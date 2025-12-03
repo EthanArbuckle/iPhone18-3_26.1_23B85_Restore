@@ -1,9 +1,9 @@
 @interface IDSUTunDeliveryController
 + (IDSUTunDeliveryController)sharedInstance;
 - (BOOL)defaultPeerIsNearby;
-- (BOOL)hasSpaceForCloudMessagesWithPriority:(int64_t)a3 dataProtectionClass:(unsigned int)a4;
-- (BOOL)hasSpaceForMessagesWithPriority:(int64_t)a3 dataProtectionClass:(unsigned int)a4;
-- (BOOL)isPeerForPhoneContinuityLocalMessage:(id)a3;
+- (BOOL)hasSpaceForCloudMessagesWithPriority:(int64_t)priority dataProtectionClass:(unsigned int)class;
+- (BOOL)hasSpaceForMessagesWithPriority:(int64_t)priority dataProtectionClass:(unsigned int)class;
+- (BOOL)isPeerForPhoneContinuityLocalMessage:(id)message;
 - (BOOL)isPresent;
 - (BOOL)isTerminusConnected;
 - (BOOL)isTerminusConnectedOverBluetooth;
@@ -11,7 +11,7 @@
 - (BOOL)isTerminusRegistered;
 - (BOOL)localSetupInProgress;
 - (IDSUTunDeliveryController)init;
-- (IDSUTunDeliveryController)initWithBroadcastQueue:(id)a3 pairingManager:(id)a4;
+- (IDSUTunDeliveryController)initWithBroadcastQueue:(id)queue pairingManager:(id)manager;
 - (IDSUTunDeliveryControllerDelegate)delegate;
 - (NSDictionary)defaultPriorityMessageStatistics;
 - (NSDictionary)queuedIncomingMessageDictionary;
@@ -20,91 +20,91 @@
 - (NSDictionary)urgentCloudPriorityMessageStatistics;
 - (NSDictionary)urgentPriorityMessageStatistics;
 - (NSSet)allowedTrafficClasses;
-- (id)_copyPeerWithID:(id)a3;
-- (id)_createPeerFromDeviceID:(id)a3;
-- (id)_createPeerFromDeviceInfo:(id)a3;
-- (id)_deviceIDForPeer:(id)a3;
+- (id)_copyPeerWithID:(id)d;
+- (id)_createPeerFromDeviceID:(id)d;
+- (id)_createPeerFromDeviceInfo:(id)info;
+- (id)_deviceIDForPeer:(id)peer;
 - (id)_pairedDeviceUUID;
-- (id)hashForString:(id)a3;
-- (id)lockedContinuityPeerID:(id)a3;
-- (id)pendingContinuityPeerID:(id)a3;
-- (id)sessionIDforPeer:(id)a3;
-- (id)topicForStreamID:(unsigned __int16)a3;
+- (id)hashForString:(id)string;
+- (id)lockedContinuityPeerID:(id)d;
+- (id)pendingContinuityPeerID:(id)d;
+- (id)sessionIDforPeer:(id)peer;
+- (id)topicForStreamID:(unsigned __int16)d;
 - (void)_OTREnableTimerFiredOnMain;
-- (void)_cleanupContinuityPeerMaps:(id)a3;
-- (void)_disableOTRForDefaultPairedPeer:(id)a3;
+- (void)_cleanupContinuityPeerMaps:(id)maps;
+- (void)_disableOTRForDefaultPairedPeer:(id)peer;
 - (void)_enableOTRForDefaultPairedDevice;
 - (void)_refreshIPsecStatus;
 - (void)_removeDevicePreferencesHandler;
-- (void)_removePeerFromDeviceID:(id)a3;
-- (void)_setCloudConnectionConnected:(BOOL)a3 forPeer:(id)a4;
+- (void)_removePeerFromDeviceID:(id)d;
+- (void)_setCloudConnectionConnected:(BOOL)connected forPeer:(id)peer;
 - (void)_setOTREnableTimer;
-- (void)_updateLocalSetupInProgressState:(BOOL)a3;
-- (void)addConnectivityDelegate:(id)a3;
-- (void)addContinuityPeer:(id)a3 btUUID:(id)a4 connectBlock:(id)a5 failureBlock:(id)a6;
-- (void)addUTunPeerWithDeviceUniqueID:(id)a3 btuuid:(id)a4;
-- (void)admissionPolicyChangedForTopic:(id)a3 allowed:(BOOL)a4;
-- (void)cancelMessageID:(id)a3;
+- (void)_updateLocalSetupInProgressState:(BOOL)state;
+- (void)addConnectivityDelegate:(id)delegate;
+- (void)addContinuityPeer:(id)peer btUUID:(id)d connectBlock:(id)block failureBlock:(id)failureBlock;
+- (void)addUTunPeerWithDeviceUniqueID:(id)d btuuid:(id)btuuid;
+- (void)admissionPolicyChangedForTopic:(id)topic allowed:(BOOL)allowed;
+- (void)cancelMessageID:(id)d;
 - (void)dealloc;
-- (void)defaultPeerClassCConnectivityDidChange:(BOOL)a3;
-- (void)defaultPeerCloudConnectivityChanged:(BOOL)a3;
-- (void)defaultPeerConnectivityChanged:(BOOL)a3;
+- (void)defaultPeerClassCConnectivityDidChange:(BOOL)change;
+- (void)defaultPeerCloudConnectivityChanged:(BOOL)changed;
+- (void)defaultPeerConnectivityChanged:(BOOL)changed;
 - (void)defaultPeerDropDisallowedMessages;
-- (void)defaultPeerLinkTypeChanged:(unsigned __int8)a3;
-- (void)defaultPeerMagnetIndicationOfAwakeStateChanged:(BOOL)a3;
-- (void)defaultPeerNearbyChanged:(BOOL)a3;
-- (void)defaultPeerSetLinkPreferences:(id)a3;
-- (void)defaultPeerSetPreferInfraWiFi:(BOOL)a3 services:(id)a4;
-- (void)defaultPeerSetWantsQuickRelayRequest:(BOOL)a3;
-- (void)defaultPeerSupportsDirectMessaging:(BOOL)a3 isObliterating:(BOOL)a4;
+- (void)defaultPeerLinkTypeChanged:(unsigned __int8)changed;
+- (void)defaultPeerMagnetIndicationOfAwakeStateChanged:(BOOL)changed;
+- (void)defaultPeerNearbyChanged:(BOOL)changed;
+- (void)defaultPeerSetLinkPreferences:(id)preferences;
+- (void)defaultPeerSetPreferInfraWiFi:(BOOL)fi services:(id)services;
+- (void)defaultPeerSetWantsQuickRelayRequest:(BOOL)request;
+- (void)defaultPeerSupportsDirectMessaging:(BOOL)messaging isObliterating:(BOOL)obliterating;
 - (void)defaultPeerUnpairStart;
-- (void)deviceWithUniqueID:(id)a3 updatedUUID:(id)a4;
-- (void)didAddPairedDevice:(id)a3;
-- (void)didRemovePairedDevice:(id)a3;
-- (void)didUpdatePairedDevice:(id)a3;
-- (void)enableCloudConnectionForDefaultPairedDevice:(BOOL)a3;
-- (void)enableConnectionForDefaultPairedDevice:(BOOL)a3;
+- (void)deviceWithUniqueID:(id)d updatedUUID:(id)iD;
+- (void)didAddPairedDevice:(id)device;
+- (void)didRemovePairedDevice:(id)device;
+- (void)didUpdatePairedDevice:(id)device;
+- (void)enableCloudConnectionForDefaultPairedDevice:(BOOL)device;
+- (void)enableConnectionForDefaultPairedDevice:(BOOL)device;
 - (void)enableOTRForDefaultPairedDevice;
 - (void)ensureLocalSetupInProgressConsistencyAfterQWS;
-- (void)findDefaultPeerToForceOTRNegotiation:(id)a3 priority:(int64_t)a4 completionBlock:(id)a5;
-- (void)kickProgressBlockForMessageID:(id)a3;
-- (void)legacyUTunBTLinkManagerDefaultPeerCloudConnectivityChanged:(BOOL)a3;
-- (void)legacyUTunBTLinkManagerDefaultPeerConnectivityChanged:(BOOL)a3;
-- (void)legacyUTunBTLinkManagerDefaultPeerNearbyChanged:(BOOL)a3;
+- (void)findDefaultPeerToForceOTRNegotiation:(id)negotiation priority:(int64_t)priority completionBlock:(id)block;
+- (void)kickProgressBlockForMessageID:(id)d;
+- (void)legacyUTunBTLinkManagerDefaultPeerCloudConnectivityChanged:(BOOL)changed;
+- (void)legacyUTunBTLinkManagerDefaultPeerConnectivityChanged:(BOOL)changed;
+- (void)legacyUTunBTLinkManagerDefaultPeerNearbyChanged:(BOOL)changed;
 - (void)localAccountSetupCompleted;
 - (void)localSetupCompleted;
 - (void)localSetupStarted;
-- (void)lockContinuityPeer:(id)a3 btUUID:(id)a4;
-- (void)nrDeviceBridge:(id)a3 defaultPeerNearbyDidChange:(BOOL)a4;
-- (void)peer:(id)a3 dataReceived:(id)a4 topic:(id)a5 command:(id)a6 fromID:(id)a7 messageID:(id)a8 wantsAppAck:(BOOL)a9 expectsPeerResponse:(BOOL)a10 peerResponseIdentifier:(id)a11 messageUUID:(id)a12 priority:(int64_t)a13 isCompressed:(BOOL)a14 connectionType:(int64_t)a15 didWakeHint:(BOOL)a16;
-- (void)peer:(id)a3 messageReceived:(id)a4 topic:(id)a5 command:(id)a6 fromID:(id)a7 messageID:(id)a8 wantsAppAck:(BOOL)a9 expectsPeerResponse:(BOOL)a10 peerResponseIdentifier:(id)a11 messageUUID:(id)a12 priority:(int64_t)a13 isCompressed:(BOOL)a14 connectionType:(int64_t)a15 didWakeHint:(BOOL)a16;
-- (void)peer:(id)a3 protobufReceived:(id)a4 topic:(id)a5 command:(id)a6 fromID:(id)a7 messageID:(id)a8 wantsAppAck:(BOOL)a9 expectsPeerResponse:(BOOL)a10 peerResponseIdentifier:(id)a11 messageUUID:(id)a12 priority:(int64_t)a13 isCompressed:(BOOL)a14 connectionType:(int64_t)a15 didWakeHint:(BOOL)a16;
-- (void)peer:(id)a3 receivedAppLevelAckWithTopic:(id)a4 fromID:(id)a5 messageID:(id)a6 peerResponseIdentifier:(id)a7 priority:(int64_t)a8 connectionType:(int64_t)a9;
-- (void)peerCloudConnectivityChanged:(id)a3;
-- (void)peerCloudConnectivityChanged:(id)a3 isCloudConnected:(BOOL)a4;
-- (void)peerConnectivityChanged:(id)a3;
-- (void)peerHasSpaceForNonUrgentMessages:(id)a3 priority:(int64_t)a4 dataProtectionClass:(unsigned int)a5;
-- (void)peerHasSpaceForNonUrgentMessages:(id)a3 priority:(int64_t)a4 dataProtectionClass:(unsigned int)a5 withTypes:(id)a6;
-- (void)peerHasSpaceForUrgentMessages:(id)a3 dataProtectionClass:(unsigned int)a4 withTypes:(id)a5;
-- (void)peerNearbyStateChanged:(id)a3 forceNotify:(BOOL)a4;
+- (void)lockContinuityPeer:(id)peer btUUID:(id)d;
+- (void)nrDeviceBridge:(id)bridge defaultPeerNearbyDidChange:(BOOL)change;
+- (void)peer:(id)peer dataReceived:(id)received topic:(id)topic command:(id)command fromID:(id)d messageID:(id)iD wantsAppAck:(BOOL)ack expectsPeerResponse:(BOOL)self0 peerResponseIdentifier:(id)self1 messageUUID:(id)self2 priority:(int64_t)self3 isCompressed:(BOOL)self4 connectionType:(int64_t)self5 didWakeHint:(BOOL)self6;
+- (void)peer:(id)peer messageReceived:(id)received topic:(id)topic command:(id)command fromID:(id)d messageID:(id)iD wantsAppAck:(BOOL)ack expectsPeerResponse:(BOOL)self0 peerResponseIdentifier:(id)self1 messageUUID:(id)self2 priority:(int64_t)self3 isCompressed:(BOOL)self4 connectionType:(int64_t)self5 didWakeHint:(BOOL)self6;
+- (void)peer:(id)peer protobufReceived:(id)received topic:(id)topic command:(id)command fromID:(id)d messageID:(id)iD wantsAppAck:(BOOL)ack expectsPeerResponse:(BOOL)self0 peerResponseIdentifier:(id)self1 messageUUID:(id)self2 priority:(int64_t)self3 isCompressed:(BOOL)self4 connectionType:(int64_t)self5 didWakeHint:(BOOL)self6;
+- (void)peer:(id)peer receivedAppLevelAckWithTopic:(id)topic fromID:(id)d messageID:(id)iD peerResponseIdentifier:(id)identifier priority:(int64_t)priority connectionType:(int64_t)type;
+- (void)peerCloudConnectivityChanged:(id)changed;
+- (void)peerCloudConnectivityChanged:(id)changed isCloudConnected:(BOOL)connected;
+- (void)peerConnectivityChanged:(id)changed;
+- (void)peerHasSpaceForNonUrgentMessages:(id)messages priority:(int64_t)priority dataProtectionClass:(unsigned int)class;
+- (void)peerHasSpaceForNonUrgentMessages:(id)messages priority:(int64_t)priority dataProtectionClass:(unsigned int)class withTypes:(id)types;
+- (void)peerHasSpaceForUrgentMessages:(id)messages dataProtectionClass:(unsigned int)class withTypes:(id)types;
+- (void)peerNearbyStateChanged:(id)changed forceNotify:(BOOL)notify;
 - (void)prepareForQuickSwitch;
-- (void)rapportClient:(id)a3 didDiscoverDevice:(id)a4;
-- (void)rapportClient:(id)a3 didLoseDevice:(id)a4;
-- (void)removeConnectivityDelegate:(id)a3;
-- (void)removeUTunPeerWithDeviceUniqueID:(id)a3 btuuid:(id)a4 reason:(int64_t)a5 shouldWait:(BOOL)a6;
-- (void)removeUTunPeerWithSessionID:(id)a3 reason:(int64_t)a4 shouldWait:(BOOL)a5;
-- (void)sendData:(id)a3 service:(id)a4 protobuf:(id)a5 resourcePath:(id)a6 resourceMetadata:(id)a7 priority:(int64_t)a8 dataProtectionClass:(unsigned int)a9 nonWaking:(BOOL)a10 nonCloudWaking:(BOOL)a11 requireBluetooth:(BOOL)a12 requireLocalWiFi:(BOOL)a13 queueOneIdentifier:(id)a14 expirationDate:(id)a15 enforceRemoteTimeouts:(BOOL)a16 expectsPeerResponse:(BOOL)a17 wantsAppAck:(BOOL)a18 compressPayload:(BOOL)a19 compressed:(BOOL)a20 peerResponseIdentifier:(id)a21 messageID:(id)a22 topic:(id)a23 awdTopic:(id)a24 command:(id)a25 fromID:(id)a26 uriToDeviceID:(id)a27 localDeviceDestinationDeviceUUID:(id)a28 bypassDuet:(BOOL)a29 duetIdentifiersOverride:(id)a30 messageType:(int64_t)a31 fallbackBlock:(id)a32 progressBlock:(id)a33 completionBlock:(id)a34;
-- (void)setAllowedTrafficClasses:(id)a3;
-- (void)setCompanionLinkPreference:(BOOL)a3;
-- (void)setDeviceUniqueIDToCBUUID:(id)a3;
+- (void)rapportClient:(id)client didDiscoverDevice:(id)device;
+- (void)rapportClient:(id)client didLoseDevice:(id)device;
+- (void)removeConnectivityDelegate:(id)delegate;
+- (void)removeUTunPeerWithDeviceUniqueID:(id)d btuuid:(id)btuuid reason:(int64_t)reason shouldWait:(BOOL)wait;
+- (void)removeUTunPeerWithSessionID:(id)d reason:(int64_t)reason shouldWait:(BOOL)wait;
+- (void)sendData:(id)data service:(id)service protobuf:(id)protobuf resourcePath:(id)path resourceMetadata:(id)metadata priority:(int64_t)priority dataProtectionClass:(unsigned int)class nonWaking:(BOOL)self0 nonCloudWaking:(BOOL)self1 requireBluetooth:(BOOL)self2 requireLocalWiFi:(BOOL)self3 queueOneIdentifier:(id)self4 expirationDate:(id)self5 enforceRemoteTimeouts:(BOOL)self6 expectsPeerResponse:(BOOL)self7 wantsAppAck:(BOOL)self8 compressPayload:(BOOL)self9 compressed:(BOOL)compressed peerResponseIdentifier:(id)responseIdentifier messageID:(id)d topic:(id)topic awdTopic:(id)awdTopic command:(id)command fromID:(id)iD uriToDeviceID:(id)deviceID localDeviceDestinationDeviceUUID:(id)uID bypassDuet:(BOOL)duet duetIdentifiersOverride:(id)data0 messageType:(int64_t)data1 fallbackBlock:(id)data2 progressBlock:(id)data3 completionBlock:(id)data4;
+- (void)setAllowedTrafficClasses:(id)classes;
+- (void)setCompanionLinkPreference:(BOOL)preference;
+- (void)setDeviceUniqueIDToCBUUID:(id)d;
 - (void)setPendingCloudFlagOnDefaultPeer;
-- (void)setTopics:(id)a3;
-- (void)startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:(id)a3;
+- (void)setTopics:(id)topics;
+- (void)startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:(id)identifier;
 - (void)stopIdsNRDeviceBridgeAndPreferenceHandler;
 - (void)systemScreenDidPowerDown;
-- (void)tryNextContinuityPeer:(id)a3;
+- (void)tryNextContinuityPeer:(id)peer;
 - (void)unlockAllContinuityPeers;
-- (void)unlockContinuityPeer:(id)a3;
+- (void)unlockContinuityPeer:(id)peer;
 - (void)updatecloudDeliveryStateOnDefaultPeer;
 @end
 
@@ -124,18 +124,18 @@
 
 - (BOOL)isTerminusConnected
 {
-  v2 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-  v3 = [v2 isConnected];
+  idsNRDeviceBridge = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+  isConnected = [idsNRDeviceBridge isConnected];
 
-  return v3;
+  return isConnected;
 }
 
 - (BOOL)localSetupInProgress
 {
-  v2 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v3 = [v2 localSetupInProgress];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  localSetupInProgress = [_copyPairedDevice localSetupInProgress];
 
-  return v3;
+  return localSetupInProgress;
 }
 
 - (NSSet)allowedTrafficClasses
@@ -149,11 +149,11 @@
 
 - (BOOL)isTerminusConnectedOverBluetooth
 {
-  v3 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-  if ([v3 isConnected])
+  idsNRDeviceBridge = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+  if ([idsNRDeviceBridge isConnected])
   {
-    v4 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-    v5 = [v4 latestLinkType] == 1;
+    idsNRDeviceBridge2 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+    v5 = [idsNRDeviceBridge2 latestLinkType] == 1;
   }
 
   else
@@ -164,10 +164,10 @@
   return v5;
 }
 
-- (IDSUTunDeliveryController)initWithBroadcastQueue:(id)a3 pairingManager:(id)a4
+- (IDSUTunDeliveryController)initWithBroadcastQueue:(id)queue pairingManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  managerCopy = manager;
   im_assert_primary_base_queue();
   v55.receiver = self;
   v55.super_class = IDSUTunDeliveryController;
@@ -194,18 +194,18 @@
     pthread_mutex_init(&v10->_trafficClassLock, 0);
     pthread_mutex_init(&v10->_continuityPeerLock, 0);
     v10->_notificationDelayInSeconds = 10.0;
-    objc_storeStrong(&v10->_broadcastQueue, a3);
-    objc_storeStrong(&v10->_pairingManager, a4);
-    v15 = [(IDSPairingManager *)v10->_pairingManager cbuuidsOfPairingDevices];
-    v16 = [(IDSPairingManager *)v10->_pairingManager cbuuidsOfPairedDevices];
-    if ([v15 count])
+    objc_storeStrong(&v10->_broadcastQueue, queue);
+    objc_storeStrong(&v10->_pairingManager, manager);
+    cbuuidsOfPairingDevices = [(IDSPairingManager *)v10->_pairingManager cbuuidsOfPairingDevices];
+    cbuuidsOfPairedDevices = [(IDSPairingManager *)v10->_pairingManager cbuuidsOfPairedDevices];
+    if ([cbuuidsOfPairingDevices count])
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = [v16 count] == 0;
+      v17 = [cbuuidsOfPairedDevices count] == 0;
     }
 
     v18 = OSLogHandleForTransportCategory();
@@ -364,10 +364,10 @@
 
     [(IDSPairingManager *)v10->_pairingManager addDelegate:v10];
     v10->_messageID = 0;
-    v34 = [(IDSUTunDeliveryController *)v10 _pairedDeviceUUID];
-    [(IDSUTunDeliveryController *)v10 startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:v34];
-    v35 = [(IDSUTunDeliveryController *)v10 idsNRDeviceBridge];
-    -[IDSUTunPeer setIsClassCConnected:](v23, "setIsClassCConnected:", [v35 isClassCConnected]);
+    _pairedDeviceUUID = [(IDSUTunDeliveryController *)v10 _pairedDeviceUUID];
+    [(IDSUTunDeliveryController *)v10 startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:_pairedDeviceUUID];
+    idsNRDeviceBridge = [(IDSUTunDeliveryController *)v10 idsNRDeviceBridge];
+    -[IDSUTunPeer setIsClassCConnected:](v23, "setIsClassCConnected:", [idsNRDeviceBridge isClassCConnected]);
 
     [(IDSUTunDeliveryController *)v10 _updateLocalSetupInProgressState:v17];
     v36 = +[IMSystemMonitor sharedInstance];
@@ -437,8 +437,8 @@
 - (void)dealloc
 {
   [(IDSUTunDeliveryController *)self _removeDevicePreferencesHandler];
-  v3 = [(IDSUTunDeliveryController *)self pairingManager];
-  [v3 removeDelegate:self];
+  pairingManager = [(IDSUTunDeliveryController *)self pairingManager];
+  [pairingManager removeDelegate:self];
 
   [(IMTimer *)self->_otrTimer invalidate];
   otrTimer = self->_otrTimer;
@@ -459,15 +459,15 @@
 
 - (id)_pairedDeviceUUID
 {
-  v3 = [(IDSUTunDeliveryController *)self pairingManager];
-  v4 = [v3 isPaired];
+  pairingManager = [(IDSUTunDeliveryController *)self pairingManager];
+  isPaired = [pairingManager isPaired];
 
-  if (v4)
+  if (isPaired)
   {
     v5 = [NSUUID alloc];
-    v6 = [(IDSUTunDeliveryController *)self pairingManager];
-    v7 = [v6 pairedDeviceUUIDString];
-    v8 = [v5 initWithUUIDString:v7];
+    pairingManager2 = [(IDSUTunDeliveryController *)self pairingManager];
+    pairedDeviceUUIDString = [pairingManager2 pairedDeviceUUIDString];
+    v8 = [v5 initWithUUIDString:pairedDeviceUUIDString];
 
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -517,17 +517,17 @@
   return v8;
 }
 
-- (void)startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:(id)a3
+- (void)startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-  if (v5 && (-[IDSUTunDeliveryController idsNRDeviceBridge](self, "idsNRDeviceBridge"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isDevicesIdentifierEqualTo:v4], v6, v5, v7))
+  identifierCopy = identifier;
+  idsNRDeviceBridge = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+  if (idsNRDeviceBridge && (-[IDSUTunDeliveryController idsNRDeviceBridge](self, "idsNRDeviceBridge"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isDevicesIdentifierEqualTo:identifierCopy], v6, idsNRDeviceBridge, v7))
   {
     v8 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "NRDeviceMonitor already running for {deviceIdentifier: %@}.", buf, 0xCu);
     }
 
@@ -548,17 +548,17 @@
   {
     [(IDSUTunDeliveryController *)self _removeDevicePreferencesHandler];
     [(IDSUTunDeliveryController *)self setIdsNRDeviceBridge:0];
-    if (v4)
+    if (identifierCopy)
     {
-      v9 = [[IDSNRDevicePreferencesHandler alloc] initWithDeviceIdentifier:v4];
+      v9 = [[IDSNRDevicePreferencesHandler alloc] initWithDeviceIdentifier:identifierCopy];
       [(IDSUTunDeliveryController *)self setNrDevicePreferencesHandler:v9];
 
-      v10 = [[IDSNRDeviceBridge alloc] initWithDeviceIdentifier:v4 delegate:self];
+      v10 = [[IDSNRDeviceBridge alloc] initWithDeviceIdentifier:identifierCopy delegate:self];
       [(IDSUTunDeliveryController *)self setIdsNRDeviceBridge:v10];
 
       pthread_mutex_lock(&self->_trafficClassLock);
-      v11 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-      [v11 setAllowedTrafficClasses:self->_allowedTrafficClasses];
+      nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      [nrDevicePreferencesHandler setAllowedTrafficClasses:self->_allowedTrafficClasses];
 
       pthread_mutex_unlock(&self->_trafficClassLock);
     }
@@ -574,12 +574,12 @@
 
 - (void)_removeDevicePreferencesHandler
 {
-  v3 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+  nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
 
-  if (v3)
+  if (nrDevicePreferencesHandler)
   {
-    v4 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-    [v4 cancel];
+    nrDevicePreferencesHandler2 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+    [nrDevicePreferencesHandler2 cancel];
 
     [(IDSUTunDeliveryController *)self setNrDevicePreferencesHandler:0];
   }
@@ -587,57 +587,57 @@
 
 - (void)_refreshIPsecStatus
 {
-  v3 = [(IDSUTunDeliveryController *)self pairingManager];
-  self->_shouldUseIPsecLinkForDefaultPairedDevice = [v3 shouldUseIPsecLinkForDefaultPairedDevice];
+  pairingManager = [(IDSUTunDeliveryController *)self pairingManager];
+  self->_shouldUseIPsecLinkForDefaultPairedDevice = [pairingManager shouldUseIPsecLinkForDefaultPairedDevice];
 
-  v4 = [(IDSUTunDeliveryController *)self _pairedDeviceUUID];
-  v5 = v4;
-  if (self->_shouldUseIPsecLinkForDefaultPairedDevice && v4 != 0)
+  _pairedDeviceUUID = [(IDSUTunDeliveryController *)self _pairedDeviceUUID];
+  v5 = _pairedDeviceUUID;
+  if (self->_shouldUseIPsecLinkForDefaultPairedDevice && _pairedDeviceUUID != 0)
   {
-    v7 = v4;
-    v4 = [(IDSUTunDeliveryController *)self startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:v4];
+    v7 = _pairedDeviceUUID;
+    _pairedDeviceUUID = [(IDSUTunDeliveryController *)self startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:_pairedDeviceUUID];
     v5 = v7;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(_pairedDeviceUUID, v5);
 }
 
-- (id)_copyPeerWithID:(id)a3
+- (id)_copyPeerWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
-  v5 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:dCopy];
 
   pthread_mutex_unlock(&self->_deviceIDToPeerLock);
   return v5;
 }
 
-- (id)hashForString:(id)a3
+- (id)hashForString:(id)string
 {
   memset(md, 170, sizeof(md));
-  v3 = [a3 UTF8String];
-  v4 = strlen(v3);
-  CC_MD5(v3, v4, md);
+  uTF8String = [string UTF8String];
+  v4 = strlen(uTF8String);
+  CC_MD5(uTF8String, v4, md);
   v5 = [NSNumber numberWithUnsignedShort:bswap32(*md) >> 16];
 
   return v5;
 }
 
-- (void)setDeviceUniqueIDToCBUUID:(id)a3
+- (void)setDeviceUniqueIDToCBUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received devices with unique ids -> cbuuids %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v6 = v4;
+    v6 = dCopy;
     _IDSLogV();
   }
 
@@ -646,35 +646,35 @@
   v7[2] = sub_1004C8A08;
   v7[3] = &unk_100BDE5D8;
   v7[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:{v7, v6}];
+  [dCopy enumerateKeysAndObjectsUsingBlock:{v7, v6}];
 }
 
-- (void)deviceWithUniqueID:(id)a3 updatedUUID:(id)a4
+- (void)deviceWithUniqueID:(id)d updatedUUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   im_assert_primary_base_queue();
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = dCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = iDCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received device with unique id %@ updated BTUUID: %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v13 = v6;
-    v14 = v7;
+    v13 = dCopy;
+    v14 = iDCopy;
     _IDSLogV();
   }
 
-  if (v6 && ![(IDSUTunPeer *)v6 isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID])
+  if (dCopy && ![(IDSUTunPeer *)dCopy isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID])
   {
     pthread_mutex_lock(&self->_deviceIDToPeerLock);
-    v10 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:v6];
+    v10 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:dCopy];
     if (v10)
     {
       pthread_mutex_unlock(&self->_deviceIDToPeerLock);
@@ -684,28 +684,28 @@
         *buf = 138412802;
         v17 = v10;
         v18 = 2112;
-        v19 = v6;
+        v19 = dCopy;
         v20 = 2112;
-        v21 = v7;
+        v21 = iDCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating existing peer %@ for uniqueID %@ with btuuid %@", buf, 0x20u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v14 = v6;
-        v15 = v7;
+        v14 = dCopy;
+        v15 = iDCopy;
         v13 = v10;
         _IDSLogV();
       }
 
-      [(IDSUTunPeer *)v10 setBtUUID:v7, v13, v14, v15];
+      [(IDSUTunPeer *)v10 setBtUUID:iDCopy, v13, v14, v15];
     }
 
     else
     {
-      v10 = [[IDSUTunPeer alloc] initWithIdentifier:@"UTunDelivery" btUUID:v7 uniqueID:v6 shouldUseIPsecLink:0 isNearby:0 isClassCConnected:0];
+      v10 = [[IDSUTunPeer alloc] initWithIdentifier:@"UTunDelivery" btUUID:iDCopy uniqueID:dCopy shouldUseIPsecLink:0 isNearby:0 isClassCConnected:0];
       [(IDSUTunPeer *)v10 setDelegate:self];
-      [(NSMutableDictionary *)self->_deviceIDToPeer setObject:v10 forKey:v6];
+      [(NSMutableDictionary *)self->_deviceIDToPeer setObject:v10 forKey:dCopy];
       pthread_mutex_unlock(&self->_deviceIDToPeerLock);
       v12 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -713,9 +713,9 @@
         *buf = 138412802;
         v17 = v10;
         v18 = 2112;
-        v19 = v6;
+        v19 = dCopy;
         v20 = 2112;
-        v21 = v7;
+        v21 = iDCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Created new peer %@ for uniqueID %@ with btuuid %@", buf, 0x20u);
       }
 
@@ -732,7 +732,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Ignoring update for nil or default paired device BTUUID: %@", buf, 0xCu);
     }
 
@@ -743,26 +743,26 @@
   }
 }
 
-- (void)_updateLocalSetupInProgressState:(BOOL)a3
+- (void)_updateLocalSetupInProgressState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   [(IDSUTunDeliveryController *)self setIsLocalSetUpInProgress:?];
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
   {
-    v5 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+    nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
 
-    if (v5)
+    if (nrDevicePreferencesHandler)
     {
-      v6 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-      v7 = v6;
-      if (v3)
+      nrDevicePreferencesHandler2 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      v7 = nrDevicePreferencesHandler2;
+      if (stateCopy)
       {
-        [v6 localSetUpStarted];
+        [nrDevicePreferencesHandler2 localSetUpStarted];
       }
 
       else
       {
-        [v6 localSetUpCompleted];
+        [nrDevicePreferencesHandler2 localSetUpCompleted];
       }
     }
   }
@@ -790,8 +790,8 @@
     }
   }
 
-  v4 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  [v4 clearStats];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  [_copyPairedDevice clearStats];
   [(IDSUTunDeliveryController *)self _updateLocalSetupInProgressState:1];
 }
 
@@ -817,17 +817,17 @@
     }
   }
 
-  v4 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  [v4 setLocalSetupInProgress:0];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  [_copyPairedDevice setLocalSetupInProgress:0];
   [(IDSUTunDeliveryController *)self _updateLocalSetupInProgressState:0];
 }
 
 - (void)prepareForQuickSwitch
 {
-  v3 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  if ([v3 localSetupInProgress])
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  if ([_copyPairedDevice localSetupInProgress])
   {
-    [v3 setLocalSetupInProgress:0];
+    [_copyPairedDevice setLocalSetupInProgress:0];
     [(IDSUTunDeliveryController *)self _updateLocalSetupInProgressState:0];
   }
 
@@ -850,15 +850,15 @@
     }
   }
 
-  [v3 setSupportsCloudConnections:0];
+  [_copyPairedDevice setSupportsCloudConnections:0];
 }
 
 - (void)updatecloudDeliveryStateOnDefaultPeer
 {
-  v3 = [(IDSUTunDeliveryController *)self pairingManager];
-  v4 = [v3 pairedDeviceServiceMinCompatibilityVersion];
+  pairingManager = [(IDSUTunDeliveryController *)self pairingManager];
+  pairedDeviceServiceMinCompatibilityVersion = [pairingManager pairedDeviceServiceMinCompatibilityVersion];
 
-  if (v4 >= 3)
+  if (pairedDeviceServiceMinCompatibilityVersion >= 3)
   {
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -876,32 +876,32 @@
       }
     }
 
-    v6 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-    [v6 setSupportsCloudConnections:1];
+    _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+    [_copyPairedDevice setSupportsCloudConnections:1];
   }
 }
 
 - (void)ensureLocalSetupInProgressConsistencyAfterQWS
 {
-  v7 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  [v7 setLocalSetupInProgress:{-[IDSUTunDeliveryController isLocalSetUpInProgress](self, "isLocalSetUpInProgress")}];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  [_copyPairedDevice setLocalSetupInProgress:{-[IDSUTunDeliveryController isLocalSetUpInProgress](self, "isLocalSetUpInProgress")}];
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
   {
-    v3 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+    nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
 
-    if (v3)
+    if (nrDevicePreferencesHandler)
     {
-      v4 = [(IDSUTunDeliveryController *)self isLocalSetUpInProgress];
-      v5 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-      v6 = v5;
-      if (v4)
+      isLocalSetUpInProgress = [(IDSUTunDeliveryController *)self isLocalSetUpInProgress];
+      nrDevicePreferencesHandler2 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      v6 = nrDevicePreferencesHandler2;
+      if (isLocalSetUpInProgress)
       {
-        [v5 localSetUpStarted];
+        [nrDevicePreferencesHandler2 localSetUpStarted];
       }
 
       else
       {
-        [v5 localSetUpCompleted];
+        [nrDevicePreferencesHandler2 localSetUpCompleted];
       }
     }
   }
@@ -909,33 +909,33 @@
 
 - (void)setPendingCloudFlagOnDefaultPeer
 {
-  v2 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  [v2 setPendingCloudEnable:1];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  [_copyPairedDevice setPendingCloudEnable:1];
 }
 
-- (void)_removePeerFromDeviceID:(id)a3
+- (void)_removePeerFromDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
-  [(NSMutableDictionary *)self->_deviceIDToPeer removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_deviceIDToPeer removeObjectForKey:dCopy];
 
   pthread_mutex_unlock(&self->_deviceIDToPeerLock);
 }
 
-- (id)_createPeerFromDeviceID:(id)a3
+- (id)_createPeerFromDeviceID:(id)d
 {
-  v4 = [NSDictionary dictionaryWithObject:a3 forKey:IDSDevicePairedDeviceID];
+  v4 = [NSDictionary dictionaryWithObject:d forKey:IDSDevicePairedDeviceID];
   v5 = [(IDSUTunDeliveryController *)self _createPeerFromDeviceInfo:v4];
 
   return v5;
 }
 
-- (id)_createPeerFromDeviceInfo:(id)a3
+- (id)_createPeerFromDeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:IDSDevicePairedDeviceID];
-  v6 = [v4 objectForKey:@"bt-id"];
-  v7 = [v4 objectForKey:@"session-id"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKey:IDSDevicePairedDeviceID];
+  v6 = [infoCopy objectForKey:@"bt-id"];
+  v7 = [infoCopy objectForKey:@"session-id"];
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
   if (!v7 || ![(IDSUTunPeer *)v7 length])
   {
@@ -988,7 +988,7 @@
       *buf = 138412802;
       v18 = v7;
       v19 = 2112;
-      v20 = v4;
+      v20 = infoCopy;
       v21 = 2112;
       v22 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "WARNING: Peer from sessionID %@ shouldn't be created for the default paired device! (deviceInfo: %@) (peer map: %@)", buf, 0x20u);
@@ -1074,98 +1074,98 @@ LABEL_31:
   return v10;
 }
 
-- (void)sendData:(id)a3 service:(id)a4 protobuf:(id)a5 resourcePath:(id)a6 resourceMetadata:(id)a7 priority:(int64_t)a8 dataProtectionClass:(unsigned int)a9 nonWaking:(BOOL)a10 nonCloudWaking:(BOOL)a11 requireBluetooth:(BOOL)a12 requireLocalWiFi:(BOOL)a13 queueOneIdentifier:(id)a14 expirationDate:(id)a15 enforceRemoteTimeouts:(BOOL)a16 expectsPeerResponse:(BOOL)a17 wantsAppAck:(BOOL)a18 compressPayload:(BOOL)a19 compressed:(BOOL)a20 peerResponseIdentifier:(id)a21 messageID:(id)a22 topic:(id)a23 awdTopic:(id)a24 command:(id)a25 fromID:(id)a26 uriToDeviceID:(id)a27 localDeviceDestinationDeviceUUID:(id)a28 bypassDuet:(BOOL)a29 duetIdentifiersOverride:(id)a30 messageType:(int64_t)a31 fallbackBlock:(id)a32 progressBlock:(id)a33 completionBlock:(id)a34
+- (void)sendData:(id)data service:(id)service protobuf:(id)protobuf resourcePath:(id)path resourceMetadata:(id)metadata priority:(int64_t)priority dataProtectionClass:(unsigned int)class nonWaking:(BOOL)self0 nonCloudWaking:(BOOL)self1 requireBluetooth:(BOOL)self2 requireLocalWiFi:(BOOL)self3 queueOneIdentifier:(id)self4 expirationDate:(id)self5 enforceRemoteTimeouts:(BOOL)self6 expectsPeerResponse:(BOOL)self7 wantsAppAck:(BOOL)self8 compressPayload:(BOOL)self9 compressed:(BOOL)compressed peerResponseIdentifier:(id)responseIdentifier messageID:(id)d topic:(id)topic awdTopic:(id)awdTopic command:(id)command fromID:(id)iD uriToDeviceID:(id)deviceID localDeviceDestinationDeviceUUID:(id)uID bypassDuet:(BOOL)duet duetIdentifiersOverride:(id)data0 messageType:(int64_t)data1 fallbackBlock:(id)data2 progressBlock:(id)data3 completionBlock:(id)data4
 {
-  v77 = a3;
-  v67 = a4;
-  v76 = a5;
-  v60 = a6;
-  v58 = a7;
-  v59 = a14;
-  v75 = a15;
-  v38 = a21;
-  v56 = a22;
-  v57 = a23;
-  v39 = a24;
-  v51 = a25;
-  v55 = a26;
-  v50 = a27;
-  v52 = a28;
-  v53 = a30;
-  v40 = a32;
-  v54 = a33;
-  v41 = a34;
+  dataCopy = data;
+  serviceCopy = service;
+  protobufCopy = protobuf;
+  pathCopy = path;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  dateCopy = date;
+  responseIdentifierCopy = responseIdentifier;
+  dCopy = d;
+  topicCopy = topic;
+  awdTopicCopy = awdTopic;
+  commandCopy = command;
+  iDCopy = iD;
+  deviceIDCopy = deviceID;
+  uIDCopy = uID;
+  overrideCopy = override;
+  blockCopy = block;
+  progressBlockCopy = progressBlock;
+  completionBlockCopy = completionBlock;
   v61 = +[IDSDaemonPriorityQueueController sharedInstance];
   v79[0] = _NSConcreteStackBlock;
   v79[1] = 3221225472;
   v79[2] = sub_1004C9F68;
   v79[3] = &unk_100BDE650;
-  v102 = a16;
-  v101 = a9;
-  v103 = a10;
-  v104 = a11;
-  v105 = a17;
-  v106 = a18;
-  v107 = a19;
-  v108 = a20;
-  v109 = a12;
-  v110 = a13;
-  v111 = a29;
+  timeoutsCopy = timeouts;
+  classCopy = class;
+  wakingCopy = waking;
+  cloudWakingCopy = cloudWaking;
+  responseCopy = response;
+  ackCopy = ack;
+  payloadCopy = payload;
+  compressedCopy = compressed;
+  bluetoothCopy = bluetooth;
+  fiCopy = fi;
+  duetCopy = duet;
   v79[4] = self;
-  v80 = v57;
-  v99 = a8;
-  v100 = a31;
-  v81 = v56;
-  v82 = v77;
-  v83 = v76;
-  v84 = v75;
-  v85 = v51;
-  v86 = v50;
-  v87 = v52;
-  v88 = v60;
-  v89 = v58;
-  v90 = v38;
-  v91 = v39;
-  v92 = v55;
-  v96 = v41;
-  v97 = v40;
-  v98 = v54;
-  v93 = v59;
-  v94 = v53;
-  v95 = v67;
-  v74 = v67;
-  v72 = v53;
-  v71 = v59;
-  v70 = v54;
-  v69 = v40;
-  v68 = v55;
-  v66 = v39;
-  v65 = v38;
-  v64 = v58;
-  v63 = v60;
-  v62 = v41;
-  v42 = v52;
-  v43 = v50;
-  v44 = v51;
-  v45 = v75;
-  v46 = v76;
-  v47 = v77;
-  v48 = v56;
-  v49 = v57;
-  [v61 performBlockWithPriority:v79 priority:a8];
+  v80 = topicCopy;
+  priorityCopy = priority;
+  typeCopy = type;
+  v81 = dCopy;
+  v82 = dataCopy;
+  v83 = protobufCopy;
+  v84 = dateCopy;
+  v85 = commandCopy;
+  v86 = deviceIDCopy;
+  v87 = uIDCopy;
+  v88 = pathCopy;
+  v89 = metadataCopy;
+  v90 = responseIdentifierCopy;
+  v91 = awdTopicCopy;
+  v92 = iDCopy;
+  v96 = completionBlockCopy;
+  v97 = blockCopy;
+  v98 = progressBlockCopy;
+  v93 = identifierCopy;
+  v94 = overrideCopy;
+  v95 = serviceCopy;
+  v74 = serviceCopy;
+  v72 = overrideCopy;
+  v71 = identifierCopy;
+  v70 = progressBlockCopy;
+  v69 = blockCopy;
+  v68 = iDCopy;
+  v66 = awdTopicCopy;
+  v65 = responseIdentifierCopy;
+  v64 = metadataCopy;
+  v63 = pathCopy;
+  v62 = completionBlockCopy;
+  v42 = uIDCopy;
+  v43 = deviceIDCopy;
+  v44 = commandCopy;
+  v45 = dateCopy;
+  v46 = protobufCopy;
+  v47 = dataCopy;
+  v48 = dCopy;
+  v49 = topicCopy;
+  [v61 performBlockWithPriority:v79 priority:priority];
 }
 
-- (void)cancelMessageID:(id)a3
+- (void)cancelMessageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   im_assert_primary_base_queue();
-  if ([v4 length])
+  if ([dCopy length])
   {
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Attempting to cancel message ID: %@", buf, 0xCu);
     }
 
@@ -1173,11 +1173,11 @@ LABEL_31:
     {
       if (_IDSShouldLogTransport())
       {
-        v10 = v4;
+        v10 = dCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v10 = v4;
+          v10 = dCopy;
           _IDSLogV();
         }
       }
@@ -1188,8 +1188,8 @@ LABEL_31:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(NSMutableDictionary *)self->_deviceIDToPeer allValues];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(NSMutableDictionary *)self->_deviceIDToPeer allValues];
+    v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = *v12;
@@ -1200,15 +1200,15 @@ LABEL_31:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          [*(*(&v11 + 1) + 8 * v9) cancelMessageID:{v4, v10}];
+          [*(*(&v11 + 1) + 8 * v9) cancelMessageID:{dCopy, v10}];
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -1218,17 +1218,17 @@ LABEL_31:
   }
 }
 
-- (void)kickProgressBlockForMessageID:(id)a3
+- (void)kickProgressBlockForMessageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   im_assert_primary_base_queue();
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_deviceIDToPeer allValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_deviceIDToPeer allValues];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1240,15 +1240,15 @@ LABEL_31:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) kickProgressBlockForMessageID:v4];
+        [*(*(&v10 + 1) + 8 * v9) kickProgressBlockForMessageID:dCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -1257,12 +1257,12 @@ LABEL_31:
   pthread_mutex_unlock(&self->_deviceIDToPeerLock);
 }
 
-- (id)topicForStreamID:(unsigned __int16)a3
+- (id)topicForStreamID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   pthread_mutex_lock(&self->_streamIDToTopicLock);
   streamIDToTopic = self->_streamIDToTopic;
-  v6 = [NSNumber numberWithUnsignedShort:v3];
+  v6 = [NSNumber numberWithUnsignedShort:dCopy];
   v7 = [(NSMutableDictionary *)streamIDToTopic objectForKey:v6];
 
   pthread_mutex_unlock(&self->_streamIDToTopicLock);
@@ -1273,19 +1273,19 @@ LABEL_31:
 - (BOOL)isPresent
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v4 = [v3 isConnected];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  isConnected = [_copyPairedDevice isConnected];
 
-  return v4;
+  return isConnected;
 }
 
 - (BOOL)defaultPeerIsNearby
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v4 = [v3 isNearby];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  isNearby = [_copyPairedDevice isNearby];
 
-  return v4;
+  return isNearby;
 }
 
 - (void)localAccountSetupCompleted
@@ -1354,15 +1354,15 @@ LABEL_31:
   }
 }
 
-- (void)enableConnectionForDefaultPairedDevice:(BOOL)a3
+- (void)enableConnectionForDefaultPairedDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (deviceCopy)
     {
       v6 = @"YES";
     }
@@ -1375,7 +1375,7 @@ LABEL_31:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v7 = @"NO";
-    if (v3)
+    if (deviceCopy)
     {
       v7 = @"YES";
     }
@@ -1384,18 +1384,18 @@ LABEL_31:
     _IDSLogV();
   }
 
-  v8 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v9 = v8;
-  if (v8)
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  v9 = _copyPairedDevice;
+  if (_copyPairedDevice)
   {
-    if (v3)
+    if (deviceCopy)
     {
-      [v8 enableConnection];
+      [_copyPairedDevice enableConnection];
     }
 
     else
     {
-      [v8 disableConnectionForReason:14 shouldWait:0];
+      [_copyPairedDevice disableConnectionForReason:14 shouldWait:0];
     }
   }
 
@@ -1416,15 +1416,15 @@ LABEL_31:
   }
 }
 
-- (void)enableCloudConnectionForDefaultPairedDevice:(BOOL)a3
+- (void)enableCloudConnectionForDefaultPairedDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (deviceCopy)
     {
       v6 = @"YES";
     }
@@ -1437,7 +1437,7 @@ LABEL_31:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v7 = @"NO";
-    if (v3)
+    if (deviceCopy)
     {
       v7 = @"YES";
     }
@@ -1446,18 +1446,18 @@ LABEL_31:
     _IDSLogV();
   }
 
-  v8 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v9 = v8;
-  if (v8)
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  v9 = _copyPairedDevice;
+  if (_copyPairedDevice)
   {
-    if (v3)
+    if (deviceCopy)
     {
-      [v8 enableCloudConnection];
+      [_copyPairedDevice enableCloudConnection];
     }
 
     else
     {
-      [v8 disableCloudConnectionForReason:14];
+      [_copyPairedDevice disableCloudConnectionForReason:14];
     }
   }
 
@@ -1478,39 +1478,39 @@ LABEL_31:
   }
 }
 
-- (BOOL)hasSpaceForMessagesWithPriority:(int64_t)a3 dataProtectionClass:(unsigned int)a4
+- (BOOL)hasSpaceForMessagesWithPriority:(int64_t)priority dataProtectionClass:(unsigned int)class
 {
-  v4 = *&a4;
+  v4 = *&class;
   v7 = +[IDSDaemonPriorityQueueController sharedInstance];
-  [v7 assertRunningWithPriority:a3];
+  [v7 assertRunningWithPriority:priority];
 
-  v8 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  LOBYTE(v4) = [v8 hasSpaceForMessagesWithPriority:a3 dataProtectionClass:v4 messageType:4];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  LOBYTE(v4) = [_copyPairedDevice hasSpaceForMessagesWithPriority:priority dataProtectionClass:v4 messageType:4];
 
   return v4;
 }
 
-- (BOOL)hasSpaceForCloudMessagesWithPriority:(int64_t)a3 dataProtectionClass:(unsigned int)a4
+- (BOOL)hasSpaceForCloudMessagesWithPriority:(int64_t)priority dataProtectionClass:(unsigned int)class
 {
-  v4 = *&a4;
+  v4 = *&class;
   v7 = +[IDSDaemonPriorityQueueController sharedInstance];
-  [v7 assertRunningWithPriority:a3];
+  [v7 assertRunningWithPriority:priority];
 
-  v8 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  LOBYTE(v4) = [v8 hasSpaceForMessagesWithPriority:a3 dataProtectionClass:v4 messageType:6];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  LOBYTE(v4) = [_copyPairedDevice hasSpaceForMessagesWithPriority:priority dataProtectionClass:v4 messageType:6];
 
   return v4;
 }
 
-- (void)setTopics:(id)a3
+- (void)setTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   im_assert_primary_base_queue();
   pthread_mutex_lock(&self->_streamIDToTopicLock);
-  v5 = [(NSMutableDictionary *)self->_streamIDToTopic allValues];
-  v6 = [NSSet setWithArray:v5];
+  allValues = [(NSMutableDictionary *)self->_streamIDToTopic allValues];
+  v6 = [NSSet setWithArray:allValues];
 
-  if (v4 && v6 && [v6 isEqualToSet:v4])
+  if (topicsCopy && v6 && [v6 isEqualToSet:topicsCopy])
   {
     pthread_mutex_unlock(&self->_streamIDToTopicLock);
   }
@@ -1532,19 +1532,19 @@ LABEL_31:
     v13[2] = sub_1004CBED4;
     v13[3] = &unk_100BDE678;
     v13[4] = self;
-    [v4 enumerateObjectsUsingBlock:v13];
+    [topicsCopy enumerateObjectsUsingBlock:v13];
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(NSMutableDictionary *)self->_streamIDToTopic allKeys];
+      allKeys = [(NSMutableDictionary *)self->_streamIDToTopic allKeys];
       *buf = 138412290;
-      v15 = v11;
+      v15 = allKeys;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Got topic set update %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v12 = [(NSMutableDictionary *)self->_streamIDToTopic allKeys];
+      allKeys2 = [(NSMutableDictionary *)self->_streamIDToTopic allKeys];
       _IDSLogV();
     }
 
@@ -1555,46 +1555,46 @@ LABEL_31:
 - (NSDictionary)syncPriorityMessageStatistics
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v4 = [v3 syncPriorityMessageStatistics];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  syncPriorityMessageStatistics = [_copyPairedDevice syncPriorityMessageStatistics];
 
-  return v4;
+  return syncPriorityMessageStatistics;
 }
 
 - (NSDictionary)defaultPriorityMessageStatistics
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v4 = [v3 defaultPriorityMessageStatistics];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  defaultPriorityMessageStatistics = [_copyPairedDevice defaultPriorityMessageStatistics];
 
-  return v4;
+  return defaultPriorityMessageStatistics;
 }
 
 - (NSDictionary)urgentPriorityMessageStatistics
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v4 = [v3 urgentPriorityMessageStatistics];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  urgentPriorityMessageStatistics = [_copyPairedDevice urgentPriorityMessageStatistics];
 
-  return v4;
+  return urgentPriorityMessageStatistics;
 }
 
 - (NSDictionary)urgentCloudPriorityMessageStatistics
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v4 = [v3 urgentCloudPriorityMessageStatistics];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  urgentCloudPriorityMessageStatistics = [_copyPairedDevice urgentCloudPriorityMessageStatistics];
 
-  return v4;
+  return urgentCloudPriorityMessageStatistics;
 }
 
 - (NSDictionary)sendingMessageStatistics
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v4 = [v3 sendingMessageStatistics];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  sendingMessageStatistics = [_copyPairedDevice sendingMessageStatistics];
 
-  return v4;
+  return sendingMessageStatistics;
 }
 
 - (NSDictionary)queuedIncomingMessageDictionary
@@ -1617,35 +1617,35 @@ LABEL_31:
   return v6;
 }
 
-- (void)setAllowedTrafficClasses:(id)a3
+- (void)setAllowedTrafficClasses:(id)classes
 {
-  v5 = a3;
+  classesCopy = classes;
   im_assert_primary_base_queue();
   pthread_mutex_lock(&self->_trafficClassLock);
-  if (([(NSSet *)self->_allowedTrafficClasses isEqual:v5]& 1) == 0)
+  if (([(NSSet *)self->_allowedTrafficClasses isEqual:classesCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_allowedTrafficClasses, a3);
+    objc_storeStrong(&self->_allowedTrafficClasses, classes);
     v6 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:IDSDeviceDefaultPairedDeviceUniqueID];
     [v6 trafficClassesChanged];
 
     if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
     {
-      v7 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
 
-      if (v7)
+      if (nrDevicePreferencesHandler)
       {
-        v8 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-        [v8 setAllowedTrafficClasses:v5];
+        nrDevicePreferencesHandler2 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+        [nrDevicePreferencesHandler2 setAllowedTrafficClasses:classesCopy];
       }
 
       else
       {
-        v8 = +[IDSFoundationLog delivery];
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+        nrDevicePreferencesHandler2 = +[IDSFoundationLog delivery];
+        if (os_log_type_enabled(nrDevicePreferencesHandler2, OS_LOG_TYPE_DEFAULT))
         {
           v9 = 138412290;
-          v10 = v5;
-          _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Warning: [IDSUTunDeliveryController setAllowedTrafficClasses:] called but missing nrDevicePreferencesHandler; allowedTrafficClasses %@", &v9, 0xCu);
+          v10 = classesCopy;
+          _os_log_impl(&_mh_execute_header, nrDevicePreferencesHandler2, OS_LOG_TYPE_DEFAULT, "Warning: [IDSUTunDeliveryController setAllowedTrafficClasses:] called but missing nrDevicePreferencesHandler; allowedTrafficClasses %@", &v9, 0xCu);
         }
       }
     }
@@ -1677,30 +1677,30 @@ LABEL_31:
   [(NSMutableDictionary *)deviceIDToPeer enumerateKeysAndObjectsUsingBlock:v5];
 }
 
-- (void)removeUTunPeerWithSessionID:(id)a3 reason:(int64_t)a4 shouldWait:(BOOL)a5
+- (void)removeUTunPeerWithSessionID:(id)d reason:(int64_t)reason shouldWait:(BOOL)wait
 {
-  v5 = a5;
-  v8 = a3;
+  waitCopy = wait;
+  dCopy = d;
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
-  v9 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:v8];
-  [v9 disableConnectionForReason:a4 shouldWait:v5];
+  v9 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:dCopy];
+  [v9 disableConnectionForReason:reason shouldWait:waitCopy];
   [v9 setDelegate:0];
-  v10 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:v8];
+  v10 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:dCopy];
 
   if (v10)
   {
-    [(NSMutableDictionary *)self->_deviceIDToPeer removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_deviceIDToPeer removeObjectForKey:dCopy];
   }
 
   btuuidToSessionID = self->_btuuidToSessionID;
-  v12 = [v9 originalbtUUID];
-  v13 = [(NSMutableDictionary *)btuuidToSessionID objectForKey:v12];
+  originalbtUUID = [v9 originalbtUUID];
+  v13 = [(NSMutableDictionary *)btuuidToSessionID objectForKey:originalbtUUID];
 
-  if (v13 && [v13 isEqualToString:v8])
+  if (v13 && [v13 isEqualToString:dCopy])
   {
     v14 = self->_btuuidToSessionID;
-    v15 = [v9 originalbtUUID];
-    [(NSMutableDictionary *)v14 removeObjectForKey:v15];
+    originalbtUUID2 = [v9 originalbtUUID];
+    [(NSMutableDictionary *)v14 removeObjectForKey:originalbtUUID2];
   }
 
   else
@@ -1721,23 +1721,23 @@ LABEL_31:
   pthread_mutex_unlock(&self->_deviceIDToPeerLock);
 }
 
-- (void)removeUTunPeerWithDeviceUniqueID:(id)a3 btuuid:(id)a4 reason:(int64_t)a5 shouldWait:(BOOL)a6
+- (void)removeUTunPeerWithDeviceUniqueID:(id)d btuuid:(id)btuuid reason:(int64_t)reason shouldWait:(BOOL)wait
 {
-  v6 = a6;
+  waitCopy = wait;
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
   v9 = IDSDeviceDefaultPairedDeviceUniqueID;
   v10 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:IDSDeviceDefaultPairedDeviceUniqueID];
   [(NSMutableDictionary *)self->_deviceIDToPeer removeObjectForKey:v9];
   pthread_mutex_unlock(&self->_deviceIDToPeerLock);
   [(IDSUTunDeliveryController *)self _disableOTRForDefaultPairedPeer:v10];
-  [v10 disableConnectionForReason:a5 shouldWait:v6];
+  [v10 disableConnectionForReason:reason shouldWait:waitCopy];
   [v10 setDelegate:0];
 }
 
-- (void)addUTunPeerWithDeviceUniqueID:(id)a3 btuuid:(id)a4
+- (void)addUTunPeerWithDeviceUniqueID:(id)d btuuid:(id)btuuid
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  btuuidCopy = btuuid;
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
   v8 = IDSDeviceDefaultPairedDeviceUniqueID;
   v9 = [(NSMutableDictionary *)self->_deviceIDToPeer objectForKey:IDSDeviceDefaultPairedDeviceUniqueID];
@@ -1749,9 +1749,9 @@ LABEL_31:
     {
       deviceIDToPeer = self->_deviceIDToPeer;
       *buf = 138478339;
-      v24 = v6;
+      v24 = dCopy;
       v25 = 2113;
-      v26 = v7;
+      v26 = btuuidCopy;
       v27 = 2113;
       v28 = deviceIDToPeer;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Already have a peer ignoring call to add {deviceUniqueID: %{private}@, btuuid: %{private}@, deviceIDToPeer: %{private}@}", buf, 0x20u);
@@ -1768,13 +1768,13 @@ LABEL_31:
   else
   {
     [(IDSUTunDeliveryController *)self _refreshIPsecStatus];
-    v12 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-    v13 = [v12 isNearby];
+    idsNRDeviceBridge = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+    isNearby = [idsNRDeviceBridge isNearby];
 
-    v14 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-    v15 = [v14 isClassCConnected];
+    idsNRDeviceBridge2 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+    isClassCConnected = [idsNRDeviceBridge2 isClassCConnected];
 
-    v16 = [[IDSUTunPeer alloc] initWithIdentifier:@"UTunDelivery-Default" btUUID:0 uniqueID:v8 shouldUseIPsecLink:self->_shouldUseIPsecLinkForDefaultPairedDevice isNearby:v13 isClassCConnected:v15];
+    v16 = [[IDSUTunPeer alloc] initWithIdentifier:@"UTunDelivery-Default" btUUID:0 uniqueID:v8 shouldUseIPsecLink:self->_shouldUseIPsecLinkForDefaultPairedDevice isNearby:isNearby isClassCConnected:isClassCConnected];
     [(IDSUTunPeer *)v16 setDelegate:self];
     [(NSMutableDictionary *)self->_deviceIDToPeer setObject:v16 forKey:v8];
     pthread_mutex_unlock(&self->_deviceIDToPeerLock);
@@ -1834,11 +1834,11 @@ LABEL_31:
   }
 }
 
-- (void)addConnectivityDelegate:(id)a3
+- (void)addConnectivityDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     connectivityDelegates = self->_connectivityDelegates;
     v9 = v5;
@@ -1851,24 +1851,24 @@ LABEL_31:
       connectivityDelegates = self->_connectivityDelegates;
     }
 
-    v4 = [(NSHashTable *)connectivityDelegates addObject:v9];
+    delegateCopy = [(NSHashTable *)connectivityDelegates addObject:v9];
     v5 = v9;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(delegateCopy, v5);
 }
 
-- (void)removeConnectivityDelegate:(id)a3
+- (void)removeConnectivityDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     [(NSHashTable *)self->_connectivityDelegates removeObject:?];
   }
 }
 
-- (id)_deviceIDForPeer:(id)a3
+- (id)_deviceIDForPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1881,7 +1881,7 @@ LABEL_31:
   v9[1] = 3221225472;
   v9[2] = sub_1004CCC38;
   v9[3] = &unk_100BDE6C8;
-  v6 = v4;
+  v6 = peerCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)deviceIDToPeer enumerateKeysAndObjectsUsingBlock:v9];
@@ -1893,88 +1893,88 @@ LABEL_31:
   return v7;
 }
 
-- (void)peer:(id)a3 protobufReceived:(id)a4 topic:(id)a5 command:(id)a6 fromID:(id)a7 messageID:(id)a8 wantsAppAck:(BOOL)a9 expectsPeerResponse:(BOOL)a10 peerResponseIdentifier:(id)a11 messageUUID:(id)a12 priority:(int64_t)a13 isCompressed:(BOOL)a14 connectionType:(int64_t)a15 didWakeHint:(BOOL)a16
+- (void)peer:(id)peer protobufReceived:(id)received topic:(id)topic command:(id)command fromID:(id)d messageID:(id)iD wantsAppAck:(BOOL)ack expectsPeerResponse:(BOOL)self0 peerResponseIdentifier:(id)self1 messageUUID:(id)self2 priority:(int64_t)self3 isCompressed:(BOOL)self4 connectionType:(int64_t)self5 didWakeHint:(BOOL)self6
 {
-  HIDWORD(v34) = a14;
-  v36 = a3;
-  v35 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a8;
-  v26 = a11;
-  v27 = a12;
+  HIDWORD(v34) = compressed;
+  peerCopy = peer;
+  receivedCopy = received;
+  topicCopy = topic;
+  commandCopy = command;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  uIDCopy = uID;
   v28 = +[IDSDaemonPriorityQueueController sharedInstance];
-  [v28 assertRunningWithPriority:a13];
+  [v28 assertRunningWithPriority:priority];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a4) = objc_opt_respondsToSelector();
+  LOBYTE(received) = objc_opt_respondsToSelector();
 
-  if (a4)
+  if (received)
   {
     v30 = objc_loadWeakRetained(&self->_delegate);
-    v31 = [(IDSUTunDeliveryController *)self _deviceIDForPeer:v36];
-    LOBYTE(v34) = a16;
+    v31 = [(IDSUTunDeliveryController *)self _deviceIDForPeer:peerCopy];
+    LOBYTE(v34) = hint;
     LOBYTE(v33) = BYTE4(v34);
-    LOWORD(v32) = __PAIR16__(a10, a9);
-    [v30 deliveryController:self protobufReceived:v35 topic:v22 command:v23 deviceID:v31 btUUID:v24 messageID:v25 wantsAppAck:v32 expectsPeerResponse:v26 peerResponseIdentifier:v27 messageUUID:a13 priority:v33 isCompressed:a15 connectionType:v34 didWakeHint:?];
+    LOWORD(v32) = __PAIR16__(response, ack);
+    [v30 deliveryController:self protobufReceived:receivedCopy topic:topicCopy command:commandCopy deviceID:v31 btUUID:dCopy messageID:iDCopy wantsAppAck:v32 expectsPeerResponse:identifierCopy peerResponseIdentifier:uIDCopy messageUUID:priority priority:v33 isCompressed:type connectionType:v34 didWakeHint:?];
   }
 }
 
-- (void)peer:(id)a3 dataReceived:(id)a4 topic:(id)a5 command:(id)a6 fromID:(id)a7 messageID:(id)a8 wantsAppAck:(BOOL)a9 expectsPeerResponse:(BOOL)a10 peerResponseIdentifier:(id)a11 messageUUID:(id)a12 priority:(int64_t)a13 isCompressed:(BOOL)a14 connectionType:(int64_t)a15 didWakeHint:(BOOL)a16
+- (void)peer:(id)peer dataReceived:(id)received topic:(id)topic command:(id)command fromID:(id)d messageID:(id)iD wantsAppAck:(BOOL)ack expectsPeerResponse:(BOOL)self0 peerResponseIdentifier:(id)self1 messageUUID:(id)self2 priority:(int64_t)self3 isCompressed:(BOOL)self4 connectionType:(int64_t)self5 didWakeHint:(BOOL)self6
 {
-  HIDWORD(v34) = a14;
-  v36 = a3;
-  v35 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a8;
-  v26 = a11;
-  v27 = a12;
+  HIDWORD(v34) = compressed;
+  peerCopy = peer;
+  receivedCopy = received;
+  topicCopy = topic;
+  commandCopy = command;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  uIDCopy = uID;
   v28 = +[IDSDaemonPriorityQueueController sharedInstance];
-  [v28 assertRunningWithPriority:a13];
+  [v28 assertRunningWithPriority:priority];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a4) = objc_opt_respondsToSelector();
+  LOBYTE(received) = objc_opt_respondsToSelector();
 
-  if (a4)
+  if (received)
   {
     v30 = objc_loadWeakRetained(&self->_delegate);
-    v31 = [(IDSUTunDeliveryController *)self _deviceIDForPeer:v36];
-    LOBYTE(v34) = a16;
+    v31 = [(IDSUTunDeliveryController *)self _deviceIDForPeer:peerCopy];
+    LOBYTE(v34) = hint;
     LOBYTE(v33) = BYTE4(v34);
-    LOWORD(v32) = __PAIR16__(a10, a9);
-    [v30 deliveryController:self dataReceived:v35 topic:v22 command:v23 deviceID:v31 btUUID:v24 messageID:v25 wantsAppAck:v32 expectsPeerResponse:v26 peerResponseIdentifier:v27 messageUUID:a13 priority:v33 isCompressed:a15 connectionType:v34 didWakeHint:?];
+    LOWORD(v32) = __PAIR16__(response, ack);
+    [v30 deliveryController:self dataReceived:receivedCopy topic:topicCopy command:commandCopy deviceID:v31 btUUID:dCopy messageID:iDCopy wantsAppAck:v32 expectsPeerResponse:identifierCopy peerResponseIdentifier:uIDCopy messageUUID:priority priority:v33 isCompressed:type connectionType:v34 didWakeHint:?];
   }
 }
 
-- (void)peer:(id)a3 messageReceived:(id)a4 topic:(id)a5 command:(id)a6 fromID:(id)a7 messageID:(id)a8 wantsAppAck:(BOOL)a9 expectsPeerResponse:(BOOL)a10 peerResponseIdentifier:(id)a11 messageUUID:(id)a12 priority:(int64_t)a13 isCompressed:(BOOL)a14 connectionType:(int64_t)a15 didWakeHint:(BOOL)a16
+- (void)peer:(id)peer messageReceived:(id)received topic:(id)topic command:(id)command fromID:(id)d messageID:(id)iD wantsAppAck:(BOOL)ack expectsPeerResponse:(BOOL)self0 peerResponseIdentifier:(id)self1 messageUUID:(id)self2 priority:(int64_t)self3 isCompressed:(BOOL)self4 connectionType:(int64_t)self5 didWakeHint:(BOOL)self6
 {
-  HIDWORD(v39) = a14;
-  v42 = a3;
-  v40 = a4;
-  v41 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a11;
-  v26 = a12;
+  HIDWORD(v39) = compressed;
+  peerCopy = peer;
+  receivedCopy = received;
+  topicCopy = topic;
+  commandCopy = command;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  uIDCopy = uID;
   v27 = +[IDSDaemonPriorityQueueController sharedInstance];
-  [v27 assertRunningWithPriority:a13];
+  [v27 assertRunningWithPriority:priority];
 
-  v28 = [v42 originalbtUUID];
-  if (v28)
+  originalbtUUID = [peerCopy originalbtUUID];
+  if (originalbtUUID)
   {
-    v29 = v28;
-    v30 = [v42 btUUID];
-    v31 = [v23 isEqualToString:v30];
+    v29 = originalbtUUID;
+    btUUID = [peerCopy btUUID];
+    v31 = [dCopy isEqualToString:btUUID];
 
     if (v31)
     {
-      v32 = [v42 originalbtUUID];
+      originalbtUUID2 = [peerCopy originalbtUUID];
 
-      v23 = v32;
+      dCopy = originalbtUUID2;
     }
   }
 
@@ -1984,23 +1984,23 @@ LABEL_31:
   if (v34)
   {
     v35 = objc_loadWeakRetained(&self->_delegate);
-    v36 = [(IDSUTunDeliveryController *)self _deviceIDForPeer:v42];
-    LOBYTE(v39) = a16;
+    v36 = [(IDSUTunDeliveryController *)self _deviceIDForPeer:peerCopy];
+    LOBYTE(v39) = hint;
     LOBYTE(v38) = BYTE4(v39);
-    LOWORD(v37) = __PAIR16__(a10, a9);
-    [v35 deliveryController:self messageReceived:v40 topic:v41 command:v22 deviceID:v36 btUUID:v23 messageID:v24 wantsAppAck:v37 expectsPeerResponse:v25 peerResponseIdentifier:v26 messageUUID:a13 priority:v38 isCompressed:a15 connectionType:v39 didWakeHint:?];
+    LOWORD(v37) = __PAIR16__(response, ack);
+    [v35 deliveryController:self messageReceived:receivedCopy topic:topicCopy command:commandCopy deviceID:v36 btUUID:dCopy messageID:iDCopy wantsAppAck:v37 expectsPeerResponse:identifierCopy peerResponseIdentifier:uIDCopy messageUUID:priority priority:v38 isCompressed:type connectionType:v39 didWakeHint:?];
   }
 }
 
-- (void)peer:(id)a3 receivedAppLevelAckWithTopic:(id)a4 fromID:(id)a5 messageID:(id)a6 peerResponseIdentifier:(id)a7 priority:(int64_t)a8 connectionType:(int64_t)a9
+- (void)peer:(id)peer receivedAppLevelAckWithTopic:(id)topic fromID:(id)d messageID:(id)iD peerResponseIdentifier:(id)identifier priority:(int64_t)priority connectionType:(int64_t)type
 {
-  v24 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  peerCopy = peer;
+  topicCopy = topic;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
   v19 = +[IDSDaemonPriorityQueueController sharedInstance];
-  [v19 assertRunningWithPriority:a8];
+  [v19 assertRunningWithPriority:priority];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v21 = objc_opt_respondsToSelector();
@@ -2008,20 +2008,20 @@ LABEL_31:
   if (v21)
   {
     v22 = objc_loadWeakRetained(&self->_delegate);
-    v23 = [(IDSUTunDeliveryController *)self _deviceIDForPeer:v24];
-    [v22 deliveryController:self receivedAppLevelAckWithTopic:v15 deviceID:v23 btUUID:v16 messageID:v17 peerResponseIdentifier:v18 priority:a8 connectionType:a9];
+    v23 = [(IDSUTunDeliveryController *)self _deviceIDForPeer:peerCopy];
+    [v22 deliveryController:self receivedAppLevelAckWithTopic:topicCopy deviceID:v23 btUUID:dCopy messageID:iDCopy peerResponseIdentifier:identifierCopy priority:priority connectionType:type];
   }
 }
 
-- (void)peerNearbyStateChanged:(id)a3 forceNotify:(BOOL)a4
+- (void)peerNearbyStateChanged:(id)changed forceNotify:(BOOL)notify
 {
-  v4 = a4;
-  v6 = a3;
+  notifyCopy = notify;
+  changedCopy = changed;
   im_assert_primary_base_queue();
-  v7 = [v6 isNearby];
-  v8 = [v6 uniqueID];
+  isNearby = [changedCopy isNearby];
+  uniqueID = [changedCopy uniqueID];
   v9 = +[IMSystemMonitor sharedInstance];
-  v10 = [v9 isScreenLit];
+  isScreenLit = [v9 isScreenLit];
 
   v11 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2029,7 +2029,7 @@ LABEL_31:
     v12 = [(NSMutableDictionary *)self->_deviceIDToPeer count];
     v13 = @"NO";
     *buf = 138413058;
-    if (v10)
+    if (isScreenLit)
     {
       v14 = @"YES";
     }
@@ -2039,7 +2039,7 @@ LABEL_31:
       v14 = @"NO";
     }
 
-    if (v7)
+    if (isNearby)
     {
       v13 = @"YES";
     }
@@ -2048,7 +2048,7 @@ LABEL_31:
     v25 = 2112;
     v26 = v14;
     v27 = 2112;
-    v28 = v8;
+    v28 = uniqueID;
     v29 = 2048;
     v30 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "peer nearby state changed:%@    screenLit:%@   uniqueID:%@   peer-count:%lu", buf, 0x2Au);
@@ -2060,9 +2060,9 @@ LABEL_31:
     _IDSLogV();
   }
 
-  if ((v4 | v10))
+  if ((notifyCopy | isScreenLit))
   {
-    if (v7)
+    if (isNearby)
     {
       v15 = 0;
     }
@@ -2080,10 +2080,10 @@ LABEL_31:
     block[2] = sub_1004CD63C;
     block[3] = &unk_100BD6E18;
     block[4] = self;
-    v21 = v6;
-    v22 = v8;
+    v21 = changedCopy;
+    v22 = uniqueID;
     dispatch_after(v17, broadcastQueue, block);
-    if (v7)
+    if (isNearby)
     {
       +[NSDate timeIntervalSinceReferenceDate];
       self->_lastIsNearbyBecameTrue = v19;
@@ -2091,21 +2091,21 @@ LABEL_31:
   }
 }
 
-- (void)peerConnectivityChanged:(id)a3
+- (void)peerConnectivityChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
-  v5 = [v4 isConnected];
-  v6 = [v4 uniqueID];
-  v7 = [v6 isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID];
-  if ((v7 & v5) == 1)
+  isConnected = [changedCopy isConnected];
+  uniqueID = [changedCopy uniqueID];
+  v7 = [uniqueID isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID];
+  if ((v7 & isConnected) == 1)
   {
     isLinkForDefaultPeerConnected = self->_isLinkForDefaultPeerConnected;
   }
 
   else
   {
-    isLinkForDefaultPeerConnected = (v7 ^ 1) & v5;
+    isLinkForDefaultPeerConnected = (v7 ^ 1) & isConnected;
   }
 
   [(IDSUTunDeliveryController *)self setIsConnected:isLinkForDefaultPeerConnected & 1];
@@ -2122,7 +2122,7 @@ LABEL_31:
 
     v33 = *&v10;
     v34 = 2112;
-    v35 = v6;
+    v35 = uniqueID;
     v36 = 2112;
     v37 = deviceIDToPeer;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "peer connectivity changed: %@    uniqueID: %@   map: %@", buf, 0x20u);
@@ -2136,7 +2136,7 @@ LABEL_31:
       v12 = @"YES";
     }
 
-    v28 = v6;
+    v28 = uniqueID;
     v29 = self->_deviceIDToPeer;
     v27 = *&v12;
     _IDSLogV();
@@ -2149,8 +2149,8 @@ LABEL_31:
 
   else
   {
-    v14 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-    if ([v14 latestLinkType] == 2)
+    idsNRDeviceBridge = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+    if ([idsNRDeviceBridge latestLinkType] == 2)
     {
       v13 = 0;
     }
@@ -2169,7 +2169,7 @@ LABEL_31:
   block[2] = sub_1004CDD80;
   block[3] = &unk_100BD6E40;
   block[4] = self;
-  v18 = v6;
+  v18 = uniqueID;
   v31 = v18;
   dispatch_after(v16, broadcastQueue, block);
   +[NSDate timeIntervalSinceReferenceDate];
@@ -2194,7 +2194,7 @@ LABEL_31:
   if (isLinkForDefaultPeerConnected)
   {
     self->_lastConnectedTime = v20;
-    if ((isLinkForDefaultPeerConnected & [v4 isNearby]) == 1)
+    if ((isLinkForDefaultPeerConnected & [changedCopy isNearby]) == 1)
     {
       v24 = ((v20 - self->_lastIsNearbyBecameTrue) * 1000.0);
       if (v24 >= 1)
@@ -2239,26 +2239,26 @@ LABEL_31:
       IMSubmitSimpleAggegateMetric();
     }
 
-    [v4 isNearby];
+    [changedCopy isNearby];
   }
 }
 
-- (void)peerCloudConnectivityChanged:(id)a3
+- (void)peerCloudConnectivityChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
-  v5 = [v4 isCloudConnected];
-  v26 = v4;
-  v6 = [v4 uniqueID];
-  [(IDSUTunDeliveryController *)self setIsCloudConnected:v5];
-  v7 = [(NSHashTable *)self->_connectivityDelegates allObjects];
-  v8 = [v7 copy];
+  isCloudConnected = [changedCopy isCloudConnected];
+  v26 = changedCopy;
+  uniqueID = [changedCopy uniqueID];
+  [(IDSUTunDeliveryController *)self setIsCloudConnected:isCloudConnected];
+  allObjects = [(NSHashTable *)self->_connectivityDelegates allObjects];
+  v8 = [allObjects copy];
 
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"NO";
-    if (v5)
+    if (isCloudConnected)
     {
       v10 = @"YES";
     }
@@ -2266,20 +2266,20 @@ LABEL_31:
     *buf = 138412546;
     v33 = v10;
     v34 = 2112;
-    v35 = v6;
+    v35 = uniqueID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Broadcasting isCloudConnected %@ for %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v11 = v5 ? @"YES" : @"NO";
+    v11 = isCloudConnected ? @"YES" : @"NO";
     v24 = v11;
-    v25 = v6;
+    v25 = uniqueID;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
       v24 = v11;
-      v25 = v6;
+      v25 = uniqueID;
       _IDSLogV();
     }
   }
@@ -2306,7 +2306,7 @@ LABEL_31:
         v16 = *(*(&v27 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 deliveryController:self uniqueID:v6 isCloudConnected:v5];
+          [v16 deliveryController:self uniqueID:uniqueID isCloudConnected:isCloudConnected];
         }
 
         v15 = v15 + 1;
@@ -2337,24 +2337,24 @@ LABEL_31:
   }
 }
 
-- (void)peerHasSpaceForNonUrgentMessages:(id)a3 priority:(int64_t)a4 dataProtectionClass:(unsigned int)a5 withTypes:(id)a6
+- (void)peerHasSpaceForNonUrgentMessages:(id)messages priority:(int64_t)priority dataProtectionClass:(unsigned int)class withTypes:(id)types
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a6;
+  v7 = *&class;
+  messagesCopy = messages;
+  typesCopy = types;
   im_assert_primary_base_queue();
-  v12 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
   v13 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = @"Sync";
-    if (a4 == 200)
+    if (priority == 200)
     {
       v14 = @"Default";
     }
 
     v15 = @"Class D";
-    if (a4 == 300)
+    if (priority == 300)
     {
       v14 = @"URGENT";
     }
@@ -2370,12 +2370,12 @@ LABEL_31:
     }
 
     *buf = 138413058;
-    v21 = v10;
+    v21 = messagesCopy;
     v23 = v14;
     v22 = 2112;
     v24 = 2112;
     v25 = v15;
-    if (v12 == v10)
+    if (_copyPairedDevice == messagesCopy)
     {
       v16 = @"YES";
     }
@@ -2395,7 +2395,7 @@ LABEL_31:
     _IDSLogV();
   }
 
-  if (v12 == v10)
+  if (_copyPairedDevice == messagesCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v18 = objc_opt_respondsToSelector();
@@ -2403,28 +2403,28 @@ LABEL_31:
     if (v18)
     {
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 deliveryControllerHasSpaceforNonUrgentMessages:self priority:a4 dataProtectionClass:v7 ofTypes:v11];
+      [v19 deliveryControllerHasSpaceforNonUrgentMessages:self priority:priority dataProtectionClass:v7 ofTypes:typesCopy];
     }
   }
 }
 
-- (void)peerHasSpaceForNonUrgentMessages:(id)a3 priority:(int64_t)a4 dataProtectionClass:(unsigned int)a5
+- (void)peerHasSpaceForNonUrgentMessages:(id)messages priority:(int64_t)priority dataProtectionClass:(unsigned int)class
 {
-  v5 = *&a5;
-  v8 = a3;
+  v5 = *&class;
+  messagesCopy = messages;
   im_assert_primary_base_queue();
-  v9 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
   v10 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"Sync";
-    if (a4 == 200)
+    if (priority == 200)
     {
       v11 = @"Default";
     }
 
     v12 = @"Class D";
-    if (a4 == 300)
+    if (priority == 300)
     {
       v11 = @"URGENT";
     }
@@ -2440,12 +2440,12 @@ LABEL_31:
     }
 
     *buf = 138413058;
-    v18 = v8;
+    v18 = messagesCopy;
     v20 = v11;
     v19 = 2112;
     v21 = 2112;
     v22 = v12;
-    if (v9 == v8)
+    if (_copyPairedDevice == messagesCopy)
     {
       v13 = @"YES";
     }
@@ -2465,7 +2465,7 @@ LABEL_31:
     _IDSLogV();
   }
 
-  if (v9 == v8)
+  if (_copyPairedDevice == messagesCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v15 = objc_opt_respondsToSelector();
@@ -2473,18 +2473,18 @@ LABEL_31:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 deliveryControllerHasSpaceforNonUrgentMessages:self priority:a4 dataProtectionClass:v5];
+      [v16 deliveryControllerHasSpaceforNonUrgentMessages:self priority:priority dataProtectionClass:v5];
     }
   }
 }
 
-- (void)peerHasSpaceForUrgentMessages:(id)a3 dataProtectionClass:(unsigned int)a4 withTypes:(id)a5
+- (void)peerHasSpaceForUrgentMessages:(id)messages dataProtectionClass:(unsigned int)class withTypes:(id)types
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
+  v6 = *&class;
+  messagesCopy = messages;
+  typesCopy = types;
   im_assert_primary_base_queue();
-  v10 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
   v11 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2495,7 +2495,7 @@ LABEL_31:
     }
 
     *buf = 138413058;
-    v18 = v8;
+    v18 = messagesCopy;
     if (!v6)
     {
       v12 = @"Class C";
@@ -2505,7 +2505,7 @@ LABEL_31:
     v19 = 2112;
     v21 = 2112;
     v22 = v12;
-    if (v10 == v8)
+    if (_copyPairedDevice == messagesCopy)
     {
       v13 = @"YES";
     }
@@ -2525,7 +2525,7 @@ LABEL_31:
     _IDSLogV();
   }
 
-  if (v10 == v8)
+  if (_copyPairedDevice == messagesCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v15 = objc_opt_respondsToSelector();
@@ -2533,31 +2533,31 @@ LABEL_31:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 deliveryControllerHasSpaceforUrgentMessages:self dataProtectionClass:v6 ofTypes:v9];
+      [v16 deliveryControllerHasSpaceforUrgentMessages:self dataProtectionClass:v6 ofTypes:typesCopy];
     }
   }
 }
 
-- (void)defaultPeerConnectivityChanged:(BOOL)a3
+- (void)defaultPeerConnectivityChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
   [(IDSUTunDeliveryController *)self _refreshIPsecStatus];
-  if (!v3)
+  if (!changedCopy)
   {
     self->_defaultPeerConnectedDeferred = 0;
-    v8 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+    nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
 
-    if (v8)
+    if (nrDevicePreferencesHandler)
     {
-      v7 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-      [v7 annouceAvailabilityForCloudMessaging];
+      nrDevicePreferencesHandler2 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      [nrDevicePreferencesHandler2 annouceAvailabilityForCloudMessaging];
       goto LABEL_7;
     }
 
 LABEL_8:
     isLinkForDefaultPeerConnected = self->_isLinkForDefaultPeerConnected;
-    self->_isLinkForDefaultPeerConnected = v3;
+    self->_isLinkForDefaultPeerConnected = changedCopy;
     v10 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -2572,7 +2572,7 @@ LABEL_8:
         v12 = @"NO";
       }
 
-      if (v3)
+      if (changedCopy)
       {
         v11 = @"YES";
       }
@@ -2587,7 +2587,7 @@ LABEL_8:
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
     {
       v13 = isLinkForDefaultPeerConnected ? @"YES" : @"NO";
-      v14 = v3 ? @"YES" : @"NO";
+      v14 = changedCopy ? @"YES" : @"NO";
       v19 = v13;
       v20 = v14;
       _IDSLogTransport();
@@ -2603,9 +2603,9 @@ LABEL_8:
     v16 = v15;
     if (v15)
     {
-      if (isLinkForDefaultPeerConnected != v3)
+      if (isLinkForDefaultPeerConnected != changedCopy)
       {
-        [v15 setIsConnected:v3];
+        [v15 setIsConnected:changedCopy];
         [(IDSUTunDeliveryController *)self peerConnectivityChanged:v16];
       }
     }
@@ -2638,15 +2638,15 @@ LABEL_8:
   if (self->_localAccountSetupCompleted)
   {
     [(IDSUTunDeliveryController *)self enableConnectionForDefaultPairedDevice:1];
-    v5 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+    nrDevicePreferencesHandler3 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
 
-    if (v5)
+    if (nrDevicePreferencesHandler3)
     {
-      v6 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-      [v6 setQuickRelayRequest:0];
+      nrDevicePreferencesHandler4 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      [nrDevicePreferencesHandler4 setQuickRelayRequest:0];
 
-      v7 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-      [v7 revokeAvailabilityForCloudMessaging];
+      nrDevicePreferencesHandler2 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      [nrDevicePreferencesHandler2 revokeAvailabilityForCloudMessaging];
 LABEL_7:
 
       goto LABEL_8;
@@ -2676,9 +2676,9 @@ LABEL_7:
   }
 }
 
-- (void)legacyUTunBTLinkManagerDefaultPeerConnectivityChanged:(BOOL)a3
+- (void)legacyUTunBTLinkManagerDefaultPeerConnectivityChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
   [(IDSUTunDeliveryController *)self _refreshIPsecStatus];
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
@@ -2687,7 +2687,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (changedCopy)
       {
         v6 = @"YES";
       }
@@ -2701,23 +2701,23 @@ LABEL_7:
   else
   {
 
-    [(IDSUTunDeliveryController *)self defaultPeerConnectivityChanged:v3];
+    [(IDSUTunDeliveryController *)self defaultPeerConnectivityChanged:changedCopy];
   }
 }
 
-- (void)defaultPeerNearbyChanged:(BOOL)a3
+- (void)defaultPeerNearbyChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
-  v5 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  v6 = v5;
-  if (v5)
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  v6 = _copyPairedDevice;
+  if (_copyPairedDevice)
   {
-    v7 = [v5 isNearby];
-    if (v7 != v3)
+    isNearby = [_copyPairedDevice isNearby];
+    if (isNearby != changedCopy)
     {
-      v8 = v7;
-      [v6 setIsNearby:v3];
+      v8 = isNearby;
+      [v6 setIsNearby:changedCopy];
       v9 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -2732,7 +2732,7 @@ LABEL_7:
           v11 = @"NO";
         }
 
-        if (v3)
+        if (changedCopy)
         {
           v10 = @"YES";
         }
@@ -2756,7 +2756,7 @@ LABEL_7:
           v12 = @"NO";
         }
 
-        if (v3)
+        if (changedCopy)
         {
           v13 = @"YES";
         }
@@ -2782,18 +2782,18 @@ LABEL_7:
   }
 }
 
-- (void)defaultPeerLinkTypeChanged:(unsigned __int8)a3
+- (void)defaultPeerLinkTypeChanged:(unsigned __int8)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
-  v5 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  if (!v5)
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  if (!_copyPairedDevice)
   {
     v6 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ Did not find default peer device.", buf, 0xCu);
     }
 
@@ -2801,27 +2801,27 @@ LABEL_7:
     {
       if (_IDSShouldLogTransport())
       {
-        v7 = self;
+        selfCopy3 = self;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v7 = self;
+          selfCopy3 = self;
           _IDSLogV();
         }
       }
     }
   }
 
-  [v5 logCurrentTransportStatsAndResetTimers];
-  if ([v5 linkType] != v3)
+  [_copyPairedDevice logCurrentTransportStatsAndResetTimers];
+  if ([_copyPairedDevice linkType] != changedCopy)
   {
-    [v5 setLinkType:v3];
+    [_copyPairedDevice setLinkType:changedCopy];
   }
 }
 
-- (void)legacyUTunBTLinkManagerDefaultPeerNearbyChanged:(BOOL)a3
+- (void)legacyUTunBTLinkManagerDefaultPeerNearbyChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
   [(IDSUTunDeliveryController *)self _refreshIPsecStatus];
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
@@ -2830,7 +2830,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (changedCopy)
       {
         v6 = @"YES";
       }
@@ -2844,20 +2844,20 @@ LABEL_7:
   else
   {
 
-    [(IDSUTunDeliveryController *)self defaultPeerNearbyChanged:v3];
+    [(IDSUTunDeliveryController *)self defaultPeerNearbyChanged:changedCopy];
   }
 }
 
-- (void)defaultPeerCloudConnectivityChanged:(BOOL)a3
+- (void)defaultPeerCloudConnectivityChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
-  v5 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
   v6 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v3)
+    if (changedCopy)
     {
       v7 = @"YES";
     }
@@ -2869,7 +2869,7 @@ LABEL_7:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    if (v3)
+    if (changedCopy)
     {
       v8 = @"YES";
     }
@@ -2888,12 +2888,12 @@ LABEL_7:
     }
   }
 
-  [(IDSUTunDeliveryController *)self _setCloudConnectionConnected:v3 forPeer:v5, v9];
+  [(IDSUTunDeliveryController *)self _setCloudConnectionConnected:changedCopy forPeer:_copyPairedDevice, v9];
 }
 
-- (void)legacyUTunBTLinkManagerDefaultPeerCloudConnectivityChanged:(BOOL)a3
+- (void)legacyUTunBTLinkManagerDefaultPeerCloudConnectivityChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
   [(IDSUTunDeliveryController *)self _refreshIPsecStatus];
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
@@ -2902,7 +2902,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (changedCopy)
       {
         v6 = @"YES";
       }
@@ -2916,19 +2916,19 @@ LABEL_7:
   else
   {
 
-    [(IDSUTunDeliveryController *)self defaultPeerCloudConnectivityChanged:v3];
+    [(IDSUTunDeliveryController *)self defaultPeerCloudConnectivityChanged:changedCopy];
   }
 }
 
-- (void)defaultPeerMagnetIndicationOfAwakeStateChanged:(BOOL)a3
+- (void)defaultPeerMagnetIndicationOfAwakeStateChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (changedCopy)
     {
       v6 = @"YES";
     }
@@ -2941,7 +2941,7 @@ LABEL_7:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v7 = @"NO";
-    if (v3)
+    if (changedCopy)
     {
       v7 = @"YES";
     }
@@ -2950,19 +2950,19 @@ LABEL_7:
     _IDSLogV();
   }
 
-  v8 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  [v8 setIsMagnetIndicatingPeerIsAwake:v3];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  [_copyPairedDevice setIsMagnetIndicatingPeerIsAwake:changedCopy];
 }
 
-- (void)defaultPeerClassCConnectivityDidChange:(BOOL)a3
+- (void)defaultPeerClassCConnectivityDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (changeCopy)
     {
       v6 = @"YES";
     }
@@ -2975,7 +2975,7 @@ LABEL_7:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v7 = @"NO";
-    if (v3)
+    if (changeCopy)
     {
       v7 = @"YES";
     }
@@ -2984,22 +2984,22 @@ LABEL_7:
     _IDSLogV();
   }
 
-  v8 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  [v8 setIsClassCConnected:v3];
-  [(IDSUTunDeliveryController *)self setIsClassCConnected:v3];
-  [(IDSUTunDeliveryController *)self peerConnectivityChanged:v8];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  [_copyPairedDevice setIsClassCConnected:changeCopy];
+  [(IDSUTunDeliveryController *)self setIsClassCConnected:changeCopy];
+  [(IDSUTunDeliveryController *)self peerConnectivityChanged:_copyPairedDevice];
 }
 
-- (void)defaultPeerSetPreferInfraWiFi:(BOOL)a3 services:(id)a4
+- (void)defaultPeerSetPreferInfraWiFi:(BOOL)fi services:(id)services
 {
-  v4 = a3;
-  v6 = a4;
+  fiCopy = fi;
+  servicesCopy = services;
   im_assert_primary_base_queue();
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v4)
+    if (fiCopy)
     {
       v8 = @"YES";
     }
@@ -3007,7 +3007,7 @@ LABEL_7:
     *buf = 138412546;
     v15 = v8;
     v16 = 2112;
-    v17 = v6;
+    v17 = servicesCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "defaultPeerSetPreferInfraWiFi: %@ services: %@", buf, 0x16u);
   }
 
@@ -3025,8 +3025,8 @@ LABEL_7:
 
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
   {
-    v9 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-    v10 = v9 == 0;
+    nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+    v10 = nrDevicePreferencesHandler == 0;
 
     if (v10)
     {
@@ -3052,32 +3052,32 @@ LABEL_7:
 
     else
     {
-      v11 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-      [v11 setPreferInfraWiFiRequest:v4 services:v6];
+      nrDevicePreferencesHandler2 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      [nrDevicePreferencesHandler2 setPreferInfraWiFiRequest:fiCopy services:servicesCopy];
     }
   }
 
   else
   {
-    v12 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-    [v12 setPreferInfraWiFi:v4 services:v6];
+    _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+    [_copyPairedDevice setPreferInfraWiFi:fiCopy services:servicesCopy];
   }
 }
 
-- (void)defaultPeerSetLinkPreferences:(id)a3
+- (void)defaultPeerSetLinkPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   im_assert_primary_base_queue();
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
   {
-    v5 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+    nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
 
-    if (v5)
+    if (nrDevicePreferencesHandler)
     {
       v6 = +[IDSLinkPreferencesManager sharedInstance];
-      v7 = [v6 accumulativePreferencesForAllServices];
+      accumulativePreferencesForAllServices = [v6 accumulativePreferencesForAllServices];
 
-      v8 = [v7 objectForKey:@"PacketsPerSecond"];
+      v8 = [accumulativePreferencesForAllServices objectForKey:@"PacketsPerSecond"];
       v9 = v8;
       if (v8)
       {
@@ -3091,7 +3091,7 @@ LABEL_7:
 
       v11 = v10;
 
-      v12 = [v7 objectForKey:@"InputBytesPerSecond"];
+      v12 = [accumulativePreferencesForAllServices objectForKey:@"InputBytesPerSecond"];
       v13 = v12;
       if (v12)
       {
@@ -3105,7 +3105,7 @@ LABEL_7:
 
       v15 = v14;
 
-      v16 = [v7 objectForKey:@"OutputBytesPerSecond"];
+      v16 = [accumulativePreferencesForAllServices objectForKey:@"OutputBytesPerSecond"];
       v17 = v16;
       if (v16)
       {
@@ -3119,7 +3119,7 @@ LABEL_7:
 
       v19 = v18;
 
-      v20 = [v7 objectForKey:@"Intent"];
+      v20 = [accumulativePreferencesForAllServices objectForKey:@"Intent"];
       if ([v20 isEqualToString:@"forceBTClassic"] && objc_msgSend(v11, "unsignedIntValue") <= 0xC7)
       {
 
@@ -3130,13 +3130,13 @@ LABEL_7:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544386;
-        v36 = v4;
+        v36 = preferencesCopy;
         v37 = 1024;
-        v38 = [v11 unsignedIntValue];
+        unsignedIntValue = [v11 unsignedIntValue];
         v39 = 1024;
-        v40 = [v15 unsignedIntValue];
+        unsignedIntValue2 = [v15 unsignedIntValue];
         v41 = 1024;
-        v42 = [v19 unsignedIntValue];
+        unsignedIntValue3 = [v19 unsignedIntValue];
         v43 = 2114;
         v44 = v20;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "setBluetoothLinkPreferences: service: %{public}@, pps: %d input bps: %d output bps: %d intent: %{public}@", buf, 0x28u);
@@ -3146,23 +3146,23 @@ LABEL_7:
       {
         if (_IDSShouldLogTransport())
         {
-          v22 = [v11 unsignedIntValue];
-          v23 = [v15 unsignedIntValue];
-          v33 = [v19 unsignedIntValue];
+          unsignedIntValue4 = [v11 unsignedIntValue];
+          unsignedIntValue5 = [v15 unsignedIntValue];
+          unsignedIntValue6 = [v19 unsignedIntValue];
           v34 = v20;
-          v31 = v22;
-          v32 = v23;
-          v30 = v4;
+          v31 = unsignedIntValue4;
+          v32 = unsignedIntValue5;
+          v30 = preferencesCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v24 = [v11 unsignedIntValue];
-            v25 = [v15 unsignedIntValue];
-            v33 = [v19 unsignedIntValue];
+            unsignedIntValue7 = [v11 unsignedIntValue];
+            unsignedIntValue8 = [v15 unsignedIntValue];
+            unsignedIntValue6 = [v19 unsignedIntValue];
             v34 = v20;
-            v31 = v24;
-            v32 = v25;
-            v30 = v4;
+            v31 = unsignedIntValue7;
+            v32 = unsignedIntValue8;
+            v30 = preferencesCopy;
             _IDSLogV();
           }
         }
@@ -3201,7 +3201,7 @@ LABEL_7:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v36 = v4;
+      v36 = preferencesCopy;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "defaultPeerSetLinkPreferences, service: %{public}@", buf, 0xCu);
     }
 
@@ -3209,29 +3209,29 @@ LABEL_7:
     {
       if (_IDSShouldLogTransport())
       {
-        v30 = v4;
+        v30 = preferencesCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v30 = v4;
+          v30 = preferencesCopy;
           _IDSLogV();
         }
       }
     }
 
-    v28 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-    [v28 setLinkPreferences:v4];
+    _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+    [_copyPairedDevice setLinkPreferences:preferencesCopy];
   }
 }
 
-- (void)setCompanionLinkPreference:(BOOL)a3
+- (void)setCompanionLinkPreference:(BOOL)preference
 {
-  v3 = a3;
+  preferenceCopy = preference;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (preferenceCopy)
     {
       v6 = @"YES";
     }
@@ -3243,7 +3243,7 @@ LABEL_7:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    if (v3)
+    if (preferenceCopy)
     {
       v7 = @"YES";
     }
@@ -3262,13 +3262,13 @@ LABEL_7:
     }
   }
 
-  v8 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-  [v8 setCompanionLinkPreferences:v3];
+  nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+  [nrDevicePreferencesHandler setCompanionLinkPreferences:preferenceCopy];
 }
 
-- (void)defaultPeerSetWantsQuickRelayRequest:(BOOL)a3
+- (void)defaultPeerSetWantsQuickRelayRequest:(BOOL)request
 {
-  v3 = a3;
+  requestCopy = request;
   im_assert_primary_base_queue();
   [(IDSUTunDeliveryController *)self _refreshIPsecStatus];
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
@@ -3277,7 +3277,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (requestCopy)
       {
         v6 = @"YES";
       }
@@ -3289,7 +3289,7 @@ LABEL_7:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
     {
-      v7 = v3 ? @"YES" : @"NO";
+      v7 = requestCopy ? @"YES" : @"NO";
       v10 = v7;
       _IDSLogTransport();
       if (_IDSShouldLog())
@@ -3299,30 +3299,30 @@ LABEL_7:
       }
     }
 
-    v8 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+    nrDevicePreferencesHandler = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
 
-    if (v8)
+    if (nrDevicePreferencesHandler)
     {
-      v9 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
-      [v9 setQuickRelayRequest:v3];
+      nrDevicePreferencesHandler2 = [(IDSUTunDeliveryController *)self nrDevicePreferencesHandler];
+      [nrDevicePreferencesHandler2 setQuickRelayRequest:requestCopy];
     }
 
     else
     {
-      v9 = +[IDSFoundationLog delivery];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      nrDevicePreferencesHandler2 = +[IDSFoundationLog delivery];
+      if (os_log_type_enabled(nrDevicePreferencesHandler2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[IDSUTunDeliveryController defaultPeerSetWantsQuickRelayRequest:] called but missing nrDevicePreferencesHandler", buf, 2u);
+        _os_log_impl(&_mh_execute_header, nrDevicePreferencesHandler2, OS_LOG_TYPE_DEFAULT, "[IDSUTunDeliveryController defaultPeerSetWantsQuickRelayRequest:] called but missing nrDevicePreferencesHandler", buf, 2u);
       }
     }
   }
 }
 
-- (void)defaultPeerSupportsDirectMessaging:(BOOL)a3 isObliterating:(BOOL)a4
+- (void)defaultPeerSupportsDirectMessaging:(BOOL)messaging isObliterating:(BOOL)obliterating
 {
-  v4 = a4;
-  v5 = a3;
+  obliteratingCopy = obliterating;
+  messagingCopy = messaging;
   im_assert_primary_base_queue();
   if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
   {
@@ -3330,7 +3330,7 @@ LABEL_7:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v5)
+      if (messagingCopy)
       {
         v8 = @"YES";
       }
@@ -3358,7 +3358,7 @@ LABEL_7:
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 deliveryController:self device:0 supportsDirectMessaging:v5 isObliterating:v4];
+      [v11 deliveryController:self device:0 supportsDirectMessaging:messagingCopy isObliterating:obliteratingCopy];
     }
   }
 }
@@ -3385,8 +3385,8 @@ LABEL_7:
     }
   }
 
-  v4 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  [v4 unpairStart];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  [_copyPairedDevice unpairStart];
   [(IDSUTunDeliveryController *)self _updateLocalSetupInProgressState:1];
 }
 
@@ -3412,16 +3412,16 @@ LABEL_7:
     }
   }
 
-  v4 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  [v4 dropDisallowedMessages];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  [_copyPairedDevice dropDisallowedMessages];
 }
 
-- (void)peerCloudConnectivityChanged:(id)a3 isCloudConnected:(BOOL)a4
+- (void)peerCloudConnectivityChanged:(id)changed isCloudConnected:(BOOL)connected
 {
-  v4 = a4;
-  v6 = a3;
+  connectedCopy = connected;
+  changedCopy = changed;
   im_assert_primary_base_queue();
-  if ([(__CFString *)v6 isEqualToString:kIDSDefaultPairedDeviceID])
+  if ([(__CFString *)changedCopy isEqualToString:kIDSDefaultPairedDeviceID])
   {
     [(IDSUTunDeliveryController *)self _refreshIPsecStatus];
     if (self->_shouldUseIPsecLinkForDefaultPairedDevice)
@@ -3430,7 +3430,7 @@ LABEL_7:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = @"NO";
-        if (v4)
+        if (connectedCopy)
         {
           v8 = @"YES";
         }
@@ -3445,20 +3445,20 @@ LABEL_7:
 
     v9 = IDSDeviceDefaultPairedDeviceUniqueID;
 
-    v6 = v9;
+    changedCopy = v9;
   }
 
   v10 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v4)
+    if (connectedCopy)
     {
       v11 = @"YES";
     }
 
     *buf = 138412546;
-    v16 = v6;
+    v16 = changedCopy;
     v17 = 2112;
     v18 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "cloud connectivity changed for peer %@: %@.", buf, 0x16u);
@@ -3466,40 +3466,40 @@ LABEL_7:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v12 = v4 ? @"YES" : @"NO";
-    v13 = v6;
+    v12 = connectedCopy ? @"YES" : @"NO";
+    v13 = changedCopy;
     v14 = v12;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      v13 = v6;
+      v13 = changedCopy;
       v14 = v12;
       _IDSLogV();
     }
   }
 
-  v7 = [(IDSUTunDeliveryController *)self _createPeerFromDeviceID:v6, v13, v14];
-  [(IDSUTunDeliveryController *)self _setCloudConnectionConnected:v4 forPeer:v7];
+  v7 = [(IDSUTunDeliveryController *)self _createPeerFromDeviceID:changedCopy, v13, v14];
+  [(IDSUTunDeliveryController *)self _setCloudConnectionConnected:connectedCopy forPeer:v7];
 LABEL_20:
 }
 
-- (void)_setCloudConnectionConnected:(BOOL)a3 forPeer:(id)a4
+- (void)_setCloudConnectionConnected:(BOOL)connected forPeer:(id)peer
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  connectedCopy = connected;
+  peerCopy = peer;
+  v7 = peerCopy;
+  if (peerCopy)
   {
-    if (v4)
+    if (connectedCopy)
     {
-      [v6 enableCloudConnection];
+      [peerCopy enableCloudConnection];
     }
 
-    v8 = [v7 isCloudConnected];
-    if (v8 != v4)
+    isCloudConnected = [v7 isCloudConnected];
+    if (isCloudConnected != connectedCopy)
     {
-      v9 = v8;
-      [v7 setIsCloudConnected:v4];
+      v9 = isCloudConnected;
+      [v7 setIsCloudConnected:connectedCopy];
       v10 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -3518,7 +3518,7 @@ LABEL_20:
         v20 = v7;
         v22 = v12;
         v21 = 2112;
-        if (v4)
+        if (connectedCopy)
         {
           v11 = @"YES";
         }
@@ -3540,7 +3540,7 @@ LABEL_20:
           v13 = @"NO";
         }
 
-        if (v4)
+        if (connectedCopy)
         {
           v14 = @"YES";
         }
@@ -3585,37 +3585,37 @@ LABEL_20:
 
 - (BOOL)isTerminusNearby
 {
-  v2 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-  v3 = [v2 isNearby];
+  idsNRDeviceBridge = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+  isNearby = [idsNRDeviceBridge isNearby];
 
-  return v3;
+  return isNearby;
 }
 
 - (BOOL)isTerminusRegistered
 {
-  v2 = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
-  v3 = [v2 isRegistered];
+  idsNRDeviceBridge = [(IDSUTunDeliveryController *)self idsNRDeviceBridge];
+  isRegistered = [idsNRDeviceBridge isRegistered];
 
-  return v3;
+  return isRegistered;
 }
 
-- (void)nrDeviceBridge:(id)a3 defaultPeerNearbyDidChange:(BOOL)a4
+- (void)nrDeviceBridge:(id)bridge defaultPeerNearbyDidChange:(BOOL)change
 {
-  v4 = a4;
-  v19 = a3;
-  [(IDSUTunDeliveryController *)self defaultPeerNearbyChanged:v4];
-  v6 = [(IDSUTunDeliveryController *)self _copyPairedDevice];
-  if (v6 && v4)
+  changeCopy = change;
+  bridgeCopy = bridge;
+  [(IDSUTunDeliveryController *)self defaultPeerNearbyChanged:changeCopy];
+  _copyPairedDevice = [(IDSUTunDeliveryController *)self _copyPairedDevice];
+  if (_copyPairedDevice && changeCopy)
   {
-    v7 = [(NSHashTable *)self->_connectivityDelegates allObjects];
-    v8 = [v7 copy];
+    allObjects = [(NSHashTable *)self->_connectivityDelegates allObjects];
+    v8 = [allObjects copy];
 
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 uniqueID];
+      uniqueID = [_copyPairedDevice uniqueID];
       *buf = 138412290;
-      v26 = v10;
+      v26 = uniqueID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Broadcasting found nearby IPsec device {uniqueID: %@}", buf, 0xCu);
     }
 
@@ -3623,12 +3623,12 @@ LABEL_20:
     {
       if (_IDSShouldLogTransport())
       {
-        v17 = [v6 uniqueID];
+        uniqueID2 = [_copyPairedDevice uniqueID];
         _IDSLogTransport();
 
         if (_IDSShouldLog())
         {
-          v18 = [v6 uniqueID];
+          uniqueID3 = [_copyPairedDevice uniqueID];
           _IDSLogV();
         }
       }
@@ -3656,8 +3656,8 @@ LABEL_20:
           v15 = *(*(&v20 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            v16 = [v6 uniqueID];
-            [v15 deliveryController:self foundNearbyIPsecCapableDeviceWithUniqueID:v16];
+            uniqueID4 = [_copyPairedDevice uniqueID];
+            [v15 deliveryController:self foundNearbyIPsecCapableDeviceWithUniqueID:uniqueID4];
           }
 
           v14 = v14 + 1;
@@ -3670,7 +3670,7 @@ LABEL_20:
       while (v12);
     }
 
-    [(IDSUTunDeliveryController *)self peerNearbyStateChanged:v6 forceNotify:1];
+    [(IDSUTunDeliveryController *)self peerNearbyStateChanged:_copyPairedDevice forceNotify:1];
   }
 }
 
@@ -3747,9 +3747,9 @@ LABEL_20:
   }
 }
 
-- (void)_disableOTRForDefaultPairedPeer:(id)a3
+- (void)_disableOTRForDefaultPairedPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3774,13 +3774,13 @@ LABEL_20:
   otrTimer = self->_otrTimer;
   self->_otrTimer = 0;
 
-  [v4 setEnableOTR:0];
+  [peerCopy setEnableOTR:0];
   self->_otrInitialized = 0;
 }
 
-- (void)didAddPairedDevice:(id)a3
+- (void)didAddPairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3813,9 +3813,9 @@ LABEL_20:
   }
 }
 
-- (void)didRemovePairedDevice:(id)a3
+- (void)didRemovePairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3847,9 +3847,9 @@ LABEL_20:
   [v8 removeAllCachedSessionsFromMainQueue];
 }
 
-- (void)didUpdatePairedDevice:(id)a3
+- (void)didUpdatePairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   im_assert_primary_base_queue();
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3896,35 +3896,35 @@ LABEL_20:
   }
 }
 
-- (void)findDefaultPeerToForceOTRNegotiation:(id)a3 priority:(int64_t)a4 completionBlock:(id)a5
+- (void)findDefaultPeerToForceOTRNegotiation:(id)negotiation priority:(int64_t)priority completionBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  negotiationCopy = negotiation;
   v9 = +[IDSUTunDeliveryController sharedInstance];
-  v10 = [v9 _copyPairedDevice];
+  _copyPairedDevice = [v9 _copyPairedDevice];
 
-  [v10 forceOTRNegotiationForTopic:v8 priority:a4 completionBlock:v7];
+  [_copyPairedDevice forceOTRNegotiationForTopic:negotiationCopy priority:priority completionBlock:blockCopy];
 }
 
-- (void)admissionPolicyChangedForTopic:(id)a3 allowed:(BOOL)a4
+- (void)admissionPolicyChangedForTopic:(id)topic allowed:(BOOL)allowed
 {
-  v6 = a3;
+  topicCopy = topic;
   im_assert_primary_base_queue();
   deviceIDToPeer = self->_deviceIDToPeer;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1004D1B80;
   v9[3] = &unk_100BDE6F0;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = topicCopy;
+  allowedCopy = allowed;
+  v8 = topicCopy;
   [(NSMutableDictionary *)deviceIDToPeer enumerateKeysAndObjectsUsingBlock:v9];
 }
 
-- (void)_cleanupContinuityPeerMaps:(id)a3
+- (void)_cleanupContinuityPeerMaps:(id)maps
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_peerListMap objectForKey:v4];
+  mapsCopy = maps;
+  v5 = [(NSMutableDictionary *)self->_peerListMap objectForKey:mapsCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -3957,22 +3957,22 @@ LABEL_20:
     while (v7);
   }
 
-  [(NSMutableDictionary *)self->_peerListMap removeObjectForKey:v4];
-  [(NSMutableDictionary *)self->_pendingPeerMap removeObjectForKey:v4];
-  [(NSMutableDictionary *)self->_peerConnectBlocksMap removeObjectForKey:v4];
-  [(NSMutableDictionary *)self->_peerFailureBlocksMap removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_peerListMap removeObjectForKey:mapsCopy];
+  [(NSMutableDictionary *)self->_pendingPeerMap removeObjectForKey:mapsCopy];
+  [(NSMutableDictionary *)self->_peerConnectBlocksMap removeObjectForKey:mapsCopy];
+  [(NSMutableDictionary *)self->_peerFailureBlocksMap removeObjectForKey:mapsCopy];
 }
 
-- (void)lockContinuityPeer:(id)a3 btUUID:(id)a4
+- (void)lockContinuityPeer:(id)peer btUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  dCopy = d;
   pthread_mutex_lock(&self->_continuityPeerLock);
-  v8 = [(NSMutableDictionary *)self->_lockedPeerMap objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_lockedPeerMap objectForKey:dCopy];
   v9 = v8;
   if (v8)
   {
-    if (([v8 isEqualToString:v6] & 1) == 0)
+    if (([v8 isEqualToString:peerCopy] & 1) == 0)
     {
       v10 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -3980,9 +3980,9 @@ LABEL_20:
         *buf = 138412802;
         v18 = v9;
         v19 = 2112;
-        v20 = v7;
+        v20 = dCopy;
         v21 = 2112;
-        v22 = v6;
+        v22 = peerCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Peer %@ is already locked for btUUID %@, ignore peer %@", buf, 0x20u);
       }
 
@@ -4005,35 +4005,35 @@ LABEL_20:
       lockedPeerMap = self->_lockedPeerMap;
     }
 
-    [(NSMutableDictionary *)lockedPeerMap setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)lockedPeerMap setObject:peerCopy forKey:dCopy];
     v14 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = v6;
+      v18 = peerCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = dCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Lock peer %@ for btUUID %@.", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v15 = v6;
-      v16 = v7;
+      v15 = peerCopy;
+      v16 = dCopy;
       _IDSLogV();
     }
 
-    [(IDSUTunDeliveryController *)self _cleanupContinuityPeerMaps:v7, v15, v16];
+    [(IDSUTunDeliveryController *)self _cleanupContinuityPeerMaps:dCopy, v15, v16];
   }
 
   pthread_mutex_unlock(&self->_continuityPeerLock);
 }
 
-- (void)unlockContinuityPeer:(id)a3
+- (void)unlockContinuityPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   pthread_mutex_lock(&self->_continuityPeerLock);
-  v5 = [(NSMutableDictionary *)self->_lockedPeerMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_lockedPeerMap objectForKey:peerCopy];
   if (v5)
   {
     v6 = OSLogHandleForIDSCategory();
@@ -4042,21 +4042,21 @@ LABEL_20:
       *buf = 138412546;
       v10 = v5;
       v11 = 2112;
-      v12 = v4;
+      v12 = peerCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Remove locked peer %@ for btUUID %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       v7 = v5;
-      v8 = v4;
+      v8 = peerCopy;
       _IDSLogV();
     }
 
-    [(NSMutableDictionary *)self->_lockedPeerMap removeObjectForKey:v4, v7, v8];
+    [(NSMutableDictionary *)self->_lockedPeerMap removeObjectForKey:peerCopy, v7, v8];
   }
 
-  [(IDSUTunDeliveryController *)self _cleanupContinuityPeerMaps:v4];
+  [(IDSUTunDeliveryController *)self _cleanupContinuityPeerMaps:peerCopy];
   pthread_mutex_unlock(&self->_continuityPeerLock);
 }
 
@@ -4093,35 +4093,35 @@ LABEL_20:
   pthread_mutex_unlock(&self->_continuityPeerLock);
 }
 
-- (id)lockedContinuityPeerID:(id)a3
+- (id)lockedContinuityPeerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   pthread_mutex_lock(&self->_continuityPeerLock);
-  v5 = [(NSMutableDictionary *)self->_lockedPeerMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_lockedPeerMap objectForKey:dCopy];
 
   pthread_mutex_unlock(&self->_continuityPeerLock);
 
   return v5;
 }
 
-- (id)pendingContinuityPeerID:(id)a3
+- (id)pendingContinuityPeerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   pthread_mutex_lock(&self->_continuityPeerLock);
-  v5 = [(NSMutableDictionary *)self->_pendingPeerMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_pendingPeerMap objectForKey:dCopy];
 
   pthread_mutex_unlock(&self->_continuityPeerLock);
 
   return v5;
 }
 
-- (void)addContinuityPeer:(id)a3 btUUID:(id)a4 connectBlock:(id)a5 failureBlock:(id)a6
+- (void)addContinuityPeer:(id)peer btUUID:(id)d connectBlock:(id)block failureBlock:(id)failureBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID])
+  peerCopy = peer;
+  dCopy = d;
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
+  if ([peerCopy isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID])
   {
     v14 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -4141,7 +4141,7 @@ LABEL_20:
   else
   {
     pthread_mutex_lock(&self->_continuityPeerLock);
-    [(NSMutableDictionary *)self->_peerListMap objectForKey:v11];
+    [(NSMutableDictionary *)self->_peerListMap objectForKey:dCopy];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -4159,7 +4159,7 @@ LABEL_20:
             objc_enumerationMutation(v15);
           }
 
-          if ([*(*(&v44 + 1) + 8 * i) isEqualToString:v10])
+          if ([*(*(&v44 + 1) + 8 * i) isEqualToString:peerCopy])
           {
             pthread_mutex_unlock(&self->_continuityPeerLock);
             v27 = v15;
@@ -4181,9 +4181,9 @@ LABEL_20:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v49 = v10;
+      v49 = peerCopy;
       v50 = 2112;
-      v51 = v11;
+      v51 = dCopy;
       v52 = 2112;
       v53 = v15;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Add new peer %@ for btUUID %@, list %@.", buf, 0x20u);
@@ -4191,9 +4191,9 @@ LABEL_20:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v41 = v11;
+      v41 = dCopy;
       v43 = v15;
-      v38 = v10;
+      v38 = peerCopy;
       _IDSLogV();
     }
 
@@ -4202,7 +4202,7 @@ LABEL_20:
       v15 = objc_alloc_init(NSMutableArray);
     }
 
-    [v15 addObject:{v10, v38, v41, v43}];
+    [v15 addObject:{peerCopy, v38, v41, v43}];
     peerListMap = self->_peerListMap;
     if (!peerListMap)
     {
@@ -4213,7 +4213,7 @@ LABEL_20:
       peerListMap = self->_peerListMap;
     }
 
-    [(NSMutableDictionary *)peerListMap setObject:v15 forKey:v11];
+    [(NSMutableDictionary *)peerListMap setObject:v15 forKey:dCopy];
     v23 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -4238,35 +4238,35 @@ LABEL_20:
       pendingPeerMap = self->_pendingPeerMap;
     }
 
-    v27 = [(NSMutableDictionary *)pendingPeerMap objectForKey:v11, v39];
+    v27 = [(NSMutableDictionary *)pendingPeerMap objectForKey:dCopy, v39];
     if (!v27)
     {
-      [(NSMutableDictionary *)self->_pendingPeerMap setObject:v10 forKey:v11];
+      [(NSMutableDictionary *)self->_pendingPeerMap setObject:peerCopy forKey:dCopy];
       v28 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v49 = v10;
+        v49 = peerCopy;
         v50 = 2112;
-        v51 = v11;
+        v51 = dCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Enable peer %@ for btUUID %@.", buf, 0x16u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v40 = v10;
-        v42 = v11;
+        v40 = peerCopy;
+        v42 = dCopy;
         _IDSLogV();
       }
 
-      if (v12)
+      if (blockCopy)
       {
         v29 = im_primary_queue();
-        dispatch_async(v29, v12);
+        dispatch_async(v29, blockCopy);
       }
     }
 
-    v30 = [(NSMutableDictionary *)self->_peerConnectBlocksMap objectForKey:v11, v40, v42];
+    v30 = [(NSMutableDictionary *)self->_peerConnectBlocksMap objectForKey:dCopy, v40, v42];
     if (!v30)
     {
       v30 = objc_alloc_init(NSMutableDictionary);
@@ -4279,11 +4279,11 @@ LABEL_20:
       self->_peerConnectBlocksMap = v31;
     }
 
-    v33 = [v12 copy];
-    [v30 setObject:v33 forKey:v10];
+    v33 = [blockCopy copy];
+    [v30 setObject:v33 forKey:peerCopy];
 
-    [(NSMutableDictionary *)self->_peerConnectBlocksMap setObject:v30 forKey:v11];
-    v34 = [(NSMutableDictionary *)self->_peerFailureBlocksMap objectForKey:v11];
+    [(NSMutableDictionary *)self->_peerConnectBlocksMap setObject:v30 forKey:dCopy];
+    v34 = [(NSMutableDictionary *)self->_peerFailureBlocksMap objectForKey:dCopy];
     if (!v34)
     {
       v34 = objc_alloc_init(NSMutableDictionary);
@@ -4296,26 +4296,26 @@ LABEL_20:
       self->_peerFailureBlocksMap = v35;
     }
 
-    v37 = [v13 copy];
-    [v34 setObject:v37 forKey:v10];
+    v37 = [failureBlockCopy copy];
+    [v34 setObject:v37 forKey:peerCopy];
 
-    [(NSMutableDictionary *)self->_peerFailureBlocksMap setObject:v34 forKey:v11];
+    [(NSMutableDictionary *)self->_peerFailureBlocksMap setObject:v34 forKey:dCopy];
     pthread_mutex_unlock(&self->_continuityPeerLock);
 
 LABEL_48:
   }
 }
 
-- (void)tryNextContinuityPeer:(id)a3
+- (void)tryNextContinuityPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   pthread_mutex_lock(&self->_continuityPeerLock);
-  v40 = self;
-  v37 = v4;
-  v38 = [(NSMutableDictionary *)self->_lockedPeerMap objectForKey:v4];
+  selfCopy = self;
+  v37 = peerCopy;
+  v38 = [(NSMutableDictionary *)self->_lockedPeerMap objectForKey:peerCopy];
   if (!v38)
   {
-    v6 = [(NSMutableDictionary *)self->_pendingPeerMap objectForKey:v4];
+    v6 = [(NSMutableDictionary *)self->_pendingPeerMap objectForKey:peerCopy];
     if (!v6)
     {
       v30 = OSLogHandleForIDSCategory();
@@ -4336,9 +4336,9 @@ LABEL_48:
       goto LABEL_62;
     }
 
-    v7 = [(NSMutableDictionary *)self->_peerListMap objectForKey:v4];
+    v7 = [(NSMutableDictionary *)self->_peerListMap objectForKey:peerCopy];
     v8 = [(IDSUTunDeliveryController *)self _copyPeerWithID:v6];
-    v9 = [v8 continuityConnectCount];
+    continuityConnectCount = [v8 continuityConnectCount];
 
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -4348,14 +4348,14 @@ LABEL_48:
       v49 = 2112;
       v50 = v6;
       v51 = 1024;
-      v52 = v9;
+      v52 = continuityConnectCount;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Search peer in %@. (current peer %@, count %d)", buf, 0x1Cu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       v34 = v6;
-      v36 = v9;
+      v36 = continuityConnectCount;
       v32 = v7;
       _IDSLogV();
     }
@@ -4382,28 +4382,28 @@ LABEL_48:
           v14 = *(*(&v42 + 1) + 8 * i);
           if (([v14 isEqualToString:{v6, v32, v34, v36}] & 1) == 0)
           {
-            v15 = [(IDSUTunDeliveryController *)v40 _copyPeerWithID:v14];
-            v16 = [v15 continuityConnectCount];
+            v15 = [(IDSUTunDeliveryController *)selfCopy _copyPeerWithID:v14];
+            continuityConnectCount2 = [v15 continuityConnectCount];
             v17 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
               v48 = v14;
               v49 = 1024;
-              LODWORD(v50) = v16;
+              LODWORD(v50) = continuityConnectCount2;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "peer %@ has count %d", buf, 0x12u);
             }
 
             if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
             {
               v32 = v14;
-              v34 = v16;
+              v34 = continuityConnectCount2;
               _IDSLogV();
             }
 
-            if (v16 >= v9)
+            if (continuityConnectCount2 >= continuityConnectCount)
             {
-              v16 = v9;
+              continuityConnectCount2 = continuityConnectCount;
             }
 
             else
@@ -4413,7 +4413,7 @@ LABEL_48:
               v39 = v18;
             }
 
-            v9 = v16;
+            continuityConnectCount = continuityConnectCount2;
           }
         }
 
@@ -4441,7 +4441,7 @@ LABEL_48:
           _IDSLogV();
         }
 
-        v20 = [(NSMutableDictionary *)v40->_peerFailureBlocksMap objectForKey:v37, v32, v34];
+        v20 = [(NSMutableDictionary *)selfCopy->_peerFailureBlocksMap objectForKey:v37, v32, v34];
         v21 = [v20 objectForKey:v6];
 
         if (v21)
@@ -4450,14 +4450,14 @@ LABEL_48:
           dispatch_async(v22, v21);
         }
 
-        pendingPeerMap = v40->_pendingPeerMap;
+        pendingPeerMap = selfCopy->_pendingPeerMap;
         if (!pendingPeerMap)
         {
           Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-          v25 = v40->_pendingPeerMap;
-          v40->_pendingPeerMap = Mutable;
+          v25 = selfCopy->_pendingPeerMap;
+          selfCopy->_pendingPeerMap = Mutable;
 
-          pendingPeerMap = v40->_pendingPeerMap;
+          pendingPeerMap = selfCopy->_pendingPeerMap;
         }
 
         [(NSMutableDictionary *)pendingPeerMap setObject:v39 forKey:v37];
@@ -4478,7 +4478,7 @@ LABEL_48:
           _IDSLogV();
         }
 
-        v27 = [(NSMutableDictionary *)v40->_peerConnectBlocksMap objectForKey:v37, v33, v35];
+        v27 = [(NSMutableDictionary *)selfCopy->_peerConnectBlocksMap objectForKey:v37, v33, v35];
         v28 = [v27 objectForKey:v39];
 
         if (v28)
@@ -4487,7 +4487,7 @@ LABEL_48:
           dispatch_async(v29, v28);
         }
 
-        pthread_mutex_unlock(&v40->_continuityPeerLock);
+        pthread_mutex_unlock(&selfCopy->_continuityPeerLock);
 
 LABEL_61:
 LABEL_62:
@@ -4513,7 +4513,7 @@ LABEL_62:
       _IDSLogV();
     }
 
-    pthread_mutex_unlock(&v40->_continuityPeerLock);
+    pthread_mutex_unlock(&selfCopy->_continuityPeerLock);
     v39 = 0;
     goto LABEL_61;
   }
@@ -4537,16 +4537,16 @@ LABEL_62:
 LABEL_63:
 }
 
-- (BOOL)isPeerForPhoneContinuityLocalMessage:(id)a3
+- (BOOL)isPeerForPhoneContinuityLocalMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(NSMutableDictionary *)self->_deviceIDToPeer allValues];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->_deviceIDToPeer allValues];
+  v6 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
     v7 = *v21;
@@ -4556,24 +4556,24 @@ LABEL_63:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 btUUID];
-        if ([v10 isEqualToString:v4])
+        btUUID = [v9 btUUID];
+        if ([btUUID isEqualToString:messageCopy])
         {
-          v11 = [v9 originalbtUUID];
-          v12 = v11 == 0;
+          originalbtUUID = [v9 originalbtUUID];
+          v12 = originalbtUUID == 0;
 
           if (!v12)
           {
             v14 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v9 btUUID];
+              btUUID2 = [v9 btUUID];
               *buf = 138412290;
-              v25 = v16;
+              v25 = btUUID2;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Peer's session ID %@ is for the phone continuity local message.", buf, 0xCu);
             }
 
@@ -4581,12 +4581,12 @@ LABEL_63:
             {
               if (_IDSShouldLogTransport())
               {
-                v18 = [v9 btUUID];
+                btUUID3 = [v9 btUUID];
                 _IDSLogTransport();
 
                 if (_IDSShouldLog())
                 {
-                  v19 = [v9 btUUID];
+                  btUUID4 = [v9 btUUID];
                   _IDSLogV();
                 }
               }
@@ -4602,7 +4602,7 @@ LABEL_63:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v6)
       {
         continue;
@@ -4619,11 +4619,11 @@ LABEL_20:
   return v13;
 }
 
-- (id)sessionIDforPeer:(id)a3
+- (id)sessionIDforPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   pthread_mutex_lock(&self->_deviceIDToPeerLock);
-  v5 = [(NSMutableDictionary *)self->_btuuidToSessionID objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_btuuidToSessionID objectForKey:peerCopy];
 
   pthread_mutex_unlock(&self->_deviceIDToPeerLock);
 
@@ -4633,12 +4633,12 @@ LABEL_20:
 - (void)enableOTRForDefaultPairedDevice
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSUTunDeliveryController *)self _currentOTRTimer];
+  _currentOTRTimer = [(IDSUTunDeliveryController *)self _currentOTRTimer];
 
-  if (!v3)
+  if (!_currentOTRTimer)
   {
-    v7 = [(IDSUTunDeliveryController *)self pairingManager];
-    if ([v7 isPaired])
+    pairingManager = [(IDSUTunDeliveryController *)self pairingManager];
+    if ([pairingManager isPaired])
     {
       enableOTR = self->_enableOTR;
 
@@ -4672,15 +4672,15 @@ LABEL_20:
   }
 }
 
-- (void)rapportClient:(id)a3 didDiscoverDevice:(id)a4
+- (void)rapportClient:(id)client didDiscoverDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  deviceCopy = device;
   im_assert_primary_base_queue();
-  v8 = [(IDSUTunDeliveryController *)self _copyPeerWithID:v7];
+  v8 = [(IDSUTunDeliveryController *)self _copyPeerWithID:deviceCopy];
   if (!v8)
   {
-    v8 = [(IDSUTunDeliveryController *)self _createPeerFromDeviceID:v7];
+    v8 = [(IDSUTunDeliveryController *)self _createPeerFromDeviceID:deviceCopy];
   }
 
   v9 = OSLogHandleForIDSCategory();
@@ -4689,14 +4689,14 @@ LABEL_20:
     *buf = 138412546;
     v14 = v8;
     v15 = 2112;
-    v16 = v7;
+    v16 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Rapport discovered device. {Peer:%@, deviceID:%@}", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v11 = v8;
-    v12 = v7;
+    v12 = deviceCopy;
     _IDSLogV();
   }
 
@@ -4706,33 +4706,33 @@ LABEL_20:
     {
       [v8 enableCloudConnection];
       v10 = +[IDSUTunController sharedInstance];
-      [v10 startGlobalLinkForDevice:v7];
+      [v10 startGlobalLinkForDevice:deviceCopy];
     }
 
     [v8 setIsPeerAlwaysConnected:1];
   }
 }
 
-- (void)rapportClient:(id)a3 didLoseDevice:(id)a4
+- (void)rapportClient:(id)client didLoseDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  deviceCopy = device;
   im_assert_primary_base_queue();
-  v8 = [(IDSUTunDeliveryController *)self _copyPeerWithID:v7];
+  v8 = [(IDSUTunDeliveryController *)self _copyPeerWithID:deviceCopy];
   v9 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v7;
+    v15 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Rapport lost device. {Peer:%@, deviceID:%@}", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v10 = v8;
-    v11 = v7;
+    v11 = deviceCopy;
     _IDSLogV();
   }
 

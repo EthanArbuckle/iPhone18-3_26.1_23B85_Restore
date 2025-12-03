@@ -33,13 +33,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [a1 objectForKeyedSubscript:v7];
+  v8 = [self objectForKeyedSubscript:v7];
   if (!v8)
   {
     v8 = [MEMORY[0x277CBEB58] set];
   }
 
-  [a1 setObject:v8 forKeyedSubscript:v7];
+  [self setObject:v8 forKeyedSubscript:v7];
   [v8 addObject:v6];
 
 LABEL_11:
@@ -50,7 +50,7 @@ LABEL_11:
   v6 = a3;
   if (a4)
   {
-    v7 = [a1 objectForKeyedSubscript:a4];
+    v7 = [self objectForKeyedSubscript:a4];
     v8 = v7;
     if (v7)
     {

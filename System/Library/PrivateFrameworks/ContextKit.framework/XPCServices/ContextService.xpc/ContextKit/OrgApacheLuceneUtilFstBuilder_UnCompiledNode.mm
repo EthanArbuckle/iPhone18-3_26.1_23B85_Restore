@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneUtilFstBuilder_UnCompiledNode
-- (id)getLastOutputWithInt:(int)a3;
+- (id)getLastOutputWithInt:(int)int;
 - (void)__javaClone;
 - (void)clear;
 - (void)dealloc;
-- (void)prependOutputWithId:(id)a3;
-- (void)replaceLastWithInt:(int)a3 withOrgApacheLuceneUtilFstBuilder_Node:(id)a4 withId:(id)a5 withBoolean:(BOOL)a6;
-- (void)setLastOutputWithInt:(int)a3 withId:(id)a4;
+- (void)prependOutputWithId:(id)id;
+- (void)replaceLastWithInt:(int)int withOrgApacheLuceneUtilFstBuilder_Node:(id)node withId:(id)id withBoolean:(BOOL)boolean;
+- (void)setLastOutputWithInt:(int)int withId:(id)id;
 @end
 
 @implementation OrgApacheLuceneUtilFstBuilder_UnCompiledNode
@@ -24,7 +24,7 @@
   self->inputCount_ = 0;
 }
 
-- (id)getLastOutputWithInt:(int)a3
+- (id)getLastOutputWithInt:(int)int
 {
   arcs = self->arcs_;
   numArcs = self->numArcs_;
@@ -44,7 +44,7 @@
   return v7[4].super.isa;
 }
 
-- (void)replaceLastWithInt:(int)a3 withOrgApacheLuceneUtilFstBuilder_Node:(id)a4 withId:(id)a5 withBoolean:(BOOL)a6
+- (void)replaceLastWithInt:(int)int withOrgApacheLuceneUtilFstBuilder_Node:(id)node withId:(id)id withBoolean:(BOOL)boolean
 {
   arcs = self->arcs_;
   if (!arcs)
@@ -61,12 +61,12 @@
   }
 
   v12 = (&arcs->elementType_)[v11];
-  objc_storeWeak(&v12[2].super.isa, a4);
-  JreStrongAssign(&v12[5].super.isa, a5);
-  LOBYTE(v12[3].super.isa) = a6;
+  objc_storeWeak(&v12[2].super.isa, node);
+  JreStrongAssign(&v12[5].super.isa, id);
+  LOBYTE(v12[3].super.isa) = boolean;
 }
 
-- (void)setLastOutputWithInt:(int)a3 withId:(id)a4
+- (void)setLastOutputWithInt:(int)int withId:(id)id
 {
   arcs = self->arcs_;
   if (!arcs)
@@ -84,10 +84,10 @@
 
   p_isa = &(&arcs->elementType_)[v7][4].super.isa;
 
-  JreStrongAssign(p_isa, a4);
+  JreStrongAssign(p_isa, id);
 }
 
-- (void)prependOutputWithId:(id)a3
+- (void)prependOutputWithId:(id)id
 {
   if (self->numArcs_ >= 1)
   {
@@ -137,7 +137,7 @@
         break;
       }
 
-      JreStrongAssign(&v8[4].super.isa, [v10 addWithId:a3 withId:v13[4].super.isa]);
+      JreStrongAssign(&v8[4].super.isa, [v10 addWithId:id withId:v13[4].super.isa]);
       if (++v5 >= self->numArcs_)
       {
         goto LABEL_14;
@@ -163,7 +163,7 @@ LABEL_14:
       goto LABEL_21;
     }
 
-    v16 = [v15 addWithId:a3 withId:self->output_];
+    v16 = [v15 addWithId:id withId:self->output_];
 
     JreStrongAssign(&self->output_, v16);
   }

@@ -1,13 +1,13 @@
 @interface UIKitCardPresentationController
-- (_TtC5TeaUI31UIKitCardPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_TtC5TeaUI31UIKitCardPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 @end
 
 @implementation UIKitCardPresentationController
 
-- (_TtC5TeaUI31UIKitCardPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC5TeaUI31UIKitCardPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   return sub_1D7E3A394();
 }
 

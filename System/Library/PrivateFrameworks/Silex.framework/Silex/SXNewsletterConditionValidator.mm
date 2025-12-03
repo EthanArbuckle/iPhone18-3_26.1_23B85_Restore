@@ -1,24 +1,24 @@
 @interface SXNewsletterConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXNewsletterConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 newsletterSubscriptionStatus])
+  conditionCopy = condition;
+  contextCopy = context;
+  if ([conditionCopy newsletterSubscriptionStatus])
   {
-    if ([v5 newsletterSubscriptionStatus] == 1)
+    if ([conditionCopy newsletterSubscriptionStatus] == 1)
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = [v5 newsletterSubscriptionStatus];
-      v7 = v8 == [v6 newsletterSubscriptionStatus];
+      newsletterSubscriptionStatus = [conditionCopy newsletterSubscriptionStatus];
+      v7 = newsletterSubscriptionStatus == [contextCopy newsletterSubscriptionStatus];
     }
   }
 

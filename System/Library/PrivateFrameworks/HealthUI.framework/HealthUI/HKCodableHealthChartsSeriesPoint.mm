@@ -1,20 +1,20 @@
 @interface HKCodableHealthChartsSeriesPoint
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasYStart:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasYStart:(BOOL)start;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableHealthChartsSeriesPoint
 
-- (void)setHasYStart:(BOOL)a3
+- (void)setHasYStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 2;
   }
@@ -33,34 +33,34 @@
   v8.receiver = self;
   v8.super_class = HKCodableHealthChartsSeriesPoint;
   v4 = [(HKCodableHealthChartsSeriesPoint *)&v8 description];
-  v5 = [(HKCodableHealthChartsSeriesPoint *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableHealthChartsSeriesPoint *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   dateInterval = self->_dateInterval;
   if (dateInterval)
   {
-    v5 = [(HKCodableDateInterval *)dateInterval dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"dateInterval"];
+    dictionaryRepresentation = [(HKCodableDateInterval *)dateInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"dateInterval"];
   }
 
   scalarInterval = self->_scalarInterval;
   if (scalarInterval)
   {
-    v7 = [(HKCodableClosedRange *)scalarInterval dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"scalarInterval"];
+    dictionaryRepresentation2 = [(HKCodableClosedRange *)scalarInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"scalarInterval"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_yStart];
-    [v3 setObject:v9 forKey:@"yStart"];
+    [dictionary setObject:v9 forKey:@"yStart"];
 
     has = self->_has;
   }
@@ -68,82 +68,82 @@
   if (has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_yEnd];
-    [v3 setObject:v10 forKey:@"yEnd"];
+    [dictionary setObject:v10 forKey:@"yEnd"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_dateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scalarInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_dateInterval)
   {
-    [v4 setDateInterval:?];
-    v4 = v6;
+    [toCopy setDateInterval:?];
+    toCopy = v6;
   }
 
   if (self->_scalarInterval)
   {
     [v6 setScalarInterval:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_yStart;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = *&self->_yStart;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_yEnd;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_yEnd;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableDateInterval *)self->_dateInterval copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableDateInterval *)self->_dateInterval copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(HKCodableClosedRange *)self->_scalarInterval copyWithZone:a3];
+  v8 = [(HKCodableClosedRange *)self->_scalarInterval copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -164,16 +164,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   dateInterval = self->_dateInterval;
-  if (dateInterval | *(v4 + 3))
+  if (dateInterval | *(equalCopy + 3))
   {
     if (![(HKCodableDateInterval *)dateInterval isEqual:?])
     {
@@ -182,7 +182,7 @@
   }
 
   scalarInterval = self->_scalarInterval;
-  if (scalarInterval | *(v4 + 4))
+  if (scalarInterval | *(equalCopy + 4))
   {
     if (![(HKCodableClosedRange *)scalarInterval isEqual:?])
     {
@@ -192,23 +192,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_yStart != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_yStart != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 40) & 1) == 0;
+  v7 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_yEnd != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_yEnd != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
@@ -295,12 +295,12 @@ LABEL_16:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   dateInterval = self->_dateInterval;
-  v6 = *(v4 + 3);
-  v10 = v4;
+  v6 = *(fromCopy + 3);
+  v10 = fromCopy;
   if (dateInterval)
   {
     if (!v6)
@@ -321,10 +321,10 @@ LABEL_16:
     [(HKCodableHealthChartsSeriesPoint *)self setDateInterval:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
   scalarInterval = self->_scalarInterval;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (scalarInterval)
   {
     if (!v8)
@@ -345,23 +345,23 @@ LABEL_7:
     scalarInterval = [(HKCodableHealthChartsSeriesPoint *)self setScalarInterval:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_13:
-  v9 = *(v4 + 40);
+  v9 = *(fromCopy + 40);
   if ((v9 & 2) != 0)
   {
-    self->_yStart = *(v4 + 2);
+    self->_yStart = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v9 = *(v4 + 40);
+    v9 = *(fromCopy + 40);
   }
 
   if (v9)
   {
-    self->_yEnd = *(v4 + 1);
+    self->_yEnd = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](scalarInterval, v4);
+  MEMORY[0x1EEE66BB8](scalarInterval, fromCopy);
 }
 
 @end

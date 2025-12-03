@@ -1,7 +1,7 @@
 @interface CAFDAgent
 - (NSString)domain;
 - (_TtC13caraccessoryd9CAFDAgent)init;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation CAFDAgent
@@ -13,13 +13,13 @@
   return result;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v9 = self;
-  specialized CAFDAgent.listener(_:didReceive:withContext:)(v8);
+  selfCopy = self;
+  specialized CAFDAgent.listener(_:didReceive:withContext:)(connectionCopy);
 
   swift_unknownObjectRelease();
 }

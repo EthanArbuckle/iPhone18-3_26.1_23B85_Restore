@@ -1,21 +1,21 @@
 @interface WDProfileHeaderView
 - (BOOL)isNameHidden;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WDProfileHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WDProfileHeaderView)initWithFrame:(CGRect)frame;
 - (void)_updateFont;
 - (void)layoutSubviews;
-- (void)setAvatarView:(id)a3;
-- (void)setFirstName:(id)a3 lastName:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAvatarView:(id)view;
+- (void)setFirstName:(id)name lastName:(id)lastName;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WDProfileHeaderView
 
-- (WDProfileHeaderView)initWithFrame:(CGRect)a3
+- (WDProfileHeaderView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = WDProfileHeaderView;
-  v3 = [(WDProfileHeaderView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WDProfileHeaderView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -28,8 +28,8 @@
     [(UILabel *)v3->_nameLabel setFont:v6];
 
     [(UILabel *)v3->_nameLabel setTextAlignment:1];
-    v7 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v3->_nameLabel setTextColor:v7];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v3->_nameLabel setTextColor:labelColor];
 
     [(WDProfileHeaderView *)v3 addSubview:v3->_nameLabel];
     [(WDProfileHeaderView *)v3 _updateFont];
@@ -38,8 +38,8 @@
     v3->_nameFormatter = v8;
 
     [(NSPersonNameComponentsFormatter *)v3->_nameFormatter setStyle:0];
-    v10 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    [(WDProfileHeaderView *)v3 setBackgroundColor:v10];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    [(WDProfileHeaderView *)v3 setBackgroundColor:systemGroupedBackgroundColor];
   }
 
   return v3;
@@ -65,8 +65,8 @@
   else
   {
     v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
-    v11 = [(WDProfileHeaderView *)self nameLabel];
-    [v11 setFont:v12];
+    nameLabel = [(WDProfileHeaderView *)self nameLabel];
+    [nameLabel setFont:v12];
   }
 }
 
@@ -87,10 +87,10 @@
   {
     [(UIView *)avatarView frame];
     v10 = v9;
-    v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v12 = [v11 isIPhone];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isIPhone = [mEMORY[0x277CCDD30] isIPhone];
 
-    if (v12)
+    if (isIPhone)
     {
       v13 = (Width + -86.0) * 0.5;
     }
@@ -123,10 +123,10 @@
   [(UILabel *)self->_nameLabel setFrame:10.0, v16, v4, v7];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(WDProfileHeaderView *)self layoutIfNeeded:a3.width];
+  width = fits.width;
+  [(WDProfileHeaderView *)self layoutIfNeeded:fits.width];
   if ([(UILabel *)self->_nameLabel isHidden])
   {
     avatarView = self->_avatarView;
@@ -153,63 +153,63 @@ LABEL_7:
   return result;
 }
 
-- (void)setAvatarView:(id)a3
+- (void)setAvatarView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   avatarView = self->_avatarView;
-  if (avatarView != v5)
+  if (avatarView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)avatarView removeFromSuperview];
     if (v7)
     {
       [(WDProfileHeaderView *)self addSubview:v7];
     }
 
-    objc_storeStrong(&self->_avatarView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_avatarView, view);
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](avatarView, v5);
+  MEMORY[0x2821F96F8](avatarView, viewCopy);
 }
 
-- (void)setFirstName:(id)a3 lastName:(id)a4
+- (void)setFirstName:(id)name lastName:(id)lastName
 {
   v6 = MEMORY[0x277CCAC00];
-  v7 = a4;
-  v8 = a3;
+  lastNameCopy = lastName;
+  nameCopy = name;
   v12 = objc_alloc_init(v6);
-  [v12 setGivenName:v8];
+  [v12 setGivenName:nameCopy];
 
-  [v12 setFamilyName:v7];
-  v9 = [(WDProfileHeaderView *)self nameFormatter];
-  v10 = [v9 stringFromPersonNameComponents:v12];
-  v11 = [(WDProfileHeaderView *)self nameLabel];
-  [v11 setText:v10];
+  [v12 setFamilyName:lastNameCopy];
+  nameFormatter = [(WDProfileHeaderView *)self nameFormatter];
+  v10 = [nameFormatter stringFromPersonNameComponents:v12];
+  nameLabel = [(WDProfileHeaderView *)self nameLabel];
+  [nameLabel setText:v10];
 
   [(WDProfileHeaderView *)self setNeedsLayout];
 }
 
 - (BOOL)isNameHidden
 {
-  v2 = [(WDProfileHeaderView *)self nameLabel];
-  v3 = [v2 isHidden];
+  nameLabel = [(WDProfileHeaderView *)self nameLabel];
+  isHidden = [nameLabel isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = WDProfileHeaderView;
-  [(WDProfileHeaderView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(WDProfileHeaderView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(WDProfileHeaderView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(WDProfileHeaderView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

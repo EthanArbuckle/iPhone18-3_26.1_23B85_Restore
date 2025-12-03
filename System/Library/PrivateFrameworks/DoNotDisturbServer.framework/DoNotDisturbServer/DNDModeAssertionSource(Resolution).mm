@@ -9,10 +9,10 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = a1;
-  v12 = [v11 deviceIdentifier];
-  v13 = v12;
-  if (!v12)
+  selfCopy = self;
+  deviceIdentifier = [selfCopy deviceIdentifier];
+  v13 = deviceIdentifier;
+  if (!deviceIdentifier)
   {
     v15 = v9;
     if (!v9)
@@ -23,7 +23,7 @@
     goto LABEL_14;
   }
 
-  if (v12 == v8)
+  if (deviceIdentifier == v8)
   {
     if (v8 == v10)
     {
@@ -50,16 +50,16 @@ LABEL_14:
     v17 = MEMORY[0x277D05988];
     v18 = v15;
     v19 = [v17 alloc];
-    v20 = [v11 clientIdentifier];
-    v21 = [v19 initWithClientIdentifier:v20 deviceIdentifier:v18];
+    clientIdentifier = [selfCopy clientIdentifier];
+    v21 = [v19 initWithClientIdentifier:clientIdentifier deviceIdentifier:v18];
 
-    v11 = v21;
+    selfCopy = v21;
     goto LABEL_15;
   }
 
   if (v8)
   {
-    v14 = [v12 isEqual:v8];
+    v14 = [deviceIdentifier isEqual:v8];
     if (v13 != v10 && (v14 & 1) != 0)
     {
       goto LABEL_10;
@@ -68,7 +68,7 @@ LABEL_14:
 
 LABEL_15:
 
-  return v11;
+  return selfCopy;
 }
 
 @end

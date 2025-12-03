@@ -1,29 +1,29 @@
 @interface AARequester
-- (AARequester)initWithRequest:(id)a3 handler:(id)a4;
+- (AARequester)initWithRequest:(id)request handler:(id)handler;
 - (void)__unsafe_callHandler;
 - (void)_callHandler;
-- (void)_kickOffRequest:(id)a3;
+- (void)_kickOffRequest:(id)request;
 - (void)cancel;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connection:(id)a3 willSendRequestForAuthenticationChallenge:(id)a4;
-- (void)connectionDidFinishLoading:(id)a3;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connection:(id)connection willSendRequestForAuthenticationChallenge:(id)challenge;
+- (void)connectionDidFinishLoading:(id)loading;
 - (void)start;
 @end
 
 @implementation AARequester
 
-- (AARequester)initWithRequest:(id)a3 handler:(id)a4
+- (AARequester)initWithRequest:(id)request handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = AARequester;
   v9 = [(AARequester *)&v18 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [handlerCopy copy];
     handler = v9->_handler;
     v9->_handler = v10;
 
@@ -31,7 +31,7 @@
     data = v9->_data;
     v9->_data = v12;
 
-    objc_storeStrong(&v9->_request, a3);
+    objc_storeStrong(&v9->_request, request);
     v9->_responseClass = [objc_opt_class() responseClass];
     v9->_canceled = 0;
     handlerQueue = v9->_handlerQueue;
@@ -62,7 +62,7 @@
       v12 = 3221225472;
       v13 = __21__AARequester_cancel__block_invoke;
       v14 = &unk_1E7C9A868;
-      v15 = self;
+      selfCopy = self;
       v5 = &v11;
     }
 
@@ -72,7 +72,7 @@
       v7 = 3221225472;
       v8 = __21__AARequester_cancel__block_invoke_2;
       v9 = &unk_1E7C9A868;
-      v10 = self;
+      selfCopy2 = self;
       handlerQueue = MEMORY[0x1E69E96A0];
       v5 = &v6;
     }
@@ -80,7 +80,7 @@
     dispatch_async(handlerQueue, v5);
   }
 
-  [(AARequester *)self setCanceled:1, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15];
+  [(AARequester *)self setCanceled:1, v6, v7, v8, v9, selfCopy2, v11, v12, v13, v14, selfCopy];
 }
 
 - (void)start
@@ -88,11 +88,11 @@
   v21 = *MEMORY[0x1E69E9840];
   [(AARequester *)self setIsExecuting:1];
   [(AARequester *)self setFinished:0];
-  v3 = [(AARequest *)self->_request urlString];
+  urlString = [(AARequest *)self->_request urlString];
 
-  if (v3)
+  if (urlString)
   {
-    v16 = [(AARequest *)self->_request urlRequest];
+    urlRequest = [(AARequest *)self->_request urlRequest];
     [(AARequester *)self _kickOffRequest:?];
     v4 = *MEMORY[0x1E69E9840];
   }
@@ -129,12 +129,12 @@
   }
 }
 
-- (void)_kickOffRequest:(id)a3
+- (void)_kickOffRequest:(id)request
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [(AKAppleIDSession *)self->_appleIDSession appleIDHeadersForRequest:v4];
+  requestCopy = request;
+  v5 = [requestCopy mutableCopy];
+  v6 = [(AKAppleIDSession *)self->_appleIDSession appleIDHeadersForRequest:requestCopy];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -187,9 +187,9 @@
         break;
       }
 
-      v18 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      v19 = [MEMORY[0x1E695DF00] distantFuture];
-      v20 = [v18 runMode:v17 beforeDate:v19];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      v20 = [currentRunLoop runMode:v17 beforeDate:distantFuture];
     }
 
     while ((v20 & 1) != 0);
@@ -227,8 +227,8 @@
 {
   if (self->_shouldRetry)
   {
-    v5 = [(NSURLConnection *)self->_urlConnection originalRequest];
-    [(AARequester *)self _kickOffRequest:v5];
+    originalRequest = [(NSURLConnection *)self->_urlConnection originalRequest];
+    [(AARequester *)self _kickOffRequest:originalRequest];
   }
 
   else
@@ -268,10 +268,10 @@
   [(AARequester *)self setFinished:1];
 }
 
-- (void)connection:(id)a3 willSendRequestForAuthenticationChallenge:(id)a4
+- (void)connection:(id)connection willSendRequestForAuthenticationChallenge:(id)challenge
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  challengeCopy = challenge;
   v8 = +[AACertificatePinner sharedPinner];
   v9 = objc_opt_respondsToSelector();
 
@@ -281,11 +281,11 @@
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(AARequester *)a2 connection:v7 willSendRequestForAuthenticationChallenge:v11];
+      [(AARequester *)a2 connection:challengeCopy willSendRequestForAuthenticationChallenge:v11];
     }
 
-    v12 = +[AACertificatePinner sharedPinner];
-    [v12 connection:v6 willSendRequestForAuthenticationChallenge:v7];
+    sender = +[AACertificatePinner sharedPinner];
+    [sender connection:connectionCopy willSendRequestForAuthenticationChallenge:challengeCopy];
   }
 
   else
@@ -295,53 +295,53 @@
       [AARequester connection:a2 willSendRequestForAuthenticationChallenge:v11];
     }
 
-    v12 = [v7 sender];
-    [v12 performDefaultHandlingForAuthenticationChallenge:v7];
+    sender = [challengeCopy sender];
+    [sender performDefaultHandlingForAuthenticationChallenge:challengeCopy];
   }
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  responseCopy = response;
+  connectionCopy = connection;
   v8 = _AALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NSHTTPURLResponse *)v6 allHeaderFields];
+    allHeaderFields = [(NSHTTPURLResponse *)responseCopy allHeaderFields];
     v14 = 138412290;
-    v15 = v9;
+    v15 = allHeaderFields;
     _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "Received response. Headers: %@", &v14, 0xCu);
   }
 
   self->_shouldRetry = 0;
   appleIDSession = self->_appleIDSession;
-  v11 = [v7 originalRequest];
+  originalRequest = [connectionCopy originalRequest];
 
-  [(AKAppleIDSession *)appleIDSession handleResponse:v6 forRequest:v11 shouldRetry:&self->_shouldRetry];
+  [(AKAppleIDSession *)appleIDSession handleResponse:responseCopy forRequest:originalRequest shouldRetry:&self->_shouldRetry];
   httpResponse = self->_httpResponse;
-  self->_httpResponse = v6;
+  self->_httpResponse = responseCopy;
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  dataCopy = data;
   v6 = _AALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [v5 length];
+    v9 = [dataCopy length];
     _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Received %lu bytes.", &v8, 0xCu);
   }
 
-  [(NSMutableData *)self->_data appendData:v5];
+  [(NSMutableData *)self->_data appendData:dataCopy];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = _AALogSystem();
@@ -363,10 +363,10 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = _AALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -374,14 +374,14 @@
     _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Connection failed.", &v13, 2u);
   }
 
-  if (v5)
+  if (errorCopy)
   {
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v5 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       v13 = 138412290;
-      v14 = v8;
+      v14 = localizedDescription;
       _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "%@", &v13, 0xCu);
     }
   }
@@ -390,8 +390,8 @@
   response = self->_response;
   self->_response = v9;
 
-  v11 = [v5 _aa_userReadableError];
-  [(AAResponse *)self->_response setError:v11];
+  _aa_userReadableError = [errorCopy _aa_userReadableError];
+  [(AAResponse *)self->_response setError:_aa_userReadableError];
 
   [(AARequester *)self _callHandler];
   [(AARequester *)self setIsExecuting:0];

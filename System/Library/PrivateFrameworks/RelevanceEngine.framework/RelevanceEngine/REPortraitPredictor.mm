@@ -1,5 +1,5 @@
 @interface REPortraitPredictor
-- (float)userAffinityToContent:(id)a3;
+- (float)userAffinityToContent:(id)content;
 - (id)_init;
 - (void)_loadStoreIfNeeded;
 - (void)dealloc;
@@ -12,25 +12,25 @@
 {
   v7.receiver = self;
   v7.super_class = REPortraitPredictor;
-  v2 = [(REPredictor *)&v7 _init];
-  if (v2)
+  _init = [(REPredictor *)&v7 _init];
+  if (_init)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    v4 = v2[9];
-    v2[9] = v3;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v4 = _init[9];
+    _init[9] = dictionary;
 
-    [v2 _loadStoreIfNeeded];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__loadStoreIfNeeded name:@"REDeviceLockStateChangedNotification" object:0];
+    [_init _loadStoreIfNeeded];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:_init selector:sel__loadStoreIfNeeded name:@"REDeviceLockStateChangedNotification" object:0];
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"REDeviceLockStateChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"REDeviceLockStateChangedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = REPortraitPredictor;
@@ -92,7 +92,7 @@ uint64_t __41__REPortraitPredictor__loadStoreIfNeeded__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22859F000, a2, OS_LOG_TYPE_ERROR, "Unable to load named entities: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -122,10 +122,10 @@ void __29__REPortraitPredictor_update__block_invoke(uint64_t a1, void *a2)
   *(v11 + 24) = v12;
 }
 
-- (float)userAffinityToContent:(id)a3
+- (float)userAffinityToContent:(id)content
 {
-  v4 = a3;
-  v5 = [v4 count];
+  contentCopy = content;
+  v5 = [contentCopy count];
   if (v5)
   {
     v9 = 0;
@@ -139,7 +139,7 @@ void __29__REPortraitPredictor_update__block_invoke(uint64_t a1, void *a2)
     v8[5] = &v9;
     v8[6] = v5;
     v8[4] = self;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [contentCopy enumerateObjectsUsingBlock:v8];
     v6 = v10[6];
     _Block_object_dispose(&v9, 8);
   }

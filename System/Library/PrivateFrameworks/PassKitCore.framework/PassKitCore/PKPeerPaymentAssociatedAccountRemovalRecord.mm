@@ -1,27 +1,27 @@
 @interface PKPeerPaymentAssociatedAccountRemovalRecord
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentAssociatedAccountRemovalRecord)initWithCoder:(id)a3;
-- (PKPeerPaymentAssociatedAccountRemovalRecord)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentAssociatedAccountRemovalRecord)initWithCoder:(id)coder;
+- (PKPeerPaymentAssociatedAccountRemovalRecord)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentAssociatedAccountRemovalRecord
 
-- (PKPeerPaymentAssociatedAccountRemovalRecord)initWithDictionary:(id)a3
+- (PKPeerPaymentAssociatedAccountRemovalRecord)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PKPeerPaymentAssociatedAccountRemovalRecord;
   v5 = [(PKPeerPaymentAssociatedAccountRemovalRecord *)&v21 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"altDSID"];
+    v6 = [dictionaryCopy PKStringForKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v8 = [v4 PKStringForKey:@"removalReason"];
+    v8 = [dictionaryCopy PKStringForKey:@"removalReason"];
     v9 = v8;
     v10 = 0;
     if (v8 == @"closed" || !v8)
@@ -52,7 +52,7 @@
 LABEL_12:
 
     v5->_reason = v10;
-    v18 = [v4 PKDateForKey:@"removalDate"];
+    v18 = [dictionaryCopy PKDateForKey:@"removalDate"];
     date = v5->_date;
     v5->_date = v18;
   }
@@ -60,37 +60,37 @@ LABEL_12:
   return v5;
 }
 
-- (PKPeerPaymentAssociatedAccountRemovalRecord)initWithCoder:(id)a3
+- (PKPeerPaymentAssociatedAccountRemovalRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentAssociatedAccountRemovalRecord;
   v5 = [(PKPeerPaymentAssociatedAccountRemovalRecord *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v5->_reason = [v4 decodeIntegerForKey:@"reason"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v5->_reason = [coderCopy decodeIntegerForKey:@"reason"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v8;
 
-    v5->_hasPresentedNotification = [v4 decodeBoolForKey:@"hasPresentedNotification"];
+    v5->_hasPresentedNotification = [coderCopy decodeBoolForKey:@"hasPresentedNotification"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   altDSID = self->_altDSID;
-  v5 = a3;
-  [v5 encodeObject:altDSID forKey:@"altDSID"];
-  [v5 encodeInteger:self->_reason forKey:@"reason"];
-  [v5 encodeObject:self->_date forKey:@"date"];
-  [v5 encodeBool:self->_hasPresentedNotification forKey:@"hasPresentedNotification"];
+  coderCopy = coder;
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
+  [coderCopy encodeInteger:self->_reason forKey:@"reason"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeBool:self->_hasPresentedNotification forKey:@"hasPresentedNotification"];
 }
 
 - (id)description
@@ -132,16 +132,16 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v5 = v4[2];
+  v5 = equalCopy[2];
   v6 = self->_altDSID;
   v7 = v5;
   v8 = v7;
@@ -165,10 +165,10 @@ LABEL_12:
     }
   }
 
-  if (self->_reason == v4[3])
+  if (self->_reason == equalCopy[3])
   {
     date = self->_date;
-    v11 = v4[4];
+    v11 = equalCopy[4];
     if (date && v11)
     {
       if (([(NSDate *)date isEqual:?]& 1) != 0)
@@ -180,7 +180,7 @@ LABEL_12:
     else if (date == v11)
     {
 LABEL_17:
-      v12 = self->_hasPresentedNotification == *(v4 + 8);
+      v12 = self->_hasPresentedNotification == *(equalCopy + 8);
       goto LABEL_16;
     }
   }
@@ -194,10 +194,10 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_altDSID];
-  [v3 safelyAddObject:self->_date];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_altDSID];
+  [array safelyAddObject:self->_date];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_reason - v4 + 32 * v4;
   v6 = self->_hasPresentedNotification - v5 + 32 * v5;
 

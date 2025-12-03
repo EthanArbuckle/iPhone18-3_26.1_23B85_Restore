@@ -126,10 +126,10 @@ LABEL_15:
 
 - (void)restoreContinuityPairingRecordIfNeeded
 {
-  v3 = [(MSDContinuityHelper *)self shouldRestoreRapportPairingRecord];
+  shouldRestoreRapportPairingRecord = [(MSDContinuityHelper *)self shouldRestoreRapportPairingRecord];
   v4 = sub_100063A54();
   v5 = v4;
-  if (v3)
+  if (shouldRestoreRapportPairingRecord)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -143,10 +143,10 @@ LABEL_15:
     if (v7)
     {
       [(MSDContinuityHelper *)self removeRapportPairingIfNeeded];
-      v8 = [(MSDContinuityHelper *)self shouldRestoreUCBPairingRecord];
+      shouldRestoreUCBPairingRecord = [(MSDContinuityHelper *)self shouldRestoreUCBPairingRecord];
       v9 = sub_100063A54();
       v10 = v9;
-      if (v8)
+      if (shouldRestoreUCBPairingRecord)
       {
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
@@ -192,8 +192,8 @@ LABEL_15:
   v3 = +[NSFileManager defaultManager];
   if ([v2 isContentFrozen])
   {
-    v4 = [v2 getSavedRequest];
-    if ([v4 isEqualToString:@"RevertSnapshot"])
+    getSavedRequest = [v2 getSavedRequest];
+    if ([getSavedRequest isEqualToString:@"RevertSnapshot"])
     {
       v5 = [v3 fileExistsAtPath:@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/com.apple.MobileStoreDemo.rapportkeychain"];
     }
@@ -218,8 +218,8 @@ LABEL_15:
   v3 = +[NSFileManager defaultManager];
   if ([v2 isContentFrozen])
   {
-    v4 = [v2 getSavedRequest];
-    if ([v4 isEqualToString:@"RevertSnapshot"])
+    getSavedRequest = [v2 getSavedRequest];
+    if ([getSavedRequest isEqualToString:@"RevertSnapshot"])
     {
       v5 = [v3 fileExistsAtPath:@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/com.apple.MobileStoreDemo.ucbkeychain"];
     }

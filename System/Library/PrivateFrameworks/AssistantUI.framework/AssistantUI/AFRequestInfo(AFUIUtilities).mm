@@ -7,18 +7,18 @@
 
 - (BOOL)afui_isRemoteHeadsetActivation
 {
-  v1 = [a1 speechRequestOptions];
-  v2 = [v1 activationEvent];
+  speechRequestOptions = [self speechRequestOptions];
+  activationEvent = [speechRequestOptions activationEvent];
 
-  return (v2 & 0xFFFFFFFFFFFFFFFELL) == 14;
+  return (activationEvent & 0xFFFFFFFFFFFFFFFELL) == 14;
 }
 
 - (BOOL)afui_isRemoteVoiceActivation
 {
-  v1 = [a1 speechRequestOptions];
-  v2 = [v1 activationEvent];
+  speechRequestOptions = [self speechRequestOptions];
+  activationEvent = [speechRequestOptions activationEvent];
 
-  return v2 == 8 || v2 == 15;
+  return activationEvent == 8 || activationEvent == 15;
 }
 
 @end

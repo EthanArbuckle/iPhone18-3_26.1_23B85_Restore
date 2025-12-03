@@ -3,13 +3,13 @@
 - (BOOL)triggeredQueueCheck;
 - (NSError)error;
 - (NSOrderedSet)downloads;
-- (SSVStoreDownloadQueueResponse)initWithDictionary:(id)a3 userIdentifier:(id)a4 preferredAssetFlavor:(id)a5;
-- (SSVStoreDownloadQueueResponse)initWithError:(id)a3 userIdentifier:(id)a4;
-- (id)_errorWithFailureType:(id)a3 customerMessage:(id)a4;
+- (SSVStoreDownloadQueueResponse)initWithDictionary:(id)dictionary userIdentifier:(id)identifier preferredAssetFlavor:(id)flavor;
+- (SSVStoreDownloadQueueResponse)initWithError:(id)error userIdentifier:(id)identifier;
+- (id)_errorWithFailureType:(id)type customerMessage:(id)message;
 - (id)_initStoreDownloadQueueResponse;
-- (void)setError:(id)a3;
-- (void)setShouldCancelPurchaseBatch:(BOOL)a3;
-- (void)setTriggeredQueueCheck:(BOOL)a3;
+- (void)setError:(id)error;
+- (void)setShouldCancelPurchaseBatch:(BOOL)batch;
+- (void)setTriggeredQueueCheck:(BOOL)check;
 @end
 
 @implementation SSVStoreDownloadQueueResponse
@@ -29,16 +29,16 @@
   return v2;
 }
 
-- (SSVStoreDownloadQueueResponse)initWithDictionary:(id)a3 userIdentifier:(id)a4 preferredAssetFlavor:(id)a5
+- (SSVStoreDownloadQueueResponse)initWithDictionary:(id)dictionary userIdentifier:(id)identifier preferredAssetFlavor:(id)flavor
 {
   v75 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SSVStoreDownloadQueueResponse *)self _initStoreDownloadQueueResponse];
-  if (v11)
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  flavorCopy = flavor;
+  _initStoreDownloadQueueResponse = [(SSVStoreDownloadQueueResponse *)self _initStoreDownloadQueueResponse];
+  if (_initStoreDownloadQueueResponse)
   {
-    v12 = [v8 objectForKey:@"page-type"];
+    v12 = [dictionaryCopy objectForKey:@"page-type"];
     v13 = 0x1E695D000uLL;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -59,36 +59,36 @@
       v15 = 0;
     }
 
-    v16 = [v8 objectForKey:@"more"];
+    v16 = [dictionaryCopy objectForKey:@"more"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v17 = SSVCopyLoadMoreRangesFromArray(v16);
-      rangesToLoad = v11->_rangesToLoad;
-      v11->_rangesToLoad = v17;
+      rangesToLoad = _initStoreDownloadQueueResponse->_rangesToLoad;
+      _initStoreDownloadQueueResponse->_rangesToLoad = v17;
     }
 
-    v19 = [v8 objectForKey:@"failureType"];
+    v19 = [dictionaryCopy objectForKey:@"failureType"];
 
     if (v19)
     {
-      v20 = [v8 objectForKey:@"customerMessage"];
-      v21 = [(SSVStoreDownloadQueueResponse *)v11 _errorWithFailureType:v19 customerMessage:v20];
-      error = v11->_error;
-      v11->_error = v21;
+      v20 = [dictionaryCopy objectForKey:@"customerMessage"];
+      v21 = [(SSVStoreDownloadQueueResponse *)_initStoreDownloadQueueResponse _errorWithFailureType:v19 customerMessage:v20];
+      error = _initStoreDownloadQueueResponse->_error;
+      _initStoreDownloadQueueResponse->_error = v21;
     }
 
-    v23 = [v8 objectForKey:@"failed-items"];
+    v23 = [dictionaryCopy objectForKey:@"failed-items"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v58 = v15;
-      v60 = v10;
-      v61 = v8;
-      v62 = v9;
-      v24 = v11;
+      v60 = flavorCopy;
+      v61 = dictionaryCopy;
+      v62 = identifierCopy;
+      v24 = _initStoreDownloadQueueResponse;
       v64 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v69 = 0u;
       v70 = 0u;
@@ -146,22 +146,22 @@
       }
 
       v37 = [v64 copy];
-      v11 = v24;
+      _initStoreDownloadQueueResponse = v24;
       itemErrors = v24->_itemErrors;
       v24->_itemErrors = v37;
 
-      v8 = v61;
-      v9 = v62;
+      dictionaryCopy = v61;
+      identifierCopy = v62;
       v23 = v59;
-      v10 = v60;
+      flavorCopy = v60;
       v15 = v58;
     }
 
-    v39 = [v8 objectForKey:@"keybag"];
-    keybag = v11->_keybag;
-    v11->_keybag = v39;
+    v39 = [dictionaryCopy objectForKey:@"keybag"];
+    keybag = _initStoreDownloadQueueResponse->_keybag;
+    _initStoreDownloadQueueResponse->_keybag = v39;
 
-    v41 = [v8 objectForKey:@"dsPersonId"];
+    v41 = [dictionaryCopy objectForKey:@"dsPersonId"];
     v42 = SSAccountGetUniqueIdentifierFromValue(v41);
 
     if (v42)
@@ -171,27 +171,27 @@
 
     else
     {
-      v43 = v9;
+      v43 = identifierCopy;
     }
 
-    objc_storeStrong(&v11->_userIdentifier, v43);
+    objc_storeStrong(&_initStoreDownloadQueueResponse->_userIdentifier, v43);
     if ((v15 & 1) == 0)
     {
-      v44 = [v8 objectForKey:@"items"];
+      v44 = [dictionaryCopy objectForKey:@"items"];
 
       v23 = v44;
       if (!v44)
       {
-        v23 = [v8 objectForKey:@"songList"];
+        v23 = [dictionaryCopy objectForKey:@"songList"];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v63 = v9;
+        v63 = identifierCopy;
         v45 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-        downloads = v11->_downloads;
-        v11->_downloads = v45;
+        downloads = _initStoreDownloadQueueResponse->_downloads;
+        _initStoreDownloadQueueResponse->_downloads = v45;
 
         v67 = 0u;
         v68 = 0u;
@@ -214,12 +214,12 @@
               }
 
               v52 = [[SSVStoreDownload alloc] initWithDictionary:*(*(&v65 + 1) + 8 * j)];
-              if ([v10 length])
+              if ([flavorCopy length])
               {
-                [(SSVStoreDownload *)v52 setPreferredAssetFlavor:v10];
+                [(SSVStoreDownload *)v52 setPreferredAssetFlavor:flavorCopy];
               }
 
-              [(NSMutableOrderedSet *)v11->_downloads addObject:v52];
+              [(NSMutableOrderedSet *)_initStoreDownloadQueueResponse->_downloads addObject:v52];
             }
 
             v23 = v50;
@@ -229,41 +229,41 @@
           while (v48);
         }
 
-        v9 = v63;
+        identifierCopy = v63;
       }
     }
 
-    v53 = [v8 objectForKey:@"cancel-purchase-batch"];
+    v53 = [dictionaryCopy objectForKey:@"cancel-purchase-batch"];
 
     if (objc_opt_respondsToSelector())
     {
-      v54 = [v53 BOOLValue];
+      bOOLValue = [v53 BOOLValue];
     }
 
     else
     {
-      v54 = 0;
+      bOOLValue = 0;
     }
 
-    v11->_shouldCancelPurchaseBatch = v54;
-    v55 = [[SSDictionaryResponse alloc] initWithResponseDictionary:v8];
+    _initStoreDownloadQueueResponse->_shouldCancelPurchaseBatch = bOOLValue;
+    v55 = [[SSDictionaryResponse alloc] initWithResponseDictionary:dictionaryCopy];
     v56 = [(SSDictionaryResponse *)v55 actionsWithActionType:@"SSResponseActionTypeCheckDownloadQueues"];
-    v11->_triggeredQueueCheck = [v56 count] != 0;
+    _initStoreDownloadQueueResponse->_triggeredQueueCheck = [v56 count] != 0;
   }
 
-  return v11;
+  return _initStoreDownloadQueueResponse;
 }
 
-- (SSVStoreDownloadQueueResponse)initWithError:(id)a3 userIdentifier:(id)a4
+- (SSVStoreDownloadQueueResponse)initWithError:(id)error userIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SSVStoreDownloadQueueResponse *)self _initStoreDownloadQueueResponse];
-  v10 = v9;
-  if (v9)
+  errorCopy = error;
+  identifierCopy = identifier;
+  _initStoreDownloadQueueResponse = [(SSVStoreDownloadQueueResponse *)self _initStoreDownloadQueueResponse];
+  v10 = _initStoreDownloadQueueResponse;
+  if (_initStoreDownloadQueueResponse)
   {
-    objc_storeStrong(v9 + 3, a3);
-    objc_storeStrong(&v10->_userIdentifier, a4);
+    objc_storeStrong(_initStoreDownloadQueueResponse + 3, error);
+    objc_storeStrong(&v10->_userIdentifier, identifier);
   }
 
   return v10;
@@ -298,17 +298,17 @@
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__SSVStoreDownloadQueueResponse_setError___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -324,7 +324,7 @@ void __42__SSVStoreDownloadQueueResponse_setError___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShouldCancelPurchaseBatch:(BOOL)a3
+- (void)setShouldCancelPurchaseBatch:(BOOL)batch
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -332,11 +332,11 @@ void __42__SSVStoreDownloadQueueResponse_setError___block_invoke(uint64_t a1)
   v4[2] = __62__SSVStoreDownloadQueueResponse_setShouldCancelPurchaseBatch___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  batchCopy = batch;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setTriggeredQueueCheck:(BOOL)a3
+- (void)setTriggeredQueueCheck:(BOOL)check
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -344,7 +344,7 @@ void __42__SSVStoreDownloadQueueResponse_setError___block_invoke(uint64_t a1)
   v4[2] = __56__SSVStoreDownloadQueueResponse_setTriggeredQueueCheck___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  checkCopy = check;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -386,30 +386,30 @@ void __42__SSVStoreDownloadQueueResponse_setError___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_errorWithFailureType:(id)a3 customerMessage:(id)a4
+- (id)_errorWithFailureType:(id)type customerMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  messageCopy = message;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v6 = 0;
+    messageCopy = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 intValue];
+    intValue = [typeCopy intValue];
     v8 = @"SSServerErrorDomain";
   }
 
   else
   {
     v8 = @"SSErrorDomain";
-    v7 = 100;
+    intValue = 100;
   }
 
-  v9 = SSError(v8, v7, v6, 0);
+  v9 = SSError(v8, intValue, messageCopy, 0);
 
   return v9;
 }

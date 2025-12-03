@@ -1,47 +1,47 @@
 @interface DOCThumbnailFolderIcon
-+ (id)_folderIconForSize:(CGSize)a3 scale:(double)a4;
-+ (id)_folderIconsForImageNamePattern:(id)a3 documentsBadgeNamePattern:(id)a4 desktopBadgeNamePattern:(id)a5 sharedBadgeNamePattern:(id)a6 downloadsBadgeNamePattern:(id)a7 genericSharepointBadgeNamePattern:(id)a8;
-+ (id)folderIconForDescriptor:(id)a3;
++ (id)_folderIconForSize:(CGSize)size scale:(double)scale;
++ (id)_folderIconsForImageNamePattern:(id)pattern documentsBadgeNamePattern:(id)namePattern desktopBadgeNamePattern:(id)badgeNamePattern sharedBadgeNamePattern:(id)sharedBadgeNamePattern downloadsBadgeNamePattern:(id)downloadsBadgeNamePattern genericSharepointBadgeNamePattern:(id)sharepointBadgeNamePattern;
++ (id)folderIconForDescriptor:(id)descriptor;
 + (id)folderIcons;
-+ (id)imageWithStyle:(unint64_t)a3 assetImage:(id)a4;
++ (id)imageWithStyle:(unint64_t)style assetImage:(id)image;
 - (CGSize)badgeSize;
-- (CGSize)badgeSizeForFolderType:(unint64_t)a3;
-- (DOCThumbnailFolderIcon)initWithImageName:(id)a3 documentsBadgeName:(id)a4 dekstopBadgeName:(id)a5 sharedBadgeName:(id)a6 downloadsBadgeName:(id)a7 genericSharepointBadgeName:(id)a8 imageDimension:(double)a9 badgeDimension:(double)a10 badgeBottomInset:(double)a11 sharedBadgeDimension:(double)a12 sharedBadgeBottomInset:(double)a13;
+- (CGSize)badgeSizeForFolderType:(unint64_t)type;
+- (DOCThumbnailFolderIcon)initWithImageName:(id)name documentsBadgeName:(id)badgeName dekstopBadgeName:(id)dekstopBadgeName sharedBadgeName:(id)sharedBadgeName downloadsBadgeName:(id)downloadsBadgeName genericSharepointBadgeName:(id)sharepointBadgeName imageDimension:(double)dimension badgeDimension:(double)self0 badgeBottomInset:(double)self1 sharedBadgeDimension:(double)self2 sharedBadgeBottomInset:(double)self3;
 - (UIImage)desktopBadge;
 - (UIImage)documentsBadge;
 - (UIImage)downloadsBadge;
 - (UIImage)genericSharepointBadge;
 - (UIImage)sharedBadge;
-- (double)bottomInsetForFolderType:(unint64_t)a3;
-- (id)_badgedFolderIconForBadge:(id)a3 badgeSize:(CGSize)a4 bottomInset:(double)a5 style:(unint64_t)a6;
-- (id)badgeForFolderType:(unint64_t)a3;
-- (id)badgedFolderIconForBadge:(id)a3 style:(unint64_t)a4;
-- (id)badgedFolderIconForFolderType:(unint64_t)a3 style:(unint64_t)a4;
+- (double)bottomInsetForFolderType:(unint64_t)type;
+- (id)_badgedFolderIconForBadge:(id)badge badgeSize:(CGSize)size bottomInset:(double)inset style:(unint64_t)style;
+- (id)badgeForFolderType:(unint64_t)type;
+- (id)badgedFolderIconForBadge:(id)badge style:(unint64_t)style;
+- (id)badgedFolderIconForFolderType:(unint64_t)type style:(unint64_t)style;
 - (id)image;
-- (id)plainFolderImageWithStyle:(unint64_t)a3;
+- (id)plainFolderImageWithStyle:(unint64_t)style;
 - (void)resolveImage;
 @end
 
 @implementation DOCThumbnailFolderIcon
 
-+ (id)_folderIconsForImageNamePattern:(id)a3 documentsBadgeNamePattern:(id)a4 desktopBadgeNamePattern:(id)a5 sharedBadgeNamePattern:(id)a6 downloadsBadgeNamePattern:(id)a7 genericSharepointBadgeNamePattern:(id)a8
++ (id)_folderIconsForImageNamePattern:(id)pattern documentsBadgeNamePattern:(id)namePattern desktopBadgeNamePattern:(id)badgeNamePattern sharedBadgeNamePattern:(id)sharedBadgeNamePattern downloadsBadgeNamePattern:(id)downloadsBadgeNamePattern genericSharepointBadgeNamePattern:(id)sharepointBadgeNamePattern
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v24 = a7;
-  v23 = a8;
+  patternCopy = pattern;
+  namePatternCopy = namePattern;
+  badgeNamePatternCopy = badgeNamePattern;
+  sharedBadgeNamePatternCopy = sharedBadgeNamePattern;
+  downloadsBadgeNamePatternCopy = downloadsBadgeNamePattern;
+  sharepointBadgeNamePatternCopy = sharepointBadgeNamePattern;
   v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:14];
   for (i = 0; i != 14; ++i)
   {
     v14 = *&qword_249D07078[i];
-    v15 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v29 validFormatSpecifiers:@"%u" error:0, v14];
-    v16 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v28 validFormatSpecifiers:@"%u" error:0, v14];
-    v17 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v27 validFormatSpecifiers:@"%u" error:0, v14];
-    v18 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v26 validFormatSpecifiers:@"%u" error:0, v14];
-    v19 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v24 validFormatSpecifiers:@"%u" error:0, v14];
-    v20 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v23 validFormatSpecifiers:@"%u" error:0, v14];
+    v15 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:patternCopy validFormatSpecifiers:@"%u" error:0, v14];
+    v16 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:namePatternCopy validFormatSpecifiers:@"%u" error:0, v14];
+    v17 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:badgeNamePatternCopy validFormatSpecifiers:@"%u" error:0, v14];
+    v18 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:sharedBadgeNamePatternCopy validFormatSpecifiers:@"%u" error:0, v14];
+    v19 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:downloadsBadgeNamePatternCopy validFormatSpecifiers:@"%u" error:0, v14];
+    v20 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:sharepointBadgeNamePatternCopy validFormatSpecifiers:@"%u" error:0, v14];
     v21 = [[DOCThumbnailFolderIcon alloc] initWithImageName:v15 documentsBadgeName:v16 dekstopBadgeName:v17 sharedBadgeName:v18 downloadsBadgeName:v19 genericSharepointBadgeName:v20 imageDimension:v14 badgeDimension:*&qword_249D070E8[i] badgeBottomInset:*&qword_249D071C8[i] sharedBadgeDimension:*&qword_249D07158[i] sharedBadgeBottomInset:*&qword_249D07238[i]];
     [v25 addObject:v21];
   }
@@ -55,7 +55,7 @@
   block[1] = 3221225472;
   block[2] = __37__DOCThumbnailFolderIcon_folderIcons__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (folderIcons_onceToken != -1)
   {
     dispatch_once(&folderIcons_onceToken, block);
@@ -73,22 +73,22 @@ uint64_t __37__DOCThumbnailFolderIcon_folderIcons__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)folderIconForDescriptor:(id)a3
++ (id)folderIconForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  [v4 size];
+  descriptorCopy = descriptor;
+  [descriptorCopy size];
   v6 = v5;
   v8 = v7;
-  [v4 scale];
+  [descriptorCopy scale];
   v10 = v9;
 
-  return [a1 _folderIconForSize:v6 scale:{v8, v10}];
+  return [self _folderIconForSize:v6 scale:{v8, v10}];
 }
 
-+ (id)_folderIconForSize:(CGSize)a3 scale:(double)a4
++ (id)_folderIconForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v27 = *MEMORY[0x277D85DE8];
   if (_folderIconForSize_scale__onceToken != -1)
   {
@@ -104,7 +104,7 @@ uint64_t __37__DOCThumbnailFolderIcon_folderIcons__block_invoke(uint64_t a1)
 
   else
   {
-    [a1 folderIcons];
+    [self folderIcons];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -202,33 +202,33 @@ BOOL __51__DOCThumbnailFolderIcon__folderIconForSize_scale___block_invoke_2(uint
   return result;
 }
 
-- (DOCThumbnailFolderIcon)initWithImageName:(id)a3 documentsBadgeName:(id)a4 dekstopBadgeName:(id)a5 sharedBadgeName:(id)a6 downloadsBadgeName:(id)a7 genericSharepointBadgeName:(id)a8 imageDimension:(double)a9 badgeDimension:(double)a10 badgeBottomInset:(double)a11 sharedBadgeDimension:(double)a12 sharedBadgeBottomInset:(double)a13
+- (DOCThumbnailFolderIcon)initWithImageName:(id)name documentsBadgeName:(id)badgeName dekstopBadgeName:(id)dekstopBadgeName sharedBadgeName:(id)sharedBadgeName downloadsBadgeName:(id)downloadsBadgeName genericSharepointBadgeName:(id)sharepointBadgeName imageDimension:(double)dimension badgeDimension:(double)self0 badgeBottomInset:(double)self1 sharedBadgeDimension:(double)self2 sharedBadgeBottomInset:(double)self3
 {
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v25 = a6;
-  v26 = a7;
-  v27 = a8;
+  nameCopy = name;
+  badgeNameCopy = badgeName;
+  dekstopBadgeNameCopy = dekstopBadgeName;
+  sharedBadgeNameCopy = sharedBadgeName;
+  downloadsBadgeNameCopy = downloadsBadgeName;
+  sharepointBadgeNameCopy = sharepointBadgeName;
   v34.receiver = self;
   v34.super_class = DOCThumbnailFolderIcon;
   v28 = [(DOCThumbnailFolderIcon *)&v34 init];
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_imageName, a3);
-    v29->_imageDimension = a9;
-    objc_storeStrong(&v29->_documentsBadgeName, a4);
-    objc_storeStrong(&v29->_desktopBadgeName, a5);
-    objc_storeStrong(&v29->_sharedBadgeName, a6);
-    objc_storeStrong(&v29->_downloadsBadgeName, a7);
-    objc_storeStrong(&v29->_genericSharepointBadgeName, a8);
-    v29->_bottomInset = a11;
-    v29->_sharedBadgeBottomInset = a13;
-    v29->_badgeSize.width = a10;
-    v29->_badgeSize.height = a10;
-    v29->_sharedBadgeSize.width = a12;
-    v29->_sharedBadgeSize.height = a12;
+    objc_storeStrong(&v28->_imageName, name);
+    v29->_imageDimension = dimension;
+    objc_storeStrong(&v29->_documentsBadgeName, badgeName);
+    objc_storeStrong(&v29->_desktopBadgeName, dekstopBadgeName);
+    objc_storeStrong(&v29->_sharedBadgeName, sharedBadgeName);
+    objc_storeStrong(&v29->_downloadsBadgeName, downloadsBadgeName);
+    objc_storeStrong(&v29->_genericSharepointBadgeName, sharepointBadgeName);
+    v29->_bottomInset = inset;
+    v29->_sharedBadgeBottomInset = bottomInset;
+    v29->_badgeSize.width = badgeDimension;
+    v29->_badgeSize.height = badgeDimension;
+    v29->_sharedBadgeSize.width = sharedBadgeDimension;
+    v29->_sharedBadgeSize.height = sharedBadgeDimension;
   }
 
   return v29;
@@ -365,17 +365,17 @@ BOOL __51__DOCThumbnailFolderIcon__folderIconForSize_scale___block_invoke_2(uint
   }
 }
 
-+ (id)imageWithStyle:(unint64_t)a3 assetImage:(id)a4
++ (id)imageWithStyle:(unint64_t)style assetImage:(id)image
 {
-  v7 = a4;
-  v8 = [v7 imageAsset];
+  imageCopy = image;
+  imageAsset = [imageCopy imageAsset];
 
-  if (!v8)
+  if (!imageAsset)
   {
-    [DOCThumbnailFolderIcon imageWithStyle:a2 assetImage:a1];
+    [DOCThumbnailFolderIcon imageWithStyle:a2 assetImage:self];
   }
 
-  if (a3)
+  if (style)
   {
     v9 = 1;
   }
@@ -385,17 +385,17 @@ BOOL __51__DOCThumbnailFolderIcon__folderIconForSize_scale___block_invoke_2(uint
     v9 = 2;
   }
 
-  v10 = [v7 traitCollection];
-  if ([v10 userInterfaceStyle] == v9)
+  traitCollection = [imageCopy traitCollection];
+  if ([traitCollection userInterfaceStyle] == v9)
   {
-    v11 = v7;
+    v11 = imageCopy;
   }
 
   else
   {
-    if (v10)
+    if (traitCollection)
     {
-      v12 = v10;
+      v12 = traitCollection;
     }
 
     else
@@ -411,56 +411,56 @@ BOOL __51__DOCThumbnailFolderIcon__folderIconForSize_scale___block_invoke_2(uint
     v17[4] = v9;
     v14 = [v12 traitCollectionByModifyingTraits:v17];
 
-    v15 = [v7 imageAsset];
-    v11 = [v15 imageWithTraitCollection:v14];
+    imageAsset2 = [imageCopy imageAsset];
+    v11 = [imageAsset2 imageWithTraitCollection:v14];
   }
 
   return v11;
 }
 
-- (id)plainFolderImageWithStyle:(unint64_t)a3
+- (id)plainFolderImageWithStyle:(unint64_t)style
 {
   v5 = objc_opt_class();
-  v6 = [(DOCThumbnailFolderIcon *)self plainFolderImage];
-  v7 = [v5 imageWithStyle:a3 assetImage:v6];
+  plainFolderImage = [(DOCThumbnailFolderIcon *)self plainFolderImage];
+  v7 = [v5 imageWithStyle:style assetImage:plainFolderImage];
 
   return v7;
 }
 
-- (id)badgedFolderIconForFolderType:(unint64_t)a3 style:(unint64_t)a4
+- (id)badgedFolderIconForFolderType:(unint64_t)type style:(unint64_t)style
 {
   v7 = [(DOCThumbnailFolderIcon *)self badgeForFolderType:?];
-  [(DOCThumbnailFolderIcon *)self badgeSizeForFolderType:a3];
+  [(DOCThumbnailFolderIcon *)self badgeSizeForFolderType:type];
   v9 = v8;
   v11 = v10;
-  [(DOCThumbnailFolderIcon *)self bottomInsetForFolderType:a3];
-  v13 = [(DOCThumbnailFolderIcon *)self _badgedFolderIconForBadge:v7 badgeSize:a4 bottomInset:v9 style:v11, v12];
+  [(DOCThumbnailFolderIcon *)self bottomInsetForFolderType:type];
+  v13 = [(DOCThumbnailFolderIcon *)self _badgedFolderIconForBadge:v7 badgeSize:style bottomInset:v9 style:v11, v12];
 
   return v13;
 }
 
-- (id)badgedFolderIconForBadge:(id)a3 style:(unint64_t)a4
+- (id)badgedFolderIconForBadge:(id)badge style:(unint64_t)style
 {
-  v6 = a3;
+  badgeCopy = badge;
   [(DOCThumbnailFolderIcon *)self badgeSize];
   v8 = v7;
   v10 = v9;
   [(DOCThumbnailFolderIcon *)self bottomInset];
-  v12 = [(DOCThumbnailFolderIcon *)self _badgedFolderIconForBadge:v6 badgeSize:a4 bottomInset:v8 style:v10, v11];
+  v12 = [(DOCThumbnailFolderIcon *)self _badgedFolderIconForBadge:badgeCopy badgeSize:style bottomInset:v8 style:v10, v11];
 
   return v12;
 }
 
-- (id)_badgedFolderIconForBadge:(id)a3 badgeSize:(CGSize)a4 bottomInset:(double)a5 style:(unint64_t)a6
+- (id)_badgedFolderIconForBadge:(id)badge badgeSize:(CGSize)size bottomInset:(double)inset style:(unint64_t)style
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  badgeCopy = badge;
   v12 = objc_opt_class();
-  v13 = [(DOCThumbnailFolderIcon *)self plainFolderImage];
-  v14 = [v12 imageWithStyle:a6 assetImage:v13];
+  plainFolderImage = [(DOCThumbnailFolderIcon *)self plainFolderImage];
+  v14 = [v12 imageWithStyle:style assetImage:plainFolderImage];
 
-  v15 = [objc_opt_class() imageWithStyle:a6 assetImage:v11];
+  v15 = [objc_opt_class() imageWithStyle:style assetImage:badgeCopy];
 
   v16 = objc_alloc_init(MEMORY[0x277D75568]);
   [v14 scale];
@@ -474,7 +474,7 @@ BOOL __51__DOCThumbnailFolderIcon__folderIconForSize_scale___block_invoke_2(uint
   v23[3] = &unk_278FB39C8;
   v26 = width;
   v27 = height;
-  v28 = a5;
+  insetCopy = inset;
   v24 = v14;
   v25 = v15;
   v19 = v15;
@@ -508,39 +508,39 @@ void __80__DOCThumbnailFolderIcon__badgedFolderIconForBadge_badgeSize_bottomInse
   CGContextRestoreGState(v9);
 }
 
-- (id)badgeForFolderType:(unint64_t)a3
+- (id)badgeForFolderType:(unint64_t)type
 {
-  v4 = 0;
-  if (a3 <= 3)
+  desktopBadge = 0;
+  if (type <= 3)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v4 = [(DOCThumbnailFolderIcon *)self desktopBadge];
+      desktopBadge = [(DOCThumbnailFolderIcon *)self desktopBadge];
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
-      v4 = [(DOCThumbnailFolderIcon *)self documentsBadge];
+      desktopBadge = [(DOCThumbnailFolderIcon *)self documentsBadge];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 4uLL:
-        v4 = [(DOCThumbnailFolderIcon *)self downloadsBadge];
+        desktopBadge = [(DOCThumbnailFolderIcon *)self downloadsBadge];
         break;
       case 5uLL:
-        v4 = [(DOCThumbnailFolderIcon *)self sharedBadge];
+        desktopBadge = [(DOCThumbnailFolderIcon *)self sharedBadge];
         break;
       case 6uLL:
-        v4 = [(DOCThumbnailFolderIcon *)self genericSharepointBadge];
+        desktopBadge = [(DOCThumbnailFolderIcon *)self genericSharepointBadge];
         break;
     }
   }
 
-  return v4;
+  return desktopBadge;
 }
 
 - (CGSize)badgeSize
@@ -551,19 +551,19 @@ void __80__DOCThumbnailFolderIcon__badgedFolderIconForBadge_badgeSize_bottomInse
   return result;
 }
 
-- (CGSize)badgeSizeForFolderType:(unint64_t)a3
+- (CGSize)badgeSizeForFolderType:(unint64_t)type
 {
   p_width = MEMORY[0x277CBF3A8];
   v4 = (MEMORY[0x277CBF3A8] + 8);
   p_badgeSize = &self->_badgeSize;
   p_height = &self->_badgeSize.height;
-  if (a3 == 5)
+  if (type == 5)
   {
     p_badgeSize = &self->_sharedBadgeSize;
     p_height = &self->_sharedBadgeSize.height;
   }
 
-  if (a3)
+  if (type)
   {
     p_width = &p_badgeSize->width;
     v4 = p_height;
@@ -576,15 +576,15 @@ void __80__DOCThumbnailFolderIcon__badgedFolderIconForBadge_badgeSize_bottomInse
   return result;
 }
 
-- (double)bottomInsetForFolderType:(unint64_t)a3
+- (double)bottomInsetForFolderType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0.0;
   }
 
   v3 = 16;
-  if (a3 != 5)
+  if (type != 5)
   {
     v3 = 8;
   }

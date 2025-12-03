@@ -1,39 +1,39 @@
 @interface CMShapeUtils
-+ (BOOL)isShapeALine:(id)a3;
-+ (CGRect)transformRect:(CGRect)a3 scale:(float)a4 offsetX:(float)a5 offsetY:(float)a6;
-+ (double)getFormulaResultFromCustomGeometry:(id)a3 atIndex:(unint64_t)a4;
-+ (double)mapAdjustCoord:(OADAdjustCoord)a3 geometry:(id)a4;
-+ (double)mapFormulaOfType:(int)a3 argValues:(double *)a4 isEscher:(BOOL)a5;
-+ (double)nativeAngleToRad:(int)a3 isEscher:(BOOL)a4;
-+ (float)fontSizeForText:(id)a3 insideRectangle:(CGSize)a4;
-+ (float)intersectionAngleNextToAngle:(float)a3 isAfter:(BOOL)a4 nodeSize:(CGSize)a5;
-+ (float)scaleFactorFromLength:(float)a3 toLength:(float)a4;
-+ (id)absoluteOrientedBoundsWithRelativeOrientedBounds:(id)a3 parentOrientedBounds:(id)a4 parentLogicalBounds:(CGRect)a5;
-+ (id)inscribedBoundsWithBounds:(id)a3 logicalBounds:(CGRect)a4;
-+ (id)internalBoundsWithBounds:(id)a3 scaleBounds:(CGRect)a4;
-+ (id)relatvieBoundsWithAbsoluteInnerBounds:(id)a3 parentBounds:(id)a4;
-+ (id)transformFromBounds:(CGRect)a3 toOrientedBounds:(id)a4;
-+ (id)transformedBoundsWithBounds:(id)a3 transform:(id)a4;
-+ (int)mapFormulaKeywordValue:(int)a3 geometry:(id)a4;
-+ (int)radToNativeAngle:(double)a3 isEscher:(BOOL)a4;
-+ (void)setCoordSpaceForCustomeGeometry:(id)a3 fromSize:(CGSize)a4;
++ (BOOL)isShapeALine:(id)line;
++ (CGRect)transformRect:(CGRect)rect scale:(float)scale offsetX:(float)x offsetY:(float)y;
++ (double)getFormulaResultFromCustomGeometry:(id)geometry atIndex:(unint64_t)index;
++ (double)mapAdjustCoord:(OADAdjustCoord)coord geometry:(id)geometry;
++ (double)mapFormulaOfType:(int)type argValues:(double *)values isEscher:(BOOL)escher;
++ (double)nativeAngleToRad:(int)rad isEscher:(BOOL)escher;
++ (float)fontSizeForText:(id)text insideRectangle:(CGSize)rectangle;
++ (float)intersectionAngleNextToAngle:(float)angle isAfter:(BOOL)after nodeSize:(CGSize)size;
++ (float)scaleFactorFromLength:(float)length toLength:(float)toLength;
++ (id)absoluteOrientedBoundsWithRelativeOrientedBounds:(id)bounds parentOrientedBounds:(id)orientedBounds parentLogicalBounds:(CGRect)logicalBounds;
++ (id)inscribedBoundsWithBounds:(id)bounds logicalBounds:(CGRect)logicalBounds;
++ (id)internalBoundsWithBounds:(id)bounds scaleBounds:(CGRect)scaleBounds;
++ (id)relatvieBoundsWithAbsoluteInnerBounds:(id)bounds parentBounds:(id)parentBounds;
++ (id)transformFromBounds:(CGRect)bounds toOrientedBounds:(id)orientedBounds;
++ (id)transformedBoundsWithBounds:(id)bounds transform:(id)transform;
++ (int)mapFormulaKeywordValue:(int)value geometry:(id)geometry;
++ (int)radToNativeAngle:(double)angle isEscher:(BOOL)escher;
++ (void)setCoordSpaceForCustomeGeometry:(id)geometry fromSize:(CGSize)size;
 @end
 
 @implementation CMShapeUtils
 
-+ (BOOL)isShapeALine:(id)a3
++ (BOOL)isShapeALine:(id)line
 {
-  v3 = a3;
-  v4 = [v3 geometry];
+  lineCopy = line;
+  geometry = [lineCopy geometry];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 geometry];
-    if ([v6 pathCount] == 1)
+    geometry2 = [lineCopy geometry];
+    if ([geometry2 pathCount] == 1)
     {
-      v7 = [v6 pathAtIndex:0];
+      v7 = [geometry2 pathAtIndex:0];
       if (([v7 stroked] & 1) != 0 && objc_msgSend(v7, "elementCount") == 2)
       {
         v8 = [v7 elementAtIndex:0];
@@ -70,18 +70,18 @@
   return v10;
 }
 
-+ (void)setCoordSpaceForCustomeGeometry:(id)a3 fromSize:(CGSize)a4
++ (void)setCoordSpaceForCustomeGeometry:(id)geometry fromSize:(CGSize)size
 {
   v4 = 0;
-  width = a4.width;
-  height = a4.height;
-  [a3 setGeometryCoordSpace:&v4];
+  width = size.width;
+  height = size.height;
+  [geometry setGeometryCoordSpace:&v4];
 }
 
-+ (float)scaleFactorFromLength:(float)a3 toLength:(float)a4
++ (float)scaleFactorFromLength:(float)length toLength:(float)toLength
 {
-  v4 = a4 / a3;
-  v5 = a3 == 0.0;
+  v4 = toLength / length;
+  v5 = length == 0.0;
   result = 0.0;
   if (!v5)
   {
@@ -91,19 +91,19 @@
   return result;
 }
 
-+ (CGRect)transformRect:(CGRect)a3 scale:(float)a4 offsetX:(float)a5 offsetY:(float)a6
++ (CGRect)transformRect:(CGRect)rect scale:(float)scale offsetX:(float)x offsetY:(float)y
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11 = *(MEMORY[0x277CBF2C0] + 16);
   *&v16.a = *MEMORY[0x277CBF2C0];
   *&v16.c = v11;
   *&v16.tx = *(MEMORY[0x277CBF2C0] + 32);
-  CGAffineTransformTranslate(&v17, &v16, a5, a6);
+  CGAffineTransformTranslate(&v17, &v16, x, y);
   v16 = v17;
-  CGAffineTransformScale(&v17, &v16, a4, a4);
+  CGAffineTransformScale(&v17, &v16, scale, scale);
   v12 = height * v17.c + v17.a * width;
   v13 = height * v17.d + v17.b * width;
   v14 = v17.tx + y * v17.c + v17.a * x;
@@ -115,19 +115,19 @@
   return result;
 }
 
-+ (id)transformFromBounds:(CGRect)a3 toOrientedBounds:(id)a4
++ (id)transformFromBounds:(CGRect)bounds toOrientedBounds:(id)orientedBounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  [v9 bounds];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  orientedBoundsCopy = orientedBounds;
+  [orientedBoundsCopy bounds];
   rect = v10;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v9 rotation];
+  [orientedBoundsCopy rotation];
   if ([OADOrientedBounds directionCloserToVerticalThanToHorizontal:?])
   {
     v17 = NSTransposedRectWithSameCenter(v12, v14, v16, rect);
@@ -154,7 +154,7 @@
   v27 = v25;
   *&v28 = v26;
   *&v26 = v27;
-  [a1 scaleFactorFromLength:v26 toLength:v28];
+  [self scaleFactorFromLength:v26 toLength:v28];
   HIDWORD(v52) = v29;
   v57.origin.x = v21;
   v57.origin.y = v22;
@@ -169,29 +169,29 @@
   v32 = v30;
   *&v33 = v31;
   *&v31 = v32;
-  [a1 scaleFactorFromLength:v31 toLength:v33];
+  [self scaleFactorFromLength:v31 toLength:v33];
   LODWORD(v52) = v34;
   v35 = TSUCenterOfRect(v21, v22, v23, v24);
   v37 = v36;
   v38 = TSUCenterOfRect(v12, v14, v16, rect);
   v40 = v39;
-  v41 = [MEMORY[0x277CCA878] transform];
+  transform = [MEMORY[0x277CCA878] transform];
   v42 = objc_alloc_init(MEMORY[0x277CCA878]);
   [v42 translateXBy:-v35 yBy:-v37];
-  [v41 appendTransform:v42];
+  [transform appendTransform:v42];
   v43 = objc_alloc_init(MEMORY[0x277CCA878]);
 
   [v43 scaleXBy:*(&v52 + 1) yBy:*&v52];
-  [v41 appendTransform:v43];
+  [transform appendTransform:v43];
   v44 = objc_alloc_init(MEMORY[0x277CCA878]);
 
-  [v9 rotation];
+  [orientedBoundsCopy rotation];
   [v44 rotateByDegrees:v45];
-  [v41 appendTransform:v44];
+  [transform appendTransform:v44];
   v46 = objc_alloc_init(MEMORY[0x277CCA878]);
 
-  LODWORD(v44) = [v9 flipX];
-  v47 = [v9 flipY];
+  LODWORD(v44) = [orientedBoundsCopy flipX];
+  flipY = [orientedBoundsCopy flipY];
   v48 = 1.0;
   if (v44)
   {
@@ -203,54 +203,54 @@
     v49 = 1.0;
   }
 
-  if (v47)
+  if (flipY)
   {
     v48 = -1.0;
   }
 
   [v46 scaleXBy:v49 yBy:{v48, v52}];
-  [v41 appendTransform:v46];
+  [transform appendTransform:v46];
   v50 = objc_alloc_init(MEMORY[0x277CCA878]);
 
   [v50 translateXBy:v38 yBy:v40];
-  [v41 appendTransform:v50];
+  [transform appendTransform:v50];
 
-  return v41;
+  return transform;
 }
 
-+ (id)absoluteOrientedBoundsWithRelativeOrientedBounds:(id)a3 parentOrientedBounds:(id)a4 parentLogicalBounds:(CGRect)a5
++ (id)absoluteOrientedBoundsWithRelativeOrientedBounds:(id)bounds parentOrientedBounds:(id)orientedBounds parentLogicalBounds:(CGRect)logicalBounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3;
-  v11 = a4;
-  v12 = [CMShapeUtils transformFromBounds:v11 toOrientedBounds:x, y, width, height];
-  [v10 bounds];
+  height = logicalBounds.size.height;
+  width = logicalBounds.size.width;
+  y = logicalBounds.origin.y;
+  x = logicalBounds.origin.x;
+  boundsCopy = bounds;
+  orientedBoundsCopy = orientedBounds;
+  height = [CMShapeUtils transformFromBounds:orientedBoundsCopy toOrientedBounds:x, y, width, height];
+  [boundsCopy bounds];
   MidX = CGRectGetMidX(v44);
-  [v10 bounds];
-  [v12 transformPoint:{MidX, CGRectGetMidY(v45)}];
+  [boundsCopy bounds];
+  [height transformPoint:{MidX, CGRectGetMidY(v45)}];
   v15 = v14;
   v17 = v16;
-  [v10 bounds];
-  [v12 transformSize:{v18, v19}];
+  [boundsCopy bounds];
+  [height transformSize:{v18, v19}];
   v21 = TSURectWithCenterAndSize(v15, v17, v20);
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v28 = [v11 flipX];
-  v29 = [v10 flipX];
-  v30 = [v11 flipY];
-  v31 = [v10 flipY];
-  v32 = [v10 flipX];
-  v33 = [v10 flipY];
-  [v10 rotation];
+  flipX = [orientedBoundsCopy flipX];
+  flipX2 = [boundsCopy flipX];
+  flipY = [orientedBoundsCopy flipY];
+  flipY2 = [boundsCopy flipY];
+  flipX3 = [boundsCopy flipX];
+  flipY3 = [boundsCopy flipY];
+  [boundsCopy rotation];
   v35 = v34;
-  [v11 rotation];
+  [orientedBoundsCopy rotation];
   v37 = v36;
   v38 = [OADOrientedBounds alloc];
-  if (v33)
+  if (flipY3)
   {
     v40 = -1;
   }
@@ -260,30 +260,30 @@
     v40 = 1;
   }
 
-  if (v32)
+  if (flipX3)
   {
     v40 = -v40;
   }
 
   *&v39 = v35 + (v40 * v37);
-  v41 = [(OADOrientedBounds *)v38 initWithBounds:v28 ^ v29 rotation:v30 ^ v31 flipX:v21 flipY:v23, v25, v27, v39];
+  v41 = [(OADOrientedBounds *)v38 initWithBounds:flipX ^ flipX2 rotation:flipY ^ flipY2 flipX:v21 flipY:v23, v25, v27, v39];
 
   return v41;
 }
 
-+ (id)inscribedBoundsWithBounds:(id)a3 logicalBounds:(CGRect)a4
++ (id)inscribedBoundsWithBounds:(id)bounds logicalBounds:(CGRect)logicalBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 bounds];
+  height = logicalBounds.size.height;
+  width = logicalBounds.size.width;
+  y = logicalBounds.origin.y;
+  x = logicalBounds.origin.x;
+  boundsCopy = bounds;
+  [boundsCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v9 rotation];
+  [boundsCopy rotation];
   if ([OADOrientedBounds directionCloserToVerticalThanToHorizontal:?])
   {
     v11 = NSTransposedRectWithSameCenter(v11, v13, v15, v17);
@@ -306,7 +306,7 @@
   v23 = v21;
   *&v24 = v22;
   *&v22 = v23;
-  [a1 scaleFactorFromLength:v22 toLength:v24];
+  [self scaleFactorFromLength:v22 toLength:v24];
   v26 = v25;
   v52.origin.x = x;
   v52.origin.y = y;
@@ -321,7 +321,7 @@
   v29 = v27;
   *&v30 = v28;
   *&v28 = v29;
-  [a1 scaleFactorFromLength:v28 toLength:v30];
+  [self scaleFactorFromLength:v28 toLength:v30];
   if (v26 >= v31)
   {
     v26 = v31;
@@ -329,30 +329,30 @@
 
   v32 = TSUCenterOfRect(v11, v13, v15, v17);
   v34 = v33;
-  v35 = [MEMORY[0x277CCA878] transform];
-  [v35 scaleXBy:v26 yBy:v26];
-  [v35 transformSize:{v48, height}];
+  transform = [MEMORY[0x277CCA878] transform];
+  [transform scaleXBy:v26 yBy:v26];
+  [transform transformSize:{v48, height}];
   v37 = v36;
   v39 = v38;
   v40 = [OADOrientedBounds alloc];
-  [v9 rotation];
+  [boundsCopy rotation];
   v42 = v41;
-  v43 = [v9 flipX];
-  v44 = [v9 flipY];
+  flipX = [boundsCopy flipX];
+  flipY = [boundsCopy flipY];
   LODWORD(v45) = v42;
-  v46 = [(OADOrientedBounds *)v40 initWithBounds:v43 rotation:v44 flipX:v32 - v37 * 0.5 flipY:v34 - v39 * 0.5, v37, v39, v45];
+  v46 = [(OADOrientedBounds *)v40 initWithBounds:flipX rotation:flipY flipX:v32 - v37 * 0.5 flipY:v34 - v39 * 0.5, v37, v39, v45];
 
   return v46;
 }
 
-+ (id)internalBoundsWithBounds:(id)a3 scaleBounds:(CGRect)a4
++ (id)internalBoundsWithBounds:(id)bounds scaleBounds:(CGRect)scaleBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  [v8 bounds];
+  height = scaleBounds.size.height;
+  width = scaleBounds.size.width;
+  y = scaleBounds.origin.y;
+  x = scaleBounds.origin.x;
+  boundsCopy = bounds;
+  [boundsCopy bounds];
   v9 = v31.origin.x;
   v10 = v31.origin.y;
   v11 = v31.size.width;
@@ -384,30 +384,30 @@
   v36.size.height = v12;
   v14 = CGRectGetHeight(v36);
   v15 = [OADOrientedBounds alloc];
-  [v8 rotation];
+  [boundsCopy rotation];
   LODWORD(v11) = v16;
-  v17 = [v8 flipX];
-  v18 = [v8 flipY];
+  flipX = [boundsCopy flipX];
+  flipY = [boundsCopy flipY];
   v19 = x * v29;
   v20 = y * v28;
   v21 = v27 * v26;
   v22 = v13 * v14;
   LODWORD(v23) = LODWORD(v11);
-  v24 = [(OADOrientedBounds *)v15 initWithBounds:v17 rotation:v18 flipX:v19 flipY:v20, v21, v22, v23];
+  v24 = [(OADOrientedBounds *)v15 initWithBounds:flipX rotation:flipY flipX:v19 flipY:v20, v21, v22, v23];
 
   return v24;
 }
 
-+ (id)relatvieBoundsWithAbsoluteInnerBounds:(id)a3 parentBounds:(id)a4
++ (id)relatvieBoundsWithAbsoluteInnerBounds:(id)bounds parentBounds:(id)parentBounds
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 bounds];
+  boundsCopy = bounds;
+  parentBoundsCopy = parentBounds;
+  [boundsCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 bounds];
+  [parentBoundsCopy bounds];
   v16 = v15;
   v18 = v17;
   v31.origin.x = v8;
@@ -421,160 +421,160 @@
   v32.size.height = v14;
   Height = CGRectGetHeight(v32);
   v21 = [OADOrientedBounds alloc];
-  [v5 rotation];
+  [boundsCopy rotation];
   LODWORD(v14) = v22;
-  v23 = [v5 flipX];
-  v24 = [v5 flipY];
+  flipX = [boundsCopy flipX];
+  flipY = [boundsCopy flipY];
   v25 = v8 - v16;
   v26 = v10 - v18;
   LODWORD(v27) = LODWORD(v14);
-  v28 = [(OADOrientedBounds *)v21 initWithBounds:v23 rotation:v24 flipX:v25 flipY:v26, Width, Height, v27];
+  v28 = [(OADOrientedBounds *)v21 initWithBounds:flipX rotation:flipY flipX:v25 flipY:v26, Width, Height, v27];
 
   return v28;
 }
 
-+ (id)transformedBoundsWithBounds:(id)a3 transform:(id)a4
++ (id)transformedBoundsWithBounds:(id)bounds transform:(id)transform
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 bounds];
+  boundsCopy = bounds;
+  transformCopy = transform;
+  [boundsCopy bounds];
   v11 = TSUCenterOfRect(v7, v8, v9, v10);
   v13 = v12;
-  [v6 transformPoint:{*MEMORY[0x277CCA860], *(MEMORY[0x277CCA860] + 8)}];
+  [transformCopy transformPoint:{*MEMORY[0x277CCA860], *(MEMORY[0x277CCA860] + 8)}];
   v15 = v14;
   v17 = v16;
-  [v5 bounds];
-  [v6 transformSize:{v18, v19}];
+  [boundsCopy bounds];
+  [transformCopy transformSize:{v18, v19}];
   v21 = TSURectWithCenterAndSize(v11 + v15, v13 + v17, v20);
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v28 = [OADOrientedBounds alloc];
-  [v5 rotation];
+  [boundsCopy rotation];
   v30 = v29;
-  v31 = [v5 flipX];
-  v32 = [v5 flipY];
+  flipX = [boundsCopy flipX];
+  flipY = [boundsCopy flipY];
   LODWORD(v33) = v30;
-  v34 = [(OADOrientedBounds *)v28 initWithBounds:v31 rotation:v32 flipX:v21 flipY:v23, v25, v27, v33];
+  v34 = [(OADOrientedBounds *)v28 initWithBounds:flipX rotation:flipY flipX:v21 flipY:v23, v25, v27, v33];
 
   return v34;
 }
 
-+ (double)mapAdjustCoord:(OADAdjustCoord)a3 geometry:(id)a4
++ (double)mapAdjustCoord:(OADAdjustCoord)coord geometry:(id)geometry
 {
-  v5 = a4;
-  if (a3.isFormulaResult)
+  geometryCopy = geometry;
+  if (coord.isFormulaResult)
   {
-    [CMShapeUtils getFormulaResultFromCustomGeometry:v5 atIndex:*&a3 >> 32];
+    [CMShapeUtils getFormulaResultFromCustomGeometry:geometryCopy atIndex:*&coord >> 32];
     value = v6;
   }
 
   else
   {
-    value = a3.value;
+    value = coord.value;
   }
 
   return value;
 }
 
-+ (double)mapFormulaOfType:(int)a3 argValues:(double *)a4 isEscher:(BOOL)a5
++ (double)mapFormulaOfType:(int)type argValues:(double *)values isEscher:(BOOL)escher
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
-      v5 = *a4 + a4[1];
-      v6 = a4[2];
+      v5 = *values + values[1];
+      v6 = values[2];
       return v5 - v6;
     case 1:
-      v16 = a4[2];
+      v16 = values[2];
       if (v16 == 0.0)
       {
-        a4[2] = 1.0;
+        values[2] = 1.0;
         v16 = 1.0;
       }
 
-      return *a4 * a4[1] / v16;
+      return *values * values[1] / v16;
     case 2:
-      v13 = *a4 + a4[1];
+      v13 = *values + values[1];
       v14 = 0.5;
       return v13 * v14;
     case 3:
-      return fabs(*a4);
+      return fabs(*values);
     case 4:
-      result = *a4;
-      if (*a4 >= a4[1])
+      result = *values;
+      if (*values >= values[1])
       {
-        return a4[1];
+        return values[1];
       }
 
       return result;
     case 5:
-      result = *a4;
-      if (*a4 <= a4[1])
+      result = *values;
+      if (*values <= values[1])
       {
-        return a4[1];
+        return values[1];
       }
 
       return result;
     case 6:
       v18 = 2;
-      if (*a4 > 0.0)
+      if (*values > 0.0)
       {
         v18 = 1;
       }
 
-      return a4[v18];
+      return values[v18];
     case 7:
-      v15 = a4[1] * a4[1] + *a4 * *a4 + a4[2] * a4[2];
+      v15 = values[1] * values[1] + *values * *values + values[2] * values[2];
       return sqrt(v15);
     case 8:
-      return [a1 radToNativeAngle:a5 isEscher:{atan2(a4[1], *a4)}];
+      return [self radToNativeAngle:escher isEscher:{atan2(values[1], *values)}];
     case 9:
-      v7 = *a4;
-      [a1 nativeAngleToRad:a4[1] isEscher:a5];
+      v7 = *values;
+      [self nativeAngleToRad:values[1] isEscher:escher];
       goto LABEL_12;
     case 10:
-      v7 = *a4;
-      [a1 nativeAngleToRad:a4[1] isEscher:a5];
+      v7 = *values;
+      [self nativeAngleToRad:values[1] isEscher:escher];
       goto LABEL_36;
     case 11:
-      v7 = *a4;
-      v11 = atan2(a4[2], a4[1]);
+      v7 = *values;
+      v11 = atan2(values[2], values[1]);
 LABEL_36:
       v9 = cos(v11);
       goto LABEL_37;
     case 12:
-      v7 = *a4;
-      v12 = atan2(a4[2], a4[1]);
+      v7 = *values;
+      v12 = atan2(values[2], values[1]);
 LABEL_12:
       v9 = sin(v12);
       goto LABEL_37;
     case 13:
-      v15 = *a4;
+      v15 = *values;
       return sqrt(v15);
     case 14:
-      v5 = *a4 + (a4[1] << 16);
-      v6 = (a4[2] << 16);
+      v5 = *values + (values[1] << 16);
+      v6 = (values[2] << 16);
       return v5 - v6;
     case 15:
-      v13 = a4[2];
-      v14 = sqrt(1.0 - *a4 / a4[1] * (*a4 / a4[1]));
+      v13 = values[2];
+      v14 = sqrt(1.0 - *values / values[1] * (*values / values[1]));
       return v13 * v14;
     case 16:
-      v7 = *a4;
-      [a1 nativeAngleToRad:a4[1] isEscher:a5];
+      v7 = *values;
+      [self nativeAngleToRad:values[1] isEscher:escher];
       v9 = tan(v8);
 LABEL_37:
       result = v7 * v9;
       break;
     case 17:
-      v17 = a4[1];
-      if (*a4 > v17)
+      v17 = values[1];
+      if (*values > v17)
       {
-        v17 = *a4;
+        v17 = *values;
       }
 
-      result = a4[2];
+      result = values[2];
       if (v17 < result)
       {
         result = v17;
@@ -582,10 +582,10 @@ LABEL_37:
 
       break;
     case 18:
-      result = (*a4 + a4[1]) / a4[2];
+      result = (*values + values[1]) / values[2];
       break;
     case 19:
-      result = *a4;
+      result = *values;
       break;
     default:
       result = 0.0;
@@ -595,15 +595,15 @@ LABEL_37:
   return result;
 }
 
-+ (double)getFormulaResultFromCustomGeometry:(id)a3 atIndex:(unint64_t)a4
++ (double)getFormulaResultFromCustomGeometry:(id)geometry atIndex:(unint64_t)index
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 isEscher];
+  geometryCopy = geometry;
+  isEscher = [geometryCopy isEscher];
   v9 = 0.0;
-  if ([v7 formulaCount] > a4)
+  if ([geometryCopy formulaCount] > index)
   {
-    v10 = [v7 formulaAtIndex:a4];
+    v10 = [geometryCopy formulaAtIndex:index];
     v11 = 0;
     memset(v20, 0, 24);
     while (1)
@@ -631,30 +631,30 @@ LABEL_37:
         switch(v12)
         {
           case 2:
-            v15 = [v7 adjustValueAtIndex:v14];
+            v15 = [geometryCopy adjustValueAtIndex:v14];
 LABEL_12:
             v16 = v15;
 LABEL_16:
             *&v20[v11] = v16;
             break;
           case 3:
-            if (v14 >= a4)
+            if (v14 >= index)
             {
-              v19 = [MEMORY[0x277CCA890] currentHandler];
-              [v19 handleFailureInMethod:a2 object:a1 file:@"CMShapeUtils.mm" lineNumber:437 description:@"Forward reference to formula"];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"CMShapeUtils.mm" lineNumber:437 description:@"Forward reference to formula"];
             }
 
-            [CMShapeUtils getFormulaResultFromCustomGeometry:v7 atIndex:v13 >> 32];
+            [CMShapeUtils getFormulaResultFromCustomGeometry:geometryCopy atIndex:v13 >> 32];
             goto LABEL_16;
           case 4:
-            v15 = [a1 mapFormulaKeywordValue:v14 geometry:v7];
+            v15 = [self mapFormulaKeywordValue:v14 geometry:geometryCopy];
             goto LABEL_12;
         }
       }
 
       if (++v11 == 3)
       {
-        +[CMShapeUtils mapFormulaOfType:argValues:isEscher:](CMShapeUtils, "mapFormulaOfType:argValues:isEscher:", [v10 type], v20, v8);
+        +[CMShapeUtils mapFormulaOfType:argValues:isEscher:](CMShapeUtils, "mapFormulaOfType:argValues:isEscher:", [v10 type], v20, isEscher);
         v9 = v17;
 
         break;
@@ -665,14 +665,14 @@ LABEL_16:
   return v9;
 }
 
-+ (float)intersectionAngleNextToAngle:(float)a3 isAfter:(BOOL)a4 nodeSize:(CGSize)a5
++ (float)intersectionAngleNextToAngle:(float)angle isAfter:(BOOL)after nodeSize:(CGSize)size
 {
-  width = a5.width;
-  height = a5.height;
-  v45 = a4;
+  width = size.width;
+  height = size.height;
+  afterCopy = after;
   v54[1] = *MEMORY[0x277D85DE8];
   v54[0] = 0;
-  [a1 normalizedAngle:?];
+  [self normalizedAngle:?];
   v46 = v6;
   v8 = __sincos_stret(v6 * 3.14159265 / 180.0);
   v7.f64[0] = v8.__cosval;
@@ -733,13 +733,13 @@ LABEL_16:
 
             if (v10 >= 2)
             {
-              v48 = [MEMORY[0x277CCA890] currentHandler];
-              [v48 handleFailureInMethod:a2 object:a1 file:@"CMShapeUtils.mm" lineNumber:488 description:@"Unexpected intersection count"];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"CMShapeUtils.mm" lineNumber:488 description:@"Unexpected intersection count"];
             }
 
             v34 = (atan2f(v33, v32) * 180.0) / 3.14159265;
             *&v34 = v34;
-            [a1 normalizedAngle:v34];
+            [self normalizedAngle:v34];
             *(v54 + v10++) = v35;
           }
 
@@ -763,14 +763,14 @@ LABEL_16:
   v36 = v46;
   if (v10 != 2)
   {
-    v44 = [MEMORY[0x277CCA890] currentHandler];
-    [v44 handleFailureInMethod:a2 object:a1 file:@"CMShapeUtils.mm" lineNumber:495 description:@"Unexpected intersection count"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CMShapeUtils.mm" lineNumber:495 description:@"Unexpected intersection count"];
 
     v36 = v46;
   }
 
   v37 = 0.0;
-  if (v45)
+  if (afterCopy)
   {
     *&v37 = 360.0;
   }
@@ -787,7 +787,7 @@ LABEL_16:
     }
 
     v42 = v41 >= *&v37;
-    if (!v45)
+    if (!afterCopy)
     {
       v42 = v41 <= *&v37;
     }
@@ -804,15 +804,15 @@ LABEL_16:
   while ((v40 & 1) != 0);
   *&v37 = v36 + *&v37;
 
-  [a1 normalizedAngle:v37];
+  [self normalizedAngle:v37];
   return result;
 }
 
-+ (float)fontSizeForText:(id)a3 insideRectangle:(CGSize)a4
++ (float)fontSizeForText:(id)text insideRectangle:(CGSize)rectangle
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [a3 length];
+  height = rectangle.height;
+  width = rectangle.width;
+  v6 = [text length];
   if (!v6)
   {
     return 65.0;
@@ -827,41 +827,41 @@ LABEL_16:
   return result;
 }
 
-+ (double)nativeAngleToRad:(int)a3 isEscher:(BOOL)a4
++ (double)nativeAngleToRad:(int)rad isEscher:(BOOL)escher
 {
-  if (a4)
+  if (escher)
   {
-    [a1 fixedPointDegToRad:*&a3];
+    [self fixedPointDegToRad:*&rad];
   }
 
   else
   {
-    [a1 milliMinutesToRad:*&a3];
+    [self milliMinutesToRad:*&rad];
   }
 
   return result;
 }
 
-+ (int)radToNativeAngle:(double)a3 isEscher:(BOOL)a4
++ (int)radToNativeAngle:(double)angle isEscher:(BOOL)escher
 {
-  if (a4)
+  if (escher)
   {
-    return [a1 radToFixedPointDeg:a3];
+    return [self radToFixedPointDeg:angle];
   }
 
   else
   {
-    return [a1 radToMilliMinutes:a3];
+    return [self radToMilliMinutes:angle];
   }
 }
 
-+ (int)mapFormulaKeywordValue:(int)a3 geometry:(id)a4
++ (int)mapFormulaKeywordValue:(int)value geometry:(id)geometry
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  geometryCopy = geometry;
+  v8 = geometryCopy;
+  if (geometryCopy)
   {
-    [v7 geometryCoordSpace];
+    [geometryCopy geometryCoordSpace];
     v9 = COERCE_DOUBLE(vcvt_f32_s32(vsub_s32(v14, v13)));
   }
 
@@ -872,23 +872,23 @@ LABEL_16:
     v9 = 0.0;
   }
 
-  if (a3 > 1279)
+  if (value > 1279)
   {
-    if (a3 <= 1281)
+    if (value <= 1281)
     {
       goto LABEL_17;
     }
 
-    if (a3 == 1282)
+    if (value == 1282)
     {
       goto LABEL_19;
     }
 
-    if (a3 != 1283)
+    if (value != 1283)
     {
 LABEL_16:
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"CMShapeUtils.mm" lineNumber:621 description:@"Unknown formula keyword"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CMShapeUtils.mm" lineNumber:621 description:@"Unknown formula keyword"];
 
 LABEL_17:
       LODWORD(v9) = 0;
@@ -900,14 +900,14 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if (a3 > 321)
+  if (value > 321)
   {
-    if (a3 == 322)
+    if (value == 322)
     {
       goto LABEL_19;
     }
 
-    if (a3 != 323)
+    if (value != 323)
     {
       goto LABEL_16;
     }
@@ -915,13 +915,13 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a3 == 320)
+  if (value == 320)
   {
     *&v9 = *&v9 * 0.5;
     goto LABEL_19;
   }
 
-  if (a3 != 321)
+  if (value != 321)
   {
     goto LABEL_16;
   }

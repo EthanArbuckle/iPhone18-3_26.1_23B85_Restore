@@ -1,80 +1,80 @@
 @interface SiriSharedUISuggestionsViewProvider
 - (_TtC12SiriSharedUI35SiriSharedUISuggestionsViewProvider)init;
-- (id)makeSuggestionsViewWithSuggestionsResizeHandler:(id)a3;
-- (void)filterSuggestionsWithText:(id)a3;
-- (void)makeConversationContinuerSuggestionsViewWithRequestId:(id)a3 currentMode:(id)a4 deviceLocked:(BOOL)a5 keyboardShowing:(BOOL)a6 suggestionTapHandler:(id)a7;
-- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)a3 keyboardShowing:(BOOL)a4 isVoiceTrigger:(BOOL)a5 invocationSource:(int64_t)a6 suggestionTapHandler:(id)a7;
-- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)a3 keyboardShowing:(BOOL)a4 isVoiceTrigger:(BOOL)a5 suggestionTapHandler:(id)a6;
-- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)a3 keyboardShowing:(BOOL)a4 suggestionTapHandler:(id)a5;
-- (void)setShowSuggestions:(BOOL)a3;
+- (id)makeSuggestionsViewWithSuggestionsResizeHandler:(id)handler;
+- (void)filterSuggestionsWithText:(id)text;
+- (void)makeConversationContinuerSuggestionsViewWithRequestId:(id)id currentMode:(id)mode deviceLocked:(BOOL)locked keyboardShowing:(BOOL)showing suggestionTapHandler:(id)handler;
+- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)locked keyboardShowing:(BOOL)showing isVoiceTrigger:(BOOL)trigger invocationSource:(int64_t)source suggestionTapHandler:(id)handler;
+- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)locked keyboardShowing:(BOOL)showing isVoiceTrigger:(BOOL)trigger suggestionTapHandler:(id)handler;
+- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)locked keyboardShowing:(BOOL)showing suggestionTapHandler:(id)handler;
+- (void)setShowSuggestions:(BOOL)suggestions;
 @end
 
 @implementation SiriSharedUISuggestionsViewProvider
 
-- (id)makeSuggestionsViewWithSuggestionsResizeHandler:(id)a3
+- (id)makeSuggestionsViewWithSuggestionsResizeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   v7 = sub_21E4603DC(sub_21E462CF0, v5);
 
   return v7;
 }
 
-- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)a3 keyboardShowing:(BOOL)a4 suggestionTapHandler:(id)a5
+- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)locked keyboardShowing:(BOOL)showing suggestionTapHandler:(id)handler
 {
-  v6 = a3;
-  v8 = _Block_copy(a5);
+  lockedCopy = locked;
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = self;
-  sub_21E4606B0(v6, a4, sub_21E462F40, v9);
+  selfCopy = self;
+  sub_21E4606B0(lockedCopy, showing, sub_21E462F40, v9);
 }
 
-- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)a3 keyboardShowing:(BOOL)a4 isVoiceTrigger:(BOOL)a5 suggestionTapHandler:(id)a6
+- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)locked keyboardShowing:(BOOL)showing isVoiceTrigger:(BOOL)trigger suggestionTapHandler:(id)handler
 {
-  v6 = a5;
-  v8 = a3;
-  v10 = _Block_copy(a6);
+  triggerCopy = trigger;
+  lockedCopy = locked;
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
-  v12 = self;
-  sub_21E460D1C(v8, a4, v6, sub_21E462F40, v11);
+  selfCopy = self;
+  sub_21E460D1C(lockedCopy, showing, triggerCopy, sub_21E462F40, v11);
 }
 
-- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)a3 keyboardShowing:(BOOL)a4 isVoiceTrigger:(BOOL)a5 invocationSource:(int64_t)a6 suggestionTapHandler:(id)a7
+- (void)makeConversationStarterSuggestionsViewWithDeviceLocked:(BOOL)locked keyboardShowing:(BOOL)showing isVoiceTrigger:(BOOL)trigger invocationSource:(int64_t)source suggestionTapHandler:(id)handler
 {
-  v8 = a5;
-  v10 = a3;
-  v12 = _Block_copy(a7);
+  triggerCopy = trigger;
+  lockedCopy = locked;
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
-  v14 = self;
-  sub_21E461398(v10, a4, v8, a6, sub_21E462F40, v13);
+  selfCopy = self;
+  sub_21E461398(lockedCopy, showing, triggerCopy, source, sub_21E462F40, v13);
 }
 
-- (void)makeConversationContinuerSuggestionsViewWithRequestId:(id)a3 currentMode:(id)a4 deviceLocked:(BOOL)a5 keyboardShowing:(BOOL)a6 suggestionTapHandler:(id)a7
+- (void)makeConversationContinuerSuggestionsViewWithRequestId:(id)id currentMode:(id)mode deviceLocked:(BOOL)locked keyboardShowing:(BOOL)showing suggestionTapHandler:(id)handler
 {
-  v8 = a5;
-  v11 = _Block_copy(a7);
+  lockedCopy = locked;
+  v11 = _Block_copy(handler);
   v12 = sub_21E4DCF78();
   v14 = v13;
   v15 = swift_allocObject();
   *(v15 + 16) = v11;
-  v16 = a4;
-  v17 = self;
-  sub_21E461A30(v12, v14, v16, v8, a6, sub_21E426DC0, v15);
+  modeCopy = mode;
+  selfCopy = self;
+  sub_21E461A30(v12, v14, modeCopy, lockedCopy, showing, sub_21E426DC0, v15);
 }
 
-- (void)setShowSuggestions:(BOOL)a3
+- (void)setShowSuggestions:(BOOL)suggestions
 {
-  v4 = self;
+  selfCopy = self;
 
-  sub_21E457DD0(a3);
+  sub_21E457DD0(suggestions);
 }
 
-- (void)filterSuggestionsWithText:(id)a3
+- (void)filterSuggestionsWithText:(id)text
 {
   sub_21E4DCF78();
   swift_getKeyPath();

@@ -1,12 +1,12 @@
 @interface HMDAccessoryFirmwareUpdateConcurrencyLogEventManager
-- (HMDAccessoryFirmwareUpdateConcurrencyLogEventManager)initWithCountersManager:(id)a3;
-- (unint64_t)differenceFromCounterWithCategory:(unint64_t)a3;
-- (void)startApplyWithAccessory:(id)a3;
-- (void)startStagingWithAccessory:(id)a3;
-- (void)startWithCategory:(unint64_t)a3 accessory:(id)a4;
-- (void)stopApplyWithAccessory:(id)a3;
-- (void)stopStagingWithAccessory:(id)a3;
-- (void)stopWithCategory:(unint64_t)a3 accessory:(id)a4;
+- (HMDAccessoryFirmwareUpdateConcurrencyLogEventManager)initWithCountersManager:(id)manager;
+- (unint64_t)differenceFromCounterWithCategory:(unint64_t)category;
+- (void)startApplyWithAccessory:(id)accessory;
+- (void)startStagingWithAccessory:(id)accessory;
+- (void)startWithCategory:(unint64_t)category accessory:(id)accessory;
+- (void)stopApplyWithAccessory:(id)accessory;
+- (void)stopStagingWithAccessory:(id)accessory;
+- (void)stopWithCategory:(unint64_t)category accessory:(id)accessory;
 - (void)submitLogEvent;
 @end
 
@@ -19,9 +19,9 @@
   [v2 submitLogEvent:v3];
 }
 
-- (unint64_t)differenceFromCounterWithCategory:(unint64_t)a3
+- (unint64_t)differenceFromCounterWithCategory:(unint64_t)category
 {
-  if (a3 - 1 > 5)
+  if (category - 1 > 5)
   {
     v5 = 0;
   }
@@ -32,68 +32,68 @@
     v6 = @"HMDLogEventPeakConcurrentIPAccessoryUpdateStagingCounter";
   }
 
-  v7 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self countersManager];
-  v8 = [v7 fetchEventCounterForEventName:v5 requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup"];
+  countersManager = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self countersManager];
+  v8 = [countersManager fetchEventCounterForEventName:v5 requestGroup:@"HMDLogEventAccessoryFirmwareUpdateRequestGroup"];
 
   os_unfair_lock_lock_with_options();
-  v9 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self peakActivity];
-  v10 = [v9 objectAtIndexedSubscript:a3];
-  v11 = [v10 unsignedIntegerValue];
+  peakActivity = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self peakActivity];
+  v10 = [peakActivity objectAtIndexedSubscript:category];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
-  v13 = [v12 objectAtIndexedSubscript:a3];
-  v14 = [v13 unsignedIntegerValue];
+  currentActivity = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
+  v13 = [currentActivity objectAtIndexedSubscript:category];
+  unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-  if (!v8 && v11)
+  if (!v8 && unsignedIntegerValue)
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-    v16 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self peakActivity];
-    [v16 setObject:v15 atIndexedSubscript:a3];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2];
+    peakActivity2 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self peakActivity];
+    [peakActivity2 setObject:v15 atIndexedSubscript:category];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v11 - v14;
+  return unsignedIntegerValue - unsignedIntegerValue2;
 }
 
-- (void)stopWithCategory:(unint64_t)a3 accessory:(id)a4
+- (void)stopWithCategory:(unint64_t)category accessory:(id)accessory
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self inProgress];
-  v8 = [(__CFString *)v6 uuid];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  accessoryCopy = accessory;
+  inProgress = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self inProgress];
+  uuid = [(__CFString *)accessoryCopy uuid];
+  v9 = [inProgress objectForKeyedSubscript:uuid];
 
   if (v9)
   {
-    v10 = [v9 unsignedIntValue];
-    if (v10 != a3)
+    unsignedIntValue = [v9 unsignedIntValue];
+    if (unsignedIntValue != category)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = HMFGetLogIdentifier();
-        if (a3 - 1 > 6)
+        if (category - 1 > 6)
         {
           v15 = @"HMDAccessoryFirmwareUpdateConcurrencyCategoryUnknown";
         }
 
         else
         {
-          v15 = off_279729390[a3 - 1];
+          v15 = off_279729390[category - 1];
         }
 
         v23 = v15;
-        if ((v10 - 1) > 6)
+        if ((unsignedIntValue - 1) > 6)
         {
           v24 = @"HMDAccessoryFirmwareUpdateConcurrencyCategoryUnknown";
         }
 
         else
         {
-          v24 = off_279729390[v10 - 1];
+          v24 = off_279729390[unsignedIntValue - 1];
         }
 
         v25 = v24;
@@ -110,33 +110,33 @@
     }
 
     os_unfair_lock_lock_with_options();
-    v26 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
-    v27 = [v26 objectAtIndexedSubscript:v10];
-    v28 = [v27 unsignedIntegerValue];
+    currentActivity = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
+    v27 = [currentActivity objectAtIndexedSubscript:unsignedIntValue];
+    unsignedIntegerValue = [v27 unsignedIntegerValue];
 
-    if (v28)
+    if (unsignedIntegerValue)
     {
-      v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v28 - 1];
-      v30 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
-      [v30 setObject:v29 atIndexedSubscript:v10];
+      v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue - 1];
+      currentActivity2 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
+      [currentActivity2 setObject:v29 atIndexedSubscript:unsignedIntValue];
     }
 
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy2 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         v34 = HMFGetLogIdentifier();
-        if ((v10 - 1) > 6)
+        if ((unsignedIntValue - 1) > 6)
         {
           v35 = @"HMDAccessoryFirmwareUpdateConcurrencyCategoryUnknown";
         }
 
         else
         {
-          v35 = off_279729390[v10 - 1];
+          v35 = off_279729390[unsignedIntValue - 1];
         }
 
         v36 = v35;
@@ -145,16 +145,16 @@
         v42 = 2112;
         v43 = v36;
         v44 = 2112;
-        v45 = v6;
+        v45 = accessoryCopy;
         _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_ERROR, "%{public}@Stopping category %@ when current activity is 0 for accessory %@", &v40, 0x20u);
       }
 
       objc_autoreleasePoolPop(v31);
     }
 
-    v37 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self inProgress];
-    v38 = [(__CFString *)v6 uuid];
-    [v37 setObject:0 forKeyedSubscript:v38];
+    inProgress2 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self inProgress];
+    uuid2 = [(__CFString *)accessoryCopy uuid];
+    [inProgress2 setObject:0 forKeyedSubscript:uuid2];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -162,7 +162,7 @@
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -184,7 +184,7 @@
       v42 = 2112;
       v43 = v22;
       v44 = 2112;
-      v45 = v6;
+      v45 = accessoryCopy;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Stopping %@ when nothing is in progress for accessory %@", &v40, 0x20u);
     }
 
@@ -194,30 +194,30 @@
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithCategory:(unint64_t)a3 accessory:(id)a4
+- (void)startWithCategory:(unint64_t)category accessory:(id)accessory
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self inProgress];
-  v8 = [v6 uuid];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  accessoryCopy = accessory;
+  inProgress = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self inProgress];
+  uuid = [accessoryCopy uuid];
+  v9 = [inProgress objectForKeyedSubscript:uuid];
 
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = HMFGetLogIdentifier();
-      if (a3 - 1 > 6)
+      if (category - 1 > 6)
       {
         v14 = @"HMDAccessoryFirmwareUpdateConcurrencyCategoryUnknown";
       }
 
       else
       {
-        v14 = off_279729390[a3 - 1];
+        v14 = off_279729390[category - 1];
       }
 
       v15 = v14;
@@ -240,45 +240,45 @@
       v38 = 2112;
       v39 = v18;
       v40 = 2112;
-      v41 = v6;
+      v41 = accessoryCopy;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Starting %@ while %@ is in progress for accessory %@", &v34, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)v11 stopStagingWithAccessory:v6];
+    [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)selfCopy stopStagingWithAccessory:accessoryCopy];
   }
 
   os_unfair_lock_lock_with_options();
-  v19 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
-  v20 = [v19 objectAtIndexedSubscript:a3];
-  v21 = [v20 unsignedIntegerValue];
+  currentActivity = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
+  v20 = [currentActivity objectAtIndexedSubscript:category];
+  unsignedIntegerValue = [v20 unsignedIntegerValue];
 
-  v22 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self peakActivity];
-  v23 = [v22 objectAtIndexedSubscript:a3];
-  v24 = [v23 unsignedIntegerValue];
+  peakActivity = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self peakActivity];
+  v23 = [peakActivity objectAtIndexedSubscript:category];
+  unsignedIntegerValue2 = [v23 unsignedIntegerValue];
 
-  if (v21 + 1 > v24)
+  if (unsignedIntegerValue + 1 > unsignedIntegerValue2)
   {
-    v25 = v21 + 1;
+    v25 = unsignedIntegerValue + 1;
   }
 
   else
   {
-    v25 = v24;
+    v25 = unsignedIntegerValue2;
   }
 
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  v27 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
-  [v27 setObject:v26 atIndexedSubscript:a3];
+  currentActivity2 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self currentActivity];
+  [currentActivity2 setObject:v26 atIndexedSubscript:category];
 
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v25];
-  v29 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self peakActivity];
-  [v29 setObject:v28 atIndexedSubscript:a3];
+  peakActivity2 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self peakActivity];
+  [peakActivity2 setObject:v28 atIndexedSubscript:category];
 
-  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v31 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self inProgress];
-  v32 = [v6 uuid];
-  [v31 setObject:v30 forKeyedSubscript:v32];
+  v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
+  inProgress2 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self inProgress];
+  uuid2 = [accessoryCopy uuid];
+  [inProgress2 setObject:v30 forKeyedSubscript:uuid2];
 
   os_unfair_lock_unlock(&self->_lock);
   [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self submitLogEvent];
@@ -286,33 +286,33 @@
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopApplyWithAccessory:(id)a3
+- (void)stopApplyWithAccessory:(id)accessory
 {
-  v4 = a3;
-  [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self stopWithCategory:2 * getAccessoryFirmwareUpdateActiveTransport(v4) - 2 accessory:v4];
+  accessoryCopy = accessory;
+  [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self stopWithCategory:2 * getAccessoryFirmwareUpdateActiveTransport(accessoryCopy) - 2 accessory:accessoryCopy];
 }
 
-- (void)stopStagingWithAccessory:(id)a3
+- (void)stopStagingWithAccessory:(id)accessory
 {
-  v4 = a3;
-  [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self stopWithCategory:qword_253D4BBB0[getAccessoryFirmwareUpdateActiveTransport(v4) - 1] accessory:v4];
+  accessoryCopy = accessory;
+  [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self stopWithCategory:qword_253D4BBB0[getAccessoryFirmwareUpdateActiveTransport(accessoryCopy) - 1] accessory:accessoryCopy];
 }
 
-- (void)startApplyWithAccessory:(id)a3
+- (void)startApplyWithAccessory:(id)accessory
 {
-  v4 = a3;
-  [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self startWithCategory:2 * getAccessoryFirmwareUpdateActiveTransport(v4) - 2 accessory:v4];
+  accessoryCopy = accessory;
+  [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self startWithCategory:2 * getAccessoryFirmwareUpdateActiveTransport(accessoryCopy) - 2 accessory:accessoryCopy];
 }
 
-- (void)startStagingWithAccessory:(id)a3
+- (void)startStagingWithAccessory:(id)accessory
 {
-  v4 = a3;
-  [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self startWithCategory:qword_253D4BBB0[getAccessoryFirmwareUpdateActiveTransport(v4) - 1] accessory:v4];
+  accessoryCopy = accessory;
+  [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)self startWithCategory:qword_253D4BBB0[getAccessoryFirmwareUpdateActiveTransport(accessoryCopy) - 1] accessory:accessoryCopy];
 }
 
-- (HMDAccessoryFirmwareUpdateConcurrencyLogEventManager)initWithCountersManager:(id)a3
+- (HMDAccessoryFirmwareUpdateConcurrencyLogEventManager)initWithCountersManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = HMDAccessoryFirmwareUpdateConcurrencyLogEventManager;
   v6 = [(HMDAccessoryFirmwareUpdateConcurrencyLogEventManager *)&v16 init];
@@ -332,7 +332,7 @@
     inProgress = v7->_inProgress;
     v7->_inProgress = v12;
 
-    objc_storeStrong(&v7->_countersManager, a3);
+    objc_storeStrong(&v7->_countersManager, manager);
     for (i = 0; i != 7; ++i)
     {
       [(NSMutableArray *)v7->_currentActivity setObject:&unk_286628570 atIndexedSubscript:i];

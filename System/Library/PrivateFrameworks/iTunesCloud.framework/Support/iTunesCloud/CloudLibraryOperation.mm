@@ -1,26 +1,26 @@
 @interface CloudLibraryOperation
 - (CloudLibraryOperation)init;
-- (CloudLibraryOperation)initWithCoder:(id)a3;
-- (CloudLibraryOperation)initWithConfiguration:(id)a3;
-- (CloudLibraryOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CloudLibraryOperation)initWithCoder:(id)coder;
+- (CloudLibraryOperation)initWithConfiguration:(id)configuration;
+- (CloudLibraryOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CloudLibraryOperation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CloudLibraryOperation *)self configuration];
-  [v5 encodeObject:v4 forKey:@"configuration"];
+  coderCopy = coder;
+  configuration = [(CloudLibraryOperation *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 
-  [v5 encodeTCCIdentity:self->_clientIdentity forKey:@"clientIdentity"];
+  [coderCopy encodeTCCIdentity:self->_clientIdentity forKey:@"clientIdentity"];
 }
 
-- (CloudLibraryOperation)initWithCoder:(id)a3
+- (CloudLibraryOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
   v6 = v5;
   if (v5)
   {
@@ -34,34 +34,34 @@
 
   v8 = v7;
 
-  v9 = [v4 decodeTCCIdentityForKey:@"clientIdentity"];
+  v9 = [coderCopy decodeTCCIdentityForKey:@"clientIdentity"];
   v10 = [(CloudLibraryOperation *)self initWithConfiguration:v8 clientIdentity:v9];
 
   return v10;
 }
 
-- (CloudLibraryOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4
+- (CloudLibraryOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  identityCopy = identity;
   v19.receiver = self;
   v19.super_class = CloudLibraryOperation;
   v9 = [(CloudLibraryOperation *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    v11 = [v7 userIdentity];
+    objc_storeStrong(&v9->_configuration, configuration);
+    userIdentity = [configurationCopy userIdentity];
     userIdentity = v10->_userIdentity;
-    v10->_userIdentity = v11;
+    v10->_userIdentity = userIdentity;
 
-    v13 = [v7 userIdentityStore];
+    userIdentityStore = [configurationCopy userIdentityStore];
     userIdentityStore = v10->_userIdentityStore;
-    v10->_userIdentityStore = v13;
+    v10->_userIdentityStore = userIdentityStore;
 
-    objc_storeStrong(&v10->_clientIdentity, a4);
-    v15 = [v7 userIdentity];
-    v16 = [ML3MusicLibrary musicLibraryForUserAccount:v15];
+    objc_storeStrong(&v10->_clientIdentity, identity);
+    userIdentity2 = [configurationCopy userIdentity];
+    v16 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity2];
     musicLibrary = v10->_musicLibrary;
     v10->_musicLibrary = v16;
   }
@@ -69,11 +69,11 @@
   return v10;
 }
 
-- (CloudLibraryOperation)initWithConfiguration:(id)a3
+- (CloudLibraryOperation)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = MSVTCCIdentityForCurrentProcess();
-  v6 = [(CloudLibraryOperation *)self initWithConfiguration:v4 clientIdentity:v5];
+  v6 = [(CloudLibraryOperation *)self initWithConfiguration:configurationCopy clientIdentity:v5];
 
   return v6;
 }

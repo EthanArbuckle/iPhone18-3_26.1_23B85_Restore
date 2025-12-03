@@ -1,10 +1,10 @@
 @interface PregnancyOffboardingCoordinator
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation PregnancyOffboardingCoordinator
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
   isa = self->super.isa;
   sub_29DFF5600(0, &qword_2A1A5E2F0, MEMORY[0x29EDCA398], MEMORY[0x29EDC9C68]);
@@ -13,9 +13,9 @@
   v9 = sub_29E2C3734();
   (*(*(v9 - 8) + 56))(v8, 1, 1, v9);
   sub_29E2C3714();
-  v10 = a3;
+  updateCopy = update;
   swift_retain_n();
-  v11 = v10;
+  v11 = updateCopy;
   v12 = sub_29E2C3704();
   v13 = swift_allocObject();
   v14 = MEMORY[0x29EDCA390];

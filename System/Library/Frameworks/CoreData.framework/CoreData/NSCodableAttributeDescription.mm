@@ -1,7 +1,7 @@
 @interface NSCodableAttributeDescription
 - (NSCodableAttributeDescription)init;
-- (id)decode:(id)a3 withRegistry:(id)a4 error:(id *)a5;
-- (id)encode:(id)a3 withRegistry:(id)a4 error:(id *)a5;
+- (id)decode:(id)decode withRegistry:(id)registry error:(id *)error;
+- (id)encode:(id)encode withRegistry:(id)registry error:(id *)error;
 @end
 
 @implementation NSCodableAttributeDescription
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (id)encode:(id)a3 withRegistry:(id)a4 error:(id *)a5
+- (id)encode:(id)encode withRegistry:(id)registry error:(id *)error
 {
   v8 = 0;
-  v6 = [a4 encodeWithValue:a3 withAdapterNamed:-[NSAttributeDescription valueTransformerName](self error:{"valueTransformerName"), &v8}];
+  v6 = [registry encodeWithValue:encode withAdapterNamed:-[NSAttributeDescription valueTransformerName](self error:{"valueTransformerName"), &v8}];
   if (!v6)
   {
     objc_opt_class();
@@ -33,18 +33,18 @@
     }
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v8;
+    *error = v8;
   }
 
   return v6;
 }
 
-- (id)decode:(id)a3 withRegistry:(id)a4 error:(id *)a5
+- (id)decode:(id)decode withRegistry:(id)registry error:(id *)error
 {
   v8 = 0;
-  v6 = [a4 decodeWithData:a3 withAdapterNamed:-[NSAttributeDescription valueTransformerName](self error:{"valueTransformerName"), &v8}];
+  v6 = [registry decodeWithData:decode withAdapterNamed:-[NSAttributeDescription valueTransformerName](self error:{"valueTransformerName"), &v8}];
   if (!v6)
   {
     objc_opt_class();
@@ -54,9 +54,9 @@
     }
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v8;
+    *error = v8;
   }
 
   return v6;

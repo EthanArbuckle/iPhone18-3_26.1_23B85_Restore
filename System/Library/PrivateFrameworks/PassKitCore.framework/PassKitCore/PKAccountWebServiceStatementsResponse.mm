@@ -1,15 +1,15 @@
 @interface PKAccountWebServiceStatementsResponse
-- (PKAccountWebServiceStatementsResponse)initWithData:(id)a3;
+- (PKAccountWebServiceStatementsResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceStatementsResponse
 
-- (PKAccountWebServiceStatementsResponse)initWithData:(id)a3
+- (PKAccountWebServiceStatementsResponse)initWithData:(id)data
 {
   v32 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = PKAccountWebServiceStatementsResponse;
-  v3 = [(PKWebServiceResponse *)&v26 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v26 initWithData:data];
   v4 = v3;
   if (!v3)
   {
@@ -18,16 +18,16 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [v5 PKArrayForKey:{@"statements", 0}];
+    v7 = [jSONObject PKArrayForKey:{@"statements", 0}];
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v8)
     {
@@ -46,7 +46,7 @@ LABEL_13:
           v12 = [[PKCreditAccountStatement alloc] initWithDictionary:*(*(&v22 + 1) + 8 * v11)];
           if (v12)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
 
           ++v11;
@@ -59,7 +59,7 @@ LABEL_13:
       while (v9);
     }
 
-    v13 = [v6 copy];
+    v13 = [array copy];
     statements = v4->_statements;
     v4->_statements = v13;
 

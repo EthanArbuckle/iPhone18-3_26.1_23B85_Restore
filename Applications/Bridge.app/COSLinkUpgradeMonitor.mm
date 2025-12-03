@@ -1,19 +1,19 @@
 @interface COSLinkUpgradeMonitor
 - (BOOL)holdingAnyCompanionLinkPreference;
 - (void)_awdlUpgradeTimedout;
-- (void)_enteredCompatibilityState:(id)a3;
+- (void)_enteredCompatibilityState:(id)state;
 - (void)_onInitialPropertyExchangeComplete;
 - (void)_performLinkUpgradeToInfraWiFi;
 - (void)_sendWirelessCredentialsToWatch;
-- (void)_updateCompanionLinkPreferenceToAWDLforBTUUID:(id)a3;
+- (void)_updateCompanionLinkPreferenceToAWDLforBTUUID:(id)d;
 - (void)_updateNanoRegistryToNormalStateIfNeeded;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4;
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4 linkSubtype:(unsigned __int8)a5;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected;
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype;
 - (void)requestLinkUpgrade;
 - (void)resetCompanionLinkPreference;
 - (void)resetMonitor;
-- (void)wirelessCredentialUpdateCompletedWithResult:(BOOL)a3;
+- (void)wirelessCredentialUpdateCompletedWithResult:(BOOL)result;
 @end
 
 @implementation COSLinkUpgradeMonitor
@@ -25,18 +25,18 @@
     if (self->_currentLinkSubType != 102 && !self->_waitingForAWDLupgradeTimeout)
     {
       v9 = +[UIApplication sharedApplication];
-      v3 = [v9 activeWatch];
+      activeWatch = [v9 activeWatch];
 
-      if (v3)
+      if (activeWatch)
       {
         v10 = +[NSNotificationCenter defaultCenter];
         v11 = NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification;
         [v10 addObserver:self selector:"_enteredCompatibilityState:" name:NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification object:0];
 
-        v12 = [v3 valueForProperty:_NRDevicePropertyCompatibilityState];
-        v13 = [v12 unsignedIntValue];
+        v12 = [activeWatch valueForProperty:_NRDevicePropertyCompatibilityState];
+        unsignedIntValue = [v12 unsignedIntValue];
 
-        if (v13 >= 3u)
+        if (unsignedIntValue >= 3u)
         {
           v14 = pbb_setupflow_log();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -44,7 +44,7 @@
             *buf = 136315394;
             v24 = "[COSLinkUpgradeMonitor requestLinkUpgrade]";
             v25 = 1024;
-            LODWORD(v26) = v13;
+            LODWORD(v26) = unsignedIntValue;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: already initial properties exchanged: %d", buf, 0x12u);
           }
 
@@ -57,9 +57,9 @@
         v16 = _NRDevicePropertyBluetoothIdentifier;
         v22 = _NRDevicePropertyBluetoothIdentifier;
         v17 = [NSArray arrayWithObjects:&v22 count:1];
-        [v3 addPropertyObserver:self forPropertyChanges:v17];
+        [activeWatch addPropertyObserver:self forPropertyChanges:v17];
 
-        StringFromNRLinkSubtype = [v3 valueForProperty:v16];
+        StringFromNRLinkSubtype = [activeWatch valueForProperty:v16];
         v18 = pbb_setupflow_log();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
@@ -75,7 +75,7 @@
           self->_observingLinkChange = 0;
           v21 = v16;
           v19 = [NSArray arrayWithObjects:&v21 count:1];
-          [v3 removePropertyObserver:self forPropertyChanges:v19];
+          [activeWatch removePropertyObserver:self forPropertyChanges:v19];
 
           [(COSLinkUpgradeMonitor *)self _updateCompanionLinkPreferenceToAWDLforBTUUID:StringFromNRLinkSubtype];
         }
@@ -114,8 +114,8 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v3 = pbb_setupflow_log();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    activeWatch = pbb_setupflow_log();
+    if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT))
     {
       StringFromNRLinkSubtype = createStringFromNRLinkSubtype();
       waitingForAWDLupgradeTimeout = self->_waitingForAWDLupgradeTimeout;
@@ -126,7 +126,7 @@ LABEL_6:
       v27 = 1024;
       v28 = waitingForAWDLupgradeTimeout;
       v6 = "%s: Ignoring upgrade request. current link: %@ request in progress: %d";
-      v7 = v3;
+      v7 = activeWatch;
       v8 = 28;
       goto LABEL_6;
     }
@@ -134,23 +134,23 @@ LABEL_6:
 
   else
   {
-    v3 = pbb_setupflow_log();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    activeWatch = pbb_setupflow_log();
+    if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v24 = "[COSLinkUpgradeMonitor requestLinkUpgrade]";
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s: feature disabled. Ignoring linkupgrade request", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, activeWatch, OS_LOG_TYPE_DEFAULT, "%s: feature disabled. Ignoring linkupgrade request", buf, 0xCu);
     }
   }
 
 LABEL_10:
 }
 
-- (void)_enteredCompatibilityState:(id)a3
+- (void)_enteredCompatibilityState:(id)state
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NRPairedDeviceRegistryCompatibilityStateKey];
-  v6 = [v5 unsignedIntValue];
+  userInfo = [state userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryCompatibilityStateKey];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -158,11 +158,11 @@ LABEL_10:
     v9 = 136315394;
     v10 = "[COSLinkUpgradeMonitor _enteredCompatibilityState:]";
     v11 = 1024;
-    v12 = v6;
+    v12 = unsignedIntValue;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: Entered Compatibility State: %d", &v9, 0x12u);
   }
 
-  if (v6 >= 3u)
+  if (unsignedIntValue >= 3u)
   {
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 removeObserver:self name:NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification object:0];
@@ -210,24 +210,24 @@ LABEL_10:
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 removeObserver:self name:NRPairedDeviceRegistryDeviceDidEnterCompatibilityStateNotification object:0];
 
-  v7 = [UIApp activeWatch];
-  if (v7)
+  activeWatch = [UIApp activeWatch];
+  if (activeWatch)
   {
     v9 = _NRDevicePropertyBluetoothIdentifier;
     v8 = [NSArray arrayWithObjects:&v9 count:1];
-    [v7 removePropertyObserver:self forPropertyChanges:v8];
+    [activeWatch removePropertyObserver:self forPropertyChanges:v8];
   }
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  changeCopy = change;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v9 = _NRDevicePropertyBluetoothIdentifier;
-  if ([v8 isEqualToString:_NRDevicePropertyBluetoothIdentifier])
+  if ([changeCopy isEqualToString:_NRDevicePropertyBluetoothIdentifier])
   {
-    v10 = [v7 valueForProperty:v9];
+    v10 = [deviceCopy valueForProperty:v9];
     v11 = pbb_setupflow_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -243,7 +243,7 @@ LABEL_10:
       self->_observingLinkChange = 0;
       v15 = v9;
       v12 = [NSArray arrayWithObjects:&v15 count:1];
-      [v7 removePropertyObserver:self forPropertyChanges:v12];
+      [deviceCopy removePropertyObserver:self forPropertyChanges:v12];
 
       [(COSLinkUpgradeMonitor *)self _updateCompanionLinkPreferenceToAWDLforBTUUID:v10];
     }
@@ -271,7 +271,7 @@ LABEL_10:
       *buf = 136315394;
       v17 = "[COSLinkUpgradeMonitor device:propertyDidChange:fromValue:]";
       v18 = 2112;
-      v19 = v8;
+      v19 = changeCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: received unexpected property change: %@", buf, 0x16u);
     }
   }
@@ -279,17 +279,17 @@ LABEL_10:
 
 - (void)_sendWirelessCredentialsToWatch
 {
-  v3 = [UIApp bridgeController];
-  v4 = [v3 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v4)
+  if (isTinkerPairing)
   {
-    v5 = pbb_setupflow_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    activeWatch = pbb_setupflow_log();
+    if (os_log_type_enabled(activeWatch, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 136315138;
       v14 = "[COSLinkUpgradeMonitor _sendWirelessCredentialsToWatch]";
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Skipping Wireless Credentials exchange.", &v13, 0xCu);
+      _os_log_impl(&_mh_execute_header, activeWatch, OS_LOG_TYPE_DEFAULT, "%s: Skipping Wireless Credentials exchange.", &v13, 0xCu);
     }
 
 LABEL_15:
@@ -300,10 +300,10 @@ LABEL_15:
   if (!self->_wirelessCredentialsExchangeComplete)
   {
     v7 = +[UIApplication sharedApplication];
-    v5 = [v7 activeWatch];
+    activeWatch = [v7 activeWatch];
 
     v8 = [[NSUUID alloc] initWithUUIDString:@"15874345-3594-4D3F-9A28-BA2AEA650A0D"];
-    v9 = [v5 supportsCapability:v8];
+    v9 = [activeWatch supportsCapability:v8];
 
     v10 = pbb_setupflow_log();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -317,8 +317,8 @@ LABEL_15:
       }
 
       v10 = +[UIApplication sharedApplication];
-      v12 = [v10 bridgeController];
-      [v12 sendAllWirelessCredentials:0];
+      bridgeController2 = [v10 bridgeController];
+      [bridgeController2 sendAllWirelessCredentials:0];
     }
 
     else if (v11)
@@ -342,24 +342,24 @@ LABEL_15:
   [(COSLinkUpgradeMonitor *)self wirelessCredentialUpdateCompletedWithResult:1];
 }
 
-- (void)_updateCompanionLinkPreferenceToAWDLforBTUUID:(id)a3
+- (void)_updateCompanionLinkPreferenceToAWDLforBTUUID:(id)d
 {
-  v4 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:a3];
+  v4 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:d];
   v5 = pbb_setupflow_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 nrDeviceIdentifier];
+    nrDeviceIdentifier = [v4 nrDeviceIdentifier];
     v21 = 136315394;
     v22 = "[COSLinkUpgradeMonitor _updateCompanionLinkPreferenceToAWDLforBTUUID:]";
     v23 = 2114;
-    v24 = v6;
+    v24 = nrDeviceIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: NetworkRelayDeviceIdentifier: %{public}@", &v21, 0x16u);
   }
 
-  v7 = [(NRDeviceMonitor *)self->_networkRelayDeviceMonitor deviceIdentifier];
-  v8 = [v7 nrDeviceIdentifier];
-  v9 = [v4 nrDeviceIdentifier];
-  v10 = [v8 isEqual:v9];
+  deviceIdentifier = [(NRDeviceMonitor *)self->_networkRelayDeviceMonitor deviceIdentifier];
+  nrDeviceIdentifier2 = [deviceIdentifier nrDeviceIdentifier];
+  nrDeviceIdentifier3 = [v4 nrDeviceIdentifier];
+  v10 = [nrDeviceIdentifier2 isEqual:nrDeviceIdentifier3];
 
   if ((v10 & 1) == 0)
   {
@@ -429,22 +429,22 @@ LABEL_15:
 
 - (void)_performLinkUpgradeToInfraWiFi
 {
-  v3 = [UIApp activeWatch];
-  v4 = v3;
-  if (v3)
+  activeWatch = [UIApp activeWatch];
+  v4 = activeWatch;
+  if (activeWatch)
   {
-    v5 = [v3 valueForProperty:_NRDevicePropertyBluetoothIdentifier];
+    v5 = [activeWatch valueForProperty:_NRDevicePropertyBluetoothIdentifier];
     v6 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:v5];
     v7 = pbb_setupflow_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 nrDeviceIdentifier];
+      nrDeviceIdentifier = [v6 nrDeviceIdentifier];
       v16 = 136315650;
       v17 = "[COSLinkUpgradeMonitor _performLinkUpgradeToInfraWiFi]";
       v18 = 2114;
       v19 = v5;
       v20 = 2114;
-      v21 = v8;
+      v21 = nrDeviceIdentifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: BT identifier: %{public}@ networkRelayDeviceIdentifier: %{public}@", &v16, 0x20u);
     }
 
@@ -487,7 +487,7 @@ LABEL_15:
   }
 }
 
-- (void)wirelessCredentialUpdateCompletedWithResult:(BOOL)a3
+- (void)wirelessCredentialUpdateCompletedWithResult:(BOOL)result
 {
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
@@ -495,7 +495,7 @@ LABEL_15:
   v5[2] = sub_1001355F0;
   v5[3] = &unk_100268380;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  resultCopy = result;
   v5[4] = self;
   dispatch_async(&_dispatch_main_q, v5);
   objc_destroyWeak(&v6);
@@ -525,10 +525,10 @@ LABEL_15:
 - (void)_updateNanoRegistryToNormalStateIfNeeded
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 activeWatch];
+  activeWatch = [v3 activeWatch];
 
   v5 = [[NSUUID alloc] initWithUUIDString:@"15874345-3594-4D3F-9A28-BA2AEA650A0D"];
-  v6 = [v4 supportsCapability:v5];
+  v6 = [activeWatch supportsCapability:v5];
 
   if ((v6 & 1) == 0 || self->_updatedNRToEnterNormalState)
   {
@@ -576,27 +576,27 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: Asking NR to end pairing. Link sub type: %d", &v14, 0x12u);
   }
 
-  v13 = [UIApp setupController];
-  [v13 updateNanoRegistryToNormalState];
+  setupController = [UIApp setupController];
+  [setupController updateNanoRegistryToNormalState];
 
   self->_updatedNRToEnterNormalState = 1;
 LABEL_7:
 }
 
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected
 {
-  v4 = a4;
+  connectedCopy = connected;
   v6 = pbb_setupflow_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v10 = "[COSLinkUpgradeMonitor deviceIsConnectedDidChange:isConnected:]";
     v11 = 1024;
-    v12 = v4;
+    v12 = connectedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: connected %{BOOL}d", buf, 0x12u);
   }
 
-  if (v4 && self->_pendingLinkUpgradeRequest)
+  if (connectedCopy && self->_pendingLinkUpgradeRequest)
   {
     objc_initWeak(buf, self);
     block[0] = _NSConcreteStackBlock;
@@ -610,9 +610,9 @@ LABEL_7:
   }
 }
 
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4 linkSubtype:(unsigned __int8)a5
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype
 {
-  v5 = a5;
+  subtypeCopy = subtype;
   v7 = pbb_setupflow_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -630,8 +630,8 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: link changed. current linkSubType: %@ new linkType: %@, new linkSubType: %@", &v12, 0x2Au);
   }
 
-  self->_currentLinkSubType = v5;
-  if (v5 == 102)
+  self->_currentLinkSubType = subtypeCopy;
+  if (subtypeCopy == 102)
   {
     self->_everConnectedOnAWDL = 1;
     self->_waitingForAWDLupgradeTimeout = 0;
@@ -645,8 +645,8 @@ LABEL_7:
 
 - (BOOL)holdingAnyCompanionLinkPreference
 {
-  v2 = [(NRDevicePreferences *)self->_networkRelayDevicePreferences companionLinkPreferences];
-  v3 = v2 != 0;
+  companionLinkPreferences = [(NRDevicePreferences *)self->_networkRelayDevicePreferences companionLinkPreferences];
+  v3 = companionLinkPreferences != 0;
 
   return v3;
 }

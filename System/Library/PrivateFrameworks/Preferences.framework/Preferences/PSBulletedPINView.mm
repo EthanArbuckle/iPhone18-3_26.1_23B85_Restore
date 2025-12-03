@@ -1,32 +1,32 @@
 @interface PSBulletedPINView
 - (BOOL)resignFirstResponder;
-- (PSBulletedPINView)initWithFrame:(CGRect)a3 numberOfFields:(int)a4;
-- (void)appendString:(id)a3;
+- (PSBulletedPINView)initWithFrame:(CGRect)frame numberOfFields:(int)fields;
+- (void)appendString:(id)string;
 - (void)dealloc;
 - (void)deleteLastCharacter;
-- (void)hidePasscodeField:(BOOL)a3;
+- (void)hidePasscodeField:(BOOL)field;
 - (void)layoutSubviews;
 - (void)notifyDelegatePINChanged;
 - (void)notifyDelegatePINEntered;
-- (void)setStringValue:(id)a3;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation PSBulletedPINView
 
-- (PSBulletedPINView)initWithFrame:(CGRect)a3 numberOfFields:(int)a4
+- (PSBulletedPINView)initWithFrame:(CGRect)frame numberOfFields:(int)fields
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v23.receiver = self;
   v23.super_class = PSBulletedPINView;
-  v7 = [(PSBulletedPINView *)&v23 initWithFrame:a3.origin.x, a3.origin.y];
+  v7 = [(PSBulletedPINView *)&v23 initWithFrame:frame.origin.x, frame.origin.y];
   if (v7)
   {
     v8 = +[PSListController appearance];
-    v9 = [v8 backgroundColor];
-    [(PSBulletedPINView *)v7 setBackgroundColor:v9];
+    backgroundColor = [v8 backgroundColor];
+    [(PSBulletedPINView *)v7 setBackgroundColor:backgroundColor];
 
-    v10 = [[PSPasscodeField alloc] initWithNumberOfEntryFields:a4];
+    v10 = [[PSPasscodeField alloc] initWithNumberOfEntryFields:fields];
     passcodeField = v7->_passcodeField;
     v7->_passcodeField = v10;
 
@@ -48,8 +48,8 @@
     [(UILabel *)v7->super._titleLabel setTextAlignment:1];
     v19 = v7->super._titleLabel;
     v20 = +[PSListController appearance];
-    v21 = [v20 textColor];
-    [(UILabel *)v19 setTextColor:v21];
+    textColor = [v20 textColor];
+    [(UILabel *)v19 setTextColor:textColor];
 
     [(UILabel *)v7->super._titleLabel setNumberOfLines:0];
     [(UILabel *)v7->super._titleLabel accessibilitySetIdentification:@"titleLabel"];
@@ -105,14 +105,14 @@
     v18.size.height = v6;
     v12 = CGRectGetMaxY(v18) + 22.0;
     failureView = self->super._failureView;
-    v14 = [(FailureBarView *)failureView titleLabel];
-    [(PINView *)self layoutBottomSubview:failureView withLabel:v14 withMinY:v12];
+    titleLabel = [(FailureBarView *)failureView titleLabel];
+    [(PINView *)self layoutBottomSubview:failureView withLabel:titleLabel withMinY:v12];
   }
 }
 
-- (void)hidePasscodeField:(BOOL)a3
+- (void)hidePasscodeField:(BOOL)field
 {
-  v3 = a3;
+  fieldCopy = field;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x4010000000;
@@ -133,7 +133,7 @@
   aBlock[4] = v15;
   v9 = _Block_copy(aBlock);
   v10 = v9;
-  if (v3)
+  if (fieldCopy)
   {
     v11 = MEMORY[0x1E69DD250];
     [MEMORY[0x1E69DD228] defaultDurationForTransition:7];
@@ -157,9 +157,9 @@ void __39__PSBulletedPINView_hidePasscodeField___block_invoke(uint64_t a1)
   [WeakRetained[60] setFrame:{*(*(*(a1 + 32) + 8) + 32), *(*(*(a1 + 32) + 8) + 40), *(*(*(a1 + 32) + 8) + 48), *(*(*(a1 + 32) + 8) + 56)}];
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  [(PSPasscodeField *)self->_passcodeField setStringValue:a3];
+  [(PSPasscodeField *)self->_passcodeField setStringValue:value];
 
   [(PSBulletedPINView *)self notifyDelegatePINChanged];
 }
@@ -171,9 +171,9 @@ void __39__PSBulletedPINView_hidePasscodeField___block_invoke(uint64_t a1)
   [(PSBulletedPINView *)self notifyDelegatePINChanged];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  [(PSPasscodeField *)self->_passcodeField insertText:a3];
+  [(PSPasscodeField *)self->_passcodeField insertText:string];
 
   [(PSBulletedPINView *)self notifyDelegatePINChanged];
 }
@@ -188,21 +188,21 @@ void __39__PSBulletedPINView_hidePasscodeField___block_invoke(uint64_t a1)
 
 - (void)notifyDelegatePINChanged
 {
-  v4 = [(PINView *)self delegate];
+  delegate = [(PINView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PSBulletedPINView *)self stringValue];
-    [v4 pinView:self pinValueChanged:v3];
+    stringValue = [(PSBulletedPINView *)self stringValue];
+    [delegate pinView:self pinValueChanged:stringValue];
   }
 }
 
 - (void)notifyDelegatePINEntered
 {
-  v4 = [(PINView *)self delegate];
+  delegate = [(PINView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PSBulletedPINView *)self stringValue];
-    [v4 pinView:self pinEntered:v3];
+    stringValue = [(PSBulletedPINView *)self stringValue];
+    [delegate pinView:self pinEntered:stringValue];
   }
 }
 

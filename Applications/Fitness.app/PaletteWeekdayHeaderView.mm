@@ -1,20 +1,20 @@
 @interface PaletteWeekdayHeaderView
 - (BOOL)_shouldUseVeryShortWeekdays;
-- (PaletteWeekdayHeaderView)initWithFrame:(CGRect)a3;
+- (PaletteWeekdayHeaderView)initWithFrame:(CGRect)frame;
 - (double)_weekdayLabelWidth;
-- (void)adjustWeekLabelsByOffset:(int64_t)a3;
-- (void)highlightWeekdayLabelForDateAndSetDay:(id)a3;
+- (void)adjustWeekLabelsByOffset:(int64_t)offset;
+- (void)highlightWeekdayLabelForDateAndSetDay:(id)day;
 - (void)layoutSubviews;
-- (void)setIsExpanded:(BOOL)a3;
+- (void)setIsExpanded:(BOOL)expanded;
 @end
 
 @implementation PaletteWeekdayHeaderView
 
-- (PaletteWeekdayHeaderView)initWithFrame:(CGRect)a3
+- (PaletteWeekdayHeaderView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = PaletteWeekdayHeaderView;
-  v3 = [(PaletteWeekdayHeaderView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PaletteWeekdayHeaderView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSMutableArray array];
@@ -70,8 +70,8 @@
         v20 = [(NSMutableArray *)v3->_weekdayLabels objectAtIndexedSubscript:i];
         [v20 setIndex:v18 % v10];
         v21 = [v16 objectAtIndexedSubscript:(v18 - 1) % v10];
-        v22 = [v20 weekDayLabel];
-        [v22 setText:v21];
+        weekDayLabel = [v20 weekDayLabel];
+        [weekDayLabel setText:v21];
 
         ++v18;
       }
@@ -84,38 +84,38 @@
   return v3;
 }
 
-- (void)adjustWeekLabelsByOffset:(int64_t)a3
+- (void)adjustWeekLabelsByOffset:(int64_t)offset
 {
   for (i = self->_weekdayLabels; ; i = self->_weekdayLabels)
   {
-    v6 = [(NSMutableArray *)i firstObject];
-    v7 = [v6 index];
+    firstObject = [(NSMutableArray *)i firstObject];
+    index = [firstObject index];
 
-    if (v7 == 2)
+    if (index == 2)
     {
       break;
     }
 
     weekdayLabels = self->_weekdayLabels;
-    v9 = [(NSMutableArray *)weekdayLabels lastObject];
-    [(NSMutableArray *)weekdayLabels insertObject:v9 atIndex:0];
+    lastObject = [(NSMutableArray *)weekdayLabels lastObject];
+    [(NSMutableArray *)weekdayLabels insertObject:lastObject atIndex:0];
 
     [(NSMutableArray *)self->_weekdayLabels removeLastObject];
   }
 
-  if (a3 >= 1)
+  if (offset >= 1)
   {
     do
     {
       v10 = self->_weekdayLabels;
-      v11 = [(NSMutableArray *)v10 lastObject];
-      [(NSMutableArray *)v10 insertObject:v11 atIndex:0];
+      lastObject2 = [(NSMutableArray *)v10 lastObject];
+      [(NSMutableArray *)v10 insertObject:lastObject2 atIndex:0];
 
       [(NSMutableArray *)self->_weekdayLabels removeLastObject];
-      --a3;
+      --offset;
     }
 
-    while (a3);
+    while (offset);
   }
 
   [(PaletteWeekdayHeaderView *)self setNeedsLayout];
@@ -124,8 +124,8 @@
 - (BOOL)_shouldUseVeryShortWeekdays
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 languageCode];
-  v4 = [v3 isEqualToString:@"ar"];
+  languageCode = [v2 languageCode];
+  v4 = [languageCode isEqualToString:@"ar"];
 
   return v4 ^ 1;
 }
@@ -140,13 +140,13 @@
     do
     {
       v6 = [(NSMutableArray *)self->_weekdayLabels objectAtIndexedSubscript:v5];
-      v7 = [v6 weekDayLabel];
-      v8 = [v7 text];
+      weekDayLabel = [v6 weekDayLabel];
+      text = [weekDayLabel text];
       weekdaysFont = self->_weekdaysFont;
       v14 = NSFontAttributeName;
       v15 = weekdaysFont;
       v10 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-      [v8 sizeWithAttributes:v10];
+      [text sizeWithAttributes:v10];
       v12 = v11;
 
       if (v3 < v12)
@@ -193,10 +193,10 @@
   }
 }
 
-- (void)setIsExpanded:(BOOL)a3
+- (void)setIsExpanded:(BOOL)expanded
 {
-  self->_isExpanded = a3;
-  if (!a3)
+  self->_isExpanded = expanded;
+  if (!expanded)
   {
     [(WeekPaletteTappableDay *)self->_highlightedDay setCircleHidden:1 updateCircleColor:0];
     markedAsTodayDay = self->_markedAsTodayDay;
@@ -205,19 +205,19 @@
   }
 }
 
-- (void)highlightWeekdayLabelForDateAndSetDay:(id)a3
+- (void)highlightWeekdayLabelForDateAndSetDay:(id)day
 {
-  v4 = a3;
+  dayCopy = day;
   v16 = +[NSCalendar currentCalendar];
-  v5 = [v16 component:512 fromDate:v4];
+  v5 = [v16 component:512 fromDate:dayCopy];
   v6 = HKDaysInAWeek;
   v15 = v6 - HKFirstDayOfWeekForWeeklyGoalCalculations();
   v7 = &v5[v15];
   v8 = +[NSDate date];
   [v16 setFirstWeekday:HKFirstDayOfWeekForWeeklyGoalCalculations()];
-  v9 = [v16 isDate:v4 equalToDate:v8 toUnitGranularity:0x2000];
+  v9 = [v16 isDate:dayCopy equalToDate:v8 toUnitGranularity:0x2000];
   v14 = [v16 component:512 fromDate:v8];
-  v10 = [v16 isDate:v4 inSameDayAsDate:v8];
+  v10 = [v16 isDate:dayCopy inSameDayAsDate:v8];
 
   [(WeekPaletteTappableDay *)self->_highlightedDay setCircleHidden:1 updateCircleColor:v10];
   [(WeekPaletteTappableDay *)self->_markedAsTodayDay setTextColorHighlighted:0];

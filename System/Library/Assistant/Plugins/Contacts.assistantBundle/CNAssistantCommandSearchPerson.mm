@@ -1,12 +1,12 @@
 @interface CNAssistantCommandSearchPerson
 - (CNContactStore)contactStore;
-- (id)meContact:(id *)a3;
+- (id)meContact:(id *)contact;
 - (id)perform;
-- (id)searchByName:(id *)a3;
-- (id)searchLocal:(id *)a3;
-- (id)searchRemote:(id *)a3;
+- (id)searchByName:(id *)name;
+- (id)searchLocal:(id *)local;
+- (id)searchRemote:(id *)remote;
 - (id)validate;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CNAssistantCommandSearchPerson
@@ -26,9 +26,9 @@
   return contactStore;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = objc_msgSend_validate(self, v5, v6);
   if (!v7)
   {
@@ -37,7 +37,7 @@
 
   v11 = v7;
   v10 = objc_msgSend_dictionary(v7, v8, v9);
-  v4[2](v4, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
 - (id)validate
@@ -287,12 +287,12 @@ LABEL_17:
   return v30;
 }
 
-- (id)meContact:(id *)a3
+- (id)meContact:(id *)contact
 {
-  v4 = objc_msgSend_contactStore(self, a2, a3);
+  v4 = objc_msgSend_contactStore(self, a2, contact);
   v7 = objc_msgSend_descriptorsForRequiredKeys(MEMORY[0x277CFBC48], v5, v6);
-  v10 = objc_msgSend__crossPlatformUnifiedMeContactWithKeysToFetch_error_(v4, v8, v7, a3);
-  if (*a3)
+  v10 = objc_msgSend__crossPlatformUnifiedMeContactWithKeysToFetch_error_(v4, v8, v7, contact);
+  if (*contact)
   {
     v11 = 0;
   }
@@ -305,9 +305,9 @@ LABEL_17:
   return v11;
 }
 
-- (id)searchByName:(id *)a3
+- (id)searchByName:(id *)name
 {
-  v5 = objc_msgSend_name(self, a2, a3);
+  v5 = objc_msgSend_name(self, a2, name);
 
   if (v5)
   {
@@ -317,8 +317,8 @@ LABEL_17:
     v15 = objc_msgSend_name(self, v13, v14);
     v17 = objc_msgSend_predicateForContactsMatchingName_options_(v12, v16, v15, 1);
 
-    v21 = objc_msgSend_unifiedContactsMatchingPredicate_keysToFetch_error_(v8, v18, v17, v11, a3);
-    if (*a3)
+    v21 = objc_msgSend_unifiedContactsMatchingPredicate_keysToFetch_error_(v8, v18, v17, v11, name);
+    if (*name)
     {
       v22 = 0;
     }
@@ -329,9 +329,9 @@ LABEL_17:
       v24 = objc_msgSend_name(self, v19, v20);
       v26 = objc_msgSend_predicateForContactsWithOrganizationName_(v23, v25, v24);
 
-      v28 = objc_msgSend_unifiedContactsMatchingPredicate_keysToFetch_error_(v8, v27, v26, v11, a3);
+      v28 = objc_msgSend_unifiedContactsMatchingPredicate_keysToFetch_error_(v8, v27, v26, v11, name);
       v30 = v28;
-      if (*a3)
+      if (*name)
       {
         v22 = 0;
       }
@@ -354,13 +354,13 @@ LABEL_17:
   return v22;
 }
 
-- (id)searchLocal:(id *)a3
+- (id)searchLocal:(id *)local
 {
-  v5 = objc_msgSend_name(self, a2, a3);
+  v5 = objc_msgSend_name(self, a2, local);
 
   if (v5)
   {
-    v10 = objc_msgSend_searchByName_(self, v6, a3);
+    v10 = objc_msgSend_searchByName_(self, v6, local);
     v11 = 0;
     goto LABEL_9;
   }
@@ -439,7 +439,7 @@ LABEL_17:
 LABEL_8:
   v10 = 0;
 LABEL_9:
-  if (*a3)
+  if (*local)
   {
     v32 = 0;
   }
@@ -450,7 +450,7 @@ LABEL_9:
     if (v11)
     {
       v36 = objc_msgSend_descriptorsForRequiredKeys(MEMORY[0x277CFBC48], v33, v34);
-      v38 = objc_msgSend_unifiedContactsMatchingPredicate_keysToFetch_error_(v35, v37, v11, v36, a3);
+      v38 = objc_msgSend_unifiedContactsMatchingPredicate_keysToFetch_error_(v35, v37, v11, v36, local);
 
       v10 = v38;
     }
@@ -470,9 +470,9 @@ LABEL_9:
   return v32;
 }
 
-- (id)searchRemote:(id *)a3
+- (id)searchRemote:(id *)remote
 {
-  v5 = objc_msgSend_name(self, a2, a3);
+  v5 = objc_msgSend_name(self, a2, remote);
 
   if (v5)
   {
@@ -512,9 +512,9 @@ LABEL_6:
     v28 = objc_msgSend_absoluteString(v25, v26, v27);
     v30 = objc_msgSend_predicateForContainersInAccountWithIdentifier_(v24, v29, v28);
 
-    v32 = objc_msgSend_containersMatchingPredicate_error_(v18, v31, v30, a3);
+    v32 = objc_msgSend_containersMatchingPredicate_error_(v18, v31, v30, remote);
     v34 = v32;
-    if (*a3)
+    if (*remote)
     {
 LABEL_12:
       v43 = 0;
@@ -543,8 +543,8 @@ LABEL_9:
 
   v36 = objc_msgSend_predicateForContactsMatchingFullTextSearch_containerIdentifiers_groupIdentifiers_(MEMORY[0x277CBDA58], v22, v11, v30, 0);
   v39 = objc_msgSend_descriptorsForRequiredKeys(MEMORY[0x277CFBC48], v37, v38);
-  v34 = objc_msgSend_unifiedContactsMatchingPredicate_keysToFetch_error_(v18, v40, v36, v39, a3);
-  v41 = *a3;
+  v34 = objc_msgSend_unifiedContactsMatchingPredicate_keysToFetch_error_(v18, v40, v36, v39, remote);
+  v41 = *remote;
 
   if (v41 || !v34)
   {

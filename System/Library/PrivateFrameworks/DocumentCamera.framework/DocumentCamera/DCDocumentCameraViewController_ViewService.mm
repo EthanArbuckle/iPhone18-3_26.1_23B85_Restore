@@ -1,24 +1,24 @@
 @interface DCDocumentCameraViewController_ViewService
 - (DCDocumentCameraRemoteViewController)remoteViewController;
-- (DCDocumentCameraViewController_ViewService)initWithDelegate:(id)a3;
+- (DCDocumentCameraViewController_ViewService)initWithDelegate:(id)delegate;
 - (DCDocumentCameraViewServiceViewController)viewServiceViewController;
 - (id)castedChildViewController;
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4;
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation;
 - (void)dealloc;
 - (void)didCancel;
-- (void)didFailWithError:(id)a3;
-- (void)didFinishWithDocumentInfoCollection:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didFinishWithDocumentInfoCollection:(id)collection;
 - (void)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation DCDocumentCameraViewController_ViewService
 
-- (DCDocumentCameraViewController_ViewService)initWithDelegate:(id)a3
+- (DCDocumentCameraViewController_ViewService)initWithDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = DCDocumentCameraViewController_ViewService;
-  v3 = [(DCDocumentCameraViewController *)&v6 initWithDelegate:a3 childViewController:0];
+  v3 = [(DCDocumentCameraViewController *)&v6 initWithDelegate:delegate childViewController:0];
   v4 = v3;
   if (v3)
   {
@@ -30,24 +30,24 @@
 
 - (void)dealloc
 {
-  v3 = [(DCDocumentCameraViewController_ViewService *)self accelerometer];
-  [v3 setOrientationEventsEnabled:0];
+  accelerometer = [(DCDocumentCameraViewController_ViewService *)self accelerometer];
+  [accelerometer setOrientationEventsEnabled:0];
 
-  v4 = [(DCDocumentCameraViewController_ViewService *)self accelerometer];
-  [v4 setPassiveOrientationEvents:1];
+  accelerometer2 = [(DCDocumentCameraViewController_ViewService *)self accelerometer];
+  [accelerometer2 setPassiveOrientationEvents:1];
 
-  v5 = [(DCDocumentCameraViewController_ViewService *)self accelerometer];
-  [v5 setDelegate:0];
+  accelerometer3 = [(DCDocumentCameraViewController_ViewService *)self accelerometer];
+  [accelerometer3 setDelegate:0];
 
   v6.receiver = self;
   v6.super_class = DCDocumentCameraViewController_ViewService;
   [(DCDocumentCameraViewController_ViewService *)&v6 dealloc];
 }
 
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation
 {
-  v5 = [(DCDocumentCameraViewController_ViewService *)self viewServiceViewController];
-  [v5 setOrientation:a4 animated:1];
+  viewServiceViewController = [(DCDocumentCameraViewController_ViewService *)self viewServiceViewController];
+  [viewServiceViewController setOrientation:orientation animated:1];
 }
 
 - (void)viewDidLoad
@@ -84,77 +84,77 @@
 
 - (id)castedChildViewController
 {
-  v2 = [(DCDocumentCameraViewController *)self childViewController];
+  childViewController = [(DCDocumentCameraViewController *)self childViewController];
   v3 = objc_opt_class();
-  v9 = DCClassAndProtocolCast(v2, v3, 1, v4, v5, v6, v7, v8, &unk_285CA5358);
+  v9 = DCClassAndProtocolCast(childViewController, v3, 1, v4, v5, v6, v7, v8, &unk_285CA5358);
 
   return v9;
 }
 
 - (DCDocumentCameraViewServiceViewController)viewServiceViewController
 {
-  v2 = [(DCDocumentCameraViewController_ViewService *)self remoteViewController];
-  v3 = [v2 viewServiceViewController];
+  remoteViewController = [(DCDocumentCameraViewController_ViewService *)self remoteViewController];
+  viewServiceViewController = [remoteViewController viewServiceViewController];
 
-  return v3;
+  return viewServiceViewController;
 }
 
 - (DCDocumentCameraRemoteViewController)remoteViewController
 {
-  v2 = [(DCDocumentCameraViewController_ViewService *)self castedChildViewController];
-  v3 = [v2 remoteViewController];
+  castedChildViewController = [(DCDocumentCameraViewController_ViewService *)self castedChildViewController];
+  remoteViewController = [castedChildViewController remoteViewController];
 
-  return v3;
+  return remoteViewController;
 }
 
 - (void)dismiss
 {
-  v3 = [(DCDocumentCameraViewController_ViewService *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DCDocumentCameraViewController_ViewService *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v4 = [(DCDocumentCameraViewController_ViewService *)self remoteViewController];
-  [v4 viewControllerWasDismissed];
+  remoteViewController = [(DCDocumentCameraViewController_ViewService *)self remoteViewController];
+  [remoteViewController viewControllerWasDismissed];
 }
 
 - (void)didCancel
 {
-  v3 = [(DCDocumentCameraViewController *)self docCamDelegate];
+  docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v5 documentCameraViewControllerDidCancel:self];
+    docCamDelegate2 = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate2 documentCameraViewControllerDidCancel:self];
   }
 }
 
-- (void)didFinishWithDocumentInfoCollection:(id)a3
+- (void)didFinishWithDocumentInfoCollection:(id)collection
 {
-  v11 = a3;
-  v4 = [(DCDocumentCameraViewController *)self docCamDelegate];
+  collectionCopy = collection;
+  docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = [DCScannedDocument alloc];
-    v7 = [(DCDocumentCameraViewController_ViewService *)self viewServiceSession];
-    v8 = [v7 docCamImageCache];
-    v9 = [(DCScannedDocument *)v6 initWithDocInfoCollection:v11 imageCache:v8];
+    viewServiceSession = [(DCDocumentCameraViewController_ViewService *)self viewServiceSession];
+    docCamImageCache = [viewServiceSession docCamImageCache];
+    v9 = [(DCScannedDocument *)v6 initWithDocInfoCollection:collectionCopy imageCache:docCamImageCache];
 
-    v10 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v10 documentCameraViewController:self didFinishWithDocument:v9];
+    docCamDelegate2 = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate2 documentCameraViewController:self didFinishWithDocument:v9];
   }
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = [(DCDocumentCameraViewController *)self docCamDelegate];
+  docCamDelegate = [(DCDocumentCameraViewController *)self docCamDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DCDocumentCameraViewController *)self docCamDelegate];
-    [v6 documentCameraViewControllerDidCancel:self];
+    docCamDelegate2 = [(DCDocumentCameraViewController *)self docCamDelegate];
+    [docCamDelegate2 documentCameraViewControllerDidCancel:self];
   }
 }
 

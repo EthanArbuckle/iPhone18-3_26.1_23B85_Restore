@@ -10,7 +10,7 @@
 
 - (uint64_t)_webkit_numberForKey:()WebNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -25,7 +25,7 @@
 
 - (uint64_t)_webkit_stringForKey:()WebNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -40,7 +40,7 @@
 
 - (uint64_t)_webkit_arrayForKey:()WebNSDictionaryExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -55,7 +55,7 @@
 
 - (uint64_t)_webkit_objectForMIMEType:()WebNSDictionaryExtras
 {
-  result = [a1 objectForKey:?];
+  result = [self objectForKey:?];
   if (!result)
   {
     v6 = [a3 rangeOfString:@"/"];
@@ -68,7 +68,7 @@
     {
       v7 = [a3 substringToIndex:v6 + 1];
 
-      return [a1 objectForKey:v7];
+      return [self objectForKey:v7];
     }
   }
 
@@ -77,7 +77,7 @@
 
 - (void)_webkit_BOOLForKey:()WebNSDictionaryExtras
 {
-  result = [a1 _webkit_numberForKey:?];
+  result = [self _webkit_numberForKey:?];
   if (result)
   {
 

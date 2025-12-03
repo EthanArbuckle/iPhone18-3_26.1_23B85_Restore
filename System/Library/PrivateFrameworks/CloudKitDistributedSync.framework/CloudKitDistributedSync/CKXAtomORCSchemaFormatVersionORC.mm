@@ -1,25 +1,25 @@
 @interface CKXAtomORCSchemaFormatVersionORC
-- (CKXAtomORCSchemaFormatVersionORC)initWithBinding:(id)a3;
+- (CKXAtomORCSchemaFormatVersionORC)initWithBinding:(id)binding;
 - (id)generateSchema;
-- (unint64_t)listColumnIndexForReference:(unint64_t)a3;
-- (unint64_t)structReferenceIndexForReference:(unint64_t)a3;
-- (unint64_t)topLevelIndexForStruct:(unint64_t)a3;
-- (unint64_t)valueColumnIndexForField:(unint64_t)a3;
-- (void)configureColumnsWithRootColumn:(void *)a3;
+- (unint64_t)listColumnIndexForReference:(unint64_t)reference;
+- (unint64_t)structReferenceIndexForReference:(unint64_t)reference;
+- (unint64_t)topLevelIndexForStruct:(unint64_t)struct;
+- (unint64_t)valueColumnIndexForField:(unint64_t)field;
+- (void)configureColumnsWithRootColumn:(void *)column;
 @end
 
 @implementation CKXAtomORCSchemaFormatVersionORC
 
-- (CKXAtomORCSchemaFormatVersionORC)initWithBinding:(id)a3
+- (CKXAtomORCSchemaFormatVersionORC)initWithBinding:(id)binding
 {
-  v5 = a3;
+  bindingCopy = binding;
   v9.receiver = self;
   v9.super_class = CKXAtomORCSchemaFormatVersionORC;
   v6 = [(CKXAtomORCSchemaFormatVersionORC *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_binding, a3);
+    objc_storeStrong(&v6->_binding, binding);
   }
 
   return v7;
@@ -59,9 +59,9 @@
   return v2;
 }
 
-- (void)configureColumnsWithRootColumn:(void *)a3
+- (void)configureColumnsWithRootColumn:(void *)column
 {
-  v9 = *(*(a3 + 10) + 8 * objc_msgSend_topLevelIndexForStruct_(self, a2, self->_binding->tokens.location, v3, v4, v5, v6));
+  v9 = *(*(column + 10) + 8 * objc_msgSend_topLevelIndexForStruct_(self, a2, self->_binding->tokens.location, v3, v4, v5, v6));
   if (v9)
   {
     v12 = **v9;
@@ -74,7 +74,7 @@
     objc_msgSend_enumerateColumn_includingRoot_shallow_withBlock_(CKXORCUtilities, v10, 0, 1, 0, &unk_2856A2BD8, v11);
   }
 
-  v21 = *(*(a3 + 10) + 8 * objc_msgSend_topLevelIndexForStruct_(self, v16, self->_binding->tokens.timestamp, v17, v18, v19, v20));
+  v21 = *(*(column + 10) + 8 * objc_msgSend_topLevelIndexForStruct_(self, v16, self->_binding->tokens.timestamp, v17, v18, v19, v20));
   if (v21)
   {
     v24 = **v21;
@@ -87,7 +87,7 @@
     objc_msgSend_enumerateColumn_includingRoot_shallow_withBlock_(CKXORCUtilities, v22, 0, 1, 0, &unk_2856A2BF8, v23);
   }
 
-  v33 = *(*(a3 + 10) + 8 * objc_msgSend_topLevelIndexForStruct_(self, v28, self->_binding->tokens.reference, v29, v30, v31, v32));
+  v33 = *(*(column + 10) + 8 * objc_msgSend_topLevelIndexForStruct_(self, v28, self->_binding->tokens.reference, v29, v30, v31, v32));
   if (v33)
   {
     v36 = **v33;
@@ -100,7 +100,7 @@
     objc_msgSend_enumerateColumn_includingRoot_shallow_withBlock_(CKXORCUtilities, v34, 0, 1, 0, &unk_2856A2C18, v35);
   }
 
-  v45 = *(*(a3 + 10) + 8 * objc_msgSend_topLevelIndexForStruct_(self, v40, self->_binding->tokens.atom, v41, v42, v43, v44));
+  v45 = *(*(column + 10) + 8 * objc_msgSend_topLevelIndexForStruct_(self, v40, self->_binding->tokens.atom, v41, v42, v43, v44));
   if (v45)
   {
     v48 = **v45;
@@ -115,137 +115,137 @@
   objc_msgSend_enumerateColumn_includingRoot_shallow_withBlock_(CKXORCUtilities, v46, v49, 1, 0, &unk_2856A2C38, v47);
 }
 
-- (unint64_t)topLevelIndexForStruct:(unint64_t)a3
+- (unint64_t)topLevelIndexForStruct:(unint64_t)struct
 {
   binding = self->_binding;
-  if (binding->tokens.location == a3)
+  if (binding->tokens.location == struct)
   {
     return 0;
   }
 
-  if (binding->tokens.timestamp == a3)
+  if (binding->tokens.timestamp == struct)
   {
     return 1;
   }
 
-  if (binding->tokens.reference == a3)
+  if (binding->tokens.reference == struct)
   {
     return 2;
   }
 
-  if (binding->tokens.atom == a3)
+  if (binding->tokens.atom == struct)
   {
     return 3;
   }
 
-  v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, v3, v4, v5, v6);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKXAtomORCSchema.mm", 185, @"Invalid struct %lu", a3);
+  v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, struct, v3, v4, v5, v6);
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKXAtomORCSchema.mm", 185, @"Invalid struct %lu", struct);
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)structReferenceIndexForReference:(unint64_t)a3
+- (unint64_t)structReferenceIndexForReference:(unint64_t)reference
 {
   binding = self->_binding;
-  if (binding->tokens.atom_location == a3)
+  if (binding->tokens.atom_location == reference)
   {
     return 1;
   }
 
-  if (binding->tokens.atom_timestamp == a3)
+  if (binding->tokens.atom_timestamp == reference)
   {
     return 2;
   }
 
-  if (binding->tokens.reference_location == a3)
+  if (binding->tokens.reference_location == reference)
   {
     return 1;
   }
 
-  if (binding->tokens.reference_timestamp == a3)
+  if (binding->tokens.reference_timestamp == reference)
   {
     return 2;
   }
 
-  v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, v3, v4, v5, v6);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKXAtomORCSchema.mm", 206, @"Invalid field %lu", a3);
+  v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, reference, v3, v4, v5, v6);
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKXAtomORCSchema.mm", 206, @"Invalid field %lu", reference);
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)listColumnIndexForReference:(unint64_t)a3
+- (unint64_t)listColumnIndexForReference:(unint64_t)reference
 {
-  if (self->_binding->tokens.atom_references == a3)
+  if (self->_binding->tokens.atom_references == reference)
   {
     return 3;
   }
 
-  v11 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, v3, v4, v5, v6);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v12, a2, self, @"CKXAtomORCSchema.mm", 220, @"Invalid field %lu", a3);
+  v11 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, reference, v3, v4, v5, v6);
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v12, a2, self, @"CKXAtomORCSchema.mm", 220, @"Invalid field %lu", reference);
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)valueColumnIndexForField:(unint64_t)a3
+- (unint64_t)valueColumnIndexForField:(unint64_t)field
 {
   binding = self->_binding;
-  if (binding->tokens.atom_version == a3)
+  if (binding->tokens.atom_version == field)
   {
     return 0;
   }
 
-  if (binding->tokens.atom_atom_behavior == a3)
+  if (binding->tokens.atom_atom_behavior == field)
   {
     return 4;
   }
 
-  if (binding->tokens.atom_atom_type == a3)
+  if (binding->tokens.atom_atom_type == field)
   {
     return 5;
   }
 
-  if (binding->tokens.atom_value == a3)
+  if (binding->tokens.atom_value == field)
   {
     return 6;
   }
 
-  if (binding->tokens.reference_type == a3 || binding->tokens.location_identifier == a3)
+  if (binding->tokens.reference_type == field || binding->tokens.location_identifier == field)
   {
     return 0;
   }
 
-  if (binding->tokens.location_zone_name == a3)
+  if (binding->tokens.location_zone_name == field)
   {
     return 1;
   }
 
-  if (binding->tokens.location_zone_owner_name == a3)
+  if (binding->tokens.location_zone_owner_name == field)
   {
     return 2;
   }
 
-  if (binding->tokens.timestamp_identifier == a3)
+  if (binding->tokens.timestamp_identifier == field)
   {
     return 0;
   }
 
-  if (binding->tokens.timestamp_modifier == a3)
+  if (binding->tokens.timestamp_modifier == field)
   {
     return 1;
   }
 
-  if (binding->tokens.timestamp_clock == a3)
+  if (binding->tokens.timestamp_clock == field)
   {
     return 2;
   }
 
-  if (binding->tokens.timestamp_unordered == a3)
+  if (binding->tokens.timestamp_unordered == field)
   {
     return 3;
   }
 
-  objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, v3, v4, v5, v6);
-  v12 = v14 = a3;
+  objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, field, v3, v4, v5, v6);
+  v12 = v14 = field;
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKXAtomORCSchema.mm", 259, @"Invalid field %lu", v14);
 
   return 0x7FFFFFFFFFFFFFFFLL;

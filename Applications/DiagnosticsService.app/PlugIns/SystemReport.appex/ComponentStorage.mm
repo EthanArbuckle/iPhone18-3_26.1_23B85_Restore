@@ -1,35 +1,35 @@
 @interface ComponentStorage
-- (id)checkDiskSpaceForURLResourceKey:(id)a3;
+- (id)checkDiskSpaceForURLResourceKey:(id)key;
 - (id)dataAvailable;
 - (id)dataAvailableForImportantUsage;
 - (id)dataCapacity;
 - (id)serialNumber;
 - (id)totalDiskCapacity;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentStorage
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentStorage *)self dataCapacity];
-  [v4 setObject:v5 forKeyedSubscript:@"nandCapacity"];
+  attributesCopy = attributes;
+  dataCapacity = [(ComponentStorage *)self dataCapacity];
+  [attributesCopy setObject:dataCapacity forKeyedSubscript:@"nandCapacity"];
 
-  v6 = [(ComponentStorage *)self dataAvailable];
-  [v4 setObject:v6 forKeyedSubscript:@"nandAvailable"];
+  dataAvailable = [(ComponentStorage *)self dataAvailable];
+  [attributesCopy setObject:dataAvailable forKeyedSubscript:@"nandAvailable"];
 
-  v7 = [(ComponentStorage *)self dataAvailableForImportantUsage];
-  [v4 setObject:v7 forKeyedSubscript:@"nandAvailableForImportantUsage"];
+  dataAvailableForImportantUsage = [(ComponentStorage *)self dataAvailableForImportantUsage];
+  [attributesCopy setObject:dataAvailableForImportantUsage forKeyedSubscript:@"nandAvailableForImportantUsage"];
 
-  v8 = [(ComponentStorage *)self totalDiskCapacity];
-  [v4 setObject:v8 forKeyedSubscript:@"nandTotalDiskCapacity"];
+  totalDiskCapacity = [(ComponentStorage *)self totalDiskCapacity];
+  [attributesCopy setObject:totalDiskCapacity forKeyedSubscript:@"nandTotalDiskCapacity"];
 
-  v9 = [(ComponentStorage *)self serialNumber];
-  [v4 setObject:v9 forKeyedSubscript:@"serialNumber"];
+  serialNumber = [(ComponentStorage *)self serialNumber];
+  [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
 
   v10 = CopyAppleCareNANDInfo();
-  [v4 setObject:v10 forKeyedSubscript:@"nandInfo"];
+  [attributesCopy setObject:v10 forKeyedSubscript:@"nandInfo"];
 }
 
 - (id)dataCapacity
@@ -45,8 +45,8 @@
     v2 = [NSNumber numberWithUnsignedLongLong:v6.f_blocks * v6.f_bsize];
   }
 
-  v3 = [v2 stringValue];
-  v4 = stringOrNull(v3);
+  stringValue = [v2 stringValue];
+  v4 = stringOrNull(stringValue);
 
   return v4;
 }
@@ -122,13 +122,13 @@ LABEL_11:
   return v9;
 }
 
-- (id)checkDiskSpaceForURLResourceKey:(id)a3
+- (id)checkDiskSpaceForURLResourceKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [NSURL fileURLWithPath:@"/private/var"];
   v9 = 0;
   v10 = 0;
-  [v4 getResourceValue:&v10 forKey:v3 error:&v9];
+  [v4 getResourceValue:&v10 forKey:keyCopy error:&v9];
   v5 = v10;
   v6 = v9;
   if (!v5)
@@ -137,7 +137,7 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v12 = v3;
+      v12 = keyCopy;
       v13 = 2112;
       v14 = v6;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Unable to check resource %@ in system report: %@", buf, 0x16u);

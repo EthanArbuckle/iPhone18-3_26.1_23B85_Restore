@@ -1,20 +1,20 @@
 @interface _GEODefaultsNotificationHelper
-- (void)_notifyPeerOfChangedKeys:(id)a3 options:(unint64_t)a4;
-- (void)geoXPCConnectionIsReadyToSend:(id)a3;
+- (void)_notifyPeerOfChangedKeys:(id)keys options:(unint64_t)options;
+- (void)geoXPCConnectionIsReadyToSend:(id)send;
 @end
 
 @implementation _GEODefaultsNotificationHelper
 
-- (void)geoXPCConnectionIsReadyToSend:(id)a3
+- (void)geoXPCConnectionIsReadyToSend:(id)send
 {
-  v4 = a3;
+  sendCopy = send;
   WeakRetained = objc_loadWeakRetained(&self->_peer);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained connection];
+    connection = [WeakRetained connection];
 
-    if (v7 == v4)
+    if (connection == sendCopy)
     {
       v25 = 0;
       v26 = &v25;
@@ -39,8 +39,8 @@
         v10 = GEOGetUserDefaultsLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v11 = [v20[5] allObjects];
-          v12 = [v11 componentsJoinedByString:{@", "}];
+          allObjects = [v20[5] allObjects];
+          v12 = [allObjects componentsJoinedByString:{@", "}];
           *buf = 138412546;
           v30 = v9;
           v31 = 2114;
@@ -49,12 +49,12 @@
         }
 
         v13 = [[GEOConfigKeyChangeNotification alloc] initWithTraits:0 auditToken:0 throttleToken:0];
-        v14 = [v20[5] allObjects];
-        [v13 setKeyStrings:v14];
+        allObjects2 = [v20[5] allObjects];
+        [v13 setKeyStrings:allObjects2];
 
         [v13 setKeyOptions:v26[3]];
-        v15 = [v9 connection];
-        [v13 send:v15];
+        connection2 = [v9 connection];
+        [v13 send:connection2];
       }
 
       _Block_object_dispose(v17, 8);
@@ -65,14 +65,14 @@
   }
 }
 
-- (void)_notifyPeerOfChangedKeys:(id)a3 options:(unint64_t)a4
+- (void)_notifyPeerOfChangedKeys:(id)keys options:(unint64_t)options
 {
-  v5 = a3;
+  keysCopy = keys;
   WeakRetained = objc_loadWeakRetained(&self->_peer);
   if (WeakRetained)
   {
     isolater = self->_isolater;
-    v8 = v5;
+    v8 = keysCopy;
     v9 = WeakRetained;
     geo_isolate_sync();
   }

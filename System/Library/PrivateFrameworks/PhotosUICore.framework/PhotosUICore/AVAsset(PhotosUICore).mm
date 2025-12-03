@@ -10,12 +10,12 @@
 - (id)px_assetByClampingToDuration:()PhotosUICore error:
 {
   v20 = *MEMORY[0x1E69E9840];
-  [a1 duration];
+  [self duration];
   *&time2.start.value = *&a3->value;
   time2.start.epoch = a3->epoch;
   if (CMTimeCompare(&time1.start, &time2.start) <= 0)
   {
-    v13 = a1;
+    selfCopy = self;
   }
 
   else
@@ -30,7 +30,7 @@
     v16 = 0;
     time2 = time1;
     duration = *v7;
-    v9 = [MEMORY[0x1E69C0708] insertTimeRange:&time2 ofAsset:a1 atTime:&duration intoMutableComposition:v8 error:&v16];
+    v9 = [MEMORY[0x1E69C0708] insertTimeRange:&time2 ofAsset:self atTime:&duration intoMutableComposition:v8 error:&v16];
     v10 = v16;
     v11 = v10;
     if (v9)
@@ -41,7 +41,7 @@
         *a4 = v11;
       }
 
-      v13 = [v8 copy];
+      selfCopy = [v8 copy];
     }
 
     else
@@ -52,7 +52,7 @@
         time2.start.epoch = a3->epoch;
         v15 = CMTimeCopyDescription(0, &time2.start);
         LODWORD(time2.start.value) = 138412802;
-        *(&time2.start.value + 4) = a1;
+        *(&time2.start.value + 4) = self;
         LOWORD(time2.start.flags) = 2112;
         *(&time2.start.flags + 2) = v15;
         HIWORD(time2.start.epoch) = 2112;
@@ -60,19 +60,19 @@
         _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to produce trimmed AVAsset from asset %@, duration %@. Error: %@.", &time2, 0x20u);
       }
 
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (double)px_dimensionsOfFirstVideoTrack
 {
-  v1 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:a1];
-  v2 = [v1 firstObject];
+  v1 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:self];
+  firstObject = [v1 firstObject];
 
-  [v2 dimensions];
+  [firstObject dimensions];
   v4 = v3;
 
   return v4;
@@ -82,14 +82,14 @@
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 px_cachedDuration];
-  v6 = v5;
-  if (v5)
+  px_cachedDuration = [self px_cachedDuration];
+  v6 = px_cachedDuration;
+  if (px_cachedDuration)
   {
     location[0] = 0;
     location[1] = 0;
     v22 = 0;
-    [v5 CMTimeValue];
+    [px_cachedDuration CMTimeValue];
     if (v4)
     {
       v7 = v4[2];
@@ -101,7 +101,7 @@
 
   else
   {
-    objc_initWeak(location, a1);
+    objc_initWeak(location, self);
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __62__AVAsset_PhotosUICore__px_loadDurationWithCompletionHandler___block_invoke;
@@ -110,7 +110,7 @@
     v17 = v4;
     v8 = _Block_copy(&v13);
     v9 = NSStringFromSelector(sel_duration);
-    v10 = [a1 statusOfValueForKey:v9 error:{0, v13, v14, v15, v16}];
+    v10 = [self statusOfValueForKey:v9 error:{0, v13, v14, v15, v16}];
 
     if (v10 == 2)
     {
@@ -122,7 +122,7 @@
       v11 = NSStringFromSelector(sel_duration);
       v23[0] = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-      [a1 loadValuesAsynchronouslyForKeys:v12 completionHandler:v8];
+      [self loadValuesAsynchronouslyForKeys:v12 completionHandler:v8];
     }
 
     objc_destroyWeak(&v18);
@@ -132,10 +132,10 @@
 
 - (void)px_duration
 {
-  v4 = [a1 px_cachedDuration];
-  if (v4)
+  px_cachedDuration = [self px_cachedDuration];
+  if (px_cachedDuration)
   {
-    v5 = v4;
+    v5 = px_cachedDuration;
     *a2 = 0;
     a2[1] = 0;
     a2[2] = 0;
@@ -145,11 +145,11 @@
   {
     v8 = 0uLL;
     v9 = 0;
-    [a1 duration];
+    [self duration];
     v6 = v8;
     v7 = v9;
     v5 = [MEMORY[0x1E696B098] valueWithCMTime:&v6];
-    [a1 _px_setCachedDuration:v5];
+    [self _px_setCachedDuration:v5];
     *a2 = 0;
     a2[1] = 0;
     a2[2] = 0;

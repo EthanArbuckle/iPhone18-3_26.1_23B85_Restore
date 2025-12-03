@@ -1,6 +1,6 @@
 @interface RTIntermittentGNSSManagerMetrics
-+ (id)signalCategoryToString:(unint64_t)a3;
-- (RTIntermittentGNSSManagerMetrics)initWithDefaultsManager:(id)a3 timerManager:(id)a4;
++ (id)signalCategoryToString:(unint64_t)string;
+- (RTIntermittentGNSSManagerMetrics)initWithDefaultsManager:(id)manager timerManager:(id)timerManager;
 - (double)_getCurrentSessionDuration;
 - (id)_collectDailyMetrics;
 - (id)_collectSessionMetrics;
@@ -14,30 +14,30 @@
 - (void)_submitDailyMetricsToCoreAnalytics;
 - (void)_submitSessionMetricsToCoreAnalytics;
 - (void)_submitStreakMetricsToCoreAnalytics;
-- (void)_updateMetricsForKey:(id)a3;
-- (void)processSignalSwitch:(unint64_t)a3;
+- (void)_updateMetricsForKey:(id)key;
+- (void)processSignalSwitch:(unint64_t)switch;
 - (void)setup;
 - (void)shutdown;
 - (void)submitDailyMetricsToCoreAnalytics;
-- (void)updateMetricsForKey:(id)a3;
-- (void)updateSessionLocationCount:(unint64_t)a3;
+- (void)updateMetricsForKey:(id)key;
+- (void)updateSessionLocationCount:(unint64_t)count;
 @end
 
 @implementation RTIntermittentGNSSManagerMetrics
 
-- (RTIntermittentGNSSManagerMetrics)initWithDefaultsManager:(id)a3 timerManager:(id)a4
+- (RTIntermittentGNSSManagerMetrics)initWithDefaultsManager:(id)manager timerManager:(id)timerManager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  managerCopy = manager;
+  timerManagerCopy = timerManager;
+  v9 = timerManagerCopy;
+  if (!managerCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v17 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -48,7 +48,7 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!timerManagerCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -67,23 +67,23 @@ LABEL_15:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_defaultsManager, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v10->_defaultsManager, manager);
+    objc_storeStrong(p_isa + 3, timerManager);
     v12 = p_isa;
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v12 UTF8String];
+      uTF8String = [v12 UTF8String];
     }
 
     else
     {
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v12];
-      v14 = [v18 UTF8String];
+      uTF8String = [v18 UTF8String];
     }
 
-    v19 = dispatch_queue_create(v14, v13);
+    v19 = dispatch_queue_create(uTF8String, v13);
 
     v20 = v12[5];
     v12[5] = v19;
@@ -96,21 +96,21 @@ LABEL_15:
   }
 
   self = p_isa;
-  v17 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)setup
 {
-  v3 = [(RTIntermittentGNSSManagerMetrics *)self queue];
+  queue = [(RTIntermittentGNSSManagerMetrics *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__RTIntermittentGNSSManagerMetrics_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
@@ -127,13 +127,13 @@ LABEL_13:
 
 - (void)shutdown
 {
-  v3 = [(RTIntermittentGNSSManagerMetrics *)self queue];
+  queue = [(RTIntermittentGNSSManagerMetrics *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__RTIntermittentGNSSManagerMetrics_shutdown__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __44__RTIntermittentGNSSManagerMetrics_shutdown__block_invoke(uint64_t a1)
@@ -148,23 +148,23 @@ uint64_t __44__RTIntermittentGNSSManagerMetrics_shutdown__block_invoke(uint64_t 
 
 - (double)_getCurrentSessionDuration
 {
-  v2 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsIntermittentGNSSLastRegistrationDate"];
+  defaultsManager = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsIntermittentGNSSLastRegistrationDate"];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    date = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v6 = v5;
+  v6 = date;
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSinceDate:v6];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceDate:v6];
   v9 = v8;
 
   return v9;
@@ -178,14 +178,14 @@ uint64_t __44__RTIntermittentGNSSManagerMetrics_shutdown__block_invoke(uint64_t 
   v10 = __Block_byref_object_copy__51;
   v11 = __Block_byref_object_dispose__51;
   v12 = 0;
-  v3 = [(RTIntermittentGNSSManagerMetrics *)self queue];
+  queue = [(RTIntermittentGNSSManagerMetrics *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__RTIntermittentGNSSManagerMetrics_getLastRegistrationDate__block_invoke;
   v6[3] = &unk_2788C7FB0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -202,34 +202,34 @@ uint64_t __59__RTIntermittentGNSSManagerMetrics_getLastRegistrationDate__block_i
 
 - (id)_getLastRegistrationDate
 {
-  v2 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsIntermittentGNSSLastRegistrationDate"];
+  defaultsManager = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsIntermittentGNSSLastRegistrationDate"];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    date = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v6 = v5;
+  v6 = date;
 
   return v6;
 }
 
-- (void)updateSessionLocationCount:(unint64_t)a3
+- (void)updateSessionLocationCount:(unint64_t)count
 {
-  v5 = [(RTIntermittentGNSSManagerMetrics *)self queue];
+  queue = [(RTIntermittentGNSSManagerMetrics *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__RTIntermittentGNSSManagerMetrics_updateSessionLocationCount___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = count;
+  dispatch_async(queue, v6);
 }
 
 _BYTE *__63__RTIntermittentGNSSManagerMetrics_updateSessionLocationCount___block_invoke(uint64_t a1)
@@ -247,32 +247,32 @@ _BYTE *__63__RTIntermittentGNSSManagerMetrics_updateSessionLocationCount___block
   return result;
 }
 
-+ (id)signalCategoryToString:(unint64_t)a3
++ (id)signalCategoryToString:(unint64_t)string
 {
-  if (a3 - 1 > 4)
+  if (string - 1 > 4)
   {
     return @"RTIntermittentGNSSManagerSignalCategoryUnknown";
   }
 
   else
   {
-    return off_2788C9388[a3 - 1];
+    return off_2788C9388[string - 1];
   }
 }
 
-- (void)updateMetricsForKey:(id)a3
+- (void)updateMetricsForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(RTIntermittentGNSSManagerMetrics *)self queue];
+    queue = [(RTIntermittentGNSSManagerMetrics *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __56__RTIntermittentGNSSManagerMetrics_updateMetricsForKey___block_invoke;
     v7[3] = &unk_2788C4A70;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = keyCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -286,12 +286,12 @@ _BYTE *__63__RTIntermittentGNSSManagerMetrics_updateSessionLocationCount___block
   }
 }
 
-- (void)_updateMetricsForKey:(id)a3
+- (void)_updateMetricsForKey:(id)key
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (!keyCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -305,29 +305,29 @@ LABEL_10:
     goto LABEL_33;
   }
 
-  if ([v4 isEqualToString:@"register"])
+  if ([keyCopy isEqualToString:@"register"])
   {
     [(RTIntermittentGNSSManagerMetrics *)self setCurrentSessionOngoing:1];
-    v6 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v6 setObject:v7 forKey:@"RTDefaultsIntermittentGNSSLastRegistrationDate"];
+    defaultsManager = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    date = [MEMORY[0x277CBEAA8] date];
+    [defaultsManager setObject:date forKey:@"RTDefaultsIntermittentGNSSLastRegistrationDate"];
 
-    v8 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
-    [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"Enabled"];
+    powerLogEventDictionary = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
+    [powerLogEventDictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"Enabled"];
 
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTIntermittentGNSSManagerMetrics mostRecentSignalSwitch](self, "mostRecentSignalSwitch")}];
-    v10 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
-    [v10 setObject:v9 forKeyedSubscript:@"Reason"];
+    powerLogEventDictionary2 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
+    [powerLogEventDictionary2 setObject:v9 forKeyedSubscript:@"Reason"];
 
-    v11 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
+    powerLogEventDictionary3 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
     PLLogRegisteredEvent();
 
     [(RTIntermittentGNSSManagerMetrics *)self setCurrentSessionActivationCriteria:[(RTIntermittentGNSSManagerMetrics *)self mostRecentSignalSwitch]];
-    v12 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v13 = [v12 objectForKey:@"RTDefaultsIntermittentGNSSLastUnregistrationDate"];
+    defaultsManager2 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v13 = [defaultsManager2 objectForKey:@"RTDefaultsIntermittentGNSSLastUnregistrationDate"];
 
-    v14 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v15 = [v14 objectForKey:@"RTDefaultsIntermittentGNSSLastRegistrationDate"];
+    defaultsManager3 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v15 = [defaultsManager3 objectForKey:@"RTDefaultsIntermittentGNSSLastRegistrationDate"];
 
     if (v13 && ([v15 timeIntervalSinceDate:v13], -[RTIntermittentGNSSManagerMetrics setCurrentSessionTimeSinceLastSession:](self, "setCurrentSessionTimeSinceLastSession:"), -[RTIntermittentGNSSManagerMetrics currentSessionTimeSinceLastSession](self, "currentSessionTimeSinceLastSession"), v16 <= 1200.0))
     {
@@ -368,28 +368,28 @@ LABEL_10:
   }
 
   [(RTIntermittentGNSSManagerMetrics *)self setCurrentSessionOngoing:0];
-  v18 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v19 = [MEMORY[0x277CBEAA8] date];
-  [v18 setObject:v19 forKey:@"RTDefaultsIntermittentGNSSLastUnregistrationDate"];
+  defaultsManager4 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [defaultsManager4 setObject:date2 forKey:@"RTDefaultsIntermittentGNSSLastUnregistrationDate"];
 
-  v20 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
-  [v20 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"Enabled"];
+  powerLogEventDictionary4 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
+  [powerLogEventDictionary4 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"Enabled"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTIntermittentGNSSManagerMetrics mostRecentSignalSwitch](self, "mostRecentSignalSwitch")}];
-  v22 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
-  [v22 setObject:v21 forKeyedSubscript:@"Reason"];
+  powerLogEventDictionary5 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
+  [powerLogEventDictionary5 setObject:v21 forKeyedSubscript:@"Reason"];
 
-  v23 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
+  powerLogEventDictionary6 = [(RTIntermittentGNSSManagerMetrics *)self powerLogEventDictionary];
   PLLogRegisteredEvent();
 
   [(RTIntermittentGNSSManagerMetrics *)self _getCurrentSessionDuration];
   v25 = v24;
-  v26 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v27 = [v26 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
-  v28 = [v27 intValue];
+  defaultsManager5 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v27 = [defaultsManager5 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
+  intValue = [v27 intValue];
 
-  v29 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v30 = [v29 objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
+  defaultsManager6 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v30 = [defaultsManager6 objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
   [v30 doubleValue];
   if (v31 == 0.0)
   {
@@ -401,16 +401,16 @@ LABEL_10:
     v32 = v31;
   }
 
-  v33 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  defaultsManager7 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
   v34 = [MEMORY[0x277CCABB0] numberWithDouble:v25 + v32];
-  [v33 setObject:v34 forKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
+  [defaultsManager7 setObject:v34 forKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
 
-  v35 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v36 = [MEMORY[0x277CCABB0] numberWithInt:(v28 + 1)];
-  [v35 setObject:v36 forKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
+  defaultsManager8 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v36 = [MEMORY[0x277CCABB0] numberWithInt:(intValue + 1)];
+  [defaultsManager8 setObject:v36 forKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
 
-  v37 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v38 = [v37 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
+  defaultsManager9 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v38 = [defaultsManager9 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
   [v38 doubleValue];
   if (v39 == 0.0)
   {
@@ -424,20 +424,20 @@ LABEL_10:
 
   if (v25 > v40)
   {
-    v41 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    defaultsManager10 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
     v42 = [MEMORY[0x277CCABB0] numberWithDouble:v25];
-    [v41 setObject:v42 forKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
+    [defaultsManager10 setObject:v42 forKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
   }
 
   if (v25 >= 1200.0)
   {
-    v43 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v44 = [v43 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
-    v45 = [v44 intValue];
+    defaultsManager11 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v44 = [defaultsManager11 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
+    intValue2 = [v44 intValue];
 
-    v46 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v47 = [MEMORY[0x277CCABB0] numberWithInt:(v45 + 1)];
-    [v46 setObject:v47 forKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
+    defaultsManager12 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v47 = [MEMORY[0x277CCABB0] numberWithInt:(intValue2 + 1)];
+    [defaultsManager12 setObject:v47 forKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
   }
 
   [(RTIntermittentGNSSManagerMetrics *)self setCurrentSessionDuration:v25];
@@ -457,33 +457,33 @@ LABEL_10:
 
   [(RTIntermittentGNSSManagerMetrics *)self setCurrentStreakDeactivationCriteria:[(RTIntermittentGNSSManagerMetrics *)self mostRecentSignalSwitch]];
   [(RTIntermittentGNSSManagerMetrics *)self _submitSessionMetricsToCoreAnalytics];
-  v55 = [(RTIntermittentGNSSManagerMetrics *)self streakMetricsTimer];
+  streakMetricsTimer = [(RTIntermittentGNSSManagerMetrics *)self streakMetricsTimer];
 
-  if (v55)
+  if (streakMetricsTimer)
   {
-    v56 = [(RTIntermittentGNSSManagerMetrics *)self streakMetricsTimer];
-    [v56 invalidate];
+    streakMetricsTimer2 = [(RTIntermittentGNSSManagerMetrics *)self streakMetricsTimer];
+    [streakMetricsTimer2 invalidate];
 
     [(RTIntermittentGNSSManagerMetrics *)self setStreakMetricsTimer:0];
   }
 
   objc_initWeak(location, self);
-  v57 = [(RTIntermittentGNSSManagerMetrics *)self timerManager];
-  v58 = [(RTIntermittentGNSSManagerMetrics *)self queue];
+  timerManager = [(RTIntermittentGNSSManagerMetrics *)self timerManager];
+  queue = [(RTIntermittentGNSSManagerMetrics *)self queue];
   v62 = MEMORY[0x277D85DD0];
   v63 = 3221225472;
   v64 = __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke;
   v65 = &unk_2788C57F8;
   objc_copyWeak(&v67, location);
-  v66 = self;
-  v59 = [v57 timerWithIdentifier:@"RTIntermittentGNSSStreakMetricsTimer" queue:v58 handler:&v62];
+  selfCopy = self;
+  v59 = [timerManager timerWithIdentifier:@"RTIntermittentGNSSStreakMetricsTimer" queue:queue handler:&v62];
   [(RTIntermittentGNSSManagerMetrics *)self setStreakMetricsTimer:v59, v62, v63, v64, v65];
 
-  v60 = [(RTIntermittentGNSSManagerMetrics *)self streakMetricsTimer];
-  [v60 fireAfterDelay:1200.0];
+  streakMetricsTimer3 = [(RTIntermittentGNSSManagerMetrics *)self streakMetricsTimer];
+  [streakMetricsTimer3 fireAfterDelay:1200.0];
 
-  v61 = [(RTIntermittentGNSSManagerMetrics *)self streakMetricsTimer];
-  [v61 resume];
+  streakMetricsTimer4 = [(RTIntermittentGNSSManagerMetrics *)self streakMetricsTimer];
+  [streakMetricsTimer4 resume];
 
   objc_destroyWeak(&v67);
   objc_destroyWeak(location);
@@ -525,27 +525,27 @@ void __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke(
   }
 }
 
-- (void)processSignalSwitch:(unint64_t)a3
+- (void)processSignalSwitch:(unint64_t)switch
 {
-  v5 = [(RTIntermittentGNSSManagerMetrics *)self queue];
+  queue = [(RTIntermittentGNSSManagerMetrics *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__RTIntermittentGNSSManagerMetrics_processSignalSwitch___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = switch;
+  dispatch_async(queue, v6);
 }
 
 - (id)_collectDailyMetrics
 {
   v3 = objc_opt_new();
-  v4 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v5 = [v4 objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
+  defaultsManager = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v5 = [defaultsManager objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
   if (v5)
   {
-    v6 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v7 = [v6 objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
+    defaultsManager2 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v7 = [defaultsManager2 objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
     [v7 doubleValue];
     v9 = v8;
   }
@@ -555,40 +555,40 @@ void __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke(
     v9 = 0.0;
   }
 
-  v10 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v11 = [v10 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
+  defaultsManager3 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v11 = [defaultsManager3 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
   if (v11)
   {
-    v12 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v13 = [v12 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
-    v14 = [v13 intValue];
+    defaultsManager4 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v13 = [defaultsManager4 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
+    intValue = [v13 intValue];
   }
 
   else
   {
-    v14 = 0;
+    intValue = 0;
   }
 
-  v15 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v16 = [v15 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
+  defaultsManager5 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v16 = [defaultsManager5 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
   if (v16)
   {
-    v17 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v18 = [v17 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
-    v19 = [v18 intValue];
+    defaultsManager6 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v18 = [defaultsManager6 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
+    intValue2 = [v18 intValue];
   }
 
   else
   {
-    v19 = 0;
+    intValue2 = 0;
   }
 
-  v20 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v21 = [v20 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
+  defaultsManager7 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v21 = [defaultsManager7 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
   if (v21)
   {
-    v22 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v23 = [v22 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
+    defaultsManager8 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v23 = [defaultsManager8 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
     [v23 doubleValue];
     v25 = v24;
   }
@@ -602,11 +602,11 @@ void __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke(
   v27 = [RTMetric binForNumber:v26 bins:&unk_2845A0C50];
   [v3 setObject:v27 forKeyedSubscript:@"_totalDailyDuration"];
 
-  v28 = [MEMORY[0x277CCABB0] numberWithInt:v14];
+  v28 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
   v29 = [RTMetric binForNumber:v28 bins:&unk_2845A0C68];
   [v3 setObject:v29 forKeyedSubscript:@"_numDailyRequests"];
 
-  v30 = [MEMORY[0x277CCABB0] numberWithInt:v19];
+  v30 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
   v31 = [RTMetric binForNumber:v30 bins:&unk_2845A0C80];
   [v3 setObject:v31 forKeyedSubscript:@"_numLongSessions"];
 
@@ -680,17 +680,17 @@ void __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke(
 
 - (void)_clearDailyMetrics
 {
-  v3 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  [v3 setObject:&unk_28459D308 forKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
+  defaultsManager = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  [defaultsManager setObject:&unk_28459D308 forKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
 
-  v4 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  [v4 setObject:&unk_28459D308 forKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
+  defaultsManager2 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  [defaultsManager2 setObject:&unk_28459D308 forKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
 
-  v5 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  [v5 setObject:&unk_28459D308 forKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
+  defaultsManager3 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  [defaultsManager3 setObject:&unk_28459D308 forKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
 
-  v6 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  [v6 setObject:&unk_28459D308 forKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
+  defaultsManager4 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  [defaultsManager4 setObject:&unk_28459D308 forKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
 }
 
 - (void)_clearSessionMetrics
@@ -715,59 +715,59 @@ void __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke(
 
 - (void)submitDailyMetricsToCoreAnalytics
 {
-  v3 = [(RTIntermittentGNSSManagerMetrics *)self queue];
+  queue = [(RTIntermittentGNSSManagerMetrics *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__RTIntermittentGNSSManagerMetrics_submitDailyMetricsToCoreAnalytics__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_submitDailyMetricsToCoreAnalytics
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(RTIntermittentGNSSManagerMetrics *)self _collectDailyMetrics];
-  v4 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v5 = [v4 objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
+  _collectDailyMetrics = [(RTIntermittentGNSSManagerMetrics *)self _collectDailyMetrics];
+  defaultsManager = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v5 = [defaultsManager objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
   v6 = 0;
   v7 = 0;
   if (v5)
   {
-    v8 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v9 = [v8 objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
+    defaultsManager2 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v9 = [defaultsManager2 objectForKey:@"RTDefaultsIntermittentGNSSDailyDuration"];
     [v9 doubleValue];
     v7 = v10;
   }
 
-  v11 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v12 = [v11 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
+  defaultsManager3 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v12 = [defaultsManager3 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
   if (v12)
   {
-    v13 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v14 = [v13 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
+    defaultsManager4 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v14 = [defaultsManager4 objectForKey:@"RTDefaultsIntermittentGNSSDailySessionCount"];
     [v14 doubleValue];
     v6 = v15;
   }
 
-  v16 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v17 = [v16 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
+  defaultsManager5 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v17 = [defaultsManager5 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
   v18 = 0;
   v19 = 0;
   if (v17)
   {
-    v20 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v21 = [v20 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
+    defaultsManager6 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v21 = [defaultsManager6 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongSessionCount"];
     [v21 doubleValue];
     v19 = v22;
   }
 
-  v23 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-  v24 = [v23 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
+  defaultsManager7 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+  v24 = [defaultsManager7 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
   if (v24)
   {
-    v25 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
-    v26 = [v25 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
+    defaultsManager8 = [(RTIntermittentGNSSManagerMetrics *)self defaultsManager];
+    v26 = [defaultsManager8 objectForKey:@"RTDefaultsIntermittentGNSSDailyLongestSessionDuration"];
     [v26 doubleValue];
     v18 = v27;
   }
@@ -786,14 +786,14 @@ void __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke(
       v38 = 2048;
       v39 = v18;
       v40 = 2112;
-      v41 = v3;
+      v41 = _collectDailyMetrics;
       _os_log_impl(&dword_2304B3000, v28, OS_LOG_TYPE_INFO, "submitting daily metrics for intermittent gnss, totalDuration, %.2f, sessionCount, %.2f, longSessionCount, %.2f, longSessionDuration, %.2f, metrics, %@", buf, 0x34u);
     }
   }
 
   v29 = objc_alloc(MEMORY[0x277CCACA8]);
   v30 = [v29 initWithCString:RTAnalyticsEventIntermittentGNSSDailyMetrics encoding:1];
-  log_analytics_submission(v30, v3);
+  log_analytics_submission(v30, _collectDailyMetrics);
   v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v30];
   AnalyticsSendEvent();
 
@@ -802,10 +802,10 @@ void __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke(
 
 - (void)_submitSessionMetricsToCoreAnalytics
 {
-  v6 = [(RTIntermittentGNSSManagerMetrics *)self _collectSessionMetrics];
+  _collectSessionMetrics = [(RTIntermittentGNSSManagerMetrics *)self _collectSessionMetrics];
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = [v3 initWithCString:RTAnalyticsEventIntermittentGNSSSessionMetrics encoding:1];
-  log_analytics_submission(v4, v6);
+  log_analytics_submission(v4, _collectSessionMetrics);
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v4];
   AnalyticsSendEvent();
 
@@ -814,10 +814,10 @@ void __57__RTIntermittentGNSSManagerMetrics__updateMetricsForKey___block_invoke(
 
 - (void)_submitStreakMetricsToCoreAnalytics
 {
-  v6 = [(RTIntermittentGNSSManagerMetrics *)self _collectStreakMetrics];
+  _collectStreakMetrics = [(RTIntermittentGNSSManagerMetrics *)self _collectStreakMetrics];
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = [v3 initWithCString:RTAnalyticsEventIntermittentGNSSStreakMetrics encoding:1];
-  log_analytics_submission(v4, v6);
+  log_analytics_submission(v4, _collectStreakMetrics);
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v4];
   AnalyticsSendEvent();
 

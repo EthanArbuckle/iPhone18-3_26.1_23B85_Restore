@@ -1,23 +1,23 @@
 @interface SADomainCommand
-- (void)_ad_performAudioPausingCommand:(unsigned int)a3 mediaRemoteService:(id)a4 replyHandler:(id)a5;
+- (void)_ad_performAudioPausingCommand:(unsigned int)command mediaRemoteService:(id)service replyHandler:(id)handler;
 @end
 
 @implementation SADomainCommand
 
-- (void)_ad_performAudioPausingCommand:(unsigned int)a3 mediaRemoteService:(id)a4 replyHandler:(id)a5
+- (void)_ad_performAudioPausingCommand:(unsigned int)command mediaRemoteService:(id)service replyHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SADomainCommand *)self _ad_mediaRemoteOptions];
+  serviceCopy = service;
+  handlerCopy = handler;
+  _ad_mediaRemoteOptions = [(SADomainCommand *)self _ad_mediaRemoteOptions];
   if (AFPauseCommandsInterruptAudio())
   {
     v10 = +[ADCommandCenter sharedCommandCenter];
     [v10 setSuppressAudioInterruptionEndedNotifications:1];
   }
 
-  v11 = [v7 targetQueue];
-  v13 = v8;
-  v12 = v8;
+  targetQueue = [serviceCopy targetQueue];
+  v13 = handlerCopy;
+  v12 = handlerCopy;
   AFMediaRemoteSendCommandWithOptions();
 
   [AFAggregator logSiriPausedMedia:_NSConcreteStackBlock];

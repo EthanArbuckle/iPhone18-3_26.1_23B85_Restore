@@ -1,31 +1,31 @@
 @interface PTSection
-- (BOOL)_shouldEnableRow:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_shouldEnableRow:(id)row;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)allSections;
 - (NSArray)enabledSections;
 - (PTComponentObserver)componentObserver;
-- (PTSection)initWithCoder:(id)a3;
-- (PTSection)initWithRows:(id)a3;
+- (PTSection)initWithCoder:(id)coder;
+- (PTSection)initWithRows:(id)rows;
 - (id)_remoteEditingWhitelistedComponent;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_recomputeEnabledSection;
 - (void)_reloadEnabledRows;
-- (void)_sendInserts:(id)a3 deletes:(id)a4;
+- (void)_sendInserts:(id)inserts deletes:(id)deletes;
 - (void)_sendReload;
 - (void)_updateEnabledRows;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSettings:(id)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSettings:(id)settings;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 @end
 
 @implementation PTSection
 
-- (PTSection)initWithRows:(id)a3
+- (PTSection)initWithRows:(id)rows
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rowsCopy = rows;
   v21.receiver = self;
   v21.super_class = PTSection;
   v5 = [(PTSection *)&v21 init];
@@ -35,7 +35,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = rowsCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v7)
     {
@@ -66,9 +66,9 @@
     v5->_rows = v12;
 
     v5->_enabledSection = 1;
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     enabledRows = v5->_enabledRows;
-    v5->_enabledRows = v14;
+    v5->_enabledRows = array;
 
     [(PTSection *)v5 _reloadEnabledRows];
   }
@@ -90,10 +90,10 @@
   [(PTSection *)&v4 dealloc];
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  settingsCopy = settings;
   if (self->_settings)
   {
     v6 = PTLogObjectForTopic(0);
@@ -106,7 +106,7 @@
 
   else
   {
-    objc_storeStrong(&self->_settings, a3);
+    objc_storeStrong(&self->_settings, settings);
     [(PTSettings *)self->_settings addKeyPathObserver:self];
     v14 = 0u;
     v15 = 0u;
@@ -141,9 +141,9 @@
   }
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  [(PTSection *)self _updateEnabledRows:a3];
+  [(PTSection *)self _updateEnabledRows:settings];
 
   [(PTSection *)self _recomputeEnabledSection];
 }
@@ -177,7 +177,7 @@
 - (id)_remoteEditingWhitelistedComponent
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -201,7 +201,7 @@
         v10 = objc_opt_class();
         if (PTRowClassIsWhitelistedForRemoteEditing(v10) && [v9 isEncodable])
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -211,15 +211,15 @@
     while (v6);
   }
 
-  v11 = [[PTSection alloc] initWithRows:v3];
-  v12 = [(PTSection *)self title];
-  [(PTSection *)v11 setTitle:v12];
+  v11 = [[PTSection alloc] initWithRows:array];
+  title = [(PTSection *)self title];
+  [(PTSection *)v11 setTitle:title];
 
-  v13 = [(PTSection *)self appearancePredicate];
-  [(PTSection *)v11 setAppearancePredicate:v13];
+  appearancePredicate = [(PTSection *)self appearancePredicate];
+  [(PTSection *)v11 setAppearancePredicate:appearancePredicate];
 
-  v14 = [(PTSection *)self childSettingsKeyPath];
-  [(PTSection *)v11 setChildSettingsKeyPath:v14];
+  childSettingsKeyPath = [(PTSection *)self childSettingsKeyPath];
+  [(PTSection *)v11 setChildSettingsKeyPath:childSettingsKeyPath];
 
   return v11;
 }
@@ -248,8 +248,8 @@
 - (void)_updateEnabledRows
 {
   v20 = *MEMORY[0x277D85DE8];
-  v14 = [MEMORY[0x277CCAB58] indexSet];
-  v13 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -272,17 +272,17 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [(PTSection *)self _shouldEnableRow:v10, v13];
+        v11 = [(PTSection *)self _shouldEnableRow:v10, indexSet2];
         v12 = [(NSMutableArray *)self->_enabledRows containsObject:v10];
         if (v12 && !v11)
         {
-          [v13 addIndex:v7];
+          [indexSet2 addIndex:v7];
           [(NSMutableArray *)self->_enabledRows removeObject:v10];
         }
 
         if (((v12 | !v11) & 1) == 0)
         {
-          [v14 addIndex:v6];
+          [indexSet addIndex:v6];
           [(NSMutableArray *)self->_enabledRows insertObject:v10 atIndex:v6];
         }
 
@@ -296,7 +296,7 @@
     while (v5);
   }
 
-  [(PTSection *)self _sendInserts:v14 deletes:v13];
+  [(PTSection *)self _sendInserts:indexSet deletes:indexSet2];
 }
 
 - (void)_reloadEnabledRows
@@ -338,29 +338,29 @@
   [(PTSection *)self _sendReload];
 }
 
-- (BOOL)_shouldEnableRow:(id)a3
+- (BOOL)_shouldEnableRow:(id)row
 {
-  v4 = a3;
-  v5 = [v4 condition];
+  rowCopy = row;
+  condition = [rowCopy condition];
 
-  if (v5)
+  if (condition)
   {
-    v6 = [v4 condition];
-    v7 = [v6 evaluateWithObject:self->_settings];
+    condition2 = [rowCopy condition];
+    v7 = [condition2 evaluateWithObject:self->_settings];
   }
 
   else
   {
-    v8 = [v4 externalCondition];
+    externalCondition = [rowCopy externalCondition];
 
-    if (!v8)
+    if (!externalCondition)
     {
       v9 = 1;
       goto LABEL_6;
     }
 
-    v6 = [v4 externalCondition];
-    v7 = v6[2]();
+    condition2 = [rowCopy externalCondition];
+    v7 = condition2[2]();
   }
 
   v9 = v7;
@@ -369,14 +369,14 @@ LABEL_6:
   return v9;
 }
 
-- (void)_sendInserts:(id)a3 deletes:(id)a4
+- (void)_sendInserts:(id)inserts deletes:(id)deletes
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 count] || objc_msgSend(v6, "count"))
+  insertsCopy = inserts;
+  deletesCopy = deletes;
+  if ([insertsCopy count] || objc_msgSend(deletesCopy, "count"))
   {
     WeakRetained = objc_loadWeakRetained(&self->_componentObserver);
-    [WeakRetained section:self didInsertRows:v8 deleteRows:v6];
+    [WeakRetained section:self didInsertRows:insertsCopy deleteRows:deletesCopy];
   }
 }
 
@@ -386,15 +386,15 @@ LABEL_6:
   [WeakRetained sectionDidReload:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(PTSection *)v4 isMemberOfClass:objc_opt_class()]&& BSEqualObjects() && BSEqualStrings() && BSEqualObjects())
+  else if ([(PTSection *)equalCopy isMemberOfClass:objc_opt_class()]&& BSEqualObjects() && BSEqualStrings() && BSEqualObjects())
   {
     v5 = BSEqualObjects();
   }
@@ -409,49 +409,49 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_rows];
-  v5 = [v3 appendString:self->_title];
-  v6 = [v3 appendObject:self->_appearancePredicate];
-  v7 = [v3 appendString:self->_childSettingsKeyPath];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_rows];
+  v5 = [builder appendString:self->_title];
+  v6 = [builder appendObject:self->_appearancePredicate];
+  v7 = [builder appendString:self->_childSettingsKeyPath];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_rows forKey:@"rows"];
-  [v4 encodeObject:self->_title forKey:@"title"];
-  [v4 encodeObject:self->_childSettingsKeyPath forKey:@"childKeyPath"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_rows forKey:@"rows"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_childSettingsKeyPath forKey:@"childKeyPath"];
   if (os_variant_allows_internal_security_policies())
   {
-    [v4 encodeObject:self->_appearancePredicate forKey:@"predicate"];
+    [coderCopy encodeObject:self->_appearancePredicate forKey:@"predicate"];
   }
 }
 
-- (PTSection)initWithCoder:(id)a3
+- (PTSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"rows"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"rows"];
   v9 = [(PTSection *)self initWithRows:v8];
   if (v9)
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v9->_title;
     v9->_title = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"childKeyPath"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"childKeyPath"];
     childSettingsKeyPath = v9->_childSettingsKeyPath;
     v9->_childSettingsKeyPath = v12;
 
     if (os_variant_allows_internal_security_policies())
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
       appearancePredicate = v9->_appearancePredicate;
       v9->_appearancePredicate = v14;
 
@@ -472,10 +472,10 @@ LABEL_6:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [objc_msgSend(MEMORY[0x277CBEA60] "allocWithZone:{"initWithArray:copyItems:", self->_rows, 1}")];
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithRows:", v5}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithRows:", v5}];
   [v6 setTitle:self->_title];
   [v6 setChildSettingsKeyPath:self->_childSettingsKeyPath];
   [v6 setAppearancePredicate:self->_appearancePredicate];

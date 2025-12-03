@@ -1,18 +1,18 @@
 @interface _OSBatteryPredictor
 + (id)predictor;
 - (BOOL)lowSOCPredicted;
-- (BOOL)recommendsAutoLPMWithError:(id *)a3;
+- (BOOL)recommendsAutoLPMWithError:(id *)error;
 - (_OSBatteryPredictor)init;
 - (double)timeToEmpty;
-- (id)batteryLifeMitigationWithError:(id *)a3;
-- (id)highDayDrainAroundCurrentDateWithError:(id *)a3;
-- (id)lowSOCPredictionWithError:(id *)a3;
-- (id)typicalBatteryLevelWithReferenceDays:(unint64_t)a3 aggregatedOverTimeWidth:(unint64_t)a4 withError:(id *)a5;
-- (void)client:(id)a3 setIBLMNotificationsState:(int64_t)a4;
-- (void)client:(id)a3 setIBLMState:(int64_t)a4;
+- (id)batteryLifeMitigationWithError:(id *)error;
+- (id)highDayDrainAroundCurrentDateWithError:(id *)error;
+- (id)lowSOCPredictionWithError:(id *)error;
+- (id)typicalBatteryLevelWithReferenceDays:(unint64_t)days aggregatedOverTimeWidth:(unint64_t)width withError:(id *)error;
+- (void)client:(id)client setIBLMNotificationsState:(int64_t)state;
+- (void)client:(id)client setIBLMState:(int64_t)state;
 - (void)dealloc;
-- (void)overrideAllMitigations:(unint64_t)a3;
-- (void)overrideCLPCMitigations:(unint64_t)a3;
+- (void)overrideAllMitigations:(unint64_t)mitigations;
+- (void)overrideCLPCMitigations:(unint64_t)mitigations;
 @end
 
 @implementation _OSBatteryPredictor
@@ -102,7 +102,7 @@
   return v7;
 }
 
-- (id)lowSOCPredictionWithError:(id *)a3
+- (id)lowSOCPredictionWithError:(id *)error
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -126,7 +126,7 @@
   return v5;
 }
 
-- (id)typicalBatteryLevelWithReferenceDays:(unint64_t)a3 aggregatedOverTimeWidth:(unint64_t)a4 withError:(id *)a5
+- (id)typicalBatteryLevelWithReferenceDays:(unint64_t)days aggregatedOverTimeWidth:(unint64_t)width withError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -157,11 +157,11 @@
   v14[5] = &v22;
   v14[6] = &v16;
   v14[7] = a2;
-  [v11 typicalBatteryLevelWithReferenceDays:a3 aggregatedOverTimeWidth:a4 withHandler:v14];
+  [v11 typicalBatteryLevelWithReferenceDays:days aggregatedOverTimeWidth:width withHandler:v14];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v17[5];
+    *error = v17[5];
   }
 
   v12 = v23[5];
@@ -172,7 +172,7 @@
   return v12;
 }
 
-- (id)highDayDrainAroundCurrentDateWithError:(id *)a3
+- (id)highDayDrainAroundCurrentDateWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -205,9 +205,9 @@
   v10[7] = a2;
   [v7 highDayDrainAroundCurrentDateWithHandler:v10];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v19[5];
@@ -218,7 +218,7 @@
   return v8;
 }
 
-- (id)batteryLifeMitigationWithError:(id *)a3
+- (id)batteryLifeMitigationWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -251,9 +251,9 @@
   v10[7] = a2;
   [v7 batteryLifeMitigationWithHandler:v10];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v19[5];
@@ -264,7 +264,7 @@
   return v8;
 }
 
-- (void)overrideAllMitigations:(unint64_t)a3
+- (void)overrideAllMitigations:(unint64_t)mitigations
 {
   v10[0] = 0;
   v10[1] = v10;
@@ -287,12 +287,12 @@
   v8[3] = &unk_2799C1690;
   v8[4] = self;
   v8[5] = a2;
-  [v7 overrideAllMitigations:a3 withHandler:v8];
+  [v7 overrideAllMitigations:mitigations withHandler:v8];
 
   _Block_object_dispose(v10, 8);
 }
 
-- (void)overrideCLPCMitigations:(unint64_t)a3
+- (void)overrideCLPCMitigations:(unint64_t)mitigations
 {
   v10[0] = 0;
   v10[1] = v10;
@@ -315,14 +315,14 @@
   v8[3] = &unk_2799C1690;
   v8[4] = self;
   v8[5] = a2;
-  [v7 overrideCLPCMitigations:a3 withHandler:v8];
+  [v7 overrideCLPCMitigations:mitigations withHandler:v8];
 
   _Block_object_dispose(v10, 8);
 }
 
-- (void)client:(id)a3 setIBLMState:(int64_t)a4
+- (void)client:(id)client setIBLMState:(int64_t)state
 {
-  v7 = a3;
+  clientCopy = client;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -344,15 +344,15 @@
   v10[3] = &unk_2799C16B8;
   v10[4] = self;
   v10[5] = a2;
-  v10[6] = a4;
-  [v9 client:v7 setIBLMState:a4 withHandler:v10];
+  v10[6] = state;
+  [v9 client:clientCopy setIBLMState:state withHandler:v10];
 
   _Block_object_dispose(v12, 8);
 }
 
-- (void)client:(id)a3 setIBLMNotificationsState:(int64_t)a4
+- (void)client:(id)client setIBLMNotificationsState:(int64_t)state
 {
-  v7 = a3;
+  clientCopy = client;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -374,13 +374,13 @@
   v10[3] = &unk_2799C16B8;
   v10[4] = self;
   v10[5] = a2;
-  v10[6] = a4;
-  [v9 client:v7 setIBLMNotificationsState:a4 withHandler:v10];
+  v10[6] = state;
+  [v9 client:clientCopy setIBLMNotificationsState:state withHandler:v10];
 
   _Block_object_dispose(v12, 8);
 }
 
-- (BOOL)recommendsAutoLPMWithError:(id *)a3
+- (BOOL)recommendsAutoLPMWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -411,9 +411,9 @@
   v10[7] = a2;
   [v7 recommendsAutoLPMWithHandler:v10];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v8 = *(v13 + 24);

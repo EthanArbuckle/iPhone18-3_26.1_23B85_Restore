@@ -1,11 +1,11 @@
 @interface MFLocalActionReplayHandler
 + (OS_os_log)log;
-- (MFLocalActionReplayHandler)initWithLibrary:(id)a3 account:(id)a4;
+- (MFLocalActionReplayHandler)initWithLibrary:(id)library account:(id)account;
 - (MailAccount)account;
 - (NSString)ef_publicDescription;
 - (void)_checkForNewActions;
 - (void)_replayAllActions;
-- (void)addNewAction:(id)a3;
+- (void)addNewAction:(id)action;
 - (void)connectionEstablished;
 - (void)newActionsAdded;
 @end
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __33__MFLocalActionReplayHandler_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_13 != -1)
   {
     dispatch_once(&log_onceToken_13, block);
@@ -38,19 +38,19 @@ void __33__MFLocalActionReplayHandler_log__block_invoke(uint64_t a1)
   log_log_13 = v3;
 }
 
-- (MFLocalActionReplayHandler)initWithLibrary:(id)a3 account:(id)a4
+- (MFLocalActionReplayHandler)initWithLibrary:(id)library account:(id)account
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  accountCopy = account;
   v19.receiver = self;
   v19.super_class = MFLocalActionReplayHandler;
   v9 = [(MFLocalActionReplayHandler *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_library, a3);
-    objc_storeWeak(&v10->_account, v8);
+    objc_storeStrong(&v9->_library, library);
+    objc_storeWeak(&v10->_account, accountCopy);
     v11 = objc_opt_new();
     actionsToReplay = v10->_actionsToReplay;
     v10->_actionsToReplay = v11;
@@ -63,11 +63,11 @@ void __33__MFLocalActionReplayHandler_log__block_invoke(uint64_t a1)
   v15 = +[MFLocalActionReplayHandler log];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v8 identifier];
+    identifier = [accountCopy identifier];
     *buf = 138543618;
     v21 = v10;
     v22 = 2114;
-    v23 = v16;
+    v23 = identifier;
     _os_log_impl(&dword_1B0389000, v15, OS_LOG_TYPE_DEFAULT, "Created %{public}@ for account %{public}@", buf, 0x16u);
   }
 
@@ -81,21 +81,21 @@ void __33__MFLocalActionReplayHandler_log__block_invoke(uint64_t a1)
   v3 = +[MFLocalActionReplayHandler log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MFLocalActionReplayHandler *)self ef_publicDescription];
+    ef_publicDescription = [(MFLocalActionReplayHandler *)self ef_publicDescription];
     v7 = 138543362;
-    v8 = v4;
+    v8 = ef_publicDescription;
     _os_log_impl(&dword_1B0389000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ connection established", &v7, 0xCu);
   }
 
-  v5 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-  objc_sync_enter(v5);
+  actionsToReplay = [(MFLocalActionReplayHandler *)self actionsToReplay];
+  objc_sync_enter(actionsToReplay);
   if (![(MFLocalActionReplayHandler *)self replayingActions])
   {
     [(MFLocalActionReplayHandler *)self setNeedToCheckForNewActions:1];
     [(MFLocalActionReplayHandler *)self _replayAllActions];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(actionsToReplay);
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -113,32 +113,32 @@ void __33__MFLocalActionReplayHandler_log__block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (void)addNewAction:(id)a3
+- (void)addNewAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-  objc_sync_enter(v5);
+  actionCopy = action;
+  actionsToReplay = [(MFLocalActionReplayHandler *)self actionsToReplay];
+  objc_sync_enter(actionsToReplay);
   v6 = +[MFLocalActionReplayHandler log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MFLocalActionReplayHandler *)self ef_publicDescription];
+    ef_publicDescription = [(MFLocalActionReplayHandler *)self ef_publicDescription];
     v10 = 138543618;
-    v11 = v7;
+    v11 = ef_publicDescription;
     v12 = 2114;
-    v13 = v4;
+    v13 = actionCopy;
     _os_log_impl(&dword_1B0389000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ added action %{public}@", &v10, 0x16u);
   }
 
-  v8 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-  [v8 addObject:v4];
+  actionsToReplay2 = [(MFLocalActionReplayHandler *)self actionsToReplay];
+  [actionsToReplay2 addObject:actionCopy];
 
   if (![(MFLocalActionReplayHandler *)self replayingActions])
   {
     [(MFLocalActionReplayHandler *)self _replayAllActions];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(actionsToReplay);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -146,18 +146,18 @@ void __33__MFLocalActionReplayHandler_log__block_invoke(uint64_t a1)
 - (void)_replayAllActions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-  objc_sync_enter(v3);
-  v4 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-  v5 = [v4 count];
+  actionsToReplay = [(MFLocalActionReplayHandler *)self actionsToReplay];
+  objc_sync_enter(actionsToReplay);
+  actionsToReplay2 = [(MFLocalActionReplayHandler *)self actionsToReplay];
+  v5 = [actionsToReplay2 count];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(actionsToReplay);
   v6 = +[MFLocalActionReplayHandler log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MFLocalActionReplayHandler *)self ef_publicDescription];
+    ef_publicDescription = [(MFLocalActionReplayHandler *)self ef_publicDescription];
     *buf = 138412546;
-    v15 = v7;
+    v15 = ef_publicDescription;
     v16 = 2048;
     v17 = v5;
     _os_log_impl(&dword_1B0389000, v6, OS_LOG_TYPE_DEFAULT, "Replaying all actions %@: %ld action(s) to replay", buf, 0x16u);
@@ -165,7 +165,7 @@ void __33__MFLocalActionReplayHandler_log__block_invoke(uint64_t a1)
 
   [(MFLocalActionReplayHandler *)self setReplayingActions:1];
   v8 = [MEMORY[0x1E699B860] transactionWithDescription:@"com.apple.mobilemail.localActionReplayScheduler"];
-  v9 = [(MFLocalActionReplayHandler *)self replayScheduler];
+  replayScheduler = [(MFLocalActionReplayHandler *)self replayScheduler];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__MFLocalActionReplayHandler__replayAllActions__block_invoke;
@@ -173,7 +173,7 @@ void __33__MFLocalActionReplayHandler_log__block_invoke(uint64_t a1)
   v12[4] = self;
   v10 = v8;
   v13 = v10;
-  [v9 performBlock:v12];
+  [replayScheduler performBlock:v12];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -285,41 +285,41 @@ void __47__MFLocalActionReplayHandler__replayAllActions__block_invoke(uint64_t a
 
 - (void)_checkForNewActions
 {
-  v3 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-  objc_sync_enter(v3);
-  v4 = [(MFLocalActionReplayHandler *)self needToCheckForNewActions];
+  actionsToReplay = [(MFLocalActionReplayHandler *)self actionsToReplay];
+  objc_sync_enter(actionsToReplay);
+  needToCheckForNewActions = [(MFLocalActionReplayHandler *)self needToCheckForNewActions];
   [(MFLocalActionReplayHandler *)self setNeedToCheckForNewActions:0];
-  objc_sync_exit(v3);
+  objc_sync_exit(actionsToReplay);
 
-  if (v4)
+  if (needToCheckForNewActions)
   {
-    v5 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-    v6 = [v5 lastObject];
-    v7 = [v6 persistentID];
-    v8 = [v7 databaseID];
+    actionsToReplay2 = [(MFLocalActionReplayHandler *)self actionsToReplay];
+    lastObject = [actionsToReplay2 lastObject];
+    persistentID = [lastObject persistentID];
+    databaseID = [persistentID databaseID];
 
-    v9 = [(MFLocalActionReplayHandler *)self library];
-    v10 = [v9 persistence];
-    v11 = [v10 localActionPersistence];
-    v12 = [(MFLocalActionReplayHandler *)self account];
-    v13 = [v12 URLString];
-    v16 = [v11 messageActionsForAccountURL:v13 previousActionID:v8];
+    library = [(MFLocalActionReplayHandler *)self library];
+    persistence = [library persistence];
+    localActionPersistence = [persistence localActionPersistence];
+    account = [(MFLocalActionReplayHandler *)self account];
+    uRLString = [account URLString];
+    v16 = [localActionPersistence messageActionsForAccountURL:uRLString previousActionID:databaseID];
 
-    v14 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-    objc_sync_enter(v14);
-    v15 = [(MFLocalActionReplayHandler *)self actionsToReplay];
-    [v15 addObjectsFromArray:v16];
+    actionsToReplay3 = [(MFLocalActionReplayHandler *)self actionsToReplay];
+    objc_sync_enter(actionsToReplay3);
+    actionsToReplay4 = [(MFLocalActionReplayHandler *)self actionsToReplay];
+    [actionsToReplay4 addObjectsFromArray:v16];
 
-    objc_sync_exit(v14);
+    objc_sync_exit(actionsToReplay3);
   }
 }
 
 - (NSString)ef_publicDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MFLocalActionReplayHandler *)self account];
-  v5 = [v4 ef_publicDescription];
-  v6 = [v3 stringWithFormat:@"%@ for account: %@", self, v5];
+  account = [(MFLocalActionReplayHandler *)self account];
+  ef_publicDescription = [account ef_publicDescription];
+  v6 = [v3 stringWithFormat:@"%@ for account: %@", self, ef_publicDescription];
 
   return v6;
 }

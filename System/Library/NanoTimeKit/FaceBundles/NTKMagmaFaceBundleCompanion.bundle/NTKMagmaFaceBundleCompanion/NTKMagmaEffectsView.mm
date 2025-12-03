@@ -1,41 +1,41 @@
 @interface NTKMagmaEffectsView
-- (NTKMagmaEffectsView)initWithFrame:(CGRect)a3 device:(id)a4;
+- (NTKMagmaEffectsView)initWithFrame:(CGRect)frame device:(id)device;
 - (id)_buttonColor;
-- (void)_addEffect:(id)a3;
+- (void)_addEffect:(id)effect;
 - (void)_loadBackgroundIfNeeded;
 - (void)_loadSwoosh;
 - (void)_setupQuadView;
-- (void)_tapAtPoint:(CGPoint)a3;
+- (void)_tapAtPoint:(CGPoint)point;
 - (void)_triggerDanceAnimation;
 - (void)_triggerTimeChangeAnimation;
 - (void)_updatePaused;
-- (void)applyDeviceMotion:(id)a3;
-- (void)buttonHighlightedChanged:(BOOL)a3;
+- (void)applyDeviceMotion:(id)motion;
+- (void)buttonHighlightedChanged:(BOOL)changed;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)magmaRendererPrepareForFrameWithTime:(double)a3;
-- (void)setColorPalette:(id)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)timeFormatterTextDidChange:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)magmaRendererPrepareForFrameWithTime:(double)time;
+- (void)setColorPalette:(id)palette;
+- (void)setEditing:(BOOL)editing;
+- (void)timeFormatterTextDidChange:(id)change;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation NTKMagmaEffectsView
 
-- (NTKMagmaEffectsView)initWithFrame:(CGRect)a3 device:(id)a4
+- (NTKMagmaEffectsView)initWithFrame:(CGRect)frame device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKMagmaEffectsView;
-  v11 = [(NTKMagmaEffectsView *)&v22 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKMagmaEffectsView *)&v22 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     v12->_distortionMultiplier = 1.0;
     v12->_lastTapTime = 0.0;
     [(NTKMagmaEffectsView *)v12 _setupQuadView];
@@ -80,12 +80,12 @@
   [(NTKMagmaEffectsView *)&v2 layoutSubviews];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
-    [(NTKMagmaQuad *)self->_quad setRunPhysics:!a3];
+    self->_editing = editing;
+    [(NTKMagmaQuad *)self->_quad setRunPhysics:!editing];
   }
 }
 
@@ -119,11 +119,11 @@
   [(NTKMagmaEffectsView *)self addSubview:v8];
 }
 
-- (void)magmaRendererPrepareForFrameWithTime:(double)a3
+- (void)magmaRendererPrepareForFrameWithTime:(double)time
 {
   if (self->_buttonHighlightAnimating)
   {
-    v5 = (a3 - self->_buttonHighlightLastChange) / 0.15;
+    v5 = (time - self->_buttonHighlightLastChange) / 0.15;
     if (v5 > 1.0)
     {
       v5 = 1.0;
@@ -137,8 +137,8 @@
     }
 
     quad = self->_quad;
-    v7 = [(NTKMagmaEffectsView *)self _buttonColor];
-    [(NTKMagmaQuad *)quad setLogoColor:v7];
+    _buttonColor = [(NTKMagmaEffectsView *)self _buttonColor];
+    [(NTKMagmaQuad *)quad setLogoColor:_buttonColor];
   }
 
   obj = self->_effects;
@@ -163,7 +163,7 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        [v13 applyForTime:self->_quad quad:a3];
+        [v13 applyForTime:self->_quad quad:time];
         if ([v13 isComplete])
         {
           [(NSMutableArray *)self->_effects removeObject:v13];
@@ -187,10 +187,10 @@
   objc_sync_exit(obj);
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   if (self->_shouldSkipTimeFormatterTextChange)
   {
     self->_shouldSkipTimeFormatterTextChange = 0;
@@ -198,12 +198,12 @@
 
   else
   {
-    v6 = [v4 timeSubstringToSeparatorText];
-    v7 = [v5 timeSubstringFromSeparatorText];
-    if (![v6 isEqual:self->_displayedUpperLabelText] || (objc_msgSend(v7, "isEqual:", self->_displayedLowerLabelText) & 1) == 0)
+    timeSubstringToSeparatorText = [changeCopy timeSubstringToSeparatorText];
+    timeSubstringFromSeparatorText = [v5 timeSubstringFromSeparatorText];
+    if (![timeSubstringToSeparatorText isEqual:self->_displayedUpperLabelText] || (objc_msgSend(timeSubstringFromSeparatorText, "isEqual:", self->_displayedLowerLabelText) & 1) == 0)
     {
-      objc_storeStrong(&self->_displayedUpperLabelText, v6);
-      objc_storeStrong(&self->_displayedLowerLabelText, v7);
+      objc_storeStrong(&self->_displayedUpperLabelText, timeSubstringToSeparatorText);
+      objc_storeStrong(&self->_displayedLowerLabelText, timeSubstringFromSeparatorText);
       sub_3768(self->_device, &v27);
       v8 = *(&v27 + 1);
       sub_3768(self->_device, &v25);
@@ -211,7 +211,7 @@
       v23 = 0u;
       v24 = 0u;
       sub_3768(self->_device, v22);
-      [NTKMagmaTimeRenderer renderTimeWithHour:v6 minute:v7 fontSize:v22[0] lineSpacing:v9];
+      [NTKMagmaTimeRenderer renderTimeWithHour:timeSubstringToSeparatorText minute:timeSubstringFromSeparatorText fontSize:v22[0] lineSpacing:v9];
       [(NTKMagmaEffectsView *)self bounds];
       [v23 size];
       [(NTKMagmaEffectsView *)self bounds];
@@ -231,8 +231,8 @@
 
       else
       {
-        v19 = [v5 overrideDate];
-        v18 = v19 != 0;
+        overrideDate = [v5 overrideDate];
+        v18 = overrideDate != 0;
       }
 
       if (!self->_inTritium && !self->_paused && !v18)
@@ -241,17 +241,17 @@
       }
     }
 
-    v20 = [v5 overrideDate];
-    self->_showingOverrideTime = v20 != 0;
+    overrideDate2 = [v5 overrideDate];
+    self->_showingOverrideTime = overrideDate2 != 0;
   }
 }
 
-- (void)_addEffect:(id)a3
+- (void)_addEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v5 = self->_effects;
   objc_sync_enter(v5);
-  [(NSMutableArray *)self->_effects addObject:v4];
+  [(NSMutableArray *)self->_effects addObject:effectCopy];
   v6 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -276,13 +276,13 @@
   [(NTKMagmaEffectsView *)self _addEffect:v3];
 }
 
-- (void)applyDeviceMotion:(id)a3
+- (void)applyDeviceMotion:(id)motion
 {
-  v4 = a3;
-  v42 = v4;
-  if (v4)
+  motionCopy = motion;
+  v42 = motionCopy;
+  if (motionCopy)
   {
-    [v4 rotationRate];
+    [motionCopy rotationRate];
     v40 = v6;
     v41 = v5;
     v8 = v7;
@@ -378,12 +378,12 @@
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v12 = CGBitmapContextCreate(0, v7, v10, 8uLL, v7, DeviceGray, 7u);
   v13 = v18;
-  v14 = [v18 CGImage];
+  cGImage = [v18 CGImage];
   v23.origin.x = 0.0;
   v23.origin.y = 0.0;
   v23.size.width = v6;
   v23.size.height = v9;
-  CGContextDrawImage(v12, v23, v14);
+  CGContextDrawImage(v12, v23, cGImage);
   Image = CGBitmapContextCreateImage(v12);
   [(CLKDevice *)self->_device screenScale];
   v16 = [UIImage imageWithCGImage:Image scale:0 orientation:?];
@@ -418,19 +418,19 @@
   }
 
   v35 = v5;
-  v6 = [(NTKMagmaColorPalette *)v35 fromPalette];
-  v7 = [(NTKMagmaColorPalette *)v35 toPalette];
-  if (([v7 isTritium] & 1) == 0)
+  fromPalette = [(NTKMagmaColorPalette *)v35 fromPalette];
+  toPalette = [(NTKMagmaColorPalette *)v35 toPalette];
+  if (([toPalette isTritium] & 1) == 0)
   {
-    v8 = [v6 backgroundStyle];
-    if (v8 == [v7 backgroundStyle])
+    backgroundStyle = [fromPalette backgroundStyle];
+    if (backgroundStyle == [toPalette backgroundStyle])
     {
       [(NTKMagmaColorPalette *)v35 transitionFraction];
       if (v9 < 0.5)
       {
-        v10 = [v6 isRainbowColor];
+        isRainbowColor = [fromPalette isRainbowColor];
 
-        if (!v10)
+        if (!isRainbowColor)
         {
           goto LABEL_15;
         }
@@ -445,9 +445,9 @@ LABEL_9:
         goto LABEL_16;
       }
 
-      v12 = [v7 isRainbowColor];
+      isRainbowColor2 = [toPalette isRainbowColor];
 
-      if (v12)
+      if (isRainbowColor2)
       {
         goto LABEL_9;
       }
@@ -467,12 +467,12 @@ LABEL_16:
       if (v11)
       {
         v23 = NTKImageNamed();
-        v24 = [v23 CGImage];
+        cGImage = [v23 CGImage];
         v40.origin.x = 0.0;
         v40.origin.y = 0.0;
         v40.size.width = v19;
         v40.size.height = v20;
-        CGContextDrawImage(v22, v40, v24);
+        CGContextDrawImage(v22, v40, cGImage);
         self->_rainbowIsLoaded = 1;
       }
 
@@ -494,10 +494,10 @@ LABEL_16:
         [(NTKMagmaEffectsView *)self bounds];
         [v25 setFrame:?];
         [v25 setContentsScale:v18];
-        v30 = [(NTKMagmaColorPalette *)self->_palette maskedBackgroundStart];
-        v36[0] = [v30 CGColor];
-        v31 = [(NTKMagmaColorPalette *)self->_palette maskedBackgroundEnd];
-        v36[1] = [v31 CGColor];
+        maskedBackgroundStart = [(NTKMagmaColorPalette *)self->_palette maskedBackgroundStart];
+        v36[0] = [maskedBackgroundStart CGColor];
+        maskedBackgroundEnd = [(NTKMagmaColorPalette *)self->_palette maskedBackgroundEnd];
+        v36[1] = [maskedBackgroundEnd CGColor];
         v32 = [NSArray arrayWithObjects:v36 count:2];
         [v25 setColors:v32];
 
@@ -521,63 +521,63 @@ LABEL_16:
 
 - (id)_buttonColor
 {
-  v3 = [(NTKMagmaColorPalette *)self->_palette swoosh];
-  v4 = [v3 colorWithAlphaComponent:0.6];
+  swoosh = [(NTKMagmaColorPalette *)self->_palette swoosh];
+  v4 = [swoosh colorWithAlphaComponent:0.6];
 
-  v5 = [(NTKMagmaColorPalette *)self->_palette swoosh];
+  swoosh2 = [(NTKMagmaColorPalette *)self->_palette swoosh];
   buttonHighlightFraction = self->_buttonHighlightFraction;
   v7 = NTKInterpolateBetweenColors();
 
   return v7;
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v23 = a3;
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
   [(NTKMagmaEffectsView *)self _loadBackgroundIfNeeded];
-  v5 = [v23 backgroundTextureAlpha];
-  [v5 doubleValue];
+  backgroundTextureAlpha = [paletteCopy backgroundTextureAlpha];
+  [backgroundTextureAlpha doubleValue];
   v7 = v6;
 
-  v8 = [v23 backgroundMask];
-  [v8 doubleValue];
+  backgroundMask = [paletteCopy backgroundMask];
+  [backgroundMask doubleValue];
   v10 = v9;
 
   quad = self->_quad;
-  v12 = [v23 digitsOutline];
-  [(NTKMagmaQuad *)quad setTimeOutlineColor:v12];
+  digitsOutline = [paletteCopy digitsOutline];
+  [(NTKMagmaQuad *)quad setTimeOutlineColor:digitsOutline];
 
   v13 = self->_quad;
-  v14 = [v23 digits];
-  [(NTKMagmaQuad *)v13 setTimeFillColor:v14];
+  digits = [paletteCopy digits];
+  [(NTKMagmaQuad *)v13 setTimeFillColor:digits];
 
   *&v15 = v7;
   [(NTKMagmaQuad *)self->_quad setBackgroundTextureAlpha:v15];
   v16 = self->_quad;
-  v17 = [v23 backgroundStart];
-  [(NTKMagmaQuad *)v16 setBackgroundTopColor:v17];
+  backgroundStart = [paletteCopy backgroundStart];
+  [(NTKMagmaQuad *)v16 setBackgroundTopColor:backgroundStart];
 
   v18 = self->_quad;
-  v19 = [v23 backgroundEnd];
-  [(NTKMagmaQuad *)v18 setBackgroundBottomColor:v19];
+  backgroundEnd = [paletteCopy backgroundEnd];
+  [(NTKMagmaQuad *)v18 setBackgroundBottomColor:backgroundEnd];
 
   v20 = self->_quad;
-  v21 = [(NTKMagmaEffectsView *)self _buttonColor];
-  [(NTKMagmaQuad *)v20 setLogoColor:v21];
+  _buttonColor = [(NTKMagmaEffectsView *)self _buttonColor];
+  [(NTKMagmaQuad *)v20 setLogoColor:_buttonColor];
 
   *&v22 = v10;
   [(NTKMagmaQuad *)self->_quad setMaskingFraction:v22];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a3;
+  beganCopy = began;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [beganCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -589,7 +589,7 @@ LABEL_16:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(beganCopy);
         }
 
         [*(*(&v10 + 1) + 8 * v9) locationInView:self];
@@ -598,17 +598,17 @@ LABEL_16:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [beganCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_tapAtPoint:(CGPoint)a3
+- (void)_tapAtPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   v4 = CACurrentMediaTime();
   if (v4 - self->_lastTapTime >= 0.1)
   {
@@ -635,10 +635,10 @@ LABEL_16:
   }
 }
 
-- (void)buttonHighlightedChanged:(BOOL)a3
+- (void)buttonHighlightedChanged:(BOOL)changed
 {
-  self->_buttonHighlighted = a3;
-  if (a3)
+  self->_buttonHighlighted = changed;
+  if (changed)
   {
     v4 = 0;
     v5 = 1.0;
@@ -655,8 +655,8 @@ LABEL_16:
   *(&self->super.super.super.isa + *v6) = v5;
   self->_buttonHighlightAnimating = v4;
   quad = self->_quad;
-  v8 = [(NTKMagmaEffectsView *)self _buttonColor];
-  [(NTKMagmaQuad *)quad setLogoColor:v8];
+  _buttonColor = [(NTKMagmaEffectsView *)self _buttonColor];
+  [(NTKMagmaQuad *)quad setLogoColor:_buttonColor];
 }
 
 @end

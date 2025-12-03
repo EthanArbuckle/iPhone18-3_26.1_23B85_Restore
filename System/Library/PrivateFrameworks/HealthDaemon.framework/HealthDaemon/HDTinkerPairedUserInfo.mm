@@ -1,14 +1,14 @@
 @interface HDTinkerPairedUserInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation HDTinkerPairedUserInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -18,26 +18,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HDTinkerPairedUserInfo *)self firstName];
-      v7 = [(HDTinkerPairedUserInfo *)v5 firstName];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      firstName = [(HDTinkerPairedUserInfo *)self firstName];
+      firstName2 = [(HDTinkerPairedUserInfo *)v5 firstName];
+      v8 = firstName2;
+      if (firstName == firstName2)
       {
       }
 
       else
       {
-        v9 = [(HDTinkerPairedUserInfo *)v5 firstName];
-        if (!v9)
+        firstName3 = [(HDTinkerPairedUserInfo *)v5 firstName];
+        if (!firstName3)
         {
           goto LABEL_19;
         }
 
-        v10 = v9;
-        v11 = [(HDTinkerPairedUserInfo *)self firstName];
-        v12 = [(HDTinkerPairedUserInfo *)v5 firstName];
-        v13 = [v11 isEqualToString:v12];
+        v10 = firstName3;
+        firstName4 = [(HDTinkerPairedUserInfo *)self firstName];
+        firstName5 = [(HDTinkerPairedUserInfo *)v5 firstName];
+        v13 = [firstName4 isEqualToString:firstName5];
 
         if (!v13)
         {
@@ -45,25 +45,25 @@
         }
       }
 
-      v6 = [(HDTinkerPairedUserInfo *)self lastName];
-      v15 = [(HDTinkerPairedUserInfo *)v5 lastName];
-      v8 = v15;
-      if (v6 == v15)
+      firstName = [(HDTinkerPairedUserInfo *)self lastName];
+      lastName = [(HDTinkerPairedUserInfo *)v5 lastName];
+      v8 = lastName;
+      if (firstName == lastName)
       {
       }
 
       else
       {
-        v16 = [(HDTinkerPairedUserInfo *)v5 lastName];
-        if (!v16)
+        lastName2 = [(HDTinkerPairedUserInfo *)v5 lastName];
+        if (!lastName2)
         {
           goto LABEL_19;
         }
 
-        v17 = v16;
-        v18 = [(HDTinkerPairedUserInfo *)self lastName];
-        v19 = [(HDTinkerPairedUserInfo *)v5 lastName];
-        v20 = [v18 isEqualToString:v19];
+        v17 = lastName2;
+        lastName3 = [(HDTinkerPairedUserInfo *)self lastName];
+        lastName4 = [(HDTinkerPairedUserInfo *)v5 lastName];
+        v20 = [lastName3 isEqualToString:lastName4];
 
         if (!v20)
         {
@@ -71,10 +71,10 @@
         }
       }
 
-      v6 = [(HDTinkerPairedUserInfo *)self dsid];
-      v21 = [(HDTinkerPairedUserInfo *)v5 dsid];
-      v8 = v21;
-      if (v6 == v21)
+      firstName = [(HDTinkerPairedUserInfo *)self dsid];
+      dsid = [(HDTinkerPairedUserInfo *)v5 dsid];
+      v8 = dsid;
+      if (firstName == dsid)
       {
 
 LABEL_24:
@@ -82,13 +82,13 @@ LABEL_24:
         goto LABEL_21;
       }
 
-      v22 = [(HDTinkerPairedUserInfo *)v5 dsid];
-      if (v22)
+      dsid2 = [(HDTinkerPairedUserInfo *)v5 dsid];
+      if (dsid2)
       {
-        v23 = v22;
-        v24 = [(HDTinkerPairedUserInfo *)self dsid];
-        v25 = [(HDTinkerPairedUserInfo *)v5 dsid];
-        v26 = [v24 isEqual:v25];
+        v23 = dsid2;
+        dsid3 = [(HDTinkerPairedUserInfo *)self dsid];
+        dsid4 = [(HDTinkerPairedUserInfo *)v5 dsid];
+        v26 = [dsid3 isEqual:dsid4];
 
         if (v26)
         {
@@ -119,10 +119,10 @@ LABEL_22:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDTinkerPairedUserInfo *)self firstName];
-  v6 = [(HDTinkerPairedUserInfo *)self lastName];
-  v7 = [(HDTinkerPairedUserInfo *)self dsid];
-  v8 = [v3 stringWithFormat:@"<%@:%p firstName:%@ lastName:%@ DSID:%@>", v4, self, v5, v6, v7];
+  firstName = [(HDTinkerPairedUserInfo *)self firstName];
+  lastName = [(HDTinkerPairedUserInfo *)self lastName];
+  dsid = [(HDTinkerPairedUserInfo *)self dsid];
+  v8 = [v3 stringWithFormat:@"<%@:%p firstName:%@ lastName:%@ DSID:%@>", v4, self, firstName, lastName, dsid];
 
   return v8;
 }

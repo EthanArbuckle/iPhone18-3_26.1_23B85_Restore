@@ -1,23 +1,23 @@
 @interface LACUIAvailableMechanismsWrapper
 - (BOOL)allowsBiometry;
 - (BOOL)allowsPasscode;
-- (LACUIAvailableMechanismsWrapper)initWithMechanismEvents:(id)a3;
+- (LACUIAvailableMechanismsWrapper)initWithMechanismEvents:(id)events;
 @end
 
 @implementation LACUIAvailableMechanismsWrapper
 
-- (LACUIAvailableMechanismsWrapper)initWithMechanismEvents:(id)a3
+- (LACUIAvailableMechanismsWrapper)initWithMechanismEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v9.receiver = self;
   v9.super_class = LACUIAvailableMechanismsWrapper;
   v5 = [(LACUIAvailableMechanismsWrapper *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (eventsCopy)
     {
-      v7 = v4;
+      v7 = eventsCopy;
     }
 
     else

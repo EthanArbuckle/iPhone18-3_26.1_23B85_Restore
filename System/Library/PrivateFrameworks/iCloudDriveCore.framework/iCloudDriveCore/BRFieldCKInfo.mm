@@ -1,28 +1,28 @@
 @interface BRFieldCKInfo
-+ (id)newFromSqliteStatement:(sqlite3_stmt *)a3 atIndex:(int)a4;
-+ (id)newFromSqliteValue:(sqlite3_value *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BRFieldCKInfo)initWithRecord:(id)a3;
++ (id)newFromSqliteStatement:(sqlite3_stmt *)statement atIndex:(int)index;
++ (id)newFromSqliteValue:(sqlite3_value *)value;
+- (BOOL)isEqual:(id)equal;
+- (BRFieldCKInfo)initWithRecord:(id)record;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)markCrossZoneMoved;
-- (void)mergeFrom:(id)a3;
-- (void)overwriteEtag:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)overwriteEtag:(id)etag;
 - (void)revertEtagsForOldZoneTombstone;
-- (void)setCKInfoFieldsInRecord:(id)a3 includeCZMEtag:(BOOL)a4;
-- (void)setHasWasCached:(BOOL)a3;
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4;
-- (void)writeTo:(id)a3;
+- (void)setCKInfoFieldsInRecord:(id)record includeCZMEtag:(BOOL)etag;
+- (void)setHasWasCached:(BOOL)cached;
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BRFieldCKInfo
 
-- (void)setHasWasCached:(BOOL)a3
+- (void)setHasWasCached:(BOOL)cached
 {
-  if (a3)
+  if (cached)
   {
     v3 = 2;
   }
@@ -41,20 +41,20 @@
   v8.receiver = self;
   v8.super_class = BRFieldCKInfo;
   v4 = [(BRFieldCKInfo *)&v8 description];
-  v5 = [(BRFieldCKInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BRFieldCKInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_knownToServer];
-    [v3 setObject:v5 forKey:@"knownToServer"];
+    [dictionary setObject:v5 forKey:@"knownToServer"];
 
     has = self->_has;
   }
@@ -62,40 +62,40 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_wasCached];
-    [v3 setObject:v6 forKey:@"wasCached"];
+    [dictionary setObject:v6 forKey:@"wasCached"];
   }
 
   etag = self->_etag;
   if (etag)
   {
-    [v3 setObject:etag forKey:@"etag"];
+    [dictionary setObject:etag forKey:@"etag"];
   }
 
   etagBeforeCrossZoneMove = self->_etagBeforeCrossZoneMove;
   if (etagBeforeCrossZoneMove)
   {
-    [v3 setObject:etagBeforeCrossZoneMove forKey:@"etagBeforeCrossZoneMove"];
+    [dictionary setObject:etagBeforeCrossZoneMove forKey:@"etagBeforeCrossZoneMove"];
   }
 
   deletionChangeToken = self->_deletionChangeToken;
   if (deletionChangeToken)
   {
-    [v3 setObject:deletionChangeToken forKey:@"deletionChangeToken"];
+    [dictionary setObject:deletionChangeToken forKey:@"deletionChangeToken"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     knownToServer = self->_knownToServer;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -103,68 +103,68 @@
   {
     wasCached = self->_wasCached;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_etag)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_etagBeforeCrossZoneMove)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_deletionChangeToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[32] = self->_knownToServer;
-    v4[36] |= 1u;
+    toCopy[32] = self->_knownToServer;
+    toCopy[36] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[33] = self->_wasCached;
-    v4[36] |= 2u;
+    toCopy[33] = self->_wasCached;
+    toCopy[36] |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_etag)
   {
-    [v4 setEtag:?];
-    v4 = v6;
+    [toCopy setEtag:?];
+    toCopy = v6;
   }
 
   if (self->_etagBeforeCrossZoneMove)
   {
     [v6 setEtagBeforeCrossZoneMove:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deletionChangeToken)
   {
     [v6 setDeletionChangeToken:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -180,60 +180,60 @@
     v5[36] |= 2u;
   }
 
-  v8 = [(NSString *)self->_etag copyWithZone:a3];
+  v8 = [(NSString *)self->_etag copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
-  v10 = [(NSString *)self->_etagBeforeCrossZoneMove copyWithZone:a3];
+  v10 = [(NSString *)self->_etagBeforeCrossZoneMove copyWithZone:zone];
   v11 = v6[3];
   v6[3] = v10;
 
-  v12 = [(NSData *)self->_deletionChangeToken copyWithZone:a3];
+  v12 = [(NSData *)self->_deletionChangeToken copyWithZone:zone];
   v13 = v6[1];
   v6[1] = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_23;
     }
 
-    v10 = *(v4 + 32);
+    v10 = *(equalCopy + 32);
     if (self->_knownToServer)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -243,34 +243,34 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 36) & 2) == 0)
+  if ((*(equalCopy + 36) & 2) == 0)
   {
     goto LABEL_23;
   }
 
-  v11 = *(v4 + 33);
+  v11 = *(equalCopy + 33);
   if (self->_wasCached)
   {
-    if ((*(v4 + 33) & 1) == 0)
+    if ((*(equalCopy + 33) & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 33))
+  else if (*(equalCopy + 33))
   {
     goto LABEL_23;
   }
 
 LABEL_6:
   etag = self->_etag;
-  if (etag | *(v4 + 2) && ![(NSString *)etag isEqual:?])
+  if (etag | *(equalCopy + 2) && ![(NSString *)etag isEqual:?])
   {
     goto LABEL_23;
   }
 
   etagBeforeCrossZoneMove = self->_etagBeforeCrossZoneMove;
-  if (etagBeforeCrossZoneMove | *(v4 + 3))
+  if (etagBeforeCrossZoneMove | *(equalCopy + 3))
   {
     if (![(NSString *)etagBeforeCrossZoneMove isEqual:?])
     {
@@ -279,7 +279,7 @@ LABEL_6:
   }
 
   deletionChangeToken = self->_deletionChangeToken;
-  if (deletionChangeToken | *(v4 + 1))
+  if (deletionChangeToken | *(equalCopy + 1))
   {
     v9 = [(NSData *)deletionChangeToken isEqual:?];
   }
@@ -323,54 +323,54 @@ LABEL_6:
   return v5 ^ v6 ^ [(NSData *)self->_deletionChangeToken hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[36];
+  fromCopy = from;
+  v5 = fromCopy[36];
   if (v5)
   {
-    self->_knownToServer = v4[32];
+    self->_knownToServer = fromCopy[32];
     *&self->_has |= 1u;
-    v5 = v4[36];
+    v5 = fromCopy[36];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_wasCached = v4[33];
+    self->_wasCached = fromCopy[33];
     *&self->_has |= 2u;
   }
 
-  v6 = v4;
-  if (*(v4 + 2))
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(BRFieldCKInfo *)self setEtag:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BRFieldCKInfo *)self setEtagBeforeCrossZoneMove:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BRFieldCKInfo *)self setDeletionChangeToken:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
-- (BRFieldCKInfo)initWithRecord:(id)a3
+- (BRFieldCKInfo)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = [(BRFieldCKInfo *)self init];
   if (v5)
   {
-    v6 = [v4 etag];
-    [(BRFieldCKInfo *)v5 setEtag:v6];
+    etag = [recordCopy etag];
+    [(BRFieldCKInfo *)v5 setEtag:etag];
 
-    -[BRFieldCKInfo setKnownToServer:](v5, "setKnownToServer:", [v4 isKnownToServer]);
-    -[BRFieldCKInfo setWasCached:](v5, "setWasCached:", [v4 wasCached]);
+    -[BRFieldCKInfo setKnownToServer:](v5, "setKnownToServer:", [recordCopy isKnownToServer]);
+    -[BRFieldCKInfo setWasCached:](v5, "setWasCached:", [recordCopy wasCached]);
   }
 
   return v5;
@@ -378,8 +378,8 @@ LABEL_6:
 
 - (void)markCrossZoneMoved
 {
-  v3 = [(BRFieldCKInfo *)self etag];
-  [(BRFieldCKInfo *)self setEtagBeforeCrossZoneMove:v3];
+  etag = [(BRFieldCKInfo *)self etag];
+  [(BRFieldCKInfo *)self setEtagBeforeCrossZoneMove:etag];
 
   [(BRFieldCKInfo *)self setEtag:0];
 }
@@ -393,40 +393,40 @@ LABEL_6:
     [(BRFieldCKInfo(BRCItemAdditions) *)self revertEtagsForOldZoneTombstone];
   }
 
-  v5 = [(BRFieldCKInfo *)self etagBeforeCrossZoneMove];
-  [(BRFieldCKInfo *)self setEtag:v5];
+  etagBeforeCrossZoneMove = [(BRFieldCKInfo *)self etagBeforeCrossZoneMove];
+  [(BRFieldCKInfo *)self setEtag:etagBeforeCrossZoneMove];
 
   [(BRFieldCKInfo *)self setEtagBeforeCrossZoneMove:0];
 }
 
-- (void)overwriteEtag:(id)a3
+- (void)overwriteEtag:(id)etag
 {
   [(BRFieldCKInfo *)self setEtag:?];
-  if (!a3)
+  if (!etag)
   {
 
     [(BRFieldCKInfo *)self setKnownToServer:0];
   }
 }
 
-- (void)setCKInfoFieldsInRecord:(id)a3 includeCZMEtag:(BOOL)a4
+- (void)setCKInfoFieldsInRecord:(id)record includeCZMEtag:(BOOL)etag
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(BRFieldCKInfo *)self etag];
-  [v12 setEtag:v6];
+  etagCopy = etag;
+  recordCopy = record;
+  etag = [(BRFieldCKInfo *)self etag];
+  [recordCopy setEtag:etag];
 
-  [v12 setKnownToServer:{-[BRFieldCKInfo knownToServer](self, "knownToServer")}];
-  [v12 setWasCached:{-[BRFieldCKInfo wasCached](self, "wasCached")}];
-  v7 = [(BRFieldCKInfo *)self etagBeforeCrossZoneMove];
+  [recordCopy setKnownToServer:{-[BRFieldCKInfo knownToServer](self, "knownToServer")}];
+  [recordCopy setWasCached:{-[BRFieldCKInfo wasCached](self, "wasCached")}];
+  etagBeforeCrossZoneMove = [(BRFieldCKInfo *)self etagBeforeCrossZoneMove];
 
-  if (v7 && v4)
+  if (etagBeforeCrossZoneMove && etagCopy)
   {
-    v8 = [v12 pluginFields];
-    if (v8)
+    pluginFields = [recordCopy pluginFields];
+    if (pluginFields)
     {
-      v9 = [v12 pluginFields];
-      v10 = [v9 mutableCopy];
+      pluginFields2 = [recordCopy pluginFields];
+      v10 = [pluginFields2 mutableCopy];
     }
 
     else
@@ -434,44 +434,44 @@ LABEL_6:
       v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
     }
 
-    v11 = [(BRFieldCKInfo *)self etagBeforeCrossZoneMove];
-    [v10 setObject:v11 forKeyedSubscript:@"br_etagInPreviousZone"];
+    etagBeforeCrossZoneMove2 = [(BRFieldCKInfo *)self etagBeforeCrossZoneMove];
+    [v10 setObject:etagBeforeCrossZoneMove2 forKeyedSubscript:@"br_etagInPreviousZone"];
 
-    [v12 setPluginFields:v10];
+    [recordCopy setPluginFields:v10];
   }
 }
 
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index
 {
-  v7 = [(BRFieldCKInfo *)self data];
-  v6 = v7;
-  sqlite3_bind_blob(a3, a4, [v7 bytes], objc_msgSend(v7, "length"), 0xFFFFFFFFFFFFFFFFLL);
+  data = [(BRFieldCKInfo *)self data];
+  v6 = data;
+  sqlite3_bind_blob(bind, index, [data bytes], objc_msgSend(data, "length"), 0xFFFFFFFFFFFFFFFFLL);
 }
 
-+ (id)newFromSqliteValue:(sqlite3_value *)a3
++ (id)newFromSqliteValue:(sqlite3_value *)value
 {
-  if (sqlite3_value_type(a3) != 4)
+  if (sqlite3_value_type(value) != 4)
   {
     return 0;
   }
 
-  v5 = sqlite3_value_blob(a3);
-  v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v5 length:sqlite3_value_bytes(a3) freeWhenDone:0];
-  v7 = [[a1 alloc] initWithData:v6];
+  v5 = sqlite3_value_blob(value);
+  v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v5 length:sqlite3_value_bytes(value) freeWhenDone:0];
+  v7 = [[self alloc] initWithData:v6];
 
   return v7;
 }
 
-+ (id)newFromSqliteStatement:(sqlite3_stmt *)a3 atIndex:(int)a4
++ (id)newFromSqliteStatement:(sqlite3_stmt *)statement atIndex:(int)index
 {
-  if (sqlite3_column_type(a3, a4) != 4)
+  if (sqlite3_column_type(statement, index) != 4)
   {
     return 0;
   }
 
-  v7 = sqlite3_column_blob(a3, a4);
-  v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v7 length:sqlite3_column_bytes(a3 freeWhenDone:{a4), 0}];
-  v9 = [[a1 alloc] initWithData:v8];
+  v7 = sqlite3_column_blob(statement, index);
+  v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v7 length:sqlite3_column_bytes(statement freeWhenDone:{index), 0}];
+  v9 = [[self alloc] initWithData:v8];
 
   return v9;
 }

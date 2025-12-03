@@ -13,7 +13,7 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = [a1 participants];
+  obj = [self participants];
   v1 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v1)
   {
@@ -29,18 +29,18 @@
         }
 
         v5 = *(*(&v16 + 1) + 8 * i);
-        v6 = [v5 internal];
-        v7 = [v6 playerID];
-        v8 = [MEMORY[0x277D0C138] local];
-        v9 = [v8 playerID];
-        v10 = [v7 isEqualToString:v9];
+        internal = [v5 internal];
+        playerID = [internal playerID];
+        local = [MEMORY[0x277D0C138] local];
+        playerID2 = [local playerID];
+        v10 = [playerID isEqualToString:playerID2];
 
         if ((v10 & 1) == 0)
         {
-          v11 = [v5 internal];
-          v12 = [v11 isAutomatchParticipant];
+          internal2 = [v5 internal];
+          isAutomatchParticipant = [internal2 isAutomatchParticipant];
 
-          if (!v12)
+          if (!isAutomatchParticipant)
           {
             v13 = 0;
             goto LABEL_12;
@@ -66,20 +66,20 @@ LABEL_12:
 
 - (id)matchTitle
 {
-  if ([a1 isAllAutomatchedPlayer])
+  if ([self isAllAutomatchedPlayer])
   {
     goto LABEL_2;
   }
 
-  v4 = [a1 playingWithParticipantOrFirstKnownPlayer];
-  if (v4 && (v5 = v4, [a1 playingWithParticipantOrFirstKnownPlayer], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "internal"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "invitedBy"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v8))
+  playingWithParticipantOrFirstKnownPlayer = [self playingWithParticipantOrFirstKnownPlayer];
+  if (playingWithParticipantOrFirstKnownPlayer && (v5 = playingWithParticipantOrFirstKnownPlayer, [self playingWithParticipantOrFirstKnownPlayer], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "internal"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "invitedBy"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v8))
   {
-    v9 = [a1 playingWithParticipantOrFirstKnownPlayer];
-    v10 = [v9 internal];
-    v11 = [v10 invitedBy];
-    v12 = [v11 isLocalPlayer];
+    playingWithParticipantOrFirstKnownPlayer2 = [self playingWithParticipantOrFirstKnownPlayer];
+    internal = [playingWithParticipantOrFirstKnownPlayer2 internal];
+    invitedBy = [internal invitedBy];
+    isLocalPlayer = [invitedBy isLocalPlayer];
 
-    if (v12)
+    if (isLocalPlayer)
     {
 LABEL_2:
       v2 = GKGameCenterUIFrameworkBundle();
@@ -90,10 +90,10 @@ LABEL_2:
     v18 = MEMORY[0x277CCACA8];
     v2 = GKGameCenterUIFrameworkBundle();
     v14 = GKGetLocalizedStringFromTableInBundle();
-    v15 = [a1 playingWithParticipantOrFirstKnownPlayer];
-    v16 = [v15 internal];
-    v17 = [v16 invitedBy];
-    v19 = [v17 displayNameWithOptions:1];
+    playingWithParticipantOrFirstKnownPlayer3 = [self playingWithParticipantOrFirstKnownPlayer];
+    internal2 = [playingWithParticipantOrFirstKnownPlayer3 internal];
+    invitedBy2 = [internal2 invitedBy];
+    v19 = [invitedBy2 displayNameWithOptions:1];
     v3 = [v18 stringWithFormat:v14, v19];
   }
 
@@ -102,10 +102,10 @@ LABEL_2:
     v13 = MEMORY[0x277CCACA8];
     v2 = GKGameCenterUIFrameworkBundle();
     v14 = GKGetLocalizedStringFromTableInBundle();
-    v15 = [a1 playingWithParticipantOrFirstKnownPlayer];
-    v16 = [v15 player];
-    v17 = [v16 displayNameWithOptions:1];
-    v3 = [v13 stringWithFormat:v14, v17];
+    playingWithParticipantOrFirstKnownPlayer3 = [self playingWithParticipantOrFirstKnownPlayer];
+    internal2 = [playingWithParticipantOrFirstKnownPlayer3 player];
+    invitedBy2 = [internal2 displayNameWithOptions:1];
+    v3 = [v13 stringWithFormat:v14, invitedBy2];
   }
 
 LABEL_10:
@@ -115,22 +115,22 @@ LABEL_10:
 
 - (id)showcasePlayer
 {
-  if (![a1 isAllAutomatchedPlayer] && (objc_msgSend(a1, "playingWithParticipantOrFirstKnownPlayer"), (v2 = objc_claimAutoreleasedReturnValue()) != 0) && (v3 = v2, objc_msgSend(a1, "playingWithParticipantOrFirstKnownPlayer"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "internal"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "invitedBy"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v3, v6))
+  if (![self isAllAutomatchedPlayer] && (objc_msgSend(self, "playingWithParticipantOrFirstKnownPlayer"), (v2 = objc_claimAutoreleasedReturnValue()) != 0) && (v3 = v2, objc_msgSend(self, "playingWithParticipantOrFirstKnownPlayer"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "internal"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "invitedBy"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v3, v6))
   {
     v7 = objc_alloc(MEMORY[0x277D0C170]);
-    v8 = [a1 playingWithParticipantOrFirstKnownPlayer];
-    v9 = [v8 internal];
-    v10 = [v9 invitedBy];
-    v11 = [v7 initWithInternalRepresentation:v10];
+    playingWithParticipantOrFirstKnownPlayer = [self playingWithParticipantOrFirstKnownPlayer];
+    internal = [playingWithParticipantOrFirstKnownPlayer internal];
+    invitedBy = [internal invitedBy];
+    player = [v7 initWithInternalRepresentation:invitedBy];
   }
 
   else
   {
-    v8 = [a1 localPlayerParticipant];
-    v11 = [v8 player];
+    playingWithParticipantOrFirstKnownPlayer = [self localPlayerParticipant];
+    player = [playingWithParticipantOrFirstKnownPlayer player];
   }
 
-  return v11;
+  return player;
 }
 
 @end

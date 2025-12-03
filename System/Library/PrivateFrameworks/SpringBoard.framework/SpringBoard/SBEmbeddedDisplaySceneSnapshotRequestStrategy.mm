@@ -1,25 +1,25 @@
 @interface SBEmbeddedDisplaySceneSnapshotRequestStrategy
-- (id)snapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5;
+- (id)snapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context;
 @end
 
 @implementation SBEmbeddedDisplaySceneSnapshotRequestStrategy
 
-- (id)snapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5
+- (id)snapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  handleCopy = handle;
+  settingsCopy = settings;
+  contextCopy = context;
+  if (handleCopy)
   {
-    if (v9)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_27:
     [SBEmbeddedDisplaySceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:settings:snapshotRequestContext:];
-    if (v10)
+    if (contextCopy)
     {
       goto LABEL_4;
     }
@@ -28,13 +28,13 @@ LABEL_27:
   }
 
   [SBEmbeddedDisplaySceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:settings:snapshotRequestContext:];
-  if (!v9)
+  if (!settingsCopy)
   {
     goto LABEL_27;
   }
 
 LABEL_3:
-  if (v10)
+  if (contextCopy)
   {
     goto LABEL_4;
   }
@@ -42,19 +42,19 @@ LABEL_3:
 LABEL_28:
   [SBEmbeddedDisplaySceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:settings:snapshotRequestContext:];
 LABEL_4:
-  v11 = [v10 sceneDisplayWindowManagementContext];
-  v12 = [v10 sceneDisplayLayoutStateTransitionContext];
-  v13 = [v12 fromLayoutState];
+  sceneDisplayWindowManagementContext = [contextCopy sceneDisplayWindowManagementContext];
+  sceneDisplayLayoutStateTransitionContext = [contextCopy sceneDisplayLayoutStateTransitionContext];
+  fromLayoutState = [sceneDisplayLayoutStateTransitionContext fromLayoutState];
 
-  v14 = [v10 sceneDisplayLayoutStateTransitionContext];
-  v15 = [v14 toLayoutState];
+  sceneDisplayLayoutStateTransitionContext2 = [contextCopy sceneDisplayLayoutStateTransitionContext];
+  toLayoutState = [sceneDisplayLayoutStateTransitionContext2 toLayoutState];
 
-  if (v13)
+  if (fromLayoutState)
   {
-    v16 = [v8 application];
-    v17 = [v16 isMedusaCapable];
+    application = [handleCopy application];
+    isMedusaCapable = [application isMedusaCapable];
 
-    if ((v17 & 1) == 0)
+    if ((isMedusaCapable & 1) == 0)
     {
       v21 = [[SBSceneSnapshotRequest alloc] initWithSize:0 orientation:0 userInterfaceStyle:1];
       v36[0] = v21;
@@ -70,7 +70,7 @@ LABEL_4:
     v19 = v18;
     v35 = v19;
     v20 = MEMORY[0x223D6F7F0](v34);
-    if ([v11 isChamoisOrFlexibleWindowing])
+    if ([sceneDisplayWindowManagementContext isChamoisOrFlexibleWindowing])
     {
       v20[2](v20, 0, 0);
       v20[2](v20, 1, 5);
@@ -79,28 +79,28 @@ LABEL_4:
     else
     {
       v33 = v19;
-      v23 = [v8 sceneIdentifier];
-      v24 = [v13 elementWithIdentifier:v23];
-      v25 = [v24 layoutRole];
+      sceneIdentifier = [handleCopy sceneIdentifier];
+      v24 = [fromLayoutState elementWithIdentifier:sceneIdentifier];
+      layoutRole = [v24 layoutRole];
 
-      if (v25 == 3)
+      if (layoutRole == 3)
       {
         v20[2](v20, 5, 4);
       }
 
       else
       {
-        if (v25 != 4)
+        if (layoutRole != 4)
         {
-          v31 = [v13 appLayout];
-          v26 = [v15 appLayout];
+          appLayout = [fromLayoutState appLayout];
+          appLayout2 = [toLayoutState appLayout];
           v27 = MEMORY[0x277CBEB98];
-          v28 = [v31 allItems];
-          v29 = [v27 setWithArray:v28];
-          v32 = v26;
-          LOBYTE(v26) = [v26 containsAnyItemFromSet:v29];
+          allItems = [appLayout allItems];
+          v29 = [v27 setWithArray:allItems];
+          v32 = appLayout2;
+          LOBYTE(appLayout2) = [appLayout2 containsAnyItemFromSet:v29];
 
-          if ((v26 & 1) != 0 || [v31 configuration] == 1)
+          if ((appLayout2 & 1) != 0 || [appLayout configuration] == 1)
           {
             v20[2](v20, 3, 4);
             v20[2](v20, 4, 0);
@@ -133,7 +133,7 @@ LABEL_22:
   v21 = SBLogSceneSnapshots();
   if (os_log_type_enabled(&v21->super, OS_LOG_TYPE_ERROR))
   {
-    [SBEmbeddedDisplaySceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:v8 settings:&v21->super snapshotRequestContext:?];
+    [SBEmbeddedDisplaySceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:handleCopy settings:&v21->super snapshotRequestContext:?];
   }
 
   v22 = MEMORY[0x277CBEBF8];

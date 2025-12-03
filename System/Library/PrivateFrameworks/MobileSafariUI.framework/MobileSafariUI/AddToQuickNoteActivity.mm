@@ -1,26 +1,26 @@
 @interface AddToQuickNoteActivity
-- (BOOL)canPerformWithTabDocument:(id)a3;
-- (void)performActivityWithTabDocument:(id)a3;
+- (BOOL)canPerformWithTabDocument:(id)document;
+- (void)performActivityWithTabDocument:(id)document;
 @end
 
 @implementation AddToQuickNoteActivity
 
-- (void)performActivityWithTabDocument:(id)a3
+- (void)performActivityWithTabDocument:(id)document
 {
-  [a3 addAppHighlightCreatingLink:1];
+  [document addAppHighlightCreatingLink:1];
 
   [(_SFActivity *)self activityDidFinish:1];
 }
 
-- (BOOL)canPerformWithTabDocument:(id)a3
+- (BOOL)canPerformWithTabDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v4 = +[Application sharedApplication];
-  v5 = [v4 systemNoteTakingController];
-  v6 = [v3 isPrivateBrowsingEnabled];
+  systemNoteTakingController = [v4 systemNoteTakingController];
+  isPrivateBrowsingEnabled = [documentCopy isPrivateBrowsingEnabled];
 
-  LOBYTE(v3) = [v5 isNoteTakingSupportedWithPrivateBrowsing:v6];
-  return v3;
+  LOBYTE(documentCopy) = [systemNoteTakingController isNoteTakingSupportedWithPrivateBrowsing:isPrivateBrowsingEnabled];
+  return documentCopy;
 }
 
 @end

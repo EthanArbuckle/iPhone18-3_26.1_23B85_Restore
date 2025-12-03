@@ -1,26 +1,26 @@
 @interface MCCBgTimer
 - (BOOL)isValid;
-- (MCCBgTimer)initWithTimeIntervalSinceNow:(double)a3 queue:(id)a4 block:(id)a5;
+- (MCCBgTimer)initWithTimeIntervalSinceNow:(double)now queue:(id)queue block:(id)block;
 - (void)cancel;
 - (void)start;
 @end
 
 @implementation MCCBgTimer
 
-- (MCCBgTimer)initWithTimeIntervalSinceNow:(double)a3 queue:(id)a4 block:(id)a5
+- (MCCBgTimer)initWithTimeIntervalSinceNow:(double)now queue:(id)queue block:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   v22.receiver = self;
   v22.super_class = MCCBgTimer;
   v10 = [(MCCBgTimer *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    v10->_interval = (a3 * 1000000000.0);
-    if (v8)
+    v10->_interval = (now * 1000000000.0);
+    if (queueCopy)
     {
-      v12 = v8;
+      v12 = queueCopy;
     }
 
     else
@@ -41,7 +41,7 @@
     handler[1] = 3221225472;
     handler[2] = __55__MCCBgTimer_initWithTimeIntervalSinceNow_queue_block___block_invoke;
     handler[3] = &unk_1E8458140;
-    v19 = v9;
+    v19 = blockCopy;
     objc_copyWeak(&v20, &location);
     dispatch_source_set_event_handler(v16, handler);
     objc_destroyWeak(&v20);

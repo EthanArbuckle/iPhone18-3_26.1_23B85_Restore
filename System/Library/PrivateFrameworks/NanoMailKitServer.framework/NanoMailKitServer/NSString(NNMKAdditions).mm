@@ -8,7 +8,7 @@
 
 - (id)nnmk_base64String
 {
-  v1 = [a1 dataUsingEncoding:4];
+  v1 = [self dataUsingEncoding:4];
   v2 = [v1 base64EncodedStringWithOptions:1];
 
   return v2;
@@ -17,7 +17,7 @@
 - (id)nnmk_sanitizedFileNameString
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"/\\?%*|<>:"];
-  v3 = [a1 componentsSeparatedByCharactersInSet:v2];
+  v3 = [self componentsSeparatedByCharactersInSet:v2];
   v4 = [v3 componentsJoinedByString:@"_"];
 
   return v4;

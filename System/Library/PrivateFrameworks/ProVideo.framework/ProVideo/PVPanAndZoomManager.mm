@@ -1,46 +1,46 @@
 @interface PVPanAndZoomManager
-+ (CGPoint)adjustPositionToKeepMediaInViewBounds:(CGPoint)a3 scale:(double)a4 minScale:(double)a5 mediaAspectRatio:(double)a6 viewAspectRatio:(double)a7 fillMode:(int)a8 outNeedsUpdate:(BOOL *)a9;
-+ (CGPoint)maximumNormalizedPositionForScale:(double)a3 minScale:(double)a4 position:(CGPoint)a5 mediaAspectRatio:(double)a6 viewAspectRatio:(double)a7 fillMode:(int)a8;
-+ (PVTransformAnimationInfo)transformAnimInfoForScale:(SEL)a3 atNormalizedLocationInView:(double)a4 minScale:(CGPoint)a5 currentScale:(double)a6 currentTranslation:(double)a7 mediaAspectRatio:(CGPoint)a8 viewAspectRatio:(double)a9 fillMode:(double)a10 outNeedsUpdate:(int)a11;
-+ (double)calculateMaxScale:(double)result forMediaAspectRatio:(double)a4 viewAspectRatio:(double)a5 fillMode:(int)a6;
-+ (double)calculateMinScaleForMediaAspectRatio:(double)a3 viewAspectRatio:(double)a4 fillMode:(int)a5;
-+ (double)maximumNormalizedPositionInAxisForScale:(double)a3 minScale:(double)a4 isMediaAxisNormal:(BOOL)a5 isPositionBelowZero:(BOOL)a6;
-+ (id)panAndZoomManagerWithMediaSize:(CGSize)a3 viewSize:(CGSize)a4 fillMode:(int)a5 maxScale:(double)a6;
-- (BOOL)isEditingTransformType:(int)a3;
++ (CGPoint)adjustPositionToKeepMediaInViewBounds:(CGPoint)bounds scale:(double)scale minScale:(double)minScale mediaAspectRatio:(double)ratio viewAspectRatio:(double)aspectRatio fillMode:(int)mode outNeedsUpdate:(BOOL *)update;
++ (CGPoint)maximumNormalizedPositionForScale:(double)scale minScale:(double)minScale position:(CGPoint)position mediaAspectRatio:(double)ratio viewAspectRatio:(double)aspectRatio fillMode:(int)mode;
++ (PVTransformAnimationInfo)transformAnimInfoForScale:(SEL)scale atNormalizedLocationInView:(double)view minScale:(CGPoint)minScale currentScale:(double)currentScale currentTranslation:(double)translation mediaAspectRatio:(CGPoint)ratio viewAspectRatio:(double)aspectRatio fillMode:(double)self0 outNeedsUpdate:(int)self1;
++ (double)calculateMaxScale:(double)result forMediaAspectRatio:(double)ratio viewAspectRatio:(double)aspectRatio fillMode:(int)mode;
++ (double)calculateMinScaleForMediaAspectRatio:(double)ratio viewAspectRatio:(double)aspectRatio fillMode:(int)mode;
++ (double)maximumNormalizedPositionInAxisForScale:(double)scale minScale:(double)minScale isMediaAxisNormal:(BOOL)normal isPositionBelowZero:(BOOL)zero;
++ (id)panAndZoomManagerWithMediaSize:(CGSize)size viewSize:(CGSize)viewSize fillMode:(int)mode maxScale:(double)scale;
+- (BOOL)isEditingTransformType:(int)type;
 - (CGSize)mediaSize;
 - (CGSize)viewSize;
-- (PVPanAndZoomManager)initWithMediaSize:(CGSize)a3 viewSize:(CGSize)a4 fillMode:(int)a5 maxScale:(double)a6;
-- (PVTransformAnimationInfo)endEditingTransformForType:(SEL)a3;
-- (PVTransformAnimationInfo)updateRotation:(SEL)a3 normalizedLocationInView:(double)a4 outNeedsUpdate:(CGPoint)a5;
-- (PVTransformAnimationInfo)updateScale:(SEL)a3 normalizedLocationInView:(double)a4 outNeedsUpdate:(CGPoint)a5;
-- (PVTransformAnimationInfo)updateTranslation:(SEL)a3 outNeedsUpdate:(CGPoint)a4;
-- (void)beginEditingTransform:(PVTransformAnimationInfo *)a3 transformType:(int)a4 updateOtherWorkingTransforms:(BOOL)a5;
+- (PVPanAndZoomManager)initWithMediaSize:(CGSize)size viewSize:(CGSize)viewSize fillMode:(int)mode maxScale:(double)scale;
+- (PVTransformAnimationInfo)endEditingTransformForType:(SEL)type;
+- (PVTransformAnimationInfo)updateRotation:(SEL)rotation normalizedLocationInView:(double)view outNeedsUpdate:(CGPoint)update;
+- (PVTransformAnimationInfo)updateScale:(SEL)scale normalizedLocationInView:(double)view outNeedsUpdate:(CGPoint)update;
+- (PVTransformAnimationInfo)updateTranslation:(SEL)translation outNeedsUpdate:(CGPoint)update;
+- (void)beginEditingTransform:(PVTransformAnimationInfo *)transform transformType:(int)type updateOtherWorkingTransforms:(BOOL)transforms;
 - (void)cancelEditing;
 - (void)cancelSnapTimer;
-- (void)setFillMode:(int)a3;
-- (void)setIsEditingTransform:(BOOL)a3 type:(int)a4;
-- (void)setMaxScale:(double)a3;
-- (void)setMediaSize:(CGSize)a3;
-- (void)setViewSize:(CGSize)a3;
+- (void)setFillMode:(int)mode;
+- (void)setIsEditingTransform:(BOOL)transform type:(int)type;
+- (void)setMaxScale:(double)scale;
+- (void)setMediaSize:(CGSize)size;
+- (void)setViewSize:(CGSize)size;
 - (void)updateMediaAspectRatio;
 - (void)updateViewAspectRatio;
 @end
 
 @implementation PVPanAndZoomManager
 
-+ (id)panAndZoomManagerWithMediaSize:(CGSize)a3 viewSize:(CGSize)a4 fillMode:(int)a5 maxScale:(double)a6
++ (id)panAndZoomManagerWithMediaSize:(CGSize)size viewSize:(CGSize)viewSize fillMode:(int)mode maxScale:(double)scale
 {
-  v6 = [[a1 alloc] initWithMediaSize:*&a5 viewSize:a3.width fillMode:a3.height maxScale:{a4.width, a4.height, a6}];
+  v6 = [[self alloc] initWithMediaSize:*&mode viewSize:size.width fillMode:size.height maxScale:{viewSize.width, viewSize.height, scale}];
 
   return v6;
 }
 
-- (PVPanAndZoomManager)initWithMediaSize:(CGSize)a3 viewSize:(CGSize)a4 fillMode:(int)a5 maxScale:(double)a6
+- (PVPanAndZoomManager)initWithMediaSize:(CGSize)size viewSize:(CGSize)viewSize fillMode:(int)mode maxScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3.height;
-  v11 = a3.width;
+  height = viewSize.height;
+  width = viewSize.width;
+  v10 = size.height;
+  v11 = size.width;
   v17.receiver = self;
   v17.super_class = PVPanAndZoomManager;
   v12 = [(PVPanAndZoomManager *)&v17 init];
@@ -54,15 +54,15 @@
     v13->_viewSize.width = width;
     v13->_viewSize.height = height;
     [(PVPanAndZoomManager *)v13 updateViewAspectRatio];
-    v13->_fillMode = a5;
+    v13->_fillMode = mode;
     [(PVPanAndZoomManager *)v13 updateMinScale];
-    v14 = 3.0;
-    if (fabs(a6) >= 0.0000001)
+    scaleCopy = 3.0;
+    if (fabs(scale) >= 0.0000001)
     {
-      v14 = a6;
+      scaleCopy = scale;
     }
 
-    v13->_maxScale = v14;
+    v13->_maxScale = scaleCopy;
     [(PVPanAndZoomManager *)v13 updateMaxScale];
     v13->_skipFirstSnap = 0;
     v13->_isZoomSnapEnabled = 1;
@@ -79,30 +79,30 @@
   return v13;
 }
 
-- (void)beginEditingTransform:(PVTransformAnimationInfo *)a3 transformType:(int)a4 updateOtherWorkingTransforms:(BOOL)a5
+- (void)beginEditingTransform:(PVTransformAnimationInfo *)transform transformType:(int)type updateOtherWorkingTransforms:(BOOL)transforms
 {
-  v5 = a5;
+  transformsCopy = transforms;
   [(PVPanAndZoomManager *)self setIsEditingTransform:1 type:?];
-  switch(a4)
+  switch(type)
   {
     case 2:
-      v15 = *&a3->time.value;
-      v16 = *&a3->time.epoch;
-      v17 = *&a3->translation.y;
-      self->_workingTransformRotate.rotation = a3->rotation;
+      v15 = *&transform->time.value;
+      v16 = *&transform->time.epoch;
+      v17 = *&transform->translation.y;
+      self->_workingTransformRotate.rotation = transform->rotation;
       *&self->_workingTransformRotate.translation.y = v17;
       *&self->_workingTransformRotate.time.epoch = v16;
       *&self->_workingTransformRotate.time.value = v15;
       break;
     case 1:
-      v12 = *&a3->time.value;
-      v13 = *&a3->time.epoch;
-      v14 = *&a3->translation.y;
-      self->_workingTransformScale.rotation = a3->rotation;
+      v12 = *&transform->time.value;
+      v13 = *&transform->time.epoch;
+      v14 = *&transform->translation.y;
+      self->_workingTransformScale.rotation = transform->rotation;
       *&self->_workingTransformScale.time.epoch = v13;
       *&self->_workingTransformScale.translation.y = v14;
       *&self->_workingTransformScale.time.value = v12;
-      if (v5)
+      if (transformsCopy)
       {
         self->_workingTransformTranslate.scale = self->_workingTransformScale.scale;
       }
@@ -117,16 +117,16 @@
       [(PVPanAndZoomManager *)self cancelSnapTimer];
       break;
     case 0:
-      v9 = *&a3->time.value;
-      v10 = *&a3->time.epoch;
-      v11 = *&a3->translation.y;
-      self->_workingTransformTranslate.rotation = a3->rotation;
+      v9 = *&transform->time.value;
+      v10 = *&transform->time.epoch;
+      v11 = *&transform->translation.y;
+      self->_workingTransformTranslate.rotation = transform->rotation;
       *&self->_workingTransformTranslate.translation.y = v11;
       *&self->_workingTransformTranslate.time.epoch = v10;
       *&self->_workingTransformTranslate.time.value = v9;
-      if (v5)
+      if (transformsCopy)
       {
-        self->_workingTransformScale.translation = a3->translation;
+        self->_workingTransformScale.translation = transform->translation;
       }
 
       if (self->_isEditingScale)
@@ -138,7 +138,7 @@
   }
 }
 
-- (PVTransformAnimationInfo)endEditingTransformForType:(SEL)a3
+- (PVTransformAnimationInfo)endEditingTransformForType:(SEL)type
 {
   result = [(PVPanAndZoomManager *)self setIsEditingTransform:0 type:*&a4];
   if (a4 == 2)
@@ -219,7 +219,7 @@ LABEL_17:
   self->_workingTransformRotate.rotation = v9;
 }
 
-- (PVTransformAnimationInfo)updateTranslation:(SEL)a3 outNeedsUpdate:(CGPoint)a4
+- (PVTransformAnimationInfo)updateTranslation:(SEL)translation outNeedsUpdate:(CGPoint)update
 {
   v17 = 0;
   if (a5)
@@ -233,25 +233,25 @@ LABEL_17:
     {
       if (self->_isZoomSnapEnabled && self->_snapTimer)
       {
-        a4 = **&MEMORY[0x277CBF348];
+        update = **&MEMORY[0x277CBF348];
       }
 
       if (self->_isTranslationDirectionLockEnabled)
       {
-        v8 = fabs(a4.x);
-        v9 = fabs(a4.y);
+        v8 = fabs(update.x);
+        v9 = fabs(update.y);
         translationDirectionLockThreshold = self->_translationDirectionLockThreshold;
         if (v9 <= v8 * translationDirectionLockThreshold)
         {
           if (v8 > v9 * translationDirectionLockThreshold)
           {
-            a4.y = 0.0;
+            update.y = 0.0;
           }
         }
 
         else
         {
-          a4.x = 0.0;
+          update.x = 0.0;
         }
       }
 
@@ -260,7 +260,7 @@ LABEL_17:
         self->_workingTransformTranslate.scale = self->_workingTransformScale.scale;
       }
 
-      result = [objc_opt_class() adjustPositionToKeepMediaInViewBounds:self->_fillMode scale:&v17 minScale:a4.x + self->_workingTransformTranslate.translation.x mediaAspectRatio:a4.y + self->_workingTransformTranslate.translation.y viewAspectRatio:self->_workingTransformTranslate.scale fillMode:self->_minScale outNeedsUpdate:{self->_mediaAspectRatio, self->_viewAspectRatio}];
+      result = [objc_opt_class() adjustPositionToKeepMediaInViewBounds:self->_fillMode scale:&v17 minScale:update.x + self->_workingTransformTranslate.translation.x mediaAspectRatio:update.y + self->_workingTransformTranslate.translation.y viewAspectRatio:self->_workingTransformTranslate.scale fillMode:self->_minScale outNeedsUpdate:{self->_mediaAspectRatio, self->_viewAspectRatio}];
       if ((v17 & 1) == 0 && (self->_workingTransformTranslate.translation.x == v12 ? (v14 = self->_workingTransformTranslate.translation.y == v13) : (v14 = 0), v14))
       {
         v15 = 0;
@@ -296,18 +296,18 @@ LABEL_28:
       return result;
     }
 
-    NSLog(&cfstr_Pvpanandzoomma.isa, a3, a4.x, a4.y);
+    NSLog(&cfstr_Pvpanandzoomma.isa, translation, update.x, update.y);
   }
 
   PVTransformAnimationInfoIdentity(retstr);
   return result;
 }
 
-- (PVTransformAnimationInfo)updateScale:(SEL)a3 normalizedLocationInView:(double)a4 outNeedsUpdate:(CGPoint)a5
+- (PVTransformAnimationInfo)updateScale:(SEL)scale normalizedLocationInView:(double)view outNeedsUpdate:(CGPoint)update
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = self;
+  y = update.y;
+  x = update.x;
+  selfCopy = self;
   if (a6)
   {
     *a6 = 0;
@@ -318,7 +318,7 @@ LABEL_28:
     if ((self[3].time.timescale & 0x100) != 0)
     {
       rotation = self[1].rotation;
-      v12 = rotation * a4;
+      v12 = rotation * view;
       scale = self[3].scale;
       v14 = fmax(v12, self[3].translation.y);
       if (LOBYTE(self[3].time.timescale) == 1)
@@ -343,13 +343,13 @@ LABEL_24:
         }
 
 LABEL_25:
-        v20 = v9[1].translation.y;
-        v21 = v9[1].scale;
+        v20 = selfCopy[1].translation.y;
+        v21 = selfCopy[1].scale;
         memset(v31, 0, 24);
         self = objc_opt_class();
         if (self)
         {
-          self = [(PVTransformAnimationInfo *)self transformAnimInfoForScale:LODWORD(v9[4].translation.x) atNormalizedLocationInView:0 minScale:v16 currentScale:x currentTranslation:y mediaAspectRatio:v9[3].translation.y viewAspectRatio:rotation fillMode:v20 outNeedsUpdate:v21, *&v9[3].time.epoch, *&v9[3].translation.x];
+          self = [(PVTransformAnimationInfo *)self transformAnimInfoForScale:LODWORD(selfCopy[4].translation.x) atNormalizedLocationInView:0 minScale:v16 currentScale:x currentTranslation:y mediaAspectRatio:selfCopy[3].translation.y viewAspectRatio:rotation fillMode:v20 outNeedsUpdate:v21, *&selfCopy[3].time.epoch, *&selfCopy[3].translation.x];
         }
 
         else
@@ -357,12 +357,12 @@ LABEL_25:
           memset(v31, 0, 24);
         }
 
-        v9[1].rotation = 0.0;
-        *&v9[1].translation.y = *(v31 + 8);
-        if (LOBYTE(v9[3].time.timescale) == 1)
+        selfCopy[1].rotation = 0.0;
+        *&selfCopy[1].translation.y = *(v31 + 8);
+        if (LOBYTE(selfCopy[3].time.timescale) == 1)
         {
-          v9->rotation = 0.0;
-          *&v9->translation.y = *(v31 + 8);
+          selfCopy->rotation = 0.0;
+          *&selfCopy->translation.y = *(v31 + 8);
         }
 
         v22 = 1;
@@ -374,11 +374,11 @@ LABEL_25:
 LABEL_33:
         *a6 = v22;
 LABEL_34:
-        translation = v9[1].translation;
-        *&retstr->time.value = *&v9[1].time.timescale;
+        translation = selfCopy[1].translation;
+        *&retstr->time.value = *&selfCopy[1].time.timescale;
         *&retstr->time.epoch = translation;
-        *&retstr->translation.y = *&v9[1].scale;
-        *&retstr->rotation = v9[2].time.value;
+        *&retstr->translation.y = *&selfCopy[1].scale;
+        *&retstr->rotation = selfCopy[2].time.value;
         return self;
       }
 
@@ -392,7 +392,7 @@ LABEL_34:
           if (v19 <= 0.75)
           {
             self = [(PVTransformAnimationInfo *)self cancelSnapTimer];
-            v15 = 1.0 - (v9[4].rotation + v9[4].rotation);
+            v15 = 1.0 - (selfCopy[4].rotation + selfCopy[4].rotation);
           }
         }
 
@@ -424,36 +424,36 @@ LABEL_34:
       }
 
       v24 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_onSnapTimer_ selector:0 userInfo:0 repeats:1.0];
-      v25 = *&v9[4].time.timescale;
-      *&v9[4].time.timescale = v24;
+      v25 = *&selfCopy[4].time.timescale;
+      *&selfCopy[4].time.timescale = v24;
 
-      *&v9[4].time.value = v16;
-      v9[1].rotation = v16;
-      if (fabs(v9[4].scale + -1.0) >= 0.0001)
+      *&selfCopy[4].time.value = v16;
+      selfCopy[1].rotation = v16;
+      if (fabs(selfCopy[4].scale + -1.0) >= 0.0001)
       {
         goto LABEL_25;
       }
 
-      v26 = *&v9[3].time.epoch;
+      v26 = *&selfCopy[3].time.epoch;
       v27 = 0x100000001;
       if (fabs(vsubq_f64(v26, vdupq_laneq_s64(v26, 1)).f64[0]) < 0.0001)
       {
 LABEL_41:
         if (v27.i32[0])
         {
-          v9[1].translation.y = 0.0;
+          selfCopy[1].translation.y = 0.0;
         }
 
         if (v27.i32[1])
         {
-          v9[1].scale = 0.0;
+          selfCopy[1].scale = 0.0;
         }
 
         goto LABEL_25;
       }
 
       v28 = 0;
-      x_low = LODWORD(v9[4].translation.x);
+      x_low = LODWORD(selfCopy[4].translation.x);
       if (x_low <= 2)
       {
         if (x_low)
@@ -499,14 +499,14 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    NSLog(&cfstr_Pvpanandzoomma_0.isa, a3, a4);
+    NSLog(&cfstr_Pvpanandzoomma_0.isa, scale, view);
   }
 
   PVTransformAnimationInfoIdentity(retstr);
   return self;
 }
 
-- (PVTransformAnimationInfo)updateRotation:(SEL)a3 normalizedLocationInView:(double)a4 outNeedsUpdate:(CGPoint)a5
+- (PVTransformAnimationInfo)updateRotation:(SEL)rotation normalizedLocationInView:(double)view outNeedsUpdate:(CGPoint)update
 {
   if (a6)
   {
@@ -530,7 +530,7 @@ LABEL_40:
       return self;
     }
 
-    NSLog(&cfstr_Pvpanandzoomma_1.isa, a3, a4, a5.x, a5.y);
+    NSLog(&cfstr_Pvpanandzoomma_1.isa, rotation, view, update.x, update.y);
   }
 
   PVTransformAnimationInfoIdentity(retstr);
@@ -544,11 +544,11 @@ LABEL_40:
   self->_snapTimer = 0;
 }
 
-- (void)setMediaSize:(CGSize)a3
+- (void)setMediaSize:(CGSize)size
 {
-  if (self->_mediaSize.width != a3.width || self->_mediaSize.height != a3.height)
+  if (self->_mediaSize.width != size.width || self->_mediaSize.height != size.height)
   {
-    self->_mediaSize = a3;
+    self->_mediaSize = size;
     [(PVPanAndZoomManager *)self updateMediaAspectRatio];
     [(PVPanAndZoomManager *)self updateMinScale];
 
@@ -568,11 +568,11 @@ LABEL_40:
   self->_mediaAspectRatio = v3;
 }
 
-- (void)setViewSize:(CGSize)a3
+- (void)setViewSize:(CGSize)size
 {
-  if (self->_viewSize.width != a3.width || self->_viewSize.height != a3.height)
+  if (self->_viewSize.width != size.width || self->_viewSize.height != size.height)
   {
-    self->_viewSize = a3;
+    self->_viewSize = size;
     [(PVPanAndZoomManager *)self updateViewAspectRatio];
     [(PVPanAndZoomManager *)self updateMinScale];
 
@@ -592,51 +592,51 @@ LABEL_40:
   self->_viewAspectRatio = v3;
 }
 
-- (void)setFillMode:(int)a3
+- (void)setFillMode:(int)mode
 {
-  if (self->_fillMode != a3)
+  if (self->_fillMode != mode)
   {
-    self->_fillMode = a3;
+    self->_fillMode = mode;
     [(PVPanAndZoomManager *)self updateMinScale];
 
     [(PVPanAndZoomManager *)self updateMaxScale];
   }
 }
 
-- (void)setMaxScale:(double)a3
+- (void)setMaxScale:(double)scale
 {
-  if (self->_maxScale != a3)
+  if (self->_maxScale != scale)
   {
-    self->_maxScale = a3;
+    self->_maxScale = scale;
     [(PVPanAndZoomManager *)self updateMaxScale];
   }
 }
 
-- (BOOL)isEditingTransformType:(int)a3
+- (BOOL)isEditingTransformType:(int)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    v3 = *(&self->_isEditingTranslate + a3);
+    v3 = *(&self->_isEditingTranslate + type);
   }
 
   return v3 & 1;
 }
 
-- (void)setIsEditingTransform:(BOOL)a3 type:(int)a4
+- (void)setIsEditingTransform:(BOOL)transform type:(int)type
 {
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    *(&self->_isEditingTranslate + a4) = a3;
+    *(&self->_isEditingTranslate + type) = transform;
   }
 }
 
-+ (PVTransformAnimationInfo)transformAnimInfoForScale:(SEL)a3 atNormalizedLocationInView:(double)a4 minScale:(CGPoint)a5 currentScale:(double)a6 currentTranslation:(double)a7 mediaAspectRatio:(CGPoint)a8 viewAspectRatio:(double)a9 fillMode:(double)a10 outNeedsUpdate:(int)a11
++ (PVTransformAnimationInfo)transformAnimInfoForScale:(SEL)scale atNormalizedLocationInView:(double)view minScale:(CGPoint)minScale currentScale:(double)currentScale currentTranslation:(double)translation mediaAspectRatio:(CGPoint)ratio viewAspectRatio:(double)aspectRatio fillMode:(double)self0 outNeedsUpdate:(int)self1
 {
-  v13 = *&a11;
-  y = a8.y;
-  x = a8.x;
-  v18 = a5.y;
-  v19 = a5.x;
+  v13 = *&update;
+  y = ratio.y;
+  x = ratio.x;
+  v18 = minScale.y;
+  v19 = minScale.x;
   retstr->rotation = 0.0;
   *&retstr->time.epoch = 0u;
   *&retstr->translation.y = 0u;
@@ -647,24 +647,24 @@ LABEL_40:
   {
     if (v13)
     {
-      v24 = a9;
+      aspectRatioCopy2 = aspectRatio;
       if (v13 != 1)
       {
         goto LABEL_15;
       }
 
-      if (a10 <= 1.0)
+      if (mode <= 1.0)
       {
-        if (a9 < a10)
+        if (aspectRatio < mode)
         {
-          v23 = a10 / a9;
+          v23 = mode / aspectRatio;
         }
       }
 
       else
       {
-        v23 = a10 / a9;
-        if (a10 / a9 < 1.0)
+        v23 = mode / aspectRatio;
+        if (mode / aspectRatio < 1.0)
         {
           v23 = 1.0;
         }
@@ -674,14 +674,14 @@ LABEL_40:
     }
 
 LABEL_13:
-    v24 = a10;
+    aspectRatioCopy2 = mode;
     goto LABEL_15;
   }
 
   if (v13 == 13)
   {
-    v24 = a10;
-    v23 = a10 / a9;
+    aspectRatioCopy2 = mode;
+    v23 = mode / aspectRatio;
     goto LABEL_15;
   }
 
@@ -690,25 +690,25 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v24 = a9;
+  aspectRatioCopy2 = aspectRatio;
   if (v13 == 2)
   {
-    v23 = a10 / a9;
-    if (a10 / a9 > 1.0)
+    v23 = mode / aspectRatio;
+    if (mode / aspectRatio > 1.0)
     {
       v23 = 1.0;
     }
 
 LABEL_7:
-    v24 = v23 * a9;
+    aspectRatioCopy2 = v23 * aspectRatio;
   }
 
 LABEL_15:
-  v25 = a4 * a7 * v24;
-  v26 = a4 * a7 * v23;
+  v25 = view * translation * aspectRatioCopy2;
+  v26 = view * translation * v23;
   v27 = v19 + -0.5;
   v28 = 0.5 - v18;
-  CGAffineTransformMakeScale(&v32, a4 / a7, a4 / a7);
+  CGAffineTransformMakeScale(&v32, view / translation, view / translation);
   memset(&v33, 0, sizeof(v33));
   CGAffineTransformMakeTranslation(&t1, -v27, -v28);
   t2 = v32;
@@ -723,23 +723,23 @@ LABEL_15:
   v38 = CGRectApplyAffineTransform(v37, &v36);
   retstr->translation.x = v38.origin.x + v38.size.width * 0.5;
   retstr->translation.y = -(v38.origin.y + v38.size.height * 0.5);
-  retstr->scale = a4;
+  retstr->scale = view;
   result = [a2 adjustPositionToKeepMediaInViewBounds:v13 scale:a12 minScale:? mediaAspectRatio:? viewAspectRatio:? fillMode:? outNeedsUpdate:?];
   retstr->translation.x = v30;
   retstr->translation.y = v31;
   return result;
 }
 
-+ (CGPoint)adjustPositionToKeepMediaInViewBounds:(CGPoint)a3 scale:(double)a4 minScale:(double)a5 mediaAspectRatio:(double)a6 viewAspectRatio:(double)a7 fillMode:(int)a8 outNeedsUpdate:(BOOL *)a9
++ (CGPoint)adjustPositionToKeepMediaInViewBounds:(CGPoint)bounds scale:(double)scale minScale:(double)minScale mediaAspectRatio:(double)ratio viewAspectRatio:(double)aspectRatio fillMode:(int)mode outNeedsUpdate:(BOOL *)update
 {
-  y = a3.y;
-  x = a3.x;
-  [a1 maximumNormalizedPositionForScale:*&a8 minScale:a4 position:a5 mediaAspectRatio:a3.x viewAspectRatio:a3.y fillMode:{a6, a7}];
+  y = bounds.y;
+  x = bounds.x;
+  [self maximumNormalizedPositionForScale:*&mode minScale:scale position:minScale mediaAspectRatio:bounds.x viewAspectRatio:bounds.y fillMode:{ratio, aspectRatio}];
   v14 = fabs(x);
   v15 = fabs(v12);
   v16 = fabs(y);
   v17 = fabs(v13);
-  if (a9)
+  if (update)
   {
     v18 = v16 > v17;
     if (v14 > v15)
@@ -747,7 +747,7 @@ LABEL_15:
       v18 = 1;
     }
 
-    *a9 = v18;
+    *update = v18;
   }
 
   if (v16 <= v17)
@@ -765,48 +765,48 @@ LABEL_15:
   return result;
 }
 
-+ (CGPoint)maximumNormalizedPositionForScale:(double)a3 minScale:(double)a4 position:(CGPoint)a5 mediaAspectRatio:(double)a6 viewAspectRatio:(double)a7 fillMode:(int)a8
++ (CGPoint)maximumNormalizedPositionForScale:(double)scale minScale:(double)minScale position:(CGPoint)position mediaAspectRatio:(double)ratio viewAspectRatio:(double)aspectRatio fillMode:(int)mode
 {
-  y = a5.y;
+  y = position.y;
   v12 = 1.0;
-  if (a7 <= 1.0)
+  if (aspectRatio <= 1.0)
   {
-    if (a6 < a7)
+    if (ratio < aspectRatio)
     {
-      v12 = a7 / a6;
+      v12 = aspectRatio / ratio;
     }
   }
 
   else
   {
-    v12 = a7 / a6;
-    if (a7 / a6 < 1.0)
+    v12 = aspectRatio / ratio;
+    if (aspectRatio / ratio < 1.0)
     {
       v12 = 1.0;
     }
   }
 
-  v13 = a7;
-  if (a8 <= 1)
+  ratioCopy2 = aspectRatio;
+  if (mode <= 1)
   {
-    if (a8)
+    if (mode)
     {
-      v13 = a6;
-      if (a8 == 1)
+      ratioCopy2 = ratio;
+      if (mode == 1)
       {
         v14 = 1.0;
-        if (a7 <= 1.0)
+        if (aspectRatio <= 1.0)
         {
-          if (a6 < a7)
+          if (ratio < aspectRatio)
           {
-            v14 = a7 / a6;
+            v14 = aspectRatio / ratio;
           }
         }
 
         else
         {
-          v14 = a7 / a6;
-          if (a7 / a6 < 1.0)
+          v14 = aspectRatio / ratio;
+          if (aspectRatio / ratio < 1.0)
           {
             v14 = 1.0;
           }
@@ -817,49 +817,49 @@ LABEL_15:
     }
   }
 
-  else if (a8 != 13 && a8 != 3)
+  else if (mode != 13 && mode != 3)
   {
-    v13 = a6;
-    if (a8 == 2)
+    ratioCopy2 = ratio;
+    if (mode == 2)
     {
-      v14 = a7 / a6;
-      if (a7 / a6 > 1.0)
+      v14 = aspectRatio / ratio;
+      if (aspectRatio / ratio > 1.0)
       {
         v14 = 1.0;
       }
 
 LABEL_12:
-      v13 = v14 * a6;
+      ratioCopy2 = v14 * ratio;
     }
   }
 
   v15 = 0x100000001;
-  if (vabdd_f64(a6, a7) < 0.0001)
+  if (vabdd_f64(ratio, aspectRatio) < 0.0001)
   {
     goto LABEL_23;
   }
 
   v16 = 0;
-  if (a8 <= 2)
+  if (mode <= 2)
   {
-    if (a8)
+    if (mode)
     {
-      if (a8 == 1)
+      if (mode == 1)
       {
-        *v27.i64 = a6;
-        *&v27.i64[1] = a7;
+        *v27.i64 = ratio;
+        *&v27.i64[1] = aspectRatio;
         v26 = vcgtq_f64(vextq_s8(v27, v27, 8uLL), v27);
       }
 
       else
       {
-        if (a8 != 2)
+        if (mode != 2)
         {
           goto LABEL_22;
         }
 
-        v25.f64[0] = a6;
-        v25.f64[1] = a7;
+        v25.f64[0] = ratio;
+        v25.f64[1] = aspectRatio;
         v26 = vcgtq_f64(v25, vextq_s8(v25, v25, 8uLL));
       }
 
@@ -868,14 +868,14 @@ LABEL_12:
     }
   }
 
-  else if ((a8 - 4) >= 0xA)
+  else if ((mode - 4) >= 0xA)
   {
-    if (a8 == 3)
+    if (mode == 3)
     {
       v16 = 0x100000001;
     }
 
-    else if (a8 == 14)
+    else if (mode == 14)
     {
       v16 = 0x100000000;
     }
@@ -888,30 +888,30 @@ LABEL_22:
   v15 = vand_s8(v16, 0x100000001);
 LABEL_23:
   v28 = v15.i32[1];
-  v17 = v13 / (v12 * a6) * a3;
+  v17 = ratioCopy2 / (v12 * ratio) * scale;
   if (v15.i32[0])
   {
-    v18 = a3;
+    scaleCopy = scale;
   }
 
   else
   {
-    v18 = v13 / (v12 * a6) * a3;
+    scaleCopy = ratioCopy2 / (v12 * ratio) * scale;
   }
 
-  [a1 maximumNormalizedPositionInAxisForScale:v15.i32[0] != 0 minScale:a5.x < 0.0 isMediaAxisNormal:v18 isPositionBelowZero:a4];
+  [self maximumNormalizedPositionInAxisForScale:v15.i32[0] != 0 minScale:position.x < 0.0 isMediaAxisNormal:scaleCopy isPositionBelowZero:minScale];
   v20 = v19;
   if (v28)
   {
-    v21 = a3;
+    scaleCopy2 = scale;
   }
 
   else
   {
-    v21 = v17;
+    scaleCopy2 = v17;
   }
 
-  [a1 maximumNormalizedPositionInAxisForScale:v28 != 0 minScale:y < 0.0 isMediaAxisNormal:v21 isPositionBelowZero:a4];
+  [self maximumNormalizedPositionInAxisForScale:v28 != 0 minScale:y < 0.0 isMediaAxisNormal:scaleCopy2 isPositionBelowZero:minScale];
   v23 = v22;
   v24 = v20;
   result.y = v23;
@@ -919,16 +919,16 @@ LABEL_23:
   return result;
 }
 
-+ (double)maximumNormalizedPositionInAxisForScale:(double)a3 minScale:(double)a4 isMediaAxisNormal:(BOOL)a5 isPositionBelowZero:(BOOL)a6
++ (double)maximumNormalizedPositionInAxisForScale:(double)scale minScale:(double)minScale isMediaAxisNormal:(BOOL)normal isPositionBelowZero:(BOOL)zero
 {
-  if (a5)
+  if (normal)
   {
-    a4 = 1.0;
+    minScale = 1.0;
   }
 
-  v6 = vabdd_f64(a3, a4) / a4;
+  v6 = vabdd_f64(scale, minScale) / minScale;
   v7 = 2.0;
-  if (a6)
+  if (zero)
   {
     v7 = -2.0;
   }
@@ -936,34 +936,34 @@ LABEL_23:
   return v6 / v7;
 }
 
-+ (double)calculateMinScaleForMediaAspectRatio:(double)a3 viewAspectRatio:(double)a4 fillMode:(int)a5
++ (double)calculateMinScaleForMediaAspectRatio:(double)ratio viewAspectRatio:(double)aspectRatio fillMode:(int)mode
 {
   v5 = 1.0;
-  if (fabs(a4) < 0.0000001 || fabs(a3) < 0.0000001 || vabdd_f64(a3, a4) < 0.0001)
+  if (fabs(aspectRatio) < 0.0000001 || fabs(ratio) < 0.0000001 || vabdd_f64(ratio, aspectRatio) < 0.0001)
   {
     return v5;
   }
 
-  if (a5 <= 1)
+  if (mode <= 1)
   {
-    v6 = a4;
-    if (a5)
+    ratioCopy = aspectRatio;
+    if (mode)
     {
-      if (a5 == 1)
+      if (mode == 1)
       {
         v7 = 1.0;
-        if (a4 <= 1.0)
+        if (aspectRatio <= 1.0)
         {
-          if (a3 < a4)
+          if (ratio < aspectRatio)
           {
-            v7 = a4 / a3;
+            v7 = aspectRatio / ratio;
           }
         }
 
         else
         {
-          v7 = a4 / a3;
-          if (a4 / a3 < 1.0)
+          v7 = aspectRatio / ratio;
+          if (aspectRatio / ratio < 1.0)
           {
             v7 = 1.0;
           }
@@ -976,42 +976,42 @@ LABEL_23:
     }
 
 LABEL_24:
-    v10 = a4 / a3;
+    v10 = aspectRatio / ratio;
     if (v10 > 1.0)
     {
       v10 = 1.0;
     }
 
-    return v10 * a3 / v6;
+    return v10 * ratio / ratioCopy;
   }
 
-  if (a5 != 13)
+  if (mode != 13)
   {
-    v6 = a4;
-    if (a5 != 3)
+    ratioCopy = aspectRatio;
+    if (mode != 3)
     {
-      if (a5 == 2)
+      if (mode == 2)
       {
-        v7 = a4 / a3;
-        if (a4 / a3 > 1.0)
+        v7 = aspectRatio / ratio;
+        if (aspectRatio / ratio > 1.0)
         {
           v7 = 1.0;
         }
 
 LABEL_23:
-        v6 = v7 * a3;
+        ratioCopy = v7 * ratio;
         goto LABEL_24;
       }
 
 LABEL_20:
-      v6 = a3;
+      ratioCopy = ratio;
       goto LABEL_24;
     }
 
     goto LABEL_24;
   }
 
-  v8 = a4 / a3;
+  v8 = aspectRatio / ratio;
   v9 = 1.0;
   if (v8 <= 1.0)
   {
@@ -1021,36 +1021,36 @@ LABEL_20:
   return v9 / v8;
 }
 
-+ (double)calculateMaxScale:(double)result forMediaAspectRatio:(double)a4 viewAspectRatio:(double)a5 fillMode:(int)a6
++ (double)calculateMaxScale:(double)result forMediaAspectRatio:(double)ratio viewAspectRatio:(double)aspectRatio fillMode:(int)mode
 {
-  if (fabs(a5) < 0.0000001 || fabs(a4) < 0.0000001 || vabdd_f64(a4, a5) < 0.0001)
+  if (fabs(aspectRatio) < 0.0000001 || fabs(ratio) < 0.0000001 || vabdd_f64(ratio, aspectRatio) < 0.0001)
   {
     return result;
   }
 
   v6 = 1.0;
-  if (a6 <= 1)
+  if (mode <= 1)
   {
-    if (a6)
+    if (mode)
     {
-      v7 = a4;
-      if (a6 != 1)
+      ratioCopy2 = ratio;
+      if (mode != 1)
       {
         goto LABEL_18;
       }
 
-      if (a5 <= 1.0)
+      if (aspectRatio <= 1.0)
       {
-        if (a4 < a5)
+        if (ratio < aspectRatio)
         {
-          v6 = a5 / a4;
+          v6 = aspectRatio / ratio;
         }
       }
 
       else
       {
-        v6 = a5 / a4;
-        if (a5 / a4 < 1.0)
+        v6 = aspectRatio / ratio;
+        if (aspectRatio / ratio < 1.0)
         {
           v6 = 1.0;
         }
@@ -1060,56 +1060,56 @@ LABEL_20:
     }
 
 LABEL_16:
-    v7 = a5;
+    ratioCopy2 = aspectRatio;
     goto LABEL_18;
   }
 
-  if (a6 == 13)
+  if (mode == 13)
   {
-    v7 = a5;
-    v6 = a5 / a4;
+    ratioCopy2 = aspectRatio;
+    v6 = aspectRatio / ratio;
     goto LABEL_18;
   }
 
-  if (a6 == 3)
+  if (mode == 3)
   {
     goto LABEL_16;
   }
 
-  v7 = a4;
-  if (a6 == 2)
+  ratioCopy2 = ratio;
+  if (mode == 2)
   {
-    v6 = a5 / a4;
-    if (a5 / a4 > 1.0)
+    v6 = aspectRatio / ratio;
+    if (aspectRatio / ratio > 1.0)
     {
       v6 = 1.0;
     }
 
 LABEL_10:
-    v7 = v6 * a4;
+    ratioCopy2 = v6 * ratio;
   }
 
 LABEL_18:
   v8 = 1.0;
-  if (a5 <= 1.0)
+  if (aspectRatio <= 1.0)
   {
-    if (a4 < a5)
+    if (ratio < aspectRatio)
     {
-      v8 = a5 / a4;
+      v8 = aspectRatio / ratio;
     }
   }
 
   else
   {
-    v8 = a5 / a4;
-    if (a5 / a4 < 1.0)
+    v8 = aspectRatio / ratio;
+    if (aspectRatio / ratio < 1.0)
     {
       v8 = 1.0;
     }
   }
 
-  v9 = v8 * a4 / v7;
-  if (a6 == 13)
+  v9 = v8 * ratio / ratioCopy2;
+  if (mode == 13)
   {
     v9 = v8 / v6;
   }

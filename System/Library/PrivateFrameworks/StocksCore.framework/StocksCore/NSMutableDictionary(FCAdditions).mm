@@ -12,12 +12,12 @@
   {
     if (v7)
     {
-      [a1 setObject:v7 forKey:v6];
+      [self setObject:v7 forKey:v6];
     }
 
     else
     {
-      [a1 removeObjectForKey:v6];
+      [self removeObjectForKey:v6];
     }
   }
 }

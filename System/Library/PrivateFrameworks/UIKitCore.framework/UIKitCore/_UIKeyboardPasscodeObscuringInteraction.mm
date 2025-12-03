@@ -1,10 +1,10 @@
 @interface _UIKeyboardPasscodeObscuringInteraction
 - (UIPointerInteraction)pointerInteraction;
 - (UIView)view;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIKeyboardPasscodeObscuringInteraction
@@ -24,11 +24,11 @@
   return pointerInteraction;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v5 = [WeakRetained layer];
-  [v5 setDisableUpdateMask:0];
+  layer = [WeakRetained layer];
+  [layer setDisableUpdateMask:0];
 
   if (self->_pointerInteraction)
   {
@@ -39,40 +39,40 @@
   objc_storeWeak(&self->_view, 0);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v6 = [WeakRetained layer];
-    [v6 setDisableUpdateMask:18];
+    layer = [WeakRetained layer];
+    [layer setDisableUpdateMask:18];
 
     v7 = objc_loadWeakRetained(&self->_view);
-    v8 = [(_UIKeyboardPasscodeObscuringInteraction *)self pointerInteraction];
-    [v7 addInteraction:v8];
+    pointerInteraction = [(_UIKeyboardPasscodeObscuringInteraction *)self pointerInteraction];
+    [v7 addInteraction:pointerInteraction];
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a5;
-  v7 = [a3 view];
-  [v7 bounds];
+  regionCopy = region;
+  view = [interaction view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v6 identifier];
+  identifier = [regionCopy identifier];
 
-  v17 = [UIPointerRegion regionWithRect:v16 identifier:v9, v11, v13, v15];
+  v17 = [UIPointerRegion regionWithRect:identifier identifier:v9, v11, v13, v15];
 
   return v17;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [UIPointerStyle systemPointerStyle:a3];
+  v4 = [UIPointerStyle systemPointerStyle:interaction];
   [v4 set_suppressesMirroring:1];
 
   return v4;

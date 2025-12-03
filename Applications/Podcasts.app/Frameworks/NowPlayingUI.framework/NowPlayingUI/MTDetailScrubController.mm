@@ -1,31 +1,31 @@
 @interface MTDetailScrubController
-- (BOOL)beginTrackingWithLocation:(CGPoint)a3;
-- (BOOL)continueTrackingWithLocation:(CGPoint)a3;
+- (BOOL)beginTrackingWithLocation:(CGPoint)location;
+- (BOOL)continueTrackingWithLocation:(CGPoint)location;
 - (MTDetailScrubController)init;
-- (MTDetailScrubController)initWithScrubbingControl:(id)a3;
+- (MTDetailScrubController)initWithScrubbingControl:(id)control;
 - (MTDetailScrubControllerDelegate)delegate;
 - (MTDetailedScrubbing)scrubbingControl;
 - (double)_minimumScale;
-- (double)_scaleForIdealValueForVerticalPosition:(double)a3;
-- (double)scaleForVerticalPosition:(double)a3;
+- (double)_scaleForIdealValueForVerticalPosition:(double)position;
+- (double)scaleForVerticalPosition:(double)position;
 - (void)_beginScrubbing;
-- (void)_commitValue:(float)a3;
+- (void)_commitValue:(float)value;
 - (void)_endScrubbing;
-- (void)endTrackingWithLocation:(CGPoint)a3;
+- (void)endTrackingWithLocation:(CGPoint)location;
 @end
 
 @implementation MTDetailScrubController
 
-- (MTDetailScrubController)initWithScrubbingControl:(id)a3
+- (MTDetailScrubController)initWithScrubbingControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v8.receiver = self;
   v8.super_class = MTDetailScrubController;
   v5 = [(MTDetailScrubController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scrubbingControl, v4);
+    objc_storeWeak(&v5->_scrubbingControl, controlCopy);
     v6->_scrubbingVerticalRange = 220.0;
     v6->_detailedScrubbingEnabled = 1;
   }
@@ -40,10 +40,10 @@
   return 0;
 }
 
-- (BOOL)beginTrackingWithLocation:(CGPoint)a3
+- (BOOL)beginTrackingWithLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   self->_didBeginTracking = 0;
   WeakRetained = objc_loadWeakRetained(&self->_scrubbingControl);
   [WeakRetained thumbHitRect];
@@ -74,10 +74,10 @@
   return v7;
 }
 
-- (BOOL)continueTrackingWithLocation:(CGPoint)a3
+- (BOOL)continueTrackingWithLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6 = 1.0;
   if (self->_detailedScrubbingEnabled && [(MTDetailScrubController *)self durationAllowsForDetailedScrubbing])
   {
@@ -213,10 +213,10 @@ LABEL_33:
   return 1;
 }
 
-- (void)endTrackingWithLocation:(CGPoint)a3
+- (void)endTrackingWithLocation:(CGPoint)location
 {
-  x = a3.x;
-  [(MTDetailScrubController *)self _endScrubbing:a3.x];
+  x = location.x;
+  [(MTDetailScrubController *)self _endScrubbing:location.x];
   if (vabdd_f64(self->_lastCommittedLocationInView.x, x) > 3.0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_scrubbingControl);
@@ -225,19 +225,19 @@ LABEL_33:
   }
 }
 
-- (double)scaleForVerticalPosition:(double)a3
+- (double)scaleForVerticalPosition:(double)position
 {
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
   scrubbingVerticalRange = self->_scrubbingVerticalRange;
-  v8 = vabdd_f64(a3, self->_beginLocationInView.y);
+  v8 = vabdd_f64(position, self->_beginLocationInView.y);
   if (scrubbingVerticalRange >= v8)
   {
     scrubbingVerticalRange = v8;
   }
 
-  if (v6 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v9 = 20.0;
   }
@@ -297,10 +297,10 @@ LABEL_33:
   return v4;
 }
 
-- (double)_scaleForIdealValueForVerticalPosition:(double)a3
+- (double)_scaleForIdealValueForVerticalPosition:(double)position
 {
   scrubbingVerticalRange = self->_scrubbingVerticalRange;
-  v4 = vabdd_f64(a3, self->_beginLocationInView.y);
+  v4 = vabdd_f64(position, self->_beginLocationInView.y);
   if (scrubbingVerticalRange < v4)
   {
     v4 = self->_scrubbingVerticalRange;
@@ -370,7 +370,7 @@ LABEL_33:
   }
 }
 
-- (void)_commitValue:(float)a3
+- (void)_commitValue:(float)value
 {
   if (self->_needsCommit)
   {
@@ -380,7 +380,7 @@ LABEL_33:
     if (v6)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      v8 = self->_duration * a3;
+      v8 = self->_duration * value;
       *&v8 = v8;
       [v7 detailScrubController:self didChangeValue:v8];
 

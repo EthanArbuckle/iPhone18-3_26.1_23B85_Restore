@@ -1,7 +1,7 @@
 @interface RequestTransportTypeInformation
-- (BOOL)isEqual:(id)a3;
-- (RequestTransportTypeInformation)initWithDictionary:(id)a3;
-- (id)requestInfoProviderForTransportType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (RequestTransportTypeInformation)initWithDictionary:(id)dictionary;
+- (id)requestInfoProviderForTransportType:(int64_t)type;
 - (unint64_t)hash;
 @end
 
@@ -9,25 +9,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(RequestTransportTypeInformation *)self transportTypeInfoProviders];
-  v3 = [v2 hash];
+  transportTypeInfoProviders = [(RequestTransportTypeInformation *)self transportTypeInfoProviders];
+  v3 = [transportTypeInfoProviders hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if ([(RequestTransportTypeInformation *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(RequestTransportTypeInformation *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(RequestTransportTypeInformation *)v4 transportTypeInfoProviders];
-    v6 = [(RequestTransportTypeInformation *)self transportTypeInfoProviders];
-    v7 = [v5 isEqualToDictionary:v6];
+    transportTypeInfoProviders = [(RequestTransportTypeInformation *)equalCopy transportTypeInfoProviders];
+    transportTypeInfoProviders2 = [(RequestTransportTypeInformation *)self transportTypeInfoProviders];
+    v7 = [transportTypeInfoProviders isEqualToDictionary:transportTypeInfoProviders2];
   }
 
   else
@@ -38,25 +38,25 @@
   return v7;
 }
 
-- (id)requestInfoProviderForTransportType:(int64_t)a3
+- (id)requestInfoProviderForTransportType:(int64_t)type
 {
-  v4 = [(RequestTransportTypeInformation *)self transportTypeInfoProviders];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  transportTypeInfoProviders = [(RequestTransportTypeInformation *)self transportTypeInfoProviders];
+  v5 = [NSNumber numberWithInteger:type];
+  v6 = [transportTypeInfoProviders objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (RequestTransportTypeInformation)initWithDictionary:(id)a3
+- (RequestTransportTypeInformation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([v4 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v4;
+    v5 = dictionaryCopy;
     v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
@@ -100,17 +100,17 @@
     }
 
     self = v11;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
 
 LABEL_17:
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

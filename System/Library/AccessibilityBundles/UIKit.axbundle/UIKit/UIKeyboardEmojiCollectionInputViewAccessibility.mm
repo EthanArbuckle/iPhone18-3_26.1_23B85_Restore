@@ -1,19 +1,19 @@
 @interface UIKeyboardEmojiCollectionInputViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (void)willDisplayModalActionView:(id)a3 withSubTreeKeyView:(id)a4 completion:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)willDisplayModalActionView:(id)view withSubTreeKeyView:(id)keyView completion:(id)completion;
 @end
 
 @implementation UIKeyboardEmojiCollectionInputViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   v5 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = "@";
   v3 = @"UIKeyboardEmojiCollectionInputView";
   [location[0] validateClass:"@" hasInstanceMethod:"@" withFullSignature:{"@?", 0}];
@@ -21,17 +21,17 @@
   objc_storeStrong(v6, v5);
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, kind);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v11.receiver = v16;
+  objc_storeStrong(&v13, path);
+  v11.receiver = selfCopy;
   v11.super_class = UIKeyboardEmojiCollectionInputViewAccessibility;
   v12 = [(UIKeyboardEmojiCollectionInputViewAccessibility *)&v11 collectionView:location[0] viewForSupplementaryElementOfKind:v14 atIndexPath:v13];
   v8 = v12;
@@ -47,23 +47,23 @@
   return v10;
 }
 
-- (void)willDisplayModalActionView:(id)a3 withSubTreeKeyView:(id)a4 completion:(id)a5
+- (void)willDisplayModalActionView:(id)view withSubTreeKeyView:(id)keyView completion:(id)completion
 {
   v25 = *MEMORY[0x29EDCA608];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, keyView);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v19.receiver = v23;
+  objc_storeStrong(&v20, completion);
+  v19.receiver = selfCopy;
   v19.super_class = UIKeyboardEmojiCollectionInputViewAccessibility;
   [(UIKeyboardEmojiCollectionInputViewAccessibility *)&v19 willDisplayModalActionView:location[0] withSubTreeKeyView:v21 completion:v20];
-  v18 = [location[0] subviews];
+  subviews = [location[0] subviews];
   memset(__b, 0, sizeof(__b));
-  v14 = MEMORY[0x29EDC9748](v18);
+  v14 = MEMORY[0x29EDC9748](subviews);
   v15 = [v14 countByEnumeratingWithState:__b objects:v24 count:16];
   if (v15)
   {
@@ -102,7 +102,7 @@
 
   MEMORY[0x29EDC9740](v14);
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&subviews, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);

@@ -1,14 +1,14 @@
 @interface NNMKPairedDeviceInfo
-+ (id)pairedDeviceInfoWithScreenWidth:(double)a3 screenScale:(double)a4;
++ (id)pairedDeviceInfoWithScreenWidth:(double)width screenScale:(double)scale;
 @end
 
 @implementation NNMKPairedDeviceInfo
 
-+ (id)pairedDeviceInfoWithScreenWidth:(double)a3 screenScale:(double)a4
++ (id)pairedDeviceInfoWithScreenWidth:(double)width screenScale:(double)scale
 {
   v6 = objc_alloc_init(NNMKPairedDeviceInfo);
-  [(NNMKPairedDeviceInfo *)v6 setScreenWidth:a3];
-  [(NNMKPairedDeviceInfo *)v6 setScreenScale:a4];
+  [(NNMKPairedDeviceInfo *)v6 setScreenWidth:width];
+  [(NNMKPairedDeviceInfo *)v6 setScreenScale:scale];
 
   return v6;
 }

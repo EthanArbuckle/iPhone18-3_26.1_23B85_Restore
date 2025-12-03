@@ -1,23 +1,23 @@
 @interface _DPPINERandomizer
-+ (BOOL)isValidCentralEpsilon:(double)a3 plistParameter:(id)a4;
-+ (id)randomizerWithMaxCentralEpsilon:(double)a3 parameters:(id)a4;
-- (BOOL)isDPMechanismNoneForMetadata:(id)a3;
-- (_DPPINERandomizer)initWithMaxCentralEpsilon:(double)a3 parameter:(id)a4;
-- (id)addNoiseToData:(id)a3 metadata:(id)a4;
-- (id)auditedMetadata:(id)a3;
-- (id)pineParameterWithMetadata:(id)a3;
-- (id)randomizeFloatVector:(id)a3 metadata:(id)a4;
-- (id)randomizeFloatVectors:(id)a3 metadata:(id)a4 forKey:(id)a5;
-- (id)recordWithShardResult:(id)a3 noisedVector:(id)a4 metadata:(id)a5 key:(id)a6;
++ (BOOL)isValidCentralEpsilon:(double)epsilon plistParameter:(id)parameter;
++ (id)randomizerWithMaxCentralEpsilon:(double)epsilon parameters:(id)parameters;
+- (BOOL)isDPMechanismNoneForMetadata:(id)metadata;
+- (_DPPINERandomizer)initWithMaxCentralEpsilon:(double)epsilon parameter:(id)parameter;
+- (id)addNoiseToData:(id)data metadata:(id)metadata;
+- (id)auditedMetadata:(id)metadata;
+- (id)pineParameterWithMetadata:(id)metadata;
+- (id)randomizeFloatVector:(id)vector metadata:(id)metadata;
+- (id)randomizeFloatVectors:(id)vectors metadata:(id)metadata forKey:(id)key;
+- (id)recordWithShardResult:(id)result noisedVector:(id)vector metadata:(id)metadata key:(id)key;
 @end
 
 @implementation _DPPINERandomizer
 
-+ (BOOL)isValidCentralEpsilon:(double)a3 plistParameter:(id)a4
++ (BOOL)isValidCentralEpsilon:(double)epsilon plistParameter:(id)parameter
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (a3 >= 0.0 && a3 <= 16.0)
+  parameterCopy = parameter;
+  if (epsilon >= 0.0 && epsilon <= 16.0)
   {
     v34 = 0u;
     v35 = 0u;
@@ -44,7 +44,7 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [v5 objectForKeyedSubscript:*(*(&v32 + 1) + 8 * i)];
+          v19 = [parameterCopy objectForKeyedSubscript:*(*(&v32 + 1) + 8 * i)];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
@@ -68,7 +68,7 @@
       }
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"VDAFType"];
+    v14 = [parameterCopy objectForKeyedSubscript:@"VDAFType"];
     if (![_DPPINEShim isValidPINEType:[v14 unsignedIntValue]])
     {
       v20 = +[_DPLog framework];
@@ -81,22 +81,22 @@
       goto LABEL_37;
     }
 
-    v20 = [v5 objectForKeyedSubscript:@"VDAFNumOfProofs"];
+    v20 = [parameterCopy objectForKeyedSubscript:@"VDAFNumOfProofs"];
     if ([_DPPINEShim isValidNumOfProofs:[v20 unsignedCharValue]])
     {
-      v21 = [v5 objectForKeyedSubscript:@"PINEWraparoundCheckCount"];
+      v21 = [parameterCopy objectForKeyedSubscript:@"PINEWraparoundCheckCount"];
       if ([_DPPINEShim isValidWraparoundCheckCount:[v21 unsignedCharValue]])
       {
-        v22 = [v5 objectForKeyedSubscript:@"MaxCentralDelta"];
+        v22 = [parameterCopy objectForKeyedSubscript:@"MaxCentralDelta"];
         [v22 doubleValue];
         v24 = v23;
 
         if (v24 > 0.0)
         {
-          v30 = [v5 objectForKeyedSubscript:@"MaxDimension"];
-          v31 = [v30 unsignedLongLongValue];
+          v30 = [parameterCopy objectForKeyedSubscript:@"MaxDimension"];
+          unsignedLongLongValue = [v30 unsignedLongLongValue];
 
-          if ([_DPPrioPlusPlusNoiseGenerator isValidDimension:v31])
+          if ([_DPPrioPlusPlusNoiseGenerator isValidDimension:unsignedLongLongValue])
           {
             v27 = 1;
             goto LABEL_36;
@@ -105,7 +105,7 @@
           v25 = +[_DPLog framework];
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            [_DPPINERandomizer isValidCentralEpsilon:v5 plistParameter:@"MaxDimension"];
+            [_DPPINERandomizer isValidCentralEpsilon:parameterCopy plistParameter:@"MaxDimension"];
           }
         }
 
@@ -114,7 +114,7 @@
           v25 = +[_DPLog framework];
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            [_DPPINERandomizer isValidCentralEpsilon:v5 plistParameter:@"MaxCentralDelta"];
+            [_DPPINERandomizer isValidCentralEpsilon:parameterCopy plistParameter:@"MaxCentralDelta"];
           }
         }
       }
@@ -159,10 +159,10 @@ LABEL_26:
   return v27;
 }
 
-- (_DPPINERandomizer)initWithMaxCentralEpsilon:(double)a3 parameter:(id)a4
+- (_DPPINERandomizer)initWithMaxCentralEpsilon:(double)epsilon parameter:(id)parameter
 {
-  v6 = a4;
-  if ([objc_opt_class() isValidCentralEpsilon:v6 plistParameter:a3])
+  parameterCopy = parameter;
+  if ([objc_opt_class() isValidCentralEpsilon:parameterCopy plistParameter:epsilon])
   {
     v13.receiver = self;
     v13.super_class = _DPPINERandomizer;
@@ -170,43 +170,43 @@ LABEL_26:
     v8 = v7;
     if (v7)
     {
-      v7->_maxCentralEpsilon = a3;
-      v9 = [v6 copy];
+      v7->_maxCentralEpsilon = epsilon;
+      v9 = [parameterCopy copy];
       plistParameter = v8->_plistParameter;
       v8->_plistParameter = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)randomizerWithMaxCentralEpsilon:(double)a3 parameters:(id)a4
++ (id)randomizerWithMaxCentralEpsilon:(double)epsilon parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithMaxCentralEpsilon:v6 parameter:a3];
+  parametersCopy = parameters;
+  v7 = [[self alloc] initWithMaxCentralEpsilon:parametersCopy parameter:epsilon];
 
   return v7;
 }
 
-- (id)addNoiseToData:(id)a3 metadata:(id)a4
+- (id)addNoiseToData:(id)data metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  dataCopy = data;
+  metadataCopy = metadata;
+  v7 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
   v8 = [v7 objectForKeyedSubscript:@"DPConfig"];
   v9 = [v8 objectForKeyedSubscript:@"SigmaAfterNormalizing"];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [v6 objectForKeyedSubscript:@"DediscoTaskConfig"];
+  v12 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
 
   v13 = [v12 objectForKeyedSubscript:@"MinBatchSize"];
 
@@ -249,10 +249,10 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v15 = [MEMORY[0x277CBEB28] dataWithData:v5];
-  v16 = [v15 mutableBytes];
+  v15 = [MEMORY[0x277CBEB28] dataWithData:dataCopy];
+  mutableBytes = [v15 mutableBytes];
   v17 = [v15 length] >> 2;
-  _DPClipNorm(v16, v17, 1.0);
+  _DPClipNorm(mutableBytes, v17, 1.0);
   v18 = [_DPPrioPlusPlusNoiseGenerator randomize:v15 dimension:v17 stddev:v14];
 
   if (v18)
@@ -265,26 +265,26 @@ LABEL_15:
   return v18;
 }
 
-- (id)pineParameterWithMetadata:(id)a3
+- (id)pineParameterWithMetadata:(id)metadata
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_DPPINERandomizer *)self plistParameter];
-  v6 = [v5 objectForKeyedSubscript:@"PINEFractionalBitCount"];
+  metadataCopy = metadata;
+  plistParameter = [(_DPPINERandomizer *)self plistParameter];
+  v6 = [plistParameter objectForKeyedSubscript:@"PINEFractionalBitCount"];
 
-  v7 = [(_DPPINERandomizer *)self plistParameter];
-  v8 = [v7 objectForKeyedSubscript:@"VDAFNumOfProofs"];
+  plistParameter2 = [(_DPPINERandomizer *)self plistParameter];
+  v8 = [plistParameter2 objectForKeyedSubscript:@"VDAFNumOfProofs"];
 
-  v9 = [(_DPPINERandomizer *)self plistParameter];
-  v10 = [v9 objectForKeyedSubscript:@"PINEWraparoundCheckCount"];
+  plistParameter3 = [(_DPPINERandomizer *)self plistParameter];
+  v10 = [plistParameter3 objectForKeyedSubscript:@"PINEWraparoundCheckCount"];
 
-  v11 = [(_DPPINERandomizer *)self plistParameter];
-  v12 = [v11 objectForKeyedSubscript:@"VDAFType"];
-  v13 = [v12 unsignedIntValue];
+  plistParameter4 = [(_DPPINERandomizer *)self plistParameter];
+  v12 = [plistParameter4 objectForKeyedSubscript:@"VDAFType"];
+  unsignedIntValue = [v12 unsignedIntValue];
 
-  if (_DPMetadataIsV2(v4))
+  if (_DPMetadataIsV2(metadataCopy))
   {
-    v14 = [v4 objectForKeyedSubscript:@"DediscoTaskConfig"];
+    v14 = [metadataCopy objectForKeyedSubscript:@"DediscoTaskConfig"];
     v15 = [v14 objectForKeyedSubscript:@"VDAFConfig"];
 
     v16 = [v15 objectForKeyedSubscript:@"L2NormBoundWithNoise"];
@@ -329,13 +329,13 @@ LABEL_17:
     {
       [v16 floatValue];
       v21 = [_DPPINEParameter alloc];
-      v22 = [v18 integerValue];
+      integerValue = [v18 integerValue];
       [v16 floatValue];
       v24 = v23;
-      v25 = [v8 integerValue];
-      v26 = [v10 integerValue];
+      integerValue2 = [v8 integerValue];
+      integerValue3 = [v10 integerValue];
       LODWORD(v27) = v24;
-      v20 = [(_DPPINEParameter *)v21 initWithFractionalBitCount:v22 l2NormBound:v25 numOfProofs:v26 wraparoundCheckCount:v13 pineType:v27];
+      v20 = [(_DPPINEParameter *)v21 initWithFractionalBitCount:integerValue l2NormBound:integerValue2 numOfProofs:integerValue3 wraparoundCheckCount:unsignedIntValue pineType:v27];
     }
 
     else
@@ -366,13 +366,13 @@ LABEL_18:
   return v20;
 }
 
-- (BOOL)isDPMechanismNoneForMetadata:(id)a3
+- (BOOL)isDPMechanismNoneForMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(_DPPINERandomizer *)self plistParameter];
-  if ([_DPAlgorithmParameters allowDPMechanismNone:v5])
+  metadataCopy = metadata;
+  plistParameter = [(_DPPINERandomizer *)self plistParameter];
+  if ([_DPAlgorithmParameters allowDPMechanismNone:plistParameter])
   {
-    IsDPMechanismNone = _DPMetadataIsDPMechanismNone(v4);
+    IsDPMechanismNone = _DPMetadataIsDPMechanismNone(metadataCopy);
   }
 
   else
@@ -383,22 +383,22 @@ LABEL_18:
   return IsDPMechanismNone;
 }
 
-- (id)auditedMetadata:(id)a3
+- (id)auditedMetadata:(id)metadata
 {
-  v4 = a3;
-  if ([(_DPPINERandomizer *)self isDPMechanismNoneForMetadata:v4])
+  metadataCopy = metadata;
+  if ([(_DPPINERandomizer *)self isDPMechanismNoneForMetadata:metadataCopy])
   {
-    v5 = v4;
+    v5 = metadataCopy;
   }
 
   else
   {
-    v6 = [(_DPPINERandomizer *)self plistParameter];
-    v7 = [v6 objectForKeyedSubscript:@"MaxCentralDelta"];
+    plistParameter = [(_DPPINERandomizer *)self plistParameter];
+    v7 = [plistParameter objectForKeyedSubscript:@"MaxCentralDelta"];
     [v7 doubleValue];
 
     [(_DPPINERandomizer *)self maxCentralEpsilon];
-    v5 = [_DPRandomizerUtils auditedDPParametersWithMetadata:"auditedDPParametersWithMetadata:maxCentralEpsilon:maxCentralDelta:" maxCentralEpsilon:v4 maxCentralDelta:?];
+    v5 = [_DPRandomizerUtils auditedDPParametersWithMetadata:"auditedDPParametersWithMetadata:maxCentralEpsilon:maxCentralDelta:" maxCentralEpsilon:metadataCopy maxCentralDelta:?];
   }
 
   v8 = v5;
@@ -406,32 +406,32 @@ LABEL_18:
   return v8;
 }
 
-- (id)randomizeFloatVector:(id)a3 metadata:(id)a4
+- (id)randomizeFloatVector:(id)vector metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  vectorCopy = vector;
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     v13 = 0;
     goto LABEL_18;
   }
 
-  v8 = [v6 length] >> 2;
-  v9 = [(_DPPINERandomizer *)self plistParameter];
-  v10 = [v9 objectForKeyedSubscript:@"MaxDimension"];
-  v11 = [v10 unsignedLongLongValue];
+  v8 = [vectorCopy length] >> 2;
+  plistParameter = [(_DPPINERandomizer *)self plistParameter];
+  v10 = [plistParameter objectForKeyedSubscript:@"MaxDimension"];
+  unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-  if (v8 <= v11)
+  if (v8 <= unsignedLongLongValue)
   {
-    v12 = [(_DPPINERandomizer *)self pineParameterWithMetadata:v7];
+    v12 = [(_DPPINERandomizer *)self pineParameterWithMetadata:metadataCopy];
     if (v12)
     {
-      v14 = _DPL2Norm([v6 bytes], v8);
+      v14 = _DPL2Norm([vectorCopy bytes], v8);
       [v12 l2NormBound];
       if (v14 <= v15)
       {
         v19 = 0;
-        v13 = [_DPPINEShim shard:v6 parameter:v12 error:&v19];
+        v13 = [_DPPINEShim shard:vectorCopy parameter:v12 error:&v19];
         v16 = v19;
         if (!v13)
         {
@@ -475,72 +475,72 @@ LABEL_18:
   return v13;
 }
 
-- (id)recordWithShardResult:(id)a3 noisedVector:(id)a4 metadata:(id)a5 key:(id)a6
+- (id)recordWithShardResult:(id)result noisedVector:(id)vector metadata:(id)metadata key:(id)key
 {
   v36[6] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v34 = a4;
-  v10 = a6;
+  resultCopy = result;
+  vectorCopy = vector;
+  keyCopy = key;
   v11 = MEMORY[0x277CBEAA8];
-  v12 = a5;
+  metadataCopy = metadata;
   v13 = [v11 dateWithTimeIntervalSinceNow:0.0];
   [v13 timeIntervalSinceReferenceDate];
   v15 = v14;
 
-  v16 = [v12 mutableCopy];
+  v16 = [metadataCopy mutableCopy];
   v35[0] = @"PINEChunkLength";
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "chunkLength")}];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(resultCopy, "chunkLength")}];
   v36[0] = v17;
   v35[1] = @"PINEChunkLengthNormEquality";
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v9, "chunkLengthNormEquality")}];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(resultCopy, "chunkLengthNormEquality")}];
   v36[1] = v18;
   v35[2] = @"PINEFractionalBitCount";
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "fractionalBitCount")}];
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(resultCopy, "fractionalBitCount")}];
   v36[2] = v19;
   v35[3] = @"PINEL2NormBoundInt";
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "l2NormBoundInt")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(resultCopy, "l2NormBoundInt")}];
   v36[3] = v20;
   v35[4] = @"Nonce";
-  v21 = [v9 nonce];
-  v36[4] = v21;
+  nonce = [resultCopy nonce];
+  v36[4] = nonce;
   v35[5] = @"PublicShare";
-  v22 = [v9 publicShare];
-  v36[5] = v22;
+  publicShare = [resultCopy publicShare];
+  v36[5] = publicShare;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:6];
   [v16 setObject:v23 forKeyedSubscript:@"VDAF"];
 
-  v24 = [_DPKeyNames keyPropertiesForKey:v10];
-  v25 = [v24 dataSource];
+  v24 = [_DPKeyNames keyPropertiesForKey:keyCopy];
+  dataSource = [v24 dataSource];
 
-  if (v25)
+  if (dataSource)
   {
-    [v16 setObject:v34 forKeyedSubscript:@"NoisedData"];
+    [v16 setObject:vectorCopy forKeyedSubscript:@"NoisedData"];
   }
 
   v26 = [_DPPrioRecord alloc];
-  v27 = [v9 inputShares];
-  v28 = [v27 objectAtIndexedSubscript:0];
-  v29 = [v9 inputShares];
-  v30 = [v29 objectAtIndexedSubscript:1];
-  v31 = -[_DPPrioRecord initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:](v26, "initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:", v10, v28, v30, [v9 dimension], v16, 0, v15, 0);
+  inputShares = [resultCopy inputShares];
+  v28 = [inputShares objectAtIndexedSubscript:0];
+  inputShares2 = [resultCopy inputShares];
+  v30 = [inputShares2 objectAtIndexedSubscript:1];
+  v31 = -[_DPPrioRecord initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:](v26, "initWithKey:share1:share2:dimension:metadata:creationDate:submitted:objectId:", keyCopy, v28, v30, [resultCopy dimension], v16, 0, v15, 0);
 
   v32 = *MEMORY[0x277D85DE8];
 
   return v31;
 }
 
-- (id)randomizeFloatVectors:(id)a3 metadata:(id)a4 forKey:(id)a5
+- (id)randomizeFloatVectors:(id)vectors metadata:(id)metadata forKey:(id)key
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v35 = a5;
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
+  keyCopy = key;
   v33 = [MEMORY[0x277CBEBF8] mutableCopy];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v10 = v8;
+  v10 = vectorsCopy;
   v11 = [v10 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v11)
   {
@@ -554,7 +554,7 @@ LABEL_18:
       v14 = 0;
       do
       {
-        v15 = v9;
+        v15 = metadataCopy;
         if (*v40 != v36)
         {
           objc_enumerationMutation(obj);
@@ -571,9 +571,9 @@ LABEL_18:
           _os_signpost_emit_with_name_impl(&dword_22622D000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v19, "_DPPINERandomizer", &unk_22629C805, buf, 2u);
         }
 
-        v9 = [(_DPPINERandomizer *)self auditedMetadata:v15];
+        metadataCopy = [(_DPPINERandomizer *)self auditedMetadata:v15];
 
-        if ([(_DPPINERandomizer *)self isDPMechanismNoneForMetadata:v9])
+        if ([(_DPPINERandomizer *)self isDPMechanismNoneForMetadata:metadataCopy])
         {
           v20 = +[_DPLog framework];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -586,7 +586,7 @@ LABEL_18:
 
         else
         {
-          v21 = [(_DPPINERandomizer *)self addNoiseToData:v16 metadata:v9];
+          v21 = [(_DPPINERandomizer *)self addNoiseToData:v16 metadata:metadataCopy];
           if (!v21)
           {
             v29 = +[_DPLog framework];
@@ -602,7 +602,7 @@ LABEL_18:
           }
         }
 
-        v22 = [(_DPPINERandomizer *)self randomizeFloatVector:v21 metadata:v9];
+        v22 = [(_DPPINERandomizer *)self randomizeFloatVector:v21 metadata:metadataCopy];
         v23 = +[_DPLog daemon];
         v24 = +[_DPLog daemon];
         v25 = os_signpost_id_make_with_pointer(v24, v16);
@@ -615,7 +615,7 @@ LABEL_18:
 
         if (v22)
         {
-          v26 = [(_DPPINERandomizer *)self recordWithShardResult:v22 noisedVector:v21 metadata:v9 key:v35];
+          v26 = [(_DPPINERandomizer *)self recordWithShardResult:v22 noisedVector:v21 metadata:metadataCopy key:keyCopy];
           if (v26)
           {
             [v33 addObject:v26];
@@ -628,7 +628,7 @@ LABEL_18:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
             *buf = v32;
-            v44 = v35;
+            v44 = keyCopy;
             _os_log_error_impl(&dword_22622D000, v26, OS_LOG_TYPE_ERROR, "Fail to privatize vector with key=%@, continuing...", buf, 0xCu);
           }
         }

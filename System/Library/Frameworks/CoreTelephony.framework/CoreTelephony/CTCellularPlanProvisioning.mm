@@ -2,8 +2,8 @@
 - (BOOL)supportsCellularPlan;
 - (CTCellularPlanProvisioning)init;
 - (void)addPlanWith:(CTCellularPlanProvisioningRequest *)request completionHandler:(void *)completionHandler;
-- (void)addPlanWithRequest:(id)a3 properties:(id)a4 completionHandler:(id)a5;
-- (void)updateCellularPlanProperties:(id)a3 completionHandler:(id)a4;
+- (void)addPlanWithRequest:(id)request properties:(id)properties completionHandler:(id)handler;
+- (void)updateCellularPlanProperties:(id)properties completionHandler:(id)handler;
 @end
 
 @implementation CTCellularPlanProvisioning
@@ -29,20 +29,20 @@
 - (BOOL)supportsCellularPlan
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 infoDictionary];
-  v5 = [v4 objectForKey:@"SmdpUrl"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v5 = [infoDictionary objectForKey:@"SmdpUrl"];
 
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 infoDictionary];
-  v8 = [v7 objectForKey:@"IccidPrefix"];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary2 = [mainBundle2 infoDictionary];
+  v8 = [infoDictionary2 objectForKey:@"IccidPrefix"];
 
-  v9 = [MEMORY[0x1E696AAE8] mainBundle];
-  v10 = [v9 infoDictionary];
-  v11 = [v10 objectForKey:@"CarrierDescriptors"];
+  mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary3 = [mainBundle3 infoDictionary];
+  v11 = [infoDictionary3 objectForKey:@"CarrierDescriptors"];
 
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
+  mainBundle4 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle4 bundleIdentifier];
 
   if ([v11 count] < 0x10)
   {
@@ -53,13 +53,13 @@
       v27 = 2112;
       v28 = v8;
       v29 = 2112;
-      v30 = v13;
+      v30 = bundleIdentifier;
       v31 = 2048;
       v32 = [v11 count];
       _os_log_impl(&dword_182E9B000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "SMDP Url: [%@], Iccid Prefix: [%@], Bundle ID: [%@], Carrier Descriptors count: %lu", &v25, 0x2Au);
     }
 
-    v22 = [(CoreTelephonyClient *)self->_client supportsPlanProvisioning:0 carrierDescriptors:v11 smdpUrl:v5 iccidPrefix:v8 bundleId:v13];
+    v22 = [(CoreTelephonyClient *)self->_client supportsPlanProvisioning:0 carrierDescriptors:v11 smdpUrl:v5 iccidPrefix:v8 bundleId:bundleIdentifier];
   }
 
   else
@@ -81,18 +81,18 @@
 {
   v6 = request;
   v7 = completionHandler;
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 infoDictionary];
-  v10 = [v9 objectForKey:@"CFBundleDisplayName"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v10 = [infoDictionary objectForKey:@"CFBundleDisplayName"];
 
   if (v10)
   {
     goto LABEL_3;
   }
 
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 infoDictionary];
-  v10 = [v12 objectForKey:@"CFBundleName"];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary2 = [mainBundle2 infoDictionary];
+  v10 = [infoDictionary2 objectForKey:@"CFBundleName"];
 
   if (v10)
   {
@@ -118,23 +118,23 @@ LABEL_3:
   }
 }
 
-- (void)addPlanWithRequest:(id)a3 properties:(id)a4 completionHandler:(id)a5
+- (void)addPlanWithRequest:(id)request properties:(id)properties completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 infoDictionary];
-  v13 = [v12 objectForKey:@"CFBundleDisplayName"];
+  requestCopy = request;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v13 = [infoDictionary objectForKey:@"CFBundleDisplayName"];
 
   if (v13)
   {
     goto LABEL_3;
   }
 
-  v14 = [MEMORY[0x1E696AAE8] mainBundle];
-  v15 = [v14 infoDictionary];
-  v13 = [v15 objectForKey:@"CFBundleName"];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary2 = [mainBundle2 infoDictionary];
+  v13 = [infoDictionary2 objectForKey:@"CFBundleName"];
 
   if (v13)
   {
@@ -144,8 +144,8 @@ LABEL_3:
     v25[1] = 3221225472;
     v25[2] = __78__CTCellularPlanProvisioning_addPlanWithRequest_properties_completionHandler___block_invoke;
     v25[3] = &unk_1E6A45E60;
-    v26 = v10;
-    [(CoreTelephonyClient *)client addPlanWith:v8 appName:v13 appType:0 properties:v9 completionHandler:v25];
+    v26 = handlerCopy;
+    [(CoreTelephonyClient *)client addPlanWith:requestCopy appName:v13 appType:0 properties:propertiesCopy completionHandler:v25];
   }
 
   else
@@ -156,26 +156,26 @@ LABEL_3:
       [(CTCellularPlanProvisioning *)v17 addPlanWith:v18 completionHandler:v19, v20, v21, v22, v23, v24];
     }
 
-    (*(v10 + 2))(v10, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
-- (void)updateCellularPlanProperties:(id)a3 completionHandler:(id)a4
+- (void)updateCellularPlanProperties:(id)properties completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 infoDictionary];
-  v10 = [v9 objectForKey:@"CFBundleDisplayName"];
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v10 = [infoDictionary objectForKey:@"CFBundleDisplayName"];
 
   if (v10)
   {
     goto LABEL_3;
   }
 
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 infoDictionary];
-  v10 = [v12 objectForKey:@"CFBundleName"];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary2 = [mainBundle2 infoDictionary];
+  v10 = [infoDictionary2 objectForKey:@"CFBundleName"];
 
   if (v10)
   {
@@ -185,8 +185,8 @@ LABEL_3:
     v22[1] = 3221225472;
     v22[2] = __77__CTCellularPlanProvisioning_updateCellularPlanProperties_completionHandler___block_invoke;
     v22[3] = &unk_1E6A43CC8;
-    v23 = v7;
-    [(CoreTelephonyClient *)client updateCellularPlanProperties:v6 appName:v10 appType:0 completionHandler:v22];
+    v23 = handlerCopy;
+    [(CoreTelephonyClient *)client updateCellularPlanProperties:propertiesCopy appName:v10 appType:0 completionHandler:v22];
   }
 
   else
@@ -198,7 +198,7 @@ LABEL_3:
     }
 
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-    (*(v7 + 2))(v7, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 }
 

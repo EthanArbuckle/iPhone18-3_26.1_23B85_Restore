@@ -1,21 +1,21 @@
 @interface HRETriggerTemplate
-- (id)_subclass_triggerBuilderForRecommendation:(id)a3 withObjects:(id)a4;
-- (id)iconDescriptorForRecommendation:(id)a3 withObjects:(id)a4;
-- (id)triggerBuilderForRecommendation:(id)a3 withObjects:(id)a4;
+- (id)_subclass_triggerBuilderForRecommendation:(id)recommendation withObjects:(id)objects;
+- (id)iconDescriptorForRecommendation:(id)recommendation withObjects:(id)objects;
+- (id)triggerBuilderForRecommendation:(id)recommendation withObjects:(id)objects;
 @end
 
 @implementation HRETriggerTemplate
 
-- (id)triggerBuilderForRecommendation:(id)a3 withObjects:(id)a4
+- (id)triggerBuilderForRecommendation:(id)recommendation withObjects:(id)objects
 {
-  v5 = [(HRETriggerTemplate *)self _subclass_triggerBuilderForRecommendation:a3 withObjects:a4];
-  v6 = [(HRETemplate *)self title];
-  [v5 setDisplayName:v6];
+  v5 = [(HRETriggerTemplate *)self _subclass_triggerBuilderForRecommendation:recommendation withObjects:objects];
+  title = [(HRETemplate *)self title];
+  [v5 setDisplayName:title];
 
   return v5;
 }
 
-- (id)_subclass_triggerBuilderForRecommendation:(id)a3 withObjects:(id)a4
+- (id)_subclass_triggerBuilderForRecommendation:(id)recommendation withObjects:(id)objects
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -25,34 +25,34 @@
   return 0;
 }
 
-- (id)iconDescriptorForRecommendation:(id)a3 withObjects:(id)a4
+- (id)iconDescriptorForRecommendation:(id)recommendation withObjects:(id)objects
 {
-  v5 = a3;
-  v6 = [(HRETriggerTemplate *)self iconDescriptorsByTriggerCharacteristic];
-  v7 = [v6 count];
+  recommendationCopy = recommendation;
+  iconDescriptorsByTriggerCharacteristic = [(HRETriggerTemplate *)self iconDescriptorsByTriggerCharacteristic];
+  v7 = [iconDescriptorsByTriggerCharacteristic count];
 
   if (v7)
   {
-    v8 = [v5 triggerBuilders];
+    triggerBuilders = [recommendationCopy triggerBuilders];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __66__HRETriggerTemplate_iconDescriptorForRecommendation_withObjects___block_invoke;
     v12[3] = &unk_2797767C0;
     v12[4] = self;
-    v9 = [v8 na_flatMap:v12];
+    v9 = [triggerBuilders na_flatMap:v12];
 
     if ([v9 count] == 1)
     {
-      v10 = [v9 anyObject];
+      anyObject = [v9 anyObject];
 
       goto LABEL_6;
     }
   }
 
-  v10 = [(HRETriggerTemplate *)self defaultIconDescriptor];
+  anyObject = [(HRETriggerTemplate *)self defaultIconDescriptor];
 LABEL_6:
 
-  return v10;
+  return anyObject;
 }
 
 id __66__HRETriggerTemplate_iconDescriptorForRecommendation_withObjects___block_invoke(uint64_t a1, void *a2)

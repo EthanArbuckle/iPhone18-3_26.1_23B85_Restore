@@ -9,11 +9,11 @@
   v5.receiver = self;
   v5.super_class = SBEntityRemovalMedusaSlideOutDownwardAnimationSettings;
   [(SBEntityRemovalMedusaSlideOutAnimationSettings *)&v5 setDefaultValues];
-  v3 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v3 setToBeMadeFullscreenFrameAnimationDelay:0.25];
+  defaultAnimationSettings = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings setToBeMadeFullscreenFrameAnimationDelay:0.25];
 
-  v4 = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self toBeRemovedSlideOutAnimationSettings];
-  [v4 setResponse:0.699999988];
+  toBeRemovedSlideOutAnimationSettings = [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self toBeRemovedSlideOutAnimationSettings];
+  [toBeRemovedSlideOutAnimationSettings setResponse:0.699999988];
 
   [(SBEntityRemovalMedusaSlideOutAnimationSettings *)self setToBeRemovedSlideOutAnimationDelay:0.0];
 }

@@ -1,37 +1,37 @@
 @interface TPSAssets
 - (BOOL)hasVideo;
-- (BOOL)isEqual:(id)a3;
-- (TPSAssets)initWithCoder:(id)a3;
-- (TPSAssets)initWithDictionary:(id)a3 metadata:(id)a4;
-- (TPSAssets)initWithSymbolId:(id)a3 symbolColor:(id)a4 symbolSize:(id)a5 alt:(id)a6 gradientColorStrings:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TPSAssets)initWithCoder:(id)coder;
+- (TPSAssets)initWithDictionary:(id)dictionary metadata:(id)metadata;
+- (TPSAssets)initWithSymbolId:(id)id symbolColor:(id)color symbolSize:(id)size alt:(id)alt gradientColorStrings:(id)strings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)identifierForKey:(id)a3 dictionary:(id)a4;
+- (id)identifierForKey:(id)key dictionary:(id)dictionary;
 - (id)imageIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSAssets
 
-- (TPSAssets)initWithSymbolId:(id)a3 symbolColor:(id)a4 symbolSize:(id)a5 alt:(id)a6 gradientColorStrings:(id)a7
+- (TPSAssets)initWithSymbolId:(id)id symbolColor:(id)color symbolSize:(id)size alt:(id)alt gradientColorStrings:(id)strings
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  colorCopy = color;
+  sizeCopy = size;
+  altCopy = alt;
+  stringsCopy = strings;
   v23.receiver = self;
   v23.super_class = TPSAssets;
   v17 = [(TPSAssets *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_symbolId, a3);
-    objc_storeStrong(&v18->_symbolColor, a4);
-    objc_storeStrong(&v18->_symbolSize, a5);
-    objc_storeStrong(&v18->_alt, a6);
-    v19 = [[TPSGradient alloc] initWithColorStrings:v16];
+    objc_storeStrong(&v17->_symbolId, id);
+    objc_storeStrong(&v18->_symbolColor, color);
+    objc_storeStrong(&v18->_symbolSize, size);
+    objc_storeStrong(&v18->_alt, alt);
+    v19 = [[TPSGradient alloc] initWithColorStrings:stringsCopy];
     gradient = v18->_gradient;
     v18->_gradient = v19;
   }
@@ -39,26 +39,26 @@
   return v18;
 }
 
-- (TPSAssets)initWithDictionary:(id)a3 metadata:(id)a4
+- (TPSAssets)initWithDictionary:(id)dictionary metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  metadataCopy = metadata;
   v41.receiver = self;
   v41.super_class = TPSAssets;
-  v8 = [(TPSSerializableObject *)&v41 initWithDictionary:v6];
+  v8 = [(TPSSerializableObject *)&v41 initWithDictionary:dictionaryCopy];
   if (!v8)
   {
     goto LABEL_15;
   }
 
-  v9 = [v7 assetBaseURL];
+  assetBaseURL = [metadataCopy assetBaseURL];
   baseURL = v8->_baseURL;
-  v8->_baseURL = v9;
+  v8->_baseURL = assetBaseURL;
 
-  v11 = [v6 TPSSafeStringForKey:@"type"];
+  v11 = [dictionaryCopy TPSSafeStringForKey:@"type"];
   if (v11)
   {
-    v12 = [v6 TPSSafeDictionaryForKey:@"attrs"];
+    v12 = [dictionaryCopy TPSSafeDictionaryForKey:@"attrs"];
     if (!v12)
     {
 LABEL_17:
@@ -109,31 +109,31 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v20 = [v6 TPSSafeStringForKey:@"alt"];
+  v20 = [dictionaryCopy TPSSafeStringForKey:@"alt"];
   v21 = v8->_alt;
   v8->_alt = v20;
 
-  v22 = [v6 TPSSafeStringForKey:@"caption"];
+  v22 = [dictionaryCopy TPSSafeStringForKey:@"caption"];
   caption = v8->_caption;
   v8->_caption = v22;
 
-  v24 = [(TPSAssets *)v8 identifierForKey:@"posterId" dictionary:v6];
+  v24 = [(TPSAssets *)v8 identifierForKey:@"posterId" dictionary:dictionaryCopy];
   posterId = v8->_posterId;
   v8->_posterId = v24;
 
-  v26 = [(TPSAssets *)v8 identifierForKey:@"thumbnailId" dictionary:v6];
+  v26 = [(TPSAssets *)v8 identifierForKey:@"thumbnailId" dictionary:dictionaryCopy];
   thumbnailId = v8->_thumbnailId;
   v8->_thumbnailId = v26;
 
-  v28 = [(TPSAssets *)v8 identifierForKey:@"videoId" dictionary:v6];
+  v28 = [(TPSAssets *)v8 identifierForKey:@"videoId" dictionary:dictionaryCopy];
   videoId = v8->_videoId;
   v8->_videoId = v28;
 
-  v30 = [(TPSAssets *)v8 identifierForKey:@"fallbackId" dictionary:v6];
+  v30 = [(TPSAssets *)v8 identifierForKey:@"fallbackId" dictionary:dictionaryCopy];
   fallbackId = v8->_fallbackId;
   v8->_fallbackId = v30;
 
-  v32 = [(TPSAssets *)v8 identifierForKey:@"imageId" dictionary:v6];
+  v32 = [(TPSAssets *)v8 identifierForKey:@"imageId" dictionary:dictionaryCopy];
   imageId = v8->_imageId;
   v8->_imageId = v32;
 LABEL_11:
@@ -150,103 +150,103 @@ LABEL_16:
   return v39;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = TPSAssets;
-  v4 = [(TPSSerializableObject *)&v18 copyWithZone:a3];
+  v4 = [(TPSSerializableObject *)&v18 copyWithZone:zone];
   v5 = [(TPSAssets *)self alt];
   [v4 setAlt:v5];
 
-  v6 = [(TPSAssets *)self caption];
-  [v4 setCaption:v6];
+  caption = [(TPSAssets *)self caption];
+  [v4 setCaption:caption];
 
-  v7 = [(TPSAssets *)self posterId];
-  [v4 setPosterId:v7];
+  posterId = [(TPSAssets *)self posterId];
+  [v4 setPosterId:posterId];
 
-  v8 = [(TPSAssets *)self thumbnailId];
-  [v4 setThumbnailId:v8];
+  thumbnailId = [(TPSAssets *)self thumbnailId];
+  [v4 setThumbnailId:thumbnailId];
 
-  v9 = [(TPSAssets *)self videoId];
-  [v4 setVideoId:v9];
+  videoId = [(TPSAssets *)self videoId];
+  [v4 setVideoId:videoId];
 
-  v10 = [(TPSAssets *)self fallbackId];
-  [v4 setFallbackId:v10];
+  fallbackId = [(TPSAssets *)self fallbackId];
+  [v4 setFallbackId:fallbackId];
 
-  v11 = [(TPSAssets *)self imageId];
-  [v4 setImageId:v11];
+  imageId = [(TPSAssets *)self imageId];
+  [v4 setImageId:imageId];
 
-  v12 = [(TPSAssets *)self symbolId];
-  [v4 setSymbolId:v12];
+  symbolId = [(TPSAssets *)self symbolId];
+  [v4 setSymbolId:symbolId];
 
-  v13 = [(TPSAssets *)self symbolColor];
-  [v4 setSymbolColor:v13];
+  symbolColor = [(TPSAssets *)self symbolColor];
+  [v4 setSymbolColor:symbolColor];
 
-  v14 = [(TPSAssets *)self symbolSize];
-  [v4 setSymbolSize:v14];
+  symbolSize = [(TPSAssets *)self symbolSize];
+  [v4 setSymbolSize:symbolSize];
 
-  v15 = [(TPSAssets *)self baseURL];
-  [v4 setBaseURL:v15];
+  baseURL = [(TPSAssets *)self baseURL];
+  [v4 setBaseURL:baseURL];
 
-  v16 = [(TPSAssets *)self gradient];
-  [v4 setGradient:v16];
+  gradient = [(TPSAssets *)self gradient];
+  [v4 setGradient:gradient];
 
   return v4;
 }
 
-- (TPSAssets)initWithCoder:(id)a3
+- (TPSAssets)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = TPSAssets;
-  v5 = [(TPSSerializableObject *)&v31 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v31 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alt"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alt"];
     alt = v5->_alt;
     v5->_alt = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"caption"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"caption"];
     caption = v5->_caption;
     v5->_caption = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"posterId"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"posterId"];
     posterId = v5->_posterId;
     v5->_posterId = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailId"];
     thumbnailId = v5->_thumbnailId;
     v5->_thumbnailId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"videoId"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"videoId"];
     videoId = v5->_videoId;
     v5->_videoId = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fallbackId"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fallbackId"];
     fallbackId = v5->_fallbackId;
     v5->_fallbackId = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageId"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageId"];
     imageId = v5->_imageId;
     v5->_imageId = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringId"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringId"];
     symbolId = v5->_symbolId;
     v5->_symbolId = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     symbolColor = v5->_symbolColor;
     v5->_symbolColor = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     symbolSize = v5->_symbolSize;
     v5->_symbolSize = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     baseURL = v5->_baseURL;
     v5->_baseURL = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gradient"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gradient"];
     gradient = v5->_gradient;
     v5->_gradient = v28;
   }
@@ -254,47 +254,47 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = TPSAssets;
-  v4 = a3;
-  [(TPSSerializableObject *)&v17 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v17 encodeWithCoder:coderCopy];
   v5 = [(TPSAssets *)self alt:v17.receiver];
-  [v4 encodeObject:v5 forKey:@"alt"];
+  [coderCopy encodeObject:v5 forKey:@"alt"];
 
-  v6 = [(TPSAssets *)self caption];
-  [v4 encodeObject:v6 forKey:@"caption"];
+  caption = [(TPSAssets *)self caption];
+  [coderCopy encodeObject:caption forKey:@"caption"];
 
-  v7 = [(TPSAssets *)self posterId];
-  [v4 encodeObject:v7 forKey:@"posterId"];
+  posterId = [(TPSAssets *)self posterId];
+  [coderCopy encodeObject:posterId forKey:@"posterId"];
 
-  v8 = [(TPSAssets *)self thumbnailId];
-  [v4 encodeObject:v8 forKey:@"thumbnailId"];
+  thumbnailId = [(TPSAssets *)self thumbnailId];
+  [coderCopy encodeObject:thumbnailId forKey:@"thumbnailId"];
 
-  v9 = [(TPSAssets *)self videoId];
-  [v4 encodeObject:v9 forKey:@"videoId"];
+  videoId = [(TPSAssets *)self videoId];
+  [coderCopy encodeObject:videoId forKey:@"videoId"];
 
-  v10 = [(TPSAssets *)self fallbackId];
-  [v4 encodeObject:v10 forKey:@"fallbackId"];
+  fallbackId = [(TPSAssets *)self fallbackId];
+  [coderCopy encodeObject:fallbackId forKey:@"fallbackId"];
 
-  v11 = [(TPSAssets *)self imageId];
-  [v4 encodeObject:v11 forKey:@"imageId"];
+  imageId = [(TPSAssets *)self imageId];
+  [coderCopy encodeObject:imageId forKey:@"imageId"];
 
-  v12 = [(TPSAssets *)self symbolId];
-  [v4 encodeObject:v12 forKey:@"stringId"];
+  symbolId = [(TPSAssets *)self symbolId];
+  [coderCopy encodeObject:symbolId forKey:@"stringId"];
 
-  v13 = [(TPSAssets *)self symbolColor];
-  [v4 encodeObject:v13 forKey:@"color"];
+  symbolColor = [(TPSAssets *)self symbolColor];
+  [coderCopy encodeObject:symbolColor forKey:@"color"];
 
-  v14 = [(TPSAssets *)self symbolSize];
-  [v4 encodeObject:v14 forKey:@"size"];
+  symbolSize = [(TPSAssets *)self symbolSize];
+  [coderCopy encodeObject:symbolSize forKey:@"size"];
 
-  v15 = [(TPSAssets *)self baseURL];
-  [v4 encodeObject:v15 forKey:@"baseURL"];
+  baseURL = [(TPSAssets *)self baseURL];
+  [coderCopy encodeObject:baseURL forKey:@"baseURL"];
 
-  v16 = [(TPSAssets *)self gradient];
-  [v4 encodeObject:v16 forKey:@"gradient"];
+  gradient = [(TPSAssets *)self gradient];
+  [coderCopy encodeObject:gradient forKey:@"gradient"];
 }
 
 - (id)imageIdentifier
@@ -318,15 +318,15 @@ LABEL_2:
 
 - (BOOL)hasVideo
 {
-  v2 = [(TPSAssets *)self videoId];
-  v3 = [v2 length] != 0;
+  videoId = [(TPSAssets *)self videoId];
+  v3 = [videoId length] != 0;
 
   return v3;
 }
 
-- (id)identifierForKey:(id)a3 dictionary:(id)a4
+- (id)identifierForKey:(id)key dictionary:(id)dictionary
 {
-  v4 = [a4 TPSSafeStringForKey:a3];
+  v4 = [dictionary TPSSafeStringForKey:key];
   if (![v4 length])
   {
 
@@ -352,92 +352,92 @@ LABEL_2:
     [v5 appendFormat:@"  %@ = %@\n", @"alt", v7];
   }
 
-  v8 = [(TPSAssets *)self caption];
+  caption = [(TPSAssets *)self caption];
 
-  if (v8)
+  if (caption)
   {
-    v9 = [(TPSAssets *)self caption];
-    [v5 appendFormat:@"  %@ = %@\n", @"caption", v9];
+    caption2 = [(TPSAssets *)self caption];
+    [v5 appendFormat:@"  %@ = %@\n", @"caption", caption2];
   }
 
-  v10 = [(TPSAssets *)self posterId];
+  posterId = [(TPSAssets *)self posterId];
 
-  if (v10)
+  if (posterId)
   {
-    v11 = [(TPSAssets *)self posterId];
-    [v5 appendFormat:@"  %@ = %@\n", @"posterId", v11];
+    posterId2 = [(TPSAssets *)self posterId];
+    [v5 appendFormat:@"  %@ = %@\n", @"posterId", posterId2];
   }
 
-  v12 = [(TPSAssets *)self thumbnailId];
+  thumbnailId = [(TPSAssets *)self thumbnailId];
 
-  if (v12)
+  if (thumbnailId)
   {
-    v13 = [(TPSAssets *)self thumbnailId];
-    [v5 appendFormat:@"  %@ = %@\n", @"thumbnailId", v13];
+    thumbnailId2 = [(TPSAssets *)self thumbnailId];
+    [v5 appendFormat:@"  %@ = %@\n", @"thumbnailId", thumbnailId2];
   }
 
-  v14 = [(TPSAssets *)self videoId];
+  videoId = [(TPSAssets *)self videoId];
 
-  if (v14)
+  if (videoId)
   {
-    v15 = [(TPSAssets *)self videoId];
-    [v5 appendFormat:@"  %@ = %@\n", @"videoId", v15];
+    videoId2 = [(TPSAssets *)self videoId];
+    [v5 appendFormat:@"  %@ = %@\n", @"videoId", videoId2];
   }
 
-  v16 = [(TPSAssets *)self fallbackId];
+  fallbackId = [(TPSAssets *)self fallbackId];
 
-  if (v16)
+  if (fallbackId)
   {
-    v17 = [(TPSAssets *)self fallbackId];
-    [v5 appendFormat:@"  %@ = %@\n", @"fallbackId", v17];
+    fallbackId2 = [(TPSAssets *)self fallbackId];
+    [v5 appendFormat:@"  %@ = %@\n", @"fallbackId", fallbackId2];
   }
 
-  v18 = [(TPSAssets *)self imageId];
+  imageId = [(TPSAssets *)self imageId];
 
-  if (v18)
+  if (imageId)
   {
-    v19 = [(TPSAssets *)self imageId];
-    [v5 appendFormat:@"  %@ = %@\n", @"imageId", v19];
+    imageId2 = [(TPSAssets *)self imageId];
+    [v5 appendFormat:@"  %@ = %@\n", @"imageId", imageId2];
   }
 
-  v20 = [(TPSAssets *)self symbolId];
+  symbolId = [(TPSAssets *)self symbolId];
 
-  if (v20)
+  if (symbolId)
   {
-    v21 = [(TPSAssets *)self symbolId];
-    [v5 appendFormat:@"  %@ = %@\n", @"stringId", v21];
+    symbolId2 = [(TPSAssets *)self symbolId];
+    [v5 appendFormat:@"  %@ = %@\n", @"stringId", symbolId2];
   }
 
-  v22 = [(TPSAssets *)self symbolColor];
+  symbolColor = [(TPSAssets *)self symbolColor];
 
-  if (v22)
+  if (symbolColor)
   {
-    v23 = [(TPSAssets *)self symbolColor];
-    [v5 appendFormat:@"  %@ = %@\n", @"color", v23];
+    symbolColor2 = [(TPSAssets *)self symbolColor];
+    [v5 appendFormat:@"  %@ = %@\n", @"color", symbolColor2];
   }
 
-  v24 = [(TPSAssets *)self symbolColor];
+  symbolColor3 = [(TPSAssets *)self symbolColor];
 
-  if (v24)
+  if (symbolColor3)
   {
-    v25 = [(TPSAssets *)self symbolSize];
-    [v5 appendFormat:@"  %@ = %@\n", @"size", v25];
+    symbolSize = [(TPSAssets *)self symbolSize];
+    [v5 appendFormat:@"  %@ = %@\n", @"size", symbolSize];
   }
 
-  v26 = [(TPSAssets *)self baseURL];
+  baseURL = [(TPSAssets *)self baseURL];
 
-  if (v26)
+  if (baseURL)
   {
-    v27 = [(TPSAssets *)self baseURL];
-    [v5 appendFormat:@"  %@ = %@\n", @"baseURL", v27];
+    baseURL2 = [(TPSAssets *)self baseURL];
+    [v5 appendFormat:@"  %@ = %@\n", @"baseURL", baseURL2];
   }
 
-  v28 = [(TPSAssets *)self gradient];
+  gradient = [(TPSAssets *)self gradient];
 
-  if (v28)
+  if (gradient)
   {
-    v29 = [(TPSAssets *)self gradient];
-    v30 = [v29 debugDescription];
+    gradient2 = [(TPSAssets *)self gradient];
+    v30 = [gradient2 debugDescription];
     [v5 appendFormat:@"  %@ = %@\n", @"gradient", v30];
   }
 
@@ -485,19 +485,19 @@ id __24__TPSAssets_na_identity__block_invoke_3()
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

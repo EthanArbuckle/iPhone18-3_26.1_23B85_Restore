@@ -1,8 +1,8 @@
 @interface MediaControlsModuleNowPlayingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)didSelectArtworkControlWithControl:(id)a3;
-- (void)didSelectHeaderViewWithHeaderView:(id)a3;
-- (void)didSelectRouteButtonWithButton:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)didSelectArtworkControlWithControl:(id)control;
+- (void)didSelectHeaderViewWithHeaderView:(id)view;
+- (void)didSelectRouteButtonWithButton:(id)button;
 - (void)layoutSubviews;
 @end
 
@@ -10,15 +10,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A211D330();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1A2230E10(width, height);
   v8 = v7;
 
@@ -29,44 +29,44 @@
   return result;
 }
 
-- (void)didSelectArtworkControlWithControl:(id)a3
+- (void)didSelectArtworkControlWithControl:(id)control
 {
   v4 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xE8);
-  v5 = a3;
-  v9 = self;
+  controlCopy = control;
+  selfCopy = self;
   if (v4())
   {
     v7 = v6;
     ObjectType = swift_getObjectType();
-    (*(v7 + 8))(v9, v5, ObjectType, v7);
+    (*(v7 + 8))(selfCopy, controlCopy, ObjectType, v7);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didSelectHeaderViewWithHeaderView:(id)a3
+- (void)didSelectHeaderViewWithHeaderView:(id)view
 {
   v4 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xE8);
-  v5 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   if (v4())
   {
     v7 = v6;
     ObjectType = swift_getObjectType();
-    (*(v7 + 16))(v9, v5, ObjectType, v7);
+    (*(v7 + 16))(selfCopy, viewCopy, ObjectType, v7);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didSelectRouteButtonWithButton:(id)a3
+- (void)didSelectRouteButtonWithButton:(id)button
 {
   v4 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xE8);
-  v5 = a3;
-  v9 = self;
+  buttonCopy = button;
+  selfCopy = self;
   if (v4())
   {
     v7 = v6;
     ObjectType = swift_getObjectType();
-    (*(v7 + 24))(v9, v5, ObjectType, v7);
+    (*(v7 + 24))(selfCopy, buttonCopy, ObjectType, v7);
     swift_unknownObjectRelease();
   }
 }

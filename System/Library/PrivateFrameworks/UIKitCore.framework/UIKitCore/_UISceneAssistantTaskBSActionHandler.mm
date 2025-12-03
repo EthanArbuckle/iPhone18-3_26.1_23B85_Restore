@@ -1,17 +1,17 @@
 @interface _UISceneAssistantTaskBSActionHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (void)_extractAssistantTasksFromActions:(void *)a3 intoAssistantTasks:(void *)a4 andUnhandledActions:;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (void)_extractAssistantTasksFromActions:(void *)actions intoAssistantTasks:(void *)tasks andUnhandledActions:;
 @end
 
 @implementation _UISceneAssistantTaskBSActionHandler
 
-- (void)_extractAssistantTasksFromActions:(void *)a3 intoAssistantTasks:(void *)a4 andUnhandledActions:
+- (void)_extractAssistantTasksFromActions:(void *)actions intoAssistantTasks:(void *)tasks andUnhandledActions:
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (!a3)
+    if (!actions)
     {
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"outAssistantTasks"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -24,7 +24,7 @@
         v35 = 2114;
         v36 = v22;
         v37 = 2048;
-        v38 = a1;
+        selfCopy2 = self;
         v39 = 2114;
         v40 = @"_UISceneAssistantTaskBSActionHandler.m";
         v41 = 1024;
@@ -40,7 +40,7 @@
       JUMPOUT(0x189FF4010);
     }
 
-    if (!a4)
+    if (!tasks)
     {
       v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"outUnhandledActions"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@
         v35 = 2114;
         v36 = v26;
         v37 = 2048;
-        v38 = a1;
+        selfCopy2 = self;
         v39 = 2114;
         v40 = @"_UISceneAssistantTaskBSActionHandler.m";
         v41 = 1024;
@@ -100,8 +100,8 @@
               if (v9)
               {
 LABEL_12:
-                v15 = [v14 payload];
-                [v10 addObject:v15];
+                payload = [v14 payload];
+                [v10 addObject:payload];
 
                 [v9 removeObject:v14];
                 goto LABEL_13;
@@ -139,63 +139,63 @@ LABEL_13:
     v10 = 0;
 LABEL_20:
 
-    *a3 = [v10 copy];
+    *actions = [v10 copy];
     if ([v9 count])
     {
       v17 = [v9 copy];
-      *a4 = v17;
+      *tasks = v17;
     }
 
     else
     {
       v18 = v6;
-      *a4 = v6;
+      *tasks = v6;
     }
   }
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  if (a5 && (*(a5 + 209) & 1) != 0)
+  if (iScene && (*(iScene + 209) & 1) != 0)
   {
     v14 = 0;
     v15 = 0;
-    [(_UISceneAssistantTaskBSActionHandler *)self _extractAssistantTasksFromActions:a3 intoAssistantTasks:&v15 andUnhandledActions:&v14];
+    [(_UISceneAssistantTaskBSActionHandler *)self _extractAssistantTasksFromActions:actions intoAssistantTasks:&v15 andUnhandledActions:&v14];
     v9 = v15;
     v10 = v14;
     if ([v9 count])
     {
-      v11 = [a5 delegate];
-      [v11 _scene:a5 handleAssistantTasks:v9];
+      delegate = [iScene delegate];
+      [delegate _scene:iScene handleAssistantTasks:v9];
     }
 
     if ([v10 count])
     {
-      v12 = v10;
+      actionsCopy = v10;
     }
 
     else
     {
-      v12 = a3;
+      actionsCopy = actions;
     }
 
-    v8 = v12;
+    actionsCopy2 = actionsCopy;
   }
 
   else
   {
-    v8 = a3;
+    actionsCopy2 = actions;
   }
 
-  return v8;
+  return actionsCopy2;
 }
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v8 = objc_opt_new();
   v15 = 0;
   v16 = 0;
-  [(_UISceneAssistantTaskBSActionHandler *)self _extractAssistantTasksFromActions:a3 intoAssistantTasks:&v16 andUnhandledActions:&v15];
+  [(_UISceneAssistantTaskBSActionHandler *)self _extractAssistantTasksFromActions:actions intoAssistantTasks:&v16 andUnhandledActions:&v15];
   v9 = v16;
   v10 = v15;
   if ([v9 count])
@@ -209,15 +209,15 @@ LABEL_20:
 
   if ([v10 count])
   {
-    v13 = v10;
+    actionsCopy = v10;
   }
 
   else
   {
-    v13 = a3;
+    actionsCopy = actions;
   }
 
-  [v11 setUnprocessedActions:v13];
+  [v11 setUnprocessedActions:actionsCopy];
 
   return v11;
 }

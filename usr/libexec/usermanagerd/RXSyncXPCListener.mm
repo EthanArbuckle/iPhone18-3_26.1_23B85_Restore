@@ -1,22 +1,22 @@
 @interface RXSyncXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation RXSyncXPCListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 _xpcConnection];
+  connectionCopy = connection;
+  _xpcConnection = [connectionCopy _xpcConnection];
   __xpc_connection_set_logging();
 
   v6 = +[RDServer sharedXPCInterface];
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = +[RDServer sharedServer];
-  [v4 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
 
-  [v4 resume];
+  [connectionCopy resume];
   return 1;
 }
 

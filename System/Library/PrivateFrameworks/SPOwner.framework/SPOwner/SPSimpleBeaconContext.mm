@@ -3,15 +3,15 @@
 + (id)deviceManagerContext;
 + (id)fmcaContext;
 + (id)fmipItemContext;
-+ (id)fmipItemContextForBeaconUUIDs:(id)a3;
-+ (id)fmipItemContextForProductUUIDs:(id)a3;
-- (SPSimpleBeaconContext)initWithCoder:(id)a3;
-- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)a3 matchingBeaconUUIDs:(id)a4;
-- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)a3 matchingFindMyIds:(id)a4;
-- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)a3 matchingProductUUIDs:(id)a4;
-- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)a3 matchingSerialNumbers:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)fmipItemContextForBeaconUUIDs:(id)ds;
++ (id)fmipItemContextForProductUUIDs:(id)ds;
+- (SPSimpleBeaconContext)initWithCoder:(id)coder;
+- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)properties matchingBeaconUUIDs:(id)ds;
+- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)properties matchingFindMyIds:(id)ids;
+- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)properties matchingProductUUIDs:(id)ds;
+- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)properties matchingSerialNumbers:(id)numbers;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPSimpleBeaconContext
@@ -40,18 +40,18 @@
   return v3;
 }
 
-+ (id)fmipItemContextForBeaconUUIDs:(id)a3
++ (id)fmipItemContextForBeaconUUIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [[SPSimpleBeaconContext alloc] initWithFetchProperties:512 matchingBeaconUUIDs:v3];
+  dsCopy = ds;
+  v4 = [[SPSimpleBeaconContext alloc] initWithFetchProperties:512 matchingBeaconUUIDs:dsCopy];
 
   return v4;
 }
 
-+ (id)fmipItemContextForProductUUIDs:(id)a3
++ (id)fmipItemContextForProductUUIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [[SPSimpleBeaconContext alloc] initWithFetchProperties:512 matchingProductUUIDs:v3];
+  dsCopy = ds;
+  v4 = [[SPSimpleBeaconContext alloc] initWithFetchProperties:512 matchingProductUUIDs:dsCopy];
 
   return v4;
 }
@@ -64,23 +64,23 @@
   return v3;
 }
 
-- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)a3 matchingBeaconUUIDs:(id)a4
+- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)properties matchingBeaconUUIDs:(id)ds
 {
-  v7 = a4;
+  dsCopy = ds;
   v18.receiver = self;
   v18.super_class = SPSimpleBeaconContext;
   v8 = [(SPSimpleBeaconContext *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    v8->_fetchProperties = a3;
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 bundleIdentifier];
+    v8->_fetchProperties = properties;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleIdentifier = v9->_bundleIdentifier;
-    v9->_bundleIdentifier = v11;
+    v9->_bundleIdentifier = bundleIdentifier;
 
     v9->_sendInitialBeacons = 1;
-    objc_storeStrong(&v9->_matchingBeaconUUIDs, a4);
+    objc_storeStrong(&v9->_matchingBeaconUUIDs, ds);
     matchingSerialNumbers = v9->_matchingSerialNumbers;
     v14 = MEMORY[0x277CBEBF8];
     v9->_matchingSerialNumbers = MEMORY[0x277CBEBF8];
@@ -95,27 +95,27 @@
   return v9;
 }
 
-- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)a3 matchingSerialNumbers:(id)a4
+- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)properties matchingSerialNumbers:(id)numbers
 {
-  v7 = a4;
+  numbersCopy = numbers;
   v18.receiver = self;
   v18.super_class = SPSimpleBeaconContext;
   v8 = [(SPSimpleBeaconContext *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    v8->_fetchProperties = a3;
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 bundleIdentifier];
+    v8->_fetchProperties = properties;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleIdentifier = v9->_bundleIdentifier;
-    v9->_bundleIdentifier = v11;
+    v9->_bundleIdentifier = bundleIdentifier;
 
     v9->_sendInitialBeacons = 1;
     matchingBeaconUUIDs = v9->_matchingBeaconUUIDs;
     v14 = MEMORY[0x277CBEBF8];
     v9->_matchingBeaconUUIDs = MEMORY[0x277CBEBF8];
 
-    objc_storeStrong(&v9->_matchingSerialNumbers, a4);
+    objc_storeStrong(&v9->_matchingSerialNumbers, numbers);
     matchingFindMyIds = v9->_matchingFindMyIds;
     v9->_matchingFindMyIds = v14;
 
@@ -126,20 +126,20 @@
   return v9;
 }
 
-- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)a3 matchingFindMyIds:(id)a4
+- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)properties matchingFindMyIds:(id)ids
 {
-  v7 = a4;
+  idsCopy = ids;
   v18.receiver = self;
   v18.super_class = SPSimpleBeaconContext;
   v8 = [(SPSimpleBeaconContext *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    v8->_fetchProperties = a3;
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 bundleIdentifier];
+    v8->_fetchProperties = properties;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleIdentifier = v9->_bundleIdentifier;
-    v9->_bundleIdentifier = v11;
+    v9->_bundleIdentifier = bundleIdentifier;
 
     v9->_sendInitialBeacons = 1;
     matchingBeaconUUIDs = v9->_matchingBeaconUUIDs;
@@ -149,7 +149,7 @@
     matchingSerialNumbers = v9->_matchingSerialNumbers;
     v9->_matchingSerialNumbers = v14;
 
-    objc_storeStrong(&v9->_matchingFindMyIds, a4);
+    objc_storeStrong(&v9->_matchingFindMyIds, ids);
     matchingProductUUIDs = v9->_matchingProductUUIDs;
     v9->_matchingProductUUIDs = v14;
   }
@@ -157,20 +157,20 @@
   return v9;
 }
 
-- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)a3 matchingProductUUIDs:(id)a4
+- (SPSimpleBeaconContext)initWithFetchProperties:(unint64_t)properties matchingProductUUIDs:(id)ds
 {
-  v7 = a4;
+  dsCopy = ds;
   v18.receiver = self;
   v18.super_class = SPSimpleBeaconContext;
   v8 = [(SPSimpleBeaconContext *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    v8->_fetchProperties = a3;
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 bundleIdentifier];
+    v8->_fetchProperties = properties;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleIdentifier = v9->_bundleIdentifier;
-    v9->_bundleIdentifier = v11;
+    v9->_bundleIdentifier = bundleIdentifier;
 
     v9->_sendInitialBeacons = 1;
     matchingBeaconUUIDs = v9->_matchingBeaconUUIDs;
@@ -183,43 +183,43 @@
     matchingFindMyIds = v9->_matchingFindMyIds;
     v9->_matchingFindMyIds = v14;
 
-    objc_storeStrong(&v9->_matchingProductUUIDs, a4);
+    objc_storeStrong(&v9->_matchingProductUUIDs, ds);
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeDouble:@"fetchProperties" forKey:self->_fetchProperties];
-  [v5 encodeBool:self->_sendInitialBeacons forKey:@"sendInitialBeacons"];
-  [v5 encodeObject:self->_matchingBeaconUUIDs forKey:@"matchingBeaconUUIDs"];
-  [v5 encodeObject:self->_matchingProductUUIDs forKey:@"matchingProductUUIDs"];
-  [v5 encodeObject:self->_matchingSerialNumbers forKey:@"matchingSerialNumbers"];
-  [v5 encodeObject:self->_matchingFindMyIds forKey:@"matchingFindMyIds"];
-  [v5 encodeObject:self->_repairContextType forKey:@"repairContextType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeDouble:@"fetchProperties" forKey:self->_fetchProperties];
+  [coderCopy encodeBool:self->_sendInitialBeacons forKey:@"sendInitialBeacons"];
+  [coderCopy encodeObject:self->_matchingBeaconUUIDs forKey:@"matchingBeaconUUIDs"];
+  [coderCopy encodeObject:self->_matchingProductUUIDs forKey:@"matchingProductUUIDs"];
+  [coderCopy encodeObject:self->_matchingSerialNumbers forKey:@"matchingSerialNumbers"];
+  [coderCopy encodeObject:self->_matchingFindMyIds forKey:@"matchingFindMyIds"];
+  [coderCopy encodeObject:self->_repairContextType forKey:@"repairContextType"];
 }
 
-- (SPSimpleBeaconContext)initWithCoder:(id)a3
+- (SPSimpleBeaconContext)initWithCoder:(id)coder
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v5;
 
-  [v4 decodeDoubleForKey:@"fetchProperties"];
+  [coderCopy decodeDoubleForKey:@"fetchProperties"];
   self->_fetchProperties = v7;
-  self->_sendInitialBeacons = [v4 decodeBoolForKey:@"sendInitialBeacons"];
+  self->_sendInitialBeacons = [coderCopy decodeBoolForKey:@"sendInitialBeacons"];
   v8 = MEMORY[0x277CBEB98];
   v35[0] = objc_opt_class();
   v35[1] = objc_opt_class();
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
   v10 = [v8 setWithArray:v9];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"matchingBeaconUUIDs"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"matchingBeaconUUIDs"];
   matchingBeaconUUIDs = self->_matchingBeaconUUIDs;
   self->_matchingBeaconUUIDs = v11;
 
@@ -228,7 +228,7 @@
   v34[1] = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
   v15 = [v13 setWithArray:v14];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"matchingProductUUIDs"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"matchingProductUUIDs"];
   matchingProductUUIDs = self->_matchingProductUUIDs;
   self->_matchingProductUUIDs = v16;
 
@@ -237,7 +237,7 @@
   v33[1] = objc_opt_class();
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
   v20 = [v18 setWithArray:v19];
-  v21 = [v4 decodeObjectOfClasses:v20 forKey:@"matchingSerialNumbers"];
+  v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"matchingSerialNumbers"];
   matchingSerialNumbers = self->_matchingSerialNumbers;
   self->_matchingSerialNumbers = v21;
 
@@ -246,11 +246,11 @@
   v32[1] = objc_opt_class();
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
   v25 = [v23 setWithArray:v24];
-  v26 = [v4 decodeObjectOfClasses:v25 forKey:@"matchingFindMyIds"];
+  v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"matchingFindMyIds"];
   matchingFindMyIds = self->_matchingFindMyIds;
   self->_matchingFindMyIds = v26;
 
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"repairContextType"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"repairContextType"];
 
   repairContextType = self->_repairContextType;
   self->_repairContextType = v28;
@@ -259,28 +259,28 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SPSimpleBeaconContext *)self bundleIdentifier];
-  [v4 setBundleIdentifier:v5];
+  bundleIdentifier = [(SPSimpleBeaconContext *)self bundleIdentifier];
+  [v4 setBundleIdentifier:bundleIdentifier];
 
   [v4 setFetchProperties:{-[SPSimpleBeaconContext fetchProperties](self, "fetchProperties")}];
   [v4 setSendInitialBeacons:{-[SPSimpleBeaconContext sendInitialBeacons](self, "sendInitialBeacons")}];
-  v6 = [(SPSimpleBeaconContext *)self matchingBeaconUUIDs];
-  [v4 setMatchingBeaconUUIDs:v6];
+  matchingBeaconUUIDs = [(SPSimpleBeaconContext *)self matchingBeaconUUIDs];
+  [v4 setMatchingBeaconUUIDs:matchingBeaconUUIDs];
 
-  v7 = [(SPSimpleBeaconContext *)self matchingProductUUIDs];
-  [v4 setMatchingProductUUIDs:v7];
+  matchingProductUUIDs = [(SPSimpleBeaconContext *)self matchingProductUUIDs];
+  [v4 setMatchingProductUUIDs:matchingProductUUIDs];
 
-  v8 = [(SPSimpleBeaconContext *)self matchingSerialNumbers];
-  [v4 setMatchingSerialNumbers:v8];
+  matchingSerialNumbers = [(SPSimpleBeaconContext *)self matchingSerialNumbers];
+  [v4 setMatchingSerialNumbers:matchingSerialNumbers];
 
-  v9 = [(SPSimpleBeaconContext *)self matchingFindMyIds];
-  [v4 setMatchingFindMyIds:v9];
+  matchingFindMyIds = [(SPSimpleBeaconContext *)self matchingFindMyIds];
+  [v4 setMatchingFindMyIds:matchingFindMyIds];
 
-  v10 = [(SPSimpleBeaconContext *)self repairContextType];
-  [v4 setRepairContextType:v10];
+  repairContextType = [(SPSimpleBeaconContext *)self repairContextType];
+  [v4 setRepairContextType:repairContextType];
 
   return v4;
 }

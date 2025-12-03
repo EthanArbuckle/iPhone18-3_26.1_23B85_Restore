@@ -1,24 +1,24 @@
 @interface EDSMIMEAnalyticsCollector
-- (EDSMIMEAnalyticsCollector)initWithAnalyticsCollector:(id)a3 smimeConfigurationProvider:(id)a4 messagePersistence:(id)a5;
+- (EDSMIMEAnalyticsCollector)initWithAnalyticsCollector:(id)collector smimeConfigurationProvider:(id)provider messagePersistence:(id)persistence;
 - (id)coreAnalyticsPeriodicEvent;
 @end
 
 @implementation EDSMIMEAnalyticsCollector
 
-- (EDSMIMEAnalyticsCollector)initWithAnalyticsCollector:(id)a3 smimeConfigurationProvider:(id)a4 messagePersistence:(id)a5
+- (EDSMIMEAnalyticsCollector)initWithAnalyticsCollector:(id)collector smimeConfigurationProvider:(id)provider messagePersistence:(id)persistence
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectorCopy = collector;
+  providerCopy = provider;
+  persistenceCopy = persistence;
   v15.receiver = self;
   v15.super_class = EDSMIMEAnalyticsCollector;
   v11 = [(EDSMIMEAnalyticsCollector *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_smimeConfigurationProvider, a4);
-    objc_storeStrong(&v12->_messagePersistence, a5);
-    v13 = [v8 registerForLogEventsWithPeriodicDataProvider:v12];
+    objc_storeStrong(&v11->_smimeConfigurationProvider, provider);
+    objc_storeStrong(&v12->_messagePersistence, persistence);
+    v13 = [collectorCopy registerForLogEventsWithPeriodicDataProvider:v12];
   }
 
   return v12;
@@ -35,13 +35,13 @@
   v5 = [v4 numberWithDouble:?];
   v63 = [v3 greaterThan:v5];
 
-  v6 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
-  v7 = [v6 mailboxPersistence];
-  v56 = [v7 mailboxObjectIDsForMailboxType:4];
+  messagePersistence = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
+  mailboxPersistence = [messagePersistence mailboxPersistence];
+  v56 = [mailboxPersistence mailboxObjectIDsForMailboxType:4];
 
-  v8 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
-  v9 = [v8 mailboxPersistence];
-  v55 = [v9 mailboxDatabaseIDsForMailboxObjectIDs:v56 createIfNecessary:0];
+  messagePersistence2 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
+  mailboxPersistence2 = [messagePersistence2 mailboxPersistence];
+  v55 = [mailboxPersistence2 mailboxDatabaseIDsForMailboxObjectIDs:v56 createIfNecessary:0];
 
   v10 = [MEMORY[0x1E699B8C8] column:@"mailbox"];
   v62 = [v10 in:v55];
@@ -96,23 +96,23 @@
   v33 = [v31 initWithExpressions:v32];
 
   [v30 setWhere:v33];
-  v34 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
-  v35 = [v34 countOfMessageStatement:v60];
+  messagePersistence3 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
+  v35 = [messagePersistence3 countOfMessageStatement:v60];
 
-  v36 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
-  v37 = [v36 countOfMessageStatement:v58];
+  messagePersistence4 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
+  v37 = [messagePersistence4 countOfMessageStatement:v58];
 
-  v38 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
-  v39 = [v38 countOfMessageStatement:v30];
+  messagePersistence5 = [(EDSMIMEAnalyticsCollector *)self messagePersistence];
+  v39 = [messagePersistence5 countOfMessageStatement:v30];
 
-  v40 = [(EDSMIMEAnalyticsCollector *)self smimeConfigurationProvider];
-  LODWORD(v38) = [v40 signingIsConfigured];
-  v41 = [v40 encryptionIsConfigured];
-  LODWORD(v22) = [v40 signingEnabledByDefault];
-  v42 = v38 & v22 | v41 & [v40 encryptionIsEnabledByDefault];
-  if ((v35 < 1) | v38 & 1)
+  smimeConfigurationProvider = [(EDSMIMEAnalyticsCollector *)self smimeConfigurationProvider];
+  LODWORD(messagePersistence5) = [smimeConfigurationProvider signingIsConfigured];
+  encryptionIsConfigured = [smimeConfigurationProvider encryptionIsConfigured];
+  LODWORD(v22) = [smimeConfigurationProvider signingEnabledByDefault];
+  v42 = messagePersistence5 & v22 | encryptionIsConfigured & [smimeConfigurationProvider encryptionIsEnabledByDefault];
+  if ((v35 < 1) | messagePersistence5 & 1)
   {
-    v43 = (v37 > 0) & (v41 ^ 1u);
+    v43 = (v37 > 0) & (encryptionIsConfigured ^ 1u);
   }
 
   else

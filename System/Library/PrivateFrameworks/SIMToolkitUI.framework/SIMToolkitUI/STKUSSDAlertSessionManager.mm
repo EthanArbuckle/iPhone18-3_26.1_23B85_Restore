@@ -1,23 +1,23 @@
 @interface STKUSSDAlertSessionManager
-- (STKUSSDAlertSessionManager)initWithSubscriptionMonitor:(id)a3;
+- (STKUSSDAlertSessionManager)initWithSubscriptionMonitor:(id)monitor;
 - (id)_supplementaryServicesResponder;
-- (id)remoteAlertDescriptorForSession:(id)a3;
-- (void)_executeOnQueue:(id)a3;
-- (void)_queue_handleUSSDEvent:(int64_t)a3 responder:(id)a4 userInfo:(id)a5;
+- (id)remoteAlertDescriptorForSession:(id)session;
+- (void)_executeOnQueue:(id)queue;
+- (void)_queue_handleUSSDEvent:(int64_t)event responder:(id)responder userInfo:(id)info;
 - (void)_queue_startListening;
-- (void)handleUSSDEvent:(int64_t)a3 responder:(id)a4 userInfo:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)suppServicesCompleted:(id)a3;
-- (void)suppServicesError:(id)a3 error:(id)a4;
-- (void)suppServicesStarted:(id)a3;
+- (void)handleUSSDEvent:(int64_t)event responder:(id)responder userInfo:(id)info;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)suppServicesCompleted:(id)completed;
+- (void)suppServicesError:(id)error error:(id)a4;
+- (void)suppServicesStarted:(id)started;
 @end
 
 @implementation STKUSSDAlertSessionManager
 
-- (STKUSSDAlertSessionManager)initWithSubscriptionMonitor:(id)a3
+- (STKUSSDAlertSessionManager)initWithSubscriptionMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v6 = objc_opt_new();
   v7 = STKUSSDLog();
   v25.receiver = self;
@@ -34,7 +34,7 @@
     telephonyClient = v8->_telephonyClient;
     v8->_telephonyClient = v11;
 
-    objc_storeStrong(&v8->_subscriptionMonitor, a3);
+    objc_storeStrong(&v8->_subscriptionMonitor, monitor);
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     activeUSSDSessions = v8->_activeUSSDSessions;
     v8->_activeUSSDSessions = v13;
@@ -63,9 +63,9 @@
   return v8;
 }
 
-- (id)remoteAlertDescriptorForSession:(id)a3
+- (id)remoteAlertDescriptorForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -77,8 +77,8 @@
     v13 = __62__STKUSSDAlertSessionManager_remoteAlertDescriptorForSession___block_invoke;
     v14 = &unk_279B4C478;
     objc_copyWeak(&v17, &location);
-    v15 = v4;
-    v16 = self;
+    v15 = sessionCopy;
+    selfCopy = self;
     v7 = [(STKUSSDSessionAction *)v6 initWithInputData:v5 response:&v11];
     v8 = [_STKRemoteAlertDescriptor alloc];
     v9 = [(_STKRemoteAlertDescriptor *)v8 initWithAction:v7 viewControllerName:@"STKUSSDViewController", v11, v12, v13, v14];
@@ -146,35 +146,35 @@ uint64_t __62__STKUSSDAlertSessionManager_remoteAlertDescriptorForSession___bloc
   }
 }
 
-- (void)handleUSSDEvent:(int64_t)a3 responder:(id)a4 userInfo:(id)a5
+- (void)handleUSSDEvent:(int64_t)event responder:(id)responder userInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
+  responderCopy = responder;
+  infoCopy = info;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__STKUSSDAlertSessionManager_handleUSSDEvent_responder_userInfo___block_invoke;
   v13[3] = &unk_279B4C4A0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = responderCopy;
+  v15 = infoCopy;
+  eventCopy = event;
+  v11 = infoCopy;
+  v12 = responderCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__STKUSSDAlertSessionManager_remoteAlertHandleDidDeactivate___block_invoke;
   v7[3] = &unk_279B4C4C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deactivateCopy;
+  v6 = deactivateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -368,18 +368,18 @@ void __61__STKUSSDAlertSessionManager_remoteAlertHandleDidDeactivate___block_inv
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a3;
-  [v5 removeObserver:self];
+  handleCopy = handle;
+  [handleCopy removeObserver:self];
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__STKUSSDAlertSessionManager_remoteAlertHandle_didInvalidateWithError___block_invoke;
   v8[3] = &unk_279B4C4C8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handleCopy;
+  v7 = handleCopy;
   dispatch_async(queue, v8);
 }
 
@@ -593,21 +593,21 @@ void __71__STKUSSDAlertSessionManager_remoteAlertHandle_didInvalidateWithError__
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suppServicesStarted:(id)a3
+- (void)suppServicesStarted:(id)started
 {
-  v4 = [(STKUSSDAlertSessionManager *)self _supplementaryServicesResponder];
-  [(STKUSSDAlertSessionManager *)self _queue_handleUSSDEvent:6 responder:v4 userInfo:MEMORY[0x277CBEC10]];
+  _supplementaryServicesResponder = [(STKUSSDAlertSessionManager *)self _supplementaryServicesResponder];
+  [(STKUSSDAlertSessionManager *)self _queue_handleUSSDEvent:6 responder:_supplementaryServicesResponder userInfo:MEMORY[0x277CBEC10]];
 }
 
-- (void)suppServicesCompleted:(id)a3
+- (void)suppServicesCompleted:(id)completed
 {
-  v4 = [(STKUSSDAlertSessionManager *)self _supplementaryServicesResponder];
-  [(STKUSSDAlertSessionManager *)self _queue_handleUSSDEvent:9 responder:v4 userInfo:MEMORY[0x277CBEC10]];
+  _supplementaryServicesResponder = [(STKUSSDAlertSessionManager *)self _supplementaryServicesResponder];
+  [(STKUSSDAlertSessionManager *)self _queue_handleUSSDEvent:9 responder:_supplementaryServicesResponder userInfo:MEMORY[0x277CBEC10]];
 }
 
-- (void)suppServicesError:(id)a3 error:(id)a4
+- (void)suppServicesError:(id)error error:(id)a4
 {
-  v12 = a3;
+  errorCopy = error;
   v6 = a4;
   if (v6)
   {
@@ -615,12 +615,12 @@ void __71__STKUSSDAlertSessionManager_remoteAlertHandle_didInvalidateWithError__
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "code")}];
     [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277CC4328]];
 
-    v9 = [v6 localizedDescription];
+    localizedDescription = [v6 localizedDescription];
 
-    if (v9)
+    if (localizedDescription)
     {
-      v10 = [v6 localizedDescription];
-      [v7 setObject:v10 forKeyedSubscript:*MEMORY[0x277CC4338]];
+      localizedDescription2 = [v6 localizedDescription];
+      [v7 setObject:localizedDescription2 forKeyedSubscript:*MEMORY[0x277CC4338]];
     }
   }
 
@@ -629,14 +629,14 @@ void __71__STKUSSDAlertSessionManager_remoteAlertHandle_didInvalidateWithError__
     v7 = 0;
   }
 
-  v11 = [(STKUSSDAlertSessionManager *)self _supplementaryServicesResponder];
-  [(STKUSSDAlertSessionManager *)self _queue_handleUSSDEvent:8 responder:v11 userInfo:v7];
+  _supplementaryServicesResponder = [(STKUSSDAlertSessionManager *)self _supplementaryServicesResponder];
+  [(STKUSSDAlertSessionManager *)self _queue_handleUSSDEvent:8 responder:_supplementaryServicesResponder userInfo:v7];
 }
 
-- (void)_executeOnQueue:(id)a3
+- (void)_executeOnQueue:(id)queue
 {
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     [(STKUSSDAlertSessionManager *)a2 _executeOnQueue:?];
   }
@@ -646,38 +646,38 @@ void __71__STKUSSDAlertSessionManager_remoteAlertHandle_didInvalidateWithError__
   block[1] = 3221225472;
   block[2] = __46__STKUSSDAlertSessionManager__executeOnQueue___block_invoke;
   block[3] = &unk_279B4C4F0;
-  v9 = v5;
-  v7 = v5;
+  v9 = queueCopy;
+  v7 = queueCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_queue_handleUSSDEvent:(int64_t)a3 responder:(id)a4 userInfo:(id)a5
+- (void)_queue_handleUSSDEvent:(int64_t)event responder:(id)responder userInfo:(id)info
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  responderCopy = responder;
+  infoCopy = info;
   queue = self->_queue;
   BSDispatchQueueAssert();
-  if (a3 > 4)
+  if (event > 4)
   {
-    if (a3 <= 6)
+    if (event <= 6)
     {
-      if (a3 == 5)
+      if (event == 5)
       {
-        v11 = [(NSMutableArray *)self->_activeUSSDSessions lastObject];
+        lastObject = [(NSMutableArray *)self->_activeUSSDSessions lastObject];
         v26 = [(STKAlertSessionManager *)self log];
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v68 = v11;
+          v68 = lastObject;
           _os_log_impl(&dword_262BB4000, v26, OS_LOG_TYPE_DEFAULT, "Session <%p> - Terminated Event", buf, 0xCu);
         }
 
-        if (v11)
+        if (lastObject)
         {
-          [(NSMutableArray *)self->_finishedUSSDSessions addObject:v11];
+          [(NSMutableArray *)self->_finishedUSSDSessions addObject:lastObject];
           [(NSMutableArray *)self->_activeUSSDSessions removeLastObject];
-          [v11 performUSSDUpdate:&__block_literal_global_43];
+          [lastObject performUSSDUpdate:&__block_literal_global_43];
         }
 
         goto LABEL_73;
@@ -692,127 +692,127 @@ void __71__STKUSSDAlertSessionManager_remoteAlertHandle_didInvalidateWithError__
 
       v24 = [STKUSSDAlertSession alloc];
       v25 = [(STKAlertSessionManager *)self log];
-      v11 = [(STKUSSDAlertSession *)v24 initWithLogger:v25 responseProvider:v8 event:6 options:v9 sound:0];
+      lastObject = [(STKUSSDAlertSession *)v24 initWithLogger:v25 responseProvider:responderCopy event:6 options:infoCopy sound:0];
 
-      [(NSMutableArray *)self->_activeSupplementaryServicesSessions addObject:v11];
+      [(NSMutableArray *)self->_activeSupplementaryServicesSessions addObject:lastObject];
       v22 = &__block_literal_global_46;
       goto LABEL_27;
     }
 
-    switch(a3)
+    switch(event)
     {
       case 7:
-        v11 = [(NSMutableArray *)self->_activeSupplementaryServicesSessions lastObject];
+        lastObject = [(NSMutableArray *)self->_activeSupplementaryServicesSessions lastObject];
         v38 = [(STKAlertSessionManager *)self log];
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v68 = v11;
+          v68 = lastObject;
           _os_log_impl(&dword_262BB4000, v38, OS_LOG_TYPE_DEFAULT, "Session <%p> - Supplementary Services Event", buf, 0xCu);
         }
 
-        if (v11)
+        if (lastObject)
         {
           v56[0] = MEMORY[0x277D85DD0];
           v56[1] = 3221225472;
           v56[2] = __72__STKUSSDAlertSessionManager__queue_handleUSSDEvent_responder_userInfo___block_invoke_47;
           v56[3] = &unk_279B4C5D0;
-          v57 = v9;
-          [v11 performUSSDUpdate:v56];
-          [v11 setHasReceivedContent:1];
+          v57 = infoCopy;
+          [lastObject performUSSDUpdate:v56];
+          [lastObject setHasReceivedContent:1];
         }
 
         goto LABEL_73;
       case 8:
-        v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CC4338]];
-        v40 = [v9 objectForKeyedSubscript:*MEMORY[0x277CC4328]];
-        v41 = [v40 integerValue];
+        lastObject = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC4338]];
+        v40 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC4328]];
+        integerValue = [v40 integerValue];
 
-        v14 = [(NSMutableArray *)self->_activeSupplementaryServicesSessions lastObject];
+        lastObject2 = [(NSMutableArray *)self->_activeSupplementaryServicesSessions lastObject];
         v42 = [(STKAlertSessionManager *)self log];
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v68 = v14;
+          v68 = lastObject2;
           v69 = 1024;
-          v70 = v41;
+          v70 = integerValue;
           v71 = 2112;
-          v72 = v11;
+          v72 = lastObject;
           _os_log_impl(&dword_262BB4000, v42, OS_LOG_TYPE_DEFAULT, "Session <%p> - Supplementary Services Error, errorCode: %d, error: %@", buf, 0x1Cu);
         }
 
-        if (!v14)
+        if (!lastObject2)
         {
           goto LABEL_51;
         }
 
-        [(NSMutableArray *)self->_finishedSupplementaryServicesSessions addObject:v14];
+        [(NSMutableArray *)self->_finishedSupplementaryServicesSessions addObject:lastObject2];
         [(NSMutableArray *)self->_activeSupplementaryServicesSessions removeLastObject];
         v53[0] = MEMORY[0x277D85DD0];
         v53[1] = 3221225472;
         v53[2] = __72__STKUSSDAlertSessionManager__queue_handleUSSDEvent_responder_userInfo___block_invoke_48;
         v53[3] = &unk_279B4C588;
-        v55 = v41;
-        v54 = v11;
-        [(STKUSSDAlertSession *)v14 performUSSDUpdate:v53];
-        [(STKUSSDAlertSession *)v14 setHasReceivedContent:1];
+        v55 = integerValue;
+        v54 = lastObject;
+        [(STKUSSDAlertSession *)lastObject2 performUSSDUpdate:v53];
+        [(STKUSSDAlertSession *)lastObject2 setHasReceivedContent:1];
         v16 = v54;
         goto LABEL_50;
       case 9:
         v17 = 80;
-        v11 = [(NSMutableArray *)self->_activeSupplementaryServicesSessions lastObject];
+        lastObject = [(NSMutableArray *)self->_activeSupplementaryServicesSessions lastObject];
         v18 = [(STKAlertSessionManager *)self log];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v68 = v11;
+          v68 = lastObject;
           _os_log_impl(&dword_262BB4000, v18, OS_LOG_TYPE_DEFAULT, "Session <%p> - Supplementary Services End", buf, 0xCu);
         }
 
-        if (!v11)
+        if (!lastObject)
         {
           goto LABEL_73;
         }
 
-        if (([v11 hasReceivedContent]& 1) != 0)
+        if (([lastObject hasReceivedContent]& 1) != 0)
         {
-          [(NSMutableArray *)self->_finishedSupplementaryServicesSessions addObject:v11];
-          [v11 performUSSDUpdate:&__block_literal_global_51];
+          [(NSMutableArray *)self->_finishedSupplementaryServicesSessions addObject:lastObject];
+          [lastObject performUSSDUpdate:&__block_literal_global_51];
 LABEL_53:
           [*(&self->super.super.isa + v17) removeLastObject];
           goto LABEL_73;
         }
 
 LABEL_52:
-        [v11 invalidate];
+        [lastObject invalidate];
         goto LABEL_53;
     }
   }
 
   else
   {
-    if (a3 > 1)
+    if (event > 1)
     {
-      if (a3 == 2)
+      if (event == 2)
       {
-        v27 = [v9 objectForKeyedSubscript:*MEMORY[0x277CC4348]];
-        v28 = [v9 objectForKeyedSubscript:*MEMORY[0x277CC4340]];
-        v52 = [v28 BOOLValue];
+        v27 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC4348]];
+        v28 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC4340]];
+        bOOLValue = [v28 BOOLValue];
 
-        v29 = [v9 objectForKeyedSubscript:@"kCallSimSlot"];
-        v30 = [v29 integerValue];
+        v29 = [infoCopy objectForKeyedSubscript:@"kCallSimSlot"];
+        integerValue2 = [v29 integerValue];
 
-        v31 = [(STKCarrierSubscriptionMonitor *)self->_subscriptionMonitor subscriptionInfoForSlot:v30];
-        v32 = [v31 ussdFilter];
+        v31 = [(STKCarrierSubscriptionMonitor *)self->_subscriptionMonitor subscriptionInfoForSlot:integerValue2];
+        ussdFilter = [v31 ussdFilter];
 
-        v33 = [(NSMutableArray *)self->_activeUSSDSessions lastObject];
+        lastObject3 = [(NSMutableArray *)self->_activeUSSDSessions lastObject];
         v34 = [(STKAlertSessionManager *)self log];
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
-          v51 = v32;
-          v35 = [MEMORY[0x277CF0CA8] sharedInstance];
-          v36 = [v35 isInternalInstall];
-          if (v36)
+          v51 = ussdFilter;
+          mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+          isInternalInstall = [mEMORY[0x277CF0CA8] isInternalInstall];
+          if (isInternalInstall)
           {
             v37 = [MEMORY[0x277CCACA8] stringWithFormat:@", string: %@", v27];
           }
@@ -823,27 +823,27 @@ LABEL_52:
           }
 
           *buf = 134218498;
-          v68 = v33;
+          v68 = lastObject3;
           v69 = 1024;
-          v70 = v52;
+          v70 = bOOLValue;
           v71 = 2114;
           v72 = v37;
           _os_log_impl(&dword_262BB4000, v34, OS_LOG_TYPE_DEFAULT, "Session <%p> - String Event (should respond? %d%{public}@)", buf, 0x1Cu);
-          if (v36)
+          if (isInternalInstall)
           {
           }
 
-          v32 = v51;
+          ussdFilter = v51;
         }
 
         v66 = 0;
-        if (!v33)
+        if (!lastObject3)
         {
-          if ((v52 & 1) != 0 || ([v32 shouldFilterString:v27 coalescable:&v66] & 1) == 0)
+          if ((bOOLValue & 1) != 0 || ([ussdFilter shouldFilterString:v27 coalescable:&v66] & 1) == 0)
           {
             v43 = [STKUSSDAlertSession alloc];
             v44 = [(STKAlertSessionManager *)self log];
-            v33 = [(STKUSSDAlertSession *)v43 initWithLogger:v44 responseProvider:v8 event:2 options:v9 sound:0];
+            lastObject3 = [(STKUSSDAlertSession *)v43 initWithLogger:v44 responseProvider:responderCopy event:2 options:infoCopy sound:0];
 
             if (v66 == 1)
             {
@@ -851,7 +851,7 @@ LABEL_52:
               if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134217984;
-                v68 = v33;
+                v68 = lastObject3;
                 _os_log_impl(&dword_262BB4000, v45, OS_LOG_TYPE_DEFAULT, "Session <%p> - String should coalesce.", buf, 0xCu);
               }
 
@@ -864,25 +864,25 @@ LABEL_52:
                 v64[2] = __72__STKUSSDAlertSessionManager__queue_handleUSSDEvent_responder_userInfo___block_invoke_34;
                 v64[3] = &unk_279B4C538;
                 v64[4] = self;
-                v65 = v33;
+                v65 = lastObject3;
                 [(STKUSSDAlertSession *)coalescingUSSDSession performUSSDUpdate:v64];
                 [(STKUSSDAlertSession *)self->_coalescingUSSDSession invalidate];
               }
 
-              objc_storeStrong(&self->_coalescingUSSDSession, v33);
+              objc_storeStrong(&self->_coalescingUSSDSession, lastObject3);
             }
 
             else
             {
-              [(NSMutableArray *)self->_activeUSSDSessions addObject:v33];
+              [(NSMutableArray *)self->_activeUSSDSessions addObject:lastObject3];
             }
 
-            [(STKAlertSessionManager *)self enqueuePresentationForSession:v33 completion:&__block_literal_global_38];
+            [(STKAlertSessionManager *)self enqueuePresentationForSession:lastObject3 completion:&__block_literal_global_38];
           }
 
           else
           {
-            v33 = 0;
+            lastObject3 = 0;
           }
         }
 
@@ -890,58 +890,58 @@ LABEL_52:
         v61[1] = 3221225472;
         v61[2] = __72__STKUSSDAlertSessionManager__queue_handleUSSDEvent_responder_userInfo___block_invoke_2;
         v61[3] = &unk_279B4C560;
-        v11 = v27;
-        v62 = v11;
-        v63 = v52;
-        [(STKUSSDAlertSession *)v33 performUSSDUpdate:v61];
-        [(STKUSSDAlertSession *)v33 setHasReceivedContent:1];
-        v47 = [v9 objectForKeyedSubscript:*MEMORY[0x277CC4350]];
-        v48 = [v47 BOOLValue];
+        lastObject = v27;
+        v62 = lastObject;
+        v63 = bOOLValue;
+        [(STKUSSDAlertSession *)lastObject3 performUSSDUpdate:v61];
+        [(STKUSSDAlertSession *)lastObject3 setHasReceivedContent:1];
+        v47 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC4350]];
+        bOOLValue2 = [v47 BOOLValue];
 
-        if ((v48 & 1) == 0)
+        if ((bOOLValue2 & 1) == 0)
         {
           v49 = [STKSoundFactory soundForSystemSoundID:1050 duration:0.0];
-          [(STKAlertSession *)v33 setSound:v49];
+          [(STKAlertSession *)lastObject3 setSound:v49];
           [v49 playSound];
         }
 
         goto LABEL_73;
       }
 
-      if (a3 != 3)
+      if (event != 3)
       {
-        v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CC4338]];
-        v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277CC4328]];
-        v13 = [v12 integerValue];
+        lastObject = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC4338]];
+        v12 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CC4328]];
+        integerValue3 = [v12 integerValue];
 
-        v14 = [(NSMutableArray *)self->_activeUSSDSessions lastObject];
+        lastObject2 = [(NSMutableArray *)self->_activeUSSDSessions lastObject];
         v15 = [(STKAlertSessionManager *)self log];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v68 = v14;
+          v68 = lastObject2;
           v69 = 1024;
-          v70 = v13;
+          v70 = integerValue3;
           v71 = 2112;
-          v72 = v11;
+          v72 = lastObject;
           _os_log_impl(&dword_262BB4000, v15, OS_LOG_TYPE_DEFAULT, "Session <%p> - Error Event, errorCode: %d, error: %@", buf, 0x1Cu);
         }
 
-        if (!v14)
+        if (!lastObject2)
         {
           goto LABEL_51;
         }
 
-        [(NSMutableArray *)self->_finishedUSSDSessions addObject:v14];
-        [(NSMutableArray *)self->_activeUSSDSessions removeObject:v14];
+        [(NSMutableArray *)self->_finishedUSSDSessions addObject:lastObject2];
+        [(NSMutableArray *)self->_activeUSSDSessions removeObject:lastObject2];
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
         v58[2] = __72__STKUSSDAlertSessionManager__queue_handleUSSDEvent_responder_userInfo___block_invoke_40;
         v58[3] = &unk_279B4C588;
-        v60 = v13;
-        v59 = v11;
-        [(STKUSSDAlertSession *)v14 performUSSDUpdate:v58];
-        [(STKUSSDAlertSession *)v14 setHasReceivedContent:1];
+        v60 = integerValue3;
+        v59 = lastObject;
+        [(STKUSSDAlertSession *)lastObject2 performUSSDUpdate:v58];
+        [(STKUSSDAlertSession *)lastObject2 setHasReceivedContent:1];
         v16 = v59;
 LABEL_50:
 
@@ -950,42 +950,42 @@ LABEL_51:
       }
 
       v17 = 56;
-      v11 = [(NSMutableArray *)self->_activeUSSDSessions lastObject];
+      lastObject = [(NSMutableArray *)self->_activeUSSDSessions lastObject];
       v39 = [(STKAlertSessionManager *)self log];
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v68 = v11;
+        v68 = lastObject;
         _os_log_impl(&dword_262BB4000, v39, OS_LOG_TYPE_DEFAULT, "Session <%p> - End Event", buf, 0xCu);
       }
 
-      if (!v11)
+      if (!lastObject)
       {
         goto LABEL_73;
       }
 
-      if (([v11 hasReceivedContent]& 1) != 0)
+      if (([lastObject hasReceivedContent]& 1) != 0)
       {
-        [(NSMutableArray *)self->_finishedUSSDSessions addObject:v11];
+        [(NSMutableArray *)self->_finishedUSSDSessions addObject:lastObject];
         goto LABEL_53;
       }
 
       goto LABEL_52;
     }
 
-    if (!a3)
+    if (!event)
     {
-      v11 = [(STKAlertSessionManager *)self log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      lastObject = [(STKAlertSessionManager *)self log];
+      if (os_log_type_enabled(lastObject, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_262BB4000, v11, OS_LOG_TYPE_DEFAULT, "Unknown STKUSSDEvent", buf, 2u);
+        _os_log_impl(&dword_262BB4000, lastObject, OS_LOG_TYPE_DEFAULT, "Unknown STKUSSDEvent", buf, 2u);
       }
 
       goto LABEL_73;
     }
 
-    if (a3 == 1)
+    if (event == 1)
     {
       v19 = [(STKAlertSessionManager *)self log];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -996,12 +996,12 @@ LABEL_51:
 
       v20 = [STKUSSDAlertSession alloc];
       v21 = [(STKAlertSessionManager *)self log];
-      v11 = [(STKUSSDAlertSession *)v20 initWithLogger:v21 responseProvider:v8 event:1 options:v9 sound:0];
+      lastObject = [(STKUSSDAlertSession *)v20 initWithLogger:v21 responseProvider:responderCopy event:1 options:infoCopy sound:0];
 
-      [(NSMutableArray *)self->_activeUSSDSessions addObject:v11];
+      [(NSMutableArray *)self->_activeUSSDSessions addObject:lastObject];
       v22 = &__block_literal_global_0;
 LABEL_27:
-      [(STKAlertSessionManager *)self enqueuePresentationForSession:v11 completion:v22];
+      [(STKAlertSessionManager *)self enqueuePresentationForSession:lastObject completion:v22];
 LABEL_73:
     }
   }

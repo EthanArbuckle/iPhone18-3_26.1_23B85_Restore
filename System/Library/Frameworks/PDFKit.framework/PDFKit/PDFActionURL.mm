@@ -1,8 +1,8 @@
 @interface PDFActionURL
-- (PDFActionURL)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5;
+- (PDFActionURL)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page;
 - (PDFActionURL)initWithURL:(NSURL *)url;
 - (__CFDictionary)createDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toolTip;
 - (void)commonInit;
@@ -29,7 +29,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = PDFActionURL;
@@ -40,7 +40,7 @@
     v7 = v5[2];
     v5[2] = v6;
 
-    v8 = [(NSURL *)self->_private2->url copyWithZone:a3];
+    v8 = [(NSURL *)self->_private2->url copyWithZone:zone];
     v9 = v5[2];
     v10 = *(v9 + 8);
     *(v9 + 8) = v8;
@@ -64,18 +64,18 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PDFActionURL *)self toolTip];
-  v4 = [v2 stringWithFormat:@"URL Action - %@", v3];
+  toolTip = [(PDFActionURL *)self toolTip];
+  v4 = [v2 stringWithFormat:@"URL Action - %@", toolTip];
 
   return v4;
 }
 
-- (PDFActionURL)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5
+- (PDFActionURL)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page
 {
-  v8 = a4;
+  documentCopy = document;
   v44.receiver = self;
   v44.super_class = PDFActionURL;
-  v9 = [(PDFAction *)&v44 initWithActionDictionary:a3 forDocument:v8 forPage:a5];
+  v9 = [(PDFAction *)&v44 initWithActionDictionary:dictionary forDocument:documentCopy forPage:page];
   if (!v9)
   {
     goto LABEL_29;
@@ -83,7 +83,7 @@
 
   v42 = 0;
   string = 0;
-  if (CGPDFDocumentIsEncrypted([v8 documentRef]))
+  if (CGPDFDocumentIsEncrypted([documentCopy documentRef]))
   {
     UnresolvedObject = CGPDFDictionaryGetUnresolvedObject();
     if (UnresolvedObject)
@@ -100,7 +100,7 @@
     }
   }
 
-  if (CGPDFDictionaryGetString(a3, "URI", &string))
+  if (CGPDFDictionaryGetString(dictionary, "URI", &string))
   {
     BytePtr = CGPDFStringGetBytePtr(string);
     if (BytePtr)
@@ -125,8 +125,8 @@
           v19 = v9->_private2->url;
           if (v19)
           {
-            v20 = [(NSURL *)v19 scheme];
-            if (![v20 isEqualToString:*MEMORY[0x1E696A9A8]])
+            scheme = [(NSURL *)v19 scheme];
+            if (![scheme isEqualToString:*MEMORY[0x1E696A9A8]])
             {
               v26 = 0;
 LABEL_22:
@@ -142,8 +142,8 @@ LABEL_22:
 
             if (!v22)
             {
-              v20 = [(PDFAction *)v9 baseURLForDocument:v8];
-              v24 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v15 relativeToURL:v20];
+              scheme = [(PDFAction *)v9 baseURLForDocument:documentCopy];
+              v24 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v15 relativeToURL:scheme];
               v25 = v24;
               if (v24)
               {
@@ -177,12 +177,12 @@ LABEL_23:
     }
   }
 
-  if (CGPDFDictionaryGetObject(a3, "F", &v42))
+  if (CGPDFDictionaryGetObject(dictionary, "F", &v42))
   {
     v27 = v42;
-    v28 = [v8 documentURL];
-    v29 = [v28 path];
-    v30 = getFilepathFromObjectDetermineEncoding(v27, [v29 stringByDeletingLastPathComponent]);
+    documentURL = [documentCopy documentURL];
+    path = [documentURL path];
+    v30 = getFilepathFromObjectDetermineEncoding(v27, [path stringByDeletingLastPathComponent]);
 
     if (v30)
     {
@@ -221,8 +221,8 @@ LABEL_29:
   if (Mutable)
   {
     v4 = [(PDFActionURL *)self URL];
-    v5 = [MEMORY[0x1E695DFB0] null];
-    v6 = [v4 isEqual:v5];
+    null = [MEMORY[0x1E695DFB0] null];
+    v6 = [v4 isEqual:null];
 
     if (v6)
     {
@@ -234,11 +234,11 @@ LABEL_29:
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
       CFDictionarySetValue(Mutable, @"/S", @"/URI");
       v7 = [(PDFActionURL *)self URL];
-      v8 = [v7 absoluteString];
+      absoluteString = [v7 absoluteString];
 
-      if (v8)
+      if (absoluteString)
       {
-        CFDictionarySetValue(Mutable, @"/URI", v8);
+        CFDictionarySetValue(Mutable, @"/URI", absoluteString);
       }
     }
   }
@@ -251,18 +251,18 @@ LABEL_29:
   v2 = [(PDFActionURL *)self URL];
   if ([v2 isFileURL])
   {
-    v3 = [v2 path];
-    v4 = [v3 lastPathComponent];
+    path = [v2 path];
+    lastPathComponent = [path lastPathComponent];
   }
 
   else
   {
-    v3 = [v2 standardizedURL];
-    v5 = [v3 absoluteString];
-    v4 = [v5 stringByRemovingPercentEncoding];
+    path = [v2 standardizedURL];
+    absoluteString = [path absoluteString];
+    lastPathComponent = [absoluteString stringByRemovingPercentEncoding];
   }
 
-  return v4;
+  return lastPathComponent;
 }
 
 @end

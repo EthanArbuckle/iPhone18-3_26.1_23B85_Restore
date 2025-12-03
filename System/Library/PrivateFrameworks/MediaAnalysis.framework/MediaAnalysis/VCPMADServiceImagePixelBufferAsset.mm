@@ -1,26 +1,26 @@
 @interface VCPMADServiceImagePixelBufferAsset
 - (CGSize)resolution;
-- (VCPMADServiceImagePixelBufferAsset)initWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 andIdentifier:(id)a5 clientBundleID:(id)a6 clientTeamID:(id)a7;
+- (VCPMADServiceImagePixelBufferAsset)initWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation andIdentifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD;
 - (id)cachedParseData;
 - (id)documentObservations;
-- (int)loadPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int *)a4;
-- (void)setCachedParseData:(id)a3 overwriteExisting:(BOOL)a4;
-- (void)setDocumentObservations:(id)a3;
+- (int)loadPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int *)orientation;
+- (void)setCachedParseData:(id)data overwriteExisting:(BOOL)existing;
+- (void)setDocumentObservations:(id)observations;
 @end
 
 @implementation VCPMADServiceImagePixelBufferAsset
 
-- (VCPMADServiceImagePixelBufferAsset)initWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 andIdentifier:(id)a5 clientBundleID:(id)a6 clientTeamID:(id)a7
+- (VCPMADServiceImagePixelBufferAsset)initWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation andIdentifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v13 = a5;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = VCPMADServiceImagePixelBufferAsset;
-  v14 = [(VCPMADServiceImageAsset *)&v18 initWithClientBundleID:a6 clientTeamID:a7];
+  v14 = [(VCPMADServiceImageAsset *)&v18 initWithClientBundleID:d clientTeamID:iD];
   if (v14)
   {
-    if (a3)
+    if (buffer)
     {
-      v15 = CFRetain(a3);
+      v15 = CFRetain(buffer);
     }
 
     else
@@ -31,8 +31,8 @@
     v17 = v15;
     CF<__CVBuffer *>::operator=(&v14->_pixelBuffer.value_, &v17);
     CF<__CVBuffer *>::~CF(&v17);
-    v14->_orientation = a4;
-    objc_storeStrong(&v14->_identifier, a5);
+    v14->_orientation = orientation;
+    objc_storeStrong(&v14->_identifier, identifier);
   }
 
   return v14;
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (int)loadPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int *)a4
+- (int)loadPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int *)orientation
 {
   value = self->_pixelBuffer.value_;
   if (value)
@@ -56,8 +56,8 @@
     value = CFRetain(value);
   }
 
-  *a3 = value;
-  *a4 = self->_orientation;
+  *buffer = value;
+  *orientation = self->_orientation;
   return 0;
 }
 
@@ -77,10 +77,10 @@
   return documentObservations;
 }
 
-- (void)setDocumentObservations:(id)a3
+- (void)setDocumentObservations:(id)observations
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  observationsCopy = observations;
+  v4 = [observationsCopy copy];
   documentObservations = self->_documentObservations;
   self->_documentObservations = v4;
 }
@@ -101,10 +101,10 @@
   return cachedParseData;
 }
 
-- (void)setCachedParseData:(id)a3 overwriteExisting:(BOOL)a4
+- (void)setCachedParseData:(id)data overwriteExisting:(BOOL)existing
 {
-  v7 = a3;
-  v5 = [v7 copy];
+  dataCopy = data;
+  v5 = [dataCopy copy];
   cachedParseData = self->_cachedParseData;
   self->_cachedParseData = v5;
 

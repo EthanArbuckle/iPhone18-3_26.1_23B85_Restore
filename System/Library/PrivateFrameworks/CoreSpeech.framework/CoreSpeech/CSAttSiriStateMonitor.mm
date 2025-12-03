@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (CSAttSiriStateMonitor)init;
 - (unint64_t)getAttendingState;
-- (void)updateState:(unint64_t)a3;
+- (void)updateState:(unint64_t)state;
 @end
 
 @implementation CSAttSiriStateMonitor
@@ -38,7 +38,7 @@
   return v3;
 }
 
-- (void)updateState:(unint64_t)a3
+- (void)updateState:(unint64_t)state
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -46,7 +46,7 @@
   v4[2] = sub_1000A93F8;
   v4[3] = &unk_100253C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(queue, v4);
 }
 

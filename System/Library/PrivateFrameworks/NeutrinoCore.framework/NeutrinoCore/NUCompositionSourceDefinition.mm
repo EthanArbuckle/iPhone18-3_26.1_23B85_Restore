@@ -1,16 +1,16 @@
 @interface NUCompositionSourceDefinition
 - (NUCompositionSourceDefinition)init;
-- (NUCompositionSourceDefinition)initWithComposition:(id)a3;
-- (id)sourceContainerNodeWithIdentifier:(id)a3 error:(id *)a4;
+- (NUCompositionSourceDefinition)initWithComposition:(id)composition;
+- (id)sourceContainerNodeWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation NUCompositionSourceDefinition
 
-- (id)sourceContainerNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)sourceContainerNodeWithIdentifier:(id)identifier error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  identifierCopy = identifier;
+  if (!error)
   {
     v18 = NUAssertLogger_8665();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v25;
         v38 = 2114;
@@ -43,8 +43,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -53,39 +53,39 @@
     _NUAssertFailHandler("[NUCompositionSourceDefinition(NodeProvider) sourceContainerNodeWithIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 620, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [(NUCompositionSourceDefinition *)self composition];
-  v9 = [v8 identifier];
+  v7 = identifierCopy;
+  composition = [(NUCompositionSourceDefinition *)self composition];
+  identifier = [composition identifier];
 
   v10 = +[NURenderPipelineRegistry sharedRegistry];
-  v11 = [v10 renderPipelineForIdentifier:v9];
+  v11 = [v10 renderPipelineForIdentifier:identifier];
 
   if (v11)
   {
     v12 = [NUCompositionSourceNode alloc];
-    v13 = [(NUCompositionSourceDefinition *)self composition];
+    composition2 = [(NUCompositionSourceDefinition *)self composition];
     v34 = @"container";
     v35 = v7;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-    v15 = [(NUCompositionSourceNode *)v12 initWithComposition:v13 renderPipeline:v11 settings:v14];
+    v15 = [(NUCompositionSourceNode *)v12 initWithComposition:composition2 renderPipeline:v11 settings:v14];
 
     v16 = [[NUSingleSourceContainerNode alloc] initWithSourceNode:v15 assetIdentifier:v7];
   }
 
   else
   {
-    [NUError missingError:@"No render pipeline registered for composition identifier" object:v9];
-    *a4 = v16 = 0;
+    [NUError missingError:@"No render pipeline registered for composition identifier" object:identifier];
+    *error = v16 = 0;
   }
 
   return v16;
 }
 
-- (NUCompositionSourceDefinition)initWithComposition:(id)a3
+- (NUCompositionSourceDefinition)initWithComposition:(id)composition
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  compositionCopy = composition;
+  if (!compositionCopy)
   {
     v9 = NUAssertLogger_9314();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -106,8 +106,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -118,8 +118,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -128,7 +128,7 @@
     _NUAssertFailHandler("[NUCompositionSourceDefinition initWithComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUSource.m", 373, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "composition != nil");
   }
 
-  v5 = v4;
+  v5 = compositionCopy;
   v25.receiver = self;
   v25.super_class = NUCompositionSourceDefinition;
   v6 = [(NUCompositionSourceDefinition *)&v25 init];
@@ -184,8 +184,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -201,8 +201,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

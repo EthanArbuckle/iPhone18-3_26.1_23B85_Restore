@@ -1,58 +1,58 @@
 @interface HUHomeHubAccessoryListItemManager
-- (HUHomeHubAccessoryListItemManager)initWithAccessories:(id)a3 delegate:(id)a4;
-- (HUHomeHubAccessoryListItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_itemForAccessory:(id)a3;
+- (HUHomeHubAccessoryListItemManager)initWithAccessories:(id)accessories delegate:(id)delegate;
+- (HUHomeHubAccessoryListItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_itemForAccessory:(id)accessory;
 @end
 
 @implementation HUHomeHubAccessoryListItemManager
 
-- (HUHomeHubAccessoryListItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUHomeHubAccessoryListItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithAccessories_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUHomeHubAccessoryListItemManager.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HUHomeHubAccessoryListItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeHubAccessoryListItemManager.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HUHomeHubAccessoryListItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUHomeHubAccessoryListItemManager)initWithAccessories:(id)a3 delegate:(id)a4
+- (HUHomeHubAccessoryListItemManager)initWithAccessories:(id)accessories delegate:(id)delegate
 {
-  v7 = a3;
+  accessoriesCopy = accessories;
   v11.receiver = self;
   v11.super_class = HUHomeHubAccessoryListItemManager;
-  v8 = [(HFItemManager *)&v11 initWithDelegate:a4 sourceItem:0];
+  v8 = [(HFItemManager *)&v11 initWithDelegate:delegate sourceItem:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accessories, a3);
+    objc_storeStrong(&v8->_accessories, accessories);
   }
 
   return v9;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HUHomeHubAccessoryListItemManager *)self accessories];
+    accessories = [(HUHomeHubAccessoryListItemManager *)self accessories];
     *buf = 136315394;
     v14 = "[HUHomeHubAccessoryListItemManager _buildItemProvidersForHome:]";
     v15 = 2112;
-    v16 = v5;
+    v16 = accessories;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%s accessories: %@.", buf, 0x16u);
   }
 
-  v6 = [(HUHomeHubAccessoryListItemManager *)self accessories];
+  accessories2 = [(HUHomeHubAccessoryListItemManager *)self accessories];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__HUHomeHubAccessoryListItemManager__buildItemProvidersForHome___block_invoke;
   v11[3] = &unk_277DC00A8;
   v11[4] = self;
-  v7 = [v6 na_map:v11];
+  v7 = [accessories2 na_map:v11];
 
   v8 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v7];
   v12 = v8;
@@ -61,25 +61,25 @@
   return v9;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HUHomeHubAccessoryListItemManager *)self accessories];
-  v7 = [v6 na_map:&__block_literal_global_167];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
+  accessories = [(HUHomeHubAccessoryListItemManager *)self accessories];
+  v7 = [accessories na_map:&__block_literal_global_167];
 
-  v8 = [v7 allObjects];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_15_2];
+  allObjects = [v7 allObjects];
+  v9 = [allObjects sortedArrayUsingComparator:&__block_literal_global_15_2];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __70__HUHomeHubAccessoryListItemManager__buildSectionsWithDisplayedItems___block_invoke_3;
   v16[3] = &unk_277DBFE78;
   v17 = v7;
-  v18 = v4;
-  v10 = v5;
+  v18 = itemsCopy;
+  v10 = array;
   v19 = v10;
-  v11 = v4;
+  v11 = itemsCopy;
   v12 = v7;
   [v9 na_each:v16];
   v13 = v19;
@@ -177,37 +177,37 @@ uint64_t __70__HUHomeHubAccessoryListItemManager__buildSectionsWithDisplayedItem
   return v10;
 }
 
-- (id)_itemForAccessory:(id)a3
+- (id)_itemForAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   v4 = objc_opt_new();
-  v5 = [v3 hf_displayName];
-  [v4 na_safeSetObject:v5 forKey:*MEMORY[0x277D13F60]];
+  hf_displayName = [accessoryCopy hf_displayName];
+  [v4 na_safeSetObject:hf_displayName forKey:*MEMORY[0x277D13F60]];
 
-  v6 = [v3 home];
-  v7 = [v6 uniqueIdentifier];
-  [v4 na_safeSetObject:v7 forKey:*MEMORY[0x277D13FC0]];
+  home = [accessoryCopy home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  [v4 na_safeSetObject:uniqueIdentifier forKey:*MEMORY[0x277D13FC0]];
 
   v8 = MEMORY[0x277D14810];
-  v9 = [v3 mediaProfile];
-  LODWORD(v8) = [v8 isHomePodMini:v9];
+  mediaProfile = [accessoryCopy mediaProfile];
+  LODWORD(v8) = [v8 isHomePodMini:mediaProfile];
 
   if (v8)
   {
     v10 = MEMORY[0x277D755B8];
     v11 = *MEMORY[0x277D141E8];
 LABEL_5:
-    v15 = [v10 systemImageNamed:v11];
-    v16 = [MEMORY[0x277D75348] hu_keyColor];
-    v17 = [v15 imageWithTintColor:v16];
+    device = [v10 systemImageNamed:v11];
+    hu_keyColor = [MEMORY[0x277D75348] hu_keyColor];
+    v17 = [device imageWithTintColor:hu_keyColor];
     [v4 na_safeSetObject:v17 forKey:*MEMORY[0x277D13E98]];
 
     goto LABEL_7;
   }
 
   v12 = MEMORY[0x277D14810];
-  v13 = [v3 mediaProfile];
-  LODWORD(v12) = [v12 isHomePodOriginal:v13];
+  mediaProfile2 = [accessoryCopy mediaProfile];
+  LODWORD(v12) = [v12 isHomePodOriginal:mediaProfile2];
 
   v14 = MEMORY[0x277D755B8];
   if (v12)
@@ -217,9 +217,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v15 = [v3 device];
-  v16 = [v14 hu_symbolFromProductPlatform:v15];
-  [v4 na_safeSetObject:v16 forKey:*MEMORY[0x277D13E98]];
+  device = [accessoryCopy device];
+  hu_keyColor = [v14 hu_symbolFromProductPlatform:device];
+  [v4 na_safeSetObject:hu_keyColor forKey:*MEMORY[0x277D13E98]];
 LABEL_7:
 
   v18 = objc_alloc(MEMORY[0x277D14B38]);

@@ -1,30 +1,30 @@
 @interface TransitVehicleLineAnnotation
 - (CLLocationCoordinate2D)coordinate;
-- (TransitVehicleLineAnnotation)initWithTransitLine:(id)a3;
+- (TransitVehicleLineAnnotation)initWithTransitLine:(id)line;
 - (UIColor)color;
-- (id)imageWithScale:(double)a3 nightMode:(BOOL)a4;
+- (id)imageWithScale:(double)scale nightMode:(BOOL)mode;
 @end
 
 @implementation TransitVehicleLineAnnotation
 
-- (id)imageWithScale:(double)a3 nightMode:(BOOL)a4
+- (id)imageWithScale:(double)scale nightMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = [(TransitVehicleLineAnnotation *)self transitLine];
-  v7 = [v6 modeArtwork];
+  modeCopy = mode;
+  transitLine = [(TransitVehicleLineAnnotation *)self transitLine];
+  modeArtwork = [transitLine modeArtwork];
 
   v8 = +[MKTransitArtworkManager sharedInstance];
-  v9 = [v8 transitArtworkImageWithDataSource:v7 size:6 featureType:2 scale:v4 nightMode:a3];
+  v9 = [v8 transitArtworkImageWithDataSource:modeArtwork size:6 featureType:2 scale:modeCopy nightMode:scale];
 
   return v9;
 }
 
 - (UIColor)color
 {
-  v2 = [(TransitVehicleLineAnnotation *)self transitLine];
-  v3 = [v2 lineColorString];
+  transitLine = [(TransitVehicleLineAnnotation *)self transitLine];
+  lineColorString = [transitLine lineColorString];
 
-  v4 = [UIColor _maps_colorFromHexString:v3];
+  v4 = [UIColor _maps_colorFromHexString:lineColorString];
 
   return v4;
 }
@@ -38,16 +38,16 @@
   return result;
 }
 
-- (TransitVehicleLineAnnotation)initWithTransitLine:(id)a3
+- (TransitVehicleLineAnnotation)initWithTransitLine:(id)line
 {
-  v5 = a3;
+  lineCopy = line;
   v9.receiver = self;
   v9.super_class = TransitVehicleLineAnnotation;
   v6 = [(TransitVehicleLineAnnotation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transitLine, a3);
+    objc_storeStrong(&v6->_transitLine, line);
   }
 
   return v7;

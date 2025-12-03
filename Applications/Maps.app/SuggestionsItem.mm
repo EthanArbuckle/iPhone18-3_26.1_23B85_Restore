@@ -7,7 +7,7 @@
 - (PersonalizedItemSource)source;
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes;
 - (SearchResult)searchResult;
-- (SuggestionsItem)initWithSuggestion:(id)a3 order:(unsigned __int16)a4 sourceType:(int64_t)a5 sourceSubtype:(int64_t)a6 hasPriorityOverride:(BOOL)a7 priorityOverride:(int64_t)a8;
+- (SuggestionsItem)initWithSuggestion:(id)suggestion order:(unsigned __int16)order sourceType:(int64_t)type sourceSubtype:(int64_t)subtype hasPriorityOverride:(BOOL)override priorityOverride:(int64_t)priorityOverride;
 - (id)leafPersonalizedAutocompleteItems;
 @end
 
@@ -22,17 +22,17 @@
 
 - (id)leafPersonalizedAutocompleteItems
 {
-  v4 = self;
-  v2 = [NSArray arrayWithObjects:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v2;
 }
 
 - (NSArray)autocompletionStrings
 {
-  v3 = [(MapsSuggestionsEntry *)self->_suggestion undecoratedTitle];
-  v4 = v3;
-  if (v3 && [v3 length])
+  undecoratedTitle = [(MapsSuggestionsEntry *)self->_suggestion undecoratedTitle];
+  v4 = undecoratedTitle;
+  if (undecoratedTitle && [undecoratedTitle length])
   {
     if ([(MapsSuggestionsEntry *)self->_suggestion type]== 3)
     {
@@ -60,9 +60,9 @@
 
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID
 {
-  v3 = [(SuggestionsItem *)self styleAttributes];
-  v4 = [v3 styleAttributes];
-  v5 = [v4 poiType];
+  styleAttributes = [(SuggestionsItem *)self styleAttributes];
+  v3StyleAttributes = [styleAttributes styleAttributes];
+  poiType = [v3StyleAttributes poiType];
   [(MKMapItem *)self->_mapItem _coordinate];
   v7 = fabs(v6);
   v8 = floor(v7 + 0.5);
@@ -81,7 +81,7 @@
     v13 = v11;
   }
 
-  v14 = v13 ^ v5;
+  v14 = v13 ^ poiType;
   [(MKMapItem *)self->_mapItem _coordinate];
   v16 = fabs(v15);
   v17 = floor(v16 + 0.5);
@@ -102,14 +102,14 @@
 
   v23 = v14 ^ v22;
 
-  v24 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v25 = [v24 name];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  name = [_geoMapItem name];
 
-  if (v25)
+  if (name)
   {
-    v26 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v27 = [v26 name];
-    v23 ^= [v27 hash];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    name2 = [_geoMapItem2 name];
+    v23 ^= [name2 hash];
   }
 
   return [PersonalizedItemClientFeatureIDAdornment adornmentWithClientFeatureID:v23];
@@ -117,10 +117,10 @@
 
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes
 {
-  v3 = [(MapsSuggestionsEntry *)self->_suggestion styleAttributes];
-  if (!v3)
+  styleAttributes = [(MapsSuggestionsEntry *)self->_suggestion styleAttributes];
+  if (!styleAttributes)
   {
-    v3 = +[GEOFeatureStyleAttributes markerStyleAttributes];
+    styleAttributes = +[GEOFeatureStyleAttributes markerStyleAttributes];
   }
 
   v15 = 0;
@@ -136,9 +136,9 @@
   v5 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v6 = [v5 mutableCopy];
 
-  v7 = [(MapsSuggestionsEntry *)self->_suggestion type];
-  v8 = v7;
-  if (v7 > 5 || ((1 << v7) & 0x26) == 0)
+  type = [(MapsSuggestionsEntry *)self->_suggestion type];
+  v8 = type;
+  if (type > 5 || ((1 << type) & 0x26) == 0)
   {
     v11 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
     v12 = *(v16 + 24);
@@ -174,7 +174,7 @@
     }
   }
 
-  v9 = [PersonalizedItemStyleAttributesAdornment adornmentWithStyleAttributes:v3 additionalAttributes:v6];
+  v9 = [PersonalizedItemStyleAttributesAdornment adornmentWithStyleAttributes:styleAttributes additionalAttributes:v6];
 
   _Block_object_dispose(&v15, 8);
 
@@ -183,21 +183,21 @@
 
 - (PersonalizedItemPrioritizedStringAdornment)subtitle
 {
-  v3 = [(MapsSuggestionsEntry *)self->_suggestion type];
-  if (v3 > 0x19)
+  type = [(MapsSuggestionsEntry *)self->_suggestion type];
+  if (type > 0x19)
   {
     v5 = 0;
   }
 
   else
   {
-    if (((1 << v3) & 0x37E9EF7) != 0)
+    if (((1 << type) & 0x37E9EF7) != 0)
     {
       v4 = +[PersonalizedItemPrioritizedStringAdornment defaultAdornment];
       goto LABEL_9;
     }
 
-    if (((1 << v3) & 0x814100) != 0)
+    if (((1 << type) & 0x814100) != 0)
     {
       [(MapsSuggestionsEntry *)self->_suggestion undecoratedSubtitle];
     }
@@ -218,14 +218,14 @@ LABEL_9:
 
 - (PersonalizedItemPrioritizedStringAdornment)title
 {
-  v3 = [(MapsSuggestionsEntry *)self->_suggestion poiTitle];
-  v4 = [(MapsSuggestionsEntry *)self->_suggestion type];
-  if (v4 == 1)
+  poiTitle = [(MapsSuggestionsEntry *)self->_suggestion poiTitle];
+  type = [(MapsSuggestionsEntry *)self->_suggestion type];
+  if (type == 1)
   {
     v5 = 901;
   }
 
-  else if (v4 == 2)
+  else if (type == 2)
   {
     v5 = 1001;
   }
@@ -235,7 +235,7 @@ LABEL_9:
     v5 = 900;
   }
 
-  v6 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v3 priority:v5];
+  v6 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:poiTitle priority:v5];
 
   return v6;
 }
@@ -244,8 +244,8 @@ LABEL_9:
 {
   if ([(MapsSuggestionsEntry *)self->_suggestion type]== 24 && [(MapsSuggestionsEntry *)self->_suggestion containsKey:@"MapsSuggestionsContactLikelyAppleIDKey"])
   {
-    v3 = [(MapsSuggestionsEntry *)self->_suggestion findMyWaypoint];
-    if (!v3)
+    findMyWaypoint = [(MapsSuggestionsEntry *)self->_suggestion findMyWaypoint];
+    if (!findMyWaypoint)
     {
       v8 = sub_10006D178();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -274,19 +274,19 @@ LABEL_9:
       }
     }
 
-    v4 = [[SearchResult alloc] initWithComposedWaypoint:v3];
+    v4 = [[SearchResult alloc] initWithComposedWaypoint:findMyWaypoint];
   }
 
   else
   {
-    v3 = [[MapsLocationOfInterest alloc] initWithMapsSuggestionEntry:self->_suggestion];
-    if (v3)
+    findMyWaypoint = [[MapsLocationOfInterest alloc] initWithMapsSuggestionEntry:self->_suggestion];
+    if (findMyWaypoint)
     {
       v5 = [SearchResult alloc];
-      v6 = [(MapsLocationOfInterest *)v3 mapItem];
-      v4 = [(SearchResult *)v5 initWithMapItem:v6];
+      mapItem = [(MapsLocationOfInterest *)findMyWaypoint mapItem];
+      v4 = [(SearchResult *)v5 initWithMapItem:mapItem];
 
-      [(SearchResult *)v4 setLocationOfInterest:v3];
+      [(SearchResult *)v4 setLocationOfInterest:findMyWaypoint];
     }
 
     else
@@ -306,11 +306,11 @@ LABEL_9:
   return result;
 }
 
-- (SuggestionsItem)initWithSuggestion:(id)a3 order:(unsigned __int16)a4 sourceType:(int64_t)a5 sourceSubtype:(int64_t)a6 hasPriorityOverride:(BOOL)a7 priorityOverride:(int64_t)a8
+- (SuggestionsItem)initWithSuggestion:(id)suggestion order:(unsigned __int16)order sourceType:(int64_t)type sourceSubtype:(int64_t)subtype hasPriorityOverride:(BOOL)override priorityOverride:(int64_t)priorityOverride
 {
-  v15 = a3;
-  v16 = [v15 MKMapItem];
-  if (v16)
+  suggestionCopy = suggestion;
+  mKMapItem = [suggestionCopy MKMapItem];
+  if (mKMapItem)
   {
     v34.receiver = self;
     v34.super_class = SuggestionsItem;
@@ -318,33 +318,33 @@ LABEL_9:
     v18 = v17;
     if (v17)
     {
-      objc_storeStrong(&v17->_suggestion, a3);
-      v18->_order = a4;
-      v18->_sourceType = a5;
-      v18->_sourceSubtype = a6;
-      v18->_hasPriorityOverride = a7;
-      v18->_priorityOverride = a8;
-      v19 = [[PersonalizedMapItemKey alloc] initWithMapItem:v16];
+      objc_storeStrong(&v17->_suggestion, suggestion);
+      v18->_order = order;
+      v18->_sourceType = type;
+      v18->_sourceSubtype = subtype;
+      v18->_hasPriorityOverride = override;
+      v18->_priorityOverride = priorityOverride;
+      v19 = [[PersonalizedMapItemKey alloc] initWithMapItem:mKMapItem];
       v20 = [NSSet setWithObject:v19];
       keys = v18->_keys;
       v18->_keys = v20;
 
-      v22 = [[MapsLocationOfInterest alloc] initWithMapsSuggestionEntry:v15];
+      v22 = [[MapsLocationOfInterest alloc] initWithMapsSuggestionEntry:suggestionCopy];
       v23 = v22;
       if (v22)
       {
-        v24 = [(MapsLocationOfInterest *)v22 mapItem];
+        mapItem = [(MapsLocationOfInterest *)v22 mapItem];
       }
 
       else
       {
-        v24 = v16;
+        mapItem = mKMapItem;
       }
 
       mapItem = v18->_mapItem;
-      v18->_mapItem = v24;
+      v18->_mapItem = mapItem;
 
-      if ([v15 type] == 7)
+      if ([suggestionCopy type] == 7)
       {
         v27 = +[ParkedCar personalizedItemKey];
         v28 = [NSSet setWithObject:v27];
@@ -362,15 +362,15 @@ LABEL_9:
     }
 
     self = v18;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
 @end

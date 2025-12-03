@@ -1,47 +1,47 @@
 @interface PKPaymentApplication
-+ (BOOL)paymentApplicationSupportsMerchantCapabilties:(unint64_t)a3 paymentType:(unint64_t)a4;
-+ (PKPaymentApplication)applicationWithProtobuf:(id)a3;
-- (BOOL)acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:(id)a3 merchantCapabilities:(unint64_t)a4 merchantCountryCode:(id)a5 paymentApplicationStates:(id)a6 paymentRequestType:(id)a7 isMultiTokensRequest:(BOOL)a8 webService:(id)a9;
-- (BOOL)acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:(id)a3 merchantCapabilities:(unint64_t)a4 paymentMode:(int64_t)a5;
-- (BOOL)acceptedForWebPaymentWithSupportedNetworkIdentifiers:(id)a3 merchantCapabilities:(unint64_t)a4 merchantCountryCode:(id)a5 paymentApplicationStates:(id)a6 webService:(id)a7 paymentMode:(int64_t)a8 isMultiTokensRequest:(BOOL)a9;
++ (BOOL)paymentApplicationSupportsMerchantCapabilties:(unint64_t)capabilties paymentType:(unint64_t)type;
++ (PKPaymentApplication)applicationWithProtobuf:(id)protobuf;
+- (BOOL)acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:(id)identifiers merchantCapabilities:(unint64_t)capabilities merchantCountryCode:(id)code paymentApplicationStates:(id)states paymentRequestType:(id)type isMultiTokensRequest:(BOOL)request webService:(id)service;
+- (BOOL)acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:(id)identifiers merchantCapabilities:(unint64_t)capabilities paymentMode:(int64_t)mode;
+- (BOOL)acceptedForWebPaymentWithSupportedNetworkIdentifiers:(id)identifiers merchantCapabilities:(unint64_t)capabilities merchantCountryCode:(id)code paymentApplicationStates:(id)states webService:(id)service paymentMode:(int64_t)mode isMultiTokensRequest:(BOOL)request;
 - (BOOL)blockingSupportedUWBDueToHardware;
-- (BOOL)canProcessPayment:(id)a3;
+- (BOOL)canProcessPayment:(id)payment;
 - (BOOL)firstApproachCompleted;
 - (BOOL)generatesLocalTransactions;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentApplication:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentApplication:(id)application;
 - (BOOL)isParsedTransitApplication;
-- (BOOL)isRequiredForMerchantInCountry:(id)a3;
+- (BOOL)isRequiredForMerchantInCountry:(id)country;
 - (BOOL)isShareable;
-- (BOOL)supportsAutomaticSelectionForTCI:(id)a3;
-- (BOOL)supportsDeviceAssessmentAccordingToService:(id)a3;
+- (BOOL)supportsAutomaticSelectionForTCI:(id)i;
+- (BOOL)supportsDeviceAssessmentAccordingToService:(id)service;
 - (BOOL)supportsExpress;
-- (BOOL)supportsExpressForAutomaticSelectionCriteriaPassingTest:(id)a3;
-- (BOOL)supportsExpressForAutomaticSelectionTechnologyType:(int64_t)a3;
-- (BOOL)supportsExpressMode:(id)a3;
-- (BOOL)supportsMultiTokensWithImplicitlyEnabledNetworks:(id)a3;
+- (BOOL)supportsExpressForAutomaticSelectionCriteriaPassingTest:(id)test;
+- (BOOL)supportsExpressForAutomaticSelectionTechnologyType:(int64_t)type;
+- (BOOL)supportsExpressMode:(id)mode;
+- (BOOL)supportsMultiTokensWithImplicitlyEnabledNetworks:(id)networks;
 - (BOOL)supportsSuica;
 - (BOOL)supportsTransit;
 - (BOOL)supportsUWB;
-- (BOOL)supportsWebPaymentMode:(int64_t)a3 withExclusionList:(id)a4 clientOSVersion:(id)a5;
+- (BOOL)supportsWebPaymentMode:(int64_t)mode withExclusionList:(id)list clientOSVersion:(id)version;
 - (NSString)stateAsString;
 - (NSString)stationCodeProvider;
-- (PKPaymentApplication)initWithCoder:(id)a3;
-- (PKPaymentApplication)initWithPaymentApplicationDictionary:(id)a3 auxiliaryApplication:(BOOL)a4;
+- (PKPaymentApplication)initWithCoder:(id)coder;
+- (PKPaymentApplication)initWithPaymentApplicationDictionary:(id)dictionary auxiliaryApplication:(BOOL)application;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)networksSupportedAccordingToService:(id)a3;
+- (id)networksSupportedAccordingToService:(id)service;
 - (id)paymentApplicationsIncludingAuxiliaryPaymentTypes;
 - (id)protobuf;
-- (id)torinoFeatureFromService:(id)a3;
+- (id)torinoFeatureFromService:(id)service;
 - (unint64_t)hash;
 - (unint64_t)supportedRadioTechnologies;
-- (unint64_t)vpanRefreshTypeAccordingToService:(id)a3;
+- (unint64_t)vpanRefreshTypeAccordingToService:(id)service;
 - (void)_createAndPopulateAutomaticSelectionCriteriaIfNecessary;
 - (void)_createAndPopulateReaderIdentifierIfNecessary;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFelicaProperties:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFelicaProperties:(id)properties;
 @end
 
 @implementation PKPaymentApplication
@@ -84,18 +84,18 @@
   supportsVirtualCardNumber = self->_supportsVirtualCardNumber;
   if (supportsVirtualCardNumber)
   {
-    v12 = [(NSNumber *)supportsVirtualCardNumber BOOLValue];
+    bOOLValue = [(NSNumber *)supportsVirtualCardNumber BOOLValue];
   }
 
   else
   {
-    v12 = 2;
+    bOOLValue = 2;
   }
 
   v13 = supportsContactlessPayment - (state - v4 + 32 * v4) + 32 * (state - v4 + 32 * v4);
   v14 = supportsMerchantTokens - (supportsInAppPayment - v13 + 32 * v13) + 32 * (supportsInAppPayment - v13 + 32 * v13);
   v15 = hadMerchantTokens - (hasMerchantTokens - v14 + 32 * v14) + 32 * (hasMerchantTokens - v14 + 32 * v14);
-  v16 = self->_virtualCardVPANOrigin - (v12 - v15 + 32 * v15) + 32 * (v12 - v15 + 32 * v15);
+  v16 = self->_virtualCardVPANOrigin - (bOOLValue - v15 + 32 * v15) + 32 * (bOOLValue - v15 + 32 * v15);
   v17 = self->_supportsBarcodePayment - v16 + 32 * v16;
   v18 = self->_supportsOptionalAuthentication - v17 + 32 * v17;
   v19 = self->_supportsServiceMode - v18 + 32 * v18;
@@ -189,17 +189,17 @@
         }
 
         v20 = *(*(&v36 + 1) + 8 * j);
-        v21 = [v20 _readerIdentifier];
-        if (v21)
+        _readerIdentifier = [v20 _readerIdentifier];
+        if (_readerIdentifier)
         {
-          [v14 pk_safelyAddObject:v21];
+          [v14 pk_safelyAddObject:_readerIdentifier];
         }
 
         else
         {
-          v22 = [v20 pairedReaderIdentifier];
-          v23 = [v22 pk_decodeHexadecimal];
-          [v14 pk_safelyAddObject:v23];
+          pairedReaderIdentifier = [v20 pairedReaderIdentifier];
+          pk_decodeHexadecimal = [pairedReaderIdentifier pk_decodeHexadecimal];
+          [v14 pk_safelyAddObject:pk_decodeHexadecimal];
         }
       }
 
@@ -231,8 +231,8 @@
           }
 
           v29 = *(*(&v32 + 1) + 8 * k);
-          v30 = [v29 readerIDs];
-          v31 = [v30 count];
+          readerIDs = [v29 readerIDs];
+          v31 = [readerIDs count];
 
           if (!v31)
           {
@@ -273,8 +273,8 @@
             objc_enumerationMutation(v3);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) readerIDs];
-          if ([v9 count] > 1)
+          readerIDs = [*(*(&v14 + 1) + 8 * i) readerIDs];
+          if ([readerIDs count] > 1)
           {
             v11 = v6;
 LABEL_17:
@@ -282,11 +282,11 @@ LABEL_17:
             goto LABEL_18;
           }
 
-          v10 = [v9 anyObject];
-          v11 = v10;
-          if (v10)
+          anyObject = [readerIDs anyObject];
+          v11 = anyObject;
+          if (anyObject)
           {
-            if (v6 && ![(NSData *)v10 isEqual:v6])
+            if (v6 && ![(NSData *)anyObject isEqual:v6])
             {
 
               goto LABEL_17;
@@ -319,55 +319,55 @@ LABEL_18:
   }
 }
 
-- (BOOL)acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:(id)a3 merchantCapabilities:(unint64_t)a4 paymentMode:(int64_t)a5
+- (BOOL)acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:(id)identifiers merchantCapabilities:(unint64_t)capabilities paymentMode:(int64_t)mode
 {
   LOBYTE(v8) = 0;
-  v6 = [PKPaymentRequestSupportedQuery inAppQueryWithSupportedNetworkIDs:a3 merchantCapabilities:a4 merchantCountryCode:0 paymentMode:a5 paymentApplicationStates:0 paymentRequestType:0 isMultiTokensRequest:v8 webService:0];
+  v6 = [PKPaymentRequestSupportedQuery inAppQueryWithSupportedNetworkIDs:identifiers merchantCapabilities:capabilities merchantCountryCode:0 paymentMode:mode paymentApplicationStates:0 paymentRequestType:0 isMultiTokensRequest:v8 webService:0];
   LOBYTE(self) = [(PKPaymentApplication *)self canProcessPayment:v6];
 
   return self;
 }
 
-- (BOOL)canProcessPayment:(id)a3
+- (BOOL)canProcessPayment:(id)payment
 {
-  v4 = a3;
-  v5 = [v4 issuedOnTheWeb];
-  v6 = [v4 supportedNetworkIDs];
-  v7 = [v4 merchantCapabilities];
-  v8 = [v4 merchantCountryCode];
-  v9 = [v4 paymentApplicationStates];
-  if (v5)
+  paymentCopy = payment;
+  issuedOnTheWeb = [paymentCopy issuedOnTheWeb];
+  supportedNetworkIDs = [paymentCopy supportedNetworkIDs];
+  merchantCapabilities = [paymentCopy merchantCapabilities];
+  merchantCountryCode = [paymentCopy merchantCountryCode];
+  paymentApplicationStates = [paymentCopy paymentApplicationStates];
+  if (issuedOnTheWeb)
   {
-    v10 = [v4 webService];
-    v11 = [v4 paymentMode];
-    v12 = [v4 isMultiTokensRequest];
+    webService = [paymentCopy webService];
+    paymentMode = [paymentCopy paymentMode];
+    isMultiTokensRequest = [paymentCopy isMultiTokensRequest];
 
-    LOBYTE(v17) = v12;
-    v13 = [(PKPaymentApplication *)self acceptedForWebPaymentWithSupportedNetworkIdentifiers:v6 merchantCapabilities:v7 merchantCountryCode:v8 paymentApplicationStates:v9 webService:v10 paymentMode:v11 isMultiTokensRequest:v17];
+    LOBYTE(v17) = isMultiTokensRequest;
+    v13 = [(PKPaymentApplication *)self acceptedForWebPaymentWithSupportedNetworkIdentifiers:supportedNetworkIDs merchantCapabilities:merchantCapabilities merchantCountryCode:merchantCountryCode paymentApplicationStates:paymentApplicationStates webService:webService paymentMode:paymentMode isMultiTokensRequest:v17];
   }
 
   else
   {
-    v10 = [v4 paymentRequestType];
-    v14 = [v4 isMultiTokensRequest];
-    v15 = [v4 webService];
+    webService = [paymentCopy paymentRequestType];
+    isMultiTokensRequest2 = [paymentCopy isMultiTokensRequest];
+    webService2 = [paymentCopy webService];
 
-    v13 = [(PKPaymentApplication *)self acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:v6 merchantCapabilities:v7 merchantCountryCode:v8 paymentApplicationStates:v9 paymentRequestType:v10 isMultiTokensRequest:v14 webService:v15];
+    v13 = [(PKPaymentApplication *)self acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:supportedNetworkIDs merchantCapabilities:merchantCapabilities merchantCountryCode:merchantCountryCode paymentApplicationStates:paymentApplicationStates paymentRequestType:webService isMultiTokensRequest:isMultiTokensRequest2 webService:webService2];
   }
 
   return v13;
 }
 
-- (BOOL)acceptedForWebPaymentWithSupportedNetworkIdentifiers:(id)a3 merchantCapabilities:(unint64_t)a4 merchantCountryCode:(id)a5 paymentApplicationStates:(id)a6 webService:(id)a7 paymentMode:(int64_t)a8 isMultiTokensRequest:(BOOL)a9
+- (BOOL)acceptedForWebPaymentWithSupportedNetworkIdentifiers:(id)identifiers merchantCapabilities:(unint64_t)capabilities merchantCountryCode:(id)code paymentApplicationStates:(id)states webService:(id)service paymentMode:(int64_t)mode isMultiTokensRequest:(BOOL)request
 {
-  v15 = a7;
-  if ([(PKPaymentApplication *)self acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:a3 merchantCapabilities:a4 merchantCountryCode:a5 paymentApplicationStates:a6 paymentRequestType:0 isMultiTokensRequest:a9 webService:v15])
+  serviceCopy = service;
+  if ([(PKPaymentApplication *)self acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:identifiers merchantCapabilities:capabilities merchantCountryCode:code paymentApplicationStates:states paymentRequestType:0 isMultiTokensRequest:request webService:serviceCopy])
   {
-    v16 = [v15 context];
-    v17 = [v16 configuration];
-    v18 = [v17 unsupportedWebPaymentConfigurations];
+    context = [serviceCopy context];
+    configuration = [context configuration];
+    unsupportedWebPaymentConfigurations = [configuration unsupportedWebPaymentConfigurations];
 
-    v19 = [(PKPaymentApplication *)self supportsWebPaymentMode:a8 withExclusionList:v18];
+    v19 = [(PKPaymentApplication *)self supportsWebPaymentMode:mode withExclusionList:unsupportedWebPaymentConfigurations];
   }
 
   else
@@ -378,46 +378,46 @@ LABEL_18:
   return v19;
 }
 
-- (BOOL)acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:(id)a3 merchantCapabilities:(unint64_t)a4 merchantCountryCode:(id)a5 paymentApplicationStates:(id)a6 paymentRequestType:(id)a7 isMultiTokensRequest:(BOOL)a8 webService:(id)a9
+- (BOOL)acceptedForNonWebPaymentWithSupportedNetworkIdentifiers:(id)identifiers merchantCapabilities:(unint64_t)capabilities merchantCountryCode:(id)code paymentApplicationStates:(id)states paymentRequestType:(id)type isMultiTokensRequest:(BOOL)request webService:(id)service
 {
-  v33 = a8;
-  v13 = a7;
-  v14 = a9;
-  v15 = a6;
-  v16 = a5;
-  v17 = a3;
-  LODWORD(a3) = [(PKPaymentApplication *)self supportsInAppPayment];
+  requestCopy = request;
+  typeCopy = type;
+  serviceCopy = service;
+  statesCopy = states;
+  codeCopy = code;
+  identifiersCopy = identifiers;
+  LODWORD(identifiers) = [(PKPaymentApplication *)self supportsInAppPayment];
   v18 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PKPaymentApplication state](self, "state")}];
-  v19 = [v15 containsObject:v18];
+  v19 = [statesCopy containsObject:v18];
 
   v20 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PKPaymentApplication paymentNetworkIdentifier](self, "paymentNetworkIdentifier")}];
-  v21 = [v17 containsObject:v20];
+  v21 = [identifiersCopy containsObject:v20];
 
-  v22 = [(PKPaymentApplication *)self unsupportedInAppMerchantCountryCodes];
-  v23 = [v22 containsObject:v16];
+  unsupportedInAppMerchantCountryCodes = [(PKPaymentApplication *)self unsupportedInAppMerchantCountryCodes];
+  v23 = [unsupportedInAppMerchantCountryCodes containsObject:codeCopy];
 
   v24 = 0;
-  if (a3 && v19 && v21 && (v23 & 1) == 0)
+  if (identifiers && v19 && v21 && (v23 & 1) == 0)
   {
-    if (v13 && [v13 intValue] == 10 && ((a4 & 0x80) != 0 && !-[PKPaymentApplication supportsInstantFundsIn](self, "supportsInstantFundsIn") || (+[PKWebServiceDisbursementFeature disbursementFeatureWithWebService:](PKWebServiceDisbursementFeature, "disbursementFeatureWithWebService:", v14), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "supportedNetworks"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", -[PKPaymentApplication paymentNetworkIdentifier](self, "paymentNetworkIdentifier")), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "containsObject:", v27), v27, v26, v25, !v28)))
+    if (typeCopy && [typeCopy intValue] == 10 && ((capabilities & 0x80) != 0 && !-[PKPaymentApplication supportsInstantFundsIn](self, "supportsInstantFundsIn") || (+[PKWebServiceDisbursementFeature disbursementFeatureWithWebService:](PKWebServiceDisbursementFeature, "disbursementFeatureWithWebService:", serviceCopy), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "supportedNetworks"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", -[PKPaymentApplication paymentNetworkIdentifier](self, "paymentNetworkIdentifier")), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "containsObject:", v27), v27, v26, v25, !v28)))
     {
       v24 = 0;
     }
 
     else
     {
-      v29 = [v14 targetDevice];
-      v30 = [v29 paymentWebService:v14 supportedRegionFeatureOfType:4];
+      targetDevice = [serviceCopy targetDevice];
+      v30 = [targetDevice paymentWebService:serviceCopy supportedRegionFeatureOfType:4];
 
-      v31 = [v30 supportedNetworks];
-      if (v33 && ![(PKPaymentApplication *)self supportsMultiTokensWithImplicitlyEnabledNetworks:v31])
+      supportedNetworks = [v30 supportedNetworks];
+      if (requestCopy && ![(PKPaymentApplication *)self supportsMultiTokensWithImplicitlyEnabledNetworks:supportedNetworks])
       {
         v24 = 0;
       }
 
       else
       {
-        v24 = [objc_opt_class() paymentApplicationSupportsMerchantCapabilties:a4 paymentType:{-[PKPaymentApplication paymentType](self, "paymentType")}];
+        v24 = [objc_opt_class() paymentApplicationSupportsMerchantCapabilties:capabilities paymentType:{-[PKPaymentApplication paymentType](self, "paymentType")}];
       }
     }
   }
@@ -425,37 +425,37 @@ LABEL_18:
   return v24;
 }
 
-+ (PKPaymentApplication)applicationWithProtobuf:(id)a3
++ (PKPaymentApplication)applicationWithProtobuf:(id)protobuf
 {
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKPaymentApplication);
-  v5 = [v3 dpanIdentifier];
-  [(PKPaymentApplication *)v4 setDPANIdentifier:v5];
+  dpanIdentifier = [protobufCopy dpanIdentifier];
+  [(PKPaymentApplication *)v4 setDPANIdentifier:dpanIdentifier];
 
-  v6 = [v3 dpanSuffix];
-  [(PKPaymentApplication *)v4 setDPANSuffix:v6];
+  dpanSuffix = [protobufCopy dpanSuffix];
+  [(PKPaymentApplication *)v4 setDPANSuffix:dpanSuffix];
 
-  v7 = [v3 sanitizedDpan];
-  [(PKPaymentApplication *)v4 setSanitizedDPAN:v7];
+  sanitizedDpan = [protobufCopy sanitizedDpan];
+  [(PKPaymentApplication *)v4 setSanitizedDPAN:sanitizedDpan];
 
-  v8 = [v3 applicationIdentifier];
-  [(PKPaymentApplication *)v4 setApplicationIdentifier:v8];
+  applicationIdentifier = [protobufCopy applicationIdentifier];
+  [(PKPaymentApplication *)v4 setApplicationIdentifier:applicationIdentifier];
 
-  v9 = [v3 secureElementIdenfitier];
-  [(PKPaymentApplication *)v4 setSecureElementIdentifier:v9];
+  secureElementIdenfitier = [protobufCopy secureElementIdenfitier];
+  [(PKPaymentApplication *)v4 setSecureElementIdentifier:secureElementIdenfitier];
 
-  -[PKPaymentApplication setState:](v4, "setState:", [v3 state]);
-  v10 = [v3 suspendedReason];
-  [(PKPaymentApplication *)v4 setSuspendedReason:v10];
+  -[PKPaymentApplication setState:](v4, "setState:", [protobufCopy state]);
+  suspendedReason = [protobufCopy suspendedReason];
+  [(PKPaymentApplication *)v4 setSuspendedReason:suspendedReason];
 
-  -[PKPaymentApplication setSupportsContactlessPayment:](v4, "setSupportsContactlessPayment:", [v3 supportsContactlessPayment]);
-  -[PKPaymentApplication setSupportsInAppPayment:](v4, "setSupportsInAppPayment:", [v3 supportsInAppPayment]);
-  -[PKPaymentApplication setPaymentNetworkIdentifier:](v4, "setPaymentNetworkIdentifier:", [v3 paymentNetworkIdentifier]);
-  -[PKPaymentApplication setInAppPINRequired:](v4, "setInAppPINRequired:", [v3 inAppPINRequired]);
-  if ([v3 hasBalanceInAppPINRequiredAmount])
+  -[PKPaymentApplication setSupportsContactlessPayment:](v4, "setSupportsContactlessPayment:", [protobufCopy supportsContactlessPayment]);
+  -[PKPaymentApplication setSupportsInAppPayment:](v4, "setSupportsInAppPayment:", [protobufCopy supportsInAppPayment]);
+  -[PKPaymentApplication setPaymentNetworkIdentifier:](v4, "setPaymentNetworkIdentifier:", [protobufCopy paymentNetworkIdentifier]);
+  -[PKPaymentApplication setInAppPINRequired:](v4, "setInAppPINRequired:", [protobufCopy inAppPINRequired]);
+  if ([protobufCopy hasBalanceInAppPINRequiredAmount])
   {
-    v11 = [v3 balanceInAppPINRequiredAmount];
-    v12 = PKProtoSupportDecimalNumberFromProtobuf(v11);
+    balanceInAppPINRequiredAmount = [protobufCopy balanceInAppPINRequiredAmount];
+    v12 = PKProtoSupportDecimalNumberFromProtobuf(balanceInAppPINRequiredAmount);
 LABEL_5:
     v13 = v12;
     [(PKPaymentApplication *)v4 setInAppPINRequiredAmount:v12];
@@ -463,39 +463,39 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 hasCustomPrecisionInAppPINRequiredAmount])
+  if ([protobufCopy hasCustomPrecisionInAppPINRequiredAmount])
   {
-    v11 = [v3 customPrecisionInAppPINRequiredAmount];
-    v12 = PKLegacyCurrencyStorageIntegerToDecimal([v11 amount], 1);
+    balanceInAppPINRequiredAmount = [protobufCopy customPrecisionInAppPINRequiredAmount];
+    v12 = PKLegacyCurrencyStorageIntegerToDecimal([balanceInAppPINRequiredAmount amount], 1);
     goto LABEL_5;
   }
 
-  v11 = PKLegacyCurrencyStorageIntegerToDecimal([v3 inAppPINRequiredAmount], 0);
-  [(PKPaymentApplication *)v4 setInAppPINRequiredAmount:v11];
+  balanceInAppPINRequiredAmount = PKLegacyCurrencyStorageIntegerToDecimal([protobufCopy inAppPINRequiredAmount], 0);
+  [(PKPaymentApplication *)v4 setInAppPINRequiredAmount:balanceInAppPINRequiredAmount];
 LABEL_7:
 
-  v14 = [v3 inAppPINRequiredCurrency];
-  [(PKPaymentApplication *)v4 setInAppPINRequiredCurrency:v14];
+  inAppPINRequiredCurrency = [protobufCopy inAppPINRequiredCurrency];
+  [(PKPaymentApplication *)v4 setInAppPINRequiredCurrency:inAppPINRequiredCurrency];
 
-  v15 = [v3 displayName];
-  [(PKPaymentApplication *)v4 setDisplayName:v15];
+  displayName = [protobufCopy displayName];
+  [(PKPaymentApplication *)v4 setDisplayName:displayName];
 
-  -[PKPaymentApplication setAuxiliary:](v4, "setAuxiliary:", [v3 auxiliary]);
-  -[PKPaymentApplication setPaymentType:](v4, "setPaymentType:", [v3 paymentType]);
-  -[PKPaymentApplication setAuxiliaryPaymentType:](v4, "setAuxiliaryPaymentType:", [v3 auxiliaryPaymentType]);
+  -[PKPaymentApplication setAuxiliary:](v4, "setAuxiliary:", [protobufCopy auxiliary]);
+  -[PKPaymentApplication setPaymentType:](v4, "setPaymentType:", [protobufCopy paymentType]);
+  -[PKPaymentApplication setAuxiliaryPaymentType:](v4, "setAuxiliaryPaymentType:", [protobufCopy auxiliaryPaymentType]);
   [(PKPaymentApplication *)v4 setAutomaticSelectionCriteria:MEMORY[0x1E695E0F0]];
-  -[PKPaymentApplication setInAppPriority:](v4, "setInAppPriority:", [v3 inAppPriority]);
-  v16 = [v3 apanIdentifier];
-  [(PKPaymentApplication *)v4 setAPANIdentifier:v16];
+  -[PKPaymentApplication setInAppPriority:](v4, "setInAppPriority:", [protobufCopy inAppPriority]);
+  apanIdentifier = [protobufCopy apanIdentifier];
+  [(PKPaymentApplication *)v4 setAPANIdentifier:apanIdentifier];
 
-  v17 = [v3 apanSuffix];
-  [(PKPaymentApplication *)v4 setAPANSuffix:v17];
+  apanSuffix = [protobufCopy apanSuffix];
+  [(PKPaymentApplication *)v4 setAPANSuffix:apanSuffix];
 
-  -[PKPaymentApplication setSupportsMerchantTokens:](v4, "setSupportsMerchantTokens:", [v3 supportsMerchantTokens]);
-  -[PKPaymentApplication setSupportsInstantFundsIn:](v4, "setSupportsInstantFundsIn:", [v3 supportsInstantFundsIn]);
-  if ([v3 hasSupportsMultiTokensV2])
+  -[PKPaymentApplication setSupportsMerchantTokens:](v4, "setSupportsMerchantTokens:", [protobufCopy supportsMerchantTokens]);
+  -[PKPaymentApplication setSupportsInstantFundsIn:](v4, "setSupportsInstantFundsIn:", [protobufCopy supportsInstantFundsIn]);
+  if ([protobufCopy hasSupportsMultiTokensV2])
   {
-    v18 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "supportsMultiTokensV2")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(protobufCopy, "supportsMultiTokensV2")}];
     [(PKPaymentApplication *)v4 setSupportsMultiTokens:v18];
   }
 
@@ -510,179 +510,179 @@ LABEL_7:
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufPaymentApplication);
-  v4 = [(PKPaymentApplication *)self dpanIdentifier];
-  [(PKProtobufPaymentApplication *)v3 setDpanIdentifier:v4];
+  dpanIdentifier = [(PKPaymentApplication *)self dpanIdentifier];
+  [(PKProtobufPaymentApplication *)v3 setDpanIdentifier:dpanIdentifier];
 
-  v5 = [(PKPaymentApplication *)self dpanSuffix];
-  [(PKProtobufPaymentApplication *)v3 setDpanSuffix:v5];
+  dpanSuffix = [(PKPaymentApplication *)self dpanSuffix];
+  [(PKProtobufPaymentApplication *)v3 setDpanSuffix:dpanSuffix];
 
-  v6 = [(PKPaymentApplication *)self sanitizedDPAN];
-  [(PKProtobufPaymentApplication *)v3 setSanitizedDpan:v6];
+  sanitizedDPAN = [(PKPaymentApplication *)self sanitizedDPAN];
+  [(PKProtobufPaymentApplication *)v3 setSanitizedDpan:sanitizedDPAN];
 
-  v7 = [(PKPaymentApplication *)self applicationIdentifier];
-  [(PKProtobufPaymentApplication *)v3 setApplicationIdentifier:v7];
+  applicationIdentifier = [(PKPaymentApplication *)self applicationIdentifier];
+  [(PKProtobufPaymentApplication *)v3 setApplicationIdentifier:applicationIdentifier];
 
-  v8 = [(PKPaymentApplication *)self secureElementIdentifier];
-  [(PKProtobufPaymentApplication *)v3 setSecureElementIdenfitier:v8];
+  secureElementIdentifier = [(PKPaymentApplication *)self secureElementIdentifier];
+  [(PKProtobufPaymentApplication *)v3 setSecureElementIdenfitier:secureElementIdentifier];
 
   [(PKProtobufPaymentApplication *)v3 setState:[(PKPaymentApplication *)self state]];
-  v9 = [(PKPaymentApplication *)self suspendedReason];
-  [(PKProtobufPaymentApplication *)v3 setSuspendedReason:v9];
+  suspendedReason = [(PKPaymentApplication *)self suspendedReason];
+  [(PKProtobufPaymentApplication *)v3 setSuspendedReason:suspendedReason];
 
   [(PKProtobufPaymentApplication *)v3 setSupportsContactlessPayment:[(PKPaymentApplication *)self supportsContactlessPayment]];
   [(PKProtobufPaymentApplication *)v3 setSupportsInAppPayment:[(PKPaymentApplication *)self supportsInAppPayment]];
   [(PKProtobufPaymentApplication *)v3 setPaymentNetworkIdentifier:[(PKPaymentApplication *)self paymentNetworkIdentifier]];
   [(PKProtobufPaymentApplication *)v3 setInAppPINRequired:[(PKPaymentApplication *)self inAppPINRequired]];
-  v10 = [(PKPaymentApplication *)self inAppPINRequiredAmount];
-  [(PKProtobufPaymentApplication *)v3 setInAppPINRequiredAmount:PKCurrencyDecimalToLegacyStorageInteger(v10, 0)];
+  inAppPINRequiredAmount = [(PKPaymentApplication *)self inAppPINRequiredAmount];
+  [(PKProtobufPaymentApplication *)v3 setInAppPINRequiredAmount:PKCurrencyDecimalToLegacyStorageInteger(inAppPINRequiredAmount, 0)];
 
-  v11 = [(PKPaymentApplication *)self inAppPINRequiredAmount];
-  v12 = DecimalToCustomPrecisionProtobuf(v11);
+  inAppPINRequiredAmount2 = [(PKPaymentApplication *)self inAppPINRequiredAmount];
+  v12 = DecimalToCustomPrecisionProtobuf(inAppPINRequiredAmount2);
   [(PKProtobufPaymentApplication *)v3 setCustomPrecisionInAppPINRequiredAmount:v12];
 
-  v13 = [(PKPaymentApplication *)self inAppPINRequiredAmount];
-  v14 = PKProtoSupportProtoDecimalNumberFromDecimalNumber(v13);
+  inAppPINRequiredAmount3 = [(PKPaymentApplication *)self inAppPINRequiredAmount];
+  v14 = PKProtoSupportProtoDecimalNumberFromDecimalNumber(inAppPINRequiredAmount3);
   [(PKProtobufPaymentApplication *)v3 setBalanceInAppPINRequiredAmount:v14];
 
-  v15 = [(PKPaymentApplication *)self inAppPINRequiredCurrency];
-  [(PKProtobufPaymentApplication *)v3 setInAppPINRequiredCurrency:v15];
+  inAppPINRequiredCurrency = [(PKPaymentApplication *)self inAppPINRequiredCurrency];
+  [(PKProtobufPaymentApplication *)v3 setInAppPINRequiredCurrency:inAppPINRequiredCurrency];
 
-  v16 = [(PKPaymentApplication *)self displayName];
-  [(PKProtobufPaymentApplication *)v3 setDisplayName:v16];
+  displayName = [(PKPaymentApplication *)self displayName];
+  [(PKProtobufPaymentApplication *)v3 setDisplayName:displayName];
 
   [(PKProtobufPaymentApplication *)v3 setAuxiliary:[(PKPaymentApplication *)self isAuxiliary]];
   [(PKProtobufPaymentApplication *)v3 setPaymentType:[(PKPaymentApplication *)self paymentType]];
   [(PKProtobufPaymentApplication *)v3 setAuxiliaryPaymentType:[(PKPaymentApplication *)self auxiliaryPaymentType]];
   [(PKProtobufPaymentApplication *)v3 setInAppPriority:[(PKPaymentApplication *)self inAppPriority]];
-  v17 = [(PKPaymentApplication *)self apanIdentifier];
-  [(PKProtobufPaymentApplication *)v3 setApanIdentifier:v17];
+  apanIdentifier = [(PKPaymentApplication *)self apanIdentifier];
+  [(PKProtobufPaymentApplication *)v3 setApanIdentifier:apanIdentifier];
 
-  v18 = [(PKPaymentApplication *)self apanSuffix];
-  [(PKProtobufPaymentApplication *)v3 setApanSuffix:v18];
+  apanSuffix = [(PKPaymentApplication *)self apanSuffix];
+  [(PKProtobufPaymentApplication *)v3 setApanSuffix:apanSuffix];
 
   [(PKProtobufPaymentApplication *)v3 setSupportsMerchantTokens:[(PKPaymentApplication *)self supportsMerchantTokens]];
   [(PKProtobufPaymentApplication *)v3 setSupportsInstantFundsIn:[(PKPaymentApplication *)self supportsInstantFundsIn]];
-  v19 = [(PKPaymentApplication *)self supportsMultiTokens];
+  supportsMultiTokens = [(PKPaymentApplication *)self supportsMultiTokens];
 
-  if (v19)
+  if (supportsMultiTokens)
   {
-    v20 = [(PKPaymentApplication *)self supportsMultiTokens];
-    -[PKProtobufPaymentApplication setSupportsMultiTokensV2:](v3, "setSupportsMultiTokensV2:", [v20 BOOLValue]);
+    supportsMultiTokens2 = [(PKPaymentApplication *)self supportsMultiTokens];
+    -[PKProtobufPaymentApplication setSupportsMultiTokensV2:](v3, "setSupportsMultiTokensV2:", [supportsMultiTokens2 BOOLValue]);
   }
 
   return v3;
 }
 
-- (PKPaymentApplication)initWithPaymentApplicationDictionary:(id)a3 auxiliaryApplication:(BOOL)a4
+- (PKPaymentApplication)initWithPaymentApplicationDictionary:(id)dictionary auxiliaryApplication:(BOOL)application
 {
   v123 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v120.receiver = self;
   v120.super_class = PKPaymentApplication;
   v7 = [(PKPaymentApplication *)&v120 init];
   if (v7)
   {
-    v8 = [v6 objectForKey:@"applicationIdentifier"];
+    v8 = [dictionaryCopy objectForKey:@"applicationIdentifier"];
     applicationIdentifier = v7->_applicationIdentifier;
     v7->_applicationIdentifier = v8;
 
-    v10 = [v6 objectForKey:@"secureElementIdentifier"];
+    v10 = [dictionaryCopy objectForKey:@"secureElementIdentifier"];
     secureElementIdentifier = v7->_secureElementIdentifier;
     v7->_secureElementIdentifier = v10;
 
-    v12 = [v6 objectForKey:@"DPANIdentifier"];
+    v12 = [dictionaryCopy objectForKey:@"DPANIdentifier"];
     dpanIdentifier = v7->_dpanIdentifier;
     v7->_dpanIdentifier = v12;
 
-    v14 = [v6 objectForKey:@"DPANSuffix"];
+    v14 = [dictionaryCopy objectForKey:@"DPANSuffix"];
     dpanSuffix = v7->_dpanSuffix;
     v7->_dpanSuffix = v14;
 
-    v16 = [v6 objectForKey:@"sanitizedDPAN"];
+    v16 = [dictionaryCopy objectForKey:@"sanitizedDPAN"];
     sanitizedDPAN = v7->_sanitizedDPAN;
     v7->_sanitizedDPAN = v16;
 
-    v18 = [v6 objectForKey:@"state"];
+    v18 = [dictionaryCopy objectForKey:@"state"];
     v7->_state = [v18 integerValue];
 
-    v19 = [v6 objectForKey:@"suspendedReason"];
+    v19 = [dictionaryCopy objectForKey:@"suspendedReason"];
     suspendedReason = v7->_suspendedReason;
     v7->_suspendedReason = v19;
 
-    v21 = [v6 objectForKey:@"supportsContactlessPayment"];
+    v21 = [dictionaryCopy objectForKey:@"supportsContactlessPayment"];
     v7->_supportsContactlessPayment = [v21 BOOLValue];
 
-    v22 = [v6 objectForKey:@"supportsInAppPayment"];
+    v22 = [dictionaryCopy objectForKey:@"supportsInAppPayment"];
     v7->_supportsInAppPayment = [v22 BOOLValue];
 
-    v23 = [v6 objectForKey:@"supportsMerchantTokens"];
+    v23 = [dictionaryCopy objectForKey:@"supportsMerchantTokens"];
     v7->_supportsMerchantTokens = [v23 BOOLValue];
 
-    v24 = [v6 objectForKey:@"hasMerchantTokens"];
+    v24 = [dictionaryCopy objectForKey:@"hasMerchantTokens"];
     v7->_hasMerchantTokens = [v24 BOOLValue];
 
-    v25 = [v6 objectForKey:@"hadMerchantTokens"];
+    v25 = [dictionaryCopy objectForKey:@"hadMerchantTokens"];
     v7->_hadMerchantTokens = [v25 BOOLValue];
 
-    v26 = [v6 objectForKey:@"APANIdentifier"];
+    v26 = [dictionaryCopy objectForKey:@"APANIdentifier"];
     apanIdentifier = v7->_apanIdentifier;
     v7->_apanIdentifier = v26;
 
-    v28 = [v6 objectForKey:@"APANSuffix"];
+    v28 = [dictionaryCopy objectForKey:@"APANSuffix"];
     apanSuffix = v7->_apanSuffix;
     v7->_apanSuffix = v28;
 
-    v30 = [v6 objectForKey:@"supportsMultiTokens"];
+    v30 = [dictionaryCopy objectForKey:@"supportsMultiTokens"];
     supportsMultiTokens = v7->_supportsMultiTokens;
     v7->_supportsMultiTokens = v30;
 
-    v32 = [v6 objectForKey:@"VPANIdentifier"];
+    v32 = [dictionaryCopy objectForKey:@"VPANIdentifier"];
     virtualCardIdentifier = v7->_virtualCardIdentifier;
     v7->_virtualCardIdentifier = v32;
 
-    v34 = [v6 objectForKey:@"VPANSuffix"];
+    v34 = [dictionaryCopy objectForKey:@"VPANSuffix"];
     virtualCardSuffix = v7->_virtualCardSuffix;
     v7->_virtualCardSuffix = v34;
 
-    v36 = [v6 objectForKey:@"supportsVirtualCardNumber"];
+    v36 = [dictionaryCopy objectForKey:@"supportsVirtualCardNumber"];
     supportsVirtualCardNumber = v7->_supportsVirtualCardNumber;
     v7->_supportsVirtualCardNumber = v36;
 
-    v38 = [v6 objectForKey:@"virtualCardNumberOrigin"];
+    v38 = [dictionaryCopy objectForKey:@"virtualCardNumberOrigin"];
     v7->_virtualCardVPANOrigin = PKVirtualCardVPANOriginForString(v38);
 
-    v39 = [v6 PKNumberForKey:@"virtualCardRefreshType"];
+    v39 = [dictionaryCopy PKNumberForKey:@"virtualCardRefreshType"];
     virtualCardRefreshTypeNumber = v7->_virtualCardRefreshTypeNumber;
     v7->_virtualCardRefreshTypeNumber = v39;
 
-    v41 = [v6 objectForKey:@"supportsBarcodePayment"];
+    v41 = [dictionaryCopy objectForKey:@"supportsBarcodePayment"];
     v7->_supportsBarcodePayment = [v41 BOOLValue];
 
-    v42 = [v6 objectForKey:@"supportsOptionalAuthentication"];
+    v42 = [dictionaryCopy objectForKey:@"supportsOptionalAuthentication"];
     v7->_supportsOptionalAuthentication = [v42 BOOLValue];
 
-    v43 = [v6 objectForKey:@"supportedExpressModes"];
+    v43 = [dictionaryCopy objectForKey:@"supportedExpressModes"];
     v44 = [v43 copy];
     supportedExpressModes = v7->_supportedExpressModes;
     v7->_supportedExpressModes = v44;
 
-    v46 = [v6 objectForKey:@"supportsServiceMode"];
+    v46 = [dictionaryCopy objectForKey:@"supportsServiceMode"];
     v111 = v46;
     if (v46)
     {
-      v47 = [v46 BOOLValue];
+      bOOLValue = [v46 BOOLValue];
     }
 
     else
     {
-      v47 = 1;
+      bOOLValue = 1;
     }
 
-    v7->_supportsServiceMode = v47;
-    v48 = [v6 objectForKey:@"automaticSelectionCriteria"];
+    v7->_supportsServiceMode = bOOLValue;
+    v48 = [dictionaryCopy objectForKey:@"automaticSelectionCriteria"];
     if (v48)
     {
-      v109 = a4;
+      applicationCopy = application;
       v49 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v48, "count")}];
       v116 = 0u;
       v117 = 0u;
@@ -722,36 +722,36 @@ LABEL_7:
       v7->_automaticSelectionCriteria = v57;
 
       v48 = v50;
-      a4 = v109;
+      application = applicationCopy;
     }
 
-    v59 = [v6 objectForKey:@"appletDataFormat"];
+    v59 = [dictionaryCopy objectForKey:@"appletDataFormat"];
     v60 = [v59 copy];
     appletDataFormat = v7->_appletDataFormat;
     v7->_appletDataFormat = v60;
 
-    v62 = [v6 objectForKey:@"appletCurrencyCode"];
+    v62 = [dictionaryCopy objectForKey:@"appletCurrencyCode"];
     v63 = [v62 copy];
     appletCurrencyCode = v7->_appletCurrencyCode;
     v7->_appletCurrencyCode = v63;
 
-    v65 = [v6 objectForKey:@"requiresDeferredAuthorization"];
+    v65 = [dictionaryCopy objectForKey:@"requiresDeferredAuthorization"];
     v7->_requiresDeferredAuthorization = [v65 BOOLValue];
 
-    v66 = [v6 objectForKey:@"paymentNetworkIdentifier"];
+    v66 = [dictionaryCopy objectForKey:@"paymentNetworkIdentifier"];
     v7->_paymentNetworkIdentifier = [v66 integerValue];
 
-    v67 = [v6 objectForKey:@"paymentType"];
+    v67 = [dictionaryCopy objectForKey:@"paymentType"];
     v7->_paymentType = PKPaymentMethodTypeForString(v67);
 
-    v68 = [v6 objectForKey:@"auxiliaryPaymentType"];
+    v68 = [dictionaryCopy objectForKey:@"auxiliaryPaymentType"];
     v7->_auxiliaryPaymentType = PKPaymentMethodTypeForString(v68);
 
-    v69 = [v6 objectForKey:@"applicationDescription"];
+    v69 = [dictionaryCopy objectForKey:@"applicationDescription"];
     displayName = v7->_displayName;
     v7->_displayName = v69;
 
-    v71 = [v6 objectForKey:@"inAppPINRequiredAmount"];
+    v71 = [dictionaryCopy objectForKey:@"inAppPINRequiredAmount"];
     if (v71)
     {
       v72 = [MEMORY[0x1E696AB90] decimalNumberWithString:v71];
@@ -759,33 +759,33 @@ LABEL_7:
       v7->_inAppPINRequiredAmount = v72;
     }
 
-    v74 = [v6 objectForKey:@"inAppPINRequiredCurrency"];
+    v74 = [dictionaryCopy objectForKey:@"inAppPINRequiredCurrency"];
     inAppPINRequiredCurrency = v7->_inAppPINRequiredCurrency;
     v7->_inAppPINRequiredCurrency = v74;
 
-    v7->_auxiliary = a4;
-    v76 = [v6 objectForKey:@"contactlessPriority"];
+    v7->_auxiliary = application;
+    v76 = [dictionaryCopy objectForKey:@"contactlessPriority"];
     v7->_contactlessPriority = [v76 integerValue];
 
-    v77 = [v6 objectForKey:@"inAppPriority"];
+    v77 = [dictionaryCopy objectForKey:@"inAppPriority"];
     v7->_inAppPriority = [v77 integerValue];
 
-    v78 = [v6 PKArrayContaining:objc_opt_class() forKey:@"supportedInAppMerchantCountryCodes"];
+    v78 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"supportedInAppMerchantCountryCodes"];
     supportedInAppMerchantCountryCodes = v7->_supportedInAppMerchantCountryCodes;
     v7->_supportedInAppMerchantCountryCodes = v78;
 
-    v80 = [v6 PKArrayContaining:objc_opt_class() forKey:@"unsupportedInAppMerchantCountryCodes"];
+    v80 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"unsupportedInAppMerchantCountryCodes"];
     unsupportedInAppMerchantCountryCodes = v7->_unsupportedInAppMerchantCountryCodes;
     v7->_unsupportedInAppMerchantCountryCodes = v80;
 
-    v82 = [v6 PKArrayContaining:objc_opt_class() forKey:@"supportedTransitNetworkIdentifiers"];
+    v82 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"supportedTransitNetworkIdentifiers"];
     supportedTransitNetworkIdentifiers = v7->_supportedTransitNetworkIdentifiers;
     v7->_supportedTransitNetworkIdentifiers = v82;
 
-    v84 = [v6 objectForKey:@"supportsInstantFundsIn"];
+    v84 = [dictionaryCopy objectForKey:@"supportsInstantFundsIn"];
     v7->_supportsInstantFundsIn = [v84 BOOLValue];
 
-    v85 = [v6 objectForKey:@"fundingSourcePaymentType"];
+    v85 = [dictionaryCopy objectForKey:@"fundingSourcePaymentType"];
     v86 = v85;
     if (v85)
     {
@@ -798,10 +798,10 @@ LABEL_7:
     }
 
     v7->_fundingSourcePaymentType = paymentType;
-    v88 = [v6 objectForKey:@"requiresConsentForDataRelease"];
+    v88 = [dictionaryCopy objectForKey:@"requiresConsentForDataRelease"];
     v7->_requiresConsentForDataRelease = [v88 BOOLValue];
 
-    v89 = [v6 PKDictionaryForKey:@"subcredential"];
+    v89 = [dictionaryCopy PKDictionaryForKey:@"subcredential"];
     if (v89)
     {
       v90 = [[PKAppletSubcredential alloc] initWithDictionary:v89];
@@ -815,14 +815,14 @@ LABEL_7:
       v7->_subcredentials = v90;
     }
 
-    v7->_shareable = [v6 PKBoolForKey:@"shareable"];
+    v7->_shareable = [dictionaryCopy PKBoolForKey:@"shareable"];
     v7->_foundVehicleReport = 0;
-    v93 = [v6 PKStringForKey:@"readerIdentifier"];
-    v94 = [v93 pk_decodeHexadecimal];
+    v93 = [dictionaryCopy PKStringForKey:@"readerIdentifier"];
+    pk_decodeHexadecimal = [v93 pk_decodeHexadecimal];
     readerIdentifier = v7->_readerIdentifier;
-    v7->_readerIdentifier = v94;
+    v7->_readerIdentifier = pk_decodeHexadecimal;
 
-    v96 = [v6 PKArrayContaining:objc_opt_class() forKey:@"associatedReaders"];
+    v96 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"associatedReaders"];
     if ([v96 count])
     {
       v107 = v89;
@@ -877,28 +877,28 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentApplication *)self isEqualToPaymentApplication:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentApplication *)self isEqualToPaymentApplication:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPaymentApplication:(id)a3
+- (BOOL)isEqualToPaymentApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   applicationIdentifier = self->_applicationIdentifier;
-  v6 = v4[7];
+  v6 = applicationCopy[7];
   if (applicationIdentifier)
   {
     v7 = v6 == 0;
@@ -923,7 +923,7 @@ LABEL_7:
   }
 
   secureElementIdentifier = self->_secureElementIdentifier;
-  v9 = v4[8];
+  v9 = applicationCopy[8];
   if (secureElementIdentifier && v9)
   {
     if (([(NSString *)secureElementIdentifier isEqual:?]& 1) == 0)
@@ -938,7 +938,7 @@ LABEL_7:
   }
 
   dpanIdentifier = self->_dpanIdentifier;
-  v11 = v4[4];
+  v11 = applicationCopy[4];
   if (dpanIdentifier && v11)
   {
     if (([(NSString *)dpanIdentifier isEqual:?]& 1) == 0)
@@ -953,7 +953,7 @@ LABEL_7:
   }
 
   dpanSuffix = self->_dpanSuffix;
-  v13 = v4[5];
+  v13 = applicationCopy[5];
   if (dpanSuffix && v13)
   {
     if (([(NSString *)dpanSuffix isEqual:?]& 1) == 0)
@@ -968,7 +968,7 @@ LABEL_7:
   }
 
   sanitizedDPAN = self->_sanitizedDPAN;
-  v15 = v4[6];
+  v15 = applicationCopy[6];
   if (sanitizedDPAN && v15)
   {
     if (([(NSString *)sanitizedDPAN isEqual:?]& 1) == 0)
@@ -983,7 +983,7 @@ LABEL_7:
   }
 
   suspendedReason = self->_suspendedReason;
-  v17 = v4[10];
+  v17 = applicationCopy[10];
   if (suspendedReason && v17)
   {
     if (([(NSString *)suspendedReason isEqual:?]& 1) == 0)
@@ -998,7 +998,7 @@ LABEL_7:
   }
 
   inAppPINRequiredAmount = self->_inAppPINRequiredAmount;
-  v19 = v4[23];
+  v19 = applicationCopy[23];
   if (inAppPINRequiredAmount && v19)
   {
     if (([(NSDecimalNumber *)inAppPINRequiredAmount isEqual:?]& 1) == 0)
@@ -1013,7 +1013,7 @@ LABEL_7:
   }
 
   inAppPINRequiredCurrency = self->_inAppPINRequiredCurrency;
-  v21 = v4[24];
+  v21 = applicationCopy[24];
   if (inAppPINRequiredCurrency && v21)
   {
     if (([(NSString *)inAppPINRequiredCurrency isEqual:?]& 1) == 0)
@@ -1028,7 +1028,7 @@ LABEL_7:
   }
 
   displayName = self->_displayName;
-  v23 = v4[27];
+  v23 = applicationCopy[27];
   if (displayName && v23)
   {
     if (([(NSString *)displayName isEqual:?]& 1) == 0)
@@ -1042,13 +1042,13 @@ LABEL_7:
     goto LABEL_157;
   }
 
-  if (self->_state != v4[9] || self->_supportsContactlessPayment != *(v4 + 9) || self->_supportsInAppPayment != *(v4 + 10) || self->_supportsMerchantTokens != *(v4 + 11) || self->_hasMerchantTokens != *(v4 + 12) || self->_hadMerchantTokens != *(v4 + 13))
+  if (self->_state != applicationCopy[9] || self->_supportsContactlessPayment != *(applicationCopy + 9) || self->_supportsInAppPayment != *(applicationCopy + 10) || self->_supportsMerchantTokens != *(applicationCopy + 11) || self->_hasMerchantTokens != *(applicationCopy + 12) || self->_hadMerchantTokens != *(applicationCopy + 13))
   {
     goto LABEL_157;
   }
 
   apanIdentifier = self->_apanIdentifier;
-  v25 = v4[11];
+  v25 = applicationCopy[11];
   if (apanIdentifier && v25)
   {
     if (([(NSString *)apanIdentifier isEqual:?]& 1) == 0)
@@ -1063,7 +1063,7 @@ LABEL_7:
   }
 
   apanSuffix = self->_apanSuffix;
-  v27 = v4[12];
+  v27 = applicationCopy[12];
   if (apanSuffix && v27)
   {
     if (([(NSString *)apanSuffix isEqual:?]& 1) == 0)
@@ -1078,7 +1078,7 @@ LABEL_7:
   }
 
   virtualCardIdentifier = self->_virtualCardIdentifier;
-  v29 = v4[13];
+  v29 = applicationCopy[13];
   if (virtualCardIdentifier && v29)
   {
     if (([(NSString *)virtualCardIdentifier isEqual:?]& 1) == 0)
@@ -1093,7 +1093,7 @@ LABEL_7:
   }
 
   virtualCardSuffix = self->_virtualCardSuffix;
-  v31 = v4[14];
+  v31 = applicationCopy[14];
   if (virtualCardSuffix && v31)
   {
     if (([(NSString *)virtualCardSuffix isEqual:?]& 1) == 0)
@@ -1108,7 +1108,7 @@ LABEL_7:
   }
 
   supportsVirtualCardNumber = self->_supportsVirtualCardNumber;
-  v33 = v4[15];
+  v33 = applicationCopy[15];
   if (supportsVirtualCardNumber && v33)
   {
     if (([(NSNumber *)supportsVirtualCardNumber isEqual:?]& 1) == 0)
@@ -1122,13 +1122,13 @@ LABEL_7:
     goto LABEL_157;
   }
 
-  if (self->_virtualCardVPANOrigin != v4[16])
+  if (self->_virtualCardVPANOrigin != applicationCopy[16])
   {
     goto LABEL_157;
   }
 
   virtualCardRefreshTypeNumber = self->_virtualCardRefreshTypeNumber;
-  v35 = v4[17];
+  v35 = applicationCopy[17];
   if (virtualCardRefreshTypeNumber && v35)
   {
     if (([(NSNumber *)virtualCardRefreshTypeNumber isEqual:?]& 1) == 0)
@@ -1143,7 +1143,7 @@ LABEL_7:
   }
 
   supportsMultiTokens = self->_supportsMultiTokens;
-  v37 = v4[18];
+  v37 = applicationCopy[18];
   if (supportsMultiTokens && v37)
   {
     if (([(NSNumber *)supportsMultiTokens isEqual:?]& 1) == 0)
@@ -1157,13 +1157,13 @@ LABEL_7:
     goto LABEL_157;
   }
 
-  if (self->_supportsBarcodePayment != *(v4 + 14) || self->_supportsOptionalAuthentication != *(v4 + 15) || self->_requiresDeferredAuthorization != *(v4 + 17))
+  if (self->_supportsBarcodePayment != *(applicationCopy + 14) || self->_supportsOptionalAuthentication != *(applicationCopy + 15) || self->_requiresDeferredAuthorization != *(applicationCopy + 17))
   {
     goto LABEL_157;
   }
 
   supportedExpressModes = self->_supportedExpressModes;
-  v39 = v4[19];
+  v39 = applicationCopy[19];
   if (supportedExpressModes && v39)
   {
     if (([(NSArray *)supportedExpressModes isEqual:?]& 1) == 0)
@@ -1178,7 +1178,7 @@ LABEL_7:
   }
 
   automaticSelectionCriteria = self->_automaticSelectionCriteria;
-  v41 = v4[20];
+  v41 = applicationCopy[20];
   if (automaticSelectionCriteria && v41)
   {
     if (([(NSArray *)automaticSelectionCriteria isEqual:?]& 1) == 0)
@@ -1193,7 +1193,7 @@ LABEL_7:
   }
 
   transitProperties = self->_transitProperties;
-  v43 = v4[33];
+  v43 = applicationCopy[33];
   if (transitProperties && v43)
   {
     if (![(PKStoredValuePassProperties *)transitProperties isEqual:?])
@@ -1207,13 +1207,13 @@ LABEL_7:
     goto LABEL_157;
   }
 
-  if (self->_paymentNetworkIdentifier != v4[22] || self->_auxiliary != *(v4 + 19) || self->_paymentType != v4[25] || self->_auxiliaryPaymentType != v4[26] || self->_contactlessPriority != v4[28] || self->_inAppPriority != v4[29] || self->_supportsInstantFundsIn != *(v4 + 20) || self->_fundingSourcePaymentType != v4[30] || self->_requiresConsentForDataRelease != *(v4 + 21) || self->_supportsServiceMode != *(v4 + 16))
+  if (self->_paymentNetworkIdentifier != applicationCopy[22] || self->_auxiliary != *(applicationCopy + 19) || self->_paymentType != applicationCopy[25] || self->_auxiliaryPaymentType != applicationCopy[26] || self->_contactlessPriority != applicationCopy[28] || self->_inAppPriority != applicationCopy[29] || self->_supportsInstantFundsIn != *(applicationCopy + 20) || self->_fundingSourcePaymentType != applicationCopy[30] || self->_requiresConsentForDataRelease != *(applicationCopy + 21) || self->_supportsServiceMode != *(applicationCopy + 16))
   {
     goto LABEL_157;
   }
 
   appletDataFormat = self->_appletDataFormat;
-  v45 = v4[32];
+  v45 = applicationCopy[32];
   if (appletDataFormat && v45)
   {
     if (([(NSString *)appletDataFormat isEqual:?]& 1) == 0)
@@ -1228,7 +1228,7 @@ LABEL_7:
   }
 
   subcredentials = self->_subcredentials;
-  v47 = v4[38];
+  v47 = applicationCopy[38];
   if (subcredentials && v47)
   {
     if (([(NSSet *)subcredentials isEqual:?]& 1) == 0)
@@ -1243,7 +1243,7 @@ LABEL_7:
   }
 
   supportedInAppMerchantCountryCodes = self->_supportedInAppMerchantCountryCodes;
-  v49 = v4[34];
+  v49 = applicationCopy[34];
   if (supportedInAppMerchantCountryCodes && v49)
   {
     if (([(NSArray *)supportedInAppMerchantCountryCodes isEqual:?]& 1) == 0)
@@ -1258,7 +1258,7 @@ LABEL_7:
   }
 
   unsupportedInAppMerchantCountryCodes = self->_unsupportedInAppMerchantCountryCodes;
-  v51 = v4[35];
+  v51 = applicationCopy[35];
   if (unsupportedInAppMerchantCountryCodes && v51)
   {
     if (([(NSArray *)unsupportedInAppMerchantCountryCodes isEqual:?]& 1) == 0)
@@ -1273,7 +1273,7 @@ LABEL_7:
   }
 
   supportedTransitNetworkIdentifiers = self->_supportedTransitNetworkIdentifiers;
-  v53 = v4[36];
+  v53 = applicationCopy[36];
   if (supportedTransitNetworkIdentifiers && v53)
   {
     if (([(NSArray *)supportedTransitNetworkIdentifiers isEqual:?]& 1) == 0)
@@ -1288,7 +1288,7 @@ LABEL_7:
   }
 
   transactionSourceIdentifier = self->_transactionSourceIdentifier;
-  v55 = v4[31];
+  v55 = applicationCopy[31];
   if (transactionSourceIdentifier && v55)
   {
     if (([(NSString *)transactionSourceIdentifier isEqual:?]& 1) == 0)
@@ -1302,13 +1302,13 @@ LABEL_7:
     goto LABEL_157;
   }
 
-  if (self->_shareable != *(v4 + 22))
+  if (self->_shareable != *(applicationCopy + 22))
   {
     goto LABEL_157;
   }
 
   readerIdentifier = self->_readerIdentifier;
-  v57 = v4[3];
+  v57 = applicationCopy[3];
   if (!readerIdentifier || !v57)
   {
     if (readerIdentifier == v57)
@@ -1328,7 +1328,7 @@ LABEL_157:
 
 LABEL_153:
   associatedReaders = self->_associatedReaders;
-  v59 = v4[39];
+  v59 = applicationCopy[39];
   if (associatedReaders && v59)
   {
     v60 = [(NSSet *)associatedReaders isEqual:?];
@@ -1344,165 +1344,165 @@ LABEL_158:
   return v60;
 }
 
-- (PKPaymentApplication)initWithCoder:(id)a3
+- (PKPaymentApplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v84.receiver = self;
   v84.super_class = PKPaymentApplication;
   v5 = [(PKPaymentApplication *)&v84 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureElementIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureElementIdentifier"];
     secureElementIdentifier = v5->_secureElementIdentifier;
     v5->_secureElementIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DPANIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DPANIdentifier"];
     dpanIdentifier = v5->_dpanIdentifier;
     v5->_dpanIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DPANSuffix"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DPANSuffix"];
     dpanSuffix = v5->_dpanSuffix;
     v5->_dpanSuffix = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sanitizedDPAN"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sanitizedDPAN"];
     sanitizedDPAN = v5->_sanitizedDPAN;
     v5->_sanitizedDPAN = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inAppPINRequiredAmount"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inAppPINRequiredAmount"];
     inAppPINRequiredAmount = v5->_inAppPINRequiredAmount;
     v5->_inAppPINRequiredAmount = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inAppPINRequiredCurrency"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inAppPINRequiredCurrency"];
     inAppPINRequiredCurrency = v5->_inAppPINRequiredCurrency;
     v5->_inAppPINRequiredCurrency = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationDescription"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationDescription"];
     displayName = v5->_displayName;
     v5->_displayName = v20;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suspendedReason"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suspendedReason"];
     suspendedReason = v5->_suspendedReason;
     v5->_suspendedReason = v22;
 
-    v5->_supportsContactlessPayment = [v4 decodeBoolForKey:@"supportsContactlessPayment"];
-    v5->_supportsServiceMode = [v4 decodeBoolForKey:@"supportsServiceMode"];
-    v5->_supportsInAppPayment = [v4 decodeBoolForKey:@"supportsInAppPayment"];
-    v5->_supportsMerchantTokens = [v4 decodeBoolForKey:@"supportsMerchantTokens"];
-    v5->_hasMerchantTokens = [v4 decodeBoolForKey:@"hasMerchantTokens"];
-    v5->_hadMerchantTokens = [v4 decodeBoolForKey:@"hadMerchantTokens"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"APANIdentifier"];
+    v5->_supportsContactlessPayment = [coderCopy decodeBoolForKey:@"supportsContactlessPayment"];
+    v5->_supportsServiceMode = [coderCopy decodeBoolForKey:@"supportsServiceMode"];
+    v5->_supportsInAppPayment = [coderCopy decodeBoolForKey:@"supportsInAppPayment"];
+    v5->_supportsMerchantTokens = [coderCopy decodeBoolForKey:@"supportsMerchantTokens"];
+    v5->_hasMerchantTokens = [coderCopy decodeBoolForKey:@"hasMerchantTokens"];
+    v5->_hadMerchantTokens = [coderCopy decodeBoolForKey:@"hadMerchantTokens"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"APANIdentifier"];
     apanIdentifier = v5->_apanIdentifier;
     v5->_apanIdentifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"APANSuffix"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"APANSuffix"];
     apanSuffix = v5->_apanSuffix;
     v5->_apanSuffix = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VPANIdentifier"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VPANIdentifier"];
     virtualCardIdentifier = v5->_virtualCardIdentifier;
     v5->_virtualCardIdentifier = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VPANSuffix"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VPANSuffix"];
     virtualCardSuffix = v5->_virtualCardSuffix;
     v5->_virtualCardSuffix = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsVirtualCardNumber"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsVirtualCardNumber"];
     supportsVirtualCardNumber = v5->_supportsVirtualCardNumber;
     v5->_supportsVirtualCardNumber = v32;
 
-    v5->_virtualCardVPANOrigin = [v4 decodeIntegerForKey:@"virtualCardNumberOrigin"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"virtualCardRefreshType"];
+    v5->_virtualCardVPANOrigin = [coderCopy decodeIntegerForKey:@"virtualCardNumberOrigin"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"virtualCardRefreshType"];
     virtualCardRefreshTypeNumber = v5->_virtualCardRefreshTypeNumber;
     v5->_virtualCardRefreshTypeNumber = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsMultiTokens"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsMultiTokens"];
     supportsMultiTokens = v5->_supportsMultiTokens;
     v5->_supportsMultiTokens = v36;
 
-    v5->_supportsBarcodePayment = [v4 decodeBoolForKey:@"supportsBarcodePayment"];
-    v5->_supportsOptionalAuthentication = [v4 decodeBoolForKey:@"supportsOptionalAuthentication"];
+    v5->_supportsBarcodePayment = [coderCopy decodeBoolForKey:@"supportsBarcodePayment"];
+    v5->_supportsOptionalAuthentication = [coderCopy decodeBoolForKey:@"supportsOptionalAuthentication"];
     v38 = MEMORY[0x1E695DFD8];
     v39 = objc_opt_class();
     v40 = [v38 setWithObjects:{v39, objc_opt_class(), 0}];
-    v41 = [v4 decodeObjectOfClasses:v40 forKey:@"supportedExpressModes"];
+    v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"supportedExpressModes"];
     supportedExpressModes = v5->_supportedExpressModes;
     v5->_supportedExpressModes = v41;
 
     v43 = MEMORY[0x1E695DFD8];
     v44 = objc_opt_class();
     v45 = [v43 setWithObjects:{v44, objc_opt_class(), 0}];
-    v46 = [v4 decodeObjectOfClasses:v45 forKey:@"automaticSelectionCriteria"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"automaticSelectionCriteria"];
     automaticSelectionCriteria = v5->_automaticSelectionCriteria;
     v5->_automaticSelectionCriteria = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletCurrencyCode"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletCurrencyCode"];
     appletCurrencyCode = v5->_appletCurrencyCode;
     v5->_appletCurrencyCode = v48;
 
-    v5->_requiresDeferredAuthorization = [v4 decodeBoolForKey:@"requiresDeferredAuthorization"];
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletDataFormat"];
+    v5->_requiresDeferredAuthorization = [coderCopy decodeBoolForKey:@"requiresDeferredAuthorization"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletDataFormat"];
     appletDataFormat = v5->_appletDataFormat;
     v5->_appletDataFormat = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transitPassProperties"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transitPassProperties"];
     transitProperties = v5->_transitProperties;
     v5->_transitProperties = v52;
 
-    v5->_paymentNetworkIdentifier = [v4 decodeIntegerForKey:@"paymentNetworkIdentifier"];
-    v5->_auxiliary = [v4 decodeBoolForKey:@"isAuxiliary"];
-    v5->_paymentType = [v4 decodeIntegerForKey:@"paymentType"];
-    v5->_auxiliaryPaymentType = [v4 decodeIntegerForKey:@"auxiliaryPaymentType"];
-    v5->_contactlessPriority = [v4 decodeIntegerForKey:@"contactlessPriority"];
-    v5->_inAppPriority = [v4 decodeIntegerForKey:@"inAppPriority"];
+    v5->_paymentNetworkIdentifier = [coderCopy decodeIntegerForKey:@"paymentNetworkIdentifier"];
+    v5->_auxiliary = [coderCopy decodeBoolForKey:@"isAuxiliary"];
+    v5->_paymentType = [coderCopy decodeIntegerForKey:@"paymentType"];
+    v5->_auxiliaryPaymentType = [coderCopy decodeIntegerForKey:@"auxiliaryPaymentType"];
+    v5->_contactlessPriority = [coderCopy decodeIntegerForKey:@"contactlessPriority"];
+    v5->_inAppPriority = [coderCopy decodeIntegerForKey:@"inAppPriority"];
     v54 = MEMORY[0x1E695DFD8];
     v55 = objc_opt_class();
     v56 = [v54 setWithObjects:{v55, objc_opt_class(), 0}];
-    v57 = [v4 decodeObjectOfClasses:v56 forKey:@"supportedInAppMerchantCountryCodes"];
+    v57 = [coderCopy decodeObjectOfClasses:v56 forKey:@"supportedInAppMerchantCountryCodes"];
     supportedInAppMerchantCountryCodes = v5->_supportedInAppMerchantCountryCodes;
     v5->_supportedInAppMerchantCountryCodes = v57;
 
     v59 = MEMORY[0x1E695DFD8];
     v60 = objc_opt_class();
     v61 = [v59 setWithObjects:{v60, objc_opt_class(), 0}];
-    v62 = [v4 decodeObjectOfClasses:v61 forKey:@"unsupportedInAppMerchantCountryCodes"];
+    v62 = [coderCopy decodeObjectOfClasses:v61 forKey:@"unsupportedInAppMerchantCountryCodes"];
     unsupportedInAppMerchantCountryCodes = v5->_unsupportedInAppMerchantCountryCodes;
     v5->_unsupportedInAppMerchantCountryCodes = v62;
 
     v64 = MEMORY[0x1E695DFD8];
     v65 = objc_opt_class();
     v66 = [v64 setWithObjects:{v65, objc_opt_class(), 0}];
-    v67 = [v4 decodeObjectOfClasses:v66 forKey:@"supportedTransitNetworkIdentifiers"];
+    v67 = [coderCopy decodeObjectOfClasses:v66 forKey:@"supportedTransitNetworkIdentifiers"];
     supportedTransitNetworkIdentifiers = v5->_supportedTransitNetworkIdentifiers;
     v5->_supportedTransitNetworkIdentifiers = v67;
 
-    v5->_supportsInstantFundsIn = [v4 decodeBoolForKey:@"supportsInstantFundsIn"];
-    v5->_fundingSourcePaymentType = [v4 decodeIntegerForKey:@"fundingSourcePaymentType"];
-    v5->_requiresConsentForDataRelease = [v4 decodeBoolForKey:@"requiresConsentForDataRelease"];
+    v5->_supportsInstantFundsIn = [coderCopy decodeBoolForKey:@"supportsInstantFundsIn"];
+    v5->_fundingSourcePaymentType = [coderCopy decodeIntegerForKey:@"fundingSourcePaymentType"];
+    v5->_requiresConsentForDataRelease = [coderCopy decodeBoolForKey:@"requiresConsentForDataRelease"];
     v69 = MEMORY[0x1E695DFD8];
     v70 = objc_opt_class();
     v71 = [v69 setWithObjects:{v70, objc_opt_class(), 0}];
-    v72 = [v4 decodeObjectOfClasses:v71 forKey:@"subcredentials"];
+    v72 = [coderCopy decodeObjectOfClasses:v71 forKey:@"subcredentials"];
     subcredentials = v5->_subcredentials;
     v5->_subcredentials = v72;
 
-    v74 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
+    v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
     transactionSourceIdentifier = v5->_transactionSourceIdentifier;
     v5->_transactionSourceIdentifier = v74;
 
-    v5->_shareable = [v4 decodeBoolForKey:@"shareable"];
-    v76 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
+    v5->_shareable = [coderCopy decodeBoolForKey:@"shareable"];
+    v76 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
     readerIdentifier = v5->_readerIdentifier;
     v5->_readerIdentifier = v76;
 
     v78 = objc_alloc(MEMORY[0x1E695DFD8]);
     v79 = objc_opt_class();
     v80 = [v78 initWithObjects:{v79, objc_opt_class(), 0}];
-    v81 = [v4 decodeObjectOfClasses:v80 forKey:@"associatedReaders"];
+    v81 = [coderCopy decodeObjectOfClasses:v80 forKey:@"associatedReaders"];
     associatedReaders = v5->_associatedReaders;
     v5->_associatedReaders = v81;
 
@@ -1513,102 +1513,102 @@ LABEL_158:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   applicationIdentifier = self->_applicationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
-  [v5 encodeObject:self->_secureElementIdentifier forKey:@"secureElementIdentifier"];
-  [v5 encodeObject:self->_dpanIdentifier forKey:@"DPANIdentifier"];
-  [v5 encodeObject:self->_dpanSuffix forKey:@"DPANSuffix"];
-  [v5 encodeObject:self->_sanitizedDPAN forKey:@"sanitizedDPAN"];
-  [v5 encodeObject:self->_displayName forKey:@"applicationDescription"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_suspendedReason forKey:@"suspendedReason"];
-  [v5 encodeBool:self->_supportsContactlessPayment forKey:@"supportsContactlessPayment"];
-  [v5 encodeBool:self->_supportsServiceMode forKey:@"supportsServiceMode"];
-  [v5 encodeBool:self->_supportsInAppPayment forKey:@"supportsInAppPayment"];
-  [v5 encodeBool:self->_supportsMerchantTokens forKey:@"supportsMerchantTokens"];
-  [v5 encodeBool:self->_hasMerchantTokens forKey:@"hasMerchantTokens"];
-  [v5 encodeBool:self->_hadMerchantTokens forKey:@"hadMerchantTokens"];
-  [v5 encodeObject:self->_apanIdentifier forKey:@"APANIdentifier"];
-  [v5 encodeObject:self->_apanSuffix forKey:@"APANSuffix"];
-  [v5 encodeObject:self->_virtualCardIdentifier forKey:@"VPANIdentifier"];
-  [v5 encodeObject:self->_virtualCardSuffix forKey:@"VPANSuffix"];
-  [v5 encodeObject:self->_supportsVirtualCardNumber forKey:@"supportsVirtualCardNumber"];
-  [v5 encodeInteger:self->_virtualCardVPANOrigin forKey:@"virtualCardNumberOrigin"];
-  [v5 encodeObject:self->_virtualCardRefreshTypeNumber forKey:@"virtualCardRefreshType"];
-  [v5 encodeObject:self->_supportsMultiTokens forKey:@"supportsMultiTokens"];
-  [v5 encodeBool:self->_supportsBarcodePayment forKey:@"supportsBarcodePayment"];
-  [v5 encodeBool:self->_supportsOptionalAuthentication forKey:@"supportsOptionalAuthentication"];
-  [v5 encodeObject:self->_supportedExpressModes forKey:@"supportedExpressModes"];
-  [v5 encodeObject:self->_automaticSelectionCriteria forKey:@"automaticSelectionCriteria"];
-  [v5 encodeObject:self->_appletDataFormat forKey:@"appletDataFormat"];
-  [v5 encodeObject:self->_appletCurrencyCode forKey:@"appletCurrencyCode"];
-  [v5 encodeBool:self->_requiresDeferredAuthorization forKey:@"requiresDeferredAuthorization"];
-  [v5 encodeObject:self->_transitProperties forKey:@"transitPassProperties"];
-  [v5 encodeBool:self->_auxiliary forKey:@"isAuxiliary"];
-  [v5 encodeInteger:self->_paymentNetworkIdentifier forKey:@"paymentNetworkIdentifier"];
-  [v5 encodeInteger:self->_paymentType forKey:@"paymentType"];
-  [v5 encodeInteger:self->_auxiliaryPaymentType forKey:@"auxiliaryPaymentType"];
-  [v5 encodeBool:self->_supportsInstantFundsIn forKey:@"supportsInstantFundsIn"];
-  [v5 encodeInteger:self->_fundingSourcePaymentType forKey:@"fundingSourcePaymentType"];
-  [v5 encodeBool:self->_requiresConsentForDataRelease forKey:@"requiresConsentForDataRelease"];
-  [v5 encodeInteger:self->_contactlessPriority forKey:@"contactlessPriority"];
-  [v5 encodeInteger:self->_inAppPriority forKey:@"inAppPriority"];
-  [v5 encodeObject:self->_inAppPINRequiredAmount forKey:@"inAppPINRequiredAmount"];
-  [v5 encodeObject:self->_inAppPINRequiredCurrency forKey:@"inAppPINRequiredCurrency"];
-  [v5 encodeObject:self->_supportedInAppMerchantCountryCodes forKey:@"supportedInAppMerchantCountryCodes"];
-  [v5 encodeObject:self->_unsupportedInAppMerchantCountryCodes forKey:@"unsupportedInAppMerchantCountryCodes"];
-  [v5 encodeObject:self->_supportedTransitNetworkIdentifiers forKey:@"supportedTransitNetworkIdentifiers"];
-  [v5 encodeObject:self->_subcredentials forKey:@"subcredentials"];
-  [v5 encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
-  [v5 encodeBool:self->_shareable forKey:@"shareable"];
-  [v5 encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
-  [v5 encodeObject:self->_associatedReaders forKey:@"associatedReaders"];
+  coderCopy = coder;
+  [coderCopy encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
+  [coderCopy encodeObject:self->_secureElementIdentifier forKey:@"secureElementIdentifier"];
+  [coderCopy encodeObject:self->_dpanIdentifier forKey:@"DPANIdentifier"];
+  [coderCopy encodeObject:self->_dpanSuffix forKey:@"DPANSuffix"];
+  [coderCopy encodeObject:self->_sanitizedDPAN forKey:@"sanitizedDPAN"];
+  [coderCopy encodeObject:self->_displayName forKey:@"applicationDescription"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_suspendedReason forKey:@"suspendedReason"];
+  [coderCopy encodeBool:self->_supportsContactlessPayment forKey:@"supportsContactlessPayment"];
+  [coderCopy encodeBool:self->_supportsServiceMode forKey:@"supportsServiceMode"];
+  [coderCopy encodeBool:self->_supportsInAppPayment forKey:@"supportsInAppPayment"];
+  [coderCopy encodeBool:self->_supportsMerchantTokens forKey:@"supportsMerchantTokens"];
+  [coderCopy encodeBool:self->_hasMerchantTokens forKey:@"hasMerchantTokens"];
+  [coderCopy encodeBool:self->_hadMerchantTokens forKey:@"hadMerchantTokens"];
+  [coderCopy encodeObject:self->_apanIdentifier forKey:@"APANIdentifier"];
+  [coderCopy encodeObject:self->_apanSuffix forKey:@"APANSuffix"];
+  [coderCopy encodeObject:self->_virtualCardIdentifier forKey:@"VPANIdentifier"];
+  [coderCopy encodeObject:self->_virtualCardSuffix forKey:@"VPANSuffix"];
+  [coderCopy encodeObject:self->_supportsVirtualCardNumber forKey:@"supportsVirtualCardNumber"];
+  [coderCopy encodeInteger:self->_virtualCardVPANOrigin forKey:@"virtualCardNumberOrigin"];
+  [coderCopy encodeObject:self->_virtualCardRefreshTypeNumber forKey:@"virtualCardRefreshType"];
+  [coderCopy encodeObject:self->_supportsMultiTokens forKey:@"supportsMultiTokens"];
+  [coderCopy encodeBool:self->_supportsBarcodePayment forKey:@"supportsBarcodePayment"];
+  [coderCopy encodeBool:self->_supportsOptionalAuthentication forKey:@"supportsOptionalAuthentication"];
+  [coderCopy encodeObject:self->_supportedExpressModes forKey:@"supportedExpressModes"];
+  [coderCopy encodeObject:self->_automaticSelectionCriteria forKey:@"automaticSelectionCriteria"];
+  [coderCopy encodeObject:self->_appletDataFormat forKey:@"appletDataFormat"];
+  [coderCopy encodeObject:self->_appletCurrencyCode forKey:@"appletCurrencyCode"];
+  [coderCopy encodeBool:self->_requiresDeferredAuthorization forKey:@"requiresDeferredAuthorization"];
+  [coderCopy encodeObject:self->_transitProperties forKey:@"transitPassProperties"];
+  [coderCopy encodeBool:self->_auxiliary forKey:@"isAuxiliary"];
+  [coderCopy encodeInteger:self->_paymentNetworkIdentifier forKey:@"paymentNetworkIdentifier"];
+  [coderCopy encodeInteger:self->_paymentType forKey:@"paymentType"];
+  [coderCopy encodeInteger:self->_auxiliaryPaymentType forKey:@"auxiliaryPaymentType"];
+  [coderCopy encodeBool:self->_supportsInstantFundsIn forKey:@"supportsInstantFundsIn"];
+  [coderCopy encodeInteger:self->_fundingSourcePaymentType forKey:@"fundingSourcePaymentType"];
+  [coderCopy encodeBool:self->_requiresConsentForDataRelease forKey:@"requiresConsentForDataRelease"];
+  [coderCopy encodeInteger:self->_contactlessPriority forKey:@"contactlessPriority"];
+  [coderCopy encodeInteger:self->_inAppPriority forKey:@"inAppPriority"];
+  [coderCopy encodeObject:self->_inAppPINRequiredAmount forKey:@"inAppPINRequiredAmount"];
+  [coderCopy encodeObject:self->_inAppPINRequiredCurrency forKey:@"inAppPINRequiredCurrency"];
+  [coderCopy encodeObject:self->_supportedInAppMerchantCountryCodes forKey:@"supportedInAppMerchantCountryCodes"];
+  [coderCopy encodeObject:self->_unsupportedInAppMerchantCountryCodes forKey:@"unsupportedInAppMerchantCountryCodes"];
+  [coderCopy encodeObject:self->_supportedTransitNetworkIdentifiers forKey:@"supportedTransitNetworkIdentifiers"];
+  [coderCopy encodeObject:self->_subcredentials forKey:@"subcredentials"];
+  [coderCopy encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
+  [coderCopy encodeBool:self->_shareable forKey:@"shareable"];
+  [coderCopy encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
+  [coderCopy encodeObject:self->_associatedReaders forKey:@"associatedReaders"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentApplication allocWithZone:](PKPaymentApplication init];
-  v6 = [(NSString *)self->_applicationIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_applicationIdentifier copyWithZone:zone];
   applicationIdentifier = v5->_applicationIdentifier;
   v5->_applicationIdentifier = v6;
 
-  v8 = [(NSString *)self->_secureElementIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_secureElementIdentifier copyWithZone:zone];
   secureElementIdentifier = v5->_secureElementIdentifier;
   v5->_secureElementIdentifier = v8;
 
-  v10 = [(NSString *)self->_dpanIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_dpanIdentifier copyWithZone:zone];
   dpanIdentifier = v5->_dpanIdentifier;
   v5->_dpanIdentifier = v10;
 
-  v12 = [(NSString *)self->_dpanSuffix copyWithZone:a3];
+  v12 = [(NSString *)self->_dpanSuffix copyWithZone:zone];
   dpanSuffix = v5->_dpanSuffix;
   v5->_dpanSuffix = v12;
 
-  v14 = [(NSString *)self->_sanitizedDPAN copyWithZone:a3];
+  v14 = [(NSString *)self->_sanitizedDPAN copyWithZone:zone];
   sanitizedDPAN = v5->_sanitizedDPAN;
   v5->_sanitizedDPAN = v14;
 
-  v16 = [(NSDecimalNumber *)self->_inAppPINRequiredAmount copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_inAppPINRequiredAmount copyWithZone:zone];
   inAppPINRequiredAmount = v5->_inAppPINRequiredAmount;
   v5->_inAppPINRequiredAmount = v16;
 
-  v18 = [(NSString *)self->_inAppPINRequiredCurrency copyWithZone:a3];
+  v18 = [(NSString *)self->_inAppPINRequiredCurrency copyWithZone:zone];
   inAppPINRequiredCurrency = v5->_inAppPINRequiredCurrency;
   v5->_inAppPINRequiredCurrency = v18;
 
-  v20 = [(NSString *)self->_displayName copyWithZone:a3];
+  v20 = [(NSString *)self->_displayName copyWithZone:zone];
   displayName = v5->_displayName;
   v5->_displayName = v20;
 
   v5->_state = self->_state;
-  v22 = [(NSString *)self->_suspendedReason copyWithZone:a3];
+  v22 = [(NSString *)self->_suspendedReason copyWithZone:zone];
   suspendedReason = v5->_suspendedReason;
   v5->_suspendedReason = v22;
 
-  v24 = [(NSString *)self->_transactionSourceIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_transactionSourceIdentifier copyWithZone:zone];
   transactionSourceIdentifier = v5->_transactionSourceIdentifier;
   v5->_transactionSourceIdentifier = v24;
 
@@ -1617,56 +1617,56 @@ LABEL_158:
   v5->_supportsMerchantTokens = self->_supportsMerchantTokens;
   v5->_hasMerchantTokens = self->_hasMerchantTokens;
   v5->_hadMerchantTokens = self->_hadMerchantTokens;
-  v26 = [(NSString *)self->_apanIdentifier copyWithZone:a3];
+  v26 = [(NSString *)self->_apanIdentifier copyWithZone:zone];
   apanIdentifier = v5->_apanIdentifier;
   v5->_apanIdentifier = v26;
 
-  v28 = [(NSString *)self->_apanSuffix copyWithZone:a3];
+  v28 = [(NSString *)self->_apanSuffix copyWithZone:zone];
   apanSuffix = v5->_apanSuffix;
   v5->_apanSuffix = v28;
 
-  v30 = [(NSString *)self->_virtualCardIdentifier copyWithZone:a3];
+  v30 = [(NSString *)self->_virtualCardIdentifier copyWithZone:zone];
   virtualCardIdentifier = v5->_virtualCardIdentifier;
   v5->_virtualCardIdentifier = v30;
 
-  v32 = [(NSString *)self->_virtualCardSuffix copyWithZone:a3];
+  v32 = [(NSString *)self->_virtualCardSuffix copyWithZone:zone];
   virtualCardSuffix = v5->_virtualCardSuffix;
   v5->_virtualCardSuffix = v32;
 
-  v34 = [(NSNumber *)self->_supportsVirtualCardNumber copyWithZone:a3];
+  v34 = [(NSNumber *)self->_supportsVirtualCardNumber copyWithZone:zone];
   supportsVirtualCardNumber = v5->_supportsVirtualCardNumber;
   v5->_supportsVirtualCardNumber = v34;
 
   v5->_virtualCardVPANOrigin = self->_virtualCardVPANOrigin;
-  v36 = [(NSNumber *)self->_virtualCardRefreshTypeNumber copyWithZone:a3];
+  v36 = [(NSNumber *)self->_virtualCardRefreshTypeNumber copyWithZone:zone];
   virtualCardRefreshTypeNumber = v5->_virtualCardRefreshTypeNumber;
   v5->_virtualCardRefreshTypeNumber = v36;
 
-  v38 = [(NSNumber *)self->_supportsMultiTokens copyWithZone:a3];
+  v38 = [(NSNumber *)self->_supportsMultiTokens copyWithZone:zone];
   supportsMultiTokens = v5->_supportsMultiTokens;
   v5->_supportsMultiTokens = v38;
 
   v5->_supportsBarcodePayment = self->_supportsBarcodePayment;
   v5->_supportsOptionalAuthentication = self->_supportsOptionalAuthentication;
   v5->_supportsServiceMode = self->_supportsServiceMode;
-  v40 = [(NSArray *)self->_supportedExpressModes copyWithZone:a3];
+  v40 = [(NSArray *)self->_supportedExpressModes copyWithZone:zone];
   supportedExpressModes = v5->_supportedExpressModes;
   v5->_supportedExpressModes = v40;
 
-  v42 = [(NSArray *)self->_automaticSelectionCriteria copyWithZone:a3];
+  v42 = [(NSArray *)self->_automaticSelectionCriteria copyWithZone:zone];
   automaticSelectionCriteria = v5->_automaticSelectionCriteria;
   v5->_automaticSelectionCriteria = v42;
 
-  v44 = [(NSString *)self->_appletDataFormat copyWithZone:a3];
+  v44 = [(NSString *)self->_appletDataFormat copyWithZone:zone];
   appletDataFormat = v5->_appletDataFormat;
   v5->_appletDataFormat = v44;
 
-  v46 = [(NSString *)self->_appletCurrencyCode copyWithZone:a3];
+  v46 = [(NSString *)self->_appletCurrencyCode copyWithZone:zone];
   appletCurrencyCode = v5->_appletCurrencyCode;
   v5->_appletCurrencyCode = v46;
 
   v5->_requiresDeferredAuthorization = self->_requiresDeferredAuthorization;
-  v48 = [(PKStoredValuePassProperties *)self->_transitProperties copyWithZone:a3];
+  v48 = [(PKStoredValuePassProperties *)self->_transitProperties copyWithZone:zone];
   transitProperties = v5->_transitProperties;
   v5->_transitProperties = v48;
 
@@ -1679,28 +1679,28 @@ LABEL_158:
   v5->_supportsInstantFundsIn = self->_supportsInstantFundsIn;
   v5->_fundingSourcePaymentType = self->_fundingSourcePaymentType;
   v5->_requiresConsentForDataRelease = self->_requiresConsentForDataRelease;
-  v50 = [(NSArray *)self->_supportedInAppMerchantCountryCodes copyWithZone:a3];
+  v50 = [(NSArray *)self->_supportedInAppMerchantCountryCodes copyWithZone:zone];
   supportedInAppMerchantCountryCodes = v5->_supportedInAppMerchantCountryCodes;
   v5->_supportedInAppMerchantCountryCodes = v50;
 
-  v52 = [(NSArray *)self->_unsupportedInAppMerchantCountryCodes copyWithZone:a3];
+  v52 = [(NSArray *)self->_unsupportedInAppMerchantCountryCodes copyWithZone:zone];
   unsupportedInAppMerchantCountryCodes = v5->_unsupportedInAppMerchantCountryCodes;
   v5->_unsupportedInAppMerchantCountryCodes = v52;
 
-  v54 = [(NSArray *)self->_supportedTransitNetworkIdentifiers copyWithZone:a3];
+  v54 = [(NSArray *)self->_supportedTransitNetworkIdentifiers copyWithZone:zone];
   supportedTransitNetworkIdentifiers = v5->_supportedTransitNetworkIdentifiers;
   v5->_supportedTransitNetworkIdentifiers = v54;
 
-  v56 = [(NSSet *)self->_subcredentials copyWithZone:a3];
+  v56 = [(NSSet *)self->_subcredentials copyWithZone:zone];
   subcredentials = v5->_subcredentials;
   v5->_subcredentials = v56;
 
   v5->_shareable = self->_shareable;
-  v58 = [(NSData *)self->_readerIdentifier copyWithZone:a3];
+  v58 = [(NSData *)self->_readerIdentifier copyWithZone:zone];
   readerIdentifier = v5->_readerIdentifier;
   v5->_readerIdentifier = v58;
 
-  v60 = [(NSSet *)self->_associatedReaders copyWithZone:a3];
+  v60 = [(NSSet *)self->_associatedReaders copyWithZone:zone];
   associatedReaders = v5->_associatedReaders;
   v5->_associatedReaders = v60;
 
@@ -1711,20 +1711,20 @@ LABEL_158:
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(PKPaymentApplication *)self secureElementIdentifier];
-  v6 = [(PKPaymentApplication *)self applicationIdentifier];
-  v7 = [(PKPaymentApplication *)self displayName];
-  v8 = [(PKPaymentApplication *)self dpanIdentifier];
-  v9 = [(PKPaymentApplication *)self state];
-  v10 = [(PKPaymentApplication *)self stateAsString];
-  v11 = [(NSData *)self->_readerIdentifier hexEncoding];
-  v12 = [v3 stringWithFormat:@"<%@: %p SEID: %@; Application Identifier: %@; Display Name: %@; DPAN Identifier: %@; State: %d (%@); Reader Identifier: %@", v4, self, v5, v6, v7, v8, v9, v10, v11];;
+  secureElementIdentifier = [(PKPaymentApplication *)self secureElementIdentifier];
+  applicationIdentifier = [(PKPaymentApplication *)self applicationIdentifier];
+  displayName = [(PKPaymentApplication *)self displayName];
+  dpanIdentifier = [(PKPaymentApplication *)self dpanIdentifier];
+  state = [(PKPaymentApplication *)self state];
+  stateAsString = [(PKPaymentApplication *)self stateAsString];
+  hexEncoding = [(NSData *)self->_readerIdentifier hexEncoding];
+  v12 = [v3 stringWithFormat:@"<%@: %p SEID: %@; Application Identifier: %@; Display Name: %@; DPAN Identifier: %@; State: %d (%@); Reader Identifier: %@", v4, self, secureElementIdentifier, applicationIdentifier, displayName, dpanIdentifier, state, stateAsString, hexEncoding];;
 
   if ([(PKPaymentApplication *)self inAppPINRequired])
   {
-    v13 = [(PKPaymentApplication *)self inAppPINRequiredAmount];
-    v14 = [(PKPaymentApplication *)self inAppPINRequiredCurrency];
-    [v12 appendFormat:@"; InAppPINRequiredAmount: %@; InAppPINRequiredCurrency: %@", v13, v14];
+    inAppPINRequiredAmount = [(PKPaymentApplication *)self inAppPINRequiredAmount];
+    inAppPINRequiredCurrency = [(PKPaymentApplication *)self inAppPINRequiredCurrency];
+    [v12 appendFormat:@"; InAppPINRequiredAmount: %@; InAppPINRequiredCurrency: %@", inAppPINRequiredAmount, inAppPINRequiredCurrency];
   }
 
   [v12 appendFormat:@">"];
@@ -1735,12 +1735,12 @@ LABEL_158:
 
 - (NSString)stateAsString
 {
-  v3 = [(PKPaymentApplication *)self state];
-  if (v3 <= 5)
+  state = [(PKPaymentApplication *)self state];
+  if (state <= 5)
   {
-    if (v3 > 2)
+    if (state > 2)
     {
-      if (v3 == 3 || v3 == 4)
+      if (state == 3 || state == 4)
       {
         v4 = @"Requires Verification";
       }
@@ -1753,13 +1753,13 @@ LABEL_158:
       goto LABEL_24;
     }
 
-    if (v3 == 1)
+    if (state == 1)
     {
       v4 = @"Personalized";
       goto LABEL_24;
     }
 
-    if (v3 == 2)
+    if (state == 2)
     {
       v4 = @"Personalizing";
       goto LABEL_24;
@@ -1770,14 +1770,14 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v3 > 8)
+  if (state > 8)
   {
-    switch(v3)
+    switch(state)
     {
       case 9:
         v5 = MEMORY[0x1E696AEC0];
-        v6 = [(PKPaymentApplication *)self suspendedReason];
-        v4 = [v5 stringWithFormat:@"Suspended - Custom '%@'", v6];
+        suspendedReason = [(PKPaymentApplication *)self suspendedReason];
+        v4 = [v5 stringWithFormat:@"Suspended - Custom '%@'", suspendedReason];
 
         goto LABEL_24;
       case 10:
@@ -1791,12 +1791,12 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (v3 == 6)
+  if (state == 6)
   {
     v4 = @"Suspended - Issuer";
   }
 
-  else if (v3 == 7)
+  else if (state == 7)
   {
     v4 = @"Suspended - Lost Mode";
   }
@@ -1811,16 +1811,16 @@ LABEL_24:
   return v4;
 }
 
-- (BOOL)supportsWebPaymentMode:(int64_t)a3 withExclusionList:(id)a4 clientOSVersion:(id)a5
+- (BOOL)supportsWebPaymentMode:(int64_t)mode withExclusionList:(id)list clientOSVersion:(id)version
 {
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  listCopy = list;
+  versionCopy = version;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v7;
+  obj = listCopy;
   v9 = [obj countByEnumeratingWithState:&v51 objects:v63 count:16];
   if (!v9)
   {
@@ -1829,16 +1829,16 @@ LABEL_24:
   }
 
   v11 = v9;
-  v45 = v8;
-  v46 = a3;
-  v13 = a3 == 2 && v8 != 0;
+  v45 = versionCopy;
+  modeCopy = mode;
+  v13 = mode == 2 && versionCopy != 0;
   v48 = v13;
   v14 = *v52;
   v15 = @"PaymentNetworks";
   v16 = 0x1E696A000uLL;
   *&v10 = 138412546;
   v44 = v10;
-  v17 = self;
+  selfCopy2 = self;
   while (2)
   {
     v18 = 0;
@@ -1852,7 +1852,7 @@ LABEL_24:
 
       v19 = *(*(&v51 + 1) + 8 * v18);
       v20 = [v19 PKArrayForKey:{v15, v44}];
-      v21 = [*(v16 + 3480) numberWithInteger:v17->_paymentNetworkIdentifier];
+      v21 = [*(v16 + 3480) numberWithInteger:selfCopy2->_paymentNetworkIdentifier];
       v22 = [v20 containsObject:v21];
 
       if (!v22)
@@ -1873,7 +1873,7 @@ LABEL_24:
       {
 
 LABEL_20:
-        if (v46 == 1)
+        if (modeCopy == 1)
         {
           v28 = [v19 PKArrayForKey:@"LocalDeviceClasses"];
           if (v28)
@@ -1911,7 +1911,7 @@ LABEL_20:
         }
 
         v35 = v31 | v34;
-        v17 = self;
+        selfCopy2 = self;
         if ((v35 & 1) == 0)
         {
           goto LABEL_47;
@@ -1990,7 +1990,7 @@ LABEL_40:
 
   v41 = 1;
 LABEL_48:
-  v8 = v45;
+  versionCopy = v45;
 LABEL_49:
 
   return v41;
@@ -2051,10 +2051,10 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)supportsExpressForAutomaticSelectionCriteriaPassingTest:(id)a3
+- (BOOL)supportsExpressForAutomaticSelectionCriteriaPassingTest:(id)test
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   state = self->_state;
   v6 = state > 0xF;
   v7 = (1 << state) & 0x83DE;
@@ -2085,7 +2085,7 @@ LABEL_17:
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          if ([v13 supportsExpress] && (!v4 || (v4[2](v4, v13) & 1) != 0))
+          if ([v13 supportsExpress] && (!testCopy || (testCopy[2](testCopy, v13) & 1) != 0))
           {
             LOBYTE(v10) = 1;
             goto LABEL_19;
@@ -2108,20 +2108,20 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)supportsExpressForAutomaticSelectionTechnologyType:(int64_t)a3
+- (BOOL)supportsExpressForAutomaticSelectionTechnologyType:(int64_t)type
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __75__PKPaymentApplication_supportsExpressForAutomaticSelectionTechnologyType___block_invoke;
   v4[3] = &__block_descriptor_40_e43_B16__0__PKPassAutomaticSelectionCriterion_8l;
-  v4[4] = a3;
+  v4[4] = type;
   return [(PKPaymentApplication *)self supportsExpressForAutomaticSelectionCriteriaPassingTest:v4];
 }
 
-- (BOOL)supportsExpressMode:(id)a3
+- (BOOL)supportsExpressMode:(id)mode
 {
-  v4 = a3;
-  v5 = v4;
+  modeCopy = mode;
+  v5 = modeCopy;
   state = self->_state;
   v7 = state > 0xF;
   v8 = (1 << state) & 0x83DE;
@@ -2134,7 +2134,7 @@ LABEL_19:
   else
   {
     v10 = 0;
-    if (v4)
+    if (modeCopy)
     {
       supportedExpressModes = self->_supportedExpressModes;
       if (supportedExpressModes)
@@ -2147,11 +2147,11 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)supportsAutomaticSelectionForTCI:(id)a3
+- (BOOL)supportsAutomaticSelectionForTCI:(id)i
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  iCopy = i;
+  if (iCopy)
   {
     v18 = 0u;
     v19 = 0u;
@@ -2173,8 +2173,8 @@ LABEL_19:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 primaryTCIs];
-          if ([v11 containsObject:v4])
+          primaryTCIs = [v10 primaryTCIs];
+          if ([primaryTCIs containsObject:iCopy])
           {
 
 LABEL_15:
@@ -2182,8 +2182,8 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v12 = [v10 TCIs];
-          v13 = [v12 containsObject:v4];
+          tCIs = [v10 TCIs];
+          v13 = [tCIs containsObject:iCopy];
 
           if (v13)
           {
@@ -2242,60 +2242,60 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)isRequiredForMerchantInCountry:(id)a3
+- (BOOL)isRequiredForMerchantInCountry:(id)country
 {
-  v4 = a3;
-  v5 = [(PKPaymentApplication *)self supportedInAppMerchantCountryCodes];
-  v6 = [v5 containsObject:v4];
+  countryCopy = country;
+  supportedInAppMerchantCountryCodes = [(PKPaymentApplication *)self supportedInAppMerchantCountryCodes];
+  v6 = [supportedInAppMerchantCountryCodes containsObject:countryCopy];
 
   return v6;
 }
 
 - (BOOL)supportsTransit
 {
-  v3 = [(PKPaymentApplication *)self appletDataFormat];
-  if (!v3 || !@"transit.felica.suica")
+  appletDataFormat = [(PKPaymentApplication *)self appletDataFormat];
+  if (!appletDataFormat || !@"transit.felica.suica")
   {
-    if (@"transit.felica.suica" == v3)
+    if (@"transit.felica.suica" == appletDataFormat)
     {
       goto LABEL_4;
     }
 
 LABEL_6:
-    v4 = [(PKPaymentApplication *)self isParsedTransitApplication];
+    isParsedTransitApplication = [(PKPaymentApplication *)self isParsedTransitApplication];
     goto LABEL_7;
   }
 
-  if (([@"transit.felica.suica" isEqual:v3] & 1) == 0)
+  if (([@"transit.felica.suica" isEqual:appletDataFormat] & 1) == 0)
   {
     goto LABEL_6;
   }
 
 LABEL_4:
-  v4 = 1;
+  isParsedTransitApplication = 1;
 LABEL_7:
 
-  return v4;
+  return isParsedTransitApplication;
 }
 
-- (void)setFelicaProperties:(id)a3
+- (void)setFelicaProperties:(id)properties
 {
-  v4 = [a3 copy];
+  v4 = [properties copy];
   transitProperties = self->_transitProperties;
   self->_transitProperties = v4;
 }
 
 - (BOOL)supportsSuica
 {
-  v2 = [(PKPaymentApplication *)self appletDataFormat];
-  if (v2 && @"transit.felica.suica")
+  appletDataFormat = [(PKPaymentApplication *)self appletDataFormat];
+  if (appletDataFormat && @"transit.felica.suica")
   {
-    v3 = [@"transit.felica.suica" isEqual:v2];
+    v3 = [@"transit.felica.suica" isEqual:appletDataFormat];
   }
 
   else
   {
-    v3 = @"transit.felica.suica" == v2;
+    v3 = @"transit.felica.suica" == appletDataFormat;
   }
 
   return v3;
@@ -2303,8 +2303,8 @@ LABEL_7:
 
 - (BOOL)isParsedTransitApplication
 {
-  v2 = [(PKPaymentApplication *)self appletDataFormat];
-  v3 = [v2 hasPrefix:@"transit.apple"];
+  appletDataFormat = [(PKPaymentApplication *)self appletDataFormat];
+  v3 = [appletDataFormat hasPrefix:@"transit.apple"];
 
   return v3;
 }
@@ -2463,10 +2463,10 @@ LABEL_11:
 
 - (NSString)stationCodeProvider
 {
-  v2 = [(PKPaymentApplication *)self appletDataFormat];
-  if (!v2 || !@"transit.felica.suica")
+  appletDataFormat = [(PKPaymentApplication *)self appletDataFormat];
+  if (!appletDataFormat || !@"transit.felica.suica")
   {
-    if (@"transit.felica.suica" == v2)
+    if (@"transit.felica.suica" == appletDataFormat)
     {
       goto LABEL_4;
     }
@@ -2476,7 +2476,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (([@"transit.felica.suica" isEqual:v2] & 1) == 0)
+  if (([@"transit.felica.suica" isEqual:appletDataFormat] & 1) == 0)
   {
     goto LABEL_6;
   }
@@ -2484,9 +2484,9 @@ LABEL_6:
 LABEL_4:
   v3 = @"transit.felica.cjrc";
 LABEL_7:
-  if (!v2 || !@"transit.apple.bmac")
+  if (!appletDataFormat || !@"transit.apple.bmac")
   {
-    if (@"transit.apple.bmac" != v2)
+    if (@"transit.apple.bmac" != appletDataFormat)
     {
       goto LABEL_11;
     }
@@ -2494,7 +2494,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if ([@"transit.apple.bmac" isEqual:v2])
+  if ([@"transit.apple.bmac" isEqual:appletDataFormat])
   {
 LABEL_10:
     v4 = @"transit.apple.bmac";
@@ -2503,9 +2503,9 @@ LABEL_10:
   }
 
 LABEL_11:
-  if (!v2 || !@"transit.apple.sptcc")
+  if (!appletDataFormat || !@"transit.apple.sptcc")
   {
-    if (@"transit.apple.sptcc" != v2)
+    if (@"transit.apple.sptcc" != appletDataFormat)
     {
       goto LABEL_15;
     }
@@ -2513,7 +2513,7 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if ([@"transit.apple.sptcc" isEqual:v2])
+  if ([@"transit.apple.sptcc" isEqual:appletDataFormat])
   {
 LABEL_14:
     v5 = @"transit.apple.sptcc";
@@ -2522,9 +2522,9 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (!v2 || !@"transit.apple.mot")
+  if (!appletDataFormat || !@"transit.apple.mot")
   {
-    if (@"transit.apple.mot" != v2)
+    if (@"transit.apple.mot" != appletDataFormat)
     {
       goto LABEL_19;
     }
@@ -2532,7 +2532,7 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if ([@"transit.apple.mot" isEqual:v2])
+  if ([@"transit.apple.mot" isEqual:appletDataFormat])
   {
 LABEL_18:
     v6 = @"transit.apple.mot";
@@ -2541,9 +2541,9 @@ LABEL_18:
   }
 
 LABEL_19:
-  if (!v2 || !@"transit.apple.mifare")
+  if (!appletDataFormat || !@"transit.apple.mifare")
   {
-    if (@"transit.apple.mifare" != v2)
+    if (@"transit.apple.mifare" != appletDataFormat)
     {
       goto LABEL_23;
     }
@@ -2551,7 +2551,7 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if ([@"transit.apple.mifare" isEqual:v2])
+  if ([@"transit.apple.mifare" isEqual:appletDataFormat])
   {
 LABEL_22:
     v7 = @"transit.apple.mifare";
@@ -2560,9 +2560,9 @@ LABEL_22:
   }
 
 LABEL_23:
-  if (!v2 || !@"transit.apple.tmoney")
+  if (!appletDataFormat || !@"transit.apple.tmoney")
   {
-    if (@"transit.apple.tmoney" != v2)
+    if (@"transit.apple.tmoney" != appletDataFormat)
     {
       goto LABEL_27;
     }
@@ -2570,7 +2570,7 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  if ([@"transit.apple.tmoney" isEqual:v2])
+  if ([@"transit.apple.tmoney" isEqual:appletDataFormat])
   {
 LABEL_26:
     v8 = @"transit.apple.tmoney";
@@ -2579,9 +2579,9 @@ LABEL_26:
   }
 
 LABEL_27:
-  if (v2 && @"transit.apple.calypso.navigo")
+  if (appletDataFormat && @"transit.apple.calypso.navigo")
   {
-    if (([@"transit.apple.calypso.navigo" isEqual:v2] & 1) == 0)
+    if (([@"transit.apple.calypso.navigo" isEqual:appletDataFormat] & 1) == 0)
     {
       goto LABEL_31;
     }
@@ -2589,7 +2589,7 @@ LABEL_27:
     goto LABEL_30;
   }
 
-  if (@"transit.apple.calypso.navigo" == v2)
+  if (@"transit.apple.calypso.navigo" == appletDataFormat)
   {
 LABEL_30:
     v9 = @"com.apple.transit.navigo";
@@ -2739,8 +2739,8 @@ LABEL_31:
   inAppPINRequiredAmount = self->_inAppPINRequiredAmount;
   if (inAppPINRequiredAmount)
   {
-    v33 = [(NSDecimalNumber *)inAppPINRequiredAmount stringValue];
-    [v4 setObject:v33 forKeyedSubscript:@"inAppPINRequiredAmount"];
+    stringValue = [(NSDecimalNumber *)inAppPINRequiredAmount stringValue];
+    [v4 setObject:stringValue forKeyedSubscript:@"inAppPINRequiredAmount"];
   }
 
   inAppPINRequiredCurrency = self->_inAppPINRequiredCurrency;
@@ -2784,16 +2784,16 @@ LABEL_31:
 
   if ([(NSSet *)self->_subcredentials count])
   {
-    v42 = [(NSSet *)self->_subcredentials anyObject];
-    v43 = [v42 asDictionary];
-    [v4 setObject:v43 forKeyedSubscript:@"subcredential"];
+    anyObject = [(NSSet *)self->_subcredentials anyObject];
+    asDictionary = [anyObject asDictionary];
+    [v4 setObject:asDictionary forKeyedSubscript:@"subcredential"];
   }
 
   v44 = [MEMORY[0x1E696AD98] numberWithBool:self->_shareable];
   [v4 setObject:v44 forKeyedSubscript:@"shareable"];
 
-  v45 = [(NSData *)self->_readerIdentifier hexEncoding];
-  [v4 setObject:v45 forKeyedSubscript:@"readerIdentifier"];
+  hexEncoding = [(NSData *)self->_readerIdentifier hexEncoding];
+  [v4 setObject:hexEncoding forKeyedSubscript:@"readerIdentifier"];
 
   v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v56 = 0u;
@@ -2815,8 +2815,8 @@ LABEL_31:
           objc_enumerationMutation(v47);
         }
 
-        v52 = [*(*(&v56 + 1) + 8 * i) asDictionary];
-        [v46 addObject:v52];
+        asDictionary2 = [*(*(&v56 + 1) + 8 * i) asDictionary];
+        [v46 addObject:asDictionary2];
       }
 
       v49 = [(NSSet *)v47 countByEnumeratingWithState:&v56 objects:v60 count:16];
@@ -2843,26 +2843,26 @@ LABEL_31:
 
   else
   {
-    v4 = [(PKPaymentApplication *)self subcredentials];
-    v5 = [v4 anyObject];
-    v6 = [v5 identifier];
+    subcredentials = [(PKPaymentApplication *)self subcredentials];
+    anyObject = [subcredentials anyObject];
+    identifier = [anyObject identifier];
 
-    if ([v6 length])
+    if ([identifier length])
     {
       v13 = 0;
       v7 = [PKGetClassNFDigitalCarKeySession() vehicleReports:&v13];
       v8 = v13;
-      v9 = [v7 objectForKeyedSubscript:v6];
+      v9 = [v7 objectForKeyedSubscript:identifier];
       if (!v9)
       {
         v10 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [(PKPaymentApplication *)self applicationIdentifier];
+          applicationIdentifier = [(PKPaymentApplication *)self applicationIdentifier];
           *buf = 138412802;
-          v15 = v11;
+          v15 = applicationIdentifier;
           v16 = 2112;
-          v17 = v6;
+          v17 = identifier;
           v18 = 2112;
           v19 = v8;
           _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "PKPaymentApplication: failed to fetch vehicle report for (%@: %@) - %@.", buf, 0x20u);
@@ -2876,10 +2876,10 @@ LABEL_31:
   }
 }
 
-- (BOOL)supportsMultiTokensWithImplicitlyEnabledNetworks:(id)a3
+- (BOOL)supportsMultiTokensWithImplicitlyEnabledNetworks:(id)networks
 {
-  v4 = a3;
-  v5 = [(NSNumber *)self->_supportsMultiTokens BOOLValue];
+  networksCopy = networks;
+  bOOLValue = [(NSNumber *)self->_supportsMultiTokens BOOLValue];
   if (self->_supportsMultiTokens)
   {
     v6 = 0;
@@ -2888,10 +2888,10 @@ LABEL_31:
   else
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_paymentNetworkIdentifier];
-    v6 = [v4 containsObject:v7];
+    v6 = [networksCopy containsObject:v7];
   }
 
-  return (v5 | v6) & 1;
+  return (bOOLValue | v6) & 1;
 }
 
 - (BOOL)isShareable
@@ -2907,14 +2907,14 @@ LABEL_31:
   return v2;
 }
 
-- (BOOL)supportsDeviceAssessmentAccordingToService:(id)a3
+- (BOOL)supportsDeviceAssessmentAccordingToService:(id)service
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(PKPaymentApplication *)self networksSupportedAccordingToService:a3];
+  v4 = [(PKPaymentApplication *)self networksSupportedAccordingToService:service];
   if (v4)
   {
-    v5 = [(PKPaymentApplication *)self paymentNetworkIdentifier];
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+    paymentNetworkIdentifier = [(PKPaymentApplication *)self paymentNetworkIdentifier];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:paymentNetworkIdentifier];
     v7 = [v4 containsObject:v6];
 
     v8 = PKLogFacilityTypeGetObject(7uLL);
@@ -2927,7 +2927,7 @@ LABEL_31:
       }
 
       v11 = 134218242;
-      v12 = v5;
+      v12 = paymentNetworkIdentifier;
       v13 = 2080;
       v14 = v9;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Device assessment supports network %ld: %s", &v11, 0x16u);
@@ -2949,30 +2949,30 @@ LABEL_31:
   return v7;
 }
 
-- (id)networksSupportedAccordingToService:(id)a3
+- (id)networksSupportedAccordingToService:(id)service
 {
-  v3 = [(PKPaymentApplication *)self torinoFeatureFromService:a3];
+  v3 = [(PKPaymentApplication *)self torinoFeatureFromService:service];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 implicitFeatureSupportedNetworks];
+    implicitFeatureSupportedNetworks = [v3 implicitFeatureSupportedNetworks];
   }
 
   else
   {
-    v5 = 0;
+    implicitFeatureSupportedNetworks = 0;
   }
 
-  return v5;
+  return implicitFeatureSupportedNetworks;
 }
 
-- (id)torinoFeatureFromService:(id)a3
+- (id)torinoFeatureFromService:(id)service
 {
-  v3 = a3;
-  v4 = [v3 targetDevice];
+  serviceCopy = service;
+  targetDevice = [serviceCopy targetDevice];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 paymentWebService:v3 supportedRegionFeatureOfType:6];
+    v5 = [targetDevice paymentWebService:serviceCopy supportedRegionFeatureOfType:6];
   }
 
   else
@@ -2983,33 +2983,33 @@ LABEL_31:
   return v5;
 }
 
-- (unint64_t)vpanRefreshTypeAccordingToService:(id)a3
+- (unint64_t)vpanRefreshTypeAccordingToService:(id)service
 {
-  v4 = [PKWebServiceVirtualCardFeature virtualCardFeatureWithWebService:a3];
+  v4 = [PKWebServiceVirtualCardFeature virtualCardFeatureWithWebService:service];
   v5 = [v4 refreshTypeForPaymentApplication:self];
 
   return v5;
 }
 
-+ (BOOL)paymentApplicationSupportsMerchantCapabilties:(unint64_t)a3 paymentType:(unint64_t)a4
++ (BOOL)paymentApplicationSupportsMerchantCapabilties:(unint64_t)capabilties paymentType:(unint64_t)type
 {
   result = 1;
-  if ((a3 & 0x1C) != 0)
+  if ((capabilties & 0x1C) != 0)
   {
-    v5 = (a3 >> 4) & 1;
-    v6 = (a3 >> 2) & 1;
-    v7 = a4 != 1 || (a3 & 8) != 0;
-    if (a4 != 2)
+    v5 = (capabilties >> 4) & 1;
+    v6 = (capabilties >> 2) & 1;
+    v7 = type != 1 || (capabilties & 8) != 0;
+    if (type != 2)
     {
       LOBYTE(v6) = v7;
     }
 
-    if (a4 != 100)
+    if (type != 100)
     {
       LOBYTE(v5) = v6;
     }
 
-    if ((a3 & 0x1C) == 0x1C)
+    if ((capabilties & 0x1C) == 0x1C)
     {
       return 1;
     }

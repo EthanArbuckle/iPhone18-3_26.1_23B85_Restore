@@ -1,11 +1,11 @@
 @interface PKShareablePassMetadataPreview
 + (PKShareablePassMetadataPreview)previewWithTemplateIdentifier:(NSString *)templateIdentifier;
-- (PKShareablePassMetadataPreview)initWithCoder:(id)a3;
+- (PKShareablePassMetadataPreview)initWithCoder:(id)coder;
 - (PKShareablePassMetadataPreview)initWithTemplateIdentifier:(NSString *)templateIdentifier;
-- (id)_initWithPassThumbnail:(CGImage *)a3 localizedDescription:(id)a4 provisioningTemplateIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_extendableDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithPassThumbnail:(CGImage *)thumbnail localizedDescription:(id)description provisioningTemplateIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_extendableDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKShareablePassMetadataPreview
@@ -26,32 +26,32 @@
   return v5;
 }
 
-- (id)_initWithPassThumbnail:(CGImage *)a3 localizedDescription:(id)a4 provisioningTemplateIdentifier:(id)a5
+- (id)_initWithPassThumbnail:(CGImage *)thumbnail localizedDescription:(id)description provisioningTemplateIdentifier:(id)identifier
 {
-  v9 = a5;
-  v10 = [(PKAddPassMetadataPreview *)self initWithPassThumbnail:a3 localizedDescription:a4];
+  identifierCopy = identifier;
+  v10 = [(PKAddPassMetadataPreview *)self initWithPassThumbnail:thumbnail localizedDescription:description];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_provisioningTemplateIdentifier, a5);
+    objc_storeStrong(&v10->_provisioningTemplateIdentifier, identifier);
   }
 
   return v11;
 }
 
-- (PKShareablePassMetadataPreview)initWithCoder:(id)a3
+- (PKShareablePassMetadataPreview)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKShareablePassMetadataPreview;
-  v5 = [(PKAddPassMetadataPreview *)&v11 initWithCoder:v4];
+  v5 = [(PKAddPassMetadataPreview *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerDisplayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerDisplayName"];
     ownerDisplayName = v5->_ownerDisplayName;
     v5->_ownerDisplayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningTemplateIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningTemplateIdentifier"];
     provisioningTemplateIdentifier = v5->_provisioningTemplateIdentifier;
     v5->_provisioningTemplateIdentifier = v8;
   }
@@ -59,31 +59,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKShareablePassMetadataPreview;
-  v4 = a3;
-  [(PKAddPassMetadataPreview *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_ownerDisplayName forKey:{@"ownerDisplayName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_provisioningTemplateIdentifier forKey:@"provisioningTemplateIdentifier"];
+  coderCopy = coder;
+  [(PKAddPassMetadataPreview *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_ownerDisplayName forKey:{@"ownerDisplayName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_provisioningTemplateIdentifier forKey:@"provisioningTemplateIdentifier"];
 }
 
-- (void)_extendableDescription:(id)a3
+- (void)_extendableDescription:(id)description
 {
   v5.receiver = self;
   v5.super_class = PKShareablePassMetadataPreview;
-  v4 = a3;
-  [(PKAddPassMetadataPreview *)&v5 _extendableDescription:v4];
-  [v4 appendFormat:@"ownerDisplayName: '%@'; ", self->_ownerDisplayName];
-  [v4 appendFormat:@"provisioningTemplateIdentifier: '%@'; ", self->_provisioningTemplateIdentifier];
+  descriptionCopy = description;
+  [(PKAddPassMetadataPreview *)&v5 _extendableDescription:descriptionCopy];
+  [descriptionCopy appendFormat:@"ownerDisplayName: '%@'; ", self->_ownerDisplayName];
+  [descriptionCopy appendFormat:@"provisioningTemplateIdentifier: '%@'; ", self->_provisioningTemplateIdentifier];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = PKShareablePassMetadataPreview;
-  v4 = [(PKAddPassMetadataPreview *)&v10 copyWithZone:a3];
+  v4 = [(PKAddPassMetadataPreview *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_ownerDisplayName copy];
   v6 = v4[4];
   v4[4] = v5;

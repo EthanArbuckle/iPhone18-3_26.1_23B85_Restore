@@ -1,19 +1,19 @@
 @interface PRLowPowerModeMonitor
 - (BOOL)startMonitoring;
-- (PRLowPowerModeMonitor)initWithQueue:(id)a3 stateChangeHandler:(id)a4;
+- (PRLowPowerModeMonitor)initWithQueue:(id)queue stateChangeHandler:(id)handler;
 - (void)_initLowPowerModeListner;
-- (void)_lowPowerModeChanged:(id)a3;
+- (void)_lowPowerModeChanged:(id)changed;
 - (void)dealloc;
 - (void)stopMonitoring;
 @end
 
 @implementation PRLowPowerModeMonitor
 
-- (PRLowPowerModeMonitor)initWithQueue:(id)a3 stateChangeHandler:(id)a4
+- (PRLowPowerModeMonitor)initWithQueue:(id)queue stateChangeHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!queueCopy)
   {
     v15 = +[NSAssertionHandler currentHandler];
     [v15 handleFailureInMethod:a2 object:self file:@"PRLowPowerModeMonitor.mm" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
@@ -25,9 +25,9 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a3);
+    objc_storeStrong(&v10->_queue, queue);
     v11->_monitoring = 0;
-    v12 = objc_retainBlock(v9);
+    v12 = objc_retainBlock(handlerCopy);
     modeChangeHandler = v11->_modeChangeHandler;
     v11->_modeChangeHandler = v12;
 
@@ -79,7 +79,7 @@
   }
 }
 
-- (void)_lowPowerModeChanged:(id)a3
+- (void)_lowPowerModeChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;

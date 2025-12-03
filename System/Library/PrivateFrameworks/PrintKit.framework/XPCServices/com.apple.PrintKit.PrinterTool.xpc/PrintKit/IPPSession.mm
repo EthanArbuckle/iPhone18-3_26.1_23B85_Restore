@@ -1,12 +1,12 @@
 @interface IPPSession
 + (id)globalSession;
-- (id)_initWithBundleIdentifier:(id)a3 clientID:(int)a4 completeConfiguraton:(id)a5;
+- (id)_initWithBundleIdentifier:(id)identifier clientID:(int)d completeConfiguraton:(id)configuraton;
 - (id)debugDescription;
 - (id)getLogLeader;
-- (id)httpWithURL:(id)a3;
-- (id)ippBrowseInfo:(id)a3;
-- (id)ippEndpoint:(id)a3;
-- (id)ippURL:(id)a3;
+- (id)httpWithURL:(id)l;
+- (id)ippBrowseInfo:(id)info;
+- (id)ippEndpoint:(id)endpoint;
+- (id)ippURL:(id)l;
 - (void)dealloc;
 @end
 
@@ -24,18 +24,18 @@
   return v3;
 }
 
-- (id)_initWithBundleIdentifier:(id)a3 clientID:(int)a4 completeConfiguraton:(id)a5
+- (id)_initWithBundleIdentifier:(id)identifier clientID:(int)d completeConfiguraton:(id)configuraton
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  configuratonCopy = configuraton;
   v34.receiver = self;
   v34.super_class = IPPSession;
   v11 = [(IPPSession *)&v34 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_clientBundleIdentifier, a3);
-    v12->_clientID = a4;
+    objc_storeStrong(&v11->_clientBundleIdentifier, identifier);
+    v12->_clientID = d;
     v13 = [[IPPSessionDelegate alloc] initWithClientID:v12->_clientID];
     sessionDelegate = v12->_sessionDelegate;
     v12->_sessionDelegate = v13;
@@ -68,9 +68,9 @@
     }
 
     v27 = @"com.apple.prinkit";
-    if (v9)
+    if (identifierCopy)
     {
-      v27 = v9;
+      v27 = identifierCopy;
     }
 
     v39[0] = @"X-PrintKit-Origin";
@@ -80,15 +80,15 @@
     v28 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
     [v20 setHTTPAdditionalHeaders:v28];
 
-    if (v9)
+    if (identifierCopy)
     {
-      [v20 set_sourceApplicationBundleIdentifier:v9];
+      [v20 set_sourceApplicationBundleIdentifier:identifierCopy];
     }
 
     [v20 set_sourceApplicationSecondaryIdentifier:@"com.apple.PrintKit.PrinterTool"];
-    if (v10)
+    if (configuratonCopy)
     {
-      v10[2](v10, v20);
+      configuratonCopy[2](configuratonCopy, v20);
     }
 
     v29 = [NSURLSession sessionWithConfiguration:v20 delegate:v12->_sessionDelegate delegateQueue:v12->_operationQueue];
@@ -102,7 +102,7 @@
       *buf = 138543618;
       v36 = v32;
       v37 = 2114;
-      v38 = v9;
+      v38 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Created - session %{public}@ ident %{public}@", buf, 0x16u);
     }
   }
@@ -139,42 +139,42 @@
 
 - (id)debugDescription
 {
-  v3 = [(IPPSession *)self getLogLeader];
-  v4 = [(NSURLSession *)self->_URLSession configuration];
-  v5 = [v4 HTTPAdditionalHeaders];
-  v6 = [NSString stringWithFormat:@"%@ - http headers: %@", v3, v5];
+  getLogLeader = [(IPPSession *)self getLogLeader];
+  configuration = [(NSURLSession *)self->_URLSession configuration];
+  hTTPAdditionalHeaders = [configuration HTTPAdditionalHeaders];
+  v6 = [NSString stringWithFormat:@"%@ - http headers: %@", getLogLeader, hTTPAdditionalHeaders];
 
   return v6;
 }
 
-- (id)httpWithURL:(id)a3
+- (id)httpWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[platform_http_t alloc] initWithURL:v4 session:self];
+  lCopy = l;
+  v5 = [[platform_http_t alloc] initWithURL:lCopy session:self];
 
   return v5;
 }
 
-- (id)ippURL:(id)a3
+- (id)ippURL:(id)l
 {
-  v4 = a3;
-  v5 = [[IPPURL alloc] initWithSession:self url:v4];
+  lCopy = l;
+  v5 = [[IPPURL alloc] initWithSession:self url:lCopy];
 
   return v5;
 }
 
-- (id)ippEndpoint:(id)a3
+- (id)ippEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [[IPPEndpoint alloc] initWithSession:self endpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [[IPPEndpoint alloc] initWithSession:self endpoint:endpointCopy];
 
   return v5;
 }
 
-- (id)ippBrowseInfo:(id)a3
+- (id)ippBrowseInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[IPPBrowseInfo alloc] initWithSession:self browseInfo:v4];
+  infoCopy = info;
+  v5 = [[IPPBrowseInfo alloc] initWithSession:self browseInfo:infoCopy];
 
   return v5;
 }

@@ -8,8 +8,8 @@
 - (BOOL)isAccessibilityElement
 {
   v2 = [(ActionBarDirectionButtonAccessibility *)self safeSwiftValueForKey:@"textLabel"];
-  v3 = [v2 text];
-  v4 = [v3 length] != 0;
+  text = [v2 text];
+  v4 = [text length] != 0;
 
   return v4;
 }
@@ -26,10 +26,10 @@
     goto LABEL_13;
   }
 
-  v5 = [v4 image];
-  v6 = [v5 imageAsset];
+  image = [v4 image];
+  imageAsset = [image imageAsset];
 
-  v7 = [v6 safeStringForKey:@"assetName"];
+  v7 = [imageAsset safeStringForKey:@"assetName"];
   if ([v7 isEqualToString:@"car.fill"])
   {
     v8 = @"CAR_DIRECTIONS";
@@ -61,7 +61,7 @@ LABEL_12:
 
 LABEL_13:
   v10 = [(ActionBarDirectionButtonAccessibility *)self safeSwiftValueForKey:@"textLabel"];
-  v13 = [v10 accessibilityLabel];
+  accessibilityLabel = [v10 accessibilityLabel];
   v11 = __AXStringForVariables();
 
   return v11;

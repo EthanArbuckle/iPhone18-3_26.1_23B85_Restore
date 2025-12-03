@@ -9,7 +9,7 @@
 - (BOOL)supportsMultiUser;
 - (BOOL)watchPlatform;
 - (RTPlatform_MobileGestalt)init;
-- (RTPlatform_MobileGestalt)initWithNanoRegistry:(id)a3 userDefaults:(id)a4;
+- (RTPlatform_MobileGestalt)initWithNanoRegistry:(id)registry userDefaults:(id)defaults;
 - (id)deviceClass;
 - (id)productType;
 - (id)systemModel;
@@ -36,11 +36,11 @@
 
 - (BOOL)iPhoneDevice
 {
-  v2 = [(RTPlatform_MobileGestalt *)self deviceClass];
-  v3 = v2;
-  if (v2)
+  deviceClass = [(RTPlatform_MobileGestalt *)self deviceClass];
+  v3 = deviceClass;
+  if (deviceClass)
   {
-    v4 = [v2 isEqualToString:@"iPhone"];
+    v4 = [deviceClass isEqualToString:@"iPhone"];
   }
 
   else
@@ -61,18 +61,18 @@
 - (RTPlatform_MobileGestalt)init
 {
   v3 = objc_alloc_init(RTNanoRegistry);
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [(RTPlatform_MobileGestalt *)self initWithNanoRegistry:v3 userDefaults:v4];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [(RTPlatform_MobileGestalt *)self initWithNanoRegistry:v3 userDefaults:standardUserDefaults];
 
   return v5;
 }
 
-- (RTPlatform_MobileGestalt)initWithNanoRegistry:(id)a3 userDefaults:(id)a4
+- (RTPlatform_MobileGestalt)initWithNanoRegistry:(id)registry userDefaults:(id)defaults
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  registryCopy = registry;
+  defaultsCopy = defaults;
+  if (defaultsCopy)
   {
     v14.receiver = self;
     v14.super_class = RTPlatform_MobileGestalt;
@@ -80,12 +80,12 @@
     p_isa = &v9->super.super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_userDefaults, a4);
-      objc_storeStrong(p_isa + 2, a3);
+      objc_storeStrong(&v9->_userDefaults, defaults);
+      objc_storeStrong(p_isa + 2, registry);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -100,10 +100,10 @@
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: userDefaults (in %s:%d)", buf, 0x12u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)userAssignedDeviceName
@@ -111,12 +111,12 @@
   v2 = MGCopyAnswer();
   if (!v2)
   {
-    v3 = [MEMORY[0x277CCAA58] currentHost];
-    v4 = [v3 name];
+    currentHost = [MEMORY[0x277CCAA58] currentHost];
+    name = [currentHost name];
 
-    if (v4)
+    if (name)
     {
-      [v3 name];
+      [currentHost name];
     }
 
     else
@@ -175,7 +175,7 @@
       }
     }
 
-    v4 = [(__CFString *)v2 BOOLValue];
+    bOOLValue = [(__CFString *)v2 BOOLValue];
   }
 
   else
@@ -185,13 +185,13 @@
     {
       v6 = v5;
       v7 = CFGetTypeID(v5);
-      v4 = v7 == CFBooleanGetTypeID() && CFBooleanGetValue(v6) != 0;
+      bOOLValue = v7 == CFBooleanGetTypeID() && CFBooleanGetValue(v6) != 0;
       CFRelease(v6);
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
   }
 
@@ -201,7 +201,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = @"NO";
-      if (v4)
+      if (bOOLValue)
       {
         v9 = @"YES";
       }
@@ -212,7 +212,7 @@
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMultiUser
@@ -232,14 +232,14 @@
       }
     }
 
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
     v5 = MKBUserTypeDeviceMode();
     v6 = [v5 objectForKey:*MEMORY[0x277D28AD0]];
-    v4 = [v6 isEqualToString:*MEMORY[0x277D28AD8]];
+    bOOLValue = [v6 isEqualToString:*MEMORY[0x277D28AD8]];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -248,7 +248,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = @"NO";
-      if (v4)
+      if (bOOLValue)
       {
         v8 = @"YES";
       }
@@ -259,7 +259,7 @@
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)systemModel
@@ -286,20 +286,20 @@
 
 - (BOOL)iPhonePlatform
 {
-  v2 = [(RTPlatform_MobileGestalt *)self deviceClass];
-  v3 = v2;
-  v4 = v2 && (([v2 isEqualToString:@"iPhone"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"iPad") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"iPod"));
+  deviceClass = [(RTPlatform_MobileGestalt *)self deviceClass];
+  v3 = deviceClass;
+  v4 = deviceClass && (([deviceClass isEqualToString:@"iPhone"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"iPad") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"iPod"));
 
   return v4;
 }
 
 - (BOOL)watchPlatform
 {
-  v2 = [(RTPlatform_MobileGestalt *)self deviceClass];
-  v3 = v2;
-  if (v2)
+  deviceClass = [(RTPlatform_MobileGestalt *)self deviceClass];
+  v3 = deviceClass;
+  if (deviceClass)
   {
-    v4 = [v2 isEqualToString:@"Watch"];
+    v4 = [deviceClass isEqualToString:@"Watch"];
   }
 
   else
@@ -312,11 +312,11 @@
 
 - (BOOL)realityDevice
 {
-  v2 = [(RTPlatform_MobileGestalt *)self deviceClass];
-  v3 = v2;
-  if (v2)
+  deviceClass = [(RTPlatform_MobileGestalt *)self deviceClass];
+  v3 = deviceClass;
+  if (deviceClass)
   {
-    v4 = [v2 isEqualToString:@"RealityDevice"];
+    v4 = [deviceClass isEqualToString:@"RealityDevice"];
   }
 
   else

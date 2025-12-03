@@ -2,54 +2,54 @@
 + (id)logCategory;
 - (BOOL)_finishedAllTransports;
 - (BOOL)expectsResponse;
-- (HMDModernTransportMessageContext)initWithMessage:(id)a3 options:(id)a4 completionHandler:(id)a5 dateProvider:(id)a6 timerProvider:(id)a7;
-- (HMDModernTransportMessageContext)initWithMessage:(id)a3 options:(id)a4 completionHandler:(id)a5 dateProvider:(id)a6 timerProvider:(id)a7 activityFactory:(id)a8 logEventSubmitter:(id)a9;
+- (HMDModernTransportMessageContext)initWithMessage:(id)message options:(id)options completionHandler:(id)handler dateProvider:(id)provider timerProvider:(id)timerProvider;
+- (HMDModernTransportMessageContext)initWithMessage:(id)message options:(id)options completionHandler:(id)handler dateProvider:(id)provider timerProvider:(id)timerProvider activityFactory:(id)factory logEventSubmitter:(id)submitter;
 - (NSMapTable)inProgressTransportToStartTimeMap;
 - (NSSet)inProgressTransports;
 - (double)timeout;
 - (double)timeoutRemaining;
-- (id)_activityForTransport:(id)a1;
+- (id)_activityForTransport:(id)transport;
 - (id)_attemptedTransports;
-- (id)preparedMessageWithTimeout:(double)a3;
-- (unint64_t)retriesRemainingForTransport:(id)a3;
-- (void)_completeTransportActivity:(void *)a3 txError:(void *)a4 rxError:;
-- (void)completeSendingOverTransport:(id)a3 withError:(id)a4;
-- (void)decrementRetriesForTransport:(id)a3;
+- (id)preparedMessageWithTimeout:(double)timeout;
+- (unint64_t)retriesRemainingForTransport:(id)transport;
+- (void)_completeTransportActivity:(void *)activity txError:(void *)error rxError:;
+- (void)completeSendingOverTransport:(id)transport withError:(id)error;
+- (void)decrementRetriesForTransport:(id)transport;
 - (void)done;
-- (void)receivedResponseOverTransport:(id)a3 withError:(id)a4;
-- (void)startResponseTimerWithTimeInterval:(double)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)startSendingOverTransport:(id)a3;
-- (void)startTransportFallbackTimerWithTimeInterval:(double)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)timerDidFire:(id)a3;
+- (void)receivedResponseOverTransport:(id)transport withError:(id)error;
+- (void)startResponseTimerWithTimeInterval:(double)interval queue:(id)queue completionHandler:(id)handler;
+- (void)startSendingOverTransport:(id)transport;
+- (void)startTransportFallbackTimerWithTimeInterval:(double)interval queue:(id)queue completionHandler:(id)handler;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDModernTransportMessageContext
 
 - (id)_attemptedTransports
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[9] transports];
-    v3 = [v2 mutableCopy];
+    transports = [self[9] transports];
+    v3 = [transports mutableCopy];
 
-    [v3 minusSet:v1[1]];
-    v1 = [v3 copy];
+    [v3 minusSet:selfCopy[1]];
+    selfCopy = [v3 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)done
 {
   v26[7] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDModernTransportMessageContext *)self responseTimer];
-  [v3 cancel];
+  responseTimer = [(HMDModernTransportMessageContext *)self responseTimer];
+  [responseTimer cancel];
 
   [(HMDModernTransportMessageContext *)self setResponseTimer:0];
   [(HMDModernTransportMessageContext *)self setResponseCompletionBlock:0];
-  v4 = [(HMDModernTransportMessageContext *)self fallbackTimer];
-  [v4 cancel];
+  fallbackTimer = [(HMDModernTransportMessageContext *)self fallbackTimer];
+  [fallbackTimer cancel];
 
   [(HMDModernTransportMessageContext *)self setFallbackTimer:0];
   [(HMDModernTransportMessageContext *)self setFallbackCompletionBlock:0];
@@ -72,15 +72,15 @@ LABEL_7:
 
   v24 = 0;
 LABEL_8:
-  v6 = [(HMDModernTransportMessageContext *)self dateProvider];
-  [v6 timeIntervalSince1970];
+  dateProvider = [(HMDModernTransportMessageContext *)self dateProvider];
+  [dateProvider timeIntervalSince1970];
   v8 = v7;
   [(HMDModernTransportMessageContext *)self requestStartTime];
   v10 = v8 - v9;
 
   v25[0] = @"remoteMessageName";
-  v11 = [(HMDModernTransportMessageContext *)self messageName];
-  v26[0] = v11;
+  messageName = [(HMDModernTransportMessageContext *)self messageName];
+  v26[0] = messageName;
   v25[1] = @"messageType";
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDModernTransportMessageContext messageType](self, "messageType")}];
   v26[1] = v12;
@@ -98,39 +98,39 @@ LABEL_8:
   v26[5] = v16;
   v25[6] = @"numTransportsAttempted";
   v17 = MEMORY[0x277CCABB0];
-  v18 = [(HMDModernTransportMessageContext *)&self->super.isa _attemptedTransports];
-  v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "count")}];
+  _attemptedTransports = [(HMDModernTransportMessageContext *)&self->super.isa _attemptedTransports];
+  v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(_attemptedTransports, "count")}];
   v26[6] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:7];
 
-  v21 = [(HMDModernTransportMessageContext *)self messageNetworkActivity];
-  [v21 submitMetrics:v20 withName:@"modernTransportNetworkActivityMetrics"];
+  messageNetworkActivity = [(HMDModernTransportMessageContext *)self messageNetworkActivity];
+  [messageNetworkActivity submitMetrics:v20 withName:@"modernTransportNetworkActivityMetrics"];
 
-  v22 = [(HMDModernTransportMessageContext *)self messageNetworkActivity];
-  [v22 completeWithSuccess:v24];
+  messageNetworkActivity2 = [(HMDModernTransportMessageContext *)self messageNetworkActivity];
+  [messageNetworkActivity2 completeWithSuccess:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)expectsResponse
 {
-  v2 = [(HMDModernTransportMessageContext *)self messageResponseHandler];
-  v3 = v2 != 0;
+  messageResponseHandler = [(HMDModernTransportMessageContext *)self messageResponseHandler];
+  v3 = messageResponseHandler != 0;
 
   return v3;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDModernTransportMessageContext *)self responseTimer];
+  fireCopy = fire;
+  responseTimer = [(HMDModernTransportMessageContext *)self responseTimer];
 
-  if (v5 == v4)
+  if (responseTimer == fireCopy)
   {
-    v9 = [(HMDModernTransportMessageContext *)self responseCompletionBlock];
+    responseCompletionBlock = [(HMDModernTransportMessageContext *)self responseCompletionBlock];
 
-    if (v9)
+    if (responseCompletionBlock)
     {
       if (![(HMDModernTransportMessageContext *)self successfulResponseCount])
       {
@@ -139,8 +139,8 @@ LABEL_8:
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [(HMDModernTransportMessageContext *)&self->super.isa _attemptedTransports];
-        v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        _attemptedTransports = [(HMDModernTransportMessageContext *)&self->super.isa _attemptedTransports];
+        v11 = [_attemptedTransports countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v11)
         {
           v12 = v11;
@@ -151,7 +151,7 @@ LABEL_8:
             {
               if (*v21 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(_attemptedTransports);
               }
 
               v15 = *(*(&v20 + 1) + 8 * i);
@@ -160,15 +160,15 @@ LABEL_8:
               [(HMDModernTransportMessageContext *)self _completeTransportActivity:v17 txError:0 rxError:v16];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+            v12 = [_attemptedTransports countByEnumeratingWithState:&v20 objects:v24 count:16];
           }
 
           while (v12);
         }
       }
 
-      v18 = [(HMDModernTransportMessageContext *)self responseCompletionBlock];
-      v18[2]();
+      responseCompletionBlock2 = [(HMDModernTransportMessageContext *)self responseCompletionBlock];
+      responseCompletionBlock2[2]();
 
       [(HMDModernTransportMessageContext *)self setResponseCompletionBlock:0];
     }
@@ -178,17 +178,17 @@ LABEL_8:
 
   else
   {
-    v6 = [(HMDModernTransportMessageContext *)self fallbackTimer];
+    fallbackTimer = [(HMDModernTransportMessageContext *)self fallbackTimer];
 
-    if (v6 == v4)
+    if (fallbackTimer == fireCopy)
     {
-      v7 = [(HMDModernTransportMessageContext *)self fallbackCompletionBlock];
+      fallbackCompletionBlock = [(HMDModernTransportMessageContext *)self fallbackCompletionBlock];
 
-      if (v7)
+      if (fallbackCompletionBlock)
       {
         [(HMDModernTransportMessageContext *)self setDidFallback:1];
-        v8 = [(HMDModernTransportMessageContext *)self fallbackCompletionBlock];
-        v8[2]();
+        fallbackCompletionBlock2 = [(HMDModernTransportMessageContext *)self fallbackCompletionBlock];
+        fallbackCompletionBlock2[2]();
 
         [(HMDModernTransportMessageContext *)self setFallbackCompletionBlock:0];
       }
@@ -200,19 +200,19 @@ LABEL_8:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_activityForTransport:(id)a1
+- (id)_activityForTransport:(id)transport
 {
-  v2 = a1;
-  if (a1)
+  transportCopy = transport;
+  if (transport)
   {
-    v3 = [a2 transportType];
+    transportType = [a2 transportType];
     v4 = 3;
-    if (v3 != 6)
+    if (transportType != 6)
     {
       v4 = 0;
     }
 
-    if (v3 == 2)
+    if (transportType == 2)
     {
       v5 = 2;
     }
@@ -222,46 +222,46 @@ LABEL_8:
       v5 = v4;
     }
 
-    v6 = [v2 messageNetworkActivity];
-    v2 = [v6 childActivityWithLabel:v5 createIfNeeded:1];
+    messageNetworkActivity = [transportCopy messageNetworkActivity];
+    transportCopy = [messageNetworkActivity childActivityWithLabel:v5 createIfNeeded:1];
   }
 
-  return v2;
+  return transportCopy;
 }
 
-- (void)_completeTransportActivity:(void *)a3 txError:(void *)a4 rxError:
+- (void)_completeTransportActivity:(void *)activity txError:(void *)error rxError:
 {
   v20[4] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  activityCopy = activity;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (self)
   {
-    if (v8)
+    if (activityCopy)
     {
-      v11 = [v8 code];
-      v12 = [v8 domain];
+      code = [activityCopy code];
+      domain = [activityCopy domain];
       if (v10)
       {
 LABEL_4:
-        v13 = [v10 code];
-        v14 = [v10 domain];
+        code2 = [v10 code];
+        domain2 = [v10 domain];
 LABEL_7:
         v19[0] = @"txErrorCode";
-        v15 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+        v15 = [MEMORY[0x277CCABB0] numberWithInteger:code];
         v20[0] = v15;
-        v20[1] = v12;
+        v20[1] = domain;
         v19[1] = @"txErrorDomain";
         v19[2] = @"rxErrorCode";
-        v16 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
+        v16 = [MEMORY[0x277CCABB0] numberWithInteger:code2];
         v19[3] = @"rxErrorDomain";
         v20[2] = v16;
-        v20[3] = v14;
+        v20[3] = domain2;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:4];
 
         [v7 submitMetrics:v17 withName:@"transportNetworkActivityMetrics"];
-        [v7 completeWithSuccess:(v8 | v10) == 0];
+        [v7 completeWithSuccess:(activityCopy | v10) == 0];
 
         goto LABEL_8;
       }
@@ -269,16 +269,16 @@ LABEL_7:
 
     else
     {
-      v11 = 0;
-      v12 = @"None";
-      if (v9)
+      code = 0;
+      domain = @"None";
+      if (errorCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v13 = 0;
-    v14 = @"None";
+    code2 = 0;
+    domain2 = @"None";
     goto LABEL_7;
   }
 
@@ -287,51 +287,51 @@ LABEL_8:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTransportFallbackTimerWithTimeInterval:(double)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)startTransportFallbackTimerWithTimeInterval:(double)interval queue:(id)queue completionHandler:(id)handler
 {
-  v15 = a4;
-  v8 = a5;
-  v9 = [(HMDModernTransportMessageContext *)self fallbackTimer];
+  queueCopy = queue;
+  handlerCopy = handler;
+  fallbackTimer = [(HMDModernTransportMessageContext *)self fallbackTimer];
 
-  if (!v9)
+  if (!fallbackTimer)
   {
-    [(HMDModernTransportMessageContext *)self setFallbackCompletionBlock:v8];
-    v10 = [(HMDModernTransportMessageContext *)self timerProvider];
-    v11 = [v10 timerWithTimeInterval:0 options:a3];
+    [(HMDModernTransportMessageContext *)self setFallbackCompletionBlock:handlerCopy];
+    timerProvider = [(HMDModernTransportMessageContext *)self timerProvider];
+    v11 = [timerProvider timerWithTimeInterval:0 options:interval];
     [(HMDModernTransportMessageContext *)self setFallbackTimer:v11];
 
-    v12 = [(HMDModernTransportMessageContext *)self fallbackTimer];
-    [v12 setDelegate:self];
+    fallbackTimer2 = [(HMDModernTransportMessageContext *)self fallbackTimer];
+    [fallbackTimer2 setDelegate:self];
 
-    v13 = [(HMDModernTransportMessageContext *)self fallbackTimer];
-    [v13 setDelegateQueue:v15];
+    fallbackTimer3 = [(HMDModernTransportMessageContext *)self fallbackTimer];
+    [fallbackTimer3 setDelegateQueue:queueCopy];
 
-    v14 = [(HMDModernTransportMessageContext *)self fallbackTimer];
-    [v14 resume];
+    fallbackTimer4 = [(HMDModernTransportMessageContext *)self fallbackTimer];
+    [fallbackTimer4 resume];
   }
 }
 
-- (void)startResponseTimerWithTimeInterval:(double)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)startResponseTimerWithTimeInterval:(double)interval queue:(id)queue completionHandler:(id)handler
 {
-  v15 = a4;
-  v8 = a5;
-  v9 = [(HMDModernTransportMessageContext *)self responseTimer];
+  queueCopy = queue;
+  handlerCopy = handler;
+  responseTimer = [(HMDModernTransportMessageContext *)self responseTimer];
 
-  if (!v9)
+  if (!responseTimer)
   {
-    [(HMDModernTransportMessageContext *)self setResponseCompletionBlock:v8];
-    v10 = [(HMDModernTransportMessageContext *)self timerProvider];
-    v11 = [v10 timerWithTimeInterval:0 options:a3];
+    [(HMDModernTransportMessageContext *)self setResponseCompletionBlock:handlerCopy];
+    timerProvider = [(HMDModernTransportMessageContext *)self timerProvider];
+    v11 = [timerProvider timerWithTimeInterval:0 options:interval];
     [(HMDModernTransportMessageContext *)self setResponseTimer:v11];
 
-    v12 = [(HMDModernTransportMessageContext *)self responseTimer];
-    [v12 setDelegate:self];
+    responseTimer2 = [(HMDModernTransportMessageContext *)self responseTimer];
+    [responseTimer2 setDelegate:self];
 
-    v13 = [(HMDModernTransportMessageContext *)self responseTimer];
-    [v13 setDelegateQueue:v15];
+    responseTimer3 = [(HMDModernTransportMessageContext *)self responseTimer];
+    [responseTimer3 setDelegateQueue:queueCopy];
 
-    v14 = [(HMDModernTransportMessageContext *)self responseTimer];
-    [v14 resume];
+    responseTimer4 = [(HMDModernTransportMessageContext *)self responseTimer];
+    [responseTimer4 resume];
   }
 }
 
@@ -345,8 +345,8 @@ LABEL_8:
     [(HMDModernTransportMessageContext *)self requestStartTime];
     if (v6 >= 2.22044605e-16)
     {
-      v7 = [(HMDModernTransportMessageContext *)self dateProvider];
-      [v7 timeIntervalSince1970];
+      dateProvider = [(HMDModernTransportMessageContext *)self dateProvider];
+      [dateProvider timeIntervalSince1970];
       v9 = v8;
       [(HMDModernTransportMessageContext *)self requestStartTime];
       v11 = v9 - v10;
@@ -365,12 +365,12 @@ LABEL_8:
   return result;
 }
 
-- (id)preparedMessageWithTimeout:(double)a3
+- (id)preparedMessageWithTimeout:(double)timeout
 {
-  v5 = [(HMDModernTransportMessageContext *)self message];
-  v6 = [(HMDModernTransportMessageContext *)self options];
-  v7 = [v5 headers];
-  v8 = [v7 mutableCopy];
+  message = [(HMDModernTransportMessageContext *)self message];
+  options = [(HMDModernTransportMessageContext *)self options];
+  headers = [message headers];
+  v8 = [headers mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -387,37 +387,37 @@ LABEL_8:
   v12 = MEMORY[0x277CCABB0];
   [(HMDModernTransportMessageContext *)self requestStartTime];
   v13 = [v12 numberWithDouble:?];
-  v14 = [v6 requestStartTimeHeaderKey];
-  [v11 setObject:v13 forKeyedSubscript:v14];
+  requestStartTimeHeaderKey = [options requestStartTimeHeaderKey];
+  [v11 setObject:v13 forKeyedSubscript:requestStartTimeHeaderKey];
 
-  [v6 timeToLive];
+  [options timeToLive];
   if (v15 >= 2.22044605e-16)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-    v17 = [v6 timeToLiveHeaderKey];
-    [v11 setObject:v16 forKeyedSubscript:v17];
+    timeToLiveHeaderKey = [options timeToLiveHeaderKey];
+    [v11 setObject:v16 forKeyedSubscript:timeToLiveHeaderKey];
   }
 
-  v31 = v6;
+  v31 = options;
   v18 = [HMDRemoteMessage alloc];
-  v19 = [v5 name];
-  v20 = [v5 qualityOfService];
-  v21 = [v5 destination];
-  v22 = [v5 messagePayload];
-  v23 = [v5 type];
-  LOBYTE(v30) = [v5 isSecure];
-  v24 = -[HMDRemoteMessage initWithName:qualityOfService:destination:payload:headers:type:timeout:secure:restriction:sendOptions:](v18, "initWithName:qualityOfService:destination:payload:headers:type:timeout:secure:restriction:sendOptions:", v19, v20, v21, v22, v11, v23, a3, v30, [v5 restriction], objc_msgSend(v5, "sendOptions"));
+  name = [message name];
+  qualityOfService = [message qualityOfService];
+  destination = [message destination];
+  messagePayload = [message messagePayload];
+  type = [message type];
+  LOBYTE(v30) = [message isSecure];
+  v24 = -[HMDRemoteMessage initWithName:qualityOfService:destination:payload:headers:type:timeout:secure:restriction:sendOptions:](v18, "initWithName:qualityOfService:destination:payload:headers:type:timeout:secure:restriction:sendOptions:", name, qualityOfService, destination, messagePayload, v11, type, timeout, v30, [message restriction], objc_msgSend(message, "sendOptions"));
 
-  v25 = [v5 identifier];
-  [(HMDRemoteMessage *)v24 setIdentifier:v25];
+  identifier = [message identifier];
+  [(HMDRemoteMessage *)v24 setIdentifier:identifier];
 
-  v26 = [v5 userInfo];
-  v27 = [(HMDRemoteMessage *)v24 internal];
-  [v27 setUserInfo:v26];
+  userInfo = [message userInfo];
+  internal = [(HMDRemoteMessage *)v24 internal];
+  [internal setUserInfo:userInfo];
 
   [(HMDRemoteMessage *)v24 setResponseHandler:0];
-  v28 = [v5 transactionIdentifier];
-  [(HMDRemoteMessage *)v24 setTransactionIdentifier:v28];
+  transactionIdentifier = [message transactionIdentifier];
+  [(HMDRemoteMessage *)v24 setTransactionIdentifier:transactionIdentifier];
 
   if (![(HMDRemoteMessage *)v24 type])
   {
@@ -427,41 +427,41 @@ LABEL_8:
   return v24;
 }
 
-- (void)receivedResponseOverTransport:(id)a3 withError:(id)a4
+- (void)receivedResponseOverTransport:(id)transport withError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMDModernTransportMessageContextOptions *)self->_options expectsMultipleResponses];
-  if (!v6 || !v7)
+  transportCopy = transport;
+  errorCopy = error;
+  expectsMultipleResponses = [(HMDModernTransportMessageContextOptions *)self->_options expectsMultipleResponses];
+  if (!errorCopy || !expectsMultipleResponses)
   {
-    v8 = [(HMDModernTransportMessageContext *)self _activityForTransport:v9];
+    v8 = [(HMDModernTransportMessageContext *)self _activityForTransport:transportCopy];
     if (([v8 isActivated] & 1) == 0)
     {
       [v8 activate];
     }
 
-    [(HMDModernTransportMessageContext *)self _completeTransportActivity:v8 txError:0 rxError:v6];
+    [(HMDModernTransportMessageContext *)self _completeTransportActivity:v8 txError:0 rxError:errorCopy];
 
-    if (!v6)
+    if (!errorCopy)
     {
       ++self->_successfulResponseCount;
     }
   }
 }
 
-- (void)completeSendingOverTransport:(id)a3 withError:(id)a4
+- (void)completeSendingOverTransport:(id)transport withError:(id)error
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v73 = a4;
-  v7 = [(HMDModernTransportMessageContext *)self options];
-  v8 = [v7 transports];
-  v9 = [v8 containsObject:v6];
+  transportCopy = transport;
+  errorCopy = error;
+  options = [(HMDModernTransportMessageContext *)self options];
+  transports = [options transports];
+  v9 = [transports containsObject:transportCopy];
 
   if ((v9 & 1) == 0)
   {
     v59 = objc_autoreleasePoolPush();
-    v60 = self;
+    selfCopy = self;
     v61 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_FAULT))
     {
@@ -477,13 +477,13 @@ LABEL_8:
     [v64 submitLogEvent:v63];
   }
 
-  v10 = [(HMDModernTransportMessageContext *)self inProgressTransports];
-  v11 = [v10 containsObject:v6];
+  inProgressTransports = [(HMDModernTransportMessageContext *)self inProgressTransports];
+  v11 = [inProgressTransports containsObject:transportCopy];
 
   if ((v11 & 1) == 0)
   {
     v65 = objc_autoreleasePoolPush();
-    v66 = self;
+    selfCopy2 = self;
     v67 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_FAULT))
     {
@@ -500,22 +500,22 @@ LABEL_8:
   }
 
   os_unfair_lock_lock_with_options();
-  v12 = [(HMDModernTransportMessageContext *)self dateProvider];
-  [v12 timeIntervalSince1970];
+  dateProvider = [(HMDModernTransportMessageContext *)self dateProvider];
+  [dateProvider timeIntervalSince1970];
   v14 = v13;
-  v15 = [(HMDModernTransportMessageContext *)self inProgressTransportToStartTimeMap];
-  v16 = [v15 objectForKey:v6];
+  inProgressTransportToStartTimeMap = [(HMDModernTransportMessageContext *)self inProgressTransportToStartTimeMap];
+  v16 = [inProgressTransportToStartTimeMap objectForKey:transportCopy];
   [v16 doubleValue];
   v18 = v17;
 
-  v19 = [(HMDModernTransportMessageContext *)self inProgressTransportToStartTimeMap];
-  [v19 removeObjectForKey:v6];
+  inProgressTransportToStartTimeMap2 = [(HMDModernTransportMessageContext *)self inProgressTransportToStartTimeMap];
+  [inProgressTransportToStartTimeMap2 removeObjectForKey:transportCopy];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v73)
+  if (errorCopy)
   {
-    v20 = [(HMDModernTransportMessageContext *)self _activityForTransport:v6];
-    [(HMDModernTransportMessageContext *)self _completeTransportActivity:v20 txError:v73 rxError:0];
+    v20 = [(HMDModernTransportMessageContext *)self _activityForTransport:transportCopy];
+    [(HMDModernTransportMessageContext *)self _completeTransportActivity:v20 txError:errorCopy rxError:0];
 LABEL_7:
 
     goto LABEL_8;
@@ -524,26 +524,26 @@ LABEL_7:
   self->_didSucceedSending = 1;
   if (![(HMDModernTransportMessageContext *)self expectsResponse])
   {
-    v20 = [(HMDModernTransportMessageContext *)self _activityForTransport:v6];
+    v20 = [(HMDModernTransportMessageContext *)self _activityForTransport:transportCopy];
     [(HMDModernTransportMessageContext *)self _completeTransportActivity:v20 txError:0 rxError:0];
     goto LABEL_7;
   }
 
 LABEL_8:
-  v21 = [v6 transportType];
-  if (v21 != 6 || (-[HMDModernTransportMessageContext options](self, "options"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 expectRapportSuccess], v22, v23))
+  transportType = [transportCopy transportType];
+  if (transportType != 6 || (-[HMDModernTransportMessageContext options](self, "options"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v22 expectRapportSuccess], v22, v23))
   {
-    v24 = [v6 maximumNumberOfRetries];
-    v25 = [(HMDModernTransportMessageContext *)self retriesRemainingForTransport];
-    v26 = [v25 objectForKey:v6];
-    v27 = [v26 unsignedIntValue];
+    maximumNumberOfRetries = [transportCopy maximumNumberOfRetries];
+    retriesRemainingForTransport = [(HMDModernTransportMessageContext *)self retriesRemainingForTransport];
+    v26 = [retriesRemainingForTransport objectForKey:transportCopy];
+    unsignedIntValue = [v26 unsignedIntValue];
 
-    v72 = [(HMDModernTransportMessageContext *)self logEventSubmitter];
-    v28 = [HMDRemoteMessageTxReportLogEvent txReportForTransport:v21 latency:v24 - v27 retriesUsed:v14 - v18];
-    v29 = v73;
+    logEventSubmitter = [(HMDModernTransportMessageContext *)self logEventSubmitter];
+    v28 = [HMDRemoteMessageTxReportLogEvent txReportForTransport:transportType latency:maximumNumberOfRetries - unsignedIntValue retriesUsed:v14 - v18];
+    v29 = errorCopy;
     if (self)
     {
-      v30 = v73 == 0;
+      v30 = errorCopy == 0;
     }
 
     else
@@ -560,9 +560,9 @@ LABEL_8:
     {
       v71 = v29;
       v32 = v29;
-      v33 = [v32 userInfo];
+      userInfo = [v32 userInfo];
       v34 = *MEMORY[0x277CCA7E8];
-      v35 = [v33 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      v35 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -577,8 +577,8 @@ LABEL_8:
 
       v37 = v36;
 
-      v38 = [v37 userInfo];
-      v39 = [v38 objectForKeyedSubscript:v34];
+      userInfo2 = [v37 userInfo];
+      v39 = [userInfo2 objectForKeyedSubscript:v34];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -593,14 +593,14 @@ LABEL_8:
 
       v41 = v40;
 
-      v42 = [v41 userInfo];
-      v43 = [v42 objectForKeyedSubscript:v34];
+      userInfo3 = [v41 userInfo];
+      v43 = [userInfo3 objectForKeyedSubscript:v34];
 
       objc_opt_class();
-      LOBYTE(v42) = objc_opt_isKindOfClass();
+      LOBYTE(userInfo3) = objc_opt_isKindOfClass();
 
       v44 = v41 != 0;
-      v45 = v44 & v42;
+      v45 = v44 & userInfo3;
       v46 = v37 != 0;
       v47 = !v46 || !v44;
       if (v46 && v44)
@@ -639,15 +639,15 @@ LABEL_8:
       v29 = v71;
     }
 
-    [v72 submitLogEvent:v28 error:v31];
+    [logEventSubmitter submitLogEvent:v28 error:v31];
   }
 
-  v51 = [(HMDModernTransportMessageContext *)self completionHandler];
+  completionHandler = [(HMDModernTransportMessageContext *)self completionHandler];
 
-  if (v51 && (!v73 || [(HMDModernTransportMessageContext *)self _finishedAllTransports]))
+  if (completionHandler && (!errorCopy || [(HMDModernTransportMessageContext *)self _finishedAllTransports]))
   {
-    v52 = [(HMDModernTransportMessageContext *)self completionHandler];
-    (v52)[2](v52, v73);
+    completionHandler2 = [(HMDModernTransportMessageContext *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
 
     [(HMDModernTransportMessageContext *)self setCompletionHandler:0];
   }
@@ -655,21 +655,21 @@ LABEL_8:
   if ([(HMDModernTransportMessageContext *)self _finishedAllTransports]|| self->_didSucceedSending)
   {
     v53 = objc_autoreleasePoolPush();
-    v54 = self;
+    selfCopy3 = self;
     v55 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
     {
       v56 = HMFGetLogIdentifier();
-      v57 = [(HMDModernTransportMessageContext *)v54 messageID];
+      messageID = [(HMDModernTransportMessageContext *)selfCopy3 messageID];
       *buf = 138543618;
       v75 = v56;
       v76 = 2114;
-      v77 = v57;
+      v77 = messageID;
       _os_log_impl(&dword_229538000, v55, OS_LOG_TYPE_INFO, "%{public}@Message %{public}@ no longer needed, clearing message.", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v53);
-    [(HMDModernTransportMessageContext *)v54 setMessage:0];
+    [(HMDModernTransportMessageContext *)selfCopy3 setMessage:0];
   }
 
   v58 = *MEMORY[0x277D85DE8];
@@ -681,8 +681,8 @@ LABEL_8:
   {
     v1 = result;
     os_unfair_lock_lock_with_options();
-    v2 = [v1 inProgressTransportToStartTimeMap];
-    v3 = [v2 count];
+    inProgressTransportToStartTimeMap = [v1 inProgressTransportToStartTimeMap];
+    v3 = [inProgressTransportToStartTimeMap count];
 
     os_unfair_lock_unlock((v1 + 16));
     return ([*(v1 + 8) count] | v3) == 0;
@@ -691,31 +691,31 @@ LABEL_8:
   return result;
 }
 
-- (void)decrementRetriesForTransport:(id)a3
+- (void)decrementRetriesForTransport:(id)transport
 {
-  v9 = a3;
-  v4 = [(HMDModernTransportMessageContext *)self retriesRemainingForTransport];
-  v5 = [v4 objectForKey:v9];
-  v6 = [v5 integerValue];
+  transportCopy = transport;
+  retriesRemainingForTransport = [(HMDModernTransportMessageContext *)self retriesRemainingForTransport];
+  v5 = [retriesRemainingForTransport objectForKey:transportCopy];
+  integerValue = [v5 integerValue];
 
-  if (v6)
+  if (integerValue)
   {
     retriesRemainingForTransport = self->_retriesRemainingForTransport;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:v6 - 1];
-    [(NSMapTable *)retriesRemainingForTransport setObject:v8 forKey:v9];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue - 1];
+    [(NSMapTable *)retriesRemainingForTransport setObject:v8 forKey:transportCopy];
   }
 }
 
-- (unint64_t)retriesRemainingForTransport:(id)a3
+- (unint64_t)retriesRemainingForTransport:(id)transport
 {
-  v5 = a3;
-  v6 = [(HMDModernTransportMessageContext *)self remainingTransports];
-  v7 = [v6 containsObject:v5];
-  if ((v7 & 1) != 0 || (-[HMDModernTransportMessageContext inProgressTransports](self, "inProgressTransports"), v3 = objc_claimAutoreleasedReturnValue(), [v3 containsObject:v5]))
+  transportCopy = transport;
+  remainingTransports = [(HMDModernTransportMessageContext *)self remainingTransports];
+  v7 = [remainingTransports containsObject:transportCopy];
+  if ((v7 & 1) != 0 || (-[HMDModernTransportMessageContext inProgressTransports](self, "inProgressTransports"), v3 = objc_claimAutoreleasedReturnValue(), [v3 containsObject:transportCopy]))
   {
-    v8 = [(HMDModernTransportMessageContext *)self retriesRemainingForTransport];
-    v9 = [v8 objectForKey:v5];
-    v10 = [v9 integerValue];
+    retriesRemainingForTransport = [(HMDModernTransportMessageContext *)self retriesRemainingForTransport];
+    v9 = [retriesRemainingForTransport objectForKey:transportCopy];
+    integerValue = [v9 integerValue];
 
     if (v7)
     {
@@ -725,25 +725,25 @@ LABEL_8:
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
 LABEL_7:
-  return v10;
+  return integerValue;
 }
 
-- (void)startSendingOverTransport:(id)a3
+- (void)startSendingOverTransport:(id)transport
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDModernTransportMessageContext *)self options];
-  v6 = [v5 transports];
-  v7 = [v6 containsObject:v4];
+  transportCopy = transport;
+  options = [(HMDModernTransportMessageContext *)self options];
+  transports = [options transports];
+  v7 = [transports containsObject:transportCopy];
 
   if ((v7 & 1) == 0)
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -759,10 +759,10 @@ LABEL_7:
     [v24 submitLogEvent:v23];
   }
 
-  if (![v4 maximumNumberOfRetries] && (-[NSMutableSet containsObject:](self->_remainingTransports, "containsObject:", v4) & 1) == 0)
+  if (![transportCopy maximumNumberOfRetries] && (-[NSMutableSet containsObject:](self->_remainingTransports, "containsObject:", transportCopy) & 1) == 0)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
@@ -779,17 +779,17 @@ LABEL_7:
     [v31 submitLogEvent:v30];
   }
 
-  v8 = [(HMDModernTransportMessageContext *)self dateProvider];
-  [v8 timeIntervalSince1970];
+  dateProvider = [(HMDModernTransportMessageContext *)self dateProvider];
+  [dateProvider timeIntervalSince1970];
   v10 = v9;
 
-  v11 = [(HMDModernTransportMessageContext *)self messageNetworkActivity];
-  v12 = [v11 isActivated];
+  messageNetworkActivity = [(HMDModernTransportMessageContext *)self messageNetworkActivity];
+  isActivated = [messageNetworkActivity isActivated];
 
-  if ((v12 & 1) == 0)
+  if ((isActivated & 1) == 0)
   {
-    v13 = [(HMDModernTransportMessageContext *)self messageNetworkActivity];
-    [v13 activate];
+    messageNetworkActivity2 = [(HMDModernTransportMessageContext *)self messageNetworkActivity];
+    [messageNetworkActivity2 activate];
   }
 
   [(HMDModernTransportMessageContext *)self requestStartTime];
@@ -798,17 +798,17 @@ LABEL_7:
     [(HMDModernTransportMessageContext *)self setRequestStartTime:v10];
   }
 
-  v15 = [(HMDModernTransportMessageContext *)self _activityForTransport:v4];
+  v15 = [(HMDModernTransportMessageContext *)self _activityForTransport:transportCopy];
   if (([v15 isActivated] & 1) == 0)
   {
     [v15 activate];
   }
 
-  [(NSMutableSet *)self->_remainingTransports removeObject:v4];
+  [(NSMutableSet *)self->_remainingTransports removeObject:transportCopy];
   os_unfair_lock_lock_with_options();
-  v16 = [(HMDModernTransportMessageContext *)self inProgressTransportToStartTimeMap];
+  inProgressTransportToStartTimeMap = [(HMDModernTransportMessageContext *)self inProgressTransportToStartTimeMap];
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
-  [v16 setObject:v17 forKey:v4];
+  [inProgressTransportToStartTimeMap setObject:v17 forKey:transportCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   v18 = *MEMORY[0x277D85DE8];
@@ -817,22 +817,22 @@ LABEL_7:
 - (NSSet)inProgressTransports
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDModernTransportMessageContext *)self inProgressTransportToStartTimeMap];
-  v4 = [v3 copy];
+  inProgressTransportToStartTimeMap = [(HMDModernTransportMessageContext *)self inProgressTransportToStartTimeMap];
+  v4 = [inProgressTransportToStartTimeMap copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 keyEnumerator];
-  v7 = [v6 allObjects];
-  v8 = [v5 setWithArray:v7];
+  keyEnumerator = [v4 keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v8 = [v5 setWithArray:allObjects];
 
   return v8;
 }
 
 - (double)timeout
 {
-  v3 = [(HMDModernTransportMessageContext *)self options];
-  [v3 timeoutOverride];
+  options = [(HMDModernTransportMessageContext *)self options];
+  [options timeoutOverride];
   v5 = v4;
 
   if (v5 <= 0.0)
@@ -843,8 +843,8 @@ LABEL_7:
 
   else
   {
-    v6 = [(HMDModernTransportMessageContext *)self options];
-    [v6 timeoutOverride];
+    options2 = [(HMDModernTransportMessageContext *)self options];
+    [options2 timeoutOverride];
     v8 = v7;
 
     return v8;
@@ -861,30 +861,30 @@ LABEL_7:
   return inProgressTransportToStartTimeMap;
 }
 
-- (HMDModernTransportMessageContext)initWithMessage:(id)a3 options:(id)a4 completionHandler:(id)a5 dateProvider:(id)a6 timerProvider:(id)a7
+- (HMDModernTransportMessageContext)initWithMessage:(id)message options:(id)options completionHandler:(id)handler dateProvider:(id)provider timerProvider:(id)timerProvider
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  timerProviderCopy = timerProvider;
+  providerCopy = provider;
+  handlerCopy = handler;
+  optionsCopy = options;
+  messageCopy = message;
   v17 = +[HMDNetworkActivityWrapperFactory sharedInstance];
   v18 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v19 = [(HMDModernTransportMessageContext *)self initWithMessage:v16 options:v15 completionHandler:v14 dateProvider:v13 timerProvider:v12 activityFactory:v17 logEventSubmitter:v18];
+  v19 = [(HMDModernTransportMessageContext *)self initWithMessage:messageCopy options:optionsCopy completionHandler:handlerCopy dateProvider:providerCopy timerProvider:timerProviderCopy activityFactory:v17 logEventSubmitter:v18];
 
   return v19;
 }
 
-- (HMDModernTransportMessageContext)initWithMessage:(id)a3 options:(id)a4 completionHandler:(id)a5 dateProvider:(id)a6 timerProvider:(id)a7 activityFactory:(id)a8 logEventSubmitter:(id)a9
+- (HMDModernTransportMessageContext)initWithMessage:(id)message options:(id)options completionHandler:(id)handler dateProvider:(id)provider timerProvider:(id)timerProvider activityFactory:(id)factory logEventSubmitter:(id)submitter
 {
   v77 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v68 = a6;
-  v67 = a7;
-  v66 = a8;
-  v65 = a9;
+  messageCopy = message;
+  optionsCopy = options;
+  handlerCopy = handler;
+  providerCopy = provider;
+  timerProviderCopy = timerProvider;
+  factoryCopy = factory;
+  submitterCopy = submitter;
   v73.receiver = self;
   v73.super_class = HMDModernTransportMessageContext;
   v19 = [(HMDModernTransportMessageContext *)&v73 init];
@@ -892,34 +892,34 @@ LABEL_7:
   if (v19)
   {
     v19->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v19->_message, a3);
-    v21 = [v16 name];
+    objc_storeStrong(&v19->_message, message);
+    name = [messageCopy name];
     messageName = v20->_messageName;
-    v20->_messageName = v21;
+    v20->_messageName = name;
 
-    v20->_messageType = [v16 type];
-    v23 = [v16 identifier];
+    v20->_messageType = [messageCopy type];
+    identifier = [messageCopy identifier];
     messageID = v20->_messageID;
-    v20->_messageID = v23;
+    v20->_messageID = identifier;
 
-    v25 = [v16 responseHandler];
+    responseHandler = [messageCopy responseHandler];
     messageResponseHandler = v20->_messageResponseHandler;
-    v20->_messageResponseHandler = v25;
+    v20->_messageResponseHandler = responseHandler;
 
-    [v16 timeout];
+    [messageCopy timeout];
     v20->_messageTimeout = v27;
-    v28 = [v16 identifier];
+    identifier2 = [messageCopy identifier];
     identifier = v20->_identifier;
-    v20->_identifier = v28;
+    v20->_identifier = identifier2;
 
-    v64 = v18;
-    if (![v16 type])
+    v64 = handlerCopy;
+    if (![messageCopy type])
     {
-      v30 = [v16 transactionIdentifier];
-      v31 = v30;
-      if (v30)
+      transactionIdentifier = [messageCopy transactionIdentifier];
+      v31 = transactionIdentifier;
+      if (transactionIdentifier)
       {
-        v32 = v30;
+        v32 = transactionIdentifier;
         v33 = v20->_identifier;
         v20->_identifier = v32;
       }
@@ -946,41 +946,41 @@ LABEL_7:
         [logb submitLogEvent:v33];
       }
 
-      v18 = v64;
+      handlerCopy = v64;
     }
 
-    v34 = [v16 destination];
+    destination = [messageCopy destination];
     destination = v20->_destination;
-    v20->_destination = v34;
+    v20->_destination = destination;
 
-    v20->_messageQualityOfService = [v16 qualityOfService];
-    objc_storeStrong(&v20->_options, a4);
-    v36 = [v18 copy];
+    v20->_messageQualityOfService = [messageCopy qualityOfService];
+    objc_storeStrong(&v20->_options, options);
+    v36 = [handlerCopy copy];
     completionHandler = v20->_completionHandler;
     v20->_completionHandler = v36;
 
-    objc_storeStrong(&v20->_dateProvider, a6);
-    objc_storeStrong(&v20->_timerProvider, a7);
-    log = v17;
-    v38 = [v17 transports];
-    v39 = [v38 mutableCopy];
+    objc_storeStrong(&v20->_dateProvider, provider);
+    objc_storeStrong(&v20->_timerProvider, timerProvider);
+    log = optionsCopy;
+    transports = [optionsCopy transports];
+    v39 = [transports mutableCopy];
     remainingTransports = v20->_remainingTransports;
     v20->_remainingTransports = v39;
 
-    v41 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     inProgressTransportToStartTimeMap = v20->_inProgressTransportToStartTimeMap;
-    v20->_inProgressTransportToStartTimeMap = v41;
+    v20->_inProgressTransportToStartTimeMap = strongToStrongObjectsMapTable;
 
-    objc_storeStrong(&v20->_activityFactory, a8);
-    objc_storeStrong(&v20->_logEventSubmitter, a9);
+    objc_storeStrong(&v20->_activityFactory, factory);
+    objc_storeStrong(&v20->_logEventSubmitter, submitter);
     v43 = [(HMDNetworkActivityWrapperFactory *)v20->_activityFactory networkActivityWrapperWithLabel:1];
     messageNetworkActivity = v20->_messageNetworkActivity;
     v20->_messageNetworkActivity = v43;
 
     v20->_keepRetrying = 1;
-    v45 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     retriesRemainingForTransport = v20->_retriesRemainingForTransport;
-    v20->_retriesRemainingForTransport = v45;
+    v20->_retriesRemainingForTransport = strongToStrongObjectsMapTable2;
 
     v71 = 0u;
     v72 = 0u;
@@ -1013,8 +1013,8 @@ LABEL_7:
       while (v49);
     }
 
-    v17 = log;
-    v18 = v64;
+    optionsCopy = log;
+    handlerCopy = v64;
   }
 
   v55 = *MEMORY[0x277D85DE8];

@@ -1,16 +1,16 @@
 @interface VSUIPerformActionCardProvider
-- (id)cardViewControllerForCard:(id)a3;
+- (id)cardViewControllerForCard:(id)card;
 @end
 
 @implementation VSUIPerformActionCardProvider
 
-- (id)cardViewControllerForCard:(id)a3
+- (id)cardViewControllerForCard:(id)card
 {
-  v3 = a3;
+  cardCopy = card;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[VSUIProgressCardViewController alloc] _initWithCard:v3 delegate:0 loadProvidersImmediately:0];
+    v4 = [[VSUIProgressCardViewController alloc] _initWithCard:cardCopy delegate:0 loadProvidersImmediately:0];
   }
 
   else

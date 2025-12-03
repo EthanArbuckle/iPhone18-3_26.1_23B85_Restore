@@ -1,17 +1,17 @@
 @interface GQDWPTab
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 @end
 
 @implementation GQDWPTab
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  sub_4290C(a3, qword_A35E8, off_9CD80);
+  sub_4290C(reader, qword_A35E8, off_9CD80);
   *&v5 = v5;
   self->mPosition = *&v5;
   self->mAlignment = 0;
-  AttributeNs = xmlTextReaderGetAttributeNs(a3, off_9CD88, *(qword_A35E8 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, off_9CD88, *(qword_A35E8 + 16));
   if (AttributeNs)
   {
     v7 = AttributeNs;
@@ -29,7 +29,7 @@ LABEL_7:
     free(v7);
   }
 
-  v9 = sub_4294C(a3, qword_A35E8, off_9CD90);
+  v9 = sub_4294C(reader, qword_A35E8, off_9CD90);
   mLeader = self->mLeader;
   if (mLeader)
   {

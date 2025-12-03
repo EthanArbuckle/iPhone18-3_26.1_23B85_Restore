@@ -1,6 +1,6 @@
 @interface PaymentOfferSelectorModel
 - (_TtC9PassKitUI25PaymentOfferSelectorModel)init;
-- (void)paymentOfferCatalogChanged:(id)a3;
+- (void)paymentOfferCatalogChanged:(id)changed;
 @end
 
 @implementation PaymentOfferSelectorModel
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (void)paymentOfferCatalogChanged:(id)a3
+- (void)paymentOfferCatalogChanged:(id)changed
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v4 - 8, v5);
@@ -23,7 +23,7 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_1BD122C00(0, 0, v7, &unk_1BE0C3438, v9);
 }
 

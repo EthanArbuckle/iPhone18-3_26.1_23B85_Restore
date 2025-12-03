@@ -1,30 +1,30 @@
 @interface OTSOSActualAdapter
 + (id)sosCKKSViewList;
-- (BOOL)joinAfterRestore:(id *)a3;
-- (BOOL)preloadOctagonKeySetOnAccount:(id)a3 error:(id *)a4;
-- (BOOL)resetToOffering:(id *)a3;
-- (BOOL)safariViewSyncingEnabled:(id *)a3;
+- (BOOL)joinAfterRestore:(id *)restore;
+- (BOOL)preloadOctagonKeySetOnAccount:(id)account error:(id *)error;
+- (BOOL)resetToOffering:(id *)offering;
+- (BOOL)safariViewSyncingEnabled:(id *)enabled;
 - (BOOL)sosEnabled;
-- (BOOL)updateCKKS4AllStatus:(BOOL)a3 error:(id *)a4;
-- (BOOL)updateOctagonKeySetWithAccount:(id)a3 error:(id *)a4;
-- (id)currentSOSSelf:(id *)a3;
+- (BOOL)updateCKKS4AllStatus:(BOOL)status error:(id *)error;
+- (BOOL)updateOctagonKeySetWithAccount:(id)account error:(id *)error;
+- (id)currentSOSSelf:(id *)self;
 - (id)currentState;
-- (id)fetchSelfPeers:(id *)a3;
-- (id)fetchTrustedPeers:(id *)a3;
-- (id)initAsEssential:(BOOL)a3;
-- (int)circleStatus:(id *)a3;
-- (void)registerForPeerChangeUpdates:(id)a3;
+- (id)fetchSelfPeers:(id *)peers;
+- (id)fetchTrustedPeers:(id *)peers;
+- (id)initAsEssential:(BOOL)essential;
+- (int)circleStatus:(id *)status;
+- (void)registerForPeerChangeUpdates:(id)updates;
 - (void)sendSelfPeerChangedUpdate;
 - (void)sendTrustedPeerSetChangedUpdate;
 @end
 
 @implementation OTSOSActualAdapter
 
-- (BOOL)resetToOffering:(id *)a3
+- (BOOL)resetToOffering:(id *)offering
 {
   if (![(OTSOSActualAdapter *)self sosEnabled])
   {
-    if (!a3)
+    if (!offering)
     {
       LOBYTE(v4) = 0;
       return v4;
@@ -46,21 +46,21 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SOSCCResetToOffering complete: %d %@", buf, 0x12u);
   }
 
-  if (a3)
+  if (offering)
   {
     v6 = 0;
 LABEL_8:
-    *a3 = v6;
+    *offering = v6;
   }
 
   return v4;
 }
 
-- (BOOL)joinAfterRestore:(id *)a3
+- (BOOL)joinAfterRestore:(id *)restore
 {
   if (![(OTSOSActualAdapter *)self sosEnabled])
   {
-    if (!a3)
+    if (!restore)
     {
       LOBYTE(v4) = 0;
       return v4;
@@ -82,24 +82,24 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SOSCCRequestToJoinCircleAfterRestore complete: %d %@", buf, 0x12u);
   }
 
-  if (a3)
+  if (restore)
   {
     v6 = 0;
 LABEL_8:
-    *a3 = v6;
+    *restore = v6;
   }
 
   return v4;
 }
 
-- (BOOL)safariViewSyncingEnabled:(id *)a3
+- (BOOL)safariViewSyncingEnabled:(id *)enabled
 {
   if ([(OTSOSActualAdapter *)self sosEnabled])
   {
     return SOSCCView() == 1;
   }
 
-  if (!a3)
+  if (!enabled)
   {
     return 0;
   }
@@ -107,7 +107,7 @@ LABEL_8:
   v4 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
   v5 = v4;
   result = 0;
-  *a3 = v4;
+  *enabled = v4;
   return result;
 }
 
@@ -134,36 +134,36 @@ LABEL_8:
 
 - (void)sendTrustedPeerSetChangedUpdate
 {
-  v3 = [(OTSOSActualAdapter *)self peerChangeListeners];
+  peerChangeListeners = [(OTSOSActualAdapter *)self peerChangeListeners];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000ED8F4;
   v4[3] = &unk_100336E38;
   v4[4] = self;
-  [v3 iterateListeners:v4];
+  [peerChangeListeners iterateListeners:v4];
 }
 
 - (void)sendSelfPeerChangedUpdate
 {
-  v3 = [(OTSOSActualAdapter *)self peerChangeListeners];
+  peerChangeListeners = [(OTSOSActualAdapter *)self peerChangeListeners];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000ED988;
   v4[3] = &unk_100336E38;
   v4[4] = self;
-  [v3 iterateListeners:v4];
+  [peerChangeListeners iterateListeners:v4];
 }
 
-- (void)registerForPeerChangeUpdates:(id)a3
+- (void)registerForPeerChangeUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(OTSOSActualAdapter *)self peerChangeListeners];
-  [v5 registerListener:v4];
+  updatesCopy = updates;
+  peerChangeListeners = [(OTSOSActualAdapter *)self peerChangeListeners];
+  [peerChangeListeners registerListener:updatesCopy];
 }
 
-- (BOOL)updateCKKS4AllStatus:(BOOL)a3 error:(id *)a4
+- (BOOL)updateCKKS4AllStatus:(BOOL)status error:(id *)error
 {
-  v5 = a3;
+  statusCopy = status;
   if ([(OTSOSActualAdapter *)self sosEnabled])
   {
     v13 = 0;
@@ -171,7 +171,7 @@ LABEL_8:
     *(&buf + 1) = 3221225472;
     v15 = sub_100257AA0;
     v16 = &unk_100346F80;
-    v17 = v5;
+    v17 = statusCopy;
     v6 = sub_1002463E8(&v13, &buf);
     v7 = v13;
     if (!v6 || v13)
@@ -184,10 +184,10 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "octagon-sos: failed to update CKKS4All status in SOS: %@", &buf, 0xCu);
       }
 
-      if (a4 && v7)
+      if (error && v7)
       {
         v11 = v7;
-        *a4 = v7;
+        *error = v7;
       }
     }
 
@@ -197,7 +197,7 @@ LABEL_8:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = @"not supported";
-        if (v5)
+        if (statusCopy)
         {
           v9 = @"supported";
         }
@@ -209,10 +209,10 @@ LABEL_8:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
-    *a4 = LOBYTE(v6) = 0;
+    *error = LOBYTE(v6) = 0;
   }
 
   else
@@ -223,15 +223,15 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)updateOctagonKeySetWithAccount:(id)a3 error:(id *)a4
+- (BOOL)updateOctagonKeySetWithAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   if (![(OTSOSActualAdapter *)self sosEnabled])
   {
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
-      *a4 = v38 = 0;
+      *error = v38 = 0;
     }
 
     else
@@ -242,92 +242,92 @@ LABEL_8:
     goto LABEL_24;
   }
 
-  v7 = [v6 publicSigningKey];
-  if ([v7 _secKey])
+  publicSigningKey = [accountCopy publicSigningKey];
+  if ([publicSigningKey _secKey])
   {
-    v8 = [v6 publicEncryptionKey];
-    v9 = [v8 _secKey];
+    publicEncryptionKey = [accountCopy publicEncryptionKey];
+    _secKey = [publicEncryptionKey _secKey];
 
-    if (v9)
+    if (_secKey)
     {
       v85 = 0;
       v86 = &v85;
       v87 = 0x2020000000;
-      v10 = [v6 signingKey];
-      v11 = [v10 keyData];
+      signingKey = [accountCopy signingKey];
+      keyData = [signingKey keyData];
 
-      v88 = v11;
+      v88 = keyData;
       v81 = 0;
       v82 = &v81;
       v83 = 0x2020000000;
-      v12 = [v6 encryptionKey];
-      v13 = [v12 keyData];
+      encryptionKey = [accountCopy encryptionKey];
+      keyData2 = [encryptionKey keyData];
 
-      v84 = v13;
+      v84 = keyData2;
       v80[0] = 0;
       v80[1] = v80;
       v80[2] = 0x2020000000;
-      v14 = [v6 publicSigningKey];
-      v15 = [v14 keyData];
+      publicSigningKey2 = [accountCopy publicSigningKey];
+      keyData3 = [publicSigningKey2 keyData];
 
-      v80[3] = v15;
+      v80[3] = keyData3;
       v79[0] = 0;
       v79[1] = v79;
       v79[2] = 0x2020000000;
-      v16 = [v6 publicEncryptionKey];
-      v17 = [v16 keyData];
+      publicEncryptionKey2 = [accountCopy publicEncryptionKey];
+      keyData4 = [publicEncryptionKey2 keyData];
 
-      v79[3] = v17;
+      v79[3] = keyData4;
       v75 = 0;
       v76 = &v75;
       v77 = 0x2020000000;
-      v18 = [v6 publicSigningKey];
-      v19 = [v18 _secKey];
+      publicSigningKey3 = [accountCopy publicSigningKey];
+      _secKey2 = [publicSigningKey3 _secKey];
 
-      if (v19)
+      if (_secKey2)
       {
-        CFRetain(v19);
+        CFRetain(_secKey2);
       }
 
-      v78 = v19;
+      v78 = _secKey2;
       v71 = 0;
       v72 = &v71;
       v73 = 0x2020000000;
-      v20 = [v6 publicEncryptionKey];
-      v21 = [v20 _secKey];
+      publicEncryptionKey3 = [accountCopy publicEncryptionKey];
+      _secKey3 = [publicEncryptionKey3 _secKey];
 
-      if (v21)
+      if (_secKey3)
       {
-        CFRetain(v21);
+        CFRetain(_secKey3);
       }
 
-      v74 = v21;
+      v74 = _secKey3;
       v67 = 0;
       v68 = &v67;
       v69 = 0x2020000000;
-      v22 = [v6 signingKey];
-      v23 = [v22 _secKey];
+      signingKey2 = [accountCopy signingKey];
+      _secKey4 = [signingKey2 _secKey];
 
-      if (v23)
+      if (_secKey4)
       {
-        CFRetain(v23);
+        CFRetain(_secKey4);
       }
 
-      v70 = v23;
+      v70 = _secKey4;
       v63 = 0;
       v64 = &v63;
       v65 = 0x2020000000;
-      v24 = [v6 encryptionKey];
-      v25 = [v24 _secKey];
+      encryptionKey2 = [accountCopy encryptionKey];
+      _secKey5 = [encryptionKey2 _secKey];
 
-      if (v25)
+      if (_secKey5)
       {
-        CFRetain(v25);
+        CFRetain(_secKey5);
       }
 
-      v66 = v25;
-      v26 = [objc_opt_class() logger];
-      v27 = [v26 startLogSystemMetricsForActivityNamed:@"OctagonSOSAdapterUpdateKeys"];
+      v66 = _secKey5;
+      logger = [objc_opt_class() logger];
+      v27 = [logger startLogSystemMetricsForActivityNamed:@"OctagonSOSAdapterUpdateKeys"];
 
       v59 = 0;
       v60 = &v59;
@@ -383,9 +383,9 @@ LABEL_8:
         CFRelease(v37);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v54[5];
+        *error = v54[5];
       }
 
       v38 = *(v60 + 24);
@@ -422,15 +422,15 @@ LABEL_24:
   return v38 & 1;
 }
 
-- (BOOL)preloadOctagonKeySetOnAccount:(id)a3 error:(id *)a4
+- (BOOL)preloadOctagonKeySetOnAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   if (![(OTSOSActualAdapter *)self sosEnabled])
   {
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
-      *a4 = v33 = 0;
+      *error = v33 = 0;
     }
 
     else
@@ -441,78 +441,78 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v7 = [v6 publicSigningKey];
-  if ([v7 _secKey])
+  publicSigningKey = [accountCopy publicSigningKey];
+  if ([publicSigningKey _secKey])
   {
-    v8 = [v6 publicEncryptionKey];
-    v9 = [v8 _secKey];
+    publicEncryptionKey = [accountCopy publicEncryptionKey];
+    _secKey = [publicEncryptionKey _secKey];
 
-    if (v9)
+    if (_secKey)
     {
       v77 = 0;
       v78 = &v77;
       v79 = 0x2020000000;
-      v10 = [v6 signingKey];
-      v11 = [v10 keyData];
+      signingKey = [accountCopy signingKey];
+      keyData = [signingKey keyData];
 
-      v80 = v11;
+      v80 = keyData;
       v73 = 0;
       v74 = &v73;
       v75 = 0x2020000000;
-      v12 = [v6 encryptionKey];
-      v13 = [v12 keyData];
+      encryptionKey = [accountCopy encryptionKey];
+      keyData2 = [encryptionKey keyData];
 
-      v76 = v13;
+      v76 = keyData2;
       v69 = 0;
       v70 = &v69;
       v71 = 0x2020000000;
-      v14 = [v6 publicSigningKey];
-      v15 = [v14 _secKey];
+      publicSigningKey2 = [accountCopy publicSigningKey];
+      _secKey2 = [publicSigningKey2 _secKey];
 
-      if (v15)
+      if (_secKey2)
       {
-        CFRetain(v15);
+        CFRetain(_secKey2);
       }
 
-      v72 = v15;
+      v72 = _secKey2;
       v65 = 0;
       v66 = &v65;
       v67 = 0x2020000000;
-      v16 = [v6 publicEncryptionKey];
-      v17 = [v16 _secKey];
+      publicEncryptionKey2 = [accountCopy publicEncryptionKey];
+      _secKey3 = [publicEncryptionKey2 _secKey];
 
-      if (v17)
+      if (_secKey3)
       {
-        CFRetain(v17);
+        CFRetain(_secKey3);
       }
 
-      v68 = v17;
+      v68 = _secKey3;
       v61 = 0;
       v62 = &v61;
       v63 = 0x2020000000;
-      v18 = [v6 signingKey];
-      v19 = [v18 _secKey];
+      signingKey2 = [accountCopy signingKey];
+      _secKey4 = [signingKey2 _secKey];
 
-      if (v19)
+      if (_secKey4)
       {
-        CFRetain(v19);
+        CFRetain(_secKey4);
       }
 
-      v64 = v19;
+      v64 = _secKey4;
       v57 = 0;
       v58 = &v57;
       v59 = 0x2020000000;
-      v20 = [v6 encryptionKey];
-      v21 = [v20 _secKey];
+      encryptionKey2 = [accountCopy encryptionKey];
+      _secKey5 = [encryptionKey2 _secKey];
 
-      if (v21)
+      if (_secKey5)
       {
-        CFRetain(v21);
+        CFRetain(_secKey5);
       }
 
-      v60 = v21;
-      v22 = [objc_opt_class() logger];
-      v23 = [v22 startLogSystemMetricsForActivityNamed:@"OctagonSOSAdapterUpdateKeys"];
+      v60 = _secKey5;
+      logger = [objc_opt_class() logger];
+      v23 = [logger startLogSystemMetricsForActivityNamed:@"OctagonSOSAdapterUpdateKeys"];
 
       v53 = 0;
       v54 = &v53;
@@ -566,9 +566,9 @@ LABEL_24:
         CFRelease(v32);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v48[5];
+        *error = v48[5];
       }
 
       v33 = *(v54 + 24);
@@ -603,7 +603,7 @@ LABEL_24:
   return v33 & 1;
 }
 
-- (id)fetchTrustedPeers:(id *)a3
+- (id)fetchTrustedPeers:(id *)peers
 {
   if ([(OTSOSActualAdapter *)self sosEnabled])
   {
@@ -641,12 +641,12 @@ LABEL_24:
       CFRelease(v6);
     }
 
-    if (a3)
+    if (peers)
     {
       v7 = v12[5];
       if (v7)
       {
-        *a3 = v7;
+        *peers = v7;
       }
     }
 
@@ -656,10 +656,10 @@ LABEL_24:
     _Block_object_dispose(&v17, 8);
   }
 
-  else if (a3)
+  else if (peers)
   {
     [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
-    *a3 = v8 = 0;
+    *peers = v8 = 0;
   }
 
   else
@@ -670,11 +670,11 @@ LABEL_24:
   return v8;
 }
 
-- (id)fetchSelfPeers:(id *)a3
+- (id)fetchSelfPeers:(id *)peers
 {
   if ([(OTSOSActualAdapter *)self sosEnabled])
   {
-    v5 = [(OTSOSActualAdapter *)self currentSOSSelf:a3];
+    v5 = [(OTSOSActualAdapter *)self currentSOSSelf:peers];
     if (v5)
     {
       v6 = [[CKKSSelves alloc] initWithCurrent:v5 allSelves:0];
@@ -686,10 +686,10 @@ LABEL_24:
     }
   }
 
-  else if (a3)
+  else if (peers)
   {
     [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
-    *a3 = v6 = 0;
+    *peers = v6 = 0;
   }
 
   else
@@ -700,7 +700,7 @@ LABEL_24:
   return v6;
 }
 
-- (id)currentSOSSelf:(id *)a3
+- (id)currentSOSSelf:(id *)self
 {
   if ([(OTSOSActualAdapter *)self sosEnabled])
   {
@@ -757,9 +757,9 @@ LABEL_24:
       }
 
       v10 = 0;
-      if (a3)
+      if (self)
       {
-        *a3 = v34[5];
+        *self = v34[5];
       }
 
       goto LABEL_37;
@@ -786,7 +786,7 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "octagon-sos: Error fetching self peer : %@", buf, 0xCu);
       }
 
-      if (a3)
+      if (self)
       {
         v19 = v34[5];
         goto LABEL_28;
@@ -844,12 +844,12 @@ LABEL_24:
         }
       }
 
-      if (a3)
+      if (self)
       {
         v19 = v34[5];
 LABEL_28:
         v10 = 0;
-        *a3 = v19;
+        *self = v19;
 LABEL_36:
 
 LABEL_37:
@@ -866,10 +866,10 @@ LABEL_37:
     goto LABEL_36;
   }
 
-  if (a3)
+  if (self)
   {
     [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
-    *a3 = v10 = 0;
+    *self = v10 = 0;
   }
 
   else
@@ -882,22 +882,22 @@ LABEL_38:
   return v10;
 }
 
-- (int)circleStatus:(id *)a3
+- (int)circleStatus:(id *)status
 {
   if ([(OTSOSActualAdapter *)self sosEnabled])
   {
     return SOSCCThisDeviceIsInCircle();
   }
 
-  if (a3)
+  if (status)
   {
-    *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
+    *status = [NSError errorWithDomain:NSOSStatusErrorDomain code:-4 description:@"SOS is not enabled for compatibility mode"];
   }
 
   return -1;
 }
 
-- (id)initAsEssential:(BOOL)a3
+- (id)initAsEssential:(BOOL)essential
 {
   v17.receiver = self;
   v17.super_class = OTSOSActualAdapter;
@@ -905,7 +905,7 @@ LABEL_38:
   v5 = v4;
   if (v4)
   {
-    v4->_essential = a3;
+    v4->_essential = essential;
     providerID = v4->_providerID;
     v4->_providerID = @"[OTSOSActualAdapter]";
 
@@ -1100,8 +1100,8 @@ LABEL_38:
       }
 
 LABEL_36:
-      v18 = [objc_opt_class() logger];
-      [v18 logSuccessForEventNamed:@"SOSDeferralEventCompatibilityModeEnabled"];
+      logger = [objc_opt_class() logger];
+      [logger logSuccessForEventNamed:@"SOSDeferralEventCompatibilityModeEnabled"];
 
       return 1;
     }
@@ -1128,8 +1128,8 @@ LABEL_35:
   }
 
 LABEL_43:
-  v21 = [objc_opt_class() logger];
-  [v21 logSuccessForEventNamed:@"SOSDeferralEventCompatibilityModeDisabled"];
+  logger2 = [objc_opt_class() logger];
+  [logger2 logSuccessForEventNamed:@"SOSDeferralEventCompatibilityModeDisabled"];
 
   return 0;
 }

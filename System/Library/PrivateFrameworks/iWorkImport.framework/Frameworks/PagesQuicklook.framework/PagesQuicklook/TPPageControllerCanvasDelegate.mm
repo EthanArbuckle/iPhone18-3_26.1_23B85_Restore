@@ -1,17 +1,17 @@
 @interface TPPageControllerCanvasDelegate
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3;
-- (TPPageControllerCanvasDelegate)initWithDocumentRoot:(id)a3 canvas:(id)a4;
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas;
+- (TPPageControllerCanvasDelegate)initWithDocumentRoot:(id)root canvas:(id)canvas;
 - (id)documentRoot;
 - (void)dealloc;
 @end
 
 @implementation TPPageControllerCanvasDelegate
 
-- (TPPageControllerCanvasDelegate)initWithDocumentRoot:(id)a3 canvas:(id)a4
+- (TPPageControllerCanvasDelegate)initWithDocumentRoot:(id)root canvas:(id)canvas
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  rootCopy = root;
+  canvasCopy = canvas;
+  if (!rootCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, v12, "[TPPageControllerCanvasDelegate initWithDocumentRoot:canvas:]");
@@ -27,8 +27,8 @@
   v32 = v31;
   if (v31)
   {
-    objc_storeWeak(&v31->_documentRoot, v6);
-    objc_storeStrong(&v32->_canvas, a4);
+    objc_storeWeak(&v31->_documentRoot, rootCopy);
+    objc_storeStrong(&v32->_canvas, canvas);
     v32->_textLayoutMustIncludeAdornmentsCounter = 0;
   }
 
@@ -50,7 +50,7 @@
   return WeakRetained;
 }
 
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas
 {
   v3 = *MEMORY[0x277CBF398];
   v4 = *(MEMORY[0x277CBF398] + 8);

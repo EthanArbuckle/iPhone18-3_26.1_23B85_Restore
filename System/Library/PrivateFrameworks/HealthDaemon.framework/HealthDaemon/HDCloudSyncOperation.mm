@@ -1,12 +1,12 @@
 @interface HDCloudSyncOperation
 + (id)unitTest_operationHandler;
 + (void)unitTest_clearAllOperationHandlers;
-+ (void)unitTest_setOperationHandler:(id)a3;
-- (BOOL)finishWithSuccess:(BOOL)a3 error:(id)a4;
++ (void)unitTest_setOperationHandler:(id)handler;
+- (BOOL)finishWithSuccess:(BOOL)success error:(id)error;
 - (HDCloudSyncOperation)init;
-- (HDCloudSyncOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncOperation)initWithPreceedingOperation:(id)a3 transitionHandler:(id)a4;
-- (HDCloudSyncOperation)operationWithRunCondition:(id)a3;
+- (HDCloudSyncOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncOperation)initWithPreceedingOperation:(id)operation transitionHandler:(id)handler;
+- (HDCloudSyncOperation)operationWithRunCondition:(id)condition;
 - (HDProfile)profile;
 - (NSString)description;
 - (id)analyticsDictionary;
@@ -14,15 +14,15 @@
 - (id)onError;
 - (id)onSuccess;
 - (id)operationIgnoringErrors;
-- (id)operationsOfType:(Class)a3;
-- (void)chainFromOperation:(id)a3 transitionHandler:(id)a4;
-- (void)delegateToOperation:(id)a3;
+- (id)operationsOfType:(Class)type;
+- (void)chainFromOperation:(id)operation transitionHandler:(id)handler;
+- (void)delegateToOperation:(id)operation;
 - (void)main;
-- (void)setOnError:(id)a3;
-- (void)setOnSuccess:(id)a3;
+- (void)setOnError:(id)error;
+- (void)setOnSuccess:(id)success;
 - (void)skip;
 - (void)start;
-- (void)updateCompletedProgressCount:(int64_t)a3;
+- (void)updateCompletedProgressCount:(int64_t)count;
 @end
 
 @implementation HDCloudSyncOperation
@@ -44,75 +44,75 @@
   return 0;
 }
 
-- (HDCloudSyncOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  stateCopy = state;
   v31.receiver = self;
   v31.super_class = HDCloudSyncOperation;
   v9 = [(HDCloudSyncOperation *)&v31 init];
   if (v9)
   {
-    v10 = [v7 repository];
-    v11 = [v10 profile];
-    v12 = [v11 legacyRepositoryProfile];
-    objc_storeWeak(&v9->_profile, v12);
+    repository = [configurationCopy repository];
+    profile = [repository profile];
+    legacyRepositoryProfile = [profile legacyRepositoryProfile];
+    objc_storeWeak(&v9->_profile, legacyRepositoryProfile);
 
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v9->_cloudState, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v9->_cloudState, state);
     v13 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:{objc_msgSend(objc_opt_class(), "progressCount")}];
     progress = v9->_progress;
     v9->_progress = v13;
 
-    v15 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v9->_identifier;
-    v9->_identifier = v15;
+    v9->_identifier = uUID;
 
     v30 = objc_alloc(MEMORY[0x277CCACA8]);
-    v17 = [(HDCloudSyncOperationConfiguration *)v9->_configuration shortSyncIdentifier];
-    v18 = [(NSUUID *)v9->_identifier UUIDString];
-    v19 = [v18 substringToIndex:4];
-    v20 = [(HDCloudSyncOperationConfiguration *)v9->_configuration shortProfileIdentifier];
-    v21 = [(HDCloudSyncOperationConfiguration *)v9->_configuration repository];
-    [v21 profileType];
+    shortSyncIdentifier = [(HDCloudSyncOperationConfiguration *)v9->_configuration shortSyncIdentifier];
+    uUIDString = [(NSUUID *)v9->_identifier UUIDString];
+    v19 = [uUIDString substringToIndex:4];
+    shortProfileIdentifier = [(HDCloudSyncOperationConfiguration *)v9->_configuration shortProfileIdentifier];
+    repository2 = [(HDCloudSyncOperationConfiguration *)v9->_configuration repository];
+    [repository2 profileType];
     v22 = HKStringFromProfileType();
     v23 = objc_opt_class();
     NSStringFromClass(v23);
-    v24 = v7;
-    v26 = v25 = v8;
-    v27 = [v30 initWithFormat:@"[%@:%@] [%@:%@] %@", v17, v19, v20, v22, v26];
+    v24 = configurationCopy;
+    v26 = v25 = stateCopy;
+    v27 = [v30 initWithFormat:@"[%@:%@] [%@:%@] %@", shortSyncIdentifier, v19, shortProfileIdentifier, v22, v26];
     loggingPrefix = v9->_loggingPrefix;
     v9->_loggingPrefix = v27;
 
-    v8 = v25;
-    v7 = v24;
+    stateCopy = v25;
+    configurationCopy = v24;
   }
 
   return v9;
 }
 
-- (HDCloudSyncOperation)initWithPreceedingOperation:(id)a3 transitionHandler:(id)a4
+- (HDCloudSyncOperation)initWithPreceedingOperation:(id)operation transitionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 configuration];
-  v9 = [(HDCloudSyncOperation *)self initWithConfiguration:v8 cloudState:0];
+  handlerCopy = handler;
+  operationCopy = operation;
+  configuration = [operationCopy configuration];
+  v9 = [(HDCloudSyncOperation *)self initWithConfiguration:configuration cloudState:0];
 
-  [(HDCloudSyncOperation *)v9 chainFromOperation:v7 transitionHandler:v6];
+  [(HDCloudSyncOperation *)v9 chainFromOperation:operationCopy transitionHandler:handlerCopy];
   return v9;
 }
 
-- (void)setOnSuccess:(id)a3
+- (void)setOnSuccess:(id)success
 {
-  v8 = a3;
+  successCopy = success;
   os_unfair_lock_lock(&self->_lock);
   if (self->_status)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
   }
 
-  v5 = [v8 copy];
+  v5 = [successCopy copy];
   onSuccess = self->_onSuccess;
   self->_onSuccess = v5;
 
@@ -129,17 +129,17 @@
   return v4;
 }
 
-- (void)setOnError:(id)a3
+- (void)setOnError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   if (self->_status)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
   }
 
-  v5 = [v8 copy];
+  v5 = [errorCopy copy];
   onError = self->_onError;
   self->_onError = v5;
 
@@ -156,24 +156,24 @@
   return v4;
 }
 
-- (void)chainFromOperation:(id)a3 transitionHandler:(id)a4
+- (void)chainFromOperation:(id)operation transitionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__HDCloudSyncOperation_chainFromOperation_transitionHandler___block_invoke;
   v11[3] = &unk_278613088;
   v11[4] = self;
-  v7 = a3;
-  [v7 setOnError:v11];
+  operationCopy = operation;
+  [operationCopy setOnError:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__HDCloudSyncOperation_chainFromOperation_transitionHandler___block_invoke_2;
   v9[3] = &unk_278615FF8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 setOnSuccess:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [operationCopy setOnSuccess:v9];
 }
 
 void __61__HDCloudSyncOperation_chainFromOperation_transitionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -206,43 +206,43 @@ void __61__HDCloudSyncOperation_chainFromOperation_transitionHandler___block_inv
   os_unfair_lock_lock(&self->_lock);
   if (!self->_onSuccess)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_onSuccess != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_onSuccess != nil"}];
   }
 
   if (!self->_onError)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"_onError != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"_onError != nil"}];
   }
 
   if (self->_status)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
   }
 
   self->_status = 1;
   self->_startTime = CFAbsoluteTimeGetCurrent();
   configuration = self->_configuration;
-  v5 = [objc_opt_class() operationTagDependencies];
+  operationTagDependencies = [objc_opt_class() operationTagDependencies];
   v37 = 0;
-  v6 = [(HDCloudSyncOperationConfiguration *)configuration satisfiesOperationTagDependencies:v5 error:&v37];
+  v6 = [(HDCloudSyncOperationConfiguration *)configuration satisfiesOperationTagDependencies:operationTagDependencies error:&v37];
   v7 = v37;
 
   if (v6)
   {
-    v8 = [(HDCloudSyncOperation *)self configuration];
-    v9 = [v8 canceled];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    canceled = [configuration canceled];
 
-    if (v9)
+    if (canceled)
     {
       _HKInitializeLogging();
       v10 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v39 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Operation cancellation requested.", buf, 0xCu);
       }
 
@@ -259,12 +259,12 @@ void __61__HDCloudSyncOperation_chainFromOperation_transitionHandler___block_inv
         goto LABEL_31;
       }
 
-      v15 = [(HDCloudSyncOperation *)self configuration];
-      v16 = [v15 context];
-      v17 = [v16 backgroundTask];
-      v18 = [v17 shouldDefer];
+      configuration2 = [(HDCloudSyncOperation *)self configuration];
+      context = [configuration2 context];
+      backgroundTask = [context backgroundTask];
+      shouldDefer = [backgroundTask shouldDefer];
 
-      if (!v18)
+      if (!shouldDefer)
       {
 LABEL_31:
         if ([objc_opt_class() shouldLogAtOperationStart])
@@ -274,7 +274,7 @@ LABEL_31:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v39 = self;
+            selfCopy3 = self;
             _os_log_impl(&dword_228986000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting.", buf, 0xCu);
           }
         }
@@ -282,23 +282,23 @@ LABEL_31:
         os_unfair_lock_unlock(&self->_lock);
         if ([objc_opt_class() shouldProduceOperationAnalytics])
         {
-          v26 = [(HDCloudSyncOperationConfiguration *)self->_configuration repository];
-          v27 = [v26 profile];
-          v28 = [v27 daemon];
-          v29 = [v28 analyticsSubmissionCoordinator];
-          [v29 cloudSync_operationStarted:self];
+          repository = [(HDCloudSyncOperationConfiguration *)self->_configuration repository];
+          profile = [repository profile];
+          daemon = [profile daemon];
+          analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+          [analyticsSubmissionCoordinator cloudSync_operationStarted:self];
         }
 
-        v30 = [objc_opt_class() unitTest_operationHandler];
-        v14 = v30;
-        if (v30)
+        unitTest_operationHandler = [objc_opt_class() unitTest_operationHandler];
+        v14 = unitTest_operationHandler;
+        if (unitTest_operationHandler)
         {
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __29__HDCloudSyncOperation_start__block_invoke;
           v36[3] = &unk_2786130B0;
           v36[4] = self;
-          (*(v30 + 16))(v30, self, v36);
+          (*(unitTest_operationHandler + 16))(unitTest_operationHandler, self, v36);
         }
 
         else
@@ -316,14 +316,14 @@ LABEL_31:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
-        v21 = [(HDCloudSyncOperation *)self configuration];
-        v22 = [v21 context];
-        v23 = [v22 backgroundTask];
-        v24 = [v23 identifier];
+        configuration3 = [(HDCloudSyncOperation *)self configuration];
+        context2 = [configuration3 context];
+        backgroundTask2 = [context2 backgroundTask];
+        identifier = [backgroundTask2 identifier];
         *buf = 138543618;
-        v39 = self;
+        selfCopy3 = self;
         v40 = 2114;
-        v41 = v24;
+        v41 = identifier;
         _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: Operation deferral requested for activity %{public}@.", buf, 0x16u);
       }
 
@@ -367,18 +367,18 @@ LABEL_28:
   os_unfair_lock_unlock(&self->_lock);
   if (status)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"status == HDCloudSyncOperationStatusPending"}];
   }
 }
 
-- (void)delegateToOperation:(id)a3
+- (void)delegateToOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   if ([(HDCloudSyncOperation *)self status]!= 1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:220 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusActive"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:220 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusActive"}];
   }
 
   v13[0] = MEMORY[0x277D85DD0];
@@ -386,24 +386,24 @@ LABEL_28:
   v13[2] = __44__HDCloudSyncOperation_delegateToOperation___block_invoke;
   v13[3] = &unk_278613060;
   v13[4] = self;
-  [v5 setOnSuccess:v13];
+  [operationCopy setOnSuccess:v13];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__HDCloudSyncOperation_delegateToOperation___block_invoke_2;
   v12[3] = &unk_278613088;
   v12[4] = self;
-  [v5 setOnError:v12];
-  v6 = [v5 progress];
-  v7 = [v6 totalUnitCount];
+  [operationCopy setOnError:v12];
+  progress = [operationCopy progress];
+  totalUnitCount = [progress totalUnitCount];
 
-  v8 = [(HDCloudSyncOperation *)self progress];
-  [v8 setTotalUnitCount:{objc_msgSend(v8, "totalUnitCount") + v7}];
+  progress2 = [(HDCloudSyncOperation *)self progress];
+  [progress2 setTotalUnitCount:{objc_msgSend(progress2, "totalUnitCount") + totalUnitCount}];
 
-  v9 = [(HDCloudSyncOperation *)self progress];
-  v10 = [v5 progress];
-  [v9 addChild:v10 withPendingUnitCount:v7];
+  progress3 = [(HDCloudSyncOperation *)self progress];
+  progress4 = [operationCopy progress];
+  [progress3 addChild:progress4 withPendingUnitCount:totalUnitCount];
 
-  [v5 start];
+  [operationCopy start];
 }
 
 uint64_t __44__HDCloudSyncOperation_delegateToOperation___block_invoke(uint64_t a1, void *a2)
@@ -416,17 +416,17 @@ uint64_t __44__HDCloudSyncOperation_delegateToOperation___block_invoke(uint64_t 
   return [v4 finishWithSuccess:1 error:0];
 }
 
-- (BOOL)finishWithSuccess:(BOOL)a3 error:(id)a4
+- (BOOL)finishWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   status = self->_status;
   if (status == 1)
   {
     v9 = 2;
-    if (!v4)
+    if (!successCopy)
     {
       v9 = 3;
     }
@@ -443,17 +443,17 @@ uint64_t __44__HDCloudSyncOperation_delegateToOperation___block_invoke(uint64_t 
     self->_endTime = CFAbsoluteTimeGetCurrent();
     if (_HDIsUnitTesting)
     {
-      v14 = [(NSProgress *)self->_progress completedUnitCount];
-      if (v14 > [(NSProgress *)self->_progress totalUnitCount])
+      completedUnitCount = [(NSProgress *)self->_progress completedUnitCount];
+      if (completedUnitCount > [(NSProgress *)self->_progress totalUnitCount])
       {
-        v41 = [MEMORY[0x277CCA890] currentHandler];
-        [v41 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:257 description:{@"Invalid parameter not satisfying: %@", @"_progress.completedUnitCount <= _progress.totalUnitCount"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:257 description:{@"Invalid parameter not satisfying: %@", @"_progress.completedUnitCount <= _progress.totalUnitCount"}];
       }
     }
 
     [(NSProgress *)self->_progress setCompletedUnitCount:[(NSProgress *)self->_progress totalUnitCount]];
     os_unfair_lock_unlock(&self->_lock);
-    if (v4)
+    if (successCopy)
     {
       if ([objc_opt_class() shouldLogAtOperationEnd])
       {
@@ -462,26 +462,26 @@ uint64_t __44__HDCloudSyncOperation_delegateToOperation___block_invoke(uint64_t 
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v48 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Finished.", buf, 0xCu);
         }
       }
 
       if ([objc_opt_class() shouldProduceOperationAnalytics])
       {
-        v16 = [(HDCloudSyncOperationConfiguration *)self->_configuration repository];
-        v17 = [v16 profile];
-        v18 = [v17 daemon];
-        v19 = [v18 analyticsSubmissionCoordinator];
-        [v19 cloudSync_operationFinished:self];
+        repository = [(HDCloudSyncOperationConfiguration *)self->_configuration repository];
+        profile = [repository profile];
+        daemon = [profile daemon];
+        analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+        [analyticsSubmissionCoordinator cloudSync_operationFinished:self];
       }
 
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v20 = [objc_opt_class() finishedOperationTags];
-      v21 = [v20 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      finishedOperationTags = [objc_opt_class() finishedOperationTags];
+      v21 = [finishedOperationTags countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v21)
       {
         v22 = v21;
@@ -492,13 +492,13 @@ uint64_t __44__HDCloudSyncOperation_delegateToOperation___block_invoke(uint64_t 
           {
             if (*v43 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(finishedOperationTags);
             }
 
             [(HDCloudSyncOperationConfiguration *)self->_configuration didFinishOperationTag:*(*(&v42 + 1) + 8 * i)];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v42 objects:v46 count:16];
+          v22 = [finishedOperationTags countByEnumeratingWithState:&v42 objects:v46 count:16];
         }
 
         while (v22);
@@ -509,15 +509,15 @@ uint64_t __44__HDCloudSyncOperation_delegateToOperation___block_invoke(uint64_t 
 
     else
     {
-      if (!v7)
+      if (!errorCopy)
       {
-        v7 = [MEMORY[0x277CCA9B8] hk_error:2000 format:{@"%@ failed without reporting an error.", self}];
+        errorCopy = [MEMORY[0x277CCA9B8] hk_error:2000 format:{@"%@ failed without reporting an error.", self}];
         _HKInitializeLogging();
         v26 = *MEMORY[0x277CCC328];
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
         {
           *buf = 138543362;
-          v48 = self;
+          selfCopy4 = self;
           _os_log_fault_impl(&dword_228986000, v26, OS_LOG_TYPE_FAULT, "%{public}@: Failed but did not provide an error.", buf, 0xCu);
         }
       }
@@ -529,34 +529,34 @@ uint64_t __44__HDCloudSyncOperation_delegateToOperation___block_invoke(uint64_t 
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v48 = self;
+          selfCopy4 = self;
           v49 = 2114;
-          v50 = v7;
+          v50 = errorCopy;
           _os_log_impl(&dword_228986000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: Failed with error: %{public}@.", buf, 0x16u);
         }
       }
 
-      v28 = [v7 hd_errorSurfacingFatalCloudKitPartialFailureForAnalytics];
-      v29 = v28;
-      if (v28)
+      hd_errorSurfacingFatalCloudKitPartialFailureForAnalytics = [errorCopy hd_errorSurfacingFatalCloudKitPartialFailureForAnalytics];
+      v29 = hd_errorSurfacingFatalCloudKitPartialFailureForAnalytics;
+      if (hd_errorSurfacingFatalCloudKitPartialFailureForAnalytics)
       {
-        v30 = v28;
+        v30 = hd_errorSurfacingFatalCloudKitPartialFailureForAnalytics;
       }
 
       else
       {
-        v30 = v7;
+        v30 = errorCopy;
       }
 
       v31 = v30;
 
-      v32 = [(HDCloudSyncOperationConfiguration *)self->_configuration repository];
-      v33 = [v32 profile];
-      v34 = [v33 daemon];
-      v35 = [v34 analyticsSubmissionCoordinator];
-      [v35 cloudSync_operationFailed:self error:v31];
+      repository2 = [(HDCloudSyncOperationConfiguration *)self->_configuration repository];
+      profile2 = [repository2 profile];
+      daemon2 = [profile2 daemon];
+      analyticsSubmissionCoordinator2 = [daemon2 analyticsSubmissionCoordinator];
+      [analyticsSubmissionCoordinator2 cloudSync_operationFailed:self error:v31];
 
-      v11[2](v11, self, v7);
+      v11[2](v11, self, errorCopy);
     }
   }
 
@@ -570,7 +570,7 @@ uint64_t __44__HDCloudSyncOperation_delegateToOperation___block_invoke(uint64_t 
       v39 = NSStringFromSelector(a2);
       v40 = HDCloudSyncOperationStatusToString(self->_status);
       *buf = 138543874;
-      v48 = self;
+      selfCopy4 = self;
       v49 = 2114;
       v50 = v39;
       v51 = 2114;
@@ -627,8 +627,8 @@ LABEL_6:
   v12 = [v8 numberWithDouble:v11];
   v19[4] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
-  v14 = [(HDCloudSyncOperationConfiguration *)self->_configuration analyticsDictionary];
-  v15 = [v13 hk_dictionaryByAddingEntriesFromDictionary:v14];
+  analyticsDictionary = [(HDCloudSyncOperationConfiguration *)self->_configuration analyticsDictionary];
+  v15 = [v13 hk_dictionaryByAddingEntriesFromDictionary:analyticsDictionary];
 
   os_unfair_lock_unlock(&self->_lock);
   v16 = *MEMORY[0x277D85DE8];
@@ -646,38 +646,38 @@ LABEL_6:
   return v5;
 }
 
-- (void)updateCompletedProgressCount:(int64_t)a3
+- (void)updateCompletedProgressCount:(int64_t)count
 {
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(HDCloudSyncOperation *)self progress];
-  v7 = [v6 completedUnitCount];
+  progress = [(HDCloudSyncOperation *)self progress];
+  completedUnitCount = [progress completedUnitCount];
 
-  v8 = v7 + a3;
+  v8 = completedUnitCount + count;
   if (_HDIsUnitTesting)
   {
-    if (a3 < 0)
+    if (count < 0)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:329 description:{@"Invalid parameter not satisfying: %@", @"updated >= current"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:329 description:{@"Invalid parameter not satisfying: %@", @"updated >= current"}];
     }
 
-    v9 = [(HDCloudSyncOperation *)self progress];
-    v10 = [v9 totalUnitCount];
+    progress2 = [(HDCloudSyncOperation *)self progress];
+    totalUnitCount = [progress2 totalUnitCount];
 
-    if (v8 > v10)
+    if (v8 > totalUnitCount)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"updated <= self.progress.totalUnitCount"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDCloudSyncOperation.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"updated <= self.progress.totalUnitCount"}];
     }
   }
 
-  v11 = [(HDCloudSyncOperation *)self progress];
-  [v11 setCompletedUnitCount:v8];
+  progress3 = [(HDCloudSyncOperation *)self progress];
+  [progress3 setCompletedUnitCount:v8];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)operationsOfType:(Class)a3
+- (id)operationsOfType:(Class)type
 {
   v7[1] = *MEMORY[0x277D85DE8];
   if (objc_opt_isKindOfClass())
@@ -700,7 +700,7 @@ LABEL_6:
 {
   os_unfair_lock_lock(&_MergedGlobals_214);
   v3 = qword_280D67D68;
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKeyedSubscript:v4];
 
   os_unfair_lock_unlock(&_MergedGlobals_214);
@@ -709,9 +709,9 @@ LABEL_6:
   return v6;
 }
 
-+ (void)unitTest_setOperationHandler:(id)a3
++ (void)unitTest_setOperationHandler:(id)handler
 {
-  v10 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&_MergedGlobals_214);
   if (!qword_280D67D68)
   {
@@ -720,10 +720,10 @@ LABEL_6:
     qword_280D67D68 = v4;
   }
 
-  v6 = [v10 copy];
+  v6 = [handlerCopy copy];
   v7 = _Block_copy(v6);
   v8 = qword_280D67D68;
-  v9 = NSStringFromClass(a1);
+  v9 = NSStringFromClass(self);
   [v8 setObject:v7 forKeyedSubscript:v9];
 
   os_unfair_lock_unlock(&_MergedGlobals_214);
@@ -748,20 +748,20 @@ LABEL_6:
 - (id)operationIgnoringErrors
 {
   v3 = [HDCloudSyncIgnoredErrorsOperation alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncOperation *)self cloudState];
-  v6 = [(HDCloudSyncIgnoredErrorsOperation *)v3 initWithConfiguration:v4 cloudState:v5 operation:self];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cloudState = [(HDCloudSyncOperation *)self cloudState];
+  v6 = [(HDCloudSyncIgnoredErrorsOperation *)v3 initWithConfiguration:configuration cloudState:cloudState operation:self];
 
   return v6;
 }
 
-- (HDCloudSyncOperation)operationWithRunCondition:(id)a3
+- (HDCloudSyncOperation)operationWithRunCondition:(id)condition
 {
-  v4 = a3;
+  conditionCopy = condition;
   v5 = [HDCloudSyncConditionalOperation alloc];
-  v6 = [(HDCloudSyncOperation *)self configuration];
-  v7 = [(HDCloudSyncOperation *)self cloudState];
-  v8 = [(HDCloudSyncConditionalOperation *)v5 initWithConfiguration:v6 cloudState:v7 operation:self shouldRunHandler:v4];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cloudState = [(HDCloudSyncOperation *)self cloudState];
+  v8 = [(HDCloudSyncConditionalOperation *)v5 initWithConfiguration:configuration cloudState:cloudState operation:self shouldRunHandler:conditionCopy];
 
   return v8;
 }

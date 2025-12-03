@@ -1,45 +1,45 @@
 @interface CSClientCheckinResponse
-- (CSClientCheckinResponse)initWithMessage:(id)a3;
+- (CSClientCheckinResponse)initWithMessage:(id)message;
 - (id)dictionaryRepresentation;
-- (id)initValidCheckin:(BOOL)a3;
+- (id)initValidCheckin:(BOOL)checkin;
 @end
 
 @implementation CSClientCheckinResponse
 
-- (id)initValidCheckin:(BOOL)a3
+- (id)initValidCheckin:(BOOL)checkin
 {
   v5.receiver = self;
   v5.super_class = CSClientCheckinResponse;
   result = [(CSClientCheckinResponse *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = checkin;
   }
 
   return result;
 }
 
-- (CSClientCheckinResponse)initWithMessage:(id)a3
+- (CSClientCheckinResponse)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v10.receiver = self;
   v10.super_class = CSClientCheckinResponse;
-  v5 = [(CSMessage *)&v10 initWithMessage:v4];
+  v5 = [(CSMessage *)&v10 initWithMessage:messageCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"IsValid"];
+    v6 = [messageCopy objectForKeyedSubscript:@"IsValid"];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v8 = 1;
+      bOOLValue = 1;
     }
 
-    v5->_valid = v8;
+    v5->_valid = bOOLValue;
   }
 
   return v5;
@@ -49,8 +49,8 @@
 {
   v7.receiver = self;
   v7.super_class = CSClientCheckinResponse;
-  v3 = [(CSMessage *)&v7 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CSMessage *)&v7 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_valid];
   [v4 setObject:v5 forKeyedSubscript:@"IsValid"];

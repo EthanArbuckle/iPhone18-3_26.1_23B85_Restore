@@ -1,23 +1,23 @@
 @interface _MFFlagChangeEntry
-- (_MFFlagChangeEntry)initWithPath:(id)a3 UID:(unsigned int)a4 changes:(id)a5;
+- (_MFFlagChangeEntry)initWithPath:(id)path UID:(unsigned int)d changes:(id)changes;
 - (void)dealloc;
 @end
 
 @implementation _MFFlagChangeEntry
 
-- (_MFFlagChangeEntry)initWithPath:(id)a3 UID:(unsigned int)a4 changes:(id)a5
+- (_MFFlagChangeEntry)initWithPath:(id)path UID:(unsigned int)d changes:(id)changes
 {
-  v9 = a3;
-  v10 = a5;
+  pathCopy = path;
+  changesCopy = changes;
   v14.receiver = self;
   v14.super_class = _MFFlagChangeEntry;
   v11 = [(_MFFlagChangeEntry *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->path, a3);
-    v12->uid = a4;
-    objc_storeStrong(&v12->changes, a5);
+    objc_storeStrong(&v11->path, path);
+    v12->uid = d;
+    objc_storeStrong(&v12->changes, changes);
     v12->commitTime = 0.0;
     v12->connectionTag = -1;
   }

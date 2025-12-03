@@ -1,37 +1,37 @@
 @interface SHMediaLibraryDataStore
-- (BOOL)commitChangesWithError:(id *)a3;
-- (SHMediaLibraryDataStore)initWithStoreType:(int64_t)a3;
+- (BOOL)commitChangesWithError:(id *)error;
+- (SHMediaLibraryDataStore)initWithStoreType:(int64_t)type;
 - (SHMediaLibraryDataStoreDelegate)delegate;
-- (id)createMetadataWithData:(id)a3 track:(id)a4 group:(id)a5 context:(id)a6;
-- (id)createWithManagedTrack:(id)a3 excludeCloudMetadata:(BOOL)a4;
-- (id)dataFromManagedObjectRawResponseDictionary:(id)a3;
+- (id)createMetadataWithData:(id)data track:(id)track group:(id)group context:(id)context;
+- (id)createWithManagedTrack:(id)track excludeCloudMetadata:(BOOL)metadata;
+- (id)dataFromManagedObjectRawResponseDictionary:(id)dictionary;
 - (id)fetchAllUploadableGroupsMissingLibrarySyncMetadata;
 - (id)fetchAllUploadableTracksMissingLibrarySyncMetadata;
-- (id)fetchLibraryGroupsWithParameters:(id)a3;
-- (id)fetchLibraryTracksWithParameters:(id)a3;
-- (id)fetchObjectsForRequest:(id)a3 withPredicate:(id)a4 context:(id)a5;
-- (id)fetchRawSongResponseDataForLibraryTrackIdentifier:(id)a3;
-- (id)libraryChangesFromManagedObjects:(id)a3 usingContext:(id)a4 changeType:(int64_t)a5;
-- (id)persistentContainerForStoreType:(int64_t)a3 error:(id *)a4;
-- (id)updateReportForLibraryGroups:(id)a3;
-- (id)updateReportForLibraryTrack:(id)a3;
-- (void)associateTrack:(id)a3 toGroupWithIdentifier:(id)a4 context:(id)a5;
+- (id)fetchLibraryGroupsWithParameters:(id)parameters;
+- (id)fetchLibraryTracksWithParameters:(id)parameters;
+- (id)fetchObjectsForRequest:(id)request withPredicate:(id)predicate context:(id)context;
+- (id)fetchRawSongResponseDataForLibraryTrackIdentifier:(id)identifier;
+- (id)libraryChangesFromManagedObjects:(id)objects usingContext:(id)context changeType:(int64_t)type;
+- (id)persistentContainerForStoreType:(int64_t)type error:(id *)error;
+- (id)updateReportForLibraryGroups:(id)groups;
+- (id)updateReportForLibraryTrack:(id)track;
+- (void)associateTrack:(id)track toGroupWithIdentifier:(id)identifier context:(id)context;
 - (void)deleteAllItems;
-- (void)deleteAllItemsWithFetchRequest:(id)a3 completionHandler:(id)a4;
+- (void)deleteAllItemsWithFetchRequest:(id)request completionHandler:(id)handler;
 - (void)deleteAllSyncMetadataItems;
-- (void)deleteItemsByIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)fetchLibraryItemsWithParameters:(id)a3 completionHandler:(id)a4;
-- (void)managedObjectsDidChange:(id)a3;
-- (void)observeDatabaseChangesWithContext:(id)a3;
-- (void)persistLibraryGroups:(id)a3 completionHandler:(id)a4;
-- (void)persistUpdatedTracks:(id)a3 completionHandler:(id)a4;
+- (void)deleteItemsByIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)fetchLibraryItemsWithParameters:(id)parameters completionHandler:(id)handler;
+- (void)managedObjectsDidChange:(id)change;
+- (void)observeDatabaseChangesWithContext:(id)context;
+- (void)persistLibraryGroups:(id)groups completionHandler:(id)handler;
+- (void)persistUpdatedTracks:(id)tracks completionHandler:(id)handler;
 - (void)reset;
-- (void)updateManagedTrack:(id)a3 withUpdatedTrack:(id)a4;
+- (void)updateManagedTrack:(id)track withUpdatedTrack:(id)updatedTrack;
 @end
 
 @implementation SHMediaLibraryDataStore
 
-- (SHMediaLibraryDataStore)initWithStoreType:(int64_t)a3
+- (SHMediaLibraryDataStore)initWithStoreType:(int64_t)type
 {
   v20.receiver = self;
   v20.super_class = SHMediaLibraryDataStore;
@@ -43,25 +43,25 @@
   }
 
   v19 = 0;
-  v6 = [(SHMediaLibraryDataStore *)v4 persistentContainerForStoreType:a3 error:&v19];
+  v6 = [(SHMediaLibraryDataStore *)v4 persistentContainerForStoreType:type error:&v19];
   v7 = v19;
   persistentContainer = v5->_persistentContainer;
   v5->_persistentContainer = v6;
 
   if (!v7)
   {
-    v11 = [(NSPersistentContainer *)v5->_persistentContainer newBackgroundContext];
+    newBackgroundContext = [(NSPersistentContainer *)v5->_persistentContainer newBackgroundContext];
     v12 = +[NSMergePolicy mergeByPropertyStoreTrumpMergePolicy];
-    [(NSManagedObjectContext *)v11 setMergePolicy:v12];
+    [(NSManagedObjectContext *)newBackgroundContext setMergePolicy:v12];
 
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v15 = [NSString stringWithFormat:@"%@ context", v14];
-    [(NSManagedObjectContext *)v11 setName:v15];
+    [(NSManagedObjectContext *)newBackgroundContext setName:v15];
 
     managedObjectContext = v5->_managedObjectContext;
-    v5->_managedObjectContext = v11;
-    v17 = v11;
+    v5->_managedObjectContext = newBackgroundContext;
+    v17 = newBackgroundContext;
 
     [(SHMediaLibraryDataStore *)v5 observeDatabaseChangesWithContext:v17];
 LABEL_7:
@@ -83,10 +83,10 @@ LABEL_8:
   return v10;
 }
 
-- (id)persistentContainerForStoreType:(int64_t)a3 error:(id *)a4
+- (id)persistentContainerForStoreType:(int64_t)type error:(id *)error
 {
   v6 = NSSQLiteStoreType;
-  if (!a3)
+  if (!type)
   {
     v7 = NSInMemoryStoreType;
 
@@ -115,9 +115,9 @@ LABEL_8:
   v15[3] = &unk_10007D428;
   v15[4] = &v16;
   [v11 loadPersistentStoresWithCompletionHandler:v15];
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   _Block_object_dispose(&v16, 8);
@@ -125,13 +125,13 @@ LABEL_8:
   return v11;
 }
 
-- (void)fetchLibraryItemsWithParameters:(id)a3 completionHandler:(id)a4
+- (void)fetchLibraryItemsWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 filterOptions])
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  if ([parametersCopy filterOptions])
   {
-    v7 = [(SHMediaLibraryDataStore *)self fetchLibraryTracksWithParameters:v9];
+    v7 = [(SHMediaLibraryDataStore *)self fetchLibraryTracksWithParameters:parametersCopy];
   }
 
   else
@@ -139,9 +139,9 @@ LABEL_8:
     v7 = 0;
   }
 
-  if (([v9 filterOptions] & 2) != 0)
+  if (([parametersCopy filterOptions] & 2) != 0)
   {
-    v8 = [(SHMediaLibraryDataStore *)self fetchLibraryGroupsWithParameters:v9];
+    v8 = [(SHMediaLibraryDataStore *)self fetchLibraryGroupsWithParameters:parametersCopy];
   }
 
   else
@@ -149,12 +149,12 @@ LABEL_8:
     v8 = 0;
   }
 
-  v6[2](v6, v7, v8, 0);
+  handlerCopy[2](handlerCopy, v7, v8, 0);
 }
 
-- (id)fetchLibraryTracksWithParameters:(id)a3
+- (id)fetchLibraryTracksWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -169,7 +169,7 @@ LABEL_8:
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 1;
-  v5 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   v6 = sh_log_object();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -182,25 +182,25 @@ LABEL_8:
     while (1)
     {
       v7 = [v36[5] count];
-      if (v7 == [v4 resultsLimit])
+      if (v7 == [parametersCopy resultsLimit])
       {
         break;
       }
 
-      v8 = [v4 resultsLimit];
+      resultsLimit = [parametersCopy resultsLimit];
       v9 = [v36[5] count];
-      if ((v8 - v9) >= 0x1F4)
+      if ((resultsLimit - v9) >= 0x1F4)
       {
         v10 = 500;
       }
 
       else
       {
-        v10 = v8 - v9;
+        v10 = resultsLimit - v9;
       }
 
-      v11 = +[SHFetchRequestFactory tracksFetchRequestWithContext:fetchOffset:fetchLimit:sortedByAscendingDate:excludeCloudMetadata:](SHFetchRequestFactory, "tracksFetchRequestWithContext:fetchOffset:fetchLimit:sortedByAscendingDate:excludeCloudMetadata:", v5, v32[3], v10, [v4 ascending], objc_msgSend(v4, "excludeCloudMetadata"));
-      v12 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v11 withPredicate:0 context:v5];
+      v11 = +[SHFetchRequestFactory tracksFetchRequestWithContext:fetchOffset:fetchLimit:sortedByAscendingDate:excludeCloudMetadata:](SHFetchRequestFactory, "tracksFetchRequestWithContext:fetchOffset:fetchLimit:sortedByAscendingDate:excludeCloudMetadata:", managedObjectContext, v32[3], v10, [parametersCopy ascending], objc_msgSend(parametersCopy, "excludeCloudMetadata"));
+      v12 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v11 withPredicate:0 context:managedObjectContext];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_100018EE8;
@@ -208,11 +208,11 @@ LABEL_8:
       v13 = v12;
       v20 = v13;
       v24 = &v27;
-      v21 = v4;
-      v22 = self;
+      v21 = parametersCopy;
+      selfCopy = self;
       v25 = &v35;
       v26 = &v31;
-      v23 = v5;
+      v23 = managedObjectContext;
       [v23 performBlockAndWait:v19];
 
       if ((v28[3] & 1) == 0)
@@ -247,10 +247,10 @@ LABEL_13:
   return v17;
 }
 
-- (id)fetchRawSongResponseDataForLibraryTrackIdentifier:(id)a3
+- (id)fetchRawSongResponseDataForLibraryTrackIdentifier:(id)identifier
 {
-  v4 = [NSPredicate predicateWithFormat:@"syncID == %@", a3];
-  v5 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  identifier = [NSPredicate predicateWithFormat:@"syncID == %@", identifier];
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   v6 = +[SHTrackMO fetchRequest];
   [v6 setResultType:2];
   [v6 setFetchLimit:1];
@@ -258,11 +258,11 @@ LABEL_13:
   v7 = [NSArray arrayWithObjects:&v13 count:1];
   [v6 setPropertiesToFetch:v7];
 
-  v8 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v6 withPredicate:v4 context:v5];
+  v8 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v6 withPredicate:identifier context:managedObjectContext];
   if ([v8 count])
   {
-    v9 = [v8 firstObject];
-    v10 = [v9 objectForKeyedSubscript:@"rawSongResponse"];
+    firstObject = [v8 firstObject];
+    v10 = [firstObject objectForKeyedSubscript:@"rawSongResponse"];
 
     v11 = [(SHMediaLibraryDataStore *)self dataFromManagedObjectRawResponseDictionary:v10];
   }
@@ -290,9 +290,9 @@ LABEL_13:
   v9 = [NSArray arrayWithObjects:v27 count:2];
   v10 = [NSCompoundPredicate andPredicateWithSubpredicates:v9];
 
-  v11 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   v12 = +[SHTrackMO fetchRequest];
-  v13 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v12 withPredicate:v10 context:v11];
+  v13 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v12 withPredicate:v10 context:managedObjectContext];
 
   v21 = 0;
   v22 = &v21;
@@ -306,9 +306,9 @@ LABEL_13:
   v17[3] = &unk_10007D478;
   v14 = v13;
   v18 = v14;
-  v19 = self;
+  selfCopy = self;
   v20 = &v21;
-  [v11 performBlockAndWait:v17];
+  [managedObjectContext performBlockAndWait:v17];
   v15 = [v22[5] copy];
 
   _Block_object_dispose(&v21, 8);
@@ -326,9 +326,9 @@ LABEL_13:
   v6 = [NSArray arrayWithObjects:&v23 count:1];
   v7 = [NSCompoundPredicate andPredicateWithSubpredicates:v6];
 
-  v8 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   v9 = +[SHGroupMO fetchRequest];
-  v10 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v9 withPredicate:v7 context:v8];
+  v10 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v9 withPredicate:v7 context:managedObjectContext];
 
   v17 = 0;
   v18 = &v17;
@@ -343,7 +343,7 @@ LABEL_13:
   v11 = v10;
   v15 = v11;
   v16 = &v17;
-  [v8 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
   v12 = [v18[5] copy];
 
   _Block_object_dispose(&v17, 8);
@@ -351,16 +351,16 @@ LABEL_13:
   return v12;
 }
 
-- (id)fetchLibraryGroupsWithParameters:(id)a3
+- (id)fetchLibraryGroupsWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = sub_1000189E0;
   v28 = sub_1000189F0;
   v29 = +[NSMutableArray array];
-  v5 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   v6 = sh_log_object();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -368,18 +368,18 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Local] Media library fetching groups.", buf, 2u);
   }
 
-  v7 = [SHFetchRequestFactory groupsFetchRequestWithContext:v5];
-  v8 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v7 withPredicate:0 context:v5];
+  v7 = [SHFetchRequestFactory groupsFetchRequestWithContext:managedObjectContext];
+  v8 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v7 withPredicate:0 context:managedObjectContext];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_100019CC4;
   v19 = &unk_10007D4C8;
-  v9 = v4;
+  v9 = parametersCopy;
   v20 = v9;
   v10 = v8;
   v21 = v10;
   v23 = &v24;
-  v11 = v5;
+  v11 = managedObjectContext;
   v22 = v11;
   [v11 performBlockAndWait:&v16];
   v12 = sh_log_object();
@@ -397,154 +397,154 @@ LABEL_13:
   return v14;
 }
 
-- (void)persistUpdatedTracks:(id)a3 completionHandler:(id)a4
+- (void)persistUpdatedTracks:(id)tracks completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tracksCopy = tracks;
+  handlerCopy = handler;
   [(SHMediaLibraryDataStore *)self managedObjectContext];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100019F6C;
   v11[3] = &unk_10007D4F0;
   v11[4] = self;
-  v13 = v12 = v6;
-  v14 = v7;
-  v8 = v7;
+  v13 = v12 = tracksCopy;
+  v14 = handlerCopy;
+  v8 = handlerCopy;
   v9 = v13;
-  v10 = v6;
+  v10 = tracksCopy;
   [v9 performBlockAndWait:v11];
 }
 
-- (id)updateReportForLibraryTrack:(id)a3
+- (id)updateReportForLibraryTrack:(id)track
 {
-  v4 = a3;
+  trackCopy = track;
   v5 = objc_alloc_init(SHMediaLibraryUpdateReport);
-  v6 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   v7 = NSStringFromSelector("identifier");
   v8 = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", v7];
-  v9 = [v4 valueForKeyPath:v8];
+  v9 = [trackCopy valueForKeyPath:v8];
 
   v10 = [NSPredicate predicateWithFormat:@"%K IN %@", @"syncID", v9];
   v11 = +[SHTrackMO fetchRequest];
-  v12 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v11 withPredicate:v10 context:v6];
+  v12 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v11 withPredicate:v10 context:managedObjectContext];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10001A688;
   v19[3] = &unk_10007D1E8;
-  v20 = v4;
+  v20 = trackCopy;
   v21 = v12;
   v13 = v5;
   v22 = v13;
   v14 = v12;
-  v15 = v4;
-  [v6 performBlockAndWait:v19];
+  v15 = trackCopy;
+  [managedObjectContext performBlockAndWait:v19];
   v16 = v22;
   v17 = v13;
 
   return v13;
 }
 
-- (void)persistLibraryGroups:(id)a3 completionHandler:(id)a4
+- (void)persistLibraryGroups:(id)groups completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupsCopy = groups;
+  handlerCopy = handler;
   [(SHMediaLibraryDataStore *)self managedObjectContext];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001A9D8;
   v11[3] = &unk_10007D4F0;
   v11[4] = self;
-  v13 = v12 = v6;
-  v14 = v7;
-  v8 = v7;
+  v13 = v12 = groupsCopy;
+  v14 = handlerCopy;
+  v8 = handlerCopy;
   v9 = v13;
-  v10 = v6;
+  v10 = groupsCopy;
   [v9 performBlockAndWait:v11];
 }
 
-- (id)updateReportForLibraryGroups:(id)a3
+- (id)updateReportForLibraryGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = objc_alloc_init(SHMediaLibraryUpdateReport);
-  v6 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   v7 = NSStringFromSelector("identifier");
   v8 = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", v7];
-  v9 = [v4 valueForKeyPath:v8];
+  v9 = [groupsCopy valueForKeyPath:v8];
 
   v10 = NSStringFromSelector("syncID");
   v11 = [NSPredicate predicateWithFormat:@"%K IN %@", v10, v9];
 
   v12 = +[SHGroupMO fetchRequest];
-  v13 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v12 withPredicate:v11 context:v6];
+  v13 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v12 withPredicate:v11 context:managedObjectContext];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10001B14C;
   v20[3] = &unk_10007D1E8;
-  v21 = v4;
+  v21 = groupsCopy;
   v22 = v13;
   v14 = v5;
   v23 = v14;
   v15 = v13;
-  v16 = v4;
-  [v6 performBlockAndWait:v20];
+  v16 = groupsCopy;
+  [managedObjectContext performBlockAndWait:v20];
   v17 = v23;
   v18 = v14;
 
   return v14;
 }
 
-- (void)deleteItemsByIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)deleteItemsByIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   v9 = NSStringFromSelector("syncID");
-  v10 = [NSPredicate predicateWithFormat:@"%K IN %@", v9, v7];
+  identifiersCopy = [NSPredicate predicateWithFormat:@"%K IN %@", v9, identifiersCopy];
 
   v11 = +[SHGroupMO fetchRequest];
-  v12 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v11 withPredicate:v10 context:v8];
+  v12 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v11 withPredicate:identifiersCopy context:managedObjectContext];
 
   v13 = +[SHTrackMO fetchRequest];
-  v14 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v13 withPredicate:v10 context:v8];
+  v14 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v13 withPredicate:identifiersCopy context:managedObjectContext];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10001B564;
   v19[3] = &unk_10007D4F0;
   v20 = v12;
-  v21 = v8;
+  v21 = managedObjectContext;
   v22 = v14;
-  v23 = v6;
-  v15 = v6;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v14;
-  v17 = v8;
+  v17 = managedObjectContext;
   v18 = v12;
   [v17 performBlockAndWait:v19];
 }
 
-- (void)deleteAllItemsWithFetchRequest:(id)a3 completionHandler:(id)a4
+- (void)deleteAllItemsWithFetchRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHMediaLibraryDataStore *)self managedObjectContext];
-  v9 = [(SHMediaLibraryDataStore *)self persistentContainer];
-  v10 = [v9 persistentStoreDescriptions];
-  v11 = [v10 firstObject];
+  requestCopy = request;
+  handlerCopy = handler;
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  persistentContainer = [(SHMediaLibraryDataStore *)self persistentContainer];
+  persistentStoreDescriptions = [persistentContainer persistentStoreDescriptions];
+  firstObject = [persistentStoreDescriptions firstObject];
 
-  v12 = [v11 type];
-  LODWORD(v10) = [v12 isEqualToString:NSInMemoryStoreType];
+  type = [firstObject type];
+  LODWORD(persistentStoreDescriptions) = [type isEqualToString:NSInMemoryStoreType];
 
-  if (v10)
+  if (persistentStoreDescriptions)
   {
-    [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v6 withPredicate:0 context:v8];
+    [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:requestCopy withPredicate:0 context:managedObjectContext];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_10001B9D4;
     v30 = v29[3] = &unk_10007D568;
-    v31 = v8;
-    v32 = v7;
+    v31 = managedObjectContext;
+    v32 = handlerCopy;
     v13 = v30;
     [v31 performBlockAndWait:v29];
 
@@ -553,9 +553,9 @@ LABEL_13:
 
   else
   {
-    v15 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:v6];
-    v16 = [(SHMediaLibraryDataStore *)self persistentContainer];
-    v17 = [v16 persistentStoreCoordinator];
+    v15 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:requestCopy];
+    persistentContainer2 = [(SHMediaLibraryDataStore *)self persistentContainer];
+    persistentStoreCoordinator = [persistentContainer2 persistentStoreCoordinator];
 
     v23 = 0;
     v24 = &v23;
@@ -567,14 +567,14 @@ LABEL_13:
     v18[1] = 3221225472;
     v18[2] = sub_10001BADC;
     v18[3] = &unk_10007D590;
-    v14 = v17;
+    v14 = persistentStoreCoordinator;
     v19 = v14;
     v13 = v15;
     v20 = v13;
-    v21 = v8;
+    v21 = managedObjectContext;
     v22 = &v23;
     [v21 performBlockAndWait:v18];
-    (*(v7 + 2))(v7, v24[5]);
+    (*(handlerCopy + 2))(handlerCopy, v24[5]);
 
     _Block_object_dispose(&v23, 8);
   }
@@ -599,7 +599,7 @@ LABEL_13:
   [(SHMediaLibraryDataStore *)self reset];
 }
 
-- (BOOL)commitChangesWithError:(id *)a3
+- (BOOL)commitChangesWithError:(id *)error
 {
   [(SHMediaLibraryDataStore *)self managedObjectContext];
   v18 = 0;
@@ -621,7 +621,7 @@ LABEL_13:
   v13 = &v18;
   [v4 performBlockAndWait:v10];
   v5 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) == 0)
+  if (error && (v15[3] & 1) == 0)
   {
     v6 = v19[5];
     if (v6)
@@ -644,7 +644,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to commit library core data changes. Error %@", buf, 0xCu);
     }
 
-    *a3 = [NSError errorWithDomain:SHErrorDomain code:400 userInfo:v7];
+    *error = [NSError errorWithDomain:SHErrorDomain code:400 userInfo:v7];
 
     v5 = *(v15 + 24);
   }
@@ -666,14 +666,14 @@ LABEL_13:
   [v2 performBlockAndWait:v3];
 }
 
-- (id)fetchObjectsForRequest:(id)a3 withPredicate:(id)a4 context:(id)a5
+- (id)fetchObjectsForRequest:(id)request withPredicate:(id)predicate context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  requestCopy = request;
+  predicateCopy = predicate;
+  contextCopy = context;
+  if (predicateCopy)
   {
-    [v7 setPredicate:v8];
+    [requestCopy setPredicate:predicateCopy];
   }
 
   v26 = 0;
@@ -693,9 +693,9 @@ LABEL_13:
   v15[2] = sub_10001C400;
   v15[3] = &unk_10007D660;
   v18 = &v20;
-  v10 = v9;
+  v10 = contextCopy;
   v16 = v10;
-  v11 = v7;
+  v11 = requestCopy;
   v17 = v11;
   v19 = &v26;
   [v10 performBlockAndWait:v15];
@@ -718,39 +718,39 @@ LABEL_13:
   return v13;
 }
 
-- (id)createMetadataWithData:(id)a3 track:(id)a4 group:(id)a5 context:(id)a6
+- (id)createMetadataWithData:(id)data track:(id)track group:(id)group context:(id)context
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  contextCopy = context;
+  groupCopy = group;
+  trackCopy = track;
+  dataCopy = data;
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [NSEntityDescription insertNewObjectForEntityForName:v14 inManagedObjectContext:v9];
+  v15 = [NSEntityDescription insertNewObjectForEntityForName:v14 inManagedObjectContext:contextCopy];
 
-  [v15 setData:v12];
-  [v15 setTrack:v11];
+  [v15 setData:dataCopy];
+  [v15 setTrack:trackCopy];
 
-  [v15 setGroup:v10];
+  [v15 setGroup:groupCopy];
 
   return v15;
 }
 
-- (void)associateTrack:(id)a3 toGroupWithIdentifier:(id)a4 context:(id)a5
+- (void)associateTrack:(id)track toGroupWithIdentifier:(id)identifier context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  trackCopy = track;
+  identifierCopy = identifier;
+  contextCopy = context;
   v11 = NSStringFromSelector("syncID");
-  v12 = [NSPredicate predicateWithFormat:@"%K == %@", v11, v9];
+  identifierCopy = [NSPredicate predicateWithFormat:@"%K == %@", v11, identifierCopy];
 
   v13 = +[SHGroupMO fetchRequest];
-  v14 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v13 withPredicate:v12 context:v10];
-  v15 = [v14 firstObject];
+  v14 = [(SHMediaLibraryDataStore *)self fetchObjectsForRequest:v13 withPredicate:identifierCopy context:contextCopy];
+  firstObject = [v14 firstObject];
 
-  if (v15)
+  if (firstObject)
   {
-    [v8 setGroup:v15];
+    [trackCopy setGroup:firstObject];
   }
 
   else
@@ -764,207 +764,207 @@ LABEL_13:
 
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [NSEntityDescription insertNewObjectForEntityForName:v18 inManagedObjectContext:v10];
+    v19 = [NSEntityDescription insertNewObjectForEntityForName:v18 inManagedObjectContext:contextCopy];
 
-    [v19 setSyncID:v9];
-    [v8 setGroup:v19];
+    [v19 setSyncID:identifierCopy];
+    [trackCopy setGroup:v19];
   }
 }
 
-- (void)updateManagedTrack:(id)a3 withUpdatedTrack:(id)a4
+- (void)updateManagedTrack:(id)track withUpdatedTrack:(id)updatedTrack
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 identifier];
-  [v5 setSyncID:v7];
+  trackCopy = track;
+  updatedTrackCopy = updatedTrack;
+  identifier = [updatedTrackCopy identifier];
+  [trackCopy setSyncID:identifier];
 
-  v8 = [v6 creationDate];
-  [v5 setDate:v8];
+  creationDate = [updatedTrackCopy creationDate];
+  [trackCopy setDate:creationDate];
 
-  [v6 locationCoordinate];
-  [v5 setLatitude:?];
-  [v6 locationCoordinate];
-  [v5 setLongitude:v9];
-  if ([v6 explicitContent])
+  [updatedTrackCopy locationCoordinate];
+  [trackCopy setLatitude:?];
+  [updatedTrackCopy locationCoordinate];
+  [trackCopy setLongitude:v9];
+  if ([updatedTrackCopy explicitContent])
   {
-    [v5 setExplicit:{objc_msgSend(v6, "explicitContent")}];
+    [trackCopy setExplicit:{objc_msgSend(updatedTrackCopy, "explicitContent")}];
   }
 
-  if ([v6 shazamCount])
+  if ([updatedTrackCopy shazamCount])
   {
-    [v5 setShazamCount:{objc_msgSend(v6, "shazamCount")}];
+    [trackCopy setShazamCount:{objc_msgSend(updatedTrackCopy, "shazamCount")}];
   }
 
-  v10 = [v6 shazamKey];
+  shazamKey = [updatedTrackCopy shazamKey];
 
-  if (v10)
+  if (shazamKey)
   {
-    v11 = [v6 shazamKey];
-    v12 = [v11 validatedKey];
-    [v5 setShazamKey:v12];
+    shazamKey2 = [updatedTrackCopy shazamKey];
+    validatedKey = [shazamKey2 validatedKey];
+    [trackCopy setShazamKey:validatedKey];
   }
 
-  v13 = [v6 recognitionIdentifier];
+  recognitionIdentifier = [updatedTrackCopy recognitionIdentifier];
 
-  if (v13)
+  if (recognitionIdentifier)
   {
-    v14 = [v6 recognitionIdentifier];
-    [v5 setRecognitionID:v14];
+    recognitionIdentifier2 = [updatedTrackCopy recognitionIdentifier];
+    [trackCopy setRecognitionID:recognitionIdentifier2];
   }
 
-  v15 = [v6 title];
+  title = [updatedTrackCopy title];
 
-  if (v15)
+  if (title)
   {
-    v16 = [v6 title];
-    [v5 setTitle:v16];
+    title2 = [updatedTrackCopy title];
+    [trackCopy setTitle:title2];
   }
 
-  v17 = [v6 subtitle];
+  subtitle = [updatedTrackCopy subtitle];
 
-  if (v17)
+  if (subtitle)
   {
-    v18 = [v6 subtitle];
-    [v5 setSubtitle:v18];
+    subtitle2 = [updatedTrackCopy subtitle];
+    [trackCopy setSubtitle:subtitle2];
   }
 
-  v19 = [v6 providerIdentifier];
+  providerIdentifier = [updatedTrackCopy providerIdentifier];
 
-  if (v19)
+  if (providerIdentifier)
   {
-    v20 = [v6 providerIdentifier];
-    [v5 setProviderID:v20];
+    providerIdentifier2 = [updatedTrackCopy providerIdentifier];
+    [trackCopy setProviderID:providerIdentifier2];
   }
 
-  v21 = [v6 providerName];
+  providerName = [updatedTrackCopy providerName];
 
-  if (v21)
+  if (providerName)
   {
-    v22 = [v6 providerName];
-    [v5 setProviderName:v22];
+    providerName2 = [updatedTrackCopy providerName];
+    [trackCopy setProviderName:providerName2];
   }
 
-  v23 = [v6 artworkURL];
+  artworkURL = [updatedTrackCopy artworkURL];
 
-  if (v23)
+  if (artworkURL)
   {
-    v24 = [v6 artworkURL];
-    [v5 setArtworkURL:v24];
+    artworkURL2 = [updatedTrackCopy artworkURL];
+    [trackCopy setArtworkURL:artworkURL2];
   }
 
-  v25 = [v6 shazamURL];
+  shazamURL = [updatedTrackCopy shazamURL];
 
-  if (v25)
+  if (shazamURL)
   {
-    v26 = [v6 shazamURL];
-    [v5 setShazamURL:v26];
+    shazamURL2 = [updatedTrackCopy shazamURL];
+    [trackCopy setShazamURL:shazamURL2];
   }
 
-  v27 = [v6 albumName];
+  albumName = [updatedTrackCopy albumName];
 
-  if (v27)
+  if (albumName)
   {
-    v28 = [v6 albumName];
-    [v5 setAlbumName:v28];
+    albumName2 = [updatedTrackCopy albumName];
+    [trackCopy setAlbumName:albumName2];
   }
 
-  v29 = [v6 appleMusicID];
+  appleMusicID = [updatedTrackCopy appleMusicID];
 
-  if (v29)
+  if (appleMusicID)
   {
-    v30 = [v6 appleMusicID];
-    [v5 setAppleMusicID:v30];
+    appleMusicID2 = [updatedTrackCopy appleMusicID];
+    [trackCopy setAppleMusicID:appleMusicID2];
   }
 
-  v31 = [v6 appleMusicURL];
+  appleMusicURL = [updatedTrackCopy appleMusicURL];
 
-  if (v31)
+  if (appleMusicURL)
   {
-    v32 = [v6 appleMusicURL];
-    [v5 setAppleMusicURL:v32];
+    appleMusicURL2 = [updatedTrackCopy appleMusicURL];
+    [trackCopy setAppleMusicURL:appleMusicURL2];
   }
 
-  v33 = [v6 genres];
+  genres = [updatedTrackCopy genres];
 
-  if (v33)
+  if (genres)
   {
-    v34 = [v6 genres];
-    [v5 setGenres:v34];
+    genres2 = [updatedTrackCopy genres];
+    [trackCopy setGenres:genres2];
   }
 
-  v35 = [v6 isrc];
+  isrc = [updatedTrackCopy isrc];
 
-  if (v35)
+  if (isrc)
   {
-    v36 = [v6 isrc];
-    [v5 setIsrc:v36];
+    isrc2 = [updatedTrackCopy isrc];
+    [trackCopy setIsrc:isrc2];
   }
 
-  v37 = [v6 rawSongResponse];
+  rawSongResponse = [updatedTrackCopy rawSongResponse];
 
-  if (v37)
+  if (rawSongResponse)
   {
     v52 = @"SHMediaLibraryDataStoreRawResponseSongsData";
-    v38 = [v6 rawSongResponse];
-    v53 = v38;
+    rawSongResponse2 = [updatedTrackCopy rawSongResponse];
+    v53 = rawSongResponse2;
     v39 = [NSDictionary dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-    [v5 setRawSongResponse:v39];
+    [trackCopy setRawSongResponse:v39];
   }
 
-  v40 = [v6 releaseDate];
+  releaseDate = [updatedTrackCopy releaseDate];
 
-  if (v40)
+  if (releaseDate)
   {
-    v41 = [v6 releaseDate];
-    [v5 setReleaseDate:v41];
+    releaseDate2 = [updatedTrackCopy releaseDate];
+    [trackCopy setReleaseDate:releaseDate2];
   }
 
-  v42 = [v6 videoURL];
+  videoURL = [updatedTrackCopy videoURL];
 
-  if (v42)
+  if (videoURL)
   {
-    v43 = [v6 videoURL];
-    [v5 setVideoURL:v43];
+    videoURL2 = [updatedTrackCopy videoURL];
+    [trackCopy setVideoURL:videoURL2];
   }
 
-  v44 = [v6 lastUpdatedDate];
+  lastUpdatedDate = [updatedTrackCopy lastUpdatedDate];
 
-  if (v44)
+  if (lastUpdatedDate)
   {
-    v45 = [v6 lastUpdatedDate];
-    [v5 setModifiedDate:v45];
+    lastUpdatedDate2 = [updatedTrackCopy lastUpdatedDate];
+    [trackCopy setModifiedDate:lastUpdatedDate2];
   }
 
   v46 = NSStringFromSelector("name");
   v47 = [NSString stringWithFormat:@"@distinctUnionOfObjects.%@", v46];
 
-  v48 = [v6 labels];
-  v49 = [v48 valueForKeyPath:v47];
-  v50 = [v49 allObjects];
+  labels = [updatedTrackCopy labels];
+  v49 = [labels valueForKeyPath:v47];
+  allObjects = [v49 allObjects];
 
-  v51 = [v50 copy];
-  [v5 setLabels:v51];
+  v51 = [allObjects copy];
+  [trackCopy setLabels:v51];
 }
 
-- (void)observeDatabaseChangesWithContext:(id)a3
+- (void)observeDatabaseChangesWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 addObserver:self selector:"managedObjectsDidChange:" name:NSManagedObjectContextObjectsDidChangeNotification object:v4];
+  [v5 addObserver:self selector:"managedObjectsDidChange:" name:NSManagedObjectContextObjectsDidChangeNotification object:contextCopy];
 }
 
-- (void)managedObjectsDidChange:(id)a3
+- (void)managedObjectsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:NSInsertedObjectsKey];
-  if (v6 || ([v5 objectForKeyedSubscript:NSUpdatedObjectsKey], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:NSInsertedObjectsKey];
+  if (v6 || ([userInfo objectForKeyedSubscript:NSUpdatedObjectsKey], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v12 = [v5 objectForKeyedSubscript:NSDeletedObjectsKey];
+    v12 = [userInfo objectForKeyedSubscript:NSDeletedObjectsKey];
 
     if (!v12)
     {
@@ -979,7 +979,7 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[Local] Received Managed objects change notification. Handling changes.", buf, 2u);
   }
 
-  v8 = [(SHMediaLibraryDataStore *)self managedObjectContext];
+  managedObjectContext = [(SHMediaLibraryDataStore *)self managedObjectContext];
   *buf = 0;
   v22 = buf;
   v23 = 0x3032000000;
@@ -990,9 +990,9 @@ LABEL_13:
   v14 = 3221225472;
   v15 = sub_10001CF5C;
   v16 = &unk_10007D590;
-  v17 = v5;
-  v18 = self;
-  v9 = v8;
+  v17 = userInfo;
+  selfCopy = self;
+  v9 = managedObjectContext;
   v19 = v9;
   v20 = buf;
   [v9 performBlockAndWait:&v13];
@@ -1004,25 +1004,25 @@ LABEL_13:
 LABEL_7:
 }
 
-- (id)libraryChangesFromManagedObjects:(id)a3 usingContext:(id)a4 changeType:(int64_t)a5
+- (id)libraryChangesFromManagedObjects:(id)objects usingContext:(id)context changeType:(int64_t)type
 {
-  v6 = a3;
-  v7 = a4;
-  v39 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  objectsCopy = objects;
+  contextCopy = context;
+  v39 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [objectsCopy count]);
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [NSEntityDescription entityForName:v9 inManagedObjectContext:v7];
+  v10 = [NSEntityDescription entityForName:v9 inManagedObjectContext:contextCopy];
 
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v36 = v7;
-  v13 = [NSEntityDescription entityForName:v12 inManagedObjectContext:v7];
+  v36 = contextCopy;
+  v13 = [NSEntityDescription entityForName:v12 inManagedObjectContext:contextCopy];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v14 = v6;
+  v14 = objectsCopy;
   v15 = [v14 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v15)
   {
@@ -1039,8 +1039,8 @@ LABEL_7:
         }
 
         v19 = *(*(&v41 + 1) + 8 * i);
-        v20 = [v19 entity];
-        v21 = [v20 isKindOfEntity:v10];
+        entity = [v19 entity];
+        v21 = [entity isKindOfEntity:v10];
 
         if (v21)
         {
@@ -1053,21 +1053,21 @@ LABEL_7:
 
         else
         {
-          v23 = [v19 entity];
-          v24 = [v23 isKindOfEntity:v13];
+          entity2 = [v19 entity];
+          v24 = [entity2 isKindOfEntity:v13];
 
           if (v24)
           {
             v25 = v19;
             v26 = [SHMediaLibraryGroup alloc];
-            v27 = [v25 metadata];
-            v28 = [v27 data];
+            metadata = [v25 metadata];
+            data = [metadata data];
             [v25 syncID];
             v29 = v10;
             v30 = v14;
             v32 = v31 = v13;
 
-            v22 = [v26 initWithGroupMetadata:v28 groupSyncID:v32];
+            v22 = [v26 initWithGroupMetadata:data groupSyncID:v32];
             v13 = v31;
             v14 = v30;
             v10 = v29;
@@ -1076,7 +1076,7 @@ LABEL_7:
             if (v22)
             {
 LABEL_11:
-              v33 = [[SHMediaLibraryChange alloc] initWithLibraryItem:v22 changeType:a5];
+              v33 = [[SHMediaLibraryChange alloc] initWithLibraryItem:v22 changeType:type];
               [v39 addObject:v33];
 
               continue;
@@ -1096,65 +1096,65 @@ LABEL_11:
   return v34;
 }
 
-- (id)createWithManagedTrack:(id)a3 excludeCloudMetadata:(BOOL)a4
+- (id)createWithManagedTrack:(id)track excludeCloudMetadata:(BOOL)metadata
 {
-  v5 = a3;
+  trackCopy = track;
   v29 = [SHMediaLibraryTrack alloc];
-  v6 = [v5 syncID];
-  v7 = [v5 date];
-  v38 = [v5 releaseDate];
-  v31 = [v5 group];
-  v37 = [v31 syncID];
-  v36 = [v5 labels];
-  v35 = [v5 modifiedDate];
-  v34 = [v5 providerID];
-  v39 = v7;
-  v40 = v6;
-  if (a4)
+  syncID = [trackCopy syncID];
+  date = [trackCopy date];
+  releaseDate = [trackCopy releaseDate];
+  group = [trackCopy group];
+  syncID2 = [group syncID];
+  labels = [trackCopy labels];
+  modifiedDate = [trackCopy modifiedDate];
+  providerID = [trackCopy providerID];
+  v39 = date;
+  v40 = syncID;
+  if (metadata)
   {
-    v32 = 0;
+    data = 0;
   }
 
   else
   {
-    v20 = [v5 metadata];
-    v32 = [v20 data];
+    metadata = [trackCopy metadata];
+    data = [metadata data];
   }
 
-  v28 = [v5 providerName];
-  v33 = [v5 shazamKey];
-  v27 = [v5 recognitionID];
-  v23 = [v5 title];
-  v26 = [v5 subtitle];
-  v25 = [v5 artworkURL];
-  v22 = [v5 appleMusicID];
-  v24 = [v5 appleMusicURL];
-  v21 = [v5 shazamURL];
-  v8 = [v5 videoURL];
-  v9 = [v5 explicit];
-  v10 = [v5 albumName];
-  v11 = [v5 isrc];
-  v12 = [v5 shazamCount];
-  [v5 latitude];
+  providerName = [trackCopy providerName];
+  shazamKey = [trackCopy shazamKey];
+  recognitionID = [trackCopy recognitionID];
+  title = [trackCopy title];
+  subtitle = [trackCopy subtitle];
+  artworkURL = [trackCopy artworkURL];
+  appleMusicID = [trackCopy appleMusicID];
+  appleMusicURL = [trackCopy appleMusicURL];
+  shazamURL = [trackCopy shazamURL];
+  videoURL = [trackCopy videoURL];
+  explicit = [trackCopy explicit];
+  albumName = [trackCopy albumName];
+  isrc = [trackCopy isrc];
+  shazamCount = [trackCopy shazamCount];
+  [trackCopy latitude];
   v14 = v13;
-  [v5 longitude];
+  [trackCopy longitude];
   v16 = CLLocationCoordinate2DMake(v14, v15);
-  v17 = [v5 genres];
-  LOBYTE(v19) = v9;
-  v30 = [v29 initWithTrackSyncID:v40 creationDate:v39 releaseDate:v38 groupSyncID:v37 labels:v36 lastUpdatedDate:v35 providerIdentifier:v16.latitude trackMetadata:v16.longitude providerName:v34 shazamKey:v32 recognitionID:v28 title:v33 subtitle:v27 artworkURL:v23 appleMusicID:v26 appleMusicURL:v25 shazamURL:v22 videoURL:v24 isExplicit:v21 albumName:v8 isrc:v19 shazamCount:v10 locationCoordinate:v11 genres:v12 rawSongResponse:{v17, 0}];
+  genres = [trackCopy genres];
+  LOBYTE(v19) = explicit;
+  v30 = [v29 initWithTrackSyncID:v40 creationDate:v39 releaseDate:releaseDate groupSyncID:syncID2 labels:labels lastUpdatedDate:modifiedDate providerIdentifier:v16.latitude trackMetadata:v16.longitude providerName:providerID shazamKey:data recognitionID:providerName title:shazamKey subtitle:recognitionID artworkURL:title appleMusicID:subtitle appleMusicURL:artworkURL shazamURL:appleMusicID videoURL:appleMusicURL isExplicit:shazamURL albumName:videoURL isrc:v19 shazamCount:albumName locationCoordinate:isrc genres:shazamCount rawSongResponse:{genres, 0}];
 
-  if (!a4)
+  if (!metadata)
   {
   }
 
   return v30;
 }
 
-- (id)dataFromManagedObjectRawResponseDictionary:(id)a3
+- (id)dataFromManagedObjectRawResponseDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy && [dictionaryCopy count])
   {
     v5 = [v4 objectForKeyedSubscript:@"SHMediaLibraryDataStoreRawResponseSongsData"];
     if (v5)

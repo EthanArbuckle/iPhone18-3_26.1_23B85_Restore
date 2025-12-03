@@ -3,15 +3,15 @@
 - (BOOL)isClosed;
 - (TSCH3DSplineGenerator)init;
 - (id).cxx_construct;
-- (void)calcControlMatrix:(void *)a3 pointNum:(int64_t)a4;
-- (void)generatePoints:(void *)a3;
+- (void)calcControlMatrix:(void *)matrix pointNum:(int64_t)num;
+- (void)generatePoints:(void *)points;
 @end
 
 @implementation TSCH3DSplineGenerator
 
 + (id)generator
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -42,7 +42,7 @@
   return begin[1] == *(end - 1) && *begin == *(end - 2);
 }
 
-- (void)calcControlMatrix:(void *)a3 pointNum:(int64_t)a4
+- (void)calcControlMatrix:(void *)matrix pointNum:(int64_t)num
 {
   v10 = self->_controlPts.__end_ - self->_controlPts.__begin_;
   isClosed = objc_msgSend_isClosed(self, a2, v4, v5, v6);
@@ -62,7 +62,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  if (a4 >= (self->_controlPts.__end_ - self->_controlPts.__begin_) >> 3)
+  if (num >= (self->_controlPts.__end_ - self->_controlPts.__begin_) >> 3)
   {
     v32 = MEMORY[0x277D81150];
     v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, *&v13, *&v14, v15, "[TSCH3DSplineGenerator calcControlMatrix:pointNum:]");
@@ -72,10 +72,10 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
   }
 
-  if (a4)
+  if (num)
   {
     begin = self->_controlPts.__begin_;
-    v48 = begin[a4 - 1];
+    v48 = begin[num - 1];
   }
 
   else if (objc_msgSend_isClosed(self, v12, *&v13, *&v14, v15))
@@ -92,10 +92,10 @@
     v48 = vadd_f32(*begin, v14);
   }
 
-  v49 = &begin[a4];
+  v49 = &begin[num];
   v50 = *v49;
   v51 = (self->_controlPts.__end_ - begin) >> 3;
-  if (v51 - 1 == a4)
+  if (v51 - 1 == num)
   {
     if (objc_msgSend_isClosed(self, v12, *&v13, *&v14, v15))
     {
@@ -117,7 +117,7 @@
   else
   {
     v54 = v49[1];
-    if (v51 - 2 == a4)
+    if (v51 - 2 == num)
     {
       if (objc_msgSend_isClosed(self, v12, *&v13, *&v14, v15))
       {
@@ -136,17 +136,17 @@
     }
   }
 
-  *a3 = v48;
-  *(a3 + 2) = 0;
-  *(a3 + 2) = v50;
-  *(a3 + 6) = 0;
-  *(a3 + 4) = v54;
-  *(a3 + 10) = 0;
-  *(a3 + 6) = v53;
-  *(a3 + 14) = 0;
+  *matrix = v48;
+  *(matrix + 2) = 0;
+  *(matrix + 2) = v50;
+  *(matrix + 6) = 0;
+  *(matrix + 4) = v54;
+  *(matrix + 10) = 0;
+  *(matrix + 6) = v53;
+  *(matrix + 14) = 0;
 }
 
-- (void)generatePoints:(void *)a3
+- (void)generatePoints:(void *)points
 {
   *&v45[4] = 0uLL;
   *v45 = 1065353216;
@@ -184,8 +184,8 @@
   v6 = 0.0;
   *&v40[4] = xmmword_2764D63B0;
   *&v40[20] = 0;
-  v7 = *a3;
-  *(a3 + 1) = *a3;
+  v7 = *points;
+  *(points + 1) = *points;
   begin = self->_controlPts.__begin_;
   v9 = self->_controlPts.__end_ - begin;
   if (v9)
@@ -236,10 +236,10 @@
 
         while (v14 != 4);
         a2 = self->_controlPts.__begin_ + 8 * i;
-        v19 = *(a3 + 1);
-        if (v19 >= *(a3 + 2))
+        v19 = *(points + 1);
+        if (v19 >= *(points + 2))
         {
-          v20 = sub_2761C99B0(a3, a2);
+          v20 = sub_2761C99B0(points, a2);
         }
 
         else
@@ -250,7 +250,7 @@
           v20 = (v19 + 2);
         }
 
-        *(a3 + 1) = v20;
+        *(points + 1) = v20;
         v21 = self->_splineExclude.__begin_;
         v22 = self->_splineExclude.__end_ - v21;
         if (!v22)
@@ -278,7 +278,7 @@
           if (v26 >= v23)
           {
 LABEL_22:
-            sub_2761EE9F8(v41, a3, 0.0, 1.0, self->_detail, self->_adaptiveThreshold);
+            sub_2761EE9F8(v41, points, 0.0, 1.0, self->_detail, self->_adaptiveThreshold);
           }
         }
 
@@ -286,13 +286,13 @@ LABEL_22:
         v28 = ((self->_controlPts.__end_ - begin) >> 3) - 1;
       }
 
-      v7 = *(a3 + 1);
+      v7 = *(points + 1);
     }
 
     v29 = &begin[8 * v28];
-    if (v7 >= *(a3 + 2))
+    if (v7 >= *(points + 2))
     {
-      v30 = sub_2761C99B0(a3, v29);
+      v30 = sub_2761C99B0(points, v29);
     }
 
     else
@@ -302,7 +302,7 @@ LABEL_22:
       v30 = (v7 + 2);
     }
 
-    *(a3 + 1) = v30;
+    *(points + 1) = v30;
   }
 }
 

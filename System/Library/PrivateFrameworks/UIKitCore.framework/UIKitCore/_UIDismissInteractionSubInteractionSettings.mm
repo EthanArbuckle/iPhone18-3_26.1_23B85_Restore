@@ -1,22 +1,22 @@
 @interface _UIDismissInteractionSubInteractionSettings
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
-- (void)setUpdateSpring:(id)a3;
+- (void)setUpdateSpring:(id)spring;
 @end
 
 @implementation _UIDismissInteractionSubInteractionSettings
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_188C86234();
 }
 
-- (void)setUpdateSpring:(id)a3
+- (void)setUpdateSpring:(id)spring
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit43_UIDismissInteractionSubInteractionSettings_updateSpring);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit43_UIDismissInteractionSubInteractionSettings_updateSpring) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit43_UIDismissInteractionSubInteractionSettings_updateSpring) = spring;
+  springCopy = spring;
 }
 
 + (id)settingsControllerModule

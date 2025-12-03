@@ -8,11 +8,11 @@
 - (id)eventPayload
 {
   v11[0] = @"activityType";
-  v3 = [(UAActivityBecameCurrentEvent *)self reportedActivityType];
-  v4 = v3;
-  if (v3)
+  reportedActivityType = [(UAActivityBecameCurrentEvent *)self reportedActivityType];
+  v4 = reportedActivityType;
+  if (reportedActivityType)
   {
-    v5 = v3;
+    v5 = reportedActivityType;
   }
 
   else
@@ -22,11 +22,11 @@
 
   v11[1] = @"bundleIdentifier";
   v12[0] = v5;
-  v6 = [(UAActivityBecameCurrentEvent *)self bundleIdentifier];
-  v7 = v6;
-  if (v6)
+  bundleIdentifier = [(UAActivityBecameCurrentEvent *)self bundleIdentifier];
+  v7 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v8 = v6;
+    v8 = bundleIdentifier;
   }
 
   else
@@ -42,8 +42,8 @@
 
 - (id)reportedActivityType
 {
-  v3 = [(UAActivityBecameCurrentEvent *)self activityType];
-  v4 = [(UAAnalyticsEvent *)self firstPartyActivityTypeOrUnknown:v3];
+  activityType = [(UAActivityBecameCurrentEvent *)self activityType];
+  v4 = [(UAAnalyticsEvent *)self firstPartyActivityTypeOrUnknown:activityType];
 
   return v4;
 }

@@ -1,28 +1,28 @@
 @interface MNGuidanceJunctionViewImage
-- (MNGuidanceJunctionViewImage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MNGuidanceJunctionViewImage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNGuidanceJunctionViewImage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageID = self->_imageID;
-  v5 = a3;
-  [v5 encodeInteger:imageID forKey:@"_imageID"];
-  [v5 encodeObject:self->_imageData forKey:@"_imageData"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:imageID forKey:@"_imageID"];
+  [coderCopy encodeObject:self->_imageData forKey:@"_imageData"];
 }
 
-- (MNGuidanceJunctionViewImage)initWithCoder:(id)a3
+- (MNGuidanceJunctionViewImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MNGuidanceJunctionViewImage;
   v5 = [(MNGuidanceJunctionViewImage *)&v9 init];
   if (v5)
   {
-    v5->_imageID = [v4 decodeIntegerForKey:@"_imageID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imageData"];
+    v5->_imageID = [coderCopy decodeIntegerForKey:@"_imageID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v6;
   }

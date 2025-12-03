@@ -1,19 +1,19 @@
 @interface IDSFirewallEntry
-- (BOOL)isEqual:(id)a3;
-- (IDSFirewallEntry)initWithCoder:(id)a3;
-- (IDSFirewallEntry)initWithURI:(id)a3 andLastSeenDate:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDSFirewallEntry)initWithCoder:(id)coder;
+- (IDSFirewallEntry)initWithURI:(id)i andLastSeenDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSFirewallEntry
 
-- (IDSFirewallEntry)initWithURI:(id)a3 andLastSeenDate:(id)a4
+- (IDSFirewallEntry)initWithURI:(id)i andLastSeenDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  iCopy = i;
+  dateCopy = date;
+  if (iCopy)
   {
     v15.receiver = self;
     v15.super_class = IDSFirewallEntry;
@@ -21,63 +21,63 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_uri, a3);
-      if (v8)
+      objc_storeStrong(&v9->_uri, i);
+      if (dateCopy)
       {
-        v11 = v8;
+        date = dateCopy;
       }
 
       else
       {
-        v11 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
       }
 
       lastSeen = v10->_lastSeen;
-      v10->_lastSeen = v11;
+      v10->_lastSeen = date;
 
       v10->_isDonated = 0;
     }
 
     self = v10;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = [(IDSFirewallEntry *)self uri];
-      v6 = [v4 uri];
+      v6 = [equalCopy uri];
       v7 = [v5 isEqual:v6];
 
       if (v7)
       {
-        v8 = [(IDSFirewallEntry *)self lastSeen];
-        v9 = [v4 lastSeen];
-        v10 = [v8 isEqual:v9];
+        lastSeen = [(IDSFirewallEntry *)self lastSeen];
+        lastSeen2 = [equalCopy lastSeen];
+        v10 = [lastSeen isEqual:lastSeen2];
 
         if (v10)
         {
-          v11 = [(IDSFirewallEntry *)self mergeID];
-          if (v11 || ([v4 mergeID], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+          mergeID = [(IDSFirewallEntry *)self mergeID];
+          if (mergeID || ([equalCopy mergeID], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
           {
-            v12 = [(IDSFirewallEntry *)self mergeID];
-            v13 = [v4 mergeID];
-            v14 = [v12 isEqual:v13];
+            mergeID2 = [(IDSFirewallEntry *)self mergeID];
+            mergeID3 = [equalCopy mergeID];
+            v14 = [mergeID2 isEqual:mergeID3];
 
-            if (v11)
+            if (mergeID)
             {
 LABEL_13:
 
@@ -108,7 +108,7 @@ LABEL_9:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(IDSFirewallEntry *)self uri];
-  v5 = [(IDSFirewallEntry *)self lastSeen];
+  lastSeen = [(IDSFirewallEntry *)self lastSeen];
   if ([(IDSFirewallEntry *)self isDonated])
   {
     v6 = @"YES";
@@ -119,47 +119,47 @@ LABEL_9:
     v6 = @"NO";
   }
 
-  v7 = [(IDSFirewallEntry *)self mergeID];
-  v8 = [v3 stringWithFormat:@"<IDSFirewallEntry %p>: uri %@ lastSeen %@ isDonated %@ mergeID %@", self, v4, v5, v6, v7];
+  mergeID = [(IDSFirewallEntry *)self mergeID];
+  v8 = [v3 stringWithFormat:@"<IDSFirewallEntry %p>: uri %@ lastSeen %@ isDonated %@ mergeID %@", self, v4, lastSeen, v6, mergeID];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(IDSFirewallEntry *)self uri];
-  v6 = [(IDSFirewallEntry *)self lastSeen];
-  v7 = [v4 initWithURI:v5 andLastSeenDate:v6];
+  lastSeen = [(IDSFirewallEntry *)self lastSeen];
+  v7 = [v4 initWithURI:v5 andLastSeenDate:lastSeen];
 
-  v8 = [(IDSFirewallEntry *)self mergeID];
-  [v7 setMergeID:v8];
+  mergeID = [(IDSFirewallEntry *)self mergeID];
+  [v7 setMergeID:mergeID];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   v4 = [(IDSFirewallEntry *)self uri];
-  [v7 encodeObject:v4 forKey:@"firewall-uri"];
+  [coderCopy encodeObject:v4 forKey:@"firewall-uri"];
 
-  v5 = [(IDSFirewallEntry *)self lastSeen];
-  [v7 encodeObject:v5 forKey:@"firewall-lastseen"];
+  lastSeen = [(IDSFirewallEntry *)self lastSeen];
+  [coderCopy encodeObject:lastSeen forKey:@"firewall-lastseen"];
 
-  v6 = [(IDSFirewallEntry *)self mergeID];
-  [v7 encodeObject:v6 forKey:@"firewall-mergeid"];
+  mergeID = [(IDSFirewallEntry *)self mergeID];
+  [coderCopy encodeObject:mergeID forKey:@"firewall-mergeid"];
 
-  [v7 encodeBool:-[IDSFirewallEntry isDonated](self forKey:{"isDonated"), @"firewall-isdonated"}];
+  [coderCopy encodeBool:-[IDSFirewallEntry isDonated](self forKey:{"isDonated"), @"firewall-isdonated"}];
 }
 
-- (IDSFirewallEntry)initWithCoder:(id)a3
+- (IDSFirewallEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firewall-uri"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firewall-lastseen"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firewall-mergeid"];
-  v8 = [v4 decodeBoolForKey:@"firewall-isdonated"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firewall-uri"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firewall-lastseen"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firewall-mergeid"];
+  v8 = [coderCopy decodeBoolForKey:@"firewall-isdonated"];
 
   v9 = [[IDSFirewallEntry alloc] initWithURI:v5 andLastSeenDate:v6];
   v10 = v9;

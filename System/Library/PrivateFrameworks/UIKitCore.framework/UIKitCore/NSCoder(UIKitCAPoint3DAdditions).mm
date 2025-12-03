@@ -8,7 +8,7 @@
 - (double)ui_decodeCAPoint3DForKey:()UIKitCAPoint3DAdditions
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   v6 = _CAPoint3DFromString(v5);
   return v6;
@@ -18,7 +18,7 @@
 {
   v10 = a6;
   v11 = _NSStringFromCAPoint3D(a2, a3, a4);
-  [a1 encodeObject:v11 forKey:v10];
+  [self encodeObject:v11 forKey:v10];
 }
 
 @end

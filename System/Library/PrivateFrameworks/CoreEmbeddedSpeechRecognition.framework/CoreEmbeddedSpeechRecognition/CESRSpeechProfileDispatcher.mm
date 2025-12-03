@@ -1,41 +1,41 @@
 @interface CESRSpeechProfileDispatcher
 + (id)_supportedDarwinNotifications;
 + (id)sharedDispatcher;
-+ (unint64_t)_maintenanceReasonForDarwinNotificationEventWithName:(id)a3;
-- (BOOL)_adminServiceShouldAcceptNewConnection:(id)a3;
-- (BOOL)handleDarwinNotificationEventWithName:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (unint64_t)_maintenanceReasonForDarwinNotificationEventWithName:(id)name;
+- (BOOL)_adminServiceShouldAcceptNewConnection:(id)connection;
+- (BOOL)handleDarwinNotificationEventWithName:(id)name;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CESRSpeechProfileDispatcher)init;
 - (id)_adminServiceProvider;
-- (id)_defaultTaskCoalescerWithQueue:(id)a3;
-- (id)_initWithQueue:(id)a3 adminServiceProvider:(id)a4 speechProfileSiteManager:(id)a5;
-- (id)_listenerWithMachServiceName:(id)a3 delegate:(id)a4;
+- (id)_defaultTaskCoalescerWithQueue:(id)queue;
+- (id)_initWithQueue:(id)queue adminServiceProvider:(id)provider speechProfileSiteManager:(id)manager;
+- (id)_listenerWithMachServiceName:(id)name delegate:(id)delegate;
 - (id)_speechProfileSiteManager;
-- (void)_notifyChangeToSets:(id)a3;
-- (void)newPersonas:(id)a3;
-- (void)removedPersonas:(id)a3;
-- (void)resourceAvailableForPersona:(id)a3;
-- (void)resourceUnavailableForPersona:(id)a3;
-- (void)resourceUnavailableSoonForPersona:(id)a3;
-- (void)runMaintenanceWithShouldDefer:(id)a3 completion:(id)a4;
-- (void)runMigration:(id)a3;
+- (void)_notifyChangeToSets:(id)sets;
+- (void)newPersonas:(id)personas;
+- (void)removedPersonas:(id)personas;
+- (void)resourceAvailableForPersona:(id)persona;
+- (void)resourceUnavailableForPersona:(id)persona;
+- (void)resourceUnavailableSoonForPersona:(id)persona;
+- (void)runMaintenanceWithShouldDefer:(id)defer completion:(id)completion;
+- (void)runMigration:(id)migration;
 - (void)setupXPCListeners;
-- (void)snapshotBookmarksForLocale:(id)a3 toPath:(id)a4;
+- (void)snapshotBookmarksForLocale:(id)locale toPath:(id)path;
 @end
 
 @implementation CESRSpeechProfileDispatcher
 
-- (void)removedPersonas:(id)a3
+- (void)removedPersonas:(id)personas
 {
-  v4 = a3;
+  personasCopy = personas;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CESRSpeechProfileDispatcher_removedPersonas___block_invoke;
   v7[3] = &unk_278580398;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = personasCopy;
+  v6 = personasCopy;
   dispatch_async(queue, v7);
 }
 
@@ -45,17 +45,17 @@ void __47__CESRSpeechProfileDispatcher_removedPersonas___block_invoke(uint64_t a
   [v2 handleRemovedPersonas:*(a1 + 40)];
 }
 
-- (void)newPersonas:(id)a3
+- (void)newPersonas:(id)personas
 {
-  v4 = a3;
+  personasCopy = personas;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__CESRSpeechProfileDispatcher_newPersonas___block_invoke;
   v7[3] = &unk_278580398;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = personasCopy;
+  v6 = personasCopy;
   dispatch_async(queue, v7);
 }
 
@@ -65,17 +65,17 @@ void __43__CESRSpeechProfileDispatcher_newPersonas___block_invoke(uint64_t a1)
   [v2 handleNewPersonas:*(a1 + 40)];
 }
 
-- (void)resourceUnavailableForPersona:(id)a3
+- (void)resourceUnavailableForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__CESRSpeechProfileDispatcher_resourceUnavailableForPersona___block_invoke;
   v7[3] = &unk_278580398;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = personaCopy;
+  v6 = personaCopy;
   dispatch_async(queue, v7);
 }
 
@@ -89,17 +89,17 @@ void __61__CESRSpeechProfileDispatcher_resourceUnavailableForPersona___block_inv
   }
 }
 
-- (void)resourceUnavailableSoonForPersona:(id)a3
+- (void)resourceUnavailableSoonForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__CESRSpeechProfileDispatcher_resourceUnavailableSoonForPersona___block_invoke;
   v7[3] = &unk_278580398;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = personaCopy;
+  v6 = personaCopy;
   dispatch_async(queue, v7);
 }
 
@@ -113,17 +113,17 @@ void __65__CESRSpeechProfileDispatcher_resourceUnavailableSoonForPersona___block
   }
 }
 
-- (void)resourceAvailableForPersona:(id)a3
+- (void)resourceAvailableForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__CESRSpeechProfileDispatcher_resourceAvailableForPersona___block_invoke;
   v7[3] = &unk_278580398;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = personaCopy;
+  v6 = personaCopy;
   dispatch_async(queue, v7);
 }
 
@@ -133,11 +133,11 @@ void __59__CESRSpeechProfileDispatcher_resourceAvailableForPersona___block_invok
   [v2 handleSiteAvailableForPersona:*(a1 + 40)];
 }
 
-- (void)snapshotBookmarksForLocale:(id)a3 toPath:(id)a4
+- (void)snapshotBookmarksForLocale:(id)locale toPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  pathCopy = path;
   if ([MEMORY[0x277CEF2A8] isASRSpeechProfileSamplingEnabled])
   {
     queue = self->_queue;
@@ -146,8 +146,8 @@ void __59__CESRSpeechProfileDispatcher_resourceAvailableForPersona___block_invok
     block[2] = __65__CESRSpeechProfileDispatcher_snapshotBookmarksForLocale_toPath___block_invoke;
     block[3] = &unk_27857FED0;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = localeCopy;
+    v13 = pathCopy;
     dispatch_async(queue, block);
   }
 
@@ -171,19 +171,19 @@ void __65__CESRSpeechProfileDispatcher_snapshotBookmarksForLocale_toPath___block
   [v2 snapshotBookmarksForLocale:*(a1 + 40) toPath:*(a1 + 48)];
 }
 
-- (void)runMigration:(id)a3
+- (void)runMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v5 = os_transaction_create();
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__CESRSpeechProfileDispatcher_runMigration___block_invoke;
   aBlock[3] = &unk_2785800F8;
   v10 = v5;
-  v11 = v4;
+  v11 = migrationCopy;
   aBlock[4] = self;
   v6 = v5;
-  v7 = v4;
+  v7 = migrationCopy;
   v8 = _Block_copy(aBlock);
   dispatch_async(self->_queue, v8);
 }
@@ -213,22 +213,22 @@ uint64_t __44__CESRSpeechProfileDispatcher_runMigration___block_invoke(uint64_t 
   return result;
 }
 
-- (void)runMaintenanceWithShouldDefer:(id)a3 completion:(id)a4
+- (void)runMaintenanceWithShouldDefer:(id)defer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deferCopy = defer;
+  completionCopy = completion;
   v8 = os_transaction_create();
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__CESRSpeechProfileDispatcher_runMaintenanceWithShouldDefer_completion___block_invoke;
   v13[3] = &unk_27857FB98;
-  v15 = v6;
-  v16 = v7;
+  v15 = deferCopy;
+  v16 = completionCopy;
   v13[4] = self;
   v14 = v8;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = deferCopy;
   v12 = _Block_copy(v13);
   dispatch_async(self->_queue, v12);
 }
@@ -260,16 +260,16 @@ uint64_t __72__CESRSpeechProfileDispatcher_runMaintenanceWithShouldDefer_complet
   return result;
 }
 
-- (BOOL)handleDarwinNotificationEventWithName:(id)a3
+- (BOOL)handleDarwinNotificationEventWithName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSSet *)self->_supportedNotifications containsObject:v4])
+  nameCopy = name;
+  if ([(NSSet *)self->_supportedNotifications containsObject:nameCopy])
   {
     v5 = +[CESRSpeechProfileEvaluationStatus sharedStatus];
     if ([v5 isEvaluationEnabled])
     {
-      v6 = [v4 isEqualToString:@"com.apple.sysdiagnose.sysdiagnoseStarted"];
+      v6 = [nameCopy isEqualToString:@"com.apple.sysdiagnose.sysdiagnoseStarted"];
 
       if ((v6 & 1) == 0)
       {
@@ -279,7 +279,7 @@ uint64_t __72__CESRSpeechProfileDispatcher_runMaintenanceWithShouldDefer_complet
           *buf = 136315394;
           v32 = "[CESRSpeechProfileDispatcher handleDarwinNotificationEventWithName:]";
           v33 = 2112;
-          v34 = v4;
+          v34 = nameCopy;
           _os_log_impl(&dword_225EEB000, v7, OS_LOG_TYPE_INFO, "%s Evaluation is enabled, ignoring notification: %@", buf, 0x16u);
         }
 
@@ -298,7 +298,7 @@ uint64_t __72__CESRSpeechProfileDispatcher_runMaintenanceWithShouldDefer_complet
       *buf = 136315394;
       v32 = "[CESRSpeechProfileDispatcher handleDarwinNotificationEventWithName:]";
       v33 = 2112;
-      v34 = v4;
+      v34 = nameCopy;
       _os_log_impl(&dword_225EEB000, v10, OS_LOG_TYPE_DEFAULT, "%s Handling notification: %@", buf, 0x16u);
     }
 
@@ -308,7 +308,7 @@ uint64_t __72__CESRSpeechProfileDispatcher_runMaintenanceWithShouldDefer_complet
     aBlock[2] = __69__CESRSpeechProfileDispatcher_handleDarwinNotificationEventWithName___block_invoke;
     aBlock[3] = &unk_27857FB70;
     aBlock[4] = self;
-    v12 = v4;
+    v12 = nameCopy;
     v30 = v12;
     v13 = _Block_copy(aBlock);
     if (([v12 isEqualToString:@"com.apple.mobile.keybagd.first_unlock"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"com.apple.siri.uaf.com.apple.siri.understanding"))
@@ -458,11 +458,11 @@ void __69__CESRSpeechProfileDispatcher_handleDarwinNotificationEventWithName___b
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_adminServiceShouldAcceptNewConnection:(id)a3
+- (BOOL)_adminServiceShouldAcceptNewConnection:(id)connection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"com.apple.corespeech.corespeechd.speechprofileadmin"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.corespeech.corespeechd.speechprofileadmin"];
 
   if (v5)
   {
@@ -481,20 +481,20 @@ void __69__CESRSpeechProfileDispatcher_handleDarwinNotificationEventWithName___b
     v15[5] = v20;
     dispatch_sync(queue, v15);
     v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28395A128];
-    [v4 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    v8 = [*(*&v20[8] + 40) adminService];
-    [v4 setExportedObject:v8];
+    adminService = [*(*&v20[8] + 40) adminService];
+    [connectionCopy setExportedObject:adminService];
 
-    [v4 resume];
+    [connectionCopy resume];
     v9 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       *buf = 136315394;
       v17 = "[CESRSpeechProfileDispatcher _adminServiceShouldAcceptNewConnection:]";
       v18 = 1024;
-      v19 = v10;
+      v19 = processIdentifier;
       _os_log_impl(&dword_225EEB000, v9, OS_LOG_TYPE_INFO, "%s New connection established to process with pid=(%d)", buf, 0x12u);
     }
 
@@ -510,7 +510,7 @@ void __69__CESRSpeechProfileDispatcher_handleDarwinNotificationEventWithName___b
       *v20 = 136315394;
       *&v20[4] = "[CESRSpeechProfileDispatcher _adminServiceShouldAcceptNewConnection:]";
       *&v20[12] = 1024;
-      *&v20[14] = [v4 processIdentifier];
+      *&v20[14] = [connectionCopy processIdentifier];
       _os_log_impl(&dword_225EEB000, v12, OS_LOG_TYPE_INFO, "%s Connecting process with pid=(%d) is not entitled for the speech profile admin service - rejecting connection.", v20, 0x12u);
     }
   }
@@ -529,14 +529,14 @@ uint64_t __70__CESRSpeechProfileDispatcher__adminServiceShouldAcceptNewConnectio
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_adminServiceListener == v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_adminServiceListener == listenerCopy)
   {
-    v9 = [(CESRSpeechProfileDispatcher *)self _adminServiceShouldAcceptNewConnection:v7];
+    v9 = [(CESRSpeechProfileDispatcher *)self _adminServiceShouldAcceptNewConnection:connectionCopy];
   }
 
   else
@@ -547,7 +547,7 @@ uint64_t __70__CESRSpeechProfileDispatcher__adminServiceShouldAcceptNewConnectio
       v12 = 136315394;
       v13 = "[CESRSpeechProfileDispatcher listener:shouldAcceptNewConnection:]";
       v14 = 2112;
-      v15 = v6;
+      v15 = listenerCopy;
       _os_log_error_impl(&dword_225EEB000, v8, OS_LOG_TYPE_ERROR, "%s Unrecognized listener passed to delegate: %@", &v12, 0x16u);
     }
 
@@ -558,27 +558,27 @@ uint64_t __70__CESRSpeechProfileDispatcher__adminServiceShouldAcceptNewConnectio
   return v9;
 }
 
-- (id)_listenerWithMachServiceName:(id)a3 delegate:(id)a4
+- (id)_listenerWithMachServiceName:(id)name delegate:(id)delegate
 {
   v5 = MEMORY[0x277CCAE98];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithMachServiceName:v7];
+  delegateCopy = delegate;
+  nameCopy = name;
+  v8 = [[v5 alloc] initWithMachServiceName:nameCopy];
 
-  [v8 setDelegate:v6];
+  [v8 setDelegate:delegateCopy];
   [v8 resume];
 
   return v8;
 }
 
-- (void)_notifyChangeToSets:(id)a3
+- (void)_notifyChangeToSets:(id)sets
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setsCopy = sets;
   v5 = +[CESRSpeechProfileEvaluationStatus sharedStatus];
-  v6 = [v5 isEvaluationEnabled];
+  isEvaluationEnabled = [v5 isEvaluationEnabled];
 
-  if (v6)
+  if (isEvaluationEnabled)
   {
     v7 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEFAULT))
@@ -597,8 +597,8 @@ uint64_t __70__CESRSpeechProfileDispatcher__adminServiceShouldAcceptNewConnectio
     block[1] = 3221225472;
     block[2] = __51__CESRSpeechProfileDispatcher__notifyChangeToSets___block_invoke;
     block[3] = &unk_27857FED0;
-    v13 = v4;
-    v14 = self;
+    v13 = setsCopy;
+    selfCopy = self;
     v15 = v8;
     v10 = v8;
     dispatch_async(queue, block);
@@ -679,8 +679,8 @@ void __48__CESRSpeechProfileDispatcher_setupXPCListeners__block_invoke(uint64_t 
   {
     v4 = [CESRSpeechProfileAdminServiceFactory alloc];
     queue = self->_queue;
-    v6 = [(CESRSpeechProfileDispatcher *)self _speechProfileSiteManager];
-    v7 = [(CESRSpeechProfileAdminServiceFactory *)v4 initWithQueue:queue speechProfileSiteManager:v6];
+    _speechProfileSiteManager = [(CESRSpeechProfileDispatcher *)self _speechProfileSiteManager];
+    v7 = [(CESRSpeechProfileAdminServiceFactory *)v4 initWithQueue:queue speechProfileSiteManager:_speechProfileSiteManager];
     v8 = self->_adminServiceProvider;
     self->_adminServiceProvider = v7;
 
@@ -706,47 +706,47 @@ void __48__CESRSpeechProfileDispatcher_setupXPCListeners__block_invoke(uint64_t 
   return speechProfileSiteManager;
 }
 
-- (id)_defaultTaskCoalescerWithQueue:(id)a3
+- (id)_defaultTaskCoalescerWithQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = [CESRTaskCoalescer alloc];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(CESRTaskCoalescer *)v4 initWithManagerName:v6 coalescenceInterval:v3 coalescenceDelay:10.0 executionQueue:2.0];
+  v7 = [(CESRTaskCoalescer *)v4 initWithManagerName:v6 coalescenceInterval:queueCopy coalescenceDelay:10.0 executionQueue:2.0];
 
   return v7;
 }
 
-- (id)_initWithQueue:(id)a3 adminServiceProvider:(id)a4 speechProfileSiteManager:(id)a5
+- (id)_initWithQueue:(id)queue adminServiceProvider:(id)provider speechProfileSiteManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  providerCopy = provider;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = CESRSpeechProfileDispatcher;
   v12 = [(CESRSpeechProfileDispatcher *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a3);
-    v14 = [(CESRSpeechProfileDispatcher *)v13 _defaultTaskCoalescerWithQueue:v9];
+    objc_storeStrong(&v12->_queue, queue);
+    v14 = [(CESRSpeechProfileDispatcher *)v13 _defaultTaskCoalescerWithQueue:queueCopy];
     taskCoalescer = v13->_taskCoalescer;
     v13->_taskCoalescer = v14;
 
-    objc_storeStrong(&v13->_adminServiceProvider, a4);
-    objc_storeStrong(&v13->_speechProfileSiteManager, a5);
-    v16 = [objc_opt_class() _supportedDarwinNotifications];
+    objc_storeStrong(&v13->_adminServiceProvider, provider);
+    objc_storeStrong(&v13->_speechProfileSiteManager, manager);
+    _supportedDarwinNotifications = [objc_opt_class() _supportedDarwinNotifications];
     supportedNotifications = v13->_supportedNotifications;
-    v13->_supportedNotifications = v16;
+    v13->_supportedNotifications = _supportedDarwinNotifications;
 
-    v18 = [MEMORY[0x277CDCEE8] sharedMonitor];
-    [v18 addObserver:v13];
+    mEMORY[0x277CDCEE8] = [MEMORY[0x277CDCEE8] sharedMonitor];
+    [mEMORY[0x277CDCEE8] addObserver:v13];
 
-    v19 = [MEMORY[0x277CDCEE8] sharedMonitor];
-    [v19 registerLaunchOnDemand];
+    mEMORY[0x277CDCEE8]2 = [MEMORY[0x277CDCEE8] sharedMonitor];
+    [mEMORY[0x277CDCEE8]2 registerLaunchOnDemand];
 
-    v20 = [MEMORY[0x277CDCEB0] sharedInstance];
-    [v20 addObserver:v13];
+    mEMORY[0x277CDCEB0] = [MEMORY[0x277CDCEB0] sharedInstance];
+    [mEMORY[0x277CDCEB0] addObserver:v13];
   }
 
   return v13;
@@ -758,21 +758,21 @@ void __48__CESRSpeechProfileDispatcher_setupXPCListeners__block_invoke(uint64_t 
   objc_exception_throw(v2);
 }
 
-+ (unint64_t)_maintenanceReasonForDarwinNotificationEventWithName:(id)a3
++ (unint64_t)_maintenanceReasonForDarwinNotificationEventWithName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   if (_maintenanceReasonForDarwinNotificationEventWithName__onceToken == -1)
   {
-    if (v3)
+    if (nameCopy)
     {
 LABEL_3:
       v5 = [_maintenanceReasonForDarwinNotificationEventWithName__maintenanceReasonForEventName objectForKey:v4];
       v6 = v5;
       if (v5)
       {
-        v7 = [v5 unsignedIntegerValue];
+        unsignedIntegerValue = [v5 unsignedIntegerValue];
       }
 
       else
@@ -787,7 +787,7 @@ LABEL_3:
           _os_log_error_impl(&dword_225EEB000, v8, OS_LOG_TYPE_ERROR, "%s No known maintenance reason for notification: %@", &v12, 0x16u);
         }
 
-        v7 = 0;
+        unsignedIntegerValue = 0;
       }
 
       goto LABEL_13;
@@ -811,11 +811,11 @@ LABEL_3:
     _os_log_error_impl(&dword_225EEB000, v9, OS_LOG_TYPE_ERROR, "%s eventName cannot be nil.", &v12, 0xCu);
   }
 
-  v7 = 0;
+  unsignedIntegerValue = 0;
 LABEL_13:
 
   v10 = *MEMORY[0x277D85DE8];
-  return v7;
+  return unsignedIntegerValue;
 }
 
 void __84__CESRSpeechProfileDispatcher__maintenanceReasonForDarwinNotificationEventWithName___block_invoke()
@@ -876,7 +876,7 @@ void __60__CESRSpeechProfileDispatcher__supportedDarwinNotifications__block_invo
   block[1] = 3221225472;
   block[2] = __47__CESRSpeechProfileDispatcher_sharedDispatcher__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDispatcher_onceToken != -1)
   {
     dispatch_once(&sharedDispatcher_onceToken, block);

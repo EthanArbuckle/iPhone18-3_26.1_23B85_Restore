@@ -31,8 +31,8 @@
 
 - (void)_handleClose
 {
-  v2 = [(SHSheetPresentationBlockingViewController *)self delegate];
-  [v2 handlePresentationBlockingViewControllerClose];
+  delegate = [(SHSheetPresentationBlockingViewController *)self delegate];
+  [delegate handlePresentationBlockingViewControllerClose];
 }
 
 - (SHSheetPresentationBlockingViewControllerDelegate)delegate

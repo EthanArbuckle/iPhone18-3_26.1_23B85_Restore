@@ -1,5 +1,5 @@
 @interface PXPeopleSuggestionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,11 +7,11 @@
 
 @implementation PXPeopleSuggestionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXPeopleSuggestionView" hasInstanceMethod:@"suggestion" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXPerson" hasRequiredInstanceMethod:@"px_localizedName"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXPeopleSuggestionView" hasInstanceMethod:@"suggestion" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXPerson" hasRequiredInstanceMethod:@"px_localizedName"];
 }
 
 - (id)accessibilityLabel
@@ -31,7 +31,7 @@
   }
 
   v8 = [(PXPeopleSuggestionViewAccessibility *)self safeValueForKey:@"imageView"];
-  v11 = [v8 accessibilityLabel];
+  accessibilityLabel = [v8 accessibilityLabel];
   v9 = __UIAXStringForVariables();
 
   return v9;
@@ -40,17 +40,17 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = [(PXPeopleSuggestionViewAccessibility *)self safeValueForKey:@"imageView"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(PXPeopleSuggestionViewAccessibility *)self safeValueForKey:@"imageView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

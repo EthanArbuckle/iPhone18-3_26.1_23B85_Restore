@@ -1,20 +1,20 @@
 @interface SKSceneAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityContainer;
-- (void)didChangeSize:(CGSize)a3;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveFromView:(id)a3;
+- (void)didChangeSize:(CGSize)size;
+- (void)didMoveToView:(id)view;
+- (void)willMoveFromView:(id)view;
 @end
 
 @implementation SKSceneAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKScene" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKScene" hasInstanceMethod:@"didMoveToView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SKScene" hasInstanceMethod:@"didChangeSize:" withFullSignature:{"v", "{CGSize=dd}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKScene" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKScene" hasInstanceMethod:@"didMoveToView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SKScene" hasInstanceMethod:@"didChangeSize:" withFullSignature:{"v", "{CGSize=dd}", 0}];
 }
 
 - (CGRect)accessibilityFrame
@@ -30,7 +30,7 @@
   {
     objc_opt_class();
     v6 = __UIAccessibilityCastAsClass();
-    v7 = [v6 view];
+    view = [v6 view];
     [v6 frame];
     v9 = v8;
     v11 = v10;
@@ -48,7 +48,7 @@
     v31.size.width = vabdd_f64(v24, v21);
     v31.size.height = vabdd_f64(v23, v31.origin.y);
     v31.origin.x = v21;
-    v32 = UIAccessibilityConvertFrameToScreenCoordinates(v31, v7);
+    v32 = UIAccessibilityConvertFrameToScreenCoordinates(v31, view);
     x = v32.origin.x;
     y = v32.origin.y;
     width = v32.size.width;
@@ -70,36 +70,36 @@
 {
   v5.receiver = self;
   v5.super_class = SKSceneAccessibility;
-  v3 = [(SKSceneAccessibility *)&v5 accessibilityContainer];
-  if (!v3)
+  accessibilityContainer = [(SKSceneAccessibility *)&v5 accessibilityContainer];
+  if (!accessibilityContainer)
   {
-    v3 = [(SKSceneAccessibility *)self safeValueForKey:@"view"];
+    accessibilityContainer = [(SKSceneAccessibility *)self safeValueForKey:@"view"];
   }
 
-  return v3;
+  return accessibilityContainer;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v3.receiver = self;
   v3.super_class = SKSceneAccessibility;
-  [(SKSceneAccessibility *)&v3 didMoveToView:a3];
+  [(SKSceneAccessibility *)&v3 didMoveToView:view];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)didChangeSize:(CGSize)a3
+- (void)didChangeSize:(CGSize)size
 {
   v3.receiver = self;
   v3.super_class = SKSceneAccessibility;
-  [(SKSceneAccessibility *)&v3 didChangeSize:a3.width, a3.height];
+  [(SKSceneAccessibility *)&v3 didChangeSize:size.width, size.height];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)willMoveFromView:(id)a3
+- (void)willMoveFromView:(id)view
 {
   v3.receiver = self;
   v3.super_class = SKSceneAccessibility;
-  [(SKSceneAccessibility *)&v3 willMoveFromView:a3];
+  [(SKSceneAccessibility *)&v3 willMoveFromView:view];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 

@@ -1,21 +1,21 @@
 @interface FCCKDirectRequestOperationURLCache
-- (void)storeCachedResponse:(id)a3 forRequest:(id)a4;
+- (void)storeCachedResponse:(id)response forRequest:(id)request;
 @end
 
 @implementation FCCKDirectRequestOperationURLCache
 
-- (void)storeCachedResponse:(id)a3 forRequest:(id)a4
+- (void)storeCachedResponse:(id)response forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 HTTPMethod];
-  v9 = [v8 isEqualToString:@"GET"];
+  responseCopy = response;
+  requestCopy = request;
+  hTTPMethod = [requestCopy HTTPMethod];
+  v9 = [hTTPMethod isEqualToString:@"GET"];
 
   if (v9)
   {
     v10.receiver = self;
     v10.super_class = FCCKDirectRequestOperationURLCache;
-    [(NSURLCache *)&v10 storeCachedResponse:v6 forRequest:v7];
+    [(NSURLCache *)&v10 storeCachedResponse:responseCopy forRequest:requestCopy];
   }
 }
 

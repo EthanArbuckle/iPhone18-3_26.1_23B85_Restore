@@ -1,23 +1,23 @@
 @interface CLSPartOfDayInformant
-- (id)gatherCluesForInvestigation:(id)a3 progressBlock:(id)a4;
+- (id)gatherCluesForInvestigation:(id)investigation progressBlock:(id)block;
 @end
 
 @implementation CLSPartOfDayInformant
 
-- (id)gatherCluesForInvestigation:(id)a3 progressBlock:(id)a4
+- (id)gatherCluesForInvestigation:(id)investigation progressBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  investigationCopy = investigation;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 clueCollection];
-  v7 = [v6 localDates];
-  v8 = [v7 count];
+  clueCollection = [investigationCopy clueCollection];
+  localDates = [clueCollection localDates];
+  v8 = [localDates count];
 
   if (v8)
   {
-    v22 = v6;
-    v9 = [v4 feeder];
-    v10 = [CLSPartOfDayCalculation partsOfDayForFeeder:v9];
+    v22 = clueCollection;
+    feeder = [investigationCopy feeder];
+    v10 = [CLSPartOfDayCalculation partsOfDayForFeeder:feeder];
 
     v25 = 0u;
     v26 = 0u;
@@ -53,7 +53,7 @@
       while (v13);
     }
 
-    v6 = v22;
+    clueCollection = v22;
   }
 
   return v5;

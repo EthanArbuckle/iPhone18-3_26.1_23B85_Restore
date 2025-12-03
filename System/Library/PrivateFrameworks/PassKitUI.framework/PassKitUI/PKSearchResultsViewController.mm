@@ -1,109 +1,109 @@
 @interface PKSearchResultsViewController
-- (BOOL)_hasContentBelowSection:(int64_t)a3;
-- (BOOL)_isQueryIdentifierMatchingCurrentQuery:(id)a3;
-- (BOOL)_shouldOmitHeaderViewForSection:(unint64_t)a3;
-- (BOOL)_shouldShowPagedTransactionListForQuery:(id)a3;
-- (BOOL)_updateGroup:(id)a3 withRegion:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PKSearchResultsViewController)initWithPaymentDataProvider:(id)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5;
+- (BOOL)_hasContentBelowSection:(int64_t)section;
+- (BOOL)_isQueryIdentifierMatchingCurrentQuery:(id)query;
+- (BOOL)_shouldOmitHeaderViewForSection:(unint64_t)section;
+- (BOOL)_shouldShowPagedTransactionListForQuery:(id)query;
+- (BOOL)_updateGroup:(id)group withRegion:(id)region;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PKSearchResultsViewController)initWithPaymentDataProvider:(id)provider transactionSourceCollection:(id)collection familyCollection:(id)familyCollection;
 - (PKSearchResultsViewControllerDelegate)delegate;
 - (double)_thumbnailInset;
 - (double)_thumbnailSpacing;
-- (id)_balanceItemsFromPendingPeerPaymentRquests:(id)a3;
-- (id)_fetchPassForUniqueIdentifierIfNeeded:(id)a3;
+- (id)_balanceItemsFromPendingPeerPaymentRquests:(id)rquests;
+- (id)_fetchPassForUniqueIdentifierIfNeeded:(id)needed;
 - (id)_fetchSearchHistoryResults;
-- (id)_groupItemForTransactionGroup:(id)a3 searchQuery:(id)a4;
-- (id)_headerTitleForSection:(unint64_t)a3;
-- (id)_historyViewControllerForQuery:(id)a3 groups:(id)a4 headerGroup:(id)a5;
-- (id)_listSectionLayoutForSectionAtIndex:(int64_t)a3 itemCount:(int64_t)a4 environment:(id)a5;
+- (id)_groupItemForTransactionGroup:(id)group searchQuery:(id)query;
+- (id)_headerTitleForSection:(unint64_t)section;
+- (id)_historyViewControllerForQuery:(id)query groups:(id)groups headerGroup:(id)group;
+- (id)_listSectionLayoutForSectionAtIndex:(int64_t)index itemCount:(int64_t)count environment:(id)environment;
 - (id)_loadResultsLayout;
 - (id)_loadThumbnailLayout;
-- (id)_passItemsFromPassResults:(id)a3 isInExpiredSection:(BOOL)a4;
-- (id)_queryWithIdentifier:(id)a3;
+- (id)_passItemsFromPassResults:(id)results isInExpiredSection:(BOOL)section;
+- (id)_queryWithIdentifier:(id)identifier;
 - (id)_searchController;
-- (id)_searchTokenForTransactionSourceCollection:(id)a3;
-- (id)_standardSectionLayoutForSectionAtIndex:(int64_t)a3 itemCount:(int64_t)a4 environment:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)_numberOfItemsInSection:(int64_t)a3;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (unint64_t)_headerSeeAllResultTypeForSection:(unint64_t)a3;
+- (id)_searchTokenForTransactionSourceCollection:(id)collection;
+- (id)_standardSectionLayoutForSectionAtIndex:(int64_t)index itemCount:(int64_t)count environment:(id)environment;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)_numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (unint64_t)_headerSeeAllResultTypeForSection:(unint64_t)section;
 - (unint64_t)_relevantItemsSection;
 - (unint64_t)_topHitHeaderSection;
-- (void)_applyMaskToCell:(id)a3 firstInSection:(BOOL)a4 lastInSection:(BOOL)a5;
-- (void)_configureHeaderView:(id)a3 inSection:(unint64_t)a4;
-- (void)_configureSuggestionCell:(id)a3 withSuggestion:(id)a4;
-- (void)_initiateSeeAllPresentationForQuery:(id)a3;
-- (void)_pendingRequestActionButtonPressedWithRequest:(id)a3 forPresentationCounter:(unint64_t)a4;
-- (void)_presentPassWithUniqueIdentifier:(id)a3;
-- (void)_saveResults:(id)a3 forQuery:(id)a4;
-- (void)_saveSearchHistoryString:(id)a3;
+- (void)_applyMaskToCell:(id)cell firstInSection:(BOOL)section lastInSection:(BOOL)inSection;
+- (void)_configureHeaderView:(id)view inSection:(unint64_t)section;
+- (void)_configureSuggestionCell:(id)cell withSuggestion:(id)suggestion;
+- (void)_initiateSeeAllPresentationForQuery:(id)query;
+- (void)_pendingRequestActionButtonPressedWithRequest:(id)request forPresentationCounter:(unint64_t)counter;
+- (void)_presentPassWithUniqueIdentifier:(id)identifier;
+- (void)_saveResults:(id)results forQuery:(id)query;
+- (void)_saveSearchHistoryString:(id)string;
 - (void)_scrollViewStoppedScrolling;
-- (void)_seeAllHeaderGroupForQuery:(id)a3 groups:(id)a4 transactionResults:(id)a5 completion:(id)a6;
-- (void)_setHasActivePeerPaymentRequestAction:(BOOL)a3;
-- (void)_sharePass:(id)a3;
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 groups:(id)a4 transactionResults:(id)a5;
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 orders:(id)a4;
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 passes:(id)a4;
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 paymentSetupProducts:(id)a4;
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 pendingPeerPaymentRequests:(id)a4;
-- (void)_updateAccountsWithCompletion:(id)a3;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
-- (void)_updateUIIfPossibleWithResults:(id)a3 query:(id)a4 completion:(id)a5;
-- (void)_updateUIWithResults:(id)a3 forQuery:(id)a4 completion:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)dashboardPaymentSetupProductPresenter:(id)a3 actionButtonPressedOnCellAtIndexPath:(id)a4;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)_seeAllHeaderGroupForQuery:(id)query groups:(id)groups transactionResults:(id)results completion:(id)completion;
+- (void)_setHasActivePeerPaymentRequestAction:(BOOL)action;
+- (void)_sharePass:(id)pass;
+- (void)_udpateSeeAllViewControllerForQuery:(id)query groups:(id)groups transactionResults:(id)results;
+- (void)_udpateSeeAllViewControllerForQuery:(id)query orders:(id)orders;
+- (void)_udpateSeeAllViewControllerForQuery:(id)query passes:(id)passes;
+- (void)_udpateSeeAllViewControllerForQuery:(id)query paymentSetupProducts:(id)products;
+- (void)_udpateSeeAllViewControllerForQuery:(id)query pendingPeerPaymentRequests:(id)requests;
+- (void)_updateAccountsWithCompletion:(id)completion;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)_updateLayoutForKeyboardAction:(id)action;
+- (void)_updateUIIfPossibleWithResults:(id)results query:(id)query completion:(id)completion;
+- (void)_updateUIWithResults:(id)results forQuery:(id)query completion:(id)completion;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)dashboardPaymentSetupProductPresenter:(id)presenter actionButtonPressedOnCellAtIndexPath:(id)path;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 - (void)invalidateSearchResults;
-- (void)keyboardWillChange:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchDidCompleteWithError:(id)a3 results:(id)a4 forIdentifier:(id)a5;
-- (void)setQuery:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)keyboardWillChange:(id)change;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)preflightWithCompletion:(id)completion;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchDidCompleteWithError:(id)error results:(id)results forIdentifier:(id)identifier;
+- (void)setQuery:(id)query;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)worldRegionUpdated:(id)a3 updatedRegion:(id)a4;
+- (void)worldRegionUpdated:(id)updated updatedRegion:(id)region;
 @end
 
 @implementation PKSearchResultsViewController
 
-- (PKSearchResultsViewController)initWithPaymentDataProvider:(id)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5
+- (PKSearchResultsViewController)initWithPaymentDataProvider:(id)provider transactionSourceCollection:(id)collection familyCollection:(id)familyCollection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PKSearchResultsViewController *)self _loadThumbnailLayout];
-  [v12 setHidden:1];
+  providerCopy = provider;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  _loadThumbnailLayout = [(PKSearchResultsViewController *)self _loadThumbnailLayout];
+  [_loadThumbnailLayout setHidden:1];
   v76.receiver = self;
   v76.super_class = PKSearchResultsViewController;
-  v13 = [(PKSearchResultsViewController *)&v76 initWithCollectionViewLayout:v12];
+  v13 = [(PKSearchResultsViewController *)&v76 initWithCollectionViewLayout:_loadThumbnailLayout];
   v14 = v13;
   if (v13)
   {
-    v68 = v11;
-    v69 = v10;
-    v70 = v9;
-    objc_storeStrong(&v13->_transactionSourceCollection, a4);
+    v68 = familyCollectionCopy;
+    v69 = collectionCopy;
+    v70 = providerCopy;
+    objc_storeStrong(&v13->_transactionSourceCollection, collection);
     v14->_usingThumbnailLayout = 1;
-    objc_storeStrong(&v14->_thumbnailLayout, v12);
-    v15 = [(PKSearchResultsViewController *)v14 _loadResultsLayout];
+    objc_storeStrong(&v14->_thumbnailLayout, _loadThumbnailLayout);
+    _loadResultsLayout = [(PKSearchResultsViewController *)v14 _loadResultsLayout];
     resultsLayout = v14->_resultsLayout;
-    v14->_resultsLayout = v15;
+    v14->_resultsLayout = _loadResultsLayout;
 
     v14->_atNaturalRestingBounds = 1;
-    objc_storeStrong(&v14->_paymentDataProvider, a3);
-    objc_storeStrong(&v14->_familyCollection, a5);
+    objc_storeStrong(&v14->_paymentDataProvider, provider);
+    objc_storeStrong(&v14->_familyCollection, familyCollection);
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_attr_make_with_qos_class(v17, QOS_CLASS_USER_INTERACTIVE, 0);
 
@@ -162,8 +162,8 @@
     [(PKTransactionGroupItemPresenter *)v14->_transactionGroupPresenter setSnapshotManager:v41];
     [(PKTransactionGroupItemPresenter *)v14->_transactionGroupPresenter setPaymentDataProvider:v14->_paymentDataProvider];
     v44 = [PKContactAvatarManager alloc];
-    v45 = [(PKTransactionGroupItemPresenter *)v14->_transactionGroupPresenter contactResolver];
-    v46 = [(PKContactAvatarManager *)v44 initWithContactResolver:v45 paymentDataProvider:v14->_paymentDataProvider];
+    contactResolver = [(PKTransactionGroupItemPresenter *)v14->_transactionGroupPresenter contactResolver];
+    v46 = [(PKContactAvatarManager *)v44 initWithContactResolver:contactResolver paymentDataProvider:v14->_paymentDataProvider];
 
     [(PKTransactionGroupItemPresenter *)v14->_transactionGroupPresenter setAvatarManager:v46];
     [(PKTransactionGroupItemPresenter *)v14->_transactionGroupPresenter setInSearch:1];
@@ -174,9 +174,9 @@
     [(PKTransactionGroupThumbnailPresenter *)v14->_thumbnailPresenter setSnapshotManager:v41];
     [(PKTransactionGroupThumbnailPresenter *)v14->_thumbnailPresenter setPaymentDataProvider:v14->_paymentDataProvider];
     [(PKTransactionGroupThumbnailPresenter *)v14->_thumbnailPresenter setAvatarManager:v46];
-    v49 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v14->_accountService;
-    v14->_accountService = v49;
+    v14->_accountService = mEMORY[0x1E69B8400];
 
     [(PKAccountService *)v14->_accountService registerObserver:v14];
     v51 = objc_alloc_init(MEMORY[0x1E69B91C0]);
@@ -184,19 +184,19 @@
     v14->_searchService = v51;
 
     [(PKSearchService *)v14->_searchService registerObserver:v14];
-    v53 = [MEMORY[0x1E69B8A58] sharedInstance];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
     passLibrary = v14->_passLibrary;
-    v14->_passLibrary = v53;
+    v14->_passLibrary = mEMORY[0x1E69B8A58];
 
     v55 = [[PKWorldRegionUpdater alloc] initWithSearchService:v14->_searchService];
     regionUpdater = v14->_regionUpdater;
     v14->_regionUpdater = v55;
 
     [(PKWorldRegionUpdater *)v14->_regionUpdater addObserver:v14];
-    v57 = [(PKSearchResultsViewController *)v14 navigationItem];
-    [v57 setBackButtonDisplayMode:2];
+    navigationItem = [(PKSearchResultsViewController *)v14 navigationItem];
+    [navigationItem setBackButtonDisplayMode:2];
     v58 = PKLocalizedPaymentString(&cfstr_DashboardSearc.isa);
-    [v57 setBackButtonTitle:v58];
+    [navigationItem setBackButtonTitle:v58];
 
     objc_initWeak(&location, v14);
     v59 = objc_alloc_init(MEMORY[0x1E69B8658]);
@@ -207,21 +207,21 @@
     v60 = v14;
     v74 = v60;
     [v59 addOperation:v73];
-    v61 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
     v71[2] = __106__PKSearchResultsViewController_initWithPaymentDataProvider_transactionSourceCollection_familyCollection___block_invoke_3;
     v71[3] = &unk_1E8019248;
     objc_copyWeak(&v72, &location);
-    v62 = [v59 evaluateWithInput:v61 completion:v71];
+    v62 = [v59 evaluateWithInput:null completion:v71];
 
     [(PKPaymentDataProvider *)v14->_paymentDataProvider addDelegate:v60];
     if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
     {
-      v63 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v63 addObserver:v60 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-      [v63 addObserver:v60 selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
-      [v63 addObserver:v60 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v60 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+      [defaultCenter addObserver:v60 selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
+      [defaultCenter addObserver:v60 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
     }
 
     v64 = objc_alloc_init(getFHSearchSuggestionControllerClass[0]());
@@ -231,9 +231,9 @@
     objc_destroyWeak(&v72);
     objc_destroyWeak(&location);
 
-    v10 = v69;
-    v9 = v70;
-    v11 = v68;
+    collectionCopy = v69;
+    providerCopy = v70;
+    familyCollectionCopy = v68;
   }
 
   return v14;
@@ -277,43 +277,43 @@ void __106__PKSearchResultsViewController_initWithPaymentDataProvider_transactio
   v19.receiver = self;
   v19.super_class = PKSearchResultsViewController;
   [(PKSearchResultsViewController *)&v19 viewDidLoad];
-  v3 = [(PKSearchResultsViewController *)self navigationItem];
+  navigationItem = [(PKSearchResultsViewController *)self navigationItem];
   if (_UISolariumFeatureFlagEnabled())
   {
-    [v3 _setPreferredNavigationBarVisibility:1];
+    [navigationItem _setPreferredNavigationBarVisibility:1];
   }
 
   else
   {
-    [v3 pkui_setupScrollEdgeChromelessAppearance];
-    [v3 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+    [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+    [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
   }
 
-  v4 = [(PKSearchResultsViewController *)self collectionView];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardBalancePresenterIdentifier"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardPassPresenterIdentifier"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardOrderPresenterIdentifier"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardAccountModulePresenterIdentifier"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardPaymentSetupProductPresenterIdentifier"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"transactionItemPresenter"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"transactionGroupPresenter"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"emptyCellIdentifier"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKTransactionGroupThumbnailPresenterIdentifier"];
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"suggestionIdentifier"];
-  [v4 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"titleIdentifier"];
-  [v4 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"separatorIdentifier"];
-  [v4 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"ElementKindHeaderSpacing" withReuseIdentifier:@"ElementKindHeaderSpacing"];
-  [v4 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"ElementKindFooterSpacing" withReuseIdentifier:@"ElementKindFooterSpacing"];
+  collectionView = [(PKSearchResultsViewController *)self collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardBalancePresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardPassPresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardOrderPresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardAccountModulePresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardPaymentSetupProductPresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"transactionItemPresenter"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"transactionGroupPresenter"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"emptyCellIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKTransactionGroupThumbnailPresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"suggestionIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"titleIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"separatorIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"ElementKindHeaderSpacing" withReuseIdentifier:@"ElementKindHeaderSpacing"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"ElementKindFooterSpacing" withReuseIdentifier:@"ElementKindFooterSpacing"];
   v5 = +[PKDashboardViewController backgroundColor];
-  [v4 setBackgroundColor:v5];
+  [collectionView setBackgroundColor:v5];
 
-  [v4 setShowsVerticalScrollIndicator:1];
-  [v4 setAlwaysBounceVertical:1];
-  [v4 setKeyboardDismissMode:1];
-  [v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9BD0]];
+  [collectionView setShowsVerticalScrollIndicator:1];
+  [collectionView setAlwaysBounceVertical:1];
+  [collectionView setKeyboardDismissMode:1];
+  [collectionView setAccessibilityIdentifier:*MEMORY[0x1E69B9BD0]];
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    [v4 setContentInsetAdjustmentBehavior:2];
+    [collectionView setContentInsetAdjustmentBehavior:2];
   }
 
   v6 = [PKDashboardTitleHeaderView alloc];
@@ -349,24 +349,24 @@ void __106__PKSearchResultsViewController_initWithPaymentDataProvider_transactio
   [(PKSearchResultsViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = PKSearchResultsViewController;
-  [(PKSearchResultsViewController *)&v15 viewWillAppear:a3];
-  v4 = [(PKSearchResultsViewController *)self _searchController];
-  v5 = [v4 searchBar];
-  v6 = [v5 searchTextField];
+  [(PKSearchResultsViewController *)&v15 viewWillAppear:appear];
+  _searchController = [(PKSearchResultsViewController *)self _searchController];
+  searchBar = [_searchController searchBar];
+  searchTextField = [searchBar searchTextField];
 
-  [v6 setDelegate:self];
-  v7 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v8 = v7;
-  if (v7)
+  [searchTextField setDelegate:self];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  v8 = paymentPass;
+  if (paymentPass)
   {
-    v9 = [v7 localizedDescription];
-    if ([v9 length])
+    localizedDescription = [paymentPass localizedDescription];
+    if ([localizedDescription length])
     {
-      v10 = PKLocalizedString(&cfstr_SearchPassPlac.isa, &stru_1F3BD5BF0.isa, v9);
+      v10 = PKLocalizedString(&cfstr_SearchPassPlac.isa, &stru_1F3BD5BF0.isa, localizedDescription);
     }
 
     else
@@ -380,18 +380,18 @@ void __106__PKSearchResultsViewController_initWithPaymentDataProvider_transactio
     v10 = PKLocalizedString(&cfstr_SearchGlobalPl.isa);
   }
 
-  v11 = [v6 placeholder];
+  placeholder = [searchTextField placeholder];
   v12 = v10;
   v13 = v12;
-  if (v11 == v12)
+  if (placeholder == v12)
   {
   }
 
   else
   {
-    if (v12 && v11)
+    if (v12 && placeholder)
     {
-      v14 = [v11 isEqualToString:v12];
+      v14 = [placeholder isEqualToString:v12];
 
       if (v14)
       {
@@ -403,7 +403,7 @@ void __106__PKSearchResultsViewController_initWithPaymentDataProvider_transactio
     {
     }
 
-    [v6 setPlaceholder:v13];
+    [searchTextField setPlaceholder:v13];
   }
 
 LABEL_15:
@@ -416,44 +416,44 @@ LABEL_15:
   [(PKSearchResultsViewController *)&v31 viewWillLayoutSubviews];
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    v3 = [(PKSearchResultsViewController *)self collectionView];
-    [v3 safeAreaInsets];
+    collectionView = [(PKSearchResultsViewController *)self collectionView];
+    [collectionView safeAreaInsets];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(PKSearchResultsViewController *)self _searchController];
-    v13 = v12;
-    if (v12)
+    _searchController = [(PKSearchResultsViewController *)self _searchController];
+    v13 = _searchController;
+    if (_searchController)
     {
-      v14 = [v12 searchBar];
-      v15 = [v14 superview];
+      searchBar = [_searchController searchBar];
+      superview = [searchBar superview];
 
-      if (v15)
+      if (superview)
       {
-        v16 = [v3 superview];
-        [v14 bounds];
-        [v16 convertPoint:v14 fromView:{0.0, v17}];
+        superview2 = [collectionView superview];
+        [searchBar bounds];
+        [superview2 convertPoint:searchBar fromView:{0.0, v17}];
         v19 = v18;
 
         v20 = v9 + self->_keyboardFrame.size.height;
-        [v3 contentInset];
+        [collectionView contentInset];
         if (v7 != v24 || v19 != v21 || v11 != v23 || v20 != v22)
         {
-          [v3 setContentInset:{v19, v7, v20, v11}];
-          [v3 verticalScrollIndicatorInsets];
-          [v3 setVerticalScrollIndicatorInsets:v19 - v5];
+          [collectionView setContentInset:{v19, v7, v20, v11}];
+          [collectionView verticalScrollIndicatorInsets];
+          [collectionView setVerticalScrollIndicatorInsets:v19 - v5];
         }
 
         if (self->_atNaturalRestingBounds)
         {
-          [v3 contentOffset];
+          [collectionView contentOffset];
           v26 = v25;
           v28 = v27;
-          [v3 pkui_naturalRestingBounds];
+          [collectionView pkui_naturalRestingBounds];
           if (v26 != v30 || v28 != v29)
           {
-            [v3 setContentOffset:0 animated:?];
+            [collectionView setContentOffset:0 animated:?];
           }
         }
       }
@@ -461,19 +461,19 @@ LABEL_15:
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4 && self->_isScrolling)
+  draggingCopy = dragging;
+  if (!decelerate && self->_isScrolling)
   {
     self->_isScrolling = 0;
-    v7 = v6;
+    v7 = draggingCopy;
     [(PKSearchResultsViewController *)self _scrollViewStoppedScrolling];
-    v6 = v7;
+    draggingCopy = v7;
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (self->_isScrolling)
   {
@@ -484,11 +484,11 @@ LABEL_15:
 
 - (void)_scrollViewStoppedScrolling
 {
-  v10 = [(PKSearchResultsViewController *)self collectionView];
-  [v10 pkui_naturalRestingBounds];
+  collectionView = [(PKSearchResultsViewController *)self collectionView];
+  [collectionView pkui_naturalRestingBounds];
   v4 = v3;
   v6 = v5;
-  [v10 contentOffset];
+  [collectionView contentOffset];
   v8 = v7 == v4;
   if (v9 != v6)
   {
@@ -542,26 +542,26 @@ LABEL_15:
   return result;
 }
 
-- (id)_standardSectionLayoutForSectionAtIndex:(int64_t)a3 itemCount:(int64_t)a4 environment:(id)a5
+- (id)_standardSectionLayoutForSectionAtIndex:(int64_t)index itemCount:(int64_t)count environment:(id)environment
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = self;
-  [(PKSearchResultsViewController *)self _thumbnailInset:a3];
+  countCopy = count;
+  indexCopy = index;
+  selfCopy = self;
+  [(PKSearchResultsViewController *)self _thumbnailInset:index];
   v9 = v8;
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5];
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:countCopy];
   v11 = 0x1E6995000uLL;
   v12 = 0x1E6995000uLL;
-  if (v5)
+  if (countCopy)
   {
     v13 = 0;
     v14 = 0.0;
     do
     {
-      v39 = [(PKSearchResultsViewController *)v7 collectionView];
-      v38 = [MEMORY[0x1E696AC88] indexPathForRow:v13 inSection:v6];
-      v15 = [v39 collectionViewLayout];
-      [(PKSearchResultsViewController *)v7 collectionView:v39 layout:v15 sizeForItemAtIndexPath:v38];
+      collectionView = [(PKSearchResultsViewController *)selfCopy collectionView];
+      v38 = [MEMORY[0x1E696AC88] indexPathForRow:v13 inSection:indexCopy];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [(PKSearchResultsViewController *)selfCopy collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:v38];
       v17 = v16;
       v19 = v18;
 
@@ -569,18 +569,18 @@ LABEL_15:
       v21 = [*(v11 + 1368) absoluteDimension:v17];
       [*(v11 + 1368) absoluteDimension:v19];
       v22 = v11;
-      v23 = v7;
-      v24 = v5;
+      v23 = selfCopy;
+      v24 = countCopy;
       v25 = v12;
-      v26 = v6;
+      v26 = indexCopy;
       v28 = v27 = v10;
       v29 = [v20 sizeWithWidthDimension:v21 heightDimension:v28];
 
       v10 = v27;
-      v6 = v26;
+      indexCopy = v26;
       v12 = v25;
-      v5 = v24;
-      v7 = v23;
+      countCopy = v24;
+      selfCopy = v23;
       v11 = v22;
 
       v30 = [MEMORY[0x1E6995578] itemWithLayoutSize:v29];
@@ -590,7 +590,7 @@ LABEL_15:
       ++v13;
     }
 
-    while (v5 != v13);
+    while (countCopy != v13);
   }
 
   else
@@ -613,13 +613,13 @@ LABEL_15:
   return v36;
 }
 
-- (id)_listSectionLayoutForSectionAtIndex:(int64_t)a3 itemCount:(int64_t)a4 environment:(id)a5
+- (id)_listSectionLayoutForSectionAtIndex:(int64_t)index itemCount:(int64_t)count environment:(id)environment
 {
   v6 = MEMORY[0x1E69DC7E0];
-  v7 = a5;
+  environmentCopy = environment;
   v8 = [[v6 alloc] initWithAppearance:2];
-  [v8 setHeaderMode:a4 > 0];
-  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:v7];
+  [v8 setHeaderMode:count > 0];
+  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:environmentCopy];
 
   return v9;
 }
@@ -838,9 +838,9 @@ id __51__PKSearchResultsViewController__loadResultsLayout__block_invoke(uint64_t
   return v9;
 }
 
-- (BOOL)_hasContentBelowSection:(int64_t)a3
+- (BOOL)_hasContentBelowSection:(int64_t)section
 {
-  v4 = a3 + 1;
+  v4 = section + 1;
   do
   {
     v5 = v4;
@@ -857,14 +857,14 @@ id __51__PKSearchResultsViewController__loadResultsLayout__block_invoke(uint64_t
   return v5 < 0x13;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 section];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  section = [pathCopy section];
   v12 = *MEMORY[0x1E69DDC08];
-  v13 = v9;
+  v13 = kindCopy;
   v14 = v13;
   if (v12 == v13)
   {
@@ -900,7 +900,7 @@ LABEL_18:
           v22 = v21;
           if (v21 == @"ElementKindHeaderSpacing" || v21 && ((v23 = [(__CFString *)v21 isEqualToString:@"ElementKindHeaderSpacing"], v22, (v23 & 1) != 0) || (v24 = v22, v24 == @"ElementKindFooterSpacing") || (v25 = v24, v26 = [(__CFString *)v24 isEqualToString:@"ElementKindFooterSpacing"], v25, v26)))
           {
-            v16 = [v8 dequeueReusableSupplementaryViewOfKind:v22 withReuseIdentifier:v22 forIndexPath:v10];
+            v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:v22 withReuseIdentifier:v22 forIndexPath:pathCopy];
           }
 
           else
@@ -919,7 +919,7 @@ LABEL_18:
         }
       }
 
-      v16 = [v8 dequeueReusableSupplementaryViewOfKind:v19 withReuseIdentifier:@"separatorIdentifier" forIndexPath:v10];
+      v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:v19 withReuseIdentifier:@"separatorIdentifier" forIndexPath:pathCopy];
       if (self->_usingThumbnailLayout)
       {
         [MEMORY[0x1E69DC888] separatorColor];
@@ -936,21 +936,21 @@ LABEL_18:
     }
   }
 
-  v16 = [v8 dequeueReusableSupplementaryViewOfKind:v14 withReuseIdentifier:@"titleIdentifier" forIndexPath:v10];
-  [(PKSearchResultsViewController *)self _configureHeaderView:v16 inSection:v11];
+  v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:v14 withReuseIdentifier:@"titleIdentifier" forIndexPath:pathCopy];
+  [(PKSearchResultsViewController *)self _configureHeaderView:v16 inSection:section];
 LABEL_27:
 
   return v16;
 }
 
-- (BOOL)_shouldOmitHeaderViewForSection:(unint64_t)a3
+- (BOOL)_shouldOmitHeaderViewForSection:(unint64_t)section
 {
   if (self->_usingThumbnailLayout)
   {
-    v5 = [(PKSearchResultsViewController *)self _headerTitleForSection:a3];
-    if ([v5 length] || -[PKSearchResultsViewController _headerSeeAllResultTypeForSection:](self, "_headerSeeAllResultTypeForSection:", a3))
+    v5 = [(PKSearchResultsViewController *)self _headerTitleForSection:section];
+    if ([v5 length] || -[PKSearchResultsViewController _headerSeeAllResultTypeForSection:](self, "_headerSeeAllResultTypeForSection:", section))
     {
-      if (a3 == 1)
+      if (section == 1)
       {
         v6 = _UISolariumFeatureFlagEnabled() ^ 1;
       }
@@ -967,7 +967,7 @@ LABEL_27:
     }
   }
 
-  else if (a3 == 1)
+  else if (section == 1)
   {
     return _UISolariumFeatureFlagEnabled() ^ 1;
   }
@@ -980,14 +980,14 @@ LABEL_27:
   return v6;
 }
 
-- (id)_headerTitleForSection:(unint64_t)a3
+- (id)_headerTitleForSection:(unint64_t)section
 {
-  if ([(PKSearchResultsViewController *)self _topHitHeaderSection]== a3)
+  if ([(PKSearchResultsViewController *)self _topHitHeaderSection]== section)
   {
     v5 = @"SEARCH_TITLE_TOP_HIT";
   }
 
-  else if ([(PKSearchResultsViewController *)self _relevantItemsSection]== a3)
+  else if ([(PKSearchResultsViewController *)self _relevantItemsSection]== section)
   {
     v5 = @"SEARCH_TITLE_RELEVANT_ITEMS";
   }
@@ -996,7 +996,7 @@ LABEL_27:
   {
     v6 = 0;
     v5 = @"SEARCH_TITLE_PAYMENT_PASSES";
-    switch(a3)
+    switch(section)
     {
       case 0uLL:
         if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
@@ -1072,14 +1072,14 @@ LABEL_6:
   return v6;
 }
 
-- (unint64_t)_headerSeeAllResultTypeForSection:(unint64_t)a3
+- (unint64_t)_headerSeeAllResultTypeForSection:(unint64_t)section
 {
   result = 0;
-  if (a3 > 12)
+  if (section > 12)
   {
-    if (a3 > 15)
+    if (section > 15)
     {
-      switch(a3)
+      switch(section)
       {
         case 0x10uLL:
           if ([(NSArray *)self->_locations count]< 3)
@@ -1108,7 +1108,7 @@ LABEL_6:
       }
     }
 
-    else if (a3 == 13)
+    else if (section == 13)
     {
       if ([(NSArray *)self->_categories count]< 3)
       {
@@ -1119,7 +1119,7 @@ LABEL_6:
       v6 = 5;
     }
 
-    else if (a3 == 14)
+    else if (section == 14)
     {
       if ([(NSArray *)self->_merchants count]< 3)
       {
@@ -1153,13 +1153,13 @@ LABEL_39:
     }
   }
 
-  if (a3 <= 8)
+  if (section <= 8)
   {
-    if (a3 != 2)
+    if (section != 2)
     {
-      if (a3 != 7)
+      if (section != 7)
       {
-        if (a3 == 8)
+        if (section == 8)
         {
           if ([(NSArray *)self->_barcodePasses count]>= 3)
           {
@@ -1197,7 +1197,7 @@ LABEL_34:
     }
   }
 
-  switch(a3)
+  switch(section)
   {
     case 9uLL:
       if ([(NSArray *)self->_keysAndIDs count]< 3)
@@ -1219,22 +1219,22 @@ LABEL_34:
   return result;
 }
 
-- (void)_configureHeaderView:(id)a3 inSection:(unint64_t)a4
+- (void)_configureHeaderView:(id)view inSection:(unint64_t)section
 {
-  v6 = a3;
-  v7 = [(PKSearchResultsViewController *)self _headerTitleForSection:a4];
-  v8 = [(PKSearchResultsViewController *)self _headerSeeAllResultTypeForSection:a4];
+  viewCopy = view;
+  v7 = [(PKSearchResultsViewController *)self _headerTitleForSection:section];
+  v8 = [(PKSearchResultsViewController *)self _headerSeeAllResultTypeForSection:section];
   if (self->_usingThumbnailLayout)
   {
     [(PKSearchResultsViewController *)self _thumbnailInset];
-    [v6 setHorizontalInset:?];
+    [viewCopy setHorizontalInset:?];
   }
 
-  [v6 setTitle:v7];
+  [viewCopy setTitle:v7];
   if (v8)
   {
     v9 = PKLocalizedString(&cfstr_SearchSeeAll.isa);
-    [v6 setActionTitle:v9];
+    [viewCopy setActionTitle:v9];
 
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x1E69E9820];
@@ -1244,14 +1244,14 @@ LABEL_34:
     objc_copyWeak(v11, &location);
     v11[1] = v8;
     v10[4] = self;
-    [v6 setAction:v10];
+    [viewCopy setAction:v10];
     objc_destroyWeak(v11);
     objc_destroyWeak(&location);
   }
 
   else
   {
-    [v6 setActionTitle:0];
+    [viewCopy setActionTitle:0];
   }
 }
 
@@ -1365,7 +1365,7 @@ LABEL_17:
 LABEL_21:
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if (self->_hasLoadedRequiredData)
   {
@@ -1378,10 +1378,10 @@ LABEL_21:
   }
 }
 
-- (int64_t)_numberOfItemsInSection:(int64_t)a3
+- (int64_t)_numberOfItemsInSection:(int64_t)section
 {
   v3 = &OBJC_IVAR___PKSearchResultsViewController__suggestions;
-  switch(a3)
+  switch(section)
   {
     case 0:
       goto LABEL_24;
@@ -1466,23 +1466,23 @@ LABEL_22:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  switch([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  switch([pathCopy section])
   {
     case 0:
-      v8 = [v6 dequeueReusableCellWithReuseIdentifier:@"suggestionIdentifier" forIndexPath:v7];
+      v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"suggestionIdentifier" forIndexPath:pathCopy];
       v9 = 1400;
       goto LABEL_15;
     case 1:
-      v8 = [v6 dequeueReusableCellWithReuseIdentifier:@"suggestionIdentifier" forIndexPath:v7];
+      v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"suggestionIdentifier" forIndexPath:pathCopy];
       v9 = 1408;
 LABEL_15:
       v17 = *(&self->super.super.super.super.isa + v9);
       v18 = v8;
-      v19 = [v17 objectAtIndex:{objc_msgSend(v7, "row")}];
+      v19 = [v17 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
       [(PKSearchResultsViewController *)self _configureSuggestionCell:v18 withSuggestion:v19];
 
       goto LABEL_21;
@@ -1553,8 +1553,8 @@ LABEL_19:
       if (usingThumbnailLayout)
       {
         thumbnailPresenter = self->_thumbnailPresenter;
-        v19 = [v20 objectAtIndex:{objc_msgSend(v7, "row")}];
-        v18 = [(PKTransactionGroupThumbnailPresenter *)thumbnailPresenter cellForItem:v19 inCollectionView:v6 atIndexPath:v7];
+        v19 = [v20 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+        v18 = [(PKTransactionGroupThumbnailPresenter *)thumbnailPresenter cellForItem:v19 inCollectionView:viewCopy atIndexPath:pathCopy];
 LABEL_21:
         v22 = 1;
       }
@@ -1563,8 +1563,8 @@ LABEL_21:
       {
         passPresenter = self->_transactionGroupPresenter;
 LABEL_30:
-        v19 = [v20 objectAtIndex:{objc_msgSend(v7, "row")}];
-        v18 = [passPresenter cellForItem:v19 inCollectionView:v6 atIndexPath:v7];
+        v19 = [v20 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+        v18 = [passPresenter cellForItem:v19 inCollectionView:viewCopy atIndexPath:pathCopy];
         v22 = 0;
       }
 
@@ -1576,7 +1576,7 @@ LABEL_32:
         [v23 setWantsCustomAppearance:v22];
         if ((v22 & 1) == 0)
         {
-          -[PKSearchResultsViewController _applyMaskToCell:firstInSection:lastInSection:](self, "_applyMaskToCell:firstInSection:lastInSection:", v23, [v7 row] == 0, objc_msgSend(v6, "numberOfItemsInSection:", objc_msgSend(v7, "section")) == objc_msgSend(v7, "row") + 1);
+          -[PKSearchResultsViewController _applyMaskToCell:firstInSection:lastInSection:](self, "_applyMaskToCell:firstInSection:lastInSection:", v23, [pathCopy row] == 0, objc_msgSend(viewCopy, "numberOfItemsInSection:", objc_msgSend(pathCopy, "section")) == objc_msgSend(pathCopy, "row") + 1);
           [v23 setShowsBottomSeparator:0];
         }
       }
@@ -1599,46 +1599,46 @@ LABEL_29:
   }
 }
 
-- (void)_configureSuggestionCell:(id)a3 withSuggestion:(id)a4
+- (void)_configureSuggestionCell:(id)cell withSuggestion:(id)suggestion
 {
   v12 = 0;
   v13 = 0;
   transactionGroupPresenter = self->_transactionGroupPresenter;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKTransactionGroupItemPresenter *)transactionGroupPresenter contactResolver];
-  PKSearchAutoCompletionTextAndImageFromSuggestion(&v13, &v12, 0, v6, v8);
+  suggestionCopy = suggestion;
+  cellCopy = cell;
+  contactResolver = [(PKTransactionGroupItemPresenter *)transactionGroupPresenter contactResolver];
+  PKSearchAutoCompletionTextAndImageFromSuggestion(&v13, &v12, 0, suggestionCopy, contactResolver);
 
   v9 = v13;
   v10 = v12;
 
-  [v7 setIcon:v10];
-  [v7 setSuggestion:v9];
+  [cellCopy setIcon:v10];
+  [cellCopy setSuggestion:v9];
 
-  [v7 setShowsBottomSeparator:1];
-  v11 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v11];
+  [cellCopy setShowsBottomSeparator:1];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 }
 
-- (void)_applyMaskToCell:(id)a3 firstInSection:(BOOL)a4 lastInSection:(BOOL)a5
+- (void)_applyMaskToCell:(id)cell firstInSection:(BOOL)section lastInSection:(BOOL)inSection
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v11 = v7;
+  inSectionCopy = inSection;
+  sectionCopy = section;
+  cellCopy = cell;
+  v11 = cellCopy;
   v8 = 2;
-  if (!v5)
+  if (!inSectionCopy)
   {
     v8 = 0;
   }
 
   v9 = 3;
-  if (!v5)
+  if (!inSectionCopy)
   {
     v9 = 1;
   }
 
-  if (v6)
+  if (sectionCopy)
   {
     v10 = v9;
   }
@@ -1648,10 +1648,10 @@ LABEL_29:
     v10 = v8;
   }
 
-  [v7 setMaskType:v10];
+  [cellCopy setMaskType:v10];
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
   if (!self->_queryHasNoResults)
   {
@@ -1660,23 +1660,23 @@ LABEL_29:
   }
 
   v4 = MEMORY[0x1E69DC8C8];
-  v5 = a3;
-  v6 = [v4 searchConfiguration];
-  v17 = [v6 updatedConfigurationForState:v5];
+  stateCopy = state;
+  searchConfiguration = [v4 searchConfiguration];
+  v17 = [searchConfiguration updatedConfigurationForState:stateCopy];
 
-  v7 = [(PKSearchQuery *)self->_queryForCurrentResults text];
+  text = [(PKSearchQuery *)self->_queryForCurrentResults text];
   if (([(PKSearchQuery *)self->_queryForCurrentResults isEmpty]& 1) != 0)
   {
     v8 = PKLocalizedString(&cfstr_SearchNoSugges.isa);
     if (self->_fullResultsNotAvailable)
     {
-      v9 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+      paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
 
-      if (v9)
+      if (paymentPass)
       {
-        v10 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-        v11 = [v10 localizedDescription];
-        PKLocalizedString(&cfstr_SearchNoSugges_0.isa, &stru_1F3BD5BF0.isa, v11);
+        paymentPass2 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+        localizedDescription = [paymentPass2 localizedDescription];
+        PKLocalizedString(&cfstr_SearchNoSugges_0.isa, &stru_1F3BD5BF0.isa, localizedDescription);
         goto LABEL_10;
       }
 
@@ -1696,16 +1696,16 @@ LABEL_20:
   v8 = PKLocalizedString(&cfstr_SearchNoResult.isa);
   if (self->_fullResultsNotAvailable)
   {
-    v13 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-    v10 = v13;
-    if (!v13)
+    paymentPass3 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+    paymentPass2 = paymentPass3;
+    if (!paymentPass3)
     {
       v14 = PKLocalizedString(&cfstr_SearchNoResult_1.isa);
       goto LABEL_18;
     }
 
-    v11 = [v13 localizedDescription];
-    PKLocalizedString(&cfstr_SearchNoResult_0.isa, &stru_1F3BD5BF0.isa, v11);
+    localizedDescription = [paymentPass3 localizedDescription];
+    PKLocalizedString(&cfstr_SearchNoResult_0.isa, &stru_1F3BD5BF0.isa, localizedDescription);
     v14 = LABEL_10:;
 
 LABEL_18:
@@ -1718,13 +1718,13 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (![v7 length])
+  if (![text length])
   {
     v15 = @"SEARCH_NO_RESULTS_SUBTITLE_NO_TEXT";
     goto LABEL_20;
   }
 
-  v16 = PKLocalizedString(&cfstr_SearchNoResult_3.isa, &stru_1F3BD5BF0.isa, v7);
+  v16 = PKLocalizedString(&cfstr_SearchNoResult_3.isa, &stru_1F3BD5BF0.isa, text);
 
   v14 = PKLocalizedString(&cfstr_SearchNoResult_4.isa);
   v8 = v16;
@@ -1738,19 +1738,19 @@ LABEL_22:
   [(PKSearchResultsViewController *)self _setContentUnavailableConfiguration:v12];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 safeAreaInsets];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy safeAreaInsets];
   v10 = v9;
   v12 = v11;
-  [v7 bounds];
+  [viewCopy bounds];
   v14 = v13;
-  v15 = [v8 section];
-  if (v15 == 1)
+  section = [pathCopy section];
+  if (section == 1)
   {
-    v16 = -[NSArray objectAtIndex:](self->_searchHistories, "objectAtIndex:", [v8 row]);
+    v16 = -[NSArray objectAtIndex:](self->_searchHistories, "objectAtIndex:", [pathCopy row]);
     [(PKSearchResultsViewController *)self _configureSuggestionCell:self->_sampleSuggestionCell withSuggestion:v16];
     sampleSuggestionCell = self->_sampleSuggestionCell;
     v19 = v14 - v10 - v12;
@@ -1758,17 +1758,17 @@ LABEL_22:
 
   else
   {
-    if (v15)
+    if (section)
     {
       v22 = *MEMORY[0x1E695F060];
       v24 = *(MEMORY[0x1E695F060] + 8);
       goto LABEL_7;
     }
 
-    v16 = -[NSArray objectAtIndex:](self->_suggestions, "objectAtIndex:", [v8 row]);
+    v16 = -[NSArray objectAtIndex:](self->_suggestions, "objectAtIndex:", [pathCopy row]);
     [(PKSearchResultsViewController *)self _configureSuggestionCell:self->_sampleSuggestionCell withSuggestion:v16];
     v17 = self->_sampleSuggestionCell;
-    [v7 bounds];
+    [viewCopy bounds];
     v19 = v18;
     sampleSuggestionCell = v17;
   }
@@ -1785,15 +1785,15 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   if (!self->_usingThumbnailLayout)
   {
     v13 = 1;
-    switch(v8)
+    switch(section)
     {
       case 0:
         goto LABEL_9;
@@ -1869,7 +1869,7 @@ LABEL_20:
     }
   }
 
-  if (v8 == 2)
+  if (section == 2)
   {
 LABEL_3:
     v9 = &OBJC_IVAR___PKSearchResultsViewController__pendingPeerPaymentRequestPresenter;
@@ -1877,8 +1877,8 @@ LABEL_4:
     passPresenter = *(&self->super.super.super.super.isa + *v9);
     v11 = v9[22];
 LABEL_5:
-    v12 = [*(&self->super.super.super.super.isa + v11) objectAtIndex:{objc_msgSend(v7, "row")}];
-    v13 = [passPresenter canSelectItem:v12 inCollectionView:v6 atIndexPath:v7];
+    v12 = [*(&self->super.super.super.super.isa + v11) objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+    v13 = [passPresenter canSelectItem:v12 inCollectionView:viewCopy atIndexPath:pathCopy];
   }
 
   else
@@ -1891,48 +1891,48 @@ LABEL_9:
   return v13;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v120 = *MEMORY[0x1E69E9840];
-  v90 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   ++self->_presentationCounter;
   [(PKSearchResultsViewController *)self _setHasActivePeerPaymentRequestAction:0];
   presentationCounter = self->_presentationCounter;
-  if (self->_usingThumbnailLayout || ![v6 section])
+  if (self->_usingThumbnailLayout || ![pathCopy section])
   {
-    v9 = [(PKSearchResultsViewController *)self _searchController];
-    v10 = [v9 searchBar];
-    v8 = [v10 searchTextField];
+    _searchController = [(PKSearchResultsViewController *)self _searchController];
+    searchBar = [_searchController searchBar];
+    searchTextField = [searchBar searchTextField];
   }
 
   else
   {
-    v8 = 0;
+    searchTextField = 0;
   }
 
-  v11 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v12 = [v11 associatedAccountServiceAccountIdentifier];
-  v86 = v11;
-  v88 = v12;
-  v13 = v8;
-  if ([v11 hasAssociatedPeerPaymentAccount])
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  associatedAccountServiceAccountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+  v86 = paymentPass;
+  v88 = associatedAccountServiceAccountIdentifier;
+  v13 = searchTextField;
+  if ([paymentPass hasAssociatedPeerPaymentAccount])
   {
     v14 = 1;
   }
 
-  else if ([v12 length])
+  else if ([associatedAccountServiceAccountIdentifier length])
   {
-    v15 = [(NSDictionary *)self->_accountsPerIdentifier objectForKey:v12];
-    v16 = [v15 feature];
-    if (v16 == 2)
+    v15 = [(NSDictionary *)self->_accountsPerIdentifier objectForKey:associatedAccountServiceAccountIdentifier];
+    feature = [v15 feature];
+    if (feature == 2)
     {
       v14 = 2;
     }
 
     else
     {
-      v14 = v16 == 1;
+      v14 = feature == 1;
     }
   }
 
@@ -1948,13 +1948,13 @@ LABEL_9:
   aBlock[4] = self;
   v87 = _Block_copy(aBlock);
   v89 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v17 = [v6 section];
-  v18 = [(PKSearchResultsViewController *)self _isTopHitSection:v17];
-  v91 = v6;
-  switch(v17)
+  section = [pathCopy section];
+  v18 = [(PKSearchResultsViewController *)self _isTopHitSection:section];
+  v91 = pathCopy;
+  switch(section)
   {
     case 0:
-      v21 = -[NSArray objectAtIndex:](self->_suggestions, "objectAtIndex:", [v6 row]);
+      v21 = -[NSArray objectAtIndex:](self->_suggestions, "objectAtIndex:", [pathCopy row]);
       v48 = v87[2](v87, v21);
       [v89 safelyAddObject:v48];
 
@@ -1962,9 +1962,9 @@ LABEL_9:
       {
         v49 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v50 = [v21 tag];
-        v51 = [v50 type];
+        type = [v50 type];
 
-        v52 = [MEMORY[0x1E696AD98] numberWithInteger:v51];
+        v52 = [MEMORY[0x1E696AD98] numberWithInteger:type];
         v53 = _MergedGlobals_5_6();
         [v49 setObject:v52 forKey:v53];
 
@@ -1983,21 +1983,21 @@ LABEL_9:
 
       goto LABEL_38;
     case 1:
-      v21 = -[NSArray objectAtIndex:](self->_searchHistories, "objectAtIndex:", [v6 row]);
-      v60 = [v21 searchHistory];
+      v21 = -[NSArray objectAtIndex:](self->_searchHistories, "objectAtIndex:", [pathCopy row]);
+      searchHistory = [v21 searchHistory];
       v23 = 0;
       goto LABEL_48;
     case 2:
-      v21 = -[NSArray objectAtIndex:](self->_pendingPeerPaymentRequests, "objectAtIndex:", [v6 row]);
+      v21 = -[NSArray objectAtIndex:](self->_pendingPeerPaymentRequests, "objectAtIndex:", [pathCopy row]);
       pendingPeerPaymentRequestPresenter = self->_pendingPeerPaymentRequestPresenter;
-      v47 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController = [(PKSearchResultsViewController *)self navigationController];
       v104[0] = MEMORY[0x1E69E9820];
       v104[1] = 3221225472;
       v104[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_14;
       v104[3] = &unk_1E80192C0;
       v104[4] = self;
       v104[5] = presentationCounter;
-      [(PKDashboardBalancePresenter *)pendingPeerPaymentRequestPresenter didSelectItem:v21 inCollectionView:v90 atIndexPath:v6 navigationController:v47 canPresent:v104];
+      [(PKDashboardBalancePresenter *)pendingPeerPaymentRequestPresenter didSelectItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy navigationController:navigationController canPresent:v104];
 
 LABEL_38:
       v23 = 0;
@@ -2011,11 +2011,11 @@ LABEL_38:
       }
 
       v20 = *(&self->super.super.super.super.isa + OBJC_IVAR___PKSearchResultsViewController__transactionSourceCollection[v19]);
-      v21 = [v20 objectAtIndex:{objc_msgSend(v6, "row")}];
-      v22 = v90;
-      v23 = [(PKDashboardPassPresenter *)self->_passPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+      v21 = [v20 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      v22 = viewCopy;
+      v23 = [(PKDashboardPassPresenter *)self->_passPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
       passPresenter = self->_passPresenter;
-      v25 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController2 = [(PKSearchResultsViewController *)self navigationController];
       v116[0] = MEMORY[0x1E69E9820];
       v116[1] = 3221225472;
       v116[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_2;
@@ -2033,11 +2033,11 @@ LABEL_38:
       }
 
       v20 = *(&self->super.super.super.super.isa + OBJC_IVAR___PKSearchResultsViewController__transactionSourceCollection[v27]);
-      v21 = [v20 objectAtIndex:{objc_msgSend(v6, "row")}];
-      v22 = v90;
-      v23 = [(PKDashboardPassPresenter *)self->_passPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+      v21 = [v20 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      v22 = viewCopy;
+      v23 = [(PKDashboardPassPresenter *)self->_passPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
       passPresenter = self->_passPresenter;
-      v25 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController2 = [(PKSearchResultsViewController *)self navigationController];
       v114[0] = MEMORY[0x1E69E9820];
       v114[1] = 3221225472;
       v114[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_4;
@@ -2055,11 +2055,11 @@ LABEL_38:
       }
 
       v20 = *(&self->super.super.super.super.isa + OBJC_IVAR___PKSearchResultsViewController__transactionSourceCollection[v28]);
-      v21 = [v20 objectAtIndex:{objc_msgSend(v6, "row")}];
-      v22 = v90;
-      v23 = [(PKDashboardPassPresenter *)self->_passPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+      v21 = [v20 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      v22 = viewCopy;
+      v23 = [(PKDashboardPassPresenter *)self->_passPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
       passPresenter = self->_passPresenter;
-      v25 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController2 = [(PKSearchResultsViewController *)self navigationController];
       v115[0] = MEMORY[0x1E69E9820];
       v115[1] = 3221225472;
       v115[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_3;
@@ -2077,11 +2077,11 @@ LABEL_38:
       }
 
       v20 = *(&self->super.super.super.super.isa + OBJC_IVAR___PKSearchResultsViewController__transactionSourceCollection[v29]);
-      v21 = [v20 objectAtIndex:{objc_msgSend(v6, "row")}];
-      v22 = v90;
-      v23 = [(PKDashboardAccountModulePresenter *)self->_accountPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+      v21 = [v20 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      v22 = viewCopy;
+      v23 = [(PKDashboardAccountModulePresenter *)self->_accountPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
       passPresenter = self->_accountPresenter;
-      v25 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController2 = [(PKSearchResultsViewController *)self navigationController];
       v112[0] = MEMORY[0x1E69E9820];
       v112[1] = 3221225472;
       v112[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_6;
@@ -2090,15 +2090,15 @@ LABEL_38:
       v112[4] = self;
       v26 = v112;
 LABEL_26:
-      [passPresenter didSelectItem:v21 inCollectionView:v22 atIndexPath:v6 navigationController:v25 canPresent:v26];
+      [passPresenter didSelectItem:v21 inCollectionView:v22 atIndexPath:pathCopy navigationController:navigationController2 canPresent:v26];
 
       goto LABEL_47;
     case 11:
-      v21 = -[NSArray objectAtIndex:](self->_transactions, "objectAtIndex:", [v6 row]);
-      v40 = v90;
-      v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+      v21 = -[NSArray objectAtIndex:](self->_transactions, "objectAtIndex:", [pathCopy row]);
+      v40 = viewCopy;
+      v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
       transactionPresenter = self->_transactionPresenter;
-      v42 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController3 = [(PKSearchResultsViewController *)self navigationController];
       v107[0] = MEMORY[0x1E69E9820];
       v107[1] = 3221225472;
       v107[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_11;
@@ -2108,11 +2108,11 @@ LABEL_26:
       v43 = v107;
       goto LABEL_41;
     case 12:
-      v21 = -[NSArray objectAtIndex:](self->_orders, "objectAtIndex:", [v6 row]);
-      v44 = v90;
-      v23 = [(PKDashboardOrderPresenter *)self->_orderPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v91];
+      v21 = -[NSArray objectAtIndex:](self->_orders, "objectAtIndex:", [pathCopy row]);
+      v44 = viewCopy;
+      v23 = [(PKDashboardOrderPresenter *)self->_orderPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:v91];
       orderPresenter = self->_orderPresenter;
-      v42 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController3 = [(PKSearchResultsViewController *)self navigationController];
       v111[0] = MEMORY[0x1E69E9820];
       v111[1] = 3221225472;
       v111[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_7;
@@ -2122,17 +2122,17 @@ LABEL_26:
       v43 = v111;
       goto LABEL_45;
     case 13:
-      v21 = -[NSArray objectAtIndex:](self->_categories, "objectAtIndex:", [v6 row]);
-      v30 = [v21 group];
+      v21 = -[NSArray objectAtIndex:](self->_categories, "objectAtIndex:", [pathCopy row]);
+      group = [v21 group];
       if (self->_usingThumbnailLayout)
       {
         goto LABEL_43;
       }
 
-      v31 = v90;
-      v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+      v31 = viewCopy;
+      v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
       transactionGroupPresenter = self->_transactionGroupPresenter;
-      v33 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController4 = [(PKSearchResultsViewController *)self navigationController];
       v109[0] = MEMORY[0x1E69E9820];
       v109[1] = 3221225472;
       v109[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_9;
@@ -2142,15 +2142,15 @@ LABEL_26:
       v34 = v109;
       goto LABEL_53;
     case 14:
-      v21 = -[NSArray objectAtIndex:](self->_merchants, "objectAtIndex:", [v6 row]);
-      v35 = [v21 group];
+      v21 = -[NSArray objectAtIndex:](self->_merchants, "objectAtIndex:", [pathCopy row]);
+      group2 = [v21 group];
       if (self->_usingThumbnailLayout)
       {
         v36 = objc_alloc_init(MEMORY[0x1E69B9198]);
-        v37 = [v35 merchant];
-        [v36 setMerchant:v37];
-        v38 = [v37 displayName];
-        [v36 setDisplayName:v38];
+        merchant = [group2 merchant];
+        [v36 setMerchant:merchant];
+        displayName = [merchant displayName];
+        [v36 setDisplayName:displayName];
 
         v39 = v87[2](v87, v36);
         [v89 safelyAddObject:v39];
@@ -2160,33 +2160,33 @@ LABEL_26:
 
       else
       {
-        v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+        v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
         v69 = self->_transactionGroupPresenter;
-        v70 = [(PKSearchResultsViewController *)self navigationController];
+        navigationController5 = [(PKSearchResultsViewController *)self navigationController];
         v108[0] = MEMORY[0x1E69E9820];
         v108[1] = 3221225472;
         v108[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_10;
         v108[3] = &unk_1E80192C0;
         v108[4] = self;
         v108[5] = presentationCounter;
-        [(PKTransactionGroupItemPresenter *)v69 didSelectItem:v21 inCollectionView:v90 atIndexPath:v6 navigationController:v70 canPresent:v108];
+        [(PKTransactionGroupItemPresenter *)v69 didSelectItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy navigationController:navigationController5 canPresent:v108];
       }
 
       v66 = v13;
 
       goto LABEL_55;
     case 15:
-      v21 = -[NSArray objectAtIndex:](self->_people, "objectAtIndex:", [v6 row]);
-      v30 = [v21 group];
+      v21 = -[NSArray objectAtIndex:](self->_people, "objectAtIndex:", [pathCopy row]);
+      group = [v21 group];
       if (self->_usingThumbnailLayout)
       {
         goto LABEL_43;
       }
 
-      v31 = v90;
-      v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+      v31 = viewCopy;
+      v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
       transactionGroupPresenter = self->_transactionGroupPresenter;
-      v33 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController4 = [(PKSearchResultsViewController *)self navigationController];
       v106[0] = MEMORY[0x1E69E9820];
       v106[1] = 3221225472;
       v106[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_12;
@@ -2196,13 +2196,13 @@ LABEL_26:
       v34 = v106;
       goto LABEL_53;
     case 16:
-      v21 = -[NSArray objectAtIndex:](self->_locations, "objectAtIndex:", [v6 row]);
-      v30 = [v21 group];
+      v21 = -[NSArray objectAtIndex:](self->_locations, "objectAtIndex:", [pathCopy row]);
+      group = [v21 group];
       if (self->_usingThumbnailLayout)
       {
 LABEL_43:
         v64 = objc_alloc_init(MEMORY[0x1E69B91D0]);
-        [v64 setGroup:v30];
+        [v64 setGroup:group];
         v65 = v87[2](v87, v64);
         [v89 safelyAddObject:v65];
 
@@ -2211,10 +2211,10 @@ LABEL_43:
 
       else
       {
-        v31 = v90;
-        v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+        v31 = viewCopy;
+        v23 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
         transactionGroupPresenter = self->_transactionGroupPresenter;
-        v33 = [(PKSearchResultsViewController *)self navigationController];
+        navigationController4 = [(PKSearchResultsViewController *)self navigationController];
         v105[0] = MEMORY[0x1E69E9820];
         v105[1] = 3221225472;
         v105[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_13;
@@ -2223,20 +2223,20 @@ LABEL_43:
         v105[5] = presentationCounter;
         v34 = v105;
 LABEL_53:
-        [(PKTransactionGroupItemPresenter *)transactionGroupPresenter didSelectItem:v21 inCollectionView:v31 atIndexPath:v6 navigationController:v33 canPresent:v34];
+        [(PKTransactionGroupItemPresenter *)transactionGroupPresenter didSelectItem:v21 inCollectionView:v31 atIndexPath:pathCopy navigationController:navigationController4 canPresent:v34];
       }
 
       v66 = v13;
 
 LABEL_55:
-      v60 = 0;
+      searchHistory = 0;
       goto LABEL_56;
     case 17:
-      v21 = -[NSArray objectAtIndex:](self->_paymentSetupProducts, "objectAtIndex:", [v6 row]);
-      v40 = v90;
-      v23 = [(PKDashboardOrderPresenter *)self->_orderPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v6];
+      v21 = -[NSArray objectAtIndex:](self->_paymentSetupProducts, "objectAtIndex:", [pathCopy row]);
+      v40 = viewCopy;
+      v23 = [(PKDashboardOrderPresenter *)self->_orderPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:pathCopy];
       transactionPresenter = self->_paymentSetupProductPresenter;
-      v42 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController3 = [(PKSearchResultsViewController *)self navigationController];
       v110[0] = MEMORY[0x1E69E9820];
       v110[1] = 3221225472;
       v110[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_8;
@@ -2250,11 +2250,11 @@ LABEL_41:
       v63 = v40;
       goto LABEL_46;
     case 18:
-      v21 = -[NSArray objectAtIndex:](self->_expiredPasses, "objectAtIndex:", [v6 row]);
-      v44 = v90;
-      v23 = [(PKDashboardPassPresenter *)self->_passPresenter searchHistoryStringForItem:v21 inCollectionView:v90 atIndexPath:v91];
+      v21 = -[NSArray objectAtIndex:](self->_expiredPasses, "objectAtIndex:", [pathCopy row]);
+      v44 = viewCopy;
+      v23 = [(PKDashboardPassPresenter *)self->_passPresenter searchHistoryStringForItem:v21 inCollectionView:viewCopy atIndexPath:v91];
       orderPresenter = self->_passPresenter;
-      v42 = [(PKSearchResultsViewController *)self navigationController];
+      navigationController3 = [(PKSearchResultsViewController *)self navigationController];
       v113[0] = MEMORY[0x1E69E9820];
       v113[1] = 3221225472;
       v113[2] = __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath___block_invoke_5;
@@ -2266,12 +2266,12 @@ LABEL_45:
       v61 = orderPresenter;
       v62 = v21;
       v63 = v44;
-      v6 = v91;
+      pathCopy = v91;
 LABEL_46:
-      [v61 didSelectItem:v62 inCollectionView:v63 atIndexPath:v6 navigationController:v42 canPresent:v43];
+      [v61 didSelectItem:v62 inCollectionView:v63 atIndexPath:pathCopy navigationController:navigationController3 canPresent:v43];
 
 LABEL_47:
-      v60 = 0;
+      searchHistory = 0;
 LABEL_48:
       v66 = v13;
 LABEL_56:
@@ -2281,7 +2281,7 @@ LABEL_56:
       break;
     default:
       v67 = 0;
-      v60 = 0;
+      searchHistory = 0;
       v66 = v13;
       v68 = v88;
       break;
@@ -2293,9 +2293,9 @@ LABEL_56:
   }
 
   v85 = v67;
-  if ([v60 length])
+  if ([searchHistory length])
   {
-    [v66 setText:v60];
+    [v66 setText:searchHistory];
   }
 
   else
@@ -2309,7 +2309,7 @@ LABEL_56:
     if (v95)
     {
       v93 = *v101;
-      v94 = v60;
+      v94 = searchHistory;
       do
       {
         for (i = 0; i != v95; ++i)
@@ -2325,8 +2325,8 @@ LABEL_56:
           v98 = 0u;
           v99 = 0u;
           v73 = v66;
-          v74 = [v66 tokens];
-          v75 = [v74 countByEnumeratingWithState:&v96 objects:v118 count:16];
+          tokens = [v66 tokens];
+          v75 = [tokens countByEnumeratingWithState:&v96 objects:v118 count:16];
           if (v75)
           {
             v76 = v75;
@@ -2337,11 +2337,11 @@ LABEL_56:
               {
                 if (*v97 != v77)
                 {
-                  objc_enumerationMutation(v74);
+                  objc_enumerationMutation(tokens);
                 }
 
-                v79 = [*(*(&v96 + 1) + 8 * j) representedObject];
-                v80 = [v72 representedObject];
+                representedObject = [*(*(&v96 + 1) + 8 * j) representedObject];
+                representedObject2 = [v72 representedObject];
                 v81 = PKEqualObjects();
 
                 if (v81)
@@ -2351,7 +2351,7 @@ LABEL_56:
                 }
               }
 
-              v76 = [v74 countByEnumeratingWithState:&v96 objects:v118 count:16];
+              v76 = [tokens countByEnumeratingWithState:&v96 objects:v118 count:16];
               if (v76)
               {
                 continue;
@@ -2361,21 +2361,21 @@ LABEL_56:
             }
           }
 
-          v82 = [v72 representedObject];
-          v83 = [v82 tokenType];
+          representedObject3 = [v72 representedObject];
+          tokenType = [representedObject3 tokenType];
 
-          v84 = v83 == 10;
+          v84 = tokenType == 10;
           v66 = v73;
           if (!v84)
           {
             [v73 setText:&stru_1F3BD7330];
           }
 
-          v74 = [v73 tokens];
-          [v73 insertToken:v72 atIndex:{objc_msgSend(v74, "count")}];
+          tokens = [v73 tokens];
+          [v73 insertToken:v72 atIndex:{objc_msgSend(tokens, "count")}];
 LABEL_78:
 
-          v60 = v94;
+          searchHistory = v94;
         }
 
         v95 = [obj countByEnumeratingWithState:&v100 objects:v119 count:16];
@@ -2384,7 +2384,7 @@ LABEL_78:
       while (v95);
     }
 
-    v6 = v91;
+    pathCopy = v91;
     v68 = v88;
   }
 }
@@ -2413,48 +2413,48 @@ id __73__PKSearchResultsViewController_collectionView_didSelectItemAtIndexPath__
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v28.receiver = self;
   v28.super_class = PKSearchResultsViewController;
-  [(PKSearchResultsViewController *)&v28 traitCollectionDidChange:v4];
+  [(PKSearchResultsViewController *)&v28 traitCollectionDidChange:changeCopy];
   if (self->_hasLoadedRequiredData)
   {
-    v5 = [(PKSearchResultsViewController *)self traitCollection];
+    traitCollection = [(PKSearchResultsViewController *)self traitCollection];
     passPresenter = self->_passPresenter;
-    v7 = [(PKSearchResultsViewController *)self collectionView];
-    [(PKDashboardPassPresenter *)passPresenter traitCollectionDidChangeFromTrait:v4 toTrait:v5 inCollectionView:v7];
+    collectionView = [(PKSearchResultsViewController *)self collectionView];
+    [(PKDashboardPassPresenter *)passPresenter traitCollectionDidChangeFromTrait:changeCopy toTrait:traitCollection inCollectionView:collectionView];
 
     transactionPresenter = self->_transactionPresenter;
-    v9 = [(PKSearchResultsViewController *)self collectionView];
-    [(PKDashboardPaymentTransactionItemPresenter *)transactionPresenter traitCollectionDidChangeFromTrait:v4 toTrait:v5 inCollectionView:v9];
+    collectionView2 = [(PKSearchResultsViewController *)self collectionView];
+    [(PKDashboardPaymentTransactionItemPresenter *)transactionPresenter traitCollectionDidChangeFromTrait:changeCopy toTrait:traitCollection inCollectionView:collectionView2];
 
     transactionGroupPresenter = self->_transactionGroupPresenter;
-    v11 = [(PKSearchResultsViewController *)self collectionView];
-    [(PKTransactionGroupItemPresenter *)transactionGroupPresenter traitCollectionDidChangeFromTrait:v4 toTrait:v5 inCollectionView:v11];
+    collectionView3 = [(PKSearchResultsViewController *)self collectionView];
+    [(PKTransactionGroupItemPresenter *)transactionGroupPresenter traitCollectionDidChangeFromTrait:changeCopy toTrait:traitCollection inCollectionView:collectionView3];
 
     thumbnailPresenter = self->_thumbnailPresenter;
-    v13 = [(PKSearchResultsViewController *)self collectionView];
-    [(PKTransactionGroupThumbnailPresenter *)thumbnailPresenter traitCollectionDidChangeFromTrait:v4 toTrait:v5 inCollectionView:v13];
+    collectionView4 = [(PKSearchResultsViewController *)self collectionView];
+    [(PKTransactionGroupThumbnailPresenter *)thumbnailPresenter traitCollectionDidChangeFromTrait:changeCopy toTrait:traitCollection inCollectionView:collectionView4];
 
-    if (!v4 || !v5)
+    if (!changeCopy || !traitCollection)
     {
       goto LABEL_8;
     }
 
-    v14 = [v4 preferredContentSizeCategory];
-    v15 = [v5 preferredContentSizeCategory];
-    if (UIContentSizeCategoryCompareToCategory(v14, v15))
+    preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2))
     {
     }
 
     else
     {
-      v16 = [v4 userInterfaceStyle];
-      v17 = [v5 userInterfaceStyle];
+      userInterfaceStyle = [changeCopy userInterfaceStyle];
+      userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-      if (v16 == v17)
+      if (userInterfaceStyle == userInterfaceStyle2)
       {
 LABEL_8:
 
@@ -2475,8 +2475,8 @@ LABEL_8:
     sampleSuggestionCell = self->_sampleSuggestionCell;
     self->_sampleSuggestionCell = v25;
 
-    v27 = [(PKSearchResultsViewController *)self collectionView];
-    [v27 reloadData];
+    collectionView5 = [(PKSearchResultsViewController *)self collectionView];
+    [collectionView5 reloadData];
 
     goto LABEL_8;
   }
@@ -2484,48 +2484,48 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   ++self->_presentationCounter;
-  v5 = [v4 searchBar];
-  v6 = [v5 textInputMode];
-  v7 = [v6 primaryLanguage];
+  searchBar = [controllerCopy searchBar];
+  textInputMode = [searchBar textInputMode];
+  primaryLanguage = [textInputMode primaryLanguage];
 
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v10 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v41 = v10;
-  v42 = v9;
-  if (v10)
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  v41 = paymentPass;
+  v42 = uUIDString;
+  if (paymentPass)
   {
-    v11 = v10;
+    v11 = paymentPass;
     v12 = objc_alloc(MEMORY[0x1E69B92F0]);
-    v13 = [v11 uniqueID];
-    v14 = [v12 initWithIdentifier:v9 keyboardLanguage:v7 passUniqueIdentifier:v13];
+    uniqueID = [v11 uniqueID];
+    v14 = [v12 initWithIdentifier:uUIDString keyboardLanguage:primaryLanguage passUniqueIdentifier:uniqueID];
   }
 
   else
   {
-    v14 = [objc_alloc(MEMORY[0x1E69B91B0]) initWithIdentifier:v9 keyboardLanguage:v7];
+    v14 = [objc_alloc(MEMORY[0x1E69B91B0]) initWithIdentifier:uUIDString keyboardLanguage:primaryLanguage];
   }
 
-  v44 = v4;
-  v15 = [v4 searchBar];
-  v16 = [v15 text];
-  [v14 setText:v16];
+  v44 = controllerCopy;
+  searchBar2 = [controllerCopy searchBar];
+  text = [searchBar2 text];
+  [v14 setText:text];
 
-  v17 = [v5 searchTextField];
-  v18 = [v17 tokens];
+  searchTextField = [searchBar searchTextField];
+  tokens = [searchTextField tokens];
 
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v20 = v18;
+  v20 = tokens;
   v21 = [v20 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v21)
   {
@@ -2540,8 +2540,8 @@ LABEL_9:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v45 + 1) + 8 * i) representedObject];
-        [v19 addObject:v25];
+        representedObject = [*(*(&v45 + 1) + 8 * i) representedObject];
+        [v19 addObject:representedObject];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v45 objects:v49 count:16];
@@ -2550,7 +2550,7 @@ LABEL_9:
     while (v22);
   }
 
-  v43 = v5;
+  v43 = searchBar;
   if ([v19 count])
   {
     v26 = [v19 copy];
@@ -2591,16 +2591,16 @@ LABEL_9:
       v36 = [(NSMutableOrderedSet *)lastQueries objectAtIndex:?];
 
       lastResultsPerQueryIdentifier = self->_lastResultsPerQueryIdentifier;
-      v38 = [v36 identifier];
-      v35 = [(NSMutableDictionary *)lastResultsPerQueryIdentifier objectForKey:v38];
+      identifier = [v36 identifier];
+      v35 = [(NSMutableDictionary *)lastResultsPerQueryIdentifier objectForKey:identifier];
 
       v34 = 0;
       v14 = v36;
     }
 
-    v39 = [v14 identifier];
+    identifier2 = [v14 identifier];
     currentQueryIdentifier = self->_currentQueryIdentifier;
-    self->_currentQueryIdentifier = v39;
+    self->_currentQueryIdentifier = identifier2;
 
     os_unfair_lock_unlock(&self->_lockQuery);
     v31 = v43;
@@ -2627,15 +2627,15 @@ LABEL_9:
   }
 }
 
-- (void)searchDidCompleteWithError:(id)a3 results:(id)a4 forIdentifier:(id)a5
+- (void)searchDidCompleteWithError:(id)error results:(id)results forIdentifier:(id)identifier
 {
   v61 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  resultsCopy = results;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lockQuery);
   v11 = self->_currentQueryIdentifier;
-  v12 = v10;
+  v12 = identifierCopy;
   v13 = v12;
   if (v11 == v12)
   {
@@ -2659,21 +2659,21 @@ LABEL_7:
 
 LABEL_9:
   os_unfair_lock_unlock(&self->_lockQuery);
-  if (v8)
+  if (errorCopy)
   {
     v15 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v58 = v8;
+      v58 = errorCopy;
       v59 = 2112;
       v60 = v13;
       _os_log_impl(&dword_1BD026000, v15, OS_LOG_TYPE_DEFAULT, "Error %@ for query %@", buf, 0x16u);
     }
 
-    v16 = [(NSString *)v8 domain];
+    domain = [(NSString *)errorCopy domain];
     v17 = *MEMORY[0x1E69BC3B8];
-    v18 = v16;
+    v18 = domain;
     v19 = v18;
     if (v18 == v17)
     {
@@ -2695,26 +2695,26 @@ LABEL_9:
       }
     }
 
-    v21 = [(NSString *)v8 code]== 5;
+    v21 = [(NSString *)errorCopy code]== 5;
 
     if (v21)
     {
-      v19 = v9;
-      v9 = objc_alloc_init(MEMORY[0x1E69B91B8]);
+      v19 = resultsCopy;
+      resultsCopy = objc_alloc_init(MEMORY[0x1E69B91B8]);
 LABEL_21:
     }
   }
 
-  if (v9 && [(NSString *)v8 code]!= 4)
+  if (resultsCopy && [(NSString *)errorCopy code]!= 4)
   {
     v41 = [(PKSearchResultsViewController *)self _queryWithIdentifier:v13];
     if (v41)
     {
       objc_initWeak(buf, self);
       v22 = 0;
-      v23 = 0;
+      locationResults = 0;
       v39 = 0;
-      v40 = 0;
+      transactionResults = 0;
       v37 = 0;
       v38 = 0;
       v24 = 0;
@@ -2724,7 +2724,7 @@ LABEL_21:
       switch([v41 type])
       {
         case 0:
-          [(PKSearchResultsViewController *)self _saveResults:v9 forQuery:v41];
+          [(PKSearchResultsViewController *)self _saveResults:resultsCopy forQuery:v41];
           self->_hasReceivedResults = 1;
           v55[0] = MEMORY[0x1E69E9820];
           v55[1] = 3221225472;
@@ -2732,77 +2732,77 @@ LABEL_21:
           v55[3] = &unk_1E8012FD0;
           v55[4] = self;
           v56 = v41;
-          [(PKSearchResultsViewController *)self _updateUIIfPossibleWithResults:v9 query:v56 completion:v55];
+          [(PKSearchResultsViewController *)self _updateUIIfPossibleWithResults:resultsCopy query:v56 completion:v55];
 
-          v23 = 0;
+          locationResults = 0;
           goto LABEL_43;
         case 1:
-          v34 = [v9 paymentPassResults];
-          v24 = [(PKSearchResultsViewController *)self _passItemsFromPassResults:v34];
+          paymentPassResults = [resultsCopy paymentPassResults];
+          v24 = [(PKSearchResultsViewController *)self _passItemsFromPassResults:paymentPassResults];
 
-          v23 = 0;
+          locationResults = 0;
           v39 = 0;
-          v40 = 0;
+          transactionResults = 0;
           v37 = 0;
           v38 = 0;
           goto LABEL_48;
         case 2:
-          v33 = [v9 keyAndIDResults];
-          v25 = [(PKSearchResultsViewController *)self _passItemsFromPassResults:v33];
+          keyAndIDResults = [resultsCopy keyAndIDResults];
+          v25 = [(PKSearchResultsViewController *)self _passItemsFromPassResults:keyAndIDResults];
 
-          v23 = 0;
+          locationResults = 0;
           v39 = 0;
-          v40 = 0;
+          transactionResults = 0;
           v37 = 0;
           v38 = 0;
           v24 = 0;
           goto LABEL_49;
         case 3:
-          v32 = [v9 barcodePassResults];
-          v38 = [(PKSearchResultsViewController *)self _passItemsFromPassResults:v32];
+          barcodePassResults = [resultsCopy barcodePassResults];
+          v38 = [(PKSearchResultsViewController *)self _passItemsFromPassResults:barcodePassResults];
 
-          v23 = 0;
+          locationResults = 0;
           v39 = 0;
-          v40 = 0;
+          transactionResults = 0;
           goto LABEL_46;
         case 4:
         case 12:
           goto LABEL_52;
         case 5:
-          v29 = [v9 categoryResults];
+          categoryResults = [resultsCopy categoryResults];
           goto LABEL_42;
         case 6:
-          v29 = [v9 merchantResults];
+          categoryResults = [resultsCopy merchantResults];
           goto LABEL_42;
         case 7:
-          v40 = [v9 transactionResults];
-          v23 = 0;
+          transactionResults = [resultsCopy transactionResults];
+          locationResults = 0;
           goto LABEL_44;
         case 8:
-          v35 = [v9 orderResults];
-          v39 = [v35 pk_arrayByApplyingBlock:&__block_literal_global_105];
+          orderResults = [resultsCopy orderResults];
+          v39 = [orderResults pk_arrayByApplyingBlock:&__block_literal_global_105];
 
-          v23 = 0;
-          v40 = 0;
+          locationResults = 0;
+          transactionResults = 0;
           goto LABEL_45;
         case 9:
-          v36 = [v9 paymentSetupProductResults];
-          v26 = [v36 pk_arrayBySafelyApplyingBlock:&__block_literal_global_331];
+          paymentSetupProductResults = [resultsCopy paymentSetupProductResults];
+          v26 = [paymentSetupProductResults pk_arrayBySafelyApplyingBlock:&__block_literal_global_331];
 
-          v23 = 0;
+          locationResults = 0;
           v39 = 0;
-          v40 = 0;
+          transactionResults = 0;
           v37 = 0;
           v38 = 0;
           v24 = 0;
           v25 = 0;
           goto LABEL_50;
         case 10:
-          v29 = [v9 personResults];
+          categoryResults = [resultsCopy personResults];
 LABEL_42:
-          v23 = v29;
+          locationResults = categoryResults;
 LABEL_43:
-          v40 = 0;
+          transactionResults = 0;
 LABEL_44:
           v39 = 0;
 LABEL_45:
@@ -2811,9 +2811,9 @@ LABEL_46:
           v37 = 0;
           goto LABEL_47;
         case 11:
-          v23 = [v9 locationResults];
+          locationResults = [resultsCopy locationResults];
           v39 = 0;
-          v40 = 0;
+          transactionResults = 0;
           v37 = 0;
           v38 = 0;
           v24 = 0;
@@ -2821,19 +2821,19 @@ LABEL_46:
           v26 = 0;
           v27 = 0;
           v22 = 1;
-          if (v23)
+          if (locationResults)
           {
             goto LABEL_61;
           }
 
           goto LABEL_53;
         case 13:
-          v31 = [v9 pendingPeerPaymentRequestResults];
-          v27 = [(PKSearchResultsViewController *)self _balanceItemsFromPendingPeerPaymentRquests:v31];
+          pendingPeerPaymentRequestResults = [resultsCopy pendingPeerPaymentRequestResults];
+          v27 = [(PKSearchResultsViewController *)self _balanceItemsFromPendingPeerPaymentRquests:pendingPeerPaymentRequestResults];
 
-          v23 = 0;
+          locationResults = 0;
           v39 = 0;
-          v40 = 0;
+          transactionResults = 0;
           v37 = 0;
           v38 = 0;
           v24 = 0;
@@ -2841,12 +2841,12 @@ LABEL_46:
           v26 = 0;
           goto LABEL_51;
         case 14:
-          v30 = [v9 expiredPassResults];
-          v37 = [(PKSearchResultsViewController *)self _passItemsFromPassResults:v30 isInExpiredSection:1];
+          expiredPassResults = [resultsCopy expiredPassResults];
+          v37 = [(PKSearchResultsViewController *)self _passItemsFromPassResults:expiredPassResults isInExpiredSection:1];
 
-          v23 = 0;
+          locationResults = 0;
           v39 = 0;
-          v40 = 0;
+          transactionResults = 0;
           v38 = 0;
 LABEL_47:
           v24 = 0;
@@ -2859,7 +2859,7 @@ LABEL_50:
 LABEL_51:
           v22 = 0;
 LABEL_52:
-          if (!v23)
+          if (!locationResults)
           {
             goto LABEL_53;
           }
@@ -2867,7 +2867,7 @@ LABEL_52:
           goto LABEL_61;
         default:
           v39 = 0;
-          v40 = 0;
+          transactionResults = 0;
           v37 = 0;
           v38 = 0;
           v24 = 0;
@@ -2875,7 +2875,7 @@ LABEL_52:
           v26 = 0;
           v27 = 0;
 LABEL_53:
-          if (v40 || v39 || v38 || v24 || v37 || v25 || v26 || v27)
+          if (transactionResults || v39 || v38 || v24 || v37 || v25 || v26 || v27)
           {
 LABEL_61:
             block[0] = MEMORY[0x1E69E9820];
@@ -2883,10 +2883,10 @@ LABEL_61:
             block[2] = __82__PKSearchResultsViewController_searchDidCompleteWithError_results_forIdentifier___block_invoke_4;
             block[3] = &unk_1E8019328;
             objc_copyWeak(&v53, buf);
-            v43 = v23;
+            v43 = locationResults;
             v44 = v41;
             v54 = v22;
-            v45 = v40;
+            v45 = transactionResults;
             v46 = v39;
             v47 = v38;
             v48 = v24;
@@ -3064,9 +3064,9 @@ void __56__PKSearchResultsViewController_invalidateSearchResults__block_invoke(u
   }
 }
 
-- (id)_queryWithIdentifier:(id)a3
+- (id)_queryWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3079,7 +3079,7 @@ void __56__PKSearchResultsViewController_invalidateSearchResults__block_invoke(u
   v9[1] = 3221225472;
   v9[2] = __54__PKSearchResultsViewController__queryWithIdentifier___block_invoke;
   v9[3] = &unk_1E8019350;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableOrderedSet *)lastQueries enumerateObjectsUsingBlock:v9];
@@ -3123,14 +3123,14 @@ LABEL_7:
 LABEL_9:
 }
 
-- (BOOL)_isQueryIdentifierMatchingCurrentQuery:(id)a3
+- (BOOL)_isQueryIdentifierMatchingCurrentQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   os_unfair_lock_lock(&self->_lockQuery);
   v5 = self->_currentQueryIdentifier;
   os_unfair_lock_unlock(&self->_lockQuery);
   v6 = v5;
-  v7 = v4;
+  v7 = queryCopy;
   v8 = v7;
   if (v6 == v7)
   {
@@ -3149,19 +3149,19 @@ LABEL_9:
   return v9;
 }
 
-- (void)_saveResults:(id)a3 forQuery:(id)a4
+- (void)_saveResults:(id)results forQuery:(id)query
 {
-  v19 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  queryCopy = query;
   os_unfair_lock_lock(&self->_lockQuery);
-  if (!v6)
+  if (!queryCopy)
   {
     goto LABEL_13;
   }
 
-  v7 = [v6 identifier];
+  identifier = [queryCopy identifier];
   currentQueryIdentifier = self->_currentQueryIdentifier;
-  currentResults = v7;
+  currentResults = identifier;
   v10 = currentQueryIdentifier;
   v11 = v10;
   if (currentResults == v10)
@@ -3181,22 +3181,22 @@ LABEL_9:
   if (v12)
   {
 LABEL_8:
-    v13 = v19;
+    v13 = resultsCopy;
     currentResults = self->_currentResults;
     self->_currentResults = v13;
 LABEL_10:
   }
 
   lastResultsPerQueryIdentifier = self->_lastResultsPerQueryIdentifier;
-  v15 = [v6 identifier];
-  [(NSMutableDictionary *)lastResultsPerQueryIdentifier setObject:v19 forKey:v15];
+  identifier2 = [queryCopy identifier];
+  [(NSMutableDictionary *)lastResultsPerQueryIdentifier setObject:resultsCopy forKey:identifier2];
 
   if ([(NSMutableDictionary *)self->_lastResultsPerQueryIdentifier count]== 10)
   {
     v16 = [(NSMutableOrderedSet *)self->_lastQueries objectAtIndex:0];
     v17 = self->_lastResultsPerQueryIdentifier;
-    v18 = [v16 identifier];
-    [(NSMutableDictionary *)v17 removeObjectForKey:v18];
+    identifier3 = [v16 identifier];
+    [(NSMutableDictionary *)v17 removeObjectForKey:identifier3];
 
     [(NSMutableOrderedSet *)self->_lastQueries removeObjectAtIndex:0];
   }
@@ -3205,42 +3205,42 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_lockQuery);
 }
 
-- (id)_groupItemForTransactionGroup:(id)a3 searchQuery:(id)a4
+- (id)_groupItemForTransactionGroup:(id)group searchQuery:(id)query
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setSearchQuery:v6];
-  v8 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  queryCopy = query;
+  groupCopy = group;
+  [groupCopy setSearchQuery:queryCopy];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
   v9 = objc_alloc_init(PKDashboardPaymentTransactionGroupItem);
-  [(PKDashboardPaymentTransactionGroupItem *)v9 setGroup:v7];
+  [(PKDashboardPaymentTransactionGroupItem *)v9 setGroup:groupCopy];
 
-  v10 = [v6 tokens];
+  tokens = [queryCopy tokens];
 
-  [(PKDashboardPaymentTransactionGroupItem *)v9 setTokens:v10];
+  [(PKDashboardPaymentTransactionGroupItem *)v9 setTokens:tokens];
   [(PKDashboardPaymentTransactionGroupItem *)v9 setFamilyCollection:self->_familyCollection];
   [(PKDashboardPaymentTransactionGroupItem *)v9 setTransactionSourceCollection:self->_transactionSourceCollection];
-  if (v8)
+  if (paymentPass)
   {
-    v11 = [v8 associatedAccountServiceAccountIdentifier];
-    v12 = [(NSDictionary *)self->_accountsPerIdentifier objectForKey:v11];
+    associatedAccountServiceAccountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+    v12 = [(NSDictionary *)self->_accountsPerIdentifier objectForKey:associatedAccountServiceAccountIdentifier];
     [(PKDashboardPaymentTransactionGroupItem *)v9 setAccount:v12];
 
-    v13 = [(NSDictionary *)self->_accountUserCollectionsPerIdentifier objectForKey:v11];
+    v13 = [(NSDictionary *)self->_accountUserCollectionsPerIdentifier objectForKey:associatedAccountServiceAccountIdentifier];
     [(PKDashboardPaymentTransactionGroupItem *)v9 setAccountUserCollection:v13];
 
-    v14 = [(NSDictionary *)self->_physicalCardsPerIdentifier objectForKey:v11];
+    v14 = [(NSDictionary *)self->_physicalCardsPerIdentifier objectForKey:associatedAccountServiceAccountIdentifier];
     [(PKDashboardPaymentTransactionGroupItem *)v9 setPhysicalCards:v14];
   }
 
   return v9;
 }
 
-- (void)_updateUIWithResults:(id)a3 forQuery:(id)a4 completion:(id)a5
+- (void)_updateUIWithResults:(id)results forQuery:(id)query completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  resultsCopy = results;
+  queryCopy = query;
+  completionCopy = completion;
+  if (resultsCopy)
   {
     queuePrepareResults = self->_queuePrepareResults;
     v12[0] = MEMORY[0x1E69E9820];
@@ -3248,9 +3248,9 @@ LABEL_13:
     v12[2] = __74__PKSearchResultsViewController__updateUIWithResults_forQuery_completion___block_invoke;
     v12[3] = &unk_1E8011D78;
     v12[4] = self;
-    v13 = v9;
-    v14 = v8;
-    v15 = v10;
+    v13 = queryCopy;
+    v14 = resultsCopy;
+    v15 = completionCopy;
     dispatch_async(queuePrepareResults, v12);
   }
 }
@@ -4303,27 +4303,27 @@ uint64_t __74__PKSearchResultsViewController__updateUIWithResults_forQuery_compl
   return result;
 }
 
-- (void)_updateUIIfPossibleWithResults:(id)a3 query:(id)a4 completion:(id)a5
+- (void)_updateUIIfPossibleWithResults:(id)results query:(id)query completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && self->_hasReceivedResults && self->_hasLoadedRequiredData)
+  resultsCopy = results;
+  queryCopy = query;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (resultsCopy && queryCopy && self->_hasReceivedResults && self->_hasLoadedRequiredData)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __81__PKSearchResultsViewController__updateUIIfPossibleWithResults_query_completion___block_invoke;
     v12[3] = &unk_1E8012300;
     v12[4] = self;
-    v13 = v9;
+    v13 = queryCopy;
     v14 = v11;
-    [(PKSearchResultsViewController *)self _updateUIWithResults:v8 forQuery:v13 completion:v12];
+    [(PKSearchResultsViewController *)self _updateUIWithResults:resultsCopy forQuery:v13 completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -4380,25 +4380,25 @@ uint64_t __81__PKSearchResultsViewController__updateUIIfPossibleWithResults_quer
   return result;
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKSearchResultsViewController *)self _searchController];
-  v6 = [v5 searchBar];
-  v7 = [v6 searchTextField];
+  queryCopy = query;
+  _searchController = [(PKSearchResultsViewController *)self _searchController];
+  searchBar = [_searchController searchBar];
+  searchTextField = [searchBar searchTextField];
 
-  if (v4)
+  if (queryCopy)
   {
-    v19 = v7;
-    v20 = v5;
+    v19 = searchTextField;
+    v20 = _searchController;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v21 = v4;
-    obj = [v4 tokens];
+    v21 = queryCopy;
+    obj = [queryCopy tokens];
     v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
@@ -4417,8 +4417,8 @@ uint64_t __81__PKSearchResultsViewController__updateUIIfPossibleWithResults_quer
           v13 = *(*(&v25 + 1) + 8 * v12);
           v23 = 0;
           v24 = 0;
-          v14 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter contactResolver];
-          PKSearchAutoCompletionTextAndImageFromSuggestion(&v24, &v23, 1, v13, v14);
+          contactResolver = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter contactResolver];
+          PKSearchAutoCompletionTextAndImageFromSuggestion(&v24, &v23, 1, v13, contactResolver);
           v15 = v24;
           v16 = v23;
 
@@ -4436,46 +4436,46 @@ uint64_t __81__PKSearchResultsViewController__updateUIIfPossibleWithResults_quer
       while (v10);
     }
 
-    v7 = v19;
+    searchTextField = v19;
     [v19 setTokens:v8];
-    v4 = v21;
-    v18 = [v21 text];
-    [v19 setText:v18];
+    queryCopy = v21;
+    text = [v21 text];
+    [v19 setText:text];
 
-    v5 = v20;
+    _searchController = v20;
   }
 
   else
   {
-    [v7 setTokens:MEMORY[0x1E695E0F0]];
-    [v7 setText:&stru_1F3BD7330];
+    [searchTextField setTokens:MEMORY[0x1E695E0F0]];
+    [searchTextField setText:&stru_1F3BD7330];
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   pendingPreflightCompletion = self->_pendingPreflightCompletion;
   self->_pendingPreflightCompletion = v4;
 
   self->_isPreflighting = 1;
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v8 = [MEMORY[0x1E695DF58] currentLocale];
-  v9 = [v8 languageCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
 
-  v10 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  if (v10)
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  if (paymentPass)
   {
     v11 = objc_alloc(MEMORY[0x1E69B92F0]);
-    v12 = [v10 uniqueID];
-    v13 = [v11 initWithIdentifier:v7 keyboardLanguage:v9 passUniqueIdentifier:v12];
+    uniqueID = [paymentPass uniqueID];
+    v13 = [v11 initWithIdentifier:uUIDString keyboardLanguage:languageCode passUniqueIdentifier:uniqueID];
   }
 
   else
   {
-    v13 = [objc_alloc(MEMORY[0x1E69B91B0]) initWithIdentifier:v7 keyboardLanguage:v9];
+    v13 = [objc_alloc(MEMORY[0x1E69B91B0]) initWithIdentifier:uUIDString keyboardLanguage:languageCode];
   }
 
   [v13 setText:&stru_1F3BD7330];
@@ -4494,9 +4494,9 @@ uint64_t __81__PKSearchResultsViewController__updateUIIfPossibleWithResults_quer
 
   os_unfair_lock_lock(&self->_lockQuery);
   [(NSMutableOrderedSet *)self->_lastQueries addObject:v13];
-  v17 = [v13 identifier];
+  identifier = [v13 identifier];
   currentQueryIdentifier = self->_currentQueryIdentifier;
-  self->_currentQueryIdentifier = v17;
+  self->_currentQueryIdentifier = identifier;
 
   self->_queryInProgress = 1;
   os_unfair_lock_unlock(&self->_lockQuery);
@@ -4504,18 +4504,18 @@ uint64_t __81__PKSearchResultsViewController__updateUIIfPossibleWithResults_quer
   [(PKSearchService *)self->_searchService searchWithQuery:v13];
 }
 
-- (id)_fetchPassForUniqueIdentifierIfNeeded:(id)a3
+- (id)_fetchPassForUniqueIdentifierIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_passesForTransactionResults objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_passesForTransactionResults objectForKey:neededCopy];
     if (!v5)
     {
-      v5 = [(NSMutableDictionary *)self->_passesForPassResults objectForKey:v4];
+      v5 = [(NSMutableDictionary *)self->_passesForPassResults objectForKey:neededCopy];
       if (!v5)
       {
-        v5 = [(PKPassLibrary *)self->_passLibrary passWithUniqueID:v4];
+        v5 = [(PKPassLibrary *)self->_passLibrary passWithUniqueID:neededCopy];
       }
     }
 
@@ -4530,34 +4530,34 @@ uint64_t __81__PKSearchResultsViewController__updateUIIfPossibleWithResults_quer
   return v6;
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
-  v6 = a3;
+  arbiterCopy = arbiter;
   foregroundActive = self->_foregroundActiveState.foregroundActive;
-  self->_foregroundActiveState = a4;
-  if (!foregroundActive && (*&a4 & 0x100) != 0 && self->_fullResultsNotAvailable)
+  self->_foregroundActiveState = state;
+  if (!foregroundActive && (*&state & 0x100) != 0 && self->_fullResultsNotAvailable)
   {
-    v8 = v6;
+    v8 = arbiterCopy;
     [(PKSearchResultsViewController *)self invalidateSearchResults];
-    v6 = v8;
+    arbiterCopy = v8;
   }
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = a3;
-  v5 = [(PKSearchResultsViewController *)self _searchController];
-  v6 = [v5 searchBar];
-  v7 = [v6 searchTextField];
+  clearCopy = clear;
+  _searchController = [(PKSearchResultsViewController *)self _searchController];
+  searchBar = [_searchController searchBar];
+  searchTextField = [searchBar searchTextField];
 
-  if (v7 == v4)
+  if (searchTextField == clearCopy)
   {
-    v9 = v4;
-    v10 = [v9 tokens];
-    if ([v10 count])
+    v9 = clearCopy;
+    tokens = [v9 tokens];
+    if ([tokens count])
     {
-      v11 = [v9 text];
-      v12 = [v11 length];
+      text = [v9 text];
+      v12 = [text length];
 
       if (!v12)
       {
@@ -4583,10 +4583,10 @@ LABEL_9:
   return v8;
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -4632,14 +4632,14 @@ BOOL __50__PKSearchResultsViewController_keyboardWillShow___block_invoke(uint64_
   return !CGRectEqualToRect(*(*(a1 + 32) + 1520), v16);
 }
 
-- (void)keyboardWillChange:(id)a3
+- (void)keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
     if (v7)
     {
@@ -4674,7 +4674,7 @@ BOOL __52__PKSearchResultsViewController_keyboardWillChange___block_invoke(uint6
   return !CGRectEqualToRect(*(*(a1 + 32) + 1520), v13);
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -4700,17 +4700,17 @@ BOOL __50__PKSearchResultsViewController_keyboardWillHide___block_invoke(uint64_
   return !CGRectEqualToRect(*&v3, v8);
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = [(PKSearchResultsViewController *)self viewIfLoaded];
-    v6 = v5;
-    if (v5)
+    viewIfLoaded = [(PKSearchResultsViewController *)self viewIfLoaded];
+    v6 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v5 layoutIfNeeded];
-      if (v4[2](v4))
+      [viewIfLoaded layoutIfNeeded];
+      if (actionCopy[2](actionCopy))
       {
         [v6 setNeedsLayout];
         v7 = MEMORY[0x1E69DD250];
@@ -4725,21 +4725,21 @@ BOOL __50__PKSearchResultsViewController_keyboardWillHide___block_invoke(uint64_
 
     else
     {
-      v4[2](v4);
+      actionCopy[2](actionCopy);
     }
   }
 }
 
-- (void)worldRegionUpdated:(id)a3 updatedRegion:(id)a4
+- (void)worldRegionUpdated:(id)updated updatedRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PKSearchResultsViewController_worldRegionUpdated_updatedRegion___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = regionCopy;
+  v6 = regionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -4913,15 +4913,15 @@ LABEL_27:
   }
 }
 
-- (BOOL)_updateGroup:(id)a3 withRegion:(id)a4
+- (BOOL)_updateGroup:(id)group withRegion:(id)region
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 type] == 13)
+  groupCopy = group;
+  regionCopy = region;
+  if ([groupCopy type] == 13)
   {
-    v7 = [v6 identifier];
-    v8 = [v5 regions];
-    v9 = [v8 mutableCopy];
+    identifier = [regionCopy identifier];
+    regions = [groupCopy regions];
+    v9 = [regions mutableCopy];
 
     if ([v9 count])
     {
@@ -4929,17 +4929,17 @@ LABEL_27:
       while (1)
       {
         v11 = [v9 objectAtIndex:v10];
-        v12 = [v11 identifier];
-        v13 = v7;
+        identifier2 = [v11 identifier];
+        v13 = identifier;
         v14 = v13;
-        if (v12 == v13)
+        if (identifier2 == v13)
         {
           break;
         }
 
-        if (v7 && v12)
+        if (identifier && identifier2)
         {
-          v15 = [v12 isEqualToString:v13];
+          v15 = [identifier2 isEqualToString:v13];
 
           if (v15)
           {
@@ -4958,9 +4958,9 @@ LABEL_27:
       }
 
 LABEL_14:
-      [v9 replaceObjectAtIndex:v10 withObject:v6];
+      [v9 replaceObjectAtIndex:v10 withObject:regionCopy];
       v17 = [v9 copy];
-      [v5 setRegions:v17];
+      [groupCopy setRegions:v17];
 
       v16 = 1;
     }
@@ -4980,68 +4980,68 @@ LABEL_11:
   return v16;
 }
 
-- (void)_initiateSeeAllPresentationForQuery:(id)a3
+- (void)_initiateSeeAllPresentationForQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   objc_initWeak(&location, self);
-  if ([v4 type] == 8)
+  if ([queryCopy type] == 8)
   {
-    v5 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:0 itemPresenter:self->_orderPresenter searchQuery:v4];
+    v5 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:0 itemPresenter:self->_orderPresenter searchQuery:queryCopy];
     seeAllOrderVC = self->_seeAllOrderVC;
     self->_seeAllOrderVC = v5;
 
     [(PKSearchSeeAllViewController *)self->_seeAllOrderVC setSeeAllViewControllerDelegate:self];
-    v7 = [(PKSearchResultsViewController *)self navigationController];
-    [(PKDashboardPaymentSetupProductPresenter *)v7 pushViewController:self->_seeAllOrderVC animated:1];
+    navigationController = [(PKSearchResultsViewController *)self navigationController];
+    [(PKDashboardPaymentSetupProductPresenter *)navigationController pushViewController:self->_seeAllOrderVC animated:1];
   }
 
-  else if ([v4 type] == 9)
+  else if ([queryCopy type] == 9)
   {
-    v7 = objc_alloc_init(PKDashboardPaymentSetupProductPresenter);
-    v8 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:0 itemPresenter:v7 searchQuery:v4];
+    navigationController = objc_alloc_init(PKDashboardPaymentSetupProductPresenter);
+    v8 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:0 itemPresenter:navigationController searchQuery:queryCopy];
     seeAllPaymentSetupProductsVC = self->_seeAllPaymentSetupProductsVC;
     self->_seeAllPaymentSetupProductsVC = v8;
 
     [(PKSearchSeeAllViewController *)self->_seeAllPaymentSetupProductsVC setSeeAllViewControllerDelegate:self];
-    [(PKDashboardPaymentSetupProductPresenter *)v7 setDelegate:self->_seeAllPaymentSetupProductsVC];
-    v10 = [(PKSearchResultsViewController *)self navigationController];
-    [v10 pushViewController:self->_seeAllPaymentSetupProductsVC animated:1];
+    [(PKDashboardPaymentSetupProductPresenter *)navigationController setDelegate:self->_seeAllPaymentSetupProductsVC];
+    navigationController2 = [(PKSearchResultsViewController *)self navigationController];
+    [navigationController2 pushViewController:self->_seeAllPaymentSetupProductsVC animated:1];
   }
 
-  else if ([v4 type] == 3 || objc_msgSend(v4, "type") == 1 || objc_msgSend(v4, "type") == 2 || objc_msgSend(v4, "type") == 14)
+  else if ([queryCopy type] == 3 || objc_msgSend(queryCopy, "type") == 1 || objc_msgSend(queryCopy, "type") == 2 || objc_msgSend(queryCopy, "type") == 14)
   {
-    v11 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:0 itemPresenter:self->_passPresenter searchQuery:v4];
+    v11 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:0 itemPresenter:self->_passPresenter searchQuery:queryCopy];
     seeAllPassesVC = self->_seeAllPassesVC;
     self->_seeAllPassesVC = v11;
 
     [(PKSearchSeeAllViewController *)self->_seeAllPassesVC setSeeAllViewControllerDelegate:self];
-    v7 = [(PKSearchResultsViewController *)self navigationController];
-    [(PKDashboardPaymentSetupProductPresenter *)v7 pushViewController:self->_seeAllPassesVC animated:1];
+    navigationController = [(PKSearchResultsViewController *)self navigationController];
+    [(PKDashboardPaymentSetupProductPresenter *)navigationController pushViewController:self->_seeAllPassesVC animated:1];
   }
 
   else
   {
-    if ([v4 type] != 13)
+    if ([queryCopy type] != 13)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___block_invoke;
       v15[3] = &unk_1E80194C8;
       objc_copyWeak(&v17, &location);
-      v16 = v4;
+      v16 = queryCopy;
       [(PKSearchResultsViewController *)self _seeAllHeaderGroupForQuery:v16 groups:0 transactionResults:0 completion:v15];
 
       objc_destroyWeak(&v17);
       goto LABEL_11;
     }
 
-    v13 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:0 itemPresenter:self->_pendingPeerPaymentRequestPresenter searchQuery:v4];
+    v13 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:0 itemPresenter:self->_pendingPeerPaymentRequestPresenter searchQuery:queryCopy];
     seeAllPeerPaymentRequestsVC = self->_seeAllPeerPaymentRequestsVC;
     self->_seeAllPeerPaymentRequestsVC = v13;
 
     [(PKSearchSeeAllViewController *)self->_seeAllPeerPaymentRequestsVC setSeeAllViewControllerDelegate:self];
-    v7 = [(PKSearchResultsViewController *)self navigationController];
-    [(PKDashboardPaymentSetupProductPresenter *)v7 pushViewController:self->_seeAllPeerPaymentRequestsVC animated:1];
+    navigationController = [(PKSearchResultsViewController *)self navigationController];
+    [(PKDashboardPaymentSetupProductPresenter *)navigationController pushViewController:self->_seeAllPeerPaymentRequestsVC animated:1];
   }
 
 LABEL_11:
@@ -5064,26 +5064,26 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
   }
 }
 
-- (void)_seeAllHeaderGroupForQuery:(id)a3 groups:(id)a4 transactionResults:(id)a5 completion:(id)a6
+- (void)_seeAllHeaderGroupForQuery:(id)query groups:(id)groups transactionResults:(id)results completion:(id)completion
 {
   v114 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v61 = a6;
+  queryCopy = query;
+  groupsCopy = groups;
+  resultsCopy = results;
+  completionCopy = completion;
   v13 = objc_alloc_init(MEMORY[0x1E69B8EB0]);
   [v13 setType:14];
-  v62 = v10;
+  v62 = queryCopy;
   v63 = v13;
-  [v13 setSearchQuery:v10];
-  v59 = v11;
-  v60 = v12;
-  if (v12)
+  [v13 setSearchQuery:queryCopy];
+  v59 = groupsCopy;
+  v60 = resultsCopy;
+  if (resultsCopy)
   {
-    v14 = self;
-    v15 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+    selfCopy = self;
+    paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
 
-    if (!v15)
+    if (!paymentPass)
     {
       v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -5091,7 +5091,7 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
-      v18 = v12;
+      v18 = resultsCopy;
       v19 = [v18 countByEnumeratingWithState:&v106 objects:v113 count:16];
       if (v19)
       {
@@ -5105,16 +5105,16 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
               objc_enumerationMutation(v18);
             }
 
-            v22 = [*(*(&v106 + 1) + 8 * i) passUniqueIdentifier];
-            if (v22 && ([v16 containsObject:v22] & 1) == 0)
+            passUniqueIdentifier = [*(*(&v106 + 1) + 8 * i) passUniqueIdentifier];
+            if (passUniqueIdentifier && ([v16 containsObject:passUniqueIdentifier] & 1) == 0)
             {
-              v23 = [(PKSearchResultsViewController *)v14 _fetchPassForUniqueIdentifierIfNeeded:v22];
-              v24 = [v23 paymentPass];
+              v23 = [(PKSearchResultsViewController *)selfCopy _fetchPassForUniqueIdentifierIfNeeded:passUniqueIdentifier];
+              paymentPass2 = [v23 paymentPass];
 
-              if (v24)
+              if (paymentPass2)
               {
-                v25 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v24];
-                [v16 addObject:v22];
+                v25 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:paymentPass2];
+                [v16 addObject:passUniqueIdentifier];
                 [v17 addObject:v25];
               }
             }
@@ -5138,22 +5138,22 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
     [v63 setTransactions:v29];
     if ([v62 domain] || objc_msgSend(v62, "type") != 7)
     {
-      v30 = [v29 firstObject];
-      v31 = [v30 transactionDate];
-      [v63 setEndDate:v31];
+      firstObject = [v29 firstObject];
+      transactionDate = [firstObject transactionDate];
+      [v63 setEndDate:transactionDate];
 
-      v32 = [v29 lastObject];
-      v33 = [v32 transactionDate];
-      [v63 setStartDate:v33];
+      lastObject = [v29 lastObject];
+      transactionDate2 = [lastObject transactionDate];
+      [v63 setStartDate:transactionDate2];
     }
 
-    v61[2](v61, v63);
+    completionCopy[2](completionCopy, v63);
   }
 
-  else if (v11)
+  else if (groupsCopy)
   {
-    v34 = [v10 type] - 5;
-    v58 = self;
+    v34 = [queryCopy type] - 5;
+    selfCopy2 = self;
     if (v34 > 6)
     {
       v35 = 1;
@@ -5169,7 +5169,7 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
     v105 = 0u;
     v102 = 0u;
     v103 = 0u;
-    obj = v11;
+    obj = groupsCopy;
     v67 = [obj countByEnumeratingWithState:&v102 objects:v112 count:16];
     if (v67)
     {
@@ -5191,8 +5191,8 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
             v101 = 0u;
             v98 = 0u;
             v99 = 0u;
-            v70 = [v37 regions];
-            v68 = [v70 countByEnumeratingWithState:&v98 objects:v111 count:16];
+            regions = [v37 regions];
+            v68 = [regions countByEnumeratingWithState:&v98 objects:v111 count:16];
             if (v68)
             {
               v38 = *v99;
@@ -5203,7 +5203,7 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
                 {
                   if (*v99 != v38)
                   {
-                    objc_enumerationMutation(v70);
+                    objc_enumerationMutation(regions);
                   }
 
                   v40 = *(*(&v98 + 1) + 8 * k);
@@ -5228,8 +5228,8 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
                         v45 = *(*(&v94 + 1) + 8 * m);
                         if (v45 != v37)
                         {
-                          v46 = [v45 regions];
-                          v47 = [v40 isIncludedInRegions:v46];
+                          regions2 = [v45 regions];
+                          v47 = [v40 isIncludedInRegions:regions2];
 
                           if (v47)
                           {
@@ -5252,7 +5252,7 @@ void __69__PKSearchResultsViewController__initiateSeeAllPresentationForQuery___b
                   v38 = v64;
                 }
 
-                v68 = [v70 countByEnumeratingWithState:&v98 objects:v111 count:16];
+                v68 = [regions countByEnumeratingWithState:&v98 objects:v111 count:16];
                 v38 = v64;
               }
 
@@ -5289,28 +5289,28 @@ LABEL_50:
     v85 = __Block_byref_object_copy__23;
     v86 = __Block_byref_object_dispose__23;
     v87 = 0;
-    v48 = [v62 dateToken];
+    dateToken = [v62 dateToken];
     v49 = objc_alloc_init(MEMORY[0x1E69B8658]);
-    if (v48)
+    if (dateToken)
     {
-      v50 = [v48 startDate];
+      startDate = [dateToken startDate];
       v51 = v89[5];
-      v89[5] = v50;
+      v89[5] = startDate;
 
-      v52 = [v48 endDate];
+      endDate = [dateToken endDate];
       v53 = v83[5];
-      v83[5] = v52;
+      v83[5] = endDate;
     }
 
     else
     {
-      v54 = [(PKTransactionSourceCollection *)v58->_transactionSourceCollection transactionSourceIdentifiers];
+      transactionSourceIdentifiers = [(PKTransactionSourceCollection *)selfCopy2->_transactionSourceCollection transactionSourceIdentifiers];
       v79[0] = MEMORY[0x1E69E9820];
       v79[1] = 3221225472;
       v79[2] = __97__PKSearchResultsViewController__seeAllHeaderGroupForQuery_groups_transactionResults_completion___block_invoke_2;
       v79[3] = &unk_1E8012D58;
-      v79[4] = v58;
-      v55 = v54;
+      v79[4] = selfCopy2;
+      v55 = transactionSourceIdentifiers;
       v80 = v55;
       v81 = &v88;
       [v49 addOperation:v79];
@@ -5318,14 +5318,14 @@ LABEL_50:
       v76[1] = 3221225472;
       v76[2] = __97__PKSearchResultsViewController__seeAllHeaderGroupForQuery_groups_transactionResults_completion___block_invoke_4;
       v76[3] = &unk_1E8012D58;
-      v76[4] = v58;
+      v76[4] = selfCopy2;
       v53 = v55;
       v77 = v53;
       v78 = &v82;
       [v49 addOperation:v76];
     }
 
-    v56 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
     v71[2] = __97__PKSearchResultsViewController__seeAllHeaderGroupForQuery_groups_transactionResults_completion___block_invoke_6;
@@ -5333,8 +5333,8 @@ LABEL_50:
     v72 = v63;
     v74 = &v88;
     v75 = &v82;
-    v73 = v61;
-    v57 = [v49 evaluateWithInput:v56 completion:v71];
+    v73 = completionCopy;
+    v57 = [v49 evaluateWithInput:null completion:v71];
 
     _Block_object_dispose(&v82, 8);
     _Block_object_dispose(&v88, 8);
@@ -5342,7 +5342,7 @@ LABEL_50:
 
   else
   {
-    v61[2](v61, v13);
+    completionCopy[2](completionCopy, v13);
   }
 }
 
@@ -5435,25 +5435,25 @@ uint64_t __97__PKSearchResultsViewController__seeAllHeaderGroupForQuery_groups_t
   return v2();
 }
 
-- (BOOL)_shouldShowPagedTransactionListForQuery:(id)a3
+- (BOOL)_shouldShowPagedTransactionListForQuery:(id)query
 {
-  v3 = a3;
-  v4 = [v3 text];
-  if (![v4 length] && !objc_msgSend(v3, "domain"))
+  queryCopy = query;
+  text = [queryCopy text];
+  if (![text length] && !objc_msgSend(queryCopy, "domain"))
   {
-    v7 = [v3 tokens];
-    if ([v7 count] == 1)
+    tokens = [queryCopy tokens];
+    if ([tokens count] == 1)
     {
-      v8 = [v3 type];
+      type = [queryCopy type];
 
-      if (v8 != 7)
+      if (type != 7)
       {
         v5 = 0;
         goto LABEL_5;
       }
 
-      v9 = [v3 tokens];
-      v4 = [v9 firstObject];
+      tokens2 = [queryCopy tokens];
+      text = [tokens2 firstObject];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -5461,8 +5461,8 @@ uint64_t __97__PKSearchResultsViewController__seeAllHeaderGroupForQuery_groups_t
         goto LABEL_3;
       }
 
-      v7 = [v4 typeName];
-      v5 = [v7 isEqual:@"Transactions"];
+      tokens = [text typeName];
+      v5 = [tokens isEqual:@"Transactions"];
     }
 
     else
@@ -5481,29 +5481,29 @@ LABEL_5:
   return v5;
 }
 
-- (id)_historyViewControllerForQuery:(id)a3 groups:(id)a4 headerGroup:(id)a5
+- (id)_historyViewControllerForQuery:(id)query groups:(id)groups headerGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v26 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v11 = [v26 associatedAccountServiceAccountIdentifier];
-  v12 = [(NSDictionary *)self->_accountsPerIdentifier objectForKey:v11];
-  v13 = [(NSDictionary *)self->_accountUserCollectionsPerIdentifier objectForKey:v11];
-  v25 = v11;
-  v14 = [(NSDictionary *)self->_physicalCardsPerIdentifier objectForKey:v11];
-  if ([v8 type] == 7)
+  queryCopy = query;
+  groupsCopy = groups;
+  groupCopy = group;
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  associatedAccountServiceAccountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+  v12 = [(NSDictionary *)self->_accountsPerIdentifier objectForKey:associatedAccountServiceAccountIdentifier];
+  v13 = [(NSDictionary *)self->_accountUserCollectionsPerIdentifier objectForKey:associatedAccountServiceAccountIdentifier];
+  v25 = associatedAccountServiceAccountIdentifier;
+  v14 = [(NSDictionary *)self->_physicalCardsPerIdentifier objectForKey:associatedAccountServiceAccountIdentifier];
+  if ([queryCopy type] == 7)
   {
-    if ([(PKSearchResultsViewController *)self _shouldShowPagedTransactionListForQuery:v8])
+    if ([(PKSearchResultsViewController *)self _shouldShowPagedTransactionListForQuery:queryCopy])
     {
       v15 = objc_alloc_init(PKPagedTransactionListDataSource);
       [(PKPagedTransactionListDataSource *)v15 loadTransactionsIfNeeded];
-      v16 = [[PKTransactionHistoryViewController alloc] initWithDataSource:v15 transactionGroup:v10 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:v12 accountUserCollection:v13 physicalCards:v14 fetcher:0 detailViewStyle:0];
+      v16 = [[PKTransactionHistoryViewController alloc] initWithDataSource:v15 transactionGroup:groupCopy transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:v12 accountUserCollection:v13 physicalCards:v14 fetcher:0 detailViewStyle:0];
     }
 
     else
     {
-      v16 = [[PKTransactionHistoryViewController alloc] initWithTransactionGroup:v10 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:v12 accountUserCollection:v13 physicalCards:v14 fetcher:0 detailViewStyle:0];
+      v16 = [[PKTransactionHistoryViewController alloc] initWithTransactionGroup:groupCopy transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:v12 accountUserCollection:v13 physicalCards:v14 fetcher:0 detailViewStyle:0];
     }
   }
 
@@ -5513,33 +5513,33 @@ LABEL_5:
     transactionGroupPresenter = self->_transactionGroupPresenter;
     v23 = v17;
     regionUpdater = self->_regionUpdater;
-    [v8 tokens];
-    v19 = v24 = v8;
-    v16 = [(PKTransactionHistoryViewController *)v23 initWithTransactionGroups:v9 headerGroup:v10 groupPresenter:transactionGroupPresenter regionUpdater:regionUpdater tokens:v19 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:v12 accountUserCollection:v13 physicalCards:v14];
+    [queryCopy tokens];
+    v19 = v24 = queryCopy;
+    v16 = [(PKTransactionHistoryViewController *)v23 initWithTransactionGroups:groupsCopy headerGroup:groupCopy groupPresenter:transactionGroupPresenter regionUpdater:regionUpdater tokens:v19 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection account:v12 accountUserCollection:v13 physicalCards:v14];
 
-    v8 = v24;
+    queryCopy = v24;
   }
 
-  v20 = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter avatarManager];
-  [(PKTransactionHistoryViewController *)v16 setContactAvatarManager:v20];
+  avatarManager = [(PKTransactionGroupItemPresenter *)self->_transactionGroupPresenter avatarManager];
+  [(PKTransactionHistoryViewController *)v16 setContactAvatarManager:avatarManager];
 
   return v16;
 }
 
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 groups:(id)a4 transactionResults:(id)a5
+- (void)_udpateSeeAllViewControllerForQuery:(id)query groups:(id)groups transactionResults:(id)results
 {
-  v8 = a3;
-  v9 = a4;
+  queryCopy = query;
+  groupsCopy = groups;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __95__PKSearchResultsViewController__udpateSeeAllViewControllerForQuery_groups_transactionResults___block_invoke;
   v12[3] = &unk_1E8019560;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(PKSearchResultsViewController *)self _seeAllHeaderGroupForQuery:v11 groups:v10 transactionResults:a5 completion:v12];
+  v13 = queryCopy;
+  v14 = groupsCopy;
+  v10 = groupsCopy;
+  v11 = queryCopy;
+  [(PKSearchResultsViewController *)self _seeAllHeaderGroupForQuery:v11 groups:v10 transactionResults:results completion:v12];
 }
 
 void __95__PKSearchResultsViewController__udpateSeeAllViewControllerForQuery_groups_transactionResults___block_invoke(uint64_t a1, void *a2)
@@ -5568,14 +5568,14 @@ void __95__PKSearchResultsViewController__udpateSeeAllViewControllerForQuery_gro
   }
 }
 
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 orders:(id)a4
+- (void)_udpateSeeAllViewControllerForQuery:(id)query orders:(id)orders
 {
-  v11 = a3;
+  queryCopy = query;
   seeAllOrderVC = self->_seeAllOrderVC;
   if (seeAllOrderVC)
   {
-    v7 = a4;
-    [(PKSearchSeeAllViewController *)seeAllOrderVC updateWithItems:v7];
+    ordersCopy = orders;
+    [(PKSearchSeeAllViewController *)seeAllOrderVC updateWithItems:ordersCopy];
 
     v8 = self->_seeAllOrderVC;
     self->_seeAllOrderVC = 0;
@@ -5583,23 +5583,23 @@ void __95__PKSearchResultsViewController__udpateSeeAllViewControllerForQuery_gro
 
   else
   {
-    v9 = a4;
-    v8 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:v9 itemPresenter:self->_orderPresenter searchQuery:v11];
+    ordersCopy2 = orders;
+    v8 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:ordersCopy2 itemPresenter:self->_orderPresenter searchQuery:queryCopy];
 
     [(PKSearchSeeAllViewController *)v8 setSeeAllViewControllerDelegate:self];
-    v10 = [(PKSearchResultsViewController *)self navigationController];
-    [v10 pushViewController:v8 animated:1];
+    navigationController = [(PKSearchResultsViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 passes:(id)a4
+- (void)_udpateSeeAllViewControllerForQuery:(id)query passes:(id)passes
 {
-  v11 = a3;
+  queryCopy = query;
   seeAllPassesVC = self->_seeAllPassesVC;
   if (seeAllPassesVC)
   {
-    v7 = a4;
-    [(PKSearchSeeAllViewController *)seeAllPassesVC updateWithItems:v7];
+    passesCopy = passes;
+    [(PKSearchSeeAllViewController *)seeAllPassesVC updateWithItems:passesCopy];
 
     v8 = self->_seeAllPassesVC;
     self->_seeAllPassesVC = 0;
@@ -5607,23 +5607,23 @@ void __95__PKSearchResultsViewController__udpateSeeAllViewControllerForQuery_gro
 
   else
   {
-    v9 = a4;
-    v8 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:v9 itemPresenter:self->_passPresenter searchQuery:v11];
+    passesCopy2 = passes;
+    v8 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:passesCopy2 itemPresenter:self->_passPresenter searchQuery:queryCopy];
 
     [(PKSearchSeeAllViewController *)v8 setSeeAllViewControllerDelegate:self];
-    v10 = [(PKSearchResultsViewController *)self navigationController];
-    [v10 pushViewController:v8 animated:1];
+    navigationController = [(PKSearchResultsViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 paymentSetupProducts:(id)a4
+- (void)_udpateSeeAllViewControllerForQuery:(id)query paymentSetupProducts:(id)products
 {
-  v12 = a3;
+  queryCopy = query;
   seeAllPaymentSetupProductsVC = self->_seeAllPaymentSetupProductsVC;
   if (seeAllPaymentSetupProductsVC)
   {
-    v7 = a4;
-    [(PKSearchSeeAllViewController *)seeAllPaymentSetupProductsVC updateWithItems:v7];
+    productsCopy = products;
+    [(PKSearchSeeAllViewController *)seeAllPaymentSetupProductsVC updateWithItems:productsCopy];
 
     v8 = self->_seeAllPaymentSetupProductsVC;
     self->_seeAllPaymentSetupProductsVC = 0;
@@ -5631,25 +5631,25 @@ void __95__PKSearchResultsViewController__udpateSeeAllViewControllerForQuery_gro
 
   else
   {
-    v9 = a4;
+    productsCopy2 = products;
     v8 = objc_alloc_init(PKDashboardPaymentSetupProductPresenter);
-    v10 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:v9 itemPresenter:v8 searchQuery:v12];
+    v10 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:productsCopy2 itemPresenter:v8 searchQuery:queryCopy];
 
     [(PKSearchSeeAllViewController *)v10 setSeeAllViewControllerDelegate:self];
     [(PKDashboardPaymentSetupProductPresenter *)v8 setDelegate:v10];
-    v11 = [(PKSearchResultsViewController *)self navigationController];
-    [v11 pushViewController:v10 animated:1];
+    navigationController = [(PKSearchResultsViewController *)self navigationController];
+    [navigationController pushViewController:v10 animated:1];
   }
 }
 
-- (void)_udpateSeeAllViewControllerForQuery:(id)a3 pendingPeerPaymentRequests:(id)a4
+- (void)_udpateSeeAllViewControllerForQuery:(id)query pendingPeerPaymentRequests:(id)requests
 {
-  v11 = a3;
+  queryCopy = query;
   seeAllPeerPaymentRequestsVC = self->_seeAllPeerPaymentRequestsVC;
   if (seeAllPeerPaymentRequestsVC)
   {
-    v7 = a4;
-    [(PKSearchSeeAllViewController *)seeAllPeerPaymentRequestsVC updateWithItems:v7];
+    requestsCopy = requests;
+    [(PKSearchSeeAllViewController *)seeAllPeerPaymentRequestsVC updateWithItems:requestsCopy];
 
     v8 = self->_seeAllPeerPaymentRequestsVC;
     self->_seeAllPeerPaymentRequestsVC = 0;
@@ -5657,26 +5657,26 @@ void __95__PKSearchResultsViewController__udpateSeeAllViewControllerForQuery_gro
 
   else
   {
-    v9 = a4;
-    v8 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:v9 itemPresenter:self->_pendingPeerPaymentRequestPresenter searchQuery:v11];
+    requestsCopy2 = requests;
+    v8 = [[PKSearchSeeAllViewController alloc] initWithSearchResultItems:requestsCopy2 itemPresenter:self->_pendingPeerPaymentRequestPresenter searchQuery:queryCopy];
 
     [(PKSearchSeeAllViewController *)v8 setSeeAllViewControllerDelegate:self];
-    v10 = [(PKSearchResultsViewController *)self navigationController];
-    [v10 pushViewController:v8 animated:1];
+    navigationController = [(PKSearchResultsViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 
-- (void)_updateAccountsWithCompletion:(id)a3
+- (void)_updateAccountsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accountService = self->_accountService;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PKSearchResultsViewController__updateAccountsWithCompletion___block_invoke;
   v7[3] = &unk_1E8019600;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(PKAccountService *)accountService accountsWithCompletion:v7];
 }
 
@@ -5929,16 +5929,16 @@ uint64_t __63__PKSearchResultsViewController__updateAccountsWithCompletion___blo
   return result;
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__PKSearchResultsViewController_didUpdateFamilyMembers___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = membersCopy;
+  selfCopy = self;
+  v5 = membersCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -5953,26 +5953,26 @@ void __56__PKSearchResultsViewController_didUpdateFamilyMembers___block_invoke(u
   }
 }
 
-- (void)_presentPassWithUniqueIdentifier:(id)a3
+- (void)_presentPassWithUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained searchResultsViewController:self didSelectPassWithUniqueIdentifier:v5];
+    [WeakRetained searchResultsViewController:self didSelectPassWithUniqueIdentifier:identifierCopy];
   }
 }
 
-- (void)_sharePass:(id)a3
+- (void)_sharePass:(id)pass
 {
-  v4 = a3;
-  if ([v4 passType] == 1)
+  passCopy = pass;
+  if ([passCopy passType] == 1)
   {
-    v5 = [v4 secureElementPass];
+    secureElementPass = [passCopy secureElementPass];
     v6 = objc_alloc(MEMORY[0x1E69B9268]);
-    v7 = [MEMORY[0x1E69B8EF8] sharedService];
-    v8 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-    v9 = [v6 initWithPass:v5 webService:v7 paymentServiceProvider:v8 queue:MEMORY[0x1E69E96A0]];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    v9 = [v6 initWithPass:secureElementPass webService:mEMORY[0x1E69B8EF8] paymentServiceProvider:defaultDataProvider queue:MEMORY[0x1E69E96A0]];
 
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x1E69E9820];
@@ -5982,7 +5982,7 @@ void __56__PKSearchResultsViewController_didUpdateFamilyMembers___block_invoke(u
     v10 = v9;
     v15 = v10;
     objc_copyWeak(&v17, &location);
-    v11 = v5;
+    v11 = secureElementPass;
     v16 = v11;
     [v10 updateEntitlementsWithCompletion:v14];
 
@@ -5992,15 +5992,15 @@ void __56__PKSearchResultsViewController_didUpdateFamilyMembers___block_invoke(u
 
   else
   {
-    v11 = [[PKLinkedApplication alloc] initWithPass:v4];
-    v10 = [MEMORY[0x1E69CD9F8] pkui_activityControllerForPass:v4 passView:0 passLinkedApplication:v11];
+    v11 = [[PKLinkedApplication alloc] initWithPass:passCopy];
+    v10 = [MEMORY[0x1E69CD9F8] pkui_activityControllerForPass:passCopy passView:0 passLinkedApplication:v11];
     if (v10)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __44__PKSearchResultsViewController__sharePass___block_invoke_3;
       v12[3] = &unk_1E8012528;
-      v13 = v4;
+      v13 = passCopy;
       [v10 setCompletionWithItemsHandler:v12];
       [(PKSearchResultsViewController *)self presentViewController:v10 animated:1 completion:0];
     }
@@ -6068,28 +6068,28 @@ void __44__PKSearchResultsViewController__sharePass___block_invoke_3(uint64_t a1
   }
 }
 
-- (void)dashboardPaymentSetupProductPresenter:(id)a3 actionButtonPressedOnCellAtIndexPath:(id)a4
+- (void)dashboardPaymentSetupProductPresenter:(id)presenter actionButtonPressedOnCellAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  presenterCopy = presenter;
+  pathCopy = path;
   v8 = (self->_presentationCounter + 1);
   self->_presentationCounter = v8;
   objc_initWeak(&location, self);
-  v9 = [v7 row];
+  v9 = [pathCopy row];
   if (v9 < [(NSArray *)self->_paymentSetupProducts count])
   {
     v10 = [(NSArray *)self->_paymentSetupProducts objectAtIndex:v9];
     if (v10)
     {
-      v11 = [(PKSearchResultsViewController *)self collectionView];
-      v12 = [(PKSearchResultsViewController *)self navigationController];
+      collectionView = [(PKSearchResultsViewController *)self collectionView];
+      navigationController = [(PKSearchResultsViewController *)self navigationController];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __108__PKSearchResultsViewController_dashboardPaymentSetupProductPresenter_actionButtonPressedOnCellAtIndexPath___block_invoke;
       v13[3] = &unk_1E8013C18;
       objc_copyWeak(v14, &location);
       v14[1] = v8;
-      [v6 performActionForItem:v10 inCollectionView:v11 atIndexPath:v7 navigationController:v12 canPresent:v13];
+      [presenterCopy performActionForItem:v10 inCollectionView:collectionView atIndexPath:pathCopy navigationController:navigationController canPresent:v13];
 
       objc_destroyWeak(v14);
     }
@@ -6114,17 +6114,17 @@ BOOL __108__PKSearchResultsViewController_dashboardPaymentSetupProductPresenter_
   return v3;
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v3 = [(PKSearchResultsViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKSearchResultsViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_saveSearchHistoryString:(id)a3
+- (void)_saveSearchHistoryString:(id)string
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v5 = PKSearchSelectedItemTitles();
     v6 = [v5 mutableCopy];
@@ -6141,13 +6141,13 @@ BOOL __108__PKSearchResultsViewController_dashboardPaymentSetupProductPresenter_
 
     v9 = v8;
 
-    v10 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-    v11 = [v10 uniqueID];
-    v12 = v11;
+    paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+    uniqueID = [paymentPass uniqueID];
+    v12 = uniqueID;
     v13 = @"SearchHistoryWalletDomain";
-    if (v11)
+    if (uniqueID)
     {
-      v13 = v11;
+      v13 = uniqueID;
     }
 
     v14 = v13;
@@ -6156,7 +6156,7 @@ BOOL __108__PKSearchResultsViewController_dashboardPaymentSetupProductPresenter_
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [v16 addObject:v4];
+      [v16 addObject:stringCopy];
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
@@ -6177,7 +6177,7 @@ BOOL __108__PKSearchResultsViewController_dashboardPaymentSetupProductPresenter_
             }
 
             v22 = *(*(&v24 + 1) + 8 * i);
-            if (([v4 isEqualToString:{v22, v24}] & 1) == 0)
+            if (([stringCopy isEqualToString:{v22, v24}] & 1) == 0)
             {
               [v16 safelyAddObject:v22];
               goto LABEL_20;
@@ -6199,7 +6199,7 @@ LABEL_20:
 
     else
     {
-      v29[0] = v4;
+      v29[0] = stringCopy;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
     }
 
@@ -6213,13 +6213,13 @@ LABEL_20:
 - (id)_fetchSearchHistoryResults
 {
   v3 = PKSearchSelectedItemTitles();
-  v4 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v5 = [v4 uniqueID];
-  v6 = v5;
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  uniqueID = [paymentPass uniqueID];
+  v6 = uniqueID;
   v7 = @"SearchHistoryWalletDomain";
-  if (v5)
+  if (uniqueID)
   {
-    v7 = v5;
+    v7 = uniqueID;
   }
 
   v8 = v7;
@@ -6299,9 +6299,9 @@ id __59__PKSearchResultsViewController__fetchSearchHistoryResults__block_invoke(
   }
 }
 
-- (void)_pendingRequestActionButtonPressedWithRequest:(id)a3 forPresentationCounter:(unint64_t)a4
+- (void)_pendingRequestActionButtonPressedWithRequest:(id)request forPresentationCounter:(unint64_t)counter
 {
-  v6 = a3;
+  requestCopy = request;
   if (self->_hasActivePeerPaymentRequestAction)
   {
     v7 = PKLogFacilityTypeGetObject();
@@ -6315,30 +6315,30 @@ id __59__PKSearchResultsViewController__fetchSearchHistoryResults__block_invoke(
   else
   {
     [(PKSearchResultsViewController *)self _setHasActivePeerPaymentRequestAction:1];
-    v8 = [(PKSearchResultsViewController *)self _searchController];
-    v9 = [v8 searchBar];
-    [v9 resignFirstResponder];
+    _searchController = [(PKSearchResultsViewController *)self _searchController];
+    searchBar = [_searchController searchBar];
+    [searchBar resignFirstResponder];
 
     v10 = objc_alloc(MEMORY[0x1E69B8F28]);
-    v11 = [MEMORY[0x1E69B9020] sharedService];
-    v7 = [v10 initWithPeerPaymentWebService:v11];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    v7 = [v10 initWithPeerPaymentWebService:mEMORY[0x1E69B9020]];
 
     v12 = [PKPeerPaymentRemoteMessagesComposer alloc];
-    v13 = [(PKSearchResultsViewController *)self navigationController];
-    v14 = [(PKPeerPaymentRemoteMessagesComposer *)v12 initWithPeerPaymentController:v7 presentingViewController:v13 actionType:1 sourceType:1];
+    navigationController = [(PKSearchResultsViewController *)self navigationController];
+    v14 = [(PKPeerPaymentRemoteMessagesComposer *)v12 initWithPeerPaymentController:v7 presentingViewController:navigationController actionType:1 sourceType:1];
 
     objc_initWeak(buf, self);
-    v15 = [v6 requesterAddress];
+    requesterAddress = [requestCopy requesterAddress];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __102__PKSearchResultsViewController__pendingRequestActionButtonPressedWithRequest_forPresentationCounter___block_invoke;
     v17[3] = &unk_1E8019670;
     objc_copyWeak(v20, buf);
-    v20[1] = a4;
-    v18 = v6;
+    v20[1] = counter;
+    v18 = requestCopy;
     v16 = v14;
     v19 = v16;
-    [(PKPeerPaymentRemoteMessagesComposer *)v16 validateRecipientWithAddress:v15 completion:v17];
+    [(PKPeerPaymentRemoteMessagesComposer *)v16 validateRecipientWithAddress:requesterAddress completion:v17];
 
     objc_destroyWeak(v20);
     objc_destroyWeak(buf);
@@ -6396,35 +6396,35 @@ void __102__PKSearchResultsViewController__pendingRequestActionButtonPressedWith
   }
 }
 
-- (void)_setHasActivePeerPaymentRequestAction:(BOOL)a3
+- (void)_setHasActivePeerPaymentRequestAction:(BOOL)action
 {
-  if (self->_hasActivePeerPaymentRequestAction != a3)
+  if (self->_hasActivePeerPaymentRequestAction != action)
   {
     v11 = v3;
     v12 = v4;
-    self->_hasActivePeerPaymentRequestAction = a3;
+    self->_hasActivePeerPaymentRequestAction = action;
     pendingPeerPaymentRequests = self->_pendingPeerPaymentRequests;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __71__PKSearchResultsViewController__setHasActivePeerPaymentRequestAction___block_invoke;
     v9[3] = &__block_descriptor_33_e39_v32__0__PKDashboardBalanceItem_8Q16_B24l;
-    v10 = a3;
+    actionCopy = action;
     [(NSArray *)pendingPeerPaymentRequests enumerateObjectsUsingBlock:v9];
     v7 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndex:2];
-    v8 = [(PKSearchResultsViewController *)self collectionView];
-    [v8 reloadSections:v7];
+    collectionView = [(PKSearchResultsViewController *)self collectionView];
+    [collectionView reloadSections:v7];
   }
 }
 
-- (id)_searchTokenForTransactionSourceCollection:(id)a3
+- (id)_searchTokenForTransactionSourceCollection:(id)collection
 {
-  v4 = [a3 paymentPass];
-  if (v4)
+  paymentPass = [collection paymentPass];
+  if (paymentPass)
   {
     v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"creditcard"];
     v6 = MEMORY[0x1E69DCF30];
-    v7 = [v4 localizedDescription];
-    v8 = [v6 tokenWithIcon:v5 text:v7];
+    localizedDescription = [paymentPass localizedDescription];
+    v8 = [v6 tokenWithIcon:v5 text:localizedDescription];
 
     [v8 setRepresentedObject:self->_transactionSourceCollection];
   }
@@ -6437,14 +6437,14 @@ void __102__PKSearchResultsViewController__pendingRequestActionButtonPressedWith
   return v8;
 }
 
-- (id)_balanceItemsFromPendingPeerPaymentRquests:(id)a3
+- (id)_balanceItemsFromPendingPeerPaymentRquests:(id)rquests
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __76__PKSearchResultsViewController__balanceItemsFromPendingPeerPaymentRquests___block_invoke;
   v5[3] = &unk_1E80196B8;
   v5[4] = self;
-  v3 = [a3 pk_arrayBySafelyApplyingBlock:v5];
+  v3 = [rquests pk_arrayBySafelyApplyingBlock:v5];
 
   return v3;
 }
@@ -6500,15 +6500,15 @@ void __76__PKSearchResultsViewController__balanceItemsFromPendingPeerPaymentRque
   [WeakRetained _pendingRequestActionButtonPressedWithRequest:*(a1 + 32) forPresentationCounter:WeakRetained[180]];
 }
 
-- (id)_passItemsFromPassResults:(id)a3 isInExpiredSection:(BOOL)a4
+- (id)_passItemsFromPassResults:(id)results isInExpiredSection:(BOOL)section
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __78__PKSearchResultsViewController__passItemsFromPassResults_isInExpiredSection___block_invoke;
   v6[3] = &unk_1E80196E0;
   v6[4] = self;
-  v7 = a4;
-  v4 = [a3 pk_arrayBySafelyApplyingBlock:v6];
+  sectionCopy = section;
+  v4 = [results pk_arrayBySafelyApplyingBlock:v6];
 
   return v4;
 }

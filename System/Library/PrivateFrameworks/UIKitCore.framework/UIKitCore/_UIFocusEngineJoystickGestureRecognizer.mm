@@ -1,22 +1,22 @@
 @interface _UIFocusEngineJoystickGestureRecognizer
-- (BOOL)_shouldReceivePress:(id)a3;
+- (BOOL)_shouldReceivePress:(id)press;
 - (CGPoint)previousStickPosition;
 - (CGPoint)stickPosition;
-- (_UIFocusEngineJoystickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_calculateStickPositionFromPresses:(id)a3 withEvent:(id)a4;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (_UIFocusEngineJoystickGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_calculateStickPositionFromPresses:(id)presses withEvent:(id)event;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIFocusEngineJoystickGestureRecognizer
 
-- (_UIFocusEngineJoystickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIFocusEngineJoystickGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v6.receiver = self;
   v6.super_class = _UIFocusEngineJoystickGestureRecognizer;
-  result = [(UIGestureRecognizer *)&v6 initWithTarget:a3 action:a4];
+  result = [(UIGestureRecognizer *)&v6 initWithTarget:target action:action];
   if (result)
   {
     v5 = *MEMORY[0x1E695EFF8];
@@ -27,61 +27,61 @@
   return result;
 }
 
-- (BOOL)_shouldReceivePress:(id)a3
+- (BOOL)_shouldReceivePress:(id)press
 {
-  v3 = a3;
-  if ([v3 _source] == 2)
+  pressCopy = press;
+  if ([pressCopy _source] == 2)
   {
-    v4 = [v3 _isAnalogStickPress];
+    _isAnalogStickPress = [pressCopy _isAnalogStickPress];
   }
 
   else
   {
-    v4 = 0;
+    _isAnalogStickPress = 0;
   }
 
-  return v4;
+  return _isAnalogStickPress;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v5 = a4;
-  v6 = [v5 allPresses];
-  [(_UIFocusEngineJoystickGestureRecognizer *)self _calculateStickPositionFromPresses:v6 withEvent:v5];
+  eventCopy = event;
+  allPresses = [eventCopy allPresses];
+  [(_UIFocusEngineJoystickGestureRecognizer *)self _calculateStickPositionFromPresses:allPresses withEvent:eventCopy];
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v5 = a4;
-  v6 = [v5 allPresses];
-  [(_UIFocusEngineJoystickGestureRecognizer *)self _calculateStickPositionFromPresses:v6 withEvent:v5];
+  eventCopy = event;
+  allPresses = [eventCopy allPresses];
+  [(_UIFocusEngineJoystickGestureRecognizer *)self _calculateStickPositionFromPresses:allPresses withEvent:eventCopy];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a4;
-  v6 = [v5 allPresses];
-  [(_UIFocusEngineJoystickGestureRecognizer *)self _calculateStickPositionFromPresses:v6 withEvent:v5];
+  eventCopy = event;
+  allPresses = [eventCopy allPresses];
+  [(_UIFocusEngineJoystickGestureRecognizer *)self _calculateStickPositionFromPresses:allPresses withEvent:eventCopy];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a4;
-  v6 = [v5 allPresses];
-  [(_UIFocusEngineJoystickGestureRecognizer *)self _calculateStickPositionFromPresses:v6 withEvent:v5];
+  eventCopy = event;
+  allPresses = [eventCopy allPresses];
+  [(_UIFocusEngineJoystickGestureRecognizer *)self _calculateStickPositionFromPresses:allPresses withEvent:eventCopy];
 }
 
-- (void)_calculateStickPositionFromPresses:(id)a3 withEvent:(id)a4
+- (void)_calculateStickPositionFromPresses:(id)presses withEvent:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pressesCopy = presses;
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v8 = [pressesCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   v9 = v7;
   v10 = v6;
   if (v8)
@@ -96,7 +96,7 @@
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pressesCopy);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
@@ -128,7 +128,7 @@
         }
       }
 
-      v11 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [pressesCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);

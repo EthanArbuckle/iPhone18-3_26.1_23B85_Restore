@@ -1,9 +1,9 @@
 @interface CRLCanvasDotGridBackground
-- (CGPoint)alignmentPointForPoint:(CGPoint)a3;
+- (CGPoint)alignmentPointForPoint:(CGPoint)point;
 - (Class)layerClass;
 - (Class)viewClass;
-- (_TtC8Freeform26CRLCanvasDotGridBackground)initWithICC:(id)a3;
-- (void)snapDistanceForViewScale:(double)a1;
+- (_TtC8Freeform26CRLCanvasDotGridBackground)initWithICC:(id)c;
+- (void)snapDistanceForViewScale:(double)scale;
 @end
 
 @implementation CRLCanvasDotGridBackground
@@ -22,11 +22,11 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (CGPoint)alignmentPointForPoint:(CGPoint)a3
+- (CGPoint)alignmentPointForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   sub_100C683C8(x);
   v7 = x + v6;
   sub_100C683C8(y);
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (_TtC8Freeform26CRLCanvasDotGridBackground)initWithICC:(id)a3
+- (_TtC8Freeform26CRLCanvasDotGridBackground)initWithICC:(id)c
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakAssign();
@@ -48,12 +48,12 @@
   return [(CRLCanvasBackground *)&v5 init];
 }
 
-- (void)snapDistanceForViewScale:(double)a1
+- (void)snapDistanceForViewScale:(double)scale
 {
-  if (a1 <= 0.0)
+  if (scale <= 0.0)
   {
     v1 = objc_opt_self();
-    v2 = [v1 _atomicIncrementAssertCount];
+    _atomicIncrementAssertCount = [v1 _atomicIncrementAssertCount];
     v24 = [objc_allocWithZone(NSString) init];
     sub_100604538(_swiftEmptyArrayStorage, &v24);
     StaticString.description.getter();
@@ -62,7 +62,7 @@
     StaticString.description.getter();
     v4 = String._bridgeToObjectiveC()();
 
-    v5 = [v4 lastPathComponent];
+    lastPathComponent = [v4 lastPathComponent];
 
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -78,7 +78,7 @@
     *(inited + 16) = xmmword_10146CA70;
     *(inited + 56) = &type metadata for Int32;
     *(inited + 64) = &protocol witness table for Int32;
-    *(inited + 32) = v2;
+    *(inited + 32) = _atomicIncrementAssertCount;
     v11 = sub_1005CF000();
     *(inited + 96) = v11;
     v12 = sub_1005CF04C();

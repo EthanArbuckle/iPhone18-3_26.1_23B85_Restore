@@ -1,44 +1,44 @@
 @interface NPUtilities
-+ (BOOL)compareAddressEndpoints:(id)a3 endpoint2:(id)a4 addressOnly:(BOOL)a5;
-+ (BOOL)hasPacketDrop:(id)a3;
-+ (BOOL)printDictionaryAsJson:(id)a3 debugName:(id)a4;
-+ (BOOL)rollDiceWithSuccessRatio:(id)a3;
-+ (__SecKey)copyKeyFromKeychainWithIdentifier:(id)a3;
-+ (id)connectionInfoToDict:(id)a3 dictionary:(id)a4;
-+ (id)copyBase64HeaderValueFromData:(id)a3;
-+ (id)copyCurrentNetworkCharacteristicsForPath:(id)a3;
-+ (id)copyDataFromKeychainWithIdentifier:(id)a3 accountName:(id)a4;
-+ (id)copyDataHexString:(id)a3;
-+ (id)copyItemIdentifiersFromKeychainWithAccountName:(id)a3;
-+ (id)copyNetworkDescription:(id)a3;
++ (BOOL)compareAddressEndpoints:(id)endpoints endpoint2:(id)endpoint2 addressOnly:(BOOL)only;
++ (BOOL)hasPacketDrop:(id)drop;
++ (BOOL)printDictionaryAsJson:(id)json debugName:(id)name;
++ (BOOL)rollDiceWithSuccessRatio:(id)ratio;
++ (__SecKey)copyKeyFromKeychainWithIdentifier:(id)identifier;
++ (id)connectionInfoToDict:(id)dict dictionary:(id)dictionary;
++ (id)copyBase64HeaderValueFromData:(id)data;
++ (id)copyCurrentNetworkCharacteristicsForPath:(id)path;
++ (id)copyDataFromKeychainWithIdentifier:(id)identifier accountName:(id)name;
++ (id)copyDataHexString:(id)string;
++ (id)copyItemIdentifiersFromKeychainWithAccountName:(id)name;
++ (id)copyNetworkDescription:(id)description;
 + (id)copyTrueClientIPAddressFromPreferences;
-+ (id)copyUUIDsForSigningIdentifier:(id)a3 executablePath:(id)a4;
-+ (id)createAddressStringFromBuffer:(unint64_t)a3 addressLen:(uint64_t)a4 family:;
-+ (id)createMaskedIPv4Address:(id)a3 prefix:(unint64_t)a4;
-+ (id)createMaskedIPv6Address:(id)a3 prefix:(unint64_t)a4;
-+ (id)endpointFromString:(id)a3 defaultPortString:(id)a4;
-+ (id)getInterfaceName:(int64_t)a3;
-+ (id)getInterfaceTypeString:(int64_t)a3;
-+ (id)hexDumpBytes:(const void *)a3 length:(unint64_t)a4;
-+ (id)machoUUIDFromPID:(int)a3;
-+ (id)mergeHTTPHeaders:(id)a3 headerOverrides:(id)a4;
-+ (id)parseXHost:(id)a3;
++ (id)copyUUIDsForSigningIdentifier:(id)identifier executablePath:(id)path;
++ (id)createAddressStringFromBuffer:(unint64_t)buffer addressLen:(uint64_t)len family:;
++ (id)createMaskedIPv4Address:(id)address prefix:(unint64_t)prefix;
++ (id)createMaskedIPv6Address:(id)address prefix:(unint64_t)prefix;
++ (id)endpointFromString:(id)string defaultPortString:(id)portString;
++ (id)getInterfaceName:(int64_t)name;
++ (id)getInterfaceTypeString:(int64_t)string;
++ (id)hexDumpBytes:(const void *)bytes length:(unint64_t)length;
++ (id)machoUUIDFromPID:(int)d;
++ (id)mergeHTTPHeaders:(id)headers headerOverrides:(id)overrides;
++ (id)parseXHost:(id)host;
 + (id)sharedEmphemeralSession;
-+ (id)stripWhitespace:(id)a3;
-+ (id)timestampIdentifierToName:(unint64_t)a3;
-+ (int64_t)certificateDateIsValid:(__SecCertificate *)a3;
-+ (int64_t)interfaceTypeOfInterface:(id)a3;
-+ (int64_t)interfaceTypeOfNWInterface:(id)a3;
-+ (int64_t)protocolTypeFromPath:(id)a3 endpoint:(id)a4;
-+ (unint64_t)parseXRTT:(id)a3;
-+ (unint64_t)totalDataInKeychainWithIdentifier:(id)a3;
-+ (void)parseXTimeout:(id)a3 hardTTLInSeconds:(double *)a4;
-+ (void)postNotification:(id)a3 value:(unint64_t)a4;
-+ (void)removeDataFromKeychainWithIdentifier:(id)a3;
-+ (void)removeDataFromKeychainWithIdentifier:(id)a3 accountName:(id)a4;
-+ (void)removeKeyFromKeychainWithIdentifier:(id)a3;
-+ (void)saveDataToKeychain:(id)a3 withIdentifier:(id)a4 accountName:(id)a5;
-+ (void)saveKeyToKeychain:(__SecKey *)a3 withIdentifier:(id)a4;
++ (id)stripWhitespace:(id)whitespace;
++ (id)timestampIdentifierToName:(unint64_t)name;
++ (int64_t)certificateDateIsValid:(__SecCertificate *)valid;
++ (int64_t)interfaceTypeOfInterface:(id)interface;
++ (int64_t)interfaceTypeOfNWInterface:(id)interface;
++ (int64_t)protocolTypeFromPath:(id)path endpoint:(id)endpoint;
++ (unint64_t)parseXRTT:(id)t;
++ (unint64_t)totalDataInKeychainWithIdentifier:(id)identifier;
++ (void)parseXTimeout:(id)timeout hardTTLInSeconds:(double *)seconds;
++ (void)postNotification:(id)notification value:(unint64_t)value;
++ (void)removeDataFromKeychainWithIdentifier:(id)identifier;
++ (void)removeDataFromKeychainWithIdentifier:(id)identifier accountName:(id)name;
++ (void)removeKeyFromKeychainWithIdentifier:(id)identifier;
++ (void)saveDataToKeychain:(id)keychain withIdentifier:(id)identifier accountName:(id)name;
++ (void)saveKeyToKeychain:(__SecKey *)keychain withIdentifier:(id)identifier;
 @end
 
 @implementation NPUtilities
@@ -64,22 +64,22 @@ void __38__NPUtilities_sharedEmphemeralSession__block_invoke()
   _MergedGlobals_24 = v1;
 }
 
-+ (id)copyDataFromKeychainWithIdentifier:(id)a3 accountName:(id)a4
++ (id)copyDataFromKeychainWithIdentifier:(id)identifier accountName:(id)name
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v7 = *MEMORY[0x1E697B008];
   v8 = *MEMORY[0x1E697AE88];
   v22[0] = *MEMORY[0x1E697AFF8];
   v22[1] = v8;
   v23[0] = v7;
-  v23[1] = v5;
+  v23[1] = identifierCopy;
   v9 = *MEMORY[0x1E697B260];
   v22[2] = *MEMORY[0x1E697AC30];
   v22[3] = v9;
   v10 = *MEMORY[0x1E697B270];
-  v23[2] = v6;
+  v23[2] = nameCopy;
   v23[3] = v10;
   v22[4] = *MEMORY[0x1E697B318];
   v23[4] = MEMORY[0x1E695E118];
@@ -94,7 +94,7 @@ void __38__NPUtilities_sharedEmphemeralSession__block_invoke()
       *buf = 67109378;
       v19 = v12;
       v20 = 2112;
-      v21 = v5;
+      v21 = identifierCopy;
       _os_log_debug_impl(&dword_1AE7E2000, v14, OS_LOG_TYPE_DEBUG, "SecItemCopyMatching returned %d for %@", buf, 0x12u);
     }
 
@@ -110,33 +110,33 @@ void __38__NPUtilities_sharedEmphemeralSession__block_invoke()
   return v13;
 }
 
-+ (void)saveDataToKeychain:(id)a3 withIdentifier:(id)a4 accountName:(id)a5
++ (void)saveDataToKeychain:(id)keychain withIdentifier:(id)identifier accountName:(id)name
 {
   v32[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v9 = *MEMORY[0x1E697AFF8];
   v10 = *MEMORY[0x1E697B008];
   v11 = *MEMORY[0x1E697AE88];
   v30[0] = *MEMORY[0x1E697AFF8];
   v30[1] = v11;
   v32[0] = v10;
-  v32[1] = v7;
+  v32[1] = identifierCopy;
   v31 = *MEMORY[0x1E697AC30];
   v12 = v31;
-  v32[2] = v8;
+  v32[2] = nameCopy;
   v13 = MEMORY[0x1E695DF20];
-  v14 = a3;
+  keychainCopy = keychain;
   v15 = [v13 dictionaryWithObjects:v32 forKeys:v30 count:3];
   v28[0] = v11;
   v28[1] = v12;
-  v29[0] = v7;
-  v29[1] = v8;
+  v29[0] = identifierCopy;
+  v29[1] = nameCopy;
   v16 = *MEMORY[0x1E697ABD8];
   v28[2] = *MEMORY[0x1E697B3C0];
   v28[3] = v16;
   v17 = *MEMORY[0x1E697ABE8];
-  v29[2] = v14;
+  v29[2] = keychainCopy;
   v29[3] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:4];
 
@@ -154,28 +154,28 @@ void __38__NPUtilities_sharedEmphemeralSession__block_invoke()
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v25 = v7;
+      v25 = identifierCopy;
       v26 = 1024;
       v27 = v19;
       _os_log_error_impl(&dword_1AE7E2000, v21, OS_LOG_TYPE_ERROR, "Failed to save %@ to the keychain: %d", buf, 0x12u);
     }
 
-    [a1 removeDataFromKeychainWithIdentifier:v7 accountName:v8];
+    [self removeDataFromKeychainWithIdentifier:identifierCopy accountName:nameCopy];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (unint64_t)totalDataInKeychainWithIdentifier:(id)a3
++ (unint64_t)totalDataInKeychainWithIdentifier:(id)identifier
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = *MEMORY[0x1E697B008];
   v5 = *MEMORY[0x1E697AE88];
   v26[0] = *MEMORY[0x1E697AFF8];
   v26[1] = v5;
   v27[0] = v4;
-  v27[1] = v3;
+  v27[1] = identifierCopy;
   v6 = *MEMORY[0x1E697B268];
   v7 = *MEMORY[0x1E697B318];
   v26[2] = *MEMORY[0x1E697B260];
@@ -253,16 +253,16 @@ LABEL_18:
   return v11;
 }
 
-+ (void)removeDataFromKeychainWithIdentifier:(id)a3
++ (void)removeDataFromKeychainWithIdentifier:(id)identifier
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = *MEMORY[0x1E697B008];
   v5 = *MEMORY[0x1E697AE88];
   v16[0] = *MEMORY[0x1E697AFF8];
   v16[1] = v5;
   v17[0] = v4;
-  v17[1] = v3;
+  v17[1] = identifierCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v7 = SecItemDelete(v6);
   if (v7 != -25300 && v7 != 0)
@@ -272,7 +272,7 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v3;
+      v13 = identifierCopy;
       v14 = 1024;
       v15 = v9;
       _os_log_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEFAULT, "Failed to delete %@ from the keychain: %d", &v12, 0x12u);
@@ -282,20 +282,20 @@ LABEL_18:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeDataFromKeychainWithIdentifier:(id)a3 accountName:(id)a4
++ (void)removeDataFromKeychainWithIdentifier:(id)identifier accountName:(id)name
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = *MEMORY[0x1E697B008];
   v7 = *MEMORY[0x1E697AE88];
   v20[0] = *MEMORY[0x1E697AFF8];
   v20[1] = v7;
   v21[0] = v6;
-  v21[1] = v5;
+  v21[1] = identifierCopy;
   v20[2] = *MEMORY[0x1E697AC30];
-  v21[2] = a4;
+  v21[2] = name;
   v8 = MEMORY[0x1E695DF20];
-  v9 = a4;
+  nameCopy = name;
   v10 = [v8 dictionaryWithObjects:v21 forKeys:v20 count:3];
 
   v11 = SecItemDelete(v10);
@@ -306,7 +306,7 @@ LABEL_18:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v5;
+      v17 = identifierCopy;
       v18 = 1024;
       v19 = v13;
       _os_log_impl(&dword_1AE7E2000, v14, OS_LOG_TYPE_DEFAULT, "Failed to delete %@ from the keychain: %d", &v16, 0x12u);
@@ -316,16 +316,16 @@ LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (__SecKey)copyKeyFromKeychainWithIdentifier:(id)a3
++ (__SecKey)copyKeyFromKeychainWithIdentifier:(id)identifier
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = *MEMORY[0x1E697B020];
   v5 = *MEMORY[0x1E697AC40];
   v20[0] = *MEMORY[0x1E697AFF8];
   v20[1] = v5;
   v21[0] = v4;
-  v21[1] = v3;
+  v21[1] = identifierCopy;
   v6 = *MEMORY[0x1E697B270];
   v7 = *MEMORY[0x1E697B328];
   v20[2] = *MEMORY[0x1E697B260];
@@ -343,7 +343,7 @@ LABEL_18:
       *buf = 67109378;
       v17 = v9;
       v18 = 2112;
-      v19 = v3;
+      v19 = identifierCopy;
       _os_log_debug_impl(&dword_1AE7E2000, v12, OS_LOG_TYPE_DEBUG, "SecItemCopyMatching returned %d for %@", buf, 0x12u);
     }
 
@@ -364,10 +364,10 @@ LABEL_18:
   return v11;
 }
 
-+ (void)saveKeyToKeychain:(__SecKey *)a3 withIdentifier:(id)a4
++ (void)saveKeyToKeychain:(__SecKey *)keychain withIdentifier:(id)identifier
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = *MEMORY[0x1E697B020];
   v7 = *MEMORY[0x1E697AC40];
   v19[0] = *MEMORY[0x1E697AFF8];
@@ -376,9 +376,9 @@ LABEL_18:
   v19[2] = *MEMORY[0x1E697B3D0];
   v19[3] = v8;
   v20[0] = v6;
-  v20[1] = v5;
+  v20[1] = identifierCopy;
   v9 = *MEMORY[0x1E697ABE8];
-  v20[2] = a3;
+  v20[2] = keychain;
   v20[3] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
   v11 = SecItemAdd(v10, 0);
@@ -389,7 +389,7 @@ LABEL_18:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412546;
-      v16 = v5;
+      v16 = identifierCopy;
       v17 = 1024;
       v18 = v12;
       _os_log_error_impl(&dword_1AE7E2000, v13, OS_LOG_TYPE_ERROR, "Failed to save key %@ to the keychain: %d", &v15, 0x12u);
@@ -399,16 +399,16 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeKeyFromKeychainWithIdentifier:(id)a3
++ (void)removeKeyFromKeychainWithIdentifier:(id)identifier
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = *MEMORY[0x1E697B020];
   v5 = *MEMORY[0x1E697AC40];
   v16[0] = *MEMORY[0x1E697AFF8];
   v16[1] = v5;
   v17[0] = v4;
-  v17[1] = v3;
+  v17[1] = identifierCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v7 = SecItemDelete(v6);
   if (v7 != -25300 && v7 != 0)
@@ -418,7 +418,7 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v3;
+      v13 = identifierCopy;
       v14 = 1024;
       v15 = v9;
       _os_log_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEFAULT, "Failed to delete key %@ from the keychain: %d", &v12, 0x12u);
@@ -428,16 +428,16 @@ LABEL_18:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)copyItemIdentifiersFromKeychainWithAccountName:(id)a3
++ (id)copyItemIdentifiersFromKeychainWithAccountName:(id)name
 {
   v34[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nameCopy = name;
   v4 = *MEMORY[0x1E697B008];
   v5 = *MEMORY[0x1E697AC30];
   v33[0] = *MEMORY[0x1E697AFF8];
   v33[1] = v5;
   v34[0] = v4;
-  v34[1] = v3;
+  v34[1] = nameCopy;
   v6 = *MEMORY[0x1E697B268];
   v7 = *MEMORY[0x1E697B310];
   v33[2] = *MEMORY[0x1E697B260];
@@ -455,7 +455,7 @@ LABEL_18:
       *buf = 67109378;
       v29 = v9;
       v30 = 2112;
-      v31 = v3;
+      v31 = nameCopy;
       _os_log_debug_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_DEBUG, "SecItemCopyMatching returned %d for %@", buf, 0x12u);
     }
 
@@ -477,7 +477,7 @@ LABEL_19:
 
   v12 = v11;
   v21 = v8;
-  v22 = v3;
+  v22 = nameCopy;
   v13 = 0;
   v14 = *v24;
   v15 = *MEMORY[0x1E697AE88];
@@ -513,7 +513,7 @@ LABEL_19:
 
   while (v12);
   v8 = v21;
-  v3 = v22;
+  nameCopy = v22;
 LABEL_20:
 
   if (result)
@@ -525,9 +525,9 @@ LABEL_20:
   return v13;
 }
 
-+ (int64_t)interfaceTypeOfInterface:(id)a3
++ (int64_t)interfaceTypeOfInterface:(id)interface
 {
-  v3 = nw_interface_get_type(a3) - 1;
+  v3 = nw_interface_get_type(interface) - 1;
   if (v3 < 3)
   {
     return v3 + 1;
@@ -539,9 +539,9 @@ LABEL_20:
   }
 }
 
-+ (int64_t)interfaceTypeOfNWInterface:(id)a3
++ (int64_t)interfaceTypeOfNWInterface:(id)interface
 {
-  result = [a3 type];
+  result = [interface type];
   if ((result - 1) >= 3)
   {
     return 0;
@@ -550,27 +550,27 @@ LABEL_20:
   return result;
 }
 
-+ (id)getInterfaceName:(int64_t)a3
++ (id)getInterfaceName:(int64_t)name
 {
-  if ((a3 - 1) > 3)
+  if ((name - 1) > 3)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_1E7A307A0[a3 - 1];
+    return off_1E7A307A0[name - 1];
   }
 }
 
-+ (int64_t)protocolTypeFromPath:(id)a3 endpoint:(id)a4
++ (int64_t)protocolTypeFromPath:(id)path endpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = a4;
-  if (nw_path_has_ipv6(v5))
+  pathCopy = path;
+  endpointCopy = endpoint;
+  if (nw_path_has_ipv6(pathCopy))
   {
-    v7 = !nw_path_has_ipv4(v5);
-    if (!v6)
+    v7 = !nw_path_has_ipv4(pathCopy);
+    if (!endpointCopy)
     {
 LABEL_13:
       if (v7)
@@ -590,18 +590,18 @@ LABEL_13:
   else
   {
     v7 = 0;
-    if (!v6)
+    if (!endpointCopy)
     {
       goto LABEL_13;
     }
   }
 
-  if (nw_endpoint_get_type(v6) != nw_endpoint_type_address)
+  if (nw_endpoint_get_type(endpointCopy) != nw_endpoint_type_address)
   {
     goto LABEL_13;
   }
 
-  sa_family = nw_endpoint_get_address(v6)->sa_family;
+  sa_family = nw_endpoint_get_address(endpointCopy)->sa_family;
   v9 = 3;
   if (!v7)
   {
@@ -628,19 +628,19 @@ LABEL_16:
   return v10;
 }
 
-+ (BOOL)hasPacketDrop:(id)a3
++ (BOOL)hasPacketDrop:(id)drop
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 state] && objc_msgSend(v4, "state") != 5)
+  dropCopy = drop;
+  v4 = dropCopy;
+  if (dropCopy && [dropCopy state] && objc_msgSend(v4, "state") != 5)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [v4 TCPInfo];
-    v5 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    tCPInfo = [v4 TCPInfo];
+    v5 = [tCPInfo countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v9 = *v15;
@@ -650,12 +650,12 @@ LABEL_16:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tCPInfo);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v4 TCPInfo];
-          v13 = [v12 objectForKeyedSubscript:v11];
+          tCPInfo2 = [v4 TCPInfo];
+          v13 = [tCPInfo2 objectForKeyedSubscript:v11];
 
           if ([v13 length] == 424 && *(objc_msgSend(v13, "bytes") + 84))
           {
@@ -665,7 +665,7 @@ LABEL_16:
           }
         }
 
-        v5 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [tCPInfo countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v5)
         {
           continue;
@@ -687,13 +687,13 @@ LABEL_17:
   return v5;
 }
 
-+ (id)stripWhitespace:(id)a3
++ (id)stripWhitespace:(id)whitespace
 {
-  v3 = a3;
+  whitespaceCopy = whitespace;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [whitespaceCopy length])
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@"\\s+" withString:&stru_1F2438480 options:1024 range:{0, objc_msgSend(v3, "length")}];
+    v4 = [whitespaceCopy stringByReplacingOccurrencesOfString:@"\\s+" withString:&stru_1F2438480 options:1024 range:{0, objc_msgSend(whitespaceCopy, "length")}];
   }
 
   else
@@ -704,12 +704,12 @@ LABEL_17:
   return v4;
 }
 
-+ (id)hexDumpBytes:(const void *)a3 length:(unint64_t)a4
++ (id)hexDumpBytes:(const void *)bytes length:(unint64_t)length
 {
   v4 = 0;
-  if (a3 && a4)
+  if (bytes && length)
   {
-    v7 = malloc_type_malloc((2 * a4) | 1, 0x100004077774924uLL);
+    v7 = malloc_type_malloc((2 * length) | 1, 0x100004077774924uLL);
     if (v7)
     {
       v8 = v7;
@@ -717,18 +717,18 @@ LABEL_17:
       v10 = 2;
       do
       {
-        sprintf(&v8[v10 - 2], "%x", *(a3 + v9++));
-        if (v9 >= a4)
+        sprintf(&v8[v10 - 2], "%x", *(bytes + v9++));
+        if (v9 >= length)
         {
           break;
         }
 
-        v11 = v10 >= 2 * a4 - 1;
+        v11 = v10 >= 2 * length - 1;
         v10 += 2;
       }
 
       while (!v11);
-      v8[2 * a4] = 0;
+      v8[2 * length] = 0;
       v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:v8 encoding:4];
       free(v8);
     }
@@ -742,13 +742,13 @@ LABEL_17:
   return v4;
 }
 
-+ (void)parseXTimeout:(id)a3 hardTTLInSeconds:(double *)a4
++ (void)parseXTimeout:(id)timeout hardTTLInSeconds:(double *)seconds
 {
-  v9 = a3;
+  timeoutCopy = timeout;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 doubleValue];
+    [timeoutCopy doubleValue];
     v6 = v5 * 60.0;
     v7 = v5 <= 0.0;
     v8 = 92160.0;
@@ -768,17 +768,17 @@ LABEL_17:
     v8 = 92160.0;
   }
 
-  *a4 = v8;
+  *seconds = v8;
 }
 
-+ (id)parseXHost:(id)a3
++ (id)parseXHost:(id)host
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  hostCopy = host;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [hostCopy length])
   {
-    v4 = [v3 componentsSeparatedByString:{@", "}];
+    v4 = [hostCopy componentsSeparatedByString:{@", "}];
     v6 = 0;
     if ([v4 count])
     {
@@ -829,13 +829,13 @@ LABEL_17:
   return v6;
 }
 
-+ (unint64_t)parseXRTT:(id)a3
++ (unint64_t)parseXRTT:(id)t
 {
-  v3 = a3;
+  tCopy = t;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [tCopy length])
   {
-    v4 = [v3 componentsSeparatedByString:{@", "}];
+    v4 = [tCopy componentsSeparatedByString:{@", "}];
     if ([v4 count])
     {
       v5 = [v4 objectAtIndexedSubscript:0];
@@ -864,25 +864,25 @@ LABEL_17:
   return v6;
 }
 
-+ (id)copyBase64HeaderValueFromData:(id)a3
++ (id)copyBase64HeaderValueFromData:(id)data
 {
-  v3 = [a3 base64EncodedStringWithOptions:0];
+  v3 = [data base64EncodedStringWithOptions:0];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@":%@:", v3];
 
   return v4;
 }
 
-+ (id)copyCurrentNetworkCharacteristicsForPath:(id)a3
++ (id)copyCurrentNetworkCharacteristicsForPath:(id)path
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 status] == 1)
+  pathCopy = path;
+  if ([pathCopy status] == 1)
   {
-    v4 = [v3 interface];
-    v5 = [v4 interfaceName];
-    if (v5 && nwi_state_copy())
+    interface = [pathCopy interface];
+    interfaceName = [interface interfaceName];
+    if (interfaceName && nwi_state_copy())
     {
-      [v5 UTF8String];
+      [interfaceName UTF8String];
       ifstate = nwi_state_get_ifstate();
       if (ifstate)
       {
@@ -896,7 +896,7 @@ LABEL_17:
           v14[0] = v7;
           v13[0] = @"Signature";
           v13[1] = @"InterfaceType";
-          v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "type")}];
+          v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(interface, "type")}];
           v14[1] = v9;
           v13[2] = @"HasIPv6";
           v10 = [MEMORY[0x1E696AD98] numberWithBool:v8];
@@ -928,76 +928,76 @@ LABEL_17:
   return ifstate;
 }
 
-+ (id)connectionInfoToDict:(id)a3 dictionary:(id)a4
++ (id)connectionInfoToDict:(id)dict dictionary:(id)dictionary
 {
   v82 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dictCopy = dict;
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
   *v79 = 0;
   v80 = 0;
   v81 = 0;
-  if (!v5)
+  if (!dictCopy)
   {
     v10 = 0;
     goto LABEL_57;
   }
 
-  if (!v6)
+  if (!dictionaryCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v8 = [v5 pathType];
-  if (v8 > 5)
+  pathType = [dictCopy pathType];
+  if (pathType > 5)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = off_1E7A307C0[v8];
+    v9 = off_1E7A307C0[pathType];
   }
 
   [v7 setObject:v9 forKeyedSubscript:@"PathType"];
-  if ([v5 pathType] == 2)
+  if ([dictCopy pathType] == 2)
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "fallbackReason")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(dictCopy, "fallbackReason")}];
     [v7 setObject:v11 forKeyedSubscript:@"FallbackReasonNumber"];
 
-    v12 = +[NSPConnectionInfo getFallbackReasonDescription:](NSPConnectionInfo, "getFallbackReasonDescription:", [v5 fallbackReason]);
+    v12 = +[NSPConnectionInfo getFallbackReasonDescription:](NSPConnectionInfo, "getFallbackReasonDescription:", [dictCopy fallbackReason]);
     [v7 setObject:v12 forKeyedSubscript:@"FallbackReason"];
 
-    v13 = [v5 fallbackReasonCategory];
-    if (v13 <= 4)
+    fallbackReasonCategory = [dictCopy fallbackReasonCategory];
+    if (fallbackReasonCategory <= 4)
     {
-      v9 = off_1E7A307F0[v13];
+      v9 = off_1E7A307F0[fallbackReasonCategory];
     }
 
     [v7 setObject:v9 forKeyedSubscript:@"FallbackCategory"];
     v14 = objc_alloc(MEMORY[0x1E696AD98]);
-    [v5 fallbackDelay];
-    v15 = [v14 initWithDouble:?];
+    [dictCopy fallbackDelay];
+    firstTxByteTimeStamp = [v14 initWithDouble:?];
     v16 = @"FallbackDelay";
     v17 = v7;
-    v18 = v15;
+    v18 = firstTxByteTimeStamp;
     goto LABEL_12;
   }
 
-  if ([v5 pathType] == 1)
+  if ([dictCopy pathType] == 1)
   {
-    v19 = [v5 edgeType];
-    if (v19 <= 3)
+    edgeType = [dictCopy edgeType];
+    if (edgeType <= 3)
     {
-      v9 = off_1E7A30818[v19];
+      v9 = off_1E7A30818[edgeType];
     }
 
     [v7 setObject:v9 forKeyedSubscript:@"EdgeType"];
-    v20 = [v5 edgeAddress];
-    if (v20)
+    edgeAddress = [dictCopy edgeAddress];
+    if (edgeAddress)
     {
-      v21 = [v5 edgeAddress];
-      [v7 setObject:v21 forKeyedSubscript:@"EdgeAddress"];
+      edgeAddress2 = [dictCopy edgeAddress];
+      [v7 setObject:edgeAddress2 forKeyedSubscript:@"EdgeAddress"];
     }
 
     else
@@ -1005,11 +1005,11 @@ LABEL_17:
       [v7 setObject:@"unknown" forKeyedSubscript:@"EdgeAddress"];
     }
 
-    v15 = [v5 firstTxByteTimeStamp];
-    if (v15)
+    firstTxByteTimeStamp = [dictCopy firstTxByteTimeStamp];
+    if (firstTxByteTimeStamp)
     {
-      v22 = [v5 firstTxByteTimeStamp];
-      v23 = [v22 description];
+      firstTxByteTimeStamp2 = [dictCopy firstTxByteTimeStamp];
+      v23 = [firstTxByteTimeStamp2 description];
       [v7 setObject:v23 forKeyedSubscript:@"tunnelFirstTxByteTimestamp"];
 
       goto LABEL_21;
@@ -1023,7 +1023,7 @@ LABEL_12:
 LABEL_21:
   }
 
-  if ([v5 isMultipath])
+  if ([dictCopy isMultipath])
   {
     v24 = @"yes";
   }
@@ -1034,13 +1034,13 @@ LABEL_21:
   }
 
   [v7 setObject:v24 forKeyedSubscript:@"IsMultipath"];
-  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "multipathSubflowCount")}];
+  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dictCopy, "multipathSubflowCount")}];
   [v7 setObject:v25 forKeyedSubscript:@"SubflowCount"];
 
-  v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "multipathConnectedSubflowCount")}];
+  v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dictCopy, "multipathConnectedSubflowCount")}];
   [v7 setObject:v26 forKeyedSubscript:@"ConnectedSubflowCount"];
 
-  if ([v5 isTFOProbeSucceeded])
+  if ([dictCopy isTFOProbeSucceeded])
   {
     v27 = @"yes";
   }
@@ -1051,65 +1051,65 @@ LABEL_21:
   }
 
   [v7 setObject:v27 forKeyedSubscript:@"IsTFOProbeSucceeded"];
-  if (if_indextoname([v5 multipathPrimarySubflowInterfaceIndex], v79))
+  if (if_indextoname([dictCopy multipathPrimarySubflowInterfaceIndex], v79))
   {
     v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v79];
     [v7 setObject:v28 forKeyedSubscript:@"PrimarySubflowInterface"];
   }
 
-  v29 = [v5 multipathSubflowSwitchCounts];
-  if (v29)
+  multipathSubflowSwitchCounts = [dictCopy multipathSubflowSwitchCounts];
+  if (multipathSubflowSwitchCounts)
   {
-    v30 = v29;
-    v31 = [v5 multipathSubflowSwitchCounts];
-    v32 = [v31 count];
+    v30 = multipathSubflowSwitchCounts;
+    multipathSubflowSwitchCounts2 = [dictCopy multipathSubflowSwitchCounts];
+    v32 = [multipathSubflowSwitchCounts2 count];
 
     if (v32)
     {
-      v33 = [v5 multipathSubflowSwitchCounts];
-      [v7 setObject:v33 forKeyedSubscript:@"SwitchCounts"];
+      multipathSubflowSwitchCounts3 = [dictCopy multipathSubflowSwitchCounts];
+      [v7 setObject:multipathSubflowSwitchCounts3 forKeyedSubscript:@"SwitchCounts"];
     }
   }
 
-  [v5 connectionDelay];
+  [dictCopy connectionDelay];
   if (v34 > 0.0)
   {
     v35 = MEMORY[0x1E696AD98];
-    [v5 connectionDelay];
+    [dictCopy connectionDelay];
     v36 = [v35 numberWithDouble:?];
     [v7 setObject:v36 forKeyedSubscript:@"ConnectionDelay"];
   }
 
-  [v5 firstTxByteDelay];
+  [dictCopy firstTxByteDelay];
   if (v37 > 0.0)
   {
     v38 = MEMORY[0x1E696AD98];
-    [v5 firstTxByteDelay];
+    [dictCopy firstTxByteDelay];
     v39 = [v38 numberWithDouble:?];
     [v7 setObject:v39 forKeyedSubscript:@"FirstTxByteDelay"];
   }
 
-  [v5 timeToFirstByte];
+  [dictCopy timeToFirstByte];
   if (v40 > 0.0)
   {
     v41 = MEMORY[0x1E696AD98];
-    [v5 timeToFirstByte];
+    [dictCopy timeToFirstByte];
     v42 = [v41 numberWithDouble:?];
     [v7 setObject:v42 forKeyedSubscript:@"TimeToFirstByte"];
   }
 
-  if ([v5 tunnelConnectionError])
+  if ([dictCopy tunnelConnectionError])
   {
-    v43 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "tunnelConnectionError")}];
+    v43 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(dictCopy, "tunnelConnectionError")}];
     [v7 setObject:v43 forKeyedSubscript:@"ConnectionError"];
   }
 
-  v44 = [v5 TCPInfo];
-  if (v44)
+  tCPInfo = [dictCopy TCPInfo];
+  if (tCPInfo)
   {
-    v45 = v44;
-    v46 = [v5 TCPInfo];
-    v47 = [v46 count];
+    v45 = tCPInfo;
+    tCPInfo2 = [dictCopy TCPInfo];
+    v47 = [tCPInfo2 count];
 
     if (v47)
     {
@@ -1119,7 +1119,7 @@ LABEL_21:
       v73 = 0u;
       v74 = 0u;
       v75 = 0u;
-      obj = [v5 TCPInfo];
+      obj = [dictCopy TCPInfo];
       v71 = [obj countByEnumeratingWithState:&v72 objects:v78 count:16];
       if (v71)
       {
@@ -1134,30 +1134,30 @@ LABEL_21:
             }
 
             v49 = *(*(&v72 + 1) + 8 * i);
-            v50 = [v5 TCPInfo];
-            [v50 objectForKeyedSubscript:v49];
-            v52 = v51 = v5;
+            tCPInfo3 = [dictCopy TCPInfo];
+            [tCPInfo3 objectForKeyedSubscript:v49];
+            v52 = v51 = dictCopy;
 
-            v53 = [v52 bytes];
+            bytes = [v52 bytes];
             v76[0] = @"TxBytes";
-            v54 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v53 + 76)];
+            v54 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(bytes + 76)];
             v77[0] = v54;
             v76[1] = @"TxPackets";
-            v55 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v53 + 68)];
+            v55 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(bytes + 68)];
             v77[1] = v55;
             v76[2] = @"RxBytes";
-            v56 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v53 + 108)];
+            v56 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(bytes + 108)];
             v77[2] = v56;
             v76[3] = @"RxPackets";
-            v57 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v53 + 100)];
+            v57 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(bytes + 100)];
             v77[3] = v57;
             v76[4] = @"Resend";
-            v58 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v53 + 284)];
+            v58 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(bytes + 284)];
             v77[4] = v58;
             v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:v76 count:5];
 
             [v70 setObject:v59 forKeyedSubscript:v49];
-            v5 = v51;
+            dictCopy = v51;
           }
 
           v71 = [obj countByEnumeratingWithState:&v72 objects:v78 count:16];
@@ -1171,16 +1171,16 @@ LABEL_21:
     }
   }
 
-  [v5 timeIntervalSinceLastUsage];
+  [dictCopy timeIntervalSinceLastUsage];
   if (v60 > 0.0)
   {
     v61 = MEMORY[0x1E696AD98];
-    [v5 timeIntervalSinceLastUsage];
+    [dictCopy timeIntervalSinceLastUsage];
     v62 = [v61 numberWithDouble:?];
     [v7 setObject:v62 forKeyedSubscript:@"TimeSinceLastUsage"];
   }
 
-  if ([v5 TFOSucceeded])
+  if ([dictCopy TFOSucceeded])
   {
     v63 = @"yes";
   }
@@ -1191,8 +1191,8 @@ LABEL_21:
   }
 
   [v7 setObject:v63 forKeyedSubscript:@"TFOSucceeded"];
-  v64 = [v5 timingIntervals];
-  [v7 setObject:v64 forKeyedSubscript:@"TimingIntervals"];
+  timingIntervals = [dictCopy timingIntervals];
+  [v7 setObject:timingIntervals forKeyedSubscript:@"TimingIntervals"];
 
   v7 = v7;
   v10 = v7;
@@ -1203,26 +1203,26 @@ LABEL_57:
   return v10;
 }
 
-+ (BOOL)printDictionaryAsJson:(id)a3 debugName:(id)a4
++ (BOOL)printDictionaryAsJson:(id)json debugName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if (![MEMORY[0x1E696ACB0] isValidJSONObject:v5])
+  jsonCopy = json;
+  nameCopy = name;
+  if (![MEMORY[0x1E696ACB0] isValidJSONObject:jsonCopy])
   {
-    printf("%s are not a valid JSON object\n", [v6 UTF8String]);
+    printf("%s are not a valid JSON object\n", [nameCopy UTF8String]);
 LABEL_6:
     v10 = 0;
     goto LABEL_7;
   }
 
   v14 = 0;
-  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v5 options:1 error:&v14];
+  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:jsonCopy options:1 error:&v14];
   v8 = v14;
   if (!v7)
   {
-    v11 = [v6 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     v12 = [v8 description];
-    printf("Failed to create JSON data from the %s: %s\n", v11, [v12 UTF8String]);
+    printf("Failed to create JSON data from the %s: %s\n", uTF8String, [v12 UTF8String]);
 
     goto LABEL_6;
   }
@@ -1236,11 +1236,11 @@ LABEL_7:
   return v10;
 }
 
-+ (id)endpointFromString:(id)a3 defaultPortString:(id)a4
++ (id)endpointFromString:(id)string defaultPortString:(id)portString
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [NPUtilities stripWhitespace:a3];
+  portStringCopy = portString;
+  v6 = [NPUtilities stripWhitespace:string];
   v7 = [v6 componentsSeparatedByString:@"@"];
   v8 = [v6 componentsSeparatedByString:@"."];
   if ([v8 count] >= 3)
@@ -1308,9 +1308,9 @@ LABEL_7:
 
   if ([v7 count] < 2)
   {
-    if (v5)
+    if (portStringCopy)
     {
-      v17 = [MEMORY[0x1E6977E28] endpointWithHostname:v6 port:v5];
+      v17 = [MEMORY[0x1E6977E28] endpointWithHostname:v6 port:portStringCopy];
     }
 
     else
@@ -1334,34 +1334,34 @@ LABEL_22:
   return v17;
 }
 
-+ (BOOL)compareAddressEndpoints:(id)a3 endpoint2:(id)a4 addressOnly:(BOOL)a5
++ (BOOL)compareAddressEndpoints:(id)endpoints endpoint2:(id)endpoint2 addressOnly:(BOOL)only
 {
-  v7 = a3;
-  v8 = a4;
+  endpointsCopy = endpoints;
+  endpoint2Copy = endpoint2;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [v7 address];
-      v11 = [v9 address];
-      v12 = v10[1];
-      if (v12 == v11[1])
+      v9 = endpoint2Copy;
+      address = [endpointsCopy address];
+      address2 = [v9 address];
+      v12 = address[1];
+      if (v12 == address2[1])
       {
         if (v12 == 30)
         {
-          if (*v10 >= 0x1Cu && *v11 >= 0x1Cu && (a5 || *(v10 + 1) == *(v11 + 1)))
+          if (*address >= 0x1Cu && *address2 >= 0x1Cu && (only || *(address + 1) == *(address2 + 1)))
           {
-            v13 = *(v10 + 1) == *(v11 + 1) && *(v10 + 2) == *(v11 + 2);
+            v13 = *(address + 1) == *(address2 + 1) && *(address + 2) == *(address2 + 2);
             goto LABEL_22;
           }
         }
 
-        else if (v12 == 2 && *v10 >= 0x10u && *v11 >= 0x10u && (a5 || *(v10 + 1) == *(v11 + 1)))
+        else if (v12 == 2 && *address >= 0x10u && *address2 >= 0x10u && (only || *(address + 1) == *(address2 + 1)))
         {
-          v13 = *(v10 + 1) == *(v11 + 1);
+          v13 = *(address + 1) == *(address2 + 1);
 LABEL_22:
           v14 = v13;
           goto LABEL_17;
@@ -1381,23 +1381,23 @@ LABEL_18:
   return v14;
 }
 
-+ (id)getInterfaceTypeString:(int64_t)a3
++ (id)getInterfaceTypeString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Other";
   }
 
   else
   {
-    return off_1E7A30838[a3 - 1];
+    return off_1E7A30838[string - 1];
   }
 }
 
-+ (BOOL)rollDiceWithSuccessRatio:(id)a3
++ (BOOL)rollDiceWithSuccessRatio:(id)ratio
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  ratioCopy = ratio;
   bytes = 0;
   if (SecRandomCopyBytes(*MEMORY[0x1E697B308], 4uLL, &bytes) < 0)
   {
@@ -1422,7 +1422,7 @@ LABEL_18:
       _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Random ratio %f", buf, 0xCu);
     }
 
-    [v3 doubleValue];
+    [ratioCopy doubleValue];
     v7 = v4 < v6;
   }
 
@@ -1430,35 +1430,35 @@ LABEL_18:
   return v7;
 }
 
-+ (id)timestampIdentifierToName:(unint64_t)a3
++ (id)timestampIdentifierToName:(unint64_t)name
 {
-  if (a3 - 1 > 0xE)
+  if (name - 1 > 0xE)
   {
     return @"EnableNSP";
   }
 
   else
   {
-    return off_1E7A30850[a3 - 1];
+    return off_1E7A30850[name - 1];
   }
 }
 
-+ (id)copyDataHexString:(id)a3
++ (id)copyDataHexString:(id)string
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = v13;
     memset(v13, 0, sizeof(v13));
-    v5 = [v3 bytes];
+    bytes = [stringCopy bytes];
     v12 = 60;
-    if ([v3 length])
+    if ([stringCopy length])
     {
       v6 = 0;
       do
       {
-        snprintf(v4, 3uLL, "%02x", *(v5 + v6));
+        snprintf(v4, 3uLL, "%02x", *(bytes + v6));
         v7 = v4 + 2;
         v8 = v4 + 2 - &v12;
         if (v6 && (v6 & 3) == 0 && v8 <= 254)
@@ -1468,7 +1468,7 @@ LABEL_18:
           v8 = v4 + 3 - &v12;
         }
 
-        if (++v6 >= [v3 length])
+        if (++v6 >= [stringCopy length])
         {
           break;
         }
@@ -1502,11 +1502,11 @@ LABEL_16:
   return v9;
 }
 
-+ (id)copyNetworkDescription:(id)a3
++ (id)copyNetworkDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"InterfaceType"];
-  v5 = [v3 objectForKeyedSubscript:@"Signature"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKeyedSubscript:@"InterfaceType"];
+  v5 = [descriptionCopy objectForKeyedSubscript:@"Signature"];
 
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   v7 = +[NPUtilities getInterfaceTypeString:](NPUtilities, "getInterfaceTypeString:", [v4 intValue]);
@@ -1516,10 +1516,10 @@ LABEL_16:
   return v9;
 }
 
-+ (int64_t)certificateDateIsValid:(__SecCertificate *)a3
++ (int64_t)certificateDateIsValid:(__SecCertificate *)valid
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (valid)
   {
     SecCertificateNotValidBefore();
     v4 = v3;
@@ -1653,22 +1653,22 @@ LABEL_30:
   return v6;
 }
 
-+ (void)postNotification:(id)a3 value:(unint64_t)a4
++ (void)postNotification:(id)notification value:(unint64_t)value
 {
-  v5 = a3;
+  notificationCopy = notification;
   v6 = NPGetInternalQueue();
   dispatch_assert_queue_V2(v6);
 
   out_token = -1;
-  if (!notify_register_check([v5 UTF8String], &out_token))
+  if (!notify_register_check([notificationCopy UTF8String], &out_token))
   {
-    v7 = 0;
-    if (notify_get_state(out_token, &v7) || v7 != a4)
+    valueCopy = 0;
+    if (notify_get_state(out_token, &valueCopy) || valueCopy != value)
     {
-      v7 = a4;
-      if (!notify_set_state(out_token, a4))
+      valueCopy = value;
+      if (!notify_set_state(out_token, value))
       {
-        notify_post([v5 UTF8String]);
+        notify_post([notificationCopy UTF8String]);
       }
     }
 
@@ -1710,13 +1710,13 @@ LABEL_30:
   return v4;
 }
 
-+ (id)machoUUIDFromPID:(int)a3
++ (id)machoUUIDFromPID:(int)d
 {
   v13 = *MEMORY[0x1E69E9840];
   v12 = 0;
   memset(buffer, 0, sizeof(buffer));
   v4 = 0;
-  if (proc_pidinfo(a3, 17, 1uLL, buffer, 56) == 56)
+  if (proc_pidinfo(d, 17, 1uLL, buffer, 56) == 56)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:buffer];
   }
@@ -1725,7 +1725,7 @@ LABEL_30:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8[0] = 67109378;
-    v8[1] = a3;
+    v8[1] = d;
     v9 = 2112;
     v10 = v4;
     _os_log_debug_impl(&dword_1AE7E2000, v5, OS_LOG_TYPE_DEBUG, "Mach-O UUID for process PID=%d is %@", v8, 0x12u);
@@ -1736,7 +1736,7 @@ LABEL_30:
   return v4;
 }
 
-+ (id)createAddressStringFromBuffer:(unint64_t)a3 addressLen:(uint64_t)a4 family:
++ (id)createAddressStringFromBuffer:(unint64_t)buffer addressLen:(uint64_t)len family:
 {
   v12 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -1746,7 +1746,7 @@ LABEL_30:
     goto LABEL_9;
   }
 
-  if (a4 == 2)
+  if (len == 2)
   {
     v7 = 2;
 LABEL_8:
@@ -1756,7 +1756,7 @@ LABEL_8:
   }
 
   v8 = 0;
-  if (a3 >= 0x10 && a4 == 30)
+  if (buffer >= 0x10 && len == 30)
   {
     v7 = 30;
     goto LABEL_8;
@@ -1768,20 +1768,20 @@ LABEL_9:
   return v8;
 }
 
-+ (id)createMaskedIPv4Address:(id)a3 prefix:(unint64_t)a4
++ (id)createMaskedIPv4Address:(id)address prefix:(unint64_t)prefix
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (address)
   {
-    v6 = a3;
+    addressCopy = address;
     objc_opt_self();
-    if (a4 < 0x21)
+    if (prefix < 0x21)
     {
       __b = 0;
-      if (a4 >= 8)
+      if (prefix >= 8)
       {
-        v8 = a4 >> 3;
-        memset(&__b, 255, a4 >> 3);
+        v8 = prefix >> 3;
+        memset(&__b, 255, prefix >> 3);
       }
 
       else
@@ -1789,9 +1789,9 @@ LABEL_9:
         v8 = 0;
       }
 
-      if ((a4 & 7) != 0)
+      if ((prefix & 7) != 0)
       {
-        *(&__b + v8) = 0xFF00u >> (a4 & 7);
+        *(&__b + v8) = 0xFF00u >> (prefix & 7);
       }
 
       v7 = [NPUtilities createAddressStringFromBuffer:4uLL addressLen:2 family:?];
@@ -1799,7 +1799,7 @@ LABEL_9:
       {
         v12 = 0;
         __b = 0;
-        inet_pton(2, [v6 UTF8String], &__b);
+        inet_pton(2, [addressCopy UTF8String], &__b);
         inet_pton(2, [v7 UTF8String], &v12);
         __b &= v12;
         v9 = [NPUtilities createAddressStringFromBuffer:4uLL addressLen:2 family:?];
@@ -1832,24 +1832,24 @@ LABEL_14:
   return v9;
 }
 
-+ (id)createMaskedIPv6Address:(id)a3 prefix:(unint64_t)a4
++ (id)createMaskedIPv6Address:(id)address prefix:(unint64_t)prefix
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  addressCopy = address;
+  if (addressCopy)
   {
     objc_opt_self();
     v6 = 0;
     __b = 0uLL;
-    if (a4 >= 8)
+    if (prefix >= 8)
     {
-      v6 = a4 >> 3;
-      memset(&__b, 255, a4 >> 3);
+      v6 = prefix >> 3;
+      memset(&__b, 255, prefix >> 3);
     }
 
-    if ((a4 & 7) != 0)
+    if ((prefix & 7) != 0)
     {
-      __b.i8[v6] = 0xFF00u >> (a4 & 7);
+      __b.i8[v6] = 0xFF00u >> (prefix & 7);
     }
 
     v7 = [NPUtilities createAddressStringFromBuffer:0x10uLL addressLen:30 family:?];
@@ -1857,7 +1857,7 @@ LABEL_14:
     {
       __b = 0uLL;
       v11 = 0uLL;
-      inet_pton(30, [v5 UTF8String], &__b);
+      inet_pton(30, [addressCopy UTF8String], &__b);
       inet_pton(30, [v7 UTF8String], &v11);
       __b = vandq_s8(v11, __b);
       v8 = [NPUtilities createAddressStringFromBuffer:0x10uLL addressLen:30 family:?];
@@ -1884,18 +1884,18 @@ LABEL_11:
   return v8;
 }
 
-+ (id)copyUUIDsForSigningIdentifier:(id)a3 executablePath:(id)a4
++ (id)copyUUIDsForSigningIdentifier:(id)identifier executablePath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  [v5 UTF8String];
-  [v6 UTF8String];
+  [identifierCopy UTF8String];
+  [pathCopy UTF8String];
   v7 = NEHelperCacheCopyAppUUIDMapping();
   v8 = v7;
   if (v7 && MEMORY[0x1B2708030](v7) == MEMORY[0x1E69E9E50])
@@ -1941,17 +1941,17 @@ uint64_t __60__NPUtilities_copyUUIDsForSigningIdentifier_executablePath___block_
   return 1;
 }
 
-+ (id)mergeHTTPHeaders:(id)a3 headerOverrides:(id)a4
++ (id)mergeHTTPHeaders:(id)headers headerOverrides:(id)overrides
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  headersCopy = headers;
+  overridesCopy = overrides;
+  if (overridesCopy)
   {
-    v24 = v5;
-    if (v5)
+    v24 = headersCopy;
+    if (headersCopy)
     {
-      v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v5];
+      v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:headersCopy];
     }
 
     else
@@ -1960,7 +1960,7 @@ uint64_t __60__NPUtilities_copyUUIDsForSigningIdentifier_executablePath___block_
     }
 
     v8 = v7;
-    v9 = [v6 componentsSeparatedByString:{@";", v6}];;
+    v9 = [overridesCopy componentsSeparatedByString:{@";", overridesCopy}];;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -1982,42 +1982,42 @@ uint64_t __60__NPUtilities_copyUUIDsForSigningIdentifier_executablePath___block_
           v14 = [*(*(&v26 + 1) + 8 * i) componentsSeparatedByString:@"="];
           if ([v14 count]<= 2 && [v14 count])
           {
-            v15 = [v14 firstObject];
-            v16 = [v15 length];
+            firstObject = [v14 firstObject];
+            v16 = [firstObject length];
 
             if (!v16)
             {
               goto LABEL_26;
             }
 
-            v17 = [v14 firstObject];
-            v18 = [v14 lastObject];
-            if (-[NSObject count](v14, "count") == 1 || ![v18 length])
+            firstObject2 = [v14 firstObject];
+            lastObject = [v14 lastObject];
+            if (-[NSObject count](v14, "count") == 1 || ![lastObject length])
             {
               v20 = nplog_obj();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
               {
-                v25 = [v8 objectForKey:v17];
+                v25 = [v8 objectForKey:firstObject2];
                 *buf = 138412546;
-                v31 = v17;
+                v31 = firstObject2;
                 v32 = 2112;
                 v33 = v25;
                 _os_log_debug_impl(&dword_1AE7E2000, v20, OS_LOG_TYPE_DEBUG, "Removing header %@ due to user-configured headers, current value is %@", buf, 0x16u);
               }
 
-              [v8 removeObjectForKey:v17];
+              [v8 removeObjectForKey:firstObject2];
             }
 
             else
             {
-              [v8 setValue:v18 forKey:v17];
+              [v8 setValue:lastObject forKey:firstObject2];
               v19 = nplog_obj();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412546;
-                v31 = v17;
+                v31 = firstObject2;
                 v32 = 2112;
-                v33 = v18;
+                v33 = lastObject;
                 _os_log_debug_impl(&dword_1AE7E2000, v19, OS_LOG_TYPE_DEBUG, "Adding/replacing header %@ with value %@ due to user-configured headers", buf, 0x16u);
               }
             }
@@ -2025,12 +2025,12 @@ uint64_t __60__NPUtilities_copyUUIDsForSigningIdentifier_executablePath___block_
 
           else
           {
-            v17 = nplog_obj();
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+            firstObject2 = nplog_obj();
+            if (os_log_type_enabled(firstObject2, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v31 = v14;
-              _os_log_error_impl(&dword_1AE7E2000, v17, OS_LOG_TYPE_ERROR, "Skipping malformed header override: %@", buf, 0xCu);
+              _os_log_error_impl(&dword_1AE7E2000, firstObject2, OS_LOG_TYPE_ERROR, "Skipping malformed header override: %@", buf, 0xCu);
             }
           }
 
@@ -2043,13 +2043,13 @@ LABEL_26:
       while (v11);
     }
 
-    v6 = v23;
-    v5 = v24;
+    overridesCopy = v23;
+    headersCopy = v24;
   }
 
   else
   {
-    v8 = v5;
+    v8 = headersCopy;
   }
 
   v21 = *MEMORY[0x1E69E9840];

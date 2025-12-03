@@ -1,15 +1,15 @@
 @interface SBNubView
 + (double)height;
 - (CGSize)intrinsicContentSize;
-- (SBNubView)initWithCoder:(id)a3;
-- (SBNubView)initWithDeviceApplicationSceneHandle:(id)a3;
-- (SBNubView)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBNubView)initWithCoder:(id)coder;
+- (SBNubView)initWithDeviceApplicationSceneHandle:(id)handle;
+- (SBNubView)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_updateNubViewBackgroundColor;
 - (void)_updateNubViewOverrideUserInterfaceStyleAndBackgroundColor;
 - (void)dealloc;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBNubView
@@ -24,9 +24,9 @@
   return *&height___height;
 }
 
-- (SBNubView)initWithDeviceApplicationSceneHandle:(id)a3
+- (SBNubView)initWithDeviceApplicationSceneHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v25.receiver = self;
   v25.super_class = SBNubView;
   v6 = *MEMORY[0x277CBF3A0];
@@ -37,7 +37,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_deviceApplicationSceneHandle, a3);
+    objc_storeStrong(&v10->_deviceApplicationSceneHandle, handle);
     v11->_highlighted = 0;
     v12 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v6, v7, v8, v9}];
     nubView = v11->_nubView;
@@ -47,22 +47,22 @@
     [(UIView *)v11->_nubView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SBNubView *)v11 addSubview:v11->_nubView];
     [(SBNubView *)v11 _updateNubViewOverrideUserInterfaceStyleAndBackgroundColor];
-    v14 = [(UIView *)v11->_nubView widthAnchor];
-    v15 = [v14 constraintEqualToConstant:36.0];
+    widthAnchor = [(UIView *)v11->_nubView widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:36.0];
     [v15 setActive:1];
 
-    v16 = [(UIView *)v11->_nubView heightAnchor];
-    v17 = [v16 constraintEqualToConstant:5.0];
+    heightAnchor = [(UIView *)v11->_nubView heightAnchor];
+    v17 = [heightAnchor constraintEqualToConstant:5.0];
     [v17 setActive:1];
 
-    v18 = [(UIView *)v11->_nubView centerXAnchor];
-    v19 = [(SBNubView *)v11 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor = [(UIView *)v11->_nubView centerXAnchor];
+    centerXAnchor2 = [(SBNubView *)v11 centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v20 setActive:1];
 
-    v21 = [(UIView *)v11->_nubView centerYAnchor];
-    v22 = [(SBNubView *)v11 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor = [(UIView *)v11->_nubView centerYAnchor];
+    centerYAnchor2 = [(SBNubView *)v11 centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v23 setActive:1];
 
     [(SBDeviceApplicationSceneHandle *)v11->_deviceApplicationSceneHandle addObserver:v11];
@@ -71,7 +71,7 @@
   return v11;
 }
 
-- (SBNubView)initWithNibName:(id)a3 bundle:(id)a4
+- (SBNubView)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE648];
@@ -91,17 +91,17 @@
   [(SBNubView *)&v3 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = SBNubView;
-  v4 = a3;
-  [(SBNubView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SBNubView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(SBNubView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(SBNubView *)self _updateNubViewOverrideUserInterfaceStyleAndBackgroundColor];
   }
@@ -118,27 +118,27 @@
   return result;
 }
 
-- (SBNubView)initWithCoder:(id)a3
+- (SBNubView)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE658];
-  v6 = a3;
+  coderCopy = coder;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [v4 raise:v5 format:{@"%@ does not support unarchiving from a nib.", v8}];
 
   v11.receiver = self;
   v11.super_class = SBNubView;
-  v9 = [(SBNubView *)&v11 initWithCoder:v6];
+  v9 = [(SBNubView *)&v11 initWithCoder:coderCopy];
 
   return v9;
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 settingsDiff];
+  handleCopy = handle;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
   applicationSceneClientSettingsDiffInspector = self->_applicationSceneClientSettingsDiffInspector;
   if (!applicationSceneClientSettingsDiffInspector)
   {
@@ -159,7 +159,7 @@
     applicationSceneClientSettingsDiffInspector = self->_applicationSceneClientSettingsDiffInspector;
   }
 
-  [v8 evaluateWithInspector:applicationSceneClientSettingsDiffInspector context:{0, v13, v14, v15, v16}];
+  [settingsDiff evaluateWithInspector:applicationSceneClientSettingsDiffInspector context:{0, v13, v14, v15, v16}];
 }
 
 void __49__SBNubView_sceneHandle_didUpdateClientSettings___block_invoke(uint64_t a1)
@@ -173,11 +173,11 @@ void __49__SBNubView_sceneHandle_didUpdateClientSettings___block_invoke(uint64_t
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(SBNubView *)self _updateNubViewBackgroundColor];
   }
 }
@@ -201,8 +201,8 @@ uint64_t __19__SBNubView_height__block_invoke()
     [MEMORY[0x277D75348] tertiaryLabelColor];
   }
   v3 = ;
-  v4 = [(UIView *)self->_nubView backgroundColor];
-  v5 = [v3 isEqual:v4];
+  backgroundColor = [(UIView *)self->_nubView backgroundColor];
+  v5 = [v3 isEqual:backgroundColor];
 
   if ((v5 & 1) == 0)
   {
@@ -220,14 +220,14 @@ uint64_t __19__SBNubView_height__block_invoke()
 
 - (void)_updateNubViewOverrideUserInterfaceStyleAndBackgroundColor
 {
-  v3 = [(SBNubView *)self deviceApplicationSceneHandle];
-  v4 = [v3 sceneIfExists];
-  v7 = [v4 clientSettings];
+  deviceApplicationSceneHandle = [(SBNubView *)self deviceApplicationSceneHandle];
+  sceneIfExists = [deviceApplicationSceneHandle sceneIfExists];
+  clientSettings = [sceneIfExists clientSettings];
 
-  if (v7)
+  if (clientSettings)
   {
     nubView = self->_nubView;
-    if (_SBStatusBarColorStyleFromStyle([v7 statusBarModernStyle]) == 2)
+    if (_SBStatusBarColorStyleFromStyle([clientSettings statusBarModernStyle]) == 2)
     {
       v6 = 1;
     }

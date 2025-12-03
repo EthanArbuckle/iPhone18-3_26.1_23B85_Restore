@@ -1,20 +1,20 @@
 @interface PIEffectAdjustmentController
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4;
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key;
 - (NSString)kind;
 - (double)intensity;
 - (int64_t)version;
-- (void)setIntensity:(double)a3;
-- (void)setKind:(id)a3;
-- (void)setVersion:(int64_t)a3;
+- (void)setIntensity:(double)intensity;
+- (void)setKind:(id)kind;
+- (void)setVersion:(int64_t)version;
 @end
 
 @implementation PIEffectAdjustmentController
 
 - (double)intensity
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIEffectAdjustmentController intensityKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   objc_opt_class();
   v5 = 1.0;
@@ -27,69 +27,69 @@
   return v5;
 }
 
-- (void)setIntensity:(double)a3
+- (void)setIntensity:(double)intensity
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:intensity];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIEffectAdjustmentController intensityKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (int64_t)version
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIEffectAdjustmentController versionKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)setVersion:(int64_t)a3
+- (void)setVersion:(int64_t)version
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:version];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIEffectAdjustmentController versionKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (NSString)kind
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIEffectAdjustmentController kindKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   return v4;
 }
 
-- (void)setKind:(id)a3
+- (void)setKind:(id)kind
 {
-  v6 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [kind copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIEffectAdjustmentController kindKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PIAdjustmentController *)self adjustment];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  equalCopy = equal;
+  keyCopy = key;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v9 = [adjustment objectForKeyedSubscript:keyCopy];
 
-  v10 = [v6 objectForKeyedSubscript:v7];
+  v10 = [equalCopy objectForKeyedSubscript:keyCopy];
   v11 = +[PIEffectAdjustmentController intensityKey];
-  v12 = [v7 isEqualToString:v11];
+  v12 = [keyCopy isEqualToString:v11];
 
   if (v12)
   {
@@ -103,7 +103,7 @@
   {
     v18.receiver = self;
     v18.super_class = PIEffectAdjustmentController;
-    v16 = [(PIAdjustmentController *)&v18 isSettingEqual:v6 forKey:v7];
+    v16 = [(PIAdjustmentController *)&v18 isSettingEqual:equalCopy forKey:keyCopy];
   }
 
   return v16;

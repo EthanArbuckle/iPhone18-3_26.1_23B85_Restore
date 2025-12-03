@@ -1,42 +1,42 @@
 @interface NESportsTagLinkPresentationSource
-+ (id)iconItemProviderForSportsTag:(id)a3 tagImageProvider:(id)a4;
-+ (id)imageItemProviderForSportsTag:(id)a3 tagImageProvider:(id)a4;
++ (id)iconItemProviderForSportsTag:(id)tag tagImageProvider:(id)provider;
++ (id)imageItemProviderForSportsTag:(id)tag tagImageProvider:(id)provider;
 - (LPLinkMetadata)linkMetadata;
-- (NESportsTagLinkPresentationSource)initWithSportsTag:(id)a3 tagImageProvider:(id)a4;
-- (NESportsTagLinkPresentationSource)initWithTitle:(id)a3 url:(id)a4 sportsTag:(id)a5 tagImageProvider:(id)a6;
+- (NESportsTagLinkPresentationSource)initWithSportsTag:(id)tag tagImageProvider:(id)provider;
+- (NESportsTagLinkPresentationSource)initWithTitle:(id)title url:(id)url sportsTag:(id)tag tagImageProvider:(id)provider;
 @end
 
 @implementation NESportsTagLinkPresentationSource
 
-- (NESportsTagLinkPresentationSource)initWithSportsTag:(id)a3 tagImageProvider:(id)a4
+- (NESportsTagLinkPresentationSource)initWithSportsTag:(id)tag tagImageProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 name];
+  providerCopy = provider;
+  tagCopy = tag;
+  name = [tagCopy name];
   v9 = MEMORY[0x1E695DFF8];
-  v10 = [v7 identifier];
-  v11 = [v9 nss_NewsURLForTagID:v10];
-  v12 = [(NESportsTagLinkPresentationSource *)self initWithTitle:v8 url:v11 sportsTag:v7 tagImageProvider:v6];
+  identifier = [tagCopy identifier];
+  v11 = [v9 nss_NewsURLForTagID:identifier];
+  v12 = [(NESportsTagLinkPresentationSource *)self initWithTitle:name url:v11 sportsTag:tagCopy tagImageProvider:providerCopy];
 
   return v12;
 }
 
-- (NESportsTagLinkPresentationSource)initWithTitle:(id)a3 url:(id)a4 sportsTag:(id)a5 tagImageProvider:(id)a6
+- (NESportsTagLinkPresentationSource)initWithTitle:(id)title url:(id)url sportsTag:(id)tag tagImageProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  urlCopy = url;
+  tagCopy = tag;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = NESportsTagLinkPresentationSource;
   v15 = [(NESportsTagLinkPresentationSource *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sportsTag, a5);
-    objc_storeStrong(&v16->_title, a3);
-    objc_storeStrong(&v16->_url, a4);
-    objc_storeStrong(&v16->_tagImageProvider, a6);
+    objc_storeStrong(&v15->_sportsTag, tag);
+    objc_storeStrong(&v16->_title, title);
+    objc_storeStrong(&v16->_url, url);
+    objc_storeStrong(&v16->_tagImageProvider, provider);
   }
 
   return v16;
@@ -44,51 +44,51 @@
 
 - (LPLinkMetadata)linkMetadata
 {
-  v3 = [(NESportsTagLinkPresentationSource *)self title];
+  title = [(NESportsTagLinkPresentationSource *)self title];
   v4 = [(NESportsTagLinkPresentationSource *)self url];
-  v5 = [(NESportsTagLinkPresentationSource *)self sportsTag];
-  v6 = [v5 isMySports];
+  sportsTag = [(NESportsTagLinkPresentationSource *)self sportsTag];
+  isMySports = [sportsTag isMySports];
 
   v7 = [NELinkMetadataSource alloc];
-  if (v6)
+  if (isMySports)
   {
-    v8 = [(NESportsTagLinkPresentationSource *)self tagImageProvider];
-    v9 = [(NESportsTagLinkPresentationSource *)self sportsTag];
-    v10 = [v8 mySportsShareImageFor:v9];
-    v11 = [(NELinkMetadataSource *)v7 initWithTitle:v3 url:v4 image:v10];
+    tagImageProvider = [(NESportsTagLinkPresentationSource *)self tagImageProvider];
+    sportsTag2 = [(NESportsTagLinkPresentationSource *)self sportsTag];
+    v10 = [tagImageProvider mySportsShareImageFor:sportsTag2];
+    v11 = [(NELinkMetadataSource *)v7 initWithTitle:title url:v4 image:v10];
   }
 
   else
   {
-    v8 = [(NESportsTagLinkPresentationSource *)self sportsTag];
-    v9 = [(NESportsTagLinkPresentationSource *)self tagImageProvider];
-    v10 = [NESportsTagLinkPresentationSource imageItemProviderForSportsTag:v8 tagImageProvider:v9];
-    v12 = [(NESportsTagLinkPresentationSource *)self sportsTag];
-    v13 = [(NESportsTagLinkPresentationSource *)self tagImageProvider];
-    v14 = [NESportsTagLinkPresentationSource iconItemProviderForSportsTag:v12 tagImageProvider:v13];
-    v11 = [(NELinkMetadataSource *)v7 initWithTitle:v3 url:v4 imageProvider:v10 iconProvider:v14];
+    tagImageProvider = [(NESportsTagLinkPresentationSource *)self sportsTag];
+    sportsTag2 = [(NESportsTagLinkPresentationSource *)self tagImageProvider];
+    v10 = [NESportsTagLinkPresentationSource imageItemProviderForSportsTag:tagImageProvider tagImageProvider:sportsTag2];
+    sportsTag3 = [(NESportsTagLinkPresentationSource *)self sportsTag];
+    tagImageProvider2 = [(NESportsTagLinkPresentationSource *)self tagImageProvider];
+    v14 = [NESportsTagLinkPresentationSource iconItemProviderForSportsTag:sportsTag3 tagImageProvider:tagImageProvider2];
+    v11 = [(NELinkMetadataSource *)v7 initWithTitle:title url:v4 imageProvider:v10 iconProvider:v14];
   }
 
-  v15 = [(NELinkMetadataSource *)v11 linkMetadata];
+  linkMetadata = [(NELinkMetadataSource *)v11 linkMetadata];
 
-  return v15;
+  return linkMetadata;
 }
 
-+ (id)imageItemProviderForSportsTag:(id)a3 tagImageProvider:(id)a4
++ (id)imageItemProviderForSportsTag:(id)tag tagImageProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  tagCopy = tag;
+  providerCopy = provider;
   v7 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v8 = [*MEMORY[0x1E6982F28] identifier];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__NESportsTagLinkPresentationSource_imageItemProviderForSportsTag_tagImageProvider___block_invoke;
   v12[3] = &unk_1E84CD128;
-  v13 = v6;
-  v14 = v5;
-  v9 = v5;
-  v10 = v6;
-  [v7 registerItemForTypeIdentifier:v8 loadHandler:v12];
+  v13 = providerCopy;
+  v14 = tagCopy;
+  v9 = tagCopy;
+  v10 = providerCopy;
+  [v7 registerItemForTypeIdentifier:identifier loadHandler:v12];
 
   return v7;
 }
@@ -113,21 +113,21 @@ void __84__NESportsTagLinkPresentationSource_imageItemProviderForSportsTag_tagIm
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)iconItemProviderForSportsTag:(id)a3 tagImageProvider:(id)a4
++ (id)iconItemProviderForSportsTag:(id)tag tagImageProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  tagCopy = tag;
+  providerCopy = provider;
   v7 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v8 = [*MEMORY[0x1E6982F28] identifier];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __83__NESportsTagLinkPresentationSource_iconItemProviderForSportsTag_tagImageProvider___block_invoke;
   v12[3] = &unk_1E84CD128;
-  v13 = v6;
-  v14 = v5;
-  v9 = v5;
-  v10 = v6;
-  [v7 registerItemForTypeIdentifier:v8 loadHandler:v12];
+  v13 = providerCopy;
+  v14 = tagCopy;
+  v9 = tagCopy;
+  v10 = providerCopy;
+  [v7 registerItemForTypeIdentifier:identifier loadHandler:v12];
 
   return v7;
 }

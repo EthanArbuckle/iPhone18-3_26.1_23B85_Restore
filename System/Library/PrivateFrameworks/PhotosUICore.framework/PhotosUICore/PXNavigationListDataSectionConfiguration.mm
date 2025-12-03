@@ -1,8 +1,8 @@
 @interface PXNavigationListDataSectionConfiguration
-+ (id)configurationWithCollectionList:(id)a3;
-+ (id)configurationWithCollectionsFetchResult:(id)a3;
-- (PXNavigationListDataSectionConfiguration)initWithCollectionList:(id)a3;
-- (PXNavigationListDataSectionConfiguration)initWithCollectionsFetchResult:(id)a3;
++ (id)configurationWithCollectionList:(id)list;
++ (id)configurationWithCollectionsFetchResult:(id)result;
+- (PXNavigationListDataSectionConfiguration)initWithCollectionList:(id)list;
+- (PXNavigationListDataSectionConfiguration)initWithCollectionsFetchResult:(id)result;
 - (id)description;
 @end
 
@@ -12,54 +12,54 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PHCollectionList *)self->_collectionList localizedTitle];
-  v6 = [v3 stringWithFormat:@"<%@: %p title = %@>", v4, self, v5];;
+  localizedTitle = [(PHCollectionList *)self->_collectionList localizedTitle];
+  v6 = [v3 stringWithFormat:@"<%@: %p title = %@>", v4, self, localizedTitle];;
 
   return v6;
 }
 
-- (PXNavigationListDataSectionConfiguration)initWithCollectionsFetchResult:(id)a3
+- (PXNavigationListDataSectionConfiguration)initWithCollectionsFetchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = PXNavigationListDataSectionConfiguration;
   v6 = [(PXNavigationListDataSectionConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionsFetchResult, a3);
+    objc_storeStrong(&v6->_collectionsFetchResult, result);
   }
 
   return v7;
 }
 
-- (PXNavigationListDataSectionConfiguration)initWithCollectionList:(id)a3
+- (PXNavigationListDataSectionConfiguration)initWithCollectionList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = PXNavigationListDataSectionConfiguration;
   v6 = [(PXNavigationListDataSectionConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionList, a3);
+    objc_storeStrong(&v6->_collectionList, list);
   }
 
   return v7;
 }
 
-+ (id)configurationWithCollectionsFetchResult:(id)a3
++ (id)configurationWithCollectionsFetchResult:(id)result
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCollectionsFetchResult:v4];
+  resultCopy = result;
+  v5 = [[self alloc] initWithCollectionsFetchResult:resultCopy];
 
   return v5;
 }
 
-+ (id)configurationWithCollectionList:(id)a3
++ (id)configurationWithCollectionList:(id)list
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCollectionList:v4];
+  listCopy = list;
+  v5 = [[self alloc] initWithCollectionList:listCopy];
 
   return v5;
 }

@@ -1,49 +1,49 @@
 @interface EXSheet
-+ (Class)exSheetClassFromXmlSheetType:(id)a3 location:(id)a4;
-+ (void)readAllDrawablesWithState:(id)a3;
-+ (void)readCommonSheetElementsFrom:(_xmlTextReader *)a3 state:(id)a4;
-+ (void)readDelayedSheeWithLocation:(id)a3 sheetXmlType:(id)a4 state:(id)a5;
-+ (void)readDrawablesWithState:(id)a3;
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)readLegacyDrawablesWithState:(id)a3;
-+ (void)readSheetProperties:(_xmlNode *)a3 state:(id)a4;
++ (Class)exSheetClassFromXmlSheetType:(id)type location:(id)location;
++ (void)readAllDrawablesWithState:(id)state;
++ (void)readCommonSheetElementsFrom:(_xmlTextReader *)from state:(id)state;
++ (void)readDelayedSheeWithLocation:(id)location sheetXmlType:(id)type state:(id)state;
++ (void)readDrawablesWithState:(id)state;
++ (void)readFrom:(_xmlNode *)from state:(id)state;
++ (void)readLegacyDrawablesWithState:(id)state;
++ (void)readSheetProperties:(_xmlNode *)properties state:(id)state;
 @end
 
 @implementation EXSheet
 
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readFrom:(_xmlNode *)from state:(id)state
 {
-  v6 = a4;
-  [v6 resetForNewSheet];
-  v25 = [v6 workbookPart];
-  v7 = [v6 OCXReadRequiredRelationshipForNode:a3 packagePart:v25];
-  v8 = [v25 package];
-  if (!v8)
+  stateCopy = state;
+  [stateCopy resetForNewSheet];
+  workbookPart = [stateCopy workbookPart];
+  v7 = [stateCopy OCXReadRequiredRelationshipForNode:from packagePart:workbookPart];
+  package = [workbookPart package];
+  if (!package)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v9 = [v7 targetLocation];
-  v10 = [v8 partForLocation:v9];
+  targetLocation = [v7 targetLocation];
+  v10 = [package partForLocation:targetLocation];
 
   if (!v10)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v11 = [v10 location];
-  v26 = [v11 relativeString];
+  location = [v10 location];
+  relativeString = [location relativeString];
 
   v29 = 0;
-  CXOptionalStringAttribute(a3, CXNoNamespace, "type", &v29);
+  CXOptionalStringAttribute(from, CXNoNamespace, "type", &v29);
   v12 = v29;
-  v13 = [a1 exSheetClassFromXmlSheetType:v12 location:v26];
+  v13 = [self exSheetClassFromXmlSheetType:v12 location:relativeString];
   if (v13)
   {
-    [v6 setCurrentPart:v10];
-    v14 = [v13 edSheetWithState:v6];
+    [stateCopy setCurrentPart:v10];
+    v14 = [v13 edSheetWithState:stateCopy];
     v28 = 0;
-    v15 = CXOptionalStringAttribute(a3, CXNoNamespace, "name", &v28);
+    v15 = CXOptionalStringAttribute(from, CXNoNamespace, "name", &v28);
     v24 = v28;
     if (v15)
     {
@@ -52,7 +52,7 @@
     }
 
     v27 = 0;
-    CXOptionalStringAttribute(a3, CXNoNamespace, "state", &v27);
+    CXOptionalStringAttribute(from, CXNoNamespace, "state", &v27);
     v17 = v27;
     v18 = v17;
     if (v17 && (([v17 isEqualToString:@"hidden"] & 1) != 0 || objc_msgSend(v18, "isEqualToString:", @"veryHidden")))
@@ -61,70 +61,70 @@
     }
 
     v19 = [EXSheetContext alloc];
-    v20 = [v7 targetLocation];
-    v21 = [(EXSheetContext *)v19 initWithSheetLocation:v20 sheetXmlType:v12 state:v6];
+    targetLocation2 = [v7 targetLocation];
+    v21 = [(EXSheetContext *)v19 initWithSheetLocation:targetLocation2 sheetXmlType:v12 state:stateCopy];
 
     [v14 setDelayedContext:v21];
-    v22 = [v6 workbook];
-    [v22 addSheet:v14];
+    workbook = [stateCopy workbook];
+    [workbook addSheet:v14];
 
-    [v6 setCurrentSheet:v14];
-    [v13 readTables:v6];
-    [v6 setCurrentSheet:0];
-    [v6 setCurrentPart:0];
-    v23 = [v7 targetLocation];
-    [v8 resetPartForLocation:v23];
+    [stateCopy setCurrentSheet:v14];
+    [v13 readTables:stateCopy];
+    [stateCopy setCurrentSheet:0];
+    [stateCopy setCurrentPart:0];
+    targetLocation3 = [v7 targetLocation];
+    [package resetPartForLocation:targetLocation3];
   }
 }
 
-+ (void)readDelayedSheeWithLocation:(id)a3 sheetXmlType:(id)a4 state:(id)a5
++ (void)readDelayedSheeWithLocation:(id)location sheetXmlType:(id)type state:(id)state
 {
-  v23 = a3;
-  v7 = a4;
-  v8 = a5;
+  locationCopy = location;
+  typeCopy = type;
+  stateCopy = state;
   v9 = objc_autoreleasePoolPush();
   [TCProgressContext createStageWithSteps:@"read sheet" takingSteps:3.0 name:1.0];
-  [v8 resetForNewSheet];
-  v20 = [v8 workbookPart];
-  v10 = [v20 package];
-  v21 = v10;
-  if (!v10)
+  [stateCopy resetForNewSheet];
+  workbookPart = [stateCopy workbookPart];
+  package = [workbookPart package];
+  v21 = package;
+  if (!package)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v11 = [v10 partForLocation:v23];
+  v11 = [package partForLocation:locationCopy];
   v22 = v11;
   if (!v11)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v12 = [v11 location];
-  v13 = [v12 relativeString];
+  location = [v11 location];
+  relativeString = [location relativeString];
 
-  v14 = [a1 exSheetClassFromXmlSheetType:v7 location:v13];
+  v14 = [self exSheetClassFromXmlSheetType:typeCopy location:relativeString];
   if (v14)
   {
-    [v8 setCurrentPart:v22];
-    [v14 readOtherSheetComponentsWithState:v8];
-    v15 = [v22 xmlReader];
-    if (!v15)
+    [stateCopy setCurrentPart:v22];
+    [v14 readOtherSheetComponentsWithState:stateCopy];
+    xmlReader = [v22 xmlReader];
+    if (!xmlReader)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
     [TCProgressContext createStageWithSteps:@"read common sheet elements outer" takingSteps:1.0 name:1.0];
     v16 = objc_alloc_init(OCXSStream);
-    v17 = xmlTextReaderDepth(v15);
-    [(OCXSStream *)v16 pushLevel:v17 name:xmlTextReaderConstLocalName(v15)];
+    v17 = xmlTextReaderDepth(xmlReader);
+    [(OCXSStream *)v16 pushLevel:v17 name:xmlTextReaderConstLocalName(xmlReader)];
     v18 = -1;
-    while ([OCXStreamUtility readStream:v15 streamState:v16])
+    while ([OCXStreamUtility readStream:xmlReader streamState:v16])
     {
       [TCProgressContext createStageWithSteps:@"read common sheet elements inner" takingSteps:2.0 name:ldexp(1.0, v18)];
-      if (([v14 readDistinctSheetElementsFrom:v15 state:v8] & 1) == 0)
+      if (([v14 readDistinctSheetElementsFrom:xmlReader state:stateCopy] & 1) == 0)
       {
-        [a1 readCommonSheetElementsFrom:v15 state:v8];
+        [self readCommonSheetElementsFrom:xmlReader state:stateCopy];
       }
 
       --v18;
@@ -132,36 +132,36 @@
     }
 
     +[TCProgressContext endStage];
-    [a1 readAllDrawablesWithState:v8];
-    v19 = [v8 currentSheet];
-    [EXFormula applyArrayedFormulasToSheet:v19 state:v8];
+    [self readAllDrawablesWithState:stateCopy];
+    currentSheet = [stateCopy currentSheet];
+    [EXFormula applyArrayedFormulasToSheet:currentSheet state:stateCopy];
 
-    [v8 setCurrentPart:0];
-    [v21 resetPartForLocation:v23];
+    [stateCopy setCurrentPart:0];
+    [v21 resetPartForLocation:locationCopy];
     +[TCProgressContext endStage];
   }
 
   else
   {
     v16 = 0;
-    v15 = 0;
+    xmlReader = 0;
   }
 
-  if (v15)
+  if (xmlReader)
   {
-    xmlFreeTextReader(v15);
+    xmlFreeTextReader(xmlReader);
   }
 
   objc_autoreleasePoolPop(v9);
 }
 
-+ (void)readCommonSheetElementsFrom:(_xmlTextReader *)a3 state:(id)a4
++ (void)readCommonSheetElementsFrom:(_xmlTextReader *)from state:(id)state
 {
-  v6 = a4;
-  v7 = xmlTextReaderConstLocalName(a3);
+  stateCopy = state;
+  v7 = xmlTextReaderConstLocalName(from);
   if (v7)
   {
-    v8 = xmlTextReaderExpand(a3);
+    v8 = xmlTextReaderExpand(from);
   }
 
   else
@@ -176,15 +176,15 @@
     v10 = v13;
     if (v9)
     {
-      [v6 reportWarning:ECPasswordProtectedSheet];
+      [stateCopy reportWarning:ECPasswordProtectedSheet];
     }
   }
 
   if (xmlStrEqual(v7, "headerFooter"))
   {
-    v11 = [v6 currentSheet];
-    v12 = [EXHeaderFooter edHeaderFooterFromXmlHeaderFooterElement:v8 state:v6];
-    [v11 setHeaderFooter:v12];
+    currentSheet = [stateCopy currentSheet];
+    v12 = [EXHeaderFooter edHeaderFooterFromXmlHeaderFooterElement:v8 state:stateCopy];
+    [currentSheet setHeaderFooter:v12];
 LABEL_15:
 
     goto LABEL_16;
@@ -192,41 +192,41 @@ LABEL_15:
 
   if (xmlStrEqual(v7, "pageMargins"))
   {
-    v11 = [v6 currentSheet];
-    v12 = [EXPageSetup edPageMarginsFrom:v8 state:v6];
-    [v11 setPageSetup:v12];
+    currentSheet = [stateCopy currentSheet];
+    v12 = [EXPageSetup edPageMarginsFrom:v8 state:stateCopy];
+    [currentSheet setPageSetup:v12];
     goto LABEL_15;
   }
 
   if (xmlStrEqual(v7, "pageSetup"))
   {
-    v11 = [v6 currentSheet];
-    v12 = [EXPageSetup edPageSetupFrom:v8 state:v6];
-    [v11 setPageSetup:v12];
+    currentSheet = [stateCopy currentSheet];
+    v12 = [EXPageSetup edPageSetupFrom:v8 state:stateCopy];
+    [currentSheet setPageSetup:v12];
     goto LABEL_15;
   }
 
   if (xmlStrEqual(v7, "sheetPr"))
   {
-    [a1 readSheetProperties:v8 state:v6];
+    [self readSheetProperties:v8 state:stateCopy];
   }
 
   else if (xmlStrEqual(v7, "legacyDrawing"))
   {
-    [a1 readLegacyDrawablesWithState:v6];
+    [self readLegacyDrawablesWithState:stateCopy];
   }
 
 LABEL_16:
 }
 
-+ (Class)exSheetClassFromXmlSheetType:(id)a3 location:(id)a4
++ (Class)exSheetClassFromXmlSheetType:(id)type location:(id)location
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  typeCopy = type;
+  locationCopy = location;
+  v7 = locationCopy;
+  if (typeCopy)
   {
-    if (([v5 isEqualToString:@"work"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"chartsheet") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"macrosheet") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"dialogsheet") & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", @"basic"))
+    if (([typeCopy isEqualToString:@"work"] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", @"chartsheet") & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", @"macrosheet") & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", @"dialogsheet") & 1) == 0 && !objc_msgSend(typeCopy, "isEqualToString:", @"basic"))
     {
 LABEL_7:
       v8 = 0;
@@ -234,7 +234,7 @@ LABEL_7:
     }
   }
 
-  else if (([v6 hasPrefix:@"chartsheets"] & 1) == 0 && (objc_msgSend(v7, "hasPrefix:", @"worksheets") & 1) == 0 && objc_msgSend(v7, "rangeOfString:", @"/worksheets") == 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend(v7, "hasPrefix:", @"dialogsheets") & 1) == 0 && (objc_msgSend(v7, "hasPrefix:", @"macrosheets") & 1) == 0 && (objc_msgSend(v7, "hasPrefix:", @"basics") & 1) == 0 && (!objc_msgSend(v7, "hasSuffix:", @".xml") || objc_msgSend(v7, "rangeOfString:", @"/") != 0x7FFFFFFFFFFFFFFFLL))
+  else if (([locationCopy hasPrefix:@"chartsheets"] & 1) == 0 && (objc_msgSend(v7, "hasPrefix:", @"worksheets") & 1) == 0 && objc_msgSend(v7, "rangeOfString:", @"/worksheets") == 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend(v7, "hasPrefix:", @"dialogsheets") & 1) == 0 && (objc_msgSend(v7, "hasPrefix:", @"macrosheets") & 1) == 0 && (objc_msgSend(v7, "hasPrefix:", @"basics") & 1) == 0 && (!objc_msgSend(v7, "hasSuffix:", @".xml") || objc_msgSend(v7, "rangeOfString:", @"/") != 0x7FFFFFFFFFFFFFFFLL))
   {
     goto LABEL_7;
   }
@@ -245,11 +245,11 @@ LABEL_19:
   return v8;
 }
 
-+ (void)readSheetProperties:(_xmlNode *)a3 state:(id)a4
++ (void)readSheetProperties:(_xmlNode *)properties state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 EXSpreadsheetMLNamespace];
-  v7 = OCXFindChild(a3, v6, "pageSetUpPr");
+  stateCopy = state;
+  eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+  v7 = OCXFindChild(properties, eXSpreadsheetMLNamespace, "pageSetUpPr");
 
   if (v7)
   {
@@ -257,65 +257,65 @@ LABEL_19:
     if (CXOptionalBoolAttribute(v7, CXNoNamespace, "fitToPage", &v11))
     {
       v8 = objc_opt_class();
-      v9 = [v5 currentSheet];
-      v10 = TSUDynamicCast(v8, v9);
+      currentSheet = [stateCopy currentSheet];
+      v10 = TSUDynamicCast(v8, currentSheet);
 
       [v10 setFitToPage:v11];
     }
   }
 }
 
-+ (void)readDrawablesWithState:(id)a3
++ (void)readDrawablesWithState:(id)state
 {
-  v12 = a3;
-  v3 = [(OCXState *)v12 currentPart];
-  v4 = OCXPartRelationshipsByTypeWithFallback(v3, v12, sel_OCXDrawingRelationshipType);
+  stateCopy = state;
+  currentPart = [(OCXState *)stateCopy currentPart];
+  v4 = OCXPartRelationshipsByTypeWithFallback(currentPart, stateCopy, sel_OCXDrawingRelationshipType);
   v5 = v4;
   if (v4 && [v4 count])
   {
-    v6 = [(OCPPackagePart *)v3 package];
-    if (!v6 || [v5 count] != 1)
+    package = [(OCPPackagePart *)currentPart package];
+    if (!package || [v5 count] != 1)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
     v7 = [v5 objectAtIndex:0];
-    v8 = [v7 targetLocation];
-    v9 = [v6 partForLocation:v8];
+    targetLocation = [v7 targetLocation];
+    v9 = [package partForLocation:targetLocation];
 
     if (!v9)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
-    [EXDrawing readFromPart:v9 state:v12];
+    [EXDrawing readFromPart:v9 state:stateCopy];
     v10 = [v5 objectAtIndex:0];
-    v11 = [v10 targetLocation];
-    [v6 resetPartForLocation:v11];
+    targetLocation2 = [v10 targetLocation];
+    [package resetPartForLocation:targetLocation2];
   }
 }
 
-+ (void)readLegacyDrawablesWithState:(id)a3
++ (void)readLegacyDrawablesWithState:(id)state
 {
-  v20 = a3;
-  v3 = [v20 currentPart];
-  v4 = [v3 relationshipsByType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/vmlDrawing"];
+  stateCopy = state;
+  currentPart = [stateCopy currentPart];
+  v4 = [currentPart relationshipsByType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/vmlDrawing"];
   v5 = v4;
   if (v4 && [v4 count])
   {
-    v6 = [v3 package];
-    if (!v6)
+    package = [currentPart package];
+    if (!package)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
-    v18 = v3;
-    v19 = [v20 legacyDrawables];
+    v18 = currentPart;
+    legacyDrawables = [stateCopy legacyDrawables];
     for (i = 0; [v5 count] > i; ++i)
     {
       v8 = [v5 objectAtIndex:i];
-      v9 = [v8 targetLocation];
-      v10 = [v6 partForLocation:v9];
+      targetLocation = [v8 targetLocation];
+      v10 = [package partForLocation:targetLocation];
 
       if (!v10)
       {
@@ -334,44 +334,44 @@ LABEL_19:
         [TCMessageException raise:TCInvalidFileFormatMessage];
       }
 
-      v13 = [v20 oavState];
-      [v13 setPackagePart:v10];
-      v14 = [v20 EXSpreadsheetDrawingNamespace];
-      v15 = [OAVDrawable readDrawablesFromParent:v12 inNamespace:v14 state:v13];
-      [v19 addObjectsFromArray:v15];
+      oavState = [stateCopy oavState];
+      [oavState setPackagePart:v10];
+      eXSpreadsheetDrawingNamespace = [stateCopy EXSpreadsheetDrawingNamespace];
+      v15 = [OAVDrawable readDrawablesFromParent:v12 inNamespace:eXSpreadsheetDrawingNamespace state:oavState];
+      [legacyDrawables addObjectsFromArray:v15];
 
       v16 = [v5 objectAtIndex:i];
-      v17 = [v16 targetLocation];
-      [v6 resetPartForLocation:v17];
+      targetLocation2 = [v16 targetLocation];
+      [package resetPartForLocation:targetLocation2];
 
       xmlFreeDoc(v11);
     }
 
-    v3 = v18;
+    currentPart = v18;
   }
 }
 
-+ (void)readAllDrawablesWithState:(id)a3
++ (void)readAllDrawablesWithState:(id)state
 {
-  v11 = a3;
-  v4 = [v11 legacyDrawables];
-  [a1 readDrawablesWithState:v11];
+  stateCopy = state;
+  legacyDrawables = [stateCopy legacyDrawables];
+  [self readDrawablesWithState:stateCopy];
   for (i = 0; ; i = v6 + 1)
   {
     v6 = i;
-    if ([v4 count] <= i)
+    if ([legacyDrawables count] <= i)
     {
       break;
     }
 
-    v7 = [v4 objectAtIndex:i];
-    v8 = [v11 oavState];
-    v9 = [v8 isDualDrawable:v7];
+    v7 = [legacyDrawables objectAtIndex:i];
+    oavState = [stateCopy oavState];
+    v9 = [oavState isDualDrawable:v7];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [v11 currentSheet];
-      [v10 addDrawable:v7];
+      currentSheet = [stateCopy currentSheet];
+      [currentSheet addDrawable:v7];
     }
   }
 }

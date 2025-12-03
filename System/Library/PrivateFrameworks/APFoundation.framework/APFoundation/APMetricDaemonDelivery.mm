@@ -1,11 +1,11 @@
 @interface APMetricDaemonDelivery
 + (APMetricDaemonDeliverer)daemonDelivery;
-+ (void)setDaemonDelivery:(id)a3;
++ (void)setDaemonDelivery:(id)delivery;
 - (APMetricDaemonDelivery)init;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)extendCollectionClassesForRemoteInterface:(id)a3;
-- (void)receivedMetric:(id)a3;
+- (void)extendCollectionClassesForRemoteInterface:(id)interface;
+- (void)receivedMetric:(id)metric;
 @end
 
 @implementation APMetricDaemonDelivery
@@ -37,17 +37,17 @@
   return v5;
 }
 
-+ (void)setDaemonDelivery:(id)a3
++ (void)setDaemonDelivery:(id)delivery
 {
-  v23 = a3;
+  deliveryCopy = delivery;
   v6 = objc_msgSend_processInfo(MEMORY[0x1E696AE30], v3, v4, v5);
   isRunningTests = objc_msgSend_isRunningTests(v6, v7, v8, v9);
 
   if (isRunningTests)
   {
     v12 = &unk_1F390EAA8;
-    v13 = v23;
-    if (v23 && (v14 = objc_msgSend_conformsToProtocol_(v23, v23, v12, v11), v13 = v23, !v14))
+    v13 = deliveryCopy;
+    if (deliveryCopy && (v14 = objc_msgSend_conformsToProtocol_(deliveryCopy, deliveryCopy, v12, v11), v13 = deliveryCopy, !v14))
     {
       v17 = MEMORY[0x1E696AEC0];
       v18 = objc_opt_class();
@@ -67,23 +67,23 @@
   }
 }
 
-- (void)receivedMetric:(id)a3
+- (void)receivedMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   v16 = objc_msgSend_notificationRegistrar(self, v5, v6, v7);
-  objc_msgSend_receivedMetric_(v16, v8, v4, v9);
+  objc_msgSend_receivedMetric_(v16, v8, metricCopy, v9);
   v13 = objc_msgSend_remoteObjectProxy(self, v10, v11, v12);
-  objc_msgSend_receivedMetric_(v13, v14, v4, v15);
+  objc_msgSend_receivedMetric_(v13, v14, metricCopy, v15);
 }
 
-- (void)extendCollectionClassesForRemoteInterface:(id)a3
+- (void)extendCollectionClassesForRemoteInterface:(id)interface
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  interfaceCopy = interface;
   objc_msgSend_metricClass(MetricsModuleCommon, v5, v6, v7);
   v8 = objc_opt_class();
   v12 = objc_msgSend_setWithObjects_(v3, v9, v8, v10, 0);
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v11, v12, sel_receivedMetric_, 0, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(interfaceCopy, v11, v12, sel_receivedMetric_, 0, 0);
 }
 
 - (void)connectionInterrupted

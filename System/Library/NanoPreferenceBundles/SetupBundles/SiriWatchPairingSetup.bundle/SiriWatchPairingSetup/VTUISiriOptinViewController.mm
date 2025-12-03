@@ -10,20 +10,20 @@
 - (id)okayButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)applyConfirmedOptin:(BOOL)a3;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)okayButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)applyConfirmedOptin:(BOOL)optin;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)okayButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation VTUISiriOptinViewController
 
 + (BOOL)wantsUnifiedFYI
 {
-  v2 = [sub_121C() sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  sharedPreferences = [sub_121C() sharedPreferences];
+  assistantIsEnabled = [sharedPreferences assistantIsEnabled];
 
-  return v3 & shouldShowSiriOptInPage();
+  return assistantIsEnabled & shouldShowSiriOptInPage();
 }
 
 + (BOOL)controllerNeedsToRun
@@ -54,10 +54,10 @@
 
   else
   {
-    v5 = [sub_121C() sharedPreferences];
-    v6 = [v5 assistantIsEnabled];
+    sharedPreferences = [sub_121C() sharedPreferences];
+    assistantIsEnabled = [sharedPreferences assistantIsEnabled];
 
-    v4 = v6 ^ shouldShowSiriOptInPage();
+    v4 = assistantIsEnabled ^ shouldShowSiriOptInPage();
   }
 
   return v4 & 1;
@@ -70,12 +70,12 @@
   v2 = [(VTUISiriOptinViewController *)&v11 init];
   if (v2)
   {
-    v3 = [sub_121C() sharedPreferences];
-    v4 = [v3 assistantIsEnabled];
+    sharedPreferences = [sub_121C() sharedPreferences];
+    assistantIsEnabled = [sharedPreferences assistantIsEnabled];
 
     v5 = BPSShouldOfferSiriForDeviceLanguage();
     v2->_languageSupported = v5;
-    if (!v4 || (v5 & 1) != 0)
+    if (!assistantIsEnabled || (v5 & 1) != 0)
     {
       if (!v5)
       {
@@ -150,18 +150,18 @@ LABEL_10:
 - (id)imageResource
 {
   v2 = +[BPSBridgeAppContext shared];
-  v3 = [v2 activeDevice];
+  activeDevice = [v2 activeDevice];
   v4 = VTUISiriScreenStringForDevice();
 
   return v4;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = +[BPSBridgeAppContext shared];
-  v5 = [v4 activeDevice];
+  activeDevice = [v4 activeDevice];
   v6 = [[NSUUID alloc] initWithUUIDString:@"F06861AE-125A-424B-AF25-C1DAA8F7AEBC"];
-  v7 = [v5 supportsCapability:v6];
+  v7 = [activeDevice supportsCapability:v6];
 
   if (v7)
   {
@@ -176,32 +176,32 @@ LABEL_10:
   }
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(VTUISiriOptinViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(VTUISiriOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:OBPrivacyAskSiriIdentifier];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  if (a3)
+  if (optin)
   {
-    v4 = [(VTUISiriOptinViewController *)self delegate];
-    [v4 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+    delegate = [(VTUISiriOptinViewController *)self delegate];
+    [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
   }
 
   else
   {
     VTUISetSiriEnabled(0);
-    v4 = [(VTUISiriOptinViewController *)self delegate];
-    [v4 buddyControllerDone:self];
+    delegate = [(VTUISiriOptinViewController *)self delegate];
+    [delegate buddyControllerDone:self];
   }
 }
 

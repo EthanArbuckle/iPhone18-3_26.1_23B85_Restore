@@ -1,5 +1,5 @@
 @interface MapsSuggestionsWalletStreamer
-- (_TtC15MapsSuggestions29MapsSuggestionsWalletStreamer)initWithLookAheadPeriod:(double)a3 pingInterval:(double)a4 notificationName:(id)a5 identifyingName:(id)a6;
+- (_TtC15MapsSuggestions29MapsSuggestionsWalletStreamer)initWithLookAheadPeriod:(double)period pingInterval:(double)interval notificationName:(id)name identifyingName:(id)identifyingName;
 - (void)_setupWallet;
 - (void)_tearDownWallet;
 - (void)scanForStreamableEvents;
@@ -9,23 +9,23 @@
 
 - (void)_setupWallet
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C525500C();
 }
 
 - (void)_tearDownWallet
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5256BC0(&OBJC_IVAR____TtC15MapsSuggestions29MapsSuggestionsWalletStreamer__wallet, "Tore down Wallet.");
 }
 
 - (void)scanForStreamableEvents
 {
-  v2 = self;
+  selfCopy = self;
   MapsSuggestionsWalletStreamer.scanForStreamableEvents()();
 }
 
-- (_TtC15MapsSuggestions29MapsSuggestionsWalletStreamer)initWithLookAheadPeriod:(double)a3 pingInterval:(double)a4 notificationName:(id)a5 identifyingName:(id)a6
+- (_TtC15MapsSuggestions29MapsSuggestionsWalletStreamer)initWithLookAheadPeriod:(double)period pingInterval:(double)interval notificationName:(id)name identifyingName:(id)identifyingName
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

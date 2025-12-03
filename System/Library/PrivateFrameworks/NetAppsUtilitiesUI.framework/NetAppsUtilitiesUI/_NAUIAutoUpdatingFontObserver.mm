@@ -1,6 +1,6 @@
 @interface _NAUIAutoUpdatingFontObserver
-+ (BOOL)canObserveFontsForTarget:(id)a3;
-- (_NAUIAutoUpdatingFontObserver)initWithTarget:(id)a3;
++ (BOOL)canObserveFontsForTarget:(id)target;
+- (_NAUIAutoUpdatingFontObserver)initWithTarget:(id)target;
 - (id)target;
 - (void)dealloc;
 - (void)updateDyamicFontForCurrentContentSize;
@@ -8,10 +8,10 @@
 
 @implementation _NAUIAutoUpdatingFontObserver
 
-- (_NAUIAutoUpdatingFontObserver)initWithTarget:(id)a3
+- (_NAUIAutoUpdatingFontObserver)initWithTarget:(id)target
 {
-  v4 = a3;
-  if ([objc_opt_class() canObserveFontsForTarget:v4])
+  targetCopy = target;
+  if ([objc_opt_class() canObserveFontsForTarget:targetCopy])
   {
     v17.receiver = self;
     v17.super_class = _NAUIAutoUpdatingFontObserver;
@@ -19,17 +19,17 @@
     v6 = v5;
     if (v5)
     {
-      objc_storeWeak(&v5->_target, v4);
+      objc_storeWeak(&v5->_target, targetCopy);
       objc_initWeak(&location, v6);
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      v8 = [MEMORY[0x277CCABD8] mainQueue];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v9 = *MEMORY[0x277D76810];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __48___NAUIAutoUpdatingFontObserver_initWithTarget___block_invoke;
       v14[3] = &unk_279966658;
       objc_copyWeak(&v15, &location);
-      v10 = [v7 addObserverForName:v9 object:0 queue:v8 usingBlock:v14];
+      v10 = [defaultCenter addObserverForName:v9 object:0 queue:mainQueue usingBlock:v14];
       notificationObserver = v6->_notificationObserver;
       v6->_notificationObserver = v10;
 
@@ -38,24 +38,24 @@
     }
 
     self = v6;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-+ (BOOL)canObserveFontsForTarget:(id)a3
++ (BOOL)canObserveFontsForTarget:(id)target
 {
-  v3 = a3;
+  targetCopy = target;
   v4 = 1;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 viewForLastBaselineLayout], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([targetCopy viewForLastBaselineLayout], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
     {
       v4 = 0;
     }
@@ -73,7 +73,7 @@
   if (isKindOfClass)
   {
     v5 = objc_loadWeakRetained(&self->_target);
-    v13 = [v5 naui_dynamicFontTextStyleDescriptor];
+    naui_dynamicFontTextStyleDescriptor = [v5 naui_dynamicFontTextStyleDescriptor];
 
     v6 = objc_loadWeakRetained(&self->_target);
     v7 = objc_opt_respondsToSelector();
@@ -81,16 +81,16 @@
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_target);
-      [v8 naui_reloadDynamicFontWithTextStyleDescriptor:v13];
+      [v8 naui_reloadDynamicFontWithTextStyleDescriptor:naui_dynamicFontTextStyleDescriptor];
     }
 
     v9 = objc_loadWeakRetained(&self->_target);
-    v10 = [v9 viewForLastBaselineLayout];
+    viewForLastBaselineLayout = [v9 viewForLastBaselineLayout];
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [NAUITextStyleDescriptor fontWithTextStyleDescriptor:v13];
-      [v10 setFont:v11];
+      v11 = [NAUITextStyleDescriptor fontWithTextStyleDescriptor:naui_dynamicFontTextStyleDescriptor];
+      [viewForLastBaselineLayout setFont:v11];
     }
 
     v12 = objc_loadWeakRetained(&self->_target);
@@ -100,8 +100,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_notificationObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_notificationObserver];
 
   v4.receiver = self;
   v4.super_class = _NAUIAutoUpdatingFontObserver;

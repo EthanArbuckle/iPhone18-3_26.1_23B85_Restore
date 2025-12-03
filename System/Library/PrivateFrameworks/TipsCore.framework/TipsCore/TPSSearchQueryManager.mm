@@ -1,7 +1,7 @@
 @interface TPSSearchQueryManager
 + (TPSSearchQueryManager)shared;
-- (void)cancelQueryWithIdentifier:(id)a3;
-- (void)performQuery:(id)a3 completion:(id)a4;
+- (void)cancelQueryWithIdentifier:(id)identifier;
+- (void)performQuery:(id)query completion:(id)completion;
 @end
 
 @implementation TPSSearchQueryManager
@@ -18,21 +18,21 @@
   return v3;
 }
 
-- (void)performQuery:(id)a3 completion:(id)a4
+- (void)performQuery:(id)query completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1C0135B48(v8, sub_1C0136A08, v7);
+  queryCopy = query;
+  selfCopy = self;
+  sub_1C0135B48(queryCopy, sub_1C0136A08, v7);
 }
 
-- (void)cancelQueryWithIdentifier:(id)a3
+- (void)cancelQueryWithIdentifier:(id)identifier
 {
   v4 = sub_1C014C230();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1C0136370(v4, v6);
 }
 

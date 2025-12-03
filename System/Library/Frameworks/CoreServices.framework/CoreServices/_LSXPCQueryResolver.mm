@@ -1,9 +1,9 @@
 @interface _LSXPCQueryResolver
 - (_LSXPCQueryResolver)init;
-- (id)_resolveQueries:(id)a3 XPCConnection:(id)a4 error:(id *)a5;
-- (id)resolveExpensiveRemoteQueriesInSet:(id)a3 XPCConnection:(id)a4 error:(id *)a5;
-- (id)resolveWhatWeCanLocallyWithQueries:(id)a3 XPCConnection:(id)a4 error:(id *)a5;
-- (void)_enumerateResolvedResultsOfQuery:(id)a3 XPCConnection:(id)a4 withBlock:(id)a5;
+- (id)_resolveQueries:(id)queries XPCConnection:(id)connection error:(id *)error;
+- (id)resolveExpensiveRemoteQueriesInSet:(id)set XPCConnection:(id)connection error:(id *)error;
+- (id)resolveWhatWeCanLocallyWithQueries:(id)queries XPCConnection:(id)connection error:(id *)error;
+- (void)_enumerateResolvedResultsOfQuery:(id)query XPCConnection:(id)connection withBlock:(id)block;
 @end
 
 @implementation _LSXPCQueryResolver
@@ -23,15 +23,15 @@
   return v2;
 }
 
-- (id)resolveWhatWeCanLocallyWithQueries:(id)a3 XPCConnection:(id)a4 error:(id *)a5
+- (id)resolveWhatWeCanLocallyWithQueries:(id)queries XPCConnection:(id)connection error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  queriesCopy = queries;
+  connectionCopy = connection;
   if ([__LSDefaultsGetSharedInstance() isServer])
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:338 description:@"Hit the client-side query resolution codepath from within lsd! This is a serious bug! Please file a radar against Launch Services."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:338 description:@"Hit the client-side query resolution codepath from within lsd! This is a serious bug! Please file a radar against Launch Services."];
   }
 
   v11 = [MEMORY[0x1E695DFA8] set];
@@ -39,7 +39,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v9;
+  v12 = queriesCopy;
   v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
@@ -70,14 +70,14 @@
   {
     localResolver = self->_localResolver;
     v25 = 0;
-    v18 = [(_LSLocalQueryResolver *)localResolver _resolveQueries:v11 XPCConnection:v10 error:&v25];
+    v18 = [(_LSLocalQueryResolver *)localResolver _resolveQueries:v11 XPCConnection:connectionCopy error:&v25];
     v19 = v25;
     v20 = v19;
-    if (a5 && !v18)
+    if (error && !v18)
     {
       v21 = v19;
       v18 = 0;
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -92,22 +92,22 @@
   return v18;
 }
 
-- (id)resolveExpensiveRemoteQueriesInSet:(id)a3 XPCConnection:(id)a4 error:(id *)a5
+- (id)resolveExpensiveRemoteQueriesInSet:(id)set XPCConnection:(id)connection error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  setCopy = set;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([__LSDefaultsGetSharedInstance() isServer])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:372 description:@"Hit the client-side remote-expensive query resolution codepath from within lsd! This is a serious bug! Please file a radar against Launch Services."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSQueryContext.mm" lineNumber:372 description:@"Hit the client-side remote-expensive query resolution codepath from within lsd! This is a serious bug! Please file a radar against Launch Services."];
   }
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v20;
+  v8 = setCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v9)
   {
@@ -164,11 +164,11 @@
   return v7;
 }
 
-- (id)_resolveQueries:(id)a3 XPCConnection:(id)a4 error:(id *)a5
+- (id)_resolveQueries:(id)queries XPCConnection:(id)connection error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  queriesCopy = queries;
+  connectionCopy = connection;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -185,7 +185,7 @@
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v10 = v8;
+  v10 = queriesCopy;
   v11 = [v10 countByEnumeratingWithState:&v44 objects:v59 count:16];
   if (v11)
   {
@@ -221,7 +221,7 @@ LABEL_11:
 
   v15 = (v49[0] + 40);
   obj = *(v49[0] + 40);
-  v16 = [(_LSXPCQueryResolver *)self resolveWhatWeCanLocallyWithQueries:v10 XPCConnection:v9 error:&obj];
+  v16 = [(_LSXPCQueryResolver *)self resolveWhatWeCanLocallyWithQueries:v10 XPCConnection:connectionCopy error:&obj];
   objc_storeStrong(v15, obj);
   v17 = v52[5];
   v52[5] = v16;
@@ -231,15 +231,15 @@ LABEL_11:
   {
     v19 = [v10 mutableCopy];
     v20 = MEMORY[0x1E695DFD8];
-    v21 = [v52[5] allKeys];
-    v22 = [v20 setWithArray:v21];
+    allKeys = [v52[5] allKeys];
+    v22 = [v20 setWithArray:allKeys];
     [v19 minusSet:v22];
 
     if ([v19 count])
     {
       v23 = (v49[0] + 40);
       v42 = *(v49[0] + 40);
-      v24 = [(_LSXPCQueryResolver *)self resolveExpensiveRemoteQueriesInSet:v19 XPCConnection:v9 error:&v42];
+      v24 = [(_LSXPCQueryResolver *)self resolveExpensiveRemoteQueriesInSet:v19 XPCConnection:connectionCopy error:&v42];
       objc_storeStrong(v23, v42);
       if (v24)
       {
@@ -247,8 +247,8 @@ LABEL_11:
         [v25 addEntriesFromDictionary:v24];
         objc_storeStrong(v52 + 5, v25);
         v26 = MEMORY[0x1E695DFD8];
-        v27 = [v24 allKeys];
-        v28 = [v26 setWithArray:v27];
+        allKeys2 = [v24 allKeys];
+        v28 = [v26 setWithArray:allKeys2];
         [v19 minusSet:v28];
       }
     }
@@ -303,9 +303,9 @@ LABEL_27:
     v18 = v52[5];
   }
 
-  if (a5 && !v18)
+  if (error && !v18)
   {
-    *a5 = *(v49[0] + 40);
+    *error = *(v49[0] + 40);
     v18 = v52[5];
   }
 
@@ -318,31 +318,31 @@ LABEL_27:
   return v34;
 }
 
-- (void)_enumerateResolvedResultsOfQuery:(id)a3 XPCConnection:(id)a4 withBlock:(id)a5
+- (void)_enumerateResolvedResultsOfQuery:(id)query XPCConnection:(id)connection withBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  connectionCopy = connection;
+  blockCopy = block;
+  v10 = [MEMORY[0x1E695DFD8] setWithObject:query];
   v18 = 0;
-  v11 = [(_LSXPCQueryResolver *)self _resolveQueries:v10 XPCConnection:v8 error:&v18];
+  v11 = [(_LSXPCQueryResolver *)self _resolveQueries:v10 XPCConnection:connectionCopy error:&v18];
   v12 = v18;
 
   if (v11)
   {
-    v13 = [v11 allValues];
-    v14 = [v13 firstObject];
+    allValues = [v11 allValues];
+    firstObject = [allValues firstObject];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __80___LSXPCQueryResolver__enumerateResolvedResultsOfQuery_XPCConnection_withBlock___block_invoke;
     v16[3] = &unk_1E6A1DB60;
-    v17 = v9;
-    [v14 enumerateObjectsUsingBlock:v16];
+    v17 = blockCopy;
+    [firstObject enumerateObjectsUsingBlock:v16];
   }
 
   else
   {
     v15 = 0;
-    (*(v9 + 2))(v9, 0, v12, &v15);
+    (*(blockCopy + 2))(blockCopy, 0, v12, &v15);
   }
 }
 

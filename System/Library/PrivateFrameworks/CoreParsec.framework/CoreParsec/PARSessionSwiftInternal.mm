@@ -1,118 +1,118 @@
 @interface PARSessionSwiftInternal
-- (BOOL)canLoadCard:(id)a3;
-- (BOOL)canLoadImage:(id)a3 context:(id)a4;
+- (BOOL)canLoadCard:(id)card;
+- (BOOL)canLoadImage:(id)image context:(id)context;
 - (NSXPCConnection)connection;
 - (PARBag)bag;
 - (PARSessionConfiguration)configuration;
 - (PARSessionDelegate)delegate;
-- (PARSessionSwiftInternal)initWithSession:(id)a3 configuration:(id)a4 connection:(id)a5 delegate:(id)a6;
+- (PARSessionSwiftInternal)initWithSession:(id)session configuration:(id)configuration connection:(id)connection delegate:(id)delegate;
 - (_TtC10CoreParsec15PARSearchClient)client;
-- (id)taskWith:(id)a3 completion:(id)a4;
+- (id)taskWith:(id)with completion:(id)completion;
 - (unint64_t)enabledStatus;
 - (unint64_t)safariAssistantEnabledStatus;
-- (unint64_t)safariAssistantEnabledStatusForPageLanguage:(id)a3;
-- (void)addCompletion:(id)a3 forInput:(id)a4;
-- (void)addEngagedResults:(id)a3;
-- (void)addEngagedResults:(id)a3 completion:(id)a4;
-- (void)clearEngagedResults:(id)a3 completion:(id)a4;
-- (void)clearEngagementsFrom:(id)a3 to:(id)a4;
-- (void)clearEngagementsWithTitle:(id)a3 type:(id)a4;
-- (void)clearSafariFeedback:(id)a3;
-- (void)fileHandleAndAttributesForResource:(id)a3 completion:(id)a4;
-- (void)loadImage:(SFImage *)a3 context:(SFImageContext *)a4 completionHandler:(id)a5;
-- (void)loadWithTask:(id)a3;
-- (void)reportFeedback:(id)a3 queryId:(int64_t)a4;
-- (void)searchViewDidDisappear:(void *)a3;
-- (void)send:(id)a3 completion:(id)a4;
-- (void)sendCBAEngagementFeedback:(id)a3 query:(unint64_t)a4;
-- (void)sendCustomFeedback:(id)a3;
-- (void)setBag:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDelegate:(id)a3;
+- (unint64_t)safariAssistantEnabledStatusForPageLanguage:(id)language;
+- (void)addCompletion:(id)completion forInput:(id)input;
+- (void)addEngagedResults:(id)results;
+- (void)addEngagedResults:(id)results completion:(id)completion;
+- (void)clearEngagedResults:(id)results completion:(id)completion;
+- (void)clearEngagementsFrom:(id)from to:(id)to;
+- (void)clearEngagementsWithTitle:(id)title type:(id)type;
+- (void)clearSafariFeedback:(id)feedback;
+- (void)fileHandleAndAttributesForResource:(id)resource completion:(id)completion;
+- (void)loadImage:(SFImage *)image context:(SFImageContext *)context completionHandler:(id)handler;
+- (void)loadWithTask:(id)task;
+- (void)reportFeedback:(id)feedback queryId:(int64_t)id;
+- (void)searchViewDidDisappear:(void *)disappear;
+- (void)send:(id)send completion:(id)completion;
+- (void)sendCBAEngagementFeedback:(id)feedback query:(unint64_t)query;
+- (void)sendCustomFeedback:(id)feedback;
+- (void)setBag:(id)bag;
+- (void)setConfiguration:(id)configuration;
+- (void)setDelegate:(id)delegate;
 - (void)start;
-- (void)updateParametersForSmartSearchV1:(id)a3 smartSearchV2:(id)a4;
+- (void)updateParametersForSmartSearchV1:(id)v1 smartSearchV2:(id)v2;
 @end
 
 @implementation PARSessionSwiftInternal
 
-- (PARSessionSwiftInternal)initWithSession:(id)a3 configuration:(id)a4 connection:(id)a5 delegate:(id)a6
+- (PARSessionSwiftInternal)initWithSession:(id)session configuration:(id)configuration connection:(id)connection delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  configurationCopy = configuration;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  return PARSessionSwiftInternal.init(session:configuration:connection:delegate:)(v8, v9, a5);
+  return PARSessionSwiftInternal.init(session:configuration:connection:delegate:)(sessionCopy, configurationCopy, connection);
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B10680C0();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B1068FC8();
 }
 
 - (PARBag)bag
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B106903C();
 
   return v3;
 }
 
-- (void)reportFeedback:(id)a3 queryId:(int64_t)a4
+- (void)reportFeedback:(id)feedback queryId:(int64_t)id
 {
-  v6 = a3;
-  v7 = self;
-  PARSessionSwiftInternal.report(_:queryId:)(v6, a4);
+  feedbackCopy = feedback;
+  selfCopy = self;
+  PARSessionSwiftInternal.report(_:queryId:)(feedbackCopy, id);
 }
 
 - (unint64_t)enabledStatus
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B106F3A0();
 
   return v3;
 }
 
-- (id)taskWith:(id)a3 completion:(id)a4
+- (id)taskWith:(id)with completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  v10 = sub_1B106F50C(v8, sub_1B10728B8, v7);
+  withCopy = with;
+  selfCopy = self;
+  v10 = sub_1B106F50C(withCopy, sub_1B10728B8, v7);
 
   return v10;
 }
 
-- (void)loadWithTask:(id)a3
+- (void)loadWithTask:(id)task
 {
-  v4 = a3;
-  v5 = self;
+  taskCopy = task;
+  selfCopy = self;
   sub_1B106F910();
 }
 
 - (PARSessionConfiguration)configuration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1068078();
 
   return v3;
 }
 
-- (void)searchViewDidDisappear:(void *)a3
+- (void)searchViewDidDisappear:(void *)disappear
 {
-  v4 = a3;
-  v5 = a1;
+  disappearCopy = disappear;
+  selfCopy = self;
   OUTLINED_FUNCTION_25_0();
-  PARSessionSwiftInternal.didEndSearch(_:)(v4);
+  PARSessionSwiftInternal.didEndSearch(_:)(disappearCopy);
 }
 
 - (_TtC10CoreParsec15PARSearchClient)client
@@ -124,24 +124,24 @@
 
 - (PARSessionDelegate)delegate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B108E454();
 
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B108E5C0(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1B108E5C0(configurationCopy);
 }
 
-- (void)setBag:(id)a3
+- (void)setBag:(id)bag
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B106ECF0(a3);
+  bagCopy = bag;
+  selfCopy = self;
+  sub_1B106ECF0(bag);
 }
 
 - (NSXPCConnection)connection
@@ -151,20 +151,20 @@
   return v2;
 }
 
-- (void)fileHandleAndAttributesForResource:(id)a3 completion:(id)a4
+- (void)fileHandleAndAttributesForResource:(id)resource completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   sub_1B1122A5C();
   *(swift_allocObject() + 16) = v5;
-  v6 = self;
+  selfCopy = self;
   sub_1B108EA38();
 }
 
-- (unint64_t)safariAssistantEnabledStatusForPageLanguage:(id)a3
+- (unint64_t)safariAssistantEnabledStatusForPageLanguage:(id)language
 {
   v4 = sub_1B1122A5C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1B108EB1C(v4, v6);
 
   return v8;
@@ -172,14 +172,14 @@
 
 - (unint64_t)safariAssistantEnabledStatus
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B108EB84();
   v4 = v3;
 
   return v4;
 }
 
-- (void)sendCBAEngagementFeedback:(id)a3 query:(unint64_t)a4
+- (void)sendCBAEngagementFeedback:(id)feedback query:(unint64_t)query
 {
   v6 = sub_1B112186C();
   v7 = *(v6 - 8);
@@ -187,58 +187,58 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B112183C();
-  v11 = self;
-  sub_1B108F270(v10, a4);
+  selfCopy = self;
+  sub_1B108F270(v10, query);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)clearSafariFeedback:(id)a3
+- (void)clearSafariFeedback:(id)feedback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(feedback);
   _Block_copy(v4);
-  v5 = self;
-  sub_1B108F5D0(v5, v4);
+  selfCopy = self;
+  sub_1B108F5D0(selfCopy, v4);
   _Block_release(v4);
 }
 
-- (BOOL)canLoadImage:(id)a3 context:(id)a4
+- (BOOL)canLoadImage:(id)image context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(a4) = PARSessionSwiftInternal.canLoad(_:context:)(v6, a4);
+  imageCopy = image;
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(context) = PARSessionSwiftInternal.canLoad(_:context:)(imageCopy, context);
 
-  return a4 & 1;
+  return context & 1;
 }
 
-- (void)loadImage:(SFImage *)a3 context:(SFImageContext *)a4 completionHandler:(id)a5
+- (void)loadImage:(SFImage *)image context:(SFImageContext *)context completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = image;
+  v9[3] = context;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  imageCopy = image;
+  contextCopy = context;
+  selfCopy = self;
 
   sub_1B10915E4(&unk_1B1134820, v9);
 }
 
-- (BOOL)canLoadCard:(id)a3
+- (BOOL)canLoadCard:(id)card
 {
-  v4 = a3;
-  v5 = self;
-  v6 = PARSessionSwiftInternal.canLoad(_:)(v4);
+  cardCopy = card;
+  selfCopy = self;
+  v6 = PARSessionSwiftInternal.canLoad(_:)(cardCopy);
 
   return v6;
 }
 
-- (void)send:(id)a3 completion:(id)a4
+- (void)send:(id)send completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -251,26 +251,26 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  PARSessionSwiftInternal.send(_:completion:)(v8, v6, v7);
+  sendCopy = send;
+  selfCopy = self;
+  PARSessionSwiftInternal.send(_:completion:)(sendCopy, v6, v7);
   sub_1B106E740(v6);
 }
 
-- (void)sendCustomFeedback:(id)a3
+- (void)sendCustomFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = self;
-  PARSessionSwiftInternal.send(_:)(v4);
+  feedbackCopy = feedback;
+  selfCopy = self;
+  PARSessionSwiftInternal.send(_:)(feedbackCopy);
 }
 
-- (void)addCompletion:(id)a3 forInput:(id)a4
+- (void)addCompletion:(id)completion forInput:(id)input
 {
   v5 = sub_1B1122A5C();
   v7 = v6;
   v8 = sub_1B1122A5C();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -278,7 +278,7 @@
   PARSessionSwiftInternal.addCompletion(_:forInput:)(v12, v13);
 }
 
-- (void)clearEngagementsFrom:(id)a3 to:(id)a4
+- (void)clearEngagementsFrom:(id)from to:(id)to
 {
   v5 = sub_1B112194C();
   v6 = *(v5 - 8);
@@ -289,7 +289,7 @@
   v12 = &v15 - v11;
   sub_1B112192C();
   sub_1B112192C();
-  v13 = self;
+  selfCopy = self;
   PARSessionSwiftInternal.clearEngagements(from:to:)();
 
   v14 = *(v6 + 8);
@@ -297,37 +297,37 @@
   v14(v12, v5);
 }
 
-- (void)clearEngagementsWithTitle:(id)a3 type:(id)a4
+- (void)clearEngagementsWithTitle:(id)title type:(id)type
 {
   v6 = sub_1B1122A5C();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  typeCopy = type;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  v13.value.super.super.isa = a4;
+  v13.value.super.super.isa = type;
   PARSessionSwiftInternal.clearEngagements(withTitle:type:)(v11, v13);
 }
 
-- (void)updateParametersForSmartSearchV1:(id)a3 smartSearchV2:(id)a4
+- (void)updateParametersForSmartSearchV1:(id)v1 smartSearchV2:(id)v2
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  PARSessionSwiftInternal.updateParameters(forSmartSearchV1:smartSearchV2:)(v6, v7);
+  v1Copy = v1;
+  v2Copy = v2;
+  selfCopy = self;
+  PARSessionSwiftInternal.updateParameters(forSmartSearchV1:smartSearchV2:)(v1Copy, v2Copy);
 }
 
-- (void)addEngagedResults:(id)a3
+- (void)addEngagedResults:(id)results
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB739F50, &qword_1B1134630);
   v4 = sub_1B1122B8C();
-  v5 = self;
+  selfCopy = self;
   PARSessionSwiftInternal.addEngagedResults(_:)(v4);
 }
 
-- (void)addEngagedResults:(id)a3 completion:(id)a4
+- (void)addEngagedResults:(id)results completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB739F50, &qword_1B1134630);
   v6 = sub_1B1122B8C();
   if (v5)
@@ -342,14 +342,14 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   PARSessionSwiftInternal.addEngagedResults(_:completion:)(v6, v5, v7);
   sub_1B106E740(v5);
 }
 
-- (void)clearEngagedResults:(id)a3 completion:(id)a4
+- (void)clearEngagedResults:(id)results completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB739F50, &qword_1B1134630);
   v6 = sub_1B1122B8C();
   if (v5)
@@ -358,7 +358,7 @@
     v5 = sub_1B10997C4;
   }
 
-  v7 = self;
+  selfCopy = self;
   PARSessionSwiftInternal.clearEngagedResults(_:completion:)(v6, v5);
   sub_1B106E740(v5);
 }

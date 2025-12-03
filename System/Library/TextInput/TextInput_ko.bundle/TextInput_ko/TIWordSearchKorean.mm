@@ -18,11 +18,11 @@
 {
   v10.receiver = self;
   v10.super_class = TIWordSearchKorean;
-  v3 = [(TIWordSearch *)&v10 mecabraCreationOptionsDictionary];
-  v4 = [v3 mutableCopy];
+  mecabraCreationOptionsDictionary = [(TIWordSearch *)&v10 mecabraCreationOptionsDictionary];
+  v4 = [mecabraCreationOptionsDictionary mutableCopy];
 
-  v5 = [(TIWordSearch *)self inputMode];
-  v6 = [v5 originalIdentifier];
+  inputMode = [(TIWordSearch *)self inputMode];
+  originalIdentifier = [inputMode originalIdentifier];
   v7 = TIInputModeGetSWLayout();
   v8 = [v7 isEqualToString:@"Korean-With-QWERTY"];
 

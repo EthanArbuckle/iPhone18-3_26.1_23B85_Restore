@@ -1,30 +1,30 @@
 @interface asn1Token
-+ (id)readTokenFromBuffer:(const char *)a3 opaque:(BOOL)a4;
-- (id)_initWithID:(unint64_t)a3 class:(unsigned __int8)a4 length:(unint64_t)a5 content:(const char *)a6 opaque:(BOOL)a7;
++ (id)readTokenFromBuffer:(const char *)buffer opaque:(BOOL)opaque;
+- (id)_initWithID:(unint64_t)d class:(unsigned __int8)class length:(unint64_t)length content:(const char *)content opaque:(BOOL)opaque;
 @end
 
 @implementation asn1Token
 
-- (id)_initWithID:(unint64_t)a3 class:(unsigned __int8)a4 length:(unint64_t)a5 content:(const char *)a6 opaque:(BOOL)a7
+- (id)_initWithID:(unint64_t)d class:(unsigned __int8)class length:(unint64_t)length content:(const char *)content opaque:(BOOL)opaque
 {
   v12.receiver = self;
   v12.super_class = asn1Token;
-  result = [(asn1Token *)&v12 init:a3];
+  result = [(asn1Token *)&v12 init:d];
   if (result)
   {
-    *(result + 8) = a4;
-    *(result + 2) = a3;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
+    *(result + 8) = class;
+    *(result + 2) = d;
+    *(result + 3) = length;
+    *(result + 4) = content;
   }
 
   return result;
 }
 
-+ (id)readTokenFromBuffer:(const char *)a3 opaque:(BOOL)a4
++ (id)readTokenFromBuffer:(const char *)buffer opaque:(BOOL)opaque
 {
-  v4 = a4;
-  v6 = *a3;
+  opaqueCopy = opaque;
+  v6 = *buffer;
   v7 = v6 & 0x1F;
   if ((v6 & 0x1F) == 0x1F)
   {
@@ -38,8 +38,8 @@
     v8 = 1;
   }
 
-  v9 = &a3[v8];
-  v10 = a3[v8];
+  v9 = &buffer[v8];
+  v10 = buffer[v8];
   v11 = v10;
   if (v10 < 0)
   {
@@ -118,7 +118,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  v17 = [objc_alloc(*v16) _initWithID:v7 class:v6 >> 6 length:v11 content:&v9[v12] opaque:v4];
+  v17 = [objc_alloc(*v16) _initWithID:v7 class:v6 >> 6 length:v11 content:&v9[v12] opaque:opaqueCopy];
 
   return v17;
 }

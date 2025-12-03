@@ -1,30 +1,30 @@
 @interface PREUMEngagedResponseList
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsGenerationStatus:(id)a3;
-- (int)StringAsInputMethod:(id)a3;
+- (int)StringAsGenerationStatus:(id)status;
+- (int)StringAsInputMethod:(id)method;
 - (int)generationStatus;
 - (int)inputMethod;
 - (unint64_t)hash;
-- (void)addItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEngagedItem:(BOOL)a3;
-- (void)setHasGenerationStatus:(BOOL)a3;
-- (void)setHasInputMethod:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEngagedItem:(BOOL)item;
+- (void)setHasGenerationStatus:(BOOL)status;
+- (void)setHasInputMethod:(BOOL)method;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PREUMEngagedResponseList
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   experiment = self->_experiment;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (experiment)
   {
     if (v6)
@@ -39,7 +39,7 @@
   }
 
   msgMetadata = self->_msgMetadata;
-  v8 = *(v4 + 6);
+  v8 = *(fromCopy + 6);
   if (msgMetadata)
   {
     if (v8)
@@ -57,7 +57,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = *(v4 + 5);
+  v9 = *(fromCopy + 5);
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -81,12 +81,12 @@
     while (v11);
   }
 
-  v14 = *(v4 + 56);
+  v14 = *(fromCopy + 56);
   if ((v14 & 2) != 0)
   {
-    self->_engagedItem = *(v4 + 4);
+    self->_engagedItem = *(fromCopy + 4);
     *&self->_has |= 2u;
-    v14 = *(v4 + 56);
+    v14 = *(fromCopy + 56);
     if ((v14 & 1) == 0)
     {
 LABEL_20:
@@ -96,9 +96,9 @@ LABEL_20:
       }
 
 LABEL_26:
-      self->_inputMethod = *(v4 + 9);
+      self->_inputMethod = *(fromCopy + 9);
       *&self->_has |= 8u;
-      if ((*(v4 + 56) & 4) == 0)
+      if ((*(fromCopy + 56) & 4) == 0)
       {
         goto LABEL_23;
       }
@@ -107,14 +107,14 @@ LABEL_26:
     }
   }
 
-  else if ((*(v4 + 56) & 1) == 0)
+  else if ((*(fromCopy + 56) & 1) == 0)
   {
     goto LABEL_20;
   }
 
-  self->_timeToTap = *(v4 + 1);
+  self->_timeToTap = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v14 = *(v4 + 56);
+  v14 = *(fromCopy + 56);
   if ((v14 & 8) != 0)
   {
     goto LABEL_26;
@@ -124,7 +124,7 @@ LABEL_21:
   if ((v14 & 4) != 0)
   {
 LABEL_22:
-    self->_generationStatus = *(v4 + 8);
+    self->_generationStatus = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
@@ -190,16 +190,16 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   experiment = self->_experiment;
-  if (experiment | *(v4 + 3))
+  if (experiment | *(equalCopy + 3))
   {
     if (![(PREUMTrialExperiment *)experiment isEqual:?])
     {
@@ -208,7 +208,7 @@ LABEL_5:
   }
 
   msgMetadata = self->_msgMetadata;
-  if (msgMetadata | *(v4 + 6))
+  if (msgMetadata | *(equalCopy + 6))
   {
     if (![(PREUMMessageMetadata *)msgMetadata isEqual:?])
     {
@@ -217,7 +217,7 @@ LABEL_5:
   }
 
   items = self->_items;
-  if (items | *(v4 + 5))
+  if (items | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)items isEqual:?])
     {
@@ -227,13 +227,13 @@ LABEL_5:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_engagedItem != *(v4 + 4))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_engagedItem != *(equalCopy + 4))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_27:
     v8 = 0;
@@ -242,34 +242,34 @@ LABEL_27:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_timeToTap != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_timeToTap != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_inputMethod != *(v4 + 9))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_inputMethod != *(equalCopy + 9))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_27;
   }
 
-  v8 = (*(v4 + 56) & 4) == 0;
+  v8 = (*(equalCopy + 56) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_generationStatus != *(v4 + 8))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_generationStatus != *(equalCopy + 8))
     {
       goto LABEL_27;
     }
@@ -282,15 +282,15 @@ LABEL_28:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PREUMTrialExperiment *)self->_experiment copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PREUMTrialExperiment *)self->_experiment copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(PREUMMessageMetadata *)self->_msgMetadata copyWithZone:a3];
+  v8 = [(PREUMMessageMetadata *)self->_msgMetadata copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
@@ -313,7 +313,7 @@ LABEL_28:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v15 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v5 addItems:v15];
       }
 
@@ -375,30 +375,30 @@ LABEL_13:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_experiment)
   {
-    [v9 setExperiment:?];
+    [toCopy setExperiment:?];
   }
 
   if (self->_msgMetadata)
   {
-    [v9 setMsgMetadata:?];
+    [toCopy setMsgMetadata:?];
   }
 
   if ([(PREUMEngagedResponseList *)self itemsCount])
   {
-    [v9 clearItems];
-    v4 = [(PREUMEngagedResponseList *)self itemsCount];
-    if (v4)
+    [toCopy clearItems];
+    itemsCount = [(PREUMEngagedResponseList *)self itemsCount];
+    if (itemsCount)
     {
-      v5 = v4;
+      v5 = itemsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PREUMEngagedResponseList *)self itemsAtIndex:i];
-        [v9 addItems:v7];
+        [toCopy addItems:v7];
       }
     }
   }
@@ -406,8 +406,8 @@ LABEL_13:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v9 + 4) = self->_engagedItem;
-    *(v9 + 56) |= 2u;
+    *(toCopy + 4) = self->_engagedItem;
+    *(toCopy + 56) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -426,8 +426,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v9 + 1) = self->_timeToTap;
-  *(v9 + 56) |= 1u;
+  *(toCopy + 1) = self->_timeToTap;
+  *(toCopy + 56) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -441,22 +441,22 @@ LABEL_12:
   }
 
 LABEL_19:
-  *(v9 + 9) = self->_inputMethod;
-  *(v9 + 56) |= 8u;
+  *(toCopy + 9) = self->_inputMethod;
+  *(toCopy + 56) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_13:
-    *(v9 + 8) = self->_generationStatus;
-    *(v9 + 56) |= 4u;
+    *(toCopy + 8) = self->_generationStatus;
+    *(toCopy + 56) |= 4u;
   }
 
 LABEL_14:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_experiment)
   {
     PBDataWriterWriteSubmessage();
@@ -551,19 +551,19 @@ LABEL_17:
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   experiment = self->_experiment;
   if (experiment)
   {
-    v5 = [(PREUMTrialExperiment *)experiment dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"experiment"];
+    dictionaryRepresentation = [(PREUMTrialExperiment *)experiment dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"experiment"];
   }
 
   msgMetadata = self->_msgMetadata;
   if (msgMetadata)
   {
-    v7 = [(PREUMMessageMetadata *)msgMetadata dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"msg_metadata"];
+    dictionaryRepresentation2 = [(PREUMMessageMetadata *)msgMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"msg_metadata"];
   }
 
   if ([(NSMutableArray *)self->_items count])
@@ -588,8 +588,8 @@ LABEL_17:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -598,14 +598,14 @@ LABEL_17:
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"items"];
+    [dictionary setObject:v8 forKey:@"items"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_engagedItem];
-    [v3 setObject:v16 forKey:@"engaged_item"];
+    [dictionary setObject:v16 forKey:@"engaged_item"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -628,7 +628,7 @@ LABEL_21:
         v19 = *(&off_279ABAC80 + inputMethod);
       }
 
-      [v3 setObject:v19 forKey:@"input_method"];
+      [dictionary setObject:v19 forKey:@"input_method"];
 
       if ((*&self->_has & 4) == 0)
       {
@@ -645,7 +645,7 @@ LABEL_21:
   }
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timeToTap];
-  [v3 setObject:v17 forKey:@"time_to_tap"];
+  [dictionary setObject:v17 forKey:@"time_to_tap"];
 
   has = self->_has;
   if ((has & 8) != 0)
@@ -668,13 +668,13 @@ LABEL_25:
       v21 = *(&off_279ABACB0 + generationStatus);
     }
 
-    [v3 setObject:v21 forKey:@"generation_status"];
+    [dictionary setObject:v21 forKey:@"generation_status"];
   }
 
 LABEL_29:
   v22 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -683,41 +683,41 @@ LABEL_29:
   v8.receiver = self;
   v8.super_class = PREUMEngagedResponseList;
   v4 = [(PREUMEngagedResponseList *)&v8 description];
-  v5 = [(PREUMEngagedResponseList *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PREUMEngagedResponseList *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsGenerationStatus:(id)a3
+- (int)StringAsGenerationStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"STATUS_UNKNOWN"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"STATUS_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NORMAL"])
+  else if ([statusCopy isEqualToString:@"NORMAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CACHED"])
+  else if ([statusCopy isEqualToString:@"CACHED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FALLBACK_TO_RK_NIL"])
+  else if ([statusCopy isEqualToString:@"FALLBACK_TO_RK_NIL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FALLBACK_TO_RK_ERROR"])
+  else if ([statusCopy isEqualToString:@"FALLBACK_TO_RK_ERROR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ONLY_CANNED_QR_EMPTY_ARRAY"])
+  else if ([statusCopy isEqualToString:@"ONLY_CANNED_QR_EMPTY_ARRAY"])
   {
     v4 = 5;
   }
@@ -730,9 +730,9 @@ LABEL_29:
   return v4;
 }
 
-- (void)setHasGenerationStatus:(BOOL)a3
+- (void)setHasGenerationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -758,35 +758,35 @@ LABEL_29:
   }
 }
 
-- (int)StringAsInputMethod:(id)a3
+- (int)StringAsInputMethod:(id)method
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"METHOD_UNKNOWN"])
+  methodCopy = method;
+  if ([methodCopy isEqualToString:@"METHOD_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CANNED"])
+  else if ([methodCopy isEqualToString:@"CANNED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SCRIBBLE"])
+  else if ([methodCopy isEqualToString:@"SCRIBBLE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DICTATION"])
+  else if ([methodCopy isEqualToString:@"DICTATION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"EMOJI"])
+  else if ([methodCopy isEqualToString:@"EMOJI"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HEART"])
+  else if ([methodCopy isEqualToString:@"HEART"])
   {
     v4 = 5;
   }
@@ -799,9 +799,9 @@ LABEL_29:
   return v4;
 }
 
-- (void)setHasInputMethod:(BOOL)a3
+- (void)setHasInputMethod:(BOOL)method
 {
-  if (a3)
+  if (method)
   {
     v3 = 8;
   }
@@ -827,9 +827,9 @@ LABEL_29:
   }
 }
 
-- (void)setHasEngagedItem:(BOOL)a3
+- (void)setHasEngagedItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 2;
   }
@@ -842,22 +842,22 @@ LABEL_29:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   items = self->_items;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!items)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_items;
     self->_items = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     items = self->_items;
   }
 
-  [(NSMutableArray *)items addObject:v4];
+  [(NSMutableArray *)items addObject:itemsCopy];
 }
 
 @end

@@ -1,98 +1,98 @@
 @interface PKAccountBillPaymentViewController
-+ (BOOL)canPayBillForAccount:(id)a3 displayableError:(id *)a4;
-+ (CGSize)smallRingSizeWithAccessibilityLayout:(BOOL)a3;
++ (BOOL)canPayBillForAccount:(id)account displayableError:(id *)error;
++ (CGSize)smallRingSizeWithAccessibilityLayout:(BOOL)layout;
 + (UIEdgeInsets)contentMargins;
 + (double)ringTopMargin;
 + (double)smallRingTopMargin;
-+ (id)alertControllerForDisplayableError:(id)a3 handler:(id)a4;
-+ (id)displayableErrorForAccount:(id)a3 reason:(unint64_t)a4;
-+ (void)_billPaymentViewControllerForAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 configuration:(id)a6 withCompletion:(id)a7;
-+ (void)billPaymentViewControllerForAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 configuration:(id)a6 withCompletion:(id)a7;
++ (id)alertControllerForDisplayableError:(id)error handler:(id)handler;
++ (id)displayableErrorForAccount:(id)account reason:(unint64_t)reason;
++ (void)_billPaymentViewControllerForAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source configuration:(id)configuration withCompletion:(id)completion;
++ (void)billPaymentViewControllerForAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source configuration:(id)configuration withCompletion:(id)completion;
 - (BOOL)_interestLabelIsOutsideSmallRing;
-- (CGSize)_layoutScrollViewWithContentWidth:(double)a3;
+- (CGSize)_layoutScrollViewWithContentWidth:(double)width;
 - (PKAccountBillPaymentObserver)observer;
-- (PKAccountBillPaymentViewController)initWithAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 suggestedAmountController:(id)a6 configuration:(id)a7 interstitalState:(unint64_t)a8;
-- (PKAccountBillPaymentViewController)initWithSuggestedAmountController:(id)a3 transactionSource:(id)a4;
-- (double)_buttonHeightForButtonWidth:(double)a3;
+- (PKAccountBillPaymentViewController)initWithAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source suggestedAmountController:(id)controller configuration:(id)configuration interstitalState:(unint64_t)state;
+- (PKAccountBillPaymentViewController)initWithSuggestedAmountController:(id)controller transactionSource:(id)source;
+- (double)_buttonHeightForButtonWidth:(double)width;
 - (id)_addBankAccountInformationViewController;
-- (id)_interestForAmount:(id)a3;
+- (id)_interestForAmount:(id)amount;
 - (id)_interestPostDate;
-- (id)_interestStringForAmount:(id)a3;
+- (id)_interestStringForAmount:(id)amount;
 - (id)_paymentAmount;
-- (id)_roundedInterestForAmount:(id)a3;
+- (id)_roundedInterestForAmount:(id)amount;
 - (id)_title;
-- (id)billPaymentRingView:(id)a3 bottomCurvedTextForSuggestedAmount:(id)a4;
-- (id)billPaymentRingView:(id)a3 topCurvedTextForSuggestedAmount:(id)a4;
-- (id)billPaymentRingViewZeroInterestText:(id)a3;
-- (id)disabledBottomCurvedTextForBillPaymentRingView:(id)a3;
-- (id)disabledTopCurvedTextForBillPaymentRingView:(id)a3;
-- (id)presentationSceneIdentifierForAccountAutomaticPaymentsController:(id)a3;
-- (id)presentationSceneIdentifierForAccountBillPaymentController:(id)a3;
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
-- (void)_accountDidChange:(id)a3;
-- (void)_cancelButtonTapped:(id)a3;
+- (id)billPaymentRingView:(id)view bottomCurvedTextForSuggestedAmount:(id)amount;
+- (id)billPaymentRingView:(id)view topCurvedTextForSuggestedAmount:(id)amount;
+- (id)billPaymentRingViewZeroInterestText:(id)text;
+- (id)disabledBottomCurvedTextForBillPaymentRingView:(id)view;
+- (id)disabledTopCurvedTextForBillPaymentRingView:(id)view;
+- (id)presentationSceneIdentifierForAccountAutomaticPaymentsController:(id)controller;
+- (id)presentationSceneIdentifierForAccountBillPaymentController:(id)controller;
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection;
+- (void)_accountDidChange:(id)change;
+- (void)_cancelButtonTapped:(id)tapped;
 - (void)_configureProductHeroView;
-- (void)_contactSupportButtonTapped:(id)a3;
-- (void)_dismissViewControllerWithSuccess:(BOOL)a3;
-- (void)_interstitialButtonTapped:(id)a3;
-- (void)_layoutFooterWithState:(id *)a3;
-- (void)_payLaterButtonTapped:(id)a3;
-- (void)_payNowButtonTapped:(id)a3;
-- (void)_performBillPaymentWithAmount:(id)a3 billPaymentSuggestedAmountDataEvent:(id)a4;
+- (void)_contactSupportButtonTapped:(id)tapped;
+- (void)_dismissViewControllerWithSuccess:(BOOL)success;
+- (void)_interstitialButtonTapped:(id)tapped;
+- (void)_layoutFooterWithState:(id *)state;
+- (void)_payLaterButtonTapped:(id)tapped;
+- (void)_payNowButtonTapped:(id)tapped;
+- (void)_performBillPaymentWithAmount:(id)amount billPaymentSuggestedAmountDataEvent:(id)event;
 - (void)_presentAddBankAccount;
-- (void)_presentAlertControllerForError:(id)a3;
-- (void)_reportEventForPassIfNecessary:(id)a3;
-- (void)_setAccount:(id)a3;
-- (void)_setEnabled:(BOOL)a3;
-- (void)_setPayButtonsEnabled:(BOOL)a3;
-- (void)_setShowKeyboard:(BOOL)a3;
+- (void)_presentAlertControllerForError:(id)error;
+- (void)_reportEventForPassIfNecessary:(id)necessary;
+- (void)_setAccount:(id)account;
+- (void)_setEnabled:(BOOL)enabled;
+- (void)_setPayButtonsEnabled:(BOOL)enabled;
+- (void)_setShowKeyboard:(BOOL)keyboard;
 - (void)_setupAmountDescriptionViewForInterstitial;
 - (void)_showOrHideKeypad;
-- (void)_updateForShowKeyboardAnimated:(BOOL)a3;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
+- (void)_updateForShowKeyboardAnimated:(BOOL)animated;
+- (void)_updateLayoutForKeyboardAction:(id)action;
 - (void)_updateNavigationTitle;
-- (void)_updatePayNowButtonTitleWithAmount:(id)a3;
+- (void)_updatePayNowButtonTitleWithAmount:(id)amount;
 - (void)_updateSmallRingInterestString;
 - (void)_updateSubtitle;
-- (void)accountAutomaticPaymentsController:(id)a3 didSchedulePayment:(id)a4;
-- (void)accountBillPaymentController:(id)a3 hasChangedState:(unint64_t)a4 error:(id)a5 updatedAccount:(id)a6;
-- (void)addBankAccountInformationViewController:(id)a3 didAddFundingSource:(id)a4;
-- (void)addBankAccountInformationViewControllerDidFinish:(id)a3;
-- (void)billPaymentAmountDescriptionView:(id)a3 hasChangedAmount:(id)a4 isValidAmount:(BOOL)a5;
-- (void)billPaymentAmountDescriptionViewHasTappedLearnMore:(id)a3;
-- (void)billPaymentRingView:(id)a3 amountChanged:(id)a4;
-- (void)billPaymentRingView:(id)a3 selectedSuggestedAmount:(id)a4 selectedSuggestedAmountIsTarget:(BOOL)a5 userInitiatedChange:(BOOL)a6;
+- (void)accountAutomaticPaymentsController:(id)controller didSchedulePayment:(id)payment;
+- (void)accountBillPaymentController:(id)controller hasChangedState:(unint64_t)state error:(id)error updatedAccount:(id)account;
+- (void)addBankAccountInformationViewController:(id)controller didAddFundingSource:(id)source;
+- (void)addBankAccountInformationViewControllerDidFinish:(id)finish;
+- (void)billPaymentAmountDescriptionView:(id)view hasChangedAmount:(id)amount isValidAmount:(BOOL)validAmount;
+- (void)billPaymentAmountDescriptionViewHasTappedLearnMore:(id)more;
+- (void)billPaymentRingView:(id)view amountChanged:(id)changed;
+- (void)billPaymentRingView:(id)view selectedSuggestedAmount:(id)amount selectedSuggestedAmountIsTarget:(BOOL)target userInitiatedChange:(BOOL)change;
 - (void)dealloc;
-- (void)keyboardDidShow:(id)a3;
-- (void)keyboardWillChange:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardDidShow:(id)show;
+- (void)keyboardWillChange:(id)change;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAccountBillPaymentViewController
 
-+ (BOOL)canPayBillForAccount:(id)a3 displayableError:(id *)a4
++ (BOOL)canPayBillForAccount:(id)account displayableError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  accountCopy = account;
+  v7 = accountCopy;
+  if (accountCopy)
   {
-    v8 = [v6 schedulePaymentFeatureDescriptor];
+    schedulePaymentFeatureDescriptor = [accountCopy schedulePaymentFeatureDescriptor];
 
-    if (v8)
+    if (schedulePaymentFeatureDescriptor)
     {
-      v9 = [v7 stateReason];
-      LOBYTE(v8) = v9 != 14;
-      v10 = 2 * (v9 == 14);
-      if (!a4)
+      stateReason = [v7 stateReason];
+      LOBYTE(schedulePaymentFeatureDescriptor) = stateReason != 14;
+      v10 = 2 * (stateReason == 14);
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -101,7 +101,7 @@
     else
     {
       v10 = 1;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -110,30 +110,30 @@
 
   else
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(schedulePaymentFeatureDescriptor) = 0;
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
   }
 
-  if ((v8 & 1) == 0)
+  if ((schedulePaymentFeatureDescriptor & 1) == 0)
   {
-    *a4 = [a1 displayableErrorForAccount:v7 reason:v10];
+    *error = [self displayableErrorForAccount:v7 reason:v10];
   }
 
 LABEL_10:
 
-  return v8;
+  return schedulePaymentFeatureDescriptor;
 }
 
-+ (id)displayableErrorForAccount:(id)a3 reason:(unint64_t)a4
++ (id)displayableErrorForAccount:(id)account reason:(unint64_t)reason
 {
-  [a3 feature];
-  if (a4 != 2)
+  [account feature];
+  if (reason != 2)
   {
-    if (a4 == 1)
+    if (reason == 1)
     {
       v5 = PKLocalizedFeatureString();
     }
@@ -174,17 +174,17 @@ LABEL_6:
   return v8;
 }
 
-+ (id)alertControllerForDisplayableError:(id)a3 handler:(id)a4
++ (id)alertControllerForDisplayableError:(id)error handler:(id)handler
 {
-  v5 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (error)
   {
     v6 = MEMORY[0x1E69DC650];
-    v7 = a3;
+    errorCopy = error;
     v8 = PKTitleForDisplayableError();
-    v9 = MEMORY[0x1BFB42D10](v7);
+    v9 = MEMORY[0x1BFB42D10](errorCopy);
 
-    a3 = [v6 alertControllerWithTitle:v8 message:v9 preferredStyle:1];
+    error = [v6 alertControllerWithTitle:v8 message:v9 preferredStyle:1];
 
     v10 = MEMORY[0x1E69DC648];
     v11 = PKLocalizedString(&cfstr_CancelButtonTi.isa);
@@ -192,13 +192,13 @@ LABEL_6:
     v14[1] = 3221225472;
     v14[2] = __81__PKAccountBillPaymentViewController_alertControllerForDisplayableError_handler___block_invoke;
     v14[3] = &unk_1E8011248;
-    v15 = v5;
+    v15 = handlerCopy;
     v12 = [v10 actionWithTitle:v11 style:1 handler:v14];
 
-    [a3 addAction:v12];
+    [error addAction:v12];
   }
 
-  return a3;
+  return error;
 }
 
 uint64_t __81__PKAccountBillPaymentViewController_alertControllerForDisplayableError_handler___block_invoke(uint64_t a1)
@@ -212,36 +212,36 @@ uint64_t __81__PKAccountBillPaymentViewController_alertControllerForDisplayableE
   return result;
 }
 
-+ (void)billPaymentViewControllerForAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 configuration:(id)a6 withCompletion:(id)a7
++ (void)billPaymentViewControllerForAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source configuration:(id)configuration withCompletion:(id)completion
 {
-  v52 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  accountCopy = account;
+  collectionCopy = collection;
+  sourceCopy = source;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v41 = a1;
-    v48 = v12;
-    v16 = v52;
-    v17 = [v16 creditDetails];
-    v18 = [v17 accountSummary];
-    v19 = [v18 balanceSummary];
-    v51 = [v18 adjustedBalance];
-    v20 = [v18 pastDueAmount];
-    v46 = v19;
-    v50 = [v19 pendingPurchases];
-    v42 = [v18 cyclesPastDue];
-    v21 = [v17 createdDate];
+    selfCopy = self;
+    v48 = collectionCopy;
+    v16 = accountCopy;
+    creditDetails = [v16 creditDetails];
+    accountSummary = [creditDetails accountSummary];
+    balanceSummary = [accountSummary balanceSummary];
+    adjustedBalance = [accountSummary adjustedBalance];
+    pastDueAmount = [accountSummary pastDueAmount];
+    v46 = balanceSummary;
+    pendingPurchases = [balanceSummary pendingPurchases];
+    cyclesPastDue = [accountSummary cyclesPastDue];
+    createdDate = [creditDetails createdDate];
     v22 = objc_alloc(MEMORY[0x1E695DEE8]);
     v23 = [v22 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-    v24 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v49 = v16;
-    v44 = v24;
+    v44 = date;
     v45 = v23;
-    if (v21 && (v25 = v24, [v23 isDate:v21 equalToDate:v24 toUnitGranularity:8]))
+    if (createdDate && (v25 = date, [v23 isDate:createdDate equalToDate:date toUnitGranularity:8]))
     {
-      v26 = [v23 isDate:v21 equalToDate:v25 toUnitGranularity:4] ^ 1;
+      v26 = [v23 isDate:createdDate equalToDate:v25 toUnitGranularity:4] ^ 1;
     }
 
     else
@@ -250,23 +250,23 @@ uint64_t __81__PKAccountBillPaymentViewController_alertControllerForDisplayableE
     }
 
     v40 = v26;
-    v27 = v50;
-    v28 = v20;
-    if (v50)
+    v27 = pendingPurchases;
+    v28 = pastDueAmount;
+    if (pendingPurchases)
     {
-      v29 = [MEMORY[0x1E696AB90] zero];
-      v27 = [v50 compare:v29] == 1;
+      zero = [MEMORY[0x1E696AB90] zero];
+      v27 = [pendingPurchases compare:zero] == 1;
     }
 
-    v47 = v13;
-    v30 = v51;
-    if (v51)
+    v47 = sourceCopy;
+    v30 = adjustedBalance;
+    if (adjustedBalance)
     {
-      v31 = [MEMORY[0x1E696AB90] zero];
-      v30 = [v51 compare:v31] == 1;
+      zero2 = [MEMORY[0x1E696AB90] zero];
+      v30 = [adjustedBalance compare:zero2] == 1;
     }
 
-    if (v42 <= 0)
+    if (cyclesPastDue <= 0)
     {
       if (v28)
       {
@@ -288,11 +288,11 @@ uint64_t __81__PKAccountBillPaymentViewController_alertControllerForDisplayableE
       v32 = 1;
     }
 
-    v34 = [v14 earlyInstallmentPlan];
-    v35 = [v17 numberOfActiveStatementedInstallments];
-    if (v34)
+    earlyInstallmentPlan = [configurationCopy earlyInstallmentPlan];
+    numberOfActiveStatementedInstallments = [creditDetails numberOfActiveStatementedInstallments];
+    if (earlyInstallmentPlan)
     {
-      if (v35 <= 1)
+      if (numberOfActiveStatementedInstallments <= 1)
       {
         v36 = 6;
       }
@@ -344,43 +344,43 @@ uint64_t __81__PKAccountBillPaymentViewController_alertControllerForDisplayableE
       }
     }
 
-    v13 = v47;
-    v12 = v48;
+    sourceCopy = v47;
+    collectionCopy = v48;
     if (v36)
     {
-      v39 = [[PKAccountBillPaymentViewController alloc] initWithAccount:v49 accountUserCollection:v48 transactionSource:v47 suggestedAmountController:0 configuration:v14 interstitalState:v36];
-      v15[2](v15, v39);
+      v39 = [[PKAccountBillPaymentViewController alloc] initWithAccount:v49 accountUserCollection:v48 transactionSource:v47 suggestedAmountController:0 configuration:configurationCopy interstitalState:v36];
+      completionCopy[2](completionCopy, v39);
     }
 
     else
     {
-      [v41 _billPaymentViewControllerForAccount:v49 accountUserCollection:v48 transactionSource:v47 configuration:v14 withCompletion:v15];
+      [selfCopy _billPaymentViewControllerForAccount:v49 accountUserCollection:v48 transactionSource:v47 configuration:configurationCopy withCompletion:completionCopy];
     }
   }
 }
 
-+ (void)_billPaymentViewControllerForAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 configuration:(id)a6 withCompletion:(id)a7
++ (void)_billPaymentViewControllerForAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source configuration:(id)configuration withCompletion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  accountCopy = account;
+  collectionCopy = collection;
+  sourceCopy = source;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v16 = MEMORY[0x1E69B86C8];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __144__PKAccountBillPaymentViewController__billPaymentViewControllerForAccount_accountUserCollection_transactionSource_configuration_withCompletion___block_invoke;
   v22[3] = &unk_1E8013C78;
-  v26 = v14;
-  v27 = v15;
-  v23 = v11;
-  v24 = v12;
-  v25 = v13;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
-  v20 = v11;
-  v21 = v15;
+  v26 = configurationCopy;
+  v27 = completionCopy;
+  v23 = accountCopy;
+  v24 = collectionCopy;
+  v25 = sourceCopy;
+  v17 = configurationCopy;
+  v18 = sourceCopy;
+  v19 = collectionCopy;
+  v20 = accountCopy;
+  v21 = completionCopy;
   [v16 defaultControllerForAccount:v20 accountUserCollection:v19 transactionSource:v18 configuration:v17 completion:v22];
 }
 
@@ -460,12 +460,12 @@ void __144__PKAccountBillPaymentViewController__billPaymentViewControllerForAcco
   return v2;
 }
 
-+ (CGSize)smallRingSizeWithAccessibilityLayout:(BOOL)a3
++ (CGSize)smallRingSizeWithAccessibilityLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v4 = PKUIGetMinScreenWidthType();
   v5 = 120.0;
-  if (v3)
+  if (layoutCopy)
   {
     v5 = 64.0;
   }
@@ -481,49 +481,49 @@ void __144__PKAccountBillPaymentViewController__billPaymentViewControllerForAcco
   return result;
 }
 
-- (PKAccountBillPaymentViewController)initWithSuggestedAmountController:(id)a3 transactionSource:(id)a4
+- (PKAccountBillPaymentViewController)initWithSuggestedAmountController:(id)controller transactionSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 account];
-  v9 = [v7 accountUserCollection];
-  v10 = [(PKAccountBillPaymentViewController *)self initWithSuggestedAmountController:v7 account:v8 accountUserCollection:v9 transactionSource:v6 configuration:0 interstitialState:0];
+  sourceCopy = source;
+  controllerCopy = controller;
+  account = [controllerCopy account];
+  accountUserCollection = [controllerCopy accountUserCollection];
+  v10 = [(PKAccountBillPaymentViewController *)self initWithSuggestedAmountController:controllerCopy account:account accountUserCollection:accountUserCollection transactionSource:sourceCopy configuration:0 interstitialState:0];
 
   return v10;
 }
 
-- (PKAccountBillPaymentViewController)initWithAccount:(id)a3 accountUserCollection:(id)a4 transactionSource:(id)a5 suggestedAmountController:(id)a6 configuration:(id)a7 interstitalState:(unint64_t)a8
+- (PKAccountBillPaymentViewController)initWithAccount:(id)account accountUserCollection:(id)collection transactionSource:(id)source suggestedAmountController:(id)controller configuration:(id)configuration interstitalState:(unint64_t)state
 {
   v77 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v66 = a5;
-  v17 = a6;
-  v67 = a7;
+  accountCopy = account;
+  collectionCopy = collection;
+  sourceCopy = source;
+  controllerCopy = controller;
+  configurationCopy = configuration;
   v73.receiver = self;
   v73.super_class = PKAccountBillPaymentViewController;
   v18 = [(PKAccountBillPaymentViewController *)&v73 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    v62 = v17;
-    v64 = v16;
-    objc_storeStrong(&v18->_account, a3);
-    objc_storeStrong(&v19->_accountUserCollection, a4);
-    objc_storeStrong(&v19->_transactionSource, a5);
-    v19->_interstitialState = a8;
-    if (a8 > 5)
+    v62 = controllerCopy;
+    v64 = collectionCopy;
+    objc_storeStrong(&v18->_account, account);
+    objc_storeStrong(&v19->_accountUserCollection, collection);
+    objc_storeStrong(&v19->_transactionSource, source);
+    v19->_interstitialState = state;
+    if (state > 5)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = qword_1BE114AC0[a8];
+      v20 = qword_1BE114AC0[state];
     }
 
     v19->_featuredViewState = v20;
-    objc_storeStrong(&v19->_configuration, a7);
+    objc_storeStrong(&v19->_configuration, configuration);
     v19->_viewIsEnabled = 1;
     v19->_payButtonsEnabled = 1;
     v19->_shouldEnablePayLaterButton = 1;
@@ -533,7 +533,7 @@ void __144__PKAccountBillPaymentViewController__billPaymentViewControllerForAcco
     v19->_lastKeyboardFrame.size = v22;
     v19->_keyboardFrame.origin = v21;
     v19->_keyboardFrame.size = v22;
-    objc_storeStrong(&v19->_suggestedAmountController, a6);
+    objc_storeStrong(&v19->_suggestedAmountController, controller);
     v23 = [(PKBillPaymentSuggestedAmountController *)v19->_suggestedAmountController generateAmountSuggestionListWithFinHealth:PKFinHealthBillPaymentSuggestionsEnabled()];
     suggestionList = v19->_suggestionList;
     v19->_suggestionList = v23;
@@ -541,11 +541,11 @@ void __144__PKAccountBillPaymentViewController__billPaymentViewControllerForAcco
     interstitialState = v19->_interstitialState;
     if (interstitialState - 6 < 2)
     {
-      v30 = [v67 earlyInstallmentPlan];
-      v31 = v30;
-      if (v30)
+      earlyInstallmentPlan = [configurationCopy earlyInstallmentPlan];
+      v31 = earlyInstallmentPlan;
+      if (earlyInstallmentPlan)
       {
-        v75 = v30;
+        v75 = earlyInstallmentPlan;
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
         installmentPlans = v19->_installmentPlans;
         v19->_installmentPlans = v32;
@@ -555,7 +555,7 @@ void __144__PKAccountBillPaymentViewController__billPaymentViewControllerForAcco
     else if (interstitialState == 5)
     {
       v72 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-      newInstallmentsForAccount(v15, &v72);
+      newInstallmentsForAccount(accountCopy, &v72);
       v34 = [v72 copy];
       v35 = v19->_installmentPlans;
       v19->_installmentPlans = v34;
@@ -580,8 +580,8 @@ void __144__PKAccountBillPaymentViewController__billPaymentViewControllerForAcco
               objc_enumerationMutation(v37);
             }
 
-            v42 = [*(*(&v68 + 1) + 8 * i) identifier];
-            [v36 addObject:v42];
+            identifier = [*(*(&v68 + 1) + 8 * i) identifier];
+            [v36 addObject:identifier];
           }
 
           v39 = [(NSArray *)v37 countByEnumeratingWithState:&v68 objects:v76 count:16];
@@ -592,62 +592,62 @@ void __144__PKAccountBillPaymentViewController__billPaymentViewControllerForAcco
 
       if ([v36 count])
       {
-        v43 = [MEMORY[0x1E69B8400] sharedInstance];
-        v44 = [(PKAccount *)v19->_account accountIdentifier];
-        [v43 markUserViewedIntroduction:1 forInstallmentIdentifiers:v36 accountIdentifier:v44];
+        mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+        accountIdentifier = [(PKAccount *)v19->_account accountIdentifier];
+        [mEMORY[0x1E69B8400] markUserViewedIntroduction:1 forInstallmentIdentifiers:v36 accountIdentifier:accountIdentifier];
       }
     }
 
     else if (!interstitialState)
     {
       v26 = objc_alloc(MEMORY[0x1E69B8348]);
-      v27 = [v66 paymentPass];
-      v28 = [v26 initWithAccount:v15 paymentPass:v27];
+      paymentPass = [sourceCopy paymentPass];
+      v28 = [v26 initWithAccount:accountCopy paymentPass:paymentPass];
       billPaymentCoordinator = v19->_billPaymentCoordinator;
       v19->_billPaymentCoordinator = v28;
 
       [(PKAccountBillPaymentController *)v19->_billPaymentCoordinator setDelegate:v19];
     }
 
-    v45 = [v15 creditDetails];
-    v46 = [v45 rates];
-    v47 = [v46 aprForPurchases];
+    creditDetails = [accountCopy creditDetails];
+    rates = [creditDetails rates];
+    aprForPurchases = [rates aprForPurchases];
     apr = v19->_apr;
-    v19->_apr = v47;
+    v19->_apr = aprForPurchases;
 
     v49 = objc_alloc_init(MEMORY[0x1E696AB78]);
     interestDateFormatter = v19->_interestDateFormatter;
     v19->_interestDateFormatter = v49;
 
     v51 = v19->_interestDateFormatter;
-    v52 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v51 setLocale:v52];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v51 setLocale:autoupdatingCurrentLocale];
 
     [(NSDateFormatter *)v19->_interestDateFormatter setLocalizedDateFormatFromTemplate:@"MMM d"];
-    v53 = [v45 currencyCode];
+    currencyCode = [creditDetails currencyCode];
     v54 = PKMutableNumberFormatterForCurrencyCode();
     amountFormatter = v19->_amountFormatter;
     v19->_amountFormatter = v54;
 
-    v56 = [(PKAccountBillPaymentViewController *)v19 navigationItem];
+    navigationItem = [(PKAccountBillPaymentViewController *)v19 navigationItem];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v56 pkui_setupScrollEdgeChromelessAppearance];
-      [v56 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
     v57 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v19 action:sel__cancelButtonTapped_];
     [v57 setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
-    [v56 setLeftBarButtonItem:v57];
-    v58 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v58 addObserver:v19 selector:sel__accountDidChange_ name:*MEMORY[0x1E69B9E60] object:0];
+    [navigationItem setLeftBarButtonItem:v57];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v19 selector:sel__accountDidChange_ name:*MEMORY[0x1E69B9E60] object:0];
 
     v74 = objc_opt_class();
     v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v74 count:1];
     v60 = [(PKAccountBillPaymentViewController *)v19 registerForTraitChanges:v59 withHandler:&__block_literal_global_109];
 
-    v17 = v63;
-    v16 = v65;
+    controllerCopy = v63;
+    collectionCopy = v65;
   }
 
   return v19;
@@ -669,8 +669,8 @@ void __151__PKAccountBillPaymentViewController_initWithAccount_accountUserCollec
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   CLInUse = self->_CLInUse;
   if (CLInUse)
@@ -695,8 +695,8 @@ void __151__PKAccountBillPaymentViewController_initWithAccount_accountUserCollec
   featuredViewState = self->_featuredViewState;
   if (_UISolariumFeatureFlagEnabled())
   {
-    v4 = [(PKAccountBillPaymentViewController *)self view];
-    [v4 pkui_applyContainerConcentricCornerConfiguration];
+    view = [(PKAccountBillPaymentViewController *)self view];
+    [view pkui_applyContainerConcentricCornerConfiguration];
   }
 
   v5 = PKUIGetMinScreenType();
@@ -726,8 +726,8 @@ void __151__PKAccountBillPaymentViewController_initWithAccount_accountUserCollec
 
     [(UILabel *)self->_titleLabel setTextAlignment:PKOBKTextAlignment()];
     v13 = self->_titleLabel;
-    v14 = [(PKAccountBillPaymentViewController *)self _title];
-    [(UILabel *)v13 setText:v14];
+    _title = [(PKAccountBillPaymentViewController *)self _title];
+    [(UILabel *)v13 setText:_title];
 
     [(UILabel *)self->_titleLabel setNumberOfLines:0];
     [(UILabel *)self->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
@@ -778,17 +778,17 @@ void __151__PKAccountBillPaymentViewController_initWithAccount_accountUserCollec
 
   [(PKBillPaymentRingView *)self->_ringView setEnabled:self->_interstitialState == 0];
   [(PKBillPaymentRingView *)self->_ringView setHidden:featuredViewState != 1];
-  v27 = [(PKBillPaymentRingView *)self->_ringView layer];
-  [v27 setAnchorPoint:{0.5, 0.0}];
+  layer = [(PKBillPaymentRingView *)self->_ringView layer];
+  [layer setAnchorPoint:{0.5, 0.0}];
 
   v28 = [[PKAccountBillPaymentAmountDescriptionView alloc] initWithSuggestedAmountList:self->_suggestionList account:self->_account configuration:self->_configuration delegate:self];
   amountDescriptionView = self->_amountDescriptionView;
   self->_amountDescriptionView = v28;
 
   v30 = self->_amountDescriptionView;
-  v31 = [(PKAccount *)self->_account schedulePaymentFeatureDescriptor];
-  v32 = [v31 minimumAmount];
-  [(PKAccountBillPaymentAmountDescriptionView *)v30 setMinimumAmount:v32];
+  schedulePaymentFeatureDescriptor = [(PKAccount *)self->_account schedulePaymentFeatureDescriptor];
+  minimumAmount = [schedulePaymentFeatureDescriptor minimumAmount];
+  [(PKAccountBillPaymentAmountDescriptionView *)v30 setMinimumAmount:minimumAmount];
 
   v33 = self->_amountDescriptionView;
   if (PKBroadwayAllowOverpaymentViaKeypadKey())
@@ -798,8 +798,8 @@ void __151__PKAccountBillPaymentViewController_initWithAccount_accountUserCollec
 
   else
   {
-    v34 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList maximumAmount];
-    [(PKAccountBillPaymentAmountDescriptionView *)v33 setMaximumAmount:v34];
+    maximumAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList maximumAmount];
+    [(PKAccountBillPaymentAmountDescriptionView *)v33 setMaximumAmount:maximumAmount];
   }
 
   [(PKAccountBillPaymentViewController *)self _setupAmountDescriptionViewForInterstitial];
@@ -828,18 +828,18 @@ void __151__PKAccountBillPaymentViewController_initWithAccount_accountUserCollec
   objc_initWeak(&location, self);
   if (_UISolariumFeatureFlagEnabled() && (PKIsVision() & 1) == 0)
   {
-    v39 = [MEMORY[0x1E69DC740] prominentGlassButtonConfiguration];
+    prominentGlassButtonConfiguration = [MEMORY[0x1E69DC740] prominentGlassButtonConfiguration];
     v43 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_66];
-    [v39 setBaseForegroundColor:v43];
+    [prominentGlassButtonConfiguration setBaseForegroundColor:v43];
 
     v127[0] = MEMORY[0x1E69E9820];
     v127[1] = 3221225472;
     v127[2] = __46__PKAccountBillPaymentViewController_loadView__block_invoke_2;
     v127[3] = &unk_1E8013EE8;
     v128 = v115;
-    [v39 setTitleTextAttributesTransformer:v127];
-    [v39 setShowsActivityIndicator:!self->_viewIsEnabled];
-    v44 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v39 primaryAction:0];
+    [prominentGlassButtonConfiguration setTitleTextAttributesTransformer:v127];
+    [prominentGlassButtonConfiguration setShowsActivityIndicator:!self->_viewIsEnabled];
+    v44 = [MEMORY[0x1E69DC738] buttonWithConfiguration:prominentGlassButtonConfiguration primaryAction:0];
     primaryButton = self->_primaryButton;
     self->_primaryButton = v44;
 
@@ -855,14 +855,14 @@ void __151__PKAccountBillPaymentViewController_initWithAccount_accountUserCollec
     objc_copyWeak(&v126, &location);
     [(UIButton *)v48 setConfigurationUpdateHandler:v125];
     objc_destroyWeak(&v126);
-    v40 = v128;
+    backgroundColor = v128;
   }
 
   else
   {
-    v39 = [MEMORY[0x1E69DC888] labelColor];
-    v40 = [objc_opt_class() backgroundColor];
-    v41 = v116[2](v116, v39, v40);
+    prominentGlassButtonConfiguration = [MEMORY[0x1E69DC888] labelColor];
+    backgroundColor = [objc_opt_class() backgroundColor];
+    v41 = v116[2](v116, prominentGlassButtonConfiguration, backgroundColor);
     v42 = self->_primaryButton;
     self->_primaryButton = v41;
   }
@@ -882,38 +882,38 @@ LABEL_36:
     if (!interstitialState)
     {
       self->_buttonsArePayButtons = 1;
-      v51 = [(PKAccountBillPaymentViewController *)self _paymentAmount];
-      [(PKAccountBillPaymentViewController *)self _updatePayNowButtonTitleWithAmount:v51];
+      _paymentAmount = [(PKAccountBillPaymentViewController *)self _paymentAmount];
+      [(PKAccountBillPaymentViewController *)self _updatePayNowButtonTitleWithAmount:_paymentAmount];
 
       [(UIButton *)self->_primaryButton addTarget:self action:sel__payNowButtonTapped_ forControlEvents:64];
       v52 = PKLocalizedFeatureString();
       if (_UISolariumFeatureFlagEnabled() && (PKIsVision() & 1) == 0)
       {
-        v67 = [MEMORY[0x1E69DC740] prominentGlassButtonConfiguration];
-        [v67 setTitle:v52];
-        v68 = [MEMORY[0x1E69DC888] labelColor];
-        [v67 setBaseForegroundColor:v68];
+        prominentGlassButtonConfiguration2 = [MEMORY[0x1E69DC740] prominentGlassButtonConfiguration];
+        [prominentGlassButtonConfiguration2 setTitle:v52];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        [prominentGlassButtonConfiguration2 setBaseForegroundColor:labelColor];
 
         v123[0] = MEMORY[0x1E69E9820];
         v123[1] = 3221225472;
         v123[2] = __46__PKAccountBillPaymentViewController_loadView__block_invoke_4;
         v123[3] = &unk_1E8013EE8;
         v124 = v115;
-        [v67 setTitleTextAttributesTransformer:v123];
-        v69 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v67 primaryAction:0];
+        [prominentGlassButtonConfiguration2 setTitleTextAttributesTransformer:v123];
+        v69 = [MEMORY[0x1E69DC738] buttonWithConfiguration:prominentGlassButtonConfiguration2 primaryAction:0];
         secondaryButton = self->_secondaryButton;
         self->_secondaryButton = v69;
 
         v71 = self->_secondaryButton;
-        v72 = [MEMORY[0x1E69DC888] systemGray6Color];
-        [(UIButton *)v71 setTintColor:v72];
+        systemGray6Color = [MEMORY[0x1E69DC888] systemGray6Color];
+        [(UIButton *)v71 setTintColor:systemGray6Color];
       }
 
       else
       {
-        v53 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-        v54 = [MEMORY[0x1E69DC888] labelColor];
-        v55 = v116[2](v116, v53, v54);
+        tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+        labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+        v55 = v116[2](v116, tertiarySystemFillColor, labelColor2);
         v56 = self->_secondaryButton;
         self->_secondaryButton = v55;
 
@@ -1010,8 +1010,8 @@ LABEL_45:
     self->_buttonContainerView = v80;
 
     v82 = self->_buttonContainerView;
-    v83 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v82 setBackgroundColor:v83];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v82 setBackgroundColor:clearColor];
   }
 
   else
@@ -1025,30 +1025,30 @@ LABEL_45:
     [(_PKVisibilityBackdropView *)self->_blurringView setUserInteractionEnabled:1];
     [(_PKVisibilityBackdropView *)self->_blurringView pkui_setVisibility:0 animated:0.0];
     v87 = self->_blurringView;
-    v83 = self->_buttonContainerView;
+    clearColor = self->_buttonContainerView;
     self->_buttonContainerView = &v87->super.super;
   }
 
-  v88 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v88 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-  [v88 addObserver:self selector:sel_keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
-  [v88 addObserver:self selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
-  [v88 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
-  v113 = v88;
-  v89 = [(PKAccountBillPaymentViewController *)self view];
-  v90 = [objc_opt_class() backgroundColor];
-  [v89 setBackgroundColor:v90];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+  v113 = defaultCenter;
+  view2 = [(PKAccountBillPaymentViewController *)self view];
+  backgroundColor2 = [objc_opt_class() backgroundColor];
+  [view2 setBackgroundColor:backgroundColor2];
 
-  [v89 addSubview:self->_scrollView];
-  [v89 addSubview:self->_buttonContainerView];
+  [view2 addSubview:self->_scrollView];
+  [view2 addSubview:self->_buttonContainerView];
   if ((_UISolariumFeatureFlagEnabled() & 1) != 0 || PKIsVision())
   {
-    v118 = self->_buttonContainerView;
+    contentView = self->_buttonContainerView;
   }
 
   else
   {
-    v118 = [(_UIBackdropView *)self->_blurringView contentView];
+    contentView = [(_UIBackdropView *)self->_blurringView contentView];
   }
 
   if (_UISolariumFeatureFlagEnabled())
@@ -1058,18 +1058,18 @@ LABEL_45:
 
   else
   {
-    [(UIView *)v118 addSubview:self->_tertiaryButton];
+    [(UIView *)contentView addSubview:self->_tertiaryButton];
   }
 
-  [(UIView *)v118 addSubview:self->_secondaryButton];
-  [(UIView *)v118 addSubview:self->_primaryButton];
+  [(UIView *)contentView addSubview:self->_secondaryButton];
+  [(UIView *)contentView addSubview:self->_primaryButton];
   [(UIScrollView *)self->_scrollView addSubview:self->_ringView];
   [(UIScrollView *)self->_scrollView addSubview:self->_productHeroView];
   [(UIScrollView *)self->_scrollView addSubview:self->_amountDescriptionView];
   [(UIScrollView *)self->_scrollView addSubview:self->_titleLabel];
   [(UIScrollView *)self->_scrollView addSubview:self->_subtitleLabel];
   [(UIScrollView *)self->_scrollView addSubview:self->_smallRingInterestLabel];
-  [v89 setUserInteractionEnabled:self->_viewIsEnabled];
+  [view2 setUserInteractionEnabled:self->_viewIsEnabled];
   v91 = !self->_buttonsArePayButtons || self->_payButtonsEnabled;
   [(UIButton *)self->_primaryButton setEnabled:v91];
   v92 = self->_shouldEnablePayLaterButton && self->_payButtonsEnabled;
@@ -1080,15 +1080,15 @@ LABEL_45:
   }
 
   [(UIButton *)self->_tertiaryButton setEnabled:self->_viewIsEnabled];
-  v93 = [(PKAccountBillPaymentViewController *)self traitCollection];
-  v94 = [v93 preferredContentSizeCategory];
+  traitCollection = [(PKAccountBillPaymentViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   v95 = *MEMORY[0x1E69DDC70];
-  self->_usesAccessibilityLayout = UIContentSizeCategoryCompareToCategory(v94, *MEMORY[0x1E69DDC70]) == NSOrderedDescending;
-  self->_usesLargestAccessibilityLayout = UIContentSizeCategoryCompareToCategory(v94, *MEMORY[0x1E69DDC20]) < 2;
-  v96 = [(PKAccountBillPaymentViewController *)self _interestLabelIsOutsideSmallRing];
+  self->_usesAccessibilityLayout = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC70]) == NSOrderedDescending;
+  self->_usesLargestAccessibilityLayout = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC20]) < 2;
+  _interestLabelIsOutsideSmallRing = [(PKAccountBillPaymentViewController *)self _interestLabelIsOutsideSmallRing];
   v97 = *MEMORY[0x1E69DDD28];
-  if (v96)
+  if (_interestLabelIsOutsideSmallRing)
   {
     v98 = *MEMORY[0x1E69DDD28];
   }
@@ -1098,7 +1098,7 @@ LABEL_45:
     v98 = v114;
   }
 
-  if (v96)
+  if (_interestLabelIsOutsideSmallRing)
   {
     v99 = v117;
   }
@@ -1109,11 +1109,11 @@ LABEL_45:
   }
 
   v100 = PKFontForDesign(*MEMORY[0x1E69DB8D8], v98, v99, 0x8000, 0);
-  v101 = [v100 pk_fixedWidthFont];
+  pk_fixedWidthFont = [v100 pk_fixedWidthFont];
 
   v135 = *MEMORY[0x1E69DB648];
   v102 = v135;
-  v136[0] = v101;
+  v136[0] = pk_fixedWidthFont;
   v103 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v136 forKeys:&v135 count:1];
   v104 = [v103 mutableCopy];
   smallRingInterestAttributes = self->_smallRingInterestAttributes;
@@ -1124,16 +1124,16 @@ LABEL_45:
   v107 = *MEMORY[0x1E69DB650];
   v133[0] = v102;
   v133[1] = v107;
-  v108 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v134[1] = v108;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v134[1] = secondaryLabelColor;
   v109 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v134 forKeys:v133 count:2];
   smallRingInterestDateAttributes = self->_smallRingInterestDateAttributes;
   self->_smallRingInterestDateAttributes = v109;
 
   [(PKAccountBillPaymentViewController *)self _updateNavigationTitle];
   [(PKAccountBillPaymentViewController *)self _updateForShowKeyboardAnimated:0];
-  v111 = [(PKAccountBillPaymentViewController *)self view];
-  [v111 setAccessibilityIdentifier:*MEMORY[0x1E69B9540]];
+  view3 = [(PKAccountBillPaymentViewController *)self view];
+  [view3 setAccessibilityIdentifier:*MEMORY[0x1E69B9540]];
 
   if (_UISolariumFeatureFlagEnabled() && (PKIsVision() & 1) == 0)
   {
@@ -1241,11 +1241,11 @@ void __46__PKAccountBillPaymentViewController_loadView__block_invoke_7(uint64_t 
   [(PKAccountBillPaymentViewController *)&v89 viewWillLayoutSubviews];
   v3 = objc_autoreleasePoolPush();
   self->_inLayoutSubviews = 1;
-  v4 = [(PKAccountBillPaymentViewController *)self view];
-  [v4 safeAreaInsets];
+  view = [(PKAccountBillPaymentViewController *)self view];
+  [view safeAreaInsets];
   v6 = v5;
   v77 = v7;
-  [v4 bounds];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v80 = v12;
@@ -1254,13 +1254,13 @@ void __46__PKAccountBillPaymentViewController_loadView__block_invoke_7(uint64_t 
   memset(&slice, 0, sizeof(slice));
   memset(&remainder, 0, sizeof(remainder));
   [objc_opt_class() contentMargins];
-  [v4 pkui_readableContentBoundsWithMargins:?];
+  [view pkui_readableContentBoundsWithMargins:?];
   v15 = v14;
   if (PKUIGetMinScreenWidthType())
   {
-    v16 = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
+    pkui_userInterfaceIdiomSupportsLargeLayouts = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
     v17 = 24.0;
-    if (v16)
+    if (pkui_userInterfaceIdiomSupportsLargeLayouts)
     {
       v17 = 19.0;
     }
@@ -1282,8 +1282,8 @@ void __46__PKAccountBillPaymentViewController_loadView__block_invoke_7(uint64_t 
     v90.size.width = v9;
     v90.size.height = v11;
     v19 = CGRectGetMaxY(v90) + -48.0;
-    v20 = [(PKAccountBillPaymentViewController *)self view];
-    [v20 _concentricEdgeInsetsForEdge:4 bounds:0.0 minimumEdgeInsets:{v19, v9, 48.0, 0.0, 28.0, 28.0, 28.0}];
+    view2 = [(PKAccountBillPaymentViewController *)self view];
+    [view2 _concentricEdgeInsetsForEdge:4 bounds:0.0 minimumEdgeInsets:{v19, v9, 48.0, 0.0, 28.0, 28.0, 28.0}];
     v22 = v21;
     v82 = v23;
     v25 = v24;
@@ -1345,12 +1345,12 @@ void __46__PKAccountBillPaymentViewController_loadView__block_invoke_7(uint64_t 
       height = *(MEMORY[0x1E695F050] + 24);
       if (!CGRectIsNull(self->_keyboardFrame))
       {
-        v42 = [v4 window];
-        v43 = v42;
-        if (v42)
+        window = [view window];
+        v43 = window;
+        if (window)
         {
-          [v42 convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
-          [v4 convertRect:0 fromView:?];
+          [window convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
+          [view convertRect:0 fromView:?];
           x = v44;
           y = v45;
           width = v46;
@@ -1497,8 +1497,8 @@ LABEL_42:
 
     [(_PKVisibilityBackdropView *)self->_blurringView pkui_setVisibility:0 animated:v71];
     scrollView = self->_scrollView;
-    v73 = [(PKAccountBillPaymentViewController *)self navigationItem];
-    [(UIScrollView *)scrollView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v73];
+    navigationItem = [(PKAccountBillPaymentViewController *)self navigationItem];
+    [(UIScrollView *)scrollView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 
   objc_autoreleasePoolPop(v3);
@@ -1512,25 +1512,25 @@ LABEL_42:
   self->_inLayoutSubviews = 0;
 }
 
-- (CGSize)_layoutScrollViewWithContentWidth:(double)a3
+- (CGSize)_layoutScrollViewWithContentWidth:(double)width
 {
   [(UIScrollView *)self->_scrollView bounds];
   v104 = v5;
-  [(UILabel *)self->_titleLabel sizeThatFits:a3, 1.79769313e308];
+  [(UILabel *)self->_titleLabel sizeThatFits:width, 1.79769313e308];
   v128 = v7;
   v130 = v6;
-  [(UILabel *)self->_subtitleLabel sizeThatFits:a3, 1.79769313e308];
+  [(UILabel *)self->_subtitleLabel sizeThatFits:width, 1.79769313e308];
   v124 = v9;
   v126 = v8;
-  [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView sizeThatFits:a3, 1.79769313e308];
+  [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView sizeThatFits:width, 1.79769313e308];
   v132 = v11;
   v134 = v10;
-  v123 = a3;
-  [(PKBillPaymentRingView *)self->_ringView sizeThatFits:a3, 1.79769313e308];
+  widthCopy = width;
+  [(PKBillPaymentRingView *)self->_ringView sizeThatFits:width, 1.79769313e308];
   v13 = v12;
   v15 = v14;
-  v16 = [(UIImageView *)self->_productHeroView image];
-  [v16 size];
+  image = [(UIImageView *)self->_productHeroView image];
+  [image size];
   PKSizeAspectFit();
   v18 = v17;
   v20 = v19;
@@ -1584,11 +1584,11 @@ LABEL_42:
   v122 = v29;
   [(PKBillPaymentRingView *)self->_ringView setBounds:v29, v30, v13, v15];
   [(PKBillPaymentRingView *)self->_ringView layoutIfNeeded];
-  v31 = [(PKAccountBillPaymentViewController *)self _interestLabelIsOutsideSmallRing];
-  if (v31)
+  _interestLabelIsOutsideSmallRing = [(PKAccountBillPaymentViewController *)self _interestLabelIsOutsideSmallRing];
+  if (_interestLabelIsOutsideSmallRing)
   {
-    v32 = v123;
-    [(UILabel *)self->_smallRingInterestLabel sizeThatFits:v123, 1.79769313e308];
+    v32 = widthCopy;
+    [(UILabel *)self->_smallRingInterestLabel sizeThatFits:widthCopy, 1.79769313e308];
     v34 = v33;
     v36 = v35;
   }
@@ -1599,7 +1599,7 @@ LABEL_42:
     [(UILabel *)self->_smallRingInterestLabel sizeThatFits:v23 + v37 * -2.0 * v120 + -10.0, v23 + v37 * -2.0 * v120 + -10.0];
     v34 = v38;
     v36 = v39;
-    v32 = v123;
+    v32 = widthCopy;
   }
 
   [(UILabel *)self->_smallRingInterestLabel setBounds:v122, v30, v34, v36];
@@ -1622,8 +1622,8 @@ LABEL_42:
   v44 = v40;
   if ((PKIsVision() & 1) == 0)
   {
-    v45 = [(PKAccountBillPaymentViewController *)self view];
-    [v45 _shouldReverseLayoutDirection];
+    view = [(PKAccountBillPaymentViewController *)self view];
+    [view _shouldReverseLayoutDirection];
 
     v44 = PKContentAlignmentMake();
   }
@@ -1720,7 +1720,7 @@ LABEL_42:
     *(v142 + 2) = v138;
   }
 
-  if (v31)
+  if (_interestLabelIsOutsideSmallRing)
   {
     v142[5] = v142[5] + 8.0;
     v43[2](v43, v40, v111, v109);
@@ -1769,7 +1769,7 @@ LABEL_42:
   v90 = 0.0;
   if (tertiaryButton)
   {
-    [(UIButton *)tertiaryButton sizeThatFits:v123, 1.79769313e308];
+    [(UIButton *)tertiaryButton sizeThatFits:widthCopy, 1.79769313e308];
     v92 = v91;
     v94 = v93;
     [(UIButton *)self->_tertiaryButton setBounds:v122, v30, v91, v93];
@@ -1808,21 +1808,21 @@ void __72__PKAccountBillPaymentViewController__layoutScrollViewWithContentWidth_
   [v9 setCenter:{a2 + v10 * a4, a3 + v11 * a5}];
 }
 
-- (void)_layoutFooterWithState:(id *)a3
+- (void)_layoutFooterWithState:(id *)state
 {
   if (_UISolariumFeatureFlagEnabled())
   {
-    v5 = self->_buttonContainerView;
+    contentView = self->_buttonContainerView;
   }
 
   else
   {
-    v5 = [(_UIBackdropView *)self->_blurringView contentView];
+    contentView = [(_UIBackdropView *)self->_blurringView contentView];
   }
 
-  v6 = v5;
+  v6 = contentView;
   memset(&slice, 0, sizeof(slice));
-  [(UIView *)v5 bounds];
+  [(UIView *)contentView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1845,11 +1845,11 @@ void __72__PKAccountBillPaymentViewController__layoutScrollViewWithContentWidth_
   v24.origin.y = v10;
   v24.size.width = v12;
   v24.size.height = v14;
-  CGRectDivide(v24, &slice, &v22, a3->var5, CGRectMaxYEdge);
+  CGRectDivide(v24, &slice, &v22, state->var5, CGRectMaxYEdge);
   if (self->_tertiaryButton && (_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    [(UIButton *)self->_tertiaryButton sizeThatFits:a3->var1, 1.79769313e308];
-    height = a3->var2.height;
+    [(UIButton *)self->_tertiaryButton sizeThatFits:state->var1, 1.79769313e308];
+    height = state->var2.height;
     if (self->_showKeyboard)
     {
       slice.origin.x = v22.origin.x;
@@ -1864,7 +1864,7 @@ void __72__PKAccountBillPaymentViewController__layoutScrollViewWithContentWidth_
     else
     {
       CGRectDivide(v22, &slice, &v22, 3.0, CGRectMaxYEdge);
-      CGRectDivide(v22, &slice, &v22, a3->var2.height, CGRectMaxYEdge);
+      CGRectDivide(v22, &slice, &v22, state->var2.height, CGRectMaxYEdge);
       v18 = self->_tertiaryButton;
       PKSizeAlignedInRect();
       [(UIButton *)v18 setFrame:?];
@@ -1872,23 +1872,23 @@ void __72__PKAccountBillPaymentViewController__layoutScrollViewWithContentWidth_
     }
   }
 
-  if (!a3->var6)
+  if (!state->var6)
   {
     PKSizeAlignedInRect();
     v22 = v25;
-    CGRectDivide(v25, &v22, &slice, a3->var2.height, CGRectMaxYEdge);
-    CGRectDivide(v22, &slice, &v22, a3->var2.width, v15);
+    CGRectDivide(v25, &v22, &slice, state->var2.height, CGRectMaxYEdge);
+    CGRectDivide(v22, &slice, &v22, state->var2.width, v15);
     secondaryButton = self->_secondaryButton;
     PKSizeAlignedInRect();
     [(UIButton *)secondaryButton setFrame:?];
-    CGRectDivide(v22, &slice, &v22, a3->var3, v15);
+    CGRectDivide(v22, &slice, &v22, state->var3, v15);
     primaryButton = self->_primaryButton;
     goto LABEL_20;
   }
 
   if (self->_secondaryButton)
   {
-    CGRectDivide(v22, &slice, &v22, a3->var2.height, CGRectMaxYEdge);
+    CGRectDivide(v22, &slice, &v22, state->var2.height, CGRectMaxYEdge);
     v19 = self->_secondaryButton;
     PKSizeAlignedInRect();
     [(UIButton *)v19 setFrame:?];
@@ -1898,7 +1898,7 @@ void __72__PKAccountBillPaymentViewController__layoutScrollViewWithContentWidth_
   {
     if (!self->_secondaryButton || (CGRectDivide(v22, &slice, &v22, 15.0, CGRectMaxYEdge), self->_primaryButton))
     {
-      CGRectDivide(v22, &slice, &v22, a3->var2.height, CGRectMaxYEdge);
+      CGRectDivide(v22, &slice, &v22, state->var2.height, CGRectMaxYEdge);
       primaryButton = self->_primaryButton;
 LABEL_20:
       PKSizeAlignedInRect();
@@ -1907,11 +1907,11 @@ LABEL_20:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = PKAccountBillPaymentViewController;
-  [(PKAccountBillPaymentViewController *)&v11 viewWillAppear:a3];
+  [(PKAccountBillPaymentViewController *)&v11 viewWillAppear:appear];
   self->_visibility = 1;
   [(PKAccountBillPaymentController *)self->_billPaymentCoordinator setDelegate:self];
   if (self->_hasAnimatedRing || ![(PKBillPaymentRingView *)self->_ringView isEnabled])
@@ -1920,51 +1920,51 @@ LABEL_20:
   }
 
   v4 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList suggestedAmountWithCategory:18];
-  v5 = [v4 amount];
+  amount = [v4 amount];
 
-  if (!v5)
+  if (!amount)
   {
-    v5 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList maximumAmount];
+    amount = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList maximumAmount];
   }
 
   configuration = self->_configuration;
   if (configuration)
   {
-    v7 = [(PKAccountServiceAccountResolutionConfiguration *)configuration billPayAmountType];
-    switch(v7)
+    billPayAmountType = [(PKAccountServiceAccountResolutionConfiguration *)configuration billPayAmountType];
+    switch(billPayAmountType)
     {
       case 3:
-        v8 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration billPayAmount];
+        billPayAmount = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration billPayAmount];
         goto LABEL_12;
       case 2:
-        v8 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList minimumAmount];
+        billPayAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList minimumAmount];
         goto LABEL_12;
       case 1:
-        v8 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList remainingStatementAmount];
+        billPayAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList remainingStatementAmount];
 LABEL_12:
-        v9 = v8;
+        v9 = billPayAmount;
 
-        v5 = v9;
+        amount = v9;
         break;
     }
   }
 
-  [(PKBillPaymentRingView *)self->_ringView prepareForInitialDisplayWithAmount:v5];
+  [(PKBillPaymentRingView *)self->_ringView prepareForInitialDisplayWithAmount:amount];
 
 LABEL_14:
   if (self->_showKeyboard)
   {
-    v10 = [(PKAccountBillPaymentViewController *)self view];
-    [v10 setNeedsLayout];
+    view = [(PKAccountBillPaymentViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = PKAccountBillPaymentViewController;
-  [(PKAccountBillPaymentViewController *)&v6 viewDidAppear:a3];
+  [(PKAccountBillPaymentViewController *)&v6 viewDidAppear:appear];
   self->_visibility = 2;
   if (!self->_hasAnimatedRing)
   {
@@ -1975,8 +1975,8 @@ LABEL_14:
   [(PKAccountBillPaymentViewController *)self _showOrHideKeypad];
   if (self->_showKeyboard)
   {
-    v4 = [(PKAccountBillPaymentViewController *)self view];
-    [v4 setNeedsLayout];
+    view = [(PKAccountBillPaymentViewController *)self view];
+    [view setNeedsLayout];
   }
 
   v7 = *MEMORY[0x1E69BA680];
@@ -1985,11 +1985,11 @@ LABEL_14:
   [(PKAccountBillPaymentViewController *)self _reportEventForPassIfNecessary:v5];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PKAccountBillPaymentViewController;
-  [(PKAccountBillPaymentViewController *)&v7 viewWillDisappear:a3];
+  [(PKAccountBillPaymentViewController *)&v7 viewWillDisappear:disappear];
   self->_visibility = 3;
   CLInUse = self->_CLInUse;
   if (CLInUse)
@@ -2001,22 +2001,22 @@ LABEL_14:
 
   if (self->_showKeyboard)
   {
-    v6 = [(PKAccountBillPaymentViewController *)self view];
-    [v6 setNeedsLayout];
+    view = [(PKAccountBillPaymentViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = PKAccountBillPaymentViewController;
-  [(PKAccountBillPaymentViewController *)&v6 viewDidDisappear:a3];
+  [(PKAccountBillPaymentViewController *)&v6 viewDidDisappear:disappear];
   self->_visibility = 0;
   if (self->_showKeyboard)
   {
-    v4 = [(PKAccountBillPaymentViewController *)self view];
-    [v4 setNeedsLayout];
+    view = [(PKAccountBillPaymentViewController *)self view];
+    [view setNeedsLayout];
   }
 
   v7 = *MEMORY[0x1E69BA680];
@@ -2025,41 +2025,41 @@ LABEL_14:
   [(PKAccountBillPaymentViewController *)self _reportEventForPassIfNecessary:v5];
 }
 
-- (void)billPaymentRingView:(id)a3 selectedSuggestedAmount:(id)a4 selectedSuggestedAmountIsTarget:(BOOL)a5 userInitiatedChange:(BOOL)a6
+- (void)billPaymentRingView:(id)view selectedSuggestedAmount:(id)amount selectedSuggestedAmountIsTarget:(BOOL)target userInitiatedChange:(BOOL)change
 {
-  v6 = a6;
-  v7 = a5;
+  changeCopy = change;
+  targetCopy = target;
   v20[2] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  amountCopy = amount;
   if (!self->_interstitialState)
   {
-    v10 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList suggestedAmountGapMessageForStartSuggestedAmount:v9];
+    v10 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList suggestedAmountGapMessageForStartSuggestedAmount:amountCopy];
     v11 = v10;
-    if (v7 || !v10)
+    if (targetCopy || !v10)
     {
-      v12 = [v9 title];
-      v13 = v9;
+      title = [amountCopy title];
+      v13 = amountCopy;
     }
 
     else
     {
-      v12 = [v10 title];
+      title = [v10 title];
       v13 = v11;
     }
 
-    v14 = [v13 message];
-    [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView setTitleText:v12];
-    [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView setDescriptionText:v14];
-    v15 = [(PKAccountBillPaymentViewController *)self view];
-    [v15 setNeedsLayout];
+    message = [v13 message];
+    [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView setTitleText:title];
+    [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView setDescriptionText:message];
+    view = [(PKAccountBillPaymentViewController *)self view];
+    [view setNeedsLayout];
 
-    if (v6)
+    if (changeCopy)
     {
       v16 = *MEMORY[0x1E69BA3E8];
       v19[0] = *MEMORY[0x1E69BA680];
       v19[1] = v16;
       v17 = @"false";
-      if (v7)
+      if (targetCopy)
       {
         v17 = @"true";
       }
@@ -2072,65 +2072,65 @@ LABEL_14:
   }
 }
 
-- (void)billPaymentRingView:(id)a3 amountChanged:(id)a4
+- (void)billPaymentRingView:(id)view amountChanged:(id)changed
 {
-  v5 = a4;
-  v8 = v5;
+  changedCopy = changed;
+  v8 = changedCopy;
   if (self->_showKeyboard)
   {
-    v6 = [(PKAccountBillPaymentViewController *)self _paymentAmount];
+    _paymentAmount = [(PKAccountBillPaymentViewController *)self _paymentAmount];
   }
 
   else
   {
-    v6 = v5;
+    _paymentAmount = changedCopy;
   }
 
-  v7 = v6;
-  [(PKAccountBillPaymentViewController *)self _updatePayNowButtonTitleWithAmount:v6];
+  v7 = _paymentAmount;
+  [(PKAccountBillPaymentViewController *)self _updatePayNowButtonTitleWithAmount:_paymentAmount];
 }
 
-- (id)billPaymentRingView:(id)a3 topCurvedTextForSuggestedAmount:(id)a4
+- (id)billPaymentRingView:(id)view topCurvedTextForSuggestedAmount:(id)amount
 {
-  [(PKAccount *)self->_account feature:a3];
-  v5 = [(PKAccount *)self->_account creditDetails];
-  v6 = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
-  if (v6)
+  [(PKAccount *)self->_account feature:view];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  earlyInstallmentPlan = [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
+  if (earlyInstallmentPlan)
   {
-    [v5 totalBalance];
+    [creditDetails totalBalance];
   }
 
   else
   {
-    [v5 cardBalance];
+    [creditDetails cardBalance];
   }
   v7 = ;
 
-  v8 = [v7 amount];
-  v9 = [MEMORY[0x1E696AB90] zero];
-  v10 = [v8 compare:v9];
+  amount = [v7 amount];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v10 = [amount compare:zero];
 
   if (v10 == -1)
   {
-    v11 = [v7 negativeValue];
+    negativeValue = [v7 negativeValue];
 
-    v7 = v11;
+    v7 = negativeValue;
   }
 
-  v12 = [v7 formattedStringValue];
-  if (v12)
+  formattedStringValue = [v7 formattedStringValue];
+  if (formattedStringValue)
   {
     if (v10 == -1)
     {
-      v17 = v12;
+      v17 = formattedStringValue;
       v13 = PKLocalizedFeatureString();
 
-      v12 = v13;
+      formattedStringValue = v13;
     }
 
     [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
 
-    v17 = v12;
+    v17 = formattedStringValue;
     v14 = PKLocalizedFeatureString();
   }
 
@@ -2139,36 +2139,36 @@ LABEL_14:
     v14 = 0;
   }
 
-  v15 = [v14 pk_uppercaseStringForPreferredLocale];
+  pk_uppercaseStringForPreferredLocale = [v14 pk_uppercaseStringForPreferredLocale];
 
-  return v15;
+  return pk_uppercaseStringForPreferredLocale;
 }
 
-- (id)billPaymentRingView:(id)a3 bottomCurvedTextForSuggestedAmount:(id)a4
+- (id)billPaymentRingView:(id)view bottomCurvedTextForSuggestedAmount:(id)amount
 {
-  v5 = a4;
+  amountCopy = amount;
   if ([(PKAccount *)self->_account showBillPaymentInterest])
   {
     [(PKAccount *)self->_account feature];
-    v6 = [v5 amount];
-    v7 = [(PKAccountBillPaymentViewController *)self _interestForAmount:v6];
+    amount = [amountCopy amount];
+    v7 = [(PKAccountBillPaymentViewController *)self _interestForAmount:amount];
 
     if (v7 && ([MEMORY[0x1E696AB90] zero], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "compare:", v8), v8, v9 == 1))
     {
-      v10 = [(PKAccountBillPaymentViewController *)self _interestPostDate];
-      v11 = [(NSDateFormatter *)self->_interestDateFormatter stringFromDate:v10];
+      _interestPostDate = [(PKAccountBillPaymentViewController *)self _interestPostDate];
+      unpostedInterest = [(NSDateFormatter *)self->_interestDateFormatter stringFromDate:_interestPostDate];
       v12 = PKLocalizedFeatureString();
     }
 
     else
     {
-      v14 = [(PKAccount *)self->_account creditDetails];
-      v10 = [v14 accountSummary];
+      creditDetails = [(PKAccount *)self->_account creditDetails];
+      _interestPostDate = [creditDetails accountSummary];
 
-      v11 = [v10 unpostedInterest];
-      if ([v10 inGrace])
+      unpostedInterest = [_interestPostDate unpostedInterest];
+      if ([_interestPostDate inGrace])
       {
-        v15 = v11 == 0;
+        v15 = unpostedInterest == 0;
       }
 
       else
@@ -2178,8 +2178,8 @@ LABEL_14:
 
       if (!v15)
       {
-        v16 = [MEMORY[0x1E696AB90] zero];
-        [v11 compare:v16];
+        zero = [MEMORY[0x1E696AB90] zero];
+        [unpostedInterest compare:zero];
       }
 
       v12 = PKLocalizedFeatureString();
@@ -2187,22 +2187,22 @@ LABEL_14:
 
     v17 = v12;
 
-    v13 = [v17 pk_uppercaseStringForPreferredLocale];
+    pk_uppercaseStringForPreferredLocale = [v17 pk_uppercaseStringForPreferredLocale];
   }
 
   else
   {
-    v13 = 0;
+    pk_uppercaseStringForPreferredLocale = 0;
   }
 
-  return v13;
+  return pk_uppercaseStringForPreferredLocale;
 }
 
-- (id)disabledTopCurvedTextForBillPaymentRingView:(id)a3
+- (id)disabledTopCurvedTextForBillPaymentRingView:(id)view
 {
   [(PKAccount *)self->_account feature];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = v4;
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  v5 = creditDetails;
   if (self->_interstitialState - 1 > 2)
   {
     v11 = 0;
@@ -2210,24 +2210,24 @@ LABEL_14:
 
   else
   {
-    v6 = [v4 cardBalance];
-    v7 = [v6 amount];
-    v8 = [MEMORY[0x1E696AB90] zero];
-    v9 = [v7 compare:v8];
+    cardBalance = [creditDetails cardBalance];
+    amount = [cardBalance amount];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v9 = [amount compare:zero];
 
     if (v9 == -1)
     {
-      v12 = [v6 negativeValue];
+      negativeValue = [cardBalance negativeValue];
 
-      v15 = [v12 formattedStringValue];
-      v10 = PKLocalizedFeatureString();
+      formattedStringValue = [negativeValue formattedStringValue];
+      formattedStringValue2 = PKLocalizedFeatureString();
 
-      v6 = v12;
+      cardBalance = negativeValue;
     }
 
     else
     {
-      v10 = [v6 formattedStringValue];
+      formattedStringValue2 = [cardBalance formattedStringValue];
     }
 
     if ([v5 numberOfActiveStatementedInstallments] >= 1)
@@ -2235,22 +2235,22 @@ LABEL_14:
       [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
     }
 
-    v15 = v10;
+    formattedStringValue = formattedStringValue2;
     v11 = PKLocalizedFeatureString();
   }
 
-  v13 = [v11 pk_uppercaseStringForPreferredLocale];
+  pk_uppercaseStringForPreferredLocale = [v11 pk_uppercaseStringForPreferredLocale];
 
-  return v13;
+  return pk_uppercaseStringForPreferredLocale;
 }
 
-- (id)disabledBottomCurvedTextForBillPaymentRingView:(id)a3
+- (id)disabledBottomCurvedTextForBillPaymentRingView:(id)view
 {
   [(PKAccount *)self->_account feature];
-  v4 = [(PKAccount *)self->_account creditDetails];
-  v5 = [v4 currencyCode];
-  v6 = [v4 accountSummary];
-  v7 = v6;
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
+  accountSummary = [creditDetails accountSummary];
+  v7 = accountSummary;
   if (self->_interstitialState - 1 > 2)
   {
     v10 = 0;
@@ -2258,23 +2258,23 @@ LABEL_14:
 
   else
   {
-    v8 = [v6 availableCredit];
-    v9 = PKCurrencyAmountCreate(v8, v5);
+    availableCredit = [accountSummary availableCredit];
+    v9 = PKCurrencyAmountCreate(availableCredit, currencyCode);
 
-    v13 = [v9 formattedStringValue];
+    formattedStringValue = [v9 formattedStringValue];
     v10 = PKLocalizedFeatureString();
   }
 
-  v11 = [v10 pk_uppercaseStringForPreferredLocale];
+  pk_uppercaseStringForPreferredLocale = [v10 pk_uppercaseStringForPreferredLocale];
 
-  return v11;
+  return pk_uppercaseStringForPreferredLocale;
 }
 
-- (id)billPaymentRingViewZeroInterestText:(id)a3
+- (id)billPaymentRingViewZeroInterestText:(id)text
 {
   amountFormatter = self->_amountFormatter;
-  v4 = [MEMORY[0x1E696AB90] zero];
-  v5 = [(NSNumberFormatter *)amountFormatter stringFromNumber:v4];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v5 = [(NSNumberFormatter *)amountFormatter stringFromNumber:zero];
 
   return v5;
 }
@@ -2283,27 +2283,27 @@ LABEL_14:
 {
   if ([(PKAccount *)self->_account showBillPaymentInterest])
   {
-    v3 = [(PKAccountBillPaymentViewController *)self _interestPostDate];
-    v4 = [(PKAccountBillPaymentViewController *)self _paymentAmount];
-    v5 = [(PKAccountBillPaymentViewController *)self _interestStringForAmount:v4];
+    _interestPostDate = [(PKAccountBillPaymentViewController *)self _interestPostDate];
+    _paymentAmount = [(PKAccountBillPaymentViewController *)self _paymentAmount];
+    v5 = [(PKAccountBillPaymentViewController *)self _interestStringForAmount:_paymentAmount];
 
     [(PKAccount *)self->_account feature];
-    v6 = [(PKBillPaymentRingView *)self->_ringView currentStartColor];
-    if (!v6)
+    currentStartColor = [(PKBillPaymentRingView *)self->_ringView currentStartColor];
+    if (!currentStartColor)
     {
-      v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      currentStartColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
 
-    [(NSMutableDictionary *)self->_smallRingInterestAttributes setObject:v6 forKey:*MEMORY[0x1E69DB650]];
-    if (!v3 || ![v5 length] || ((v7 = -[PKAccountBillPaymentViewController _interestLabelIsOutsideSmallRing](self, "_interestLabelIsOutsideSmallRing"), v8 = objc_alloc(MEMORY[0x1E696AAB0]), !v7) ? (v9 = @"%@\n") : (v9 = @"%@ "), objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", v9, v5), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "initWithString:attributes:", v10, self->_smallRingInterestAttributes), v10, -[NSDateFormatter stringFromDate:](self->_interestDateFormatter, "stringFromDate:", v3), v12 = objc_claimAutoreleasedReturnValue(), PKLocalizedFeatureString(), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "pk_uppercaseStringForPreferredLocale", v12), v14 = objc_claimAutoreleasedReturnValue(), v13, v12, v15 = objc_msgSend(objc_alloc(MEMORY[0x1E696AAB0]), "initWithString:attributes:", v14, self->_smallRingInterestDateAttributes), v16 = objc_msgSend(v11, "mutableCopy"), objc_msgSend(v16, "appendAttributedString:", v15), v24 = objc_msgSend(v16, "copy"), v16, v15, v14, v11, !v24))
+    [(NSMutableDictionary *)self->_smallRingInterestAttributes setObject:currentStartColor forKey:*MEMORY[0x1E69DB650]];
+    if (!_interestPostDate || ![v5 length] || ((v7 = -[PKAccountBillPaymentViewController _interestLabelIsOutsideSmallRing](self, "_interestLabelIsOutsideSmallRing"), v8 = objc_alloc(MEMORY[0x1E696AAB0]), !v7) ? (v9 = @"%@\n") : (v9 = @"%@ "), objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", v9, v5), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "initWithString:attributes:", v10, self->_smallRingInterestAttributes), v10, -[NSDateFormatter stringFromDate:](self->_interestDateFormatter, "stringFromDate:", _interestPostDate), v12 = objc_claimAutoreleasedReturnValue(), PKLocalizedFeatureString(), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "pk_uppercaseStringForPreferredLocale", v12), v14 = objc_claimAutoreleasedReturnValue(), v13, v12, v15 = objc_msgSend(objc_alloc(MEMORY[0x1E696AAB0]), "initWithString:attributes:", v14, self->_smallRingInterestDateAttributes), v16 = objc_msgSend(v11, "mutableCopy"), objc_msgSend(v16, "appendAttributedString:", v15), v24 = objc_msgSend(v16, "copy"), v16, v15, v14, v11, !v24))
     {
-      v17 = [(PKAccount *)self->_account creditDetails];
-      v18 = [v17 accountSummary];
+      creditDetails = [(PKAccount *)self->_account creditDetails];
+      accountSummary = [creditDetails accountSummary];
 
-      v19 = [v18 unpostedInterest];
-      if ([v18 inGrace])
+      unpostedInterest = [accountSummary unpostedInterest];
+      if ([accountSummary inGrace])
       {
-        v20 = v19 == 0;
+        v20 = unpostedInterest == 0;
       }
 
       else
@@ -2313,59 +2313,59 @@ LABEL_14:
 
       if (!v20)
       {
-        v21 = [MEMORY[0x1E696AB90] zero];
-        [v19 compare:v21];
+        zero = [MEMORY[0x1E696AB90] zero];
+        [unpostedInterest compare:zero];
       }
 
       v22 = PKLocalizedFeatureString();
-      v23 = [v22 pk_uppercaseStringForPreferredLocale];
+      pk_uppercaseStringForPreferredLocale = [v22 pk_uppercaseStringForPreferredLocale];
 
-      v24 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v23 attributes:self->_smallRingInterestDateAttributes];
+      v24 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:pk_uppercaseStringForPreferredLocale attributes:self->_smallRingInterestDateAttributes];
     }
 
     [(UILabel *)self->_smallRingInterestLabel setAttributedText:v24];
   }
 }
 
-- (void)billPaymentAmountDescriptionView:(id)a3 hasChangedAmount:(id)a4 isValidAmount:(BOOL)a5
+- (void)billPaymentAmountDescriptionView:(id)view hasChangedAmount:(id)amount isValidAmount:(BOOL)validAmount
 {
-  v5 = a5;
+  validAmountCopy = validAmount;
   ringView = self->_ringView;
-  v8 = a4;
-  [(PKBillPaymentRingView *)ringView setAmount:v8 animated:1 userInitiatedWithKeypad:1];
-  [(PKAccountBillPaymentViewController *)self _updatePayNowButtonTitleWithAmount:v8];
+  amountCopy = amount;
+  [(PKBillPaymentRingView *)ringView setAmount:amountCopy animated:1 userInitiatedWithKeypad:1];
+  [(PKAccountBillPaymentViewController *)self _updatePayNowButtonTitleWithAmount:amountCopy];
 
-  [(PKAccountBillPaymentViewController *)self _setPayButtonsEnabled:v5];
+  [(PKAccountBillPaymentViewController *)self _setPayButtonsEnabled:validAmountCopy];
   [(PKAccountBillPaymentViewController *)self _updateSmallRingInterestString];
   [(PKBillPaymentRingView *)self->_ringView setNeedsLayout];
-  v9 = [(PKAccountBillPaymentViewController *)self view];
-  [v9 setNeedsLayout];
+  view = [(PKAccountBillPaymentViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)billPaymentAmountDescriptionViewHasTappedLearnMore:(id)a3
+- (void)billPaymentAmountDescriptionViewHasTappedLearnMore:(id)more
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v4 = [[PKAccountBillPaymentLearnMoreViewController alloc] initWithAccount:self->_account];
   v5 = [[PKNavigationController alloc] initWithRootViewController:v4];
   if (![(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
-    v7 = [(PKAccountBillPaymentViewController *)self navigationController];
-    v8 = v7;
+    navigationController = [(PKAccountBillPaymentViewController *)self navigationController];
+    v8 = navigationController;
     goto LABEL_5;
   }
 
   [(PKNavigationController *)v5 setModalPresentationStyle:3];
   v6 = PKIsVision();
-  v7 = [(PKAccountBillPaymentViewController *)self navigationController];
-  v8 = v7;
+  navigationController = [(PKAccountBillPaymentViewController *)self navigationController];
+  v8 = navigationController;
   if (v6)
   {
 LABEL_5:
-    [v7 presentViewController:v5 animated:1 completion:0];
+    [navigationController presentViewController:v5 animated:1 completion:0];
     goto LABEL_6;
   }
 
-  [v7 presentViewController:v5 withTransition:8 completion:0];
+  [navigationController presentViewController:v5 withTransition:8 completion:0];
 LABEL_6:
 
   v9 = *MEMORY[0x1E69BA6F0];
@@ -2379,14 +2379,14 @@ LABEL_6:
   [(PKAccountBillPaymentViewController *)self _reportEventForPassIfNecessary:v12];
 }
 
-- (void)accountBillPaymentController:(id)a3 hasChangedState:(unint64_t)a4 error:(id)a5 updatedAccount:(id)a6
+- (void)accountBillPaymentController:(id)controller hasChangedState:(unint64_t)state error:(id)error updatedAccount:(id)account
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  controllerCopy = controller;
+  errorCopy = error;
+  accountCopy = account;
+  v13 = accountCopy;
   self->_performingAction = 0;
-  switch(a4)
+  switch(state)
   {
     case 2uLL:
       [(PKAccountBillPaymentViewController *)self _setEnabled:1];
@@ -2395,16 +2395,16 @@ LABEL_6:
       [(PKBillPaymentSuggestedAmountController *)self->_suggestedAmountController recordPaymentRingAction:1];
       break;
     case 1uLL:
-      if (v12)
+      if (accountCopy)
       {
-        [(PKAccountBillPaymentViewController *)self _setAccount:v12];
+        [(PKAccountBillPaymentViewController *)self _setAccount:accountCopy];
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_observer);
       if (objc_opt_respondsToSelector())
       {
-        v15 = [(PKAccountBillPaymentController *)self->_billPaymentCoordinator payments];
-        [WeakRetained accountBillPaymentViewController:self didSchedulePayments:v15];
+        payments = [(PKAccountBillPaymentController *)self->_billPaymentCoordinator payments];
+        [WeakRetained accountBillPaymentViewController:self didSchedulePayments:payments];
       }
 
       if ([(PKBillPaymentRingView *)self->_ringView isSmall])
@@ -2429,11 +2429,11 @@ LABEL_6:
       }
 
       [(PKBillPaymentSuggestedAmountController *)self->_suggestedAmountController recordPaymentRingAction:v17];
-      v18 = [(PKAccountBillPaymentController *)self->_billPaymentCoordinator payments];
-      if ([v18 count])
+      payments2 = [(PKAccountBillPaymentController *)self->_billPaymentCoordinator payments];
+      if ([payments2 count])
       {
-        v19 = [(PKTransactionSource *)self->_transactionSource paymentPass];
-        v20 = [[PKAccountBillPaymentConfirmationViewController alloc] initWithAccount:self->_account previousAccountSummary:self->_previousAccountSummary paymentPass:v19 payments:v18 suggestionList:self->_suggestionList interestForPaymentTotal:self->_interestForPaymentTotal interestForStatementBalance:self->_interestForStatementBalance];
+        paymentPass = [(PKTransactionSource *)self->_transactionSource paymentPass];
+        v20 = [[PKAccountBillPaymentConfirmationViewController alloc] initWithAccount:self->_account previousAccountSummary:self->_previousAccountSummary paymentPass:paymentPass payments:payments2 suggestionList:self->_suggestionList interestForPaymentTotal:self->_interestForPaymentTotal interestForStatementBalance:self->_interestForStatementBalance];
         objc_initWeak(&location, self);
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
@@ -2455,7 +2455,7 @@ LABEL_6:
 
       break;
     case 0uLL:
-      [(PKAccountBillPaymentViewController *)self _presentAlertControllerForError:v11];
+      [(PKAccountBillPaymentViewController *)self _presentAlertControllerForError:errorCopy];
       break;
   }
 }
@@ -2486,51 +2486,51 @@ void __104__PKAccountBillPaymentViewController_accountBillPaymentController_hasC
   }
 }
 
-- (id)presentationSceneIdentifierForAccountBillPaymentController:(id)a3
+- (id)presentationSceneIdentifierForAccountBillPaymentController:(id)controller
 {
-  v3 = [(PKAccountBillPaymentViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKAccountBillPaymentViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)accountAutomaticPaymentsController:(id)a3 didSchedulePayment:(id)a4
+- (void)accountAutomaticPaymentsController:(id)controller didSchedulePayment:(id)payment
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  paymentCopy = payment;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   if (objc_opt_respondsToSelector())
   {
-    v8[0] = v5;
+    v8[0] = paymentCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     [WeakRetained accountBillPaymentViewController:self didSchedulePayments:v7];
   }
 }
 
-- (id)presentationSceneIdentifierForAccountAutomaticPaymentsController:(id)a3
+- (id)presentationSceneIdentifierForAccountAutomaticPaymentsController:(id)controller
 {
-  v3 = [(PKAccountBillPaymentViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKAccountBillPaymentViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)addBankAccountInformationViewController:(id)a3 didAddFundingSource:(id)a4
+- (void)addBankAccountInformationViewController:(id)controller didAddFundingSource:(id)source
 {
   v9 = *MEMORY[0x1E69E9840];
   billPaymentCoordinator = self->_billPaymentCoordinator;
-  v8 = a4;
+  sourceCopy = source;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = [v5 arrayWithObjects:&v8 count:1];
-  [(PKAccountBillPaymentController *)billPaymentCoordinator setFundingSources:v7, v8, v9];
+  sourceCopy2 = source;
+  v7 = [v5 arrayWithObjects:&sourceCopy count:1];
+  [(PKAccountBillPaymentController *)billPaymentCoordinator setFundingSources:v7, sourceCopy, v9];
 }
 
-- (void)addBankAccountInformationViewControllerDidFinish:(id)a3
+- (void)addBankAccountInformationViewControllerDidFinish:(id)finish
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -2583,11 +2583,11 @@ void __87__PKAccountBillPaymentViewController_addBankAccountInformationViewContr
 LABEL_6:
 }
 
-- (void)_performBillPaymentWithAmount:(id)a3 billPaymentSuggestedAmountDataEvent:(id)a4
+- (void)_performBillPaymentWithAmount:(id)amount billPaymentSuggestedAmountDataEvent:(id)event
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  amountCopy = amount;
+  eventCopy = event;
   if (!self->_CLInUse)
   {
     v8 = MEMORY[0x1E695FBE0];
@@ -2612,33 +2612,33 @@ LABEL_6:
   {
     self->_performingAction = 1;
     [(PKAccountBillPaymentViewController *)self _setEnabled:0];
-    v13 = [(PKAccount *)self->_account creditDetails];
-    v14 = [v13 accountSummary];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    accountSummary = [creditDetails accountSummary];
     previousAccountSummary = self->_previousAccountSummary;
-    self->_previousAccountSummary = v14;
+    self->_previousAccountSummary = accountSummary;
 
-    v16 = [(PKAccountBillPaymentViewController *)self _roundedInterestForAmount:v6];
+    v16 = [(PKAccountBillPaymentViewController *)self _roundedInterestForAmount:amountCopy];
     interestForPaymentTotal = self->_interestForPaymentTotal;
     self->_interestForPaymentTotal = v16;
 
-    v18 = [(PKCreditAccountSummary *)self->_previousAccountSummary remainingStatementBalance];
-    v19 = [(PKAccountBillPaymentViewController *)self _roundedInterestForAmount:v18];
+    remainingStatementBalance = [(PKCreditAccountSummary *)self->_previousAccountSummary remainingStatementBalance];
+    v19 = [(PKAccountBillPaymentViewController *)self _roundedInterestForAmount:remainingStatementBalance];
     interestForStatementBalance = self->_interestForStatementBalance;
     self->_interestForStatementBalance = v19;
 
-    [(PKAccountBillPaymentController *)self->_billPaymentCoordinator performBillPaymentActionWithAmount:v6 billPaymentSuggestedAmountDataEvent:v7];
+    [(PKAccountBillPaymentController *)self->_billPaymentCoordinator performBillPaymentActionWithAmount:amountCopy billPaymentSuggestedAmountDataEvent:eventCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKAccountBillPaymentViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKAccountBillPaymentViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection
 {
-  if ([a4 userInterfaceStyle] == 2)
+  if ([collection userInterfaceStyle] == 2)
   {
     return 2030;
   }
@@ -2649,18 +2649,18 @@ LABEL_6:
   }
 }
 
-- (void)_accountDidChange:(id)a3
+- (void)_accountDidChange:(id)change
 {
   if (self->_account)
   {
-    v4 = [MEMORY[0x1E69B8400] sharedInstance];
-    v5 = [(PKAccount *)self->_account accountIdentifier];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __56__PKAccountBillPaymentViewController__accountDidChange___block_invoke;
     v6[3] = &unk_1E80112C0;
     v6[4] = self;
-    [v4 accountWithIdentifier:v5 completion:v6];
+    [mEMORY[0x1E69B8400] accountWithIdentifier:accountIdentifier completion:v6];
   }
 }
 
@@ -2677,24 +2677,24 @@ void __56__PKAccountBillPaymentViewController__accountDidChange___block_invoke(u
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)_setAccount:(id)a3
+- (void)_setAccount:(id)account
 {
-  v7 = a3;
+  accountCopy = account;
   v5 = [(PKAccount *)self->_account isContentEqualToAccount:?];
-  objc_storeStrong(&self->_account, a3);
+  objc_storeStrong(&self->_account, account);
   if ((v5 & 1) == 0)
   {
-    v6 = [(PKCompoundInterestCalculator *)self->_interestCalculator configuration];
-    [v6 updateWithCreditAccount:v7];
+    configuration = [(PKCompoundInterestCalculator *)self->_interestCalculator configuration];
+    [configuration updateWithCreditAccount:accountCopy];
 
     [(NSMutableDictionary *)self->_cachedInterestResults removeAllObjects];
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -2740,18 +2740,18 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillShow___block_invoke(ui
   return !CGRectEqualToRect(*(*(a1 + 32) + 1168), v16);
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
-  v4 = [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView amountContainerView];
-  v5 = [v4 enterCurrencyAmountView];
-  [v5 frame];
+  amountContainerView = [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView amountContainerView];
+  enterCurrencyAmountView = [amountContainerView enterCurrencyAmountView];
+  [enterCurrencyAmountView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PKAccountBillPaymentViewController *)self view];
-  [v14 convertRect:self->_amountDescriptionView fromView:{v7, v9, v11, v13}];
+  view = [(PKAccountBillPaymentViewController *)self view];
+  [view convertRect:self->_amountDescriptionView fromView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -2775,14 +2775,14 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillShow___block_invoke(ui
   }
 }
 
-- (void)keyboardWillChange:(id)a3
+- (void)keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
     if (v7)
     {
@@ -2817,7 +2817,7 @@ BOOL __57__PKAccountBillPaymentViewController_keyboardWillChange___block_invoke(
   return !CGRectEqualToRect(*(*(a1 + 32) + 1168), v13);
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   if (self->_keyboardVisible)
   {
@@ -2848,21 +2848,21 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillHide___block_invoke(ui
   return !CGRectEqualToRect(*&v3, v8);
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
     if (self->_showKeyboard)
     {
-      v5 = [(PKAccountBillPaymentViewController *)self viewIfLoaded];
-      v6 = v5;
+      viewIfLoaded = [(PKAccountBillPaymentViewController *)self viewIfLoaded];
+      v6 = viewIfLoaded;
       v7 = self->_visibility - 3;
       v8 = v7 < 0xFFFFFFFE;
-      v9 = v5 == 0;
-      if (v5 && v7 >= 0xFFFFFFFE)
+      v9 = viewIfLoaded == 0;
+      if (viewIfLoaded && v7 >= 0xFFFFFFFE)
       {
-        [v5 layoutIfNeeded];
+        [viewIfLoaded layoutIfNeeded];
         v9 = 0;
         v8 = 0;
       }
@@ -2875,7 +2875,7 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillHide___block_invoke(ui
       v9 = 1;
     }
 
-    v10 = v4[2](v4);
+    v10 = actionCopy[2](actionCopy);
     if (!v9)
     {
       if (v10)
@@ -2896,19 +2896,19 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillHide___block_invoke(ui
   }
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
   [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView dismissKeyboard];
-  v4 = [(PKAccountBillPaymentViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKAccountBillPaymentViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_contactSupportButtonTapped:(id)a3
+- (void)_contactSupportButtonTapped:(id)tapped
 {
   v4 = [PKBusinessChatInstallmentPaymentContext alloc];
   account = self->_account;
-  v6 = [(PKTransactionSource *)self->_transactionSource paymentPass];
-  v15 = [(PKBusinessChatInstallmentPaymentContext *)v4 initWithAccount:account paymentPass:v6];
+  paymentPass = [(PKTransactionSource *)self->_transactionSource paymentPass];
+  v15 = [(PKBusinessChatInstallmentPaymentContext *)v4 initWithAccount:account paymentPass:paymentPass];
 
   v7 = objc_alloc_init(MEMORY[0x1E69B8408]);
   [v7 setBusinessChatContext:v15];
@@ -2938,20 +2938,20 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillHide___block_invoke(ui
   [(PKAccountServiceAccountResolutionController *)self->_accountResolutionController presentFlowForAccountResolution:v14 configuration:v7 completion:0];
 }
 
-- (void)_setShowKeyboard:(BOOL)a3
+- (void)_setShowKeyboard:(BOOL)keyboard
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  if (self->_showKeyboard == !a3)
+  if (self->_showKeyboard == !keyboard)
   {
-    v3 = a3;
-    v5 = [(PKAccountBillPaymentViewController *)self view];
-    [v5 layoutIfNeeded];
-    self->_showKeyboard = v3;
-    [v5 setNeedsLayout];
-    if (v3)
+    keyboardCopy = keyboard;
+    view = [(PKAccountBillPaymentViewController *)self view];
+    [view layoutIfNeeded];
+    self->_showKeyboard = keyboardCopy;
+    [view setNeedsLayout];
+    if (keyboardCopy)
     {
-      v6 = [(PKBillPaymentRingView *)self->_ringView amount];
-      [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView setAmount:v6];
+      amount = [(PKBillPaymentRingView *)self->_ringView amount];
+      [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView setAmount:amount];
 
       [(PKAccountBillPaymentViewController *)self _updateNavigationTitle];
       [(PKAccountBillPaymentViewController *)self _updateForShowKeyboardAnimated:1];
@@ -2964,8 +2964,8 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillHide___block_invoke(ui
       [(PKAccountBillPaymentViewController *)self _updateForShowKeyboardAnimated:1];
       [(PKAccountBillPaymentViewController *)self _showOrHideKeypad];
       [(PKAccountBillPaymentViewController *)self _setPayButtonsEnabled:1];
-      v7 = [(PKAccountBillPaymentViewController *)self _paymentAmount];
-      [(PKAccountBillPaymentViewController *)self _updatePayNowButtonTitleWithAmount:v7];
+      _paymentAmount = [(PKAccountBillPaymentViewController *)self _paymentAmount];
+      [(PKAccountBillPaymentViewController *)self _updatePayNowButtonTitleWithAmount:_paymentAmount];
 
       [(PKAccountBillPaymentAmountDescriptionView *)self->_amountDescriptionView normalizeEnteredAmount];
     }
@@ -2998,9 +2998,9 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillHide___block_invoke(ui
   }
 }
 
-- (void)_updateForShowKeyboardAnimated:(BOOL)a3
+- (void)_updateForShowKeyboardAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (self->_showKeyboard)
   {
     v5 = 1312;
@@ -3019,17 +3019,17 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillHide___block_invoke(ui
     *v6 = 0;
   }
 
-  v8 = [(PKAccountBillPaymentViewController *)self viewIfLoaded];
-  v9 = v8;
-  if (v8)
+  viewIfLoaded = [(PKAccountBillPaymentViewController *)self viewIfLoaded];
+  v9 = viewIfLoaded;
+  if (viewIfLoaded)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __69__PKAccountBillPaymentViewController__updateForShowKeyboardAnimated___block_invoke;
     aBlock[3] = &unk_1E8013D60;
     aBlock[4] = self;
-    v22 = v3;
-    v21 = v8;
+    v22 = animatedCopy;
+    v21 = viewIfLoaded;
     v10 = _Block_copy(aBlock);
     objc_initWeak(&location, self);
     showKeyboard = self->_showKeyboard;
@@ -3040,7 +3040,7 @@ BOOL __55__PKAccountBillPaymentViewController_keyboardWillHide___block_invoke(ui
     objc_copyWeak(&v17, &location);
     v18 = showKeyboard;
     v12 = _Block_copy(&v13);
-    if (v3)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:134 animations:v10 completion:{v12, v13, v14, v15, v16}];
     }
@@ -3145,7 +3145,7 @@ LABEL_11:
   }
 }
 
-- (void)_payNowButtonTapped:(id)a3
+- (void)_payNowButtonTapped:(id)tapped
 {
   if (PKStoreDemoModeEnabled())
   {
@@ -3155,7 +3155,7 @@ LABEL_11:
 
   else
   {
-    v4 = [(PKAccountBillPaymentViewController *)self _paymentAmount];
+    _paymentAmount = [(PKAccountBillPaymentViewController *)self _paymentAmount];
     [(PKAccountBillPaymentViewController *)self _setEnabled:0];
     billPaymentCoordinator = self->_billPaymentCoordinator;
     v8[0] = MEMORY[0x1E69E9820];
@@ -3163,8 +3163,8 @@ LABEL_11:
     v8[2] = __58__PKAccountBillPaymentViewController__payNowButtonTapped___block_invoke;
     v8[3] = &unk_1E8013D88;
     v8[4] = self;
-    v9 = v4;
-    v6 = v4;
+    v9 = _paymentAmount;
+    v6 = _paymentAmount;
     [(PKAccountBillPaymentController *)billPaymentCoordinator canPerformBillPaymentWithAmount:v6 scheduledDate:0 completion:v8];
   }
 }
@@ -3211,9 +3211,9 @@ void __58__PKAccountBillPaymentViewController__payNowButtonTapped___block_invoke
   [v13 _reportEventForPassIfNecessary:v16];
 }
 
-- (void)_payLaterButtonTapped:(id)a3
+- (void)_payLaterButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (PKStoreDemoModeEnabled())
   {
     v5 = PKUIStoreDemoGatewayViewController();
@@ -3223,15 +3223,15 @@ void __58__PKAccountBillPaymentViewController__payNowButtonTapped___block_invoke
   else
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x1E69B8400] sharedInstance];
-    v7 = [(PKAccount *)self->_account accountIdentifier];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__PKAccountBillPaymentViewController__payLaterButtonTapped___block_invoke;
     v8[3] = &unk_1E8013DF8;
     objc_copyWeak(&v9, &location);
     v8[4] = self;
-    [v6 scheduledPaymentsWithAccountIdentifier:v7 includeFailedRecurringPayments:1 completion:v8];
+    [mEMORY[0x1E69B8400] scheduledPaymentsWithAccountIdentifier:accountIdentifier includeFailedRecurringPayments:1 completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -3401,9 +3401,9 @@ void __60__PKAccountBillPaymentViewController__payLaterButtonTapped___block_invo
   }
 }
 
-- (void)_interstitialButtonTapped:(id)a3
+- (void)_interstitialButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if ((self->_interstitialState & 0xFFFFFFFFFFFFFFFCLL) == 4)
   {
     objc_initWeak(&location, self);
@@ -3424,7 +3424,7 @@ void __60__PKAccountBillPaymentViewController__payLaterButtonTapped___block_invo
 
   else
   {
-    [(PKAccountBillPaymentViewController *)self _cancelButtonTapped:v4];
+    [(PKAccountBillPaymentViewController *)self _cancelButtonTapped:tappedCopy];
   }
 }
 
@@ -3471,12 +3471,12 @@ void __64__PKAccountBillPaymentViewController__interstitialButtonTapped___block_
   }
 }
 
-- (double)_buttonHeightForButtonWidth:(double)a3
+- (double)_buttonHeightForButtonWidth:(double)width
 {
   primaryButton = self->_primaryButton;
   if (primaryButton)
   {
-    [(UIButton *)primaryButton sizeThatFits:a3, 1.79769313e308];
+    [(UIButton *)primaryButton sizeThatFits:width, 1.79769313e308];
     v7 = fmax(v6, 48.0);
     secondaryButton = self->_secondaryButton;
     if (!secondaryButton)
@@ -3485,7 +3485,7 @@ void __64__PKAccountBillPaymentViewController__interstitialButtonTapped___block_
     }
 
 LABEL_6:
-    [(UIButton *)secondaryButton sizeThatFits:a3, 1.79769313e308];
+    [(UIButton *)secondaryButton sizeThatFits:width, 1.79769313e308];
     return fmax(v9, v7);
   }
 
@@ -3499,14 +3499,14 @@ LABEL_6:
   return 0.0;
 }
 
-- (void)_updatePayNowButtonTitleWithAmount:(id)a3
+- (void)_updatePayNowButtonTitleWithAmount:(id)amount
 {
   if (self->_buttonsArePayButtons)
   {
     account = self->_account;
-    v6 = a3;
+    amountCopy = amount;
     [(PKAccount *)account feature];
-    v8 = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:v6];
+    v8 = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:amountCopy];
 
     v7 = PKLocalizedFeatureString();
     objc_storeStrong(&self->_payNowButtonTitle, v7);
@@ -3522,10 +3522,10 @@ LABEL_6:
   }
 }
 
-- (id)_interestForAmount:(id)a3
+- (id)_interestForAmount:(id)amount
 {
-  v4 = a3;
-  if (v4)
+  amountCopy = amount;
+  if (amountCopy)
   {
     if (!self->_interestCalculator)
     {
@@ -3535,39 +3535,39 @@ LABEL_6:
       interestCalculator = self->_interestCalculator;
       self->_interestCalculator = v7;
 
-      v9 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       cachedInterestResults = self->_cachedInterestResults;
-      self->_cachedInterestResults = v9;
+      self->_cachedInterestResults = dictionary;
 
-      v11 = [(PKTransactionSource *)self->_transactionSource transactionSourceIdentifiers];
+      transactionSourceIdentifiers = [(PKTransactionSource *)self->_transactionSource transactionSourceIdentifiers];
       accountUserCollection = self->_accountUserCollection;
       if (accountUserCollection)
       {
-        v13 = [(PKAccountUserCollection *)accountUserCollection transactionSourceIdentifiers];
-        if (v13)
+        transactionSourceIdentifiers2 = [(PKAccountUserCollection *)accountUserCollection transactionSourceIdentifiers];
+        if (transactionSourceIdentifiers2)
         {
-          v14 = [v11 setByAddingObjectsFromSet:v13];
+          v14 = [transactionSourceIdentifiers setByAddingObjectsFromSet:transactionSourceIdentifiers2];
 
-          v11 = v14;
+          transactionSourceIdentifiers = v14;
         }
       }
 
-      v15 = [MEMORY[0x1E69B8DB8] paymentService];
-      v16 = [v6 periodStartDate];
-      v17 = [v6 periodEndDate];
+      paymentService = [MEMORY[0x1E69B8DB8] paymentService];
+      periodStartDate = [v6 periodStartDate];
+      periodEndDate = [v6 periodEndDate];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __57__PKAccountBillPaymentViewController__interestForAmount___block_invoke;
       v19[3] = &unk_1E8013E48;
       v19[4] = self;
-      [v15 approvedTransactionsForTransactionSourceIdentifiers:v11 withTransactionSource:0 withBackingData:1 startDate:v16 endDate:v17 limit:0 completion:v19];
+      [paymentService approvedTransactionsForTransactionSourceIdentifiers:transactionSourceIdentifiers withTransactionSource:0 withBackingData:1 startDate:periodStartDate endDate:periodEndDate limit:0 completion:v19];
     }
 
-    v5 = [(NSMutableDictionary *)self->_cachedInterestResults objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_cachedInterestResults objectForKey:amountCopy];
     if (!v5)
     {
-      v5 = [(PKCompoundInterestCalculator *)self->_interestCalculator compoundInterestWithPaymentOfAmount:v4];
-      [(NSMutableDictionary *)self->_cachedInterestResults setObject:v5 forKey:v4];
+      v5 = [(PKCompoundInterestCalculator *)self->_interestCalculator compoundInterestWithPaymentOfAmount:amountCopy];
+      [(NSMutableDictionary *)self->_cachedInterestResults setObject:v5 forKey:amountCopy];
     }
   }
 
@@ -3611,18 +3611,18 @@ uint64_t __57__PKAccountBillPaymentViewController__interestForAmount___block_inv
     v2 = 24;
   }
 
-  v3 = [*(&self->super.super.super.isa + OBJC_IVAR___PKAccountBillPaymentViewController__account[v2]) amount];
+  amount = [*(&self->super.super.super.isa + OBJC_IVAR___PKAccountBillPaymentViewController__account[v2]) amount];
 
-  return v3;
+  return amount;
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
-  if (self->_viewIsEnabled == !a3)
+  if (self->_viewIsEnabled == !enabled)
   {
-    self->_viewIsEnabled = a3;
-    v8 = [(PKAccountBillPaymentViewController *)self viewIfLoaded];
-    [v8 setUserInteractionEnabled:self->_viewIsEnabled];
+    self->_viewIsEnabled = enabled;
+    viewIfLoaded = [(PKAccountBillPaymentViewController *)self viewIfLoaded];
+    [viewIfLoaded setUserInteractionEnabled:self->_viewIsEnabled];
     [(PKAccountBillPaymentViewController *)self _setPayButtonsEnabled:self->_viewIsEnabled];
     v4 = _UISolariumFeatureFlagEnabled();
     primaryButton = self->_primaryButton;
@@ -3637,20 +3637,20 @@ uint64_t __57__PKAccountBillPaymentViewController__interestForAmount___block_inv
     }
 
     [(UIButton *)self->_tertiaryButton setEnabled:self->_viewIsEnabled];
-    v6 = [(PKAccountBillPaymentViewController *)self navigationItem];
-    v7 = [v6 leftBarButtonItem];
-    [v7 setEnabled:self->_viewIsEnabled];
+    navigationItem = [(PKAccountBillPaymentViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setEnabled:self->_viewIsEnabled];
 
-    [v8 setNeedsLayout];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)_setPayButtonsEnabled:(BOOL)a3
+- (void)_setPayButtonsEnabled:(BOOL)enabled
 {
-  if (self->_payButtonsEnabled == !a3)
+  if (self->_payButtonsEnabled == !enabled)
   {
-    self->_payButtonsEnabled = a3;
-    [(UIButton *)self->_primaryButton setEnabled:a3 | !self->_buttonsArePayButtons];
+    self->_payButtonsEnabled = enabled;
+    [(UIButton *)self->_primaryButton setEnabled:enabled | !self->_buttonsArePayButtons];
     secondaryButton = self->_secondaryButton;
     v5 = self->_shouldEnablePayLaterButton && self->_payButtonsEnabled;
 
@@ -3658,17 +3658,17 @@ uint64_t __57__PKAccountBillPaymentViewController__interestForAmount___block_inv
   }
 }
 
-- (void)_dismissViewControllerWithSuccess:(BOOL)a3
+- (void)_dismissViewControllerWithSuccess:(BOOL)success
 {
-  v3 = [(PKAccountBillPaymentViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKAccountBillPaymentViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_presentAddBankAccount
 {
-  v4 = [(PKAccountBillPaymentViewController *)self _addBankAccountInformationViewController];
-  [v4 setOfferKeychainPreFill:1];
-  v3 = [[PKNavigationController alloc] initWithRootViewController:v4];
+  _addBankAccountInformationViewController = [(PKAccountBillPaymentViewController *)self _addBankAccountInformationViewController];
+  [_addBankAccountInformationViewController setOfferKeychainPreFill:1];
+  v3 = [[PKNavigationController alloc] initWithRootViewController:_addBankAccountInformationViewController];
   [(PKNavigationController *)v3 setSupportedInterfaceOrientations:2];
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
@@ -3685,9 +3685,9 @@ uint64_t __57__PKAccountBillPaymentViewController__interestForAmount___block_inv
   {
     v4 = [PKAddBankAccountInformationViewController alloc];
     v5 = [objc_alloc(MEMORY[0x1E69B86A8]) initWithType:1];
-    v6 = [(PKAccount *)self->_account creditDetails];
-    v7 = [v6 countryCode];
-    v8 = [(PKAddBankAccountInformationViewController *)v4 initWithDelegate:self bankInformation:v5 accountCountryCode:v7 featureAccount:self->_account];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    countryCode = [creditDetails countryCode];
+    v8 = [(PKAddBankAccountInformationViewController *)v4 initWithDelegate:self bankInformation:v5 accountCountryCode:countryCode featureAccount:self->_account];
     v9 = self->_addBankAccountViewController;
     self->_addBankAccountViewController = v8;
 
@@ -3699,27 +3699,27 @@ uint64_t __57__PKAccountBillPaymentViewController__interestForAmount___block_inv
 
 - (id)_interestPostDate
 {
-  v2 = [(PKAccount *)self->_account creditDetails];
-  v3 = [v2 accountSummary];
-  v4 = [v3 balanceSummary];
-  v5 = [v4 closingDate];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  balanceSummary = [accountSummary balanceSummary];
+  closingDate = [balanceSummary closingDate];
 
-  return v5;
+  return closingDate;
 }
 
-- (id)_roundedInterestForAmount:(id)a3
+- (id)_roundedInterestForAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   if ([(PKAccount *)self->_account showBillPaymentInterest])
   {
-    v5 = [(PKAccountBillPaymentViewController *)self _interestForAmount:v4];
-    v6 = [MEMORY[0x1E69B86D0] roundingHandler];
-    v7 = [v5 decimalNumberByRoundingAccordingToBehavior:v6];
+    v5 = [(PKAccountBillPaymentViewController *)self _interestForAmount:amountCopy];
+    roundingHandler = [MEMORY[0x1E69B86D0] roundingHandler];
+    v7 = [v5 decimalNumberByRoundingAccordingToBehavior:roundingHandler];
 
-    v8 = [MEMORY[0x1E696AB90] zero];
-    LOBYTE(v6) = [v7 isEqualToNumber:v8];
+    zero = [MEMORY[0x1E696AB90] zero];
+    LOBYTE(roundingHandler) = [v7 isEqualToNumber:zero];
 
-    if (v6)
+    if (roundingHandler)
     {
       v9 = 0;
     }
@@ -3738,9 +3738,9 @@ uint64_t __57__PKAccountBillPaymentViewController__interestForAmount___block_inv
   return v9;
 }
 
-- (id)_interestStringForAmount:(id)a3
+- (id)_interestStringForAmount:(id)amount
 {
-  v4 = [(PKAccountBillPaymentViewController *)self _roundedInterestForAmount:a3];
+  v4 = [(PKAccountBillPaymentViewController *)self _roundedInterestForAmount:amount];
   if (v4)
   {
     v5 = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:v4];
@@ -3775,16 +3775,16 @@ uint64_t __57__PKAccountBillPaymentViewController__interestForAmount___block_inv
 {
   if (self->_showKeyboard || self->_titleLabel)
   {
-    v3 = 0;
+    _title = 0;
   }
 
   else
   {
-    v3 = [(PKAccountBillPaymentViewController *)self _title];
+    _title = [(PKAccountBillPaymentViewController *)self _title];
   }
 
-  v4 = v3;
-  [(PKAccountBillPaymentViewController *)self setTitle:v3];
+  v4 = _title;
+  [(PKAccountBillPaymentViewController *)self setTitle:_title];
 }
 
 - (id)_title
@@ -3829,9 +3829,9 @@ LABEL_12:
   }
 
   [(PKAccount *)self->_account feature];
-  v56 = [(PKAccount *)self->_account creditDetails];
-  v3 = [v56 accountSummary];
-  v4 = [v3 currentStatement];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
   v5 = createDateFormatter();
   interstitialState = self->_interstitialState;
   if (interstitialState > 3)
@@ -3840,10 +3840,10 @@ LABEL_12:
     {
       if (interstitialState == 6 || interstitialState == 7)
       {
-        v11 = [v56 rates];
-        v12 = [v11 formattedAPRForPurchasesPercentageString];
+        rates = [creditDetails rates];
+        formattedAPRForPurchasesPercentageString = [rates formattedAPRForPurchasesPercentageString];
 
-        v44 = v12;
+        v44 = formattedAPRForPurchasesPercentageString;
         v7 = PKLocalizedFeatureString();
 
         if (v7)
@@ -3853,14 +3853,14 @@ LABEL_12:
       }
 
 LABEL_33:
-      v21 = [v3 pastDueAmount];
+      pastDueAmount = [accountSummary pastDueAmount];
       v55 = v5;
-      if ([v3 cyclesPastDue] <= 0)
+      if ([accountSummary cyclesPastDue] <= 0)
       {
-        if (v21)
+        if (pastDueAmount)
         {
-          v23 = [MEMORY[0x1E696AB90] zero];
-          v22 = [v21 compare:v23] == 1;
+          zero = [MEMORY[0x1E696AB90] zero];
+          v22 = [pastDueAmount compare:zero] == 1;
         }
 
         else
@@ -3874,14 +3874,14 @@ LABEL_33:
         v22 = 1;
       }
 
-      v52 = v4;
-      v24 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList remainingStatementAmount];
-      v25 = [v3 paymentDueDate];
-      v50 = v21;
-      if (v24)
+      v52 = currentStatement;
+      remainingStatementAmount = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList remainingStatementAmount];
+      paymentDueDate = [accountSummary paymentDueDate];
+      v50 = pastDueAmount;
+      if (remainingStatementAmount)
       {
-        v26 = [MEMORY[0x1E696AB90] zero];
-        v27 = [v24 compare:v26] == 1;
+        zero2 = [MEMORY[0x1E696AB90] zero];
+        v27 = [remainingStatementAmount compare:zero2] == 1;
       }
 
       else
@@ -3889,13 +3889,13 @@ LABEL_33:
         v27 = 0;
       }
 
-      v54 = [v56 productTimeZone];
-      v28 = [(PKAccount *)self->_account stateReason];
+      productTimeZone = [creditDetails productTimeZone];
+      stateReason = [(PKAccount *)self->_account stateReason];
       v29 = createBaseDateFormatter();
       [v29 setTimeStyle:1];
       if (!v22)
       {
-        if (v25)
+        if (paymentDueDate)
         {
           v31 = v27;
         }
@@ -3915,8 +3915,8 @@ LABEL_33:
           }
 
           v34 = v33;
-          v35 = [v29 stringFromDate:v25];
-          [v55 stringFromDate:v25];
+          v35 = [v29 stringFromDate:paymentDueDate];
+          [v55 stringFromDate:paymentDueDate];
           v45 = v44 = v35;
           v30 = PKLocalizedFeatureString();
 
@@ -3929,16 +3929,16 @@ LABEL_33:
           goto LABEL_59;
         }
 
-        if (v28 != 2)
+        if (stateReason != 2)
         {
-          if (v25)
+          if (paymentDueDate)
           {
             v36 = PKEndOfNextMonthAndTimeZone();
           }
 
           else
           {
-            v37 = [MEMORY[0x1E695DF00] date];
+            date = [MEMORY[0x1E695DF00] date];
             v36 = PKEndOfNextMonthAndTimeZone();
           }
 
@@ -3976,7 +3976,7 @@ LABEL_59:
         v7 = @" ";
       }
 
-      v4 = v52;
+      currentStatement = v52;
       v5 = v55;
       goto LABEL_63;
     }
@@ -3987,13 +3987,13 @@ LABEL_59:
       goto LABEL_8;
     }
 
-    v8 = [v56 currencyCode];
+    currencyCode = [creditDetails currencyCode];
     if (accountCurrentStatementIsLastMonthsStatement(self->_account))
     {
-      v9 = [v4 closingDate];
-      if (v9)
+      closingDate = [currentStatement closingDate];
+      if (closingDate)
       {
-        v10 = [v5 stringFromDate:v9];
+        v10 = [v5 stringFromDate:closingDate];
       }
 
       else
@@ -4005,29 +4005,29 @@ LABEL_59:
     else
     {
       v10 = 0;
-      v9 = 0;
+      closingDate = 0;
     }
 
-    v14 = [v3 pastDueAmount];
-    v51 = v14;
-    if (v14)
+    pastDueAmount2 = [accountSummary pastDueAmount];
+    v51 = pastDueAmount2;
+    if (pastDueAmount2)
     {
-      v14 = PKCurrencyAmountCreate(v14, v8);
+      pastDueAmount2 = PKCurrencyAmountCreate(pastDueAmount2, currencyCode);
     }
 
-    v49 = v14;
-    v15 = [(NSDecimalNumber *)v14 formattedStringValue];
-    v16 = v15;
+    v49 = pastDueAmount2;
+    formattedStringValue = [(NSDecimalNumber *)pastDueAmount2 formattedStringValue];
+    v16 = formattedStringValue;
     v53 = v10;
-    if (v15 && v10)
+    if (formattedStringValue && v10)
     {
       v44 = v10;
-      v45 = v15;
+      v45 = formattedStringValue;
     }
 
-    else if (v15)
+    else if (formattedStringValue)
     {
-      v44 = v15;
+      v44 = formattedStringValue;
     }
 
     else
@@ -4037,18 +4037,18 @@ LABEL_59:
         v17 = PKLocalizedFeatureString();
 LABEL_30:
         v7 = v17;
-        if ([v3 requiresDebtCollectionNotices])
+        if ([accountSummary requiresDebtCollectionNotices])
         {
           PKLocalizedFeatureString();
-          v18 = v47 = v8;
+          v18 = v47 = currencyCode;
           [(__CFString *)v7 stringByAppendingString:v18];
-          v46 = v9;
+          v46 = closingDate;
           v20 = v19 = v5;
 
           v7 = v20;
           v5 = v19;
-          v9 = v46;
-          v8 = v47;
+          closingDate = v46;
+          currencyCode = v47;
         }
 
         if (v7)
@@ -4108,8 +4108,8 @@ LABEL_63:
 
   if (interstitialState == 1)
   {
-    v11 = [(PKAccount *)self->_account creditDetails];
-    v7 = [v11 createdDate];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    createdDate = [creditDetails createdDate];
 
     v13 = PKLocalizedFeatureString();
     v8 = createDateFormatter();
@@ -4121,9 +4121,9 @@ LABEL_63:
   v13 = 0;
   if (interstitialState == 2)
   {
-    v5 = [(PKAccount *)self->_account creditDetails];
-    v6 = [v5 accountSummary];
-    v7 = [v6 paymentDueDate];
+    creditDetails2 = [(PKAccount *)self->_account creditDetails];
+    accountSummary = [creditDetails2 accountSummary];
+    createdDate = [accountSummary paymentDueDate];
 
     v13 = PKLocalizedFeatureString();
     v8 = createDateFormatter();
@@ -4147,14 +4147,14 @@ LABEL_13:
   aBlock[3] = &unk_1E8010A38;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(NSArray *)self->_installmentPlans firstObject];
-  v5 = [v4 product];
-  v6 = [v5 iconURLForScale:0 suffix:PKUIScreenScale()];
+  firstObject = [(NSArray *)self->_installmentPlans firstObject];
+  product = [firstObject product];
+  v6 = [product iconURLForScale:0 suffix:PKUIScreenScale()];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
-    v8 = [v7 cachedDataForURL:v6];
+    mEMORY[0x1E69B8A08] = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+    v8 = [mEMORY[0x1E69B8A08] cachedDataForURL:v6];
     if (v8)
     {
       v9 = [MEMORY[0x1E69DCAB8] imageWithData:v8];
@@ -4168,15 +4168,15 @@ LABEL_13:
       v10[2] = __63__PKAccountBillPaymentViewController__configureProductHeroView__block_invoke_2;
       v10[3] = &unk_1E8013E70;
       v11 = v3;
-      [v7 downloadFromUrl:v6 completionHandler:v10];
+      [mEMORY[0x1E69B8A08] downloadFromUrl:v6 completionHandler:v10];
       v9 = v11;
     }
   }
 
   else
   {
-    v7 = PKUIImageNamed(@"Hero_Apply-CCS");
-    v3[2](v3, v7);
+    mEMORY[0x1E69B8A08] = PKUIImageNamed(@"Hero_Apply-CCS");
+    v3[2](v3, mEMORY[0x1E69B8A08]);
   }
 }
 
@@ -4227,10 +4227,10 @@ void __63__PKAccountBillPaymentViewController__configureProductHeroView__block_i
   }
 }
 
-- (void)_presentAlertControllerForError:(id)a3
+- (void)_presentAlertControllerForError:(id)error
 {
-  v4 = a3;
-  v5 = [PKAccountFlowController displayableErrorForError:v4 featureIdentifier:[(PKAccount *)self->_account feature] genericErrorTitle:0 genericErrorMessage:0];
+  errorCopy = error;
+  v5 = [PKAccountFlowController displayableErrorForError:errorCopy featureIdentifier:[(PKAccount *)self->_account feature] genericErrorTitle:0 genericErrorMessage:0];
   objc_initWeak(&location, self);
   v6 = objc_opt_class();
   v8 = MEMORY[0x1E69E9820];
@@ -4260,16 +4260,16 @@ void __70__PKAccountBillPaymentViewController__presentAlertControllerForError___
   [WeakRetained _setEnabled:1];
 }
 
-- (void)_reportEventForPassIfNecessary:(id)a3
+- (void)_reportEventForPassIfNecessary:(id)necessary
 {
-  v10 = a3;
+  necessaryCopy = necessary;
   v4 = MEMORY[0x1E69B8540];
-  v5 = [(PKTransactionSource *)self->_transactionSource paymentPass];
-  v6 = [v4 subjectToReportDashboardAnalyticsForPass:v5];
+  paymentPass = [(PKTransactionSource *)self->_transactionSource paymentPass];
+  v6 = [v4 subjectToReportDashboardAnalyticsForPass:paymentPass];
 
-  if (v10 && v6)
+  if (necessaryCopy && v6)
   {
-    v7 = [v10 mutableCopy];
+    v7 = [necessaryCopy mutableCopy];
     [v7 setObject:*MEMORY[0x1E69BA5A0] forKey:*MEMORY[0x1E69BABE8]];
     v8 = MEMORY[0x1E69B8540];
     v9 = [v7 copy];

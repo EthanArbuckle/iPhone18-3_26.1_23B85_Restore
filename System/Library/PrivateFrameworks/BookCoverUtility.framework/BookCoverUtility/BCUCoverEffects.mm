@@ -1,45 +1,45 @@
 @interface BCUCoverEffects
-+ (CGImage)restrictedImageFrom:(CGImage *)a3 size:(CGSize)a4;
-+ (id)_effectIdentifierForEffectIndex:(unint64_t)a3;
-+ (id)effectIdentifierForAsset:(id)a3 withEnvironment:(id)a4;
-+ (id)effectIdentifierForFilterInfo:(id)a3;
-+ (id)effectIdentifierWithRTL:(BOOL)a3 style:(unint64_t)a4 content:(unint64_t)a5 nightMode:(BOOL)a6;
-- (BCUCoverEffects)initWithRenderer:(id)a3 mode:(unint64_t)a4;
-- (id)bookCoverEffectFilterForEffectIdentifier:(id)a3;
++ (CGImage)restrictedImageFrom:(CGImage *)from size:(CGSize)size;
++ (id)_effectIdentifierForEffectIndex:(unint64_t)index;
++ (id)effectIdentifierForAsset:(id)asset withEnvironment:(id)environment;
++ (id)effectIdentifierForFilterInfo:(id)info;
++ (id)effectIdentifierWithRTL:(BOOL)l style:(unint64_t)style content:(unint64_t)content nightMode:(BOOL)mode;
+- (BCUCoverEffects)initWithRenderer:(id)renderer mode:(unint64_t)mode;
+- (id)bookCoverEffectFilterForEffectIdentifier:(id)identifier;
 @end
 
 @implementation BCUCoverEffects
 
-+ (id)effectIdentifierWithRTL:(BOOL)a3 style:(unint64_t)a4 content:(unint64_t)a5 nightMode:(BOOL)a6
++ (id)effectIdentifierWithRTL:(BOOL)l style:(unint64_t)style content:(unint64_t)content nightMode:(BOOL)mode
 {
   v6 = 6;
-  if (!a3)
+  if (!l)
   {
     v6 = 0;
   }
 
-  return objc_msgSend__effectIdentifierForEffectIndex_(BCUCoverEffects, a2, (v6 + 12 * a4 + 2 * a5) | a6);
+  return objc_msgSend__effectIdentifierForEffectIndex_(BCUCoverEffects, a2, (v6 + 12 * style + 2 * content) | mode);
 }
 
-+ (id)effectIdentifierForAsset:(id)a3 withEnvironment:(id)a4
++ (id)effectIdentifierForAsset:(id)asset withEnvironment:(id)environment
 {
-  v5 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_coverEffectRTLOverride(v6, v7, v8);
+  assetCopy = asset;
+  environmentCopy = environment;
+  v11 = objc_msgSend_coverEffectRTLOverride(environmentCopy, v7, v8);
   if (v11)
   {
-    v12 = objc_msgSend_coverEffectRTLOverride(v6, v9, v10);
+    v12 = objc_msgSend_coverEffectRTLOverride(environmentCopy, v9, v10);
     v15 = objc_msgSend_BOOLValue(v12, v13, v14);
   }
 
   else
   {
-    v15 = objc_msgSend_coverEffectRTL(v5, v9, v10);
+    v15 = objc_msgSend_coverEffectRTL(assetCopy, v9, v10);
   }
 
-  v18 = objc_msgSend_coverEffectStyle(v5, v16, v17);
-  v21 = objc_msgSend_coverEffectsContent(v6, v19, v20);
-  v25 = objc_msgSend_coverEffectsNightMode(v6, v22, v23);
+  v18 = objc_msgSend_coverEffectStyle(assetCopy, v16, v17);
+  v21 = objc_msgSend_coverEffectsContent(environmentCopy, v19, v20);
+  v25 = objc_msgSend_coverEffectsNightMode(environmentCopy, v22, v23);
   v26 = 6;
   if (!v15)
   {
@@ -51,14 +51,14 @@
   return v27;
 }
 
-+ (id)effectIdentifierForFilterInfo:(id)a3
++ (id)effectIdentifierForFilterInfo:(id)info
 {
-  v3 = a3;
-  v5 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"BCUCoverEffectsFilterInfoAlternativeAppearanceKey");
+  infoCopy = info;
+  v5 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v4, @"BCUCoverEffectsFilterInfoAlternativeAppearanceKey");
   v8 = objc_msgSend_BOOLValue(v5, v6, v7);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v3, v9, @"BCUCoverEffectsFilterInfoContentRTLKey");
+  v10 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v9, @"BCUCoverEffectsFilterInfoContentRTLKey");
 
-  v12 = objc_msgSend_objectForKeyedSubscript_(v3, v11, @"BCUCoverEffectsFilterInfoCoverEffectStyleKey");
+  v12 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v11, @"BCUCoverEffectsFilterInfoCoverEffectStyleKey");
 
   v15 = objc_msgSend_intValue(v12, v13, v14);
   v17 = 6;
@@ -78,23 +78,23 @@
   return v19;
 }
 
-+ (id)_effectIdentifierForEffectIndex:(unint64_t)a3
++ (id)_effectIdentifierForEffectIndex:(unint64_t)index
 {
   if (qword_27EC69A80 != -1)
   {
     sub_241C85C14();
   }
 
-  v4 = *(&xmmword_27EC69900 + a3);
+  v4 = *(&xmmword_27EC69900 + index);
 
   return v4;
 }
 
-+ (CGImage)restrictedImageFrom:(CGImage *)a3 size:(CGSize)a4
++ (CGImage)restrictedImageFrom:(CGImage *)from size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], a2, a3);
+  height = size.height;
+  width = size.width;
+  v6 = objc_msgSend_imageWithCGImage_(MEMORY[0x277CBF758], a2, from);
   v8 = objc_msgSend_filterWithName_(MEMORY[0x277CBF750], v7, @"CIGaussianBlur");
   v9 = *MEMORY[0x277CBFAF0];
   objc_msgSend_setValue_forKey_(v8, v10, v6, *MEMORY[0x277CBFAF0]);
@@ -119,21 +119,21 @@
   return v35;
 }
 
-- (BCUCoverEffects)initWithRenderer:(id)a3 mode:(unint64_t)a4
+- (BCUCoverEffects)initWithRenderer:(id)renderer mode:(unint64_t)mode
 {
   v295[25] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  rendererCopy = renderer;
   v292.receiver = self;
   v292.super_class = BCUCoverEffects;
   v8 = [(BCUCoverEffects *)&v292 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_renderer, a3);
-    v9->_mode = a4;
-    if (!a4)
+    objc_storeStrong(&v8->_renderer, renderer);
+    v9->_mode = mode;
+    if (!mode)
     {
-      v288 = v7;
+      v288 = rendererCopy;
       if (qword_2810D51B0 != -1)
       {
         sub_241C85C28();
@@ -422,23 +422,23 @@
       templateImageFilters = v9->_templateImageFilters;
       v9->_templateImageFilters = v200;
 
-      v7 = v288;
+      rendererCopy = v288;
     }
   }
 
   return v9;
 }
 
-- (id)bookCoverEffectFilterForEffectIdentifier:(id)a3
+- (id)bookCoverEffectFilterForEffectIdentifier:(id)identifier
 {
   v131 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   if (self->_mode == 1)
   {
     v7 = MEMORY[0x277CCA8D8];
     v8 = objc_opt_class();
     v10 = objc_msgSend_bundleForClass_(v7, v9, v8);
-    if (objc_msgSend_isEqualToString_(v6, v11, @"BCUCoverEffectsIdentifierBookBinding"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v11, @"BCUCoverEffectsIdentifierBookBinding"))
     {
       v13 = [_BCUCoverEffectsAssets alloc];
       v15 = objc_msgSend_initWithBundle_rtl_night_small_(v13, v14, v10, 0, 0, 1);
@@ -447,7 +447,7 @@ LABEL_17:
       v31 = _BCUCoverEffectsBookBinding;
 LABEL_18:
       v32 = [v31 alloc];
-      v34 = objc_msgSend_initWithIdentifier_renderer_assets_shadow_seriesShadow_shadowOnly_(v32, v33, v6, self->_renderer, v30, 0, 0, 0);
+      v34 = objc_msgSend_initWithIdentifier_renderer_assets_shadow_seriesShadow_shadowOnly_(v32, v33, identifierCopy, self->_renderer, v30, 0, 0, 0);
 LABEL_19:
       v19 = v34;
 LABEL_20:
@@ -455,14 +455,14 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v12, @"BCUCoverEffectsIdentifierBookBindingNight"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v12, @"BCUCoverEffectsIdentifierBookBindingNight"))
     {
       v28 = [_BCUCoverEffectsAssets alloc];
       v15 = objc_msgSend_initWithBundle_rtl_night_(v28, v29, v10, 0, 1);
       goto LABEL_17;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v27, @"BCUCoverEffectsIdentifierBookBindingWithShadow"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v27, @"BCUCoverEffectsIdentifierBookBindingWithShadow"))
     {
       v37 = [_BCUCoverEffectsAssets alloc];
       v30 = objc_msgSend_initWithBundle_rtl_night_small_(v37, v38, v10, 0, 0, 1);
@@ -471,7 +471,7 @@ LABEL_20:
       goto LABEL_28;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v36, @"BCUCoverEffectsIdentifierBookBindingNightWithShadow"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v36, @"BCUCoverEffectsIdentifierBookBindingNightWithShadow"))
     {
       v42 = [_BCUCoverEffectsAssets alloc];
       v30 = objc_msgSend_initWithBundle_rtl_night_(v42, v43, v10, 0, 1);
@@ -495,7 +495,7 @@ LABEL_20:
       goto LABEL_33;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v41, @"BCUCoverEffectsIdentifierBookBindingShadowOnly"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v41, @"BCUCoverEffectsIdentifierBookBindingShadowOnly"))
     {
       v57 = [_BCUCoverEffectsShadow alloc];
       v58 = @"iBooks_Covers_Flat-S_Shadow";
@@ -505,32 +505,32 @@ LABEL_39:
       v62 = _BCUCoverEffectsBookBinding;
 LABEL_40:
       v63 = [v62 alloc];
-      v34 = objc_msgSend_initWithIdentifier_renderer_assets_shadow_seriesShadow_shadowOnly_(v63, v64, v6, self->_renderer, 0, v30, 0, 1);
+      v34 = objc_msgSend_initWithIdentifier_renderer_assets_shadow_seriesShadow_shadowOnly_(v63, v64, identifierCopy, self->_renderer, 0, v30, 0, 1);
       goto LABEL_19;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v56, @"BCUCoverEffectsIdentifierBookBindingNightShadowOnly"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v56, @"BCUCoverEffectsIdentifierBookBindingNightShadowOnly"))
     {
       v57 = [_BCUCoverEffectsShadow alloc];
       v58 = @"iBooks_Covers_Flat-L_Shadow~Night";
       goto LABEL_39;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v59, @"BCUCoverEffectsIdentifierBookBindingRTL"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v59, @"BCUCoverEffectsIdentifierBookBindingRTL"))
     {
       v66 = [_BCUCoverEffectsAssets alloc];
       v15 = objc_msgSend_initWithBundle_rtl_night_small_(v66, v67, v10, 1, 0, 1);
       goto LABEL_17;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v65, @"BCUCoverEffectsIdentifierBookBindingRTLNight"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v65, @"BCUCoverEffectsIdentifierBookBindingRTLNight"))
     {
       v69 = [_BCUCoverEffectsAssets alloc];
       v15 = objc_msgSend_initWithBundle_rtl_night_(v69, v70, v10, 1, 1);
       goto LABEL_17;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v68, @"BCUCoverEffectsIdentifierBookBindingRTLWithShadow"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v68, @"BCUCoverEffectsIdentifierBookBindingRTLWithShadow"))
     {
       v72 = [_BCUCoverEffectsAssets alloc];
       v30 = objc_msgSend_initWithBundle_rtl_night_small_(v72, v73, v10, 1, 0, 1);
@@ -544,12 +544,12 @@ LABEL_33:
       v53 = _BCUCoverEffectsBookBinding;
 LABEL_34:
       v54 = [v53 alloc];
-      v19 = objc_msgSend_initWithIdentifier_renderer_assets_shadow_seriesShadow_shadowOnly_(v54, v55, v6, self->_renderer, v30, v52, 0, 0);
+      v19 = objc_msgSend_initWithIdentifier_renderer_assets_shadow_seriesShadow_shadowOnly_(v54, v55, identifierCopy, self->_renderer, v30, v52, 0, 0);
 
       goto LABEL_20;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v71, @"BCUCoverEffectsIdentifierBookBindingRTLNightWithShadow"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v71, @"BCUCoverEffectsIdentifierBookBindingRTLNightWithShadow"))
     {
       v77 = [_BCUCoverEffectsAssets alloc];
       v30 = objc_msgSend_initWithBundle_rtl_night_(v77, v78, v10, 1, 1);
@@ -558,21 +558,21 @@ LABEL_34:
       goto LABEL_49;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v76, @"BCUCoverEffectsIdentifierBookBindingRTLShadowOnly"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v76, @"BCUCoverEffectsIdentifierBookBindingRTLShadowOnly"))
     {
       v57 = [_BCUCoverEffectsShadow alloc];
       v58 = @"iBooks_Covers_RTL_Flat-S_Shadow";
       goto LABEL_39;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v81, @"BCUCoverEffectsIdentifierBookBindingRTLNightShadowOnly"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v81, @"BCUCoverEffectsIdentifierBookBindingRTLNightShadowOnly"))
     {
       v57 = [_BCUCoverEffectsShadow alloc];
       v58 = @"iBooks_Covers_RTL_Flat-L_Shadow~Night";
       goto LABEL_39;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v82, @"BCUCoverEffectsIdentifierAudiobook"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v82, @"BCUCoverEffectsIdentifierAudiobook"))
     {
       v84 = [_BCUCoverEffectsAssets alloc];
       v86 = objc_msgSend_initWithBundle_rtl_night_small_(v84, v85, v10, 0, 0, 1);
@@ -582,14 +582,14 @@ LABEL_58:
       goto LABEL_18;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v83, @"BCUCoverEffectsIdentifierAudiobookNight"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v83, @"BCUCoverEffectsIdentifierAudiobookNight"))
     {
       v88 = [_BCUCoverEffectsAssets alloc];
       v86 = objc_msgSend_initWithBundle_rtl_night_(v88, v89, v10, 0, 1);
       goto LABEL_58;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v87, @"BCUCoverEffectsIdentifierAudiobookWithShadow"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v87, @"BCUCoverEffectsIdentifierAudiobookWithShadow"))
     {
       v91 = [_BCUCoverEffectsAssets alloc];
       v30 = objc_msgSend_initWithBundle_rtl_night_small_(v91, v92, v10, 0, 0, 1);
@@ -602,7 +602,7 @@ LABEL_63:
       goto LABEL_34;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v90, @"BCUCoverEffectsIdentifierAudiobookNightWithShadow"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v90, @"BCUCoverEffectsIdentifierAudiobookNightWithShadow"))
     {
       v96 = [_BCUCoverEffectsAssets alloc];
       v30 = objc_msgSend_initWithBundle_rtl_night_(v96, v97, v10, 0, 1);
@@ -611,7 +611,7 @@ LABEL_63:
       goto LABEL_63;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v95, @"BCUCoverEffectsIdentifierAudiobookShadowOnly"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v95, @"BCUCoverEffectsIdentifierAudiobookShadowOnly"))
     {
       v101 = [_BCUCoverEffectsShadow alloc];
       v102 = @"iBooks_Covers_Flat-S_Shadow";
@@ -622,18 +622,18 @@ LABEL_68:
       goto LABEL_40;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v100, @"BCUCoverEffectsIdentifierAudiobookNightShadowOnly"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v100, @"BCUCoverEffectsIdentifierAudiobookNightShadowOnly"))
     {
       v101 = [_BCUCoverEffectsShadow alloc];
       v102 = @"iBooks_Covers_Flat-L_Shadow~Night";
       goto LABEL_68;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v103, @"BCUCoverEffectsIdentifierPDF"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v103, @"BCUCoverEffectsIdentifierPDF"))
     {
       v107 = [_BCUCoverEffectsPDF alloc];
       renderer = self->_renderer;
-      v110 = v6;
+      v110 = identifierCopy;
       v111 = 1;
       v112 = 0;
 LABEL_76:
@@ -643,11 +643,11 @@ LABEL_14:
       goto LABEL_21;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v106, @"BCUCoverEffectsIdentifierPDFNight"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v106, @"BCUCoverEffectsIdentifierPDFNight"))
     {
       v114 = [_BCUCoverEffectsPDF alloc];
       v116 = self->_renderer;
-      v117 = v6;
+      v117 = identifierCopy;
       v118 = 1;
       v119 = 0;
 LABEL_80:
@@ -655,56 +655,56 @@ LABEL_80:
       goto LABEL_14;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v113, @"BCUCoverEffectsIdentifierPDFWithShadow"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v113, @"BCUCoverEffectsIdentifierPDFWithShadow"))
     {
       v107 = [_BCUCoverEffectsPDF alloc];
       renderer = self->_renderer;
-      v110 = v6;
+      v110 = identifierCopy;
       v111 = 1;
 LABEL_75:
       v112 = 1;
       goto LABEL_76;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v120, @"BCUCoverEffectsIdentifierPDFNightWithShadow"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v120, @"BCUCoverEffectsIdentifierPDFNightWithShadow"))
     {
       v114 = [_BCUCoverEffectsPDF alloc];
       v116 = self->_renderer;
-      v117 = v6;
+      v117 = identifierCopy;
       v118 = 1;
 LABEL_79:
       v119 = 1;
       goto LABEL_80;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v121, @"BCUCoverEffectsIdentifierPDFShadowOnly"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v121, @"BCUCoverEffectsIdentifierPDFShadowOnly"))
     {
       v107 = [_BCUCoverEffectsPDF alloc];
       renderer = self->_renderer;
-      v110 = v6;
+      v110 = identifierCopy;
       v111 = 0;
       goto LABEL_75;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v122, @"BCUCoverEffectsIdentifierPDFNightShadowOnly"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v122, @"BCUCoverEffectsIdentifierPDFNightShadowOnly"))
     {
       v114 = [_BCUCoverEffectsPDF alloc];
       v116 = self->_renderer;
-      v117 = v6;
+      v117 = identifierCopy;
       v118 = 0;
       goto LABEL_79;
     }
 
-    if (objc_msgSend_isEqualToString_(v6, v123, @"BCUCoverEffectsIdentifierIdentity"))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v123, @"BCUCoverEffectsIdentifierIdentity"))
     {
       v124 = [_BCUCoverEffectsIdentity alloc];
-      v26 = objc_msgSend_initWithIdentifier_renderer_assets_shadow_seriesShadow_shadowOnly_(v124, v125, v6, self->_renderer, 0, 0, 0, 0);
+      v26 = objc_msgSend_initWithIdentifier_renderer_assets_shadow_seriesShadow_shadowOnly_(v124, v125, identifierCopy, self->_renderer, 0, 0, 0, 0);
       goto LABEL_14;
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      sub_241C85C50(v6);
+      sub_241C85C50(identifierCopy);
     }
 
     v19 = 0;
@@ -732,7 +732,7 @@ LABEL_79:
 
           v22 = *(*(&v126 + 1) + 8 * i);
           v23 = objc_msgSend_identifier(v22, v17, v18);
-          isEqualToString = objc_msgSend_isEqualToString_(v23, v24, v6);
+          isEqualToString = objc_msgSend_isEqualToString_(v23, v24, identifierCopy);
 
           if (isEqualToString)
           {

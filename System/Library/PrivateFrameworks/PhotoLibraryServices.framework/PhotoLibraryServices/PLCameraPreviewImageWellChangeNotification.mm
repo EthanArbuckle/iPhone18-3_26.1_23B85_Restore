@@ -12,9 +12,9 @@
   image = self->_image;
   if (!image)
   {
-    v4 = [MEMORY[0x1E69BF170] cameraPreviewWellImage];
+    cameraPreviewWellImage = [MEMORY[0x1E69BF170] cameraPreviewWellImage];
     v5 = self->_image;
-    self->_image = v4;
+    self->_image = cameraPreviewWellImage;
 
     image = self->_image;
   }
@@ -40,9 +40,9 @@
 
 + (id)notification
 {
-  v2 = [[a1 alloc] _init];
+  _init = [[self alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 @end

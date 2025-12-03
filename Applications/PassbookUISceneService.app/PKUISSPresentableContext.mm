@@ -1,20 +1,20 @@
 @interface PKUISSPresentableContext
-- (void)bannerHandle:(id)a3 didChangeFromClientState:(id)a4;
-- (void)bannerHandleDidInvalidate:(id)a3;
-- (void)setState:(id)a3;
+- (void)bannerHandle:(id)handle didChangeFromClientState:(id)state;
+- (void)bannerHandleDidInvalidate:(id)invalidate;
+- (void)setState:(id)state;
 @end
 
 @implementation PKUISSPresentableContext
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if (self->_associated)
   {
-    v7 = v5;
-    if (self->_state != v5)
+    v7 = stateCopy;
+    if (self->_state != stateCopy)
     {
-      objc_storeStrong(&self->_state, a3);
+      objc_storeStrong(&self->_state, state);
       currentHandle = self->_currentHandle;
       if (currentHandle)
       {
@@ -29,23 +29,23 @@
   }
 }
 
-- (void)bannerHandle:(id)a3 didChangeFromClientState:(id)a4
+- (void)bannerHandle:(id)handle didChangeFromClientState:(id)state
 {
-  if (self->_effectiveHandle == a3)
+  if (self->_effectiveHandle == handle)
   {
     sub_1000060F0(self);
   }
 }
 
-- (void)bannerHandleDidInvalidate:(id)a3
+- (void)bannerHandleDidInvalidate:(id)invalidate
 {
   handles = self->_handles;
-  v5 = a3;
-  [(NSMutableArray *)handles removeObjectIdenticalTo:v5];
+  invalidateCopy = invalidate;
+  [(NSMutableArray *)handles removeObjectIdenticalTo:invalidateCopy];
   p_currentHandle = &self->_currentHandle;
   currentHandle = self->_currentHandle;
 
-  if (currentHandle == v5)
+  if (currentHandle == invalidateCopy)
   {
     *p_currentHandle = 0;
 
@@ -60,9 +60,9 @@
     return;
   }
 
-  v8 = [(NSMutableArray *)self->_handles firstObject];
+  firstObject = [(NSMutableArray *)self->_handles firstObject];
   v9 = self->_currentHandle;
-  self->_currentHandle = v8;
+  self->_currentHandle = firstObject;
 
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
   v11 = self->_currentHandle;

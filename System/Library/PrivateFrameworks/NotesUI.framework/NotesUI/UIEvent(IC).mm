@@ -6,7 +6,7 @@
 
 - (const)ic_isPencilEvent
 {
-  result = [a1 _hidEvent];
+  result = [self _hidEvent];
   if (result)
   {
     result = IOHIDEventGetChildren();

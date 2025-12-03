@@ -1,27 +1,27 @@
 @interface MTREventPath
 + (MTREventPath)eventPathWithEndpointID:(NSNumber *)endpointID clusterID:(NSNumber *)clusterID eventID:(NSNumber *)eventID;
 + (MTREventPath)eventPathWithEndpointId:(NSNumber *)endpointId clusterId:(NSNumber *)clusterId eventId:(NSNumber *)eventId;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEventPath:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEventPath:(id)path;
 - (ConcreteEventPath)_asConcretePath;
-- (MTREventPath)initWithCoder:(id)a3;
-- (MTREventPath)initWithPath:(const ConcreteEventPath *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTREventPath)initWithCoder:(id)coder;
+- (MTREventPath)initWithPath:(const ConcreteEventPath *)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTREventPath
 
-- (MTREventPath)initWithPath:(const ConcreteEventPath *)a3
+- (MTREventPath)initWithPath:(const ConcreteEventPath *)path
 {
   v8.receiver = self;
   v8.super_class = MTREventPath;
   v4 = [(MTRClusterPath *)&v8 initWithPath:?];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3->var3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:path->var3];
     event = v4->_event;
     v4->_event = v5;
   }
@@ -32,20 +32,20 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v18 = [(MTRClusterPath *)self endpoint];
-  v4 = [v18 unsignedShortValue];
-  v17 = [(MTRClusterPath *)self cluster];
-  v5 = [v17 unsignedLongLongValue];
-  v16 = [(MTRClusterPath *)self cluster];
-  v6 = [v16 unsignedLongLongValue];
+  endpoint = [(MTRClusterPath *)self endpoint];
+  unsignedShortValue = [endpoint unsignedShortValue];
+  cluster = [(MTRClusterPath *)self cluster];
+  unsignedLongLongValue = [cluster unsignedLongLongValue];
+  cluster2 = [(MTRClusterPath *)self cluster];
+  unsignedLongLongValue2 = [cluster2 unsignedLongLongValue];
   [(MTRClusterPath *)self cluster];
-  v15 = v14 = v4;
+  v15 = v14 = unsignedShortValue;
   v7 = MTRClusterNameForID([v15 unsignedLongLongValue]);
-  v8 = [(NSNumber *)self->_event unsignedLongLongValue];
-  v9 = [(NSNumber *)self->_event unsignedLongLongValue];
-  v10 = [(MTRClusterPath *)self cluster];
-  v11 = MTREventNameForID([v10 unsignedLongLongValue], -[NSNumber unsignedLongLongValue](self->_event, "unsignedLongLongValue"));
-  v12 = [v3 stringWithFormat:@"<MTREventPath endpoint %u cluster 0x%llx (%llu, %@) event 0x%llx (%llu, %@)>", v14, v5, v6, v7, v8, v9, v11];
+  unsignedLongLongValue3 = [(NSNumber *)self->_event unsignedLongLongValue];
+  unsignedLongLongValue4 = [(NSNumber *)self->_event unsignedLongLongValue];
+  cluster3 = [(MTRClusterPath *)self cluster];
+  v11 = MTREventNameForID([cluster3 unsignedLongLongValue], -[NSNumber unsignedLongLongValue](self->_event, "unsignedLongLongValue"));
+  v12 = [v3 stringWithFormat:@"<MTREventPath endpoint %u cluster 0x%llx (%llu, %@) event 0x%llx (%llu, %@)>", v14, unsignedLongLongValue, unsignedLongLongValue2, v7, unsignedLongLongValue3, unsignedLongLongValue4, v11];
 
   return v12;
 }
@@ -55,22 +55,22 @@
   v7 = endpointID;
   v8 = clusterID;
   v9 = eventID;
-  v12 = [(NSNumber *)v7 unsignedShortValue];
-  v13 = [(NSNumber *)v8 unsignedLongValue];
-  v14 = [(NSNumber *)v9 unsignedLongValue];
-  v10 = [[MTREventPath alloc] initWithPath:&v12];
+  unsignedShortValue = [(NSNumber *)v7 unsignedShortValue];
+  unsignedLongValue = [(NSNumber *)v8 unsignedLongValue];
+  unsignedLongValue2 = [(NSNumber *)v9 unsignedLongValue];
+  v10 = [[MTREventPath alloc] initWithPath:&unsignedShortValue];
 
   return v10;
 }
 
-- (BOOL)isEqualToEventPath:(id)a3
+- (BOOL)isEqualToEventPath:(id)path
 {
-  v4 = a3;
-  if ([(MTRClusterPath *)self isEqualToClusterPath:v4])
+  pathCopy = path;
+  if ([(MTRClusterPath *)self isEqualToClusterPath:pathCopy])
   {
     event = self->_event;
-    v6 = [v4 event];
-    v7 = sub_238DB32F8(event, v6);
+    event = [pathCopy event];
+    v7 = sub_238DB32F8(event, event);
   }
 
   else
@@ -81,46 +81,46 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && [(MTREventPath *)self isEqualToEventPath:v4];
+  v6 = v5 == objc_opt_class() && [(MTREventPath *)self isEqualToEventPath:equalCopy];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MTRClusterPath *)self endpoint];
-  v4 = [v3 unsignedShortValue];
-  v5 = [(MTRClusterPath *)self cluster];
-  v6 = [v5 unsignedLongValue];
-  v7 = [(NSNumber *)self->_event unsignedLongValue];
+  endpoint = [(MTRClusterPath *)self endpoint];
+  unsignedShortValue = [endpoint unsignedShortValue];
+  cluster = [(MTRClusterPath *)self cluster];
+  unsignedLongValue = [cluster unsignedLongValue];
+  unsignedLongValue2 = [(NSNumber *)self->_event unsignedLongValue];
 
-  return v6 ^ v4 ^ v7;
+  return unsignedLongValue ^ unsignedShortValue ^ unsignedLongValue2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(MTRClusterPath *)self endpoint];
-  v5 = [(MTRClusterPath *)self cluster];
-  v6 = [MTREventPath eventPathWithEndpointID:v4 clusterID:v5 eventID:self->_event];
+  endpoint = [(MTRClusterPath *)self endpoint];
+  cluster = [(MTRClusterPath *)self cluster];
+  v6 = [MTREventPath eventPathWithEndpointID:endpoint clusterID:cluster eventID:self->_event];
 
   return v6;
 }
 
 - (ConcreteEventPath)_asConcretePath
 {
-  v3 = [(MTRClusterPath *)self endpoint];
-  v4 = [v3 unsignedShortValue];
-  v5 = [(MTRClusterPath *)self cluster];
-  v6 = [v5 unsignedLongValue];
-  v7 = [(MTREventPath *)self event];
-  v8 = [v7 unsignedLongValue];
+  endpoint = [(MTRClusterPath *)self endpoint];
+  unsignedShortValue = [endpoint unsignedShortValue];
+  cluster = [(MTRClusterPath *)self cluster];
+  unsignedLongValue = [cluster unsignedLongValue];
+  event = [(MTREventPath *)self event];
+  unsignedLongValue2 = [event unsignedLongValue];
 
-  v9 = v4 | (v6 << 32);
-  v10 = v8;
+  v9 = unsignedShortValue | (unsignedLongValue << 32);
+  v10 = unsignedLongValue2;
   result.var0 = v9;
   result.var1 = BYTE2(v9);
   result.var2 = HIDWORD(v9);
@@ -128,17 +128,17 @@
   return result;
 }
 
-- (MTREventPath)initWithCoder:(id)a3
+- (MTREventPath)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MTREventPath;
-  v5 = [(MTRClusterPath *)&v14 initWithCoder:v4];
+  v5 = [(MTRClusterPath *)&v14 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventKey"];
     event = v5->_event;
     v5->_event = v7;
 
@@ -172,18 +172,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MTREventPath;
-  [(MTRClusterPath *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_event forKey:@"eventKey"];
+  [(MTRClusterPath *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_event forKey:@"eventKey"];
 }
 
 + (MTREventPath)eventPathWithEndpointId:(NSNumber *)endpointId clusterId:(NSNumber *)clusterId eventId:(NSNumber *)eventId
 {
-  v5 = [a1 eventPathWithEndpointID:endpointId clusterID:clusterId eventID:eventId];
+  v5 = [self eventPathWithEndpointID:endpointId clusterID:clusterId eventID:eventId];
 
   return v5;
 }

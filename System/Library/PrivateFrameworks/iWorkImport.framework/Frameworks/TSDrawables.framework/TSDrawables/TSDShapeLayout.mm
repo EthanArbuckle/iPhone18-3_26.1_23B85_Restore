@@ -16,21 +16,21 @@
 - (CGPoint)headPoint;
 - (CGPoint)tailLineEndPoint;
 - (CGPoint)tailPoint;
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3;
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale;
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameInRoot;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform;
 - (CGRect)frameForPartitioning;
-- (CGRect)p_boundsOfLineEndForHead:(BOOL)a3 transform:(CGAffineTransform *)a4;
+- (CGRect)p_boundsOfLineEndForHead:(BOOL)head transform:(CGAffineTransform *)transform;
 - (CGRect)p_cachedClippedPathStroked;
 - (CGRect)p_cachedPathBounds;
 - (CGRect)p_cachedPathBoundsWithoutStroke;
-- (CGRect)p_updatedCachedClipRectIfNeededForRotation:(CGAffineTransform *)a3;
+- (CGRect)p_updatedCachedClipRectIfNeededForRotation:(CGAffineTransform *)rotation;
 - (CGRect)pathBoundsWithoutStroke;
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3;
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3 strokeDrawOptions:(unint64_t)a4;
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform;
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform strokeDrawOptions:(unint64_t)options;
 - (CGSize)minimumSize;
 - (TSDFill)fill;
 - (TSDInfoGeometry)layoutInfoGeometry;
@@ -38,49 +38,49 @@
 - (TSDLineEnd)strokeTailLineEnd;
 - (TSDPathSource)pathSource;
 - (TSDShapeInfo)shapeInfo;
-- (TSDShapeLayout)initWithInfo:(id)a3;
+- (TSDShapeLayout)initWithInfo:(id)info;
 - (TSUBezierPath)clippedPathForLineEnds;
 - (double)i_scaleFromClampedParentLayout;
-- (double)lineEndScale:(BOOL)a3;
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4;
+- (double)lineEndScale:(BOOL)scale;
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform;
 - (id)computeLayoutGeometry;
 - (id)editablePathSource;
 - (id)i_computeWrapPath;
-- (id)i_computeWrapPathClosed:(BOOL)a3;
+- (id)i_computeWrapPathClosed:(BOOL)closed;
 - (id)layoutGeometryFromInfo;
 - (id)p_cachedPath;
 - (id)p_createClippedPath;
-- (id)p_unitePath:(id)a3 withLineEndForHead:(BOOL)a4 stroke:(id)a5;
+- (id)p_unitePath:(id)path withLineEndForHead:(BOOL)head stroke:(id)stroke;
 - (id)reliedOnLayouts;
 - (id)smartPathSource;
 - (id)stroke;
 - (int)wrapType;
-- (void)aliasPathForScale:(double)a3 adjustedStroke:(id *)a4 adjustedPath:(id *)a5 startDelta:(CGPoint *)a6 endDelta:(CGPoint *)a7;
-- (void)aliasPathForScale:(double)a3 originalStroke:(id)a4 adjustedStroke:(id *)a5 adjustedPath:(id *)a6 startDelta:(CGPoint *)a7 endDelta:(CGPoint *)a8;
+- (void)aliasPathForScale:(double)scale adjustedStroke:(id *)stroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta;
+- (void)aliasPathForScale:(double)scale originalStroke:(id)stroke adjustedStroke:(id *)adjustedStroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta;
 - (void)dealloc;
 - (void)invalidate;
 - (void)invalidateFrame;
 - (void)invalidatePath;
 - (void)invalidatePathBounds;
-- (void)offsetGeometryBy:(CGPoint)a3;
+- (void)offsetGeometryBy:(CGPoint)by;
 - (void)p_invalidateClippedPath;
-- (void)p_performBlockOkayToSetGeometry:(id)a3;
+- (void)p_performBlockOkayToSetGeometry:(id)geometry;
 - (void)p_validateHeadAndTail;
 - (void)p_validateHeadLineEnd;
 - (void)p_validateTailLineEnd;
-- (void)processChangedProperty:(int)a3;
-- (void)setGeometry:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)processChangedProperty:(int)property;
+- (void)setGeometry:(id)geometry;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)validate;
 @end
 
 @implementation TSDShapeLayout
 
-- (TSDShapeLayout)initWithInfo:(id)a3
+- (TSDShapeLayout)initWithInfo:(id)info
 {
   v11.receiver = self;
   v11.super_class = TSDShapeLayout;
-  v3 = [(TSDLayout *)&v11 initWithInfo:a3];
+  v3 = [(TSDLayout *)&v11 initWithInfo:info];
   v6 = v3;
   if (v3)
   {
@@ -118,9 +118,9 @@
 {
   v4.receiver = self;
   v4.super_class = TSDShapeLayout;
-  v2 = [(TSDLayout *)&v4 layoutGeometryFromInfo];
+  layoutGeometryFromInfo = [(TSDLayout *)&v4 layoutGeometryFromInfo];
 
-  return v2;
+  return layoutGeometryFromInfo;
 }
 
 - (BOOL)isFreehandDrawingSpacerShape
@@ -150,7 +150,7 @@
   v40 = *MEMORY[0x277D85DE8];
   v38.receiver = self;
   v38.super_class = TSDShapeLayout;
-  v3 = [(TSDLayout *)&v38 reliedOnLayouts];
+  reliedOnLayouts = [(TSDLayout *)&v38 reliedOnLayouts];
   if (objc_msgSend_isFreehandDrawingSpacerShape(self, v4, v5))
   {
     v8 = objc_msgSend_set(MEMORY[0x277CBEB58], v6, v7);
@@ -199,15 +199,15 @@
       while (v23);
     }
 
-    if (v3)
+    if (reliedOnLayouts)
     {
-      objc_msgSend_unionSet_(v8, v32, v3);
+      objc_msgSend_unionSet_(v8, v32, reliedOnLayouts);
     }
   }
 
   else
   {
-    v8 = v3;
+    v8 = reliedOnLayouts;
   }
 
   return v8;
@@ -468,19 +468,19 @@ LABEL_54:
   return v130;
 }
 
-- (double)scaleForInlineClampingUnrotatedSize:(CGSize)a3 withTransform:(CGAffineTransform *)a4
+- (double)scaleForInlineClampingUnrotatedSize:(CGSize)size withTransform:(CGAffineTransform *)transform
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = objc_msgSend_shapeInfo(self, a2, a4);
+  height = size.height;
+  width = size.width;
+  v8 = objc_msgSend_shapeInfo(self, a2, transform);
   v11 = objc_msgSend_pathSource(v8, v9, v10);
   v14 = objc_msgSend_copy(v11, v12, v13);
 
   objc_msgSend_scaleToNaturalSize_(v14, v15, v16, width, height);
-  v17 = *&a4->c;
-  v22[0] = *&a4->a;
+  v17 = *&transform->c;
+  v22[0] = *&transform->a;
   v22[1] = v17;
-  v22[2] = *&a4->tx;
+  v22[2] = *&transform->tx;
   objc_msgSend_scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform_withStartingPathSource_(self, v18, v22, v14);
   v20 = v19;
 
@@ -510,9 +510,9 @@ LABEL_54:
   return CGAffineTransformTranslate(retstr, &v15, v12, v13);
 }
 
-- (void)p_performBlockOkayToSetGeometry:(id)a3
+- (void)p_performBlockOkayToSetGeometry:(id)geometry
 {
-  v13 = a3;
+  geometryCopy = geometry;
   if (self->mOkayToSetGeometry)
   {
     v5 = MEMORY[0x277D81150];
@@ -530,13 +530,13 @@ LABEL_54:
   }
 
   self->mOkayToSetGeometry = 1;
-  v13[2]();
+  geometryCopy[2]();
   self->mOkayToSetGeometry = mOkayToSetGeometry;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v6 = a3;
+  geometryCopy = geometry;
   if (!self->mOkayToSetGeometry)
   {
     v7 = objc_msgSend_shapeInfo(self, v4, v5);
@@ -558,11 +558,11 @@ LABEL_54:
   {
     v19 = objc_msgSend_geometry(self, v4, v5);
     v21 = v19;
-    if (v19 && (objc_msgSend_isEqual_(v19, v20, v6) & 1) == 0 && (objc_msgSend_differsInMoreThanTranslationFrom_(v21, v22, v6) & 1) == 0)
+    if (v19 && (objc_msgSend_isEqual_(v19, v20, geometryCopy) & 1) == 0 && (objc_msgSend_differsInMoreThanTranslationFrom_(v21, v22, geometryCopy) & 1) == 0)
     {
-      if (v6)
+      if (geometryCopy)
       {
-        objc_msgSend_transform(v6, v23, v24);
+        objc_msgSend_transform(geometryCopy, v23, v24);
       }
 
       objc_msgSend_transform(v21, v23, v24, *(MEMORY[0x277CBF348] + 8));
@@ -589,9 +589,9 @@ LABEL_54:
         *&t1.c = v34;
         *&t1.tx = *&self->mCachedAlignmentFrameInRootTransformInRoot.tx;
         CGAffineTransformConcat(&v42, &t1, &t2);
-        if (v6)
+        if (geometryCopy)
         {
-          objc_msgSend_transform(v6, v35, v36);
+          objc_msgSend_transform(geometryCopy, v35, v36);
         }
 
         else
@@ -616,7 +616,7 @@ LABEL_54:
 
   v38.receiver = self;
   v38.super_class = TSDShapeLayout;
-  [(TSDDrawableLayout *)&v38 setGeometry:v6];
+  [(TSDDrawableLayout *)&v38 setGeometry:geometryCopy];
 }
 
 - (CGRect)alignmentFrame
@@ -648,12 +648,12 @@ LABEL_54:
   return result;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v5 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v5;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v6 = *(MEMORY[0x277CBF2C0] + 16);
   *&t2.a = *MEMORY[0x277CBF2C0];
   *&t2.c = v6;
@@ -662,10 +662,10 @@ LABEL_54:
   {
     v17.receiver = self;
     v17.super_class = TSDShapeLayout;
-    v9 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v9 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v9;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(TSDStyledLayout *)&v17 baseFrameForFrameForCullingWithAdditionalTransform:&t1];
   }
 
@@ -673,10 +673,10 @@ LABEL_54:
   {
     memset(&t1, 0, sizeof(t1));
     objc_msgSend_transform(self, v7, v8);
-    v14 = *&a3->c;
-    *&v16.a = *&a3->a;
+    v14 = *&transform->c;
+    *&v16.a = *&transform->a;
     *&v16.c = v14;
-    *&v16.tx = *&a3->tx;
+    *&v16.tx = *&transform->tx;
     CGAffineTransformConcat(&t1, &t2, &v16);
     t2 = t1;
     objc_msgSend_shapeFrameWithTransform_(self, v15, &t2);
@@ -730,14 +730,14 @@ LABEL_54:
   return result;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v23.receiver = self;
   v23.super_class = TSDShapeLayout;
   [(TSDDrawableLayout *)&v23 processChangedProperty:?];
-  if (a3 > 522)
+  if (property > 522)
   {
-    if (a3 == 523)
+    if (property == 523)
     {
       objc_msgSend_invalidatePathBounds(self, v5, v6);
       objc_msgSend_p_invalidateTail(self, v21, v22);
@@ -745,7 +745,7 @@ LABEL_54:
 
     else
     {
-      if (a3 != 527)
+      if (property != 527)
       {
         return;
       }
@@ -758,9 +758,9 @@ LABEL_54:
     goto LABEL_11;
   }
 
-  if (a3 != 517)
+  if (property != 517)
   {
-    if (a3 != 522)
+    if (property != 522)
     {
       return;
     }
@@ -806,15 +806,15 @@ LABEL_11:
   return CGRectOffset(*&v21, v18, v20);
 }
 
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform
 {
   v6.receiver = self;
   v6.super_class = TSDShapeLayout;
-  v4 = *&a4->c;
-  v5[0] = *&a4->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a4->tx;
-  [(TSDStyledLayout *)&v6 frameForCullingWithBaseFrame:v5 additionalTransform:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5[2] = *&transform->tx;
+  [(TSDStyledLayout *)&v6 frameForCullingWithBaseFrame:v5 additionalTransform:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   return CGRectInset(v7, -1.0, -1.0);
 }
 
@@ -1037,16 +1037,16 @@ LABEL_11:
   return v18 < 0.0;
 }
 
-- (double)lineEndScale:(BOOL)a3
+- (double)lineEndScale:(BOOL)scale
 {
-  if (a3)
+  if (scale)
   {
-    objc_msgSend_strokeHeadLineEnd(self, a2, a3);
+    objc_msgSend_strokeHeadLineEnd(self, a2, scale);
   }
 
   else
   {
-    objc_msgSend_strokeTailLineEnd(self, a2, a3);
+    objc_msgSend_strokeTailLineEnd(self, a2, scale);
   }
   v4 = ;
   v7 = objc_msgSend_stroke(self, v5, v6);
@@ -1073,12 +1073,12 @@ LABEL_11:
   return v6;
 }
 
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v8[0] = *&a3->a;
+  v3 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v3;
-  v8[2] = *&a3->tx;
+  v8[2] = *&transform->tx;
   objc_msgSend_shapeFrameWithTransform_strokeDrawOptions_(self, a2, v8, 7);
   result.size.height = v7;
   result.size.width = v6;
@@ -1087,20 +1087,20 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3 strokeDrawOptions:(unint64_t)a4
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform strokeDrawOptions:(unint64_t)options
 {
-  v4 = a4;
-  objc_msgSend_pathBounds(self, a2, a3);
-  v9 = *&a3->c;
-  *&v46.a = *&a3->a;
+  optionsCopy = options;
+  objc_msgSend_pathBounds(self, a2, transform);
+  v9 = *&transform->c;
+  *&v46.a = *&transform->a;
   *&v46.c = v9;
-  *&v46.tx = *&a3->tx;
+  *&v46.tx = *&transform->tx;
   CGAffineTransformTranslate(&v47, &v46, -v7, -v8);
   v12 = *&v47.c;
-  *&a3->a = *&v47.a;
-  *&a3->c = v12;
-  *&a3->tx = *&v47.tx;
-  if ((v4 & 1) == 0)
+  *&transform->a = *&v47.a;
+  *&transform->c = v12;
+  *&transform->tx = *&v47.tx;
+  if ((optionsCopy & 1) == 0)
   {
     x = *MEMORY[0x277CBF398];
     y = *(MEMORY[0x277CBF398] + 8);
@@ -1117,16 +1117,16 @@ LABEL_11:
 
   else
   {
-    v26 = *&a3->c;
-    *&v47.a = *&a3->a;
+    v26 = *&transform->c;
+    *&v47.a = *&transform->a;
     *&v47.c = v26;
-    *&v47.tx = *&a3->tx;
+    *&v47.tx = *&transform->tx;
     if (!TSUAffineTransformIsRectilinear())
     {
-      v30 = *&a3->c;
-      *&v47.a = *&a3->a;
+      v30 = *&transform->c;
+      *&v47.a = *&transform->a;
       *&v47.c = v30;
-      *&v47.tx = *&a3->tx;
+      *&v47.tx = *&transform->tx;
       objc_msgSend_p_updatedCachedClipRectIfNeededForRotation_(self, v27, &v47);
       goto LABEL_9;
     }
@@ -1134,10 +1134,10 @@ LABEL_11:
     objc_msgSend_p_cachedClippedPathStroked(self, v27, v28);
   }
 
-  v29 = *&a3->c;
-  *&v47.a = *&a3->a;
+  v29 = *&transform->c;
+  *&v47.a = *&transform->a;
   *&v47.c = v29;
-  *&v47.tx = *&a3->tx;
+  *&v47.tx = *&transform->tx;
   v48 = CGRectApplyAffineTransform(*&v22, &v47);
 LABEL_9:
   x = v48.origin.x;
@@ -1148,12 +1148,12 @@ LABEL_9:
 LABEL_10:
   if (objc_msgSend_pathIsOpen(self, v10, v11))
   {
-    if ((v4 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
-      v32 = *&a3->c;
-      *&v47.a = *&a3->a;
+      v32 = *&transform->c;
+      *&v47.a = *&transform->a;
       *&v47.c = v32;
-      *&v47.tx = *&a3->tx;
+      *&v47.tx = *&transform->tx;
       objc_msgSend_p_boundsOfLineEndForHead_transform_(self, v31, 1, &v47);
       v54.origin.x = v33;
       v54.origin.y = v34;
@@ -1170,12 +1170,12 @@ LABEL_10:
       height = v50.size.height;
     }
 
-    if ((v4 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
-      v37 = *&a3->c;
-      *&v47.a = *&a3->a;
+      v37 = *&transform->c;
+      *&v47.a = *&transform->a;
       *&v47.c = v37;
-      *&v47.tx = *&a3->tx;
+      *&v47.tx = *&transform->tx;
       objc_msgSend_p_boundsOfLineEndForHead_transform_(self, v31, 0, &v47);
       v55.origin.x = v38;
       v55.origin.y = v39;
@@ -1271,7 +1271,7 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale
 {
   v67 = 0.0;
   v68 = 0.0;
@@ -1279,7 +1279,7 @@ LABEL_10:
   v66 = 0.0;
   v63 = 0;
   v64 = 0;
-  objc_msgSend_aliasPathForScale_adjustedStroke_adjustedPath_startDelta_endDelta_(self, a2, &v64, &v63, &v67, &v65, a3);
+  objc_msgSend_aliasPathForScale_adjustedStroke_adjustedPath_startDelta_endDelta_(self, a2, &v64, &v63, &v67, &v65, scale);
   v4 = v64;
   v5 = v63;
   objc_msgSend_pathBounds(self, v6, v7);
@@ -1372,16 +1372,16 @@ LABEL_10:
   return result;
 }
 
-- (void)aliasPathForScale:(double)a3 adjustedStroke:(id *)a4 adjustedPath:(id *)a5 startDelta:(CGPoint *)a6 endDelta:(CGPoint *)a7
+- (void)aliasPathForScale:(double)scale adjustedStroke:(id *)stroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta
 {
-  v14 = objc_msgSend_stroke(self, a2, a4);
-  objc_msgSend_aliasPathForScale_originalStroke_adjustedStroke_adjustedPath_startDelta_endDelta_(self, v13, v14, a4, a5, a6, a7, a3);
+  v14 = objc_msgSend_stroke(self, a2, stroke);
+  objc_msgSend_aliasPathForScale_originalStroke_adjustedStroke_adjustedPath_startDelta_endDelta_(self, v13, v14, stroke, path, delta, endDelta, scale);
 }
 
-- (void)aliasPathForScale:(double)a3 originalStroke:(id)a4 adjustedStroke:(id *)a5 adjustedPath:(id *)a6 startDelta:(CGPoint *)a7 endDelta:(CGPoint *)a8
+- (void)aliasPathForScale:(double)scale originalStroke:(id)stroke adjustedStroke:(id *)adjustedStroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta
 {
   v189 = *MEMORY[0x277D85DE8];
-  v14 = a4;
+  strokeCopy = stroke;
   v17 = objc_msgSend_shapeInfo(self, v15, v16);
   if (!objc_msgSend_pathIsOpen(self, v18, v19))
   {
@@ -1390,7 +1390,7 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  v181 = a6;
+  pathCopy = path;
   v24 = objc_msgSend_headLineEnd(v17, v20, v21);
   if (v24)
   {
@@ -1398,8 +1398,8 @@ LABEL_19:
     v9 = objc_msgSend_null(MEMORY[0x277CBEB68], v25, v26);
     if (objc_msgSend_isEqual_(v8, v27, v9))
     {
-      v28 = a5;
-      v179 = v14;
+      adjustedStrokeCopy3 = adjustedStroke;
+      v179 = strokeCopy;
       v29 = 0;
     }
 
@@ -1413,16 +1413,16 @@ LABEL_19:
       }
 
       v175 = v30;
-      v28 = a5;
-      v179 = v14;
+      adjustedStrokeCopy3 = adjustedStroke;
+      v179 = strokeCopy;
       v29 = 1;
     }
   }
 
   else
   {
-    v28 = a5;
-    v179 = v14;
+    adjustedStrokeCopy3 = adjustedStroke;
+    v179 = strokeCopy;
     v29 = 0;
   }
 
@@ -1448,7 +1448,7 @@ LABEL_19:
     }
 
     v17 = v37;
-    a5 = v28;
+    adjustedStroke = adjustedStrokeCopy3;
     v9 = v176;
     v8 = v177;
     if (v29)
@@ -1460,7 +1460,7 @@ LABEL_19:
   else
   {
     v45 = 0;
-    a5 = v28;
+    adjustedStroke = adjustedStrokeCopy3;
     if (v29)
     {
 LABEL_15:
@@ -1471,8 +1471,8 @@ LABEL_15:
   {
   }
 
-  v14 = v179;
-  a6 = v181;
+  strokeCopy = v179;
+  path = pathCopy;
   if ((v45 & 1) == 0)
   {
     goto LABEL_19;
@@ -1497,28 +1497,28 @@ LABEL_22:
     isDrawingIntoPDF = objc_msgSend_isDrawingIntoPDF(v58, v61, v62);
   }
 
-  v64 = a8;
-  if (a5)
+  endDeltaCopy3 = endDelta;
+  if (adjustedStroke)
   {
-    v65 = v14;
-    *a5 = v14;
+    v65 = strokeCopy;
+    *adjustedStroke = strokeCopy;
   }
 
-  v66 = a5;
-  if (a6)
+  adjustedStrokeCopy4 = adjustedStroke;
+  if (path)
   {
-    *a6 = objc_msgSend_copy(v52, v61, v62);
+    *path = objc_msgSend_copy(v52, v61, v62);
   }
 
   v67 = MEMORY[0x277CBF348];
-  if (a7)
+  if (delta)
   {
-    *a7 = *MEMORY[0x277CBF348];
+    *delta = *MEMORY[0x277CBF348];
   }
 
-  if (a8)
+  if (endDelta)
   {
-    *a8 = *v67;
+    *endDelta = *v67;
   }
 
   if (v52)
@@ -1529,55 +1529,55 @@ LABEL_22:
       objc_msgSend_pathBounds(self, v68, v69);
       v71 = v70;
       v73 = v72;
-      if (!objc_msgSend_shouldRender(v14, v74, v75) || objc_msgSend_shouldAntialiasDefeat(v14, v76, v77))
+      if (!objc_msgSend_shouldRender(strokeCopy, v74, v75) || objc_msgSend_shouldAntialiasDefeat(strokeCopy, v76, v77))
       {
-        v78 = objc_msgSend_mutableCopy(v14, v76, v77);
+        v78 = objc_msgSend_mutableCopy(strokeCopy, v76, v77);
         v83 = 0.0;
         v180 = v78;
         if (objc_msgSend_shouldRender(v78, v79, v80))
         {
           isFrame = objc_msgSend_isFrame(v78, v81, v82);
-          v85 = a7;
+          deltaCopy5 = delta;
           if ((isFrame & 1) == 0)
           {
-            objc_msgSend_width(v14, v81, v82);
+            objc_msgSend_width(strokeCopy, v81, v82);
             v83 = 1.0;
-            if (v88 * a3 > 1.0)
+            if (v88 * scale > 1.0)
             {
               TSURound();
               v90 = v89;
-              objc_msgSend_setWidth_(v180, v91, v92, v89 / a3);
+              objc_msgSend_setWidth_(v180, v91, v92, v89 / scale);
               v83 = v90;
             }
 
-            objc_msgSend_width(v14, v86, v87);
+            objc_msgSend_width(strokeCopy, v86, v87);
             objc_msgSend_setActualWidth_(v180, v93, v94);
           }
         }
 
         else
         {
-          v85 = a7;
+          deltaCopy5 = delta;
         }
 
-        v182 = a6;
-        if (v85)
+        pathCopy2 = path;
+        if (deltaCopy5)
         {
-          if (a8)
+          if (endDelta)
           {
 LABEL_45:
             v95 = objc_msgSend_copy(v52, v81, v82);
             objc_msgSend_elementAtIndex_associatedPoints_(v52, v96, 0, &v188);
-            if (v85)
+            if (deltaCopy5)
             {
-              *v85 = *&v188.a;
+              *deltaCopy5 = *&v188.a;
             }
 
-            if (v64)
+            if (endDeltaCopy3)
             {
               objc_msgSend_currentPoint(v52, v97, v98);
-              v64->x = v99;
-              v64->y = v100;
+              endDeltaCopy3->x = v99;
+              endDeltaCopy3->y = v100;
             }
 
             v185 = v187;
@@ -1593,7 +1593,7 @@ LABEL_45:
               v110 = MEMORY[0x277D81160];
               objc_msgSend_bounds(v95, v111, v112);
               v115 = objc_msgSend_bezierPathWithRect_(v110, v113, v114);
-              *&v116 = a3;
+              *&v116 = scale;
               *&v117 = v83;
               objc_msgSend_aliasedPathWithViewScale_effectiveStrokeWidth_(v115, v118, v119, v116, v117);
               v121 = v120 = v17;
@@ -1604,7 +1604,7 @@ LABEL_45:
               v131 = v130;
 
               v17 = v120;
-              v85 = a7;
+              deltaCopy5 = delta;
 
               v185 = v187;
               CGAffineTransformInvert(&v186, &v185);
@@ -1629,7 +1629,7 @@ LABEL_45:
 
             else
             {
-              *&v107 = a3;
+              *&v107 = scale;
               *&v108 = v83;
               v137 = objc_msgSend_aliasedPathWithViewScale_effectiveStrokeWidth_(v95, v105, v106, v107, v108);
             }
@@ -1639,31 +1639,31 @@ LABEL_45:
             objc_msgSend_transformUsingAffineTransform_(v137, v147, &v186);
             *&v186.a = *v67;
             objc_msgSend_elementAtIndex_associatedPoints_(v137, v148, 0, &v186);
-            if (v85)
+            if (deltaCopy5)
             {
               TSUSubtractPoints();
-              v85->x = v151;
-              v85->y = v152;
+              deltaCopy5->x = v151;
+              deltaCopy5->y = v152;
             }
 
-            if (a8)
+            if (endDelta)
             {
               objc_msgSend_currentPoint(v137, v149, v150);
               TSUSubtractPoints();
-              a8->x = v153;
-              a8->y = v154;
+              endDelta->x = v153;
+              endDelta->y = v154;
             }
 
-            if (v66)
+            if (adjustedStrokeCopy4)
             {
               v155 = v180;
-              *v66 = v180;
+              *adjustedStrokeCopy4 = v180;
             }
 
-            if (v182)
+            if (pathCopy2)
             {
               v156 = v137;
-              *v182 = v137;
+              *pathCopy2 = v137;
             }
 
             goto LABEL_62;
@@ -1677,13 +1677,13 @@ LABEL_45:
           v159 = v158 = v17;
           v161 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v160, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDShapeLayout.m");
           v162 = v157;
-          v64 = a8;
+          endDeltaCopy3 = endDelta;
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v162, v163, v159, v161, 825, 0, "invalid nil value for '%{public}s'", "startDelta");
 
-          v85 = a7;
+          deltaCopy5 = delta;
           v17 = v158;
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v164, v165);
-          if (a8)
+          if (endDelta)
           {
             goto LABEL_45;
           }
@@ -1694,10 +1694,10 @@ LABEL_45:
         v168 = v167 = v17;
         v170 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v169, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDShapeLayout.m");
         v171 = v166;
-        v64 = a8;
+        endDeltaCopy3 = endDelta;
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v171, v172, v168, v170, 826, 0, "invalid nil value for '%{public}s'", "endDelta");
 
-        v85 = a7;
+        deltaCopy5 = delta;
         v17 = v167;
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v173, v174);
         goto LABEL_45;
@@ -1927,13 +1927,13 @@ LABEL_13:
   return result;
 }
 
-- (void)offsetGeometryBy:(CGPoint)a3
+- (void)offsetGeometryBy:(CGPoint)by
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_276678708;
   v3[3] = &unk_27A6CC768;
-  v4 = a3;
+  byCopy = by;
   v3[4] = self;
   objc_msgSend_p_performBlockOkayToSetGeometry_(self, a2, v3);
 }
@@ -2004,9 +2004,9 @@ LABEL_13:
   return v10;
 }
 
-- (id)i_computeWrapPathClosed:(BOOL)a3
+- (id)i_computeWrapPathClosed:(BOOL)closed
 {
-  v5 = objc_msgSend_path(self, a2, a3);
+  v5 = objc_msgSend_path(self, a2, closed);
   v8 = objc_msgSend_stroke(self, v6, v7);
   v11 = v8;
   if (v8 && objc_msgSend_shouldRender(v8, v9, v10))
@@ -2027,7 +2027,7 @@ LABEL_13:
 
       objc_msgSend_takeAttributesFromStroke_(v22, v23, v11);
       v5 = objc_msgSend_strokedCopyAttemptingUsingLivarotFirst(v22, v24, v25);
-      if (a3 || objc_msgSend_isEffectivelyClosed(v22, v26, v27))
+      if (closed || objc_msgSend_isEffectivelyClosed(v22, v26, v27))
       {
         v28 = objc_msgSend_uniteWithBezierPath_(v22, v26, v5);
       }
@@ -2067,19 +2067,19 @@ LABEL_13:
   return v18;
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v5 = a5;
+  documentCopy = document;
   v16.receiver = self;
   v16.super_class = TSDShapeLayout;
-  v7 = *&a4->c;
-  v13 = *&a4->a;
+  v7 = *&transform->c;
+  v13 = *&transform->a;
   v14 = v7;
-  v15 = *&a4->tx;
-  v8 = a3;
-  [(TSDLayout *)&v16 transferLayoutGeometryToInfo:v8 withAdditionalTransform:&v13 assertIfInDocument:v5];
+  v15 = *&transform->tx;
+  infoCopy = info;
+  [(TSDLayout *)&v16 transferLayoutGeometryToInfo:infoCopy withAdditionalTransform:&v13 assertIfInDocument:documentCopy];
   v11 = objc_msgSend_pathSource(self, v9, v10, v13, v14, v15, v16.receiver, v16.super_class);
-  objc_msgSend_setPathSource_(v8, v12, v11);
+  objc_msgSend_setPathSource_(infoCopy, v12, v11);
 }
 
 - (void)validate
@@ -2269,14 +2269,14 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)p_updatedCachedClipRectIfNeededForRotation:(CGAffineTransform *)a3
+- (CGRect)p_updatedCachedClipRectIfNeededForRotation:(CGAffineTransform *)rotation
 {
-  v4 = *&a3->c;
-  v39 = *&a3->a;
+  v4 = *&rotation->c;
+  v39 = *&rotation->a;
   v40 = v4;
   p_mClippedPathRotatedTransform = &self->mClippedPathRotatedTransform;
-  v6 = *&a3->c;
-  v35 = *&a3->a;
+  v6 = *&rotation->c;
+  v35 = *&rotation->a;
   v36 = v6;
   v37 = 0;
   v38 = 0;
@@ -2482,18 +2482,18 @@ LABEL_9:
   return v26;
 }
 
-- (CGRect)p_boundsOfLineEndForHead:(BOOL)a3 transform:(CGAffineTransform *)a4
+- (CGRect)p_boundsOfLineEndForHead:(BOOL)head transform:(CGAffineTransform *)transform
 {
-  v5 = a3;
+  headCopy = head;
   v7 = MEMORY[0x277CBF398];
-  if (a3)
+  if (head)
   {
-    objc_msgSend_strokeHeadLineEnd(self, a2, a3);
+    objc_msgSend_strokeHeadLineEnd(self, a2, head);
   }
 
   else
   {
-    objc_msgSend_strokeTailLineEnd(self, a2, a3);
+    objc_msgSend_strokeTailLineEnd(self, a2, head);
   }
   v8 = ;
   v11 = v8;
@@ -2503,7 +2503,7 @@ LABEL_9:
   v15 = v7[3];
   if (v8 && (objc_msgSend_isNone(v8, v9, v10) & 1) == 0)
   {
-    if (v5)
+    if (headCopy)
     {
       objc_msgSend_headLineEndPoint(self, v16, v17);
       v19 = v18;
@@ -2520,13 +2520,13 @@ LABEL_9:
     }
 
     v30 = v25;
-    objc_msgSend_lineEndScale_(self, v24, v5);
+    objc_msgSend_lineEndScale_(self, v24, headCopy);
     v32 = v31;
     v35 = objc_msgSend_stroke(self, v33, v34);
-    v36 = *&a4->c;
-    v46[0] = *&a4->a;
+    v36 = *&transform->c;
+    v46[0] = *&transform->a;
     v46[1] = v36;
-    v46[2] = *&a4->tx;
+    v46[2] = *&transform->tx;
     objc_msgSend_boundsForLineEnd_atPoint_atAngle_withScale_transform_(v35, v37, v11, v46, v19, v21, v30, v32);
     v12 = v38;
     v13 = v39;
@@ -2545,13 +2545,13 @@ LABEL_9:
   return result;
 }
 
-- (id)p_unitePath:(id)a3 withLineEndForHead:(BOOL)a4 stroke:(id)a5
+- (id)p_unitePath:(id)path withLineEndForHead:(BOOL)head stroke:(id)stroke
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v12 = v8;
-  if (v6)
+  headCopy = head;
+  pathCopy = path;
+  strokeCopy = stroke;
+  v12 = pathCopy;
+  if (headCopy)
   {
     objc_msgSend_strokeHeadLineEnd(self, v10, v11);
   }
@@ -2568,7 +2568,7 @@ LABEL_9:
     v17 = v12;
     if ((objc_msgSend_isNone(v13, v14, v15) & 1) == 0)
     {
-      if (v6)
+      if (headCopy)
       {
         objc_msgSend_headLineEndPoint(self, v18, v19);
         v21 = v20;
@@ -2585,8 +2585,8 @@ LABEL_9:
       }
 
       v32 = v27;
-      objc_msgSend_lineEndScale_(self, v26, v6);
-      v35 = objc_msgSend_pathForLineEnd_wrapPath_atPoint_atAngle_withScale_(v9, v33, v16, 1, v21, v23, v32, v34);
+      objc_msgSend_lineEndScale_(self, v26, headCopy);
+      v35 = objc_msgSend_pathForLineEnd_wrapPath_atPoint_atAngle_withScale_(strokeCopy, v33, v16, 1, v21, v23, v32, v34);
       v17 = objc_msgSend_uniteWithBezierPath_(v12, v36, v35);
     }
   }

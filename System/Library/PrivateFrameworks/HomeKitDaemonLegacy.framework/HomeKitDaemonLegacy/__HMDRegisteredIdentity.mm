@@ -1,6 +1,6 @@
 @interface __HMDRegisteredIdentity
 - (__HMDRegisteredIdentity)init;
-- (__HMDRegisteredIdentity)initWithIdentity:(id)a3;
+- (__HMDRegisteredIdentity)initWithIdentity:(id)identity;
 - (id)debugDescription;
 - (id)description;
 @end
@@ -9,49 +9,49 @@
 
 - (id)description
 {
-  v2 = [(__HMDRegisteredIdentity *)self identity];
-  v3 = [v2 description];
+  identity = [(__HMDRegisteredIdentity *)self identity];
+  v3 = [identity description];
 
   return v3;
 }
 
 - (id)debugDescription
 {
-  v2 = [(__HMDRegisteredIdentity *)self identity];
-  v3 = [v2 debugDescription];
+  identity = [(__HMDRegisteredIdentity *)self identity];
+  v3 = [identity debugDescription];
 
   return v3;
 }
 
-- (__HMDRegisteredIdentity)initWithIdentity:(id)a3
+- (__HMDRegisteredIdentity)initWithIdentity:(id)identity
 {
-  v4 = a3;
-  if (v4)
+  identityCopy = identity;
+  if (identityCopy)
   {
     v12.receiver = self;
     v12.super_class = __HMDRegisteredIdentity;
     v5 = [(__HMDRegisteredIdentity *)&v12 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [identityCopy copy];
       identity = v5->_identity;
       v5->_identity = v6;
 
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       registeredObjects = v5->_registeredObjects;
-      v5->_registeredObjects = v8;
+      v5->_registeredObjects = array;
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (__HMDRegisteredIdentity)init

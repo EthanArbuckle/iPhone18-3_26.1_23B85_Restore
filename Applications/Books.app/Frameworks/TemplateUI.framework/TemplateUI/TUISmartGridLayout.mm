@@ -1,8 +1,8 @@
 @interface TUISmartGridLayout
-- (double)columnLayoutProviderWidthForColumnSpan:(unint64_t)a3;
-- (unint64_t)columnLayoutProviderColumnSpanForColumnSpan:(id)a3;
-- (unint64_t)columnLayoutProviderColumnsForContainerFraction:(double)a3;
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6;
+- (double)columnLayoutProviderWidthForColumnSpan:(unint64_t)span;
+- (unint64_t)columnLayoutProviderColumnSpanForColumnSpan:(id)span;
+- (unint64_t)columnLayoutProviderColumnsForContainerFraction:(double)fraction;
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models;
 - (void)computeLayout;
 @end
 
@@ -13,17 +13,17 @@
   if (!self->_layoutManager)
   {
     v3 = [(TUILayout *)self box];
-    v4 = [v3 layoutMode];
+    layoutMode = [v3 layoutMode];
 
-    if (v4 <= 1)
+    if (layoutMode <= 1)
     {
-      if (!v4)
+      if (!layoutMode)
       {
         v5 = TUISmartGridSwooshLayoutManager;
         goto LABEL_13;
       }
 
-      if (v4 == (&dword_0 + 1))
+      if (layoutMode == (&dword_0 + 1))
       {
         v5 = TUISmartGridGridLayoutManager;
         goto LABEL_13;
@@ -32,12 +32,12 @@
 
     else
     {
-      if (v4 == (&dword_0 + 2))
+      if (layoutMode == (&dword_0 + 2))
       {
         v6 = [TUISmartGridGridLayoutManager alloc];
         v7 = [(TUILayout *)self box];
-        v8 = [v7 content];
-        v9 = [(TUISmartGridGridLayoutManager *)v6 initWithContent:v8];
+        content = [v7 content];
+        v9 = [(TUISmartGridGridLayoutManager *)v6 initWithContent:content];
 
         [(TUISmartGridGridLayoutManager *)v9 setList:1];
         layoutManager = self->_layoutManager;
@@ -47,20 +47,20 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      if (v4 == (&dword_0 + 3))
+      if (layoutMode == (&dword_0 + 3))
       {
         v5 = TUISmartGridOverlapWithOffsetsLayoutManager;
         goto LABEL_13;
       }
 
-      if (v4 == &dword_4)
+      if (layoutMode == &dword_4)
       {
         v5 = TUISmartGridFlexRowLayoutManager;
 LABEL_13:
         v11 = [v5 alloc];
         layoutManager = [(TUILayout *)self box];
-        v12 = [layoutManager content];
-        v13 = [v11 initWithContent:v12];
+        content2 = [layoutManager content];
+        v13 = [v11 initWithContent:content2];
         v14 = self->_layoutManager;
         self->_layoutManager = v13;
 
@@ -73,15 +73,15 @@ LABEL_15:
   [(TUILayout *)self computeWidth];
   v16 = v15;
   v37 = [(TUILayout *)self box];
-  v17 = [(TUILayout *)self controller];
+  controller = [(TUILayout *)self controller];
   v18 = [(TUILayout *)self box];
-  v19 = [v18 scrollBox];
-  v20 = [v17 layoutForModel:v19];
+  scrollBox = [v18 scrollBox];
+  v20 = [controller layoutForModel:scrollBox];
 
-  v21 = [(TUILayout *)self controller];
+  controller2 = [(TUILayout *)self controller];
   v22 = [(TUILayout *)self box];
-  v23 = [v22 content];
-  v24 = [v21 layoutForModel:v23];
+  content3 = [v22 content];
+  v24 = [controller2 layoutForModel:content3];
 
   [v20 containingWidth];
   v26 = v25;
@@ -108,27 +108,27 @@ LABEL_15:
   [(TUILayout *)self setComputedNaturalSize:?];
 }
 
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models
 {
   v19.receiver = self;
   v19.super_class = TUISmartGridLayout;
-  v10 = *&a5->c;
-  v16 = *&a5->a;
+  v10 = *&transform->c;
+  v16 = *&transform->a;
   v17 = v10;
-  v18 = *&a5->tx;
-  v11 = a6;
-  v12 = a4;
-  [(TUILayout *)&v19 appendChildRenderModelCompatibleWithKind:a3 context:v12 transform:&v16 toModels:v11];
+  v18 = *&transform->tx;
+  modelsCopy = models;
+  contextCopy = context;
+  [(TUILayout *)&v19 appendChildRenderModelCompatibleWithKind:kind context:contextCopy transform:&v16 toModels:modelsCopy];
   layoutManager = self->_layoutManager;
   v14 = [(TUILayout *)self box:v16];
-  v15 = *&a5->c;
-  v16 = *&a5->a;
+  v15 = *&transform->c;
+  v16 = *&transform->a;
   v17 = v15;
-  v18 = *&a5->tx;
-  [(TUISmartGridLayoutManager *)layoutManager appendNonScrollableAdornmentRenderModelsCompatibleWithKind:a3 transform:&v16 context:v12 box:v14 toModels:v11];
+  v18 = *&transform->tx;
+  [(TUISmartGridLayoutManager *)layoutManager appendNonScrollableAdornmentRenderModelsCompatibleWithKind:kind transform:&v16 context:contextCopy box:v14 toModels:modelsCopy];
 }
 
-- (double)columnLayoutProviderWidthForColumnSpan:(unint64_t)a3
+- (double)columnLayoutProviderWidthForColumnSpan:(unint64_t)span
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -137,27 +137,27 @@ LABEL_15:
 
   layoutManager = self->_layoutManager;
 
-  [(TUISmartGridLayoutManager *)layoutManager widthForColumnSpan:a3];
+  [(TUISmartGridLayoutManager *)layoutManager widthForColumnSpan:span];
   return result;
 }
 
-- (unint64_t)columnLayoutProviderColumnSpanForColumnSpan:(id)a3
+- (unint64_t)columnLayoutProviderColumnSpanForColumnSpan:(id)span
 {
   layoutManager = self->_layoutManager;
-  v4 = a3;
-  v5 = [(TUISmartGridLayoutManager *)layoutManager configuration];
-  v6 = [v5 unsignedIntegerWithSpec:v4];
+  spanCopy = span;
+  configuration = [(TUISmartGridLayoutManager *)layoutManager configuration];
+  v6 = [configuration unsignedIntegerWithSpec:spanCopy];
 
   return v6;
 }
 
-- (unint64_t)columnLayoutProviderColumnsForContainerFraction:(double)a3
+- (unint64_t)columnLayoutProviderColumnsForContainerFraction:(double)fraction
 {
-  v5 = [(TUISmartGridLayoutManager *)self->_layoutManager configuration];
-  [v5 width];
+  configuration = [(TUISmartGridLayoutManager *)self->_layoutManager configuration];
+  [configuration width];
   v7 = v6;
   [(TUISmartGridLayoutManager *)self->_layoutManager computedColumnSpacing];
-  v9 = v8 + v7 * a3;
+  v9 = v8 + v7 * fraction;
   [(TUISmartGridLayoutManager *)self->_layoutManager computedColumnWidth];
   v11 = v10;
   [(TUISmartGridLayoutManager *)self->_layoutManager computedColumnSpacing];

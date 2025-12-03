@@ -1,31 +1,31 @@
 @interface PLSQLiteDatabase
-+ (id)openDatabaseAtPath:(id)a3 capabilities:(id)a4;
-+ (int)dataProtectionOpenFlagForCapabilities:(id)a3;
-+ (int)dataProtectionOpenFlagForPath:(id)a3;
-+ (int)setLockProxyFileForDatabase:(sqlite3 *)a3 lockFilePath:(id)a4;
-+ (sqlite3)_openSQLiteDatabaseAtPath:(const char *)a3 capabilities:(id)a4;
-- (BOOL)_execute:(id)a3;
++ (id)openDatabaseAtPath:(id)path capabilities:(id)capabilities;
++ (int)dataProtectionOpenFlagForCapabilities:(id)capabilities;
++ (int)dataProtectionOpenFlagForPath:(id)path;
++ (int)setLockProxyFileForDatabase:(sqlite3 *)database lockFilePath:(id)path;
++ (sqlite3)_openSQLiteDatabaseAtPath:(const char *)path capabilities:(id)capabilities;
+- (BOOL)_execute:(id)_execute;
 - (BOOL)close;
-- (BOOL)prepareStatement:(id)a3 andStepThroughResultsWithBlock:(id)a4;
-- (PLSQLiteDatabase)initWithOpenedSQLite3Database:(sqlite3 *)a3;
-- (sqlite3_stmt)_prepareStatement:(id)a3;
+- (BOOL)prepareStatement:(id)statement andStepThroughResultsWithBlock:(id)block;
+- (PLSQLiteDatabase)initWithOpenedSQLite3Database:(sqlite3 *)database;
+- (sqlite3_stmt)_prepareStatement:(id)statement;
 @end
 
 @implementation PLSQLiteDatabase
 
-- (BOOL)_execute:(id)a3
+- (BOOL)_execute:(id)_execute
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _executeCopy = _execute;
   errmsg = 0;
-  v5 = sqlite3_exec(self->_database, [v4 UTF8String], 0, 0, &errmsg);
+  v5 = sqlite3_exec(self->_database, [_executeCopy UTF8String], 0, 0, &errmsg);
   if (v5)
   {
     v6 = PLBackendGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v10 = v4;
+      v10 = _executeCopy;
       v11 = 2080;
       v12 = errmsg;
       v13 = 1024;
@@ -37,14 +37,14 @@
   return v5 == 0;
 }
 
-- (sqlite3_stmt)_prepareStatement:(id)a3
+- (sqlite3_stmt)_prepareStatement:(id)statement
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 UTF8String];
-  v6 = strlen(v5);
+  statementCopy = statement;
+  uTF8String = [statementCopy UTF8String];
+  v6 = strlen(uTF8String);
   ppStmt = 0;
-  v7 = sqlite3_prepare_v2(self->_database, v5, v6 + 1, &ppStmt, 0);
+  v7 = sqlite3_prepare_v2(self->_database, uTF8String, v6 + 1, &ppStmt, 0);
   if (v7)
   {
     v8 = v7;
@@ -53,7 +53,7 @@
     {
       v10 = sqlite3_errmsg(self->_database);
       *buf = 138412802;
-      v15 = v4;
+      v15 = statementCopy;
       v16 = 2080;
       v17 = v10;
       v18 = 1024;
@@ -67,11 +67,11 @@
   return v11;
 }
 
-- (BOOL)prepareStatement:(id)a3 andStepThroughResultsWithBlock:(id)a4
+- (BOOL)prepareStatement:(id)statement andStepThroughResultsWithBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PLSQLiteDatabase *)self _prepareStatement:a3];
+  blockCopy = block;
+  v7 = [(PLSQLiteDatabase *)self _prepareStatement:statement];
   if (v7)
   {
     v8 = v7;
@@ -84,7 +84,7 @@
         break;
       }
 
-      v6[2](v6, v8, &v15);
+      blockCopy[2](blockCopy, v8, &v15);
       if (v15)
       {
         v10 = 1;
@@ -148,7 +148,7 @@ LABEL_12:
   return v2 == 0;
 }
 
-- (PLSQLiteDatabase)initWithOpenedSQLite3Database:(sqlite3 *)a3
+- (PLSQLiteDatabase)initWithOpenedSQLite3Database:(sqlite3 *)database
 {
   v8.receiver = self;
   v8.super_class = PLSQLiteDatabase;
@@ -156,25 +156,25 @@ LABEL_12:
   v5 = v4;
   if (v4)
   {
-    v4->_database = a3;
+    v4->_database = database;
     v6 = v4;
   }
 
   return v5;
 }
 
-+ (sqlite3)_openSQLiteDatabaseAtPath:(const char *)a3 capabilities:(id)a4
++ (sqlite3)_openSQLiteDatabaseAtPath:(const char *)path capabilities:(id)capabilities
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a3)
+  capabilitiesCopy = capabilities;
+  if (!path)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLSQLiteDatabase.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"path != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSQLiteDatabase.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"path != NULL"}];
   }
 
   ppDb = 0;
-  v8 = sqlite3_open_v2(a3, &ppDb, [PLSQLiteDatabase dataProtectionOpenFlagForCapabilities:v7]| 2, 0);
+  v8 = sqlite3_open_v2(path, &ppDb, [PLSQLiteDatabase dataProtectionOpenFlagForCapabilities:capabilitiesCopy]| 2, 0);
   if (v8)
   {
     v9 = v8;
@@ -219,11 +219,11 @@ LABEL_12:
   return v14;
 }
 
-+ (id)openDatabaseAtPath:(id)a3 capabilities:(id)a4
++ (id)openDatabaseAtPath:(id)path capabilities:(id)capabilities
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a1 _openSQLiteDatabaseAtPath:objc_msgSend(a3 capabilities:{"UTF8String"), v8}];
+  pathCopy = path;
+  capabilitiesCopy = capabilities;
+  v9 = [self _openSQLiteDatabaseAtPath:objc_msgSend(path capabilities:{"UTF8String"), capabilitiesCopy}];
 
   if (v9)
   {
@@ -238,16 +238,16 @@ LABEL_12:
   return v10;
 }
 
-+ (int)setLockProxyFileForDatabase:(sqlite3 *)a3 lockFilePath:(id)a4
++ (int)setLockProxyFileForDatabase:(sqlite3 *)database lockFilePath:(id)path
 {
   *&v14[5] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = sqlite3_mprintf("PRAGMA lock_proxy_file = %Q", [v5 fileSystemRepresentation]);
+  pathCopy = path;
+  v6 = sqlite3_mprintf("PRAGMA lock_proxy_file = %Q", [pathCopy fileSystemRepresentation]);
   if (v6)
   {
     v7 = v6;
     errmsg = 0;
-    v8 = sqlite3_exec(a3, v6, 0, 0, &errmsg);
+    v8 = sqlite3_exec(database, v6, 0, 0, &errmsg);
     if (v8)
     {
       v9 = PLBackendGetLog();
@@ -273,7 +273,7 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *v14 = v5;
+      *v14 = pathCopy;
       _os_log_impl(&dword_1AA9BD000, v10, OS_LOG_TYPE_ERROR, "Failed to set lock_proxy_file (statement parse error) for path: %@", buf, 0xCu);
     }
 
@@ -283,9 +283,9 @@ LABEL_12:
   return v8;
 }
 
-+ (int)dataProtectionOpenFlagForCapabilities:(id)a3
++ (int)dataProtectionOpenFlagForCapabilities:(id)capabilities
 {
-  if ([a3 supportsDataProtection])
+  if ([capabilities supportsDataProtection])
   {
     return 3145728;
   }
@@ -296,9 +296,9 @@ LABEL_12:
   }
 }
 
-+ (int)dataProtectionOpenFlagForPath:(id)a3
++ (int)dataProtectionOpenFlagForPath:(id)path
 {
-  v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3 isDirectory:0];
+  v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:0];
   v4 = [PLFileSystemCapabilities capabilitiesWithURL:v3];
 
   LODWORD(v3) = [PLSQLiteDatabase dataProtectionOpenFlagForCapabilities:v4];

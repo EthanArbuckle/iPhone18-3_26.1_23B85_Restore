@@ -1,42 +1,42 @@
 @interface TSPFilePackageDataStorage
-- (BOOL)isInPackage:(id)a3;
+- (BOOL)isInPackage:(id)package;
 - (BOOL)isLengthPrecise;
-- (BOOL)linkOrCopyToURL:(id)a3 encryptionInfo:(id)a4 canLink:(BOOL)a5;
+- (BOOL)linkOrCopyToURL:(id)l encryptionInfo:(id)info canLink:(BOOL)link;
 - (TSPFilePackageDataStorage)init;
-- (TSPFilePackageDataStorage)initWithPath:(id)a3 package:(id)a4 decryptionInfo:(id)a5 materializedLength:(unint64_t)a6;
-- (id)newDataCopyReadChannelProviderWithDocumentURL:(id)a3 encryptionInfo:(id)a4 error:(id *)a5;
-- (id)streamReadChannelForWriteWithPackageWriter:(id)a3;
-- (id)writeData:(id)a3 toPackageWriter:(id)a4 infoMessage:(void *)a5 preferredFilename:(id)a6 shouldRemoveData:(BOOL)a7 error:(id *)a8;
+- (TSPFilePackageDataStorage)initWithPath:(id)path package:(id)package decryptionInfo:(id)info materializedLength:(unint64_t)length;
+- (id)newDataCopyReadChannelProviderWithDocumentURL:(id)l encryptionInfo:(id)info error:(id *)error;
+- (id)streamReadChannelForWriteWithPackageWriter:(id)writer;
+- (id)writeData:(id)data toPackageWriter:(id)writer infoMessage:(void *)message preferredFilename:(id)filename shouldRemoveData:(BOOL)removeData error:(id *)error;
 - (unint64_t)encodedLength;
 - (unint64_t)fileFormatVersion;
 - (unint64_t)length;
 - (unsigned)CRC;
-- (void)didInitializeFromDocumentURL:(id)a3;
-- (void)performIOChannelReadWithAccessor:(id)a3;
-- (void)setEncodedLength:(unint64_t)a3 isMissingData:(BOOL)a4;
+- (void)didInitializeFromDocumentURL:(id)l;
+- (void)performIOChannelReadWithAccessor:(id)accessor;
+- (void)setEncodedLength:(unint64_t)length isMissingData:(BOOL)data;
 @end
 
 @implementation TSPFilePackageDataStorage
 
-- (TSPFilePackageDataStorage)initWithPath:(id)a3 package:(id)a4 decryptionInfo:(id)a5 materializedLength:(unint64_t)a6
+- (TSPFilePackageDataStorage)initWithPath:(id)path package:(id)package decryptionInfo:(id)info materializedLength:(unint64_t)length
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  packageCopy = package;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = TSPFilePackageDataStorage;
   v15 = [(TSPFilePackageDataStorage *)&v19 init];
   if (v15)
   {
-    v16 = objc_msgSend_copy(v10, v13, v14);
+    v16 = objc_msgSend_copy(pathCopy, v13, v14);
     path = v15->_path;
     v15->_path = v16;
 
-    objc_storeStrong(&v15->_decryptionInfo, a5);
-    objc_storeWeak(&v15->_package, v11);
-    if (a6 != -1)
+    objc_storeStrong(&v15->_decryptionInfo, info);
+    objc_storeWeak(&v15->_package, packageCopy);
+    if (length != -1)
     {
-      atomic_store(a6, &v15->_materializedLength);
+      atomic_store(length, &v15->_materializedLength);
     }
   }
 
@@ -59,7 +59,7 @@
   objc_exception_throw(v13);
 }
 
-- (void)didInitializeFromDocumentURL:(id)a3
+- (void)didInitializeFromDocumentURL:(id)l
 {
   WeakRetained = objc_loadWeakRetained(&self->_package);
   v7 = objc_msgSend_zipArchive(WeakRetained, v5, v6);
@@ -88,26 +88,26 @@
   }
 }
 
-- (void)setEncodedLength:(unint64_t)a3 isMissingData:(BOOL)a4
+- (void)setEncodedLength:(unint64_t)length isMissingData:(BOOL)data
 {
-  atomic_store(a3, &self->_encodedLength);
-  if (a3)
+  atomic_store(length, &self->_encodedLength);
+  if (length)
   {
-    v4 = 1;
+    dataCopy = 1;
   }
 
   else
   {
-    v4 = a4;
+    dataCopy = data;
   }
 
-  atomic_store(v4, &self->_didCalculateEncodedLength);
-  atomic_store(a4, &self->_isMissingData);
+  atomic_store(dataCopy, &self->_didCalculateEncodedLength);
+  atomic_store(data, &self->_isMissingData);
 }
 
-- (void)performIOChannelReadWithAccessor:(id)a3
+- (void)performIOChannelReadWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   WeakRetained = objc_loadWeakRetained(&self->_package);
   v8 = objc_msgSend_zipArchive(WeakRetained, v6, v7);
 
@@ -149,19 +149,19 @@ LABEL_9:
 
   v20 = v12;
 LABEL_10:
-  v4[2](v4, v20);
+  accessorCopy[2](accessorCopy, v20);
 }
 
-- (id)streamReadChannelForWriteWithPackageWriter:(id)a3
+- (id)streamReadChannelForWriteWithPackageWriter:(id)writer
 {
-  v4 = a3;
+  writerCopy = writer;
   WeakRetained = objc_loadWeakRetained(&self->_package);
   v8 = objc_msgSend_zipArchive(WeakRetained, v6, v7);
 
   v12 = objc_msgSend_entryForName_(v8, v9, self->_path);
   if (v12)
   {
-    v13 = objc_msgSend_documentSaveValidationPolicy(v4, v10, v11);
+    v13 = objc_msgSend_documentSaveValidationPolicy(writerCopy, v10, v11);
     if (objc_msgSend_validateDataCRC(v13, v14, v15))
     {
       v18 = 1;
@@ -193,21 +193,21 @@ LABEL_10:
   return v20;
 }
 
-- (id)writeData:(id)a3 toPackageWriter:(id)a4 infoMessage:(void *)a5 preferredFilename:(id)a6 shouldRemoveData:(BOOL)a7 error:(id *)a8
+- (id)writeData:(id)data toPackageWriter:(id)writer infoMessage:(void *)message preferredFilename:(id)filename shouldRemoveData:(BOOL)removeData error:(id *)error
 {
-  v8 = a7;
-  v65 = a3;
-  v13 = a4;
-  v64 = a6;
+  removeDataCopy = removeData;
+  dataCopy = data;
+  writerCopy = writer;
+  filenameCopy = filename;
   LODWORD(v15) = atomic_load(&self->_isMissingData);
-  v63 = v8;
-  if (((v15 | v8) & 1) != 0 || self->_isUnmaterializedDueToPartiallyDownloadedDocument)
+  v63 = removeDataCopy;
+  if (((v15 | removeDataCopy) & 1) != 0 || self->_isUnmaterializedDueToPartiallyDownloadedDocument)
   {
-    v16 = objc_msgSend_filenameForData_preferredFilename_(v13, v14, v65, v64);
-    v19 = objc_msgSend_encryptionKey(v13, v17, v18);
+    v16 = objc_msgSend_filenameForData_preferredFilename_(writerCopy, v14, dataCopy, filenameCopy);
+    v19 = objc_msgSend_encryptionKey(writerCopy, v17, v18);
     if (sub_276AB678C(self->_decryptionInfo, v19, 0x100000))
     {
-      if (!((v15 | v8) & 1 | (v19 == 0)))
+      if (!((v15 | removeDataCopy) & 1 | (v19 == 0)))
       {
         v21 = MEMORY[0x277D81150];
         v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSPFilePackageDataStorage writeData:toPackageWriter:infoMessage:preferredFilename:shouldRemoveData:error:]");
@@ -240,10 +240,10 @@ LABEL_10:
     {
 LABEL_12:
       v32 = atomic_load(&self->_materializedLength);
-      if (a5 && v32 && v32 != -1)
+      if (message && v32 && v32 != -1)
       {
-        *(a5 + 4) |= 0x20000u;
-        *(a5 + 18) = v32;
+        *(message + 4) |= 0x20000u;
+        *(message + 18) = v32;
       }
 
       v33 = [TSPDataStorageWriteResult alloc];
@@ -254,7 +254,7 @@ LABEL_12:
 
   else
   {
-    v15 = objc_msgSend_streamReadChannelForWriteWithPackageWriter_(self, v14, v13);
+    v15 = objc_msgSend_streamReadChannelForWriteWithPackageWriter_(self, v14, writerCopy);
     v61 = v15;
     if (v15)
     {
@@ -262,7 +262,7 @@ LABEL_12:
       v39 = objc_msgSend_encodedLength(self, v36, v37);
       v42 = objc_msgSend_shouldValidateCRCOnWrite(self, v40, v41);
       v66 = 0;
-      v44 = objc_msgSend_copyData_withReadChannel_decryptionInfo_size_calculateCRC_preferredFilename_error_(v13, v43, v65, v15, decryptionInfo, v39, v42, v64, &v66);
+      v44 = objc_msgSend_copyData_withReadChannel_decryptionInfo_size_calculateCRC_preferredFilename_error_(writerCopy, v43, dataCopy, v15, decryptionInfo, v39, v42, filenameCopy, &v66);
       v30 = v66;
       if (v44)
       {
@@ -289,7 +289,7 @@ LABEL_12:
       LOBYTE(v15) = 0;
     }
 
-    else if (objc_msgSend_updateType(v13, v36, v37) == 2)
+    else if (objc_msgSend_updateType(writerCopy, v36, v37) == 2)
     {
       if (*MEMORY[0x277D81408] != -1)
       {
@@ -307,8 +307,8 @@ LABEL_12:
 
     else
     {
-      v16 = objc_msgSend_filenameForData_preferredFilename_(v13, v52, v65, v64);
-      v55 = objc_msgSend_encryptionKey(v13, v53, v54);
+      v16 = objc_msgSend_filenameForData_preferredFilename_(writerCopy, v52, dataCopy, filenameCopy);
+      v55 = objc_msgSend_encryptionKey(writerCopy, v53, v54);
       v56 = sub_276AB678C(self->_decryptionInfo, v55, 0x100000);
       v57 = v55;
       if (!v56)
@@ -329,18 +329,18 @@ LABEL_12:
     }
   }
 
-  if (a8)
+  if (error)
   {
     if (v30)
     {
       v58 = v30;
       v35 = 0;
-      *a8 = v30;
+      *error = v30;
       goto LABEL_37;
     }
 
     v59 = objc_msgSend_tsp_unknownWriteErrorWithUserInfo_(MEMORY[0x277CCA9B8], v29, 0);
-    *a8 = v59;
+    *error = v59;
   }
 
   v35 = 0;
@@ -415,12 +415,12 @@ LABEL_37:
   return atomic_load(&self->_CRC);
 }
 
-- (BOOL)isInPackage:(id)a3
+- (BOOL)isInPackage:(id)package
 {
-  v4 = a3;
+  packageCopy = package;
   WeakRetained = objc_loadWeakRetained(&self->_package);
 
-  return WeakRetained == v4;
+  return WeakRetained == packageCopy;
 }
 
 - (unint64_t)fileFormatVersion
@@ -431,23 +431,23 @@ LABEL_37:
   return v5;
 }
 
-- (BOOL)linkOrCopyToURL:(id)a3 encryptionInfo:(id)a4 canLink:(BOOL)a5
+- (BOOL)linkOrCopyToURL:(id)l encryptionInfo:(id)info canLink:(BOOL)link
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  infoCopy = info;
   v12 = objc_msgSend_streamReadChannelForWriteWithPackageWriter_(self, v9, 0);
   if (v12)
   {
     v13 = objc_alloc(MEMORY[0x277D811D0]);
     v27 = 0;
-    v15 = objc_msgSend_initForStreamWritingURL_error_(v13, v14, v7, &v27);
+    v15 = objc_msgSend_initForStreamWritingURL_error_(v13, v14, lCopy, &v27);
     v16 = v27;
     if (v15)
     {
       decryptionInfo = self->_decryptionInfo;
       v18 = objc_msgSend_encodedLength(self, v10, v11);
       v26 = v16;
-      v20 = objc_msgSend_copyDataFromReadChannel_decryptionInfo_size_toWriteChannel_encryptionInfo_encodedLength_error_(TSPFileManager, v19, v12, decryptionInfo, v18, v15, v8, 0, &v26);
+      v20 = objc_msgSend_copyDataFromReadChannel_decryptionInfo_size_toWriteChannel_encryptionInfo_encodedLength_error_(TSPFileManager, v19, v12, decryptionInfo, v18, v15, infoCopy, 0, &v26);
       v21 = v26;
 
       v22 = v15;
@@ -478,19 +478,19 @@ LABEL_37:
   return v20;
 }
 
-- (id)newDataCopyReadChannelProviderWithDocumentURL:(id)a3 encryptionInfo:(id)a4 error:(id *)a5
+- (id)newDataCopyReadChannelProviderWithDocumentURL:(id)l encryptionInfo:(id)info error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend_tsu_fileSize(v8, v10, v11);
+  lCopy = l;
+  infoCopy = info;
+  v12 = objc_msgSend_tsu_fileSize(lCopy, v10, v11);
   v15 = 0;
-  if (!v8 || v9)
+  if (!lCopy || infoCopy)
   {
     goto LABEL_16;
   }
 
   v16 = v12;
-  v17 = objc_msgSend_tsu_volumeSupportsCloning(v8, v13, v14);
+  v17 = objc_msgSend_tsu_volumeSupportsCloning(lCopy, v13, v14);
   if (v16)
   {
     v20 = v17;
@@ -509,7 +509,7 @@ LABEL_16:
     v63.receiver = self;
     v63.super_class = TSPFilePackageDataStorage;
     v64 = 0;
-    v56 = [(TSPStreamDataStorage *)&v63 newDataCopyReadChannelProviderWithDocumentURL:v8 encryptionInfo:v9 error:&v64];
+    v56 = [(TSPStreamDataStorage *)&v63 newDataCopyReadChannelProviderWithDocumentURL:lCopy encryptionInfo:infoCopy error:&v64];
     v15 = v64;
     goto LABEL_17;
   }
@@ -525,7 +525,7 @@ LABEL_16:
 
   v26 = [TSPDataCopyProviderConcrete alloc];
   v68 = 0;
-  v28 = objc_msgSend_initWithDocumentURL_error_(v26, v27, v8, &v68);
+  v28 = objc_msgSend_initWithDocumentURL_error_(v26, v27, lCopy, &v68);
   v29 = v68;
   if (!v28)
   {
@@ -534,7 +534,7 @@ LABEL_16:
   }
 
   v30 = objc_msgSend_directory(v28, v23, v24);
-  v33 = objc_msgSend_lastPathComponent(v8, v31, v32);
+  v33 = objc_msgSend_lastPathComponent(lCopy, v31, v32);
   v35 = objc_msgSend_URLByAppendingPathComponent_(v30, v34, v33);
 
   if (!v35)
@@ -549,7 +549,7 @@ LABEL_23:
   v36 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v23, v24);
   v62 = v25;
   v67 = v29;
-  v38 = objc_msgSend_copyItemAtURL_toURL_error_(v36, v37, v8, v35, &v67);
+  v38 = objc_msgSend_copyItemAtURL_toURL_error_(v36, v37, lCopy, v35, &v67);
   v15 = v67;
 
   if (!v38)
@@ -590,10 +590,10 @@ LABEL_24:
   }
 
 LABEL_17:
-  if (a5)
+  if (error)
   {
     v57 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   return v56;

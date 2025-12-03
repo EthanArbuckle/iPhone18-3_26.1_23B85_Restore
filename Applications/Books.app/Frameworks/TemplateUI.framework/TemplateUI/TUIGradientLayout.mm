@@ -1,15 +1,15 @@
 @interface TUIGradientLayout
-- (TUIGradientLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (TUIGradientLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 @end
 
 @implementation TUIGradientLayout
 
-- (TUIGradientLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIGradientLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v8.receiver = self;
   v8.super_class = TUIGradientLayout;
-  v5 = [(TUILayout *)&v8 initWithModel:a3 parent:a4 controller:a5];
+  v5 = [(TUILayout *)&v8 initWithModel:model parent:parent controller:controller];
   v6 = v5;
   if (v5)
   {
@@ -20,17 +20,17 @@
   return v6;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = [[_TUIGradientStyler alloc] initWithLayout:self];
   v7 = [[_TUIGradientContainerLayerConfig alloc] initWithStyle:v6];
   v8 = [[TUIRenderModelLayer alloc] initWithSubmodels:0 config:v7 erasableInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
   v9 = [(TUILayout *)self box];
-  v10 = [v9 identifier];
-  [(TUIRenderModelLayer *)v8 setIdentifier:v10];
+  identifier = [v9 identifier];
+  [(TUIRenderModelLayer *)v8 setIdentifier:identifier];
 
-  [(TUILayout *)self renderModelSizeWithContext:v5];
+  [(TUILayout *)self renderModelSizeWithContext:contextCopy];
   v12 = v11;
   v14 = v13;
 

@@ -1,44 +1,44 @@
 @interface SWDocumentStateManager
 - (BOOL)isDocumentReady;
-- (SWDocumentStateManager)initWithUserContentController:(id)a3;
+- (SWDocumentStateManager)initWithUserContentController:(id)controller;
 - (void)documentIsReady;
 - (void)documentStartedLoading;
 - (void)documentWillUnload;
-- (void)onLoad:(id)a3;
-- (void)onReady:(id)a3;
-- (void)onUnload:(id)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)onLoad:(id)load;
+- (void)onReady:(id)ready;
+- (void)onUnload:(id)unload;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation SWDocumentStateManager
 
-- (SWDocumentStateManager)initWithUserContentController:(id)a3
+- (SWDocumentStateManager)initWithUserContentController:(id)controller
 {
   v43[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllerCopy = controller;
   v41.receiver = self;
   v41.super_class = SWDocumentStateManager;
   v6 = [(SWDocumentStateManager *)&v41 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userContentController, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_userContentController, controller);
+    array = [MEMORY[0x1E695DF70] array];
     onReadyBlocks = v7->_onReadyBlocks;
-    v7->_onReadyBlocks = v8;
+    v7->_onReadyBlocks = array;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     onLoadBlocks = v7->_onLoadBlocks;
-    v7->_onLoadBlocks = v10;
+    v7->_onLoadBlocks = array2;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     onUnloadBlocks = v7->_onUnloadBlocks;
-    v7->_onUnloadBlocks = v12;
+    v7->_onUnloadBlocks = array3;
 
     v39 = [[SWWeakScriptMessageHandler alloc] initWithScriptMessageHandler:v7];
-    [v5 addScriptMessageHandler:v39 name:@"documentReady"];
+    [controllerCopy addScriptMessageHandler:v39 name:@"documentReady"];
     v38 = [objc_alloc(MEMORY[0x1E6985358]) initWithSource:@"window.webkit.messageHandlers.documentReady.postMessage({});" injectionTime:0 forMainFrameOnly:1];
-    [v5 addUserScript:v38];
+    [controllerCopy addUserScript:v38];
     v36 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"idle"];
     v14 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"loading"];
     v15 = [v14 onWillEnter:&__block_literal_global];
@@ -46,7 +46,7 @@
     v17 = [v16 onWillEnter:&__block_literal_global_18];
     v18 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"unload"];
     v19 = [v18 onWillEnter:&__block_literal_global_23];
-    v40 = v5;
+    v40 = controllerCopy;
     v20 = objc_alloc(MEMORY[0x1E69B6910]);
     v21 = MEMORY[0x1E695DFD8];
     v43[0] = v36;
@@ -68,7 +68,7 @@
     v30 = [v28 setWithArray:v29];
     v31 = [v27 initWithName:@"unload" transitionFromStates:v30 toState:v18];
 
-    v5 = v40;
+    controllerCopy = v40;
     v32 = [objc_alloc(MEMORY[0x1E69B6908]) initWithState:v36 withOwner:v7];
     stateMachine = v7->_stateMachine;
     v7->_stateMachine = v32;
@@ -202,72 +202,72 @@ void __56__SWDocumentStateManager_initWithUserContentController___block_invoke_3
 
 - (void)documentStartedLoading
 {
-  v3 = [(SWDocumentStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"loading" withContext:0];
+  stateMachine = [(SWDocumentStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"loading" withContext:0];
 }
 
 - (void)documentIsReady
 {
-  v3 = [(SWDocumentStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"ready" withContext:0];
+  stateMachine = [(SWDocumentStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"ready" withContext:0];
 }
 
 - (void)documentWillUnload
 {
-  v3 = [(SWDocumentStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"unload" withContext:0];
+  stateMachine = [(SWDocumentStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"unload" withContext:0];
 }
 
-- (void)onReady:(id)a3
+- (void)onReady:(id)ready
 {
-  if (a3)
+  if (ready)
   {
-    v4 = a3;
-    v6 = [(SWDocumentStateManager *)self onReadyBlocks];
-    v5 = MEMORY[0x1DA6FDA60](v4);
+    readyCopy = ready;
+    onReadyBlocks = [(SWDocumentStateManager *)self onReadyBlocks];
+    v5 = MEMORY[0x1DA6FDA60](readyCopy);
 
-    [v6 addObject:v5];
+    [onReadyBlocks addObject:v5];
   }
 }
 
-- (void)onLoad:(id)a3
+- (void)onLoad:(id)load
 {
-  if (a3)
+  if (load)
   {
-    v4 = a3;
-    v6 = [(SWDocumentStateManager *)self onLoadBlocks];
-    v5 = MEMORY[0x1DA6FDA60](v4);
+    loadCopy = load;
+    onLoadBlocks = [(SWDocumentStateManager *)self onLoadBlocks];
+    v5 = MEMORY[0x1DA6FDA60](loadCopy);
 
-    [v6 addObject:v5];
+    [onLoadBlocks addObject:v5];
   }
 }
 
-- (void)onUnload:(id)a3
+- (void)onUnload:(id)unload
 {
-  if (a3)
+  if (unload)
   {
-    v4 = a3;
-    v6 = [(SWDocumentStateManager *)self onUnloadBlocks];
-    v5 = MEMORY[0x1DA6FDA60](v4);
+    unloadCopy = unload;
+    onUnloadBlocks = [(SWDocumentStateManager *)self onUnloadBlocks];
+    v5 = MEMORY[0x1DA6FDA60](unloadCopy);
 
-    [v6 addObject:v5];
+    [onUnloadBlocks addObject:v5];
   }
 }
 
 - (BOOL)isDocumentReady
 {
-  v2 = [(SWDocumentStateManager *)self stateMachine];
-  v3 = [v2 state];
-  v4 = [v3 name];
-  v5 = [v4 isEqualToString:@"ready"];
+  stateMachine = [(SWDocumentStateManager *)self stateMachine];
+  state = [stateMachine state];
+  name = [state name];
+  v5 = [name isEqualToString:@"ready"];
 
   return v5;
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v5 = [a4 name];
-  v6 = [v5 isEqualToString:@"documentReady"];
+  name = [message name];
+  v6 = [name isEqualToString:@"documentReady"];
 
   if (v6)
   {

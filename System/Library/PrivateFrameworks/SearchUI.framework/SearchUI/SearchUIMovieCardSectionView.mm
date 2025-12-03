@@ -1,26 +1,26 @@
 @interface SearchUIMovieCardSectionView
-+ (id)dragTitleForCardSection:(id)a3;
-- (SearchUIMovieCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
++ (id)dragTitleForCardSection:(id)section;
+- (SearchUIMovieCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (id)setupContentView;
 @end
 
 @implementation SearchUIMovieCardSectionView
 
-- (SearchUIMovieCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUIMovieCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v6 = a3;
+  modelCopy = model;
   v32.receiver = self;
   v32.super_class = SearchUIMovieCardSectionView;
-  v7 = [(SearchUICardSectionView *)&v32 initWithRowModel:v6 feedbackDelegate:a4];
+  v7 = [(SearchUICardSectionView *)&v32 initWithRowModel:modelCopy feedbackDelegate:delegate];
   if (!v7)
   {
     goto LABEL_9;
   }
 
-  v8 = [v6 cardSection];
-  v9 = [v8 mediaItem];
-  v10 = [v9 thumbnail];
-  if (v10)
+  cardSection = [modelCopy cardSection];
+  mediaItem = [cardSection mediaItem];
+  thumbnail = [mediaItem thumbnail];
+  if (thumbnail)
   {
 
 LABEL_5:
@@ -31,7 +31,7 @@ LABEL_5:
     v27 = 3221225472;
     v28 = __66__SearchUIMovieCardSectionView_initWithRowModel_feedbackDelegate___block_invoke;
     v29 = &unk_1E85B2540;
-    v30 = v8;
+    v30 = cardSection;
     v31 = v12;
     v14 = v12;
     [v14 performBatchUpdates:&v26];
@@ -41,16 +41,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = [v8 details];
+  details = [cardSection details];
 
-  if (v11)
+  if (details)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  v16 = [v8 watchListIdentifier];
-  v17 = [v16 length];
+  watchListIdentifier = [cardSection watchListIdentifier];
+  v17 = [watchListIdentifier length];
 
   if (v17)
   {
@@ -62,8 +62,8 @@ LABEL_6:
     v22 = v21;
     +[SearchUIUtilities standardTableCellContentInset];
     [(SearchUIButtonsView *)v18 setLayoutMargins:0.0, v20, v22, v23];
-    v24 = [(SearchUICardSectionView *)v7 contentView];
-    [v24 addArrangedSubview:v18];
+    contentView = [(SearchUICardSectionView *)v7 contentView];
+    [contentView addArrangedSubview:v18];
   }
 
 LABEL_9:
@@ -137,17 +137,17 @@ void __66__SearchUIMovieCardSectionView_initWithRowModel_feedbackDelegate___bloc
   return v2;
 }
 
-+ (id)dragTitleForCardSection:(id)a3
++ (id)dragTitleForCardSection:(id)section
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
+  sectionCopy = section;
+  string = [MEMORY[0x1E696AD60] string];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 details];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  details = [sectionCopy details];
+  v6 = [details countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -158,23 +158,23 @@ void __66__SearchUIMovieCardSectionView_initWithRowModel_feedbackDelegate___bloc
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(details);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 title];
-        v12 = [v10 content];
-        v13 = [v12 text];
-        [v4 appendFormat:@"%@\n%@\n\n", v11, v13];
+        title = [v10 title];
+        content = [v10 content];
+        text = [content text];
+        [string appendFormat:@"%@\n%@\n\n", title, text];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [details countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return string;
 }
 
 @end

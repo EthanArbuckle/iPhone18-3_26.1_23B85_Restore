@@ -1,7 +1,7 @@
 @interface IFTSchemaIFTAppRequirement
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTAppRequirement)initWithDictionary:(id)a3;
-- (IFTSchemaIFTAppRequirement)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTAppRequirement)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTAppRequirement)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
@@ -9,37 +9,37 @@
 - (void)deleteAccountSetupRequired;
 - (void)deleteSignInRequired;
 - (void)deleteUserConfirmationRequired;
-- (void)setAccountSetupRequired:(BOOL)a3;
-- (void)setSignInRequired:(BOOL)a3;
-- (void)setUserConfirmationRequired:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setAccountSetupRequired:(BOOL)required;
+- (void)setSignInRequired:(BOOL)required;
+- (void)setUserConfirmationRequired:(BOOL)required;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTAppRequirement
 
-- (IFTSchemaIFTAppRequirement)initWithDictionary:(id)a3
+- (IFTSchemaIFTAppRequirement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = IFTSchemaIFTAppRequirement;
   v5 = [(IFTSchemaIFTAppRequirement *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"signInRequired"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"signInRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTAppRequirement setSignInRequired:](v5, "setSignInRequired:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"accountSetupRequired"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accountSetupRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTAppRequirement setAccountSetupRequired:](v5, "setAccountSetupRequired:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userConfirmationRequired"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userConfirmationRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,30 +52,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTAppRequirement)initWithJSON:(id)a3
+- (IFTSchemaIFTAppRequirement)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTAppRequirement *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTAppRequirement *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTAppRequirement *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -88,12 +88,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   whichOneof_Apprequirement = self->_whichOneof_Apprequirement;
   if (whichOneof_Apprequirement == 2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTAppRequirement accountSetupRequired](self, "accountSetupRequired")}];
-    [v3 setObject:v5 forKeyedSubscript:@"accountSetupRequired"];
+    [dictionary setObject:v5 forKeyedSubscript:@"accountSetupRequired"];
 
     whichOneof_Apprequirement = self->_whichOneof_Apprequirement;
   }
@@ -101,7 +101,7 @@
   if (whichOneof_Apprequirement == 1)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTAppRequirement signInRequired](self, "signInRequired")}];
-    [v3 setObject:v6 forKeyedSubscript:@"signInRequired"];
+    [dictionary setObject:v6 forKeyedSubscript:@"signInRequired"];
 
     whichOneof_Apprequirement = self->_whichOneof_Apprequirement;
   }
@@ -109,12 +109,12 @@
   if (whichOneof_Apprequirement == 3)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTAppRequirement userConfirmationRequired](self, "userConfirmationRequired")}];
-    [v3 setObject:v7 forKeyedSubscript:@"userConfirmationRequired"];
+    [dictionary setObject:v7 forKeyedSubscript:@"userConfirmationRequired"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -131,13 +131,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (whichOneof_Apprequirement = self->_whichOneof_Apprequirement, whichOneof_Apprequirement == objc_msgSend(v4, "whichOneof_Apprequirement")) && (signInRequired = self->_signInRequired, signInRequired == objc_msgSend(v4, "signInRequired")) && (accountSetupRequired = self->_accountSetupRequired, accountSetupRequired == objc_msgSend(v4, "accountSetupRequired")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (whichOneof_Apprequirement = self->_whichOneof_Apprequirement, whichOneof_Apprequirement == objc_msgSend(equalCopy, "whichOneof_Apprequirement")) && (signInRequired = self->_signInRequired, signInRequired == objc_msgSend(equalCopy, "signInRequired")) && (accountSetupRequired = self->_accountSetupRequired, accountSetupRequired == objc_msgSend(equalCopy, "accountSetupRequired")))
   {
     userConfirmationRequired = self->_userConfirmationRequired;
-    v9 = userConfirmationRequired == [v4 userConfirmationRequired];
+    v9 = userConfirmationRequired == [equalCopy userConfirmationRequired];
   }
 
   else
@@ -148,29 +148,29 @@
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   whichOneof_Apprequirement = self->_whichOneof_Apprequirement;
-  v6 = v4;
+  v6 = toCopy;
   if (whichOneof_Apprequirement == 1)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     whichOneof_Apprequirement = self->_whichOneof_Apprequirement;
   }
 
   if (whichOneof_Apprequirement == 2)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     whichOneof_Apprequirement = self->_whichOneof_Apprequirement;
   }
 
   if (whichOneof_Apprequirement == 3)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
@@ -183,12 +183,12 @@
   }
 }
 
-- (void)setUserConfirmationRequired:(BOOL)a3
+- (void)setUserConfirmationRequired:(BOOL)required
 {
   self->_signInRequired = 0;
   self->_accountSetupRequired = 0;
   self->_whichOneof_Apprequirement = 3;
-  self->_userConfirmationRequired = a3;
+  self->_userConfirmationRequired = required;
 }
 
 - (void)deleteAccountSetupRequired
@@ -200,12 +200,12 @@
   }
 }
 
-- (void)setAccountSetupRequired:(BOOL)a3
+- (void)setAccountSetupRequired:(BOOL)required
 {
   self->_signInRequired = 0;
   self->_userConfirmationRequired = 0;
   self->_whichOneof_Apprequirement = 2;
-  self->_accountSetupRequired = a3;
+  self->_accountSetupRequired = required;
 }
 
 - (void)deleteSignInRequired
@@ -217,12 +217,12 @@
   }
 }
 
-- (void)setSignInRequired:(BOOL)a3
+- (void)setSignInRequired:(BOOL)required
 {
   self->_accountSetupRequired = 0;
   self->_userConfirmationRequired = 0;
   self->_whichOneof_Apprequirement = 1;
-  self->_signInRequired = a3;
+  self->_signInRequired = required;
 }
 
 - (id)suppressMessageUnderConditions

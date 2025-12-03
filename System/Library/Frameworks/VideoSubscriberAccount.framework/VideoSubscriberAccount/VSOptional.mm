@@ -1,15 +1,15 @@
 @interface VSOptional
-+ (VSOptional)optionalWithObject:(id)a3;
++ (VSOptional)optionalWithObject:(id)object;
 + (id)decodableClasses;
-- (BOOL)isEqual:(id)a3;
-- (VSOptional)initWithCoder:(id)a3;
-- (VSOptional)initWithObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VSOptional)initWithCoder:(id)coder;
+- (VSOptional)initWithObject:(id)object;
 - (id)description;
 - (id)forceUnwrapObject;
-- (id)unwrapWithFallback:(id)a3;
+- (id)unwrapWithFallback:(id)fallback;
 - (unint64_t)hash;
-- (void)conditionallyUnwrapObject:(id)a3 otherwise:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)conditionallyUnwrapObject:(id)object otherwise:(id)otherwise;
+- (void)encodeWithCoder:(id)coder;
 - (void)forceUnwrapObject;
 @end
 
@@ -43,57 +43,57 @@
   return [v25 setWithObjects:{v24, v23, v22, v21, v20, v19, v18, v17, v16, v15, v14, v13, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, objc_opt_class(), 0}];
 }
 
-+ (VSOptional)optionalWithObject:(id)a3
++ (VSOptional)optionalWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithObject:objectCopy];
 
   return v5;
 }
 
-- (VSOptional)initWithObject:(id)a3
+- (VSOptional)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = VSOptional;
   v6 = [(VSOptional *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;
 }
 
-- (void)conditionallyUnwrapObject:(id)a3 otherwise:(id)a4
+- (void)conditionallyUnwrapObject:(id)object otherwise:(id)otherwise
 {
-  v8 = a3;
-  v6 = a4;
-  if (!v8)
+  objectCopy = object;
+  otherwiseCopy = otherwise;
+  if (!objectCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The conditionalBlock parameter must not be nil."];
   }
 
-  v7 = [(VSOptional *)self object];
-  if (v7)
+  object = [(VSOptional *)self object];
+  if (object)
   {
-    v8[2](v8, v7);
+    objectCopy[2](objectCopy, object);
   }
 
-  else if (v6)
+  else if (otherwiseCopy)
   {
-    v6[2](v6);
+    otherwiseCopy[2](otherwiseCopy);
   }
 }
 
 - (id)forceUnwrapObject
 {
-  v3 = [(VSOptional *)self object];
-  if (v3)
+  object = [(VSOptional *)self object];
+  if (object)
   {
 
-    return v3;
+    return object;
   }
 
   else
@@ -110,18 +110,18 @@
   return result;
 }
 
-- (id)unwrapWithFallback:(id)a3
+- (id)unwrapWithFallback:(id)fallback
 {
-  v4 = a3;
-  if (!v4)
+  fallbackCopy = fallback;
+  if (!fallbackCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The fallback parameter must not be nil."];
   }
 
-  v5 = [(VSOptional *)self object];
-  if (v5 || (v5 = v4, v4))
+  object = [(VSOptional *)self object];
+  if (object || (object = fallbackCopy, fallbackCopy))
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -133,20 +133,20 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  VSRequireKeyedCoder(v4);
-  v5 = [(VSOptional *)self object];
-  [v4 encodeObject:v5 forKey:@"VSOptionalObject"];
+  coderCopy = coder;
+  VSRequireKeyedCoder(coderCopy);
+  object = [(VSOptional *)self object];
+  [coderCopy encodeObject:object forKey:@"VSOptionalObject"];
 }
 
-- (VSOptional)initWithCoder:(id)a3
+- (VSOptional)initWithCoder:(id)coder
 {
-  v4 = a3;
-  VSRequireKeyedCoder(v4);
-  v5 = [objc_opt_class() decodableClasses];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"VSOptionalObject"];
+  coderCopy = coder;
+  VSRequireKeyedCoder(coderCopy);
+  decodableClasses = [objc_opt_class() decodableClasses];
+  v6 = [coderCopy decodeObjectOfClasses:decodableClasses forKey:@"VSOptionalObject"];
 
   v7 = [(VSOptional *)self initWithObject:v6];
   return v7;
@@ -154,22 +154,22 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VSOptional *)self object];
-  v3 = [v2 hash];
+  object = [(VSOptional *)self object];
+  v3 = [object hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(VSOptional *)self object];
-    v7 = [v5 object];
-    v8 = v6;
-    v9 = v7;
+    v5 = equalCopy;
+    object = [(VSOptional *)self object];
+    object2 = [v5 object];
+    v8 = object;
+    v9 = object2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -200,8 +200,8 @@
   v8.receiver = self;
   v8.super_class = VSOptional;
   v4 = [(VSOptional *)&v8 description];
-  v5 = [(VSOptional *)self object];
-  v6 = [v3 stringWithFormat:@"<%@ object=%@>", v4, v5];
+  object = [(VSOptional *)self object];
+  v6 = [v3 stringWithFormat:@"<%@ object=%@>", v4, object];
 
   return v6;
 }
@@ -210,7 +210,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23AB8E000, a2, OS_LOG_TYPE_ERROR, "Failed to force unwrap optional %p.", &v2, 0xCu);
 }
 

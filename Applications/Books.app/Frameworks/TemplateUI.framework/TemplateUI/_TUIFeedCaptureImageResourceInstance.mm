@@ -1,20 +1,20 @@
 @interface _TUIFeedCaptureImageResourceInstance
 - (CGSize)naturalSize;
-- (_TUIFeedCaptureImageResourceInstance)initWithDictionary:(id)a3;
-- (id)imageContentWithOptions:(unint64_t)a3;
+- (_TUIFeedCaptureImageResourceInstance)initWithDictionary:(id)dictionary;
+- (id)imageContentWithOptions:(unint64_t)options;
 @end
 
 @implementation _TUIFeedCaptureImageResourceInstance
 
-- (_TUIFeedCaptureImageResourceInstance)initWithDictionary:(id)a3
+- (_TUIFeedCaptureImageResourceInstance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v49.receiver = self;
   v49.super_class = _TUIFeedCaptureImageResourceInstance;
   v5 = [(_TUIFeedCaptureImageResourceInstance *)&v49 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"intrinsicSize"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"intrinsicSize"];
     v7 = objc_opt_class();
     v8 = TUIDynamicCast(v7, v6);
     v9 = objc_opt_class();
@@ -32,7 +32,7 @@
     v5->_intrinsicSize.width = v13;
     v5->_intrinsicSize.height = v18;
 
-    v19 = [v4 objectForKeyedSubscript:@"insets"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"insets"];
     v20 = objc_opt_class();
     v21 = TUIDynamicCast(v20, v19);
     v22 = objc_opt_class();
@@ -65,9 +65,9 @@
     v5->_insets.right = v41;
 
     v42 = +[NSUUID UUID];
-    v43 = [v42 UUIDString];
+    uUIDString = [v42 UUIDString];
 
-    v44 = [[TUIImageResourceCacheKey alloc] initWithID:v43];
+    v44 = [[TUIImageResourceCacheKey alloc] initWithID:uUIDString];
     unsizedKey = v5->_unsizedKey;
     v5->_unsizedKey = v44;
 
@@ -79,9 +79,9 @@
   return v5;
 }
 
-- (id)imageContentWithOptions:(unint64_t)a3
+- (id)imageContentWithOptions:(unint64_t)options
 {
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v4 = [[TUIImageContent alloc] initWithIntrinsicSize:0 flags:self->_intrinsicSize.width, self->_intrinsicSize.height];
   }

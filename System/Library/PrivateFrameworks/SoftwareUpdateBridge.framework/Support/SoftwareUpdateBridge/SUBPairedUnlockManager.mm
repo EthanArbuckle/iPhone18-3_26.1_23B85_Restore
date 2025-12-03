@@ -1,7 +1,7 @@
 @interface SUBPairedUnlockManager
 - (SUBPairedUnlockManager)init;
-- (void)stageStashBagWithManifest:(id)a3 completion:(id)a4;
-- (void)supportsPairedUnlock:(id)a3;
+- (void)stageStashBagWithManifest:(id)manifest completion:(id)completion;
+- (void)supportsPairedUnlock:(id)unlock;
 @end
 
 @implementation SUBPairedUnlockManager
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (void)supportsPairedUnlock:(id)a3
+- (void)supportsPairedUnlock:(id)unlock
 {
-  v4 = a3;
-  if (v4)
+  unlockCopy = unlock;
+  if (unlockCopy)
   {
     v5 = +[SFUnlockManager sharedUnlockManager];
     v6 = IDSDefaultPairedDevice;
@@ -34,24 +34,24 @@
     v7[2] = sub_10000E76C;
     v7[3] = &unk_10002D530;
     v7[4] = self;
-    v8 = v4;
+    v8 = unlockCopy;
     [v5 unlockEnabledWithDevice:v6 completionHandler:v7];
   }
 }
 
-- (void)stageStashBagWithManifest:(id)a3 completion:(id)a4
+- (void)stageStashBagWithManifest:(id)manifest completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  manifestCopy = manifest;
+  completionCopy = completion;
   v8 = softwareupdatebridge_log;
   v9 = os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (manifestCopy)
   {
     if (v9)
     {
       v10 = v8;
       *buf = 134217984;
-      v20 = [v6 length];
+      v20 = [manifestCopy length];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Found manifest of size %lu", buf, 0xCu);
     }
 
@@ -62,9 +62,9 @@
     v15[3] = &unk_10002D530;
     v12 = &v16;
     v15[4] = self;
-    v16 = v7;
-    v13 = v7;
-    [v11 establishStashBagWithManifest:v6 completionHandler:v15];
+    v16 = completionCopy;
+    v13 = completionCopy;
+    [v11 establishStashBagWithManifest:manifestCopy completionHandler:v15];
   }
 
   else
@@ -82,8 +82,8 @@
     v17[3] = &unk_10002D530;
     v12 = &v18;
     v17[4] = self;
-    v18 = v7;
-    v14 = v7;
+    v18 = completionCopy;
+    v14 = completionCopy;
     [v11 establishStashBagWithCompletionHandler:v17];
   }
 }

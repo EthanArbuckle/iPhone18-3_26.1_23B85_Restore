@@ -1,22 +1,22 @@
 @interface PXCMMPhotoKitMessageComposeActionPerformer
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXCMMPhotoKitMessageComposeActionPerformer
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 2)
+  controllerCopy = controller;
+  if (result == 2)
   {
     v7 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1008 debugDescription:@"Message Compose reported send failure"];
   }
 
   else
   {
-    if (a4)
+    if (result)
     {
       v8 = 0;
       v10 = 1;
@@ -37,7 +37,7 @@
 
   v10 = 0;
 LABEL_9:
-  if (v6 && self->_messageComposeViewController == v6)
+  if (controllerCopy && self->_messageComposeViewController == controllerCopy)
   {
     v14 = 1;
   }
@@ -49,7 +49,7 @@ LABEL_9:
     {
       messageComposeViewController = self->_messageComposeViewController;
       *buf = 138412546;
-      v30 = v6;
+      v30 = controllerCopy;
       v31 = 2112;
       v32 = messageComposeViewController;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "Unexpected controller: %@ expected: %@", buf, 0x16u);
@@ -75,7 +75,7 @@ LABEL_9:
   v17 = v16;
   if (v14)
   {
-    if (![(PXActionPerformer *)self dismissViewController:v6 completionHandler:v16])
+    if (![(PXActionPerformer *)self dismissViewController:controllerCopy completionHandler:v16])
     {
       v18 = MEMORY[0x1E696ABC0];
       v19 = PXLocalizedStringFromTable(@"PXCMMShareError", @"PhotosUICore");
@@ -90,7 +90,7 @@ LABEL_9:
     (*(v16 + 2))(v16);
   }
 
-  [(MFMessageComposeViewController *)v6 setMessageComposeDelegate:0];
+  [(MFMessageComposeViewController *)controllerCopy setMessageComposeDelegate:0];
   v21 = self->_messageComposeViewController;
   self->_messageComposeViewController = 0;
 
@@ -110,19 +110,19 @@ void __95__PXCMMPhotoKitMessageComposeActionPerformer_messageComposeViewControll
   v4 = PLSharingGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PXCMMShowMessageComposeActionPerformer *)self shareURL];
-    v6 = [v5 pl_redactedShareURL];
+    shareURL = [(PXCMMShowMessageComposeActionPerformer *)self shareURL];
+    pl_redactedShareURL = [shareURL pl_redactedShareURL];
     *buf = 138412546;
-    v47 = self;
+    selfCopy = self;
     v48 = 2114;
-    v49 = v6;
+    v49 = pl_redactedShareURL;
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "Performer: %@ Presenting Message Compose for URL %{public}@", buf, 0x16u);
   }
 
   if (([getMFMessageComposeViewControllerClass() canSendText] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1010 debugDescription:@"Unable to send text"];
-    [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:v10];
+    shareURL2 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1010 debugDescription:@"Unable to send text"];
+    [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:shareURL2];
     goto LABEL_38;
   }
 
@@ -138,10 +138,10 @@ void __95__PXCMMPhotoKitMessageComposeActionPerformer_messageComposeViewControll
     }
   }
 
-  v10 = [(PXCMMShowMessageComposeActionPerformer *)self shareURL];
+  shareURL2 = [(PXCMMShowMessageComposeActionPerformer *)self shareURL];
   if ((PFIsiOSPhotosApp() & 1) != 0 || PFIsVisionPhotosApp())
   {
-    v11 = PXMessageForMomentShareURL(v10);
+    v11 = PXMessageForMomentShareURL(shareURL2);
     v12 = 1;
   }
 
@@ -170,9 +170,9 @@ void __95__PXCMMPhotoKitMessageComposeActionPerformer_messageComposeViewControll
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v10 pl_redactedShareURL];
+      pl_redactedShareURL2 = [shareURL2 pl_redactedShareURL];
       *buf = 138543362;
-      v47 = v17;
+      selfCopy = pl_redactedShareURL2;
       v18 = "Message Compose Action: Unable to create MSMessage for URL: %{public}@. Falling back to plain link";
       v19 = v16;
       v20 = OS_LOG_TYPE_ERROR;
@@ -183,17 +183,17 @@ LABEL_19:
 
   else if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v10 pl_redactedShareURL];
+    pl_redactedShareURL2 = [shareURL2 pl_redactedShareURL];
     *buf = 138543362;
-    v47 = v17;
+    selfCopy = pl_redactedShareURL2;
     v18 = "Share Sheet: Live Bubbles not supported. Sending moment share URL as text: %{public}@";
     v19 = v16;
     v20 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_19;
   }
 
-  v21 = [v10 absoluteString];
-  [(MFMessageComposeViewController *)self->_messageComposeViewController setBody:v21];
+  absoluteString = [shareURL2 absoluteString];
+  [(MFMessageComposeViewController *)self->_messageComposeViewController setBody:absoluteString];
 
 LABEL_21:
   v22 = PLSharingGetLog();
@@ -208,16 +208,16 @@ LABEL_21:
     }
   }
 
-  v25 = [MEMORY[0x1E695DF70] array];
-  v26 = [(PXCMMActionPerformer *)self session];
-  v27 = [v26 viewModel];
-  v28 = [v27 recipients];
+  array = [MEMORY[0x1E695DF70] array];
+  session = [(PXCMMActionPerformer *)self session];
+  viewModel = [session viewModel];
+  recipients = [viewModel recipients];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v29 = v28;
+  v29 = recipients;
   v30 = [v29 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v30)
   {
@@ -232,14 +232,14 @@ LABEL_21:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v41 + 1) + 8 * i) suggestedTransport];
-        v35 = [v34 addressKind];
-        if ((v35 - 1) >= 2)
+        suggestedTransport = [*(*(&v41 + 1) + 8 * i) suggestedTransport];
+        addressKind = [suggestedTransport addressKind];
+        if ((addressKind - 1) >= 2)
         {
-          if (!v35)
+          if (!addressKind)
           {
-            v38 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v38 handleFailureInMethod:v39 object:self file:@"PXCMMPhotoKitMessageComposeActionPerformer.m" lineNumber:84 description:@"Code which should be unreachable has been reached"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:v39 object:self file:@"PXCMMPhotoKitMessageComposeActionPerformer.m" lineNumber:84 description:@"Code which should be unreachable has been reached"];
 
             abort();
           }
@@ -247,8 +247,8 @@ LABEL_21:
 
         else
         {
-          v36 = [v34 address];
-          [v25 addObject:v36];
+          address = [suggestedTransport address];
+          [array addObject:address];
         }
       }
 
@@ -258,7 +258,7 @@ LABEL_21:
     while (v31);
   }
 
-  [(MFMessageComposeViewController *)self->_messageComposeViewController setRecipients:v25];
+  [(MFMessageComposeViewController *)self->_messageComposeViewController setRecipients:array];
   if (!self->_messageComposeViewController || ![(PXActionPerformer *)self presentViewController:?])
   {
     v37 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1002 debugDescription:{@"Failed to present the message compose view controller", v39}];

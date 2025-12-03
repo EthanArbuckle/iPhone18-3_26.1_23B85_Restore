@@ -1,22 +1,22 @@
 @interface TNFollowUpItemConfiguration
-- (TNFollowUpItemConfiguration)initWithPrimaryAccountAltDSID:(id)a3 expirationDate:(id)a4;
+- (TNFollowUpItemConfiguration)initWithPrimaryAccountAltDSID:(id)d expirationDate:(id)date;
 - (id)description;
 @end
 
 @implementation TNFollowUpItemConfiguration
 
-- (TNFollowUpItemConfiguration)initWithPrimaryAccountAltDSID:(id)a3 expirationDate:(id)a4
+- (TNFollowUpItemConfiguration)initWithPrimaryAccountAltDSID:(id)d expirationDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = TNFollowUpItemConfiguration;
   v9 = [(TNFollowUpItemConfiguration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_expirationDate, a4);
-    objc_storeStrong(&v10->_primaryAccountAltDSID, a3);
+    objc_storeStrong(&v9->_expirationDate, date);
+    objc_storeStrong(&v10->_primaryAccountAltDSID, d);
   }
 
   return v10;
@@ -28,12 +28,12 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(TNFollowUpItemConfiguration *)self expirationDate];
-  v7 = [v5 stringWithFormat:@"expirationDate: %@", v6];
+  expirationDate = [(TNFollowUpItemConfiguration *)self expirationDate];
+  v7 = [v5 stringWithFormat:@"expirationDate: %@", expirationDate];
   v16[0] = v7;
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(TNFollowUpItemConfiguration *)self primaryAccountAltDSID];
-  v10 = [v8 stringWithFormat:@"primaryHandle: %@", v9];
+  primaryAccountAltDSID = [(TNFollowUpItemConfiguration *)self primaryAccountAltDSID];
+  v10 = [v8 stringWithFormat:@"primaryHandle: %@", primaryAccountAltDSID];
   v16[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   v12 = [v11 componentsJoinedByString:@" "];;

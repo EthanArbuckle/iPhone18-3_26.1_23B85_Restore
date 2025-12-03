@@ -29,14 +29,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [a1 userInfo];
-  [v4 setObject:v3 forKeyedSubscript:@"ctui_hmadc"];
+  userInfo = [self userInfo];
+  [userInfo setObject:v3 forKeyedSubscript:@"ctui_hmadc"];
 }
 
 - (void)hmd_currentChangeSet
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"ctui_ccs"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"ctui_ccs"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -57,14 +57,14 @@
 - (void)setHmd_currentChangeSet:()HMDCoreDataCloudTransformInternal
 {
   v4 = a3;
-  v5 = [a1 userInfo];
-  [v5 setObject:v4 forKeyedSubscript:@"ctui_ccs"];
+  userInfo = [self userInfo];
+  [userInfo setObject:v4 forKeyedSubscript:@"ctui_ccs"];
 }
 
 - (uint64_t)hmd_homeManagerApplicationDataChanged
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"ctui_hmadc"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"ctui_hmadc"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -79,8 +79,8 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)setHmd_fakeRecordsEnabled:()HMDCoreDataCloudTransformInternal
@@ -95,14 +95,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [a1 userInfo];
-  [v4 setObject:v3 forKeyedSubscript:@"ctui_fre"];
+  userInfo = [self userInfo];
+  [userInfo setObject:v3 forKeyedSubscript:@"ctui_fre"];
 }
 
 - (uint64_t)hmd_fakeRecordsEnabled
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"ctui_fre"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"ctui_fre"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -117,21 +117,21 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)setHmd_homeManagerContext:()HMDCoreDataCloudTransformInternal
 {
   v4 = a3;
-  v5 = [a1 userInfo];
-  [v5 setObject:v4 forKeyedSubscript:@"ctui_hmc"];
+  userInfo = [self userInfo];
+  [userInfo setObject:v4 forKeyedSubscript:@"ctui_hmc"];
 }
 
 - (void)hmd_homeManagerContext
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"ctui_hmc"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"ctui_hmc"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -152,14 +152,14 @@
 - (void)setHmd_workingStoreIdentifier:()HMDCoreDataCloudTransformInternal
 {
   v4 = a3;
-  v5 = [a1 userInfo];
-  [v5 setObject:v4 forKeyedSubscript:@"ctui_wsi"];
+  userInfo = [self userInfo];
+  [userInfo setObject:v4 forKeyedSubscript:@"ctui_wsi"];
 }
 
 - (void)hmd_workingStoreIdentifier
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"ctui_wsi"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"ctui_wsi"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -180,14 +180,14 @@
 - (void)setHmd_cloudSharedStoreIdentifier:()HMDCoreDataCloudTransformInternal
 {
   v4 = a3;
-  v5 = [a1 userInfo];
-  [v5 setObject:v4 forKeyedSubscript:@"ctui_cssi"];
+  userInfo = [self userInfo];
+  [userInfo setObject:v4 forKeyedSubscript:@"ctui_cssi"];
 }
 
 - (void)hmd_cloudSharedStoreIdentifier
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"ctui_cssi"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"ctui_cssi"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -208,14 +208,14 @@
 - (void)setHmd_cloudPrivateStoreIdentifier:()HMDCoreDataCloudTransformInternal
 {
   v4 = a3;
-  v5 = [a1 userInfo];
-  [v5 setObject:v4 forKeyedSubscript:@"ctui_cpsi"];
+  userInfo = [self userInfo];
+  [userInfo setObject:v4 forKeyedSubscript:@"ctui_cpsi"];
 }
 
 - (void)hmd_cloudPrivateStoreIdentifier
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"ctui_cpsi"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"ctui_cpsi"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

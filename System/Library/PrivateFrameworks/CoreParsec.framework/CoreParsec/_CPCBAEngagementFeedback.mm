@@ -1,8 +1,8 @@
 @interface _CPCBAEngagementFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCBAEngagementFeedback)init;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCBAEngagementFeedback
@@ -14,22 +14,22 @@
   return v2 ^ v3 ^ [(NSString *)self->_url hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
       queryId = self->_queryId;
-      if (queryId == [v4 queryId])
+      if (queryId == [equalCopy queryId])
       {
         cbaType = self->_cbaType;
-        if (cbaType == [v4 cbaType])
+        if (cbaType == [equalCopy cbaType])
         {
           v8 = [(_CPCBAEngagementFeedback *)self url];
-          v9 = [v4 url];
+          v9 = [equalCopy url];
           v10 = v9;
           if ((v8 != 0) != (v9 == 0))
           {
@@ -44,7 +44,7 @@ LABEL_13:
 
             v12 = v11;
             v13 = [(_CPCBAEngagementFeedback *)self url];
-            v14 = [v4 url];
+            v14 = [equalCopy url];
             v15 = [v13 isEqual:v14];
 
             if (v15)
@@ -67,9 +67,9 @@ LABEL_11:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(_CPCBAEngagementFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -90,12 +90,12 @@ LABEL_11:
 
   v7 = [(_CPCBAEngagementFeedback *)self url];
 
-  v8 = v10;
+  v8 = toCopy;
   if (v7)
   {
     url = self->_url;
     PBDataWriterWriteStringField();
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 

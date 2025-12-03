@@ -1,23 +1,23 @@
 @interface PRWordLanguageModel
-+ (id)languageModelWithLocalization:(id)a3 appIdentifier:(id)a4 lexicon:(id)a5;
-- (PRWordLanguageModel)initWithLocalization:(id)a3 appIdentifier:(id)a4 lexicon:(id)a5;
-- (id)_descriptionForTokenSequence:(const unsigned int *)a3 length:(unint64_t)a4;
++ (id)languageModelWithLocalization:(id)localization appIdentifier:(id)identifier lexicon:(id)lexicon;
+- (PRWordLanguageModel)initWithLocalization:(id)localization appIdentifier:(id)identifier lexicon:(id)lexicon;
+- (id)_descriptionForTokenSequence:(const unsigned int *)sequence length:(unint64_t)length;
 - (id)description;
-- (id)stringForTokenID:(unsigned int)a3;
+- (id)stringForTokenID:(unsigned int)d;
 - (void)dealloc;
-- (void)enumerateEntriesForString:(id)a3 withBlock:(id)a4;
-- (void)enumeratePredictionsForContext:(const unsigned int *)a3 length:(unint64_t)a4 maxPredictions:(unint64_t)a5 maxTokensPerPrediction:(unint64_t)a6 withBlock:(id)a7;
+- (void)enumerateEntriesForString:(id)string withBlock:(id)block;
+- (void)enumeratePredictionsForContext:(const unsigned int *)context length:(unint64_t)length maxPredictions:(unint64_t)predictions maxTokensPerPrediction:(unint64_t)prediction withBlock:(id)block;
 @end
 
 @implementation PRWordLanguageModel
 
-- (PRWordLanguageModel)initWithLocalization:(id)a3 appIdentifier:(id)a4 lexicon:(id)a5
+- (PRWordLanguageModel)initWithLocalization:(id)localization appIdentifier:(id)identifier lexicon:(id)lexicon
 {
-  v9 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:a3];
+  v9 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:localization];
   v10 = MEMORY[0x1E695DF90];
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:2];
   v12 = [v10 dictionaryWithObjectsAndKeys:{v11, *MEMORY[0x1E69778F0], v9, *MEMORY[0x1E6977900], 0}];
-  v13 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a4, *MEMORY[0x1E69778E0], 0}];
+  v13 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{identifier, *MEMORY[0x1E69778E0], 0}];
   if (_kSuppressAdaptation == 1)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:0];
@@ -28,26 +28,26 @@
 
   v16 = [MEMORY[0x1E6977A50] languageModelWithOptions:v12 error:0];
   v17 = [v16 sessionWithOptions:v13];
-  v18 = [v16 tokenIDConverter];
+  tokenIDConverter = [v16 tokenIDConverter];
   v21.receiver = self;
   v21.super_class = PRWordLanguageModel;
   v19 = [(PRWordLanguageModel *)&v21 init];
   if (v19)
   {
-    v19->_localization = [a3 copy];
-    v19->_appIdentifier = [a4 copy];
+    v19->_localization = [localization copy];
+    v19->_appIdentifier = [identifier copy];
     v19->_model = v16;
     v19->_session = v17;
-    v19->_converter = v18;
-    v19->_lexicon = a5;
+    v19->_converter = tokenIDConverter;
+    v19->_lexicon = lexicon;
   }
 
   return v19;
 }
 
-+ (id)languageModelWithLocalization:(id)a3 appIdentifier:(id)a4 lexicon:(id)a5
++ (id)languageModelWithLocalization:(id)localization appIdentifier:(id)identifier lexicon:(id)lexicon
 {
-  v5 = [[a1 alloc] initWithLocalization:a3 appIdentifier:a4 lexicon:a5];
+  v5 = [[self alloc] initWithLocalization:localization appIdentifier:identifier lexicon:lexicon];
 
   return v5;
 }
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (id)stringForTokenID:(unsigned int)a3
+- (id)stringForTokenID:(unsigned int)d
 {
-  if (a3 < 0x1F4)
+  if (d < 0x1F4)
   {
     return 0;
   }
@@ -97,30 +97,30 @@
   }
 }
 
-- (id)_descriptionForTokenSequence:(const unsigned int *)a3 length:(unint64_t)a4
+- (id)_descriptionForTokenSequence:(const unsigned int *)sequence length:(unint64_t)length
 {
-  v7 = [MEMORY[0x1E696AD60] string];
-  if (a4)
+  string = [MEMORY[0x1E696AD60] string];
+  if (length)
   {
     v8 = 0;
     do
     {
       if (v8)
       {
-        [v7 appendString:@" "];
+        [string appendString:@" "];
       }
 
-      [v7 appendFormat:@"%u <%@>", a3[v8], -[PRWordLanguageModel stringForTokenID:](self, "stringForTokenID:", a3[v8])];
+      [string appendFormat:@"%u <%@>", sequence[v8], -[PRWordLanguageModel stringForTokenID:](self, "stringForTokenID:", sequence[v8])];
       ++v8;
     }
 
-    while (a4 != v8);
+    while (length != v8);
   }
 
-  return v7;
+  return string;
 }
 
-- (void)enumeratePredictionsForContext:(const unsigned int *)a3 length:(unint64_t)a4 maxPredictions:(unint64_t)a5 maxTokensPerPrediction:(unint64_t)a6 withBlock:(id)a7
+- (void)enumeratePredictionsForContext:(const unsigned int *)context length:(unint64_t)length maxPredictions:(unint64_t)predictions maxTokensPerPrediction:(unint64_t)prediction withBlock:(id)block
 {
   v9[0] = 0;
   v9[1] = v9;
@@ -132,9 +132,9 @@
   v8[2] = __109__PRWordLanguageModel_enumeratePredictionsForContext_length_maxPredictions_maxTokensPerPrediction_withBlock___block_invoke;
   v8[3] = &unk_1E84053C8;
   v8[5] = v9;
-  v8[6] = a5;
-  v8[4] = a7;
-  [(NLLMLanguageModelSession *)session enumeratePredictionsForContextTokenIDs:a3 length:a4 maximumPredictions:a5 maximumTokensPerPrediction:a6 withBlock:v8];
+  v8[6] = predictions;
+  v8[4] = block;
+  [(NLLMLanguageModelSession *)session enumeratePredictionsForContextTokenIDs:context length:length maximumPredictions:predictions maximumTokensPerPrediction:prediction withBlock:v8];
   _Block_object_dispose(v9, 8);
 }
 
@@ -173,15 +173,15 @@ LABEL_6:
   return result;
 }
 
-- (void)enumerateEntriesForString:(id)a3 withBlock:(id)a4
+- (void)enumerateEntriesForString:(id)string withBlock:(id)block
 {
   lexicon = self->_lexicon;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__PRWordLanguageModel_enumerateEntriesForString_withBlock___block_invoke;
   v5[3] = &unk_1E8405178;
-  v5[4] = a4;
-  [(PRLexicon *)lexicon enumerateEntriesForString:a3 usingBlock:v5];
+  v5[4] = block;
+  [(PRLexicon *)lexicon enumerateEntriesForString:string usingBlock:v5];
 }
 
 @end

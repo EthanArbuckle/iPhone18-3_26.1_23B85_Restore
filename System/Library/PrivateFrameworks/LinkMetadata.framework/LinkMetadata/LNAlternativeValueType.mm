@@ -1,14 +1,14 @@
 @interface LNAlternativeValueType
 + (id)objectClassesForCoding;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)objectIsMemberOfType:(id)a3;
-- (BOOL)valueIsKindOfType:(id)a3;
-- (LNAlternativeValueType)initWithCoder:(id)a3;
-- (LNAlternativeValueType)initWithMemberValueTypes:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)objectIsMemberOfType:(id)type;
+- (BOOL)valueIsKindOfType:(id)type;
+- (LNAlternativeValueType)initWithCoder:(id)coder;
+- (LNAlternativeValueType)initWithMemberValueTypes:(id)types;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateValuesOfValueType:(id)a3 value:(id)a4 block:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateValuesOfValueType:(id)type value:(id)value block:(id)block;
 @end
 
 @implementation LNAlternativeValueType
@@ -20,11 +20,11 @@
   return [v2 arrayWithObjects:{v3, objc_opt_class(), 0}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v17) = 1;
   }
@@ -33,18 +33,18 @@
   {
     v24.receiver = self;
     v24.super_class = LNAlternativeValueType;
-    if ([(LNValueType *)&v24 isEqual:v4])
+    if ([(LNValueType *)&v24 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (v5)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [(LNAlternativeValueType *)self memberValueTypes];
-          v7 = [v6 count];
-          v8 = [(LNAlternativeValueType *)v5 memberValueTypes];
-          v9 = [v8 count];
+          memberValueTypes = [(LNAlternativeValueType *)self memberValueTypes];
+          v7 = [memberValueTypes count];
+          memberValueTypes2 = [(LNAlternativeValueType *)v5 memberValueTypes];
+          v9 = [memberValueTypes2 count];
 
           if (v7 != v9)
           {
@@ -56,8 +56,8 @@
           v23 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v10 = [(LNAlternativeValueType *)v5 memberValueTypes];
-          v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+          memberValueTypes3 = [(LNAlternativeValueType *)v5 memberValueTypes];
+          v11 = [memberValueTypes3 countByEnumeratingWithState:&v20 objects:v25 count:16];
           if (v11)
           {
             v12 = v11;
@@ -68,12 +68,12 @@ LABEL_8:
             {
               if (*v21 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(memberValueTypes3);
               }
 
               v15 = *(*(&v20 + 1) + 8 * v14);
-              v16 = [(LNAlternativeValueType *)self memberValueTypes];
-              v17 = [v16 containsObject:v15];
+              memberValueTypes4 = [(LNAlternativeValueType *)self memberValueTypes];
+              v17 = [memberValueTypes4 containsObject:v15];
 
               if (!v17)
               {
@@ -82,7 +82,7 @@ LABEL_8:
 
               if (v12 == ++v14)
               {
-                v12 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+                v12 = [memberValueTypes3 countByEnumeratingWithState:&v20 objects:v25 count:16];
                 LOBYTE(v17) = 1;
                 if (v12)
                 {
@@ -103,14 +103,14 @@ LABEL_8:
         else
         {
           LOBYTE(v17) = 0;
-          v10 = v5;
+          memberValueTypes3 = v5;
           v5 = 0;
         }
       }
 
       else
       {
-        v10 = 0;
+        memberValueTypes3 = 0;
         LOBYTE(v17) = 0;
       }
 
@@ -132,8 +132,8 @@ LABEL_21:
   v7.receiver = self;
   v7.super_class = LNAlternativeValueType;
   v3 = [(LNValueType *)&v7 hash];
-  v4 = [(LNAlternativeValueType *)self memberValueTypes];
-  v5 = [v4 hash];
+  memberValueTypes = [(LNAlternativeValueType *)self memberValueTypes];
+  v5 = [memberValueTypes hash];
 
   return v5 ^ v3;
 }
@@ -141,85 +141,85 @@ LABEL_21:
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(LNAlternativeValueType *)self memberValueTypes];
-  v4 = [v3 componentsJoinedByString:@" | "];
+  memberValueTypes = [(LNAlternativeValueType *)self memberValueTypes];
+  v4 = [memberValueTypes componentsJoinedByString:@" | "];
   v5 = [v2 stringWithFormat:@"(%@)", v4];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = LNAlternativeValueType;
-  v4 = a3;
-  [(LNValueType *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LNValueType *)&v6 encodeWithCoder:coderCopy];
   v5 = [(LNAlternativeValueType *)self memberValueTypes:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"memberValueTypes"];
+  [coderCopy encodeObject:v5 forKey:@"memberValueTypes"];
 }
 
-- (LNAlternativeValueType)initWithCoder:(id)a3
+- (LNAlternativeValueType)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"memberValueTypes"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"memberValueTypes"];
 
   if (v8)
   {
     self = [(LNAlternativeValueType *)self initWithMemberValueTypes:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)enumerateValuesOfValueType:(id)a3 value:(id)a4 block:(id)a5
+- (void)enumerateValuesOfValueType:(id)type value:(id)value block:(id)block
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(LNAlternativeValueType *)self memberValueTypes];
-  v11 = [v10 containsObject:v13];
+  typeCopy = type;
+  valueCopy = value;
+  blockCopy = block;
+  memberValueTypes = [(LNAlternativeValueType *)self memberValueTypes];
+  v11 = [memberValueTypes containsObject:typeCopy];
 
   if (v11)
   {
-    v12 = [v8 valueType];
-    [v12 enumerateValuesOfValueType:v13 value:v8 block:v9];
+    valueType = [valueCopy valueType];
+    [valueType enumerateValuesOfValueType:typeCopy value:valueCopy block:blockCopy];
   }
 }
 
-- (BOOL)valueIsKindOfType:(id)a3
+- (BOOL)valueIsKindOfType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(LNAlternativeValueType *)self memberValueTypes];
-  v6 = [v4 valueType];
+  typeCopy = type;
+  memberValueTypes = [(LNAlternativeValueType *)self memberValueTypes];
+  valueType = [typeCopy valueType];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(typeCopy) = [memberValueTypes containsObject:valueType];
+  return typeCopy;
 }
 
-- (BOOL)objectIsMemberOfType:(id)a3
+- (BOOL)objectIsMemberOfType:(id)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(LNAlternativeValueType *)self memberValueTypes];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  memberValueTypes = [(LNAlternativeValueType *)self memberValueTypes];
+  v6 = [memberValueTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -229,17 +229,17 @@ LABEL_21:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(memberValueTypes);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) objectIsMemberOfType:v4])
+        if ([*(*(&v11 + 1) + 8 * i) objectIsMemberOfType:typeCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [memberValueTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -255,15 +255,15 @@ LABEL_11:
   return v6;
 }
 
-- (LNAlternativeValueType)initWithMemberValueTypes:(id)a3
+- (LNAlternativeValueType)initWithMemberValueTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v10.receiver = self;
   v10.super_class = LNAlternativeValueType;
   v5 = [(LNValueType *)&v10 initWithContentType:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     memberValueTypes = v5->_memberValueTypes;
     v5->_memberValueTypes = v6;
 

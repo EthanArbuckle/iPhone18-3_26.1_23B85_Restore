@@ -1,15 +1,15 @@
 @interface NEIKEv2ChildSAConfiguration
 - (NEIKEv2ChildSAConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setProposals:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setProposals:(id)proposals;
 @end
 
 @implementation NEIKEv2ChildSAConfiguration
 
-- (void)setProposals:(id)a3
+- (void)setProposals:(id)proposals
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [proposals copy];
   proposals = self->_proposals;
   self->_proposals = v4;
 
@@ -50,40 +50,40 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setMode:{-[NEIKEv2ChildSAConfiguration mode](self, "mode")}];
   [v4 setReplayWindowSize:{-[NEIKEv2ChildSAConfiguration replayWindowSize](self, "replayWindowSize")}];
   [v4 setSequencePerTrafficClass:{-[NEIKEv2ChildSAConfiguration sequencePerTrafficClass](self, "sequencePerTrafficClass")}];
   [v4 setPreferInitiatorProposalOrder:{-[NEIKEv2ChildSAConfiguration preferInitiatorProposalOrder](self, "preferInitiatorProposalOrder")}];
-  v5 = [(NEIKEv2ChildSAConfiguration *)self proposals];
+  proposals = [(NEIKEv2ChildSAConfiguration *)self proposals];
 
-  if (v5)
+  if (proposals)
   {
     v6 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v7 = [(NEIKEv2ChildSAConfiguration *)self proposals];
-    v8 = [v6 initWithArray:v7 copyItems:1];
+    proposals2 = [(NEIKEv2ChildSAConfiguration *)self proposals];
+    v8 = [v6 initWithArray:proposals2 copyItems:1];
     [v4 setProposals:v8];
   }
 
-  v9 = [(NEIKEv2ChildSAConfiguration *)self localTrafficSelectors];
+  localTrafficSelectors = [(NEIKEv2ChildSAConfiguration *)self localTrafficSelectors];
 
-  if (v9)
+  if (localTrafficSelectors)
   {
     v10 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v11 = [(NEIKEv2ChildSAConfiguration *)self localTrafficSelectors];
-    v12 = [v10 initWithArray:v11 copyItems:1];
+    localTrafficSelectors2 = [(NEIKEv2ChildSAConfiguration *)self localTrafficSelectors];
+    v12 = [v10 initWithArray:localTrafficSelectors2 copyItems:1];
     [v4 setLocalTrafficSelectors:v12];
   }
 
-  v13 = [(NEIKEv2ChildSAConfiguration *)self remoteTrafficSelectors];
+  remoteTrafficSelectors = [(NEIKEv2ChildSAConfiguration *)self remoteTrafficSelectors];
 
-  if (v13)
+  if (remoteTrafficSelectors)
   {
     v14 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v15 = [(NEIKEv2ChildSAConfiguration *)self remoteTrafficSelectors];
-    v16 = [v14 initWithArray:v15 copyItems:1];
+    remoteTrafficSelectors2 = [(NEIKEv2ChildSAConfiguration *)self remoteTrafficSelectors];
+    v16 = [v14 initWithArray:remoteTrafficSelectors2 copyItems:1];
     [v4 setRemoteTrafficSelectors:v16];
   }
 

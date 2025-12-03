@@ -1,15 +1,15 @@
 @interface HUPinCodeUtilities
-+ (id)createSharingViewControllerForPinCodeItem:(id)a3 inHome:(id)a4;
++ (id)createSharingViewControllerForPinCodeItem:(id)item inHome:(id)home;
 @end
 
 @implementation HUPinCodeUtilities
 
-+ (id)createSharingViewControllerForPinCodeItem:(id)a3 inHome:(id)a4
++ (id)createSharingViewControllerForPinCodeItem:(id)item inHome:(id)home
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [[_HUPinCodeActivityItemSource alloc] initWithPinCodeItem:v5];
+  itemCopy = item;
+  homeCopy = home;
+  v7 = [[_HUPinCodeActivityItemSource alloc] initWithPinCodeItem:itemCopy];
   v8 = objc_alloc(MEMORY[0x277D546D8]);
   v17[0] = v7;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -19,10 +19,10 @@
   v14[1] = 3221225472;
   v14[2] = __71__HUPinCodeUtilities_createSharingViewControllerForPinCodeItem_inHome___block_invoke;
   v14[3] = &unk_277DBE240;
-  v15 = v6;
-  v16 = v5;
-  v11 = v5;
-  v12 = v6;
+  v15 = homeCopy;
+  v16 = itemCopy;
+  v11 = itemCopy;
+  v12 = homeCopy;
   [v10 setCompletionWithItemsHandler:v14];
 
   return v10;

@@ -2,27 +2,27 @@
 - (CGRect)cropBoxAccountForRotation;
 - (CGRect)mediaBoxAccountForRotation;
 - (CGSize)size;
-- (UIPDFPage)initWithCGPDFPage:(CGPDFPage *)a3;
-- (UIPDFPage)initWithDocument:(id)a3 pageNumber:(unint64_t)a4;
-- (id)annotationIn:(id)a3 withIndex:(unint64_t)a4;
+- (UIPDFPage)initWithCGPDFPage:(CGPDFPage *)page;
+- (UIPDFPage)initWithDocument:(id)document pageNumber:(unint64_t)number;
+- (id)annotationIn:(id)in withIndex:(unint64_t)index;
 - (id)annotations;
 - (id)copyPage;
-- (id)findString:(id)a3 fromSelection:(id)a4 options:(unint64_t)a5;
+- (id)findString:(id)string fromSelection:(id)selection options:(unint64_t)options;
 - (id)getImageIfAvailable;
 - (id)string;
 - (unint64_t)rotation;
-- (void)addAnnotation:(id)a3;
+- (void)addAnnotation:(id)annotation;
 - (void)clearAnnotations;
 - (void)dealloc;
-- (void)drawInRect:(CGRect)a3 context:(CGContext *)a4;
+- (void)drawInRect:(CGRect)rect context:(CGContext *)context;
 - (void)refresh;
 - (void)removeAllAnnotations;
-- (void)removeAnnotation:(id)a3;
+- (void)removeAnnotation:(id)annotation;
 @end
 
 @implementation UIPDFPage
 
-- (UIPDFPage)initWithCGPDFPage:(CGPDFPage *)a3
+- (UIPDFPage)initWithCGPDFPage:(CGPDFPage *)page
 {
   v8.receiver = self;
   v8.super_class = UIPDFPage;
@@ -30,9 +30,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_cgPage = a3;
-    CGPDFPageRetain(a3);
-    PageNumber = CGPDFPageGetPageNumber(a3);
+    v4->_cgPage = page;
+    CGPDFPageRetain(page);
+    PageNumber = CGPDFPageGetPageNumber(page);
     v5->_pageNumber = PageNumber;
     v5->_pageIndex = PageNumber - 1;
     v5->_lock._os_unfair_lock_opaque = 0;
@@ -41,14 +41,14 @@
   return v5;
 }
 
-- (UIPDFPage)initWithDocument:(id)a3 pageNumber:(unint64_t)a4
+- (UIPDFPage)initWithDocument:(id)document pageNumber:(unint64_t)number
 {
   v7.receiver = self;
   v7.super_class = UIPDFPage;
   v5 = [(UIPDFPage *)&v7 init];
   if (v5)
   {
-    [a3 CGDocument];
+    [document CGDocument];
     v5->_cgPage = CGPDFDocumentCopyPage();
     v5->_pageIndex = v5->_pageNumber - 1;
     v5->_lock._os_unfair_lock_opaque = 0;
@@ -68,24 +68,24 @@
   [(UIPDFPage *)&v3 dealloc];
 }
 
-- (void)drawInRect:(CGRect)a3 context:(CGContext *)a4
+- (void)drawInRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSaveGState(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
   v41.origin.x = x;
   v41.origin.y = y;
   v41.size.width = width;
   v41.size.height = height;
-  CGContextClipToRect(a4, v41);
-  CGContextSetFillColorWithColor(a4, [+[UIColor CGColor] whiteColor];
+  CGContextClipToRect(context, v41);
+  CGContextSetFillColorWithColor(context, [+[UIColor CGColor] whiteColor];
   v42.origin.x = x;
   v42.origin.y = y;
   v42.size.width = width;
   v42.size.height = height;
-  CGContextFillRect(a4, v42);
+  CGContextFillRect(context, v42);
   cgPage = self->_cgPage;
   memset(&v36, 0, 32);
   memset(&transform, 0, sizeof(transform));
@@ -231,29 +231,29 @@ LABEL_11:
   CGAffineTransformConcat(&t1, &t2, &v37);
   v36 = t1;
   transform = t1;
-  CGContextConcatCTM(a4, &transform);
-  v29 = self;
-  CGContextDrawPDFPage(a4, [(UIPDFPage *)self CGPage]);
+  CGContextConcatCTM(context, &transform);
+  selfCopy = self;
+  CGContextDrawPDFPage(context, [(UIPDFPage *)self CGPage]);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 - (id)getImageIfAvailable
 {
-  v3 = [(UIPDFPage *)self pageImage];
-  if (v3)
+  pageImage = [(UIPDFPage *)self pageImage];
+  if (pageImage)
   {
-    v4 = v3;
-    v5 = v3;
+    v4 = pageImage;
+    v5 = pageImage;
     return v4;
   }
 
   else
   {
-    v7 = [(UIPDFDocument *)[(UIPDFPage *)self document] pageImageCache];
-    v8 = [(UIPDFPage *)self pageNumber];
+    pageImageCache = [(UIPDFDocument *)[(UIPDFPage *)self document] pageImageCache];
+    pageNumber = [(UIPDFPage *)self pageNumber];
 
-    return [(UIPDFPageImageCache *)v7 getImageIfAvailableForPage:v8];
+    return [(UIPDFPageImageCache *)pageImageCache getImageIfAvailableForPage:pageNumber];
   }
 }
 
@@ -314,7 +314,7 @@ LABEL_11:
   return result;
 }
 
-- (id)findString:(id)a3 fromSelection:(id)a4 options:(unint64_t)a5
+- (id)findString:(id)string fromSelection:(id)selection options:(unint64_t)options
 {
   result = [(UIPDFPage *)self string];
   if (!result)
@@ -323,17 +323,17 @@ LABEL_11:
   }
 
   v10 = result;
-  if ((a5 & 4) == 0)
+  if ((options & 4) == 0)
   {
     v11 = 0;
-    if (!a4)
+    if (!selection)
     {
       goto LABEL_11;
     }
 
 LABEL_6:
-    v12 = [a4 stringRange];
-    if ((a5 & 4) != 0)
+    stringRange = [selection stringRange];
+    if ((options & 4) != 0)
     {
       v14 = -1;
     }
@@ -343,8 +343,8 @@ LABEL_6:
       v14 = v13;
     }
 
-    v15 = v14 + v12;
-    if (v12 != -1)
+    v15 = v14 + stringRange;
+    if (stringRange != -1)
     {
       v11 = v15;
     }
@@ -353,13 +353,13 @@ LABEL_6:
   }
 
   v11 = CFStringGetLength(result) - 1;
-  if (a4)
+  if (selection)
   {
     goto LABEL_6;
   }
 
 LABEL_11:
-  if ((a5 & 4) != 0)
+  if ((options & 4) != 0)
   {
     v16 = 0;
   }
@@ -370,10 +370,10 @@ LABEL_11:
     v11 = CFStringGetLength(v10) - v11;
   }
 
-  v17 = [(UIPDFPage *)self cfCompareFlagsFromNSOptions:a5, 0, 0];
+  v17 = [(UIPDFPage *)self cfCompareFlagsFromNSOptions:options, 0, 0];
   v20.location = v16;
   v20.length = v11;
-  if (!CFStringFindWithOptions(v10, a3, v20, v17, &v19))
+  if (!CFStringFindWithOptions(v10, string, v20, v17, &v19))
   {
     return 0;
   }
@@ -423,14 +423,14 @@ LABEL_11:
   [(UIPDFPage *)self clearAnnotations];
 }
 
-- (id)annotationIn:(id)a3 withIndex:(unint64_t)a4
+- (id)annotationIn:(id)in withIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [in countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -444,18 +444,18 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(a3);
+      objc_enumerationMutation(in);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([v10 index] == a4)
+    if ([v10 index] == index)
     {
       return v10;
     }
 
     if (v7 == ++v9)
     {
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [in countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -600,12 +600,12 @@ LABEL_28:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addAnnotation:(id)a3
+- (void)addAnnotation:(id)annotation
 {
   if (self->_annotations)
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableArray *)self->_annotations addObject:a3];
+    [(NSMutableArray *)self->_annotations addObject:annotation];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -613,7 +613,7 @@ LABEL_28:
   else
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
-    [v6 addObject:a3];
+    [v6 addObject:annotation];
     v5 = 0;
     atomic_compare_exchange_strong(&self->_annotations, &v5, v6);
     if (v5)
@@ -622,33 +622,33 @@ LABEL_28:
   }
 }
 
-- (void)removeAnnotation:(id)a3
+- (void)removeAnnotation:(id)annotation
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [a3 popup];
-  if (v5)
+  popup = [annotation popup];
+  if (popup)
   {
-    v6 = v5;
-    [v5 setParent:0];
+    v6 = popup;
+    [popup setParent:0];
     [(NSMutableArray *)self->_annotations removeObject:v6];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a3 parent];
-    if (v7)
+    parent = [annotation parent];
+    if (parent)
     {
-      [v7 setPopup:0];
+      [parent setPopup:0];
     }
   }
 
-  if ([a3 annotationView])
+  if ([annotation annotationView])
   {
-    [objc_msgSend(a3 "annotationView")];
+    [objc_msgSend(annotation "annotationView")];
   }
 
-  [(NSMutableArray *)self->_annotations removeObject:a3];
+  [(NSMutableArray *)self->_annotations removeObject:annotation];
 
   os_unfair_lock_unlock(&self->_lock);
 }

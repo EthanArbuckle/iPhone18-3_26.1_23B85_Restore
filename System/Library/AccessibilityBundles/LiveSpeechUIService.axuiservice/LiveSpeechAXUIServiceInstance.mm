@@ -1,10 +1,10 @@
 @interface LiveSpeechAXUIServiceInstance
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)a3;
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)identifier;
 + (id)sharedInstance;
 - (LiveSpeechAXUIServiceInstance)init;
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (void)externalDisplaySceneConnected:(id)a3;
-- (void)externalDisplaySceneDisconnected:(id)a3;
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (void)externalDisplaySceneConnected:(id)connected;
+- (void)externalDisplaySceneDisconnected:(id)disconnected;
 @end
 
 @implementation LiveSpeechAXUIServiceInstance
@@ -17,9 +17,9 @@
   return v2;
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(int64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(int64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  if (a3)
+  if (message)
   {
     v8 = sub_BAF40();
   }
@@ -31,33 +31,33 @@
 
   v9 = sub_BAFD0();
   v11 = v10;
-  v12 = self;
-  sub_3D58C(v8, a4, v9, v11);
+  selfCopy = self;
+  sub_3D58C(v8, identifier, v9, v11);
 
   v13.super.isa = sub_BAF30().super.isa;
 
   return v13.super.isa;
 }
 
-+ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)a3
++ (id)requiredEntitlementForProcessingMessageWithIdentifier:(int64_t)identifier
 {
   v3 = sub_BAFA0();
 
   return v3;
 }
 
-- (void)externalDisplaySceneConnected:(id)a3
+- (void)externalDisplaySceneConnected:(id)connected
 {
-  v5 = a3;
-  v6 = self;
-  sub_3E8A4(a3, "External display scene connected", &unk_F0C48, &unk_BFFF8);
+  connectedCopy = connected;
+  selfCopy = self;
+  sub_3E8A4(connected, "External display scene connected", &unk_F0C48, &unk_BFFF8);
 }
 
-- (void)externalDisplaySceneDisconnected:(id)a3
+- (void)externalDisplaySceneDisconnected:(id)disconnected
 {
-  v5 = a3;
-  v6 = self;
-  sub_3E8A4(a3, "External display scene disconnected", &unk_F0C20, &unk_BFFE8);
+  disconnectedCopy = disconnected;
+  selfCopy = self;
+  sub_3E8A4(disconnected, "External display scene disconnected", &unk_F0C20, &unk_BFFE8);
 }
 
 - (LiveSpeechAXUIServiceInstance)init

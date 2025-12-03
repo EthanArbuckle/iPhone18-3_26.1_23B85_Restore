@@ -1,39 +1,39 @@
 @interface GKViceroySession
-- (BOOL)acceptConnectionFromPeer:(id)a3 error:(id *)a4;
+- (BOOL)acceptConnectionFromPeer:(id)peer error:(id *)error;
 - (BOOL)isAvailable;
 - (BOOL)isBusy;
-- (BOOL)isPeerBusy:(id)a3;
-- (BOOL)isWrappingGKSession:(id)a3;
-- (GKViceroySession)initWithConnection:(id)a3 delegate:(id)a4;
+- (BOOL)isPeerBusy:(id)busy;
+- (BOOL)isWrappingGKSession:(id)session;
+- (GKViceroySession)initWithConnection:(id)connection delegate:(id)delegate;
 - (double)disconnectTimeout;
 - (id)delegate;
 - (id)description;
 - (id)displayName;
-- (id)displayNameForPeer:(id)a3;
+- (id)displayNameForPeer:(id)peer;
 - (id)peerID;
 - (id)privateDelegate;
 - (id)sessionID;
-- (id)voiceChatWithName:(id)a3 players:(id)a4;
+- (id)voiceChatWithName:(id)name players:(id)players;
 - (int)sessionMode;
-- (void)cancelConnectToPeer:(id)a3;
-- (void)connectToPeer:(id)a3 withTimeout:(double)a4;
+- (void)cancelConnectToPeer:(id)peer;
+- (void)connectToPeer:(id)peer withTimeout:(double)timeout;
 - (void)dealloc;
-- (void)denyConnectionFromPeer:(id)a3;
+- (void)denyConnectionFromPeer:(id)peer;
 - (void)disableWifi;
 - (void)disconnectFromAllPeers;
-- (void)disconnectPeerFromAllPeers:(id)a3;
-- (void)setDataReceiveHandler:(id)a3 withContext:(void *)a4;
-- (void)setDelegate:(id)a3;
-- (void)setDisconnectTimeout:(double)a3;
-- (void)setPrivateDelegate:(id)a3;
+- (void)disconnectPeerFromAllPeers:(id)peers;
+- (void)setDataReceiveHandler:(id)handler withContext:(void *)context;
+- (void)setDelegate:(id)delegate;
+- (void)setDisconnectTimeout:(double)timeout;
+- (void)setPrivateDelegate:(id)delegate;
 @end
 
 @implementation GKViceroySession
 
-- (GKViceroySession)initWithConnection:(id)a3 delegate:(id)a4
+- (GKViceroySession)initWithConnection:(id)connection delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = GKViceroySession;
   v8 = [(GKViceroySession *)&v16 init];
@@ -44,13 +44,13 @@
     v8->_gkSession = v9;
 
     v11 = objc_alloc(MEMORY[0x277D0C938]);
-    v12 = [(GKViceroySession *)v8 gkSession];
-    v13 = [v11 initWithConnection:v6 session:v12 delegate:v7];
+    gkSession = [(GKViceroySession *)v8 gkSession];
+    v13 = [v11 initWithConnection:connectionCopy session:gkSession delegate:delegateCopy];
     session = v8->_session;
     v8->_session = v13;
 
-    [(GKSessionInternal *)v8->_session setPrivateDelegate:v7];
-    [(GKSessionInternal *)v8->_session setDataReceiveHandler:v7 withContext:0];
+    [(GKSessionInternal *)v8->_session setPrivateDelegate:delegateCopy];
+    [(GKSessionInternal *)v8->_session setDataReceiveHandler:delegateCopy withContext:0];
   }
 
   return v8;
@@ -58,17 +58,17 @@
 
 - (void)dealloc
 {
-  v3 = [(GKViceroySession *)self session];
-  [v3 setDataReceiveHandler:0 withContext:0];
+  session = [(GKViceroySession *)self session];
+  [session setDataReceiveHandler:0 withContext:0];
 
-  v4 = [(GKViceroySession *)self session];
-  [v4 setDelegate:0];
+  session2 = [(GKViceroySession *)self session];
+  [session2 setDelegate:0];
 
-  v5 = [(GKViceroySession *)self session];
-  [v5 setPrivateDelegate:0];
+  session3 = [(GKViceroySession *)self session];
+  [session3 setPrivateDelegate:0];
 
-  v6 = [(GKViceroySession *)self session];
-  [v6 reset];
+  session4 = [(GKViceroySession *)self session];
+  [session4 reset];
 
   v7.receiver = self;
   v7.super_class = GKViceroySession;
@@ -77,45 +77,45 @@
 
 - (BOOL)isAvailable
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 isAvailable];
+  session = [(GKViceroySession *)self session];
+  isAvailable = [session isAvailable];
 
-  return v3;
+  return isAvailable;
 }
 
 - (BOOL)isBusy
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 isBusy];
+  session = [(GKViceroySession *)self session];
+  isBusy = [session isBusy];
 
-  return v3;
+  return isBusy;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(GKViceroySession *)self session];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  session = [(GKViceroySession *)self session];
+  [session setDelegate:delegateCopy];
 }
 
 - (id)delegate
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 delegate];
+  session = [(GKViceroySession *)self session];
+  delegate = [session delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDisconnectTimeout:(double)a3
+- (void)setDisconnectTimeout:(double)timeout
 {
-  v4 = [(GKViceroySession *)self session];
-  [v4 setDisconnectTimeout:a3];
+  session = [(GKViceroySession *)self session];
+  [session setDisconnectTimeout:timeout];
 }
 
 - (double)disconnectTimeout
 {
-  v2 = [(GKViceroySession *)self session];
-  [v2 disconnectTimeout];
+  session = [(GKViceroySession *)self session];
+  [session disconnectTimeout];
   v4 = v3;
 
   return v4;
@@ -123,152 +123,152 @@
 
 - (id)displayName
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 displayName];
+  session = [(GKViceroySession *)self session];
+  displayName = [session displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (id)description
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 description];
+  session = [(GKViceroySession *)self session];
+  v3 = [session description];
 
   return v3;
 }
 
 - (id)peerID
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 peerID];
+  session = [(GKViceroySession *)self session];
+  peerID = [session peerID];
 
-  return v3;
+  return peerID;
 }
 
-- (void)setPrivateDelegate:(id)a3
+- (void)setPrivateDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(GKViceroySession *)self session];
-  [v5 setPrivateDelegate:v4];
+  delegateCopy = delegate;
+  session = [(GKViceroySession *)self session];
+  [session setPrivateDelegate:delegateCopy];
 }
 
 - (id)privateDelegate
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 privateDelegate];
+  session = [(GKViceroySession *)self session];
+  privateDelegate = [session privateDelegate];
 
-  return v3;
+  return privateDelegate;
 }
 
 - (id)sessionID
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 sessionID];
+  session = [(GKViceroySession *)self session];
+  sessionID = [session sessionID];
 
-  return v3;
+  return sessionID;
 }
 
 - (int)sessionMode
 {
-  v2 = [(GKViceroySession *)self session];
-  v3 = [v2 sessionMode];
+  session = [(GKViceroySession *)self session];
+  sessionMode = [session sessionMode];
 
-  return v3;
+  return sessionMode;
 }
 
-- (BOOL)acceptConnectionFromPeer:(id)a3 error:(id *)a4
+- (BOOL)acceptConnectionFromPeer:(id)peer error:(id *)error
 {
-  v6 = a3;
-  v7 = [(GKViceroySession *)self session];
-  LOBYTE(a4) = [v7 acceptConnectionFromPeer:v6 error:a4];
+  peerCopy = peer;
+  session = [(GKViceroySession *)self session];
+  LOBYTE(error) = [session acceptConnectionFromPeer:peerCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)cancelConnectToPeer:(id)a3
+- (void)cancelConnectToPeer:(id)peer
 {
-  v4 = a3;
-  v5 = [(GKViceroySession *)self session];
-  [v5 cancelConnectToPeer:v4];
+  peerCopy = peer;
+  session = [(GKViceroySession *)self session];
+  [session cancelConnectToPeer:peerCopy];
 }
 
-- (void)connectToPeer:(id)a3 withTimeout:(double)a4
+- (void)connectToPeer:(id)peer withTimeout:(double)timeout
 {
-  v6 = a3;
-  v7 = [(GKViceroySession *)self session];
-  [v7 connectToPeer:v6 withTimeout:a4];
+  peerCopy = peer;
+  session = [(GKViceroySession *)self session];
+  [session connectToPeer:peerCopy withTimeout:timeout];
 }
 
-- (void)denyConnectionFromPeer:(id)a3
+- (void)denyConnectionFromPeer:(id)peer
 {
-  v4 = a3;
-  v5 = [(GKViceroySession *)self session];
-  [v5 denyConnectionFromPeer:v4];
+  peerCopy = peer;
+  session = [(GKViceroySession *)self session];
+  [session denyConnectionFromPeer:peerCopy];
 }
 
 - (void)disableWifi
 {
-  v2 = [(GKViceroySession *)self session];
-  [v2 setWifiEnabled:0];
+  session = [(GKViceroySession *)self session];
+  [session setWifiEnabled:0];
 }
 
 - (void)disconnectFromAllPeers
 {
-  v2 = [(GKViceroySession *)self session];
-  [v2 disconnectFromAllPeers];
+  session = [(GKViceroySession *)self session];
+  [session disconnectFromAllPeers];
 }
 
-- (void)disconnectPeerFromAllPeers:(id)a3
+- (void)disconnectPeerFromAllPeers:(id)peers
 {
-  v4 = a3;
-  v5 = [(GKViceroySession *)self session];
-  [v5 disconnectPeerFromAllPeers:v4];
+  peersCopy = peers;
+  session = [(GKViceroySession *)self session];
+  [session disconnectPeerFromAllPeers:peersCopy];
 }
 
-- (id)displayNameForPeer:(id)a3
+- (id)displayNameForPeer:(id)peer
 {
-  v4 = a3;
-  v5 = [(GKViceroySession *)self session];
-  v6 = [v5 displayNameForPeer:v4];
+  peerCopy = peer;
+  session = [(GKViceroySession *)self session];
+  v6 = [session displayNameForPeer:peerCopy];
 
   return v6;
 }
 
-- (BOOL)isPeerBusy:(id)a3
+- (BOOL)isPeerBusy:(id)busy
 {
-  v4 = a3;
-  v5 = [(GKViceroySession *)self session];
-  v6 = [v5 isPeerBusy:v4];
+  busyCopy = busy;
+  session = [(GKViceroySession *)self session];
+  v6 = [session isPeerBusy:busyCopy];
 
   return v6;
 }
 
-- (BOOL)isWrappingGKSession:(id)a3
+- (BOOL)isWrappingGKSession:(id)session
 {
-  v4 = a3;
-  v5 = [(GKViceroySession *)self gkSession];
+  sessionCopy = session;
+  gkSession = [(GKViceroySession *)self gkSession];
 
-  return v5 == v4;
+  return gkSession == sessionCopy;
 }
 
-- (void)setDataReceiveHandler:(id)a3 withContext:(void *)a4
+- (void)setDataReceiveHandler:(id)handler withContext:(void *)context
 {
-  v6 = a3;
-  v7 = [(GKViceroySession *)self session];
-  [v7 setDataReceiveHandler:v6 withContext:a4];
+  handlerCopy = handler;
+  session = [(GKViceroySession *)self session];
+  [session setDataReceiveHandler:handlerCopy withContext:context];
 }
 
-- (id)voiceChatWithName:(id)a3 players:(id)a4
+- (id)voiceChatWithName:(id)name players:(id)players
 {
-  v6 = a4;
-  v7 = a3;
+  playersCopy = players;
+  nameCopy = name;
   v8 = [GKViceroyVoiceChat alloc];
-  v9 = [(GKViceroySession *)self session];
-  v10 = [v9 connection];
-  v11 = [(GKViceroySession *)self gkSession];
-  v12 = [(GKViceroyVoiceChat *)v8 initWithName:v7 connection:v10 gkSession:v11];
+  session = [(GKViceroySession *)self session];
+  connection = [session connection];
+  gkSession = [(GKViceroySession *)self gkSession];
+  v12 = [(GKViceroyVoiceChat *)v8 initWithName:nameCopy connection:connection gkSession:gkSession];
 
-  v13 = [[GKVoiceChat alloc] initWithViceroyVoiceChat:v12 players:v6];
+  v13 = [[GKVoiceChat alloc] initWithViceroyVoiceChat:v12 players:playersCopy];
 
   return v13;
 }

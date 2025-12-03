@@ -1,6 +1,6 @@
 @interface _NSZeroData
 + (id)data;
-- (_NSZeroData)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 deallocator:(id)a6;
+- (_NSZeroData)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy deallocator:(id)deallocator;
 @end
 
 @implementation _NSZeroData
@@ -15,13 +15,13 @@
   return _MergedGlobals_35;
 }
 
-- (_NSZeroData)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 deallocator:(id)a6
+- (_NSZeroData)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy deallocator:(id)deallocator
 {
-  v7 = a5;
+  copyCopy = copy;
   _NSDataReinitializationBreak();
   v10 = objc_alloc(MEMORY[0x1E695DEF0]);
 
-  return [v10 initWithBytes:a3 length:a4 copy:v7 deallocator:a6];
+  return [v10 initWithBytes:bytes length:length copy:copyCopy deallocator:deallocator];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface AVSpatialVideoConfiguration
 - (AVSpatialVideoConfiguration)init;
-- (AVSpatialVideoConfiguration)initWithFormatDescription:(opaqueCMFormatDescription *)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVSpatialVideoConfiguration)initWithFormatDescription:(opaqueCMFormatDescription *)description;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toDictionary;
 - (unint64_t)hash;
@@ -18,15 +18,15 @@
   return [(AVSpatialVideoConfiguration *)&v3 init];
 }
 
-- (AVSpatialVideoConfiguration)initWithFormatDescription:(opaqueCMFormatDescription *)a3
+- (AVSpatialVideoConfiguration)initWithFormatDescription:(opaqueCMFormatDescription *)description
 {
   v4 = [(AVSpatialVideoConfiguration *)self init];
   if (v4)
   {
-    v4->_cameraCalibrationDataLensCollection = [CMFormatDescriptionGetExtension(a3 *MEMORY[0x1E6962750])];
-    v4->_horizontalFieldOfView = [CMFormatDescriptionGetExtension(a3 *MEMORY[0x1E6960068])];
-    v4->_cameraSystemBaseline = [CMFormatDescriptionGetExtension(a3 *MEMORY[0x1E69600B0])];
-    v4->_disparityAdjustment = [CMFormatDescriptionGetExtension(a3 *MEMORY[0x1E6960060])];
+    v4->_cameraCalibrationDataLensCollection = [CMFormatDescriptionGetExtension(description *MEMORY[0x1E6962750])];
+    v4->_horizontalFieldOfView = [CMFormatDescriptionGetExtension(description *MEMORY[0x1E6960068])];
+    v4->_cameraSystemBaseline = [CMFormatDescriptionGetExtension(description *MEMORY[0x1E69600B0])];
+    v4->_disparityAdjustment = [CMFormatDescriptionGetExtension(description *MEMORY[0x1E6960060])];
   }
 
   return v4;
@@ -39,9 +39,9 @@
   [(AVSpatialVideoConfiguration *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_13;
   }
@@ -53,22 +53,22 @@
     return v6;
   }
 
-  v5 = [(AVSpatialVideoConfiguration *)self cameraCalibrationDataLensCollection];
-  if (v5 == [a3 cameraCalibrationDataLensCollection] || (v6 = -[NSArray isEqual:](-[AVSpatialVideoConfiguration cameraCalibrationDataLensCollection](self, "cameraCalibrationDataLensCollection"), "isEqual:", objc_msgSend(a3, "cameraCalibrationDataLensCollection"))) != 0)
+  cameraCalibrationDataLensCollection = [(AVSpatialVideoConfiguration *)self cameraCalibrationDataLensCollection];
+  if (cameraCalibrationDataLensCollection == [equal cameraCalibrationDataLensCollection] || (v6 = -[NSArray isEqual:](-[AVSpatialVideoConfiguration cameraCalibrationDataLensCollection](self, "cameraCalibrationDataLensCollection"), "isEqual:", objc_msgSend(equal, "cameraCalibrationDataLensCollection"))) != 0)
   {
-    v7 = [(AVSpatialVideoConfiguration *)self horizontalFieldOfView];
-    if (v7 == [a3 horizontalFieldOfView] || (v6 = -[NSNumber isEqual:](-[AVSpatialVideoConfiguration horizontalFieldOfView](self, "horizontalFieldOfView"), "isEqual:", objc_msgSend(a3, "horizontalFieldOfView"))) != 0)
+    horizontalFieldOfView = [(AVSpatialVideoConfiguration *)self horizontalFieldOfView];
+    if (horizontalFieldOfView == [equal horizontalFieldOfView] || (v6 = -[NSNumber isEqual:](-[AVSpatialVideoConfiguration horizontalFieldOfView](self, "horizontalFieldOfView"), "isEqual:", objc_msgSend(equal, "horizontalFieldOfView"))) != 0)
     {
-      v8 = [(AVSpatialVideoConfiguration *)self cameraSystemBaseline];
-      if (v8 == [a3 cameraSystemBaseline] || (v6 = -[NSNumber isEqual:](-[AVSpatialVideoConfiguration cameraSystemBaseline](self, "cameraSystemBaseline"), "isEqual:", objc_msgSend(a3, "cameraSystemBaseline"))) != 0)
+      cameraSystemBaseline = [(AVSpatialVideoConfiguration *)self cameraSystemBaseline];
+      if (cameraSystemBaseline == [equal cameraSystemBaseline] || (v6 = -[NSNumber isEqual:](-[AVSpatialVideoConfiguration cameraSystemBaseline](self, "cameraSystemBaseline"), "isEqual:", objc_msgSend(equal, "cameraSystemBaseline"))) != 0)
       {
-        v9 = [(AVSpatialVideoConfiguration *)self disparityAdjustment];
-        if (v9 != [a3 disparityAdjustment])
+        disparityAdjustment = [(AVSpatialVideoConfiguration *)self disparityAdjustment];
+        if (disparityAdjustment != [equal disparityAdjustment])
         {
-          v10 = [(AVSpatialVideoConfiguration *)self disparityAdjustment];
-          v11 = [a3 disparityAdjustment];
+          disparityAdjustment2 = [(AVSpatialVideoConfiguration *)self disparityAdjustment];
+          disparityAdjustment3 = [equal disparityAdjustment];
 
-          LOBYTE(v6) = [(NSNumber *)v10 isEqual:v11];
+          LOBYTE(v6) = [(NSNumber *)disparityAdjustment2 isEqual:disparityAdjustment3];
           return v6;
         }
 
@@ -89,7 +89,7 @@ LABEL_13:
   return v4 ^ v5 ^ [(NSNumber *)[(AVSpatialVideoConfiguration *)self disparityAdjustment] hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AVSpatialVideoConfiguration allocWithZone:?]];
   if (v4)
@@ -112,32 +112,32 @@ LABEL_13:
 
 - (id)toDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(AVSpatialVideoConfiguration *)self cameraCalibrationDataLensCollection])
   {
-    v4 = [(AVSpatialVideoConfiguration *)self cameraCalibrationDataLensCollection];
-    [v3 setObject:v4 forKey:*MEMORY[0x1E6960010]];
+    cameraCalibrationDataLensCollection = [(AVSpatialVideoConfiguration *)self cameraCalibrationDataLensCollection];
+    [dictionary setObject:cameraCalibrationDataLensCollection forKey:*MEMORY[0x1E6960010]];
   }
 
   if ([(AVSpatialVideoConfiguration *)self horizontalFieldOfView])
   {
-    v5 = [(AVSpatialVideoConfiguration *)self horizontalFieldOfView];
-    [v3 setObject:v5 forKey:*MEMORY[0x1E6960068]];
+    horizontalFieldOfView = [(AVSpatialVideoConfiguration *)self horizontalFieldOfView];
+    [dictionary setObject:horizontalFieldOfView forKey:*MEMORY[0x1E6960068]];
   }
 
   if ([(AVSpatialVideoConfiguration *)self cameraSystemBaseline])
   {
-    v6 = [(AVSpatialVideoConfiguration *)self cameraSystemBaseline];
-    [v3 setObject:v6 forKey:*MEMORY[0x1E69600B0]];
+    cameraSystemBaseline = [(AVSpatialVideoConfiguration *)self cameraSystemBaseline];
+    [dictionary setObject:cameraSystemBaseline forKey:*MEMORY[0x1E69600B0]];
   }
 
   if ([(AVSpatialVideoConfiguration *)self disparityAdjustment])
   {
-    v7 = [(AVSpatialVideoConfiguration *)self disparityAdjustment];
-    [v3 setObject:v7 forKey:*MEMORY[0x1E6960060]];
+    disparityAdjustment = [(AVSpatialVideoConfiguration *)self disparityAdjustment];
+    [dictionary setObject:disparityAdjustment forKey:*MEMORY[0x1E6960060]];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface CertInfoTrustSummaryController
-- (CertInfoTrustSummaryController)initWithTrustDescription:(id)a3;
+- (CertInfoTrustSummaryController)initWithTrustDescription:(id)description;
 - (CertInfoTrustSummaryControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_cellForReuseIdentifier:(id)a3;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_cellForReuseIdentifier:(id)identifier;
 - (id)_descriptionCell;
 - (id)_headerCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_actionButtonPressed:(id)a3;
-- (void)_doneButtonPressed:(id)a3;
-- (void)setShowsDoneButton:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_actionButtonPressed:(id)pressed;
+- (void)_doneButtonPressed:(id)pressed;
+- (void)setShowsDoneButton:(BOOL)button;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CertInfoTrustSummaryController
 
-- (CertInfoTrustSummaryController)initWithTrustDescription:(id)a3
+- (CertInfoTrustSummaryController)initWithTrustDescription:(id)description
 {
-  v6 = a3;
-  if (!v6)
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
     [(CertInfoTrustSummaryController *)a2 initWithTrustDescription:?];
   }
@@ -28,25 +28,25 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_description, a3);
+    objc_storeStrong(&v7->_description, description);
     v9 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
     v10 = [v9 localizedStringForKey:@"CERTIFICATE" value:&stru_28561D260 table:@"CertInfo"];
-    v11 = [(CertInfoTrustSummaryController *)v8 navigationItem];
-    [v11 setTitle:v10];
+    navigationItem = [(CertInfoTrustSummaryController *)v8 navigationItem];
+    [navigationItem setTitle:v10];
   }
 
   return v8;
 }
 
-- (void)setShowsDoneButton:(BOOL)a3
+- (void)setShowsDoneButton:(BOOL)button
 {
-  v4 = *(self + 1080) & 0xFE | a3;
-  *(self + 1080) = *(self + 1080) & 0xFE | a3;
+  v4 = *(self + 1080) & 0xFE | button;
+  *(self + 1080) = *(self + 1080) & 0xFE | button;
   if (self->_doneButton)
   {
-    v5 = [(CertInfoTrustSummaryController *)self navigationItem];
-    v6 = [v5 rightBarButtonItem];
-    v7 = v6 != self->_doneButton;
+    navigationItem = [(CertInfoTrustSummaryController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    v7 = rightBarButtonItem != self->_doneButton;
 
     v4 = *(self + 1080);
     if ((v4 & 1) == 0)
@@ -87,50 +87,50 @@ LABEL_8:
 
   doneButton = 0;
 LABEL_10:
-  v11 = [(CertInfoTrustSummaryController *)self navigationItem];
-  [v11 setRightBarButtonItem:doneButton];
+  navigationItem2 = [(CertInfoTrustSummaryController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:doneButton];
 }
 
-- (void)_doneButtonPressed:(id)a3
+- (void)_doneButtonPressed:(id)pressed
 {
-  v4 = [(CertInfoTrustSummaryController *)self delegate];
+  delegate = [(CertInfoTrustSummaryController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CertInfoTrustSummaryController *)self delegate];
-    [v6 trustSummaryControllerDidFinish:self];
+    delegate2 = [(CertInfoTrustSummaryController *)self delegate];
+    [delegate2 trustSummaryControllerDidFinish:self];
   }
 }
 
-- (void)_actionButtonPressed:(id)a3
+- (void)_actionButtonPressed:(id)pressed
 {
-  v4 = [(CertInfoTrustSummaryController *)self delegate];
+  delegate = [(CertInfoTrustSummaryController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CertInfoTrustSummaryController *)self delegate];
-    [v6 trustSummaryControllerPerformAction:self];
+    delegate2 = [(CertInfoTrustSummaryController *)self delegate];
+    [delegate2 trustSummaryControllerPerformAction:self];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row] > 2)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row] > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = *sOrderedCellIdentifiers_0[[v7 row]];
+    v8 = *sOrderedCellIdentifiers_0[[pathCopy row]];
   }
 
   v9 = v8;
-  v10 = [v6 dequeueReusableCellWithIdentifier:v9];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
   if (!v10)
   {
     v10 = [(CertInfoTrustSummaryController *)self _cellForReuseIdentifier:v9];
@@ -139,24 +139,24 @@ LABEL_10:
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  if ([v11 row] > 2)
+  pathCopy = path;
+  if ([pathCopy row] > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = *sOrderedCellIdentifiers_0[[v11 row]];
+    v5 = *sOrderedCellIdentifiers_0[[pathCopy row]];
   }
 
   v6 = v5;
   if ([v6 isEqualToString:@"kCertInfoTrustSummaryMoreDetailsIdentifier"])
   {
-    v7 = [(CertInfoTrustDescription *)self->_description certificateCount];
-    if (v7 >= 2)
+    certificateCount = [(CertInfoTrustDescription *)self->_description certificateCount];
+    if (certificateCount >= 2)
     {
       v8 = [[CertInfoCertificateListController alloc] initWithTrustDescription:self->_description];
       if (!v8)
@@ -165,13 +165,13 @@ LABEL_10:
       }
 
 LABEL_10:
-      v10 = [(CertInfoTrustSummaryController *)self navigationController];
-      [v10 pushViewController:v8 animated:1];
+      navigationController = [(CertInfoTrustSummaryController *)self navigationController];
+      [navigationController pushViewController:v8 animated:1];
 
       goto LABEL_11;
     }
 
-    if (v7 == 1)
+    if (certificateCount == 1)
     {
       v9 = [(CertInfoTrustDescription *)self->_description certificatePropertiesAtIndex:0];
       v8 = [[CertInfoCertificateDetailsController alloc] initWithCertificateProperties:v9];
@@ -186,28 +186,28 @@ LABEL_10:
 LABEL_11:
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 rowHeight];
+  pathCopy = path;
+  [view rowHeight];
   v8 = v7;
-  if ([v6 row] > 2)
+  if ([pathCopy row] > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = *sOrderedCellIdentifiers_0[[v6 row]];
+    v9 = *sOrderedCellIdentifiers_0[[pathCopy row]];
   }
 
   v10 = v9;
   if ([v10 isEqualToString:@"kCertInfoTrustSummaryHeaderIdentifier"])
   {
-    v11 = [(CertInfoTrustSummaryController *)self _headerCell];
+    _headerCell = [(CertInfoTrustSummaryController *)self _headerCell];
 LABEL_8:
-    v12 = v11;
-    [v11 rowHeight];
+    v12 = _headerCell;
+    [_headerCell rowHeight];
     v8 = v13;
 
     goto LABEL_9;
@@ -215,7 +215,7 @@ LABEL_8:
 
   if ([v10 isEqualToString:@"kCertInfoTrustSummaryDescriptionIdentifier"])
   {
-    v11 = [(CertInfoTrustSummaryController *)self _descriptionCell];
+    _headerCell = [(CertInfoTrustSummaryController *)self _descriptionCell];
     goto LABEL_8;
   }
 
@@ -224,30 +224,30 @@ LABEL_9:
   return v8;
 }
 
-- (id)_cellForReuseIdentifier:(id)a3
+- (id)_cellForReuseIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"kCertInfoTrustSummaryHeaderIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"kCertInfoTrustSummaryHeaderIdentifier"])
   {
-    v5 = [(CertInfoTrustSummaryController *)self _headerCell];
+    _headerCell = [(CertInfoTrustSummaryController *)self _headerCell];
 LABEL_5:
-    v6 = v5;
+    v6 = _headerCell;
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"kCertInfoTrustSummaryDescriptionIdentifier"])
+  if ([identifierCopy isEqualToString:@"kCertInfoTrustSummaryDescriptionIdentifier"])
   {
-    v5 = [(CertInfoTrustSummaryController *)self _descriptionCell];
+    _headerCell = [(CertInfoTrustSummaryController *)self _descriptionCell];
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"kCertInfoTrustSummaryMoreDetailsIdentifier"])
+  if ([identifierCopy isEqualToString:@"kCertInfoTrustSummaryMoreDetailsIdentifier"])
   {
-    v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:v4];
-    v8 = [v6 textLabel];
+    v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:identifierCopy];
+    textLabel = [v6 textLabel];
     v9 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
     v10 = [v9 localizedStringForKey:@"MORE_DETAILS" value:&stru_28561D260 table:@"CertInfo"];
-    [v8 setText:v10];
+    [textLabel setText:v10];
 
     [v6 setAccessoryType:1];
   }
@@ -268,17 +268,17 @@ LABEL_6:
   if (!headerCell)
   {
     v4 = [[_CertInfoTrustSummaryHeaderCell alloc] initWithStyle:0 reuseIdentifier:@"kCertInfoTrustSummaryHeaderIdentifier"];
-    v5 = [(CertInfoTrustDescription *)self->_description summaryTitle];
-    [(_CertInfoTrustSummaryHeaderCell *)v4 setTrustTitle:v5];
+    summaryTitle = [(CertInfoTrustDescription *)self->_description summaryTitle];
+    [(_CertInfoTrustSummaryHeaderCell *)v4 setTrustTitle:summaryTitle];
 
-    v6 = [(CertInfoTrustDescription *)self->_description summarySubtitle];
-    [(_CertInfoTrustSummaryHeaderCell *)v4 setTrustSubtitle:v6];
+    summarySubtitle = [(CertInfoTrustDescription *)self->_description summarySubtitle];
+    [(_CertInfoTrustSummaryHeaderCell *)v4 setTrustSubtitle:summarySubtitle];
 
     [(_CertInfoTrustSummaryHeaderCell *)v4 setTrusted:[(CertInfoTrustDescription *)self->_description isTrusted]];
     [(_CertInfoTrustSummaryHeaderCell *)v4 setExpired:0];
     [(_CertInfoTrustSummaryHeaderCell *)v4 setSelectionStyle:0];
-    v7 = [(_CertInfoTrustSummaryHeaderCell *)v4 actionButton];
-    [v7 addTarget:self action:sel__actionButtonPressed_ forControlEvents:64];
+    actionButton = [(_CertInfoTrustSummaryHeaderCell *)v4 actionButton];
+    [actionButton addTarget:self action:sel__actionButtonPressed_ forControlEvents:64];
     v8 = self->_headerCell;
     self->_headerCell = &v4->super;
 
@@ -294,8 +294,8 @@ LABEL_6:
   if (!descriptionCell)
   {
     v4 = [[CertInfoCertificateSummaryDescriptionCell alloc] initWithStyle:0 reuseIdentifier:@"kCertInfoTrustSummaryDescriptionIdentifier"];
-    v5 = [(CertInfoTrustDescription *)self->_description summaryDescriptionItems];
-    [(CertInfoCertificateSummaryDescriptionCell *)v4 setLabelsAndValues:v5];
+    summaryDescriptionItems = [(CertInfoTrustDescription *)self->_description summaryDescriptionItems];
+    [(CertInfoCertificateSummaryDescriptionCell *)v4 setLabelsAndValues:summaryDescriptionItems];
 
     [(CertInfoCertificateSummaryDescriptionCell *)v4 setSelectionStyle:0];
     v6 = self->_descriptionCell;

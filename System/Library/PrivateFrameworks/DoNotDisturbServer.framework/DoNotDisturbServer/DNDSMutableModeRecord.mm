@@ -1,84 +1,84 @@
 @interface DNDSMutableModeRecord
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setModeIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSymbolDescriptorImageName:(id)a3;
-- (void)setSymbolDescriptorTintColorNames:(id)a3;
-- (void)setSymbolImageName:(id)a3;
-- (void)setTintColorName:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setModeIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setSymbolDescriptorImageName:(id)name;
+- (void)setSymbolDescriptorTintColorNames:(id)names;
+- (void)setSymbolImageName:(id)name;
+- (void)setTintColorName:(id)name;
 @end
 
 @implementation DNDSMutableModeRecord
 
-- (void)setSymbolImageName:(id)a3
+- (void)setSymbolImageName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   symbolImageName = self->super._symbolImageName;
   self->super._symbolImageName = v4;
 
   MEMORY[0x2821F96F8](v4, symbolImageName);
 }
 
-- (void)setTintColorName:(id)a3
+- (void)setTintColorName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   tintColorName = self->super._tintColorName;
   self->super._tintColorName = v4;
 
   MEMORY[0x2821F96F8](v4, tintColorName);
 }
 
-- (void)setSymbolDescriptorTintColorNames:(id)a3
+- (void)setSymbolDescriptorTintColorNames:(id)names
 {
-  v4 = [a3 copy];
+  v4 = [names copy];
   symbolDescriptorTintColorNames = self->super._symbolDescriptorTintColorNames;
   self->super._symbolDescriptorTintColorNames = v4;
 
   MEMORY[0x2821F96F8](v4, symbolDescriptorTintColorNames);
 }
 
-- (void)setSymbolDescriptorImageName:(id)a3
+- (void)setSymbolDescriptorImageName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   symbolDescriptorImageName = self->super._symbolDescriptorImageName;
   self->super._symbolDescriptorImageName = v4;
 
   MEMORY[0x2821F96F8](v4, symbolDescriptorImageName);
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->super._name;
   self->super._name = v4;
 
   MEMORY[0x2821F96F8](v4, name);
 }
 
-- (void)setModeIdentifier:(id)a3
+- (void)setModeIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   modeIdentifier = self->super._modeIdentifier;
   self->super._modeIdentifier = v4;
 
   MEMORY[0x2821F96F8](v4, modeIdentifier);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v17 = [DNDSModeRecord allocWithZone:a3];
-  v16 = [(DNDSModeRecord *)self symbolImageName];
-  v4 = [(DNDSModeRecord *)self tintColorName];
-  v5 = [(DNDSModeRecord *)self symbolDescriptorTintStyle];
-  v6 = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
-  v7 = [(DNDSModeRecord *)self symbolDescriptorImageName];
-  v8 = [(DNDSModeRecord *)self name];
-  v9 = [(DNDSModeRecord *)self modeIdentifier];
-  v10 = [(DNDSModeRecord *)self semanticType];
-  v11 = [(DNDSModeRecord *)self visibility];
-  v12 = [(DNDSModeRecord *)self identifier];
-  v13 = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
-  v14 = [(DNDSModeRecord *)v17 _initWithSymbolImageName:v16 tintColorName:v4 symbolDescriptorTintStyle:v5 symbolDescriptorTintColorNames:v6 symbolDescriptorImageName:v7 name:v8 modeIdentifier:v9 semanticType:v10 visibility:v11 identifier:v12 placeholderExcludedPlatforms:v13];
+  v17 = [DNDSModeRecord allocWithZone:zone];
+  symbolImageName = [(DNDSModeRecord *)self symbolImageName];
+  tintColorName = [(DNDSModeRecord *)self tintColorName];
+  symbolDescriptorTintStyle = [(DNDSModeRecord *)self symbolDescriptorTintStyle];
+  symbolDescriptorTintColorNames = [(DNDSModeRecord *)self symbolDescriptorTintColorNames];
+  symbolDescriptorImageName = [(DNDSModeRecord *)self symbolDescriptorImageName];
+  name = [(DNDSModeRecord *)self name];
+  modeIdentifier = [(DNDSModeRecord *)self modeIdentifier];
+  semanticType = [(DNDSModeRecord *)self semanticType];
+  visibility = [(DNDSModeRecord *)self visibility];
+  identifier = [(DNDSModeRecord *)self identifier];
+  placeholderExcludedPlatforms = [(DNDSModeRecord *)self placeholderExcludedPlatforms];
+  v14 = [(DNDSModeRecord *)v17 _initWithSymbolImageName:symbolImageName tintColorName:tintColorName symbolDescriptorTintStyle:symbolDescriptorTintStyle symbolDescriptorTintColorNames:symbolDescriptorTintColorNames symbolDescriptorImageName:symbolDescriptorImageName name:name modeIdentifier:modeIdentifier semanticType:semanticType visibility:visibility identifier:identifier placeholderExcludedPlatforms:placeholderExcludedPlatforms];
 
   return v14;
 }

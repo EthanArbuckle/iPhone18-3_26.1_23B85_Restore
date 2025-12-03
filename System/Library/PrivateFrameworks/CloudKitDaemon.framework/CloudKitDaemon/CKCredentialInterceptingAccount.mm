@@ -1,17 +1,17 @@
 @interface CKCredentialInterceptingAccount
-- (BOOL)aa_updateTokensWithProvisioningResponse:(id)a3;
+- (BOOL)aa_updateTokensWithProvisioningResponse:(id)response;
 @end
 
 @implementation CKCredentialInterceptingAccount
 
-- (BOOL)aa_updateTokensWithProvisioningResponse:(id)a3
+- (BOOL)aa_updateTokensWithProvisioningResponse:(id)response
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_2250AB6D8(v3);
+  responseCopy = response;
+  responseCopy2 = response;
+  selfCopy = self;
+  LOBYTE(responseCopy) = sub_2250AB6D8(responseCopy);
 
-  return v3 & 1;
+  return responseCopy & 1;
 }
 
 @end

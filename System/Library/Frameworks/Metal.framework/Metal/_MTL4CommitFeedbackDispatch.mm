@@ -1,8 +1,8 @@
 @interface _MTL4CommitFeedbackDispatch
 - (id).cxx_construct;
-- (void)addFeedbackHandler:(id)a3;
+- (void)addFeedbackHandler:(id)handler;
 - (void)dealloc;
-- (void)executeBlocksWithCommitFeedback:(id)a3;
+- (void)executeBlocksWithCommitFeedback:(id)feedback;
 @end
 
 @implementation _MTL4CommitFeedbackDispatch
@@ -30,9 +30,9 @@
   [(_MTL4CommitFeedbackDispatch *)&v6 dealloc];
 }
 
-- (void)addFeedbackHandler:(id)a3
+- (void)addFeedbackHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v6 = *(self + 2);
   v5 = *(self + 3);
   if (v6 >= v5)
@@ -92,7 +92,7 @@
   *(self + 2) = v7;
 }
 
-- (void)executeBlocksWithCommitFeedback:(id)a3
+- (void)executeBlocksWithCommitFeedback:(id)feedback
 {
   v4 = *(self + 1);
   if (*(self + 2) != v4)
@@ -102,7 +102,7 @@
     do
     {
       v8 = *(v4 + 8 * v6);
-      (v8)[2](v8, a3);
+      (v8)[2](v8, feedback);
       _Block_release(v8);
       v6 = v7;
       v4 = *(self + 1);

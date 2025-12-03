@@ -1,6 +1,6 @@
 @interface HistoryRAPUserDirectionRequest
-+ (void)loadAllRequestsFromStorage:(id)a3 completion:(id)a4;
-- (HistoryRAPUserDirectionRequest)initWithHistoryItem:(id)a3 recording:(id)a4;
++ (void)loadAllRequestsFromStorage:(id)storage completion:(id)completion;
+- (HistoryRAPUserDirectionRequest)initWithHistoryItem:(id)item recording:(id)recording;
 - (int)requestedTransportType;
 @end
 
@@ -15,8 +15,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [(RAPDirectionsRecording *)recording directionsRequests];
-    v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    directionsRequests = [(RAPDirectionsRecording *)recording directionsRequests];
+    v5 = [directionsRequests countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v5)
     {
       v6 = v5;
@@ -27,23 +27,23 @@
         {
           if (*v21 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(directionsRequests);
           }
 
           v9 = *(*(&v20 + 1) + 8 * i);
-          v10 = [v9 routeAttributes];
-          v11 = [v10 hasMainTransportType];
+          routeAttributes = [v9 routeAttributes];
+          hasMainTransportType = [routeAttributes hasMainTransportType];
 
-          if (v11)
+          if (hasMainTransportType)
           {
-            v18 = [v9 routeAttributes];
-            v17 = [v18 mainTransportType];
+            routeAttributes2 = [v9 routeAttributes];
+            mainTransportType = [routeAttributes2 mainTransportType];
 
             goto LABEL_29;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v6 = [directionsRequests countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v6)
         {
           continue;
@@ -54,9 +54,9 @@
     }
   }
 
-  v4 = [(HistoryEntryRecentsItem *)self->_historyItem historyEntry];
-  v12 = [v4 transportType];
-  if (v12 == 5)
+  directionsRequests = [(HistoryEntryRecentsItem *)self->_historyItem historyEntry];
+  transportType = [directionsRequests transportType];
+  if (transportType == 5)
   {
     v13 = 3;
   }
@@ -66,7 +66,7 @@
     v13 = 4;
   }
 
-  if (v12 == 4)
+  if (transportType == 4)
   {
     v14 = 6;
   }
@@ -76,7 +76,7 @@
     v14 = v13;
   }
 
-  if (v12 == 3)
+  if (transportType == 3)
   {
     v15 = 1;
   }
@@ -86,7 +86,7 @@
     v15 = v14;
   }
 
-  if (v12 == 2)
+  if (transportType == 2)
   {
     v16 = 2;
   }
@@ -96,56 +96,56 @@
     v16 = 4;
   }
 
-  if (v12 == 1)
+  if (transportType == 1)
   {
     v16 = 0;
   }
 
-  if (v12 <= 2)
+  if (transportType <= 2)
   {
-    v17 = v16;
+    mainTransportType = v16;
   }
 
   else
   {
-    v17 = v15;
+    mainTransportType = v15;
   }
 
 LABEL_29:
 
-  return v17;
+  return mainTransportType;
 }
 
-- (HistoryRAPUserDirectionRequest)initWithHistoryItem:(id)a3 recording:(id)a4
+- (HistoryRAPUserDirectionRequest)initWithHistoryItem:(id)item recording:(id)recording
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  recordingCopy = recording;
   v12.receiver = self;
   v12.super_class = HistoryRAPUserDirectionRequest;
   v8 = [(HistoryRAPUserDirectionRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[HistoryEntryRecentsItem alloc] initWithHistoryEntry:v6];
+    v9 = [[HistoryEntryRecentsItem alloc] initWithHistoryEntry:itemCopy];
     historyItem = v8->_historyItem;
     v8->_historyItem = v9;
 
-    objc_storeStrong(&v8->_recording, a4);
+    objc_storeStrong(&v8->_recording, recording);
   }
 
   return v8;
 }
 
-+ (void)loadAllRequestsFromStorage:(id)a3 completion:(id)a4
++ (void)loadAllRequestsFromStorage:(id)storage completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[RAPStorageHistoryContainer directionsRecordingStorage];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100CC4FEC;
   v8[3] = &unk_101650598;
-  v9 = v5;
-  v10 = a1;
-  v7 = v5;
+  v9 = completionCopy;
+  selfCopy = self;
+  v7 = completionCopy;
   [v6 loadAllRecordingsWithConcurrentBlock:v8];
 }
 

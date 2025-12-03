@@ -1,37 +1,37 @@
 @interface PPSpotlightWritebackDissector
-+ (BOOL)bundleIdIsAllowed:(id)a3;
++ (BOOL)bundleIdIsAllowed:(id)allowed;
 + (id)sharedCache;
-- (BOOL)consumeContentFromBundleId:(id)a3 extractions:(id)a4 spotlightIdentifier:(id)a5 fileProtectionType:(id)a6 shouldContinueBlock:(id)a7;
+- (BOOL)consumeContentFromBundleId:(id)id extractions:(id)extractions spotlightIdentifier:(id)identifier fileProtectionType:(id)type shouldContinueBlock:(id)block;
 - (PPSpotlightWritebackDissector)init;
-- (PPSpotlightWritebackDissector)initWithNamedEntityStore:(id)a3 topicStore:(id)a4 spotlightIndex:(id)a5 significanceCheckEnabled:(BOOL)a6;
-- (id)spotlightAttributesForBundleId:(id)a3 spotlightIdentifier:(id)a4 extractions:(id)a5 shouldContinueBlock:(id)a6;
-- (void)_getNamedEntityPortraitScores:(id)a3 priorityQueue:(id)a4;
+- (PPSpotlightWritebackDissector)initWithNamedEntityStore:(id)store topicStore:(id)topicStore spotlightIndex:(id)index significanceCheckEnabled:(BOOL)enabled;
+- (id)spotlightAttributesForBundleId:(id)id spotlightIdentifier:(id)identifier extractions:(id)extractions shouldContinueBlock:(id)block;
+- (void)_getNamedEntityPortraitScores:(id)scores priorityQueue:(id)queue;
 @end
 
 @implementation PPSpotlightWritebackDissector
 
-- (id)spotlightAttributesForBundleId:(id)a3 spotlightIdentifier:(id)a4 extractions:(id)a5 shouldContinueBlock:(id)a6
+- (id)spotlightAttributesForBundleId:(id)id spotlightIdentifier:(id)identifier extractions:(id)extractions shouldContinueBlock:(id)block
 {
   v101 = *MEMORY[0x277D85DE8];
-  v64 = a3;
-  v63 = a4;
-  v9 = a5;
-  v70 = a6;
+  idCopy = id;
+  identifierCopy = identifier;
+  extractionsCopy = extractions;
+  blockCopy = block;
   v10 = +[PPConfiguration sharedInstance];
-  v68 = [v10 useRawNEExtractionScores];
+  useRawNEExtractionScores = [v10 useRawNEExtractionScores];
 
   v11 = +[PPConfiguration sharedInstance];
-  v12 = [v11 maxNEExtractions];
+  maxNEExtractions = [v11 maxNEExtractions];
 
   v13 = objc_opt_new();
   v65 = objc_opt_new();
-  v14 = [[PPEvictingMinPriorityQueue alloc] initWithCapacity:v12];
+  v14 = [[PPEvictingMinPriorityQueue alloc] initWithCapacity:maxNEExtractions];
   v15 = objc_opt_new();
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  obj = v9;
+  obj = extractionsCopy;
   v69 = [obj countByEnumeratingWithState:&v87 objects:v100 count:16];
   if (!v69)
   {
@@ -51,7 +51,7 @@
 
       v17 = *(*(&v87 + 1) + 8 * v16);
       v18 = objc_autoreleasePoolPush();
-      if ((v70[2]() & 1) == 0)
+      if ((blockCopy[2]() & 1) == 0)
       {
         v57 = pp_default_log_handle();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
@@ -71,8 +71,8 @@
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v19 = [v17 topics];
-      v20 = [v19 countByEnumeratingWithState:&v83 objects:v99 count:16];
+      topics = [v17 topics];
+      v20 = [topics countByEnumeratingWithState:&v83 objects:v99 count:16];
       if (v20)
       {
         v21 = v20;
@@ -83,28 +83,28 @@
           {
             if (*v84 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(topics);
             }
 
-            v24 = [*(*(&v83 + 1) + 8 * i) item];
-            v25 = [v24 topicIdentifier];
-            [v13 addQidString:v25];
+            item = [*(*(&v83 + 1) + 8 * i) item];
+            topicIdentifier = [item topicIdentifier];
+            [v13 addQidString:topicIdentifier];
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v83 objects:v99 count:16];
+          v21 = [topics countByEnumeratingWithState:&v83 objects:v99 count:16];
         }
 
         while (v21);
       }
 
-      if (!v68)
+      if (!useRawNEExtractionScores)
       {
         v77 = 0u;
         v78 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v26 = [v17 entities];
-        v34 = [v26 countByEnumeratingWithState:&v75 objects:v97 count:16];
+        entities = [v17 entities];
+        v34 = [entities countByEnumeratingWithState:&v75 objects:v97 count:16];
         if (v34)
         {
           v35 = v34;
@@ -115,19 +115,19 @@
             {
               if (*v76 != v36)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(entities);
               }
 
               v38 = *(*(&v75 + 1) + 8 * j);
               v39 = objc_autoreleasePoolPush();
-              v40 = [v38 item];
-              v41 = [v40 name];
-              [v15 addObject:v41];
+              item2 = [v38 item];
+              name = [item2 name];
+              [v15 addObject:name];
 
               objc_autoreleasePoolPop(v39);
             }
 
-            v35 = [v26 countByEnumeratingWithState:&v75 objects:v97 count:16];
+            v35 = [entities countByEnumeratingWithState:&v75 objects:v97 count:16];
           }
 
           while (v35);
@@ -142,8 +142,8 @@ LABEL_30:
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v26 = [v17 entities];
-      v27 = [v26 countByEnumeratingWithState:&v79 objects:v98 count:16];
+      entities = [v17 entities];
+      v27 = [entities countByEnumeratingWithState:&v79 objects:v98 count:16];
       if (!v27)
       {
         goto LABEL_30;
@@ -158,7 +158,7 @@ LABEL_30:
         {
           if (*v80 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(entities);
           }
 
           v32 = *(*(&v79 + 1) + 8 * k);
@@ -167,7 +167,7 @@ LABEL_30:
           objc_autoreleasePoolPop(v33);
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v79 objects:v98 count:16];
+        v28 = [entities countByEnumeratingWithState:&v79 objects:v98 count:16];
       }
 
       while (v28);
@@ -189,12 +189,12 @@ LABEL_31:
 
 LABEL_33:
 
-  if ((v68 & 1) == 0)
+  if ((useRawNEExtractionScores & 1) == 0)
   {
     [(PPSpotlightWritebackDissector *)self _getNamedEntityPortraitScores:v15 priorityQueue:v14];
   }
 
-  v42 = v70[2]();
+  v42 = blockCopy[2]();
   v43 = pp_default_log_handle();
   v44 = v43;
   if (v42)
@@ -207,14 +207,14 @@ LABEL_33:
       _os_log_debug_impl(&dword_23224A000, v44, OS_LOG_TYPE_DEBUG, "PPSpotlightWritebackDissector: namedEntityPriorityQueue contains %f items", buf, 0xCu);
     }
 
-    v45 = [(PPEvictingMinPriorityQueue *)v14 extractSortedMutableArray];
+    extractSortedMutableArray = [(PPEvictingMinPriorityQueue *)v14 extractSortedMutableArray];
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __116__PPSpotlightWritebackDissector_spotlightAttributesForBundleId_spotlightIdentifier_extractions_shouldContinueBlock___block_invoke;
     v73[3] = &unk_278978540;
     v46 = v65;
     v74 = v46;
-    [v45 enumerateObjectsUsingBlock:v73];
+    [extractSortedMutableArray enumerateObjectsUsingBlock:v73];
 
     v47 = pp_default_log_handle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -225,31 +225,31 @@ LABEL_33:
       _os_log_impl(&dword_23224A000, v47, OS_LOG_TYPE_DEFAULT, "PPSpotlightWritebackDissector: namedEntityScores contains %tu items", buf, 0xCu);
     }
 
-    if (v70[2]())
+    if (blockCopy[2]())
     {
       [(PPUniversalSearchSpotlightIndexScorer *)self->_scorer computeSpotlightIndexScoreFromPortraitExtractions:obj];
       v50 = v49;
       v51 = pp_default_log_handle();
-      v53 = v63;
-      v52 = v64;
+      v53 = identifierCopy;
+      v52 = idCopy;
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218498;
         v92 = v50;
         v93 = 2112;
-        v94 = v63;
+        v94 = identifierCopy;
         v95 = 2112;
-        v96 = v64;
+        v96 = idCopy;
         _os_log_debug_impl(&dword_23224A000, v51, OS_LOG_TYPE_DEBUG, "PPSpotlightWritebackDissector: spotlightIndexScore of %g for CSSI item %@ from %@", buf, 0x20u);
       }
 
       v54 = objc_opt_new();
       [v54 setStaticScore:v50];
-      v55 = [v13 encodeAsData];
-      [v54 setFeatureVector:v55];
+      encodeAsData = [v13 encodeAsData];
+      [v54 setFeatureVector:encodeAsData];
 
-      v56 = [MEMORY[0x277D3A4F0] featureVectorVersion];
-      [v54 setFeatureVectorVersion:v56];
+      featureVectorVersion = [MEMORY[0x277D3A4F0] featureVectorVersion];
+      [v54 setFeatureVectorVersion:featureVectorVersion];
 
       [v54 setNamedEntityScores:v46];
     }
@@ -257,8 +257,8 @@ LABEL_33:
     else
     {
       v60 = pp_default_log_handle();
-      v53 = v63;
-      v52 = v64;
+      v53 = identifierCopy;
+      v52 = idCopy;
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -280,8 +280,8 @@ LABEL_33:
 LABEL_47:
 
     v54 = 0;
-    v53 = v63;
-    v52 = v64;
+    v53 = identifierCopy;
+    v52 = idCopy;
   }
 
   v58 = *MEMORY[0x277D85DE8];
@@ -310,15 +310,15 @@ void __116__PPSpotlightWritebackDissector_spotlightAttributesForBundleId_spotlig
   }
 }
 
-- (void)_getNamedEntityPortraitScores:(id)a3 priorityQueue:(id)a4
+- (void)_getNamedEntityPortraitScores:(id)scores priorityQueue:(id)queue
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  scoresCopy = scores;
+  queueCopy = queue;
+  if ([scoresCopy count])
   {
     v8 = +[PPConfiguration sharedInstance];
-    v9 = [v8 storeNewExtractions];
+    storeNewExtractions = [v8 storeNewExtractions];
 
     v10 = +[PPConfiguration sharedInstance];
     [v10 scoreThreshold];
@@ -331,15 +331,15 @@ void __116__PPSpotlightWritebackDissector_spotlightAttributesForBundleId_spotlig
     v22 = 3221225472;
     v23 = __77__PPSpotlightWritebackDissector__getNamedEntityPortraitScores_priorityQueue___block_invoke_2;
     v24 = &unk_278971780;
-    v25 = v6;
+    v25 = scoresCopy;
     v26 = v14;
     v16 = v13;
-    LOBYTE(v32) = v9;
+    LOBYTE(v32) = storeNewExtractions;
     v27 = v16;
     v30 = &__block_literal_global_124;
     v31 = v12;
-    v28 = v7;
-    v29 = self;
+    v28 = queueCopy;
+    selfCopy = self;
     v17 = v14;
     [v15 runWithLockAcquired:&v21];
 
@@ -523,42 +523,42 @@ id __77__PPSpotlightWritebackDissector__getNamedEntityPortraitScores_priorityQue
   return v7;
 }
 
-- (BOOL)consumeContentFromBundleId:(id)a3 extractions:(id)a4 spotlightIdentifier:(id)a5 fileProtectionType:(id)a6 shouldContinueBlock:(id)a7
+- (BOOL)consumeContentFromBundleId:(id)id extractions:(id)extractions spotlightIdentifier:(id)identifier fileProtectionType:(id)type shouldContinueBlock:(id)block
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (+[PPSpotlightWritebackDissector bundleIdIsAllowed:](PPSpotlightWritebackDissector, "bundleIdIsAllowed:", v13) && (![v13 isEqualToString:*MEMORY[0x277D3A648]] || objc_msgSend(MEMORY[0x277D42598], "lockState") != 1))
+  idCopy = id;
+  extractionsCopy = extractions;
+  identifierCopy = identifier;
+  typeCopy = type;
+  blockCopy = block;
+  if (+[PPSpotlightWritebackDissector bundleIdIsAllowed:](PPSpotlightWritebackDissector, "bundleIdIsAllowed:", idCopy) && (![idCopy isEqualToString:*MEMORY[0x277D3A648]] || objc_msgSend(MEMORY[0x277D42598], "lockState") != 1))
   {
     v33 = a2;
-    v34 = v14;
-    v35 = v16;
-    v18 = [(PPSpotlightWritebackDissector *)self spotlightAttributesForBundleId:v13 spotlightIdentifier:v15 extractions:v14 shouldContinueBlock:v17];
+    v34 = extractionsCopy;
+    v35 = typeCopy;
+    v18 = [(PPSpotlightWritebackDissector *)self spotlightAttributesForBundleId:idCopy spotlightIdentifier:identifierCopy extractions:extractionsCopy shouldContinueBlock:blockCopy];
     v19 = objc_opt_new();
     v20 = MEMORY[0x277CCABB0];
     [v18 staticScore];
     v21 = [v20 numberWithDouble:?];
     [v19 setPortraitStaticScore:v21];
 
-    v22 = [v18 featureVector];
-    [v19 setPortraitFeatureVector:v22];
+    featureVector = [v18 featureVector];
+    [v19 setPortraitFeatureVector:featureVector];
 
-    v23 = [v18 featureVectorVersion];
-    [v19 setPortraitFeatureVectorVersion:v23];
+    featureVectorVersion = [v18 featureVectorVersion];
+    [v19 setPortraitFeatureVectorVersion:featureVectorVersion];
 
-    v24 = [v18 namedEntityScores];
-    [v19 setPortraitNamedEntities:v24];
+    namedEntityScores = [v18 namedEntityScores];
+    [v19 setPortraitNamedEntities:namedEntityScores];
 
-    v25 = [objc_alloc(MEMORY[0x277CC34B0]) initWithUniqueIdentifier:v15 domainIdentifier:0 attributeSet:v19];
+    v25 = [objc_alloc(MEMORY[0x277CC34B0]) initWithUniqueIdentifier:identifierCopy domainIdentifier:0 attributeSet:v19];
     [v25 setIsUpdate:1];
     v26 = self->_spotlightIndex;
     if (!v26)
     {
-      v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"PersonalizationPortrait-harvestQueueWriteback-%@", v13];
-      v26 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:v27 protectionClass:v35 bundleIdentifier:v13];
+      idCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"PersonalizationPortrait-harvestQueueWriteback-%@", idCopy];
+      v26 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:idCopy protectionClass:v35 bundleIdentifier:idCopy];
     }
 
     v39[0] = v25;
@@ -580,8 +580,8 @@ id __77__PPSpotlightWritebackDissector__getNamedEntityPortraitScores_priorityQue
     _Block_object_dispose(v37, 8);
     [(PPSearchableIndex *)v26 indexSearchableItems:v28 completionHandler:v30];
 
-    v14 = v34;
-    v16 = v35;
+    extractionsCopy = v34;
+    typeCopy = v35;
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -621,23 +621,23 @@ LABEL_6:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (PPSpotlightWritebackDissector)initWithNamedEntityStore:(id)a3 topicStore:(id)a4 spotlightIndex:(id)a5 significanceCheckEnabled:(BOOL)a6
+- (PPSpotlightWritebackDissector)initWithNamedEntityStore:(id)store topicStore:(id)topicStore spotlightIndex:(id)index significanceCheckEnabled:(BOOL)enabled
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  storeCopy = store;
+  topicStoreCopy = topicStore;
+  indexCopy = index;
   v18.receiver = self;
   v18.super_class = PPSpotlightWritebackDissector;
   v14 = [(PPSpotlightWritebackDissector *)&v18 init];
   if (v14)
   {
-    v15 = [[PPUniversalSearchSpotlightIndexScorer alloc] initWithLocalTopicStore:v12];
+    v15 = [[PPUniversalSearchSpotlightIndexScorer alloc] initWithLocalTopicStore:topicStoreCopy];
     scorer = v14->_scorer;
     v14->_scorer = v15;
 
-    objc_storeStrong(&v14->_namedEntityStore, a3);
-    objc_storeStrong(&v14->_spotlightIndex, a5);
-    v14->_significanceCheckEnabled = a6;
+    objc_storeStrong(&v14->_namedEntityStore, store);
+    objc_storeStrong(&v14->_spotlightIndex, index);
+    v14->_significanceCheckEnabled = enabled;
   }
 
   return v14;
@@ -652,13 +652,13 @@ LABEL_6:
   return v5;
 }
 
-+ (BOOL)bundleIdIsAllowed:(id)a3
++ (BOOL)bundleIdIsAllowed:(id)allowed
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  allowedCopy = allowed;
+  v4 = allowedCopy;
+  if (allowedCopy)
   {
-    if ([v3 isEqualToString:*MEMORY[0x277D3A658]])
+    if ([allowedCopy isEqualToString:*MEMORY[0x277D3A658]])
     {
       v5 = 1;
     }

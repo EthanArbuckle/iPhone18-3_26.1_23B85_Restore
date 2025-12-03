@@ -34,16 +34,16 @@
   v5 = layout;
   v13.receiver = self;
   v13.super_class = PHASEChannelMixerDefinition;
-  v6 = [(PHASEMixerDefinition *)&v13 initInternal];
-  if (!v6)
+  initInternal = [(PHASEMixerDefinition *)&v13 initInternal];
+  if (!initInternal)
   {
 LABEL_6:
     v10 = 0;
     goto LABEL_7;
   }
 
-  v7 = [(AVAudioChannelLayout *)v5 layout];
-  v9 = Phase::ChannelLayout::IsLayoutSupported(v7, v8);
+  layout = [(AVAudioChannelLayout *)v5 layout];
+  v9 = Phase::ChannelLayout::IsLayoutSupported(layout, v8);
   if ((v9 & 1) == 0)
   {
     v11 = **(Phase::Logger::GetInstance(v9) + 448);
@@ -59,8 +59,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  objc_storeStrong(v6 + 4, layout);
-  v10 = v6;
+  objc_storeStrong(initInternal + 4, layout);
+  v10 = initInternal;
 LABEL_7:
 
   return v10;

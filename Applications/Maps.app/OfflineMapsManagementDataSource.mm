@@ -1,13 +1,13 @@
 @interface OfflineMapsManagementDataSource
-- (BOOL)_canItemIdentifierBeSelected:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (OfflineMapsManagementDataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4;
+- (BOOL)_canItemIdentifierBeSelected:(id)selected;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (OfflineMapsManagementDataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location;
 - (OfflineMapsManagementDataSourceDelegate)offlineDelegate;
 - (id)_automaticUpdatesModel;
-- (id)_createAutomaticUpdatesModel:(BOOL)a3;
-- (id)_createForceOfflineModel:(BOOL)a3;
-- (id)_createSyncToWatchModel:(BOOL)a3;
+- (id)_createAutomaticUpdatesModel:(BOOL)model;
+- (id)_createForceOfflineModel:(BOOL)model;
+- (id)_createSyncToWatchModel:(BOOL)model;
 - (id)_disabledAutomaticUpdatesModel;
 - (id)_disabledForceOfflineModel;
 - (id)_disabledSyncToWatchModel;
@@ -17,25 +17,25 @@
 - (id)_forceOfflineModel;
 - (id)_optimizeStorageModel;
 - (id)_syncToWatchModel;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)sectionForSectionIndex:(unint64_t)a3;
-- (id)swipeActionsConfigurationForIndexPath:(id)a3;
-- (void)_fetchExpiredSubscriptionsAnimated:(BOOL)a3;
-- (void)_fetchLastUpdatedDateAnimated:(BOOL)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)sectionForSectionIndex:(unint64_t)index;
+- (id)swipeActionsConfigurationForIndexPath:(id)path;
+- (void)_fetchExpiredSubscriptionsAnimated:(BOOL)animated;
+- (void)_fetchLastUpdatedDateAnimated:(BOOL)animated;
 - (void)_showPairedDeviceDiskSpaceDialogIfNeeded;
 - (void)_updateAutoUpdateRowSubtitle;
-- (void)_updateContentAnimated:(BOOL)a3;
+- (void)_updateContentAnimated:(BOOL)animated;
 - (void)_updateSyncToWatchModel;
 - (void)_updateUpdateAllModels;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)commonInit;
 - (void)dealloc;
-- (void)setActive:(BOOL)a3;
-- (void)subscriptionInfosDidChange:(id)a3;
-- (void)subscriptionsBeingUpdatedDidChange:(BOOL)a3;
-- (void)subscriptionsNeedUpdatingDidChange:(BOOL)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)subscriptionInfosDidChange:(id)change;
+- (void)subscriptionsBeingUpdatedDidChange:(BOOL)change;
+- (void)subscriptionsNeedUpdatingDidChange:(BOOL)change;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation OfflineMapsManagementDataSource
@@ -77,9 +77,9 @@
   return forceOfflineModel;
 }
 
-- (id)_createForceOfflineModel:(BOOL)a3
+- (id)_createForceOfflineModel:(BOOL)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = objc_alloc_init(MapsDebugSwitchTableRow);
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Only Use Offline Maps [cell title]" value:@"localized string not found" table:@"Offline"];
@@ -89,18 +89,18 @@
   v14[1] = 3221225472;
   v14[2] = sub_10086CE24;
   v14[3] = &unk_10162C338;
-  v15 = v3;
+  v15 = modelCopy;
   [(MapsDebugSwitchTableRow *)v4 setGet:v14];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10086CE48;
   v12[3] = &unk_10162C420;
-  v13 = v3;
+  v13 = modelCopy;
   [(MapsDebugSwitchTableRow *)v4 setSet:v12];
-  v7 = [(MapsDebugTableRow *)v4 title];
-  [(MapsDebugSwitchTableRow *)v4 setAccessibilityLabel:v7];
+  title = [(MapsDebugTableRow *)v4 title];
+  [(MapsDebugSwitchTableRow *)v4 setAccessibilityLabel:title];
 
-  [(MapsDebugSwitchTableRow *)v4 setEnabled:v3];
+  [(MapsDebugSwitchTableRow *)v4 setEnabled:modelCopy];
   [(MapsDebugTableRow *)v4 setSelectionAction:0];
   [(MapsDebugTableRow *)v4 setConfigureCollectionViewCellBlock:&stru_10162C440];
   v8 = +[NSBundle mainBundle];
@@ -110,7 +110,7 @@
   v10 = objc_alloc_init(OfflineMapsManagementCellModel);
   [(OfflineMapsManagementCellModel *)v10 setCellType:6];
   [(OfflineMapsManagementCellModel *)v10 setTableRow:v4];
-  [(OfflineMapsManagementCellModel *)v10 setEnabled:v3];
+  [(OfflineMapsManagementCellModel *)v10 setEnabled:modelCopy];
 
   return v10;
 }
@@ -118,22 +118,22 @@
 - (void)_updateSyncToWatchModel
 {
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v9 = [v3 getActivePairedDeviceExcludingAltAccount];
+  getActivePairedDeviceExcludingAltAccount = [v3 getActivePairedDeviceExcludingAltAccount];
 
-  if (v9)
+  if (getActivePairedDeviceExcludingAltAccount)
   {
-    v4 = [v9 valueForProperty:NRDevicePropertyName];
+    tableRow2 = [getActivePairedDeviceExcludingAltAccount valueForProperty:NRDevicePropertyName];
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"Sync with Watch [cell subtitle]" value:@"localized string not found" table:@"Offline"];
-    v7 = [NSString localizedStringWithFormat:v6, v4];
-    v8 = [(OfflineMapsManagementCellModel *)self->_syncToWatchModel tableRow];
-    [v8 setSubtitle:v7];
+    v7 = [NSString localizedStringWithFormat:v6, tableRow2];
+    tableRow = [(OfflineMapsManagementCellModel *)self->_syncToWatchModel tableRow];
+    [tableRow setSubtitle:v7];
   }
 
   else
   {
-    v4 = [(OfflineMapsManagementCellModel *)self->_syncToWatchModel tableRow];
-    [v4 setSubtitle:0];
+    tableRow2 = [(OfflineMapsManagementCellModel *)self->_syncToWatchModel tableRow];
+    [tableRow2 setSubtitle:0];
   }
 }
 
@@ -168,9 +168,9 @@
   return syncToWatchModel;
 }
 
-- (id)_createSyncToWatchModel:(BOOL)a3
+- (id)_createSyncToWatchModel:(BOOL)model
 {
-  v3 = a3;
+  modelCopy = model;
   v5 = objc_alloc_init(OfflineMapsManagementCellModel);
   [(OfflineMapsManagementCellModel *)v5 setCellType:5];
   v6 = objc_alloc_init(MapsDebugSwitchTableRow);
@@ -182,7 +182,7 @@
   v20[1] = 3221225472;
   v20[2] = sub_10086D428;
   v20[3] = &unk_10162C338;
-  v21 = v3;
+  v21 = modelCopy;
   [(MapsDebugSwitchTableRow *)v6 setGet:v20];
   objc_initWeak(&location, v5);
   objc_initWeak(&from, self);
@@ -190,18 +190,18 @@
   v12 = 3221225472;
   v13 = sub_10086D44C;
   v14 = &unk_10162C360;
-  v17 = v3;
+  v17 = modelCopy;
   objc_copyWeak(&v15, &from);
   objc_copyWeak(&v16, &location);
   [(MapsDebugSwitchTableRow *)v6 setSet:&v11];
   v9 = [(MapsDebugTableRow *)v6 title:v11];
   [(MapsDebugSwitchTableRow *)v6 setAccessibilityLabel:v9];
 
-  [(MapsDebugSwitchTableRow *)v6 setEnabled:v3];
+  [(MapsDebugSwitchTableRow *)v6 setEnabled:modelCopy];
   [(MapsDebugTableRow *)v6 setSelectionAction:0];
   [(MapsDebugTableRow *)v6 setConfigureCollectionViewCellBlock:&stru_10162C400];
   [(OfflineMapsManagementCellModel *)v5 setTableRow:v6];
-  [(OfflineMapsManagementCellModel *)v5 setEnabled:v3];
+  [(OfflineMapsManagementCellModel *)v5 setEnabled:modelCopy];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&from);
@@ -222,8 +222,8 @@
 
     [(MapsDebugSwitchTableRow *)v4 setGet:&stru_10162C3A0];
     [(MapsDebugSwitchTableRow *)v4 setSet:&stru_10162C3C0];
-    v7 = [(MapsDebugTableRow *)v4 title];
-    [(MapsDebugSwitchTableRow *)v4 setAccessibilityLabel:v7];
+    title = [(MapsDebugTableRow *)v4 title];
+    [(MapsDebugSwitchTableRow *)v4 setAccessibilityLabel:title];
 
     [(MapsDebugTableRow *)v4 setSelectionAction:0];
     [(MapsDebugTableRow *)v4 setConfigureCollectionViewCellBlock:&stru_10162C3E0];
@@ -253,8 +253,8 @@
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"Automatic Updates [disabled cell subtitle]" value:@"localized string not found" table:@"Offline"];
     v6 = [NSString localizedStringWithFormat:v5, v3];
-    v7 = [(OfflineMapsManagementCellModel *)self->_disabledAutomaticUpdatesModel tableRow];
-    [v7 setSubtitle:v6];
+    tableRow = [(OfflineMapsManagementCellModel *)self->_disabledAutomaticUpdatesModel tableRow];
+    [tableRow setSubtitle:v6];
   }
 }
 
@@ -289,9 +289,9 @@
   return automaticUpdatesModel;
 }
 
-- (id)_createAutomaticUpdatesModel:(BOOL)a3
+- (id)_createAutomaticUpdatesModel:(BOOL)model
 {
-  v3 = a3;
+  modelCopy = model;
   v5 = objc_alloc_init(OfflineMapsManagementCellModel);
   [(OfflineMapsManagementCellModel *)v5 setCellType:3];
   v6 = objc_alloc_init(MapsDebugSwitchTableRow);
@@ -307,7 +307,7 @@
   v22[1] = 3221225472;
   v22[2] = sub_10086DF3C;
   v22[3] = &unk_10162C338;
-  v23 = v3;
+  v23 = modelCopy;
   [(MapsDebugSwitchTableRow *)v6 setGet:v22];
   objc_initWeak(&location, v5);
   objc_initWeak(&from, self);
@@ -315,14 +315,14 @@
   v14 = 3221225472;
   v15 = sub_10086DF60;
   v16 = &unk_10162C360;
-  v19 = v3;
+  v19 = modelCopy;
   objc_copyWeak(&v17, &from);
   objc_copyWeak(&v18, &location);
   [(MapsDebugSwitchTableRow *)v6 setSet:&v13];
   v11 = [(MapsDebugTableRow *)v6 title:v13];
   [(MapsDebugSwitchTableRow *)v6 setAccessibilityLabel:v11];
 
-  [(MapsDebugSwitchTableRow *)v6 setEnabled:v3];
+  [(MapsDebugSwitchTableRow *)v6 setEnabled:modelCopy];
   [(MapsDebugTableRow *)v6 setSelectionAction:0];
   [(MapsDebugTableRow *)v6 setConfigureCollectionViewCellBlock:&stru_10162C380];
   [(OfflineMapsManagementCellModel *)v5 setTableRow:v6];
@@ -406,8 +406,8 @@ LABEL_15:
         [(MapsDebugTableRow *)v20 setTitle:v22];
 
         [(MapsDebugMenuRow *)v20 setMenu:v19];
-        v23 = [(MapsDebugTableRow *)v20 title];
-        [(MapsDebugMenuRow *)v20 setAccessibilityLabel:v23];
+        title = [(MapsDebugTableRow *)v20 title];
+        [(MapsDebugMenuRow *)v20 setAccessibilityLabel:title];
 
         [(MapsDebugTableRow *)v20 setSelectionAction:0];
         [(MapsDebugTableRow *)v20 setConfigureCollectionViewCellBlock:&stru_10162C318];
@@ -450,28 +450,28 @@ LABEL_17:
 
   if (self->_hasInProgressUpdate)
   {
-    v5 = +[NSBundle mainBundle];
-    v42 = [v5 localizedStringForKey:@"Updating footer text" value:@"localized string not found" table:@"Offline"];
+    subscriptionInfos = +[NSBundle mainBundle];
+    v42 = [subscriptionInfos localizedStringForKey:@"Updating footer text" value:@"localized string not found" table:@"Offline"];
 LABEL_19:
 
     v20 = v42;
     goto LABEL_20;
   }
 
-  v5 = [(OfflineMapsManagementDataSource *)self subscriptionInfos];
-  if (![v5 count])
+  subscriptionInfos = [(OfflineMapsManagementDataSource *)self subscriptionInfos];
+  if (![subscriptionInfos count])
   {
     v42 = 0;
     goto LABEL_19;
   }
 
-  v2 = 128;
+  subtitle = 128;
   lastUpdatedDate = self->_lastUpdatedDate;
 
   if (lastUpdatedDate)
   {
     v7 = +[NSBundle mainBundle];
-    v5 = [v7 localizedStringForKey:@"Last updated footer text" value:@"localized string not found" table:@"Offline"];
+    subscriptionInfos = [v7 localizedStringForKey:@"Last updated footer text" value:@"localized string not found" table:@"Offline"];
 
     v8 = +[NSDate now];
     [v8 timeIntervalSinceDate:self->_lastUpdatedDate];
@@ -500,16 +500,16 @@ LABEL_19:
         dateFormatter = self->_dateFormatter;
       }
 
-      v16 = [(NSRelativeDateTimeFormatter *)dateFormatter calendar];
+      calendar = [(NSRelativeDateTimeFormatter *)dateFormatter calendar];
       v17 = +[NSDate now];
-      v18 = [v16 components:4124 fromDate:v17 toDate:self->_lastUpdatedDate options:0];
+      v18 = [calendar components:4124 fromDate:v17 toDate:self->_lastUpdatedDate options:0];
 
       v19 = [(NSRelativeDateTimeFormatter *)self->_dateFormatter localizedStringFromDateComponents:v18];
     }
 
     v21 = v19;
 
-    v42 = [NSString stringWithFormat:v5, v21];
+    v42 = [NSString stringWithFormat:subscriptionInfos, v21];
 
     goto LABEL_19;
   }
@@ -518,7 +518,7 @@ LABEL_19:
 LABEL_20:
   v43 = v20;
   updateAllModel = self->_updateAllModel;
-  if (!updateAllModel || (-[OfflineMapsManagementCellModel tableRow](self->_updateAllModel, "tableRow"), v23 = objc_claimAutoreleasedReturnValue(), [v23 subtitle], v5 = objc_claimAutoreleasedReturnValue(), v41 = v23, v43 == v5))
+  if (!updateAllModel || (-[OfflineMapsManagementCellModel tableRow](self->_updateAllModel, "tableRow"), v23 = objc_claimAutoreleasedReturnValue(), [v23 subtitle], subscriptionInfos = objc_claimAutoreleasedReturnValue(), v41 = v23, v43 == subscriptionInfos))
   {
     v28 = 0;
     p_disabledUpdateAllModel = &self->_disabledUpdateAllModel;
@@ -531,9 +531,9 @@ LABEL_20:
 
   else
   {
-    v24 = [(OfflineMapsManagementCellModel *)self->_updateAllModel tableRow];
-    v2 = [v24 subtitle];
-    v25 = [v43 isEqualToString:v2];
+    tableRow = [(OfflineMapsManagementCellModel *)self->_updateAllModel tableRow];
+    subtitle = [tableRow subtitle];
+    v25 = [v43 isEqualToString:subtitle];
     if ((v25 & 1) == 0 || (p_disabledUpdateAllModel = &self->_disabledUpdateAllModel, (disabledUpdateAllModel = self->_disabledUpdateAllModel) == 0))
     {
       v28 = v25 ^ 1;
@@ -541,13 +541,13 @@ LABEL_20:
       goto LABEL_33;
     }
 
-    v40 = v24;
+    v40 = tableRow;
     v28 = 1;
   }
 
-  v29 = [(OfflineMapsManagementCellModel *)disabledUpdateAllModel tableRow];
-  v30 = [v29 subtitle];
-  if (v43 == v30)
+  tableRow2 = [(OfflineMapsManagementCellModel *)disabledUpdateAllModel tableRow];
+  subtitle2 = [tableRow2 subtitle];
+  if (v43 == subtitle2)
   {
 
     v33 = 0;
@@ -559,9 +559,9 @@ LABEL_20:
     goto LABEL_28;
   }
 
-  v31 = [(OfflineMapsManagementCellModel *)*p_disabledUpdateAllModel tableRow];
-  v32 = [v31 subtitle];
-  v33 = [v43 isEqualToString:v32] ^ 1;
+  tableRow3 = [(OfflineMapsManagementCellModel *)*p_disabledUpdateAllModel tableRow];
+  subtitle3 = [tableRow3 subtitle];
+  v33 = [v43 isEqualToString:subtitle3] ^ 1;
 
   v4 = &OBJC_IVAR___FlyoverContainerViewController__statusView;
   if (v28)
@@ -577,23 +577,23 @@ LABEL_30:
 LABEL_33:
   }
 
-  v34 = [(OfflineMapsManagementCellModel *)self->_updateAllModel tableRow];
-  [v34 setSubtitle:v43];
+  tableRow4 = [(OfflineMapsManagementCellModel *)self->_updateAllModel tableRow];
+  [tableRow4 setSubtitle:v43];
 
-  v35 = [*(&self->super.super.isa + v4[1022]) tableRow];
-  [v35 setSubtitle:v43];
+  tableRow5 = [*(&self->super.super.isa + v4[1022]) tableRow];
+  [tableRow5 setSubtitle:v43];
 
   if (v28 && self->_actionButtonsSection)
   {
-    v36 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-    v37 = [v36 snapshot];
+    diffableDataSource = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+    snapshot = [diffableDataSource snapshot];
 
-    if ([v37 indexOfSectionIdentifier:self->_actionButtonsSection] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([snapshot indexOfSectionIdentifier:self->_actionButtonsSection] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v38 = [v37 itemIdentifiersInSectionWithIdentifier:self->_actionButtonsSection];
-      [v37 reconfigureItemsWithIdentifiers:v38];
-      v39 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-      [v39 applySnapshot:v37 animatingDifferences:1];
+      v38 = [snapshot itemIdentifiersInSectionWithIdentifier:self->_actionButtonsSection];
+      [snapshot reconfigureItemsWithIdentifiers:v38];
+      diffableDataSource2 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+      [diffableDataSource2 applySnapshot:snapshot animatingDifferences:1];
     }
   }
 }
@@ -640,8 +640,8 @@ LABEL_33:
     v13[3] = &unk_101661B98;
     objc_copyWeak(&v14, &location);
     [(MapsDebugTableRow *)v3 setSelectionAction:v13];
-    v6 = [(MapsDebugTableRow *)v3 title];
-    [(MapsDebugNavigationTableRow *)v3 setAccessibilityLabel:v6];
+    title = [(MapsDebugTableRow *)v3 title];
+    [(MapsDebugNavigationTableRow *)v3 setAccessibilityLabel:title];
 
     [(MapsDebugTableRow *)v3 setConfigureCollectionViewCellBlock:&stru_10162C2B8];
     v7 = objc_alloc_init(OfflineMapsManagementCellModel);
@@ -656,91 +656,91 @@ LABEL_33:
   }
 
   v9 = [NSString localizedStringWithFormat:@"%ld", [(NSArray *)self->_expiredSubscriptions count]];
-  v10 = [(OfflineMapsManagementCellModel *)self->_expiredMapsModel tableRow];
-  [v10 setSubtitle:v9];
+  tableRow = [(OfflineMapsManagementCellModel *)self->_expiredMapsModel tableRow];
+  [tableRow setSubtitle:v9];
 
   v11 = self->_expiredMapsModel;
 
   return v11;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
-  v7 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-  v9 = [v7 itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
+  diffableDataSource = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+  v9 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v8 = [(DataSource *)self delegate];
-  [v8 dataSource:self itemTapped:v9];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:v9];
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   LOBYTE(self) = [(OfflineMapsManagementDataSource *)self _canItemIdentifierBeSelected:v7];
   return self;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   LOBYTE(self) = [(OfflineMapsManagementDataSource *)self _canItemIdentifierBeSelected:v7];
   return self;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = -[OfflineMapsManagementDataSource sectionForSectionIndex:](self, "sectionForSectionIndex:", [v10 section]);
-  if ([v9 isEqualToString:UICollectionElementKindSectionHeader])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  v11 = -[OfflineMapsManagementDataSource sectionForSectionIndex:](self, "sectionForSectionIndex:", [pathCopy section]);
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionHeader])
   {
-    v12 = [v11 headerText];
-    if ([v12 length])
+    headerText = [v11 headerText];
+    if ([headerText length])
     {
       v13 = +[SectionHeaderCollectionReusableView reuseIdentifier];
-      v14 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v13 forIndexPath:v10];
+      v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v13 forIndexPath:pathCopy];
 
-      [v14 setTitle:v12];
+      [v14 setTitle:headerText];
       [v14 setShowsBottomHairline:0];
-      [v14 setFirstNonEmptySection:{objc_msgSend(v10, "section") == objc_msgSend(v8, "_maps_indexOfFirstNonEmptySection")}];
+      [v14 setFirstNonEmptySection:{objc_msgSend(pathCopy, "section") == objc_msgSend(viewCopy, "_maps_indexOfFirstNonEmptySection")}];
       goto LABEL_11;
     }
   }
 
-  if (![v9 isEqualToString:UICollectionElementKindSectionFooter])
+  if (![kindCopy isEqualToString:UICollectionElementKindSectionFooter])
   {
     v14 = 0;
     goto LABEL_12;
   }
 
-  v15 = [v11 footerText];
-  v16 = [v15 length];
+  footerText = [v11 footerText];
+  v16 = [footerText length];
 
   if (v16)
   {
     v17 = [NSAttributedString alloc];
-    v18 = [v11 footerText];
-    v12 = [v17 initWithString:v18];
+    footerText2 = [v11 footerText];
+    headerText = [v17 initWithString:footerText2];
   }
 
   else
   {
-    v12 = 0;
+    headerText = 0;
   }
 
-  v19 = [[UserProfileSectionFooterViewModel alloc] initWithContentString:v12];
+  v19 = [[UserProfileSectionFooterViewModel alloc] initWithContentString:headerText];
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
-  v14 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v21 forIndexPath:v10];
+  v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v21 forIndexPath:pathCopy];
 
   [v14 configureWithViewModel:v19];
 LABEL_11:
@@ -750,18 +750,18 @@ LABEL_12:
   return v14;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = identifierCopy;
     v12 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-    v13 = [v8 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:pathCopy];
 
     v55[0] = _NSConcreteStackBlock;
     v55[1] = 3221225472;
@@ -788,16 +788,16 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = v10;
+    v17 = identifierCopy;
     v18 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-    v13 = [v8 dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:pathCopy];
 
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_10086FDA4;
     v48[3] = &unk_101661480;
     objc_copyWeak(&v51, &location);
-    v49 = v9;
+    v49 = pathCopy;
     v15 = v17;
     v50 = v15;
     v19 = [TwoLinesContentViewModelComposer cellModelForOfflineMapSuggestion:v15 downloadBlock:v48];
@@ -808,11 +808,11 @@ LABEL_21:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSArray *)self->_expiredSubscriptions containsObject:v10])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSArray *)self->_expiredSubscriptions containsObject:identifierCopy])
   {
-    v20 = v10;
+    v20 = identifierCopy;
     v21 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-    v13 = [v8 dequeueReusableCellWithReuseIdentifier:v21 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v21 forIndexPath:pathCopy];
 
     v22 = sub_10086FE68(v20);
     BOOL = GEOConfigGetBOOL();
@@ -832,14 +832,14 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v10;
-    v25 = [v15 tableRow];
-    v13 = [v25 cellForCollectionView:v8 forIndexPath:v9];
+    v15 = identifierCopy;
+    tableRow = [v15 tableRow];
+    v13 = [tableRow cellForCollectionView:viewCopy forIndexPath:pathCopy];
 
     [v13 setAccessibilityIdentifier:@"OfflineMapSettingsCell"];
-    v26 = [v15 tableRow];
-    v27 = [v26 title];
-    [v13 setAccessibilityLabel:v27];
+    tableRow2 = [v15 tableRow];
+    title = [tableRow2 title];
+    [v13 setAccessibilityLabel:title];
 
     goto LABEL_21;
   }
@@ -847,39 +847,39 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v10;
+    v15 = identifierCopy;
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    v13 = [v8 dequeueReusableCellWithReuseIdentifier:v29 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v29 forIndexPath:pathCopy];
 
     [v13 setAccessibilityIdentifier:@"DownloadMap"];
-    v30 = [v15 titleString];
-    [v13 setAccessibilityLabel:v30];
+    titleString = [v15 titleString];
+    [v13 setAccessibilityLabel:titleString];
 
     [v13 setViewModel:v15];
     goto LABEL_21;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 isEqualToString:@"EmptyState"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [identifierCopy isEqualToString:@"EmptyState"])
   {
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
-    v13 = [v8 dequeueReusableCellWithReuseIdentifier:v32 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v32 forIndexPath:pathCopy];
 
     v33 = +[NSBundle mainBundle];
     v34 = [v33 localizedStringForKey:@"OFFLINE_MANAGEMENT_EMPTY_TITLE" value:@"localized string not found" table:@"Offline"];
-    v35 = [v13 emptyStateView];
-    [v35 setTitle:v34];
+    emptyStateView = [v13 emptyStateView];
+    [emptyStateView setTitle:v34];
 
     v36 = +[NSBundle mainBundle];
     v37 = [v36 localizedStringForKey:@"OFFLINE_MANAGEMENT_EMPTY_MESSAGE" value:@"localized string not found" table:@"Offline"];
-    v38 = [v13 emptyStateView];
-    [v38 setSubtitle:v37];
+    emptyStateView2 = [v13 emptyStateView];
+    [emptyStateView2 setSubtitle:v37];
 
     v15 = [UIImage systemImageNamed:@"icloud.slash"];
-    v39 = [v13 emptyStateView];
-    [v39 setImage:v15];
+    emptyStateView3 = [v13 emptyStateView];
+    [emptyStateView3 setImage:v15];
 
     goto LABEL_21;
   }
@@ -923,49 +923,49 @@ LABEL_22:
   return v13;
 }
 
-- (void)subscriptionsBeingUpdatedDidChange:(BOOL)a3
+- (void)subscriptionsBeingUpdatedDidChange:(BOOL)change
 {
-  self->_hasInProgressUpdate = a3;
+  self->_hasInProgressUpdate = change;
   [(OfflineMapsManagementDataSource *)self _updateUpdateAllModels];
 
   [(OfflineMapsManagementDataSource *)self _updateContentAnimated:1];
 }
 
-- (void)subscriptionsNeedUpdatingDidChange:(BOOL)a3
+- (void)subscriptionsNeedUpdatingDidChange:(BOOL)change
 {
-  self->_hasSubscriptionsNeedingUpdate = a3;
+  self->_hasSubscriptionsNeedingUpdate = change;
   [(OfflineMapsManagementDataSource *)self _updateContentAnimated:1];
 
   [(OfflineMapsManagementDataSource *)self _fetchLastUpdatedDateAnimated:1];
 }
 
-- (void)subscriptionInfosDidChange:(id)a3
+- (void)subscriptionInfosDidChange:(id)change
 {
-  [(OfflineMapsManagementDataSource *)self setSubscriptionInfos:a3];
+  [(OfflineMapsManagementDataSource *)self setSubscriptionInfos:change];
   [(OfflineMapsManagementDataSource *)self _updateUpdateAllModels];
   [(OfflineMapsManagementDataSource *)self _updateContentAnimated:1];
 
   [(OfflineMapsManagementDataSource *)self _fetchExpiredSubscriptionsAnimated:1];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 628 && a3.var1 == &unk_101643798 || (a3.var0 == GeoOfflineConfig_AutomaticUpdatesEnabled ? (v4 = a3.var1 == *(&GeoOfflineConfig_AutomaticUpdatesEnabled + 1)) : (v4 = 0), v4 || (a3.var0 == GeoOfflineConfig_OptimizeStorageEnabled ? (v5 = a3.var1 == *(&GeoOfflineConfig_OptimizeStorageEnabled + 1)) : (v5 = 0), v5 || (a3.var0 == GeoOfflineConfig_SyncToWatchEnabled ? (v6 = a3.var1 == *(&GeoOfflineConfig_SyncToWatchEnabled + 1)) : (v6 = 0), v6 || a3.var0 == 569 && a3.var1 == &unk_101642C20))))
+  if (key.var0 == 628 && key.var1 == &unk_101643798 || (key.var0 == GeoOfflineConfig_AutomaticUpdatesEnabled ? (v4 = key.var1 == *(&GeoOfflineConfig_AutomaticUpdatesEnabled + 1)) : (v4 = 0), v4 || (key.var0 == GeoOfflineConfig_OptimizeStorageEnabled ? (v5 = key.var1 == *(&GeoOfflineConfig_OptimizeStorageEnabled + 1)) : (v5 = 0), v5 || (key.var0 == GeoOfflineConfig_SyncToWatchEnabled ? (v6 = key.var1 == *(&GeoOfflineConfig_SyncToWatchEnabled + 1)) : (v6 = 0), v6 || key.var0 == 569 && key.var1 == &unk_101642C20))))
   {
     if (self->_settingsSection && self->_forceOfflineSection)
     {
-      v7 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-      v12 = [v7 snapshot];
+      diffableDataSource = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+      snapshot = [diffableDataSource snapshot];
 
-      v8 = [v12 itemIdentifiersInSectionWithIdentifier:self->_settingsSection];
+      v8 = [snapshot itemIdentifiersInSectionWithIdentifier:self->_settingsSection];
       v9 = [NSMutableArray arrayWithArray:v8];
 
-      v10 = [v12 itemIdentifiersInSectionWithIdentifier:self->_forceOfflineSection];
+      v10 = [snapshot itemIdentifiersInSectionWithIdentifier:self->_forceOfflineSection];
       [v9 addObjectsFromArray:v10];
 
-      [v12 reconfigureItemsWithIdentifiers:v9];
-      v11 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-      [v11 applySnapshot:v12 animatingDifferences:0];
+      [snapshot reconfigureItemsWithIdentifiers:v9];
+      diffableDataSource2 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+      [diffableDataSource2 applySnapshot:snapshot animatingDifferences:0];
     }
   }
 }
@@ -976,18 +976,18 @@ LABEL_22:
   {
     val = self;
     v3 = +[NRPairedDeviceRegistry sharedInstance];
-    v26 = [v3 getActivePairedDeviceExcludingAltAccount];
+    getActivePairedDeviceExcludingAltAccount = [v3 getActivePairedDeviceExcludingAltAccount];
 
-    if (v26)
+    if (getActivePairedDeviceExcludingAltAccount)
     {
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
       v4 = +[MapsOfflineUIHelper sharedHelper];
-      v5 = [v4 subscriptionInfos];
+      subscriptionInfos = [v4 subscriptionInfos];
 
-      v6 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v6 = [subscriptionInfos countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v6)
       {
         v7 = 0;
@@ -999,32 +999,32 @@ LABEL_22:
           {
             if (*v31 != v9)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(subscriptionInfos);
             }
 
             v11 = *(*(&v30 + 1) + 8 * i);
-            v12 = [v11 pairedDeviceState];
-            if (v12)
+            pairedDeviceState = [v11 pairedDeviceState];
+            if (pairedDeviceState)
             {
-              v13 = [v11 pairedDeviceState];
-              v14 = [v13 downloadState] == 0;
+              pairedDeviceState2 = [v11 pairedDeviceState];
+              v14 = [pairedDeviceState2 downloadState] == 0;
 
               if (!v14)
               {
-                v15 = [v11 state];
-                v16 = [v15 downloadedDataSize];
+                state = [v11 state];
+                downloadedDataSize = [state downloadedDataSize];
 
-                v8 += v16;
+                v8 += downloadedDataSize;
               }
             }
 
-            v17 = [v11 state];
-            v18 = [v17 downloadState] == 2;
+            state2 = [v11 state];
+            v18 = [state2 downloadState] == 2;
 
             v7 |= v18;
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v6 = [subscriptionInfos countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v6);
@@ -1046,7 +1046,7 @@ LABEL_22:
           objc_destroyWeak(v28);
           objc_destroyWeak(location);
 LABEL_24:
-          v22 = v26;
+          v22 = getActivePairedDeviceExcludingAltAccount;
           goto LABEL_25;
         }
       }
@@ -1088,21 +1088,21 @@ LABEL_24:
 LABEL_25:
 }
 
-- (BOOL)_canItemIdentifierBeSelected:(id)a3
+- (BOOL)_canItemIdentifierBeSelected:(id)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 tableRow];
-    v5 = [v4 selectionAction];
-    isKindOfClass = v5 != 0;
+    tableRow = [selectedCopy tableRow];
+    selectionAction = [tableRow selectionAction];
+    isKindOfClass = selectionAction != 0;
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 state], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "loadState"), v7, v8))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([selectedCopy state], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "loadState"), v7, v8))
     {
       isKindOfClass = 1;
     }
@@ -1117,11 +1117,11 @@ LABEL_25:
   return isKindOfClass & 1;
 }
 
-- (void)_fetchExpiredSubscriptionsAnimated:(BOOL)a3
+- (void)_fetchExpiredSubscriptionsAnimated:(BOOL)animated
 {
   objc_initWeak(&location, self);
   v5 = [NSString stringWithFormat:@"%@*", @"com.apple.Maps.offline."];
-  v6 = [(OfflineMapsManagementDataSource *)self subscriptionManager];
+  subscriptionManager = [(OfflineMapsManagementDataSource *)self subscriptionManager];
   v13 = v5;
   v7 = [NSArray arrayWithObjects:&v13 count:1];
   v8 = &_dispatch_main_q;
@@ -1130,40 +1130,40 @@ LABEL_25:
   v9[2] = sub_100870DC0;
   v9[3] = &unk_10162E3B8;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
-  [v6 fetchExpiredSubscriptionsWithIdentifiers:v7 callbackQueue:&_dispatch_main_q completionHandler:v9];
+  animatedCopy = animated;
+  [subscriptionManager fetchExpiredSubscriptionsWithIdentifiers:v7 callbackQueue:&_dispatch_main_q completionHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_fetchLastUpdatedDateAnimated:(BOOL)a3
+- (void)_fetchLastUpdatedDateAnimated:(BOOL)animated
 {
   objc_initWeak(&location, self);
-  v5 = [(OfflineMapsManagementDataSource *)self subscriptionManager];
+  subscriptionManager = [(OfflineMapsManagementDataSource *)self subscriptionManager];
   v6 = &_dispatch_main_q;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1008710C0;
   v7[3] = &unk_10162C278;
   objc_copyWeak(&v8, &location);
-  v9 = a3;
-  [v5 fetchLastUpdatedDateForOfflineSubscriptionsWithQueue:&_dispatch_main_q completionHandler:v7];
+  animatedCopy = animated;
+  [subscriptionManager fetchLastUpdatedDateForOfflineSubscriptionsWithQueue:&_dispatch_main_q completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)_updateContentAnimated:(BOOL)a3
+- (void)_updateContentAnimated:(BOOL)animated
 {
-  v62 = a3;
+  animatedCopy = animated;
   v4 = GEOSupportsOfflineMaps();
   BOOL = GEOConfigGetBOOL();
   v6 = objc_alloc_init(NSDiffableDataSourceSnapshot);
   if (v4)
   {
-    v7 = [(OfflineMapsManagementDataSource *)self subscriptionInfos];
-    v8 = [v7 count] != 0;
+    subscriptionInfos = [(OfflineMapsManagementDataSource *)self subscriptionInfos];
+    v8 = [subscriptionInfos count] != 0;
   }
 
   else
@@ -1203,8 +1203,8 @@ LABEL_25:
 
     if (v8)
     {
-      v16 = [(OfflineMapsManagementDataSource *)self subscriptionInfos];
-      [v6 appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:v14];
+      subscriptionInfos2 = [(OfflineMapsManagementDataSource *)self subscriptionInfos];
+      [v6 appendItemsWithIdentifiers:subscriptionInfos2 intoSectionWithIdentifier:v14];
     }
 
     if (v9)
@@ -1229,18 +1229,18 @@ LABEL_25:
   v20 = [NSArray arrayWithObjects:&v72 count:1];
   [v6 appendSectionsWithIdentifiers:v20];
 
-  v21 = [(OfflineMapsManagementDataSource *)self _downloadNewMapModel];
-  v71 = v21;
+  _downloadNewMapModel = [(OfflineMapsManagementDataSource *)self _downloadNewMapModel];
+  v71 = _downloadNewMapModel;
   v22 = [NSArray arrayWithObjects:&v71 count:1];
   [v6 appendItemsWithIdentifiers:v22 intoSectionWithIdentifier:self->_actionButtonsSection];
 
-  v23 = [(OfflineMapsManagementDataSource *)self suggestedRegions];
-  v24 = [v23 count];
+  suggestedRegions = [(OfflineMapsManagementDataSource *)self suggestedRegions];
+  v24 = [suggestedRegions count];
 
   if (v24)
   {
-    v25 = [(OfflineMapsManagementDataSource *)self suggestedRegions];
-    v26 = [v25 _geo_filtered:&stru_10162C250];
+    suggestedRegions2 = [(OfflineMapsManagementDataSource *)self suggestedRegions];
+    v26 = [suggestedRegions2 _geo_filtered:&stru_10162C250];
 
     if ([v26 count])
     {
@@ -1259,8 +1259,8 @@ LABEL_25:
 
       [v6 appendItemsWithIdentifiers:v26 intoSectionWithIdentifier:v29];
       v31 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v26 count]);
-      v32 = [v31 stringValue];
-      [GEOAPPortal captureUserAction:397 target:88 value:v32];
+      stringValue = [v31 stringValue];
+      [GEOAPPortal captureUserAction:397 target:88 value:stringValue];
     }
   }
 
@@ -1274,20 +1274,20 @@ LABEL_25:
     v35 = [NSArray arrayWithObjects:&v69 count:1];
     [v6 appendSectionsWithIdentifiers:v35];
 
-    v36 = [(OfflineMapsManagementDataSource *)self _downloadSettingsModel];
-    v37 = v36;
-    if (v36)
+    _downloadSettingsModel = [(OfflineMapsManagementDataSource *)self _downloadSettingsModel];
+    v37 = _downloadSettingsModel;
+    if (_downloadSettingsModel)
     {
-      v68 = v36;
+      v68 = _downloadSettingsModel;
       v38 = [NSArray arrayWithObjects:&v68 count:1];
       [v6 appendItemsWithIdentifiers:v38 intoSectionWithIdentifier:self->_settingsSection];
     }
 
     v39 = +[MapsOfflineUIHelper sharedHelper];
-    v40 = [v39 totalOfflineDataSize];
+    totalOfflineDataSize = [v39 totalOfflineDataSize];
     updated = GEOMaximumAutomaticUpdateOfflineDataSize();
 
-    if (v40 <= updated)
+    if (totalOfflineDataSize <= updated)
     {
       [(OfflineMapsManagementDataSource *)self _automaticUpdatesModel];
     }
@@ -1298,32 +1298,32 @@ LABEL_25:
     }
     v43 = ;
     v67[0] = v43;
-    v44 = [(OfflineMapsManagementDataSource *)self _optimizeStorageModel];
-    v67[1] = v44;
+    _optimizeStorageModel = [(OfflineMapsManagementDataSource *)self _optimizeStorageModel];
+    v67[1] = _optimizeStorageModel;
     v45 = [NSArray arrayWithObjects:v67 count:2];
     [v6 appendItemsWithIdentifiers:v45 intoSectionWithIdentifier:self->_settingsSection];
 
     if (MapsFeature_IsEnabled_StandaloneWatchOffline())
     {
       v46 = +[NRPairedDeviceRegistry sharedInstance];
-      v47 = [v46 getActivePairedDeviceExcludingAltAccount];
+      getActivePairedDeviceExcludingAltAccount = [v46 getActivePairedDeviceExcludingAltAccount];
 
-      if (v47)
+      if (getActivePairedDeviceExcludingAltAccount)
       {
         v48 = [[NSUUID alloc] initWithUUIDString:@"3B512C1E-F8D5-4FE7-B109-1AD8EF7F924D"];
-        v49 = [v47 supportsCapability:v48];
+        v49 = [getActivePairedDeviceExcludingAltAccount supportsCapability:v48];
 
         if (v49)
         {
-          v50 = [(OfflineMapsManagementDataSource *)self _syncToWatchModel];
-          v66 = v50;
+          _syncToWatchModel = [(OfflineMapsManagementDataSource *)self _syncToWatchModel];
+          v66 = _syncToWatchModel;
           v51 = &v66;
         }
 
         else
         {
-          v50 = [(OfflineMapsManagementDataSource *)self _disabledSyncToWatchModel];
-          v65 = v50;
+          _syncToWatchModel = [(OfflineMapsManagementDataSource *)self _disabledSyncToWatchModel];
+          v65 = _syncToWatchModel;
           v51 = &v65;
         }
 
@@ -1366,21 +1366,21 @@ LABEL_29:
     self->_forceOfflineSection = 0;
   }
 
-  v59 = [v6 sectionIdentifiers];
-  [(OfflineMapsManagementDataSource *)self setSections:v59];
+  sectionIdentifiers = [v6 sectionIdentifiers];
+  [(OfflineMapsManagementDataSource *)self setSections:sectionIdentifiers];
 
-  v60 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-  [v60 applySnapshot:v6 animatingDifferences:v62];
+  diffableDataSource = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+  [diffableDataSource applySnapshot:v6 animatingDifferences:animatedCopy];
 
-  v61 = [(DataSource *)self delegate];
-  [v61 dataSourceUpdated:self];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSourceUpdated:self];
 }
 
-- (id)swipeActionsConfigurationForIndexPath:(id)a3
+- (id)swipeActionsConfigurationForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+  v6 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1494,15 +1494,15 @@ LABEL_29:
   return v19;
 }
 
-- (id)sectionForSectionIndex:(unint64_t)a3
+- (id)sectionForSectionIndex:(unint64_t)index
 {
-  v5 = [(OfflineMapsManagementDataSource *)self sections];
-  v6 = [v5 count];
+  sections = [(OfflineMapsManagementDataSource *)self sections];
+  v6 = [sections count];
 
-  if (v6 >= a3)
+  if (v6 >= index)
   {
-    v8 = [(OfflineMapsManagementDataSource *)self sections];
-    v7 = [v8 objectAtIndex:a3];
+    sections2 = [(OfflineMapsManagementDataSource *)self sections];
+    v7 = [sections2 objectAtIndex:index];
   }
 
   else
@@ -1513,15 +1513,15 @@ LABEL_29:
   return v7;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v7.receiver = self;
   v7.super_class = OfflineMapsManagementDataSource;
   [(DataSource *)&v7 setActive:?];
   v5 = +[MapsOfflineUIHelper sharedHelper];
   v6 = v5;
-  if (v3)
+  if (activeCopy)
   {
     [v5 addObserver:self];
   }
@@ -1549,49 +1549,49 @@ LABEL_29:
   v4 = [[OfflineMapsSuggestionsDataProvider alloc] initWithClientType:2 callbackQueue:&_dispatch_main_q];
   [(OfflineMapsManagementDataSource *)self setSuggestionsProvider:v4];
 
-  v5 = [(DataSource *)self collectionView];
-  [v5 setDelegate:self];
+  collectionView = [(DataSource *)self collectionView];
+  [collectionView setDelegate:self];
 
-  v6 = [(DataSource *)self collectionView];
-  [MapsDebugTableRow registerCellsInCollectionView:v6];
+  collectionView2 = [(DataSource *)self collectionView];
+  [MapsDebugTableRow registerCellsInCollectionView:collectionView2];
 
-  v7 = [(DataSource *)self collectionView];
+  collectionView3 = [(DataSource *)self collectionView];
   v8 = objc_opt_class();
   v9 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-  [v7 registerClass:v8 forCellWithReuseIdentifier:v9];
+  [collectionView3 registerClass:v8 forCellWithReuseIdentifier:v9];
 
-  v10 = [(DataSource *)self collectionView];
+  collectionView4 = [(DataSource *)self collectionView];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  [v10 registerClass:v11 forCellWithReuseIdentifier:v13];
+  [collectionView4 registerClass:v11 forCellWithReuseIdentifier:v13];
 
-  v14 = [(DataSource *)self collectionView];
+  collectionView5 = [(DataSource *)self collectionView];
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  [v14 registerClass:v15 forCellWithReuseIdentifier:v17];
+  [collectionView5 registerClass:v15 forCellWithReuseIdentifier:v17];
 
-  v18 = [(DataSource *)self collectionView];
+  collectionView6 = [(DataSource *)self collectionView];
   v19 = objc_opt_class();
   v20 = +[SectionHeaderCollectionReusableView reuseIdentifier];
-  [v18 registerClass:v19 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v20];
+  [collectionView6 registerClass:v19 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v20];
 
-  v21 = [(DataSource *)self collectionView];
+  collectionView7 = [(DataSource *)self collectionView];
   v22 = objc_opt_class();
   v23 = objc_opt_class();
   v24 = NSStringFromClass(v23);
-  [v21 registerClass:v22 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v24];
+  [collectionView7 registerClass:v22 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v24];
 
   v25 = [UICollectionViewDiffableDataSource alloc];
-  v26 = [(DataSource *)self collectionView];
+  collectionView8 = [(DataSource *)self collectionView];
   v27 = sub_1007CDFC8(self);
-  v28 = [v25 initWithCollectionView:v26 cellProvider:v27];
+  v28 = [v25 initWithCollectionView:collectionView8 cellProvider:v27];
   [(OfflineMapsManagementDataSource *)self setDiffableDataSource:v28];
 
   v29 = sub_1007CE178(self);
-  v30 = [(OfflineMapsManagementDataSource *)self diffableDataSource];
-  [v30 setSupplementaryViewProvider:v29];
+  diffableDataSource = [(OfflineMapsManagementDataSource *)self diffableDataSource];
+  [diffableDataSource setSupplementaryViewProvider:v29];
 
   v31 = +[MapsOfflineUIHelper sharedHelper];
   self->_hasSubscriptionsNeedingUpdate = [v31 hasSubscriptionsNeedingUpdate];
@@ -1610,14 +1610,14 @@ LABEL_29:
 
   [(OfflineMapsManagementDataSource *)self _fetchExpiredSubscriptionsAnimated:0];
   [(OfflineMapsManagementDataSource *)self _fetchLastUpdatedDateAnimated:0];
-  v34 = [(OfflineMapsManagementDataSource *)self suggestionsProvider];
-  v35 = [(DataSource *)self currentLocation];
+  suggestionsProvider = [(OfflineMapsManagementDataSource *)self suggestionsProvider];
+  currentLocation = [(DataSource *)self currentLocation];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100872EA4;
   v39[3] = &unk_101654BC0;
   objc_copyWeak(&v40, &location);
-  [v34 offlineSuggestionsForLocation:v35 completion:v39];
+  [suggestionsProvider offlineSuggestionsForLocation:currentLocation completion:v39];
 
   objc_copyWeak(&v38, &location);
   v36 = _GEOConfigAddBlockListenerForKey();
@@ -1636,11 +1636,11 @@ LABEL_29:
   objc_destroyWeak(&location);
 }
 
-- (OfflineMapsManagementDataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4
+- (OfflineMapsManagementDataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location
 {
   v7.receiver = self;
   v7.super_class = OfflineMapsManagementDataSource;
-  v4 = [(DataSource *)&v7 initWithCollectionView:a3 updateLocation:a4];
+  v4 = [(DataSource *)&v7 initWithCollectionView:view updateLocation:location];
   v5 = v4;
   if (v4)
   {

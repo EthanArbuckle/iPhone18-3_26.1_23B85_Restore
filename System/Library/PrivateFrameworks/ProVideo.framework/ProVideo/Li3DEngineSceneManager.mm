@@ -1,6 +1,6 @@
 @interface Li3DEngineSceneManager
-- (BOOL)applyForce:(const void *)a3 node:(id)a4 arScale:(float)a5 objects:(void *)a6;
-- (BOOL)hasAppliedForce:(id)a3;
+- (BOOL)applyForce:(const void *)force node:(id)node arScale:(float)scale objects:(void *)objects;
+- (BOOL)hasAppliedForce:(id)force;
 - (Li3DEngineSceneManager)init;
 - (void)resetSim;
 @end
@@ -22,27 +22,27 @@
 
 - (void)resetSim
 {
-  v2 = [(Li3DEngineSceneManager *)self appliedForces];
+  appliedForces = [(Li3DEngineSceneManager *)self appliedForces];
 
-  [(NSMutableSet *)v2 removeAllObjects];
+  [(NSMutableSet *)appliedForces removeAllObjects];
 }
 
-- (BOOL)hasAppliedForce:(id)a3
+- (BOOL)hasAppliedForce:(id)force
 {
-  v4 = [(Li3DEngineSceneManager *)self appliedForces];
+  appliedForces = [(Li3DEngineSceneManager *)self appliedForces];
 
-  return [(NSMutableSet *)v4 containsObject:a3];
+  return [(NSMutableSet *)appliedForces containsObject:force];
 }
 
-- (BOOL)applyForce:(const void *)a3 node:(id)a4 arScale:(float)a5 objects:(void *)a6
+- (BOOL)applyForce:(const void *)force node:(id)node arScale:(float)scale objects:(void *)objects
 {
-  if (*(a3 + 5) == 0.0 || !*(a3 + 6) || *a3 == 1 && [(Li3DEngineSceneManager *)self hasAppliedForce:?])
+  if (*(force + 5) == 0.0 || !*(force + 6) || *force == 1 && [(Li3DEngineSceneManager *)self hasAppliedForce:?])
   {
     return 0;
   }
 
-  LiPhysicsUtils::ApplyForce(a3, a4, a6, a5);
-  [(NSMutableSet *)[(Li3DEngineSceneManager *)self appliedForces] addObject:*(a3 + 6)];
+  LiPhysicsUtils::ApplyForce(force, node, objects, scale);
+  [(NSMutableSet *)[(Li3DEngineSceneManager *)self appliedForces] addObject:*(force + 6)];
   return 1;
 }
 

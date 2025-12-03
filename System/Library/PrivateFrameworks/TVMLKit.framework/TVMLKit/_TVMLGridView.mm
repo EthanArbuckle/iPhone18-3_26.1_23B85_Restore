@@ -1,23 +1,23 @@
 @interface _TVMLGridView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)rowMetricsForExpectedWidth:(double)a3 firstItemRowIndex:(int64_t *)a4;
-- (id)rowMetricsForExpectedWidth:(double)a3 withContentInset:(UIEdgeInsets)a4 firstItemRowIndex:(int64_t *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)rowMetricsForExpectedWidth:(double)width firstItemRowIndex:(int64_t *)index;
+- (id)rowMetricsForExpectedWidth:(double)width withContentInset:(UIEdgeInsets)inset firstItemRowIndex:(int64_t *)index;
 @end
 
 @implementation _TVMLGridView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v14.receiver = self;
   v14.super_class = _TVMLGridView;
   [(_TVGridView *)&v14 sizeThatFits:?];
   v7 = v6;
   v9 = v8;
-  v10 = [(_TVMLGridView *)self headerView];
+  headerView = [(_TVMLGridView *)self headerView];
 
-  if (v10)
+  if (headerView)
   {
     [(UIView *)self->_headerView sizeThatFits:width, height];
     v9 = v9 + v11;
@@ -30,27 +30,27 @@
   return result;
 }
 
-- (id)rowMetricsForExpectedWidth:(double)a3 firstItemRowIndex:(int64_t *)a4
+- (id)rowMetricsForExpectedWidth:(double)width firstItemRowIndex:(int64_t *)index
 {
   [(_TVMLGridView *)self contentInset];
 
-  return [(_TVMLGridView *)self rowMetricsForExpectedWidth:a4 withContentInset:a3 firstItemRowIndex:v7, v8, v9, v10];
+  return [(_TVMLGridView *)self rowMetricsForExpectedWidth:index withContentInset:width firstItemRowIndex:v7, v8, v9, v10];
 }
 
-- (id)rowMetricsForExpectedWidth:(double)a3 withContentInset:(UIEdgeInsets)a4 firstItemRowIndex:(int64_t *)a5
+- (id)rowMetricsForExpectedWidth:(double)width withContentInset:(UIEdgeInsets)inset firstItemRowIndex:(int64_t *)index
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v11 = [(_TVMLGridView *)self collectionViewLayout];
-  v12 = [(_TVMLGridView *)self numberOfSections];
-  v13 = [(_TVMLGridView *)self delegate];
-  v14 = [v13 indexPathForPreferredFocusedViewInCollectionView:self];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  collectionViewLayout = [(_TVMLGridView *)self collectionViewLayout];
+  numberOfSections = [(_TVMLGridView *)self numberOfSections];
+  delegate = [(_TVMLGridView *)self delegate];
+  v14 = [delegate indexPathForPreferredFocusedViewInCollectionView:self];
 
-  if (v11)
+  if (collectionViewLayout)
   {
-    [v11 cellMetrics];
+    [collectionViewLayout cellMetrics];
     v15 = *&v68;
   }
 
@@ -68,25 +68,25 @@
     v68 = 0u;
   }
 
-  [v11 minimumInteritemSpacing];
+  [collectionViewLayout minimumInteritemSpacing];
   v17 = v16;
-  [v11 minimumLineSpacing];
+  [collectionViewLayout minimumLineSpacing];
   v19 = v18;
-  v20 = a3 - (left + right);
-  v51 = a5;
-  if (([v11 isHeterogeneous] & 1) != 0 || v15 <= 0.0)
+  v20 = width - (left + right);
+  indexCopy = index;
+  if (([collectionViewLayout isHeterogeneous] & 1) != 0 || v15 <= 0.0)
   {
-    v25 = [(_TVMLGridView *)self delegate];
+    delegate2 = [(_TVMLGridView *)self delegate];
     v26 = objc_opt_respondsToSelector();
 
     v21 = 0;
     v55 = 0x7FFFFFFFFFFFFFFFLL;
-    if ((v26 & 1) != 0 && v12 >= 1)
+    if ((v26 & 1) != 0 && numberOfSections >= 1)
     {
       v27 = 0;
       v21 = 0;
       v55 = 0x7FFFFFFFFFFFFFFFLL;
-      v52 = v12;
+      v52 = numberOfSections;
       do
       {
         v28 = [(_TVMLGridView *)self numberOfItemsInSection:v27];
@@ -98,8 +98,8 @@
           do
           {
             v32 = [MEMORY[0x277CCAA70] indexPathForItem:v30 inSection:v27];
-            v33 = [(_TVMLGridView *)self delegate];
-            [v33 collectionView:self layout:v11 sizeForItemAtIndexPath:v32];
+            delegate3 = [(_TVMLGridView *)self delegate];
+            [delegate3 collectionView:self layout:collectionViewLayout sizeForItemAtIndexPath:v32];
             v35 = v34;
 
             if (v31 < fmin(v35, v20))
@@ -110,9 +110,9 @@
 
             if (v14 && [v14 section] == v27)
             {
-              v36 = [v14 item];
+              item = [v14 item];
               v37 = v55;
-              if (v30 == v36)
+              if (v30 == item)
               {
                 v37 = v21;
               }
@@ -127,17 +127,17 @@
 
           while (v29 != v30);
           ++v21;
-          v12 = v52;
+          numberOfSections = v52;
         }
 
         ++v27;
       }
 
-      while (v27 != v12);
+      while (v27 != numberOfSections);
     }
   }
 
-  else if (v12 < 1)
+  else if (numberOfSections < 1)
   {
     v21 = 0;
     v55 = 0x7FFFFFFFFFFFFFFFLL;
@@ -161,16 +161,16 @@
       ++v22;
     }
 
-    while (v12 != v22);
+    while (numberOfSections != v22);
   }
 
   v66 = 0u;
   v67 = 0u;
   v65 = 0u;
   memset(v64, 0, sizeof(v64));
-  if (v11)
+  if (collectionViewLayout)
   {
-    [v11 cellMetrics];
+    [collectionViewLayout cellMetrics];
   }
 
   else
@@ -248,7 +248,7 @@
     while (v21);
   }
 
-  if (v51)
+  if (indexCopy)
   {
     if (v55 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -260,7 +260,7 @@
       v48 = v55;
     }
 
-    *v51 = v48 + v55;
+    *indexCopy = v48 + v55;
   }
 
   v49 = [v40 copy];

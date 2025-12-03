@@ -7,7 +7,7 @@
 
 - (char)_init
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = WebScriptObject_0;
   v1 = objc_msgSendSuper2(&v4, sel_init);
   objc_opt_class();
@@ -32,9 +32,9 @@
   result = objc_opt_isKindOfClass();
   if (result)
   {
-    if (a1)
+    if (self)
     {
-      v3 = a1[2];
+      v3 = self[2];
       v4 = *(*(*(v3 + 48) + 8) + 552);
       if (!v4)
       {
@@ -107,7 +107,7 @@ LABEL_16:
 
       v12 = v10;
       v13 = v10;
-      [a1 _setImp:OutOfLineCachedWrapper originRootObject:&v13 rootObject:&v12];
+      [self _setImp:OutOfLineCachedWrapper originRootObject:&v13 rootObject:&v12];
       v11 = v12;
       v12 = 0;
       if (v11)

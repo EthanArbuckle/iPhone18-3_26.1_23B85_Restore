@@ -1,31 +1,31 @@
 @interface HMDPhotoLibrary
-+ (id)_phPersonWithUUID:(id)a3 fromSuggestedPersonsFetchResult:(id)a4;
++ (id)_phPersonWithUUID:(id)d fromSuggestedPersonsFetchResult:(id)result;
 + (id)logCategory;
-- (HMDPhotoLibrary)initWithWorkQueue:(id)a3;
+- (HMDPhotoLibrary)initWithWorkQueue:(id)queue;
 - (HMDPhotoLibraryDelegate)delegate;
 - (NSSet)persons;
 - (PHPhotoLibrary)photoLibrary;
-- (id)fetchFaceCropDataByUUIDForPersonUUID:(id)a3;
+- (id)fetchFaceCropDataByUUIDForPersonUUID:(id)d;
 - (id)fetchOptions;
 - (void)fetchPersons;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HMDPhotoLibrary
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HMDPhotoLibrary *)self workQueue];
+  changeCopy = change;
+  workQueue = [(HMDPhotoLibrary *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 void __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke(uint64_t a1)
@@ -111,28 +111,28 @@ void __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke(uint64_t a1)
 
 - (id)fetchOptions
 {
-  v3 = [(HMDPhotoLibrary *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibrary *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDPhotoLibrary *)self photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  photoLibrary = [(HMDPhotoLibrary *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v5 setIncludeNonvisibleFaces:0];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:0];
 
-  return v5;
+  return librarySpecificFetchOptions;
 }
 
 - (PHPhotoLibrary)photoLibrary
 {
-  v3 = [(HMDPhotoLibrary *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibrary *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   photoLibrary = self->_photoLibrary;
   if (!photoLibrary)
   {
-    v5 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+    mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
     v6 = self->_photoLibrary;
-    self->_photoLibrary = v5;
+    self->_photoLibrary = mEMORY[0x277CD9948];
 
     photoLibrary = self->_photoLibrary;
   }
@@ -140,34 +140,34 @@ void __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke(uint64_t a1)
   return photoLibrary;
 }
 
-- (id)fetchFaceCropDataByUUIDForPersonUUID:(id)a3
+- (id)fetchFaceCropDataByUUIDForPersonUUID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPhotoLibrary *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(HMDPhotoLibrary *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDPhotoLibrary *)self suggestedPersonsFetchResult];
-  if (v6)
+  suggestedPersonsFetchResult = [(HMDPhotoLibrary *)self suggestedPersonsFetchResult];
+  if (suggestedPersonsFetchResult)
   {
-    v7 = [HMDPhotoLibrary _phPersonWithUUID:v4 fromSuggestedPersonsFetchResult:v6];
+    v7 = [HMDPhotoLibrary _phPersonWithUUID:dCopy fromSuggestedPersonsFetchResult:suggestedPersonsFetchResult];
     if (v7)
     {
-      v8 = [(HMDPhotoLibrary *)self fetchOptions];
-      [v8 setFetchLimit:20];
+      fetchOptions = [(HMDPhotoLibrary *)self fetchOptions];
+      [fetchOptions setFetchLimit:20];
       v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:0];
       v23 = v9;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
-      [v8 setSortDescriptors:v10];
+      [fetchOptions setSortDescriptors:v10];
 
-      v11 = [MEMORY[0x277CD9870] fetchTransientTrainingFaceCropsForPerson:v7 options:v8];
-      v12 = [v11 faceCropDataByUUID];
+      v11 = [MEMORY[0x277CD9870] fetchTransientTrainingFaceCropsForPerson:v7 options:fetchOptions];
+      faceCropDataByUUID = [v11 faceCropDataByUUID];
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -175,19 +175,19 @@ void __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke(uint64_t a1)
         *buf = 138543618;
         v25 = v20;
         v26 = 2112;
-        v27 = v4;
+        v27 = dCopy;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Did not find person with UUID: %@, returning empty dictionary", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v12 = MEMORY[0x277CBEC10];
+      faceCropDataByUUID = MEMORY[0x277CBEC10];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -198,49 +198,49 @@ void __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v13);
-    v12 = 0;
+    faceCropDataByUUID = 0;
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return faceCropDataByUUID;
 }
 
 - (void)fetchPersons
 {
-  v3 = [(HMDPhotoLibrary *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibrary *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = MEMORY[0x277CD9938];
-  v6 = [(HMDPhotoLibrary *)self fetchOptions];
-  v5 = [v4 fetchSuggestedPersonsForClient:1 options:v6];
+  fetchOptions = [(HMDPhotoLibrary *)self fetchOptions];
+  v5 = [v4 fetchSuggestedPersonsForClient:1 options:fetchOptions];
   [(HMDPhotoLibrary *)self setSuggestedPersonsFetchResult:v5];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HMDPhotoLibrary *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  workQueue = [(HMDPhotoLibrary *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  objc_storeWeak(&self->_delegate, v4);
-  v6 = [(HMDPhotoLibrary *)self photoLibrary];
-  v7 = v6;
-  if (v4)
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  photoLibrary = [(HMDPhotoLibrary *)self photoLibrary];
+  v7 = photoLibrary;
+  if (delegateCopy)
   {
-    [v6 registerChangeObserver:self];
+    [photoLibrary registerChangeObserver:self];
   }
 
   else
   {
-    [v6 unregisterChangeObserver:self];
+    [photoLibrary unregisterChangeObserver:self];
   }
 }
 
 - (HMDPhotoLibraryDelegate)delegate
 {
-  v3 = [(HMDPhotoLibrary *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibrary *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -250,16 +250,16 @@ void __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke(uint64_t a1)
 - (NSSet)persons
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPhotoLibrary *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPhotoLibrary *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDPhotoLibrary *)self suggestedPersonsFetchResult];
-  v5 = v4;
-  if (v4)
+  suggestedPersonsFetchResult = [(HMDPhotoLibrary *)self suggestedPersonsFetchResult];
+  v5 = suggestedPersonsFetchResult;
+  if (suggestedPersonsFetchResult)
   {
     v6 = MEMORY[0x277CBEB98];
-    v7 = [v4 objects];
-    v8 = [v6 setWithArray:v7];
+    objects = [suggestedPersonsFetchResult objects];
+    v8 = [v6 setWithArray:objects];
 
     v9 = [v8 na_map:&__block_literal_global_55746];
   }
@@ -267,7 +267,7 @@ void __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke(uint64_t a1)
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -286,16 +286,16 @@ void __41__HMDPhotoLibrary_photoLibraryDidChange___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (HMDPhotoLibrary)initWithWorkQueue:(id)a3
+- (HMDPhotoLibrary)initWithWorkQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = HMDPhotoLibrary;
   v6 = [(HMDPhotoLibrary *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workQueue, a3);
+    objc_storeStrong(&v6->_workQueue, queue);
   }
 
   return v7;
@@ -321,17 +321,17 @@ void __30__HMDPhotoLibrary_logCategory__block_invoke()
   logCategory__hmf_once_v7_55759 = v1;
 }
 
-+ (id)_phPersonWithUUID:(id)a3 fromSuggestedPersonsFetchResult:(id)a4
++ (id)_phPersonWithUUID:(id)d fromSuggestedPersonsFetchResult:(id)result
 {
-  v5 = a3;
-  v6 = [a4 objects];
+  dCopy = d;
+  objects = [result objects];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__HMDPhotoLibrary__phPersonWithUUID_fromSuggestedPersonsFetchResult___block_invoke;
   v10[3] = &unk_278674388;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = dCopy;
+  v7 = dCopy;
+  v8 = [objects na_firstObjectPassingTest:v10];
 
   return v8;
 }

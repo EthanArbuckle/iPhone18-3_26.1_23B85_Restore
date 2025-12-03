@@ -1,58 +1,58 @@
 @interface KTSelfValidationURIDiagnostics
-- (BOOL)isEqual:(id)a3;
-- (KTSelfValidationURIDiagnostics)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KTSelfValidationURIDiagnostics)initWithCoder:(id)coder;
 - (NSDictionary)diagnosticsJsonDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTSelfValidationURIDiagnostics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(KTSelfValidationURIDiagnostics *)self ktVerificationInfoDiagnosticsJson];
-  [v13 encodeObject:v4 forKey:@"KTVerificationInfo"];
+  coderCopy = coder;
+  ktVerificationInfoDiagnosticsJson = [(KTSelfValidationURIDiagnostics *)self ktVerificationInfoDiagnosticsJson];
+  [coderCopy encodeObject:ktVerificationInfoDiagnosticsJson forKey:@"KTVerificationInfo"];
 
-  v5 = [(KTSelfValidationURIDiagnostics *)self transparentDataDiagnosticsJson];
-  [v13 encodeObject:v5 forKey:@"transparentData"];
+  transparentDataDiagnosticsJson = [(KTSelfValidationURIDiagnostics *)self transparentDataDiagnosticsJson];
+  [coderCopy encodeObject:transparentDataDiagnosticsJson forKey:@"transparentData"];
 
-  v6 = [(KTSelfValidationURIDiagnostics *)self result];
-  [v13 encodeObject:v6 forKey:@"result"];
+  result = [(KTSelfValidationURIDiagnostics *)self result];
+  [coderCopy encodeObject:result forKey:@"result"];
 
-  v7 = [(KTSelfValidationURIDiagnostics *)self requestTime];
+  requestTime = [(KTSelfValidationURIDiagnostics *)self requestTime];
 
-  if (v7)
+  if (requestTime)
   {
-    v8 = [(KTSelfValidationURIDiagnostics *)self requestTime];
-    [v13 encodeObject:v8 forKey:@"requestTime"];
+    requestTime2 = [(KTSelfValidationURIDiagnostics *)self requestTime];
+    [coderCopy encodeObject:requestTime2 forKey:@"requestTime"];
   }
 
-  v9 = [(KTSelfValidationURIDiagnostics *)self error];
+  error = [(KTSelfValidationURIDiagnostics *)self error];
 
-  if (v9)
+  if (error)
   {
     v10 = MEMORY[0x1E697AAC0];
-    v11 = [(KTSelfValidationURIDiagnostics *)self error];
-    v12 = [v10 cleanseErrorForXPC:v11];
-    [v13 encodeObject:v12 forKey:@"error"];
+    error2 = [(KTSelfValidationURIDiagnostics *)self error];
+    v12 = [v10 cleanseErrorForXPC:error2];
+    [coderCopy encodeObject:v12 forKey:@"error"];
   }
 }
 
-- (KTSelfValidationURIDiagnostics)initWithCoder:(id)a3
+- (KTSelfValidationURIDiagnostics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = +[KTSelfValidationDiagnostics jsonClasses];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"KTVerificationInfo"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"KTVerificationInfo"];
 
   v7 = +[KTSelfValidationDiagnostics jsonClasses];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"transparentData"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"transparentData"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"result"];
-  v10 = [MEMORY[0x1E697AAC0] safeErrorClasses];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"error"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"result"];
+  safeErrorClasses = [MEMORY[0x1E697AAC0] safeErrorClasses];
+  v11 = [coderCopy decodeObjectOfClasses:safeErrorClasses forKey:@"error"];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestTime"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestTime"];
 
   if (!v6)
   {
@@ -151,10 +151,10 @@ uint64_t __48__KTSelfValidationURIDiagnostics_initWithCoder___block_invoke_22()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -164,76 +164,76 @@ uint64_t __48__KTSelfValidationURIDiagnostics_initWithCoder___block_invoke_22()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTSelfValidationURIDiagnostics *)self ktVerificationInfoDiagnosticsJson];
-      v7 = [(KTSelfValidationURIDiagnostics *)v5 ktVerificationInfoDiagnosticsJson];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      ktVerificationInfoDiagnosticsJson = [(KTSelfValidationURIDiagnostics *)self ktVerificationInfoDiagnosticsJson];
+      ktVerificationInfoDiagnosticsJson2 = [(KTSelfValidationURIDiagnostics *)v5 ktVerificationInfoDiagnosticsJson];
+      v8 = [ktVerificationInfoDiagnosticsJson isEqual:ktVerificationInfoDiagnosticsJson2];
 
       if (v8)
       {
-        v9 = [(KTSelfValidationURIDiagnostics *)self transparentDataDiagnosticsJson];
-        v10 = [(KTSelfValidationURIDiagnostics *)v5 transparentDataDiagnosticsJson];
-        v11 = [v9 isEqual:v10];
+        transparentDataDiagnosticsJson = [(KTSelfValidationURIDiagnostics *)self transparentDataDiagnosticsJson];
+        transparentDataDiagnosticsJson2 = [(KTSelfValidationURIDiagnostics *)v5 transparentDataDiagnosticsJson];
+        v11 = [transparentDataDiagnosticsJson isEqual:transparentDataDiagnosticsJson2];
 
         if (v11)
         {
-          v12 = [(KTSelfValidationURIDiagnostics *)self result];
-          v13 = [(KTSelfValidationURIDiagnostics *)v5 result];
-          v14 = [v12 isEqual:v13];
+          result = [(KTSelfValidationURIDiagnostics *)self result];
+          result2 = [(KTSelfValidationURIDiagnostics *)v5 result];
+          v14 = [result isEqual:result2];
 
           if (v14)
           {
-            v15 = [(KTSelfValidationURIDiagnostics *)self error];
-            if (v15)
+            error = [(KTSelfValidationURIDiagnostics *)self error];
+            if (error)
             {
             }
 
             else
             {
-              v17 = [(KTSelfValidationURIDiagnostics *)v5 error];
+              error2 = [(KTSelfValidationURIDiagnostics *)v5 error];
 
-              if (!v17)
+              if (!error2)
               {
                 goto LABEL_13;
               }
             }
 
-            v18 = [(KTSelfValidationURIDiagnostics *)v5 error];
+            error3 = [(KTSelfValidationURIDiagnostics *)v5 error];
 
-            if (v18)
+            if (error3)
             {
               v19 = MEMORY[0x1E697AAC0];
-              v13 = [(KTSelfValidationURIDiagnostics *)self error];
-              v20 = [v19 cleanseErrorForXPC:v13];
+              result2 = [(KTSelfValidationURIDiagnostics *)self error];
+              v20 = [v19 cleanseErrorForXPC:result2];
               v21 = MEMORY[0x1E697AAC0];
-              v22 = [(KTSelfValidationURIDiagnostics *)v5 error];
-              v14 = [v21 cleanseErrorForXPC:v22];
+              error4 = [(KTSelfValidationURIDiagnostics *)v5 error];
+              v14 = [v21 cleanseErrorForXPC:error4];
               v23 = [v20 isEqual:v14];
 
               if (v23)
               {
 LABEL_13:
-                v24 = [(KTSelfValidationURIDiagnostics *)self requestTime];
-                if (v24 && (-[KTSelfValidationURIDiagnostics requestTime](self, "requestTime"), v13 = objc_claimAutoreleasedReturnValue(), -[KTSelfValidationURIDiagnostics requestTime](v5, "requestTime"), v14 = objc_claimAutoreleasedReturnValue(), [v13 compare:v14]))
+                requestTime = [(KTSelfValidationURIDiagnostics *)self requestTime];
+                if (requestTime && (-[KTSelfValidationURIDiagnostics requestTime](self, "requestTime"), result2 = objc_claimAutoreleasedReturnValue(), -[KTSelfValidationURIDiagnostics requestTime](v5, "requestTime"), v14 = objc_claimAutoreleasedReturnValue(), [result2 compare:v14]))
                 {
                   v25 = 1;
                 }
 
                 else
                 {
-                  v27 = [(KTSelfValidationURIDiagnostics *)self requestTime];
-                  if (v27)
+                  requestTime2 = [(KTSelfValidationURIDiagnostics *)self requestTime];
+                  if (requestTime2)
                   {
                     v25 = 0;
                   }
 
                   else
                   {
-                    v28 = [(KTSelfValidationURIDiagnostics *)v5 requestTime];
-                    v25 = v28 != 0;
+                    requestTime3 = [(KTSelfValidationURIDiagnostics *)v5 requestTime];
+                    v25 = requestTime3 != 0;
                   }
 
-                  if (!v24)
+                  if (!requestTime)
                   {
                     goto LABEL_24;
                   }
@@ -264,56 +264,56 @@ LABEL_18:
 
 - (NSDictionary)diagnosticsJsonDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(KTSelfValidationURIDiagnostics *)self result];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  result = [(KTSelfValidationURIDiagnostics *)self result];
 
-  if (v4)
+  if (result)
   {
-    v5 = [(KTSelfValidationURIDiagnostics *)self result];
-    [v3 setObject:v5 forKeyedSubscript:@"result"];
+    result2 = [(KTSelfValidationURIDiagnostics *)self result];
+    [dictionary setObject:result2 forKeyedSubscript:@"result"];
   }
 
-  v6 = [(KTSelfValidationURIDiagnostics *)self transparentDataDiagnosticsJson];
+  transparentDataDiagnosticsJson = [(KTSelfValidationURIDiagnostics *)self transparentDataDiagnosticsJson];
 
-  if (v6)
+  if (transparentDataDiagnosticsJson)
   {
-    v7 = [(KTSelfValidationURIDiagnostics *)self transparentDataDiagnosticsJson];
-    [v3 setObject:v7 forKeyedSubscript:@"transparentData"];
+    transparentDataDiagnosticsJson2 = [(KTSelfValidationURIDiagnostics *)self transparentDataDiagnosticsJson];
+    [dictionary setObject:transparentDataDiagnosticsJson2 forKeyedSubscript:@"transparentData"];
   }
 
-  v8 = [(KTSelfValidationURIDiagnostics *)self ktVerificationInfoDiagnosticsJson];
+  ktVerificationInfoDiagnosticsJson = [(KTSelfValidationURIDiagnostics *)self ktVerificationInfoDiagnosticsJson];
 
-  if (v8)
+  if (ktVerificationInfoDiagnosticsJson)
   {
-    v9 = [(KTSelfValidationURIDiagnostics *)self ktVerificationInfoDiagnosticsJson];
-    [v3 setObject:v9 forKeyedSubscript:@"KTVerificationInfo"];
+    ktVerificationInfoDiagnosticsJson2 = [(KTSelfValidationURIDiagnostics *)self ktVerificationInfoDiagnosticsJson];
+    [dictionary setObject:ktVerificationInfoDiagnosticsJson2 forKeyedSubscript:@"KTVerificationInfo"];
   }
 
-  v10 = [(KTSelfValidationURIDiagnostics *)self error];
+  error = [(KTSelfValidationURIDiagnostics *)self error];
 
-  if (v10)
+  if (error)
   {
-    v11 = [(KTSelfValidationURIDiagnostics *)self error];
-    v12 = [TransparencyError diagnosticError:v11];
-    [v3 setObject:v12 forKeyedSubscript:@"error"];
+    error2 = [(KTSelfValidationURIDiagnostics *)self error];
+    v12 = [TransparencyError diagnosticError:error2];
+    [dictionary setObject:v12 forKeyedSubscript:@"error"];
   }
 
-  v13 = [(KTSelfValidationURIDiagnostics *)self requestTime];
+  requestTime = [(KTSelfValidationURIDiagnostics *)self requestTime];
 
-  if (v13)
+  if (requestTime)
   {
-    v14 = [(KTSelfValidationURIDiagnostics *)self requestTime];
-    v15 = [v14 kt_dateToString];
-    [v3 setObject:v15 forKeyedSubscript:@"requestTime"];
+    requestTime2 = [(KTSelfValidationURIDiagnostics *)self requestTime];
+    kt_dateToString = [requestTime2 kt_dateToString];
+    [dictionary setObject:kt_dateToString forKeyedSubscript:@"requestTime"];
 
-    v16 = [(KTSelfValidationURIDiagnostics *)self requestTime];
-    v17 = [v16 kt_toISO_8601_UTCString];
-    [v3 setObject:v17 forKeyedSubscript:@"requestTimeReadable"];
+    requestTime3 = [(KTSelfValidationURIDiagnostics *)self requestTime];
+    kt_toISO_8601_UTCString = [requestTime3 kt_toISO_8601_UTCString];
+    [dictionary setObject:kt_toISO_8601_UTCString forKeyedSubscript:@"requestTimeReadable"];
   }
 
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v3])
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionary])
   {
-    v18 = v3;
+    v18 = dictionary;
   }
 
   else
@@ -326,8 +326,8 @@ LABEL_18:
 
 - (id)description
 {
-  v2 = [(KTSelfValidationURIDiagnostics *)self diagnosticsJsonDictionary];
-  v3 = [v2 description];
+  diagnosticsJsonDictionary = [(KTSelfValidationURIDiagnostics *)self diagnosticsJsonDictionary];
+  v3 = [diagnosticsJsonDictionary description];
 
   return v3;
 }

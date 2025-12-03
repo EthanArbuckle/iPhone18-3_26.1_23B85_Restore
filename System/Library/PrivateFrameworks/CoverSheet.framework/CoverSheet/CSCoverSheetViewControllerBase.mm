@@ -3,59 +3,59 @@
 - (BOOL)_rebuildAppearance;
 - (BOOL)_rebuildBehavior;
 - (BOOL)_rebuildPresentation;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (CAFrameRateRange)presentationPreferredFrameRateRange;
-- (CGSize)effectiveContentSizeForScrollView:(id)a3;
+- (CGSize)effectiveContentSizeForScrollView:(id)view;
 - (CSAppearance)activeAppearance;
 - (CSBehavior)activeBehavior;
-- (CSCoverSheetViewControllerBase)initWithNibName:(id)a3 bundle:(id)a4;
+- (CSCoverSheetViewControllerBase)initWithNibName:(id)name bundle:(id)bundle;
 - (CSCoverSheetViewPresenting)presenter;
 - (CSPresentation)externalPresentation;
 - (NSString)coverSheetIdentifier;
 - (SBSDisplayLayoutElement)_displayLayoutElement;
 - (UIViewController)kitPresentedViewController;
 - (id)_presenter;
-- (id)_regionsForView:(id)a3;
-- (id)_timelinesForDateInterval:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_regionsForView:(id)view;
+- (id)_timelinesForDateInterval:(id)interval;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)participantState;
 - (void)_layoutIfNeededForPresentation;
 - (void)_rebuildDisposition;
-- (void)_setDisplayLayoutElementActive:(BOOL)a3 immediately:(BOOL)a4;
-- (void)_updateDisplayLayoutElementForActivation:(id)a3;
-- (void)_updateWithFrameSpecifier:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregatePresentation:(id)a3;
+- (void)_setDisplayLayoutElementActive:(BOOL)active immediately:(BOOL)immediately;
+- (void)_updateDisplayLayoutElementForActivation:(id)activation;
+- (void)_updateWithFrameSpecifier:(id)specifier;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregatePresentation:(id)presentation;
 - (void)dealloc;
-- (void)didTransitionToPresented:(BOOL)a3;
+- (void)didTransitionToPresented:(BOOL)presented;
 - (void)dismiss;
-- (void)handleAction:(id)a3 fromSender:(id)a4;
+- (void)handleAction:(id)action fromSender:(id)sender;
 - (void)loadView;
-- (void)performCustomTransitionToVisible:(BOOL)a3 withAnimationSettings:(id)a4 completion:(id)a5;
-- (void)rebuildEverythingForReason:(id)a3;
-- (void)registerView:(id)a3 forRole:(int64_t)a4 options:(unint64_t)a5;
-- (void)sendAction:(id)a3;
-- (void)setDisplayLayoutElementActive:(BOOL)a3;
+- (void)performCustomTransitionToVisible:(BOOL)visible withAnimationSettings:(id)settings completion:(id)completion;
+- (void)rebuildEverythingForReason:(id)reason;
+- (void)registerView:(id)view forRole:(int64_t)role options:(unint64_t)options;
+- (void)sendAction:(id)action;
+- (void)setDisplayLayoutElementActive:(BOOL)active;
 - (void)unregisterAllViews;
-- (void)unregisterView:(id)a3;
-- (void)updateAppearance:(id)a3 completion:(id)a4;
-- (void)updateAppearanceForController:(id)a3 withAnimationSettings:(id)a4 completion:(id)a5;
-- (void)updateBehavior:(id)a3;
-- (void)updateBehaviorForController:(id)a3;
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3;
-- (void)updateForPresentation:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)unregisterView:(id)view;
+- (void)updateAppearance:(id)appearance completion:(id)completion;
+- (void)updateAppearanceForController:(id)controller withAnimationSettings:(id)settings completion:(id)completion;
+- (void)updateBehavior:(id)behavior;
+- (void)updateBehaviorForController:(id)controller;
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder;
+- (void)updateForPresentation:(id)presentation;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToPresented:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToPresented:(BOOL)presented;
 @end
 
 @implementation CSCoverSheetViewControllerBase
@@ -78,32 +78,32 @@
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
   if (WeakRetained || ([(CSCoverSheetViewControllerBase *)self parentViewController], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7 & 1) != 0) && ([(CSCoverSheetViewControllerBase *)self parentViewController], (WeakRetained = objc_claimAutoreleasedReturnValue()) != 0) || ([(CSCoverSheetViewControllerBase *)self presentingViewController], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, (v9 & 1) != 0) && ([(CSCoverSheetViewControllerBase *)self presentingViewController], (WeakRetained = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = WeakRetained;
+    navigationController = WeakRetained;
   }
 
   else
   {
-    v4 = [(CSCoverSheetViewControllerBase *)self navigationController];
-    if (v4)
+    navigationController = [(CSCoverSheetViewControllerBase *)self navigationController];
+    if (navigationController)
     {
-      v10 = [(CSCoverSheetViewControllerBase *)self navigationController];
-      v11 = [v10 parentViewController];
+      navigationController2 = [(CSCoverSheetViewControllerBase *)self navigationController];
+      parentViewController = [navigationController2 parentViewController];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v13 = [(CSCoverSheetViewControllerBase *)self navigationController];
-        v4 = [v13 parentViewController];
+        navigationController3 = [(CSCoverSheetViewControllerBase *)self navigationController];
+        navigationController = [navigationController3 parentViewController];
       }
 
       else
       {
-        v4 = 0;
+        navigationController = 0;
       }
     }
   }
 
-  return v4;
+  return navigationController;
 }
 
 - (void)viewWillLayoutSubviews
@@ -150,9 +150,9 @@
     }
   }
 
-  v3 = [(CSCoverSheetViewControllerBase *)self viewIfLoaded];
-  v4 = [v3 window];
-  v5 = v4 != 0;
+  viewIfLoaded = [(CSCoverSheetViewControllerBase *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  v5 = window != 0;
 
   return v5;
 }
@@ -180,14 +180,14 @@
 - (void)loadView
 {
   v3 = objc_alloc([objc_opt_class() viewClass]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v8 = [v3 initWithFrame:?];
 
-  v5 = [v8 layer];
+  layer = [v8 layer];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 setName:v7];
+  [layer setName:v7];
 
   [v8 setAutoresizingMask:18];
   [v8 setAutoresizesSubviews:1];
@@ -199,7 +199,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_0();
@@ -225,18 +225,18 @@
 
 - (BOOL)_rebuildAppearance
 {
-  v3 = [(CSAppearance *)self->_appearance identifier];
-  v4 = [CSAppearance appearanceWithIdentifier:v3];
+  identifier = [(CSAppearance *)self->_appearance identifier];
+  v4 = [CSAppearance appearanceWithIdentifier:identifier];
 
   [(CSCoverSheetViewControllerBase *)self aggregateAppearance:v4];
-  v5 = [(CSCoverSheetViewControllerBase *)self _rebuildPresentation];
+  _rebuildPresentation = [(CSCoverSheetViewControllerBase *)self _rebuildPresentation];
   if (![(CSAppearance *)self->_appearance isEqualToAppearance:v4])
   {
     objc_storeStrong(&self->_appearance, v4);
-    v5 = 1;
+    _rebuildPresentation = 1;
   }
 
-  return v5;
+  return _rebuildPresentation;
 }
 
 - (BOOL)_rebuildPresentation
@@ -246,21 +246,21 @@
     return 0;
   }
 
-  v3 = [(CSPresentation *)self->_presentation coordinateSpace];
-  v4 = [(CSCoverSheetViewControllerBase *)self view];
-  v5 = [v4 window];
+  coordinateSpace = [(CSPresentation *)self->_presentation coordinateSpace];
+  view = [(CSCoverSheetViewControllerBase *)self view];
+  window = [view window];
 
-  if (v3 != v5)
+  if (coordinateSpace != window)
   {
-    v6 = [(CSCoverSheetViewControllerBase *)self view];
-    v7 = [v6 window];
-    v8 = [CSPresentation presentationWithCoordinateSpace:v7];
+    view2 = [(CSCoverSheetViewControllerBase *)self view];
+    window2 = [view2 window];
+    v8 = [CSPresentation presentationWithCoordinateSpace:window2];
     presentation = self->_presentation;
     self->_presentation = v8;
 
     v10 = self->_presentation;
-    v11 = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
-    [(CSPresentation *)v10 setIdentifier:v11];
+    coverSheetIdentifier = [(CSCoverSheetViewControllerBase *)self coverSheetIdentifier];
+    [(CSPresentation *)v10 setIdentifier:coverSheetIdentifier];
   }
 
   v12 = [(CSPresentation *)self->_presentation presentationForRole:0];
@@ -282,9 +282,9 @@
   displayLayoutElement = self->_displayLayoutElement;
   if (!displayLayoutElement)
   {
-    v4 = [(CSCoverSheetViewControllerBase *)self _newDisplayLayoutElement];
+    _newDisplayLayoutElement = [(CSCoverSheetViewControllerBase *)self _newDisplayLayoutElement];
     v5 = self->_displayLayoutElement;
-    self->_displayLayoutElement = v4;
+    self->_displayLayoutElement = _newDisplayLayoutElement;
 
     displayLayoutElement = self->_displayLayoutElement;
   }
@@ -297,8 +297,8 @@
   if ([(CSCoverSheetViewControllerBase *)self _appearState])
   {
     self->_forcingLayoutForPresentation = 1;
-    v3 = [(CSCoverSheetViewControllerBase *)self view];
-    [v3 layoutIfNeeded];
+    view = [(CSCoverSheetViewControllerBase *)self view];
+    [view layoutIfNeeded];
 
     self->_forcingLayoutForPresentation = 0;
   }
@@ -306,35 +306,35 @@
 
 - (CSPresentation)externalPresentation
 {
-  v2 = [(CSCoverSheetViewControllerBase *)self _presenter];
-  v3 = [v2 externalPresentation];
+  _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
+  externalPresentation = [_presenter externalPresentation];
 
-  return v3;
+  return externalPresentation;
 }
 
 - (CSAppearance)activeAppearance
 {
-  v2 = [(CSCoverSheetViewControllerBase *)self _presenter];
-  v3 = [v2 activeAppearance];
+  _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
+  activeAppearance = [_presenter activeAppearance];
 
-  return v3;
+  return activeAppearance;
 }
 
 - (CSBehavior)activeBehavior
 {
-  v2 = [(CSCoverSheetViewControllerBase *)self _presenter];
-  v3 = [v2 activeBehavior];
+  _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
+  activeBehavior = [_presenter activeBehavior];
 
-  return v3;
+  return activeBehavior;
 }
 
 - (UIViewController)kitPresentedViewController
 {
   v4.receiver = self;
   v4.super_class = CSCoverSheetViewControllerBase;
-  v2 = [(CSCoverSheetViewControllerBase *)&v4 presentedViewController];
+  presentedViewController = [(CSCoverSheetViewControllerBase *)&v4 presentedViewController];
 
-  return v2;
+  return presentedViewController;
 }
 
 - (void)dealloc
@@ -381,11 +381,11 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (CSCoverSheetViewControllerBase)initWithNibName:(id)a3 bundle:(id)a4
+- (CSCoverSheetViewControllerBase)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = CSCoverSheetViewControllerBase;
-  v4 = [(CSCoverSheetViewControllerBase *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(CSCoverSheetViewControllerBase *)&v12 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = SBLogDashBoard();
@@ -407,9 +407,9 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v23 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = CSCoverSheetViewControllerBase;
@@ -432,8 +432,8 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(CSCoverSheetViewControllerBase *)self childViewControllers];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    childViewControllers = [(CSCoverSheetViewControllerBase *)self childViewControllers];
+    v7 = [childViewControllers countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -445,14 +445,14 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(childViewControllers);
           }
 
-          [(CSCoverSheetViewControllerBase *)self bs_beginAppearanceTransitionForChildViewController:*(*(&v13 + 1) + 8 * v10++) toVisible:1 animated:v3];
+          [(CSCoverSheetViewControllerBase *)self bs_beginAppearanceTransitionForChildViewController:*(*(&v13 + 1) + 8 * v10++) toVisible:1 animated:appearCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [childViewControllers countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v8);
@@ -460,7 +460,7 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v22 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
@@ -485,8 +485,8 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CSCoverSheetViewControllerBase *)self childViewControllers];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    childViewControllers = [(CSCoverSheetViewControllerBase *)self childViewControllers];
+    v6 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -498,14 +498,14 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(childViewControllers);
           }
 
           [(CSCoverSheetViewControllerBase *)self bs_endAppearanceTransitionForChildViewController:*(*(&v12 + 1) + 8 * v9++) toVisible:1];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v7);
@@ -515,9 +515,9 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
   [(CSCoverSheetViewControllerBase *)self rebuildEverythingForReason:@"ViewController Did Appear"];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v23 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = CSCoverSheetViewControllerBase;
@@ -541,8 +541,8 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(CSCoverSheetViewControllerBase *)self childViewControllers];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    childViewControllers = [(CSCoverSheetViewControllerBase *)self childViewControllers];
+    v7 = [childViewControllers countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -554,14 +554,14 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(childViewControllers);
           }
 
-          [(CSCoverSheetViewControllerBase *)self bs_beginAppearanceTransitionForChildViewController:*(*(&v13 + 1) + 8 * v10++) toVisible:0 animated:v3];
+          [(CSCoverSheetViewControllerBase *)self bs_beginAppearanceTransitionForChildViewController:*(*(&v13 + 1) + 8 * v10++) toVisible:0 animated:disappearCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [childViewControllers countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v8);
@@ -569,7 +569,7 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v22 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
@@ -593,8 +593,8 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CSCoverSheetViewControllerBase *)self childViewControllers];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    childViewControllers = [(CSCoverSheetViewControllerBase *)self childViewControllers];
+    v6 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -606,14 +606,14 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(childViewControllers);
           }
 
           [(CSCoverSheetViewControllerBase *)self bs_endAppearanceTransitionForChildViewController:*(*(&v12 + 1) + 8 * v9++) toVisible:0];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [childViewControllers countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v7);
@@ -621,14 +621,14 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = CSCoverSheetViewControllerBase;
-  [(CSCoverSheetViewControllerBase *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(CSCoverSheetViewControllerBase *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ([(CSCoverSheetViewControllerBase *)self _presentationParticipant])
   {
     v8[4] = self;
@@ -641,17 +641,17 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
     v8[1] = 3221225472;
     v8[2] = __85__CSCoverSheetViewControllerBase_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
     v8[3] = &unk_27838C938;
-    [v7 animateAlongsideTransition:v9 completion:v8];
+    [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
   }
 }
 
-- (void)registerView:(id)a3 forRole:(int64_t)a4 options:(unint64_t)a5
+- (void)registerView:(id)view forRole:(int64_t)role options:(unint64_t)options
 {
-  v5 = a5;
-  v9 = a3;
-  if (a4)
+  optionsCopy = options;
+  viewCopy = view;
+  if (role)
   {
-    if (!v9)
+    if (!viewCopy)
     {
       goto LABEL_6;
     }
@@ -659,36 +659,36 @@ uint64_t __41__CSCoverSheetViewControllerBase_dismiss__block_invoke()
 
   else
   {
-    v13 = v9;
+    v13 = viewCopy;
     [CSCoverSheetViewControllerBase registerView:a2 forRole:self options:?];
-    v9 = v13;
+    viewCopy = v13;
     if (!v13)
     {
       goto LABEL_6;
     }
   }
 
-  v12 = v9;
+  v12 = viewCopy;
   if (!self->_regionProviders)
   {
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     regionProviders = self->_regionProviders;
-    self->_regionProviders = v10;
+    self->_regionProviders = weakObjectsHashTable;
   }
 
-  [v12 setCoverSheetRegionRole:a4];
-  [v12 setCoverSheetRegionReservedForHorizontalScrolling:v5 & 1];
+  [v12 setCoverSheetRegionRole:role];
+  [v12 setCoverSheetRegionReservedForHorizontalScrolling:optionsCopy & 1];
   [(NSHashTable *)self->_regionProviders addObject:v12];
-  v9 = v12;
+  viewCopy = v12;
 LABEL_6:
 }
 
-- (void)unregisterView:(id)a3
+- (void)unregisterView:(id)view
 {
-  v4 = a3;
-  [v4 setCoverSheetRegionRole:0];
-  [v4 setCoverSheetRegionReservedForHorizontalScrolling:0];
-  [(NSHashTable *)self->_regionProviders removeObject:v4];
+  viewCopy = view;
+  [viewCopy setCoverSheetRegionRole:0];
+  [viewCopy setCoverSheetRegionReservedForHorizontalScrolling:0];
+  [(NSHashTable *)self->_regionProviders removeObject:viewCopy];
 }
 
 - (void)unregisterAllViews
@@ -727,10 +727,10 @@ LABEL_6:
   [(NSHashTable *)self->_regionProviders removeAllObjects];
 }
 
-- (void)rebuildEverythingForReason:(id)a3
+- (void)rebuildEverythingForReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -738,7 +738,7 @@ LABEL_6:
     v7 = 138412546;
     v8 = v6;
     v9 = 2112;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_debug_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEBUG, "%@ reason = %@", &v7, 0x16u);
   }
 
@@ -746,36 +746,36 @@ LABEL_6:
   [(CSCoverSheetViewControllerBase *)self rebuildBehavior];
 }
 
-- (void)updateAppearance:(id)a3 completion:(id)a4
+- (void)updateAppearance:(id)appearance completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (appearance)
   {
-    a3 = (*(a3 + 2))(a3, self->_appearance);
+    appearance = (*(appearance + 2))(appearance, self->_appearance);
   }
 
-  [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self withAnimationSettings:a3 completion:v6];
+  [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self withAnimationSettings:appearance completion:completionCopy];
 }
 
-- (void)updateBehavior:(id)a3
+- (void)updateBehavior:(id)behavior
 {
-  if (a3)
+  if (behavior)
   {
-    (*(a3 + 2))(a3, self->_behavior);
+    (*(behavior + 2))(behavior, self->_behavior);
   }
 
-  v4 = [(CSCoverSheetViewControllerBase *)self _presenter];
-  [v4 updateBehaviorForController:self];
+  _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
+  [_presenter updateBehaviorForController:self];
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewControllerBase *)self _presenter];
-  [v5 handleAction:v4 fromSender:self];
+  actionCopy = action;
+  _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
+  [_presenter handleAction:actionCopy fromSender:self];
 }
 
-- (void)willTransitionToPresented:(BOOL)a3
+- (void)willTransitionToPresented:(BOOL)presented
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = SBLogDashBoard();
@@ -790,11 +790,11 @@ LABEL_6:
     _os_log_debug_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEBUG, "%@ presented = %@", &v9, 0x16u);
   }
 
-  v6 = a3 || self->_isBeingPresented;
+  v6 = presented || self->_isBeingPresented;
   self->_isBeingPresented = v6;
 }
 
-- (void)didTransitionToPresented:(BOOL)a3
+- (void)didTransitionToPresented:(BOOL)presented
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = SBLogDashBoard();
@@ -809,16 +809,16 @@ LABEL_6:
     _os_log_debug_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEBUG, "%@ presented = %@", &v8, 0x16u);
   }
 
-  self->_isBeingPresented = a3;
+  self->_isBeingPresented = presented;
 }
 
-- (void)updateForPresentation:(id)a3
+- (void)updateForPresentation:(id)presentation
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 presentationForRole:2];
-  v35 = v4;
-  v6 = [v4 presentationForRole:3];
+  presentationCopy = presentation;
+  v5 = [presentationCopy presentationForRole:2];
+  v35 = presentationCopy;
+  v6 = [presentationCopy presentationForRole:3];
   v37 = v5;
   [v5 unionPresentation:v6];
 
@@ -827,8 +827,8 @@ LABEL_6:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = [(CSCoverSheetViewControllerBase *)self presentationRegions];
-  v8 = [v7 countByEnumeratingWithState:&v38 objects:v48 count:16];
+  presentationRegions = [(CSCoverSheetViewControllerBase *)self presentationRegions];
+  v8 = [presentationRegions countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v8)
   {
     v9 = v8;
@@ -840,13 +840,13 @@ LABEL_6:
       {
         if (*v39 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(presentationRegions);
         }
 
         v12 = *(*(&v38 + 1) + 8 * v11);
-        v13 = [v12 identity];
+        identity = [v12 identity];
         v14 = objc_opt_class();
-        v15 = v13;
+        v15 = identity;
         if (v14)
         {
           if (objc_opt_isKindOfClass())
@@ -870,8 +870,8 @@ LABEL_6:
         if (v17)
         {
           regionProviders = self->_regionProviders;
-          v19 = [v12 provider];
-          LODWORD(regionProviders) = [(NSHashTable *)regionProviders containsObject:v19];
+          provider = [v12 provider];
+          LODWORD(regionProviders) = [(NSHashTable *)regionProviders containsObject:provider];
 
           if (regionProviders)
           {
@@ -922,14 +922,14 @@ LABEL_6:
                   if (v26)
                   {
                     v36 = [MEMORY[0x277CF0C00] descriptionForObject:v17];
-                    v27 = [v37 identifier];
+                    identifier = [v37 identifier];
                     *buf = 138412802;
                     v43 = v36;
                     v44 = 2112;
                     v45 = v20;
                     v46 = 2112;
-                    v47 = v27;
-                    v28 = v27;
+                    v47 = identifier;
+                    v28 = identifier;
                     v29 = v25;
                     v30 = "Hiding view %@ because it intersects %@ within %@";
                     v31 = 32;
@@ -940,12 +940,12 @@ LABEL_6:
                 else if (v26)
                 {
                   v36 = [MEMORY[0x277CF0C00] descriptionForObject:v17];
-                  v33 = [v37 identifier];
+                  identifier2 = [v37 identifier];
                   *buf = 138412546;
                   v43 = v36;
                   v44 = 2112;
-                  v45 = v33;
-                  v28 = v33;
+                  v45 = identifier2;
+                  v28 = identifier2;
                   v29 = v25;
                   v30 = "Showing view %@ because it doesn't intersect any regions within %@.";
                   v31 = 22;
@@ -961,7 +961,7 @@ LABEL_32:
       }
 
       while (v9 != v11);
-      v34 = [v7 countByEnumeratingWithState:&v38 objects:v48 count:16];
+      v34 = [presentationRegions countByEnumeratingWithState:&v38 objects:v48 count:16];
       v9 = v34;
     }
 
@@ -971,33 +971,33 @@ LABEL_32:
   [(CSCoverSheetViewControllerBase *)self _rebuildPresentation];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
-  v8 = a3;
-  v3 = [v8 legibilitySettings];
+  appearanceCopy = appearance;
+  legibilitySettings = [appearanceCopy legibilitySettings];
 
-  if (!v3)
+  if (!legibilitySettings)
   {
-    v4 = [v8 componentForType:19 property:4];
-    v5 = [v4 value];
-    v6 = [v5 integerValue];
+    v4 = [appearanceCopy componentForType:19 property:4];
+    value = [v4 value];
+    integerValue = [value integerValue];
 
-    v7 = CSGetLegibilitySettingsForBackgroundStyle(v6);
+    v7 = CSGetLegibilitySettingsForBackgroundStyle(integerValue);
     if (v7)
     {
-      [v8 setLegibilitySettings:v7];
+      [appearanceCopy setLegibilitySettings:v7];
     }
   }
 }
 
-- (void)aggregatePresentation:(id)a3
+- (void)aggregatePresentation:(id)presentation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSCoverSheetViewControllerBase *)self externalPresentation];
-  [v4 unionPresentation:v5];
+  presentationCopy = presentation;
+  externalPresentation = [(CSCoverSheetViewControllerBase *)self externalPresentation];
+  [presentationCopy unionPresentation:externalPresentation];
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1019,7 +1019,7 @@ LABEL_32:
         }
 
         v12 = [(CSCoverSheetViewControllerBase *)self _regionsForView:*(*(&v13 + 1) + 8 * v11), v13];
-        [v6 addObjectsFromArray:v12];
+        [array addObjectsFromArray:v12];
 
         ++v11;
       }
@@ -1031,52 +1031,52 @@ LABEL_32:
     while (v9);
   }
 
-  [v4 addRegions:v6];
+  [presentationCopy addRegions:array];
 }
 
-- (void)performCustomTransitionToVisible:(BOOL)a3 withAnimationSettings:(id)a4 completion:(id)a5
+- (void)performCustomTransitionToVisible:(BOOL)visible withAnimationSettings:(id)settings completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)_updateDisplayLayoutElementForActivation:(id)a3
+- (void)_updateDisplayLayoutElementForActivation:(id)activation
 {
-  v4 = a3;
-  v7 = [(CSCoverSheetViewControllerBase *)self view];
-  v5 = [v7 window];
-  [v5 level];
-  [v4 setLevel:v6];
+  activationCopy = activation;
+  view = [(CSCoverSheetViewControllerBase *)self view];
+  window = [view window];
+  [window level];
+  [activationCopy setLevel:v6];
 }
 
-- (void)_setDisplayLayoutElementActive:(BOOL)a3 immediately:(BOOL)a4
+- (void)_setDisplayLayoutElementActive:(BOOL)active immediately:(BOOL)immediately
 {
-  v4 = a4;
-  [(CSCoverSheetViewControllerBase *)self setDisplayLayoutElementActive:a3];
-  if (v4 && self->_displayLayoutElement)
+  immediatelyCopy = immediately;
+  [(CSCoverSheetViewControllerBase *)self setDisplayLayoutElementActive:active];
+  if (immediatelyCopy && self->_displayLayoutElement)
   {
-    v6 = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
-    [v6 flush];
+    _displayLayoutPublisher = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
+    [_displayLayoutPublisher flush];
   }
 }
 
-- (id)_timelinesForDateInterval:(id)a3
+- (id)_timelinesForDateInterval:(id)interval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v18.receiver = self;
   v18.super_class = CSCoverSheetViewControllerBase;
-  v5 = [(CSCoverSheetViewControllerBase *)&v18 _timelinesForDateInterval:v4];
+  v5 = [(CSCoverSheetViewControllerBase *)&v18 _timelinesForDateInterval:intervalCopy];
   v6 = [v5 mutableCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(CSCoverSheetViewControllerBase *)self childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  childViewControllers = [(CSCoverSheetViewControllerBase *)self childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1087,17 +1087,17 @@ LABEL_32:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) _timelinesForDateInterval:v4];
+        v12 = [*(*(&v14 + 1) + 8 * i) _timelinesForDateInterval:intervalCopy];
         if (v12)
         {
           [v6 addObjectsFromArray:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v9 = [childViewControllers countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v9);
@@ -1106,19 +1106,19 @@ LABEL_32:
   return v6;
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3
+- (void)_updateWithFrameSpecifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = CSCoverSheetViewControllerBase;
-  [(CSCoverSheetViewControllerBase *)&v14 _updateWithFrameSpecifier:v4];
+  [(CSCoverSheetViewControllerBase *)&v14 _updateWithFrameSpecifier:specifierCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(CSCoverSheetViewControllerBase *)self childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  childViewControllers = [(CSCoverSheetViewControllerBase *)self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1130,63 +1130,63 @@ LABEL_32:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _updateWithFrameSpecifier:v4];
+        [*(*(&v10 + 1) + 8 * v9++) _updateWithFrameSpecifier:specifierCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [childViewControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)updateBehaviorForController:(id)a3
+- (void)updateBehaviorForController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(CSCoverSheetViewControllerBase *)self _rebuildBehavior])
   {
-    v5 = [(CSCoverSheetViewControllerBase *)self _presenter];
-    [v5 updateBehaviorForController:self];
+    _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
+    [_presenter updateBehaviorForController:self];
   }
 
   else
   {
-    v5 = SBLogDashBoard();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    _presenter = SBLogDashBoard();
+    if (os_log_type_enabled(_presenter, OS_LOG_TYPE_DEBUG))
     {
-      [(CSCoverSheetViewControllerBase *)self updateBehaviorForController:v4];
+      [(CSCoverSheetViewControllerBase *)self updateBehaviorForController:controllerCopy];
     }
   }
 }
 
-- (void)updateAppearanceForController:(id)a3 withAnimationSettings:(id)a4 completion:(id)a5
+- (void)updateAppearanceForController:(id)controller withAnimationSettings:(id)settings completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  controllerCopy = controller;
+  settingsCopy = settings;
+  completionCopy = completion;
+  if (settingsCopy)
   {
-    v11 = v9;
+    _currentAnimationSettings = settingsCopy;
   }
 
   else
   {
-    v11 = [MEMORY[0x277D75D18] _currentAnimationSettings];
+    _currentAnimationSettings = [MEMORY[0x277D75D18] _currentAnimationSettings];
   }
 
-  v12 = v11;
-  v17 = v11;
-  v13 = [(CSCoverSheetViewControllerBase *)self handleAppearanceUpdateFromController:v8 animationSettings:&v17];
+  v12 = _currentAnimationSettings;
+  v17 = _currentAnimationSettings;
+  v13 = [(CSCoverSheetViewControllerBase *)self handleAppearanceUpdateFromController:controllerCopy animationSettings:&v17];
   v14 = v17;
 
   if (v13)
   {
-    v15 = [(CSCoverSheetViewControllerBase *)self _presenter];
-    [v15 updateAppearanceForController:self withAnimationSettings:v14 completion:v10];
+    _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
+    [_presenter updateAppearanceForController:self withAnimationSettings:v14 completion:completionCopy];
   }
 
   else
@@ -1194,46 +1194,46 @@ LABEL_32:
     v16 = SBLogDashBoard();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [CSCoverSheetViewControllerBase updateAppearanceForController:v8 withAnimationSettings:? completion:?];
+      [CSCoverSheetViewControllerBase updateAppearanceForController:controllerCopy withAnimationSettings:? completion:?];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)handleAction:(id)a3 fromSender:(id)a4
+- (void)handleAction:(id)action fromSender:(id)sender
 {
-  v8 = a3;
-  v6 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![(CSCoverSheetViewControllerBase *)self handleAction:v8 fromController:v6])
+  actionCopy = action;
+  senderCopy = sender;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![(CSCoverSheetViewControllerBase *)self handleAction:actionCopy fromController:senderCopy])
   {
-    v7 = [(CSCoverSheetViewControllerBase *)self _presenter];
-    [v7 handleAction:v8 fromSender:v6];
+    _presenter = [(CSCoverSheetViewControllerBase *)self _presenter];
+    [_presenter handleAction:actionCopy fromSender:senderCopy];
   }
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 type] - 5) <= 2)
+  eventCopy = event;
+  if (([eventCopy type] - 5) <= 2)
   {
     [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
     displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = 0;
   }
 
-  if (([v4 isConsumable] & 1) == 0)
+  if (([eventCopy isConsumable] & 1) == 0)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(CSCoverSheetViewControllerBase *)self childViewControllers];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    childViewControllers = [(CSCoverSheetViewControllerBase *)self childViewControllers];
+    v7 = [childViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1245,20 +1245,20 @@ LABEL_32:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(childViewControllers);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            [v11 handleEvent:v4];
+            [v11 handleEvent:eventCopy];
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [childViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -1268,30 +1268,30 @@ LABEL_32:
   return 0;
 }
 
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder
 {
-  v13 = a3;
-  v5 = [(CSCoverSheetViewControllerBase *)self _displayLayoutElement];
-  if (v5)
+  builderCopy = builder;
+  _displayLayoutElement = [(CSCoverSheetViewControllerBase *)self _displayLayoutElement];
+  if (_displayLayoutElement)
   {
     if (self->_displayLayoutElementAssertion)
     {
-      v6 = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
-      if (!v6)
+      _displayLayoutPublisher = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
+      if (!_displayLayoutPublisher)
       {
         [(CSCoverSheetViewControllerBase *)a2 updateDisplayLayoutElementWithBuilder:?];
       }
 
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v6 transitionAssertionWithReason:v8];
+      v9 = [_displayLayoutPublisher transitionAssertionWithReason:v8];
 
       [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
       displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
       self->_displayLayoutElementAssertion = 0;
 
-      v13[2](v13, v5);
-      v11 = [v6 addElement:v5];
+      builderCopy[2](builderCopy, _displayLayoutElement);
+      v11 = [_displayLayoutPublisher addElement:_displayLayoutElement];
       v12 = self->_displayLayoutElementAssertion;
       self->_displayLayoutElementAssertion = v11;
 
@@ -1300,84 +1300,84 @@ LABEL_32:
 
     else
     {
-      v13[2](v13, v5);
+      builderCopy[2](builderCopy, _displayLayoutElement);
     }
   }
 }
 
-- (void)setDisplayLayoutElementActive:(BOOL)a3
+- (void)setDisplayLayoutElementActive:(BOOL)active
 {
-  v3 = a3;
-  v6 = [(CSCoverSheetViewControllerBase *)self _displayLayoutElement];
-  if (v6)
+  activeCopy = active;
+  _displayLayoutElement = [(CSCoverSheetViewControllerBase *)self _displayLayoutElement];
+  if (_displayLayoutElement)
   {
-    v14 = v6;
-    v7 = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
-    if (!v7)
+    v14 = _displayLayoutElement;
+    _displayLayoutPublisher = [(CSCoverSheetViewControllerBase *)self _displayLayoutPublisher];
+    if (!_displayLayoutPublisher)
     {
       [(CSCoverSheetViewControllerBase *)a2 setDisplayLayoutElementActive:?];
     }
 
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 transitionAssertionWithReason:v9];
+    v10 = [_displayLayoutPublisher transitionAssertionWithReason:v9];
 
     [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
     displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = 0;
 
-    if (v3)
+    if (activeCopy)
     {
       [(CSCoverSheetViewControllerBase *)self _updateDisplayLayoutElementForActivation:v14];
-      v12 = [v7 addElement:v14];
+      v12 = [_displayLayoutPublisher addElement:v14];
       v13 = self->_displayLayoutElementAssertion;
       self->_displayLayoutElementAssertion = v12;
     }
 
     [v10 invalidate];
 
-    v6 = v14;
+    _displayLayoutElement = v14;
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CSCoverSheetViewControllerBase *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSCoverSheetViewControllerBase *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(CSCoverSheetViewControllerBase *)self _displayLayoutElement];
-  v5 = [v4 identifier];
-  v6 = [v3 appendObject:v5 withName:@"layoutID" skipIfNil:1];
+  _displayLayoutElement = [(CSCoverSheetViewControllerBase *)self _displayLayoutElement];
+  identifier = [_displayLayoutElement identifier];
+  v6 = [v3 appendObject:identifier withName:@"layoutID" skipIfNil:1];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSCoverSheetViewControllerBase *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSCoverSheetViewControllerBase *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CSCoverSheetViewControllerBase *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CSCoverSheetViewControllerBase *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__CSCoverSheetViewControllerBase_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_27838B838;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -1418,18 +1418,18 @@ id __72__CSCoverSheetViewControllerBase_descriptionBuilderWithMultilinePrefix___
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 1008) withName:@"presentation" skipIfNil:1];
 }
 
-- (id)_regionsForView:(id)a3
+- (id)_regionsForView:(id)view
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 superview];
-  v6 = v5;
+  viewCopy = view;
+  superview = [viewCopy superview];
+  v6 = superview;
   v7 = 0;
-  if (v4 && v5)
+  if (viewCopy && superview)
   {
-    if ([v4 isCoverSheetView])
+    if ([viewCopy isCoverSheetView])
     {
-      v8 = [v4 presentationRegions];
+      presentationRegions = [viewCopy presentationRegions];
     }
 
     else
@@ -1437,11 +1437,11 @@ id __72__CSCoverSheetViewControllerBase_descriptionBuilderWithMultilinePrefix___
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v4;
-        v10 = [v9 superview];
+        v9 = viewCopy;
+        superview2 = [v9 superview];
         [(CSCoverSheetViewControllerBase *)self effectiveContentSizeForScrollView:v9];
         BSRectWithSize();
-        [v9 convertRect:v10 toView:?];
+        [v9 convertRect:superview2 toView:?];
         v12 = v11;
         v14 = v13;
         v16 = v15;
@@ -1456,29 +1456,29 @@ id __72__CSCoverSheetViewControllerBase_descriptionBuilderWithMultilinePrefix___
         v47.size.width = v16;
         v47.size.height = v18;
         v48 = CGRectIntersection(v47, v49);
-        [v9 convertRect:v10 fromView:{v48.origin.x, v48.origin.y, v48.size.width, v48.size.height}];
+        [v9 convertRect:superview2 fromView:{v48.origin.x, v48.origin.y, v48.size.width, v48.size.height}];
         v23 = [CSRegion regionForCoordinateSpace:v9 withExtent:?];
 
         v45[0] = v23;
-        v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
+        presentationRegions = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
       }
 
       else
       {
-        [v4 bounds];
-        v10 = [CSRegion regionForCoordinateSpace:v4 withExtent:?];
-        v44 = v10;
-        v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
+        [viewCopy bounds];
+        superview2 = [CSRegion regionForCoordinateSpace:viewCopy withExtent:?];
+        v44 = superview2;
+        presentationRegions = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
       }
     }
 
-    v38 = [v4 coverSheetRegionRole];
-    v24 = [v4 coverSheetRegionIsReservedForHorizontalScrolling];
+    coverSheetRegionRole = [viewCopy coverSheetRegionRole];
+    coverSheetRegionIsReservedForHorizontalScrolling = [viewCopy coverSheetRegionIsReservedForHorizontalScrolling];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v7 = v8;
+    v7 = presentationRegions;
     v25 = [v7 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v25)
     {
@@ -1494,9 +1494,9 @@ id __72__CSCoverSheetViewControllerBase_descriptionBuilderWithMultilinePrefix___
           }
 
           v29 = *(*(&v39 + 1) + 8 * i);
-          v30 = [v29 identity];
+          identity = [v29 identity];
           v31 = objc_opt_class();
-          v32 = v30;
+          v32 = identity;
           if (v31)
           {
             if (objc_opt_isKindOfClass())
@@ -1527,7 +1527,7 @@ id __72__CSCoverSheetViewControllerBase_descriptionBuilderWithMultilinePrefix___
 
           else
           {
-            [v29 setRole:v38];
+            [v29 setRole:coverSheetRegionRole];
             if (!v34)
             {
               goto LABEL_27;
@@ -1537,22 +1537,22 @@ id __72__CSCoverSheetViewControllerBase_descriptionBuilderWithMultilinePrefix___
           [v34 alpha];
           if (BSFloatIsZero())
           {
-            v35 = 1;
+            isHidden = 1;
           }
 
           else
           {
-            v35 = [v34 isHidden];
+            isHidden = [v34 isHidden];
           }
 
-          [v29 setHidden:v35];
+          [v29 setHidden:isHidden];
 LABEL_27:
           if (([v29 isReservedForHorizontalScrolling] & 1) == 0)
           {
-            [v29 setReservedForHorizontalScrolling:v24];
+            [v29 setReservedForHorizontalScrolling:coverSheetRegionIsReservedForHorizontalScrolling];
           }
 
-          [v29 setProvider:v4];
+          [v29 setProvider:viewCopy];
         }
 
         v26 = [v7 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -1567,23 +1567,23 @@ LABEL_27:
   return v7;
 }
 
-- (CGSize)effectiveContentSizeForScrollView:(id)a3
+- (CGSize)effectiveContentSizeForScrollView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 collectionViewLayout];
+    collectionViewLayout = [viewCopy collectionViewLayout];
 
-    [v4 collectionViewContentSize];
+    [collectionViewLayout collectionViewContentSize];
     v6 = v5;
     v8 = v7;
-    v3 = v4;
+    viewCopy = collectionViewLayout;
   }
 
   else
   {
-    [v3 contentSize];
+    [viewCopy contentSize];
     v6 = v9;
     v8 = v10;
   }

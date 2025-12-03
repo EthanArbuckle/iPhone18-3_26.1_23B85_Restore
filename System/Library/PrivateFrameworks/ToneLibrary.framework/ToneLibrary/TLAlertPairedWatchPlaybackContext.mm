@@ -1,21 +1,21 @@
 @interface TLAlertPairedWatchPlaybackContext
-- (TLAlertPairedWatchPlaybackContext)initWithAlert:(id)a3 completionHandler:(id)a4;
+- (TLAlertPairedWatchPlaybackContext)initWithAlert:(id)alert completionHandler:(id)handler;
 @end
 
 @implementation TLAlertPairedWatchPlaybackContext
 
-- (TLAlertPairedWatchPlaybackContext)initWithAlert:(id)a3 completionHandler:(id)a4
+- (TLAlertPairedWatchPlaybackContext)initWithAlert:(id)alert completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  alertCopy = alert;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = TLAlertPairedWatchPlaybackContext;
   v9 = [(TLAlertPairedWatchPlaybackContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_alert, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_alert, alert);
+    v11 = [handlerCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
   }

@@ -1,13 +1,13 @@
 @interface HAPTLVCreator
 + (id)creator;
-+ (id)creatorWithBufferSize:(unint64_t)a3;
-- (BOOL)addTLV:(unint64_t)a3 data:(id)a4;
-- (BOOL)addTLV:(unint64_t)a3 length:(unint64_t)a4 floatNumber:(id)a5;
-- (BOOL)addTLV:(unint64_t)a3 length:(unint64_t)a4 number:(id)a5;
-- (BOOL)addTLV:(unint64_t)a3 number:(id)a4;
-- (BOOL)addTLV:(unint64_t)a3 string:(id)a4;
-- (BOOL)addTLV:(unint64_t)a3 uuid:(id)a4;
-- (HAPTLVCreator)initWithBufferSize:(unint64_t)a3;
++ (id)creatorWithBufferSize:(unint64_t)size;
+- (BOOL)addTLV:(unint64_t)v data:(id)data;
+- (BOOL)addTLV:(unint64_t)v length:(unint64_t)length floatNumber:(id)number;
+- (BOOL)addTLV:(unint64_t)v length:(unint64_t)length number:(id)number;
+- (BOOL)addTLV:(unint64_t)v number:(id)number;
+- (BOOL)addTLV:(unint64_t)v string:(id)string;
+- (BOOL)addTLV:(unint64_t)v uuid:(id)uuid;
+- (HAPTLVCreator)initWithBufferSize:(unint64_t)size;
 - (id)serialize;
 - (void)dealloc;
 @end
@@ -21,14 +21,14 @@
   return v2;
 }
 
-+ (id)creatorWithBufferSize:(unint64_t)a3
++ (id)creatorWithBufferSize:(unint64_t)size
 {
-  v3 = [[HAPTLVCreator alloc] initWithBufferSize:a3];
+  v3 = [[HAPTLVCreator alloc] initWithBufferSize:size];
 
   return v3;
 }
 
-- (HAPTLVCreator)initWithBufferSize:(unint64_t)a3
+- (HAPTLVCreator)initWithBufferSize:(unint64_t)size
 {
   v6.receiver = self;
   v6.super_class = HAPTLVCreator;
@@ -66,16 +66,16 @@
   return v4;
 }
 
-- (BOOL)addTLV:(unint64_t)a3 data:(id)a4
+- (BOOL)addTLV:(unint64_t)v data:(id)data
 {
-  v5 = a4;
-  v6 = v5;
-  if (!v5)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (!dataCopy)
   {
     goto LABEL_4;
   }
 
-  [v5 bytes];
+  [dataCopy bytes];
   [v6 length];
   v7 = 1;
   if (TLV8BufferAppend())
@@ -88,14 +88,14 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)addTLV:(unint64_t)a3 string:(id)a4
+- (BOOL)addTLV:(unint64_t)v string:(id)string
 {
-  if (!a4)
+  if (!string)
   {
     return 0;
   }
 
-  v5 = [a4 dataUsingEncoding:4];
+  v5 = [string dataUsingEncoding:4];
   [v5 bytes];
   [v5 length];
   v6 = TLV8BufferAppend();
@@ -108,16 +108,16 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)addTLV:(unint64_t)a3 number:(id)a4
+- (BOOL)addTLV:(unint64_t)v number:(id)number
 {
-  v5 = a4;
-  v6 = v5;
-  if (!v5)
+  numberCopy = number;
+  v6 = numberCopy;
+  if (!numberCopy)
   {
     goto LABEL_4;
   }
 
-  [v5 unsignedIntegerValue];
+  [numberCopy unsignedIntegerValue];
   v7 = 1;
   if (TLV8BufferAppendUInt64())
   {
@@ -129,45 +129,45 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)addTLV:(unint64_t)a3 length:(unint64_t)a4 number:(id)a5
+- (BOOL)addTLV:(unint64_t)v length:(unint64_t)length number:(id)number
 {
-  if (!a5)
+  if (!number)
   {
     return 0;
   }
 
-  v11 = [a5 unsignedIntegerValue];
-  v8 = [NSData dataWithBytes:&v11 length:a4];
-  v9 = [(HAPTLVCreator *)self addTLV:a3 data:v8];
+  unsignedIntegerValue = [number unsignedIntegerValue];
+  v8 = [NSData dataWithBytes:&unsignedIntegerValue length:length];
+  v9 = [(HAPTLVCreator *)self addTLV:v data:v8];
 
   return v9;
 }
 
-- (BOOL)addTLV:(unint64_t)a3 length:(unint64_t)a4 floatNumber:(id)a5
+- (BOOL)addTLV:(unint64_t)v length:(unint64_t)length floatNumber:(id)number
 {
-  if (!a5)
+  if (!number)
   {
     return 0;
   }
 
-  [a5 floatValue];
+  [number floatValue];
   v12 = v8;
-  v9 = [NSData dataWithBytes:&v12 length:a4];
-  v10 = [(HAPTLVCreator *)self addTLV:a3 data:v9];
+  v9 = [NSData dataWithBytes:&v12 length:length];
+  v10 = [(HAPTLVCreator *)self addTLV:v data:v9];
 
   return v10;
 }
 
-- (BOOL)addTLV:(unint64_t)a3 uuid:(id)a4
+- (BOOL)addTLV:(unint64_t)v uuid:(id)uuid
 {
-  if (!a4)
+  if (!uuid)
   {
     return 0;
   }
 
   v7[0] = 0;
   v7[1] = 0;
-  [a4 getUUIDBytes:v7];
+  [uuid getUUIDBytes:v7];
   v5 = TLV8BufferAppend();
   result = v5 == 0;
   if (v5)

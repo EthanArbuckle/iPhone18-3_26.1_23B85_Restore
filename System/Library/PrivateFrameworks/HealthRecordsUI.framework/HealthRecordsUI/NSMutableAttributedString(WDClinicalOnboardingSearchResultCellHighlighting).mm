@@ -48,7 +48,7 @@
           v25 = *(*(&v42 + 1) + 8 * i);
           if ([v25 length])
           {
-            v26 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
             v27 = [v14 rangeOfString:v25 options:1 range:{0, v20}];
             if (v27 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -56,7 +56,7 @@
               v30 = v28;
               do
               {
-                if (!v29 || [v26 characterIsMember:{objc_msgSend(v14, "characterAtIndex:", v29 - 1)}])
+                if (!v29 || [whitespaceCharacterSet characterIsMember:{objc_msgSend(v14, "characterAtIndex:", v29 - 1)}])
                 {
                   [v19 addAttribute:v39 value:v40 range:{v29, v30}];
                   [v19 addAttribute:v23 value:v41 range:{v29, v30}];

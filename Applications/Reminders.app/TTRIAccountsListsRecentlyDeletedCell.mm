@@ -1,17 +1,17 @@
 @interface TTRIAccountsListsRecentlyDeletedCell
 - (NSArray)accessibilityCustomActions;
-- (_TtC9Reminders36TTRIAccountsListsRecentlyDeletedCell)initWithCoder:(id)a3;
-- (_TtC9Reminders36TTRIAccountsListsRecentlyDeletedCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC9Reminders36TTRIAccountsListsRecentlyDeletedCell)initWithCoder:(id)coder;
+- (_TtC9Reminders36TTRIAccountsListsRecentlyDeletedCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)setAccessibilityCustomActions:(id)isa;
 @end
 
 @implementation TTRIAccountsListsRecentlyDeletedCell
 
-- (_TtC9Reminders36TTRIAccountsListsRecentlyDeletedCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9Reminders36TTRIAccountsListsRecentlyDeletedCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -20,10 +20,10 @@
     v6 = 0;
   }
 
-  return sub_10031EA04(a3, a4, v6);
+  return sub_10031EA04(style, identifier, v6);
 }
 
-- (_TtC9Reminders36TTRIAccountsListsRecentlyDeletedCell)initWithCoder:(id)a3
+- (_TtC9Reminders36TTRIAccountsListsRecentlyDeletedCell)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -32,7 +32,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10031EC84();
 
   if (v3)
@@ -56,13 +56,13 @@
   {
     sub_100003540(0, &qword_10076BCE0);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = self;
+    selfCopy = self;
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

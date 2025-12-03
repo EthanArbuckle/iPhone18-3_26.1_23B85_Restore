@@ -13,16 +13,16 @@
 
 - (BOOL)hasSendMessageCapability
 {
-  v3 = [(TUCall *)self provider];
-  if ([v3 isSystemProvider])
+  provider = [(TUCall *)self provider];
+  if ([provider isSystemProvider])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TUCall *)self sendMessageIntentExtension];
-    v4 = v5 != 0;
+    sendMessageIntentExtension = [(TUCall *)self sendMessageIntentExtension];
+    v4 = sendMessageIntentExtension != 0;
   }
 
   return v4;
@@ -30,9 +30,9 @@
 
 - (BOOL)disconnectedReasonRequiresCallBackUI
 {
-  v3 = [(TUCall *)self disconnectedReason];
+  disconnectedReason = [(TUCall *)self disconnectedReason];
   v4 = 0;
-  if (v3 > 0x18 || ((1 << v3) & 0x1C2C020) == 0)
+  if (disconnectedReason > 0x18 || ((1 << disconnectedReason) & 0x1C2C020) == 0)
   {
     return v4 & 1;
   }
@@ -42,13 +42,13 @@
 
   if (v6)
   {
-    v7 = [v6 isOneToOneModeEnabled];
+    isOneToOneModeEnabled = [v6 isOneToOneModeEnabled];
   }
 
   else
   {
-    v8 = [(TUCall *)self remoteParticipantHandles];
-    v7 = [v8 count] == &dword_0 + 1;
+    remoteParticipantHandles = [(TUCall *)self remoteParticipantHandles];
+    isOneToOneModeEnabled = [remoteParticipantHandles count] == &dword_0 + 1;
   }
 
   v9 = +[PHInCallUIUtilities isSpringBoardPasscodeLocked];
@@ -60,7 +60,7 @@
     }
 
 LABEL_10:
-    v4 = [(TUCall *)self isConversation]^ 1 | v7;
+    v4 = [(TUCall *)self isConversation]^ 1 | isOneToOneModeEnabled;
     goto LABEL_11;
   }
 
@@ -78,17 +78,17 @@ LABEL_11:
     *buf = 67110912;
     v13 = v4 & 1;
     v14 = 1024;
-    v15 = [(TUCall *)self disconnectedReason];
+    disconnectedReason2 = [(TUCall *)self disconnectedReason];
     v16 = 1024;
-    v17 = [(TUCall *)self isIncoming];
+    isIncoming = [(TUCall *)self isIncoming];
     v18 = 1024;
-    v19 = [(TUCall *)self isConnecting];
+    isConnecting = [(TUCall *)self isConnecting];
     v20 = 1024;
     v21 = v9;
     v22 = 1024;
-    v23 = [(TUCall *)self isConversation];
+    isConversation = [(TUCall *)self isConversation];
     v24 = 1024;
-    v25 = v7;
+    v25 = isOneToOneModeEnabled;
     v26 = 1024;
     v27 = v6 == 0;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "disconnectedReasonRequiresCallBackUI = %d (disconnectedReason: %d, isIncoming: %d, isConnecting: %d, isSpringBoardPasscodeLocked: %d, isConversation: %d, isOneToOneModeEnabled: %d, conversationIsNil: %d)", buf, 0x32u);
@@ -101,16 +101,16 @@ LABEL_11:
 {
   if ([(TUCall *)self status]== 6)
   {
-    v3 = [(TUCall *)self errorAlertTitle];
-    if (v3)
+    errorAlertTitle = [(TUCall *)self errorAlertTitle];
+    if (errorAlertTitle)
     {
       v4 = ![(TUCall *)self shouldShowAutomaticTelephonyCallFallback];
     }
 
     else
     {
-      v5 = [(TUCall *)self errorAlertMessage];
-      if (v5)
+      errorAlertMessage = [(TUCall *)self errorAlertMessage];
+      if (errorAlertMessage)
       {
         v4 = ![(TUCall *)self shouldShowAutomaticTelephonyCallFallback];
       }
@@ -132,12 +132,12 @@ LABEL_11:
 
 - (BOOL)shouldShowAutomaticTelephonyCallFallback
 {
-  v3 = [(TUCall *)self disconnectedReason];
-  v4 = [(TUCall *)self provider];
-  if ([v4 isFaceTimeProvider] && (-[TUCall isVideo](self, "isVideo") & 1) == 0)
+  disconnectedReason = [(TUCall *)self disconnectedReason];
+  provider = [(TUCall *)self provider];
+  if ([provider isFaceTimeProvider] && (-[TUCall isVideo](self, "isVideo") & 1) == 0)
   {
-    v6 = [(TUCall *)self remoteParticipantHandles];
-    if ([v6 count] == &dword_0 + 1 && (v3 == 49 || v3 == 30))
+    remoteParticipantHandles = [(TUCall *)self remoteParticipantHandles];
+    if ([remoteParticipantHandles count] == &dword_0 + 1 && (disconnectedReason == 49 || disconnectedReason == 30))
     {
       v5 = TUDefaultAppsEnabled();
     }
@@ -158,20 +158,20 @@ LABEL_11:
 
 - (BOOL)shouldPlayInCallSounds
 {
-  v3 = [(TUCall *)self needsManualInCallSounds];
-  if (v3)
+  needsManualInCallSounds = [(TUCall *)self needsManualInCallSounds];
+  if (needsManualInCallSounds)
   {
 
-    LOBYTE(v3) = [(TUCall *)self isEndpointOnCurrentDevice];
+    LOBYTE(needsManualInCallSounds) = [(TUCall *)self isEndpointOnCurrentDevice];
   }
 
-  return v3;
+  return needsManualInCallSounds;
 }
 
 - (BOOL)supportsSendMessageIntent
 {
-  v2 = [(TUCall *)self provider];
-  v3 = [v2 bundleIdentifier];
+  provider = [(TUCall *)self provider];
+  bundleIdentifier = [provider bundleIdentifier];
 
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v5 = [v4 applicationsForUserActivityType:@"INSendMessageIntent"];
@@ -203,8 +203,8 @@ LABEL_11:
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "application %@", buf, 0xCu);
         }
 
-        v12 = [v10 bundleIdentifier];
-        v13 = [v12 isEqualToString:v3];
+        bundleIdentifier2 = [v10 bundleIdentifier];
+        v13 = [bundleIdentifier2 isEqualToString:bundleIdentifier];
 
         if (v13)
         {
@@ -230,24 +230,24 @@ LABEL_13:
 
 - (BOOL)hasSendCustomMessageCapability
 {
-  v3 = [(TUCall *)self provider];
-  if ([v3 isSystemProvider])
+  provider = [(TUCall *)self provider];
+  if ([provider isSystemProvider])
   {
-    v4 = 1;
+    supportsSendMessageIntent = 1;
   }
 
   else
   {
-    v4 = [(TUCall *)self supportsSendMessageIntent];
+    supportsSendMessageIntent = [(TUCall *)self supportsSendMessageIntent];
   }
 
-  return v4;
+  return supportsSendMessageIntent;
 }
 
 - (id)sendMessageIntentExtension
 {
-  v3 = [(TUCall *)self provider];
-  if ([v3 isSystemProvider])
+  provider = [(TUCall *)self provider];
+  if ([provider isSystemProvider])
   {
 
 LABEL_13:
@@ -255,10 +255,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v4 = [(TUCall *)self provider];
-  v5 = [v4 bundleURL];
+  provider2 = [(TUCall *)self provider];
+  bundleURL = [provider2 bundleURL];
 
-  if (!v5)
+  if (!bundleURL)
   {
     goto LABEL_13;
   }
@@ -276,10 +276,10 @@ LABEL_13:
     v7 = [NSExtension _intents_extensionMatchingAttributesForIntents:v6];
     v8 = [v7 mutableCopy];
 
-    v9 = [(TUCall *)self provider];
-    v10 = [v9 bundleURL];
-    v11 = [v10 path];
-    [v8 setObject:v11 forKeyedSubscript:NSExtensionContainingAppName];
+    provider3 = [(TUCall *)self provider];
+    bundleURL2 = [provider3 bundleURL];
+    path = [bundleURL2 path];
+    [v8 setObject:path forKeyedSubscript:NSExtensionContainingAppName];
 
     v25 = 0;
     v26 = &v25;
@@ -312,7 +312,7 @@ LABEL_13:
       *buf = 138412546;
       v32 = v16;
       v33 = 2112;
-      v34 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Found send message intent extension %@ for call %@", buf, 0x16u);
     }
 

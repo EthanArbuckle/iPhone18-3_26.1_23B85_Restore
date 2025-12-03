@@ -1,5 +1,5 @@
 @interface _CESRModelPropertiesMutation
-- (_CESRModelPropertiesMutation)initWithBaseModel:(id)a3;
+- (_CESRModelPropertiesMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -14,38 +14,38 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_modelVersion;
+        modelVersion = self->_modelVersion;
       }
 
       else
       {
-        v6 = [(CESRModelProperties *)baseModel modelVersion];
+        modelVersion = [(CESRModelProperties *)baseModel modelVersion];
       }
 
-      v7 = v6;
+      v7 = modelVersion;
       if ((*&self->_mutationFlags & 4) != 0)
       {
-        v8 = self->_modelType;
+        modelType = self->_modelType;
       }
 
       else
       {
-        v8 = [(CESRModelProperties *)self->_baseModel modelType];
+        modelType = [(CESRModelProperties *)self->_baseModel modelType];
       }
 
-      v9 = v8;
+      v9 = modelType;
       if ((*&self->_mutationFlags & 8) != 0)
       {
-        v10 = self->_modelRoot;
+        modelRoot = self->_modelRoot;
       }
 
       else
       {
-        v10 = [(CESRModelProperties *)self->_baseModel modelRoot];
+        modelRoot = [(CESRModelProperties *)self->_baseModel modelRoot];
       }
 
-      v11 = v10;
-      v5 = [[CESRModelProperties alloc] initWithModelVersion:v7 modelType:v9 modelRoot:v10];
+      v11 = modelRoot;
+      v5 = [[CESRModelProperties alloc] initWithModelVersion:v7 modelType:v9 modelRoot:modelRoot];
 
       goto LABEL_16;
     }
@@ -64,16 +64,16 @@ LABEL_16:
   return v5;
 }
 
-- (_CESRModelPropertiesMutation)initWithBaseModel:(id)a3
+- (_CESRModelPropertiesMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _CESRModelPropertiesMutation;
   v6 = [(_CESRModelPropertiesMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

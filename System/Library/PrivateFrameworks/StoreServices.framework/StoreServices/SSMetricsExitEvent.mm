@@ -1,7 +1,7 @@
 @interface SSMetricsExitEvent
 - (SSMetricsExitEvent)init;
 - (id)description;
-- (void)setExitTypeWithSuspendReason:(int64_t)a3;
+- (void)setExitTypeWithSuspendReason:(int64_t)reason;
 @end
 
 @implementation SSMetricsExitEvent
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (void)setExitTypeWithSuspendReason:(int64_t)a3
+- (void)setExitTypeWithSuspendReason:(int64_t)reason
 {
-  if (a3)
+  if (reason)
   {
-    if (a3 != 1)
+    if (reason != 1)
     {
       return;
     }
@@ -46,8 +46,8 @@
   v8.receiver = self;
   v8.super_class = SSMetricsExitEvent;
   v4 = [(SSMetricsBaseEvent *)&v8 description];
-  v5 = [(SSMetricsExitEvent *)self exitType];
-  v6 = [v3 stringWithFormat:@"%@: Type: %@", v4, v5];
+  exitType = [(SSMetricsExitEvent *)self exitType];
+  v6 = [v3 stringWithFormat:@"%@: Type: %@", v4, exitType];
 
   return v6;
 }

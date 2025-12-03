@@ -15,25 +15,25 @@
   v7[5] = vcvt_hight_f64_f32(a4);
   v7[6] = vcvtq_f64_f32(*a5.f32);
   v7[7] = vcvt_hight_f64_f32(a5);
-  v5 = [a1 valueWithCATransform3D:v7];
+  v5 = [self valueWithCATransform3D:v7];
 
   return v5;
 }
 
 - (double)avt_float4x4Value
 {
-  if (!strcmp([a1 objCType], "{?=[4]}"))
+  if (!strcmp([self objCType], "{?=[4]}"))
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    [a1 getValue:&v13];
+    [self getValue:&v13];
   }
 
-  else if (!strcmp([a1 objCType], "{CATransform3D=dddddddddddddddd}"))
+  else if (!strcmp([self objCType], "{CATransform3D=dddddddddddddddd}"))
   {
-    [a1 CATransform3DValue];
+    [self CATransform3DValue];
     v13 = vcvt_hight_f32_f64(vcvt_f32_f64(v5), v6);
     v14 = vcvt_hight_f32_f64(vcvt_f32_f64(v7), v8);
     v15 = vcvt_hight_f32_f64(vcvt_f32_f64(v9), v10);

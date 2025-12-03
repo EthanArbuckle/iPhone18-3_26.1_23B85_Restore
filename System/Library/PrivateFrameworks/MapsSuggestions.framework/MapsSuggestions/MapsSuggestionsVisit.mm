@@ -1,77 +1,77 @@
 @interface MapsSuggestionsVisit
-- (MapsSuggestionsVisit)initWithRTVisit:(id)a3;
+- (MapsSuggestionsVisit)initWithRTVisit:(id)visit;
 - (NSString)uniqueName;
 @end
 
 @implementation MapsSuggestionsVisit
 
-- (MapsSuggestionsVisit)initWithRTVisit:(id)a3
+- (MapsSuggestionsVisit)initWithRTVisit:(id)visit
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  visitCopy = visit;
+  if (visitCopy)
   {
     v27.receiver = self;
     v27.super_class = MapsSuggestionsVisit;
     v5 = [(MapsSuggestionsVisit *)&v27 init];
     if (v5)
     {
-      v6 = [v4 date];
+      date = [visitCopy date];
       date = v5->_date;
-      v5->_date = v6;
+      v5->_date = date;
 
-      v8 = [v4 type];
-      if ((v8 - 1) > 2)
+      type = [visitCopy type];
+      if ((type - 1) > 2)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = qword_1C52A8DD8[v8 - 1];
+        v9 = qword_1C52A8DD8[type - 1];
       }
 
       v5->_type = v9;
-      v12 = [v4 location];
+      location = [visitCopy location];
       location = v5->_location;
-      v5->_location = v12;
+      v5->_location = location;
 
-      v14 = [v4 source];
-      if ((v14 - 1) >= 3)
+      source = [visitCopy source];
+      if ((source - 1) >= 3)
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = v14;
+        v15 = source;
       }
 
       v5->_source = v15;
-      v16 = [v4 exit];
+      exit = [visitCopy exit];
       exit = v5->_exit;
-      v5->_exit = v16;
+      v5->_exit = exit;
 
       v18 = MEMORY[0x1E696AD98];
-      [v4 confidence];
+      [visitCopy confidence];
       v19 = [v18 numberWithDouble:?];
       v5->_confidence = MSgVisitConfidenceForRTVisitConfidence(v19);
 
-      v20 = [v4 entry];
+      entry = [visitCopy entry];
       entry = v5->_entry;
-      v5->_entry = v20;
+      v5->_entry = entry;
 
-      v22 = [v4 placeInference];
+      placeInference = [visitCopy placeInference];
       placeInference = v5->_placeInference;
-      v5->_placeInference = v22;
+      v5->_placeInference = placeInference;
 
-      v24 = [v4 identifier];
+      identifier = [visitCopy identifier];
       identifier = v5->_identifier;
-      v5->_identifier = v24;
+      v5->_identifier = identifier;
     }
 
     self = v5;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -90,10 +90,10 @@
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. requires an RTVisit", buf, 0x26u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (NSString)uniqueName

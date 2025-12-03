@@ -1,48 +1,48 @@
 @interface WBDuplicateBookmarkGroup
-- (WBDuplicateBookmarkGroup)initWithOriginalBookmark:(id)a3;
-- (void)addDuplicateBookmark:(id)a3 replaceOriginal:(BOOL)a4;
+- (WBDuplicateBookmarkGroup)initWithOriginalBookmark:(id)bookmark;
+- (void)addDuplicateBookmark:(id)bookmark replaceOriginal:(BOOL)original;
 @end
 
 @implementation WBDuplicateBookmarkGroup
 
-- (WBDuplicateBookmarkGroup)initWithOriginalBookmark:(id)a3
+- (WBDuplicateBookmarkGroup)initWithOriginalBookmark:(id)bookmark
 {
-  v5 = a3;
+  bookmarkCopy = bookmark;
   v13.receiver = self;
   v13.super_class = WBDuplicateBookmarkGroup;
   v6 = [(WBDuplicateBookmarkGroup *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     dupicateBookmarks = v6->_dupicateBookmarks;
-    v6->_dupicateBookmarks = v7;
+    v6->_dupicateBookmarks = array;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     dupicateBookmarksToKeep = v6->_dupicateBookmarksToKeep;
-    v6->_dupicateBookmarksToKeep = v9;
+    v6->_dupicateBookmarksToKeep = array2;
 
-    objc_storeStrong(&v6->_originalBookmark, a3);
+    objc_storeStrong(&v6->_originalBookmark, bookmark);
     v11 = v6;
   }
 
   return v6;
 }
 
-- (void)addDuplicateBookmark:(id)a3 replaceOriginal:(BOOL)a4
+- (void)addDuplicateBookmark:(id)bookmark replaceOriginal:(BOOL)original
 {
-  v7 = a3;
+  bookmarkCopy = bookmark;
   self->_foundDuplicates = 1;
   dupicateBookmarks = self->_dupicateBookmarks;
-  v9 = v7;
-  if (a4)
+  v9 = bookmarkCopy;
+  if (original)
   {
     [(NSMutableArray *)dupicateBookmarks addObject:self->_originalBookmark];
-    objc_storeStrong(&self->_originalBookmark, a3);
+    objc_storeStrong(&self->_originalBookmark, bookmark);
   }
 
   else
   {
-    [(NSMutableArray *)dupicateBookmarks addObject:v7];
+    [(NSMutableArray *)dupicateBookmarks addObject:bookmarkCopy];
   }
 }
 

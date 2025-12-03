@@ -10,17 +10,17 @@
 - (unsigned)scrollAmount;
 - (unsigned)scrollDelay;
 - (unsigned)vspace;
-- (void)setBehavior:(id)a3;
-- (void)setBgColor:(id)a3;
-- (void)setDirection:(id)a3;
-- (void)setHeight:(id)a3;
-- (void)setHspace:(unsigned int)a3;
-- (void)setLoop:(int)a3;
-- (void)setScrollAmount:(unsigned int)a3;
-- (void)setScrollDelay:(unsigned int)a3;
-- (void)setTrueSpeed:(BOOL)a3;
-- (void)setVspace:(unsigned int)a3;
-- (void)setWidth:(id)a3;
+- (void)setBehavior:(id)behavior;
+- (void)setBgColor:(id)color;
+- (void)setDirection:(id)direction;
+- (void)setHeight:(id)height;
+- (void)setHspace:(unsigned int)hspace;
+- (void)setLoop:(int)loop;
+- (void)setScrollAmount:(unsigned int)amount;
+- (void)setScrollDelay:(unsigned int)delay;
+- (void)setTrueSpeed:(BOOL)speed;
+- (void)setVspace:(unsigned int)vspace;
+- (void)setWidth:(id)width;
 - (void)start;
 - (void)stop;
 @end
@@ -63,10 +63,10 @@
   return v4;
 }
 
-- (void)setBehavior:(id)a3
+- (void)setBehavior:(id)behavior
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, behavior, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -113,10 +113,10 @@
   return v4;
 }
 
-- (void)setBgColor:(id)a3
+- (void)setBgColor:(id)color
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, color, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -163,10 +163,10 @@
   return v4;
 }
 
-- (void)setDirection:(id)a3
+- (void)setDirection:(id)direction
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, direction, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -213,10 +213,10 @@
   return v4;
 }
 
-- (void)setHeight:(id)a3
+- (void)setHeight:(id)height
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, height, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -235,7 +235,7 @@
   return v2;
 }
 
-- (void)setHspace:(unsigned int)a3
+- (void)setHspace:(unsigned int)hspace
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setUnsignedIntegralAttribute();
@@ -250,7 +250,7 @@
   return self;
 }
 
-- (void)setLoop:(int)a3
+- (void)setLoop:(int)loop
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v8);
   WebCore::HTMLMarqueeElement::setLoop(self->super.super.super.super._internal);
@@ -272,7 +272,7 @@
   return self;
 }
 
-- (void)setScrollAmount:(unsigned int)a3
+- (void)setScrollAmount:(unsigned int)amount
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v5);
   WebCore::HTMLMarqueeElement::setScrollAmount(self->super.super.super.super._internal);
@@ -287,7 +287,7 @@
   return self;
 }
 
-- (void)setScrollDelay:(unsigned int)a3
+- (void)setScrollDelay:(unsigned int)delay
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v5);
   WebCore::HTMLMarqueeElement::setScrollDelay(self->super.super.super.super._internal);
@@ -351,7 +351,7 @@ LABEL_13:
   return v12;
 }
 
-- (void)setTrueSpeed:(BOOL)a3
+- (void)setTrueSpeed:(BOOL)speed
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setBooleanAttribute();
@@ -366,7 +366,7 @@ LABEL_13:
   return v2;
 }
 
-- (void)setVspace:(unsigned int)a3
+- (void)setVspace:(unsigned int)vspace
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v4);
   WebCore::Element::setUnsignedIntegralAttribute();
@@ -409,10 +409,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setWidth:(id)a3
+- (void)setWidth:(id)width
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, width, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)

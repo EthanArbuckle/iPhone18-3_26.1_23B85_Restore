@@ -1,29 +1,29 @@
 @interface RSDRemoteComputeNodeDevice
 + (id)tlsOidsRequiredOfPeer;
-- (RSDRemoteComputeNodeDevice)initWithInterface:(id)a3 peerConnection:(id)a4 endpoint:(id)a5;
-- (RSDRemoteComputeNodeDevice)initWithInterface:(id)a3 peerSocket:(int)a4;
+- (RSDRemoteComputeNodeDevice)initWithInterface:(id)interface peerConnection:(id)connection endpoint:(id)endpoint;
+- (RSDRemoteComputeNodeDevice)initWithInterface:(id)interface peerSocket:(int)socket;
 - (void)attach;
 - (void)dealloc;
 - (void)disconnect;
 - (void)needsConnect;
 - (void)populateInterfaceProperties;
-- (void)replacePeerConnection:(id)a3;
-- (void)replacePeerSocket:(int)a3;
+- (void)replacePeerConnection:(id)connection;
+- (void)replacePeerSocket:(int)socket;
 @end
 
 @implementation RSDRemoteComputeNodeDevice
 
-- (RSDRemoteComputeNodeDevice)initWithInterface:(id)a3 peerSocket:(int)a4
+- (RSDRemoteComputeNodeDevice)initWithInterface:(id)interface peerSocket:(int)socket
 {
-  v7 = a3;
-  if (a4 < 0 || (v8 = [(RSDRemoteDevice *)self initWithName:"cctrl"], (self = v8) == 0))
+  interfaceCopy = interface;
+  if (socket < 0 || (v8 = [(RSDRemoteDevice *)self initWithName:"cctrl"], (self = v8) == 0))
   {
 LABEL_6:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
-  if (sub_1000247A0(a4, v8->remote_address_storage.__u6_addr8))
+  if (sub_1000247A0(socket, v8->remote_address_storage.__u6_addr8))
   {
     if (os_log_type_enabled(qword_100064438, OS_LOG_TYPE_ERROR))
     {
@@ -70,19 +70,19 @@ LABEL_6:
   }
 
   self->_ipv6_str = v11;
-  objc_storeStrong(&self->_interface, a3);
-  self->peerfd = a4;
-  v9 = self;
+  objc_storeStrong(&self->_interface, interface);
+  self->peerfd = socket;
+  selfCopy = self;
 LABEL_7:
 
-  return v9;
+  return selfCopy;
 }
 
-- (RSDRemoteComputeNodeDevice)initWithInterface:(id)a3 peerConnection:(id)a4 endpoint:(id)a5
+- (RSDRemoteComputeNodeDevice)initWithInterface:(id)interface peerConnection:(id)connection endpoint:(id)endpoint
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  interfaceCopy = interface;
+  connectionCopy = connection;
+  endpointCopy = endpoint;
   v12 = [(RSDRemoteDevice *)self initWithName:"cctrl"];
   v13 = v12;
   if (!v12)
@@ -92,10 +92,10 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v12->_interface, a3);
-  objc_storeStrong(&v13->peer_connection, a4);
+  objc_storeStrong(&v12->_interface, interface);
+  objc_storeStrong(&v13->peer_connection, connection);
   v13->peerfd = -1;
-  v13->remote_address_storage = *&nw_endpoint_get_address(v11)->sa_data[6];
+  v13->remote_address_storage = *&nw_endpoint_get_address(endpointCopy)->sa_data[6];
   *__s1 = 0u;
   memset(v20, 0, sizeof(v20));
   if (!inet_ntop(30, &v13->remote_address_storage, __s1, 0x2Eu))
@@ -148,16 +148,16 @@ LABEL_11:
   [(RSDRemoteDevice *)&v3 dealloc];
 }
 
-- (void)replacePeerSocket:(int)a3
+- (void)replacePeerSocket:(int)socket
 {
-  if ((a3 & 0x80000000) == 0)
+  if ((socket & 0x80000000) == 0)
   {
-    self->peerfd = a3;
-    v4 = [(RSDRemoteDevice *)self connection];
+    self->peerfd = socket;
+    connection = [(RSDRemoteDevice *)self connection];
 
-    if (v4)
+    if (connection)
     {
-      v5 = [(RSDRemoteDevice *)self connection];
+      connection2 = [(RSDRemoteDevice *)self connection];
       xpc_remote_connection_cancel();
 
       [(RSDRemoteDevice *)self setConnection:0];
@@ -171,14 +171,14 @@ LABEL_11:
   }
 }
 
-- (void)replacePeerConnection:(id)a3
+- (void)replacePeerConnection:(id)connection
 {
-  objc_storeStrong(&self->peer_connection, a3);
-  v4 = [(RSDRemoteDevice *)self connection];
+  objc_storeStrong(&self->peer_connection, connection);
+  connection = [(RSDRemoteDevice *)self connection];
 
-  if (v4)
+  if (connection)
   {
-    v5 = [(RSDRemoteDevice *)self connection];
+    connection2 = [(RSDRemoteDevice *)self connection];
     xpc_remote_connection_cancel();
 
     [(RSDRemoteDevice *)self setConnection:0];
@@ -193,23 +193,23 @@ LABEL_11:
 
 - (void)populateInterfaceProperties
 {
-  v3 = [(RSDRemoteComputeNodeDevice *)self interface];
-  -[RSDRemoteDevice setBackendProperty:withUint:](self, "setBackendProperty:withUint:", "InterfaceIndex", [v3 index]);
+  interface = [(RSDRemoteComputeNodeDevice *)self interface];
+  -[RSDRemoteDevice setBackendProperty:withUint:](self, "setBackendProperty:withUint:", "InterfaceIndex", [interface index]);
 
-  v4 = [(RSDRemoteComputeNodeDevice *)self interface];
-  v5 = [v4 name];
+  interface2 = [(RSDRemoteComputeNodeDevice *)self interface];
+  name = [interface2 name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [(RSDRemoteComputeNodeDevice *)self interface];
-    -[RSDRemoteDevice setBackendProperty:withString:](self, "setBackendProperty:withString:", "InterfaceName", [v6 name]);
+    interface3 = [(RSDRemoteComputeNodeDevice *)self interface];
+    -[RSDRemoteDevice setBackendProperty:withString:](self, "setBackendProperty:withString:", "InterfaceName", [interface3 name]);
   }
 
   if ([(RSDRemoteComputeNodeDevice *)self ipv6_str])
   {
-    v7 = [(RSDRemoteComputeNodeDevice *)self ipv6_str];
+    ipv6_str = [(RSDRemoteComputeNodeDevice *)self ipv6_str];
 
-    [(RSDRemoteDevice *)self setBackendProperty:"IPV6Address" withString:v7];
+    [(RSDRemoteDevice *)self setBackendProperty:"IPV6Address" withString:ipv6_str];
   }
 }
 
@@ -247,7 +247,7 @@ LABEL_11:
   if (os_log_type_enabled(qword_100064438, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> needsConnect", buf, 0xCu);
   }
 

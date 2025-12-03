@@ -1,9 +1,9 @@
 @interface RoutePlanningPreferredRoutesSection
 - (BOOL)isActive;
-- (BOOL)updateWithTransportType:(int64_t)a3 routeCollection:(id)a4;
-- (RoutePlanningPreferredRoutesSection)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4;
-- (id)cellForItemAtIndexPath:(id)a3;
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
+- (BOOL)updateWithTransportType:(int64_t)type routeCollection:(id)collection;
+- (RoutePlanningPreferredRoutesSection)initWithCollectionView:(id)view sectionIdentifier:(id)identifier;
+- (id)cellForItemAtIndexPath:(id)path;
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment;
 - (void)_requireReload;
 - (void)markRouteTipkitViewSeen;
 @end
@@ -13,8 +13,8 @@
 - (void)markRouteTipkitViewSeen
 {
   GEOConfigSetBOOL();
-  v3 = [(RoutePlanningOutlineSection *)self host];
-  [v3 outlineSectionRequiresReload:self];
+  host = [(RoutePlanningOutlineSection *)self host];
+  [host outlineSectionRequiresReload:self];
 }
 
 - (BOOL)isActive
@@ -33,8 +33,8 @@
 
 - (void)_requireReload
 {
-  v3 = [(RoutePlanningOutlineSection *)self host];
-  if (v3)
+  host = [(RoutePlanningOutlineSection *)self host];
+  if (host)
   {
     model = self->_model;
 
@@ -69,48 +69,48 @@
     }
   }
 
-  v17 = [(RoutePlanningOutlineSection *)self host];
-  [v17 outlineSectionRequiresReload:self];
+  host2 = [(RoutePlanningOutlineSection *)self host];
+  [host2 outlineSectionRequiresReload:self];
 }
 
-- (id)cellForItemAtIndexPath:(id)a3
+- (id)cellForItemAtIndexPath:(id)path
 {
-  v4 = [(UICollectionView *)self->super.super._collectionView dequeueReusableCellWithReuseIdentifier:@"PreferredRouteCellIdentifier" forIndexPath:a3];
+  v4 = [(UICollectionView *)self->super.super._collectionView dequeueReusableCellWithReuseIdentifier:@"PreferredRouteCellIdentifier" forIndexPath:path];
   [v4 updateViewModel:self->_model];
 
   return v4;
 }
 
-- (BOOL)updateWithTransportType:(int64_t)a3 routeCollection:(id)a4
+- (BOOL)updateWithTransportType:(int64_t)type routeCollection:(id)collection
 {
-  [(RoutePlanningPreferredRoutesSection *)self setTransportType:a3, a4];
+  [(RoutePlanningPreferredRoutesSection *)self setTransportType:type, collection];
   [(RoutePlanningPreferredRoutesSection *)self _requireReload];
   return 1;
 }
 
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
   v6.receiver = self;
   v6.super_class = RoutePlanningPreferredRoutesSection;
-  v4 = [(RoutePlanningFeatureDiscoverOutlineSection *)&v6 listLayoutSectionConfigurationAtIndex:a3 layoutEnvironment:a4];
+  v4 = [(RoutePlanningFeatureDiscoverOutlineSection *)&v6 listLayoutSectionConfigurationAtIndex:index layoutEnvironment:environment];
   [v4 setSeparatorStyle:0];
 
   return v4;
 }
 
-- (RoutePlanningPreferredRoutesSection)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4
+- (RoutePlanningPreferredRoutesSection)initWithCollectionView:(id)view sectionIdentifier:(id)identifier
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = RoutePlanningPreferredRoutesSection;
-  v7 = [(RoutePlanningFeatureDiscoverOutlineSection *)&v10 initWithCollectionView:v6 sectionIdentifier:a4];
+  v7 = [(RoutePlanningFeatureDiscoverOutlineSection *)&v10 initWithCollectionView:viewCopy sectionIdentifier:identifier];
   if (v7)
   {
     v8 = +[NSUserDefaults standardUserDefaults];
     [v8 BOOLForKey:@"RoutePlanningPreferredRouteTipkitShownKey"];
 
     GEOConfigSetBOOL();
-    [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PreferredRouteCellIdentifier"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PreferredRouteCellIdentifier"];
   }
 
   return v7;

@@ -1,8 +1,8 @@
 @interface TUIElementRegistry
-- (BOOL)supportFeature:(id)a3;
-- (Class)elementClassForName:(id)a3;
+- (BOOL)supportFeature:(id)feature;
+- (Class)elementClassForName:(id)name;
 - (TUIElementRegistry)init;
-- (void)registerFeature:(id)a3;
+- (void)registerFeature:(id)feature;
 @end
 
 @implementation TUIElementRegistry
@@ -162,9 +162,9 @@
   return v3;
 }
 
-- (Class)elementClassForName:(id)a3
+- (Class)elementClassForName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:?];
   }
@@ -177,17 +177,17 @@
   return v4;
 }
 
-- (void)registerFeature:(id)a3
+- (void)registerFeature:(id)feature
 {
-  if (a3)
+  if (feature)
   {
     [(NSMutableSet *)self->_features addObject:?];
   }
 }
 
-- (BOOL)supportFeature:(id)a3
+- (BOOL)supportFeature:(id)feature
 {
-  if (a3)
+  if (feature)
   {
     return [(NSMutableSet *)self->_features containsObject:?];
   }

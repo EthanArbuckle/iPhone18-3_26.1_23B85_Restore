@@ -1,6 +1,6 @@
 @interface MNTransitWalkingSegmentInstruction
-+ (id)instructionForWalkingSegment:(id)a3 context:(int64_t)a4;
-- (MNTransitWalkingSegmentInstruction)initWithWalkingSegment:(id)a3 context:(int64_t)a4;
++ (id)instructionForWalkingSegment:(id)segment context:(int64_t)context;
+- (MNTransitWalkingSegmentInstruction)initWithWalkingSegment:(id)segment context:(int64_t)context;
 - (id)instructionSet;
 @end
 
@@ -9,9 +9,9 @@
 - (id)instructionSet
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(MNTransitWalkingSegmentInstruction *)self walkingSegment];
-  v3 = [v2 steps];
-  v4 = [v3 firstObject];
+  walkingSegment = [(MNTransitWalkingSegmentInstruction *)self walkingSegment];
+  steps = [walkingSegment steps];
+  firstObject = [steps firstObject];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -34,29 +34,29 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 instructions];
+    instructions = [firstObject instructions];
   }
 
   else
   {
-    v5 = 0;
+    instructions = 0;
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return instructions;
 }
 
-- (MNTransitWalkingSegmentInstruction)initWithWalkingSegment:(id)a3 context:(int64_t)a4
+- (MNTransitWalkingSegmentInstruction)initWithWalkingSegment:(id)segment context:(int64_t)context
 {
-  v7 = a3;
+  segmentCopy = segment;
   v12.receiver = self;
   v12.super_class = MNTransitWalkingSegmentInstruction;
-  v8 = [(MNTransitInstruction *)&v12 initWithContext:a4];
+  v8 = [(MNTransitInstruction *)&v12 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_walkingSegment, a3);
+    objc_storeStrong(&v8->_walkingSegment, segment);
     [(MNTransitInstruction *)v9 _fillInInstructions];
     v10 = v9;
   }
@@ -64,10 +64,10 @@
   return v9;
 }
 
-+ (id)instructionForWalkingSegment:(id)a3 context:(int64_t)a4
++ (id)instructionForWalkingSegment:(id)segment context:(int64_t)context
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithWalkingSegment:v6 context:a4];
+  segmentCopy = segment;
+  v7 = [[self alloc] initWithWalkingSegment:segmentCopy context:context];
 
   return v7;
 }

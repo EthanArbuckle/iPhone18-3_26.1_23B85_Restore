@@ -1,20 +1,20 @@
 @interface DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest
-- (DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest
 
-- (DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest)initWithCoder:(id)a3
+- (DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest;
-  v5 = [(DMFAppRequest *)&v10 initWithCoder:v4];
+  v5 = [(DMFAppRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"associatedDomainsEnableDirectDownloads"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"associatedDomainsEnableDirectDownloads"];
     associatedDomainsEnableDirectDownloads = v5->_associatedDomainsEnableDirectDownloads;
     v5->_associatedDomainsEnableDirectDownloads = v7;
   }
@@ -22,14 +22,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest;
-  v4 = a3;
-  [(DMFAppRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DMFAppRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFSetAppAssociatedDomainsEnableDirectDownloadsRequest *)self associatedDomainsEnableDirectDownloads:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"associatedDomainsEnableDirectDownloads"];
+  [coderCopy encodeObject:v5 forKey:@"associatedDomainsEnableDirectDownloads"];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface ColorPickerView.ColorPickerCoordinator
 - (_TtCV13CalendarUIKit15ColorPickerView22ColorPickerCoordinator)init;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)colorPickerViewControllerDidFinish:(id)a3;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)colorPickerViewControllerDidFinish:(id)finish;
 @end
 
 @implementation ColorPickerView.ColorPickerCoordinator
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v6 = a4;
-  v7 = self;
+  colorCopy = color;
+  selfCopy = self;
   sub_1CAD4D7D4();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC464870);
   sub_1CAD4DAC4();
 }
 
-- (void)colorPickerViewControllerDidFinish:(id)a3
+- (void)colorPickerViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  finishCopy = finish;
+  selfCopy = self;
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4631E0);
   sub_1CAD4DAC4();

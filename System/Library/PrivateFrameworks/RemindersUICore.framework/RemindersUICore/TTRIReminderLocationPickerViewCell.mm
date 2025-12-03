@@ -1,60 +1,60 @@
 @interface TTRIReminderLocationPickerViewCell
-- (_TtC15RemindersUICore34TTRIReminderLocationPickerViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15RemindersUICore34TTRIReminderLocationPickerViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
 - (void)layoutSubviews;
-- (void)setAddressLabel:(id)a3;
-- (void)setNameLabel:(id)a3;
-- (void)setPinImageBackgroundView:(id)a3;
-- (void)setPinImageView:(id)a3;
+- (void)setAddressLabel:(id)label;
+- (void)setNameLabel:(id)label;
+- (void)setPinImageBackgroundView:(id)view;
+- (void)setPinImageView:(id)view;
 @end
 
 @implementation TTRIReminderLocationPickerViewCell
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D587818();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D587BA4();
 }
 
-- (void)setNameLabel:(id)a3
+- (void)setNameLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_nameLabel);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_nameLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_nameLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setAddressLabel:(id)a3
+- (void)setAddressLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_addressLabel);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_addressLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_addressLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setPinImageView:(id)a3
+- (void)setPinImageView:(id)view
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_pinImageView);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_pinImageView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_pinImageView) = view;
+  viewCopy = view;
 }
 
-- (void)setPinImageBackgroundView:(id)a3
+- (void)setPinImageBackgroundView:(id)view
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_pinImageBackgroundView);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_pinImageBackgroundView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore34TTRIReminderLocationPickerViewCell_pinImageBackgroundView) = view;
+  viewCopy = view;
 }
 
-- (_TtC15RemindersUICore34TTRIReminderLocationPickerViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15RemindersUICore34TTRIReminderLocationPickerViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_21DBFA16C();
+    identifier = sub_21DBFA16C();
     v6 = v5;
   }
 
@@ -63,7 +63,7 @@
     v6 = 0;
   }
 
-  return sub_21D587F8C(a3, a4, v6);
+  return sub_21D587F8C(style, identifier, v6);
 }
 
 @end

@@ -37,22 +37,22 @@
 
 - (BOOL)disableAutoDim
 {
-  v3 = [(SBIdleTimerDefaults *)self disableAutoDimExists];
-  if (v3)
+  disableAutoDimExists = [(SBIdleTimerDefaults *)self disableAutoDimExists];
+  if (disableAutoDimExists)
   {
-    v4 = [(BSAbstractDefaultDomain *)self _store];
-    v5 = [v4 BOOLForKey:@"SBDisableAutoDim"];
+    _store = [(BSAbstractDefaultDomain *)self _store];
+    v5 = [_store BOOLForKey:@"SBDisableAutoDim"];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(disableAutoDimExists) = v5;
   }
 
-  return v3;
+  return disableAutoDimExists;
 }
 
 - (BOOL)disableAutoDimExists
 {
-  v2 = [(BSAbstractDefaultDomain *)self _store];
-  v3 = [v2 bs_defaultExists:@"SBDisableAutoDim"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v3 = [_store bs_defaultExists:@"SBDisableAutoDim"];
 
   return v3;
 }

@@ -1,30 +1,30 @@
 @interface QLBasePreviewParts
-+ (BOOL)canConvertDocumentType:(id)a3;
-+ (BOOL)isBundleURL:(id)a3;
-+ (void)dataCallbackForUTI:(id)a3 andSize:(unint64_t)a4;
-+ (void)urlCallbackForUTI:(id)a3;
++ (BOOL)canConvertDocumentType:(id)type;
++ (BOOL)isBundleURL:(id)l;
++ (void)dataCallbackForUTI:(id)i andSize:(unint64_t)size;
++ (void)urlCallbackForUTI:(id)i;
 - (void)computePreview;
 @end
 
 @implementation QLBasePreviewParts
 
-+ (BOOL)canConvertDocumentType:(id)a3
++ (BOOL)canConvertDocumentType:(id)type
 {
-  v3 = a3;
-  v4 = [QLPreviewConverter isOfficeDocumentType:v3]|| [QLPreviewConverter isIWorkDocumentType:v3]|| [QLPreviewConverter isLPDFDocumentType:v3]|| [QLPreviewConverter isCSVDocumentType:v3]|| [QLPreviewConverter isRTFDocumentType:v3];
+  typeCopy = type;
+  v4 = [QLPreviewConverter isOfficeDocumentType:typeCopy]|| [QLPreviewConverter isIWorkDocumentType:typeCopy]|| [QLPreviewConverter isLPDFDocumentType:typeCopy]|| [QLPreviewConverter isCSVDocumentType:typeCopy]|| [QLPreviewConverter isRTFDocumentType:typeCopy];
 
   return v4;
 }
 
-+ (BOOL)isBundleURL:(id)a3
++ (BOOL)isBundleURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
     v8 = 0;
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    v5 = [v3 path];
-    [v4 fileExistsAtPath:v5 isDirectory:&v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
+    [defaultManager fileExistsAtPath:path isDirectory:&v8];
 
     v6 = v8;
   }
@@ -37,20 +37,20 @@
   return v6 & 1;
 }
 
-+ (void)urlCallbackForUTI:(id)a3
++ (void)urlCallbackForUTI:(id)i
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [QLPreviewConverter isOfficeDocumentType:v3];
+  iCopy = i;
+  v4 = [QLPreviewConverter isOfficeDocumentType:iCopy];
   v5 = OIGenerateProgressivePreviewForURL;
   if (v4)
   {
     goto LABEL_6;
   }
 
-  v6 = [QLPreviewConverter isIWorkDocumentType:v3];
+  v6 = [QLPreviewConverter isIWorkDocumentType:iCopy];
   v5 = IWGenerateProgressivePreviewForURL;
-  if (v6 || (v7 = [QLPreviewConverter isCSVDocumentType:v3], v5 = OIGenerateProgressivePreviewForURL, v7) || (v8 = [QLPreviewConverter isRTFDocumentType:v3], v5 = RTFGeneratePreviewForURL, v8) || (v9 = [QLPreviewConverter isLPDFDocumentType:v3], v5 = LPDFGeneratePreviewForURL, v9))
+  if (v6 || (v7 = [QLPreviewConverter isCSVDocumentType:iCopy], v5 = OIGenerateProgressivePreviewForURL, v7) || (v8 = [QLPreviewConverter isRTFDocumentType:iCopy], v5 = RTFGeneratePreviewForURL, v8) || (v9 = [QLPreviewConverter isLPDFDocumentType:iCopy], v5 = LPDFGeneratePreviewForURL, v9))
   {
 LABEL_6:
     v10 = v5;
@@ -69,7 +69,7 @@ LABEL_6:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v3;
+      v16 = iCopy;
       _os_log_impl(&dword_261653000, v14, OS_LOG_TYPE_ERROR, "Cannot find url converter callback for uti %@ #Conversion", &v15, 0xCu);
     }
 
@@ -80,13 +80,13 @@ LABEL_6:
   return v10;
 }
 
-+ (void)dataCallbackForUTI:(id)a3 andSize:(unint64_t)a4
++ (void)dataCallbackForUTI:(id)i andSize:(unint64_t)size
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [QLPreviewConverter isOfficeDocumentType:v4];
+  iCopy = i;
+  v5 = [QLPreviewConverter isOfficeDocumentType:iCopy];
   v6 = OIGenerateProgressivePreviewForData;
-  if (v5 || (v7 = [QLPreviewConverter isIWorkDocumentType:v4], v6 = IWGenerateAtomicPreviewForData, v7) || (v8 = [QLPreviewConverter isCSVDocumentType:v4], v6 = OIGenerateProgressivePreviewForData, v8) || (v9 = [QLPreviewConverter isRTFDocumentType:v4], v6 = RTFGeneratePreviewForData, v9))
+  if (v5 || (v7 = [QLPreviewConverter isIWorkDocumentType:iCopy], v6 = IWGenerateAtomicPreviewForData, v7) || (v8 = [QLPreviewConverter isCSVDocumentType:iCopy], v6 = OIGenerateProgressivePreviewForData, v8) || (v9 = [QLPreviewConverter isRTFDocumentType:iCopy], v6 = RTFGeneratePreviewForData, v9))
   {
     v10 = v6;
   }
@@ -104,7 +104,7 @@ LABEL_6:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = iCopy;
       _os_log_impl(&dword_261653000, v14, OS_LOG_TYPE_ERROR, "Cannot find data converter callback for uti %@ #Conversion", &v15, 0xCu);
     }
 
@@ -117,25 +117,25 @@ LABEL_6:
 
 - (void)computePreview
 {
-  v3 = [(QLPreviewParts *)self previewURL];
-  if (v3)
+  previewURL = [(QLPreviewParts *)self previewURL];
+  if (previewURL)
   {
-    v21 = v3;
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom] == 0;
+    v21 = previewURL;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v5 = [currentDevice userInterfaceIdiom] == 0;
 
     v6 = MEMORY[0x277CBEB38];
-    v7 = [v21 absoluteString];
+    absoluteString = [v21 absoluteString];
     v8 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-    v9 = [(QLPreviewConverterParts *)self fileName];
-    v10 = [v6 dictionaryWithObjectsAndKeys:{v7, @"URLBase", v8, @"IsOnPhone", v9, @"FileName", 0}];
+    fileName = [(QLPreviewConverterParts *)self fileName];
+    v10 = [v6 dictionaryWithObjectsAndKeys:{absoluteString, @"URLBase", v8, @"IsOnPhone", fileName, @"FileName", 0}];
 
-    v11 = [(QLPreviewConverterParts *)self password];
+    password = [(QLPreviewConverterParts *)self password];
 
-    if (v11)
+    if (password)
     {
-      v12 = [(QLPreviewConverterParts *)self password];
-      [v10 setObject:v12 forKey:@"Password"];
+      password2 = [(QLPreviewConverterParts *)self password];
+      [v10 setObject:password2 forKey:@"Password"];
     }
 
     data = self->super._data;
@@ -181,7 +181,7 @@ LABEL_7:
 
 LABEL_19:
 
-    v3 = v21;
+    previewURL = v21;
   }
 }
 

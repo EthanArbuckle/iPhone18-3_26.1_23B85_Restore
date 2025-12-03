@@ -1,6 +1,6 @@
 @interface HMDAccessoryNameComposer
-- (BOOL)isEqual:(id)a3;
-- (HMDAccessoryNameComposer)initWithRawAccessoryName:(id)a3 rawRoomName:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDAccessoryNameComposer)initWithRawAccessoryName:(id)name rawRoomName:(id)roomName;
 - (NSString)composedString;
 - (unint64_t)hash;
 @end
@@ -9,16 +9,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDAccessoryNameComposer *)self accessoryName];
-  v3 = [v2 hash];
+  accessoryName = [(HMDAccessoryNameComposer *)self accessoryName];
+  v3 = [accessoryName hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -28,14 +28,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDAccessoryNameComposer *)self accessoryName];
-      v8 = [(HMDAccessoryNameComposer *)v6 accessoryName];
-      if (v7 != v8)
+      v6 = equalCopy;
+      accessoryName = [(HMDAccessoryNameComposer *)self accessoryName];
+      accessoryName2 = [(HMDAccessoryNameComposer *)v6 accessoryName];
+      if (accessoryName != accessoryName2)
       {
-        v9 = [(HMDAccessoryNameComposer *)self accessoryName];
-        v3 = [(HMDAccessoryNameComposer *)v6 accessoryName];
-        if (![v9 isEqual:v3])
+        accessoryName3 = [(HMDAccessoryNameComposer *)self accessoryName];
+        accessoryName4 = [(HMDAccessoryNameComposer *)v6 accessoryName];
+        if (![accessoryName3 isEqual:accessoryName4])
         {
           v10 = 0;
 LABEL_13:
@@ -44,25 +44,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = accessoryName3;
       }
 
-      v11 = [(HMDAccessoryNameComposer *)self roomName];
-      v12 = [(HMDAccessoryNameComposer *)v6 roomName];
-      if (v11 == v12)
+      roomName = [(HMDAccessoryNameComposer *)self roomName];
+      roomName2 = [(HMDAccessoryNameComposer *)v6 roomName];
+      if (roomName == roomName2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HMDAccessoryNameComposer *)self roomName];
-        v14 = [(HMDAccessoryNameComposer *)v6 roomName];
-        v10 = [v13 isEqual:v14];
+        roomName3 = [(HMDAccessoryNameComposer *)self roomName];
+        roomName4 = [(HMDAccessoryNameComposer *)v6 roomName];
+        v10 = [roomName3 isEqual:roomName4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      accessoryName3 = v16;
+      if (accessoryName == accessoryName2)
       {
         goto LABEL_14;
       }
@@ -81,24 +81,24 @@ LABEL_15:
 - (NSString)composedString
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryNameComposer *)self accessoryName];
-  v4 = [(HMDAccessoryNameComposer *)self accessoryName];
-  if ([v4 length])
+  accessoryName = [(HMDAccessoryNameComposer *)self accessoryName];
+  accessoryName2 = [(HMDAccessoryNameComposer *)self accessoryName];
+  if ([accessoryName2 length])
   {
-    v5 = [(HMDAccessoryNameComposer *)self roomName];
-    v6 = [v5 length];
+    roomName = [(HMDAccessoryNameComposer *)self roomName];
+    v6 = [roomName length];
 
     if (v6)
     {
-      v7 = [(HMDAccessoryNameComposer *)self roomNameAtEndSeparatedByWhitespace];
+      roomNameAtEndSeparatedByWhitespace = [(HMDAccessoryNameComposer *)self roomNameAtEndSeparatedByWhitespace];
       v8 = MEMORY[0x277CCACA8];
       v9 = HMDLocalizedStringForKey(@"ACCESSORY_NAME_COMPOSER_FORMAT");
-      if (v7)
+      if (roomNameAtEndSeparatedByWhitespace)
       {
         v26 = 0;
-        v10 = [(HMDAccessoryNameComposer *)self accessoryName];
-        v11 = [(HMDAccessoryNameComposer *)self roomName];
-        v12 = [v8 localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%1$@ %2$@" error:&v26, v10, v11];
+        accessoryName3 = [(HMDAccessoryNameComposer *)self accessoryName];
+        roomName2 = [(HMDAccessoryNameComposer *)self roomName];
+        v12 = [v8 localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%1$@ %2$@" error:&v26, accessoryName3, roomName2];
         v13 = v26;
 
         v14 = v12;
@@ -130,9 +130,9 @@ LABEL_13:
       else
       {
         v25 = 0;
-        v21 = [(HMDAccessoryNameComposer *)self roomName];
-        v22 = [(HMDAccessoryNameComposer *)self accessoryName];
-        v12 = [v8 localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%1$@ %2$@" error:&v25, v21, v22];
+        roomName3 = [(HMDAccessoryNameComposer *)self roomName];
+        accessoryName4 = [(HMDAccessoryNameComposer *)self accessoryName];
+        v12 = [v8 localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%1$@ %2$@" error:&v25, roomName3, accessoryName4];
         v13 = v25;
 
         v14 = v12;
@@ -161,7 +161,7 @@ LABEL_14:
         }
       }
 
-      v20 = v14;
+      roomName5 = v14;
 
       goto LABEL_16;
     }
@@ -171,86 +171,86 @@ LABEL_14:
   {
   }
 
-  v18 = [(HMDAccessoryNameComposer *)self roomName];
-  v19 = [v18 length];
+  roomName4 = [(HMDAccessoryNameComposer *)self roomName];
+  v19 = [roomName4 length];
 
   if (!v19)
   {
     goto LABEL_17;
   }
 
-  v20 = [(HMDAccessoryNameComposer *)self roomName];
+  roomName5 = [(HMDAccessoryNameComposer *)self roomName];
 LABEL_16:
 
-  v3 = v20;
+  accessoryName = roomName5;
 LABEL_17:
   v23 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return accessoryName;
 }
 
-- (HMDAccessoryNameComposer)initWithRawAccessoryName:(id)a3 rawRoomName:(id)a4
+- (HMDAccessoryNameComposer)initWithRawAccessoryName:(id)name rawRoomName:(id)roomName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  roomNameCopy = roomName;
   v42.receiver = self;
   v42.super_class = HMDAccessoryNameComposer;
   v8 = [(HMDAccessoryNameComposer *)&v42 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     [(HMDAccessoryNameComposer *)v8 setRawAccessoryName:v9];
 
-    v10 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v11 = [v6 stringByTrimmingCharactersInSet:v10];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v11 = [nameCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     [(HMDAccessoryNameComposer *)v8 setAccessoryName:v11];
 
-    v12 = [v7 copy];
+    v12 = [roomNameCopy copy];
     [(HMDAccessoryNameComposer *)v8 setRawRoomName:v12];
 
-    v13 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v14 = [v7 stringByTrimmingCharactersInSet:v13];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v14 = [roomNameCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
     [(HMDAccessoryNameComposer *)v8 setRoomName:v14];
 
-    v15 = [(HMDAccessoryNameComposer *)v8 accessoryName];
-    if (![v15 length])
+    accessoryName = [(HMDAccessoryNameComposer *)v8 accessoryName];
+    if (![accessoryName length])
     {
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v16 = [(HMDAccessoryNameComposer *)v8 roomName];
-    if (![v16 length])
+    roomName = [(HMDAccessoryNameComposer *)v8 roomName];
+    if (![roomName length])
     {
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    v17 = [(HMDAccessoryNameComposer *)v8 accessoryName];
-    v18 = [(HMDAccessoryNameComposer *)v8 roomName];
-    v19 = [v17 isEqualToString:v18];
+    accessoryName2 = [(HMDAccessoryNameComposer *)v8 accessoryName];
+    roomName2 = [(HMDAccessoryNameComposer *)v8 roomName];
+    v19 = [accessoryName2 isEqualToString:roomName2];
 
     if ((v19 & 1) == 0)
     {
-      v20 = [(HMDAccessoryNameComposer *)v8 accessoryName];
-      v21 = [(HMDAccessoryNameComposer *)v8 roomName];
-      v22 = [v20 rangeOfString:v21 options:129];
+      accessoryName3 = [(HMDAccessoryNameComposer *)v8 accessoryName];
+      roomName3 = [(HMDAccessoryNameComposer *)v8 roomName];
+      v22 = [accessoryName3 rangeOfString:roomName3 options:129];
       v24 = v23;
 
       if (v24)
       {
         v25 = v22 + v24;
-        v26 = [(HMDAccessoryNameComposer *)v8 accessoryName];
-        v27 = [v26 length];
+        accessoryName4 = [(HMDAccessoryNameComposer *)v8 accessoryName];
+        v27 = [accessoryName4 length];
 
         if (!v22)
         {
-          v41 = [(HMDAccessoryNameComposer *)v8 accessoryName];
-          v29 = [v41 substringFromIndex:v24];
-          v30 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-          v40 = [v29 rangeOfCharacterFromSet:v30 options:0];
+          accessoryName5 = [(HMDAccessoryNameComposer *)v8 accessoryName];
+          v29 = [accessoryName5 substringFromIndex:v24];
+          whitespaceCharacterSet3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+          v40 = [v29 rangeOfCharacterFromSet:whitespaceCharacterSet3 options:0];
 
           if (v25 != v27)
           {
@@ -258,13 +258,13 @@ LABEL_17:
             if (!v40)
             {
 LABEL_16:
-              v36 = [(HMDAccessoryNameComposer *)v8 accessoryName];
-              v37 = [v36 stringByReplacingCharactersInRange:v22 withString:{v24, &stru_283CF9D50}];
+              accessoryName6 = [(HMDAccessoryNameComposer *)v8 accessoryName];
+              v37 = [accessoryName6 stringByReplacingCharactersInRange:v22 withString:{v24, &stru_283CF9D50}];
               [(HMDAccessoryNameComposer *)v8 setAccessoryName:v37];
 
-              v15 = [(HMDAccessoryNameComposer *)v8 accessoryName];
-              v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-              v38 = [v15 stringByTrimmingCharactersInSet:v16];
+              accessoryName = [(HMDAccessoryNameComposer *)v8 accessoryName];
+              roomName = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+              v38 = [accessoryName stringByTrimmingCharactersInSet:roomName];
               [(HMDAccessoryNameComposer *)v8 setAccessoryName:v38];
 
               goto LABEL_17;
@@ -282,10 +282,10 @@ LABEL_15:
 
           v28 = v40 == 0;
 LABEL_11:
-          v31 = [(HMDAccessoryNameComposer *)v8 accessoryName];
-          v32 = [v31 substringToIndex:v22];
-          v33 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-          v34 = [v32 rangeOfCharacterFromSet:v33 options:0];
+          accessoryName7 = [(HMDAccessoryNameComposer *)v8 accessoryName];
+          v32 = [accessoryName7 substringToIndex:v22];
+          whitespaceCharacterSet4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+          v34 = [v32 rangeOfCharacterFromSet:whitespaceCharacterSet4 options:0];
           [(HMDAccessoryNameComposer *)v8 setRoomNameAtEndSeparatedByWhitespace:v34 + v35 == v22];
 
           if (v28)

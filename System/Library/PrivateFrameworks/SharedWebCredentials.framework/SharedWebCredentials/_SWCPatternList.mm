@@ -1,33 +1,33 @@
 @interface _SWCPatternList
-+ (id)patternListWithArray:(id)a3;
-+ (id)patternListWithDetailsDictionary:(id)a3 defaults:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_SWCPatternList)initWithCoder:(id)a3;
++ (id)patternListWithArray:(id)array;
++ (id)patternListWithDetailsDictionary:(id)dictionary defaults:(id)defaults;
+- (BOOL)isEqual:(id)equal;
+- (_SWCPatternList)initWithCoder:(id)coder;
 - (unint64_t)count;
-- (unint64_t)evaluateWithURLComponents:(id)a3 substitutionVariables:(id)a4 auditToken:(id *)a5 matchingPattern:(id *)a6 index:(unint64_t *)a7;
+- (unint64_t)evaluateWithURLComponents:(id)components substitutionVariables:(id)variables auditToken:(id *)token matchingPattern:(id *)pattern index:(unint64_t *)index;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumeratePatternsWithBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumeratePatternsWithBlock:(id)block;
 @end
 
 @implementation _SWCPatternList
 
-+ (id)patternListWithDetailsDictionary:(id)a3 defaults:(id)a4
++ (id)patternListWithDetailsDictionary:(id)dictionary defaults:(id)defaults
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  defaultsCopy = defaults;
   v6 = objc_autoreleasePoolPush();
   if ((_NSIsNSDictionary() & 1) == 0)
   {
     goto LABEL_28;
   }
 
-  v7 = [a3 objectForKeyedSubscript:@"defaults"];
+  v7 = [dictionary objectForKeyedSubscript:@"defaults"];
   if (_NSIsNSDictionary())
   {
-    if ([v5 count])
+    if ([defaultsCopy count])
     {
-      v8 = [v5 mutableCopy];
+      v8 = [defaultsCopy mutableCopy];
       [v8 addEntriesFromDictionary:v7];
     }
 
@@ -36,10 +36,10 @@
       v8 = v7;
     }
 
-    v5 = v8;
+    defaultsCopy = v8;
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"components"];
+  v9 = [dictionary objectForKeyedSubscript:@"components"];
   if (_NSIsNSArray())
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB40]);
@@ -61,7 +61,7 @@
             objc_enumerationMutation(v11);
           }
 
-          v15 = [[_SWCPattern alloc] initWithDictionary:*(*(&v30 + 1) + 8 * i) defaults:v5];
+          v15 = [[_SWCPattern alloc] initWithDictionary:*(*(&v30 + 1) + 8 * i) defaults:defaultsCopy];
           [v10 addObject:v15];
         }
 
@@ -74,7 +74,7 @@
 
   else
   {
-    v16 = [a3 objectForKeyedSubscript:@"paths"];
+    v16 = [dictionary objectForKeyedSubscript:@"paths"];
     if ((_NSIsNSArray() & 1) == 0)
     {
 
@@ -100,7 +100,7 @@
             objc_enumerationMutation(v11);
           }
 
-          v20 = [[_SWCPattern alloc] initWithPathPattern:*(*(&v26 + 1) + 8 * j) defaults:v5];
+          v20 = [[_SWCPattern alloc] initWithPathPattern:*(*(&v26 + 1) + 8 * j) defaults:defaultsCopy];
           [v10 addObject:v20];
         }
 
@@ -113,8 +113,8 @@
 
   if (v10)
   {
-    v21 = [v10 array];
-    v22 = [a1 patternListWithArray:v21];
+    array = [v10 array];
+    v22 = [self patternListWithArray:array];
 
     goto LABEL_29;
   }
@@ -129,7 +129,7 @@ LABEL_29:
   return v22;
 }
 
-+ (id)patternListWithArray:(id)a3
++ (id)patternListWithArray:(id)array
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -137,8 +137,8 @@ LABEL_29:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  arrayCopy = array;
+  v8 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -148,14 +148,14 @@ LABEL_29:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(arrayCopy);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) storage];
-        [v6 appendBytes:v11 length:SWCPatternStorage::getSize(v11)];
+        storage = [*(*(&v16 + 1) + 8 * i) storage];
+        [v6 appendBytes:storage length:SWCPatternStorage::getSize(storage)];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -167,11 +167,11 @@ LABEL_29:
   }
 
   [v6 appendBytes:&_MergedGlobals length:SWCPatternStorage::getSize(&_MergedGlobals)];
-  Instance = class_createInstance(a1, [v6 length]);
+  Instance = class_createInstance(self, [v6 length]);
   if (!Instance)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"SWCPattern.mm" lineNumber:489 description:{@"Failed to allocate pattern list object with %lu extra bytes.", objc_msgSend(v6, "length")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCPattern.mm" lineNumber:489 description:{@"Failed to allocate pattern list object with %lu extra bytes.", objc_msgSend(v6, "length")}];
   }
 
   [v6 getBytes:Instance + 8 range:{0, objc_msgSend(v6, "length")}];
@@ -200,7 +200,7 @@ LABEL_29:
   return v3;
 }
 
-- (void)enumeratePatternsWithBlock:(id)a3
+- (void)enumeratePatternsWithBlock:(id)block
 {
   v5 = [[_SWCPattern alloc] _initWithPatternStorageNoCopy:0 freeWhenDone:0];
   v6 = 0;
@@ -215,7 +215,7 @@ LABEL_29:
 
     v8 = objc_autoreleasePoolPush();
     [v5 setStorage:storage];
-    (*(a3 + 2))(a3, v5, v6, &v9);
+    (*(block + 2))(block, v5, v6, &v9);
     objc_autoreleasePoolPop(v8);
     ++v6;
     storage = (storage + SWCPatternStorage::getSize(storage));
@@ -224,12 +224,12 @@ LABEL_29:
   while (v9 != 1);
 }
 
-- (unint64_t)evaluateWithURLComponents:(id)a3 substitutionVariables:(id)a4 auditToken:(id *)a5 matchingPattern:(id *)a6 index:(unint64_t *)a7
+- (unint64_t)evaluateWithURLComponents:(id)components substitutionVariables:(id)variables auditToken:(id *)token matchingPattern:(id *)pattern index:(unint64_t *)index
 {
   v18[0] = 0;
   v19 = 0;
   v20 = 0;
-  v21 = a4;
+  variablesCopy = variables;
   v22 = 0;
   memset(v23, 0, sizeof(v23));
   v24 = 1065353216;
@@ -242,7 +242,7 @@ LABEL_29:
     v14 = 0;
     while (1)
     {
-      v15 = SWCPatternStorage::evaluate(storage, a3, v18, a5);
+      v15 = SWCPatternStorage::evaluate(storage, components, v18, token);
       if (v15)
       {
         break;
@@ -256,7 +256,7 @@ LABEL_29:
       }
     }
 
-    if (a6)
+    if (pattern)
     {
       v16 = [[_SWCPattern alloc] _initWithPatternStorageNoCopy:storage freeWhenDone:0];
       goto LABEL_9;
@@ -269,16 +269,16 @@ LABEL_5:
     v16 = 0;
     v15 = 0;
     v14 = 0x7FFFFFFFFFFFFFFFLL;
-    if (a6)
+    if (pattern)
     {
 LABEL_9:
-      *a6 = v16;
+      *pattern = v16;
     }
   }
 
-  if (a7)
+  if (index)
   {
-    *a7 = v14;
+    *index = v14;
   }
 
   std::__hash_table<std::__hash_value_type<std::string_view,SWCSubstitutionVariable const*>,std::__unordered_map_hasher<std::string_view,std::__hash_value_type<std::string_view,SWCSubstitutionVariable const*>,std::hash<std::string_view>,std::equal_to<std::string_view>,true>,std::__unordered_map_equal<std::string_view,std::__hash_value_type<std::string_view,SWCSubstitutionVariable const*>,std::equal_to<std::string_view>,std::hash<std::string_view>,true>,std::allocator<std::__hash_value_type<std::string_view,SWCSubstitutionVariable const*>>>::~__hash_table(v23);
@@ -286,9 +286,9 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -301,7 +301,7 @@ LABEL_9:
 
   v6 = self->_storage[0];
   storage = self->_storage;
-  v7 = (a3 + 8);
+  v7 = (equal + 8);
   if ((~*&v6 & 0x18) != 0)
   {
     v8 = 0;
@@ -363,7 +363,7 @@ LABEL_9:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -388,17 +388,17 @@ LABEL_9:
   v10 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:200 options:0 error:0];
   if (v10)
   {
-    [a3 encodeObject:v10 forKey:@"patternData"];
+    [coder encodeObject:v10 forKey:@"patternData"];
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (_SWCPatternList)initWithCoder:(id)a3
+- (_SWCPatternList)initWithCoder:(id)coder
 {
   v44 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v4 = [a3 swc_decodeObjectOfClass:objc_opt_class() forKey:@"patternData"];
+  v4 = [coder swc_decodeObjectOfClass:objc_opt_class() forKey:@"patternData"];
   v32 = v4;
   if (!v4)
   {
@@ -411,7 +411,7 @@ LABEL_9:
     v39[1] = v28;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
     v31 = [v22 initWithDomain:*MEMORY[0x277CCA050] code:4865 userInfo:?];
-    [a3 failWithError:?];
+    [coder failWithError:?];
     v21 = 0;
 LABEL_29:
 
@@ -453,10 +453,10 @@ LABEL_29:
           {
             v11 = [v10 length];
             v12 = v10;
-            v13 = [v10 bytes];
+            bytes = [v10 bytes];
             if (v11)
             {
-              v14 = v13;
+              v14 = bytes;
               if (v11 + 4 < 0x401)
               {
                 v15 = v43;
@@ -499,8 +499,8 @@ LABEL_29:
 LABEL_24:
 
           v19 = objc_opt_class();
-          v20 = [v31 array];
-          v21 = [v19 patternListWithArray:v20];
+          array = [v31 array];
+          v21 = [v19 patternListWithArray:array];
           goto LABEL_28;
         }
       }
@@ -512,16 +512,16 @@ LABEL_24:
     v41[0] = &unk_2877A72B8;
     v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[_SWCPatternList initWithCoder:]"];
     v41[1] = v31;
-    v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
-    self = [v23 initWithDomain:*MEMORY[0x277CCA050] code:4864 userInfo:v20];
-    [a3 failWithError:?];
+    array = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
+    self = [v23 initWithDomain:*MEMORY[0x277CCA050] code:4864 userInfo:array];
+    [coder failWithError:?];
     v21 = 0;
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  [a3 failWithError:v28];
+  [coder failWithError:v28];
   v21 = 0;
 
 LABEL_30:

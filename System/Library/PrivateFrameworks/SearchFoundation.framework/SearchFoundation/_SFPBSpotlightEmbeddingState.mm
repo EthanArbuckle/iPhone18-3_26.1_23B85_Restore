@@ -1,43 +1,43 @@
 @interface _SFPBSpotlightEmbeddingState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSpotlightEmbeddingState)initWithDictionary:(id)a3;
-- (_SFPBSpotlightEmbeddingState)initWithFacade:(id)a3;
-- (_SFPBSpotlightEmbeddingState)initWithJSON:(id)a3;
+- (_SFPBSpotlightEmbeddingState)initWithDictionary:(id)dictionary;
+- (_SFPBSpotlightEmbeddingState)initWithFacade:(id)facade;
+- (_SFPBSpotlightEmbeddingState)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSpotlightEmbeddingState
 
-- (_SFPBSpotlightEmbeddingState)initWithFacade:(id)a3
+- (_SFPBSpotlightEmbeddingState)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSpotlightEmbeddingState *)self init];
   if (v5)
   {
-    v6 = [v4 embeddedPhotosAssetsCount];
+    embeddedPhotosAssetsCount = [facadeCopy embeddedPhotosAssetsCount];
 
-    if (v6)
+    if (embeddedPhotosAssetsCount)
     {
-      v7 = [v4 embeddedPhotosAssetsCount];
-      -[_SFPBSpotlightEmbeddingState setEmbeddedPhotosAssetsCount:](v5, "setEmbeddedPhotosAssetsCount:", [v7 intValue]);
+      embeddedPhotosAssetsCount2 = [facadeCopy embeddedPhotosAssetsCount];
+      -[_SFPBSpotlightEmbeddingState setEmbeddedPhotosAssetsCount:](v5, "setEmbeddedPhotosAssetsCount:", [embeddedPhotosAssetsCount2 intValue]);
     }
 
-    v8 = [v4 totalPhotosAssetsCount];
+    totalPhotosAssetsCount = [facadeCopy totalPhotosAssetsCount];
 
-    if (v8)
+    if (totalPhotosAssetsCount)
     {
-      v9 = [v4 totalPhotosAssetsCount];
-      -[_SFPBSpotlightEmbeddingState setTotalPhotosAssetsCount:](v5, "setTotalPhotosAssetsCount:", [v9 intValue]);
+      totalPhotosAssetsCount2 = [facadeCopy totalPhotosAssetsCount];
+      -[_SFPBSpotlightEmbeddingState setTotalPhotosAssetsCount:](v5, "setTotalPhotosAssetsCount:", [totalPhotosAssetsCount2 intValue]);
     }
 
-    v10 = [v4 embeddedPhotosAssetsPercentage];
+    embeddedPhotosAssetsPercentage = [facadeCopy embeddedPhotosAssetsPercentage];
 
-    if (v10)
+    if (embeddedPhotosAssetsPercentage)
     {
-      v11 = [v4 embeddedPhotosAssetsPercentage];
-      -[_SFPBSpotlightEmbeddingState setEmbeddedPhotosAssetsPercentage:](v5, "setEmbeddedPhotosAssetsPercentage:", [v11 intValue]);
+      embeddedPhotosAssetsPercentage2 = [facadeCopy embeddedPhotosAssetsPercentage];
+      -[_SFPBSpotlightEmbeddingState setEmbeddedPhotosAssetsPercentage:](v5, "setEmbeddedPhotosAssetsPercentage:", [embeddedPhotosAssetsPercentage2 intValue]);
     }
 
     v12 = v5;
@@ -46,29 +46,29 @@
   return v5;
 }
 
-- (_SFPBSpotlightEmbeddingState)initWithDictionary:(id)a3
+- (_SFPBSpotlightEmbeddingState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBSpotlightEmbeddingState;
   v5 = [(_SFPBSpotlightEmbeddingState *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"embeddedPhotosAssetsCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"embeddedPhotosAssetsCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSpotlightEmbeddingState setEmbeddedPhotosAssetsCount:](v5, "setEmbeddedPhotosAssetsCount:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"totalPhotosAssetsCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"totalPhotosAssetsCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSpotlightEmbeddingState setTotalPhotosAssetsCount:](v5, "setTotalPhotosAssetsCount:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"embeddedPhotosAssetsPercentage"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"embeddedPhotosAssetsPercentage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (_SFPBSpotlightEmbeddingState)initWithJSON:(id)a3
+- (_SFPBSpotlightEmbeddingState)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSpotlightEmbeddingState *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSpotlightEmbeddingState *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSpotlightEmbeddingState *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,35 +117,35 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_embeddedPhotosAssetsCount)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBSpotlightEmbeddingState embeddedPhotosAssetsCount](self, "embeddedPhotosAssetsCount")}];
-    [v3 setObject:v4 forKeyedSubscript:@"embeddedPhotosAssetsCount"];
+    [dictionary setObject:v4 forKeyedSubscript:@"embeddedPhotosAssetsCount"];
   }
 
   if (self->_embeddedPhotosAssetsPercentage)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBSpotlightEmbeddingState embeddedPhotosAssetsPercentage](self, "embeddedPhotosAssetsPercentage")}];
-    [v3 setObject:v5 forKeyedSubscript:@"embeddedPhotosAssetsPercentage"];
+    [dictionary setObject:v5 forKeyedSubscript:@"embeddedPhotosAssetsPercentage"];
   }
 
   if (self->_totalPhotosAssetsCount)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBSpotlightEmbeddingState totalPhotosAssetsCount](self, "totalPhotosAssetsCount")}];
-    [v3 setObject:v6 forKeyedSubscript:@"totalPhotosAssetsCount"];
+    [dictionary setObject:v6 forKeyedSubscript:@"totalPhotosAssetsCount"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (embeddedPhotosAssetsCount = self->_embeddedPhotosAssetsCount, embeddedPhotosAssetsCount == objc_msgSend(v4, "embeddedPhotosAssetsCount")) && (totalPhotosAssetsCount = self->_totalPhotosAssetsCount, totalPhotosAssetsCount == objc_msgSend(v4, "totalPhotosAssetsCount")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (embeddedPhotosAssetsCount = self->_embeddedPhotosAssetsCount, embeddedPhotosAssetsCount == objc_msgSend(equalCopy, "embeddedPhotosAssetsCount")) && (totalPhotosAssetsCount = self->_totalPhotosAssetsCount, totalPhotosAssetsCount == objc_msgSend(equalCopy, "totalPhotosAssetsCount")))
   {
     embeddedPhotosAssetsPercentage = self->_embeddedPhotosAssetsPercentage;
-    v8 = embeddedPhotosAssetsPercentage == [v4 embeddedPhotosAssetsPercentage];
+    v8 = embeddedPhotosAssetsPercentage == [equalCopy embeddedPhotosAssetsPercentage];
   }
 
   else
@@ -156,9 +156,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_SFPBSpotlightEmbeddingState *)self embeddedPhotosAssetsCount])
   {
     PBDataWriterWriteInt32Field();
@@ -169,12 +169,12 @@
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(_SFPBSpotlightEmbeddingState *)self embeddedPhotosAssetsPercentage];
-  v5 = v6;
-  if (v4)
+  embeddedPhotosAssetsPercentage = [(_SFPBSpotlightEmbeddingState *)self embeddedPhotosAssetsPercentage];
+  v5 = toCopy;
+  if (embeddedPhotosAssetsPercentage)
   {
     PBDataWriterWriteInt32Field();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 

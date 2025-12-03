@@ -14,10 +14,10 @@
   }
 
   v10 = v9;
-  v11 = [[HMFKeyValueBlockObserver alloc] initWithKeyPath:v8 object:a1 options:a4];
+  v11 = [[HMFKeyValueBlockObserver alloc] initWithKeyPath:v8 object:self options:a4];
   [(HMFKeyValueBlockObserver *)v11 setHandler:v10];
-  objc_setAssociatedObject(a1, a1, v11, 0x301);
-  objc_initWeak(&location, a1);
+  objc_setAssociatedObject(self, self, v11, 0x301);
+  objc_initWeak(&location, self);
   objc_initWeak(&from, v11);
   v12 = [HMFCancellationHandler alloc];
   v15[0] = MEMORY[0x277D85DD0];
@@ -26,7 +26,7 @@
   v15[3] = &unk_2786E8060;
   objc_copyWeak(&v16, &from);
   objc_copyWeak(v17, &location);
-  v17[1] = a1;
+  v17[1] = self;
   v13 = [(HMFCancellationHandler *)v12 initWithBlock:v15];
   objc_destroyWeak(v17);
   objc_destroyWeak(&v16);

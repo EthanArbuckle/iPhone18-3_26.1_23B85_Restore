@@ -1,9 +1,9 @@
 @interface SearchHintCollectionViewCell
 - (BOOL)isHighlighted;
-- (_TtC18ASMessagesProvider28SearchHintCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider28SearchHintCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SearchHintCollectionViewCell
@@ -15,17 +15,17 @@
   return [(SearchHintCollectionViewCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for SearchHintCollectionViewCell();
   v4 = v5.receiver;
-  [(SearchHintCollectionViewCell *)&v5 setHighlighted:v3];
+  [(SearchHintCollectionViewCell *)&v5 setHighlighted:highlightedCopy];
   sub_21BEB4();
 }
 
-- (_TtC18ASMessagesProvider28SearchHintCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider28SearchHintCollectionViewCell)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC18ASMessagesProvider28SearchHintCollectionViewCell_hintView;
   *(&self->super.super.super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for SearchHintView()) init];
@@ -41,8 +41,8 @@
   v2 = v13.receiver;
   [(SearchHintCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC18ASMessagesProvider28SearchHintCollectionViewCell_hintView];
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -53,7 +53,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_21C21C();
 }
 

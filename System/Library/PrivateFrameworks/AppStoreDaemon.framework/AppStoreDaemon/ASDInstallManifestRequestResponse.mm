@@ -1,15 +1,15 @@
 @interface ASDInstallManifestRequestResponse
-- (ASDInstallManifestRequestResponse)initWithCoder:(id)a3;
-- (ASDInstallManifestRequestResponse)initWithResults:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ASDInstallManifestRequestResponse)initWithCoder:(id)coder;
+- (ASDInstallManifestRequestResponse)initWithResults:(id)results;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASDInstallManifestRequestResponse
 
-- (ASDInstallManifestRequestResponse)initWithResults:(id)a3
+- (ASDInstallManifestRequestResponse)initWithResults:(id)results
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v4 copyItems:1];
+  resultsCopy = results;
+  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:resultsCopy copyItems:1];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -71,22 +71,22 @@ uint64_t __53__ASDInstallManifestRequestResponse_initWithResults___block_invoke(
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = ASDInstallManifestRequestResponse;
-  v4 = [(ASDRequestResponse *)&v6 copyWithZone:a3];
+  v4 = [(ASDRequestResponse *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 2, self->_results);
   return v4;
 }
 
-- (ASDInstallManifestRequestResponse)initWithCoder:(id)a3
+- (ASDInstallManifestRequestResponse)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"results"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"results"];
 
   v9 = [(ASDInstallManifestRequestResponse *)self initWithResults:v8];
   return v9;

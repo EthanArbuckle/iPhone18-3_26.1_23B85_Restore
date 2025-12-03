@@ -8,8 +8,8 @@
 - (uint64_t)initFromAccessKey:()CDP
 {
   v4 = a3;
-  v5 = [v4 wrappingKeyData];
-  v6 = [v5 length];
+  wrappingKeyData = [v4 wrappingKeyData];
+  v6 = [wrappingKeyData length];
 
   if (v6)
   {
@@ -20,18 +20,18 @@
     }
 
     v8 = objc_alloc(MEMORY[0x1E69B7CD8]);
-    v9 = [v4 wrappedKeyData];
-    v10 = [v4 wrappingKeyData];
-    v11 = [v4 beneficiaryID];
+    wrappedKeyData = [v4 wrappedKeyData];
+    wrappingKeyData2 = [v4 wrappingKeyData];
+    beneficiaryID = [v4 beneficiaryID];
     v22 = 0;
     v12 = &v22;
-    v13 = [v8 initWithWrappedKeyData:v9 wrappingKeyData:v10 uuid:v11 error:&v22];
+    v13 = [v8 initWithWrappedKeyData:wrappedKeyData wrappingKeyData:wrappingKeyData2 uuid:beneficiaryID error:&v22];
   }
 
   else
   {
-    v14 = [v4 wrappingKeyString];
-    v15 = [v14 length];
+    wrappingKeyString = [v4 wrappingKeyString];
+    v15 = [wrappingKeyString length];
 
     if (!v15)
     {
@@ -46,12 +46,12 @@
     }
 
     v17 = objc_alloc(MEMORY[0x1E69B7CD8]);
-    v9 = [v4 wrappedKeyData];
-    v10 = [v4 wrappingKeyString];
-    v11 = [v4 beneficiaryID];
+    wrappedKeyData = [v4 wrappedKeyData];
+    wrappingKeyData2 = [v4 wrappingKeyString];
+    beneficiaryID = [v4 beneficiaryID];
     v21 = 0;
     v12 = &v21;
-    v13 = [v17 initWithWrappedKeyData:v9 wrappingKeyString:v10 uuid:v11 error:&v21];
+    v13 = [v17 initWithWrappedKeyData:wrappedKeyData wrappingKeyString:wrappingKeyData2 uuid:beneficiaryID error:&v21];
   }
 
   v15 = v13;
@@ -74,26 +74,26 @@ LABEL_14:
 - (id)accessCode
 {
   v2 = objc_alloc(MEMORY[0x1E698DD88]);
-  v3 = [a1 uuid];
-  v4 = [v2 initWithBeneficiairyIdentifier:v3];
+  uuid = [self uuid];
+  v4 = [v2 initWithBeneficiairyIdentifier:uuid];
 
-  v5 = [a1 claimTokenData];
-  [v4 setClaimTokenData:v5];
+  claimTokenData = [self claimTokenData];
+  [v4 setClaimTokenData:claimTokenData];
 
-  v6 = [a1 claimTokenString];
-  [v4 setClaimTokenString:v6];
+  claimTokenString = [self claimTokenString];
+  [v4 setClaimTokenString:claimTokenString];
 
-  v7 = [a1 wrappingKeyData];
-  [v4 setWrappingKeyData:v7];
+  wrappingKeyData = [self wrappingKeyData];
+  [v4 setWrappingKeyData:wrappingKeyData];
 
-  v8 = [a1 wrappingKeyString];
-  [v4 setWrappingKeyString:v8];
+  wrappingKeyString = [self wrappingKeyString];
+  [v4 setWrappingKeyString:wrappingKeyString];
 
-  v9 = [a1 wrappedKeyData];
-  [v4 setWrappedKeyData:v9];
+  wrappedKeyData = [self wrappedKeyData];
+  [v4 setWrappedKeyData:wrappedKeyData];
 
-  v10 = [a1 wrappedKeyString];
-  [v4 setWrappedKeyString:v10];
+  wrappedKeyString = [self wrappedKeyString];
+  [v4 setWrappedKeyString:wrappedKeyString];
 
   return v4;
 }

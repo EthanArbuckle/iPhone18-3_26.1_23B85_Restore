@@ -1,6 +1,6 @@
 @interface FMDCommandHandlerRegistration
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation FMDCommandHandlerRegistration
@@ -17,26 +17,26 @@
   [(FMDCommandHandler *)self didHandleCommandWithAckData:0];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FMDCommandHandler *)self commandParams];
-  v6 = [v5 objectForKeyedSubscript:@"ackURL"];
+  completionCopy = completion;
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v6 = [commandParams objectForKeyedSubscript:@"ackURL"];
 
-  v7 = [(FMDCommandHandler *)self provider];
+  provider = [(FMDCommandHandler *)self provider];
   if (v6)
   {
     v8 = [NSURL URLWithString:v6];
-    v9 = [(FMDCommandHandler *)self commandParams];
-    v10 = [v9 objectForKey:@"udid"];
-    v11 = [v10 fm_nullToNil];
+    commandParams2 = [(FMDCommandHandler *)self commandParams];
+    v10 = [commandParams2 objectForKey:@"udid"];
+    fm_nullToNil = [v10 fm_nullToNil];
 
-    v23 = v4;
-    if ([v11 length])
+    v23 = completionCopy;
+    if ([fm_nullToNil length])
     {
-      v12 = [[FMDAccessoryIdentifier alloc] initWithString:v11];
-      v13 = [v7 accessoryRegistry];
-      v14 = [v13 accessoryForIdentifier:v12];
+      v12 = [[FMDAccessoryIdentifier alloc] initWithString:fm_nullToNil];
+      accessoryRegistry = [provider accessoryRegistry];
+      v14 = [accessoryRegistry accessoryForIdentifier:v12];
     }
 
     else
@@ -50,21 +50,21 @@
     v27[2] = sub_1001DD924;
     v27[3] = &unk_1002CDF18;
     v28 = v14;
-    v16 = v7;
+    v16 = provider;
     v29 = v16;
     v17 = v14;
     v18 = [(FMDActingRequestDecorator *)v15 initWithDeviceContextGenerator:&stru_1002D12C0 deviceInfoGenerator:v27 serverContextGenerator:0 requestHeaderGenerator:0];
     v19 = [FMDRequestAckRegister alloc];
-    v20 = [v16 account];
-    v21 = [(FMDCommandHandler *)self commandParams];
-    v22 = [(FMDRequestAckRegister *)v19 initWithAccount:v20 registerCommand:v21 ackURL:v8];
+    account = [v16 account];
+    commandParams3 = [(FMDCommandHandler *)self commandParams];
+    v22 = [(FMDRequestAckRegister *)v19 initWithAccount:account registerCommand:commandParams3 ackURL:v8];
 
     [(FMDRequest *)v22 setDecorator:v18];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1001DD9C0;
     v25[3] = &unk_1002CD1D0;
-    v4 = v23;
+    completionCopy = v23;
     v26 = v23;
     [(FMDRequest *)v22 setCompletionHandler:v25];
     [v16 enqueueRequest:v22];

@@ -1,20 +1,20 @@
 @interface NCSecondaryClickGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation NCSecondaryClickGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = NCSecondaryClickGestureRecognizer;
-  v6 = a4;
-  [(NCSecondaryClickGestureRecognizer *)&v8 touchesBegan:a3 withEvent:v6];
-  LODWORD(a3) = [(NCSecondaryClickGestureRecognizer *)self isSecondaryClickEvent:v6, v8.receiver, v8.super_class];
+  eventCopy = event;
+  [(NCSecondaryClickGestureRecognizer *)&v8 touchesBegan:began withEvent:eventCopy];
+  LODWORD(began) = [(NCSecondaryClickGestureRecognizer *)self isSecondaryClickEvent:eventCopy, v8.receiver, v8.super_class];
 
-  if (a3)
+  if (began)
   {
     v7 = 1;
   }
@@ -27,29 +27,29 @@
   [(NCSecondaryClickGestureRecognizer *)self setState:v7];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = NCSecondaryClickGestureRecognizer;
-  v6 = a4;
-  [(NCSecondaryClickGestureRecognizer *)&v7 touchesEnded:a3 withEvent:v6];
-  LODWORD(a3) = [(NCSecondaryClickGestureRecognizer *)self isSecondaryClickEvent:v6, v7.receiver, v7.super_class];
+  eventCopy = event;
+  [(NCSecondaryClickGestureRecognizer *)&v7 touchesEnded:ended withEvent:eventCopy];
+  LODWORD(ended) = [(NCSecondaryClickGestureRecognizer *)self isSecondaryClickEvent:eventCopy, v7.receiver, v7.super_class];
 
-  if (a3)
+  if (ended)
   {
     [(NCSecondaryClickGestureRecognizer *)self setState:3];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = NCSecondaryClickGestureRecognizer;
-  v6 = a4;
-  [(NCSecondaryClickGestureRecognizer *)&v7 touchesCancelled:a3 withEvent:v6];
-  LODWORD(a3) = [(NCSecondaryClickGestureRecognizer *)self isSecondaryClickEvent:v6, v7.receiver, v7.super_class];
+  eventCopy = event;
+  [(NCSecondaryClickGestureRecognizer *)&v7 touchesCancelled:cancelled withEvent:eventCopy];
+  LODWORD(cancelled) = [(NCSecondaryClickGestureRecognizer *)self isSecondaryClickEvent:eventCopy, v7.receiver, v7.super_class];
 
-  if (a3)
+  if (cancelled)
   {
     [(NCSecondaryClickGestureRecognizer *)self setState:4];
   }

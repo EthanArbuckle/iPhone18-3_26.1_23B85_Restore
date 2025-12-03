@@ -80,28 +80,28 @@ LABEL_13:
   {
     v20 = self->_bundleID;
     v9 = v9;
-    v21 = [v9 installType];
-    v22 = [v9 iTunesMetadata];
-    v23 = [v22 storeItemIdentifier];
+    installType = [v9 installType];
+    iTunesMetadata = [v9 iTunesMetadata];
+    storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
     v24 = ASDLogHandleForCategory();
     v25 = v24;
-    if (v23)
+    if (storeItemIdentifier)
     {
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         v26 = objc_opt_class();
         v27 = v26;
-        v28 = [v9 iTunesMetadata];
-        v29 = [v28 storeItemIdentifier];
+        iTunesMetadata2 = [v9 iTunesMetadata];
+        storeItemIdentifier2 = [iTunesMetadata2 storeItemIdentifier];
         *buf = 138544130;
         v48 = v26;
         v49 = 2114;
         v50 = v20;
         v51 = 2048;
-        v52 = v29;
+        v52 = storeItemIdentifier2;
         v53 = 2048;
-        v54 = v21;
+        v54 = installType;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Hydrating placeholder for bundleID: %{public}@ itemID: %llu installType: %ld", buf, 0x2Au);
       }
 
@@ -118,7 +118,7 @@ LABEL_13:
         v49 = 2114;
         v50 = v20;
         v51 = 2048;
-        v52 = v21;
+        v52 = installType;
         v43 = v42;
         _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "[%{public}@]: Unable to hydrate placeholder for bundleID: %{public}@ installType: %ld due to lack of store itemID", buf, 0x20u);
       }
@@ -130,7 +130,7 @@ LABEL_13:
 
     v16 = v30;
     v17 = 0;
-    if (!v16 && v23)
+    if (!v16 && storeItemIdentifier)
     {
       v32 = self->_bundleID;
       v33 = [[NSArray alloc] initWithObjects:{v32, 0}];

@@ -2,7 +2,7 @@
 + (id)sharedAccountStore;
 - (ACAccount)primaryAppleAccount;
 - (SSVAppleAccountStore)init;
-- (void)_accountStoreDidChangeNotification:(id)a3;
+- (void)_accountStoreDidChangeNotification:(id)notification;
 @end
 
 @implementation SSVAppleAccountStore
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __42__SSVAppleAccountStore_sharedAccountStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountStore_sOnce != -1)
   {
     dispatch_once(&sharedAccountStore_sOnce, block);
@@ -111,7 +111,7 @@ void __43__SSVAppleAccountStore_primaryAppleAccount__block_invoke(uint64_t a1)
   objc_storeStrong(v14, v3);
 }
 
-- (void)_accountStoreDidChangeNotification:(id)a3
+- (void)_accountStoreDidChangeNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];

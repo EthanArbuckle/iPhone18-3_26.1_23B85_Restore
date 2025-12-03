@@ -1,45 +1,45 @@
 @interface CSHomeAffordanceViewController
 - (CGPoint)homeAffordanceOffset;
 - (CGRect)_homeAffordanceRestingFrame;
-- (CGRect)homeAffordanceFrameForHomeAffordanceInteraction:(id)a3;
-- (CSHomeAffordanceViewController)initWithCoverSheetContext:(id)a3;
+- (CGRect)homeAffordanceFrameForHomeAffordanceInteraction:(id)interaction;
+- (CSHomeAffordanceViewController)initWithCoverSheetContext:(id)context;
 - (CSHomeAffordanceViewControllerDelegate)delegate;
-- (id)_addWrapperViewWithOrientation:(int64_t)a3;
-- (void)_handleSuppressAnimationForPointerGesture:(id)a3;
+- (id)_addWrapperViewWithOrientation:(int64_t)orientation;
+- (void)_handleSuppressAnimationForPointerGesture:(id)gesture;
 - (void)_layoutHomeAffordance;
 - (void)_updateHomeAffordanceInteraction;
-- (void)aggregateAppearance:(id)a3;
-- (void)homeAffordanceInteractionDidFailToRecognizeDoubleTap:(id)a3;
-- (void)homeAffordanceInteractionDidRecognizeDoubleTap:(id)a3;
-- (void)homeAffordanceInteractionDidRecognizeSingleClick:(id)a3;
-- (void)homeAffordanceInteractionDidRecognizeSingleTap:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHomeAffordanceOffset:(CGPoint)a3;
-- (void)setHomeAffordanceOffset:(CGPoint)a3 scale:(double)a4;
-- (void)setHomeAffordanceScale:(double)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)aggregateAppearance:(id)appearance;
+- (void)homeAffordanceInteractionDidFailToRecognizeDoubleTap:(id)tap;
+- (void)homeAffordanceInteractionDidRecognizeDoubleTap:(id)tap;
+- (void)homeAffordanceInteractionDidRecognizeSingleClick:(id)click;
+- (void)homeAffordanceInteractionDidRecognizeSingleTap:(id)tap;
+- (void)setDelegate:(id)delegate;
+- (void)setHomeAffordanceOffset:(CGPoint)offset;
+- (void)setHomeAffordanceOffset:(CGPoint)offset scale:(double)scale;
+- (void)setHomeAffordanceScale:(double)scale;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CSHomeAffordanceViewController
 
-- (CSHomeAffordanceViewController)initWithCoverSheetContext:(id)a3
+- (CSHomeAffordanceViewController)initWithCoverSheetContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = CSHomeAffordanceViewController;
   v6 = [(CSCoverSheetViewControllerBase *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coverSheetContext, a3);
+    objc_storeStrong(&v6->_coverSheetContext, context);
     v7->_homeAffordanceScale = 1.0;
-    v8 = [MEMORY[0x277D65E80] rootSettings];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
     settings = v7->_settings;
-    v7->_settings = v8;
+    v7->_settings = rootSettings;
   }
 
   return v7;
@@ -50,12 +50,12 @@
   v11.receiver = self;
   v11.super_class = CSHomeAffordanceViewController;
   [(CSCoverSheetViewControllerBase *)&v11 viewDidLoad];
-  v3 = [(CSHomeAffordanceViewController *)self view];
+  view = [(CSHomeAffordanceViewController *)self view];
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
   counterRotationView = self->_counterRotationView;
   self->_counterRotationView = v4;
 
-  [v3 addSubview:self->_counterRotationView];
+  [view addSubview:self->_counterRotationView];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   rotationWrapperViews = self->_rotationWrapperViews;
   self->_rotationWrapperViews = v6;
@@ -75,8 +75,8 @@
   v29.receiver = self;
   v29.super_class = CSHomeAffordanceViewController;
   [(CSCoverSheetViewControllerBase *)&v29 viewDidLayoutSubviews];
-  v3 = [(CSHomeAffordanceViewController *)self view];
-  [v3 bounds];
+  view = [(CSHomeAffordanceViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -121,11 +121,11 @@
   [(CSHomeAffordanceViewController *)self _layoutHomeAffordance];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CSHomeAffordanceViewController;
-  [(CSCoverSheetViewControllerBase *)&v8 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v8 viewDidAppear:appear];
   if (!self->_suppressAnimationForPointerGestureRecognizer)
   {
     v4 = [objc_alloc(MEMORY[0x277D755A0]) initWithTarget:self action:sel__handleSuppressAnimationForPointerGesture_];
@@ -133,37 +133,37 @@
     self->_suppressAnimationForPointerGestureRecognizer = v4;
   }
 
-  v6 = [(CSHomeAffordanceViewController *)self view];
-  v7 = [v6 window];
-  [v7 addGestureRecognizer:self->_suppressAnimationForPointerGestureRecognizer];
+  view = [(CSHomeAffordanceViewController *)self view];
+  window = [view window];
+  [window addGestureRecognizer:self->_suppressAnimationForPointerGestureRecognizer];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CSHomeAffordanceViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:a3];
-  v4 = [(CSHomeAffordanceViewController *)self view];
-  v5 = [v4 window];
-  [v5 removeGestureRecognizer:self->_suppressAnimationForPointerGestureRecognizer];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:disappear];
+  view = [(CSHomeAffordanceViewController *)self view];
+  window = [view window];
+  [window removeGestureRecognizer:self->_suppressAnimationForPointerGestureRecognizer];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v46.receiver = self;
   v46.super_class = CSHomeAffordanceViewController;
-  [(CSCoverSheetViewControllerBase *)&v46 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(CSCoverSheetViewControllerBase *)&v46 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = SBFWindowForViewControllerTransition();
-  v9 = [v8 _toWindowOrientation];
+  _toWindowOrientation = [v8 _toWindowOrientation];
 
-  v10 = [v7 isAnimated];
-  v11 = [(NSMutableArray *)self->_rotationWrapperViews firstObject];
-  if (v10)
+  isAnimated = [coordinatorCopy isAnimated];
+  firstObject = [(NSMutableArray *)self->_rotationWrapperViews firstObject];
+  if (isAnimated)
   {
-    v12 = [(CSHomeAffordanceViewController *)self _addWrapperViewWithOrientation:v9];
+    v12 = [(CSHomeAffordanceViewController *)self _addWrapperViewWithOrientation:_toWindowOrientation];
     [v12 setAlpha:0.0];
     v13 = objc_opt_new();
     v14 = objc_opt_new();
@@ -175,19 +175,19 @@
     v42 = v15;
     v16 = v14;
     v43 = v16;
-    v44 = self;
+    selfCopy = self;
     v17 = v12;
     v45 = v17;
     v18 = MEMORY[0x223D698D0](v41);
-    v19 = [(SBFHomeGrabberSettings *)self->_settings rotationFadeOutAnimationSettings];
-    v20 = [v19 BSAnimationSettings];
+    rotationFadeOutAnimationSettings = [(SBFHomeGrabberSettings *)self->_settings rotationFadeOutAnimationSettings];
+    bSAnimationSettings = [rotationFadeOutAnimationSettings BSAnimationSettings];
 
     v21 = MEMORY[0x277CF0D38];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_3;
     v39[3] = &unk_27838B770;
-    v40 = v11;
+    v40 = firstObject;
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_4;
@@ -200,14 +200,14 @@
     v38 = v22;
     v28 = v15;
     v23 = v40;
-    v11 = v17;
-    [v21 animateWithSettings:v20 actions:v39 completion:v34];
+    firstObject = v17;
+    [v21 animateWithSettings:bSAnimationSettings actions:v39 completion:v34];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_5;
     v33[3] = &unk_27838D990;
     v33[4] = self;
-    v33[5] = v9;
+    v33[5] = _toWindowOrientation;
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_6;
@@ -216,7 +216,7 @@
     v32 = v22;
     v24 = v22;
     v25 = v16;
-    [v7 animateAlongsideTransition:v33 completion:v30];
+    [coordinatorCopy animateAlongsideTransition:v33 completion:v30];
   }
 
   else
@@ -225,11 +225,11 @@
     SBFTransformFromOrientationToOrientation();
     [(UIView *)counterRotationView setTransform:v29];
     SBFTransformFromOrientationToOrientation();
-    [v11 setTransform:v29];
+    [firstObject setTransform:v29];
   }
 
-  v27 = [(CSHomeAffordanceViewController *)self view];
-  [v27 setNeedsLayout];
+  view = [(CSHomeAffordanceViewController *)self view];
+  [view setNeedsLayout];
 }
 
 void __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -295,9 +295,9 @@ uint64_t __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTrans
   return v2();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained isEqual:obj];
 
@@ -352,28 +352,28 @@ uint64_t __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTrans
   }
 }
 
-- (void)setHomeAffordanceOffset:(CGPoint)a3
+- (void)setHomeAffordanceOffset:(CGPoint)offset
 {
-  if (self->_homeAffordanceOffset.x != a3.x || self->_homeAffordanceOffset.y != a3.y)
+  if (self->_homeAffordanceOffset.x != offset.x || self->_homeAffordanceOffset.y != offset.y)
   {
-    self->_homeAffordanceOffset = a3;
+    self->_homeAffordanceOffset = offset;
     [(CSHomeAffordanceViewController *)self _layoutHomeAffordance];
   }
 }
 
-- (void)setHomeAffordanceScale:(double)a3
+- (void)setHomeAffordanceScale:(double)scale
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_homeAffordanceScale = a3;
+    self->_homeAffordanceScale = scale;
 
     [(CSHomeAffordanceViewController *)self _layoutHomeAffordance];
   }
 }
 
-- (void)setHomeAffordanceOffset:(CGPoint)a3 scale:(double)a4
+- (void)setHomeAffordanceOffset:(CGPoint)offset scale:(double)scale
 {
-  if (self->_homeAffordanceOffset.x == a3.x && self->_homeAffordanceOffset.y == a3.y)
+  if (self->_homeAffordanceOffset.x == offset.x && self->_homeAffordanceOffset.y == offset.y)
   {
     p_homeAffordanceScale = &self->_homeAffordanceScale;
     if (BSFloatEqualToFloat())
@@ -384,7 +384,7 @@ uint64_t __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTrans
 
   else
   {
-    self->_homeAffordanceOffset = a3;
+    self->_homeAffordanceOffset = offset;
     p_homeAffordanceScale = &self->_homeAffordanceScale;
     if (BSFloatEqualToFloat())
     {
@@ -392,7 +392,7 @@ uint64_t __85__CSHomeAffordanceViewController_viewWillTransitionToSize_withTrans
     }
   }
 
-  *p_homeAffordanceScale = a4;
+  *p_homeAffordanceScale = scale;
 LABEL_9:
 
   [(CSHomeAffordanceViewController *)self _layoutHomeAffordance];
@@ -425,8 +425,8 @@ LABEL_9:
 
   else
   {
-    v16 = [(CSHomeAffordanceView *)self->_homeAffordanceView superview];
-    [v16 bounds];
+    superview = [(CSHomeAffordanceView *)self->_homeAffordanceView superview];
+    [superview bounds];
     UIRectGetCenter();
 
     SBFTransformForScalingAboutPointInSuperview();
@@ -442,11 +442,11 @@ LABEL_9:
 
 - (CGRect)_homeAffordanceRestingFrame
 {
-  v3 = [(CSHomeAffordanceView *)self->_homeAffordanceView superview];
-  [v3 bounds];
+  superview = [(CSHomeAffordanceView *)self->_homeAffordanceView superview];
+  [superview bounds];
   v5 = v4;
-  v6 = [(CSHomeAffordanceViewController *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(CSHomeAffordanceViewController *)self traitCollection];
+  [traitCollection displayScale];
 
   [(CSHomeAffordanceView *)self->_homeAffordanceView suggestedSizeForContentWidth:v5];
   [(CSHomeAffordanceView *)self->_homeAffordanceView suggestedEdgeSpacing];
@@ -467,7 +467,7 @@ LABEL_9:
   return result;
 }
 
-- (id)_addWrapperViewWithOrientation:(int64_t)a3
+- (id)_addWrapperViewWithOrientation:(int64_t)orientation
 {
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
   [(NSMutableArray *)self->_rotationWrapperViews insertObject:v4 atIndex:0];
@@ -478,18 +478,18 @@ LABEL_9:
   return v4;
 }
 
-- (void)_handleSuppressAnimationForPointerGesture:(id)a3
+- (void)_handleSuppressAnimationForPointerGesture:(id)gesture
 {
-  v10 = a3;
-  if (([v10 state] - 6) > 0xFFFFFFFFFFFFFFFCLL)
+  gestureCopy = gesture;
+  if (([gestureCopy state] - 6) > 0xFFFFFFFFFFFFFFFCLL)
   {
     v9 = 0;
   }
 
   else
   {
-    v4 = [(CSHomeAffordanceViewController *)self view];
-    [v10 locationInView:v4];
+    view = [(CSHomeAffordanceViewController *)self view];
+    [gestureCopy locationInView:view];
     v6 = v5;
     v8 = v7;
 
@@ -508,18 +508,18 @@ LABEL_9:
 
 - (void)_updateHomeAffordanceInteraction
 {
-  v3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
-  v4 = [v3 isHomeAffordanceDoubleTapGestureEnabled];
+  assistantController = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
+  isHomeAffordanceDoubleTapGestureEnabled = [assistantController isHomeAffordanceDoubleTapGestureEnabled];
 
   homeAffordanceInteraction = self->_homeAffordanceInteraction;
-  if (v4)
+  if (isHomeAffordanceDoubleTapGestureEnabled)
   {
     if (!homeAffordanceInteraction)
     {
-      v6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeAffordanceInteractionProvider];
-      v7 = [v6 newHomeAffordanceInteraction];
+      homeAffordanceInteractionProvider = [(CSCoverSheetContextProviding *)self->_coverSheetContext homeAffordanceInteractionProvider];
+      newHomeAffordanceInteraction = [homeAffordanceInteractionProvider newHomeAffordanceInteraction];
       v8 = self->_homeAffordanceInteraction;
-      self->_homeAffordanceInteraction = v7;
+      self->_homeAffordanceInteraction = newHomeAffordanceInteraction;
 
       [(SBFHomeAffordanceInteraction *)self->_homeAffordanceInteraction setDelegate:self];
       homeAffordanceView = self->_homeAffordanceView;
@@ -537,19 +537,19 @@ LABEL_9:
   }
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v7.receiver = self;
   v7.super_class = CSHomeAffordanceViewController;
-  v3 = a3;
-  [(CSCoverSheetViewControllerBase *)&v7 aggregateAppearance:v3];
+  appearanceCopy = appearance;
+  [(CSCoverSheetViewControllerBase *)&v7 aggregateAppearance:appearanceCopy];
   v4 = objc_opt_new();
   v5 = [v4 priority:{10, v7.receiver, v7.super_class}];
   v6 = [v5 suppressTeachableMomentsAnimation:BSSettingFlagIfYes()];
-  [v3 addComponent:v6];
+  [appearanceCopy addComponent:v6];
 }
 
-- (CGRect)homeAffordanceFrameForHomeAffordanceInteraction:(id)a3
+- (CGRect)homeAffordanceFrameForHomeAffordanceInteraction:(id)interaction
 {
   [(CSHomeAffordanceView *)self->_homeAffordanceView bounds];
   result.size.height = v6;
@@ -559,9 +559,9 @@ LABEL_9:
   return result;
 }
 
-- (void)homeAffordanceInteractionDidRecognizeSingleTap:(id)a3
+- (void)homeAffordanceInteractionDidRecognizeSingleTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
@@ -596,7 +596,7 @@ void __81__CSHomeAffordanceViewController_homeAffordanceInteractionDidRecognizeS
   }
 }
 
-- (void)homeAffordanceInteractionDidRecognizeDoubleTap:(id)a3
+- (void)homeAffordanceInteractionDidRecognizeDoubleTap:(id)tap
 {
   if ((*&self->_delegateRespondsTo & 2) != 0)
   {
@@ -605,7 +605,7 @@ void __81__CSHomeAffordanceViewController_homeAffordanceInteractionDidRecognizeS
   }
 }
 
-- (void)homeAffordanceInteractionDidFailToRecognizeDoubleTap:(id)a3
+- (void)homeAffordanceInteractionDidFailToRecognizeDoubleTap:(id)tap
 {
   if ((*&self->_delegateRespondsTo & 4) != 0)
   {
@@ -614,7 +614,7 @@ void __81__CSHomeAffordanceViewController_homeAffordanceInteractionDidRecognizeS
   }
 }
 
-- (void)homeAffordanceInteractionDidRecognizeSingleClick:(id)a3
+- (void)homeAffordanceInteractionDidRecognizeSingleClick:(id)click
 {
   if ((*&self->_delegateRespondsTo & 0x10) != 0)
   {

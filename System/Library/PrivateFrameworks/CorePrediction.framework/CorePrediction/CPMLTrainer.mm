@@ -1,10 +1,10 @@
 @interface CPMLTrainer
-- (id)fileProtectionClassRequest:(id)a3;
+- (id)fileProtectionClassRequest:(id)request;
 - (id)getSolution;
-- (id)init:(id)a3 withModelDBPath:(id)a4 withPropertyList:(id)a5;
-- (void)buildTrainingMachineLearningAlgorithm:(id)a3;
+- (id)init:(id)init withModelDBPath:(id)path withPropertyList:(id)list;
+- (void)buildTrainingMachineLearningAlgorithm:(id)algorithm;
 - (void)dealloc;
-- (void)train:(BOOL)a3;
+- (void)train:(BOOL)train;
 @end
 
 @implementation CPMLTrainer
@@ -16,7 +16,7 @@
   __p = 0;
   v9 = 0;
   (*(self->cpMLAlgo->var0 + 12))(self->cpMLAlgo, &__p);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = __p;
   if (v9 != __p)
   {
@@ -24,7 +24,7 @@
     do
     {
       v6 = [MEMORY[0x277CCABB0] numberWithDouble:v4[v5]];
-      [v3 addObject:v6];
+      [array addObject:v6];
 
       ++v5;
       v4 = __p;
@@ -43,21 +43,21 @@
     operator delete(__p);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)init:(id)a3 withModelDBPath:(id)a4 withPropertyList:(id)a5
+- (id)init:(id)init withModelDBPath:(id)path withPropertyList:(id)list
 {
   v27 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v9 = a4;
-  v10 = a5;
+  initCopy = init;
+  pathCopy = path;
+  listCopy = list;
   v26.receiver = self;
   v26.super_class = CPMLTrainer;
   v11 = [(CPMLTrainer *)&v26 init];
   if (v11)
   {
-    v12 = [v10 objectForKey:@"loggingMode"];
+    v12 = [listCopy objectForKey:@"loggingMode"];
     v13 = v12;
     if (v12 || (v14 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.cpml"], objc_msgSend(v14, "objectForKey:", @"loggingMode"), v13 = objc_claimAutoreleasedReturnValue(), v14, v13))
     {
@@ -66,21 +66,21 @@
     }
 
     v11->shouldFail = 0;
-    objc_storeStrong(&v11->cpmlDB, a3);
-    v16 = [(CPMLDB *)v11->cpmlDB getDelegate];
+    objc_storeStrong(&v11->cpmlDB, init);
+    getDelegate = [(CPMLDB *)v11->cpmlDB getDelegate];
     theDelegate = v11->_theDelegate;
-    v11->_theDelegate = v16;
+    v11->_theDelegate = getDelegate;
 
     [(CPMLDB *)v11->cpmlDB flushDB];
-    if (v9)
+    if (pathCopy)
     {
-      v18 = v9;
-      if (!sqlite3_open([v9 UTF8String], &v11->modelDB))
+      v18 = pathCopy;
+      if (!sqlite3_open([pathCopy UTF8String], &v11->modelDB))
       {
-        if (v10)
+        if (listCopy)
         {
-          objc_storeStrong(&v11->modelPlist, a5);
-          v20 = [[CPMLSchema alloc] initWithPlist:v10];
+          objc_storeStrong(&v11->modelPlist, list);
+          v20 = [[CPMLSchema alloc] initWithPlist:listCopy];
           cpmlSchema = v11->cpmlSchema;
           v11->cpmlSchema = v20;
 
@@ -108,7 +108,7 @@
         operator new();
       }
 
-      NSLog(&cfstr_CannotOpen.isa, v9);
+      NSLog(&cfstr_CannotOpen.isa, pathCopy);
       sqlite3_close(v11->modelDB);
     }
 
@@ -175,10 +175,10 @@
   [(CPMLTrainer *)&v9 dealloc];
 }
 
-- (id)fileProtectionClassRequest:(id)a3
+- (id)fileProtectionClassRequest:(id)request
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NSFileProtectionCompleteUntilFirstUserAuthentication"])
+  requestCopy = request;
+  if ([requestCopy isEqualToString:@"NSFileProtectionCompleteUntilFirstUserAuthentication"])
   {
     v4 = MEMORY[0x277CCA1A0];
 LABEL_9:
@@ -186,19 +186,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"NSFileProtectionCompleteUnlessOpen"])
+  if ([requestCopy isEqualToString:@"NSFileProtectionCompleteUnlessOpen"])
   {
     v4 = MEMORY[0x277CCA198];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"NSFileProtectionComplete"])
+  if ([requestCopy isEqualToString:@"NSFileProtectionComplete"])
   {
     v4 = MEMORY[0x277CCA190];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"NSFileProtectionNone"])
+  if ([requestCopy isEqualToString:@"NSFileProtectionNone"])
   {
     v4 = MEMORY[0x277CCA1B8];
     goto LABEL_9;
@@ -210,10 +210,10 @@ LABEL_10:
   return v5;
 }
 
-- (void)train:(BOOL)a3
+- (void)train:(BOOL)train
 {
-  v5 = [(CPMLDB *)self->cpmlDB getDispatchQueue];
-  v6 = v5;
+  getDispatchQueue = [(CPMLDB *)self->cpmlDB getDispatchQueue];
+  v6 = getDispatchQueue;
   if (*(self->trainerCPStatistics + 31) <= 0)
   {
     NSLog(&cfstr_TrainColumnSta.isa);
@@ -226,8 +226,8 @@ LABEL_10:
     v9[2] = __21__CPMLTrainer_train___block_invoke;
     v9[3] = &unk_278E9ECC8;
     v9[4] = self;
-    v10 = a3;
-    dispatch_sync(v5, v9);
+    trainCopy = train;
+    dispatch_sync(getDispatchQueue, v9);
     cpmlDB = self->cpmlDB;
     v8 = [(NSDictionary *)self->modelPlist objectForKey:@"clearTrainingValueTrainingPhase"];
     [v8 doubleValue];
@@ -260,75 +260,75 @@ uint64_t __21__CPMLTrainer_train___block_invoke(uint64_t a1)
   return v2();
 }
 
-- (void)buildTrainingMachineLearningAlgorithm:(id)a3
+- (void)buildTrainingMachineLearningAlgorithm:(id)algorithm
 {
-  v8 = a3;
-  if ([v8 isEqualToString:@"SVM"])
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToString:@"SVM"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"LIBSVM"])
+  if ([algorithmCopy isEqualToString:@"LIBSVM"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"LINEARSVM"])
+  if ([algorithmCopy isEqualToString:@"LINEARSVM"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"NB"])
+  if ([algorithmCopy isEqualToString:@"NB"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"NB_BASE"])
+  if ([algorithmCopy isEqualToString:@"NB_BASE"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"NAIVE_BAYES"])
+  if ([algorithmCopy isEqualToString:@"NAIVE_BAYES"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"NAIVE_BAYESV2"])
+  if ([algorithmCopy isEqualToString:@"NAIVE_BAYESV2"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"NAIVEBAYES"])
+  if ([algorithmCopy isEqualToString:@"NAIVEBAYES"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"KMEANS"])
+  if ([algorithmCopy isEqualToString:@"KMEANS"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"KNN"])
+  if ([algorithmCopy isEqualToString:@"KNN"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"LOGISTIC_REGRESSION"])
+  if ([algorithmCopy isEqualToString:@"LOGISTIC_REGRESSION"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"REGRESSION_FOREST"])
+  if ([algorithmCopy isEqualToString:@"REGRESSION_FOREST"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"GAUSSIAN_MIXTURE_MODEL"])
+  if ([algorithmCopy isEqualToString:@"GAUSSIAN_MIXTURE_MODEL"])
   {
     operator new();
   }
 
-  if ([v8 isEqualToString:@"LINEAR_REGRESSION"])
+  if ([algorithmCopy isEqualToString:@"LINEAR_REGRESSION"])
   {
     operator new();
   }

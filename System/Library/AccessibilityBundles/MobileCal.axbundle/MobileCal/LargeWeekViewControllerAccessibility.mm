@@ -1,23 +1,23 @@
 @interface LargeWeekViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)selectDate:(id)a3 animated:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)selectDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation LargeWeekViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WeekAllDayView"];
-  [v3 validateClass:@"WeekAllDayView" hasInstanceMethod:@"_dayIndexForToday" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"LargeWeekViewController" hasInstanceMethod:@"selectDate: animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WeekAllDayView"];
+  [validationsCopy validateClass:@"WeekAllDayView" hasInstanceMethod:@"_dayIndexForToday" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"LargeWeekViewController" hasInstanceMethod:@"selectDate: animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
-- (void)selectDate:(id)a3 animated:(BOOL)a4
+- (void)selectDate:(id)date animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = LargeWeekViewControllerAccessibility;
-  [(LargeWeekViewControllerAccessibility *)&v5 selectDate:a3 animated:a4];
+  [(LargeWeekViewControllerAccessibility *)&v5 selectDate:date animated:animated];
   if ([(LargeWeekViewControllerAccessibility *)self _accessibilityBoolValueForKey:@"_AXShouldFocusOnTodayStorageKey"])
   {
     AXPerformBlockOnMainThreadAfterDelay();

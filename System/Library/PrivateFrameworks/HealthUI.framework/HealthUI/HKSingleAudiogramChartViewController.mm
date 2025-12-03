@@ -1,110 +1,110 @@
 @interface HKSingleAudiogramChartViewController
 + (id)_itemForHearingLossInfographicJapanDisclaimer;
-+ (id)_itemForHearingLossInfographicWithHearingLossClassification:(unint64_t)a3;
-+ (id)_itemForTitle:(id)a3 description:(id)a4;
-+ (id)_localizedDescriptionForClassification:(unint64_t)a3;
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
++ (id)_itemForHearingLossInfographicWithHearingLossClassification:(unint64_t)classification;
++ (id)_itemForTitle:(id)title description:(id)description;
++ (id)_localizedDescriptionForClassification:(unint64_t)classification;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
 + (id)hearingLossInfographicViewController;
 - (BOOL)_shouldShowEnhancedUI;
-- (HKSingleAudiogramChartViewController)initWithApplicationItems:(id)a3 staticAudiogram:(id)a4 factorDisplayTypes:(id)a5 chartHeight:(double)a6 hideEnhancedUI:(BOOL)a7;
-- (HKSingleAudiogramChartViewController)initWithHealthStore:(id)a3 staticAudiogram:(id)a4 selectedFrequency:(id)a5;
-- (id)_annotationForFrequencyString:(id)a3;
-- (id)_attributedLabelTextOverrideWithHearingLevelClassification:(id)a3 valueAndUnit:(id)a4 metricColors:(id)a5 selectedMetricColors:(id)a6;
-- (id)_attributedLabelTextWithHearingLevelClassification:(id)a3 valueAndUnit:(id)a4 metricColors:(id)a5 selectedMetricColors:(id)a6 isSelected:(BOOL)a7;
+- (HKSingleAudiogramChartViewController)initWithApplicationItems:(id)items staticAudiogram:(id)audiogram factorDisplayTypes:(id)types chartHeight:(double)height hideEnhancedUI:(BOOL)i;
+- (HKSingleAudiogramChartViewController)initWithHealthStore:(id)store staticAudiogram:(id)audiogram selectedFrequency:(id)frequency;
+- (id)_annotationForFrequencyString:(id)string;
+- (id)_attributedLabelTextOverrideWithHearingLevelClassification:(id)classification valueAndUnit:(id)unit metricColors:(id)colors selectedMetricColors:(id)metricColors;
+- (id)_attributedLabelTextWithHearingLevelClassification:(id)classification valueAndUnit:(id)unit metricColors:(id)colors selectedMetricColors:(id)metricColors isSelected:(BOOL)selected;
 - (id)_audiogramDisplayType;
-- (id)_audiogramPureToneAveragePointsSeriesWithSensitivityPoints:(id)a3 selectedFrequency:(id)a4 seriesEar:(int64_t)a5;
-- (id)_audiogramSeriesWithSensitivityPoints:(id)a3 seriesEar:(int64_t)a4 disabledStyleOverride:(BOOL)a5;
-- (id)_averageLevelOverlaySeriesWithAudiogram:(id)a3 selectedEar:(int64_t)a4;
-- (id)_averageSectionFromAudiogram:(id)a3;
-- (id)_buildContextItemForEar:(int64_t)a3 metrics:(id)a4;
-- (id)_earSpecificColorForEar:(int64_t)a3;
+- (id)_audiogramPureToneAveragePointsSeriesWithSensitivityPoints:(id)points selectedFrequency:(id)frequency seriesEar:(int64_t)ear;
+- (id)_audiogramSeriesWithSensitivityPoints:(id)points seriesEar:(int64_t)ear disabledStyleOverride:(BOOL)override;
+- (id)_averageLevelOverlaySeriesWithAudiogram:(id)audiogram selectedEar:(int64_t)ear;
+- (id)_averageSectionFromAudiogram:(id)audiogram;
+- (id)_buildContextItemForEar:(int64_t)ear metrics:(id)metrics;
+- (id)_earSpecificColorForEar:(int64_t)ear;
 - (id)_findNavigationController;
 - (id)_healthStore;
 - (id)_indexPathForCurrentSelections;
-- (id)_sectionsFromAudiogram:(id)a3;
-- (id)_setupSeriesForAudiogramSample:(id)a3;
+- (id)_sectionsFromAudiogram:(id)audiogram;
+- (id)_setupSeriesForAudiogramSample:(id)sample;
 - (id)_unitController;
 - (id)_updateController;
 - (id)graphSeries;
 - (id)newGraphViewController;
 - (void)_addContextView;
-- (void)_addControllerAsChildController:(id)a3;
-- (void)_addHorizontalAxisAnnotationToGraphView:(id)a3 forSelectedFrequency:(id)a4;
-- (void)_addShowMoreDataButton:(id)a3;
-- (void)_pinView:(id)a3 toParentGuide:(id)a4 pinBottom:(BOOL)a5;
+- (void)_addControllerAsChildController:(id)controller;
+- (void)_addHorizontalAxisAnnotationToGraphView:(id)view forSelectedFrequency:(id)frequency;
+- (void)_addShowMoreDataButton:(id)button;
+- (void)_pinView:(id)view toParentGuide:(id)guide pinBottom:(BOOL)bottom;
 - (void)_setNeedsReloadSeries;
-- (void)_setupFixedFrequencyAxisForGraphView:(id)a3;
-- (void)_showMoreData:(id)a3;
-- (void)_updateAudiogramSample:(id)a3 error:(id)a4;
+- (void)_setupFixedFrequencyAxisForGraphView:(id)view;
+- (void)_showMoreData:(id)data;
+- (void)_updateAudiogramSample:(id)sample error:(id)error;
 - (void)_updateHeaderState;
 - (void)_updateOverlayPillsAndHeader;
-- (void)contextView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)contextView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didTapOnInfoButtonFromCurrentValueView:(id)a3;
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4;
-- (void)graphViewDidEndSelection:(id)a3;
+- (void)didTapOnInfoButtonFromCurrentValueView:(id)view;
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point;
+- (void)graphViewDidEndSelection:(id)selection;
 - (void)queryForAudiogram;
 - (void)redrawCurrentCell;
-- (void)updateAnnotationDataSource:(id)a3 pointContexts:(id)a4;
-- (void)updateStaticAudiogram:(id)a3;
+- (void)updateAnnotationDataSource:(id)source pointContexts:(id)contexts;
+- (void)updateStaticAudiogram:(id)audiogram;
 - (void)viewDidLoad;
 @end
 
 @implementation HKSingleAudiogramChartViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v13 = a10;
-  v14 = a5;
-  v15 = [[a1 alloc] initWithApplicationItems:v14 staticAudiogram:0 factorDisplayTypes:v13 chartHeight:0 hideEnhancedUI:350.0];
+  typesCopy = types;
+  itemsCopy = items;
+  v15 = [[self alloc] initWithApplicationItems:itemsCopy staticAudiogram:0 factorDisplayTypes:typesCopy chartHeight:0 hideEnhancedUI:350.0];
 
   [v15 queryForAudiogram];
 
   return v15;
 }
 
-- (HKSingleAudiogramChartViewController)initWithHealthStore:(id)a3 staticAudiogram:(id)a4 selectedFrequency:(id)a5
+- (HKSingleAudiogramChartViewController)initWithHealthStore:(id)store staticAudiogram:(id)audiogram selectedFrequency:(id)frequency
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  frequencyCopy = frequency;
+  audiogramCopy = audiogram;
+  storeCopy = store;
   v12 = objc_alloc_init(HKOverlayRoomApplicationItems);
-  v13 = [objc_alloc(MEMORY[0x1E696C518]) initWithHealthStore:v11];
+  v13 = [objc_alloc(MEMORY[0x1E696C518]) initWithHealthStore:storeCopy];
   [(HKOverlayRoomApplicationItems *)v12 setUnitController:v13];
 
-  v14 = [[HKSampleTypeUpdateController alloc] initWithHealthStore:v11];
+  v14 = [[HKSampleTypeUpdateController alloc] initWithHealthStore:storeCopy];
   [(HKOverlayRoomApplicationItems *)v12 setSampleTypeUpdateController:v14];
 
-  v15 = [HKDisplayTypeController sharedInstanceForHealthStore:v11];
+  v15 = [HKDisplayTypeController sharedInstanceForHealthStore:storeCopy];
   [(HKOverlayRoomApplicationItems *)v12 setDisplayTypeController:v15];
 
-  [(HKOverlayRoomApplicationItems *)v12 setHealthStore:v11];
-  v16 = [(HKSingleAudiogramChartViewController *)self initWithApplicationItems:v12 staticAudiogram:v10 factorDisplayTypes:0 chartHeight:1 hideEnhancedUI:350.0];
+  [(HKOverlayRoomApplicationItems *)v12 setHealthStore:storeCopy];
+  v16 = [(HKSingleAudiogramChartViewController *)self initWithApplicationItems:v12 staticAudiogram:audiogramCopy factorDisplayTypes:0 chartHeight:1 hideEnhancedUI:350.0];
 
   if (v16)
   {
     v16->_isStatic = 1;
     v16->_isManualIngestion = 1;
-    objc_storeStrong(&v16->_selectedFrequency, a5);
+    objc_storeStrong(&v16->_selectedFrequency, frequency);
   }
 
   return v16;
 }
 
-- (HKSingleAudiogramChartViewController)initWithApplicationItems:(id)a3 staticAudiogram:(id)a4 factorDisplayTypes:(id)a5 chartHeight:(double)a6 hideEnhancedUI:(BOOL)a7
+- (HKSingleAudiogramChartViewController)initWithApplicationItems:(id)items staticAudiogram:(id)audiogram factorDisplayTypes:(id)types chartHeight:(double)height hideEnhancedUI:(BOOL)i
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  itemsCopy = items;
+  audiogramCopy = audiogram;
+  typesCopy = types;
   v35.receiver = self;
   v35.super_class = HKSingleAudiogramChartViewController;
   v16 = [(HKSingleAudiogramChartViewController *)&v35 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_applicationItems, a3);
-    v17->_chartHeight = a6;
-    objc_storeStrong(&v17->_audiogram, a4);
+    objc_storeStrong(&v16->_applicationItems, items);
+    v17->_chartHeight = height;
+    objc_storeStrong(&v17->_audiogram, audiogram);
     currentValueView = v17->_currentValueView;
     v17->_currentValueView = 0;
 
@@ -118,20 +118,20 @@
     sections = v17->_sections;
     v17->_sections = 0;
 
-    v17->_audiogramsFetched = v14 != 0;
-    v17->_isStatic = v14 != 0;
-    v22 = [(HKSingleAudiogramChartViewController *)v17 navigationItem];
-    [v22 setLargeTitleDisplayMode:2];
+    v17->_audiogramsFetched = audiogramCopy != 0;
+    v17->_isStatic = audiogramCopy != 0;
+    navigationItem = [(HKSingleAudiogramChartViewController *)v17 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
     v23 = objc_alloc(MEMORY[0x1E696C178]);
     v24 = *MEMORY[0x1E696B8A0];
-    v25 = [v13 healthStore];
-    v26 = [v23 initWithFeatureIdentifier:v24 healthStore:v25];
+    healthStore = [itemsCopy healthStore];
+    v26 = [v23 initWithFeatureIdentifier:v24 healthStore:healthStore];
     hearingTestFeatureStatus = v17->_hearingTestFeatureStatus;
     v17->_hearingTestFeatureStatus = v26;
 
-    objc_storeStrong(&v17->_factorDisplayTypes, a5);
-    v17->_hideEnhancedUI = a7;
+    objc_storeStrong(&v17->_factorDisplayTypes, types);
+    v17->_hideEnhancedUI = i;
     selectedFrequency = v17->_selectedFrequency;
     v17->_selectedFrequency = 0;
 
@@ -139,8 +139,8 @@
     v17->_graphSeriesCache = MEMORY[0x1E695E0F0];
 
     v30 = [HKAudiogramAnalyticsManager alloc];
-    v31 = [(HKOverlayRoomApplicationItems *)v17->_applicationItems healthStore];
-    v32 = [(HKAudiogramAnalyticsManager *)v30 initWithHealthStore:v31];
+    healthStore2 = [(HKOverlayRoomApplicationItems *)v17->_applicationItems healthStore];
+    v32 = [(HKAudiogramAnalyticsManager *)v30 initWithHealthStore:healthStore2];
     analyticsManager = v17->_analyticsManager;
     v17->_analyticsManager = v32;
   }
@@ -150,9 +150,9 @@
 
 - (void)dealloc
 {
-  v3 = [(HKSingleAudiogramChartViewController *)self _updateController];
-  v4 = [MEMORY[0x1E696C3D0] audiogramSampleType];
-  [v3 removeObserver:self forType:v4];
+  _updateController = [(HKSingleAudiogramChartViewController *)self _updateController];
+  audiogramSampleType = [MEMORY[0x1E696C3D0] audiogramSampleType];
+  [_updateController removeObserver:self forType:audiogramSampleType];
 
   v5.receiver = self;
   v5.super_class = HKSingleAudiogramChartViewController;
@@ -169,13 +169,13 @@
     if (os_log_type_enabled(*MEMORY[0x1E696B950], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v68 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C3942000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Chart is not static, starting update observer.", buf, 0xCu);
     }
 
-    v4 = [(HKSingleAudiogramChartViewController *)self _updateController];
-    v5 = [MEMORY[0x1E696C3D0] audiogramSampleType];
-    [v4 addObserver:self forType:v5];
+    _updateController = [(HKSingleAudiogramChartViewController *)self _updateController];
+    audiogramSampleType = [MEMORY[0x1E696C3D0] audiogramSampleType];
+    [_updateController addObserver:self forType:audiogramSampleType];
 
     [(HKSingleAudiogramChartViewController *)self queryForAudiogram];
   }
@@ -192,59 +192,59 @@
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_stackView setDistribution:0];
   v9 = self->_stackView;
-  v10 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(UIStackView *)v9 setBackgroundColor:v10];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(UIStackView *)v9 setBackgroundColor:systemBackgroundColor];
 
-  v11 = [(UIStackView *)self->_stackView layer];
-  [v11 setCornerRadius:26.0];
+  layer = [(UIStackView *)self->_stackView layer];
+  [layer setCornerRadius:26.0];
 
   if (![(HKSingleAudiogramChartViewController *)self _shouldShowManualIngestionUI])
   {
     v12 = [HKAudiogramCurrentValueViewDataSource alloc];
-    v13 = [(HKSingleAudiogramChartViewController *)self applicationItems];
-    v14 = [(HKAudiogramCurrentValueViewDataSource *)v12 initWithApplicationItems:v13];
+    applicationItems = [(HKSingleAudiogramChartViewController *)self applicationItems];
+    v14 = [(HKAudiogramCurrentValueViewDataSource *)v12 initWithApplicationItems:applicationItems];
     [(HKSingleAudiogramChartViewController *)self setCurrentValueViewDataSource:v14];
 
     v15 = [[HKInteractiveChartAnnotationView alloc] initWithContext:0];
     [(HKSingleAudiogramChartViewController *)self setCurrentValueView:v15];
 
-    v16 = [(HKSingleAudiogramChartViewController *)self currentValueView];
-    [v16 setShowsInfoButton:{-[HKSingleAudiogramChartViewController _shouldShowManualIngestionUI](self, "_shouldShowManualIngestionUI") ^ 1}];
+    currentValueView = [(HKSingleAudiogramChartViewController *)self currentValueView];
+    [currentValueView setShowsInfoButton:{-[HKSingleAudiogramChartViewController _shouldShowManualIngestionUI](self, "_shouldShowManualIngestionUI") ^ 1}];
 
-    v17 = [(HKSingleAudiogramChartViewController *)self currentValueView];
-    [v17 setDelegate:self];
+    currentValueView2 = [(HKSingleAudiogramChartViewController *)self currentValueView];
+    [currentValueView2 setDelegate:self];
 
-    v18 = [(HKSingleAudiogramChartViewController *)self currentValueViewDataSource];
-    v19 = [(HKSingleAudiogramChartViewController *)self currentValueView];
-    [v19 setDataSource:v18];
+    currentValueViewDataSource = [(HKSingleAudiogramChartViewController *)self currentValueViewDataSource];
+    currentValueView3 = [(HKSingleAudiogramChartViewController *)self currentValueView];
+    [currentValueView3 setDataSource:currentValueViewDataSource];
 
-    v20 = [(HKSingleAudiogramChartViewController *)self stackView];
-    v21 = [(HKSingleAudiogramChartViewController *)self currentValueView];
-    [v20 addArrangedSubview:v21];
+    stackView = [(HKSingleAudiogramChartViewController *)self stackView];
+    currentValueView4 = [(HKSingleAudiogramChartViewController *)self currentValueView];
+    [stackView addArrangedSubview:currentValueView4];
 
-    v22 = [(HKSingleAudiogramChartViewController *)self currentValueView];
-    v23 = [v22 heightAnchor];
-    v24 = [v23 constraintEqualToConstant:90.0];
+    currentValueView5 = [(HKSingleAudiogramChartViewController *)self currentValueView];
+    heightAnchor = [currentValueView5 heightAnchor];
+    v24 = [heightAnchor constraintEqualToConstant:90.0];
     [v24 setActive:1];
   }
 
-  v25 = [(HKSingleAudiogramChartViewController *)self newGraphViewController];
-  [(HKSingleAudiogramChartViewController *)self setScalarGraphViewController:v25];
+  newGraphViewController = [(HKSingleAudiogramChartViewController *)self newGraphViewController];
+  [(HKSingleAudiogramChartViewController *)self setScalarGraphViewController:newGraphViewController];
 
-  v26 = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
-  v27 = [v26 view];
-  v28 = [v27 heightAnchor];
+  scalarGraphViewController = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
+  view = [scalarGraphViewController view];
+  heightAnchor2 = [view heightAnchor];
   [(HKSingleAudiogramChartViewController *)self chartHeight];
-  v29 = [v28 constraintEqualToConstant:?];
+  v29 = [heightAnchor2 constraintEqualToConstant:?];
   [v29 setActive:1];
 
-  v30 = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
-  [(HKSingleAudiogramChartViewController *)self _addControllerAsChildController:v30];
+  scalarGraphViewController2 = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
+  [(HKSingleAudiogramChartViewController *)self _addControllerAsChildController:scalarGraphViewController2];
 
-  v31 = [(HKSingleAudiogramChartViewController *)self stackView];
-  v32 = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
-  v33 = [v32 view];
-  [v31 addArrangedSubview:v33];
+  stackView2 = [(HKSingleAudiogramChartViewController *)self stackView];
+  scalarGraphViewController3 = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
+  view2 = [scalarGraphViewController3 view];
+  [stackView2 addArrangedSubview:view2];
 
   if (![(HKSingleAudiogramChartViewController *)self _shouldShowManualIngestionUI])
   {
@@ -257,16 +257,16 @@
     [(UIStackView *)self->_stackView setLayoutMargins:26.0, 0.0, 26.0, 0.0];
   }
 
-  v34 = [(HKSingleAudiogramChartViewController *)self view];
-  [v34 addSubview:self->_stackView];
+  view3 = [(HKSingleAudiogramChartViewController *)self view];
+  [view3 addSubview:self->_stackView];
 
-  v35 = [(HKSingleAudiogramChartViewController *)self stackView];
-  v36 = [v35 heightAnchor];
+  stackView3 = [(HKSingleAudiogramChartViewController *)self stackView];
+  heightAnchor3 = [stackView3 heightAnchor];
   [(HKSingleAudiogramChartViewController *)self chartHeight];
   v38 = v37;
-  v39 = [(HKSingleAudiogramChartViewController *)self currentValueView];
-  [v39 frame];
-  v41 = [v36 constraintGreaterThanOrEqualToConstant:v38 + v40];
+  currentValueView6 = [(HKSingleAudiogramChartViewController *)self currentValueView];
+  [currentValueView6 frame];
+  v41 = [heightAnchor3 constraintGreaterThanOrEqualToConstant:v38 + v40];
   stackViewHeightConstraint = self->_stackViewHeightConstraint;
   self->_stackViewHeightConstraint = v41;
 
@@ -275,8 +275,8 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v43 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v44 = [v43 countByEnumeratingWithState:&v61 objects:v66 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v44 = [arrangedSubviews countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v44)
   {
     v46 = v44;
@@ -287,7 +287,7 @@
       {
         if (*v62 != v47)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v49 = *(*(&v61 + 1) + 8 * i);
@@ -297,7 +297,7 @@
         [v49 setContentHuggingPriority:1 forAxis:v50];
       }
 
-      v46 = [v43 countByEnumeratingWithState:&v61 objects:v66 count:16];
+      v46 = [arrangedSubviews countByEnumeratingWithState:&v61 objects:v66 count:16];
     }
 
     while (v46);
@@ -309,19 +309,19 @@
   }
 
   v51 = self->_stackView;
-  v52 = [(HKSingleAudiogramChartViewController *)self view];
-  v53 = [v52 safeAreaLayoutGuide];
-  [(HKSingleAudiogramChartViewController *)self _pinView:v51 toParentGuide:v53 pinBottom:1];
+  view4 = [(HKSingleAudiogramChartViewController *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  [(HKSingleAudiogramChartViewController *)self _pinView:v51 toParentGuide:safeAreaLayoutGuide pinBottom:1];
 
   v54 = [HKAudiogramAnnotationViewDataSource alloc];
-  v55 = [(HKSingleAudiogramChartViewController *)self applicationItems];
-  v56 = [(HKAudiogramAnnotationViewDataSource *)v54 initWithApplicationItems:v55];
+  applicationItems2 = [(HKSingleAudiogramChartViewController *)self applicationItems];
+  v56 = [(HKAudiogramAnnotationViewDataSource *)v54 initWithApplicationItems:applicationItems2];
   [(HKSingleAudiogramChartViewController *)self setAnnotationViewDataSource:v56];
 
   v57 = [HKLollipopController alloc];
-  v58 = [(HKSingleAudiogramChartViewController *)self annotationViewDataSource];
-  v59 = [(HKSingleAudiogramChartViewController *)self stackView];
-  v60 = [(HKLollipopController *)v57 initWithAnnotationDataSource:v58 parentView:v59 delegate:self];
+  annotationViewDataSource = [(HKSingleAudiogramChartViewController *)self annotationViewDataSource];
+  stackView4 = [(HKSingleAudiogramChartViewController *)self stackView];
+  v60 = [(HKLollipopController *)v57 initWithAnnotationDataSource:annotationViewDataSource parentView:stackView4 delegate:self];
   [(HKSingleAudiogramChartViewController *)self setLollipopController:v60];
 
   if (self->_audiogramsFetched)
@@ -360,40 +360,40 @@
   }
 }
 
-- (void)_addShowMoreDataButton:(id)a3
+- (void)_addShowMoreDataButton:(id)button
 {
   v4 = MEMORY[0x1E69DC738];
-  v5 = a3;
+  buttonCopy = button;
   v10 = [v4 hk_chartShowMoreDataButtonWithTitleOverride:0 target:self action:sel__showMoreData_];
   LODWORD(v6) = 1144750080;
   [v10 setContentHuggingPriority:1 forAxis:v6];
-  v7 = [v5 arrangedSubviews];
-  v8 = [v5 arrangedSubviews];
-  v9 = [v7 objectAtIndexedSubscript:{objc_msgSend(v8, "count") - 1}];
+  arrangedSubviews = [buttonCopy arrangedSubviews];
+  arrangedSubviews2 = [buttonCopy arrangedSubviews];
+  v9 = [arrangedSubviews objectAtIndexedSubscript:{objc_msgSend(arrangedSubviews2, "count") - 1}];
 
-  [v5 addArrangedSubview:v10];
-  [v5 setCustomSpacing:v9 afterView:0.0];
+  [buttonCopy addArrangedSubview:v10];
+  [buttonCopy setCustomSpacing:v9 afterView:0.0];
 }
 
-- (void)_showMoreData:(id)a3
+- (void)_showMoreData:(id)data
 {
-  v4 = [(HKSingleAudiogramChartViewController *)self _findNavigationController];
-  if (v4)
+  _findNavigationController = [(HKSingleAudiogramChartViewController *)self _findNavigationController];
+  if (_findNavigationController)
   {
-    v12 = v4;
-    v5 = [(HKSingleAudiogramChartViewController *)self applicationItems];
-    v6 = [v5 timeScopeController];
-    [v6 setSelectedTimeScope:2];
+    v12 = _findNavigationController;
+    applicationItems = [(HKSingleAudiogramChartViewController *)self applicationItems];
+    timeScopeController = [applicationItems timeScopeController];
+    [timeScopeController setSelectedTimeScope:2];
 
     v7 = [HKAudiogramLongitudinalOverlayRoomViewController alloc];
-    v8 = [(HKSingleAudiogramChartViewController *)self applicationItems];
-    v9 = [(HKSingleAudiogramChartViewController *)self factorDisplayTypes];
-    v10 = [(HKAudiogramLongitudinalOverlayRoomViewController *)v7 initWithApplicationItems:v8 factorDisplayTypes:v9];
+    applicationItems2 = [(HKSingleAudiogramChartViewController *)self applicationItems];
+    factorDisplayTypes = [(HKSingleAudiogramChartViewController *)self factorDisplayTypes];
+    v10 = [(HKAudiogramLongitudinalOverlayRoomViewController *)v7 initWithApplicationItems:applicationItems2 factorDisplayTypes:factorDisplayTypes];
 
     v11 = [[HKModalNavigationController alloc] initWithRootViewController:v10];
     [v12 hk_presentModalCardViewController:v11 fullScreen:1 animated:1 completion:0];
 
-    v4 = v12;
+    _findNavigationController = v12;
   }
 }
 
@@ -405,7 +405,7 @@
   if (os_log_type_enabled(*MEMORY[0x1E696B950], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C3942000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Query for recent audiogram called.", buf, 0xCu);
   }
 
@@ -415,18 +415,18 @@
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
 
   v7 = objc_alloc(MEMORY[0x1E696C3C8]);
-  v8 = [MEMORY[0x1E696C3D0] audiogramSampleType];
+  audiogramSampleType = [MEMORY[0x1E696C3D0] audiogramSampleType];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__HKSingleAudiogramChartViewController_queryForAudiogram__block_invoke;
   v12[3] = &unk_1E81BBD58;
   v13 = v4;
-  v14 = self;
+  selfCopy2 = self;
   v9 = v4;
-  v10 = [v7 initWithSampleType:v8 predicate:0 limit:1 sortDescriptors:v6 resultsHandler:v12];
+  v10 = [v7 initWithSampleType:audiogramSampleType predicate:0 limit:1 sortDescriptors:v6 resultsHandler:v12];
 
-  v11 = [(HKSingleAudiogramChartViewController *)self _healthStore];
-  [v11 executeQuery:v10];
+  _healthStore = [(HKSingleAudiogramChartViewController *)self _healthStore];
+  [_healthStore executeQuery:v10];
 }
 
 void __57__HKSingleAudiogramChartViewController_queryForAudiogram__block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -456,26 +456,26 @@ void __57__HKSingleAudiogramChartViewController_queryForAudiogram__block_invoke(
   }
 }
 
-- (void)updateStaticAudiogram:(id)a3
+- (void)updateStaticAudiogram:(id)audiogram
 {
-  v4 = a3;
+  audiogramCopy = audiogram;
   if ([(HKSingleAudiogramChartViewController *)self isStatic])
   {
-    [(HKSingleAudiogramChartViewController *)self setAudiogram:v4];
+    [(HKSingleAudiogramChartViewController *)self setAudiogram:audiogramCopy];
     [(HKSingleAudiogramChartViewController *)self _updateOverlayPillsAndHeader];
   }
 }
 
-- (void)_updateAudiogramSample:(id)a3 error:(id)a4
+- (void)_updateAudiogramSample:(id)sample error:(id)error
 {
-  v5 = a3;
+  sampleCopy = sample;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___block_invoke;
   v7[3] = &unk_1E81B5AD0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = sampleCopy;
+  v6 = sampleCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -522,60 +522,60 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
 
 - (id)_audiogramDisplayType
 {
-  v2 = [(HKSingleAudiogramChartViewController *)self applicationItems];
-  v3 = [v2 displayTypeController];
-  v4 = [MEMORY[0x1E696C3D0] audiogramSampleType];
-  v5 = [v3 displayTypeForObjectType:v4];
+  applicationItems = [(HKSingleAudiogramChartViewController *)self applicationItems];
+  displayTypeController = [applicationItems displayTypeController];
+  audiogramSampleType = [MEMORY[0x1E696C3D0] audiogramSampleType];
+  v5 = [displayTypeController displayTypeForObjectType:audiogramSampleType];
 
   return v5;
 }
 
 - (id)_healthStore
 {
-  v2 = [(HKSingleAudiogramChartViewController *)self applicationItems];
-  v3 = [v2 healthStore];
+  applicationItems = [(HKSingleAudiogramChartViewController *)self applicationItems];
+  healthStore = [applicationItems healthStore];
 
-  return v3;
+  return healthStore;
 }
 
 - (id)_unitController
 {
-  v2 = [(HKSingleAudiogramChartViewController *)self applicationItems];
-  v3 = [v2 unitController];
+  applicationItems = [(HKSingleAudiogramChartViewController *)self applicationItems];
+  unitController = [applicationItems unitController];
 
-  return v3;
+  return unitController;
 }
 
 - (id)_updateController
 {
-  v2 = [(HKSingleAudiogramChartViewController *)self applicationItems];
-  v3 = [v2 sampleTypeUpdateController];
+  applicationItems = [(HKSingleAudiogramChartViewController *)self applicationItems];
+  sampleTypeUpdateController = [applicationItems sampleTypeUpdateController];
 
-  return v3;
+  return sampleTypeUpdateController;
 }
 
-- (id)_sectionsFromAudiogram:(id)a3
+- (id)_sectionsFromAudiogram:(id)audiogram
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v3 = [(HKSingleAudiogramChartViewController *)self _averageSectionFromAudiogram:a3];
+  v3 = [(HKSingleAudiogramChartViewController *)self _averageSectionFromAudiogram:audiogram];
   v6[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   return v4;
 }
 
-- (id)_averageSectionFromAudiogram:(id)a3
+- (id)_averageSectionFromAudiogram:(id)audiogram
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hearingLevelSummary];
-  v6 = [v5 leftEarMetrics];
-  v7 = [(HKSingleAudiogramChartViewController *)self _buildContextItemForEar:1 metrics:v6];
+  audiogramCopy = audiogram;
+  hearingLevelSummary = [audiogramCopy hearingLevelSummary];
+  leftEarMetrics = [hearingLevelSummary leftEarMetrics];
+  v7 = [(HKSingleAudiogramChartViewController *)self _buildContextItemForEar:1 metrics:leftEarMetrics];
 
-  v8 = [v4 hearingLevelSummary];
+  hearingLevelSummary2 = [audiogramCopy hearingLevelSummary];
 
-  v9 = [v8 rightEarMetrics];
-  v10 = [(HKSingleAudiogramChartViewController *)self _buildContextItemForEar:2 metrics:v9];
+  rightEarMetrics = [hearingLevelSummary2 rightEarMetrics];
+  v10 = [(HKSingleAudiogramChartViewController *)self _buildContextItemForEar:2 metrics:rightEarMetrics];
 
   v11 = objc_alloc_init(_HKDisplayTypeAudiogramContextItemSection2);
   [(_HKDisplayTypeAudiogramContextItemSection2 *)v11 setTitle:0];
@@ -587,20 +587,20 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
   return v11;
 }
 
-- (id)_buildContextItemForEar:(int64_t)a3 metrics:(id)a4
+- (id)_buildContextItemForEar:(int64_t)ear metrics:(id)metrics
 {
-  v6 = a4;
-  v7 = [(HKSingleAudiogramChartViewController *)self _earSpecificColorForEar:a3];
-  v8 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  v9 = [HKUIMetricColors defaultContextViewColorsUsingColor:v8];
+  metricsCopy = metrics;
+  v7 = [(HKSingleAudiogramChartViewController *)self _earSpecificColorForEar:ear];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  v9 = [HKUIMetricColors defaultContextViewColorsUsingColor:secondarySystemBackgroundColor];
 
   v10 = [HKUIMetricColors categoryColorsWithColor:v7];
   v11 = objc_alloc_init(HKDisplayTypeContextAudiogramItem2);
   [(HKDisplayTypeContextItem *)v11 setInfoHidden:1];
   [(HKDisplayTypeContextItem *)v11 setMetricColors:v9];
   [(HKDisplayTypeContextItem *)v11 setSelectedMetricColors:v10];
-  [(HKDisplayTypeContextAudiogramItem2 *)v11 setEar:a3];
-  if (a3 == 1)
+  [(HKDisplayTypeContextAudiogramItem2 *)v11 setEar:ear];
+  if (ear == 1)
   {
     v12 = @"LeftAverage";
   }
@@ -610,7 +610,7 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
     v12 = @"RightAverage";
   }
 
-  if (a3 == 1)
+  if (ear == 1)
   {
     v13 = @"LEFT_AVERAGE_HEARING";
   }
@@ -627,13 +627,13 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
   v16 = [v15 localizedStringForKey:v13 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   [(HKDisplayTypeContextItem *)v11 setTitle:v16];
 
-  v17 = [v6 averageSensitivity];
-  if (v17)
+  averageSensitivity = [metricsCopy averageSensitivity];
+  if (averageSensitivity)
   {
     v32 = HKIntegerFormatter();
-    [v17 _unit];
+    [averageSensitivity _unit];
     v18 = v33 = self;
-    [v17 doubleValueForUnit:v18];
+    [averageSensitivity doubleValueForUnit:v18];
     v20 = v19;
 
     v21 = [MEMORY[0x1E696AD98] numberWithDouble:v20];
@@ -645,9 +645,9 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
 
     [(HKDisplayTypeContextItem *)v11 setValue:v22];
     [(HKDisplayTypeContextItem *)v11 setUnit:v24];
-    v25 = [v6 averageSensitivity];
+    averageSensitivity2 = [metricsCopy averageSensitivity];
     HKHearingLevelClassificationForSensitivity();
-    v26 = v6;
+    v26 = metricsCopy;
 
     v27 = HKLocalizedStringForHearingLevelClassification();
     v28 = HKFormatValueAndUnit(v22, v24);
@@ -655,7 +655,7 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
     [(HKDisplayTypeContextItem *)v11 setAttributedLabelTextOverride:v29];
 
     v30 = v32;
-    v6 = v26;
+    metricsCopy = v26;
 
     v7 = v34;
   }
@@ -669,58 +669,58 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
   return v11;
 }
 
-- (id)_attributedLabelTextOverrideWithHearingLevelClassification:(id)a3 valueAndUnit:(id)a4 metricColors:(id)a5 selectedMetricColors:(id)a6
+- (id)_attributedLabelTextOverrideWithHearingLevelClassification:(id)classification valueAndUnit:(id)unit metricColors:(id)colors selectedMetricColors:(id)metricColors
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(HKSingleAudiogramChartViewController *)self _attributedLabelTextWithHearingLevelClassification:v13 valueAndUnit:v12 metricColors:v11 selectedMetricColors:v10 isSelected:0];
-  v15 = [(HKSingleAudiogramChartViewController *)self _attributedLabelTextWithHearingLevelClassification:v13 valueAndUnit:v12 metricColors:v11 selectedMetricColors:v10 isSelected:1];
+  metricColorsCopy = metricColors;
+  colorsCopy = colors;
+  unitCopy = unit;
+  classificationCopy = classification;
+  v14 = [(HKSingleAudiogramChartViewController *)self _attributedLabelTextWithHearingLevelClassification:classificationCopy valueAndUnit:unitCopy metricColors:colorsCopy selectedMetricColors:metricColorsCopy isSelected:0];
+  v15 = [(HKSingleAudiogramChartViewController *)self _attributedLabelTextWithHearingLevelClassification:classificationCopy valueAndUnit:unitCopy metricColors:colorsCopy selectedMetricColors:metricColorsCopy isSelected:1];
 
   v16 = [HKDisplayTypeContextItemAttributedLabelOverride attributedLabelOverrideWithText:v14 selectedText:v15];
 
   return v16;
 }
 
-- (id)_attributedLabelTextWithHearingLevelClassification:(id)a3 valueAndUnit:(id)a4 metricColors:(id)a5 selectedMetricColors:(id)a6 isSelected:(BOOL)a7
+- (id)_attributedLabelTextWithHearingLevelClassification:(id)classification valueAndUnit:(id)unit metricColors:(id)colors selectedMetricColors:(id)metricColors isSelected:(BOOL)selected
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  unitCopy = unit;
+  colorsCopy = colors;
+  metricColorsCopy = metricColors;
   v14 = MEMORY[0x1E696AEC0];
   v15 = MEMORY[0x1E696AAE8];
-  v16 = a3;
+  classificationCopy = classification;
   v17 = [v15 bundleWithIdentifier:@"com.apple.HealthUI"];
   v18 = [v17 localizedStringForKey:@"HEARING_LEVEL_CLASSIFICATION_%@_AND_AVERAGE_FORMAT_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Yodel"];
-  v19 = [v14 localizedStringWithFormat:v18, v16, v11];
+  unitCopy = [v14 localizedStringWithFormat:v18, classificationCopy, unitCopy];
 
-  v32 = v13;
-  v33 = v12;
-  if (a7)
+  v32 = metricColorsCopy;
+  v33 = colorsCopy;
+  if (selected)
   {
-    v20 = [v13 contextViewPrimaryTextColor];
-    [v13 contextViewPrimaryTextColor];
+    contextViewPrimaryTextColor = [metricColorsCopy contextViewPrimaryTextColor];
+    [metricColorsCopy contextViewPrimaryTextColor];
   }
 
   else
   {
-    v20 = [v12 contextViewPrimaryTextColor];
-    [v12 contextViewSecondaryTextColor];
+    contextViewPrimaryTextColor = [colorsCopy contextViewPrimaryTextColor];
+    [colorsCopy contextViewSecondaryTextColor];
   }
   v21 = ;
-  v22 = [v19 rangeOfString:v11];
+  v22 = [unitCopy rangeOfString:unitCopy];
   v24 = v23;
   v25 = objc_alloc(MEMORY[0x1E696AD40]);
   v34 = *MEMORY[0x1E69DB648];
-  v26 = [MEMORY[0x1E69DB878] hk_chartOverlaySectionItemValueAndUnitFont];
+  hk_chartOverlaySectionItemValueAndUnitFont = [MEMORY[0x1E69DB878] hk_chartOverlaySectionItemValueAndUnitFont];
   v35 = *MEMORY[0x1E69DB650];
   v27 = v35;
-  v36[0] = v26;
-  v36[1] = v20;
+  v36[0] = hk_chartOverlaySectionItemValueAndUnitFont;
+  v36[1] = contextViewPrimaryTextColor;
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v34 count:2];
-  v29 = [v25 initWithString:v19 attributes:v28];
+  v29 = [v25 initWithString:unitCopy attributes:v28];
 
   [v29 addAttribute:v27 value:v21 range:{v22, v24}];
   v30 = [v29 copy];
@@ -734,8 +734,8 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
   contextView = self->_contextView;
   if (contextView)
   {
-    v4 = [(HKSingleAudiogramChartViewController *)self audiogram];
-    v5 = [(HKSingleAudiogramChartViewController *)self _sectionsFromAudiogram:v4];
+    audiogram = [(HKSingleAudiogramChartViewController *)self audiogram];
+    v5 = [(HKSingleAudiogramChartViewController *)self _sectionsFromAudiogram:audiogram];
     [(HKDisplayTypeSectionedContextView *)contextView setDisplayTypeContextSections:v5];
   }
 
@@ -744,68 +744,68 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
 
 - (void)_updateHeaderState
 {
-  v3 = [(HKSingleAudiogramChartViewController *)self currentValueViewDataSource];
-  v4 = [(HKSingleAudiogramChartViewController *)self audiogram];
-  [v3 updateWithAudiogram:v4];
+  currentValueViewDataSource = [(HKSingleAudiogramChartViewController *)self currentValueViewDataSource];
+  audiogram = [(HKSingleAudiogramChartViewController *)self audiogram];
+  [currentValueViewDataSource updateWithAudiogram:audiogram];
 
-  LODWORD(v3) = [(HKSingleAudiogramChartViewController *)self _hasAudiogramData];
-  v5 = [(HKSingleAudiogramChartViewController *)self currentValueView];
-  v6 = v5;
-  if (v3)
+  LODWORD(currentValueViewDataSource) = [(HKSingleAudiogramChartViewController *)self _hasAudiogramData];
+  currentValueView = [(HKSingleAudiogramChartViewController *)self currentValueView];
+  v6 = currentValueView;
+  if (currentValueViewDataSource)
   {
-    [v5 reloadData];
+    [currentValueView reloadData];
   }
 
   else
   {
-    [v5 showNoDataStatus];
+    [currentValueView showNoDataStatus];
   }
 }
 
-- (void)_addHorizontalAxisAnnotationToGraphView:(id)a3 forSelectedFrequency:(id)a4
+- (void)_addHorizontalAxisAnnotationToGraphView:(id)view forSelectedFrequency:(id)frequency
 {
-  if (a4)
+  if (frequency)
   {
-    v6 = a3;
-    [a4 floatValue];
+    viewCopy = view;
+    [frequency floatValue];
     v8 = v7;
     [HKAudiogramChartPoint axisValueFromFrequency:v7];
     v10 = v9;
     v14 = _formattedFrequencyStringForFrequency(0, 1, v8);
     v11 = [(HKSingleAudiogramChartViewController *)self _annotationForFrequencyString:v14];
-    v12 = [v6 xAxis];
+    xAxis = [viewCopy xAxis];
 
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
-    [v12 addAxisAnnotation:v11 modelCoordinate:v13];
+    [xAxis addAxisAnnotation:v11 modelCoordinate:v13];
   }
 }
 
-- (id)_annotationForFrequencyString:(id)a3
+- (id)_annotationForFrequencyString:(id)string
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DB878];
   v4 = *MEMORY[0x1E69DB970];
-  v5 = a3;
+  stringCopy = string;
   v6 = [v3 hk_roundedSystemFontWithSize:11.0 weight:v4];
   v7 = MEMORY[0x1E69DB878];
   [v6 pointSize];
   v8 = [v7 hk_roundedSystemFontWithSize:? weight:?];
   v13[0] = *MEMORY[0x1E69DB650];
-  v9 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
   v13[1] = *MEMORY[0x1E69DB648];
-  v14[0] = v9;
+  v14[0] = labelColor;
   v14[1] = v8;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v10];
+  v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy attributes:v10];
 
   return v11;
 }
 
-- (void)didTapOnInfoButtonFromCurrentValueView:(id)a3
+- (void)didTapOnInfoButtonFromCurrentValueView:(id)view
 {
-  v4 = [objc_opt_class() hearingLossInfographicViewController];
-  [(HKSingleAudiogramChartViewController *)self presentViewController:v4 animated:1 completion:0];
+  hearingLossInfographicViewController = [objc_opt_class() hearingLossInfographicViewController];
+  [(HKSingleAudiogramChartViewController *)self presentViewController:hearingLossInfographicViewController animated:1 completion:0];
 }
 
 + (id)hearingLossInfographicViewController
@@ -814,17 +814,17 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
   v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v4 = [v20 localizedStringForKey:@"HEARING_LEVEL_CLASSIFICATION_DESCRIPTION_INTRODUCTION" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Yodel"];
-  v5 = [a1 _itemForTitle:0 description:v4];
+  v5 = [self _itemForTitle:0 description:v4];
   v21[0] = v5;
-  v6 = [a1 _itemForHearingLossInfographicWithHearingLossClassification:1];
+  v6 = [self _itemForHearingLossInfographicWithHearingLossClassification:1];
   v21[1] = v6;
-  v7 = [a1 _itemForHearingLossInfographicWithHearingLossClassification:2];
+  v7 = [self _itemForHearingLossInfographicWithHearingLossClassification:2];
   v21[2] = v7;
-  v8 = [a1 _itemForHearingLossInfographicWithHearingLossClassification:3];
+  v8 = [self _itemForHearingLossInfographicWithHearingLossClassification:3];
   v21[3] = v8;
-  v9 = [a1 _itemForHearingLossInfographicWithHearingLossClassification:4];
+  v9 = [self _itemForHearingLossInfographicWithHearingLossClassification:4];
   v21[4] = v9;
-  v10 = [a1 _itemForHearingLossInfographicWithHearingLossClassification:5];
+  v10 = [self _itemForHearingLossInfographicWithHearingLossClassification:5];
   v21[5] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:6];
   v12 = [v3 initWithArray:v11];
@@ -834,8 +834,8 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
 
   if (v4)
   {
-    v14 = [a1 _itemForHearingLossInfographicJapanDisclaimer];
-    [v12 addObject:v14];
+    _itemForHearingLossInfographicJapanDisclaimer = [self _itemForHearingLossInfographicJapanDisclaimer];
+    [v12 addObject:_itemForHearingLossInfographicJapanDisclaimer];
   }
 
   v15 = [[HKInfographicViewController alloc] initWithItems:v12];
@@ -848,31 +848,31 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
   return v18;
 }
 
-+ (id)_itemForTitle:(id)a3 description:(id)a4
++ (id)_itemForTitle:(id)title description:(id)description
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = MEMORY[0x1E696AD40];
-  v7 = a4;
+  descriptionCopy = description;
   v8 = objc_alloc_init(v6);
-  if (v5)
+  if (titleCopy)
   {
     v9 = HKInteractiveChartInfographicTitleAttributes();
-    v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v9];
+    v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy attributes:v9];
     [v8 appendAttributedString:v10];
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7];
+  v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:descriptionCopy];
 
   v12 = [[HKInfographicContentItem alloc] initWithTitle:v8 description:v11];
 
   return v12;
 }
 
-+ (id)_itemForHearingLossInfographicWithHearingLossClassification:(unint64_t)a3
++ (id)_itemForHearingLossInfographicWithHearingLossClassification:(unint64_t)classification
 {
   v5 = HKLocalizedStringForHearingLevelClassification();
-  v6 = [a1 _localizedDescriptionForClassification:a3];
-  v7 = [a1 _itemForTitle:v5 description:v6];
+  v6 = [self _localizedDescriptionForClassification:classification];
+  v7 = [self _itemForTitle:v5 description:v6];
 
   return v7;
 }
@@ -890,15 +890,15 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
   return v7;
 }
 
-+ (id)_localizedDescriptionForClassification:(unint64_t)a3
++ (id)_localizedDescriptionForClassification:(unint64_t)classification
 {
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 usesMetricSystem];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  usesMetricSystem = [currentLocale usesMetricSystem];
 
   v6 = &stru_1F42FFBE0;
-  if (a3 <= 2)
+  if (classification <= 2)
   {
-    if (a3 == 1)
+    if (classification == 1)
     {
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v8 = v7;
@@ -907,7 +907,7 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
       goto LABEL_12;
     }
 
-    if (a3 == 2)
+    if (classification == 2)
     {
       v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v8 = v7;
@@ -919,7 +919,7 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
 
   else
   {
-    switch(a3)
+    switch(classification)
     {
       case 3uLL:
         v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -939,7 +939,7 @@ void __69__HKSingleAudiogramChartViewController__updateAudiogramSample_error___b
         v9 = @"HEARING_LEVEL_CLASSIFICATION_DESCRIPTION_PROFOUND_IMPAIRMENT";
         v10 = @"HEARING_LEVEL_CLASSIFICATION_DESCRIPTION_PROFOUND_IMPAIRMENT_METRIC";
 LABEL_12:
-        if (v5)
+        if (usesMetricSystem)
         {
           v11 = v10;
         }
@@ -958,21 +958,21 @@ LABEL_12:
   return v6;
 }
 
-- (void)contextView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)contextView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v17 = a3;
-  v7 = a4;
-  v8 = [(HKSingleAudiogramChartViewController *)self audiogram];
+  viewCopy = view;
+  pathCopy = path;
+  audiogram = [(HKSingleAudiogramChartViewController *)self audiogram];
 
-  if (v8)
+  if (audiogram)
   {
-    if (![v7 section])
+    if (![pathCopy section])
     {
-      v9 = [v17 displayTypeContextSections];
-      v10 = [v9 objectAtIndex:0];
+      displayTypeContextSections = [viewCopy displayTypeContextSections];
+      v10 = [displayTypeContextSections objectAtIndex:0];
 
-      v11 = [v10 items];
-      v12 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+      items = [v10 items];
+      v12 = [items objectAtIndex:{objc_msgSend(pathCopy, "row")}];
       v13 = objc_opt_class();
       v14 = objc_opt_class();
 
@@ -981,8 +981,8 @@ LABEL_12:
         [HKSingleAudiogramChartViewController contextView:a2 didSelectItemAtIndexPath:self];
       }
 
-      v15 = [v10 items];
-      v16 = [v15 objectAtIndex:{objc_msgSend(v7, "row")}];
+      items2 = [v10 items];
+      v16 = [items2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       self->_selectedOverlayEar = [v16 ear];
     }
@@ -999,9 +999,9 @@ LABEL_12:
 - (void)redrawCurrentCell
 {
   [(HKSingleAudiogramChartViewController *)self _setNeedsReloadSeries];
-  v4 = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
-  v3 = [v4 graphView];
-  [v3 autoscaleYAxesAnimated:0 specificRange:0 onlyIfNeeded:0 completion:0];
+  scalarGraphViewController = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
+  graphView = [scalarGraphViewController graphView];
+  [graphView autoscaleYAxesAnimated:0 specificRange:0 onlyIfNeeded:0 completion:0];
 }
 
 - (void)_setNeedsReloadSeries
@@ -1009,9 +1009,9 @@ LABEL_12:
   graphSeriesCache = self->_graphSeriesCache;
   self->_graphSeriesCache = MEMORY[0x1E695E0F0];
 
-  v5 = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
-  v4 = [v5 graphView];
-  [v4 setNeedsReloadSeries];
+  scalarGraphViewController = [(HKSingleAudiogramChartViewController *)self scalarGraphViewController];
+  graphView = [scalarGraphViewController graphView];
+  [graphView setNeedsReloadSeries];
 }
 
 - (id)newGraphViewController
@@ -1023,42 +1023,42 @@ LABEL_12:
   v5 = [HKScalarGraphViewController alloc];
   [(HKSingleAudiogramChartViewController *)self chartHeight];
   v6 = [(HKScalarGraphViewController *)v5 initWithMinimumHeight:v3 labelDimension:3 labelEndings:v4 numericAxisConfigurationOverrides:?];
-  v7 = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
-  v8 = [(HKGraphViewController *)v6 graphView];
-  v9 = [v8 xAxis];
-  v10 = [v9 preferredStyle];
+  hk_chartAxisLabelColor = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
+  graphView = [(HKGraphViewController *)v6 graphView];
+  xAxis = [graphView xAxis];
+  preferredStyle = [xAxis preferredStyle];
   v11 = [MEMORY[0x1E69DB878] hk_roundedSystemFontWithSize:11.0 weight:*MEMORY[0x1E69DB970]];
-  v12 = [HKAxisLabelStyle labelStyleWithColor:v7 font:v11 horizontalAlignment:1 verticalAlignment:3];
-  [v10 setLabelStyle:v12];
+  v12 = [HKAxisLabelStyle labelStyleWithColor:hk_chartAxisLabelColor font:v11 horizontalAlignment:1 verticalAlignment:3];
+  [preferredStyle setLabelStyle:v12];
 
-  v13 = [(HKGraphViewController *)v6 graphView];
-  v14 = [v13 xAxis];
-  v15 = [v14 preferredStyle];
-  [v15 setFillOuterPadding:0.0];
+  graphView2 = [(HKGraphViewController *)v6 graphView];
+  xAxis2 = [graphView2 xAxis];
+  preferredStyle2 = [xAxis2 preferredStyle];
+  [preferredStyle2 setFillOuterPadding:0.0];
 
-  v16 = [(HKGraphViewController *)v6 graphView];
-  [v16 setMultiSeriesSelection:1];
+  graphView3 = [(HKGraphViewController *)v6 graphView];
+  [graphView3 setMultiSeriesSelection:1];
 
-  v17 = [(HKGraphViewController *)v6 graphView];
-  [v17 setAxisInset:{0.0, 0.0, 0.0, 0.0}];
+  graphView4 = [(HKGraphViewController *)v6 graphView];
+  [graphView4 setAxisInset:{0.0, 0.0, 0.0, 0.0}];
 
-  v18 = [(HKGraphViewController *)v6 graphView];
-  [(HKSingleAudiogramChartViewController *)self _setupFixedFrequencyAxisForGraphView:v18];
+  graphView5 = [(HKGraphViewController *)v6 graphView];
+  [(HKSingleAudiogramChartViewController *)self _setupFixedFrequencyAxisForGraphView:graphView5];
 
   if ([(HKSingleAudiogramChartViewController *)self _shouldShowManualIngestionUI])
   {
-    v19 = [(HKScalarGraphViewController *)v6 view];
-    [v19 setUserInteractionEnabled:0];
+    view = [(HKScalarGraphViewController *)v6 view];
+    [view setUserInteractionEnabled:0];
 
-    v20 = [(HKGraphViewController *)v6 graphView];
-    [v20 setTilingDisabled:1];
+    graphView6 = [(HKGraphViewController *)v6 graphView];
+    [graphView6 setTilingDisabled:1];
 
-    v21 = [(HKGraphViewController *)v6 graphView];
-    [(HKSingleAudiogramChartViewController *)self _addHorizontalAxisAnnotationToGraphView:v21 forSelectedFrequency:self->_selectedFrequency];
+    graphView7 = [(HKGraphViewController *)v6 graphView];
+    [(HKSingleAudiogramChartViewController *)self _addHorizontalAxisAnnotationToGraphView:graphView7 forSelectedFrequency:self->_selectedFrequency];
   }
 
-  v22 = [(HKGraphViewController *)v6 graphView];
-  [v22 setDelegate:self];
+  graphView8 = [(HKGraphViewController *)v6 graphView];
+  [graphView8 setDelegate:self];
 
   [(HKSingleAudiogramChartViewController *)self _setNeedsReloadSeries];
   return v6;
@@ -1066,9 +1066,9 @@ LABEL_12:
 
 - (id)graphSeries
 {
-  v3 = [(HKSingleAudiogramChartViewController *)self audiogram];
+  audiogram = [(HKSingleAudiogramChartViewController *)self audiogram];
 
-  if (v3)
+  if (audiogram)
   {
     if ([(NSArray *)self->_graphSeriesCache count])
     {
@@ -1077,8 +1077,8 @@ LABEL_12:
 
     else
     {
-      v5 = [(HKSingleAudiogramChartViewController *)self audiogram];
-      v6 = [(HKSingleAudiogramChartViewController *)self _setupSeriesForAudiogramSample:v5];
+      audiogram2 = [(HKSingleAudiogramChartViewController *)self audiogram];
+      v6 = [(HKSingleAudiogramChartViewController *)self _setupSeriesForAudiogramSample:audiogram2];
       graphSeriesCache = self->_graphSeriesCache;
       self->_graphSeriesCache = v6;
 
@@ -1094,56 +1094,56 @@ LABEL_12:
   return v4;
 }
 
-- (id)_setupSeriesForAudiogramSample:(id)a3
+- (id)_setupSeriesForAudiogramSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = self->_selectedFrequency != 0;
-  v7 = [v4 sensitivityPoints];
-  v8 = [(HKSingleAudiogramChartViewController *)self _audiogramSeriesWithSensitivityPoints:v7 seriesEar:2 disabledStyleOverride:v6];
+  sensitivityPoints = [sampleCopy sensitivityPoints];
+  v8 = [(HKSingleAudiogramChartViewController *)self _audiogramSeriesWithSensitivityPoints:sensitivityPoints seriesEar:2 disabledStyleOverride:v6];
   [v5 hk_addNonNilObject:v8];
 
-  v9 = [v4 sensitivityPoints];
-  v10 = [(HKSingleAudiogramChartViewController *)self _audiogramSeriesWithSensitivityPoints:v9 seriesEar:1 disabledStyleOverride:v6];
+  sensitivityPoints2 = [sampleCopy sensitivityPoints];
+  v10 = [(HKSingleAudiogramChartViewController *)self _audiogramSeriesWithSensitivityPoints:sensitivityPoints2 seriesEar:1 disabledStyleOverride:v6];
   [v5 hk_addNonNilObject:v10];
 
   if (self->_selectedOverlayEar)
   {
-    v11 = [v4 sensitivityPoints];
-    v12 = [(HKSingleAudiogramChartViewController *)self _audiogramPureToneAveragePointsSeriesWithSensitivityPoints:v11 seriesEar:self->_selectedOverlayEar];
+    sensitivityPoints3 = [sampleCopy sensitivityPoints];
+    v12 = [(HKSingleAudiogramChartViewController *)self _audiogramPureToneAveragePointsSeriesWithSensitivityPoints:sensitivityPoints3 seriesEar:self->_selectedOverlayEar];
     [v5 hk_addNonNilObject:v12];
 
-    v13 = [(HKSingleAudiogramChartViewController *)self _averageLevelOverlaySeriesWithAudiogram:v4 selectedEar:self->_selectedOverlayEar];
+    v13 = [(HKSingleAudiogramChartViewController *)self _averageLevelOverlaySeriesWithAudiogram:sampleCopy selectedEar:self->_selectedOverlayEar];
     [v5 hk_addNonNilObject:v13];
   }
 
   if (self->_selectedFrequency)
   {
-    v14 = [v4 sensitivityPoints];
-    v15 = [(HKSingleAudiogramChartViewController *)self _audiogramPureToneAveragePointsSeriesWithSensitivityPoints:v14 selectedFrequency:self->_selectedFrequency seriesEar:2];
+    sensitivityPoints4 = [sampleCopy sensitivityPoints];
+    v15 = [(HKSingleAudiogramChartViewController *)self _audiogramPureToneAveragePointsSeriesWithSensitivityPoints:sensitivityPoints4 selectedFrequency:self->_selectedFrequency seriesEar:2];
     [v5 hk_addNonNilObject:v15];
 
-    v16 = [v4 sensitivityPoints];
-    v17 = [(HKSingleAudiogramChartViewController *)self _audiogramPureToneAveragePointsSeriesWithSensitivityPoints:v16 selectedFrequency:self->_selectedFrequency seriesEar:1];
+    sensitivityPoints5 = [sampleCopy sensitivityPoints];
+    v17 = [(HKSingleAudiogramChartViewController *)self _audiogramPureToneAveragePointsSeriesWithSensitivityPoints:sensitivityPoints5 selectedFrequency:self->_selectedFrequency seriesEar:1];
     [v5 hk_addNonNilObject:v17];
   }
 
   return v5;
 }
 
-- (id)_audiogramSeriesWithSensitivityPoints:(id)a3 seriesEar:(int64_t)a4 disabledStyleOverride:(BOOL)a5
+- (id)_audiogramSeriesWithSensitivityPoints:(id)points seriesEar:(int64_t)ear disabledStyleOverride:(BOOL)override
 {
-  v5 = a5;
+  overrideCopy = override;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __110__HKSingleAudiogramChartViewController__audiogramSeriesWithSensitivityPoints_seriesEar_disabledStyleOverride___block_invoke;
   v12[3] = &__block_descriptor_40_e37_B16__0__HKAudiogramSensitivityPoint_8l;
-  v12[4] = a4 != 1;
-  v8 = [a3 hk_filter:v12];
+  v12[4] = ear != 1;
+  v8 = [points hk_filter:v12];
   if ([v8 count])
   {
-    v9 = [HKAudiogramLineSeries audiogramLineSeriesForSeriesEar:a4 selectedEar:self->_selectedOverlayEar disableConnectionLines:0 disabledStyleOverride:v5 selectedFrequency:0];
-    v10 = [[HKAudiogramDataSource alloc] initWithSensitivityData:v8 forLeftEar:a4 == 1];
+    v9 = [HKAudiogramLineSeries audiogramLineSeriesForSeriesEar:ear selectedEar:self->_selectedOverlayEar disableConnectionLines:0 disabledStyleOverride:overrideCopy selectedFrequency:0];
+    v10 = [[HKAudiogramDataSource alloc] initWithSensitivityData:v8 forLeftEar:ear == 1];
     [v9 setDataSource:v10];
   }
 
@@ -1169,15 +1169,15 @@ BOOL __110__HKSingleAudiogramChartViewController__audiogramSeriesWithSensitivity
   return v5 != 0;
 }
 
-- (id)_audiogramPureToneAveragePointsSeriesWithSensitivityPoints:(id)a3 selectedFrequency:(id)a4 seriesEar:(int64_t)a5
+- (id)_audiogramPureToneAveragePointsSeriesWithSensitivityPoints:(id)points selectedFrequency:(id)frequency seriesEar:(int64_t)ear
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  pointsCopy = points;
+  frequencyCopy = frequency;
+  v9 = frequencyCopy;
+  if (frequencyCopy)
   {
-    v23[0] = v8;
+    v23[0] = frequencyCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   }
 
@@ -1192,12 +1192,12 @@ BOOL __110__HKSingleAudiogramChartViewController__audiogramSeriesWithSensitivity
   v20 = &unk_1E81BB578;
   v11 = v10;
   v21 = v11;
-  v22 = a5 != 1;
-  v12 = [v7 hk_filter:&v17];
+  v22 = ear != 1;
+  v12 = [pointsCopy hk_filter:&v17];
   if ([v12 count])
   {
-    v13 = a5 == 1;
-    v14 = [HKAudiogramLineSeries audiogramLineSeriesForSeriesEar:a5 selectedEar:0 disableConnectionLines:1 disabledStyleOverride:0 selectedFrequency:v9];
+    v13 = ear == 1;
+    v14 = [HKAudiogramLineSeries audiogramLineSeriesForSeriesEar:ear selectedEar:0 disableConnectionLines:1 disabledStyleOverride:0 selectedFrequency:v9];
     v15 = [[HKAudiogramDataSource alloc] initWithSensitivityData:v12 forLeftEar:v13];
     [v14 setDataSource:v15];
 
@@ -1243,157 +1243,157 @@ BOOL __127__HKSingleAudiogramChartViewController__audiogramPureToneAveragePoints
   return v11;
 }
 
-- (id)_averageLevelOverlaySeriesWithAudiogram:(id)a3 selectedEar:(int64_t)a4
+- (id)_averageLevelOverlaySeriesWithAudiogram:(id)audiogram selectedEar:(int64_t)ear
 {
-  v6 = a4 == 1;
-  v7 = a3;
-  v8 = [(HKSingleAudiogramChartViewController *)self _earSpecificColorForEar:a4];
+  v6 = ear == 1;
+  audiogramCopy = audiogram;
+  v8 = [(HKSingleAudiogramChartViewController *)self _earSpecificColorForEar:ear];
   v9 = [HKAudiogramAverageLevelSeries audiogramAverageLevelSeriesWithColor:v8];
-  v10 = [[HKAudiogramAverageSensitivityDataSource alloc] initWithAudiogramSample:v7 isLeftEar:v6];
+  v10 = [[HKAudiogramAverageSensitivityDataSource alloc] initWithAudiogramSample:audiogramCopy isLeftEar:v6];
 
   [v9 setDataSource:v10];
 
   return v9;
 }
 
-- (void)_setupFixedFrequencyAxisForGraphView:(id)a3
+- (void)_setupFixedFrequencyAxisForGraphView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [HKValueRange valueRangeWithMinValue:&unk_1F4384B10 maxValue:&unk_1F4384B20];
-  [v3 setEffectiveAxisRange:v4 effectiveVisibleRangeCadence:v4 effectiveVisibleRangeActive:v4];
+  [viewCopy setEffectiveAxisRange:v4 effectiveVisibleRangeCadence:v4 effectiveVisibleRangeActive:v4];
 }
 
-- (void)updateAnnotationDataSource:(id)a3 pointContexts:(id)a4
+- (void)updateAnnotationDataSource:(id)source pointContexts:(id)contexts
 {
   v5 = self->_selectedOverlayEar != 0;
-  v6 = a4;
-  v7 = [(HKSingleAudiogramChartViewController *)self audiogram];
-  v9 = [v7 endDate];
+  contextsCopy = contexts;
+  audiogram = [(HKSingleAudiogramChartViewController *)self audiogram];
+  endDate = [audiogram endDate];
 
-  v8 = [(HKSingleAudiogramChartViewController *)self annotationViewDataSource];
-  [v8 updateWithPointSelectionContexts:v6 date:v9 isAverage:v5];
+  annotationViewDataSource = [(HKSingleAudiogramChartViewController *)self annotationViewDataSource];
+  [annotationViewDataSource updateWithPointSelectionContexts:contextsCopy date:endDate isAverage:v5];
 }
 
-- (void)graphView:(id)a3 didUpdateSelectedPoint:(id)a4
+- (void)graphView:(id)view didUpdateSelectedPoint:(id)point
 {
-  v17 = a4;
+  pointCopy = point;
   if ([HKLollipopController pointSelectionContextsHaveUserInfo:?])
   {
-    v5 = [(HKSingleAudiogramChartViewController *)self lollipopController];
-    v6 = [v5 isVisible];
+    lollipopController = [(HKSingleAudiogramChartViewController *)self lollipopController];
+    isVisible = [lollipopController isVisible];
 
-    if (v6)
+    if (isVisible)
     {
-      v7 = [(HKSingleAudiogramChartViewController *)self lollipopController];
-      [v7 updateWithPointContexts:v17];
+      lollipopController2 = [(HKSingleAudiogramChartViewController *)self lollipopController];
+      [lollipopController2 updateWithPointContexts:pointCopy];
     }
 
     else
     {
-      v8 = [(HKSingleAudiogramChartViewController *)self currentValueView];
-      [v8 frame];
+      currentValueView = [(HKSingleAudiogramChartViewController *)self currentValueView];
+      [currentValueView frame];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
 
-      v7 = [(HKSingleAudiogramChartViewController *)self lollipopController];
-      [v7 setVisibleWithRect:v17 pointContexts:1 animated:{v10, v12, v14, v16}];
+      lollipopController2 = [(HKSingleAudiogramChartViewController *)self lollipopController];
+      [lollipopController2 setVisibleWithRect:pointCopy pointContexts:1 animated:{v10, v12, v14, v16}];
     }
   }
 }
 
-- (void)graphViewDidEndSelection:(id)a3
+- (void)graphViewDidEndSelection:(id)selection
 {
-  v3 = [(HKSingleAudiogramChartViewController *)self lollipopController];
-  [v3 setInvisibleAnimated:1];
+  lollipopController = [(HKSingleAudiogramChartViewController *)self lollipopController];
+  [lollipopController setInvisibleAnimated:1];
 }
 
-- (void)_addControllerAsChildController:(id)a3
+- (void)_addControllerAsChildController:(id)controller
 {
-  v4 = a3;
-  [(HKSingleAudiogramChartViewController *)self addChildViewController:v4];
-  [v4 didMoveToParentViewController:self];
+  controllerCopy = controller;
+  [(HKSingleAudiogramChartViewController *)self addChildViewController:controllerCopy];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)_pinView:(id)a3 toParentGuide:(id)a4 pinBottom:(BOOL)a5
+- (void)_pinView:(id)view toParentGuide:(id)guide pinBottom:(BOOL)bottom
 {
-  v5 = a5;
-  v23 = a3;
-  v8 = a4;
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [v23 leadingAnchor];
-  v10 = [v8 leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomCopy = bottom;
+  viewCopy = view;
+  guideCopy = guide;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [guideCopy leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [(HKSingleAudiogramChartViewController *)self setLeadingMarginConstraint:v11];
 
-  v12 = [(HKSingleAudiogramChartViewController *)self leadingMarginConstraint];
-  [v12 setActive:1];
+  leadingMarginConstraint = [(HKSingleAudiogramChartViewController *)self leadingMarginConstraint];
+  [leadingMarginConstraint setActive:1];
 
-  v13 = [v23 trailingAnchor];
-  v14 = [v8 trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [guideCopy trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [(HKSingleAudiogramChartViewController *)self setTrailingMarginConstraint:v15];
 
-  v16 = [(HKSingleAudiogramChartViewController *)self trailingMarginConstraint];
-  [v16 setActive:1];
+  trailingMarginConstraint = [(HKSingleAudiogramChartViewController *)self trailingMarginConstraint];
+  [trailingMarginConstraint setActive:1];
 
-  v17 = [v23 topAnchor];
-  v18 = [v8 topAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [guideCopy topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v19 setActive:1];
 
-  if (v5)
+  if (bottomCopy)
   {
-    v20 = [v23 bottomAnchor];
-    v21 = [v8 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor = [viewCopy bottomAnchor];
+    bottomAnchor2 = [guideCopy bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v22 setActive:1];
   }
 }
 
 - (id)_findNavigationController
 {
-  v3 = [(HKSingleAudiogramChartViewController *)self navigationController];
+  navigationController = [(HKSingleAudiogramChartViewController *)self navigationController];
 
-  if (v3)
+  if (navigationController)
   {
-    v4 = [(HKSingleAudiogramChartViewController *)self navigationController];
+    navigationController2 = [(HKSingleAudiogramChartViewController *)self navigationController];
     goto LABEL_3;
   }
 
-  v6 = [(HKSingleAudiogramChartViewController *)self view];
-  v4 = [v6 nextResponder];
+  view = [(HKSingleAudiogramChartViewController *)self view];
+  navigationController2 = [view nextResponder];
 
-  if (v4)
+  if (navigationController2)
   {
     do
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v4;
-        v8 = [v7 navigationController];
+        v7 = navigationController2;
+        navigationController3 = [v7 navigationController];
 
-        if (v8)
+        if (navigationController3)
         {
-          v4 = [v7 navigationController];
+          navigationController2 = [v7 navigationController];
 
           break;
         }
       }
 
-      v9 = [v4 nextResponder];
+      nextResponder = [navigationController2 nextResponder];
 
-      v4 = v9;
+      navigationController2 = nextResponder;
     }
 
-    while (v9);
+    while (nextResponder);
   }
 
 LABEL_3:
 
-  return v4;
+  return navigationController2;
 }
 
 - (id)_indexPathForCurrentSelections
@@ -1419,16 +1419,16 @@ LABEL_5:
   return v6;
 }
 
-- (id)_earSpecificColorForEar:(int64_t)a3
+- (id)_earSpecificColorForEar:(int64_t)ear
 {
-  if (a3)
+  if (ear)
   {
-    if (a3 == 1)
+    if (ear == 1)
     {
       self = [MEMORY[0x1E69DC888] hk_hearingHealthAudiogramLeftEarLineColor];
     }
 
-    else if (a3 == 2)
+    else if (ear == 2)
     {
       self = [MEMORY[0x1E69DC888] hk_hearingHealthAudiogramRightEarLineColor];
     }

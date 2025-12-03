@@ -1,80 +1,80 @@
 @interface HUBridgeListItemManager
-- (BOOL)isBridgeItem:(id)a3;
-- (BOOL)isResidentDeviceItem:(id)a3;
-- (HUBridgeListItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUBridgeListItemManager)initWithHome:(id)a3 delegate:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (BOOL)isBridgeItem:(id)item;
+- (BOOL)isResidentDeviceItem:(id)item;
+- (HUBridgeListItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUBridgeListItemManager)initWithHome:(id)home delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (id)_itemsToHideInSet:(id)a3;
-- (id)bridgeItemForAccessory:(id)a3;
+- (id)_itemsToHideInSet:(id)set;
+- (id)bridgeItemForAccessory:(id)accessory;
 @end
 
 @implementation HUBridgeListItemManager
 
-- (HUBridgeListItemManager)initWithHome:(id)a3 delegate:(id)a4
+- (HUBridgeListItemManager)initWithHome:(id)home delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  homeCopy = home;
+  delegateCopy = delegate;
+  if (!homeCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HUBridgeListItemManager.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUBridgeListItemManager.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
   v14.receiver = self;
   v14.super_class = HUBridgeListItemManager;
-  v10 = [(HFItemManager *)&v14 initWithDelegate:v9 sourceItem:0];
+  v10 = [(HFItemManager *)&v14 initWithDelegate:delegateCopy sourceItem:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_overrideHome, a3);
+    objc_storeStrong(&v10->_overrideHome, home);
   }
 
   return v11;
 }
 
-- (HUBridgeListItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUBridgeListItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUBridgeListItemManager.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HUBridgeListItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUBridgeListItemManager.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HUBridgeListItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (BOOL)isBridgeItem:(id)a3
+- (BOOL)isBridgeItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUBridgeListItemManager *)self bridgeItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  bridgeItemProvider = [(HUBridgeListItemManager *)self bridgeItemProvider];
+  items = [bridgeItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   return v7;
 }
 
-- (BOOL)isResidentDeviceItem:(id)a3
+- (BOOL)isResidentDeviceItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUBridgeListItemManager *)self residentDeviceItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  residentDeviceItemProvider = [(HUBridgeListItemManager *)self residentDeviceItemProvider];
+  items = [residentDeviceItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   return v7;
 }
 
-- (id)bridgeItemForAccessory:(id)a3
+- (id)bridgeItemForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(HUBridgeListItemManager *)self bridgeItemProvider];
-  v6 = [v5 items];
+  accessoryCopy = accessory;
+  bridgeItemProvider = [(HUBridgeListItemManager *)self bridgeItemProvider];
+  items = [bridgeItemProvider items];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__HUBridgeListItemManager_bridgeItemForAccessory___block_invoke;
   v10[3] = &unk_277DB85D8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = accessoryCopy;
+  v7 = accessoryCopy;
+  v8 = [items na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -102,37 +102,37 @@ uint64_t __50__HUBridgeListItemManager_bridgeItemForAccessory___block_invoke(uin
   return v8;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D149C0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithHome:v5];
+  homeCopy = home;
+  v6 = [[v4 alloc] initWithHome:homeCopy];
   [(HUBridgeListItemManager *)self setResidentDeviceItemProvider:v6];
 
-  v7 = [objc_alloc(MEMORY[0x277D14430]) initWithHome:v5];
+  v7 = [objc_alloc(MEMORY[0x277D14430]) initWithHome:homeCopy];
   [(HUBridgeListItemManager *)self setBridgeItemProvider:v7];
 
-  v8 = [(HUBridgeListItemManager *)self residentDeviceItemProvider];
-  v12[0] = v8;
-  v9 = [(HUBridgeListItemManager *)self bridgeItemProvider];
-  v12[1] = v9;
+  residentDeviceItemProvider = [(HUBridgeListItemManager *)self residentDeviceItemProvider];
+  v12[0] = residentDeviceItemProvider;
+  bridgeItemProvider = [(HUBridgeListItemManager *)self bridgeItemProvider];
+  v12[1] = bridgeItemProvider;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
   return v10;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUBridgeAndResidentDeviceHubSectionIdentifier"];
-  v7 = [(HUBridgeListItemManager *)self residentDeviceItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 allObjects];
-  v10 = [objc_opt_class() residentDeviceItemComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
-  [v6 setItems:v11 filteringToDisplayedItems:v4];
+  residentDeviceItemProvider = [(HUBridgeListItemManager *)self residentDeviceItemProvider];
+  items = [residentDeviceItemProvider items];
+  allObjects = [items allObjects];
+  residentDeviceItemComparator = [objc_opt_class() residentDeviceItemComparator];
+  v11 = [allObjects sortedArrayUsingComparator:residentDeviceItemComparator];
+  [v6 setItems:v11 filteringToDisplayedItems:itemsCopy];
 
   v12 = _HULocalizedStringWithDefaultValue(@"HUBridgeAndResidentListHomeHubSectionTitle", @"HUBridgeAndResidentListHomeHubSectionTitle", 1);
   [v6 setHeaderTitle:v12];
@@ -142,32 +142,32 @@ uint64_t __50__HUBridgeListItemManager_bridgeItemForAccessory___block_invoke(uin
 
   [v5 addObject:v6];
   v14 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUBridgeAndResidentDeviceBridgeSectionIdentifier"];
-  v15 = [(HUBridgeListItemManager *)self bridgeItemProvider];
-  v16 = [v15 items];
-  [v14 setItemsUsingDefaultSortComparator:v16];
+  bridgeItemProvider = [(HUBridgeListItemManager *)self bridgeItemProvider];
+  items2 = [bridgeItemProvider items];
+  [v14 setItemsUsingDefaultSortComparator:items2];
 
   v17 = _HULocalizedStringWithDefaultValue(@"HUBridgeAndResidentListBridgesSectionTitle", @"HUBridgeAndResidentListBridgesSectionTitle", 1);
   [v14 setHeaderTitle:v17];
 
   [v5 addObject:v14];
-  v18 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v18 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v18;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v5.receiver = self;
   v5.super_class = HUBridgeListItemManager;
-  v3 = [(HFItemManager *)&v5 _itemsToHideInSet:a3];
+  v3 = [(HFItemManager *)&v5 _itemsToHideInSet:set];
   return 0;
 }
 
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUBridgeListItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUBridgeListItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }

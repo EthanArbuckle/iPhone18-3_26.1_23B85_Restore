@@ -1,24 +1,24 @@
 @interface WFLinkActionRecurrenceRuleParameterDefinition
-- (WFLinkActionRecurrenceRuleParameterDefinition)initWithParameterMetadata:(id)a3;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)localizedTitleForLinkValue:(id)a3;
-- (id)parameterStateFromLinkValue:(id)a3;
+- (WFLinkActionRecurrenceRuleParameterDefinition)initWithParameterMetadata:(id)metadata;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)localizedTitleForLinkValue:(id)value;
+- (id)parameterStateFromLinkValue:(id)value;
 @end
 
 @implementation WFLinkActionRecurrenceRuleParameterDefinition
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 value];
-  if (v4)
+  value = [value value];
+  if (value)
   {
-    v5 = [(WFLinkActionParameterDefinition *)self valueType];
-    v6 = [v5 objectIsMemberOfType:v4];
+    valueType = [(WFLinkActionParameterDefinition *)self valueType];
+    v6 = [valueType objectIsMemberOfType:value];
 
     if (v6)
     {
-      v7 = v4;
+      v7 = value;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -39,13 +39,13 @@
     v11 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(WFLinkActionParameterDefinition *)self valueType];
+      valueType2 = [(WFLinkActionParameterDefinition *)self valueType];
       v15 = 136315650;
       v16 = "[WFLinkActionRecurrenceRuleParameterDefinition parameterStateFromLinkValue:]";
       v17 = 2114;
-      v18 = v4;
+      v18 = value;
       v19 = 2114;
-      v20 = v12;
+      v20 = valueType2;
     }
   }
 
@@ -57,20 +57,20 @@ LABEL_11:
   return v10;
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  stateCopy = state;
+  actionCopy = action;
+  v8 = stateCopy;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 value];
-    if (v9)
+    value = [v8 value];
+    if (value)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v9;
+        v10 = value;
       }
 
       else
@@ -97,23 +97,23 @@ LABEL_11:
   return v11;
 }
 
-- (id)localizedTitleForLinkValue:(id)a3
+- (id)localizedTitleForLinkValue:(id)value
 {
-  v3 = [a3 displayRepresentation];
-  v4 = [v3 title];
-  v5 = [v4 wf_localizedString];
+  displayRepresentation = [value displayRepresentation];
+  title = [displayRepresentation title];
+  wf_localizedString = [title wf_localizedString];
 
-  return v5;
+  return wf_localizedString;
 }
 
-- (WFLinkActionRecurrenceRuleParameterDefinition)initWithParameterMetadata:(id)a3
+- (WFLinkActionRecurrenceRuleParameterDefinition)initWithParameterMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E69AC850];
-  v5 = a3;
-  v6 = [v4 recurrenceRuleType];
+  metadataCopy = metadata;
+  recurrenceRuleType = [v4 recurrenceRuleType];
   v9.receiver = self;
   v9.super_class = WFLinkActionRecurrenceRuleParameterDefinition;
-  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:v6 parameterMetadata:v5];
+  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:recurrenceRuleType parameterMetadata:metadataCopy];
 
   return v7;
 }

@@ -1,46 +1,46 @@
 @interface PHAPrivateFederatedLearningModelTrainer
-- (BOOL)_trueLabelTensor:(id)a3 isEqualToPredictionTensor:(id)a4;
-- (PHAPrivateFederatedLearningModelTrainer)initWithTrainingData:(id)a3 espressoFileURL:(id)a4 learningRate:(id)a5 modelInputName:(id)a6 modelOutputName:(id)a7 lossName:(id)a8 optimizerName:(id)a9 error:(id *)a10;
-- (id)_averageLossAndAccuracyForBatchResults:(id)a3 error:(id *)a4;
-- (id)_generateErrorWithErrorCode:(int64_t)a3 message:(id)a4 underlyingError:(id)a5;
-- (id)_getParamsFromTask:(id)a3 forLayers:(id)a4 error:(id *)a5;
-- (id)trainForNumberOfEpochs:(unint64_t)a3 layersToTrain:(id)a4 verbose:(BOOL)a5 error:(id *)a6;
-- (int)_argmax:(float *)a3 size:(int)a4;
+- (BOOL)_trueLabelTensor:(id)tensor isEqualToPredictionTensor:(id)predictionTensor;
+- (PHAPrivateFederatedLearningModelTrainer)initWithTrainingData:(id)data espressoFileURL:(id)l learningRate:(id)rate modelInputName:(id)name modelOutputName:(id)outputName lossName:(id)lossName optimizerName:(id)optimizerName error:(id *)self0;
+- (id)_averageLossAndAccuracyForBatchResults:(id)results error:(id *)error;
+- (id)_generateErrorWithErrorCode:(int64_t)code message:(id)message underlyingError:(id)error;
+- (id)_getParamsFromTask:(id)task forLayers:(id)layers error:(id *)error;
+- (id)trainForNumberOfEpochs:(unint64_t)epochs layersToTrain:(id)train verbose:(BOOL)verbose error:(id *)error;
+- (int)_argmax:(float *)_argmax size:(int)size;
 @end
 
 @implementation PHAPrivateFederatedLearningModelTrainer
 
-- (BOOL)_trueLabelTensor:(id)a3 isEqualToPredictionTensor:(id)a4
+- (BOOL)_trueLabelTensor:(id)tensor isEqualToPredictionTensor:(id)predictionTensor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dataPointer];
-  v9 = [v6 dataPointer];
-  v10 = [v7 shape];
+  predictionTensorCopy = predictionTensor;
+  tensorCopy = tensor;
+  dataPointer = [tensorCopy dataPointer];
+  dataPointer2 = [predictionTensorCopy dataPointer];
+  shape = [tensorCopy shape];
 
-  v11 = [v10 objectAtIndexedSubscript:2];
-  v12 = [v11 intValue];
+  v11 = [shape objectAtIndexedSubscript:2];
+  intValue = [v11 intValue];
 
-  v13 = [v6 shape];
+  shape2 = [predictionTensorCopy shape];
 
-  v14 = [v13 objectAtIndexedSubscript:2];
-  v15 = [v14 intValue];
+  v14 = [shape2 objectAtIndexedSubscript:2];
+  intValue2 = [v14 intValue];
 
-  v16 = [(PHAPrivateFederatedLearningModelTrainer *)self _argmax:v8 size:v12];
-  v17 = [(PHAPrivateFederatedLearningModelTrainer *)self _argmax:v9 size:v15];
-  return v12 == 1 && v15 != 1 && roundf(*v8) == v17 || v16 == v17 && vabds_f32(v8[v16], *(v9 + 4 * v16)) <= 0.1;
+  v16 = [(PHAPrivateFederatedLearningModelTrainer *)self _argmax:dataPointer size:intValue];
+  v17 = [(PHAPrivateFederatedLearningModelTrainer *)self _argmax:dataPointer2 size:intValue2];
+  return intValue == 1 && intValue2 != 1 && roundf(*dataPointer) == v17 || v16 == v17 && vabds_f32(dataPointer[v16], *(dataPointer2 + 4 * v16)) <= 0.1;
 }
 
-- (id)_averageLossAndAccuracyForBatchResults:(id)a3 error:(id *)a4
+- (id)_averageLossAndAccuracyForBatchResults:(id)results error:(id *)error
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v6 = [v37 numberOfDataPoints];
-  v8 = v6;
-  if (v6)
+  resultsCopy = results;
+  numberOfDataPoints = [resultsCopy numberOfDataPoints];
+  v8 = numberOfDataPoints;
+  if (numberOfDataPoints)
   {
-    v35 = a4;
-    v36 = v6;
+    errorCopy = error;
+    v36 = numberOfDataPoints;
     v9 = 0;
     v10 = 0;
     v11 = 0;
@@ -48,15 +48,15 @@
     while (1)
     {
       v40 = v10;
-      v13 = [v37 dataPointAtIndex:v11 error:&v40];
+      v13 = [resultsCopy dataPointAtIndex:v11 error:&v40];
       v14 = v40;
 
       if (!v13)
       {
-        if (v35)
+        if (errorCopy)
         {
           [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:7 message:@"Training output is nil." underlyingError:v14];
-          *v35 = v33 = 0;
+          *errorCopy = v33 = 0;
         }
 
         else
@@ -68,9 +68,9 @@
         goto LABEL_28;
       }
 
-      v15 = [(PHAPrivateFederatedLearningModelTrainer *)self trainingData];
+      trainingData = [(PHAPrivateFederatedLearningModelTrainer *)self trainingData];
       v39 = v14;
-      v16 = [v15 dataPointAtIndex:v11 error:&v39];
+      v16 = [trainingData dataPointAtIndex:v11 error:&v39];
       v10 = v39;
 
       if (!v16)
@@ -78,14 +78,14 @@
         break;
       }
 
-      v17 = [(PHAPrivateFederatedLearningModelTrainer *)self modelInferenceOutputName];
-      v18 = [v13 objectForKeyedSubscript:v17];
+      modelInferenceOutputName = [(PHAPrivateFederatedLearningModelTrainer *)self modelInferenceOutputName];
+      v18 = [v13 objectForKeyedSubscript:modelInferenceOutputName];
 
       if (!v18)
       {
-        if (v35)
+        if (errorCopy)
         {
-          *v35 = [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:9 message:@"Prediction output tensor is nil" underlyingError:0];
+          *errorCopy = [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:9 message:@"Prediction output tensor is nil" underlyingError:0];
         }
 
 LABEL_24:
@@ -94,21 +94,21 @@ LABEL_24:
       }
 
       v38 = v10;
-      v19 = [(PHAPrivateFederatedLearningModelTrainer *)self labelName];
-      v20 = [v16 objectForKeyedSubscript:v19];
+      labelName = [(PHAPrivateFederatedLearningModelTrainer *)self labelName];
+      v20 = [v16 objectForKeyedSubscript:labelName];
 
       v21 = [(PHAPrivateFederatedLearningModelTrainer *)self _trueLabelTensor:v20 isEqualToPredictionTensor:v18];
-      v22 = [(PHAPrivateFederatedLearningModelTrainer *)self lossName];
-      v23 = [v13 objectForKeyedSubscript:v22];
+      lossName = [(PHAPrivateFederatedLearningModelTrainer *)self lossName];
+      v23 = [v13 objectForKeyedSubscript:lossName];
 
       if (v23)
       {
         v12 = v12 + *[v23 dataPointer];
       }
 
-      else if (v35)
+      else if (errorCopy)
       {
-        *v35 = [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:10 message:@"Loss output tensor is nil" underlyingError:0];
+        *errorCopy = [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:10 message:@"Loss output tensor is nil" underlyingError:0];
       }
 
       v8 = v36;
@@ -129,9 +129,9 @@ LABEL_24:
       }
     }
 
-    if (v35)
+    if (errorCopy)
     {
-      *v35 = [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:8 message:@"Training data point is nil." underlyingError:v10];
+      *errorCopy = [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:8 message:@"Training data point is nil." underlyingError:v10];
     }
 
     goto LABEL_24;
@@ -169,29 +169,29 @@ LABEL_28:
   return v33;
 }
 
-- (int)_argmax:(float *)a3 size:(int)a4
+- (int)_argmax:(float *)_argmax size:(int)size
 {
   __C = -3.4028e38;
   v5 = -1;
-  vDSP_maxvi(a3, 1, &__C, &v5, a4);
+  vDSP_maxvi(_argmax, 1, &__C, &v5, size);
   return v5;
 }
 
-- (id)_getParamsFromTask:(id)a3 forLayers:(id)a4 error:(id *)a5
+- (id)_getParamsFromTask:(id)task forLayers:(id)layers error:(id *)error
 {
-  v22 = self;
-  v7 = a3;
-  v8 = a4;
+  selfCopy = self;
+  taskCopy = task;
+  layersCopy = layers;
   v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v24 = v7;
-  if ([v8 count])
+  v24 = taskCopy;
+  if ([layersCopy count])
   {
     v9 = 0;
     while (1)
     {
-      v10 = [v8 objectAtIndexedSubscript:{v9, v22}];
+      v10 = [layersCopy objectAtIndexedSubscript:{v9, selfCopy}];
       v27 = 0;
-      v11 = [v7 getParameterOfType:1 forLayerNamed:v10 error:&v27];
+      v11 = [taskCopy getParameterOfType:1 forLayerNamed:v10 error:&v27];
       v12 = v27;
       if (!v11)
       {
@@ -199,25 +199,25 @@ LABEL_28:
       }
 
       v26 = 0;
-      v13 = [v7 getParameterOfType:2 forLayerNamed:v10 error:&v26];
+      v13 = [taskCopy getParameterOfType:2 forLayerNamed:v10 error:&v26];
       v14 = v26;
       if (v13)
       {
         v25 = v14;
         v15 = [objc_alloc(MEMORY[0x277D22C40]) initWithDataTensor:v11];
-        v16 = a5;
+        errorCopy = error;
         v17 = [objc_alloc(MEMORY[0x277D22C40]) initWithDataTensor:v13];
         v18 = [[PHAPrivateFederatedLearningLayerParameters alloc] initWithWeights:v15 bias:v17];
         [v23 setObject:v18 atIndexedSubscript:v9];
 
-        a5 = v16;
-        v7 = v24;
+        error = errorCopy;
+        taskCopy = v24;
         v14 = v25;
       }
 
-      else if (a5)
+      else if (error)
       {
-        *a5 = [(PHAPrivateFederatedLearningModelTrainer *)v22 _generateErrorWithErrorCode:3 message:@"Error during espresso training variables (bias) definition" underlyingError:v14];
+        *error = [(PHAPrivateFederatedLearningModelTrainer *)selfCopy _generateErrorWithErrorCode:3 message:@"Error during espresso training variables (bias) definition" underlyingError:v14];
       }
 
       if (!v13)
@@ -225,15 +225,15 @@ LABEL_28:
         goto LABEL_14;
       }
 
-      if (++v9 >= [v8 count])
+      if (++v9 >= [layersCopy count])
       {
         goto LABEL_10;
       }
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [(PHAPrivateFederatedLearningModelTrainer *)v22 _generateErrorWithErrorCode:3 message:@"Error during espresso training variables (weights) definition" underlyingError:v12];
+      *error = [(PHAPrivateFederatedLearningModelTrainer *)selfCopy _generateErrorWithErrorCode:3 message:@"Error during espresso training variables (weights) definition" underlyingError:v12];
     }
 
 LABEL_14:
@@ -251,45 +251,45 @@ LABEL_10:
   return v20;
 }
 
-- (id)_generateErrorWithErrorCode:(int64_t)a3 message:(id)a4 underlyingError:(id)a5
+- (id)_generateErrorWithErrorCode:(int64_t)code message:(id)message underlyingError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
+  messageCopy = message;
   v10 = objc_alloc_init(v8);
-  [v10 setObject:v9 forKey:*MEMORY[0x277CCA450]];
+  [v10 setObject:messageCopy forKey:*MEMORY[0x277CCA450]];
 
-  if (v7)
+  if (errorCopy)
   {
-    [v10 setObject:v7 forKey:*MEMORY[0x277CCA7E8]];
+    [v10 setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningModelTrainer" code:a3 userInfo:v10];
+  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningModelTrainer" code:code userInfo:v10];
 
   return v11;
 }
 
-- (id)trainForNumberOfEpochs:(unint64_t)a3 layersToTrain:(id)a4 verbose:(BOOL)a5 error:(id *)a6
+- (id)trainForNumberOfEpochs:(unint64_t)epochs layersToTrain:(id)train verbose:(BOOL)verbose error:(id *)error
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v45 = a4;
+  trainCopy = train;
   v9 = objc_alloc(MEMORY[0x277D07770]);
-  v10 = [(PHAPrivateFederatedLearningModelTrainer *)self espressoFileURL];
+  espressoFileURL = [(PHAPrivateFederatedLearningModelTrainer *)self espressoFileURL];
   v61 = 0;
-  v11 = [v9 initWithInferenceNetworkPath:v10 error:&v61];
+  v11 = [v9 initWithInferenceNetworkPath:espressoFileURL error:&v61];
   v43 = v61;
 
   if (v11)
   {
     v60 = 0;
-    v44 = [objc_alloc(MEMORY[0x277D07798]) initForLayers:v45 error:&v60];
+    v44 = [objc_alloc(MEMORY[0x277D07798]) initForLayers:trainCopy error:&v60];
     v42 = v60;
     if (!v44)
     {
-      if (a6)
+      if (error)
       {
         [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:3 message:@"Error during espresso training variables definition" underlyingError:v42];
-        *a6 = v28 = 0;
+        *error = v28 = 0;
       }
 
       else
@@ -301,16 +301,16 @@ LABEL_10:
     }
 
     v12 = objc_alloc(MEMORY[0x277D07790]);
-    v13 = [(PHAPrivateFederatedLearningModelTrainer *)self lossDefinition];
-    v14 = [(PHAPrivateFederatedLearningModelTrainer *)self optimizerDefinition];
+    lossDefinition = [(PHAPrivateFederatedLearningModelTrainer *)self lossDefinition];
+    optimizerDefinition = [(PHAPrivateFederatedLearningModelTrainer *)self optimizerDefinition];
     v59 = 0;
-    v41 = [v12 initWithModelDefinition:v11 lossDefinition:v13 variablesDefinition:v44 optimizerDefinition:v14 forPlatform:1 error:&v59];
+    v41 = [v12 initWithModelDefinition:v11 lossDefinition:lossDefinition variablesDefinition:v44 optimizerDefinition:optimizerDefinition forPlatform:1 error:&v59];
     v39 = v59;
 
     v15 = v41;
     if (v41)
     {
-      v16 = [(PHAPrivateFederatedLearningModelTrainer *)self _getParamsFromTask:v41 forLayers:v45 error:a6];
+      v16 = [(PHAPrivateFederatedLearningModelTrainer *)self _getParamsFromTask:v41 forLayers:trainCopy error:error];
       if (v16)
       {
         v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -327,7 +327,7 @@ LABEL_10:
         aBlock[3] = &unk_2788B21D8;
         aBlock[4] = self;
         v51 = buf;
-        v52 = a5;
+        verboseCopy = verbose;
         v35 = v17;
         v49 = v35;
         v36 = v18;
@@ -339,12 +339,12 @@ LABEL_10:
         v63[0] = v20;
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:&v62 count:1];
         v47 = 0;
-        LOBYTE(trainingData) = [v41 doTrainingOnData:trainingData forNumberOfEpochs:a3 withCallback:v21 error:&v47];
+        LOBYTE(trainingData) = [v41 doTrainingOnData:trainingData forNumberOfEpochs:epochs withCallback:v21 error:&v47];
         v37 = v47;
 
         if (trainingData)
         {
-          v22 = [(PHAPrivateFederatedLearningModelTrainer *)self _getParamsFromTask:v41 forLayers:v45 error:a6];
+          v22 = [(PHAPrivateFederatedLearningModelTrainer *)self _getParamsFromTask:v41 forLayers:trainCopy error:error];
           if (v22)
           {
             v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -357,8 +357,8 @@ LABEL_10:
             }
 
             v31 = [PHAPrivateFederatedLearningModelTrainerResponse alloc];
-            v32 = [(PHAPrivateFederatedLearningModelTrainer *)self trainingData];
-            v28 = -[PHAPrivateFederatedLearningModelTrainerResponse initWithParameterDeltas:trainingLossesPerEpoch:trainingAccuraciesPerEpoch:trainingEpochs:numberOfTrainingSamples:](v31, "initWithParameterDeltas:trainingLossesPerEpoch:trainingAccuraciesPerEpoch:trainingEpochs:numberOfTrainingSamples:", v23, v35, v36, a3, [v32 numberOfDataPoints]);
+            trainingData = [(PHAPrivateFederatedLearningModelTrainer *)self trainingData];
+            v28 = -[PHAPrivateFederatedLearningModelTrainerResponse initWithParameterDeltas:trainingLossesPerEpoch:trainingAccuraciesPerEpoch:trainingEpochs:numberOfTrainingSamples:](v31, "initWithParameterDeltas:trainingLossesPerEpoch:trainingAccuraciesPerEpoch:trainingEpochs:numberOfTrainingSamples:", v23, v35, v36, epochs, [trainingData numberOfDataPoints]);
           }
 
           else
@@ -379,7 +379,7 @@ LABEL_10:
           }
         }
 
-        else if (a6)
+        else if (error)
         {
           if (*(v54 + 5))
           {
@@ -392,7 +392,7 @@ LABEL_10:
           }
 
           [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:6 message:@"Error training espresso model" underlyingError:v30];
-          *a6 = v28 = 0;
+          *error = v28 = 0;
         }
 
         else
@@ -423,7 +423,7 @@ LABEL_10:
 
     else
     {
-      if (!a6)
+      if (!error)
       {
         v28 = 0;
 LABEL_40:
@@ -433,17 +433,17 @@ LABEL_41:
       }
 
       [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:5 message:@"Error creating espresso task definition" underlyingError:v39];
-      *a6 = v28 = 0;
+      *error = v28 = 0;
     }
 
     v15 = v41;
     goto LABEL_40;
   }
 
-  if (a6)
+  if (error)
   {
     [(PHAPrivateFederatedLearningModelTrainer *)self _generateErrorWithErrorCode:2 message:@"Error during espresso model definition" underlyingError:v43];
-    *a6 = v28 = 0;
+    *error = v28 = 0;
   }
 
   else
@@ -530,16 +530,16 @@ uint64_t __94__PHAPrivateFederatedLearningModelTrainer_trainForNumberOfEpochs_la
   return MEMORY[0x2821F96F8]();
 }
 
-- (PHAPrivateFederatedLearningModelTrainer)initWithTrainingData:(id)a3 espressoFileURL:(id)a4 learningRate:(id)a5 modelInputName:(id)a6 modelOutputName:(id)a7 lossName:(id)a8 optimizerName:(id)a9 error:(id *)a10
+- (PHAPrivateFederatedLearningModelTrainer)initWithTrainingData:(id)data espressoFileURL:(id)l learningRate:(id)rate modelInputName:(id)name modelOutputName:(id)outputName lossName:(id)lossName optimizerName:(id)optimizerName error:(id *)self0
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v35 = a4;
-  v18 = a5;
-  v34 = a6;
-  v33 = a7;
-  v36 = a8;
-  v19 = a9;
+  dataCopy = data;
+  lCopy = l;
+  rateCopy = rate;
+  nameCopy = name;
+  outputNameCopy = outputName;
+  lossNameCopy = lossName;
+  optimizerNameCopy = optimizerName;
   v37.receiver = self;
   v37.super_class = PHAPrivateFederatedLearningModelTrainer;
   v20 = [(PHAPrivateFederatedLearningModelTrainer *)&v37 init];
@@ -549,17 +549,17 @@ uint64_t __94__PHAPrivateFederatedLearningModelTrainer_trainForNumberOfEpochs_la
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v20->_trainingData, a3);
-  objc_storeStrong(&v21->_espressoFileURL, a4);
+  objc_storeStrong(&v20->_trainingData, data);
+  objc_storeStrong(&v21->_espressoFileURL, l);
   labelName = v21->_labelName;
   v21->_labelName = @"label";
 
-  objc_storeStrong(&v21->_inputName, a6);
-  objc_storeStrong(&v21->_modelOutputName, a7);
-  objc_storeStrong(&v21->_lossName, a8);
-  objc_storeStrong(&v21->_optimizerName, a9);
-  objc_storeStrong(&v21->_modelInferenceOutputName, a7);
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v17, "numberOfDataPoints")}];
+  objc_storeStrong(&v21->_inputName, name);
+  objc_storeStrong(&v21->_modelOutputName, outputName);
+  objc_storeStrong(&v21->_lossName, lossName);
+  objc_storeStrong(&v21->_optimizerName, optimizerName);
+  objc_storeStrong(&v21->_modelInferenceOutputName, outputName);
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "numberOfDataPoints")}];
   if ([(NSString *)v21->_lossName isEqualToString:@"mse"])
   {
     v24 = [MEMORY[0x277D07760] L2LossWithInputName:v21->_modelOutputName targetInputName:v21->_labelName lossOutputName:v21->_lossName];
@@ -574,7 +574,7 @@ uint64_t __94__PHAPrivateFederatedLearningModelTrainer_trainForNumberOfEpochs_la
 
     else
     {
-      [MEMORY[0x277D07760] BuiltInLoss:v36];
+      [MEMORY[0x277D07760] BuiltInLoss:lossNameCopy];
     }
     v24 = ;
   }
@@ -586,11 +586,11 @@ uint64_t __94__PHAPrivateFederatedLearningModelTrainer_trainForNumberOfEpochs_la
   v38[0] = *MEMORY[0x277D079D0];
   v38[1] = v26;
   v39[0] = v23;
-  v39[1] = v18;
+  v39[1] = rateCopy;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
   if ([(NSString *)v21->_optimizerName isEqualToString:@"sgd"])
   {
-    v28 = [objc_alloc(MEMORY[0x277D07780]) initWithOptimizationAlgorithm:0 parameters:v27 error:a10];
+    v28 = [objc_alloc(MEMORY[0x277D07780]) initWithOptimizationAlgorithm:0 parameters:v27 error:error];
     optimizerDefinition = v21->_optimizerDefinition;
     v21->_optimizerDefinition = v28;
 
@@ -599,10 +599,10 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (a10)
+  if (error)
   {
-    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Optimizer '%@' is not supported.", v19];
-    *a10 = [(PHAPrivateFederatedLearningModelTrainer *)v21 _generateErrorWithErrorCode:4 message:v31 underlyingError:0];
+    optimizerNameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Optimizer '%@' is not supported.", optimizerNameCopy];
+    *error = [(PHAPrivateFederatedLearningModelTrainer *)v21 _generateErrorWithErrorCode:4 message:optimizerNameCopy underlyingError:0];
   }
 
   v30 = 0;

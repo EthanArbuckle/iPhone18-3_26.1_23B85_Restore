@@ -4,69 +4,69 @@
 - (CGSize)indicatorSize;
 - (CGSize)size;
 - (CGSize)throttleSize;
-- (TCThrottle)initWithDescriptor:(id)a3 touchController:(id)a4;
+- (TCThrottle)initWithDescriptor:(id)descriptor touchController:(id)controller;
 - (TCTouchController)touchController;
 - (id)jsonObject;
 - (void)_calculateIndicatorPosition;
 - (void)_calculatePosition;
-- (void)collectQuadDataInto:(id)a3;
-- (void)handleTouchBeganAtPoint:(CGPoint)a3;
-- (void)handleTouchEndedAtPoint:(CGPoint)a3;
-- (void)handleTouchMovedAtPoint:(CGPoint)a3;
-- (void)processTouch:(CGPoint)a3;
+- (void)collectQuadDataInto:(id)into;
+- (void)handleTouchBeganAtPoint:(CGPoint)point;
+- (void)handleTouchEndedAtPoint:(CGPoint)point;
+- (void)handleTouchMovedAtPoint:(CGPoint)point;
+- (void)processTouch:(CGPoint)touch;
 @end
 
 @implementation TCThrottle
 
-- (TCThrottle)initWithDescriptor:(id)a3 touchController:(id)a4
+- (TCThrottle)initWithDescriptor:(id)descriptor touchController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  controllerCopy = controller;
   v31.receiver = self;
   v31.super_class = TCThrottle;
   v8 = [(TCThrottle *)&v31 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_touchController, v7);
+    objc_storeWeak(&v8->_touchController, controllerCopy);
     v9->_enabled = 1;
-    v10 = [v6 backgroundContents];
+    backgroundContents = [descriptorCopy backgroundContents];
     backgroundContents = v9->_backgroundContents;
-    v9->_backgroundContents = v10;
+    v9->_backgroundContents = backgroundContents;
 
-    v12 = [v6 indicatorContents];
+    indicatorContents = [descriptorCopy indicatorContents];
     indicatorContents = v9->_indicatorContents;
-    v9->_indicatorContents = v12;
+    v9->_indicatorContents = indicatorContents;
 
-    v9->_anchor = [v6 anchor];
-    v9->_anchorCoordinateSystem = [v6 anchorCoordinateSystem];
-    [v6 offset];
+    v9->_anchor = [descriptorCopy anchor];
+    v9->_anchorCoordinateSystem = [descriptorCopy anchorCoordinateSystem];
+    [descriptorCopy offset];
     v9->_offset.x = v14;
     v9->_offset.y = v15;
-    v9->_zIndex = [v6 zIndex];
-    [v6 size];
+    v9->_zIndex = [descriptorCopy zIndex];
+    [descriptorCopy size];
     v9->_size.width = v16;
     v9->_size.height = v17;
-    [v6 indicatorSize];
+    [descriptorCopy indicatorSize];
     v9->_indicatorSize.width = v18;
     v9->_indicatorSize.height = v19;
-    [v6 throttleSize];
+    [descriptorCopy throttleSize];
     v9->_throttleSize.width = v20;
     v9->_throttleSize.height = v21;
-    [v6 highlightDuration];
+    [descriptorCopy highlightDuration];
     v9->_highlightDuration = v22;
-    v23 = [v6 label];
+    label = [descriptorCopy label];
     label = v9->_label;
-    v9->_label = v23;
+    v9->_label = label;
 
-    v9->_orientation = [v6 orientation];
-    v9->_snapsToBaseValue = [v6 snapsToBaseValue];
-    if ([v6 colliderShape])
+    v9->_orientation = [descriptorCopy orientation];
+    v9->_snapsToBaseValue = [descriptorCopy snapsToBaseValue];
+    if ([descriptorCopy colliderShape])
     {
-      if ([v6 colliderShape] != 1)
+      if ([descriptorCopy colliderShape] != 1)
       {
 LABEL_7:
-        [v6 baseValue];
+        [descriptorCopy baseValue];
         v9->_baseValue = v28;
         v9->_lastValue = v28;
         [(TCThrottle *)v9 _calculatePosition];
@@ -133,23 +133,23 @@ LABEL_8:
   self->_indicatorPosition.y = y;
 }
 
-- (void)processTouch:(CGPoint)a3
+- (void)processTouch:(CGPoint)touch
 {
   if (self->_orientation == 1)
   {
     v4 = self->_throttleSize.width - self->_indicatorSize.width * 0.5;
     x = self->_center.x;
-    if (a3.x < x - v4 * 0.5)
+    if (touch.x < x - v4 * 0.5)
     {
-      a3.x = x - v4 * 0.5;
+      touch.x = x - v4 * 0.5;
     }
 
-    if (a3.x >= x + v4 * 0.5)
+    if (touch.x >= x + v4 * 0.5)
     {
-      a3.x = x + v4 * 0.5;
+      touch.x = x + v4 * 0.5;
     }
 
-    v6 = (a3.x - x - v4 * 0.5) / v4;
+    v6 = (touch.x - x - v4 * 0.5) / v4;
     v7 = 1.0;
     v8 = v6 + 1.0;
   }
@@ -159,17 +159,17 @@ LABEL_8:
     v9 = self->_throttleSize.height - self->_indicatorSize.height * 0.5;
     y = self->_center.y;
     v11 = y - v9 * 0.5;
-    if (a3.y < v11)
+    if (touch.y < v11)
     {
-      a3.y = y - v9 * 0.5;
+      touch.y = y - v9 * 0.5;
     }
 
-    if (a3.y >= y + v9 * 0.5)
+    if (touch.y >= y + v9 * 0.5)
     {
-      a3.y = y + v9 * 0.5;
+      touch.y = y + v9 * 0.5;
     }
 
-    v12 = (a3.y - v11) / v9;
+    v12 = (touch.y - v11) / v9;
     v7 = 1.0;
     v8 = 1.0 - v12;
   }
@@ -195,29 +195,29 @@ LABEL_8:
   self->_lastValue = v13;
 }
 
-- (void)handleTouchBeganAtPoint:(CGPoint)a3
+- (void)handleTouchBeganAtPoint:(CGPoint)point
 {
   if (!self->pressed)
   {
     self->pressed = 1;
     self->highlightIntensity = 1.0;
-    [(TCThrottle *)self processTouch:a3.x, a3.y];
+    [(TCThrottle *)self processTouch:point.x, point.y];
 
     [(TCThrottle *)self _calculateIndicatorPosition];
   }
 }
 
-- (void)handleTouchMovedAtPoint:(CGPoint)a3
+- (void)handleTouchMovedAtPoint:(CGPoint)point
 {
   if (self->pressed)
   {
-    [(TCThrottle *)self processTouch:a3.x, a3.y];
+    [(TCThrottle *)self processTouch:point.x, point.y];
 
     [(TCThrottle *)self _calculateIndicatorPosition];
   }
 }
 
-- (void)handleTouchEndedAtPoint:(CGPoint)a3
+- (void)handleTouchEndedAtPoint:(CGPoint)point
 {
   if (self->pressed)
   {
@@ -233,18 +233,18 @@ LABEL_8:
   }
 }
 
-- (void)collectQuadDataInto:(id)a3
+- (void)collectQuadDataInto:(id)into
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intoCopy = into;
   if (self->_enabled)
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v5 = [(TCControlContents *)self->_backgroundContents images];
-    v6 = [v5 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    images = [(TCControlContents *)self->_backgroundContents images];
+    v6 = [images countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v6)
     {
       v7 = v6;
@@ -256,7 +256,7 @@ LABEL_8:
         {
           if (*v37 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(images);
           }
 
           v10 = *(*(&v36 + 1) + 8 * v9);
@@ -271,15 +271,15 @@ LABEL_8:
           [v11 setSize:?];
           [v11 setTintColor:{objc_msgSend(v10, "tintColor")}];
           [v11 setHighlightIntensity:0.0];
-          v17 = [v10 texture];
-          [v11 setTexture:v17];
+          texture = [v10 texture];
+          [v11 setTexture:texture];
 
-          [v4 addObject:v11];
+          [intoCopy addObject:v11];
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v7 = [images countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v7);
@@ -289,8 +289,8 @@ LABEL_8:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v18 = [(TCControlContents *)self->_indicatorContents images];
-    v19 = [v18 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    images2 = [(TCControlContents *)self->_indicatorContents images];
+    v19 = [images2 countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v19)
     {
       v20 = v19;
@@ -302,7 +302,7 @@ LABEL_8:
         {
           if (*v33 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(images2);
           }
 
           v23 = *(*(&v32 + 1) + 8 * v22);
@@ -318,15 +318,15 @@ LABEL_8:
           [v24 setTintColor:{objc_msgSend(v23, "tintColor")}];
           [(TCThrottle *)self highlightIntensity];
           [v24 setHighlightIntensity:?];
-          v30 = [v23 texture];
-          [v24 setTexture:v30];
+          texture2 = [v23 texture];
+          [v24 setTexture:texture2];
 
-          [v4 addObject:v24];
+          [intoCopy addObject:v24];
           ++v22;
         }
 
         while (v20 != v22);
-        v20 = [v18 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v20 = [images2 countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v20);

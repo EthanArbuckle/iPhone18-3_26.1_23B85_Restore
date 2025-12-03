@@ -1,32 +1,32 @@
 @interface CNVCardWriting
-+ (id)dataWithPeople:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)dataWithPerson:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)excludedFieldsForPerson:(id)a3 options:(id)a4;
-+ (id)scopeForPerson:(id)a3 options:(id)a4;
-+ (id)stringWithPeople:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)stringWithPerson:(id)a3 options:(id)a4 error:(id *)a5;
-+ (void)makevCardWithBuilder:(id)a3 serializer:(id)a4 options:(id)a5;
-+ (void)serializePerson:(id)a3 withSerializer:(id)a4 options:(id)a5;
++ (id)dataWithPeople:(id)people options:(id)options error:(id *)error;
++ (id)dataWithPerson:(id)person options:(id)options error:(id *)error;
++ (id)excludedFieldsForPerson:(id)person options:(id)options;
++ (id)scopeForPerson:(id)person options:(id)options;
++ (id)stringWithPeople:(id)people options:(id)options error:(id *)error;
++ (id)stringWithPerson:(id)person options:(id)options error:(id *)error;
++ (void)makevCardWithBuilder:(id)builder serializer:(id)serializer options:(id)options;
++ (void)serializePerson:(id)person withSerializer:(id)serializer options:(id)options;
 @end
 
 @implementation CNVCardWriting
 
-+ (id)stringWithPeople:(id)a3 options:(id)a4 error:(id *)a5
++ (id)stringWithPeople:(id)people options:(id)options error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  peopleCopy = people;
+  optionsCopy = options;
   v10 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v8;
+  obj = peopleCopy;
   v11 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
-    v25 = a5;
+    errorCopy = error;
     v13 = 0;
     v14 = *v29;
     while (2)
@@ -43,7 +43,7 @@
         v17 = *(*(&v28 + 1) + 8 * v15);
         v18 = objc_autoreleasePoolPush();
         v27 = v16;
-        v19 = [a1 stringWithPerson:v17 options:v9 error:&v27];
+        v19 = [self stringWithPerson:v17 options:optionsCopy error:&v27];
         v13 = v27;
 
         if (!v19)
@@ -72,7 +72,7 @@
     }
 
 LABEL_11:
-    a5 = v25;
+    error = errorCopy;
   }
 
   else
@@ -82,10 +82,10 @@ LABEL_11:
 
   v20 = v10;
   v21 = v20;
-  if (a5 && !v20)
+  if (error && !v20)
   {
     v22 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -93,43 +93,43 @@ LABEL_11:
   return v21;
 }
 
-+ (id)stringWithPerson:(id)a3 options:(id)a4 error:(id *)a5
++ (id)stringWithPerson:(id)person options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCAB68] string];
-  if ([v8 outputVersion] == 1)
+  personCopy = person;
+  optionsCopy = options;
+  string = [MEMORY[0x277CCAB68] string];
+  if ([optionsCopy outputVersion] == 1)
   {
-    v10 = [v8 availableEncodings];
-    v11 = [CNVCardLineSerializationStrategy version21StrategyWithStringStorage:v9 encodings:v10];
+    availableEncodings = [optionsCopy availableEncodings];
+    v11 = [CNVCardLineSerializationStrategy version21StrategyWithStringStorage:string encodings:availableEncodings];
   }
 
   else
   {
-    v11 = [CNVCardLineSerializationStrategy version30StrategyWithStringStorage:v9];
+    v11 = [CNVCardLineSerializationStrategy version30StrategyWithStringStorage:string];
   }
 
-  [a1 serializePerson:v7 withSerializer:v11 options:v8];
+  [self serializePerson:personCopy withSerializer:v11 options:optionsCopy];
 
-  return v9;
+  return string;
 }
 
-+ (id)dataWithPeople:(id)a3 options:(id)a4 error:(id *)a5
++ (id)dataWithPeople:(id)people options:(id)options error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  peopleCopy = people;
+  optionsCopy = options;
   v10 = objc_alloc_init(MEMORY[0x277CBEB28]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v8;
+  obj = peopleCopy;
   v11 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
-    v25 = a5;
+    errorCopy = error;
     v13 = 0;
     v14 = *v29;
     while (2)
@@ -146,7 +146,7 @@ LABEL_11:
         v17 = *(*(&v28 + 1) + 8 * v15);
         v18 = objc_autoreleasePoolPush();
         v27 = v16;
-        v19 = [a1 dataWithPerson:v17 options:v9 error:&v27];
+        v19 = [self dataWithPerson:v17 options:optionsCopy error:&v27];
         v13 = v27;
 
         if (!v19)
@@ -175,7 +175,7 @@ LABEL_11:
     }
 
 LABEL_11:
-    a5 = v25;
+    error = errorCopy;
   }
 
   else
@@ -185,10 +185,10 @@ LABEL_11:
 
   v20 = v10;
   v21 = v20;
-  if (a5 && !v20)
+  if (error && !v20)
   {
     v22 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -196,151 +196,151 @@ LABEL_11:
   return v21;
 }
 
-+ (id)dataWithPerson:(id)a3 options:(id)a4 error:(id *)a5
++ (id)dataWithPerson:(id)person options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEB28] data];
-  if ([v8 outputVersion] == 1)
+  personCopy = person;
+  optionsCopy = options;
+  data = [MEMORY[0x277CBEB28] data];
+  if ([optionsCopy outputVersion] == 1)
   {
-    v10 = [v8 availableEncodings];
-    v11 = [CNVCardLineSerializationStrategy version21StrategyWithDataStorage:v9 encodings:v10];
+    availableEncodings = [optionsCopy availableEncodings];
+    v11 = [CNVCardLineSerializationStrategy version21StrategyWithDataStorage:data encodings:availableEncodings];
   }
 
   else
   {
-    v11 = [CNVCardLineSerializationStrategy version30StrategyWithDataStorage:v9];
+    v11 = [CNVCardLineSerializationStrategy version30StrategyWithDataStorage:data];
   }
 
-  [a1 serializePerson:v7 withSerializer:v11 options:v8];
+  [self serializePerson:personCopy withSerializer:v11 options:optionsCopy];
 
-  return v9;
+  return data;
 }
 
-+ (id)excludedFieldsForPerson:(id)a3 options:(id)a4
++ (id)excludedFieldsForPerson:(id)person options:(id)options
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
-  if (([v5 includeNotes] & 1) == 0)
+  optionsCopy = options;
+  array = [MEMORY[0x277CBEB18] array];
+  if (([optionsCopy includeNotes] & 1) == 0)
   {
-    [v6 addObject:@"Note"];
+    [array addObject:@"Note"];
   }
 
-  if (([v5 includePhotos] & 1) == 0)
+  if (([optionsCopy includePhotos] & 1) == 0)
   {
-    [v6 addObject:@"com.apple.image.thumbnail"];
+    [array addObject:@"com.apple.image.thumbnail"];
   }
 
-  if (([v5 includeWallpaper] & 1) == 0)
+  if (([optionsCopy includeWallpaper] & 1) == 0)
   {
-    [v6 addObject:@"wallpaper"];
-    [v6 addObject:@"watchWallpaperImageData"];
+    [array addObject:@"wallpaper"];
+    [array addObject:@"watchWallpaperImageData"];
   }
 
-  if (([v5 includePosterIdentifiers] & 1) == 0)
+  if (([optionsCopy includePosterIdentifiers] & 1) == 0)
   {
-    [v6 addObject:@"posterIdentifier"];
+    [array addObject:@"posterIdentifier"];
   }
 
-  if (([v5 includeUserSettings] & 1) == 0)
+  if (([optionsCopy includeUserSettings] & 1) == 0)
   {
-    [v6 addObject:@"GuardianWhitelisted"];
-    [v6 addObject:@"ActivityAlert"];
-    [v6 addObject:@"imageType"];
-    [v6 addObject:@"imageHash"];
-    [v6 addObject:@"memojiMetadata"];
-    [v6 addObject:@"sharedPhotoDisplayPreference"];
+    [array addObject:@"GuardianWhitelisted"];
+    [array addObject:@"ActivityAlert"];
+    [array addObject:@"imageType"];
+    [array addObject:@"imageHash"];
+    [array addObject:@"memojiMetadata"];
+    [array addObject:@"sharedPhotoDisplayPreference"];
   }
 
-  if (([v5 includePronouns] & 1) == 0)
+  if (([optionsCopy includePronouns] & 1) == 0)
   {
-    [v6 addObject:@"AddressingGrammar"];
+    [array addObject:@"AddressingGrammar"];
   }
 
-  if (([v5 includeMeCardOnlySharingProperties] & 1) == 0)
+  if (([optionsCopy includeMeCardOnlySharingProperties] & 1) == 0)
   {
-    [v6 addObject:@"ABRelatedNames"];
+    [array addObject:@"ABRelatedNames"];
   }
 
-  if (([v5 includePrivateFields] & 1) == 0 && +[CNVCardUserDefaults isPrivateVCardFieldsEnabled](CNVCardUserDefaults, "isPrivateVCardFieldsEnabled"))
+  if (([optionsCopy includePrivateFields] & 1) == 0 && +[CNVCardUserDefaults isPrivateVCardFieldsEnabled](CNVCardUserDefaults, "isPrivateVCardFieldsEnabled"))
   {
-    v7 = [a1 excludedMeCardFields];
-    [v6 addObjectsFromArray:v7];
+    excludedMeCardFields = [self excludedMeCardFields];
+    [array addObjectsFromArray:excludedMeCardFields];
   }
 
-  return v6;
+  return array;
 }
 
-+ (id)scopeForPerson:(id)a3 options:(id)a4
++ (id)scopeForPerson:(id)person options:(id)options
 {
-  v6 = a4;
-  v7 = [a1 excludedFieldsForPerson:a3 options:v6];
-  LODWORD(a1) = [v6 includePrivateBundleIdentifiers];
+  optionsCopy = options;
+  v7 = [self excludedFieldsForPerson:person options:optionsCopy];
+  LODWORD(self) = [optionsCopy includePrivateBundleIdentifiers];
 
-  v8 = [[CNVCardFilteredPersonScope alloc] initWithExcludedFields:v7 options:a1];
+  v8 = [[CNVCardFilteredPersonScope alloc] initWithExcludedFields:v7 options:self];
 
   return v8;
 }
 
-+ (void)serializePerson:(id)a3 withSerializer:(id)a4 options:(id)a5
++ (void)serializePerson:(id)person withSerializer:(id)serializer options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v13 = [a1 scopeForPerson:v10 options:v8];
-  v11 = [CNVCardFilteredPerson filteredPersonWithPerson:v10 scope:v13];
+  optionsCopy = options;
+  serializerCopy = serializer;
+  personCopy = person;
+  v13 = [self scopeForPerson:personCopy options:optionsCopy];
+  v11 = [CNVCardFilteredPerson filteredPersonWithPerson:personCopy scope:v13];
 
   v12 = [CNVCard30CardBuilder builderWithPerson:v11];
-  [a1 makevCardWithBuilder:v12 serializer:v9 options:v8];
+  [self makevCardWithBuilder:v12 serializer:serializerCopy options:optionsCopy];
 }
 
-+ (void)makevCardWithBuilder:(id)a3 serializer:(id)a4 options:(id)a5
++ (void)makevCardWithBuilder:(id)builder serializer:(id)serializer options:(id)options
 {
-  v10 = a3;
-  v7 = a5;
-  v8 = a4;
-  [v10 addBeginningOfCard];
-  [v10 addNameLines];
-  [v10 addEmailAddresses];
-  [v10 addPhoneNumbers];
-  [v10 addAddressingGrammar];
-  [v10 addPostalAddresses];
-  [v10 addSocialProfiles];
-  [v10 addActivityAlerts];
-  [v10 addNote];
-  [v10 addURLs];
-  [v10 addCalendarURIs];
-  [v10 addBirthday];
-  [v10 addAlternateBirthday];
-  [v10 addInstantMessagingInfo];
-  [v10 addPhotoWithOptions:v7];
-  [v10 addWallpaper];
-  [v10 addWatchWallpaperImageData];
-  [v10 addPosterIdentifier];
-  [v10 addImageBackgroundColorsData];
-  [v10 addSensitiveContentConfiguration];
-  [v10 addOtherDates];
-  [v10 addRelatedNames];
-  [v10 addNameOrderMarker];
-  [v10 addCompanyMarker];
-  [v10 addSharedPhotoDisplayPreference];
-  v9 = [v7 treatAsUnknownProperties];
+  builderCopy = builder;
+  optionsCopy = options;
+  serializerCopy = serializer;
+  [builderCopy addBeginningOfCard];
+  [builderCopy addNameLines];
+  [builderCopy addEmailAddresses];
+  [builderCopy addPhoneNumbers];
+  [builderCopy addAddressingGrammar];
+  [builderCopy addPostalAddresses];
+  [builderCopy addSocialProfiles];
+  [builderCopy addActivityAlerts];
+  [builderCopy addNote];
+  [builderCopy addURLs];
+  [builderCopy addCalendarURIs];
+  [builderCopy addBirthday];
+  [builderCopy addAlternateBirthday];
+  [builderCopy addInstantMessagingInfo];
+  [builderCopy addPhotoWithOptions:optionsCopy];
+  [builderCopy addWallpaper];
+  [builderCopy addWatchWallpaperImageData];
+  [builderCopy addPosterIdentifier];
+  [builderCopy addImageBackgroundColorsData];
+  [builderCopy addSensitiveContentConfiguration];
+  [builderCopy addOtherDates];
+  [builderCopy addRelatedNames];
+  [builderCopy addNameOrderMarker];
+  [builderCopy addCompanyMarker];
+  [builderCopy addSharedPhotoDisplayPreference];
+  treatAsUnknownProperties = [optionsCopy treatAsUnknownProperties];
 
-  LOBYTE(v7) = [v9 containsObject:@"CATEGORIES"];
-  if ((v7 & 1) == 0)
+  LOBYTE(optionsCopy) = [treatAsUnknownProperties containsObject:@"CATEGORIES"];
+  if ((optionsCopy & 1) == 0)
   {
-    [v10 addCategories];
+    [builderCopy addCategories];
   }
 
-  [v10 addCardDAVUID];
-  [v10 addUID];
-  [v10 addPhonemeData];
-  [v10 addDowntimeWhitelist];
-  [v10 addPreferredLikenessSource];
-  [v10 addPreferredApplePersonaIdentifier];
-  [v10 addUnknownProperties];
-  [v10 addEndOfCard];
-  [v10 buildWithSerializer:v8];
+  [builderCopy addCardDAVUID];
+  [builderCopy addUID];
+  [builderCopy addPhonemeData];
+  [builderCopy addDowntimeWhitelist];
+  [builderCopy addPreferredLikenessSource];
+  [builderCopy addPreferredApplePersonaIdentifier];
+  [builderCopy addUnknownProperties];
+  [builderCopy addEndOfCard];
+  [builderCopy buildWithSerializer:serializerCopy];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface WBSSecIdentitiesCache
 - (WBSSecIdentitiesCache)init;
-- (__SecIdentity)secIdentityForDomain:(id)a3;
-- (void)setSecIdentity:(__SecIdentity *)a3 forDomain:(id)a4;
+- (__SecIdentity)secIdentityForDomain:(id)domain;
+- (void)setSecIdentity:(__SecIdentity *)identity forDomain:(id)domain;
 @end
 
 @implementation WBSSecIdentitiesCache
@@ -13,9 +13,9 @@
   v2 = [(WBSSecIdentitiesCache *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     domainsToIdentities = v2->_domainsToIdentities;
-    v2->_domainsToIdentities = v3;
+    v2->_domainsToIdentities = dictionary;
 
     v5 = v2;
   }
@@ -23,24 +23,24 @@
   return v2;
 }
 
-- (__SecIdentity)secIdentityForDomain:(id)a3
+- (__SecIdentity)secIdentityForDomain:(id)domain
 {
-  v3 = [(NSMutableDictionary *)self->_domainsToIdentities objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_domainsToIdentities objectForKeyedSubscript:domain];
 
   return v3;
 }
 
-- (void)setSecIdentity:(__SecIdentity *)a3 forDomain:(id)a4
+- (void)setSecIdentity:(__SecIdentity *)identity forDomain:(id)domain
 {
   domainsToIdentities = self->_domainsToIdentities;
-  if (a3)
+  if (identity)
   {
-    [(NSMutableDictionary *)domainsToIdentities setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)domainsToIdentities setObject:identity forKeyedSubscript:domain];
   }
 
   else
   {
-    [(NSMutableDictionary *)domainsToIdentities removeObjectForKey:a4];
+    [(NSMutableDictionary *)domainsToIdentities removeObjectForKey:domain];
   }
 }
 

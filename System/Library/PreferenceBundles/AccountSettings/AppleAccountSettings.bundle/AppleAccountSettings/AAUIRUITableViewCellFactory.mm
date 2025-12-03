@@ -1,30 +1,30 @@
 @interface AAUIRUITableViewCellFactory
-+ (id)_appleCareRowWithDelegate:(id)a3;
-+ (id)_backupRowForDevice:(id)a3 appleAccount:(id)a4 delegate:(id)a5;
-+ (id)_backupStatusStringForAccount:(id)a3;
-+ (id)_fmipRowForDevice:(id)a3 section:(id)a4 delegate:(id)a5;
++ (id)_appleCareRowWithDelegate:(id)delegate;
++ (id)_backupRowForDevice:(id)device appleAccount:(id)account delegate:(id)delegate;
++ (id)_backupStatusStringForAccount:(id)account;
++ (id)_fmipRowForDevice:(id)device section:(id)section delegate:(id)delegate;
 + (id)_fmipStatusString;
-+ (id)ruiTableViewForRowType:(int64_t)a3 device:(id)a4 section:(id)a5 delegate:(id)a6 appleAccount:(id)a7;
++ (id)ruiTableViewForRowType:(int64_t)type device:(id)device section:(id)section delegate:(id)delegate appleAccount:(id)account;
 @end
 
 @implementation AAUIRUITableViewCellFactory
 
-+ (id)ruiTableViewForRowType:(int64_t)a3 device:(id)a4 section:(id)a5 delegate:(id)a6 appleAccount:(id)a7
++ (id)ruiTableViewForRowType:(int64_t)type device:(id)device section:(id)section delegate:(id)delegate appleAccount:(id)account
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  switch(a3)
+  deviceCopy = device;
+  sectionCopy = section;
+  delegateCopy = delegate;
+  accountCopy = account;
+  switch(type)
   {
     case 2:
-      v16 = [a1 _appleCareRowWithDelegate:v14];
+      v16 = [self _appleCareRowWithDelegate:delegateCopy];
       goto LABEL_7;
     case 1:
-      v16 = [a1 _backupRowForDevice:v12 appleAccount:v15 delegate:v14];
+      v16 = [self _backupRowForDevice:deviceCopy appleAccount:accountCopy delegate:delegateCopy];
       goto LABEL_7;
     case 0:
-      v16 = [a1 _fmipRowForDevice:v12 section:v13 delegate:v14];
+      v16 = [self _fmipRowForDevice:deviceCopy section:sectionCopy delegate:delegateCopy];
 LABEL_7:
       v17 = v16;
       goto LABEL_9;
@@ -36,24 +36,24 @@ LABEL_9:
   return v17;
 }
 
-+ (id)_fmipRowForDevice:(id)a3 section:(id)a4 delegate:(id)a5
++ (id)_fmipRowForDevice:(id)device section:(id)section delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  deviceCopy = device;
+  delegateCopy = delegate;
+  sectionCopy = section;
   v11 = objc_alloc_init(NSMutableDictionary);
-  v12 = [[RUITableViewRow alloc] initWithAttributes:v11 parent:v10];
+  v12 = [[RUITableViewRow alloc] initWithAttributes:v11 parent:sectionCopy];
 
   [v11 setValue:@"fmipRow" forKey:@"name"];
-  v13 = [v8 aaui_localizedDeviceLocatorLabel];
-  [v11 setValue:v13 forKey:@"label"];
+  aaui_localizedDeviceLocatorLabel = [deviceCopy aaui_localizedDeviceLocatorLabel];
+  [v11 setValue:aaui_localizedDeviceLocatorLabel forKey:@"label"];
 
   [v11 setValue:@"labelColor" forKey:@"labelColor"];
-  if ([v8 currentDevice])
+  if ([deviceCopy currentDevice])
   {
-    [v12 setDelegate:v9];
-    v14 = [a1 _fmipStatusString];
-    [v11 setValue:v14 forKey:@"detailLabel"];
+    [v12 setDelegate:delegateCopy];
+    _fmipStatusString = [self _fmipStatusString];
+    [v11 setValue:_fmipStatusString forKey:@"detailLabel"];
     [v11 setValue:@"disclosure" forKey:@"accessory"];
     [v11 setValue:@"link" forKey:@"class"];
     v15 = @"true";
@@ -64,10 +64,10 @@ LABEL_9:
   else
   {
     [v11 setValue:@"label" forKey:@"class"];
-    v18 = [v8 fmipEnabled];
+    fmipEnabled = [deviceCopy fmipEnabled];
     v19 = [NSBundle bundleForClass:objc_opt_class()];
     v20 = v19;
-    if (v18)
+    if (fmipEnabled)
     {
       v21 = @"ON";
     }
@@ -77,44 +77,44 @@ LABEL_9:
       v21 = @"OFF";
     }
 
-    v14 = [v19 localizedStringForKey:v21 value:&stru_5A5F0 table:@"Localizable"];
+    _fmipStatusString = [v19 localizedStringForKey:v21 value:&stru_5A5F0 table:@"Localizable"];
 
     v16 = @"detailLabel";
     v17 = v11;
-    v15 = v14;
+    v15 = _fmipStatusString;
   }
 
   [v17 setValue:v15 forKey:v16];
 
   [v11 setValue:@"secondaryLabelColor" forKey:@"detailLabelColor"];
   [v12 setAttributes:v11];
-  v22 = [v12 tableCell];
-  [v22 setTag:1001];
+  tableCell = [v12 tableCell];
+  [tableCell setTag:1001];
 
   v23 = [UIImage iconForSize:@"com.apple.findmy" bundleIdentifier:29.0, 29.0];
   [v12 setImage:v23];
-  if ([v8 currentDevice] && +[AADeviceInfo locationServicesRestricted](AADeviceInfo, "locationServicesRestricted"))
+  if ([deviceCopy currentDevice] && +[AADeviceInfo locationServicesRestricted](AADeviceInfo, "locationServicesRestricted"))
   {
-    v24 = [v12 tableCell];
-    [v24 setEnabled:0];
+    tableCell2 = [v12 tableCell];
+    [tableCell2 setEnabled:0];
 
-    v25 = [v12 tableCell];
-    v26 = [v25 textLabel];
-    [v26 setAlpha:0.5];
+    tableCell3 = [v12 tableCell];
+    textLabel = [tableCell3 textLabel];
+    [textLabel setAlpha:0.5];
 
-    v27 = [v12 tableCell];
-    v28 = [v27 imageView];
-    [v28 setAlpha:0.5];
+    tableCell4 = [v12 tableCell];
+    imageView = [tableCell4 imageView];
+    [imageView setAlpha:0.5];
   }
 
   return v12;
 }
 
-+ (id)_backupRowForDevice:(id)a3 appleAccount:(id)a4 delegate:(id)a5
++ (id)_backupRowForDevice:(id)device appleAccount:(id)account delegate:(id)delegate
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  accountCopy = account;
+  delegateCopy = delegate;
+  deviceCopy = device;
   v11 = objc_alloc_init(NSMutableDictionary);
   v12 = objc_alloc_init(RUITableViewRow);
   [v11 setValue:@"backupRow" forKey:@"name"];
@@ -124,15 +124,15 @@ LABEL_9:
 
   [v11 setValue:@"labelColor" forKey:@"labelColor"];
   [v11 setValue:@"secondaryLabelColor" forKey:@"detailLabelColor"];
-  LODWORD(v13) = [v10 currentDevice];
+  LODWORD(v13) = [deviceCopy currentDevice];
 
   if (v13)
   {
-    [v12 setDelegate:v9];
+    [v12 setDelegate:delegateCopy];
     [v11 setValue:@"disclosure" forKey:@"accessory"];
     [v11 setValue:@"link" forKey:@"class"];
     [v11 setValue:@"true" forKey:@"value"];
-    v15 = [a1 _backupStatusStringForAccount:v8];
+    v15 = [self _backupStatusStringForAccount:accountCopy];
     [v11 setValue:v15 forKey:@"detailLabel"];
   }
 
@@ -143,8 +143,8 @@ LABEL_9:
   }
 
   [v12 setAttributes:v11];
-  v16 = [v12 tableCell];
-  [v16 setTag:1002];
+  tableCell = [v12 tableCell];
+  [tableCell setTag:1002];
 
   v17 = [UIImage iconForSize:@"com.apple.graphic-icon.icloud-backup" typeID:29.0, 29.0];
   [v12 setImage:v17];
@@ -152,12 +152,12 @@ LABEL_9:
   return v12;
 }
 
-+ (id)_appleCareRowWithDelegate:(id)a3
++ (id)_appleCareRowWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = objc_alloc_init(RUITableViewRow);
-  [v5 setDelegate:v3];
+  [v5 setDelegate:delegateCopy];
 
   [v4 setValue:@"appleCareRow" forKey:@"name"];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -169,8 +169,8 @@ LABEL_9:
   [v4 setValue:@"disclosure" forKey:@"accessory"];
   [v4 setValue:@"link" forKey:@"class"];
   [v5 setAttributes:v4];
-  v8 = [v5 tableCell];
-  [v8 setTag:1003];
+  tableCell = [v5 tableCell];
+  [tableCell setTag:1003];
 
   v9 = [UIImage imageForTableUIWithType:@"com.apple.graphic-icon.applecare"];
   [v5 setImage:v9];
@@ -181,11 +181,11 @@ LABEL_9:
 + (id)_fmipStatusString
 {
   v2 = +[AAUIDeviceLocatorService sharedInstance];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (isEnabled)
   {
     v6 = @"ON";
   }
@@ -200,9 +200,9 @@ LABEL_9:
   return v7;
 }
 
-+ (id)_backupStatusStringForAccount:(id)a3
++ (id)_backupStatusStringForAccount:(id)account
 {
-  v3 = [a3 isEnabledForDataclass:kAccountDataclassBackup];
+  v3 = [account isEnabledForDataclass:kAccountDataclassBackup];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
   if (v3)

@@ -1,25 +1,25 @@
 @interface SISchemaCasinoRelationship
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaCasinoRelationship)initWithDictionary:(id)a3;
-- (SISchemaCasinoRelationship)initWithJSON:(id)a3;
+- (SISchemaCasinoRelationship)initWithDictionary:(id)dictionary;
+- (SISchemaCasinoRelationship)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaCasinoRelationship
 
-- (SISchemaCasinoRelationship)initWithDictionary:(id)a3
+- (SISchemaCasinoRelationship)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaCasinoRelationship;
   v5 = [(SISchemaCasinoRelationship *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"viewIDFrom"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"viewIDFrom"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SISchemaCasinoRelationship *)v5 setViewIDFrom:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"viewIDTo"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"viewIDTo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(SISchemaCasinoRelationship *)v5 setViewIDTo:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"casinoFromType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"casinoFromType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SISchemaCasinoRelationship)initWithJSON:(id)a3
+- (SISchemaCasinoRelationship)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaCasinoRelationship *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaCasinoRelationship *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaCasinoRelationship *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,17 +84,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(SISchemaCasinoRelationship *)self casinoFromType];
+    casinoFromType = [(SISchemaCasinoRelationship *)self casinoFromType];
     v5 = @"CASINO_UNKNOWN_CASINO_TYPE";
-    if (v4 == 1)
+    if (casinoFromType == 1)
     {
       v5 = @"CASINO_COMPACT";
     }
 
-    if (v4 == 2)
+    if (casinoFromType == 2)
     {
       v6 = @"CASINO_FULL";
     }
@@ -104,26 +104,26 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"casinoFromType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"casinoFromType"];
   }
 
   if (self->_viewIDFrom)
   {
-    v7 = [(SISchemaCasinoRelationship *)self viewIDFrom];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"viewIDFrom"];
+    viewIDFrom = [(SISchemaCasinoRelationship *)self viewIDFrom];
+    v8 = [viewIDFrom copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"viewIDFrom"];
   }
 
   if (self->_viewIDTo)
   {
-    v9 = [(SISchemaCasinoRelationship *)self viewIDTo];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"viewIDTo"];
+    viewIDTo = [(SISchemaCasinoRelationship *)self viewIDTo];
+    v10 = [viewIDTo copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"viewIDTo"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -143,28 +143,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaCasinoRelationship *)self viewIDFrom];
-  v6 = [v4 viewIDFrom];
-  if ((v5 != 0) == (v6 == 0))
+  viewIDFrom = [(SISchemaCasinoRelationship *)self viewIDFrom];
+  viewIDFrom2 = [equalCopy viewIDFrom];
+  if ((viewIDFrom != 0) == (viewIDFrom2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaCasinoRelationship *)self viewIDFrom];
-  if (v7)
+  viewIDFrom3 = [(SISchemaCasinoRelationship *)self viewIDFrom];
+  if (viewIDFrom3)
   {
-    v8 = v7;
-    v9 = [(SISchemaCasinoRelationship *)self viewIDFrom];
-    v10 = [v4 viewIDFrom];
-    v11 = [v9 isEqual:v10];
+    v8 = viewIDFrom3;
+    viewIDFrom4 = [(SISchemaCasinoRelationship *)self viewIDFrom];
+    viewIDFrom5 = [equalCopy viewIDFrom];
+    v11 = [viewIDFrom4 isEqual:viewIDFrom5];
 
     if (!v11)
     {
@@ -176,22 +176,22 @@
   {
   }
 
-  v5 = [(SISchemaCasinoRelationship *)self viewIDTo];
-  v6 = [v4 viewIDTo];
-  if ((v5 != 0) == (v6 == 0))
+  viewIDFrom = [(SISchemaCasinoRelationship *)self viewIDTo];
+  viewIDFrom2 = [equalCopy viewIDTo];
+  if ((viewIDFrom != 0) == (viewIDFrom2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(SISchemaCasinoRelationship *)self viewIDTo];
-  if (v12)
+  viewIDTo = [(SISchemaCasinoRelationship *)self viewIDTo];
+  if (viewIDTo)
   {
-    v13 = v12;
-    v14 = [(SISchemaCasinoRelationship *)self viewIDTo];
-    v15 = [v4 viewIDTo];
-    v16 = [v14 isEqual:v15];
+    v13 = viewIDTo;
+    viewIDTo2 = [(SISchemaCasinoRelationship *)self viewIDTo];
+    viewIDTo3 = [equalCopy viewIDTo];
+    v16 = [viewIDTo2 isEqual:viewIDTo3];
 
     if (!v16)
     {
@@ -203,9 +203,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (casinoFromType = self->_casinoFromType, casinoFromType == [v4 casinoFromType]))
+    if ((*&self->_has & 1) == 0 || (casinoFromType = self->_casinoFromType, casinoFromType == [equalCopy casinoFromType]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -219,28 +219,28 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SISchemaCasinoRelationship *)self viewIDFrom];
+  toCopy = to;
+  viewIDFrom = [(SISchemaCasinoRelationship *)self viewIDFrom];
 
-  if (v4)
+  if (viewIDFrom)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaCasinoRelationship *)self viewIDTo];
+  viewIDTo = [(SISchemaCasinoRelationship *)self viewIDTo];
 
-  if (v5)
+  if (viewIDTo)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

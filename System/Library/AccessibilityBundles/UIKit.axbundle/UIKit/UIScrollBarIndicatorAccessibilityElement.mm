@@ -7,9 +7,9 @@
 
 - (uint64_t)orientation
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else

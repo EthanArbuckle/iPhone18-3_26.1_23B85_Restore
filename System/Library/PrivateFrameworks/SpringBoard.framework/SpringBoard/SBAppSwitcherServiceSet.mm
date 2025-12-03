@@ -1,25 +1,25 @@
 @interface SBAppSwitcherServiceSet
-- (SBAppSwitcherServiceSet)initWithServices:(id)a3 zone:(_NSZone *)a4;
+- (SBAppSwitcherServiceSet)initWithServices:(id)services zone:(_NSZone *)zone;
 - (id)appLayouts;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serviceAtIndex:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serviceAtIndex:(unint64_t)index;
 - (id)serviceBundleIdentifiers;
-- (id)serviceForBundleIdentifier:(id)a3;
-- (void)addService:(id)a3;
+- (id)serviceForBundleIdentifier:(id)identifier;
+- (void)addService:(id)service;
 @end
 
 @implementation SBAppSwitcherServiceSet
 
-- (SBAppSwitcherServiceSet)initWithServices:(id)a3 zone:(_NSZone *)a4
+- (SBAppSwitcherServiceSet)initWithServices:(id)services zone:(_NSZone *)zone
 {
-  v6 = a3;
+  servicesCopy = services;
   v12.receiver = self;
   v12.super_class = SBAppSwitcherServiceSet;
   v7 = [(SBAppSwitcherServiceSet *)&v12 init];
   if (v7)
   {
-    v8 = [v6 services];
-    v9 = [v8 copyWithZone:a4];
+    services = [servicesCopy services];
+    v9 = [services copyWithZone:zone];
     services = v7->_services;
     v7->_services = v9;
   }
@@ -27,50 +27,50 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SBAppSwitcherServiceSet alloc];
 
-  return [(SBAppSwitcherServiceSet *)v5 initWithServices:self zone:a3];
+  return [(SBAppSwitcherServiceSet *)v5 initWithServices:self zone:zone];
 }
 
-- (void)addService:(id)a3
+- (void)addService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   services = self->_services;
-  v8 = v4;
+  v8 = serviceCopy;
   if (!services)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_services;
     self->_services = v6;
 
-    v4 = v8;
+    serviceCopy = v8;
     services = self->_services;
   }
 
-  [(NSMutableArray *)services addObject:v4];
+  [(NSMutableArray *)services addObject:serviceCopy];
 }
 
-- (id)serviceAtIndex:(unint64_t)a3
+- (id)serviceAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_services count]<= a3)
+  if ([(NSMutableArray *)self->_services count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_services objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_services objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (id)serviceForBundleIdentifier:(id)a3
+- (id)serviceForBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -90,8 +90,8 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        if ([v10 isEqualToString:v4])
+        bundleIdentifier = [v9 bundleIdentifier];
+        if ([bundleIdentifier isEqualToString:identifierCopy])
         {
           v6 = v9;
 
@@ -137,8 +137,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) bundleIdentifier];
-        [v3 addObject:v9];
+        bundleIdentifier = [*(*(&v11 + 1) + 8 * i) bundleIdentifier];
+        [v3 addObject:bundleIdentifier];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -152,8 +152,8 @@ LABEL_11:
 
 - (id)appLayouts
 {
-  v2 = [(SBAppSwitcherServiceSet *)self serviceBundleIdentifiers];
-  v3 = [v2 bs_mapNoNulls:&__block_literal_global_222];
+  serviceBundleIdentifiers = [(SBAppSwitcherServiceSet *)self serviceBundleIdentifiers];
+  v3 = [serviceBundleIdentifiers bs_mapNoNulls:&__block_literal_global_222];
 
   return v3;
 }

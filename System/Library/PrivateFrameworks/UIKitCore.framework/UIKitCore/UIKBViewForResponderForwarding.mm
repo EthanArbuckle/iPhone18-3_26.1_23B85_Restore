@@ -1,25 +1,25 @@
 @interface UIKBViewForResponderForwarding
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIKBViewForResponderForwarding
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(UIView *)self subviews];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subviews = [(UIView *)self subviews];
+  v9 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -30,19 +30,19 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
         [v13 convertPoint:self fromView:{x, y}];
-        if ([v13 pointInside:v7 withEvent:?])
+        if ([v13 pointInside:eventCopy withEvent:?])
         {
           v14 = 1;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -58,83 +58,83 @@ LABEL_11:
   return v14;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
+  beganCopy = began;
+  eventCopy = event;
+  responderForForwarding = [(UIKBViewForResponderForwarding *)self responderForForwarding];
 
-  if (v8)
+  if (responderForForwarding)
   {
-    v9 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
-    [v9 touchesBegan:v6 withEvent:v7];
+    responderForForwarding2 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
+    [responderForForwarding2 touchesBegan:beganCopy withEvent:eventCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIKBViewForResponderForwarding;
-    [(UIResponder *)&v10 touchesBegan:v6 withEvent:v7];
+    [(UIResponder *)&v10 touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
+  endedCopy = ended;
+  eventCopy = event;
+  responderForForwarding = [(UIKBViewForResponderForwarding *)self responderForForwarding];
 
-  if (v8)
+  if (responderForForwarding)
   {
-    v9 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
-    [v9 touchesEnded:v6 withEvent:v7];
+    responderForForwarding2 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
+    [responderForForwarding2 touchesEnded:endedCopy withEvent:eventCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIKBViewForResponderForwarding;
-    [(UIResponder *)&v10 touchesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v10 touchesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  responderForForwarding = [(UIKBViewForResponderForwarding *)self responderForForwarding];
 
-  if (v8)
+  if (responderForForwarding)
   {
-    v9 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
-    [v9 touchesCancelled:v6 withEvent:v7];
+    responderForForwarding2 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
+    [responderForForwarding2 touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIKBViewForResponderForwarding;
-    [(UIResponder *)&v10 touchesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v10 touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
+  movedCopy = moved;
+  eventCopy = event;
+  responderForForwarding = [(UIKBViewForResponderForwarding *)self responderForForwarding];
 
-  if (v8)
+  if (responderForForwarding)
   {
-    v9 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
-    [v9 touchesMoved:v6 withEvent:v7];
+    responderForForwarding2 = [(UIKBViewForResponderForwarding *)self responderForForwarding];
+    [responderForForwarding2 touchesMoved:movedCopy withEvent:eventCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIKBViewForResponderForwarding;
-    [(UIResponder *)&v10 touchesMoved:v6 withEvent:v7];
+    [(UIResponder *)&v10 touchesMoved:movedCopy withEvent:eventCopy];
   }
 }
 

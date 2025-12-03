@@ -15,12 +15,12 @@
   v15.super_class = WFBuddyNetworkListCell;
   [(WFNetworkListCell *)&v15 awakeFromNib];
   v16[0] = *MEMORY[0x277D740C0];
-  v3 = [MEMORY[0x277D75348] systemBlueColor];
-  v17[0] = v3;
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v17[0] = systemBlueColor;
   v16[1] = *MEMORY[0x277D740A8];
-  v4 = [MEMORY[0x277D4DAA8] sharedStyle];
-  v5 = [v4 tableCellFont];
-  v17[1] = v5;
+  mEMORY[0x277D4DAA8] = [MEMORY[0x277D4DAA8] sharedStyle];
+  tableCellFont = [mEMORY[0x277D4DAA8] tableCellFont];
+  v17[1] = tableCellFont;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
   [@"A" sizeWithAttributes:v6];
@@ -31,12 +31,12 @@
   v10 = objc_loadWeakRetained(&self->_bottomLabelConstraint);
   [v10 setConstant:v8];
 
-  v11 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [(WFBuddyNetworkListCell *)self setBackgroundColor:v11];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [(WFBuddyNetworkListCell *)self setBackgroundColor:secondarySystemBackgroundColor];
 
-  v12 = [MEMORY[0x277D75348] defaultTextColor];
-  v13 = [(WFBuddyNetworkListCell *)self textLabel];
-  [v13 setTextColor:v12];
+  defaultTextColor = [MEMORY[0x277D75348] defaultTextColor];
+  textLabel = [(WFBuddyNetworkListCell *)self textLabel];
+  [textLabel setTextColor:defaultTextColor];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -56,8 +56,8 @@
     v3 = 8.0;
   }
 
-  v4 = [(WFBuddyNetworkListCell *)self trailingImageViewConstraint];
-  [v4 setConstant:v3];
+  trailingImageViewConstraint = [(WFBuddyNetworkListCell *)self trailingImageViewConstraint];
+  [trailingImageViewConstraint setConstant:v3];
 }
 
 - (NSLayoutConstraint)trailingImageViewConstraint

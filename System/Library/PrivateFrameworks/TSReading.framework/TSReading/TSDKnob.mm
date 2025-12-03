@@ -1,49 +1,49 @@
 @interface TSDKnob
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 andRep:(id)a4 returningDistance:(double *)a5;
-- (BOOL)obscuresKnob:(id)a3;
-- (BOOL)overlapsWithKnob:(id)a3;
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point andRep:(id)rep returningDistance:(double *)distance;
+- (BOOL)obscuresKnob:(id)knob;
+- (BOOL)overlapsWithKnob:(id)knob;
 - (CALayer)layer;
 - (CGPoint)offset;
 - (CGPoint)position;
-- (CGRect)boundingBoxOfHitRegionForRep:(id)a3 scale:(double)a4;
+- (CGRect)boundingBoxOfHitRegionForRep:(id)rep scale:(double)scale;
 - (TSDKnob)init;
-- (TSDKnob)initWithType:(int)a3 position:(CGPoint)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7;
-- (double)i_rotationInDegreesForKnobOnRep:(id)a3;
+- (TSDKnob)initWithType:(int)type position:(CGPoint)position radius:(double)radius tag:(unint64_t)tag onRep:(id)rep;
+- (double)i_rotationInDegreesForKnobOnRep:(id)rep;
 - (id)description;
-- (id)hitRegionLayerForRep:(id)a3;
+- (id)hitRegionLayerForRep:(id)rep;
 - (id)knobImage;
 - (void)dealloc;
-- (void)updateHitRegionPathForRep:(id)a3;
+- (void)updateHitRegionPathForRep:(id)rep;
 @end
 
 @implementation TSDKnob
 
-- (TSDKnob)initWithType:(int)a3 position:(CGPoint)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7
+- (TSDKnob)initWithType:(int)type position:(CGPoint)position radius:(double)radius tag:(unint64_t)tag onRep:(id)rep
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   v19.receiver = self;
   v19.super_class = TSDKnob;
   v13 = [(TSDKnob *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    *(v13 + 2) = a3;
+    *(v13 + 2) = type;
     v15 = MEMORY[0x277CBF348];
     *(v13 + 2) = x;
     *(v13 + 3) = y;
     *(v13 + 40) = *v15;
     v13[32] = 0;
-    *(v13 + 7) = a5;
-    *(v13 + 8) = a6;
-    if (!a7)
+    *(v13 + 7) = radius;
+    *(v13 + 8) = tag;
+    if (!rep)
     {
-      v16 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnob initWithType:position:radius:tag:onRep:]"];
-      [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 294, @"invalid nil value for '%s'", "rep"}];
+      [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 294, @"invalid nil value for '%s'", "rep"}];
     }
 
-    v14->mRep = a7;
+    v14->mRep = rep;
   }
 
   return v14;
@@ -58,48 +58,48 @@
 
 - (TSDKnob)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnob init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 312, @"Please use designated initializers on knobs, not this"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 312, @"Please use designated initializers on knobs, not this"}];
   return 0;
 }
 
-- (BOOL)isHitByUnscaledPoint:(CGPoint)a3 andRep:(id)a4 returningDistance:(double *)a5
+- (BOOL)isHitByUnscaledPoint:(CGPoint)point andRep:(id)rep returningDistance:(double *)distance
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v40 = *MEMORY[0x277D85DE8];
-  if (self->mRep != a4)
+  if (self->mRep != rep)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnob isHitByUnscaledPoint:andRep:returningDistance:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 335, @"wrong rep for hit testing knob"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 335, @"wrong rep for hit testing knob"}];
   }
 
-  v12 = [a4 interactiveCanvasController];
-  if (!-[TSDKnob worksWhenRepLocked](self, "worksWhenRepLocked") && ([a4 isLocked] & 1) != 0 || !-[TSDKnob worksWhenInVersionBrowsingMode](self, "worksWhenInVersionBrowsingMode") && (objc_msgSend(v12, "inVersionBrowsingMode") & 1) != 0)
+  interactiveCanvasController = [rep interactiveCanvasController];
+  if (!-[TSDKnob worksWhenRepLocked](self, "worksWhenRepLocked") && ([rep isLocked] & 1) != 0 || !-[TSDKnob worksWhenInVersionBrowsingMode](self, "worksWhenInVersionBrowsingMode") && (objc_msgSend(interactiveCanvasController, "inVersionBrowsingMode") & 1) != 0)
   {
     return 0;
   }
 
   [(TSDKnob *)self position];
-  [a4 convertNaturalPointToUnscaledCanvas:?];
+  [rep convertNaturalPointToUnscaledCanvas:?];
   v14 = v13;
   v16 = v15;
   mHitRegionPath = self->mHitRegionPath;
   if (!mHitRegionPath)
   {
-    [(TSDKnob *)self updateHitRegionPathForRep:a4];
+    [(TSDKnob *)self updateHitRegionPathForRep:rep];
     mHitRegionPath = self->mHitRegionPath;
   }
 
   v18 = TSDSubtractPoints(x, y, v14);
   v20 = v19;
-  [objc_msgSend(a4 "interactiveCanvasController")];
+  [objc_msgSend(rep "interactiveCanvasController")];
   v22 = [(TSDBezierPath *)mHitRegionPath containsPoint:TSDMultiplyPointScalar(v18, v20, v21)];
-  if (a5)
+  if (distance)
   {
-    *a5 = TSDDistanceSquared(v14, v16, x, y);
+    *distance = TSDDistanceSquared(v14, v16, x, y);
   }
 
   if (!v22)
@@ -112,17 +112,17 @@
     return 1;
   }
 
-  v23 = [objc_msgSend(objc_msgSend(a4 "interactiveCanvasController")];
+  v23 = [objc_msgSend(objc_msgSend(rep "interactiveCanvasController")];
   v24 = v23;
   v25 = v23 == 0;
-  if (v23 && v23 != a4)
+  if (v23 && v23 != rep)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v26 = [a4 interactiveCanvasController];
-    v27 = [v26 topLevelZOrderedSiblingsOfInfos:{objc_msgSend(MEMORY[0x277CBEB98], "setWithObject:", objc_msgSend(v24, "info"))}];
+    interactiveCanvasController2 = [rep interactiveCanvasController];
+    v27 = [interactiveCanvasController2 topLevelZOrderedSiblingsOfInfos:{objc_msgSend(MEMORY[0x277CBEB98], "setWithObject:", objc_msgSend(v24, "info"))}];
     v28 = [v27 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v28)
     {
@@ -138,9 +138,9 @@ LABEL_17:
         }
 
         v32 = *(*(&v35 + 1) + 8 * v31);
-        v33 = [v24 info];
-        v25 = v32 == v33;
-        if (v32 == v33 || v32 == [a4 info] || v32 == objc_msgSend(objc_msgSend(a4, "repForSelecting"), "info"))
+        info = [v24 info];
+        v25 = v32 == info;
+        if (v32 == info || v32 == [rep info] || v32 == objc_msgSend(objc_msgSend(rep, "repForSelecting"), "info"))
         {
           break;
         }
@@ -154,7 +154,7 @@ LABEL_17:
             goto LABEL_17;
           }
 
-          return v24 == a4 || v25;
+          return v24 == rep || v25;
         }
       }
     }
@@ -165,7 +165,7 @@ LABEL_17:
     }
   }
 
-  return v24 == a4 || v25;
+  return v24 == rep || v25;
 }
 
 - (id)knobImage
@@ -230,10 +230,10 @@ LABEL_12:
   result = self->mLayer;
   if (!result)
   {
-    v4 = [(TSDKnob *)self knobImage];
-    if (v4)
+    knobImage = [(TSDKnob *)self knobImage];
+    if (knobImage)
     {
-      v5 = v4;
+      v5 = knobImage;
       self->mLayer = objc_alloc_init(MEMORY[0x277CD9ED0]);
       [v5 size];
       [(CALayer *)self->mLayer setBounds:TSDRectWithSize()];
@@ -274,13 +274,13 @@ LABEL_12:
   return result;
 }
 
-- (id)hitRegionLayerForRep:(id)a3
+- (id)hitRegionLayerForRep:(id)rep
 {
-  if (self->mRep != a3)
+  if (self->mRep != rep)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnob hitRegionLayerForRep:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 488, @"wrong rep for hit region"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 488, @"wrong rep for hit region"}];
   }
 
   result = self->mHitRegionLayer;
@@ -291,7 +291,7 @@ LABEL_12:
     mHitRegionPath = self->mHitRegionPath;
     if (!mHitRegionPath)
     {
-      [(TSDKnob *)self updateHitRegionPathForRep:a3];
+      [(TSDKnob *)self updateHitRegionPathForRep:rep];
       mHitRegionPath = self->mHitRegionPath;
     }
 
@@ -302,26 +302,26 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)boundingBoxOfHitRegionForRep:(id)a3 scale:(double)a4
+- (CGRect)boundingBoxOfHitRegionForRep:(id)rep scale:(double)scale
 {
-  if (self->mRep != a3)
+  if (self->mRep != rep)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDKnob boundingBoxOfHitRegionForRep:scale:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 503, @"wrong rep for bounding box"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDKnob.m"), 503, @"wrong rep for bounding box"}];
   }
 
   if (!self->mHitRegionPath)
   {
-    [(TSDKnob *)self updateHitRegionPathForRep:a3];
+    [(TSDKnob *)self updateHitRegionPathForRep:rep];
   }
 
   [(TSDKnob *)self position];
-  [a3 convertNaturalPointToUnscaledCanvas:?];
+  [rep convertNaturalPointToUnscaledCanvas:?];
   v10 = v9;
   v12 = v11;
-  [objc_msgSend(a3 "interactiveCanvasController")];
-  v14 = 1.0 / v13 * a4;
+  [objc_msgSend(rep "interactiveCanvasController")];
+  v14 = 1.0 / v13 * scale;
   [(TSDBezierPath *)self->mHitRegionPath bounds];
   v16 = v15;
   v18 = v17;
@@ -336,13 +336,13 @@ LABEL_12:
   return CGRectOffset(v25, v10, v12);
 }
 
-- (double)i_rotationInDegreesForKnobOnRep:(id)a3
+- (double)i_rotationInDegreesForKnobOnRep:(id)rep
 {
   v4 = [(TSDKnob *)self tag];
-  v5 = [a3 layout];
-  if (v5)
+  layout = [rep layout];
+  if (layout)
   {
-    [v5 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -363,27 +363,27 @@ LABEL_12:
     v6 = dbl_26CA65878[v4 - 1];
   }
 
-  [a3 additionalRotationForKnobOrientation];
+  [rep additionalRotationForKnobOrientation];
   TSDNormalizeAngleInDegrees(v6 + v7);
   return result;
 }
 
-- (void)updateHitRegionPathForRep:(id)a3
+- (void)updateHitRegionPathForRep:(id)rep
 {
   self->mHitRegionPath = 0;
   [(TSDKnob *)self radius];
   v6 = v5;
-  if (([a3 canUseSpecializedHitRegionForKnob:self] & 1) == 0)
+  if (([rep canUseSpecializedHitRegionForKnob:self] & 1) == 0)
   {
     goto LABEL_26;
   }
 
-  [a3 boundsForStandardKnobs];
+  [rep boundsForStandardKnobs];
   v8 = v7;
   v10 = v9;
-  [objc_msgSend(a3 "interactiveCanvasController")];
+  [objc_msgSend(rep "interactiveCanvasController")];
   v12 = v11;
-  [objc_msgSend(a3 "interactiveCanvasController")];
+  [objc_msgSend(rep "interactiveCanvasController")];
   v14 = v6 / v13 * 10.0;
   if ([(TSDKnob *)self tag]>= 0xC && [(TSDKnob *)self tag]<= 0x10)
   {
@@ -424,7 +424,7 @@ LABEL_26:
     }
 
     *&v36.a = 0uLL;
-    [(TSDKnob *)self i_rotationInDegreesForKnobOnRep:a3];
+    [(TSDKnob *)self i_rotationInDegreesForKnobOnRep:rep];
     CGAffineTransformMakeRotation(&v36, v25 * 0.0174532925);
     memset(&v35, 0, sizeof(v35));
     CGAffineTransformMakeTranslation(&v35, v36.tx + v24 * v36.c + v36.a * 0.0, v36.ty + v24 * v36.d + v36.b * 0.0);
@@ -445,7 +445,7 @@ LABEL_26:
 
     self->mHitRegionPath = [TSDBezierPath bezierPathWithOvalInRect:-v6, -v6, v6 + v6, v6 * 3.0];
     memset(&v36, 0, sizeof(v36));
-    [(TSDKnob *)self i_rotationInDegreesForKnobOnRep:a3];
+    [(TSDKnob *)self i_rotationInDegreesForKnobOnRep:rep];
     CGAffineTransformMakeRotation(&v36, v30 * 0.0174532925);
     v28 = self->mHitRegionPath;
     v35 = v36;
@@ -457,14 +457,14 @@ LABEL_28:
   v31 = self->mHitRegionPath;
 }
 
-- (BOOL)overlapsWithKnob:(id)a3
+- (BOOL)overlapsWithKnob:(id)knob
 {
   [(CALayer *)[(TSDKnob *)self layer] frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [objc_msgSend(a3 "layer")];
+  [objc_msgSend(knob "layer")];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -477,11 +477,11 @@ LABEL_28:
   return CGRectIntersectsRect(*&v20, *&v13);
 }
 
-- (BOOL)obscuresKnob:(id)a3
+- (BOOL)obscuresKnob:(id)knob
 {
   [(CALayer *)[(TSDKnob *)self layer] zPosition];
   v5 = v4;
-  [objc_msgSend(a3 "layer")];
+  [objc_msgSend(knob "layer")];
   return v5 > v6;
 }
 

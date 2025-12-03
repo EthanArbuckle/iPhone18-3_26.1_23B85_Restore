@@ -1,7 +1,7 @@
 @interface MRRestrictedCommandClientsManager
 + (id)sharedManager;
-- (id)_restrictCommandClientsTo:(id)a3;
-- (id)restrictCommandClientsTo:(id)a3;
+- (id)_restrictCommandClientsTo:(id)to;
+- (id)restrictCommandClientsTo:(id)to;
 - (void)republishStateIfNeeded;
 @end
 
@@ -26,17 +26,17 @@ void __50__MRRestrictedCommandClientsManager_sharedManager__block_invoke()
   sharedManager___sharedManager_0 = v0;
 }
 
-- (id)restrictCommandClientsTo:(id)a3
+- (id)restrictCommandClientsTo:(id)to
 {
-  v4 = a3;
-  v5 = [(MRRestrictedCommandClientsManager *)self _restrictCommandClientsTo:v4];
+  toCopy = to;
+  v5 = [(MRRestrictedCommandClientsManager *)self _restrictCommandClientsTo:toCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__MRRestrictedCommandClientsManager_restrictCommandClientsTo___block_invoke;
   v9[3] = &unk_1E76A1958;
   v10 = v5;
   v6 = v5;
-  v7 = [v4 msv_filter:v9];
+  v7 = [toCopy msv_filter:v9];
 
   [(MRRestrictedCommandClientsManager *)self setLastAcceptedTokens:v7];
 
@@ -64,9 +64,9 @@ uint64_t __62__MRRestrictedCommandClientsManager_restrictCommandClientsTo___bloc
 - (void)republishStateIfNeeded
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = [a1 lastAcceptedTokens];
+  lastAcceptedTokens = [self lastAcceptedTokens];
   v7 = 138412546;
-  v8 = v5;
+  v8 = lastAcceptedTokens;
   v9 = 2112;
   v10 = a2;
   _os_log_error_impl(&dword_1A2860000, a3, OS_LOG_TYPE_ERROR, "[RestrictedCommandClients Mode] Republish Error: \n Tried to restrict to %@ but %@ was accepted.", &v7, 0x16u);
@@ -74,14 +74,14 @@ uint64_t __62__MRRestrictedCommandClientsManager_restrictCommandClientsTo___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_restrictCommandClientsTo:(id)a3
+- (id)_restrictCommandClientsTo:(id)to
 {
-  v3 = MRCreateDataFromArray(a3, &__block_literal_global_8_3);
+  v3 = MRCreateDataFromArray(to, &__block_literal_global_8_3);
   v4 = MRGetSharedService();
   v5 = MRCreateXPCMessage(0x40000000000000EuLL);
   MRAddDataToXPCMessage(v5, v3, "MRXPC_RESTRICT_COMMANDS_ARRAY_DATA_KEY");
-  v6 = [v4 connection];
-  v7 = xpc_connection_send_message_with_reply_sync(v6, v5);
+  connection = [v4 connection];
+  v7 = xpc_connection_send_message_with_reply_sync(connection, v5);
 
   v8 = MRCreateDataFromXPCMessage(v7, "MRXPC_RESTRICT_COMMANDS_ARRAY_DATA_KEY");
   v9 = MRCreateArrayFromData(v8, &__block_literal_global_12_2);

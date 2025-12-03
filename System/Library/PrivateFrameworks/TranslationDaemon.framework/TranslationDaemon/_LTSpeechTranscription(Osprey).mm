@@ -9,16 +9,16 @@
   v49 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v47.receiver = a1;
+  v47.receiver = self;
   v47.super_class = &off_28488F5C0;
   v8 = objc_msgSendSuper2(&v47, sel_init);
   v9 = v8;
   if (v8)
   {
     v40 = v8;
-    v10 = [MEMORY[0x277CCAB68] string];
-    v11 = [v6 alternative_index];
-    if ([v11 count])
+    string = [MEMORY[0x277CCAB68] string];
+    alternative_index = [v6 alternative_index];
+    if ([alternative_index count])
     {
       v12 = 0;
       v13 = 0.0;
@@ -27,30 +27,30 @@
       v42 = v6;
       while (1)
       {
-        v15 = [v7 positional_tok_phrase_alt];
-        v16 = [v15 count];
+        positional_tok_phrase_alt = [v7 positional_tok_phrase_alt];
+        v16 = [positional_tok_phrase_alt count];
 
         if (v12 >= v16)
         {
           break;
         }
 
-        v17 = [v7 positional_tok_phrase_alt];
-        v18 = [v17 objectAtIndexedSubscript:v12];
+        positional_tok_phrase_alt2 = [v7 positional_tok_phrase_alt];
+        v18 = [positional_tok_phrase_alt2 objectAtIndexedSubscript:v12];
 
-        v19 = [v6 alternative_index];
-        v20 = [v19 objectAtIndexedSubscript:v12];
-        v21 = [v20 unsignedIntegerValue];
+        alternative_index2 = [v6 alternative_index];
+        v20 = [alternative_index2 objectAtIndexedSubscript:v12];
+        unsignedIntegerValue = [v20 unsignedIntegerValue];
 
-        v22 = [v18 tok_phrases];
-        v23 = [v22 objectAtIndexedSubscript:v21];
-        v24 = [v23 tokens];
+        tok_phrases = [v18 tok_phrases];
+        v23 = [tok_phrases objectAtIndexedSubscript:unsignedIntegerValue];
+        tokens = [v23 tokens];
 
         v45 = 0u;
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v25 = v24;
+        v25 = tokens;
         v26 = [v25 countByEnumeratingWithState:&v43 objects:v48 count:16];
         if (v26)
         {
@@ -66,24 +66,24 @@
               }
 
               v30 = *(*(&v43 + 1) + 8 * i);
-              v31 = [v30 token_text];
-              [v10 appendString:v31];
+              token_text = [v30 token_text];
+              [string appendString:token_text];
 
               if ([v30 add_space_after])
               {
-                [v10 appendString:@" "];
+                [string appendString:@" "];
               }
 
-              v32 = [v30 confidence];
-              if (v14 >= v32)
+              confidence = [v30 confidence];
+              if (v14 >= confidence)
               {
-                v14 = v32;
+                v14 = confidence;
               }
 
-              v33 = [v30 confidence];
-              if (v13 < v33)
+              confidence2 = [v30 confidence];
+              if (v13 < confidence2)
               {
-                v13 = v33;
+                v13 = confidence2;
               }
             }
 
@@ -95,9 +95,9 @@
 
         ++v12;
         v6 = v42;
-        v11 = [v42 alternative_index];
+        alternative_index = [v42 alternative_index];
         v7 = v41;
-        if (v12 >= [v11 count])
+        if (v12 >= [alternative_index count])
         {
           goto LABEL_21;
         }
@@ -115,7 +115,7 @@ LABEL_21:
     [v40 setConfidence:{objc_msgSend(v6, "confidence")}];
     [v40 setMinConfidence:v14];
     [v40 setMaxConfidence:v13];
-    [v40 setFormattedString:v10];
+    [v40 setFormattedString:string];
     [v40 minConfidence];
     v35 = v34;
     [v40 maxConfidence];

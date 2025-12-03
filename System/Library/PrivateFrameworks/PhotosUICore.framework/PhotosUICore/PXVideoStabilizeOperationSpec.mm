@@ -1,25 +1,25 @@
 @interface PXVideoStabilizeOperationSpec
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCrossfadeDuration:(id *)a3;
-- (void)setStartTime:(id *)a3;
-- (void)setTimeRange:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCrossfadeDuration:(id *)duration;
+- (void)setStartTime:(id *)time;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation PXVideoStabilizeOperationSpec
 
-- (void)setCrossfadeDuration:(id *)a3
+- (void)setCrossfadeDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_crossfadeDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_crossfadeDuration.value = *&duration->var0;
   self->_crossfadeDuration.epoch = var3;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *&self->_timeRange.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *&self->_timeRange.start.value = *&range->var0.var0;
   *&self->_timeRange.start.epoch = v4;
   *&self->_timeRange.duration.timescale = v3;
 }
@@ -33,18 +33,18 @@
   return self;
 }
 
-- (void)setStartTime:(id *)a3
+- (void)setStartTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_startTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_startTime.value = *&time->var0;
   self->_startTime.epoch = var3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = PXVideoStabilizeOperationSpec;
-  v4 = [(PXVideoProcessingOperationSpec *)&v10 copyWithZone:a3];
+  v4 = [(PXVideoProcessingOperationSpec *)&v10 copyWithZone:zone];
   objc_storeStrong(v4 + 5, self->_recipeSource);
   v5 = *&self->_startTime.value;
   *(v4 + 8) = self->_startTime.epoch;

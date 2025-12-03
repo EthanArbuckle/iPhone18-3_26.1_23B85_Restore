@@ -1,13 +1,13 @@
 @interface DRLockObserver
-- (DRLockObserver)initWithLockHandler:(id)a3;
+- (DRLockObserver)initWithLockHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation DRLockObserver
 
-- (DRLockObserver)initWithLockHandler:(id)a3
+- (DRLockObserver)initWithLockHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = DRLockObserver;
   v5 = [(DRLockObserver *)&v14 init];
@@ -16,7 +16,7 @@
   {
     v5->_notifyToken = -1;
     p_notifyToken = &v5->_notifyToken;
-    v8 = objc_retainBlock(v4);
+    v8 = objc_retainBlock(handlerCopy);
     lockHandler = v6->_lockHandler;
     v6->_lockHandler = v8;
 

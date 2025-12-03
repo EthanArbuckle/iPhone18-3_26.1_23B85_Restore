@@ -1,16 +1,16 @@
 @interface CSVoiceTriggerAssetHandlerMac
-- (CSVoiceTriggerAssetHandlerMac)initWithVoiceTriggerAssetDownloadMonitor:(id)a3 languageCodeUpdateMonitor:(id)a4 uafAssetDownloadMonitor:(id)a5 assetManager:(id)a6 uafAssetManager:(id)a7 disableOnDeviceCompilation:(BOOL)a8;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)CSVoiceTriggerAssetDownloadMonitor:(id)a3 didInstallNewAsset:(BOOL)a4;
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
+- (CSVoiceTriggerAssetHandlerMac)initWithVoiceTriggerAssetDownloadMonitor:(id)monitor languageCodeUpdateMonitor:(id)updateMonitor uafAssetDownloadMonitor:(id)downloadMonitor assetManager:(id)manager uafAssetManager:(id)assetManager disableOnDeviceCompilation:(BOOL)compilation;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)CSVoiceTriggerAssetDownloadMonitor:(id)monitor didInstallNewAsset:(BOOL)asset;
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
 - (void)_checkNewAssetAvailability;
 - (void)_checkNewAssetAvailabilityForEndpoint;
-- (void)_getVoiceTriggerAssetFromAssetManager:(id)a3;
-- (void)_getVoiceTriggerAssetFromAssetManagerWithLocale:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)_handleEndpointVoiceTriggerAsset:(id)a3 completion:(id)a4;
-- (void)_handleVoiceTriggerAssetWithCompletion:(id)a3;
-- (void)assetDownloadMonitorDelegate:(id)a3 assetType:(unint64_t)a4;
-- (void)getVoiceTriggerAssetWithEndpointId:(id)a3 completion:(id)a4;
+- (void)_getVoiceTriggerAssetFromAssetManager:(id)manager;
+- (void)_getVoiceTriggerAssetFromAssetManagerWithLocale:(id)locale bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)_handleEndpointVoiceTriggerAsset:(id)asset completion:(id)completion;
+- (void)_handleVoiceTriggerAssetWithCompletion:(id)completion;
+- (void)assetDownloadMonitorDelegate:(id)delegate assetType:(unint64_t)type;
+- (void)getVoiceTriggerAssetWithEndpointId:(id)id completion:(id)completion;
 - (void)start;
 - (void)triggerAssetRefresh;
 @end
@@ -28,11 +28,11 @@
   dispatch_async(queue, block);
 }
 
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && self->_onDeviceCompilationHandler)
+  enabledCopy = enabled;
+  monitorCopy = monitor;
+  if (enabledCopy && self->_onDeviceCompilationHandler)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -44,10 +44,10 @@
   }
 }
 
-- (void)assetDownloadMonitorDelegate:(id)a3 assetType:(unint64_t)a4
+- (void)assetDownloadMonitorDelegate:(id)delegate assetType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4)
+  delegateCopy = delegate;
+  if (type)
   {
     v7 = CSLogCategoryAsset;
     if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_INFO))
@@ -55,7 +55,7 @@
       v8 = 136315394;
       v9 = "[CSVoiceTriggerAssetHandlerMac assetDownloadMonitorDelegate:assetType:]";
       v10 = 2048;
-      v11 = a4;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Ignore UAF asset update for type: %lu", &v8, 0x16u);
     }
   }
@@ -67,16 +67,16 @@
   }
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSVoiceTriggerAssetHandlerMac CSLanguageCodeUpdateMonitor:didReceiveLanguageCodeChanged:]";
     v9 = 2114;
-    v10 = v5;
+    v10 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Language Code Changed : %{public}@", &v7, 0x16u);
   }
 
@@ -84,7 +84,7 @@
   [(CSVoiceTriggerAssetHandlerMac *)self _checkNewAssetAvailabilityForEndpoint];
 }
 
-- (void)CSVoiceTriggerAssetDownloadMonitor:(id)a3 didInstallNewAsset:(BOOL)a4
+- (void)CSVoiceTriggerAssetDownloadMonitor:(id)monitor didInstallNewAsset:(BOOL)asset
 {
   v5 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
@@ -119,17 +119,17 @@
   [(CSVoiceTriggerAssetHandlerMac *)self _getVoiceTriggerAssetFromAssetManager:v2];
 }
 
-- (void)_getVoiceTriggerAssetFromAssetManagerWithLocale:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)_getVoiceTriggerAssetFromAssetManagerWithLocale:(id)locale bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  localeCopy = locale;
+  completionCopy = completion;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100038964;
   v23[3] = &unk_100252878;
-  v10 = v8;
+  v10 = localeCopy;
   v24 = v10;
-  v11 = v9;
+  v11 = completionCopy;
   v25 = v11;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -139,7 +139,7 @@
   v12 = objc_retainBlock(v23);
   v22 = v12;
   v13 = objc_retainBlock(v21);
-  if (a4)
+  if (identifier)
   {
     (v12[2])(v12, 0, 0);
   }
@@ -149,7 +149,7 @@
     v14 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
     if ([v10 isEqualToString:v14] && (-[CSVoiceTriggerAssetHandler uafAssetManager](self, "uafAssetManager"), v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
     {
-      v16 = [(CSVoiceTriggerAssetHandler *)self uafAssetManager];
+      uafAssetManager = [(CSVoiceTriggerAssetHandler *)self uafAssetManager];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_100038B0C;
@@ -157,7 +157,7 @@
       v19 = v12;
       v20 = v13;
       v18 = v10;
-      [v16 getInstalledAssetofType:0 forLocale:v14 completion:v17];
+      [uafAssetManager getInstalledAssetofType:0 forLocale:v14 completion:v17];
     }
 
     else
@@ -167,18 +167,18 @@
   }
 }
 
-- (void)_getVoiceTriggerAssetFromAssetManager:(id)a3
+- (void)_getVoiceTriggerAssetFromAssetManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
-  [(CSVoiceTriggerAssetHandlerMac *)self _getVoiceTriggerAssetFromAssetManagerWithLocale:v5 completion:v4];
+  [(CSVoiceTriggerAssetHandlerMac *)self _getVoiceTriggerAssetFromAssetManagerWithLocale:v5 completion:managerCopy];
 }
 
-- (void)getVoiceTriggerAssetWithEndpointId:(id)a3 completion:(id)a4
+- (void)getVoiceTriggerAssetWithEndpointId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  idCopy = id;
+  completionCopy = completion;
+  if (idCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -186,66 +186,66 @@
     block[2] = sub_100038EA4;
     block[3] = &unk_1002533A0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = idCopy;
+    v11 = completionCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
-    [(CSVoiceTriggerAssetHandlerMac *)self _handleVoiceTriggerAssetWithCompletion:v7];
+    [(CSVoiceTriggerAssetHandlerMac *)self _handleVoiceTriggerAssetWithCompletion:completionCopy];
   }
 }
 
-- (void)_handleEndpointVoiceTriggerAsset:(id)a3 completion:(id)a4
+- (void)_handleEndpointVoiceTriggerAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  assetCopy = asset;
+  completionCopy = completion;
+  if (!assetCopy)
   {
     v9 = [NSError errorWithDomain:CSErrorDomain code:114 userInfo:0];
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
     goto LABEL_6;
   }
 
-  v8 = [(NSMutableDictionary *)self->_cachedEndpointAssets objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_cachedEndpointAssets objectForKeyedSubscript:assetCopy];
 
   if (!v8)
   {
-    v10 = [CSUtils getSiriLanguageWithEndpointId:v6 fallbackLanguage:@"en-US"];
+    v10 = [CSUtils getSiriLanguageWithEndpointId:assetCopy fallbackLanguage:@"en-US"];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100039044;
     v11[3] = &unk_10024ED08;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = assetCopy;
+    v13 = completionCopy;
     [(CSVoiceTriggerAssetHandlerMac *)self _getVoiceTriggerAssetFromAssetManagerWithLocale:v10 completion:v11];
 
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_cachedEndpointAssets objectForKeyedSubscript:v6];
-    (v7)[2](v7, v9, 0);
+    v9 = [(NSMutableDictionary *)self->_cachedEndpointAssets objectForKeyedSubscript:assetCopy];
+    (completionCopy)[2](completionCopy, v9, 0);
 LABEL_6:
   }
 
 LABEL_8:
 }
 
-- (void)_handleVoiceTriggerAssetWithCompletion:(id)a3
+- (void)_handleVoiceTriggerAssetWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CSVoiceTriggerAssetHandlerMac *)self cachedAsset];
+  completionCopy = completion;
+  cachedAsset = [(CSVoiceTriggerAssetHandlerMac *)self cachedAsset];
 
-  if (v5)
+  if (cachedAsset)
   {
-    if (v4)
+    if (completionCopy)
     {
-      v6 = [(CSVoiceTriggerAssetHandlerMac *)self cachedAsset];
-      v4[2](v4, v6, 0);
+      cachedAsset2 = [(CSVoiceTriggerAssetHandlerMac *)self cachedAsset];
+      completionCopy[2](completionCopy, cachedAsset2, 0);
     }
   }
 
@@ -256,7 +256,7 @@ LABEL_8:
     v7[2] = sub_1000393C0;
     v7[3] = &unk_100252878;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(CSVoiceTriggerAssetHandlerMac *)self _getVoiceTriggerAssetFromAssetManager:v7];
   }
 }
@@ -270,13 +270,13 @@ LABEL_8:
   [v3 addObserver:self];
 }
 
-- (CSVoiceTriggerAssetHandlerMac)initWithVoiceTriggerAssetDownloadMonitor:(id)a3 languageCodeUpdateMonitor:(id)a4 uafAssetDownloadMonitor:(id)a5 assetManager:(id)a6 uafAssetManager:(id)a7 disableOnDeviceCompilation:(BOOL)a8
+- (CSVoiceTriggerAssetHandlerMac)initWithVoiceTriggerAssetDownloadMonitor:(id)monitor languageCodeUpdateMonitor:(id)updateMonitor uafAssetDownloadMonitor:(id)downloadMonitor assetManager:(id)manager uafAssetManager:(id)assetManager disableOnDeviceCompilation:(BOOL)compilation
 {
-  v35 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  monitorCopy = monitor;
+  updateMonitorCopy = updateMonitor;
+  downloadMonitorCopy = downloadMonitor;
+  managerCopy = manager;
+  assetManagerCopy = assetManager;
   v36.receiver = self;
   v36.super_class = CSVoiceTriggerAssetHandlerMac;
   v18 = [(CSVoiceTriggerAssetHandler *)&v36 init];
@@ -290,7 +290,7 @@ LABEL_8:
     cachedEndpointAssets = v18->_cachedEndpointAssets;
     v18->_cachedEndpointAssets = v21;
 
-    objc_storeStrong(&v18->_voiceTriggerAssetDownloadMonitor, a3);
+    objc_storeStrong(&v18->_voiceTriggerAssetDownloadMonitor, monitor);
     if (!v18->_voiceTriggerAssetDownloadMonitor)
     {
       v23 = +[CSVoiceTriggerAssetDownloadMonitor sharedInstance];
@@ -298,7 +298,7 @@ LABEL_8:
       v18->_voiceTriggerAssetDownloadMonitor = v23;
     }
 
-    objc_storeStrong(&v18->_languageCodeUpdateMonitor, a4);
+    objc_storeStrong(&v18->_languageCodeUpdateMonitor, updateMonitor);
     if (!v18->_languageCodeUpdateMonitor)
     {
       v25 = +[CSLanguageCodeUpdateMonitor sharedInstance];
@@ -306,7 +306,7 @@ LABEL_8:
       v18->_languageCodeUpdateMonitor = v25;
     }
 
-    objc_storeStrong(&v18->_uafAssetDownloadMonitor, a5);
+    objc_storeStrong(&v18->_uafAssetDownloadMonitor, downloadMonitor);
     if (!v18->_uafAssetDownloadMonitor)
     {
       v27 = +[CSUAFDownloadMonitor sharedInstance];
@@ -314,7 +314,7 @@ LABEL_8:
       v18->_uafAssetDownloadMonitor = v27;
     }
 
-    objc_storeStrong(&v18->_assetManager, a6);
+    objc_storeStrong(&v18->_assetManager, manager);
     if (!v18->_assetManager)
     {
       v29 = +[CSAssetManager sharedManager];
@@ -322,15 +322,15 @@ LABEL_8:
       v18->_assetManager = v29;
     }
 
-    if (v17)
+    if (assetManagerCopy)
     {
-      [(CSVoiceTriggerAssetHandler *)v18 setUafAssetManager:v17];
+      [(CSVoiceTriggerAssetHandler *)v18 setUafAssetManager:assetManagerCopy];
     }
 
     [(CSVoiceTriggerAssetHandlerMac *)v18 start];
     [(CSVoiceTriggerAssetHandlerMac *)v18 setCachedAsset:0];
     [(CSVoiceTriggerAssetHandlerMac *)v18 setCachedAssistantAsset:0];
-    if (!a8 && !v18->_onDeviceCompilationHandler)
+    if (!compilation && !v18->_onDeviceCompilationHandler)
     {
       v31 = +[CSOnDeviceCompilationHandler sharedHandler];
       onDeviceCompilationHandler = v18->_onDeviceCompilationHandler;

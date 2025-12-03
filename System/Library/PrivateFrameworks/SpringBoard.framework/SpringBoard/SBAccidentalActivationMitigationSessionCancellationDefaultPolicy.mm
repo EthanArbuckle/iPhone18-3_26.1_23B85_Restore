@@ -1,38 +1,38 @@
 @interface SBAccidentalActivationMitigationSessionCancellationDefaultPolicy
-- (SBAccidentalActivationMitigationSessionCancellationDefaultPolicy)initWithSession:(id)a3;
-- (SBAccidentalActivationMitigationSessionCancellationDefaultPolicy)initWithSession:(id)a3 suppressionManager:(id)a4;
+- (SBAccidentalActivationMitigationSessionCancellationDefaultPolicy)initWithSession:(id)session;
+- (SBAccidentalActivationMitigationSessionCancellationDefaultPolicy)initWithSession:(id)session suppressionManager:(id)manager;
 - (void)_startEvaluatingWhetherActivationWasIntentional;
 - (void)_stopEvaluatingWhetherActivationWasIntentional;
-- (void)accidentalActivationMitigationSessionStateDidChange:(id)a3;
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4;
+- (void)accidentalActivationMitigationSessionStateDidChange:(id)change;
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event;
 - (void)dealloc;
-- (void)liftToWakeController:(id)a3 didObserveTransition:(int64_t)a4 deviceOrientation:(int64_t)a5;
+- (void)liftToWakeController:(id)controller didObserveTransition:(int64_t)transition deviceOrientation:(int64_t)orientation;
 @end
 
 @implementation SBAccidentalActivationMitigationSessionCancellationDefaultPolicy
 
-- (SBAccidentalActivationMitigationSessionCancellationDefaultPolicy)initWithSession:(id)a3
+- (SBAccidentalActivationMitigationSessionCancellationDefaultPolicy)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = [(SBAccidentalActivationMitigationSessionCancellationDefaultPolicy *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     [(SBSAccidentalActivationMitigationSession *)v7->_session addObserver:v7];
   }
 
   return v7;
 }
 
-- (SBAccidentalActivationMitigationSessionCancellationDefaultPolicy)initWithSession:(id)a3 suppressionManager:(id)a4
+- (SBAccidentalActivationMitigationSessionCancellationDefaultPolicy)initWithSession:(id)session suppressionManager:(id)manager
 {
-  v7 = a4;
-  v8 = [(SBAccidentalActivationMitigationSessionCancellationDefaultPolicy *)self initWithSession:a3];
+  managerCopy = manager;
+  v8 = [(SBAccidentalActivationMitigationSessionCancellationDefaultPolicy *)self initWithSession:session];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_suppressionManager, a4);
+    objc_storeStrong(&v8->_suppressionManager, manager);
     v10 = +[SBLiftToWakeController sharedController];
     liftToWakeController = v9->_liftToWakeController;
     v9->_liftToWakeController = v10;
@@ -104,30 +104,30 @@
   [(SBLiftToWakeController *)self->_liftToWakeController removeObserver:self];
 }
 
-- (void)accidentalActivationMitigationSessionStateDidChange:(id)a3
+- (void)accidentalActivationMitigationSessionStateDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  changeCopy = change;
+  if ([changeCopy state] == 1)
   {
     [(SBAccidentalActivationMitigationSessionCancellationDefaultPolicy *)self _startEvaluatingWhetherActivationWasIntentional];
   }
 
-  else if ([v4 state] == 2 || objc_msgSend(v4, "state") == 3)
+  else if ([changeCopy state] == 2 || objc_msgSend(changeCopy, "state") == 3)
   {
     [(SBAccidentalActivationMitigationSessionCancellationDefaultPolicy *)self _stopEvaluatingWhetherActivationWasIntentional];
   }
 }
 
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  eventCopy = event;
   if ([(SBSAccidentalActivationMitigationSession *)self->_session state]== 1)
   {
-    if ([v5 eventMask] == 2)
+    if ([eventCopy eventMask] == 2)
     {
       self->_eventType = 0;
-      self->_eventReason = NSStringFromSBAttentionAwarenessClientLastEventMask([v5 eventMask]);
+      self->_eventReason = NSStringFromSBAttentionAwarenessClientLastEventMask([eventCopy eventMask]);
       v6 = SBLogCameraCaptureAccidentalActivationMitigationSession();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
@@ -156,7 +156,7 @@ LABEL_8:
     if ([(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState]!= 1)
     {
       self->_eventType = 0;
-      self->_eventReason = NSStringFromSBAttentionAwarenessClientLastEventMask([v5 eventMask]);
+      self->_eventReason = NSStringFromSBAttentionAwarenessClientLastEventMask([eventCopy eventMask]);
       v6 = SBLogCameraCaptureAccidentalActivationMitigationSession();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
@@ -183,11 +183,11 @@ LABEL_9:
   }
 }
 
-- (void)liftToWakeController:(id)a3 didObserveTransition:(int64_t)a4 deviceOrientation:(int64_t)a5
+- (void)liftToWakeController:(id)controller didObserveTransition:(int64_t)transition deviceOrientation:(int64_t)orientation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = [(SBSAccidentalActivationMitigationSession *)self->_session state:a3];
-  if (a4 == 2 && v7 == 1)
+  v7 = [(SBSAccidentalActivationMitigationSession *)self->_session state:controller];
+  if (transition == 2 && v7 == 1)
   {
     self->_eventType = 1;
     self->_eventReason = NSStringFromSBLiftToWakeTransition(2);

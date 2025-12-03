@@ -1,26 +1,26 @@
 @interface SESKeyDesignationStorageCoordinator
-+ (id)getAndReturnError:(id *)a3;
++ (id)getAndReturnError:(id *)error;
 - (_TtC10seserviced35SESKeyDesignationStorageCoordinator)init;
-- (id)findKeyWithKeyIdentifier:(id)a3;
+- (id)findKeyWithKeyIdentifier:(id)identifier;
 - (void)commit;
-- (void)designateKeyWithAid:(id)a3 slotNumber:(int64_t)a4 keyIdentifier:(id)a5 assetACL:(id)a6 assetACLAttestation:(id)a7 operationApprovalVersion:(int64_t)a8 designation:(int64_t)a9;
-- (void)removeDesignationWithKeyIdentifier:(id)a3;
-- (void)removeWithDesignation:(int64_t)a3;
+- (void)designateKeyWithAid:(id)aid slotNumber:(int64_t)number keyIdentifier:(id)identifier assetACL:(id)l assetACLAttestation:(id)attestation operationApprovalVersion:(int64_t)version designation:(int64_t)designation;
+- (void)removeDesignationWithKeyIdentifier:(id)identifier;
+- (void)removeWithDesignation:(int64_t)designation;
 @end
 
 @implementation SESKeyDesignationStorageCoordinator
 
-+ (id)getAndReturnError:(id *)a3
++ (id)getAndReturnError:(id *)error
 {
   v3 = sub_100120FD0();
 
   return v3;
 }
 
-- (id)findKeyWithKeyIdentifier:(id)a3
+- (id)findKeyWithKeyIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
@@ -30,13 +30,13 @@
   return v9;
 }
 
-- (void)designateKeyWithAid:(id)a3 slotNumber:(int64_t)a4 keyIdentifier:(id)a5 assetACL:(id)a6 assetACLAttestation:(id)a7 operationApprovalVersion:(int64_t)a8 designation:(int64_t)a9
+- (void)designateKeyWithAid:(id)aid slotNumber:(int64_t)number keyIdentifier:(id)identifier assetACL:(id)l assetACLAttestation:(id)attestation operationApprovalVersion:(int64_t)version designation:(int64_t)designation
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v31 = self;
+  aidCopy = aid;
+  identifierCopy = identifier;
+  lCopy = l;
+  attestationCopy = attestation;
+  selfCopy = self;
   v17 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v19 = v18;
 
@@ -49,31 +49,31 @@
   v26 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v28 = v27;
 
-  sub_10012050C(v17, v19, a4, v20, v22, v23, v25, v26, v28, a8, a9);
+  sub_10012050C(v17, v19, number, v20, v22, v23, v25, v26, v28, version, designation);
   sub_10006A178(v26, v28);
   sub_10006A178(v23, v25);
   sub_10006A178(v20, v22);
   sub_10006A178(v17, v19);
 }
 
-- (void)removeDesignationWithKeyIdentifier:(id)a3
+- (void)removeDesignationWithKeyIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
   v9 = OBJC_IVAR____TtC10seserviced35SESKeyDesignationStorageCoordinator_keys;
   swift_beginAccess();
   sub_100069E2C(v6, v8);
-  v10 = sub_100121D60((v5 + v9), v6, v8);
+  v10 = sub_100121D60((selfCopy + v9), v6, v8);
   sub_10006A178(v6, v8);
-  v11 = *(&v5->super.isa + v9);
+  v11 = *(&selfCopy->super.isa + v9);
   if (v11 >> 62)
   {
     if (v11 < 0)
     {
-      v13 = *(&v5->super.isa + v9);
+      v13 = *(&selfCopy->super.isa + v9);
     }
 
     v12 = _CocoaArrayWrapper.endIndex.getter();
@@ -92,7 +92,7 @@ LABEL_3:
       sub_1001A2540(v10, v12);
       swift_endAccess();
       sub_10006A178(v6, v8);
-      *(&v5->super.isa + OBJC_IVAR____TtC10seserviced35SESKeyDesignationStorageCoordinator_mutated) = 1;
+      *(&selfCopy->super.isa + OBJC_IVAR____TtC10seserviced35SESKeyDesignationStorageCoordinator_mutated) = 1;
 
       return;
     }
@@ -101,12 +101,12 @@ LABEL_3:
   __break(1u);
 }
 
-- (void)removeWithDesignation:(int64_t)a3
+- (void)removeWithDesignation:(int64_t)designation
 {
   v5 = OBJC_IVAR____TtC10seserviced35SESKeyDesignationStorageCoordinator_keys;
   swift_beginAccess();
-  v6 = self;
-  v7 = sub_100120D70((self + v5), a3);
+  selfCopy = self;
+  v7 = sub_100120D70((self + v5), designation);
   v8 = *(&self->super.isa + v5);
   if (v8 >> 62)
   {
@@ -127,7 +127,7 @@ LABEL_3:
 LABEL_3:
       sub_1001A2540(v7, v9);
       swift_endAccess();
-      *(&v6->super.isa + OBJC_IVAR____TtC10seserviced35SESKeyDesignationStorageCoordinator_mutated) = 1;
+      *(&selfCopy->super.isa + OBJC_IVAR____TtC10seserviced35SESKeyDesignationStorageCoordinator_mutated) = 1;
 
       return;
     }
@@ -145,7 +145,7 @@ LABEL_3:
     swift_beginAccess();
     v5 = *(&self->super.isa + v3);
     sub_1001217D8();
-    v6 = self;
+    selfCopy = self;
 
     isa = Array._bridgeToObjectiveC()().super.isa;
 

@@ -1,15 +1,15 @@
 @interface _EAREmojiRecognition
 + (void)initialize;
 - (BOOL)isEmojiRecognitionCapable;
-- (BOOL)isValidEmoji:(id)a3;
-- (_EAREmojiRecognition)initWithLanguage:(id)a3;
-- (id)baseStringForEmojiString:(id)a3;
-- (id)formatEmojiStrings:(id)a3;
-- (id)formatEmojiStrings:(id)a3 isLogging:(BOOL)a4;
-- (id)searchEmojiAlternativesForSpokenEmoji:(id)a3 count:(int64_t)a4 emojiCharacter:(id)a5;
+- (BOOL)isValidEmoji:(id)emoji;
+- (_EAREmojiRecognition)initWithLanguage:(id)language;
+- (id)baseStringForEmojiString:(id)string;
+- (id)formatEmojiStrings:(id)strings;
+- (id)formatEmojiStrings:(id)strings isLogging:(BOOL)logging;
+- (id)searchEmojiAlternativesForSpokenEmoji:(id)emoji count:(int64_t)count emojiCharacter:(id)character;
 - (void)dealloc;
-- (void)didUseEmoji:(id)a3 replacementContext:(id)a4;
-- (void)recognizeEmojisInInputString:(id)a3 enumerateUsingBlock:(id)a4;
+- (void)didUseEmoji:(id)emoji replacementContext:(id)context;
+- (void)recognizeEmojisInInputString:(id)string enumerateUsingBlock:(id)block;
 - (void)resetEmojiPreferences;
 @end
 
@@ -18,16 +18,16 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EAREmojiRecognition)initWithLanguage:(id)a3
+- (_EAREmojiRecognition)initWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v15.receiver = self;
   v15.super_class = _EAREmojiRecognition;
   v5 = [(_EAREmojiRecognition *)&v15 init];
@@ -36,20 +36,20 @@
     goto LABEL_12;
   }
 
-  if (v4)
+  if (languageCopy)
   {
-    v6 = [v4 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v6 = [languageCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
     if (v6)
     {
       v7 = [MEMORY[0x1E699BAD8] emojiLocaleDataWithLocaleIdentifier:v6];
       v8 = 0;
-      v4 = v6;
+      languageCopy = v6;
       goto LABEL_8;
     }
 
     v7 = 0;
-    v4 = 0;
+    languageCopy = 0;
   }
 
   else
@@ -62,7 +62,7 @@ LABEL_8:
   localeData = v5->_localeData;
   v5->_localeData = v7;
 
-  v5->_isLocaleRTL = [MEMORY[0x1E695DF58] characterDirectionForLanguage:v4] == 2;
+  v5->_isLocaleRTL = [MEMORY[0x1E695DF58] characterDirectionForLanguage:languageCopy] == 2;
   if (v8)
   {
     v10 = 0;
@@ -75,9 +75,9 @@ LABEL_8:
 
   v5->_cemlocaleRef = v10;
   *&v5->_isEmojiPersonalizationUsed = 0;
-  v11 = [objc_alloc(MEMORY[0x1E699BAE8]) _initWithoutConnection];
+  _initWithoutConnection = [objc_alloc(MEMORY[0x1E699BAE8]) _initWithoutConnection];
   preferences = v5->_preferences;
-  v5->_preferences = v11;
+  v5->_preferences = _initWithoutConnection;
 
   [(EMFEmojiPreferencesClient *)v5->_preferences readEmojiDefaults];
   if (![(_EAREmojiRecognition *)v5 isEmojiRecognitionCapable])
@@ -106,25 +106,25 @@ LABEL_14:
   [(_EAREmojiRecognition *)&v4 dealloc];
 }
 
-- (id)formatEmojiStrings:(id)a3
+- (id)formatEmojiStrings:(id)strings
 {
-  v3 = [(_EAREmojiRecognition *)self formatEmojiStrings:a3 isLogging:0];
+  v3 = [(_EAREmojiRecognition *)self formatEmojiStrings:strings isLogging:0];
 
   return v3;
 }
 
-- (id)formatEmojiStrings:(id)a3 isLogging:(BOOL)a4
+- (id)formatEmojiStrings:(id)strings isLogging:(BOOL)logging
 {
-  v6 = a3;
-  v7 = v6;
+  stringsCopy = strings;
+  v7 = stringsCopy;
   if (+[_EARFeatureFlags isEmojiV2Enabled])
   {
     goto LABEL_18;
   }
 
-  if (v6)
+  if (stringsCopy)
   {
-    [v6 ear_toString];
+    [stringsCopy ear_toString];
   }
 
   else
@@ -161,7 +161,7 @@ LABEL_14:
     }
 
     v9 = 0;
-    v7 = v6;
+    v7 = stringsCopy;
   }
 
   else
@@ -182,7 +182,7 @@ LABEL_14:
     }
 
 LABEL_31:
-    v14 = 0;
+    string = 0;
     goto LABEL_32;
   }
 
@@ -196,7 +196,7 @@ LABEL_18:
   v12 = v11;
   if (v11)
   {
-    if ([v11 supportsSkinToneVariants]&& !a4)
+    if ([v11 supportsSkinToneVariants]&& !logging)
     {
       v13 = [(EMFEmojiPreferencesClient *)self->_preferences lastUsedVariantEmojiForEmoji:v12];
 
@@ -208,7 +208,7 @@ LABEL_18:
       v12 = v13;
     }
 
-    v14 = [v12 string];
+    string = [v12 string];
   }
 
   else
@@ -219,24 +219,24 @@ LABEL_18:
       [_EAREmojiRecognition formatEmojiStrings:v12 isLogging:?];
     }
 
-    v14 = 0;
+    string = 0;
   }
 
 LABEL_32:
 
-  return v14;
+  return string;
 }
 
-- (void)didUseEmoji:(id)a3 replacementContext:(id)a4
+- (void)didUseEmoji:(id)emoji replacementContext:(id)context
 {
-  v8 = a3;
-  v6 = a4;
-  if ([(_EAREmojiRecognition *)self isValidEmoji:v8])
+  emojiCopy = emoji;
+  contextCopy = context;
+  if ([(_EAREmojiRecognition *)self isValidEmoji:emojiCopy])
   {
-    v7 = [MEMORY[0x1E699BB00] emojiTokenWithString:v8 localeData:self->_localeData];
+    v7 = [MEMORY[0x1E699BB00] emojiTokenWithString:emojiCopy localeData:self->_localeData];
     [(EMFEmojiPreferencesClient *)self->_preferences didUseEmoji:v7];
     [(EMFEmojiPreferencesClient *)self->_preferences _disconnect];
-    [(EMFEmojiPreferencesClient *)self->_preferences didUseEmojiInDictation:v7 replacementContext:v6];
+    [(EMFEmojiPreferencesClient *)self->_preferences didUseEmojiInDictation:v7 replacementContext:contextCopy];
   }
 }
 
@@ -245,31 +245,31 @@ LABEL_32:
   preferences = self->_preferences;
   self->_preferences = 0;
 
-  v4 = [objc_alloc(MEMORY[0x1E699BAE8]) _initWithoutConnection];
+  _initWithoutConnection = [objc_alloc(MEMORY[0x1E699BAE8]) _initWithoutConnection];
   v5 = self->_preferences;
-  self->_preferences = v4;
+  self->_preferences = _initWithoutConnection;
 
   v6 = self->_preferences;
 
   [(EMFEmojiPreferencesClient *)v6 readEmojiDefaults];
 }
 
-- (id)baseStringForEmojiString:(id)a3
+- (id)baseStringForEmojiString:(id)string
 {
-  v4 = a3;
-  if (([v4 _isSingleEmoji] & 1) != 0 && -[_EAREmojiRecognition isValidEmoji:](self, "isValidEmoji:", v4))
+  stringCopy = string;
+  if (([stringCopy _isSingleEmoji] & 1) != 0 && -[_EAREmojiRecognition isValidEmoji:](self, "isValidEmoji:", stringCopy))
   {
-    v5 = [MEMORY[0x1E699BB00] emojiTokenWithString:v4 localeData:self->_localeData];
-    v6 = [v5 copyWithoutModifiers];
-    v7 = [v6 string];
+    v5 = [MEMORY[0x1E699BB00] emojiTokenWithString:stringCopy localeData:self->_localeData];
+    copyWithoutModifiers = [v5 copyWithoutModifiers];
+    string = [copyWithoutModifiers string];
   }
 
   else
   {
-    v7 = v4;
+    string = stringCopy;
   }
 
-  return v7;
+  return string;
 }
 
 - (BOOL)isEmojiRecognitionCapable
@@ -280,11 +280,11 @@ LABEL_32:
     v3 = v2;
     if (v2)
     {
-      v4 = [v2 string];
-      if ([v4 length])
+      string = [v2 string];
+      if ([string length])
       {
-        v5 = [v3 string];
-        v6 = [v5 isEqualToString:@"👍"];
+        string2 = [v3 string];
+        v6 = [string2 isEqualToString:@"👍"];
       }
 
       else
@@ -315,7 +315,7 @@ LABEL_32:
   return v6;
 }
 
-- (BOOL)isValidEmoji:(id)a3
+- (BOOL)isValidEmoji:(id)emoji
 {
   v3 = CEMEmojiTokenCreateWithString();
   v4 = v3;
@@ -327,14 +327,14 @@ LABEL_32:
   return v4 != 0;
 }
 
-- (id)searchEmojiAlternativesForSpokenEmoji:(id)a3 count:(int64_t)a4 emojiCharacter:(id)a5
+- (id)searchEmojiAlternativesForSpokenEmoji:(id)emoji count:(int64_t)count emojiCharacter:(id)character
 {
   v58 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v38 = a5;
+  emojiCopy = emoji;
+  characterCopy = character;
   v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(EMFEmojiLocaleData *)self->_localeData localeIdentifier];
-  v9 = [&unk_1F2D54410 objectForKey:v8];
+  localeIdentifier = [(EMFEmojiLocaleData *)self->_localeData localeIdentifier];
+  v9 = [&unk_1F2D54410 objectForKey:localeIdentifier];
 
   if (!v9)
   {
@@ -342,15 +342,15 @@ LABEL_32:
   }
 
   v36 = v9;
-  v10 = [v37 stringByReplacingOccurrencesOfString:v9 withString:&stru_1F2D44B60];
-  v11 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v39 = [v10 stringByTrimmingCharactersInSet:v11];
+  v10 = [emojiCopy stringByReplacingOccurrencesOfString:v9 withString:&stru_1F2D44B60];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v39 = [v10 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v42 = [(_EAREmojiRecognition *)self baseStringForEmojiString:v38];
+  v42 = [(_EAREmojiRecognition *)self baseStringForEmojiString:characterCopy];
   v40 = [(EMFEmojiLocaleData *)self->_localeData emojiTokensForText:v39 phoneticReading:0 options:17 searchType:2 includePrefixMatches:1];
   if (v40 && [v40 count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
@@ -370,13 +370,13 @@ LABEL_32:
           }
 
           v17 = *(*(&v51 + 1) + 8 * i);
-          v18 = [v17 string];
-          v19 = [(_EAREmojiRecognition *)self isValidEmoji:v18];
+          string = [v17 string];
+          v19 = [(_EAREmojiRecognition *)self isValidEmoji:string];
 
           if (v19)
           {
-            v20 = [v17 string];
-            [v12 addObject:v20];
+            string2 = [v17 string];
+            [array addObject:string2];
           }
         }
 
@@ -404,7 +404,7 @@ LABEL_32:
             objc_enumerationMutation(v21);
           }
 
-          if (!a4)
+          if (!count)
           {
             v33 = v41;
 
@@ -412,10 +412,10 @@ LABEL_32:
           }
 
           v25 = *(*(&v47 + 1) + 8 * j);
-          if (([v25 isEqualToString:v42] & 1) == 0 && objc_msgSend(v12, "containsObject:", v25))
+          if (([v25 isEqualToString:v42] & 1) == 0 && objc_msgSend(array, "containsObject:", v25))
           {
             [v41 addObject:v25];
-            --a4;
+            --count;
           }
         }
 
@@ -433,7 +433,7 @@ LABEL_32:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v26 = v12;
+    v26 = array;
     v27 = [v26 countByEnumeratingWithState:&v43 objects:v55 count:16];
     if (v27)
     {
@@ -449,7 +449,7 @@ LABEL_32:
 
           v30 = *(*(&v43 + 1) + 8 * k);
           v31 = v30;
-          if (!a4)
+          if (!count)
           {
 
             goto LABEL_40;
@@ -458,7 +458,7 @@ LABEL_32:
           if (([v30 isEqualToString:v42] & 1) == 0 && (objc_msgSend(v41, "containsObject:", v31) & 1) == 0)
           {
             [v41 addObject:v31];
-            --a4;
+            --count;
           }
         }
 
@@ -486,18 +486,18 @@ LABEL_41:
   return v41;
 }
 
-- (void)recognizeEmojisInInputString:(id)a3 enumerateUsingBlock:(id)a4
+- (void)recognizeEmojisInInputString:(id)string enumerateUsingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   localeData = self->_localeData;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73___EAREmojiRecognition_recognizeEmojisInInputString_enumerateUsingBlock___block_invoke;
   v9[3] = &unk_1E7C1BC48;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(EMFEmojiLocaleData *)localeData enumerateAnchoredReplacementCandidatesForContext:a3 withOptions:0 usingBlock:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [(EMFEmojiLocaleData *)localeData enumerateAnchoredReplacementCandidatesForContext:string withOptions:0 usingBlock:v9];
 }
 
 @end

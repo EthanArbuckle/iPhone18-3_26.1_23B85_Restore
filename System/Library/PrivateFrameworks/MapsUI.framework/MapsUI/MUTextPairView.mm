@@ -1,12 +1,12 @@
 @interface MUTextPairView
-- (BOOL)shouldStackForProposedWidth:(double)a3;
-- (MUTextPairView)initWithFrame:(CGRect)a3;
+- (BOOL)shouldStackForProposedWidth:(double)width;
+- (MUTextPairView)initWithFrame:(CGRect)frame;
 - (void)_contentSizeDidChange;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)_updateConstraints;
-- (void)setStacked:(BOOL)a3;
-- (void)setViewModel:(id)a3;
+- (void)setStacked:(BOOL)stacked;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUTextPairView
@@ -23,22 +23,22 @@
 
 - (void)_updateAppearance
 {
-  v3 = [(MUTextPairViewModel *)self->_viewModel leftText];
-  [(UILabel *)self->_leftLabel setText:v3];
+  leftText = [(MUTextPairViewModel *)self->_viewModel leftText];
+  [(UILabel *)self->_leftLabel setText:leftText];
 
-  v4 = [(MUTextPairViewModel *)self->_viewModel rightText];
-  [(UILabel *)self->_rightLabel setText:v4];
+  rightText = [(MUTextPairViewModel *)self->_viewModel rightText];
+  [(UILabel *)self->_rightLabel setText:rightText];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(MUTextPairView *)self _updateAppearance];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
@@ -53,36 +53,36 @@
   leftLabel = self->_leftLabel;
   if (self->_stacked)
   {
-    v4 = [(UILabel *)leftLabel topAnchor];
-    v5 = [(MUTextPairView *)self topAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5];
+    topAnchor = [(UILabel *)leftLabel topAnchor];
+    topAnchor2 = [(MUTextPairView *)self topAnchor];
+    v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[0] = v6;
-    v7 = [(UILabel *)self->_leftLabel bottomAnchor];
-    v50 = [(UILabel *)self->_rightLabel topAnchor];
-    v49 = [v7 constraintEqualToAnchor:?];
+    bottomAnchor = [(UILabel *)self->_leftLabel bottomAnchor];
+    topAnchor3 = [(UILabel *)self->_rightLabel topAnchor];
+    v49 = [bottomAnchor constraintEqualToAnchor:?];
     v52[1] = v49;
-    v8 = [(UILabel *)self->_leftLabel leadingAnchor];
-    v47 = [(MUTextPairView *)self leadingAnchor];
-    v48 = v8;
-    v46 = [v8 constraintEqualToAnchor:?];
+    leadingAnchor = [(UILabel *)self->_leftLabel leadingAnchor];
+    leadingAnchor2 = [(MUTextPairView *)self leadingAnchor];
+    v48 = leadingAnchor;
+    v46 = [leadingAnchor constraintEqualToAnchor:?];
     v52[2] = v46;
-    v9 = [(UILabel *)self->_leftLabel trailingAnchor];
-    v45 = [(MUTextPairView *)self trailingAnchor];
-    v44 = [v9 constraintEqualToAnchor:?];
+    trailingAnchor = [(UILabel *)self->_leftLabel trailingAnchor];
+    trailingAnchor2 = [(MUTextPairView *)self trailingAnchor];
+    v44 = [trailingAnchor constraintEqualToAnchor:?];
     v52[3] = v44;
-    v10 = [(UILabel *)self->_rightLabel leadingAnchor];
-    v42 = [(MUTextPairView *)self leadingAnchor];
-    v43 = v10;
-    v41 = [v10 constraintEqualToAnchor:?];
+    leadingAnchor3 = [(UILabel *)self->_rightLabel leadingAnchor];
+    leadingAnchor4 = [(MUTextPairView *)self leadingAnchor];
+    v43 = leadingAnchor3;
+    v41 = [leadingAnchor3 constraintEqualToAnchor:?];
     v52[4] = v41;
-    v11 = [(UILabel *)self->_rightLabel trailingAnchor];
-    v39 = [(MUTextPairView *)self trailingAnchor];
-    v40 = v11;
-    v38 = [v11 constraintEqualToAnchor:?];
+    trailingAnchor3 = [(UILabel *)self->_rightLabel trailingAnchor];
+    trailingAnchor4 = [(MUTextPairView *)self trailingAnchor];
+    v40 = trailingAnchor3;
+    v38 = [trailingAnchor3 constraintEqualToAnchor:?];
     v52[5] = v38;
-    v12 = [(UILabel *)self->_rightLabel bottomAnchor];
-    v37 = [(MUTextPairView *)self bottomAnchor];
-    v13 = [v12 constraintEqualToAnchor:?];
+    bottomAnchor2 = [(UILabel *)self->_rightLabel bottomAnchor];
+    bottomAnchor3 = [(MUTextPairView *)self bottomAnchor];
+    v13 = [bottomAnchor2 constraintEqualToAnchor:?];
     v52[6] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:7];
     constraints = self->_constraints;
@@ -91,84 +91,84 @@
 
   else
   {
-    v36 = [(UILabel *)leftLabel leadingAnchor];
-    v35 = [(MUTextPairView *)self leadingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    leadingAnchor5 = [(UILabel *)leftLabel leadingAnchor];
+    leadingAnchor6 = [(MUTextPairView *)self leadingAnchor];
+    v34 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v51[0] = v34;
-    v33 = [(UILabel *)self->_leftLabel topAnchor];
-    v50 = [(MUTextPairView *)self topAnchor];
-    v49 = [v33 constraintEqualToAnchor:?];
+    topAnchor4 = [(UILabel *)self->_leftLabel topAnchor];
+    topAnchor3 = [(MUTextPairView *)self topAnchor];
+    v49 = [topAnchor4 constraintEqualToAnchor:?];
     v51[1] = v49;
-    v16 = [(UILabel *)self->_leftLabel bottomAnchor];
-    v47 = [(MUTextPairView *)self bottomAnchor];
-    v48 = v16;
-    v46 = [v16 constraintEqualToAnchor:?];
+    bottomAnchor4 = [(UILabel *)self->_leftLabel bottomAnchor];
+    leadingAnchor2 = [(MUTextPairView *)self bottomAnchor];
+    v48 = bottomAnchor4;
+    v46 = [bottomAnchor4 constraintEqualToAnchor:?];
     v51[2] = v46;
-    v32 = [(UILabel *)self->_leftLabel trailingAnchor];
-    v45 = [(UILabel *)self->_rightLabel leadingAnchor];
-    v44 = [v32 constraintEqualToAnchor:-8.0 constant:?];
+    trailingAnchor5 = [(UILabel *)self->_leftLabel trailingAnchor];
+    trailingAnchor2 = [(UILabel *)self->_rightLabel leadingAnchor];
+    v44 = [trailingAnchor5 constraintEqualToAnchor:-8.0 constant:?];
     v51[3] = v44;
-    v17 = [(UILabel *)self->_leftLabel centerYAnchor];
-    v42 = [(MUTextPairView *)self centerYAnchor];
-    v43 = v17;
-    v41 = [v17 constraintEqualToAnchor:?];
+    centerYAnchor = [(UILabel *)self->_leftLabel centerYAnchor];
+    leadingAnchor4 = [(MUTextPairView *)self centerYAnchor];
+    v43 = centerYAnchor;
+    v41 = [centerYAnchor constraintEqualToAnchor:?];
     v51[4] = v41;
-    v18 = [(UILabel *)self->_leftLabel firstBaselineAnchor];
-    v39 = [(UILabel *)self->_rightLabel firstBaselineAnchor];
-    v40 = v18;
-    v38 = [v18 constraintEqualToAnchor:?];
+    firstBaselineAnchor = [(UILabel *)self->_leftLabel firstBaselineAnchor];
+    trailingAnchor4 = [(UILabel *)self->_rightLabel firstBaselineAnchor];
+    v40 = firstBaselineAnchor;
+    v38 = [firstBaselineAnchor constraintEqualToAnchor:?];
     v51[5] = v38;
-    v29 = [(UILabel *)self->_rightLabel leadingAnchor];
-    v37 = [(MUTextPairView *)self centerXAnchor];
-    v13 = [v29 constraintEqualToAnchor:?];
+    leadingAnchor7 = [(UILabel *)self->_rightLabel leadingAnchor];
+    bottomAnchor3 = [(MUTextPairView *)self centerXAnchor];
+    v13 = [leadingAnchor7 constraintEqualToAnchor:?];
     v51[6] = v13;
-    v31 = [(UILabel *)self->_rightLabel topAnchor];
-    v30 = [(MUTextPairView *)self topAnchor];
-    v19 = [(NSArray *)v31 constraintEqualToAnchor:v30];
+    topAnchor5 = [(UILabel *)self->_rightLabel topAnchor];
+    topAnchor6 = [(MUTextPairView *)self topAnchor];
+    v19 = [(NSArray *)topAnchor5 constraintEqualToAnchor:topAnchor6];
     v51[7] = v19;
-    v20 = [(UILabel *)self->_rightLabel bottomAnchor];
-    v21 = [(MUTextPairView *)self bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor5 = [(UILabel *)self->_rightLabel bottomAnchor];
+    bottomAnchor6 = [(MUTextPairView *)self bottomAnchor];
+    v22 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v51[8] = v22;
-    v23 = [(UILabel *)self->_rightLabel trailingAnchor];
-    v24 = [(MUTextPairView *)self trailingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    trailingAnchor6 = [(UILabel *)self->_rightLabel trailingAnchor];
+    trailingAnchor7 = [(MUTextPairView *)self trailingAnchor];
+    v25 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v51[9] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:10];
     v27 = self->_constraints;
     self->_constraints = v26;
 
-    v12 = v29;
-    v9 = v32;
+    bottomAnchor2 = leadingAnchor7;
+    trailingAnchor = trailingAnchor5;
 
-    v7 = v33;
+    bottomAnchor = topAnchor4;
     v6 = v34;
 
-    v5 = v35;
-    v4 = v36;
+    topAnchor2 = leadingAnchor6;
+    topAnchor = leadingAnchor5;
 
-    constraints = v31;
+    constraints = topAnchor5;
   }
 
   [MEMORY[0x1E696ACD8] activateConstraints:self->_constraints];
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setStacked:(BOOL)a3
+- (void)setStacked:(BOOL)stacked
 {
-  if (self->_stacked != a3)
+  if (self->_stacked != stacked)
   {
-    self->_stacked = a3;
+    self->_stacked = stacked;
     [(MUTextPairView *)self _updateConstraints];
   }
 }
 
-- (BOOL)shouldStackForProposedWidth:(double)a3
+- (BOOL)shouldStackForProposedWidth:(double)width
 {
   [(UILabel *)self->_leftLabel idealWidth];
   v6 = v5 + 8.0;
   [(UILabel *)self->_rightLabel idealWidth];
-  return v6 + v7 > a3;
+  return v6 + v7 > width;
 }
 
 - (void)_setupSubviews
@@ -203,11 +203,11 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (MUTextPairView)initWithFrame:(CGRect)a3
+- (MUTextPairView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MUTextPairView;
-  v3 = [(MUTextPairView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUTextPairView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

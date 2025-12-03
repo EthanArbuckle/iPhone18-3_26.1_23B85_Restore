@@ -1,5 +1,5 @@
 @interface FMFLabelUtil
-+ (BOOL)isDefaultLabel:(id)a3;
++ (BOOL)isDefaultLabel:(id)label;
 + (id)defaultLabelKeys;
 @end
 
@@ -20,14 +20,14 @@
   return v2;
 }
 
-+ (BOOL)isDefaultLabel:(id)a3
++ (BOOL)isDefaultLabel:(id)label
 {
-  v4 = a3;
-  v5 = [a1 defaultLabelKeys];
-  v6 = [v4 lowercaseString];
+  labelCopy = label;
+  defaultLabelKeys = [self defaultLabelKeys];
+  lowercaseString = [labelCopy lowercaseString];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(labelCopy) = [defaultLabelKeys containsObject:lowercaseString];
+  return labelCopy;
 }
 
 @end

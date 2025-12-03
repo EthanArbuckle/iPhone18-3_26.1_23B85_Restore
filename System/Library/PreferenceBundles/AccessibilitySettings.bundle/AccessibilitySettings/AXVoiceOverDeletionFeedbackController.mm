@@ -1,7 +1,7 @@
 @interface AXVoiceOverDeletionFeedbackController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverDeletionFeedbackController
@@ -47,31 +47,31 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a4;
+  cellCopy = cell;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 voiceOverDeletionFeedback];
+  voiceOverDeletionFeedback = [v5 voiceOverDeletionFeedback];
 
-  v7 = [v10 specifier];
-  v8 = [v7 propertyForKey:@"AXSVoiceOverDeletionFeedback"];
-  v9 = [v8 integerValue] == v6;
+  specifier = [cellCopy specifier];
+  v8 = [specifier propertyForKey:@"AXSVoiceOverDeletionFeedback"];
+  v9 = [v8 integerValue] == voiceOverDeletionFeedback;
 
-  [v10 setChecked:v9];
+  [cellCopy setChecked:v9];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = AXVoiceOverDeletionFeedbackController;
-  v6 = a4;
-  [(AXVoiceOverDeletionFeedbackController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXVoiceOverDeletionFeedbackController *)self specifierForIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  [(AXVoiceOverDeletionFeedbackController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXVoiceOverDeletionFeedbackController *)self specifierForIndexPath:pathCopy, v11.receiver, v11.super_class];
 
   v8 = [v7 propertyForKey:@"AXSVoiceOverDeletionFeedback"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   v10 = +[AXSettings sharedInstance];
-  [v10 setVoiceOverDeletionFeedback:v9];
+  [v10 setVoiceOverDeletionFeedback:integerValue];
 
   [(AXVoiceOverDeletionFeedbackController *)self beginUpdates];
   [(AXVoiceOverDeletionFeedbackController *)self reloadSpecifiers];

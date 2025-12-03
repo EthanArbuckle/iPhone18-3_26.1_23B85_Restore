@@ -1,12 +1,12 @@
 @interface BRCItemID_v9
-+ (id)newFromSqliteValue:(sqlite3_value *)a3;
-- (BRCItemID_v9)initWithRootObject:(RootItemObject *)a3;
-- (BRCItemID_v9)initWithUUID:(const char *)a3;
-- (BRCItemID_v9)initWithUUIDObject:(_UUIDItemObject_OLD *)a3;
-- (id)_initAsLibraryRootWithAppLibraryRowID:(id)a3 enclosureUUID:(id)a4;
++ (id)newFromSqliteValue:(sqlite3_value *)value;
+- (BRCItemID_v9)initWithRootObject:(RootItemObject *)object;
+- (BRCItemID_v9)initWithUUID:(const char *)d;
+- (BRCItemID_v9)initWithUUIDObject:(_UUIDItemObject_OLD *)object;
+- (id)_initAsLibraryRootWithAppLibraryRowID:(id)d enclosureUUID:(id)iD;
 - (id)itemIDString;
 - (void)itemIDString;
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4;
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index;
 @end
 
 @implementation BRCItemID_v9
@@ -69,7 +69,7 @@ LABEL_16:
   return v5;
 }
 
-- (BRCItemID_v9)initWithUUID:(const char *)a3
+- (BRCItemID_v9)initWithUUID:(const char *)d
 {
   v5.receiver = self;
   v5.super_class = BRCItemID_v9;
@@ -77,13 +77,13 @@ LABEL_16:
   if (result)
   {
     result->_kind = 0;
-    *result->_uuid = *a3;
+    *result->_uuid = *d;
   }
 
   return result;
 }
 
-- (BRCItemID_v9)initWithRootObject:(RootItemObject *)a3
+- (BRCItemID_v9)initWithRootObject:(RootItemObject *)object
 {
   v9.receiver = self;
   v9.super_class = BRCItemID_v9;
@@ -91,12 +91,12 @@ LABEL_16:
   v5 = v4;
   if (v4)
   {
-    v4->_kind = a3->var0;
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(&a3->var0 + 1)];
+    v4->_kind = object->var0;
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(&object->var0 + 1)];
     appLibraryRowID = v5->_appLibraryRowID;
     v5->_appLibraryRowID = v6;
 
-    if (a3->var0 - 3 <= 0xFFFFFFFD)
+    if (object->var0 - 3 <= 0xFFFFFFFD)
     {
       [BRCItemID_v9 initWithRootObject:];
     }
@@ -105,7 +105,7 @@ LABEL_16:
   return v5;
 }
 
-- (BRCItemID_v9)initWithUUIDObject:(_UUIDItemObject_OLD *)a3
+- (BRCItemID_v9)initWithUUIDObject:(_UUIDItemObject_OLD *)object
 {
   v9.receiver = self;
   v9.super_class = BRCItemID_v9;
@@ -113,13 +113,13 @@ LABEL_16:
   v5 = v4;
   if (v4)
   {
-    v4->_kind = a3->var0;
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(&a3->var0 + 1)];
+    v4->_kind = object->var0;
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(&object->var0 + 1)];
     appLibraryRowID = v5->_appLibraryRowID;
     v5->_appLibraryRowID = v6;
 
-    *v5->_uuid = *(&a3->var1 + 1);
-    if (a3->var0 - 6 <= 0xFFFFFFFD)
+    *v5->_uuid = *(&object->var1 + 1);
+    if (object->var0 - 6 <= 0xFFFFFFFD)
     {
       [BRCItemID_v9 initWithUUIDObject:];
     }
@@ -128,10 +128,10 @@ LABEL_16:
   return v5;
 }
 
-+ (id)newFromSqliteValue:(sqlite3_value *)a3
++ (id)newFromSqliteValue:(sqlite3_value *)value
 {
   *&v28[13] = *MEMORY[0x277D85DE8];
-  v4 = sqlite3_value_type(a3);
+  v4 = sqlite3_value_type(value);
   if (v4 == 5)
   {
     goto LABEL_10;
@@ -140,8 +140,8 @@ LABEL_16:
   v5 = v4;
   if (v4 != 4)
   {
-    v11 = sqlite3_value_text(a3);
-    v12 = sqlite3_value_bytes(a3);
+    v11 = sqlite3_value_text(value);
+    v12 = sqlite3_value_bytes(value);
     v13 = brc_bread_crumbs();
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -159,8 +159,8 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  v6 = sqlite3_value_blob(a3);
-  v7 = sqlite3_value_bytes(a3);
+  v6 = sqlite3_value_blob(value);
+  v7 = sqlite3_value_bytes(value);
   if (v7 == 16)
   {
     v8 = [BRCItemID_v9 alloc];
@@ -203,7 +203,7 @@ LABEL_10:
   return [(BRCItemID_v9 *)v19 initWithUUIDObject:v6];
 }
 
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index
 {
   v18 = *MEMORY[0x277D85DE8];
   memset(v16, 0, 5);
@@ -251,7 +251,7 @@ LABEL_17:
 
 LABEL_19:
 
-        sqlite3_bind_null(a3, a4);
+        sqlite3_bind_null(bind, index);
 LABEL_27:
         v15 = *MEMORY[0x277D85DE8];
         return;
@@ -259,8 +259,8 @@ LABEL_27:
 
     *&v17[5] = *self->_uuid;
     v11 = v17;
-    v12 = a3;
-    v13 = a4;
+    bindCopy2 = bind;
+    indexCopy2 = index;
     v14 = 21;
     goto LABEL_26;
   }
@@ -290,11 +290,11 @@ LABEL_27:
 
 LABEL_22:
       v11 = v16;
-      v12 = a3;
-      v13 = a4;
+      bindCopy2 = bind;
+      indexCopy2 = index;
       v14 = 5;
 LABEL_26:
-      sqlite3_bind_blob(v12, v13, v11, v14, 0xFFFFFFFFFFFFFFFFLL);
+      sqlite3_bind_blob(bindCopy2, indexCopy2, v11, v14, 0xFFFFFFFFFFFFFFFFLL);
       goto LABEL_27;
     }
 
@@ -303,13 +303,13 @@ LABEL_26:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  sqlite3_bind_blob(a3, a4, self->_uuid, 16, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_blob(bind, index, self->_uuid, 16, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (id)_initAsLibraryRootWithAppLibraryRowID:(id)a3 enclosureUUID:(id)a4
+- (id)_initAsLibraryRootWithAppLibraryRowID:(id)d enclosureUUID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v18.receiver = self;
   v18.super_class = BRCItemID_v9;
   v9 = [(BRCItemID_v9 *)&v18 init];
@@ -321,7 +321,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!iDCopy)
   {
     v9->_kind = 1;
     goto LABEL_8;
@@ -331,11 +331,11 @@ LABEL_10:
   if (_br_parseUUIDString())
   {
 LABEL_8:
-    objc_storeStrong(p_isa + 1, a3);
-    if (!v7 || ![v7 unsignedLongLongValue])
+    objc_storeStrong(p_isa + 1, d);
+    if (!dCopy || ![dCopy unsignedLongLongValue])
     {
       abc_report_panic_with_signature();
-      [MEMORY[0x277CCACA8] stringWithFormat:@"can't initialize library root with invalid library rowid %@", v7];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"can't initialize library root with invalid library rowid %@", dCopy];
       objc_claimAutoreleasedReturnValue();
       v15 = brc_bread_crumbs();
       v16 = brc_default_log();
@@ -345,8 +345,8 @@ LABEL_8:
       }
 
       brc_append_system_info_to_message();
-      v17 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      __assert_rtn("[BRCItemID_v9 _initAsLibraryRootWithAppLibraryRowID:enclosureUUID:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCDatabaseSchema.m", 338, v17);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      __assert_rtn("[BRCItemID_v9 _initAsLibraryRootWithAppLibraryRowID:enclosureUUID:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCDatabaseSchema.m", 338, uTF8String);
     }
 
     goto LABEL_10;
@@ -368,7 +368,7 @@ LABEL_11:
 - (void)itemIDString
 {
   v7 = *MEMORY[0x277D85DE8];
-  v6 = *a1;
+  v6 = *self;
   OUTLINED_FUNCTION_9();
   _os_log_fault_impl(v1, v2, OS_LOG_TYPE_FAULT, v3, v4, 0x12u);
   v5 = *MEMORY[0x277D85DE8];

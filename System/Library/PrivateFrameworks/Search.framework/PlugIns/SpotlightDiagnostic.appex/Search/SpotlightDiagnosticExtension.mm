@@ -1,7 +1,7 @@
 @interface SpotlightDiagnosticExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
-- (id)runHelperWithDestination:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)runHelperWithDestination:(id)destination;
 @end
 
 @implementation SpotlightDiagnosticExtension
@@ -34,18 +34,18 @@
   return v5;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v51 = a3;
-  v4 = [v51 objectForKeyedSubscript:@"DEExtensionAttachmentsParamBundleIDKey"];
+  parametersCopy = parameters;
+  v4 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamBundleIDKey"];
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 firstObject];
+      firstObject = [v4 firstObject];
 
-      v4 = v5;
+      v4 = firstObject;
     }
 
     objc_opt_class();
@@ -60,7 +60,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v51;
+    *(&buf + 4) = parametersCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[SpotlightDiagnosticExtension attachmentsForParameters:] - %@", &buf, 0xCu);
   }
 
@@ -76,8 +76,8 @@
   v10 = SDLogCategoryExtension();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [v9 path];
-    sub_100001C34(v11, v60, v10);
+    path = [v9 path];
+    sub_100001C34(path, v60, v10);
   }
 
   if (SDIsAppleInternalInstall())
@@ -190,16 +190,16 @@
   return v49;
 }
 
-- (id)runHelperWithDestination:(id)a3
+- (id)runHelperWithDestination:(id)destination
 {
-  v3 = a3;
+  destinationCopy = destination;
   v4 = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.spotlight.diagnostic.helper" options:4096];
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DESpotlightDiagnosticHelperProtocol];
   [v4 setRemoteObjectInterface:v5];
 
   [v4 resume];
-  v6 = [v4 remoteObjectProxy];
-  v7 = [DEDaemonHelper generateSandboxExtensionWithDestinationDir:v3 pingTarget:v6];
+  remoteObjectProxy = [v4 remoteObjectProxy];
+  v7 = [DEDaemonHelper generateSandboxExtensionWithDestinationDir:destinationCopy pingTarget:remoteObjectProxy];
 
   v8 = dispatch_semaphore_create(0);
   v27 = 0;
@@ -208,7 +208,7 @@
   v30 = sub_10000165C;
   v31 = sub_10000166C;
   v32 = 0;
-  v9 = [v4 remoteObjectProxy];
+  remoteObjectProxy2 = [v4 remoteObjectProxy];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100001B08;
@@ -218,7 +218,7 @@
   v24 = v10;
   v11 = v4;
   v25 = v11;
-  [v9 runDiagnosticWithDestinationDir:v3 sandboxExtension:v7 replyURL:v23];
+  [remoteObjectProxy2 runDiagnosticWithDestinationDir:destinationCopy sandboxExtension:v7 replyURL:v23];
 
   v12 = dispatch_time(0, 20000000000);
   if (dispatch_semaphore_wait(v10, v12))

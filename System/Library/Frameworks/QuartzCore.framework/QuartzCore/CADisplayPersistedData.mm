@@ -2,62 +2,62 @@
 + (id)sharedInstance;
 + (id)supportedClasses;
 - (CADisplayPersistedData)init;
-- (CADisplayPersistedData)initWithCoder:(id)a3;
-- (Mode)preferredModeForUUID:(id)a3;
-- (double)latencyForUUID:(id)a3 andMode:(Mode)a4;
+- (CADisplayPersistedData)initWithCoder:(id)coder;
+- (Mode)preferredModeForUUID:(id)d;
+- (double)latencyForUUID:(id)d andMode:(Mode)mode;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)save;
-- (void)setLatency:(double)a3 forUUID:(id)a4 andMode:(Mode)a5;
-- (void)setPreferredMode:(Mode)a3 forUUID:(id)a4;
+- (void)setLatency:(double)latency forUUID:(id)d andMode:(Mode)mode;
+- (void)setPreferredMode:(Mode)mode forUUID:(id)d;
 - (void)update;
 @end
 
 @implementation CADisplayPersistedData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = objc_autoreleasePoolPush();
   if (self->_version)
   {
-    [a3 encodeObject:MEMORY[0x1E695E118] forKey:@"hasVersion"];
-    [a3 encodeObject:self->_version forKey:@"version"];
+    [coder encodeObject:MEMORY[0x1E695E118] forKey:@"hasVersion"];
+    [coder encodeObject:self->_version forKey:@"version"];
   }
 
   else
   {
-    [a3 encodeObject:MEMORY[0x1E695E110] forKey:@"hasVersion"];
+    [coder encodeObject:MEMORY[0x1E695E110] forKey:@"hasVersion"];
   }
 
   latencies = self->_latencies;
   if (latencies && [(NSMutableArray *)latencies count])
   {
-    [a3 encodeObject:MEMORY[0x1E695E118] forKey:@"hasLatencies"];
-    [a3 encodeObject:-[NSMutableArray copy](self->_latencies forKey:{"copy"), @"latencies"}];
+    [coder encodeObject:MEMORY[0x1E695E118] forKey:@"hasLatencies"];
+    [coder encodeObject:-[NSMutableArray copy](self->_latencies forKey:{"copy"), @"latencies"}];
   }
 
   else
   {
-    [a3 encodeObject:MEMORY[0x1E695E110] forKey:@"hasLatencies"];
+    [coder encodeObject:MEMORY[0x1E695E110] forKey:@"hasLatencies"];
   }
 
   preferredModes = self->_preferredModes;
   if (preferredModes && [(NSMutableArray *)preferredModes count])
   {
-    [a3 encodeObject:MEMORY[0x1E695E118] forKey:@"hasPreferredModes"];
-    [a3 encodeObject:-[NSMutableArray copy](self->_preferredModes forKey:{"copy"), @"preferredModes"}];
+    [coder encodeObject:MEMORY[0x1E695E118] forKey:@"hasPreferredModes"];
+    [coder encodeObject:-[NSMutableArray copy](self->_preferredModes forKey:{"copy"), @"preferredModes"}];
   }
 
   else
   {
-    [a3 encodeObject:MEMORY[0x1E695E110] forKey:@"hasPreferredModes"];
+    [coder encodeObject:MEMORY[0x1E695E110] forKey:@"hasPreferredModes"];
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (CADisplayPersistedData)initWithCoder:(id)a3
+- (CADisplayPersistedData)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -65,15 +65,15 @@
   v4 = [(CADisplayPersistedData *)&v8 init];
   if (v4)
   {
-    v4->_version = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-    v5 = [a3 decodeObjectOfClasses:+[CADisplayPersistedData supportedClasses](CADisplayPersistedData forKey:{"supportedClasses"), @"latencies"}];
+    v4->_version = [coder decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v5 = [coder decodeObjectOfClasses:+[CADisplayPersistedData supportedClasses](CADisplayPersistedData forKey:{"supportedClasses"), @"latencies"}];
     v4->_latencies = v5;
     if (!v5)
     {
       v4->_latencies = objc_opt_new();
     }
 
-    v6 = [a3 decodeObjectOfClasses:+[CADisplayPersistedData supportedClasses](CADisplayPersistedData forKey:{"supportedClasses"), @"preferredModes"}];
+    v6 = [coder decodeObjectOfClasses:+[CADisplayPersistedData supportedClasses](CADisplayPersistedData forKey:{"supportedClasses"), @"preferredModes"}];
     v4->_preferredModes = v6;
     if (!v6)
     {
@@ -170,7 +170,7 @@
   }
 }
 
-- (Mode)preferredModeForUUID:(id)a3
+- (Mode)preferredModeForUUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -194,7 +194,7 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        if ([a3 isEqualToString:{objc_msgSend(v10, "uuid")}])
+        if ([d isEqualToString:{objc_msgSend(v10, "uuid")}])
         {
           v11 = 0;
           CA::WindowServer::Display::Mode::Mode(&v11, [v10 mode]);
@@ -223,11 +223,11 @@ LABEL_11:
   return result;
 }
 
-- (void)setPreferredMode:(Mode)a3 forUUID:(id)a4
+- (void)setPreferredMode:(Mode)mode forUUID:(id)d
 {
-  v4 = *(&a3.var0.var1 + 1);
+  v4 = *(&mode.var0.var1 + 1);
   v9[1] = *MEMORY[0x1E69E9840];
-  v9[0] = a3.var0.var1;
+  v9[0] = mode.var0.var1;
   v6 = objc_alloc_init(CADisplayPersistedPreferredMode);
   [(CADisplayPersistedPreferredMode *)v6 setUuid:v4, v9[0]];
   [(CADisplayPersistedPreferredMode *)v6 setMode:CA::WindowServer::Display::Mode::create_dictionary_representation(v9)];
@@ -266,10 +266,10 @@ LABEL_8:
   [(CADisplayPersistedData *)self save];
 }
 
-- (double)latencyForUUID:(id)a3 andMode:(Mode)a4
+- (double)latencyForUUID:(id)d andMode:(Mode)mode
 {
   v22 = *MEMORY[0x1E69E9840];
-  var1 = a4.var0.var1;
+  var1 = mode.var0.var1;
   v6 = CA::WindowServer::Display::Mode::create_dictionary_representation(&var1);
   v18 = 0u;
   v19 = 0u;
@@ -292,7 +292,7 @@ LABEL_8:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if ([a3 isEqualToString:{objc_msgSend(v13, "uuid")}] && (-[__CFDictionary isEqual:](v6, "isEqual:", objc_msgSend(v13, "mode")) & 1) != 0)
+        if ([d isEqualToString:{objc_msgSend(v13, "uuid")}] && (-[__CFDictionary isEqual:](v6, "isEqual:", objc_msgSend(v13, "mode")) & 1) != 0)
         {
           [v13 latency];
           return v14;
@@ -312,15 +312,15 @@ LABEL_8:
   return v9;
 }
 
-- (void)setLatency:(double)a3 forUUID:(id)a4 andMode:(Mode)a5
+- (void)setLatency:(double)latency forUUID:(id)d andMode:(Mode)mode
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v13[0] = a5.var0.var1;
+  v13[0] = mode.var0.var1;
   v8 = CA::WindowServer::Display::Mode::create_dictionary_representation(v13);
   v9 = objc_alloc_init(CADisplayPersistedLatency);
-  [(CADisplayPersistedLatency *)v9 setUuid:a4];
+  [(CADisplayPersistedLatency *)v9 setUuid:d];
   [(CADisplayPersistedLatency *)v9 setMode:v8];
-  [(CADisplayPersistedLatency *)v9 setLatency:a3];
+  [(CADisplayPersistedLatency *)v9 setLatency:latency];
   if (![(NSMutableArray *)self->_latencies count])
   {
     goto LABEL_6;
@@ -331,7 +331,7 @@ LABEL_8:
   while (1)
   {
     v12 = [(NSMutableArray *)self->_latencies objectAtIndexedSubscript:v10];
-    if ([a4 isEqualToString:{objc_msgSend(v12, "uuid")}])
+    if ([d isEqualToString:{objc_msgSend(v12, "uuid")}])
     {
       if (-[__CFDictionary isEqual:](v8, "isEqual:", [v12 mode]))
       {
@@ -367,12 +367,12 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
-  [v3 appendFormat:@"<%@:%p; ", NSStringFromClass(v4), self];
-  [v3 appendFormat:@"version: %@, latencies: %@, preferredModes:%@", self->_version, self->_latencies, self->_preferredModes];
-  [v3 appendString:@">"];
-  return v3;
+  [string appendFormat:@"<%@:%p; ", NSStringFromClass(v4), self];
+  [string appendFormat:@"version: %@, latencies: %@, preferredModes:%@", self->_version, self->_latencies, self->_preferredModes];
+  [string appendString:@">"];
+  return string;
 }
 
 - (void)dealloc

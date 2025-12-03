@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationFTABSubfileDigestFilename
 - (UARPMetaDataPersonalizationFTABSubfileDigestFilename)init;
-- (UARPMetaDataPersonalizationFTABSubfileDigestFilename)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationFTABSubfileDigestFilename)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationFTABSubfileDigestFilename)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationFTABSubfileDigestFilename)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationFTABSubfileDigestFilename)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationFTABSubfileDigestFilename)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationFTABSubfileDigestFilename *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataPersonalizationFTABSubfileDigestFilename;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     filename = v7->_filename;
     v7->_filename = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataPersonalizationFTABSubfileDigestFilename)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationFTABSubfileDigestFilename)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationFTABSubfileDigestFilename *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     filename = v6->_filename;
     v6->_filename = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataPersonalizationFTABSubfileDigestFilename *)self filename];
+  filename = [(UARPMetaDataPersonalizationFTABSubfileDigestFilename *)self filename];
   v6.receiver = self;
   v6.super_class = UARPMetaDataPersonalizationFTABSubfileDigestFilename;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:filename];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataPersonalizationFTABSubfileDigestFilename *)self filename];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  filename = [(UARPMetaDataPersonalizationFTABSubfileDigestFilename *)self filename];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, filename];
 
   return v5;
 }

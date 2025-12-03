@@ -1,39 +1,39 @@
 @interface CBCombinedConfigProvider
-+ (id)providerFromList:(id)a3;
-- (BOOL)loadFixedFloat:(id)a3 toDestination:(float *)a4;
-- (BOOL)loadFixedFloat:(id)a3 withScaler:(float)a4 toDestination:(float *)a5;
-- (BOOL)loadFloat:(id)a3 toDestination:(float *)a4;
-- (BOOL)loadInt:(id)a3 toDestination:(int *)a4;
-- (BOOL)loadUint:(id)a3 toDestination:(unsigned int *)a4;
-- (CBCombinedConfigProvider)initWithProviders:(id)a3;
-- (unint64_t)loadFloatArray:(id)a3 toDestination:(float *)a4;
-- (unint64_t)loadIOFixedArray:(id)a3 toDestination:(float *)a4;
-- (unint64_t)loadInt16Array:(id)a3 toDestination:(signed __int16 *)a4;
-- (unint64_t)loadUintArray:(id)a3 toDestination:(unsigned int *)a4;
++ (id)providerFromList:(id)list;
+- (BOOL)loadFixedFloat:(id)float toDestination:(float *)destination;
+- (BOOL)loadFixedFloat:(id)float withScaler:(float)scaler toDestination:(float *)destination;
+- (BOOL)loadFloat:(id)float toDestination:(float *)destination;
+- (BOOL)loadInt:(id)int toDestination:(int *)destination;
+- (BOOL)loadUint:(id)uint toDestination:(unsigned int *)destination;
+- (CBCombinedConfigProvider)initWithProviders:(id)providers;
+- (unint64_t)loadFloatArray:(id)array toDestination:(float *)destination;
+- (unint64_t)loadIOFixedArray:(id)array toDestination:(float *)destination;
+- (unint64_t)loadInt16Array:(id)array toDestination:(signed __int16 *)destination;
+- (unint64_t)loadUintArray:(id)array toDestination:(unsigned int *)destination;
 - (void)dealloc;
 @end
 
 @implementation CBCombinedConfigProvider
 
-+ (id)providerFromList:(id)a3
++ (id)providerFromList:(id)list
 {
-  v3 = [[CBCombinedConfigProvider alloc] initWithProviders:a3];
+  v3 = [[CBCombinedConfigProvider alloc] initWithProviders:list];
 
   return v3;
 }
 
-- (CBCombinedConfigProvider)initWithProviders:(id)a3
+- (CBCombinedConfigProvider)initWithProviders:(id)providers
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = CBCombinedConfigProvider;
   v4 = [(CBCombinedConfigProvider *)&v17 init];
-  if ([a3 count])
+  if ([providers count])
   {
-    if ([a3 count] == 1)
+    if ([providers count] == 1)
     {
 
-      v4 = [a3 objectAtIndexedSubscript:0];
+      v4 = [providers objectAtIndexedSubscript:0];
     }
 
     else
@@ -43,7 +43,7 @@
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v6 = [providers countByEnumeratingWithState:&v13 objects:v18 count:16];
       if (v6)
       {
         v7 = v6;
@@ -55,7 +55,7 @@
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(providers);
             }
 
             v10 = *(*(&v13 + 1) + 8 * v9);
@@ -74,7 +74,7 @@
           }
 
           while (v7 != v9);
-          v7 = [a3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+          v7 = [providers countByEnumeratingWithState:&v13 objects:v18 count:16];
         }
 
         while (v7);
@@ -102,7 +102,7 @@
   [(CBCombinedConfigProvider *)&v3 dealloc];
 }
 
-- (BOOL)loadFixedFloat:(id)a3 toDestination:(float *)a4
+- (BOOL)loadFixedFloat:(id)float toDestination:(float *)destination
 {
   v28 = *MEMORY[0x277D85DE8];
   v17 = 0u;
@@ -126,14 +126,14 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        if ([v12 loadFixedFloat:a3 toDestination:a4])
+        if ([v12 loadFixedFloat:float toDestination:destination])
         {
           logHandle = self->_logHandle;
           if (logHandle && os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            v15 = *a4;
+            v15 = *destination;
             *buf = 138412802;
-            v22 = a3;
+            floatCopy = float;
             v23 = 2048;
             v24 = v15;
             v25 = 2112;
@@ -165,7 +165,7 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)loadFixedFloat:(id)a3 withScaler:(float)a4 toDestination:(float *)a5
+- (BOOL)loadFixedFloat:(id)float withScaler:(float)scaler toDestination:(float *)destination
 {
   v31 = *MEMORY[0x277D85DE8];
   v20 = 0u;
@@ -189,15 +189,15 @@ LABEL_14:
         }
 
         v15 = *(*(&v20 + 1) + 8 * v14);
-        *&v11 = a4;
-        if ([v15 loadFixedFloat:a3 withScaler:a5 toDestination:v11])
+        *&v11 = scaler;
+        if ([v15 loadFixedFloat:float withScaler:destination toDestination:v11])
         {
           logHandle = self->_logHandle;
           if (logHandle && os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            v18 = *a5;
+            v18 = *destination;
             *buf = 138412802;
-            v25 = a3;
+            floatCopy = float;
             v26 = 2048;
             v27 = v18;
             v28 = 2112;
@@ -229,7 +229,7 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)loadFloat:(id)a3 toDestination:(float *)a4
+- (BOOL)loadFloat:(id)float toDestination:(float *)destination
 {
   v28 = *MEMORY[0x277D85DE8];
   v17 = 0u;
@@ -253,14 +253,14 @@ LABEL_14:
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        if ([v12 loadFloat:a3 toDestination:a4])
+        if ([v12 loadFloat:float toDestination:destination])
         {
           logHandle = self->_logHandle;
           if (logHandle && os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            v15 = *a4;
+            v15 = *destination;
             *buf = 138412802;
-            v22 = a3;
+            floatCopy = float;
             v23 = 2048;
             v24 = v15;
             v25 = 2112;
@@ -292,7 +292,7 @@ LABEL_14:
   return v8;
 }
 
-- (unint64_t)loadFloatArray:(id)a3 toDestination:(float *)a4
+- (unint64_t)loadFloatArray:(id)array toDestination:(float *)destination
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -315,7 +315,7 @@ LABEL_14:
           objc_enumerationMutation(providers);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v11) loadFloatArray:a3 toDestination:a4])
+        if ([*(*(&v13 + 1) + 8 * v11) loadFloatArray:array toDestination:destination])
         {
           if (self->_logHandle && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
           {
@@ -346,7 +346,7 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)loadIOFixedArray:(id)a3 toDestination:(float *)a4
+- (unint64_t)loadIOFixedArray:(id)array toDestination:(float *)destination
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -369,7 +369,7 @@ LABEL_14:
           objc_enumerationMutation(providers);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v11) loadIOFixedArray:a3 toDestination:a4])
+        if ([*(*(&v13 + 1) + 8 * v11) loadIOFixedArray:array toDestination:destination])
         {
           if (self->_logHandle && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
           {
@@ -400,7 +400,7 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)loadInt16Array:(id)a3 toDestination:(signed __int16 *)a4
+- (unint64_t)loadInt16Array:(id)array toDestination:(signed __int16 *)destination
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -423,7 +423,7 @@ LABEL_14:
           objc_enumerationMutation(providers);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v11) loadInt16Array:a3 toDestination:a4])
+        if ([*(*(&v13 + 1) + 8 * v11) loadInt16Array:array toDestination:destination])
         {
           if (self->_logHandle && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
           {
@@ -454,7 +454,7 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)loadInt:(id)a3 toDestination:(int *)a4
+- (BOOL)loadInt:(id)int toDestination:(int *)destination
 {
   v28 = *MEMORY[0x277D85DE8];
   v17 = 0u;
@@ -478,14 +478,14 @@ LABEL_14:
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        if ([v12 loadInt:a3 toDestination:a4])
+        if ([v12 loadInt:int toDestination:destination])
         {
           logHandle = self->_logHandle;
           if (logHandle && os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            v15 = *a4;
+            v15 = *destination;
             *buf = 138412802;
-            v22 = a3;
+            intCopy = int;
             v23 = 1024;
             v24 = v15;
             v25 = 2112;
@@ -517,7 +517,7 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)loadUint:(id)a3 toDestination:(unsigned int *)a4
+- (BOOL)loadUint:(id)uint toDestination:(unsigned int *)destination
 {
   v28 = *MEMORY[0x277D85DE8];
   v17 = 0u;
@@ -541,14 +541,14 @@ LABEL_14:
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        if ([v12 loadUint:a3 toDestination:a4])
+        if ([v12 loadUint:uint toDestination:destination])
         {
           logHandle = self->_logHandle;
           if (logHandle && os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            v15 = *a4;
+            v15 = *destination;
             *buf = 138412802;
-            v22 = a3;
+            uintCopy = uint;
             v23 = 1024;
             v24 = v15;
             v25 = 2112;
@@ -580,7 +580,7 @@ LABEL_14:
   return v8;
 }
 
-- (unint64_t)loadUintArray:(id)a3 toDestination:(unsigned int *)a4
+- (unint64_t)loadUintArray:(id)array toDestination:(unsigned int *)destination
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -603,7 +603,7 @@ LABEL_14:
           objc_enumerationMutation(providers);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v11) loadUintArray:a3 toDestination:a4])
+        if ([*(*(&v13 + 1) + 8 * v11) loadUintArray:array toDestination:destination])
         {
           if (self->_logHandle && os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
           {

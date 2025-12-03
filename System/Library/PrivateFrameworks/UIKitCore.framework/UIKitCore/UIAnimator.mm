@@ -1,32 +1,32 @@
 @interface UIAnimator
 + (id)sharedAnimator;
 - (UIAnimator)init;
-- (void)_addAnimation:(id)a3 withDuration:(double)a4 start:(BOOL)a5 startTime:(double)a6;
-- (void)_advanceAnimationsOnScreenWithIdentifier:(id)a3 withTimestamp:(double)a4;
-- (void)_startAnimation:(id)a3 withStartTime:(double)a4;
-- (void)addAnimation:(id)a3 withDuration:(double)a4 start:(BOOL)a5;
-- (void)addAnimations:(id)a3 withDuration:(double)a4 start:(BOOL)a5;
+- (void)_addAnimation:(id)animation withDuration:(double)duration start:(BOOL)start startTime:(double)time;
+- (void)_advanceAnimationsOnScreenWithIdentifier:(id)identifier withTimestamp:(double)timestamp;
+- (void)_startAnimation:(id)animation withStartTime:(double)time;
+- (void)addAnimation:(id)animation withDuration:(double)duration start:(BOOL)start;
+- (void)addAnimations:(id)animations withDuration:(double)duration start:(BOOL)start;
 - (void)dealloc;
-- (void)removeAnimationsForTarget:(id)a3;
-- (void)removeAnimationsForTarget:(id)a3 ofKind:(Class)a4;
-- (void)startAnimation:(id)a3;
-- (void)stopAnimation:(id)a3;
+- (void)removeAnimationsForTarget:(id)target;
+- (void)removeAnimationsForTarget:(id)target ofKind:(Class)kind;
+- (void)startAnimation:(id)animation;
+- (void)stopAnimation:(id)animation;
 @end
 
 @implementation UIAnimator
 
 + (id)sharedAnimator
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKey:@"sharedAnimator"];
+  v4 = [threadDictionary objectForKey:@"sharedAnimator"];
   if (!v4)
   {
     v4 = objc_alloc_init(UIAnimator);
     if (v4)
     {
-      [v3 setObject:v4 forKey:@"sharedAnimator"];
+      [threadDictionary setObject:v4 forKey:@"sharedAnimator"];
     }
   }
 
@@ -83,8 +83,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NSMutableDictionary *)self->_animatorScreenLinks allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  allKeys = [(NSMutableDictionary *)self->_animatorScreenLinks allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -95,7 +95,7 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v16 + 1) + 8 * j);
@@ -105,7 +105,7 @@
         [(NSMutableDictionary *)self->_animatorScreenLinks removeObjectForKey:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v10);
@@ -116,34 +116,34 @@
   [(UIAnimator *)&v15 dealloc];
 }
 
-- (void)addAnimation:(id)a3 withDuration:(double)a4 start:(BOOL)a5
+- (void)addAnimation:(id)animation withDuration:(double)duration start:(BOOL)start
 {
-  v5 = a5;
-  v10 = a3;
+  startCopy = start;
+  animationCopy = animation;
   v8 = 0.0;
-  if (v5)
+  if (startCopy)
   {
     currentAnimationTime();
     v8 = v9;
   }
 
-  [(UIAnimator *)self _addAnimation:v10 withDuration:v5 start:a4 startTime:v8];
+  [(UIAnimator *)self _addAnimation:animationCopy withDuration:startCopy start:duration startTime:v8];
 }
 
-- (void)addAnimations:(id)a3 withDuration:(double)a4 start:(BOOL)a5
+- (void)addAnimations:(id)animations withDuration:(double)duration start:(BOOL)start
 {
-  v5 = a5;
-  v8 = a3;
+  startCopy = start;
+  animationsCopy = animations;
   v9 = 0.0;
-  v15 = v8;
-  if (v5)
+  v15 = animationsCopy;
+  if (startCopy)
   {
     currentAnimationTime();
-    v8 = v15;
+    animationsCopy = v15;
     v9 = v10;
   }
 
-  v11 = [v8 count];
+  v11 = [animationsCopy count];
   if (v11 >= 1)
   {
     v12 = 0;
@@ -151,7 +151,7 @@
     do
     {
       v14 = [v15 objectAtIndex:v12];
-      [(UIAnimator *)self _addAnimation:v14 withDuration:v5 start:a4 startTime:v9];
+      [(UIAnimator *)self _addAnimation:v14 withDuration:startCopy start:duration startTime:v9];
 
       ++v12;
     }
@@ -160,23 +160,23 @@
   }
 }
 
-- (void)removeAnimationsForTarget:(id)a3
+- (void)removeAnimationsForTarget:(id)target
 {
-  v4 = a3;
-  [(UIAnimator *)self removeAnimationsForTarget:v4 ofKind:objc_opt_class()];
+  targetCopy = target;
+  [(UIAnimator *)self removeAnimationsForTarget:targetCopy ofKind:objc_opt_class()];
 }
 
-- (void)removeAnimationsForTarget:(id)a3 ofKind:(Class)a4
+- (void)removeAnimationsForTarget:(id)target ofKind:(Class)kind
 {
-  v6 = a3;
+  targetCopy = target;
   animations = self->_animations;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__UIAnimator_removeAnimationsForTarget_ofKind___block_invoke;
   v12[3] = &unk_1E70F5BB8;
-  v13 = v6;
-  v14 = a4;
-  v8 = v6;
+  v13 = targetCopy;
+  kindCopy = kind;
+  v8 = targetCopy;
   v9 = [(NSMutableArray *)animations indexesOfObjectsPassingTest:v12];
   v10 = [(NSMutableArray *)animations objectsAtIndexes:v9];
 
@@ -214,93 +214,93 @@ void __47__UIAnimator_removeAnimationsForTarget_ofKind___block_invoke_2(uint64_t
   }
 }
 
-- (void)startAnimation:(id)a3
+- (void)startAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   currentAnimationTime();
-  [(UIAnimator *)self _startAnimation:v4 withStartTime:?];
+  [(UIAnimator *)self _startAnimation:animationCopy withStartTime:?];
 }
 
-- (void)stopAnimation:(id)a3
+- (void)stopAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [v4 _screenIdentifier];
-  v6 = [(NSMutableDictionary *)self->_animatorScreenLinks objectForKeyedSubscript:v5];
+  animationCopy = animation;
+  _screenIdentifier = [animationCopy _screenIdentifier];
+  v6 = [(NSMutableDictionary *)self->_animatorScreenLinks objectForKeyedSubscript:_screenIdentifier];
   currentAnimationTime();
-  [v4 fractionForTime:?];
+  [animationCopy fractionForTime:?];
   v8 = v7;
-  if ([v4 state] == 1)
+  if ([animationCopy state] == 1)
   {
     [v6 setAnimationCount:{(objc_msgSend(v6, "animationCount") - 1)}];
   }
 
-  [v4 markStop];
+  [animationCopy markStop];
   if (v6 && ![v6 animationCount])
   {
     [v6 invalidate];
-    [(NSMutableDictionary *)self->_animatorScreenLinks removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_animatorScreenLinks removeObjectForKey:_screenIdentifier];
   }
 
-  v15 = v4;
+  v15 = animationCopy;
   [(NSMutableArray *)self->_animations removeObject:v15];
-  v9 = [v15 completion];
-  v10 = v9;
-  if (v9)
+  completion = [v15 completion];
+  v10 = completion;
+  if (completion)
   {
-    (*(v9 + 16))(v9);
+    (*(completion + 16))(completion);
     [v15 setCompletion:0];
   }
 
-  v11 = [v15 delegate];
-  if (v11)
+  delegate = [v15 delegate];
+  if (delegate)
   {
-    v12 = [v15 action];
-    if (v12)
+    action = [v15 action];
+    if (action)
     {
-      v13 = v12;
+      v13 = action;
       if (dyld_program_sdk_at_least())
       {
-        [v11 v13];
+        [delegate v13];
       }
 
       else
       {
-        [v11 performSelector:v13 withObject:v15];
+        [delegate performSelector:v13 withObject:v15];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
       LODWORD(v14) = v8;
-      [v11 animator:self stopAnimation:v15 fraction:v14];
+      [delegate animator:self stopAnimation:v15 fraction:v14];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v11 animator:self stopAnimation:v15];
+      [delegate animator:self stopAnimation:v15];
     }
   }
 }
 
-- (void)_addAnimation:(id)a3 withDuration:(double)a4 start:(BOOL)a5 startTime:(double)a6
+- (void)_addAnimation:(id)animation withDuration:(double)duration start:(BOOL)start startTime:(double)time
 {
-  v7 = a5;
+  startCopy = start;
   v17 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if ([v10 state] == 1)
+  animationCopy = animation;
+  if ([animationCopy state] == 1)
   {
     v11 = *(__UILogGetCategoryCachedImpl("Animation", &_addAnimation_withDuration_start_startTime____s_category) + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v10;
+      v16 = animationCopy;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Attempted to add running animation: %@", &v15, 0xCu);
     }
   }
 
   else
   {
-    [v10 setDuration:UIAnimationDragCoefficient() * a4];
+    [animationCopy setDuration:UIAnimationDragCoefficient() * duration];
     animations = self->_animations;
     if (!animations)
     {
@@ -311,63 +311,63 @@ void __47__UIAnimator_removeAnimationsForTarget_ofKind___block_invoke_2(uint64_t
       animations = self->_animations;
     }
 
-    [(NSMutableArray *)animations addObject:v10];
-    if (v7)
+    [(NSMutableArray *)animations addObject:animationCopy];
+    if (startCopy)
     {
-      [(UIAnimator *)self _startAnimation:v10 withStartTime:a6];
+      [(UIAnimator *)self _startAnimation:animationCopy withStartTime:time];
     }
   }
 }
 
-- (void)_startAnimation:(id)a3 withStartTime:(double)a4
+- (void)_startAnimation:(id)animation withStartTime:(double)time
 {
-  v6 = a3;
-  if ([v6 state] != 1)
+  animationCopy = animation;
+  if ([animationCopy state] != 1)
   {
-    v7 = [v6 _screenIdentifier];
-    v8 = [(NSMutableDictionary *)self->_animatorScreenLinks objectForKeyedSubscript:v7];
+    _screenIdentifier = [animationCopy _screenIdentifier];
+    v8 = [(NSMutableDictionary *)self->_animatorScreenLinks objectForKeyedSubscript:_screenIdentifier];
 
     if (v8)
     {
-      v9 = [(NSMutableDictionary *)self->_animatorScreenLinks objectForKeyedSubscript:v7];
+      v9 = [(NSMutableDictionary *)self->_animatorScreenLinks objectForKeyedSubscript:_screenIdentifier];
       [v9 setAnimationCount:{(objc_msgSend(v9, "animationCount") + 1)}];
     }
 
     else
     {
-      v10 = [v6 _screen];
+      _screen = [animationCopy _screen];
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __44__UIAnimator__startAnimation_withStartTime___block_invoke;
       v18 = &unk_1E70F5C08;
-      v19 = self;
-      v11 = v7;
+      selfCopy = self;
+      v11 = _screenIdentifier;
       v20 = v11;
-      v12 = [UIAnimatorScreenLink startTimerWithScreen:v10 action:&v15];
+      v12 = [UIAnimatorScreenLink startTimerWithScreen:_screen action:&v15];
 
-      [(NSMutableDictionary *)self->_animatorScreenLinks setObject:v12 forKeyedSubscript:v11, v15, v16, v17, v18, v19];
+      [(NSMutableDictionary *)self->_animatorScreenLinks setObject:v12 forKeyedSubscript:v11, v15, v16, v17, v18, selfCopy];
     }
 
-    [v6 markStart:a4];
-    self->_lastUpdateTime = a4;
-    v13 = [v6 delegate];
-    if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+    [animationCopy markStart:time];
+    self->_lastUpdateTime = time;
+    delegate = [animationCopy delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v13 animator:self startAnimation:v6];
+      [delegate animator:self startAnimation:animationCopy];
     }
 
     if (__animatorEnabled == 1)
     {
       LODWORD(v14) = 1.0;
-      [v6 setProgress:v14];
-      [(UIAnimator *)self stopAnimation:v6];
+      [animationCopy setProgress:v14];
+      [(UIAnimator *)self stopAnimation:animationCopy];
     }
   }
 }
 
-- (void)_advanceAnimationsOnScreenWithIdentifier:(id)a3 withTimestamp:(double)a4
+- (void)_advanceAnimationsOnScreenWithIdentifier:(id)identifier withTimestamp:(double)timestamp
 {
-  v13 = a3;
+  identifierCopy = identifier;
   v6 = [(NSMutableArray *)self->_animations copy];
   v7 = [v6 count];
   if (v7 >= 1)
@@ -378,11 +378,11 @@ void __47__UIAnimator_removeAnimationsForTarget_ofKind___block_invoke_2(uint64_t
       v9 = [v6 objectAtIndex:v8 - 2];
       if ([v9 state] == 1)
       {
-        v10 = [v9 _screenIdentifier];
+        _screenIdentifier = [v9 _screenIdentifier];
 
-        if (v10 == v13)
+        if (_screenIdentifier == identifierCopy)
         {
-          [v9 fractionForTime:a4];
+          [v9 fractionForTime:timestamp];
           v12 = v11;
           [v9 progressForFraction:?];
           [v9 setProgress:?];
@@ -399,7 +399,7 @@ void __47__UIAnimator_removeAnimationsForTarget_ofKind___block_invoke_2(uint64_t
     while (v8 > 1);
   }
 
-  self->_lastUpdateTime = a4;
+  self->_lastUpdateTime = timestamp;
 }
 
 @end

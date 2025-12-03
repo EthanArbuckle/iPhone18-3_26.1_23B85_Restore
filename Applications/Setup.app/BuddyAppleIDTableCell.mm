@@ -1,130 +1,130 @@
 @interface BuddyAppleIDTableCell
-- (BuddyAppleIDTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 columnCount:(unint64_t)a5;
-- (id)addService:(id)a3 description:(id)a4;
+- (BuddyAppleIDTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier columnCount:(unint64_t)count;
+- (id)addService:(id)service description:(id)description;
 @end
 
 @implementation BuddyAppleIDTableCell
 
-- (BuddyAppleIDTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 columnCount:(unint64_t)a5
+- (BuddyAppleIDTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier columnCount:(unint64_t)count
 {
-  v41 = self;
+  selfCopy = self;
   v40 = a2;
-  v39 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v37 = a5;
-  v6 = v41;
-  v41 = 0;
+  objc_storeStrong(&location, identifier);
+  countCopy = count;
+  v6 = selfCopy;
+  selfCopy = 0;
   v36.receiver = v6;
   v36.super_class = BuddyAppleIDTableCell;
-  v41 = [(BuddyAppleIDTableCell *)&v36 initWithStyle:v39 reuseIdentifier:location];
-  objc_storeStrong(&v41, v41);
-  if (v41)
+  selfCopy = [(BuddyAppleIDTableCell *)&v36 initWithStyle:styleCopy reuseIdentifier:location];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [v41 setSelectionStyle:0];
-    [v41 setColumnCount:v37];
+    [selfCopy setSelectionStyle:0];
+    [selfCopy setColumnCount:countCopy];
     v7 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    [v41 setStackView:v7];
+    [selfCopy setStackView:v7];
 
-    v8 = [v41 stackView];
-    [v8 setAxis:1];
+    stackView = [selfCopy stackView];
+    [stackView setAxis:1];
 
-    v9 = [v41 stackView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    stackView2 = [selfCopy stackView];
+    [stackView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [v41 stackView];
-    [v10 setSpacing:20.0];
+    stackView3 = [selfCopy stackView];
+    [stackView3 setSpacing:20.0];
 
-    v11 = [v41 contentView];
-    v12 = [v41 stackView];
-    [v11 addSubview:v12];
+    contentView = [selfCopy contentView];
+    stackView4 = [selfCopy stackView];
+    [contentView addSubview:stackView4];
 
-    v35 = [v41 contentView];
-    v33 = [v35 topAnchor];
-    v34 = [v41 stackView];
-    v32 = [v34 topAnchor];
-    v31 = [v33 constraintEqualToAnchor:?];
+    contentView2 = [selfCopy contentView];
+    topAnchor = [contentView2 topAnchor];
+    stackView5 = [selfCopy stackView];
+    topAnchor2 = [stackView5 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:?];
     v42[0] = v31;
-    v30 = [v41 contentView];
-    v28 = [v30 trailingAnchor];
-    v29 = [v41 stackView];
-    v27 = [v29 trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:?];
+    contentView3 = [selfCopy contentView];
+    trailingAnchor = [contentView3 trailingAnchor];
+    stackView6 = [selfCopy stackView];
+    trailingAnchor2 = [stackView6 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:?];
     v42[1] = v26;
-    v25 = [v41 contentView];
-    v13 = [v25 bottomAnchor];
-    v14 = [v41 stackView];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    contentView4 = [selfCopy contentView];
+    bottomAnchor = [contentView4 bottomAnchor];
+    stackView7 = [selfCopy stackView];
+    bottomAnchor2 = [stackView7 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v42[2] = v16;
-    v17 = [v41 contentView];
-    v18 = [v17 leadingAnchor];
-    v19 = [v41 stackView];
-    v20 = [v19 leadingAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    contentView5 = [selfCopy contentView];
+    leadingAnchor = [contentView5 leadingAnchor];
+    stackView8 = [selfCopy stackView];
+    leadingAnchor2 = [stackView8 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v42[3] = v21;
     v22 = [NSArray arrayWithObjects:v42 count:4];
     [NSLayoutConstraint activateConstraints:v22];
   }
 
-  v23 = v41;
+  v23 = selfCopy;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v23;
 }
 
-- (id)addService:(id)a3 description:(id)a4
+- (id)addService:(id)service description:(id)description
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, service);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, description);
   v5 = [BuddyAppleIDServiceView alloc];
   v19 = [(BuddyAppleIDServiceView *)v5 initWithImage:location[0] description:v20];
   [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-  if ([(BuddyAppleIDTableCell *)v22 columnCount]== 1)
+  if ([(BuddyAppleIDTableCell *)selfCopy columnCount]== 1)
   {
-    v6 = [(BuddyAppleIDTableCell *)v22 stackView];
-    [(UIStackView *)v6 addArrangedSubview:v19];
+    stackView = [(BuddyAppleIDTableCell *)selfCopy stackView];
+    [(UIStackView *)stackView addArrangedSubview:v19];
   }
 
   else
   {
-    v7 = [(BuddyAppleIDTableCell *)v22 rowStackView];
+    rowStackView = [(BuddyAppleIDTableCell *)selfCopy rowStackView];
 
-    if (v7)
+    if (rowStackView)
     {
-      v16 = [(BuddyAppleIDTableCell *)v22 rowStackView];
-      [(UIStackView *)v16 addArrangedSubview:v19];
+      rowStackView2 = [(BuddyAppleIDTableCell *)selfCopy rowStackView];
+      [(UIStackView *)rowStackView2 addArrangedSubview:v19];
 
-      [(BuddyAppleIDTableCell *)v22 setRowStackView:0];
+      [(BuddyAppleIDTableCell *)selfCopy setRowStackView:0];
     }
 
     else
     {
       v8 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-      [(BuddyAppleIDTableCell *)v22 setRowStackView:v8];
+      [(BuddyAppleIDTableCell *)selfCopy setRowStackView:v8];
 
-      v9 = [(BuddyAppleIDTableCell *)v22 rowStackView];
-      [(UIStackView *)v9 setAxis:0];
+      rowStackView3 = [(BuddyAppleIDTableCell *)selfCopy rowStackView];
+      [(UIStackView *)rowStackView3 setAxis:0];
 
-      v10 = [(BuddyAppleIDTableCell *)v22 rowStackView];
-      [(UIStackView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+      rowStackView4 = [(BuddyAppleIDTableCell *)selfCopy rowStackView];
+      [(UIStackView *)rowStackView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v11 = [(BuddyAppleIDTableCell *)v22 rowStackView];
-      [(UIStackView *)v11 setDistribution:1];
+      rowStackView5 = [(BuddyAppleIDTableCell *)selfCopy rowStackView];
+      [(UIStackView *)rowStackView5 setDistribution:1];
 
-      v12 = [(BuddyAppleIDTableCell *)v22 rowStackView];
-      [(UIStackView *)v12 setSpacing:23.0];
+      rowStackView6 = [(BuddyAppleIDTableCell *)selfCopy rowStackView];
+      [(UIStackView *)rowStackView6 setSpacing:23.0];
 
-      v13 = [(BuddyAppleIDTableCell *)v22 stackView];
-      v14 = [(BuddyAppleIDTableCell *)v22 rowStackView];
-      [(UIStackView *)v13 addArrangedSubview:v14];
+      stackView2 = [(BuddyAppleIDTableCell *)selfCopy stackView];
+      rowStackView7 = [(BuddyAppleIDTableCell *)selfCopy rowStackView];
+      [(UIStackView *)stackView2 addArrangedSubview:rowStackView7];
 
-      v15 = [(BuddyAppleIDTableCell *)v22 rowStackView];
-      [(UIStackView *)v15 addArrangedSubview:v19];
+      rowStackView8 = [(BuddyAppleIDTableCell *)selfCopy rowStackView];
+      [(UIStackView *)rowStackView8 addArrangedSubview:v19];
     }
   }
 

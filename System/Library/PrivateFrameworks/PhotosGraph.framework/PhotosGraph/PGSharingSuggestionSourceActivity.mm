@@ -1,24 +1,24 @@
 @interface PGSharingSuggestionSourceActivity
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
 @end
 
 @implementation PGSharingSuggestionSourceActivity
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v32 = a4;
-  v33 = v5;
-  v6 = [v5 momentNodes];
-  v36 = [v5 graph];
-  [v36 _checkCanRead];
+  inputCopy = input;
+  optionsCopy = options;
+  v33 = inputCopy;
+  momentNodes = [inputCopy momentNodes];
+  graph = [inputCopy graph];
+  [graph _checkCanRead];
   v7 = [MEMORY[0x277CBEB58] set];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v8 = v6;
+  v8 = momentNodes;
   v9 = [v8 countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v9)
   {
@@ -32,8 +32,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v52 + 1) + 8 * i) meaningLabels];
-        [v7 unionSet:v12];
+        meaningLabels = [*(*(&v52 + 1) + 8 * i) meaningLabels];
+        [v7 unionSet:meaningLabels];
       }
 
       v9 = [v8 countByEnumeratingWithState:&v52 objects:v58 count:16];
@@ -81,7 +81,7 @@
             v19 = v17;
             v42 = v19;
             v43 = &v44;
-            [v36 enumerateMeaningfulEventsWithMeaning:v18 usingBlock:v41];
+            [graph enumerateMeaningfulEventsWithMeaning:v18 usingBlock:v41];
             v20 = v45[3];
             v37 = 0u;
             v38 = 0u;

@@ -1,8 +1,8 @@
 @interface SBFSteppedAnimationTimingFunctionCalculator
 - (SBFSteppedAnimationTimingFunctionCalculator)init;
-- (double)valueForFunctionWithName:(id)a3;
-- (void)addTimingFunction:(id)a3 withName:(id)a4 constrainedToIntervalBetween:(double)a5 and:(double)a6;
-- (void)addTimingFunctionWithName:(id)a3 fromNormalizedAnimationSettings:(id)a4;
+- (double)valueForFunctionWithName:(id)name;
+- (void)addTimingFunction:(id)function withName:(id)name constrainedToIntervalBetween:(double)between and:(double)and;
+- (void)addTimingFunctionWithName:(id)name fromNormalizedAnimationSettings:(id)settings;
 @end
 
 @implementation SBFSteppedAnimationTimingFunctionCalculator
@@ -22,29 +22,29 @@
   return v2;
 }
 
-- (void)addTimingFunction:(id)a3 withName:(id)a4 constrainedToIntervalBetween:(double)a5 and:(double)a6
+- (void)addTimingFunction:(id)function withName:(id)name constrainedToIntervalBetween:(double)between and:(double)and
 {
-  v10 = a4;
-  v11 = [_SBSteppedAnimationTimingFunction timingFunctionWithTimingFunction:a3 constrainedToIntervalBetween:a5 and:a6];
-  [(NSMutableDictionary *)self->_functionsByName setObject:v11 forKey:v10];
+  nameCopy = name;
+  v11 = [_SBSteppedAnimationTimingFunction timingFunctionWithTimingFunction:function constrainedToIntervalBetween:between and:and];
+  [(NSMutableDictionary *)self->_functionsByName setObject:v11 forKey:nameCopy];
 }
 
-- (void)addTimingFunctionWithName:(id)a3 fromNormalizedAnimationSettings:(id)a4
+- (void)addTimingFunctionWithName:(id)name fromNormalizedAnimationSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [v6 timingFunction];
-  [v6 delay];
+  settingsCopy = settings;
+  nameCopy = name;
+  timingFunction = [settingsCopy timingFunction];
+  [settingsCopy delay];
   v9 = v8;
-  [v6 duration];
+  [settingsCopy duration];
   v11 = v10;
 
-  [(SBFSteppedAnimationTimingFunctionCalculator *)self addTimingFunction:v12 withName:v7 constrainedToIntervalBetween:v9 and:v11];
+  [(SBFSteppedAnimationTimingFunctionCalculator *)self addTimingFunction:timingFunction withName:nameCopy constrainedToIntervalBetween:v9 and:v11];
 }
 
-- (double)valueForFunctionWithName:(id)a3
+- (double)valueForFunctionWithName:(id)name
 {
-  v4 = [(NSMutableDictionary *)self->_functionsByName objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_functionsByName objectForKey:name];
   [v4 valueAtPercentage:self->_percentComplete];
   v6 = v5;
 

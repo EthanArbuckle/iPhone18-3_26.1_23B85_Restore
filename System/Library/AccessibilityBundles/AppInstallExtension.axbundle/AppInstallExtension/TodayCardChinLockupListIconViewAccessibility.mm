@@ -9,7 +9,7 @@
 {
   v6.receiver = self;
   v6.super_class = TodayCardChinLockupListIconViewAccessibility;
-  v2 = [(TodayCardChinLockupListIconViewAccessibility *)&v6 accessibilityLabel];
+  accessibilityLabel = [(TodayCardChinLockupListIconViewAccessibility *)&v6 accessibilityLabel];
   v3 = accessibilityAppStoreLocalizedString(@"app.suggestion");
   v4 = __AXStringForVariables();
 

@@ -1,27 +1,27 @@
 @interface MRNetServiceTransport
-+ (id)createDeviceInfoFromNetService:(id)a3;
-+ (id)createDeviceInfoFromTXTRecord:(id)a3;
-- (BOOL)getInputStream:(id *)a3 outputStream:(id *)a4 userInfo:(id)a5;
-- (MRNetServiceTransport)initWithNetService:(id)a3;
-- (id)createConnectionWithUserInfo:(id)a3;
++ (id)createDeviceInfoFromNetService:(id)service;
++ (id)createDeviceInfoFromTXTRecord:(id)record;
+- (BOOL)getInputStream:(id *)stream outputStream:(id *)outputStream userInfo:(id)info;
+- (MRNetServiceTransport)initWithNetService:(id)service;
+- (id)createConnectionWithUserInfo:(id)info;
 - (id)deviceInfo;
 - (void)dealloc;
-- (void)setNetService:(id)a3;
-- (void)updateDeviceInfoWithTXTRecord:(id)a3;
+- (void)setNetService:(id)service;
+- (void)updateDeviceInfoWithTXTRecord:(id)record;
 @end
 
 @implementation MRNetServiceTransport
 
-- (MRNetServiceTransport)initWithNetService:(id)a3
+- (MRNetServiceTransport)initWithNetService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = MRNetServiceTransport;
   v6 = [(MRNetServiceTransport *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_netService, a3);
+    objc_storeStrong(&v6->_netService, service);
     v7->_requiresCustomPairing = 1;
   }
 
@@ -36,38 +36,38 @@
   [(MRNetServiceTransport *)&v3 dealloc];
 }
 
-- (void)setNetService:(id)a3
+- (void)setNetService:(id)service
 {
-  v5 = a3;
-  if (self->_netService != v5)
+  serviceCopy = service;
+  if (self->_netService != serviceCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_netService, a3);
+    v12 = serviceCopy;
+    objc_storeStrong(&self->_netService, service);
     v6 = MEMORY[0x1E695AC20];
-    v7 = [(NSNetService *)v12 TXTRecordData];
-    v8 = [v6 dictionaryFromTXTRecordData:v7];
+    tXTRecordData = [(NSNetService *)v12 TXTRecordData];
+    v8 = [v6 dictionaryFromTXTRecordData:tXTRecordData];
     v9 = [v8 mutableCopy];
 
-    v10 = [(NSNetService *)v12 name];
-    v11 = [v10 dataUsingEncoding:4];
+    name = [(NSNetService *)v12 name];
+    v11 = [name dataUsingEncoding:4];
     [v9 setObject:v11 forKey:@"Name"];
 
     [(MRNetServiceTransport *)self updateDeviceInfoWithTXTRecord:v9];
-    v5 = v12;
+    serviceCopy = v12;
   }
 }
 
-+ (id)createDeviceInfoFromNetService:(id)a3
++ (id)createDeviceInfoFromNetService:(id)service
 {
   v3 = MEMORY[0x1E695AC20];
-  v4 = a3;
-  v5 = [v4 TXTRecordData];
-  v6 = [v3 dictionaryFromTXTRecordData:v5];
+  serviceCopy = service;
+  tXTRecordData = [serviceCopy TXTRecordData];
+  v6 = [v3 dictionaryFromTXTRecordData:tXTRecordData];
   v7 = [v6 mutableCopy];
 
-  v8 = [v4 name];
+  name = [serviceCopy name];
 
-  v9 = [v8 dataUsingEncoding:4];
+  v9 = [name dataUsingEncoding:4];
   [v7 setObject:v9 forKey:@"Name"];
 
   v10 = [objc_opt_class() createDeviceInfoFromTXTRecord:v7];
@@ -75,41 +75,41 @@
   return v10;
 }
 
-+ (id)createDeviceInfoFromTXTRecord:(id)a3
++ (id)createDeviceInfoFromTXTRecord:(id)record
 {
   v36 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  recordCopy = record;
   v5 = [v3 alloc];
-  v6 = [v4 objectForKeyedSubscript:@"UniqueIdentifier"];
+  v6 = [recordCopy objectForKeyedSubscript:@"UniqueIdentifier"];
   v7 = [v5 initWithData:v6 encoding:4];
 
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v9 = [v4 objectForKeyedSubscript:@"Name"];
+  v9 = [recordCopy objectForKeyedSubscript:@"Name"];
   v10 = [v8 initWithData:v9 encoding:4];
 
   v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v12 = [v4 objectForKeyedSubscript:@"ModelName"];
+  v12 = [recordCopy objectForKeyedSubscript:@"ModelName"];
   v13 = [v11 initWithData:v12 encoding:4];
 
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v15 = [v4 objectForKeyedSubscript:@"SystemBuildVersion"];
+  v15 = [recordCopy objectForKeyedSubscript:@"SystemBuildVersion"];
   v16 = [v14 initWithData:v15 encoding:4];
 
   v17 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v18 = [v4 objectForKeyedSubscript:@"BluetoothAddress"];
+  v18 = [recordCopy objectForKeyedSubscript:@"BluetoothAddress"];
   v19 = [v17 initWithData:v18];
 
   v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v21 = [v4 objectForKeyedSubscript:@"LocalAirPlayReceiverPairingIdentity"];
+  v21 = [recordCopy objectForKeyedSubscript:@"LocalAirPlayReceiverPairingIdentity"];
   v22 = [v20 initWithData:v21 encoding:4];
 
   v23 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v24 = [v4 objectForKeyedSubscript:@"macAddress"];
+  v24 = [recordCopy objectForKeyedSubscript:@"macAddress"];
   v25 = [v23 initWithData:v24 encoding:4];
 
   v26 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v27 = [v4 objectForKeyedSubscript:@"AllowPairing"];
+  v27 = [recordCopy objectForKeyedSubscript:@"AllowPairing"];
 
   v28 = [v26 initWithData:v27 encoding:4];
   if (v7)
@@ -124,15 +124,15 @@
     [(MRDeviceInfo *)v29 setManagedConfigurationDeviceIdentifier:v25];
     if ([v28 length])
     {
-      v30 = [v28 BOOLValue];
+      bOOLValue = [v28 BOOLValue];
     }
 
     else
     {
-      v30 = 1;
+      bOOLValue = 1;
     }
 
-    [(MRDeviceInfo *)v29 setPairingAllowed:v30];
+    [(MRDeviceInfo *)v29 setPairingAllowed:bOOLValue];
   }
 
   else
@@ -153,20 +153,20 @@
   return v29;
 }
 
-- (void)updateDeviceInfoWithTXTRecord:(id)a3
+- (void)updateDeviceInfoWithTXTRecord:(id)record
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v12 = [v4 defaultCenter];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = v6;
+  recordCopy = record;
+  defaultCenter = [v4 defaultCenter];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v7 = dictionary;
   deviceInfo = self->_deviceInfo;
   if (deviceInfo)
   {
-    [v6 setObject:deviceInfo forKey:@"OldDeviceInfo"];
+    [dictionary setObject:deviceInfo forKey:@"OldDeviceInfo"];
   }
 
-  v9 = [objc_opt_class() createDeviceInfoFromTXTRecord:v5];
+  v9 = [objc_opt_class() createDeviceInfoFromTXTRecord:recordCopy];
 
   v10 = self->_deviceInfo;
   self->_deviceInfo = v9;
@@ -177,7 +177,7 @@
     [v7 setObject:v11 forKey:@"NewDeviceInfo"];
   }
 
-  [v12 postNotificationName:@"MRExternalDeviceTransportDeviceInfoDidChangeNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"MRExternalDeviceTransportDeviceInfoDidChangeNotification" object:self userInfo:v7];
 }
 
 - (id)deviceInfo
@@ -195,11 +195,11 @@
   return deviceInfo;
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
   v8 = 0;
   v9 = 0;
-  v3 = [(MRNetServiceTransport *)self getInputStream:&v9 outputStream:&v8 userInfo:a3];
+  v3 = [(MRNetServiceTransport *)self getInputStream:&v9 outputStream:&v8 userInfo:info];
   v4 = v9;
   v5 = v8;
   v6 = 0;
@@ -211,15 +211,15 @@
   return v6;
 }
 
-- (BOOL)getInputStream:(id *)a3 outputStream:(id *)a4 userInfo:(id)a5
+- (BOOL)getInputStream:(id *)stream outputStream:(id *)outputStream userInfo:(id)info
 {
   v9 = 0;
   v10 = 0;
-  v7 = [(NSNetService *)self->_netService getInputStream:&v10 outputStream:&v9, a5];
-  *a3 = v10;
-  *a4 = v9;
+  info = [(NSNetService *)self->_netService getInputStream:&v10 outputStream:&v9, info];
+  *stream = v10;
+  *outputStream = v9;
 
-  return v7;
+  return info;
 }
 
 @end

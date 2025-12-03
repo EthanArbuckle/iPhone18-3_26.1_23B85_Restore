@@ -4,7 +4,7 @@
 + (double)horizontalPadding;
 + (double)outerCircleDiameter;
 + (double)unhighlightedCircleViewAlpha;
-- (id)initForCharacter:(int64_t)a3 style:(int64_t)a4;
+- (id)initForCharacter:(int64_t)character style:(int64_t)style;
 @end
 
 @implementation PHInCallNumberPadButton
@@ -12,9 +12,9 @@
 + (double)outerCircleDiameter
 {
   v3 = +[CNKFeatures sharedInstance];
-  v4 = [v3 isDialPadEnabled];
+  isDialPadEnabled = [v3 isDialPadEnabled];
 
-  if (v4)
+  if (isDialPadEnabled)
   {
     v5 = +[UIScreen mainScreen];
     [v5 bounds];
@@ -37,7 +37,7 @@
 
   else
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = &OBJC_METACLASS___PHInCallNumberPadButton;
     objc_msgSendSuper2(&v13, "outerCircleDiameter");
   }
@@ -48,9 +48,9 @@
 + (double)horizontalPadding
 {
   v3 = +[CNKFeatures sharedInstance];
-  v4 = [v3 isDialPadEnabled];
+  isDialPadEnabled = [v3 isDialPadEnabled];
 
-  if (v4)
+  if (isDialPadEnabled)
   {
     v5 = +[UIScreen mainScreen];
     [v5 bounds];
@@ -68,13 +68,13 @@
     }
 
     v11 = v10 + v10 * -0.102 * 2.0;
-    [a1 outerCircleDiameter];
+    [self outerCircleDiameter];
     return (v11 + v12 * -3.0) * 0.25;
   }
 
   else
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___PHInCallNumberPadButton;
     objc_msgSendSuper2(&v14, "horizontalPadding");
   }
@@ -82,19 +82,19 @@
   return result;
 }
 
-- (id)initForCharacter:(int64_t)a3 style:(int64_t)a4
+- (id)initForCharacter:(int64_t)character style:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = PHInCallNumberPadButton;
-  v4 = [(PHInCallNumberPadButton *)&v9 initForCharacter:a3 style:a4];
+  v4 = [(PHInCallNumberPadButton *)&v9 initForCharacter:character style:style];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 layer];
-    [v6 setAllowsGroupOpacity:0];
+    layer = [v4 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v7 = [v5 layer];
-    [v7 setAllowsGroupBlending:0];
+    layer2 = [v5 layer];
+    [layer2 setAllowsGroupBlending:0];
   }
 
   return v5;
@@ -142,16 +142,16 @@
   if ([v2 isEnhancedEmergencyEnabled])
   {
     v3 = +[TUCallCenter sharedInstance];
-    v4 = [v3 frontmostCall];
-    v5 = [v4 isEmergency];
+    frontmostCall = [v3 frontmostCall];
+    isEmergency = [frontmostCall isEmergency];
   }
 
   else
   {
-    v5 = 0;
+    isEmergency = 0;
   }
 
-  return v5;
+  return isEmergency;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface MSUDataAccessorDiagnostics
-- (id)returnDirectoryIfExistsForPath:(id)a3;
+- (id)returnDirectoryIfExistsForPath:(id)path;
 @end
 
 @implementation MSUDataAccessorDiagnostics
 
-- (id)returnDirectoryIfExistsForPath:(id)a3
+- (id)returnDirectoryIfExistsForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v8 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:&v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v8];
 
   if (v5 && v8 == 1)
   {
-    v6 = v3;
+    v6 = pathCopy;
   }
 
   else

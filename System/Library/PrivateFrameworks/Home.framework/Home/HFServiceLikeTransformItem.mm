@@ -3,48 +3,48 @@
 - (BOOL)containsActions;
 - (NSSet)services;
 - (id)accessories;
-- (id)currentStateActionBuildersForHome:(id)a3;
+- (id)currentStateActionBuildersForHome:(id)home;
 @end
 
 @implementation HFServiceLikeTransformItem
 
 - (NSSet)services
 {
-  v2 = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
-  v3 = [v2 services];
+  sourceServicePickerItem = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
+  services = [sourceServicePickerItem services];
 
-  return v3;
+  return services;
 }
 
 - (id)accessories
 {
-  v2 = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
-  v3 = [v2 accessories];
+  sourceServicePickerItem = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
+  accessories = [sourceServicePickerItem accessories];
 
-  return v3;
+  return accessories;
 }
 
 - (BOOL)containsActions
 {
-  v2 = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
-  v3 = [v2 containsActions];
+  sourceServicePickerItem = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
+  containsActions = [sourceServicePickerItem containsActions];
 
-  return v3;
+  return containsActions;
 }
 
 - (BOOL)actionsMayRequireDeviceUnlock
 {
-  v2 = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
-  v3 = [v2 actionsMayRequireDeviceUnlock];
+  sourceServicePickerItem = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
+  actionsMayRequireDeviceUnlock = [sourceServicePickerItem actionsMayRequireDeviceUnlock];
 
-  return v3;
+  return actionsMayRequireDeviceUnlock;
 }
 
-- (id)currentStateActionBuildersForHome:(id)a3
+- (id)currentStateActionBuildersForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
-  v6 = [v5 currentStateActionBuildersForHome:v4];
+  homeCopy = home;
+  sourceServicePickerItem = [(HFServiceLikeTransformItem *)self sourceServicePickerItem];
+  v6 = [sourceServicePickerItem currentStateActionBuildersForHome:homeCopy];
 
   return v6;
 }

@@ -8,9 +8,9 @@
 - (id)allTriggerTime;
 - (id)apply;
 - (id)counterAllocator;
-- (id)createTriggerKDebug:(id *)a3;
-- (id)createTriggerPMI:(id *)a3;
-- (id)createTriggerTime:(id *)a3;
+- (id)createTriggerKDebug:(id *)debug;
+- (id)createTriggerPMI:(id *)i;
+- (id)createTriggerTime:(id *)time;
 - (id)firstTriggerTime;
 - (id)generateConfigWords;
 - (id)reset;
@@ -18,13 +18,13 @@
 - (id)triggerPMI;
 - (unsigned)enabledKPCClasses;
 - (void)_enableKdebugCodes;
-- (void)addCodeSet:(id)a3;
+- (void)addCodeSet:(id)set;
 - (void)clearAllTriggerTime;
 - (void)clearTriggerKDebug;
 - (void)clearTriggerPMI;
-- (void)clearTriggerTimeAtIndex:(unint64_t)a3;
-- (void)setBufferSize:(unint64_t)a3;
-- (void)setRecountConfiguration:(id)a3;
+- (void)clearTriggerTimeAtIndex:(unint64_t)index;
+- (void)setBufferSize:(unint64_t)size;
+- (void)setRecountConfiguration:(id)configuration;
 @end
 
 @implementation DTKPKperfConfiguration
@@ -56,9 +56,9 @@
   v43 = sub_247F80CA8;
   v44 = sub_247F80CB8;
   v45 = 0;
-  v3 = [(DTKPKperfConfiguration *)self _validateConfigLocked];
+  _validateConfigLocked = [(DTKPKperfConfiguration *)self _validateConfigLocked];
   v4 = v41[5];
-  v41[5] = v3;
+  v41[5] = _validateConfigLocked;
 
   v5 = v41[5];
   if (v5)
@@ -66,9 +66,9 @@
     goto LABEL_3;
   }
 
-  v6 = [(DTKPKperfConfiguration *)self _reinitializeKperf];
+  _reinitializeKperf = [(DTKPKperfConfiguration *)self _reinitializeKperf];
   v7 = v41[5];
-  v41[5] = v6;
+  v41[5] = _reinitializeKperf;
 
   v5 = v41[5];
   if (v5)
@@ -103,8 +103,8 @@ LABEL_3:
 
   if (*(self + 6) && ![XRBottlenecksAnalysisModeManager applyWithConfig:?]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v15 = [*(self + 6) countingMode];
-    sub_24802CBD8(v15, buf);
+    countingMode = [*(self + 6) countingMode];
+    sub_24802CBD8(countingMode, buf);
   }
 
   v32 = 0;
@@ -112,7 +112,7 @@ LABEL_3:
   v34 = 0x3032000000;
   v35 = sub_247F80CA8;
   v36 = sub_247F80CB8;
-  v37 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -238,9 +238,9 @@ LABEL_4:
   v3 = *(self + 5);
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = *(self + 5);
-    *(self + 5) = v4;
+    *(self + 5) = array;
 
     if (*(self + 4))
     {
@@ -269,16 +269,16 @@ LABEL_4:
   v3 = *(self + 15);
   if (v3)
   {
-    v4 = [v3 kpcClasses];
+    kpcClasses = [v3 kpcClasses];
   }
 
   else
   {
-    v4 = 0;
+    kpcClasses = 0;
   }
 
   std::mutex::unlock((self + 56));
-  return v4;
+  return kpcClasses;
 }
 
 - (id)counterAllocator
@@ -307,13 +307,13 @@ LABEL_4:
   return v3;
 }
 
-- (void)addCodeSet:(id)a3
+- (void)addCodeSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v8 = *(self + 1);
   v7 = (self + 8);
   v6 = v8;
-  v9 = v5;
+  v9 = setCopy;
   if (v8)
   {
     [v6 addCodeSet:?];
@@ -321,7 +321,7 @@ LABEL_4:
 
   else
   {
-    objc_storeStrong(v7, a3);
+    objc_storeStrong(v7, set);
   }
 }
 
@@ -359,15 +359,15 @@ LABEL_4:
   return v3;
 }
 
-- (id)createTriggerKDebug:(id *)a3
+- (id)createTriggerKDebug:(id *)debug
 {
   std::mutex::lock((self + 56));
   v5 = *(self + 2);
   if (v5)
   {
-    if (a3)
+    if (debug)
     {
-      *a3 = sub_247F813AC(@"A kdebug trigger already exists. DTKPKperfConfiguration doesn't support creation of multiple kdebug triggers.", -510);
+      *debug = sub_247F813AC(@"A kdebug trigger already exists. DTKPKperfConfiguration doesn't support creation of multiple kdebug triggers.", -510);
       v5 = *(self + 2);
     }
 
@@ -385,15 +385,15 @@ LABEL_4:
   return v6;
 }
 
-- (id)createTriggerPMI:(id *)a3
+- (id)createTriggerPMI:(id *)i
 {
   std::mutex::lock((self + 56));
   v5 = *(self + 3);
   if (v5)
   {
-    if (a3)
+    if (i)
     {
-      *a3 = sub_247F813AC(@"A PMI trigger already exists. DTKPKperfConfiguration doesn't support creation of multiple PMI triggers.", -510);
+      *i = sub_247F813AC(@"A PMI trigger already exists. DTKPKperfConfiguration doesn't support creation of multiple PMI triggers.", -510);
       v5 = *(self + 3);
     }
 
@@ -411,7 +411,7 @@ LABEL_4:
   return v6;
 }
 
-- (id)createTriggerTime:(id *)a3
+- (id)createTriggerTime:(id *)time
 {
   std::mutex::lock((self + 56));
   v4 = [[DTKPTriggerTime alloc] initWithCounterAllocatorProvider:self recountConfiguration:*(self + 6)];
@@ -443,12 +443,12 @@ LABEL_4:
   std::mutex::unlock((self + 56));
 }
 
-- (void)clearTriggerTimeAtIndex:(unint64_t)a3
+- (void)clearTriggerTimeAtIndex:(unint64_t)index
 {
   std::mutex::lock((self + 56));
-  if ([*(self + 4) count] > a3)
+  if ([*(self + 4) count] > index)
   {
-    [*(self + 4) removeObjectAtIndex:a3];
+    [*(self + 4) removeObjectAtIndex:index];
   }
 
   std::mutex::unlock((self + 56));
@@ -464,12 +464,12 @@ LABEL_4:
   std::mutex::unlock((self + 56));
 }
 
-- (void)setRecountConfiguration:(id)a3
+- (void)setRecountConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   std::mutex::lock((self + 56));
   v5 = *(self + 6);
-  *(self + 6) = v4;
+  *(self + 6) = configurationCopy;
 
   std::mutex::unlock((self + 56));
 }
@@ -495,10 +495,10 @@ LABEL_4:
 - (id)firstTriggerTime
 {
   std::mutex::lock((self + 56));
-  v3 = [*(self + 4) firstObject];
+  firstObject = [*(self + 4) firstObject];
   std::mutex::unlock((self + 56));
 
-  return v3;
+  return firstObject;
 }
 
 - (id)allTriggerTime
@@ -510,7 +510,7 @@ LABEL_4:
   return v3;
 }
 
-- (void)setBufferSize:(unint64_t)a3
+- (void)setBufferSize:(unint64_t)size
 {
   std::mutex::lock((self + 56));
   *(self + 17) = kperf_logging_query_size() << 6;
@@ -623,7 +623,7 @@ LABEL_4:
     v9[0] = 0;
     v9[1] = v9;
     v9[2] = 0x2020000000;
-    v10 = [*(self + 3) requestsPMCSampling];
+    requestsPMCSampling = [*(self + 3) requestsPMCSampling];
     v6 = *(self + 4);
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;

@@ -1,8 +1,8 @@
 @interface RideBookingRideStatus
-+ (RideBookingRideStatus)statusWithApplication:(id)a3 error:(unint64_t)a4;
++ (RideBookingRideStatus)statusWithApplication:(id)application error:(unint64_t)error;
 - (BOOL)_feedbackRequired;
 - (BOOL)_shouldShowPayment;
-- (BOOL)_showFeedbackType:(unint64_t)a3;
+- (BOOL)_showFeedbackType:(unint64_t)type;
 - (BOOL)isActiveRide;
 - (BOOL)isScheduledRide;
 - (BOOL)isValidRide;
@@ -32,7 +32,7 @@
 - (NSString)traySubtitle;
 - (NSString)trayTitle;
 - (RideBookingApplication)application;
-- (RideBookingRideStatus)initWithApplication:(id)a3 rideOption:(id)a4 canceled:(BOOL)a5 canceledByService:(BOOL)a6 userActivityForCanceling:(id)a7 identifier:(id)a8 phase:(unint64_t)a9 error:(unint64_t)a10;
+- (RideBookingRideStatus)initWithApplication:(id)application rideOption:(id)option canceled:(BOOL)canceled canceledByService:(BOOL)service userActivityForCanceling:(id)canceling identifier:(id)identifier phase:(unint64_t)phase error:(unint64_t)self0;
 - (RidesharingSpecialPricingBadge)cardFormattedPriceRangeBadge;
 - (UIImage)cardIcon;
 - (UIImage)driverImage;
@@ -51,7 +51,7 @@
 - (id)_confirmedTrayTitle;
 - (id)_destinationAddress;
 - (id)_driverName;
-- (id)_minuteStringForSeconds:(double)a3;
+- (id)_minuteStringForSeconds:(double)seconds;
 - (id)_ongoingCardSubtitle;
 - (id)_ongoingTemplatedViewSubtitle;
 - (id)_ongoingTemplatedViewTitle;
@@ -68,38 +68,38 @@
 - (id)_scheduledTrayTitle;
 - (id)description;
 - (id)timeFormatter;
-- (void)setGetRideStatusIntentResponse:(id)a3;
-- (void)setIntentsRideStatus:(id)a3;
-- (void)setRequestRideIntentResponse:(id)a3;
+- (void)setGetRideStatusIntentResponse:(id)response;
+- (void)setIntentsRideStatus:(id)status;
+- (void)setRequestRideIntentResponse:(id)response;
 @end
 
 @implementation RideBookingRideStatus
 
-- (void)setRequestRideIntentResponse:(id)a3
+- (void)setRequestRideIntentResponse:(id)response
 {
-  value = a3;
-  v4 = [(RideBookingRideStatus *)self requestRideIntentResponse];
-  if (([v4 isEqual:value] & 1) == 0)
+  value = response;
+  requestRideIntentResponse = [(RideBookingRideStatus *)self requestRideIntentResponse];
+  if (([requestRideIntentResponse isEqual:value] & 1) == 0)
   {
     objc_setAssociatedObject(self, &unk_10121321A, value, 3);
   }
 }
 
-- (void)setGetRideStatusIntentResponse:(id)a3
+- (void)setGetRideStatusIntentResponse:(id)response
 {
-  value = a3;
-  v4 = [(RideBookingRideStatus *)self getRideStatusIntentResponse];
-  if (([v4 isEqual:value] & 1) == 0)
+  value = response;
+  getRideStatusIntentResponse = [(RideBookingRideStatus *)self getRideStatusIntentResponse];
+  if (([getRideStatusIntentResponse isEqual:value] & 1) == 0)
   {
     objc_setAssociatedObject(self, &unk_101213219, value, 3);
   }
 }
 
-- (void)setIntentsRideStatus:(id)a3
+- (void)setIntentsRideStatus:(id)status
 {
-  value = a3;
-  v4 = [(RideBookingRideStatus *)self intentsRideStatus];
-  if (([v4 isEqual:value] & 1) == 0)
+  value = status;
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  if (([intentsRideStatus isEqual:value] & 1) == 0)
   {
     objc_setAssociatedObject(self, &unk_101213218, value, 3);
   }
@@ -122,55 +122,55 @@
 
 - (BOOL)isActiveRide
 {
-  v3 = [(RideBookingRideStatus *)self isValidRide];
-  if (v3)
+  isValidRide = [(RideBookingRideStatus *)self isValidRide];
+  if (isValidRide)
   {
-    LOBYTE(v3) = [(RideBookingRideStatus *)self phase]!= 4;
+    LOBYTE(isValidRide) = [(RideBookingRideStatus *)self phase]!= 4;
   }
 
-  return v3;
+  return isValidRide;
 }
 
 - (BOOL)isValidRide
 {
-  v3 = [(RideBookingRideStatus *)self identifier];
-  v4 = v3 && ![(RideBookingRideStatus *)self isCanceledByUser]&& [(RideBookingRideStatus *)self phase]!= 0;
+  identifier = [(RideBookingRideStatus *)self identifier];
+  v4 = identifier && ![(RideBookingRideStatus *)self isCanceledByUser]&& [(RideBookingRideStatus *)self phase]!= 0;
 
   return v4;
 }
 
-- (RideBookingRideStatus)initWithApplication:(id)a3 rideOption:(id)a4 canceled:(BOOL)a5 canceledByService:(BOOL)a6 userActivityForCanceling:(id)a7 identifier:(id)a8 phase:(unint64_t)a9 error:(unint64_t)a10
+- (RideBookingRideStatus)initWithApplication:(id)application rideOption:(id)option canceled:(BOOL)canceled canceledByService:(BOOL)service userActivityForCanceling:(id)canceling identifier:(id)identifier phase:(unint64_t)phase error:(unint64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
+  applicationCopy = application;
+  optionCopy = option;
+  cancelingCopy = canceling;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = RideBookingRideStatus;
   v20 = [(RideBookingRideStatus *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_application, v16);
-    objc_storeStrong(&v21->_rideOption, a4);
-    v21->_rideStatusIsCanceled = a5;
-    v21->_rideStatusIsCanceledByService = a6;
-    v21->_phase = a9;
-    v21->_rideStatusError = a10;
-    v22 = [v19 copy];
+    objc_storeWeak(&v20->_application, applicationCopy);
+    objc_storeStrong(&v21->_rideOption, option);
+    v21->_rideStatusIsCanceled = canceled;
+    v21->_rideStatusIsCanceledByService = service;
+    v21->_phase = phase;
+    v21->_rideStatusError = error;
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    objc_storeStrong(&v21->_userActivityForCanceling, a7);
+    objc_storeStrong(&v21->_userActivityForCanceling, canceling);
   }
 
   return v21;
 }
 
-+ (RideBookingRideStatus)statusWithApplication:(id)a3 error:(unint64_t)a4
++ (RideBookingRideStatus)statusWithApplication:(id)application error:(unint64_t)error
 {
-  v5 = a3;
-  v6 = [[RideBookingRideStatus alloc] initWithApplication:v5 rideOption:0 canceled:0 canceledByService:0 userActivityForCanceling:0 identifier:0 phase:0 error:a4];
+  applicationCopy = application;
+  v6 = [[RideBookingRideStatus alloc] initWithApplication:applicationCopy rideOption:0 canceled:0 canceledByService:0 userActivityForCanceling:0 identifier:0 phase:0 error:error];
 
   return v6;
 }
@@ -181,10 +181,10 @@
   v4 = objc_opt_new();
   [v4 setIntent:4];
   [v4 setFailure:0];
-  v5 = [(RideBookingRideStatus *)self rideStatusError];
-  if (v5 <= 8 && ((0x1FDu >> v5) & 1) != 0)
+  rideStatusError = [(RideBookingRideStatus *)self rideStatusError];
+  if (rideStatusError <= 8 && ((0x1FDu >> rideStatusError) & 1) != 0)
   {
-    [v4 setFailure:dword_1012156F4[v5]];
+    [v4 setFailure:dword_1012156F4[rideStatusError]];
   }
 
   if ([v4 failure])
@@ -193,20 +193,20 @@
     [v3 addObject:v6];
   }
 
-  v7 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v8 = [v7 rideIdentifier];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  rideIdentifier = [intentsRideStatus rideIdentifier];
 
-  if (!v8)
+  if (!rideIdentifier)
   {
     [v4 setFailure:13];
     v9 = [v4 copy];
     [v3 addObject:v9];
   }
 
-  v10 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v11 = [v10 rideOption];
-  v12 = [v11 name];
-  v13 = [v12 length];
+  intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+  rideOption = [intentsRideStatus2 rideOption];
+  name = [rideOption name];
+  v13 = [name length];
 
   if (!v13)
   {
@@ -215,21 +215,21 @@
     [v3 addObject:v14];
   }
 
-  v15 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v16 = [v15 estimatedPickupDate];
+  intentsRideStatus3 = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedPickupDate = [intentsRideStatus3 estimatedPickupDate];
 
-  if (!v16)
+  if (!estimatedPickupDate)
   {
     [v4 setFailure:12];
     v17 = [v4 copy];
     [v3 addObject:v17];
   }
 
-  v18 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v19 = [v18 vehicle];
-  v20 = [v19 location];
-  v21 = v20;
-  if (v20 && ([v20 coordinate], latitude = v33.latitude, longitude = v33.longitude, CLLocationCoordinate2DIsValid(v33)) && fabs(latitude) > 2.22044605e-16)
+  intentsRideStatus4 = [(RideBookingRideStatus *)self intentsRideStatus];
+  vehicle = [intentsRideStatus4 vehicle];
+  location = [vehicle location];
+  v21 = location;
+  if (location && ([location coordinate], latitude = v33.latitude, longitude = v33.longitude, CLLocationCoordinate2DIsValid(v33)) && fabs(latitude) > 2.22044605e-16)
   {
 
     if (fabs(longitude) > 2.22044605e-16)
@@ -247,14 +247,14 @@
   [v3 addObject:v24];
 
 LABEL_19:
-  v25 = [(RideBookingRideStatus *)self intentsRideStatus];
-  if (v25)
+  intentsRideStatus5 = [(RideBookingRideStatus *)self intentsRideStatus];
+  if (intentsRideStatus5)
   {
-    v26 = v25;
-    v27 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v28 = [v27 phase];
+    v26 = intentsRideStatus5;
+    intentsRideStatus6 = [(RideBookingRideStatus *)self intentsRideStatus];
+    phase = [intentsRideStatus6 phase];
 
-    if (!v28)
+    if (!phase)
     {
       [v4 setFailure:14];
       v29 = [v4 copy];
@@ -269,15 +269,15 @@ LABEL_19:
 
 - (NSArray)tippingOptions
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 completionStatus];
-  v5 = [v4 defaultTippingOptions];
-  v6 = [v5 allObjects];
-  v7 = sub_100021DB0(v6, &stru_10164E7D0);
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
+  defaultTippingOptions = [completionStatus defaultTippingOptions];
+  allObjects = [defaultTippingOptions allObjects];
+  v7 = sub_100021DB0(allObjects, &stru_10164E7D0);
 
-  v8 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v9 = [v8 completionStatus];
-  if ([v9 isCompleted] && -[RideBookingRideStatus shouldShowTippingOptions](self, "shouldShowTippingOptions"))
+  intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus2 = [intentsRideStatus2 completionStatus];
+  if ([completionStatus2 isCompleted] && -[RideBookingRideStatus shouldShowTippingOptions](self, "shouldShowTippingOptions"))
   {
     v10 = [v7 count];
 
@@ -298,37 +298,37 @@ LABEL_19:
 
 - (NSDate)estimatedDropOffDate
 {
-  v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v3 = [v2 estimatedDropOffDate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedDropOffDate = [intentsRideStatus estimatedDropOffDate];
 
-  return v3;
+  return estimatedDropOffDate;
 }
 
 - (NSNumber)pickupETAMinutes
 {
-  v2 = self;
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 estimatedPickupDate];
+  selfCopy = self;
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedPickupDate = [intentsRideStatus estimatedPickupDate];
 
-  if (v4)
+  if (estimatedPickupDate)
   {
-    v5 = [v2 intentsRideStatus];
-    v6 = [v5 estimatedPickupDate];
-    [v6 timeIntervalSinceNow];
+    intentsRideStatus2 = [selfCopy intentsRideStatus];
+    estimatedPickupDate2 = [intentsRideStatus2 estimatedPickupDate];
+    [estimatedPickupDate2 timeIntervalSinceNow];
     if (round(v7 * 0.0166666667) < 1.0)
     {
-      v2 = 1;
+      selfCopy = 1;
     }
 
     else
     {
-      v8 = [v2 intentsRideStatus];
-      v9 = [v8 estimatedPickupDate];
-      [v9 timeIntervalSinceNow];
-      LODWORD(v2) = vcvtad_u64_f64(v10 * 0.0166666667);
+      intentsRideStatus3 = [selfCopy intentsRideStatus];
+      estimatedPickupDate3 = [intentsRideStatus3 estimatedPickupDate];
+      [estimatedPickupDate3 timeIntervalSinceNow];
+      LODWORD(selfCopy) = vcvtad_u64_f64(v10 * 0.0166666667);
     }
 
-    v11 = [NSNumber numberWithUnsignedInt:v2];
+    v11 = [NSNumber numberWithUnsignedInt:selfCopy];
   }
 
   else
@@ -341,62 +341,62 @@ LABEL_19:
 
 - (NSDateComponents)scheduledPickupWindowStartDateComponents
 {
-  v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v3 = [v2 scheduledPickupTime];
-  v4 = [v3 startDateComponents];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  scheduledPickupTime = [intentsRideStatus scheduledPickupTime];
+  startDateComponents = [scheduledPickupTime startDateComponents];
 
-  return v4;
+  return startDateComponents;
 }
 
 - (CLPlacemark)dropoffLocation
 {
-  v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v3 = [v2 dropOffLocation];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  dropOffLocation = [intentsRideStatus dropOffLocation];
 
-  return v3;
+  return dropOffLocation;
 }
 
 - (CLPlacemark)pickupLocation
 {
-  v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v3 = [v2 pickupLocation];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  pickupLocation = [intentsRideStatus pickupLocation];
 
-  return v3;
+  return pickupLocation;
 }
 
 - (UIImage)vehicleImage
 {
   v3 = +[RideBookingAccessProxy imageCache];
-  v4 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v5 = [v4 vehicle];
-  v6 = [v5 mapAnnotationImage];
-  v7 = [v6 _identifier];
-  v8 = [v3 imageForKey:v7];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  vehicle = [intentsRideStatus vehicle];
+  mapAnnotationImage = [vehicle mapAnnotationImage];
+  _identifier = [mapAnnotationImage _identifier];
+  v8 = [v3 imageForKey:_identifier];
 
   return v8;
 }
 
 - (CLLocation)vehicleLocation
 {
-  v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v3 = [v2 vehicle];
-  v4 = [v3 location];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  vehicle = [intentsRideStatus vehicle];
+  location = [vehicle location];
 
-  return v4;
+  return location;
 }
 
 - (id)_driverName
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 driver];
-  v5 = [v4 nameComponents];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  driver = [intentsRideStatus driver];
+  nameComponents = [driver nameComponents];
 
-  if (v5)
+  if (nameComponents)
   {
-    v6 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v7 = [v6 driver];
-    v8 = [v7 nameComponents];
-    v9 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v8 style:0 options:0];
+    intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+    driver2 = [intentsRideStatus2 driver];
+    nameComponents2 = [driver2 nameComponents];
+    v9 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:nameComponents2 style:0 options:0];
   }
 
   else
@@ -410,22 +410,22 @@ LABEL_19:
 - (UIImage)driverImage
 {
   v3 = +[RideBookingAccessProxy imageCache];
-  v4 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v5 = [v4 driver];
-  v6 = [v5 image];
-  v7 = [v6 _identifier];
-  v8 = [v3 imageForKey:v7];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  driver = [intentsRideStatus driver];
+  image = [driver image];
+  _identifier = [image _identifier];
+  v8 = [v3 imageForKey:_identifier];
 
   return v8;
 }
 
 - (NSString)driverPhoneNumber
 {
-  v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v3 = [v2 driver];
-  v4 = [v3 phoneNumber];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  driver = [intentsRideStatus driver];
+  phoneNumber = [driver phoneNumber];
 
-  return v4;
+  return phoneNumber;
 }
 
 - (NSString)contactCommandTitle
@@ -438,19 +438,19 @@ LABEL_19:
 
 - (NSString)cancelCommandTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 phase];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  phase = [intentsRideStatus phase];
 
-  if (v4 > 2)
+  if (phase > 2)
   {
-    if ((v4 - 5) < 2 || v4 == 3)
+    if ((phase - 5) < 2 || phase == 3)
     {
 LABEL_11:
       v5 = @"Cancel Ride";
       goto LABEL_13;
     }
 
-    if (v4 != 4)
+    if (phase != 4)
     {
       goto LABEL_14;
     }
@@ -460,18 +460,18 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (!v4)
+  if (!phase)
   {
     goto LABEL_10;
   }
 
-  if (v4 == 1)
+  if (phase == 1)
   {
     v5 = @"Cancel Request";
     goto LABEL_13;
   }
 
-  if (v4 != 2)
+  if (phase != 2)
   {
     goto LABEL_14;
   }
@@ -484,25 +484,25 @@ LABEL_10:
   v5 = @"Cancel Scheduled Ride";
 LABEL_13:
   v6 = +[NSBundle mainBundle];
-  v3 = [v6 localizedStringForKey:v5 value:@"localized string not found" table:0];
+  intentsRideStatus = [v6 localizedStringForKey:v5 value:@"localized string not found" table:0];
 
 LABEL_14:
 
-  return v3;
+  return intentsRideStatus;
 }
 
 - (NSString)openInAppCommandTitle
 {
-  v3 = [(RideBookingRideStatus *)self application];
-  v4 = [v3 name];
+  application = [(RideBookingRideStatus *)self application];
+  name = [application name];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (name)
   {
     v6 = [v5 localizedStringForKey:@"Open in %@ [Ridesharing]" value:@"localized string not found" table:0];
-    v7 = [(RideBookingRideStatus *)self application];
-    v8 = [v7 name];
-    v9 = [NSString stringWithFormat:v6, v8];
+    application2 = [(RideBookingRideStatus *)self application];
+    name2 = [application2 name];
+    v9 = [NSString stringWithFormat:v6, name2];
   }
 
   else
@@ -515,19 +515,19 @@ LABEL_14:
 
 - (BOOL)_shouldShowPayment
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 completionStatus];
-  v5 = [v4 paymentAmount];
-  v6 = [v5 amount];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
+  paymentAmount = [completionStatus paymentAmount];
+  amount = [paymentAmount amount];
 
-  v7 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v8 = [v7 completionStatus];
-  v9 = [v8 paymentAmount];
-  v10 = [v9 currencyCode];
+  intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus2 = [intentsRideStatus2 completionStatus];
+  paymentAmount2 = [completionStatus2 paymentAmount];
+  currencyCode = [paymentAmount2 currencyCode];
 
-  if (v6)
+  if (amount)
   {
-    v11 = [v6 compare:&off_1016E94A0] == 1;
+    v11 = [amount compare:&off_1016E94A0] == 1;
   }
 
   else
@@ -535,9 +535,9 @@ LABEL_14:
     v11 = 0;
   }
 
-  if (v6)
+  if (amount)
   {
-    v12 = v10 == 0;
+    v12 = currencyCode == 0;
   }
 
   else
@@ -552,33 +552,33 @@ LABEL_14:
 
 - (NSString)cardRideCompletedActionButtonTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 completionStatus];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
 
-  if ([v4 isCompleted] && objc_msgSend(v4, "isOutstanding") && -[RideBookingRideStatus _shouldShowPayment](self, "_shouldShowPayment"))
+  if ([completionStatus isCompleted] && objc_msgSend(completionStatus, "isOutstanding") && -[RideBookingRideStatus _shouldShowPayment](self, "_shouldShowPayment"))
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"[ridesharing] pay %@ now" value:@"localized string not found" table:0];
-    v7 = [v4 paymentAmount];
-    v8 = [v7 amount];
-    v9 = [v4 paymentAmount];
-    v10 = [v9 currencyCode];
-    v11 = [NSString _navigation_formattedStringForPriceValueWithAmount:v8 currencyCode:v10 showsCurrencySymbol:1];
+    paymentAmount = [completionStatus paymentAmount];
+    amount = [paymentAmount amount];
+    paymentAmount2 = [completionStatus paymentAmount];
+    currencyCode = [paymentAmount2 currencyCode];
+    v11 = [NSString _navigation_formattedStringForPriceValueWithAmount:amount currencyCode:currencyCode showsCurrencySymbol:1];
     v12 = [NSString localizedStringWithFormat:v6, v11];
   }
 
   else
   {
-    v13 = [(RideBookingRideStatus *)self application];
-    v14 = [v13 name];
+    application = [(RideBookingRideStatus *)self application];
+    name = [application name];
 
     v5 = +[NSBundle mainBundle];
-    if (v14)
+    if (name)
     {
       v15 = [v5 localizedStringForKey:@"[ridesharing] view in %@" value:@"localized string not found" table:0];
-      v16 = [(RideBookingRideStatus *)self application];
-      v17 = [v16 name];
-      v12 = [NSString localizedStringWithFormat:v15, v17];
+      application2 = [(RideBookingRideStatus *)self application];
+      name2 = [application2 name];
+      v12 = [NSString localizedStringWithFormat:v15, name2];
     }
 
     else
@@ -592,14 +592,14 @@ LABEL_14:
 
 - (NSArray)cardActions
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 additionalActionActivities];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  additionalActionActivities = [intentsRideStatus additionalActionActivities];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100C420BC;
   v7[3] = &unk_10164E790;
   v7[4] = self;
-  v5 = sub_100021DB0(v4, v7);
+  v5 = sub_100021DB0(additionalActionActivities, v7);
 
   return v5;
 }
@@ -608,15 +608,15 @@ LABEL_14:
 {
   if ([(RideBookingRideStatus *)self _shouldShowPayment])
   {
-    v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v4 = [v3 completionStatus];
-    v5 = [v4 paymentAmount];
+    intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+    completionStatus = [intentsRideStatus completionStatus];
+    paymentAmount = [completionStatus paymentAmount];
 
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Total fare is card %@ [Ridesharing]" value:@"localized string not found" table:0];
-    v8 = [v5 amount];
-    v9 = [v5 currencyCode];
-    v10 = [NSString _navigation_formattedStringForPriceValueWithAmount:v8 currencyCode:v9];
+    amount = [paymentAmount amount];
+    currencyCode = [paymentAmount currencyCode];
+    v10 = [NSString _navigation_formattedStringForPriceValueWithAmount:amount currencyCode:currencyCode];
     v11 = [NSString localizedStringWithFormat:v7, v10];
   }
 
@@ -630,11 +630,11 @@ LABEL_14:
 
 - (id)_completedCardSubtitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 completionStatus];
-  v5 = [v4 isMissedPickup];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
+  isMissedPickup = [completionStatus isMissedPickup];
 
-  if (v5)
+  if (isMissedPickup)
   {
     v6 = +[NSBundle mainBundle];
     v7 = v6;
@@ -643,13 +643,13 @@ LABEL_14:
 
   else
   {
-    v9 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v10 = [v9 completionStatus];
-    v11 = [v10 isCanceled];
+    intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+    completionStatus2 = [intentsRideStatus2 completionStatus];
+    isCanceled = [completionStatus2 isCanceled];
 
     v6 = +[NSBundle mainBundle];
     v7 = v6;
-    if (v11)
+    if (isCanceled)
     {
       v8 = @"Trip was canceled card [Ridesharing]";
     }
@@ -667,14 +667,14 @@ LABEL_14:
 
 - (id)_ongoingCardSubtitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 estimatedDropOffDate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedDropOffDate = [intentsRideStatus estimatedDropOffDate];
 
-  if (v4)
+  if (estimatedDropOffDate)
   {
-    v5 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v6 = [v5 estimatedDropOffDate];
-    [v6 timeIntervalSinceNow];
+    intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+    estimatedDropOffDate2 = [intentsRideStatus2 estimatedDropOffDate];
+    [estimatedDropOffDate2 timeIntervalSinceNow];
     v7 = [(RideBookingRideStatus *)self _minuteStringForSeconds:?];
 
     v8 = +[NSBundle mainBundle];
@@ -692,30 +692,30 @@ LABEL_14:
 
 - (id)_scheduledCardSubtitle
 {
-  v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v3 = [v2 scheduledPickupTime];
-  v4 = [v3 startDateComponents];
-  v5 = [NSString _maps_ridesharingScheduledPickupWindowStart:v4 partySize:0];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  scheduledPickupTime = [intentsRideStatus scheduledPickupTime];
+  startDateComponents = [scheduledPickupTime startDateComponents];
+  v5 = [NSString _maps_ridesharingScheduledPickupWindowStart:startDateComponents partySize:0];
 
   return v5;
 }
 
 - (id)_receivedCardSubtitle
 {
-  v5 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v6 = [v5 estimatedPickupDate];
-  if (v6)
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedPickupDate = [intentsRideStatus estimatedPickupDate];
+  if (estimatedPickupDate)
   {
-    v7 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v8 = [v7 estimatedPickupDate];
-    [v8 timeIntervalSinceNow];
+    intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+    estimatedPickupDate2 = [intentsRideStatus2 estimatedPickupDate];
+    [estimatedPickupDate2 timeIntervalSinceNow];
     v10 = round(v9 * 0.0166666667);
     v11 = 1.0;
     if (v10 >= 1.0)
     {
-      v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-      v3 = [v2 estimatedPickupDate];
-      [v3 timeIntervalSinceNow];
+      intentsRideStatus3 = [(RideBookingRideStatus *)self intentsRideStatus];
+      estimatedPickupDate3 = [intentsRideStatus3 estimatedPickupDate];
+      [estimatedPickupDate3 timeIntervalSinceNow];
       v11 = round(v12 * 0.0166666667);
     }
 
@@ -737,9 +737,9 @@ LABEL_14:
 
 - (NSArray)cardFareLineItems
 {
-  v2 = [(RideBookingRideStatus *)self rideOption];
-  v3 = [v2 intentsRideOption];
-  v4 = [RidesharingFareLineItem _fareItemsFromRideOption:v3];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  intentsRideOption = [rideOption intentsRideOption];
+  v4 = [RidesharingFareLineItem _fareItemsFromRideOption:intentsRideOption];
 
   return v4;
 }
@@ -754,63 +754,63 @@ LABEL_14:
 
 - (RidesharingSpecialPricingBadge)cardFormattedPriceRangeBadge
 {
-  v2 = [(RideBookingRideStatus *)self rideOption];
-  v3 = [v2 specialPricingBadge];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  specialPricingBadge = [rideOption specialPricingBadge];
 
-  return v3;
+  return specialPricingBadge;
 }
 
 - (NSString)cardTertiaryTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 phase];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  phase = [intentsRideStatus phase];
 
-  v5 = &stru_1016631F0;
-  if (v4 <= 6)
+  priceRange = &stru_1016631F0;
+  if (phase <= 6)
   {
-    if (((1 << v4) & 0x6E) != 0)
+    if (((1 << phase) & 0x6E) != 0)
     {
-      v6 = [(RideBookingRideStatus *)self rideOption];
-      v5 = [v6 priceRange];
+      rideOption = [(RideBookingRideStatus *)self rideOption];
+      priceRange = [rideOption priceRange];
     }
 
-    else if (v4 == 4)
+    else if (phase == 4)
     {
-      v5 = [(RideBookingRideStatus *)self _completedCardTertiaryTitle];
+      priceRange = [(RideBookingRideStatus *)self _completedCardTertiaryTitle];
     }
   }
 
-  return v5;
+  return priceRange;
 }
 
 - (NSString)cardSubtitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 phase];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  phase = [intentsRideStatus phase];
 
-  v5 = &stru_1016631F0;
-  if (v4 > 3)
+  _completedCardSubtitle = &stru_1016631F0;
+  if (phase > 3)
   {
-    switch(v4)
+    switch(phase)
     {
       case 4:
-        v5 = [(RideBookingRideStatus *)self _completedCardSubtitle];
+        _completedCardSubtitle = [(RideBookingRideStatus *)self _completedCardSubtitle];
         break;
       case 5:
-        v5 = [(RideBookingRideStatus *)self _approachingPickupCardSubtitle];
+        _completedCardSubtitle = [(RideBookingRideStatus *)self _approachingPickupCardSubtitle];
         break;
       case 6:
-        v5 = [(RideBookingRideStatus *)self _pickupCardSubtitle];
+        _completedCardSubtitle = [(RideBookingRideStatus *)self _pickupCardSubtitle];
         break;
     }
   }
 
   else
   {
-    switch(v4)
+    switch(phase)
     {
       case 1:
-        v5 = [(RideBookingRideStatus *)self _receivedCardSubtitle];
+        _completedCardSubtitle = [(RideBookingRideStatus *)self _receivedCardSubtitle];
         break;
       case 2:
         if ([(RideBookingRideStatus *)self isScheduledRide])
@@ -822,45 +822,45 @@ LABEL_14:
         {
           [(RideBookingRideStatus *)self _confirmedCardSubtitle];
         }
-        v5 = ;
+        _completedCardSubtitle = ;
         break;
       case 3:
-        v5 = [(RideBookingRideStatus *)self _ongoingCardSubtitle];
+        _completedCardSubtitle = [(RideBookingRideStatus *)self _ongoingCardSubtitle];
         break;
     }
   }
 
-  return v5;
+  return _completedCardSubtitle;
 }
 
 - (NSString)cardTitle
 {
-  v2 = [(RideBookingRideStatus *)self rideOption];
-  v3 = [v2 name];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  name = [rideOption name];
 
-  return v3;
+  return name;
 }
 
 - (UIImage)cardIcon
 {
-  v2 = [(RideBookingRideStatus *)self application];
-  v3 = [v2 iconWithFormat:0];
+  application = [(RideBookingRideStatus *)self application];
+  v3 = [application iconWithFormat:0];
 
   return v3;
 }
 
 - (NSString)bannerAttributionTitle
 {
-  v3 = [(RideBookingRideStatus *)self application];
-  v4 = [v3 name];
+  application = [(RideBookingRideStatus *)self application];
+  name = [application name];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (name)
   {
     v6 = [v5 localizedStringForKey:@"[ridesharing] banner view attribution" value:@"localized string not found" table:0];
-    v7 = [(RideBookingRideStatus *)self application];
-    v8 = [v7 name];
-    v9 = [NSString localizedStringWithFormat:v6, v8];
+    application2 = [(RideBookingRideStatus *)self application];
+    name2 = [application2 name];
+    v9 = [NSString localizedStringWithFormat:v6, name2];
   }
 
   else
@@ -873,14 +873,14 @@ LABEL_14:
 
 - (id)_completedTraySubtitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 completionStatus];
-  v5 = [v4 isMissedPickup];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
+  isMissedPickup = [completionStatus isMissedPickup];
 
-  if (v5)
+  if (isMissedPickup)
   {
     v6 = +[NSBundle mainBundle];
-    v7 = v6;
+    paymentAmount = v6;
     v8 = @"Driver has departed proactive [Ridesharing]";
 LABEL_5:
     v12 = [v6 localizedStringForKey:v8 value:@"localized string not found" table:0];
@@ -889,14 +889,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v10 = [v9 completionStatus];
-  v11 = [v10 isCanceled];
+  intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus2 = [intentsRideStatus2 completionStatus];
+  isCanceled = [completionStatus2 isCanceled];
 
-  if (v11)
+  if (isCanceled)
   {
     v6 = +[NSBundle mainBundle];
-    v7 = v6;
+    paymentAmount = v6;
     v8 = @"Trip was canceled proactive [Ridesharing]";
     goto LABEL_5;
   }
@@ -906,35 +906,35 @@ LABEL_6:
     if (![(RideBookingRideStatus *)self _shouldShowPayment])
     {
       v6 = +[NSBundle mainBundle];
-      v7 = v6;
+      paymentAmount = v6;
       v8 = @"Arrived proactive [Ridesharing]";
       goto LABEL_5;
     }
 
-    v19 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v20 = [v19 completionStatus];
-    v7 = [v20 paymentAmount];
+    intentsRideStatus3 = [(RideBookingRideStatus *)self intentsRideStatus];
+    completionStatus3 = [intentsRideStatus3 completionStatus];
+    paymentAmount = [completionStatus3 paymentAmount];
 
     v21 = +[NSBundle mainBundle];
     v22 = [v21 localizedStringForKey:@"Total fare is %@ proactive [Ridesharing]" value:@"localized string not found" table:0];
-    v23 = [v7 amount];
-    v24 = [v7 currencyCode];
-    v25 = [NSString _navigation_formattedStringForPriceValueWithAmount:v23 currencyCode:v24];
+    amount = [paymentAmount amount];
+    currencyCode = [paymentAmount currencyCode];
+    v25 = [NSString _navigation_formattedStringForPriceValueWithAmount:amount currencyCode:currencyCode];
     v12 = [NSString localizedStringWithFormat:v22, v25];
 
 LABEL_15:
     goto LABEL_6;
   }
 
-  v14 = [(RideBookingRideStatus *)self _driverName];
-  v15 = [v14 length];
+  _driverName = [(RideBookingRideStatus *)self _driverName];
+  v15 = [_driverName length];
 
   if (!v15)
   {
-    v26 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v7 = [v26 estimatedPickupDate];
+    intentsRideStatus4 = [(RideBookingRideStatus *)self intentsRideStatus];
+    paymentAmount = [intentsRideStatus4 estimatedPickupDate];
 
-    if (!v7)
+    if (!paymentAmount)
     {
       v12 = &stru_1016631F0;
       goto LABEL_6;
@@ -946,15 +946,15 @@ LABEL_15:
     }
 
     v27 = +[NSCalendar autoupdatingCurrentCalendar];
-    v28 = [v27 isDateInToday:v7];
+    v28 = [v27 isDateInToday:paymentAmount];
 
     if (!v28)
     {
       v45 = 0;
       v39 = +[NSCalendar autoupdatingCurrentCalendar];
       v40 = +[NSCalendar autoupdatingCurrentCalendar];
-      v41 = [v40 timeZone];
-      v42 = [v39 _navigation_transitRelativeDateStringForDate:v7 context:5 inTimeZone:v41 outUsedFormat:&v45];
+      timeZone = [v40 timeZone];
+      v42 = [v39 _navigation_transitRelativeDateStringForDate:paymentAmount context:5 inTimeZone:timeZone outUsedFormat:&v45];
 
       v43 = +[NSBundle mainBundle];
       v44 = [v43 localizedStringForKey:@"ridesharing.completed.feedbackRequired.rideDay" value:@"localized string not found" table:0];
@@ -963,9 +963,9 @@ LABEL_15:
       goto LABEL_6;
     }
 
-    v21 = [qword_10195EC50 stringFromDate:v7];
+    v21 = [qword_10195EC50 stringFromDate:paymentAmount];
     v29 = MapsSuggestionsTimeZone();
-    v30 = v7;
+    v30 = paymentAmount;
     v31 = v29;
     if (!v29)
     {
@@ -975,8 +975,8 @@ LABEL_15:
     v32 = +[NSCalendar autoupdatingCurrentCalendar];
     v33 = [v32 componentsInTimeZone:v31 fromDate:v30];
 
-    v34 = [v33 hour];
-    if (v34 == 1 || v34 == 13)
+    hour = [v33 hour];
+    if (hour == 1 || hour == 13)
     {
       v36 = @"ridesharing.completed.feedbackRequired.rideTime at 1 O'clock";
     }
@@ -996,8 +996,8 @@ LABEL_15:
 
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:@"ridesharing.tray.subtitle.completed.feedbackRequired.driverName" value:@"localized string not found" table:0];
-  v18 = [(RideBookingRideStatus *)self _driverName];
-  v12 = [NSString localizedStringWithFormat:v17, v18];
+  _driverName2 = [(RideBookingRideStatus *)self _driverName];
+  v12 = [NSString localizedStringWithFormat:v17, _driverName2];
 
 LABEL_7:
 
@@ -1015,44 +1015,44 @@ LABEL_7:
   v3 = +[NSLocale autoupdatingCurrentLocale];
   [qword_10195EC40 setLocale:v3];
 
-  v4 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
-  v5 = [v4 timeZone];
-  [qword_10195EC40 setTimeZone:v5];
+  scheduledPickupWindowStartDateComponents = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
+  timeZone = [scheduledPickupWindowStartDateComponents timeZone];
+  [qword_10195EC40 setTimeZone:timeZone];
 
   v6 = +[NSCalendar autoupdatingCurrentCalendar];
-  v7 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
-  v8 = [v6 dateFromComponents:v7];
+  scheduledPickupWindowStartDateComponents2 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
+  v8 = [v6 dateFromComponents:scheduledPickupWindowStartDateComponents2];
 
   v9 = [qword_10195EC40 stringFromDate:v8];
-  v10 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
-  v11 = [v10 timeZone];
-  v12 = [v11 abbreviation];
+  scheduledPickupWindowStartDateComponents3 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
+  timeZone2 = [scheduledPickupWindowStartDateComponents3 timeZone];
+  abbreviation = [timeZone2 abbreviation];
 
   v13 = +[NSCalendar autoupdatingCurrentCalendar];
-  v14 = [v13 timeZone];
-  v15 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
-  v16 = [v15 timeZone];
-  v17 = [v14 isEqualToTimeZone:v16];
+  timeZone3 = [v13 timeZone];
+  scheduledPickupWindowStartDateComponents4 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
+  timeZone4 = [scheduledPickupWindowStartDateComponents4 timeZone];
+  v17 = [timeZone3 isEqualToTimeZone:timeZone4];
 
   if (v17)
   {
 
-    v12 = 0;
+    abbreviation = 0;
   }
 
   v45 = 0;
   v18 = +[NSCalendar autoupdatingCurrentCalendar];
-  v19 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
-  v20 = [v19 timeZone];
-  v21 = [v18 _navigation_transitRelativeDateStringForDate:v8 context:5 inTimeZone:v20 outUsedFormat:&v45];
+  scheduledPickupWindowStartDateComponents5 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
+  timeZone5 = [scheduledPickupWindowStartDateComponents5 timeZone];
+  v21 = [v18 _navigation_transitRelativeDateStringForDate:v8 context:5 inTimeZone:timeZone5 outUsedFormat:&v45];
 
-  if (v12)
+  if (abbreviation)
   {
-    v22 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
-    v23 = [v22 timeZone];
+    scheduledPickupWindowStartDateComponents6 = [(RideBookingRideStatus *)self scheduledPickupWindowStartDateComponents];
+    timeZone6 = [scheduledPickupWindowStartDateComponents6 timeZone];
     v24 = v8;
-    v25 = v23;
-    if (!v23)
+    v25 = timeZone6;
+    if (!timeZone6)
     {
       v25 = MapsSuggestionsTimeZone();
     }
@@ -1060,8 +1060,8 @@ LABEL_7:
     v26 = +[NSCalendar autoupdatingCurrentCalendar];
     v27 = [v26 componentsInTimeZone:v25 fromDate:v24];
 
-    v28 = [v27 hour];
-    if (v28 == 13 || v28 == 1)
+    hour = [v27 hour];
+    if (hour == 13 || hour == 1)
     {
       v29 = +[NSBundle mainBundle];
       v30 = v29;
@@ -1077,7 +1077,7 @@ LABEL_7:
 
     v41 = [v29 localizedStringForKey:v31 value:@"localized string not found" table:0];
 
-    [NSString localizedStringWithFormat:v41, v21, v9, v12];
+    [NSString localizedStringWithFormat:v41, v21, v9, abbreviation];
   }
 
   else
@@ -1093,8 +1093,8 @@ LABEL_7:
     v35 = +[NSCalendar autoupdatingCurrentCalendar];
     v36 = [v35 componentsInTimeZone:v34 fromDate:v33];
 
-    v37 = [v36 hour];
-    if (v37 == 13 || v37 == 1)
+    hour2 = [v36 hour];
+    if (hour2 == 13 || hour2 == 1)
     {
       v38 = +[NSBundle mainBundle];
       v39 = v38;
@@ -1119,25 +1119,25 @@ LABEL_7:
 
 - (id)_completedTrayTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 completionStatus];
-  v5 = [v4 isCanceled];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
+  isCanceled = [completionStatus isCanceled];
 
-  if (v5)
+  if (isCanceled)
   {
-    v6 = [(RideBookingRideStatus *)self rideOption];
-    v7 = [v6 name];
+    rideOption = [(RideBookingRideStatus *)self rideOption];
+    name = [rideOption name];
 
-    if (v7)
+    if (name)
     {
       v8 = +[NSBundle mainBundle];
       v9 = v8;
       v10 = @"%@ was canceled [Ridesharing]";
 LABEL_8:
       v13 = [v8 localizedStringForKey:v10 value:@"localized string not found" table:0];
-      v14 = [(RideBookingRideStatus *)self rideOption];
-      v15 = [v14 name];
-      v16 = [NSString localizedStringWithFormat:v13, v15];
+      rideOption2 = [(RideBookingRideStatus *)self rideOption];
+      name2 = [rideOption2 name];
+      v16 = [NSString localizedStringWithFormat:v13, name2];
 
       goto LABEL_12;
     }
@@ -1157,10 +1157,10 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v11 = [(RideBookingRideStatus *)self rideOption];
-    v12 = [v11 name];
+    rideOption3 = [(RideBookingRideStatus *)self rideOption];
+    name3 = [rideOption3 name];
 
-    if (v12)
+    if (name3)
     {
       v8 = +[NSBundle mainBundle];
       v9 = v8;
@@ -1181,21 +1181,21 @@ LABEL_12:
 
 - (id)_ongoingTrayTitle
 {
-  v3 = [(RideBookingRideStatus *)self _destinationAddress];
-  v4 = [(RideBookingRideStatus *)self rideOption];
-  v5 = [v4 name];
-  if (v5)
+  _destinationAddress = [(RideBookingRideStatus *)self _destinationAddress];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  name = [rideOption name];
+  if (name)
   {
-    v6 = v5;
-    v7 = [v3 length];
+    v6 = name;
+    v7 = [_destinationAddress length];
 
     if (v7)
     {
-      v8 = +[NSBundle mainBundle];
-      v9 = [v8 localizedStringForKey:@"%@ to %@ [Ridesharing]" value:@"localized string not found" table:0];
-      v10 = [(RideBookingRideStatus *)self rideOption];
-      v11 = [v10 name];
-      v12 = [NSString localizedStringWithFormat:v9, v11, v3];
+      rideOption3 = +[NSBundle mainBundle];
+      v9 = [rideOption3 localizedStringForKey:@"%@ to %@ [Ridesharing]" value:@"localized string not found" table:0];
+      rideOption2 = [(RideBookingRideStatus *)self rideOption];
+      name2 = [rideOption2 name];
+      v12 = [NSString localizedStringWithFormat:v9, name2, _destinationAddress];
 
       goto LABEL_10;
     }
@@ -1205,21 +1205,21 @@ LABEL_12:
   {
   }
 
-  if ([v3 length])
+  if ([_destinationAddress length])
   {
-    v8 = +[NSBundle mainBundle];
-    v9 = [v8 localizedStringForKey:@"Ride to %@ [Ridesharing]" value:@"localized string not found" table:0];
-    v13 = [NSString localizedStringWithFormat:v9, v3];
+    rideOption3 = +[NSBundle mainBundle];
+    v9 = [rideOption3 localizedStringForKey:@"Ride to %@ [Ridesharing]" value:@"localized string not found" table:0];
+    v13 = [NSString localizedStringWithFormat:v9, _destinationAddress];
 LABEL_9:
     v12 = v13;
     goto LABEL_10;
   }
 
-  v8 = [(RideBookingRideStatus *)self rideOption];
-  v14 = [v8 name];
-  if (v14)
+  rideOption3 = [(RideBookingRideStatus *)self rideOption];
+  name3 = [rideOption3 name];
+  if (name3)
   {
-    v13 = v14;
+    v13 = name3;
     v9 = v13;
     goto LABEL_9;
   }
@@ -1235,24 +1235,24 @@ LABEL_10:
 
 - (id)_pickupTrayTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 estimatedPickupEndDate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedPickupEndDate = [intentsRideStatus estimatedPickupEndDate];
 
-  if (v4)
+  if (estimatedPickupEndDate)
   {
-    [v4 timeIntervalSinceNow];
+    [estimatedPickupEndDate timeIntervalSinceNow];
     v5 = [(RideBookingRideStatus *)self _minuteStringForSeconds:?];
-    v6 = [(RideBookingRideStatus *)self rideOption];
-    v7 = [v6 name];
+    rideOption = [(RideBookingRideStatus *)self rideOption];
+    name = [rideOption name];
 
     v8 = +[NSBundle mainBundle];
     v9 = v8;
-    if (v7)
+    if (name)
     {
       v10 = [v8 localizedStringForKey:@"%@ departs in %@ [Ridesharing]" value:@"localized string not found" table:0];
-      v11 = [(RideBookingRideStatus *)self rideOption];
-      v12 = [v11 name];
-      v13 = [NSString localizedStringWithFormat:v10, v12, v5];
+      rideOption2 = [(RideBookingRideStatus *)self rideOption];
+      name2 = [rideOption2 name];
+      v13 = [NSString localizedStringWithFormat:v10, name2, v5];
     }
 
     else
@@ -1264,16 +1264,16 @@ LABEL_10:
 
   else
   {
-    v14 = [(RideBookingRideStatus *)self rideOption];
-    v15 = [v14 name];
+    rideOption3 = [(RideBookingRideStatus *)self rideOption];
+    name3 = [rideOption3 name];
 
     v5 = +[NSBundle mainBundle];
-    if (v15)
+    if (name3)
     {
       v16 = [v5 localizedStringForKey:@"%@ has arrived [Ridesharing]" value:@"localized string not found" table:0];
-      v17 = [(RideBookingRideStatus *)self rideOption];
-      v18 = [v17 name];
-      v13 = [NSString localizedStringWithFormat:v16, v18];
+      rideOption4 = [(RideBookingRideStatus *)self rideOption];
+      name4 = [rideOption4 name];
+      v13 = [NSString localizedStringWithFormat:v16, name4];
     }
 
     else
@@ -1287,16 +1287,16 @@ LABEL_10:
 
 - (id)_approachingPickupTrayTitle
 {
-  v3 = [(RideBookingRideStatus *)self rideOption];
-  v4 = [v3 name];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  name = [rideOption name];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (name)
   {
     v6 = [v5 localizedStringForKey:@"%@ is arriving [Ridesharing]" value:@"localized string not found" table:0];
-    v7 = [(RideBookingRideStatus *)self rideOption];
-    v8 = [v7 name];
-    v9 = [NSString localizedStringWithFormat:v6, v8];
+    rideOption2 = [(RideBookingRideStatus *)self rideOption];
+    name2 = [rideOption2 name];
+    v9 = [NSString localizedStringWithFormat:v6, name2];
   }
 
   else
@@ -1309,24 +1309,24 @@ LABEL_10:
 
 - (id)_confirmedTrayTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 estimatedPickupDate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedPickupDate = [intentsRideStatus estimatedPickupDate];
 
-  if (v4)
+  if (estimatedPickupDate)
   {
-    [v4 timeIntervalSinceNow];
+    [estimatedPickupDate timeIntervalSinceNow];
     v5 = [(RideBookingRideStatus *)self _minuteStringForSeconds:?];
-    v6 = [(RideBookingRideStatus *)self rideOption];
-    v7 = [v6 name];
+    rideOption = [(RideBookingRideStatus *)self rideOption];
+    name = [rideOption name];
 
     v8 = +[NSBundle mainBundle];
     v9 = v8;
-    if (v7)
+    if (name)
     {
       v10 = [v8 localizedStringForKey:@"%@ arrives in %@ [Ridesharing]" value:@"localized string not found" table:0];
-      v11 = [(RideBookingRideStatus *)self rideOption];
-      v12 = [v11 name];
-      v13 = [NSString localizedStringWithFormat:v10, v12, v5];
+      rideOption2 = [(RideBookingRideStatus *)self rideOption];
+      name2 = [rideOption2 name];
+      v13 = [NSString localizedStringWithFormat:v10, name2, v5];
     }
 
     else
@@ -1338,16 +1338,16 @@ LABEL_10:
 
   else
   {
-    v14 = [(RideBookingRideStatus *)self rideOption];
-    v15 = [v14 name];
+    rideOption3 = [(RideBookingRideStatus *)self rideOption];
+    name3 = [rideOption3 name];
 
     v5 = +[NSBundle mainBundle];
-    if (v15)
+    if (name3)
     {
       v16 = [v5 localizedStringForKey:@"%@ arrives soon [Ridesharing]" value:@"localized string not found" table:0];
-      v17 = [(RideBookingRideStatus *)self rideOption];
-      v18 = [v17 name];
-      v13 = [NSString localizedStringWithFormat:v16, v18];
+      rideOption4 = [(RideBookingRideStatus *)self rideOption];
+      name4 = [rideOption4 name];
+      v13 = [NSString localizedStringWithFormat:v16, name4];
     }
 
     else
@@ -1361,16 +1361,16 @@ LABEL_10:
 
 - (id)_receivedTrayTitle
 {
-  v3 = [(RideBookingRideStatus *)self rideOption];
-  v4 = [v3 name];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  name = [rideOption name];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (name)
   {
     v6 = [v5 localizedStringForKey:@"Requesting %@ [Ridesharing]" value:@"localized string not found" table:0];
-    v7 = [(RideBookingRideStatus *)self rideOption];
-    v8 = [v7 name];
-    v9 = [NSString stringWithFormat:v6, v8];
+    rideOption2 = [(RideBookingRideStatus *)self rideOption];
+    name2 = [rideOption2 name];
+    v9 = [NSString stringWithFormat:v6, name2];
   }
 
   else
@@ -1383,42 +1383,42 @@ LABEL_10:
 
 - (id)_scheduledTrayTitle
 {
-  v3 = [(RideBookingRideStatus *)self _destinationAddress];
-  v4 = [(RideBookingRideStatus *)self _pickupAddress];
-  v5 = [(RideBookingRideStatus *)self rideOption];
-  v6 = [v5 name];
+  _destinationAddress = [(RideBookingRideStatus *)self _destinationAddress];
+  _pickupAddress = [(RideBookingRideStatus *)self _pickupAddress];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  name = [rideOption name];
 
-  v7 = [v3 length];
-  if (v6)
+  v7 = [_destinationAddress length];
+  if (name)
   {
     if (v7)
     {
       v8 = +[NSBundle mainBundle];
       v9 = [v8 localizedStringForKey:@"%@ to %@ [Ridesharing]" value:@"localized string not found" table:0];
-      v10 = [(RideBookingRideStatus *)self rideOption];
-      v11 = [v10 name];
-      [NSString localizedStringWithFormat:v9, v11, v3];
+      rideOption2 = [(RideBookingRideStatus *)self rideOption];
+      name2 = [rideOption2 name];
+      [NSString localizedStringWithFormat:v9, name2, _destinationAddress];
     }
 
     else
     {
-      v13 = [v4 length];
+      v13 = [_pickupAddress length];
       v14 = +[NSBundle mainBundle];
       v8 = v14;
       if (v13)
       {
         v9 = [v14 localizedStringForKey:@"%@ from %@ [Ridesharing]" value:@"localized string not found" table:0];
-        v10 = [(RideBookingRideStatus *)self rideOption];
-        v11 = [v10 name];
-        [NSString localizedStringWithFormat:v9, v11, v4];
+        rideOption2 = [(RideBookingRideStatus *)self rideOption];
+        name2 = [rideOption2 name];
+        [NSString localizedStringWithFormat:v9, name2, _pickupAddress];
       }
 
       else
       {
         v9 = [v14 localizedStringForKey:@"%@ [Ridesharing]" value:@"localized string not found" table:0];
-        v10 = [(RideBookingRideStatus *)self rideOption];
-        v11 = [v10 name];
-        [NSString localizedStringWithFormat:v9, v11, v17];
+        rideOption2 = [(RideBookingRideStatus *)self rideOption];
+        name2 = [rideOption2 name];
+        [NSString localizedStringWithFormat:v9, name2, v17];
       }
     }
     v15 = ;
@@ -1430,17 +1430,17 @@ LABEL_10:
   {
     v8 = +[NSBundle mainBundle];
     v12 = [v8 localizedStringForKey:@"Ride to %@ [Ridesharing]" value:@"localized string not found" table:0];
-    [NSString localizedStringWithFormat:v12, v3];
+    [NSString localizedStringWithFormat:v12, _destinationAddress];
     v15 = LABEL_10:;
 
     goto LABEL_13;
   }
 
-  if ([v4 length])
+  if ([_pickupAddress length])
   {
     v8 = +[NSBundle mainBundle];
     v12 = [v8 localizedStringForKey:@"Ride from %@ [Ridesharing]" value:@"localized string not found" table:0];
-    [NSString localizedStringWithFormat:v12, v4];
+    [NSString localizedStringWithFormat:v12, _pickupAddress];
     goto LABEL_10;
   }
 
@@ -1453,39 +1453,39 @@ LABEL_13:
 
 - (NSString)traySubtitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 phase];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  phase = [intentsRideStatus phase];
 
   v5 = &stru_1016631F0;
-  if (v4 > 3)
+  if (phase > 3)
   {
-    if ((v4 - 5) >= 2)
+    if ((phase - 5) >= 2)
     {
-      if (v4 != 4)
+      if (phase != 4)
       {
         goto LABEL_16;
       }
 
-      v6 = [(RideBookingRideStatus *)self _completedTraySubtitle];
+      _completedTraySubtitle = [(RideBookingRideStatus *)self _completedTraySubtitle];
       goto LABEL_15;
     }
 
     goto LABEL_6;
   }
 
-  if ((v4 - 1) < 2)
+  if ((phase - 1) < 2)
   {
     if ([(RideBookingRideStatus *)self isScheduledRide])
     {
-      v6 = [(RideBookingRideStatus *)self _scheduledTraySubtitle];
+      _completedTraySubtitle = [(RideBookingRideStatus *)self _scheduledTraySubtitle];
 LABEL_15:
-      v5 = v6;
+      v5 = _completedTraySubtitle;
       goto LABEL_16;
     }
 
 LABEL_6:
-    v7 = [(RideBookingRideStatus *)self _pickupAddress];
-    if (![v7 length])
+    _pickupAddress = [(RideBookingRideStatus *)self _pickupAddress];
+    if (![_pickupAddress length])
     {
 LABEL_12:
 
@@ -1497,25 +1497,25 @@ LABEL_12:
     v10 = @"Pickup at %@ [Ridesharing]";
 LABEL_11:
     v15 = [v8 localizedStringForKey:v10 value:@"localized string not found" table:0];
-    v5 = [NSString localizedStringWithFormat:v15, v7];
+    v5 = [NSString localizedStringWithFormat:v15, _pickupAddress];
 
     goto LABEL_12;
   }
 
-  if (v4 != 3)
+  if (phase != 3)
   {
     goto LABEL_16;
   }
 
-  v11 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v12 = [v11 estimatedDropOffDate];
+  intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedDropOffDate = [intentsRideStatus2 estimatedDropOffDate];
 
-  if (v12)
+  if (estimatedDropOffDate)
   {
-    v13 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v14 = [v13 estimatedDropOffDate];
-    [v14 timeIntervalSinceNow];
-    v7 = [(RideBookingRideStatus *)self _minuteStringForSeconds:?];
+    intentsRideStatus3 = [(RideBookingRideStatus *)self intentsRideStatus];
+    estimatedDropOffDate2 = [intentsRideStatus3 estimatedDropOffDate];
+    [estimatedDropOffDate2 timeIntervalSinceNow];
+    _pickupAddress = [(RideBookingRideStatus *)self _minuteStringForSeconds:?];
 
     v8 = +[NSBundle mainBundle];
     v9 = v8;
@@ -1531,50 +1531,50 @@ LABEL_16:
 
 - (id)_destinationAddress
 {
-  v2 = [(RideBookingRideStatus *)self dropoffLocation];
-  v3 = [v2 _geoMapItem];
-  v4 = [v3 name];
+  dropoffLocation = [(RideBookingRideStatus *)self dropoffLocation];
+  _geoMapItem = [dropoffLocation _geoMapItem];
+  name = [_geoMapItem name];
 
-  return v4;
+  return name;
 }
 
 - (id)_pickupAddress
 {
-  v2 = [(RideBookingRideStatus *)self pickupLocation];
-  v3 = [v2 _geoMapItem];
-  v4 = [v3 name];
+  pickupLocation = [(RideBookingRideStatus *)self pickupLocation];
+  _geoMapItem = [pickupLocation _geoMapItem];
+  name = [_geoMapItem name];
 
-  return v4;
+  return name;
 }
 
 - (NSString)trayTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 phase];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  phase = [intentsRideStatus phase];
 
-  v5 = &stru_1016631F0;
-  if (v4 > 3)
+  _completedTrayTitle = &stru_1016631F0;
+  if (phase > 3)
   {
-    switch(v4)
+    switch(phase)
     {
       case 4:
-        v5 = [(RideBookingRideStatus *)self _completedTrayTitle];
+        _completedTrayTitle = [(RideBookingRideStatus *)self _completedTrayTitle];
         break;
       case 5:
-        v5 = [(RideBookingRideStatus *)self _approachingPickupTrayTitle];
+        _completedTrayTitle = [(RideBookingRideStatus *)self _approachingPickupTrayTitle];
         break;
       case 6:
-        v5 = [(RideBookingRideStatus *)self _pickupTrayTitle];
+        _completedTrayTitle = [(RideBookingRideStatus *)self _pickupTrayTitle];
         break;
     }
   }
 
   else
   {
-    switch(v4)
+    switch(phase)
     {
       case 1:
-        v5 = [(RideBookingRideStatus *)self _receivedTrayTitle];
+        _completedTrayTitle = [(RideBookingRideStatus *)self _receivedTrayTitle];
         break;
       case 2:
         if ([(RideBookingRideStatus *)self isScheduledRide])
@@ -1586,40 +1586,40 @@ LABEL_16:
         {
           [(RideBookingRideStatus *)self _confirmedTrayTitle];
         }
-        v5 = ;
+        _completedTrayTitle = ;
         break;
       case 3:
-        v5 = [(RideBookingRideStatus *)self _ongoingTrayTitle];
+        _completedTrayTitle = [(RideBookingRideStatus *)self _ongoingTrayTitle];
         break;
     }
   }
 
-  return v5;
+  return _completedTrayTitle;
 }
 
 - (id)_completedTemplatedViewSubtitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 estimatedPickupDate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedPickupDate = [intentsRideStatus estimatedPickupDate];
 
   if ([(RideBookingRideStatus *)self _feedbackRequired])
   {
-    if (v4)
+    if (estimatedPickupDate)
     {
       if (qword_10195EC38 != -1)
       {
         dispatch_once(&qword_10195EC38, &stru_10164E728);
       }
 
-      v5 = [qword_10195EC30 stringFromDate:v4];
+      v5 = [qword_10195EC30 stringFromDate:estimatedPickupDate];
       v22 = 0;
       v6 = +[NSCalendar autoupdatingCurrentCalendar];
       v7 = +[NSCalendar autoupdatingCurrentCalendar];
-      v8 = [v7 timeZone];
-      v9 = [v6 _navigation_transitRelativeDateStringForDate:v4 context:5 inTimeZone:v8 outUsedFormat:&v22];
+      timeZone = [v7 timeZone];
+      v9 = [v6 _navigation_transitRelativeDateStringForDate:estimatedPickupDate context:5 inTimeZone:timeZone outUsedFormat:&v22];
 
       v10 = MapsSuggestionsTimeZone();
-      v11 = v4;
+      v11 = estimatedPickupDate;
       v12 = v10;
       if (!v10)
       {
@@ -1629,8 +1629,8 @@ LABEL_16:
       v13 = +[NSCalendar autoupdatingCurrentCalendar];
       v14 = [v13 componentsInTimeZone:v12 fromDate:v11];
 
-      v15 = [v14 hour];
-      if (v15 == 1 || v15 == 13)
+      hour = [v14 hour];
+      if (hour == 1 || hour == 13)
       {
         v17 = @"Pickup date and time [Ridesharing] at 1";
       }
@@ -1643,35 +1643,35 @@ LABEL_16:
       v18 = +[NSBundle mainBundle];
       v19 = [v18 localizedStringForKey:v17 value:@"localized string not found" table:0];
 
-      v20 = [NSString localizedStringWithFormat:v19, v9, v5];
+      _completedTraySubtitle = [NSString localizedStringWithFormat:v19, v9, v5];
     }
 
     else
     {
-      v20 = &stru_1016631F0;
+      _completedTraySubtitle = &stru_1016631F0;
     }
   }
 
   else
   {
-    v20 = [(RideBookingRideStatus *)self _completedTraySubtitle];
+    _completedTraySubtitle = [(RideBookingRideStatus *)self _completedTraySubtitle];
   }
 
-  return v20;
+  return _completedTraySubtitle;
 }
 
 - (id)_ongoingTemplatedViewSubtitle
 {
-  v2 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v3 = [v2 dropOffLocation];
-  v4 = [v3 _geoMapItem];
-  v5 = [v4 name];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  dropOffLocation = [intentsRideStatus dropOffLocation];
+  _geoMapItem = [dropOffLocation _geoMapItem];
+  name = [_geoMapItem name];
 
-  if ([v5 length])
+  if ([name length])
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"[Ridesharing] templated view ongoing subtitle" value:@"localized string not found" table:0];
-    v8 = [NSString localizedStringWithFormat:v7, v5];
+    v8 = [NSString localizedStringWithFormat:v7, name];
   }
 
   else
@@ -1684,49 +1684,49 @@ LABEL_16:
 
 - (id)_confirmedTemplatedViewSubtitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 vehicle];
-  v5 = [v4 registrationPlate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  vehicle = [intentsRideStatus vehicle];
+  registrationPlate = [vehicle registrationPlate];
 
-  v6 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v7 = [v6 vehicle];
-  v8 = [v7 manufacturer];
+  intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+  vehicle2 = [intentsRideStatus2 vehicle];
+  manufacturer = [vehicle2 manufacturer];
 
-  v9 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v10 = [v9 vehicle];
-  v11 = [v10 model];
+  intentsRideStatus3 = [(RideBookingRideStatus *)self intentsRideStatus];
+  vehicle3 = [intentsRideStatus3 vehicle];
+  model = [vehicle3 model];
 
-  if (v8)
+  if (manufacturer)
   {
-    v12 = v8;
+    v12 = manufacturer;
   }
 
   else
   {
-    v12 = v11;
+    v12 = model;
   }
 
   v13 = v12;
-  if (v8 && v11)
+  if (manufacturer && model)
   {
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:@"[Ridesharing] templated view vehicle make" value:@"localized string not found" table:0];
-    v13 = [NSString localizedStringWithFormat:v15, v8, v11];
+    v13 = [NSString localizedStringWithFormat:v15, manufacturer, model];
   }
 
-  if (v13 && v5)
+  if (v13 && registrationPlate)
   {
     v16 = +[NSBundle mainBundle];
     v17 = [v16 localizedStringForKey:@"[Ridesharing] templated view vehicle details" value:@"localized string not found" table:0];
-    v18 = [NSString localizedStringWithFormat:v17, v13, v5];
+    v18 = [NSString localizedStringWithFormat:v17, v13, registrationPlate];
   }
 
   else
   {
     v19 = &stru_1016631F0;
-    if (v5)
+    if (registrationPlate)
     {
-      v19 = v5;
+      v19 = registrationPlate;
     }
 
     if (v13)
@@ -1752,43 +1752,43 @@ LABEL_16:
 {
   if ([(RideBookingRideStatus *)self _feedbackRequired])
   {
-    v3 = [(RideBookingRideStatus *)self _driverName];
-    v4 = [v3 length];
+    _driverName = [(RideBookingRideStatus *)self _driverName];
+    v4 = [_driverName length];
 
     v5 = +[NSBundle mainBundle];
     v6 = v5;
     if (v4)
     {
       v7 = [v5 localizedStringForKey:@"ridesharing.tray.subtitle.completed.feedbackRequired.driverName" value:@"localized string not found" table:0];
-      v8 = [(RideBookingRideStatus *)self _driverName];
-      v9 = [NSString localizedStringWithFormat:v7, v8];
+      _driverName2 = [(RideBookingRideStatus *)self _driverName];
+      _completedTrayTitle = [NSString localizedStringWithFormat:v7, _driverName2];
     }
 
     else
     {
       v7 = [v5 localizedStringForKey:@"ridesharing.templated.title.completed.feedbackRequired.rideName" value:@"localized string not found" table:0];
-      v8 = [(RideBookingRideStatus *)self rideOption];
-      v10 = [v8 name];
-      v9 = [NSString localizedStringWithFormat:v7, v10];
+      _driverName2 = [(RideBookingRideStatus *)self rideOption];
+      name = [_driverName2 name];
+      _completedTrayTitle = [NSString localizedStringWithFormat:v7, name];
     }
   }
 
   else
   {
-    v9 = [(RideBookingRideStatus *)self _completedTrayTitle];
+    _completedTrayTitle = [(RideBookingRideStatus *)self _completedTrayTitle];
   }
 
-  return v9;
+  return _completedTrayTitle;
 }
 
 - (id)_ongoingTemplatedViewTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 estimatedDropOffDate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedDropOffDate = [intentsRideStatus estimatedDropOffDate];
 
-  if (v4)
+  if (estimatedDropOffDate)
   {
-    [v4 timeIntervalSinceNow];
+    [estimatedDropOffDate timeIntervalSinceNow];
     v5 = [(RideBookingRideStatus *)self _minuteStringForSeconds:?];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"[Ridesharing] You’ll arrive in %@" value:@"localized string not found" table:0];
@@ -1806,24 +1806,24 @@ LABEL_16:
 
 - (id)_pickupTemplatedViewTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 estimatedPickupEndDate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedPickupEndDate = [intentsRideStatus estimatedPickupEndDate];
 
-  if (v4)
+  if (estimatedPickupEndDate)
   {
-    [v4 timeIntervalSinceNow];
+    [estimatedPickupEndDate timeIntervalSinceNow];
     v5 = [(RideBookingRideStatus *)self _minuteStringForSeconds:?];
-    v6 = [(RideBookingRideStatus *)self rideOption];
-    v7 = [v6 name];
+    rideOption = [(RideBookingRideStatus *)self rideOption];
+    name = [rideOption name];
 
     v8 = +[NSBundle mainBundle];
     v9 = v8;
-    if (v7)
+    if (name)
     {
       v10 = [v8 localizedStringForKey:@"Your %@ departs in %@ [Ridesharing]" value:@"localized string not found" table:0];
-      v11 = [(RideBookingRideStatus *)self rideOption];
-      v12 = [v11 name];
-      v13 = [NSString localizedStringWithFormat:v10, v12, v5];
+      rideOption2 = [(RideBookingRideStatus *)self rideOption];
+      name2 = [rideOption2 name];
+      v13 = [NSString localizedStringWithFormat:v10, name2, v5];
     }
 
     else
@@ -1835,16 +1835,16 @@ LABEL_16:
 
   else
   {
-    v14 = [(RideBookingRideStatus *)self rideOption];
-    v15 = [v14 name];
+    rideOption3 = [(RideBookingRideStatus *)self rideOption];
+    name3 = [rideOption3 name];
 
     v5 = +[NSBundle mainBundle];
-    if (v15)
+    if (name3)
     {
       v16 = [v5 localizedStringForKey:@"Your %@ has arrived [Ridesharing]" value:@"localized string not found" table:0];
-      v17 = [(RideBookingRideStatus *)self rideOption];
-      v18 = [v17 name];
-      v13 = [NSString localizedStringWithFormat:v16, v18];
+      rideOption4 = [(RideBookingRideStatus *)self rideOption];
+      name4 = [rideOption4 name];
+      v13 = [NSString localizedStringWithFormat:v16, name4];
     }
 
     else
@@ -1858,16 +1858,16 @@ LABEL_16:
 
 - (id)_approachingPickupTemplatedViewTitle
 {
-  v3 = [(RideBookingRideStatus *)self rideOption];
-  v4 = [v3 name];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  name = [rideOption name];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (name)
   {
     v6 = [v5 localizedStringForKey:@"Your %@ is arriving now [Ridesharing]" value:@"localized string not found" table:0];
-    v7 = [(RideBookingRideStatus *)self rideOption];
-    v8 = [v7 name];
-    v9 = [NSString localizedStringWithFormat:v6, v8];
+    rideOption2 = [(RideBookingRideStatus *)self rideOption];
+    name2 = [rideOption2 name];
+    v9 = [NSString localizedStringWithFormat:v6, name2];
   }
 
   else
@@ -1880,24 +1880,24 @@ LABEL_16:
 
 - (id)_confirmedTemplatedViewTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 estimatedPickupDate];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  estimatedPickupDate = [intentsRideStatus estimatedPickupDate];
 
-  if (v4)
+  if (estimatedPickupDate)
   {
-    [v4 timeIntervalSinceNow];
+    [estimatedPickupDate timeIntervalSinceNow];
     v5 = [(RideBookingRideStatus *)self _minuteStringForSeconds:?];
-    v6 = [(RideBookingRideStatus *)self rideOption];
-    v7 = [v6 name];
+    rideOption = [(RideBookingRideStatus *)self rideOption];
+    name = [rideOption name];
 
     v8 = +[NSBundle mainBundle];
     v9 = v8;
-    if (v7)
+    if (name)
     {
       v10 = [v8 localizedStringForKey:@"Your %@ arrives in %@ [Ridesharing]" value:@"localized string not found" table:0];
-      v11 = [(RideBookingRideStatus *)self rideOption];
-      v12 = [v11 name];
-      v13 = [NSString localizedStringWithFormat:v10, v12, v5];
+      rideOption2 = [(RideBookingRideStatus *)self rideOption];
+      name2 = [rideOption2 name];
+      v13 = [NSString localizedStringWithFormat:v10, name2, v5];
     }
 
     else
@@ -1909,16 +1909,16 @@ LABEL_16:
 
   else
   {
-    v14 = [(RideBookingRideStatus *)self rideOption];
-    v15 = [v14 name];
+    rideOption3 = [(RideBookingRideStatus *)self rideOption];
+    name3 = [rideOption3 name];
 
     v5 = +[NSBundle mainBundle];
-    if (v15)
+    if (name3)
     {
       v16 = [v5 localizedStringForKey:@"Your %@ arrives soon [Ridesharing]" value:@"localized string not found" table:0];
-      v17 = [(RideBookingRideStatus *)self rideOption];
-      v18 = [v17 name];
-      v13 = [NSString localizedStringWithFormat:v16, v18];
+      rideOption4 = [(RideBookingRideStatus *)self rideOption];
+      name4 = [rideOption4 name];
+      v13 = [NSString localizedStringWithFormat:v16, name4];
     }
 
     else
@@ -1932,16 +1932,16 @@ LABEL_16:
 
 - (id)_receivedTemplatedViewTitle
 {
-  v3 = [(RideBookingRideStatus *)self rideOption];
-  v4 = [v3 name];
+  rideOption = [(RideBookingRideStatus *)self rideOption];
+  name = [rideOption name];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (name)
   {
     v6 = [v5 localizedStringForKey:@"Requesting your %@ [Ridesharing]" value:@"localized string not found" table:0];
-    v7 = [(RideBookingRideStatus *)self rideOption];
-    v8 = [v7 name];
-    v9 = [NSString stringWithFormat:v6, v8];
+    rideOption2 = [(RideBookingRideStatus *)self rideOption];
+    name2 = [rideOption2 name];
+    v9 = [NSString stringWithFormat:v6, name2];
   }
 
   else
@@ -1952,11 +1952,11 @@ LABEL_16:
   return v9;
 }
 
-- (id)_minuteStringForSeconds:(double)a3
+- (id)_minuteStringForSeconds:(double)seconds
 {
-  v3 = fmax(a3, 60.0);
-  v4 = [(RideBookingRideStatus *)self timeFormatter];
-  v5 = [v4 stringFromTimeInterval:v3];
+  v3 = fmax(seconds, 60.0);
+  timeFormatter = [(RideBookingRideStatus *)self timeFormatter];
+  v5 = [timeFormatter stringFromTimeInterval:v3];
 
   return v5;
 }
@@ -1975,90 +1975,90 @@ LABEL_16:
 
 - (NSString)templatedViewSubtitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 phase];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  phase = [intentsRideStatus phase];
 
-  v5 = &stru_1016631F0;
-  if (v4 > 3)
+  _completedTemplatedViewSubtitle = &stru_1016631F0;
+  if (phase > 3)
   {
-    switch(v4)
+    switch(phase)
     {
       case 4:
-        v5 = [(RideBookingRideStatus *)self _completedTemplatedViewSubtitle];
+        _completedTemplatedViewSubtitle = [(RideBookingRideStatus *)self _completedTemplatedViewSubtitle];
         break;
       case 5:
-        v5 = [(RideBookingRideStatus *)self _approachingPickupTemplatedViewSubtitle];
+        _completedTemplatedViewSubtitle = [(RideBookingRideStatus *)self _approachingPickupTemplatedViewSubtitle];
         break;
       case 6:
-        v5 = [(RideBookingRideStatus *)self _pickupTemplatedViewSubtitle];
+        _completedTemplatedViewSubtitle = [(RideBookingRideStatus *)self _pickupTemplatedViewSubtitle];
         break;
     }
   }
 
   else
   {
-    switch(v4)
+    switch(phase)
     {
       case 1:
-        v5 = [(RideBookingRideStatus *)self _receivedTemplatedViewSubtitle];
+        _completedTemplatedViewSubtitle = [(RideBookingRideStatus *)self _receivedTemplatedViewSubtitle];
         break;
       case 2:
-        v5 = [(RideBookingRideStatus *)self _confirmedTemplatedViewSubtitle];
+        _completedTemplatedViewSubtitle = [(RideBookingRideStatus *)self _confirmedTemplatedViewSubtitle];
         break;
       case 3:
-        v5 = [(RideBookingRideStatus *)self _ongoingTemplatedViewSubtitle];
+        _completedTemplatedViewSubtitle = [(RideBookingRideStatus *)self _ongoingTemplatedViewSubtitle];
         break;
     }
   }
 
-  return v5;
+  return _completedTemplatedViewSubtitle;
 }
 
 - (NSString)templatedViewTitle
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 phase];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  phase = [intentsRideStatus phase];
 
-  v5 = &stru_1016631F0;
-  if (v4 > 3)
+  _completedTemplatedViewTitle = &stru_1016631F0;
+  if (phase > 3)
   {
-    switch(v4)
+    switch(phase)
     {
       case 4:
-        v5 = [(RideBookingRideStatus *)self _completedTemplatedViewTitle];
+        _completedTemplatedViewTitle = [(RideBookingRideStatus *)self _completedTemplatedViewTitle];
         break;
       case 5:
-        v5 = [(RideBookingRideStatus *)self _approachingPickupTemplatedViewTitle];
+        _completedTemplatedViewTitle = [(RideBookingRideStatus *)self _approachingPickupTemplatedViewTitle];
         break;
       case 6:
-        v5 = [(RideBookingRideStatus *)self _pickupTemplatedViewTitle];
+        _completedTemplatedViewTitle = [(RideBookingRideStatus *)self _pickupTemplatedViewTitle];
         break;
     }
   }
 
   else
   {
-    switch(v4)
+    switch(phase)
     {
       case 1:
-        v5 = [(RideBookingRideStatus *)self _receivedTemplatedViewTitle];
+        _completedTemplatedViewTitle = [(RideBookingRideStatus *)self _receivedTemplatedViewTitle];
         break;
       case 2:
-        v5 = [(RideBookingRideStatus *)self _confirmedTemplatedViewTitle];
+        _completedTemplatedViewTitle = [(RideBookingRideStatus *)self _confirmedTemplatedViewTitle];
         break;
       case 3:
-        v5 = [(RideBookingRideStatus *)self _ongoingTemplatedViewTitle];
+        _completedTemplatedViewTitle = [(RideBookingRideStatus *)self _ongoingTemplatedViewTitle];
         break;
     }
   }
 
-  return v5;
+  return _completedTemplatedViewTitle;
 }
 
 - (UIImage)templatedViewAppIcon
 {
-  v2 = [(RideBookingRideStatus *)self application];
-  v3 = [v2 iconWithFormat:2];
+  application = [(RideBookingRideStatus *)self application];
+  v3 = [application iconWithFormat:2];
 
   return v3;
 }
@@ -2070,46 +2070,46 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 scheduledPickupTime];
-  v5 = v4 != 0;
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  scheduledPickupTime = [intentsRideStatus scheduledPickupTime];
+  v5 = scheduledPickupTime != 0;
 
   return v5;
 }
 
 - (BOOL)_feedbackRequired
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 completionStatus];
-  if (([v4 feedbackType] & 2) != 0)
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
+  if (([completionStatus feedbackType] & 2) != 0)
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    v5 = [(RideBookingRideStatus *)self intentsRideStatus];
-    v6 = [v5 completionStatus];
-    v7 = [v6 feedbackType] & 1;
+    intentsRideStatus2 = [(RideBookingRideStatus *)self intentsRideStatus];
+    completionStatus2 = [intentsRideStatus2 completionStatus];
+    v7 = [completionStatus2 feedbackType] & 1;
   }
 
   return v7;
 }
 
-- (BOOL)_showFeedbackType:(unint64_t)a3
+- (BOOL)_showFeedbackType:(unint64_t)type
 {
-  v4 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v5 = [v4 completionStatus];
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
 
-  v6 = [v5 isCompleted] && (objc_msgSend(v5, "feedbackType") & a3) != 0;
+  v6 = [completionStatus isCompleted] && (objc_msgSend(completionStatus, "feedbackType") & type) != 0;
   return v6;
 }
 
 - (BOOL)shouldShowFeedbackControls
 {
-  v3 = [(RideBookingRideStatus *)self intentsRideStatus];
-  v4 = [v3 completionStatus];
-  if (![v4 isCompleted])
+  intentsRideStatus = [(RideBookingRideStatus *)self intentsRideStatus];
+  completionStatus = [intentsRideStatus completionStatus];
+  if (![completionStatus isCompleted])
   {
 
     return 0;
@@ -2117,9 +2117,9 @@ LABEL_16:
 
   if (![(RideBookingRideStatus *)self shouldShowTippingOptions])
   {
-    v6 = [(RideBookingRideStatus *)self shouldShowRatingOptions];
+    shouldShowRatingOptions = [(RideBookingRideStatus *)self shouldShowRatingOptions];
 
-    return (v6 & 1) != 0;
+    return (shouldShowRatingOptions & 1) != 0;
   }
 
   return 1;

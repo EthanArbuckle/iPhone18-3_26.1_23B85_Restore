@@ -1,27 +1,27 @@
 @interface FPUnarchiveOperation
-- (BOOL)getHasUnarchivedMultipleItems:(BOOL *)a3 firstUnarchivedItemURL:(id *)a4 forArchiveFolderURL:(id)a5 error:(id *)a6;
-- (FPUnarchiveOperation)initWithItem:(id)a3 destinationFolder:(id)a4;
-- (id)_newParentProgressWithCompletedUnitCount:(int64_t)a3;
-- (void)_importUnarchivedContentAtURL:(id)a3 archiveName:(id)a4 completionHandler:(id)a5;
-- (void)_unarchiveAndHandleIncorrectPassphraseURL:(id)a3 archiveName:(id)a4 service:(id)a5 passphrase:(id)a6 completionHandler:(id)a7;
-- (void)_unarchiveURL:(id)a3 archiveName:(id)a4 service:(id)a5 passphrase:(id)a6 completionHandler:(id)a7;
-- (void)_unarchiveURLInDSEnumeratedDomain:(id)a3 service:(id)a4 passphrase:(id)a5 completionHandler:(id)a6;
-- (void)_unarchiveURLInFPEnumeratedDomain:(id)a3 archiveName:(id)a4 service:(id)a5 passphrase:(id)a6 completionHandler:(id)a7;
+- (BOOL)getHasUnarchivedMultipleItems:(BOOL *)items firstUnarchivedItemURL:(id *)l forArchiveFolderURL:(id)rL error:(id *)error;
+- (FPUnarchiveOperation)initWithItem:(id)item destinationFolder:(id)folder;
+- (id)_newParentProgressWithCompletedUnitCount:(int64_t)count;
+- (void)_importUnarchivedContentAtURL:(id)l archiveName:(id)name completionHandler:(id)handler;
+- (void)_unarchiveAndHandleIncorrectPassphraseURL:(id)l archiveName:(id)name service:(id)service passphrase:(id)passphrase completionHandler:(id)handler;
+- (void)_unarchiveURL:(id)l archiveName:(id)name service:(id)service passphrase:(id)passphrase completionHandler:(id)handler;
+- (void)_unarchiveURLInDSEnumeratedDomain:(id)domain service:(id)service passphrase:(id)passphrase completionHandler:(id)handler;
+- (void)_unarchiveURLInFPEnumeratedDomain:(id)domain archiveName:(id)name service:(id)service passphrase:(id)passphrase completionHandler:(id)handler;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)service:(id)a3 didReceiveArchivedItemsDescriptors:(id)a4 placeholderName:(id)a5 placeholderTypeIdentifier:(id)a6;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)service:(id)service didReceiveArchivedItemsDescriptors:(id)descriptors placeholderName:(id)name placeholderTypeIdentifier:(id)identifier;
 @end
 
 @implementation FPUnarchiveOperation
 
-- (FPUnarchiveOperation)initWithItem:(id)a3 destinationFolder:(id)a4
+- (FPUnarchiveOperation)initWithItem:(id)item destinationFolder:(id)folder
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  itemCopy = item;
+  folderCopy = folder;
+  v9 = folderCopy;
+  if (itemCopy)
   {
-    if (v8)
+    if (folderCopy)
     {
       goto LABEL_3;
     }
@@ -38,15 +38,15 @@
 
   [FPUnarchiveOperation initWithItem:destinationFolder:];
 LABEL_3:
-  v10 = [v9 providerDomainID];
+  providerDomainID = [v9 providerDomainID];
   v14.receiver = self;
   v14.super_class = FPUnarchiveOperation;
-  v11 = [(FPActionOperation *)&v14 initWithProvider:v10 action:0];
+  v11 = [(FPActionOperation *)&v14 initWithProvider:providerDomainID action:0];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_item, a3);
-    objc_storeStrong(&v11->_destinationFolder, a4);
+    objc_storeStrong(&v11->_item, item);
+    objc_storeStrong(&v11->_destinationFolder, folder);
     v12 = [(FPUnarchiveOperation *)v11 _newParentProgressWithCompletedUnitCount:0];
     [(FPActionOperation *)v11 setProgress:v12];
   }
@@ -54,33 +54,33 @@ LABEL_3:
   return v11;
 }
 
-- (id)_newParentProgressWithCompletedUnitCount:(int64_t)a3
+- (id)_newParentProgressWithCompletedUnitCount:(int64_t)count
 {
   v4 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
   [v4 fp_setFileOperationKind:*MEMORY[0x1E696A840]];
-  [v4 setCompletedUnitCount:a3];
+  [v4 setCompletedUnitCount:count];
   return v4;
 }
 
-- (BOOL)getHasUnarchivedMultipleItems:(BOOL *)a3 firstUnarchivedItemURL:(id *)a4 forArchiveFolderURL:(id)a5 error:(id *)a6
+- (BOOL)getHasUnarchivedMultipleItems:(BOOL *)items firstUnarchivedItemURL:(id *)l forArchiveFolderURL:(id)rL error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  rLCopy = rL;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__5;
   v32 = __Block_byref_object_dispose__5;
   v33 = 0;
-  if (v9)
+  if (rLCopy)
   {
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __103__FPUnarchiveOperation_getHasUnarchivedMultipleItems_firstUnarchivedItemURL_forArchiveFolderURL_error___block_invoke;
     v27[3] = &unk_1E793B018;
     v27[4] = &v28;
-    v11 = [v10 enumeratorAtURL:v9 includingPropertiesForKeys:0 options:1 errorHandler:v27];
+    v11 = [defaultManager enumeratorAtURL:rLCopy includingPropertiesForKeys:0 options:1 errorHandler:v27];
 
     v25 = 0u;
     v26 = 0u;
@@ -134,7 +134,7 @@ LABEL_19:
     v18 = v19 == 0;
     if (v19)
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -142,18 +142,18 @@ LABEL_19:
 
     else
     {
-      if (a3)
+      if (items)
       {
-        *a3 = v17;
+        *items = v17;
       }
 
-      if (a4)
+      if (l)
       {
         v20 = v14;
-        *a4 = v14;
+        *l = v14;
       }
 
-      if (!a6)
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -161,26 +161,26 @@ LABEL_19:
       v19 = v29[5];
     }
 
-    *a6 = v19;
+    *error = v19;
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  if (a3)
+  if (items)
   {
-    *a3 = 0;
+    *items = 0;
   }
 
-  if (a4)
+  if (l)
   {
-    *a4 = 0;
+    *l = 0;
   }
 
-  if (a6)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:260 userInfo:0];
-    *a6 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -195,21 +195,21 @@ LABEL_30:
   return v18;
 }
 
-- (void)_importUnarchivedContentAtURL:(id)a3 archiveName:(id)a4 completionHandler:(id)a5
+- (void)_importUnarchivedContentAtURL:(id)l archiveName:(id)name completionHandler:(id)handler
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v35 = a4;
-  v9 = a5;
+  lCopy = l;
+  nameCopy = name;
+  handlerCopy = handler;
   v37 = +[FPItemManager defaultManager];
-  v38 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v8 startAccessingSecurityScopedResource];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__FPUnarchiveOperation__importUnarchivedContentAtURL_archiveName_completionHandler___block_invoke;
   aBlock[3] = &unk_1E793AE88;
-  v59 = v10;
-  v11 = v8;
+  v59 = startAccessingSecurityScopedResource;
+  v11 = lCopy;
   v58 = v11;
   v12 = _Block_copy(aBlock);
   v56 = 0;
@@ -246,7 +246,7 @@ LABEL_6:
         if (!v17)
         {
           v12[2](v12);
-          v9[2](v9, 0, v18);
+          handlerCopy[2](handlerCopy, 0, v18);
           v17 = 0;
 LABEL_25:
 
@@ -254,17 +254,17 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v19 = [v35 stringByDeletingPathExtension];
-        v20 = [v17 URLByAppendingPathComponent:v19 isDirectory:1];
+        stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
+        v20 = [v17 URLByAppendingPathComponent:stringByDeletingPathExtension isDirectory:1];
 
         v52 = v18;
-        v21 = [v38 moveItemAtURL:v11 toURL:v20 error:&v52];
+        v21 = [defaultManager moveItemAtURL:v11 toURL:v20 error:&v52];
         v14 = v52;
 
         if ((v21 & 1) == 0)
         {
           v51 = 0;
-          v29 = [v38 removeItemAtURL:v17 error:&v51];
+          v29 = [defaultManager removeItemAtURL:v17 error:&v51];
           v30 = v51;
           if ((v29 & 1) == 0)
           {
@@ -276,7 +276,7 @@ LABEL_25:
           }
 
           v12[2](v12);
-          v9[2](v9, 0, v14);
+          handlerCopy[2](handlerCopy, 0, v14);
 
           v18 = v14;
           goto LABEL_25;
@@ -310,25 +310,25 @@ LABEL_25:
       v39[2] = __84__FPUnarchiveOperation__importUnarchivedContentAtURL_archiveName_completionHandler___block_invoke_168;
       v39[3] = &unk_1E793B040;
       v49 = v56;
-      v40 = v38;
+      v40 = defaultManager;
       v41 = v11;
       v46 = v12;
-      v42 = self;
+      selfCopy = self;
       v17 = v17;
       v43 = v17;
       v48[1] = a2;
       v16 = v16;
       v44 = v16;
-      v47 = v9;
+      v47 = handlerCopy;
       objc_copyWeak(v48, &location);
       v18 = v14;
       v45 = v18;
       [(FPActionOperation *)v25 setActionCompletionBlock:v39];
       [(FPMoveOperation *)v25 setShouldBounceOnCollision:1];
       [(FPActionOperation *)v25 setHaveStitching:0];
-      v26 = [(FPActionOperation *)self progress];
-      v27 = [(FPActionOperation *)v25 progress];
-      [v26 addChild:v27 withPendingUnitCount:10];
+      progress = [(FPActionOperation *)self progress];
+      progress2 = [(FPActionOperation *)v25 progress];
+      [progress addChild:progress2 withPendingUnitCount:10];
 
       [v37 scheduleAction:v25];
       objc_destroyWeak(v48);
@@ -344,13 +344,13 @@ LABEL_25:
       _os_log_impl(&dword_1AAAE1000, v28, OS_LOG_TYPE_INFO, "[INFO] unarchive operation produced no output", &location, 2u);
     }
 
-    v9[2](v9, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   else
   {
     v12[2](v12);
-    v9[2](v9, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
   }
 
 LABEL_26:
@@ -438,34 +438,34 @@ LABEL_5:
 LABEL_13:
 }
 
-- (void)_unarchiveURLInFPEnumeratedDomain:(id)a3 archiveName:(id)a4 service:(id)a5 passphrase:(id)a6 completionHandler:(id)a7
+- (void)_unarchiveURLInFPEnumeratedDomain:(id)domain archiveName:(id)name service:(id)service passphrase:(id)passphrase completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
+  domainCopy = domain;
+  nameCopy = name;
+  handlerCopy = handler;
+  passphraseCopy = passphrase;
+  serviceCopy = service;
   v17 = fp_current_or_default_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [FPUnarchiveOperation _unarchiveURLInFPEnumeratedDomain:v12 archiveName:? service:? passphrase:? completionHandler:?];
+    [FPUnarchiveOperation _unarchiveURLInFPEnumeratedDomain:domainCopy archiveName:? service:? passphrase:? completionHandler:?];
   }
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __107__FPUnarchiveOperation__unarchiveURLInFPEnumeratedDomain_archiveName_service_passphrase_completionHandler___block_invoke;
   v22[3] = &unk_1E793B068;
-  v23 = v13;
-  v24 = v14;
+  v23 = nameCopy;
+  v24 = handlerCopy;
   v22[4] = self;
-  v18 = v13;
-  v19 = v14;
-  v20 = [v16 unarchiveItemAtURL:v12 passphrase:v15 destinationFolderURL:v12 completionHandler:v22];
+  v18 = nameCopy;
+  v19 = handlerCopy;
+  v20 = [serviceCopy unarchiveItemAtURL:domainCopy passphrase:passphraseCopy destinationFolderURL:domainCopy completionHandler:v22];
 
   if (v20)
   {
-    v21 = [(FPActionOperation *)self progress];
-    [v21 addChild:v20 withPendingUnitCount:80];
+    progress = [(FPActionOperation *)self progress];
+    [progress addChild:v20 withPendingUnitCount:80];
   }
 }
 
@@ -496,17 +496,17 @@ void __107__FPUnarchiveOperation__unarchiveURLInFPEnumeratedDomain_archiveName_s
   }
 }
 
-- (void)_unarchiveURLInDSEnumeratedDomain:(id)a3 service:(id)a4 passphrase:(id)a5 completionHandler:(id)a6
+- (void)_unarchiveURLInDSEnumeratedDomain:(id)domain service:(id)service passphrase:(id)passphrase completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 URLByDeletingLastPathComponent];
-  if (v12)
+  domainCopy = domain;
+  serviceCopy = service;
+  passphraseCopy = passphrase;
+  handlerCopy = handler;
+  uRLByDeletingLastPathComponent = [domainCopy URLByDeletingLastPathComponent];
+  if (passphraseCopy)
   {
-    v22[0] = v12;
+    v22[0] = passphraseCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   }
 
@@ -519,17 +519,17 @@ void __107__FPUnarchiveOperation__unarchiveURLInFPEnumeratedDomain_archiveName_s
   v20[1] = 3221225472;
   v20[2] = __95__FPUnarchiveOperation__unarchiveURLInDSEnumeratedDomain_service_passphrase_completionHandler___block_invoke;
   v20[3] = &unk_1E793A3D0;
-  v21 = v13;
-  v16 = v13;
-  v17 = [v11 unarchiveItemAtURL:v10 toURL:v14 options:0 acceptedFormats:1 passphrases:v15 completionHandler:v20];
-  if (v12)
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = [serviceCopy unarchiveItemAtURL:domainCopy toURL:uRLByDeletingLastPathComponent options:0 acceptedFormats:1 passphrases:v15 completionHandler:v20];
+  if (passphraseCopy)
   {
   }
 
   if (v17)
   {
-    v18 = [(FPActionOperation *)self progress];
-    [v18 addChild:v17 withPendingUnitCount:80];
+    progress = [(FPActionOperation *)self progress];
+    [progress addChild:v17 withPendingUnitCount:80];
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -550,13 +550,13 @@ void __95__FPUnarchiveOperation__unarchiveURLInDSEnumeratedDomain_service_passph
   }
 }
 
-- (void)_unarchiveURL:(id)a3 archiveName:(id)a4 service:(id)a5 passphrase:(id)a6 completionHandler:(id)a7
+- (void)_unarchiveURL:(id)l archiveName:(id)name service:(id)service passphrase:(id)passphrase completionHandler:(id)handler
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  nameCopy = name;
+  serviceCopy = service;
+  passphraseCopy = passphrase;
+  handlerCopy = handler;
   if ([(FPProviderDomain *)self->_providerDomain isUsingFPFS])
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -565,12 +565,12 @@ void __95__FPUnarchiveOperation__unarchiveURLInDSEnumeratedDomain_service_passph
     }
 
 LABEL_6:
-    [(FPUnarchiveOperation *)self _unarchiveURLInDSEnumeratedDomain:v18 service:v13 passphrase:v14 completionHandler:v15];
+    [(FPUnarchiveOperation *)self _unarchiveURLInDSEnumeratedDomain:lCopy service:serviceCopy passphrase:passphraseCopy completionHandler:handlerCopy];
     goto LABEL_9;
   }
 
-  v16 = [(FPProviderDomain *)self->_providerDomain providerID];
-  if ([v16 isEqualToString:@"com.apple.FileProvider.LocalStorage"])
+  providerID = [(FPProviderDomain *)self->_providerDomain providerID];
+  if ([providerID isEqualToString:@"com.apple.FileProvider.LocalStorage"])
   {
     v17 = objc_opt_respondsToSelector();
 
@@ -585,33 +585,33 @@ LABEL_6:
   }
 
 LABEL_8:
-  [(FPUnarchiveOperation *)self _unarchiveURLInFPEnumeratedDomain:v18 archiveName:v12 service:v13 passphrase:v14 completionHandler:v15];
+  [(FPUnarchiveOperation *)self _unarchiveURLInFPEnumeratedDomain:lCopy archiveName:nameCopy service:serviceCopy passphrase:passphraseCopy completionHandler:handlerCopy];
 LABEL_9:
 }
 
-- (void)_unarchiveAndHandleIncorrectPassphraseURL:(id)a3 archiveName:(id)a4 service:(id)a5 passphrase:(id)a6 completionHandler:(id)a7
+- (void)_unarchiveAndHandleIncorrectPassphraseURL:(id)l archiveName:(id)name service:(id)service passphrase:(id)passphrase completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  lCopy = l;
+  nameCopy = name;
+  serviceCopy = service;
+  passphraseCopy = passphrase;
+  handlerCopy = handler;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __115__FPUnarchiveOperation__unarchiveAndHandleIncorrectPassphraseURL_archiveName_service_passphrase_completionHandler___block_invoke;
   v23[3] = &unk_1E793B0B8;
   v23[4] = self;
-  v24 = v16;
-  v28 = v17;
+  v24 = passphraseCopy;
+  v28 = handlerCopy;
   v29 = a2;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
-  v22 = v17;
+  v25 = lCopy;
+  v26 = nameCopy;
+  v27 = serviceCopy;
+  v18 = serviceCopy;
+  v19 = nameCopy;
+  v20 = lCopy;
+  v21 = passphraseCopy;
+  v22 = handlerCopy;
   [(FPUnarchiveOperation *)self _unarchiveURL:v20 archiveName:v19 service:v18 passphrase:v21 completionHandler:v23];
 }
 
@@ -732,8 +732,8 @@ LABEL_6:
 {
   v3 = +[FPItemManager defaultManager];
   v4 = self->_item;
-  v5 = [(FPItem *)v4 providerDomainID];
-  v6 = [FPProviderDomain providerDomainWithID:v5 cachePolicy:1 error:0];
+  providerDomainID = [(FPItem *)v4 providerDomainID];
+  v6 = [FPProviderDomain providerDomainWithID:providerDomainID cachePolicy:1 error:0];
   providerDomain = self->_providerDomain;
   self->_providerDomain = v6;
 
@@ -819,10 +819,10 @@ void __34__FPUnarchiveOperation_actionMain__block_invoke_2(uint64_t a1, uint64_t
   }
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  errorCopy = error;
   itemURL = self->_itemURL;
   if (itemURL)
   {
@@ -834,8 +834,8 @@ void __34__FPUnarchiveOperation_actionMain__block_invoke_2(uint64_t a1, uint64_t
     coordinator = self->_coordinator;
     if (!coordinator)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"FPArchiveOperation.m" lineNumber:1044 description:@"nil coordinator with a non-nil coordination access token"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"FPArchiveOperation.m" lineNumber:1044 description:@"nil coordinator with a non-nil coordination access token"];
 
       coordinator = self->_coordinator;
       coordinationAccessToken = self->_coordinationAccessToken;
@@ -849,27 +849,27 @@ void __34__FPUnarchiveOperation_actionMain__block_invoke_2(uint64_t a1, uint64_t
   v12 = self->_coordinator;
   self->_coordinator = 0;
 
-  v13 = v7;
-  if (v8)
+  v13 = resultCopy;
+  if (errorCopy)
   {
-    v14 = [v8 fp_annotatedErrorWithItem:self->_item variant:@"Unarchive"];
+    v14 = [errorCopy fp_annotatedErrorWithItem:self->_item variant:@"Unarchive"];
   }
 
   else
   {
-    v8 = [(FPActionOperation *)self stitcher];
-    [v8 associateItem:v13 withPlaceholderID:self->_placeholderID];
+    errorCopy = [(FPActionOperation *)self stitcher];
+    [errorCopy associateItem:v13 withPlaceholderID:self->_placeholderID];
     v14 = 0;
   }
 
-  v15 = [(FPActionOperation *)self stitcher];
-  [v15 finishWithItem:v13 error:v14];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItem:v13 error:v14];
 
-  v16 = [(FPUnarchiveOperation *)self unarchiveCompletionBlock];
-  v17 = v16;
-  if (v16)
+  unarchiveCompletionBlock = [(FPUnarchiveOperation *)self unarchiveCompletionBlock];
+  v17 = unarchiveCompletionBlock;
+  if (unarchiveCompletionBlock)
   {
-    (*(v16 + 16))(v16, v13, v14);
+    (*(unarchiveCompletionBlock + 16))(unarchiveCompletionBlock, v13, v14);
     [(FPUnarchiveOperation *)self setUnarchiveCompletionBlock:0];
   }
 
@@ -878,29 +878,29 @@ void __34__FPUnarchiveOperation_actionMain__block_invoke_2(uint64_t a1, uint64_t
   [(FPActionOperation *)&v20 finishWithResult:v13 error:v14];
 }
 
-- (void)service:(id)a3 didReceiveArchivedItemsDescriptors:(id)a4 placeholderName:(id)a5 placeholderTypeIdentifier:(id)a6
+- (void)service:(id)service didReceiveArchivedItemsDescriptors:(id)descriptors placeholderName:(id)name placeholderTypeIdentifier:(id)identifier
 {
   v71 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v11 count] && !objc_msgSend(v11, "count"))
+  serviceCopy = service;
+  descriptorsCopy = descriptors;
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (![descriptorsCopy count] && !objc_msgSend(descriptorsCopy, "count"))
   {
     [FPUnarchiveOperation service:didReceiveArchivedItemsDescriptors:placeholderName:placeholderTypeIdentifier:];
   }
 
-  v14 = [(FPActionOperation *)self stitcher];
-  [v14 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v62 = v10;
-  if (v12 && v13)
+  v62 = serviceCopy;
+  if (nameCopy && identifierCopy)
   {
-    v15 = [MEMORY[0x1E6982C40] fp_cachedTypeWithIdentifier:v13];
-    v16 = [(FPActionOperation *)self stitcher];
-    v17 = [(FPItem *)self->_destinationFolder itemIdentifier];
-    v18 = [(FPItem *)self->_destinationFolder providerDomainID];
-    v19 = [v16 createPlaceholderWithName:v12 contentType:v15 contentAccessDate:0 underParent:v17 inProviderDomainID:v18];
+    v15 = [MEMORY[0x1E6982C40] fp_cachedTypeWithIdentifier:identifierCopy];
+    stitcher2 = [(FPActionOperation *)self stitcher];
+    itemIdentifier = [(FPItem *)self->_destinationFolder itemIdentifier];
+    providerDomainID = [(FPItem *)self->_destinationFolder providerDomainID];
+    v19 = [stitcher2 createPlaceholderWithName:nameCopy contentType:v15 contentAccessDate:0 underParent:itemIdentifier inProviderDomainID:providerDomainID];
     placeholderID = self->_placeholderID;
     self->_placeholderID = v19;
 
@@ -909,16 +909,16 @@ void __34__FPUnarchiveOperation_actionMain__block_invoke_2(uint64_t a1, uint64_t
 
   else
   {
-    v57 = v13;
-    v58 = v12;
+    v57 = identifierCopy;
+    v58 = nameCopy;
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v59 = v11;
-    obj = v11;
+    v59 = descriptorsCopy;
+    obj = descriptorsCopy;
     v22 = [obj countByEnumeratingWithState:&v66 objects:v70 count:16];
-    v61 = self;
+    selfCopy = self;
     if (v22)
     {
       v23 = v22;
@@ -937,12 +937,12 @@ void __34__FPUnarchiveOperation_actionMain__block_invoke_2(uint64_t a1, uint64_t
           }
 
           v28 = *(*(&v66 + 1) + 8 * v27);
-          v29 = [v28 filePath];
-          v30 = [v29 pathComponents];
-          v31 = [v30 count];
-          if ([v30 count] == 2)
+          filePath = [v28 filePath];
+          pathComponents = [filePath pathComponents];
+          v31 = [pathComponents count];
+          if ([pathComponents count] == 2)
           {
-            [v30 lastObject];
+            [pathComponents lastObject];
             v32 = v24;
             v33 = v26;
             v35 = v34 = v25;
@@ -993,7 +993,7 @@ void __34__FPUnarchiveOperation_actionMain__block_invoke_2(uint64_t a1, uint64_t
       v38 = v25 == 1;
       v37 = v24;
 LABEL_24:
-      self = v61;
+      self = selfCopy;
     }
 
     else
@@ -1002,58 +1002,58 @@ LABEL_24:
       v38 = 0;
     }
 
-    v39 = [(FPItem *)self->_destinationFolder fileURL];
+    fileURL = [(FPItem *)self->_destinationFolder fileURL];
     if (v38)
     {
-      v40 = [v37 filePath];
-      v41 = [v40 lastPathComponent];
+      filePath2 = [v37 filePath];
+      lastPathComponent = [filePath2 lastPathComponent];
 
-      if (!v41)
+      if (!lastPathComponent)
       {
-        v42 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v42 handleFailureInMethod:a2 object:self file:@"FPArchiveOperation.m" lineNumber:1133 description:{@"missing name in descriptor: %@", v37}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"FPArchiveOperation.m" lineNumber:1133 description:{@"missing name in descriptor: %@", v37}];
       }
 
-      v43 = [v37 typeIdentifier];
-      v44 = [MEMORY[0x1E6982C40] fp_cachedTypeWithIdentifier:v43];
-      v45 = [(FPUnarchiveOperation *)self findUniqueUnarchivedName:v41 isFolder:v44 == *MEMORY[0x1E6982DC8] parent:v39];
-      v46 = [(FPActionOperation *)self stitcher];
+      typeIdentifier = [v37 typeIdentifier];
+      itemIdentifier2 = [MEMORY[0x1E6982C40] fp_cachedTypeWithIdentifier:typeIdentifier];
+      providerDomainID3 = [(FPUnarchiveOperation *)self findUniqueUnarchivedName:lastPathComponent isFolder:itemIdentifier2 == *MEMORY[0x1E6982DC8] parent:fileURL];
+      stitcher3 = [(FPActionOperation *)self stitcher];
       [(FPItem *)self->_destinationFolder itemIdentifier];
-      v47 = obja = v39;
-      v48 = [(FPItem *)self->_destinationFolder providerDomainID];
-      v49 = [v46 createPlaceholderWithName:v45 contentType:v44 contentAccessDate:0 underParent:v47 inProviderDomainID:v48];
+      v47 = obja = fileURL;
+      providerDomainID2 = [(FPItem *)self->_destinationFolder providerDomainID];
+      v49 = [stitcher3 createPlaceholderWithName:providerDomainID3 contentType:itemIdentifier2 contentAccessDate:0 underParent:v47 inProviderDomainID:providerDomainID2];
       v50 = self->_placeholderID;
       self->_placeholderID = v49;
 
-      v39 = obja;
+      fileURL = obja;
     }
 
     else
     {
-      v51 = [(FPItem *)self->_item displayName];
-      v41 = [(FPUnarchiveOperation *)self findUniqueUnarchivedName:v51 isFolder:1 parent:v39];
+      displayName = [(FPItem *)self->_item displayName];
+      lastPathComponent = [(FPUnarchiveOperation *)self findUniqueUnarchivedName:displayName isFolder:1 parent:fileURL];
 
-      v43 = [(FPActionOperation *)self stitcher];
-      v44 = [(FPItem *)self->_destinationFolder itemIdentifier];
-      v45 = [(FPItem *)self->_destinationFolder providerDomainID];
-      v52 = [v43 createPlaceholderWithName:v41 isFolder:1 contentAccessDate:0 underParent:v44 inProviderDomainID:v45];
-      v46 = self->_placeholderID;
+      typeIdentifier = [(FPActionOperation *)self stitcher];
+      itemIdentifier2 = [(FPItem *)self->_destinationFolder itemIdentifier];
+      providerDomainID3 = [(FPItem *)self->_destinationFolder providerDomainID];
+      v52 = [typeIdentifier createPlaceholderWithName:lastPathComponent isFolder:1 contentAccessDate:0 underParent:itemIdentifier2 inProviderDomainID:providerDomainID3];
+      stitcher3 = self->_placeholderID;
       self->_placeholderID = v52;
     }
 
-    self = v61;
+    self = selfCopy;
     v21 = v62;
-    v12 = v58;
-    v11 = v59;
-    v13 = v57;
+    nameCopy = v58;
+    descriptorsCopy = v59;
+    identifierCopy = v57;
   }
 
   v53 = +[FPProgressManager defaultManager];
-  v54 = [(FPActionOperation *)self progress];
-  [v53 registerCopyProgress:v54 forItemID:self->_placeholderID];
+  progress = [(FPActionOperation *)self progress];
+  [v53 registerCopyProgress:progress forItemID:self->_placeholderID];
 
-  v55 = [(FPActionOperation *)self stitcher];
-  [v55 flush];
+  stitcher4 = [(FPActionOperation *)self stitcher];
+  [stitcher4 flush];
 
   v56 = *MEMORY[0x1E69E9840];
 }

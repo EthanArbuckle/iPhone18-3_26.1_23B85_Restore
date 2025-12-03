@@ -1,21 +1,21 @@
 @interface KNAnimationRandomGenerator
-+ (id)randomGeneratorFromPluginContext:(id)a3;
++ (id)randomGeneratorFromPluginContext:(id)context;
 - ($94F468A8D4C62B317260615823C2B210)metalPoint2DRandomPoint;
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)metalPoint4DRandomPoint;
 - ($E2C29196C7A5C696474C6955C5A9CE06)metalPoint3DRandomDirection;
 - ($E2C29196C7A5C696474C6955C5A9CE06)metalPoint3DRandomPoint;
-- (KNAnimationRandomGenerator)initWithSeed:(id)a3;
-- (double)doubleBetween:(double)a3 :(double)a4;
+- (KNAnimationRandomGenerator)initWithSeed:(id)seed;
+- (double)doubleBetween:(double)between :(double)a4;
 - (double)randomDouble;
-- (int64_t)intBetween:(int64_t)a3 :(int64_t)a4;
+- (int64_t)intBetween:(int64_t)between :(int64_t)a4;
 - (void)dealloc;
 @end
 
 @implementation KNAnimationRandomGenerator
 
-- (KNAnimationRandomGenerator)initWithSeed:(id)a3
+- (KNAnimationRandomGenerator)initWithSeed:(id)seed
 {
-  v4 = a3;
+  seedCopy = seed;
   v9.receiver = self;
   v9.super_class = KNAnimationRandomGenerator;
   v5 = [(KNAnimationRandomGenerator *)&v9 init];
@@ -24,26 +24,26 @@
     v6 = +[NSUserDefaults standardUserDefaults];
     if ([v6 BOOLForKey:@"RandomNumberSeedAlwaysZero"])
     {
-      v7 = 0;
+      integerValue = 0;
     }
 
-    else if ([v6 BOOLForKey:@"RandomNumberSeedAlwaysRandom"] || !v4)
+    else if ([v6 BOOLForKey:@"RandomNumberSeedAlwaysRandom"] || !seedCopy)
     {
-      v7 = arc4random_uniform(0x7FFFFFFFu);
+      integerValue = arc4random_uniform(0x7FFFFFFFu);
     }
 
     else
     {
-      v7 = [v4 integerValue];
+      integerValue = [seedCopy integerValue];
     }
 
-    [(KNAnimationRandomGenerator *)v5 setSeed:v7];
+    [(KNAnimationRandomGenerator *)v5 setSeed:integerValue];
   }
 
   return v5;
 }
 
-+ (id)randomGeneratorFromPluginContext:(id)a3
++ (id)randomGeneratorFromPluginContext:(id)context
 {
   v3 = [[KNAnimationRandomGenerator alloc] initWithSeed:0];
 
@@ -79,7 +79,7 @@
   return result;
 }
 
-- (int64_t)intBetween:(int64_t)a3 :(int64_t)a4
+- (int64_t)intBetween:(int64_t)between :(int64_t)a4
 {
   randGenerator = self->_randGenerator;
   if (!randGenerator)
@@ -92,31 +92,31 @@
     randGenerator = self->_randGenerator;
   }
 
-  if (a3 >= a4)
+  if (between >= a4)
   {
-    v11 = a4;
+    betweenCopy = a4;
   }
 
   else
   {
-    v11 = a3;
+    betweenCopy = between;
   }
 
-  if (a3 <= a4)
+  if (between <= a4)
   {
-    v12 = a4;
+    betweenCopy2 = a4;
   }
 
   else
   {
-    v12 = a3;
+    betweenCopy2 = between;
   }
 
-  RandGenerator::randWithMinMax(randGenerator, v11, v12);
+  RandGenerator::randWithMinMax(randGenerator, betweenCopy, betweenCopy2);
   return vcvtmd_s64_f64(v13);
 }
 
-- (double)doubleBetween:(double)a3 :(double)a4
+- (double)doubleBetween:(double)between :(double)a4
 {
   randGenerator = self->_randGenerator;
   if (!randGenerator)
@@ -129,27 +129,27 @@
     randGenerator = self->_randGenerator;
   }
 
-  if (a3 >= a4)
+  if (between >= a4)
   {
-    v11 = a4;
+    betweenCopy = a4;
   }
 
   else
   {
-    v11 = a3;
+    betweenCopy = between;
   }
 
-  if (a3 >= a4)
+  if (between >= a4)
   {
-    a4 = a3;
+    a4 = between;
   }
 
   RandGenerator::randomDouble(randGenerator);
   v13 = a4 * v12;
-  v14 = v11 * v12;
-  v15 = v11 + v13 - v14;
-  result = v11 + v13 - v14;
-  if (v11 >= 0.0 != a4 < 0.0)
+  v14 = betweenCopy * v12;
+  v15 = betweenCopy + v13 - v14;
+  result = betweenCopy + v13 - v14;
+  if (betweenCopy >= 0.0 != a4 < 0.0)
   {
     return v15;
   }

@@ -1,6 +1,6 @@
 @interface DevelopmentOverrideSettings
-- (_TtC27DevelopmentOverrideSettings27DevelopmentOverrideSettings)initWithCoder:(id)a3;
-- (_TtC27DevelopmentOverrideSettings27DevelopmentOverrideSettings)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC27DevelopmentOverrideSettings27DevelopmentOverrideSettings)initWithCoder:(id)coder;
+- (_TtC27DevelopmentOverrideSettings27DevelopmentOverrideSettings)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -16,11 +16,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1270();
 }
 
-- (_TtC27DevelopmentOverrideSettings27DevelopmentOverrideSettings)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC27DevelopmentOverrideSettings27DevelopmentOverrideSettings)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
   sub_3088();
@@ -31,26 +31,26 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_3038();
-    v8 = a4;
-    a3 = sub_3028();
+    bundleCopy = bundle;
+    name = sub_3028();
   }
 
   else
   {
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(DevelopmentOverrideSettings *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(DevelopmentOverrideSettings *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC27DevelopmentOverrideSettings27DevelopmentOverrideSettings)initWithCoder:(id)a3
+- (_TtC27DevelopmentOverrideSettings27DevelopmentOverrideSettings)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_3088();
@@ -63,8 +63,8 @@
 
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(DevelopmentOverrideSettings *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(DevelopmentOverrideSettings *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

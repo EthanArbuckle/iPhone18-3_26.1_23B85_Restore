@@ -1,9 +1,9 @@
 @interface SPSecureLocationsSubscriptionResult
 - (SPSecureLocationsSubscriptionResult)init;
-- (SPSecureLocationsSubscriptionResult)initWithCoder:(id)a3;
-- (SPSecureLocationsSubscriptionResult)initWithExpiryTime:(double)a3 locations:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPSecureLocationsSubscriptionResult)initWithCoder:(id)coder;
+- (SPSecureLocationsSubscriptionResult)initWithExpiryTime:(double)time locations:(id)locations;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPSecureLocationsSubscriptionResult
@@ -25,39 +25,39 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SPSecureLocationsSubscriptionResult);
-  v5 = [(SPSecureLocationsSubscriptionResult *)self locations];
-  [(SPSecureLocationsSubscriptionResult *)v4 setLocations:v5];
+  locations = [(SPSecureLocationsSubscriptionResult *)self locations];
+  [(SPSecureLocationsSubscriptionResult *)v4 setLocations:locations];
 
   [(SPSecureLocationsSubscriptionResult *)self expiresIn];
   [(SPSecureLocationsSubscriptionResult *)v4 setExpiresIn:?];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   locations = self->_locations;
-  v5 = a3;
-  [v5 encodeObject:locations forKey:@"locations"];
-  [v5 encodeDouble:@"expiresIn" forKey:self->_expiresIn];
+  coderCopy = coder;
+  [coderCopy encodeObject:locations forKey:@"locations"];
+  [coderCopy encodeDouble:@"expiresIn" forKey:self->_expiresIn];
 }
 
-- (SPSecureLocationsSubscriptionResult)initWithCoder:(id)a3
+- (SPSecureLocationsSubscriptionResult)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v7 = [v4 setWithArray:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"locations"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"locations"];
   locations = self->_locations;
   self->_locations = v8;
 
-  [v5 decodeDoubleForKey:@"expiresIn"];
+  [coderCopy decodeDoubleForKey:@"expiresIn"];
   v11 = v10;
 
   self->_expiresIn = v11;
@@ -65,10 +65,10 @@
   return self;
 }
 
-- (SPSecureLocationsSubscriptionResult)initWithExpiryTime:(double)a3 locations:(id)a4
+- (SPSecureLocationsSubscriptionResult)initWithExpiryTime:(double)time locations:(id)locations
 {
-  objc_storeStrong(&self->_locations, a4);
-  self->_expiresIn = a3;
+  objc_storeStrong(&self->_locations, locations);
+  self->_expiresIn = time;
   return self;
 }
 

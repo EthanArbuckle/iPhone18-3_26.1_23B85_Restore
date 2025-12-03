@@ -1,15 +1,15 @@
 @interface StackDetailSideBySideItemsCell
-- (_TtC10FitnessApp30StackDetailSideBySideItemsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC10FitnessApp30StackDetailSideBySideItemsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation StackDetailSideBySideItemsCell
 
-- (_TtC10FitnessApp30StackDetailSideBySideItemsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp30StackDetailSideBySideItemsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,12 +18,12 @@
     v6 = 0;
   }
 
-  return sub_1002DD2E8(a3, a4, v6);
+  return sub_1002DD2E8(style, identifier, v6);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002DE28C();
 }
 

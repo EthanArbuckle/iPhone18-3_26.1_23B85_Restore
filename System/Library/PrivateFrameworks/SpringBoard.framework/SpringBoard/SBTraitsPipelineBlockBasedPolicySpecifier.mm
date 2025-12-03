@@ -1,6 +1,6 @@
 @interface SBTraitsPipelineBlockBasedPolicySpecifier
 - (NSString)description;
-- (SBTraitsPipelineBlockBasedPolicySpecifier)initWithPolicySpecifierBlock:(id)a3 specifierDescription:(id)a4 componentOrder:(id)a5 arbiter:(id)a6;
+- (SBTraitsPipelineBlockBasedPolicySpecifier)initWithPolicySpecifierBlock:(id)block specifierDescription:(id)description componentOrder:(id)order arbiter:(id)arbiter;
 - (TRAArbiter)arbiter;
 - (void)dealloc;
 - (void)invalidate;
@@ -14,28 +14,28 @@
   {
     self->_isValid = 0;
     WeakRetained = objc_loadWeakRetained(&self->_arbiter);
-    v4 = [WeakRetained orientationResolutionStage];
-    [v4 removeResolutionPolicySpecifier:self];
+    orientationResolutionStage = [WeakRetained orientationResolutionStage];
+    [orientationResolutionStage removeResolutionPolicySpecifier:self];
   }
 }
 
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (SBTraitsPipelineBlockBasedPolicySpecifier)initWithPolicySpecifierBlock:(id)a3 specifierDescription:(id)a4 componentOrder:(id)a5 arbiter:(id)a6
+- (SBTraitsPipelineBlockBasedPolicySpecifier)initWithPolicySpecifierBlock:(id)block specifierDescription:(id)description componentOrder:(id)order arbiter:(id)arbiter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  blockCopy = block;
+  descriptionCopy = description;
+  orderCopy = order;
+  arbiterCopy = arbiter;
+  if (arbiterCopy)
   {
-    if (v10)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -44,17 +44,17 @@
   else
   {
     [SBTraitsPipelineBlockBasedPolicySpecifier initWithPolicySpecifierBlock:specifierDescription:componentOrder:arbiter:];
-    if (v10)
+    if (blockCopy)
     {
 LABEL_3:
-      if (v12)
+      if (orderCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [SBTraitsPipelineBlockBasedPolicySpecifier initWithPolicySpecifierBlock:specifierDescription:componentOrder:arbiter:];
-      if (v11)
+      if (descriptionCopy)
       {
         goto LABEL_5;
       }
@@ -64,13 +64,13 @@ LABEL_10:
   }
 
   [SBTraitsPipelineBlockBasedPolicySpecifier initWithPolicySpecifierBlock:specifierDescription:componentOrder:arbiter:];
-  if (!v12)
+  if (!orderCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v11)
+  if (descriptionCopy)
   {
     goto LABEL_5;
   }
@@ -85,21 +85,21 @@ LABEL_5:
   if (v14)
   {
     v14->_isValid = 1;
-    objc_storeWeak(&v14->_arbiter, v13);
-    v16 = [v10 copy];
+    objc_storeWeak(&v14->_arbiter, arbiterCopy);
+    v16 = [blockCopy copy];
     specifierBlock = v15->_specifierBlock;
     v15->_specifierBlock = v16;
 
-    v18 = [v12 copy];
+    v18 = [orderCopy copy];
     componentOrder = v15->_componentOrder;
     v15->_componentOrder = v18;
 
-    v20 = [v11 copy];
+    v20 = [descriptionCopy copy];
     specifierDescription = v15->_specifierDescription;
     v15->_specifierDescription = v20;
 
-    v22 = [v13 orientationResolutionStage];
-    [v22 addResolutionPolicySpecifier:v15 update:0];
+    orientationResolutionStage = [arbiterCopy orientationResolutionStage];
+    [orientationResolutionStage addResolutionPolicySpecifier:v15 update:0];
   }
 
   return v15;
@@ -114,8 +114,8 @@ LABEL_5:
   v5 = [v3 stringWithString:v4];
 
   specifierDescription = self->_specifierDescription;
-  v7 = [(NSNumber *)self->_componentOrder stringValue];
-  [v5 appendFormat:@" %@ order: %@", specifierDescription, v7];
+  stringValue = [(NSNumber *)self->_componentOrder stringValue];
+  [v5 appendFormat:@" %@ order: %@", specifierDescription, stringValue];
 
   return v5;
 }

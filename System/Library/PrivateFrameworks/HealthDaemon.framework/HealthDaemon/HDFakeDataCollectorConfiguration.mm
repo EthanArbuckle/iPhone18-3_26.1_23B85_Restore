@@ -1,20 +1,20 @@
 @interface HDFakeDataCollectorConfiguration
-+ (id)configurationForWorkoutActivityType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)configurationForWorkoutActivityType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HDFakeDataCollectorConfiguration
 
-+ (id)configurationForWorkoutActivityType:(unint64_t)a3
++ (id)configurationForWorkoutActivityType:(unint64_t)type
 {
   v4 = objc_alloc_init(HDFakeDataCollectorConfiguration);
   v5 = v4;
-  if (a3 <= 38)
+  if (type <= 38)
   {
-    if (a3 > 34)
+    if (type > 34)
     {
-      if (a3 == 35)
+      if (type == 35)
       {
         v27 = MEMORY[0x277CCD7E8];
         v28 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
@@ -25,7 +25,7 @@
         goto LABEL_22;
       }
 
-      if (a3 == 37)
+      if (type == 37)
       {
         v15 = MEMORY[0x277CCD7E8];
         v16 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
@@ -39,7 +39,7 @@
 
     else
     {
-      if (a3 == 13)
+      if (type == 13)
       {
         v21 = MEMORY[0x277CCD7E8];
         v22 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
@@ -50,7 +50,7 @@
         goto LABEL_22;
       }
 
-      if (a3 == 31)
+      if (type == 31)
       {
         v6 = MEMORY[0x277CCD7E8];
         v7 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
@@ -68,9 +68,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 > 51)
+  if (type > 51)
   {
-    if (a3 == 52)
+    if (type == 52)
     {
       v30 = MEMORY[0x277CCD7E8];
       v31 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
@@ -81,7 +81,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (a3 == 60)
+    if (type == 60)
     {
       v18 = MEMORY[0x277CCD7E8];
       v19 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
@@ -95,7 +95,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (a3 == 39)
+  if (type == 39)
   {
     v24 = MEMORY[0x277CCD7E8];
     v25 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
@@ -106,15 +106,15 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 != 46)
+  if (type != 46)
   {
     goto LABEL_21;
   }
 
-  v10 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v11 = [v10 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (!v11)
+  if (!isAppleWatch)
   {
     goto LABEL_23;
   }
@@ -132,16 +132,16 @@ LABEL_23:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_speed == v4[2] && self->_activityType == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_speed == equalCopy[2] && self->_activityType == equalCopy[1];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HDFakeDataCollectorConfiguration);
   [(HDFakeDataCollectorConfiguration *)v4 setSpeed:self->_speed];

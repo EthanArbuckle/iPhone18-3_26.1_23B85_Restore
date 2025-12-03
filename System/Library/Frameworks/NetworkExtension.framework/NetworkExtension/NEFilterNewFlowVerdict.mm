@@ -5,10 +5,10 @@
 + (NEFilterNewFlowVerdict)needRulesVerdict;
 + (NEFilterNewFlowVerdict)pauseVerdict;
 + (NEFilterNewFlowVerdict)remediateVerdictWithRemediationURLMapKey:(NSString *)remediationURLMapKey remediationButtonTextMapKey:(NSString *)remediationButtonTextMapKey;
-- (NEFilterNewFlowVerdict)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEFilterNewFlowVerdict)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)filterAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFilterNewFlowVerdict
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NEFilterNewFlowVerdict;
-  v4 = [(NEFilterVerdict *)&v6 copyWithZone:a3];
+  v4 = [(NEFilterVerdict *)&v6 copyWithZone:zone];
   [v4 setFilterInbound:{-[NEFilterNewFlowVerdict filterInbound](self, "filterInbound")}];
   [v4 setFilterOutbound:{-[NEFilterNewFlowVerdict filterOutbound](self, "filterOutbound")}];
   [v4 setPeekInboundBytes:{-[NEFilterNewFlowVerdict peekInboundBytes](self, "peekInboundBytes")}];
@@ -47,32 +47,32 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NEFilterNewFlowVerdict;
-  v4 = a3;
-  [(NEFilterVerdict *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[NEFilterNewFlowVerdict filterInbound](self forKey:{"filterInbound", v5.receiver, v5.super_class), @"FilterInbound"}];
-  [v4 encodeBool:-[NEFilterNewFlowVerdict filterOutbound](self forKey:{"filterOutbound"), @"FilterOutbound"}];
-  [v4 encodeInt64:-[NEFilterNewFlowVerdict peekInboundBytes](self forKey:{"peekInboundBytes"), @"PeekInboundBytes"}];
-  [v4 encodeInt64:-[NEFilterNewFlowVerdict peekOutboundBytes](self forKey:{"peekOutboundBytes"), @"PeekOutboundBytes"}];
-  [v4 encodeInt:-[NEFilterNewFlowVerdict statisticsReportFrequency](self forKey:{"statisticsReportFrequency"), @"StatisticsReportFrequency"}];
+  coderCopy = coder;
+  [(NEFilterVerdict *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[NEFilterNewFlowVerdict filterInbound](self forKey:{"filterInbound", v5.receiver, v5.super_class), @"FilterInbound"}];
+  [coderCopy encodeBool:-[NEFilterNewFlowVerdict filterOutbound](self forKey:{"filterOutbound"), @"FilterOutbound"}];
+  [coderCopy encodeInt64:-[NEFilterNewFlowVerdict peekInboundBytes](self forKey:{"peekInboundBytes"), @"PeekInboundBytes"}];
+  [coderCopy encodeInt64:-[NEFilterNewFlowVerdict peekOutboundBytes](self forKey:{"peekOutboundBytes"), @"PeekOutboundBytes"}];
+  [coderCopy encodeInt:-[NEFilterNewFlowVerdict statisticsReportFrequency](self forKey:{"statisticsReportFrequency"), @"StatisticsReportFrequency"}];
 }
 
-- (NEFilterNewFlowVerdict)initWithCoder:(id)a3
+- (NEFilterNewFlowVerdict)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NEFilterNewFlowVerdict;
-  v5 = [(NEFilterVerdict *)&v7 initWithCoder:v4];
+  v5 = [(NEFilterVerdict *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_filterInbound = [v4 decodeBoolForKey:@"FilterInbound"];
-    v5->_filterOutbound = [v4 decodeBoolForKey:@"FilterOutbound"];
-    v5->_peekInboundBytes = [v4 decodeInt64ForKey:@"PeekInboundBytes"];
-    v5->_peekOutboundBytes = [v4 decodeInt64ForKey:@"PeekOutboundBytes"];
-    v5->_statisticsReportFrequency = [v4 decodeIntForKey:@"StatisticsReportFrequency"];
+    v5->_filterInbound = [coderCopy decodeBoolForKey:@"FilterInbound"];
+    v5->_filterOutbound = [coderCopy decodeBoolForKey:@"FilterOutbound"];
+    v5->_peekInboundBytes = [coderCopy decodeInt64ForKey:@"PeekInboundBytes"];
+    v5->_peekOutboundBytes = [coderCopy decodeInt64ForKey:@"PeekOutboundBytes"];
+    v5->_statisticsReportFrequency = [coderCopy decodeIntForKey:@"StatisticsReportFrequency"];
   }
 
   return v5;

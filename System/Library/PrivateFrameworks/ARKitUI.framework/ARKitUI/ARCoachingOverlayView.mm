@@ -1,60 +1,60 @@
 @interface ARCoachingOverlayView
-- (ARCoachingOverlayView)initWithCoder:(id)a3;
-- (ARCoachingOverlayView)initWithFrame:(CGRect)a3;
+- (ARCoachingOverlayView)initWithCoder:(id)coder;
+- (ARCoachingOverlayView)initWithFrame:(CGRect)frame;
 - (BOOL)checkActivationHeuristics;
 - (BOOL)isRelocalizing;
 - (CGSize)intrinsicContentSize;
 - (NSObject)sessionProvider;
-- (double)calcFadeDurationIn:(BOOL)a3 withButton:(BOOL)a4;
+- (double)calcFadeDurationIn:(BOOL)in withButton:(BOOL)button;
 - (id)delegate;
-- (id)frameWithOverrides:(id)a3;
+- (id)frameWithOverrides:(id)overrides;
 - (int64_t)currentDeviceOrientation;
-- (void)buttonPress:(id)a3;
-- (void)createConstraintsForDeviceOrientation:(int64_t)a3;
-- (void)crossFadeCoachingMessage:(int64_t)a3;
+- (void)buttonPress:(id)press;
+- (void)createConstraintsForDeviceOrientation:(int64_t)orientation;
+- (void)crossFadeCoachingMessage:(int64_t)message;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)doStateAction:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)doStateAction:(int64_t)action;
+- (void)encodeWithCoder:(id)coder;
 - (void)fadeOut;
 - (void)finishAllUIAnimations;
-- (void)generateHeuristicsForActive:(BOOL)a3;
+- (void)generateHeuristicsForActive:(BOOL)active;
 - (void)killUIAnimations;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)orientationChanged;
-- (void)resolveCoachingMessageWithFrame:(id)a3;
+- (void)resolveCoachingMessageWithFrame:(id)frame;
 - (void)restartIfActive;
-- (void)session:(id)a3 didAddAnchors:(id)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didRemoveAnchors:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)session:(id)a3 willRunWithConfiguration:(id)a4;
+- (void)session:(id)session didAddAnchors:(id)anchors;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didRemoveAnchors:(id)anchors;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)session:(id)session willRunWithConfiguration:(id)configuration;
 - (void)setActive:(BOOL)active animated:(BOOL)animated;
-- (void)setCoachingMessage:(int64_t)a3 animationState:(int64_t)a4;
+- (void)setCoachingMessage:(int64_t)message animationState:(int64_t)state;
 - (void)setGoal:(ARCoachingGoal)goal;
-- (void)setResetButtonLandscapeVerticalOffset:(float)a3;
-- (void)setResetButtonPortraitVerticalOffset:(float)a3;
+- (void)setResetButtonLandscapeVerticalOffset:(float)offset;
+- (void)setResetButtonPortraitVerticalOffset:(float)offset;
 - (void)setSession:(ARSession *)session;
 - (void)setSessionProvider:(NSObject *)sessionProvider;
 - (void)setupView;
 - (void)startup;
-- (void)swapState:(id)a3;
+- (void)swapState:(id)state;
 - (void)teardown;
-- (void)updateCoachingMessagingWithMotionTracker:(BOOL)a3 frame:(id)a4;
+- (void)updateCoachingMessagingWithMotionTracker:(BOOL)tracker frame:(id)frame;
 - (void)updateConstraints;
 - (void)updateFromDisplayLink;
 - (void)updateUIAnimations;
-- (void)updateWithFrame:(id)a3;
+- (void)updateWithFrame:(id)frame;
 @end
 
 @implementation ARCoachingOverlayView
 
-- (ARCoachingOverlayView)initWithFrame:(CGRect)a3
+- (ARCoachingOverlayView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ARCoachingOverlayView;
-  v3 = [(ARCoachingOverlayView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ARCoachingOverlayView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -64,38 +64,38 @@
   return v4;
 }
 
-- (ARCoachingOverlayView)initWithCoder:(id)a3
+- (ARCoachingOverlayView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ARCoachingOverlayView;
-  v5 = [(ARCoachingOverlayView *)&v8 initWithCoder:v4];
+  v5 = [(ARCoachingOverlayView *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(ARCoachingOverlayView *)v5 setupView];
-    if ([v4 containsValueForKey:@"goal"])
+    if ([coderCopy containsValueForKey:@"goal"])
     {
-      -[ARCoachingOverlayView setGoal:](v6, "setGoal:", [v4 decodeIntegerForKey:@"goal"]);
+      -[ARCoachingOverlayView setGoal:](v6, "setGoal:", [coderCopy decodeIntegerForKey:@"goal"]);
     }
 
-    if ([v4 containsValueForKey:@"activatesAutomatically"])
+    if ([coderCopy containsValueForKey:@"activatesAutomatically"])
     {
-      -[ARCoachingOverlayView setActivatesAutomatically:](v6, "setActivatesAutomatically:", [v4 decodeBoolForKey:@"activatesAutomatically"]);
+      -[ARCoachingOverlayView setActivatesAutomatically:](v6, "setActivatesAutomatically:", [coderCopy decodeBoolForKey:@"activatesAutomatically"]);
     }
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ARCoachingOverlayView;
-  v4 = a3;
-  [(ARCoachingOverlayView *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_goal forKey:{@"goal", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_activatesAutomatically forKey:@"activatesAutomatically"];
+  coderCopy = coder;
+  [(ARCoachingOverlayView *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_goal forKey:{@"goal", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_activatesAutomatically forKey:@"activatesAutomatically"];
 }
 
 - (void)dealloc
@@ -109,13 +109,13 @@
     *buf = 138543618;
     v10 = v5;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D3AE000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Deallocate the overlay", buf, 0x16u);
   }
 
   [(ARSession *)self->_session _removeObserver:self];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277D76878] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76878] object:0];
 
   v8.receiver = self;
   v8.super_class = ARCoachingOverlayView;
@@ -134,7 +134,7 @@
     *buf = 138543618;
     v72 = v5;
     v73 = 2048;
-    v74 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D3AE000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Set up the overlay", buf, 0x16u);
   }
 
@@ -177,8 +177,8 @@
   coachingText = self->_coachingText;
   self->_coachingText = v19;
 
-  v21 = [MEMORY[0x277D75348] whiteColor];
-  [(UILabel *)self->_coachingText setTextColor:v21];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UILabel *)self->_coachingText setTextColor:whiteColor];
 
   v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
   [(UILabel *)self->_coachingText setFont:v22];
@@ -201,15 +201,15 @@
   [(ARCoachingOverlayView *)self addSubview:self->_coachingAnimationView];
   [(ARCoachingOverlayView *)self addSubview:self->_coachingText];
   [(ARCoachingOverlayView *)self addSubview:self->_resetButton];
-  v28 = [(UILabel *)self->_coachingText leftAnchor];
-  v29 = [(ARCoachingOverlayView *)self centerXAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29 constant:-154.0];
+  leftAnchor = [(UILabel *)self->_coachingText leftAnchor];
+  centerXAnchor = [(ARCoachingOverlayView *)self centerXAnchor];
+  v30 = [leftAnchor constraintEqualToAnchor:centerXAnchor constant:-154.0];
   coachingTextLeftAnchorConstraint = self->_coachingTextLeftAnchorConstraint;
   self->_coachingTextLeftAnchorConstraint = v30;
 
-  v32 = [(UILabel *)self->_coachingText rightAnchor];
-  v33 = [(ARCoachingOverlayView *)self centerXAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33 constant:154.0];
+  rightAnchor = [(UILabel *)self->_coachingText rightAnchor];
+  centerXAnchor2 = [(ARCoachingOverlayView *)self centerXAnchor];
+  v34 = [rightAnchor constraintEqualToAnchor:centerXAnchor2 constant:154.0];
   coachingTextRightAnchorConstraint = self->_coachingTextRightAnchorConstraint;
   self->_coachingTextRightAnchorConstraint = v34;
 
@@ -224,50 +224,50 @@
   }
 
   v58 = MEMORY[0x277CCAAD0];
-  v69 = [(UIView *)self->_background centerXAnchor];
-  v68 = [(ARCoachingOverlayView *)self centerXAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  centerXAnchor3 = [(UIView *)self->_background centerXAnchor];
+  centerXAnchor4 = [(ARCoachingOverlayView *)self centerXAnchor];
+  v67 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v70[0] = v67;
-  v66 = [(UIView *)self->_background centerYAnchor];
-  v65 = [(ARCoachingOverlayView *)self centerYAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  centerYAnchor = [(UIView *)self->_background centerYAnchor];
+  centerYAnchor2 = [(ARCoachingOverlayView *)self centerYAnchor];
+  v64 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v70[1] = v64;
-  v63 = [(ARCoachingAnimationView *)self->_coachingAnimationView leftAnchor];
-  v62 = [(ARCoachingOverlayView *)self leftAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  leftAnchor2 = [(ARCoachingAnimationView *)self->_coachingAnimationView leftAnchor];
+  leftAnchor3 = [(ARCoachingOverlayView *)self leftAnchor];
+  v61 = [leftAnchor2 constraintEqualToAnchor:leftAnchor3];
   v70[2] = v61;
-  v60 = [(ARCoachingAnimationView *)self->_coachingAnimationView topAnchor];
-  v59 = [(ARCoachingOverlayView *)self topAnchor];
-  v57 = [v60 constraintEqualToAnchor:v59];
+  topAnchor = [(ARCoachingAnimationView *)self->_coachingAnimationView topAnchor];
+  topAnchor2 = [(ARCoachingOverlayView *)self topAnchor];
+  v57 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v70[3] = v57;
-  v56 = [(ARCoachingAnimationView *)self->_coachingAnimationView rightAnchor];
-  v55 = [(ARCoachingOverlayView *)self rightAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  rightAnchor2 = [(ARCoachingAnimationView *)self->_coachingAnimationView rightAnchor];
+  rightAnchor3 = [(ARCoachingOverlayView *)self rightAnchor];
+  v54 = [rightAnchor2 constraintEqualToAnchor:rightAnchor3];
   v70[4] = v54;
-  v53 = [(ARCoachingAnimationView *)self->_coachingAnimationView bottomAnchor];
-  v52 = [(ARCoachingOverlayView *)self bottomAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  bottomAnchor = [(ARCoachingAnimationView *)self->_coachingAnimationView bottomAnchor];
+  bottomAnchor2 = [(ARCoachingOverlayView *)self bottomAnchor];
+  v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v37 = self->_coachingTextLeftAnchorConstraint;
   v70[5] = v51;
   v70[6] = v37;
   v70[7] = self->_coachingTextRightAnchorConstraint;
-  v50 = [(UILabel *)self->_coachingText topAnchor];
-  v38 = [(ARCoachingOverlayView *)self centerYAnchor];
-  v39 = [v50 constraintEqualToAnchor:v38 constant:v36];
+  topAnchor3 = [(UILabel *)self->_coachingText topAnchor];
+  centerYAnchor3 = [(ARCoachingOverlayView *)self centerYAnchor];
+  v39 = [topAnchor3 constraintEqualToAnchor:centerYAnchor3 constant:v36];
   v70[8] = v39;
-  v40 = [(ARCoachingPillButton *)self->_resetButton centerXAnchor];
-  v41 = [(ARCoachingOverlayView *)self centerXAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
+  centerXAnchor5 = [(ARCoachingPillButton *)self->_resetButton centerXAnchor];
+  centerXAnchor6 = [(ARCoachingOverlayView *)self centerXAnchor];
+  v42 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v70[9] = v42;
-  v43 = [(ARCoachingPillButton *)self->_resetButton topAnchor];
-  v44 = [(UILabel *)self->_coachingText bottomAnchor];
-  v45 = [v43 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v44 multiplier:1.0];
+  topAnchor4 = [(ARCoachingPillButton *)self->_resetButton topAnchor];
+  bottomAnchor3 = [(UILabel *)self->_coachingText bottomAnchor];
+  v45 = [topAnchor4 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor3 multiplier:1.0];
   v70[10] = v45;
   v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:11];
   [v58 activateConstraints:v46];
 
-  v47 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v47 addObserver:self selector:sel_orientationChanged name:*MEMORY[0x277D76878] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_orientationChanged name:*MEMORY[0x277D76878] object:0];
 
   v48 = [[ARCoachingStateHidden alloc] initWithView:self];
   [(ARCoachingOverlayView *)self swapState:v48];
@@ -312,7 +312,7 @@
         v14 = 138543618;
         v15 = v9;
         v16 = 2048;
-        v17 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_23D3AE000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Restarting coaching due to session change", &v14, 0x16u);
       }
 
@@ -329,7 +329,7 @@
         v14 = 138543618;
         v15 = v12;
         v16 = 2048;
-        v17 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_23D3AE000, v10, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Deactivating coaching due to invalid session", &v14, 0x16u);
       }
 
@@ -357,7 +357,7 @@
       v10 = 138543618;
       v11 = v8;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_23D3AE000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Restarting coaching due to goal change", &v10, 0x16u);
     }
 
@@ -405,7 +405,7 @@
         v14 = 138543618;
         v15 = v12;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&dword_23D3AE000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Coaching requires an AR session, and must be run on a supported device. Run a session with a valid configuration, and set session or sessionProvider before activation.", &v14, 0x16u);
       }
     }
@@ -436,16 +436,16 @@
   return result;
 }
 
-- (void)setResetButtonLandscapeVerticalOffset:(float)a3
+- (void)setResetButtonLandscapeVerticalOffset:(float)offset
 {
-  self->_resetButtonLandscapeVerticalOffset = a3;
+  self->_resetButtonLandscapeVerticalOffset = offset;
   self->_currentConstraintDeviceOrientation = 0;
   [(ARCoachingOverlayView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setResetButtonPortraitVerticalOffset:(float)a3
+- (void)setResetButtonPortraitVerticalOffset:(float)offset
 {
-  self->_resetButtonPortraitVerticalOffset = a3;
+  self->_resetButtonPortraitVerticalOffset = offset;
   self->_currentConstraintDeviceOrientation = 0;
   [(ARCoachingOverlayView *)self setNeedsUpdateConstraints];
 }
@@ -457,16 +457,16 @@
     return 1;
   }
 
-  v4 = [(ARSession *)self->_session currentFrame];
-  v5 = v4;
+  currentFrame = [(ARSession *)self->_session currentFrame];
+  v5 = currentFrame;
   v2 = 0;
-  if (!self->_isSessionRelocalizingMap && v4)
+  if (!self->_isSessionRelocalizingMap && currentFrame)
   {
-    v6 = [v4 camera];
-    if ([v6 trackingState] == 1)
+    camera = [currentFrame camera];
+    if ([camera trackingState] == 1)
     {
-      v7 = [v5 camera];
-      v2 = [v7 trackingStateReason] == 4;
+      camera2 = [v5 camera];
+      v2 = [camera2 trackingStateReason] == 4;
     }
 
     else
@@ -489,7 +489,7 @@
     v15 = 138543618;
     v16 = v5;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D3AE000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Start rendering the overlay", &v15, 0x16u);
   }
 
@@ -501,12 +501,12 @@
   [(ARCoachingMotionTracker *)self->_motionTracker clear];
   [(ARCoachingSessionCache *)self->_coachingSessionCache clear];
   self->_nextCoachingMessageType = 0;
-  v6 = [(ARSession *)self->_session metrics];
-  [v6 recordCoachingOverlayUsage:LODWORD(self->_goal)];
+  metrics = [(ARSession *)self->_session metrics];
+  [metrics recordCoachingOverlayUsage:LODWORD(self->_goal)];
 
   v7 = [ARCoachingFrame alloc];
-  v8 = [(ARSession *)self->_session currentFrame];
-  v9 = [(ARCoachingFrame *)v7 initWithFrame:v8];
+  currentFrame = [(ARSession *)self->_session currentFrame];
+  v9 = [(ARCoachingFrame *)v7 initWithFrame:currentFrame];
 
   [(ARCoachingHeuristicCollection *)self->_heuristics updateWithFrame:v9 cache:self->_coachingSessionCache];
   [(ARCoachingMotionTracker *)self->_motionTracker updateWithFrame:v9];
@@ -519,8 +519,8 @@
     self->_displayLink = v10;
 
     v12 = self->_displayLink;
-    v13 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)v12 addToRunLoop:v13 forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)v12 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -532,9 +532,9 @@
   v12.receiver = self;
   v12.super_class = ARCoachingOverlayView;
   [(ARCoachingOverlayView *)&v12 didMoveToWindow];
-  v3 = [(ARCoachingOverlayView *)self window];
+  window = [(ARCoachingOverlayView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     v8 = _ARLogCoaching_2();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -544,7 +544,7 @@
       *buf = 138543618;
       v14 = v10;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_23D3AE000, v8, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Tearing down because the view no longer has a window.", buf, 0x16u);
     }
 
@@ -580,7 +580,7 @@ LABEL_7:
     v11 = 138543618;
     v12 = v5;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D3AE000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Stop rendering the overlay", &v11, 0x16u);
   }
 
@@ -598,8 +598,8 @@ LABEL_7:
   [(ARCoachingPillButton *)self->_resetButton setHidden:1];
   self->_nextCoachingMessageType = 0;
   v7 = [ARCoachingFrame alloc];
-  v8 = [(ARSession *)self->_session currentFrame];
-  v9 = [(ARCoachingFrame *)v7 initWithFrame:v8];
+  currentFrame = [(ARSession *)self->_session currentFrame];
+  v9 = [(ARCoachingFrame *)v7 initWithFrame:currentFrame];
 
   [(ARCoachingHeuristicCollection *)self->_heuristics updateWithFrame:v9 cache:self->_coachingSessionCache];
   v10 = *MEMORY[0x277D85DE8];
@@ -632,8 +632,8 @@ uint64_t __42__ARCoachingOverlayView_fadeInWithButton___block_invoke_2(uint64_t 
 {
   v3 = CACurrentMediaTime();
   lastCoachingUpdateTime = self->_lastCoachingUpdateTime;
-  v5 = [(ARCoachingAnimationView *)self->_coachingAnimationView animationState];
-  v6 = v5 > 6 || ((1 << v5) & 0x52) == 0;
+  animationState = [(ARCoachingAnimationView *)self->_coachingAnimationView animationState];
+  v6 = animationState > 6 || ((1 << animationState) & 0x52) == 0;
   v7 = fmax(lastCoachingUpdateTime - v3 + 1.0, 0.0);
   if (v6)
   {
@@ -702,10 +702,10 @@ uint64_t __32__ARCoachingOverlayView_fadeOut__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v5 = a4;
-  v6 = [[ARCoachingFrame alloc] initWithFrame:v5];
+  frameCopy = frame;
+  v6 = [[ARCoachingFrame alloc] initWithFrame:frameCopy];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -723,10 +723,10 @@ void __48__ARCoachingOverlayView_session_didUpdateFrame___block_invoke(uint64_t 
   [*(a1 + 32) updateWithFrame:v2];
 }
 
-- (id)frameWithOverrides:(id)a3
+- (id)frameWithOverrides:(id)overrides
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  overridesCopy = overrides;
   if (self->_trackingStateNormalOverride)
   {
     v5 = _ARLogCoaching_2();
@@ -737,12 +737,12 @@ void __48__ARCoachingOverlayView_session_didUpdateFrame___block_invoke(uint64_t 
       v31 = 138543618;
       v32 = v7;
       v33 = 2048;
-      v34 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_23D3AE000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Overriding ARFrame tracking state to be .normal", &v31, 0x16u);
     }
 
-    v8 = [v4 camera];
-    [v8 setTrackingState:2];
+    camera = [overridesCopy camera];
+    [camera setTrackingState:2];
 
     trackingStateReasonOverride = 0;
   }
@@ -767,26 +767,26 @@ void __48__ARCoachingOverlayView_session_didUpdateFrame___block_invoke(uint64_t 
       v31 = 138543618;
       v32 = v12;
       v33 = 2048;
-      v34 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_23D3AE000, v10, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Overriding ARFrame tracking state to be .limited", &v31, 0x16u);
     }
 
-    v13 = [v4 camera];
-    [v13 setTrackingState:1];
+    camera2 = [overridesCopy camera];
+    [camera2 setTrackingState:1];
 
     trackingStateReasonOverride = self->_trackingStateReasonOverride;
   }
 
-  v14 = [v4 camera];
-  [v14 setTrackingStateReason:trackingStateReasonOverride];
+  camera3 = [overridesCopy camera];
+  [camera3 setTrackingStateReason:trackingStateReasonOverride];
 
 LABEL_10:
-  v15 = [v4 geoTrackingStatus];
+  geoTrackingStatus = [overridesCopy geoTrackingStatus];
 
-  if (!v15)
+  if (!geoTrackingStatus)
   {
-    v16 = [MEMORY[0x277CE52A0] initialStatus];
-    [v4 setGeoTrackingStatus:v16];
+    initialStatus = [MEMORY[0x277CE52A0] initialStatus];
+    [overridesCopy setGeoTrackingStatus:initialStatus];
   }
 
   if (self->_geoTrackingStateOverrideEnabled)
@@ -800,15 +800,15 @@ LABEL_10:
       v31 = 138543874;
       v32 = v19;
       v33 = 2048;
-      v34 = self;
+      selfCopy4 = self;
       v35 = 2048;
       v36 = geoTrackingStateOverride;
       _os_log_impl(&dword_23D3AE000, v17, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Overriding ARFrame geo tracking state to be state %ld", &v31, 0x20u);
     }
 
     v21 = self->_geoTrackingStateOverride;
-    v22 = [v4 geoTrackingStatus];
-    [v22 setState:v21];
+    geoTrackingStatus2 = [overridesCopy geoTrackingStatus];
+    [geoTrackingStatus2 setState:v21];
   }
 
   if (self->_geoTrackingStateReasonOverrideEnabled)
@@ -822,24 +822,24 @@ LABEL_10:
       v31 = 138543874;
       v32 = v25;
       v33 = 2048;
-      v34 = self;
+      selfCopy4 = self;
       v35 = 2048;
       v36 = geoTrackingStateReasonOverride;
       _os_log_impl(&dword_23D3AE000, v23, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Overriding ARFrame geo tracking state reason to be state %ld", &v31, 0x20u);
     }
 
     v27 = self->_geoTrackingStateReasonOverride;
-    v28 = [v4 geoTrackingStatus];
-    [v28 setStateReason:v27];
+    geoTrackingStatus3 = [overridesCopy geoTrackingStatus];
+    [geoTrackingStatus3 setStateReason:v27];
   }
 
 LABEL_20:
   v29 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return overridesCopy;
 }
 
-- (void)session:(id)a3 willRunWithConfiguration:(id)a4
+- (void)session:(id)session willRunWithConfiguration:(id)configuration
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -879,10 +879,10 @@ uint64_t __58__ARCoachingOverlayView_session_willRunWithConfiguration___block_in
   return result;
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _ARLogCoaching_2();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -891,7 +891,7 @@ uint64_t __58__ARCoachingOverlayView_session_willRunWithConfiguration___block_in
     *buf = 138543618;
     v14 = v8;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D3AE000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Coaching recieved session failure callback", buf, 0x16u);
   }
 
@@ -900,8 +900,8 @@ uint64_t __58__ARCoachingOverlayView_session_willRunWithConfiguration___block_in
   v11[2] = __50__ARCoachingOverlayView_session_didFailWithError___block_invoke;
   v11[3] = &unk_278BCD520;
   v11[4] = self;
-  v12 = v5;
-  v9 = v5;
+  v12 = errorCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1008,46 +1008,46 @@ LABEL_16:
   return result;
 }
 
-- (void)session:(id)a3 didRemoveAnchors:(id)a4
+- (void)session:(id)session didRemoveAnchors:(id)anchors
 {
-  v5 = a4;
+  anchorsCopy = anchors;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ARCoachingOverlayView_session_didRemoveAnchors___block_invoke;
   v7[3] = &unk_278BCD520;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = anchorsCopy;
+  v6 = anchorsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)session:(id)a3 didAddAnchors:(id)a4
+- (void)session:(id)session didAddAnchors:(id)anchors
 {
-  v5 = a4;
+  anchorsCopy = anchors;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__ARCoachingOverlayView_session_didAddAnchors___block_invoke;
   v7[3] = &unk_278BCD520;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = anchorsCopy;
+  v6 = anchorsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kARCoachingSessionProviderSessionContext == a6)
+  if (kARCoachingSessionProviderSessionContext == context)
   {
     WeakRetained = objc_loadWeakRetained(&self->_sessionProvider);
-    v7 = [WeakRetained session];
-    [(ARCoachingOverlayView *)self setSession:v7];
+    session = [WeakRetained session];
+    [(ARCoachingOverlayView *)self setSession:session];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = ARCoachingOverlayView;
-    [(ARCoachingOverlayView *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(ARCoachingOverlayView *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -1067,12 +1067,12 @@ LABEL_16:
   }
 }
 
-- (void)resolveCoachingMessageWithFrame:(id)a3
+- (void)resolveCoachingMessageWithFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   goal = self->_goal;
   v6 = 4;
-  v29 = v4;
+  v29 = frameCopy;
   if (goal <= 2)
   {
     if (goal == 2)
@@ -1095,31 +1095,31 @@ LABEL_16:
 
   else if (goal == 4)
   {
-    v7 = [v4 geoTrackingStatus];
+    geoTrackingStatus = [frameCopy geoTrackingStatus];
 
-    if (!v7)
+    if (!geoTrackingStatus)
     {
       v10 = 6;
       goto LABEL_50;
     }
 
-    v8 = [v29 geoTrackingStatus];
-    v9 = [v8 stateReason];
+    geoTrackingStatus2 = [v29 geoTrackingStatus];
+    stateReason = [geoTrackingStatus2 stateReason];
 
-    if (v9 == 7)
+    if (stateReason == 7)
     {
       v10 = 8;
 LABEL_50:
-      v22 = self;
+      selfCopy2 = self;
       v21 = 7;
       goto LABEL_37;
     }
 
-    v23 = [v29 geoTrackingStatus];
-    if ([v23 stateReason] == 3)
+    geoTrackingStatus3 = [v29 geoTrackingStatus];
+    if ([geoTrackingStatus3 stateReason] == 3)
     {
-      v24 = [v29 camera];
-      if ([v24 trackingStateReason] == 1)
+      camera = [v29 camera];
+      if ([camera trackingStateReason] == 1)
       {
 
 LABEL_49:
@@ -1127,10 +1127,10 @@ LABEL_49:
         goto LABEL_50;
       }
 
-      v27 = [v29 camera];
-      v28 = [v27 trackingStateReason];
+      camera2 = [v29 camera];
+      trackingStateReason = [camera2 trackingStateReason];
 
-      if (v28 == 2)
+      if (trackingStateReason == 2)
       {
         goto LABEL_49;
       }
@@ -1140,10 +1140,10 @@ LABEL_49:
     {
     }
 
-    v25 = [v29 geoTrackingStatus];
-    v26 = [v25 stateReason];
+    geoTrackingStatus4 = [v29 geoTrackingStatus];
+    stateReason2 = [geoTrackingStatus4 stateReason];
 
-    if (v26 == 8)
+    if (stateReason2 == 8)
     {
       v10 = 7;
     }
@@ -1219,8 +1219,8 @@ LABEL_13:
     v19 = v12;
   }
 
-  v20 = [(ARCoachingMotionTracker *)self->_motionTracker isMoving];
-  if (v20)
+  isMoving = [(ARCoachingMotionTracker *)self->_motionTracker isMoving];
+  if (isMoving)
   {
     v10 = v19;
   }
@@ -1230,7 +1230,7 @@ LABEL_13:
     v10 = v18;
   }
 
-  if (v20)
+  if (isMoving)
   {
     v21 = 4;
   }
@@ -1240,26 +1240,26 @@ LABEL_13:
     v21 = v17;
   }
 
-  v22 = self;
+  selfCopy2 = self;
 LABEL_37:
-  [(ARCoachingOverlayView *)v22 setCoachingMessage:v10 animationState:v21];
+  [(ARCoachingOverlayView *)selfCopy2 setCoachingMessage:v10 animationState:v21];
 }
 
-- (void)setCoachingMessage:(int64_t)a3 animationState:(int64_t)a4
+- (void)setCoachingMessage:(int64_t)message animationState:(int64_t)state
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (self->_coachingMessageType != a3 || [(ARCoachingAnimationView *)self->_coachingAnimationView animationState]!= a4)
+  if (self->_coachingMessageType != message || [(ARCoachingAnimationView *)self->_coachingAnimationView animationState]!= state)
   {
     v7 = CACurrentMediaTime();
     if ([(ARCoachingOverlayView *)self isHidden])
     {
-      self->_coachingMessageType = a3;
-      v8 = getCoachingText(a3);
+      self->_coachingMessageType = message;
+      v8 = getCoachingText(message);
       [(UILabel *)self->_coachingText setText:v8];
 
       if ([(ARCoachingOverlayView *)self hideCoachingMessageLabel])
       {
-        v9 = [(ARCoachingOverlayView *)self delegate];
+        delegate = [(ARCoachingOverlayView *)self delegate];
         v10 = objc_opt_respondsToSelector();
 
         if (v10)
@@ -1272,18 +1272,18 @@ LABEL_37:
             v24 = 138543618;
             v25 = v13;
             v26 = 2048;
-            v27 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_23D3AE000, v11, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Asking delegate to display the coaching message", &v24, 0x16u);
           }
 
-          v14 = [(ARCoachingOverlayView *)self delegate];
-          v15 = getCoachingText(a3);
-          [v14 displayCoachingMessage:v15 forCoachingView:self];
+          delegate2 = [(ARCoachingOverlayView *)self delegate];
+          v15 = getCoachingText(message);
+          [delegate2 displayCoachingMessage:v15 forCoachingView:self];
         }
       }
 
 LABEL_17:
-      [(ARCoachingAnimationView *)self->_coachingAnimationView setAnimationState:a4];
+      [(ARCoachingAnimationView *)self->_coachingAnimationView setAnimationState:state];
       self->_nextCoachingMessageType = 0;
       self->_lastCoachingUpdateTime = v7;
       goto LABEL_18;
@@ -1291,10 +1291,10 @@ LABEL_17:
 
     if (v7 - self->_lastCoachingUpdateTime >= 1.0)
     {
-      [(ARCoachingOverlayView *)self crossFadeCoachingMessage:a3];
+      [(ARCoachingOverlayView *)self crossFadeCoachingMessage:message];
       if ([(ARCoachingOverlayView *)self hideCoachingMessageLabel])
       {
-        v16 = [(ARCoachingOverlayView *)self delegate];
+        delegate3 = [(ARCoachingOverlayView *)self delegate];
         v17 = objc_opt_respondsToSelector();
 
         if (v17)
@@ -1307,36 +1307,36 @@ LABEL_17:
             v24 = 138543618;
             v25 = v20;
             v26 = 2048;
-            v27 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_23D3AE000, v18, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Asking delegate to display the coaching message", &v24, 0x16u);
           }
 
-          v21 = [(ARCoachingOverlayView *)self delegate];
-          v22 = getCoachingText(a3);
-          [v21 displayCoachingMessage:v22 forCoachingView:self];
+          delegate4 = [(ARCoachingOverlayView *)self delegate];
+          v22 = getCoachingText(message);
+          [delegate4 displayCoachingMessage:v22 forCoachingView:self];
         }
       }
 
       goto LABEL_17;
     }
 
-    self->_nextCoachingMessageType = a3;
-    self->_nextCoachingAnimationState = a4;
+    self->_nextCoachingMessageType = message;
+    self->_nextCoachingAnimationState = state;
   }
 
 LABEL_18:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)crossFadeCoachingMessage:(int64_t)a3
+- (void)crossFadeCoachingMessage:(int64_t)message
 {
-  if (self->_coachingMessageType != a3)
+  if (self->_coachingMessageType != message)
   {
     v14[5] = v6;
     v14[6] = v5;
     v14[11] = v3;
     v14[12] = v4;
-    self->_coachingMessageType = a3;
+    self->_coachingMessageType = message;
     v9 = objc_alloc(MEMORY[0x277D75D40]);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -1350,7 +1350,7 @@ LABEL_18:
     v13[2] = __50__ARCoachingOverlayView_crossFadeCoachingMessage___block_invoke_2;
     v13[3] = &unk_278BCD5E8;
     v13[4] = self;
-    v13[5] = a3;
+    v13[5] = message;
     v12 = [v11 initWithDuration:2 curve:v13 animations:0.15];
     [(NSMutableArray *)self->_uiAnimationQueue addObject:v10];
     [(NSMutableArray *)self->_uiAnimationQueue addObject:v12];
@@ -1367,9 +1367,9 @@ uint64_t __50__ARCoachingOverlayView_crossFadeCoachingMessage___block_invoke_2(u
   return [v3 setAlpha:1.0];
 }
 
-- (void)doStateAction:(int64_t)a3
+- (void)doStateAction:(int64_t)action
 {
-  v4 = [(ARCoachingState *)self->_state doAction:a3];
+  v4 = [(ARCoachingState *)self->_state doAction:action];
   if (v4)
   {
     v5 = v4;
@@ -1378,10 +1378,10 @@ uint64_t __50__ARCoachingOverlayView_crossFadeCoachingMessage___block_invoke_2(u
   }
 }
 
-- (void)swapState:(id)a3
+- (void)swapState:(id)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   [(ARCoachingState *)self->_state exit];
   v6 = _ARLogCoaching_2();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1394,13 +1394,13 @@ uint64_t __50__ARCoachingOverlayView_crossFadeCoachingMessage___block_invoke_2(u
     v20 = 138543874;
     v21 = v8;
     v22 = 2048;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
     v25 = v11;
     _os_log_impl(&dword_23D3AE000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Exited coaching state %@", &v20, 0x20u);
   }
 
-  objc_storeStrong(&self->_state, a3);
+  objc_storeStrong(&self->_state, state);
   v12 = self->_state;
   objc_opt_class();
   [(ARCoachingAnimationView *)self->_coachingAnimationView setIsDeactivating:objc_opt_isKindOfClass() & 1];
@@ -1416,7 +1416,7 @@ uint64_t __50__ARCoachingOverlayView_crossFadeCoachingMessage___block_invoke_2(u
     v20 = 138543874;
     v21 = v15;
     v22 = 2048;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
     v25 = v18;
     _os_log_impl(&dword_23D3AE000, v13, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Entered coaching state %@", &v20, 0x20u);
@@ -1425,11 +1425,11 @@ uint64_t __50__ARCoachingOverlayView_crossFadeCoachingMessage___block_invoke_2(u
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithFrame:(id)a3
+- (void)updateWithFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   coachingSessionCache = self->_coachingSessionCache;
-  v6 = v4;
+  v6 = frameCopy;
   [ARCoachingHeuristicCollection updateWithFrame:"updateWithFrame:cache:" cache:?];
   [(ARCoachingOverlayView *)self doStateAction:4];
   if ([(ARCoachingOverlayView *)self isActive])
@@ -1446,8 +1446,8 @@ uint64_t __50__ARCoachingOverlayView_crossFadeCoachingMessage___block_invoke_2(u
   {
     [(ARCoachingOverlayView *)self doStateAction:3];
     v4 = [ARCoachingFrame alloc];
-    v5 = [(ARSession *)self->_session currentFrame];
-    v7 = [(ARCoachingFrame *)v4 initWithFrame:v5];
+    currentFrame = [(ARSession *)self->_session currentFrame];
+    v7 = [(ARCoachingFrame *)v4 initWithFrame:currentFrame];
 
     v6 = [(ARCoachingOverlayView *)self frameWithOverrides:v7];
     [(ARCoachingOverlayView *)self updateCoachingMessagingWithMotionTracker:0 frame:v6];
@@ -1455,17 +1455,17 @@ uint64_t __50__ARCoachingOverlayView_crossFadeCoachingMessage___block_invoke_2(u
   }
 }
 
-- (void)updateCoachingMessagingWithMotionTracker:(BOOL)a3 frame:(id)a4
+- (void)updateCoachingMessagingWithMotionTracker:(BOOL)tracker frame:(id)frame
 {
-  v4 = a3;
-  v12 = a4;
+  trackerCopy = tracker;
+  frameCopy = frame;
   coachingRequirements = self->_coachingRequirements;
-  v7 = [(ARCoachingState *)self->_state requirements];
-  v8 = [(ARCoachingHeuristicCollection *)self->_heuristics requirements]| v7;
+  requirements = [(ARCoachingState *)self->_state requirements];
+  v8 = [(ARCoachingHeuristicCollection *)self->_heuristics requirements]| requirements;
   self->_coachingRequirements = v8;
-  if (v4 && ([(ARCoachingMotionTracker *)self->_motionTracker didStartMoving]|| [(ARCoachingMotionTracker *)self->_motionTracker didStopMoving]) || v8 != coachingRequirements || self->_goal == 4)
+  if (trackerCopy && ([(ARCoachingMotionTracker *)self->_motionTracker didStartMoving]|| [(ARCoachingMotionTracker *)self->_motionTracker didStopMoving]) || v8 != coachingRequirements || self->_goal == 4)
   {
-    [(ARCoachingOverlayView *)self resolveCoachingMessageWithFrame:v12];
+    [(ARCoachingOverlayView *)self resolveCoachingMessageWithFrame:frameCopy];
   }
 
   nextCoachingMessageType = self->_nextCoachingMessageType;
@@ -1496,17 +1496,17 @@ LABEL_15:
   }
 }
 
-- (double)calcFadeDurationIn:(BOOL)a3 withButton:(BOOL)a4
+- (double)calcFadeDurationIn:(BOOL)in withButton:(BOOL)button
 {
-  v4 = a4;
-  v5 = a3;
+  buttonCopy = button;
+  inCopy = in;
   [(UIView *)self->_background alpha];
-  if (v5)
+  if (inCopy)
   {
     v8 = fmax(1.0 - v7, 0.0);
     [(UILabel *)self->_coachingText alpha];
     v10 = fmax(v8, 1.0 - v9);
-    if (v4)
+    if (buttonCopy)
     {
       [(ARCoachingPillButton *)self->_resetButton alpha];
       v12 = 1.0 - v11;
@@ -1525,7 +1525,7 @@ LABEL_15:
 LABEL_6:
   v15 = fmax(v10, v12);
   v16 = 0.3;
-  if (!v5)
+  if (!inCopy)
   {
     v16 = 0.75;
   }
@@ -1533,11 +1533,11 @@ LABEL_6:
   return v16 * v15;
 }
 
-- (void)generateHeuristicsForActive:(BOOL)a3
+- (void)generateHeuristicsForActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   [(ARCoachingHeuristicCollection *)self->_heuristics clear];
-  if (v3)
+  if (activeCopy)
   {
     heuristics = self->_heuristics;
     v6 = [[ARCoachingHeuristicDelay alloc] initWithDuration:1.0];
@@ -1598,12 +1598,12 @@ LABEL_6:
   [(ARCoachingHeuristicCollection *)v15 addHeuristic:v16];
 }
 
-- (void)buttonPress:(id)a3
+- (void)buttonPress:(id)press
 {
-  v4 = a3;
-  if (self->_resetButton == v4)
+  pressCopy = press;
+  if (self->_resetButton == pressCopy)
   {
-    v9 = v4;
+    v9 = pressCopy;
     if (self->_activatesAutomatically)
     {
       [(ARCoachingOverlayView *)self setActive:0 animated:1];
@@ -1614,18 +1614,18 @@ LABEL_6:
 
     if (v6)
     {
-      v7 = objc_loadWeakRetained(&self->_delegate);
-      [v7 coachingOverlayViewDidRequestSessionReset:self];
+      configuration = objc_loadWeakRetained(&self->_delegate);
+      [configuration coachingOverlayViewDidRequestSessionReset:self];
     }
 
     else
     {
       session = self->_session;
-      v7 = [(ARSession *)session configuration];
-      [(ARSession *)session runWithConfiguration:v7 options:3];
+      configuration = [(ARSession *)session configuration];
+      [(ARSession *)session runWithConfiguration:configuration options:3];
     }
 
-    v4 = v9;
+    pressCopy = v9;
   }
 }
 
@@ -1783,8 +1783,8 @@ LABEL_6:
 - (int64_t)currentDeviceOrientation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  currentConstraintDeviceOrientation = [v3 orientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  currentConstraintDeviceOrientation = [currentDevice orientation];
 
   if ((currentConstraintDeviceOrientation - 1) >= 4)
   {
@@ -1795,10 +1795,10 @@ LABEL_6:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v5 = [MEMORY[0x277D75128] sharedApplication];
-      v6 = [v5 connectedScenes];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      connectedScenes = [mEMORY[0x277D75128] connectedScenes];
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         v8 = v7;
@@ -1810,16 +1810,16 @@ LABEL_6:
           {
             if (*v16 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(connectedScenes);
             }
 
             v11 = *(*(&v15 + 1) + 8 * v10);
             if ([v11 isMemberOfClass:objc_opt_class()])
             {
-              v12 = [v11 interfaceOrientation];
-              if ((v12 - 1) < 4)
+              interfaceOrientation = [v11 interfaceOrientation];
+              if ((interfaceOrientation - 1) < 4)
               {
-                currentConstraintDeviceOrientation = v12;
+                currentConstraintDeviceOrientation = interfaceOrientation;
                 goto LABEL_14;
               }
             }
@@ -1828,7 +1828,7 @@ LABEL_6:
           }
 
           while (v8 != v10);
-          v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v8 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v8)
           {
             continue;
@@ -1852,23 +1852,23 @@ LABEL_14:
   v4.receiver = self;
   v4.super_class = ARCoachingOverlayView;
   [(ARCoachingOverlayView *)&v4 updateConstraints];
-  v3 = [(ARCoachingOverlayView *)self currentDeviceOrientation];
-  if (v3 != self->_currentConstraintDeviceOrientation)
+  currentDeviceOrientation = [(ARCoachingOverlayView *)self currentDeviceOrientation];
+  if (currentDeviceOrientation != self->_currentConstraintDeviceOrientation)
   {
-    [(ARCoachingOverlayView *)self createConstraintsForDeviceOrientation:v3];
+    [(ARCoachingOverlayView *)self createConstraintsForDeviceOrientation:currentDeviceOrientation];
   }
 }
 
-- (void)createConstraintsForDeviceOrientation:(int64_t)a3
+- (void)createConstraintsForDeviceOrientation:(int64_t)orientation
 {
-  v5 = [(ARCoachingOverlayView *)self safeAreaLayoutGuide];
+  safeAreaLayoutGuide = [(ARCoachingOverlayView *)self safeAreaLayoutGuide];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __63__ARCoachingOverlayView_createConstraintsForDeviceOrientation___block_invoke;
   v15 = &unk_278BCD5E8;
-  v16 = self;
-  v17 = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32((a3 - 3) < 2), 0x1FuLL)), 0x43670000C3670000, 0x431A0000C31A0000);
-  if ((a3 - 3) >= 2)
+  selfCopy = self;
+  v17 = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32((orientation - 3) < 2), 0x1FuLL)), 0x43670000C3670000, 0x431A0000C31A0000);
+  if ((orientation - 3) >= 2)
   {
     v6 = &OBJC_IVAR___ARCoachingOverlayView__resetButtonPortraitVerticalOffset;
   }
@@ -1880,15 +1880,15 @@ LABEL_14:
 
   dispatch_async(MEMORY[0x277D85CD0], &v12);
   v7 = *(&self->super.super.super.isa + *v6);
-  [(NSLayoutConstraint *)self->_resetButtonBottomLayoutConstraint setActive:0, v12, v13, v14, v15, v16, *&v17];
-  v8 = [(ARCoachingPillButton *)self->_resetButton bottomAnchor];
-  v9 = [v5 bottomAnchor];
-  v10 = [v8 constraintGreaterThanOrEqualToAnchor:v9 constant:-v7];
+  [(NSLayoutConstraint *)self->_resetButtonBottomLayoutConstraint setActive:0, v12, v13, v14, v15, selfCopy, *&v17];
+  bottomAnchor = [(ARCoachingPillButton *)self->_resetButton bottomAnchor];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v10 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:-v7];
   resetButtonBottomLayoutConstraint = self->_resetButtonBottomLayoutConstraint;
   self->_resetButtonBottomLayoutConstraint = v10;
 
   [(NSLayoutConstraint *)self->_resetButtonBottomLayoutConstraint setActive:1];
-  self->_currentConstraintDeviceOrientation = a3;
+  self->_currentConstraintDeviceOrientation = orientation;
 }
 
 uint64_t __63__ARCoachingOverlayView_createConstraintsForDeviceOrientation___block_invoke(uint64_t a1)

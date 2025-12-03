@@ -8,24 +8,24 @@
 
 - (BOOL)isAllPunctuationGroup
 {
-  v2 = [(AXSSPunctuationGroup *)self uuid];
-  v3 = [v2 isEqual:AXSSVoiceOverPunctuationGroupAll];
+  uuid = [(AXSSPunctuationGroup *)self uuid];
+  v3 = [uuid isEqual:AXSSVoiceOverPunctuationGroupAll];
 
   return v3;
 }
 
 - (BOOL)isSomePunctuationGroup
 {
-  v2 = [(AXSSPunctuationGroup *)self uuid];
-  v3 = [v2 isEqual:AXSSVoiceOverPunctuationGroupSome];
+  uuid = [(AXSSPunctuationGroup *)self uuid];
+  v3 = [uuid isEqual:AXSSVoiceOverPunctuationGroupSome];
 
   return v3;
 }
 
 - (BOOL)isNonePunctuationGroup
 {
-  v2 = [(AXSSPunctuationGroup *)self uuid];
-  v3 = [v2 isEqual:AXSSVoiceOverPunctuationGroupNone];
+  uuid = [(AXSSPunctuationGroup *)self uuid];
+  v3 = [uuid isEqual:AXSSVoiceOverPunctuationGroupNone];
 
   return v3;
 }

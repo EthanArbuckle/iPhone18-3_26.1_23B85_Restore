@@ -1,6 +1,6 @@
 @interface IMActionDialEnriched
 - (IMActionDialEnriched)init;
-- (IMActionDialEnriched)initWithPhoneNumber:(id)a3 fallbackUrl:(id)a4 subject:(id)a5;
+- (IMActionDialEnriched)initWithPhoneNumber:(id)number fallbackUrl:(id)url subject:(id)subject;
 - (NSString)phoneNumber;
 - (id)dictionaryRepresentation;
 @end
@@ -15,14 +15,14 @@
   return v2;
 }
 
-- (IMActionDialEnriched)initWithPhoneNumber:(id)a3 fallbackUrl:(id)a4 subject:(id)a5
+- (IMActionDialEnriched)initWithPhoneNumber:(id)number fallbackUrl:(id)url subject:(id)subject
 {
   v8 = sub_1A88C82E8();
   v10 = v9;
-  if (!a4)
+  if (!url)
   {
     v12 = 0;
-    if (a5)
+    if (subject)
     {
       goto LABEL_3;
     }
@@ -33,9 +33,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  a4 = sub_1A88C82E8();
+  url = sub_1A88C82E8();
   v12 = v11;
-  if (!a5)
+  if (!subject)
   {
     goto LABEL_5;
   }
@@ -47,7 +47,7 @@ LABEL_6:
   *v15 = v8;
   v15[1] = v10;
   v16 = (self + OBJC_IVAR___IMActionDialEnriched_fallbackUrl);
-  *v16 = a4;
+  *v16 = url;
   v16[1] = v12;
   v17 = (self + OBJC_IVAR___IMActionDialEnriched_subject);
   *v17 = v13;
@@ -59,7 +59,7 @@ LABEL_6:
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A8824A98();
 
   v3 = sub_1A88C8188();

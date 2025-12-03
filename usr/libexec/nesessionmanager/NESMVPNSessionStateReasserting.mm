@@ -2,8 +2,8 @@
 - (BOOL)handleSetConfiguration;
 - (BOOL)handleSleep;
 - (NESMVPNSessionStateReasserting)init;
-- (void)enterWithSession:(id)a3;
-- (void)handlePluginStatusDidChangeToConnected:(id)a3;
+- (void)enterWithSession:(id)session;
+- (void)handlePluginStatusDidChangeToConnected:(id)connected;
 - (void)handleTimeout;
 - (void)handleUserLogout;
 - (void)handleUserSwitch;
@@ -15,13 +15,13 @@
 {
   v5.receiver = self;
   v5.super_class = NESMVPNSessionStateReasserting;
-  v3 = [(NESMVPNSessionState *)&v5 handleSetConfiguration];
-  if (self && v3)
+  handleSetConfiguration = [(NESMVPNSessionState *)&v5 handleSetConfiguration];
+  if (self && handleSetConfiguration)
   {
     self->_setConfigurationInProgress = 1;
   }
 
-  return v3;
+  return handleSetConfiguration;
 }
 
 - (void)handleUserLogout
@@ -40,23 +40,23 @@
 
 - (BOOL)handleSleep
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 16, 1);
   }
 
-  v3 = [(NESMVPNSessionStateReasserting *)self protocol];
-  v4 = [v3 disconnectOnSleep];
+  protocol = [(NESMVPNSessionStateReasserting *)self protocol];
+  disconnectOnSleep = [protocol disconnectOnSleep];
 
-  if (v4)
+  if (disconnectOnSleep)
   {
     v5 = ne_log_obj();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      if (v2)
+      if (selfCopy)
       {
-        Property = objc_getProperty(v2, v6, 16, 1);
+        Property = objc_getProperty(selfCopy, v6, 16, 1);
       }
 
       else
@@ -73,11 +73,11 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: delaying sleep until disconnected", buf, 0x16u);
     }
 
-    if (v2)
+    if (selfCopy)
     {
-      [objc_getProperty(v2 v10];
-      [objc_getProperty(v2 v11];
-      v13 = objc_getProperty(v2, v12, 16, 1);
+      [objc_getProperty(selfCopy v10];
+      [objc_getProperty(selfCopy v11];
+      v13 = objc_getProperty(selfCopy, v12, 16, 1);
     }
 
     else
@@ -92,7 +92,7 @@
 
   else
   {
-    v15.receiver = v2;
+    v15.receiver = selfCopy;
     v15.super_class = NESMVPNSessionStateReasserting;
     [(NESMVPNSessionState *)&v15 handleSleep];
   }
@@ -100,11 +100,11 @@
   return 1;
 }
 
-- (void)handlePluginStatusDidChangeToConnected:(id)a3
+- (void)handlePluginStatusDidChangeToConnected:(id)connected
 {
   v6.receiver = self;
   v6.super_class = NESMVPNSessionStateReasserting;
-  [(NESMVPNSessionState *)&v6 handlePluginStatusDidChangeToConnected:a3];
+  [(NESMVPNSessionState *)&v6 handlePluginStatusDidChangeToConnected:connected];
   if (self)
   {
     if (self->_setConfigurationInProgress)
@@ -143,7 +143,7 @@
   [Property setState:5];
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   if (self)
   {
@@ -152,7 +152,7 @@
 
   v3.receiver = self;
   v3.super_class = NESMVPNSessionStateReasserting;
-  [(NESMVPNSessionState *)&v3 enterWithSession:a3];
+  [(NESMVPNSessionState *)&v3 enterWithSession:session];
 }
 
 - (NESMVPNSessionStateReasserting)init

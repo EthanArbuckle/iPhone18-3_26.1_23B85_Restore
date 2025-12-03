@@ -1,14 +1,14 @@
 @interface KVPodcastItemBuilder
 + (void)initialize;
 - (KVPodcastItemBuilder)init;
-- (id)_buildItemWithError:(id *)a3;
-- (id)playlistItemWithName:(id)a3 itemId:(id)a4 error:(id *)a5;
-- (id)podcastItemWithTitle:(id)a3 itemId:(id)a4 artistName:(id)a5 error:(id *)a6;
+- (id)_buildItemWithError:(id *)error;
+- (id)playlistItemWithName:(id)name itemId:(id)id error:(id *)error;
+- (id)podcastItemWithTitle:(id)title itemId:(id)id artistName:(id)name error:(id *)error;
 @end
 
 @implementation KVPodcastItemBuilder
 
-- (id)_buildItemWithError:(id *)a3
+- (id)_buildItemWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   builder = self->_builder;
@@ -29,13 +29,13 @@
     v18 = 2112;
     v19 = v9;
     _os_log_error_impl(&dword_2559A5000, v11, OS_LOG_TYPE_ERROR, "%s %@", buf, 0x16u);
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
   }
 
-  else if (!a3)
+  else if (!error)
   {
     goto LABEL_7;
   }
@@ -43,7 +43,7 @@
   if (v9)
   {
     v12 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
 LABEL_7:
@@ -53,24 +53,24 @@ LABEL_7:
   return v8;
 }
 
-- (id)playlistItemWithName:(id)a3 itemId:(id)a4 error:(id *)a5
+- (id)playlistItemWithName:(id)name itemId:(id)id error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  nameCopy = name;
   builder = self->_builder;
   v29 = 0;
-  v12 = objc_msgSend_setItemType_itemId_error_(builder, v10, 16, a4, &v29, v11);
+  v12 = objc_msgSend_setItemType_itemId_error_(builder, v10, 16, id, &v29, v11);
   v15 = v29;
   if (v12)
   {
     v16 = self->_builder;
     v28 = v15;
-    v17 = objc_msgSend_addFieldWithType_value_error_(v16, v13, 702, v8, &v28, v14);
+    v17 = objc_msgSend_addFieldWithType_value_error_(v16, v13, 702, nameCopy, &v28, v14);
     v18 = v28;
 
     if (v17)
     {
-      v23 = objc_msgSend__buildItemWithError_(self, v19, a5, v20, v21, v22);
+      v23 = objc_msgSend__buildItemWithError_(self, v19, error, v20, v21, v22);
       goto LABEL_11;
     }
 
@@ -88,11 +88,11 @@ LABEL_7:
   }
 
   v23 = 0;
-  if (a5 && v15)
+  if (error && v15)
   {
     v25 = v15;
     v23 = 0;
-    *a5 = v15;
+    *error = v15;
   }
 
   v18 = v15;
@@ -103,20 +103,20 @@ LABEL_11:
   return v23;
 }
 
-- (id)podcastItemWithTitle:(id)a3 itemId:(id)a4 artistName:(id)a5 error:(id *)a6
+- (id)podcastItemWithTitle:(id)title itemId:(id)id artistName:(id)name error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  titleCopy = title;
+  nameCopy = name;
   builder = self->_builder;
   v37 = 0;
-  v15 = objc_msgSend_setItemType_itemId_error_(builder, v13, 16, a4, &v37, v14);
+  v15 = objc_msgSend_setItemType_itemId_error_(builder, v13, 16, id, &v37, v14);
   v18 = v37;
   if (v15)
   {
     v19 = self->_builder;
     v36 = v18;
-    v20 = objc_msgSend_addFieldWithType_value_error_(v19, v16, 700, v10, &v36, v17);
+    v20 = objc_msgSend_addFieldWithType_value_error_(v19, v16, 700, titleCopy, &v36, v17);
     v21 = v36;
 
     if (!v20)
@@ -127,12 +127,12 @@ LABEL_11:
 
     v24 = self->_builder;
     v35 = v21;
-    v25 = objc_msgSend_addFieldWithType_value_error_(v24, v22, 701, v11, &v35, v23);
+    v25 = objc_msgSend_addFieldWithType_value_error_(v24, v22, 701, nameCopy, &v35, v23);
     v18 = v35;
 
     if (v25)
     {
-      v30 = objc_msgSend__buildItemWithError_(self, v26, a6, v27, v28, v29);
+      v30 = objc_msgSend__buildItemWithError_(self, v26, error, v27, v28, v29);
       goto LABEL_13;
     }
   }
@@ -150,11 +150,11 @@ LABEL_7:
   }
 
   v30 = 0;
-  if (a6 && v21)
+  if (error && v21)
   {
     v32 = v21;
     v30 = 0;
-    *a6 = v21;
+    *error = v21;
   }
 
   v18 = v21;

@@ -1,43 +1,43 @@
 @interface SHHapticSpatialOffset
-- (SHHapticSpatialOffset)initWithCoder:(id)a3;
-- (SHHapticSpatialOffset)initWithTimestamp:(double)a3 offset:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SHHapticSpatialOffset)initWithCoder:(id)coder;
+- (SHHapticSpatialOffset)initWithTimestamp:(double)timestamp offset:(double)offset;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHHapticSpatialOffset
 
-- (SHHapticSpatialOffset)initWithTimestamp:(double)a3 offset:(double)a4
+- (SHHapticSpatialOffset)initWithTimestamp:(double)timestamp offset:(double)offset
 {
   v7.receiver = self;
   v7.super_class = SHHapticSpatialOffset;
   result = [(SHHapticSpatialOffset *)&v7 init];
   if (result)
   {
-    result->_timestamp = a3;
-    result->_offset = a4;
+    result->_timestamp = timestamp;
+    result->_offset = offset;
   }
 
   return result;
 }
 
-- (SHHapticSpatialOffset)initWithCoder:(id)a3
+- (SHHapticSpatialOffset)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"SHHapticSpatialOffsetTimestampKey"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"SHHapticSpatialOffsetTimestampKey"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"SHHapticSpatialOffsetKey"];
+  [coderCopy decodeDoubleForKey:@"SHHapticSpatialOffsetKey"];
   v8 = v7;
 
   return [(SHHapticSpatialOffset *)self initWithTimestamp:v6 offset:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(SHHapticSpatialOffset *)self timestamp];
-  [v4 encodeDouble:@"SHHapticSpatialOffsetTimestampKey" forKey:?];
+  [coderCopy encodeDouble:@"SHHapticSpatialOffsetTimestampKey" forKey:?];
   [(SHHapticSpatialOffset *)self offset];
-  [v4 encodeDouble:@"SHHapticSpatialOffsetKey" forKey:?];
+  [coderCopy encodeDouble:@"SHHapticSpatialOffsetKey" forKey:?];
 }
 
 @end

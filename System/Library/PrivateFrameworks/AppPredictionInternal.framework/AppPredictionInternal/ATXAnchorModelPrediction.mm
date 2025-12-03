@@ -1,53 +1,53 @@
 @interface ATXAnchorModelPrediction
-- (ATXAnchorModelPrediction)initWithAnchorType:(id)a3 anchorEvent:(id)a4 candidateType:(id)a5 candidateId:(id)a6 dateIntervalForPrediction:(id)a7 score:(double)a8 numUniqueOccurrencesAfterAnchor:(unint64_t)a9 posteriorProbability:(double)a10 classConditionalProbability:(double)a11 standardDeviationOfOffsetFromAnchor:(double)a12 anchorPopularity:(double)a13 globalPopularity:(double)a14 offsetFromAnchorToShowPrediction:(id)a15 candidateClassifier:(id)a16;
-- (ATXAnchorModelPrediction)initWithCoder:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
+- (ATXAnchorModelPrediction)initWithAnchorType:(id)type anchorEvent:(id)event candidateType:(id)candidateType candidateId:(id)id dateIntervalForPrediction:(id)prediction score:(double)score numUniqueOccurrencesAfterAnchor:(unint64_t)anchor posteriorProbability:(double)self0 classConditionalProbability:(double)self1 standardDeviationOfOffsetFromAnchor:(double)self2 anchorPopularity:(double)self3 globalPopularity:(double)self4 offsetFromAnchorToShowPrediction:(id)self5 candidateClassifier:(id)self6;
+- (ATXAnchorModelPrediction)initWithCoder:(id)coder;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXAnchorModelPrediction
 
-- (ATXAnchorModelPrediction)initWithAnchorType:(id)a3 anchorEvent:(id)a4 candidateType:(id)a5 candidateId:(id)a6 dateIntervalForPrediction:(id)a7 score:(double)a8 numUniqueOccurrencesAfterAnchor:(unint64_t)a9 posteriorProbability:(double)a10 classConditionalProbability:(double)a11 standardDeviationOfOffsetFromAnchor:(double)a12 anchorPopularity:(double)a13 globalPopularity:(double)a14 offsetFromAnchorToShowPrediction:(id)a15 candidateClassifier:(id)a16
+- (ATXAnchorModelPrediction)initWithAnchorType:(id)type anchorEvent:(id)event candidateType:(id)candidateType candidateId:(id)id dateIntervalForPrediction:(id)prediction score:(double)score numUniqueOccurrencesAfterAnchor:(unint64_t)anchor posteriorProbability:(double)self0 classConditionalProbability:(double)self1 standardDeviationOfOffsetFromAnchor:(double)self2 anchorPopularity:(double)self3 globalPopularity:(double)self4 offsetFromAnchorToShowPrediction:(id)self5 candidateClassifier:(id)self6
 {
-  v27 = a3;
-  v42 = a4;
-  v28 = a5;
-  v29 = a6;
-  v41 = a7;
-  v30 = a15;
-  v31 = a16;
+  typeCopy = type;
+  eventCopy = event;
+  candidateTypeCopy = candidateType;
+  idCopy = id;
+  predictionCopy = prediction;
+  showPredictionCopy = showPrediction;
+  classifierCopy = classifier;
   v43.receiver = self;
   v43.super_class = ATXAnchorModelPrediction;
   v32 = [(ATXAnchorModelPrediction *)&v43 init];
   if (v32)
   {
-    v33 = [v27 copy];
+    v33 = [typeCopy copy];
     anchorType = v32->_anchorType;
     v32->_anchorType = v33;
 
-    objc_storeStrong(&v32->_anchorEvent, a4);
-    v35 = [v28 copy];
+    objc_storeStrong(&v32->_anchorEvent, event);
+    v35 = [candidateTypeCopy copy];
     candidateType = v32->_candidateType;
     v32->_candidateType = v35;
 
-    v37 = [v29 copy];
+    v37 = [idCopy copy];
     candidateId = v32->_candidateId;
     v32->_candidateId = v37;
 
-    objc_storeStrong(&v32->_dateIntervalForPrediction, a7);
-    v32->_score = a8;
-    v32->_numUniqueOccurrencesAfterAnchor = a9;
-    v32->_posteriorProbability = a10;
-    v32->_classConditionalProbability = a11;
-    v32->_standardDeviationOfOffsetFromAnchor = a12;
-    v32->_anchorPopularity = a13;
-    v32->_globalPopularity = a14;
-    objc_storeStrong(&v32->_offsetFromAnchorToShowPrediction, a15);
-    objc_storeStrong(&v32->_candidateClassifier, a16);
+    objc_storeStrong(&v32->_dateIntervalForPrediction, prediction);
+    v32->_score = score;
+    v32->_numUniqueOccurrencesAfterAnchor = anchor;
+    v32->_posteriorProbability = probability;
+    v32->_classConditionalProbability = conditionalProbability;
+    v32->_standardDeviationOfOffsetFromAnchor = fromAnchor;
+    v32->_anchorPopularity = popularity;
+    v32->_globalPopularity = globalPopularity;
+    objc_storeStrong(&v32->_offsetFromAnchorToShowPrediction, showPrediction);
+    objc_storeStrong(&v32->_candidateClassifier, classifier);
   }
 
   return v32;
@@ -62,10 +62,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -75,7 +75,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_anchorType;
       v7 = v6;
       if (v6 == v5->_anchorType)
@@ -234,33 +234,33 @@ LABEL_32:
   return [(ATXAnchorModelPredictionOffsetFromAnchorOccurrence *)self->_offsetFromAnchorToShowPrediction hash]- v7 + 32 * v7;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -272,33 +272,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (fordouble == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -310,93 +310,93 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   anchorType = self->_anchorType;
-  v5 = a3;
-  [v5 encodeObject:anchorType forKey:@"codingKeyForAnchorType"];
-  [v5 encodeObject:self->_anchorEvent forKey:@"codingKeyForAnchorEvent"];
-  [v5 encodeObject:self->_candidateType forKey:@"codingKeyForCandidateType"];
-  [v5 encodeObject:self->_candidateId forKey:@"codingKeyForCandidateId"];
-  [v5 encodeObject:self->_dateIntervalForPrediction forKey:@"codingKeyForPredictionDateInterval"];
-  [v5 encodeDouble:@"codingKeyForScore" forKey:self->_score];
-  [v5 encodeInteger:self->_numUniqueOccurrencesAfterAnchor forKey:@"codingKeyForNumUniqueOccurrencesAfterAnchor"];
-  [v5 encodeDouble:@"codingKeyForPosteriorProbability" forKey:self->_posteriorProbability];
-  [v5 encodeDouble:@"codingKeyForClassConditionalProbability" forKey:self->_classConditionalProbability];
-  [v5 encodeDouble:@"codingKeyForStandardDeviationOfOffsetFromAnchor" forKey:self->_standardDeviationOfOffsetFromAnchor];
-  [v5 encodeDouble:@"codingKeyForAnchorPopularity" forKey:self->_anchorPopularity];
-  [v5 encodeDouble:@"codingKeyForGlobalPopularity" forKey:self->_globalPopularity];
-  [v5 encodeObject:self->_offsetFromAnchorToShowPrediction forKey:@"codingKeyForAnchorOffset"];
-  [v5 encodeObject:self->_candidateClassifier forKey:@"codingKeyForCandidateClassifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:anchorType forKey:@"codingKeyForAnchorType"];
+  [coderCopy encodeObject:self->_anchorEvent forKey:@"codingKeyForAnchorEvent"];
+  [coderCopy encodeObject:self->_candidateType forKey:@"codingKeyForCandidateType"];
+  [coderCopy encodeObject:self->_candidateId forKey:@"codingKeyForCandidateId"];
+  [coderCopy encodeObject:self->_dateIntervalForPrediction forKey:@"codingKeyForPredictionDateInterval"];
+  [coderCopy encodeDouble:@"codingKeyForScore" forKey:self->_score];
+  [coderCopy encodeInteger:self->_numUniqueOccurrencesAfterAnchor forKey:@"codingKeyForNumUniqueOccurrencesAfterAnchor"];
+  [coderCopy encodeDouble:@"codingKeyForPosteriorProbability" forKey:self->_posteriorProbability];
+  [coderCopy encodeDouble:@"codingKeyForClassConditionalProbability" forKey:self->_classConditionalProbability];
+  [coderCopy encodeDouble:@"codingKeyForStandardDeviationOfOffsetFromAnchor" forKey:self->_standardDeviationOfOffsetFromAnchor];
+  [coderCopy encodeDouble:@"codingKeyForAnchorPopularity" forKey:self->_anchorPopularity];
+  [coderCopy encodeDouble:@"codingKeyForGlobalPopularity" forKey:self->_globalPopularity];
+  [coderCopy encodeObject:self->_offsetFromAnchorToShowPrediction forKey:@"codingKeyForAnchorOffset"];
+  [coderCopy encodeObject:self->_candidateClassifier forKey:@"codingKeyForCandidateClassifier"];
 }
 
-- (ATXAnchorModelPrediction)initWithCoder:(id)a3
+- (ATXAnchorModelPrediction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D42620];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_anchor();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForAnchorType" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForAnchorType" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v7];
 
   if (v8)
   {
     v9 = MEMORY[0x277D42620];
     v10 = objc_opt_class();
     v11 = __atxlog_handle_anchor();
-    v12 = [v9 robustDecodeObjectOfClass:v10 forKey:@"codingKeyForAnchorEvent" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v11];
+    v12 = [v9 robustDecodeObjectOfClass:v10 forKey:@"codingKeyForAnchorEvent" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v11];
 
     if (v12)
     {
       v13 = MEMORY[0x277D42620];
       v14 = objc_opt_class();
       v15 = __atxlog_handle_anchor();
-      v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"codingKeyForCandidateType" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v15];
+      v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"codingKeyForCandidateType" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v15];
 
       if (v16)
       {
         v17 = MEMORY[0x277D42620];
         v18 = objc_opt_class();
         v19 = __atxlog_handle_anchor();
-        v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"codingKeyForCandidateId" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v19];
+        v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"codingKeyForCandidateId" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v19];
 
         if (v20)
         {
           v21 = MEMORY[0x277D42620];
           v22 = objc_opt_class();
           v23 = __atxlog_handle_anchor();
-          v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"codingKeyForPredictionDateInterval" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v23];
+          v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"codingKeyForPredictionDateInterval" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v23];
 
           if (!v24)
           {
             goto LABEL_13;
           }
 
-          [v4 decodeDoubleForKey:@"codingKeyForScore"];
+          [coderCopy decodeDoubleForKey:@"codingKeyForScore"];
           v26 = v25;
-          if ([(ATXAnchorModelPrediction *)self checkAndReportDecodingFailureIfNeededFordouble:@"codingKeyForScore" key:v4 coder:@"com.apple.proactive.AnchorModelPrediction" errorDomain:-1 errorCode:?])
+          if ([(ATXAnchorModelPrediction *)self checkAndReportDecodingFailureIfNeededFordouble:@"codingKeyForScore" key:coderCopy coder:@"com.apple.proactive.AnchorModelPrediction" errorDomain:-1 errorCode:?])
           {
             goto LABEL_13;
           }
 
-          v27 = [v4 decodeIntegerForKey:@"codingKeyForNumUniqueOccurrencesAfterAnchor"];
-          if ([(ATXAnchorModelPrediction *)self checkAndReportDecodingFailureIfNeededForNSInteger:v26 key:@"codingKeyForNumUniqueOccurrencesAfterAnchor" coder:v4 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1])
+          v27 = [coderCopy decodeIntegerForKey:@"codingKeyForNumUniqueOccurrencesAfterAnchor"];
+          if ([(ATXAnchorModelPrediction *)self checkAndReportDecodingFailureIfNeededForNSInteger:v26 key:@"codingKeyForNumUniqueOccurrencesAfterAnchor" coder:coderCopy errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1])
           {
             goto LABEL_13;
           }
 
-          [v4 decodeDoubleForKey:@"codingKeyForPosteriorProbability"];
+          [coderCopy decodeDoubleForKey:@"codingKeyForPosteriorProbability"];
           v29 = v28;
-          if ([(ATXAnchorModelPrediction *)self checkAndReportDecodingFailureIfNeededFordouble:@"codingKeyForPosteriorProbability" key:v4 coder:@"com.apple.proactive.AnchorModelPrediction" errorDomain:-1 errorCode:v26])
+          if ([(ATXAnchorModelPrediction *)self checkAndReportDecodingFailureIfNeededFordouble:@"codingKeyForPosteriorProbability" key:coderCopy coder:@"com.apple.proactive.AnchorModelPrediction" errorDomain:-1 errorCode:v26])
           {
             goto LABEL_13;
           }
 
-          [v4 decodeDoubleForKey:@"codingKeyForClassConditionalProbability"];
+          [coderCopy decodeDoubleForKey:@"codingKeyForClassConditionalProbability"];
           v31 = v30;
-          if (-[ATXAnchorModelPrediction checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"codingKeyForClassConditionalProbability", v4, @"com.apple.proactive.AnchorModelPrediction", -1, v26) || ([v4 decodeDoubleForKey:@"codingKeyForStandardDeviationOfOffsetFromAnchor"], v33 = v32, -[ATXAnchorModelPrediction checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"codingKeyForStandardDeviationOfOffsetFromAnchor", v4, @"com.apple.proactive.AnchorModelPrediction", -1, v26)) || (objc_msgSend(v4, "decodeDoubleForKey:", @"codingKeyForAnchorPopularity"), v35 = v34, -[ATXAnchorModelPrediction checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"codingKeyForAnchorPopularity", v4, @"com.apple.proactive.AnchorModelPrediction", -1, v26)) || (objc_msgSend(v4, "decodeDoubleForKey:", @"codingKeyForGlobalPopularity"), v37 = v36, -[ATXAnchorModelPrediction checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"codingKeyForGlobalPopularity", v4, @"com.apple.proactive.AnchorModelPrediction", -1, v26)))
+          if (-[ATXAnchorModelPrediction checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"codingKeyForClassConditionalProbability", coderCopy, @"com.apple.proactive.AnchorModelPrediction", -1, v26) || ([coderCopy decodeDoubleForKey:@"codingKeyForStandardDeviationOfOffsetFromAnchor"], v33 = v32, -[ATXAnchorModelPrediction checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"codingKeyForStandardDeviationOfOffsetFromAnchor", coderCopy, @"com.apple.proactive.AnchorModelPrediction", -1, v26)) || (objc_msgSend(coderCopy, "decodeDoubleForKey:", @"codingKeyForAnchorPopularity"), v35 = v34, -[ATXAnchorModelPrediction checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"codingKeyForAnchorPopularity", coderCopy, @"com.apple.proactive.AnchorModelPrediction", -1, v26)) || (objc_msgSend(coderCopy, "decodeDoubleForKey:", @"codingKeyForGlobalPopularity"), v37 = v36, -[ATXAnchorModelPrediction checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"codingKeyForGlobalPopularity", coderCopy, @"com.apple.proactive.AnchorModelPrediction", -1, v26)))
           {
 LABEL_13:
-            v38 = 0;
+            selfCopy = 0;
           }
 
           else
@@ -404,7 +404,7 @@ LABEL_13:
             v40 = MEMORY[0x277D42620];
             v50 = objc_opt_class();
             v52 = __atxlog_handle_anchor();
-            v41 = [v40 robustDecodeObjectOfClass:v50 forKey:@"codingKeyForAnchorOffset" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v52];
+            v41 = [v40 robustDecodeObjectOfClass:v50 forKey:@"codingKeyForAnchorOffset" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v52];
 
             v53 = v41;
             if (v41)
@@ -417,16 +417,16 @@ LABEL_13:
               v48 = [v47 initWithObjects:{v42, v43, objc_opt_class(), 0}];
               objc_autoreleasePoolPop(context);
               v44 = __atxlog_handle_anchor();
-              v45 = [v51 robustDecodeObjectOfClasses:v48 forKey:@"codingKeyForCandidateClassifier" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v44];
+              v45 = [v51 robustDecodeObjectOfClasses:v48 forKey:@"codingKeyForCandidateClassifier" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.AnchorModelPrediction" errorCode:-1 logHandle:v44];
 
               self = [(ATXAnchorModelPrediction *)self initWithAnchorType:v8 anchorEvent:v12 candidateType:v16 candidateId:v20 dateIntervalForPrediction:v24 score:v27 numUniqueOccurrencesAfterAnchor:v26 posteriorProbability:v29 classConditionalProbability:v31 standardDeviationOfOffsetFromAnchor:v33 anchorPopularity:v35 globalPopularity:v37 offsetFromAnchorToShowPrediction:v53 candidateClassifier:v45];
-              v38 = self;
+              selfCopy = self;
               v46 = v53;
             }
 
             else
             {
-              v38 = 0;
+              selfCopy = 0;
               v46 = 0;
             }
           }
@@ -434,28 +434,28 @@ LABEL_13:
 
         else
         {
-          v38 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v38 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v38 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v38 = 0;
+    selfCopy = 0;
   }
 
-  return v38;
+  return selfCopy;
 }
 
 @end

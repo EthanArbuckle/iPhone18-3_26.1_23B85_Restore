@@ -24,7 +24,7 @@
   *v25 = 0uLL;
   if (!v5 || ![v5 bytes] || !objc_msgSend(v6, "length"))
   {
-    v11 = [MEMORY[0x1E696AFB0] _LS_nullUUID];
+    _LS_nullUUID = [MEMORY[0x1E696AFB0] _LS_nullUUID];
     goto LABEL_14;
   }
 
@@ -33,28 +33,28 @@
     case 2:
       v18 = v6;
       v19 = v6;
-      v20 = [v19 bytes];
+      bytes = [v19 bytes];
       v21 = [v19 length];
 
-      CC_MD5(v20, v21, v25);
+      CC_MD5(bytes, v21, v25);
       v16 = v25[6];
       v17 = 48;
       goto LABEL_12;
     case 1:
       v12 = v6;
       v13 = v6;
-      v14 = [v13 bytes];
+      bytes2 = [v13 bytes];
       v15 = [v13 length];
 
-      CC_SHA1(v14, v15, md);
+      CC_SHA1(bytes2, v15, md);
       goto LABEL_10;
     case 0:
       v7 = v6;
       v8 = v6;
-      v9 = [v8 bytes];
+      bytes3 = [v8 bytes];
       v10 = [v8 length];
 
-      CC_SHA256(v9, v10, md);
+      CC_SHA256(bytes3, v10, md);
 LABEL_10:
       *v25 = *md;
       v16 = md[6];
@@ -65,9 +65,9 @@ LABEL_12:
       break;
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v25];
+  _LS_nullUUID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v25];
 LABEL_14:
-  v22 = v11;
+  v22 = _LS_nullUUID;
 
   v23 = *MEMORY[0x1E69E9840];
 

@@ -1,11 +1,11 @@
 @interface _UIFlexInteractionGlowContainerView
-- (_UIFlexInteractionGlowContainerView)initWithCoder:(id)a3;
-- (void)_privateSubview_setValue:(id)a3 forObservedLayerKeyPath:(id)a4;
+- (_UIFlexInteractionGlowContainerView)initWithCoder:(id)coder;
+- (void)_privateSubview_setValue:(id)value forObservedLayerKeyPath:(id)path;
 @end
 
 @implementation _UIFlexInteractionGlowContainerView
 
-- (_UIFlexInteractionGlowContainerView)initWithCoder:(id)a3
+- (_UIFlexInteractionGlowContainerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____UIFlexInteractionGlowContainerView_bigGlow;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UIView) init];
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (void)_privateSubview_setValue:(id)a3 forObservedLayerKeyPath:(id)a4
+- (void)_privateSubview_setValue:(id)value forObservedLayerKeyPath:(id)path
 {
   swift_unknownObjectRetain();
   sub_18A4A7DE8();

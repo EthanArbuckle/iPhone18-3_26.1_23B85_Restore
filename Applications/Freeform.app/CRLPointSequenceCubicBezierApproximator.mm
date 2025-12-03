@@ -1,7 +1,7 @@
 @interface CRLPointSequenceCubicBezierApproximator
 - (CGPoint)controlPoint1;
 - (CGPoint)controlPoint2;
-- (CRLPointSequenceCubicBezierApproximator)initWithDataPoints:(const void *)a3;
+- (CRLPointSequenceCubicBezierApproximator)initWithDataPoints:(const void *)points;
 - (id).cxx_construct;
 - (void)computeApproximationError;
 - (void)computeCoefficientMatrix;
@@ -14,7 +14,7 @@
 
 @implementation CRLPointSequenceCubicBezierApproximator
 
-- (CRLPointSequenceCubicBezierApproximator)initWithDataPoints:(const void *)a3
+- (CRLPointSequenceCubicBezierApproximator)initWithDataPoints:(const void *)points
 {
   v8.receiver = self;
   v8.super_class = CRLPointSequenceCubicBezierApproximator;
@@ -23,12 +23,12 @@
   if (v4)
   {
     p_dataPoints = &v4->_dataPoints;
-    if (&v5->_dataPoints != a3)
+    if (&v5->_dataPoints != points)
     {
-      sub_1000DB520(p_dataPoints, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+      sub_1000DB520(p_dataPoints, *points, *(points + 1), (*(points + 1) - *points) >> 4);
     }
 
-    v5->_n = ((*(a3 + 1) - *a3) >> 4) - 1;
+    v5->_n = ((*(points + 1) - *points) >> 4) - 1;
   }
 
   return v5;
@@ -48,8 +48,8 @@
       v6 = (*[(CRLPointSequenceCubicBezierApproximator *)self dataPoints]+ v3);
       v7 = *v6;
       v8 = v6[1];
-      v9 = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
-      v4 = v4 + sqrt(sub_100120090(v7, v8, *(*v9 + v3 + 16), *(*v9 + v3 + 24)));
+      dataPoints = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
+      v4 = v4 + sqrt(sub_100120090(v7, v8, *(*dataPoints + v3 + 16), *(*dataPoints + v3 + 24)));
       *(*[(CRLPointSequenceCubicBezierApproximator *)self knots]+ 8 * v5++) = v4;
       v3 += 16;
     }
@@ -67,8 +67,8 @@
     v10 = 1;
     do
     {
-      v11 = [(CRLPointSequenceCubicBezierApproximator *)self knots];
-      *(*v11 + 8 * v10) = *(*v11 + 8 * v10) / v4;
+      knots = [(CRLPointSequenceCubicBezierApproximator *)self knots];
+      *(*knots + 8 * v10) = *(*knots + 8 * v10) / v4;
       ++v10;
     }
 
@@ -88,11 +88,11 @@
       v5 = *[(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
       v6 = 1.0 - *(*[(CRLPointSequenceCubicBezierApproximator *)self knots]+ 8 * v3);
       v11 = vmulq_n_f64(*v5, v6 * (v6 * v6));
-      v7 = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
+      dataPoints = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
       v8 = [(CRLPointSequenceCubicBezierApproximator *)self n];
-      v9 = *v7;
-      v10 = [(CRLPointSequenceCubicBezierApproximator *)self knots];
-      v12 = vsubq_f64(*(v4 + 16 * v3), vaddq_f64(v11, vmulq_n_f64(*(v9 + 16 * v8), *(*v10 + 8 * v3) * (*(*v10 + 8 * v3) * *(*v10 + 8 * v3)))));
+      v9 = *dataPoints;
+      knots = [(CRLPointSequenceCubicBezierApproximator *)self knots];
+      v12 = vsubq_f64(*(v4 + 16 * v3), vaddq_f64(v11, vmulq_n_f64(*(v9 + 16 * v8), *(*knots + 8 * v3) * (*(*knots + 8 * v3) * *(*knots + 8 * v3)))));
       *(*[(CRLPointSequenceCubicBezierApproximator *)self errorDistances]+ 16 * v3++) = v12;
     }
 
@@ -183,8 +183,8 @@
   [(CRLPointSequenceCubicBezierApproximator *)self controlPoint2];
   v23 = v5;
   v24 = v6;
-  v7 = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
-  v25 = *(*v7 + 16 * [(CRLPointSequenceCubicBezierApproximator *)self n]);
+  dataPoints = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
+  v25 = *(*dataPoints + 16 * [(CRLPointSequenceCubicBezierApproximator *)self n]);
   [(CRLPointSequenceCubicBezierApproximator *)self approximationError];
   if ((v8 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
   {
@@ -231,14 +231,14 @@
   {
     if ([(CRLPointSequenceCubicBezierApproximator *)self n]== 2)
     {
-      v3 = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
-      v4 = vaddq_f64(vaddq_f64(**v3, **v3), *(*[(CRLPointSequenceCubicBezierApproximator *)self dataPoints]+ 16));
+      dataPoints = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
+      v4 = vaddq_f64(vaddq_f64(**dataPoints, **dataPoints), *(*[(CRLPointSequenceCubicBezierApproximator *)self dataPoints]+ 16));
       __asm { FMOV            V1.2D, #3.0 }
 
       v11 = _Q1;
       [(CRLPointSequenceCubicBezierApproximator *)self setControlPoint1:vdivq_f64(v4, _Q1)];
-      v10 = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
-      [(CRLPointSequenceCubicBezierApproximator *)self setControlPoint2:vdivq_f64(vaddq_f64(vaddq_f64((*v10)[2], (*v10)[2]), *(*[(CRLPointSequenceCubicBezierApproximator *)self dataPoints]+ 16)), v11)];
+      dataPoints2 = [(CRLPointSequenceCubicBezierApproximator *)self dataPoints];
+      [(CRLPointSequenceCubicBezierApproximator *)self setControlPoint2:vdivq_f64(vaddq_f64(vaddq_f64((*dataPoints2)[2], (*dataPoints2)[2]), *(*[(CRLPointSequenceCubicBezierApproximator *)self dataPoints]+ 16)), v11)];
 
       [(CRLPointSequenceCubicBezierApproximator *)self setApproximationError:0.0];
     }

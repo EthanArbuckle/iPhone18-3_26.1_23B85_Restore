@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneIndexLeafReader_CoreClosedListenerWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)onCloseWithOrgApacheLuceneIndexIndexReader:(id)a3;
+- (void)onCloseWithOrgApacheLuceneIndexIndexReader:(id)reader;
 @end
 
 @implementation OrgApacheLuceneIndexLeafReader_CoreClosedListenerWrapper
 
-- (void)onCloseWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (void)onCloseWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   listener = self->listener_;
-  if (!listener || !a3)
+  if (!listener || !reader)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 getCoreCacheKey];
+  getCoreCacheKey = [reader getCoreCacheKey];
 
-  [(OrgApacheLuceneIndexLeafReader_CoreClosedListener *)listener onCloseWithId:v4];
+  [(OrgApacheLuceneIndexLeafReader_CoreClosedListener *)listener onCloseWithId:getCoreCacheKey];
 }
 
 - (unint64_t)hash
@@ -31,7 +31,7 @@
   return [(OrgApacheLuceneIndexLeafReader_CoreClosedListener *)listener hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -40,7 +40,7 @@
   }
 
   listener = self->listener_;
-  if (!listener || (objc_opt_class(), !a3))
+  if (!listener || (objc_opt_class(), !equal))
   {
     JreThrowNullPointerException();
   }
@@ -50,7 +50,7 @@
     JreThrowClassCastException();
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return [(OrgApacheLuceneIndexLeafReader_CoreClosedListener *)listener isEqual:v6];
 }

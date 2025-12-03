@@ -33,9 +33,9 @@
 
 - (uint64_t)sqliteErrorIndicatorFileExists
 {
-  v1 = [a1 sqliteErrorIndicatorFilePath];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 fileExistsAtPath:v1];
+  sqliteErrorIndicatorFilePath = [self sqliteErrorIndicatorFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:sqliteErrorIndicatorFilePath];
 
   return v3;
 }
@@ -50,9 +50,9 @@
     _os_log_impl(&dword_19BF1F000, v2, OS_LOG_TYPE_DEFAULT, "Recording rebuild reason", buf, 2u);
   }
 
-  v3 = [a1 sqliteErrorIndicatorFilePath];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  sqliteErrorIndicatorFilePath = [self sqliteErrorIndicatorFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:sqliteErrorIndicatorFilePath];
 
   if (!v5)
   {
@@ -60,16 +60,16 @@
     goto LABEL_17;
   }
 
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3];
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:sqliteErrorIndicatorFilePath];
   v30 = 0;
   v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:&v30];
   v8 = v30;
   if (!v7)
   {
-    v23 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v29 = 0;
-    v24 = [v23 attributesOfItemAtPath:v3 error:&v29];
-    v9 = v29;
+    v24 = [defaultManager2 attributesOfItemAtPath:sqliteErrorIndicatorFilePath error:&v29];
+    rebuildHistoryFilePath = v29;
 
     if (!v24)
     {
@@ -77,9 +77,9 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v32 = v3;
+        v32 = sqliteErrorIndicatorFilePath;
         v33 = 2112;
-        v34 = v9;
+        v34 = rebuildHistoryFilePath;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unable to get attributes for %@: %@", buf, 0x16u);
       }
 
@@ -90,8 +90,8 @@
     v25 = [v24 objectForKeyedSubscript:*MEMORY[0x1E696A308]];
     if (v25)
     {
-      v26 = [a1 _rebuildDateFormatter];
-      v27 = [v26 stringFromDate:v25];
+      _rebuildDateFormatter = [self _rebuildDateFormatter];
+      v27 = [_rebuildDateFormatter stringFromDate:v25];
 
       v35 = v27;
       v36[0] = &unk_1F0FBDED0;
@@ -110,20 +110,20 @@
   }
 
   PLRecordRebuildHistory(v7);
-  v9 = [a1 rebuildHistoryFilePath];
+  rebuildHistoryFilePath = [self rebuildHistoryFilePath];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v11 fileExistsAtPath:v9];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v12 = [defaultManager3 fileExistsAtPath:rebuildHistoryFilePath];
 
   if (v12)
   {
-    v13 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:v9];
+    v13 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:rebuildHistoryFilePath];
 
     v10 = v13;
   }
 
   [v10 addEntriesFromDictionary:v7];
-  v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9 isDirectory:0];
+  v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:rebuildHistoryFilePath isDirectory:0];
   v28 = 0;
   v15 = [v10 writeToURL:v14 error:&v28];
   v16 = v28;
@@ -137,7 +137,7 @@
       *buf = 138412546;
       v32 = v7;
       v33 = 2112;
-      v34 = v9;
+      v34 = rebuildHistoryFilePath;
       v19 = "Added last rebuild %@ to rebuild history file %@";
       v20 = v18;
       v21 = OS_LOG_TYPE_DEFAULT;
@@ -149,7 +149,7 @@ LABEL_13:
   else if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v32 = v9;
+    v32 = rebuildHistoryFilePath;
     v33 = 2112;
     v34 = v16;
     v19 = "Failed to update rebuild history file %@: %@";
@@ -169,24 +169,24 @@ LABEL_17:
 - (uint64_t)lastRebuildReason
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (![a1 sqliteErrorIndicatorFileExists])
+  if (![self sqliteErrorIndicatorFileExists])
   {
     return 0;
   }
 
-  v2 = [a1 sqliteErrorIndicatorFilePath];
-  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v2];
+  sqliteErrorIndicatorFilePath = [self sqliteErrorIndicatorFilePath];
+  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:sqliteErrorIndicatorFilePath];
   v12 = 0;
   v4 = [MEMORY[0x1E696AE40] propertyListWithData:v3 options:0 format:0 error:&v12];
   v5 = v12;
   if (v4)
   {
-    v6 = [v4 allKeys];
-    v7 = [v6 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [v4 allKeys];
+    v7 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-    v8 = [v7 lastObject];
-    v9 = [v4 objectForKeyedSubscript:v8];
-    v10 = [v9 integerValue];
+    lastObject = [v7 lastObject];
+    v9 = [v4 objectForKeyedSubscript:lastObject];
+    integerValue = [v9 integerValue];
   }
 
   else
@@ -199,16 +199,16 @@ LABEL_17:
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Failed to deserialize sqliteerror. Error: %@", buf, 0xCu);
     }
 
-    v10 = 0;
+    integerValue = 0;
   }
 
-  return v10;
+  return integerValue;
 }
 
 - (void)setSqliteErrorForRebuildReason:()SQLError allowsExit:
 {
   v30 = *MEMORY[0x1E69E9840];
-  if ([a1 _createSqliteErrorIndicatorFileWithRebuildReason:?])
+  if ([self _createSqliteErrorIndicatorFileWithRebuildReason:?])
   {
     v7 = 0;
     if (a3 > 15)
@@ -338,8 +338,8 @@ LABEL_37:
       if (a4)
       {
         v17 = objc_opt_class();
-        v18 = [a1 libraryURL];
-        LODWORD(v17) = [v17 isSystemPhotoLibraryURL:v18];
+        libraryURL = [self libraryURL];
+        LODWORD(v17) = [v17 isSystemPhotoLibraryURL:libraryURL];
 
         if (v17)
         {
@@ -355,11 +355,11 @@ LABEL_37:
 
         if ((PLIsAssetsd() & 1) == 0)
         {
-          v21 = [a1 libraryURL];
-          v22 = [PLPhotoLibraryBundleController sharedAssetsdClientForPhotoLibraryURL:v21];
-          v23 = [v22 libraryClient];
+          libraryURL2 = [self libraryURL];
+          v22 = [PLPhotoLibraryBundleController sharedAssetsdClientForPhotoLibraryURL:libraryURL2];
+          libraryClient = [v22 libraryClient];
           v27 = 0;
-          v24 = [v23 validateOrRebuildPhotoLibraryDatabaseWithError:&v27];
+          v24 = [libraryClient validateOrRebuildPhotoLibraryDatabaseWithError:&v27];
           v25 = v27;
 
           if ((v24 & 1) == 0)
@@ -379,67 +379,67 @@ LABEL_37:
           switch(a3)
           {
             case 0:
-              [a1 _abortWithRebuildReasonPLRebuildReasonUnknown];
+              [self _abortWithRebuildReasonPLRebuildReasonUnknown];
               break;
             case 1:
-              [a1 _abortWithRebuildReasonPLRebuildReasonCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonCorruption];
               break;
             case 2:
-              [a1 _abortWithRebuildReasonPLRebuildReasonSimulatedCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonSimulatedCorruption];
               break;
             case 3:
-              [a1 _abortWithRebuildReasonPLRebuildReasonStagedDemoContentInstallation];
+              [self _abortWithRebuildReasonPLRebuildReasonStagedDemoContentInstallation];
               break;
             case 4:
-              [a1 _abortWithRebuildReasonPLRebuildReasonLightweightMigration];
+              [self _abortWithRebuildReasonPLRebuildReasonLightweightMigration];
               break;
             case 5:
-              [a1 _abortWithRebuildReasonPLRebuildReasonTooManyOrphanedRecords];
+              [self _abortWithRebuildReasonPLRebuildReasonTooManyOrphanedRecords];
               break;
             case 6:
-              [a1 _abortWithRebuildReasonPLRebuildReasonUUIDCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonUUIDCorruption];
               break;
             case 7:
-              [a1 _abortWithRebuildReasonPLRebuildReasonPathCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonPathCorruption];
               break;
             case 8:
-              [a1 _abortWithRebuildReasonPLRebuildReasonDatabaseCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonDatabaseCorruption];
               break;
             case 9:
-              [a1 _abortWithRebuildReasonPLRebuildReasonTooManyThumbnailRebuilds];
+              [self _abortWithRebuildReasonPLRebuildReasonTooManyThumbnailRebuilds];
               break;
             case 10:
-              [a1 _abortWithRebuildReasonPLRebuildReasonUpgradeForceRebuild];
+              [self _abortWithRebuildReasonPLRebuildReasonUpgradeForceRebuild];
               break;
             case 11:
-              [a1 _abortWithRebuildReasonPLRebuildReasonExcessiveRecoveryAttempts];
+              [self _abortWithRebuildReasonPLRebuildReasonExcessiveRecoveryAttempts];
               break;
             case 12:
-              [a1 _abortWithRebuildReasonPLRebuildReasonMPSPathCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonMPSPathCorruption];
               break;
             case 13:
-              [a1 _abortWithRebuildReasonPLRebuildReasonSharedAlbumPathCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonSharedAlbumPathCorruption];
               break;
             case 14:
-              [a1 _abortWithRebuildReasonPLRebuildReasonMPSUUIDCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonMPSUUIDCorruption];
               break;
             case 15:
-              [a1 _abortWithRebuildReasonPLRebuildReasonSharedAlbumUUIDCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonSharedAlbumUUIDCorruption];
               break;
             case 16:
-              [a1 _abortWithRebuildReasonPLRebuildReasonExcessivePersistentHistorySize];
+              [self _abortWithRebuildReasonPLRebuildReasonExcessivePersistentHistorySize];
               break;
             case 18:
-              [a1 _abortWithRebuildReasonPLRebuildReasonBackgroundMigration];
+              [self _abortWithRebuildReasonPLRebuildReasonBackgroundMigration];
               break;
             case 19:
-              [a1 _abortWithRebuildReasonPLRebuildReasonPersonUUIDCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonPersonUUIDCorruption];
               break;
             case 20:
-              [a1 _abortWithRebuildReasonPLRebuildReasonExcessiveOrphanedSceneClassifications];
+              [self _abortWithRebuildReasonPLRebuildReasonExcessiveOrphanedSceneClassifications];
               break;
             case 21:
-              [a1 _abortWithRebuildReasonPLRebuildReasonUnknownAssetColumnTriggerCorruption];
+              [self _abortWithRebuildReasonPLRebuildReasonUnknownAssetColumnTriggerCorruption];
               break;
             default:
               return;
@@ -473,9 +473,9 @@ LABEL_24:
   v10 = PLBackendGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [a1 sqliteErrorIndicatorFilePath];
+    sqliteErrorIndicatorFilePath = [self sqliteErrorIndicatorFilePath];
     *buf = 138412290;
-    v29 = v11;
+    v29 = sqliteErrorIndicatorFilePath;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Failed to create sqlite error file %@.", buf, 0xCu);
   }
 }
@@ -777,10 +777,10 @@ LABEL_24:
 - (void)removeSqliteErrorIndicatorFile
 {
   v17 = *MEMORY[0x1E69E9840];
-  v1 = [a1 sqliteErrorIndicatorFilePath];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  sqliteErrorIndicatorFilePath = [self sqliteErrorIndicatorFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  v3 = [v2 removeItemAtPath:v1 error:&v12];
+  v3 = [defaultManager removeItemAtPath:sqliteErrorIndicatorFilePath error:&v12];
   v4 = v12;
 
   if (v3)
@@ -789,7 +789,7 @@ LABEL_24:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v1;
+      v14 = sqliteErrorIndicatorFilePath;
       v6 = "Removed sqliteErrorIndicatorFile %@";
 LABEL_4:
       v7 = v5;
@@ -806,7 +806,7 @@ LABEL_11:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v1;
+      v14 = sqliteErrorIndicatorFilePath;
       v6 = "sqliteErrorIndicatorFile does not exist at %@";
       goto LABEL_4;
     }
@@ -818,7 +818,7 @@ LABEL_11:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = v1;
+      v14 = sqliteErrorIndicatorFilePath;
       v15 = 2112;
       v16 = v4;
       v6 = "Failed to remove sqliteErrorIndicatorFile %@, %@";
@@ -833,17 +833,17 @@ LABEL_11:
 - (uint64_t)_createSqliteErrorIndicatorFileWithRebuildReason:()SQLError
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v5 = [a1 sqliteErrorIndicatorFilePath];
-  v6 = v5;
-  if (v5)
+  sqliteErrorIndicatorFilePath = [self sqliteErrorIndicatorFilePath];
+  v6 = sqliteErrorIndicatorFilePath;
+  if (sqliteErrorIndicatorFilePath)
   {
-    v7 = open([v5 fileSystemRepresentation], 2689, 438);
+    v7 = open([sqliteErrorIndicatorFilePath fileSystemRepresentation], 2689, 438);
     if ((v7 & 0x80000000) == 0)
     {
       v8 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v7 closeOnDealloc:1];
-      v9 = [a1 _rebuildDateFormatter];
-      v10 = [MEMORY[0x1E695DF00] date];
-      v11 = [v9 stringFromDate:v10];
+      _rebuildDateFormatter = [self _rebuildDateFormatter];
+      date = [MEMORY[0x1E695DF00] date];
+      v11 = [_rebuildDateFormatter stringFromDate:date];
 
       v33 = v11;
       v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];

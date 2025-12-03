@@ -1,12 +1,12 @@
 @interface SGGraph
-+ (id)graphWithName:(id)a3 inputs:(id)a4 outputs:(id)a5;
-- (BOOL)connect:(id)a3 to:(id)a4 error:(id *)a5;
-- (BOOL)connectOutputInputPairs:(id)a3 error:(id *)a4;
-- (BOOL)insertNodes:(id)a3 error:(id *)a4;
++ (id)graphWithName:(id)name inputs:(id)inputs outputs:(id)outputs;
+- (BOOL)connect:(id)connect to:(id)to error:(id *)error;
+- (BOOL)connectOutputInputPairs:(id)pairs error:(id *)error;
+- (BOOL)insertNodes:(id)nodes error:(id *)error;
 - (NSString)name;
 - (SGGraph)init;
-- (id)createDotRepresentationWithError:(id *)a3;
-- (id)nodeNamed:(id)a3;
+- (id)createDotRepresentationWithError:(id *)error;
+- (id)nodeNamed:(id)named;
 @end
 
 @implementation SGGraph
@@ -28,14 +28,14 @@
   return result;
 }
 
-+ (id)graphWithName:(id)a3 inputs:(id)a4 outputs:(id)a5
++ (id)graphWithName:(id)name inputs:(id)inputs outputs:(id)outputs
 {
-  v6 = a4;
-  if (a3)
+  inputsCopy = inputs;
+  if (name)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
-    if (!v6)
+    if (!inputsCopy)
     {
       goto LABEL_4;
     }
@@ -45,38 +45,38 @@
 
   v7 = 0;
   v9 = 0;
-  if (a4)
+  if (inputs)
   {
 LABEL_3:
     type metadata accessor for SGInput();
-    v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    inputsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  if (a5)
+  if (outputs)
   {
     type metadata accessor for SGOutput();
-    a5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    outputs = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v10 = specialized static SGGraph.create(name:inputs:outputs:)(v7, v9, v6, a5);
+  v10 = specialized static SGGraph.create(name:inputs:outputs:)(v7, v9, inputsCopy, outputs);
 
   return v10;
 }
 
-- (BOOL)connect:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)connect:(id)connect to:(id)to error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  SGGraph.connect(_:to:)(a3, a4);
+  connectCopy = connect;
+  toCopy = to;
+  selfCopy = self;
+  SGGraph.connect(_:to:)(connect, to);
 
   return 1;
 }
 
-- (BOOL)connectOutputInputPairs:(id)a3 error:(id *)a4
+- (BOOL)connectOutputInputPairs:(id)pairs error:(id *)error
 {
-  if (a3)
+  if (pairs)
   {
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -86,18 +86,18 @@ LABEL_4:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v12.value._rawValue = v6;
   SGGraph.connect(outputInputPairs:)(v12);
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v9 = _convertErrorToNSError(_:)();
 
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -108,9 +108,9 @@ LABEL_4:
   return v8 == 0;
 }
 
-- (BOOL)insertNodes:(id)a3 error:(id *)a4
+- (BOOL)insertNodes:(id)nodes error:(id *)error
 {
-  if (a3)
+  if (nodes)
   {
     type metadata accessor for SGNode();
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -121,18 +121,18 @@ LABEL_4:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v12.value._rawValue = v6;
   SGGraph.insert(_:)(v12);
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v9 = _convertErrorToNSError(_:)();
 
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -143,9 +143,9 @@ LABEL_4:
   return v8 == 0;
 }
 
-- (id)nodeNamed:(id)a3
+- (id)nodeNamed:(id)named
 {
-  if (a3)
+  if (named)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -157,16 +157,16 @@ LABEL_4:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = SGGraph.node(named:)(v4, v6);
 
   return v8;
 }
 
-- (id)createDotRepresentationWithError:(id *)a3
+- (id)createDotRepresentationWithError:(id *)error
 {
-  v3 = self;
-  v4 = createDotText(representing:)(v3);
+  selfCopy = self;
+  v4 = createDotText(representing:)(selfCopy);
   v5 = MEMORY[0x266771450](v4);
 
   return v5;

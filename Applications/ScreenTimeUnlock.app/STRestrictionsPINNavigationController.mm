@@ -6,7 +6,7 @@
 - (void)_adjustToSuperviewFrame;
 - (void)_freezeSupportedOrientations;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation STRestrictionsPINNavigationController
@@ -21,16 +21,16 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = a4;
+  coordinatorCopy = coordinator;
   [(STRestrictionsPINNavigationController *)self setPrefersStatusBarHiddenOverride:1];
   [(STRestrictionsPINNavigationController *)self setNeedsStatusBarAppearanceUpdate];
-  v6 = [(STRestrictionsPINNavigationController *)self view];
-  [v6 frame];
+  view = [(STRestrictionsPINNavigationController *)self view];
+  [view frame];
   v11.receiver = self;
   v11.super_class = STRestrictionsPINNavigationController;
-  [(STRestrictionsPINNavigationController *)&v11 viewWillTransitionToSize:v5 withTransitionCoordinator:v7, v8];
+  [(STRestrictionsPINNavigationController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:v7, v8];
 
   v9[4] = self;
   v10[0] = _NSConcreteStackBlock;
@@ -42,7 +42,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_100002B80;
   v9[3] = &unk_1000083E0;
-  [v5 animateAlongsideTransition:v10 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:v9];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -79,9 +79,9 @@
 
 - (void)_adjustToSuperviewFrame
 {
-  v13 = [(STRestrictionsPINNavigationController *)self view];
-  v3 = [v13 superview];
-  [v3 frame];
+  view = [(STRestrictionsPINNavigationController *)self view];
+  superview = [view superview];
+  [superview frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -97,36 +97,36 @@
     [(STRestrictionsPINNavigationController *)self setLastKnownSuperviewFrame:v5, v7, v9, v11];
     if ([objc_opt_class() st_isPad])
     {
-      v12 = [v13 layer];
-      [v12 setCornerRadius:10.0];
+      layer = [view layer];
+      [layer setCornerRadius:10.0];
 
-      [v13 setClipsToBounds:1];
+      [view setClipsToBounds:1];
       [(STRestrictionsPINNavigationController *)self _freezeSupportedOrientations];
     }
 
     else
     {
-      [v13 setFrame:{v5, v7, v9, v11}];
+      [view setFrame:{v5, v7, v9, v11}];
     }
   }
 }
 
 - (void)_freezeSupportedOrientations
 {
-  v3 = [(STRestrictionsPINNavigationController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 effectiveGeometry];
-  v7 = [v6 interfaceOrientation];
+  view = [(STRestrictionsPINNavigationController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  effectiveGeometry = [windowScene effectiveGeometry];
+  interfaceOrientation = [effectiveGeometry interfaceOrientation];
 
-  if ((v7 - 2) > 2)
+  if ((interfaceOrientation - 2) > 2)
   {
     v8 = 2;
   }
 
   else
   {
-    v8 = qword_1000045F0[(v7 - 2)];
+    v8 = qword_1000045F0[(interfaceOrientation - 2)];
   }
 
   [(STRestrictionsPINNavigationController *)self setInternalSupportedOrientations:v8];

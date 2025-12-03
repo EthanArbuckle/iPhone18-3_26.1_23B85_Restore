@@ -1,6 +1,6 @@
 @interface DOCUnarchiveOperation
 - (NSString)actionNameForUndoing;
-- (_TtC26DocumentManagerExecutables21DOCUnarchiveOperation)initWithItem:(id)a3 destinationFolder:(id)a4;
+- (_TtC26DocumentManagerExecutables21DOCUnarchiveOperation)initWithItem:(id)item destinationFolder:(id)folder;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
 @end
@@ -9,7 +9,7 @@
 
 - (NSString)actionNameForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCUnarchiveOperation.actionNameForUndoing.getter();
   v5 = v4;
 
@@ -28,7 +28,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCUnarchiveOperation.operationForRedoing()();
 
   return v3;
@@ -36,13 +36,13 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCUnarchiveOperation.operationForUndoing()();
 
   return v3;
 }
 
-- (_TtC26DocumentManagerExecutables21DOCUnarchiveOperation)initWithItem:(id)a3 destinationFolder:(id)a4
+- (_TtC26DocumentManagerExecutables21DOCUnarchiveOperation)initWithItem:(id)item destinationFolder:(id)folder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

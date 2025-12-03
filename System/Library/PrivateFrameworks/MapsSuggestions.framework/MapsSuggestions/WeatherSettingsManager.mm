@@ -2,8 +2,8 @@
 + (id)sharedManager;
 - (id)initSharedManager;
 - (void)_postWeatherConditionsSettingsUpdatedNotification;
-- (void)setShouldShowAirQualityConditions:(BOOL)a3;
-- (void)setShouldShowWeatherConditions:(BOOL)a3;
+- (void)setShouldShowAirQualityConditions:(BOOL)conditions;
+- (void)setShouldShowWeatherConditions:(BOOL)conditions;
 @end
 
 @implementation WeatherSettingsManager
@@ -37,14 +37,14 @@
   return v2;
 }
 
-- (void)setShouldShowAirQualityConditions:(BOOL)a3
+- (void)setShouldShowAirQualityConditions:(BOOL)conditions
 {
   GEOConfigSetBOOL();
 
   [(WeatherSettingsManager *)self _postWeatherConditionsSettingsUpdatedNotification];
 }
 
-- (void)setShouldShowWeatherConditions:(BOOL)a3
+- (void)setShouldShowWeatherConditions:(BOOL)conditions
 {
   GEOConfigSetBOOL();
 

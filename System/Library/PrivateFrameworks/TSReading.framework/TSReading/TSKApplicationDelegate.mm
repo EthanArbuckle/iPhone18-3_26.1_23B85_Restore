@@ -2,7 +2,7 @@
 + (id)documentDirectoryPath;
 + (id)sharedDelegate;
 - (BOOL)centerOnInitialSelection;
-- (BOOL)openURL:(id)a3 sourceDocumentRoot:(id)a4;
+- (BOOL)openURL:(id)l sourceDocumentRoot:(id)root;
 - (CGRect)applicationToolbarFrame;
 - (NSString)applicationName;
 - (NSString)documentTypeDisplayName;
@@ -11,8 +11,8 @@
 - (id)appChartPropertyOverrides;
 - (id)createCompatibilityDelegate;
 - (id)invalidURLSchemes;
-- (id)previewImageForType:(id)a3;
-- (id)toolbarButtonForModalDoneWithTarget:(id)a3 action:(SEL)a4;
+- (id)previewImageForType:(id)type;
+- (id)toolbarButtonForModalDoneWithTarget:(id)target action:(SEL)action;
 - (id)validURLSchemes;
 - (void)dealloc;
 @end
@@ -35,7 +35,7 @@
 
   else
   {
-    return [a1 platform_sharedDelegate];
+    return [self platform_sharedDelegate];
   }
 }
 
@@ -56,25 +56,25 @@
 
 - (NSString)applicationName
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate applicationName]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 114, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 114, @"Abstract method"}];
   return 0;
 }
 
 - (NSString)documentTypeDisplayName
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate documentTypeDisplayName]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 120, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 120, @"Abstract method"}];
   return 0;
 }
 
 - (NSString)templateTypeDisplayName
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate templateTypeDisplayName]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 126, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 126, @"Abstract method"}];
   return 0;
 }
 
@@ -87,17 +87,17 @@
 
 - (id)createCompatibilityDelegate
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate createCompatibilityDelegate]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 137, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 137, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKApplicationDelegate createCompatibilityDelegate]"), 0}]);
 }
 
 - (BOOL)centerOnInitialSelection
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate centerOnInitialSelection]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 142, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 142, @"Abstract method"}];
   return 0;
 }
 
@@ -114,51 +114,51 @@
   return result;
 }
 
-- (id)previewImageForType:(id)a3
+- (id)previewImageForType:(id)type
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate previewImageForType:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 193, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 193, @"Abstract method"}];
   return 0;
 }
 
 - (id)appChartPropertyOverrides
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate appChartPropertyOverrides]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 200, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 200, @"Abstract method"}];
   return 0;
 }
 
 - (id)invalidURLSchemes
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate invalidURLSchemes]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 206, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 206, @"Abstract method"}];
   return 0;
 }
 
 - (id)validURLSchemes
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate validURLSchemes]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 212, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 212, @"Abstract method"}];
   return 0;
 }
 
-- (BOOL)openURL:(id)a3 sourceDocumentRoot:(id)a4
+- (BOOL)openURL:(id)l sourceDocumentRoot:(id)root
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate openURL:sourceDocumentRoot:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 224, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 224, @"Abstract method"}];
   return 0;
 }
 
-- (id)toolbarButtonForModalDoneWithTarget:(id)a3 action:(SEL)a4
+- (id)toolbarButtonForModalDoneWithTarget:(id)target action:(SEL)action
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKApplicationDelegate toolbarButtonForModalDoneWithTarget:action:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 279, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKApplicationDelegate.m"), 279, @"Abstract method"}];
   return 0;
 }
 

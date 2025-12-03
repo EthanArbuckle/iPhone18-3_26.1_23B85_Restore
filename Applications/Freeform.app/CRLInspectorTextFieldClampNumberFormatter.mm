@@ -1,28 +1,28 @@
 @interface CRLInspectorTextFieldClampNumberFormatter
-+ (id)formatterWithMinValue:(id)a3 maxValue:(id)a4;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (BOOL)p_getObjectValue:(id *)a3 forString:(id)a4 withMinimum:(id)a5 andMaximum:(id)a6 originalValue:(id)a7 errorDescription:(id *)a8 valueObjectWasAdjusted:(BOOL *)a9;
-- (BOOL)p_textShouldBeginEditingWithContent:(id)a3;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
++ (id)formatterWithMinValue:(id)value maxValue:(id)maxValue;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (BOOL)p_getObjectValue:(id *)value forString:(id)string withMinimum:(id)minimum andMaximum:(id)maximum originalValue:(id)originalValue errorDescription:(id *)description valueObjectWasAdjusted:(BOOL *)adjusted;
+- (BOOL)p_textShouldBeginEditingWithContent:(id)content;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
 - (CRLInspectorTextFieldClampNumberFormatter)init;
-- (CRLInspectorTextFieldClampNumberFormatter)initWithCoder:(id)a3;
-- (id)p_clampNumber:(id)a3 toMinimum:(id)a4 andMaximum:(id)a5 wasNumberClamped:(BOOL *)a6;
-- (id)stringForObjectValue:(id)a3 originalValue:(id)a4;
+- (CRLInspectorTextFieldClampNumberFormatter)initWithCoder:(id)coder;
+- (id)p_clampNumber:(id)number toMinimum:(id)minimum andMaximum:(id)maximum wasNumberClamped:(BOOL *)clamped;
+- (id)stringForObjectValue:(id)value originalValue:(id)originalValue;
 - (void)p_commonInitClampNumberFormatter;
 @end
 
 @implementation CRLInspectorTextFieldClampNumberFormatter
 
-+ (id)formatterWithMinValue:(id)a3 maxValue:(id)a4
++ (id)formatterWithMinValue:(id)value maxValue:(id)maxValue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 formatter];
-  [v8 setMinimum:v7];
+  maxValueCopy = maxValue;
+  valueCopy = value;
+  formatter = [self formatter];
+  [formatter setMinimum:valueCopy];
 
-  [v8 setMaximum:v6];
+  [formatter setMaximum:maxValueCopy];
 
-  return v8;
+  return formatter;
 }
 
 - (void)p_commonInitClampNumberFormatter
@@ -32,11 +32,11 @@
   [(CRLInspectorTextFieldAbstractNumberFormatter *)self setCrlaxRulerUnitType:5];
 }
 
-- (CRLInspectorTextFieldClampNumberFormatter)initWithCoder:(id)a3
+- (CRLInspectorTextFieldClampNumberFormatter)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLInspectorTextFieldClampNumberFormatter;
-  v3 = [(CRLInspectorTextFieldClampNumberFormatter *)&v6 initWithCoder:a3];
+  v3 = [(CRLInspectorTextFieldClampNumberFormatter *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -60,15 +60,15 @@
   return v3;
 }
 
-- (id)p_clampNumber:(id)a3 toMinimum:(id)a4 andMaximum:(id)a5 wasNumberClamped:(BOOL *)a6
+- (id)p_clampNumber:(id)number toMinimum:(id)minimum andMaximum:(id)maximum wasNumberClamped:(BOOL *)clamped
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
-  if (v10 && v11)
+  numberCopy = number;
+  minimumCopy = minimum;
+  maximumCopy = maximum;
+  v12 = numberCopy;
+  if (minimumCopy && maximumCopy)
   {
-    if ([v10 compare:v11] != -1 && objc_msgSend(v10, "compare:", v11))
+    if ([minimumCopy compare:maximumCopy] != -1 && objc_msgSend(minimumCopy, "compare:", maximumCopy))
     {
       v13 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -88,9 +88,9 @@
         v28 = 1024;
         v29 = 135;
         v30 = 2112;
-        v31 = v10;
+        v31 = minimumCopy;
         v32 = 2112;
-        v33 = v11;
+        v33 = maximumCopy;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d invalid minimum %@ and maximum %@", buf, 0x36u);
       }
 
@@ -107,21 +107,21 @@
 
       v16 = [NSString stringWithUTF8String:"[CRLInspectorTextFieldClampNumberFormatter p_clampNumber:toMinimum:andMaximum:wasNumberClamped:]"];
       v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLInspectorFieldFormatters.m"];
-      [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:135 isFatal:0 description:"invalid minimum %@ and maximum %@", v10, v11];
+      [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:135 isFatal:0 description:"invalid minimum %@ and maximum %@", minimumCopy, maximumCopy];
     }
   }
 
-  else if (!v10)
+  else if (!minimumCopy)
   {
     goto LABEL_16;
   }
 
-  if ([v12 compare:v10] != -1)
+  if ([v12 compare:minimumCopy] != -1)
   {
 LABEL_16:
     v18 = 0;
     v19 = v12;
-    if (!v11)
+    if (!maximumCopy)
     {
       goto LABEL_21;
     }
@@ -129,118 +129,118 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v19 = v10;
+  v19 = minimumCopy;
 
   v18 = 1;
-  if (!v11)
+  if (!maximumCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_19:
-  if ([v19 compare:v11] == 1)
+  if ([v19 compare:maximumCopy] == 1)
   {
-    v20 = v11;
+    v20 = maximumCopy;
 
     v18 = 1;
     v19 = v20;
   }
 
 LABEL_21:
-  if (a6)
+  if (clamped)
   {
-    *a6 = v18;
+    *clamped = v18;
   }
 
   return v19;
 }
 
-- (id)stringForObjectValue:(id)a3 originalValue:(id)a4
+- (id)stringForObjectValue:(id)value originalValue:(id)originalValue
 {
-  v6 = a4;
+  originalValueCopy = originalValue;
   v10.receiver = self;
   v10.super_class = CRLInspectorTextFieldClampNumberFormatter;
-  v7 = [(CRLPositiveZeroNumberFormatter *)&v10 stringForObjectValue:a3];
+  v7 = [(CRLPositiveZeroNumberFormatter *)&v10 stringForObjectValue:value];
   v8 = v7;
-  if (a3 && !v7)
+  if (value && !v7)
   {
-    if (!v6)
+    if (!originalValueCopy)
     {
-      v6 = &stru_1018BCA28;
+      originalValueCopy = &stru_1018BCA28;
     }
 
-    v8 = [(__CFString *)v6 description];
+    v8 = [(__CFString *)originalValueCopy description];
   }
 
   return v8;
 }
 
-- (BOOL)p_getObjectValue:(id *)a3 forString:(id)a4 withMinimum:(id)a5 andMaximum:(id)a6 originalValue:(id)a7 errorDescription:(id *)a8 valueObjectWasAdjusted:(BOOL *)a9
+- (BOOL)p_getObjectValue:(id *)value forString:(id)string withMinimum:(id)minimum andMaximum:(id)maximum originalValue:(id)originalValue errorDescription:(id *)description valueObjectWasAdjusted:(BOOL *)adjusted
 {
-  v14 = a9;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a4;
-  v19 = [(CRLInspectorTextFieldClampNumberFormatter *)self minimum];
-  v20 = [(CRLInspectorTextFieldClampNumberFormatter *)self maximum];
+  adjustedCopy3 = adjusted;
+  minimumCopy = minimum;
+  maximumCopy = maximum;
+  originalValueCopy = originalValue;
+  stringCopy = string;
+  minimum = [(CRLInspectorTextFieldClampNumberFormatter *)self minimum];
+  maximum = [(CRLInspectorTextFieldClampNumberFormatter *)self maximum];
   [(CRLInspectorTextFieldClampNumberFormatter *)self setMinimum:0];
   [(CRLInspectorTextFieldClampNumberFormatter *)self setMaximum:0];
   v28.receiver = self;
   v28.super_class = CRLInspectorTextFieldClampNumberFormatter;
   v29 = 0;
-  v21 = [(CRLInspectorTextFieldClampNumberFormatter *)&v28 getObjectValue:a3 forString:v18 errorDescription:&v29];
+  v21 = [(CRLInspectorTextFieldClampNumberFormatter *)&v28 getObjectValue:value forString:stringCopy errorDescription:&v29];
 
   v22 = v29;
-  [(CRLInspectorTextFieldClampNumberFormatter *)self setMinimum:v19];
-  [(CRLInspectorTextFieldClampNumberFormatter *)self setMaximum:v20];
+  [(CRLInspectorTextFieldClampNumberFormatter *)self setMinimum:minimum];
+  [(CRLInspectorTextFieldClampNumberFormatter *)self setMaximum:maximum];
   v27 = 0;
-  if (a3)
+  if (value)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v24 = *a3;
+    v24 = *value;
     if (isKindOfClass)
     {
-      *a3 = [(CRLInspectorTextFieldClampNumberFormatter *)self p_clampNumber:v24 toMinimum:v15 andMaximum:v16 wasNumberClamped:&v27];
-      v14 = a9;
+      *value = [(CRLInspectorTextFieldClampNumberFormatter *)self p_clampNumber:v24 toMinimum:minimumCopy andMaximum:maximumCopy wasNumberClamped:&v27];
+      adjustedCopy3 = adjusted;
     }
 
     else
     {
-      v14 = a9;
+      adjustedCopy3 = adjusted;
       if (!v24 && (!v21 || ![(CRLInspectorTextFieldAbstractNumberFormatter *)self inspectorTextFieldAllowsNilObjectValue]))
       {
-        v25 = v17;
-        *a3 = v17;
+        v25 = originalValueCopy;
+        *value = originalValueCopy;
         v27 = 1;
       }
     }
   }
 
-  if (v14)
+  if (adjustedCopy3)
   {
-    *v14 = v27;
+    *adjustedCopy3 = v27;
   }
 
   return v21;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  v8 = a4;
-  v9 = [(CRLInspectorTextFieldClampNumberFormatter *)self minimum];
-  v10 = [(CRLInspectorTextFieldClampNumberFormatter *)self maximum];
-  [(CRLInspectorTextFieldClampNumberFormatter *)self p_getObjectValue:a3 forString:v8 withMinimum:v9 andMaximum:v10 originalValue:self->mValueBeforeEditing errorDescription:a5 valueObjectWasAdjusted:0];
+  stringCopy = string;
+  minimum = [(CRLInspectorTextFieldClampNumberFormatter *)self minimum];
+  maximum = [(CRLInspectorTextFieldClampNumberFormatter *)self maximum];
+  [(CRLInspectorTextFieldClampNumberFormatter *)self p_getObjectValue:value forString:stringCopy withMinimum:minimum andMaximum:maximum originalValue:self->mValueBeforeEditing errorDescription:description valueObjectWasAdjusted:0];
 
   return 1;
 }
 
-- (BOOL)p_textShouldBeginEditingWithContent:(id)a3
+- (BOOL)p_textShouldBeginEditingWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v14 = 0;
-  v5 = [(CRLInspectorTextFieldClampNumberFormatter *)self getObjectValue:&v14 forString:v4 errorDescription:0];
+  v5 = [(CRLInspectorTextFieldClampNumberFormatter *)self getObjectValue:&v14 forString:contentCopy errorDescription:0];
   v6 = v14;
   if ((v5 & 1) == 0)
   {
@@ -253,7 +253,7 @@ LABEL_21:
     v8 = off_1019EDA68;
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_10138CF38(v4, v7, v8);
+      sub_10138CF38(contentCopy, v7, v8);
     }
 
     if (qword_101AD5A10 != -1)
@@ -269,7 +269,7 @@ LABEL_21:
 
     v10 = [NSString stringWithUTF8String:"[CRLInspectorTextFieldClampNumberFormatter p_textShouldBeginEditingWithContent:]"];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLInspectorFieldFormatters.m"];
-    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:221 isFatal:0 description:"invalid initial string %@", v4];
+    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:221 isFatal:0 description:"invalid initial string %@", contentCopy];
   }
 
   mValueBeforeEditing = self->mValueBeforeEditing;
@@ -278,10 +278,10 @@ LABEL_21:
   return 1;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = [a3 text];
-  LOBYTE(self) = [(CRLInspectorTextFieldClampNumberFormatter *)self p_textShouldBeginEditingWithContent:v4];
+  text = [editing text];
+  LOBYTE(self) = [(CRLInspectorTextFieldClampNumberFormatter *)self p_textShouldBeginEditingWithContent:text];
 
   return self;
 }

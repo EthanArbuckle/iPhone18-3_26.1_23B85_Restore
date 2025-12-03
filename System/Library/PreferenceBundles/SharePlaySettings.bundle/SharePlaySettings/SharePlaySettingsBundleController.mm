@@ -1,20 +1,20 @@
 @interface SharePlaySettingsBundleController
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3;
-- (SharePlaySettingsBundleController)initWithParentListController:(id)a3;
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller;
+- (SharePlaySettingsBundleController)initWithParentListController:(id)controller;
 - (id)parentListController;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4;
-- (void)performButtonActionForSpecifier:(id)a3;
-- (void)propertiesDidChangeForConfiguration:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller;
+- (void)performButtonActionForSpecifier:(id)specifier;
+- (void)propertiesDidChangeForConfiguration:(id)configuration;
 @end
 
 @implementation SharePlaySettingsBundleController
 
-- (SharePlaySettingsBundleController)initWithParentListController:(id)a3
+- (SharePlaySettingsBundleController)initWithParentListController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = SharePlaySettingsBundleController;
-  v3 = [(SharePlaySettingsBundleController *)&v9 initWithParentListController:a3];
+  v3 = [(SharePlaySettingsBundleController *)&v9 initWithParentListController:controller];
   if (v3)
   {
     v4 = objc_alloc_init(SharePlayProviderController);
@@ -31,28 +31,28 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
-  v5 = [(SharePlaySettingsBundleController *)self groupSpecifier];
-  if (v5)
+  groupSpecifier = [(SharePlaySettingsBundleController *)self groupSpecifier];
+  if (groupSpecifier)
   {
     goto LABEL_2;
   }
 
-  v6 = [(SharePlaySettingsBundleController *)self mainSpecifier];
+  mainSpecifier = [(SharePlaySettingsBundleController *)self mainSpecifier];
 
-  if (!v6)
+  if (!mainSpecifier)
   {
-    v5 = +[PSSpecifier emptyGroupSpecifier];
-    [v5 setIdentifier:@"SHAREPLAY_SETTINGS_GROUP"];
+    groupSpecifier = +[PSSpecifier emptyGroupSpecifier];
+    [groupSpecifier setIdentifier:@"SHAREPLAY_SETTINGS_GROUP"];
     v9 = [SharePlaySettingsStrings localizedStringForKey:@"BUNDLE_CONTROLLER_GROUP_SPECIFIER_DETAIL"];
-    [v5 setProperty:v9 forKey:PSFooterTextGroupKey];
+    [groupSpecifier setProperty:v9 forKey:PSFooterTextGroupKey];
 
-    [v4 addObject:v5];
-    [(SharePlaySettingsBundleController *)self setGroupSpecifier:v5];
-    v10 = [(SharePlaySettingsBundleController *)self parentListController];
-    v11 = [(SharePlaySettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:v10];
+    [v4 addObject:groupSpecifier];
+    [(SharePlaySettingsBundleController *)self setGroupSpecifier:groupSpecifier];
+    parentListController = [(SharePlaySettingsBundleController *)self parentListController];
+    v11 = [(SharePlaySettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:parentListController];
 
     v12 = [SharePlaySettingsStrings localizedStringForKey:@"LIST_CONTROLLER_TITLE"];
     if (v11)
@@ -79,15 +79,15 @@ LABEL_2:
     }
 
     [v13 setIdentifier:@"SHAREPLAY_SETTINGS"];
-    v14 = [(SharePlaySettingsBundleController *)self providerController];
+    providerController = [(SharePlaySettingsBundleController *)self providerController];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v13 setProperty:v14 forKey:v16];
+    [v13 setProperty:providerController forKey:v16];
 
-    v17 = [(SharePlaySettingsBundleController *)self userConfiguration];
+    userConfiguration = [(SharePlaySettingsBundleController *)self userConfiguration];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    [v13 setProperty:v17 forKey:v19];
+    [v13 setProperty:userConfiguration forKey:v19];
 
     [v4 addObject:v13];
     goto LABEL_12;
@@ -106,21 +106,21 @@ LABEL_4:
   return WeakRetained;
 }
 
-- (void)performButtonActionForSpecifier:(id)a3
+- (void)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(SharePlaySettingsBundleController *)self parentListController];
-  [(SharePlaySettingsBundleController *)self handleUserDidTapOnMainSpecifier:v4 parentController:v5];
+  specifierCopy = specifier;
+  parentListController = [(SharePlaySettingsBundleController *)self parentListController];
+  [(SharePlaySettingsBundleController *)self handleUserDidTapOnMainSpecifier:specifierCopy parentController:parentListController];
 }
 
-- (void)propertiesDidChangeForConfiguration:(id)a3
+- (void)propertiesDidChangeForConfiguration:(id)configuration
 {
-  v5 = [(SharePlaySettingsBundleController *)self parentListController];
-  v4 = [(SharePlaySettingsBundleController *)self mainSpecifier];
-  [v5 reloadSpecifier:v4];
+  parentListController = [(SharePlaySettingsBundleController *)self parentListController];
+  mainSpecifier = [(SharePlaySettingsBundleController *)self mainSpecifier];
+  [parentListController reloadSpecifier:mainSpecifier];
 }
 
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller
 {
   v4 = sub_5BA4();
   v5 = *(v4 - 8);
@@ -135,17 +135,17 @@ LABEL_4:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = [v9 traitCollection];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
   sub_5C14();
 
-  LOBYTE(v10) = sub_5B84();
+  LOBYTE(traitCollection) = sub_5B84();
   (*(v5 + 8))(v8, v4);
 
-  return v10 & 1;
+  return traitCollection & 1;
 }
 
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller
 {
   v18 = sub_5BA4();
   v5 = *(v18 - 8);
@@ -167,10 +167,10 @@ LABEL_4:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v15 = a4;
+  controllerCopy = controller;
   sub_5C24();
   sub_5B64();
-  v16 = [v15 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
   sub_5C14();
 
   sub_51D8();

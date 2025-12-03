@@ -1,31 +1,31 @@
 @interface GKNetworkImageSource
-- (BOOL)imageNeedsRefresh:(id)a3;
-- (void)loadAndCacheAvatarFromGamedForURLString:(id)a3 useUIImage:(BOOL)a4 cacheSubdirectory:(id)a5 reference:(id)a6 queue:(id)a7 handler:(id)a8;
-- (void)loadImageForURLString:(id)a3 loader:(id)a4 reference:(id)a5 queue:(id)a6 handler:(id)a7;
-- (void)loadImageForURLString:(id)a3 reference:(id)a4 queue:(id)a5 handler:(id)a6;
+- (BOOL)imageNeedsRefresh:(id)refresh;
+- (void)loadAndCacheAvatarFromGamedForURLString:(id)string useUIImage:(BOOL)image cacheSubdirectory:(id)subdirectory reference:(id)reference queue:(id)queue handler:(id)handler;
+- (void)loadImageForURLString:(id)string loader:(id)loader reference:(id)reference queue:(id)queue handler:(id)handler;
+- (void)loadImageForURLString:(id)string reference:(id)reference queue:(id)queue handler:(id)handler;
 @end
 
 @implementation GKNetworkImageSource
 
-- (BOOL)imageNeedsRefresh:(id)a3
+- (BOOL)imageNeedsRefresh:(id)refresh
 {
-  v4 = a3;
-  v5 = [(GKImageSource *)self renderedDefaultImage];
+  refreshCopy = refresh;
+  renderedDefaultImage = [(GKImageSource *)self renderedDefaultImage];
 
-  return v5 == v4;
+  return renderedDefaultImage == refreshCopy;
 }
 
-- (void)loadImageForURLString:(id)a3 reference:(id)a4 queue:(id)a5 handler:(id)a6
+- (void)loadImageForURLString:(id)string reference:(id)reference queue:(id)queue handler:(id)handler
 {
-  v10 = a3;
+  stringCopy = string;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__GKNetworkImageSource_loadImageForURLString_reference_queue_handler___block_invoke;
   v12[3] = &unk_27967F508;
-  v13 = v10;
-  v14 = self;
-  v11 = v10;
-  [(GKNetworkImageSource *)self loadImageForURLString:v11 loader:v12 reference:a4 queue:a5 handler:a6];
+  v13 = stringCopy;
+  selfCopy = self;
+  v11 = stringCopy;
+  [(GKNetworkImageSource *)self loadImageForURLString:v11 loader:v12 reference:reference queue:queue handler:handler];
 }
 
 void __70__GKNetworkImageSource_loadImageForURLString_reference_queue_handler___block_invoke(uint64_t a1, void *a2)
@@ -43,16 +43,16 @@ void __70__GKNetworkImageSource_loadImageForURLString_reference_queue_handler___
   [v4 _gkloadRemoteImageForURL:v5 queue:v6 withCompletionHandler:v8];
 }
 
-- (void)loadAndCacheAvatarFromGamedForURLString:(id)a3 useUIImage:(BOOL)a4 cacheSubdirectory:(id)a5 reference:(id)a6 queue:(id)a7 handler:(id)a8
+- (void)loadAndCacheAvatarFromGamedForURLString:(id)string useUIImage:(BOOL)image cacheSubdirectory:(id)subdirectory reference:(id)reference queue:(id)queue handler:(id)handler
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v17)
+  stringCopy = string;
+  subdirectoryCopy = subdirectory;
+  referenceCopy = reference;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!queueCopy)
   {
-    v17 = MEMORY[0x277D85CD0];
+    queueCopy = MEMORY[0x277D85CD0];
     v19 = MEMORY[0x277D85CD0];
   }
 
@@ -60,30 +60,30 @@ void __70__GKNetworkImageSource_loadImageForURLString_reference_queue_handler___
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKImageSource.m", 705, "-[GKNetworkImageSource loadAndCacheAvatarFromGamedForURLString:useUIImage:cacheSubdirectory:reference:queue:handler:]"];
   v22 = [v20 dispatchGroupWithName:v21];
 
-  if (v14)
+  if (stringCopy)
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __117__GKNetworkImageSource_loadAndCacheAvatarFromGamedForURLString_useUIImage_cacheSubdirectory_reference_queue_handler___block_invoke;
     v27[3] = &unk_27967F5D0;
     v27[4] = self;
-    v28 = v15;
-    v31 = a4;
+    v28 = subdirectoryCopy;
+    imageCopy = image;
     v29 = v22;
-    v30 = v14;
+    v30 = stringCopy;
     [v29 perform:v27];
   }
 
-  if (v18)
+  if (handlerCopy)
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __117__GKNetworkImageSource_loadAndCacheAvatarFromGamedForURLString_useUIImage_cacheSubdirectory_reference_queue_handler___block_invoke_2_259;
     v23[3] = &unk_27967F5F8;
-    v26 = v18;
+    v26 = handlerCopy;
     v24 = v22;
-    v25 = v16;
-    [v24 notifyOnQueue:v17 block:v23];
+    v25 = referenceCopy;
+    [v24 notifyOnQueue:queueCopy block:v23];
   }
 }
 
@@ -308,16 +308,16 @@ void __117__GKNetworkImageSource_loadAndCacheAvatarFromGamedForURLString_useUIIm
   (*(v2 + 16))(v2, v3, *(a1 + 40));
 }
 
-- (void)loadImageForURLString:(id)a3 loader:(id)a4 reference:(id)a5 queue:(id)a6 handler:(id)a7
+- (void)loadImageForURLString:(id)string loader:(id)loader reference:(id)reference queue:(id)queue handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v15)
+  stringCopy = string;
+  loaderCopy = loader;
+  referenceCopy = reference;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!queueCopy)
   {
-    v15 = MEMORY[0x277D85CD0];
+    queueCopy = MEMORY[0x277D85CD0];
     v17 = MEMORY[0x277D85CD0];
   }
 
@@ -327,39 +327,39 @@ void __117__GKNetworkImageSource_loadAndCacheAvatarFromGamedForURLString_useUIIm
 
   if ([(GKImageSource *)self shouldUseTestImage])
   {
-    if (v16)
+    if (handlerCopy)
     {
-      v21 = [(GKImageSource *)self renderedTestImage];
-      [v20 setResult:v21];
+      renderedTestImage = [(GKImageSource *)self renderedTestImage];
+      [v20 setResult:renderedTestImage];
 
 LABEL_9:
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __77__GKNetworkImageSource_loadImageForURLString_loader_reference_queue_handler___block_invoke_2_261;
       v22[3] = &unk_27967F5F8;
-      v25 = v16;
+      v25 = handlerCopy;
       v23 = v20;
-      v24 = v14;
-      [v23 notifyOnQueue:v15 block:v22];
+      v24 = referenceCopy;
+      [v23 notifyOnQueue:queueCopy block:v22];
     }
   }
 
   else
   {
-    if (v12)
+    if (stringCopy)
     {
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __77__GKNetworkImageSource_loadImageForURLString_loader_reference_queue_handler___block_invoke;
       v26[3] = &unk_27967F6C0;
       v26[4] = self;
-      v27 = v12;
+      v27 = stringCopy;
       v28 = v20;
-      v29 = v13;
+      v29 = loaderCopy;
       [v28 perform:v26];
     }
 
-    if (v16)
+    if (handlerCopy)
     {
       goto LABEL_9;
     }

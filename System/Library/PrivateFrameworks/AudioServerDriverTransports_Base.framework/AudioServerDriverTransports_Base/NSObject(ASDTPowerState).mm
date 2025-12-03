@@ -6,19 +6,19 @@
 
 - (uint64_t)asdtPowerStateChange:()ASDTPowerState
 {
-  if ([a1 conformsToProtocol:&unk_285356750])
+  if ([self conformsToProtocol:&unk_285356750])
   {
-    v5 = a1;
-    v6 = asdtPowerStateFromTransition([v5 powerState], a3);
-    v7 = [v5 name];
+    selfCopy = self;
+    v6 = asdtPowerStateFromTransition([selfCopy powerState], a3);
+    name = [selfCopy name];
     v15[0] = 0;
-    strlcpy(v15, [v7 UTF8String], 9uLL);
+    strlcpy(v15, [name UTF8String], 9uLL);
     v15[1] = 0;
 
     v8 = asdtPowerTransitionUpwards(a3);
-    [v5 powerState];
+    [selfCopy powerState];
     kdebug_trace();
-    if (v6 == [v5 powerState])
+    if (v6 == [selfCopy powerState])
     {
       v9 = 0;
 LABEL_30:
@@ -35,10 +35,10 @@ LABEL_30:
           v9 = 2003329396;
           goto LABEL_30;
         case 0x69616374:
-          v10 = [v5 performPowerStateInactive:a3];
+          performPowerStateOn = [selfCopy performPowerStateInactive:a3];
           break;
         case 0x69646C65:
-          v10 = [v5 performPowerStateIdle:a3];
+          performPowerStateOn = [selfCopy performPowerStateIdle:a3];
           break;
         default:
           goto LABEL_28;
@@ -49,7 +49,7 @@ LABEL_30:
     {
       if (v6 == 1920298606)
       {
-        v10 = [v5 performPowerStateOn];
+        performPowerStateOn = [selfCopy performPowerStateOn];
       }
 
       else
@@ -59,7 +59,7 @@ LABEL_30:
           goto LABEL_28;
         }
 
-        v10 = [v5 performPowerStateSleep];
+        performPowerStateOn = [selfCopy performPowerStateSleep];
       }
     }
 
@@ -69,33 +69,33 @@ LABEL_30:
       {
         if (v6 == 1886876269)
         {
-          v10 = [v5 performPowerStatePrewarm:a3];
+          performPowerStateOn = [selfCopy performPowerStatePrewarm:a3];
           goto LABEL_21;
         }
 
 LABEL_28:
-        [v5 setPowerState:v6];
+        [selfCopy setPowerState:v6];
 LABEL_29:
-        [v5 powerState];
+        [selfCopy powerState];
         kdebug_trace();
         goto LABEL_30;
       }
 
-      v10 = [v5 performPowerStatePrepare:a3];
+      performPowerStateOn = [selfCopy performPowerStatePrepare:a3];
     }
 
 LABEL_21:
-    v9 = v10;
+    v9 = performPowerStateOn;
     v11 = v8 ^ 1;
-    if (!v10)
+    if (!performPowerStateOn)
     {
       v11 = 1;
     }
 
     if ((v11 & 1) == 0)
     {
-      v12 = [v5 pmNoStateChangeOnFailure];
-      v13 = a3 == 1768843636 ? 1 : v12;
+      pmNoStateChangeOnFailure = [selfCopy pmNoStateChangeOnFailure];
+      v13 = a3 == 1768843636 ? 1 : pmNoStateChangeOnFailure;
       if (v13)
       {
         goto LABEL_29;

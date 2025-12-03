@@ -7,19 +7,19 @@
 - (id)_doubleTapGroupSpecifiers;
 - (id)_flickSpecifiers;
 - (id)_gesturesToggleSpecifiers;
-- (id)_getAllGesturesToggleEnabledState:(id)a3;
-- (id)_getCoverToMuteEnableState:(id)a3;
-- (id)_getFlickEnabledState:(id)a3;
+- (id)_getAllGesturesToggleEnabledState:(id)state;
+- (id)_getCoverToMuteEnableState:(id)state;
+- (id)_getFlickEnabledState:(id)state;
 - (id)_phoneSettings;
-- (id)getEltonStateDescription:(id)a3;
+- (id)getEltonStateDescription:(id)description;
 - (id)specifiers;
 - (unint64_t)_allGesturesToggleState;
 - (unint64_t)_flickGestureState;
 - (unint64_t)_gestureMode;
-- (void)_openTipsPage:(id)a3;
-- (void)_setAllGesturesToggleEnabled:(id)a3 specifier:(id)a4;
-- (void)_setCoverToMuteEnabled:(id)a3 specifier:(id)a4;
-- (void)_setFlickEnabled:(id)a3 specifier:(id)a4;
+- (void)_openTipsPage:(id)page;
+- (void)_setAllGesturesToggleEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setCoverToMuteEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setFlickEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -35,12 +35,12 @@
   eltonAccessor = self->_eltonAccessor;
   self->_eltonAccessor = v4;
 
-  v6 = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_eltonAccessor synchronize];
   v7 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel"];
   cslAccessor = self->_cslAccessor;
   self->_cslAccessor = v7;
 
-  v9 = [(NPSDomainAccessor *)self->_cslAccessor synchronize];
+  synchronize2 = [(NPSDomainAccessor *)self->_cslAccessor synchronize];
 }
 
 - (id)specifiers
@@ -59,17 +59,17 @@ LABEL_2:
   {
     if (!-[WGAEltonBridgeSettingsController _pairedDeviceSupportsFlick](self, "_pairedDeviceSupportsFlick") || (-[WGAEltonBridgeSettingsController _gesturesToggleSpecifiers](self, "_gesturesToggleSpecifiers"), v7 = objc_claimAutoreleasedReturnValue(), [v6 addObjectsFromArray:v7], v7, -[WGAEltonBridgeSettingsController _allGesturesToggleState](self, "_allGesturesToggleState")))
     {
-      v8 = [(WGAEltonBridgeSettingsController *)self _doubleTapGroupSpecifiers];
-      [v6 addObjectsFromArray:v8];
+      _doubleTapGroupSpecifiers = [(WGAEltonBridgeSettingsController *)self _doubleTapGroupSpecifiers];
+      [v6 addObjectsFromArray:_doubleTapGroupSpecifiers];
 
       if ([(WGAEltonBridgeSettingsController *)self _pairedDeviceSupportsFlick])
       {
-        v9 = [(WGAEltonBridgeSettingsController *)self _flickSpecifiers];
-        [v6 addObjectsFromArray:v9];
+        _flickSpecifiers = [(WGAEltonBridgeSettingsController *)self _flickSpecifiers];
+        [v6 addObjectsFromArray:_flickSpecifiers];
       }
 
-      v10 = [(WGAEltonBridgeSettingsController *)self _coverToMuteSpecifiers];
-      [v6 addObjectsFromArray:v10];
+      _coverToMuteSpecifiers = [(WGAEltonBridgeSettingsController *)self _coverToMuteSpecifiers];
+      [v6 addObjectsFromArray:_coverToMuteSpecifiers];
 
       v11 = *&self->BPSListController_opaque[v2];
       *&self->BPSListController_opaque[v2] = v6;
@@ -81,8 +81,8 @@ LABEL_2:
 
   else
   {
-    v12 = [(WGAEltonBridgeSettingsController *)self _coverToMuteSpecifiers];
-    [v6 addObjectsFromArray:v12];
+    _coverToMuteSpecifiers2 = [(WGAEltonBridgeSettingsController *)self _coverToMuteSpecifiers];
+    [v6 addObjectsFromArray:_coverToMuteSpecifiers2];
   }
 
   v13 = *&self->BPSListController_opaque[v2];
@@ -97,10 +97,10 @@ LABEL_11:
 
 - (id)_doubleTapGroupSpecifiers
 {
-  v3 = [(WGAEltonBridgeSettingsController *)self _pairedDeviceSupportsElton];
-  v4 = [(WGAEltonBridgeSettingsController *)self _pairedDeviceIsTinker];
+  _pairedDeviceSupportsElton = [(WGAEltonBridgeSettingsController *)self _pairedDeviceSupportsElton];
+  _pairedDeviceIsTinker = [(WGAEltonBridgeSettingsController *)self _pairedDeviceIsTinker];
   v5 = &__NSArray0__struct;
-  if (v3 && (v4 & 1) == 0)
+  if (_pairedDeviceSupportsElton && (_pairedDeviceIsTinker & 1) == 0)
   {
     v5 = +[NSMutableArray array];
     if ([(WGAEltonBridgeSettingsController *)self _pairedDeviceSupportsFlick])
@@ -144,10 +144,10 @@ LABEL_11:
 
 - (id)_gesturesToggleSpecifiers
 {
-  v3 = [(WGAEltonBridgeSettingsController *)self _pairedDeviceSupportsElton];
-  v4 = [(WGAEltonBridgeSettingsController *)self _pairedDeviceIsTinker];
+  _pairedDeviceSupportsElton = [(WGAEltonBridgeSettingsController *)self _pairedDeviceSupportsElton];
+  _pairedDeviceIsTinker = [(WGAEltonBridgeSettingsController *)self _pairedDeviceIsTinker];
   v5 = &__NSArray0__struct;
-  if (v3 && (v4 & 1) == 0)
+  if (_pairedDeviceSupportsElton && (_pairedDeviceIsTinker & 1) == 0)
   {
     v5 = +[NSMutableArray array];
     v6 = [PSSpecifier groupSpecifierWithID:@"GESTURES_TOGGLE_GROUP_ID"];
@@ -162,26 +162,26 @@ LABEL_11:
   return v5;
 }
 
-- (void)_setAllGesturesToggleEnabled:(id)a3 specifier:(id)a4
+- (void)_setAllGesturesToggleEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1D58;
   v32[3] = &unk_8330;
   v32[4] = self;
-  v9 = v6;
+  v9 = enabledCopy;
   v33 = v9;
-  v35 = v8;
-  v10 = v7;
+  v35 = bOOLValue;
+  v10 = specifierCopy;
   v34 = v10;
   v11 = objc_retainBlock(v32);
   v12 = +[WatchControlSettings sharedInstance];
-  v13 = [v12 hasGreySupportFeatureEnabled];
+  hasGreySupportFeatureEnabled = [v12 hasGreySupportFeatureEnabled];
 
-  if (v8 && v13)
+  if (bOOLValue && hasGreySupportFeatureEnabled)
   {
     v25 = v9;
     v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -225,17 +225,17 @@ LABEL_11:
   }
 }
 
-- (id)_getAllGesturesToggleEnabledState:(id)a3
+- (id)_getAllGesturesToggleEnabledState:(id)state
 {
-  v4 = [(WGAEltonBridgeSettingsController *)self _allGesturesToggleState];
-  v5 = [(WGAEltonBridgeSettingsController *)self _phoneSettings];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  _allGesturesToggleState = [(WGAEltonBridgeSettingsController *)self _allGesturesToggleState];
+  _phoneSettings = [(WGAEltonBridgeSettingsController *)self _phoneSettings];
+  if (os_log_type_enabled(_phoneSettings, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = v7;
     v9 = @"Disabled";
-    if (v4 == 1)
+    if (_allGesturesToggleState == 1)
     {
       v9 = @"Enabled";
     }
@@ -244,10 +244,10 @@ LABEL_11:
     v13 = v7;
     v14 = 2112;
     v15 = v9;
-    _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ Get Gestures toggle state %@", &v12, 0x16u);
+    _os_log_impl(&dword_0, _phoneSettings, OS_LOG_TYPE_DEFAULT, "%@ Get Gestures toggle state %@", &v12, 0x16u);
   }
 
-  v10 = [NSNumber numberWithBool:v4 == 1];
+  v10 = [NSNumber numberWithBool:_allGesturesToggleState == 1];
 
   return v10;
 }
@@ -266,10 +266,10 @@ LABEL_11:
 
 - (id)_flickSpecifiers
 {
-  v3 = [(WGAEltonBridgeSettingsController *)self _pairedDeviceSupportsElton];
-  v4 = [(WGAEltonBridgeSettingsController *)self _pairedDeviceIsTinker];
+  _pairedDeviceSupportsElton = [(WGAEltonBridgeSettingsController *)self _pairedDeviceSupportsElton];
+  _pairedDeviceIsTinker = [(WGAEltonBridgeSettingsController *)self _pairedDeviceIsTinker];
   v5 = &__NSArray0__struct;
-  if (v3 && (v4 & 1) == 0)
+  if (_pairedDeviceSupportsElton && (_pairedDeviceIsTinker & 1) == 0)
   {
     v5 = +[NSMutableArray array];
     v6 = [PSSpecifier groupSpecifierWithID:@"FLICK_GROUP_SETTINGS_FOOTER"];
@@ -306,25 +306,25 @@ LABEL_11:
   return v5;
 }
 
-- (void)_setFlickEnabled:(id)a3 specifier:(id)a4
+- (void)_setFlickEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_2874;
   v31[3] = &unk_83D0;
   v31[4] = self;
-  v9 = v6;
+  v9 = enabledCopy;
   v32 = v9;
   v10 = objc_retainBlock(v31);
   v11 = +[WatchControlSettings sharedInstance];
-  v12 = [v11 hasGreySupportFeatureEnabled];
+  hasGreySupportFeatureEnabled = [v11 hasGreySupportFeatureEnabled];
 
-  if (v8 && v12)
+  if (bOOLValue && hasGreySupportFeatureEnabled)
   {
-    v24 = v7;
+    v24 = specifierCopy;
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"ASSISTIVE_TOUCH_WARNING_TITLE" value:&stru_8680 table:@"Localizable_Flick"];
     v15 = [NSBundle bundleForClass:objc_opt_class()];
@@ -348,7 +348,7 @@ LABEL_11:
     v25[1] = 3221225472;
     v25[2] = sub_2A60;
     v25[3] = &unk_83A8;
-    v7 = v24;
+    specifierCopy = v24;
     v26 = v24;
     objc_copyWeak(&v27, &location);
     v23 = [UIAlertAction actionWithTitle:v22 style:1 handler:v25];
@@ -366,17 +366,17 @@ LABEL_11:
   }
 }
 
-- (id)_getFlickEnabledState:(id)a3
+- (id)_getFlickEnabledState:(id)state
 {
-  v4 = [(WGAEltonBridgeSettingsController *)self _flickGestureState];
-  v5 = [(WGAEltonBridgeSettingsController *)self _phoneSettings];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  _flickGestureState = [(WGAEltonBridgeSettingsController *)self _flickGestureState];
+  _phoneSettings = [(WGAEltonBridgeSettingsController *)self _phoneSettings];
+  if (os_log_type_enabled(_phoneSettings, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = v7;
     v9 = @"Disabled";
-    if (v4 == 1)
+    if (_flickGestureState == 1)
     {
       v9 = @"Enabled";
     }
@@ -385,10 +385,10 @@ LABEL_11:
     v13 = v7;
     v14 = 2112;
     v15 = v9;
-    _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ Get Flick toggle state %@", &v12, 0x16u);
+    _os_log_impl(&dword_0, _phoneSettings, OS_LOG_TYPE_DEFAULT, "%@ Get Flick toggle state %@", &v12, 0x16u);
   }
 
-  v10 = [NSNumber numberWithBool:v4 == 1];
+  v10 = [NSNumber numberWithBool:_flickGestureState == 1];
 
   return v10;
 }
@@ -423,10 +423,10 @@ LABEL_11:
   return v3;
 }
 
-- (void)_setCoverToMuteEnabled:(id)a3 specifier:(id)a4
+- (void)_setCoverToMuteEnabled:(id)enabled specifier:(id)specifier
 {
-  -[NPSDomainAccessor setBool:forKey:](self->_cslAccessor, "setBool:forKey:", [a3 BOOLValue], @"CSLCoverToMute");
-  v5 = [(NPSDomainAccessor *)self->_cslAccessor synchronize];
+  -[NPSDomainAccessor setBool:forKey:](self->_cslAccessor, "setBool:forKey:", [enabled BOOLValue], @"CSLCoverToMute");
+  synchronize = [(NPSDomainAccessor *)self->_cslAccessor synchronize];
   v6 = objc_opt_new();
   v9 = @"CSLCoverToMute";
   v7 = [NSArray arrayWithObjects:&v9 count:1];
@@ -434,7 +434,7 @@ LABEL_11:
   [v6 synchronizeNanoDomain:@"com.apple.Carousel" keys:v8];
 }
 
-- (id)_getCoverToMuteEnableState:(id)a3
+- (id)_getCoverToMuteEnableState:(id)state
 {
   v6 = 0;
   v3 = [(NPSDomainAccessor *)self->_cslAccessor BOOLForKey:@"CSLCoverToMute" keyExistsAndHasValidFormat:&v6];
@@ -450,12 +450,12 @@ LABEL_11:
   return v2 & 1 | ((v4 & 1) == 0);
 }
 
-- (id)getEltonStateDescription:(id)a3
+- (id)getEltonStateDescription:(id)description
 {
-  v3 = [(WGAEltonBridgeSettingsController *)self _gestureMode];
+  _gestureMode = [(WGAEltonBridgeSettingsController *)self _gestureMode];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3 == 1)
+  if (_gestureMode == 1)
   {
     v6 = @"ELTON_DOUBLE_TAP_STATE_ON";
   }
@@ -485,10 +485,10 @@ LABEL_11:
 - (BOOL)_pairedDeviceSupportsElton
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
 
   v4 = [[NSUUID alloc] initWithUUIDString:@"0E581E21-36BA-4770-9408-0467585E8495"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
@@ -496,23 +496,23 @@ LABEL_11:
 - (BOOL)_pairedDeviceIsTinker
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
 
-  v4 = [v3 valueForProperty:NRDevicePropertyIsAltAccount];
-  v5 = [v4 BOOLValue];
+  v4 = [getActivePairedDevice valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)_pairedDeviceSupportsFlick
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
 
   if (_os_feature_enabled_impl())
   {
     v4 = [[NSUUID alloc] initWithUUIDString:@"D5834418-F4A0-4C74-AA38-8ED5F7765BD1"];
-    v5 = [v3 supportsCapability:v4];
+    v5 = [getActivePairedDevice supportsCapability:v4];
   }
 
   else
@@ -523,11 +523,11 @@ LABEL_11:
   return v5;
 }
 
-- (void)_openTipsPage:(id)a3
+- (void)_openTipsPage:(id)page
 {
-  v4 = a3;
-  v5 = [(WGAEltonBridgeSettingsController *)self _phoneSettings];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pageCopy = page;
+  _phoneSettings = [(WGAEltonBridgeSettingsController *)self _phoneSettings];
+  if (os_log_type_enabled(_phoneSettings, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
@@ -535,19 +535,19 @@ LABEL_11:
     v12 = v7;
     v13 = 2080;
     v14 = "[WGAEltonBridgeSettingsController _openTipsPage:]";
-    _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ %s", &v11, 0x16u);
+    _os_log_impl(&dword_0, _phoneSettings, OS_LOG_TYPE_DEFAULT, "%@ %s", &v11, 0x16u);
   }
 
-  v8 = [(WGAEltonBridgeSettingsController *)self _phoneSettings];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  _phoneSettings2 = [(WGAEltonBridgeSettingsController *)self _phoneSettings];
+  if (os_log_type_enabled(_phoneSettings2, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
-    _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Will open url %@", &v11, 0xCu);
+    v12 = pageCopy;
+    _os_log_impl(&dword_0, _phoneSettings2, OS_LOG_TYPE_DEFAULT, "Will open url %@", &v11, 0xCu);
   }
 
   v9 = +[LSApplicationWorkspace defaultWorkspace];
-  v10 = [NSURL URLWithString:v4];
+  v10 = [NSURL URLWithString:pageCopy];
   [v9 openSensitiveURL:v10 withOptions:0];
 }
 

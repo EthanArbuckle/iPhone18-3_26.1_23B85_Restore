@@ -1,24 +1,24 @@
 @interface TSUCompressionReadChannel
-- (TSUCompressionReadChannel)initWithReadChannel:(id)a3 compressionAlgorithm:(int)a4 operation:(int)a5;
+- (TSUCompressionReadChannel)initWithReadChannel:(id)channel compressionAlgorithm:(int)algorithm operation:(int)operation;
 - (void)close;
 - (void)dealloc;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSUCompressionReadChannel
 
-- (TSUCompressionReadChannel)initWithReadChannel:(id)a3 compressionAlgorithm:(int)a4 operation:(int)a5
+- (TSUCompressionReadChannel)initWithReadChannel:(id)channel compressionAlgorithm:(int)algorithm operation:(int)operation
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v9 = a3;
+  v5 = *&operation;
+  v6 = *&algorithm;
+  channelCopy = channel;
   v15.receiver = self;
   v15.super_class = TSUCompressionReadChannel;
   v10 = [(TSUCompressionReadChannel *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_readChannel, a3);
+    objc_storeStrong(&v10->_readChannel, channel);
     v12 = [[TSUStreamCompression alloc] initWithAlgorithm:v6 operation:v5];
     compressor = v11->_compressor;
     v11->_compressor = v12;
@@ -53,9 +53,9 @@
   self->_compressor = 0;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -69,7 +69,7 @@
   v12 = v13;
   v7 = v5;
   v10 = v7;
-  v8 = v4;
+  v8 = handlerCopy;
   v11 = v8;
   [(TSUStreamReadChannel *)readChannel readWithHandler:v9];
 

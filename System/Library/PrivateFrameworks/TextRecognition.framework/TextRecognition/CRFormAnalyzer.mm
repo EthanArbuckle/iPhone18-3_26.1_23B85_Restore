@@ -1,20 +1,20 @@
 @interface CRFormAnalyzer
-+ (id)fetchSerializedResultsForImage:(id)a3;
-+ (void)_saveAllDebugImagesForRegions:(id)a3 image:(id)a4 afterPostProcessing:(BOOL)a5;
-+ (void)_saveDebugImageForRegions:(id)a3 image:(id)a4 suffix:(id)a5 displayTypes:(BOOL)a6;
-+ (void)exportSerializedResults:(id)a3 forImage:(id)a4;
-- (BOOL)shouldRunDetectionForDocument:(id)a3;
-- (CRFormAnalyzer)initWithConfiguration:(id)a3 detectionStats:(id)a4 postProcessingStats:(id)a5 error:(id *)a6;
-- (void)analyzeImage:(id)a3 outputRegion:(id)a4;
++ (id)fetchSerializedResultsForImage:(id)image;
++ (void)_saveAllDebugImagesForRegions:(id)regions image:(id)image afterPostProcessing:(BOOL)processing;
++ (void)_saveDebugImageForRegions:(id)regions image:(id)image suffix:(id)suffix displayTypes:(BOOL)types;
++ (void)exportSerializedResults:(id)results forImage:(id)image;
+- (BOOL)shouldRunDetectionForDocument:(id)document;
+- (CRFormAnalyzer)initWithConfiguration:(id)configuration detectionStats:(id)stats postProcessingStats:(id)processingStats error:(id *)error;
+- (void)analyzeImage:(id)image outputRegion:(id)region;
 @end
 
 @implementation CRFormAnalyzer
 
-- (CRFormAnalyzer)initWithConfiguration:(id)a3 detectionStats:(id)a4 postProcessingStats:(id)a5 error:(id *)a6
+- (CRFormAnalyzer)initWithConfiguration:(id)configuration detectionStats:(id)stats postProcessingStats:(id)processingStats error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  configurationCopy = configuration;
+  statsCopy = stats;
+  processingStatsCopy = processingStats;
   v26.receiver = self;
   v26.super_class = CRFormAnalyzer;
   v14 = [(CRFormAnalyzer *)&v26 init];
@@ -22,24 +22,24 @@
   v16 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_configuration, a3);
-    if ([v11 useModelBasedDetection])
+    objc_storeStrong(&v14->_configuration, configuration);
+    if ([configurationCopy useModelBasedDetection])
     {
-      v17 = [[CRFormDetector alloc] initWithConfiguration:v11 error:a6];
+      v17 = [[CRFormDetector alloc] initWithConfiguration:configurationCopy error:error];
       modelDetector = v16->_modelDetector;
       v16->_modelDetector = v17;
     }
 
-    if ([v11 useContourBasedDetection])
+    if ([configurationCopy useContourBasedDetection])
     {
-      v19 = [[CRFormContourBasedDetector alloc] initWithConfiguration:v11];
+      v19 = [[CRFormContourBasedDetector alloc] initWithConfiguration:configurationCopy];
       contourBasedDetector = v16->_contourBasedDetector;
       v16->_contourBasedDetector = v19;
     }
 
-    if ([v11 useTextBasedDetection])
+    if ([configurationCopy useTextBasedDetection])
     {
-      v21 = [[CRFormTextBasedDetector alloc] initWithConfiguration:v11 error:a6];
+      v21 = [[CRFormTextBasedDetector alloc] initWithConfiguration:configurationCopy error:error];
       textBasedDetector = v16->_textBasedDetector;
       v16->_textBasedDetector = v21;
     }
@@ -48,26 +48,26 @@
     postProcessingManager = v16->_postProcessingManager;
     v16->_postProcessingManager = v23;
 
-    objc_storeStrong(&v15->_formDetectionStats, a4);
-    objc_storeStrong(&v15->_formPostProcessingStats, a5);
+    objc_storeStrong(&v15->_formDetectionStats, stats);
+    objc_storeStrong(&v15->_formPostProcessingStats, processingStats);
   }
 
   return v16;
 }
 
-+ (void)_saveDebugImageForRegions:(id)a3 image:(id)a4 suffix:(id)a5 displayTypes:(BOOL)a6
++ (void)_saveDebugImageForRegions:(id)regions image:(id)image suffix:(id)suffix displayTypes:(BOOL)types
 {
-  v6 = a6;
+  typesCopy = types;
   v89[1] = *MEMORY[0x1E69E9840];
-  v68 = a3;
-  v9 = a4;
-  v67 = a5;
-  v64 = v9;
+  regionsCopy = regions;
+  imageCopy = image;
+  suffixCopy = suffix;
+  v64 = imageCopy;
   GenericRGB = CGColorCreateGenericRGB(0.2, 0.2, 1.0, 0.8);
   v66 = CGColorCreateGenericRGB(0.6, 0.6, 0.6, 0.8);
-  v10 = v9;
+  v10 = imageCopy;
   v70 = v10;
-  if (v6)
+  if (typesCopy)
   {
     v88 = *MEMORY[0x1E69659D8];
     v11 = v88;
@@ -86,7 +86,7 @@
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    obj = v68;
+    obj = regionsCopy;
     v14 = [obj countByEnumeratingWithState:&v81 objects:v85 count:16];
     if (v14)
     {
@@ -108,36 +108,36 @@
           v19 = v18;
           if (v18)
           {
-            v20 = [v18 labelRegion];
-            v21 = v20 == 0;
+            labelRegion = [v18 labelRegion];
+            v21 = labelRegion == 0;
 
             if (!v21)
             {
-              v22 = [v19 labelRegion];
-              [v69 addObject:v22];
+              labelRegion2 = [v19 labelRegion];
+              [v69 addObject:labelRegion2];
             }
           }
 
           if ([v17 fieldType] == 1)
           {
-            v23 = [v17 textContentType];
+            textContentType = [v17 textContentType];
           }
 
           else
           {
-            v23 = 0;
+            textContentType = 0;
           }
 
-          v24 = [CRFormContentTypeUtilities stringFromContentType:v23];
+          v24 = [CRFormContentTypeUtilities stringFromContentType:textContentType];
           v80 = [v24 stringByReplacingOccurrencesOfString:@"CRFormContentType" withString:&stru_1F2BB4348];
 
           if (v19)
           {
-            v25 = [v19 labelRegion];
-            v26 = [v25 text];
-            v27 = [v19 labelRegion];
-            v28 = [v27 text];
-            v29 = [v28 length];
+            labelRegion3 = [v19 labelRegion];
+            text = [labelRegion3 text];
+            labelRegion4 = [v19 labelRegion];
+            text2 = [labelRegion4 text];
+            v29 = [text2 length];
             if (v29 >= 0xA)
             {
               v30 = 10;
@@ -148,7 +148,7 @@
               v30 = v29;
             }
 
-            v79 = [v26 substringToIndex:v30];
+            v79 = [text substringToIndex:v30];
           }
 
           else
@@ -186,13 +186,13 @@
 
             if (v19)
             {
-              v38 = [v19 labelRegion];
-              v39 = [v38 recognizedLocale];
-              v40 = v39;
+              labelRegion5 = [v19 labelRegion];
+              recognizedLocale = [labelRegion5 recognizedLocale];
+              v40 = recognizedLocale;
               v41 = &stru_1F2BB4348;
-              if (v39)
+              if (recognizedLocale)
               {
-                v41 = v39;
+                v41 = recognizedLocale;
               }
 
               v73 = v41;
@@ -225,7 +225,7 @@
             }
           }
 
-          if (+[CRFormContentTypeUtilities contentTypeIsAutoFillable:](CRFormContentTypeUtilities, "contentTypeIsAutoFillable:", v23) && ([v17 autofillNewContextStart] & 1) == 0)
+          if (+[CRFormContentTypeUtilities contentTypeIsAutoFillable:](CRFormContentTypeUtilities, "contentTypeIsAutoFillable:", textContentType) && ([v17 autofillNewContextStart] & 1) == 0)
           {
             v44 = objc_alloc(MEMORY[0x1E696AAB0]);
             v45 = v72;
@@ -254,12 +254,12 @@
     v48 = [v47 imageByOverlayingRegions:v69 strings:0 lineWidth:2.0 red:0.2 green:1.0 blue:0.2 alpha:0.8];
 
     v49 = [v70 url];
-    v50 = [v49 URLByDeletingPathExtension];
-    v51 = [v50 lastPathComponent];
-    v52 = v51;
-    if (v51)
+    uRLByDeletingPathExtension = [v49 URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
+    v52 = lastPathComponent;
+    if (lastPathComponent)
     {
-      v53 = v51;
+      v53 = lastPathComponent;
     }
 
     else
@@ -269,22 +269,22 @@
 
     v62 = v53;
 
-    v63 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/form_%@_%@.png", v62, v67];
-    [v48 writeToFile:v63];
+    suffixCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/form_%@_%@.png", v62, suffixCopy];
+    [v48 writeToFile:suffixCopy];
   }
 
   else
   {
     v54 = v10;
-    v48 = [v10 imageByOverlayingRegions:v68 strings:0 lineWidth:2.0 red:0.2 green:0.2 blue:1.0 alpha:0.8];
+    v48 = [v10 imageByOverlayingRegions:regionsCopy strings:0 lineWidth:2.0 red:0.2 green:0.2 blue:1.0 alpha:0.8];
 
     v55 = [v54 url];
-    v56 = [v55 URLByDeletingPathExtension];
-    v57 = [v56 lastPathComponent];
-    v58 = v57;
-    if (v57)
+    uRLByDeletingPathExtension2 = [v55 URLByDeletingPathExtension];
+    lastPathComponent2 = [uRLByDeletingPathExtension2 lastPathComponent];
+    v58 = lastPathComponent2;
+    if (lastPathComponent2)
     {
-      v59 = v57;
+      v59 = lastPathComponent2;
     }
 
     else
@@ -294,53 +294,53 @@
 
     v60 = v59;
 
-    v61 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/form_%@_%@.png", v60, v67];
-    [v48 writeToFile:v61];
+    suffixCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/form_%@_%@.png", v60, suffixCopy];
+    [v48 writeToFile:suffixCopy2];
   }
 }
 
-+ (void)_saveAllDebugImagesForRegions:(id)a3 image:(id)a4 afterPostProcessing:(BOOL)a5
++ (void)_saveAllDebugImagesForRegions:(id)regions image:(id)image afterPostProcessing:(BOOL)processing
 {
-  v5 = a5;
-  v20 = a3;
-  v7 = a4;
-  CRLogger = CRLogger::getCRLogger(v7);
+  processingCopy = processing;
+  regionsCopy = regions;
+  imageCopy = image;
+  CRLogger = CRLogger::getCRLogger(imageCopy);
   if (*CRLogger == 1 && (CRLogger[8] & 0x10) != 0)
   {
     v9 = @"a_before_pp";
-    if (v5)
+    if (processingCopy)
     {
       v9 = @"b_after_pp";
     }
 
     v10 = v9;
-    v11 = [v20 _fieldsOfSource:1];
-    v12 = [v20 _fieldsOfSource:2];
-    v13 = [v20 _fieldsOfSource:3];
+    v11 = [regionsCopy _fieldsOfSource:1];
+    v12 = [regionsCopy _fieldsOfSource:2];
+    v13 = [regionsCopy _fieldsOfSource:3];
     v14 = objc_opt_class();
     v15 = [@"mlfields_" stringByAppendingString:v10];
-    [v14 _saveDebugImageForRegions:v11 image:v7 suffix:v15 displayTypes:0];
+    [v14 _saveDebugImageForRegions:v11 image:imageCopy suffix:v15 displayTypes:0];
 
     v16 = objc_opt_class();
     v17 = [@"contourfields_" stringByAppendingString:v10];
-    [v16 _saveDebugImageForRegions:v12 image:v7 suffix:v17 displayTypes:0];
+    [v16 _saveDebugImageForRegions:v12 image:imageCopy suffix:v17 displayTypes:0];
 
     v18 = objc_opt_class();
     v19 = [@"textBasedfields_" stringByAppendingString:v10];
-    [v18 _saveDebugImageForRegions:v13 image:v7 suffix:v19 displayTypes:0];
+    [v18 _saveDebugImageForRegions:v13 image:imageCopy suffix:v19 displayTypes:0];
 
-    if (v5)
+    if (processingCopy)
     {
-      [objc_opt_class() _saveDebugImageForRegions:v11 image:v7 suffix:@"mlfields_with_types" displayTypes:1];
+      [objc_opt_class() _saveDebugImageForRegions:v11 image:imageCopy suffix:@"mlfields_with_types" displayTypes:1];
     }
   }
 }
 
-- (void)analyzeImage:(id)a3 outputRegion:(id)a4
+- (void)analyzeImage:(id)image outputRegion:(id)region
 {
   v66[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  regionCopy = region;
   v55[0] = 0;
   v55[1] = v55;
   v55[2] = 0x3032000000;
@@ -378,9 +378,9 @@
   v27[3] = &unk_1E7BC3040;
   v30 = &v43;
   v27[4] = self;
-  v9 = v6;
+  v9 = imageCopy;
   v28 = v9;
-  v10 = v7;
+  v10 = regionCopy;
   v29 = v10;
   v31 = v55;
   v32 = &v37;
@@ -399,19 +399,19 @@
   v21 = __44__CRFormAnalyzer_analyzeImage_outputRegion___block_invoke_117;
   v22 = &unk_1E7BC3068;
   v26 = &v49;
-  v23 = self;
+  selfCopy = self;
   v13 = v10;
   v24 = v13;
   v14 = v11;
   v25 = v14;
   [(CRPerformanceStatistics *)formPostProcessingStats measureBlock:&v19];
-  [objc_opt_class() _saveAllDebugImagesForRegions:v50[5] image:v9 afterPostProcessing:{1, v19, v20, v21, v22, v23}];
+  [objc_opt_class() _saveAllDebugImagesForRegions:v50[5] image:v9 afterPostProcessing:{1, v19, v20, v21, v22, selfCopy}];
   v15 = CROSLogForCategory(6);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = [v44[5] count];
     v17 = [v38[5] count];
-    v18 = [v13 formness];
+    formness = [v13 formness];
     *buf = 136315906;
     v58 = "[CRFormAnalyzer analyzeImage:outputRegion:]";
     v59 = 2048;
@@ -419,7 +419,7 @@
     v61 = 2048;
     v62 = v17;
     v63 = 2048;
-    v64 = v18;
+    v64 = formness;
     _os_log_impl(&dword_1B40D2000, v15, OS_LOG_TYPE_DEFAULT, "%s: %lu ML fields detected; %lu contour-based fields detected; formness: %lu;", buf, 0x2Au);
   }
 
@@ -575,19 +575,19 @@ void __44__CRFormAnalyzer_analyzeImage_outputRegion___block_invoke_117(uint64_t 
   }
 }
 
-+ (void)exportSerializedResults:(id)a3 forImage:(id)a4
++ (void)exportSerializedResults:(id)results forImage:(id)image
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 bufferHash];
+  resultsCopy = results;
+  imageCopy = image;
+  bufferHash = [imageCopy bufferHash];
   if (qword_1ED960200 != -1)
   {
     dispatch_once(&qword_1ED960200, &__block_literal_global_25);
   }
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"form_result_%lX.dat", v7];
-  v9 = [v5 writeToFileInFolder:_MergedGlobals_30 basename:v8];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"form_result_%lX.dat", bufferHash];
+  v9 = [resultsCopy writeToFileInFolder:_MergedGlobals_30 basename:v8];
   v10 = CROSLogForCategory(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -610,24 +610,24 @@ void __51__CRFormAnalyzer_exportSerializedResults_forImage___block_invoke()
   _MergedGlobals_30 = v1;
 }
 
-+ (id)fetchSerializedResultsForImage:(id)a3
++ (id)fetchSerializedResultsForImage:(id)image
 {
   v44 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v3 = [v33 bufferHash];
+  imageCopy = image;
+  bufferHash = [imageCopy bufferHash];
   v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/AppleInternal/Library/Frameworks/CoreRecognitionToolkit.framework/"];
-  v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FormSerializedResults/form_result_%lX.dat", v3];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FormSerializedResults/form_result_%lX.dat", v3];
+  v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FormSerializedResults/form_result_%lX.dat", bufferHash];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FormSerializedResults/form_result_%lX.dat", bufferHash];
   v35 = [v4 URLByAppendingPathComponent:v5];
 
   v6 = CROSLogForCategory(6);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v4 absoluteString];
+    absoluteString = [v4 absoluteString];
     *buf = 136315650;
     v39 = "+[CRFormAnalyzer fetchSerializedResultsForImage:]";
     v40 = 2112;
-    v41 = v7;
+    v41 = absoluteString;
     v42 = 2112;
     v43 = v32;
     _os_log_impl(&dword_1B40D2000, v6, OS_LOG_TYPE_DEBUG, "%s: Attempting to fetch serialized result from location: %@/%@", buf, 0x20u);
@@ -645,7 +645,7 @@ void __51__CRFormAnalyzer_exportSerializedResults_forImage___block_invoke()
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/Resources/", @"/AppleInternal/Library/Frameworks/CoreRecognitionToolkit.framework/"];
   v11 = [v9 fileURLWithPath:v10];
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FormSerializedResults/form_result_%lX.dat", v3];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FormSerializedResults/form_result_%lX.dat", bufferHash];
   v13 = [v11 URLByAppendingPathComponent:v12];
 
   v36 = v34;
@@ -662,16 +662,16 @@ LABEL_6:
     v16 = CROSLogForCategory(6);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v35 absoluteString];
+      absoluteString2 = [v35 absoluteString];
       *buf = 136315394;
       v39 = "+[CRFormAnalyzer fetchSerializedResultsForImage:]";
       v40 = 2112;
-      v41 = v17;
+      v41 = absoluteString2;
       _os_log_impl(&dword_1B40D2000, v16, OS_LOG_TYPE_DEBUG, "%s: Successfully fetched serialized result from location: %@", buf, 0x16u);
     }
 
     v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
-    [v33 size];
+    [imageCopy size];
     v20 = v19;
     v22 = v21;
     v23 = 0;
@@ -686,8 +686,8 @@ LABEL_6:
     }
 
     while (v23 != 3);
-    v27 = [v15 formFieldRegions];
-    v28 = [v27 arrayByAddingObjectsFromArray:v18];
+    formFieldRegions = [v15 formFieldRegions];
+    v28 = [formFieldRegions arrayByAddingObjectsFromArray:v18];
     [v15 setFormFieldRegions:v28];
 
     goto LABEL_11;
@@ -696,12 +696,12 @@ LABEL_6:
   v18 = CROSLogForCategory(6);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v30 = [v13 absoluteString];
+    absoluteString3 = [v13 absoluteString];
     v31 = [v14 description];
     *buf = 136315650;
     v39 = "+[CRFormAnalyzer fetchSerializedResultsForImage:]";
     v40 = 2112;
-    v41 = v30;
+    v41 = absoluteString3;
     v42 = 2112;
     v43 = v31;
     _os_log_impl(&dword_1B40D2000, v18, OS_LOG_TYPE_DEBUG, "%s: Unable to fetch serialized result from tentative location: %@, error = %@", buf, 0x20u);
@@ -717,28 +717,28 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)shouldRunDetectionForDocument:(id)a3
+- (BOOL)shouldRunDetectionForDocument:(id)document
 {
   v71 = *MEMORY[0x1E69E9840];
-  v55 = a3;
-  v4 = [(CRFormAnalyzer *)self configuration];
-  v5 = [v4 gatingWithOCRResults];
+  documentCopy = document;
+  configuration = [(CRFormAnalyzer *)self configuration];
+  gatingWithOCRResults = [configuration gatingWithOCRResults];
 
-  if (v5)
+  if (gatingWithOCRResults)
   {
-    v6 = [v55 text];
-    v7 = [v6 length];
+    text = [documentCopy text];
+    v7 = [text length];
 
     if (v7 <= 0x4F)
     {
       v8 = CROSLogForCategory(6);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [v55 text];
+        text2 = [documentCopy text];
         *buf = 136315394;
         v66 = "[CRFormAnalyzer shouldRunDetectionForDocument:]";
         v67 = 2048;
-        v68 = COERCE_DOUBLE([v9 length]);
+        v68 = COERCE_DOUBLE([text2 length]);
         _os_log_impl(&dword_1B40D2000, v8, OS_LOG_TYPE_DEBUG, "%s: Gated by character count %lu", buf, 0x16u);
       }
 
@@ -746,7 +746,7 @@ LABEL_11:
       goto LABEL_52;
     }
 
-    v8 = [v55 contentsWithTypes:8];
+    v8 = [documentCopy contentsWithTypes:8];
     if ([v8 count]<= 3)
     {
       log = CROSLogForCategory(6);
@@ -767,7 +767,7 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    log = [v55 contentsWithTypes:2];
+    log = [documentCopy contentsWithTypes:2];
     if ([log count]<= 1 && [v8 count]<= 7)
     {
       v11 = CROSLogForCategory(6);
@@ -813,20 +813,20 @@ LABEL_52:
           }
 
           v20 = *(*(&v57 + 1) + 8 * i);
-          v21 = [v20 boundingQuad];
-          [v21 topLeft];
+          boundingQuad = [v20 boundingQuad];
+          [boundingQuad topLeft];
           v23 = v22;
 
-          v24 = [v20 boundingQuad];
-          [v24 topRight];
+          boundingQuad2 = [v20 boundingQuad];
+          [boundingQuad2 topRight];
           v26 = v25;
 
-          v27 = [v20 boundingQuad];
-          [v27 topLeft];
+          boundingQuad3 = [v20 boundingQuad];
+          [boundingQuad3 topLeft];
           v29 = v28;
 
-          v30 = [v20 boundingQuad];
-          [v30 bottomLeft];
+          boundingQuad4 = [v20 boundingQuad];
+          [boundingQuad4 bottomLeft];
           v32 = v31;
 
           [v20 visualTextAngle];

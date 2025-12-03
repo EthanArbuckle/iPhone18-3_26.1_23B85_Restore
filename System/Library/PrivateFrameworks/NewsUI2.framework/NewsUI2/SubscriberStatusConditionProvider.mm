@@ -1,6 +1,6 @@
 @interface SubscriberStatusConditionProvider
 - (_TtC7NewsUI233SubscriberStatusConditionProvider)init;
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4;
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change;
 @end
 
 @implementation SubscriberStatusConditionProvider
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_2196CEB6C();
   swift_unknownObjectRelease();
 }

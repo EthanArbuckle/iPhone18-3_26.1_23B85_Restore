@@ -1,33 +1,33 @@
 @interface _MRLanguageOptionProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCharacteristics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCharacteristics:(id)characteristics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRLanguageOptionProtobuf
 
-- (void)addCharacteristics:(id)a3
+- (void)addCharacteristics:(id)characteristics
 {
-  v4 = a3;
+  characteristicsCopy = characteristics;
   characteristics = self->_characteristics;
-  v8 = v4;
+  v8 = characteristicsCopy;
   if (!characteristics)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_characteristics;
     self->_characteristics = v6;
 
-    v4 = v8;
+    characteristicsCopy = v8;
     characteristics = self->_characteristics;
   }
 
-  [(NSMutableArray *)characteristics addObject:v4];
+  [(NSMutableArray *)characteristics addObject:characteristicsCopy];
 }
 
 - (id)description
@@ -36,52 +36,52 @@
   v8.receiver = self;
   v8.super_class = _MRLanguageOptionProtobuf;
   v4 = [(_MRLanguageOptionProtobuf *)&v8 description];
-  v5 = [(_MRLanguageOptionProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRLanguageOptionProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_type];
-    [v3 setObject:v4 forKey:@"type"];
+    [dictionary setObject:v4 forKey:@"type"];
   }
 
   languageTag = self->_languageTag;
   if (languageTag)
   {
-    [v3 setObject:languageTag forKey:@"languageTag"];
+    [dictionary setObject:languageTag forKey:@"languageTag"];
   }
 
   characteristics = self->_characteristics;
   if (characteristics)
   {
-    [v3 setObject:characteristics forKey:@"characteristics"];
+    [dictionary setObject:characteristics forKey:@"characteristics"];
   }
 
   displayName = self->_displayName;
   if (displayName)
   {
-    [v3 setObject:displayName forKey:@"displayName"];
+    [dictionary setObject:displayName forKey:@"displayName"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     type = self->_type;
@@ -138,28 +138,28 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_type;
-    *(v4 + 44) |= 1u;
+    toCopy[10] = self->_type;
+    *(toCopy + 44) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_languageTag)
   {
-    [v4 setLanguageTag:?];
+    [toCopy setLanguageTag:?];
   }
 
   if ([(_MRLanguageOptionProtobuf *)self characteristicsCount])
   {
     [v10 clearCharacteristics];
-    v5 = [(_MRLanguageOptionProtobuf *)self characteristicsCount];
-    if (v5)
+    characteristicsCount = [(_MRLanguageOptionProtobuf *)self characteristicsCount];
+    if (characteristicsCount)
     {
-      v6 = v5;
+      v6 = characteristicsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(_MRLanguageOptionProtobuf *)self characteristicsAtIndex:i];
@@ -181,10 +181,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -192,7 +192,7 @@
     *(v5 + 44) |= 1u;
   }
 
-  v7 = [(NSString *)self->_languageTag copyWithZone:a3];
+  v7 = [(NSString *)self->_languageTag copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
@@ -216,7 +216,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v21 + 1) + 8 * v13) copyWithZone:{a3, v21}];
+        v14 = [*(*(&v21 + 1) + 8 * v13) copyWithZone:{zone, v21}];
         [v6 addCharacteristics:v14];
 
         ++v13;
@@ -229,11 +229,11 @@
     while (v11);
   }
 
-  v15 = [(NSString *)self->_displayName copyWithZone:a3];
+  v15 = [(NSString *)self->_displayName copyWithZone:zone];
   v16 = v6[2];
   v6[2] = v15;
 
-  v17 = [(NSString *)self->_identifier copyWithZone:a3];
+  v17 = [(NSString *)self->_identifier copyWithZone:zone];
   v18 = v6[3];
   v6[3] = v17;
 
@@ -241,24 +241,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_type != *(v4 + 10))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_type != *(equalCopy + 10))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
 LABEL_15:
     v10 = 0;
@@ -266,13 +266,13 @@ LABEL_15:
   }
 
   languageTag = self->_languageTag;
-  if (languageTag | *(v4 + 4) && ![(NSString *)languageTag isEqual:?])
+  if (languageTag | *(equalCopy + 4) && ![(NSString *)languageTag isEqual:?])
   {
     goto LABEL_15;
   }
 
   characteristics = self->_characteristics;
-  if (characteristics | *(v4 + 1))
+  if (characteristics | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)characteristics isEqual:?])
     {
@@ -281,7 +281,7 @@ LABEL_15:
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 2))
+  if (displayName | *(equalCopy + 2))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -290,7 +290,7 @@ LABEL_15:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     v10 = [(NSString *)identifier isEqual:?];
   }
@@ -323,18 +323,18 @@ LABEL_16:
   return v6 ^ [(NSString *)self->_identifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 44))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 44))
   {
-    self->_type = *(v4 + 10);
+    self->_type = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(_MRLanguageOptionProtobuf *)self setLanguageTag:?];
   }

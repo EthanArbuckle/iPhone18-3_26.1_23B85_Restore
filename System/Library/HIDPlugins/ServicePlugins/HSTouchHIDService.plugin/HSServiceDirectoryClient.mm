@@ -1,7 +1,7 @@
 @interface HSServiceDirectoryClient
-- (FileDescriptor)openService:(SEL)a3 config:(id)a4;
-- (HSServiceDirectoryClient)initWithSendRight:(const SendRight *)a3;
-- (HSServiceDirectoryClient)initWithSocket:(FileDescriptor *)a3;
+- (FileDescriptor)openService:(SEL)service config:(id)config;
+- (HSServiceDirectoryClient)initWithSendRight:(const SendRight *)right;
+- (HSServiceDirectoryClient)initWithSocket:(FileDescriptor *)socket;
 - (id).cxx_construct;
 - (id)services;
 - (void)services;
@@ -9,9 +9,9 @@
 
 @implementation HSServiceDirectoryClient
 
-- (HSServiceDirectoryClient)initWithSendRight:(const SendRight *)a3
+- (HSServiceDirectoryClient)initWithSendRight:(const SendRight *)right
 {
-  if (a3->_mp - 1 >= 0xFFFFFFFE)
+  if (right->_mp - 1 >= 0xFFFFFFFE)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"HSServiceDirectory.mm" lineNumber:365 description:{@"Invalid parameter not satisfying: %@", @"sendRight"}];
@@ -22,7 +22,7 @@
   v5 = [(HSServiceDirectoryClient *)&v13 init];
   if (v5)
   {
-    [HSMachPortListener getSendRightFromServer:a3];
+    [HSMachPortListener getSendRightFromServer:right];
     if ((v12 - 1) >= 0xFFFFFFFE)
     {
       basename_r("/Library/Caches/com.apple.xbs/Sources/HIDSensingPipeline/HIDSensingPipeline/HSServiceDirectory.mm", v14);
@@ -74,9 +74,9 @@ LABEL_16:
   return v7;
 }
 
-- (HSServiceDirectoryClient)initWithSocket:(FileDescriptor *)a3
+- (HSServiceDirectoryClient)initWithSocket:(FileDescriptor *)socket
 {
-  if (a3->_fd < 0)
+  if (socket->_fd < 0)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"HSServiceDirectory.mm" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"socket"}];
@@ -95,8 +95,8 @@ LABEL_16:
       v6->_socket._fd = -1;
     }
 
-    v6->_socket._fd = a3->_fd;
-    a3->_fd = -1;
+    v6->_socket._fd = socket->_fd;
+    socket->_fd = -1;
     v8 = v6;
   }
 
@@ -214,14 +214,14 @@ LABEL_16:
   return v5;
 }
 
-- (FileDescriptor)openService:(SEL)a3 config:(id)a4
+- (FileDescriptor)openService:(SEL)service config:(id)config
 {
-  v9 = a4;
+  configCopy = config;
   v10 = a5;
-  if (!v9)
+  if (!configCopy)
   {
     v12 = +[NSAssertionHandler currentHandler];
-    [v12 handleFailureInMethod:a3 object:self file:@"HSServiceDirectory.mm" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    [v12 handleFailureInMethod:service object:self file:@"HSServiceDirectory.mm" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   HSUtil::EncoderBuf::EncoderBuf(&v15);
@@ -238,7 +238,7 @@ LABEL_16:
     }
   }
 
-  HSUtil::Encoder::encodeNSString(&v15, v9);
+  HSUtil::Encoder::encodeNSString(&v15, configCopy);
   HSUtil::Encoder::encodeNSDictionary(&v15, v10);
   if (v15 || (HSUtil::Encoder::_encodeContainerStop(&v15), v15))
   {

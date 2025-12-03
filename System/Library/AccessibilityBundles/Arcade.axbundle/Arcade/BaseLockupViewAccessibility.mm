@@ -16,49 +16,49 @@ uint64_t __65__BaseLockupViewAccessibility__accessibilityAdvertisementElement__b
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(BaseLockupViewAccessibility *)self _accessibilityAdvertisementElement];
-  v5 = v4;
-  if (v4 && [v4 _accessibilityViewIsVisible])
+  array = [MEMORY[0x29EDB8DE8] array];
+  _accessibilityAdvertisementElement = [(BaseLockupViewAccessibility *)self _accessibilityAdvertisementElement];
+  v5 = _accessibilityAdvertisementElement;
+  if (_accessibilityAdvertisementElement && [_accessibilityAdvertisementElement _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v5];
+    [array axSafelyAddObject:v5];
   }
 
   v6 = [(BaseLockupViewAccessibility *)self safeValueForKey:@"accessibilityHeadingLabel"];
   if ([v6 _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v6];
+    [array axSafelyAddObject:v6];
   }
 
   v7 = [(BaseLockupViewAccessibility *)self safeValueForKey:@"accessibilityOrdinalLabel"];
   if ([v7 _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v7];
+    [array axSafelyAddObject:v7];
   }
 
   v8 = [(BaseLockupViewAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
   if ([v8 _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v8];
+    [array axSafelyAddObject:v8];
   }
 
   v9 = [(BaseLockupViewAccessibility *)self safeValueForKey:@"accessibilitySubtitleLabel"];
   if ([v9 _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v9];
+    [array axSafelyAddObject:v9];
   }
 
   v10 = [(BaseLockupViewAccessibility *)self safeValueForKey:@"accessibilityTertiaryTitleLabel"];
   if ([v10 _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v10];
+    [array axSafelyAddObject:v10];
   }
 
   v11 = [(BaseLockupViewAccessibility *)self safeValueForKey:@"accessibilityAdLabel"];
   if ([v11 _accessibilityViewIsVisible])
   {
-    v12 = [v11 text];
-    [v3 axSafelyAddObject:v12];
+    text = [v11 text];
+    [array axSafelyAddObject:text];
   }
 
   v13 = AXLabelForElements();
@@ -68,20 +68,20 @@ uint64_t __65__BaseLockupViewAccessibility__accessibilityAdvertisementElement__b
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v9.receiver = self;
   v9.super_class = BaseLockupViewAccessibility;
-  v4 = [(BaseLockupViewAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilitySupplementaryFooterViews = [(BaseLockupViewAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
-  v5 = [(BaseLockupViewAccessibility *)self _accessibilityAdvertisementElement];
-  [v3 axSafelyAddObject:v5];
+  _accessibilityAdvertisementElement = [(BaseLockupViewAccessibility *)self _accessibilityAdvertisementElement];
+  [array axSafelyAddObject:_accessibilityAdvertisementElement];
   v6 = [(BaseLockupViewAccessibility *)self safeValueForKey:@"accessibilityOfferButton"];
-  [v3 axSafelyAddObject:v6];
+  [array axSafelyAddObject:v6];
   v7 = [(BaseLockupViewAccessibility *)self safeValueForKey:@"accessibilityOfferLabel"];
-  [v3 axSafelyAddObject:v7];
+  [array axSafelyAddObject:v7];
 
-  return v3;
+  return array;
 }
 
 @end

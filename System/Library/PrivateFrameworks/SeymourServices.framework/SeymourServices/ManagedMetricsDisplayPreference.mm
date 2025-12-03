@@ -1,14 +1,14 @@
 @interface ManagedMetricsDisplayPreference
-- (ManagedMetricsDisplayPreference)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedMetricsDisplayPreference)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedMetricsDisplayPreference
 
-- (ManagedMetricsDisplayPreference)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedMetricsDisplayPreference)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedMetricsDisplayPreference();
-  return [(ManagedMetricsDisplayPreference *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedMetricsDisplayPreference *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

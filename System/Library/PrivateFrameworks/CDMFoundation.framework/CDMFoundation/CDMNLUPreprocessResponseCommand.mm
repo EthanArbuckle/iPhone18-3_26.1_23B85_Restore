@@ -1,19 +1,19 @@
 @interface CDMNLUPreprocessResponseCommand
-- (CDMNLUPreprocessResponseCommand)initWithPreprocessingWrapper:(id)a3;
+- (CDMNLUPreprocessResponseCommand)initWithPreprocessingWrapper:(id)wrapper;
 @end
 
 @implementation CDMNLUPreprocessResponseCommand
 
-- (CDMNLUPreprocessResponseCommand)initWithPreprocessingWrapper:(id)a3
+- (CDMNLUPreprocessResponseCommand)initWithPreprocessingWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = CDMNLUPreprocessResponseCommand;
   v6 = [(CDMBaseCommand *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preprocessingWrapper, a3);
+    objc_storeStrong(&v6->_preprocessingWrapper, wrapper);
   }
 
   return v7;

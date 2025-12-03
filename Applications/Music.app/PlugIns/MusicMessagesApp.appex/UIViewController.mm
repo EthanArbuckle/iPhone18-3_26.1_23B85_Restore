@@ -4,31 +4,31 @@
 - (NSData)playActivityForwardedRecommendationData;
 - (NSString)combinedPlayActivityFeatureName;
 - (UIViewController)playActivityFeatureNameSourceViewController;
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3;
-- (void)setPlayActivityFeatureNameSourceViewController:(id)a3;
-- (void)setPlayActivityForwardedRecommendationData:(id)a3;
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller;
+- (void)setPlayActivityFeatureNameSourceViewController:(id)controller;
+- (void)setPlayActivityForwardedRecommendationData:(id)data;
 @end
 
 @implementation UIViewController
 
 - (UIViewController)playActivityFeatureNameSourceViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIViewController.playActivityFeatureNameSourceViewController.getter();
 
   return v3;
 }
 
-- (void)setPlayActivityFeatureNameSourceViewController:(id)a3
+- (void)setPlayActivityFeatureNameSourceViewController:(id)controller
 {
-  v6 = a3;
-  v5 = self;
-  sub_100154650(a3, &qword_100633CA8, &qword_100638148);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100154650(controller, &qword_100633CA8, &qword_100638148);
 }
 
 - (NSData)playActivityForwardedRecommendationData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIViewController.playActivityForwardedRecommendationData.getter();
   v5 = v4;
 
@@ -47,20 +47,20 @@
   return v6;
 }
 
-- (void)setPlayActivityForwardedRecommendationData:(id)a3
+- (void)setPlayActivityForwardedRecommendationData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_1004D810C();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = sub_1004D810C();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -77,23 +77,23 @@
 
   else
   {
-    sub_100010530(v3, v8);
+    sub_100010530(dataCopy, v8);
     isa = sub_1004D80FC().super.isa;
-    sub_100010584(v3, v8);
+    sub_100010584(dataCopy, v8);
   }
 
   objc_setAssociatedObject(self, v10, isa, 3);
 
-  sub_100010584(v3, v8);
+  sub_100010584(dataCopy, v8);
 }
 
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller
 {
   sub_100004CB8(&unk_100637DF0);
   v4 = swift_allocObject();
   *(v4 + 16) = xmmword_100511DA0;
-  v5 = self;
-  v6 = [(UIViewController *)v5 playActivityFeatureName];
+  selfCopy = self;
+  playActivityFeatureName = [(UIViewController *)selfCopy playActivityFeatureName];
   v7 = sub_1004DD43C();
   v9 = v8;
 
@@ -107,7 +107,7 @@
 
 - (NSArray)completePlayActivityFeatureNames
 {
-  v2 = self;
+  selfCopy = self;
   UIViewController.completePlayActivityFeatureNames.getter();
 
   v3.super.isa = sub_1004DD85C().super.isa;
@@ -117,8 +117,8 @@
 
 - (NSString)combinedPlayActivityFeatureName
 {
-  v2 = self;
-  v3 = [(UIViewController *)v2 completePlayActivityFeatureNames];
+  selfCopy = self;
+  completePlayActivityFeatureNames = [(UIViewController *)selfCopy completePlayActivityFeatureNames];
   sub_1004DD87C();
 
   sub_100004CB8(&unk_1006372E0);
@@ -133,9 +133,9 @@
 
 - (BOOL)canPresentViewControllers
 {
-  v2 = [(UIViewController *)self popoverPresentationController];
-  v3 = v2;
-  if (v2)
+  popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+  v3 = popoverPresentationController;
+  if (popoverPresentationController)
   {
   }
 

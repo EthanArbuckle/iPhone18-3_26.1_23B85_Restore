@@ -10,12 +10,12 @@
 + (id)recentSearchCategory;
 + (id)suggestedSearchCategory;
 + (id)topHitsCategory;
-- (BOOL)isGroupedInCategory:(id)a3;
+- (BOOL)isGroupedInCategory:(id)category;
 - (MUISearchSuggestionCategory)groupingCategory;
-- (MUISearchSuggestionCategory)initWithDisplayName:(id)a3 groupingCategory:(id)a4;
+- (MUISearchSuggestionCategory)initWithDisplayName:(id)name groupingCategory:(id)category;
 - (NSString)ef_publicDescription;
 - (UIImage)image;
-- (unint64_t)indexOfScopeWithIdentifier:(id)a3;
+- (unint64_t)indexOfScopeWithIdentifier:(id)identifier;
 @end
 
 @implementation MUISearchSuggestionCategory
@@ -252,20 +252,20 @@ void __46__MUISearchSuggestionCategory_topHitsCategory__block_invoke()
   topHitsCategory_category = v2;
 }
 
-- (MUISearchSuggestionCategory)initWithDisplayName:(id)a3 groupingCategory:(id)a4
+- (MUISearchSuggestionCategory)initWithDisplayName:(id)name groupingCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  categoryCopy = category;
   v12.receiver = self;
   v12.super_class = MUISearchSuggestionCategory;
   v8 = [(MUISearchSuggestionCategory *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     displayName = v8->_displayName;
     v8->_displayName = v9;
 
-    objc_storeWeak(&v8->_groupingCategory, v7);
+    objc_storeWeak(&v8->_groupingCategory, categoryCopy);
   }
 
   return v8;
@@ -300,9 +300,9 @@ void __46__MUISearchSuggestionCategory_topHitsCategory__block_invoke()
     goto LABEL_2;
   }
 
-  v5 = [(MUISearchSuggestionCategory *)self imageInstantiationBlock];
+  imageInstantiationBlock = [(MUISearchSuggestionCategory *)self imageInstantiationBlock];
 
-  if (!v5)
+  if (!imageInstantiationBlock)
   {
     image = self->_image;
 LABEL_2:
@@ -311,18 +311,18 @@ LABEL_2:
   }
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%p>.image", self];
-  v7 = [MEMORY[0x277CD6870] sharedFontMetricCache];
-  v8 = [(MUISearchSuggestionCategory *)self imageInstantiationBlock];
-  v3 = [v7 cachedImage:v8 forKey:v6];
+  mEMORY[0x277CD6870] = [MEMORY[0x277CD6870] sharedFontMetricCache];
+  imageInstantiationBlock2 = [(MUISearchSuggestionCategory *)self imageInstantiationBlock];
+  v3 = [mEMORY[0x277CD6870] cachedImage:imageInstantiationBlock2 forKey:v6];
 
 LABEL_5:
 
   return v3;
 }
 
-- (unint64_t)indexOfScopeWithIdentifier:(id)a3
+- (unint64_t)indexOfScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(NSArray *)self->_scopes count])
   {
     scopes = self->_scopes;
@@ -330,7 +330,7 @@ LABEL_5:
     v8[1] = 3221225472;
     v8[2] = __58__MUISearchSuggestionCategory_indexOfScopeWithIdentifier___block_invoke;
     v8[3] = &unk_27818B0C0;
-    v9 = v4;
+    v9 = identifierCopy;
     v6 = [(NSArray *)scopes indexOfObjectPassingTest:v8];
   }
 
@@ -362,18 +362,18 @@ uint64_t __58__MUISearchSuggestionCategory_indexOfScopeWithIdentifier___block_in
   return WeakRetained;
 }
 
-- (BOOL)isGroupedInCategory:(id)a3
+- (BOOL)isGroupedInCategory:(id)category
 {
-  v4 = a3;
-  if (([(MUISearchSuggestionCategory *)self isEqual:v4]& 1) != 0)
+  categoryCopy = category;
+  if (([(MUISearchSuggestionCategory *)self isEqual:categoryCopy]& 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(MUISearchSuggestionCategory *)self groupingCategory];
-    v5 = [v6 isEqual:v4];
+    groupingCategory = [(MUISearchSuggestionCategory *)self groupingCategory];
+    v5 = [groupingCategory isEqual:categoryCopy];
   }
 
   return v5;

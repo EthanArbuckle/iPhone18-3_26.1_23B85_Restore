@@ -3,23 +3,23 @@
 - (BOOL)isTrackingLocked;
 - (BOOL)shouldShowTrackingSummaryViews;
 - (_TtC8CameraUI20CAMDockKitController)init;
-- (_TtC8CameraUI20CAMDockKitController)initWithMotionController:(id)a3;
-- (id)matchingTrackedSubjectForAnstID:(int64_t)a3;
-- (void)captureModeDidChange:(int64_t)a3;
-- (void)panoramaCaptureDidStart:(int64_t)a3;
-- (void)panoramaCaptureDidStop:(int64_t)a3;
-- (void)panoramaDriftingY:(double)a3;
-- (void)panoramaPaintingUpdatedWithCurrentSpeed:(double)a3 maxAllowedSpeed:(double)a4;
-- (void)systemEventDataWithInfo:(id)a3 data:(id)a4;
-- (void)tapToTrackTriggeredAtPoint:(CGPoint)a3 devicePosition:(int64_t)a4;
-- (void)trackingSummaryDataWithInfo:(id)a3 data:(id)a4;
+- (_TtC8CameraUI20CAMDockKitController)initWithMotionController:(id)controller;
+- (id)matchingTrackedSubjectForAnstID:(int64_t)d;
+- (void)captureModeDidChange:(int64_t)change;
+- (void)panoramaCaptureDidStart:(int64_t)start;
+- (void)panoramaCaptureDidStop:(int64_t)stop;
+- (void)panoramaDriftingY:(double)y;
+- (void)panoramaPaintingUpdatedWithCurrentSpeed:(double)speed maxAllowedSpeed:(double)allowedSpeed;
+- (void)systemEventDataWithInfo:(id)info data:(id)data;
+- (void)tapToTrackTriggeredAtPoint:(CGPoint)point devicePosition:(int64_t)position;
+- (void)trackingSummaryDataWithInfo:(id)info data:(id)data;
 @end
 
 @implementation CAMDockKitController
 
-- (_TtC8CameraUI20CAMDockKitController)initWithMotionController:(id)a3
+- (_TtC8CameraUI20CAMDockKitController)initWithMotionController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = sub_1A38962F8();
 
   return v4;
@@ -27,27 +27,27 @@
 
 - (BOOL)shouldShowTrackingSummaryViews
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A3892FC4();
 
   return v3;
 }
 
-- (void)tapToTrackTriggeredAtPoint:(CGPoint)a3 devicePosition:(int64_t)a4
+- (void)tapToTrackTriggeredAtPoint:(CGPoint)point devicePosition:(int64_t)position
 {
-  v4 = self;
+  selfCopy = self;
   sub_1A389307C();
 }
 
-- (void)captureModeDidChange:(int64_t)a3
+- (void)captureModeDidChange:(int64_t)change
 {
-  v4 = self;
-  sub_1A3893834(a3);
+  selfCopy = self;
+  sub_1A3893834(change);
 }
 
 - (BOOL)isConnectedAndTracking
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A389401C();
 
   return v3;
@@ -60,60 +60,60 @@
   return result;
 }
 
-- (void)systemEventDataWithInfo:(id)a3 data:(id)a4
+- (void)systemEventDataWithInfo:(id)info data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1A38C9850(v7);
+  infoCopy = info;
+  dataCopy = data;
+  selfCopy = self;
+  sub_1A38C9850(dataCopy);
 }
 
-- (void)trackingSummaryDataWithInfo:(id)a3 data:(id)a4
+- (void)trackingSummaryDataWithInfo:(id)info data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  infoCopy = info;
+  dataCopy = data;
+  selfCopy = self;
   sub_1A3966334();
 }
 
-- (id)matchingTrackedSubjectForAnstID:(int64_t)a3
+- (id)matchingTrackedSubjectForAnstID:(int64_t)d
 {
-  v4 = self;
-  v5 = CAMDockKitController.matchingTrackedSubjectForAnstID(_:)(a3);
+  selfCopy = self;
+  v5 = CAMDockKitController.matchingTrackedSubjectForAnstID(_:)(d);
 
   return v5;
 }
 
 - (BOOL)isTrackingLocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAMDockKitController.isTrackingLocked()();
 
   return v3;
 }
 
-- (void)panoramaCaptureDidStart:(int64_t)a3
+- (void)panoramaCaptureDidStart:(int64_t)start
 {
-  v4 = self;
-  CAMDockKitController.panoramaCaptureDidStart(_:)(a3);
+  selfCopy = self;
+  CAMDockKitController.panoramaCaptureDidStart(_:)(start);
 }
 
-- (void)panoramaCaptureDidStop:(int64_t)a3
+- (void)panoramaCaptureDidStop:(int64_t)stop
 {
-  v4 = self;
-  CAMDockKitController.panoramaCaptureDidStop(_:)(a3);
+  selfCopy = self;
+  CAMDockKitController.panoramaCaptureDidStop(_:)(stop);
 }
 
-- (void)panoramaPaintingUpdatedWithCurrentSpeed:(double)a3 maxAllowedSpeed:(double)a4
+- (void)panoramaPaintingUpdatedWithCurrentSpeed:(double)speed maxAllowedSpeed:(double)allowedSpeed
 {
-  v6 = self;
-  CAMDockKitController.panoramaPaintingUpdated(currentSpeed:maxAllowedSpeed:)(a3, a4);
+  selfCopy = self;
+  CAMDockKitController.panoramaPaintingUpdated(currentSpeed:maxAllowedSpeed:)(speed, allowedSpeed);
 }
 
-- (void)panoramaDriftingY:(double)a3
+- (void)panoramaDriftingY:(double)y
 {
-  v4 = self;
-  CAMDockKitController.panoramaDriftingY(_:)(a3);
+  selfCopy = self;
+  CAMDockKitController.panoramaDriftingY(_:)(y);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CRUpdateProgressCommand
 - (CRUpdateProgressCommand)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRUpdateProgressCommand
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(CRUpdateProgressCommand);
-  v6 = [(CRUpdateProgressCommand *)self userInfo];
-  v7 = [v6 copyWithZone:a3];
+  userInfo = [(CRUpdateProgressCommand *)self userInfo];
+  v7 = [userInfo copyWithZone:zone];
   [(CRUpdateProgressCommand *)v5 setUserInfo:v7];
 
   [(CRUpdateProgressCommand *)v5 setCommandDirection:[(CRUpdateProgressCommand *)self commandDirection]];

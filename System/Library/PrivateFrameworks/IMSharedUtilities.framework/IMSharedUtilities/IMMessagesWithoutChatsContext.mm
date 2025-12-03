@@ -6,11 +6,11 @@
 
 - (float)percentMissing
 {
-  v2 = self;
-  v3 = [(IMMessagesWithoutChatsContext *)v2 missingMessagesCount];
-  v4 = [(IMMessagesWithoutChatsContext *)v2 totalMessagesCount];
+  selfCopy = self;
+  missingMessagesCount = [(IMMessagesWithoutChatsContext *)selfCopy missingMessagesCount];
+  totalMessagesCount = [(IMMessagesWithoutChatsContext *)selfCopy totalMessagesCount];
 
-  return (v3 / v4) * 100.0;
+  return (missingMessagesCount / totalMessagesCount) * 100.0;
 }
 
 @end

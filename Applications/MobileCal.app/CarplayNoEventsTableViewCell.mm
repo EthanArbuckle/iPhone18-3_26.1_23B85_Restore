@@ -1,14 +1,14 @@
 @interface CarplayNoEventsTableViewCell
-- (CarplayNoEventsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CarplayNoEventsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation CarplayNoEventsTableViewCell
 
-- (CarplayNoEventsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CarplayNoEventsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v27.receiver = self;
   v27.super_class = CarplayNoEventsTableViewCell;
-  v4 = [(CarplayNoEventsTableViewCell *)&v27 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CarplayNoEventsTableViewCell *)&v27 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor clearColor];
@@ -27,27 +27,27 @@
     v10 = +[UIColor labelColor];
     [(UILabel *)v4->_label setTextColor:v10];
 
-    v11 = [(CarplayNoEventsTableViewCell *)v4 traitCollection];
-    v12 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout compatibleWithTraitCollection:v11];
+    traitCollection = [(CarplayNoEventsTableViewCell *)v4 traitCollection];
+    v12 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout compatibleWithTraitCollection:traitCollection];
     [(UILabel *)v4->_label setFont:v12];
 
     [(UILabel *)v4->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CarplayNoEventsTableViewCell *)v4 addSubview:v4->_label];
-    v26 = [(UILabel *)v4->_label leadingAnchor];
-    v25 = [(CarplayNoEventsTableViewCell *)v4 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    leadingAnchor = [(UILabel *)v4->_label leadingAnchor];
+    leadingAnchor2 = [(CarplayNoEventsTableViewCell *)v4 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[0] = v24;
-    v23 = [(UILabel *)v4->_label trailingAnchor];
-    v13 = [(CarplayNoEventsTableViewCell *)v4 trailingAnchor];
-    v14 = [v23 constraintEqualToAnchor:v13];
+    trailingAnchor = [(UILabel *)v4->_label trailingAnchor];
+    trailingAnchor2 = [(CarplayNoEventsTableViewCell *)v4 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v28[1] = v14;
-    v15 = [(UILabel *)v4->_label firstBaselineAnchor];
-    v16 = [(CarplayNoEventsTableViewCell *)v4 topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:38.0];
+    firstBaselineAnchor = [(UILabel *)v4->_label firstBaselineAnchor];
+    topAnchor = [(CarplayNoEventsTableViewCell *)v4 topAnchor];
+    v17 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:38.0];
     v28[2] = v17;
-    v18 = [(CarplayNoEventsTableViewCell *)v4 bottomAnchor];
-    v19 = [(UILabel *)v4->_label lastBaselineAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:12.0];
+    bottomAnchor = [(CarplayNoEventsTableViewCell *)v4 bottomAnchor];
+    lastBaselineAnchor = [(UILabel *)v4->_label lastBaselineAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:12.0];
     v28[3] = v20;
     v21 = [NSArray arrayWithObjects:v28 count:4];
     [NSLayoutConstraint activateConstraints:v21];

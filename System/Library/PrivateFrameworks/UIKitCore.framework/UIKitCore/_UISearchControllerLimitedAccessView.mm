@@ -1,16 +1,16 @@
 @interface _UISearchControllerLimitedAccessView
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (_UISearchControllerLimitedAccessView)initWithFrame:(CGRect)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (_UISearchControllerLimitedAccessView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _UISearchControllerLimitedAccessView
 
-- (_UISearchControllerLimitedAccessView)initWithFrame:(CGRect)a3
+- (_UISearchControllerLimitedAccessView)initWithFrame:(CGRect)frame
 {
   v56[9] = *MEMORY[0x1E69E9840];
   v55.receiver = self;
   v55.super_class = _UISearchControllerLimitedAccessView;
-  v3 = [(UIView *)&v55 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v55 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -57,46 +57,46 @@
 
     [(UIView *)v3->_backButton sizeToFit];
     [(UIView *)v3 addSubview:v3->_backButton];
-    v53 = [(UIView *)v3->_keyboardLimitedLabel leftAnchor];
-    v54 = [(UIView *)v3 safeAreaLayoutGuide];
-    v52 = [v54 leftAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52 constant:5.0];
+    leftAnchor = [(UIView *)v3->_keyboardLimitedLabel leftAnchor];
+    safeAreaLayoutGuide = [(UIView *)v3 safeAreaLayoutGuide];
+    leftAnchor2 = [safeAreaLayoutGuide leftAnchor];
+    v51 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:5.0];
     v56[0] = v51;
-    v49 = [(UIView *)v3->_keyboardLimitedLabel rightAnchor];
-    v50 = [(UIView *)v3 safeAreaLayoutGuide];
-    v48 = [v50 rightAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:-5.0];
+    rightAnchor = [(UIView *)v3->_keyboardLimitedLabel rightAnchor];
+    safeAreaLayoutGuide2 = [(UIView *)v3 safeAreaLayoutGuide];
+    rightAnchor2 = [safeAreaLayoutGuide2 rightAnchor];
+    v47 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-5.0];
     v56[1] = v47;
-    v45 = [(UIView *)v3->_keyboardLimitedLabel bottomAnchor];
-    v46 = [(UIView *)v3 safeAreaLayoutGuide];
-    v44 = [v46 centerYAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:-5.0];
+    bottomAnchor = [(UIView *)v3->_keyboardLimitedLabel bottomAnchor];
+    safeAreaLayoutGuide3 = [(UIView *)v3 safeAreaLayoutGuide];
+    centerYAnchor = [safeAreaLayoutGuide3 centerYAnchor];
+    v43 = [bottomAnchor constraintEqualToAnchor:centerYAnchor constant:-5.0];
     v56[2] = v43;
-    v41 = [(UIView *)v3->_backButton centerXAnchor];
-    v42 = [(UIView *)v3 safeAreaLayoutGuide];
-    v40 = [v42 centerXAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    centerXAnchor = [(UIView *)v3->_backButton centerXAnchor];
+    safeAreaLayoutGuide4 = [(UIView *)v3 safeAreaLayoutGuide];
+    centerXAnchor2 = [safeAreaLayoutGuide4 centerXAnchor];
+    v39 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v56[3] = v39;
-    v37 = [(UIView *)v3->_backButton topAnchor];
-    v38 = [(UIView *)v3 safeAreaLayoutGuide];
-    v36 = [v38 centerYAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36 constant:5.0];
+    topAnchor = [(UIView *)v3->_backButton topAnchor];
+    safeAreaLayoutGuide5 = [(UIView *)v3 safeAreaLayoutGuide];
+    centerYAnchor2 = [safeAreaLayoutGuide5 centerYAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:centerYAnchor2 constant:5.0];
     v56[4] = v35;
-    v33 = [(UIView *)v3->_backgroundView leftAnchor];
-    v32 = [(UIView *)v3 leftAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    leftAnchor3 = [(UIView *)v3->_backgroundView leftAnchor];
+    leftAnchor4 = [(UIView *)v3 leftAnchor];
+    v31 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     v56[5] = v31;
-    v21 = [(UIView *)v3->_backgroundView rightAnchor];
-    v22 = [(UIView *)v3 rightAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    rightAnchor3 = [(UIView *)v3->_backgroundView rightAnchor];
+    rightAnchor4 = [(UIView *)v3 rightAnchor];
+    v23 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v56[6] = v23;
-    v24 = [(UIView *)v3->_backgroundView topAnchor];
-    v25 = [(UIView *)v3 topAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    topAnchor2 = [(UIView *)v3->_backgroundView topAnchor];
+    topAnchor3 = [(UIView *)v3 topAnchor];
+    v26 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v56[7] = v26;
-    v27 = [(UIView *)v3->_backgroundView bottomAnchor];
-    v28 = [(UIView *)v3 bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    bottomAnchor2 = [(UIView *)v3->_backgroundView bottomAnchor];
+    bottomAnchor3 = [(UIView *)v3 bottomAnchor];
+    v29 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v56[8] = v29;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:9];
 
@@ -106,10 +106,10 @@
   return v3;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = [a3 nextFocusedItem];
-  LOBYTE(self) = v4 == self->_backButton;
+  nextFocusedItem = [context nextFocusedItem];
+  LOBYTE(self) = nextFocusedItem == self->_backButton;
 
   return self;
 }

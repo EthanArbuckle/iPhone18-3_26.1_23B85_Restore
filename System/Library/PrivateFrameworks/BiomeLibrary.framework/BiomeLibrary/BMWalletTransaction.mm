@@ -1,38 +1,38 @@
 @interface BMWalletTransaction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletTransaction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMWalletTransaction)initWithPassUniqueID:(id)a3 passLocalizedDescription:(id)a4 transactionType:(int)a5 transactionID:(id)a6 merchantType:(int)a7 poiCategory:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletTransaction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMWalletTransaction)initWithPassUniqueID:(id)d passLocalizedDescription:(id)description transactionType:(int)type transactionID:(id)iD merchantType:(int)merchantType poiCategory:(id)category;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletTransaction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWalletTransaction *)self passUniqueID];
-    v7 = [v5 passUniqueID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    passUniqueID = [(BMWalletTransaction *)self passUniqueID];
+    passUniqueID2 = [v5 passUniqueID];
+    v8 = passUniqueID2;
+    if (passUniqueID == passUniqueID2)
     {
     }
 
     else
     {
-      v9 = [(BMWalletTransaction *)self passUniqueID];
-      v10 = [v5 passUniqueID];
-      v11 = [v9 isEqual:v10];
+      passUniqueID3 = [(BMWalletTransaction *)self passUniqueID];
+      passUniqueID4 = [v5 passUniqueID];
+      v11 = [passUniqueID3 isEqual:passUniqueID4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMWalletTransaction *)self passLocalizedDescription];
-    v14 = [v5 passLocalizedDescription];
-    v15 = v14;
-    if (v13 == v14)
+    passLocalizedDescription = [(BMWalletTransaction *)self passLocalizedDescription];
+    passLocalizedDescription2 = [v5 passLocalizedDescription];
+    v15 = passLocalizedDescription2;
+    if (passLocalizedDescription == passLocalizedDescription2)
     {
     }
 
     else
     {
-      v16 = [(BMWalletTransaction *)self passLocalizedDescription];
-      v17 = [v5 passLocalizedDescription];
-      v18 = [v16 isEqual:v17];
+      passLocalizedDescription3 = [(BMWalletTransaction *)self passLocalizedDescription];
+      passLocalizedDescription4 = [v5 passLocalizedDescription];
+      v18 = [passLocalizedDescription3 isEqual:passLocalizedDescription4];
 
       if (!v18)
       {
@@ -59,21 +59,21 @@
       }
     }
 
-    v19 = [(BMWalletTransaction *)self transactionType];
-    if (v19 == [v5 transactionType])
+    transactionType = [(BMWalletTransaction *)self transactionType];
+    if (transactionType == [v5 transactionType])
     {
-      v20 = [(BMWalletTransaction *)self transactionID];
-      v21 = [v5 transactionID];
-      v22 = v21;
-      if (v20 == v21)
+      transactionID = [(BMWalletTransaction *)self transactionID];
+      transactionID2 = [v5 transactionID];
+      v22 = transactionID2;
+      if (transactionID == transactionID2)
       {
       }
 
       else
       {
-        v23 = [(BMWalletTransaction *)self transactionID];
-        v24 = [v5 transactionID];
-        v25 = [v23 isEqual:v24];
+        transactionID3 = [(BMWalletTransaction *)self transactionID];
+        transactionID4 = [v5 transactionID];
+        v25 = [transactionID3 isEqual:transactionID4];
 
         if (!v25)
         {
@@ -81,21 +81,21 @@
         }
       }
 
-      v26 = [(BMWalletTransaction *)self merchantType];
-      if (v26 == [v5 merchantType])
+      merchantType = [(BMWalletTransaction *)self merchantType];
+      if (merchantType == [v5 merchantType])
       {
-        v27 = [(BMWalletTransaction *)self poiCategory];
-        v28 = [v5 poiCategory];
-        if (v27 == v28)
+        poiCategory = [(BMWalletTransaction *)self poiCategory];
+        poiCategory2 = [v5 poiCategory];
+        if (poiCategory == poiCategory2)
         {
           v12 = 1;
         }
 
         else
         {
-          v29 = [(BMWalletTransaction *)self poiCategory];
-          v30 = [v5 poiCategory];
-          v12 = [v29 isEqual:v30];
+          poiCategory3 = [(BMWalletTransaction *)self poiCategory];
+          poiCategory4 = [v5 poiCategory];
+          v12 = [poiCategory3 isEqual:poiCategory4];
         }
 
         goto LABEL_20;
@@ -118,66 +118,66 @@ LABEL_21:
 - (id)jsonDictionary
 {
   v24[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMWalletTransaction *)self passUniqueID];
-  v4 = [(BMWalletTransaction *)self passLocalizedDescription];
+  passUniqueID = [(BMWalletTransaction *)self passUniqueID];
+  passLocalizedDescription = [(BMWalletTransaction *)self passLocalizedDescription];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletTransaction transactionType](self, "transactionType")}];
-  v6 = [(BMWalletTransaction *)self transactionID];
+  transactionID = [(BMWalletTransaction *)self transactionID];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletTransaction merchantType](self, "merchantType")}];
-  v8 = [(BMWalletTransaction *)self poiCategory];
+  poiCategory = [(BMWalletTransaction *)self poiCategory];
   v23[0] = @"passUniqueID";
-  v9 = v3;
-  if (!v3)
+  null = passUniqueID;
+  if (!passUniqueID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v9;
-  v22 = v4;
-  v24[0] = v9;
+  v21 = null;
+  v22 = passLocalizedDescription;
+  v24[0] = null;
   v23[1] = @"passLocalizedDescription";
-  v10 = v4;
-  if (!v4)
+  null2 = passLocalizedDescription;
+  if (!passLocalizedDescription)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v10;
-  v24[1] = v10;
+  v19 = null2;
+  v24[1] = null2;
   v23[2] = @"transactionType";
-  v11 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[2] = v11;
+  v24[2] = null3;
   v23[3] = @"transactionID";
-  v12 = v6;
-  if (!v6)
+  null4 = transactionID;
+  if (!transactionID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13 = v3;
-  v24[3] = v12;
+  v13 = passUniqueID;
+  v24[3] = null4;
   v23[4] = @"merchantType";
-  v14 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[4] = v14;
+  v24[4] = null5;
   v23[5] = @"poiCategory";
-  v15 = v8;
-  if (!v8)
+  null6 = poiCategory;
+  if (!poiCategory)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[5] = v15;
+  v24[5] = null6;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:{6, v19}];
-  if (v8)
+  if (poiCategory)
   {
     if (v7)
     {
@@ -191,7 +191,7 @@ LABEL_21:
     if (v7)
     {
 LABEL_15:
-      if (v6)
+      if (transactionID)
       {
         goto LABEL_16;
       }
@@ -207,7 +207,7 @@ LABEL_24:
     }
   }
 
-  if (!v6)
+  if (!transactionID)
   {
     goto LABEL_24;
   }
@@ -244,23 +244,23 @@ LABEL_19:
   return v16;
 }
 
-- (BMWalletTransaction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWalletTransaction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"passUniqueID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"passUniqueID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"passLocalizedDescription"];
-    v43 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"passLocalizedDescription"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v14 = 0;
           v16 = 0;
@@ -274,7 +274,7 @@ LABEL_4:
         v48 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"passLocalizedDescription"];
         v60 = v48;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-        v10 = v20 = a4;
+        v10 = v20 = error;
         v21 = v19;
         v8 = v18;
         v14 = 0;
@@ -291,8 +291,8 @@ LABEL_4:
       v47 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"transactionType"];
-    v50 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"transactionType"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -306,7 +306,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v43)
+          if (!errorCopy)
           {
             v48 = 0;
             v16 = 0;
@@ -326,11 +326,11 @@ LABEL_4:
           v37 = [v49 initWithDomain:v36 code:2 userInfo:v22];
           v48 = 0;
           v16 = 0;
-          *v43 = v37;
+          *errorCopy = v37;
 LABEL_44:
           v14 = v47;
 
-          self = v50;
+          self = selfCopy;
 LABEL_45:
 
           goto LABEL_46;
@@ -347,14 +347,14 @@ LABEL_45:
       v48 = 0;
     }
 
-    v22 = [v6 objectForKeyedSubscript:@"transactionID"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"transactionID"];
     v44 = v8;
     if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v43)
+        if (!errorCopy)
         {
           v45 = 0;
           v16 = 0;
@@ -370,7 +370,7 @@ LABEL_45:
         v27 = [v46 initWithDomain:v26 code:2 userInfo:v23];
         v45 = 0;
         v16 = 0;
-        *v43 = v27;
+        *errorCopy = v27;
         goto LABEL_43;
       }
 
@@ -382,7 +382,7 @@ LABEL_45:
       v45 = 0;
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"merchantType"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"merchantType"];
     if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -396,7 +396,7 @@ LABEL_45:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v43)
+          if (!errorCopy)
           {
             v24 = 0;
             v16 = 0;
@@ -412,7 +412,7 @@ LABEL_45:
           v40 = [v38 initWithDomain:v39 code:2 userInfo:v28];
           v24 = 0;
           v16 = 0;
-          *v43 = v40;
+          *errorCopy = v40;
           goto LABEL_42;
         }
 
@@ -427,13 +427,13 @@ LABEL_45:
       v24 = 0;
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"poiCategory"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"poiCategory"];
     if (v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v43)
+        if (errorCopy)
         {
           v42 = objc_alloc(MEMORY[0x1E696ABC0]);
           v41 = *MEMORY[0x1E698F240];
@@ -441,7 +441,7 @@ LABEL_45:
           v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"poiCategory"];
           v52 = v32;
           v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-          *v43 = [v42 initWithDomain:v41 code:2 userInfo:v33];
+          *errorCopy = [v42 initWithDomain:v41 code:2 userInfo:v33];
         }
 
         v29 = 0;
@@ -457,8 +457,8 @@ LABEL_45:
       v29 = 0;
     }
 
-    v16 = -[BMWalletTransaction initWithPassUniqueID:passLocalizedDescription:transactionType:transactionID:merchantType:poiCategory:](v50, "initWithPassUniqueID:passLocalizedDescription:transactionType:transactionID:merchantType:poiCategory:", v44, v47, [v48 intValue], v45, objc_msgSend(v24, "intValue"), v29);
-    v50 = v16;
+    v16 = -[BMWalletTransaction initWithPassUniqueID:passLocalizedDescription:transactionType:transactionID:merchantType:poiCategory:](selfCopy, "initWithPassUniqueID:passLocalizedDescription:transactionType:transactionID:merchantType:poiCategory:", v44, v47, [v48 intValue], v45, objc_msgSend(v24, "intValue"), v29);
+    selfCopy = v16;
 LABEL_42:
 
 LABEL_43:
@@ -473,7 +473,7 @@ LABEL_43:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
@@ -489,7 +489,7 @@ LABEL_43:
   v15 = [v12 initWithDomain:v13 code:2 userInfo:v9];
   v8 = 0;
   v16 = 0;
-  *a4 = v15;
+  *error = v15;
 LABEL_46:
 
 LABEL_47:
@@ -501,14 +501,14 @@ LABEL_47:
 {
   v3 = objc_opt_new();
   [(BMWalletTransaction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_passUniqueID)
   {
     PBDataWriterWriteStringField();
@@ -534,9 +534,9 @@ LABEL_47:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMWalletTransaction;
   v5 = [(BMEventBase *)&v35 init];
@@ -545,12 +545,12 @@ LABEL_47:
     goto LABEL_62;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -561,18 +561,18 @@ LABEL_47:
       while (1)
       {
         v36 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v36 & 0x7F) << v7;
@@ -589,9 +589,9 @@ LABEL_47:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -616,18 +616,18 @@ LABEL_16:
             while (1)
             {
               v36 = 0;
-              v25 = [v4 position] + 1;
-              if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+              v25 = [fromCopy position] + 1;
+              if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
               {
-                v27 = [v4 data];
-                [v27 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v36 & 0x7F) << v23;
@@ -644,7 +644,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 7)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 7)
             {
 LABEL_56:
               LODWORD(v18) = 0;
@@ -682,18 +682,18 @@ LABEL_45:
             while (1)
             {
               v36 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v36 & 0x7F) << v16;
@@ -710,7 +710,7 @@ LABEL_45:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 6)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 6)
             {
 LABEL_52:
               LODWORD(v18) = 0;
@@ -729,13 +729,13 @@ LABEL_58:
       *(&v5->super.super.isa + v29) = v28;
 
 LABEL_59:
-      v32 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v32 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_61:
     v33 = 0;
@@ -753,35 +753,35 @@ LABEL_62:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMWalletTransaction *)self passUniqueID];
-  v5 = [(BMWalletTransaction *)self passLocalizedDescription];
+  passUniqueID = [(BMWalletTransaction *)self passUniqueID];
+  passLocalizedDescription = [(BMWalletTransaction *)self passLocalizedDescription];
   v6 = BMWalletTransactionTypeAsString([(BMWalletTransaction *)self transactionType]);
-  v7 = [(BMWalletTransaction *)self transactionID];
+  transactionID = [(BMWalletTransaction *)self transactionID];
   v8 = BMWalletTransactionMerchantTypeAsString([(BMWalletTransaction *)self merchantType]);
-  v9 = [(BMWalletTransaction *)self poiCategory];
-  v10 = [v3 initWithFormat:@"BMWalletTransaction with passUniqueID: %@, passLocalizedDescription: %@, transactionType: %@, transactionID: %@, merchantType: %@, poiCategory: %@", v4, v5, v6, v7, v8, v9];
+  poiCategory = [(BMWalletTransaction *)self poiCategory];
+  v10 = [v3 initWithFormat:@"BMWalletTransaction with passUniqueID: %@, passLocalizedDescription: %@, transactionType: %@, transactionID: %@, merchantType: %@, poiCategory: %@", passUniqueID, passLocalizedDescription, v6, transactionID, v8, poiCategory];
 
   return v10;
 }
 
-- (BMWalletTransaction)initWithPassUniqueID:(id)a3 passLocalizedDescription:(id)a4 transactionType:(int)a5 transactionID:(id)a6 merchantType:(int)a7 poiCategory:(id)a8
+- (BMWalletTransaction)initWithPassUniqueID:(id)d passLocalizedDescription:(id)description transactionType:(int)type transactionID:(id)iD merchantType:(int)merchantType poiCategory:(id)category
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  dCopy = d;
+  descriptionCopy = description;
+  iDCopy = iD;
+  categoryCopy = category;
   v21.receiver = self;
   v21.super_class = BMWalletTransaction;
   v18 = [(BMEventBase *)&v21 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_passUniqueID, a3);
-    objc_storeStrong(&v18->_passLocalizedDescription, a4);
-    v18->_transactionType = a5;
-    objc_storeStrong(&v18->_transactionID, a6);
-    v18->_merchantType = a7;
-    objc_storeStrong(&v18->_poiCategory, a8);
+    objc_storeStrong(&v18->_passUniqueID, d);
+    objc_storeStrong(&v18->_passLocalizedDescription, description);
+    v18->_transactionType = type;
+    objc_storeStrong(&v18->_transactionID, iD);
+    v18->_merchantType = merchantType;
+    objc_storeStrong(&v18->_poiCategory, category);
   }
 
   return v18;
@@ -831,9 +831,9 @@ LABEL_62:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -841,8 +841,8 @@ LABEL_62:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWalletTransaction alloc] initByReadFrom:v7];
     v4 = v8;

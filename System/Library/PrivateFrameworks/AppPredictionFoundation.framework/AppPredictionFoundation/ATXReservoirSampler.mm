@@ -1,13 +1,13 @@
 @interface ATXReservoirSampler
-+ (id)sampleWeightedArray:(id)a3;
-+ (id)sampleWeightedArray:(id)a3 numToSample:(unint64_t)a4;
++ (id)sampleWeightedArray:(id)array;
++ (id)sampleWeightedArray:(id)array numToSample:(unint64_t)sample;
 @end
 
 @implementation ATXReservoirSampler
 
-+ (id)sampleWeightedArray:(id)a3
++ (id)sampleWeightedArray:(id)array
 {
-  v3 = [a3 _pas_mappedArrayWithIndexedTransform:&__block_literal_global_10];
+  v3 = [array _pas_mappedArrayWithIndexedTransform:&__block_literal_global_10];
   v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_10];
   v5 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_13];
 
@@ -49,21 +49,21 @@ uint64_t __43__ATXReservoirSampler_sampleWeightedArray___block_invoke_7(uint64_t
   return v7;
 }
 
-+ (id)sampleWeightedArray:(id)a3 numToSample:(unint64_t)a4
++ (id)sampleWeightedArray:(id)array numToSample:(unint64_t)sample
 {
-  v5 = [a1 sampleWeightedArray:a3];
+  v5 = [self sampleWeightedArray:array];
   v6 = [v5 count];
-  if (v6 >= a4)
+  if (v6 >= sample)
   {
-    v7 = a4;
+    sampleCopy = sample;
   }
 
   else
   {
-    v7 = v6;
+    sampleCopy = v6;
   }
 
-  v8 = [v5 subarrayWithRange:{0, v7}];
+  v8 = [v5 subarrayWithRange:{0, sampleCopy}];
 
   return v8;
 }

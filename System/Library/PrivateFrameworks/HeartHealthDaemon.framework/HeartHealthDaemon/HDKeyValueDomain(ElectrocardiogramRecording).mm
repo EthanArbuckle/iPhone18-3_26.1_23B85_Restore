@@ -15,7 +15,7 @@
   v22 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CCBCE8];
   v19 = 0;
-  v5 = [a1 propertyListValueForKey:v4 error:&v19];
+  v5 = [self propertyListValueForKey:v4 error:&v19];
   v6 = v19;
   v7 = v6;
   if (v5)
@@ -35,11 +35,11 @@
 
   else
   {
-    v10 = [v6 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [v6 hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v11 = *MEMORY[0x277CCC2D8];
     v12 = *MEMORY[0x277CCC2D8];
-    if (v10)
+    if (hk_isDatabaseAccessibilityError)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -81,7 +81,7 @@
   v22 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CCBCD0];
   v19 = 0;
-  v5 = [a1 dateForKey:v4 error:&v19];
+  v5 = [self dateForKey:v4 error:&v19];
   v6 = v19;
   v7 = v6;
   if (v5)
@@ -101,11 +101,11 @@
 
   else
   {
-    v10 = [v6 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [v6 hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v11 = *MEMORY[0x277CCC2D8];
     v12 = *MEMORY[0x277CCC2D8];
-    if (v10)
+    if (hk_isDatabaseAccessibilityError)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -145,24 +145,24 @@
 - (uint64_t)hdhr_setElectrocardiogramRecordingFirstOnboardingCompletedDate:()ElectrocardiogramRecording error:
 {
   v6 = a3;
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CCE460]), v7, (v8 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CCE460]), v7, (v8 & 1) == 0))
   {
     [HDKeyValueDomain(ElectrocardiogramRecording) hdhr_setElectrocardiogramRecordingFirstOnboardingCompletedDate:error:];
   }
 
-  v9 = [a1 setDate:v6 forKey:*MEMORY[0x277CCBCD0] error:a4];
+  v9 = [self setDate:v6 forKey:*MEMORY[0x277CCBCD0] error:a4];
 
   return v9;
 }
 
 - (id)hdhr_electrocardiogramRecordingOnboardingCompletionVersionWithError:()ElectrocardiogramRecording
 {
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
   {
     [HDKeyValueDomain(ElectrocardiogramRecording) hdhr_electrocardiogramRecordingOnboardingCompletionVersionWithError:];
   }
 
-  v7 = [a1 numberForKey:*MEMORY[0x277CCBCF0] error:a3];
+  v7 = [self numberForKey:*MEMORY[0x277CCBCF0] error:a3];
   if ([v7 integerValue])
   {
     v8 = v7;
@@ -179,14 +179,14 @@
 - (id)hdhr_electrocardiogramRecordingOnboardingCountryCodeWithError:()ElectrocardiogramRecording
 {
   v25 = *MEMORY[0x277D85DE8];
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
   {
     [HDKeyValueDomain(ElectrocardiogramRecording) hdhr_electrocardiogramRecordingOnboardingCountryCodeWithError:];
   }
 
   v7 = *MEMORY[0x277CCBCE0];
   v22 = 0;
-  v8 = [a1 stringForKey:v7 error:&v22];
+  v8 = [self stringForKey:v7 error:&v22];
   v9 = v22;
   v10 = v9;
   if (v8)
@@ -201,16 +201,16 @@
 
   if (v11)
   {
-    v12 = [v8 hk_copyNonEmptyString];
+    hk_copyNonEmptyString = [v8 hk_copyNonEmptyString];
   }
 
   else
   {
-    v13 = [v9 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [v9 hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v14 = *MEMORY[0x277CCC2D8];
     v15 = *MEMORY[0x277CCC2D8];
-    if (v13)
+    if (hk_isDatabaseAccessibilityError)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -231,51 +231,51 @@
     if (a3)
     {
       v19 = v10;
-      v12 = 0;
+      hk_copyNonEmptyString = 0;
       *a3 = v10;
     }
 
     else
     {
       _HKLogDroppedError();
-      v12 = 0;
+      hk_copyNonEmptyString = 0;
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return hk_copyNonEmptyString;
 }
 
 - (uint64_t)hdhr_resetElectrocardiogramRecordingFirstOnboardingCompletedDateWithError:()ElectrocardiogramRecording
 {
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
   {
     [HDKeyValueDomain(ElectrocardiogramRecording) hdhr_resetElectrocardiogramRecordingFirstOnboardingCompletedDateWithError:];
   }
 
   v7 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277CCBCD0]];
-  v8 = [a1 removeValuesForKeys:v7 error:a3];
+  v8 = [self removeValuesForKeys:v7 error:a3];
 
   return v8;
 }
 
 - (uint64_t)hdhr_electrocardiogramRecordingCountryCodeProvenanceWithError:()ElectrocardiogramRecording
 {
-  if ([a1 category] != 105)
+  if ([self category] != 105)
   {
     [HDKeyValueDomain(ElectrocardiogramRecording) hdhr_electrocardiogramRecordingCountryCodeProvenanceWithError:];
   }
 
-  v5 = [a1 domainName];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CCE460]];
+  domainName = [self domainName];
+  v6 = [domainName isEqualToString:*MEMORY[0x277CCE460]];
 
   if ((v6 & 1) == 0)
   {
     [HDKeyValueDomain(ElectrocardiogramRecording) hdhr_electrocardiogramRecordingCountryCodeProvenanceWithError:];
   }
 
-  return [a1 numberForKey:@"HKElectrocardiogramOnboardingCountryCodeProvenance" error:a3];
+  return [self numberForKey:@"HKElectrocardiogramOnboardingCountryCodeProvenance" error:a3];
 }
 
 - (void)hdhr_electrocardiogramRecordingOnboardingHistoryWithError:()ElectrocardiogramRecording .cold.1(void *a1)

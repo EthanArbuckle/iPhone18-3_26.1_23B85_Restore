@@ -1,24 +1,24 @@
 @interface IdentityImageDimension
 - (_TtC13CoreIDVShared22IdentityImageDimension)init;
-- (_TtC13CoreIDVShared22IdentityImageDimension)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared22IdentityImageDimension)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityImageDimension
 
-- (_TtC13CoreIDVShared22IdentityImageDimension)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared22IdentityImageDimension)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B6C3FC(v3);
+  coderCopy = coder;
+  v4 = sub_225B6C3FC(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityImageDimension.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityImageDimension.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared22IdentityImageDimension)init

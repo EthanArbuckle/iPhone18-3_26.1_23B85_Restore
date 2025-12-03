@@ -1,28 +1,28 @@
 @interface NPHCSCellularPlanDataSource
-- (NPHCSCellularPlanDataSource)initWithDelegate:(id)a3;
-- (void)_cellularPlanInfoDidChange:(id)a3;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (NPHCSCellularPlanDataSource)initWithDelegate:(id)delegate;
+- (void)_cellularPlanInfoDidChange:(id)change;
+- (void)simStatusDidChange:(id)change status:(id)status;
 @end
 
 @implementation NPHCSCellularPlanDataSource
 
-- (NPHCSCellularPlanDataSource)initWithDelegate:(id)a3
+- (NPHCSCellularPlanDataSource)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = NPHCSCellularPlanDataSource;
   v5 = [(NPHCSCellularPlanDataSource *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    [(NPHCSCellularPlanDataSource *)v5 setDelegate:v4];
+    [(NPHCSCellularPlanDataSource *)v5 setDelegate:delegateCopy];
     v7 = [CoreTelephonyClient alloc];
     v8 = dispatch_get_global_queue(0, 0);
     v9 = [v7 initWithQueue:v8];
     [(NPHCSCellularPlanDataSource *)v6 setCoreTelephonyClient:v9];
 
-    v10 = [(NPHCSCellularPlanDataSource *)v6 coreTelephonyClient];
-    [v10 setDelegate:v6];
+    coreTelephonyClient = [(NPHCSCellularPlanDataSource *)v6 coreTelephonyClient];
+    [coreTelephonyClient setDelegate:v6];
 
     v11 = +[NPHCellularBridgeUIManager sharedInstance];
     [v11 startRemoteProvisioning];
@@ -39,42 +39,42 @@
   return v6;
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  statusCopy = status;
   v8 = nph_general_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315650;
     v12 = "[NPHCSCellularPlanDataSource simStatusDidChange:status:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = changeCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = statusCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%s context:%@ status:%@", &v11, 0x20u);
   }
 
-  v9 = [(NPHCSCellularPlanDataSource *)self delegate];
-  v10 = [(NPHCSCellularPlanDataSource *)self cellularPlansDictionary];
-  [v9 cellularPlansUpdated:v10 error:0];
+  delegate = [(NPHCSCellularPlanDataSource *)self delegate];
+  cellularPlansDictionary = [(NPHCSCellularPlanDataSource *)self cellularPlansDictionary];
+  [delegate cellularPlansUpdated:cellularPlansDictionary error:0];
 }
 
-- (void)_cellularPlanInfoDidChange:(id)a3
+- (void)_cellularPlanInfoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v33 = "[NPHCSCellularPlanDataSource _cellularPlanInfoDidChange:]";
     v34 = 2112;
-    v35 = v4;
+    v35 = changeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%s - notification:%@", buf, 0x16u);
   }
 
   v6 = +[NPHCellularBridgeUIManager sharedInstance];
-  v7 = [v6 cellularPlans];
+  cellularPlans = [v6 cellularPlans];
 
   v8 = nph_general_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -82,17 +82,17 @@
     *buf = 136315394;
     v33 = "[NPHCSCellularPlanDataSource _cellularPlanInfoDidChange:]";
     v34 = 2112;
-    v35 = v7;
+    v35 = cellularPlans;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%s -- cellularPlans:%@", buf, 0x16u);
   }
 
-  v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [cellularPlans count]);
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [cellularPlans count]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v7;
+  v11 = cellularPlans;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v12)
   {
@@ -139,11 +139,11 @@
   v20 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
   [(NPHCSCellularPlanDataSource *)self setCellularPlansDictionary:v20];
 
-  v21 = [(NPHCSCellularPlanDataSource *)self delegate];
-  v22 = [(NPHCSCellularPlanDataSource *)self cellularPlansDictionary];
-  v23 = [v4 userInfo];
-  v24 = [v23 objectForKeyedSubscript:NPHCellularPlanInfoError];
-  [v21 cellularPlansUpdated:v22 error:v24];
+  delegate = [(NPHCSCellularPlanDataSource *)self delegate];
+  cellularPlansDictionary = [(NPHCSCellularPlanDataSource *)self cellularPlansDictionary];
+  userInfo = [changeCopy userInfo];
+  v24 = [userInfo objectForKeyedSubscript:NPHCellularPlanInfoError];
+  [delegate cellularPlansUpdated:cellularPlansDictionary error:v24];
 }
 
 @end

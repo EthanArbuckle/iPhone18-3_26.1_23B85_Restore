@@ -11,50 +11,50 @@
 
 - (id)cnui_appropriatePresentationController
 {
-  v1 = a1;
-  v2 = [v1 parentViewController];
+  selfCopy = self;
+  parentViewController = [selfCopy parentViewController];
 
-  if (v2)
+  if (parentViewController)
   {
     do
     {
-      v3 = [v1 parentViewController];
+      parentViewController2 = [selfCopy parentViewController];
 
-      v4 = [v3 parentViewController];
+      v3ParentViewController = [parentViewController2 parentViewController];
 
-      v1 = v3;
+      selfCopy = parentViewController2;
     }
 
-    while (v4);
+    while (v3ParentViewController);
   }
 
   else
   {
-    v3 = v1;
+    parentViewController2 = selfCopy;
   }
 
-  v5 = [v3 presentationController];
+  presentationController = [parentViewController2 presentationController];
 
-  return v5;
+  return presentationController;
 }
 
 - (void)cnui_addChildViewController:()ABPresentation
 {
   v6 = a3;
-  [a1 addChildViewController:v6];
-  v4 = [a1 view];
-  v5 = [v6 view];
-  [v4 bounds];
-  [v5 setFrame:?];
-  [v5 setAutoresizingMask:18];
-  if (([a1 shouldAutomaticallyForwardAppearanceMethods] & 1) == 0)
+  [self addChildViewController:v6];
+  view = [self view];
+  view2 = [v6 view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
+  if (([self shouldAutomaticallyForwardAppearanceMethods] & 1) == 0)
   {
     [v6 beginAppearanceTransition:1 animated:0];
   }
 
-  [v4 addSubview:v5];
-  [v6 didMoveToParentViewController:a1];
-  if (([a1 shouldAutomaticallyForwardAppearanceMethods] & 1) == 0)
+  [view addSubview:view2];
+  [v6 didMoveToParentViewController:self];
+  if (([self shouldAutomaticallyForwardAppearanceMethods] & 1) == 0)
   {
     [v6 endAppearanceTransition];
   }
@@ -65,14 +65,14 @@
   result = dyld_program_sdk_at_least();
   if (result)
   {
-    result = [a1 _existingPresentationControllerImmediate:0 effective:1];
+    result = [self _existingPresentationControllerImmediate:0 effective:1];
     if (result)
     {
       v3 = result;
       while ([v3 presentationStyle] != 2 && objc_msgSend(v3, "presentationStyle") != 1)
       {
-        v4 = [v3 presentingViewController];
-        v5 = [v4 _existingPresentationControllerImmediate:0 effective:1];
+        presentingViewController = [v3 presentingViewController];
+        v5 = [presentingViewController _existingPresentationControllerImmediate:0 effective:1];
 
         v3 = v5;
         if (!v5)
@@ -92,7 +92,7 @@
 {
   if (dyld_program_sdk_at_least())
   {
-    v5 = [a1 _existingPresentationControllerImmediate:0 effective:1];
+    v5 = [self _existingPresentationControllerImmediate:0 effective:1];
     if (!v5)
     {
       return 0;
@@ -109,8 +109,8 @@
         break;
       }
 
-      v9 = [v6 presentingViewController];
-      v10 = [v9 _existingPresentationControllerImmediate:0 effective:1];
+      presentingViewController = [v6 presentingViewController];
+      v10 = [presentingViewController _existingPresentationControllerImmediate:0 effective:1];
 
       v6 = v10;
       if (!v10)
@@ -124,45 +124,45 @@
     return (v15 & 1) != 0;
   }
 
-  v11 = [a1 _popoverController];
-  v12 = v11;
-  if (!v11 || (a3 & 1) != 0)
+  _popoverController = [self _popoverController];
+  v12 = _popoverController;
+  if (!_popoverController || (a3 & 1) != 0)
   {
 
     return v12 != 0;
   }
 
-  v13 = [v11 contentViewController];
-  v14 = v13 == a1;
+  contentViewController = [_popoverController contentViewController];
+  v14 = contentViewController == self;
 
   return v14;
 }
 
 - (BOOL)ab_shouldUseTransparentBackgroundInPopovers
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1 || ![a1 ab_isInPopover])
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 || ![self ab_isInPopover])
   {
     return 0;
   }
 
-  v4 = [a1 presentingViewController];
-  v5 = v4 == 0;
+  presentingViewController = [self presentingViewController];
+  v5 = presentingViewController == 0;
 
   return v5;
 }
 
 - (uint64_t)ab_shouldShowNavBarButtons
 {
-  if (![a1 ab_isInPopover])
+  if (![self ab_isInPopover])
   {
     return 1;
   }
 
-  v2 = [a1 presentingViewController];
-  if (v2)
+  presentingViewController = [self presentingViewController];
+  if (presentingViewController)
   {
     v3 = 1;
   }

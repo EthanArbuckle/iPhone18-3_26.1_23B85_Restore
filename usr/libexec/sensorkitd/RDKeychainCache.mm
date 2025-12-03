@@ -1,5 +1,5 @@
 @interface RDKeychainCache
-- (BOOL)addToKeychainKey:(id)a3 withName:(id)a4 sensor:(id)a5;
+- (BOOL)addToKeychainKey:(id)key withName:(id)name sensor:(id)sensor;
 - (RDKeychainCache)init;
 @end
 
@@ -21,13 +21,13 @@
   return result;
 }
 
-- (BOOL)addToKeychainKey:(id)a3 withName:(id)a4 sensor:(id)a5
+- (BOOL)addToKeychainKey:(id)key withName:(id)name sensor:(id)sensor
 {
   if (self)
   {
-    v6 = self;
-    [(NSCache *)self->_cache setObject:a3 forKey:a4, a5];
-    LOBYTE(self) = [(NSCache *)v6->_cache objectForKey:a4]!= 0;
+    selfCopy = self;
+    [(NSCache *)self->_cache setObject:key forKey:name, sensor];
+    LOBYTE(self) = [(NSCache *)selfCopy->_cache objectForKey:name]!= 0;
   }
 
   return self;

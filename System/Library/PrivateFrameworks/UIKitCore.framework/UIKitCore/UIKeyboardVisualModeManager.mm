@@ -17,8 +17,8 @@
 - (UIKeyboardVisualModeManager)init;
 - (UIKeyboardVisualModeManagerDelegate)delegate;
 - (int)visualMode;
-- (void)enhancedWindowingModeDidChange:(id)a3;
-- (void)keyboardCameraNotification:(id)a3;
+- (void)enhancedWindowingModeDidChange:(id)change;
+- (void)keyboardCameraNotification:(id)notification;
 @end
 
 @implementation UIKeyboardVisualModeManager
@@ -26,15 +26,15 @@
 - (BOOL)useVisualModeWindowed
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardVisualModeManager *)self windowingModeEnabled];
-  v4 = v3 && [(UIKeyboardVisualModeManager *)self visualMode]== 2;
+  windowingModeEnabled = [(UIKeyboardVisualModeManager *)self windowingModeEnabled];
+  v4 = windowingModeEnabled && [(UIKeyboardVisualModeManager *)self visualMode]== 2;
   v5 = +[UIKeyboardVisualModeManager visualModeLog];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7[0] = 67109376;
     v7[1] = v4;
     v8 = 1024;
-    v9 = v3;
+    v9 = windowingModeEnabled;
     _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "useVisualModeWindowed: %d (windowingModeEnabled: %d)", v7, 0xEu);
   }
 
@@ -50,29 +50,29 @@
 
 - (BOOL)shouldShowWithinAppWindow
 {
-  v3 = [(UIKeyboardVisualModeManager *)self useVisualModeWindowed];
-  if (v3)
+  useVisualModeWindowed = [(UIKeyboardVisualModeManager *)self useVisualModeWindowed];
+  if (useVisualModeWindowed)
   {
-    v4 = [(UIKeyboardVisualModeManager *)self delegate];
-    v5 = [v4 showingInAppWindow];
+    delegate = [(UIKeyboardVisualModeManager *)self delegate];
+    showingInAppWindow = [delegate showingInAppWindow];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(useVisualModeWindowed) = showingInAppWindow;
   }
 
-  return v3;
+  return useVisualModeWindowed;
 }
 
 - (BOOL)windowingModeEnabled
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardVisualModeManager *)self delegate];
+  delegate = [(UIKeyboardVisualModeManager *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(UIKeyboardVisualModeManager *)self delegate];
-    v5 = [v4 enhancedWindowingModeIsEnabled];
+    delegate2 = [(UIKeyboardVisualModeManager *)self delegate];
+    enhancedWindowingModeIsEnabled = [delegate2 enhancedWindowingModeIsEnabled];
 
-    return v5;
+    return enhancedWindowingModeIsEnabled;
   }
 
   else
@@ -81,7 +81,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Invalid UIKeyboardVisualModeManager (%@) configured without a datasource", &v8, 0xCu);
     }
 
@@ -108,14 +108,14 @@
   v2 = [(UIKeyboardVisualModeManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_enhancedWindowingModeDidChange_ name:@"_UIWindowSceneEnhancedWindowingModeChanged" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_enhancedWindowingModeDidChange_ name:@"_UIWindowSceneEnhancedWindowingModeChanged" object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_keyboardCameraNotification_ name:@"_UIKeyboardCameraSessionWillPresent" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_keyboardCameraNotification_ name:@"_UIKeyboardCameraSessionWillPresent" object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_keyboardCameraNotification_ name:@"_UIKeyboardCameraSessionWillDismiss" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_keyboardCameraNotification_ name:@"_UIKeyboardCameraSessionWillDismiss" object:0];
   }
 
   return v2;
@@ -138,28 +138,28 @@ void __44__UIKeyboardVisualModeManager_visualModeLog__block_invoke()
   }
 
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 visualModeManager];
-  v6 = [v5 windowingModeEnabled];
+  visualModeManager = [v4 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
   v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v8 = [v7 isKeyboardOnEmbeddedScreen];
+  isKeyboardOnEmbeddedScreen = [v7 isKeyboardOnEmbeddedScreen];
 
-  if (v6)
+  if (windowingModeEnabled)
   {
-    v9 = [a1 windowingSoftwareKeyboardAllowed];
+    windowingSoftwareKeyboardAllowed = [self windowingSoftwareKeyboardAllowed];
   }
 
   else
   {
-    v9 = 1;
+    windowingSoftwareKeyboardAllowed = 1;
   }
 
-  if (v8 & 1 | ((v9 & 1) == 0))
+  if (isKeyboardOnEmbeddedScreen & 1 | ((windowingSoftwareKeyboardAllowed & 1) == 0))
   {
-    return v8 & v9;
+    return isKeyboardOnEmbeddedScreen & windowingSoftwareKeyboardAllowed;
   }
 
-  return [a1 softwareKeyboardAllowedOnExternalScreen];
+  return [self softwareKeyboardAllowedOnExternalScreen];
 }
 
 + (BOOL)softwareKeyboardAllowedOnExternalScreen
@@ -193,27 +193,27 @@ void __70__UIKeyboardVisualModeManager_softwareKeyboardAllowedOnExternalScreen__
     goto LABEL_27;
   }
 
-  v3 = [(UIKeyboardVisualModeManager *)self keyboardHasBeenInitialized];
-  v4 = [(UIKeyboardVisualModeManager *)self hardwareKeyboardAttached];
-  if (v3)
+  keyboardHasBeenInitialized = [(UIKeyboardVisualModeManager *)self keyboardHasBeenInitialized];
+  hardwareKeyboardAttached = [(UIKeyboardVisualModeManager *)self hardwareKeyboardAttached];
+  if (keyboardHasBeenInitialized)
   {
-    if (v4)
+    if (hardwareKeyboardAttached)
     {
       if ([(UIKeyboardVisualModeManager *)self isCustomInputViewSet]|| [(UIKeyboardVisualModeManager *)self expectedInputModeIsSpecialized])
       {
-        v5 = [(UIKeyboardVisualModeManager *)self textEntryFocusOnExternalDisplay];
+        textEntryFocusOnExternalDisplay = [(UIKeyboardVisualModeManager *)self textEntryFocusOnExternalDisplay];
       }
 
       else
       {
-        v5 = [(UIKeyboardVisualModeManager *)self softwareKeyboardMinimized];
+        textEntryFocusOnExternalDisplay = [(UIKeyboardVisualModeManager *)self softwareKeyboardMinimized];
       }
 
       goto LABEL_22;
     }
 
-    v7 = [(UIKeyboardVisualModeManager *)self delegate];
-    if ([v7 showingAccessoryViewOnly])
+    delegate = [(UIKeyboardVisualModeManager *)self delegate];
+    if ([delegate showingAccessoryViewOnly])
     {
 
       goto LABEL_15;
@@ -221,9 +221,9 @@ void __70__UIKeyboardVisualModeManager_softwareKeyboardAllowedOnExternalScreen__
 
     if ([(UIKeyboardVisualModeManager *)self softwareKeyboardMinimized])
     {
-      v8 = [(UIKeyboardVisualModeManager *)self textEntryFocusOnExternalDisplay];
+      textEntryFocusOnExternalDisplay2 = [(UIKeyboardVisualModeManager *)self textEntryFocusOnExternalDisplay];
 
-      if (v8)
+      if (textEntryFocusOnExternalDisplay2)
       {
         goto LABEL_15;
       }
@@ -234,9 +234,9 @@ void __70__UIKeyboardVisualModeManager_softwareKeyboardAllowedOnExternalScreen__
     }
 
 LABEL_21:
-    v5 = [(UIKeyboardVisualModeManager *)self isWantsAssistantWhileSuppressingKeyboard];
+    textEntryFocusOnExternalDisplay = [(UIKeyboardVisualModeManager *)self isWantsAssistantWhileSuppressingKeyboard];
 LABEL_22:
-    if (v5)
+    if (textEntryFocusOnExternalDisplay)
     {
       v6 = 2;
     }
@@ -249,7 +249,7 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  if (!v4)
+  if (!hardwareKeyboardAttached)
   {
     goto LABEL_21;
   }
@@ -319,25 +319,25 @@ LABEL_27:
 - (BOOL)hardwareKeyboardAttached
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 _isHardwareKeyboardAvailable];
+  _isHardwareKeyboardAvailable = [v2 _isHardwareKeyboardAvailable];
 
-  return v3;
+  return _isHardwareKeyboardAvailable;
 }
 
 - (BOOL)softwareKeyboardMinimized
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 isMinimized];
+  isMinimized = [v2 isMinimized];
 
-  return v3;
+  return isMinimized;
 }
 
 - (BOOL)isCustomInputViewSet
 {
-  v2 = [(UIKeyboardVisualModeManager *)self delegate];
-  v3 = [v2 expectedInputViewSetIsCustom];
+  delegate = [(UIKeyboardVisualModeManager *)self delegate];
+  expectedInputViewSetIsCustom = [delegate expectedInputViewSetIsCustom];
 
-  return v3;
+  return expectedInputViewSetIsCustom;
 }
 
 - (BOOL)isWantsAssistantWhileSuppressingKeyboard
@@ -345,15 +345,15 @@ LABEL_27:
   v2 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
   if ([v2 wantsAssistantWhileSuppressingKeyboard])
   {
-    v3 = [v2 disableBecomeFirstResponder];
+    disableBecomeFirstResponder = [v2 disableBecomeFirstResponder];
   }
 
   else
   {
-    v3 = 0;
+    disableBecomeFirstResponder = 0;
   }
 
-  return v3;
+  return disableBecomeFirstResponder;
 }
 
 - (BOOL)keyboardCameraPresentedOrPresenting
@@ -361,15 +361,15 @@ LABEL_27:
   v2 = +[UIKeyboardCameraSession activeSession];
   if ([v2 isPresented])
   {
-    v3 = 1;
+    isPresenting = 1;
   }
 
   else
   {
-    v3 = [v2 isPresenting];
+    isPresenting = [v2 isPresenting];
   }
 
-  return v3;
+  return isPresenting;
 }
 
 - (BOOL)keyboardSubstitutePresentedOrPresenting
@@ -388,94 +388,94 @@ LABEL_27:
   return v3;
 }
 
-- (void)enhancedWindowingModeDidChange:(id)a3
+- (void)enhancedWindowingModeDidChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKeyboardVisualModeManager *)self delegate];
+  changeCopy = change;
+  delegate = [(UIKeyboardVisualModeManager *)self delegate];
 
   v6 = +[UIKeyboardVisualModeManager visualModeLog];
-  v7 = v6;
-  if (v5)
+  delegate3 = v6;
+  if (delegate)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(UIKeyboardVisualModeManager *)v4 userInfo];
+      userInfo = [(UIKeyboardVisualModeManager *)changeCopy userInfo];
       v12 = 138412802;
-      v13 = v4;
+      selfCopy2 = changeCopy;
       v14 = 2112;
-      v15 = v8;
+      v15 = userInfo;
       v16 = 2112;
-      v17 = self;
-      _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "enhancedWindowingModeChangeNotification: %@ info: %@ received by %@", &v12, 0x20u);
+      selfCopy = self;
+      _os_log_impl(&dword_188A29000, delegate3, OS_LOG_TYPE_DEFAULT, "enhancedWindowingModeChangeNotification: %@ info: %@ received by %@", &v12, 0x20u);
     }
 
-    v9 = [(UIKeyboardVisualModeManager *)self windowingModeEnabled];
-    v10 = [(UIKeyboardVisualModeManager *)self delegate];
-    [v10 visualModeManager:self observedEnhancedWindowingModeEnabledDidChange:v9];
+    windowingModeEnabled = [(UIKeyboardVisualModeManager *)self windowingModeEnabled];
+    delegate2 = [(UIKeyboardVisualModeManager *)self delegate];
+    [delegate2 visualModeManager:self observedEnhancedWindowingModeEnabledDidChange:windowingModeEnabled];
 
-    v11 = [(UIKeyboardVisualModeManager *)self visualMode];
-    v7 = [(UIKeyboardVisualModeManager *)self delegate];
-    [v7 visualModeManager:self didChangeToMode:v11];
+    visualMode = [(UIKeyboardVisualModeManager *)self visualMode];
+    delegate3 = [(UIKeyboardVisualModeManager *)self delegate];
+    [delegate3 visualModeManager:self didChangeToMode:visualMode];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v12 = 138412290;
-    v13 = self;
-    _os_log_error_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Invalid UIKeyboardVisualModeManager (%@) configured without a delegate", &v12, 0xCu);
+    selfCopy2 = self;
+    _os_log_error_impl(&dword_188A29000, delegate3, OS_LOG_TYPE_ERROR, "Invalid UIKeyboardVisualModeManager (%@) configured without a delegate", &v12, 0xCu);
   }
 }
 
-- (void)keyboardCameraNotification:(id)a3
+- (void)keyboardCameraNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKeyboardVisualModeManager *)self delegate];
+  notificationCopy = notification;
+  delegate = [(UIKeyboardVisualModeManager *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(UIKeyboardVisualModeManager *)self delegate];
-    v7 = [v6 enhancedWindowingModeIsAvailable];
+    delegate2 = [(UIKeyboardVisualModeManager *)self delegate];
+    enhancedWindowingModeIsAvailable = [delegate2 enhancedWindowingModeIsAvailable];
 
     v8 = +[UIKeyboardVisualModeManager visualModeLog];
-    v9 = v8;
-    if (v7)
+    delegate3 = v8;
+    if (enhancedWindowingModeIsAvailable)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 136315650;
-        v12 = "[UIKeyboardVisualModeManager keyboardCameraNotification:]";
+        selfCopy3 = "[UIKeyboardVisualModeManager keyboardCameraNotification:]";
         v13 = 2112;
-        v14 = v4;
+        v14 = notificationCopy;
         v15 = 2112;
-        v16 = self;
-        _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "%s: %@ received by %@", &v11, 0x20u);
+        selfCopy = self;
+        _os_log_impl(&dword_188A29000, delegate3, OS_LOG_TYPE_DEFAULT, "%s: %@ received by %@", &v11, 0x20u);
       }
 
-      v9 = [(UIKeyboardVisualModeManager *)self delegate];
-      [v9 visualModeManager:self didChangeToMode:[(UIKeyboardVisualModeManager *)self visualMode]];
+      delegate3 = [(UIKeyboardVisualModeManager *)self delegate];
+      [delegate3 visualModeManager:self didChangeToMode:[(UIKeyboardVisualModeManager *)self visualMode]];
     }
 
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v10 = [(UIKeyboardVisualModeManager *)self delegate];
+      delegate4 = [(UIKeyboardVisualModeManager *)self delegate];
       v11 = 138412546;
-      v12 = self;
+      selfCopy3 = self;
       v13 = 2112;
-      v14 = v10;
-      _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_INFO, "Ignoring Keyboard Camera notification for (%@), enhanced windowing is not available on (%@)", &v11, 0x16u);
+      v14 = delegate4;
+      _os_log_impl(&dword_188A29000, delegate3, OS_LOG_TYPE_INFO, "Ignoring Keyboard Camera notification for (%@), enhanced windowing is not available on (%@)", &v11, 0x16u);
     }
   }
 
   else
   {
-    v9 = +[UIKeyboardVisualModeManager visualModeLog];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    delegate3 = +[UIKeyboardVisualModeManager visualModeLog];
+    if (os_log_type_enabled(delegate3, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412290;
-      v12 = self;
-      _os_log_error_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "Invalid UIKeyboardVisualModeManager (%@) configured without a delegate", &v11, 0xCu);
+      selfCopy3 = self;
+      _os_log_error_impl(&dword_188A29000, delegate3, OS_LOG_TYPE_ERROR, "Invalid UIKeyboardVisualModeManager (%@) configured without a delegate", &v11, 0xCu);
     }
   }
 }
@@ -483,14 +483,14 @@ LABEL_27:
 - (BOOL)textEntryFocusOnExternalDisplay
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardVisualModeManager *)self delegate];
+  delegate = [(UIKeyboardVisualModeManager *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(UIKeyboardVisualModeManager *)self delegate];
-    v5 = [v4 textEntryFocusOnExternalDisplay];
+    delegate2 = [(UIKeyboardVisualModeManager *)self delegate];
+    textEntryFocusOnExternalDisplay = [delegate2 textEntryFocusOnExternalDisplay];
 
-    return v5;
+    return textEntryFocusOnExternalDisplay;
   }
 
   else
@@ -499,7 +499,7 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Invalid UIKeyboardVisualModeManager (%@) configured without a datasource", &v8, 0xCu);
     }
 
@@ -510,14 +510,14 @@ LABEL_27:
 - (BOOL)expectedInputModeIsSpecialized
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(UIKeyboardVisualModeManager *)self delegate];
+  delegate = [(UIKeyboardVisualModeManager *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(UIKeyboardVisualModeManager *)self delegate];
-    v5 = [v4 expectedInputModeIsSpecialized];
+    delegate2 = [(UIKeyboardVisualModeManager *)self delegate];
+    expectedInputModeIsSpecialized = [delegate2 expectedInputModeIsSpecialized];
 
-    return v5;
+    return expectedInputModeIsSpecialized;
   }
 
   else
@@ -526,7 +526,7 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Invalid UIKeyboardVisualModeManager (%@) configured without a datasource", &v8, 0xCu);
     }
 

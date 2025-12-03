@@ -1,10 +1,10 @@
 @interface CLSDBCache
-+ (BOOL)locationIsValidForDatabaseAtURL:(id)a3;
-+ (id)urlWithParentURL:(id)a3;
++ (BOOL)locationIsValidForDatabaseAtURL:(id)l;
++ (id)urlWithParentURL:(id)l;
 - (BOOL)_save;
-- (BOOL)_saveWithError:(id *)a3;
+- (BOOL)_saveWithError:(id *)error;
 - (BOOL)save;
-- (CLSDBCache)initWithURL:(id)a3 dataModelName:(id)a4;
+- (CLSDBCache)initWithURL:(id)l dataModelName:(id)name;
 - (NSManagedObjectContext)managedObjectContext;
 - (NSManagedObjectModel)managedObjectModel;
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator;
@@ -20,13 +20,13 @@
 
 - (void)invalidateMemoryCaches
 {
-  v3 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __36__CLSDBCache_invalidateMemoryCaches__block_invoke;
   v4[3] = &unk_2788A8260;
   v4[4] = self;
-  [v3 performBlockAndWait:v4];
+  [managedObjectContext performBlockAndWait:v4];
 }
 
 void __36__CLSDBCache_invalidateMemoryCaches__block_invoke(uint64_t a1)
@@ -40,13 +40,13 @@ void __36__CLSDBCache_invalidateMemoryCaches__block_invoke(uint64_t a1)
 
 - (void)invalidateDiskCaches
 {
-  v3 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __34__CLSDBCache_invalidateDiskCaches__block_invoke;
   v4[3] = &unk_2788A8260;
   v4[4] = self;
-  [v3 performBlockAndWait:v4];
+  [managedObjectContext performBlockAndWait:v4];
 }
 
 void __34__CLSDBCache_invalidateDiskCaches__block_invoke(uint64_t a1)
@@ -158,13 +158,13 @@ void __34__CLSDBCache_invalidateDiskCaches__block_invoke(uint64_t a1)
 
 - (void)_saveAsync
 {
-  v3 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __24__CLSDBCache__saveAsync__block_invoke;
   v4[3] = &unk_2788A8260;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [managedObjectContext performBlock:v4];
 }
 
 void __24__CLSDBCache__saveAsync__block_invoke(uint64_t a1)
@@ -182,23 +182,23 @@ void __24__CLSDBCache__saveAsync__block_invoke(uint64_t a1)
 
 - (BOOL)save
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __18__CLSDBCache_save__block_invoke;
   v5[3] = &unk_2788A7470;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __18__CLSDBCache_save__block_invoke(uint64_t a1)
@@ -221,34 +221,34 @@ void __18__CLSDBCache_save__block_invoke(uint64_t a1)
   if (!v2)
   {
     v4 = +[CLSLogging sharedLogging];
-    v5 = [v4 loggingConnection];
+    loggingConnection = [v4 loggingConnection];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v3 localizedDescription];
+      localizedDescription = [v3 localizedDescription];
       *buf = 138412290;
-      v10 = v7;
-      _os_log_error_impl(&dword_22F907000, v5, OS_LOG_TYPE_ERROR, "An error occured saving to the database: %@", buf, 0xCu);
+      v10 = localizedDescription;
+      _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "An error occured saving to the database: %@", buf, 0xCu);
     }
   }
 
   return v2;
 }
 
-- (BOOL)_saveWithError:(id *)a3
+- (BOOL)_saveWithError:(id *)error
 {
-  v4 = [(CLSDBCache *)self managedObjectContext];
-  LOBYTE(a3) = [v4 save:a3];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
+  LOBYTE(error) = [managedObjectContext save:error];
 
-  return a3;
+  return error;
 }
 
 - (NSPersistentStoreCoordinator)persistentStoreCoordinator
 {
   v54[2] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  persistentStoreCoordinator = v2->_persistentStoreCoordinator;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  persistentStoreCoordinator = selfCopy->_persistentStoreCoordinator;
   if (persistentStoreCoordinator)
   {
     v4 = persistentStoreCoordinator;
@@ -262,16 +262,16 @@ void __18__CLSDBCache_save__block_invoke(uint64_t a1)
   v54[0] = MEMORY[0x277CBEC38];
   v54[1] = MEMORY[0x277CBEC38];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
-  v8 = [(CLSDBCache *)v2 managedObjectModel];
-  if (!v8)
+  managedObjectModel = [(CLSDBCache *)selfCopy managedObjectModel];
+  if (!managedObjectModel)
   {
     v35 = +[CLSLogging sharedLogging];
-    v14 = [v35 loggingConnection];
+    loggingConnection = [v35 loggingConnection];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F907000, v14, OS_LOG_TYPE_ERROR, "An error occured when we get the managedObjectModel", buf, 2u);
+      _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "An error occured when we get the managedObjectModel", buf, 2u);
     }
 
     v27 = 0;
@@ -279,22 +279,22 @@ void __18__CLSDBCache_save__block_invoke(uint64_t a1)
     goto LABEL_26;
   }
 
-  v9 = [objc_alloc(MEMORY[0x277CBE4D8]) initWithManagedObjectModel:v8];
-  v10 = v2->_persistentStoreCoordinator;
-  v2->_persistentStoreCoordinator = v9;
+  v9 = [objc_alloc(MEMORY[0x277CBE4D8]) initWithManagedObjectModel:managedObjectModel];
+  v10 = selfCopy->_persistentStoreCoordinator;
+  selfCopy->_persistentStoreCoordinator = v9;
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(CLSDBCache *)v2 dataModelName];
-  v13 = [(NSURL *)v2->_diskCacheURL lastPathComponent];
-  v14 = [v11 stringWithFormat:@"%@.formatVersion.%@", v12, v13];
+  dataModelName = [(CLSDBCache *)selfCopy dataModelName];
+  lastPathComponent = [(NSURL *)selfCopy->_diskCacheURL lastPathComponent];
+  loggingConnection = [v11 stringWithFormat:@"%@.formatVersion.%@", dataModelName, lastPathComponent];
 
-  v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v16 = [v15 stringForKey:v14];
-  v17 = [(CLSDBCache *)v2 formatVersion];
-  v18 = [v16 isEqualToString:v17];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v16 = [standardUserDefaults stringForKey:loggingConnection];
+  formatVersion = [(CLSDBCache *)selfCopy formatVersion];
+  v18 = [v16 isEqualToString:formatVersion];
 
-  v19 = [(CLSDBCache *)v2 formatVersion];
-  if (v19 && (v20 = [(CLSDBCache *)v2 supportsVersioning], v19, ((v18 ^ 1) & v20) == 1))
+  formatVersion2 = [(CLSDBCache *)selfCopy formatVersion];
+  if (formatVersion2 && (v20 = [(CLSDBCache *)selfCopy supportsVersioning], formatVersion2, ((v18 ^ 1) & v20) == 1))
   {
     v51 = *MEMORY[0x277CBE168];
     v52 = v5;
@@ -309,9 +309,9 @@ void __18__CLSDBCache_save__block_invoke(uint64_t a1)
     v22 = 0;
   }
 
-  v23 = v2->_persistentStoreCoordinator;
+  v23 = selfCopy->_persistentStoreCoordinator;
   v24 = *MEMORY[0x277CBE2E8];
-  diskCacheURL = v2->_diskCacheURL;
+  diskCacheURL = selfCopy->_diskCacheURL;
   v48 = 0;
   v26 = [(NSPersistentStoreCoordinator *)v23 addPersistentStoreWithType:v24 configuration:0 URL:diskCacheURL options:v7 error:&v48];
   v27 = v48;
@@ -319,22 +319,22 @@ void __18__CLSDBCache_save__block_invoke(uint64_t a1)
   {
     if (v22)
     {
-      [(CLSDBCache *)v2 invalidateDiskCaches];
-      [(CLSDBCache *)v2 invalidateMemoryCaches];
-      v28 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v29 = [(CLSDBCache *)v2 formatVersion];
-      [v28 setObject:v29 forKey:v14];
+      [(CLSDBCache *)selfCopy invalidateDiskCaches];
+      [(CLSDBCache *)selfCopy invalidateMemoryCaches];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      formatVersion3 = [(CLSDBCache *)selfCopy formatVersion];
+      [standardUserDefaults2 setObject:formatVersion3 forKey:loggingConnection];
 
-      v30 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v30 synchronize];
+      standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults3 synchronize];
 
       v31 = +[CLSLogging sharedLogging];
-      v32 = [v31 loggingConnection];
+      loggingConnection2 = [v31 loggingConnection];
 
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F907000, v32, OS_LOG_TYPE_INFO, "Core Data database successfully cleared", buf, 2u);
+        _os_log_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_INFO, "Core Data database successfully cleared", buf, 2u);
       }
     }
 
@@ -351,23 +351,23 @@ void __18__CLSDBCache_save__block_invoke(uint64_t a1)
   else
   {
     v36 = +[CLSLogging sharedLogging];
-    v37 = [v36 loggingConnection];
+    loggingConnection3 = [v36 loggingConnection];
 
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v50 = v27;
-      _os_log_error_impl(&dword_22F907000, v37, OS_LOG_TYPE_ERROR, "Cannot initialize Core Data database: %@. Removing store", buf, 0xCu);
+      _os_log_error_impl(&dword_22F907000, loggingConnection3, OS_LOG_TYPE_ERROR, "Cannot initialize Core Data database: %@. Removing store", buf, 0xCu);
     }
 
-    v38 = v2->_persistentStoreCoordinator;
-    v39 = v2->_diskCacheURL;
+    v38 = selfCopy->_persistentStoreCoordinator;
+    v39 = selfCopy->_diskCacheURL;
     v47 = v27;
     [(NSPersistentStoreCoordinator *)v38 destroyPersistentStoreAtURL:v39 withType:v24 options:0 error:&v47];
     v40 = v47;
 
-    v41 = v2->_persistentStoreCoordinator;
-    v42 = v2->_diskCacheURL;
+    v41 = selfCopy->_persistentStoreCoordinator;
+    v42 = selfCopy->_diskCacheURL;
     v46 = v40;
     v26 = [(NSPersistentStoreCoordinator *)v41 addPersistentStoreWithType:v24 configuration:0 URL:v42 options:v7 error:&v46];
     v27 = v46;
@@ -378,26 +378,26 @@ void __18__CLSDBCache_save__block_invoke(uint64_t a1)
     }
 
     v43 = +[CLSLogging sharedLogging];
-    v44 = [v43 loggingConnection];
+    loggingConnection4 = [v43 loggingConnection];
 
-    if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v50 = v27;
-      _os_log_error_impl(&dword_22F907000, v44, OS_LOG_TYPE_ERROR, "Cannot initialize Core Data database even after removing store: %@.", buf, 0xCu);
+      _os_log_error_impl(&dword_22F907000, loggingConnection4, OS_LOG_TYPE_ERROR, "Cannot initialize Core Data database even after removing store: %@.", buf, 0xCu);
     }
 
     v26 = 0;
-    p_super = &v2->_persistentStoreCoordinator->super;
-    v2->_persistentStoreCoordinator = 0;
+    p_super = &selfCopy->_persistentStoreCoordinator->super;
+    selfCopy->_persistentStoreCoordinator = 0;
   }
 
 LABEL_25:
-  v4 = v2->_persistentStoreCoordinator;
+  v4 = selfCopy->_persistentStoreCoordinator;
 
 LABEL_26:
 LABEL_27:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -405,9 +405,9 @@ LABEL_27:
 - (NSManagedObjectModel)managedObjectModel
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  managedObjectModel = v2->_managedObjectModel;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  managedObjectModel = selfCopy->_managedObjectModel;
   if (managedObjectModel)
   {
     v4 = managedObjectModel;
@@ -416,45 +416,45 @@ LABEL_27:
   else
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = [(CLSDBCache *)v2 dataModelName];
-    v7 = [v5 pathForResource:v6 ofType:@"momd"];
+    dataModelName = [(CLSDBCache *)selfCopy dataModelName];
+    v7 = [v5 pathForResource:dataModelName ofType:@"momd"];
 
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x277CBE450]);
       v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
       v10 = [v8 initWithContentsOfURL:v9];
-      v11 = v2->_managedObjectModel;
-      v2->_managedObjectModel = v10;
+      v11 = selfCopy->_managedObjectModel;
+      selfCopy->_managedObjectModel = v10;
     }
 
     else
     {
       v12 = +[CLSLogging sharedLogging];
-      v13 = [v12 loggingConnection];
+      loggingConnection = [v12 loggingConnection];
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(CLSDBCache *)v2 dataModelName];
+        dataModelName2 = [(CLSDBCache *)selfCopy dataModelName];
         v16 = 138412290;
-        v17 = v15;
-        _os_log_error_impl(&dword_22F907000, v13, OS_LOG_TYPE_ERROR, "Failed to load a bundle containing %@.", &v16, 0xCu);
+        v17 = dataModelName2;
+        _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to load a bundle containing %@.", &v16, 0xCu);
       }
     }
 
-    v4 = v2->_managedObjectModel;
+    v4 = selfCopy->_managedObjectModel;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (NSManagedObjectContext)managedObjectContext
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  managedObjectContext = v2->_managedObjectContext;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  managedObjectContext = selfCopy->_managedObjectContext;
   if (managedObjectContext)
   {
     v4 = managedObjectContext;
@@ -462,21 +462,21 @@ LABEL_27:
 
   else
   {
-    v5 = [(CLSDBCache *)v2 persistentStoreCoordinator];
-    if (v5)
+    persistentStoreCoordinator = [(CLSDBCache *)selfCopy persistentStoreCoordinator];
+    if (persistentStoreCoordinator)
     {
       v6 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-      v7 = v2->_managedObjectContext;
-      v2->_managedObjectContext = v6;
+      v7 = selfCopy->_managedObjectContext;
+      selfCopy->_managedObjectContext = v6;
 
-      [(NSManagedObjectContext *)v2->_managedObjectContext setUndoManager:0];
-      [(NSManagedObjectContext *)v2->_managedObjectContext setPersistentStoreCoordinator:v5];
+      [(NSManagedObjectContext *)selfCopy->_managedObjectContext setUndoManager:0];
+      [(NSManagedObjectContext *)selfCopy->_managedObjectContext setPersistentStoreCoordinator:persistentStoreCoordinator];
     }
 
-    v4 = v2->_managedObjectContext;
+    v4 = selfCopy->_managedObjectContext;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -484,21 +484,21 @@ LABEL_27:
 - (id)formatVersion
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(CLSDBCache *)self dataModelName];
-  v4 = [v2 stringWithFormat:@"%@Version", v3];
+  dataModelName = [(CLSDBCache *)self dataModelName];
+  v4 = [v2 stringWithFormat:@"%@Version", dataModelName];
 
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = [v5 infoDictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  infoDictionary = [v5 infoDictionary];
+  v7 = [infoDictionary objectForKeyedSubscript:v4];
 
   return v7;
 }
 
-- (CLSDBCache)initWithURL:(id)a3 dataModelName:(id)a4
+- (CLSDBCache)initWithURL:(id)l dataModelName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if ([objc_opt_class() locationIsValidForDatabaseAtURL:v7])
+  lCopy = l;
+  nameCopy = name;
+  if ([objc_opt_class() locationIsValidForDatabaseAtURL:lCopy])
   {
     v12.receiver = self;
     v12.super_class = CLSDBCache;
@@ -506,8 +506,8 @@ LABEL_27:
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_diskCacheURL, a3);
-      objc_storeStrong(&v10->_dataModelName, a4);
+      objc_storeStrong(&v9->_diskCacheURL, l);
+      objc_storeStrong(&v10->_dataModelName, name);
     }
   }
 
@@ -525,22 +525,22 @@ LABEL_27:
   v3 = MEMORY[0x277CBEBC0];
   v4 = NSTemporaryDirectory();
   v5 = [v3 fileURLWithPath:v4];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 URLByAppendingPathComponent:v7];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v5 URLByAppendingPathComponent:uUIDString];
   v9 = [(CLSDBCache *)self initWithURL:v8 dataModelName:0];
 
   return v9;
 }
 
-+ (BOOL)locationIsValidForDatabaseAtURL:(id)a3
++ (BOOL)locationIsValidForDatabaseAtURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v15 = 0;
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:&v15];
+  path = [lCopy path];
+  v6 = [v4 fileExistsAtPath:path isDirectory:&v15];
 
   if (v6)
   {
@@ -551,13 +551,13 @@ LABEL_27:
     }
 
     v7 = +[CLSLogging sharedLogging];
-    v8 = [v7 loggingConnection];
+    loggingConnection = [v7 loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v3;
-      _os_log_error_impl(&dword_22F907000, v8, OS_LOG_TYPE_ERROR, "Path %@ specified for database already exists as a directory", buf, 0xCu);
+      v17 = lCopy;
+      _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Path %@ specified for database already exists as a directory", buf, 0xCu);
     }
 
     v9 = 0;
@@ -565,22 +565,22 @@ LABEL_27:
 
   else
   {
-    v10 = [v3 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
     v14 = 0;
-    v9 = [v4 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v14];
-    v8 = v14;
+    v9 = [v4 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v14];
+    loggingConnection = v14;
     if ((v9 & 1) == 0)
     {
       v11 = +[CLSLogging sharedLogging];
-      v12 = [v11 loggingConnection];
+      loggingConnection2 = [v11 loggingConnection];
 
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v17 = v3;
+        v17 = lCopy;
         v18 = 2112;
-        v19 = v8;
-        _os_log_error_impl(&dword_22F907000, v12, OS_LOG_TYPE_ERROR, "Failed to create intermediate cache directories %@: %@", buf, 0x16u);
+        v19 = loggingConnection;
+        _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "Failed to create intermediate cache directories %@: %@", buf, 0x16u);
       }
     }
   }
@@ -589,24 +589,24 @@ LABEL_13:
   return v9;
 }
 
-+ (id)urlWithParentURL:(id)a3
++ (id)urlWithParentURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a1 defaultCacheName];
-  v6 = [v5 pathComponents];
+  defaultCacheName = [self defaultCacheName];
+  pathComponents = [defaultCacheName pathComponents];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  v8 = v4;
+  v7 = [pathComponents countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = lCopy;
   if (v7)
   {
     v9 = v7;
     v10 = *v16;
-    v8 = v4;
+    v8 = lCopy;
     do
     {
       v11 = 0;
@@ -615,7 +615,7 @@ LABEL_13:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pathComponents);
         }
 
         v8 = [v12 URLByAppendingPathComponent:*(*(&v15 + 1) + 8 * v11)];
@@ -625,7 +625,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [pathComponents countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);

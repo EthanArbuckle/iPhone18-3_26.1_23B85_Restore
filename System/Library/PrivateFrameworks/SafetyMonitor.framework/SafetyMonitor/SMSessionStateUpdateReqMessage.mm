@@ -1,22 +1,22 @@
 @interface SMSessionStateUpdateReqMessage
-- (SMSessionStateUpdateReqMessage)initWithCoder:(id)a3;
-- (SMSessionStateUpdateReqMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 deviceToRequest:(id)a6;
-- (SMSessionStateUpdateReqMessage)initWithDictionary:(id)a3;
-- (id)initSessionID:(id)a3 deviceToRequest:(id)a4;
+- (SMSessionStateUpdateReqMessage)initWithCoder:(id)coder;
+- (SMSessionStateUpdateReqMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD deviceToRequest:(id)request;
+- (SMSessionStateUpdateReqMessage)initWithDictionary:(id)dictionary;
+- (id)initSessionID:(id)d deviceToRequest:(id)request;
 - (id)outputToDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionStateUpdateReqMessage
 
-- (SMSessionStateUpdateReqMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 deviceToRequest:(id)a6
+- (SMSessionStateUpdateReqMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD deviceToRequest:(id)request
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v10)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  requestCopy = request;
+  v14 = requestCopy;
+  if (!dateCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v11)
+  if (!dCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v12)
+  if (!iDCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -57,7 +57,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!requestCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -69,43 +69,43 @@ LABEL_16:
 
 LABEL_17:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   v21.receiver = self;
   v21.super_class = SMSessionStateUpdateReqMessage;
-  v15 = [(SMMessage *)&v21 initWithDate:v10 messageID:v11 sessionID:v12];
+  v15 = [(SMMessage *)&v21 initWithDate:dateCopy messageID:dCopy sessionID:iDCopy];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deviceToRequest, a6);
+    objc_storeStrong(&v15->_deviceToRequest, request);
   }
 
   self = v16;
-  v17 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)initSessionID:(id)a3 deviceToRequest:(id)a4
+- (id)initSessionID:(id)d deviceToRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  dCopy = d;
   v8 = objc_opt_new();
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [(SMSessionStateUpdateReqMessage *)self initWithDate:v8 messageID:v9 sessionID:v7 deviceToRequest:v6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v10 = [(SMSessionStateUpdateReqMessage *)self initWithDate:v8 messageID:uUID sessionID:dCopy deviceToRequest:requestCopy];
 
   return v10;
 }
 
-- (SMSessionStateUpdateReqMessage)initWithDictionary:(id)a3
+- (SMSessionStateUpdateReqMessage)initWithDictionary:(id)dictionary
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -117,10 +117,10 @@ LABEL_18:
     goto LABEL_14;
   }
 
-  v7 = [v5 valueForKey:@"messageType"];
-  v8 = [v7 intValue];
+  v7 = [dictionaryCopy valueForKey:@"messageType"];
+  intValue = [v7 intValue];
 
-  if ([objc_opt_class() messageType] != v8)
+  if ([objc_opt_class() messageType] != intValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -136,9 +136,9 @@ LABEL_18:
     v49 = 2112;
     v50 = v27;
     v51 = 1024;
-    v52 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v53 = 1024;
-    v54 = v8;
+    v54 = intValue;
     v28 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
     v29 = v12;
     v30 = 34;
@@ -149,9 +149,9 @@ LABEL_32:
   }
 
   v9 = [v6 valueForKey:@"interfaceVersion"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
-  if (v10 == 1)
+  if (intValue2 == 1)
   {
     v11 = [v6 valueForKey:@"sendDate"];
     v12 = v11;
@@ -170,7 +170,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v14, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", &v47, 0x16u);
       }
 
-      v24 = 0;
+      selfCopy = 0;
       goto LABEL_30;
     }
 
@@ -196,7 +196,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v20, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", &v47, 0x16u);
       }
 
-      v24 = 0;
+      selfCopy = 0;
       goto LABEL_29;
     }
 
@@ -213,7 +213,7 @@ LABEL_32:
       if (v23)
       {
         self = [(SMSessionStateUpdateReqMessage *)self initWithDate:v14 messageID:v17 sessionID:v20 deviceToRequest:v23];
-        v24 = self;
+        selfCopy = self;
 LABEL_28:
 
 LABEL_29:
@@ -254,7 +254,7 @@ LABEL_30:
       }
     }
 
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
@@ -269,7 +269,7 @@ LABEL_30:
     v49 = 2112;
     v50 = v27;
     v51 = 1024;
-    v52 = v10;
+    messageType = intValue2;
     v28 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v29 = v12;
     v30 = 28;
@@ -277,30 +277,30 @@ LABEL_30:
   }
 
 LABEL_14:
-  v24 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v31 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
 {
   v7.receiver = self;
   v7.super_class = SMSessionStateUpdateReqMessage;
-  v3 = [(SMMessage *)&v7 outputToDictionary];
-  v4 = [(SMSessionStateUpdateReqMessage *)self deviceToRequest];
-  v5 = [v4 UUIDString];
-  [v3 setValue:v5 forKey:@"deviceToRequest"];
+  outputToDictionary = [(SMMessage *)&v7 outputToDictionary];
+  deviceToRequest = [(SMSessionStateUpdateReqMessage *)self deviceToRequest];
+  uUIDString = [deviceToRequest UUIDString];
+  [outputToDictionary setValue:uUIDString forKey:@"deviceToRequest"];
 
-  return v3;
+  return outputToDictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -315,19 +315,19 @@ LABEL_15:
 
   v8.receiver = self;
   v8.super_class = SMSessionStateUpdateReqMessage;
-  [(SMMessage *)&v8 encodeWithCoder:v4];
-  v6 = [(SMSessionStateUpdateReqMessage *)self deviceToRequest];
-  [v4 encodeObject:v6 forKey:@"deviceToRequest"];
+  [(SMMessage *)&v8 encodeWithCoder:coderCopy];
+  deviceToRequest = [(SMSessionStateUpdateReqMessage *)self deviceToRequest];
+  [coderCopy encodeObject:deviceToRequest forKey:@"deviceToRequest"];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (SMSessionStateUpdateReqMessage)initWithCoder:(id)a3
+- (SMSessionStateUpdateReqMessage)initWithCoder:(id)coder
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  coderCopy = coder;
+  v6 = coderCopy;
+  if (!coderCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -339,7 +339,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"messageType"];
+  v7 = [coderCopy decodeIntegerForKey:@"messageType"];
   if ([objc_opt_class() messageType] != v7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -356,7 +356,7 @@ LABEL_15:
     v40 = 2112;
     v41 = v17;
     v42 = 1024;
-    v43 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v44 = 1024;
     v45 = v7;
     v18 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
@@ -387,7 +387,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v10, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", &v38, 0x16u);
       }
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_30;
     }
 
@@ -407,7 +407,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v11, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", &v38, 0x16u);
       }
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_29;
     }
 
@@ -419,7 +419,7 @@ LABEL_32:
       {
         v13 = v12;
         self = [(SMSessionStateUpdateReqMessage *)self initWithDate:v10 messageID:v9 sessionID:v11 deviceToRequest:v12];
-        v14 = self;
+        selfCopy = self;
 LABEL_28:
 
 LABEL_29:
@@ -460,7 +460,7 @@ LABEL_30:
       }
     }
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
@@ -476,7 +476,7 @@ LABEL_30:
     v40 = 2112;
     v41 = v17;
     v42 = 1024;
-    v43 = v21;
+    messageType = v21;
     v18 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v19 = v9;
     v20 = 28;
@@ -484,11 +484,11 @@ LABEL_30:
   }
 
 LABEL_14:
-  v14 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v22 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface SBInvalidationDodgingModifierEventResponse
-+ (id)responseWithOptions:(unint64_t)a3;
-- (SBInvalidationDodgingModifierEventResponse)initWithOptions:(unint64_t)a3;
++ (id)responseWithOptions:(unint64_t)options;
+- (SBInvalidationDodgingModifierEventResponse)initWithOptions:(unint64_t)options;
 - (id)description;
 @end
 
 @implementation SBInvalidationDodgingModifierEventResponse
 
-+ (id)responseWithOptions:(unint64_t)a3
++ (id)responseWithOptions:(unint64_t)options
 {
-  v3 = [[SBInvalidationDodgingModifierEventResponse alloc] initWithOptions:a3];
+  v3 = [[SBInvalidationDodgingModifierEventResponse alloc] initWithOptions:options];
 
   return v3;
 }
 
-- (SBInvalidationDodgingModifierEventResponse)initWithOptions:(unint64_t)a3
+- (SBInvalidationDodgingModifierEventResponse)initWithOptions:(unint64_t)options
 {
   v5.receiver = self;
   v5.super_class = SBInvalidationDodgingModifierEventResponse;
   result = [(SBChainableModifierEventResponse *)&v5 init];
   if (result)
   {
-    result->_options = a3;
+    result->_options = options;
   }
 
   return result;

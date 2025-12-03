@@ -1,60 +1,60 @@
 @interface SXInteractionContextManager
 - (BOOL)shouldStartPreviewing;
-- (SXInteractionContextManager)initWithViewport:(id)a3;
+- (SXInteractionContextManager)initWithViewport:(id)viewport;
 - (SXInteractionContextManagerDelegate)delegate;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (id)toolTipInteraction:(id)a3 configurationAtPoint:(CGPoint)a4;
-- (void)addProvider:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (id)toolTipInteraction:(id)interaction configurationAtPoint:(CGPoint)point;
+- (void)addProvider:(id)provider;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration;
 - (void)didEndPreviewing;
-- (void)registerOnView:(id)a3;
+- (void)registerOnView:(id)view;
 - (void)willStartPreviewing;
 @end
 
 @implementation SXInteractionContextManager
 
-- (SXInteractionContextManager)initWithViewport:(id)a3
+- (SXInteractionContextManager)initWithViewport:(id)viewport
 {
-  v5 = a3;
+  viewportCopy = viewport;
   v11.receiver = self;
   v11.super_class = SXInteractionContextManager;
   v6 = [(SXInteractionContextManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewport, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_viewport, viewport);
+    array = [MEMORY[0x1E695DF70] array];
     providers = v7->_providers;
-    v7->_providers = v8;
+    v7->_providers = array;
   }
 
   return v7;
 }
 
-- (void)registerOnView:(id)a3
+- (void)registerOnView:(id)view
 {
   v4 = MEMORY[0x1E69DC8E0];
-  v5 = a3;
+  viewCopy = view;
   v7 = [[v4 alloc] initWithDelegate:self];
-  [v5 addInteraction:v7];
+  [viewCopy addInteraction:v7];
   v6 = objc_alloc_init(MEMORY[0x1E69DD178]);
   [v6 setDelegate:self];
-  [v5 addInteraction:v6];
+  [viewCopy addInteraction:v6];
 }
 
-- (void)addProvider:(id)a3
+- (void)addProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SXInteractionContextManager *)self providers];
-  [v5 addObject:v4];
+  providerCopy = provider;
+  providers = [(SXInteractionContextManager *)self providers];
+  [providers addObject:providerCopy];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v21 = *MEMORY[0x1E69E9840];
   if ([(SXInteractionContextManager *)self shouldStartPreviewing])
   {
@@ -62,8 +62,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(SXInteractionContextManager *)self providers];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    providers = [(SXInteractionContextManager *)self providers];
+    v8 = [providers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -74,12 +74,12 @@
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(providers);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [(SXInteractionContextManager *)self viewport];
-          v14 = [v12 contextMenuAtLocation:v13 viewport:{x, y}];
+          viewport = [(SXInteractionContextManager *)self viewport];
+          v14 = [v12 contextMenuAtLocation:viewport viewport:{x, y}];
 
           if (v14)
           {
@@ -88,7 +88,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [providers countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v9)
         {
           continue;
@@ -110,16 +110,16 @@ LABEL_13:
   return v14;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __103__SXInteractionContextManager_contextMenuInteraction_willPerformPreviewActionForMenuWithConfiguration___block_invoke;
   v7[3] = &unk_1E84FEC78;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   [v6 addCompletion:v7];
 }
 
@@ -130,25 +130,25 @@ void __103__SXInteractionContextManager_contextMenuInteraction_willPerformPrevie
   [v3 commitPreviewViewController:v2];
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [v5 view];
-  [v5 locationInView:v6];
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  [interactionCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SXInteractionContextManager *)self activeProvider];
-  v12 = [(SXInteractionContextManager *)self viewport];
-  v13 = [v11 targetedPreviewAtLocation:v12 viewport:{v8, v10}];
+  activeProvider = [(SXInteractionContextManager *)self activeProvider];
+  viewport = [(SXInteractionContextManager *)self viewport];
+  v13 = [activeProvider targetedPreviewAtLocation:viewport viewport:{v8, v10}];
   [(SXInteractionContextManager *)self setActivePreview:v13];
 
   return [(SXInteractionContextManager *)self activePreview];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __87__SXInteractionContextManager_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
@@ -156,9 +156,9 @@ void __103__SXInteractionContextManager_contextMenuInteraction_willPerformPrevie
   v9[4] = self;
   v7 = MEMORY[0x1DA716BE0](v9);
   v8 = v7;
-  if (v6)
+  if (animatorCopy)
   {
-    [v6 addCompletion:v7];
+    [animatorCopy addCompletion:v7];
   }
 
   else
@@ -181,16 +181,16 @@ uint64_t __87__SXInteractionContextManager_contextMenuInteraction_willEndForConf
   return [v4 setActiveProvider:0];
 }
 
-- (id)toolTipInteraction:(id)a3 configurationAtPoint:(CGPoint)a4
+- (id)toolTipInteraction:(id)interaction configurationAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(SXInteractionContextManager *)self providers:a3];
+  v7 = [(SXInteractionContextManager *)self providers:interaction];
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -208,8 +208,8 @@ LABEL_3:
       v12 = *(*(&v16 + 1) + 8 * v11);
       if (objc_opt_respondsToSelector())
       {
-        v13 = [(SXInteractionContextManager *)self viewport];
-        v14 = [v12 toolTipAtLocation:v13 viewport:{x, y}];
+        viewport = [(SXInteractionContextManager *)self viewport];
+        v14 = [v12 toolTipAtLocation:viewport viewport:{x, y}];
 
         if (v14)
         {
@@ -241,7 +241,7 @@ LABEL_10:
 
 - (BOOL)shouldStartPreviewing
 {
-  v3 = [(SXInteractionContextManager *)self delegate];
+  delegate = [(SXInteractionContextManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -249,33 +249,33 @@ LABEL_10:
     return 1;
   }
 
-  v5 = [(SXInteractionContextManager *)self delegate];
-  v6 = [v5 shouldStartPreviewForInteractionContextManager:self];
+  delegate2 = [(SXInteractionContextManager *)self delegate];
+  v6 = [delegate2 shouldStartPreviewForInteractionContextManager:self];
 
   return v6;
 }
 
 - (void)willStartPreviewing
 {
-  v3 = [(SXInteractionContextManager *)self delegate];
+  delegate = [(SXInteractionContextManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SXInteractionContextManager *)self delegate];
-    [v5 willStartPreviewingForInteractionContextManager:self];
+    delegate2 = [(SXInteractionContextManager *)self delegate];
+    [delegate2 willStartPreviewingForInteractionContextManager:self];
   }
 }
 
 - (void)didEndPreviewing
 {
-  v3 = [(SXInteractionContextManager *)self delegate];
+  delegate = [(SXInteractionContextManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SXInteractionContextManager *)self delegate];
-    [v5 willEndPreviewingForInteractionContextManager:self];
+    delegate2 = [(SXInteractionContextManager *)self delegate];
+    [delegate2 willEndPreviewingForInteractionContextManager:self];
   }
 }
 

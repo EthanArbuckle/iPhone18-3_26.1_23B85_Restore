@@ -14,11 +14,11 @@
   v4 = MEMORY[0x277D74300];
   [v3 pointSize];
   v5 = [v4 boldSystemFontOfSize:?];
-  v6 = [(WFAdditionalSetupTableViewCell *)self label];
-  [v6 setFont:v5];
+  label = [(WFAdditionalSetupTableViewCell *)self label];
+  [label setFont:v5];
 
-  v7 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [(WFAdditionalSetupTableViewCell *)self setBackgroundColor:v7];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [(WFAdditionalSetupTableViewCell *)self setBackgroundColor:secondarySystemBackgroundColor];
 }
 
 - (UILabel)label

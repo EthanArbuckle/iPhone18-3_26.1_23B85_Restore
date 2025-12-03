@@ -1,37 +1,37 @@
 @interface MRTransactionPacket
 - (BOOL)isWriteComplete;
-- (MRTransactionPacket)initWithData:(id)a3 forKey:(id)a4;
-- (MRTransactionPacket)initWithPackets:(id)a3;
-- (MRTransactionPacket)initWithProtobuf:(id)a3;
+- (MRTransactionPacket)initWithData:(id)data forKey:(id)key;
+- (MRTransactionPacket)initWithPackets:(id)packets;
+- (MRTransactionPacket)initWithProtobuf:(id)protobuf;
 - (_MRTransactionPacketProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)isWriteComplete;
 - (void)protobuf;
-- (void)setWriteLength:(unint64_t)a3;
+- (void)setWriteLength:(unint64_t)length;
 - (void)writeComplete;
 @end
 
 @implementation MRTransactionPacket
 
-- (MRTransactionPacket)initWithData:(id)a3 forKey:(id)a4
+- (MRTransactionPacket)initWithData:(id)data forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v17.receiver = self;
   v17.super_class = MRTransactionPacket;
   v8 = [(MRTransactionPacket *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_key, a4);
-    v10 = [v6 mutableCopy];
+    objc_storeStrong(&v8->_key, key);
+    v10 = [dataCopy mutableCopy];
     data = v9->_data;
     v9->_data = v10;
 
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v13 = [v12 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v9->_identifier;
-    v9->_identifier = v13;
+    v9->_identifier = uUIDString;
 
     v15 = [(NSMutableData *)v9->_data length];
     v9->_totalLength = v15;
@@ -45,30 +45,30 @@
   return v9;
 }
 
-- (MRTransactionPacket)initWithPackets:(id)a3
+- (MRTransactionPacket)initWithPackets:(id)packets
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  packetsCopy = packets;
   v31.receiver = self;
   v31.super_class = MRTransactionPacket;
   v5 = [(MRTransactionPacket *)&v31 init];
   if (v5)
   {
-    v6 = [v4 firstObject];
-    v7 = v6;
-    if (v6)
+    firstObject = [packetsCopy firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      v8 = [v6 key];
+      v8 = [firstObject key];
       key = v5->_key;
       v5->_key = v8;
 
-      v10 = [v7 identifier];
+      identifier = [v7 identifier];
       identifier = v5->_identifier;
-      v5->_identifier = v10;
+      v5->_identifier = identifier;
 
-      v12 = [v7 totalLength];
-      v5->_totalLength = v12;
-      v5->_writeLength = v12;
+      totalLength = [v7 totalLength];
+      v5->_totalLength = totalLength;
+      v5->_writeLength = totalLength;
     }
 
     v13 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:v5->_totalLength];
@@ -79,7 +79,7 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = v4;
+    v15 = packetsCopy;
     v16 = [v15 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v16)
     {
@@ -95,8 +95,8 @@
           }
 
           v20 = *(*(&v27 + 1) + 8 * i);
-          v21 = [v20 identifier];
-          v22 = [v21 isEqualToString:v5->_identifier];
+          identifier2 = [v20 identifier];
+          v22 = [identifier2 isEqualToString:v5->_identifier];
 
           if ((v22 & 1) == 0)
           {
@@ -104,8 +104,8 @@
           }
 
           v23 = v5->_data;
-          v24 = [v20 data];
-          [(NSMutableData *)v23 appendData:v24];
+          data = [v20 data];
+          [(NSMutableData *)v23 appendData:data];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -124,31 +124,31 @@
   return v5;
 }
 
-- (MRTransactionPacket)initWithProtobuf:(id)a3
+- (MRTransactionPacket)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v15.receiver = self;
   v15.super_class = MRTransactionPacket;
   v5 = [(MRTransactionPacket *)&v15 init];
   if (v5)
   {
-    v6 = [v4 key];
+    v6 = [protobufCopy key];
     key = v5->_key;
     v5->_key = v6;
 
-    v8 = [v4 packetData];
-    v9 = [v8 mutableCopy];
+    packetData = [protobufCopy packetData];
+    v9 = [packetData mutableCopy];
     data = v5->_data;
     v5->_data = v9;
 
-    v11 = [v4 identifier];
-    v12 = [v11 copy];
+    identifier = [protobufCopy identifier];
+    v12 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v12;
 
-    v5->_totalLength = [v4 totalLength];
+    v5->_totalLength = [protobufCopy totalLength];
     v5->_writeLength = [(NSMutableData *)v5->_data length];
-    v5->_totalWritePosition = [v4 totalWritePosition];
+    v5->_totalWritePosition = [protobufCopy totalWritePosition];
     if (!v5->_key || !v5->_identifier || !v5->_data)
     {
       [MRTransactionPacket initWithProtobuf:];
@@ -158,9 +158,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -191,8 +191,8 @@
     [MRTransactionPacket protobuf];
   }
 
-  v6 = [(NSMutableData *)self->_data bytes];
-  v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v6 + self->_writePosition length:self->_writeLength];
+  bytes = [(NSMutableData *)self->_data bytes];
+  v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:bytes + self->_writePosition length:self->_writeLength];
   [(_MRTransactionPacketProtobuf *)v3 setPacketData:v7];
   [(_MRTransactionPacketProtobuf *)v3 setKey:self->_key];
   [(_MRTransactionPacketProtobuf *)v3 setIdentifier:self->_identifier];
@@ -206,21 +206,21 @@
 {
   OUTLINED_FUNCTION_7_3();
   v2 = v1;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v4 = *v2;
   v5 = *v0;
   OUTLINED_FUNCTION_0_0();
   [v3 handleFailureInMethod:v4 object:v5 file:? lineNumber:? description:?];
 }
 
-- (void)setWriteLength:(unint64_t)a3
+- (void)setWriteLength:(unint64_t)length
 {
-  self->_writeLength = a3;
-  v5 = self->_writePosition + a3;
+  self->_writeLength = length;
+  v5 = self->_writePosition + length;
   if (v5 > [(NSMutableData *)self->_data length])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MRTransaction.m" lineNumber:137 description:{@"Write Position %lu + Write Length %lu greater than data length %lu", self->_writePosition, self->_writeLength, -[NSMutableData length](self->_data, "length")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MRTransaction.m" lineNumber:137 description:{@"Write Position %lu + Write Length %lu greater than data length %lu", self->_writePosition, self->_writeLength, -[NSMutableData length](self->_data, "length")}];
   }
 }
 
@@ -271,14 +271,14 @@
 - (void)protobuf
 {
   OUTLINED_FUNCTION_2();
-  v3 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v3 handleFailureInMethod:v0 object:v1 file:@"MRTransaction.m" lineNumber:103 description:{@"Next Write Pos: %lu greater than data length %lu", *v2, objc_msgSend(v1, "actualLength")}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:v0 object:v1 file:@"MRTransaction.m" lineNumber:103 description:{@"Next Write Pos: %lu greater than data length %lu", *v2, objc_msgSend(v1, "actualLength")}];
 }
 
 - (void)isWriteComplete
 {
   OUTLINED_FUNCTION_1_6();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_0_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

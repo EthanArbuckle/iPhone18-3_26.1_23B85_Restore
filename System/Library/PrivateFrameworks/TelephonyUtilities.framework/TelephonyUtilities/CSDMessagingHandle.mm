@@ -1,16 +1,16 @@
 @interface CSDMessagingHandle
-+ (CSDMessagingHandle)handleWithTUHandle:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CSDMessagingHandle)handleWithTUHandle:(id)handle;
+- (BOOL)isEqual:(id)equal;
 - (TUHandle)tuHandle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingHandle
@@ -57,57 +57,57 @@
 
 - (TUHandle)tuHandle
 {
-  v3 = [(CSDMessagingHandle *)self value];
-  if (![v3 length])
+  value = [(CSDMessagingHandle *)self value];
+  if (![value length])
   {
     v5 = 0;
     goto LABEL_16;
   }
 
-  v4 = [(CSDMessagingHandle *)self type];
+  type = [(CSDMessagingHandle *)self type];
   v5 = 0;
-  if (v4 > 1)
+  if (type > 1)
   {
-    if (v4 == 2)
+    if (type == 2)
     {
-      v7 = [(CSDMessagingHandle *)self isoCountryCode];
-      v5 = [TUHandle normalizedPhoneNumberHandleForValue:v3 isoCountryCode:v7];
+      isoCountryCode = [(CSDMessagingHandle *)self isoCountryCode];
+      v5 = [TUHandle normalizedPhoneNumberHandleForValue:value isoCountryCode:isoCountryCode];
 
       goto LABEL_15;
     }
 
-    if (v4 != 3)
+    if (type != 3)
     {
       goto LABEL_15;
     }
 
 LABEL_11:
-    v6 = [TUHandle normalizedEmailAddressHandleForValue:v3];
+    v6 = [TUHandle normalizedEmailAddressHandleForValue:value];
 LABEL_13:
     v5 = v6;
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!type)
   {
-    if (![v3 destinationIdIsEmailAddress])
+    if (![value destinationIdIsEmailAddress])
     {
 LABEL_12:
-      v6 = [TUHandle normalizedGenericHandleForValue:v3];
+      v6 = [TUHandle normalizedGenericHandleForValue:value];
       goto LABEL_13;
     }
 
     goto LABEL_11;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
     goto LABEL_12;
   }
 
 LABEL_15:
-  v8 = [(CSDMessagingHandle *)self siriDisplayName];
-  [v5 setSiriDisplayName:v8];
+  siriDisplayName = [(CSDMessagingHandle *)self siriDisplayName];
+  [v5 setSiriDisplayName:siriDisplayName];
 
 LABEL_16:
 
@@ -127,25 +127,25 @@ LABEL_16:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Generic"])
+  else if ([typeCopy isEqualToString:@"Generic"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PhoneNumber"])
+  else if ([typeCopy isEqualToString:@"PhoneNumber"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"EmailAddress"])
+  else if ([typeCopy isEqualToString:@"EmailAddress"])
   {
     v4 = 3;
   }
@@ -163,74 +163,74 @@ LABEL_16:
   v7.receiver = self;
   v7.super_class = CSDMessagingHandle;
   v3 = [(CSDMessagingHandle *)&v7 description];
-  v4 = [(CSDMessagingHandle *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingHandle *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_isoCountryCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_siriDisplayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_type;
-    *(v4 + 40) |= 1u;
+    toCopy[6] = self->_type;
+    *(toCopy + 40) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_value)
   {
-    [v4 setValue:?];
-    v4 = v5;
+    [toCopy setValue:?];
+    toCopy = v5;
   }
 
   if (self->_isoCountryCode)
   {
     [v5 setIsoCountryCode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_siriDisplayName)
   {
     [v5 setSiriDisplayName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -238,39 +238,39 @@ LABEL_16:
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_value copyWithZone:a3];
+  v7 = [(NSString *)self->_value copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(NSString *)self->_isoCountryCode copyWithZone:a3];
+  v9 = [(NSString *)self->_isoCountryCode copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
-  v11 = [(NSString *)self->_siriDisplayName copyWithZone:a3];
+  v11 = [(NSString *)self->_siriDisplayName copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -278,13 +278,13 @@ LABEL_13:
   }
 
   value = self->_value;
-  if (value | *(v4 + 4) && ![(NSString *)value isEqual:?])
+  if (value | *(equalCopy + 4) && ![(NSString *)value isEqual:?])
   {
     goto LABEL_13;
   }
 
   isoCountryCode = self->_isoCountryCode;
-  if (isoCountryCode | *(v4 + 1))
+  if (isoCountryCode | *(equalCopy + 1))
   {
     if (![(NSString *)isoCountryCode isEqual:?])
     {
@@ -293,7 +293,7 @@ LABEL_13:
   }
 
   siriDisplayName = self->_siriDisplayName;
-  if (siriDisplayName | *(v4 + 2))
+  if (siriDisplayName | *(equalCopy + 2))
   {
     v9 = [(NSString *)siriDisplayName isEqual:?];
   }
@@ -325,54 +325,54 @@ LABEL_14:
   return v4 ^ v5 ^ [(NSString *)self->_siriDisplayName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[10])
+  fromCopy = from;
+  if (fromCopy[10])
   {
-    self->_type = v4[6];
+    self->_type = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 4))
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(CSDMessagingHandle *)self setValue:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(CSDMessagingHandle *)self setIsoCountryCode:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(CSDMessagingHandle *)self setSiriDisplayName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
-+ (CSDMessagingHandle)handleWithTUHandle:(id)a3
++ (CSDMessagingHandle)handleWithTUHandle:(id)handle
 {
-  v3 = a3;
-  if (v3)
+  handleCopy = handle;
+  if (handleCopy)
   {
     v4 = objc_alloc_init(CSDMessagingHandle);
-    v5 = [v3 isoCountryCode];
-    [(CSDMessagingHandle *)v4 setIsoCountryCode:v5];
+    isoCountryCode = [handleCopy isoCountryCode];
+    [(CSDMessagingHandle *)v4 setIsoCountryCode:isoCountryCode];
 
-    v6 = [v3 value];
-    [(CSDMessagingHandle *)v4 setValue:v6];
+    value = [handleCopy value];
+    [(CSDMessagingHandle *)v4 setValue:value];
 
-    v7 = [v3 siriDisplayName];
-    [(CSDMessagingHandle *)v4 setSiriDisplayName:v7];
+    siriDisplayName = [handleCopy siriDisplayName];
+    [(CSDMessagingHandle *)v4 setSiriDisplayName:siriDisplayName];
 
-    v8 = [v3 type];
-    if ((v8 - 1) <= 2)
+    type = [handleCopy type];
+    if ((type - 1) <= 2)
     {
-      [(CSDMessagingHandle *)v4 setType:v8];
+      [(CSDMessagingHandle *)v4 setType:type];
     }
   }
 

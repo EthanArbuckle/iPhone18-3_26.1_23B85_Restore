@@ -1,27 +1,27 @@
 @interface REDuetKnowledgeStore
-- (id)_createActionsFromDuetEvents:(id)a3;
-- (id)_createEventsFromDuetEvents:(id)a3;
-- (id)_createTimelineFromPredictionTimeline:(id)a3 filterEmptyData:(BOOL)a4;
-- (id)_createTombstonesFromDuetEvents:(id)a3;
+- (id)_createActionsFromDuetEvents:(id)events;
+- (id)_createEventsFromDuetEvents:(id)events;
+- (id)_createTimelineFromPredictionTimeline:(id)timeline filterEmptyData:(BOOL)data;
+- (id)_createTombstonesFromDuetEvents:(id)events;
 - (id)_duetChargingEventStream;
 - (id)_duetDonationsStreams;
-- (id)_duetQueryForDonatedActionsAfterDate:(id)a3 onStreams:(id)a4 withPredicate:(id)a5;
+- (id)_duetQueryForDonatedActionsAfterDate:(id)date onStreams:(id)streams withPredicate:(id)predicate;
 - (id)_init;
-- (id)_queryForDonatedActionsAfterDate:(id)a3 streams:(id)a4;
-- (id)_queryForUnfilteredDonationsForStream:(id)a3;
+- (id)_queryForDonatedActionsAfterDate:(id)date streams:(id)streams;
+- (id)_queryForUnfilteredDonationsForStream:(id)stream;
 - (id)queryForAllDonatedActions;
-- (id)queryForAllDonatedActionsWithIdentifier:(id)a3;
+- (id)queryForAllDonatedActionsWithIdentifier:(id)identifier;
 - (id)queryForAllRelevantShortcuts;
-- (id)queryForDeletedActionsAfterDate:(id)a3;
-- (id)queryForDonatedActionsAfterDate:(id)a3;
-- (id)queryForDuetEventWithIdentifier:(id)a3;
-- (id)queryForHistoricChargingEventsWithMinimumDuration:(double)a3 inThePastDays:(unint64_t)a4;
-- (id)queryForPredictedChargingEventsWithMinimumDuration:(double)a3;
+- (id)queryForDeletedActionsAfterDate:(id)date;
+- (id)queryForDonatedActionsAfterDate:(id)date;
+- (id)queryForDuetEventWithIdentifier:(id)identifier;
+- (id)queryForHistoricChargingEventsWithMinimumDuration:(double)duration inThePastDays:(unint64_t)days;
+- (id)queryForPredictedChargingEventsWithMinimumDuration:(double)duration;
 - (id)queryForUnfilteredIntentDonations;
 - (id)queryForUnfilteredRelevantShortcutDonations;
 - (id)queryForUnfilteredUserActivityDonations;
 - (id)sleepInterval;
-- (void)_executeQuery:(id)a3 responseQueue:(id)a4 synchronouslyWithBatching:(BOOL)a5 completion:(id)a6;
+- (void)_executeQuery:(id)query responseQueue:(id)queue synchronouslyWithBatching:(BOOL)batching completion:(id)completion;
 @end
 
 @implementation REDuetKnowledgeStore
@@ -30,8 +30,8 @@
 {
   v8.receiver = self;
   v8.super_class = REDuetKnowledgeStore;
-  v2 = [(RESingleton *)&v8 _init];
-  if (v2 && CoreDuetLibraryCore_0())
+  _init = [(RESingleton *)&v8 _init];
+  if (_init && CoreDuetLibraryCore_0())
   {
     v10 = 0;
     v11 = &v10;
@@ -51,12 +51,12 @@
 
     v4 = v3;
     _Block_object_dispose(&v10, 8);
-    v5 = [v3 knowledgeStoreWithDirectReadOnlyAccess];
-    v6 = v2[1];
-    v2[1] = v5;
+    knowledgeStoreWithDirectReadOnlyAccess = [v3 knowledgeStoreWithDirectReadOnlyAccess];
+    v6 = _init[1];
+    _init[1] = knowledgeStoreWithDirectReadOnlyAccess;
   }
 
-  return v2;
+  return _init;
 }
 
 RETimeline *__98__REDuetKnowledgeStore_queryForTopNApplications_withLikelihoodGreaterThan_withTemporalResolution___block_invoke(uint64_t a1, void *a2)
@@ -95,14 +95,14 @@ RETimeline *__98__REDuetKnowledgeStore_queryForTopNApplications_withLikelihoodGr
   return v7;
 }
 
-- (id)_createTimelineFromPredictionTimeline:(id)a3 filterEmptyData:(BOOL)a4
+- (id)_createTimelineFromPredictionTimeline:(id)timeline filterEmptyData:(BOOL)data
 {
-  v25 = a4;
+  dataCopy = data;
   v39 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v4 = [v26 startDate];
-  v24 = [MEMORY[0x277CBEB18] array];
-  v23 = [MEMORY[0x277CBEB18] array];
+  timelineCopy = timeline;
+  startDate = [timelineCopy startDate];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3042000000;
@@ -120,28 +120,28 @@ RETimeline *__98__REDuetKnowledgeStore_queryForTopNApplications_withLikelihoodGr
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v26 transitionDates];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v38 count:16];
+  transitionDates = [timelineCopy transitionDates];
+  v7 = [transitionDates countByEnumeratingWithState:&v27 objects:v38 count:16];
   if (v7)
   {
     v8 = *v28;
     do
     {
       v9 = 0;
-      v10 = v4;
+      v10 = startDate;
       do
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(transitionDates);
         }
 
         v11 = *(*(&v27 + 1) + 8 * v9);
         [v11 timeIntervalSinceDate:v10];
         v13 = v12;
         v14 = [v10 dateByAddingTimeInterval:v12 * 0.5];
-        v15 = [v26 valueAtDate:v14];
-        if (v25)
+        v15 = [timelineCopy valueAtDate:v14];
+        if (dataCopy)
         {
           v16 = (v5)[2](v5, v15);
 
@@ -150,27 +150,27 @@ RETimeline *__98__REDuetKnowledgeStore_queryForTopNApplications_withLikelihoodGr
 
         if (v15)
         {
-          [v24 addObject:v15];
+          [array addObject:v15];
           v17 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
-          [v23 addObject:v17];
+          [array2 addObject:v17];
         }
 
-        v4 = v11;
+        startDate = v11;
 
         ++v9;
-        v10 = v4;
+        v10 = startDate;
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v27 objects:v38 count:16];
+      v7 = [transitionDates countByEnumeratingWithState:&v27 objects:v38 count:16];
     }
 
     while (v7);
   }
 
   v18 = [RETimeline alloc];
-  v19 = [v26 startDate];
-  v20 = [(RETimeline *)v18 initWithStartDate:v19 values:v24 durations:v23];
+  startDate2 = [timelineCopy startDate];
+  v20 = [(RETimeline *)v18 initWithStartDate:startDate2 values:array durations:array2];
 
   _Block_object_dispose(&v32, 8);
   objc_destroyWeak(&v37);
@@ -258,46 +258,46 @@ void __78__REDuetKnowledgeStore__createTimelineFromPredictionTimeline_filterEmpt
     v4 = v3;
     _Block_object_dispose(&v14, 8);
     v5 = [v3 predictorWithKnowledgeStore:self->_knowledgeStore];
-    v6 = [v5 expectedInBedPeriod];
-    v7 = v6;
-    if (v6)
+    expectedInBedPeriod = [v5 expectedInBedPeriod];
+    v7 = expectedInBedPeriod;
+    if (expectedInBedPeriod)
     {
-      v8 = [v6 startDate];
+      startDate = [expectedInBedPeriod startDate];
 
-      if (v8)
+      if (startDate)
       {
         v9 = objc_alloc(MEMORY[0x277CCA970]);
-        v10 = [v7 startDate];
-        v11 = [v7 endDate];
-        v8 = [v9 initWithStartDate:v10 endDate:v11];
+        startDate2 = [v7 startDate];
+        endDate = [v7 endDate];
+        startDate = [v9 initWithStartDate:startDate2 endDate:endDate];
       }
     }
 
     else
     {
-      v8 = 0;
+      startDate = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    startDate = 0;
   }
 
-  return v8;
+  return startDate;
 }
 
-- (id)queryForPredictedChargingEventsWithMinimumDuration:(double)a3
+- (id)queryForPredictedChargingEventsWithMinimumDuration:(double)duration
 {
   v21[3] = *MEMORY[0x277D85DE8];
   if (CoreDuetLibraryCore_0())
   {
     v5 = [get_DKQueryClass() predicateForEventsWithIntegerValue:1];
-    v6 = [get_DKEventQueryClass() predicateForEventsOfMinimumDuration:a3];
+    v6 = [get_DKEventQueryClass() predicateForEventsOfMinimumDuration:duration];
     DKQueryClass = get_DKQueryClass();
-    v8 = [MEMORY[0x277CBEAA8] distantPast];
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [DKQueryClass predicateForEventsWithStartInDateRangeFrom:v8 to:v9];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    date = [MEMORY[0x277CBEAA8] date];
+    v10 = [DKQueryClass predicateForEventsWithStartInDateRangeFrom:distantPast to:date];
 
     v11 = MEMORY[0x277CCA920];
     v21[0] = v5;
@@ -307,8 +307,8 @@ void __78__REDuetKnowledgeStore__createTimelineFromPredictionTimeline_filterEmpt
     v13 = [v11 andPredicateWithSubpredicates:v12];
 
     DKPredictionQueryClass = get_DKPredictionQueryClass();
-    v15 = [(REDuetKnowledgeStore *)self _duetChargingEventStream];
-    v16 = [DKPredictionQueryClass predictionQueryForStream:v15 withPredicate:v13 withPredictionType:1];
+    _duetChargingEventStream = [(REDuetKnowledgeStore *)self _duetChargingEventStream];
+    v16 = [DKPredictionQueryClass predictionQueryForStream:_duetChargingEventStream withPredicate:v13 withPredictionType:1];
 
     v17 = objc_alloc_init(REDuetQuery);
     [(REDuetQuery *)v17 setQuery:v16];
@@ -330,18 +330,18 @@ void __78__REDuetKnowledgeStore__createTimelineFromPredictionTimeline_filterEmpt
   return v17;
 }
 
-- (id)queryForHistoricChargingEventsWithMinimumDuration:(double)a3 inThePastDays:(unint64_t)a4
+- (id)queryForHistoricChargingEventsWithMinimumDuration:(double)duration inThePastDays:(unint64_t)days
 {
   v28[3] = *MEMORY[0x277D85DE8];
   if (CoreDuetLibraryCore_0())
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
-    v24 = [v8 dateByAddingUnit:16 value:-a4 toDate:v7 options:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v24 = [currentCalendar dateByAddingUnit:16 value:-days toDate:date options:0];
 
     v23 = [get_DKQueryClass() predicateForEventsWithIntegerValue:1];
-    v22 = [get_DKEventQueryClass() predicateForEventsOfMinimumDuration:a3];
-    v9 = [get_DKQueryClass() predicateForEventsWithStartInDateRangeFrom:v24 to:v7];
+    v22 = [get_DKEventQueryClass() predicateForEventsOfMinimumDuration:duration];
+    v9 = [get_DKQueryClass() predicateForEventsWithStartInDateRangeFrom:v24 to:date];
     v10 = MEMORY[0x277CCA920];
     v28[0] = v23;
     v28[1] = v22;
@@ -351,8 +351,8 @@ void __78__REDuetKnowledgeStore__createTimelineFromPredictionTimeline_filterEmpt
 
     v13 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:1];
     DKEventQueryClass = get_DKEventQueryClass();
-    v15 = [(REDuetKnowledgeStore *)self _duetChargingEventStream];
-    v27 = v15;
+    _duetChargingEventStream = [(REDuetKnowledgeStore *)self _duetChargingEventStream];
+    v27 = _duetChargingEventStream;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
     v26 = v13;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
@@ -386,16 +386,16 @@ void __78__REDuetKnowledgeStore__createTimelineFromPredictionTimeline_filterEmpt
   return [DKSystemEventStreamsClass_0 deviceIsPluggedInStream];
 }
 
-- (id)_createEventsFromDuetEvents:(id)a3
+- (id)_createEventsFromDuetEvents:(id)events
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  eventsCopy = events;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v5 = [obj countByEnumeratingWithState:&v30 objects:v43 count:16];
   if (v5)
   {
@@ -411,9 +411,9 @@ void __78__REDuetKnowledgeStore__createTimelineFromPredictionTimeline_filterEmpt
 
         v8 = *(*(&v30 + 1) + 8 * i);
         v9 = objc_alloc(MEMORY[0x277CCA970]);
-        v10 = [v8 startDate];
-        v11 = [v8 endDate];
-        v12 = [v9 initWithStartDate:v10 endDate:v11];
+        startDate = [v8 startDate];
+        endDate = [v8 endDate];
+        v12 = [v9 initWithStartDate:startDate endDate:endDate];
 
         [v8 confidence];
         v14 = v13;
@@ -438,8 +438,8 @@ void __78__REDuetKnowledgeStore__createTimelineFromPredictionTimeline_filterEmpt
         _Block_object_dispose(&v39, 8);
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v8 stringValue];
-          v19 = [REFeatureValue featureValueWithString:v18];
+          stringValue = [v8 stringValue];
+          v19 = [REFeatureValue featureValueWithString:stringValue];
 
           v15 = v19;
           goto LABEL_19;
@@ -492,7 +492,7 @@ void __78__REDuetKnowledgeStore__createTimelineFromPredictionTimeline_filterEmpt
           [v8 doubleValue];
           v22 = [REFeatureValue featureValueWithDouble:?];
 LABEL_18:
-          v18 = v15;
+          stringValue = v15;
           v15 = v22;
 LABEL_19:
         }
@@ -515,45 +515,45 @@ LABEL_19:
 
 - (id)queryForAllDonatedActions
 {
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
-  v4 = [(REDuetKnowledgeStore *)self queryForDonatedActionsAfterDate:v3];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v4 = [(REDuetKnowledgeStore *)self queryForDonatedActionsAfterDate:distantPast];
 
   return v4;
 }
 
-- (id)queryForAllDonatedActionsWithIdentifier:(id)a3
+- (id)queryForAllDonatedActionsWithIdentifier:(id)identifier
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
-  v5 = [get_DKSystemEventStreamsClass_0() appIntentsStream];
-  v29[0] = v5;
-  v6 = [get_DKSystemEventStreamsClass_0() appActivityStream];
-  v29[1] = v6;
-  v29[2] = v4;
+  identifierCopy = identifier;
+  appRelevantShortcutsStream = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
+  appIntentsStream = [get_DKSystemEventStreamsClass_0() appIntentsStream];
+  v29[0] = appIntentsStream;
+  appActivityStream = [get_DKSystemEventStreamsClass_0() appActivityStream];
+  v29[1] = appActivityStream;
+  v29[2] = appRelevantShortcutsStream;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
 
   v7 = MEMORY[0x277CCA920];
   DKEventQueryClass = get_DKEventQueryClass();
-  v9 = [v4 name];
-  v10 = [DKEventQueryClass predicateForEventsWithStreamName:v9];
+  name = [appRelevantShortcutsStream name];
+  v10 = [DKEventQueryClass predicateForEventsWithStreamName:name];
   v28[0] = v10;
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"valueString == %@", v3];
-  v28[1] = v11;
+  identifierCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"valueString == %@", identifierCopy];
+  v28[1] = identifierCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
   v13 = [v7 andPredicateWithSubpredicates:v12];
 
-  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"source.bundleID == %@", v3];
+  identifierCopy2 = [MEMORY[0x277CCAC30] predicateWithFormat:@"source.bundleID == %@", identifierCopy];
 
   v15 = MEMORY[0x277CCA920];
-  v27[0] = v14;
+  v27[0] = identifierCopy2;
   v27[1] = v13;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
   v17 = [v15 orPredicateWithSubpredicates:v16];
 
-  v18 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v19 = [v24 copy];
-  v20 = [(REDuetKnowledgeStore *)self _duetQueryForDonatedActionsAfterDate:v18 onStreams:v19 withPredicate:v17];
+  v20 = [(REDuetKnowledgeStore *)self _duetQueryForDonatedActionsAfterDate:distantPast onStreams:v19 withPredicate:v17];
 
   v21 = objc_alloc_init(REDuetQuery);
   [(REDuetQuery *)v21 setQuery:v20];
@@ -569,24 +569,24 @@ LABEL_19:
   return v21;
 }
 
-- (id)queryForDonatedActionsAfterDate:(id)a3
+- (id)queryForDonatedActionsAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(REDuetKnowledgeStore *)self _duetDonationsStreams];
-  v6 = [(REDuetKnowledgeStore *)self _queryForDonatedActionsAfterDate:v4 streams:v5];
+  dateCopy = date;
+  _duetDonationsStreams = [(REDuetKnowledgeStore *)self _duetDonationsStreams];
+  v6 = [(REDuetKnowledgeStore *)self _queryForDonatedActionsAfterDate:dateCopy streams:_duetDonationsStreams];
 
   return v6;
 }
 
-- (id)_queryForDonatedActionsAfterDate:(id)a3 streams:(id)a4
+- (id)_queryForDonatedActionsAfterDate:(id)date streams:(id)streams
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
+  streamsCopy = streams;
+  dateCopy = date;
+  appRelevantShortcutsStream = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
   DKEventQueryClass = get_DKEventQueryClass();
-  v10 = [v8 name];
-  v11 = [DKEventQueryClass predicateForEventsWithStreamName:v10];
+  name = [appRelevantShortcutsStream name];
+  v11 = [DKEventQueryClass predicateForEventsWithStreamName:name];
 
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT source.bundleID IN {'com.apple.MobileSMS', 'com.apple.InCallService', 'com.apple.mobilesafari', 'com.apple.weather', 'com.apple.mobilephone', 'com.apple.news', 'com.apple.Maps'}"];
   v13 = MEMORY[0x277CCA920];
@@ -595,7 +595,7 @@ LABEL_19:
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
   v15 = [v13 orPredicateWithSubpredicates:v14];
 
-  v16 = [(REDuetKnowledgeStore *)self _duetQueryForDonatedActionsAfterDate:v7 onStreams:v6 withPredicate:v15];
+  v16 = [(REDuetKnowledgeStore *)self _duetQueryForDonatedActionsAfterDate:dateCopy onStreams:streamsCopy withPredicate:v15];
 
   v17 = objc_alloc_init(REDuetQuery);
   [(REDuetQuery *)v17 setQuery:v16];
@@ -614,11 +614,11 @@ LABEL_19:
 - (id)queryForAllRelevantShortcuts
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
-  v4 = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
-  v11[0] = v4;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  appRelevantShortcutsStream = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
+  v11[0] = appRelevantShortcutsStream;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v6 = [(REDuetKnowledgeStore *)self _duetQueryForDonatedActionsAfterDate:v3 onStreams:v5 withPredicate:0];
+  v6 = [(REDuetKnowledgeStore *)self _duetQueryForDonatedActionsAfterDate:distantPast onStreams:v5 withPredicate:0];
 
   v7 = objc_alloc_init(REDuetQuery);
   [(REDuetQuery *)v7 setQuery:v6];
@@ -634,17 +634,17 @@ LABEL_19:
   return v7;
 }
 
-- (id)queryForDeletedActionsAfterDate:(id)a3
+- (id)queryForDeletedActionsAfterDate:(id)date
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  dateCopy = date;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(REDuetKnowledgeStore *)self _duetDonationsStreams];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  _duetDonationsStreams = [(REDuetKnowledgeStore *)self _duetDonationsStreams];
+  v7 = [_duetDonationsStreams countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -655,28 +655,28 @@ LABEL_19:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_duetDonationsStreams);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
         DKQueryClass = get_DKQueryClass();
-        v13 = [get_DKTombstoneMetadataKeyClass() eventStreamName];
-        v14 = [v11 name];
-        v15 = [DKQueryClass predicateForObjectsWithMetadataKey:v13 andStringValue:v14];
-        [v5 addObject:v15];
+        eventStreamName = [get_DKTombstoneMetadataKeyClass() eventStreamName];
+        name = [v11 name];
+        v15 = [DKQueryClass predicateForObjectsWithMetadataKey:eventStreamName andStringValue:name];
+        [array addObject:v15];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [_duetDonationsStreams countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v8);
   }
 
-  v16 = [MEMORY[0x277CCA920] orPredicateWithSubpredicates:v5];
-  v17 = [get_DKSystemEventStreamsClass_0() tombstoneStream];
-  v28 = v17;
+  v16 = [MEMORY[0x277CCA920] orPredicateWithSubpredicates:array];
+  tombstoneStream = [get_DKSystemEventStreamsClass_0() tombstoneStream];
+  v28 = tombstoneStream;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-  v19 = [(REDuetKnowledgeStore *)self _duetQueryForDonatedActionsAfterDate:v4 onStreams:v18 withPredicate:v16];
+  v19 = [(REDuetKnowledgeStore *)self _duetQueryForDonatedActionsAfterDate:dateCopy onStreams:v18 withPredicate:v16];
 
   v20 = objc_alloc_init(REDuetQuery);
   [(REDuetQuery *)v20 setQuery:v19];
@@ -695,11 +695,11 @@ LABEL_19:
 - (id)_duetDonationsStreams
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  v2 = [get_DKSystemEventStreamsClass_0() appIntentsStream];
-  v3 = [get_DKSystemEventStreamsClass_0() appActivityStream];
-  v8[1] = v3;
-  v4 = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
-  v8[2] = v4;
+  appIntentsStream = [get_DKSystemEventStreamsClass_0() appIntentsStream];
+  appActivityStream = [get_DKSystemEventStreamsClass_0() appActivityStream];
+  v8[1] = appActivityStream;
+  appRelevantShortcutsStream = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
+  v8[2] = appRelevantShortcutsStream;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -707,32 +707,32 @@ LABEL_19:
   return v5;
 }
 
-- (id)_duetQueryForDonatedActionsAfterDate:(id)a3 onStreams:(id)a4 withPredicate:(id)a5
+- (id)_duetQueryForDonatedActionsAfterDate:(id)date onStreams:(id)streams withPredicate:(id)predicate
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  streamsCopy = streams;
+  predicateCopy = predicate;
   if (CoreDuetLibraryCore_0())
   {
-    if (v7)
+    if (dateCopy)
     {
-      v32 = v7;
+      distantPast = dateCopy;
     }
 
     else
     {
-      v32 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"((localCreationDate > %@) AND (localCreationDate <= %@))", v32, v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"((localCreationDate > %@) AND (localCreationDate <= %@))", distantPast, date];
     v13 = v12;
-    if (v9)
+    if (predicateCopy)
     {
       v14 = MEMORY[0x277CCA920];
       v44[0] = v12;
-      v44[1] = v9;
+      v44[1] = predicateCopy;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
       v16 = [v14 andPredicateWithSubpredicates:v15];
 
@@ -743,7 +743,7 @@ LABEL_19:
     DKEventQueryClass = get_DKEventQueryClass();
     v43 = v17;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
-    v20 = [DKEventQueryClass eventQueryWithPredicate:v13 eventStreams:v8 offset:0 limit:10 sortDescriptors:v19];
+    v20 = [DKEventQueryClass eventQueryWithPredicate:v13 eventStreams:streamsCopy offset:0 limit:10 sortDescriptors:v19];
 
     [v20 setDeduplicateValues:0];
     if (REProcessIsRelevanced())
@@ -766,13 +766,13 @@ LABEL_19:
 
       v22 = v21;
       _Block_object_dispose(&v38, 8);
-      v23 = [v21 serializedKeyImage];
+      serializedKeyImage = [v21 serializedKeyImage];
       v38 = 0;
       v39 = &v38;
       v40 = 0x2050000000;
       v24 = get_DKRelevantShortcutMetadataKeyClass_softClass;
       v41 = get_DKRelevantShortcutMetadataKeyClass_softClass;
-      v42[0] = v23;
+      v42[0] = serializedKeyImage;
       if (!get_DKRelevantShortcutMetadataKeyClass_softClass)
       {
         v33 = MEMORY[0x277D85DD0];
@@ -786,8 +786,8 @@ LABEL_19:
 
       v25 = v24;
       _Block_object_dispose(&v38, 8);
-      v26 = [v24 serializedKeyImage];
-      v42[1] = v26;
+      serializedKeyImage2 = [v24 serializedKeyImage];
+      v42[1] = serializedKeyImage2;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
       [v20 setExcludedMetadataKeys:v27];
     }
@@ -799,8 +799,8 @@ LABEL_19:
       if (objc_opt_isKindOfClass())
       {
         v28 = v10;
-        v29 = [get_DKEventQueryClass() allDevices];
-        [v28 setDeviceIDs:v29];
+        allDevices = [get_DKEventQueryClass() allDevices];
+        [v28 setDeviceIDs:allDevices];
       }
     }
   }
@@ -815,16 +815,16 @@ LABEL_19:
   return v10;
 }
 
-- (id)_createActionsFromDuetEvents:(id)a3
+- (id)_createActionsFromDuetEvents:(id)events
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  eventsCopy = events;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -864,16 +864,16 @@ LABEL_19:
   return v4;
 }
 
-- (id)_createTombstonesFromDuetEvents:(id)a3
+- (id)_createTombstonesFromDuetEvents:(id)events
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  eventsCopy = events;
+  v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = v3;
+  v4 = eventsCopy;
   v5 = [v4 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v5)
   {
@@ -890,16 +890,16 @@ LABEL_19:
 
         v9 = *(*(&v24 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 value];
-        v12 = [v11 stringValue];
+        value = [v9 value];
+        stringValue = [value stringValue];
 
-        v13 = [v9 metadata];
-        v14 = [get_DKTombstoneMetadataKeyClass() eventStreamName];
-        v15 = [v13 objectForKeyedSubscript:v14];
+        metadata = [v9 metadata];
+        eventStreamName = [get_DKTombstoneMetadataKeyClass() eventStreamName];
+        v15 = [metadata objectForKeyedSubscript:eventStreamName];
 
-        v16 = [v9 localCreationDate];
-        v17 = v16;
-        if (v12)
+        localCreationDate = [v9 localCreationDate];
+        v17 = localCreationDate;
+        if (stringValue)
         {
           v18 = v15 == 0;
         }
@@ -909,14 +909,14 @@ LABEL_19:
           v18 = 1;
         }
 
-        if (!v18 && v16 != 0)
+        if (!v18 && localCreationDate != 0)
         {
           v28[0] = @"uuid";
           v28[1] = @"streamName";
-          v29[0] = v12;
+          v29[0] = stringValue;
           v29[1] = v15;
           v28[2] = @"localSaveDate";
-          v29[2] = v16;
+          v29[2] = localCreationDate;
           v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:3];
           [v23 addObject:v20];
         }
@@ -935,36 +935,36 @@ LABEL_19:
   return v23;
 }
 
-- (void)_executeQuery:(id)a3 responseQueue:(id)a4 synchronouslyWithBatching:(BOOL)a5 completion:(id)a6
+- (void)_executeQuery:(id)query responseQueue:(id)queue synchronouslyWithBatching:(BOOL)batching completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  queryCopy = query;
+  queueCopy = queue;
+  completionCopy = completion;
   v13 = CoreDuetLibraryCore_0();
-  if (v12 && v13)
+  if (completionCopy && v13)
   {
-    if (!v11)
+    if (!queueCopy)
     {
-      v11 = MEMORY[0x277D85CD0];
+      queueCopy = MEMORY[0x277D85CD0];
       v14 = MEMORY[0x277D85CD0];
     }
 
-    v15 = [v10 query];
-    if (v15)
+    query = [queryCopy query];
+    if (query)
     {
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __89__REDuetKnowledgeStore__executeQuery_responseQueue_synchronouslyWithBatching_completion___block_invoke_2;
       v29[3] = &unk_2785FD3B0;
       v16 = &v30;
-      v17 = v10;
+      v17 = queryCopy;
       v30 = v17;
-      v31 = v12;
+      v31 = completionCopy;
       v18 = MEMORY[0x22AABC5E0](v29);
-      if (a5)
+      if (batching)
       {
-        v26 = v11;
-        v27 = v10;
+        v26 = queueCopy;
+        v27 = queryCopy;
         v19 = v17;
         v20 = 10;
         do
@@ -972,7 +972,7 @@ LABEL_19:
           v21 = objc_autoreleasePoolPush();
           knowledgeStore = self->_knowledgeStore;
           v28 = 0;
-          v23 = [(_DKKnowledgeQuerying *)knowledgeStore executeQuery:v15 error:&v28];
+          v23 = [(_DKKnowledgeQuerying *)knowledgeStore executeQuery:query error:&v28];
           v24 = v28;
           v25 = [v23 count];
           (v18)[2](v18, v23, v24);
@@ -989,14 +989,14 @@ LABEL_19:
 
         while (v25 == 10);
 
-        v11 = v26;
-        v10 = v27;
+        queueCopy = v26;
+        queryCopy = v27;
         v16 = &v30;
       }
 
       else
       {
-        [(_DKKnowledgeQuerying *)self->_knowledgeStore executeQuery:v15 responseQueue:v11 withCompletion:v18];
+        [(_DKKnowledgeQuerying *)self->_knowledgeStore executeQuery:query responseQueue:queueCopy withCompletion:v18];
       }
     }
 
@@ -1007,8 +1007,8 @@ LABEL_19:
       block[2] = __89__REDuetKnowledgeStore__executeQuery_responseQueue_synchronouslyWithBatching_completion___block_invoke;
       block[3] = &unk_2785FA040;
       v16 = &v33;
-      v33 = v12;
-      dispatch_async(v11, block);
+      v33 = completionCopy;
+      dispatch_async(queueCopy, block);
     }
   }
 }
@@ -1061,22 +1061,22 @@ LABEL_7:
   objc_autoreleasePoolPop(v7);
 }
 
-- (id)queryForDuetEventWithIdentifier:(id)a3
+- (id)queryForDuetEventWithIdentifier:(id)identifier
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (CoreDuetLibraryCore_0())
   {
     DKQueryClass = get_DKQueryClass();
-    v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+    v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
     v7 = [DKQueryClass predicateForObjectWithUUID:v6];
 
     v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:1];
     DKEventQueryClass = get_DKEventQueryClass();
-    v10 = [(REDuetKnowledgeStore *)self _duetDonationsStreams];
+    _duetDonationsStreams = [(REDuetKnowledgeStore *)self _duetDonationsStreams];
     v19[0] = v8;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v12 = [DKEventQueryClass eventQueryWithPredicate:v7 eventStreams:v10 offset:0 limit:1 sortDescriptors:v11];
+    v12 = [DKEventQueryClass eventQueryWithPredicate:v7 eventStreams:_duetDonationsStreams offset:0 limit:1 sortDescriptors:v11];
 
     [v12 setReadMetadata:1];
     v13 = v12;
@@ -1086,8 +1086,8 @@ LABEL_7:
       if (objc_opt_isKindOfClass())
       {
         v14 = v13;
-        v15 = [get_DKEventQueryClass() allDevices];
-        [v14 setDeviceIDs:v15];
+        allDevices = [get_DKEventQueryClass() allDevices];
+        [v14 setDeviceIDs:allDevices];
       }
     }
 
@@ -1125,44 +1125,44 @@ id __72__REDuetKnowledgeStore_PrivateQueries__queryForDuetEventWithIdentifier___
 
 - (id)queryForUnfilteredUserActivityDonations
 {
-  v3 = [get_DKSystemEventStreamsClass_0() appActivityStream];
-  v4 = [(REDuetKnowledgeStore *)self _queryForUnfilteredDonationsForStream:v3];
+  appActivityStream = [get_DKSystemEventStreamsClass_0() appActivityStream];
+  v4 = [(REDuetKnowledgeStore *)self _queryForUnfilteredDonationsForStream:appActivityStream];
 
   return v4;
 }
 
 - (id)queryForUnfilteredIntentDonations
 {
-  v3 = [get_DKSystemEventStreamsClass_0() appIntentsStream];
-  v4 = [(REDuetKnowledgeStore *)self _queryForUnfilteredDonationsForStream:v3];
+  appIntentsStream = [get_DKSystemEventStreamsClass_0() appIntentsStream];
+  v4 = [(REDuetKnowledgeStore *)self _queryForUnfilteredDonationsForStream:appIntentsStream];
 
   return v4;
 }
 
 - (id)queryForUnfilteredRelevantShortcutDonations
 {
-  v3 = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
-  v4 = [(REDuetKnowledgeStore *)self _queryForUnfilteredDonationsForStream:v3];
+  appRelevantShortcutsStream = [get_DKSystemEventStreamsClass_0() appRelevantShortcutsStream];
+  v4 = [(REDuetKnowledgeStore *)self _queryForUnfilteredDonationsForStream:appRelevantShortcutsStream];
 
   return v4;
 }
 
-- (id)_queryForUnfilteredDonationsForStream:(id)a3
+- (id)_queryForUnfilteredDonationsForStream:(id)stream
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 distantPast];
-  v15[0] = v5;
+  streamCopy = stream;
+  distantPast = [v4 distantPast];
+  v15[0] = streamCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v8 = [(REDuetKnowledgeStore *)self _queryForDonatedActionsAfterDate:v6 streams:v7];
+  v8 = [(REDuetKnowledgeStore *)self _queryForDonatedActionsAfterDate:distantPast streams:v7];
 
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"localCreationDate" ascending:0];
-  v10 = [v8 query];
+  query = [v8 query];
   v14 = v9;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
 
-  [v10 setSortDescriptors:v11];
+  [query setSortDescriptors:v11];
   [v8 setTransformBlock:&__block_literal_global_106_0];
 
   v12 = *MEMORY[0x277D85DE8];

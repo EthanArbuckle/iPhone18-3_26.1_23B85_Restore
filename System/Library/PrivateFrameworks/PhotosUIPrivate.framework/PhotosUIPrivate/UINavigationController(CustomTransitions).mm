@@ -11,59 +11,59 @@
 - (uint64_t)pu_navigationTransitionWillEnd:()CustomTransitions
 {
   v5 = a3;
-  v6 = [a1 pu_currentNavigationTransition];
+  pu_currentNavigationTransition = [self pu_currentNavigationTransition];
 
-  if (v6 != v5)
+  if (pu_currentNavigationTransition != v5)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"UINavigationController+CustomTransitions.m" lineNumber:86 description:@"unexpected current navigation transition"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UINavigationController+CustomTransitions.m" lineNumber:86 description:@"unexpected current navigation transition"];
   }
 
-  return [a1 _pu_setCurrentNavigationTransition:0];
+  return [self _pu_setCurrentNavigationTransition:0];
 }
 
 - (void)pu_navigationTransitionWillStart:()CustomTransitions
 {
   v7 = a3;
-  v5 = [a1 pu_currentNavigationTransition];
+  pu_currentNavigationTransition = [self pu_currentNavigationTransition];
 
-  if (v5)
+  if (pu_currentNavigationTransition)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"UINavigationController+CustomTransitions.m" lineNumber:81 description:@"current navigation transition already exists"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UINavigationController+CustomTransitions.m" lineNumber:81 description:@"current navigation transition already exists"];
   }
 
-  [a1 _pu_setCurrentNavigationTransition:v7];
+  [self _pu_setCurrentNavigationTransition:v7];
 }
 
 - (id)pu_currentInteractiveTransition
 {
-  v1 = [a1 topViewController];
-  v2 = [v1 pu_currentInteractiveNavigationTransition];
+  topViewController = [self topViewController];
+  pu_currentInteractiveNavigationTransition = [topViewController pu_currentInteractiveNavigationTransition];
 
-  return v2;
+  return pu_currentInteractiveNavigationTransition;
 }
 
 - (void)pu_popToViewController:()CustomTransitions animated:interactive:
 {
   v13 = a3;
-  v8 = [a1 topViewController];
-  v9 = [v8 pu_navigationTransition];
-  v10 = v9;
+  topViewController = [self topViewController];
+  pu_navigationTransition = [topViewController pu_navigationTransition];
+  v10 = pu_navigationTransition;
   if (a4)
   {
-    [v9 setStartedInteractively:a5];
+    [pu_navigationTransition setStartedInteractively:a5];
   }
 
   [v10 transitionWillStartOperation:2 animated:a4 interactive:a5];
   if (v13)
   {
-    v11 = [a1 popToViewController:v13 animated:a4];
+    v11 = [self popToViewController:v13 animated:a4];
   }
 
   else
   {
-    v12 = [a1 popViewControllerAnimated:a4];
+    v12 = [self popViewControllerAnimated:a4];
   }
 
   [v10 transitionDidStartOperation:2 animated:a4 interactive:a5];
@@ -75,25 +75,25 @@
   v10 = a4;
   [v15 pu_setNavigationTransition:v10];
   [v10 setStartedInteractively:a6];
-  v11 = [a1 _useStandardStatusBarHeight];
-  v12 = [a1 topViewController];
-  v13 = [v12 prefersStatusBarHidden];
-  v14 = [v15 prefersStatusBarHidden];
+  _useStandardStatusBarHeight = [self _useStandardStatusBarHeight];
+  topViewController = [self topViewController];
+  prefersStatusBarHidden = [topViewController prefersStatusBarHidden];
+  prefersStatusBarHidden2 = [v15 prefersStatusBarHidden];
 
-  if (v13 == v14)
+  if (prefersStatusBarHidden == prefersStatusBarHidden2)
   {
     [v10 transitionWillStartOperation:1 animated:a5 interactive:a6];
-    [a1 pushViewController:v15 animated:a5];
+    [self pushViewController:v15 animated:a5];
     [v10 transitionDidStartOperation:1 animated:a5 interactive:a6];
   }
 
   else
   {
-    [a1 _setUseStandardStatusBarHeight:1];
+    [self _setUseStandardStatusBarHeight:1];
     [v10 transitionWillStartOperation:1 animated:a5 interactive:a6];
-    [a1 pushViewController:v15 animated:a5];
+    [self pushViewController:v15 animated:a5];
     [v10 transitionDidStartOperation:1 animated:a5 interactive:a6];
-    [a1 _setUseStandardStatusBarHeight:v11];
+    [self _setUseStandardStatusBarHeight:_useStandardStatusBarHeight];
   }
 }
 

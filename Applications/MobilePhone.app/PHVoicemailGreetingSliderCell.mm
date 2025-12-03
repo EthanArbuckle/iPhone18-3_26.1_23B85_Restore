@@ -4,7 +4,7 @@
 - (void)commonInit;
 - (void)loadConstraints;
 - (void)loadContentView;
-- (void)playerTimelineSlider:(id)a3 didChangeElapsedTime:(double)a4;
+- (void)playerTimelineSlider:(id)slider didChangeElapsedTime:(double)time;
 - (void)showProgressView;
 - (void)showTimelineSlider;
 - (void)unloadConstraints;
@@ -15,7 +15,7 @@
 
 + (NSString)reuseIdentifier
 {
-  v2 = NSStringFromClass(a1);
+  v2 = NSStringFromClass(self);
   v3 = [NSString stringWithFormat:@"%@ReuseIdentifier", v2];
 
   return v3;
@@ -48,8 +48,8 @@
   [(UIProgressView *)self->_progressView setProgressTintColor:v5];
 
   [(UIProgressView *)self->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(PHVoicemailGreetingSliderCell *)self contentView];
-  [v6 addSubview:self->_progressView];
+  contentView = [(PHVoicemailGreetingSliderCell *)self contentView];
+  [contentView addSubview:self->_progressView];
 
   v7 = objc_alloc_init(VMPlayerTimelineSlider);
   timelineSlider = self->_timelineSlider;
@@ -59,8 +59,8 @@
   [(VMPlayerTimelineSlider *)self->_timelineSlider setDelegate:self];
   [(VMPlayerTimelineSlider *)self->_timelineSlider setLabelsEnabled:0];
   [(VMPlayerTimelineSlider *)self->_timelineSlider setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(PHVoicemailGreetingSliderCell *)self contentView];
-  [v9 addSubview:self->_timelineSlider];
+  contentView2 = [(PHVoicemailGreetingSliderCell *)self contentView];
+  [contentView2 addSubview:self->_timelineSlider];
 }
 
 - (void)loadConstraints
@@ -68,76 +68,76 @@
   v43.receiver = self;
   v43.super_class = PHVoicemailGreetingSliderCell;
   [(PHVoicemailGreetingSliderCell *)&v43 loadConstraints];
-  v3 = [(PHVoicemailGreetingSliderCell *)self progressView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(PHVoicemailGreetingSliderCell *)self contentView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:15.0];
+  progressView = [(PHVoicemailGreetingSliderCell *)self progressView];
+  leadingAnchor = [progressView leadingAnchor];
+  contentView = [(PHVoicemailGreetingSliderCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
 
   v8 = NSStringFromSelector("progressViewLeadingAnchorConstraint");
   [v7 setIdentifier:v8];
 
   [v7 setActive:1];
   [(PHVoicemailGreetingSliderCell *)self setProgressViewLeadingAnchorConstraint:v7];
-  v9 = [(PHVoicemailGreetingSliderCell *)self contentView];
-  v10 = [v9 trailingAnchor];
-  v11 = [(PHVoicemailGreetingSliderCell *)self progressView];
-  v12 = [v11 trailingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:15.0];
+  contentView2 = [(PHVoicemailGreetingSliderCell *)self contentView];
+  trailingAnchor = [contentView2 trailingAnchor];
+  progressView2 = [(PHVoicemailGreetingSliderCell *)self progressView];
+  trailingAnchor2 = [progressView2 trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:15.0];
 
   v14 = NSStringFromSelector("progressViewTrailingAnchorConstraint");
   [v13 setIdentifier:v14];
 
   [v13 setActive:1];
   [(PHVoicemailGreetingSliderCell *)self setProgressViewTrailingAnchorConstraint:v13];
-  v15 = [(PHVoicemailGreetingSliderCell *)self progressView];
-  v16 = [v15 centerYAnchor];
-  v17 = [(PHVoicemailGreetingSliderCell *)self contentView];
-  v18 = [v17 centerYAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  progressView3 = [(PHVoicemailGreetingSliderCell *)self progressView];
+  centerYAnchor = [progressView3 centerYAnchor];
+  contentView3 = [(PHVoicemailGreetingSliderCell *)self contentView];
+  centerYAnchor2 = [contentView3 centerYAnchor];
+  v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   v20 = NSStringFromSelector("progressViewCenterYAnchorConstraint");
   [v19 setIdentifier:v20];
 
   [v19 setActive:1];
   [(PHVoicemailGreetingSliderCell *)self setProgressViewCenterYAnchorConstraint:v19];
-  v21 = [(PHVoicemailGreetingSliderCell *)self progressView];
-  v22 = [v21 heightAnchor];
+  progressView4 = [(PHVoicemailGreetingSliderCell *)self progressView];
+  heightAnchor = [progressView4 heightAnchor];
   [(PHVoicemailGreetingSliderCell *)self progressViewHeightAnchorConstraintConstant];
-  v23 = [v22 constraintEqualToConstant:?];
+  v23 = [heightAnchor constraintEqualToConstant:?];
 
   v24 = NSStringFromSelector("progressViewHeightAnchorConstraint");
   [v23 setIdentifier:v24];
 
   [v23 setActive:1];
   [(PHVoicemailGreetingSliderCell *)self setProgressViewHeightAnchorConstraint:v23];
-  v25 = [(PHVoicemailGreetingSliderCell *)self timelineSlider];
-  v26 = [v25 leadingAnchor];
-  v27 = [(PHVoicemailGreetingSliderCell *)self progressView];
-  v28 = [v27 leadingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  timelineSlider = [(PHVoicemailGreetingSliderCell *)self timelineSlider];
+  leadingAnchor3 = [timelineSlider leadingAnchor];
+  progressView5 = [(PHVoicemailGreetingSliderCell *)self progressView];
+  leadingAnchor4 = [progressView5 leadingAnchor];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
   v30 = NSStringFromSelector("timelineSliderLeadingAnchorConstraint");
   [v29 setIdentifier:v30];
 
   [v29 setActive:1];
   [(PHVoicemailGreetingSliderCell *)self setTimelineSliderLeadingAnchorConstraint:v29];
-  v31 = [(PHVoicemailGreetingSliderCell *)self progressView];
-  v32 = [v31 trailingAnchor];
-  v33 = [(PHVoicemailGreetingSliderCell *)self timelineSlider];
-  v34 = [v33 trailingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  progressView6 = [(PHVoicemailGreetingSliderCell *)self progressView];
+  trailingAnchor3 = [progressView6 trailingAnchor];
+  timelineSlider2 = [(PHVoicemailGreetingSliderCell *)self timelineSlider];
+  trailingAnchor4 = [timelineSlider2 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
   v36 = NSStringFromSelector("timelineSliderTrailingAnchorConstraint");
   [v35 setIdentifier:v36];
 
   [v35 setActive:1];
   [(PHVoicemailGreetingSliderCell *)self setTimelineSliderTrailingAnchorConstraint:v35];
-  v37 = [(PHVoicemailGreetingSliderCell *)self timelineSlider];
-  v38 = [v37 centerYAnchor];
-  v39 = [(PHVoicemailGreetingSliderCell *)self progressView];
-  v40 = [v39 centerYAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  timelineSlider3 = [(PHVoicemailGreetingSliderCell *)self timelineSlider];
+  centerYAnchor3 = [timelineSlider3 centerYAnchor];
+  progressView7 = [(PHVoicemailGreetingSliderCell *)self progressView];
+  centerYAnchor4 = [progressView7 centerYAnchor];
+  v41 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
 
   v42 = NSStringFromSelector("timelineSliderCenterYAnchorConstraint");
   [v41 setIdentifier:v42];
@@ -151,26 +151,26 @@
   v10.receiver = self;
   v10.super_class = PHVoicemailGreetingSliderCell;
   [(PHVoicemailGreetingSliderCell *)&v10 unloadConstraints];
-  v3 = [(PHVoicemailGreetingSliderCell *)self progressViewCenterYAnchorConstraint];
-  [v3 setActive:0];
+  progressViewCenterYAnchorConstraint = [(PHVoicemailGreetingSliderCell *)self progressViewCenterYAnchorConstraint];
+  [progressViewCenterYAnchorConstraint setActive:0];
 
-  v4 = [(PHVoicemailGreetingSliderCell *)self progressViewHeightAnchorConstraint];
-  [v4 setActive:0];
+  progressViewHeightAnchorConstraint = [(PHVoicemailGreetingSliderCell *)self progressViewHeightAnchorConstraint];
+  [progressViewHeightAnchorConstraint setActive:0];
 
-  v5 = [(PHVoicemailGreetingSliderCell *)self progressViewLeadingAnchorConstraint];
-  [v5 setActive:0];
+  progressViewLeadingAnchorConstraint = [(PHVoicemailGreetingSliderCell *)self progressViewLeadingAnchorConstraint];
+  [progressViewLeadingAnchorConstraint setActive:0];
 
-  v6 = [(PHVoicemailGreetingSliderCell *)self progressViewTrailingAnchorConstraint];
-  [v6 setActive:0];
+  progressViewTrailingAnchorConstraint = [(PHVoicemailGreetingSliderCell *)self progressViewTrailingAnchorConstraint];
+  [progressViewTrailingAnchorConstraint setActive:0];
 
-  v7 = [(PHVoicemailGreetingSliderCell *)self timelineSliderCenterYAnchorConstraint];
-  [v7 setActive:0];
+  timelineSliderCenterYAnchorConstraint = [(PHVoicemailGreetingSliderCell *)self timelineSliderCenterYAnchorConstraint];
+  [timelineSliderCenterYAnchorConstraint setActive:0];
 
-  v8 = [(PHVoicemailGreetingSliderCell *)self timelineSliderLeadingAnchorConstraint];
-  [v8 setActive:0];
+  timelineSliderLeadingAnchorConstraint = [(PHVoicemailGreetingSliderCell *)self timelineSliderLeadingAnchorConstraint];
+  [timelineSliderLeadingAnchorConstraint setActive:0];
 
-  v9 = [(PHVoicemailGreetingSliderCell *)self timelineSliderTrailingAnchorConstraint];
-  [v9 setActive:0];
+  timelineSliderTrailingAnchorConstraint = [(PHVoicemailGreetingSliderCell *)self timelineSliderTrailingAnchorConstraint];
+  [timelineSliderTrailingAnchorConstraint setActive:0];
 }
 
 - (void)updateConstraintsConstants
@@ -180,14 +180,14 @@
   [(PHVoicemailGreetingSliderCell *)&v6 updateConstraintsConstants];
   [(PHVoicemailGreetingSliderCell *)self progressViewHeightAnchorConstraintConstant];
   v4 = v3;
-  v5 = [(PHVoicemailGreetingSliderCell *)self progressViewHeightAnchorConstraint];
-  [v5 setConstant:v4];
+  progressViewHeightAnchorConstraint = [(PHVoicemailGreetingSliderCell *)self progressViewHeightAnchorConstraint];
+  [progressViewHeightAnchorConstraint setConstant:v4];
 }
 
-- (void)playerTimelineSlider:(id)a3 didChangeElapsedTime:(double)a4
+- (void)playerTimelineSlider:(id)slider didChangeElapsedTime:(double)time
 {
   v5 = +[PHVoicemailPlayerController sharedPlayerController];
-  CMTimeMake(&v6, a4, 1);
+  CMTimeMake(&v6, time, 1);
   [v5 seekToTime:&v6];
 }
 
@@ -231,9 +231,9 @@ void __51__PHVoicemailGreetingSliderCell_showTimelineSlider__block_invoke(uint64
 
 - (double)progressViewHeightAnchorConstraintConstant
 {
-  v2 = [(PHVoicemailGreetingSliderCell *)self isAccessiblityConstraintsEnabled];
+  isAccessiblityConstraintsEnabled = [(PHVoicemailGreetingSliderCell *)self isAccessiblityConstraintsEnabled];
   result = 7.0;
-  if (v2)
+  if (isAccessiblityConstraintsEnabled)
   {
     return 14.0;
   }

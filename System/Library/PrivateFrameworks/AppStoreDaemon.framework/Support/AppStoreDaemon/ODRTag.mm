@@ -1,6 +1,6 @@
 @interface ODRTag
 + (id)defaultProperties;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ODRTag
@@ -17,13 +17,13 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = sub_1002BFFB8(self);
     v7 = sub_1002BFFB8(v5);
     if ([v6 isEqualToString:v7])

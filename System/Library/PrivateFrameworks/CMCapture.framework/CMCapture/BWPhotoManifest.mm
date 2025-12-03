@@ -1,26 +1,26 @@
 @interface BWPhotoManifest
-- (BOOL)isEqual:(id)a3;
-- (BWPhotoManifest)initWithCoder:(id)a3;
-- (BWPhotoManifest)initWithDescriptors:(id)a3 captureRequestIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BWPhotoManifest)initWithCoder:(id)coder;
+- (BWPhotoManifest)initWithDescriptors:(id)descriptors captureRequestIdentifier:(id)identifier;
 - (id)description;
-- (id)descriptorForIdentifier:(id)a3;
-- (id)descriptorForSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (id)descriptorForIdentifier:(id)identifier;
+- (id)descriptorForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)cannotProcessDepthPhotos;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWPhotoManifest
 
-- (BWPhotoManifest)initWithDescriptors:(id)a3 captureRequestIdentifier:(id)a4
+- (BWPhotoManifest)initWithDescriptors:(id)descriptors captureRequestIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = BWPhotoManifest;
   v6 = [(BWPhotoManifest *)&v8 init];
   if (v6)
   {
-    v6->_photoDescriptors = [a3 copy];
-    v6->_captureRequestIdentifier = [a4 copy];
+    v6->_photoDescriptors = [descriptors copy];
+    v6->_captureRequestIdentifier = [identifier copy];
     v6->_bufferPtrValueToPhotoDescriptorLock._os_unfair_lock_opaque = 0;
     v6->_bufferPtrValueToPhotoDescriptor = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
@@ -35,26 +35,26 @@
   [(BWPhotoManifest *)&v3 dealloc];
 }
 
-- (BWPhotoManifest)initWithCoder:(id)a3
+- (BWPhotoManifest)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x1E695DFD8];
   v8[0] = objc_opt_class();
   v8[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
-  return -[BWPhotoManifest initWithDescriptors:captureRequestIdentifier:](self, "initWithDescriptors:captureRequestIdentifier:", [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", v6, v8[0]), @"photoDescriptors"}], objc_msgSend(a3, "decodeObjectOfClass:forKey:", objc_opt_class(), @"captureRequestIdentifier"));
+  return -[BWPhotoManifest initWithDescriptors:captureRequestIdentifier:](self, "initWithDescriptors:captureRequestIdentifier:", [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", v6, v8[0]), @"photoDescriptors"}], objc_msgSend(coder, "decodeObjectOfClass:forKey:", objc_opt_class(), @"captureRequestIdentifier"));
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_photoDescriptors forKey:@"photoDescriptors"];
+  [coder encodeObject:self->_photoDescriptors forKey:@"photoDescriptors"];
   captureRequestIdentifier = self->_captureRequestIdentifier;
 
-  [a3 encodeObject:captureRequestIdentifier forKey:@"captureRequestIdentifier"];
+  [coder encodeObject:captureRequestIdentifier forKey:@"captureRequestIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -67,11 +67,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(BWPhotoManifest *)self photoDescriptors];
-      if (v11 == [a3 photoDescriptors] || (v12 = -[NSArray isEqual:](-[BWPhotoManifest photoDescriptors](self, "photoDescriptors"), "isEqual:", objc_msgSend(a3, "photoDescriptors"))) != 0)
+      photoDescriptors = [(BWPhotoManifest *)self photoDescriptors];
+      if (photoDescriptors == [equal photoDescriptors] || (v12 = -[NSArray isEqual:](-[BWPhotoManifest photoDescriptors](self, "photoDescriptors"), "isEqual:", objc_msgSend(equal, "photoDescriptors"))) != 0)
       {
         v13 = [(BWPhotoManifest *)self captureRequestIdentifier:v6];
-        if (v13 == [a3 captureRequestIdentifier] || (v12 = -[NSString isEqual:](-[BWPhotoManifest captureRequestIdentifier](self, "captureRequestIdentifier"), "isEqual:", objc_msgSend(a3, "captureRequestIdentifier"))) != 0)
+        if (v13 == [equal captureRequestIdentifier] || (v12 = -[NSString isEqual:](-[BWPhotoManifest captureRequestIdentifier](self, "captureRequestIdentifier"), "isEqual:", objc_msgSend(equal, "captureRequestIdentifier"))) != 0)
         {
           LOBYTE(v12) = 1;
         }
@@ -87,7 +87,7 @@
   return v12;
 }
 
-- (id)descriptorForIdentifier:(id)a3
+- (id)descriptorForIdentifier:(id)identifier
 {
   v14 = 0u;
   v15 = 0u;
@@ -130,10 +130,10 @@ LABEL_3:
   }
 }
 
-- (id)descriptorForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (id)descriptorForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   os_unfair_lock_lock(&self->_bufferPtrValueToPhotoDescriptorLock);
-  v5 = [MEMORY[0x1E696B098] valueWithPointer:a3];
+  v5 = [MEMORY[0x1E696B098] valueWithPointer:buffer];
   v6 = [(NSMutableDictionary *)self->_bufferPtrValueToPhotoDescriptor objectForKeyedSubscript:v5];
   if ([(NSArray *)self->_photoDescriptors count]== 1)
   {
@@ -143,7 +143,7 @@ LABEL_3:
 
   else if (!v6)
   {
-    v7 = [CMGetAttachment(a3 @"StillImageProcessingFlags"];
+    v7 = [CMGetAttachment(buffer @"StillImageProcessingFlags"];
     v8 = [(NSArray *)self->_photoDescriptors mutableCopy];
     v26 = 0u;
     v27 = 0u;
@@ -189,7 +189,7 @@ LABEL_6:
     }
 
 LABEL_14:
-    v13 = [(NSMutableDictionary *)self->_bufferPtrValueToPhotoDescriptor allValues];
+    allValues = [(NSMutableDictionary *)self->_bufferPtrValueToPhotoDescriptor allValues];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -210,7 +210,7 @@ LABEL_14:
           }
 
           v6 = *(*(&v21 + 1) + 8 * i);
-          if (([v13 containsObject:v6] & 1) == 0)
+          if (([allValues containsObject:v6] & 1) == 0)
           {
             [(NSMutableDictionary *)self->_bufferPtrValueToPhotoDescriptor setObject:v6 forKeyedSubscript:v5];
             goto LABEL_25;
@@ -282,9 +282,9 @@ LABEL_25:
           }
 
           v9 = [BWPhotoDescriptor alloc];
-          v10 = [v7 photoIdentifier];
-          v11 = [v7 time];
-          v12 = [v7 timeZone];
+          photoIdentifier = [v7 photoIdentifier];
+          time = [v7 time];
+          timeZone = [v7 timeZone];
           if (v7)
           {
             [v7 presentationTimeStamp];
@@ -295,7 +295,7 @@ LABEL_25:
             memset(v16, 0, sizeof(v16));
           }
 
-          v13 = [(BWPhotoDescriptor *)v9 initWithPhotoIdentifier:v10 processingFlags:v8 time:v11 timeZone:v12 presentationTimeStamp:v16];
+          v13 = [(BWPhotoDescriptor *)v9 initWithPhotoIdentifier:photoIdentifier processingFlags:v8 time:time timeZone:timeZone presentationTimeStamp:v16];
           [v15 addObject:v13];
         }
       }

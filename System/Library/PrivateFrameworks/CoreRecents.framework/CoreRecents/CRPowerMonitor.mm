@@ -2,7 +2,7 @@
 + (id)sharedMonitor;
 - (BOOL)isLocked;
 - (CRPowerMonitor)init;
-- (void)_updateLockStateWithToken:(int)a3;
+- (void)_updateLockStateWithToken:(int)token;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_100012458;
   block[3] = &unk_10002CAB0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100034388 != -1)
   {
     dispatch_once(&qword_100034388, block);
@@ -66,12 +66,12 @@
   [(CRPowerMonitor *)&v4 dealloc];
 }
 
-- (void)_updateLockStateWithToken:(int)a3
+- (void)_updateLockStateWithToken:(int)token
 {
   dispatch_assert_queue_V2(self->_queue);
   lockState = self->_lockState;
   v11 = 0;
-  notify_get_state(a3, &v11);
+  notify_get_state(token, &v11);
   v7 = v11;
   v6 = v11 == 0;
   self->_lockState = v11;

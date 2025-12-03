@@ -9,10 +9,10 @@
 + (id)entryEventNoneDefinitionConfig;
 + (id)entryEventNoneDefinitionPairedDeviceConfig;
 + (id)entryEventNoneDefinitions;
-+ (id)getVersionDirectory:(int64_t)a3;
++ (id)getVersionDirectory:(int64_t)directory;
 + (int64_t)getOSVersionNumber;
 + (void)load;
-+ (void)removeFilesFromPath:(id)a3 withMaxFiles:(int64_t)a4;
++ (void)removeFilesFromPath:(id)path withMaxFiles:(int64_t)files;
 + (void)resetRAPIDTaskingConfig;
 - (BOOL)disableCABlanking;
 - (BOOL)getMDMStatus;
@@ -25,62 +25,62 @@
 - (id)deviceShutdownReasons;
 - (id)getCoverGlass;
 - (id)getDeviceSerialNumber;
-- (id)getShutdownBootReason:(BOOL)a3;
+- (id)getShutdownBootReason:(BOOL)reason;
 - (id)getSplatVersionString;
 - (id)hasEmbeddedSIM;
 - (id)hwBoardRevision;
 - (id)hwConfig;
-- (id)logAndUpdateLastBuild:(id)a3;
-- (id)logAndUpdateLastUpgradeTime:(id)a3;
+- (id)logAndUpdateLastBuild:(id)build;
+- (id)logAndUpdateLastUpgradeTime:(id)time;
 - (id)logIcloudAccountType;
 - (id)logLastBackupTime;
 - (id)logLastUpgradeSystemTimestamp;
 - (id)seedGroup;
-- (int)getCoreCount:(int)a3;
+- (int)getCoreCount:(int)count;
 - (int)getDeviceType;
 - (int)getOSVariant;
 - (int)getPerfLevelsCount;
 - (int64_t)autolockTime;
-- (int64_t)checkAndUpdateOSVersion:(id)a3;
+- (int64_t)checkAndUpdateOSVersion:(id)version;
 - (unint64_t)getUpgradeType;
-- (unint64_t)logInstallType:(id)a3;
+- (unint64_t)logInstallType:(id)type;
 - (unint64_t)rootInstalled;
-- (unint64_t)volumeFreespace:(id)a3;
+- (unint64_t)volumeFreespace:(id)freespace;
 - (void)cleanupOldPowerlogs;
-- (void)copyPowerlogsForPreUpgradeOSVersion:(int64_t)a3;
+- (void)copyPowerlogsForPreUpgradeOSVersion:(int64_t)version;
 - (void)dealloc;
 - (void)fileSizeSafeguards;
 - (void)initOperatorDependancies;
 - (void)log;
 - (void)logCPUCoreConfig;
-- (void)logConfigEntry:(id)a3;
-- (void)logConfigEntryToCA:(id)a3;
-- (void)logConfigToBGSQL:(id)a3;
+- (void)logConfigEntry:(id)entry;
+- (void)logConfigEntryToCA:(id)a;
+- (void)logConfigToBGSQL:(id)l;
 - (void)logDeviceCapability;
-- (void)logEntryToCA:(id)a3;
-- (void)logEventForwardAmbientModeEnabled:(id)a3;
+- (void)logEntryToCA:(id)a;
+- (void)logEventForwardAmbientModeEnabled:(id)enabled;
 - (void)logEventForwardConsoleMode;
-- (void)logEventForwardContinuityCamera:(id)a3;
+- (void)logEventForwardContinuityCamera:(id)camera;
 - (void)logEventForwardKeyboardClicks;
 - (void)logEventForwardKeyboardHaptics;
 - (void)logEventForwardRingerState;
-- (void)logEventForwardSysdiagnoseEvent:(BOOL)a3;
-- (void)logEventNoneBuddyData:(id)a3;
+- (void)logEventForwardSysdiagnoseEvent:(BOOL)event;
+- (void)logEventNoneBuddyData:(id)data;
 - (void)logEventNoneConfig;
 - (void)logEventNonePairedDeviceConfig;
-- (void)logEventPointFeatureFlags:(id)a3;
+- (void)logEventPointFeatureFlags:(id)flags;
 - (void)logSystemReboot;
-- (void)logToPPSBuild:(id)a3 atDate:(id)a4;
+- (void)logToPPSBuild:(id)build atDate:(id)date;
 - (void)logUserspaceReboot;
-- (void)maintainPreUpgradePowerlogs:(int64_t)a3;
-- (void)pairStatusDidChange:(id)a3;
+- (void)maintainPreUpgradePowerlogs:(int64_t)powerlogs;
+- (void)pairStatusDidChange:(id)change;
 @end
 
 @implementation PLConfigAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLConfigAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -89,23 +89,23 @@
 {
   v12[6] = *MEMORY[0x277D85DE8];
   v11[0] = @"KeyboardClicks";
-  v2 = [objc_opt_class() entryEventForwardDefinitionKeyboardClicks];
-  v12[0] = v2;
+  entryEventForwardDefinitionKeyboardClicks = [objc_opt_class() entryEventForwardDefinitionKeyboardClicks];
+  v12[0] = entryEventForwardDefinitionKeyboardClicks;
   v11[1] = @"KeyboardHaptics";
-  v3 = [objc_opt_class() entryEventForwardDefinitionKeyboardHaptics];
-  v12[1] = v3;
+  entryEventForwardDefinitionKeyboardHaptics = [objc_opt_class() entryEventForwardDefinitionKeyboardHaptics];
+  v12[1] = entryEventForwardDefinitionKeyboardHaptics;
   v11[2] = @"Ringer";
-  v4 = [objc_opt_class() entryEventForwardDefintionRinger];
-  v12[2] = v4;
+  entryEventForwardDefintionRinger = [objc_opt_class() entryEventForwardDefintionRinger];
+  v12[2] = entryEventForwardDefintionRinger;
   v11[3] = @"ContinuityCamera";
-  v5 = [objc_opt_class() entryEventForwardDefinitionContinuityCamera];
-  v12[3] = v5;
+  entryEventForwardDefinitionContinuityCamera = [objc_opt_class() entryEventForwardDefinitionContinuityCamera];
+  v12[3] = entryEventForwardDefinitionContinuityCamera;
   v11[4] = @"AmbientModeEnabled";
-  v6 = [objc_opt_class() entryEventForwardDefinitionAmbientMode];
-  v12[4] = v6;
+  entryEventForwardDefinitionAmbientMode = [objc_opt_class() entryEventForwardDefinitionAmbientMode];
+  v12[4] = entryEventForwardDefinitionAmbientMode;
   v11[5] = @"FeatureFlags";
-  v7 = [objc_opt_class() entryEventForwardDefinitionFeatureFlag];
-  v12[5] = v7;
+  entryEventForwardDefinitionFeatureFlag = [objc_opt_class() entryEventForwardDefinitionFeatureFlag];
+  v12[5] = entryEventForwardDefinitionFeatureFlag;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:6];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -116,9 +116,9 @@
 + (id)entryEventForwardDefinitionFeatureFlag
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D3F208] internalBuild];
+  internalBuild = [MEMORY[0x277D3F208] internalBuild];
   v3 = MEMORY[0x277CBEC10];
-  if (v2)
+  if (internalBuild)
   {
     v25[0] = *MEMORY[0x277D3F4E8];
     v4 = *MEMORY[0x277D3F4F8];
@@ -134,23 +134,23 @@
     v25[2] = v5;
     v21[0] = @"key";
     v19[0] = @"Domain";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v17 commonTypeDict_StringFormat];
-    v20[0] = v6;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+    v20[0] = commonTypeDict_StringFormat;
     v19[1] = @"FeatureName";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_StringFormat];
-    v20[1] = v8;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+    v20[1] = commonTypeDict_StringFormat2;
     v19[2] = @"TargetRelease";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_StringFormat];
-    v20[2] = v10;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+    v20[2] = commonTypeDict_StringFormat3;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
     v21[1] = @"value";
     v22[0] = v11;
-    v12 = [MEMORY[0x277D3F198] sharedInstance];
-    v13 = [v12 commonTypeDict_IntegerFormat];
-    v22[1] = v13;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v22[1] = commonTypeDict_IntegerFormat;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
     v26[2] = v14;
     v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
@@ -174,9 +174,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"Enabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v11 = commonTypeDict_BoolFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -199,9 +199,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"Enabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v11 = commonTypeDict_BoolFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -224,9 +224,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"Enabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v11 = commonTypeDict_BoolFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -249,9 +249,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"Enabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v11 = commonTypeDict_BoolFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -274,9 +274,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"Enabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v11 = commonTypeDict_BoolFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -290,14 +290,14 @@
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v9[0] = @"Config";
-  v3 = [objc_opt_class() entryEventNoneDefinitionConfig];
-  v10[0] = v3;
+  entryEventNoneDefinitionConfig = [objc_opt_class() entryEventNoneDefinitionConfig];
+  v10[0] = entryEventNoneDefinitionConfig;
   v9[1] = @"PairedDeviceConfig";
-  v4 = [objc_opt_class() entryEventNoneDefinitionPairedDeviceConfig];
-  v10[1] = v4;
+  entryEventNoneDefinitionPairedDeviceConfig = [objc_opt_class() entryEventNoneDefinitionPairedDeviceConfig];
+  v10[1] = entryEventNoneDefinitionPairedDeviceConfig;
   v9[2] = @"AdapterInformation";
-  v5 = [a1 entryEventNoneDefinitionAdapterInformation];
-  v10[2] = v5;
+  entryEventNoneDefinitionAdapterInformation = [self entryEventNoneDefinitionAdapterInformation];
+  v10[2] = entryEventNoneDefinitionAdapterInformation;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -320,161 +320,161 @@
   v91[0] = v85;
   v90[1] = *MEMORY[0x277D3F540];
   v86[0] = @"Build";
-  v84 = [MEMORY[0x277D3F198] sharedInstance];
-  v83 = [v84 commonTypeDict_StringFormat];
-  v87[0] = v83;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v87[0] = commonTypeDict_StringFormat;
   v86[1] = @"SupplementalBuild";
-  v82 = [MEMORY[0x277D3F198] sharedInstance];
-  v81 = [v82 commonTypeDict_StringFormat];
-  v87[1] = v81;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v87[1] = commonTypeDict_StringFormat2;
   v86[2] = @"CustomerOS";
-  v80 = [MEMORY[0x277D3F198] sharedInstance];
-  v79 = [v80 commonTypeDict_BoolFormat];
-  v87[2] = v79;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v87[2] = commonTypeDict_BoolFormat;
   v86[3] = @"Device";
-  v78 = [MEMORY[0x277D3F198] sharedInstance];
-  v77 = [v78 commonTypeDict_StringFormat];
-  v87[3] = v77;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v87[3] = commonTypeDict_StringFormat3;
   v86[4] = @"DevBoard";
-  v76 = [MEMORY[0x277D3F198] sharedInstance];
-  v75 = [v76 commonTypeDict_BoolFormat];
-  v87[4] = v75;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_BoolFormat];
+  v87[4] = commonTypeDict_BoolFormat2;
   v86[5] = @"CRKey";
-  v74 = [MEMORY[0x277D3F198] sharedInstance];
-  v73 = [v74 commonTypeDict_StringFormat];
-  v87[5] = v73;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat];
+  v87[5] = commonTypeDict_StringFormat4;
   v86[6] = @"CRKey2";
-  v72 = [MEMORY[0x277D3F198] sharedInstance];
-  v71 = [v72 commonTypeDict_StringFormat];
-  v87[6] = v71;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v87[6] = commonTypeDict_StringFormat5;
   v86[7] = @"DeviceName";
-  v70 = [MEMORY[0x277D3F198] sharedInstance];
-  v69 = [v70 commonTypeDict_StringFormat];
-  v87[7] = v69;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v87[7] = commonTypeDict_StringFormat6;
   v86[8] = @"BootArgs";
-  v68 = [MEMORY[0x277D3F198] sharedInstance];
-  v67 = [v68 commonTypeDict_StringFormat];
-  v87[8] = v67;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v87[8] = commonTypeDict_StringFormat7;
   v86[9] = @"DeviceType";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_IntegerFormat];
-  v87[9] = v65;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v87[9] = commonTypeDict_IntegerFormat;
   v86[10] = @"DeviceBootTime";
-  v64 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v64 commonTypeDict_DateFormat];
-  v87[10] = v63;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]11 commonTypeDict_DateFormat];
+  v87[10] = commonTypeDict_DateFormat;
   v86[11] = @"LastBuild";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_StringFormat];
-  v87[11] = v61;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat8 = [mEMORY[0x277D3F198]12 commonTypeDict_StringFormat];
+  v87[11] = commonTypeDict_StringFormat8;
   v86[12] = @"LastUpgradeTimestamp";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_RealFormat];
-  v87[12] = v59;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]13 commonTypeDict_RealFormat];
+  v87[12] = commonTypeDict_RealFormat;
   v86[13] = @"DeviceDiskSize";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_IntegerFormat];
-  v87[13] = v57;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v87[13] = commonTypeDict_IntegerFormat2;
   v86[14] = @"MachTimeBaseRatio";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_RealFormat];
-  v87[14] = v55;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]15 commonTypeDict_RealFormat];
+  v87[14] = commonTypeDict_RealFormat2;
   v86[15] = @"AutoLockTime";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v87[15] = v53;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v87[15] = commonTypeDict_IntegerFormat3;
   v86[16] = @"Baseband";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v87[16] = v51;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v87[16] = commonTypeDict_IntegerFormat4;
   v86[17] = @"BasebandFirmware";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_StringFormat];
-  v87[17] = v49;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat9 = [mEMORY[0x277D3F198]18 commonTypeDict_StringFormat];
+  v87[17] = commonTypeDict_StringFormat9;
   v86[18] = @"BKNoWatchdogs";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_BoolFormat];
-  v87[18] = v47;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]19 commonTypeDict_BoolFormat];
+  v87[18] = commonTypeDict_BoolFormat3;
   v86[19] = @"SBDisableCABlanking";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_BoolFormat];
-  v87[19] = v45;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]20 commonTypeDict_BoolFormat];
+  v87[19] = commonTypeDict_BoolFormat4;
   v86[20] = @"AutomatedDeviceGroup";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_StringFormat];
-  v87[20] = v43;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat10 = [mEMORY[0x277D3F198]21 commonTypeDict_StringFormat];
+  v87[20] = commonTypeDict_StringFormat10;
   v86[21] = @"SeedGroup";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_StringFormat];
-  v87[21] = v41;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat11 = [mEMORY[0x277D3F198]22 commonTypeDict_StringFormat];
+  v87[21] = commonTypeDict_StringFormat11;
   v86[22] = @"ConfigNumber";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_StringFormat];
-  v87[22] = v39;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat12 = [mEMORY[0x277D3F198]23 commonTypeDict_StringFormat];
+  v87[22] = commonTypeDict_StringFormat12;
   v86[23] = @"DebugBoardRevision";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_StringFormat];
-  v87[23] = v37;
+  mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat13 = [mEMORY[0x277D3F198]24 commonTypeDict_StringFormat];
+  v87[23] = commonTypeDict_StringFormat13;
   v86[24] = @"LastBackupTimestamp";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_DateFormat];
-  v87[24] = v35;
+  mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat2 = [mEMORY[0x277D3F198]25 commonTypeDict_DateFormat];
+  v87[24] = commonTypeDict_DateFormat2;
   v86[25] = @"DeviceBootReasons";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_StringFormat];
-  v87[25] = v33;
+  mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat14 = [mEMORY[0x277D3F198]26 commonTypeDict_StringFormat];
+  v87[25] = commonTypeDict_StringFormat14;
   v86[26] = @"IcloudAccountType";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_StringFormat];
-  v87[26] = v31;
+  mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat15 = [mEMORY[0x277D3F198]27 commonTypeDict_StringFormat];
+  v87[26] = commonTypeDict_StringFormat15;
   v86[27] = @"OSVariant";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v87[27] = v29;
+  mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+  v87[27] = commonTypeDict_IntegerFormat5;
   v86[28] = @"RemainingDiskSpace";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v87[28] = v27;
+  mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+  v87[28] = commonTypeDict_IntegerFormat6;
   v86[29] = @"DeviceSerialNumber";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_StringFormat];
-  v87[29] = v25;
+  mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat16 = [mEMORY[0x277D3F198]30 commonTypeDict_StringFormat];
+  v87[29] = commonTypeDict_StringFormat16;
   v86[30] = @"MDMStatus";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_BoolFormat];
-  v87[30] = v23;
+  mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat5 = [mEMORY[0x277D3F198]31 commonTypeDict_BoolFormat];
+  v87[30] = commonTypeDict_BoolFormat5;
   v86[31] = @"InstalledSplat";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat];
-  v87[31] = v21;
+  mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat17 = [mEMORY[0x277D3F198]32 commonTypeDict_StringFormat];
+  v87[31] = commonTypeDict_StringFormat17;
   v86[32] = @"Device_SoC";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_StringFormat];
-  v87[32] = v19;
+  mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat18 = [mEMORY[0x277D3F198]33 commonTypeDict_StringFormat];
+  v87[32] = commonTypeDict_StringFormat18;
   v86[33] = @"RootInstalled";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v87[33] = v17;
+  mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+  v87[33] = commonTypeDict_IntegerFormat7;
   v86[34] = @"LastUpgradeSystemTimestamp";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_RealFormat];
-  v87[34] = v15;
+  mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]35 commonTypeDict_RealFormat];
+  v87[34] = commonTypeDict_RealFormat3;
   v86[35] = @"InstallType";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v87[35] = v4;
+  mEMORY[0x277D3F198]36 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]36 commonTypeDict_IntegerFormat];
+  v87[35] = commonTypeDict_IntegerFormat8;
   v86[36] = @"ADGOnly";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v87[36] = v6;
+  mEMORY[0x277D3F198]37 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat19 = [mEMORY[0x277D3F198]37 commonTypeDict_StringFormat];
+  v87[36] = commonTypeDict_StringFormat19;
   v86[37] = @"ExperimentGroup";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v87[37] = v8;
+  mEMORY[0x277D3F198]38 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat20 = [mEMORY[0x277D3F198]38 commonTypeDict_StringFormat];
+  v87[37] = commonTypeDict_StringFormat20;
   v86[38] = @"HasInternalKey";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_BoolFormat];
-  v87[38] = v10;
+  mEMORY[0x277D3F198]39 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat6 = [mEMORY[0x277D3F198]39 commonTypeDict_BoolFormat];
+  v87[38] = commonTypeDict_BoolFormat6;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:v86 count:39];
   v91[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v91 forKeys:v90 count:2];
@@ -501,25 +501,25 @@
     v23[0] = v17;
     v22[1] = *MEMORY[0x277D3F540];
     v18[0] = @"Build";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_StringFormat];
-    v19[0] = v15;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+    v19[0] = commonTypeDict_StringFormat;
     v18[1] = @"Device";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_StringFormat];
-    v19[1] = v4;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+    v19[1] = commonTypeDict_StringFormat2;
     v18[2] = @"HWModel";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_StringFormat];
-    v19[2] = v6;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+    v19[2] = commonTypeDict_StringFormat3;
     v18[3] = @"PairingID";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_StringFormat];
-    v19[3] = v8;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+    v19[3] = commonTypeDict_StringFormat4;
     v18[4] = @"PMode";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v19[4] = v10;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v19[4] = commonTypeDict_IntegerFormat;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
     v23[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -550,12 +550,12 @@
   return v2;
 }
 
-- (unint64_t)volumeFreespace:(id)a3
+- (unint64_t)volumeFreespace:(id)freespace
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  freespaceCopy = freespace;
   memset(&v14, 0, 512);
-  if (statfs([v3 fileSystemRepresentation], &v14))
+  if (statfs([freespaceCopy fileSystemRepresentation], &v14))
   {
     v4 = PLLogConfig();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -563,7 +563,7 @@
       v8 = __error();
       v9 = strerror(*v8);
       v10 = 138412546;
-      v11 = v3;
+      v11 = freespaceCopy;
       v12 = 2080;
       v13 = v9;
       _os_log_debug_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEBUG, "statfs failed for %@ : %s", &v10, 0x16u);
@@ -594,7 +594,7 @@
     }
 
 LABEL_9:
-    v5 = 0;
+    strip = 0;
     goto LABEL_10;
   }
 
@@ -613,12 +613,12 @@ LABEL_9:
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
-  v5 = [v7 strip];
+  strip = [v7 strip];
 
   free(v3);
 LABEL_10:
 
-  return v5;
+  return strip;
 }
 
 - (unint64_t)rootInstalled
@@ -709,15 +709,15 @@ LABEL_10:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)disableCABlanking
@@ -726,24 +726,24 @@ LABEL_10:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)autolockTime
 {
-  v2 = [MEMORY[0x277D26298] sharedConnection];
-  v3 = [v2 effectiveValueForSetting:*MEMORY[0x277D25D70]];
-  v4 = [v3 integerValue];
+  mEMORY[0x277D26298] = [MEMORY[0x277D26298] sharedConnection];
+  v3 = [mEMORY[0x277D26298] effectiveValueForSetting:*MEMORY[0x277D25D70]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 + (void)resetRAPIDTaskingConfig
@@ -771,20 +771,20 @@ LABEL_10:
 
 + (int64_t)getOSVersionNumber
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = v2;
-  if (v2)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v3 = processInfo;
+  if (processInfo)
   {
-    [v2 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
   return 0;
 }
 
-- (int64_t)checkAndUpdateOSVersion:(id)a3
+- (int64_t)checkAndUpdateOSVersion:(id)version
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  versionCopy = version;
   v5 = MEMORY[0x277D3F180];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -798,7 +798,7 @@ LABEL_10:
 
   v6 = [v5 longForKey:@"LastOSVersion" ifNotSet:qword_2811F42D8];
   v7 = +[PLConfigAgent getOSVersionNumber];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[PLConfigAgent logInstallType:](self, "logInstallType:", v4)}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[PLConfigAgent logInstallType:](self, "logInstallType:", versionCopy)}];
   [MEMORY[0x277D3F180] setObject:v8 forKey:@"InstallType" saveToDisk:1];
   v9 = PLLogConfig();
   v10 = v9;
@@ -840,18 +840,18 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)getVersionDirectory:(int64_t)a3
++ (id)getVersionDirectory:(int64_t)directory
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = +[PLConfigAgent getOSVersionNumber];
   v5 = PLLogConfig();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (a3 / 10000 == v4 / 10000)
+  if (directory / 10000 == v4 / 10000)
   {
     if (v6)
     {
       v12 = 134218240;
-      v13 = a3;
+      directoryCopy2 = directory;
       v14 = 2048;
       v15 = v4;
       _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Minor OS upgrade: %ld -> %ld", &v12, 0x16u);
@@ -865,7 +865,7 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
     if (v6)
     {
       v12 = 134218240;
-      v13 = a3;
+      directoryCopy2 = directory;
       v14 = 2048;
       v15 = v4;
       _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Major OS upgrade: %ld -> %ld", &v12, 0x16u);
@@ -874,20 +874,20 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
     v7 = @"/Library/BatteryLife/UpgradeLogs/MajorVersion";
   }
 
-  v8 = [MEMORY[0x277D3F258] containerPath];
-  v9 = [v8 stringByAppendingString:v7];
+  containerPath = [MEMORY[0x277D3F258] containerPath];
+  v9 = [containerPath stringByAppendingString:v7];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (void)copyPowerlogsForPreUpgradeOSVersion:(int64_t)a3
+- (void)copyPowerlogsForPreUpgradeOSVersion:(int64_t)version
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3];
-  v5 = [PLConfigAgent getVersionDirectory:a3];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  version = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", version];
+  v5 = [PLConfigAgent getVersionDirectory:version];
+  v6 = [v5 stringByAppendingPathComponent:version];
   v7 = PLLogConfig();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -896,18 +896,18 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
     _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "Copy logs to dir: %@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v65 = 0;
-  v9 = [v8 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v65];
+  v9 = [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v65];
   v10 = v65;
   if (v9)
   {
     v42 = v5;
-    v43 = v4;
+    v43 = version;
     v11 = 0x277D3F000uLL;
-    v12 = [MEMORY[0x277D3F258] containerPath];
-    v13 = [v12 stringByAppendingString:@"/Library/BatteryLife/Archives/"];
-    log = [v8 contentsOfDirectoryAtPath:v13 error:0];
+    containerPath = [MEMORY[0x277D3F258] containerPath];
+    v13 = [containerPath stringByAppendingString:@"/Library/BatteryLife/Archives/"];
+    log = [defaultManager contentsOfDirectoryAtPath:v13 error:0];
 
     v63 = 0u;
     v64 = 0u;
@@ -936,8 +936,8 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
         v49 = v14;
         v15 = *(*(&v61 + 1) + 8 * v14);
         v16 = MEMORY[0x277CCAC30];
-        v17 = [v15 uuid];
-        v18 = [v16 predicateWithFormat:@"SELF CONTAINS %@", v17];
+        uuid = [v15 uuid];
+        v18 = [v16 predicateWithFormat:@"SELF CONTAINS %@", uuid];
 
         v59 = 0u;
         v60 = 0u;
@@ -961,8 +961,8 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
               }
 
               v21 = *(*(&v57 + 1) + 8 * v20);
-              v22 = [*(v11 + 600) containerPath];
-              v23 = [v22 stringByAppendingString:@"/Library/BatteryLife/Archives/"];
+              containerPath2 = [*(v11 + 600) containerPath];
+              v23 = [containerPath2 stringByAppendingString:@"/Library/BatteryLife/Archives/"];
               v24 = [v23 stringByAppendingPathComponent:v21];
 
               v25 = [v6 stringByAppendingPathComponent:v21];
@@ -977,19 +977,19 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
               }
 
               v56 = v10;
-              v27 = [v8 copyItemAtPath:v24 toPath:v25 error:&v56];
+              v27 = [defaultManager copyItemAtPath:v24 toPath:v25 error:&v56];
               v28 = v56;
 
               if (v27)
               {
-                v29 = v8;
+                v29 = defaultManager;
                 v30 = v6;
-                v31 = [MEMORY[0x277CCAA00] defaultManager];
+                defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
                 v66 = v51;
                 v67 = v50;
                 v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
                 v55 = v28;
-                v33 = [v31 setAttributes:v32 ofItemAtPath:v25 error:&v55];
+                v33 = [defaultManager2 setAttributes:v32 ofItemAtPath:v25 error:&v55];
                 v10 = v55;
 
                 if ((v33 & 1) == 0)
@@ -1014,7 +1014,7 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
                 if (v39)
                 {
                   v6 = v30;
-                  v8 = v29;
+                  defaultManager = v29;
                   v11 = 0x277D3F000;
                   v19 = v52;
                   goto LABEL_29;
@@ -1022,7 +1022,7 @@ uint64_t __41__PLConfigAgent_checkAndUpdateOSVersion___block_invoke(uint64_t a1)
 
                 v40 = PLLogConfig();
                 v6 = v30;
-                v8 = v29;
+                defaultManager = v29;
                 if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 134218242;
@@ -1075,7 +1075,7 @@ LABEL_29:
 LABEL_33:
 
         v5 = v42;
-        v4 = v43;
+        version = v43;
         goto LABEL_36;
       }
     }
@@ -1096,25 +1096,25 @@ LABEL_36:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeFilesFromPath:(id)a3 withMaxFiles:(int64_t)a4
++ (void)removeFilesFromPath:(id)path withMaxFiles:(int64_t)files
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 contentsOfDirectoryAtPath:v5 error:0];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:0];
   v8 = PLLogConfig();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v17 = v5;
+    v17 = pathCopy;
     v18 = 2048;
     v19 = [v7 count];
     v20 = 2048;
-    v21 = a4;
+    filesCopy = files;
     _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "Remove files from path: %@ currFiles: %ld maxFiles:%ld", buf, 0x20u);
   }
 
-  if ([v7 count] > a4)
+  if ([v7 count] > files)
   {
     v9 = [v7 sortedArrayUsingSelector:sel_compareInt_];
     v11[0] = MEMORY[0x277D85DD0];
@@ -1122,9 +1122,9 @@ LABEL_36:
     v11[2] = __50__PLConfigAgent_removeFilesFromPath_withMaxFiles___block_invoke;
     v11[3] = &unk_27825B900;
     v12 = v7;
-    v15 = a4;
-    v13 = v6;
-    v14 = v5;
+    filesCopy2 = files;
+    v13 = defaultManager;
+    v14 = pathCopy;
     [v9 enumerateObjectsUsingBlock:v11];
   }
 
@@ -1170,12 +1170,12 @@ void __50__PLConfigAgent_removeFilesFromPath_withMaxFiles___block_invoke(uint64_
 {
   v3 = [(PLOperator *)self defaultLongForKey:@"MaxMajorVersionDirectories"];
   v4 = [(PLOperator *)self defaultLongForKey:@"MaxMinorVersionDirectories"];
-  v5 = [MEMORY[0x277D3F258] containerPath];
-  v6 = [v5 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs/MajorVersion"];
+  containerPath = [MEMORY[0x277D3F258] containerPath];
+  v6 = [containerPath stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs/MajorVersion"];
   [PLConfigAgent removeFilesFromPath:v6 withMaxFiles:v3];
 
-  v8 = [MEMORY[0x277D3F258] containerPath];
-  v7 = [v8 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs/MinorVersion"];
+  containerPath2 = [MEMORY[0x277D3F258] containerPath];
+  v7 = [containerPath2 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs/MinorVersion"];
   [PLConfigAgent removeFilesFromPath:v7 withMaxFiles:v4];
 }
 
@@ -1183,8 +1183,8 @@ void __50__PLConfigAgent_removeFilesFromPath_withMaxFiles___block_invoke(uint64_
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D3F258];
-  v4 = [MEMORY[0x277D3F258] containerPath];
-  v5 = [v4 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs"];
+  containerPath = [MEMORY[0x277D3F258] containerPath];
+  v5 = [containerPath stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs"];
   v6 = [v3 directorySize:v5];
 
   if (v6 > [(PLOperator *)self defaultLongForKey:@"MaxUpgradeFolderSize"])
@@ -1197,11 +1197,11 @@ void __50__PLConfigAgent_removeFilesFromPath_withMaxFiles___block_invoke(uint64_
       _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "Total folder size: %ld exceeds max limit", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [MEMORY[0x277D3F258] containerPath];
-    v10 = [v9 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs"];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    containerPath2 = [MEMORY[0x277D3F258] containerPath];
+    v10 = [containerPath2 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs"];
     v17 = 0;
-    v11 = [v8 removeItemAtPath:v10 error:&v17];
+    v11 = [defaultManager removeItemAtPath:v10 error:&v17];
     v12 = v17;
 
     if ((v11 & 1) == 0)
@@ -1209,8 +1209,8 @@ void __50__PLConfigAgent_removeFilesFromPath_withMaxFiles___block_invoke(uint64_
       v13 = PLLogConfig();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v15 = [MEMORY[0x277D3F258] containerPath];
-        v16 = [v15 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs"];
+        containerPath3 = [MEMORY[0x277D3F258] containerPath];
+        v16 = [containerPath3 stringByAppendingString:@"/Library/BatteryLife/UpgradeLogs"];
         *buf = 138412546;
         v19 = v16;
         v20 = 2112;
@@ -1223,7 +1223,7 @@ void __50__PLConfigAgent_removeFilesFromPath_withMaxFiles___block_invoke(uint64_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)maintainPreUpgradePowerlogs:(int64_t)a3
+- (void)maintainPreUpgradePowerlogs:(int64_t)powerlogs
 {
   if ([MEMORY[0x277D3F180] liteMode])
   {
@@ -1244,9 +1244,9 @@ void __50__PLConfigAgent_removeFilesFromPath_withMaxFiles___block_invoke(uint64_
       dispatch_once(&qword_2811F42E0, block);
     }
 
-    if (qword_2811F42E8 <= a3)
+    if (qword_2811F42E8 <= powerlogs)
     {
-      [(PLConfigAgent *)self copyPowerlogsForPreUpgradeOSVersion:a3];
+      [(PLConfigAgent *)self copyPowerlogsForPreUpgradeOSVersion:powerlogs];
       [(PLConfigAgent *)self cleanupOldPowerlogs];
       [(PLConfigAgent *)self fileSizeSafeguards];
     }
@@ -1318,24 +1318,24 @@ uint64_t __31__PLConfigAgent_getUpgradeType__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)logAndUpdateLastBuild:(id)a3
+- (id)logAndUpdateLastBuild:(id)build
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  buildCopy = build;
   v5 = [MEMORY[0x277D3F180] objectForKey:@"LastBuild" forApplicationID:@"com.apple.powerlogd" synchronize:0];
-  if (v4 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (buildCopy && ([buildCopy isEqualToString:v5] & 1) == 0)
   {
     v7 = PLLogConfig();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v23 = v4;
+      v23 = buildCopy;
       v24 = 2112;
       v25 = v5;
       _os_log_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_INFO, "Update detected - Current Build %@ -> Last Build %@", buf, 0x16u);
     }
 
-    [MEMORY[0x277D3F180] setObject:v4 forKey:@"LastBuild" saveToDisk:1];
+    [MEMORY[0x277D3F180] setObject:buildCopy forKey:@"LastBuild" saveToDisk:1];
     +[PLConfigAgent resetRAPIDTaskingConfig];
     [(PLConfigAgent *)self maintainPreUpgradePowerlogs:[(PLConfigAgent *)self checkAndUpdateOSVersion:v5]];
     if (v5)
@@ -1346,7 +1346,7 @@ uint64_t __31__PLConfigAgent_getUpgradeType__block_invoke(uint64_t a1)
         *buf = 138412546;
         v23 = v5;
         v24 = 2112;
-        v25 = v4;
+        v25 = buildCopy;
         _os_log_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_INFO, "The device has been updated from build version %@ to build version %@", buf, 0x16u);
       }
 
@@ -1357,7 +1357,7 @@ uint64_t __31__PLConfigAgent_getUpgradeType__block_invoke(uint64_t a1)
       block[3] = &unk_278259658;
       v10 = v5;
       v20 = v10;
-      v21 = v4;
+      v21 = buildCopy;
       dispatch_after(v9, MEMORY[0x277D85CD0], block);
 
       [MEMORY[0x277D3F180] setObject:v10 forKey:@"PreviousUpdateBuild" saveToDisk:1];
@@ -1373,7 +1373,7 @@ uint64_t __31__PLConfigAgent_getUpgradeType__block_invoke(uint64_t a1)
     [v12 unsignedLongLongValue];
 
     v17 = v5;
-    v18 = v4;
+    v18 = buildCopy;
     AnalyticsSendEventLazy();
 
     v6 = v17;
@@ -1451,24 +1451,24 @@ id __39__PLConfigAgent_logAndUpdateLastBuild___block_invoke_297(void *a1)
   return v3;
 }
 
-- (id)logAndUpdateLastUpgradeTime:(id)a3
+- (id)logAndUpdateLastUpgradeTime:(id)time
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   v5 = [MEMORY[0x277D3F180] objectForKey:@"LastBuild" forApplicationID:@"com.apple.powerlogd" synchronize:0];
   v6 = [MEMORY[0x277D3F180] objectForKey:@"LastUpgradeTimestamp" forApplicationID:@"com.apple.powerlogd" synchronize:0];
   v7 = [MEMORY[0x277D3F180] objectForKey:@"LastUpgradeSystemTimestamp" forApplicationID:@"com.apple.powerlogd" synchronize:0];
-  if (v4 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (timeCopy && ([timeCopy isEqualToString:v5] & 1) == 0)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [v8 convertFromSystemToMonotonic];
+    date = [MEMORY[0x277CBEAA8] date];
+    convertFromSystemToMonotonic = [date convertFromSystemToMonotonic];
     v10 = MEMORY[0x277CCABB0];
-    [v8 timeIntervalSince1970];
+    [date timeIntervalSince1970];
     v11 = [v10 numberWithDouble:?];
 
     v12 = MEMORY[0x277D3F180];
     v13 = MEMORY[0x277CCABB0];
-    [v9 timeIntervalSince1970];
+    [convertFromSystemToMonotonic timeIntervalSince1970];
     v14 = [v13 numberWithDouble:?];
     [v12 setObject:v14 forKey:@"LastUpgradeTimestamp" saveToDisk:1];
 
@@ -1478,25 +1478,25 @@ id __39__PLConfigAgent_logAndUpdateLastBuild___block_invoke_297(void *a1)
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v22 = v4;
+      v22 = timeCopy;
       v23 = 2112;
       v24 = v5;
       v25 = 2112;
-      v26 = v8;
+      v26 = date;
       _os_log_impl(&dword_21A4C6000, v15, OS_LOG_TYPE_INFO, "Update detected - Current Build %@ -> Last Build %@ and timestamp %@", buf, 0x20u);
     }
 
-    [(PLConfigAgent *)self logToPPSBuild:v4 atDate:v9];
+    [(PLConfigAgent *)self logToPPSBuild:timeCopy atDate:convertFromSystemToMonotonic];
     v7 = v11;
   }
 
   else
   {
-    v8 = PLLogConfig();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    date = PLLogConfig();
+    if (os_log_type_enabled(date, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "Not an update case - logging upgrade timestamp at powerlog init", buf, 2u);
+      _os_log_debug_impl(&dword_21A4C6000, date, OS_LOG_TYPE_DEBUG, "Not an update case - logging upgrade timestamp at powerlog init", buf, 2u);
     }
   }
 
@@ -1573,9 +1573,9 @@ id __45__PLConfigAgent_logAndUpdateLastUpgradeTime___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (unint64_t)logInstallType:(id)a3
+- (unint64_t)logInstallType:(id)type
 {
-  if (a3)
+  if (type)
   {
     return [(PLConfigAgent *)self getUpgradeType];
   }
@@ -1586,16 +1586,16 @@ id __45__PLConfigAgent_logAndUpdateLastUpgradeTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)logToPPSBuild:(id)a3 atDate:(id)a4
+- (void)logToPPSBuild:(id)build atDate:(id)date
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v12 = @"build";
-  v13[0] = a3;
+  v13[0] = build;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  dateCopy = date;
+  buildCopy = build;
   v9 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v10 = [MEMORY[0x277CBEAA8] nearestMidnightBeforeDate:v7];
+  v10 = [MEMORY[0x277CBEAA8] nearestMidnightBeforeDate:dateCopy];
 
   [(PLOperator *)self logForSubsystem:@"PPTStorageOperator" category:@"Config" data:v9 date:v10];
   v11 = *MEMORY[0x277D85DE8];
@@ -1632,12 +1632,12 @@ id __45__PLConfigAgent_logAndUpdateLastUpgradeTime___block_invoke(uint64_t a1)
 - (id)logIcloudAccountType
 {
   v2 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_lastKnownQuota];
-  v5 = v4;
-  if (v4)
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  aa_lastKnownQuota = [aa_primaryAppleAccount aa_lastKnownQuota];
+  v5 = aa_lastKnownQuota;
+  if (aa_lastKnownQuota)
   {
-    v6 = [MEMORY[0x277CCA8E8] stringFromByteCount:objc_msgSend(v4 countStyle:{"longLongValue"), 3}];
+    v6 = [MEMORY[0x277CCA8E8] stringFromByteCount:objc_msgSend(aa_lastKnownQuota countStyle:{"longLongValue"), 3}];
   }
 
   else
@@ -1650,8 +1650,8 @@ id __45__PLConfigAgent_logAndUpdateLastUpgradeTime___block_invoke(uint64_t a1)
 
 - (id)seedGroup
 {
-  v2 = [MEMORY[0x277D3F180] sharedDefaults];
-  v3 = [v2 managedPrefsObjectForKey:@"SeedGroup" forApplicationID:@".GlobalPreferences" synchronize:1];
+  mEMORY[0x277D3F180] = [MEMORY[0x277D3F180] sharedDefaults];
+  v3 = [mEMORY[0x277D3F180] managedPrefsObjectForKey:@"SeedGroup" forApplicationID:@".GlobalPreferences" synchronize:1];
 
   return v3;
 }
@@ -1738,9 +1738,9 @@ LABEL_20:
 
 - (BOOL)getMDMStatus
 {
-  v2 = [MEMORY[0x277D26298] sharedConnection];
-  v3 = [v2 installedMDMProfileIdentifier];
-  v4 = v3 != 0;
+  mEMORY[0x277D26298] = [MEMORY[0x277D26298] sharedConnection];
+  installedMDMProfileIdentifier = [mEMORY[0x277D26298] installedMDMProfileIdentifier];
+  v4 = installedMDMProfileIdentifier != 0;
 
   return v4;
 }
@@ -1768,15 +1768,15 @@ uint64_t __38__PLConfigAgent_getSplatVersionString__block_invoke()
 {
   if ([MEMORY[0x277D3F180] fullMode])
   {
-    v2 = [MEMORY[0x277D3F1B8] getUserAssignedDeviceName];
+    getUserAssignedDeviceName = [MEMORY[0x277D3F1B8] getUserAssignedDeviceName];
   }
 
   else
   {
-    v2 = 0;
+    getUserAssignedDeviceName = 0;
   }
 
-  return v2;
+  return getUserAssignedDeviceName;
 }
 
 - (int)getOSVariant
@@ -1810,9 +1810,9 @@ uint64_t __38__PLConfigAgent_getSplatVersionString__block_invoke()
 - (id)baseband
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
+  kPLBasebandClassOfDevice = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
 
-  return [v2 numberWithInt:v3];
+  return [v2 numberWithInt:kPLBasebandClassOfDevice];
 }
 
 - (id)getCoverGlass
@@ -1848,10 +1848,10 @@ uint64_t __38__PLConfigAgent_getSplatVersionString__block_invoke()
   return 0;
 }
 
-- (int)getCoreCount:(int)a3
+- (int)getCoreCount:(int)count
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (count)
   {
     v4 = "hw.perflevel1.physicalcpu";
   }
@@ -1869,7 +1869,7 @@ uint64_t __38__PLConfigAgent_getSplatVersionString__block_invoke()
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v11 = a3;
+      countCopy = count;
       _os_log_error_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_ERROR, "Unable to retrieve hw.perflevel%d.physicalcpu", buf, 8u);
     }
 
@@ -1885,10 +1885,10 @@ uint64_t __38__PLConfigAgent_getSplatVersionString__block_invoke()
   return result;
 }
 
-- (id)getShutdownBootReason:(BOOL)a3
+- (id)getShutdownBootReason:(BOOL)reason
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (reason)
   {
     v3 = "kern.shutdownreason";
   }
@@ -2038,8 +2038,8 @@ void __32__PLConfigAgent_hwBoardRevision__block_invoke()
 - (id)getDeviceSerialNumber
 {
   v2 = MEMORY[0x277D3F1C8];
-  v3 = [(PLConfigAgent *)self iokitExpertDevice];
-  v4 = [v2 snapshotFromIOEntry:objc_msgSend(v3 forKey:{"service"), @"IOPlatformSerialNumber"}];
+  iokitExpertDevice = [(PLConfigAgent *)self iokitExpertDevice];
+  v4 = [v2 snapshotFromIOEntry:objc_msgSend(iokitExpertDevice forKey:{"service"), @"IOPlatformSerialNumber"}];
 
   return v4;
 }
@@ -2076,23 +2076,23 @@ void __32__PLConfigAgent_hwBoardRevision__block_invoke()
   sysdiagnoseStopListener = self->_sysdiagnoseStopListener;
   self->_sysdiagnoseStopListener = v8;
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 addObserver:self selector:sel_pairStatusDidChange_ name:*MEMORY[0x277D2BC68] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_pairStatusDidChange_ name:*MEMORY[0x277D2BC68] object:0];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 addObserver:self selector:sel_pairStatusDidChange_ name:*MEMORY[0x277D2BC78] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_pairStatusDidChange_ name:*MEMORY[0x277D2BC78] object:0];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel_pairStatusDidChange_ name:*MEMORY[0x277D2BC90] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_pairStatusDidChange_ name:*MEMORY[0x277D2BC90] object:0];
 
   v13 = objc_alloc(MEMORY[0x277D3F160]);
-  v14 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __41__PLConfigAgent_initOperatorDependancies__block_invoke_381;
   v46[3] = &unk_2782597E8;
   v46[4] = self;
-  v15 = [v13 initWithWorkQueue:v14 forNotification:@"com.apple.system.console_mode_changed" requireState:1 withBlock:v46];
+  v15 = [v13 initWithWorkQueue:workQueue forNotification:@"com.apple.system.console_mode_changed" requireState:1 withBlock:v46];
   [(PLConfigAgent *)self setConsoleModeListener:v15];
 
   v16 = objc_alloc(MEMORY[0x277D3F160]);
@@ -2175,8 +2175,8 @@ void __32__PLConfigAgent_hwBoardRevision__block_invoke()
     }
 
     v34 = objc_alloc_init(PPSFeatureFlagReaderHelper);
-    v35 = [(PPSFeatureFlagReaderHelper *)v34 getFeatureFlags];
-    [(PLConfigAgent *)self logEventPointFeatureFlags:v35];
+    getFeatureFlags = [(PPSFeatureFlagReaderHelper *)v34 getFeatureFlags];
+    [(PLConfigAgent *)self logEventPointFeatureFlags:getFeatureFlags];
   }
 
   objc_destroyWeak(&v42);
@@ -2308,14 +2308,14 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D2BC68] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D2BC68] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D2BC78] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D2BC78] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D2BC90] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x277D2BC90] object:0];
 
   v6.receiver = self;
   v6.super_class = PLConfigAgent;
@@ -2335,34 +2335,34 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
   [(PLConfigAgent *)self logCPUCoreConfig];
 }
 
-- (void)logEventPointFeatureFlags:(id)a3
+- (void)logEventPointFeatureFlags:(id)flags
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  flagsCopy = flags;
   v5 = [(PLOperator *)PLConfigAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"FeatureFlags"];
-  v6 = [MEMORY[0x277D3F258] deviceBootTime];
+  deviceBootTime = [MEMORY[0x277D3F258] deviceBootTime];
   v7 = objc_opt_new();
   v8 = PLLogConfig();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v49 = v4;
+    v49 = flagsCopy;
     _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "PPSFeatureFlagReader currFeatureFlags set : %@", buf, 0xCu);
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withDate:v6];
-  if ([v4 count])
+  v9 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withDate:deviceBootTime];
+  if ([flagsCopy count])
   {
     v32 = v9;
     v33 = v7;
-    v27 = self;
-    v28 = v6;
+    selfCopy = self;
+    v28 = deviceBootTime;
     v29 = v5;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v4;
+    obj = flagsCopy;
     v34 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
     v10 = 0;
     if (v34)
@@ -2420,15 +2420,15 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
       while (v34);
     }
 
-    self = v27;
+    self = selfCopy;
     v9 = v32;
-    [(PLOperator *)v27 logEntry:v32];
+    [(PLOperator *)selfCopy logEntry:v32];
     v7 = v33;
     v39 = @"__PPSKVPairs__";
     v40 = v33;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     v5 = v29;
-    v6 = v28;
+    deviceBootTime = v28;
   }
 
   else
@@ -2449,13 +2449,13 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
   }
 
-  v25 = [v9 entryDate];
-  [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"FeatureFlag" data:v23 date:v25];
+  entryDate = [v9 entryDate];
+  [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"FeatureFlag" data:v23 date:entryDate];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardSysdiagnoseEvent:(BOOL)a3
+- (void)logEventForwardSysdiagnoseEvent:(BOOL)event
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v15 = @"Start";
@@ -2464,10 +2464,10 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
   [(PLOperator *)self logForSubsystem:@"ConfigMetrics" category:@"SysdiagnoseEvent" data:v6];
-  if (!a3)
+  if (!event)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v9 = v8;
 
     v13[0] = @"TaskEndTime";
@@ -2492,23 +2492,23 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   v8 = PLLogConfig();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v11[0] = 67109120;
-    v11[1] = v7;
+    v11[1] = bOOLValue;
     _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "Keyboard Haptics state: %d", v11, 8u);
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
   [v4 setObject:v9 forKeyedSubscript:@"Enabled"];
 
   [(PLOperator *)self logEntry:v4];
@@ -2520,23 +2520,23 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
   v12 = *MEMORY[0x277D85DE8];
   v3 = [(PLOperator *)PLConfigAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"KeyboardClicks"];
   v4 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v3];
-  v5 = 1;
+  bOOLValue = 1;
   v6 = [MEMORY[0x277D3F180] objectForKey:@"keyboard-audio" forApplicationID:@"com.apple.preferences.sounds" synchronize:1];
   v7 = v6;
   if (v6)
   {
-    v5 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   v8 = PLLogConfig();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v11[0] = 67109120;
-    v11[1] = v5;
+    v11[1] = bOOLValue;
     _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "Keyboard Clicks state: %d", v11, 8u);
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
   [v4 setObject:v9 forKeyedSubscript:@"Enabled"];
 
   [(PLOperator *)self logEntry:v4];
@@ -2586,41 +2586,41 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardAmbientModeEnabled:(id)a3
+- (void)logEventForwardAmbientModeEnabled:(id)enabled
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  enabledCopy = enabled;
   v7 = [(PLOperator *)PLConfigAgent entryKeyForType:v4 andName:@"AmbientModeEnabled"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:enabledCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardContinuityCamera:(id)a3
+- (void)logEventForwardContinuityCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   v6 = [objc_opt_class() entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"ContinuityCamera"];
-  v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:v4];
+  v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:cameraCopy];
 
   [(PLOperator *)self logEntry:v5];
 }
 
-- (void)logEventNoneBuddyData:(id)a3
+- (void)logEventNoneBuddyData:(id)data
 {
-  v4 = a3;
-  [(PLOperator *)self logForSubsystem:@"ConfigMetrics" category:@"BuddyData" data:v4];
-  [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"BuddyData" data:v4];
+  dataCopy = data;
+  [(PLOperator *)self logForSubsystem:@"ConfigMetrics" category:@"BuddyData" data:dataCopy];
+  [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"BuddyData" data:dataCopy];
 
-  v5 = [(PLOperator *)self storage];
-  [v5 flushCachesWithReason:@"BuddyData"];
+  storage = [(PLOperator *)self storage];
+  [storage flushCachesWithReason:@"BuddyData"];
 }
 
 - (void)logEventForwardConsoleMode
 {
   v15 = *MEMORY[0x277D85DE8];
   state64 = 0;
-  v3 = [(PLConfigAgent *)self consoleModeListener];
-  state = notify_get_state([v3 stateToken], &state64);
+  consoleModeListener = [(PLConfigAgent *)self consoleModeListener];
+  state = notify_get_state([consoleModeListener stateToken], &state64);
 
   if (state)
   {
@@ -2690,7 +2690,7 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
   }
 
   v17 = 0;
-  v8 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v16 = 8;
   v9 = sysctlbyname("kern.userspacereboottime", &v17, &v16, 0, 0);
   v10 = PLLogConfig();
@@ -2721,7 +2721,7 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
       v12 = [MEMORY[0x277D3F258] dateFromnSecEpoch:?];
 
       [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"RebootEvents" data:v3 date:v12];
-      v8 = v12;
+      date = v12;
     }
   }
 
@@ -2735,17 +2735,17 @@ void __41__PLConfigAgent_initOperatorDependancies__block_invoke_420(uint64_t a1,
   v24 = 0.0;
   v3 = sysctlbyname("kern.shutdowntime", &v24, &v23, 0, 0);
   v4 = PLLogConfig();
-  v5 = v4;
+  date = v4;
   if (!v3)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
       v26 = v24;
-      _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "RebootEvents kern.shutdowntime value: %llu", buf, 0xCu);
+      _os_log_debug_impl(&dword_21A4C6000, date, OS_LOG_TYPE_DEBUG, "RebootEvents kern.shutdowntime value: %llu", buf, 0xCu);
     }
 
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v7 = sysctlbyname("kern.monotonicclock_usecs", v29, &v23, 0, 0);
     v8 = PLLogConfig();
     v9 = v8;
@@ -2804,8 +2804,8 @@ LABEL_44:
       _os_log_debug_impl(&dword_21A4C6000, v16, OS_LOG_TYPE_DEBUG, "Elapsed PMU RTC ticks in USecs since shutdown: %f", buf, 0xCu);
     }
 
-    v17 = [v5 dateByAddingTimeInterval:-v15];
-    v18 = [v17 convertFromSystemToMonotonic];
+    v17 = [date dateByAddingTimeInterval:-v15];
+    convertFromSystemToMonotonic = [v17 convertFromSystemToMonotonic];
 
     [(PLConfigAgent *)self getShutdownBootReason:1];
     v19 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
@@ -2873,7 +2873,7 @@ LABEL_44:
       if (![*&v19 containsString:@"ap_virtual_slp_ll"])
       {
 LABEL_43:
-        [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"RebootEvents" data:v9 date:v18];
+        [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"RebootEvents" data:v9 date:convertFromSystemToMonotonic];
 
         goto LABEL_44;
       }
@@ -2890,7 +2890,7 @@ LABEL_43:
     v6 = *__error();
     *buf = 67109120;
     LODWORD(v26) = v6;
-    _os_log_error_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_ERROR, "Unable to get kern.shutdowntime: %{errno}d", buf, 8u);
+    _os_log_error_impl(&dword_21A4C6000, date, OS_LOG_TYPE_ERROR, "Unable to get kern.shutdowntime: %{errno}d", buf, 8u);
   }
 
 LABEL_45:
@@ -2901,14 +2901,14 @@ LABEL_45:
 - (void)logDeviceCapability
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277D3F288] deviceCapabilityMapping];
+  deviceCapabilityMapping = [MEMORY[0x277D3F288] deviceCapabilityMapping];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__PLConfigAgent_logDeviceCapability__block_invoke;
   v6[3] = &unk_27825B950;
   v7 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [deviceCapabilityMapping enumerateObjectsUsingBlock:v6];
   [(PLOperator *)self logForSubsystem:@"ConfigMetrics" category:@"DeviceCapability" data:v5];
 }
 
@@ -2924,11 +2924,11 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
 - (void)logCPUCoreConfig
 {
   v10 = objc_opt_new();
-  v3 = [(PLConfigAgent *)self getPerfLevelsCount];
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:v3];
+  getPerfLevelsCount = [(PLConfigAgent *)self getPerfLevelsCount];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:getPerfLevelsCount];
   [v10 setObject:v4 forKeyedSubscript:@"numCoreTypes"];
 
-  if (v3 >= 1)
+  if (getPerfLevelsCount >= 1)
   {
     v5 = 0;
     do
@@ -2951,21 +2951,21 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
       v5 = (v5 + 1);
     }
 
-    while (v3 != v5);
+    while (getPerfLevelsCount != v5);
   }
 
   [(PLOperator *)self logForSubsystem:@"ConfigMetrics" category:@"CPUCoreConfig" data:v10];
 }
 
-- (void)logConfigToBGSQL:(id)a3
+- (void)logConfigToBGSQL:(id)l
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = [MEMORY[0x277D3F180] objectForKey:@"LastBGSQLUpgradeSystemTimestamp" forApplicationID:@"com.apple.powerlogd" synchronize:0];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 objectForKeyedSubscript:@"DeviceBootTime"];
-  v8 = [v7 convertFromMonotonicToSystem];
-  [v8 timeIntervalSince1970];
+  v7 = [lCopy objectForKeyedSubscript:@"DeviceBootTime"];
+  convertFromMonotonicToSystem = [v7 convertFromMonotonicToSystem];
+  [convertFromMonotonicToSystem timeIntervalSince1970];
   v9 = [v6 numberWithDouble:?];
 
   v10 = PLLogConfig();
@@ -3000,44 +3000,44 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
   }
 
   v20 = [v16 numberWithDouble:v19];
-  [v4 setObject:v20 forKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+  [lCopy setObject:v20 forKeyedSubscript:@"LastUpgradeSystemTimestamp"];
 
   v21 = MEMORY[0x277D3F180];
-  v22 = [v4 objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+  v22 = [lCopy objectForKeyedSubscript:@"LastUpgradeSystemTimestamp"];
   [v21 setObject:v22 forKey:@"LastBGSQLUpgradeSystemTimestamp" saveToDisk:1];
 
-  v23 = [v4 dictionary];
-  v24 = [v4 entryDate];
-  [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"Config" data:v23 date:v24];
+  dictionary = [lCopy dictionary];
+  entryDate = [lCopy entryDate];
+  [(PLOperator *)self logForSubsystem:@"BackgroundProcessing" category:@"Config" data:dictionary date:entryDate];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logConfigEntry:(id)a3
+- (void)logConfigEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = objc_opt_new();
-  v15 = [v4 dictionary];
+  dictionary = [entryCopy dictionary];
 
-  v6 = [(PLConfigAgent *)self getCoverGlass];
-  [v15 setObject:v6 forKeyedSubscript:@"DeviceCoverGlassCoating"];
+  getCoverGlass = [(PLConfigAgent *)self getCoverGlass];
+  [dictionary setObject:getCoverGlass forKeyedSubscript:@"DeviceCoverGlassCoating"];
 
-  v7 = [(PLConfigAgent *)self hasEmbeddedSIM];
-  [v15 setObject:v7 forKeyedSubscript:@"HasEmbeddedSIM"];
+  hasEmbeddedSIM = [(PLConfigAgent *)self hasEmbeddedSIM];
+  [dictionary setObject:hasEmbeddedSIM forKeyedSubscript:@"HasEmbeddedSIM"];
 
   v8 = [(PLConfigAgent *)self getShutdownBootReason:1];
-  [v15 setObject:v8 forKeyedSubscript:@"ShutdownReason"];
+  [dictionary setObject:v8 forKeyedSubscript:@"ShutdownReason"];
 
   v9 = [(PLConfigAgent *)self getShutdownBootReason:0];
-  [v15 setObject:v9 forKeyedSubscript:@"BootReason"];
+  [dictionary setObject:v9 forKeyedSubscript:@"BootReason"];
 
-  v10 = [v4 entryDate];
+  entryDate = [entryCopy entryDate];
 
-  [(PLOperator *)self logForSubsystem:@"ConfigMetrics" category:@"DeviceConfig" data:v15 date:v10];
+  [(PLOperator *)self logForSubsystem:@"ConfigMetrics" category:@"DeviceConfig" data:dictionary date:entryDate];
   if ([MEMORY[0x277D3F208] internalBuild])
   {
     v11 = MEMORY[0x277CBEB38];
-    v12 = [v15 objectForKeyedSubscript:@"DeviceSerialNumber"];
+    v12 = [dictionary objectForKeyedSubscript:@"DeviceSerialNumber"];
     v13 = [v11 dictionaryWithObject:v12 forKey:@"DeviceSerialNumber"];
 
     [(PLOperator *)self logForSubsystem:@"XcodeMetrics" category:@"DeviceConfig" data:v13];
@@ -3046,7 +3046,7 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
 
   else
   {
-    v14 = v15;
+    v14 = dictionary;
   }
 
   v16 = v14;
@@ -3057,51 +3057,51 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
 {
   v3 = [(PLOperator *)PLConfigAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"Config"];
   v4 = objc_alloc(MEMORY[0x277D3F190]);
-  v5 = [MEMORY[0x277D3F2A0] sharedCore];
-  v6 = [v5 launchDate];
-  v7 = [v4 initWithEntryKey:v3 withDate:v6];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  launchDate = [mEMORY[0x277D3F2A0] launchDate];
+  v7 = [v4 initWithEntryKey:v3 withDate:launchDate];
 
-  v8 = [MEMORY[0x277D3F258] buildVersion];
-  [v7 setObject:v8 forKeyedSubscript:@"Build"];
+  buildVersion = [MEMORY[0x277D3F258] buildVersion];
+  [v7 setObject:buildVersion forKeyedSubscript:@"Build"];
 
-  v9 = [MEMORY[0x277D3F258] supplementalBuildVersion];
-  [v7 setObject:v9 forKeyedSubscript:@"SupplementalBuild"];
+  supplementalBuildVersion = [MEMORY[0x277D3F258] supplementalBuildVersion];
+  [v7 setObject:supplementalBuildVersion forKeyedSubscript:@"SupplementalBuild"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(MEMORY[0x277D3F208], "internalBuild") ^ 1}];
   [v7 setObject:v10 forKeyedSubscript:@"CustomerOS"];
 
-  v11 = [MEMORY[0x277D3F1B8] getHardwareModel];
-  [v7 setObject:v11 forKeyedSubscript:@"Device"];
+  getHardwareModel = [MEMORY[0x277D3F1B8] getHardwareModel];
+  [v7 setObject:getHardwareModel forKeyedSubscript:@"Device"];
 
-  v12 = [MEMORY[0x277D3F258] crashReporterKey];
-  [v7 setObject:v12 forKeyedSubscript:@"CRKey"];
+  crashReporterKey = [MEMORY[0x277D3F258] crashReporterKey];
+  [v7 setObject:crashReporterKey forKeyedSubscript:@"CRKey"];
 
   if ([MEMORY[0x277D3F208] internalBuild])
   {
-    v13 = [MEMORY[0x277D3F258] crashReporterKey];
-    [v7 setObject:v13 forKeyedSubscript:@"CRKey2"];
+    crashReporterKey2 = [MEMORY[0x277D3F258] crashReporterKey];
+    [v7 setObject:crashReporterKey2 forKeyedSubscript:@"CRKey2"];
 
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[PLConfigAgent rootInstalled](self, "rootInstalled")}];
     [v7 setObject:v14 forKeyedSubscript:@"RootInstalled"];
 
-    v15 = [MEMORY[0x277D3F258] mobileUserADG];
-    [v7 setObject:v15 forKeyedSubscript:@"ADGOnly"];
+    mobileUserADG = [MEMORY[0x277D3F258] mobileUserADG];
+    [v7 setObject:mobileUserADG forKeyedSubscript:@"ADGOnly"];
 
-    v16 = [MEMORY[0x277D3F258] experimentGroup];
-    [v7 setObject:v16 forKeyedSubscript:@"ExperimentGroup"];
+    experimentGroup = [MEMORY[0x277D3F258] experimentGroup];
+    [v7 setObject:experimentGroup forKeyedSubscript:@"ExperimentGroup"];
 
     v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(MEMORY[0x277D3F258], "hasInternalKey")}];
     [v7 setObject:v17 forKeyedSubscript:@"HasInternalKey"];
   }
 
-  v18 = [(PLConfigAgent *)self deviceName];
-  [v7 setObject:v18 forKeyedSubscript:@"DeviceName"];
+  deviceName = [(PLConfigAgent *)self deviceName];
+  [v7 setObject:deviceName forKeyedSubscript:@"DeviceName"];
 
-  v19 = [MEMORY[0x277D3F258] deviceBootArgs];
-  [v7 setObject:v19 forKeyedSubscript:@"BootArgs"];
+  deviceBootArgs = [MEMORY[0x277D3F258] deviceBootArgs];
+  [v7 setObject:deviceBootArgs forKeyedSubscript:@"BootArgs"];
 
-  v20 = [MEMORY[0x277D3F258] deviceBootTime];
-  [v7 setObject:v20 forKeyedSubscript:@"DeviceBootTime"];
+  deviceBootTime = [MEMORY[0x277D3F258] deviceBootTime];
+  [v7 setObject:deviceBootTime forKeyedSubscript:@"DeviceBootTime"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithInt:{-[PLConfigAgent getDeviceType](self, "getDeviceType")}];
   [v7 setObject:v21 forKeyedSubscript:@"DeviceType"];
@@ -3122,11 +3122,11 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
   v28 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PLConfigAgent autolockTime](self, "autolockTime")}];
   [v7 setObject:v28 forKeyedSubscript:@"AutoLockTime"];
 
-  v29 = [(PLConfigAgent *)self baseband];
-  [v7 setObject:v29 forKeyedSubscript:@"Baseband"];
+  baseband = [(PLConfigAgent *)self baseband];
+  [v7 setObject:baseband forKeyedSubscript:@"Baseband"];
 
-  v30 = [MEMORY[0x277D3F1B8] getBasebandFirmwareVersion];
-  [v7 setObject:v30 forKeyedSubscript:@"BasebandFirmware"];
+  getBasebandFirmwareVersion = [MEMORY[0x277D3F1B8] getBasebandFirmwareVersion];
+  [v7 setObject:getBasebandFirmwareVersion forKeyedSubscript:@"BasebandFirmware"];
 
   v31 = [MEMORY[0x277CCABB0] numberWithBool:{-[PLConfigAgent noWatchdogs](self, "noWatchdogs")}];
   [v7 setObject:v31 forKeyedSubscript:@"BKNoWatchdogs"];
@@ -3134,29 +3134,29 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
   v32 = [MEMORY[0x277CCABB0] numberWithBool:{-[PLConfigAgent disableCABlanking](self, "disableCABlanking")}];
   [v7 setObject:v32 forKeyedSubscript:@"SBDisableCABlanking"];
 
-  v33 = [MEMORY[0x277D3F258] automatedDeviceGroup];
-  [v7 setObject:v33 forKeyedSubscript:@"AutomatedDeviceGroup"];
+  automatedDeviceGroup = [MEMORY[0x277D3F258] automatedDeviceGroup];
+  [v7 setObject:automatedDeviceGroup forKeyedSubscript:@"AutomatedDeviceGroup"];
 
-  v34 = [(PLConfigAgent *)self seedGroup];
-  [v7 setObject:v34 forKeyedSubscript:@"SeedGroup"];
+  seedGroup = [(PLConfigAgent *)self seedGroup];
+  [v7 setObject:seedGroup forKeyedSubscript:@"SeedGroup"];
 
   if ([MEMORY[0x277D3F208] internalBuild])
   {
-    v35 = [(PLConfigAgent *)self hwConfig];
-    [v7 setObject:v35 forKeyedSubscript:@"ConfigNumber"];
+    hwConfig = [(PLConfigAgent *)self hwConfig];
+    [v7 setObject:hwConfig forKeyedSubscript:@"ConfigNumber"];
 
-    v36 = [(PLConfigAgent *)self hwBoardRevision];
-    [v7 setObject:v36 forKeyedSubscript:@"DebugBoardRevision"];
+    hwBoardRevision = [(PLConfigAgent *)self hwBoardRevision];
+    [v7 setObject:hwBoardRevision forKeyedSubscript:@"DebugBoardRevision"];
 
     v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(MEMORY[0x277D3F1B8], "isDevBoard")}];
     [v7 setObject:v37 forKeyedSubscript:@"DevBoard"];
   }
 
-  v38 = [(PLConfigAgent *)self logLastBackupTime];
-  [v7 setObject:v38 forKeyedSubscript:@"LastBackupTimestamp"];
+  logLastBackupTime = [(PLConfigAgent *)self logLastBackupTime];
+  [v7 setObject:logLastBackupTime forKeyedSubscript:@"LastBackupTimestamp"];
 
-  v39 = [(PLConfigAgent *)self logIcloudAccountType];
-  [v7 setObject:v39 forKeyedSubscript:@"IcloudAccountType"];
+  logIcloudAccountType = [(PLConfigAgent *)self logIcloudAccountType];
+  [v7 setObject:logIcloudAccountType forKeyedSubscript:@"IcloudAccountType"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithInt:{-[PLConfigAgent getOSVariant](self, "getOSVariant")}];
   [v7 setObject:v40 forKeyedSubscript:@"OSVariant"];
@@ -3171,29 +3171,29 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
 
   if ([MEMORY[0x277D3F208] internalBuild])
   {
-    v44 = [(PLConfigAgent *)self getDeviceSerialNumber];
-    [v7 setObject:v44 forKeyedSubscript:@"DeviceSerialNumber"];
+    getDeviceSerialNumber = [(PLConfigAgent *)self getDeviceSerialNumber];
+    [v7 setObject:getDeviceSerialNumber forKeyedSubscript:@"DeviceSerialNumber"];
   }
 
-  v45 = [(PLConfigAgent *)self getSplatVersionString];
-  [v7 setObject:v45 forKeyedSubscript:@"InstalledSplat"];
+  getSplatVersionString = [(PLConfigAgent *)self getSplatVersionString];
+  [v7 setObject:getSplatVersionString forKeyedSubscript:@"InstalledSplat"];
 
-  v46 = [(PLConfigAgent *)self logLastUpgradeSystemTimestamp];
-  [v7 setObject:v46 forKeyedSubscript:@"LastUpgradeSystemTimestamp"];
+  logLastUpgradeSystemTimestamp = [(PLConfigAgent *)self logLastUpgradeSystemTimestamp];
+  [v7 setObject:logLastUpgradeSystemTimestamp forKeyedSubscript:@"LastUpgradeSystemTimestamp"];
 
   v47 = [MEMORY[0x277D3F180] objectForKey:@"InstallType" ifNotSet:&unk_282C10AB8];
   [v7 setObject:v47 forKeyedSubscript:@"InstallType"];
 
-  v48 = [MEMORY[0x277D3F1B8] getHardwarePlatform];
-  [v7 setObject:v48 forKeyedSubscript:@"Device_SoC"];
+  getHardwarePlatform = [MEMORY[0x277D3F1B8] getHardwarePlatform];
+  [v7 setObject:getHardwarePlatform forKeyedSubscript:@"Device_SoC"];
 
   if ((os_variant_is_darwinos() & 1) == 0)
   {
-    v49 = [(PLConfigAgent *)self deviceShutdownReasons];
-    [v7 setObject:v49 forKeyedSubscript:@"DeviceBootReasons"];
+    deviceShutdownReasons = [(PLConfigAgent *)self deviceShutdownReasons];
+    [v7 setObject:deviceShutdownReasons forKeyedSubscript:@"DeviceBootReasons"];
 
-    v50 = [(PLConfigAgent *)self getMDMStatus];
-    v51 = [MEMORY[0x277CCABB0] numberWithBool:v50];
+    getMDMStatus = [(PLConfigAgent *)self getMDMStatus];
+    v51 = [MEMORY[0x277CCABB0] numberWithBool:getMDMStatus];
     [v7 setObject:v51 forKeyedSubscript:@"MDMStatus"];
 
     if (([MEMORY[0x277D3F208] isiOS] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isMac"))
@@ -3206,8 +3206,8 @@ void __36__PLConfigAgent_logDeviceCapability__block_invoke(uint64_t a1, void *a2
   [(PLConfigAgent *)self logConfigEntry:v7];
   [(PLConfigAgent *)self logEntryToCA:v7];
   [(PLConfigAgent *)self logConfigToBGSQL:v7];
-  v52 = [(PLOperator *)self storage];
-  [v52 flushCachesWithReason:@"DeviceConfig"];
+  storage = [(PLOperator *)self storage];
+  [storage flushCachesWithReason:@"DeviceConfig"];
 }
 
 id __35__PLConfigAgent_logEventNoneConfig__block_invoke(uint64_t a1)
@@ -3223,15 +3223,15 @@ id __35__PLConfigAgent_logEventNoneConfig__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)pairStatusDidChange:(id)a3
+- (void)pairStatusDidChange:(id)change
 {
-  v4 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__PLConfigAgent_pairStatusDidChange___block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __37__PLConfigAgent_pairStatusDidChange___block_invoke(uint64_t a1)
@@ -3249,16 +3249,16 @@ uint64_t __37__PLConfigAgent_pairStatusDidChange___block_invoke(uint64_t a1)
 - (void)logEventNonePairedDeviceConfig
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v5 = [v4 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
   v6 = [(PLOperator *)PLConfigAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"PairedDeviceConfig"];
-  v40 = self;
-  v7 = [(PLOperator *)self storage];
-  v8 = [v7 lastEntryForKey:v6];
+  selfCopy = self;
+  storage = [(PLOperator *)self storage];
+  v8 = [storage lastEntryForKey:v6];
 
   v9 = *MEMORY[0x277D2BC08];
-  v10 = [v5 valueForProperty:*MEMORY[0x277D2BC08]];
+  v10 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC08]];
   v11 = v10;
   if (v8)
   {
@@ -3306,26 +3306,26 @@ LABEL_10:
   v39 = v14;
 
   v16 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-  if (v5)
+  if (getActivePairedDevice)
   {
     if ([MEMORY[0x277D3F208] internalBuild])
     {
-      v17 = [v5 valueForProperty:*MEMORY[0x277D2BBB8]];
-      v18 = [v17 UUIDString];
-      [v16 setObject:v18 forKeyedSubscript:@"PairingID"];
+      v17 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBB8]];
+      uUIDString = [v17 UUIDString];
+      [v16 setObject:uUIDString forKeyedSubscript:@"PairingID"];
     }
 
-    v19 = [v5 valueForProperty:v9];
+    v19 = [getActivePairedDevice valueForProperty:v9];
     [v16 setObject:v19 forKeyedSubscript:@"Build"];
 
-    v20 = [v5 valueForProperty:*MEMORY[0x277D2BBC0]];
+    v20 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBC0]];
     [v16 setObject:v20 forKeyedSubscript:@"Device"];
 
-    v21 = [v5 valueForProperty:*MEMORY[0x277D2BB08]];
+    v21 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BB08]];
     [v16 setObject:v21 forKeyedSubscript:@"HWModel"];
 
     v22 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"C5DDE5DD-2FF7-4735-80A3-0108488556DE"];
-    LODWORD(v23) = [v5 supportsCapability:v22];
+    LODWORD(v23) = [getActivePairedDevice supportsCapability:v22];
 
     v23 = v23;
   }
@@ -3335,17 +3335,17 @@ LABEL_10:
     v23 = 0;
   }
 
-  v24 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v25 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v26 = [v24 getAllDevicesWithArchivedAltAccountDevicesMatching:v25];
-  v27 = [v26 firstObject];
+  mEMORY[0x277D2BCF8]2 = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v26 = [mEMORY[0x277D2BCF8]2 getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v26 firstObject];
 
-  if (v27)
+  if (firstObject)
   {
-    v28 = [v27 valueForProperty:*MEMORY[0x277D2BB28]];
-    v29 = [v28 BOOLValue];
+    v28 = [firstObject valueForProperty:*MEMORY[0x277D2BB28]];
+    bOOLValue = [v28 BOOLValue];
 
-    if (v29)
+    if (bOOLValue)
     {
       v23 |= 2uLL;
     }
@@ -3373,9 +3373,9 @@ LABEL_10:
 
   v32 = v31;
   v33 = [v8 objectForKeyedSubscript:@"PMode"];
-  v34 = [v33 unsignedIntegerValue];
+  unsignedIntegerValue = [v33 unsignedIntegerValue];
 
-  if (v34 == v23)
+  if (unsignedIntegerValue == v23)
   {
     if (!v39)
     {
@@ -3390,18 +3390,18 @@ LABEL_27:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
     {
       v37 = [v8 objectForKeyedSubscript:@"PMode"];
-      v38 = [v37 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v37 unsignedIntegerValue];
       *buf = 67109632;
       v42 = 1;
       v43 = 1024;
-      v44 = v38;
+      v44 = unsignedIntegerValue2;
       v45 = 1024;
       v46 = v23;
       _os_log_debug_impl(&dword_21A4C6000, v35, OS_LOG_TYPE_DEBUG, "PairedDeviceConfig: mode changed = %d (0x%x -> 0x%x)\n", buf, 0x14u);
     }
   }
 
-  [(PLOperator *)v40 logEntry:v16];
+  [(PLOperator *)selfCopy logEntry:v16];
 LABEL_31:
 
   v36 = *MEMORY[0x277D85DE8];
@@ -3420,12 +3420,12 @@ id __47__PLConfigAgent_logEventNonePairedDeviceConfig__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logEntryToCA:(id)a3
+- (void)logEntryToCA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   if ([MEMORY[0x277D3F258] deviceRebooted])
   {
-    v4 = [v3 objectForKeyedSubscript:@"DeviceBootReasons"];
+    v4 = [aCopy objectForKeyedSubscript:@"DeviceBootReasons"];
     v5 = v4;
     if (v4)
     {
@@ -3453,13 +3453,13 @@ id __30__PLConfigAgent_logEntryToCA___block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (void)logConfigEntryToCA:(id)a3
+- (void)logConfigEntryToCA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   if ([MEMORY[0x277D3F258] deviceRebooted])
   {
-    v4 = [v3 objectForKeyedSubscript:@"ShutdownReason"];
-    v5 = [v3 objectForKeyedSubscript:@"BootReason"];
+    v4 = [aCopy objectForKeyedSubscript:@"ShutdownReason"];
+    v5 = [aCopy objectForKeyedSubscript:@"BootReason"];
     v6 = v5;
     if (v4 && v5)
     {

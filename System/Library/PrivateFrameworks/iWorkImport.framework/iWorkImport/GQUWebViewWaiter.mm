@@ -1,7 +1,7 @@
 @interface GQUWebViewWaiter
 + (id)waiter;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)waitForWebViewToFinishLoading:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)waitForWebViewToFinishLoading:(id)loading;
 @end
 
 @implementation GQUWebViewWaiter
@@ -11,28 +11,28 @@
   result = qword_A42A0;
   if (!qword_A42A0)
   {
-    result = objc_alloc_init(a1);
+    result = objc_alloc_init(self);
     qword_A42A0 = result;
   }
 
   return result;
 }
 
-- (void)waitForWebViewToFinishLoading:(id)a3
+- (void)waitForWebViewToFinishLoading:(id)loading
 {
-  [a3 addObserver:self forKeyPath:@"loading" options:0 context:0];
-  if ([a3 isLoading])
+  [loading addObserver:self forKeyPath:@"loading" options:0 context:0];
+  if ([loading isLoading])
   {
-    while ([a3 isLoading])
+    while ([loading isLoading])
     {
       CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.0, 1u);
     }
   }
 
-  [a3 removeObserver:self forKeyPath:@"loading"];
+  [loading removeObserver:self forKeyPath:@"loading"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   Current = CFRunLoopGetCurrent();
 

@@ -1,12 +1,12 @@
 @interface UserNotificationViewController
-- (_TtC35AMSEngagementNotificationsExtension30UserNotificationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC35AMSEngagementNotificationsExtension30UserNotificationViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation UserNotificationViewController
 
-- (_TtC35AMSEngagementNotificationsExtension30UserNotificationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC35AMSEngagementNotificationsExtension30UserNotificationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10000123C();
     v7 = v6;
@@ -18,8 +18,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100001068(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100001068(v5, v7, bundle);
 }
 
 @end

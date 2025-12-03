@@ -37,8 +37,8 @@ void __48__SFManagedBookmarksController_sharedController__block_invoke()
     managedBookmarksController = v2->_managedBookmarksController;
     v2->_managedBookmarksController = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_managedBookmarksDidChange name:*MEMORY[0x1E69C8C18] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_managedBookmarksDidChange name:*MEMORY[0x1E69C8C18] object:0];
 
     v6 = v2;
   }
@@ -51,11 +51,11 @@ void __48__SFManagedBookmarksController_sharedController__block_invoke()
   topLevelManagedBookmarkFolder = self->_topLevelManagedBookmarkFolder;
   if (!topLevelManagedBookmarkFolder)
   {
-    v4 = [(SFManagedBookmarksController *)self managedBookmarksController];
-    v5 = [v4 topLevelBookmarksFolderTitle];
-    v6 = [(SFManagedBookmarksController *)self managedBookmarksController];
-    v7 = [v6 managedBookmarks];
-    v8 = [SFManagedBookmarkFolder topLevelManagedBookmarkFolderWithTitle:v5 bookmarkDictionary:v7];
+    managedBookmarksController = [(SFManagedBookmarksController *)self managedBookmarksController];
+    topLevelBookmarksFolderTitle = [managedBookmarksController topLevelBookmarksFolderTitle];
+    managedBookmarksController2 = [(SFManagedBookmarksController *)self managedBookmarksController];
+    managedBookmarks = [managedBookmarksController2 managedBookmarks];
+    v8 = [SFManagedBookmarkFolder topLevelManagedBookmarkFolderWithTitle:topLevelBookmarksFolderTitle bookmarkDictionary:managedBookmarks];
     v9 = self->_topLevelManagedBookmarkFolder;
     self->_topLevelManagedBookmarkFolder = v8;
 
@@ -72,8 +72,8 @@ void __48__SFManagedBookmarksController_sharedController__block_invoke()
   topLevelManagedBookmarkFolder = self->_topLevelManagedBookmarkFolder;
   self->_topLevelManagedBookmarkFolder = 0;
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"SFManagedBookmarksDidChange" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SFManagedBookmarksDidChange" object:0];
 }
 
 @end

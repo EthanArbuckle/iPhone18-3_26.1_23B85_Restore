@@ -1,32 +1,32 @@
 @interface SXImageRecordValueTransformer
-- (SXImageRecordValueTransformer)initWithDOMObjectProvider:(id)a3;
-- (id)transformValueForRecord:(id)a3 descriptor:(id)a4;
+- (SXImageRecordValueTransformer)initWithDOMObjectProvider:(id)provider;
+- (id)transformValueForRecord:(id)record descriptor:(id)descriptor;
 @end
 
 @implementation SXImageRecordValueTransformer
 
-- (SXImageRecordValueTransformer)initWithDOMObjectProvider:(id)a3
+- (SXImageRecordValueTransformer)initWithDOMObjectProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SXImageRecordValueTransformer;
   v6 = [(SXImageRecordValueTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_DOMObjectProvider, a3);
+    objc_storeStrong(&v6->_DOMObjectProvider, provider);
   }
 
   return v7;
 }
 
-- (id)transformValueForRecord:(id)a3 descriptor:(id)a4
+- (id)transformValueForRecord:(id)record descriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = [a3 jsonDictionary];
-  v8 = [v6 key];
+  descriptorCopy = descriptor;
+  jsonDictionary = [record jsonDictionary];
+  v8 = [descriptorCopy key];
 
-  v9 = [v7 objectForKey:v8];
+  v9 = [jsonDictionary objectForKey:v8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -49,8 +49,8 @@
   v11 = v10;
   if (v10)
   {
-    v12 = [(SXImageRecordValueTransformer *)self DOMObjectProvider];
-    v13 = [v12 imageResourceForIdentifier:v11];
+    dOMObjectProvider = [(SXImageRecordValueTransformer *)self DOMObjectProvider];
+    v13 = [dOMObjectProvider imageResourceForIdentifier:v11];
 
     goto LABEL_9;
   }

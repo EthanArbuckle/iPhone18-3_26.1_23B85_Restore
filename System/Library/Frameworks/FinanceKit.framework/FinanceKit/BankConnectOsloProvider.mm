@@ -1,13 +1,13 @@
 @interface BankConnectOsloProvider
-+ (id)makeProviderAndReturnError:(id *)a3;
++ (id)makeProviderAndReturnError:(id *)error;
 - (_TtC10FinanceKit23BankConnectOsloProvider)init;
 - (void)dealloc;
-- (void)listenForAccountsWithPrimaryAccountIdentifiers:(id)a3 callback:(id)a4;
+- (void)listenForAccountsWithPrimaryAccountIdentifiers:(id)identifiers callback:(id)callback;
 @end
 
 @implementation BankConnectOsloProvider
 
-+ (id)makeProviderAndReturnError:(id *)a3
++ (id)makeProviderAndReturnError:(id *)error
 {
   if (qword_1EDAFB7C0 != -1)
   {
@@ -27,21 +27,21 @@
   return v6;
 }
 
-- (void)listenForAccountsWithPrimaryAccountIdentifiers:(id)a3 callback:(id)a4
+- (void)listenForAccountsWithPrimaryAccountIdentifiers:(id)identifiers callback:(id)callback
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(callback);
   v6 = sub_1B7800FA8();
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1B72FAFC0(v6, sub_1B72A6290, v7);
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B72FCD74();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for BankConnectOsloProvider();
   [(BankConnectOsloProvider *)&v3 dealloc];
 }

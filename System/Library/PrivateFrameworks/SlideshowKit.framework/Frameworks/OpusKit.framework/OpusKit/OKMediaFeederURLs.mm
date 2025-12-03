@@ -1,13 +1,13 @@
 @interface OKMediaFeederURLs
-+ (id)mediaFeederWithMediaObjects:(id)a3;
-+ (id)mediaFeederWithMediaURLs:(id)a3;
++ (id)mediaFeederWithMediaObjects:(id)objects;
++ (id)mediaFeederWithMediaURLs:(id)ls;
 + (id)supportedSettings;
 - (OKMediaFeederURLs)init;
-- (OKMediaFeederURLs)initWithMediaObjects:(id)a3;
-- (OKMediaFeederURLs)initWithMediaURLs:(id)a3;
-- (OKMediaFeederURLs)initWithSettings:(id)a3;
+- (OKMediaFeederURLs)initWithMediaObjects:(id)objects;
+- (OKMediaFeederURLs)initWithMediaURLs:(id)ls;
+- (OKMediaFeederURLs)initWithSettings:(id)settings;
 - (id)feederSettings;
-- (id)indexesForMediaObjects:(id)a3;
+- (id)indexesForMediaObjects:(id)objects;
 - (void)dealloc;
 @end
 
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (OKMediaFeederURLs)initWithMediaObjects:(id)a3
+- (OKMediaFeederURLs)initWithMediaObjects:(id)objects
 {
   v4 = [(OKMediaFeederURLs *)self init];
   if (v4)
@@ -37,39 +37,39 @@
   return v4;
 }
 
-+ (id)mediaFeederWithMediaObjects:(id)a3
++ (id)mediaFeederWithMediaObjects:(id)objects
 {
-  v3 = [[OKMediaFeederURLs alloc] initWithMediaObjects:a3];
+  v3 = [[OKMediaFeederURLs alloc] initWithMediaObjects:objects];
 
   return v3;
 }
 
-- (OKMediaFeederURLs)initWithMediaURLs:(id)a3
+- (OKMediaFeederURLs)initWithMediaURLs:(id)ls
 {
   v4 = [(OKMediaFeederURLs *)self init];
   if (v4)
   {
-    v4->_mediaURLs = a3;
+    v4->_mediaURLs = ls;
   }
 
   return v4;
 }
 
-+ (id)mediaFeederWithMediaURLs:(id)a3
++ (id)mediaFeederWithMediaURLs:(id)ls
 {
-  v3 = [[OKMediaFeederURLs alloc] initWithMediaURLs:a3];
+  v3 = [[OKMediaFeederURLs alloc] initWithMediaURLs:ls];
 
   return v3;
 }
 
-- (OKMediaFeederURLs)initWithSettings:(id)a3
+- (OKMediaFeederURLs)initWithSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = OKMediaFeederURLs;
   v4 = [(OKMediaFeeder *)&v7 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"items"];
+    v5 = [settings objectForKey:@"items"];
     if (v5)
     {
       v4->_mediaURLs = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v5 copyItems:1];
@@ -96,7 +96,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKMediaFeederURLs;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"items";
@@ -120,15 +120,15 @@
   return v3;
 }
 
-- (id)indexesForMediaObjects:(id)a3
+- (id)indexesForMediaObjects:(id)objects
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [objects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -140,7 +140,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -150,18 +150,18 @@
           v10 = [+[OKMediaManager defaultManager](OKMediaManager "defaultManager")];
         }
 
-        [v5 addObject:v10];
+        [array addObject:v10];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [objects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return [(NSArray *)self->_mediaURLs indexesOfObjects:v5];
+  return [(NSArray *)self->_mediaURLs indexesOfObjects:array];
 }
 
 @end

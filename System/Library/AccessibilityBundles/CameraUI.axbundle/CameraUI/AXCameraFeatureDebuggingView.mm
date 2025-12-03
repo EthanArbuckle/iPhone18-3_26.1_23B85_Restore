@@ -1,24 +1,24 @@
 @interface AXCameraFeatureDebuggingView
-- (AXCameraFeatureDebuggingView)initWithFrame:(CGRect)a3;
+- (AXCameraFeatureDebuggingView)initWithFrame:(CGRect)frame;
 - (NSString)text;
 - (double)borderWidth;
 - (void)layoutSubviews;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setInterfaceOrientation:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextInsideBox:(BOOL)a3;
-- (void)setTextOnTop:(BOOL)a3;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
+- (void)setInterfaceOrientation:(int64_t)orientation;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setTextInsideBox:(BOOL)box;
+- (void)setTextOnTop:(BOOL)top;
 @end
 
 @implementation AXCameraFeatureDebuggingView
 
-- (AXCameraFeatureDebuggingView)initWithFrame:(CGRect)a3
+- (AXCameraFeatureDebuggingView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = AXCameraFeatureDebuggingView;
-  v3 = [(AXCameraFeatureDebuggingView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXCameraFeatureDebuggingView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x29EDC7DA0]);
@@ -30,21 +30,21 @@
     crossHairX = v3->__crossHairX;
     v3->__crossHairX = v9;
 
-    v11 = [(AXCameraFeatureDebuggingView *)v3 borderColor];
-    [(UIView *)v3->__crossHairX setBackgroundColor:v11];
+    borderColor = [(AXCameraFeatureDebuggingView *)v3 borderColor];
+    [(UIView *)v3->__crossHairX setBackgroundColor:borderColor];
 
     [(AXCameraFeatureDebuggingView *)v3 addSubview:v3->__crossHairX];
     v12 = [objc_alloc(MEMORY[0x29EDC7DA0]) initWithFrame:{v5, v6, v7, v8}];
     crossHairY = v3->__crossHairY;
     v3->__crossHairY = v12;
 
-    v14 = [(AXCameraFeatureDebuggingView *)v3 borderColor];
-    [(UIView *)v3->__crossHairY setBackgroundColor:v14];
+    borderColor2 = [(AXCameraFeatureDebuggingView *)v3 borderColor];
+    [(UIView *)v3->__crossHairY setBackgroundColor:borderColor2];
 
     [(AXCameraFeatureDebuggingView *)v3 addSubview:v3->__crossHairY];
-    v15 = [MEMORY[0x29EDC7A00] whiteColor];
+    whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
     textColor = v3->_textColor;
-    v3->_textColor = v15;
+    v3->_textColor = whiteColor;
 
     v17 = v3;
   }
@@ -54,82 +54,82 @@
 
 - (double)borderWidth
 {
-  v2 = [(AXCameraFeatureDebuggingView *)self layer];
-  [v2 borderWidth];
+  layer = [(AXCameraFeatureDebuggingView *)self layer];
+  [layer borderWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  v4 = [(AXCameraFeatureDebuggingView *)self layer];
-  [v4 setBorderWidth:a3];
+  layer = [(AXCameraFeatureDebuggingView *)self layer];
+  [layer setBorderWidth:width];
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   borderColor = self->_borderColor;
-  if (borderColor != v5)
+  if (borderColor != colorCopy)
   {
-    v13 = v5;
-    if (([(UIColor *)borderColor isEqual:v5]& 1) == 0)
+    v13 = colorCopy;
+    if (([(UIColor *)borderColor isEqual:colorCopy]& 1) == 0)
     {
-      objc_storeStrong(&self->_borderColor, a3);
+      objc_storeStrong(&self->_borderColor, color);
       v7 = v13;
-      v8 = [(UIColor *)v13 CGColor];
-      v9 = [(AXCameraFeatureDebuggingView *)self layer];
-      [v9 setBorderColor:v8];
+      cGColor = [(UIColor *)v13 CGColor];
+      layer = [(AXCameraFeatureDebuggingView *)self layer];
+      [layer setBorderColor:cGColor];
 
-      v10 = [(AXCameraFeatureDebuggingView *)self _crossHairX];
-      [v10 setBackgroundColor:v13];
+      _crossHairX = [(AXCameraFeatureDebuggingView *)self _crossHairX];
+      [_crossHairX setBackgroundColor:v13];
 
-      v11 = [(AXCameraFeatureDebuggingView *)self _crossHairY];
-      [v11 setBackgroundColor:v13];
+      _crossHairY = [(AXCameraFeatureDebuggingView *)self _crossHairY];
+      [_crossHairY setBackgroundColor:v13];
 
-      v12 = [(AXCameraFeatureDebuggingView *)self _label];
-      [v12 setBackgroundColor:v13];
+      _label = [(AXCameraFeatureDebuggingView *)self _label];
+      [_label setBackgroundColor:v13];
     }
   }
 
   MEMORY[0x2A1C71028]();
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_textColor, a3);
-    v6 = [(AXCameraFeatureDebuggingView *)self _label];
-    [v6 setTextColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
+    _label = [(AXCameraFeatureDebuggingView *)self _label];
+    [_label setTextColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
 - (NSString)text
 {
-  v2 = [(AXCameraFeatureDebuggingView *)self _label];
-  v3 = [v2 text];
+  _label = [(AXCameraFeatureDebuggingView *)self _label];
+  text = [_label text];
 
-  return v3;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v11 = a3;
-  if (v11 && !self->__label)
+  textCopy = text;
+  if (textCopy && !self->__label)
   {
     v4 = objc_alloc(MEMORY[0x29EDC7B38]);
     v5 = [v4 initWithFrame:{*MEMORY[0x29EDB90E0], *(MEMORY[0x29EDB90E0] + 8), *(MEMORY[0x29EDB90E0] + 16), *(MEMORY[0x29EDB90E0] + 24)}];
-    v6 = [(AXCameraFeatureDebuggingView *)self textColor];
-    [(UILabel *)v5 setTextColor:v6];
+    textColor = [(AXCameraFeatureDebuggingView *)self textColor];
+    [(UILabel *)v5 setTextColor:textColor];
 
-    v7 = [(AXCameraFeatureDebuggingView *)self borderColor];
-    [(UILabel *)v5 setBackgroundColor:v7];
+    borderColor = [(AXCameraFeatureDebuggingView *)self borderColor];
+    [(UILabel *)v5 setBackgroundColor:borderColor];
 
     v8 = [MEMORY[0x29EDC76B0] systemFontOfSize:16.0];
     [(UILabel *)v5 setFont:v8];
@@ -140,35 +140,35 @@
     self->__label = v5;
   }
 
-  v10 = [(AXCameraFeatureDebuggingView *)self _label];
-  [v10 setText:v11];
+  _label = [(AXCameraFeatureDebuggingView *)self _label];
+  [_label setText:textCopy];
 
   [(AXCameraFeatureDebuggingView *)self setNeedsLayout];
 }
 
-- (void)setTextOnTop:(BOOL)a3
+- (void)setTextOnTop:(BOOL)top
 {
-  if (self->_textOnTop != a3)
+  if (self->_textOnTop != top)
   {
-    self->_textOnTop = a3;
+    self->_textOnTop = top;
     [(AXCameraFeatureDebuggingView *)self setNeedsLayout];
   }
 }
 
-- (void)setTextInsideBox:(BOOL)a3
+- (void)setTextInsideBox:(BOOL)box
 {
-  if (self->_textInsideBox != a3)
+  if (self->_textInsideBox != box)
   {
-    self->_textInsideBox = a3;
+    self->_textInsideBox = box;
     [(AXCameraFeatureDebuggingView *)self setNeedsLayout];
   }
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_interfaceOrientation != a3)
+  if (self->_interfaceOrientation != orientation)
   {
-    self->_interfaceOrientation = a3;
+    self->_interfaceOrientation = orientation;
     [(AXCameraFeatureDebuggingView *)self setNeedsLayout];
   }
 }
@@ -197,20 +197,20 @@
     v16 = 10.0;
   }
 
-  v17 = [(AXCameraFeatureDebuggingView *)self _crossHairX];
-  [v17 setCenter:{MinX, MaxY}];
+  _crossHairX = [(AXCameraFeatureDebuggingView *)self _crossHairX];
+  [_crossHairX setCenter:{MinX, MaxY}];
 
-  v18 = [(AXCameraFeatureDebuggingView *)self _crossHairY];
-  [v18 setCenter:{MinX, MaxY}];
+  _crossHairY = [(AXCameraFeatureDebuggingView *)self _crossHairY];
+  [_crossHairY setCenter:{MinX, MaxY}];
 
-  v19 = [(AXCameraFeatureDebuggingView *)self _crossHairX];
-  [v19 setBounds:{0.0, 0.0, v16, 2.0}];
+  _crossHairX2 = [(AXCameraFeatureDebuggingView *)self _crossHairX];
+  [_crossHairX2 setBounds:{0.0, 0.0, v16, 2.0}];
 
-  v20 = [(AXCameraFeatureDebuggingView *)self _crossHairY];
-  [v20 setBounds:{0.0, 0.0, 2.0, v16}];
+  _crossHairY2 = [(AXCameraFeatureDebuggingView *)self _crossHairY];
+  [_crossHairY2 setBounds:{0.0, 0.0, 2.0, v16}];
 
-  v21 = [(AXCameraFeatureDebuggingView *)self _label];
-  if (!v21)
+  _label = [(AXCameraFeatureDebuggingView *)self _label];
+  if (!_label)
   {
     goto LABEL_31;
   }
@@ -225,22 +225,22 @@
     v22 = v10;
   }
 
-  [v21 intrinsicContentSize];
+  [_label intrinsicContentSize];
   v24 = v23;
   v47 = fmax(v25, v22);
   v45 = *(MEMORY[0x29EDB90E0] + 8);
   v46 = *MEMORY[0x29EDB90E0];
-  v26 = [(AXCameraFeatureDebuggingView *)self textOnTop];
+  textOnTop = [(AXCameraFeatureDebuggingView *)self textOnTop];
   v27 = MEMORY[0x29EDB90B8];
   v28 = *MEMORY[0x29EDB90B8];
-  v29 = [(AXCameraFeatureDebuggingView *)self interfaceOrientation];
-  if (v29 == 2)
+  interfaceOrientation = [(AXCameraFeatureDebuggingView *)self interfaceOrientation];
+  if (interfaceOrientation == 2)
   {
     v34 = v4;
     v35 = v6;
     v36 = v8;
     v37 = v10;
-    if (v26)
+    if (textOnTop)
     {
       MaxY = CGRectGetMaxY(*&v34);
       v38 = 1.0;
@@ -262,9 +262,9 @@
     v31 = v6;
     v32 = v8;
     v33 = v10;
-    if (v29 == 4)
+    if (interfaceOrientation == 4)
     {
-      if (v26)
+      if (textOnTop)
       {
         MinX = CGRectGetMinX(*&v30);
         v28 = -1.0;
@@ -280,9 +280,9 @@
       goto LABEL_25;
     }
 
-    if (v29 == 3)
+    if (interfaceOrientation == 3)
     {
-      if (v26)
+      if (textOnTop)
       {
         MinX = CGRectGetMaxX(*&v30);
         v28 = 1.0;
@@ -300,7 +300,7 @@ LABEL_25:
       goto LABEL_28;
     }
 
-    if (v26)
+    if (textOnTop)
     {
       MaxY = CGRectGetMinY(*&v30);
       v38 = -1.0;
@@ -316,9 +316,9 @@ LABEL_25:
   }
 
 LABEL_28:
-  v40 = [(AXCameraFeatureDebuggingView *)self textInsideBox];
+  textInsideBox = [(AXCameraFeatureDebuggingView *)self textInsideBox];
   v41 = -(v24 * 0.5);
-  if (!v40)
+  if (!textInsideBox)
   {
     v41 = v24 * 0.5;
   }
@@ -327,10 +327,10 @@ LABEL_28:
   v43 = MaxY + v38 * v41;
   memset(&v49, 0, sizeof(v49));
   CGAffineTransformMakeRotation(&v49, v39);
-  [v21 setCenter:{v42, v43}];
-  [v21 setBounds:{v46, v45, v47, v24}];
+  [_label setCenter:{v42, v43}];
+  [_label setBounds:{v46, v45, v47, v24}];
   v48 = v49;
-  [v21 setTransform:&v48];
+  [_label setTransform:&v48];
 LABEL_31:
 }
 

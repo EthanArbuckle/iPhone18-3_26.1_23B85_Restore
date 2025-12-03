@@ -1,16 +1,16 @@
 @interface AMDPirTest
-+ (id)testPir:(id)a3;
++ (id)testPir:(id)pir;
 @end
 
 @implementation AMDPirTest
 
-+ (id)testPir:(id)a3
++ (id)testPir:(id)pir
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pir);
   v18 = 0;
   v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (![location[0] count])
@@ -31,10 +31,10 @@
   if (v18)
   {
     v23 = @"error";
-    v9 = [v18 localizedDescription];
-    v24[0] = v9;
+    localizedDescription = [v18 localizedDescription];
+    v24[0] = localizedDescription;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](localizedDescription);
     v13 = 1;
   }
 
@@ -64,10 +64,10 @@ LABEL_19:
     if (v18)
     {
       v21 = @"error";
-      v7 = [v18 localizedDescription];
-      v22 = v7;
+      localizedDescription2 = [v18 localizedDescription];
+      v22 = localizedDescription2;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](localizedDescription2);
       v13 = 1;
     }
 

@@ -4,7 +4,7 @@
 - (id)firstPartyProviderBundleIDs;
 - (id)protectedApplicationBundleIDs;
 - (id)systemProviderBundleIDs;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 @end
 
 @implementation CHProtectedAppProvider
@@ -20,8 +20,8 @@
     currentProcessHandle = v2->_currentProcessHandle;
     v2->_currentProcessHandle = v3;
 
-    v5 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-    v6 = [v5 addMonitor:v2 subjectMask:1];
+    subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+    v6 = [subjectMonitorRegistry addMonitor:v2 subjectMask:1];
   }
 
   return v2;
@@ -30,16 +30,16 @@
 - (id)protectedApplicationBundleIDs
 {
   v60 = *MEMORY[0x1E69E9840];
-  v3 = [(CHProtectedAppProvider *)self currentProcessHandle];
-  v4 = [v3 bundleIdentifier];
+  currentProcessHandle = [(CHProtectedAppProvider *)self currentProcessHandle];
+  bundleIdentifier = [currentProcessHandle bundleIdentifier];
 
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [MEMORY[0x1E698B0D0] hiddenApplications];
+  hiddenApplications = [MEMORY[0x1E698B0D0] hiddenApplications];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v46 objects:v59 count:16];
+  v7 = [hiddenApplications countByEnumeratingWithState:&v46 objects:v59 count:16];
   if (v7)
   {
     v8 = v7;
@@ -50,25 +50,25 @@
       {
         if (*v47 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(hiddenApplications);
         }
 
-        v11 = [*(*(&v46 + 1) + 8 * i) bundleIdentifier];
-        [v5 addObject:v11];
+        bundleIdentifier2 = [*(*(&v46 + 1) + 8 * i) bundleIdentifier];
+        [v5 addObject:bundleIdentifier2];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v46 objects:v59 count:16];
+      v8 = [hiddenApplications countByEnumeratingWithState:&v46 objects:v59 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [MEMORY[0x1E698B0D0] lockedApplications];
+  lockedApplications = [MEMORY[0x1E698B0D0] lockedApplications];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v42 objects:v58 count:16];
+  v13 = [lockedApplications countByEnumeratingWithState:&v42 objects:v58 count:16];
   if (v13)
   {
     v14 = v13;
@@ -79,35 +79,35 @@
       {
         if (*v43 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(lockedApplications);
         }
 
-        v17 = [*(*(&v42 + 1) + 8 * j) bundleIdentifier];
-        [v5 addObject:v17];
+        bundleIdentifier3 = [*(*(&v42 + 1) + 8 * j) bundleIdentifier];
+        [v5 addObject:bundleIdentifier3];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v42 objects:v58 count:16];
+      v14 = [lockedApplications countByEnumeratingWithState:&v42 objects:v58 count:16];
     }
 
     while (v14);
   }
 
-  v18 = [(CHSynchronizedLoggable *)self logHandle];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHSynchronizedLoggable *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v53 = v4;
+    v53 = bundleIdentifier;
     v54 = 2114;
-    v55 = v6;
+    v55 = hiddenApplications;
     v56 = 2114;
-    v57 = v12;
-    _os_log_impl(&dword_1C3E90000, v18, OS_LOG_TYPE_DEFAULT, "CH protectedBundleID requestorBundleID %{public}@ hiddenApplications %{public}@ lockedApplications %{public}@", buf, 0x20u);
+    v57 = lockedApplications;
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "CH protectedBundleID requestorBundleID %{public}@ hiddenApplications %{public}@ lockedApplications %{public}@", buf, 0x20u);
   }
 
-  if (v4)
+  if (bundleIdentifier)
   {
-    v19 = [(CHProtectedAppProvider *)self systemProviderBundleIDs];
-    v20 = [v19 containsObject:v4];
+    systemProviderBundleIDs = [(CHProtectedAppProvider *)self systemProviderBundleIDs];
+    v20 = [systemProviderBundleIDs containsObject:bundleIdentifier];
 
     if (v20)
     {
@@ -115,8 +115,8 @@
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v21 = [(CHProtectedAppProvider *)self firstPartyProviderBundleIDs];
-      v22 = [v21 countByEnumeratingWithState:&v38 objects:v51 count:16];
+      firstPartyProviderBundleIDs = [(CHProtectedAppProvider *)self firstPartyProviderBundleIDs];
+      v22 = [firstPartyProviderBundleIDs countByEnumeratingWithState:&v38 objects:v51 count:16];
       if (v22)
       {
         v23 = v22;
@@ -127,13 +127,13 @@
           {
             if (*v39 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(firstPartyProviderBundleIDs);
             }
 
             [v5 removeObject:*(*(&v38 + 1) + 8 * k)];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v38 objects:v51 count:16];
+          v23 = [firstPartyProviderBundleIDs countByEnumeratingWithState:&v38 objects:v51 count:16];
         }
 
         while (v23);
@@ -142,7 +142,7 @@
 
     else
     {
-      [v5 removeObject:v4];
+      [v5 removeObject:bundleIdentifier];
     }
   }
 
@@ -150,8 +150,8 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v26 = [(CHProtectedAppProvider *)self allowedProtectedAppBundleIDs];
-  v27 = [v26 countByEnumeratingWithState:&v34 objects:v50 count:16];
+  allowedProtectedAppBundleIDs = [(CHProtectedAppProvider *)self allowedProtectedAppBundleIDs];
+  v27 = [allowedProtectedAppBundleIDs countByEnumeratingWithState:&v34 objects:v50 count:16];
   if (v27)
   {
     v28 = v27;
@@ -162,13 +162,13 @@
       {
         if (*v35 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allowedProtectedAppBundleIDs);
         }
 
         [v5 removeObject:*(*(&v34 + 1) + 8 * m)];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v34 objects:v50 count:16];
+      v28 = [allowedProtectedAppBundleIDs countByEnumeratingWithState:&v34 objects:v50 count:16];
     }
 
     while (v28);
@@ -189,9 +189,9 @@
   return v3;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v4 = [(CHProtectedAppProvider *)self delegate:a3];
+  v4 = [(CHProtectedAppProvider *)self delegate:changed];
   [v4 protectedAppsChanged];
 }
 

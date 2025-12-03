@@ -1,23 +1,23 @@
 @interface NTKParmesanFaceBundle
 + (BOOL)_isBridgeOrClockFace;
 - (BOOL)_haveSuggestedShuffleData;
-- (BOOL)useDynamicCollectionForDevice:(id)a3;
+- (BOOL)useDynamicCollectionForDevice:(id)device;
 - (NTKParmesanFaceBundle)init;
-- (id)_allPlaceholderFacesForDevice:(id)a3;
-- (id)_emptyFaceForDevice:(id)a3;
-- (id)_fetchCurrentSuggestedShuffleFacesForDevice:(id)a3;
-- (id)_galleryEditOptionsForDevice:(id)a3;
-- (id)_galleryPigmentsForDevice:(id)a3;
-- (id)_heroPlaceholderFaceForDevice:(id)a3;
-- (id)_placeholderFaceForDevice:(id)a3 name:(id)a4;
-- (id)_randomPlaceholderFaceForDevice:(id)a3;
-- (id)galleryDescriptionForDevice:(id)a3;
+- (id)_allPlaceholderFacesForDevice:(id)device;
+- (id)_emptyFaceForDevice:(id)device;
+- (id)_fetchCurrentSuggestedShuffleFacesForDevice:(id)device;
+- (id)_galleryEditOptionsForDevice:(id)device;
+- (id)_galleryPigmentsForDevice:(id)device;
+- (id)_heroPlaceholderFaceForDevice:(id)device;
+- (id)_placeholderFaceForDevice:(id)device name:(id)name;
+- (id)_randomPlaceholderFaceForDevice:(id)device;
+- (id)galleryDescriptionForDevice:(id)device;
 - (id)galleryDescriptionText;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
-- (int64_t)_newFacesGroupZOrderForDevice:(id)a3;
-- (void)_applyConfigurationsForDevice:(id)a3 toFaces:(id)a4 usingPlaceholders:(BOOL)a5;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
+- (int64_t)_newFacesGroupZOrderForDevice:(id)device;
+- (void)_applyConfigurationsForDevice:(id)device toFaces:(id)faces usingPlaceholders:(BOOL)placeholders;
 - (void)_waitForGalleryFaceDirectories;
 - (void)dealloc;
 - (void)shuffleDidUpdate;
@@ -57,9 +57,9 @@
   [(NTKParmesanFaceBundle *)&v13 dealloc];
 }
 
-- (id)galleryDescriptionForDevice:(id)a3
+- (id)galleryDescriptionForDevice:(id)device
 {
-  if (objc_msgSend_isTinker(a3, a2, a3, v3))
+  if (objc_msgSend_isTinker(device, a2, device, v3))
   {
     objc_msgSend_localizedStringForKey_comment_(NTKParmesanFaceBundle, v5, @"FACE_PARMESAN_GALLERY_PLACEHOLDER_TINKER_DESCRIPTION", @"Parmesan Description");
   }
@@ -88,10 +88,10 @@
   return objc_msgSend_localizedStringForKey_comment_(NTKParmesanFaceBundle, v2, v3, @"Parmesan Description");
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v8 = objc_msgSend_logObject(NTKParmesanFaceBundle, v5, v6, v7);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -101,7 +101,7 @@
     _os_log_impl(&dword_23BF0C000, v8, OS_LOG_TYPE_INFO, "%@: Generating hero faces for device", buf, 0xCu);
   }
 
-  v12 = objc_msgSend_supportsPDRCapability_(v4, v10, 3669496134, v11);
+  v12 = objc_msgSend_supportsPDRCapability_(deviceCopy, v10, 3669496134, v11);
   v16 = objc_msgSend_logObject(NTKParmesanFaceBundle, v13, v14, v15);
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
   if (v12)
@@ -128,7 +128,7 @@
         _os_log_impl(&dword_23BF0C000, v30, OS_LOG_TYPE_DEFAULT, "%s — have shuffle data; show first as hero face", buf, 0xCu);
       }
 
-      v16 = objc_msgSend__emptyFaceForDevice_(self, v32, v4, v33);
+      v16 = objc_msgSend__emptyFaceForDevice_(self, v32, deviceCopy, v33);
       v37 = objc_msgSend__suggestedShuffleData(self, v34, v35, v36);
       v41 = objc_msgSend_suggestedShuffleUUIDStrings(v37, v38, v39, v40);
       v45 = objc_msgSend_firstObject(v41, v42, v43, v44);
@@ -146,7 +146,7 @@
         _os_log_impl(&dword_23BF0C000, v30, OS_LOG_TYPE_DEFAULT, "%s — no shuffle data; show placeholder as hero face", buf, 0xCu);
       }
 
-      v16 = objc_msgSend__heroPlaceholderFaceForDevice_(self, v54, v4, v55);
+      v16 = objc_msgSend__heroPlaceholderFaceForDevice_(self, v54, deviceCopy, v55);
     }
 
     v56 = objc_alloc(MEMORY[0x277D2C018]);
@@ -181,9 +181,9 @@
   return v53;
 }
 
-- (BOOL)useDynamicCollectionForDevice:(id)a3
+- (BOOL)useDynamicCollectionForDevice:(id)device
 {
-  if (objc_msgSend_isTinker(a3, a2, a3, v3))
+  if (objc_msgSend_isTinker(device, a2, device, v3))
   {
     return 0;
   }
@@ -191,7 +191,7 @@
   return objc_msgSend__haveSuggestedShuffleData(self, v5, v6, v7);
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = &unk_284ED43E0;
@@ -201,10 +201,10 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if (objc_msgSend__haveSuggestedShuffleData(self, v5, v6, v7))
   {
     v11 = objc_msgSend_logObject(NTKParmesanFaceBundle, v8, v9, v10);
@@ -215,7 +215,7 @@
       _os_log_impl(&dword_23BF0C000, v11, OS_LOG_TYPE_DEFAULT, "%s — have shuffle data; populate gallery with suggested shuffle faces", buf, 0xCu);
     }
 
-    v14 = objc_msgSend__fetchCurrentSuggestedShuffleFacesForDevice_(self, v12, v4, v13);
+    v14 = objc_msgSend__fetchCurrentSuggestedShuffleFacesForDevice_(self, v12, deviceCopy, v13);
     v18 = objc_msgSend_count(v14, v15, v16, v17);
   }
 
@@ -227,11 +227,11 @@
 
   if (v18)
   {
-    objc_msgSend__applyConfigurationsForDevice_toFaces_usingPlaceholders_(self, v19, v4, v14, 0);
-    if (objc_msgSend_isRunningNapiliGMOrLater(v4, v22, v23, v24))
+    objc_msgSend__applyConfigurationsForDevice_toFaces_usingPlaceholders_(self, v19, deviceCopy, v14, 0);
+    if (objc_msgSend_isRunningNapiliGMOrLater(deviceCopy, v22, v23, v24))
     {
-      v27 = objc_msgSend__allPlaceholderFacesForDevice_(self, v25, v4, v26);
-      objc_msgSend__applyConfigurationsForDevice_toFaces_usingPlaceholders_(self, v28, v4, v27, 1);
+      v27 = objc_msgSend__allPlaceholderFacesForDevice_(self, v25, deviceCopy, v26);
+      objc_msgSend__applyConfigurationsForDevice_toFaces_usingPlaceholders_(self, v28, deviceCopy, v27, 1);
       v31 = objc_msgSend_predicateWithBlock_(MEMORY[0x277CCAC30], v29, &unk_284EBA588, v30);
       v34 = objc_msgSend_filteredArrayUsingPredicate_(v27, v32, v31, v33);
 
@@ -251,16 +251,16 @@
       _os_log_impl(&dword_23BF0C000, v38, OS_LOG_TYPE_DEFAULT, "%s — no shuffle data; showing placeholder faces in gallery", buf, 0xCu);
     }
 
-    if ((_os_feature_enabled_impl() & 1) != 0 || objc_msgSend_isRunningNapiliGMOrLater(v4, v39, v40, v41))
+    if ((_os_feature_enabled_impl() & 1) != 0 || objc_msgSend_isRunningNapiliGMOrLater(deviceCopy, v39, v40, v41))
     {
-      v42 = objc_msgSend__allPlaceholderFacesForDevice_(self, v39, v4, v41);
+      v42 = objc_msgSend__allPlaceholderFacesForDevice_(self, v39, deviceCopy, v41);
 
-      objc_msgSend__applyConfigurationsForDevice_toFaces_usingPlaceholders_(self, v43, v4, v42, 1);
+      objc_msgSend__applyConfigurationsForDevice_toFaces_usingPlaceholders_(self, v43, deviceCopy, v42, 1);
     }
 
     else
     {
-      v44 = objc_msgSend__randomPlaceholderFaceForDevice_(self, v39, v4, v41);
+      v44 = objc_msgSend__randomPlaceholderFaceForDevice_(self, v39, deviceCopy, v41);
       v46 = v44;
       if (v44)
       {
@@ -280,10 +280,10 @@
   return v14;
 }
 
-- (id)_fetchCurrentSuggestedShuffleFacesForDevice:(id)a3
+- (id)_fetchCurrentSuggestedShuffleFacesForDevice:(id)device
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   objc_msgSend__waitForGalleryFaceDirectories(self, v5, v6, v7);
   v11 = objc_msgSend__suggestedShuffleData(self, v8, v9, v10);
   v15 = objc_msgSend_array(MEMORY[0x277CBEB18], v12, v13, v14);
@@ -307,7 +307,7 @@
         }
 
         v27 = *(*(&v49 + 1) + 8 * i);
-        v28 = objc_msgSend__emptyFaceForDevice_(self, v22, v4, v23);
+        v28 = objc_msgSend__emptyFaceForDevice_(self, v22, deviceCopy, v23);
         v31 = objc_msgSend_resourceDirectoryForUUIDString_(v11, v29, v27, v30);
         objc_msgSend_setResourceDirectoryByTransferringOwnership_(v28, v32, v31, v33);
         objc_msgSend_addObject_(v15, v34, v28, v35);
@@ -335,41 +335,41 @@
   return v47;
 }
 
-- (void)_applyConfigurationsForDevice:(id)a3 toFaces:(id)a4 usingPlaceholders:(BOOL)a5
+- (void)_applyConfigurationsForDevice:(id)device toFaces:(id)faces usingPlaceholders:(BOOL)placeholders
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend__galleryEditOptionsForDevice_(self, v10, v8, v11);
+  deviceCopy = device;
+  facesCopy = faces;
+  v12 = objc_msgSend__galleryEditOptionsForDevice_(self, v10, deviceCopy, v11);
   v15 = objc_msgSend_objectForKeyedSubscript_(v12, v13, &unk_284ED4410, v14);
   v18 = objc_msgSend_objectForKeyedSubscript_(v12, v16, &unk_284ED4428, v17);
   v21 = objc_msgSend_objectForKeyedSubscript_(v12, v19, &unk_284ED4440, v20);
   v24 = objc_msgSend_objectForKeyedSubscript_(v12, v22, &unk_284ED4458, v23);
-  v27 = objc_msgSend__galleryPigmentsForDevice_(self, v25, v8, v26);
+  v27 = objc_msgSend__galleryPigmentsForDevice_(self, v25, deviceCopy, v26);
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = sub_23BF1EE50;
   v36[3] = &unk_278BA6D70;
-  v44 = a5;
+  placeholdersCopy = placeholders;
   v37 = v15;
-  v38 = v8;
+  v38 = deviceCopy;
   v39 = v18;
   v40 = v21;
   v41 = v24;
   v42 = v27;
-  v43 = self;
+  selfCopy = self;
   v28 = v27;
   v29 = v24;
   v30 = v21;
   v31 = v18;
-  v32 = v8;
+  v32 = deviceCopy;
   v33 = v15;
-  objc_msgSend_enumerateObjectsUsingBlock_(v9, v34, v36, v35);
+  objc_msgSend_enumerateObjectsUsingBlock_(facesCopy, v34, v36, v35);
 }
 
-- (id)_galleryEditOptionsForDevice:(id)a3
+- (id)_galleryEditOptionsForDevice:(id)device
 {
   v10[4] = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_isRunningNapiliGMOrLater(a3, a2, a3, v3))
+  if (objc_msgSend_isRunningNapiliGMOrLater(device, a2, device, v3))
   {
     v9[0] = &unk_284ED4410;
     v9[1] = &unk_284ED4428;
@@ -399,10 +399,10 @@
   return v5;
 }
 
-- (id)_galleryPigmentsForDevice:(id)a3
+- (id)_galleryPigmentsForDevice:(id)device
 {
   v71[6] = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_isRunningNapiliGMOrLater(a3, a2, a3, v3) && objc_msgSend_isGlassEnabled(_TtC30NTKParmesanFaceBundleCompanion23DigitalTimeViewFeatures, v4, v5, v6))
+  if (objc_msgSend_isRunningNapiliGMOrLater(device, a2, device, v3) && objc_msgSend_isGlassEnabled(_TtC30NTKParmesanFaceBundleCompanion23DigitalTimeViewFeatures, v4, v5, v6))
   {
     v69 = @"time-color";
     v70 = @"time.glass_05";
@@ -489,10 +489,10 @@
   return v20;
 }
 
-- (int64_t)_newFacesGroupZOrderForDevice:(id)a3
+- (int64_t)_newFacesGroupZOrderForDevice:(id)device
 {
-  v3 = a3;
-  if (objc_msgSend_deviceCategory(v3, v4, v5, v6) == 4 || objc_msgSend_deviceCategory(v3, v7, v8, v9) == 6 || objc_msgSend_collectionType(v3, v10, v11, v12) == 5)
+  deviceCopy = device;
+  if (objc_msgSend_deviceCategory(deviceCopy, v4, v5, v6) == 4 || objc_msgSend_deviceCategory(deviceCopy, v7, v8, v9) == 6 || objc_msgSend_collectionType(deviceCopy, v10, v11, v12) == 5)
   {
     v13 = 5000;
   }
@@ -520,22 +520,22 @@
   return MEMORY[0x28210D970]();
 }
 
-- (id)_emptyFaceForDevice:(id)a3
+- (id)_emptyFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_opt_class();
   v8 = objc_msgSend_identifier(v4, v5, v6, v7);
   v9 = objc_opt_class();
   v13 = objc_msgSend_analyticsIdentifier(v9, v10, v11, v12);
-  v15 = objc_msgSend_bundledFaceWithIdentifier_analyticsIdentifier_forDevice_initCustomization_(NTKParmesanFace, v14, v8, v13, v3, &unk_284EBA5C8);
+  v15 = objc_msgSend_bundledFaceWithIdentifier_analyticsIdentifier_forDevice_initCustomization_(NTKParmesanFace, v14, v8, v13, deviceCopy, &unk_284EBA5C8);
 
   return v15;
 }
 
-- (id)_heroPlaceholderFaceForDevice:(id)a3
+- (id)_heroPlaceholderFaceForDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v8 = objc_msgSend_heroPlaceholderName(NTKParmesanGalleryPlaceholderDataSource, v5, v6, v7);
   v12 = objc_msgSend_logObject(NTKParmesanFaceBundle, v9, v10, v11);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -547,15 +547,15 @@
     _os_log_impl(&dword_23BF0C000, v12, OS_LOG_TYPE_DEFAULT, "%s — creating placeholder hero face with name: [%@]", &v16, 0x16u);
   }
 
-  v14 = objc_msgSend__placeholderFaceForDevice_name_(self, v13, v4, v8);
+  v14 = objc_msgSend__placeholderFaceForDevice_name_(self, v13, deviceCopy, v8);
 
   return v14;
 }
 
-- (id)_randomPlaceholderFaceForDevice:(id)a3
+- (id)_randomPlaceholderFaceForDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v8 = objc_msgSend_randomPlaceholderName(NTKParmesanGalleryPlaceholderDataSource, v5, v6, v7);
   v12 = objc_msgSend_logObject(NTKParmesanFaceBundle, v9, v10, v11);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -567,16 +567,16 @@
     _os_log_impl(&dword_23BF0C000, v12, OS_LOG_TYPE_DEFAULT, "%s — random placeholder face with name: [%@]", &v16, 0x16u);
   }
 
-  v14 = objc_msgSend__placeholderFaceForDevice_name_(self, v13, v4, v8);
+  v14 = objc_msgSend__placeholderFaceForDevice_name_(self, v13, deviceCopy, v8);
 
   return v14;
 }
 
-- (id)_allPlaceholderFacesForDevice:(id)a3
+- (id)_allPlaceholderFacesForDevice:(id)device
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_placeholderNamesForDevice_(NTKParmesanGalleryPlaceholderDataSource, v5, v4, v6);
+  deviceCopy = device;
+  v7 = objc_msgSend_placeholderNamesForDevice_(NTKParmesanGalleryPlaceholderDataSource, v5, deviceCopy, v6);
   v8 = MEMORY[0x277CBEB18];
   v12 = objc_msgSend_count(v7, v9, v10, v11);
   v15 = objc_msgSend_arrayWithCapacity_(v8, v13, v12, v14);
@@ -599,7 +599,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v23 = objc_msgSend__placeholderFaceForDevice_name_(self, v19, v4, *(*(&v31 + 1) + 8 * i), v31);
+        v23 = objc_msgSend__placeholderFaceForDevice_name_(self, v19, deviceCopy, *(*(&v31 + 1) + 8 * i), v31);
         objc_msgSend_addObject_(v15, v24, v23, v25);
       }
 
@@ -614,11 +614,11 @@
   return v29;
 }
 
-- (id)_placeholderFaceForDevice:(id)a3 name:(id)a4
+- (id)_placeholderFaceForDevice:(id)device name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_configurationForName_(NTKParmesanGalleryPlaceholderDataSource, v8, v7, v9);
+  deviceCopy = device;
+  nameCopy = name;
+  v10 = objc_msgSend_configurationForName_(NTKParmesanGalleryPlaceholderDataSource, v8, nameCopy, v9);
   v14 = objc_msgSend_faceClass(self, v11, v12, v13);
   v15 = objc_opt_class();
   v19 = objc_msgSend_identifier(v15, v16, v17, v18);
@@ -628,12 +628,12 @@
   v31[1] = 3221225472;
   v31[2] = sub_23BF202E0;
   v31[3] = &unk_278BA6D98;
-  v32 = v7;
-  v33 = v6;
+  v32 = nameCopy;
+  v33 = deviceCopy;
   v34 = v10;
   v25 = v10;
-  v26 = v6;
-  v27 = v7;
+  v26 = deviceCopy;
+  v27 = nameCopy;
   v29 = objc_msgSend_bundledFaceWithIdentifier_analyticsIdentifier_forDevice_initCustomization_(v14, v28, v19, v24, v26, v31);
 
   return v29;
@@ -651,9 +651,9 @@
 
 - (void)_waitForGalleryFaceDirectories
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = objc_msgSend__suggestedShuffleData(v2, v3, v4, v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend__suggestedShuffleData(selfCopy, v3, v4, v5);
   if ((objc_msgSend_isPrepared(v6, v7, v8, v9) & 1) == 0)
   {
     v10 = dispatch_semaphore_create(0);
@@ -668,7 +668,7 @@
     dispatch_semaphore_wait(v11, v14);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)shuffleDidUpdate
@@ -678,7 +678,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23BF0C000, v5, OS_LOG_TYPE_DEFAULT, "shuffleDidUpdate: Waiting for gallery directories for bundle: %@", &v16, 0xCu);
   }
 
@@ -687,7 +687,7 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23BF0C000, v12, OS_LOG_TYPE_DEFAULT, "shuffleDidUpdate: Notifying observers gallery faces updated for bundle: %@", &v16, 0xCu);
   }
 

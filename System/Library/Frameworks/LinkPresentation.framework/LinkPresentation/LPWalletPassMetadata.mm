@@ -1,35 +1,35 @@
 @interface LPWalletPassMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPWalletPassMetadata)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPWalletPassMetadata)initWithCoder:(id)coder;
 - (id)_subtitle;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)fallbackIconForTransformer:(id)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)fallbackIconForTransformer:(id)transformer;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPWalletPassMetadata
 
-- (LPWalletPassMetadata)initWithCoder:(id)a3
+- (LPWalletPassMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = LPWalletPassMetadata;
   v5 = [(LPWalletPassMetadata *)&v14 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"name");
+    v6 = decodeStringForKey(coderCopy, @"name");
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v8 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"eventDate"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v8 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"eventDate"];
     eventDate = v5->_eventDate;
     v5->_eventDate = v8;
 
-    v10 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v10 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v10;
 
@@ -39,29 +39,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
-  [v4 encodeInteger:self->_style forKey:@"style"];
-  [v4 _lp_encodeObjectIfNotNil:self->_eventDate forKey:@"eventDate"];
-  [v4 _lp_encodeObjectIfNotNil:self->_expirationDate forKey:@"expirationDate"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
+  [coderCopy encodeInteger:self->_style forKey:@"style"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_eventDate forKey:@"eventDate"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_expirationDate forKey:@"expirationDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPWalletPassMetadata allocWithZone:a3];
+  v4 = [LPWalletPassMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPWalletPassMetadata *)self name];
-    [(LPWalletPassMetadata *)v4 setName:v5];
+    name = [(LPWalletPassMetadata *)self name];
+    [(LPWalletPassMetadata *)v4 setName:name];
 
     [(LPWalletPassMetadata *)v4 setStyle:[(LPWalletPassMetadata *)self style]];
-    v6 = [(LPWalletPassMetadata *)self eventDate];
-    [(LPWalletPassMetadata *)v4 setEventDate:v6];
+    eventDate = [(LPWalletPassMetadata *)self eventDate];
+    [(LPWalletPassMetadata *)v4 setEventDate:eventDate];
 
-    v7 = [(LPWalletPassMetadata *)self expirationDate];
-    [(LPWalletPassMetadata *)v4 setExpirationDate:v7];
+    expirationDate = [(LPWalletPassMetadata *)self expirationDate];
+    [(LPWalletPassMetadata *)v4 setExpirationDate:expirationDate];
 
     v8 = v4;
   }
@@ -69,12 +69,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPWalletPassMetadata;
-  if ([(LPWalletPassMetadata *)&v8 isEqual:v4])
+  if ([(LPWalletPassMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -84,7 +84,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_name) & 1) != 0 && v6[3] == self->_style && objectsAreEqual_0(v6[4], self->_eventDate))
       {
         v5 = objectsAreEqual_0(v6[5], self->_expirationDate);
@@ -107,40 +107,40 @@
 
 - (id)_subtitle
 {
-  v3 = [(LPWalletPassMetadata *)self style];
-  if (v3 > 4)
+  style = [(LPWalletPassMetadata *)self style];
+  if (style > 4)
   {
     v4 = @"Wallet";
   }
 
   else
   {
-    v4 = off_1E7A37798[v3];
+    v4 = off_1E7A37798[style];
   }
 
   v5 = LPLocalizedString(v4);
-  v6 = [(LPWalletPassMetadata *)self expirationDate];
+  expirationDate = [(LPWalletPassMetadata *)self expirationDate];
 
-  if (v6)
+  if (expirationDate)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = LPLocalizedString(@"Valid until %@");
+    eventDate2 = LPLocalizedString(@"Valid until %@");
     v9 = MEMORY[0x1E696AB78];
-    v10 = [(LPWalletPassMetadata *)self expirationDate];
-    v11 = [v9 localizedStringFromDate:v10 dateStyle:1 timeStyle:0];
-    v12 = [v7 localizedStringWithFormat:v8, v11];
+    expirationDate2 = [(LPWalletPassMetadata *)self expirationDate];
+    v11 = [v9 localizedStringFromDate:expirationDate2 dateStyle:1 timeStyle:0];
+    v12 = [v7 localizedStringWithFormat:eventDate2, v11];
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [(LPWalletPassMetadata *)self eventDate];
+  eventDate = [(LPWalletPassMetadata *)self eventDate];
 
-  if (v13)
+  if (eventDate)
   {
     v14 = MEMORY[0x1E696AB78];
-    v8 = [(LPWalletPassMetadata *)self eventDate];
-    v12 = [v14 localizedStringFromDate:v8 dateStyle:2 timeStyle:0];
+    eventDate2 = [(LPWalletPassMetadata *)self eventDate];
+    v12 = [v14 localizedStringFromDate:eventDate2 dateStyle:2 timeStyle:0];
     goto LABEL_8;
   }
 
@@ -151,38 +151,38 @@ LABEL_9:
   return v15;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 commonPresentationPropertiesForStyle:33];
+  transformerCopy = transformer;
+  v5 = [transformerCopy commonPresentationPropertiesForStyle:33];
   v6 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v6];
 
-  v7 = [v4 metadata];
-  v8 = [v7 image];
+  metadata = [transformerCopy metadata];
+  image = [metadata image];
 
-  if (v8)
+  if (image)
   {
-    v9 = [v4 metadata];
-    v10 = [v9 image];
-    [v4 _populateProperties:v5 withPrimaryImage:v10];
+    metadata2 = [transformerCopy metadata];
+    image2 = [metadata2 image];
+    [transformerCopy _populateProperties:v5 withPrimaryImage:image2];
   }
 
   else
   {
-    v11 = [v4 metadata];
-    v9 = [v11 icon];
+    metadata3 = [transformerCopy metadata];
+    metadata2 = [metadata3 icon];
 
-    if (!v9)
+    if (!metadata2)
     {
-      v9 = [LPImage _systemImageNamed:@"creditcard"];
+      metadata2 = [LPImage _systemImageNamed:@"creditcard"];
     }
 
-    v10 = [v5 captionBar];
-    [v10 setLeadingIcon:v9];
+    image2 = [v5 captionBar];
+    [image2 setLeadingIcon:metadata2];
   }
 
-  v12 = [v4 _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
+  v12 = [transformerCopy _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
   if ((v12 - 1) >= 3)
   {
     if (v12)
@@ -190,26 +190,26 @@ LABEL_9:
       goto LABEL_11;
     }
 
-    v17 = [(LPWalletPassMetadata *)self name];
-    v18 = [v5 captionBar];
-    v19 = [v18 top];
-    v20 = [v19 leading];
-    [v20 setText:v17];
+    name = [(LPWalletPassMetadata *)self name];
+    captionBar = [v5 captionBar];
+    bottom = [captionBar top];
+    leading = [bottom leading];
+    [leading setText:name];
   }
 
   else
   {
-    v13 = [(LPWalletPassMetadata *)self name];
-    v14 = [v5 captionBar];
-    v15 = [v14 top];
-    v16 = [v15 leading];
-    [v16 setText:v13];
+    name2 = [(LPWalletPassMetadata *)self name];
+    captionBar2 = [v5 captionBar];
+    v15 = [captionBar2 top];
+    leading2 = [v15 leading];
+    [leading2 setText:name2];
 
-    v17 = [(LPWalletPassMetadata *)self _subtitle];
-    v18 = [v5 captionBar];
-    v19 = [v18 bottom];
-    v20 = [v19 leading];
-    [v20 setText:v17];
+    name = [(LPWalletPassMetadata *)self _subtitle];
+    captionBar = [v5 captionBar];
+    bottom = [captionBar bottom];
+    leading = [bottom leading];
+    [leading setText:name];
   }
 
 LABEL_11:
@@ -217,16 +217,16 @@ LABEL_11:
   return v5;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
-  v4 = [(LPWalletPassMetadata *)self name];
+  name = [(LPWalletPassMetadata *)self name];
 
-  if (v4)
+  if (name)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = LPLocalizedString(@"Pass: %@");
-    v7 = [(LPWalletPassMetadata *)self name];
-    v8 = [v5 localizedStringWithFormat:v6, v7];
+    name2 = [(LPWalletPassMetadata *)self name];
+    v8 = [v5 localizedStringWithFormat:v6, name2];
   }
 
   else
@@ -237,18 +237,18 @@ LABEL_11:
   return v8;
 }
 
-- (id)fallbackIconForTransformer:(id)a3
+- (id)fallbackIconForTransformer:(id)transformer
 {
   v3 = [LPImage _systemImageNamed:@"creditcard"];
 
   return v3;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v5 = a3;
-  v4 = [(LPWalletPassMetadata *)self name];
-  [v5 setTitle:v4];
+  compatibilityCopy = compatibility;
+  name = [(LPWalletPassMetadata *)self name];
+  [compatibilityCopy setTitle:name];
 }
 
 @end

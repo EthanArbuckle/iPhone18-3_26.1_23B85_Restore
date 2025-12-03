@@ -1,24 +1,24 @@
 @interface SDMLFeedbackResourceManager
 + (id)allTextAttributes;
 + (id)allTextFeatures;
-+ (id)logKeyNameForAttributeName:(id)a3 forOption:(unint64_t)a4;
++ (id)logKeyNameForAttributeName:(id)name forOption:(unint64_t)option;
 @end
 
 @implementation SDMLFeedbackResourceManager
 
-+ (id)logKeyNameForAttributeName:(id)a3 forOption:(unint64_t)a4
++ (id)logKeyNameForAttributeName:(id)name forOption:(unint64_t)option
 {
-  if (a4 > 4)
+  if (option > 4)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = *(&off_1000927E8 + a4);
+    v6 = *(&off_1000927E8 + option);
   }
 
-  return [NSString stringWithFormat:@"%@%@", a3, v6, v4, v5];
+  return [NSString stringWithFormat:@"%@%@", name, v6, v4, v5];
 }
 
 + (id)allTextFeatures

@@ -1,21 +1,21 @@
 @interface SRWristTemperature
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (SRWristTemperature)init;
-- (SRWristTemperature)initWithCoder:(id)a3;
-- (SRWristTemperature)initWithTimestamp:(id)a3 temperature:(id)a4 condition:(unint64_t)a5 errorEstimate:(id)a6 temperatureT1:(id)a7 temperatureT2:(id)a8;
+- (SRWristTemperature)initWithCoder:(id)coder;
+- (SRWristTemperature)initWithTimestamp:(id)timestamp temperature:(id)temperature condition:(unint64_t)condition errorEstimate:(id)estimate temperatureT1:(id)t1 temperatureT2:(id)t2;
 - (id)sr_dictionaryRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRWristTemperature
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogWristTemperature = os_log_create("com.apple.SensorKit", "SRLogWristTemperature");
   }
@@ -28,19 +28,19 @@
   return 0;
 }
 
-- (SRWristTemperature)initWithTimestamp:(id)a3 temperature:(id)a4 condition:(unint64_t)a5 errorEstimate:(id)a6 temperatureT1:(id)a7 temperatureT2:(id)a8
+- (SRWristTemperature)initWithTimestamp:(id)timestamp temperature:(id)temperature condition:(unint64_t)condition errorEstimate:(id)estimate temperatureT1:(id)t1 temperatureT2:(id)t2
 {
   v16.receiver = self;
   v16.super_class = SRWristTemperature;
   v14 = [(SRWristTemperature *)&v16 init];
   if (v14)
   {
-    v14->_timestamp = a3;
-    v14->_value = a4;
-    v14->_condition = a5;
-    v14->_errorEstimate = a6;
-    v14->_temperatureT1 = a7;
-    v14->_temperatureT2 = a8;
+    v14->_timestamp = timestamp;
+    v14->_value = temperature;
+    v14->_condition = condition;
+    v14->_errorEstimate = estimate;
+    v14->_temperatureT1 = t1;
+    v14->_temperatureT2 = t2;
   }
 
   return v14;
@@ -53,46 +53,46 @@
   [(SRWristTemperature *)&v3 dealloc];
 }
 
-- (SRWristTemperature)initWithCoder:(id)a3
+- (SRWristTemperature)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v20 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  v20 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
-  v8 = [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, objc_opt_class(), 0), @"value"}];
-  v9 = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"condition", "unsignedIntegerValue"}];
+  v8 = [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, objc_opt_class(), 0), @"value"}];
+  v9 = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"condition", "unsignedIntegerValue"}];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
-  v12 = [a3 decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, objc_opt_class(), 0), @"errorEstimate"}];
+  v12 = [coder decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, objc_opt_class(), 0), @"errorEstimate"}];
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
-  v15 = [a3 decodeObjectOfClasses:objc_msgSend(v13 forKey:{"setWithObjects:", v14, objc_opt_class(), 0), @"temperatureT1"}];
+  v15 = [coder decodeObjectOfClasses:objc_msgSend(v13 forKey:{"setWithObjects:", v14, objc_opt_class(), 0), @"temperatureT1"}];
   v16 = MEMORY[0x1E695DFD8];
   v17 = objc_opt_class();
-  v18 = [a3 decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithObjects:", v17, objc_opt_class(), 0), @"temperatureT2"}];
+  v18 = [coder decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithObjects:", v17, objc_opt_class(), 0), @"temperatureT2"}];
 
   return [(SRWristTemperature *)self initWithTimestamp:v20 temperature:v8 condition:v9 errorEstimate:v12 temperatureT1:v15 temperatureT2:v18];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[SRWristTemperature timestamp](self forKey:{"timestamp"), @"timestamp"}];
-  [a3 encodeObject:-[SRWristTemperature value](self forKey:{"value"), @"value"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", -[SRWristTemperature condition](self, "condition")), @"condition"}];
-  [a3 encodeObject:-[SRWristTemperature errorEstimate](self forKey:{"errorEstimate"), @"errorEstimate"}];
-  [a3 encodeObject:-[SRWristTemperature temperatureT1](self forKey:{"temperatureT1"), @"temperatureT1"}];
-  v6 = [(SRWristTemperature *)self temperatureT2];
+  [coder encodeObject:-[SRWristTemperature timestamp](self forKey:{"timestamp"), @"timestamp"}];
+  [coder encodeObject:-[SRWristTemperature value](self forKey:{"value"), @"value"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", -[SRWristTemperature condition](self, "condition")), @"condition"}];
+  [coder encodeObject:-[SRWristTemperature errorEstimate](self forKey:{"errorEstimate"), @"errorEstimate"}];
+  [coder encodeObject:-[SRWristTemperature temperatureT1](self forKey:{"temperatureT1"), @"temperatureT1"}];
+  temperatureT2 = [(SRWristTemperature *)self temperatureT2];
 
-  [a3 encodeObject:v6 forKey:@"temperatureT2"];
+  [coder encodeObject:temperatureT2 forKey:@"temperatureT2"];
 }
 
 - (NSString)description
@@ -157,9 +157,9 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
     return v5;
@@ -171,36 +171,36 @@
     goto LABEL_12;
   }
 
-  v5 = -[NSDate isEqual:](-[SRWristTemperature timestamp](self, "timestamp"), "isEqual:", [a3 timestamp]);
+  v5 = -[NSDate isEqual:](-[SRWristTemperature timestamp](self, "timestamp"), "isEqual:", [equal timestamp]);
   if (!v5)
   {
     return v5;
   }
 
-  v5 = -[NSMeasurement isEqual:](-[SRWristTemperature value](self, "value"), "isEqual:", [a3 value]);
+  v5 = -[NSMeasurement isEqual:](-[SRWristTemperature value](self, "value"), "isEqual:", [equal value]);
   if (!v5)
   {
     return v5;
   }
 
-  v6 = [(SRWristTemperature *)self condition];
-  if (v6 != [a3 condition])
+  condition = [(SRWristTemperature *)self condition];
+  if (condition != [equal condition])
   {
 LABEL_12:
     LOBYTE(v5) = 0;
     return v5;
   }
 
-  v5 = -[NSMeasurement isEqual:](-[SRWristTemperature errorEstimate](self, "errorEstimate"), "isEqual:", [a3 errorEstimate]);
+  v5 = -[NSMeasurement isEqual:](-[SRWristTemperature errorEstimate](self, "errorEstimate"), "isEqual:", [equal errorEstimate]);
   if (v5)
   {
-    v5 = -[NSMeasurement isEqual:](-[SRWristTemperature temperatureT1](self, "temperatureT1"), "isEqual:", [a3 temperatureT1]);
+    v5 = -[NSMeasurement isEqual:](-[SRWristTemperature temperatureT1](self, "temperatureT1"), "isEqual:", [equal temperatureT1]);
     if (v5)
     {
-      v7 = [(SRWristTemperature *)self temperatureT2];
-      v8 = [a3 temperatureT2];
+      temperatureT2 = [(SRWristTemperature *)self temperatureT2];
+      temperatureT22 = [equal temperatureT2];
 
-      LOBYTE(v5) = [(NSMeasurement *)v7 isEqual:v8];
+      LOBYTE(v5) = [(NSMeasurement *)temperatureT2 isEqual:temperatureT22];
     }
   }
 

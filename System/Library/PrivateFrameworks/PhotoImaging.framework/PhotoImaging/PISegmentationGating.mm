@@ -1,7 +1,7 @@
 @interface PISegmentationGating
-+ (BOOL)isValidSegmentationScoreForDepth:(PISegmentationBimodalScore)a3;
++ (BOOL)isValidSegmentationScoreForDepth:(PISegmentationBimodalScore)depth;
 + (id)segmentationScoreRanges;
-+ (unint64_t)gatingResultForSegmentationScores:(id)a3;
++ (unint64_t)gatingResultForSegmentationScores:(id)scores;
 @end
 
 @implementation PISegmentationGating
@@ -51,13 +51,13 @@ void __47__PISegmentationGating_segmentationScoreRanges__block_invoke()
   }
 }
 
-+ (BOOL)isValidSegmentationScoreForDepth:(PISegmentationBimodalScore)a3
++ (BOOL)isValidSegmentationScoreForDepth:(PISegmentationBimodalScore)depth
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = depth.var2;
+  var1 = depth.var1;
+  var0 = depth.var0;
   v34[3] = *MEMORY[0x1E69E9840];
-  v6 = [a1 segmentationScoreRanges];
+  segmentationScoreRanges = [self segmentationScoreRanges];
   v33[0] = *MEMORY[0x1E69C0D10];
   *&v7 = var0;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
@@ -92,7 +92,7 @@ void __47__PISegmentationGating_segmentationScoreRanges__block_invoke()
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
-        v20 = [v6 rangeForKey:{v19, v28}];
+        v20 = [segmentationScoreRanges rangeForKey:{v19, v28}];
         if (v20)
         {
           v21 = [v14 objectForKeyedSubscript:v19];
@@ -125,37 +125,37 @@ LABEL_13:
   return v26;
 }
 
-+ (unint64_t)gatingResultForSegmentationScores:(id)a3
++ (unint64_t)gatingResultForSegmentationScores:(id)scores
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scoresCopy = scores;
   v5 = *MEMORY[0x1E69C0C78];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0C78]];
+  v6 = [scoresCopy objectForKeyedSubscript:*MEMORY[0x1E69C0C78]];
   [v6 doubleValue];
   v8 = v7;
 
   v9 = *MEMORY[0x1E69C0C70];
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0C70]];
+  v10 = [scoresCopy objectForKeyedSubscript:*MEMORY[0x1E69C0C70]];
 
   if (v10)
   {
-    v11 = [v4 objectForKeyedSubscript:v9];
-    v12 = [v11 integerValue];
+    v11 = [scoresCopy objectForKeyedSubscript:v9];
+    integerValue = [v11 integerValue];
   }
 
   else
   {
-    v12 = 0;
+    integerValue = 0;
   }
 
-  [MEMORY[0x1E69C07A8] cropScoreThresholdForClassification:v12];
+  [MEMORY[0x1E69C07A8] cropScoreThresholdForClassification:integerValue];
   v14 = v13;
-  v15 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0C98]];
+  v15 = [scoresCopy objectForKeyedSubscript:*MEMORY[0x1E69C0C98]];
   [v15 doubleValue];
   v17 = v16;
 
-  v18 = [a1 segmentationScoreRanges];
-  if (v18)
+  segmentationScoreRanges = [self segmentationScoreRanges];
+  if (segmentationScoreRanges)
   {
     v19 = v14 + 0.00001;
     v20 = +[PIGlobalSettings globalSettings];
@@ -166,13 +166,13 @@ LABEL_13:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v23 = [v18 scoreKeys];
-    v24 = [v23 countByEnumeratingWithState:&v68 objects:v73 count:16];
+    scoreKeys = [segmentationScoreRanges scoreKeys];
+    v24 = [scoreKeys countByEnumeratingWithState:&v68 objects:v73 count:16];
     if (v24)
     {
       v25 = v24;
       v66 = v19;
-      v67 = v12;
+      v67 = integerValue;
       v26 = *v69;
       v27 = 1;
       v28 = 1;
@@ -182,12 +182,12 @@ LABEL_13:
         {
           if (*v69 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(scoreKeys);
           }
 
           v30 = *(*(&v68 + 1) + 8 * i);
-          v31 = [v18 rangeForKey:{v30, *&v66}];
-          v32 = [v4 objectForKeyedSubscript:v30];
+          v31 = [segmentationScoreRanges rangeForKey:{v30, *&v66}];
+          v32 = [scoresCopy objectForKeyedSubscript:v30];
           [v32 doubleValue];
           v34 = v33;
 
@@ -205,7 +205,7 @@ LABEL_13:
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v68 objects:v73 count:16];
+        v25 = [scoreKeys countByEnumeratingWithState:&v68 objects:v73 count:16];
       }
 
       while (v25);
@@ -213,7 +213,7 @@ LABEL_13:
       v40 = v17 >= v66 && v8 >= 0.5;
       if (v28)
       {
-        v12 = v67;
+        integerValue = v67;
         if (v27)
         {
           v40 |= 6uLL;
@@ -227,7 +227,7 @@ LABEL_13:
 
       else
       {
-        v12 = v67;
+        integerValue = v67;
         if (v27)
         {
           v40 |= 4uLL;
@@ -242,23 +242,23 @@ LABEL_13:
       v40 = v49 | 6;
     }
 
-    v50 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0D30]];
-    v51 = [v50 BOOLValue];
+    v50 = [scoresCopy objectForKeyedSubscript:*MEMORY[0x1E69C0D30]];
+    bOOLValue = [v50 BOOLValue];
 
-    if (v51)
+    if (bOOLValue)
     {
       v40 |= 8uLL;
     }
 
-    v52 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0D38]];
-    v53 = [v52 BOOLValue];
+    v52 = [scoresCopy objectForKeyedSubscript:*MEMORY[0x1E69C0D38]];
+    bOOLValue2 = [v52 BOOLValue];
 
-    if (v53)
+    if (bOOLValue2)
     {
       v40 |= 0x10uLL;
     }
 
-    v54 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0D20]];
+    v54 = [scoresCopy objectForKeyedSubscript:*MEMORY[0x1E69C0D20]];
     [v54 doubleValue];
     v56 = v55;
 
@@ -272,20 +272,20 @@ LABEL_13:
       v48 = v40 | 0x20;
     }
 
-    if ((v12 - 1) <= 1)
+    if ((integerValue - 1) <= 1)
     {
-      v57 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0D50]];
+      v57 = [scoresCopy objectForKeyedSubscript:*MEMORY[0x1E69C0D50]];
       [v57 doubleValue];
       v59 = v58;
 
       v60 = *MEMORY[0x1E69C0D58];
-      v61 = [v4 objectForKey:*MEMORY[0x1E69C0D58]];
+      v61 = [scoresCopy objectForKey:*MEMORY[0x1E69C0D58]];
 
       if (v61)
       {
         if (v59 <= 0.5)
         {
-          v62 = [v4 objectForKeyedSubscript:v60];
+          v62 = [scoresCopy objectForKeyedSubscript:v60];
           [v62 doubleValue];
           v64 = v63;
 
@@ -318,11 +318,11 @@ LABEL_13:
     _os_log_impl(&dword_1C7694000, v41, OS_LOG_TYPE_INFO, "Unable to load scoring plist, using fallback", buf, 2u);
   }
 
-  v42 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0D10]];
+  v42 = [scoresCopy objectForKeyedSubscript:*MEMORY[0x1E69C0D10]];
   [v42 doubleValue];
   v44 = v43 > 0.5;
 
-  v45 = [v4 objectForKeyedSubscript:v5];
+  v45 = [scoresCopy objectForKeyedSubscript:v5];
   [v45 doubleValue];
   v47 = v46;
 

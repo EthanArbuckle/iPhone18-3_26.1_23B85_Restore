@@ -1,13 +1,13 @@
 @interface MBiTunesStoreKVS
 + (id)iTunesStoreKVS;
-+ (id)mergeKnownAccountsByDSID:(id)a3 into:(id)a4;
++ (id)mergeKnownAccountsByDSID:(id)d into:(id)into;
 - (MBiTunesStoreKVS)init;
 - (id)knownAccounts;
 - (id)knownAccountsByDSID;
-- (id)valueForDomain:(id)a3 key:(id)a4;
+- (id)valueForDomain:(id)domain key:(id)key;
 - (void)removeAllValues;
-- (void)setValue:(id)a3 forDomain:(id)a4 key:(id)a5;
-- (void)setValuesWithDictionary:(id)a3 forDomain:(id)a4;
+- (void)setValue:(id)value forDomain:(id)domain key:(id)key;
+- (void)setValuesWithDictionary:(id)dictionary forDomain:(id)domain;
 @end
 
 @implementation MBiTunesStoreKVS
@@ -34,10 +34,10 @@
   return v2;
 }
 
-- (id)valueForDomain:(id)a3 key:(id)a4
+- (id)valueForDomain:(id)domain key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  keyCopy = key;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -53,9 +53,9 @@
       KVS = self->_KVS;
       v11 = objc_opt_class();
       *buf = 138412802;
-      v40 = v6;
+      v40 = domainCopy;
       v41 = 2112;
-      v42 = v7;
+      v42 = keyCopy;
       v43 = 2112;
       v44 = v11;
       v12 = v11;
@@ -76,7 +76,7 @@
   v32 = &v33;
   v16 = v14;
   v31 = v16;
-  [(SSKeyValueStore *)v15 getValueForDomain:v6 key:v7 usingBlock:v30];
+  [(SSKeyValueStore *)v15 getValueForDomain:domainCopy key:keyCopy usingBlock:v30];
   MBSemaphoreWaitForever();
   if (v34[5])
   {
@@ -90,9 +90,9 @@
         v19 = objc_opt_class();
         v20 = v34[5];
         *buf = 138413058;
-        v40 = v6;
+        v40 = domainCopy;
         v41 = 2112;
-        v42 = v7;
+        v42 = keyCopy;
         v43 = 2112;
         v44 = v19;
         v45 = 2112;
@@ -119,9 +119,9 @@
         v23 = self->_KVS;
         v24 = objc_opt_class();
         *buf = 138412802;
-        v40 = v6;
+        v40 = domainCopy;
         v41 = 2112;
-        v42 = v7;
+        v42 = keyCopy;
         v43 = 2112;
         v44 = v24;
         v25 = v24;
@@ -140,11 +140,11 @@
   return v27;
 }
 
-- (void)setValue:(id)a3 forDomain:(id)a4 key:(id)a5
+- (void)setValue:(id)value forDomain:(id)domain key:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  domainCopy = domain;
+  keyCopy = key;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -158,13 +158,13 @@
       KVS = self->_KVS;
       v14 = objc_opt_class();
       *buf = 138413058;
-      v31 = v9;
+      v31 = domainCopy;
       v32 = 2112;
-      v33 = v10;
+      v33 = keyCopy;
       v34 = 2112;
       v35 = v14;
       v36 = 2112;
-      v37 = v8;
+      v37 = valueCopy;
       v15 = v14;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Setting value %@/%@ in %@: %@", buf, 0x2Au);
     }
@@ -183,23 +183,23 @@
   v25 = &v26;
   v19 = v17;
   v24 = v19;
-  [(SSKeyValueStore *)v18 setValue:v8 forDomain:v9 key:v10 completionBlock:v23];
+  [(SSKeyValueStore *)v18 setValue:valueCopy forDomain:domainCopy key:keyCopy completionBlock:v23];
   MBSemaphoreWaitForever();
   if ((v27[3] & 1) == 0)
   {
     v20 = [MBException alloc];
     v21 = self->_KVS;
-    v22 = [v20 initWithCode:1 format:{@"Failed to set value %@/%@ in %@", v9, v10, objc_opt_class()}];
+    v22 = [v20 initWithCode:1 format:{@"Failed to set value %@/%@ in %@", domainCopy, keyCopy, objc_opt_class()}];
     objc_exception_throw(v22);
   }
 
   _Block_object_dispose(&v26, 8);
 }
 
-- (void)setValuesWithDictionary:(id)a3 forDomain:(id)a4
+- (void)setValuesWithDictionary:(id)dictionary forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  domainCopy = domain;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -213,11 +213,11 @@
       KVS = self->_KVS;
       v11 = objc_opt_class();
       *buf = 138412802;
-      v28 = v7;
+      v28 = domainCopy;
       v29 = 2112;
       v30 = v11;
       v31 = 2112;
-      v32 = v6;
+      v32 = dictionaryCopy;
       v12 = v11;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Setting values with dictionary %@ in %@: %@", buf, 0x20u);
     }
@@ -236,13 +236,13 @@
   v22 = &v23;
   v16 = v14;
   v21 = v16;
-  [(SSKeyValueStore *)v15 setValuesWithDictionary:v6 forDomain:v7 completionBlock:v20];
+  [(SSKeyValueStore *)v15 setValuesWithDictionary:dictionaryCopy forDomain:domainCopy completionBlock:v20];
   MBSemaphoreWaitForever();
   if ((v24[3] & 1) == 0)
   {
     v17 = [MBException alloc];
     v18 = self->_KVS;
-    v19 = [v17 initWithCode:1 format:{@"Failed to set values with dictionary %@/%@ in %@", v7, objc_opt_class(), v6}];
+    v19 = [v17 initWithCode:1 format:{@"Failed to set values with dictionary %@/%@ in %@", domainCopy, objc_opt_class(), dictionaryCopy}];
     objc_exception_throw(v19);
   }
 
@@ -296,16 +296,16 @@
   _Block_object_dispose(&v18, 8);
 }
 
-+ (id)mergeKnownAccountsByDSID:(id)a3 into:(id)a4
++ (id)mergeKnownAccountsByDSID:(id)d into:(id)into
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [NSMutableDictionary dictionaryWithDictionary:v6];
+  dCopy = d;
+  intoCopy = into;
+  v7 = [NSMutableDictionary dictionaryWithDictionary:intoCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = dCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -321,7 +321,7 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v6 objectForKeyedSubscript:{v13, v17}];
+        v14 = [intoCopy objectForKeyedSubscript:{v13, v17}];
 
         if (!v14)
         {
@@ -439,11 +439,11 @@ LABEL_19:
 
 - (id)knownAccountsByDSID
 {
-  v2 = [(MBiTunesStoreKVS *)self knownAccounts];
-  v3 = v2;
-  if (v2)
+  knownAccounts = [(MBiTunesStoreKVS *)self knownAccounts];
+  v3 = knownAccounts;
+  if (knownAccounts)
   {
-    v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v2 count]);
+    v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [knownAccounts count]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;

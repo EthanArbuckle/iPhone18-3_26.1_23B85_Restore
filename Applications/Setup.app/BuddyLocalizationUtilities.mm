@@ -1,23 +1,23 @@
 @interface BuddyLocalizationUtilities
-+ (id)dispositionSpecificLocalizedStringKeyForKey:(id)a3 disposition:(unint64_t)a4;
-+ (id)modelSpecificLocalizedStringKeyForKey:(id)a3 deviceClass:(id)a4;
-+ (id)siblingDeviceSpecificLocalizedStringKeyForKey:(id)a3 deviceClass:(id)a4;
-+ (id)siblingPairDeviceSpecificLocalizedStringKeyForKey:(id)a3 deviceClass:(id)a4;
++ (id)dispositionSpecificLocalizedStringKeyForKey:(id)key disposition:(unint64_t)disposition;
++ (id)modelSpecificLocalizedStringKeyForKey:(id)key deviceClass:(id)class;
++ (id)siblingDeviceSpecificLocalizedStringKeyForKey:(id)key deviceClass:(id)class;
++ (id)siblingPairDeviceSpecificLocalizedStringKeyForKey:(id)key deviceClass:(id)class;
 @end
 
 @implementation BuddyLocalizationUtilities
 
-+ (id)modelSpecificLocalizedStringKeyForKey:(id)a3 deviceClass:(id)a4
++ (id)modelSpecificLocalizedStringKeyForKey:(id)key deviceClass:(id)class
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, class);
   v5 = location[0];
-  v6 = [v9 uppercaseString];
-  v7 = [NSString stringWithFormat:@"%@_%@", v5, v6];
+  uppercaseString = [v9 uppercaseString];
+  v7 = [NSString stringWithFormat:@"%@_%@", v5, uppercaseString];
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
@@ -25,18 +25,18 @@
   return v7;
 }
 
-+ (id)siblingDeviceSpecificLocalizedStringKeyForKey:(id)a3 deviceClass:(id)a4
++ (id)siblingDeviceSpecificLocalizedStringKeyForKey:(id)key deviceClass:(id)class
 {
-  v11 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, class);
   v8 = MGCopyAnswer();
   if (([v8 isEqualToString:v9] & 1) == 0 && objc_msgSend(v9, "length"))
   {
-    v12 = [v11 modelSpecificLocalizedStringKeyForKey:location[0] deviceClass:v9];
+    v12 = [selfCopy modelSpecificLocalizedStringKeyForKey:location[0] deviceClass:v9];
   }
 
   else
@@ -54,21 +54,21 @@
   return v5;
 }
 
-+ (id)siblingPairDeviceSpecificLocalizedStringKeyForKey:(id)a3 deviceClass:(id)a4
++ (id)siblingPairDeviceSpecificLocalizedStringKeyForKey:(id)key deviceClass:(id)class
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, class);
   v11 = MGCopyAnswer();
   if (([v11 isEqualToString:v12] & 1) == 0 && objc_msgSend(v12, "length"))
   {
     v5 = location[0];
-    v6 = [v11 uppercaseString];
-    v7 = [v12 uppercaseString];
-    v14 = [NSString stringWithFormat:@"%@_%@_%@", v5, v6, v7];
+    uppercaseString = [v11 uppercaseString];
+    uppercaseString2 = [v12 uppercaseString];
+    v14 = [NSString stringWithFormat:@"%@_%@_%@", v5, uppercaseString, uppercaseString2];
   }
 
   else
@@ -86,19 +86,19 @@
   return v8;
 }
 
-+ (id)dispositionSpecificLocalizedStringKeyForKey:(id)a3 disposition:(unint64_t)a4
++ (id)dispositionSpecificLocalizedStringKeyForKey:(id)key disposition:(unint64_t)disposition
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, key);
+  dispositionCopy = disposition;
   v14 = BYStringForFlowItemDispositions();
   v5 = 0;
-  if (a4)
+  if (disposition)
   {
     v5 = 0;
-    if ((v15 & 0x3C) == v15)
+    if ((dispositionCopy & 0x3C) == dispositionCopy)
     {
       v5 = [v14 containsString:{@", "}] ^ 1;
     }
@@ -121,8 +121,8 @@
     objc_storeStrong(&oslog, 0);
   }
 
-  v6 = [v14 uppercaseString];
-  v9 = [v6 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  uppercaseString = [v14 uppercaseString];
+  v9 = [uppercaseString stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
   v7 = [NSString stringWithFormat:@"%@_%@", location[0], v9];
   objc_storeStrong(&v9, 0);

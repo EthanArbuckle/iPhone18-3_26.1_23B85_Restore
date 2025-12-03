@@ -18,10 +18,10 @@
 
 - (void)_accessibilityLoadInvertColors
 {
-  v3 = [(CKColoredBalloonViewInvertColorsAccessibility *)self superview];
-  if (v3)
+  superview = [(CKColoredBalloonViewInvertColorsAccessibility *)self superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     while (1)
     {
       AXSafeClassFromString();
@@ -30,10 +30,10 @@
         break;
       }
 
-      v5 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v5;
-      if (!v5)
+      v4 = superview2;
+      if (!superview2)
       {
         return;
       }
@@ -53,14 +53,14 @@ LABEL_19:
     v6 = [(CKColoredBalloonViewInvertColorsAccessibility *)self safeValueForKey:@"textView"];
     v7 = __UIAccessibilityCastAsClass();
 
-    v8 = [(CKColoredBalloonViewInvertColorsAccessibility *)self _axIsMessageGray];
+    _axIsMessageGray = [(CKColoredBalloonViewInvertColorsAccessibility *)self _axIsMessageGray];
     if (!v7)
     {
       goto LABEL_17;
     }
 
-    v9 = v8;
-    if ((v8 & 1) == 0 && ![(CKColoredBalloonViewInvertColorsAccessibility *)self _axIsBigEmoji])
+    v9 = _axIsMessageGray;
+    if ((_axIsMessageGray & 1) == 0 && ![(CKColoredBalloonViewInvertColorsAccessibility *)self _axIsBigEmoji])
     {
       [v7 setAccessibilityIgnoresInvertColors:0];
       UIAccessibilityIsInvertColorsEnabled();
@@ -117,9 +117,9 @@ LABEL_18:
     v4 = [v3 safeValueForKey:@"collectionView"];
     v5 = __UIAccessibilityCastAsClass();
 
-    v6 = self;
-    v7 = [(CKColoredBalloonViewInvertColorsAccessibility *)v6 superview];
-    v8 = [v7 superview];
+    selfCopy = self;
+    superview = [(CKColoredBalloonViewInvertColorsAccessibility *)selfCopy superview];
+    v7Superview = [superview superview];
 
     v18 = 0;
     v19 = &v18;
@@ -128,7 +128,7 @@ LABEL_18:
     v22 = sub_1CA64;
     v23 = 0;
     v9 = v5;
-    v10 = v8;
+    v10 = v7Superview;
     AXPerformSafeBlock();
     v11 = v19[5];
 

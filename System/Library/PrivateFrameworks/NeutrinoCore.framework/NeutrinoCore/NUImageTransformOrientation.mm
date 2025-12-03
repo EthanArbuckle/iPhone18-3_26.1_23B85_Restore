@@ -1,14 +1,14 @@
 @interface NUImageTransformOrientation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGeometryTransformOrientation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGeometryTransformOrientation:(id)orientation;
 - (BOOL)isIdentityImageTransform;
-- (CGAffineTransform)transformMatrix:(_OWORD *)a3@<X8>;
-- (CGPoint)transformPoint:(CGPoint)a3;
+- (CGAffineTransform)transformMatrix:(_OWORD *)matrix@<X8>;
+- (CGPoint)transformPoint:(CGPoint)point;
 - (NUImageTransformOrientation)init;
-- (NUImageTransformOrientation)initWithOrientation:(int64_t)a3 imageSize:(id)a4 imageOrigin:(id)a5;
+- (NUImageTransformOrientation)initWithOrientation:(int64_t)orientation imageSize:(id)size imageOrigin:(id)origin;
 - (id)description;
 - (id)inverseTransform;
-- (void)nu_updateDigest:(id)a3;
+- (void)nu_updateDigest:(id)digest;
 @end
 
 @implementation NUImageTransformOrientation
@@ -28,18 +28,18 @@
   return v5;
 }
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
-  v4 = a3;
-  [v4 addCString:"NUImageTransformOrientation"];
-  [v4 addBytes:&self->_orientation length:8];
+  digestCopy = digest;
+  [digestCopy addCString:"NUImageTransformOrientation"];
+  [digestCopy addBytes:&self->_orientation length:8];
 }
 
-- (BOOL)isEqualToGeometryTransformOrientation:(id)a3
+- (BOOL)isEqualToGeometryTransformOrientation:(id)orientation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  orientationCopy = orientation;
+  if (!orientationCopy)
   {
     v7 = NUAssertLogger_21429();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -60,8 +60,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v14;
         v25 = 2114;
@@ -72,8 +72,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -82,15 +82,15 @@
     _NUAssertFailHandler("[NUImageTransformOrientation isEqualToGeometryTransformOrientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 594, @"Invalid parameter not satisfying: %s", v19, v20, v21, v22, "other != nil");
   }
 
-  v5 = self->_orientation == v4[5];
+  v5 = self->_orientation == orientationCopy[5];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -98,7 +98,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUImageTransformOrientation *)self isEqualToGeometryTransformOrientation:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUImageTransformOrientation *)self isEqualToGeometryTransformOrientation:equalCopy];
   }
 
   return v5;
@@ -112,12 +112,12 @@
   return CGAffineTransformIsIdentity(&v3);
 }
 
-- (CGAffineTransform)transformMatrix:(_OWORD *)a3@<X8>
+- (CGAffineTransform)transformMatrix:(_OWORD *)matrix@<X8>
 {
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  result = NUOrientationMakeTransformWithSizeAndOrigin(a1[5], a1[1], a1[2], a1[3], a1[4], &v25);
+  result = NUOrientationMakeTransformWithSizeAndOrigin(self[5], self[1], self[2], self[3], self[4], &v25);
   v6 = 0;
   *&v8 = *(&v25 + 1);
   *&v7 = v25;
@@ -145,19 +145,19 @@
   v20 = *(MEMORY[0x1E69E9B08] + 112);
   v24[6] = *(MEMORY[0x1E69E9B08] + 96);
   v24[7] = v20;
-  *a3 = 0u;
-  a3[1] = 0u;
-  a3[2] = 0u;
-  a3[3] = 0u;
-  a3[4] = 0u;
-  a3[5] = 0u;
-  a3[6] = 0u;
-  a3[7] = 0u;
+  *matrix = 0u;
+  matrix[1] = 0u;
+  matrix[2] = 0u;
+  matrix[3] = 0u;
+  matrix[4] = 0u;
+  matrix[5] = 0u;
+  matrix[6] = 0u;
+  matrix[7] = 0u;
   do
   {
     v22 = v24[v6];
     v21 = v24[v6 + 1];
-    v23 = &a3[v6];
+    v23 = &matrix[v6];
     *v23 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v12, v22.f64[0]), v14, v22, 1), v16, v21.f64[0]), v18, v21, 1);
     v23[1] = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v11, v22.f64[0]), v13, v22, 1), v15, v21.f64[0]), v17, v21, 1);
     v6 += 2;
@@ -167,7 +167,7 @@
   return result;
 }
 
-- (CGPoint)transformPoint:(CGPoint)a3
+- (CGPoint)transformPoint:(CGPoint)point
 {
   v31 = *MEMORY[0x1E69E9840];
   width = self->_inputImageSize.width;
@@ -192,8 +192,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(buf[0].f64[0]) = 138543618;
         *(buf[0].f64 + 4) = v17;
         WORD2(buf[0].f64[1]) = 2114;
@@ -204,8 +204,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(buf[0].f64[0]) = 138543362;
       *(buf[0].f64 + 4) = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -214,8 +214,8 @@
     _NUAssertFailHandler("[NUImageTransformOrientation transformPoint:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 551, @"invalid image size", v22, v23, v24, v25, v26);
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   orientation = self->_orientation;
   v6 = self->_inputImageOrigin.x;
   v7 = self->_inputImageOrigin.y;
@@ -276,10 +276,10 @@
   return v12;
 }
 
-- (NUImageTransformOrientation)initWithOrientation:(int64_t)a3 imageSize:(id)a4 imageOrigin:(id)a5
+- (NUImageTransformOrientation)initWithOrientation:(int64_t)orientation imageSize:(id)size imageOrigin:(id)origin
 {
   v32 = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) >= 8)
+  if ((orientation - 1) >= 8)
   {
     v11 = NUAssertLogger_21429();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -300,8 +300,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
@@ -312,8 +312,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -322,10 +322,10 @@
     _NUAssertFailHandler("[NUImageTransformOrientation initWithOrientation:imageSize:imageOrigin:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 527, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "NUOrientationIsValid(orientation)");
   }
 
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v7 = a4.var1;
-  v8 = a4.var0;
+  var1 = origin.var1;
+  var0 = origin.var0;
+  v7 = size.var1;
+  v8 = size.var0;
   v27.receiver = self;
   v27.super_class = NUImageTransformOrientation;
   result = [(NUImageTransformOrientation *)&v27 init];
@@ -333,7 +333,7 @@
   result->_inputImageSize.height = v7;
   result->_inputImageOrigin.x = var0;
   result->_inputImageOrigin.y = var1;
-  result->_orientation = a3;
+  result->_orientation = orientation;
   return result;
 }
 
@@ -382,8 +382,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -399,8 +399,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;

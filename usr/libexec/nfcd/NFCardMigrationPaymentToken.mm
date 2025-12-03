@@ -1,36 +1,36 @@
 @interface NFCardMigrationPaymentToken
-- (NFCardMigrationPaymentToken)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NFCardMigrationPaymentToken)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFCardMigrationPaymentToken
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   token = self->_token;
-  v5 = a3;
-  [v5 encodeObject:token forKey:@"token"];
-  [v5 encodeObject:self->_signature forKey:@"signature"];
-  [v5 encodeObject:self->_certificate forKey:@"certificate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:token forKey:@"token"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
+  [coderCopy encodeObject:self->_certificate forKey:@"certificate"];
 }
 
-- (NFCardMigrationPaymentToken)initWithCoder:(id)a3
+- (NFCardMigrationPaymentToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NFCardMigrationPaymentToken;
   v5 = [(NFCardMigrationPaymentToken *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
     token = v5->_token;
     v5->_token = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v5->_signature;
     v5->_signature = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"certificate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"certificate"];
     certificate = v5->_certificate;
     v5->_certificate = v10;
   }

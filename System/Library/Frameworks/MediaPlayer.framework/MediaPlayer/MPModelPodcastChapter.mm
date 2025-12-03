@@ -10,32 +10,32 @@
 
 + (void)__MPModelPropertyPodcastChapterPlayable__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPodcastChapter.m" lineNumber:20 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterPlayable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPodcastChapter.m" lineNumber:20 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterPlayable"];
 }
 
 + (void)__MPModelPropertyPodcastChapterStartTime__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPodcastChapter.m" lineNumber:19 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterStartTime"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPodcastChapter.m" lineNumber:19 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterStartTime"];
 }
 
 + (void)__MPModelPropertyPodcastChapterDuration__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPodcastChapter.m" lineNumber:18 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterDuration"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPodcastChapter.m" lineNumber:18 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterDuration"];
 }
 
 + (void)__MPModelPropertyPodcastChapterURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPodcastChapter.m" lineNumber:17 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPodcastChapter.m" lineNumber:17 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterURL"];
 }
 
 + (void)__MPModelPropertyPodcastChapterTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPodcastChapter.m" lineNumber:16 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPodcastChapter.m" lineNumber:16 description:@"Translator was missing mapping for MPModelPropertyPodcastChapterTitle"];
 }
 
 @end

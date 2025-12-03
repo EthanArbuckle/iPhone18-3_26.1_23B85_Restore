@@ -1,14 +1,14 @@
 @interface CDRestrictedAccesssDidFinishAuthRequest
-- (CDRestrictedAccesssDidFinishAuthRequest)initWithRapportDictionary:(id)a3;
+- (CDRestrictedAccesssDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDRestrictedAccesssDidFinishAuthRequest
 
-- (CDRestrictedAccesssDidFinishAuthRequest)initWithRapportDictionary:(id)a3
+- (CDRestrictedAccesssDidFinishAuthRequest)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = CDRestrictedAccesssDidFinishAuthRequest;
   v5 = [(CDRestrictedAccesssDidFinishAuthRequest *)&v17 init];
@@ -16,7 +16,7 @@
   {
     v5->_approved = CFDictionaryGetInt64() != 0;
     v6 = objc_opt_self();
-    v7 = v4;
+    v7 = dictionaryCopy;
     v8 = [NSSet setWithObject:v6];
     v9 = sub_100017500(v7, @"authError", v8);
 
@@ -64,9 +64,9 @@
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendBool:self->_approved withName:@"approved"];
   v5 = [v3 appendObject:self->_error withName:@"error" skipIfNil:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

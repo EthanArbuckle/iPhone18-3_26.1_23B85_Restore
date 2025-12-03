@@ -1,10 +1,10 @@
 @interface PLDateRangeFormatter
-+ (id)autoupdatingFormatterWithPreset:(int64_t)a3;
++ (id)autoupdatingFormatterWithPreset:(int64_t)preset;
 - (BOOL)allowUseRelativeDayFormatting;
 - (BOOL)allowUseTime;
 - (BOOL)useLocalDates;
 - (NSLocale)locale;
-- (PLDateRangeFormatter)initWithPreset:(int64_t)a3;
+- (PLDateRangeFormatter)initWithPreset:(int64_t)preset;
 - (UDateIntervalFormat)_dayOfTheWeekIntervalFormat;
 - (UDateIntervalFormat)_differentMonthDayIntervalFormat;
 - (UDateIntervalFormat)_differentMonthDayNoYearIntervalFormat;
@@ -23,48 +23,48 @@
 - (id)_sameDayDateFormatter;
 - (id)_sameDayNoYearDateFormatter;
 - (id)_sameMonthTemplate;
-- (id)_stringFromDate:(id)a3 toDate:(id)a4 currentDate:(id)a5;
+- (id)_stringFromDate:(id)date toDate:(id)toDate currentDate:(id)currentDate;
 - (id)_yearDateFormatter;
-- (id)stringFromDate:(id)a3 toDate:(id)a4;
-- (id)stringFromDate:(id)a3 toDate:(id)a4 currentDate:(id)a5;
+- (id)stringFromDate:(id)date toDate:(id)toDate;
+- (id)stringFromDate:(id)date toDate:(id)toDate currentDate:(id)currentDate;
 - (int64_t)preset;
-- (void)_currentLocaleDidChange:(id)a3;
+- (void)_currentLocaleDidChange:(id)change;
 - (void)_handlePresetDidChange;
 - (void)_handleUseLocalDatesDidChange;
 - (void)_resetFormatters;
-- (void)_significantTimeChange:(id)a3;
-- (void)_systemTimeZoneDidChange:(id)a3;
+- (void)_significantTimeChange:(id)change;
+- (void)_systemTimeZoneDidChange:(id)change;
 - (void)dealloc;
-- (void)setAllowUseRelativeDayFormatting:(BOOL)a3;
-- (void)setAllowUseTime:(BOOL)a3;
-- (void)setLocale:(id)a3;
-- (void)setPreset:(int64_t)a3;
-- (void)setUseLocalDates:(BOOL)a3;
+- (void)setAllowUseRelativeDayFormatting:(BOOL)formatting;
+- (void)setAllowUseTime:(BOOL)time;
+- (void)setLocale:(id)locale;
+- (void)setPreset:(int64_t)preset;
+- (void)setUseLocalDates:(BOOL)dates;
 @end
 
 @implementation PLDateRangeFormatter
 
-- (id)stringFromDate:(id)a3 toDate:(id)a4
+- (id)stringFromDate:(id)date toDate:(id)toDate
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
-  v10 = [(PLDateRangeFormatter *)self stringFromDate:v8 toDate:v7 currentDate:v9];
+  toDateCopy = toDate;
+  dateCopy = date;
+  date = [v6 date];
+  v10 = [(PLDateRangeFormatter *)self stringFromDate:dateCopy toDate:toDateCopy currentDate:date];
 
   return v10;
 }
 
-- (id)stringFromDate:(id)a3 toDate:(id)a4 currentDate:(id)a5
+- (id)stringFromDate:(id)date toDate:(id)toDate currentDate:(id)currentDate
 {
   v5 = &stru_1F0F06D80;
-  if (a3 && a5)
+  if (date && currentDate)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    currentDateCopy = currentDate;
+    toDateCopy = toDate;
+    dateCopy = date;
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(PLDateRangeFormatter *)self _stringFromDate:v11 toDate:v10 currentDate:v9];
+    v5 = [(PLDateRangeFormatter *)self _stringFromDate:dateCopy toDate:toDateCopy currentDate:currentDateCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -72,13 +72,13 @@
   return v5;
 }
 
-- (void)setUseLocalDates:(BOOL)a3
+- (void)setUseLocalDates:(BOOL)dates
 {
-  v3 = a3;
+  datesCopy = dates;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_useLocalDates != v3)
+  if (self->_useLocalDates != datesCopy)
   {
-    self->_useLocalDates = v3;
+    self->_useLocalDates = datesCopy;
     [(PLDateRangeFormatter *)self _handleUseLocalDatesDidChange];
     [(PLDateRangeFormatter *)self _resetFormatters];
   }
@@ -94,19 +94,19 @@
   return useLocalDates;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v7 = a3;
-  if (!v7)
+  localeCopy = locale;
+  if (!localeCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLDateRangeFormatter.m" lineNumber:1092 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDateRangeFormatter.m" lineNumber:1092 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if (([(NSLocale *)self->_locale isEqual:v7]& 1) == 0)
+  if (([(NSLocale *)self->_locale isEqual:localeCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_locale, a3);
+    objc_storeStrong(&self->_locale, locale);
     [(PLDateRangeFormatter *)self _resetFormatters];
   }
 
@@ -122,10 +122,10 @@
   return v3;
 }
 
-- (void)setAllowUseRelativeDayFormatting:(BOOL)a3
+- (void)setAllowUseRelativeDayFormatting:(BOOL)formatting
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_allowUseRelativeDayFormatting = a3;
+  self->_allowUseRelativeDayFormatting = formatting;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -138,10 +138,10 @@
   return allowUseRelativeDayFormatting;
 }
 
-- (void)setAllowUseTime:(BOOL)a3
+- (void)setAllowUseTime:(BOOL)time
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_allowUseTime = a3;
+  self->_allowUseTime = time;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -154,12 +154,12 @@
   return allowUseTime;
 }
 
-- (void)setPreset:(int64_t)a3
+- (void)setPreset:(int64_t)preset
 {
   os_unfair_lock_lock(&self->_lock);
-  if (self->_preset != a3)
+  if (self->_preset != preset)
   {
-    self->_preset = a3;
+    self->_preset = preset;
     [(PLDateRangeFormatter *)self _handlePresetDidChange];
     [(PLDateRangeFormatter *)self _resetFormatters];
   }
@@ -175,27 +175,27 @@
   return preset;
 }
 
-- (id)_stringFromDate:(id)a3 toDate:(id)a4 currentDate:(id)a5
+- (id)_stringFromDate:(id)date toDate:(id)toDate currentDate:(id)currentDate
 {
   v128 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  toDateCopy = toDate;
+  currentDateCopy = currentDate;
   os_unfair_lock_assert_owner(&self->_lock);
-  v107 = [(PLDateRangeFormatter *)self localTimeZone];
-  v11 = [v107 secondsFromGMT];
-  v12 = v11;
+  localTimeZone = [(PLDateRangeFormatter *)self localTimeZone];
+  secondsFromGMT = [localTimeZone secondsFromGMT];
+  v12 = secondsFromGMT;
   if (self->_useLocalDates)
   {
-    v13 = [v10 dateByAddingTimeInterval:v11];
+    v13 = [currentDateCopy dateByAddingTimeInterval:secondsFromGMT];
 
-    v10 = v13;
+    currentDateCopy = v13;
   }
 
-  v14 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v15 = self->_timeZone;
-  [v14 setTimeZone:v15];
-  v105 = [v14 components:124 fromDate:v8];
+  [currentCalendar setTimeZone:v15];
+  v105 = [currentCalendar components:124 fromDate:dateCopy];
   if (self->_omitYear)
   {
     v104 = 0;
@@ -204,9 +204,9 @@
 
   else if (self->_allowUseRelativeDayFormatting && self->_useRelativeDayFormatting)
   {
-    v104 = [v14 components:124 fromDate:v10];
-    v17 = [v104 year];
-    v16 = v17 == [v105 year];
+    v104 = [currentCalendar components:124 fromDate:currentDateCopy];
+    year = [v104 year];
+    v16 = year == [v105 year];
   }
 
   else
@@ -215,22 +215,22 @@
     v104 = 0;
   }
 
-  v106 = [v8 dateByAddingTimeInterval:-v12];
+  v106 = [dateCopy dateByAddingTimeInterval:-v12];
   v18 = v106;
   if (!self->_useLocalDates)
   {
-    v18 = v8;
+    v18 = dateCopy;
   }
 
   v103 = v18;
-  if (!v9)
+  if (!toDateCopy)
   {
     v19 = 0;
     goto LABEL_43;
   }
 
-  v19 = [v14 components:124 fromDate:v9];
-  v20 = [v9 dateByAddingTimeInterval:-v12];
+  v19 = [currentCalendar components:124 fromDate:toDateCopy];
+  v20 = [toDateCopy dateByAddingTimeInterval:-v12];
   v21 = v20;
   if (self->_useLocalDates)
   {
@@ -239,16 +239,16 @@
 
   else
   {
-    v22 = v9;
+    v22 = toDateCopy;
   }
 
   v101 = v22;
   if (self->_allowUseRelativeDayFormatting && self->_useRelativeDayFormatting)
   {
     v23 = [v105 day];
-    if (v23 != [v19 day] && _DateIsInThePastNumberOfDays(v8, 6, v15, v107, self->_useLocalDates) && _DateIsInThePastNumberOfDays(v9, 6, v15, v107, self->_useLocalDates))
+    if (v23 != [v19 day] && _DateIsInThePastNumberOfDays(dateCopy, 6, v15, localTimeZone, self->_useLocalDates) && _DateIsInThePastNumberOfDays(toDateCopy, 6, v15, localTimeZone, self->_useLocalDates))
     {
-      v24 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _dayOfTheWeekIntervalFormat], v8, v9);
+      v24 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _dayOfTheWeekIntervalFormat], dateCopy, toDateCopy);
       v25 = v24;
       if (!v24)
       {
@@ -257,13 +257,13 @@
 
       v26 = [v24 isEqualToString:&stru_1F0F06D80];
 
-      if ((v26 & 1) != 0 || !_DateIsInThePastNumberOfDays(v9, 1, v15, v107, self->_useLocalDates))
+      if ((v26 & 1) != 0 || !_DateIsInThePastNumberOfDays(toDateCopy, 1, v15, localTimeZone, self->_useLocalDates))
       {
         goto LABEL_86;
       }
 
-      v27 = [(PLDateRangeFormatter *)self _relativeDateFormatter];
-      v99 = [v27 stringFromDate:v101];
+      _relativeDateFormatter = [(PLDateRangeFormatter *)self _relativeDateFormatter];
+      v99 = [_relativeDateFormatter stringFromDate:v101];
 
       if (self->_useShortDaysInRanges && [v99 length] > 0xF)
       {
@@ -295,13 +295,13 @@ LABEL_118:
         goto LABEL_86;
       }
 
-      v28 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _dayOfTheWeekIntervalFormat], v9, v9);
+      v28 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _dayOfTheWeekIntervalFormat], toDateCopy, toDateCopy);
       v94 = [v28 lowercaseStringWithLocale:self->_locale];
 
       v85 = [v94 length];
       v90 = [*(v117 + 5) objectAtIndexedSubscript:1];
-      v29 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v30 = [v90 stringByTrimmingCharactersInSet:v29];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v30 = [v90 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       v91 = [v30 lowercaseStringWithLocale:self->_locale];
 
@@ -316,8 +316,8 @@ LABEL_118:
       else
       {
         v81 = [*(v117 + 5) objectAtIndexedSubscript:0];
-        v70 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v80 = [v81 stringByTrimmingCharactersInSet:v70];
+        whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v80 = [v81 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
         if ([v80 isEqualToString:v94])
         {
@@ -345,16 +345,16 @@ LABEL_116:
 
       v25 = [v96 stringByReplacingCharactersInRange:v32 withString:{v31, v99}];
 
-      if (!_DateIsInThePastNumberOfDays(v8, 1, v15, v107, self->_useLocalDates))
+      if (!_DateIsInThePastNumberOfDays(dateCopy, 1, v15, localTimeZone, self->_useLocalDates))
       {
         v87 = v91;
         goto LABEL_116;
       }
 
-      v98 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _dayOfTheWeekIntervalFormat], v8, v8);
+      v98 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _dayOfTheWeekIntervalFormat], dateCopy, dateCopy);
       v82 = [*(v117 + 5) objectAtIndexedSubscript:v33];
-      v71 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v87 = [v82 stringByTrimmingCharactersInSet:v71];
+      whitespaceCharacterSet3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v87 = [v82 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
 
       if ([v87 isEqualToString:v98])
       {
@@ -378,8 +378,8 @@ LABEL_116:
           goto LABEL_114;
         }
 
-        v77 = [(PLDateRangeFormatter *)self _relativeDateFormatter];
-        v78 = [v77 stringFromDate:v103];
+        _relativeDateFormatter2 = [(PLDateRangeFormatter *)self _relativeDateFormatter];
+        v78 = [_relativeDateFormatter2 stringFromDate:v103];
 
         v79 = [v25 stringByReplacingCharactersInRange:v84 withString:{v93, v78}];
 
@@ -395,10 +395,10 @@ LABEL_114:
 
   if (self->_yearOnly)
   {
-    v34 = [v105 year];
-    if (v34 != [v19 year])
+    year2 = [v105 year];
+    if (year2 != [v19 year])
     {
-      v35 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _yearIntervalFormat], v8, v9);
+      v35 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _yearIntervalFormat], dateCopy, toDateCopy);
 LABEL_85:
       v25 = v35;
 LABEL_86:
@@ -411,10 +411,10 @@ LABEL_86:
 
   if (self->_monthOnly)
   {
-    v36 = [v105 month];
-    if (v36 != [v19 month])
+    month = [v105 month];
+    if (month != [v19 month])
     {
-      v35 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _monthIntervalFormat], v8, v9);
+      v35 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _monthIntervalFormat], dateCopy, toDateCopy);
       goto LABEL_85;
     }
 
@@ -423,8 +423,8 @@ LABEL_86:
 
   if (self->_monthWithDelimiterAndYear)
   {
-    v37 = [v105 month];
-    if (v37 != [v19 month])
+    month2 = [v105 month];
+    if (month2 != [v19 month])
     {
       v38 = PLBackendGetLog();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -433,7 +433,7 @@ LABEL_86:
         _os_log_impl(&dword_19BF1F000, v38, OS_LOG_TYPE_ERROR, "[PLDateRangeFormatter] From and to date months are not equal, which should not happen for month highlight. Cannot get attributed string with UDateIntervalFormat formatter", buf, 2u);
       }
 
-      v35 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _monthYearIntervalFormat], v8, v9);
+      v35 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _monthYearIntervalFormat], dateCopy, toDateCopy);
       goto LABEL_85;
     }
 
@@ -442,27 +442,27 @@ LABEL_86:
 
   if (self->_monthWithYear)
   {
-    v39 = [v105 month];
-    if (v39 != [v19 month])
+    month3 = [v105 month];
+    if (month3 != [v19 month])
     {
-      v35 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _monthYearIntervalFormat], v8, v9);
+      v35 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _monthYearIntervalFormat], dateCopy, toDateCopy);
       goto LABEL_85;
     }
 
     goto LABEL_42;
   }
 
-  v63 = [v105 year];
-  if (v63 != [v19 year] || (v64 = objc_msgSend(v105, "month"), v64 != objc_msgSend(v19, "month")))
+  year3 = [v105 year];
+  if (year3 != [v19 year] || (v64 = objc_msgSend(v105, "month"), v64 != objc_msgSend(v19, "month")))
   {
     if (v16)
     {
-      v66 = [(PLDateRangeFormatter *)self _differentMonthDayNoYearIntervalFormat];
+      _differentMonthDayNoYearIntervalFormat = [(PLDateRangeFormatter *)self _differentMonthDayNoYearIntervalFormat];
     }
 
     else
     {
-      v66 = [(PLDateRangeFormatter *)self _differentMonthDayIntervalFormat];
+      _differentMonthDayNoYearIntervalFormat = [(PLDateRangeFormatter *)self _differentMonthDayIntervalFormat];
     }
 
     goto LABEL_84;
@@ -473,16 +473,16 @@ LABEL_86:
   {
     if (v16)
     {
-      v66 = [(PLDateRangeFormatter *)self _monthDayNoYearIntervalFormat];
+      _differentMonthDayNoYearIntervalFormat = [(PLDateRangeFormatter *)self _monthDayNoYearIntervalFormat];
     }
 
     else
     {
-      v66 = [(PLDateRangeFormatter *)self _monthDayIntervalFormat];
+      _differentMonthDayNoYearIntervalFormat = [(PLDateRangeFormatter *)self _monthDayIntervalFormat];
     }
 
 LABEL_84:
-    v35 = _FormattedDateWithUDateFormatter(v66, v8, v9);
+    v35 = _FormattedDateWithUDateFormatter(_differentMonthDayNoYearIntervalFormat, dateCopy, toDateCopy);
     goto LABEL_85;
   }
 
@@ -491,8 +491,8 @@ LABEL_42:
 LABEL_43:
   if (self->_yearOnly)
   {
-    v40 = [(PLDateRangeFormatter *)self _yearDateFormatter];
-    v41 = [v40 stringFromDate:v8];
+    _yearDateFormatter = [(PLDateRangeFormatter *)self _yearDateFormatter];
+    v41 = [_yearDateFormatter stringFromDate:dateCopy];
 LABEL_47:
     v25 = v41;
 
@@ -501,8 +501,8 @@ LABEL_47:
 
   if (self->_monthOnly)
   {
-    v40 = [(PLDateRangeFormatter *)self _monthDateFormatter];
-    v41 = [v40 stringFromDate:v8];
+    _yearDateFormatter = [(PLDateRangeFormatter *)self _monthDateFormatter];
+    v41 = [_yearDateFormatter stringFromDate:dateCopy];
     goto LABEL_47;
   }
 
@@ -510,8 +510,8 @@ LABEL_47:
   {
     if (self->_monthWithYear)
     {
-      v40 = [(PLDateRangeFormatter *)self _monthYearDateFormatter];
-      v41 = [v40 stringFromDate:v8];
+      _yearDateFormatter = [(PLDateRangeFormatter *)self _monthYearDateFormatter];
+      v41 = [_yearDateFormatter stringFromDate:dateCopy];
       goto LABEL_47;
     }
 
@@ -519,22 +519,22 @@ LABEL_47:
     {
       if (self->_allowUseTime && self->_useTime)
       {
-        v56 = [v104 year];
-        if (v56 == [v105 year])
+        year4 = [v104 year];
+        if (year4 == [v105 year])
         {
-          v57 = [v104 month];
-          if (v57 == [v105 month])
+          month4 = [v104 month];
+          if (month4 == [v105 month])
           {
             v58 = [v104 day];
             if (v58 == [v105 day])
             {
-              if (v9)
+              if (toDateCopy)
               {
-                [v9 timeIntervalSinceDate:v8];
+                [toDateCopy timeIntervalSinceDate:dateCopy];
                 if (fabs(v59) > 900.0)
                 {
 LABEL_66:
-                  v60 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _timeIntervalFormat], v8, v9);
+                  v60 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _timeIntervalFormat], dateCopy, toDateCopy);
 LABEL_89:
                   v25 = v60;
                   goto LABEL_87;
@@ -542,33 +542,33 @@ LABEL_89:
               }
 
 LABEL_88:
-              v60 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _timeIntervalFormat], v8, v8);
+              v60 = _FormattedDateWithUDateFormatter([(PLDateRangeFormatter *)self _timeIntervalFormat], dateCopy, dateCopy);
               goto LABEL_89;
             }
           }
         }
       }
 
-      if (_DateIsInThePastNumberOfDays(v8, 1, v15, v107, self->_useLocalDates))
+      if (_DateIsInThePastNumberOfDays(dateCopy, 1, v15, localTimeZone, self->_useLocalDates))
       {
-        v40 = [(PLDateRangeFormatter *)self _relativeDateFormatter];
-        v41 = [v40 stringFromDate:v103];
+        _yearDateFormatter = [(PLDateRangeFormatter *)self _relativeDateFormatter];
+        v41 = [_yearDateFormatter stringFromDate:v103];
         goto LABEL_47;
       }
 
-      if (_DateIsInThePastNumberOfDays(v8, 6, v15, v107, self->_useLocalDates))
+      if (_DateIsInThePastNumberOfDays(dateCopy, 6, v15, localTimeZone, self->_useLocalDates))
       {
-        v40 = [(PLDateRangeFormatter *)self _dayOfTheWeekDateFormatter];
-        v41 = [v40 stringFromDate:v8];
+        _yearDateFormatter = [(PLDateRangeFormatter *)self _dayOfTheWeekDateFormatter];
+        v41 = [_yearDateFormatter stringFromDate:dateCopy];
         goto LABEL_47;
       }
     }
 
     else if (self->_timeOnly)
     {
-      if (v9)
+      if (toDateCopy)
       {
-        [v9 timeIntervalSinceDate:v8];
+        [toDateCopy timeIntervalSinceDate:dateCopy];
         if (fabs(v67) > 900.0)
         {
           goto LABEL_66;
@@ -587,19 +587,19 @@ LABEL_88:
     {
       [(PLDateRangeFormatter *)self _sameDayDateFormatter];
     }
-    v40 = ;
-    v41 = [v40 stringFromDate:v8];
+    _yearDateFormatter = ;
+    v41 = [_yearDateFormatter stringFromDate:dateCopy];
     goto LABEL_47;
   }
 
-  v42 = [(PLDateRangeFormatter *)self _monthYearDateFormatter];
-  v102 = [v42 _attributedStringWithFieldsFromDate:v8];
+  _monthYearDateFormatter = [(PLDateRangeFormatter *)self _monthYearDateFormatter];
+  v102 = [_monthYearDateFormatter _attributedStringWithFieldsFromDate:dateCopy];
 
-  v97 = [v102 string];
-  v43 = [(PLDateRangeFormatter *)self _monthDateFormatter];
-  v92 = [v43 stringFromDate:v8];
+  string = [v102 string];
+  _monthDateFormatter = [(PLDateRangeFormatter *)self _monthDateFormatter];
+  v92 = [_monthDateFormatter stringFromDate:dateCopy];
 
-  v44 = [v97 localizedStandardRangeOfString:v92];
+  v44 = [string localizedStandardRangeOfString:v92];
   v46 = v45;
   v47 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:2];
   v48 = *MEMORY[0x1E695D8F8];
@@ -612,7 +612,7 @@ LABEL_88:
   v86 = v46;
   v89 = v44;
   [v102 enumerateAttribute:v48 inRange:v44 options:v46 usingBlock:{0, v111}];
-  v100 = [v97 mutableCopy];
+  v100 = [string mutableCopy];
   *buf = 0;
   v117 = buf;
   v118 = 0x2020000000;
@@ -650,17 +650,17 @@ LABEL_88:
     v61 = PLBackendGetLog();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_FAULT))
     {
-      v62 = [(NSLocale *)self->_locale localeIdentifier];
+      localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
       *v122 = 138543874;
-      v123 = v97;
+      v123 = string;
       v124 = 2114;
-      v125 = v62;
+      v125 = localeIdentifier;
       v126 = 2114;
       v127 = v100;
       _os_log_impl(&dword_19BF1F000, v61, OS_LOG_TYPE_FAULT, "[PLDateRangeFormatter _stringFromDate:toDate:currentDate:] Failed to retrieve back one or more delimiters we inserted in montYearString %{public}@ using locale: %{public}@. Resulting in %{public}@.", v122, 0x20u);
     }
 
-    v55 = v97;
+    v55 = string;
   }
 
   v25 = v55;
@@ -724,8 +724,8 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   result = self->_monthYearIntervalFormat;
   if (!result)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ y", v4];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ y", _sameMonthTemplate];
     self->_monthYearIntervalFormat = _CreateUDateFormatter(self->_locale, self->_timeZone, v5);
 
     return self->_monthYearIntervalFormat;
@@ -740,8 +740,8 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   result = self->_monthIntervalFormat;
   if (!result)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    self->_monthIntervalFormat = _CreateUDateFormatter(self->_locale, self->_timeZone, v4);
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    self->_monthIntervalFormat = _CreateUDateFormatter(self->_locale, self->_timeZone, _sameMonthTemplate);
 
     return self->_monthIntervalFormat;
   }
@@ -793,11 +793,11 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   result = self->_differentMonthDayNoYearIntervalFormat;
   if (!result)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [(PLDateRangeFormatter *)self _dayDifferentMonthsTemplate];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    _dayDifferentMonthsTemplate = [(PLDateRangeFormatter *)self _dayDifferentMonthsTemplate];
     locale = self->_locale;
     timeZone = self->_timeZone;
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v4, v5];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", _sameMonthTemplate, _dayDifferentMonthsTemplate];
     self->_differentMonthDayNoYearIntervalFormat = _CreateUDateFormatter(locale, timeZone, v8);
 
     return self->_differentMonthDayNoYearIntervalFormat;
@@ -812,11 +812,11 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   result = self->_differentMonthDayIntervalFormat;
   if (!result)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [(PLDateRangeFormatter *)self _dayDifferentMonthsTemplate];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    _dayDifferentMonthsTemplate = [(PLDateRangeFormatter *)self _dayDifferentMonthsTemplate];
     locale = self->_locale;
     timeZone = self->_timeZone;
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@y", v4, v5];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@y", _sameMonthTemplate, _dayDifferentMonthsTemplate];
     self->_differentMonthDayIntervalFormat = _CreateUDateFormatter(locale, timeZone, v8);
 
     return self->_differentMonthDayIntervalFormat;
@@ -831,11 +831,11 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   result = self->_monthDayNoYearIntervalFormat;
   if (!result)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [(PLDateRangeFormatter *)self _dayTemplate];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    _dayTemplate = [(PLDateRangeFormatter *)self _dayTemplate];
     locale = self->_locale;
     timeZone = self->_timeZone;
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v4, v5];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", _sameMonthTemplate, _dayTemplate];
     self->_monthDayNoYearIntervalFormat = _CreateUDateFormatter(locale, timeZone, v8);
 
     return self->_monthDayNoYearIntervalFormat;
@@ -850,11 +850,11 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   result = self->_monthDayIntervalFormat;
   if (!result)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [(PLDateRangeFormatter *)self _dayTemplate];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    _dayTemplate = [(PLDateRangeFormatter *)self _dayTemplate];
     locale = self->_locale;
     timeZone = self->_timeZone;
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@y", v4, v5];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@y", _sameMonthTemplate, _dayTemplate];
     self->_monthDayIntervalFormat = _CreateUDateFormatter(locale, timeZone, v8);
 
     return self->_monthDayIntervalFormat;
@@ -891,8 +891,8 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   monthYearDateFormatter = self->_monthYearDateFormatter;
   if (!monthYearDateFormatter)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ y", v4];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ y", _sameMonthTemplate];
     v6 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:v5 options:0 locale:self->_locale];
     v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [(NSDateFormatter *)v7 setTimeStyle:0];
@@ -915,8 +915,8 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   monthDateFormatter = self->_monthDateFormatter;
   if (!monthDateFormatter)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:v4 options:0 locale:self->_locale];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    v5 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:_sameMonthTemplate options:0 locale:self->_locale];
     v6 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [(NSDateFormatter *)v6 setTimeStyle:0];
     [(NSDateFormatter *)v6 setDateFormat:v5];
@@ -983,10 +983,10 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   sameDayNoYearDateFormatter = self->_sameDayNoYearDateFormatter;
   if (!sameDayNoYearDateFormatter)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [(PLDateRangeFormatter *)self _dayTemplate];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    _dayTemplate = [(PLDateRangeFormatter *)self _dayTemplate];
     v6 = MEMORY[0x1E696AB78];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v4, v5];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", _sameMonthTemplate, _dayTemplate];
     v8 = [v6 dateFormatFromTemplate:v7 options:0 locale:self->_locale];
 
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -1010,10 +1010,10 @@ uint64_t __59__PLDateRangeFormatter__stringFromDate_toDate_currentDate___block_i
   sameDayDateFormatter = self->_sameDayDateFormatter;
   if (!sameDayDateFormatter)
   {
-    v4 = [(PLDateRangeFormatter *)self _sameMonthTemplate];
-    v5 = [(PLDateRangeFormatter *)self _dayTemplate];
+    _sameMonthTemplate = [(PLDateRangeFormatter *)self _sameMonthTemplate];
+    _dayTemplate = [(PLDateRangeFormatter *)self _dayTemplate];
     v6 = MEMORY[0x1E696AB78];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@y", v4, v5];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@y", _sameMonthTemplate, _dayTemplate];
     v8 = [v6 dateFormatFromTemplate:v7 options:0 locale:self->_locale];
 
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -1271,28 +1271,28 @@ LABEL_24:
   }
 }
 
-- (void)_significantTimeChange:(id)a3
+- (void)_significantTimeChange:(id)change
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PLDateRangeFormatterChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PLDateRangeFormatterChangedNotification" object:self];
 }
 
-- (void)_systemTimeZoneDidChange:(id)a3
+- (void)_systemTimeZoneDidChange:(id)change
 {
   os_unfair_lock_lock(&self->_lock);
   [(PLDateRangeFormatter *)self _resetFormatters];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PLDateRangeFormatterChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PLDateRangeFormatterChangedNotification" object:self];
 }
 
-- (void)_currentLocaleDidChange:(id)a3
+- (void)_currentLocaleDidChange:(id)change
 {
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  [(PLDateRangeFormatter *)self setLocale:v4];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [(PLDateRangeFormatter *)self setLocale:currentLocale];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"PLDateRangeFormatterChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PLDateRangeFormatterChangedNotification" object:self];
 }
 
 - (void)dealloc
@@ -1303,7 +1303,7 @@ LABEL_24:
   [(PLDateRangeFormatter *)&v3 dealloc];
 }
 
-- (PLDateRangeFormatter)initWithPreset:(int64_t)a3
+- (PLDateRangeFormatter)initWithPreset:(int64_t)preset
 {
   v9.receiver = self;
   v9.super_class = PLDateRangeFormatter;
@@ -1312,10 +1312,10 @@ LABEL_24:
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    v4->_preset = a3;
-    v6 = [MEMORY[0x1E695DF58] currentLocale];
+    v4->_preset = preset;
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     locale = v5->_locale;
-    v5->_locale = v6;
+    v5->_locale = currentLocale;
 
     *&v5->_allowUseTime = 257;
     [(PLDateRangeFormatter *)v5 _handlePresetDidChange];
@@ -1325,13 +1325,13 @@ LABEL_24:
   return v5;
 }
 
-+ (id)autoupdatingFormatterWithPreset:(int64_t)a3
++ (id)autoupdatingFormatterWithPreset:(int64_t)preset
 {
-  v3 = [[a1 alloc] initWithPreset:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:v3 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
-  [v4 addObserver:v3 selector:sel__systemTimeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
-  [v4 addObserver:v3 selector:sel__significantTimeChange_ name:@"UIApplicationSignificantTimeChangeNotification" object:0];
+  v3 = [[self alloc] initWithPreset:preset];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v3 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+  [defaultCenter addObserver:v3 selector:sel__systemTimeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
+  [defaultCenter addObserver:v3 selector:sel__significantTimeChange_ name:@"UIApplicationSignificantTimeChangeNotification" object:0];
 
   return v3;
 }

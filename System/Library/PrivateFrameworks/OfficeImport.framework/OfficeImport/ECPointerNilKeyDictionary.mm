@@ -1,19 +1,19 @@
 @interface ECPointerNilKeyDictionary
-- (id)objectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forUncopiedKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forUncopiedKey:(id)key;
 @end
 
 @implementation ECPointerNilKeyDictionary
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v8.receiver = self;
     v8.super_class = ECPointerNilKeyDictionary;
-    v5 = [(OITSUNoCopyDictionary *)&v8 objectForKey:v4];
+    v5 = [(OITSUNoCopyDictionary *)&v8 objectForKey:keyCopy];
   }
 
   else
@@ -26,37 +26,37 @@
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  if (keyCopy)
   {
     v9.receiver = self;
     v9.super_class = ECPointerNilKeyDictionary;
-    [(OITSUNoCopyDictionary *)&v9 setObject:v7 forKey:v8];
+    [(OITSUNoCopyDictionary *)&v9 setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->mNilKeyObject, a3);
+    objc_storeStrong(&self->mNilKeyObject, object);
   }
 }
 
-- (void)setObject:(id)a3 forUncopiedKey:(id)a4
+- (void)setObject:(id)object forUncopiedKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  if (keyCopy)
   {
     v9.receiver = self;
     v9.super_class = ECPointerNilKeyDictionary;
-    [(OITSUNoCopyDictionary *)&v9 setObject:v7 forUncopiedKey:v8];
+    [(OITSUNoCopyDictionary *)&v9 setObject:objectCopy forUncopiedKey:keyCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->mNilKeyObject, a3);
+    objc_storeStrong(&self->mNilKeyObject, object);
   }
 }
 

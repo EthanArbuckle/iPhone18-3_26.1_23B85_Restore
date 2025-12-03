@@ -1,29 +1,29 @@
 @interface TVRUIUpNextActivityItem
-- (TVRUIUpNextActivityItem)initWithUpNextInfo:(id)a3 upNextProvider:(id)a4 shareShow:(BOOL)a5;
+- (TVRUIUpNextActivityItem)initWithUpNextInfo:(id)info upNextProvider:(id)provider shareShow:(BOOL)show;
 - (id)_shareURL;
 - (id)_subtitle;
 - (id)_title;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation TVRUIUpNextActivityItem
 
-- (TVRUIUpNextActivityItem)initWithUpNextInfo:(id)a3 upNextProvider:(id)a4 shareShow:(BOOL)a5
+- (TVRUIUpNextActivityItem)initWithUpNextInfo:(id)info upNextProvider:(id)provider shareShow:(BOOL)show
 {
-  v9 = a3;
-  v10 = a4;
+  infoCopy = info;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = TVRUIUpNextActivityItem;
   v11 = [(TVRUIUpNextActivityItem *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_upNextInfo, a3);
-    objc_storeStrong(&v12->_upNextProvider, a4);
-    v12->_shareShow = a5;
-    v13 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v13 setHTTPMaximumConnectionsPerHost:1];
-    v14 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v13];
+    objc_storeStrong(&v11->_upNextInfo, info);
+    objc_storeStrong(&v12->_upNextProvider, provider);
+    v12->_shareShow = show;
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:1];
+    v14 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     urlSession = v12->_urlSession;
     v12->_urlSession = v14;
   }
@@ -31,19 +31,19 @@
   return v12;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_alloc_init(MEMORY[0x277CD46C8]);
-  v6 = [(TVRUIUpNextActivityItem *)self _shareURL];
-  [v5 setURL:v6];
+  _shareURL = [(TVRUIUpNextActivityItem *)self _shareURL];
+  [v5 setURL:_shareURL];
 
   v7 = objc_alloc_init(MEMORY[0x277CD4698]);
-  v8 = [(TVRUIUpNextActivityItem *)self _title];
-  [v7 setTitle:v8];
+  _title = [(TVRUIUpNextActivityItem *)self _title];
+  [v7 setTitle:_title];
 
-  v9 = [(TVRUIUpNextActivityItem *)self _subtitle];
-  [v7 setSubtitle:v9];
+  _subtitle = [(TVRUIUpNextActivityItem *)self _subtitle];
+  [v7 setSubtitle:_subtitle];
 
   if (-[TVRUIUpNextActivityItem shareShow](self, "shareShow") && (-[TVRUIUpNextActivityItem upNextInfo](self, "upNextInfo"), v10 = objc_claimAutoreleasedReturnValue(), [v10 mediaInfo], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "kind"), v11, v10, v12 == 1))
   {
@@ -62,8 +62,8 @@
     objc_copyWeak(&v30, &location);
     [(NSItemProvider *)v15 registerObjectOfClass:v16 visibility:0 loadHandler:v29];
     v18 = objc_alloc(MEMORY[0x277CD46B0]);
-    v19 = [(TVRUIUpNextActivityItem *)self imageItemProvider];
-    v20 = [v18 initWithItemProvider:v19 properties:0 placeholderImage:0];
+    imageItemProvider = [(TVRUIUpNextActivityItem *)self imageItemProvider];
+    v20 = [v18 initWithItemProvider:imageItemProvider properties:0 placeholderImage:0];
 
     [v7 setArtwork:v20];
   }
@@ -183,17 +183,17 @@ uint64_t __62__TVRUIUpNextActivityItem_activityViewControllerLinkMetadata___bloc
 
 - (id)_shareURL
 {
-  v3 = [(TVRUIUpNextActivityItem *)self shareShow];
-  v4 = [(TVRUIUpNextActivityItem *)self upNextInfo];
-  v5 = v4;
-  if (v3)
+  shareShow = [(TVRUIUpNextActivityItem *)self shareShow];
+  upNextInfo = [(TVRUIUpNextActivityItem *)self upNextInfo];
+  v5 = upNextInfo;
+  if (shareShow)
   {
-    [v4 shareShowURL];
+    [upNextInfo shareShowURL];
   }
 
   else
   {
-    [v4 shareURL];
+    [upNextInfo shareURL];
   }
   v6 = ;
 
@@ -202,40 +202,40 @@ uint64_t __62__TVRUIUpNextActivityItem_activityViewControllerLinkMetadata___bloc
 
 - (id)_title
 {
-  v2 = [(TVRUIUpNextActivityItem *)self upNextInfo];
-  v3 = [v2 mediaInfo];
-  v4 = [v3 title];
+  upNextInfo = [(TVRUIUpNextActivityItem *)self upNextInfo];
+  mediaInfo = [upNextInfo mediaInfo];
+  title = [mediaInfo title];
 
-  return v4;
+  return title;
 }
 
 - (id)_subtitle
 {
-  v3 = [(TVRUIUpNextActivityItem *)self upNextInfo];
-  v4 = [v3 mediaInfo];
-  if ([v4 kind] == 1)
+  upNextInfo = [(TVRUIUpNextActivityItem *)self upNextInfo];
+  mediaInfo = [upNextInfo mediaInfo];
+  if ([mediaInfo kind] == 1)
   {
-    v5 = [(TVRUIUpNextActivityItem *)self shareShow];
+    shareShow = [(TVRUIUpNextActivityItem *)self shareShow];
 
-    if (v5)
+    if (shareShow)
     {
       v6 = 0;
       goto LABEL_7;
     }
 
     v16 = MEMORY[0x277CCACA8];
-    v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = [v3 localizedStringForKey:@"TVRUIEpisodeShareSubtitle" value:&stru_287E6AEF8 table:@"Localizable"];
-    v17 = [(TVRUIUpNextActivityItem *)self upNextInfo];
-    v15 = [v17 mediaInfo];
-    v7 = [v15 title];
-    v8 = [(TVRUIUpNextActivityItem *)self upNextInfo];
-    v9 = [v8 mediaInfo];
-    v10 = [v9 seasonNumber];
-    v11 = [(TVRUIUpNextActivityItem *)self upNextInfo];
-    v12 = [v11 mediaInfo];
-    v13 = [v12 episodeNumber];
-    v6 = [v16 localizedStringWithFormat:v4, v7, v10, v13];
+    upNextInfo = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    mediaInfo = [upNextInfo localizedStringForKey:@"TVRUIEpisodeShareSubtitle" value:&stru_287E6AEF8 table:@"Localizable"];
+    upNextInfo2 = [(TVRUIUpNextActivityItem *)self upNextInfo];
+    mediaInfo2 = [upNextInfo2 mediaInfo];
+    title = [mediaInfo2 title];
+    upNextInfo3 = [(TVRUIUpNextActivityItem *)self upNextInfo];
+    mediaInfo3 = [upNextInfo3 mediaInfo];
+    seasonNumber = [mediaInfo3 seasonNumber];
+    upNextInfo4 = [(TVRUIUpNextActivityItem *)self upNextInfo];
+    mediaInfo4 = [upNextInfo4 mediaInfo];
+    episodeNumber = [mediaInfo4 episodeNumber];
+    v6 = [v16 localizedStringWithFormat:mediaInfo, title, seasonNumber, episodeNumber];
   }
 
   else

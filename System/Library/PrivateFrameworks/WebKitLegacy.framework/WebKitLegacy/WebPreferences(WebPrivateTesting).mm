@@ -6,10 +6,10 @@
 
 + (uint64_t)_clearNetworkLoaderSession:()WebPrivateTesting
 {
-  *a1 = &unk_1F472E678;
-  _Block_release(a1[1]);
+  *self = &unk_1F472E678;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 @end

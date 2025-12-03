@@ -1,14 +1,14 @@
 @interface ClimateZoneHeatingCoolingVentingPositionView
-- (void)fanService:(id)a3 didUpdateFanLevel:(unsigned __int8)a4;
-- (void)fanService:(void *)a1 didUpdateOn:;
-- (void)heatingCoolingService:(id)a3 didUpdateHeatingCoolingLevel:(int)a4;
-- (void)temperatureService:(id)a3 didUpdateCurrentTemperature:(id)a4;
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4;
+- (void)fanService:(id)service didUpdateFanLevel:(unsigned __int8)level;
+- (void)fanService:(void *)service didUpdateOn:;
+- (void)heatingCoolingService:(id)service didUpdateHeatingCoolingLevel:(int)level;
+- (void)temperatureService:(id)service didUpdateCurrentTemperature:(id)temperature;
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature;
 @end
 
 @implementation ClimateZoneHeatingCoolingVentingPositionView
 
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature
 {
   v5 = sub_1000040E8(&unk_100114790);
   v6 = *(v5 - 8);
@@ -16,18 +16,18 @@
   v8 = &v10 - v7;
   sub_10000827C(0, &qword_100114AB0);
   static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10009114C();
 
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)temperatureService:(id)a3 didUpdateCurrentTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateCurrentTemperature:(id)temperature
 {
   v6 = sub_1000040E8(&unk_1001153F0);
   __chkstk_darwin(v6 - 8);
   v8 = &v12 - v7;
-  if (a4)
+  if (temperature)
   {
     sub_10000827C(0, &qword_100114AB0);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -41,27 +41,27 @@
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_10009114C();
 
   sub_10000D894(v8);
 }
 
-- (void)fanService:(void *)a1 didUpdateOn:
+- (void)fanService:(void *)service didUpdateOn:
 {
-  v1 = a1;
+  serviceCopy = service;
   sub_10009114C();
 }
 
-- (void)heatingCoolingService:(id)a3 didUpdateHeatingCoolingLevel:(int)a4
+- (void)heatingCoolingService:(id)service didUpdateHeatingCoolingLevel:(int)level
 {
-  v4 = self;
+  selfCopy = self;
   sub_10009114C();
 }
 
-- (void)fanService:(id)a3 didUpdateFanLevel:(unsigned __int8)a4
+- (void)fanService:(id)service didUpdateFanLevel:(unsigned __int8)level
 {
-  v4 = self;
+  selfCopy = self;
   sub_10009114C();
 }
 

@@ -1,51 +1,51 @@
 @interface HUNearbyAccessoriesItemManager
-+ (id)itemProvidersForPrimaryAccessory:(id)a3 inHome:(id)a4;
-- (BOOL)_isAPreferredServiceType:(id)a3;
-- (BOOL)_isServiceItemAssociatedWithPrimaryAccessory:(id)a3;
++ (id)itemProvidersForPrimaryAccessory:(id)accessory inHome:(id)home;
+- (BOOL)_isAPreferredServiceType:(id)type;
+- (BOOL)_isServiceItemAssociatedWithPrimaryAccessory:(id)accessory;
 - (BOOL)hasCustomNearbyAccessories;
 - (BOOL)hasEmptyNearbyAccessories;
-- (BOOL)shouldHideItem:(id)a3;
-- (HUNearbyAccessoriesItemManager)initWithDelegate:(id)a3 sourceProfileItem:(id)a4 supportsQuickControls:(BOOL)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_comparatorForSectionIdentifier:(id)a3;
-- (id)_itemsToHideInSet:(id)a3;
+- (BOOL)shouldHideItem:(id)item;
+- (HUNearbyAccessoriesItemManager)initWithDelegate:(id)delegate sourceProfileItem:(id)item supportsQuickControls:(BOOL)controls;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_comparatorForSectionIdentifier:(id)identifier;
+- (id)_itemsToHideInSet:(id)set;
 - (id)userFilteredIdentifiers;
 @end
 
 @implementation HUNearbyAccessoriesItemManager
 
-- (HUNearbyAccessoriesItemManager)initWithDelegate:(id)a3 sourceProfileItem:(id)a4 supportsQuickControls:(BOOL)a5
+- (HUNearbyAccessoriesItemManager)initWithDelegate:(id)delegate sourceProfileItem:(id)item supportsQuickControls:(BOOL)controls
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 copy];
+  itemCopy = item;
+  delegateCopy = delegate;
+  v10 = [itemCopy copy];
   v15.receiver = self;
   v15.super_class = HUNearbyAccessoriesItemManager;
-  v11 = [(HFItemManager *)&v15 initWithDelegate:v9 sourceItem:v10];
+  v11 = [(HFItemManager *)&v15 initWithDelegate:delegateCopy sourceItem:v10];
 
   if (v11)
   {
-    v12 = [v8 accessory];
+    accessory = [itemCopy accessory];
     primaryAccessory = v11->_primaryAccessory;
-    v11->_primaryAccessory = v12;
+    v11->_primaryAccessory = accessory;
 
-    v11->_supportsQuickControls = a5;
+    v11->_supportsQuickControls = controls;
   }
 
   return v11;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_opt_class();
-  v6 = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
-  v7 = [v5 itemProvidersForPrimaryAccessory:v6 inHome:v4];
+  primaryAccessory = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
+  v7 = [v5 itemProvidersForPrimaryAccessory:primaryAccessory inHome:homeCopy];
 
   return v7;
 }
 
-- (id)_comparatorForSectionIdentifier:(id)a3
+- (id)_comparatorForSectionIdentifier:(id)identifier
 {
   v4 = objc_opt_class();
   v5 = objc_opt_class();
@@ -278,25 +278,25 @@ LABEL_51:
   return v12;
 }
 
-- (BOOL)_isServiceItemAssociatedWithPrimaryAccessory:(id)a3
+- (BOOL)_isServiceItemAssociatedWithPrimaryAccessory:(id)accessory
 {
-  v4 = [a3 accessories];
-  v5 = [v4 anyObject];
-  v6 = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
-  v7 = [v5 isEqual:v6];
+  accessories = [accessory accessories];
+  anyObject = [accessories anyObject];
+  primaryAccessory = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
+  v7 = [anyObject isEqual:primaryAccessory];
 
   return v7;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
-  v4 = a3;
-  v5 = [(HUNearbyAccessoriesItemManager *)self userFilteredIdentifiers];
-  [(HUNearbyAccessoriesItemManager *)self setCustomNearbyAccessories:v5];
+  setCopy = set;
+  userFilteredIdentifiers = [(HUNearbyAccessoriesItemManager *)self userFilteredIdentifiers];
+  [(HUNearbyAccessoriesItemManager *)self setCustomNearbyAccessories:userFilteredIdentifiers];
 
   v11.receiver = self;
   v11.super_class = HUNearbyAccessoriesItemManager;
-  v6 = [(HFItemManager *)&v11 _itemsToHideInSet:v4];
+  v6 = [(HFItemManager *)&v11 _itemsToHideInSet:setCopy];
   v7 = [v6 mutableCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
@@ -304,7 +304,7 @@ LABEL_51:
   v10[2] = __52__HUNearbyAccessoriesItemManager__itemsToHideInSet___block_invoke;
   v10[3] = &unk_277DB85D8;
   v10[4] = self;
-  v8 = [v4 na_filter:v10];
+  v8 = [setCopy na_filter:v10];
 
   [v7 unionSet:v8];
 
@@ -313,28 +313,28 @@ LABEL_51:
 
 - (BOOL)hasCustomNearbyAccessories
 {
-  v2 = [(HUNearbyAccessoriesItemManager *)self customNearbyAccessories];
-  v3 = [v2 count] != 0;
+  customNearbyAccessories = [(HUNearbyAccessoriesItemManager *)self customNearbyAccessories];
+  v3 = [customNearbyAccessories count] != 0;
 
   return v3;
 }
 
 - (BOOL)hasEmptyNearbyAccessories
 {
-  v2 = [(HUNearbyAccessoriesItemManager *)self customNearbyAccessories];
-  v3 = [v2 objectForKeyedSubscript:@"EmptySetIdentifier"];
+  customNearbyAccessories = [(HUNearbyAccessoriesItemManager *)self customNearbyAccessories];
+  v3 = [customNearbyAccessories objectForKeyedSubscript:@"EmptySetIdentifier"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)shouldHideItem:(id)a3
+- (BOOL)shouldHideItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (![(HUNearbyAccessoriesItemManager *)self hasCustomNearbyAccessories])
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -345,19 +345,19 @@ LABEL_51:
       v7 = 0;
     }
 
-    v8 = v7;
+    uniqueIdentifier3 = v7;
 
-    if (v8)
+    if (uniqueIdentifier3)
     {
-      v9 = [v8 accessories];
-      v10 = [v9 anyObject];
-      v11 = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
-      v12 = [v10 isEqual:v11];
+      accessories = [uniqueIdentifier3 accessories];
+      anyObject = [accessories anyObject];
+      primaryAccessory = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
+      v12 = [anyObject isEqual:primaryAccessory];
 
       if (v12)
       {
-        v13 = [v8 service];
-        LODWORD(v5) = [v13 hf_isDisplayableSensor] ^ 1;
+        service = [uniqueIdentifier3 service];
+        LODWORD(primaryAccessory3) = [service hf_isDisplayableSensor] ^ 1;
 LABEL_33:
 
 LABEL_34:
@@ -377,7 +377,7 @@ LABEL_34:
       v15 = 0;
     }
 
-    v13 = v15;
+    service = v15;
 
     objc_opt_class();
     v16 = v14;
@@ -393,49 +393,49 @@ LABEL_34:
 
     v18 = v17;
 
-    v19 = [v13 accessory];
-    v20 = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
-    v21 = [v19 isEqual:v20];
+    accessory = [service accessory];
+    primaryAccessory2 = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
+    v21 = [accessory isEqual:primaryAccessory2];
 
     if (v21)
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(primaryAccessory3) = 1;
 LABEL_32:
 
       goto LABEL_33;
     }
 
-    if (v13)
+    if (service)
     {
-      v28 = [v13 accessory];
-      v29 = [v28 hf_primaryService];
+      accessory2 = [service accessory];
+      hf_primaryService = [accessory2 hf_primaryService];
     }
 
-    else if (v8)
+    else if (uniqueIdentifier3)
     {
-      v29 = [v8 service];
+      hf_primaryService = [uniqueIdentifier3 service];
     }
 
     else
     {
-      v29 = 0;
+      hf_primaryService = 0;
     }
 
-    v30 = [v29 serviceType];
-    v31 = [v30 isEqual:*MEMORY[0x277CD0EC0]];
+    serviceType = [hf_primaryService serviceType];
+    v31 = [serviceType isEqual:*MEMORY[0x277CD0EC0]];
 
     if ((v31 & 1) == 0)
     {
-      v32 = [v29 serviceType];
-      v33 = [v32 isEqualToString:*MEMORY[0x277CD0ED8]];
+      serviceType2 = [hf_primaryService serviceType];
+      v33 = [serviceType2 isEqualToString:*MEMORY[0x277CD0ED8]];
 
       if (v33)
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(primaryAccessory3) = 0;
         goto LABEL_31;
       }
 
-      if (([v29 hf_isInGroup] & 1) == 0)
+      if (([hf_primaryService hf_isInGroup] & 1) == 0)
       {
         v35 = MEMORY[0x277D145C8];
         v36 = [(HFItemManager *)self childItemsForItem:v16];
@@ -445,8 +445,8 @@ LABEL_32:
         {
           if (v18)
           {
-            v38 = [v18 latestResults];
-            v39 = [v38 objectForKeyedSubscript:*MEMORY[0x277D14090]];
+            latestResults = [v18 latestResults];
+            uniqueIdentifier = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14090]];
           }
 
           else
@@ -464,11 +464,11 @@ LABEL_32:
 
             v42 = v41;
 
-            v43 = [v42 homeKitObject];
+            homeKitObject = [v42 homeKitObject];
 
-            if ([v43 conformsToProtocol:&unk_282547DB8])
+            if ([homeKitObject conformsToProtocol:&unk_282547DB8])
             {
-              v44 = v43;
+              v44 = homeKitObject;
             }
 
             else
@@ -478,27 +478,27 @@ LABEL_32:
 
             v45 = v44;
 
-            v38 = [v45 hf_parentRoom];
+            latestResults = [v45 hf_parentRoom];
 
-            v39 = [v38 uniqueIdentifier];
+            uniqueIdentifier = [latestResults uniqueIdentifier];
           }
 
-          v46 = v39;
+          v46 = uniqueIdentifier;
 
           if (v46)
           {
-            v5 = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
-            v47 = [v5 hf_parentRoom];
-            v48 = [v47 uniqueIdentifier];
-            v49 = [v48 UUIDString];
+            primaryAccessory3 = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
+            hf_parentRoom = [primaryAccessory3 hf_parentRoom];
+            uniqueIdentifier2 = [hf_parentRoom uniqueIdentifier];
+            uUIDString = [uniqueIdentifier2 UUIDString];
 
-            v50 = [v46 UUIDString];
-            LODWORD(v5) = [v50 isEqual:v49] ^ 1;
+            uUIDString2 = [v46 UUIDString];
+            LODWORD(primaryAccessory3) = [uUIDString2 isEqual:uUIDString] ^ 1;
           }
 
           else
           {
-            LOBYTE(v5) = 1;
+            LOBYTE(primaryAccessory3) = 1;
           }
 
           goto LABEL_31;
@@ -506,7 +506,7 @@ LABEL_32:
       }
     }
 
-    LOBYTE(v5) = 1;
+    LOBYTE(primaryAccessory3) = 1;
 LABEL_31:
 
     goto LABEL_32;
@@ -514,7 +514,7 @@ LABEL_31:
 
   if (![(HUNearbyAccessoriesItemManager *)self hasEmptyNearbyAccessories])
   {
-    v22 = v4;
+    v22 = itemCopy;
     if ([v22 conformsToProtocol:&unk_2824C0788])
     {
       v23 = v22;
@@ -527,35 +527,35 @@ LABEL_31:
 
     v24 = v23;
 
-    v25 = [v24 homeKitObject];
+    homeKitObject2 = [v24 homeKitObject];
 
-    v8 = [v25 uniqueIdentifier];
+    uniqueIdentifier3 = [homeKitObject2 uniqueIdentifier];
 
-    v5 = [(HUNearbyAccessoriesItemManager *)self customNearbyAccessories];
-    v26 = [v8 UUIDString];
-    v27 = [v5 objectForKeyedSubscript:v26];
+    primaryAccessory3 = [(HUNearbyAccessoriesItemManager *)self customNearbyAccessories];
+    uUIDString3 = [uniqueIdentifier3 UUIDString];
+    v27 = [primaryAccessory3 objectForKeyedSubscript:uUIDString3];
 
-    LOBYTE(v5) = v27 == 0;
+    LOBYTE(primaryAccessory3) = v27 == 0;
     goto LABEL_34;
   }
 
-  LOBYTE(v5) = 1;
+  LOBYTE(primaryAccessory3) = 1;
 LABEL_35:
 
-  return v5;
+  return primaryAccessory3;
 }
 
-- (BOOL)_isAPreferredServiceType:(id)a3
+- (BOOL)_isAPreferredServiceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CD0EA0]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0E30]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0EB0]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0F08]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0ED8]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0E58]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0EA8]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0ED0]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0F58]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0F60]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0E40]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0F40]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CD0EF8]))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277CD0EA0]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0E30]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0EB0]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0F08]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0ED8]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0E58]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0EA8]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0ED0]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0F58]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0F60]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0E40]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0F40]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CD0EF8]))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x277CD0F00]];
+    v4 = [typeCopy isEqualToString:*MEMORY[0x277CD0F00]];
   }
 
   return v4;
@@ -564,9 +564,9 @@ LABEL_35:
 - (id)userFilteredIdentifiers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
-  v3 = [v2 applicationData];
-  v4 = [v3 objectForKeyedSubscript:@"HUNearbyAccessoryCustomUUIDStrings"];
+  primaryAccessory = [(HUNearbyAccessoriesItemManager *)self primaryAccessory];
+  applicationData = [primaryAccessory applicationData];
+  v4 = [applicationData objectForKeyedSubscript:@"HUNearbyAccessoryCustomUUIDStrings"];
 
   if (v4)
   {
@@ -613,28 +613,28 @@ LABEL_35:
   return v7;
 }
 
-+ (id)itemProvidersForPrimaryAccessory:(id)a3 inHome:(id)a4
++ (id)itemProvidersForPrimaryAccessory:(id)accessory inHome:(id)home
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  accessoryCopy = accessory;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__HUNearbyAccessoriesItemManager_itemProvidersForPrimaryAccessory_inHome___block_invoke_2;
   aBlock[3] = &unk_277DC39D8;
   v22 = &__block_literal_global_261;
-  v6 = a4;
+  homeCopy = home;
   v7 = _Block_copy(aBlock);
-  v8 = [objc_alloc(MEMORY[0x277D14AD0]) initWithHome:v6 serviceTypes:0];
+  v8 = [objc_alloc(MEMORY[0x277D14AD0]) initWithHome:homeCopy serviceTypes:0];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __74__HUNearbyAccessoriesItemManager_itemProvidersForPrimaryAccessory_inHome___block_invoke_3;
   v18[3] = &unk_277DC3A00;
-  v19 = v5;
+  v19 = accessoryCopy;
   v20 = v7;
   v9 = v7;
-  v10 = v5;
+  v10 = accessoryCopy;
   [v8 setFilter:v18];
-  v11 = [objc_alloc(MEMORY[0x277D142F0]) initWithHome:v6];
+  v11 = [objc_alloc(MEMORY[0x277D142F0]) initWithHome:homeCopy];
   [v11 setIncludesMatterOnlyAccessoryItems:0];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -642,8 +642,8 @@ LABEL_35:
   v16[3] = &unk_277DC33F8;
   v17 = &__block_literal_global_261;
   [v11 setFilter:v16];
-  v12 = [MEMORY[0x277D147C0] itemProviderInHome:v6 inRoom:0];
-  v13 = [objc_alloc(MEMORY[0x277D14AB8]) initWithHome:v6];
+  v12 = [MEMORY[0x277D147C0] itemProviderInHome:homeCopy inRoom:0];
+  v13 = [objc_alloc(MEMORY[0x277D14AB8]) initWithHome:homeCopy];
 
   v23[0] = v11;
   v23[1] = v13;

@@ -1,17 +1,17 @@
 @interface CFXPlayButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)playButtonTapped:(id)a3;
+- (void)playButtonTapped:(id)tapped;
 @end
 
 @implementation CFXPlayButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CFXPlayButtonView" hasInstanceMethod:@"playButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CFXPlayButtonView" hasInstanceMethod:@"playButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CFXPlayButtonView" hasInstanceMethod:@"playButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CFXPlayButtonView" hasInstanceMethod:@"playButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -41,14 +41,14 @@
   return *MEMORY[0x29EDC7F70] | [(CFXPlayButtonViewAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)playButtonTapped:(id)a3
+- (void)playButtonTapped:(id)tapped
 {
   v6.receiver = self;
   v6.super_class = CFXPlayButtonViewAccessibility;
-  [(CFXPlayButtonViewAccessibility *)&v6 playButtonTapped:a3];
+  [(CFXPlayButtonViewAccessibility *)&v6 playButtonTapped:tapped];
   v4 = *MEMORY[0x29EDC7ED8];
-  v5 = [(CFXPlayButtonViewAccessibility *)self accessibilityContainer];
-  UIAccessibilityPostNotification(v4, v5);
+  accessibilityContainer = [(CFXPlayButtonViewAccessibility *)self accessibilityContainer];
+  UIAccessibilityPostNotification(v4, accessibilityContainer);
 }
 
 @end

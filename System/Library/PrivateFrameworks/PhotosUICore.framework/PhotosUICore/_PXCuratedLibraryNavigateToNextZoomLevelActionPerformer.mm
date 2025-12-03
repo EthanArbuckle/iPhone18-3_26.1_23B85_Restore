@@ -1,5 +1,5 @@
 @interface _PXCuratedLibraryNavigateToNextZoomLevelActionPerformer
-- (_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer)initWithActionType:(id)a3 viewModel:(id)a4 layout:(id)a5 hitSpriteReference:(id)a6;
+- (_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer)initWithActionType:(id)type viewModel:(id)model layout:(id)layout hitSpriteReference:(id)reference;
 - (void)performUserInteractionTask;
 @end
 
@@ -7,40 +7,40 @@
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v5 = [v4 zoomLevelInDirection:1 fromZoomLevel:{-[PXCuratedLibraryActionPerformer actionZoomLevel](self, "actionZoomLevel")}];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  v5 = [viewModel zoomLevelInDirection:1 fromZoomLevel:{-[PXCuratedLibraryActionPerformer actionZoomLevel](self, "actionZoomLevel")}];
 
   if (v5)
   {
-    v6 = [(_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer *)self layout];
-    v7 = [v6 rootLayout];
+    layout = [(_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer *)self layout];
+    rootLayout = [layout rootLayout];
 
-    if (v7)
+    if (rootLayout)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [v7 px_descriptionForAssertionMessage];
-        [v10 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:612 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.layout.rootLayout", v12, v13}];
+        px_descriptionForAssertionMessage = [rootLayout px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:612 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.layout.rootLayout", v12, px_descriptionForAssertionMessage}];
       }
     }
 
-    [v7 clearLastVisibleAreaAnchoringInformation];
-    v8 = [(_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer *)self hitSpriteReference];
-    [v7 setLastHitSpriteReference:v8];
+    [rootLayout clearLastVisibleAreaAnchoringInformation];
+    hitSpriteReference = [(_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer *)self hitSpriteReference];
+    [rootLayout setLastHitSpriteReference:hitSpriteReference];
 
-    v9 = [(PXCuratedLibraryActionPerformer *)self viewModel];
+    viewModel2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __85___PXCuratedLibraryNavigateToNextZoomLevelActionPerformer_performUserInteractionTask__block_invoke;
     v14[3] = &__block_descriptor_40_e43_v16__0___PXMutablePhotosLibraryViewModel__8l;
     v14[4] = v5;
-    [v9 performChanges:v14];
+    [viewModel2 performChanges:v14];
 
-    [v7 invalidateLastVisibleAreaAnchoringInformation];
+    [rootLayout invalidateLastVisibleAreaAnchoringInformation];
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
   }
 
@@ -51,18 +51,18 @@
   }
 }
 
-- (_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer)initWithActionType:(id)a3 viewModel:(id)a4 layout:(id)a5 hitSpriteReference:(id)a6
+- (_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer)initWithActionType:(id)type viewModel:(id)model layout:(id)layout hitSpriteReference:(id)reference
 {
-  v11 = a5;
-  v12 = a6;
+  layoutCopy = layout;
+  referenceCopy = reference;
   v16.receiver = self;
   v16.super_class = _PXCuratedLibraryNavigateToNextZoomLevelActionPerformer;
-  v13 = [(PXCuratedLibraryActionPerformer *)&v16 initWithActionType:a3 viewModel:a4];
+  v13 = [(PXCuratedLibraryActionPerformer *)&v16 initWithActionType:type viewModel:model];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_layout, a5);
-    objc_storeStrong(&v14->_hitSpriteReference, a6);
+    objc_storeStrong(&v13->_layout, layout);
+    objc_storeStrong(&v14->_hitSpriteReference, reference);
   }
 
   return v14;

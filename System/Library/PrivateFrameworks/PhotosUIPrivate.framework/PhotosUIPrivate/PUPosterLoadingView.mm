@@ -1,13 +1,13 @@
 @interface PUPosterLoadingView
-- (void)setIsVisible:(BOOL)a3;
+- (void)setIsVisible:(BOOL)visible;
 @end
 
 @implementation PUPosterLoadingView
 
-- (void)setIsVisible:(BOOL)a3
+- (void)setIsVisible:(BOOL)visible
 {
-  v4 = self;
-  sub_1B377D85C(a3);
+  selfCopy = self;
+  sub_1B377D85C(visible);
 }
 
 @end

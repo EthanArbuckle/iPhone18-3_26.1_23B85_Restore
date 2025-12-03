@@ -1,26 +1,26 @@
 @interface CACSpeechSystem
 + (BOOL)isSpeechSystemServerRunning;
 + (id)languagesSupportedByAssets;
-+ (id)rxContextDictionaryForLanguageModel:(id)a3;
++ (id)rxContextDictionaryForLanguageModel:(id)model;
 + (id)speechSystem;
-+ (id)valueFromRXContextKey:(id)a3 rxLanguageObject:(__RXLanguageObject *)a4;
++ (id)valueFromRXContextKey:(id)key rxLanguageObject:(__RXLanguageObject *)object;
 + (void)closeSpeechSystem;
 + (void)initialize;
-+ (void)recognizeString:(id)a3;
++ (void)recognizeString:(id)string;
 + (void)startPreventingDisplayDimming;
 + (void)stopPreventingDisplayDimming;
-- (BOOL)languageModelHasParameterOverlayLabel:(id)a3;
+- (BOOL)languageModelHasParameterOverlayLabel:(id)label;
 - (__CFLocale)currentLocaleRef;
-- (__RXLanguageObject)createRXLanguageObjectRefFromCACLanguageModel:(id)a3 ignoreBuiltInLMTable:(BOOL)a4;
+- (__RXLanguageObject)createRXLanguageObjectRefFromCACLanguageModel:(id)model ignoreBuiltInLMTable:(BOOL)table;
 - (__RXVocabulary)currentRXVocabularyRef;
-- (id)initLocaleIdentifer:(id)a3 microphoneIdentifier:(id)a4;
-- (id)resultLanguageModelFromRXLanguageObject:(__RXLanguageObject *)a3;
+- (id)initLocaleIdentifer:(id)identifer microphoneIdentifier:(id)identifier;
+- (id)resultLanguageModelFromRXLanguageObject:(__RXLanguageObject *)object;
 - (void)_close;
 - (void)rxRecognitionSystemReset;
-- (void)setAdditionalContextStrings:(id)a3;
-- (void)setLeadingContextString:(id)a3;
-- (void)setRxRecognitionSystemResetMode:(int)a3;
-- (void)setSecureFieldFocused:(BOOL)a3;
+- (void)setAdditionalContextStrings:(id)strings;
+- (void)setLeadingContextString:(id)string;
+- (void)setRxRecognitionSystemResetMode:(int)mode;
+- (void)setSecureFieldFocused:(BOOL)focused;
 @end
 
 @implementation CACSpeechSystem
@@ -40,46 +40,46 @@ uint64_t __29__CACSpeechSystem_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)rxContextDictionaryForLanguageModel:(id)a3
++ (id)rxContextDictionaryForLanguageModel:(id)model
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [v4 setObject:v3 forKey:@"LanguageModel"];
-  v5 = [v3 identifier];
+  modelCopy = model;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:modelCopy forKey:@"LanguageModel"];
+  identifier = [modelCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [v3 identifier];
-    [v4 setObject:v6 forKey:@"Identifier"];
+    identifier2 = [modelCopy identifier];
+    [dictionary setObject:identifier2 forKey:@"Identifier"];
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)valueFromRXContextKey:(id)a3 rxLanguageObject:(__RXLanguageObject *)a4
++ (id)valueFromRXContextKey:(id)key rxLanguageObject:(__RXLanguageObject *)object
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = RXObjectCopyProperty();
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   return v6;
 }
 
 + (id)speechSystem
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!sCACSpeechSystem)
   {
     v3 = [CACSpeechSystem alloc];
     v4 = +[CACPreferences sharedPreferences];
-    v5 = [v4 bestLocaleIdentifier];
-    v6 = [(CACSpeechSystem *)v3 initLocaleIdentifer:v5 microphoneIdentifier:0];
+    bestLocaleIdentifier = [v4 bestLocaleIdentifier];
+    v6 = [(CACSpeechSystem *)v3 initLocaleIdentifer:bestLocaleIdentifier microphoneIdentifier:0];
     v7 = sCACSpeechSystem;
     sCACSpeechSystem = v6;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = sCACSpeechSystem;
 
@@ -88,7 +88,7 @@ uint64_t __29__CACSpeechSystem_initialize__block_invoke()
 
 + (void)closeSpeechSystem
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   if (sCACSpeechSystem)
   {
@@ -139,11 +139,11 @@ void __46__CACSpeechSystem_isSpeechSystemServerRunning__block_invoke(uint64_t a1
   }
 }
 
-+ (void)recognizeString:(id)a3
++ (void)recognizeString:(id)string
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  stringCopy = string;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (sCACSpeechSystem)
   {
     v6 = sCACSpeechSystem;
@@ -153,12 +153,12 @@ void __46__CACSpeechSystem_isSpeechSystemServerRunning__block_invoke(uint64_t a1
     v9[2] = __35__CACSpeechSystem_recognizeString___block_invoke;
     v9[3] = &unk_279CEB4C0;
     v10 = v6;
-    v11 = v4;
+    v11 = stringCopy;
     v8 = v6;
     dispatch_async(v7, v9);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __35__CACSpeechSystem_recognizeString___block_invoke(uint64_t a1)
@@ -172,7 +172,7 @@ uint64_t __35__CACSpeechSystem_recognizeString___block_invoke(uint64_t a1)
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26B354000, a2, OS_LOG_TYPE_ERROR, "Error in idle timer assertion: %@", &v2, 0xCu);
 }
 
@@ -186,7 +186,7 @@ uint64_t __48__CACSpeechSystem_startPreventingDisplayDimming__block_invoke(uint6
 
 + (void)stopPreventingDisplayDimming
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   if (sActiveIdleTimerAssertion)
   {
@@ -200,33 +200,33 @@ uint64_t __48__CACSpeechSystem_startPreventingDisplayDimming__block_invoke(uint6
 
 + (id)languagesSupportedByAssets
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = RXObjectCopyProperty();
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)initLocaleIdentifer:(id)a3 microphoneIdentifier:(id)a4
+- (id)initLocaleIdentifer:(id)identifer microphoneIdentifier:(id)identifier
 {
-  v5 = a3;
+  identiferCopy = identifer;
   v16.receiver = self;
   v16.super_class = CACSpeechSystem;
   v6 = [(CACSpeechSystem *)&v16 init];
   if (v6)
   {
     v7 = +[CACPreferences sharedPreferences];
-    v8 = [v7 bestLocaleIdentifier];
+    bestLocaleIdentifier = [v7 bestLocaleIdentifier];
     recognitionLocaleIdentifier = v6->_recognitionLocaleIdentifier;
-    v6->_recognitionLocaleIdentifier = v8;
+    v6->_recognitionLocaleIdentifier = bestLocaleIdentifier;
 
     v10 = sRXAPIDispatchQueue;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __60__CACSpeechSystem_initLocaleIdentifer_microphoneIdentifier___block_invoke;
     v13[3] = &unk_279CEB4C0;
-    v14 = v5;
+    v14 = identiferCopy;
     v6 = v6;
     v15 = v6;
     dispatch_sync(v10, v13);
@@ -358,8 +358,8 @@ void __60__CACSpeechSystem_initLocaleIdentifer_microphoneIdentifier___block_invo
   result = self->_currentLocaleRef;
   if (!result)
   {
-    v4 = [(CACSpeechSystem *)self recognitionLocaleIdentifier];
-    self->_currentLocaleRef = CFLocaleCreate(0, v4);
+    recognitionLocaleIdentifier = [(CACSpeechSystem *)self recognitionLocaleIdentifier];
+    self->_currentLocaleRef = CFLocaleCreate(0, recognitionLocaleIdentifier);
 
     return self->_currentLocaleRef;
   }
@@ -380,15 +380,15 @@ void __60__CACSpeechSystem_initLocaleIdentifer_microphoneIdentifier___block_invo
   return result;
 }
 
-- (BOOL)languageModelHasParameterOverlayLabel:(id)a3
+- (BOOL)languageModelHasParameterOverlayLabel:(id)label
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (![v5 isEqualToString:*MEMORY[0x277D655F8]])
+  labelCopy = label;
+  identifier = [labelCopy identifier];
+  if (![identifier isEqualToString:*MEMORY[0x277D655F8]])
   {
-    v6 = [v4 identifier];
-    v7 = [v6 isEqualToString:*MEMORY[0x277D65600]];
+    identifier2 = [labelCopy identifier];
+    v7 = [identifier2 isEqualToString:*MEMORY[0x277D65600]];
 
     if (v7)
     {
@@ -399,8 +399,8 @@ void __60__CACSpeechSystem_initLocaleIdentifer_microphoneIdentifier___block_invo
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v4 children];
-    v10 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    identifier = [labelCopy children];
+    v10 = [identifier countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (!v10)
     {
 LABEL_14:
@@ -417,7 +417,7 @@ LABEL_8:
     {
       if (*v15 != v12)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(identifier);
       }
 
       if ([(CACSpeechSystem *)self languageModelHasParameterOverlayLabel:*(*(&v14 + 1) + 8 * v13)])
@@ -427,7 +427,7 @@ LABEL_8:
 
       if (v11 == ++v13)
       {
-        v11 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [identifier countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v11)
         {
           goto LABEL_8;
@@ -445,13 +445,13 @@ LABEL_5:
   return v8;
 }
 
-- (__RXLanguageObject)createRXLanguageObjectRefFromCACLanguageModel:(id)a3 ignoreBuiltInLMTable:(BOOL)a4
+- (__RXLanguageObject)createRXLanguageObjectRefFromCACLanguageModel:(id)model ignoreBuiltInLMTable:(BOOL)table
 {
-  v4 = a4;
+  tableCopy = table;
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectForAttribute:kCACLanguageModelAttributeParameterIdentifier];
-  if ([v7 length] && !v4)
+  modelCopy = model;
+  v7 = [modelCopy objectForAttribute:kCACLanguageModelAttributeParameterIdentifier];
+  if ([v7 length] && !tableCopy)
   {
     v8 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
     v9 = [v8 rxLanguageObjectForBuiltInLMIdentifier:v7];
@@ -464,59 +464,59 @@ LABEL_5:
     goto LABEL_37;
   }
 
-  v10 = [v6 objectForAttribute:*MEMORY[0x277D65638]];
-  v11 = [v10 BOOLValue];
+  v10 = [modelCopy objectForAttribute:*MEMORY[0x277D65638]];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    [v6 identifier];
-    [CACSpeechSystem rxContextDictionaryForLanguageModel:v6];
+    [modelCopy identifier];
+    [CACSpeechSystem rxContextDictionaryForLanguageModel:modelCopy];
     v12 = RXPathCreate();
   }
 
   else
   {
-    v13 = [v6 identifier];
-    if ([v13 isEqualToString:*MEMORY[0x277D655C8]])
+    identifier = [modelCopy identifier];
+    if ([identifier isEqualToString:*MEMORY[0x277D655C8]])
     {
     }
 
     else
     {
-      v14 = [v6 identifier];
-      v15 = [v14 isEqualToString:*MEMORY[0x277D655D0]];
+      identifier2 = [modelCopy identifier];
+      v15 = [identifier2 isEqualToString:*MEMORY[0x277D655D0]];
 
       if (!v15)
       {
-        [v6 identifier];
-        [CACSpeechSystem rxContextDictionaryForLanguageModel:v6];
+        [modelCopy identifier];
+        [CACSpeechSystem rxContextDictionaryForLanguageModel:modelCopy];
         v12 = RXLanguageModelCreate();
         goto LABEL_12;
       }
     }
 
-    [v6 identifier];
+    [modelCopy identifier];
     [(CACSpeechSystem *)self currentRXVocabularyRef];
-    [CACSpeechSystem rxContextDictionaryForLanguageModel:v6];
+    [CACSpeechSystem rxContextDictionaryForLanguageModel:modelCopy];
     v12 = RXAdLibCreate();
   }
 
 LABEL_12:
   v9 = v12;
-  v16 = [v6 objectForAttribute:*MEMORY[0x277D65630]];
-  v17 = [v16 BOOLValue];
+  v16 = [modelCopy objectForAttribute:*MEMORY[0x277D65630]];
+  bOOLValue2 = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue2)
   {
     RXObjectSetProperty();
   }
 
-  v18 = [v6 objectForAttribute:kCACLanguageModelAttributeCommandIdentifier];
+  v18 = [modelCopy objectForAttribute:kCACLanguageModelAttributeCommandIdentifier];
   if (v18)
   {
     RXObjectSetProperty();
     valuePtr = 0;
-    if ([v18 isEqualToString:@"System.ShowCommands"] || -[CACSpeechSystem languageModelHasParameterOverlayLabel:](self, "languageModelHasParameterOverlayLabel:", v6))
+    if ([v18 isEqualToString:@"System.ShowCommands"] || -[CACSpeechSystem languageModelHasParameterOverlayLabel:](self, "languageModelHasParameterOverlayLabel:", modelCopy))
     {
       valuePtr = 1;
     }
@@ -526,16 +526,16 @@ LABEL_12:
     CFRelease(v19);
   }
 
-  v20 = [v6 objectForAttribute:kCACLanguageModelAttributeCustomCommands];
-  v21 = [v20 BOOLValue];
+  v20 = [modelCopy objectForAttribute:kCACLanguageModelAttributeCustomCommands];
+  bOOLValue3 = [v20 BOOLValue];
 
-  if (v21)
+  if (bOOLValue3)
   {
     RXObjectSetProperty();
   }
 
-  v22 = [v6 children];
-  v23 = [v22 count];
+  children = [modelCopy children];
+  v23 = [children count];
 
   if (v23)
   {
@@ -543,8 +543,8 @@ LABEL_12:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v24 = [v6 children];
-    v25 = [v24 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    children2 = [modelCopy children];
+    v25 = [children2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v25)
     {
       v26 = v25;
@@ -556,10 +556,10 @@ LABEL_12:
         {
           if (*v35 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(children2);
           }
 
-          v29 = [(CACSpeechSystem *)self createRXLanguageObjectRefFromCACLanguageModel:*(*(&v34 + 1) + 8 * i) ignoreBuiltInLMTable:v4];
+          v29 = [(CACSpeechSystem *)self createRXLanguageObjectRefFromCACLanguageModel:*(*(&v34 + 1) + 8 * i) ignoreBuiltInLMTable:tableCopy];
           if (v29)
           {
             v30 = v29;
@@ -568,7 +568,7 @@ LABEL_12:
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v26 = [children2 countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v26);
@@ -578,15 +578,15 @@ LABEL_12:
 
   else
   {
-    v24 = [v6 text];
-    if ([v24 length])
+    children2 = [modelCopy text];
+    if ([children2 length])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v31 = [v24 string];
+        string = [children2 string];
 
-        v24 = v31;
+        children2 = string;
       }
 
       [(CACSpeechSystem *)self currentRXVocabularyRef];
@@ -599,10 +599,10 @@ LABEL_37:
   return v9;
 }
 
-- (id)resultLanguageModelFromRXLanguageObject:(__RXLanguageObject *)a3
+- (id)resultLanguageModelFromRXLanguageObject:(__RXLanguageObject *)object
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = [CACSpeechSystem valueFromRXContextKey:@"LanguageModel" rxLanguageObject:a3];
+  v4 = [CACSpeechSystem valueFromRXContextKey:@"LanguageModel" rxLanguageObject:object];
   v5 = [v4 copy];
 
   if (v5)
@@ -615,11 +615,11 @@ LABEL_37:
       v8 = RXObjectCopyPropertyWithLocale();
       if ([v8 count] == 1)
       {
-        v9 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         if ([v7 length])
         {
           v24 = v6;
-          [v9 addObject:v7];
+          [array addObject:v7];
           v27 = 0u;
           v28 = 0u;
           v25 = 0u;
@@ -643,7 +643,7 @@ LABEL_37:
                 v15 = *(*(&v25 + 1) + 8 * i);
                 if (([v15 isEqualToString:v7] & 1) == 0)
                 {
-                  [v9 addObject:v15];
+                  [array addObject:v15];
                 }
               }
 
@@ -660,11 +660,11 @@ LABEL_37:
         else
         {
           v16 = [v8 objectAtIndex:0];
-          [v9 addObjectsFromArray:v16];
+          [array addObjectsFromArray:v16];
         }
 
-        v17 = [v5 attributes];
-        [v17 setObject:v9 forKey:kCACLanguageModelAttributeTextVariants];
+        attributes = [v5 attributes];
+        [attributes setObject:array forKey:kCACLanguageModelAttributeTextVariants];
       }
     }
 
@@ -691,16 +691,16 @@ LABEL_37:
   return v5;
 }
 
-- (void)setLeadingContextString:(id)a3
+- (void)setLeadingContextString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__CACSpeechSystem_setLeadingContextString___block_invoke;
   v6[3] = &unk_279CEB4C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = stringCopy;
+  v5 = stringCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -757,7 +757,7 @@ uint64_t __43__CACSpeechSystem_setLeadingContextString___block_invoke_3(uint64_t
   return result;
 }
 
-- (void)setSecureFieldFocused:(BOOL)a3
+- (void)setSecureFieldFocused:(BOOL)focused
 {
   if (self->_recognitionSystemRef)
   {
@@ -766,21 +766,21 @@ uint64_t __43__CACSpeechSystem_setLeadingContextString___block_invoke_3(uint64_t
     v3[2] = __41__CACSpeechSystem_setSecureFieldFocused___block_invoke;
     v3[3] = &unk_279CEBF20;
     v3[4] = self;
-    v4 = a3;
+    focusedCopy = focused;
     dispatch_async(sRXAPIDispatchQueue, v3);
   }
 }
 
-- (void)setAdditionalContextStrings:(id)a3
+- (void)setAdditionalContextStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__CACSpeechSystem_setAdditionalContextStrings___block_invoke;
   v6[3] = &unk_279CEB4C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = stringsCopy;
+  v5 = stringsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -850,7 +850,7 @@ uint64_t __47__CACSpeechSystem_setAdditionalContextStrings___block_invoke_3(uint
   }
 }
 
-- (void)setRxRecognitionSystemResetMode:(int)a3
+- (void)setRxRecognitionSystemResetMode:(int)mode
 {
   if (self->_recognitionSystemRef)
   {
@@ -859,7 +859,7 @@ uint64_t __47__CACSpeechSystem_setAdditionalContextStrings___block_invoke_3(uint
     v3[2] = __51__CACSpeechSystem_setRxRecognitionSystemResetMode___block_invoke;
     v3[3] = &unk_279CEBF48;
     v3[4] = self;
-    v4 = a3;
+    modeCopy = mode;
     dispatch_async(sRXAPIDispatchQueue, v3);
   }
 }

@@ -1,21 +1,21 @@
 @interface INFindDeviceAndPlaySoundIntent
-- (INFindDeviceAndPlaySoundIntent)initWithDevices:(id)a3 isStopRequest:(id)a4;
+- (INFindDeviceAndPlaySoundIntent)initWithDevices:(id)devices isStopRequest:(id)request;
 - (NSArray)devices;
 - (NSNumber)isStopRequest;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setDevices:(id)a3;
-- (void)setIsStopRequest:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setDevices:(id)devices;
+- (void)setIsStopRequest:(id)request;
 @end
 
 @implementation INFindDeviceAndPlaySoundIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore:a3];
+  v6 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"devices";
-  v3 = [(INFindDeviceAndPlaySoundIntent *)self devices];
-  v4 = v3;
-  if (!v3)
+  devices = [(INFindDeviceAndPlaySoundIntent *)self devices];
+  null = devices;
+  if (!devices)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"isStopRequest";
-  v11[0] = v4;
-  v5 = [(INFindDeviceAndPlaySoundIntent *)self isStopRequest];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  isStopRequest = [(INFindDeviceAndPlaySoundIntent *)self isStopRequest];
+  null2 = isStopRequest;
+  if (!isStopRequest)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!isStopRequest)
   {
   }
 
-  if (!v3)
+  if (!devices)
   {
   }
 
@@ -55,29 +55,29 @@
   return v7;
 }
 
-- (void)setIsStopRequest:(id)a3
+- (void)setIsStopRequest:(id)request
 {
-  v5 = a3;
-  v4 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
-  if (v5)
+  requestCopy = request;
+  _typedBackingStore = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
+  if (requestCopy)
   {
-    [v4 setIsStopRequest:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setIsStopRequest:{objc_msgSend(requestCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasIsStopRequest:0];
+    [_typedBackingStore setHasIsStopRequest:0];
   }
 }
 
 - (NSNumber)isStopRequest
 {
-  v3 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
-  if ([v3 hasIsStopRequest])
+  _typedBackingStore = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasIsStopRequest])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "isStopRequest")}];
+    _typedBackingStore2 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "isStopRequest")}];
   }
 
   else
@@ -88,63 +88,63 @@
   return v6;
 }
 
-- (void)setDevices:(id)a3
+- (void)setDevices:(id)devices
 {
-  v4 = a3;
-  v6 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDeviceDetails(v4);
+  devicesCopy = devices;
+  _typedBackingStore = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDeviceDetails(devicesCopy);
 
-  [v6 setDevices:v5];
+  [_typedBackingStore setDevices:v5];
 }
 
 - (NSArray)devices
 {
-  v2 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
-  v3 = [v2 devices];
-  v4 = INIntentSlotValueTransformFromDeviceDetails(v3);
+  _typedBackingStore = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
+  devices = [_typedBackingStore devices];
+  v4 = INIntentSlotValueTransformFromDeviceDetails(devices);
 
   return v4;
 }
 
-- (INFindDeviceAndPlaySoundIntent)initWithDevices:(id)a3 isStopRequest:(id)a4
+- (INFindDeviceAndPlaySoundIntent)initWithDevices:(id)devices isStopRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = INFindDeviceAndPlaySoundIntent;
   v8 = [(INIntent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(INFindDeviceAndPlaySoundIntent *)v8 setDevices:v6];
-    [(INFindDeviceAndPlaySoundIntent *)v9 setIsStopRequest:v7];
+    [(INFindDeviceAndPlaySoundIntent *)v8 setDevices:devicesCopy];
+    [(INFindDeviceAndPlaySoundIntent *)v9 setIsStopRequest:requestCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INFindDeviceAndPlaySoundIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

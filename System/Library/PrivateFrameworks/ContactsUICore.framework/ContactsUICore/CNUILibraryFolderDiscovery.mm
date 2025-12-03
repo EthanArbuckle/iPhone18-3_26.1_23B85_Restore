@@ -1,5 +1,5 @@
 @interface CNUILibraryFolderDiscovery
-+ (id)discoverFoldersWithPathComponents:(id)a3 fileManager:(id)a4;
++ (id)discoverFoldersWithPathComponents:(id)components fileManager:(id)manager;
 + (id)localImageFolders;
 @end
 
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __47__CNUILibraryFolderDiscovery_localImageFolders__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (localImageFolders_cn_once_token_1 != -1)
   {
     dispatch_once(&localImageFolders_cn_once_token_1, block);
@@ -32,11 +32,11 @@ void __47__CNUILibraryFolderDiscovery_localImageFolders__block_invoke(uint64_t a
   localImageFolders_cn_once_object_1 = v3;
 }
 
-+ (id)discoverFoldersWithPathComponents:(id)a3 fileManager:(id)a4
++ (id)discoverFoldersWithPathComponents:(id)components fileManager:(id)manager
 {
   v50 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v37 = a4;
+  componentsCopy = components;
+  managerCopy = manager;
   v5 = objc_autoreleasePoolPush();
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"ABImageDebug", @"com.apple.AddressBook", 0);
   v6 = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory, 0xFFFFuLL, 1);
@@ -72,7 +72,7 @@ void __47__CNUILibraryFolderDiscovery_localImageFolders__block_invoke(uint64_t a
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v12 = v38;
+        v12 = componentsCopy;
         v13 = [v12 countByEnumeratingWithState:&v40 objects:v48 count:16];
         v14 = v11;
         if (v13)
@@ -105,7 +105,7 @@ void __47__CNUILibraryFolderDiscovery_localImageFolders__block_invoke(uint64_t a
         }
 
         v39 = 0;
-        if ([v37 fileExistsAtPath:v14 isDirectory:&v39] && v39 == 1)
+        if ([managerCopy fileExistsAtPath:v14 isDirectory:&v39] && v39 == 1)
         {
           v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14 isDirectory:1];
           v20 = v34 + 1;

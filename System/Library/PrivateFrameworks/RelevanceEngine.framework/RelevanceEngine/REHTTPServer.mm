@@ -1,40 +1,40 @@
 @interface REHTTPServer
 - (BOOL)_valid;
-- (REHTTPServer)initWithPort:(unsigned __int16)a3 delegate:(id)a4;
-- (void)connection:(id)a3 didReceiveRequest:(id)a4 completion:(id)a5;
+- (REHTTPServer)initWithPort:(unsigned __int16)port delegate:(id)delegate;
+- (void)connection:(id)connection didReceiveRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)didCloseConnection:(_CFHTTPServerConnection *)a3;
-- (void)didOpenConnection:(_CFHTTPServerConnection *)a3;
-- (void)didRecievedError:(id)a3;
+- (void)didCloseConnection:(_CFHTTPServerConnection *)connection;
+- (void)didOpenConnection:(_CFHTTPServerConnection *)connection;
+- (void)didRecievedError:(id)error;
 - (void)invalidate;
 - (void)invalidated;
 @end
 
 @implementation REHTTPServer
 
-- (REHTTPServer)initWithPort:(unsigned __int16)a3 delegate:(id)a4
+- (REHTTPServer)initWithPort:(unsigned __int16)port delegate:(id)delegate
 {
-  v7 = a4;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = REHTTPServer;
   v8 = [(REHTTPServer *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegate, a4);
+    objc_storeStrong(&v8->_delegate, delegate);
     v10 = RECreateSharedQueue(@"HTTPServer");
     queue = v9->_queue;
     v9->_queue = v10;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     connections = v9->_connections;
-    v9->_connections = v12;
+    v9->_connections = array;
 
     [MEMORY[0x277CCAE60] valueWithWeakObject:v9];
     v22 = off_283B964A0;
     v20 = xmmword_283B96480;
     v21 = *off_283B96490;
-    v9->_port = a3;
+    v9->_port = port;
     v14 = *MEMORY[0x277CBECE8];
     v9->_server = _CFHTTPServerCreateService();
     v15 = v9->_queue;
@@ -127,19 +127,19 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didRecievedError:(id)a3
+- (void)didRecievedError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = RELogForDomain(21);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(REHTTPServer *)v3 didRecievedError:v4];
+    [(REHTTPServer *)errorCopy didRecievedError:v4];
   }
 }
 
-- (void)didOpenConnection:(_CFHTTPServerConnection *)a3
+- (void)didOpenConnection:(_CFHTTPServerConnection *)connection
 {
-  v4 = [[REHTTPConnection alloc] initWithConnection:a3];
+  v4 = [[REHTTPConnection alloc] initWithConnection:connection];
   if (v4)
   {
     [(NSMutableArray *)self->_connections addObject:v4];
@@ -153,7 +153,7 @@
   }
 }
 
-- (void)didCloseConnection:(_CFHTTPServerConnection *)a3
+- (void)didCloseConnection:(_CFHTTPServerConnection *)connection
 {
   v14 = 0;
   v15 = &v14;
@@ -165,7 +165,7 @@
   v13[2] = __35__REHTTPServer_didCloseConnection___block_invoke;
   v13[3] = &unk_2785FDC38;
   v13[4] = &v14;
-  v13[5] = a3;
+  v13[5] = connection;
   [(NSMutableArray *)connections enumerateObjectsUsingBlock:v13];
   if (v15[3] != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -191,14 +191,14 @@ void __35__REHTTPServer_didCloseConnection___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)connection:(id)a3 didReceiveRequest:(id)a4 completion:(id)a5
+- (void)connection:(id)connection didReceiveRequest:(id)request completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = RELogForDomain(21);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [REHTTPServer connection:v7 didReceiveRequest:v9 completion:?];
+    [REHTTPServer connection:requestCopy didReceiveRequest:v9 completion:?];
   }
 
   queue = self->_queue;
@@ -207,10 +207,10 @@ void __35__REHTTPServer_didCloseConnection___block_invoke(uint64_t a1, void *a2,
   block[2] = __56__REHTTPServer_connection_didReceiveRequest_completion___block_invoke;
   block[3] = &unk_2785F99C8;
   block[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
+  v14 = requestCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = requestCopy;
   dispatch_async(queue, block);
 }
 

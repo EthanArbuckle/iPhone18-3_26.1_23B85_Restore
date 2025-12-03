@@ -1,23 +1,23 @@
 @interface AMSUIAuthenticateCloudTask
-- (AMSUIAuthenticateCloudTask)initWithAuthRequest:(id)a3 presentingViewController:(id)a4;
-- (id)_serviceContextWithResults:(id)a3 parentViewController:(id)a4;
+- (AMSUIAuthenticateCloudTask)initWithAuthRequest:(id)request presentingViewController:(id)controller;
+- (id)_serviceContextWithResults:(id)results parentViewController:(id)controller;
 - (id)performAuthenticate;
 @end
 
 @implementation AMSUIAuthenticateCloudTask
 
-- (AMSUIAuthenticateCloudTask)initWithAuthRequest:(id)a3 presentingViewController:(id)a4
+- (AMSUIAuthenticateCloudTask)initWithAuthRequest:(id)request presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = AMSUIAuthenticateCloudTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_authRequest, a3);
-    objc_storeStrong(&v10->_presentingViewController, a4);
+    objc_storeStrong(&v9->_authRequest, request);
+    objc_storeStrong(&v10->_presentingViewController, controller);
   }
 
   return v10;
@@ -170,10 +170,10 @@ void __49__AMSUIAuthenticateCloudTask_performAuthenticate__block_invoke_37(uint6
   }
 }
 
-- (id)_serviceContextWithResults:(id)a3 parentViewController:(id)a4
+- (id)_serviceContextWithResults:(id)results parentViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v29 = 0;
   v30 = &v29;
@@ -193,7 +193,7 @@ void __49__AMSUIAuthenticateCloudTask_performAuthenticate__block_invoke_37(uint6
 
   v9 = v8;
   _Block_object_dispose(&v29, 8);
-  v10 = [[v8 alloc] initWithPresentingViewController:v7];
+  v10 = [[v8 alloc] initWithPresentingViewController:controllerCopy];
   [(AMSUIAuthenticateCloudTask *)self setCdpUIController:v10];
 
   v29 = 0;
@@ -214,7 +214,7 @@ void __49__AMSUIAuthenticateCloudTask_performAuthenticate__block_invoke_37(uint6
 
   v12 = v11;
   _Block_object_dispose(&v29, 8);
-  v13 = [[v11 alloc] initWithPresentingViewController:v7];
+  v13 = [[v11 alloc] initWithPresentingViewController:controllerCopy];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2050000000;
@@ -234,15 +234,15 @@ void __49__AMSUIAuthenticateCloudTask_performAuthenticate__block_invoke_37(uint6
   v15 = v14;
   _Block_object_dispose(&v29, 8);
   v16 = objc_alloc_init(v14);
-  [v16 setAuthenticationResults:v6];
+  [v16 setAuthenticationResults:resultsCopy];
   [v16 setShouldForceOperation:0];
   [v16 setOperationUIPermissions:1];
-  [v16 setViewController:v7];
-  v17 = [(AMSUIAuthenticateCloudTask *)self cdpUIController];
-  [v16 setCdpUiProvider:v17];
+  [v16 setViewController:controllerCopy];
+  cdpUIController = [(AMSUIAuthenticateCloudTask *)self cdpUIController];
+  [v16 setCdpUiProvider:cdpUIController];
 
-  v18 = [v16 signInContexts];
-  v19 = [v18 mutableCopy];
+  signInContexts = [v16 signInContexts];
+  v19 = [signInContexts mutableCopy];
 
   v20 = getAIDAServiceTypeCloud();
   [v19 setObject:v13 forKeyedSubscript:v20];

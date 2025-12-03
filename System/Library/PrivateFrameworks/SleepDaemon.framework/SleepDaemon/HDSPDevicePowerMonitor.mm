@@ -1,30 +1,30 @@
 @interface HDSPDevicePowerMonitor
 - (BOOL)isCharging;
 - (HDSPDevicePowerMonitor)init;
-- (HDSPDevicePowerMonitor)initWithCallbackScheduler:(id)a3;
+- (HDSPDevicePowerMonitor)initWithCallbackScheduler:(id)scheduler;
 - (float)batteryLevel;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
 @end
 
 @implementation HDSPDevicePowerMonitor
 
 - (HDSPDevicePowerMonitor)init
 {
-  v3 = [MEMORY[0x277D2C938] hkspMainThreadScheduler];
-  v4 = [(HDSPDevicePowerMonitor *)self initWithCallbackScheduler:v3];
+  hkspMainThreadScheduler = [MEMORY[0x277D2C938] hkspMainThreadScheduler];
+  v4 = [(HDSPDevicePowerMonitor *)self initWithCallbackScheduler:hkspMainThreadScheduler];
 
   return v4;
 }
 
-- (HDSPDevicePowerMonitor)initWithCallbackScheduler:(id)a3
+- (HDSPDevicePowerMonitor)initWithCallbackScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   v10.receiver = self;
   v10.super_class = HDSPDevicePowerMonitor;
   v5 = [(HDSPDevicePowerMonitor *)&v10 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D624A0]) initWithCallbackScheduler:v4];
+    v6 = [objc_alloc(MEMORY[0x277D624A0]) initWithCallbackScheduler:schedulerCopy];
     observers = v5->_observers;
     v5->_observers = v6;
 
@@ -97,11 +97,11 @@
   return result;
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isEqualToString:@"com.apple.system.powersources.source"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"com.apple.system.powersources.source"])
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -109,7 +109,7 @@
       *buf = 138543618;
       v14 = objc_opt_class();
       v15 = 2114;
-      v16 = v5;
+      v16 = nameCopy;
       v7 = v14;
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] received %{public}@", buf, 0x16u);
     }
@@ -123,11 +123,11 @@
     [(HKSPObserverSet *)observers enumerateObserversWithBlock:v12];
   }
 
-  v9 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return futureWithNoResult;
 }
 
 void __78__HDSPDevicePowerMonitor_notificationListener_didReceiveNotificationWithName___block_invoke(uint64_t a1, void *a2)

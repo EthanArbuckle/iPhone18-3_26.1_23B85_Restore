@@ -2,7 +2,7 @@
 - (NSString)localizedButtonTitle;
 - (id)tvAppPrivacyButtonViewController;
 - (id)tvProviderPrivacyButtonViewController;
-- (void)presentDetailsFromViewController:(id)a3;
+- (void)presentDetailsFromViewController:(id)controller;
 @end
 
 @implementation VSOnboardingInfoCenter
@@ -11,25 +11,25 @@
 {
   v2 = [MEMORY[0x277D37630] bundleWithIdentifier:@"com.apple.onboarding.tvprovider"];
   v3 = [MEMORY[0x277D37668] flowWithBundle:v2];
-  v4 = [v3 localizedButtonTitle];
-  if (!v4)
+  localizedButtonTitle = [v3 localizedButtonTitle];
+  if (!localizedButtonTitle)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The privacyTitleOrNil parameter must not be nil."];
   }
 
-  return v4;
+  return localizedButtonTitle;
 }
 
-- (void)presentDetailsFromViewController:(id)a3
+- (void)presentDetailsFromViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The presentingViewController parameter must not be nil."];
   }
 
   v3 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.tvprovider"];
-  [v3 setPresentingViewController:v4];
+  [v3 setPresentingViewController:controllerCopy];
   [v3 present];
 }
 

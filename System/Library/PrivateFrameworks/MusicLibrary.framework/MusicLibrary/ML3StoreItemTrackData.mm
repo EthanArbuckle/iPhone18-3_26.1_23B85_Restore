@@ -1,48 +1,48 @@
 @interface ML3StoreItemTrackData
-- (BOOL)_platformMetadataItem:(id)a3 matchesKind:(id)a4;
-- (BOOL)_platformMetadataItemIsAUCAudioKind:(id)a3;
-- (BOOL)_platformMetadataItemIsAUCKind:(id)a3;
-- (BOOL)_platformMetadataItemIsAUCVideoKind:(id)a3;
-- (BOOL)_platformMetadataItemIsMovieKind:(id)a3;
-- (BOOL)_platformMetadataItemIsMusicKind:(id)a3;
-- (BOOL)_platformMetadataItemIsMusicVideoKind:(id)a3;
-- (BOOL)_platformMetadataItemIsSongKind:(id)a3;
-- (BOOL)_platformMetadataItemIsTVShowKind:(id)a3;
-- (BOOL)_platformMetadataItemIsVideoKind:(id)a3;
-- (ML3StoreItemTrackData)initWithLookupItems:(id)a3;
-- (ML3StoreItemTrackData)initWithTrackData:(id)a3;
+- (BOOL)_platformMetadataItem:(id)item matchesKind:(id)kind;
+- (BOOL)_platformMetadataItemIsAUCAudioKind:(id)kind;
+- (BOOL)_platformMetadataItemIsAUCKind:(id)kind;
+- (BOOL)_platformMetadataItemIsAUCVideoKind:(id)kind;
+- (BOOL)_platformMetadataItemIsMovieKind:(id)kind;
+- (BOOL)_platformMetadataItemIsMusicKind:(id)kind;
+- (BOOL)_platformMetadataItemIsMusicVideoKind:(id)kind;
+- (BOOL)_platformMetadataItemIsSongKind:(id)kind;
+- (BOOL)_platformMetadataItemIsTVShowKind:(id)kind;
+- (BOOL)_platformMetadataItemIsVideoKind:(id)kind;
+- (ML3StoreItemTrackData)initWithLookupItems:(id)items;
+- (ML3StoreItemTrackData)initWithTrackData:(id)data;
 - (NSArray)parsedStoreItemsImportProperties;
 - (NSData)trackData;
-- (double)_songDurationFromOffersArray:(id)a3;
-- (id)_allSongItemsFromCollectionLookupItem:(id)a3;
-- (id)_allSongItemsFromLookupItems:(id)a3;
-- (id)_artworkTokenForItemWithCollectionID:(int64_t)a3 itemID:(int64_t)a4;
-- (id)_artworkTokenFromLookupItem:(id)a3;
-- (id)_bestAlbumArtworkImageURLFromStoreArtworkVariants:(id)a3;
-- (id)_bestArtworkImageURLFromStoreArtworkVariants:(id)a3 cropStyle:(id)a4;
-- (id)_bestPlaylistArtworkImageURLFromStoreArtworkVariants:(id)a3;
-- (id)_importDictionaryForLookupItem:(id)a3 parentCollectionCache:(id)a4;
-- (id)_lookupItemArtworksForArtworkDictionaries:(id)a3;
-- (id)_parentDictForItemAlbumId:(id)a3;
-- (id)_storeItemsImportPropertiesFromLookupItems:(id)a3;
-- (id)_storeItemsImportPropertiesFromTrackData:(id)a3;
+- (double)_songDurationFromOffersArray:(id)array;
+- (id)_allSongItemsFromCollectionLookupItem:(id)item;
+- (id)_allSongItemsFromLookupItems:(id)items;
+- (id)_artworkTokenForItemWithCollectionID:(int64_t)d itemID:(int64_t)iD;
+- (id)_artworkTokenFromLookupItem:(id)item;
+- (id)_bestAlbumArtworkImageURLFromStoreArtworkVariants:(id)variants;
+- (id)_bestArtworkImageURLFromStoreArtworkVariants:(id)variants cropStyle:(id)style;
+- (id)_bestPlaylistArtworkImageURLFromStoreArtworkVariants:(id)variants;
+- (id)_importDictionaryForLookupItem:(id)item parentCollectionCache:(id)cache;
+- (id)_lookupItemArtworksForArtworkDictionaries:(id)dictionaries;
+- (id)_parentDictForItemAlbumId:(id)id;
+- (id)_storeItemsImportPropertiesFromLookupItems:(id)items;
+- (id)_storeItemsImportPropertiesFromTrackData:(id)data;
 - (id)_storePlatformDateFormatter;
-- (int64_t)_episodeTypeFromVideoSubTypeString:(id)a3;
+- (int64_t)_episodeTypeFromVideoSubTypeString:(id)string;
 - (unint64_t)trackCount;
 @end
 
 @implementation ML3StoreItemTrackData
 
-- (id)_bestArtworkImageURLFromStoreArtworkVariants:(id)a3 cropStyle:(id)a4
+- (id)_bestArtworkImageURLFromStoreArtworkVariants:(id)variants cropStyle:(id)style
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  variantsCopy = variants;
+  styleCopy = style;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = v5;
+  v7 = variantsCopy;
   v8 = [v7 countByEnumeratingWithState:&v45 objects:v58 count:16];
   v9 = *MEMORY[0x277CBF3A8];
   v10 = *(MEMORY[0x277CBF3A8] + 8);
@@ -62,8 +62,8 @@
         }
 
         v16 = *(*(&v45 + 1) + 8 * i);
-        v17 = [v16 sizeInfo];
-        [v17 maxSupportedSize];
+        sizeInfo = [v16 sizeInfo];
+        [sizeInfo maxSupportedSize];
         v19 = v18;
         v21 = v20;
 
@@ -86,8 +86,8 @@
   MSVGetMaximumScreenSize();
   v25 = v24;
   v27 = v26;
-  v28 = [v11 sizeInfo];
-  [v28 maxSupportedSize];
+  sizeInfo2 = [v11 sizeInfo];
+  [sizeInfo2 maxSupportedSize];
   v30 = v29;
   v32 = v31;
 
@@ -120,24 +120,24 @@
   _Block_object_dispose(&v54, 8);
   if (!v36)
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStoreArtworkInfoImageFormatJPEG(void)"];
-    [v43 handleFailureInFunction:v44 file:@"ML3StoreItemTrackData.m" lineNumber:43 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v44 file:@"ML3StoreItemTrackData.m" lineNumber:43 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
   v39 = *v36;
-  v40 = [v11 artworkURLWithSize:v6 cropStyle:v39 format:MSVDeviceSupportsExtendedColorDisplay() preferP3ColorSpace:{v25, v27}];
+  v40 = [v11 artworkURLWithSize:styleCopy cropStyle:v39 format:MSVDeviceSupportsExtendedColorDisplay() preferP3ColorSpace:{v25, v27}];
 
-  v41 = [v40 absoluteString];
+  absoluteString = [v40 absoluteString];
 
-  return v41;
+  return absoluteString;
 }
 
-- (id)_bestPlaylistArtworkImageURLFromStoreArtworkVariants:(id)a3
+- (id)_bestPlaylistArtworkImageURLFromStoreArtworkVariants:(id)variants
 {
-  v4 = a3;
+  variantsCopy = variants;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -154,16 +154,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemTrackData *)self _bestArtworkImageURLFromStoreArtworkVariants:v4 cropStyle:*v5];
+    v7 = [(ML3StoreItemTrackData *)self _bestArtworkImageURLFromStoreArtworkVariants:variantsCopy cropStyle:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStoreArtworkInfoCropStyleSquareCenterCrop(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:42 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:42 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -171,9 +171,9 @@
   return result;
 }
 
-- (id)_bestAlbumArtworkImageURLFromStoreArtworkVariants:(id)a3
+- (id)_bestAlbumArtworkImageURLFromStoreArtworkVariants:(id)variants
 {
-  v4 = a3;
+  variantsCopy = variants;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -190,16 +190,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemTrackData *)self _bestArtworkImageURLFromStoreArtworkVariants:v4 cropStyle:*v5];
+    v7 = [(ML3StoreItemTrackData *)self _bestArtworkImageURLFromStoreArtworkVariants:variantsCopy cropStyle:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStoreArtworkInfoCropStyleBoundedBox(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:41 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:41 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -207,9 +207,9 @@
   return result;
 }
 
-- (BOOL)_platformMetadataItemIsMovieKind:(id)a3
+- (BOOL)_platformMetadataItemIsMovieKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -226,16 +226,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:v4 matchesKind:*v5];
+    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:kindCopy matchesKind:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindMovie(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:37 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:37 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -243,9 +243,9 @@
   return result;
 }
 
-- (BOOL)_platformMetadataItemIsTVShowKind:(id)a3
+- (BOOL)_platformMetadataItemIsTVShowKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -262,16 +262,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:v4 matchesKind:*v5];
+    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:kindCopy matchesKind:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindTVEpisode(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:36 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:36 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -279,17 +279,17 @@
   return result;
 }
 
-- (BOOL)_platformMetadataItemIsVideoKind:(id)a3
+- (BOOL)_platformMetadataItemIsVideoKind:(id)kind
 {
-  v4 = a3;
-  v5 = [(ML3StoreItemTrackData *)self _platformMetadataItemIsTVShowKind:v4]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsMovieKind:v4];
+  kindCopy = kind;
+  v5 = [(ML3StoreItemTrackData *)self _platformMetadataItemIsTVShowKind:kindCopy]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsMovieKind:kindCopy];
 
   return v5;
 }
 
-- (BOOL)_platformMetadataItemIsAUCVideoKind:(id)a3
+- (BOOL)_platformMetadataItemIsAUCVideoKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -306,16 +306,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:v4 matchesKind:*v5];
+    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:kindCopy matchesKind:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindUploadedVideo(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:35 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:35 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -323,9 +323,9 @@
   return result;
 }
 
-- (BOOL)_platformMetadataItemIsAUCAudioKind:(id)a3
+- (BOOL)_platformMetadataItemIsAUCAudioKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -342,16 +342,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:v4 matchesKind:*v5];
+    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:kindCopy matchesKind:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindUploadedAudio(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:34 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:34 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -359,17 +359,17 @@
   return result;
 }
 
-- (BOOL)_platformMetadataItemIsAUCKind:(id)a3
+- (BOOL)_platformMetadataItemIsAUCKind:(id)kind
 {
-  v4 = a3;
-  v5 = [(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCAudioKind:v4]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCVideoKind:v4];
+  kindCopy = kind;
+  v5 = [(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCAudioKind:kindCopy]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCVideoKind:kindCopy];
 
   return v5;
 }
 
-- (BOOL)_platformMetadataItemIsMusicVideoKind:(id)a3
+- (BOOL)_platformMetadataItemIsMusicVideoKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -386,16 +386,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:v4 matchesKind:*v5];
+    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:kindCopy matchesKind:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindMusicVideo(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:33 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:33 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -403,9 +403,9 @@
   return result;
 }
 
-- (BOOL)_platformMetadataItemIsSongKind:(id)a3
+- (BOOL)_platformMetadataItemIsSongKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -422,16 +422,16 @@
   _Block_object_dispose(&v11, 8);
   if (v5)
   {
-    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:v4 matchesKind:*v5];
+    v7 = [(ML3StoreItemTrackData *)self _platformMetadataItem:kindCopy matchesKind:*v5];
 
     return v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindSong(void)"];
-    [v9 handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:32 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"ML3StoreItemTrackData.m" lineNumber:32 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -439,23 +439,23 @@
   return result;
 }
 
-- (BOOL)_platformMetadataItemIsMusicKind:(id)a3
+- (BOOL)_platformMetadataItemIsMusicKind:(id)kind
 {
-  v4 = a3;
-  v5 = [(ML3StoreItemTrackData *)self _platformMetadataItemIsSongKind:v4]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsMusicVideoKind:v4];
+  kindCopy = kind;
+  v5 = [(ML3StoreItemTrackData *)self _platformMetadataItemIsSongKind:kindCopy]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsMusicVideoKind:kindCopy];
 
   return v5;
 }
 
-- (BOOL)_platformMetadataItem:(id)a3 matchesKind:(id)a4
+- (BOOL)_platformMetadataItem:(id)item matchesKind:(id)kind
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 kind];
-  if (v7)
+  itemCopy = item;
+  kindCopy = kind;
+  kind = [itemCopy kind];
+  if (kind)
   {
-    v8 = [v5 kind];
-    v9 = [v8 compare:v6 options:1] == 0;
+    kind2 = [itemCopy kind];
+    v9 = [kind2 compare:kindCopy options:1] == 0;
   }
 
   else
@@ -466,10 +466,10 @@
   return v9;
 }
 
-- (id)_allSongItemsFromCollectionLookupItem:(id)a3
+- (id)_allSongItemsFromCollectionLookupItem:(id)item
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v56 = a3;
+  itemCopy = item;
   v3 = MEMORY[0x277CBEB98];
   v66 = 0;
   v67 = &v66;
@@ -492,9 +492,9 @@
   _Block_object_dispose(&v66, 8);
   if (!v4)
   {
-    v46 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v47 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindAlbum(void)"];
-    [v46 handleFailureInFunction:v47 file:@"ML3StoreItemTrackData.m" lineNumber:39 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v47 file:@"ML3StoreItemTrackData.m" lineNumber:39 description:{@"%s", dlerror()}];
 
     goto LABEL_50;
   }
@@ -522,9 +522,9 @@
   _Block_object_dispose(&v66, 8);
   if (!v8)
   {
-    v48 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindPlaylist(void)"];
-    [v48 handleFailureInFunction:v49 file:@"ML3StoreItemTrackData.m" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v49 file:@"ML3StoreItemTrackData.m" lineNumber:30 description:{@"%s", dlerror()}];
 
     goto LABEL_50;
   }
@@ -551,9 +551,9 @@
   _Block_object_dispose(&v66, 8);
   if (!v11)
   {
-    v50 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformMetadataKindTVSeason(void)"];
-    [v50 handleFailureInFunction:v51 file:@"ML3StoreItemTrackData.m" lineNumber:38 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v51 file:@"ML3StoreItemTrackData.m" lineNumber:38 description:{@"%s", dlerror()}];
 
 LABEL_50:
     __break(1u);
@@ -561,36 +561,36 @@ LABEL_50:
 
   v53 = [v3 setWithObjects:{v6, v7, v10, *v11, 0}];
 
-  v52 = [v56 kind];
-  if ([(ML3StoreItemTrackData *)self _platformMetadataItemIsMusicKind:v56]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCKind:v56]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsVideoKind:v56])
+  kind = [itemCopy kind];
+  if ([(ML3StoreItemTrackData *)self _platformMetadataItemIsMusicKind:itemCopy]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCKind:itemCopy]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsVideoKind:itemCopy])
   {
-    v71[0] = v56;
+    v71[0] = itemCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:1];
   }
 
-  else if ([v53 containsObject:v52])
+  else if ([v53 containsObject:kind])
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v15 = [v56 metadataDictionary];
-    v16 = [v15 objectForKey:@"children"];
-    v17 = [v15 objectForKey:@"childrenIds"];
+    metadataDictionary = [itemCopy metadataDictionary];
+    v16 = [metadataDictionary objectForKey:@"children"];
+    v17 = [metadataDictionary objectForKey:@"childrenIds"];
     v18 = v17;
     if (v17)
     {
-      v19 = v17;
+      allKeys = v17;
     }
 
     else
     {
-      v20 = [v15 objectForKey:@"children"];
-      v19 = [v20 allKeys];
+      v20 = [metadataDictionary objectForKey:@"children"];
+      allKeys = [v20 allKeys];
     }
 
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    obj = v19;
+    obj = allKeys;
     v21 = [obj countByEnumeratingWithState:&v57 objects:v70 count:16];
     if (v21)
     {
@@ -607,65 +607,65 @@ LABEL_50:
           v24 = [v16 objectForKey:*(*(&v57 + 1) + 8 * i)];
           v25 = [v24 mutableCopy];
 
-          v26 = [v56 kind];
+          kind2 = [itemCopy kind];
           v27 = getICStorePlatformMetadataKindArtist();
-          LOBYTE(v24) = [v26 isEqualToString:v27];
+          LOBYTE(v24) = [kind2 isEqualToString:v27];
 
           if ((v24 & 1) == 0)
           {
-            v28 = [v15 objectForKeyedSubscript:@"artwork"];
+            v28 = [metadataDictionary objectForKeyedSubscript:@"artwork"];
 
             if (v28)
             {
-              v29 = [v15 objectForKeyedSubscript:@"artwork"];
+              v29 = [metadataDictionary objectForKeyedSubscript:@"artwork"];
               [v25 setObject:v29 forKeyedSubscript:@"albumArtwork"];
             }
 
-            v30 = [v15 objectForKeyedSubscript:@"artistId"];
+            v30 = [metadataDictionary objectForKeyedSubscript:@"artistId"];
 
             if (v30)
             {
-              v31 = [v15 objectForKeyedSubscript:@"artistId"];
+              v31 = [metadataDictionary objectForKeyedSubscript:@"artistId"];
               [v25 setObject:v31 forKeyedSubscript:@"albumArtistId"];
             }
 
-            v32 = [v15 objectForKeyedSubscript:@"artistName"];
+            v32 = [metadataDictionary objectForKeyedSubscript:@"artistName"];
 
             if (v32)
             {
-              v33 = [v15 objectForKeyedSubscript:@"artistName"];
+              v33 = [metadataDictionary objectForKeyedSubscript:@"artistName"];
               [v25 setObject:v33 forKeyedSubscript:@"albumArtistName"];
             }
 
-            v34 = [v15 objectForKeyedSubscript:@"copyright"];
+            v34 = [metadataDictionary objectForKeyedSubscript:@"copyright"];
 
             if (v34)
             {
-              v35 = [v15 objectForKeyedSubscript:@"copyright"];
+              v35 = [metadataDictionary objectForKeyedSubscript:@"copyright"];
               [v25 setObject:v35 forKeyedSubscript:@"copyright"];
             }
 
-            v36 = [v15 objectForKeyedSubscript:@"isMasteredForItunes"];
+            v36 = [metadataDictionary objectForKeyedSubscript:@"isMasteredForItunes"];
 
             if (v36)
             {
-              v37 = [v15 objectForKeyedSubscript:@"isMasteredForItunes"];
+              v37 = [metadataDictionary objectForKeyedSubscript:@"isMasteredForItunes"];
               [v25 setObject:v37 forKeyedSubscript:@"isMasteredForItunes"];
             }
 
-            v38 = [v15 objectForKeyedSubscript:@"isCompilation"];
+            v38 = [metadataDictionary objectForKeyedSubscript:@"isCompilation"];
 
             if (v38)
             {
-              v39 = [v15 objectForKeyedSubscript:@"isCompilation"];
+              v39 = [metadataDictionary objectForKeyedSubscript:@"isCompilation"];
               [v25 setObject:v39 forKeyedSubscript:@"isCompilation"];
             }
 
-            v40 = [v15 objectForKeyedSubscript:@"seasonNumber"];
+            v40 = [metadataDictionary objectForKeyedSubscript:@"seasonNumber"];
 
             if (v40)
             {
-              v41 = [v15 objectForKeyedSubscript:@"seasonNumber"];
+              v41 = [metadataDictionary objectForKeyedSubscript:@"seasonNumber"];
               [v25 setObject:v41 forKeyedSubscript:@"episodeSeasonNumber"];
             }
           }
@@ -708,16 +708,16 @@ LABEL_50:
   return v13;
 }
 
-- (id)_allSongItemsFromLookupItems:(id)a3
+- (id)_allSongItemsFromLookupItems:(id)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -745,14 +745,14 @@ LABEL_50:
   return v5;
 }
 
-- (double)_songDurationFromOffersArray:(id)a3
+- (double)_songDurationFromOffersArray:(id)array
 {
   v28 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = array;
   v17 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v17)
   {
@@ -818,28 +818,28 @@ LABEL_50:
   return v13;
 }
 
-- (id)_lookupItemArtworksForArtworkDictionaries:(id)a3
+- (id)_lookupItemArtworksForArtworkDictionaries:(id)dictionaries
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = [MEMORY[0x277CBEB18] array];
+  dictionariesCopy = dictionaries;
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25[0] = v13;
+    v25[0] = dictionariesCopy;
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
 
-    v13 = v3;
+    dictionariesCopy = v3;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [dictionariesCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = v13;
+    v4 = dictionariesCopy;
     v5 = [v4 countByEnumeratingWithState:&v15 objects:v24 count:16];
     if (v5)
     {
@@ -878,7 +878,7 @@ LABEL_50:
             v11 = [[v9 alloc] initWithArtworkResponseDictionary:v8];
             if (v11)
             {
-              [v14 addObject:v11];
+              [array addObject:v11];
             }
           }
         }
@@ -890,33 +890,33 @@ LABEL_50:
     }
   }
 
-  return v14;
+  return array;
 }
 
-- (int64_t)_episodeTypeFromVideoSubTypeString:(id)a3
+- (int64_t)_episodeTypeFromVideoSubTypeString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"episode"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"episode"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"episodebonus"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"seasonbonus"))
+  else if ([stringCopy isEqualToString:@"episodebonus"] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", @"seasonbonus"))
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"tvtrailer"])
+  else if ([stringCopy isEqualToString:@"tvtrailer"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"tvextra"])
+  else if ([stringCopy isEqualToString:@"tvextra"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"tvinterview"])
+  else if ([stringCopy isEqualToString:@"tvinterview"])
   {
     v4 = 6;
   }
@@ -929,52 +929,52 @@ LABEL_50:
   return v4;
 }
 
-- (id)_artworkTokenForItemWithCollectionID:(int64_t)a3 itemID:(int64_t)a4
+- (id)_artworkTokenForItemWithCollectionID:(int64_t)d itemID:(int64_t)iD
 {
-  if (a3 >= 1)
+  if (d >= 1)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"store_collection_id=%lld", a4, a3];
-    v4 = LABEL_5:;
+    [MEMORY[0x277CCACA8] stringWithFormat:@"store_collection_id=%lld", iD, d];
+    uUIDString = LABEL_5:;
     goto LABEL_6;
   }
 
-  if (a4 >= 1)
+  if (iD >= 1)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"store_item_id=%lld", a4, a4];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"store_item_id=%lld", iD, iD];
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v6 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
 LABEL_6:
 
-  return v4;
+  return uUIDString;
 }
 
-- (id)_artworkTokenFromLookupItem:(id)a3
+- (id)_artworkTokenFromLookupItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 collectionStoreAdamID];
-  v6 = [v4 storeAdamID];
+  itemCopy = item;
+  collectionStoreAdamID = [itemCopy collectionStoreAdamID];
+  storeAdamID = [itemCopy storeAdamID];
 
-  return [(ML3StoreItemTrackData *)self _artworkTokenForItemWithCollectionID:v5 itemID:v6];
+  return [(ML3StoreItemTrackData *)self _artworkTokenForItemWithCollectionID:collectionStoreAdamID itemID:storeAdamID];
 }
 
-- (id)_importDictionaryForLookupItem:(id)a3 parentCollectionCache:(id)a4
+- (id)_importDictionaryForLookupItem:(id)item parentCollectionCache:(id)cache
 {
   v205 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v175 = a4;
-  v183 = v6;
-  if (![(ML3StoreItemTrackData *)self _platformMetadataItemIsMusicKind:v6]&& ![(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCKind:v6]&& ![(ML3StoreItemTrackData *)self _platformMetadataItemIsVideoKind:v6])
+  itemCopy = item;
+  cacheCopy = cache;
+  v183 = itemCopy;
+  if (![(ML3StoreItemTrackData *)self _platformMetadataItemIsMusicKind:itemCopy]&& ![(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCKind:itemCopy]&& ![(ML3StoreItemTrackData *)self _platformMetadataItemIsVideoKind:itemCopy])
   {
     log = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
-      v119 = [v6 kind];
+      kind = [itemCopy kind];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v119;
+      *(&buf + 4) = kind;
       _os_log_impl(&dword_22D2FA000, log, OS_LOG_TYPE_ERROR, "[ML3StoreItemTrackData] unsupported item kind %{public}@", &buf, 0xCu);
     }
 
@@ -983,17 +983,17 @@ LABEL_6:
   }
 
   v184 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if ([(ML3StoreItemTrackData *)self _platformMetadataItemIsMusicVideoKind:v6]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCVideoKind:v6])
+  if ([(ML3StoreItemTrackData *)self _platformMetadataItemIsMusicVideoKind:itemCopy]|| [(ML3StoreItemTrackData *)self _platformMetadataItemIsAUCVideoKind:itemCopy])
   {
     v7 = 1032;
   }
 
-  else if ([(ML3StoreItemTrackData *)self _platformMetadataItemIsTVShowKind:v6])
+  else if ([(ML3StoreItemTrackData *)self _platformMetadataItemIsTVShowKind:itemCopy])
   {
     v7 = 512;
   }
 
-  else if ([(ML3StoreItemTrackData *)self _platformMetadataItemIsMovieKind:v6])
+  else if ([(ML3StoreItemTrackData *)self _platformMetadataItemIsMovieKind:itemCopy])
   {
     v7 = 2048;
   }
@@ -1003,16 +1003,16 @@ LABEL_6:
     v7 = 8;
   }
 
-  log = [v6 metadataDictionary];
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "storeAdamID")}];
+  log = [itemCopy metadataDictionary];
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(itemCopy, "storeAdamID")}];
   [v184 setObject:v8 forKeyedSubscript:&unk_2840C97A0];
 
-  v9 = [v6 artistName];
+  artistName = [itemCopy artistName];
 
-  if (v9)
+  if (artistName)
   {
-    v10 = [v6 artistName];
-    [v184 setObject:v10 forKeyedSubscript:&unk_2840C97B8];
+    artistName2 = [itemCopy artistName];
+    [v184 setObject:artistName2 forKeyedSubscript:&unk_2840C97B8];
   }
 
   v11 = [log objectForKeyedSubscript:@"artistId"];
@@ -1191,13 +1191,13 @@ LABEL_6:
     [v184 setObject:v54 forKeyedSubscript:&unk_2840C99C8];
   }
 
-  v55 = [v6 formerStoreAdamIDs];
-  v56 = [v55 count];
+  formerStoreAdamIDs = [itemCopy formerStoreAdamIDs];
+  v56 = [formerStoreAdamIDs count];
 
   if (v56)
   {
-    v57 = [v183 formerStoreAdamIDs];
-    [v184 setObject:v57 forKeyedSubscript:&unk_2840C99E0];
+    formerStoreAdamIDs2 = [v183 formerStoreAdamIDs];
+    [v184 setObject:formerStoreAdamIDs2 forKeyedSubscript:&unk_2840C99E0];
   }
 
   v58 = [log objectForKeyedSubscript:@"albumArtistId"];
@@ -1236,7 +1236,7 @@ LABEL_6:
   }
 
   v63 = [log objectForKeyedSubscript:@"collectionId"];
-  v65 = [v175 objectForKeyedSubscript:v63];
+  v65 = [cacheCopy objectForKeyedSubscript:v63];
   if (v65)
   {
     goto LABEL_65;
@@ -1245,7 +1245,7 @@ LABEL_6:
   v65 = [(ML3StoreItemTrackData *)self _parentDictForItemAlbumId:v63];
   if (v65)
   {
-    [v175 setObject:v65 forKeyedSubscript:v63];
+    [cacheCopy setObject:v65 forKeyedSubscript:v63];
 LABEL_65:
     v66 = [v65 objectForKeyedSubscript:@"albumArtistId"];
 
@@ -1284,12 +1284,12 @@ LABEL_71:
 
   if ((v7 & 0x200) != 0)
   {
-    v73 = [v183 artistName];
+    artistName3 = [v183 artistName];
 
-    if (v73)
+    if (artistName3)
     {
-      v74 = [v183 artistName];
-      [v184 setObject:v74 forKeyedSubscript:&unk_2840C9A28];
+      artistName4 = [v183 artistName];
+      [v184 setObject:artistName4 forKeyedSubscript:&unk_2840C9A28];
     }
 
     v75 = [log objectForKeyedSubscript:@"trackNumber"];
@@ -1327,8 +1327,8 @@ LABEL_71:
   v180 = [log objectForKeyedSubscript:@"releaseDate"];
   if (v180)
   {
-    v85 = [(ML3StoreItemTrackData *)self _storePlatformDateFormatter];
-    v86 = [v85 dateFromString:v180];
+    _storePlatformDateFormatter = [(ML3StoreItemTrackData *)self _storePlatformDateFormatter];
+    v86 = [_storePlatformDateFormatter dateFromString:v180];
 
     v87 = MEMORY[0x277CCABB0];
     [v86 timeIntervalSinceReferenceDate];
@@ -1381,14 +1381,14 @@ LABEL_71:
   v179 = [log objectForKeyedSubscript:@"genreNames"];
   if ([v179 count])
   {
-    v99 = [v179 firstObject];
-    [v184 setObject:v99 forKeyedSubscript:&unk_2840C9B30];
+    firstObject = [v179 firstObject];
+    [v184 setObject:firstObject forKeyedSubscript:&unk_2840C9B30];
   }
 
-  v100 = [v183 artworkInfos];
-  if ([v100 count])
+  artworkInfos = [v183 artworkInfos];
+  if ([artworkInfos count])
   {
-    v101 = v100;
+    v101 = artworkInfos;
   }
 
   else
@@ -1409,10 +1409,10 @@ LABEL_71:
   v181 = [log objectForKeyedSubscript:@"contentRatingsBySystem"];
   if (v181)
   {
-    v104 = [v181 allKeys];
-    v105 = [v104 firstObject];
+    allKeys = [v181 allKeys];
+    firstObject2 = [allKeys firstObject];
 
-    v106 = [v181 objectForKey:v105];
+    v106 = [v181 objectForKey:firstObject2];
     v107 = v106;
     if (v106)
     {
@@ -1431,7 +1431,7 @@ LABEL_71:
       v111 = v110;
 
       v112 = [v107 objectForKeyedSubscript:@"value"];
-      if ([v105 isEqualToString:@"riaa"])
+      if ([firstObject2 isEqualToString:@"riaa"])
       {
         if (([(__CFString *)v111 isEqualToString:@"Explicit"]& 1) != 0)
         {
@@ -1467,16 +1467,16 @@ LABEL_71:
 
         if (objc_opt_respondsToSelector())
         {
-          v118 = [v112 integerValue];
+          integerValue = [v112 integerValue];
         }
 
         else
         {
-          v118 = 0;
+          integerValue = 0;
         }
 
-        v120 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@|%@|%ld|%@", v105, v111, v118, v117];
-        [v184 setObject:v120 forKeyedSubscript:&unk_2840C9B60];
+        v117 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@|%@|%ld|%@", firstObject2, v111, integerValue, v117];
+        [v184 setObject:v117 forKeyedSubscript:&unk_2840C9B60];
 
         v113 = 0;
       }
@@ -1551,9 +1551,9 @@ LABEL_71:
         _Block_object_dispose(&v195, 8);
         if (!v129)
         {
-          v162 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v163 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformAudioTraitSpatial(void)"];
-          [v162 handleFailureInFunction:v163 file:@"ML3StoreItemTrackData.m" lineNumber:44 description:{@"%s", dlerror()}];
+          [currentHandler handleFailureInFunction:v163 file:@"ML3StoreItemTrackData.m" lineNumber:44 description:{@"%s", dlerror()}];
 
           goto LABEL_185;
         }
@@ -1590,9 +1590,9 @@ LABEL_71:
           _Block_object_dispose(&v195, 8);
           if (!v134)
           {
-            v164 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
             v165 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformAudioTraitLossless(void)"];
-            [v164 handleFailureInFunction:v165 file:@"ML3StoreItemTrackData.m" lineNumber:45 description:{@"%s", dlerror()}];
+            [currentHandler2 handleFailureInFunction:v165 file:@"ML3StoreItemTrackData.m" lineNumber:45 description:{@"%s", dlerror()}];
 
             goto LABEL_185;
           }
@@ -1629,9 +1629,9 @@ LABEL_71:
             _Block_object_dispose(&v195, 8);
             if (!v139)
             {
-              v166 = [MEMORY[0x277CCA890] currentHandler];
+              currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
               v167 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformAudioTraitHiResLossless(void)"];
-              [v166 handleFailureInFunction:v167 file:@"ML3StoreItemTrackData.m" lineNumber:46 description:{@"%s", dlerror()}];
+              [currentHandler3 handleFailureInFunction:v167 file:@"ML3StoreItemTrackData.m" lineNumber:46 description:{@"%s", dlerror()}];
 
               goto LABEL_185;
             }
@@ -1668,9 +1668,9 @@ LABEL_71:
               _Block_object_dispose(&v195, 8);
               if (!v144)
               {
-                v168 = [MEMORY[0x277CCA890] currentHandler];
+                currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
                 v169 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformAudioTraitLossyStereo(void)"];
-                [v168 handleFailureInFunction:v169 file:@"ML3StoreItemTrackData.m" lineNumber:49 description:{@"%s", dlerror()}];
+                [currentHandler4 handleFailureInFunction:v169 file:@"ML3StoreItemTrackData.m" lineNumber:49 description:{@"%s", dlerror()}];
 
                 goto LABEL_185;
               }
@@ -1707,9 +1707,9 @@ LABEL_71:
                 _Block_object_dispose(&v195, 8);
                 if (!v149)
                 {
-                  v170 = [MEMORY[0x277CCA890] currentHandler];
+                  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
                   v171 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformAudioTraitAtmos(void)"];
-                  [v170 handleFailureInFunction:v171 file:@"ML3StoreItemTrackData.m" lineNumber:47 description:{@"%s", dlerror()}];
+                  [currentHandler5 handleFailureInFunction:v171 file:@"ML3StoreItemTrackData.m" lineNumber:47 description:{@"%s", dlerror()}];
 
                   goto LABEL_185;
                 }
@@ -1746,9 +1746,9 @@ LABEL_71:
                   _Block_object_dispose(&v195, 8);
                   if (!v154)
                   {
-                    v172 = [MEMORY[0x277CCA890] currentHandler];
+                    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
                     v173 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getICStorePlatformAudioTraitSurround(void)"];
-                    [v172 handleFailureInFunction:v173 file:@"ML3StoreItemTrackData.m" lineNumber:48 description:{@"%s", dlerror()}];
+                    [currentHandler6 handleFailureInFunction:v173 file:@"ML3StoreItemTrackData.m" lineNumber:48 description:{@"%s", dlerror()}];
 
 LABEL_185:
                     __break(1u);
@@ -1792,10 +1792,10 @@ LABEL_178:
   return v184;
 }
 
-- (id)_parentDictForItemAlbumId:(id)a3
+- (id)_parentDictForItemAlbumId:(id)id
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idCopy = id;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1805,15 +1805,15 @@ LABEL_178:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    stringValue = idCopy;
   }
 
   else
   {
-    v4 = [v3 stringValue];
+    stringValue = [idCopy stringValue];
   }
 
-  v5 = v4;
+  v5 = stringValue;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2050000000;
@@ -1870,8 +1870,8 @@ LABEL_178:
 
   v13 = v12;
   _Block_object_dispose(&v36, 8);
-  v14 = [v12 activeAccount];
-  v15 = [v11 initWithIdentity:v14];
+  activeAccount = [v12 activeAccount];
+  v15 = [v11 initWithIdentity:activeAccount];
 
   [v8 setRequestContext:v15];
   [v8 setKeyProfile:@"album-parent"];
@@ -1943,14 +1943,14 @@ void __51__ML3StoreItemTrackData__parentDictForItemAlbumId___block_invoke(uint64
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_storeItemsImportPropertiesFromTrackData:(id)a3
+- (id)_storeItemsImportPropertiesFromTrackData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
+  dataCopy = data;
   v5 = MSVPropertyListDataClasses();
   v11 = 0;
-  v6 = [v3 unarchivedObjectOfClasses:v5 fromData:v4 error:&v11];
+  v6 = [v3 unarchivedObjectOfClasses:v5 fromData:dataCopy error:&v11];
 
   v7 = v11;
   if (!v6)
@@ -1969,16 +1969,16 @@ void __51__ML3StoreItemTrackData__parentDictForItemAlbumId___block_invoke(uint64
   return v9;
 }
 
-- (id)_storeItemsImportPropertiesFromLookupItems:(id)a3
+- (id)_storeItemsImportPropertiesFromLookupItems:(id)items
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v20 = self;
-  v19 = v4;
-  v5 = [(ML3StoreItemTrackData *)self _allSongItemsFromLookupItems:v4];
+  itemsCopy = items;
+  v22 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+  selfCopy = self;
+  v19 = itemsCopy;
+  v5 = [(ML3StoreItemTrackData *)self _allSongItemsFromLookupItems:itemsCopy];
   v6 = [MEMORY[0x277CBEB58] set];
-  v21 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -2000,8 +2000,8 @@ void __51__ML3StoreItemTrackData__parentDictForItemAlbumId___block_invoke(uint64
 
         v11 = *(*(&v24 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 storeAdamID];
-        v14 = [MEMORY[0x277CCABB0] numberWithLongLong:v13];
+        storeAdamID = [v11 storeAdamID];
+        v14 = [MEMORY[0x277CCABB0] numberWithLongLong:storeAdamID];
         v15 = [v6 containsObject:v14];
 
         if (v15)
@@ -2010,16 +2010,16 @@ void __51__ML3StoreItemTrackData__parentDictForItemAlbumId___block_invoke(uint64
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
-            v29 = v13;
+            v29 = storeAdamID;
             _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_DEFAULT, "[ML3StoreItemTrackData] not including item with store identifier:%lld", buf, 0xCu);
           }
         }
 
         else
         {
-          v16 = [(ML3StoreItemTrackData *)v20 _importDictionaryForLookupItem:v11 parentCollectionCache:v21];
+          v16 = [(ML3StoreItemTrackData *)selfCopy _importDictionaryForLookupItem:v11 parentCollectionCache:dictionary];
           [v22 addObject:v16];
-          v17 = [MEMORY[0x277CCABB0] numberWithLongLong:v13];
+          v17 = [MEMORY[0x277CCABB0] numberWithLongLong:storeAdamID];
           [v6 addObject:v17];
         }
 
@@ -2053,8 +2053,8 @@ void __51__ML3StoreItemTrackData__parentDictForItemAlbumId___block_invoke(uint64
 
 - (unint64_t)trackCount
 {
-  v2 = [(ML3StoreItemTrackData *)self parsedStoreItemsImportProperties];
-  v3 = [v2 count];
+  parsedStoreItemsImportProperties = [(ML3StoreItemTrackData *)self parsedStoreItemsImportProperties];
+  v3 = [parsedStoreItemsImportProperties count];
 
   return v3;
 }
@@ -2092,12 +2092,12 @@ LABEL_7:
 - (NSData)trackData
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(ML3StoreItemTrackData *)self parsedStoreItemsImportProperties];
-  v3 = v2;
-  if (v2)
+  parsedStoreItemsImportProperties = [(ML3StoreItemTrackData *)self parsedStoreItemsImportProperties];
+  v3 = parsedStoreItemsImportProperties;
+  if (parsedStoreItemsImportProperties)
   {
     v7 = @"track_items";
-    v8[0] = v2;
+    v8[0] = parsedStoreItemsImportProperties;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
   }
@@ -2110,15 +2110,15 @@ LABEL_7:
   return v5;
 }
 
-- (ML3StoreItemTrackData)initWithTrackData:(id)a3
+- (ML3StoreItemTrackData)initWithTrackData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ML3StoreItemTrackData;
   v5 = [(ML3StoreItemTrackData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     trackData = v5->_trackData;
     v5->_trackData = v6;
   }
@@ -2126,15 +2126,15 @@ LABEL_7:
   return v5;
 }
 
-- (ML3StoreItemTrackData)initWithLookupItems:(id)a3
+- (ML3StoreItemTrackData)initWithLookupItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = ML3StoreItemTrackData;
   v5 = [(ML3StoreItemTrackData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     lookupItems = v5->_lookupItems;
     v5->_lookupItems = v6;
   }

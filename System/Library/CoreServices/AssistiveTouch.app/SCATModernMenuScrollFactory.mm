@@ -1,33 +1,33 @@
 @interface SCATModernMenuScrollFactory
-+ (id)_fallbackAncestorForAutoscrollForMenu:(id)a3;
-+ (id)_fallbackAncestorForScrollToTopForMenu:(id)a3;
-+ (id)_menuItemDetailsForScrollAction:(int)a3;
-+ (id)menuItemForScrollAction:(int)a3 withDelegate:(id)a4;
-+ (id)menuItemWithItemDictionary:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (void)_performFallbackScrollAncestorAction:(int)a3 withMenu:(id)a4;
-+ (void)_performScrollAction:(int)a3 withMenu:(id)a4;
++ (id)_fallbackAncestorForAutoscrollForMenu:(id)menu;
++ (id)_fallbackAncestorForScrollToTopForMenu:(id)menu;
++ (id)_menuItemDetailsForScrollAction:(int)action;
++ (id)menuItemForScrollAction:(int)action withDelegate:(id)delegate;
++ (id)menuItemWithItemDictionary:(id)dictionary menu:(id)menu delegate:(id)delegate;
++ (void)_performFallbackScrollAncestorAction:(int)action withMenu:(id)menu;
++ (void)_performScrollAction:(int)action withMenu:(id)menu;
 @end
 
 @implementation SCATModernMenuScrollFactory
 
-+ (id)menuItemForScrollAction:(int)a3 withDelegate:(id)a4
++ (id)menuItemForScrollAction:(int)action withDelegate:(id)delegate
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [a1 _menuItemDetailsForScrollAction:v4];
-  v8 = [v6 menu];
-  v9 = [a1 menuItemWithItemDictionary:v7 menu:v8 delegate:v6];
+  v4 = *&action;
+  delegateCopy = delegate;
+  v7 = [self _menuItemDetailsForScrollAction:v4];
+  menu = [delegateCopy menu];
+  v9 = [self menuItemWithItemDictionary:v7 menu:menu delegate:delegateCopy];
 
   return v9;
 }
 
-+ (id)_menuItemDetailsForScrollAction:(int)a3
++ (id)_menuItemDetailsForScrollAction:(int)action
 {
-  if (a3 > 2018)
+  if (action > 2018)
   {
-    if (a3 <= 2029)
+    if (action <= 2029)
     {
-      if (a3 == 2019)
+      if (action == 2019)
       {
         v22[0] = @"action_scrollNext";
         v21[0] = @"identifier";
@@ -36,9 +36,9 @@
         v22[1] = v3;
         v21[2] = @"imageName";
         v6 = +[HNDAccessibilityManager sharedManager];
-        v11 = [v6 applicationIsRTL];
+        applicationIsRTL = [v6 applicationIsRTL];
         v12 = @"SCATIcon_action_scrollRight";
-        if (v11)
+        if (applicationIsRTL)
         {
           v12 = @"SCATIcon_action_scrollLeft";
         }
@@ -52,7 +52,7 @@
 
       else
       {
-        if (a3 != 2020)
+        if (action != 2020)
         {
           goto LABEL_30;
         }
@@ -64,9 +64,9 @@
         v20[1] = v3;
         v19[2] = @"imageName";
         v6 = +[HNDAccessibilityManager sharedManager];
-        v7 = [v6 applicationIsRTL];
+        applicationIsRTL2 = [v6 applicationIsRTL];
         v8 = @"SCATIcon_action_scrollLeft";
-        if (v7)
+        if (applicationIsRTL2)
         {
           v8 = @"SCATIcon_action_scrollRight";
         }
@@ -84,7 +84,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (a3 == 2030)
+    if (action == 2030)
     {
       v18[0] = @"action_scrollToTop";
       v17[0] = @"identifier";
@@ -98,7 +98,7 @@ LABEL_26:
       goto LABEL_25;
     }
 
-    if (a3 == 2031)
+    if (action == 2031)
     {
       v16[0] = @"action_autoscroll";
       v15[0] = @"identifier";
@@ -113,9 +113,9 @@ LABEL_26:
     }
   }
 
-  else if (a3 > 2007)
+  else if (action > 2007)
   {
-    if (a3 == 2008)
+    if (action == 2008)
     {
       v26[0] = @"action_scrollLeft";
       v25[0] = @"identifier";
@@ -129,7 +129,7 @@ LABEL_26:
       goto LABEL_25;
     }
 
-    if (a3 == 2009)
+    if (action == 2009)
     {
       v24[0] = @"action_scrollRight";
       v23[0] = @"identifier";
@@ -146,7 +146,7 @@ LABEL_26:
 
   else
   {
-    if (a3 == 2006)
+    if (action == 2006)
     {
       v30[0] = @"action_scrollDown";
       v29[0] = @"identifier";
@@ -160,7 +160,7 @@ LABEL_26:
       goto LABEL_25;
     }
 
-    if (a3 == 2007)
+    if (action == 2007)
     {
       v28[0] = @"action_scrollUp";
       v27[0] = @"identifier";
@@ -185,34 +185,34 @@ LABEL_27:
   return v13;
 }
 
-+ (id)menuItemWithItemDictionary:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemWithItemDictionary:(id)dictionary menu:(id)menu delegate:(id)delegate
 {
-  v7 = a3;
-  v25 = a5;
-  v8 = [v7 objectForKey:@"identifier"];
-  v26 = [v7 objectForKey:@"title"];
-  v24 = [v7 objectForKey:@"imageName"];
-  v9 = [v7 objectForKey:@"activateBehavior"];
-  v23 = [v9 unsignedIntegerValue];
+  dictionaryCopy = dictionary;
+  delegateCopy = delegate;
+  v8 = [dictionaryCopy objectForKey:@"identifier"];
+  v26 = [dictionaryCopy objectForKey:@"title"];
+  v24 = [dictionaryCopy objectForKey:@"imageName"];
+  v9 = [dictionaryCopy objectForKey:@"activateBehavior"];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v10 = [v7 objectForKeyedSubscript:@"guidedAccess"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"guidedAccess"];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
   {
-    v12 = 1;
+    bOOLValue = 1;
   }
 
-  v13 = [v7 objectForKeyedSubscript:@"assistiveAccess"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"assistiveAccess"];
   v14 = v13;
-  v22 = v12;
+  v22 = bOOLValue;
   if (v13)
   {
-    LOBYTE(v12) = [v13 BOOLValue];
+    LOBYTE(bOOLValue) = [v13 BOOLValue];
   }
 
   if ([v8 isEqualToString:@"action_scrollUp"])
@@ -224,7 +224,7 @@ LABEL_27:
 LABEL_14:
     v15[2] = v16;
     v15[3] = &unk_1001D6298;
-    v15[4] = a1;
+    v15[4] = self;
     v17 = objc_retainBlock(v15);
     goto LABEL_15;
   }
@@ -291,90 +291,90 @@ LABEL_14:
 
 LABEL_15:
   v18 = [objc_opt_class() updateBlockForIdentifier:v8];
-  LOBYTE(v21) = v12;
-  v19 = [SCATModernMenuItem itemWithIdentifier:v8 delegate:v25 title:v26 imageName:v24 activateBehavior:v23 allowedWithGuidedAccess:v22 allowedWithAssistiveAccess:v21 activateHandler:v17 updateHandler:v18];
+  LOBYTE(v21) = bOOLValue;
+  v19 = [SCATModernMenuItem itemWithIdentifier:v8 delegate:delegateCopy title:v26 imageName:v24 activateBehavior:unsignedIntegerValue allowedWithGuidedAccess:v22 allowedWithAssistiveAccess:v21 activateHandler:v17 updateHandler:v18];
 
   return v19;
 }
 
-+ (id)_fallbackAncestorForScrollToTopForMenu:(id)a3
++ (id)_fallbackAncestorForScrollToTopForMenu:(id)menu
 {
-  v3 = a3;
-  v4 = [v3 fallbackScrollUpAncestor];
-  v5 = v4;
-  if (v4)
+  menuCopy = menu;
+  fallbackScrollUpAncestor = [menuCopy fallbackScrollUpAncestor];
+  v5 = fallbackScrollUpAncestor;
+  if (fallbackScrollUpAncestor)
   {
-    v6 = v4;
+    fallbackScrollDownAncestor = fallbackScrollUpAncestor;
   }
 
   else
   {
-    v6 = [v3 fallbackScrollDownAncestor];
+    fallbackScrollDownAncestor = [menuCopy fallbackScrollDownAncestor];
   }
 
-  v7 = v6;
+  v7 = fallbackScrollDownAncestor;
 
   v8 = [AXElement elementWithUIElement:v7];
 
   return v8;
 }
 
-+ (id)_fallbackAncestorForAutoscrollForMenu:(id)a3
++ (id)_fallbackAncestorForAutoscrollForMenu:(id)menu
 {
-  v3 = a3;
-  v4 = [v3 fallbackScrollDownAncestor];
-  v5 = v4;
-  if (v4)
+  menuCopy = menu;
+  fallbackScrollDownAncestor = [menuCopy fallbackScrollDownAncestor];
+  v5 = fallbackScrollDownAncestor;
+  if (fallbackScrollDownAncestor)
   {
-    v6 = v4;
+    fallbackScrollUpAncestor = fallbackScrollDownAncestor;
   }
 
   else
   {
-    v6 = [v3 fallbackScrollUpAncestor];
+    fallbackScrollUpAncestor = [menuCopy fallbackScrollUpAncestor];
   }
 
-  v7 = v6;
+  v7 = fallbackScrollUpAncestor;
 
   v8 = [AXElement elementWithUIElement:v7];
 
   return v8;
 }
 
-+ (void)_performFallbackScrollAncestorAction:(int)a3 withMenu:(id)a4
++ (void)_performFallbackScrollAncestorAction:(int)action withMenu:(id)menu
 {
-  v5 = a4;
-  v17 = v5;
-  if (a3 <= 2007)
+  menuCopy = menu;
+  v17 = menuCopy;
+  if (action <= 2007)
   {
-    if (a3 == 2006)
+    if (action == 2006)
     {
-      v13 = [v5 fallbackScrollDownAncestor];
-      v14 = [v13 performAXAction:2006];
+      fallbackScrollDownAncestor = [menuCopy fallbackScrollDownAncestor];
+      v14 = [fallbackScrollDownAncestor performAXAction:2006];
 
       if (v14)
       {
         goto LABEL_16;
       }
 
-      v8 = [v17 fallbackScrollUpAncestor];
-      v9 = v8;
+      fallbackScrollUpAncestor = [v17 fallbackScrollUpAncestor];
+      v9 = fallbackScrollUpAncestor;
       v10 = 2006;
       goto LABEL_15;
     }
 
-    if (a3 == 2007)
+    if (action == 2007)
     {
-      v6 = [v5 fallbackScrollUpAncestor];
-      v7 = [v6 performAXAction:2007];
+      fallbackScrollUpAncestor2 = [menuCopy fallbackScrollUpAncestor];
+      v7 = [fallbackScrollUpAncestor2 performAXAction:2007];
 
       if (v7)
       {
         goto LABEL_16;
       }
 
-      v8 = [v17 fallbackScrollDownAncestor];
-      v9 = v8;
+      fallbackScrollUpAncestor = [v17 fallbackScrollDownAncestor];
+      v9 = fallbackScrollUpAncestor;
       v10 = 2007;
       goto LABEL_15;
     }
@@ -384,20 +384,20 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (a3 != 2008)
+  if (action != 2008)
   {
-    if (a3 == 2009)
+    if (action == 2009)
     {
-      v11 = [v5 fallbackScrollRightAncestor];
-      v12 = [v11 performAXAction:2009];
+      fallbackScrollRightAncestor = [menuCopy fallbackScrollRightAncestor];
+      v12 = [fallbackScrollRightAncestor performAXAction:2009];
 
       if (v12)
       {
         goto LABEL_16;
       }
 
-      v8 = [v17 fallbackScrollLeftAncestor];
-      v9 = v8;
+      fallbackScrollUpAncestor = [v17 fallbackScrollLeftAncestor];
+      v9 = fallbackScrollUpAncestor;
       v10 = 2009;
       goto LABEL_15;
     }
@@ -405,35 +405,35 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v15 = [v5 fallbackScrollLeftAncestor];
-  v16 = [v15 performAXAction:2008];
+  fallbackScrollLeftAncestor = [menuCopy fallbackScrollLeftAncestor];
+  v16 = [fallbackScrollLeftAncestor performAXAction:2008];
 
   if (v16)
   {
     goto LABEL_16;
   }
 
-  v8 = [v17 fallbackScrollRightAncestor];
-  v9 = v8;
+  fallbackScrollUpAncestor = [v17 fallbackScrollRightAncestor];
+  v9 = fallbackScrollUpAncestor;
   v10 = 2008;
 LABEL_15:
-  [v8 performAXAction:v10];
+  [fallbackScrollUpAncestor performAXAction:v10];
 
 LABEL_16:
 }
 
-+ (void)_performScrollAction:(int)a3 withMenu:(id)a4
++ (void)_performScrollAction:(int)action withMenu:(id)menu
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [v6 element];
-  v8 = [v7 scrollableElement];
+  v4 = *&action;
+  menuCopy = menu;
+  element = [menuCopy element];
+  scrollableElement = [element scrollableElement];
 
-  if (v8)
+  if (scrollableElement)
   {
-    if (([v8 performAction:v4] & 1) == 0)
+    if (([scrollableElement performAction:v4] & 1) == 0)
     {
-      [a1 _performFallbackScrollAncestorAction:v4 withMenu:v6];
+      [self _performFallbackScrollAncestorAction:v4 withMenu:menuCopy];
     }
   }
 
@@ -446,8 +446,8 @@ LABEL_16:
 
     if ([v11 count] == 1)
     {
-      v12 = [v11 firstObject];
-      [v12 performAction:v4];
+      firstObject = [v11 firstObject];
+      [firstObject performAction:v4];
     }
 
     else if ([v10 count] < 2)
@@ -461,7 +461,7 @@ LABEL_16:
       v13[1] = 3221225472;
       v13[2] = sub_1000D5B78;
       v13[3] = &unk_1001D4828;
-      v14 = v6;
+      v14 = menuCopy;
       v15 = v10;
       v16 = v11;
       v17 = v4;

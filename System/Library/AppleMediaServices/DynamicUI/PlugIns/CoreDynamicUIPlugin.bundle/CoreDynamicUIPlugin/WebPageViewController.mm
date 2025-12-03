@@ -1,48 +1,48 @@
 @interface WebPageViewController
-- (_TtC19CoreDynamicUIPlugin21WebPageViewController)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5;
-- (void)webViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5;
-- (void)webViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)willDismissWebViewController:(id)a3;
+- (_TtC19CoreDynamicUIPlugin21WebPageViewController)initWithBag:(id)bag account:(id)account clientInfo:(id)info;
+- (void)webViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error;
+- (void)webViewController:(id)controller didResolveWithResult:(id)result error:(id)error completion:(id)completion;
+- (void)willDismissWebViewController:(id)controller;
 @end
 
 @implementation WebPageViewController
 
-- (_TtC19CoreDynamicUIPlugin21WebPageViewController)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5
+- (_TtC19CoreDynamicUIPlugin21WebPageViewController)initWithBag:(id)bag account:(id)account clientInfo:(id)info
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = a5;
+  accountCopy = account;
+  infoCopy = info;
   sub_8ADE0();
 }
 
-- (void)webViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5
+- (void)webViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
   sub_8BE90();
 }
 
-- (void)webViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5 completion:(id)a6
+- (void)webViewController:(id)controller didResolveWithResult:(id)result error:(id)error completion:(id)completion
 {
-  v10 = _Block_copy(a6);
-  if (a4)
+  v10 = _Block_copy(completion);
+  if (result)
   {
     sub_8F564();
   }
 
   *(swift_allocObject() + 16) = v10;
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
   sub_8C54C();
 }
 
-- (void)willDismissWebViewController:(id)a3
+- (void)willDismissWebViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_8D330();
 }
 

@@ -1,40 +1,40 @@
 @interface VFCancelationToken
-+ (VFCancelationToken)tokenWithCancelationBlock:(id)a3;
-+ (VFCancelationToken)tokenWithLabel:(id)a3 cancelationBlock:(id)a4;
-- (void)addCancelable:(id)a3;
++ (VFCancelationToken)tokenWithCancelationBlock:(id)block;
++ (VFCancelationToken)tokenWithLabel:(id)label cancelationBlock:(id)block;
+- (void)addCancelable:(id)cancelable;
 @end
 
 @implementation VFCancelationToken
 
-+ (VFCancelationToken)tokenWithLabel:(id)a3 cancelationBlock:(id)a4
++ (VFCancelationToken)tokenWithLabel:(id)label cancelationBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(VFInvocationToken *)[VFCancelationToken alloc] initWithLabel:v6];
+  blockCopy = block;
+  labelCopy = label;
+  v7 = [(VFInvocationToken *)[VFCancelationToken alloc] initWithLabel:labelCopy];
 
-  [(VFCancelationToken *)v7 addCancelationBlock:v5];
+  [(VFCancelationToken *)v7 addCancelationBlock:blockCopy];
 
   return v7;
 }
 
-+ (VFCancelationToken)tokenWithCancelationBlock:(id)a3
++ (VFCancelationToken)tokenWithCancelationBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(VFCancelationToken);
-  [(VFCancelationToken *)v4 addCancelationBlock:v3];
+  [(VFCancelationToken *)v4 addCancelationBlock:blockCopy];
 
   return v4;
 }
 
-- (void)addCancelable:(id)a3
+- (void)addCancelable:(id)cancelable
 {
-  v4 = a3;
+  cancelableCopy = cancelable;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__VFCancelationToken_addCancelable___block_invoke;
   v6[3] = &unk_279E33588;
-  v7 = v4;
-  v5 = v4;
+  v7 = cancelableCopy;
+  v5 = cancelableCopy;
   [(VFCancelationToken *)self addCancelationBlock:v6];
 }
 

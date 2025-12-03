@@ -1,9 +1,9 @@
 @interface JavaIoFilterInputStream
 - (BOOL)markSupported;
-- (JavaIoFilterInputStream)initWithJavaIoInputStream:(id)a3;
+- (JavaIoFilterInputStream)initWithJavaIoInputStream:(id)stream;
 - (int)available;
 - (int)read;
-- (int64_t)skipWithLong:(int64_t)a3;
+- (int64_t)skipWithLong:(int64_t)long;
 - (void)__javaClone;
 - (void)close;
 - (void)dealloc;
@@ -12,10 +12,10 @@
 
 @implementation JavaIoFilterInputStream
 
-- (JavaIoFilterInputStream)initWithJavaIoInputStream:(id)a3
+- (JavaIoFilterInputStream)initWithJavaIoInputStream:(id)stream
 {
   JavaIoInputStream_init(self, a2);
-  JreVolatileStrongAssign(&self->in_, a3);
+  JreVolatileStrongAssign(&self->in_, stream);
   return self;
 }
 
@@ -77,7 +77,7 @@
   objc_sync_exit(self);
 }
 
-- (int64_t)skipWithLong:(int64_t)a3
+- (int64_t)skipWithLong:(int64_t)long
 {
   v4 = atomic_load(&self->in_);
   if (!v4)
@@ -85,7 +85,7 @@
     JreThrowNullPointerException();
   }
 
-  return [v4 skipWithLong:a3];
+  return [v4 skipWithLong:long];
 }
 
 - (void)dealloc

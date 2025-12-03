@@ -26,7 +26,7 @@
       goto LABEL_10;
     }
 
-    v9 = [MEMORY[0x277CD3AB8] successWithResolvedValue:{objc_msgSend(v7, "BOOLValue")}];
+    unsupported = [MEMORY[0x277CD3AB8] successWithResolvedValue:{objc_msgSend(v7, "BOOLValue")}];
   }
 
   else
@@ -46,7 +46,7 @@
 
     if (v15)
     {
-      v9 = [MEMORY[0x277CD3AB8] unsupported];
+      unsupported = [MEMORY[0x277CD3AB8] unsupported];
     }
 
     else
@@ -55,7 +55,7 @@
 
       if (v16)
       {
-        v9 = [MEMORY[0x277CD3AB8] needsValue];
+        unsupported = [MEMORY[0x277CD3AB8] needsValue];
       }
 
       else
@@ -67,12 +67,12 @@
           goto LABEL_10;
         }
 
-        v9 = [MEMORY[0x277CD3AB8] notRequired];
+        unsupported = [MEMORY[0x277CD3AB8] notRequired];
       }
     }
   }
 
-  v10 = v9;
+  v10 = unsupported;
 LABEL_10:
 
 LABEL_11:

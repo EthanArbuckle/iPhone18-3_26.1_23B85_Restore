@@ -6,11 +6,11 @@
 
 - (void)px_splitViewController
 {
-  v1 = [a1 splitViewController];
+  splitViewController = [self splitViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = splitViewController;
   }
 
   else

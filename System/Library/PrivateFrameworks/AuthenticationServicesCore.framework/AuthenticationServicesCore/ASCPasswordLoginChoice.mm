@@ -1,55 +1,55 @@
 @interface ASCPasswordLoginChoice
-- (ASCPasswordLoginChoice)initWithCoder:(id)a3;
-- (ASCPasswordLoginChoice)initWithUsername:(id)a3 site:(id)a4 externalCredentialIdentity:(id)a5 customTitle:(id)a6 groupName:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (ASCPasswordLoginChoice)initWithCoder:(id)coder;
+- (ASCPasswordLoginChoice)initWithUsername:(id)username site:(id)site externalCredentialIdentity:(id)identity customTitle:(id)title groupName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSharedCredential;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCPasswordLoginChoice
 
-- (ASCPasswordLoginChoice)initWithUsername:(id)a3 site:(id)a4 externalCredentialIdentity:(id)a5 customTitle:(id)a6 groupName:(id)a7
+- (ASCPasswordLoginChoice)initWithUsername:(id)username site:(id)site externalCredentialIdentity:(id)identity customTitle:(id)title groupName:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  usernameCopy = username;
+  siteCopy = site;
+  identityCopy = identity;
+  titleCopy = title;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = ASCPasswordLoginChoice;
   v17 = [(ASCPasswordLoginChoice *)&v32 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [usernameCopy copy];
     username = v17->_username;
     v17->_username = v18;
 
-    v20 = [v13 copy];
+    v20 = [siteCopy copy];
     site = v17->_site;
     v17->_site = v20;
 
-    v22 = [v14 owningExtensionState];
-    v23 = [v22 providerBundleID];
+    owningExtensionState = [identityCopy owningExtensionState];
+    providerBundleID = [owningExtensionState providerBundleID];
 
-    v24 = [v23 copy];
+    v24 = [providerBundleID copy];
     providerBundleIdentifier = v17->_providerBundleIdentifier;
     v17->_providerBundleIdentifier = v24;
 
-    objc_storeStrong(&v17->_externalCredentialIdentity, a5);
-    v26 = [v15 length];
+    objc_storeStrong(&v17->_externalCredentialIdentity, identity);
+    v26 = [titleCopy length];
     if (v26)
     {
-      v26 = [v15 copy];
+      v26 = [titleCopy copy];
     }
 
     customTitle = v17->_customTitle;
     v17->_customTitle = v26;
 
-    v28 = [v16 length];
+    v28 = [nameCopy length];
     if (v28)
     {
-      v28 = [v16 copy];
+      v28 = [nameCopy copy];
     }
 
     groupName = v17->_groupName;
@@ -63,19 +63,19 @@
 
 - (BOOL)isSharedCredential
 {
-  v2 = [(ASCPasswordLoginChoice *)self groupName];
-  v3 = [v2 length] != 0;
+  groupName = [(ASCPasswordLoginChoice *)self groupName];
+  v3 = [groupName length] != 0;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSString *)self->_username isEqualToString:v5[1]]&& self->_externalCredentialIdentity == v5[5] && [(NSString *)self->_site isEqualToString:v5[2]];
   }
 
@@ -87,47 +87,47 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   username = self->_username;
-  v5 = a3;
-  [v5 encodeObject:username forKey:@"passwordLoginChoiceUsername"];
-  [v5 encodeObject:self->_site forKey:@"passwordLoginChoiceSite"];
-  [v5 encodeObject:self->_customTitle forKey:@"passwordLoginChoiceCustomTitle"];
-  [v5 encodeObject:self->_groupName forKey:@"passwordLoginChoiceGroupNameKey"];
-  [v5 encodeObject:self->_externalCredentialIdentity forKey:@"externalPasswordIdentity"];
-  [v5 encodeObject:self->_providerBundleIdentifier forKey:@"providerBundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:username forKey:@"passwordLoginChoiceUsername"];
+  [coderCopy encodeObject:self->_site forKey:@"passwordLoginChoiceSite"];
+  [coderCopy encodeObject:self->_customTitle forKey:@"passwordLoginChoiceCustomTitle"];
+  [coderCopy encodeObject:self->_groupName forKey:@"passwordLoginChoiceGroupNameKey"];
+  [coderCopy encodeObject:self->_externalCredentialIdentity forKey:@"externalPasswordIdentity"];
+  [coderCopy encodeObject:self->_providerBundleIdentifier forKey:@"providerBundleIdentifier"];
 }
 
-- (ASCPasswordLoginChoice)initWithCoder:(id)a3
+- (ASCPasswordLoginChoice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = ASCPasswordLoginChoice;
   v5 = [(ASCPasswordLoginChoice *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passwordLoginChoiceUsername"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passwordLoginChoiceUsername"];
     username = v5->_username;
     v5->_username = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passwordLoginChoiceSite"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passwordLoginChoiceSite"];
     site = v5->_site;
     v5->_site = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passwordLoginChoiceCustomTitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passwordLoginChoiceCustomTitle"];
     customTitle = v5->_customTitle;
     v5->_customTitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passwordLoginChoiceGroupNameKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passwordLoginChoiceGroupNameKey"];
     groupName = v5->_groupName;
     v5->_groupName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalPasswordIdentity"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalPasswordIdentity"];
     externalCredentialIdentity = v5->_externalCredentialIdentity;
     v5->_externalCredentialIdentity = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"providerBundleIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"providerBundleIdentifier"];
     providerBundleIdentifier = v5->_providerBundleIdentifier;
     v5->_providerBundleIdentifier = v16;
 
@@ -137,40 +137,40 @@
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (-[ASCPasswordLoginChoice isExternal](self, "isExternal") && ![v4 isExternal])
+  compareCopy = compare;
+  if (-[ASCPasswordLoginChoice isExternal](self, "isExternal") && ![compareCopy isExternal])
   {
     goto LABEL_9;
   }
 
-  if (!-[ASCPasswordLoginChoice isExternal](self, "isExternal") && ([v4 isExternal] & 1) != 0)
+  if (!-[ASCPasswordLoginChoice isExternal](self, "isExternal") && ([compareCopy isExternal] & 1) != 0)
   {
     goto LABEL_5;
   }
 
-  if (!-[ASCPasswordLoginChoice isExternal](self, "isExternal") || ![v4 isExternal])
+  if (!-[ASCPasswordLoginChoice isExternal](self, "isExternal") || ![compareCopy isExternal])
   {
     goto LABEL_11;
   }
 
-  v6 = [(SFCredentialIdentity *)self->_externalCredentialIdentity rank];
-  v7 = [v4 externalCredentialIdentity];
-  v8 = [v7 rank];
+  rank = [(SFCredentialIdentity *)self->_externalCredentialIdentity rank];
+  externalCredentialIdentity = [compareCopy externalCredentialIdentity];
+  rank2 = [externalCredentialIdentity rank];
 
-  if (v6 > v8)
+  if (rank > rank2)
   {
 LABEL_9:
     v5 = -1;
     goto LABEL_12;
   }
 
-  v9 = [(SFCredentialIdentity *)self->_externalCredentialIdentity rank];
-  v10 = [v4 externalCredentialIdentity];
-  v11 = [v10 rank];
+  rank3 = [(SFCredentialIdentity *)self->_externalCredentialIdentity rank];
+  externalCredentialIdentity2 = [compareCopy externalCredentialIdentity];
+  rank4 = [externalCredentialIdentity2 rank];
 
-  if (v9 >= v11)
+  if (rank3 >= rank4)
   {
 LABEL_11:
     v5 = 0;

@@ -1,19 +1,19 @@
 @interface BCMutableCollectionDetail
-- (BCMutableCollectionDetail)initWithCloudData:(id)a3;
-- (BCMutableCollectionDetail)initWithCoder:(id)a3;
-- (BCMutableCollectionDetail)initWithCollectionID:(id)a3;
-- (BCMutableCollectionDetail)initWithRecord:(id)a3;
+- (BCMutableCollectionDetail)initWithCloudData:(id)data;
+- (BCMutableCollectionDetail)initWithCoder:(id)coder;
+- (BCMutableCollectionDetail)initWithCollectionID:(id)d;
+- (BCMutableCollectionDetail)initWithRecord:(id)record;
 - (NSString)description;
 - (id)configuredRecordFromAttributes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCMutableCollectionDetail
 
-- (BCMutableCollectionDetail)initWithCollectionID:(id)a3
+- (BCMutableCollectionDetail)initWithCollectionID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = sub_100002660();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@
   v5 = [(BCMutableCloudData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     self = *(v5 + 10);
     *(v5 + 10) = v6;
 LABEL_7:
@@ -39,28 +39,28 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableCollectionDetail)initWithCloudData:(id)a3
+- (BCMutableCollectionDetail)initWithCloudData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = BCMutableCollectionDetail;
-  v6 = [(BCMutableCloudData *)&v19 initWithCloudData:v5];
+  v6 = [(BCMutableCloudData *)&v19 initWithCloudData:dataCopy];
   if (v6)
   {
     v7 = BUProtocolCast();
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 collectionID];
-      v10 = [v9 copy];
+      collectionID = [v7 collectionID];
+      v10 = [collectionID copy];
       collectionID = v6->_collectionID;
       v6->_collectionID = v10;
 
-      v12 = [v8 name];
-      if (v12)
+      name = [v8 name];
+      if (name)
       {
-        v3 = [v8 name];
-        v13 = [v3 copy];
+        name2 = [v8 name];
+        v13 = [name2 copy];
       }
 
       else
@@ -69,12 +69,12 @@ LABEL_7:
       }
 
       objc_storeStrong(&v6->_name, v13);
-      if (v12)
+      if (name)
       {
       }
 
-      v15 = [v8 collectionDescription];
-      v16 = [v15 copy];
+      collectionDescription = [v8 collectionDescription];
+      v16 = [collectionDescription copy];
       collectionDescription = v6->_collectionDescription;
       v6->_collectionDescription = v16;
 
@@ -98,10 +98,10 @@ LABEL_7:
   return v6;
 }
 
-- (BCMutableCollectionDetail)initWithRecord:(id)a3
+- (BCMutableCollectionDetail)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     v12 = sub_100002660();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -115,26 +115,26 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = BCMutableCollectionDetail;
-  v5 = [(BCMutableCloudData *)&v15 initWithRecord:v4];
+  v5 = [(BCMutableCloudData *)&v15 initWithRecord:recordCopy];
   if (v5)
   {
-    v6 = [BCCloudData localIdentifierFromRecord:v4];
+    v6 = [BCCloudData localIdentifierFromRecord:recordCopy];
     collectionID = v5->_collectionID;
     v5->_collectionID = v6;
 
-    v8 = [v4 objectForKey:@"name"];
+    v8 = [recordCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 objectForKey:@"collectionDescription"];
+    v10 = [recordCopy objectForKey:@"collectionDescription"];
     collectionDescription = v5->_collectionDescription;
     v5->_collectionDescription = v10;
 
-    self = [v4 objectForKey:@"hidden"];
+    self = [recordCopy objectForKey:@"hidden"];
     v5->_hidden = [(BCMutableCollectionDetail *)self BOOLValue];
-    v12 = [v4 objectForKey:@"sortOrder"];
+    v12 = [recordCopy objectForKey:@"sortOrder"];
     v5->_sortOrder = [v12 intValue];
-    v13 = [v4 objectForKey:@"sortMode"];
+    v13 = [recordCopy objectForKey:@"sortMode"];
     v5->_sortMode = [v13 intValue];
 
 LABEL_7:
@@ -145,9 +145,9 @@ LABEL_7:
 
 - (NSString)description
 {
-  v3 = [(BCMutableCollectionDetail *)self collectionID];
-  v4 = [(BCMutableCollectionDetail *)self name];
-  v5 = [(BCMutableCollectionDetail *)self collectionDescription];
+  collectionID = [(BCMutableCollectionDetail *)self collectionID];
+  name = [(BCMutableCollectionDetail *)self name];
+  collectionDescription = [(BCMutableCollectionDetail *)self collectionDescription];
   if ([(BCMutableCollectionDetail *)self hidden])
   {
     v6 = @"YES";
@@ -158,7 +158,7 @@ LABEL_7:
     v6 = @"NO";
   }
 
-  v7 = [NSString stringWithFormat:@"collectionID: %@, Name: %@, Description: %@ hidden:%@ sortOrder:%d sortMode:%d", v3, v4, v5, v6, [(BCMutableCollectionDetail *)self sortOrder], [(BCMutableCollectionDetail *)self sortMode]];
+  v7 = [NSString stringWithFormat:@"collectionID: %@, Name: %@, Description: %@ hidden:%@ sortOrder:%d sortMode:%d", collectionID, name, collectionDescription, v6, [(BCMutableCollectionDetail *)self sortOrder], [(BCMutableCollectionDetail *)self sortMode]];
 
   return v7;
 }
@@ -167,31 +167,31 @@ LABEL_7:
 {
   v12.receiver = self;
   v12.super_class = BCMutableCollectionDetail;
-  v3 = [(BCMutableCloudData *)&v12 configuredRecordFromAttributes];
-  if (v3)
+  configuredRecordFromAttributes = [(BCMutableCloudData *)&v12 configuredRecordFromAttributes];
+  if (configuredRecordFromAttributes)
   {
-    v4 = [(BCMutableCollectionDetail *)self name];
-    [v3 setObject:v4 forKey:@"name"];
+    name = [(BCMutableCollectionDetail *)self name];
+    [configuredRecordFromAttributes setObject:name forKey:@"name"];
 
-    v5 = [(BCMutableCollectionDetail *)self collectionDescription];
-    [v3 setObject:v5 forKey:@"collectionDescription"];
+    collectionDescription = [(BCMutableCollectionDetail *)self collectionDescription];
+    [configuredRecordFromAttributes setObject:collectionDescription forKey:@"collectionDescription"];
 
     v6 = [NSNumber numberWithBool:[(BCMutableCollectionDetail *)self hidden]];
-    [v3 setObject:v6 forKey:@"hidden"];
+    [configuredRecordFromAttributes setObject:v6 forKey:@"hidden"];
 
     v7 = [NSNumber numberWithInt:[(BCMutableCollectionDetail *)self sortOrder]];
-    [v3 setObject:v7 forKey:@"sortOrder"];
+    [configuredRecordFromAttributes setObject:v7 forKey:@"sortOrder"];
 
     v8 = [NSNumber numberWithInt:[(BCMutableCollectionDetail *)self sortMode]];
-    [v3 setObject:v8 forKey:@"sortMode"];
+    [configuredRecordFromAttributes setObject:v8 forKey:@"sortMode"];
   }
 
   else
   {
-    v9 = [(BCMutableCloudData *)self privacyDelegate];
-    v10 = [v9 establishedSalt];
+    privacyDelegate = [(BCMutableCloudData *)self privacyDelegate];
+    establishedSalt = [privacyDelegate establishedSalt];
 
-    if (!v10)
+    if (!establishedSalt)
     {
       goto LABEL_7;
     }
@@ -205,50 +205,50 @@ LABEL_7:
 
 LABEL_7:
 
-  return v3;
+  return configuredRecordFromAttributes;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = BCMutableCollectionDetail;
-  v4 = a3;
-  [(BCMutableCloudData *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(BCMutableCloudData *)&v7 encodeWithCoder:coderCopy];
   v5 = [(BCMutableCollectionDetail *)self name:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"name"];
+  [coderCopy encodeObject:v5 forKey:@"name"];
 
-  v6 = [(BCMutableCollectionDetail *)self collectionDescription];
-  [v4 encodeObject:v6 forKey:@"collectionDescription"];
+  collectionDescription = [(BCMutableCollectionDetail *)self collectionDescription];
+  [coderCopy encodeObject:collectionDescription forKey:@"collectionDescription"];
 
-  [v4 encodeBool:-[BCMutableCollectionDetail hidden](self forKey:{"hidden"), @"hidden"}];
-  [v4 encodeInt:-[BCMutableCollectionDetail sortOrder](self forKey:{"sortOrder"), @"sortOrder"}];
-  [v4 encodeInt:-[BCMutableCollectionDetail sortMode](self forKey:{"sortMode"), @"sortMode"}];
+  [coderCopy encodeBool:-[BCMutableCollectionDetail hidden](self forKey:{"hidden"), @"hidden"}];
+  [coderCopy encodeInt:-[BCMutableCollectionDetail sortOrder](self forKey:{"sortOrder"), @"sortOrder"}];
+  [coderCopy encodeInt:-[BCMutableCollectionDetail sortMode](self forKey:{"sortMode"), @"sortMode"}];
 }
 
-- (BCMutableCollectionDetail)initWithCoder:(id)a3
+- (BCMutableCollectionDetail)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = BCMutableCollectionDetail;
-  v5 = [(BCMutableCloudData *)&v14 initWithCoder:v4];
+  v5 = [(BCMutableCloudData *)&v14 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(BCMutableCloudData *)v5 localRecordID];
+    localRecordID = [(BCMutableCloudData *)v5 localRecordID];
     collectionID = v6->_collectionID;
-    v6->_collectionID = v7;
+    v6->_collectionID = localRecordID;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v6->_name;
     v6->_name = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collectionDescription"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collectionDescription"];
     collectionDescription = v6->_collectionDescription;
     v6->_collectionDescription = v11;
 
-    v6->_hidden = [v4 decodeBoolForKey:@"hidden"];
-    v6->_sortOrder = [v4 decodeIntForKey:@"sortOrder"];
-    v6->_sortMode = [v4 decodeIntForKey:@"sortMode"];
+    v6->_hidden = [coderCopy decodeBoolForKey:@"hidden"];
+    v6->_sortOrder = [coderCopy decodeIntForKey:@"sortOrder"];
+    v6->_sortMode = [coderCopy decodeIntForKey:@"sortMode"];
   }
 
   return v6;

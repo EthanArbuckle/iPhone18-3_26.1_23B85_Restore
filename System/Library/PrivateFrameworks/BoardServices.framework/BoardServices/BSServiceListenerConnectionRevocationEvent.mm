@@ -1,11 +1,11 @@
 @interface BSServiceListenerConnectionRevocationEvent
-+ (id)eventForImplicit:(uint64_t)a1;
++ (id)eventForImplicit:(uint64_t)implicit;
 - (BOOL)isExplicitInitiatorInvalidation;
 @end
 
 @implementation BSServiceListenerConnectionRevocationEvent
 
-+ (id)eventForImplicit:(uint64_t)a1
++ (id)eventForImplicit:(uint64_t)implicit
 {
   objc_opt_self();
   if (qword_1ED4A7C40 != -1)

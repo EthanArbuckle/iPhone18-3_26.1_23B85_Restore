@@ -1,13 +1,13 @@
 @interface SettingsFooterItem
 - (_TtC14iCloudSettings18SettingsFooterItem)init;
-- (_TtC14iCloudSettings18SettingsFooterItem)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 action:(id)a6;
+- (_TtC14iCloudSettings18SettingsFooterItem)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle action:(id)action;
 @end
 
 @implementation SettingsFooterItem
 
-- (_TtC14iCloudSettings18SettingsFooterItem)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 action:(id)a6
+- (_TtC14iCloudSettings18SettingsFooterItem)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle action:(id)action
 {
-  if (a3)
+  if (identifier)
   {
     v8 = sub_2759BA298();
     v10 = v9;
@@ -31,10 +31,10 @@
   v17 = (self + OBJC_IVAR____TtC14iCloudSettings18SettingsFooterItem_subtitle);
   *v17 = v14;
   v17[1] = v18;
-  *(self + OBJC_IVAR____TtC14iCloudSettings18SettingsFooterItem_action) = a6;
+  *(self + OBJC_IVAR____TtC14iCloudSettings18SettingsFooterItem_action) = action;
   v21.receiver = self;
   v21.super_class = type metadata accessor for SettingsFooterItem();
-  v19 = a6;
+  actionCopy = action;
   return [(SettingsFooterItem *)&v21 init];
 }
 

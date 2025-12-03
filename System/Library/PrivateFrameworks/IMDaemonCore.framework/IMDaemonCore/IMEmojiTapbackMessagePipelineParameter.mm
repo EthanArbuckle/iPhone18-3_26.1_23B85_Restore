@@ -1,121 +1,121 @@
 @interface IMEmojiTapbackMessagePipelineParameter
-- (IMEmojiTapbackMessagePipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4;
-- (IMEmojiTapbackMessagePipelineParameter)initWithBDBasic:(id)a3 idsTrustedData:(id)a4;
+- (IMEmojiTapbackMessagePipelineParameter)initWithBD:(id)d idsTrustedData:(id)data;
+- (IMEmojiTapbackMessagePipelineParameter)initWithBDBasic:(id)basic idsTrustedData:(id)data;
 - (id)description;
-- (id)messageSummaryInfoDictionaryWithBlastDoorBasicMessage:(id)a3;
-- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)a3;
+- (id)messageSummaryInfoDictionaryWithBlastDoorBasicMessage:(id)message;
+- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)message;
 @end
 
 @implementation IMEmojiTapbackMessagePipelineParameter
 
-- (IMEmojiTapbackMessagePipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4
+- (IMEmojiTapbackMessagePipelineParameter)initWithBD:(id)d idsTrustedData:(id)data
 {
-  v6 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = IMEmojiTapbackMessagePipelineParameter;
-  v7 = [(IMAssociatedMessagePipelineParameter *)&v17 initWithBD:v6 idsTrustedData:a4];
+  v7 = [(IMAssociatedMessagePipelineParameter *)&v17 initWithBD:dCopy idsTrustedData:data];
   if (v7)
   {
-    v8 = [v6 messageSubType];
-    v9 = [v8 emojiTapback];
+    messageSubType = [dCopy messageSubType];
+    emojiTapback = [messageSubType emojiTapback];
 
-    v10 = [v9 associatedMessageEmoji];
-    [(IMEmojiTapbackMessagePipelineParameter *)v7 setAssociatedMessageEmoji:v10];
+    associatedMessageEmoji = [emojiTapback associatedMessageEmoji];
+    [(IMEmojiTapbackMessagePipelineParameter *)v7 setAssociatedMessageEmoji:associatedMessageEmoji];
 
-    -[IMAssociatedMessagePipelineParameter setAssociatedMessageType:](v7, "setAssociatedMessageType:", [v9 associatedMessageType]);
-    v11 = [v9 associatedMessageGUID];
-    [(IMTextMessagePipelineParameter *)v7 setAssociatedMessageGUID:v11];
+    -[IMAssociatedMessagePipelineParameter setAssociatedMessageType:](v7, "setAssociatedMessageType:", [emojiTapback associatedMessageType]);
+    associatedMessageGUID = [emojiTapback associatedMessageGUID];
+    [(IMTextMessagePipelineParameter *)v7 setAssociatedMessageGUID:associatedMessageGUID];
 
-    v12 = [v9 associatedMessageFallbackHash];
-    [(IMAssociatedMessagePipelineParameter *)v7 setAssociatedMessageFallbackHash:v12];
+    associatedMessageFallbackHash = [emojiTapback associatedMessageFallbackHash];
+    [(IMAssociatedMessagePipelineParameter *)v7 setAssociatedMessageFallbackHash:associatedMessageFallbackHash];
 
-    v13 = [v9 associatedMessageRange];
-    [(IMAssociatedMessagePipelineParameter *)v7 setAssociatedMessageRange:v13, v14];
-    v15 = [v9 plainTextBody];
-    [(IMTextMessagePipelineParameter *)v7 setPlainTextBody:v15];
+    associatedMessageRange = [emojiTapback associatedMessageRange];
+    [(IMAssociatedMessagePipelineParameter *)v7 setAssociatedMessageRange:associatedMessageRange, v14];
+    plainTextBody = [emojiTapback plainTextBody];
+    [(IMTextMessagePipelineParameter *)v7 setPlainTextBody:plainTextBody];
   }
 
   return v7;
 }
 
-- (IMEmojiTapbackMessagePipelineParameter)initWithBDBasic:(id)a3 idsTrustedData:(id)a4
+- (IMEmojiTapbackMessagePipelineParameter)initWithBDBasic:(id)basic idsTrustedData:(id)data
 {
-  v6 = a3;
+  basicCopy = basic;
   v17.receiver = self;
   v17.super_class = IMEmojiTapbackMessagePipelineParameter;
-  v7 = [(IMAssociatedMessagePipelineParameter *)&v17 initWithBDBasic:v6 idsTrustedData:a4];
+  v7 = [(IMAssociatedMessagePipelineParameter *)&v17 initWithBDBasic:basicCopy idsTrustedData:data];
   if (v7)
   {
-    v8 = [v6 messageSubType];
-    v9 = [v8 emojiTapback];
+    messageSubType = [basicCopy messageSubType];
+    emojiTapback = [messageSubType emojiTapback];
 
-    v10 = [v9 associatedMessageEmoji];
-    [(IMEmojiTapbackMessagePipelineParameter *)v7 setAssociatedMessageEmoji:v10];
+    associatedMessageEmoji = [emojiTapback associatedMessageEmoji];
+    [(IMEmojiTapbackMessagePipelineParameter *)v7 setAssociatedMessageEmoji:associatedMessageEmoji];
 
-    -[IMAssociatedMessagePipelineParameter setAssociatedMessageType:](v7, "setAssociatedMessageType:", [v9 associatedMessageType]);
-    v11 = [v9 associatedMessageGUID];
-    [(IMTextMessagePipelineParameter *)v7 setAssociatedMessageGUID:v11];
+    -[IMAssociatedMessagePipelineParameter setAssociatedMessageType:](v7, "setAssociatedMessageType:", [emojiTapback associatedMessageType]);
+    associatedMessageGUID = [emojiTapback associatedMessageGUID];
+    [(IMTextMessagePipelineParameter *)v7 setAssociatedMessageGUID:associatedMessageGUID];
 
-    v12 = [v9 associatedMessageFallbackHash];
-    [(IMAssociatedMessagePipelineParameter *)v7 setAssociatedMessageFallbackHash:v12];
+    associatedMessageFallbackHash = [emojiTapback associatedMessageFallbackHash];
+    [(IMAssociatedMessagePipelineParameter *)v7 setAssociatedMessageFallbackHash:associatedMessageFallbackHash];
 
-    v13 = [v9 associatedMessageRange];
-    [(IMAssociatedMessagePipelineParameter *)v7 setAssociatedMessageRange:v13, v14];
-    v15 = [v9 plainTextBody];
-    [(IMTextMessagePipelineParameter *)v7 setPlainTextBody:v15];
+    associatedMessageRange = [emojiTapback associatedMessageRange];
+    [(IMAssociatedMessagePipelineParameter *)v7 setAssociatedMessageRange:associatedMessageRange, v14];
+    plainTextBody = [emojiTapback plainTextBody];
+    [(IMTextMessagePipelineParameter *)v7 setPlainTextBody:plainTextBody];
   }
 
   return v7;
 }
 
-- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)a3
+- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v27.receiver = self;
   v27.super_class = IMEmojiTapbackMessagePipelineParameter;
-  v6 = [(IMTextMessagePipelineParameter *)&v27 messageSummaryInfoDictionaryWithBlastDoorMessage:v4];
+  v6 = [(IMTextMessagePipelineParameter *)&v27 messageSummaryInfoDictionaryWithBlastDoorMessage:messageCopy];
   [(__CFDictionary *)Mutable addEntriesFromDictionary:v6];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 messageSubType];
-  v9 = [v8 emojiTapback];
-  v10 = [v9 messageSummaryInfo];
-  v11 = [v7 numberWithInteger:{objc_msgSend(v10, "contentType")}];
+  messageSubType = [messageCopy messageSubType];
+  emojiTapback = [messageSubType emojiTapback];
+  messageSummaryInfo = [emojiTapback messageSummaryInfo];
+  v11 = [v7 numberWithInteger:{objc_msgSend(messageSummaryInfo, "contentType")}];
 
   if (v11)
   {
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1A008], v11);
   }
 
-  v12 = [v4 messageSubType];
-  v13 = [v12 emojiTapback];
-  v14 = [v13 messageSummaryInfo];
-  v15 = [v14 summary];
+  messageSubType2 = [messageCopy messageSubType];
+  emojiTapback2 = [messageSubType2 emojiTapback];
+  messageSummaryInfo2 = [emojiTapback2 messageSummaryInfo];
+  summary = [messageSummaryInfo2 summary];
 
-  if (v15)
+  if (summary)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], v15);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], summary);
   }
 
-  v16 = [v4 messageSubType];
-  v17 = [v16 emojiTapback];
-  v18 = [v17 messageSummaryInfo];
-  v19 = [v18 pluginBundleID];
+  messageSubType3 = [messageCopy messageSubType];
+  emojiTapback3 = [messageSubType3 emojiTapback];
+  messageSummaryInfo3 = [emojiTapback3 messageSummaryInfo];
+  pluginBundleID = [messageSummaryInfo3 pluginBundleID];
 
-  if (v19)
+  if (pluginBundleID)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A028], v19);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A028], pluginBundleID);
   }
 
-  v20 = [v4 messageSubType];
-  v21 = [v20 emojiTapback];
-  v22 = [v21 messageSummaryInfo];
-  v23 = [v22 pluginDisplayName];
+  messageSubType4 = [messageCopy messageSubType];
+  emojiTapback4 = [messageSubType4 emojiTapback];
+  messageSummaryInfo4 = [emojiTapback4 messageSummaryInfo];
+  pluginDisplayName = [messageSummaryInfo4 pluginDisplayName];
 
-  if (v23)
+  if (pluginDisplayName)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A030], v23);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A030], pluginDisplayName);
   }
 
   if ([(__CFDictionary *)Mutable count])
@@ -133,34 +133,34 @@
   return v24;
 }
 
-- (id)messageSummaryInfoDictionaryWithBlastDoorBasicMessage:(id)a3
+- (id)messageSummaryInfoDictionaryWithBlastDoorBasicMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v19.receiver = self;
   v19.super_class = IMEmojiTapbackMessagePipelineParameter;
-  v6 = [(IMTextMessagePipelineParameter *)&v19 messageSummaryInfoDictionaryWithBlastDoorBasicMessage:v4];
+  v6 = [(IMTextMessagePipelineParameter *)&v19 messageSummaryInfoDictionaryWithBlastDoorBasicMessage:messageCopy];
   [(__CFDictionary *)Mutable addEntriesFromDictionary:v6];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 messageSubType];
-  v9 = [v8 emojiTapback];
-  v10 = [v9 messageSummaryInfo];
-  v11 = [v7 numberWithInteger:{objc_msgSend(v10, "contentType")}];
+  messageSubType = [messageCopy messageSubType];
+  emojiTapback = [messageSubType emojiTapback];
+  messageSummaryInfo = [emojiTapback messageSummaryInfo];
+  v11 = [v7 numberWithInteger:{objc_msgSend(messageSummaryInfo, "contentType")}];
 
   if (v11)
   {
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1A008], v11);
   }
 
-  v12 = [v4 messageSubType];
-  v13 = [v12 emojiTapback];
-  v14 = [v13 messageSummaryInfo];
-  v15 = [v14 summary];
+  messageSubType2 = [messageCopy messageSubType];
+  emojiTapback2 = [messageSubType2 emojiTapback];
+  messageSummaryInfo2 = [emojiTapback2 messageSummaryInfo];
+  summary = [messageSummaryInfo2 summary];
 
-  if (v15)
+  if (summary)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], v15);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], summary);
   }
 
   if ([(__CFDictionary *)Mutable count])
@@ -181,15 +181,15 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMTextMessagePipelineParameter *)self GUID];
-  v5 = [(IMAssociatedMessagePipelineParameter *)self associatedMessageType];
-  v6 = [(IMTextMessagePipelineParameter *)self associatedMessageGUID];
-  v7 = [(IMTextMessagePipelineParameter *)self timestamp];
+  gUID = [(IMTextMessagePipelineParameter *)self GUID];
+  associatedMessageType = [(IMAssociatedMessagePipelineParameter *)self associatedMessageType];
+  associatedMessageGUID = [(IMTextMessagePipelineParameter *)self associatedMessageGUID];
+  timestamp = [(IMTextMessagePipelineParameter *)self timestamp];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isFromStorage](self, "isFromStorage")}];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isLastFromStorage](self, "isLastFromStorage")}];
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isFromMe](self, "isFromMe")}];
-  v11 = [(IMTextMessagePipelineParameter *)self messageItems];
-  v12 = [v3 stringWithFormat:@"<IMEmojiTapbackMessagePipelineParameter %p> { guid: %@, assocatedMessageType: %lld, associatedMessageGUID: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, isFromMe: %@, output messageItems: %lu}", self, v4, v5, v6, v7, v8, v9, v10, objc_msgSend(v11, "count")];
+  messageItems = [(IMTextMessagePipelineParameter *)self messageItems];
+  v12 = [v3 stringWithFormat:@"<IMEmojiTapbackMessagePipelineParameter %p> { guid: %@, assocatedMessageType: %lld, associatedMessageGUID: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, isFromMe: %@, output messageItems: %lu}", self, gUID, associatedMessageType, associatedMessageGUID, timestamp, v8, v9, v10, objc_msgSend(messageItems, "count")];
 
   return v12;
 }

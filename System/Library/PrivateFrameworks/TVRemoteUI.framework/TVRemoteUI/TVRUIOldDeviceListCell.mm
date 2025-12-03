@@ -1,24 +1,24 @@
 @interface TVRUIOldDeviceListCell
-- (TVRUIOldDeviceListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_applyFilterForDevice:(id)a3;
+- (TVRUIOldDeviceListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_applyFilterForDevice:(id)device;
 - (void)layoutSubviews;
-- (void)setDevice:(id)a3;
+- (void)setDevice:(id)device;
 @end
 
 @implementation TVRUIOldDeviceListCell
 
-- (TVRUIOldDeviceListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TVRUIOldDeviceListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = TVRUIOldDeviceListCell;
-  v4 = [(TVRUIOldDeviceListCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TVRUIOldDeviceListCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(TVRUIOldDeviceListCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(TVRUIOldDeviceListCell *)v4 setBackgroundColor:clearColor];
 
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [(TVRUIOldDeviceListCell *)v4 setTintColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(TVRUIOldDeviceListCell *)v4 setTintColor:whiteColor];
 
     v7 = objc_alloc_init(MEMORY[0x277D75D18]);
     separator = v4->_separator;
@@ -30,27 +30,27 @@
   return v4;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v12 = a3;
-  if (self->_device != v12)
+  deviceCopy = device;
+  if (self->_device != deviceCopy)
   {
-    objc_storeStrong(&self->_device, a3);
-    v5 = [(TVRUIOldDeviceListCell *)self imageView];
-    v6 = [(TVRUIOldDeviceListCell *)self textLabel];
-    v7 = [(TVRUIDevice *)v12 name];
-    [v6 setText:v7];
+    objc_storeStrong(&self->_device, device);
+    imageView = [(TVRUIOldDeviceListCell *)self imageView];
+    textLabel = [(TVRUIOldDeviceListCell *)self textLabel];
+    name = [(TVRUIDevice *)deviceCopy name];
+    [textLabel setText:name];
 
-    v8 = [(TVRUIDevice *)v12 model];
-    v9 = [(TVRUIOldDeviceListCell *)self styleProvider];
-    v10 = [v9 iconForDeviceModel:v8];
+    model = [(TVRUIDevice *)deviceCopy model];
+    styleProvider = [(TVRUIOldDeviceListCell *)self styleProvider];
+    v10 = [styleProvider iconForDeviceModel:model];
 
-    v11 = [v10 _imageThatSuppressesAccessibilityHairlineThickening];
-    [v5 setImage:v11];
-    [v5 setContentMode:1];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v10 _imageThatSuppressesAccessibilityHairlineThickening];
+    [imageView setImage:_imageThatSuppressesAccessibilityHairlineThickening];
+    [imageView setContentMode:1];
   }
 
-  [(TVRUIOldDeviceListCell *)self _applyFilterForDevice:v12];
+  [(TVRUIOldDeviceListCell *)self _applyFilterForDevice:deviceCopy];
 }
 
 - (void)layoutSubviews
@@ -58,8 +58,8 @@
   v20.receiver = self;
   v20.super_class = TVRUIOldDeviceListCell;
   [(TVRUIOldDeviceListCell *)&v20 layoutSubviews];
-  v3 = [(TVRUIOldDeviceListCell *)self textLabel];
-  [v3 frame];
+  textLabel = [(TVRUIOldDeviceListCell *)self textLabel];
+  [textLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -81,8 +81,8 @@
     v24.size.width = v9;
     v24.size.height = v11;
     v15 = Width - CGRectGetMinX(v24);
-    v16 = [(TVRUIOldDeviceListCell *)self styleProvider];
-    [v16 touchpadInsets];
+    styleProvider = [(TVRUIOldDeviceListCell *)self styleProvider];
+    [styleProvider touchpadInsets];
     v18 = v15 - v17;
 
     v19 = 1.0;
@@ -99,48 +99,48 @@
   [(UIView *)self->_separator setFrame:MinX, v13, v18, v19];
 }
 
-- (void)_applyFilterForDevice:(id)a3
+- (void)_applyFilterForDevice:(id)device
 {
-  v4 = a3;
-  v19 = [(TVRUIOldDeviceListCell *)self imageView];
-  v5 = [(TVRUIOldDeviceListCell *)self textLabel];
-  v6 = [(TVRUIOldDeviceListCell *)self styleProvider];
-  v7 = [v6 fontForDeviceListRow];
-  [v5 setFont:v7];
+  deviceCopy = device;
+  imageView = [(TVRUIOldDeviceListCell *)self imageView];
+  textLabel = [(TVRUIOldDeviceListCell *)self textLabel];
+  styleProvider = [(TVRUIOldDeviceListCell *)self styleProvider];
+  fontForDeviceListRow = [styleProvider fontForDeviceListRow];
+  [textLabel setFont:fontForDeviceListRow];
 
   separator = self->_separator;
-  v9 = [(TVRUIOldDeviceListCell *)self styleProvider];
-  v10 = [v9 cellSeparatorBackgroundColor];
-  [(UIView *)separator setBackgroundColor:v10];
+  styleProvider2 = [(TVRUIOldDeviceListCell *)self styleProvider];
+  cellSeparatorBackgroundColor = [styleProvider2 cellSeparatorBackgroundColor];
+  [(UIView *)separator setBackgroundColor:cellSeparatorBackgroundColor];
 
-  v11 = [(TVRUIOldDeviceListCell *)self styleProvider];
-  v12 = [v11 cellBackgroundColor];
-  [(TVRUIOldDeviceListCell *)self setBackgroundColor:v12];
+  styleProvider3 = [(TVRUIOldDeviceListCell *)self styleProvider];
+  cellBackgroundColor = [styleProvider3 cellBackgroundColor];
+  [(TVRUIOldDeviceListCell *)self setBackgroundColor:cellBackgroundColor];
 
-  LODWORD(v11) = [v4 isConnected];
-  if (v11)
+  LODWORD(styleProvider3) = [deviceCopy isConnected];
+  if (styleProvider3)
   {
     [(TVRUIOldDeviceListCell *)self setAccessoryType:3];
-    v13 = [(TVRUIOldDeviceListCell *)self styleProvider];
-    v14 = [v13 colorForConnectedDevice];
-    [v5 setTextColor:v14];
+    styleProvider4 = [(TVRUIOldDeviceListCell *)self styleProvider];
+    colorForConnectedDevice = [styleProvider4 colorForConnectedDevice];
+    [textLabel setTextColor:colorForConnectedDevice];
 
-    v15 = [(TVRUIOldDeviceListCell *)self styleProvider];
-    [v15 colorForConnectedDevice];
+    styleProvider5 = [(TVRUIOldDeviceListCell *)self styleProvider];
+    [styleProvider5 colorForConnectedDevice];
   }
 
   else
   {
     [(TVRUIOldDeviceListCell *)self setAccessoryType:0];
-    v16 = [(TVRUIOldDeviceListCell *)self styleProvider];
-    v17 = [v16 colorForDisconnectedDevice];
-    [v5 setTextColor:v17];
+    styleProvider6 = [(TVRUIOldDeviceListCell *)self styleProvider];
+    colorForDisconnectedDevice = [styleProvider6 colorForDisconnectedDevice];
+    [textLabel setTextColor:colorForDisconnectedDevice];
 
-    v15 = [(TVRUIOldDeviceListCell *)self styleProvider];
-    [v15 colorForDisconnectedDevice];
+    styleProvider5 = [(TVRUIOldDeviceListCell *)self styleProvider];
+    [styleProvider5 colorForDisconnectedDevice];
   }
   v18 = ;
-  [v19 setTintColor:v18];
+  [imageView setTintColor:v18];
 }
 
 @end

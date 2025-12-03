@@ -1,72 +1,72 @@
 @interface MBBackupOperation
-+ (id)nameForType:(int)a3;
-- (MBBackupOperation)initWithDecoder:(id)a3;
-- (MBBackupOperation)initWithDecoder:(id)a3 domainManager:(id)a4;
++ (id)nameForType:(int)type;
+- (MBBackupOperation)initWithDecoder:(id)decoder;
+- (MBBackupOperation)initWithDecoder:(id)decoder domainManager:(id)manager;
 - (id)description;
-- (void)encode:(id)a3;
+- (void)encode:(id)encode;
 @end
 
 @implementation MBBackupOperation
 
-+ (id)nameForType:(int)a3
++ (id)nameForType:(int)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1000FE668 + a3);
+    return *(&off_1000FE668 + type);
   }
 }
 
-- (MBBackupOperation)initWithDecoder:(id)a3
+- (MBBackupOperation)initWithDecoder:(id)decoder
 {
   [(MBBackupOperation *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (MBBackupOperation)initWithDecoder:(id)a3 domainManager:(id)a4
+- (MBBackupOperation)initWithDecoder:(id)decoder domainManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  decoderCopy = decoder;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = MBBackupOperation;
   v8 = [(MBBackupOperation *)&v20 init];
   if (v8)
   {
-    v9 = [v6 decodeInt8];
-    if (v9 >= 5)
+    decodeInt8 = [decoderCopy decodeInt8];
+    if (decodeInt8 >= 5)
     {
-      v19 = [[MBException alloc] initWithCode:11 format:{@"Invalid type: %d", v9}];
+      v19 = [[MBException alloc] initWithCode:11 format:{@"Invalid type: %d", decodeInt8}];
     }
 
     else
     {
-      v8->_type = v9;
-      v8->_flags = [v6 decodeInt8];
-      v10 = [v6 decodeString];
-      if (v10 && ([v7 domainForName:v10], v11 = objc_claimAutoreleasedReturnValue(), domain = v8->_domain, v8->_domain = v11, domain, !v8->_domain))
+      v8->_type = decodeInt8;
+      v8->_flags = [decoderCopy decodeInt8];
+      decodeString = [decoderCopy decodeString];
+      if (decodeString && ([managerCopy domainForName:decodeString], v11 = objc_claimAutoreleasedReturnValue(), domain = v8->_domain, v8->_domain = v11, domain, !v8->_domain))
       {
-        v19 = [[MBException alloc] initWithCode:11 format:{@"Invalid domain name: %@", v10}];
+        v19 = [[MBException alloc] initWithCode:11 format:{@"Invalid domain name: %@", decodeString}];
       }
 
       else
       {
-        v13 = [v6 decodeData];
-        if (!v13 || (v14 = [[MBFileID alloc] initWithData:v13], fileID = v8->_fileID, v8->_fileID = v14, fileID, v8->_fileID))
+        decodeData = [decoderCopy decodeData];
+        if (!decodeData || (v14 = [[MBFileID alloc] initWithData:decodeData], fileID = v8->_fileID, v8->_fileID = v14, fileID, v8->_fileID))
         {
-          v16 = [v6 decodeString];
+          decodeString2 = [decoderCopy decodeString];
           path = v8->_path;
-          v8->_path = v16;
+          v8->_path = decodeString2;
 
-          v8->_size = [v6 decodeInt64];
+          v8->_size = [decoderCopy decodeInt64];
           goto LABEL_8;
         }
 
-        v19 = [[MBException alloc] initWithCode:11 format:{@"Invalid file ID data: %@", v13}];
+        v19 = [[MBException alloc] initWithCode:11 format:{@"Invalid file ID data: %@", decodeData}];
       }
     }
 
@@ -78,27 +78,27 @@ LABEL_8:
   return v8;
 }
 
-- (void)encode:(id)a3
+- (void)encode:(id)encode
 {
   type_low = SLOBYTE(self->_type);
-  v7 = a3;
-  [v7 encodeInt8:type_low];
-  [v7 encodeInt8:self->_flags];
-  v5 = [(MBDomain *)self->_domain name];
-  [v7 encodeString:v5];
+  encodeCopy = encode;
+  [encodeCopy encodeInt8:type_low];
+  [encodeCopy encodeInt8:self->_flags];
+  name = [(MBDomain *)self->_domain name];
+  [encodeCopy encodeString:name];
 
-  v6 = [(MBFileID *)self->_fileID data];
-  [v7 encodeData:v6];
+  data = [(MBFileID *)self->_fileID data];
+  [encodeCopy encodeData:data];
 
-  [v7 encodeString:self->_path];
-  [v7 encodeInt64:self->_size];
+  [encodeCopy encodeString:self->_path];
+  [encodeCopy encodeInt64:self->_size];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(MBBackupOperation *)self typeName];
-  v5 = [NSString stringWithFormat:@"<%@: type=%@, domain=%@, fileID=%@, path=%@, size=%llu, flags=0x%x>", v3, v4, self->_domain, self->_fileID, self->_path, self->_size, self->_flags];
+  typeName = [(MBBackupOperation *)self typeName];
+  v5 = [NSString stringWithFormat:@"<%@: type=%@, domain=%@, fileID=%@, path=%@, size=%llu, flags=0x%x>", v3, typeName, self->_domain, self->_fileID, self->_path, self->_size, self->_flags];
 
   return v5;
 }

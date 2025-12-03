@@ -1,22 +1,22 @@
 @interface HMIVideoFragment
-+ (BOOL)canFragmentData:(id)a3;
-+ (BOOL)isInitializationSegment:(id)a3 combinableWithInitializationSegment:(id)a4;
-+ (void)fragmentData:(id)a3 handler:(id)a4;
++ (BOOL)canFragmentData:(id)data;
++ (BOOL)isInitializationSegment:(id)segment combinableWithInitializationSegment:(id)initializationSegment;
++ (void)fragmentData:(id)data handler:(id)handler;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)baseDecodeTimeStamp;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
 - ($C79183323B9A0D5602617FF3BE5395AC)audioTrackTimeRange;
 - ($C79183323B9A0D5602617FF3BE5395AC)videoTrackTimeRange;
-- (BOOL)isCombinableWithFragment:(id)a3;
-- (HMIVideoFragment)initWithCoder:(id)a3;
-- (HMIVideoFragment)initWithData:(id)a3;
-- (HMIVideoFragment)initWithData:(id)a3 timeRange:(id *)a4;
-- (HMIVideoFragment)initWithFragments:(id)a3;
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4;
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 sequenceNumbers:(id)a5;
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 timeRange:(id *)a5;
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 timeRange:(id *)a5 firstVideoSampleByteRange:(_NSRange)a6;
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 timeRange:(id *)a5 sequenceNumbers:(id)a6;
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 timeRange:(id *)a5 sequenceNumbers:(id)a6 firstVideoSampleByteRange:(_NSRange)a7;
+- (BOOL)isCombinableWithFragment:(id)fragment;
+- (HMIVideoFragment)initWithCoder:(id)coder;
+- (HMIVideoFragment)initWithData:(id)data;
+- (HMIVideoFragment)initWithData:(id)data timeRange:(id *)range;
+- (HMIVideoFragment)initWithFragments:(id)fragments;
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment;
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment sequenceNumbers:(id)numbers;
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment timeRange:(id *)range;
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment timeRange:(id *)range firstVideoSampleByteRange:(_NSRange)byteRange;
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment timeRange:(id *)range sequenceNumbers:(id)numbers;
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment timeRange:(id *)range sequenceNumbers:(id)numbers firstVideoSampleByteRange:(_NSRange)byteRange;
 - (NSData)data;
 - (NSData)sanitizedData;
 - (NSData)sanitizedSeperableSegment;
@@ -27,55 +27,55 @@
 - (unint64_t)sequenceNumber;
 - (void)_ensureAttributes;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIVideoFragment
 
-- (HMIVideoFragment)initWithData:(id)a3
+- (HMIVideoFragment)initWithData:(id)data
 {
   v3 = *(MEMORY[0x277CC08C8] + 16);
   v5[0] = *MEMORY[0x277CC08C8];
   v5[1] = v3;
   v5[2] = *(MEMORY[0x277CC08C8] + 32);
-  return [(HMIVideoFragment *)self initWithData:a3 timeRange:v5];
+  return [(HMIVideoFragment *)self initWithData:data timeRange:v5];
 }
 
-- (HMIVideoFragment)initWithData:(id)a3 timeRange:(id *)a4
+- (HMIVideoFragment)initWithData:(id)data timeRange:(id *)range
 {
   v6 = MEMORY[0x277CBEA90];
-  v7 = a3;
-  v8 = [v6 data];
-  v9 = *&a4->var0.var3;
-  v12[0] = *&a4->var0.var0;
+  dataCopy = data;
+  data = [v6 data];
+  v9 = *&range->var0.var3;
+  v12[0] = *&range->var0.var0;
   v12[1] = v9;
-  v12[2] = *&a4->var1.var1;
-  v10 = [(HMIVideoFragment *)self initWithInitializationSegment:v8 separableSegment:v7 timeRange:v12];
+  v12[2] = *&range->var1.var1;
+  v10 = [(HMIVideoFragment *)self initWithInitializationSegment:data separableSegment:dataCopy timeRange:v12];
 
   return v10;
 }
 
-- (HMIVideoFragment)initWithFragments:(id)a3
+- (HMIVideoFragment)initWithFragments:(id)fragments
 {
-  v4 = a3;
-  if ([v4 count])
+  fragmentsCopy = fragments;
+  if ([fragmentsCopy count])
   {
-    v5 = [v4 firstObject];
-    v6 = [MEMORY[0x277CBEB28] data];
-    v7 = [MEMORY[0x277CBEB18] array];
+    firstObject = [fragmentsCopy firstObject];
+    data = [MEMORY[0x277CBEB28] data];
+    array = [MEMORY[0x277CBEB18] array];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __38__HMIVideoFragment_initWithFragments___block_invoke;
     v16[3] = &unk_278754308;
-    v17 = v5;
-    v18 = v6;
-    v19 = v7;
-    v8 = v7;
-    v9 = v6;
-    v10 = v5;
-    [v4 na_each:v16];
-    v11 = [v10 initializationSegment];
-    v12 = [(HMIVideoFragment *)self initWithInitializationSegment:v11 separableSegment:v9];
+    v17 = firstObject;
+    v18 = data;
+    v19 = array;
+    v8 = array;
+    v9 = data;
+    v10 = firstObject;
+    [fragmentsCopy na_each:v16];
+    initializationSegment = [v10 initializationSegment];
+    v12 = [(HMIVideoFragment *)self initWithInitializationSegment:initializationSegment separableSegment:v9];
 
     return v12;
   }
@@ -113,33 +113,33 @@ void __38__HMIVideoFragment_initWithFragments___block_invoke(uint64_t a1, void *
 - (id)redactedCopy
 {
   v3 = [HMIVideoFragment alloc];
-  v4 = [MEMORY[0x277CBEA90] data];
-  v5 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
+  data2 = [MEMORY[0x277CBEA90] data];
   [(HMIVideoFragment *)self timeRange];
-  v6 = [(HMIVideoFragment *)self sequenceNumbers];
-  v7 = [(HMIVideoFragment *)self firstVideoSampleByteRange];
-  v9 = [(HMIVideoFragment *)v3 initWithInitializationSegment:v4 separableSegment:v5 timeRange:&v11 sequenceNumbers:v6 firstVideoSampleByteRange:v7, v8];
+  sequenceNumbers = [(HMIVideoFragment *)self sequenceNumbers];
+  firstVideoSampleByteRange = [(HMIVideoFragment *)self firstVideoSampleByteRange];
+  v9 = [(HMIVideoFragment *)v3 initWithInitializationSegment:data separableSegment:data2 timeRange:&v11 sequenceNumbers:sequenceNumbers firstVideoSampleByteRange:firstVideoSampleByteRange, v8];
 
   return v9;
 }
 
 - (id)redactedCopyWithMetadata
 {
-  v3 = [MEMORY[0x277CBEB28] data];
-  v4 = [(HMIVideoFragment *)self separableSegment];
+  data = [MEMORY[0x277CBEB28] data];
+  separableSegment = [(HMIVideoFragment *)self separableSegment];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__HMIVideoFragment_redactedCopyWithMetadata__block_invoke;
   v12[3] = &unk_278754330;
-  v13 = v3;
-  v5 = v3;
-  HMIMP4Parse(v4, 0, v12);
+  v13 = data;
+  v5 = data;
+  HMIMP4Parse(separableSegment, 0, v12);
 
   v6 = [HMIVideoFragment alloc];
-  v7 = [(HMIVideoFragment *)self initializationSegment];
+  initializationSegment = [(HMIVideoFragment *)self initializationSegment];
   [(HMIVideoFragment *)self timeRange];
-  v8 = [(HMIVideoFragment *)self sequenceNumbers];
-  v9 = [(HMIVideoFragment *)v6 initWithInitializationSegment:v7 separableSegment:v5 timeRange:v11 sequenceNumbers:v8 firstVideoSampleByteRange:0, 0];
+  sequenceNumbers = [(HMIVideoFragment *)self sequenceNumbers];
+  v9 = [(HMIVideoFragment *)v6 initWithInitializationSegment:initializationSegment separableSegment:v5 timeRange:v11 sequenceNumbers:sequenceNumbers firstVideoSampleByteRange:0, 0];
 
   return v9;
 }
@@ -154,26 +154,26 @@ uint64_t __44__HMIVideoFragment_redactedCopyWithMetadata__block_invoke(uint64_t 
   return 1;
 }
 
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment
 {
   v4 = *(MEMORY[0x277CC08C8] + 16);
   v6[0] = *MEMORY[0x277CC08C8];
   v6[1] = v4;
   v6[2] = *(MEMORY[0x277CC08C8] + 32);
-  return [(HMIVideoFragment *)self initWithInitializationSegment:a3 separableSegment:a4 timeRange:v6];
+  return [(HMIVideoFragment *)self initWithInitializationSegment:segment separableSegment:separableSegment timeRange:v6];
 }
 
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 sequenceNumbers:(id)a5
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment sequenceNumbers:(id)numbers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  segmentCopy = segment;
+  separableSegmentCopy = separableSegment;
+  numbersCopy = numbers;
   v11 = *(MEMORY[0x277CC08C8] + 16);
   *v23 = *MEMORY[0x277CC08C8];
   *&v23[16] = v11;
   v24 = *(MEMORY[0x277CC08C8] + 32);
-  v12 = [(HMIVideoFragment *)self initWithInitializationSegment:v8 separableSegment:v9 timeRange:v23];
+  v12 = [(HMIVideoFragment *)self initWithInitializationSegment:segmentCopy separableSegment:separableSegmentCopy timeRange:v23];
   v13 = v12;
   if (v12)
   {
@@ -189,7 +189,7 @@ uint64_t __44__HMIVideoFragment_redactedCopyWithMetadata__block_invoke(uint64_t 
         *v23 = 138543874;
         *&v23[4] = v17;
         *&v23[12] = 2112;
-        *&v23[14] = v10;
+        *&v23[14] = numbersCopy;
         *&v23[22] = 2112;
         *&v23[24] = sequenceNumbers;
         _os_log_impl(&dword_22D12F000, v16, OS_LOG_TYPE_ERROR, "%{public}@Provided sequenceNumbers: %@, don't match fragment's sequenceNumbers: %@", v23, 0x20u);
@@ -198,7 +198,7 @@ uint64_t __44__HMIVideoFragment_redactedCopyWithMetadata__block_invoke(uint64_t 
       objc_autoreleasePoolPop(v14);
     }
 
-    v19 = [v10 copy];
+    v19 = [numbersCopy copy];
     v20 = v13->_sequenceNumbers;
     v13->_sequenceNumbers = v19;
 
@@ -214,39 +214,39 @@ uint64_t __44__HMIVideoFragment_redactedCopyWithMetadata__block_invoke(uint64_t 
   return v13;
 }
 
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 timeRange:(id *)a5
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment timeRange:(id *)range
 {
-  v5 = *&a5->var0.var3;
-  v7[0] = *&a5->var0.var0;
+  v5 = *&range->var0.var3;
+  v7[0] = *&range->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a5->var1.var1;
-  return [(HMIVideoFragment *)self initWithInitializationSegment:a3 separableSegment:a4 timeRange:v7 firstVideoSampleByteRange:0, 0];
+  v7[2] = *&range->var1.var1;
+  return [(HMIVideoFragment *)self initWithInitializationSegment:segment separableSegment:separableSegment timeRange:v7 firstVideoSampleByteRange:0, 0];
 }
 
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 timeRange:(id *)a5 firstVideoSampleByteRange:(_NSRange)a6
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment timeRange:(id *)range firstVideoSampleByteRange:(_NSRange)byteRange
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = a3;
-  v12 = a4;
+  length = byteRange.length;
+  location = byteRange.location;
+  segmentCopy = segment;
+  separableSegmentCopy = separableSegment;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
   v23 = 0;
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __103__HMIVideoFragment_initWithInitializationSegment_separableSegment_timeRange_firstVideoSampleByteRange___block_invoke;
   v19[3] = &unk_278754380;
   v21 = v22;
-  v14 = v13;
+  v14 = array;
   v20 = v14;
-  HMIMP4Parse(v12, 0, v19);
-  v15 = *&a5->var0.var3;
-  v18[0] = *&a5->var0.var0;
+  HMIMP4Parse(separableSegmentCopy, 0, v19);
+  v15 = *&range->var0.var3;
+  v18[0] = *&range->var0.var0;
   v18[1] = v15;
-  v18[2] = *&a5->var1.var1;
-  v16 = [(HMIVideoFragment *)self initWithInitializationSegment:v11 separableSegment:v12 timeRange:v18 sequenceNumbers:v14 firstVideoSampleByteRange:location, length];
+  v18[2] = *&range->var1.var1;
+  v16 = [(HMIVideoFragment *)self initWithInitializationSegment:segmentCopy separableSegment:separableSegmentCopy timeRange:v18 sequenceNumbers:v14 firstVideoSampleByteRange:location, length];
 
   _Block_object_dispose(v22, 8);
   return v16;
@@ -293,36 +293,36 @@ void __103__HMIVideoFragment_initWithInitializationSegment_separableSegment_time
   [v2 addObject:v3];
 }
 
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 timeRange:(id *)a5 sequenceNumbers:(id)a6
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment timeRange:(id *)range sequenceNumbers:(id)numbers
 {
-  v6 = *&a5->var0.var3;
-  v8[0] = *&a5->var0.var0;
+  v6 = *&range->var0.var3;
+  v8[0] = *&range->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a5->var1.var1;
-  return [(HMIVideoFragment *)self initWithInitializationSegment:a3 separableSegment:a4 timeRange:v8 sequenceNumbers:a6 firstVideoSampleByteRange:0, 0];
+  v8[2] = *&range->var1.var1;
+  return [(HMIVideoFragment *)self initWithInitializationSegment:segment separableSegment:separableSegment timeRange:v8 sequenceNumbers:numbers firstVideoSampleByteRange:0, 0];
 }
 
-- (HMIVideoFragment)initWithInitializationSegment:(id)a3 separableSegment:(id)a4 timeRange:(id *)a5 sequenceNumbers:(id)a6 firstVideoSampleByteRange:(_NSRange)a7
+- (HMIVideoFragment)initWithInitializationSegment:(id)segment separableSegment:(id)separableSegment timeRange:(id *)range sequenceNumbers:(id)numbers firstVideoSampleByteRange:(_NSRange)byteRange
 {
-  length = a7.length;
-  location = a7.location;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  length = byteRange.length;
+  location = byteRange.location;
+  segmentCopy = segment;
+  separableSegmentCopy = separableSegment;
+  numbersCopy = numbers;
   v25.receiver = self;
   v25.super_class = HMIVideoFragment;
   v17 = [(HMIVideoFragment *)&v25 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_initializationSegment, a3);
-    objc_storeStrong(&v18->_separableSegment, a4);
-    v20 = *&a5->var0.var3;
-    v19 = *&a5->var1.var1;
-    *&v18->_timeRange.start.value = *&a5->var0.var0;
+    objc_storeStrong(&v17->_initializationSegment, segment);
+    objc_storeStrong(&v18->_separableSegment, separableSegment);
+    v20 = *&range->var0.var3;
+    v19 = *&range->var1.var1;
+    *&v18->_timeRange.start.value = *&range->var0.var0;
     *&v18->_timeRange.start.epoch = v20;
     *&v18->_timeRange.duration.timescale = v19;
-    v21 = [v16 copy];
+    v21 = [numbersCopy copy];
     sequenceNumbers = v18->_sequenceNumbers;
     v18->_sequenceNumbers = v21;
 
@@ -352,11 +352,11 @@ void __103__HMIVideoFragment_initWithInitializationSegment_separableSegment_time
   cf = 0;
   v29 = 0;
   v30 = 0;
-  v3 = [(HMIVideoFragment *)self data];
+  data = [(HMIVideoFragment *)self data];
   v4 = *MEMORY[0x277CBECE8];
-  v5 = [v3 bytes];
-  v6 = [v3 length];
-  v7 = CMBlockBufferCreateWithMemoryBlock(v4, v5, v6, *MEMORY[0x277CBED00], 0, 0, [v3 length], 2u, &blockBufferOut);
+  bytes = [data bytes];
+  v6 = [data length];
+  v7 = CMBlockBufferCreateWithMemoryBlock(v4, bytes, v6, *MEMORY[0x277CBED00], 0, 0, [data length], 2u, &blockBufferOut);
   if (!v7)
   {
     v7 = CMByteStreamCreateForBlockBuffer();
@@ -528,7 +528,7 @@ LABEL_5:
   if (v8)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -571,14 +571,14 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isCombinableWithFragment:(id)a3
+- (BOOL)isCombinableWithFragment:(id)fragment
 {
-  v4 = a3;
-  v5 = CMFormatDescriptionEqual(-[HMIVideoFragment videoFormatDescription](self, "videoFormatDescription"), [v4 videoFormatDescription]);
-  v6 = [(HMIVideoFragment *)self audioFormatDescription];
-  v7 = [v4 audioFormatDescription];
+  fragmentCopy = fragment;
+  v5 = CMFormatDescriptionEqual(-[HMIVideoFragment videoFormatDescription](self, "videoFormatDescription"), [fragmentCopy videoFormatDescription]);
+  audioFormatDescription = [(HMIVideoFragment *)self audioFormatDescription];
+  audioFormatDescription2 = [fragmentCopy audioFormatDescription];
 
-  if (CMFormatDescriptionEqual(v6, v7))
+  if (CMFormatDescriptionEqual(audioFormatDescription, audioFormatDescription2))
   {
     v8 = v5 == 0;
   }
@@ -593,11 +593,11 @@ LABEL_5:
 
 - (NSData)data
 {
-  v3 = [(HMIVideoFragment *)self initializationSegment];
-  v4 = [v3 mutableCopy];
+  initializationSegment = [(HMIVideoFragment *)self initializationSegment];
+  v4 = [initializationSegment mutableCopy];
 
-  v5 = [(HMIVideoFragment *)self separableSegment];
-  [v4 appendData:v5];
+  separableSegment = [(HMIVideoFragment *)self separableSegment];
+  [v4 appendData:separableSegment];
 
   v6 = [v4 copy];
 
@@ -606,15 +606,15 @@ LABEL_5:
 
 - (NSData)sanitizedData
 {
-  v3 = [MEMORY[0x277CBEB28] data];
-  v4 = [(HMIVideoFragment *)self data];
+  data = [MEMORY[0x277CBEB28] data];
+  data2 = [(HMIVideoFragment *)self data];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__HMIVideoFragment_sanitizedData__block_invoke;
   v7[3] = &unk_278754330;
-  v5 = v3;
+  v5 = data;
   v8 = v5;
-  HMIMP4Parse(v4, 0, v7);
+  HMIMP4Parse(data2, 0, v7);
 
   return v5;
 }
@@ -631,15 +631,15 @@ uint64_t __33__HMIVideoFragment_sanitizedData__block_invoke(uint64_t a1, int a2)
 
 - (NSData)sanitizedSeperableSegment
 {
-  v3 = [MEMORY[0x277CBEB28] data];
-  v4 = [(HMIVideoFragment *)self separableSegment];
+  data = [MEMORY[0x277CBEB28] data];
+  separableSegment = [(HMIVideoFragment *)self separableSegment];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HMIVideoFragment_sanitizedSeperableSegment__block_invoke;
   v7[3] = &unk_278754330;
-  v5 = v3;
+  v5 = data;
   v8 = v5;
-  HMIMP4Parse(v4, 0, v7);
+  HMIMP4Parse(separableSegment, 0, v7);
 
   return v5;
 }
@@ -654,25 +654,25 @@ uint64_t __45__HMIVideoFragment_sanitizedSeperableSegment__block_invoke(uint64_t
   return 1;
 }
 
-+ (BOOL)isInitializationSegment:(id)a3 combinableWithInitializationSegment:(id)a4
++ (BOOL)isInitializationSegment:(id)segment combinableWithInitializationSegment:(id)initializationSegment
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  segmentCopy = segment;
+  initializationSegmentCopy = initializationSegment;
+  if (segmentCopy)
   {
-    v7 = v6;
-    if (v6)
+    v7 = initializationSegmentCopy;
+    if (initializationSegmentCopy)
     {
       v8 = [HMIVideoFragment alloc];
-      v9 = [MEMORY[0x277CBEA90] data];
-      v10 = [(HMIVideoFragment *)v8 initWithInitializationSegment:v5 separableSegment:v9];
+      data = [MEMORY[0x277CBEA90] data];
+      v10 = [(HMIVideoFragment *)v8 initWithInitializationSegment:segmentCopy separableSegment:data];
 
       v11 = [HMIVideoFragment alloc];
-      v12 = [MEMORY[0x277CBEA90] data];
-      v13 = [(HMIVideoFragment *)v11 initWithInitializationSegment:v7 separableSegment:v12];
+      data2 = [MEMORY[0x277CBEA90] data];
+      v13 = [(HMIVideoFragment *)v11 initWithInitializationSegment:v7 separableSegment:data2];
 
-      LOBYTE(v12) = [(HMIVideoFragment *)v10 isCombinableWithFragment:v13];
-      return v12;
+      LOBYTE(data2) = [(HMIVideoFragment *)v10 isCombinableWithFragment:v13];
+      return data2;
     }
   }
 
@@ -686,11 +686,11 @@ uint64_t __45__HMIVideoFragment_sanitizedSeperableSegment__block_invoke(uint64_t
   return result;
 }
 
-+ (void)fragmentData:(id)a3 handler:(id)a4
++ (void)fragmentData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 canFragmentData:v6])
+  dataCopy = data;
+  handlerCopy = handler;
+  if ([self canFragmentData:dataCopy])
   {
     v21[0] = 0;
     v21[1] = v21;
@@ -722,8 +722,8 @@ uint64_t __45__HMIVideoFragment_sanitizedSeperableSegment__block_invoke(uint64_t
     v12 = v19;
     v13 = v17;
     v14 = v15;
-    v10 = v7;
-    HMIMP4Parse(v6, 0, v9);
+    v10 = handlerCopy;
+    HMIMP4Parse(dataCopy, 0, v9);
 
     _Block_object_dispose(v15, 8);
     _Block_object_dispose(v17, 8);
@@ -734,8 +734,8 @@ uint64_t __45__HMIVideoFragment_sanitizedSeperableSegment__block_invoke(uint64_t
 
   else
   {
-    v8 = [[HMIVideoFragment alloc] initWithData:v6];
-    (*(v7 + 2))(v7, v8);
+    v8 = [[HMIVideoFragment alloc] initWithData:dataCopy];
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 }
 
@@ -812,9 +812,9 @@ uint64_t __41__HMIVideoFragment_fragmentData_handler___block_invoke_2(uint64_t a
   return 0;
 }
 
-+ (BOOL)canFragmentData:(id)a3
++ (BOOL)canFragmentData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -834,7 +834,7 @@ uint64_t __41__HMIVideoFragment_fragmentData_handler___block_invoke_2(uint64_t a
   v6[4] = &v7;
   v6[5] = &v11;
   v6[6] = &v15;
-  HMIMP4Parse(v3, 0, v6);
+  HMIMP4Parse(dataCopy, 0, v6);
   v4 = *(v12 + 24) == 1 && *(v8 + 6) == 1836019558 && *(v16 + 6) > 0;
   _Block_object_dispose(&v7, 8);
   _Block_object_dispose(&v11, 8);
@@ -911,19 +911,19 @@ LABEL_12:
 
 - (unint64_t)sequenceNumber
 {
-  v3 = [(HMIVideoFragment *)self sequenceNumbers];
-  v4 = [v3 count];
+  sequenceNumbers = [(HMIVideoFragment *)self sequenceNumbers];
+  v4 = [sequenceNumbers count];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(HMIVideoFragment *)self sequenceNumbers];
-  v6 = [v5 firstObject];
-  v7 = [v6 unsignedIntegerValue];
+  sequenceNumbers2 = [(HMIVideoFragment *)self sequenceNumbers];
+  firstObject = [sequenceNumbers2 firstObject];
+  unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (void)dealloc
@@ -945,24 +945,24 @@ LABEL_12:
   [(HMIVideoFragment *)&v5 dealloc];
 }
 
-- (HMIVideoFragment)initWithCoder:(id)a3
+- (HMIVideoFragment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_initializationSegment);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_separableSegment);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
   v11 = NSStringFromSelector(sel_timeRange);
-  if (v4)
+  if (coderCopy)
   {
-    [v4 decodeCMTimeRangeForKey:v11];
+    [coderCopy decodeCMTimeRangeForKey:v11];
   }
 
   else
@@ -974,7 +974,7 @@ LABEL_12:
 
   v12 = objc_opt_class();
   v13 = NSStringFromSelector(sel_firstVideoSampleByteRange);
-  v14 = [v4 decodeObjectOfClass:v12 forKey:v13];
+  v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
   v15 = NSRangeFromString(v14);
 
   v18[0] = v19;
@@ -985,42 +985,42 @@ LABEL_12:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMIVideoFragment *)self initializationSegment];
+  coderCopy = coder;
+  initializationSegment = [(HMIVideoFragment *)self initializationSegment];
   v6 = NSStringFromSelector(sel_initializationSegment);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:initializationSegment forKey:v6];
 
-  v7 = [(HMIVideoFragment *)self separableSegment];
+  separableSegment = [(HMIVideoFragment *)self separableSegment];
   v8 = NSStringFromSelector(sel_separableSegment);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:separableSegment forKey:v8];
 
   [(HMIVideoFragment *)self timeRange];
   v9 = NSStringFromSelector(sel_timeRange);
-  [v4 encodeCMTimeRange:&v12 forKey:v9];
+  [coderCopy encodeCMTimeRange:&v12 forKey:v9];
 
   v13.location = [(HMIVideoFragment *)self firstVideoSampleByteRange];
   v10 = NSStringFromRange(v13);
   v11 = NSStringFromSelector(sel_firstVideoSampleByteRange);
-  [v4 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:v10 forKey:v11];
 }
 
 - (id)attributeDescriptions
 {
   v23[5] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMIVideoFragment *)self sequenceNumbers];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  sequenceNumbers = [(HMIVideoFragment *)self sequenceNumbers];
+  v5 = [sequenceNumbers componentsJoinedByString:{@", "}];
   v21 = [v3 stringWithFormat:@"[%@]", v5];
 
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMIVideoFragment *)self initializationSegment];
-  v8 = [v6 initWithName:@"Initialization Segment Data" value:v7];
+  initializationSegment = [(HMIVideoFragment *)self initializationSegment];
+  v8 = [v6 initWithName:@"Initialization Segment Data" value:initializationSegment];
   v23[0] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMIVideoFragment *)self separableSegment];
-  v11 = [v9 initWithName:@"Separable Segment Data" value:v10];
+  separableSegment = [(HMIVideoFragment *)self separableSegment];
+  v11 = [v9 initWithName:@"Separable Segment Data" value:separableSegment];
   v23[1] = v11;
   v12 = [objc_alloc(MEMORY[0x277D0F778]) initWithName:@"Sequence Numbers" value:v21];
   v23[2] = v12;

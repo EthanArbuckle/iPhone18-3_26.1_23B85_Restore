@@ -1,12 +1,12 @@
 @interface SATraverse
-+ (id)getFileSize:(id)a3;
-- (BOOL)isNodeID:(unint64_t)a3 oldestForDStreamID:(unint64_t)a4 path:(id)a5;
-- (BOOL)popDir:(id *)a3 at:(int64_t *)a4 ofParentPath:(id *)a5;
++ (id)getFileSize:(id)size;
+- (BOOL)isNodeID:(unint64_t)d oldestForDStreamID:(unint64_t)iD path:(id)path;
+- (BOOL)popDir:(id *)dir at:(int64_t *)at ofParentPath:(id *)path;
 - (SATraverse)init;
-- (SATraverse)traverseWithPath:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (id)getItemSizeAtPath:(id)a3;
+- (SATraverse)traverseWithPath:(id)path options:(unint64_t)options completionHandler:(id)handler;
+- (id)getItemSizeAtPath:(id)path;
 - (void)debugLogStatistics;
-- (void)pushDir:(id)a3 at:(int64_t)a4 withParentPath:(id)a5;
+- (void)pushDir:(id)dir at:(int64_t)at withParentPath:(id)path;
 @end
 
 @implementation SATraverse
@@ -106,11 +106,11 @@
   }
 }
 
-- (void)pushDir:(id)a3 at:(int64_t)a4 withParentPath:(id)a5
+- (void)pushDir:(id)dir at:(int64_t)at withParentPath:(id)path
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[SADirContentCacheEntry alloc] initWithData:v9 idx:a4 andParentPath:v8];
+  pathCopy = path;
+  dirCopy = dir;
+  v10 = [[SADirContentCacheEntry alloc] initWithData:dirCopy idx:at andParentPath:pathCopy];
 
   [(NSMutableArray *)self->_dir_content_cache addObject:v10];
   if ([(NSMutableArray *)self->_dir_content_cache count]> self->_dir_content_max_count)
@@ -119,40 +119,40 @@
   }
 }
 
-- (BOOL)popDir:(id *)a3 at:(int64_t *)a4 ofParentPath:(id *)a5
+- (BOOL)popDir:(id *)dir at:(int64_t *)at ofParentPath:(id *)path
 {
   v9 = [(NSMutableArray *)self->_dir_content_cache count];
   if (v9)
   {
-    v10 = [(NSMutableArray *)self->_dir_content_cache lastObject];
-    *a3 = [v10 dir_content];
-    *a4 = [v10 index];
-    *a5 = [v10 parent_path];
+    lastObject = [(NSMutableArray *)self->_dir_content_cache lastObject];
+    *dir = [lastObject dir_content];
+    *at = [lastObject index];
+    *path = [lastObject parent_path];
     [(NSMutableArray *)self->_dir_content_cache removeLastObject];
   }
 
   return v9 != 0;
 }
 
-- (SATraverse)traverseWithPath:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (SATraverse)traverseWithPath:(id)path options:(unint64_t)options completionHandler:(id)handler
 {
-  v54 = a3;
-  v9 = a5;
+  pathCopy = path;
+  handlerCopy = handler;
   v10 = objc_opt_new();
-  objc_storeStrong(&self->_initialPath, a3);
-  self->_options = a4;
+  objc_storeStrong(&self->_initialPath, path);
+  self->_options = options;
   v11 = [(NSString *)self->_initialPath copy];
   v12 = objc_autoreleasePoolPush();
   initialPath = self->_initialPath;
   v64 = 0;
   v14 = [v10 attributesOfItemAtPath:initialPath error:&v64];
   v15 = v64;
-  v55 = [v14 fileSystemNumber];
-  if (self->_fs_num != v55)
+  fileSystemNumber = [v14 fileSystemNumber];
+  if (self->_fs_num != fileSystemNumber)
   {
     [(NSMutableSet *)self->_knownDstreamIDs removeAllObjects];
     [(NSMutableSet *)self->_knownInodeIDs removeAllObjects];
-    self->_fs_num = v55;
+    self->_fs_num = fileSystemNumber;
   }
 
   objc_autoreleasePoolPop(v12);
@@ -182,7 +182,7 @@
 
     if ((self->_options & 2) != 0)
     {
-      v21 = v9[2](v9, v11, 2, v19);
+      v21 = handlerCopy[2](handlerCopy, v11, 2, v19);
       if (v21)
       {
         ++self->_callback_stop;
@@ -212,7 +212,7 @@
 LABEL_35:
     if ((self->_options & 4) != 0)
     {
-      v35 = v9[2](v9, v11, 4, v19);
+      v35 = handlerCopy[2](handlerCopy, v11, 4, v19);
 
       if (v35)
       {
@@ -226,7 +226,7 @@ LABEL_35:
         v19 = 0;
         v20 = v16;
 LABEL_54:
-        v43 = v54;
+        v43 = pathCopy;
 
         objc_autoreleasePoolPop(v18);
         v15 = v19;
@@ -254,7 +254,7 @@ LABEL_54:
       v15 = v19;
       v16 = v37;
       v11 = v34;
-      v43 = v54;
+      v43 = pathCopy;
       goto LABEL_55;
     }
 
@@ -316,11 +316,11 @@ LABEL_32:
   if (v61 == 1)
   {
     v56 = v26;
-    v27 = [v26 fileSystemNumber];
-    if (v55 == v27)
+    fileSystemNumber2 = [v26 fileSystemNumber];
+    if (fileSystemNumber == fileSystemNumber2)
     {
-      v28 = [v25 UTF8String];
-      if ((self->_options & 0x10) != 0 && [SASupport isFilePurgeable:v28])
+      uTF8String = [v25 UTF8String];
+      if ((self->_options & 0x10) != 0 && [SASupport isFilePurgeable:uTF8String])
       {
         ++v63;
         ++self->_purgeableFolder;
@@ -339,7 +339,7 @@ LABEL_32:
 
     else
     {
-      v38 = v27;
+      v38 = fileSystemNumber2;
       v39 = SALog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
       {
@@ -363,9 +363,9 @@ LABEL_32:
   if ((options & 8) != 0)
   {
     v30 = v26;
-    v31 = [v26 fileType];
+    fileType = [v26 fileType];
 
-    if (v31 == NSFileTypeSymbolicLink)
+    if (fileType == NSFileTypeSymbolicLink)
     {
       ++v63;
       ++self->_skipSymbolicLink;
@@ -387,7 +387,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v32 = v9[2](v9, v25, 1, v15);
+  v32 = handlerCopy[2](handlerCopy, v25, 1, v15);
   if ((v32 & 1) == 0)
   {
     if ((v32 & 2) != 0)
@@ -409,18 +409,18 @@ LABEL_29:
   }
 
   objc_autoreleasePoolPop(v18);
-  v43 = v54;
+  v43 = pathCopy;
   v10 = v57;
 LABEL_55:
 
   return result;
 }
 
-- (BOOL)isNodeID:(unint64_t)a3 oldestForDStreamID:(unint64_t)a4 path:(id)a5
+- (BOOL)isNodeID:(unint64_t)d oldestForDStreamID:(unint64_t)iD path:(id)path
 {
-  v7 = a5;
+  pathCopy = path;
   v12 = 0;
-  v8 = [SACloneGroupsAnalyzer isNodeID:a3 oldestForDStreamID:a4 path:v7 error:&v12];
+  v8 = [SACloneGroupsAnalyzer isNodeID:d oldestForDStreamID:iD path:pathCopy error:&v12];
   v9 = v12;
   if (v9)
   {
@@ -428,31 +428,31 @@ LABEL_55:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v14 = a4;
+      iDCopy = iD;
       v15 = 2112;
       v16 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Failed to iterate clone with DStream ID (%llu) with %@. Fallback to clone mapping", buf, 0x16u);
     }
 
-    v8 = [SACloneTreeWalker isNodeID:a3 oldestForDStreamID:a4 forVolPath:v7];
+    v8 = [SACloneTreeWalker isNodeID:d oldestForDStreamID:iD forVolPath:pathCopy];
   }
 
   return v8;
 }
 
-- (id)getItemSizeAtPath:(id)a3
+- (id)getItemSizeAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v18 = 0;
   v5 = objc_opt_new();
   v6 = +[NSFileManager defaultManager];
-  v7 = [v6 fileExistsAtPath:v4 isDirectory:&v18];
+  v7 = [v6 fileExistsAtPath:pathCopy isDirectory:&v18];
 
   if (v7)
   {
     v8 = +[NSFileManager defaultManager];
     v17 = 0;
-    v9 = [v8 attributesOfItemAtPath:v4 error:&v17];
+    v9 = [v8 attributesOfItemAtPath:pathCopy error:&v17];
     v10 = v17;
 
     v11 = [0 objectForKeyedSubscript:NSFileTypeSymbolicLink];
@@ -471,14 +471,14 @@ LABEL_55:
       v15[4] = self;
       v14 = v5;
       v16 = v14;
-      [(SATraverse *)self traverseWithPath:v4 options:25 completionHandler:v15];
+      [(SATraverse *)self traverseWithPath:pathCopy options:25 completionHandler:v15];
       v12 = v14;
     }
 
     else
     {
-      v12 = [SATraverse getFileSize:v4];
-      if ([v12 isFileCloned] && -[SATraverse isNodeID:oldestForDStreamID:path:](self, "isNodeID:oldestForDStreamID:path:", +[SASupport getInodeIDForPath:](SASupport, "getInodeIDForPath:", v4), +[SASupport getCloneDstreamIDForPath:](SASupport, "getCloneDstreamIDForPath:", v4), v4))
+      v12 = [SATraverse getFileSize:pathCopy];
+      if ([v12 isFileCloned] && -[SATraverse isNodeID:oldestForDStreamID:path:](self, "isNodeID:oldestForDStreamID:path:", +[SASupport getInodeIDForPath:](SASupport, "getInodeIDForPath:", pathCopy), +[SASupport getCloneDstreamIDForPath:](SASupport, "getCloneDstreamIDForPath:", pathCopy), pathCopy))
       {
         [v12 setDataSize:{objc_msgSend(v12, "cloneSize")}];
       }
@@ -494,10 +494,10 @@ LABEL_55:
   return v12;
 }
 
-+ (id)getFileSize:(id)a3
++ (id)getFileSize:(id)size
 {
-  v3 = a3;
-  v4 = [NSURL fileURLWithPath:v3];
+  sizeCopy = size;
+  v4 = [NSURL fileURLWithPath:sizeCopy];
   v5 = objc_opt_new();
   v22 = 0;
   v20 = v4;
@@ -521,7 +521,7 @@ LABEL_55:
       }
 
       *buf = 138412546;
-      v24 = v3;
+      v24 = sizeCopy;
       v25 = 2112;
       v26 = v19;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to get physical size for file (%@)%@", buf, 0x16u);
@@ -534,20 +534,20 @@ LABEL_55:
     v15 = 0;
     v10 = 0;
     v12 = 0;
-    v8 = 0;
+    unsignedLongLongValue = 0;
     v16 = 0;
   }
 
   else
   {
-    v8 = [v6 unsignedLongLongValue];
-    v9 = [v3 fileSystemRepresentation];
-    v10 = [SASupport isFileCloned:v9];
-    v11 = [SASupport isFilePurgeable:v9];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
+    fileSystemRepresentation = [sizeCopy fileSystemRepresentation];
+    v10 = [SASupport isFileCloned:fileSystemRepresentation];
+    v11 = [SASupport isFilePurgeable:fileSystemRepresentation];
     v12 = v11;
     if (v10)
     {
-      v13 = v8;
+      v13 = unsignedLongLongValue;
     }
 
     else
@@ -567,7 +567,7 @@ LABEL_55:
 
     if (v11)
     {
-      v15 = v8;
+      v15 = unsignedLongLongValue;
     }
 
     else
@@ -582,11 +582,11 @@ LABEL_55:
 
     else
     {
-      v16 = (v8 - v13);
+      v16 = (unsignedLongLongValue - v13);
     }
   }
 
-  [v5 setPhysicalSize:v8];
+  [v5 setPhysicalSize:unsignedLongLongValue];
   [v5 setDataSize:v16];
   [v5 setCloneSize:v14];
   [v5 setPurgeableSize:v15];

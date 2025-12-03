@@ -13,9 +13,9 @@
     _os_log_impl(&dword_247E39000, v2, OS_LOG_TYPE_DEFAULT, "DMCAccountUtilities: Searching for orphaned enrollment account...", v5, 2u);
   }
 
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [v3 dmc_accountsWithPredicateBlock:&__block_literal_global];
-  [v3 dmc_removeAccounts:v4 asynchronous:0];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v4 = [defaultStore dmc_accountsWithPredicateBlock:&__block_literal_global];
+  [defaultStore dmc_removeAccounts:v4 asynchronous:0];
 }
 
 uint64_t __65__DMCEnrollmentAccountUtilities_removeOrphanedEnrollmentAccounts__block_invoke(uint64_t a1, void *a2)

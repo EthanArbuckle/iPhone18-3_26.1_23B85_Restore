@@ -1,25 +1,25 @@
 @interface CSSpeechRecognitionSelfHelper
-- (BOOL)_isNonTier1Message:(id)a3;
-- (BOOL)_isTier1LoggingAllowedForCurrentRequestWithTask:(id)a3;
-- (CSSpeechRecognitionSelfHelper)initWithAsrId:(id)a3 taskName:(id)a4 isSamplingForDictation:(BOOL)a5;
-- (void)logAssistantSamplingEventStatus:(unint64_t)a3 requestId:(id)a4 error:(id)a5;
-- (void)logDictationSamplingEventStatus:(unint64_t)a3 requestId:(id)a4 error:(id)a5;
+- (BOOL)_isNonTier1Message:(id)message;
+- (BOOL)_isTier1LoggingAllowedForCurrentRequestWithTask:(id)task;
+- (CSSpeechRecognitionSelfHelper)initWithAsrId:(id)id taskName:(id)name isSamplingForDictation:(BOOL)dictation;
+- (void)logAssistantSamplingEventStatus:(unint64_t)status requestId:(id)id error:(id)error;
+- (void)logDictationSamplingEventStatus:(unint64_t)status requestId:(id)id error:(id)error;
 - (void)logSampledAudioFileStoredSuccessfully;
-- (void)logSampledAudioFileStoredWithError:(id)a3;
-- (void)logSamplingEventStatus:(unint64_t)a3 requestId:(id)a4 error:(id)a5;
-- (void)wrapAndEmitTopLevelEvent:(id)a3 timestampInTicks:(id)a4;
+- (void)logSampledAudioFileStoredWithError:(id)error;
+- (void)logSamplingEventStatus:(unint64_t)status requestId:(id)id error:(id)error;
+- (void)wrapAndEmitTopLevelEvent:(id)event timestampInTicks:(id)ticks;
 @end
 
 @implementation CSSpeechRecognitionSelfHelper
 
-- (void)logDictationSamplingEventStatus:(unint64_t)a3 requestId:(id)a4 error:(id)a5
+- (void)logDictationSamplingEventStatus:(unint64_t)status requestId:(id)id error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  idCopy = id;
+  errorCopy = error;
+  if (idCopy)
   {
     v9 = [NSMutableDictionary alloc];
-    v34[0] = v7;
+    v34[0] = idCopy;
     v10 = [NSDate date:@"dictationUIInteractionIdentifier"];
     [v10 timeIntervalSince1970];
     v11 = [NSNumber numberWithDouble:?];
@@ -41,18 +41,18 @@
     v15 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:3];
     v16 = [v9 initWithDictionary:v15];
 
-    if (a3 == 1)
+    if (status == 1)
     {
-      if (v8)
+      if (errorCopy)
       {
-        v19 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+        v19 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
         [v16 setObject:v19 forKeyedSubscript:@"errorCode"];
 
-        v20 = [v8 domain];
-        v21 = v20;
-        if (v20)
+        domain = [errorCopy domain];
+        v21 = domain;
+        if (domain)
         {
-          v22 = v20;
+          v22 = domain;
         }
 
         else
@@ -62,11 +62,11 @@
 
         [v16 setObject:v22 forKeyedSubscript:@"errorDomain"];
 
-        v23 = [v8 localizedDescription];
-        v24 = v23;
-        if (v23)
+        localizedDescription = [errorCopy localizedDescription];
+        v24 = localizedDescription;
+        if (localizedDescription)
         {
-          v25 = v23;
+          v25 = localizedDescription;
         }
 
         else
@@ -76,19 +76,19 @@
 
         [v16 setObject:v25 forKeyedSubscript:@"description"];
 
-        v26 = [v8 userInfo];
-        v27 = [v26 objectForKey:NSUnderlyingErrorKey];
+        userInfo = [errorCopy userInfo];
+        v27 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
         if (v27)
         {
           v28 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v27 code]);
           [v16 setObject:v28 forKeyedSubscript:@"underlyingErrorCode"];
 
-          v29 = [v27 domain];
-          v30 = v29;
-          if (v29)
+          domain2 = [v27 domain];
+          v30 = domain2;
+          if (domain2)
           {
-            v31 = v29;
+            v31 = domain2;
           }
 
           else
@@ -103,7 +103,7 @@
       v17 = @"failed";
     }
 
-    else if (a3)
+    else if (status)
     {
       v17 = &stru_1002546C0;
     }
@@ -130,9 +130,9 @@
   }
 }
 
-- (BOOL)_isNonTier1Message:(id)a3
+- (BOOL)_isNonTier1Message:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v20 = objc_opt_class();
   v19 = objc_opt_class();
   v18 = objc_opt_class();
@@ -150,29 +150,29 @@
   v13 = [NSSet setWithObjects:v20, v19, v18, v17, v16, v4, v5, v6, v7, v8, v9, v10, v11, v12, objc_opt_class(), 0];
   v14 = objc_opt_class();
 
-  LOBYTE(v3) = [v13 containsObject:v14];
-  return v3;
+  LOBYTE(messageCopy) = [v13 containsObject:v14];
+  return messageCopy;
 }
 
-- (BOOL)_isTier1LoggingAllowedForCurrentRequestWithTask:(id)a3
+- (BOOL)_isTier1LoggingAllowedForCurrentRequestWithTask:(id)task
 {
   v3 = CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging;
   v4 = CoreEmbeddedSpeechRecognizerTaskSiriDictation;
   v5 = CoreEmbeddedSpeechRecognizerTaskBeto;
   v6 = CoreEmbeddedSpeechRecognizerTaskBetoDictation;
-  v7 = a3;
+  taskCopy = task;
   v8 = [NSSet setWithObjects:v3, v4, v5, v6, 0];
   v9 = [NSSet setWithObjects:CoreEmbeddedSpeechRecognizerTaskDictation, CoreEmbeddedSpeechRecognizerTaskWebSearch, 0];
-  v10 = [v8 containsObject:v7];
-  LODWORD(v4) = [v9 containsObject:v7];
+  v10 = [v8 containsObject:taskCopy];
+  LODWORD(v4) = [v9 containsObject:taskCopy];
 
   v11 = +[AFPreferences sharedPreferences];
   LOBYTE(v5) = [v11 isDictationHIPAACompliant];
 
   v12 = +[AFPreferences sharedPreferences];
-  v13 = [v12 siriDataSharingOptInStatus];
+  siriDataSharingOptInStatus = [v12 siriDataSharingOptInStatus];
 
-  v14 = (v13 == 1) & ~v5;
+  v14 = (siriDataSharingOptInStatus == 1) & ~v5;
   if (!v4)
   {
     v14 = v10;
@@ -191,18 +191,18 @@
   return v15;
 }
 
-- (void)wrapAndEmitTopLevelEvent:(id)a3 timestampInTicks:(id)a4
+- (void)wrapAndEmitTopLevelEvent:(id)event timestampInTicks:(id)ticks
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSSpeechRecognitionSelfHelper *)self _isNonTier1Message:v6];
+  eventCopy = event;
+  ticksCopy = ticks;
+  v8 = [(CSSpeechRecognitionSelfHelper *)self _isNonTier1Message:eventCopy];
   isTier1LoggingAllowedForCurrentRequest = self->_isTier1LoggingAllowedForCurrentRequest;
   v10 = objc_opt_respondsToSelector();
   if ((v8 & 1) != 0 || isTier1LoggingAllowedForCurrentRequest)
   {
     if (!isTier1LoggingAllowedForCurrentRequest && ((v10 ^ 1) & 1) == 0)
     {
-      ([v6 methodForSelector:"deleteLinkId"])(v6, "deleteLinkId");
+      ([eventCopy methodForSelector:"deleteLinkId"])(eventCopy, "deleteLinkId");
     }
 
     v11 = objc_alloc_init(ASRSchemaASRClientEventMetadata);
@@ -213,7 +213,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v13 setPreheatContext:v6];
+      [v13 setPreheatContext:eventCopy];
     }
 
     else
@@ -221,7 +221,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v13 setRequestContext:v6];
+        [v13 setRequestContext:eventCopy];
       }
 
       else
@@ -229,7 +229,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v13 setPartialResultGenerated:v6];
+          [v13 setPartialResultGenerated:eventCopy];
         }
 
         else
@@ -237,7 +237,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v13 setPackageGenerated:v6];
+            [v13 setPackageGenerated:eventCopy];
           }
 
           else
@@ -245,7 +245,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v13 setRecognitionResultTier1:v6];
+              [v13 setRecognitionResultTier1:eventCopy];
             }
 
             else
@@ -253,7 +253,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v13 setFinalResultGenerated:v6];
+                [v13 setFinalResultGenerated:eventCopy];
               }
 
               else
@@ -261,7 +261,7 @@
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [v13 setIntermediateUtteranceInfoTier1:v6];
+                  [v13 setIntermediateUtteranceInfoTier1:eventCopy];
                 }
 
                 else
@@ -269,7 +269,7 @@
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v13 setInitializationContext:v6];
+                    [v13 setInitializationContext:eventCopy];
                   }
 
                   else
@@ -277,7 +277,7 @@
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [v13 setAssetLoadContext:v6];
+                      [v13 setAssetLoadContext:eventCopy];
                     }
 
                     else
@@ -285,7 +285,7 @@
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        [v13 setLanguageModelEnrollmentContext:v6];
+                        [v13 setLanguageModelEnrollmentContext:eventCopy];
                       }
 
                       else
@@ -293,7 +293,7 @@
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          [v13 setJitLanguageModelEnrollmentEndedTier1:v6];
+                          [v13 setJitLanguageModelEnrollmentEndedTier1:eventCopy];
                         }
 
                         else
@@ -301,7 +301,7 @@
                           objc_opt_class();
                           if (objc_opt_isKindOfClass())
                           {
-                            [v13 setAudioPacketArrivalContext:v6];
+                            [v13 setAudioPacketArrivalContext:eventCopy];
                           }
 
                           else
@@ -309,7 +309,7 @@
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              [v13 setFirstAudioPacketProcessed:v6];
+                              [v13 setFirstAudioPacketProcessed:eventCopy];
                             }
 
                             else
@@ -317,7 +317,7 @@
                               objc_opt_class();
                               if (objc_opt_isKindOfClass())
                               {
-                                [v13 setFinalAudioPacketContainingSpeechReceived:v6];
+                                [v13 setFinalAudioPacketContainingSpeechReceived:eventCopy];
                               }
 
                               else
@@ -325,7 +325,7 @@
                                 objc_opt_class();
                                 if (objc_opt_isKindOfClass())
                                 {
-                                  [v13 setSampledAudioFileStored:v6];
+                                  [v13 setSampledAudioFileStored:eventCopy];
                                 }
 
                                 else
@@ -333,7 +333,7 @@
                                   objc_opt_class();
                                   if (objc_opt_isKindOfClass())
                                   {
-                                    [v13 setSampledAudioFileStorageFailed:v6];
+                                    [v13 setSampledAudioFileStorageFailed:eventCopy];
                                   }
 
                                   else
@@ -341,7 +341,7 @@
                                     objc_opt_class();
                                     if (objc_opt_isKindOfClass())
                                     {
-                                      [v13 setAppleNeuralEngineCompilationContext:v6];
+                                      [v13 setAppleNeuralEngineCompilationContext:eventCopy];
                                     }
 
                                     else
@@ -349,7 +349,7 @@
                                       objc_opt_class();
                                       if (objc_opt_isKindOfClass())
                                       {
-                                        [v13 setEmbeddedSpeechProcessContext:v6];
+                                        [v13 setEmbeddedSpeechProcessContext:eventCopy];
                                       }
 
                                       else
@@ -357,7 +357,7 @@
                                         objc_opt_class();
                                         if (objc_opt_isKindOfClass())
                                         {
-                                          [v13 setActiveConfigUpdateContext:v6];
+                                          [v13 setActiveConfigUpdateContext:eventCopy];
                                         }
 
                                         else
@@ -365,7 +365,7 @@
                                           objc_opt_class();
                                           if (objc_opt_isKindOfClass())
                                           {
-                                            [v13 setAppleNeuralEngineModelInitializationContext:v6];
+                                            [v13 setAppleNeuralEngineModelInitializationContext:eventCopy];
                                           }
 
                                           else
@@ -373,7 +373,7 @@
                                             objc_opt_class();
                                             if (objc_opt_isKindOfClass())
                                             {
-                                              [v13 setAudioSpeechPacketArrivalContext:v6];
+                                              [v13 setAudioSpeechPacketArrivalContext:eventCopy];
                                             }
 
                                             else
@@ -381,7 +381,7 @@
                                               objc_opt_class();
                                               if (objc_opt_isKindOfClass())
                                               {
-                                                [v13 setAudioSpeechPacketFirstSecondAfterFirstSpeechPacketArrived:v6];
+                                                [v13 setAudioSpeechPacketFirstSecondAfterFirstSpeechPacketArrived:eventCopy];
                                               }
 
                                               else
@@ -389,7 +389,7 @@
                                                 objc_opt_class();
                                                 if (objc_opt_isKindOfClass())
                                                 {
-                                                  [v13 setFrameProcessingReady:v6];
+                                                  [v13 setFrameProcessingReady:eventCopy];
                                                 }
 
                                                 else
@@ -397,7 +397,7 @@
                                                   objc_opt_class();
                                                   if (objc_opt_isKindOfClass())
                                                   {
-                                                    [v13 setLeadingSilenceProcessed:v6];
+                                                    [v13 setLeadingSilenceProcessed:eventCopy];
                                                   }
 
                                                   else
@@ -405,7 +405,7 @@
                                                     objc_opt_class();
                                                     if (objc_opt_isKindOfClass())
                                                     {
-                                                      [v13 setFirstSecondAfterLeadingSilenceProcessed:v6];
+                                                      [v13 setFirstSecondAfterLeadingSilenceProcessed:eventCopy];
                                                     }
 
                                                     else
@@ -413,7 +413,7 @@
                                                       objc_opt_class();
                                                       if (objc_opt_isKindOfClass())
                                                       {
-                                                        [v13 setFirstAudioPacketRecorded:v6];
+                                                        [v13 setFirstAudioPacketRecorded:eventCopy];
                                                       }
 
                                                       else
@@ -432,7 +432,7 @@
                                                           goto LABEL_66;
                                                         }
 
-                                                        [v13 setAudioPacketContainingEndOfFirstWordReadyUpstream:v6];
+                                                        [v13 setAudioPacketContainingEndOfFirstWordReadyUpstream:eventCopy];
                                                       }
                                                     }
                                                   }
@@ -475,9 +475,9 @@
 
     v15 = +[AssistantSiriAnalytics sharedStream];
     v16 = v15;
-    if (v7)
+    if (ticksCopy)
     {
-      [v15 emitMessage:v13 timestamp:{objc_msgSend(v7, "unsignedLongLongValue")}];
+      [v15 emitMessage:v13 timestamp:{objc_msgSend(ticksCopy, "unsignedLongLongValue")}];
     }
 
     else
@@ -489,20 +489,20 @@ LABEL_66:
   }
 }
 
-- (void)logSampledAudioFileStoredWithError:(id)a3
+- (void)logSampledAudioFileStoredWithError:(id)error
 {
-  v13 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(ASRSchemaASRSampledAudioFileStorageFailed);
-  if (v13)
+  if (errorCopy)
   {
-    v5 = [v13 domain];
-    if ([v5 isEqualToString:CSErrorDomain] && objc_msgSend(v13, "code") >= 0x92F)
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:CSErrorDomain] && objc_msgSend(errorCopy, "code") >= 0x92F)
     {
-      v6 = [v13 code];
+      code = [errorCopy code];
 
-      if (v6 <= 0x932)
+      if (code <= 0x932)
       {
-        v7 = [v13 code] - 2351;
+        v7 = [errorCopy code] - 2351;
         if (v7 > 3)
         {
           v8 = 0;
@@ -522,18 +522,18 @@ LABEL_66:
     {
     }
 
-    [v4 setErrorCode:{objc_msgSend(v13, "code")}];
-    v9 = [v13 domain];
-    [v4 setErrorDomain:v9];
+    [v4 setErrorCode:{objc_msgSend(errorCopy, "code")}];
+    domain2 = [errorCopy domain];
+    [v4 setErrorDomain:domain2];
 
-    v10 = [v13 userInfo];
-    v11 = [v10 objectForKey:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v11 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
     if (v11)
     {
       [v4 setUnderlyingErrorCode:{objc_msgSend(v11, "code")}];
-      v12 = [v11 domain];
-      [v4 setUnderlyingErrorDomain:v12];
+      domain3 = [v11 domain];
+      [v4 setUnderlyingErrorDomain:domain3];
     }
   }
 
@@ -548,9 +548,9 @@ LABEL_11:
   [(CSSpeechRecognitionSelfHelper *)self wrapAndEmitTopLevelEvent:v3 timestampInTicks:0];
 }
 
-- (void)logAssistantSamplingEventStatus:(unint64_t)a3 requestId:(id)a4 error:(id)a5
+- (void)logAssistantSamplingEventStatus:(unint64_t)status requestId:(id)id error:(id)error
 {
-  if (a3)
+  if (status)
   {
     [(CSSpeechRecognitionSelfHelper *)self logSampledAudioFileStoredWithError:?];
   }
@@ -561,33 +561,33 @@ LABEL_11:
   }
 }
 
-- (void)logSamplingEventStatus:(unint64_t)a3 requestId:(id)a4 error:(id)a5
+- (void)logSamplingEventStatus:(unint64_t)status requestId:(id)id error:(id)error
 {
   if (self->_isSamplingForDictation)
   {
-    [(CSSpeechRecognitionSelfHelper *)self logDictationSamplingEventStatus:a3 requestId:a4 error:a5];
+    [(CSSpeechRecognitionSelfHelper *)self logDictationSamplingEventStatus:status requestId:id error:error];
   }
 
   else
   {
-    [(CSSpeechRecognitionSelfHelper *)self logAssistantSamplingEventStatus:a3 requestId:a4 error:a5];
+    [(CSSpeechRecognitionSelfHelper *)self logAssistantSamplingEventStatus:status requestId:id error:error];
   }
 }
 
-- (CSSpeechRecognitionSelfHelper)initWithAsrId:(id)a3 taskName:(id)a4 isSamplingForDictation:(BOOL)a5
+- (CSSpeechRecognitionSelfHelper)initWithAsrId:(id)id taskName:(id)name isSamplingForDictation:(BOOL)dictation
 {
-  v9 = a3;
-  v10 = a4;
+  idCopy = id;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = CSSpeechRecognitionSelfHelper;
   v11 = [(CSSpeechRecognitionSelfHelper *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_asrId, a3);
-    objc_storeStrong(&v12->_taskName, a4);
-    v12->_isSamplingForDictation = a5;
-    v12->_isTier1LoggingAllowedForCurrentRequest = [(CSSpeechRecognitionSelfHelper *)v12 _isTier1LoggingAllowedForCurrentRequestWithTask:v10];
+    objc_storeStrong(&v11->_asrId, id);
+    objc_storeStrong(&v12->_taskName, name);
+    v12->_isSamplingForDictation = dictation;
+    v12->_isTier1LoggingAllowedForCurrentRequest = [(CSSpeechRecognitionSelfHelper *)v12 _isTier1LoggingAllowedForCurrentRequestWithTask:nameCopy];
   }
 
   return v12;

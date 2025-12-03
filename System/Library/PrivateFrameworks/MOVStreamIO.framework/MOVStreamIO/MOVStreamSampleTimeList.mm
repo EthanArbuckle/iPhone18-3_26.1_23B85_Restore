@@ -1,18 +1,18 @@
 @interface MOVStreamSampleTimeList
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtIndex:(SEL)a3;
-- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeFrom:(SEL)a3 to:(unint64_t)a4;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtIndex:(SEL)index;
+- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeFrom:(SEL)from to:(unint64_t)to;
 - (MOVStreamSampleTimeList)init;
-- (MOVStreamSampleTimeList)initWithTimes:(const void *)a3;
+- (MOVStreamSampleTimeList)initWithTimes:(const void *)times;
 - (NSArray)cmtimes;
 - (NSArray)times;
-- (_NSRange)frameRangeFrom:(id *)a3 to:(id *)a4;
+- (_NSRange)frameRangeFrom:(id *)from to:(id *)to;
 - (id).cxx_construct;
 - (id)description;
 @end
 
 @implementation MOVStreamSampleTimeList
 
-- (MOVStreamSampleTimeList)initWithTimes:(const void *)a3
+- (MOVStreamSampleTimeList)initWithTimes:(const void *)times
 {
   v8.receiver = self;
   v8.super_class = MOVStreamSampleTimeList;
@@ -20,7 +20,7 @@
   p_times = &v4->_times;
   if (v4)
   {
-    v6 = p_times == a3;
+    v6 = p_times == times;
   }
 
   else
@@ -30,7 +30,7 @@
 
   if (!v6)
   {
-    std::vector<CMTime>::__assign_with_size[abi:ne200100]<CMTime*,CMTime*>(p_times, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+    std::vector<CMTime>::__assign_with_size[abi:ne200100]<CMTime*,CMTime*>(p_times, *times, *(times + 1), 0xAAAAAAAAAAAAAAABLL * ((*(times + 1) - *times) >> 3));
   }
 
   return v4;
@@ -91,12 +91,12 @@
     v9 = self->_times.__end_;
   }
 
-  v10 = [(MOVStreamSampleTimeList *)self name];
-  if ([v10 length])
+  name = [(MOVStreamSampleTimeList *)self name];
+  if ([name length])
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(MOVStreamSampleTimeList *)self name];
-    v13 = [v11 stringWithFormat:@" name=%@", v12];
+    name2 = [(MOVStreamSampleTimeList *)self name];
+    v13 = [v11 stringWithFormat:@" name=%@", name2];
   }
 
   else
@@ -125,7 +125,7 @@
   return v21;
 }
 
-- (_NSRange)frameRangeFrom:(id *)a3 to:(id *)a4
+- (_NSRange)frameRangeFrom:(id *)from to:(id *)to
 {
   begin = self->_times.__begin_;
   end = self->_times.__end_;
@@ -144,7 +144,7 @@
       v11 = *v10;
       time1.epoch = *(v10 + 2);
       *&time1.value = v11;
-      v22 = *a3;
+      v22 = *from;
       v12 = CMTimeCompare(&time1, &v22);
       if (v12 < 0)
       {
@@ -185,7 +185,7 @@
     do
     {
       v17 = begin + 24 * (v16 >> 1);
-      time1 = *a4;
+      time1 = *to;
       v18 = *v17;
       v22.var3 = *(v17 + 2);
       *&v22.var0 = v18;
@@ -227,7 +227,7 @@
   return result;
 }
 
-- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeFrom:(SEL)a3 to:(unint64_t)a4
+- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeFrom:(SEL)from to:(unint64_t)to
 {
   v7 = MEMORY[0x277CC08D0];
   v8 = *(MEMORY[0x277CC08D0] + 16);
@@ -236,7 +236,7 @@
   *&retstr->var1.var1 = *(v7 + 32);
   v9 = *&self->var0.var1;
   v10 = 0xAAAAAAAAAAAAAAABLL * ((self->var0.var3 - v9) >> 3);
-  if (v10 > a4)
+  if (v10 > to)
   {
     v18 = v5;
     v19 = v6;
@@ -250,7 +250,7 @@
       v11 = a5;
     }
 
-    v12 = (v9 + 24 * a4);
+    v12 = (v9 + 24 * to);
     v13 = *v12;
     start.epoch = *(v12 + 2);
     *&start.value = v13;
@@ -316,7 +316,7 @@
   return cached_cmtimes;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtIndex:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtIndex:(SEL)index
 {
   v4 = *&self->var1;
   v5 = 0xAAAAAAAAAAAAAAABLL * ((self->var3 - v4) >> 3);

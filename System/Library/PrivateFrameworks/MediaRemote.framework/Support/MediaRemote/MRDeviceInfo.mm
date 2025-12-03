@@ -6,14 +6,14 @@
 
 - (BOOL)considerLocalOriginAsSeperateStream
 {
-  v3 = [(MRDeviceInfo *)self isAirPlayActive];
-  if (v3)
+  isAirPlayActive = [(MRDeviceInfo *)self isAirPlayActive];
+  if (isAirPlayActive)
   {
 
-    LOBYTE(v3) = [(MRDeviceInfo *)self parentGroupContainsDiscoverableGroupLeader];
+    LOBYTE(isAirPlayActive) = [(MRDeviceInfo *)self parentGroupContainsDiscoverableGroupLeader];
   }
 
-  return v3;
+  return isAirPlayActive;
 }
 
 @end

@@ -1,64 +1,64 @@
 @interface MLULookupItemDDContent
-- (MLULookupItemDDContent)initWithURL:(id)a3 result:(__DDResult *)a4 documentProperties:(id)a5;
+- (MLULookupItemDDContent)initWithURL:(id)l result:(__DDResult *)result documentProperties:(id)properties;
 - (unint64_t)commitType;
 - (void)dismissViewController;
 @end
 
 @implementation MLULookupItemDDContent
 
-- (MLULookupItemDDContent)initWithURL:(id)a3 result:(__DDResult *)a4 documentProperties:(id)a5
+- (MLULookupItemDDContent)initWithURL:(id)l result:(__DDResult *)result documentProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  propertiesCopy = properties;
   v22.receiver = self;
   v22.super_class = MLULookupItemDDContent;
   v10 = [(MLULookupItemDDContent *)&v22 init];
   if (v10)
   {
-    v11 = [MEMORY[0x277D04338] previewActionForURL:v8 result:a4 context:v9];
+    v11 = [MEMORY[0x277D04338] previewActionForURL:lCopy result:result context:propertiesCopy];
     previewAction = v10->_previewAction;
     v10->_previewAction = v11;
 
     v13 = v10->_previewAction;
     if (v13)
     {
-      v14 = [(DDPreviewAction *)v13 viewController];
-      if (v14)
+      viewController = [(DDPreviewAction *)v13 viewController];
+      if (viewController)
       {
         if ([(DDPreviewAction *)v10->_previewAction requiresEmbeddingNavigationController])
         {
           v15 = objc_alloc_init(DDPreviewNavigationController);
           [(DDPreviewNavigationController *)v15 setEdgesForExtendedLayout:1];
-          v16 = [MEMORY[0x277D75348] whiteColor];
-          v17 = [(DDPreviewNavigationController *)v15 view];
-          [v17 setBackgroundColor:v16];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          view = [(DDPreviewNavigationController *)v15 view];
+          [view setBackgroundColor:whiteColor];
 
-          [v14 setEdgesForExtendedLayout:0];
-          v18 = [(DDPreviewAction *)v10->_previewAction platterTitle];
-          [v14 setTitle:v18];
+          [viewController setEdgesForExtendedLayout:0];
+          platterTitle = [(DDPreviewAction *)v10->_previewAction platterTitle];
+          [viewController setTitle:platterTitle];
 
           [(DDPreviewNavigationController *)v15 setNavigationBarHidden:0];
-          [(DDPreviewNavigationController *)v15 pushViewController:v14 animated:0];
+          [(DDPreviewNavigationController *)v15 pushViewController:viewController animated:0];
           [(MLULookupItemContent *)v10 setPreviewViewController:v15];
         }
 
         else
         {
-          [(MLULookupItemContent *)v10 setPreviewViewController:v14];
+          [(MLULookupItemContent *)v10 setPreviewViewController:viewController];
         }
       }
     }
 
-    v19 = [(MLULookupItemContent *)v10 previewViewController];
-    if (v19)
+    previewViewController = [(MLULookupItemContent *)v10 previewViewController];
+    if (previewViewController)
     {
       [(MLULookupItemContent *)v10 setValid:1];
     }
 
     else
     {
-      v20 = [(MLULookupItemDDContent *)v10 contact];
-      [(MLULookupItemContent *)v10 setValid:v20 != 0];
+      contact = [(MLULookupItemDDContent *)v10 contact];
+      [(MLULookupItemContent *)v10 setValid:contact != 0];
     }
   }
 
@@ -72,9 +72,9 @@
     return 2;
   }
 
-  v4 = [(DDPreviewAction *)self->_previewAction commitURL];
+  commitURL = [(DDPreviewAction *)self->_previewAction commitURL];
 
-  if (v4)
+  if (commitURL)
   {
     return 4;
   }

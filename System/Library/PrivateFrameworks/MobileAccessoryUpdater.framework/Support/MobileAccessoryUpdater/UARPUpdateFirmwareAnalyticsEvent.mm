@@ -1,8 +1,8 @@
 @interface UARPUpdateFirmwareAnalyticsEvent
 - (id)description;
 - (void)dealloc;
-- (void)updateWithAccessoryID:(id)a3 assetID:(id)a4;
-- (void)updateWithFrameworkParams:(id)a3;
+- (void)updateWithAccessoryID:(id)d assetID:(id)iD;
+- (void)updateWithFrameworkParams:(id)params;
 @end
 
 @implementation UARPUpdateFirmwareAnalyticsEvent
@@ -14,33 +14,33 @@
   [(UARPUpdateFirmwareAnalyticsEvent *)&v3 dealloc];
 }
 
-- (void)updateWithAccessoryID:(id)a3 assetID:(id)a4
+- (void)updateWithAccessoryID:(id)d assetID:(id)iD
 {
-  -[UARPUpdateFirmwareAnalyticsEvent setManufacturerName:](self, "setManufacturerName:", [a3 manufacturer]);
-  -[UARPUpdateFirmwareAnalyticsEvent setModelName:](self, "setModelName:", [a3 modelAnalytics]);
-  -[UARPUpdateFirmwareAnalyticsEvent setActiveFirmwareVersion:](self, "setActiveFirmwareVersion:", [a3 firmwareVersion]);
-  -[UARPUpdateFirmwareAnalyticsEvent setTransport:](self, "setTransport:", [a3 transport]);
-  -[UARPUpdateFirmwareAnalyticsEvent setCountryCode:](self, "setCountryCode:", [a3 countryCode]);
-  -[UARPUpdateFirmwareAnalyticsEvent setPostedFirmwareVersion:](self, "setPostedFirmwareVersion:", [a4 assetVersion]);
-  -[UARPUpdateFirmwareAnalyticsEvent setDownloadURL:](self, "setDownloadURL:", [objc_msgSend(a4 "remoteURL")]);
-  v7 = [a3 shareAnalyticsEventsWithThirdParty];
+  -[UARPUpdateFirmwareAnalyticsEvent setManufacturerName:](self, "setManufacturerName:", [d manufacturer]);
+  -[UARPUpdateFirmwareAnalyticsEvent setModelName:](self, "setModelName:", [d modelAnalytics]);
+  -[UARPUpdateFirmwareAnalyticsEvent setActiveFirmwareVersion:](self, "setActiveFirmwareVersion:", [d firmwareVersion]);
+  -[UARPUpdateFirmwareAnalyticsEvent setTransport:](self, "setTransport:", [d transport]);
+  -[UARPUpdateFirmwareAnalyticsEvent setCountryCode:](self, "setCountryCode:", [d countryCode]);
+  -[UARPUpdateFirmwareAnalyticsEvent setPostedFirmwareVersion:](self, "setPostedFirmwareVersion:", [iD assetVersion]);
+  -[UARPUpdateFirmwareAnalyticsEvent setDownloadURL:](self, "setDownloadURL:", [objc_msgSend(iD "remoteURL")]);
+  shareAnalyticsEventsWithThirdParty = [d shareAnalyticsEventsWithThirdParty];
 
-  [(UARPUpdateFirmwareAnalyticsEvent *)self setShare3rdParty:v7];
+  [(UARPUpdateFirmwareAnalyticsEvent *)self setShare3rdParty:shareAnalyticsEventsWithThirdParty];
 }
 
-- (void)updateWithFrameworkParams:(id)a3
+- (void)updateWithFrameworkParams:(id)params
 {
-  -[UARPUpdateFirmwareAnalyticsEvent setStagingUserInitiated:](self, "setStagingUserInitiated:", [a3 stagingUserInitiated]);
-  -[UARPUpdateFirmwareAnalyticsEvent setStagingDuration:](self, "setStagingDuration:", [a3 stagingDuration]);
-  -[UARPUpdateFirmwareAnalyticsEvent setStagingIterations:](self, "setStagingIterations:", [a3 stagingIterations]);
-  -[UARPUpdateFirmwareAnalyticsEvent setStagingStatus:](self, "setStagingStatus:", [objc_msgSend(a3 "stagingStatus")]);
-  -[UARPUpdateFirmwareAnalyticsEvent setStagingVendorError:](self, "setStagingVendorError:", [a3 stagingVendorError]);
-  -[UARPUpdateFirmwareAnalyticsEvent setApplyUserInitiated:](self, "setApplyUserInitiated:", [a3 applyUserInitiated]);
-  -[UARPUpdateFirmwareAnalyticsEvent setApplyDuration:](self, "setApplyDuration:", [a3 applyDuration]);
-  -[UARPUpdateFirmwareAnalyticsEvent setApplyStatus:](self, "setApplyStatus:", [objc_msgSend(a3 "applyStatus")]);
-  v5 = [a3 applyVendorError];
+  -[UARPUpdateFirmwareAnalyticsEvent setStagingUserInitiated:](self, "setStagingUserInitiated:", [params stagingUserInitiated]);
+  -[UARPUpdateFirmwareAnalyticsEvent setStagingDuration:](self, "setStagingDuration:", [params stagingDuration]);
+  -[UARPUpdateFirmwareAnalyticsEvent setStagingIterations:](self, "setStagingIterations:", [params stagingIterations]);
+  -[UARPUpdateFirmwareAnalyticsEvent setStagingStatus:](self, "setStagingStatus:", [objc_msgSend(params "stagingStatus")]);
+  -[UARPUpdateFirmwareAnalyticsEvent setStagingVendorError:](self, "setStagingVendorError:", [params stagingVendorError]);
+  -[UARPUpdateFirmwareAnalyticsEvent setApplyUserInitiated:](self, "setApplyUserInitiated:", [params applyUserInitiated]);
+  -[UARPUpdateFirmwareAnalyticsEvent setApplyDuration:](self, "setApplyDuration:", [params applyDuration]);
+  -[UARPUpdateFirmwareAnalyticsEvent setApplyStatus:](self, "setApplyStatus:", [objc_msgSend(params "applyStatus")]);
+  applyVendorError = [params applyVendorError];
 
-  [(UARPUpdateFirmwareAnalyticsEvent *)self setApplyVendorError:v5];
+  [(UARPUpdateFirmwareAnalyticsEvent *)self setApplyVendorError:applyVendorError];
 }
 
 - (id)description

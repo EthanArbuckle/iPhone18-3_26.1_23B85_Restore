@@ -1,56 +1,56 @@
 @interface NightModeControl
-- (BOOL)parseStatusDictionary:(id)a3 intoStruct:(id *)a4 shouldUpdatePrefs:(BOOL *)a5;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (BOOL)updateTransitionTimesFromSchedule:(double)a3;
-- (BOOL)updateTransitionTimesFromSunriseSunset:(double)a3;
-- (NightModeControl)initWithSupportObject:(id)a3 queue:(id)a4 callback:(id)a5;
-- (id)copyDictionaryFromStatus:(id *)a3;
+- (BOOL)parseStatusDictionary:(id)dictionary intoStruct:(id *)struct shouldUpdatePrefs:(BOOL *)prefs;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (BOOL)updateTransitionTimesFromSchedule:(double)schedule;
+- (BOOL)updateTransitionTimesFromSunriseSunset:(double)sunset;
+- (NightModeControl)initWithSupportObject:(id)object queue:(id)queue callback:(id)callback;
+- (id)copyDictionaryFromStatus:(id *)status;
 - (id)copyLowPowerModeState;
-- (id)copyPreferenceForKey:(id)a3 user:(id)a4;
+- (id)copyPreferenceForKey:(id)key user:(id)user;
 - (id)copyStatusDictionaryFromPrefs;
-- (id)copyTimeStringWithHour:(int)a3 minute:(int)a4 second:(int)a5;
-- (id)getPropertyForKey:(id)a3;
-- (void)addSupportObject:(id)a3;
+- (id)copyTimeStringWithHour:(int)hour minute:(int)minute second:(int)second;
+- (id)getPropertyForKey:(id)key;
+- (void)addSupportObject:(id)object;
 - (void)cancelSchedule;
 - (void)cancelTransition;
 - (void)clockChanged;
 - (void)dealloc;
-- (void)displayAlertInteractive:(BOOL)a3;
-- (void)enableBlueLightReduction:(BOOL)a3 withOption:(int)a4;
+- (void)displayAlertInteractive:(BOOL)interactive;
+- (void)enableBlueLightReduction:(BOOL)reduction withOption:(int)option;
 - (void)initiateFullMaxTransition;
 - (void)initiateFullMinTransition;
 - (void)initiateRestrictedMaxTransition;
-- (void)initiateTransitionTo:(float)a3 andRampLength:(float)a4;
-- (void)reevaluateCurrentStateWithFactorFadeOption:(float)a3;
-- (void)removeSupportObject:(id)a3;
-- (void)retrieveSunriseSunsetTimesFromBackup:(double)a3;
-- (void)saveStatusToPrefs:(id)a3;
-- (void)scheduleNextTransition:(double)a3 withType:(int)a4;
-- (void)setAlgoState:(int)a3;
-- (void)setMode:(int)a3;
-- (void)setNightModeFactor:(float)a3 withFadePeriod:(float)a4;
-- (void)setSchedule:(id)a3;
-- (void)setSunPermitted:(BOOL)a3;
+- (void)initiateTransitionTo:(float)to andRampLength:(float)length;
+- (void)reevaluateCurrentStateWithFactorFadeOption:(float)option;
+- (void)removeSupportObject:(id)object;
+- (void)retrieveSunriseSunsetTimesFromBackup:(double)backup;
+- (void)saveStatusToPrefs:(id)prefs;
+- (void)scheduleNextTransition:(double)transition withType:(int)type;
+- (void)setAlgoState:(int)state;
+- (void)setMode:(int)mode;
+- (void)setNightModeFactor:(float)factor withFadePeriod:(float)period;
+- (void)setSchedule:(id)schedule;
+- (void)setSunPermitted:(BOOL)permitted;
 - (void)tearDownAllTimers;
 - (void)timeZoneChanged;
 - (void)transitionTimerHandler;
-- (void)updateLowPowerModeState:(id)a3;
-- (void)updateOptionTimestamp:(double)a3;
-- (void)updateStatusDictionaryWithValue:(id)a3 forKey:(id)a4;
+- (void)updateLowPowerModeState:(id)state;
+- (void)updateOptionTimestamp:(double)timestamp;
+- (void)updateStatusDictionaryWithValue:(id)value forKey:(id)key;
 - (void)updateSunriseSunsetBackup;
-- (void)updateSunriseSunsetInfo:(id)a3;
-- (void)updateTransitionTimes:(double)a3;
+- (void)updateSunriseSunsetInfo:(id)info;
+- (void)updateTransitionTimes:(double)times;
 @end
 
 @implementation NightModeControl
 
 - (void)cancelSchedule
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_logHandle)
   {
-    logHandle = v10->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -78,22 +78,22 @@
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "cancel next transition schedule", v6, 2u);
   }
 
-  if (v10->_nextTransitionTimer)
+  if (selfCopy->_nextTransitionTimer)
   {
-    dispatch_source_cancel(v10->_nextTransitionTimer);
-    dispatch_release(v10->_nextTransitionTimer);
-    v10->_nextTransitionTimer = 0;
-    v10->_currentScheduledTransitionType = 0;
+    dispatch_source_cancel(selfCopy->_nextTransitionTimer);
+    dispatch_release(selfCopy->_nextTransitionTimer);
+    selfCopy->_nextTransitionTimer = 0;
+    selfCopy->_currentScheduledTransitionType = 0;
   }
 }
 
 - (void)cancelTransition
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   if (self->_logHandle)
   {
-    logHandle = v11->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -121,40 +121,40 @@
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "cancel current transition", v7, 2u);
   }
 
-  if (v11->_transitionTimer)
+  if (selfCopy->_transitionTimer)
   {
-    dispatch_source_cancel(v11->_transitionTimer);
-    dispatch_release(v11->_transitionTimer);
-    v11->_transitionTimer = 0;
+    dispatch_source_cancel(selfCopy->_transitionTimer);
+    dispatch_release(selfCopy->_transitionTimer);
+    selfCopy->_transitionTimer = 0;
   }
 
-  factor = v11->_factorState.factor;
-  v11->_factorState.target = factor;
-  v11->_factorState.start = factor;
+  factor = selfCopy->_factorState.factor;
+  selfCopy->_factorState.target = factor;
+  selfCopy->_factorState.start = factor;
 }
 
-- (BOOL)parseStatusDictionary:(id)a3 intoStruct:(id *)a4 shouldUpdatePrefs:(BOOL *)a5
+- (BOOL)parseStatusDictionary:(id)dictionary intoStruct:(id *)struct shouldUpdatePrefs:(BOOL *)prefs
 {
   v19 = 0;
-  if (a5)
+  if (prefs)
   {
-    *a5 = 0;
+    *prefs = 0;
   }
 
-  [a3 objectForKey:@"Version"];
+  [dictionary objectForKey:@"Version"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  if ([objc_msgSend(a3 objectForKey:{@"Version", "intValue"}] != 1)
+  if ([objc_msgSend(dictionary objectForKey:{@"Version", "intValue"}] != 1)
   {
     return 0;
   }
 
-  a4->var0 = 1;
-  [a3 objectForKey:@"BlueReductionEnabled"];
+  struct->var0 = 1;
+  [dictionary objectForKey:@"BlueReductionEnabled"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
@@ -162,8 +162,8 @@
     return 0;
   }
 
-  a4->var1 = [objc_msgSend(a3 objectForKey:{@"BlueReductionEnabled", "intValue"}] != 0;
-  [a3 objectForKey:@"BlueReductionMode"];
+  struct->var1 = [objc_msgSend(dictionary objectForKey:{@"BlueReductionEnabled", "intValue"}] != 0;
+  [dictionary objectForKey:@"BlueReductionMode"];
   objc_opt_class();
   v6 = objc_opt_isKindOfClass();
   if ((v6 & 1) == 0)
@@ -171,13 +171,13 @@
     return 0;
   }
 
-  a4->var3 = [objc_msgSend(a3 objectForKey:{@"BlueReductionMode", "intValue"}];
-  if (a4->var3)
+  struct->var3 = [objc_msgSend(dictionary objectForKey:{@"BlueReductionMode", "intValue"}];
+  if (struct->var3)
   {
     v19 = 1;
   }
 
-  [a3 objectForKey:@"BlueReductionSunScheduleAllowed"];
+  [dictionary objectForKey:@"BlueReductionSunScheduleAllowed"];
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
   if ((v7 & 1) == 0)
@@ -185,8 +185,8 @@
     return 0;
   }
 
-  a4->var2 = [objc_msgSend(a3 objectForKey:{@"BlueReductionSunScheduleAllowed", "intValue"}] != 0;
-  v18 = [a3 objectForKey:@"BlueLightReductionSchedule"];
+  struct->var2 = [objc_msgSend(dictionary objectForKey:{@"BlueReductionSunScheduleAllowed", "intValue"}] != 0;
+  v18 = [dictionary objectForKey:@"BlueLightReductionSchedule"];
   objc_opt_class();
   v8 = objc_opt_isKindOfClass();
   if ((v8 & 1) == 0)
@@ -201,7 +201,7 @@
     return 0;
   }
 
-  a4->var4.var0.var0 = [objc_msgSend(v18 objectForKey:{@"NightStartHour", "intValue"}];
+  struct->var4.var0.var0 = [objc_msgSend(v18 objectForKey:{@"NightStartHour", "intValue"}];
   [v18 objectForKey:@"NightStartMinute"];
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
@@ -210,7 +210,7 @@
     return 0;
   }
 
-  a4->var4.var0.var1 = [objc_msgSend(v18 objectForKey:{@"NightStartMinute", "intValue"}];
+  struct->var4.var0.var1 = [objc_msgSend(v18 objectForKey:{@"NightStartMinute", "intValue"}];
   [v18 objectForKey:@"DayStartHour"];
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
@@ -219,7 +219,7 @@
     return 0;
   }
 
-  a4->var4.var1.var0 = [objc_msgSend(v18 objectForKey:{@"DayStartHour", "intValue"}];
+  struct->var4.var1.var0 = [objc_msgSend(v18 objectForKey:{@"DayStartHour", "intValue"}];
   [v18 objectForKey:@"DayStartMinute"];
   objc_opt_class();
   v11 = objc_opt_isKindOfClass();
@@ -228,39 +228,39 @@
     return 0;
   }
 
-  a4->var4.var1.var1 = [objc_msgSend(v18 objectForKey:{@"DayStartMinute", "intValue"}];
-  [a3 objectForKey:@"BlueLightReductionDisableScheduleAlertCounter"];
+  struct->var4.var1.var1 = [objc_msgSend(v18 objectForKey:{@"DayStartMinute", "intValue"}];
+  [dictionary objectForKey:@"BlueLightReductionDisableScheduleAlertCounter"];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
   if (v12)
   {
-    self->_notifyUserAboutScheduleCounter = [objc_msgSend(a3 objectForKey:{@"BlueLightReductionDisableScheduleAlertCounter", "intValue"}];
+    self->_notifyUserAboutScheduleCounter = [objc_msgSend(dictionary objectForKey:{@"BlueLightReductionDisableScheduleAlertCounter", "intValue"}];
   }
 
   if (self->_notifyUserAboutScheduleCounter < 3 && (v19 & 1) != 0)
   {
     self->_notifyUserAboutScheduleCounter = 3;
-    if (a5)
+    if (prefs)
     {
-      *a5 = 1;
+      *prefs = 1;
     }
   }
 
-  [a3 objectForKey:@"BlueLightReductionRevertToSunriseSunset"];
+  [dictionary objectForKey:@"BlueLightReductionRevertToSunriseSunset"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self->_revertToSunriseSunset = [objc_msgSend(a3 objectForKey:{@"BlueLightReductionRevertToSunriseSunset", "intValue"}] != 0;
+    self->_revertToSunriseSunset = [objc_msgSend(dictionary objectForKey:{@"BlueLightReductionRevertToSunriseSunset", "intValue"}] != 0;
   }
 
-  [a3 objectForKey:@"BlueLightReductionAlgoOverride"];
+  [dictionary objectForKey:@"BlueLightReductionAlgoOverride"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self->_algoState = [objc_msgSend(a3 objectForKey:{@"BlueLightReductionAlgoOverride", "intValue"}];
+    self->_algoState = [objc_msgSend(dictionary objectForKey:{@"BlueLightReductionAlgoOverride", "intValue"}];
     if (self->_algoState == 2 || self->_algoState == 1)
     {
-      v17 = [a3 objectForKey:@"BlueLightReductionAlgoOverrideTimestamp"];
+      v17 = [dictionary objectForKey:@"BlueLightReductionAlgoOverrideTimestamp"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -272,7 +272,7 @@
 
     else if (self->_algoState == 4 || self->_algoState == 3)
     {
-      v16 = [a3 objectForKey:@"BlueLightReductionAlgoOverrideTimestamp"];
+      v16 = [dictionary objectForKey:@"BlueLightReductionAlgoOverrideTimestamp"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -285,10 +285,10 @@
   return 1;
 }
 
-- (id)copyDictionaryFromStatus:(id *)a3
+- (id)copyDictionaryFromStatus:(id *)status
 {
   v15 = 0;
-  if (a3)
+  if (status)
   {
     v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
     v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:1];
@@ -298,28 +298,28 @@
       MEMORY[0x1E69E5920](v5);
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3->var1];
+    v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:status->var1];
     if (v6)
     {
       [v15 setObject:v6 forKey:@"BlueReductionEnabled"];
       MEMORY[0x1E69E5920](v6);
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3->var3];
+    v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:status->var3];
     if (v7)
     {
       [v15 setObject:v7 forKey:@"BlueReductionMode"];
       MEMORY[0x1E69E5920](v7);
     }
 
-    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3->var2];
+    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:status->var2];
     if (v8)
     {
       [v15 setObject:v8 forKey:@"BlueReductionSunScheduleAllowed"];
       MEMORY[0x1E69E5920](v8);
     }
 
-    v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3->var6];
+    v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:status->var6];
     if (v9)
     {
       [v15 setObject:v9 forKey:@"BlueReductionAvailable"];
@@ -329,28 +329,28 @@
     v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:4];
     if (v4)
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3->var4.var0.var0];
+      v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:status->var4.var0.var0];
       if (v10)
       {
         [v4 setObject:v10 forKey:@"NightStartHour"];
         MEMORY[0x1E69E5920](v10);
       }
 
-      v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3->var4.var0.var1];
+      v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:status->var4.var0.var1];
       if (v11)
       {
         [v4 setObject:v11 forKey:@"NightStartMinute"];
         MEMORY[0x1E69E5920](v11);
       }
 
-      v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3->var4.var1.var0];
+      v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:status->var4.var1.var0];
       if (v12)
       {
         [v4 setObject:v12 forKey:@"DayStartHour"];
         MEMORY[0x1E69E5920](v12);
       }
 
-      v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:a3->var4.var1.var1];
+      v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:status->var4.var1.var1];
       if (v13)
       {
         [v4 setObject:v13 forKey:@"DayStartMinute"];
@@ -371,16 +371,16 @@
   return v15;
 }
 
-- (void)saveStatusToPrefs:(id)a3
+- (void)saveStatusToPrefs:(id)prefs
 {
-  if (a3)
+  if (prefs)
   {
     v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.CoreBrightness"];
     if (v3)
     {
       if ([v3 objectForKey:@"CBBlueReductionStatus"] || !self->_statusUpdated)
       {
-        [v3 setObject:a3 forKey:@"CBBlueReductionStatus"];
+        [v3 setObject:prefs forKey:@"CBBlueReductionStatus"];
         [v3 synchronize];
         self->_statusUpdated = 1;
       }
@@ -437,7 +437,7 @@
   return v6;
 }
 
-- (void)updateStatusDictionaryWithValue:(id)a3 forKey:(id)a4
+- (void)updateStatusDictionaryWithValue:(id)value forKey:(id)key
 {
   v13 = *MEMORY[0x1E69E9840];
   if (self->_properties)
@@ -446,14 +446,14 @@
     if (v8)
     {
       v7 = 1;
-      if (a3)
+      if (value)
       {
-        [v8 setObject:a3 forKey:a4];
+        [v8 setObject:value forKey:key];
       }
 
-      else if ([v8 objectForKey:a4])
+      else if ([v8 objectForKey:key])
       {
-        [v8 removeObjectForKey:a4];
+        [v8 removeObjectForKey:key];
       }
 
       else
@@ -464,17 +464,17 @@
       if (v7)
       {
         [(NightModeControl *)self saveStatusToPrefs:v8];
-        if (self->_callbackBlock && (([a4 isEqualToString:@"AutoBlueReductionEnabled"] & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"BlueReductionEnabled") & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"BlueReductionMode") & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"BlueReductionSunScheduleAllowed") & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"BlueLightReductionDisableFlags") & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"BlueReductionAvailable") & 1) != 0 || (objc_msgSend(a4, "isEqualToString:", @"BlueLightReductionSchedule") & 1) != 0))
+        if (self->_callbackBlock && (([key isEqualToString:@"AutoBlueReductionEnabled"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"BlueReductionEnabled") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"BlueReductionMode") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"BlueReductionSunScheduleAllowed") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"BlueLightReductionDisableFlags") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"BlueReductionAvailable") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"BlueLightReductionSchedule") & 1) != 0))
         {
           (*(self->_callbackBlock + 2))();
         }
 
-        if ([a4 isEqualToString:@"BlueReductionEnabled"])
+        if ([key isEqualToString:@"BlueReductionEnabled"])
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v6 = [objc_alloc(MEMORY[0x1E698EBA0]) initWithStarting:a3 reason:0];
+            v6 = [objc_alloc(MEMORY[0x1E698EBA0]) initWithStarting:value reason:0];
             [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(BiomeLibrary() "Device")];
             MEMORY[0x1E69E5920](v6);
           }
@@ -504,7 +504,7 @@
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v12, a4, a3);
+      __os_log_helper_16_2_2_8_64_8_64(v12, key, value);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "NightShift status update: %@ = %@", v12, 0x16u);
     }
   }
@@ -512,14 +512,14 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)updateLowPowerModeState:(id)a3
+- (void)updateLowPowerModeState:(id)state
 {
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.CoreBrightness"];
   if (v3)
   {
-    if (a3)
+    if (state)
     {
-      [v3 setObject:a3 forKey:@"BLRLowPowerSavedMode"];
+      [v3 setObject:state forKey:@"BLRLowPowerSavedMode"];
       [v3 synchronize];
     }
 
@@ -543,8 +543,8 @@
     v6 = [v4 objectForKey:@"BLRLowPowerSavedMode"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v3 = [v6 intValue];
-      v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:v3];
+      intValue = [v6 intValue];
+      v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:intValue];
     }
 
     else
@@ -558,30 +558,30 @@
   return v5;
 }
 
-- (NightModeControl)initWithSupportObject:(id)a3 queue:(id)a4 callback:(id)a5
+- (NightModeControl)initWithSupportObject:(id)object queue:(id)queue callback:(id)callback
 {
   v68 = *MEMORY[0x1E69E9840];
-  v65 = self;
+  selfCopy = self;
   v64 = a2;
-  v63 = a3;
-  v62 = a4;
-  v61 = a5;
+  objectCopy = object;
+  queueCopy = queue;
+  callbackCopy = callback;
   v60.receiver = self;
   v60.super_class = NightModeControl;
-  v65 = [(NightModeControl *)&v60 init];
-  if (v65)
+  selfCopy = [(NightModeControl *)&v60 init];
+  if (selfCopy)
   {
-    if (v62 && v61)
+    if (queueCopy && callbackCopy)
     {
-      *(v65 + 1) = os_log_create("com.apple.CoreBrightness.NightShift", "default");
-      *(v65 + 2) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
+      *(selfCopy + 1) = os_log_create("com.apple.CoreBrightness.NightShift", "default");
+      *(selfCopy + 2) = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
       v54[0] = 0;
       v54[1] = v54;
       v55 = 1375731712;
       v56 = 48;
       v57 = __Block_byref_object_copy__2;
       v58 = __Block_byref_object_dispose__2;
-      v59 = v65;
+      v59 = selfCopy;
       v27 = [SunriseSunsetProvider alloc];
       v48 = MEMORY[0x1E69E9820];
       v49 = -1073741824;
@@ -589,13 +589,13 @@
       v51 = __57__NightModeControl_initWithSupportObject_queue_callback___block_invoke;
       v52 = &unk_1E867B818;
       v53 = v54;
-      *(v65 + 3) = [(SunriseSunsetProvider *)v27 initWithCallback:?];
-      *(v65 + 8) = 20;
-      if (!*(v65 + 3))
+      *(selfCopy + 3) = [(SunriseSunsetProvider *)v27 initWithCallback:?];
+      *(selfCopy + 8) = 20;
+      if (!*(selfCopy + 3))
       {
-        if (*(v65 + 1))
+        if (*(selfCopy + 1))
         {
-          v26 = *(v65 + 1);
+          v26 = *(selfCopy + 1);
         }
 
         else
@@ -615,79 +615,79 @@
         }
       }
 
-      *(v65 + 38) = @"sunrise";
-      *(v65 + 39) = @"sunset";
-      *(v65 + 40) = @"previousSunrise";
-      *(v65 + 41) = @"previousSunset";
-      *(v65 + 42) = @"nextSunrise";
-      *(v65 + 43) = @"nextSunset";
-      *(v65 + 44) = @"isDaylight";
-      *(v65 + 5) = 0;
-      v65[200] = 0;
-      *(v65 + 6) = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if (v63)
+      *(selfCopy + 38) = @"sunrise";
+      *(selfCopy + 39) = @"sunset";
+      *(selfCopy + 40) = @"previousSunrise";
+      *(selfCopy + 41) = @"previousSunset";
+      *(selfCopy + 42) = @"nextSunrise";
+      *(selfCopy + 43) = @"nextSunset";
+      *(selfCopy + 44) = @"isDaylight";
+      *(selfCopy + 5) = 0;
+      selfCopy[200] = 0;
+      *(selfCopy + 6) = objc_alloc_init(MEMORY[0x1E695DF70]);
+      if (objectCopy)
       {
-        [*(v65 + 6) addObject:v63];
+        [*(selfCopy + 6) addObject:objectCopy];
       }
 
-      *(v65 + 7) = v62;
-      dispatch_retain(*(v65 + 7));
-      *(v65 + 22) = 0;
-      *(v65 + 33) = 0;
-      *(v65 + 34) = 0;
-      *(v65 + 32) = 0;
-      *(v65 + 27) = 0;
-      *(v65 + 28) = 1.0;
-      v65[229] = 1;
+      *(selfCopy + 7) = queueCopy;
+      dispatch_retain(*(selfCopy + 7));
+      *(selfCopy + 22) = 0;
+      *(selfCopy + 33) = 0;
+      *(selfCopy + 34) = 0;
+      *(selfCopy + 32) = 0;
+      *(selfCopy + 27) = 0;
+      *(selfCopy + 28) = 1.0;
+      selfCopy[229] = 1;
       Current = CFAbsoluteTimeGetCurrent();
-      *(v65 + 27) = Current;
-      *(v65 + 26) = Current;
-      v65[228] = 0;
-      *(v65 + 56) = 1155596288;
-      *(v65 + 8) = 0;
-      *(v65 + 9) = 0;
-      *(v65 + 10) = objc_alloc_init(CBAnalyticsNightShiftTracker);
-      *(v65 + 51) = 0;
-      *(v65 + 90) = 0;
-      v65[377] = 0;
-      *(v65 + 70) = 22;
-      *(v65 + 71) = 0;
-      *(v65 + 72) = 7;
-      *(v65 + 73) = 0;
-      v65[296] = 0;
-      *(v65 + 33) = 0;
-      *(v65 + 18) = CFTimeZoneCopySystem();
-      v21 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v21 addObserver:v65 selector:sel_timeZoneChanged name:*MEMORY[0x1E695DA68] object:0];
-      v20 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v20 addObserver:v65 selector:sel_clockChanged name:*MEMORY[0x1E695DA60] object:0];
+      *(selfCopy + 27) = Current;
+      *(selfCopy + 26) = Current;
+      selfCopy[228] = 0;
+      *(selfCopy + 56) = 1155596288;
+      *(selfCopy + 8) = 0;
+      *(selfCopy + 9) = 0;
+      *(selfCopy + 10) = objc_alloc_init(CBAnalyticsNightShiftTracker);
+      *(selfCopy + 51) = 0;
+      *(selfCopy + 90) = 0;
+      selfCopy[377] = 0;
+      *(selfCopy + 70) = 22;
+      *(selfCopy + 71) = 0;
+      *(selfCopy + 72) = 7;
+      *(selfCopy + 73) = 0;
+      selfCopy[296] = 0;
+      *(selfCopy + 33) = 0;
+      *(selfCopy + 18) = CFTimeZoneCopySystem();
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:selfCopy selector:sel_timeZoneChanged name:*MEMORY[0x1E695DA68] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:selfCopy selector:sel_clockChanged name:*MEMORY[0x1E695DA60] object:0];
       v44 = 0;
-      v43 = [v65 copyStatusDictionaryFromPrefs];
-      if (v43)
+      copyStatusDictionaryFromPrefs = [selfCopy copyStatusDictionaryFromPrefs];
+      if (copyStatusDictionaryFromPrefs)
       {
-        v42 = [v65 copyLowPowerModeState];
-        if (v42)
+        copyLowPowerModeState = [selfCopy copyLowPowerModeState];
+        if (copyLowPowerModeState)
         {
-          [v43 setObject:v42 forKey:@"BlueReductionMode"];
-          [v65 updateLowPowerModeState:0];
-          MEMORY[0x1E69E5920](v42);
+          [copyStatusDictionaryFromPrefs setObject:copyLowPowerModeState forKey:@"BlueReductionMode"];
+          [selfCopy updateLowPowerModeState:0];
+          MEMORY[0x1E69E5920](copyLowPowerModeState);
         }
 
-        [v43 removeObjectForKey:@"BlueLightReductionDisableFlags"];
-        v65[296] = 1;
-        if ([v65 parseStatusDictionary:v43 intoStruct:v65 + 240 shouldUpdatePrefs:&v44])
+        [copyStatusDictionaryFromPrefs removeObjectForKey:@"BlueLightReductionDisableFlags"];
+        selfCopy[296] = 1;
+        if ([selfCopy parseStatusDictionary:copyStatusDictionaryFromPrefs intoStruct:selfCopy + 240 shouldUpdatePrefs:&v44])
         {
           v38 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:1];
           if (v38)
           {
-            [v43 setValue:v38 forKey:@"AutoBlueReductionEnabled"];
-            [v43 setValue:v38 forKey:@"BlueReductionAvailable"];
+            [copyStatusDictionaryFromPrefs setValue:v38 forKey:@"AutoBlueReductionEnabled"];
+            [copyStatusDictionaryFromPrefs setValue:v38 forKey:@"BlueReductionAvailable"];
             MEMORY[0x1E69E5920](v38);
           }
 
-          if (*(v65 + 1))
+          if (*(selfCopy + 1))
           {
-            v15 = *(v65 + 1);
+            v15 = *(selfCopy + 1);
           }
 
           else
@@ -709,18 +709,18 @@
           v36 = OS_LOG_TYPE_DEBUG;
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            __os_log_helper_16_2_1_8_64(v67, v43);
+            __os_log_helper_16_2_1_8_64(v67, copyStatusDictionaryFromPrefs);
             _os_log_debug_impl(&dword_1DE8E5000, v37, v36, "Defaults valid and updated: %@", v67, 0xCu);
           }
         }
 
         else
         {
-          MEMORY[0x1E69E5920](v43);
-          v43 = 0;
-          if (*(v65 + 1))
+          MEMORY[0x1E69E5920](copyStatusDictionaryFromPrefs);
+          copyStatusDictionaryFromPrefs = 0;
+          if (*(selfCopy + 1))
           {
-            v19 = *(v65 + 1);
+            v19 = *(selfCopy + 1);
           }
 
           else
@@ -750,12 +750,12 @@
         }
       }
 
-      v65[272] = 1;
-      if (!v43)
+      selfCopy[272] = 1;
+      if (!copyStatusDictionaryFromPrefs)
       {
-        if (*(v65 + 1))
+        if (*(selfCopy + 1))
         {
-          v13 = *(v65 + 1);
+          v13 = *(selfCopy + 1);
         }
 
         else
@@ -783,84 +783,84 @@
           _os_log_impl(&dword_1DE8E5000, v10, v11, "Creating default status info", v33, 2u);
         }
 
-        v65[240] = 1;
-        v65[241] = 0;
-        *(v65 + 61) = 0;
-        *(v65 + 62) = 22;
-        *(v65 + 63) = 0;
-        *(v65 + 64) = 7;
-        *(v65 + 65) = 0;
-        v65[242] = 0;
-        v43 = [v65 copyDictionaryFromStatus:v65 + 240];
+        selfCopy[240] = 1;
+        selfCopy[241] = 0;
+        *(selfCopy + 61) = 0;
+        *(selfCopy + 62) = 22;
+        *(selfCopy + 63) = 0;
+        *(selfCopy + 64) = 7;
+        *(selfCopy + 65) = 0;
+        selfCopy[242] = 0;
+        copyStatusDictionaryFromPrefs = [selfCopy copyDictionaryFromStatus:selfCopy + 240];
       }
 
-      if (v43)
+      if (copyStatusDictionaryFromPrefs)
       {
-        if (*(v65 + 2))
+        if (*(selfCopy + 2))
         {
-          [*(v65 + 2) setObject:v43 forKey:@"CBBlueReductionStatus"];
+          [*(selfCopy + 2) setObject:copyStatusDictionaryFromPrefs forKey:@"CBBlueReductionStatus"];
         }
 
-        MEMORY[0x1E69E5920](v43);
+        MEMORY[0x1E69E5920](copyStatusDictionaryFromPrefs);
       }
 
       if (v44)
       {
-        v32 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*(v65 + 90)];
+        v32 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*(selfCopy + 90)];
         if (v32)
         {
-          [v65 updateStatusDictionaryWithValue:v32 forKey:@"BlueLightReductionDisableScheduleAlertCounter"];
+          [selfCopy updateStatusDictionaryWithValue:v32 forKey:@"BlueLightReductionDisableScheduleAlertCounter"];
           MEMORY[0x1E69E5920](v32);
         }
       }
 
-      if (v61)
+      if (callbackCopy)
       {
-        *(v65 + 29) = [v61 copy];
+        *(selfCopy + 29) = [callbackCopy copy];
       }
 
-      if (*(v65 + 61) == 1)
+      if (*(selfCopy + 61) == 1)
       {
-        *(v65 + 23) = 1155596288;
+        *(selfCopy + 23) = 1155596288;
       }
 
       else
       {
-        *(v65 + 23) = 1123024896;
+        *(selfCopy + 23) = 1123024896;
       }
 
-      *(v65 + 24) = *(v65 + 23);
-      *(v65 + 26) = 2.0;
-      *(v65 + 25) = 1.0;
-      if (*(v65 + 2))
+      *(selfCopy + 24) = *(selfCopy + 23);
+      *(selfCopy + 26) = 2.0;
+      *(selfCopy + 25) = 1.0;
+      if (*(selfCopy + 2))
       {
-        v28 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*(v65 + 23)];
+        v28 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*(selfCopy + 23)];
         if (v28)
         {
-          [*(v65 + 2) setObject:v28 forKey:@"BlueLightReductionTransitionLength"];
+          [*(selfCopy + 2) setObject:v28 forKey:@"BlueLightReductionTransitionLength"];
           MEMORY[0x1E69E5920](v28);
         }
 
-        v29 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*(v65 + 26)];
+        v29 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*(selfCopy + 26)];
         if (v29)
         {
-          [*(v65 + 2) setObject:v29 forKey:@"BlueLightReductionTransitionRate"];
+          [*(selfCopy + 2) setObject:v29 forKey:@"BlueLightReductionTransitionRate"];
           MEMORY[0x1E69E5920](v29);
         }
 
-        v30 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*(v65 + 56)];
+        v30 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*(selfCopy + 56)];
         if (v30)
         {
-          [*(v65 + 2) setObject:v30 forKey:@"BlueLightReductionInactivityTimeout"];
+          [*(selfCopy + 2) setObject:v30 forKey:@"BlueLightReductionInactivityTimeout"];
           MEMORY[0x1E69E5920](v30);
         }
 
         v9 = objc_alloc(MEMORY[0x1E696AD98]);
-        LODWORD(v5) = *(v65 + 32);
+        LODWORD(v5) = *(selfCopy + 32);
         v31 = [v9 initWithFloat:v5];
         if (v31)
         {
-          [*(v65 + 2) setObject:v31 forKey:@"BlueLightReductionFactor"];
+          [*(selfCopy + 2) setObject:v31 forKey:@"BlueLightReductionFactor"];
           MEMORY[0x1E69E5920](v31);
         }
       }
@@ -870,14 +870,14 @@
 
     else
     {
-      MEMORY[0x1E69E5920](v65);
-      v65 = 0;
+      MEMORY[0x1E69E5920](selfCopy);
+      selfCopy = 0;
     }
   }
 
-  if (*(v65 + 1))
+  if (*(selfCopy + 1))
   {
-    v8 = *(v65 + 1);
+    v8 = *(selfCopy + 1);
   }
 
   else
@@ -897,12 +897,12 @@
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v66, v65);
+    __os_log_helper_16_2_1_8_64(v66, selfCopy);
     _os_log_impl(&dword_1DE8E5000, v8, OS_LOG_TYPE_DEFAULT, "Night Shift initialised: %@", v66, 0xCu);
   }
 
   *MEMORY[0x1E69E9840];
-  return v65;
+  return selfCopy;
 }
 
 void __57__NightModeControl_initWithSupportObject_queue_callback___block_invoke(uint64_t a1, void *a2)
@@ -936,41 +936,41 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
   return objc_sync_exit(obj);
 }
 
-- (void)addSupportObject:(id)a3
+- (void)addSupportObject:(id)object
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  if (a3)
+  objectCopy = object;
+  if (object)
   {
-    [(NSMutableArray *)v8->_supportObjs addObject:v6];
-    v5 = [(NightModeControl *)v8 getPropertyForKey:@"BlueLightReductionFactor"];
+    [(NSMutableArray *)selfCopy->_supportObjs addObject:objectCopy];
+    v5 = [(NightModeControl *)selfCopy getPropertyForKey:@"BlueLightReductionFactor"];
     if (v5)
     {
       v3 = objc_alloc(MEMORY[0x1E695DF20]);
       v4 = [v3 initWithObjectsAndKeys:{&unk_1F59C8CD0, @"BlueLightReductionFactorFadePeriod", v5, @"BlueLightReductionFactorValue", MEMORY[0x1E695E118], @"ForceUpdate", 0}];
-      [v6 setNightShiftFactorDictionary:v4];
+      [objectCopy setNightShiftFactorDictionary:v4];
       MEMORY[0x1E69E5920](v4);
     }
   }
 }
 
-- (void)removeSupportObject:(id)a3
+- (void)removeSupportObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    [(NSMutableArray *)self->_supportObjs removeObject:a3];
+    [(NSMutableArray *)self->_supportObjs removeObject:object];
   }
 }
 
 - (void)dealloc
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   objc_sync_enter(self);
-  if (v14->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v14->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -998,97 +998,97 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
     _os_log_impl(&dword_1DE8E5000, log, type, "Night Shift terminating", v10, 2u);
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:v14 name:*MEMORY[0x1E695DA68] object:0];
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 removeObserver:v14 name:*MEMORY[0x1E695DA60] object:0];
-  if (v14->_sunriseSunsetProvider)
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x1E695DA68] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:selfCopy name:*MEMORY[0x1E695DA60] object:0];
+  if (selfCopy->_sunriseSunsetProvider)
   {
-    [(SunriseSunsetProvider *)v14->_sunriseSunsetProvider cancel];
-    MEMORY[0x1E69E5920](v14->_sunriseSunsetProvider);
-    v14->_sunriseSunsetProvider = 0;
+    [(SunriseSunsetProvider *)selfCopy->_sunriseSunsetProvider cancel];
+    MEMORY[0x1E69E5920](selfCopy->_sunriseSunsetProvider);
+    selfCopy->_sunriseSunsetProvider = 0;
   }
 
-  if (v14->_callbackBlock)
+  if (selfCopy->_callbackBlock)
   {
-    MEMORY[0x1E69E5920](v14->_callbackBlock);
-    v14->_callbackBlock = 0;
+    MEMORY[0x1E69E5920](selfCopy->_callbackBlock);
+    selfCopy->_callbackBlock = 0;
   }
 
-  if (v14->_sunriseSunsetInfo)
+  if (selfCopy->_sunriseSunsetInfo)
   {
-    MEMORY[0x1E69E5920](v14->_sunriseSunsetInfo);
-    v14->_sunriseSunsetInfo = 0;
+    MEMORY[0x1E69E5920](selfCopy->_sunriseSunsetInfo);
+    selfCopy->_sunriseSunsetInfo = 0;
   }
 
-  if (v14->_properties)
+  if (selfCopy->_properties)
   {
-    MEMORY[0x1E69E5920](v14->_properties);
-    v14->_properties = 0;
+    MEMORY[0x1E69E5920](selfCopy->_properties);
+    selfCopy->_properties = 0;
   }
 
-  [(NightModeControl *)v14 tearDownAllTimers];
-  if ([(CBAnalyticsNightShiftTracker *)v14->_modeTracker isStarted])
+  [(NightModeControl *)selfCopy tearDownAllTimers];
+  if ([(CBAnalyticsNightShiftTracker *)selfCopy->_modeTracker isStarted])
   {
-    [(CBAnalyticsNightShiftTracker *)v14->_modeTracker stop:v14->_status.mode isEnabled:v14->_status.enabled];
+    [(CBAnalyticsNightShiftTracker *)selfCopy->_modeTracker stop:selfCopy->_status.mode isEnabled:selfCopy->_status.enabled];
   }
 
-  MEMORY[0x1E69E5920](v14->_modeTracker);
-  if (v14->_queue)
+  MEMORY[0x1E69E5920](selfCopy->_modeTracker);
+  if (selfCopy->_queue)
   {
-    dispatch_release(v14->_queue);
-    v14->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  if (v14->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v14->_logHandle);
-    v14->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  MEMORY[0x1E69E5920](v14->_supportObjs);
-  v14->_supportObjs = 0;
-  if (v14->_currentTimeZone)
+  MEMORY[0x1E69E5920](selfCopy->_supportObjs);
+  selfCopy->_supportObjs = 0;
+  if (selfCopy->_currentTimeZone)
   {
-    CFRelease(v14->_currentTimeZone);
-    v14->_currentTimeZone = 0;
+    CFRelease(selfCopy->_currentTimeZone);
+    selfCopy->_currentTimeZone = 0;
   }
 
   objc_sync_exit(self);
-  v9.receiver = v14;
+  v9.receiver = selfCopy;
   v9.super_class = NightModeControl;
   [(NightModeControl *)&v9 dealloc];
 }
 
-- (id)getPropertyForKey:(id)a3
+- (id)getPropertyForKey:(id)key
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->_properties objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_properties objectForKey:key];
   objc_sync_exit(self);
   return v5;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v57 = *MEMORY[0x1E69E9840];
-  v55 = self;
+  selfCopy = self;
   v54 = a2;
-  v53 = a3;
-  v52 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v51 = 1;
   objc_sync_enter(self);
-  if ([v52 isEqualToString:@"DisplayBrightnessFactor"] & 1) != 0 || (objc_msgSend(v52, "isEqualToString:", @"DisplayBrightnessFactorWithFade"))
+  if ([keyCopy isEqualToString:@"DisplayBrightnessFactor"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DisplayBrightnessFactorWithFade"))
   {
     v50 = 0;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v50 = [v53 objectForKey:@"DisplayBrightnessFactor"];
+      v50 = [propertyCopy objectForKey:@"DisplayBrightnessFactor"];
     }
 
     else
     {
-      v50 = v53;
+      v50 = propertyCopy;
     }
 
     objc_opt_class();
@@ -1099,19 +1099,19 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
       v5 = v4;
       if (v5 <= 0.0)
       {
-        if (v55->_notificationInProgress && v55->_enableNotification)
+        if (selfCopy->_notificationInProgress && selfCopy->_enableNotification)
         {
-          CFUserNotificationCancel(v55->_enableNotification);
+          CFUserNotificationCancel(selfCopy->_enableNotification);
         }
 
-        if (v55->_algoState == 2 || v55->_algoState == 1)
+        if (selfCopy->_algoState == 2 || selfCopy->_algoState == 1)
         {
-          v55->_displayOffTimestamp = CFAbsoluteTimeGetCurrent();
-          [(NightModeControl *)v55 updateOptionTimestamp:v55->_displayOffTimestamp];
-          v55->_checkInactivity = 1;
-          if (v55->_logHandle)
+          selfCopy->_displayOffTimestamp = CFAbsoluteTimeGetCurrent();
+          [(NightModeControl *)selfCopy updateOptionTimestamp:selfCopy->_displayOffTimestamp];
+          selfCopy->_checkInactivity = 1;
+          if (selfCopy->_logHandle)
           {
-            logHandle = v55->_logHandle;
+            logHandle = selfCopy->_logHandle;
           }
 
           else
@@ -1124,39 +1124,39 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
           v46 = OS_LOG_TYPE_DEBUG;
           if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
-            __os_log_helper_16_0_2_4_0_8_0(v56, v55->_algoState, *&v55->_displayOffTimestamp);
+            __os_log_helper_16_0_2_4_0_8_0(v56, selfCopy->_algoState, *&selfCopy->_displayOffTimestamp);
             _os_log_debug_impl(&dword_1DE8E5000, v47, v46, "Display off with algoState=%d ts=%f", v56, 0x12u);
           }
         }
 
-        [(NightModeControl *)v55 tearDownAllTimers];
-        [(CBAnalyticsNightShiftTracker *)v55->_modeTracker stop:v55->_status.mode isEnabled:v55->_status.enabled];
-        v55->_displayOff = 1;
+        [(NightModeControl *)selfCopy tearDownAllTimers];
+        [(CBAnalyticsNightShiftTracker *)selfCopy->_modeTracker stop:selfCopy->_status.mode isEnabled:selfCopy->_status.enabled];
+        selfCopy->_displayOff = 1;
       }
 
-      else if (v55->_displayOff)
+      else if (selfCopy->_displayOff)
       {
-        v55->_displayOff = 0;
-        [(CBAnalyticsNightShiftTracker *)v55->_modeTracker start:v55->_status.enabled, v5];
-        v48 = [(SunriseSunsetProvider *)v55->_sunriseSunsetProvider copySunriseSunsetInfo:v55->_sunriseSunsetInfoQueryTimeout];
+        selfCopy->_displayOff = 0;
+        [(CBAnalyticsNightShiftTracker *)selfCopy->_modeTracker start:selfCopy->_status.enabled, v5];
+        v48 = [(SunriseSunsetProvider *)selfCopy->_sunriseSunsetProvider copySunriseSunsetInfo:selfCopy->_sunriseSunsetInfoQueryTimeout];
         if (v48)
         {
-          [(NightModeControl *)v55 updateSunriseSunsetInfo:v48];
+          [(NightModeControl *)selfCopy updateSunriseSunsetInfo:v48];
           MEMORY[0x1E69E5920](v48);
         }
 
-        [(NightModeControl *)v55 reevaluateCurrentStateWithFactorFadeOption:0.0];
+        [(NightModeControl *)selfCopy reevaluateCurrentStateWithFactorFadeOption:0.0];
       }
     }
 
     goto LABEL_113;
   }
 
-  if ([v52 isEqual:@"CBSystemDidWakeFromSleep"])
+  if ([keyCopy isEqual:@"CBSystemDidWakeFromSleep"])
   {
-    if (v55->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v26 = v55->_logHandle;
+      v26 = selfCopy->_logHandle;
     }
 
     else
@@ -1184,55 +1184,55 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
       _os_log_debug_impl(&dword_1DE8E5000, v23, v24, "Force Night Shift update on system wake", v43, 2u);
     }
 
-    [(NightModeControl *)v55 reevaluateCurrentStateWithFactorFadeOption:0.0];
+    [(NightModeControl *)selfCopy reevaluateCurrentStateWithFactorFadeOption:0.0];
     goto LABEL_113;
   }
 
-  if ([v52 isEqualToString:@"AutoBlueReductionEnabled"] & 1) != 0 || (objc_msgSend(v52, "isEqualToString:", @"BlueReductionAvailable") & 1) != 0 || (objc_msgSend(v52, "isEqualToString:", @"CBDisplayPresetDisableNightShift"))
+  if ([keyCopy isEqualToString:@"AutoBlueReductionEnabled"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"BlueReductionAvailable") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"CBDisplayPresetDisableNightShift"))
   {
     v42 = -1.0;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v52 isEqualToString:@"AutoBlueReductionEnabled"])
+      if ([keyCopy isEqualToString:@"AutoBlueReductionEnabled"])
       {
-        v55->_status.active = [v53 intValue] != 0;
-        [(NightModeControl *)v55 updateStatusDictionaryWithValue:v53 forKey:v52];
+        selfCopy->_status.active = [propertyCopy intValue] != 0;
+        [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:propertyCopy forKey:keyCopy];
       }
 
-      else if ([v52 isEqualToString:@"CBDisplayPresetDisableNightShift"])
+      else if ([keyCopy isEqualToString:@"CBDisplayPresetDisableNightShift"])
       {
-        available = v55->_status.available;
-        if ((__PAIR64__(available, [v53 intValue]) - 1) >> 32)
+        available = selfCopy->_status.available;
+        if ((__PAIR64__(available, [propertyCopy intValue]) - 1) >> 32)
         {
-          [(NSMutableDictionary *)v55->_properties setObject:v53 forKey:v52];
-          v55->_status.available = [v53 intValue] == 0;
+          [(NSMutableDictionary *)selfCopy->_properties setObject:propertyCopy forKey:keyCopy];
+          selfCopy->_status.available = [propertyCopy intValue] == 0;
           v42 = 0.0;
-          v41 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v55->_status.available];
-          [(NightModeControl *)v55 updateStatusDictionaryWithValue:v41 forKey:@"BlueReductionAvailable"];
+          v41 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:selfCopy->_status.available];
+          [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:v41 forKey:@"BlueReductionAvailable"];
           MEMORY[0x1E69E5920](v41);
         }
       }
 
-      else if ([v52 isEqualToString:@"BlueReductionAvailable"])
+      else if ([keyCopy isEqualToString:@"BlueReductionAvailable"])
       {
-        v55->_status.available = [v53 intValue] != 0;
-        [(NightModeControl *)v55 updateStatusDictionaryWithValue:v53 forKey:v52];
+        selfCopy->_status.available = [propertyCopy intValue] != 0;
+        [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:propertyCopy forKey:keyCopy];
       }
 
-      if (v55->_status.active && v55->_status.available)
+      if (selfCopy->_status.active && selfCopy->_status.available)
       {
-        if ([(NSMutableArray *)v55->_supportObjs count])
+        if ([(NSMutableArray *)selfCopy->_supportObjs count])
         {
           v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
           if (v37)
           {
             v20 = objc_alloc(MEMORY[0x1E696AD98]);
-            *&v7 = v55->_factorState.factor;
+            *&v7 = selfCopy->_factorState.factor;
             v36 = [v20 initWithFloat:v7];
             if (v36)
             {
-              [(NSMutableDictionary *)v55->_properties setObject:v36 forKey:@"BlueLightReductionFactor"];
+              [(NSMutableDictionary *)selfCopy->_properties setObject:v36 forKey:@"BlueLightReductionFactor"];
               [v37 setObject:v36 forKey:@"BlueLightReductionFactorValue"];
               MEMORY[0x1E69E5920](v36);
             }
@@ -1247,15 +1247,15 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
               MEMORY[0x1E69E5920](v35);
             }
 
-            [(NightModeControl *)v55 setNightShiftFactorDictionary:v37];
+            [(NightModeControl *)selfCopy setNightShiftFactorDictionary:v37];
             MEMORY[0x1E69E5920](v37);
           }
         }
 
-        [(NightModeControl *)v55 reevaluateCurrentState];
+        [(NightModeControl *)selfCopy reevaluateCurrentState];
       }
 
-      else if ([(NSMutableArray *)v55->_supportObjs count])
+      else if ([(NSMutableArray *)selfCopy->_supportObjs count])
       {
         v40 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
         if (v40)
@@ -1263,7 +1263,7 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
           v39 = [objc_alloc(MEMORY[0x1E696AD98]) initWithFloat:0.0];
           if (v39)
           {
-            [(NSMutableDictionary *)v55->_properties setObject:v39 forKey:@"BlueLightReductionFactor"];
+            [(NSMutableDictionary *)selfCopy->_properties setObject:v39 forKey:@"BlueLightReductionFactor"];
             [v40 setObject:v39 forKey:@"BlueLightReductionFactorValue"];
             MEMORY[0x1E69E5920](v39);
           }
@@ -1278,7 +1278,7 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
             MEMORY[0x1E69E5920](v38);
           }
 
-          [(NightModeControl *)v55 setNightShiftFactorDictionary:v40];
+          [(NightModeControl *)selfCopy setNightShiftFactorDictionary:v40];
           MEMORY[0x1E69E5920](v40);
         }
       }
@@ -1287,39 +1287,39 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
     goto LABEL_113;
   }
 
-  if ([v52 isEqualToString:@"BlueLightReductionSchedule"])
+  if ([keyCopy isEqualToString:@"BlueLightReductionSchedule"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NightModeControl *)v55 setSchedule:v53];
-      [(NightModeControl *)v55 updateStatusDictionaryWithValue:v53 forKey:v52];
-      [(NightModeControl *)v55 reevaluateCurrentState];
+      [(NightModeControl *)selfCopy setSchedule:propertyCopy];
+      [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:propertyCopy forKey:keyCopy];
+      [(NightModeControl *)selfCopy reevaluateCurrentState];
     }
 
     goto LABEL_113;
   }
 
-  if ([v52 isEqualToString:@"BlueReductionEnabled"])
+  if ([keyCopy isEqualToString:@"BlueReductionEnabled"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34 = [v53 objectForKey:@"BlueReductionEnabledValue"];
+      v34 = [propertyCopy objectForKey:@"BlueReductionEnabledValue"];
       if (v34)
       {
-        v33 = [v53 objectForKey:@"BlueReductionEnabledOption"];
+        v33 = [propertyCopy objectForKey:@"BlueReductionEnabledOption"];
         if (v33)
         {
-          -[NightModeControl enableBlueLightReduction:withOption:](v55, "enableBlueLightReduction:withOption:", [v34 intValue] != 0, objc_msgSend(v33, "intValue"));
+          -[NightModeControl enableBlueLightReduction:withOption:](selfCopy, "enableBlueLightReduction:withOption:", [v34 intValue] != 0, objc_msgSend(v33, "intValue"));
         }
 
         else
         {
-          -[NightModeControl enableBlueLightReduction:withOption:](v55, "enableBlueLightReduction:withOption:", [v34 intValue] != 0, 0);
+          -[NightModeControl enableBlueLightReduction:withOption:](selfCopy, "enableBlueLightReduction:withOption:", [v34 intValue] != 0, 0);
         }
 
-        [(NightModeControl *)v55 updateLowPowerModeState:0];
+        [(NightModeControl *)selfCopy updateLowPowerModeState:0];
       }
     }
 
@@ -1328,9 +1328,9 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v55->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v18 = v55->_logHandle;
+          v18 = selfCopy->_logHandle;
         }
 
         else
@@ -1358,9 +1358,9 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
           _os_log_impl(&dword_1DE8E5000, v15, v16, "internal settings workaround", v30, 2u);
         }
 
-        [(NightModeControl *)v55 setMode:0];
-        v14 = v55;
-        *&v9 = [v53 intValue];
+        [(NightModeControl *)selfCopy setMode:0];
+        v14 = selfCopy;
+        *&v9 = [propertyCopy intValue];
         [(NightModeControl *)v14 setNightModeFactor:v9];
       }
     }
@@ -1368,71 +1368,71 @@ uint64_t __57__NightModeControl_initWithSupportObject_queue_callback___block_inv
     goto LABEL_113;
   }
 
-  if ([v52 isEqualToString:@"BlueReductionMode"])
+  if ([keyCopy isEqualToString:@"BlueReductionMode"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NSMutableDictionary *)v55->_properties setObject:v53 forKey:v52];
-      -[NightModeControl setMode:](v55, "setMode:", [v53 intValue]);
-      [(NightModeControl *)v55 updateLowPowerModeState:0];
+      [(NSMutableDictionary *)selfCopy->_properties setObject:propertyCopy forKey:keyCopy];
+      -[NightModeControl setMode:](selfCopy, "setMode:", [propertyCopy intValue]);
+      [(NightModeControl *)selfCopy updateLowPowerModeState:0];
     }
 
     goto LABEL_113;
   }
 
-  if ([v52 isEqualToString:@"BlueLightReductionTransitionLength"])
+  if ([keyCopy isEqualToString:@"BlueLightReductionTransitionLength"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NSMutableDictionary *)v55->_properties setObject:v53 forKey:v52];
-      [v53 floatValue];
-      v55->_transitionLength = v10;
+      [(NSMutableDictionary *)selfCopy->_properties setObject:propertyCopy forKey:keyCopy];
+      [propertyCopy floatValue];
+      selfCopy->_transitionLength = v10;
     }
 
 LABEL_99:
-    [(NightModeControl *)v55 reevaluateCurrentState];
+    [(NightModeControl *)selfCopy reevaluateCurrentState];
     goto LABEL_113;
   }
 
-  if ([v52 isEqualToString:@"BlueLightReductionTransitionRate"])
+  if ([keyCopy isEqualToString:@"BlueLightReductionTransitionRate"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NSMutableDictionary *)v55->_properties setObject:v53 forKey:v52];
-      [v53 floatValue];
-      v55->_transitionRate = v11;
+      [(NSMutableDictionary *)selfCopy->_properties setObject:propertyCopy forKey:keyCopy];
+      [propertyCopy floatValue];
+      selfCopy->_transitionRate = v11;
     }
 
     goto LABEL_99;
   }
 
-  if ([v52 isEqualToString:@"BlueLightReductionInactivityTimeout"])
+  if ([keyCopy isEqualToString:@"BlueLightReductionInactivityTimeout"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NSMutableDictionary *)v55->_properties setObject:v53 forKey:v52];
-      [v53 floatValue];
-      v55->_inactivityTimeout = v12;
+      [(NSMutableDictionary *)selfCopy->_properties setObject:propertyCopy forKey:keyCopy];
+      [propertyCopy floatValue];
+      selfCopy->_inactivityTimeout = v12;
     }
   }
 
-  else if ([v52 isEqualToString:@"BlueLightReductionSunInfoQueryTimeout"])
+  else if ([keyCopy isEqualToString:@"BlueLightReductionSunInfoQueryTimeout"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NSMutableDictionary *)v55->_properties setObject:v53 forKey:@"BlueLightReductionSunInfoQueryTimeout"];
-      v55->_sunriseSunsetInfoQueryTimeout = [v53 intValue];
+      [(NSMutableDictionary *)selfCopy->_properties setObject:propertyCopy forKey:@"BlueLightReductionSunInfoQueryTimeout"];
+      selfCopy->_sunriseSunsetInfoQueryTimeout = [propertyCopy intValue];
     }
   }
 
   else
   {
-    [v52 isEqualToString:@"EcoMode"];
+    [keyCopy isEqualToString:@"EcoMode"];
   }
 
 LABEL_113:
@@ -1441,19 +1441,19 @@ LABEL_113:
   return v51 & 1;
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
   v29 = *MEMORY[0x1E69E9840];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  if (self->_status.mode != a3)
+  modeCopy = mode;
+  if (self->_status.mode != mode)
   {
-    if (v25 != 1 || v27->_status.sunSchedulePermitted)
+    if (modeCopy != 1 || selfCopy->_status.sunSchedulePermitted)
     {
-      if (v27->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        logHandle = v27->_logHandle;
+        logHandle = selfCopy->_logHandle;
       }
 
       else
@@ -1475,37 +1475,37 @@ LABEL_113:
       v20 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_0_2_4_0_4_0(v28, v27->_status.mode, v25);
+        __os_log_helper_16_0_2_4_0_4_0(v28, selfCopy->_status.mode, modeCopy);
         _os_log_impl(&dword_1DE8E5000, v21, v20, "update from mode=%d to new mode=%d", v28, 0xEu);
       }
 
-      [(CBAnalyticsNightShiftTracker *)v27->_modeTracker update:v27->_status.mode isEnabled:v27->_status.enabled];
-      [(NightModeControl *)v27 setAlgoState:0];
-      v27->_status.mode = v25;
-      v19 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:v27->_status.mode];
+      [(CBAnalyticsNightShiftTracker *)selfCopy->_modeTracker update:selfCopy->_status.mode isEnabled:selfCopy->_status.enabled];
+      [(NightModeControl *)selfCopy setAlgoState:0];
+      selfCopy->_status.mode = modeCopy;
+      v19 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:selfCopy->_status.mode];
       if (v19)
       {
-        [(NightModeControl *)v27 updateStatusDictionaryWithValue:v19 forKey:@"BlueReductionMode"];
+        [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:v19 forKey:@"BlueReductionMode"];
         MEMORY[0x1E69E5920](v19);
       }
 
-      if (v27->_status.mode == 1)
+      if (selfCopy->_status.mode == 1)
       {
-        v27->_transitionLength = 1800.0;
+        selfCopy->_transitionLength = 1800.0;
       }
 
       else
       {
-        v27->_transitionLength = 120.0;
+        selfCopy->_transitionLength = 120.0;
       }
 
-      v27->_transitionLengthActual = v27->_transitionLength;
-      v27->_transitionsTimesCoeff = 1.0;
-      if (v27->_revertToSunriseSunset)
+      selfCopy->_transitionLengthActual = selfCopy->_transitionLength;
+      selfCopy->_transitionsTimesCoeff = 1.0;
+      if (selfCopy->_revertToSunriseSunset)
       {
-        if (v27->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v7 = v27->_logHandle;
+          v7 = selfCopy->_logHandle;
         }
 
         else
@@ -1533,35 +1533,35 @@ LABEL_113:
           _os_log_impl(&dword_1DE8E5000, v4, v5, "user changed mode - clearing out the sun mode revert mark", v16, 2u);
         }
 
-        v27->_revertToSunriseSunset = 0;
+        selfCopy->_revertToSunriseSunset = 0;
         v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:0];
-        [(NightModeControl *)v27 updateStatusDictionaryWithValue:v15 forKey:@"BlueLightReductionRevertToSunriseSunset"];
+        [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:v15 forKey:@"BlueLightReductionRevertToSunriseSunset"];
         MEMORY[0x1E69E5920](v15);
       }
 
-      if (v27->_notifyUserAboutScheduleCounter < 3)
+      if (selfCopy->_notifyUserAboutScheduleCounter < 3)
       {
-        if (v25)
+        if (modeCopy)
         {
-          v27->_notifyUserAboutScheduleCounter = 3;
+          selfCopy->_notifyUserAboutScheduleCounter = 3;
           v3 = objc_alloc(MEMORY[0x1E696AD98]);
-          v14 = [v3 initWithInt:v27->_notifyUserAboutScheduleCounter];
+          v14 = [v3 initWithInt:selfCopy->_notifyUserAboutScheduleCounter];
           if (v14)
           {
-            [(NightModeControl *)v27 updateStatusDictionaryWithValue:v14 forKey:@"BlueLightReductionDisableScheduleAlertCounter"];
+            [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:v14 forKey:@"BlueLightReductionDisableScheduleAlertCounter"];
             MEMORY[0x1E69E5920](v14);
           }
         }
       }
 
-      [(NightModeControl *)v27 reevaluateCurrentState];
+      [(NightModeControl *)selfCopy reevaluateCurrentState];
     }
 
     else
     {
-      if (v27->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v13 = v27->_logHandle;
+        v13 = selfCopy->_logHandle;
       }
 
       else
@@ -1594,15 +1594,15 @@ LABEL_113:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setSchedule:(id)a3
+- (void)setSchedule:(id)schedule
 {
   v22 = *MEMORY[0x1E69E9840];
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  scheduleCopy = schedule;
   if (self->_logHandle)
   {
-    logHandle = v20->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -1624,46 +1624,46 @@ LABEL_113:
   v16 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v21, v18);
+    __os_log_helper_16_2_1_8_64(v21, scheduleCopy);
     _os_log_impl(&dword_1DE8E5000, v17, v16, "update NightShift schedule: %@", v21, 0xCu);
   }
 
-  [(NSMutableDictionary *)v20->_properties setObject:v18 forKey:@"BlueLightReductionSchedule"];
-  if ([v18 count] == 4)
+  [(NSMutableDictionary *)selfCopy->_properties setObject:scheduleCopy forKey:@"BlueLightReductionSchedule"];
+  if ([scheduleCopy count] == 4)
   {
     v14 = 0;
     v13 = 0;
     v12 = 0;
-    v15 = [v18 objectForKey:@"DayStartHour"];
+    v15 = [scheduleCopy objectForKey:@"DayStartHour"];
     if (v15)
     {
-      v20->_status.schedule.toTime.hour = [v15 intValue];
+      selfCopy->_status.schedule.toTime.hour = [v15 intValue];
     }
 
-    v14 = [v18 objectForKey:@"DayStartMinute"];
+    v14 = [scheduleCopy objectForKey:@"DayStartMinute"];
     if (v15)
     {
-      v20->_status.schedule.toTime.minute = [v14 intValue];
+      selfCopy->_status.schedule.toTime.minute = [v14 intValue];
     }
 
-    v13 = [v18 objectForKey:@"NightStartHour"];
+    v13 = [scheduleCopy objectForKey:@"NightStartHour"];
     if (v13)
     {
-      v20->_status.schedule.fromTime.hour = [v13 intValue];
+      selfCopy->_status.schedule.fromTime.hour = [v13 intValue];
     }
 
-    v12 = [v18 objectForKey:@"NightStartMinute"];
+    v12 = [scheduleCopy objectForKey:@"NightStartMinute"];
     if (v12)
     {
-      v20->_status.schedule.fromTime.minute = [v12 intValue];
+      selfCopy->_status.schedule.fromTime.minute = [v12 intValue];
     }
   }
 
   else
   {
-    if (v20->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v6 = v20->_logHandle;
+      v6 = selfCopy->_logHandle;
     }
 
     else
@@ -1695,7 +1695,7 @@ LABEL_113:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)enableBlueLightReduction:(BOOL)a3 withOption:(int)a4
+- (void)enableBlueLightReduction:(BOOL)reduction withOption:(int)option
 {
   v12 = *MEMORY[0x1E69E9840];
   if (self->_logHandle)
@@ -1720,21 +1720,21 @@ LABEL_113:
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_3_4_0_4_0_4_0(v11, self->_status.mode, a3, a4);
+    __os_log_helper_16_0_3_4_0_4_0_4_0(v11, self->_status.mode, reduction, option);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "mode=%d enable=%d option=%d", v11, 0x14u);
   }
 
   if (self->_status.mode)
   {
-    if (a4 == 3)
+    if (option == 3)
     {
-      a4 = 2;
+      option = 2;
     }
 
-    if (a4 == 1)
+    if (option == 1)
     {
-      v4 = self;
-      if (a3)
+      selfCopy2 = self;
+      if (reduction)
       {
         v5 = 2;
       }
@@ -1747,8 +1747,8 @@ LABEL_113:
 
     else
     {
-      v4 = self;
-      if (a3)
+      selfCopy2 = self;
+      if (reduction)
       {
         v5 = 4;
       }
@@ -1759,22 +1759,22 @@ LABEL_113:
       }
     }
 
-    [(NightModeControl *)v4 setAlgoState:v5];
+    [(NightModeControl *)selfCopy2 setAlgoState:v5];
     goto LABEL_27;
   }
 
-  if (!a3)
+  if (!reduction)
   {
     [(NightModeControl *)self setAlgoState:0];
 LABEL_27:
-    [CBAnalytics nightShiftEnabled:a3 withOption:a4];
+    [CBAnalytics nightShiftEnabled:reduction withOption:option];
     [(NightModeControl *)self reevaluateCurrentState];
     goto LABEL_28;
   }
 
-  if (a4 != 3)
+  if (option != 3)
   {
-    if (a4 == 1)
+    if (option == 1)
     {
       [(NightModeControl *)self setAlgoState:2];
     }
@@ -1792,23 +1792,23 @@ LABEL_28:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)initiateTransitionTo:(float)a3 andRampLength:(float)a4
+- (void)initiateTransitionTo:(float)to andRampLength:(float)length
 {
   v22 = *MEMORY[0x1E69E9840];
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  v17 = a4;
+  toCopy = to;
+  lengthCopy = length;
   [(NightModeControl *)self cancelTransition];
-  if (v20->_queue && v18 != v20->_factorState.factor)
+  if (selfCopy->_queue && toCopy != selfCopy->_factorState.factor)
   {
-    v20->_factorState.start = v20->_factorState.factor;
-    v20->_factorState.target = v18;
-    v20->_factorState.rampStartTime = CFAbsoluteTimeGetCurrent();
-    v20->_factorState.rampLength = v17;
-    if (v20->_logHandle)
+    selfCopy->_factorState.start = selfCopy->_factorState.factor;
+    selfCopy->_factorState.target = toCopy;
+    selfCopy->_factorState.rampStartTime = CFAbsoluteTimeGetCurrent();
+    selfCopy->_factorState.rampLength = lengthCopy;
+    if (selfCopy->_logHandle)
     {
-      logHandle = v20->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -1830,23 +1830,23 @@ LABEL_28:
     v15 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v21, *&v20->_factorState.rampStartTime, COERCE__INT64(v20->_factorState.start), COERCE__INT64(v20->_factorState.target), COERCE__INT64(v20->_factorState.rampLength));
+      __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v21, *&selfCopy->_factorState.rampStartTime, COERCE__INT64(selfCopy->_factorState.start), COERCE__INT64(selfCopy->_factorState.target), COERCE__INT64(selfCopy->_factorState.rampLength));
       _os_log_impl(&dword_1DE8E5000, v16, v15, "[%f] START transition (%f -> %f) in %f sec ", v21, 0x2Au);
     }
 
-    v20->_transitionTimer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v20->_queue);
-    source = v20->_transitionTimer;
+    selfCopy->_transitionTimer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_queue);
+    source = selfCopy->_transitionTimer;
     v4 = dispatch_time(0, 0);
-    dispatch_source_set_timer(source, v4, (v20->_transitionRate * 1000000000.0), 0x3B9ACA00uLL);
-    transitionTimer = v20->_transitionTimer;
+    dispatch_source_set_timer(source, v4, (selfCopy->_transitionRate * 1000000000.0), 0x3B9ACA00uLL);
+    transitionTimer = selfCopy->_transitionTimer;
     handler = MEMORY[0x1E69E9820];
     v10 = -1073741824;
     v11 = 0;
     v12 = __55__NightModeControl_initiateTransitionTo_andRampLength___block_invoke;
     v13 = &unk_1E867B480;
-    v14 = v20;
+    v14 = selfCopy;
     dispatch_source_set_event_handler(transitionTimer, &handler);
-    dispatch_resume(v20->_transitionTimer);
+    dispatch_resume(selfCopy->_transitionTimer);
   }
 
   *MEMORY[0x1E69E9840];
@@ -1860,17 +1860,17 @@ uint64_t __55__NightModeControl_initiateTransitionTo_andRampLength___block_invok
   return objc_sync_exit(obj);
 }
 
-- (void)scheduleNextTransition:(double)a3 withType:(int)a4
+- (void)scheduleNextTransition:(double)transition withType:(int)type
 {
   v31 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
-  *&v27 = a3;
-  v26 = a4;
+  *&v27 = transition;
+  typeCopy = type;
   Current = CFAbsoluteTimeGetCurrent();
-  if (v29->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v29->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -1896,11 +1896,11 @@ uint64_t __55__NightModeControl_initiateTransitionTo_andRampLength___block_invok
     _os_log_impl(&dword_1DE8E5000, v24, v23, "next transition at %f (in %f seconds) \n", v30, 0x16u);
   }
 
-  if (v29->_nextTransitionTimer)
+  if (selfCopy->_nextTransitionTimer)
   {
-    dispatch_source_cancel(v29->_nextTransitionTimer);
-    dispatch_release(v29->_nextTransitionTimer);
-    v29->_nextTransitionTimer = 0;
+    dispatch_source_cancel(selfCopy->_nextTransitionTimer);
+    dispatch_release(selfCopy->_nextTransitionTimer);
+    selfCopy->_nextTransitionTimer = 0;
   }
 
   v22 = (*&v27 - Current) * 1000000000.0 + 1000000000.0;
@@ -1912,9 +1912,9 @@ uint64_t __55__NightModeControl_initiateTransitionTo_andRampLength___block_invok
 
   else
   {
-    if (v29->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v9 = v29->_logHandle;
+      v9 = selfCopy->_logHandle;
     }
 
     else
@@ -1945,21 +1945,21 @@ uint64_t __55__NightModeControl_initiateTransitionTo_andRampLength___block_invok
     v21 = -1;
   }
 
-  if (v29->_queue)
+  if (selfCopy->_queue)
   {
-    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v29->_queue);
-    v29->_nextTransitionTimer = v4;
-    dispatch_source_set_timer(v29->_nextTransitionTimer, v21, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
-    nextTransitionTimer = v29->_nextTransitionTimer;
+    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_queue);
+    selfCopy->_nextTransitionTimer = v4;
+    dispatch_source_set_timer(selfCopy->_nextTransitionTimer, v21, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+    nextTransitionTimer = selfCopy->_nextTransitionTimer;
     handler = MEMORY[0x1E69E9820];
     v13 = -1073741824;
     v14 = 0;
     v15 = __52__NightModeControl_scheduleNextTransition_withType___block_invoke;
     v16 = &unk_1E867B480;
-    v17 = v29;
+    v17 = selfCopy;
     dispatch_source_set_event_handler(nextTransitionTimer, &handler);
-    v29->_currentScheduledTransitionType = v26;
-    dispatch_resume(v29->_nextTransitionTimer);
+    selfCopy->_currentScheduledTransitionType = typeCopy;
+    dispatch_resume(selfCopy->_nextTransitionTimer);
   }
 
   *MEMORY[0x1E69E9840];
@@ -1980,12 +1980,12 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
   return objc_sync_exit(obj);
 }
 
-- (void)setNightModeFactor:(float)a3 withFadePeriod:(float)a4
+- (void)setNightModeFactor:(float)factor withFadePeriod:(float)period
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 <= self->_maxFactor)
+  if (factor <= self->_maxFactor)
   {
-    maxFactor = a3;
+    maxFactor = factor;
   }
 
   else
@@ -2025,7 +2025,7 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_0_2_8_0_8_0(v20, COERCE__INT64(minFactor), COERCE__INT64(a4));
+    __os_log_helper_16_0_2_8_0_8_0(v20, COERCE__INT64(minFactor), COERCE__INT64(period));
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "factor=%f period=%f", v20, 0x16u);
   }
 
@@ -2062,7 +2062,7 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
         }
 
         v8 = objc_alloc(MEMORY[0x1E696AD98]);
-        *&v9 = a4;
+        *&v9 = period;
         v14 = [v8 initWithFloat:v9];
         if (v14)
         {
@@ -2145,28 +2145,28 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateTransitionTimesFromSchedule:(double)a3
+- (BOOL)updateTransitionTimesFromSchedule:(double)schedule
 {
   v44 = *MEMORY[0x1E69E9840];
-  v41 = self;
+  selfCopy = self;
   v40 = a2;
-  v39 = a3;
+  scheduleCopy = schedule;
   v38 = 0;
   v37 = CFCalendarCreateWithIdentifier(*MEMORY[0x1E695E480], *MEMORY[0x1E695E678]);
   if (v37)
   {
-    CFCalendarSetTimeZone(v37, v41->_currentTimeZone);
+    CFCalendarSetTimeZone(v37, selfCopy->_currentTimeZone);
     v36 = 0;
     v35 = 0;
     v34 = 0;
     hour = 0;
     minute = 0;
-    if (CFCalendarDecomposeAbsoluteTime(v37, v39, "yMdHm", &v36, &v35, &v34, &hour, &minute))
+    if (CFCalendarDecomposeAbsoluteTime(v37, scheduleCopy, "yMdHm", &v36, &v35, &v34, &hour, &minute))
     {
-      if (v41->_status.mode)
+      if (selfCopy->_status.mode)
       {
-        hour = v41->_status.schedule.fromTime.hour;
-        minute = v41->_status.schedule.fromTime.minute;
+        hour = selfCopy->_status.schedule.fromTime.hour;
+        minute = selfCopy->_status.schedule.fromTime.minute;
       }
 
       else
@@ -2175,23 +2175,23 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
         minute = 0;
       }
 
-      if (CFCalendarComposeAbsoluteTime(v37, &v41->_sunsetAbsolute, "yMdHm", v36, v35, v34, hour, minute))
+      if (CFCalendarComposeAbsoluteTime(v37, &selfCopy->_sunsetAbsolute, "yMdHm", v36, v35, v34, hour, minute))
       {
-        v41->_sunsetPreviousAbsolute = v41->_sunsetAbsolute;
-        if (v41->_sunsetAbsolute >= v39)
+        selfCopy->_sunsetPreviousAbsolute = selfCopy->_sunsetAbsolute;
+        if (selfCopy->_sunsetAbsolute >= scheduleCopy)
         {
-          CFCalendarAddComponents(v37, &v41->_sunsetPreviousAbsolute, 0, "d", -1);
+          CFCalendarAddComponents(v37, &selfCopy->_sunsetPreviousAbsolute, 0, "d", -1);
         }
 
         else
         {
-          CFCalendarAddComponents(v37, &v41->_sunsetAbsolute, 0, "d", 1);
+          CFCalendarAddComponents(v37, &selfCopy->_sunsetAbsolute, 0, "d", 1);
         }
 
-        if (v41->_status.mode)
+        if (selfCopy->_status.mode)
         {
-          hour = v41->_status.schedule.toTime.hour;
-          minute = v41->_status.schedule.toTime.minute;
+          hour = selfCopy->_status.schedule.toTime.hour;
+          minute = selfCopy->_status.schedule.toTime.minute;
         }
 
         else
@@ -2200,29 +2200,29 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
           minute = 0;
         }
 
-        if (CFCalendarComposeAbsoluteTime(v37, &v41->_sunriseAbsolute, "yMdHm", v36, v35, v34, hour, minute))
+        if (CFCalendarComposeAbsoluteTime(v37, &selfCopy->_sunriseAbsolute, "yMdHm", v36, v35, v34, hour, minute))
         {
-          v41->_offTransitionTimeAbsoluteUnrestricted = v41->_sunriseAbsolute - v41->_transitionLength;
-          if (v41->_sunriseAbsolute < v41->_sunsetAbsolute || v41->_sunriseAbsolute - v41->_sunsetAbsolute >= (v41->_transitionLength * 2.0))
+          selfCopy->_offTransitionTimeAbsoluteUnrestricted = selfCopy->_sunriseAbsolute - selfCopy->_transitionLength;
+          if (selfCopy->_sunriseAbsolute < selfCopy->_sunsetAbsolute || selfCopy->_sunriseAbsolute - selfCopy->_sunsetAbsolute >= (selfCopy->_transitionLength * 2.0))
           {
-            if (v41->_sunriseAbsolute < v41->_sunsetPreviousAbsolute || v41->_sunriseAbsolute - v41->_sunsetPreviousAbsolute >= (v41->_transitionLength * 2.0))
+            if (selfCopy->_sunriseAbsolute < selfCopy->_sunsetPreviousAbsolute || selfCopy->_sunriseAbsolute - selfCopy->_sunsetPreviousAbsolute >= (selfCopy->_transitionLength * 2.0))
             {
-              v41->_transitionsTimesCoeff = 1.0;
-              v41->_sunriseAbsolute = v41->_sunriseAbsolute - v41->_transitionLength;
-              v41->_transitionLengthActual = v41->_transitionLength;
+              selfCopy->_transitionsTimesCoeff = 1.0;
+              selfCopy->_sunriseAbsolute = selfCopy->_sunriseAbsolute - selfCopy->_transitionLength;
+              selfCopy->_transitionLengthActual = selfCopy->_transitionLength;
             }
 
             else
             {
-              v25 = v41->_sunriseAbsolute - v41->_sunsetPreviousAbsolute;
-              v5 = v25 / (v41->_transitionLength * 2.0);
-              v41->_transitionsTimesCoeff = v5;
-              v41->_sunriseAbsolute = v41->_sunriseAbsolute - v25 / 2.0;
+              v25 = selfCopy->_sunriseAbsolute - selfCopy->_sunsetPreviousAbsolute;
+              v5 = v25 / (selfCopy->_transitionLength * 2.0);
+              selfCopy->_transitionsTimesCoeff = v5;
+              selfCopy->_sunriseAbsolute = selfCopy->_sunriseAbsolute - v25 / 2.0;
               v6 = v25 / 2.0;
-              v41->_transitionLengthActual = v6;
-              if (v41->_logHandle)
+              selfCopy->_transitionLengthActual = v6;
+              if (selfCopy->_logHandle)
               {
-                logHandle = v41->_logHandle;
+                logHandle = selfCopy->_logHandle;
               }
 
               else
@@ -2244,7 +2244,7 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
               v23 = OS_LOG_TYPE_DEBUG;
               if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
               {
-                __os_log_helper_16_0_2_8_0_8_0(v42, COERCE__INT64(v41->_transitionsTimesCoeff), COERCE__INT64(v41->_transitionLengthActual));
+                __os_log_helper_16_0_2_8_0_8_0(v42, COERCE__INT64(selfCopy->_transitionsTimesCoeff), COERCE__INT64(selfCopy->_transitionLengthActual));
                 _os_log_debug_impl(&dword_1DE8E5000, v24, v23, "transitions overlaping coeff=%f trLenghtActual=%f", v42, 0x16u);
               }
             }
@@ -2252,15 +2252,15 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
 
           else
           {
-            v28 = v41->_sunriseAbsolute - v41->_sunsetAbsolute;
-            v3 = v28 / (v41->_transitionLength * 2.0);
-            v41->_transitionsTimesCoeff = v3;
-            v41->_sunriseAbsolute = v41->_sunriseAbsolute - v28 / 2.0;
+            v28 = selfCopy->_sunriseAbsolute - selfCopy->_sunsetAbsolute;
+            v3 = v28 / (selfCopy->_transitionLength * 2.0);
+            selfCopy->_transitionsTimesCoeff = v3;
+            selfCopy->_sunriseAbsolute = selfCopy->_sunriseAbsolute - v28 / 2.0;
             v4 = v28 / 2.0;
-            v41->_transitionLengthActual = v4;
-            if (v41->_logHandle)
+            selfCopy->_transitionLengthActual = v4;
+            if (selfCopy->_logHandle)
             {
-              v15 = v41->_logHandle;
+              v15 = selfCopy->_logHandle;
             }
 
             else
@@ -2282,31 +2282,31 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
             v26 = OS_LOG_TYPE_DEBUG;
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
-              __os_log_helper_16_0_2_8_0_8_0(v43, COERCE__INT64(v41->_transitionsTimesCoeff), COERCE__INT64(v41->_transitionLengthActual));
+              __os_log_helper_16_0_2_8_0_8_0(v43, COERCE__INT64(selfCopy->_transitionsTimesCoeff), COERCE__INT64(selfCopy->_transitionLengthActual));
               _os_log_debug_impl(&dword_1DE8E5000, v27, v26, "transitions overlaping coeff=%f trLenghtActual=%f", v43, 0x16u);
             }
           }
 
-          v41->_sunrisePreviousAbsolute = v41->_sunriseAbsolute;
-          if (v41->_sunriseAbsolute >= v39)
+          selfCopy->_sunrisePreviousAbsolute = selfCopy->_sunriseAbsolute;
+          if (selfCopy->_sunriseAbsolute >= scheduleCopy)
           {
-            CFCalendarAddComponents(v37, &v41->_sunrisePreviousAbsolute, 0, "d", -1);
+            CFCalendarAddComponents(v37, &selfCopy->_sunrisePreviousAbsolute, 0, "d", -1);
           }
 
           else
           {
-            CFCalendarAddComponents(v37, &v41->_sunriseAbsolute, 0, "d", 1);
+            CFCalendarAddComponents(v37, &selfCopy->_sunriseAbsolute, 0, "d", 1);
           }
 
-          v41->_offTransitionTimeAbsoluteUnrestrictedPrev = v41->_offTransitionTimeAbsoluteUnrestricted;
-          if (v41->_offTransitionTimeAbsoluteUnrestricted >= v39)
+          selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev = selfCopy->_offTransitionTimeAbsoluteUnrestricted;
+          if (selfCopy->_offTransitionTimeAbsoluteUnrestricted >= scheduleCopy)
           {
-            CFCalendarAddComponents(v37, &v41->_offTransitionTimeAbsoluteUnrestrictedPrev, 0, "d", -1);
+            CFCalendarAddComponents(v37, &selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev, 0, "d", -1);
           }
 
           else
           {
-            CFCalendarAddComponents(v37, &v41->_offTransitionTimeAbsoluteUnrestricted, 0, "d", 1);
+            CFCalendarAddComponents(v37, &selfCopy->_offTransitionTimeAbsoluteUnrestricted, 0, "d", 1);
           }
 
           v38 = 1;
@@ -2314,9 +2314,9 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
 
         else
         {
-          if (v41->_logHandle)
+          if (selfCopy->_logHandle)
           {
-            v11 = v41->_logHandle;
+            v11 = selfCopy->_logHandle;
           }
 
           else
@@ -2348,9 +2348,9 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
 
       else
       {
-        if (v41->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v19 = v41->_logHandle;
+          v19 = selfCopy->_logHandle;
         }
 
         else
@@ -2387,17 +2387,17 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
   return v38 & 1;
 }
 
-- (void)updateTransitionTimes:(double)a3
+- (void)updateTransitionTimes:(double)times
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->_status.mode == 1)
   {
-    v3 = [(NightModeControl *)self updateTransitionTimesFromSunriseSunset:a3];
+    v3 = [(NightModeControl *)self updateTransitionTimesFromSunriseSunset:times];
   }
 
   else
   {
-    v3 = [(NightModeControl *)self updateTransitionTimesFromSchedule:a3];
+    v3 = [(NightModeControl *)self updateTransitionTimesFromSchedule:times];
   }
 
   self->_transitionTimesValid = v3;
@@ -2451,17 +2451,17 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
   [(NightModeControl *)self initiateTransitionTo:v2 andRampLength:v3, a2, self];
 }
 
-- (void)reevaluateCurrentStateWithFactorFadeOption:(float)a3
+- (void)reevaluateCurrentStateWithFactorFadeOption:(float)option
 {
   v43 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   v39 = a2;
-  v38 = a3;
+  optionCopy = option;
   Current = CFAbsoluteTimeGetCurrent();
   v36 = 0;
-  if (v40->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v40->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -2483,20 +2483,20 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
   v34 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_0_4_8_0_4_0_4_0_4_0(v42, *&Current, v40->_status.enabled, v40->_status.mode, v40->_algoState);
+    __os_log_helper_16_0_4_8_0_4_0_4_0_4_0(v42, *&Current, selfCopy->_status.enabled, selfCopy->_status.mode, selfCopy->_algoState);
     _os_log_impl(&dword_1DE8E5000, v35, v34, "now=%f enabled=%d mode=%d algo=%d", v42, 0x1Eu);
   }
 
-  [(NightModeControl *)v40 cancelSchedule];
-  [(NightModeControl *)v40 cancelTransition];
-  if (v40->_checkInactivity)
+  [(NightModeControl *)selfCopy cancelSchedule];
+  [(NightModeControl *)selfCopy cancelTransition];
+  if (selfCopy->_checkInactivity)
   {
-    v40->_checkInactivity = 0;
-    if (Current - v40->_displayOffTimestamp > v40->_inactivityTimeout)
+    selfCopy->_checkInactivity = 0;
+    if (Current - selfCopy->_displayOffTimestamp > selfCopy->_inactivityTimeout)
     {
-      if (v40->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v28 = v40->_logHandle;
+        v28 = selfCopy->_logHandle;
       }
 
       else
@@ -2524,82 +2524,82 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
         _os_log_debug_impl(&dword_1DE8E5000, v25, v26, "inactivity check passed", v31, 2u);
       }
 
-      [(NightModeControl *)v40 setAlgoState:0];
+      [(NightModeControl *)selfCopy setAlgoState:0];
     }
 
-    [(NightModeControl *)v40 updateStatusDictionaryWithValue:0 forKey:@"BlueLightReductionAlgoOverrideTimestamp"];
+    [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:0 forKey:@"BlueLightReductionAlgoOverrideTimestamp"];
   }
 
-  if (v40->_algoState == 4)
+  if (selfCopy->_algoState == 4)
   {
-    [(NightModeControl *)v40 updateTransitionTimes:Current];
+    [(NightModeControl *)selfCopy updateTransitionTimes:Current];
     v36 = 1;
-    if (v40->_transitionTimesValid)
+    if (selfCopy->_transitionTimesValid)
     {
-      untilNexTransitionTimestamp = v40->_untilNexTransitionTimestamp;
-      offTransitionTimeAbsoluteUnrestrictedPrev = v40->_offTransitionTimeAbsoluteUnrestrictedPrev;
+      untilNexTransitionTimestamp = selfCopy->_untilNexTransitionTimestamp;
+      offTransitionTimeAbsoluteUnrestrictedPrev = selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev;
       if (untilNexTransitionTimestamp < offTransitionTimeAbsoluteUnrestrictedPrev)
       {
         HIDWORD(untilNexTransitionTimestamp) = HIDWORD(Current);
-        offTransitionTimeAbsoluteUnrestrictedPrev = v40->_offTransitionTimeAbsoluteUnrestrictedPrev + v40->_transitionLength;
+        offTransitionTimeAbsoluteUnrestrictedPrev = selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev + selfCopy->_transitionLength;
         if (Current >= offTransitionTimeAbsoluteUnrestrictedPrev)
         {
-          [(NightModeControl *)v40 setAlgoState:0, Current];
+          [(NightModeControl *)selfCopy setAlgoState:0, Current];
         }
       }
     }
   }
 
-  else if (v40->_algoState == 3)
+  else if (selfCopy->_algoState == 3)
   {
-    [(NightModeControl *)v40 updateTransitionTimes:Current];
+    [(NightModeControl *)selfCopy updateTransitionTimes:Current];
     v36 = 1;
-    if (v40->_transitionTimesValid)
+    if (selfCopy->_transitionTimesValid)
     {
-      untilNexTransitionTimestamp = v40->_untilNexTransitionTimestamp;
-      offTransitionTimeAbsoluteUnrestrictedPrev = v40->_sunsetPreviousAbsolute;
+      untilNexTransitionTimestamp = selfCopy->_untilNexTransitionTimestamp;
+      offTransitionTimeAbsoluteUnrestrictedPrev = selfCopy->_sunsetPreviousAbsolute;
       if (untilNexTransitionTimestamp < offTransitionTimeAbsoluteUnrestrictedPrev)
       {
-        [(NightModeControl *)v40 setAlgoState:0];
+        [(NightModeControl *)selfCopy setAlgoState:0];
       }
     }
   }
 
-  switch(v40->_algoState)
+  switch(selfCopy->_algoState)
   {
     case 3:
       if ((v36 & 1) == 0)
       {
-        [(NightModeControl *)v40 updateTransitionTimes:Current];
+        [(NightModeControl *)selfCopy updateTransitionTimes:Current];
       }
 
-      v5 = v40->_untilNexTransitionTimestamp;
-      sunsetPreviousAbsolute = v40->_sunsetPreviousAbsolute;
+      v5 = selfCopy->_untilNexTransitionTimestamp;
+      sunsetPreviousAbsolute = selfCopy->_sunsetPreviousAbsolute;
       if (v5 < sunsetPreviousAbsolute)
       {
-        if (Current >= v40->_sunsetPreviousAbsolute + v40->_transitionLengthActual)
+        if (Current >= selfCopy->_sunsetPreviousAbsolute + selfCopy->_transitionLengthActual)
         {
-          [(NightModeControl *)v40 setAlgoState:0, Current];
-          *&v9 = v40->_maxFactor * v40->_transitionsTimesCoeff;
-          *&v10 = v38;
-          [(NightModeControl *)v40 setNightModeFactor:v9 withFadePeriod:v10];
-          if (v40->_status.mode)
+          [(NightModeControl *)selfCopy setAlgoState:0, Current];
+          *&v9 = selfCopy->_maxFactor * selfCopy->_transitionsTimesCoeff;
+          *&v10 = optionCopy;
+          [(NightModeControl *)selfCopy setNightModeFactor:v9 withFadePeriod:v10];
+          if (selfCopy->_status.mode)
           {
-            [(NightModeControl *)v40 scheduleNextTransition:2 withType:v40->_sunriseAbsolute];
+            [(NightModeControl *)selfCopy scheduleNextTransition:2 withType:selfCopy->_sunriseAbsolute];
           }
         }
 
         else
         {
-          transitionLengthActual = v40->_transitionLengthActual;
-          v8 = vabdd_f64(Current, v40->_sunsetPreviousAbsolute) / transitionLengthActual;
+          transitionLengthActual = selfCopy->_transitionLengthActual;
+          v8 = vabdd_f64(Current, selfCopy->_sunsetPreviousAbsolute) / transitionLengthActual;
           *&v8 = v8;
-          *&transitionLengthActual = v38;
-          [(NightModeControl *)v40 setNightModeFactor:v8 withFadePeriod:transitionLengthActual];
-          [(NightModeControl *)v40 initiateRestrictedMaxTransition];
-          if (v40->_status.mode)
+          *&transitionLengthActual = optionCopy;
+          [(NightModeControl *)selfCopy setNightModeFactor:v8 withFadePeriod:transitionLengthActual];
+          [(NightModeControl *)selfCopy initiateRestrictedMaxTransition];
+          if (selfCopy->_status.mode)
           {
-            [(NightModeControl *)v40 scheduleNextTransition:2 withType:v40->_sunriseAbsolute];
+            [(NightModeControl *)selfCopy scheduleNextTransition:2 withType:selfCopy->_sunriseAbsolute];
           }
         }
 
@@ -2607,112 +2607,112 @@ uint64_t __52__NightModeControl_scheduleNextTransition_withType___block_invoke(u
       }
 
 LABEL_42:
-      *&v5 = v40->_minFactor;
-      *&sunsetPreviousAbsolute = v38;
-      [(NightModeControl *)v40 setNightModeFactor:v5 withFadePeriod:sunsetPreviousAbsolute];
-      [(NightModeControl *)v40 scheduleNextTransition:1 withType:v40->_sunsetAbsolute];
+      *&v5 = selfCopy->_minFactor;
+      *&sunsetPreviousAbsolute = optionCopy;
+      [(NightModeControl *)selfCopy setNightModeFactor:v5 withFadePeriod:sunsetPreviousAbsolute];
+      [(NightModeControl *)selfCopy scheduleNextTransition:1 withType:selfCopy->_sunsetAbsolute];
       break;
     case 4:
       if ((v36 & 1) == 0)
       {
-        [(NightModeControl *)v40 updateTransitionTimes:Current];
+        [(NightModeControl *)selfCopy updateTransitionTimes:Current];
       }
 
-      v11 = v40->_untilNexTransitionTimestamp;
-      v12 = v40->_offTransitionTimeAbsoluteUnrestrictedPrev + v40->_transitionLength;
+      v11 = selfCopy->_untilNexTransitionTimestamp;
+      v12 = selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev + selfCopy->_transitionLength;
       if (v11 >= v12)
       {
-        *&v11 = v40->_maxFactor;
-        *&v12 = v38;
-        [(NightModeControl *)v40 setNightModeFactor:v11 withFadePeriod:v12];
-        [(NightModeControl *)v40 scheduleNextTransition:2 withType:v40->_offTransitionTimeAbsoluteUnrestricted];
+        *&v11 = selfCopy->_maxFactor;
+        *&v12 = optionCopy;
+        [(NightModeControl *)selfCopy setNightModeFactor:v11 withFadePeriod:v12];
+        [(NightModeControl *)selfCopy scheduleNextTransition:2 withType:selfCopy->_offTransitionTimeAbsoluteUnrestricted];
       }
 
-      else if (Current >= v40->_offTransitionTimeAbsoluteUnrestrictedPrev + v40->_transitionLength)
+      else if (Current >= selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev + selfCopy->_transitionLength)
       {
-        [(NightModeControl *)v40 setAlgoState:0, Current];
-        *&v15 = v40->_minFactor;
-        *&v16 = v38;
-        [(NightModeControl *)v40 setNightModeFactor:v15 withFadePeriod:v16];
-        if (v40->_status.mode)
+        [(NightModeControl *)selfCopy setAlgoState:0, Current];
+        *&v15 = selfCopy->_minFactor;
+        *&v16 = optionCopy;
+        [(NightModeControl *)selfCopy setNightModeFactor:v15 withFadePeriod:v16];
+        if (selfCopy->_status.mode)
         {
-          [(NightModeControl *)v40 scheduleNextTransition:1 withType:v40->_sunsetAbsolute];
+          [(NightModeControl *)selfCopy scheduleNextTransition:1 withType:selfCopy->_sunsetAbsolute];
         }
       }
 
       else
       {
-        v13 = vabdd_f64(Current, v40->_offTransitionTimeAbsoluteUnrestrictedPrev) / v40->_transitionLength;
-        v14 = v40->_maxFactor - v13;
+        v13 = vabdd_f64(Current, selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev) / selfCopy->_transitionLength;
+        v14 = selfCopy->_maxFactor - v13;
         *&v14 = v14;
-        *&v13 = v38;
-        [(NightModeControl *)v40 setNightModeFactor:v14 withFadePeriod:v13];
-        [(NightModeControl *)v40 initiateFullMinTransition];
-        if (v40->_status.mode)
+        *&v13 = optionCopy;
+        [(NightModeControl *)selfCopy setNightModeFactor:v14 withFadePeriod:v13];
+        [(NightModeControl *)selfCopy initiateFullMinTransition];
+        if (selfCopy->_status.mode)
         {
-          [(NightModeControl *)v40 scheduleNextTransition:1 withType:v40->_sunsetAbsolute];
+          [(NightModeControl *)selfCopy scheduleNextTransition:1 withType:selfCopy->_sunsetAbsolute];
         }
       }
 
       break;
     case 2:
-      *&untilNexTransitionTimestamp = v40->_maxFactor;
-      *&offTransitionTimeAbsoluteUnrestrictedPrev = v38;
-      [(NightModeControl *)v40 setNightModeFactor:untilNexTransitionTimestamp withFadePeriod:offTransitionTimeAbsoluteUnrestrictedPrev];
+      *&untilNexTransitionTimestamp = selfCopy->_maxFactor;
+      *&offTransitionTimeAbsoluteUnrestrictedPrev = optionCopy;
+      [(NightModeControl *)selfCopy setNightModeFactor:untilNexTransitionTimestamp withFadePeriod:offTransitionTimeAbsoluteUnrestrictedPrev];
       break;
     default:
-      if (v40->_algoState == 1 || !v40->_status.mode)
+      if (selfCopy->_algoState == 1 || !selfCopy->_status.mode)
       {
-        *&untilNexTransitionTimestamp = v40->_minFactor;
-        *&offTransitionTimeAbsoluteUnrestrictedPrev = v38;
-        [(NightModeControl *)v40 setNightModeFactor:untilNexTransitionTimestamp withFadePeriod:offTransitionTimeAbsoluteUnrestrictedPrev];
+        *&untilNexTransitionTimestamp = selfCopy->_minFactor;
+        *&offTransitionTimeAbsoluteUnrestrictedPrev = optionCopy;
+        [(NightModeControl *)selfCopy setNightModeFactor:untilNexTransitionTimestamp withFadePeriod:offTransitionTimeAbsoluteUnrestrictedPrev];
         break;
       }
 
       if ((v36 & 1) == 0)
       {
-        [(NightModeControl *)v40 updateTransitionTimes:Current];
+        [(NightModeControl *)selfCopy updateTransitionTimes:Current];
       }
 
-      if (v40->_transitionTimesValid)
+      if (selfCopy->_transitionTimesValid)
       {
-        if (v40->_sunriseAbsolute < v40->_sunsetAbsolute)
+        if (selfCopy->_sunriseAbsolute < selfCopy->_sunsetAbsolute)
         {
           HIDWORD(v19) = HIDWORD(Current);
-          v20 = v40->_sunsetPreviousAbsolute + v40->_transitionLengthActual;
+          v20 = selfCopy->_sunsetPreviousAbsolute + selfCopy->_transitionLengthActual;
           if (Current >= v20)
           {
-            *&v19 = v40->_maxFactor * v40->_transitionsTimesCoeff;
-            *&v20 = v38;
-            [(NightModeControl *)v40 setNightModeFactor:v19 withFadePeriod:v20];
-            [(NightModeControl *)v40 scheduleNextTransition:2 withType:v40->_sunriseAbsolute];
+            *&v19 = selfCopy->_maxFactor * selfCopy->_transitionsTimesCoeff;
+            *&v20 = optionCopy;
+            [(NightModeControl *)selfCopy setNightModeFactor:v19 withFadePeriod:v20];
+            [(NightModeControl *)selfCopy scheduleNextTransition:2 withType:selfCopy->_sunriseAbsolute];
           }
 
           else
           {
-            [(NightModeControl *)v40 scheduleNextTransition:2 withType:v40->_sunriseAbsolute];
-            transitionsTimesCoeff = v40->_transitionsTimesCoeff;
-            v22 = vabdd_f64(Current, v40->_sunsetPreviousAbsolute) / v40->_transitionLengthActual * transitionsTimesCoeff;
+            [(NightModeControl *)selfCopy scheduleNextTransition:2 withType:selfCopy->_sunriseAbsolute];
+            transitionsTimesCoeff = selfCopy->_transitionsTimesCoeff;
+            v22 = vabdd_f64(Current, selfCopy->_sunsetPreviousAbsolute) / selfCopy->_transitionLengthActual * transitionsTimesCoeff;
             *&v22 = v22;
-            *&transitionsTimesCoeff = v38;
-            [(NightModeControl *)v40 setNightModeFactor:v22 withFadePeriod:transitionsTimesCoeff];
-            [(NightModeControl *)v40 initiateRestrictedMaxTransition];
+            *&transitionsTimesCoeff = optionCopy;
+            [(NightModeControl *)selfCopy setNightModeFactor:v22 withFadePeriod:transitionsTimesCoeff];
+            [(NightModeControl *)selfCopy initiateRestrictedMaxTransition];
           }
 
           break;
         }
 
         HIDWORD(v5) = HIDWORD(Current);
-        sunsetPreviousAbsolute = v40->_sunrisePreviousAbsolute + v40->_transitionLengthActual;
+        sunsetPreviousAbsolute = selfCopy->_sunrisePreviousAbsolute + selfCopy->_transitionLengthActual;
         if (Current < sunsetPreviousAbsolute)
         {
-          [(NightModeControl *)v40 scheduleNextTransition:1 withType:v40->_sunsetAbsolute];
-          v17 = v40->_transitionsTimesCoeff;
-          v18 = (v40->_maxFactor - vabdd_f64(Current, v40->_sunrisePreviousAbsolute) / v40->_transitionLengthActual) * v17;
+          [(NightModeControl *)selfCopy scheduleNextTransition:1 withType:selfCopy->_sunsetAbsolute];
+          v17 = selfCopy->_transitionsTimesCoeff;
+          v18 = (selfCopy->_maxFactor - vabdd_f64(Current, selfCopy->_sunrisePreviousAbsolute) / selfCopy->_transitionLengthActual) * v17;
           *&v18 = v18;
-          *&v17 = v38;
-          [(NightModeControl *)v40 setNightModeFactor:v18 withFadePeriod:v17];
-          [(NightModeControl *)v40 initiateFullMinTransition];
+          *&v17 = optionCopy;
+          [(NightModeControl *)selfCopy setNightModeFactor:v18 withFadePeriod:v17];
+          [(NightModeControl *)selfCopy initiateFullMinTransition];
           break;
         }
 
@@ -2722,9 +2722,9 @@ LABEL_42:
       break;
   }
 
-  if (v40->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v24 = v40->_logHandle;
+    v24 = selfCopy->_logHandle;
   }
 
   else
@@ -2744,22 +2744,22 @@ LABEL_42:
 
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_0_2_8_0_8_0(v41, COERCE__INT64(v40->_factorState.factor), COERCE__INT64(v38));
+    __os_log_helper_16_0_2_8_0_8_0(v41, COERCE__INT64(selfCopy->_factorState.factor), COERCE__INT64(optionCopy));
     _os_log_impl(&dword_1DE8E5000, v24, OS_LOG_TYPE_INFO, "updated factor=%f with fade %f", v41, 0x16u);
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setSunPermitted:(BOOL)a3
+- (void)setSunPermitted:(BOOL)permitted
 {
   v30 = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  permittedCopy = permitted;
   if (self->_logHandle)
   {
-    logHandle = v28->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -2781,24 +2781,24 @@ LABEL_42:
   v24 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_2_4_0_4_0(v29, v28->_status.sunSchedulePermitted, v26);
+    __os_log_helper_16_0_2_4_0_4_0(v29, selfCopy->_status.sunSchedulePermitted, permittedCopy);
     _os_log_impl(&dword_1DE8E5000, v25, v24, "update sun mode permission from %d to %d", v29, 0xEu);
   }
 
-  if (v28->_status.sunSchedulePermitted != v26)
+  if (selfCopy->_status.sunSchedulePermitted != permittedCopy)
   {
-    v28->_status.sunSchedulePermitted = v26;
-    v23 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v28->_status.sunSchedulePermitted];
-    [(NightModeControl *)v28 updateStatusDictionaryWithValue:v23 forKey:@"BlueReductionSunScheduleAllowed"];
-    [CBAnalytics nightShiftSunSchedulePermitted:v28->_status.sunSchedulePermitted];
+    selfCopy->_status.sunSchedulePermitted = permittedCopy;
+    v23 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:selfCopy->_status.sunSchedulePermitted];
+    [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:v23 forKey:@"BlueReductionSunScheduleAllowed"];
+    [CBAnalytics nightShiftSunSchedulePermitted:selfCopy->_status.sunSchedulePermitted];
     *&v3 = MEMORY[0x1E69E5920](v23).n128_u64[0];
-    if (v28->_status.sunSchedulePermitted)
+    if (selfCopy->_status.sunSchedulePermitted)
     {
-      if (v28->_revertToSunriseSunset)
+      if (selfCopy->_revertToSunriseSunset)
       {
-        if (v28->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v8 = v28->_logHandle;
+          v8 = selfCopy->_logHandle;
         }
 
         else
@@ -2826,24 +2826,24 @@ LABEL_42:
           _os_log_impl(&dword_1DE8E5000, v5, v6, "reverting back to sun mode", v16, 2u);
         }
 
-        v28->_revertToSunriseSunset = 0;
+        selfCopy->_revertToSunriseSunset = 0;
         v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:0];
-        [(NightModeControl *)v28 updateStatusDictionaryWithValue:v15 forKey:@"BlueLightReductionRevertToSunriseSunset"];
+        [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:v15 forKey:@"BlueLightReductionRevertToSunriseSunset"];
         *&v4 = MEMORY[0x1E69E5920](v15).n128_u64[0];
-        [(NightModeControl *)v28 setMode:1, v4];
+        [(NightModeControl *)selfCopy setMode:1, v4];
       }
     }
 
     else
     {
-      [(NSMutableDictionary *)v28->_properties removeObjectForKey:@"BlueLightSunSchedule", v3];
-      MEMORY[0x1E69E5920](v28->_sunriseSunsetInfo);
-      v28->_sunriseSunsetInfo = 0;
-      if (v28->_status.mode == 1)
+      [(NSMutableDictionary *)selfCopy->_properties removeObjectForKey:@"BlueLightSunSchedule", v3];
+      MEMORY[0x1E69E5920](selfCopy->_sunriseSunsetInfo);
+      selfCopy->_sunriseSunsetInfo = 0;
+      if (selfCopy->_status.mode == 1)
       {
-        if (v28->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v12 = v28->_logHandle;
+          v12 = selfCopy->_logHandle;
         }
 
         else
@@ -2871,10 +2871,10 @@ LABEL_42:
           _os_log_impl(&dword_1DE8E5000, v9, v10, "taking a mark to return to sun mode", v20, 2u);
         }
 
-        [(NightModeControl *)v28 setMode:0];
-        v28->_revertToSunriseSunset = 1;
+        [(NightModeControl *)selfCopy setMode:0];
+        selfCopy->_revertToSunriseSunset = 1;
         v19 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:1];
-        [(NightModeControl *)v28 updateStatusDictionaryWithValue:v19 forKey:@"BlueLightReductionRevertToSunriseSunset"];
+        [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:v19 forKey:@"BlueLightReductionRevertToSunriseSunset"];
         MEMORY[0x1E69E5920](v19);
       }
     }
@@ -2885,7 +2885,7 @@ LABEL_42:
 
 - (void)updateSunriseSunsetBackup
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_status.sunSchedulePermitted)
   {
@@ -2893,20 +2893,20 @@ LABEL_42:
     v7 = 0;
     v6 = 22;
     v5 = 0;
-    if (v10->_sunriseSunsetInfo)
+    if (selfCopy->_sunriseSunsetInfo)
     {
       calendar = CFCalendarCreateWithIdentifier(*MEMORY[0x1E695E480], *MEMORY[0x1E695E678]);
       if (calendar)
       {
-        CFCalendarSetTimeZone(calendar, v10->_currentTimeZone);
-        [-[NSDictionary objectForKey:](v10->_sunriseSunsetInfo objectForKey:{v10->_nextSunriseKey), "timeIntervalSinceReferenceDate"}];
+        CFCalendarSetTimeZone(calendar, selfCopy->_currentTimeZone);
+        [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_nextSunriseKey), "timeIntervalSinceReferenceDate"}];
         if (!CFCalendarDecomposeAbsoluteTime(calendar, v2, "Hm", &v8, &v7))
         {
           v8 = 7;
           v7 = 0;
         }
 
-        [-[NSDictionary objectForKey:](v10->_sunriseSunsetInfo objectForKey:{v10->_nextSunsetKey), "timeIntervalSinceReferenceDate"}];
+        [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_nextSunsetKey), "timeIntervalSinceReferenceDate"}];
         if (!CFCalendarDecomposeAbsoluteTime(calendar, v3, "Hm", &v6, &v5))
         {
           v6 = 22;
@@ -2917,45 +2917,45 @@ LABEL_42:
       }
     }
 
-    if (v6 != v10->_backupSchedule.fromTime.hour || v5 != v10->_backupSchedule.fromTime.minute || v8 != v10->_backupSchedule.toTime.hour || v5 != v10->_backupSchedule.toTime.minute)
+    if (v6 != selfCopy->_backupSchedule.fromTime.hour || v5 != selfCopy->_backupSchedule.fromTime.minute || v8 != selfCopy->_backupSchedule.toTime.hour || v5 != selfCopy->_backupSchedule.toTime.minute)
     {
-      v10->_backupSchedule.fromTime.hour = v6;
-      v10->_backupSchedule.fromTime.minute = v5;
-      v10->_backupSchedule.toTime.hour = v8;
-      v10->_backupSchedule.toTime.minute = v7;
+      selfCopy->_backupSchedule.fromTime.hour = v6;
+      selfCopy->_backupSchedule.fromTime.minute = v5;
+      selfCopy->_backupSchedule.toTime.hour = v8;
+      selfCopy->_backupSchedule.toTime.minute = v7;
     }
   }
 }
 
-- (void)updateSunriseSunsetInfo:(id)a3
+- (void)updateSunriseSunsetInfo:(id)info
 {
   v41 = *MEMORY[0x1E69E9840];
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
-  v37 = a3;
-  if (a3)
+  infoCopy = info;
+  if (info)
   {
-    v36 = [objc_msgSend(v37 objectForKeyedSubscript:{@"status", "intValue"}];
+    v36 = [objc_msgSend(infoCopy objectForKeyedSubscript:{@"status", "intValue"}];
     if (v36)
     {
       if (v36 == 1)
       {
-        v39->_sunriseSunsetInfo = [v37 objectForKey:{@"sunSchedule", MEMORY[0x1E69E5920](v39->_sunriseSunsetInfo).n128_f64[0]}];
-        MEMORY[0x1E69E5928](v39->_sunriseSunsetInfo);
-        if (v39->_sunriseSunsetInfo)
+        selfCopy->_sunriseSunsetInfo = [infoCopy objectForKey:{@"sunSchedule", MEMORY[0x1E69E5920](selfCopy->_sunriseSunsetInfo).n128_f64[0]}];
+        MEMORY[0x1E69E5928](selfCopy->_sunriseSunsetInfo);
+        if (selfCopy->_sunriseSunsetInfo)
         {
-          [(NSMutableDictionary *)v39->_properties setObject:v39->_sunriseSunsetInfo forKey:@"BlueLightSunSchedule"];
+          [(NSMutableDictionary *)selfCopy->_properties setObject:selfCopy->_sunriseSunsetInfo forKey:@"BlueLightSunSchedule"];
         }
 
         else
         {
-          [(NSMutableDictionary *)v39->_properties removeObjectForKey:@"BlueLightSunSchedule"];
+          [(NSMutableDictionary *)selfCopy->_properties removeObjectForKey:@"BlueLightSunSchedule"];
         }
 
-        [(NightModeControl *)v39 setSunPermitted:1];
-        if (v39->_logHandle)
+        [(NightModeControl *)selfCopy setSunPermitted:1];
+        if (selfCopy->_logHandle)
         {
-          logHandle = v39->_logHandle;
+          logHandle = selfCopy->_logHandle;
         }
 
         else
@@ -2977,9 +2977,9 @@ LABEL_42:
         v31 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
-          if (v39->_sunriseSunsetInfo)
+          if (selfCopy->_sunriseSunsetInfo)
           {
-            sunriseSunsetInfo = v39->_sunriseSunsetInfo;
+            sunriseSunsetInfo = selfCopy->_sunriseSunsetInfo;
           }
 
           else
@@ -2994,9 +2994,9 @@ LABEL_42:
 
       else if (v36 == 2)
       {
-        if (v39->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v14 = v39->_logHandle;
+          v14 = selfCopy->_logHandle;
         }
 
         else
@@ -3024,14 +3024,14 @@ LABEL_42:
           _os_log_impl(&dword_1DE8E5000, v11, v12, "sunrise/sunset info: unavailable but permited", v28, 2u);
         }
 
-        [(NightModeControl *)v39 setSunPermitted:1];
+        [(NightModeControl *)selfCopy setSunPermitted:1];
       }
 
       else
       {
-        if (v39->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v10 = v39->_logHandle;
+          v10 = selfCopy->_logHandle;
         }
 
         else
@@ -3063,9 +3063,9 @@ LABEL_42:
 
     else
     {
-      if (v39->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v21 = v39->_logHandle;
+        v21 = selfCopy->_logHandle;
       }
 
       else
@@ -3093,15 +3093,15 @@ LABEL_42:
         _os_log_error_impl(&dword_1DE8E5000, log, type, "sunrise/sunset not permitted", v33, 2u);
       }
 
-      [(NightModeControl *)v39 setSunPermitted:0];
+      [(NightModeControl *)selfCopy setSunPermitted:0];
     }
   }
 
   else
   {
-    if (v39->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v6 = v39->_logHandle;
+      v6 = selfCopy->_logHandle;
     }
 
     else
@@ -3130,47 +3130,47 @@ LABEL_42:
     }
   }
 
-  [(NightModeControl *)v39 updateSunriseSunsetBackup];
+  [(NightModeControl *)selfCopy updateSunriseSunsetBackup];
   *MEMORY[0x1E69E9840];
 }
 
-- (void)retrieveSunriseSunsetTimesFromBackup:(double)a3
+- (void)retrieveSunriseSunsetTimesFromBackup:(double)backup
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  backupCopy = backup;
   v22 = CFCalendarCreateWithIdentifier(*MEMORY[0x1E695E480], *MEMORY[0x1E695E678]);
   if (v22)
   {
-    CFCalendarSetTimeZone(v22, v25->_currentTimeZone);
+    CFCalendarSetTimeZone(v22, selfCopy->_currentTimeZone);
     v21 = 0;
     v20 = 0;
     v19 = 0;
     hour = 0;
     minute = 0;
-    if (CFCalendarDecomposeAbsoluteTime(v22, v23, "yMdHm", &v21, &v20, &v19, &hour, &minute))
+    if (CFCalendarDecomposeAbsoluteTime(v22, backupCopy, "yMdHm", &v21, &v20, &v19, &hour, &minute))
     {
-      hour = v25->_backupSchedule.fromTime.hour;
-      minute = v25->_backupSchedule.fromTime.minute;
-      if (CFCalendarComposeAbsoluteTime(v22, &v25->_sunsetAbsolute, "yMdHm", v21, v20, v19, hour, minute))
+      hour = selfCopy->_backupSchedule.fromTime.hour;
+      minute = selfCopy->_backupSchedule.fromTime.minute;
+      if (CFCalendarComposeAbsoluteTime(v22, &selfCopy->_sunsetAbsolute, "yMdHm", v21, v20, v19, hour, minute))
       {
-        v25->_sunsetPreviousAbsolute = v25->_sunsetAbsolute;
-        if (v25->_sunsetAbsolute >= v23)
+        selfCopy->_sunsetPreviousAbsolute = selfCopy->_sunsetAbsolute;
+        if (selfCopy->_sunsetAbsolute >= backupCopy)
         {
-          CFCalendarAddComponents(v22, &v25->_sunsetPreviousAbsolute, 0, "d", -1);
+          CFCalendarAddComponents(v22, &selfCopy->_sunsetPreviousAbsolute, 0, "d", -1);
         }
 
         else
         {
-          CFCalendarAddComponents(v22, &v25->_sunsetAbsolute, 0, "d", 1);
+          CFCalendarAddComponents(v22, &selfCopy->_sunsetAbsolute, 0, "d", 1);
         }
       }
 
       else
       {
-        if (v25->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          logHandle = v25->_logHandle;
+          logHandle = selfCopy->_logHandle;
         }
 
         else
@@ -3199,28 +3199,28 @@ LABEL_42:
         }
       }
 
-      hour = v25->_backupSchedule.toTime.hour;
-      minute = v25->_backupSchedule.toTime.minute;
-      if (CFCalendarComposeAbsoluteTime(v22, &v25->_sunriseAbsolute, "yMdHm", v21, v20, v19, hour, minute))
+      hour = selfCopy->_backupSchedule.toTime.hour;
+      minute = selfCopy->_backupSchedule.toTime.minute;
+      if (CFCalendarComposeAbsoluteTime(v22, &selfCopy->_sunriseAbsolute, "yMdHm", v21, v20, v19, hour, minute))
       {
-        v25->_sunriseAbsolute = v25->_sunriseAbsolute - v25->_transitionLength;
-        v25->_sunrisePreviousAbsolute = v25->_sunriseAbsolute;
-        if (v25->_sunriseAbsolute >= v23)
+        selfCopy->_sunriseAbsolute = selfCopy->_sunriseAbsolute - selfCopy->_transitionLength;
+        selfCopy->_sunrisePreviousAbsolute = selfCopy->_sunriseAbsolute;
+        if (selfCopy->_sunriseAbsolute >= backupCopy)
         {
-          CFCalendarAddComponents(v22, &v25->_sunrisePreviousAbsolute, 0, "d", -1);
+          CFCalendarAddComponents(v22, &selfCopy->_sunrisePreviousAbsolute, 0, "d", -1);
         }
 
         else
         {
-          CFCalendarAddComponents(v22, &v25->_sunriseAbsolute, 0, "d", 1);
+          CFCalendarAddComponents(v22, &selfCopy->_sunriseAbsolute, 0, "d", 1);
         }
       }
 
       else
       {
-        if (v25->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v6 = v25->_logHandle;
+          v6 = selfCopy->_logHandle;
         }
 
         else
@@ -3254,12 +3254,12 @@ LABEL_42:
   }
 }
 
-- (BOOL)updateTransitionTimesFromSunriseSunset:(double)a3
+- (BOOL)updateTransitionTimesFromSunriseSunset:(double)sunset
 {
   v51 = *MEMORY[0x1E69E9840];
-  v42 = self;
+  selfCopy = self;
   v41 = a2;
-  v40 = a3;
+  sunsetCopy = sunset;
   v39 = 0;
   if (self->_sunriseSunsetInfo)
   {
@@ -3269,17 +3269,17 @@ LABEL_42:
     [objc_msgSend(MEMORY[0x1E695DF00] "distantPast")];
     v30 = v4;
     v39 = 1;
-    [-[NSDictionary objectForKey:](v42->_sunriseSunsetInfo objectForKey:{v42->_previousSunriseKey), "timeIntervalSinceReferenceDate"}];
+    [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_previousSunriseKey), "timeIntervalSinceReferenceDate"}];
     v45 = v5;
-    [-[NSDictionary objectForKey:](v42->_sunriseSunsetInfo objectForKey:{v42->_previousSunsetKey), "timeIntervalSinceReferenceDate"}];
+    [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_previousSunsetKey), "timeIntervalSinceReferenceDate"}];
     v46 = v6;
-    [-[NSDictionary objectForKey:](v42->_sunriseSunsetInfo objectForKey:{v42->_currentSunriseKey), "timeIntervalSinceReferenceDate"}];
+    [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_currentSunriseKey), "timeIntervalSinceReferenceDate"}];
     v47 = v7;
-    [-[NSDictionary objectForKey:](v42->_sunriseSunsetInfo objectForKey:{v42->_currentSunsetKey), "timeIntervalSinceReferenceDate"}];
+    [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_currentSunsetKey), "timeIntervalSinceReferenceDate"}];
     v48 = v8;
-    [-[NSDictionary objectForKey:](v42->_sunriseSunsetInfo objectForKey:{v42->_nextSunriseKey), "timeIntervalSinceReferenceDate"}];
+    [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_nextSunriseKey), "timeIntervalSinceReferenceDate"}];
     v49 = v9;
-    [-[NSDictionary objectForKey:](v42->_sunriseSunsetInfo objectForKey:{v42->_nextSunsetKey), "timeIntervalSinceReferenceDate"}];
+    [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_nextSunsetKey), "timeIntervalSinceReferenceDate"}];
     v50 = v10;
     for (i = 0; i < 6; ++i)
     {
@@ -3295,21 +3295,21 @@ LABEL_42:
       }
     }
 
-    v45 = v45 - v42->_transitionLength;
-    v47 = v47 - v42->_transitionLength;
-    v49 = v49 - v42->_transitionLength;
-    [(NSDictionary *)v42->_sunriseSunsetInfo objectForKey:v42->_isDaylightKey];
+    v45 = v45 - selfCopy->_transitionLength;
+    v47 = v47 - selfCopy->_transitionLength;
+    v49 = v49 - selfCopy->_transitionLength;
+    [(NSDictionary *)selfCopy->_sunriseSunsetInfo objectForKey:selfCopy->_isDaylightKey];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v12 = [-[NSDictionary objectForKey:](v42->_sunriseSunsetInfo objectForKey:{v42->_isDaylightKey), "BOOLValue"}];
-      v42->_isDaylight = v12;
+      v12 = [-[NSDictionary objectForKey:](selfCopy->_sunriseSunsetInfo objectForKey:{selfCopy->_isDaylightKey), "BOOLValue"}];
+      selfCopy->_isDaylight = v12;
     }
 
-    if (v42->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v42->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -3331,26 +3331,26 @@ LABEL_42:
     v27 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_0_2_4_0_4_0(v44, v32, v42->_isDaylight);
+      __os_log_helper_16_0_2_4_0_4_0(v44, v32, selfCopy->_isDaylight);
       _os_log_debug_impl(&dword_1DE8E5000, v28, v27, "flag=%d isDaylight=%d", v44, 0xEu);
     }
 
     if (v32 == 6)
     {
-      if (v42->_isDaylight)
+      if (selfCopy->_isDaylight)
       {
-        v42->_sunriseAbsolute = v31;
-        v42->_sunsetAbsolute = v31 - 86400.0;
-        v42->_sunrisePreviousAbsolute = v30 + 86400.0;
-        v42->_sunsetPreviousAbsolute = v30;
+        selfCopy->_sunriseAbsolute = v31;
+        selfCopy->_sunsetAbsolute = v31 - 86400.0;
+        selfCopy->_sunrisePreviousAbsolute = v30 + 86400.0;
+        selfCopy->_sunsetPreviousAbsolute = v30;
       }
 
       else
       {
-        v42->_sunsetAbsolute = v31;
-        v42->_sunriseAbsolute = v31 - 86400.0;
-        v42->_sunsetPreviousAbsolute = v30 + 86400.0;
-        v42->_sunrisePreviousAbsolute = v30;
+        selfCopy->_sunsetAbsolute = v31;
+        selfCopy->_sunriseAbsolute = v31 - 86400.0;
+        selfCopy->_sunsetPreviousAbsolute = v30 + 86400.0;
+        selfCopy->_sunrisePreviousAbsolute = v30;
       }
     }
 
@@ -3360,36 +3360,36 @@ LABEL_42:
       {
         if (*(&v33 + j))
         {
-          if (j % 2 == 1 && v40 < *(&v45 + j))
+          if (j % 2 == 1 && sunsetCopy < *(&v45 + j))
           {
-            v42->_sunsetAbsolute = *(&v45 + j);
-            v42->_sunriseAbsolute = v31;
-            v42->_sunsetPreviousAbsolute = v30;
-            v42->_sunrisePreviousAbsolute = v30;
+            selfCopy->_sunsetAbsolute = *(&v45 + j);
+            selfCopy->_sunriseAbsolute = v31;
+            selfCopy->_sunsetPreviousAbsolute = v30;
+            selfCopy->_sunrisePreviousAbsolute = v30;
           }
 
-          else if (j % 2 == 1 && v40 >= *(&v45 + j))
+          else if (j % 2 == 1 && sunsetCopy >= *(&v45 + j))
           {
-            v42->_sunsetAbsolute = v31;
-            v42->_sunriseAbsolute = v31 - 86400.0;
-            v42->_sunsetPreviousAbsolute = *(&v45 + j);
-            v42->_sunrisePreviousAbsolute = v30;
+            selfCopy->_sunsetAbsolute = v31;
+            selfCopy->_sunriseAbsolute = v31 - 86400.0;
+            selfCopy->_sunsetPreviousAbsolute = *(&v45 + j);
+            selfCopy->_sunrisePreviousAbsolute = v30;
           }
 
-          else if (j % 2 || v40 >= *(&v45 + j))
+          else if (j % 2 || sunsetCopy >= *(&v45 + j))
           {
-            v42->_sunsetAbsolute = v31 - 86400.0;
-            v42->_sunriseAbsolute = v31;
-            v42->_sunrisePreviousAbsolute = *(&v45 + j);
-            v42->_sunsetPreviousAbsolute = v30;
+            selfCopy->_sunsetAbsolute = v31 - 86400.0;
+            selfCopy->_sunriseAbsolute = v31;
+            selfCopy->_sunrisePreviousAbsolute = *(&v45 + j);
+            selfCopy->_sunsetPreviousAbsolute = v30;
           }
 
           else
           {
-            v42->_sunsetAbsolute = v31;
-            v42->_sunriseAbsolute = *(&v45 + j);
-            v42->_sunsetPreviousAbsolute = v30 + 86400.0;
-            v42->_sunrisePreviousAbsolute = v30;
+            selfCopy->_sunsetAbsolute = v31;
+            selfCopy->_sunriseAbsolute = *(&v45 + j);
+            selfCopy->_sunsetPreviousAbsolute = v30 + 86400.0;
+            selfCopy->_sunrisePreviousAbsolute = v30;
           }
         }
       }
@@ -3401,163 +3401,163 @@ LABEL_42:
       {
         if (v47 > v48)
         {
-          if (v40 >= v48)
+          if (sunsetCopy >= v48)
           {
-            if (v40 >= v47)
+            if (sunsetCopy >= v47)
             {
               if (v37)
               {
-                v42->_sunriseAbsolute = v49;
+                selfCopy->_sunriseAbsolute = v49;
               }
 
               else
               {
-                v42->_sunriseAbsolute = v31;
+                selfCopy->_sunriseAbsolute = v31;
               }
 
               if (v38)
               {
-                v42->_sunsetAbsolute = v50;
+                selfCopy->_sunsetAbsolute = v50;
               }
 
               else
               {
-                v42->_sunsetAbsolute = v31 - 86400.0;
+                selfCopy->_sunsetAbsolute = v31 - 86400.0;
               }
 
-              v42->_sunrisePreviousAbsolute = v47;
-              v42->_sunsetPreviousAbsolute = v48;
+              selfCopy->_sunrisePreviousAbsolute = v47;
+              selfCopy->_sunsetPreviousAbsolute = v48;
             }
 
             else
             {
-              v42->_sunriseAbsolute = v47;
+              selfCopy->_sunriseAbsolute = v47;
               if (v38)
               {
-                v42->_sunsetAbsolute = v50;
+                selfCopy->_sunsetAbsolute = v50;
               }
 
               else
               {
-                v42->_sunsetAbsolute = v31;
+                selfCopy->_sunsetAbsolute = v31;
               }
 
               if (v33)
               {
-                v42->_sunrisePreviousAbsolute = v45;
+                selfCopy->_sunrisePreviousAbsolute = v45;
               }
 
               else
               {
-                v42->_sunrisePreviousAbsolute = v30;
+                selfCopy->_sunrisePreviousAbsolute = v30;
               }
 
-              v42->_sunsetPreviousAbsolute = v48;
+              selfCopy->_sunsetPreviousAbsolute = v48;
             }
           }
 
           else
           {
-            v42->_sunriseAbsolute = v47;
-            v42->_sunsetAbsolute = v48;
+            selfCopy->_sunriseAbsolute = v47;
+            selfCopy->_sunsetAbsolute = v48;
             if (v33)
             {
-              v42->_sunrisePreviousAbsolute = v45;
+              selfCopy->_sunrisePreviousAbsolute = v45;
             }
 
             else
             {
-              v42->_sunrisePreviousAbsolute = v30;
+              selfCopy->_sunrisePreviousAbsolute = v30;
             }
 
             if (v34)
             {
-              v42->_sunsetPreviousAbsolute = v46;
+              selfCopy->_sunsetPreviousAbsolute = v46;
             }
 
             else
             {
-              v42->_sunsetPreviousAbsolute = v30;
+              selfCopy->_sunsetPreviousAbsolute = v30;
             }
           }
         }
 
-        else if (v40 >= v47)
+        else if (sunsetCopy >= v47)
         {
-          if (v40 >= v48)
+          if (sunsetCopy >= v48)
           {
             if (v37)
             {
-              v42->_sunriseAbsolute = v49;
+              selfCopy->_sunriseAbsolute = v49;
             }
 
             else
             {
-              v42->_sunriseAbsolute = v31 - 86400.0;
+              selfCopy->_sunriseAbsolute = v31 - 86400.0;
             }
 
             if (v38)
             {
-              v42->_sunsetAbsolute = v50;
+              selfCopy->_sunsetAbsolute = v50;
             }
 
             else
             {
-              v42->_sunsetAbsolute = v31;
+              selfCopy->_sunsetAbsolute = v31;
             }
 
-            v42->_sunrisePreviousAbsolute = v47;
-            v42->_sunsetPreviousAbsolute = v48;
+            selfCopy->_sunrisePreviousAbsolute = v47;
+            selfCopy->_sunsetPreviousAbsolute = v48;
           }
 
           else
           {
             if (v37)
             {
-              v42->_sunriseAbsolute = v49;
+              selfCopy->_sunriseAbsolute = v49;
             }
 
             else
             {
-              v42->_sunriseAbsolute = v31;
+              selfCopy->_sunriseAbsolute = v31;
             }
 
-            v42->_sunsetAbsolute = v48;
-            v42->_sunrisePreviousAbsolute = v47;
+            selfCopy->_sunsetAbsolute = v48;
+            selfCopy->_sunrisePreviousAbsolute = v47;
             if (v34)
             {
-              v42->_sunsetPreviousAbsolute = v46;
+              selfCopy->_sunsetPreviousAbsolute = v46;
             }
 
             else
             {
-              v42->_sunsetPreviousAbsolute = v30;
+              selfCopy->_sunsetPreviousAbsolute = v30;
             }
           }
         }
 
         else
         {
-          v42->_sunriseAbsolute = v47;
-          v42->_sunsetAbsolute = v48;
+          selfCopy->_sunriseAbsolute = v47;
+          selfCopy->_sunsetAbsolute = v48;
           if (v33)
           {
-            v42->_sunrisePreviousAbsolute = v45;
+            selfCopy->_sunrisePreviousAbsolute = v45;
           }
 
           else
           {
-            v42->_sunrisePreviousAbsolute = v30;
+            selfCopy->_sunrisePreviousAbsolute = v30;
           }
 
           if (v34)
           {
-            v42->_sunsetPreviousAbsolute = v46;
+            selfCopy->_sunsetPreviousAbsolute = v46;
           }
 
           else
           {
-            v42->_sunsetPreviousAbsolute = v30;
+            selfCopy->_sunsetPreviousAbsolute = v30;
           }
         }
       }
@@ -3566,139 +3566,139 @@ LABEL_42:
       {
         if (v38)
         {
-          if (v40 < v48)
+          if (sunsetCopy < v48)
           {
-            v42->_sunriseAbsolute = v31;
-            v42->_sunsetAbsolute = v48;
-            v42->_sunrisePreviousAbsolute = v45;
-            v42->_sunsetPreviousAbsolute = v46;
+            selfCopy->_sunriseAbsolute = v31;
+            selfCopy->_sunsetAbsolute = v48;
+            selfCopy->_sunrisePreviousAbsolute = v45;
+            selfCopy->_sunsetPreviousAbsolute = v46;
           }
 
           else
           {
-            v42->_sunriseAbsolute = v31 - 86400.0;
-            v42->_sunsetAbsolute = v31;
-            v42->_sunrisePreviousAbsolute = v45;
-            v42->_sunsetPreviousAbsolute = v48;
+            selfCopy->_sunriseAbsolute = v31 - 86400.0;
+            selfCopy->_sunsetAbsolute = v31;
+            selfCopy->_sunrisePreviousAbsolute = v45;
+            selfCopy->_sunsetPreviousAbsolute = v48;
           }
         }
 
         else
         {
-          if (v40 < v47)
+          if (sunsetCopy < v47)
           {
-            v42->_sunriseAbsolute = v47;
-            v42->_sunsetAbsolute = v31;
-            v42->_sunrisePreviousAbsolute = v45;
+            selfCopy->_sunriseAbsolute = v47;
+            selfCopy->_sunsetAbsolute = v31;
+            selfCopy->_sunrisePreviousAbsolute = v45;
           }
 
           else
           {
-            v42->_sunriseAbsolute = v31;
-            v42->_sunsetAbsolute = v31 - 86400.0;
-            v42->_sunrisePreviousAbsolute = v47;
+            selfCopy->_sunriseAbsolute = v31;
+            selfCopy->_sunsetAbsolute = v31 - 86400.0;
+            selfCopy->_sunrisePreviousAbsolute = v47;
           }
 
-          v42->_sunsetPreviousAbsolute = v46;
+          selfCopy->_sunsetPreviousAbsolute = v46;
         }
       }
 
-      else if (v42->_isDaylight)
+      else if (selfCopy->_isDaylight)
       {
-        v42->_sunriseAbsolute = v31;
-        v42->_sunsetAbsolute = v31 - 86400.0;
-        v42->_sunrisePreviousAbsolute = v30 + 86400.0;
-        v42->_sunsetPreviousAbsolute = v30;
+        selfCopy->_sunriseAbsolute = v31;
+        selfCopy->_sunsetAbsolute = v31 - 86400.0;
+        selfCopy->_sunrisePreviousAbsolute = v30 + 86400.0;
+        selfCopy->_sunsetPreviousAbsolute = v30;
       }
 
       else
       {
-        v42->_sunsetAbsolute = v31;
-        v42->_sunriseAbsolute = v31 - 86400.0;
-        v42->_sunsetPreviousAbsolute = v30 + 86400.0;
-        v42->_sunrisePreviousAbsolute = v30;
+        selfCopy->_sunsetAbsolute = v31;
+        selfCopy->_sunriseAbsolute = v31 - 86400.0;
+        selfCopy->_sunsetPreviousAbsolute = v30 + 86400.0;
+        selfCopy->_sunrisePreviousAbsolute = v30;
       }
     }
 
     else if (v47 > v48)
     {
-      if (v40 >= v48)
+      if (sunsetCopy >= v48)
       {
-        if (v40 >= v47)
+        if (sunsetCopy >= v47)
         {
-          if (v40 >= v50)
+          if (sunsetCopy >= v50)
           {
             v39 = 0;
           }
 
           else
           {
-            v42->_sunriseAbsolute = v49;
-            v42->_sunsetAbsolute = v50;
-            v42->_sunrisePreviousAbsolute = v47;
-            v42->_sunsetPreviousAbsolute = v48;
+            selfCopy->_sunriseAbsolute = v49;
+            selfCopy->_sunsetAbsolute = v50;
+            selfCopy->_sunrisePreviousAbsolute = v47;
+            selfCopy->_sunsetPreviousAbsolute = v48;
           }
         }
 
         else
         {
-          v42->_sunriseAbsolute = v47;
-          v42->_sunsetAbsolute = v50;
-          v42->_sunrisePreviousAbsolute = v45;
-          v42->_sunsetPreviousAbsolute = v48;
+          selfCopy->_sunriseAbsolute = v47;
+          selfCopy->_sunsetAbsolute = v50;
+          selfCopy->_sunrisePreviousAbsolute = v45;
+          selfCopy->_sunsetPreviousAbsolute = v48;
         }
       }
 
       else
       {
-        v42->_sunriseAbsolute = v47;
-        v42->_sunsetAbsolute = v48;
-        v42->_sunrisePreviousAbsolute = v45;
-        v42->_sunsetPreviousAbsolute = v46;
+        selfCopy->_sunriseAbsolute = v47;
+        selfCopy->_sunsetAbsolute = v48;
+        selfCopy->_sunrisePreviousAbsolute = v45;
+        selfCopy->_sunsetPreviousAbsolute = v46;
       }
     }
 
-    else if (v40 >= v47)
+    else if (sunsetCopy >= v47)
     {
-      if (v40 >= v48)
+      if (sunsetCopy >= v48)
       {
-        if (v40 >= v49)
+        if (sunsetCopy >= v49)
         {
           v39 = 0;
         }
 
         else
         {
-          v42->_sunriseAbsolute = v49;
-          v42->_sunsetAbsolute = v50;
-          v42->_sunrisePreviousAbsolute = v47;
-          v42->_sunsetPreviousAbsolute = v48;
+          selfCopy->_sunriseAbsolute = v49;
+          selfCopy->_sunsetAbsolute = v50;
+          selfCopy->_sunrisePreviousAbsolute = v47;
+          selfCopy->_sunsetPreviousAbsolute = v48;
         }
       }
 
       else
       {
-        v42->_sunriseAbsolute = v49;
-        v42->_sunsetAbsolute = v48;
-        v42->_sunrisePreviousAbsolute = v47;
-        v42->_sunsetPreviousAbsolute = v46;
+        selfCopy->_sunriseAbsolute = v49;
+        selfCopy->_sunsetAbsolute = v48;
+        selfCopy->_sunrisePreviousAbsolute = v47;
+        selfCopy->_sunsetPreviousAbsolute = v46;
       }
     }
 
     else
     {
-      v42->_sunriseAbsolute = v47;
-      v42->_sunsetAbsolute = v48;
-      v42->_sunrisePreviousAbsolute = v45;
-      v42->_sunsetPreviousAbsolute = v46;
+      selfCopy->_sunriseAbsolute = v47;
+      selfCopy->_sunsetAbsolute = v48;
+      selfCopy->_sunrisePreviousAbsolute = v45;
+      selfCopy->_sunsetPreviousAbsolute = v46;
     }
   }
 
   if ((v39 & 1) == 0)
   {
-    if (v42->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v19 = v42->_logHandle;
+      v19 = selfCopy->_logHandle;
     }
 
     else
@@ -3726,30 +3726,30 @@ LABEL_42:
       _os_log_error_impl(&dword_1DE8E5000, v16, v17, "Warning - invalid sunrise/sunset info, using defaults", v23, 2u);
     }
 
-    [(NightModeControl *)v42 retrieveSunriseSunsetTimesFromBackup:v40];
+    [(NightModeControl *)selfCopy retrieveSunriseSunsetTimesFromBackup:sunsetCopy];
     v39 = 1;
   }
 
-  v22 = v42->_sunriseAbsolute + v42->_transitionLength;
-  if ((v22 < v42->_sunsetAbsolute || v22 - v42->_sunsetAbsolute >= (v42->_transitionLength * 2.0)) && (v22 < v42->_sunsetPreviousAbsolute || v22 - v42->_sunsetPreviousAbsolute >= (v42->_transitionLength * 2.0)))
+  v22 = selfCopy->_sunriseAbsolute + selfCopy->_transitionLength;
+  if ((v22 < selfCopy->_sunsetAbsolute || v22 - selfCopy->_sunsetAbsolute >= (selfCopy->_transitionLength * 2.0)) && (v22 < selfCopy->_sunsetPreviousAbsolute || v22 - selfCopy->_sunsetPreviousAbsolute >= (selfCopy->_transitionLength * 2.0)))
   {
-    v42->_transitionsTimesCoeff = 1.0;
-    v42->_transitionLengthActual = v42->_transitionLength;
-    v42->_offTransitionTimeAbsoluteUnrestrictedPrev = v42->_sunrisePreviousAbsolute;
-    v42->_offTransitionTimeAbsoluteUnrestricted = v42->_sunriseAbsolute;
+    selfCopy->_transitionsTimesCoeff = 1.0;
+    selfCopy->_transitionLengthActual = selfCopy->_transitionLength;
+    selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev = selfCopy->_sunrisePreviousAbsolute;
+    selfCopy->_offTransitionTimeAbsoluteUnrestricted = selfCopy->_sunriseAbsolute;
   }
 
   else
   {
-    v42->_transitionsTimesCoeff = 0.0;
-    v42->_transitionLengthActual = 0.0;
-    v42->_sunriseAbsolute = v42->_sunsetAbsolute;
-    v42->_sunrisePreviousAbsolute = v42->_sunsetPreviousAbsolute;
-    v42->_offTransitionTimeAbsoluteUnrestricted = v42->_sunriseAbsolute - v42->_transitionLength;
-    v42->_offTransitionTimeAbsoluteUnrestrictedPrev = v42->_sunrisePreviousAbsolute - v42->_transitionLength;
-    if (v42->_logHandle)
+    selfCopy->_transitionsTimesCoeff = 0.0;
+    selfCopy->_transitionLengthActual = 0.0;
+    selfCopy->_sunriseAbsolute = selfCopy->_sunsetAbsolute;
+    selfCopy->_sunrisePreviousAbsolute = selfCopy->_sunsetPreviousAbsolute;
+    selfCopy->_offTransitionTimeAbsoluteUnrestricted = selfCopy->_sunriseAbsolute - selfCopy->_transitionLength;
+    selfCopy->_offTransitionTimeAbsoluteUnrestrictedPrev = selfCopy->_sunrisePreviousAbsolute - selfCopy->_transitionLength;
+    if (selfCopy->_logHandle)
     {
-      v15 = v42->_logHandle;
+      v15 = selfCopy->_logHandle;
     }
 
     else
@@ -3769,7 +3769,7 @@ LABEL_42:
 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_0_2_8_0_8_0(v43, COERCE__INT64(v42->_transitionsTimesCoeff), COERCE__INT64(v42->_transitionLengthActual));
+      __os_log_helper_16_0_2_8_0_8_0(v43, COERCE__INT64(selfCopy->_transitionsTimesCoeff), COERCE__INT64(selfCopy->_transitionLengthActual));
       _os_log_debug_impl(&dword_1DE8E5000, v15, OS_LOG_TYPE_DEBUG, "Sunrise/Sunset transitions overlaping coeff=%f trLenghtActual=%f", v43, 0x16u);
     }
   }
@@ -3778,9 +3778,9 @@ LABEL_42:
   return v39 & 1;
 }
 
-- (void)updateOptionTimestamp:(double)a3
+- (void)updateOptionTimestamp:(double)timestamp
 {
-  v3 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:a3];
+  v3 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:timestamp];
   if (v3)
   {
     [(NightModeControl *)self updateStatusDictionaryWithValue:v3 forKey:@"BlueLightReductionAlgoOverrideTimestamp"];
@@ -3788,12 +3788,12 @@ LABEL_42:
   }
 }
 
-- (void)setAlgoState:(int)a3
+- (void)setAlgoState:(int)state
 {
-  if (self->_algoState != a3)
+  if (self->_algoState != state)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    self->_algoState = a3;
+    self->_algoState = state;
     v3 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:self->_algoState];
     if (v3)
     {
@@ -3816,7 +3816,7 @@ LABEL_42:
 
 - (void)timeZoneChanged
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
@@ -3824,7 +3824,7 @@ LABEL_42:
   v5 = 0;
   v6 = __35__NightModeControl_timeZoneChanged__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = v10;
+  v8 = selfCopy;
   dispatch_async(queue, &block);
 }
 
@@ -3874,7 +3874,7 @@ uint64_t __35__NightModeControl_timeZoneChanged__block_invoke(uint64_t a1)
 
 - (void)clockChanged
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
@@ -3882,7 +3882,7 @@ uint64_t __35__NightModeControl_timeZoneChanged__block_invoke(uint64_t a1)
   v5 = 0;
   v6 = __32__NightModeControl_clockChanged__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = v10;
+  v8 = selfCopy;
   dispatch_async(queue, &block);
 }
 
@@ -3928,11 +3928,11 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
 
 - (void)tearDownAllTimers
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_logHandle)
   {
-    logHandle = v10->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -3960,11 +3960,11 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "disable all timers", v6, 2u);
   }
 
-  [(NightModeControl *)v10 cancelTransition];
-  [(NightModeControl *)v10 cancelSchedule];
+  [(NightModeControl *)selfCopy cancelTransition];
+  [(NightModeControl *)selfCopy cancelSchedule];
 }
 
-- (id)copyTimeStringWithHour:(int)a3 minute:(int)a4 second:(int)a5
+- (id)copyTimeStringWithHour:(int)hour minute:(int)minute second:(int)second
 {
   v13 = 0;
   v12 = 0;
@@ -3976,8 +3976,8 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
     if (v12)
     {
       [v12 setLocalizedDateFormatFromTemplate:@"j"];
-      v10 = [v12 dateFormat];
-      if (v10 && ([v10 containsString:@"a"] & 1) == 0 && (objc_msgSend(v10, "containsString:", @"b") & 1) == 0 && (objc_msgSend(v10, "containsString:", @"B") & 1) == 0)
+      dateFormat = [v12 dateFormat];
+      if (dateFormat && ([dateFormat containsString:@"a"] & 1) == 0 && (objc_msgSend(dateFormat, "containsString:", @"b") & 1) == 0 && (objc_msgSend(dateFormat, "containsString:", @"B") & 1) == 0)
       {
         [v12 setLocalizedDateFormatFromTemplate:@"jjmm"];
       }
@@ -3988,9 +3988,9 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
         v8 = [v11 components:32 fromDate:v9];
         if (v8)
         {
-          [v8 setHour:a3];
-          [v8 setMinute:a4];
-          [v8 setSecond:a5];
+          [v8 setHour:hour];
+          [v8 setMinute:minute];
+          [v8 setSecond:second];
           v7 = [v11 dateFromComponents:v8];
           if (v7)
           {
@@ -4016,33 +4016,33 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (void)displayAlertInteractive:(BOOL)a3
+- (void)displayAlertInteractive:(BOOL)interactive
 {
   __b[9] = *MEMORY[0x1E69E9840];
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
+  interactiveCopy = interactive;
   if (!self->_notificationInProgress)
   {
-    if (v30->_notifyUserAboutScheduleCounter < 3)
+    if (selfCopy->_notifyUserAboutScheduleCounter < 3)
     {
-      ++v30->_notifyUserAboutScheduleCounter;
-      v27 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:v30->_notifyUserAboutScheduleCounter];
+      ++selfCopy->_notifyUserAboutScheduleCounter;
+      v27 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:selfCopy->_notifyUserAboutScheduleCounter];
       if (v27)
       {
-        [(NightModeControl *)v30 updateStatusDictionaryWithValue:v27 forKey:@"BlueLightReductionDisableScheduleAlertCounter"];
+        [(NightModeControl *)selfCopy updateStatusDictionaryWithValue:v27 forKey:@"BlueLightReductionDisableScheduleAlertCounter"];
         MEMORY[0x1E69E5920](v27);
       }
 
-      if (!v28)
+      if (!interactiveCopy)
       {
-        [(NightModeControl *)v30 enableBlueLightReduction:1 withOption:2];
+        [(NightModeControl *)selfCopy enableBlueLightReduction:1 withOption:2];
       }
 
       v26 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v7 = MEMORY[0x1E696AAE8];
-      v6 = [v26 localizations];
-      v25 = [v7 preferredLocalizationsFromArray:v6 forPreferences:{objc_msgSend(MEMORY[0x1E695DF58], "preferredLanguages")}];
+      localizations = [v26 localizations];
+      v25 = [v7 preferredLocalizationsFromArray:localizations forPreferences:{objc_msgSend(MEMORY[0x1E695DF58], "preferredLanguages")}];
       if ([v25 count])
       {
         v24 = [v25 objectAtIndexedSubscript:0];
@@ -4055,7 +4055,7 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
           if (v22 && v21 && v20)
           {
             v19 = 0;
-            v18 = [(NightModeControl *)v30 copyTimeStringWithHour:7 minute:0 second:?];
+            v18 = [(NightModeControl *)selfCopy copyTimeStringWithHour:7 minute:0 second:?];
             if (v18)
             {
               context = objc_autoreleasePoolPush();
@@ -4090,9 +4090,9 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
               v31[8] = @"prefs:root=DISPLAY&path=BLUE_LIGHT_REDUCTION";
               dictionary = CFDictionaryCreate(0, __b, v31, 9, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
               MEMORY[0x1E69E5920](v19);
-              v30->_notificationInProgress = 1;
+              selfCopy->_notificationInProgress = 1;
               v3 = CFUserNotificationCreate(0, 0.0, 3uLL, &v16, dictionary);
-              v30->_enableNotification = v3;
+              selfCopy->_enableNotification = v3;
               CFRelease(dictionary);
               global_queue = dispatch_get_global_queue(0, 0);
               block = MEMORY[0x1E69E9820];
@@ -4100,8 +4100,8 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
               v10 = 0;
               v11 = __44__NightModeControl_displayAlertInteractive___block_invoke;
               v12 = &unk_1E867B840;
-              v13 = v30;
-              v14 = v28;
+              v13 = selfCopy;
+              v14 = interactiveCopy;
               dispatch_async(global_queue, &block);
             }
           }
@@ -4111,7 +4111,7 @@ uint64_t __32__NightModeControl_clockChanged__block_invoke(uint64_t a1)
 
     else
     {
-      [(NightModeControl *)v30 enableBlueLightReduction:1 withOption:2];
+      [(NightModeControl *)selfCopy enableBlueLightReduction:1 withOption:2];
     }
   }
 
@@ -4168,12 +4168,12 @@ uint64_t __50__NightModeControl_setNightShiftFactorDictionary___block_invoke(uin
   return result;
 }
 
-- (id)copyPreferenceForKey:(id)a3 user:(id)a4
+- (id)copyPreferenceForKey:(id)key user:(id)user
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
-  v22 = a4;
+  keyCopy = key;
+  userCopy = user;
   v15 = 0;
   v16 = &v15;
   v17 = 1375731712;
@@ -4188,8 +4188,8 @@ uint64_t __50__NightModeControl_setNightShiftFactorDictionary___block_invoke(uin
   v10 = __46__NightModeControl_copyPreferenceForKey_user___block_invoke;
   v11 = &unk_1E867B868;
   v14 = &v15;
-  v12 = a3;
-  v13 = a4;
+  keyCopy2 = key;
+  userCopy2 = user;
   [(NSMutableArray *)supportObjs enumerateObjectsUsingBlock:?];
   v6 = v16[5];
   _Block_object_dispose(&v15, 8);

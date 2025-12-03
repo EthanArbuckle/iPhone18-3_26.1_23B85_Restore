@@ -1,19 +1,19 @@
 @interface MapsFindMyHandle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNContact)contact;
 - (NSSet)emailAddresses;
 - (NSSet)phoneNumbers;
 - (NSString)displayName;
 - (NSString)identifier;
 - (_TtC4Maps16MapsFindMyHandle)init;
-- (_TtC4Maps16MapsFindMyHandle)initWithIdentifier:(id)a3;
-- (_TtC4Maps16MapsFindMyHandle)initWithSearchFindMyHandle:(id)a3;
-- (id)thumbnailIconWithScale:(double)a3 size:(CGSize)a4;
+- (_TtC4Maps16MapsFindMyHandle)initWithIdentifier:(id)identifier;
+- (_TtC4Maps16MapsFindMyHandle)initWithSearchFindMyHandle:(id)handle;
+- (id)thumbnailIconWithScale:(double)scale size:(CGSize)size;
 @end
 
 @implementation MapsFindMyHandle
 
-- (_TtC4Maps16MapsFindMyHandle)initWithIdentifier:(id)a3
+- (_TtC4Maps16MapsFindMyHandle)initWithIdentifier:(id)identifier
 {
   v4 = type metadata accessor for Handle();
   v5 = *(v4 - 8);
@@ -29,22 +29,22 @@
   return [(MapsFindMyHandle *)&v10 init];
 }
 
-- (_TtC4Maps16MapsFindMyHandle)initWithSearchFindMyHandle:(id)a3
+- (_TtC4Maps16MapsFindMyHandle)initWithSearchFindMyHandle:(id)handle
 {
   v5 = OBJC_IVAR____TtC4Maps18SearchFindMyHandle_handle;
   v6 = OBJC_IVAR____TtC4Maps16MapsFindMyHandle_handle;
   v7 = type metadata accessor for Handle();
-  (*(*(v7 - 8) + 16))(self + v6, a3 + v5, v7);
+  (*(*(v7 - 8) + 16))(self + v6, handle + v5, v7);
   v9.receiver = self;
   v9.super_class = type metadata accessor for MapsFindMyHandle();
   return [(MapsFindMyHandle *)&v9 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -53,7 +53,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100326B08(v8);
@@ -78,7 +78,7 @@
 
 - (NSSet)phoneNumbers
 {
-  v2 = self;
+  selfCopy = self;
   sub_100326ED4();
 
   sub_1003283AC();
@@ -90,7 +90,7 @@
 
 - (NSSet)emailAddresses
 {
-  v2 = self;
+  selfCopy = self;
   sub_100327444();
 
   v3.super.isa = Set._bridgeToObjectiveC()().super.isa;
@@ -100,7 +100,7 @@
 
 - (NSString)displayName
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032785C();
 
   v3 = String._bridgeToObjectiveC()();
@@ -110,18 +110,18 @@
 
 - (CNContact)contact
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100327DCC();
 
   return v3;
 }
 
-- (id)thumbnailIconWithScale:(double)a3 size:(CGSize)a4
+- (id)thumbnailIconWithScale:(double)scale size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = self;
-  v8 = sub_100327FE8(a3, width, height);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  v8 = sub_100327FE8(scale, width, height);
 
   return v8;
 }

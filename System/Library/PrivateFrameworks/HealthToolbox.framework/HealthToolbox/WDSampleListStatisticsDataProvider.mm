@@ -1,51 +1,51 @@
 @interface WDSampleListStatisticsDataProvider
-- (WDSampleListStatisticsDataProvider)initWithDisplayType:(id)a3 profile:(id)a4;
+- (WDSampleListStatisticsDataProvider)initWithDisplayType:(id)type profile:(id)profile;
 - (double)customCellHeight;
 - (double)customEstimatedCellHeight;
 - (id)_predicateForTheLastMonth;
-- (id)_statisticsAtIndexPath:(id)a3;
-- (id)customCellForObject:(id)a3 indexPath:(id)a4 tableView:(id)a5;
+- (id)_statisticsAtIndexPath:(id)path;
+- (id)customCellForObject:(id)object indexPath:(id)path tableView:(id)view;
 - (id)sampleTypes;
-- (id)secondaryTextForObject:(id)a3;
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
-- (id)viewControllerForItemAtIndexPath:(id)a3;
-- (unint64_t)_statisticsOptionsForSampleType:(id)a3;
-- (void)_handleResultsCollection:(id)a3 fromQuery:(id)a4 sampleType:(id)a5 areComplete:(BOOL)a6 withError:(id)a7 updateHandler:(id)a8;
-- (void)_startCompleteDataStatisticsCollectionQueryForSampleType:(id)a3 updateHandler:(id)a4;
-- (void)_startPartialDataStatisticsCollectionQueryForSampleType:(id)a3 updateHandler:(id)a4;
+- (id)secondaryTextForObject:(id)object;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(unint64_t)section;
+- (id)viewControllerForItemAtIndexPath:(id)path;
+- (unint64_t)_statisticsOptionsForSampleType:(id)type;
+- (void)_handleResultsCollection:(id)collection fromQuery:(id)query sampleType:(id)type areComplete:(BOOL)complete withError:(id)error updateHandler:(id)handler;
+- (void)_startCompleteDataStatisticsCollectionQueryForSampleType:(id)type updateHandler:(id)handler;
+- (void)_startPartialDataStatisticsCollectionQueryForSampleType:(id)type updateHandler:(id)handler;
 - (void)deleteAllData;
-- (void)deleteObjectsAtIndexPath:(id)a3 healthStore:(id)a4 options:(unint64_t)a5 completion:(id)a6;
-- (void)startCollectingDataWithUpdateHandler:(id)a3;
+- (void)deleteObjectsAtIndexPath:(id)path healthStore:(id)store options:(unint64_t)options completion:(id)completion;
+- (void)startCollectingDataWithUpdateHandler:(id)handler;
 - (void)stopCollectingData;
 @end
 
 @implementation WDSampleListStatisticsDataProvider
 
-- (WDSampleListStatisticsDataProvider)initWithDisplayType:(id)a3 profile:(id)a4
+- (WDSampleListStatisticsDataProvider)initWithDisplayType:(id)type profile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  profileCopy = profile;
   v18.receiver = self;
   v18.super_class = WDSampleListStatisticsDataProvider;
   v9 = [(WDSampleListStatisticsDataProvider *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_displayType, a3);
-    v11 = [v8 unitController];
+    objc_storeStrong(&v9->_displayType, type);
+    unitController = [profileCopy unitController];
     unitController = v10->_unitController;
-    v10->_unitController = v11;
+    v10->_unitController = unitController;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     activeDataQueries = v10->_activeDataQueries;
-    v10->_activeDataQueries = v13;
+    v10->_activeDataQueries = array;
 
     v15 = [MEMORY[0x277CBEB58] set];
     activeQueryTypes = v10->_activeQueryTypes;
     v10->_activeQueryTypes = v15;
 
-    objc_storeStrong(&v10->_profile, a4);
+    objc_storeStrong(&v10->_profile, profile);
     v10->_hasDetailViewController = 1;
   }
 
@@ -55,9 +55,9 @@
 - (id)sampleTypes
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(WDSampleListStatisticsDataProvider *)self displayType];
-  v3 = [v2 sampleType];
-  v7[0] = v3;
+  displayType = [(WDSampleListStatisticsDataProvider *)self displayType];
+  sampleType = [displayType sampleType];
+  v7[0] = sampleType;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -65,15 +65,15 @@
   return v4;
 }
 
-- (id)_statisticsAtIndexPath:(id)a3
+- (id)_statisticsAtIndexPath:(id)path
 {
   data = self->_data;
-  v4 = [a3 row];
+  v4 = [path row];
 
   return [(NSMutableArray *)data objectAtIndexedSubscript:v4];
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
   if ([(NSMutableArray *)self->_data count])
   {
@@ -88,34 +88,34 @@
   return v4;
 }
 
-- (id)secondaryTextForObject:(id)a3
+- (id)secondaryTextForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = HKPriorYearsDateFormatterNoTime();
-  v5 = [v3 startDate];
+  startDate = [objectCopy startDate];
 
-  v6 = [v4 stringFromDate:v5];
+  v6 = [v4 stringFromDate:startDate];
 
   return v6;
 }
 
-- (void)_handleResultsCollection:(id)a3 fromQuery:(id)a4 sampleType:(id)a5 areComplete:(BOOL)a6 withError:(id)a7 updateHandler:(id)a8
+- (void)_handleResultsCollection:(id)collection fromQuery:(id)query sampleType:(id)type areComplete:(BOOL)complete withError:(id)error updateHandler:(id)handler
 {
-  v10 = a6;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  if (!v16)
+  completeCopy = complete;
+  queryCopy = query;
+  typeCopy = type;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (!errorCopy)
   {
-    v22 = [a3 statistics];
-    v23 = [v22 sortedArrayUsingComparator:&__block_literal_global_11];
+    statistics = [collection statistics];
+    v23 = [statistics sortedArrayUsingComparator:&__block_literal_global_11];
     v24 = [v23 mutableCopy];
 
-    if (v10)
+    if (completeCopy)
     {
       [(WDSampleListStatisticsDataProvider *)self setData:v24];
-      if (!v17)
+      if (!handlerCopy)
       {
         goto LABEL_16;
       }
@@ -125,23 +125,23 @@
     {
       [v24 removeLastObject];
       [(WDSampleListStatisticsDataProvider *)self setData:v24];
-      if (!v17 || ![v24 count])
+      if (!handlerCopy || ![v24 count])
       {
         goto LABEL_16;
       }
     }
 
-    v17[2](v17);
+    handlerCopy[2](handlerCopy);
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v18 = [v16 hk_isDatabaseAccessibilityError];
+  hk_isDatabaseAccessibilityError = [errorCopy hk_isDatabaseAccessibilityError];
   _HKInitializeLogging();
   v19 = HKLogWellnessDashboard();
   v20 = v19;
-  if (!v18)
+  if (!hk_isDatabaseAccessibilityError)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -169,8 +169,8 @@ LABEL_11:
   block[2] = __120__WDSampleListStatisticsDataProvider__handleResultsCollection_fromQuery_sampleType_areComplete_withError_updateHandler___block_invoke;
   block[3] = &unk_2796E6C00;
   block[4] = self;
-  v26 = v14;
-  v27 = v15;
+  v26 = queryCopy;
+  v27 = typeCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
 LABEL_17:
@@ -195,10 +195,10 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
   return v7;
 }
 
-- (void)startCollectingDataWithUpdateHandler:(id)a3
+- (void)startCollectingDataWithUpdateHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   [(WDSampleListStatisticsDataProvider *)self setHasCompleteDataSet:0];
   v27 = 0u;
@@ -221,9 +221,9 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [(WDSampleListStatisticsDataProvider *)self profile];
-        v12 = [v11 healthStore];
-        [v12 stopQuery:v10];
+        profile = [(WDSampleListStatisticsDataProvider *)self profile];
+        healthStore = [profile healthStore];
+        [healthStore stopQuery:v10];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v25 objects:v34 count:16];
@@ -236,8 +236,8 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = [(WDSampleListStatisticsDataProvider *)self sampleTypes];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v33 count:16];
+  sampleTypes = [(WDSampleListStatisticsDataProvider *)self sampleTypes];
+  v14 = [sampleTypes countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v14)
   {
     v15 = v14;
@@ -249,14 +249,14 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(sampleTypes);
         }
 
         v18 = *(*(&v21 + 1) + 8 * v17);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(WDSampleListStatisticsDataProvider *)self _startPartialDataStatisticsCollectionQueryForSampleType:v18 updateHandler:v4];
+          [(WDSampleListStatisticsDataProvider *)self _startPartialDataStatisticsCollectionQueryForSampleType:v18 updateHandler:handlerCopy];
         }
 
         else
@@ -266,7 +266,7 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v30 = self;
+            selfCopy = self;
             v31 = 2114;
             v32 = v18;
             _os_log_error_impl(&dword_251E85000, v19, OS_LOG_TYPE_ERROR, "Data provider %{public}@ can only show hierarchical data on quantity types. Encountered type %{public}@. Skipping.", buf, 0x16u);
@@ -277,7 +277,7 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v33 count:16];
+      v15 = [sampleTypes countByEnumeratingWithState:&v21 objects:v33 count:16];
     }
 
     while (v15);
@@ -286,16 +286,16 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_statisticsOptionsForSampleType:(id)a3
+- (unint64_t)_statisticsOptionsForSampleType:(id)type
 {
-  v3 = [a3 aggregationStyle];
+  aggregationStyle = [type aggregationStyle];
   v4 = 12;
-  if (v3 == 3)
+  if (aggregationStyle == 3)
   {
     v4 = 66;
   }
 
-  if (v3)
+  if (aggregationStyle)
   {
     return v4;
   }
@@ -310,7 +310,7 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
 {
   v15 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(WDProfile *)self->_profile healthStore];
+  healthStore = [(WDProfile *)self->_profile healthStore];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -331,7 +331,7 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
           objc_enumerationMutation(v4);
         }
 
-        [v3 stopQuery:{*(*(&v10 + 1) + 8 * v8++), v10}];
+        [healthStore stopQuery:{*(*(&v10 + 1) + 8 * v8++), v10}];
       }
 
       while (v6 != v8);
@@ -349,20 +349,20 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
 
 - (void)deleteAllData
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   data = self->_data;
-  self->_data = v3;
+  self->_data = array;
 
-  MEMORY[0x2821F96F8](v3, data);
+  MEMORY[0x2821F96F8](array, data);
 }
 
-- (void)deleteObjectsAtIndexPath:(id)a3 healthStore:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)deleteObjectsAtIndexPath:(id)path healthStore:(id)store options:(unint64_t)options completion:(id)completion
 {
-  v24 = a5;
+  optionsCopy = options;
   v35 = *MEMORY[0x277D85DE8];
-  v26 = a4;
-  v25 = a6;
-  v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_data, "objectAtIndexedSubscript:", [a3 row]);
+  storeCopy = store;
+  completionCopy = completion;
+  v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_data, "objectAtIndexedSubscript:", [path row]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -384,13 +384,13 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
         }
 
         v13 = *(*(&v30 + 1) + 8 * v12);
-        v14 = [(WDSampleListStatisticsDataProvider *)self defaultQueryPredicate];
+        defaultQueryPredicate = [(WDSampleListStatisticsDataProvider *)self defaultQueryPredicate];
         v15 = MEMORY[0x277CCD838];
-        v16 = [v9 startDate];
-        v17 = [v9 endDate];
-        v18 = [v15 predicateForSamplesWithStartDate:v16 endDate:v17 options:0];
+        startDate = [v9 startDate];
+        endDate = [v9 endDate];
+        v18 = [v15 predicateForSamplesWithStartDate:startDate endDate:endDate options:0];
 
-        v19 = WDPredicateMatchingPredicates(v14, v18);
+        v19 = WDPredicateMatchingPredicates(defaultQueryPredicate, v18);
 
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
@@ -399,9 +399,9 @@ uint64_t __120__WDSampleListStatisticsDataProvider__handleResultsCollection_from
         v27[4] = self;
         v27[5] = v13;
         v28 = v19;
-        v29 = v25;
+        v29 = completionCopy;
         v20 = v19;
-        [v26 deleteObjectsOfType:v13 predicate:v20 options:v24 & 2 withCompletion:v27];
+        [storeCopy deleteObjectsOfType:v13 predicate:v20 options:optionsCopy & 2 withCompletion:v27];
 
         ++v12;
       }
@@ -432,66 +432,66 @@ void __94__WDSampleListStatisticsDataProvider_deleteObjectsAtIndexPath_healthSto
   (*(a1[7] + 16))();
 }
 
-- (id)viewControllerForItemAtIndexPath:(id)a3
+- (id)viewControllerForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(WDSampleListStatisticsDataProvider *)self displayType];
+  displayType = [(WDSampleListStatisticsDataProvider *)self displayType];
   profile = self->_profile;
-  v7 = [(WDProfile *)profile unitController];
-  v8 = [v5 wd_listViewControllerDataProviderWithProfile:profile unitController:v7 isHierarchical:0];
+  unitController = [(WDProfile *)profile unitController];
+  v8 = [displayType wd_listViewControllerDataProviderWithProfile:profile unitController:unitController isHierarchical:0];
 
   data = self->_data;
-  v10 = [v4 row];
+  v10 = [pathCopy row];
 
   v11 = [(NSMutableArray *)data objectAtIndexedSubscript:v10];
   v12 = MEMORY[0x277CCD838];
-  v13 = [v11 startDate];
-  v14 = [v11 endDate];
-  v15 = [v12 predicateForSamplesWithStartDate:v13 endDate:v14 options:0];
+  startDate = [v11 startDate];
+  endDate = [v11 endDate];
+  v15 = [v12 predicateForSamplesWithStartDate:startDate endDate:endDate options:0];
 
-  v16 = [(WDSampleListStatisticsDataProvider *)self defaultQueryPredicate];
+  defaultQueryPredicate = [(WDSampleListStatisticsDataProvider *)self defaultQueryPredicate];
   v17 = HKUIPredicateMatchingPredicates();
 
   [v8 setDefaultQueryPredicate:v17];
   v18 = [WDDataListViewController alloc];
-  v19 = [(WDSampleListStatisticsDataProvider *)self displayType];
-  v20 = [(WDDataListViewController *)v18 initWithDisplayType:v19 profile:self->_profile dataProvider:v8 usingInsetStyling:1];
+  displayType2 = [(WDSampleListStatisticsDataProvider *)self displayType];
+  v20 = [(WDDataListViewController *)v18 initWithDisplayType:displayType2 profile:self->_profile dataProvider:v8 usingInsetStyling:1];
 
   return v20;
 }
 
-- (void)_startPartialDataStatisticsCollectionQueryForSampleType:(id)a3 updateHandler:(id)a4
+- (void)_startPartialDataStatisticsCollectionQueryForSampleType:(id)type updateHandler:(id)handler
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v8 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v8 setDay:1];
-  v9 = [(WDSampleListStatisticsDataProvider *)self defaultQueryPredicate];
-  v10 = v9;
-  if (v9)
+  defaultQueryPredicate = [(WDSampleListStatisticsDataProvider *)self defaultQueryPredicate];
+  v10 = defaultQueryPredicate;
+  if (defaultQueryPredicate)
   {
     v11 = MEMORY[0x277CCA920];
-    v38[0] = v9;
-    v12 = [(WDSampleListStatisticsDataProvider *)self _predicateForTheLastMonth];
-    v38[1] = v12;
+    v38[0] = defaultQueryPredicate;
+    _predicateForTheLastMonth = [(WDSampleListStatisticsDataProvider *)self _predicateForTheLastMonth];
+    v38[1] = _predicateForTheLastMonth;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
-    v14 = [v11 andPredicateWithSubpredicates:v13];
+    _predicateForTheLastMonth2 = [v11 andPredicateWithSubpredicates:v13];
   }
 
   else
   {
-    v14 = [(WDSampleListStatisticsDataProvider *)self _predicateForTheLastMonth];
+    _predicateForTheLastMonth2 = [(WDSampleListStatisticsDataProvider *)self _predicateForTheLastMonth];
   }
 
   v15 = objc_alloc(MEMORY[0x277CCDA60]);
-  v16 = [(WDSampleListStatisticsDataProvider *)self _statisticsOptionsForSampleType:v6];
-  v17 = [MEMORY[0x277CBEA80] currentCalendar];
-  v18 = [MEMORY[0x277CBEAA8] date];
-  v19 = [v17 startOfDayForDate:v18];
-  v20 = [v15 initWithQuantityType:v6 quantitySamplePredicate:v14 options:v16 anchorDate:v19 intervalComponents:v8];
+  v16 = [(WDSampleListStatisticsDataProvider *)self _statisticsOptionsForSampleType:typeCopy];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v19 = [currentCalendar startOfDayForDate:date];
+  v20 = [v15 initWithQuantityType:typeCopy quantitySamplePredicate:_predicateForTheLastMonth2 options:v16 anchorDate:v19 intervalComponents:v8];
 
   objc_initWeak(&location, self);
   v33[0] = MEMORY[0x277D85DD0];
@@ -499,9 +499,9 @@ void __94__WDSampleListStatisticsDataProvider_deleteObjectsAtIndexPath_healthSto
   v33[2] = __108__WDSampleListStatisticsDataProvider__startPartialDataStatisticsCollectionQueryForSampleType_updateHandler___block_invoke;
   v33[3] = &unk_2796E8120;
   objc_copyWeak(&v36, &location);
-  v21 = v6;
+  v21 = typeCopy;
   v34 = v21;
-  v22 = v7;
+  v22 = handlerCopy;
   v35 = v22;
   [v20 setInitialResultsHandler:v33];
   v29[0] = MEMORY[0x277D85DD0];
@@ -514,12 +514,12 @@ void __94__WDSampleListStatisticsDataProvider_deleteObjectsAtIndexPath_healthSto
   v24 = v22;
   v31 = v24;
   [v20 setStatisticsUpdateHandler:v29];
-  v25 = [(WDSampleListStatisticsDataProvider *)self profile];
-  v26 = [v25 healthStore];
-  [v26 executeQuery:v20];
+  profile = [(WDSampleListStatisticsDataProvider *)self profile];
+  healthStore = [profile healthStore];
+  [healthStore executeQuery:v20];
 
-  v27 = [(WDSampleListStatisticsDataProvider *)self activeDataQueries];
-  [v27 addObject:v20];
+  activeDataQueries = [(WDSampleListStatisticsDataProvider *)self activeDataQueries];
+  [activeDataQueries addObject:v20];
 
   [(NSMutableSet *)self->_activeQueryTypes addObject:v23];
   objc_destroyWeak(&v32);
@@ -575,19 +575,19 @@ void __108__WDSampleListStatisticsDataProvider__startPartialDataStatisticsCollec
   [WeakRetained _handleResultsCollection:v9 fromQuery:v10 sampleType:*(a1 + 32) areComplete:1 withError:v8 updateHandler:*(a1 + 40)];
 }
 
-- (void)_startCompleteDataStatisticsCollectionQueryForSampleType:(id)a3 updateHandler:(id)a4
+- (void)_startCompleteDataStatisticsCollectionQueryForSampleType:(id)type updateHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v8 setDay:1];
   v9 = objc_alloc(MEMORY[0x277CCDA60]);
-  v10 = [(WDSampleListStatisticsDataProvider *)self defaultQueryPredicate];
-  v11 = [(WDSampleListStatisticsDataProvider *)self _statisticsOptionsForSampleType:v6];
-  v12 = [MEMORY[0x277CBEA80] currentCalendar];
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v14 = [v12 startOfDayForDate:v13];
-  v15 = [v9 initWithQuantityType:v6 quantitySamplePredicate:v10 options:v11 anchorDate:v14 intervalComponents:v8];
+  defaultQueryPredicate = [(WDSampleListStatisticsDataProvider *)self defaultQueryPredicate];
+  v11 = [(WDSampleListStatisticsDataProvider *)self _statisticsOptionsForSampleType:typeCopy];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v14 = [currentCalendar startOfDayForDate:date];
+  v15 = [v9 initWithQuantityType:typeCopy quantitySamplePredicate:defaultQueryPredicate options:v11 anchorDate:v14 intervalComponents:v8];
 
   objc_initWeak(location, self);
   v30[0] = MEMORY[0x277D85DD0];
@@ -595,9 +595,9 @@ void __108__WDSampleListStatisticsDataProvider__startPartialDataStatisticsCollec
   v30[2] = __109__WDSampleListStatisticsDataProvider__startCompleteDataStatisticsCollectionQueryForSampleType_updateHandler___block_invoke;
   v30[3] = &unk_2796E8120;
   objc_copyWeak(&v33, location);
-  v16 = v6;
+  v16 = typeCopy;
   v31 = v16;
-  v17 = v7;
+  v17 = handlerCopy;
   v32 = v17;
   [v15 setInitialResultsHandler:v30];
   v26[0] = MEMORY[0x277D85DD0];
@@ -610,11 +610,11 @@ void __108__WDSampleListStatisticsDataProvider__startPartialDataStatisticsCollec
   v19 = v17;
   v28 = v19;
   [v15 setStatisticsUpdateHandler:v26];
-  v20 = [(WDSampleListStatisticsDataProvider *)self profile];
-  v21 = [v20 healthStore];
-  [v21 executeQuery:v15];
+  profile = [(WDSampleListStatisticsDataProvider *)self profile];
+  healthStore = [profile healthStore];
+  [healthStore executeQuery:v15];
 
-  v22 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __109__WDSampleListStatisticsDataProvider__startCompleteDataStatisticsCollectionQueryForSampleType_updateHandler___block_invoke_3;
@@ -622,7 +622,7 @@ void __108__WDSampleListStatisticsDataProvider__startPartialDataStatisticsCollec
   v24[4] = self;
   v23 = v15;
   v25 = v23;
-  [v22 addOperationWithBlock:v24];
+  [mainQueue addOperationWithBlock:v24];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&v33);
@@ -658,16 +658,16 @@ void __109__WDSampleListStatisticsDataProvider__startCompleteDataStatisticsColle
 
 - (id)_predicateForTheLastMonth
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 dateByAddingUnit:8 value:-1 toDate:v2 options:1];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar dateByAddingUnit:8 value:-1 toDate:date options:1];
 
-  v5 = [MEMORY[0x277CCD838] predicateForSamplesWithStartDate:v4 endDate:v2 options:0];
+  v5 = [MEMORY[0x277CCD838] predicateForSamplesWithStartDate:v4 endDate:date options:0];
 
   return v5;
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5();
@@ -688,7 +688,7 @@ void __109__WDSampleListStatisticsDataProvider__startCompleteDataStatisticsColle
   return 0.0;
 }
 
-- (id)customCellForObject:(id)a3 indexPath:(id)a4 tableView:(id)a5
+- (id)customCellForObject:(id)object indexPath:(id)path tableView:(id)view
 {
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5();

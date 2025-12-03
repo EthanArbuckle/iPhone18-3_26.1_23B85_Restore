@@ -1,20 +1,20 @@
 @interface _UIFontPickerFontInfo
-+ (id)infoWithFamilyName:(id)a3;
-+ (id)infoWithFontDescriptor:(__CTFontDescriptor *)a3;
-+ (id)infoWithName:(id)a3;
++ (id)infoWithFamilyName:(id)name;
++ (id)infoWithFontDescriptor:(__CTFontDescriptor *)descriptor;
++ (id)infoWithName:(id)name;
 + (id)initWithSystemDefaultFont;
 - (BOOL)_hasMultipleFacesForFamily;
 - (BOOL)fontCanRenderLocalizedName;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFontFamilyAvailable;
-- (BOOL)matchesClientFontContext:(id)a3;
-- (BOOL)matchesConfiguration:(id)a3;
-- (BOOL)matchesFamilyForFontDescriptor:(id)a3;
-- (BOOL)matchesFamilyName:(id)a3;
-- (BOOL)matchesFontDescriptor:(id)a3;
-- (BOOL)matchesFontNames:(id)a3;
-- (BOOL)matchesSearchString:(id)a3;
-- (BOOL)passesLanguageFilter:(id)a3;
+- (BOOL)matchesClientFontContext:(id)context;
+- (BOOL)matchesConfiguration:(id)configuration;
+- (BOOL)matchesFamilyForFontDescriptor:(id)descriptor;
+- (BOOL)matchesFamilyName:(id)name;
+- (BOOL)matchesFontDescriptor:(id)descriptor;
+- (BOOL)matchesFontNames:(id)names;
+- (BOOL)matchesSearchString:(id)string;
+- (BOOL)passesLanguageFilter:(id)filter;
 - (NSArray)faces;
 - (NSAttributedString)attributedString;
 - (NSString)localizedFamilyName;
@@ -24,73 +24,73 @@
 - (NSString)preferredShortPreviewString;
 - (UIImage)previewImage;
 - (_UIFontPickerFontInfo)familyInfo;
-- (_UIFontPickerFontInfo)initWithFamilyName:(id)a3;
-- (_UIFontPickerFontInfo)initWithFontDescriptor:(id)a3;
-- (_UIFontPickerFontInfo)initWithFontDescriptor:(id)a3 isSystemFont:(BOOL)a4;
+- (_UIFontPickerFontInfo)initWithFamilyName:(id)name;
+- (_UIFontPickerFontInfo)initWithFontDescriptor:(id)descriptor;
+- (_UIFontPickerFontInfo)initWithFontDescriptor:(id)descriptor isSystemFont:(BOOL)font;
 - (_UIFontPickerFontInfo)initWithSystemDefaultFont;
-- (id)_fontStringForTraitCollection:(id)a3;
+- (id)_fontStringForTraitCollection:(id)collection;
 - (id)_sortedFacesByWeight;
 - (id)description;
-- (id)displayNameForFont:(id)a3;
-- (id)faceMatchingDescriptor:(id)a3;
-- (void)_createPreviewImage:(id)a3;
+- (id)displayNameForFont:(id)font;
+- (id)faceMatchingDescriptor:(id)descriptor;
+- (void)_createPreviewImage:(id)image;
 - (void)_populateLocalizedNamesIfNecessary;
 - (void)_updateAttributedStringIfNeeded;
 - (void)_updatePreviewImageIfNeeded;
-- (void)setHasMultipleFaces:(BOOL)a3;
+- (void)setHasMultipleFaces:(BOOL)faces;
 @end
 
 @implementation _UIFontPickerFontInfo
 
-+ (id)infoWithName:(id)a3
++ (id)infoWithName:(id)name
 {
-  v4 = a3;
-  v5 = [off_1E70ECC18 familyNames];
-  v6 = [v5 containsObject:v4];
+  nameCopy = name;
+  familyNames = [off_1E70ECC18 familyNames];
+  v6 = [familyNames containsObject:nameCopy];
 
   if (v6)
   {
-    v7 = [[a1 alloc] initWithFamilyName:v4];
+    v7 = [[self alloc] initWithFamilyName:nameCopy];
   }
 
   else
   {
     [off_1E70ECC18 defaultFontSize];
-    v8 = [off_1E70ECC18 fontWithName:v4 size:?];
-    v9 = [a1 alloc];
+    v8 = [off_1E70ECC18 fontWithName:nameCopy size:?];
+    v9 = [self alloc];
     v10 = v9;
     if (v8)
     {
-      v11 = [v8 fontDescriptor];
-      v7 = [v10 initWithFontDescriptor:v11];
+      fontDescriptor = [v8 fontDescriptor];
+      v7 = [v10 initWithFontDescriptor:fontDescriptor];
     }
 
     else
     {
-      v7 = [v9 initWithFamilyName:v4];
+      v7 = [v9 initWithFamilyName:nameCopy];
     }
   }
 
   return v7;
 }
 
-+ (id)infoWithFamilyName:(id)a3
++ (id)infoWithFamilyName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFamilyName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithFamilyName:nameCopy];
 
   return v5;
 }
 
-- (_UIFontPickerFontInfo)initWithFamilyName:(id)a3
+- (_UIFontPickerFontInfo)initWithFamilyName:(id)name
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nameCopy = name;
   v6 = [(_UIFontPickerFontInfo *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_familyName, a3);
+    objc_storeStrong(&v6->_familyName, name);
     familyName = v7->_familyName;
     v16 = *off_1E70ECC90;
     v17[0] = familyName;
@@ -102,8 +102,8 @@
     v12 = v7->_familyName;
     [off_1E70ECC18 defaultFontSize];
     v13 = [off_1E70ECC18 systemFontOfSize:?];
-    v14 = [v13 familyName];
-    v7->_isSystemFont = [(NSString *)v12 isEqualToString:v14];
+    familyName = [v13 familyName];
+    v7->_isSystemFont = [(NSString *)v12 isEqualToString:familyName];
   }
 
   return v7;
@@ -111,9 +111,9 @@
 
 + (id)initWithSystemDefaultFont
 {
-  v2 = [[a1 alloc] initWithSystemDefaultFont];
+  initWithSystemDefaultFont = [[self alloc] initWithSystemDefaultFont];
 
-  return v2;
+  return initWithSystemDefaultFont;
 }
 
 - (_UIFontPickerFontInfo)initWithSystemDefaultFont
@@ -135,48 +135,48 @@
   return v2;
 }
 
-+ (id)infoWithFontDescriptor:(__CTFontDescriptor *)a3
++ (id)infoWithFontDescriptor:(__CTFontDescriptor *)descriptor
 {
-  v4 = [[a1 alloc] initWithFontDescriptor:a3];
+  v4 = [[self alloc] initWithFontDescriptor:descriptor];
 
   return v4;
 }
 
-- (_UIFontPickerFontInfo)initWithFontDescriptor:(id)a3
+- (_UIFontPickerFontInfo)initWithFontDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = [(_UIFontPickerFontInfo *)self init];
   if (v6)
   {
-    v7 = [v5 objectForKey:*off_1E70ECC90];
+    v7 = [descriptorCopy objectForKey:*off_1E70ECC90];
     familyName = v6->_familyName;
     v6->_familyName = v7;
 
-    v9 = [v5 objectForKey:*off_1E70ECC88];
+    v9 = [descriptorCopy objectForKey:*off_1E70ECC88];
     styleName = v6->_styleName;
     v6->_styleName = v9;
 
-    v11 = [v5 objectForKey:*off_1E70ECCA0];
+    v11 = [descriptorCopy objectForKey:*off_1E70ECCA0];
     fontName = v6->_fontName;
     v6->_fontName = v11;
 
-    objc_storeStrong(&v6->_fontDescriptor, a3);
+    objc_storeStrong(&v6->_fontDescriptor, descriptor);
     v13 = v6->_familyName;
     [off_1E70ECC18 defaultFontSize];
     v14 = [off_1E70ECC18 systemFontOfSize:?];
-    v15 = [v14 familyName];
-    v6->_isSystemFont = [(NSString *)v13 isEqualToString:v15];
+    familyName = [v14 familyName];
+    v6->_isSystemFont = [(NSString *)v13 isEqualToString:familyName];
   }
 
   return v6;
 }
 
-- (_UIFontPickerFontInfo)initWithFontDescriptor:(id)a3 isSystemFont:(BOOL)a4
+- (_UIFontPickerFontInfo)initWithFontDescriptor:(id)descriptor isSystemFont:(BOOL)font
 {
-  result = [(_UIFontPickerFontInfo *)self initWithFontDescriptor:a3];
+  result = [(_UIFontPickerFontInfo *)self initWithFontDescriptor:descriptor];
   if (result)
   {
-    result->_isSystemFont = a4;
+    result->_isSystemFont = font;
   }
 
   return result;
@@ -203,10 +203,10 @@
   return hasMultipleFaces > 1;
 }
 
-- (void)setHasMultipleFaces:(BOOL)a3
+- (void)setHasMultipleFaces:(BOOL)faces
 {
   v3 = 1;
-  if (a3)
+  if (faces)
   {
     v3 = 2;
   }
@@ -233,7 +233,7 @@
   v12[3] = &unk_1E7123B48;
   v9 = v7;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   [v8 enumerateObjectsUsingBlock:v12];
   v10 = v9;
 
@@ -252,9 +252,9 @@
     subInfos = self->_subInfos;
     if (!subInfos)
     {
-      v7 = [(_UIFontPickerFontInfo *)self _sortedFacesByWeight];
+      _sortedFacesByWeight = [(_UIFontPickerFontInfo *)self _sortedFacesByWeight];
       v8 = self->_subInfos;
-      self->_subInfos = v7;
+      self->_subInfos = _sortedFacesByWeight;
 
       subInfos = self->_subInfos;
     }
@@ -267,16 +267,16 @@
 
 - (NSString)postscriptName
 {
-  v2 = [(_UIFontPickerFontInfo *)self fontDescriptor];
-  v3 = [v2 postscriptName];
+  fontDescriptor = [(_UIFontPickerFontInfo *)self fontDescriptor];
+  postscriptName = [fontDescriptor postscriptName];
 
-  return v3;
+  return postscriptName;
 }
 
 - (BOOL)isFontFamilyAvailable
 {
-  v2 = [(_UIFontPickerFontInfo *)self familyName];
-  v3 = [off_1E70ECC18 fontNamesForFamilyName:v2];
+  familyName = [(_UIFontPickerFontInfo *)self familyName];
+  v3 = [off_1E70ECC18 fontNamesForFamilyName:familyName];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -295,7 +295,7 @@
   else
   {
     v5 = [off_1E70ECC18 fontWithDescriptor:self->_fontDescriptor size:0.0];
-    v6 = [MEMORY[0x1E695DF58] preferredLanguages];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
     v4 = CTFontCopySampleStringWithLanguages();
     if (!v4)
     {
@@ -303,9 +303,9 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v8 = v7;
-        v9 = [v5 fontName];
+        fontName = [v5 fontName];
         v11 = 138543362;
-        v12 = v9;
+        v12 = fontName;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Unable to generate short sample string for %{public}@", &v11, 0xCu);
       }
 
@@ -335,29 +335,29 @@
     goto LABEL_5;
   }
 
-  v4 = [v3 preferredContentSizeCategory];
-  if (![v4 isEqualToString:self->_previewImageContentSize] || (objc_msgSend(v13, "displayScale"), v5 != self->_previewImageDisplayScale))
+  preferredContentSizeCategory = [v3 preferredContentSizeCategory];
+  if (![preferredContentSizeCategory isEqualToString:self->_previewImageContentSize] || (objc_msgSend(v13, "displayScale"), v5 != self->_previewImageDisplayScale))
   {
 
 LABEL_5:
     [(_UIFontPickerFontInfo *)self _createPreviewImage:v13];
-    v6 = [v13 preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [v13 preferredContentSizeCategory];
     previewImageContentSize = self->_previewImageContentSize;
-    self->_previewImageContentSize = v6;
+    self->_previewImageContentSize = preferredContentSizeCategory2;
 
     [v13 displayScale];
     self->_previewImageDisplayScale = v8;
-    v9 = [(_UIFontPickerFontInfo *)self previewImagePrefersSingleCharacter];
+    previewImagePrefersSingleCharacter = [(_UIFontPickerFontInfo *)self previewImagePrefersSingleCharacter];
     v10 = v13;
-    self->_previewImageUsesSingleCharacter = v9;
+    self->_previewImageUsesSingleCharacter = previewImagePrefersSingleCharacter;
     goto LABEL_6;
   }
 
   previewImageUsesSingleCharacter = self->_previewImageUsesSingleCharacter;
-  v12 = [(_UIFontPickerFontInfo *)self previewImagePrefersSingleCharacter];
+  previewImagePrefersSingleCharacter2 = [(_UIFontPickerFontInfo *)self previewImagePrefersSingleCharacter];
 
   v10 = v13;
-  if (previewImageUsesSingleCharacter != v12)
+  if (previewImageUsesSingleCharacter != previewImagePrefersSingleCharacter2)
   {
     goto LABEL_5;
   }
@@ -365,41 +365,41 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_createPreviewImage:(id)a3
+- (void)_createPreviewImage:(id)image
 {
   v55[1] = *MEMORY[0x1E69E9840];
   v4 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleBody"];
   [v4 pointSize];
   v6 = v5;
-  v7 = [(_UIFontPickerFontInfo *)self preferredShortPreviewString];
+  preferredShortPreviewString = [(_UIFontPickerFontInfo *)self preferredShortPreviewString];
 
   [v4 lineHeight];
   v9 = v8;
-  v10 = [(_UIFontPickerFontInfo *)self preferredShortPreviewString];
+  preferredShortPreviewString2 = [(_UIFontPickerFontInfo *)self preferredShortPreviewString];
 
-  v11 = [(_UIFontPickerFontInfo *)self previewImagePrefersSingleCharacter];
+  previewImagePrefersSingleCharacter = [(_UIFontPickerFontInfo *)self previewImagePrefersSingleCharacter];
   [v4 lineHeight];
   v13 = v12;
   v14 = [off_1E70ECC18 fontWithDescriptor:self->_fontDescriptor size:v6];
   if (-[_UIFontPickerFontInfo previewImagePrefersSingleCharacter](self, "previewImagePrefersSingleCharacter") && (-[_UIFontPickerFontInfo preferredShortPreviewString](self, "preferredShortPreviewString"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 length], v15, v16 >= 2))
   {
-    v17 = [(_UIFontPickerFontInfo *)self preferredShortPreviewString];
-    v18 = [v17 substringToIndex:1];
+    preferredShortPreviewString3 = [(_UIFontPickerFontInfo *)self preferredShortPreviewString];
+    preferredShortPreviewString4 = [preferredShortPreviewString3 substringToIndex:1];
   }
 
   else
   {
-    v18 = [(_UIFontPickerFontInfo *)self preferredShortPreviewString];
+    preferredShortPreviewString4 = [(_UIFontPickerFontInfo *)self preferredShortPreviewString];
   }
 
   v19 = 5.0;
-  if (!v7)
+  if (!preferredShortPreviewString)
   {
     v19 = 12.0;
   }
 
   v20 = 0.1;
-  if (!v10)
+  if (!preferredShortPreviewString2)
   {
     v20 = 0.25;
   }
@@ -417,7 +417,7 @@ LABEL_6:
 
   v23 = v13 + v22 + v22;
   v24 = 2.0;
-  if (v11)
+  if (previewImagePrefersSingleCharacter)
   {
     v24 = 1.5;
   }
@@ -427,7 +427,7 @@ LABEL_6:
   v54 = *off_1E70EC918;
   v55[0] = v14;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
-  v28 = [v26 initWithString:v18 attributes:v27];
+  v28 = [v26 initWithString:preferredShortPreviewString4 attributes:v27];
 
   [v28 size];
   v30 = v29;
@@ -444,7 +444,7 @@ LABEL_6:
   v51 = v32;
   v52 = v25;
   v53 = v23;
-  v47 = self;
+  selfCopy = self;
   v48 = v28;
   v34 = v28;
   v35 = v14;
@@ -584,10 +584,10 @@ LABEL_12:
   return localizedFamilyName;
 }
 
-- (id)displayNameForFont:(id)a3
+- (id)displayNameForFont:(id)font
 {
-  v4 = a3;
-  v5 = v4;
+  fontCopy = font;
+  v5 = fontCopy;
   if (self->_styleName)
   {
     v6 = MEMORY[0x1E6965868];
@@ -606,23 +606,23 @@ LABEL_12:
     v6 = MEMORY[0x1E6965798];
   }
 
-  v8 = CTFontCopyLocalizedName(v4, *v6, 0);
+  v8 = CTFontCopyLocalizedName(fontCopy, *v6, 0);
 LABEL_7:
 
   return v8;
 }
 
-- (id)_fontStringForTraitCollection:(id)a3
+- (id)_fontStringForTraitCollection:(id)collection
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIFontPickerFontInfo *)self fontDescriptor];
+  collectionCopy = collection;
+  fontDescriptor = [(_UIFontPickerFontInfo *)self fontDescriptor];
   [off_1E70ECC18 defaultFontSize];
-  v6 = [off_1E70ECC18 fontWithDescriptor:v5 size:?];
-  if (v4)
+  v6 = [off_1E70ECC18 fontWithDescriptor:fontDescriptor size:?];
+  if (collectionCopy)
   {
     v7 = [UIFontMetrics metricsForTextStyle:@"UICTFontTextStyleHeadline"];
-    v8 = [v7 scaledFontForFont:v6 compatibleWithTraitCollection:v4];
+    v8 = [v7 scaledFontForFont:v6 compatibleWithTraitCollection:collectionCopy];
 
     v6 = v8;
   }
@@ -648,9 +648,9 @@ LABEL_7:
     attributedString = self->_attributedString;
     self->_attributedString = v5;
 
-    v7 = [v9 preferredContentSizeCategory];
+    preferredContentSizeCategory = [v9 preferredContentSizeCategory];
     attributedStringContentSize = self->_attributedStringContentSize;
-    self->_attributedStringContentSize = v7;
+    self->_attributedStringContentSize = preferredContentSizeCategory;
   }
 }
 
@@ -662,11 +662,11 @@ LABEL_7:
   return attributedString;
 }
 
-- (BOOL)passesLanguageFilter:(id)a3
+- (BOOL)passesLanguageFilter:(id)filter
 {
-  v4 = a3;
-  v5 = v4;
-  if (!self->_isSystemFont && (([v4 _swiftPredicate], v7 = objc_claimAutoreleasedReturnValue(), v7, v7) || (objc_msgSend(v5, "_allowedLanguages"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9)))
+  filterCopy = filter;
+  v5 = filterCopy;
+  if (!self->_isSystemFont && (([filterCopy _swiftPredicate], v7 = objc_claimAutoreleasedReturnValue(), v7, v7) || (objc_msgSend(v5, "_allowedLanguages"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9)))
   {
     v10 = MEMORY[0x1E6965758];
     if (!v7)
@@ -686,13 +686,13 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)matchesFamilyName:(id)a3
+- (BOOL)matchesFamilyName:(id)name
 {
-  v4 = a3;
-  if (v4 && ![(NSString *)self->_familyName isEqualToString:v4])
+  nameCopy = name;
+  if (nameCopy && ![(NSString *)self->_familyName isEqualToString:nameCopy])
   {
     v6 = [(UIFontDescriptor *)self->_fontDescriptor objectForKey:*off_1E70ECC90];
-    v5 = [v6 isEqualToString:v4];
+    v5 = [v6 isEqualToString:nameCopy];
   }
 
   else
@@ -703,18 +703,18 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)matchesFontNames:(id)a3
+- (BOOL)matchesFontNames:(id)names
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_fontName)
+  namesCopy = names;
+  v5 = namesCopy;
+  if (namesCopy && self->_fontName)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = namesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -758,23 +758,23 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)matchesClientFontContext:(id)a3
+- (BOOL)matchesClientFontContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (getFontPickerClientFontContextClass())
   {
-    v5 = [v4 _clientFontContextEndpoint];
+    _clientFontContextEndpoint = [contextCopy _clientFontContextEndpoint];
 
     v6 = 1;
-    if (v5)
+    if (_clientFontContextEndpoint)
     {
       v12 = 0;
       v13 = &v12;
       v14 = 0x2020000000;
       v15 = 1;
       FontPickerClientFontContextClass = getFontPickerClientFontContextClass();
-      v8 = [v4 _clientFontContextEndpoint];
-      v9 = [FontPickerClientFontContextClass sharedInstanceForEndpoint:v8];
+      _clientFontContextEndpoint2 = [contextCopy _clientFontContextEndpoint];
+      v9 = [FontPickerClientFontContextClass sharedInstanceForEndpoint:_clientFontContextEndpoint2];
 
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -797,18 +797,18 @@ LABEL_14:
   return v6 & 1;
 }
 
-- (BOOL)matchesConfiguration:(id)a3
+- (BOOL)matchesConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (-[_UIFontPickerFontInfo matchesTraits:](self, "matchesTraits:", [v4 filteredTraits]) && -[_UIFontPickerFontInfo passesLanguageFilter:](self, "passesLanguageFilter:", v4))
+  configurationCopy = configuration;
+  if (-[_UIFontPickerFontInfo matchesTraits:](self, "matchesTraits:", [configurationCopy filteredTraits]) && -[_UIFontPickerFontInfo passesLanguageFilter:](self, "passesLanguageFilter:", configurationCopy))
   {
-    v5 = [v4 _filterFamilyName];
-    if ([(_UIFontPickerFontInfo *)self matchesFamilyName:v5])
+    _filterFamilyName = [configurationCopy _filterFamilyName];
+    if ([(_UIFontPickerFontInfo *)self matchesFamilyName:_filterFamilyName])
     {
-      v6 = [v4 _filterFontNames];
-      if ([(_UIFontPickerFontInfo *)self matchesFontNames:v6])
+      _filterFontNames = [configurationCopy _filterFontNames];
+      if ([(_UIFontPickerFontInfo *)self matchesFontNames:_filterFontNames])
       {
-        v7 = [(_UIFontPickerFontInfo *)self matchesClientFontContext:v4];
+        v7 = [(_UIFontPickerFontInfo *)self matchesClientFontContext:configurationCopy];
       }
 
       else
@@ -835,21 +835,21 @@ LABEL_14:
 {
   if (self->_styleName)
   {
-    v2 = [[_UIFontPickerFontInfo alloc] initWithFamilyName:self->_familyName];
+    selfCopy = [[_UIFontPickerFontInfo alloc] initWithFamilyName:self->_familyName];
   }
 
   else
   {
-    v2 = self;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -859,7 +859,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_familyName isEqualToString:v5->_familyName])
       {
         v6 = 0;
@@ -886,17 +886,17 @@ LABEL_14:
         LOBYTE(v9) = 0;
       }
 
-      v10 = [(_UIFontPickerFontInfo *)self fontDescriptor];
-      if (v10)
+      fontDescriptor = [(_UIFontPickerFontInfo *)self fontDescriptor];
+      if (fontDescriptor)
       {
-        v11 = [(_UIFontPickerFontInfo *)v5 fontDescriptor];
-        if (v11)
+        fontDescriptor2 = [(_UIFontPickerFontInfo *)v5 fontDescriptor];
+        if (fontDescriptor2)
         {
-          v12 = [(_UIFontPickerFontInfo *)self fontDescriptor];
-          v13 = [v12 postscriptName];
-          v14 = [(_UIFontPickerFontInfo *)v5 fontDescriptor];
-          v15 = [v14 postscriptName];
-          v16 = v13 == v15;
+          fontDescriptor3 = [(_UIFontPickerFontInfo *)self fontDescriptor];
+          postscriptName = [fontDescriptor3 postscriptName];
+          fontDescriptor4 = [(_UIFontPickerFontInfo *)v5 fontDescriptor];
+          postscriptName2 = [fontDescriptor4 postscriptName];
+          v16 = postscriptName == postscriptName2;
         }
 
         else
@@ -922,37 +922,37 @@ LABEL_14:
   return v7 & 1;
 }
 
-- (BOOL)matchesFamilyForFontDescriptor:(id)a3
+- (BOOL)matchesFamilyForFontDescriptor:(id)descriptor
 {
-  v4 = [a3 objectForKey:*off_1E70ECC90];
+  v4 = [descriptor objectForKey:*off_1E70ECC90];
   v6 = v4 && (familyName = self->_familyName) != 0 && [(NSString *)familyName isEqualToString:v4];
 
   return v6;
 }
 
-- (BOOL)matchesFontDescriptor:(id)a3
+- (BOOL)matchesFontDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(_UIFontPickerFontInfo *)self fontDescriptor];
-  v6 = [v5 postscriptName];
-  v7 = [v4 postscriptName];
+  descriptorCopy = descriptor;
+  fontDescriptor = [(_UIFontPickerFontInfo *)self fontDescriptor];
+  postscriptName = [fontDescriptor postscriptName];
+  postscriptName2 = [descriptorCopy postscriptName];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  return v4;
+  LOBYTE(descriptorCopy) = [postscriptName isEqualToString:postscriptName2];
+  return descriptorCopy;
 }
 
-- (id)faceMatchingDescriptor:(id)a3
+- (id)faceMatchingDescriptor:(id)descriptor
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(_UIFontPickerFontInfo *)self hasMultipleFaces]&& [(_UIFontPickerFontInfo *)self matchesFamilyForFontDescriptor:v4])
+  descriptorCopy = descriptor;
+  if ([(_UIFontPickerFontInfo *)self hasMultipleFaces]&& [(_UIFontPickerFontInfo *)self matchesFamilyForFontDescriptor:descriptorCopy])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(_UIFontPickerFontInfo *)self faces];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    faces = [(_UIFontPickerFontInfo *)self faces];
+    v6 = [faces countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = *v12;
@@ -962,18 +962,18 @@ LABEL_14:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(faces);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if ([v9 matchesFontDescriptor:v4])
+          if ([v9 matchesFontDescriptor:descriptorCopy])
           {
             v6 = v9;
             goto LABEL_14;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [faces countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -994,22 +994,22 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)matchesSearchString:(id)a3
+- (BOOL)matchesSearchString:(id)string
 {
-  v4 = a3;
-  v5 = [(_UIFontPickerFontInfo *)self localizedFullName];
-  if ([v5 localizedCaseInsensitiveContainsString:v4])
+  stringCopy = string;
+  localizedFullName = [(_UIFontPickerFontInfo *)self localizedFullName];
+  if ([localizedFullName localizedCaseInsensitiveContainsString:stringCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(_UIFontPickerFontInfo *)self styleName];
-    if (v7)
+    styleName = [(_UIFontPickerFontInfo *)self styleName];
+    if (styleName)
     {
-      v8 = [(_UIFontPickerFontInfo *)self styleName];
-      v6 = [v8 localizedCaseInsensitiveContainsString:v4];
+      styleName2 = [(_UIFontPickerFontInfo *)self styleName];
+      v6 = [styleName2 localizedCaseInsensitiveContainsString:stringCopy];
     }
 
     else
@@ -1025,9 +1025,9 @@ LABEL_14:
 {
   v2 = MEMORY[0x1E696AEC0];
   familyName = self->_familyName;
-  v4 = [(_UIFontPickerFontInfo *)self fontDescriptor];
-  v5 = [v4 postscriptName];
-  v6 = [v2 stringWithFormat:@"%@ (%@)", familyName, v5];
+  fontDescriptor = [(_UIFontPickerFontInfo *)self fontDescriptor];
+  postscriptName = [fontDescriptor postscriptName];
+  v6 = [v2 stringWithFormat:@"%@ (%@)", familyName, postscriptName];
 
   return v6;
 }

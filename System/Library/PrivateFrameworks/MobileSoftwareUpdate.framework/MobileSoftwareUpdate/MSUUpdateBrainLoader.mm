@@ -1,26 +1,26 @@
 @interface MSUUpdateBrainLoader
-- (MSUUpdateBrainLoader)initWithDictionary:(id)a3;
-- (void)adjustOptions:(id)a3 completion:(id)a4;
+- (MSUUpdateBrainLoader)initWithDictionary:(id)dictionary;
+- (void)adjustOptions:(id)options completion:(id)completion;
 - (void)dealloc;
-- (void)loadUpdateBrainWithOptions:(id)a3 progressHandler:(id)a4;
+- (void)loadUpdateBrainWithOptions:(id)options progressHandler:(id)handler;
 @end
 
 @implementation MSUUpdateBrainLoader
 
-- (MSUUpdateBrainLoader)initWithDictionary:(id)a3
+- (MSUUpdateBrainLoader)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = MSUUpdateBrainLoader;
   v4 = [(MSUUpdateBrainLoader *)&v6 init];
   if (v4)
   {
-    v4->_attributesDict = a3;
+    v4->_attributesDict = dictionary;
   }
 
   return v4;
 }
 
-- (void)loadUpdateBrainWithOptions:(id)a3 progressHandler:(id)a4
+- (void)loadUpdateBrainWithOptions:(id)options progressHandler:(id)handler
 {
   global_queue = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -28,8 +28,8 @@
   block[2] = __67__MSUUpdateBrainLoader_loadUpdateBrainWithOptions_progressHandler___block_invoke;
   block[3] = &unk_2798EDF00;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = options;
+  block[6] = handler;
   dispatch_async(global_queue, block);
 }
 
@@ -72,14 +72,14 @@ uint64_t __67__MSUUpdateBrainLoader_loadUpdateBrainWithOptions_progressHandler__
   return result;
 }
 
-- (void)adjustOptions:(id)a3 completion:(id)a4
+- (void)adjustOptions:(id)options completion:(id)completion
 {
-  if (a3)
+  if (options)
   {
     v5 = 0;
-    v6 = *(a4 + 2);
+    v6 = *(completion + 2);
 
-    v6(a4, v5);
+    v6(completion, v5);
   }
 }
 

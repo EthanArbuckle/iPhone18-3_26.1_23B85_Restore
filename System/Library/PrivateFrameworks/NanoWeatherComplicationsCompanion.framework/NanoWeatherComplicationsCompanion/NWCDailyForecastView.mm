@@ -1,11 +1,11 @@
 @interface NWCDailyForecastView
 + (void)initialize;
-- (NWCDailyForecastView)initWithDevice:(id)a3;
-- (void)_applyLayoutConstraints:(id)a3;
-- (void)applyAccentFilters:(id)a3 fraction:(double)a4;
-- (void)applyNonAccentFilters:(id)a3 fraction:(double)a4;
+- (NWCDailyForecastView)initWithDevice:(id)device;
+- (void)_applyLayoutConstraints:(id)constraints;
+- (void)applyAccentFilters:(id)filters fraction:(double)fraction;
+- (void)applyNonAccentFilters:(id)filters fraction:(double)fraction;
 - (void)layoutSubviews;
-- (void)updateWithHighlightColor:(id)a3 fraction:(double)a4;
+- (void)updateWithHighlightColor:(id)color fraction:(double)fraction;
 @end
 
 @implementation NWCDailyForecastView
@@ -25,22 +25,22 @@ uint64_t __34__NWCDailyForecastView_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (NWCDailyForecastView)initWithDevice:(id)a3
+- (NWCDailyForecastView)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = NWCDailyForecastView;
   v6 = [(NWCDailyForecastView *)&v23 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v9 = ___LayoutConstants_block_invoke_5(v8, v5);
+    objc_storeStrong(&v6->_device, device);
+    v9 = ___LayoutConstants_block_invoke_5(v8, deviceCopy);
     v10 = *&_LayoutConstants_constants_0_2;
     v11 = *&_LayoutConstants_constants_1_2;
     v12 = *&_LayoutConstants_constants_2_0;
     v13 = *&_LayoutConstants_constants_3_0;
-    ___LinearGaugeLayoutConstants_block_invoke(v9, v5);
+    ___LinearGaugeLayoutConstants_block_invoke(v9, deviceCopy);
     v14 = [objc_alloc(MEMORY[0x277D2C810]) initWithLayoutConstants:{*&_LinearGaugeLayoutConstants_constants_0, *&_LinearGaugeLayoutConstants_constants_1, *&_LinearGaugeLayoutConstants_constants_2}];
     [v14 setRenderValueAsPercentage:1];
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -76,68 +76,68 @@ uint64_t __34__NWCDailyForecastView_initialize__block_invoke()
   v9.receiver = self;
   v9.super_class = NWCDailyForecastView;
   [(NWCDailyForecastView *)&v9 layoutSubviews];
-  v3 = [(NWCDailyForecastView *)self device];
-  ___LinearGaugeLayoutConstants_block_invoke(v3, v3);
+  device = [(NWCDailyForecastView *)self device];
+  ___LinearGaugeLayoutConstants_block_invoke(device, device);
   v4 = *&_LinearGaugeLayoutConstants_constants_0;
 
-  v5 = [(NWCDailyForecastView *)self weekdayLabel];
-  [v5 frame];
+  weekdayLabel = [(NWCDailyForecastView *)self weekdayLabel];
+  [weekdayLabel frame];
   MinY = CGRectGetMinY(v10);
 
   [(NWCDailyForecastView *)self bounds];
   v7 = (CGRectGetWidth(v11) - v4) * 0.5;
-  v8 = [(NWCDailyForecastView *)self linearGaugeView];
-  [v8 setFrame:{v7, 0.0, v4, MinY}];
+  linearGaugeView = [(NWCDailyForecastView *)self linearGaugeView];
+  [linearGaugeView setFrame:{v7, 0.0, v4, MinY}];
 }
 
-- (void)applyAccentFilters:(id)a3 fraction:(double)a4
+- (void)applyAccentFilters:(id)filters fraction:(double)fraction
 {
-  v6 = a3;
-  v7 = [(NWCDailyForecastView *)self linearGaugeView];
-  [v7 applyForegroundGaugeFilters:v6];
+  filtersCopy = filters;
+  linearGaugeView = [(NWCDailyForecastView *)self linearGaugeView];
+  [linearGaugeView applyForegroundGaugeFilters:filtersCopy];
 
-  v8 = [(NWCDailyForecastView *)self linearGaugeView];
-  [v8 applyBackgroundGaugeFilters:v6 fraction:a4];
+  linearGaugeView2 = [(NWCDailyForecastView *)self linearGaugeView];
+  [linearGaugeView2 applyBackgroundGaugeFilters:filtersCopy fraction:fraction];
 }
 
-- (void)applyNonAccentFilters:(id)a3 fraction:(double)a4
+- (void)applyNonAccentFilters:(id)filters fraction:(double)fraction
 {
-  v10 = a3;
-  v6 = [(NWCDailyForecastView *)self weekdayLabel];
-  v7 = [v6 layer];
-  [v7 setFilters:v10];
+  filtersCopy = filters;
+  weekdayLabel = [(NWCDailyForecastView *)self weekdayLabel];
+  layer = [weekdayLabel layer];
+  [layer setFilters:filtersCopy];
 
-  v8 = [(NWCDailyForecastView *)self device];
-  LOBYTE(v7) = [v8 supportsCapability:GossamerCapability_1];
+  device = [(NWCDailyForecastView *)self device];
+  LOBYTE(layer) = [device supportsCapability:GossamerCapability_1];
 
-  if ((v7 & 1) == 0)
+  if ((layer & 1) == 0)
   {
-    v9 = [(NWCDailyForecastView *)self linearGaugeView];
-    [v9 applyBackgroundGaugeFilters:v10 fraction:a4];
+    linearGaugeView = [(NWCDailyForecastView *)self linearGaugeView];
+    [linearGaugeView applyBackgroundGaugeFilters:filtersCopy fraction:fraction];
   }
 }
 
-- (void)updateWithHighlightColor:(id)a3 fraction:(double)a4
+- (void)updateWithHighlightColor:(id)color fraction:(double)fraction
 {
-  v6 = a3;
-  v7 = [(NWCDailyForecastView *)self linearGaugeView];
-  [v7 interpolateIndicatorWithColor:v6 fraction:a4];
+  colorCopy = color;
+  linearGaugeView = [(NWCDailyForecastView *)self linearGaugeView];
+  [linearGaugeView interpolateIndicatorWithColor:colorCopy fraction:fraction];
 }
 
-- (void)_applyLayoutConstraints:(id)a3
+- (void)_applyLayoutConstraints:(id)constraints
 {
-  var3 = a3.var3;
+  var3 = constraints.var3;
   v16[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAAD0];
-  v6 = [(NWCDailyForecastView *)self weekdayLabel:a3.var0];
-  v7 = [v6 centerXAnchor];
-  v8 = [(NWCDailyForecastView *)self centerXAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  v6 = [(NWCDailyForecastView *)self weekdayLabel:constraints.var0];
+  centerXAnchor = [v6 centerXAnchor];
+  centerXAnchor2 = [(NWCDailyForecastView *)self centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v16[0] = v9;
-  v10 = [(NWCDailyForecastView *)self bottomAnchor];
-  v11 = [(NWCDailyForecastView *)self weekdayLabel];
-  v12 = [v11 firstBaselineAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:var3];
+  bottomAnchor = [(NWCDailyForecastView *)self bottomAnchor];
+  weekdayLabel = [(NWCDailyForecastView *)self weekdayLabel];
+  firstBaselineAnchor = [weekdayLabel firstBaselineAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor constant:var3];
   v16[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   [v5 activateConstraints:v14];

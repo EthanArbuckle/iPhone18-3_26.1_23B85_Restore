@@ -1,33 +1,33 @@
 @interface SBSADefaultContainerLayoutProvider
-- (id)_updatedContainerViewDescription:(id)a3 transitionDescriptions:(id)a4 context:(id)a5;
-- (id)behaviorSettingsForProperty:(id)a3;
+- (id)_updatedContainerViewDescription:(id)description transitionDescriptions:(id)descriptions context:(id)context;
+- (id)behaviorSettingsForProperty:(id)property;
 - (id)defaultTransitionSettings;
-- (id)preferencesFromContext:(id)a3;
-- (unint64_t)_indexOfContainerViewDescriptionWithIdentifier:(id)a3;
-- (void)_pruneContainerDescriptionWithIdentifier:(id)a3;
-- (void)_updateContainerDescriptionAtIndex:(unint64_t)a3 transitionDescriptions:(id)a4 context:(id)a5 updateReason:(id *)a6;
-- (void)_updateContainerViewDescriptionInCollection:(id)a3;
+- (id)preferencesFromContext:(id)context;
+- (unint64_t)_indexOfContainerViewDescriptionWithIdentifier:(id)identifier;
+- (void)_pruneContainerDescriptionWithIdentifier:(id)identifier;
+- (void)_updateContainerDescriptionAtIndex:(unint64_t)index transitionDescriptions:(id)descriptions context:(id)context updateReason:(id *)reason;
+- (void)_updateContainerViewDescriptionInCollection:(id)collection;
 @end
 
 @implementation SBSADefaultContainerLayoutProvider
 
 - (id)defaultTransitionSettings
 {
-  v2 = [objc_opt_class() settings];
-  v3 = [v2 inertInterfaceElementTransitionSettings];
+  settings = [objc_opt_class() settings];
+  inertInterfaceElementTransitionSettings = [settings inertInterfaceElementTransitionSettings];
 
-  return v3;
+  return inertInterfaceElementTransitionSettings;
 }
 
-- (id)behaviorSettingsForProperty:(id)a3
+- (id)behaviorSettingsForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   if ((BSEqualStrings() & 1) != 0 || BSEqualStrings())
   {
-    v5 = [objc_opt_class() settings];
-    v6 = [v5 keyLineStyleTransition];
+    settings = [objc_opt_class() settings];
+    keyLineStyleTransition = [settings keyLineStyleTransition];
 
-    if (v6)
+    if (keyLineStyleTransition)
     {
       goto LABEL_8;
     }
@@ -35,8 +35,8 @@
 
   else if ((BSEqualStrings() & 1) != 0 || BSEqualStrings())
   {
-    v6 = [MEMORY[0x277D65E60] unanimatedBehaviorSettings];
-    if (v6)
+    keyLineStyleTransition = [MEMORY[0x277D65E60] unanimatedBehaviorSettings];
+    if (keyLineStyleTransition)
     {
       goto LABEL_8;
     }
@@ -44,20 +44,20 @@
 
   v8.receiver = self;
   v8.super_class = SBSADefaultContainerLayoutProvider;
-  v6 = [(SBSABasePreferencesProvider *)&v8 behaviorSettingsForProperty:v4];
+  keyLineStyleTransition = [(SBSABasePreferencesProvider *)&v8 behaviorSettingsForProperty:propertyCopy];
 LABEL_8:
 
-  return v6;
+  return keyLineStyleTransition;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v107 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  contextCopy = context;
+  v4 = contextCopy;
+  if (contextCopy)
   {
-    v5 = v3;
+    v5 = contextCopy;
     v6 = objc_opt_self();
     v7 = v4;
     if (v6)
@@ -96,14 +96,14 @@ LABEL_8:
   v61 = v4;
 
   v65 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v10 = [v9 preferences];
-  if (!v10)
+  preferences = [v9 preferences];
+  if (!preferences)
   {
     goto LABEL_18;
   }
 
   v11 = objc_opt_self();
-  v12 = v10;
+  v12 = preferences;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -131,24 +131,24 @@ LABEL_18:
     v14 = 0;
   }
 
-  v63 = [v9 elementContexts];
-  v67 = [v9 containerViewDescriptions];
-  v15 = [v9 minimumNumberOfContainers];
-  v16 = [v63 count];
-  if (v15 <= v16)
+  elementContexts = [v9 elementContexts];
+  containerViewDescriptions = [v9 containerViewDescriptions];
+  minimumNumberOfContainers = [v9 minimumNumberOfContainers];
+  v16 = [elementContexts count];
+  if (minimumNumberOfContainers <= v16)
   {
-    v15 = v16;
+    minimumNumberOfContainers = v16;
   }
 
-  v17 = [v9 maximumNumberOfElements];
-  if (v15 >= v17)
+  maximumNumberOfElements = [v9 maximumNumberOfElements];
+  if (minimumNumberOfContainers >= maximumNumberOfElements)
   {
-    v18 = v17;
+    v18 = maximumNumberOfElements;
   }
 
   else
   {
-    v18 = v15;
+    v18 = minimumNumberOfContainers;
   }
 
   v19 = [(NSMutableArray *)self->_orderedContainerDescriptions count];
@@ -172,7 +172,7 @@ LABEL_18:
   {
     for (i = 0; i != v20; ++i)
     {
-      if ([v67 count] > i && (objc_msgSend(v67, "objectAtIndexedSubscript:", i), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+      if ([containerViewDescriptions count] > i && (objc_msgSend(containerViewDescriptions, "objectAtIndexedSubscript:", i), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v23 = [(SBSADefaultContainerLayoutProvider *)self _updatedContainerViewDescription:v22 transitionDescriptions:v101[5] context:v9];
         [(SBSADefaultContainerLayoutProvider *)self _updateContainerViewDescriptionInCollection:v23];
@@ -194,11 +194,11 @@ LABEL_18:
     }
   }
 
-  v26 = [v14 maintainedPreferences];
-  v64 = [v26 indicatorAppearanceStateContext];
+  maintainedPreferences = [v14 maintainedPreferences];
+  indicatorAppearanceStateContext = [maintainedPreferences indicatorAppearanceStateContext];
 
   indicatorContainerDescription = self->_indicatorContainerDescription;
-  if (v64)
+  if (indicatorAppearanceStateContext)
   {
     v28 = [(SBSADefaultContainerLayoutProvider *)self _updatedContainerViewDescription:self->_indicatorContainerDescription transitionDescriptions:v101[5] context:v9];
     v96[0] = MEMORY[0x277D85DD0];
@@ -207,7 +207,7 @@ LABEL_18:
     v96[3] = &unk_2783AD750;
     v98 = a2;
     v96[4] = self;
-    v97 = v64;
+    v97 = indicatorAppearanceStateContext;
     v29 = [v28 copyWithBlock:v96];
 
     objc_storeStrong(&self->_indicatorContainerDescription, v29);
@@ -290,7 +290,7 @@ LABEL_18:
 
   v69 = v40;
 
-  v41 = [v69 containerViewDescriptions];
+  containerViewDescriptions2 = [v69 containerViewDescriptions];
   v86 = 0u;
   v87 = 0u;
   v84 = 0u;
@@ -309,14 +309,14 @@ LABEL_18:
           objc_enumerationMutation(v42);
         }
 
-        v46 = [*(*(&v84 + 1) + 8 * j) interfaceElementIdentifier];
+        interfaceElementIdentifier = [*(*(&v84 + 1) + 8 * j) interfaceElementIdentifier];
         v82[0] = MEMORY[0x277D85DD0];
         v82[1] = 3221225472;
         v82[2] = __61__SBSADefaultContainerLayoutProvider_preferencesFromContext___block_invoke_5;
         v82[3] = &unk_2783AE040;
-        v47 = v46;
+        v47 = interfaceElementIdentifier;
         v83 = v47;
-        if ([v41 indexOfObjectPassingTest:v82] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([containerViewDescriptions2 indexOfObjectPassingTest:v82] == 0x7FFFFFFFFFFFFFFFLL)
         {
           [(SBSADefaultContainerLayoutProvider *)self _pruneContainerDescriptionWithIdentifier:v47];
         }
@@ -328,10 +328,10 @@ LABEL_18:
     while (v43);
   }
 
-  v48 = [v41 mutableCopy];
-  for (k = 0; k < [v41 count]; ++k)
+  v48 = [containerViewDescriptions2 mutableCopy];
+  for (k = 0; k < [containerViewDescriptions2 count]; ++k)
   {
-    v50 = [v41 objectAtIndex:k];
+    v50 = [containerViewDescriptions2 objectAtIndex:k];
     [v50 cornerRadius];
     if (v51 == 0.0)
     {
@@ -841,22 +841,22 @@ void __61__SBSADefaultContainerLayoutProvider_preferencesFromContext___block_inv
   [v5 setCornerRadius:Height * 0.5];
 }
 
-- (unint64_t)_indexOfContainerViewDescriptionWithIdentifier:(id)a3
+- (unint64_t)_indexOfContainerViewDescriptionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    orderedContainerDescriptions = v5->_orderedContainerDescriptions;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    orderedContainerDescriptions = selfCopy->_orderedContainerDescriptions;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __85__SBSADefaultContainerLayoutProvider__indexOfContainerViewDescriptionWithIdentifier___block_invoke;
     v9[3] = &unk_2783AE040;
-    v10 = v4;
+    v10 = identifierCopy;
     v7 = [(NSMutableArray *)orderedContainerDescriptions indexOfObjectPassingTest:v9];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -875,62 +875,62 @@ uint64_t __85__SBSADefaultContainerLayoutProvider__indexOfContainerViewDescripti
   return v3;
 }
 
-- (void)_updateContainerViewDescriptionInCollection:(id)a3
+- (void)_updateContainerViewDescriptionInCollection:(id)collection
 {
-  v10 = a3;
-  if (v10)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    if (!v4->_orderedContainerDescriptions)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_orderedContainerDescriptions)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      orderedContainerDescriptions = v4->_orderedContainerDescriptions;
-      v4->_orderedContainerDescriptions = v5;
+      orderedContainerDescriptions = selfCopy->_orderedContainerDescriptions;
+      selfCopy->_orderedContainerDescriptions = v5;
     }
 
-    v7 = [v10 interfaceElementIdentifier];
-    v8 = [(SBSADefaultContainerLayoutProvider *)v4 _indexOfContainerViewDescriptionWithIdentifier:v7];
+    interfaceElementIdentifier = [collectionCopy interfaceElementIdentifier];
+    v8 = [(SBSADefaultContainerLayoutProvider *)selfCopy _indexOfContainerViewDescriptionWithIdentifier:interfaceElementIdentifier];
 
-    v9 = v4->_orderedContainerDescriptions;
+    v9 = selfCopy->_orderedContainerDescriptions;
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)v9 addObject:v10];
+      [(NSMutableArray *)v9 addObject:collectionCopy];
     }
 
     else
     {
-      [(NSMutableArray *)v9 replaceObjectAtIndex:v8 withObject:v10];
+      [(NSMutableArray *)v9 replaceObjectAtIndex:v8 withObject:collectionCopy];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)_updatedContainerViewDescription:(id)a3 transitionDescriptions:(id)a4 context:(id)a5
+- (id)_updatedContainerViewDescription:(id)description transitionDescriptions:(id)descriptions context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  objc_sync_enter(v12);
+  descriptionCopy = description;
+  descriptionsCopy = descriptions;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __102__SBSADefaultContainerLayoutProvider__updatedContainerViewDescription_transitionDescriptions_context___block_invoke;
   v41[3] = &unk_2783C27D8;
-  v43 = v9 == 0;
-  v41[4] = v12;
-  v13 = v10;
+  v43 = descriptionCopy == 0;
+  v41[4] = selfCopy;
+  v13 = descriptionsCopy;
   v42 = v13;
   v14 = MEMORY[0x223D6F7F0](v41);
-  [v11 inertContainerFrame];
+  [contextCopy inertContainerFrame];
   v26 = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = __102__SBSADefaultContainerLayoutProvider__updatedContainerViewDescription_transitionDescriptions_context___block_invoke_2;
   v29 = &unk_2783C2800;
   v35 = a2;
-  v30 = v12;
-  v40 = v9 == 0;
+  v30 = selfCopy;
+  v40 = descriptionCopy == 0;
   v36 = v15;
   v37 = v16;
   v38 = v17;
@@ -939,12 +939,12 @@ uint64_t __85__SBSADefaultContainerLayoutProvider__indexOfContainerViewDescripti
   v34 = v19;
   v20 = v13;
   v31 = v20;
-  v21 = v9;
+  v21 = descriptionCopy;
   v32 = v21;
-  v22 = v11;
+  v22 = contextCopy;
   v33 = v22;
   v23 = MEMORY[0x223D6F7F0](&v26);
-  if (v9)
+  if (descriptionCopy)
   {
     v24 = [v21 copyWithBlock:{v23, v26, v27, v28, v29, v30, v31, v32}];
   }
@@ -954,7 +954,7 @@ uint64_t __85__SBSADefaultContainerLayoutProvider__indexOfContainerViewDescripti
     v24 = [(SBSAViewDescription *)SBSAContainerViewDescription instanceWithBlock:v23, v26, v27, v28, v29, v30, v31, v32];
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   return v24;
 }
@@ -1099,50 +1099,50 @@ void __102__SBSADefaultContainerLayoutProvider__updatedContainerViewDescription_
   [v7 setUserInteractionEnabled:1];
 }
 
-- (void)_updateContainerDescriptionAtIndex:(unint64_t)a3 transitionDescriptions:(id)a4 context:(id)a5 updateReason:(id *)a6
+- (void)_updateContainerDescriptionAtIndex:(unint64_t)index transitionDescriptions:(id)descriptions context:(id)context updateReason:(id *)reason
 {
-  v16 = a4;
-  v11 = a5;
-  v12 = self;
-  objc_sync_enter(v12);
-  if ([(NSMutableArray *)v12->_orderedContainerDescriptions count]<= a3 || ([(NSMutableArray *)v12->_orderedContainerDescriptions objectAtIndexedSubscript:a3], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+  descriptionsCopy = descriptions;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableArray *)selfCopy->_orderedContainerDescriptions count]<= index || ([(NSMutableArray *)selfCopy->_orderedContainerDescriptions objectAtIndexedSubscript:index], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if ([(NSMutableArray *)v12->_orderedContainerDescriptions count]!= a3)
+    if ([(NSMutableArray *)selfCopy->_orderedContainerDescriptions count]!= index)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v12 file:@"SBSADefaultContainerLayoutProvider.m" lineNumber:286 description:{@"Requested index '%lu' isn't the next available index: %@", a3, v12->_orderedContainerDescriptions}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"SBSADefaultContainerLayoutProvider.m" lineNumber:286 description:{@"Requested index '%lu' isn't the next available index: %@", index, selfCopy->_orderedContainerDescriptions}];
     }
 
     v13 = 0;
-    if (a6)
+    if (reason)
     {
-      *a6 = @"inertLayoutProvider.newContainer";
+      *reason = @"inertLayoutProvider.newContainer";
     }
   }
 
-  v14 = [(SBSADefaultContainerLayoutProvider *)v12 _updatedContainerViewDescription:v13 transitionDescriptions:v16 context:v11];
-  [(SBSADefaultContainerLayoutProvider *)v12 _updateContainerViewDescriptionInCollection:v14];
+  v14 = [(SBSADefaultContainerLayoutProvider *)selfCopy _updatedContainerViewDescription:v13 transitionDescriptions:descriptionsCopy context:contextCopy];
+  [(SBSADefaultContainerLayoutProvider *)selfCopy _updateContainerViewDescriptionInCollection:v14];
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_pruneContainerDescriptionWithIdentifier:(id)a3
+- (void)_pruneContainerDescriptionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(SBSADefaultContainerLayoutProvider *)v5 _indexOfContainerViewDescriptionWithIdentifier:v7];
+    v7 = identifierCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(SBSADefaultContainerLayoutProvider *)selfCopy _indexOfContainerViewDescriptionWithIdentifier:v7];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)v5->_orderedContainerDescriptions removeObjectAtIndex:v6];
+      [(NSMutableArray *)selfCopy->_orderedContainerDescriptions removeObjectAtIndex:v6];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v7;
+    identifierCopy = v7;
   }
 }
 

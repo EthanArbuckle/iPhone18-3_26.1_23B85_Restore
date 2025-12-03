@@ -1,33 +1,33 @@
 @interface TransparencyFileSupport
-+ (BOOL)deleteFile:(id)a3 error:(id *)a4;
-+ (BOOL)deleteFile:(id)a3 inDirectory:(id)a4 error:(id *)a5;
-+ (BOOL)setProtectionToClassDForURL:(id)a3 error:(id *)a4;
-+ (BOOL)writeDictionaryToFile:(id)a3 fileName:(id)a4 error:(id *)a5;
-+ (BOOL)writeDictionaryToFile:(id)a3 fileName:(id)a4 inDirectory:(id)a5 error:(id *)a6;
-+ (id)applicationSupportPath:(id *)a3;
-+ (id)readDataFromFile:(id)a3 error:(id *)a4;
-+ (id)readDictionaryFromFile:(id)a3 error:(id *)a4;
-+ (id)readDictionaryFromFile:(id)a3 inDirectory:(id)a4 error:(id *)a5;
-+ (int64_t)directorySizeInKB:(id *)a3;
++ (BOOL)deleteFile:(id)file error:(id *)error;
++ (BOOL)deleteFile:(id)file inDirectory:(id)directory error:(id *)error;
++ (BOOL)setProtectionToClassDForURL:(id)l error:(id *)error;
++ (BOOL)writeDictionaryToFile:(id)file fileName:(id)name error:(id *)error;
++ (BOOL)writeDictionaryToFile:(id)file fileName:(id)name inDirectory:(id)directory error:(id *)error;
++ (id)applicationSupportPath:(id *)path;
++ (id)readDataFromFile:(id)file error:(id *)error;
++ (id)readDictionaryFromFile:(id)file error:(id *)error;
++ (id)readDictionaryFromFile:(id)file inDirectory:(id)directory error:(id *)error;
++ (int64_t)directorySizeInKB:(id *)b;
 @end
 
 @implementation TransparencyFileSupport
 
-+ (BOOL)setProtectionToClassDForURL:(id)a3 error:(id *)a4
++ (BOOL)setProtectionToClassDForURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = open([v5 fileSystemRepresentation], 0);
+  lCopy = l;
+  v6 = open([lCopy fileSystemRepresentation], 0);
   v7 = v6;
   if (v6)
   {
     if (fcntl(v6, 64, 4) < 0)
     {
-      if (a4)
+      if (error)
       {
         v8 = *__error();
         v9 = __error();
         v10 = strerror(*v9);
-        *a4 = [TransparencyError errorWithDomain:NSPOSIXErrorDomain code:v8 description:@"set protection class error for file %@: %s(%d)", v5, v10, *__error()];
+        *error = [TransparencyError errorWithDomain:NSPOSIXErrorDomain code:v8 description:@"set protection class error for file %@: %s(%d)", lCopy, v10, *__error()];
       }
 
       if (qword_1000084E8 != -1)
@@ -43,7 +43,7 @@
         v14 = strerror(*v13);
         v15 = *__error();
         *buf = 138412802;
-        v26 = v5;
+        v26 = lCopy;
         v27 = 2080;
         v28 = v14;
         v29 = 1024;
@@ -57,12 +57,12 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v16 = *__error();
       v17 = __error();
       v18 = strerror(*v17);
-      *a4 = [TransparencyError errorWithDomain:NSPOSIXErrorDomain code:v16 description:@"open error for file %@: %s(%d)", v5, v18, *__error()];
+      *error = [TransparencyError errorWithDomain:NSPOSIXErrorDomain code:v16 description:@"open error for file %@: %s(%d)", lCopy, v18, *__error()];
     }
 
     if (qword_1000084E8 != -1)
@@ -78,7 +78,7 @@
       v22 = strerror(*v21);
       v23 = *__error();
       *buf = 138412802;
-      v26 = v5;
+      v26 = lCopy;
       v27 = 2080;
       v28 = v22;
       v29 = 1024;
@@ -90,7 +90,7 @@
   return v7 != 0;
 }
 
-+ (id)applicationSupportPath:(id *)a3
++ (id)applicationSupportPath:(id *)path
 {
   v4 = +[NSFileManager defaultManager];
   v5 = [v4 URLsForDirectory:14 inDomains:1];
@@ -104,7 +104,7 @@
     v15 = NSFileProtectionKey;
     v16 = NSFileProtectionNone;
     v9 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    v10 = [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:v9 error:a3];
+    v10 = [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:v9 error:path];
 
     v11 = 0;
     if (v10)
@@ -115,9 +115,9 @@
 
   else
   {
-    if (a3)
+    if (path)
     {
-      *a3 = [TransparencyError errorWithDomain:kTransparencyErrorFile code:-37 description:@"failed to get Application Support dir"];
+      *path = [TransparencyError errorWithDomain:kTransparencyErrorFile code:-37 description:@"failed to get Application Support dir"];
     }
 
     if (qword_1000084E8 != -1)
@@ -138,15 +138,15 @@
   return v11;
 }
 
-+ (int64_t)directorySizeInKB:(id *)a3
++ (int64_t)directorySizeInKB:(id *)b
 {
   v4 = +[NSFileManager defaultManager];
-  v5 = [TransparencyFileSupport transparencyFilesPath:a3];
+  v5 = [TransparencyFileSupport transparencyFilesPath:b];
   if (v5)
   {
     v26 = NSURLFileSizeKey;
     v6 = [NSArray arrayWithObjects:&v26 count:1];
-    v7 = [v4 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v6 options:0 error:a3];
+    v7 = [v4 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v6 options:0 error:b];
 
     if (v7)
     {
@@ -173,7 +173,7 @@
 
             v14 = *(*(&v21 + 1) + 8 * i);
             v20 = 0;
-            [v14 getResourceValue:&v20 forKey:NSURLFileSizeKey error:{a3, v19}];
+            [v14 getResourceValue:&v20 forKey:NSURLFileSizeKey error:{b, v19}];
             v15 = v20;
             if (!v15)
             {
@@ -219,12 +219,12 @@ LABEL_14:
   return v17;
 }
 
-+ (id)readDictionaryFromFile:(id)a3 inDirectory:(id)a4 error:(id *)a5
++ (id)readDictionaryFromFile:(id)file inDirectory:(id)directory error:(id *)error
 {
-  v6 = [a4 URLByAppendingPathComponent:a3];
+  v6 = [directory URLByAppendingPathComponent:file];
   if (v6)
   {
-    v7 = [NSDictionary dictionaryWithContentsOfURL:v6 error:a5];
+    v7 = [NSDictionary dictionaryWithContentsOfURL:v6 error:error];
   }
 
   else
@@ -235,13 +235,13 @@ LABEL_14:
   return v7;
 }
 
-+ (id)readDictionaryFromFile:(id)a3 error:(id *)a4
++ (id)readDictionaryFromFile:(id)file error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 transparencyFilesPath:a4];
+  fileCopy = file;
+  v7 = [self transparencyFilesPath:error];
   if (v7)
   {
-    v8 = [a1 readDictionaryFromFile:v6 inDirectory:v7 error:a4];
+    v8 = [self readDictionaryFromFile:fileCopy inDirectory:v7 error:error];
   }
 
   else
@@ -252,15 +252,15 @@ LABEL_14:
   return v8;
 }
 
-+ (id)readDataFromFile:(id)a3 error:(id *)a4
++ (id)readDataFromFile:(id)file error:(id *)error
 {
-  v5 = a3;
-  v6 = [TransparencyFileSupport transparencyFilesPath:a4];
+  fileCopy = file;
+  v6 = [TransparencyFileSupport transparencyFilesPath:error];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 URLByAppendingPathComponent:v5];
-    v9 = [NSData dataWithContentsOfURL:v8 options:0 error:a4];
+    v8 = [v6 URLByAppendingPathComponent:fileCopy];
+    v9 = [NSData dataWithContentsOfURL:v8 options:0 error:error];
   }
 
   else
@@ -271,24 +271,24 @@ LABEL_14:
   return v9;
 }
 
-+ (BOOL)writeDictionaryToFile:(id)a3 fileName:(id)a4 inDirectory:(id)a5 error:(id *)a6
++ (BOOL)writeDictionaryToFile:(id)file fileName:(id)name inDirectory:(id)directory error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 URLByAppendingPathComponent:a4];
-  LODWORD(a4) = [v9 writeToURL:v10 error:a6];
+  fileCopy = file;
+  v10 = [directory URLByAppendingPathComponent:name];
+  LODWORD(name) = [fileCopy writeToURL:v10 error:error];
 
-  v11 = a4 && [TransparencyFileSupport setProtectionToClassDForURL:v10 error:a6];
+  v11 = name && [TransparencyFileSupport setProtectionToClassDForURL:v10 error:error];
   return v11;
 }
 
-+ (BOOL)writeDictionaryToFile:(id)a3 fileName:(id)a4 error:(id *)a5
++ (BOOL)writeDictionaryToFile:(id)file fileName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [TransparencyFileSupport transparencyFilesPath:a5];
+  fileCopy = file;
+  nameCopy = name;
+  v10 = [TransparencyFileSupport transparencyFilesPath:error];
   if (v10)
   {
-    v11 = [a1 writeDictionaryToFile:v8 fileName:v9 inDirectory:v10 error:a5];
+    v11 = [self writeDictionaryToFile:fileCopy fileName:nameCopy inDirectory:v10 error:error];
   }
 
   else
@@ -299,22 +299,22 @@ LABEL_14:
   return v11;
 }
 
-+ (BOOL)deleteFile:(id)a3 inDirectory:(id)a4 error:(id *)a5
++ (BOOL)deleteFile:(id)file inDirectory:(id)directory error:(id *)error
 {
-  v6 = [a4 URLByAppendingPathComponent:a3];
+  v6 = [directory URLByAppendingPathComponent:file];
   v7 = +[NSFileManager defaultManager];
-  LOBYTE(a5) = [v7 removeItemAtURL:v6 error:a5];
+  LOBYTE(error) = [v7 removeItemAtURL:v6 error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)deleteFile:(id)a3 error:(id *)a4
++ (BOOL)deleteFile:(id)file error:(id *)error
 {
-  v6 = a3;
-  v7 = [TransparencyFileSupport transparencyFilesPath:a4];
+  fileCopy = file;
+  v7 = [TransparencyFileSupport transparencyFilesPath:error];
   if (v7)
   {
-    v8 = [a1 deleteFile:v6 inDirectory:v7 error:a4];
+    v8 = [self deleteFile:fileCopy inDirectory:v7 error:error];
   }
 
   else

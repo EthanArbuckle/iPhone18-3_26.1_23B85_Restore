@@ -1,14 +1,14 @@
 @interface PHCallBlockingServiceProviderController
-- (BOOL)supportsCallBlockingForSubscriptionContext:(id)a3;
+- (BOOL)supportsCallBlockingForSubscriptionContext:(id)context;
 - (NSArray)serviceProviders;
 - (NSArray)serviceProvidersSupportingSpamBlocking;
 - (PHCallBlockingServiceProviderController)init;
 - (PHCallBlockingServiceProviderControllerDelegate)delegate;
 - (id)fetchServiceProviders;
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (id)stringForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (void)carrierBundleController:(id)a3 carrierBundleDidChangeForSubscriptionContext:(id)a4;
-- (void)setServiceProviders:(id)a3;
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (id)stringForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (void)carrierBundleController:(id)controller carrierBundleDidChangeForSubscriptionContext:(id)context;
+- (void)setServiceProviders:(id)providers;
 @end
 
 @implementation PHCallBlockingServiceProviderController
@@ -58,14 +58,14 @@ void __47__PHCallBlockingServiceProviderController_init__block_invoke(uint64_t a
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(PHCallBlockingServiceProviderController *)self queue];
+  queue = [(PHCallBlockingServiceProviderController *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__PHCallBlockingServiceProviderController_serviceProviders__block_invoke;
   v6[3] = &unk_2782E3988;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -81,14 +81,14 @@ void __47__PHCallBlockingServiceProviderController_init__block_invoke(uint64_t a
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(PHCallBlockingServiceProviderController *)self queue];
+  queue = [(PHCallBlockingServiceProviderController *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __81__PHCallBlockingServiceProviderController_serviceProvidersSupportingSpamBlocking__block_invoke;
   v6[3] = &unk_2782E3988;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -106,18 +106,18 @@ void __81__PHCallBlockingServiceProviderController_serviceProvidersSupportingSpa
   *(v4 + 40) = v3;
 }
 
-- (void)setServiceProviders:(id)a3
+- (void)setServiceProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [(PHCallBlockingServiceProviderController *)self queue];
+  providersCopy = providers;
+  queue = [(PHCallBlockingServiceProviderController *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__PHCallBlockingServiceProviderController_setServiceProviders___block_invoke;
   v7[3] = &unk_2782E39D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providersCopy;
+  v6 = providersCopy;
+  dispatch_async(queue, v7);
 }
 
 void __63__PHCallBlockingServiceProviderController_setServiceProviders___block_invoke(uint64_t a1)
@@ -151,14 +151,14 @@ void __63__PHCallBlockingServiceProviderController_setServiceProviders___block_i
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(PHCallBlockingServiceProviderController *)self carrierBundleController];
-  v5 = [v4 activeSubscriptions];
+  carrierBundleController = [(PHCallBlockingServiceProviderController *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v5;
+  v6 = activeSubscriptions;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -186,8 +186,8 @@ void __63__PHCallBlockingServiceProviderController_setServiceProviders___block_i
 
         else
         {
-          v13 = [(PHCallBlockingServiceProviderController *)self carrierBundleController];
-          v12 = [v13 localizedCarrierNameForSubscriptionContext:v11];
+          carrierBundleController2 = [(PHCallBlockingServiceProviderController *)self carrierBundleController];
+          v12 = [carrierBundleController2 localizedCarrierNameForSubscriptionContext:v11];
 
           if ([v12 length])
           {
@@ -208,12 +208,12 @@ void __63__PHCallBlockingServiceProviderController_setServiceProviders___block_i
   return v3;
 }
 
-- (BOOL)supportsCallBlockingForSubscriptionContext:(id)a3
+- (BOOL)supportsCallBlockingForSubscriptionContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v13 = 0;
-  v5 = [(PHCallBlockingServiceProviderController *)self stringForKeyHierarchy:&unk_282D5D660 subscriptionContext:v4 error:&v13];
+  v5 = [(PHCallBlockingServiceProviderController *)self stringForKeyHierarchy:&unk_282D5D660 subscriptionContext:contextCopy error:&v13];
   v6 = v13;
   v7 = v6;
   if (v5)
@@ -224,7 +224,7 @@ void __63__PHCallBlockingServiceProviderController_setServiceProviders___block_i
       *buf = 138412546;
       v15 = v5;
       v16 = 2112;
-      v17 = v4;
+      v17 = contextCopy;
       v9 = "Retrieved call blocking value '%@' for subscription %@";
 LABEL_7:
       _os_log_impl(&dword_21B8E9000, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 0x16u);
@@ -242,7 +242,7 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v4;
+      v15 = contextCopy;
       v16 = 2112;
       v17 = v7;
       v9 = "Retrieving call blocking value for subscription %@ failed with error %@";
@@ -265,22 +265,22 @@ LABEL_9:
   return v10;
 }
 
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
   v8 = MEMORY[0x277CC3620];
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  hierarchyCopy = hierarchy;
   v11 = [[v8 alloc] initWithBundleType:1];
-  v12 = [(PHCallBlockingServiceProviderController *)self carrierBundleController];
-  v13 = [v12 telephonyClient];
-  v14 = [v13 copyCarrierBundleValue:v9 keyHierarchy:v10 bundleType:v11 error:a5];
+  carrierBundleController = [(PHCallBlockingServiceProviderController *)self carrierBundleController];
+  telephonyClient = [carrierBundleController telephonyClient];
+  v14 = [telephonyClient copyCarrierBundleValue:contextCopy keyHierarchy:hierarchyCopy bundleType:v11 error:error];
 
   return v14;
 }
 
-- (id)stringForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)stringForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
-  v5 = [(PHCallBlockingServiceProviderController *)self objectForKeyHierarchy:a3 subscriptionContext:a4 error:a5];
+  v5 = [(PHCallBlockingServiceProviderController *)self objectForKeyHierarchy:hierarchy subscriptionContext:context error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -295,25 +295,25 @@ LABEL_9:
   return v6;
 }
 
-- (void)carrierBundleController:(id)a3 carrierBundleDidChangeForSubscriptionContext:(id)a4
+- (void)carrierBundleController:(id)controller carrierBundleDidChangeForSubscriptionContext:(id)context
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  contextCopy = context;
   v6 = TPSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = contextCopy;
     _os_log_impl(&dword_21B8E9000, v6, OS_LOG_TYPE_DEFAULT, "Carrier bundle changed for subscription context %@", buf, 0xCu);
   }
 
-  v7 = [(PHCallBlockingServiceProviderController *)self queue];
+  queue = [(PHCallBlockingServiceProviderController *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__PHCallBlockingServiceProviderController_carrierBundleController_carrierBundleDidChangeForSubscriptionContext___block_invoke;
   block[3] = &unk_2782E3960;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }

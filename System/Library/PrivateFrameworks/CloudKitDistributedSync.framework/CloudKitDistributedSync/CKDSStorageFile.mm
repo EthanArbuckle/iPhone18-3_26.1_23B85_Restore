@@ -1,14 +1,14 @@
 @interface CKDSStorageFile
-- (CKDSStorageFile)initWithURL:(id)a3 isOwned:(BOOL)a4;
+- (CKDSStorageFile)initWithURL:(id)l isOwned:(BOOL)owned;
 - (void)dealloc;
 @end
 
 @implementation CKDSStorageFile
 
-- (CKDSStorageFile)initWithURL:(id)a3 isOwned:(BOOL)a4
+- (CKDSStorageFile)initWithURL:(id)l isOwned:(BOOL)owned
 {
-  v14 = a3;
-  if (!v14)
+  lCopy = l;
+  if (!lCopy)
   {
     v18 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v8, v9, v10, v11, v12, v13);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v18, v19, a2, self, @"CKDSUtils.m", 25, @"Unexpected arguments");
@@ -20,8 +20,8 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_URL, a3);
-    v16->_isOwned = a4;
+    objc_storeStrong(&v15->_URL, l);
+    v16->_isOwned = owned;
   }
 
   return v16;

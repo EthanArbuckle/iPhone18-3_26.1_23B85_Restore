@@ -1,50 +1,50 @@
 @interface DMDPolicyPersistence
-- (BOOL)_loadPersistentStoreIfNeeded:(id *)a3;
-- (BOOL)_upsertPolicy:(int64_t)a3 forType:(id)a4 identifier:(id)a5 priority:(unint64_t)a6 organizationIdentifier:(id)a7 declarationIdentifier:(id)a8 policyToUpdate:(id)a9 managedObjectContext:(id)a10;
-- (BOOL)isInLegacyDowntimeWithPolicies:(id)a3 priorities:(id)a4;
+- (BOOL)_loadPersistentStoreIfNeeded:(id *)needed;
+- (BOOL)_upsertPolicy:(int64_t)policy forType:(id)type identifier:(id)identifier priority:(unint64_t)priority organizationIdentifier:(id)organizationIdentifier declarationIdentifier:(id)declarationIdentifier policyToUpdate:(id)update managedObjectContext:(id)self0;
+- (BOOL)isInLegacyDowntimeWithPolicies:(id)policies priorities:(id)priorities;
 - (BOOL)isInManagedSettingsDowntime;
 - (DMDPolicyPersistence)init;
-- (DMDPolicyPersistence)initWithPersistentStoreDescriptions:(id)a3;
+- (DMDPolicyPersistence)initWithPersistentStoreDescriptions:(id)descriptions;
 - (NSArray)distributedNotificationNames;
 - (NSArray)managedSettingsGroups;
-- (id)_effectiveCategoryPoliciesForCategoryShieldPolicy:(id)a3 type:(id)a4 excludedIdentifiersKey:(id)a5;
-- (id)_effectivePoliciesForTypes:(id)a3;
-- (id)_effectivePolicyForManagedSettingsIdentifier:(id)a3 type:(id)a4 excludedIdentifiers:(id)a5;
-- (id)_effectivePolicyForType:(id)a3;
-- (id)_fetchCategoriesForBundleIdentifiers:(id)a3 withError:(id *)a4;
-- (id)_fetchCategoriesIfNeededForWebsiteURLs:(id)a3 withError:(id *)a4;
-- (id)_fetchParentBundleIdentifiersForBundleIdentifiers:(id)a3;
-- (void)_appendPolicyForBundleIdentifiers:(id)a3 toPolicies:(id)a4 categories:(id)a5 parentBundleIdentifiers:(id)a6 policiesByType:(id)a7;
-- (void)_appendPolicyForCategoryIdentifiers:(id)a3 toPolicies:(id)a4 policiesByType:(id)a5;
-- (void)_appendPolicyForWebsiteURLs:(id)a3 toPolicies:(id)a4 categories:(id)a5 policiesByType:(id)a6;
-- (void)_clearPolicyCachesForTypes:(id)a3;
-- (void)_enableEmergencyModeUntilDate:(id)a3 referenceDate:(id)a4 withCompletionHandler:(id)a5;
-- (void)_handleChangesToPolicyTypes:(id)a3;
-- (void)_notifyClientsRegisteredForPolicyTypes:(id)a3;
-- (void)_performBackgroundTask:(id)a3;
-- (void)_performBackgroundTaskAndWait:(id)a3;
-- (void)_performRegistrationBackgroundTask:(id)a3;
-- (void)_recalculateEffectivePolicyForTypes:(id)a3;
-- (void)_removeOrphanedPoliciesFromFetchRequest:(id)a3 managedObjectContext:(id)a4 completionHandler:(id)a5;
-- (void)addRegistration:(id)a3 replyHandler:(id)a4;
-- (void)allExpiredScreenTimeBudgetsShouldBeSynchronous:(BOOL)a3 replyHandler:(id)a4;
-- (void)disableEmergencyModeWithCompletionHandler:(id)a3;
-- (void)emergencyModeStatusWithCompletionHandler:(id)a3;
-- (void)enableEmergencyModeForDuration:(double)a3 withCompletionHandler:(id)a4;
-- (void)enableEmergencyModeWithCompletionHandler:(id)a3;
-- (void)handleAlarmWithIdentifier:(id)a3;
-- (void)handleDistributedNotificationWithName:(id)a3 userInfo:(id)a4;
-- (void)handleManagedEffectiveSettingsChangeInGroup:(id)a3;
-- (void)handleNotifyMatchingNotificationWithName:(id)a3;
-- (void)removeEffectivePolicyFromOrganizationIdentifier:(id)a3 declarationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)removeOrphanedPoliciesNotBelongingToExistingDeclarationIdentifiersByOrganizationIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeOrphanedPoliciesNotBelongingToExistingOrganizationIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)requestCommunicationPoliciesForBundleIdentifiers:(id)a3 replyHandler:(id)a4;
-- (void)requestPoliciesForBundleIdentifiers:(id)a3 replyHandler:(id)a4;
-- (void)requestPoliciesForCategoryIdentifiers:(id)a3 replyHandler:(id)a4;
-- (void)requestPoliciesForTypes:(id)a3 replyHandler:(id)a4;
-- (void)requestPoliciesForWebsiteURLs:(id)a3 replyHandler:(id)a4;
-- (void)setEffectivePolicy:(int64_t)a3 forType:(id)a4 identifiers:(id)a5 priority:(unint64_t)a6 organizationIdentifier:(id)a7 declarationIdentifier:(id)a8 completionHandler:(id)a9;
+- (id)_effectiveCategoryPoliciesForCategoryShieldPolicy:(id)policy type:(id)type excludedIdentifiersKey:(id)key;
+- (id)_effectivePoliciesForTypes:(id)types;
+- (id)_effectivePolicyForManagedSettingsIdentifier:(id)identifier type:(id)type excludedIdentifiers:(id)identifiers;
+- (id)_effectivePolicyForType:(id)type;
+- (id)_fetchCategoriesForBundleIdentifiers:(id)identifiers withError:(id *)error;
+- (id)_fetchCategoriesIfNeededForWebsiteURLs:(id)ls withError:(id *)error;
+- (id)_fetchParentBundleIdentifiersForBundleIdentifiers:(id)identifiers;
+- (void)_appendPolicyForBundleIdentifiers:(id)identifiers toPolicies:(id)policies categories:(id)categories parentBundleIdentifiers:(id)bundleIdentifiers policiesByType:(id)type;
+- (void)_appendPolicyForCategoryIdentifiers:(id)identifiers toPolicies:(id)policies policiesByType:(id)type;
+- (void)_appendPolicyForWebsiteURLs:(id)ls toPolicies:(id)policies categories:(id)categories policiesByType:(id)type;
+- (void)_clearPolicyCachesForTypes:(id)types;
+- (void)_enableEmergencyModeUntilDate:(id)date referenceDate:(id)referenceDate withCompletionHandler:(id)handler;
+- (void)_handleChangesToPolicyTypes:(id)types;
+- (void)_notifyClientsRegisteredForPolicyTypes:(id)types;
+- (void)_performBackgroundTask:(id)task;
+- (void)_performBackgroundTaskAndWait:(id)wait;
+- (void)_performRegistrationBackgroundTask:(id)task;
+- (void)_recalculateEffectivePolicyForTypes:(id)types;
+- (void)_removeOrphanedPoliciesFromFetchRequest:(id)request managedObjectContext:(id)context completionHandler:(id)handler;
+- (void)addRegistration:(id)registration replyHandler:(id)handler;
+- (void)allExpiredScreenTimeBudgetsShouldBeSynchronous:(BOOL)synchronous replyHandler:(id)handler;
+- (void)disableEmergencyModeWithCompletionHandler:(id)handler;
+- (void)emergencyModeStatusWithCompletionHandler:(id)handler;
+- (void)enableEmergencyModeForDuration:(double)duration withCompletionHandler:(id)handler;
+- (void)enableEmergencyModeWithCompletionHandler:(id)handler;
+- (void)handleAlarmWithIdentifier:(id)identifier;
+- (void)handleDistributedNotificationWithName:(id)name userInfo:(id)info;
+- (void)handleManagedEffectiveSettingsChangeInGroup:(id)group;
+- (void)handleNotifyMatchingNotificationWithName:(id)name;
+- (void)removeEffectivePolicyFromOrganizationIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier completionHandler:(id)handler;
+- (void)removeOrphanedPoliciesNotBelongingToExistingDeclarationIdentifiersByOrganizationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeOrphanedPoliciesNotBelongingToExistingOrganizationIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestCommunicationPoliciesForBundleIdentifiers:(id)identifiers replyHandler:(id)handler;
+- (void)requestPoliciesForBundleIdentifiers:(id)identifiers replyHandler:(id)handler;
+- (void)requestPoliciesForCategoryIdentifiers:(id)identifiers replyHandler:(id)handler;
+- (void)requestPoliciesForTypes:(id)types replyHandler:(id)handler;
+- (void)requestPoliciesForWebsiteURLs:(id)ls replyHandler:(id)handler;
+- (void)setEffectivePolicy:(int64_t)policy forType:(id)type identifiers:(id)identifiers priority:(unint64_t)priority organizationIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier completionHandler:(id)handler;
 @end
 
 @implementation DMDPolicyPersistence
@@ -61,9 +61,9 @@
   return v6;
 }
 
-- (DMDPolicyPersistence)initWithPersistentStoreDescriptions:(id)a3
+- (DMDPolicyPersistence)initWithPersistentStoreDescriptions:(id)descriptions
 {
-  v4 = a3;
+  descriptionsCopy = descriptions;
   v38.receiver = self;
   v38.super_class = DMDPolicyPersistence;
   v5 = [(DMDPolicyPersistence *)&v38 init];
@@ -82,7 +82,7 @@
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = [v4 copy];
+    v11 = [descriptionsCopy copy];
     v12 = [v11 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v12)
     {
@@ -143,7 +143,7 @@
   return v5;
 }
 
-- (BOOL)_loadPersistentStoreIfNeeded:(id *)a3
+- (BOOL)_loadPersistentStoreIfNeeded:(id *)needed
 {
   v12 = 0;
   v13 = &v12;
@@ -151,8 +151,8 @@
   v15 = sub_10005E6DC;
   v16 = sub_10005E6EC;
   v17 = 0;
-  v5 = [(DMDPolicyPersistence *)self persistentContainer];
-  objc_sync_enter(v5);
+  persistentContainer = [(DMDPolicyPersistence *)self persistentContainer];
+  objc_sync_enter(persistentContainer);
   if (![(DMDPolicyPersistence *)self isPersistentContainerLoaded])
   {
     v9[0] = _NSConcreteStackBlock;
@@ -161,16 +161,16 @@
     v9[3] = &unk_1000CFBC0;
     v11 = &v12;
     v9[4] = self;
-    v10 = v5;
+    v10 = persistentContainer;
     [v10 loadPersistentStoresWithCompletionHandler:v9];
   }
 
-  v6 = [(DMDPolicyPersistence *)self isPersistentContainerLoaded];
-  objc_sync_exit(v5);
+  isPersistentContainerLoaded = [(DMDPolicyPersistence *)self isPersistentContainerLoaded];
+  objc_sync_exit(persistentContainer);
 
-  if (a3)
+  if (needed)
   {
-    v7 = v6;
+    v7 = isPersistentContainerLoaded;
   }
 
   else
@@ -180,16 +180,16 @@
 
   if ((v7 & 1) == 0)
   {
-    *a3 = v13[5];
+    *needed = v13[5];
   }
 
   _Block_object_dispose(&v12, 8);
-  return v6;
+  return isPersistentContainerLoaded;
 }
 
-- (void)_performRegistrationBackgroundTask:(id)a3
+- (void)_performRegistrationBackgroundTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v11 = 0;
   v5 = [(DMDPolicyPersistence *)self _loadPersistentStoreIfNeeded:&v11];
   v6 = v11;
@@ -200,20 +200,20 @@
     v8[1] = 3221225472;
     v8[2] = sub_10005EAE8;
     v9 = v8[3] = &unk_1000CF450;
-    v10 = v4;
+    v10 = taskCopy;
     v7 = v9;
     [v7 performBlock:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(taskCopy + 2))(taskCopy, 0, v6);
   }
 }
 
-- (void)_performBackgroundTask:(id)a3
+- (void)_performBackgroundTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v11 = 0;
   v5 = [(DMDPolicyPersistence *)self _loadPersistentStoreIfNeeded:&v11];
   v6 = v11;
@@ -224,20 +224,20 @@
     v8[1] = 3221225472;
     v8[2] = sub_10005EC00;
     v9 = v8[3] = &unk_1000CF450;
-    v10 = v4;
+    v10 = taskCopy;
     v7 = v9;
     [v7 performBlock:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(taskCopy + 2))(taskCopy, 0, v6);
   }
 }
 
-- (void)_performBackgroundTaskAndWait:(id)a3
+- (void)_performBackgroundTaskAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v11 = 0;
   v5 = [(DMDPolicyPersistence *)self _loadPersistentStoreIfNeeded:&v11];
   v6 = v11;
@@ -248,48 +248,48 @@
     v8[1] = 3221225472;
     v8[2] = sub_10005ED18;
     v9 = v8[3] = &unk_1000CF450;
-    v10 = v4;
+    v10 = waitCopy;
     v7 = v9;
     [v7 performBlockAndWait:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(waitCopy + 2))(waitCopy, 0, v6);
   }
 }
 
-- (void)addRegistration:(id)a3 replyHandler:(id)a4
+- (void)addRegistration:(id)registration replyHandler:(id)handler
 {
-  v6 = a3;
+  registrationCopy = registration;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10005EDF4;
   v9[3] = &unk_1000CFBE8;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v7 = v6;
-  v8 = v12;
+  selfCopy = self;
+  handlerCopy = handler;
+  v10 = registrationCopy;
+  v7 = registrationCopy;
+  v8 = handlerCopy;
   [(DMDPolicyPersistence *)self _performRegistrationBackgroundTask:v9];
 }
 
-- (void)requestPoliciesForTypes:(id)a3 replyHandler:(id)a4
+- (void)requestPoliciesForTypes:(id)types replyHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [(DMDPolicyPersistence *)self _effectivePoliciesForTypes:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  handlerCopy = handler;
+  v8 = [(DMDPolicyPersistence *)self _effectivePoliciesForTypes:types];
+  (*(handler + 2))(handlerCopy, v8, 0);
 }
 
-- (id)_effectivePoliciesForTypes:(id)a3
+- (id)_effectivePoliciesForTypes:(id)types
 {
-  v4 = a3;
-  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  typesCopy = types;
+  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(typesCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -320,35 +320,35 @@
   return v13;
 }
 
-- (id)_effectivePolicyForType:(id)a3
+- (id)_effectivePolicyForType:(id)type
 {
-  v4 = a3;
-  v5 = [(DMDPolicyPersistence *)self effectivePolicyCache];
-  objc_sync_enter(v5);
-  v6 = [(DMDPolicyPersistence *)self effectivePolicyCache];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  effectivePolicyCache = [(DMDPolicyPersistence *)self effectivePolicyCache];
+  objc_sync_enter(effectivePolicyCache);
+  effectivePolicyCache2 = [(DMDPolicyPersistence *)self effectivePolicyCache];
+  v7 = [effectivePolicyCache2 objectForKeyedSubscript:typeCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(effectivePolicyCache);
 
   return v7;
 }
 
-- (void)_recalculateEffectivePolicyForTypes:(id)a3
+- (void)_recalculateEffectivePolicyForTypes:(id)types
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10005F51C;
   v5[3] = &unk_1000CFC10;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  typesCopy = types;
+  selfCopy = self;
+  v4 = typesCopy;
   [(DMDPolicyPersistence *)self _performBackgroundTaskAndWait:v5];
 }
 
-- (BOOL)isInLegacyDowntimeWithPolicies:(id)a3 priorities:(id)a4
+- (BOOL)isInLegacyDowntimeWithPolicies:(id)policies priorities:(id)priorities
 {
-  v5 = a3;
-  v6 = a4;
+  policiesCopy = policies;
+  prioritiesCopy = priorities;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -369,20 +369,20 @@
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
-        v13 = [v6 objectForKeyedSubscript:v11];
-        v14 = [v12 integerValue];
-        v15 = [v13 integerValue];
+        v12 = [policiesCopy objectForKeyedSubscript:v11];
+        v13 = [prioritiesCopy objectForKeyedSubscript:v11];
+        integerValue = [v12 integerValue];
+        integerValue2 = [v13 integerValue];
         v16 = DMFHighestPolicyPriority;
 
-        if (v14)
+        if (integerValue)
         {
           v17 = 1;
         }
 
         else
         {
-          v17 = v15 == v16;
+          v17 = integerValue2 == v16;
         }
 
         if (!v17)
@@ -408,14 +408,14 @@ LABEL_14:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(DMDPolicyPersistence *)self effectiveSettingsStore];
-    v4 = [v3 screenTime];
-    v5 = [v4 categoryShieldPolicies];
+    effectiveSettingsStore = [(DMDPolicyPersistence *)self effectiveSettingsStore];
+    screenTime = [effectiveSettingsStore screenTime];
+    categoryShieldPolicies = [screenTime categoryShieldPolicies];
 
-    if (v5)
+    if (categoryShieldPolicies)
     {
       v6 = +[MOCategory all];
-      v7 = [v5 objectForKeyedSubscript:v6];
+      v7 = [categoryShieldPolicies objectForKeyedSubscript:v6];
 
       if (v7)
       {
@@ -442,17 +442,17 @@ LABEL_14:
   return v8;
 }
 
-- (id)_effectiveCategoryPoliciesForCategoryShieldPolicy:(id)a3 type:(id)a4 excludedIdentifiersKey:(id)a5
+- (id)_effectiveCategoryPoliciesForCategoryShieldPolicy:(id)policy type:(id)type excludedIdentifiersKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  policyCopy = policy;
+  typeCopy = type;
+  keyCopy = key;
   v11 = objc_opt_new();
-  v12 = [v8 policy];
-  if (v12 == 2)
+  policy = [policyCopy policy];
+  if (policy == 2)
   {
-    v23 = [v8 excludedContent];
-    v14 = [v23 valueForKey:v10];
+    excludedContent = [policyCopy excludedContent];
+    v14 = [excludedContent valueForKey:keyCopy];
 
     if (v14)
     {
@@ -461,13 +461,13 @@ LABEL_14:
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v16 = +[DMFEffectivePolicy downtimeCategoryIdentifiers];
-      v24 = [v16 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      specificCategories = +[DMFEffectivePolicy downtimeCategoryIdentifiers];
+      v24 = [specificCategories countByEnumeratingWithState:&v33 objects:v41 count:16];
       if (v24)
       {
         v25 = v24;
         v31 = v14;
-        v32 = v10;
+        v32 = keyCopy;
         v26 = *v34;
         do
         {
@@ -475,14 +475,14 @@ LABEL_14:
           {
             if (*v34 != v26)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(specificCategories);
             }
 
-            v28 = [(DMDPolicyPersistence *)self _effectivePolicyForManagedSettingsIdentifier:*(*(&v33 + 1) + 8 * i) type:v9 excludedIdentifiers:v15];
+            v28 = [(DMDPolicyPersistence *)self _effectivePolicyForManagedSettingsIdentifier:*(*(&v33 + 1) + 8 * i) type:typeCopy excludedIdentifiers:v15];
             [v11 addObject:v28];
           }
 
-          v25 = [v16 countByEnumeratingWithState:&v33 objects:v41 count:16];
+          v25 = [specificCategories countByEnumeratingWithState:&v33 objects:v41 count:16];
         }
 
         while (v25);
@@ -495,13 +495,13 @@ LABEL_21:
 
   else
   {
-    if (v12 != 1)
+    if (policy != 1)
     {
       goto LABEL_23;
     }
 
-    v13 = [v8 excludedContent];
-    v14 = [v13 valueForKey:v10];
+    excludedContent2 = [policyCopy excludedContent];
+    v14 = [excludedContent2 valueForKey:keyCopy];
 
     if (v14)
     {
@@ -510,14 +510,14 @@ LABEL_21:
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v16 = [v8 specificCategories];
-      v17 = [v16 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      specificCategories = [policyCopy specificCategories];
+      v17 = [specificCategories countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v17)
       {
         v18 = v17;
         v31 = v14;
-        v32 = v10;
-        v30 = v8;
+        v32 = keyCopy;
+        v30 = policyCopy;
         v19 = *v38;
         do
         {
@@ -525,22 +525,22 @@ LABEL_21:
           {
             if (*v38 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(specificCategories);
             }
 
-            v21 = [*(*(&v37 + 1) + 8 * j) identifier];
-            v22 = [(DMDPolicyPersistence *)self _effectivePolicyForManagedSettingsIdentifier:v21 type:v9 excludedIdentifiers:v15];
+            identifier = [*(*(&v37 + 1) + 8 * j) identifier];
+            v22 = [(DMDPolicyPersistence *)self _effectivePolicyForManagedSettingsIdentifier:identifier type:typeCopy excludedIdentifiers:v15];
             [v11 addObject:v22];
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v37 objects:v42 count:16];
+          v18 = [specificCategories countByEnumeratingWithState:&v37 objects:v42 count:16];
         }
 
         while (v18);
-        v8 = v30;
+        policyCopy = v30;
 LABEL_20:
         v14 = v31;
-        v10 = v32;
+        keyCopy = v32;
         goto LABEL_21;
       }
 
@@ -553,37 +553,37 @@ LABEL_23:
   return v11;
 }
 
-- (id)_effectivePolicyForManagedSettingsIdentifier:(id)a3 type:(id)a4 excludedIdentifiers:(id)a5
+- (id)_effectivePolicyForManagedSettingsIdentifier:(id)identifier type:(id)type excludedIdentifiers:(id)identifiers
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifiersCopy = identifiers;
+  typeCopy = type;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
-  [v10 setType:v8];
+  [v10 setType:typeCopy];
 
-  [v10 setIdentifier:v9];
+  [v10 setIdentifier:identifierCopy];
   [v10 setOrganizationIdentifier:@"com.apple.ManagedSettings"];
   [v10 setDeclarationIdentifier:@"com.apple.ManagedSettings.declaration-identifier"];
   [v10 setPolicy:5];
   [v10 setPriority:DMFLowestPolicyPriority];
-  [v10 setExcludedIdentifiers:v7];
+  [v10 setExcludedIdentifiers:identifiersCopy];
 
   return v10;
 }
 
-- (void)requestPoliciesForBundleIdentifiers:(id)a3 replyHandler:(id)a4
+- (void)requestPoliciesForBundleIdentifiers:(id)identifiers replyHandler:(id)handler
 {
-  v6 = a3;
-  v39 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   obj = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
   objc_sync_enter(obj);
-  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v41 = objc_opt_new();
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v8 = v6;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v9)
   {
@@ -599,8 +599,8 @@ LABEL_23:
         }
 
         v12 = *(*(&v52 + 1) + 8 * v11);
-        v13 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
-        v14 = [v13 objectForKey:v12];
+        bundleIdentifierPolicyCache = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
+        v14 = [bundleIdentifierPolicyCache objectForKey:v12];
 
         if (v14)
         {
@@ -625,21 +625,21 @@ LABEL_23:
   if ([v41 count])
   {
     v15 = +[DMFApplicationPolicyMonitor policyTypes];
-    v38 = [v15 allObjects];
+    allObjects = [v15 allObjects];
 
-    v37 = [(DMDPolicyPersistence *)self _effectivePoliciesForTypes:v38];
+    v37 = [(DMDPolicyPersistence *)self _effectivePoliciesForTypes:allObjects];
     if ([v37 count])
     {
       v16 = [(DMDPolicyPersistence *)self _fetchParentBundleIdentifiersForBundleIdentifiers:v41];
-      v17 = [v41 allObjects];
-      v18 = [NSMutableArray arrayWithArray:v17];
+      allObjects2 = [v41 allObjects];
+      v18 = [NSMutableArray arrayWithArray:allObjects2];
 
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v19 = [v16 allValues];
-      v20 = [v19 countByEnumeratingWithState:&v43 objects:v56 count:16];
+      allValues = [v16 allValues];
+      v20 = [allValues countByEnumeratingWithState:&v43 objects:v56 count:16];
       if (v20)
       {
         v21 = *v44;
@@ -650,17 +650,17 @@ LABEL_23:
           {
             if (*v44 != v21)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(allValues);
             }
 
-            v23 = [*(*(&v43 + 1) + 8 * v22) allObjects];
-            [v18 addObjectsFromArray:v23];
+            allObjects3 = [*(*(&v43 + 1) + 8 * v22) allObjects];
+            [v18 addObjectsFromArray:allObjects3];
 
             v22 = v22 + 1;
           }
 
           while (v20 != v22);
-          v20 = [v19 countByEnumeratingWithState:&v43 objects:v56 count:16];
+          v20 = [allValues countByEnumeratingWithState:&v43 objects:v56 count:16];
         }
 
         while (v20);
@@ -688,7 +688,7 @@ LABEL_23:
         v26 = v25;
       }
 
-      v39[2](v39, v27, v26);
+      handlerCopy[2](handlerCopy, v27, v26);
 
       v35 = v37;
     }
@@ -722,8 +722,8 @@ LABEL_23:
             }
 
             v33 = *(*(&v47 + 1) + 8 * v32);
-            v34 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
-            [v34 setObject:&off_1000D7A90 forKey:v33];
+            bundleIdentifierPolicyCache2 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
+            [bundleIdentifierPolicyCache2 setObject:&off_1000D7A90 forKey:v33];
 
             [v7 setObject:&off_1000D7A90 forKeyedSubscript:v33];
             v32 = v32 + 1;
@@ -736,38 +736,38 @@ LABEL_23:
         while (v30);
       }
 
-      v39[2](v39, v7, 0);
+      handlerCopy[2](handlerCopy, v7, 0);
       v35 = v37;
     }
   }
 
   else
   {
-    v39[2](v39, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)_appendPolicyForBundleIdentifiers:(id)a3 toPolicies:(id)a4 categories:(id)a5 parentBundleIdentifiers:(id)a6 policiesByType:(id)a7
+- (void)_appendPolicyForBundleIdentifiers:(id)identifiers toPolicies:(id)policies categories:(id)categories parentBundleIdentifiers:(id)bundleIdentifiers policiesByType:(id)type
 {
-  v11 = a3;
-  v76 = a4;
-  v12 = a5;
-  v69 = a6;
-  v13 = a7;
-  v68 = [v13 objectForKeyedSubscript:DMFEffectivePolicyTypeApplication];
-  v67 = [v13 objectForKeyedSubscript:DMFEffectivePolicyTypeApplicationCategory];
-  v66 = [v13 objectForKeyedSubscript:DMFEffectivePolicyTypeCategory];
-  v60 = v13;
-  v65 = [v13 objectForKeyedSubscript:DMFEffectivePolicyTypeWeb];
+  identifiersCopy = identifiers;
+  policiesCopy = policies;
+  categoriesCopy = categories;
+  bundleIdentifiersCopy = bundleIdentifiers;
+  typeCopy = type;
+  v68 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeApplication];
+  v67 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeApplicationCategory];
+  v66 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeCategory];
+  v60 = typeCopy;
+  v65 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeWeb];
   v61 = +[DMFEffectivePolicy unblockableCategoryIdentifiers];
   v14 = +[DMFEffectivePolicy unblockableBundleIdentifiers];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v15 = v11;
+  v15 = identifiersCopy;
   v16 = [v15 countByEnumeratingWithState:&v86 objects:v101 count:16];
   if (v16)
   {
@@ -787,25 +787,25 @@ LABEL_23:
         }
 
         v19 = *(*(&v86 + 1) + 8 * v18);
-        v20 = [v12 objectForKeyedSubscript:v19];
+        v20 = [categoriesCopy objectForKeyedSubscript:v19];
         v21 = v20;
         if (v20)
         {
-          v22 = [v20 identifier];
-          v81 = [v21 webDomains];
-          v23 = [v21 equivalentBundleIdentifiers];
+          identifier = [v20 identifier];
+          webDomains = [v21 webDomains];
+          equivalentBundleIdentifiers = [v21 equivalentBundleIdentifiers];
           v24 = [NSMutableSet setWithObject:v19];
-          if ([v23 count])
+          if ([equivalentBundleIdentifiers count])
           {
-            [v24 addObjectsFromArray:v23];
+            [v24 addObjectsFromArray:equivalentBundleIdentifiers];
           }
 
           v80 = v24;
-          v78 = v23;
+          v78 = equivalentBundleIdentifiers;
           v79 = v18;
           if ([v14 containsObject:v19])
           {
-            v25 = v22;
+            v25 = identifier;
             v26 = DMFPolicyLog();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
@@ -820,16 +820,16 @@ LABEL_23:
             goto LABEL_19;
           }
 
-          if (v22 && [v61 containsObject:v22])
+          if (identifier && [v61 containsObject:identifier])
           {
-            v25 = v22;
+            v25 = identifier;
             v26 = DMFPolicyLog();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
               v91 = v19;
               v92 = 2114;
-              v93 = v22;
+              v93 = identifier;
               v27 = v26;
               v28 = "Requested application %{public}@ with associated category %{public}@ is unblockable";
               v29 = 22;
@@ -839,25 +839,25 @@ LABEL_18:
 
 LABEL_19:
 
-            v30 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
-            [v30 setObject:&off_1000D7A90 forKey:v19];
+            bundleIdentifierPolicyCache = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
+            [bundleIdentifierPolicyCache setObject:&off_1000D7A90 forKey:v19];
 
-            [v76 setObject:&off_1000D7A90 forKeyedSubscript:v19];
+            [policiesCopy setObject:&off_1000D7A90 forKeyedSubscript:v19];
           }
 
           else
           {
             v31 = objc_opt_new();
-            v32 = [v69 objectForKeyedSubscript:v19];
+            v32 = [bundleIdentifiersCopy objectForKeyedSubscript:v19];
             v73 = v21;
-            v74 = v22;
+            v74 = identifier;
             if ([v32 count])
             {
               v33 = DMFPolicyLog();
               if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
               {
-                v34 = [v32 allObjects];
-                v35 = [v34 componentsJoinedByString:{@", "}];
+                allObjects = [v32 allObjects];
+                v35 = [allObjects componentsJoinedByString:{@", "}];
                 *buf = 138543618;
                 v91 = v19;
                 v92 = 2114;
@@ -886,24 +886,24 @@ LABEL_19:
                     }
 
                     v41 = *(*(&v82 + 1) + 8 * i);
-                    v42 = [v12 objectForKeyedSubscript:v41];
+                    v42 = [categoriesCopy objectForKeyedSubscript:v41];
                     v43 = v42;
                     if (v42)
                     {
-                      v44 = [v42 identifier];
-                      [v31 addObject:v44];
+                      identifier2 = [v42 identifier];
+                      [v31 addObject:identifier2];
                     }
 
                     else
                     {
-                      v44 = DMFPolicyLog();
-                      if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+                      identifier2 = DMFPolicyLog();
+                      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138543618;
                         v91 = v19;
                         v92 = 2114;
                         v93 = v41;
-                        _os_log_error_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "Requested application %{public}@ failed to categorize parent application %{public}@", buf, 0x16u);
+                        _os_log_error_impl(&_mh_execute_header, identifier2, OS_LOG_TYPE_ERROR, "Requested application %{public}@ failed to categorize parent application %{public}@", buf, 0x16u);
                       }
                     }
                   }
@@ -914,13 +914,13 @@ LABEL_19:
                 while (v38);
               }
 
-              v22 = v74;
+              identifier = v74;
               v32 = v71;
             }
 
-            if (v22)
+            if (identifier)
             {
-              v45 = [v31 arrayByAddingObject:v22];
+              v45 = [v31 arrayByAddingObject:identifier];
             }
 
             else
@@ -929,23 +929,23 @@ LABEL_19:
             }
 
             v46 = v45;
-            v47 = [v80 allObjects];
-            v48 = [DMFPrioritizedPolicy prioritizedPoliciesForAppPolicy:v68 appCategoryPolicy:v67 bundleIdentifiers:v47 categoryPolicy:v66 categoryIdentifiers:v46 webPolicy:v65 webCategoryPolicy:0 webDomains:v81];
+            allObjects2 = [v80 allObjects];
+            v48 = [DMFPrioritizedPolicy prioritizedPoliciesForAppPolicy:v68 appCategoryPolicy:v67 bundleIdentifiers:allObjects2 categoryPolicy:v66 categoryIdentifiers:v46 webPolicy:v65 webCategoryPolicy:0 webDomains:webDomains];
 
             v49 = [DMFPrioritizedPolicy arbitratePolicyForPrioritizedPolicies:v48];
-            v50 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
+            bundleIdentifierPolicyCache2 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
             v51 = [NSNumber numberWithInteger:v49];
-            [v50 setObject:v51 forKey:v19];
+            [bundleIdentifierPolicyCache2 setObject:v51 forKey:v19];
 
             v52 = [NSNumber numberWithInteger:v49];
-            [v76 setObject:v52 forKeyedSubscript:v19];
+            [policiesCopy setObject:v52 forKeyedSubscript:v19];
 
             v53 = DMFPolicyLog();
             if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
             {
               v54 = DMFPolicyUnlocalizedDisplayName();
               v62 = [v46 componentsJoinedByString:{@", "}];
-              v55 = [v81 componentsJoinedByString:{@", "}];
+              v55 = [webDomains componentsJoinedByString:{@", "}];
               [v80 allObjects];
               v72 = v48;
               v56 = v46;
@@ -1000,15 +1000,15 @@ LABEL_42:
   }
 }
 
-- (id)_fetchParentBundleIdentifiersForBundleIdentifiers:(id)a3
+- (id)_fetchParentBundleIdentifiersForBundleIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v22 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
+  identifiersCopy = identifiers;
+  v22 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [identifiersCopy count]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = identifiersCopy;
   v25 = [obj countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v25)
   {
@@ -1033,14 +1033,14 @@ LABEL_42:
           v26 = v8;
           v10 = objc_opt_new();
           v27 = v7;
-          v11 = [v7 appClipMetadata];
-          v12 = [v11 parentApplicationIdentifiers];
+          appClipMetadata = [v7 appClipMetadata];
+          parentApplicationIdentifiers = [appClipMetadata parentApplicationIdentifiers];
 
           v30 = 0u;
           v31 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v13 = v12;
+          v13 = parentApplicationIdentifiers;
           v14 = [v13 countByEnumeratingWithState:&v28 objects:v41 count:16];
           if (v14)
           {
@@ -1114,33 +1114,33 @@ LABEL_42:
   return v20;
 }
 
-- (void)requestCommunicationPoliciesForBundleIdentifiers:(id)a3 replyHandler:(id)a4
+- (void)requestCommunicationPoliciesForBundleIdentifiers:(id)identifiers replyHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006172C;
   v8[3] = &unk_1000CF1F8;
-  v9 = a3;
-  v10 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = identifiersCopy;
+  v7 = handlerCopy;
   [(DMDPolicyPersistence *)self requestPoliciesForBundleIdentifiers:v6 replyHandler:v8];
 }
 
-- (void)requestPoliciesForCategoryIdentifiers:(id)a3 replyHandler:(id)a4
+- (void)requestPoliciesForCategoryIdentifiers:(id)identifiers replyHandler:(id)handler
 {
-  v6 = a3;
-  v25 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   obj = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
   objc_sync_enter(obj);
-  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v27 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v6;
+  v8 = identifiersCopy;
   v9 = [v8 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v9)
   {
@@ -1156,8 +1156,8 @@ LABEL_42:
         }
 
         v12 = *(*(&v33 + 1) + 8 * v11);
-        v13 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
-        v14 = [v13 objectForKey:v12];
+        categoryIdentifierPolicyCache = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
+        v14 = [categoryIdentifierPolicyCache objectForKey:v12];
 
         if (v14)
         {
@@ -1182,9 +1182,9 @@ LABEL_42:
   if ([v27 count])
   {
     v15 = +[DMFCategoryPolicyMonitor policyTypes];
-    v23 = [v15 allObjects];
+    allObjects = [v15 allObjects];
 
-    v24 = [(DMDPolicyPersistence *)self _effectivePoliciesForTypes:v23];
+    v24 = [(DMDPolicyPersistence *)self _effectivePoliciesForTypes:allObjects];
     if ([v24 count])
     {
       [(DMDPolicyPersistence *)self _appendPolicyForCategoryIdentifiers:v27 toPolicies:v7 policiesByType:v24];
@@ -1219,8 +1219,8 @@ LABEL_42:
             }
 
             v21 = *(*(&v28 + 1) + 8 * v20);
-            v22 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
-            [v22 setObject:&off_1000D7A90 forKey:v21];
+            categoryIdentifierPolicyCache2 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
+            [categoryIdentifierPolicyCache2 setObject:&off_1000D7A90 forKey:v21];
 
             [v7 setObject:&off_1000D7A90 forKeyedSubscript:v21];
             v20 = v20 + 1;
@@ -1234,32 +1234,32 @@ LABEL_42:
       }
     }
 
-    v25[2](v25, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   else
   {
-    v25[2](v25, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)_appendPolicyForCategoryIdentifiers:(id)a3 toPolicies:(id)a4 policiesByType:(id)a5
+- (void)_appendPolicyForCategoryIdentifiers:(id)identifiers toPolicies:(id)policies policiesByType:(id)type
 {
-  v8 = a3;
-  v33 = a4;
-  v9 = a5;
-  v30 = [v9 objectForKeyedSubscript:DMFEffectivePolicyTypeApplicationCategory];
-  v29 = [v9 objectForKeyedSubscript:DMFEffectivePolicyTypeCategory];
-  v27 = v9;
-  v28 = [v9 objectForKeyedSubscript:DMFEffectivePolicyTypeWebCategory];
+  identifiersCopy = identifiers;
+  policiesCopy = policies;
+  typeCopy = type;
+  v30 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeApplicationCategory];
+  v29 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeCategory];
+  v27 = typeCopy;
+  v28 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeWebCategory];
   v10 = +[DMFEffectivePolicy unblockableCategoryIdentifiers];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v8;
+  obj = identifiersCopy;
   v11 = [obj countByEnumeratingWithState:&v34 objects:v43 count:16];
   if (v11)
   {
@@ -1287,10 +1287,10 @@ LABEL_42:
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Requested category %{public}@ is unblockable", buf, 0xCu);
           }
 
-          v17 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
-          [v17 setObject:&off_1000D7A90 forKey:v15];
+          categoryIdentifierPolicyCache = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
+          [categoryIdentifierPolicyCache setObject:&off_1000D7A90 forKey:v15];
 
-          [v33 setObject:&off_1000D7A90 forKeyedSubscript:v15];
+          [policiesCopy setObject:&off_1000D7A90 forKeyedSubscript:v15];
         }
 
         else
@@ -1301,12 +1301,12 @@ LABEL_42:
           v20 = [DMFPrioritizedPolicy prioritizedPoliciesForAppPolicy:0 appCategoryPolicy:v30 bundleIdentifiers:0 categoryPolicy:v29 categoryIdentifiers:v19 webPolicy:0 webCategoryPolicy:v28 webDomains:0];
 
           v21 = [DMFPrioritizedPolicy arbitratePolicyForPrioritizedPolicies:v20];
-          v22 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
+          categoryIdentifierPolicyCache2 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
           v23 = [NSNumber numberWithInteger:v21];
-          [v22 setObject:v23 forKey:v15];
+          [categoryIdentifierPolicyCache2 setObject:v23 forKey:v15];
 
           v24 = [NSNumber numberWithInteger:v21];
-          [v33 setObject:v24 forKeyedSubscript:v15];
+          [policiesCopy setObject:v24 forKeyedSubscript:v15];
 
           v25 = DMFPolicyLog();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1334,19 +1334,19 @@ LABEL_42:
   }
 }
 
-- (void)requestPoliciesForWebsiteURLs:(id)a3 replyHandler:(id)a4
+- (void)requestPoliciesForWebsiteURLs:(id)ls replyHandler:(id)handler
 {
-  v6 = a3;
-  v32 = a4;
+  lsCopy = ls;
+  handlerCopy = handler;
   obj = [(DMDPolicyPersistence *)self webDomainPolicyCache];
   objc_sync_enter(obj);
-  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(lsCopy, "count")}];
   v35 = objc_opt_new();
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = v6;
+  v8 = lsCopy;
   v9 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v9)
   {
@@ -1362,9 +1362,9 @@ LABEL_42:
         }
 
         v12 = *(*(&v42 + 1) + 8 * v11);
-        v13 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
-        v14 = [v12 host];
-        v15 = [v13 objectForKey:v14];
+        webDomainPolicyCache = [(DMDPolicyPersistence *)self webDomainPolicyCache];
+        host = [v12 host];
+        v15 = [webDomainPolicyCache objectForKey:host];
 
         if (v15)
         {
@@ -1389,9 +1389,9 @@ LABEL_42:
   if ([v35 count])
   {
     v16 = +[DMFWebsitePolicyMonitor policyTypes];
-    v31 = [v16 allObjects];
+    allObjects = [v16 allObjects];
 
-    v30 = [(DMDPolicyPersistence *)self _effectivePoliciesForTypes:v31];
+    v30 = [(DMDPolicyPersistence *)self _effectivePoliciesForTypes:allObjects];
     if ([v30 count])
     {
       v36 = 0;
@@ -1416,7 +1416,7 @@ LABEL_42:
         v19 = v18;
       }
 
-      v32[2](v32, v20, v19);
+      handlerCopy[2](handlerCopy, v20, v19);
 
       v28 = v30;
     }
@@ -1450,9 +1450,9 @@ LABEL_42:
             }
 
             v25 = *(*(&v37 + 1) + 8 * v24);
-            v26 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
-            v27 = [v25 host];
-            [v26 setObject:&off_1000D7A90 forKey:v27];
+            webDomainPolicyCache2 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
+            host2 = [v25 host];
+            [webDomainPolicyCache2 setObject:&off_1000D7A90 forKey:host2];
 
             [v7 setObject:&off_1000D7A90 forKeyedSubscript:v25];
             v24 = v24 + 1;
@@ -1465,43 +1465,43 @@ LABEL_42:
         while (v22);
       }
 
-      v32[2](v32, v7, 0);
+      handlerCopy[2](handlerCopy, v7, 0);
       v28 = v30;
     }
   }
 
   else
   {
-    v32[2](v32, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)_appendPolicyForWebsiteURLs:(id)a3 toPolicies:(id)a4 categories:(id)a5 policiesByType:(id)a6
+- (void)_appendPolicyForWebsiteURLs:(id)ls toPolicies:(id)policies categories:(id)categories policiesByType:(id)type
 {
-  v9 = a3;
-  v59 = a4;
-  v10 = a5;
-  v11 = a6;
-  v51 = [v11 objectForKeyedSubscript:DMFEffectivePolicyTypeApplication];
-  v50 = [v11 objectForKeyedSubscript:DMFEffectivePolicyTypeCategory];
-  v49 = [v11 objectForKeyedSubscript:DMFEffectivePolicyTypeWeb];
-  v43 = v11;
-  v48 = [v11 objectForKeyedSubscript:DMFEffectivePolicyTypeWebCategory];
+  lsCopy = ls;
+  policiesCopy = policies;
+  categoriesCopy = categories;
+  typeCopy = type;
+  v51 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeApplication];
+  v50 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeCategory];
+  v49 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeWeb];
+  v43 = typeCopy;
+  v48 = [typeCopy objectForKeyedSubscript:DMFEffectivePolicyTypeWebCategory];
   v52 = +[DMFEffectivePolicy unblockableBundleIdentifiers];
   v44 = +[DMFEffectivePolicy unblockableCategoryIdentifiers];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v9;
+  obj = lsCopy;
   v12 = [obj countByEnumeratingWithState:&v65 objects:v82 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v66;
-    v47 = v10;
+    v47 = categoriesCopy;
     v57 = *v66;
     do
     {
@@ -1515,78 +1515,78 @@ LABEL_42:
         }
 
         v16 = *(*(&v65 + 1) + 8 * v15);
-        v17 = [v10 objectForKeyedSubscript:v16];
-        v18 = [v17 identifier];
-        v19 = [v17 bundleIdentifier];
-        v20 = [v17 webDomains];
-        v64 = [v17 equivalentBundleIdentifiers];
-        v21 = [v16 host];
-        if (v21)
+        v17 = [categoriesCopy objectForKeyedSubscript:v16];
+        identifier = [v17 identifier];
+        bundleIdentifier = [v17 bundleIdentifier];
+        webDomains = [v17 webDomains];
+        equivalentBundleIdentifiers = [v17 equivalentBundleIdentifiers];
+        host = [v16 host];
+        if (host)
         {
-          v22 = v10;
-          v23 = [NSMutableSet setWithObject:v21];
-          if ([v20 count])
+          v22 = categoriesCopy;
+          v23 = [NSMutableSet setWithObject:host];
+          if ([webDomains count])
           {
-            [v23 addObjectsFromArray:v20];
+            [v23 addObjectsFromArray:webDomains];
           }
 
           v24 = objc_opt_new();
           v25 = v24;
-          if (v19)
+          if (bundleIdentifier)
           {
-            [v24 addObject:v19];
+            [v24 addObject:bundleIdentifier];
           }
 
           v63 = v25;
-          if ([v64 count])
+          if ([equivalentBundleIdentifiers count])
           {
-            [v25 addObjectsFromArray:v64];
+            [v25 addObjectsFromArray:equivalentBundleIdentifiers];
           }
 
-          v61 = v20;
+          v61 = webDomains;
           v62 = v23;
-          if (v19 && [v52 containsObject:v19])
+          if (bundleIdentifier && [v52 containsObject:bundleIdentifier])
           {
             v26 = DMFPolicyLog();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v70 = v19;
+              v70 = bundleIdentifier;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Requested website with associated bundle identifier %{public}@ is unblockable", buf, 0xCu);
             }
 
             goto LABEL_22;
           }
 
-          if (v18)
+          if (identifier)
           {
-            if ([v44 containsObject:v18])
+            if ([v44 containsObject:identifier])
             {
               v26 = DMFPolicyLog();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v70 = v18;
+                v70 = identifier;
                 _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Requested website with associated category %{public}@ is unblockable", buf, 0xCu);
               }
 
 LABEL_22:
 
-              v27 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
-              [v27 setObject:&off_1000D7A90 forKey:v21];
+              webDomainPolicyCache = [(DMDPolicyPersistence *)self webDomainPolicyCache];
+              [webDomainPolicyCache setObject:&off_1000D7A90 forKey:host];
 
-              [v59 setObject:&off_1000D7A90 forKeyedSubscript:v16];
+              [policiesCopy setObject:&off_1000D7A90 forKeyedSubscript:v16];
               v28 = v60;
-              v10 = v22;
+              categoriesCopy = v22;
               v14 = v57;
 LABEL_31:
 
-              v20 = v61;
+              webDomains = v61;
               goto LABEL_32;
             }
 
-            v56 = v18;
-            v79 = v18;
+            v56 = identifier;
+            v79 = identifier;
             v30 = [NSArray arrayWithObjects:&v79 count:1];
           }
 
@@ -1596,18 +1596,18 @@ LABEL_31:
             v30 = 0;
           }
 
-          v31 = [v25 allObjects];
-          v32 = [v23 allObjects];
-          v33 = [DMFPrioritizedPolicy prioritizedPoliciesForAppPolicy:v51 appCategoryPolicy:0 bundleIdentifiers:v31 categoryPolicy:v50 categoryIdentifiers:v30 webPolicy:v49 webCategoryPolicy:v48 webDomains:v32];
+          allObjects = [v25 allObjects];
+          allObjects2 = [v23 allObjects];
+          v33 = [DMFPrioritizedPolicy prioritizedPoliciesForAppPolicy:v51 appCategoryPolicy:0 bundleIdentifiers:allObjects categoryPolicy:v50 categoryIdentifiers:v30 webPolicy:v49 webCategoryPolicy:v48 webDomains:allObjects2];
 
           v55 = v33;
           v34 = [DMFPrioritizedPolicy arbitratePolicyForPrioritizedPolicies:v33];
-          v35 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
+          webDomainPolicyCache2 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
           v36 = [NSNumber numberWithInteger:v34];
-          [v35 setObject:v36 forKey:v21];
+          [webDomainPolicyCache2 setObject:v36 forKey:host];
 
           v37 = [NSNumber numberWithInteger:v34];
-          [v59 setObject:v37 forKeyedSubscript:v16];
+          [policiesCopy setObject:v37 forKeyedSubscript:v16];
 
           v38 = DMFPolicyLog();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -1615,10 +1615,10 @@ LABEL_31:
             DMFPolicyUnlocalizedDisplayName();
             v39 = v53 = v30;
             v45 = [v53 componentsJoinedByString:{@", "}];
-            v46 = [v62 allObjects];
-            v40 = [v46 componentsJoinedByString:{@", "}];
-            v41 = [v63 allObjects];
-            v42 = [v41 componentsJoinedByString:{@", "}];
+            allObjects3 = [v62 allObjects];
+            v40 = [allObjects3 componentsJoinedByString:{@", "}];
+            allObjects4 = [v63 allObjects];
+            v42 = [allObjects4 componentsJoinedByString:{@", "}];
             *buf = 138740995;
             v70 = v16;
             v71 = 2114;
@@ -1634,8 +1634,8 @@ LABEL_31:
             v30 = v53;
           }
 
-          v10 = v47;
-          v18 = v56;
+          categoriesCopy = v47;
+          identifier = v56;
           v14 = v57;
           v28 = v60;
           goto LABEL_31;
@@ -1647,7 +1647,7 @@ LABEL_31:
           sub_10008662C(&v80, &v81);
         }
 
-        [v59 setObject:&off_1000D7A90 forKeyedSubscript:v16];
+        [policiesCopy setObject:&off_1000D7A90 forKeyedSubscript:v16];
         v28 = v60;
 LABEL_32:
 
@@ -1662,9 +1662,9 @@ LABEL_32:
   }
 }
 
-- (id)_fetchCategoriesForBundleIdentifiers:(id)a3 withError:(id *)a4
+- (id)_fetchCategoriesForBundleIdentifiers:(id)identifiers withError:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = [[NSConditionLock alloc] initWithCondition:0];
   v29 = 0;
   v30 = &v29;
@@ -1688,7 +1688,7 @@ LABEL_32:
   v8 = v6;
   v19 = v8;
   v22 = 1;
-  [v7 categoriesForBundleIDs:v5 completionHandler:&v15];
+  [v7 categoriesForBundleIDs:identifiersCopy completionHandler:&v15];
 
   v9 = [NSDate dateWithTimeIntervalSinceNow:5.0, v15, v16, v17, v18];
   v10 = [v8 lockWhenCondition:1 beforeDate:v9];
@@ -1696,12 +1696,12 @@ LABEL_32:
   if (v10)
   {
     [v8 unlock];
-    if (a4)
+    if (error)
     {
       v11 = v30[5];
       if (v11)
       {
-        *a4 = v11;
+        *error = v11;
       }
     }
 
@@ -1716,10 +1716,10 @@ LABEL_32:
       sub_100086694();
     }
 
-    if (a4)
+    if (error)
     {
       DMFErrorWithCodeAndUserInfo();
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -1734,9 +1734,9 @@ LABEL_32:
   return v12;
 }
 
-- (id)_fetchCategoriesIfNeededForWebsiteURLs:(id)a3 withError:(id *)a4
+- (id)_fetchCategoriesIfNeededForWebsiteURLs:(id)ls withError:(id *)error
 {
-  v5 = a3;
+  lsCopy = ls;
   v6 = [[NSConditionLock alloc] initWithCondition:0];
   v7 = +[CTCategories sharedCategories];
   if (v7)
@@ -1762,19 +1762,19 @@ LABEL_32:
     v8 = v6;
     v19 = v8;
     v22 = 1;
-    [v7 categoriesForDomainURLs:v5 completionHandler:&v15];
+    [v7 categoriesForDomainURLs:lsCopy completionHandler:&v15];
     v9 = [NSDate dateWithTimeIntervalSinceNow:5.0, v15, v16, v17, v18];
     v10 = [v8 lockWhenCondition:1 beforeDate:v9];
 
     if (v10)
     {
       [v8 unlock];
-      if (a4)
+      if (error)
       {
         v11 = v30[5];
         if (v11)
         {
-          *a4 = v11;
+          *error = v11;
         }
       }
 
@@ -1789,10 +1789,10 @@ LABEL_32:
         sub_100086694();
       }
 
-      if (a4)
+      if (error)
       {
         DMFErrorWithCodeAndUserInfo();
-        *a4 = v12 = 0;
+        *error = v12 = 0;
       }
 
       else
@@ -1813,70 +1813,70 @@ LABEL_32:
   return v12;
 }
 
-- (void)setEffectivePolicy:(int64_t)a3 forType:(id)a4 identifiers:(id)a5 priority:(unint64_t)a6 organizationIdentifier:(id)a7 declarationIdentifier:(id)a8 completionHandler:(id)a9
+- (void)setEffectivePolicy:(int64_t)policy forType:(id)type identifiers:(id)identifiers priority:(unint64_t)priority organizationIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier completionHandler:(id)handler
 {
-  v15 = a4;
+  typeCopy = type;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10006344C;
   v21[3] = &unk_1000CFC60;
-  v22 = a5;
-  v23 = a7;
-  v24 = a8;
-  v25 = self;
-  v26 = v15;
-  v27 = a9;
-  v28 = a3;
-  v29 = a6;
-  v16 = v15;
-  v17 = v24;
-  v18 = v23;
-  v19 = v22;
-  v20 = v27;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  declarationIdentifierCopy = declarationIdentifier;
+  selfCopy = self;
+  v26 = typeCopy;
+  handlerCopy = handler;
+  policyCopy = policy;
+  priorityCopy = priority;
+  v16 = typeCopy;
+  v17 = declarationIdentifierCopy;
+  v18 = identifierCopy;
+  v19 = identifiersCopy;
+  v20 = handlerCopy;
   [(DMDPolicyPersistence *)self _performBackgroundTask:v21];
 }
 
-- (BOOL)_upsertPolicy:(int64_t)a3 forType:(id)a4 identifier:(id)a5 priority:(unint64_t)a6 organizationIdentifier:(id)a7 declarationIdentifier:(id)a8 policyToUpdate:(id)a9 managedObjectContext:(id)a10
+- (BOOL)_upsertPolicy:(int64_t)policy forType:(id)type identifier:(id)identifier priority:(unint64_t)priority organizationIdentifier:(id)organizationIdentifier declarationIdentifier:(id)declarationIdentifier policyToUpdate:(id)update managedObjectContext:(id)self0
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  if (v19)
+  typeCopy = type;
+  identifierCopy = identifier;
+  organizationIdentifierCopy = organizationIdentifier;
+  declarationIdentifierCopy = declarationIdentifier;
+  updateCopy = update;
+  contextCopy = context;
+  if (updateCopy)
   {
-    v21 = [(DMDEffectivePolicy *)v19 policy]!= a3;
-    [(DMDEffectivePolicy *)v19 setPolicy:a3];
+    v21 = [(DMDEffectivePolicy *)updateCopy policy]!= policy;
+    [(DMDEffectivePolicy *)updateCopy setPolicy:policy];
     v22 = DMFPolicyLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138543874;
-      v25 = v19;
+      v25 = updateCopy;
       v26 = 2114;
-      v27 = v15;
+      v27 = typeCopy;
       v28 = 2114;
-      v29 = v16;
+      v29 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Updating existing policy %{public}@ of type %{public}@ identifier %{public}@", &v24, 0x20u);
     }
   }
 
   else
   {
-    v19 = [[DMDEffectivePolicy alloc] initWithContext:v20];
-    [(DMDEffectivePolicy *)v19 setType:v15];
-    [(DMDEffectivePolicy *)v19 setIdentifier:v16];
-    [(DMDEffectivePolicy *)v19 setOrganizationIdentifier:v17];
-    [(DMDEffectivePolicy *)v19 setDeclarationIdentifier:v18];
-    [(DMDEffectivePolicy *)v19 setPriority:a6];
-    [(DMDEffectivePolicy *)v19 setPolicy:a3];
+    updateCopy = [[DMDEffectivePolicy alloc] initWithContext:contextCopy];
+    [(DMDEffectivePolicy *)updateCopy setType:typeCopy];
+    [(DMDEffectivePolicy *)updateCopy setIdentifier:identifierCopy];
+    [(DMDEffectivePolicy *)updateCopy setOrganizationIdentifier:organizationIdentifierCopy];
+    [(DMDEffectivePolicy *)updateCopy setDeclarationIdentifier:declarationIdentifierCopy];
+    [(DMDEffectivePolicy *)updateCopy setPriority:priority];
+    [(DMDEffectivePolicy *)updateCopy setPolicy:policy];
     v22 = DMFPolicyLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138543618;
-      v25 = v19;
+      v25 = updateCopy;
       v26 = 2114;
-      v27 = v15;
+      v27 = typeCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Adding new policy %{public}@ of type %{public}@", &v24, 0x16u);
     }
 
@@ -1886,66 +1886,66 @@ LABEL_32:
   return v21;
 }
 
-- (void)removeEffectivePolicyFromOrganizationIdentifier:(id)a3 declarationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)removeEffectivePolicyFromOrganizationIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier completionHandler:(id)handler
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100063CD4;
   v11[3] = &unk_1000CFC88;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
-  v8 = v13;
-  v9 = v12;
-  v10 = v15;
+  identifierCopy = identifier;
+  declarationIdentifierCopy = declarationIdentifier;
+  selfCopy = self;
+  handlerCopy = handler;
+  v8 = declarationIdentifierCopy;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   [(DMDPolicyPersistence *)self _performBackgroundTask:v11];
 }
 
-- (void)removeOrphanedPoliciesNotBelongingToExistingOrganizationIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)removeOrphanedPoliciesNotBelongingToExistingOrganizationIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000641FC;
   v9[3] = &unk_1000CFBE8;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v7 = v6;
-  v8 = v12;
+  selfCopy = self;
+  handlerCopy = handler;
+  v10 = identifiersCopy;
+  v7 = identifiersCopy;
+  v8 = handlerCopy;
   [(DMDPolicyPersistence *)self _performBackgroundTask:v9];
 }
 
-- (void)removeOrphanedPoliciesNotBelongingToExistingDeclarationIdentifiersByOrganizationIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeOrphanedPoliciesNotBelongingToExistingDeclarationIdentifiersByOrganizationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000643A0;
   v9[3] = &unk_1000CFBE8;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v7 = v6;
-  v8 = v12;
+  selfCopy = self;
+  handlerCopy = handler;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
+  v8 = handlerCopy;
   [(DMDPolicyPersistence *)self _performBackgroundTask:v9];
 }
 
-- (void)_removeOrphanedPoliciesFromFetchRequest:(id)a3 managedObjectContext:(id)a4 completionHandler:(id)a5
+- (void)_removeOrphanedPoliciesFromFetchRequest:(id)request managedObjectContext:(id)context completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v45 = 0;
-  v10 = [a3 execute:&v45];
+  v10 = [request execute:&v45];
   v11 = v45;
   if (v10)
   {
     if ([v10 count])
     {
-      v35 = self;
+      selfCopy = self;
       v37 = v11;
-      v39 = v9;
+      v39 = handlerCopy;
       v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
       v13 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
       v41 = 0u;
@@ -1969,20 +1969,20 @@ LABEL_32:
             }
 
             v19 = *(*(&v41 + 1) + 8 * i);
-            v20 = [v19 type];
-            [v13 addObject:v20];
+            type = [v19 type];
+            [v13 addObject:type];
 
-            v21 = [v19 declarationIdentifier];
-            [v12 addObject:v21];
-            [v8 deleteObject:v19];
+            declarationIdentifier = [v19 declarationIdentifier];
+            [v12 addObject:declarationIdentifier];
+            [contextCopy deleteObject:v19];
             v22 = DMFPolicyLog();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v19 organizationIdentifier];
+              organizationIdentifier = [v19 organizationIdentifier];
               *buf = 138543618;
-              v47 = v21;
+              v47 = declarationIdentifier;
               v48 = 2114;
-              v49 = v23;
+              v49 = organizationIdentifier;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Removing orphaned policy %{public}@ in organization %{public}@", buf, 0x16u);
             }
           }
@@ -1993,10 +1993,10 @@ LABEL_32:
         while (v16);
       }
 
-      if ([v8 hasChanges])
+      if ([contextCopy hasChanges])
       {
         v40 = v37;
-        v24 = [v8 save:&v40];
+        v24 = [contextCopy save:&v40];
         v11 = v40;
 
         if (!v24)
@@ -2004,25 +2004,25 @@ LABEL_32:
           v25 = DMFPolicyLog();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v31 = [v13 allObjects];
-            v32 = [v31 componentsJoinedByString:{@", "}];
+            allObjects = [v13 allObjects];
+            v32 = [allObjects componentsJoinedByString:{@", "}];
             v33 = [v12 componentsJoinedByString:{@", "}];
-            v34 = [v11 verboseDescription];
+            verboseDescription = [v11 verboseDescription];
             *buf = 138543874;
             v47 = v32;
             v48 = 2114;
             v49 = v33;
             v50 = 2114;
-            v51 = v34;
+            v51 = verboseDescription;
             _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Could not remove orphaned policies types %{public}@ for declarations %{public}@: %{public}@", buf, 0x20u);
           }
 
           v26 = 0;
           v10 = v38;
-          v9 = v39;
+          handlerCopy = v39;
 LABEL_27:
 
-          (v9)[2](v9, v26);
+          (handlerCopy)[2](handlerCopy, v26);
           goto LABEL_28;
         }
       }
@@ -2041,8 +2041,8 @@ LABEL_27:
       v10 = v38;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v13 allObjects];
-        v29 = [v28 componentsJoinedByString:{@", "}];
+        allObjects2 = [v13 allObjects];
+        v29 = [allObjects2 componentsJoinedByString:{@", "}];
         v30 = [v12 componentsJoinedByString:{@", "}];
         *buf = 138543618;
         v47 = v29;
@@ -2052,11 +2052,11 @@ LABEL_27:
       }
 
       v26 = v12;
-      v9 = v39;
+      handlerCopy = v39;
       goto LABEL_27;
     }
 
-    (v9)[2](v9, &__NSArray0__struct);
+    (handlerCopy)[2](handlerCopy, &__NSArray0__struct);
   }
 
   else
@@ -2067,30 +2067,30 @@ LABEL_27:
       sub_1000867E8(v11);
     }
 
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_28:
 }
 
-- (void)_handleChangesToPolicyTypes:(id)a3
+- (void)_handleChangesToPolicyTypes:(id)types
 {
-  v4 = a3;
-  [(DMDPolicyPersistence *)self _recalculateEffectivePolicyForTypes:v4];
-  [(DMDPolicyPersistence *)self _clearPolicyCachesForTypes:v4];
-  [(DMDPolicyPersistence *)self _notifyClientsRegisteredForPolicyTypes:v4];
+  typesCopy = types;
+  [(DMDPolicyPersistence *)self _recalculateEffectivePolicyForTypes:typesCopy];
+  [(DMDPolicyPersistence *)self _clearPolicyCachesForTypes:typesCopy];
+  [(DMDPolicyPersistence *)self _notifyClientsRegisteredForPolicyTypes:typesCopy];
 }
 
-- (void)_clearPolicyCachesForTypes:(id)a3
+- (void)_clearPolicyCachesForTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = +[DMFApplicationPolicyMonitor policyTypes];
-  v6 = [v4 intersectsSet:v5];
+  v6 = [typesCopy intersectsSet:v5];
 
   if (v6)
   {
-    v7 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
-    objc_sync_enter(v7);
+    bundleIdentifierPolicyCache = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
+    objc_sync_enter(bundleIdentifierPolicyCache);
     v8 = DMFPolicyLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -2098,19 +2098,19 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Clearing app policy caches", buf, 2u);
     }
 
-    v9 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
-    [v9 removeAllObjects];
+    bundleIdentifierPolicyCache2 = [(DMDPolicyPersistence *)self bundleIdentifierPolicyCache];
+    [bundleIdentifierPolicyCache2 removeAllObjects];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(bundleIdentifierPolicyCache);
   }
 
   v10 = +[DMFCategoryPolicyMonitor policyTypes];
-  v11 = [v4 intersectsSet:v10];
+  v11 = [typesCopy intersectsSet:v10];
 
   if (v11)
   {
-    v12 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
-    objc_sync_enter(v12);
+    categoryIdentifierPolicyCache = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
+    objc_sync_enter(categoryIdentifierPolicyCache);
     v13 = DMFPolicyLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -2118,19 +2118,19 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Clearing category policy caches", v21, 2u);
     }
 
-    v14 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
-    [v14 removeAllObjects];
+    categoryIdentifierPolicyCache2 = [(DMDPolicyPersistence *)self categoryIdentifierPolicyCache];
+    [categoryIdentifierPolicyCache2 removeAllObjects];
 
-    objc_sync_exit(v12);
+    objc_sync_exit(categoryIdentifierPolicyCache);
   }
 
   v15 = +[DMFWebsitePolicyMonitor policyTypes];
-  v16 = [v4 intersectsSet:v15];
+  v16 = [typesCopy intersectsSet:v15];
 
   if (v16)
   {
-    v17 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
-    objc_sync_enter(v17);
+    webDomainPolicyCache = [(DMDPolicyPersistence *)self webDomainPolicyCache];
+    objc_sync_enter(webDomainPolicyCache);
     v18 = DMFPolicyLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -2138,62 +2138,62 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Clearing web domain policy caches", v20, 2u);
     }
 
-    v19 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
-    [v19 removeAllObjects];
+    webDomainPolicyCache2 = [(DMDPolicyPersistence *)self webDomainPolicyCache];
+    [webDomainPolicyCache2 removeAllObjects];
 
-    objc_sync_exit(v17);
+    objc_sync_exit(webDomainPolicyCache);
   }
 }
 
-- (void)_notifyClientsRegisteredForPolicyTypes:(id)a3
+- (void)_notifyClientsRegisteredForPolicyTypes:(id)types
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100064D98;
   v5[3] = &unk_1000CFCD8;
-  v6 = a3;
-  v4 = v6;
+  typesCopy = types;
+  v4 = typesCopy;
   [(DMDPolicyPersistence *)self _performRegistrationBackgroundTask:v5];
 }
 
-- (void)enableEmergencyModeWithCompletionHandler:(id)a3
+- (void)enableEmergencyModeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DMDPolicyPersistence *)self emergencyModeQueue];
+  handlerCopy = handler;
+  emergencyModeQueue = [(DMDPolicyPersistence *)self emergencyModeQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006510C;
   v7[3] = &unk_1000CE8C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_sync(emergencyModeQueue, v7);
 }
 
-- (void)enableEmergencyModeForDuration:(double)a3 withCompletionHandler:(id)a4
+- (void)enableEmergencyModeForDuration:(double)duration withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(DMDPolicyPersistence *)self emergencyModeQueue];
+  handlerCopy = handler;
+  emergencyModeQueue = [(DMDPolicyPersistence *)self emergencyModeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100065270;
   block[3] = &unk_1000CFD00;
-  v11 = a3;
+  durationCopy = duration;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_sync(emergencyModeQueue, block);
 }
 
-- (void)_enableEmergencyModeUntilDate:(id)a3 referenceDate:(id)a4 withCompletionHandler:(id)a5
+- (void)_enableEmergencyModeUntilDate:(id)date referenceDate:(id)referenceDate withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DMDPolicyPersistence *)self emergencyModeQueue];
-  dispatch_assert_queue_V2(v11);
+  dateCopy = date;
+  referenceDateCopy = referenceDate;
+  handlerCopy = handler;
+  emergencyModeQueue = [(DMDPolicyPersistence *)self emergencyModeQueue];
+  dispatch_assert_queue_V2(emergencyModeQueue);
 
-  if (!v8 || [v9 compare:v8] != -1)
+  if (!dateCopy || [referenceDateCopy compare:dateCopy] != -1)
   {
     v12 = DMFEmergencyModeLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2208,7 +2208,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v8 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v16 = (v15 * 1000000000.0);
   if (v16 <= 0)
   {
@@ -2232,54 +2232,54 @@ LABEL_5:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543362;
-    v19 = v8;
+    v19 = dateCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Enabling Emergency Mode until: %{public}@", &v18, 0xCu);
   }
 
   v13 = 0;
 LABEL_6:
-  v10[2](v10, v13);
+  handlerCopy[2](handlerCopy, v13);
 }
 
-- (void)disableEmergencyModeWithCompletionHandler:(id)a3
+- (void)disableEmergencyModeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DMDPolicyPersistence *)self emergencyModeQueue];
+  handlerCopy = handler;
+  emergencyModeQueue = [(DMDPolicyPersistence *)self emergencyModeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000655E0;
   block[3] = &unk_1000CF578;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_sync(emergencyModeQueue, block);
 }
 
-- (void)emergencyModeStatusWithCompletionHandler:(id)a3
+- (void)emergencyModeStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DMDPolicyPersistence *)self emergencyModeQueue];
+  handlerCopy = handler;
+  emergencyModeQueue = [(DMDPolicyPersistence *)self emergencyModeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100065750;
   block[3] = &unk_1000CF578;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_sync(emergencyModeQueue, block);
 }
 
-- (void)allExpiredScreenTimeBudgetsShouldBeSynchronous:(BOOL)a3 replyHandler:(id)a4
+- (void)allExpiredScreenTimeBudgetsShouldBeSynchronous:(BOOL)synchronous replyHandler:(id)handler
 {
-  v4 = a3;
+  synchronousCopy = synchronous;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100065B04;
   v12[3] = &unk_1000CFD28;
-  v5 = a4;
-  v13 = v5;
+  handlerCopy = handler;
+  v13 = handlerCopy;
   v6 = objc_retainBlock(v12);
   v7 = objc_opt_new();
   v8 = v7;
-  if (v4)
+  if (synchronousCopy)
   {
     v11 = 0;
     v9 = [v7 checkStatusOfBudgets:0 error:&v11];
@@ -2312,54 +2312,54 @@ LABEL_6:
   return v2;
 }
 
-- (void)handleAlarmWithIdentifier:(id)a3
+- (void)handleAlarmWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = DMFPolicyLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Handling alarm with identifier: %{public}@", &v5, 0xCu);
   }
 
-  if ([v3 isEqualToString:@"com.apple.dmd.emergency-mode.alarm"])
+  if ([identifierCopy isEqualToString:@"com.apple.dmd.emergency-mode.alarm"])
   {
     notify_post([DMFEmergencyModeChangedNotification UTF8String]);
   }
 }
 
-- (void)handleNotifyMatchingNotificationWithName:(id)a3
+- (void)handleNotifyMatchingNotificationWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = DMFPolicyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling notify matching notification with name: %{public}@", &v7, 0xCu);
   }
 
-  if ([v4 isEqualToString:@"com.apple.mobile.keybagd.first_unlock"])
+  if ([nameCopy isEqualToString:@"com.apple.mobile.keybagd.first_unlock"])
   {
     v6 = +[DMFPolicyMonitor allEffectivePolicyTypes];
     [(DMDPolicyPersistence *)self _handleChangesToPolicyTypes:v6];
   }
 }
 
-- (void)handleDistributedNotificationWithName:(id)a3 userInfo:(id)a4
+- (void)handleDistributedNotificationWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  infoCopy = info;
   v8 = DMFPolicyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling distributed notification with name: %{public}@", buf, 0xCu);
   }
 
-  if ([v6 isEqualToString:CTCategoriesDidChangeNotification])
+  if ([nameCopy isEqualToString:CTCategoriesDidChangeNotification])
   {
     v13[0] = DMFEffectivePolicyTypeApplicationCategory;
     v13[1] = DMFEffectivePolicyTypeCategory;
@@ -2372,12 +2372,12 @@ LABEL_6:
 
   else
   {
-    if (![v6 isEqualToString:@"com.apple.LaunchServices.applicationRegistered"])
+    if (![nameCopy isEqualToString:@"com.apple.LaunchServices.applicationRegistered"])
     {
       goto LABEL_10;
     }
 
-    v11 = [v7 objectForKeyedSubscript:@"isPlaceholder"];
+    v11 = [infoCopy objectForKeyedSubscript:@"isPlaceholder"];
     v10 = v11;
     if (v11 && ([v11 BOOLValue] & 1) == 0)
     {
@@ -2389,18 +2389,18 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)handleManagedEffectiveSettingsChangeInGroup:(id)a3
+- (void)handleManagedEffectiveSettingsChangeInGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = DMFPolicyLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v4;
+    v18 = groupCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling managed settings group change: %{public}@", buf, 0xCu);
   }
 
-  if ([v4 isEqualToString:MOEffectiveSettingsGroupShield])
+  if ([groupCopy isEqualToString:MOEffectiveSettingsGroupShield])
   {
     v13 = DMFEffectivePolicyTypeApplication;
     v14 = DMFEffectivePolicyTypeApplicationCategory;
@@ -2417,13 +2417,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:MOEffectiveSettingsGroupAccount])
+  if ([groupCopy isEqualToString:MOEffectiveSettingsGroupAccount])
   {
     v8 = [NSSet setWithObject:DMFEffectivePolicyTypeiCloudAccountLogout];
     goto LABEL_8;
   }
 
-  if (_os_feature_enabled_impl() && [v4 isEqualToString:MOEffectiveSettingsGroupScreenTime])
+  if (_os_feature_enabled_impl() && [groupCopy isEqualToString:MOEffectiveSettingsGroupScreenTime])
   {
     v9 = DMFEffectivePolicyTypeApplication;
     v10 = DMFEffectivePolicyTypeApplicationCategory;

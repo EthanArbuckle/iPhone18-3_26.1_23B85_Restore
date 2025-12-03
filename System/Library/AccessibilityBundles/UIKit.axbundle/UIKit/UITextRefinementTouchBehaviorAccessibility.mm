@@ -1,49 +1,49 @@
 @interface UITextRefinementTouchBehaviorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)textLoupeInteraction:(id)a3 gestureChangedWithState:(int64_t)a4 location:(id)a5 translation:(id)a6 velocity:(id)a7 modifierFlags:(int64_t)a8 shouldCancel:(BOOL *)a9;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)textLoupeInteraction:(id)interaction gestureChangedWithState:(int64_t)state location:(id)location translation:(id)translation velocity:(id)velocity modifierFlags:(int64_t)flags shouldCancel:(BOOL *)cancel;
 @end
 
 @implementation UITextRefinementTouchBehaviorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   v4 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UITextRefinementTouchBehavior";
   [location[0] validateClass:"@" hasInstanceMethod:"q" withFullSignature:{"@?", "@?", "@?", "q", "^B", 0}];
   [location[0] validateClass:v3 hasInstanceVariable:@"_activeSelectionMode" withType:"NSInteger"];
   objc_storeStrong(v5, v4);
 }
 
-- (void)textLoupeInteraction:(id)a3 gestureChangedWithState:(int64_t)a4 location:(id)a5 translation:(id)a6 velocity:(id)a7 modifierFlags:(int64_t)a8 shouldCancel:(BOOL *)a9
+- (void)textLoupeInteraction:(id)interaction gestureChangedWithState:(int64_t)state location:(id)location translation:(id)translation velocity:(id)velocity modifierFlags:(int64_t)flags shouldCancel:(BOOL *)cancel
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
+  objc_storeStrong(location, interaction);
+  stateCopy = state;
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, location);
   v18 = 0;
-  objc_storeStrong(&v18, a6);
+  objc_storeStrong(&v18, translation);
   v17 = 0;
-  objc_storeStrong(&v17, a7);
-  v16 = a8;
-  v15 = a9;
-  v14.receiver = v22;
+  objc_storeStrong(&v17, velocity);
+  flagsCopy = flags;
+  cancelCopy = cancel;
+  v14.receiver = selfCopy;
   v14.super_class = UITextRefinementTouchBehaviorAccessibility;
-  [(UITextRefinementTouchBehaviorAccessibility *)&v14 textLoupeInteraction:location[0] gestureChangedWithState:v20 location:v19 translation:v18 velocity:v17 modifierFlags:a8 shouldCancel:a9];
-  switch(v20)
+  [(UITextRefinementTouchBehaviorAccessibility *)&v14 textLoupeInteraction:location[0] gestureChangedWithState:stateCopy location:v19 translation:v18 velocity:v17 modifierFlags:flags shouldCancel:cancel];
+  switch(stateCopy)
   {
     case 1:
       UIAccessibilityPostNotification(0x43Au, 0);
       break;
     case 2:
-      if (![(UITextRefinementTouchBehaviorAccessibility *)v22 safeIntegerForKey:@"_activeSelectionMode"]&& !(++textLoupeInteraction_gestureChangedWithState_location_translation_velocity_modifierFlags_shouldCancel__count % 3))
+      if (![(UITextRefinementTouchBehaviorAccessibility *)selfCopy safeIntegerForKey:@"_activeSelectionMode"]&& !(++textLoupeInteraction_gestureChangedWithState_location_translation_velocity_modifierFlags_shouldCancel__count % 3))
       {
         UIAccessibilityPostNotification(0x439u, 0);
         textLoupeInteraction_gestureChangedWithState_location_translation_velocity_modifierFlags_shouldCancel__count = 0;

@@ -1,33 +1,33 @@
 @interface MTAWorldClockMapView
-+ (double)mapHeightForWidth:(double)a3;
++ (double)mapHeightForWidth:(double)width;
 + (void)updateNewYearsDay;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTAWorldClockMapView)initWithFrame:(CGRect)a3;
-- (double)maxWidthForDateStringWithFont:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTAWorldClockMapView)initWithFrame:(CGRect)frame;
+- (double)maxWidthForDateStringWithFont:(id)font;
 - (double)terminatorUpdateInterval;
-- (void)addCity:(id)a3 animated:(BOOL)a4;
+- (void)addCity:(id)city animated:(BOOL)animated;
 - (void)cancelTerminatorUpdate;
 - (void)didMoveToWindow;
 - (void)handleLocaleChange;
-- (void)handleSignificantTimeChange:(id)a3;
+- (void)handleSignificantTimeChange:(id)change;
 - (void)layoutSubviews;
-- (void)removeCity:(id)a3;
+- (void)removeCity:(id)city;
 - (void)resizeCityViews;
 - (void)scheduleTerminatorUpdate;
-- (void)setCities:(id)a3;
+- (void)setCities:(id)cities;
 - (void)startUpdatingTime;
 - (void)stopUpdatingTime;
 - (void)updateTerminator;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTAWorldClockMapView
 
-- (MTAWorldClockMapView)initWithFrame:(CGRect)a3
+- (MTAWorldClockMapView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = MTAWorldClockMapView;
-  v3 = [(MTAWorldClockMapView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTAWorldClockMapView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(NSDateFormatter);
@@ -55,9 +55,9 @@
     v22 = 0u;
     v23 = 0u;
     v12 = +[WorldClockManager sharedManager];
-    v13 = [v12 cities];
+    cities = [v12 cities];
 
-    v14 = [v13 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    v14 = [cities countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -69,7 +69,7 @@
         {
           if (*v23 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(cities);
           }
 
           [(MTAWorldClockMapView *)v3 addCity:*(*(&v22 + 1) + 8 * v17) animated:0];
@@ -77,7 +77,7 @@
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v15 = [cities countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v15);
@@ -106,7 +106,7 @@
   [(MTAWorldClockMapView *)self setNeedsLayout];
 }
 
-- (void)handleSignificantTimeChange:(id)a3
+- (void)handleSignificantTimeChange:(id)change
 {
   [objc_opt_class() updateNewYearsDay];
 
@@ -119,8 +119,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_cityViews allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_cityViews allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -131,7 +131,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -141,21 +141,21 @@
         [v8 setNeedsLayout];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (double)mapHeightForWidth:(double)a3
++ (double)mapHeightForWidth:(double)width
 {
   if (qword_1000D2A60 != -1)
   {
     sub_100073738();
   }
 
-  [qword_1000D2948[5 * sub_100020CB8(a3)] size];
+  [qword_1000D2948[5 * sub_100020CB8(width)] size];
   v5 = v4;
   v6 = MTUIShouldUseLargePadLayout();
   v7 = 10.0;
@@ -167,9 +167,9 @@
   return v5 + v7 * 2.0;
 }
 
-- (double)maxWidthForDateStringWithFont:(id)a3
+- (double)maxWidthForDateStringWithFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v6 = +[NSTimeZone systemTimeZone];
   [v5 setTimeZone:v6];
@@ -187,7 +187,7 @@
     [v7 setMinute:*(&v15 + v8 + 8)];
     v10 = [v5 dateFromComponents:v7];
     v11 = [(NSDateFormatter *)self->_timeFormatter stringFromDate:v10];
-    [v11 _legacy_sizeWithFont:v4];
+    [v11 _legacy_sizeWithFont:fontCopy];
     v13 = v12;
 
     if (v13 > v9)
@@ -203,14 +203,14 @@
   return v9 + 6.0;
 }
 
-- (void)addCity:(id)a3 animated:(BOOL)a4
+- (void)addCity:(id)city animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  cityCopy = city;
   cityViews = self->_cityViews;
-  v13 = v6;
-  v8 = [v6 alCityId];
-  v9 = [(NSMutableDictionary *)cityViews objectForKey:v8];
+  v13 = cityCopy;
+  alCityId = [cityCopy alCityId];
+  v9 = [(NSMutableDictionary *)cityViews objectForKey:alCityId];
 
   if (!v9)
   {
@@ -220,35 +220,35 @@
     [(MTAWorldClockMapCityView *)v10 setTimeLabelWidth:self->_maxTimeStringWidth];
     [(MTAWorldClockMapCityView *)v10 sizeToFit];
     v11 = self->_cityViews;
-    v12 = [v13 alCityId];
-    [(NSMutableDictionary *)v11 setObject:v10 forKey:v12];
+    alCityId2 = [v13 alCityId];
+    [(NSMutableDictionary *)v11 setObject:v10 forKey:alCityId2];
 
     [(MTAWorldClockMapView *)self addSubview:v10];
-    if (v4)
+    if (animatedCopy)
     {
       objc_storeStrong(&self->_addedCityView, v10);
     }
   }
 }
 
-- (void)removeCity:(id)a3
+- (void)removeCity:(id)city
 {
   cityViews = self->_cityViews;
-  v5 = a3;
-  v6 = [v5 alCityId];
-  v7 = [(NSMutableDictionary *)cityViews objectForKey:v6];
+  cityCopy = city;
+  alCityId = [cityCopy alCityId];
+  v7 = [(NSMutableDictionary *)cityViews objectForKey:alCityId];
 
   v8 = self->_cityViews;
-  v9 = [v5 alCityId];
+  alCityId2 = [cityCopy alCityId];
 
-  [(NSMutableDictionary *)v8 removeObjectForKey:v9];
+  [(NSMutableDictionary *)v8 removeObjectForKey:alCityId2];
   [(MTAWorldClockMapView *)self setNeedsLayout];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001EE14;
   v13[3] = &unk_1000ADAB0;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001EE54;
@@ -258,13 +258,13 @@
   [UIView animateWithDuration:0 delay:v13 options:v11 animations:0.3 completion:0.0];
 }
 
-- (void)setCities:(id)a3
+- (void)setCities:(id)cities
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cityViews allKeys];
-  v6 = [NSMutableSet setWithArray:v5];
+  citiesCopy = cities;
+  allKeys = [(NSMutableDictionary *)self->_cityViews allKeys];
+  v6 = [NSMutableSet setWithArray:allKeys];
 
-  v7 = [v4 valueForKey:@"alCityId"];
+  v7 = [citiesCopy valueForKey:@"alCityId"];
   v8 = [NSMutableSet setWithArray:v7];
 
   if (([v6 isEqualToSet:v8] & 1) == 0)
@@ -307,7 +307,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v15 = v4;
+    v15 = citiesCopy;
     v16 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v16)
     {
@@ -336,12 +336,12 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = [(MTAWorldClockMapView *)self window];
+  coordinatorCopy = coordinator;
+  window = [(MTAWorldClockMapView *)self window];
 
-  if (v6)
+  if (window)
   {
     v7 = [UISnapshotView alloc];
     [(UIImageView *)self->_mapWithTerminator frame];
@@ -353,22 +353,22 @@
     v12[2] = sub_10001F1F4;
     v12[3] = &unk_1000AD9A0;
     v13 = v8;
-    v14 = self;
+    selfCopy = self;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10001F248;
     v10[3] = &unk_1000AD9C8;
     v11 = v13;
     v9 = v13;
-    [v5 animateAlongsideTransition:v12 completion:v10];
+    [coordinatorCopy animateAlongsideTransition:v12 completion:v10];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  sub_10001F290(a3.width);
+  height = fits.height;
+  width = fits.width;
+  sub_10001F290(fits.width);
   v7 = v5 / v6;
   v8 = width / (v5 / v6);
   if (width / height >= v7)
@@ -394,9 +394,9 @@
   [(MTAWorldClockMapView *)&v4 didMoveToWindow];
   if (self->_needsUpdateTerminator)
   {
-    v3 = [(MTAWorldClockMapView *)self window];
+    window = [(MTAWorldClockMapView *)self window];
 
-    if (v3)
+    if (window)
     {
       [(MTAWorldClockMapView *)self updateTerminator];
     }
@@ -416,8 +416,8 @@
   v46 = v8;
   v47 = v10;
   [(UIImageView *)mapWithTerminator setFrame:v4, v6, v8, v10];
-  v12 = [(NSMutableDictionary *)self->_cityViews allValues];
-  v13 = [v12 count];
+  allValues = [(NSMutableDictionary *)self->_cityViews allValues];
+  v13 = [allValues count];
   v14 = __chkstk_darwin(v13);
   v15 = &v44 - 2 * v14;
   if (v14)
@@ -429,14 +429,14 @@
     f64 = v15[1].f64;
     do
     {
-      v18 = [v12 objectAtIndex:{v16, *&v44, v45}];
+      v18 = [allValues objectAtIndex:{v16, *&v44, v45}];
       [v18 setIconPlacement:1];
       v19 = v18;
-      v20 = [v19 city];
-      v21 = [v20 alCity];
-      [v21 latitude];
-      v22 = [v20 alCity];
-      [v22 longitude];
+      city = [v19 city];
+      alCity = [city alCity];
+      [alCity latitude];
+      alCity2 = [city alCity];
+      [alCity2 longitude];
       MTUILocationCoordinate2DMake();
       sub_100020B64(v23, v24, v46);
 
@@ -461,12 +461,12 @@
     }
 
     while (v13 != v16);
-    sub_10001F750(v15, v13, v12, v44.f64[0], v44.f64[1], v46, v47);
+    sub_10001F750(v15, v13, allValues, v44.f64[0], v44.f64[1], v46, v47);
     v32 = 0;
     v33 = v15[1].f64;
     do
     {
-      v34 = [v12 objectAtIndexedSubscript:v32];
+      v34 = [allValues objectAtIndexedSubscript:v32];
       v36 = *v33;
       v35 = v33[1];
       MTUIRoundToPixel();
@@ -512,7 +512,7 @@
 
   else
   {
-    sub_10001F750(&v44, v13, v12, v4, v6, v46, v47);
+    sub_10001F750(&v44, v13, allValues, v4, v6, v46, v47);
   }
 
   v43 = self->_addedCityView;
@@ -522,15 +522,15 @@
 - (void)startUpdatingTime
 {
   [(MTAWorldClockMapView *)self scheduleTerminatorUpdate];
-  v3 = [(NSMutableDictionary *)self->_cityViews allValues];
-  [v3 makeObjectsPerformSelector:"start"];
+  allValues = [(NSMutableDictionary *)self->_cityViews allValues];
+  [allValues makeObjectsPerformSelector:"start"];
 }
 
 - (void)stopUpdatingTime
 {
   [(MTAWorldClockMapView *)self cancelTerminatorUpdate];
-  v3 = [(NSMutableDictionary *)self->_cityViews allValues];
-  [v3 makeObjectsPerformSelector:"stop"];
+  allValues = [(NSMutableDictionary *)self->_cityViews allValues];
+  [allValues makeObjectsPerformSelector:"stop"];
 }
 
 - (double)terminatorUpdateInterval
@@ -578,9 +578,9 @@
     v3 = CGRectEqualToRect(v65, self->_lastTerminatorUpdateBounds);
     if (!v3 || ([(MTAWorldClockMapView *)self terminatorUpdateInterval], v5 = v4, [(NSDate *)self->_terminatorTimestamp timeIntervalSinceDate:obj], v5 - fabs(v6) < 1.0))
     {
-      v7 = [(MTAWorldClockMapView *)self window];
+      window = [(MTAWorldClockMapView *)self window];
 
-      if (v7)
+      if (window)
       {
         v61 = v3;
         [(MTAWorldClockMapView *)self bounds];
@@ -635,7 +635,7 @@
         v67.size.width = v19;
         v67.size.height = v20;
         CGContextFillRect(v30, v67);
-        v32 = [sub_100020C18(v9)[1] CGImage];
+        cGImage = [sub_100020C18(v9)[1] CGImage];
         sub_10001F290(v9);
         if (v13 == 1.0)
         {
@@ -675,7 +675,7 @@
         v68.origin.x = v39;
         v68.size.width = v38;
         v68.size.height = v37;
-        CGContextDrawImage(v30, v68, v32);
+        CGContextDrawImage(v30, v68, cGImage);
         Image = CGBitmapContextCreateImage(v21);
         v69.origin.x = 0.0;
         v69.origin.y = 0.0;

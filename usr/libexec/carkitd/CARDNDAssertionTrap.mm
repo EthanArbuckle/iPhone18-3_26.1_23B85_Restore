@@ -1,32 +1,32 @@
 @interface CARDNDAssertionTrap
 - (BOOL)isActive;
 - (CARAutomaticDNDStatus)preferences;
-- (CARDNDAssertionTrap)initWithPreferences:(id)a3;
+- (CARDNDAssertionTrap)initWithPreferences:(id)preferences;
 - (CARDNDAssertionTrapDelegate)delegate;
 - (NSString)activeAssertionsDebugString;
-- (void)_mutateAssertionsCallingDelegate:(BOOL)a3 withBlock:(id)a4;
+- (void)_mutateAssertionsCallingDelegate:(BOOL)delegate withBlock:(id)block;
 - (void)releaseAllAssertions;
 - (void)releaseAllTemporaryAssertions;
-- (void)releaseAssertion:(int64_t)a3;
-- (void)takeAssertion:(int64_t)a3;
+- (void)releaseAssertion:(int64_t)assertion;
+- (void)takeAssertion:(int64_t)assertion;
 @end
 
 @implementation CARDNDAssertionTrap
 
-- (CARDNDAssertionTrap)initWithPreferences:(id)a3
+- (CARDNDAssertionTrap)initWithPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = [(CARDNDAssertionTrap *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_preferences, v4);
+    objc_storeWeak(&v5->_preferences, preferencesCopy);
     v7 = +[NSUserDefaults standardUserDefaults];
     userDefaults = v6->_userDefaults;
     v6->_userDefaults = v7;
 
-    v9 = [(CARDNDAssertionTrap *)v6 userDefaults];
-    v6->_activeAssertions = [v9 integerForKey:@"CARDNDAssertionStateKey"];
+    userDefaults = [(CARDNDAssertionTrap *)v6 userDefaults];
+    v6->_activeAssertions = [userDefaults integerForKey:@"CARDNDAssertionStateKey"];
   }
 
   return v6;
@@ -36,10 +36,10 @@
 {
   if ([(CARDNDAssertionTrap *)self hasAssertion:8])
   {
-    v3 = [(CARDNDAssertionTrap *)self preferences];
-    v4 = [v3 disableTimerTimestamp];
+    preferences = [(CARDNDAssertionTrap *)self preferences];
+    disableTimerTimestamp = [preferences disableTimerTimestamp];
 
-    if (!v4 || (+[NSDate date], v5 = objc_claimAutoreleasedReturnValue(), v6 = [CARAnalytics calendarUnitsOfType:64 fromDate:v4 toDate:v5], v5, v6 >= 8))
+    if (!disableTimerTimestamp || (+[NSDate date], v5 = objc_claimAutoreleasedReturnValue(), v6 = [CARAnalytics calendarUnitsOfType:64 fromDate:disableTimerTimestamp toDate:v5], v5, v6 >= 8))
     {
       self->_activeAssertions &= ~8uLL;
     }
@@ -48,24 +48,24 @@
   return [(CARDNDAssertionTrap *)self activeAssertions]!= 0;
 }
 
-- (void)takeAssertion:(int64_t)a3
+- (void)takeAssertion:(int64_t)assertion
 {
   if (![(CARDNDAssertionTrap *)self hasAssertion:?])
   {
     v5 = CarDNDWDLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [NSNumber numberWithInteger:a3];
+      v6 = [NSNumber numberWithInteger:assertion];
       *buf = 138412290;
       v11 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Taking assertion trap for %@", buf, 0xCu);
     }
 
-    if (a3 == 8)
+    if (assertion == 8)
     {
       v7 = +[NSDate date];
-      v8 = [(CARDNDAssertionTrap *)self preferences];
-      [v8 setDisableTimerTimestamp:v7];
+      preferences = [(CARDNDAssertionTrap *)self preferences];
+      [preferences setDisableTimerTimestamp:v7];
     }
   }
 
@@ -74,27 +74,27 @@
   v9[2] = sub_10003D890;
   v9[3] = &unk_1000DE920;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = assertion;
   [(CARDNDAssertionTrap *)self _mutateAssertionsCallingDelegate:1 withBlock:v9];
 }
 
-- (void)releaseAssertion:(int64_t)a3
+- (void)releaseAssertion:(int64_t)assertion
 {
   if ([(CARDNDAssertionTrap *)self hasAssertion:?])
   {
     v5 = CarDNDWDLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [NSNumber numberWithInteger:a3];
+      v6 = [NSNumber numberWithInteger:assertion];
       *buf = 138412290;
       v10 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Releasing assertion trap for %@", buf, 0xCu);
     }
 
-    if (a3 == 8)
+    if (assertion == 8)
     {
-      v7 = [(CARDNDAssertionTrap *)self preferences];
-      [v7 setDisableTimerTimestamp:0];
+      preferences = [(CARDNDAssertionTrap *)self preferences];
+      [preferences setDisableTimerTimestamp:0];
     }
   }
 
@@ -103,7 +103,7 @@
   v8[2] = sub_10003D9F4;
   v8[3] = &unk_1000DE920;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = assertion;
   [(CARDNDAssertionTrap *)self _mutateAssertionsCallingDelegate:1 withBlock:v8];
 }
 
@@ -122,8 +122,8 @@
   v5[3] = &unk_1000DD480;
   v5[4] = self;
   [(CARDNDAssertionTrap *)self _mutateAssertionsCallingDelegate:1 withBlock:v5];
-  v4 = [(CARDNDAssertionTrap *)self preferences];
-  [v4 setDisableTimerTimestamp:0];
+  preferences = [(CARDNDAssertionTrap *)self preferences];
+  [preferences setDisableTimerTimestamp:0];
 }
 
 - (void)releaseAllTemporaryAssertions
@@ -190,31 +190,31 @@
   return v5;
 }
 
-- (void)_mutateAssertionsCallingDelegate:(BOOL)a3 withBlock:(id)a4
+- (void)_mutateAssertionsCallingDelegate:(BOOL)delegate withBlock:(id)block
 {
-  v4 = a3;
-  v13 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(CARDNDAssertionTrap *)v6 isActive];
-  v13[2]();
-  v8 = [(CARDNDAssertionTrap *)v6 isActive];
-  v9 = [(CARDNDAssertionTrap *)v6 userDefaults];
-  [v9 setInteger:-[CARDNDAssertionTrap activeAssertions](v6 forKey:{"activeAssertions"), @"CARDNDAssertionStateKey"}];
+  delegateCopy = delegate;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isActive = [(CARDNDAssertionTrap *)selfCopy isActive];
+  blockCopy[2]();
+  isActive2 = [(CARDNDAssertionTrap *)selfCopy isActive];
+  userDefaults = [(CARDNDAssertionTrap *)selfCopy userDefaults];
+  [userDefaults setInteger:-[CARDNDAssertionTrap activeAssertions](selfCopy forKey:{"activeAssertions"), @"CARDNDAssertionStateKey"}];
 
-  if (v4 && v8 | v7)
+  if (delegateCopy && isActive2 | isActive)
   {
-    v10 = [(CARDNDAssertionTrap *)v6 delegate];
+    delegate = [(CARDNDAssertionTrap *)selfCopy delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CARDNDAssertionTrap *)v6 delegate];
-      [v12 assertionTrap:v6 didBecomeActive:v8];
+      delegate2 = [(CARDNDAssertionTrap *)selfCopy delegate];
+      [delegate2 assertionTrap:selfCopy didBecomeActive:isActive2];
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (CARAutomaticDNDStatus)preferences

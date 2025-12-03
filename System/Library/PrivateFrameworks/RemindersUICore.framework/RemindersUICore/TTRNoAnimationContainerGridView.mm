@@ -1,5 +1,5 @@
 @interface TTRNoAnimationContainerGridView
-- (_TtC15RemindersUICore31TTRNoAnimationContainerGridView)initWithArrangedSubviewRows:(id)a3;
+- (_TtC15RemindersUICore31TTRNoAnimationContainerGridView)initWithArrangedSubviewRows:(id)rows;
 - (void)layoutSubviews;
 @end
 
@@ -7,19 +7,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D8EE40C();
 }
 
-- (_TtC15RemindersUICore31TTRNoAnimationContainerGridView)initWithArrangedSubviewRows:(id)a3
+- (_TtC15RemindersUICore31TTRNoAnimationContainerGridView)initWithArrangedSubviewRows:(id)rows
 {
-  v3 = a3;
-  if (a3)
+  rowsCopy = rows;
+  if (rows)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CE5F100);
     sub_21DBFA5EC();
     *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore31TTRNoAnimationContainerGridView_areImplicitAnimationsEnabled) = 0;
-    v3 = sub_21DBFA5DC();
+    rowsCopy = sub_21DBFA5DC();
   }
 
   else
@@ -29,7 +29,7 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for TTRNoAnimationContainerGridView();
-  v5 = [(NUIContainerGridView *)&v7 initWithArrangedSubviewRows:v3];
+  v5 = [(NUIContainerGridView *)&v7 initWithArrangedSubviewRows:rowsCopy];
 
   return v5;
 }

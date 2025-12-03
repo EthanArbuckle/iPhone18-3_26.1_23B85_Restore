@@ -1,58 +1,58 @@
 @interface ATXCandidateRelevanceModel
-- (ATXCandidateRelevanceModel)initWithCoder:(id)a3;
-- (float)predictForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5;
-- (id)featureContributionsDuringInferenceDescriptionForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5;
-- (id)featureContributionsDuringInferenceForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5;
-- (id)featureImportanceDescriptionForFeaturizationManager:(id)a3;
-- (id)featureImportancesForFeaturizationManager:(id)a3;
+- (ATXCandidateRelevanceModel)initWithCoder:(id)coder;
+- (float)predictForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager;
+- (id)featureContributionsDuringInferenceDescriptionForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager;
+- (id)featureContributionsDuringInferenceForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager;
+- (id)featureImportanceDescriptionForFeaturizationManager:(id)manager;
+- (id)featureImportancesForFeaturizationManager:(id)manager;
 @end
 
 @implementation ATXCandidateRelevanceModel
 
-- (float)predictForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5
+- (float)predictForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  candidateCopy = candidate;
+  managerCopy = manager;
   __break(1u);
   return result;
 }
 
-- (id)featureImportanceDescriptionForFeaturizationManager:(id)a3
+- (id)featureImportanceDescriptionForFeaturizationManager:(id)manager
 {
-  result = a3;
+  result = manager;
   __break(1u);
   return result;
 }
 
-- (id)featureImportancesForFeaturizationManager:(id)a3
+- (id)featureImportancesForFeaturizationManager:(id)manager
 {
-  result = a3;
+  result = manager;
   __break(1u);
   return result;
 }
 
-- (id)featureContributionsDuringInferenceForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5
+- (id)featureContributionsDuringInferenceForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  result = a5;
+  contextCopy = context;
+  candidateCopy = candidate;
+  result = manager;
   __break(1u);
   return result;
 }
 
-- (id)featureContributionsDuringInferenceDescriptionForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5
+- (id)featureContributionsDuringInferenceDescriptionForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  result = a5;
+  contextCopy = context;
+  candidateCopy = candidate;
+  result = manager;
   __break(1u);
   return result;
 }
 
-- (ATXCandidateRelevanceModel)initWithCoder:(id)a3
+- (ATXCandidateRelevanceModel)initWithCoder:(id)coder
 {
-  result = a3;
+  result = coder;
   __break(1u);
   return result;
 }

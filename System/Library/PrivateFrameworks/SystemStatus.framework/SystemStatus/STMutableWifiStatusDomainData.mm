@@ -1,52 +1,52 @@
 @interface STMutableWifiStatusDomainData
-- (BOOL)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAssociatedToIOSHotspot:(BOOL)a3;
-- (void)setSignalStrengthBars:(unint64_t)a3;
-- (void)setWifiActive:(BOOL)a3;
+- (BOOL)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAssociatedToIOSHotspot:(BOOL)hotspot;
+- (void)setSignalStrengthBars:(unint64_t)bars;
+- (void)setWifiActive:(BOOL)active;
 @end
 
 @implementation STMutableWifiStatusDomainData
 
-- (void)setWifiActive:(BOOL)a3
+- (void)setWifiActive:(BOOL)active
 {
-  if (self->super._wifiActive != a3)
+  if (self->super._wifiActive != active)
   {
-    self->super._wifiActive = a3;
+    self->super._wifiActive = active;
   }
 }
 
-- (void)setSignalStrengthBars:(unint64_t)a3
+- (void)setSignalStrengthBars:(unint64_t)bars
 {
-  if (self->super._signalStrengthBars != a3)
+  if (self->super._signalStrengthBars != bars)
   {
-    self->super._signalStrengthBars = a3;
+    self->super._signalStrengthBars = bars;
   }
 }
 
-- (void)setAssociatedToIOSHotspot:(BOOL)a3
+- (void)setAssociatedToIOSHotspot:(BOOL)hotspot
 {
-  if (self->super._associatedToIOSHotspot != a3)
+  if (self->super._associatedToIOSHotspot != hotspot)
   {
-    self->super._associatedToIOSHotspot = a3;
+    self->super._associatedToIOSHotspot = hotspot;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STWifiStatusDomainData allocWithZone:a3];
+  v4 = [STWifiStatusDomainData allocWithZone:zone];
 
   return [(STWifiStatusDomainData *)v4 initWithData:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

@@ -4,27 +4,27 @@
 - (NSMutableArray)touchIdentifiers;
 - (NSMutableArray)touchLocations;
 - (NSMutableArray)touchPhases;
-- (UIWebTouchEventsGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 touchDelegate:(id)a5;
-- (void)_processTouches:(id)a3 withEvent:(id)a4 type:(int)a5;
-- (void)_recordTouches:(id)a3 type:(int)a4;
+- (UIWebTouchEventsGestureRecognizer)initWithTarget:(id)target action:(SEL)action touchDelegate:(id)delegate;
+- (void)_processTouches:(id)touches withEvent:(id)event type:(int)type;
+- (void)_recordTouches:(id)touches type:(int)type;
 - (void)_resetGestureRecognizer;
-- (void)_updateTapStateWithTouches:(id)a3;
-- (void)_updateTapStateWithTouches:(id)a3 type:(int)a4;
+- (void)_updateTapStateWithTouches:(id)touches;
+- (void)_updateTapStateWithTouches:(id)touches type:(int)type;
 - (void)cancel;
 - (void)dealloc;
 - (void)performAction;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIWebTouchEventsGestureRecognizer
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     do
     {
@@ -35,33 +35,33 @@
   }
 }
 
-- (UIWebTouchEventsGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 touchDelegate:(id)a5
+- (UIWebTouchEventsGestureRecognizer)initWithTarget:(id)target action:(SEL)action touchDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = UIWebTouchEventsGestureRecognizer;
   v10 = [(UIGestureRecognizer *)&v17 initWithTarget:0 action:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_touchTarget, v8);
-    if (a4)
+    objc_storeWeak(&v10->_touchTarget, targetCopy);
+    if (action)
     {
-      v12 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v12 = 0;
+      actionCopy = 0;
     }
 
-    v11->_touchAction = v12;
-    objc_storeWeak(&v11->_webTouchDelegate, v9);
+    v11->_touchAction = actionCopy;
+    objc_storeWeak(&v11->_webTouchDelegate, delegateCopy);
     v11->_wasExplicitlyCancelled = 0;
-    v13 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     activeTouchesByIdentifier = v11->_activeTouchesByIdentifier;
-    v11->_activeTouchesByIdentifier = v13;
+    v11->_activeTouchesByIdentifier = strongToWeakObjectsMapTable;
 
     v11->_lastTouchEvent.touchPoints = 0;
     v11->_lastTouchEvent.touchPointCount = 0;
@@ -106,10 +106,10 @@
     if ((*(&self->super._gestureFlags + 4) & 8) != 0)
     {
       self->_wasExplicitlyCancelled = 0;
-      v3 = [(UIGestureRecognizer *)self state];
-      if (v3 <= UIGestureRecognizerStateChanged)
+      state = [(UIGestureRecognizer *)self state];
+      if (state <= UIGestureRecognizerStateChanged)
       {
-        v4 = qword_18A683DE8[v3];
+        v4 = qword_18A683DE8[state];
         self->_wasExplicitlyCancelled = 1;
 
         [(UIGestureRecognizer *)self setState:v4];
@@ -118,15 +118,15 @@
   }
 }
 
-- (void)_updateTapStateWithTouches:(id)a3
+- (void)_updateTapStateWithTouches:(id)touches
 {
-  v6 = a3;
-  if ([v6 count] == 1)
+  touchesCopy = touches;
+  if ([touchesCopy count] == 1)
   {
-    v4 = [v6 anyObject];
-    if (v4)
+    anyObject = [touchesCopy anyObject];
+    if (anyObject)
     {
-      v5 = (v4[118] >> 1) & 1;
+      v5 = (anyObject[118] >> 1) & 1;
     }
 
     else
@@ -144,21 +144,21 @@
   self->_isPotentialTap = v5;
 }
 
-- (void)_updateTapStateWithTouches:(id)a3 type:(int)a4
+- (void)_updateTapStateWithTouches:(id)touches type:(int)type
 {
-  v6 = a3;
-  if (a4 <= 1)
+  touchesCopy = touches;
+  if (type <= 1)
   {
-    if (!a4)
+    if (!type)
     {
 LABEL_9:
-      v7 = v6;
-      [(UIWebTouchEventsGestureRecognizer *)self _updateTapStateWithTouches:v6];
-      v6 = v7;
+      v7 = touchesCopy;
+      [(UIWebTouchEventsGestureRecognizer *)self _updateTapStateWithTouches:touchesCopy];
+      touchesCopy = v7;
       goto LABEL_10;
     }
 
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_10;
     }
@@ -172,12 +172,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     goto LABEL_8;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     self->_lastTouchEvent.isPotentialTap = 0;
     self->_isPotentialTap = 0;
@@ -186,18 +186,18 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)_recordTouches:(id)a3 type:(int)a4
+- (void)_recordTouches:(id)touches type:(int)type
 {
   v75 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  touchesCopy = touches;
   p_lastTouchEvent = &self->_lastTouchEvent;
-  v63 = a4;
-  self->_lastTouchEvent.type = a4;
+  typeCopy = type;
+  self->_lastTouchEvent.type = type;
   v8 = MEMORY[0x1E695EFF8];
   self->_lastTouchEvent.inJavaScriptGesture = 0;
   v64 = *v8;
   self->_dispatchingTouchEvents = 1;
-  v9 = [v6 count];
+  v9 = [touchesCopy count];
   v10 = v9;
   if (v9 != self->_lastTouchEvent.touchPointCount)
   {
@@ -205,8 +205,8 @@ LABEL_10:
     self->_lastTouchEvent.touchPoints = reallocf(self->_lastTouchEvent.touchPoints, 88 * v9);
   }
 
-  v11 = [v6 anyObject];
-  [v11 timestamp];
+  anyObject = [touchesCopy anyObject];
+  [anyObject timestamp];
   v13 = CACurrentMediaTime() - v12;
   v14 = *MEMORY[0x1E695E468];
   self->_lastTouchEvent.timestamp = v14 + CFAbsoluteTimeGetCurrent() - v13;
@@ -216,7 +216,7 @@ LABEL_10:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v15 = v6;
+  v15 = touchesCopy;
   v65 = [v15 countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (!v65)
   {
@@ -226,7 +226,7 @@ LABEL_10:
   }
 
   v55 = v10;
-  v61 = self;
+  selfCopy = self;
   v16 = 0;
   v60 = 0;
   obj = v15;
@@ -251,8 +251,8 @@ LABEL_10:
 
       v23 = *(*(&v70 + 1) + 8 * v21);
       v24 = objc_getAssociatedObject(v23, &_associatedTouchIdentifierKey);
-      v25 = [v23 _isPointerTouch];
-      if (v63 || !v25)
+      _isPointerTouch = [v23 _isPointerTouch];
+      if (typeCopy || !_isPointerTouch)
       {
         if (v24)
         {
@@ -278,7 +278,7 @@ LABEL_10:
       v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
       objc_setAssociatedObject(v23, &_associatedTouchIdentifierKey, v24, 1);
 LABEL_16:
-      [(NSMapTable *)v61->_activeTouchesByIdentifier setObject:v23 forKey:v24];
+      [(NSMapTable *)selfCopy->_activeTouchesByIdentifier setObject:v23 forKey:v24];
       v27 = p_lastTouchEvent;
       touchPoints = p_lastTouchEvent->touchPoints;
       v29 = (touchPoints + v22);
@@ -287,8 +287,8 @@ LABEL_16:
       v67 = v30;
       *(v29 - 10) = v30;
       *(v29 - 9) = v31;
-      v32 = [(UIGestureRecognizer *)v61 view];
-      [v32 convertPoint:0 fromView:{v67, v66}];
+      view = [(UIGestureRecognizer *)selfCopy view];
+      [view convertPoint:0 fromView:{v67, v66}];
       v68 = v34;
       v69 = v33;
 
@@ -381,7 +381,7 @@ LABEL_23:
 
   while (v65);
 
-  self = v61;
+  self = selfCopy;
   v10 = v55;
   if (!v60)
   {
@@ -402,16 +402,16 @@ LABEL_36:
   if (v60 != 1)
   {
     v50 = (v17 - v19) * (v17 - v19) + (v18 - v20) * (v18 - v20);
-    p_lastTouchEvent->scale = sqrtf(v50) / v61->_originalGestureDistance;
+    p_lastTouchEvent->scale = sqrtf(v50) / selfCopy->_originalGestureDistance;
     v51 = v18 - v20;
     v52 = v17 - v19;
     v53 = atan2f(v51, v52) * 180.0 * 0.318309886;
-    p_lastTouchEvent->rotation = v61->_originalGestureAngle - v53;
+    p_lastTouchEvent->rotation = selfCopy->_originalGestureAngle - v53;
     p_lastTouchEvent->inJavaScriptGesture = 1;
   }
 
 LABEL_37:
-  [(UIWebTouchEventsGestureRecognizer *)self _updateTapStateWithTouches:v15 type:v63];
+  [(UIWebTouchEventsGestureRecognizer *)self _updateTapStateWithTouches:v15 type:typeCopy];
 }
 
 - (void)performAction
@@ -438,17 +438,17 @@ LABEL_37:
   }
 }
 
-- (void)_processTouches:(id)a3 withEvent:(id)a4 type:(int)a5
+- (void)_processTouches:(id)touches withEvent:(id)event type:(int)type
 {
-  v5 = *&a5;
+  v5 = *&type;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  touchesCopy = touches;
+  eventCopy = event;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v10 = [touchesCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -460,21 +460,21 @@ LABEL_37:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
         if ([v15 phase] != 2)
         {
-          v16 = [v15 phase];
-          if (v12 <= v16)
+          phase = [v15 phase];
+          if (v12 <= phase)
           {
-            v12 = v16;
+            v12 = phase;
           }
         }
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [touchesCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);
@@ -496,7 +496,7 @@ LABEL_37:
 
   if (v17 == v5)
   {
-    [(UIWebTouchEventsGestureRecognizer *)self _recordTouches:v8 type:v5];
+    [(UIWebTouchEventsGestureRecognizer *)self _recordTouches:touchesCopy type:v5];
     [(UIWebTouchEventsGestureRecognizer *)self performAction];
     if (self->_defaultPrevented)
     {
@@ -515,19 +515,19 @@ LABEL_37:
 
     if (v5 >= 2)
     {
-      v19 = [(UIGestureRecognizer *)self _activeTouchesForEvent:v9];
+      v19 = [(UIGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
       v20 = [v19 count];
 
       if (!v20)
       {
-        v21 = [(UIGestureRecognizer *)self state];
+        state = [(UIGestureRecognizer *)self state];
         v22 = 3;
         if (v5 != 2)
         {
           v22 = 4;
         }
 
-        if (v21)
+        if (state)
         {
           v23 = v22;
         }
@@ -586,21 +586,21 @@ LABEL_37:
   [(UIGestureRecognizer *)&v10 _resetGestureRecognizer];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = a4;
-  v5 = [v7 touchesForGestureRecognizer:self];
+  eventCopy = event;
+  v5 = [eventCopy touchesForGestureRecognizer:self];
   WeakRetained = objc_loadWeakRetained(&self->_webTouchDelegate);
   if ((objc_opt_respondsToSelector() & 1) == 0 || ![WeakRetained shouldIgnoreWebTouch])
   {
     if (self->_passedHitTest)
     {
 LABEL_8:
-      [(UIWebTouchEventsGestureRecognizer *)self _processTouches:v5 withEvent:v7 type:0];
+      [(UIWebTouchEventsGestureRecognizer *)self _processTouches:v5 withEvent:eventCopy type:0];
       goto LABEL_10;
     }
 
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained gestureRecognizer:self shouldIgnoreWebTouchWithEvent:v7] & 1) == 0) && (objc_msgSend(WeakRetained, "isAnyTouchOverActiveArea:", v5))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained gestureRecognizer:self shouldIgnoreWebTouchWithEvent:eventCopy] & 1) == 0) && (objc_msgSend(WeakRetained, "isAnyTouchOverActiveArea:", v5))
     {
       self->_passedHitTest = 1;
       goto LABEL_8;
@@ -611,25 +611,25 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = a4;
-  v6 = [v5 touchesForGestureRecognizer:self];
-  [(UIWebTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:v5 type:1];
+  eventCopy = event;
+  v6 = [eventCopy touchesForGestureRecognizer:self];
+  [(UIWebTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:eventCopy type:1];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a4;
-  v6 = [v5 touchesForGestureRecognizer:self];
-  [(UIWebTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:v5 type:2];
+  eventCopy = event;
+  v6 = [eventCopy touchesForGestureRecognizer:self];
+  [(UIWebTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:eventCopy type:2];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a4;
-  v6 = [v5 touchesForGestureRecognizer:self];
-  [(UIWebTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:v5 type:3];
+  eventCopy = event;
+  v6 = [eventCopy touchesForGestureRecognizer:self];
+  [(UIWebTouchEventsGestureRecognizer *)self _processTouches:v6 withEvent:eventCopy type:3];
 }
 
 - (CGPoint)locationInWindow

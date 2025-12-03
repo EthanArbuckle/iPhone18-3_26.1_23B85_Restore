@@ -1,18 +1,18 @@
 @interface VCPVideoObjectTracker
 - (CGRect)objectBounds;
 - (CGRect)objectBoundsInitial;
-- (VCPVideoObjectTracker)initWithObjectBounds:(CGRect)a3 inFrame:(__CVBuffer *)a4 timestamp:(id *)a5;
-- (int)trackObjectInFrame:(__CVBuffer *)a3;
+- (VCPVideoObjectTracker)initWithObjectBounds:(CGRect)bounds inFrame:(__CVBuffer *)frame timestamp:(id *)timestamp;
+- (int)trackObjectInFrame:(__CVBuffer *)frame;
 @end
 
 @implementation VCPVideoObjectTracker
 
-- (VCPVideoObjectTracker)initWithObjectBounds:(CGRect)a3 inFrame:(__CVBuffer *)a4 timestamp:(id *)a5
+- (VCPVideoObjectTracker)initWithObjectBounds:(CGRect)bounds inFrame:(__CVBuffer *)frame timestamp:(id *)timestamp
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v43[8] = *MEMORY[0x1E69E9840];
   v42.receiver = self;
   v42.super_class = VCPVideoObjectTracker;
@@ -28,8 +28,8 @@
 
   if (*(v11 + 1))
   {
-    v14 = CVPixelBufferGetWidth(a4);
-    v15 = CVPixelBufferGetHeight(a4);
+    v14 = CVPixelBufferGetWidth(frame);
+    v15 = CVPixelBufferGetHeight(frame);
     v16 = x;
     v17 = y;
     v18 = width;
@@ -127,11 +127,11 @@
     *&v43[7] = v33;
     *&v43[4] = v30;
     *&v43[5] = v33;
-    pixelBuffer = a4;
+    pixelBuffer = frame;
     unlockFlags = 1;
-    if (a4)
+    if (frame)
     {
-      v39 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+      v39 = CVPixelBufferLockBaseAddress(frame, 1uLL);
       if (v39)
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -142,11 +142,11 @@
 
       else
       {
-        [*(v11 + 1) setupTrackerWithReferenceFrame:a4 withROI:v43];
+        [*(v11 + 1) setupTrackerWithReferenceFrame:frame withROI:v43];
         if (!CVPixelBufferLock::Unlock(&v39))
         {
-          v38 = *&a5->var0;
-          *(v11 + 5) = a5->var3;
+          v38 = *&timestamp->var0;
+          *(v11 + 5) = timestamp->var3;
           *(v11 + 24) = v38;
           v35 = 1;
           goto LABEL_35;
@@ -192,19 +192,19 @@ LABEL_44:
   return v34;
 }
 
-- (int)trackObjectInFrame:(__CVBuffer *)a3
+- (int)trackObjectInFrame:(__CVBuffer *)frame
 {
   v34 = *MEMORY[0x1E69E9840];
   v27 = 0;
-  pixelBuffer = a3;
+  pixelBuffer = frame;
   unlockFlags = 1;
-  if (a3)
+  if (frame)
   {
-    v5 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v5 = CVPixelBufferLockBaseAddress(frame, 1uLL);
     v27 = v5;
-    if (!v5 || (v6 = v5, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v31 = a3, v32 = 1024, v33 = v6, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v6 = v27) == 0))
+    if (!v5 || (v6 = v5, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v31 = frame, v32 = 1024, v33 = v6, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v6 = v27) == 0))
     {
-      [(VCPCtrTracker *)self->_correlationTracker trackInFrame:a3];
+      [(VCPCtrTracker *)self->_correlationTracker trackInFrame:frame];
       v6 = CVPixelBufferLock::Unlock(&v27);
       if (!v6)
       {
@@ -217,8 +217,8 @@ LABEL_44:
 
         else
         {
-          WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-          HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+          WidthOfPlane = CVPixelBufferGetWidthOfPlane(frame, 0);
+          HeightOfPlane = CVPixelBufferGetHeightOfPlane(frame, 0);
           v11 = [(VCPCtrTracker *)self->_correlationTracker box];
           x = (WidthOfPlane + -1.0);
           if (v11->x < x)

@@ -1,47 +1,47 @@
 @interface _SFPBImageOption
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBImageOption)initWithDictionary:(id)a3;
-- (_SFPBImageOption)initWithFacade:(id)a3;
-- (_SFPBImageOption)initWithJSON:(id)a3;
+- (_SFPBImageOption)initWithDictionary:(id)dictionary;
+- (_SFPBImageOption)initWithFacade:(id)facade;
+- (_SFPBImageOption)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setDefaultValue:(id)a3;
-- (void)setName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDefaultValue:(id)value;
+- (void)setName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBImageOption
 
-- (_SFPBImageOption)initWithFacade:(id)a3
+- (_SFPBImageOption)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBImageOption *)self init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [facadeCopy name];
 
-    if (v6)
+    if (name)
     {
-      v7 = [v4 name];
-      [(_SFPBImageOption *)v5 setName:v7];
+      name2 = [facadeCopy name];
+      [(_SFPBImageOption *)v5 setName:name2];
     }
 
-    v8 = [v4 defaultValue];
+    defaultValue = [facadeCopy defaultValue];
 
-    if (v8)
+    if (defaultValue)
     {
-      v9 = [v4 defaultValue];
-      [(_SFPBImageOption *)v5 setDefaultValue:v9];
+      defaultValue2 = [facadeCopy defaultValue];
+      [(_SFPBImageOption *)v5 setDefaultValue:defaultValue2];
     }
 
-    v10 = [v4 options];
+    options = [facadeCopy options];
 
-    if (v10)
+    if (options)
     {
       v11 = [_SFPBStringDictionary alloc];
-      v12 = [v4 options];
-      v13 = [(_SFPBStringDictionary *)v11 initWithNSDictionary:v12];
+      options2 = [facadeCopy options];
+      v13 = [(_SFPBStringDictionary *)v11 initWithNSDictionary:options2];
       [(_SFPBImageOption *)v5 setOptions:v13];
     }
 
@@ -51,15 +51,15 @@
   return v5;
 }
 
-- (_SFPBImageOption)initWithDictionary:(id)a3
+- (_SFPBImageOption)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBImageOption;
   v5 = [(_SFPBImageOption *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(_SFPBImageOption *)v5 setName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"defaultValue"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"defaultValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(_SFPBImageOption *)v5 setDefaultValue:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"options"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"options"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (_SFPBImageOption)initWithJSON:(id)a3
+- (_SFPBImageOption)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBImageOption *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBImageOption *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBImageOption *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,38 +125,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_defaultValue)
   {
-    v4 = [(_SFPBImageOption *)self defaultValue];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"defaultValue"];
+    defaultValue = [(_SFPBImageOption *)self defaultValue];
+    v5 = [defaultValue copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"defaultValue"];
   }
 
   if (self->_name)
   {
-    v6 = [(_SFPBImageOption *)self name];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"name"];
+    name = [(_SFPBImageOption *)self name];
+    v7 = [name copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"name"];
   }
 
   if (self->_options)
   {
-    v8 = [(_SFPBImageOption *)self options];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    options = [(_SFPBImageOption *)self options];
+    dictionaryRepresentation = [options dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"options"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"options"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"options"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"options"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -166,28 +166,28 @@
   return v4 ^ [(_SFPBStringDictionary *)self->_options hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBImageOption *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBImageOption *)self name];
+  name2 = [equalCopy name];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBImageOption *)self name];
-  if (v7)
+  name3 = [(_SFPBImageOption *)self name];
+  if (name3)
   {
-    v8 = v7;
-    v9 = [(_SFPBImageOption *)self name];
-    v10 = [v4 name];
-    v11 = [v9 isEqual:v10];
+    v8 = name3;
+    name4 = [(_SFPBImageOption *)self name];
+    name5 = [equalCopy name];
+    v11 = [name4 isEqual:name5];
 
     if (!v11)
     {
@@ -199,20 +199,20 @@
   {
   }
 
-  v5 = [(_SFPBImageOption *)self defaultValue];
-  v6 = [v4 defaultValue];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(_SFPBImageOption *)self defaultValue];
+  name2 = [equalCopy defaultValue];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBImageOption *)self defaultValue];
-  if (v12)
+  defaultValue = [(_SFPBImageOption *)self defaultValue];
+  if (defaultValue)
   {
-    v13 = v12;
-    v14 = [(_SFPBImageOption *)self defaultValue];
-    v15 = [v4 defaultValue];
-    v16 = [v14 isEqual:v15];
+    v13 = defaultValue;
+    defaultValue2 = [(_SFPBImageOption *)self defaultValue];
+    defaultValue3 = [equalCopy defaultValue];
+    v16 = [defaultValue2 isEqual:defaultValue3];
 
     if (!v16)
     {
@@ -224,12 +224,12 @@
   {
   }
 
-  v5 = [(_SFPBImageOption *)self options];
-  v6 = [v4 options];
-  if ((v5 != 0) != (v6 == 0))
+  name = [(_SFPBImageOption *)self options];
+  name2 = [equalCopy options];
+  if ((name != 0) != (name2 == 0))
   {
-    v17 = [(_SFPBImageOption *)self options];
-    if (!v17)
+    options = [(_SFPBImageOption *)self options];
+    if (!options)
     {
 
 LABEL_20:
@@ -237,10 +237,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBImageOption *)self options];
-    v20 = [v4 options];
-    v21 = [v19 isEqual:v20];
+    v18 = options;
+    options2 = [(_SFPBImageOption *)self options];
+    options3 = [equalCopy options];
+    v21 = [options2 isEqual:options3];
 
     if (v21)
     {
@@ -260,40 +260,40 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBImageOption *)self name];
-  if (v4)
+  toCopy = to;
+  name = [(_SFPBImageOption *)self name];
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBImageOption *)self defaultValue];
-  if (v5)
+  defaultValue = [(_SFPBImageOption *)self defaultValue];
+  if (defaultValue)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBImageOption *)self options];
-  if (v6)
+  options = [(_SFPBImageOption *)self options];
+  if (options)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   defaultValue = self->_defaultValue;
   self->_defaultValue = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 

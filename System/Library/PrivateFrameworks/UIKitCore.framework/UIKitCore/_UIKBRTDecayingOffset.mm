@@ -1,21 +1,21 @@
 @interface _UIKBRTDecayingOffset
 - (CGPoint)offset;
 - (CGPoint)originalOffset;
-- (_UIKBRTDecayingOffset)initWithTimeoutDuration:(double)a3 limitMovement:(BOOL)a4;
+- (_UIKBRTDecayingOffset)initWithTimeoutDuration:(double)duration limitMovement:(BOOL)movement;
 - (void)reset;
-- (void)updateOffsetTo:(CGPoint)a3;
+- (void)updateOffsetTo:(CGPoint)to;
 @end
 
 @implementation _UIKBRTDecayingOffset
 
-- (_UIKBRTDecayingOffset)initWithTimeoutDuration:(double)a3 limitMovement:(BOOL)a4
+- (_UIKBRTDecayingOffset)initWithTimeoutDuration:(double)duration limitMovement:(BOOL)movement
 {
   v6.receiver = self;
   v6.super_class = _UIKBRTDecayingOffset;
-  result = [(_UIKBRTDecayingObject *)&v6 initWithTimeoutDuration:a3];
+  result = [(_UIKBRTDecayingObject *)&v6 initWithTimeoutDuration:duration];
   if (result)
   {
-    result->_limitMovement = a4;
+    result->_limitMovement = movement;
   }
 
   return result;
@@ -29,13 +29,13 @@
   self->_offset = *MEMORY[0x1E695EFF8];
 }
 
-- (void)updateOffsetTo:(CGPoint)a3
+- (void)updateOffsetTo:(CGPoint)to
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIKBRTDecayingObject *)self isActive];
+  y = to.y;
+  x = to.x;
+  isActive = [(_UIKBRTDecayingObject *)self isActive];
   [(_UIKBRTDecayingOffset *)self offset];
-  if (v6 && self->_limitMovement)
+  if (isActive && self->_limitMovement)
   {
     v9 = x - v7;
     v10 = y - v8;

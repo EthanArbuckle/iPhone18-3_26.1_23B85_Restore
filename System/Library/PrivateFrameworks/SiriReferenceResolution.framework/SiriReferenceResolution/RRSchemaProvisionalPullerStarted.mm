@@ -1,23 +1,23 @@
 @interface RRSchemaProvisionalPullerStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RRSchemaProvisionalPullerStarted)initWithDictionary:(id)a3;
-- (RRSchemaProvisionalPullerStarted)initWithJSON:(id)a3;
+- (RRSchemaProvisionalPullerStarted)initWithDictionary:(id)dictionary;
+- (RRSchemaProvisionalPullerStarted)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaProvisionalPullerStarted
 
-- (RRSchemaProvisionalPullerStarted)initWithDictionary:(id)a3
+- (RRSchemaProvisionalPullerStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = RRSchemaProvisionalPullerStarted;
   v5 = [(RRSchemaProvisionalPullerStarted *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,30 +31,30 @@
   return v5;
 }
 
-- (RRSchemaProvisionalPullerStarted)initWithJSON:(id)a3
+- (RRSchemaProvisionalPullerStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaProvisionalPullerStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaProvisionalPullerStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaProvisionalPullerStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -67,31 +67,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_name)
   {
-    v4 = [(RRSchemaProvisionalPullerStarted *)self name];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"name"];
+    name = [(RRSchemaProvisionalPullerStarted *)self name];
+    v5 = [name copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"name"];
   }
 
-  [(RRSchemaProvisionalPullerStarted *)self willProduceDictionaryRepresentation:v3];
+  [(RRSchemaProvisionalPullerStarted *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(RRSchemaProvisionalPullerStarted *)self name];
-    v6 = [v4 name];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    name = [(RRSchemaProvisionalPullerStarted *)self name];
+    name2 = [equalCopy name];
+    v7 = name2;
+    if ((name != 0) != (name2 == 0))
     {
-      v8 = [(RRSchemaProvisionalPullerStarted *)self name];
-      if (!v8)
+      name3 = [(RRSchemaProvisionalPullerStarted *)self name];
+      if (!name3)
       {
 
 LABEL_10:
@@ -99,10 +99,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(RRSchemaProvisionalPullerStarted *)self name];
-      v11 = [v4 name];
-      v12 = [v10 isEqual:v11];
+      v9 = name3;
+      name4 = [(RRSchemaProvisionalPullerStarted *)self name];
+      name5 = [equalCopy name];
+      v12 = [name4 isEqual:name5];
 
       if (v12)
       {
@@ -121,12 +121,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(RRSchemaProvisionalPullerStarted *)self name];
+  toCopy = to;
+  name = [(RRSchemaProvisionalPullerStarted *)self name];
 
-  if (v4)
+  if (name)
   {
     name = self->_name;
     PBDataWriterWriteStringField();

@@ -5,49 +5,49 @@
 - (BOOL)isGroupMemberSearch;
 - (BOOL)isPersonSearch;
 - (BOOL)requiresDashboardEntitlement;
-- (CLSSearchSpecification)initWithCoder:(id)a3;
-- (CLSSearchSpecification)initWithOptions:(unint64_t)a3 behaviors:(unint64_t)a4;
-- (CLSSearchSpecification)initWithOptions:(unint64_t)a3 behaviors:(unint64_t)a4 searchString:(id)a5;
-- (CLSSearchSpecification)initWithOptions:(unint64_t)a3 behaviors:(unint64_t)a4 searchString:(id)a5 requestor:(id)a6;
+- (CLSSearchSpecification)initWithCoder:(id)coder;
+- (CLSSearchSpecification)initWithOptions:(unint64_t)options behaviors:(unint64_t)behaviors;
+- (CLSSearchSpecification)initWithOptions:(unint64_t)options behaviors:(unint64_t)behaviors searchString:(id)string;
+- (CLSSearchSpecification)initWithOptions:(unint64_t)options behaviors:(unint64_t)behaviors searchString:(id)string requestor:(id)requestor;
 - (NSArray)searchTokens;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)predicate;
 - (id)predicateForClasses;
 - (id)predicateForGroups;
 - (id)predicateForPersons;
-- (id)predicateForPersonsWithObjectIDs:(id)a3;
-- (id)predicateForPersonsWithPersonIDs:(id)a3;
-- (id)predicateUsingSubPredicateBlock:(id)a3;
-- (id)predicateWithLocationIDs:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)prohibitPrivilege:(id)a3 atLocationIDs:(id)a4;
-- (void)prohibitPrivilege:(id)a3 onPersonIDs:(id)a4;
-- (void)requireClassMemberRole:(unint64_t)a3 forClassIDs:(id)a4;
-- (void)requireGroupMemberIDs:(id)a3;
-- (void)requirePrivilege:(id)a3 atLocationIDs:(id)a4;
-- (void)requirePrivilege:(id)a3 onPersonIDs:(id)a4;
-- (void)requireRole:(id)a3 atLocationIDs:(id)a4;
-- (void)requireRoleType:(int64_t)a3 atLocationIDs:(id)a4;
-- (void)requireRoleType:(int64_t)a3 onPersonIDs:(id)a4;
-- (void)restrictToClassesAtLocationIDs:(id)a3;
-- (void)restrictToGroupsAtLocationIDs:(id)a3;
-- (void)restrictToOrganizationsMatchingEmailDomain:(id)a3;
+- (id)predicateForPersonsWithObjectIDs:(id)ds;
+- (id)predicateForPersonsWithPersonIDs:(id)ds;
+- (id)predicateUsingSubPredicateBlock:(id)block;
+- (id)predicateWithLocationIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
+- (void)prohibitPrivilege:(id)privilege atLocationIDs:(id)ds;
+- (void)prohibitPrivilege:(id)privilege onPersonIDs:(id)ds;
+- (void)requireClassMemberRole:(unint64_t)role forClassIDs:(id)ds;
+- (void)requireGroupMemberIDs:(id)ds;
+- (void)requirePrivilege:(id)privilege atLocationIDs:(id)ds;
+- (void)requirePrivilege:(id)privilege onPersonIDs:(id)ds;
+- (void)requireRole:(id)role atLocationIDs:(id)ds;
+- (void)requireRoleType:(int64_t)type atLocationIDs:(id)ds;
+- (void)requireRoleType:(int64_t)type onPersonIDs:(id)ds;
+- (void)restrictToClassesAtLocationIDs:(id)ds;
+- (void)restrictToGroupsAtLocationIDs:(id)ds;
+- (void)restrictToOrganizationsMatchingEmailDomain:(id)domain;
 - (void)sanitizeSpecForABMMAID;
 - (void)sanitizeSpecForEDUMAID;
 @end
 
 @implementation CLSSearchSpecification
 
-- (CLSSearchSpecification)initWithOptions:(unint64_t)a3 behaviors:(unint64_t)a4
+- (CLSSearchSpecification)initWithOptions:(unint64_t)options behaviors:(unint64_t)behaviors
 {
   v7.receiver = self;
   v7.super_class = CLSSearchSpecification;
   result = [(CLSSearchSpecification *)&v7 init];
   if (result)
   {
-    result->_options = a3;
-    result->_behaviors = a4;
+    result->_options = options;
+    result->_behaviors = behaviors;
     result->_compareOptions = 393;
     result->_includeUnsearchablePersons = 0;
     result->_requiredRoleType = 0;
@@ -58,13 +58,13 @@
   return result;
 }
 
-- (CLSSearchSpecification)initWithOptions:(unint64_t)a3 behaviors:(unint64_t)a4 searchString:(id)a5
+- (CLSSearchSpecification)initWithOptions:(unint64_t)options behaviors:(unint64_t)behaviors searchString:(id)string
 {
-  v8 = a5;
-  v12 = objc_msgSend_initWithOptions_behaviors_(self, v9, a3, a4);
+  stringCopy = string;
+  v12 = objc_msgSend_initWithOptions_behaviors_(self, v9, options, behaviors);
   if (v12)
   {
-    v13 = objc_msgSend_lowercaseString(v8, v10, v11);
+    v13 = objc_msgSend_lowercaseString(stringCopy, v10, v11);
     searchString = v12->_searchString;
     v12->_searchString = v13;
   }
@@ -72,23 +72,23 @@
   return v12;
 }
 
-- (CLSSearchSpecification)initWithOptions:(unint64_t)a3 behaviors:(unint64_t)a4 searchString:(id)a5 requestor:(id)a6
+- (CLSSearchSpecification)initWithOptions:(unint64_t)options behaviors:(unint64_t)behaviors searchString:(id)string requestor:(id)requestor
 {
-  v11 = a6;
-  v13 = objc_msgSend_initWithOptions_behaviors_searchString_(self, v12, a3, a4, a5);
+  requestorCopy = requestor;
+  v13 = objc_msgSend_initWithOptions_behaviors_searchString_(self, v12, options, behaviors, string);
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong((v13 + 56), a6);
+    objc_storeStrong((v13 + 56), requestor);
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_options(self, v8, v9);
   v13 = objc_msgSend_behaviors(self, v11, v12);
   v16 = objc_msgSend_searchString(self, v14, v15);
@@ -196,10 +196,10 @@
   return v21;
 }
 
-- (CLSSearchSpecification)initWithCoder:(id)a3
+- (CLSSearchSpecification)initWithCoder:(id)coder
 {
   v92[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v91.receiver = self;
   v91.super_class = CLSSearchSpecification;
   v5 = [(CLSSearchSpecification *)&v91 init];
@@ -215,147 +215,147 @@
     v10 = objc_msgSend_setWithArray_(v6, v9, v8);
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"searchString");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"searchString");
     searchString = v5->_searchString;
     v5->_searchString = v13;
 
-    v5->_compareOptions = objc_msgSend_decodeIntegerForKey_(v4, v15, @"compareOptions");
-    v5->_options = objc_msgSend_decodeIntegerForKey_(v4, v16, @"options");
-    v5->_behaviors = objc_msgSend_decodeIntegerForKey_(v4, v17, @"behaviors");
-    v19 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v18, v10, @"classLocationIDs");
+    v5->_compareOptions = objc_msgSend_decodeIntegerForKey_(coderCopy, v15, @"compareOptions");
+    v5->_options = objc_msgSend_decodeIntegerForKey_(coderCopy, v16, @"options");
+    v5->_behaviors = objc_msgSend_decodeIntegerForKey_(coderCopy, v17, @"behaviors");
+    v19 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v18, v10, @"classLocationIDs");
     classLocationIDs = v5->_classLocationIDs;
     v5->_classLocationIDs = v19;
 
-    v22 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v21, v10, @"classSortDescriptors");
+    v22 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v21, v10, @"classSortDescriptors");
     classSortDescriptors = v5->_classSortDescriptors;
     v5->_classSortDescriptors = v22;
 
-    v5->_includeUnsearchablePersons = objc_msgSend_decodeBoolForKey_(v4, v24, @"includeUnsearchablePersons");
-    v26 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v25, v10, @"personSortDescriptors");
+    v5->_includeUnsearchablePersons = objc_msgSend_decodeBoolForKey_(coderCopy, v24, @"includeUnsearchablePersons");
+    v26 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v25, v10, @"personSortDescriptors");
     personSortDescriptors = v5->_personSortDescriptors;
     v5->_personSortDescriptors = v26;
 
-    v29 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v28, v10, @"personLocationIDs");
+    v29 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v28, v10, @"personLocationIDs");
     personLocationIDs = v5->_personLocationIDs;
     v5->_personLocationIDs = v29;
 
-    v32 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v31, v10, @"requiredRoleID");
+    v32 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v31, v10, @"requiredRoleID");
     requiredRoleID = v5->_requiredRoleID;
     v5->_requiredRoleID = v32;
 
-    v5->_requiredRoleType = objc_msgSend_decodeIntegerForKey_(v4, v34, @"requiredRoleType");
-    v36 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v35, v10, @"requiredPrivilege");
+    v5->_requiredRoleType = objc_msgSend_decodeIntegerForKey_(coderCopy, v34, @"requiredRoleType");
+    v36 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v35, v10, @"requiredPrivilege");
     requiredPrivilege = v5->_requiredPrivilege;
     v5->_requiredPrivilege = v36;
 
-    v39 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v38, v10, @"requiredPrivilegeLocationIDs");
+    v39 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v38, v10, @"requiredPrivilegeLocationIDs");
     requiredPrivilegeLocationIDs = v5->_requiredPrivilegeLocationIDs;
     v5->_requiredPrivilegeLocationIDs = v39;
 
-    v42 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v41, v10, @"prohibitedPrivilege");
+    v42 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v41, v10, @"prohibitedPrivilege");
     prohibitedPrivilege = v5->_prohibitedPrivilege;
     v5->_prohibitedPrivilege = v42;
 
-    v45 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v44, v10, @"prohibitedPrivilegeLocationIDs");
+    v45 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v44, v10, @"prohibitedPrivilegeLocationIDs");
     prohibitedPrivilegeLocationIDs = v5->_prohibitedPrivilegeLocationIDs;
     v5->_prohibitedPrivilegeLocationIDs = v45;
 
-    v48 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v47, v10, @"locationSortDescriptors");
+    v48 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v47, v10, @"locationSortDescriptors");
     locationSortDescriptors = v5->_locationSortDescriptors;
     v5->_locationSortDescriptors = v48;
 
-    v51 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v50, v10, @"locationPersonIDs");
+    v51 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v50, v10, @"locationPersonIDs");
     locationPersonIDs = v5->_locationPersonIDs;
     v5->_locationPersonIDs = v51;
 
-    v5->_requiredLocationRoleType = objc_msgSend_decodeIntegerForKey_(v4, v53, @"requiredLocationRoleType");
-    v55 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v54, v10, @"requiredLocationPrivilege");
+    v5->_requiredLocationRoleType = objc_msgSend_decodeIntegerForKey_(coderCopy, v53, @"requiredLocationRoleType");
+    v55 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v54, v10, @"requiredLocationPrivilege");
     requiredLocationPrivilege = v5->_requiredLocationPrivilege;
     v5->_requiredLocationPrivilege = v55;
 
-    v58 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v57, v10, @"requiredLocationPersonIDs");
+    v58 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v57, v10, @"requiredLocationPersonIDs");
     requiredLocationPersonIDs = v5->_requiredLocationPersonIDs;
     v5->_requiredLocationPersonIDs = v58;
 
-    v61 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v60, v10, @"prohibitedLocationPrivilege");
+    v61 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v60, v10, @"prohibitedLocationPrivilege");
     prohibitedLocationPrivilege = v5->_prohibitedLocationPrivilege;
     v5->_prohibitedLocationPrivilege = v61;
 
-    v64 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v63, v10, @"prohibitedLocationPersonIDs");
+    v64 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v63, v10, @"prohibitedLocationPersonIDs");
     prohibitedLocationPersonIDs = v5->_prohibitedLocationPersonIDs;
     v5->_prohibitedLocationPersonIDs = v64;
 
-    v67 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v66, v10, @"organizationSortDescriptors");
+    v67 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v66, v10, @"organizationSortDescriptors");
     organizationSortDescriptors = v5->_organizationSortDescriptors;
     v5->_organizationSortDescriptors = v67;
 
-    v70 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v69, v10, @"requiredOrganizationEmailDomain");
+    v70 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v69, v10, @"requiredOrganizationEmailDomain");
     requiredOrganizationEmailDomain = v5->_requiredOrganizationEmailDomain;
     v5->_requiredOrganizationEmailDomain = v70;
 
-    v73 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v72, v10, @"adminRequestor");
+    v73 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v72, v10, @"adminRequestor");
     adminRequestor = v5->_adminRequestor;
     v5->_adminRequestor = v73;
 
-    v5->_requiredClassMemberRole = objc_msgSend_decodeIntegerForKey_(v4, v75, @"requiredClassMemberRole");
-    v77 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v76, v10, @"requiredClassMemberClassIDs");
+    v5->_requiredClassMemberRole = objc_msgSend_decodeIntegerForKey_(coderCopy, v75, @"requiredClassMemberRole");
+    v77 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v76, v10, @"requiredClassMemberClassIDs");
     requiredClassMemberClassIDs = v5->_requiredClassMemberClassIDs;
     v5->_requiredClassMemberClassIDs = v77;
 
-    v80 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v79, v10, @"groupSortDescriptors");
+    v80 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v79, v10, @"groupSortDescriptors");
     groupSortDescriptors = v5->_groupSortDescriptors;
     v5->_groupSortDescriptors = v80;
 
-    v83 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v82, v10, @"groupLocationIDs");
+    v83 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v82, v10, @"groupLocationIDs");
     groupLocationIDs = v5->_groupLocationIDs;
     v5->_groupLocationIDs = v83;
 
-    v86 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v85, v10, @"requiredGroupMemberGroupIDs");
+    v86 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v85, v10, @"requiredGroupMemberGroupIDs");
     requiredGroupMemberGroupIDs = v5->_requiredGroupMemberGroupIDs;
     v5->_requiredGroupMemberGroupIDs = v86;
 
-    v5->_includeEmptyGroupsInResults = objc_msgSend_decodeBoolForKey_(v4, v88, @"includeEmptyGroupsInResults");
+    v5->_includeEmptyGroupsInResults = objc_msgSend_decodeBoolForKey_(coderCopy, v88, @"includeEmptyGroupsInResults");
   }
 
   v89 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   searchString = self->_searchString;
-  v36 = a3;
-  objc_msgSend_encodeObject_forKey_(v36, v5, searchString, @"searchString");
-  objc_msgSend_encodeInteger_forKey_(v36, v6, self->_compareOptions, @"compareOptions");
-  objc_msgSend_encodeInteger_forKey_(v36, v7, self->_options, @"options");
-  objc_msgSend_encodeInteger_forKey_(v36, v8, self->_behaviors, @"behaviors");
-  objc_msgSend_encodeObject_forKey_(v36, v9, self->_classLocationIDs, @"classLocationIDs");
-  objc_msgSend_encodeObject_forKey_(v36, v10, self->_classSortDescriptors, @"classSortDescriptors");
-  objc_msgSend_encodeBool_forKey_(v36, v11, self->_includeUnsearchablePersons, @"includeUnsearchablePersons");
-  objc_msgSend_encodeObject_forKey_(v36, v12, self->_personSortDescriptors, @"personSortDescriptors");
-  objc_msgSend_encodeObject_forKey_(v36, v13, self->_personLocationIDs, @"personLocationIDs");
-  objc_msgSend_encodeObject_forKey_(v36, v14, self->_requiredRoleID, @"requiredRoleID");
-  objc_msgSend_encodeInteger_forKey_(v36, v15, self->_requiredRoleType, @"requiredRoleType");
-  objc_msgSend_encodeObject_forKey_(v36, v16, self->_requiredPrivilege, @"requiredPrivilege");
-  objc_msgSend_encodeObject_forKey_(v36, v17, self->_requiredPrivilegeLocationIDs, @"requiredPrivilegeLocationIDs");
-  objc_msgSend_encodeObject_forKey_(v36, v18, self->_prohibitedPrivilege, @"prohibitedPrivilege");
-  objc_msgSend_encodeObject_forKey_(v36, v19, self->_prohibitedPrivilegeLocationIDs, @"prohibitedPrivilegeLocationIDs");
-  objc_msgSend_encodeObject_forKey_(v36, v20, self->_locationSortDescriptors, @"locationSortDescriptors");
-  objc_msgSend_encodeObject_forKey_(v36, v21, self->_locationPersonIDs, @"locationPersonIDs");
-  objc_msgSend_encodeInteger_forKey_(v36, v22, self->_requiredLocationRoleType, @"requiredLocationRoleType");
-  objc_msgSend_encodeObject_forKey_(v36, v23, self->_requiredLocationPrivilege, @"requiredLocationPrivilege");
-  objc_msgSend_encodeObject_forKey_(v36, v24, self->_requiredLocationPersonIDs, @"requiredLocationPersonIDs");
-  objc_msgSend_encodeObject_forKey_(v36, v25, self->_prohibitedLocationPrivilege, @"prohibitedLocationPrivilege");
-  objc_msgSend_encodeObject_forKey_(v36, v26, self->_prohibitedLocationPersonIDs, @"prohibitedLocationPersonIDs");
-  objc_msgSend_encodeObject_forKey_(v36, v27, self->_organizationSortDescriptors, @"organizationSortDescriptors");
-  objc_msgSend_encodeObject_forKey_(v36, v28, self->_requiredOrganizationEmailDomain, @"requiredOrganizationEmailDomain");
-  objc_msgSend_encodeObject_forKey_(v36, v29, self->_adminRequestor, @"adminRequestor");
-  objc_msgSend_encodeInteger_forKey_(v36, v30, self->_requiredClassMemberRole, @"requiredClassMemberRole");
-  objc_msgSend_encodeObject_forKey_(v36, v31, self->_requiredClassMemberClassIDs, @"requiredClassMemberClassIDs");
-  objc_msgSend_encodeObject_forKey_(v36, v32, self->_groupSortDescriptors, @"groupSortDescriptors");
-  objc_msgSend_encodeObject_forKey_(v36, v33, self->_groupLocationIDs, @"groupLocationIDs");
-  objc_msgSend_encodeObject_forKey_(v36, v34, self->_requiredGroupMemberGroupIDs, @"requiredGroupMemberGroupIDs");
-  objc_msgSend_encodeBool_forKey_(v36, v35, self->_includeEmptyGroupsInResults, @"includeEmptyGroupsInResults");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, searchString, @"searchString");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_compareOptions, @"compareOptions");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, self->_options, @"options");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v8, self->_behaviors, @"behaviors");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_classLocationIDs, @"classLocationIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, self->_classSortDescriptors, @"classSortDescriptors");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v11, self->_includeUnsearchablePersons, @"includeUnsearchablePersons");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, self->_personSortDescriptors, @"personSortDescriptors");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->_personLocationIDs, @"personLocationIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, self->_requiredRoleID, @"requiredRoleID");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v15, self->_requiredRoleType, @"requiredRoleType");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, self->_requiredPrivilege, @"requiredPrivilege");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, self->_requiredPrivilegeLocationIDs, @"requiredPrivilegeLocationIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v18, self->_prohibitedPrivilege, @"prohibitedPrivilege");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, self->_prohibitedPrivilegeLocationIDs, @"prohibitedPrivilegeLocationIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, self->_locationSortDescriptors, @"locationSortDescriptors");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v21, self->_locationPersonIDs, @"locationPersonIDs");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v22, self->_requiredLocationRoleType, @"requiredLocationRoleType");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v23, self->_requiredLocationPrivilege, @"requiredLocationPrivilege");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, self->_requiredLocationPersonIDs, @"requiredLocationPersonIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v25, self->_prohibitedLocationPrivilege, @"prohibitedLocationPrivilege");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v26, self->_prohibitedLocationPersonIDs, @"prohibitedLocationPersonIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v27, self->_organizationSortDescriptors, @"organizationSortDescriptors");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, self->_requiredOrganizationEmailDomain, @"requiredOrganizationEmailDomain");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v29, self->_adminRequestor, @"adminRequestor");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v30, self->_requiredClassMemberRole, @"requiredClassMemberRole");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v31, self->_requiredClassMemberClassIDs, @"requiredClassMemberClassIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, self->_groupSortDescriptors, @"groupSortDescriptors");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v33, self->_groupLocationIDs, @"groupLocationIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v34, self->_requiredGroupMemberGroupIDs, @"requiredGroupMemberGroupIDs");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v35, self->_includeEmptyGroupsInResults, @"includeEmptyGroupsInResults");
 }
 
 - (id)dictionaryRepresentation
@@ -566,10 +566,10 @@
   return v7;
 }
 
-- (id)predicateUsingSubPredicateBlock:(id)a3
+- (id)predicateUsingSubPredicateBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
@@ -593,7 +593,7 @@
         v16 = *(*(&v25 + 1) + 8 * i);
         if (objc_msgSend_length(v16, v11, v12))
         {
-          v18 = v4[2](v4, v16);
+          v18 = blockCopy[2](blockCopy, v16);
           if (v18)
           {
             objc_msgSend_addObject_(v5, v17, v18);
@@ -642,9 +642,9 @@
   return v5;
 }
 
-- (id)predicateForPersonsWithPersonIDs:(id)a3
+- (id)predicateForPersonsWithPersonIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v7 = objc_msgSend_searchString(self, v5, v6);
 
   if (v7)
@@ -654,13 +654,13 @@
     v12[2] = sub_236FE90A8;
     v12[3] = &unk_278A195C0;
     v12[4] = self;
-    v13 = v4;
+    v13 = dsCopy;
     v10 = objc_msgSend_predicateUsingSubPredicateBlock_(self, v9, v12);
   }
 
   else
   {
-    v10 = objc_msgSend_predicateForPersonsWithObjectIDs_(self, v8, v4);
+    v10 = objc_msgSend_predicateForPersonsWithObjectIDs_(self, v8, dsCopy);
   }
 
   return v10;
@@ -732,16 +732,16 @@
   return v2;
 }
 
-- (id)predicateWithLocationIDs:(id)a3
+- (id)predicateWithLocationIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FE9584;
   v9[3] = &unk_278A195C0;
   v9[4] = self;
-  v10 = v4;
-  v5 = v4;
+  v10 = dsCopy;
+  v5 = dsCopy;
   v7 = objc_msgSend_predicateUsingSubPredicateBlock_(self, v6, v9);
 
   return v7;
@@ -932,165 +932,165 @@
   objc_msgSend_setIncludeEmptyGroupsInResults_(self, a2, 1);
 }
 
-- (id)predicateForPersonsWithObjectIDs:(id)a3
+- (id)predicateForPersonsWithObjectIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (objc_msgSend_includeUnsearchablePersons(self, v5, v6))
   {
-    objc_msgSend_predicateForObjectsWithObjectIDs_(CLSDataObserver, v7, v4);
+    objc_msgSend_predicateForObjectsWithObjectIDs_(CLSDataObserver, v7, dsCopy);
   }
 
   else
   {
-    objc_msgSend_predicateWithFormat_(MEMORY[0x277CCAC30], v7, @"%K IN %@ && isSearchable == 1", @"objectID", v4);
+    objc_msgSend_predicateWithFormat_(MEMORY[0x277CCAC30], v7, @"%K IN %@ && isSearchable == 1", @"objectID", dsCopy);
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)requireRoleType:(int64_t)a3 atLocationIDs:(id)a4
+- (void)requireRoleType:(int64_t)type atLocationIDs:(id)ds
 {
-  v11 = a4;
+  dsCopy = ds;
   v9 = objc_msgSend_options(self, v7, v8);
-  if (a3 && (v9 & 1) != 0)
+  if (type && (v9 & 1) != 0)
   {
     requiredRoleID = self->_requiredRoleID;
     self->_requiredRoleID = 0;
-    self->_requiredRoleType = a3;
+    self->_requiredRoleType = type;
 
-    objc_storeStrong(&self->_personLocationIDs, a4);
+    objc_storeStrong(&self->_personLocationIDs, ds);
   }
 }
 
-- (void)requireRole:(id)a3 atLocationIDs:(id)a4
+- (void)requireRole:(id)role atLocationIDs:(id)ds
 {
-  v13 = a3;
-  v6 = a4;
+  roleCopy = role;
+  dsCopy = ds;
   if (objc_msgSend_options(self, v7, v8))
   {
     self->_requiredRoleType = 0;
-    v11 = v13;
-    if (v13)
+    v11 = roleCopy;
+    if (roleCopy)
     {
-      v11 = objc_msgSend_objectID(v13, v9, v10);
+      v11 = objc_msgSend_objectID(roleCopy, v9, v10);
     }
 
     requiredRoleID = self->_requiredRoleID;
     self->_requiredRoleID = v11;
 
-    objc_storeStrong(&self->_personLocationIDs, a4);
+    objc_storeStrong(&self->_personLocationIDs, ds);
   }
 }
 
-- (void)requirePrivilege:(id)a3 atLocationIDs:(id)a4
+- (void)requirePrivilege:(id)privilege atLocationIDs:(id)ds
 {
-  v14 = a3;
-  v7 = a4;
+  privilegeCopy = privilege;
+  dsCopy = ds;
   if (objc_msgSend_options(self, v8, v9))
   {
-    objc_storeStrong(&self->_requiredPrivilege, a3);
-    v12 = objc_msgSend_copy(v7, v10, v11);
+    objc_storeStrong(&self->_requiredPrivilege, privilege);
+    v12 = objc_msgSend_copy(dsCopy, v10, v11);
     requiredPrivilegeLocationIDs = self->_requiredPrivilegeLocationIDs;
     self->_requiredPrivilegeLocationIDs = v12;
   }
 }
 
-- (void)prohibitPrivilege:(id)a3 atLocationIDs:(id)a4
+- (void)prohibitPrivilege:(id)privilege atLocationIDs:(id)ds
 {
-  v14 = a3;
-  v7 = a4;
+  privilegeCopy = privilege;
+  dsCopy = ds;
   if (objc_msgSend_options(self, v8, v9))
   {
-    objc_storeStrong(&self->_prohibitedPrivilege, a3);
-    v12 = objc_msgSend_copy(v7, v10, v11);
+    objc_storeStrong(&self->_prohibitedPrivilege, privilege);
+    v12 = objc_msgSend_copy(dsCopy, v10, v11);
     prohibitedPrivilegeLocationIDs = self->_prohibitedPrivilegeLocationIDs;
     self->_prohibitedPrivilegeLocationIDs = v12;
   }
 }
 
-- (void)restrictToClassesAtLocationIDs:(id)a3
+- (void)restrictToClassesAtLocationIDs:(id)ds
 {
-  v7 = a3;
+  dsCopy = ds;
   if ((objc_msgSend_options(self, v5, v6) & 2) != 0)
   {
-    objc_storeStrong(&self->_classLocationIDs, a3);
+    objc_storeStrong(&self->_classLocationIDs, ds);
   }
 }
 
-- (void)restrictToGroupsAtLocationIDs:(id)a3
+- (void)restrictToGroupsAtLocationIDs:(id)ds
 {
-  v7 = a3;
+  dsCopy = ds;
   if ((objc_msgSend_options(self, v5, v6) & 0x10) != 0)
   {
-    objc_storeStrong(&self->_groupLocationIDs, a3);
+    objc_storeStrong(&self->_groupLocationIDs, ds);
   }
 }
 
-- (void)requireRoleType:(int64_t)a3 onPersonIDs:(id)a4
+- (void)requireRoleType:(int64_t)type onPersonIDs:(id)ds
 {
-  v10 = a4;
+  dsCopy = ds;
   v9 = objc_msgSend_options(self, v7, v8);
-  if (a3 && (v9 & 4) != 0)
+  if (type && (v9 & 4) != 0)
   {
-    self->_requiredLocationRoleType = a3;
-    objc_storeStrong(&self->_locationPersonIDs, a4);
+    self->_requiredLocationRoleType = type;
+    objc_storeStrong(&self->_locationPersonIDs, ds);
   }
 }
 
-- (void)requirePrivilege:(id)a3 onPersonIDs:(id)a4
+- (void)requirePrivilege:(id)privilege onPersonIDs:(id)ds
 {
-  v14 = a3;
-  v7 = a4;
+  privilegeCopy = privilege;
+  dsCopy = ds;
   if ((objc_msgSend_options(self, v8, v9) & 4) != 0)
   {
-    objc_storeStrong(&self->_requiredLocationPrivilege, a3);
-    v12 = objc_msgSend_copy(v7, v10, v11);
+    objc_storeStrong(&self->_requiredLocationPrivilege, privilege);
+    v12 = objc_msgSend_copy(dsCopy, v10, v11);
     requiredLocationPersonIDs = self->_requiredLocationPersonIDs;
     self->_requiredLocationPersonIDs = v12;
   }
 }
 
-- (void)prohibitPrivilege:(id)a3 onPersonIDs:(id)a4
+- (void)prohibitPrivilege:(id)privilege onPersonIDs:(id)ds
 {
-  v14 = a3;
-  v7 = a4;
+  privilegeCopy = privilege;
+  dsCopy = ds;
   if ((objc_msgSend_options(self, v8, v9) & 4) != 0)
   {
-    objc_storeStrong(&self->_prohibitedLocationPrivilege, a3);
-    v12 = objc_msgSend_copy(v7, v10, v11);
+    objc_storeStrong(&self->_prohibitedLocationPrivilege, privilege);
+    v12 = objc_msgSend_copy(dsCopy, v10, v11);
     prohibitedLocationPersonIDs = self->_prohibitedLocationPersonIDs;
     self->_prohibitedLocationPersonIDs = v12;
   }
 }
 
-- (void)restrictToOrganizationsMatchingEmailDomain:(id)a3
+- (void)restrictToOrganizationsMatchingEmailDomain:(id)domain
 {
-  v7 = a3;
+  domainCopy = domain;
   if ((objc_msgSend_options(self, v5, v6) & 8) != 0)
   {
-    objc_storeStrong(&self->_requiredOrganizationEmailDomain, a3);
+    objc_storeStrong(&self->_requiredOrganizationEmailDomain, domain);
   }
 }
 
-- (void)requireClassMemberRole:(unint64_t)a3 forClassIDs:(id)a4
+- (void)requireClassMemberRole:(unint64_t)role forClassIDs:(id)ds
 {
-  v12 = a4;
+  dsCopy = ds;
   if (objc_msgSend_options(self, v6, v7))
   {
-    self->_requiredClassMemberRole = a3;
-    v10 = objc_msgSend_copy(v12, v8, v9);
+    self->_requiredClassMemberRole = role;
+    v10 = objc_msgSend_copy(dsCopy, v8, v9);
     requiredClassMemberClassIDs = self->_requiredClassMemberClassIDs;
     self->_requiredClassMemberClassIDs = v10;
   }
 }
 
-- (void)requireGroupMemberIDs:(id)a3
+- (void)requireGroupMemberIDs:(id)ds
 {
-  v10 = a3;
+  dsCopy = ds;
   if (objc_msgSend_options(self, v4, v5))
   {
-    v8 = objc_msgSend_copy(v10, v6, v7);
+    v8 = objc_msgSend_copy(dsCopy, v6, v7);
     requiredGroupMemberGroupIDs = self->_requiredGroupMemberGroupIDs;
     self->_requiredGroupMemberGroupIDs = v8;
   }

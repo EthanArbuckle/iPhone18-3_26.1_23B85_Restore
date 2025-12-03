@@ -1,32 +1,32 @@
 @interface SBPressTuple
-- (BOOL)isEqual:(id)a3;
-- (SBPressTuple)initWithDurationDown:(double)a3 durationUp:(double)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBPressTuple)initWithDurationDown:(double)down durationUp:(double)up;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBPressTuple
 
-- (SBPressTuple)initWithDurationDown:(double)a3 durationUp:(double)a4
+- (SBPressTuple)initWithDurationDown:(double)down durationUp:(double)up
 {
   v7.receiver = self;
   v7.super_class = SBPressTuple;
   result = [(SBPressTuple *)&v7 init];
   if (result)
   {
-    result->_durationDown = a3;
-    result->_durationUp = a4;
+    result->_durationDown = down;
+    result->_durationUp = up;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -64,10 +64,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBPressTuple *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBPressTuple *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -79,12 +79,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBPressTuple *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBPressTuple *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

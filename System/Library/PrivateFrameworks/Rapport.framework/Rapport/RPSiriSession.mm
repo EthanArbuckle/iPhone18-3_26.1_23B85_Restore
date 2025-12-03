@@ -1,32 +1,32 @@
 @interface RPSiriSession
-- (BOOL)voiceControllerSetupAndReturnError:(id *)a3;
+- (BOOL)voiceControllerSetupAndReturnError:(id *)error;
 - (NSString)description;
 - (RPSiriSession)init;
 - (void)_activate2;
-- (void)_activateCompletedWithError:(id)a3;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_invalidateWithCompletion:(id)a3;
+- (void)_activateCompletedWithError:(id)error;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_invalidateWithCompletion:(id)completion;
 - (void)_invalidated;
 - (void)_recordingLimitTimerFired;
-- (void)_recordingLimitTimerStart:(unsigned int)a3;
+- (void)_recordingLimitTimerStart:(unsigned int)start;
 - (void)_sendSiriStop;
-- (void)_startActivationWithDestinationID:(id)a3 messenger:(id)a4 completion:(id)a5;
+- (void)_startActivationWithDestinationID:(id)d messenger:(id)messenger completion:(id)completion;
 - (void)_stopRecording;
 - (void)_teardownVoiceController;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)invalidateWithCompletion:(id)a3;
-- (void)prewarmWithCompletion:(id)a3;
-- (void)receivedButtonUpWithCompletion:(id)a3;
-- (void)setMessenger:(id)a3;
-- (void)voiceControllerAudioCallback:(id)a3 forStream:(unint64_t)a4 buffer:(id)a5;
-- (void)voiceControllerDidDetectEndpoint:(id)a3 ofType:(int)a4 atTime:(double)a5;
-- (void)voiceControllerDidDetectStartpoint:(id)a3;
-- (void)voiceControllerDidStartRecording:(id)a3 forStream:(unint64_t)a4 successfully:(BOOL)a5 error:(id)a6;
-- (void)voiceControllerDidStopRecording:(id)a3 forStream:(unint64_t)a4 forReason:(int64_t)a5;
-- (void)voiceControllerEncoderErrorDidOccur:(id)a3 error:(id)a4;
-- (void)voiceControllerMediaServicesWereReset:(id)a3;
+- (void)invalidateWithCompletion:(id)completion;
+- (void)prewarmWithCompletion:(id)completion;
+- (void)receivedButtonUpWithCompletion:(id)completion;
+- (void)setMessenger:(id)messenger;
+- (void)voiceControllerAudioCallback:(id)callback forStream:(unint64_t)stream buffer:(id)buffer;
+- (void)voiceControllerDidDetectEndpoint:(id)endpoint ofType:(int)type atTime:(double)time;
+- (void)voiceControllerDidDetectStartpoint:(id)startpoint;
+- (void)voiceControllerDidStartRecording:(id)recording forStream:(unint64_t)stream successfully:(BOOL)successfully error:(id)error;
+- (void)voiceControllerDidStopRecording:(id)recording forStream:(unint64_t)stream forReason:(int64_t)reason;
+- (void)voiceControllerEncoderErrorDidOccur:(id)occur error:(id)error;
+- (void)voiceControllerMediaServicesWereReset:(id)reset;
 - (void)voiceControllerTearDown;
 @end
 
@@ -48,12 +48,12 @@
   return v3;
 }
 
-- (void)setMessenger:(id)a3
+- (void)setMessenger:(id)messenger
 {
-  v5 = a3;
-  if (self->_messenger != v5)
+  messengerCopy = messenger;
+  if (self->_messenger != messengerCopy)
   {
-    objc_storeStrong(&self->_messenger, a3);
+    objc_storeStrong(&self->_messenger, messenger);
     if (_os_feature_enabled_impl())
     {
       if ([(RPSiriSession *)self isDestinationPTTEligible])
@@ -89,8 +89,8 @@ void __30__RPSiriSession_setMessenger___block_invoke(uint64_t a1, void *a2, void
   startRecordingState = self->_startRecordingState;
   if (startRecordingState == 6 || startRecordingState == 1)
   {
-    v5 = [(RPSiriSession *)self delegate];
-    [v5 rpSiriSessionDidReceiveStopRecording];
+    delegate = [(RPSiriSession *)self delegate];
+    [delegate rpSiriSessionDidReceiveStopRecording];
   }
 }
 
@@ -101,17 +101,17 @@ void __30__RPSiriSession_setMessenger___block_invoke(uint64_t a1, void *a2, void
   return 0;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_RPSiriSession <= 30 && (gLogCategory_RPSiriSession != -1 || _LogCategory_Initialize()))
   {
     [RPSiriSession activateWithCompletion:];
   }
 
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -124,17 +124,17 @@ void __30__RPSiriSession_setMessenger___block_invoke(uint64_t a1, void *a2, void
   v9[2] = __40__RPSiriSession_activateWithCompletion___block_invoke;
   v9[3] = &unk_1E7C92E20;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)prewarmWithCompletion:(id)a3
+- (void)prewarmWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  completionCopy = completion;
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -147,8 +147,8 @@ void __30__RPSiriSession_setMessenger___block_invoke(uint64_t a1, void *a2, void
   v9[2] = __39__RPSiriSession_prewarmWithCompletion___block_invoke;
   v9[3] = &unk_1E7C92E20;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 }
 
@@ -178,9 +178,9 @@ void __39__RPSiriSession_prewarmWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_destinationID;
   if (!v5)
   {
@@ -188,18 +188,18 @@ void __39__RPSiriSession_prewarmWithCompletion___block_invoke(uint64_t a1)
     if (gLogCategory_RPSiriSession <= 90 && (gLogCategory_RPSiriSession != -1 || _LogCategory_Initialize()))
     {
       [RPSiriSession _activateWithCompletion:];
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_35;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
       goto LABEL_35;
     }
 
-    v4[2](v4, v6);
+    completionCopy[2](completionCopy, v6);
     goto LABEL_35;
   }
 
@@ -210,20 +210,20 @@ void __39__RPSiriSession_prewarmWithCompletion___block_invoke(uint64_t a1)
     if (gLogCategory_RPSiriSession <= 90 && (gLogCategory_RPSiriSession != -1 || _LogCategory_Initialize()))
     {
       [RPSiriSession _activateWithCompletion:];
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_25;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
 LABEL_25:
 
       goto LABEL_35;
     }
 
-    v4[2](v4, v11);
+    completionCopy[2](completionCopy, v11);
     goto LABEL_25;
   }
 
@@ -251,19 +251,19 @@ LABEL_25:
       v15[1] = 3221225472;
       v15[2] = __41__RPSiriSession__activateWithCompletion___block_invoke;
       v15[3] = &unk_1E7C93780;
-      v16 = v4;
+      v16 = completionCopy;
       [(RPMessageable *)v6 sendRequestID:@"_siriStartWhileRecording" request:MEMORY[0x1E695E0F8] destinationID:v5 options:v9 responseHandler:v15];
     }
 
-    else if (v4)
+    else if (completionCopy)
     {
-      v4[2](v4, v7);
+      completionCopy[2](completionCopy, v7);
     }
   }
 
   else if (self->_voiceController)
   {
-    [(RPSiriSession *)self _startActivationWithDestinationID:v5 messenger:v6 completion:v4];
+    [(RPSiriSession *)self _startActivationWithDestinationID:v5 messenger:v6 completion:completionCopy];
   }
 
   else
@@ -280,7 +280,7 @@ LABEL_25:
     v13[4] = self;
     v13[5] = v5;
     v13[6] = v6;
-    v14 = v4;
+    v14 = completionCopy;
     [(RPSiriSession *)self prewarmWithCompletion:v13];
   }
 
@@ -333,12 +333,12 @@ LABEL_8:
   }
 }
 
-- (void)_startActivationWithDestinationID:(id)a3 messenger:(id)a4 completion:(id)a5
+- (void)_startActivationWithDestinationID:(id)d messenger:(id)messenger completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  messengerCopy = messenger;
   self->_activateState = 1;
-  v10 = _Block_copy(a5);
+  v10 = _Block_copy(completion);
   activateCompletion = self->_activateCompletion;
   self->_activateCompletion = v10;
 
@@ -375,7 +375,7 @@ LABEL_8:
   v15[2] = __72__RPSiriSession__startActivationWithDestinationID_messenger_completion___block_invoke;
   v15[3] = &unk_1E7C93B48;
   v15[4] = self;
-  [v9 sendRequestID:@"_siriStart" request:MEMORY[0x1E695E0F8] destinationID:v8 options:v12 responseHandler:v15];
+  [messengerCopy sendRequestID:@"_siriStart" request:MEMORY[0x1E695E0F8] destinationID:dCopy options:v12 responseHandler:v15];
 }
 
 void __72__RPSiriSession__startActivationWithDestinationID_messenger_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -428,10 +428,10 @@ LABEL_7:
   }
 }
 
-- (void)_activateCompletedWithError:(id)a3
+- (void)_activateCompletedWithError:(id)error
 {
-  v7 = a3;
-  if (v7)
+  errorCopy = error;
+  if (errorCopy)
   {
     if (gLogCategory_RPSiriSession <= 90 && (gLogCategory_RPSiriSession != -1 || _LogCategory_Initialize()))
     {
@@ -453,7 +453,7 @@ LABEL_7:
 
   if (v5)
   {
-    v5[2](v5, v7);
+    v5[2](v5, errorCopy);
   }
 
   if (self->_invalidateCalled)
@@ -473,21 +473,21 @@ LABEL_7:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)invalidateWithCompletion:(id)a3
+- (void)invalidateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__RPSiriSession_invalidateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)receivedButtonUpWithCompletion:(id)a3
+- (void)receivedButtonUpWithCompletion:(id)completion
 {
   if (_os_feature_enabled_impl() && [(RPSiriSession *)self isDestinationPTTEligible])
   {
@@ -539,9 +539,9 @@ void __30__RPSiriSession__sendSiriStop__block_invoke(uint64_t a1, void *a2, void
   }
 }
 
-- (void)_invalidateWithCompletion:(id)a3
+- (void)_invalidateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_invalidateCalled)
   {
     self->_invalidateCalled = 1;
@@ -573,7 +573,7 @@ void __30__RPSiriSession__sendSiriStop__block_invoke(uint64_t a1, void *a2, void
         v16[2] = __43__RPSiriSession__invalidateWithCompletion___block_invoke;
         v16[3] = &unk_1E7C94DB8;
         v16[4] = self;
-        v17 = v4;
+        v17 = completionCopy;
         [(RPMessageable *)messenger sendRequestID:@"_siriStop" request:MEMORY[0x1E695E0F8] destinationID:destinationID options:v6 responseHandler:v16];
         v10 = self->_messenger;
         self->_messenger = 0;
@@ -705,7 +705,7 @@ void __43__RPSiriSession__invalidateWithCompletion___block_invoke(uint64_t a1, v
   }
 }
 
-- (BOOL)voiceControllerSetupAndReturnError:(id *)a3
+- (BOOL)voiceControllerSetupAndReturnError:(id *)error
 {
   v29 = 0u;
   v30 = 0u;
@@ -741,10 +741,10 @@ void __43__RPSiriSession__invalidateWithCompletion___block_invoke(uint64_t a1, v
       voiceController = self->_voiceController;
       if (!voiceController)
       {
-        if (a3)
+        if (error)
         {
           RPNestedErrorF();
-          *a3 = v9 = 0;
+          *error = v9 = 0;
         }
 
         else
@@ -773,8 +773,8 @@ LABEL_33:
         [RPSiriSession voiceControllerSetupAndReturnError:];
       }
 
-      v15 = [(AVAudioFormat *)self->_audioFormat settings];
-      if (v15)
+      settings = [(AVAudioFormat *)self->_audioFormat settings];
+      if (settings)
       {
         v16 = self->_voiceController;
         streamId = self->_streamId;
@@ -787,7 +787,7 @@ LABEL_33:
           [RPSiriSession voiceControllerSetupAndReturnError:];
         }
 
-        v19 = [objc_alloc(getAVVCPrepareRecordSettingsClass[0]()) initWithStreamID:self->_streamId settings:v15 bufferDuration:0.1];
+        v19 = [objc_alloc(getAVVCPrepareRecordSettingsClass[0]()) initWithStreamID:self->_streamId settings:settings bufferDuration:0.1];
         [v19 setMeteringEnabled:1];
         v20 = self->_voiceController;
         v23 = v18;
@@ -795,16 +795,16 @@ LABEL_33:
         v14 = v23;
 
         v9 = (v14 == 0) & v21;
-        if (a3 && !v9)
+        if (error && !v9)
         {
-          *a3 = RPNestedErrorF();
+          *error = RPNestedErrorF();
         }
       }
 
-      else if (a3)
+      else if (error)
       {
         RPErrorF();
-        *a3 = v9 = 0;
+        *error = v9 = 0;
       }
 
       else
@@ -813,10 +813,10 @@ LABEL_33:
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       RPNestedErrorF();
-      *a3 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -828,13 +828,13 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
   RPErrorF();
-  *a3 = v9 = 0;
+  *error = v9 = 0;
   return v9;
 }
 
@@ -870,19 +870,19 @@ LABEL_33:
   }
 }
 
-- (void)voiceControllerDidStartRecording:(id)a3 forStream:(unint64_t)a4 successfully:(BOOL)a5 error:(id)a6
+- (void)voiceControllerDidStartRecording:(id)recording forStream:(unint64_t)stream successfully:(BOOL)successfully error:(id)error
 {
-  v9 = a6;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__RPSiriSession_voiceControllerDidStartRecording_forStream_successfully_error___block_invoke;
   v12[3] = &unk_1E7C94F38;
-  v15 = a5;
+  successfullyCopy = successfully;
   v12[4] = self;
-  v13 = v9;
-  v14 = a4;
-  v11 = v9;
+  v13 = errorCopy;
+  streamCopy = stream;
+  v11 = errorCopy;
   dispatch_async(dispatchQueue, v12);
 }
 
@@ -926,7 +926,7 @@ void __79__RPSiriSession_voiceControllerDidStartRecording_forStream_successfully
   }
 }
 
-- (void)voiceControllerDidStopRecording:(id)a3 forStream:(unint64_t)a4 forReason:(int64_t)a5
+- (void)voiceControllerDidStopRecording:(id)recording forStream:(unint64_t)stream forReason:(int64_t)reason
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -934,8 +934,8 @@ void __79__RPSiriSession_voiceControllerDidStartRecording_forStream_successfully
   block[2] = __69__RPSiriSession_voiceControllerDidStopRecording_forStream_forReason___block_invoke;
   block[3] = &unk_1E7C94590;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = stream;
+  block[6] = reason;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -957,18 +957,18 @@ _BYTE *__69__RPSiriSession_voiceControllerDidStopRecording_forStream_forReason__
   return result;
 }
 
-- (void)voiceControllerAudioCallback:(id)a3 forStream:(unint64_t)a4 buffer:(id)a5
+- (void)voiceControllerAudioCallback:(id)callback forStream:(unint64_t)stream buffer:(id)buffer
 {
-  v7 = a5;
+  bufferCopy = buffer;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__RPSiriSession_voiceControllerAudioCallback_forStream_buffer___block_invoke;
   block[3] = &unk_1E7C94F60;
-  v11 = v7;
-  v12 = a4;
+  v11 = bufferCopy;
+  streamCopy = stream;
   block[4] = self;
-  v9 = v7;
+  v9 = bufferCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1028,13 +1028,13 @@ void __63__RPSiriSession_voiceControllerAudioCallback_forStream_buffer___block_i
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)voiceControllerDidDetectStartpoint:(id)a3
+- (void)voiceControllerDidDetectStartpoint:(id)startpoint
 {
-  v3 = a3;
-  v4 = v3;
+  startpointCopy = startpoint;
+  v4 = startpointCopy;
   if (gLogCategory_RPSiriSession <= 30)
   {
-    v6 = v3;
+    v6 = startpointCopy;
     if (gLogCategory_RPSiriSession != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       [RPSiriSession voiceControllerDidDetectStartpoint:];
@@ -1043,13 +1043,13 @@ void __63__RPSiriSession_voiceControllerAudioCallback_forStream_buffer___block_i
   }
 }
 
-- (void)voiceControllerDidDetectEndpoint:(id)a3 ofType:(int)a4 atTime:(double)a5
+- (void)voiceControllerDidDetectEndpoint:(id)endpoint ofType:(int)type atTime:(double)time
 {
-  v5 = a3;
-  v6 = v5;
+  endpointCopy = endpoint;
+  v6 = endpointCopy;
   if (gLogCategory_RPSiriSession <= 30)
   {
-    v8 = v5;
+    v8 = endpointCopy;
     if (gLogCategory_RPSiriSession != -1 || (v7 = _LogCategory_Initialize(), v6 = v8, v7))
     {
       LogPrintF();
@@ -1058,23 +1058,23 @@ void __63__RPSiriSession_voiceControllerAudioCallback_forStream_buffer___block_i
   }
 }
 
-- (void)voiceControllerEncoderErrorDidOccur:(id)a3 error:(id)a4
+- (void)voiceControllerEncoderErrorDidOccur:(id)occur error:(id)error
 {
-  v6 = a3;
-  v5 = a4;
+  occurCopy = occur;
+  errorCopy = error;
   if (gLogCategory_RPSiriSession <= 90 && (gLogCategory_RPSiriSession != -1 || _LogCategory_Initialize()))
   {
     [RPSiriSession voiceControllerEncoderErrorDidOccur:error:];
   }
 }
 
-- (void)voiceControllerMediaServicesWereReset:(id)a3
+- (void)voiceControllerMediaServicesWereReset:(id)reset
 {
-  v3 = a3;
-  v4 = v3;
+  resetCopy = reset;
+  v4 = resetCopy;
   if (gLogCategory_RPSiriSession <= 60)
   {
-    v6 = v3;
+    v6 = resetCopy;
     if (gLogCategory_RPSiriSession != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       [RPSiriSession voiceControllerMediaServicesWereReset:];
@@ -1083,7 +1083,7 @@ void __63__RPSiriSession_voiceControllerAudioCallback_forStream_buffer___block_i
   }
 }
 
-- (void)_recordingLimitTimerStart:(unsigned int)a3
+- (void)_recordingLimitTimerStart:(unsigned int)start
 {
   if (gLogCategory_RPSiriSession <= 30 && (gLogCategory_RPSiriSession != -1 || _LogCategory_Initialize()))
   {

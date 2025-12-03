@@ -1,8 +1,8 @@
 @interface AXPBackedAccessibilityServerPrimitives
 - (_TtC16ScreenSharingKit38AXPBackedAccessibilityServerPrimitives)init;
-- (id)accessibilityTranslationTransportAddReceiveDataHandler:(id)a3;
+- (id)accessibilityTranslationTransportAddReceiveDataHandler:(id)handler;
 - (void)accessibilityTranslationTransportCancel;
-- (void)accessibilityTranslationTransportSendData:(NSData *)a3 completionHandler:(id)a4;
+- (void)accessibilityTranslationTransportSendData:(NSData *)data completionHandler:(id)handler;
 @end
 
 @implementation AXPBackedAccessibilityServerPrimitives
@@ -24,15 +24,15 @@
   return [(AXPBackedAccessibilityServerPrimitives *)&v9 init];
 }
 
-- (void)accessibilityTranslationTransportSendData:(NSData *)a3 completionHandler:(id)a4
+- (void)accessibilityTranslationTransportSendData:(NSData *)data completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FF898C0, &unk_264B44190);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = data;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_264B41274();
@@ -47,14 +47,14 @@
   v15[3] = 0;
   v15[4] = &unk_264B507C0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  dataCopy = data;
+  selfCopy = self;
   sub_264A9F958(0, 0, v10, &unk_264B507D0, v15);
 }
 
-- (id)accessibilityTranslationTransportAddReceiveDataHandler:(id)a3
+- (id)accessibilityTranslationTransportAddReceiveDataHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR____TtC16ScreenSharingKit38AXPBackedAccessibilityServerPrimitives_axpTransportDataHandler);
@@ -62,10 +62,10 @@
   v8 = *&self->axpTransportDataHandler[OBJC_IVAR____TtC16ScreenSharingKit38AXPBackedAccessibilityServerPrimitives_axpTransportDataHandler];
   *v6 = sub_264A9FFB4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_2649CB67C(v7);
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)accessibilityTranslationTransportCancel

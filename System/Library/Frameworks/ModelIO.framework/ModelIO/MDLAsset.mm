@@ -5,29 +5,29 @@
 - (BOOL)exportAssetToURL:(NSURL *)URL error:(NSError *)error;
 - (MDLAsset)init;
 - (MDLAsset)initWithBufferAllocator:(id)bufferAllocator;
-- (MDLAsset)initWithData:(id)a3 name:(id)a4 vertexDescriptor:(id)a5 bufferAllocator:(id)a6 preserveTopology:(BOOL)a7 error:(id *)a8;
-- (MDLAsset)initWithURL:(id)a3 options:(id)a4 error:(id *)a5;
+- (MDLAsset)initWithData:(id)data name:(id)name vertexDescriptor:(id)descriptor bufferAllocator:(id)allocator preserveTopology:(BOOL)topology error:(id *)error;
+- (MDLAsset)initWithURL:(id)l options:(id)options error:(id *)error;
 - (MDLObject)objectAtIndex:(NSUInteger)index;
 - (MDLObject)objectAtIndexedSubscript:(NSUInteger)index;
 - (MDLObject)objectAtPath:(NSString *)path;
 - (NSArray)childObjectsOfClass:(Class)objectClass;
 - (NSTimeInterval)endTime;
 - (NSTimeInterval)startTime;
-- (id)componentConformingToProtocol:(id)a3;
+- (id)componentConformingToProtocol:(id)protocol;
 - (id)components;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initThroughSCNKitBridgeWithURL:(id)a3 options:(id)a4 error:(id)a5;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)initThroughSCNKitBridgeWithURL:(id)l options:(id)options error:(id)error;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (vector_float3)upAxis;
 - (void)_bounds;
 - (void)_commonInit;
-- (void)_conformVertexBuffers:(id)a3 error:(id *)a4;
+- (void)_conformVertexBuffers:(id)buffers error:(id *)error;
 - (void)dealloc;
-- (void)enumerateChildObjectsOfClass:(Class)a3 usingBlock:(id)a4 stopPointer:(BOOL *)a5;
+- (void)enumerateChildObjectsOfClass:(Class)class usingBlock:(id)block stopPointer:(BOOL *)pointer;
 - (void)loadTextures;
 - (void)resolveTextures;
-- (void)setComponent:(id)a3 forProtocol:(id)a4;
+- (void)setComponent:(id)component forProtocol:(id)protocol;
 @end
 
 @implementation MDLAsset
@@ -78,7 +78,7 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = *(a1 + 16);
+  v8 = *(self + 16);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v33, v37, 16);
   if (v12)
   {
@@ -128,10 +128,10 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setComponent:(id)a3 forProtocol:(id)a4
+- (void)setComponent:(id)component forProtocol:(id)protocol
 {
-  v11 = a3;
-  v7 = a4;
+  componentCopy = component;
+  protocolCopy = protocol;
   components = self->_components;
   if (!components)
   {
@@ -142,19 +142,19 @@
     components = self->_components;
   }
 
-  objc_msgSend_setObject_forKey_(components, v6, v11, v7);
+  objc_msgSend_setObject_forKey_(components, v6, componentCopy, protocolCopy);
 }
 
-- (id)componentConformingToProtocol:(id)a3
+- (id)componentConformingToProtocol:(id)protocol
 {
-  v3 = objc_msgSend_objectForKey_(self->_components, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_components, a2, protocol);
 
   return v3;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = objc_msgSend_componentConformingToProtocol_(self, a2, a3);
+  v3 = objc_msgSend_componentConformingToProtocol_(self, a2, subscript);
 
   return v3;
 }
@@ -185,8 +185,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = self;
-  v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v22, v26, 16);
+  selfCopy = self;
+  v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v15, &v22, v26, 16);
   if (v16)
   {
     v17 = *v23;
@@ -196,13 +196,13 @@
       {
         if (*v23 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(selfCopy);
         }
 
         sub_239EAC7A0(objectClass, *(*(&v22 + 1) + 8 * i), v13);
       }
 
-      v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v19, &v22, v26, 16);
+      v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v19, &v22, v26, 16);
     }
 
     while (v16);
@@ -227,27 +227,27 @@
   return v7;
 }
 
-- (void)enumerateChildObjectsOfClass:(Class)a3 usingBlock:(id)a4 stopPointer:(BOOL *)a5
+- (void)enumerateChildObjectsOfClass:(Class)class usingBlock:(id)block stopPointer:(BOOL *)pointer
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  blockCopy = block;
   v36 = 0;
-  if (a5)
+  if (pointer)
   {
-    v9 = a5;
+    pointerCopy = pointer;
   }
 
   else
   {
-    v9 = &v36;
+    pointerCopy = &v36;
   }
 
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = self;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v32, v38, 16);
+  selfCopy = self;
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v11, &v32, v38, 16);
   if (v12)
   {
     v13 = *v33;
@@ -257,29 +257,29 @@ LABEL_6:
     {
       if (*v33 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(selfCopy);
       }
 
       v15 = *(*(&v32 + 1) + 8 * v14);
       if (objc_opt_isKindOfClass())
       {
-        v8[2](v8, v15, v9);
+        blockCopy[2](blockCopy, v15, pointerCopy);
       }
 
-      if (*v9)
+      if (*pointerCopy)
       {
         break;
       }
 
-      objc_msgSend_enumerateChildObjectsOfClass_root_usingBlock_stopPointer_(v15, v16, a3, v15, v8, v9);
-      if (*v9)
+      objc_msgSend_enumerateChildObjectsOfClass_root_usingBlock_stopPointer_(v15, v16, class, v15, blockCopy, pointerCopy);
+      if (*pointerCopy)
       {
         break;
       }
 
       if (v12 == ++v14)
       {
-        v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v17, &v32, v38, 16);
+        v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v17, &v32, v38, 16);
         if (v12)
         {
           goto LABEL_6;
@@ -298,8 +298,8 @@ LABEL_15:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = objc_msgSend_masters(v10, v18, v19, 0);
-    v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v20, &v28, v37, 16);
+    selfCopy = objc_msgSend_masters(selfCopy, v18, v19, 0);
+    v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v20, &v28, v37, 16);
     if (v21)
     {
       v22 = *v29;
@@ -309,29 +309,29 @@ LABEL_17:
       {
         if (*v29 != v22)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(selfCopy);
         }
 
         v24 = *(*(&v28 + 1) + 8 * v23);
         if (objc_opt_isKindOfClass())
         {
-          v8[2](v8, v24, v9);
+          blockCopy[2](blockCopy, v24, pointerCopy);
         }
 
-        if (*v9)
+        if (*pointerCopy)
         {
           break;
         }
 
-        objc_msgSend_enumerateChildObjectsOfClass_root_usingBlock_stopPointer_(v24, v25, a3, v24, v8, v9);
-        if (*v9)
+        objc_msgSend_enumerateChildObjectsOfClass_root_usingBlock_stopPointer_(v24, v25, class, v24, blockCopy, pointerCopy);
+        if (*pointerCopy)
         {
           break;
         }
 
         if (v21 == ++v23)
         {
-          v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v26, &v28, v37, 16);
+          v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(selfCopy, v26, &v28, v37, 16);
           if (v21)
           {
             goto LABEL_17;
@@ -498,10 +498,10 @@ LABEL_17:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v6 = objc_msgSend_allocWithZone_(v4, v5, a3);
+  v6 = objc_msgSend_allocWithZone_(v4, v5, zone);
 
   return objc_msgSend_init(v6, v7, v8);
 }
@@ -613,19 +613,19 @@ LABEL_17:
   return v5;
 }
 
-- (void)_conformVertexBuffers:(id)a3 error:(id *)a4
+- (void)_conformVertexBuffers:(id)buffers error:(id *)error
 {
   v161 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  obj = buffers;
+  buffersCopy = buffers;
+  v7 = buffersCopy;
+  if (buffersCopy)
   {
     v157 = 0u;
     v158 = 0u;
     v155 = 0u;
     v156 = 0u;
-    v8 = objc_msgSend_layouts(v4, v5, v6);
+    v8 = objc_msgSend_layouts(buffersCopy, v5, v6);
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v155, v160, 16);
     if (!v12)
     {
@@ -801,12 +801,12 @@ LABEL_41:
   v148 = *MEMORY[0x277D85DE8];
 }
 
-- (MDLAsset)initWithData:(id)a3 name:(id)a4 vertexDescriptor:(id)a5 bufferAllocator:(id)a6 preserveTopology:(BOOL)a7 error:(id *)a8
+- (MDLAsset)initWithData:(id)data name:(id)name vertexDescriptor:(id)descriptor bufferAllocator:(id)allocator preserveTopology:(BOOL)topology error:(id *)error
 {
-  v38 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  dataCopy = data;
+  nameCopy = name;
+  descriptorCopy = descriptor;
+  allocatorCopy = allocator;
   v46.receiver = self;
   v46.super_class = MDLAsset;
   v18 = [(MDLAsset *)&v46 init];
@@ -823,17 +823,17 @@ LABEL_41:
     HIDWORD(v43[0]) = 1078530011;
     sub_239E552A0(&v43[1], "");
     v45 = 0uLL;
-    if (v17)
+    if (allocatorCopy)
     {
-      objc_storeStrong(&v42, a6);
+      objc_storeStrong(&v42, allocator);
     }
 
-    if (v16)
+    if (descriptorCopy)
     {
-      objc_storeStrong(&obj[1], a5);
+      objc_storeStrong(&obj[1], descriptor);
     }
 
-    LOBYTE(obj[0]) = a7;
+    LOBYTE(obj[0]) = topology;
     if (v42)
     {
       v19 = v42;
@@ -850,7 +850,7 @@ LABEL_41:
     *v18->_upAxis = xmmword_239F9C090;
     v18->_metersPerUnit = 0.01;
     objc_msgSend__commonInit(v18, v21, v22);
-    v25 = objc_msgSend_pathExtension(v15, v23, v24);
+    v25 = objc_msgSend_pathExtension(nameCopy, v23, v24);
     v28 = objc_msgSend_lowercaseString(v25, v26, v27);
 
     if (objc_msgSend_isEqualToString_(v28, v29, @"usdz"))
@@ -860,7 +860,7 @@ LABEL_41:
       sub_239E55EAC(v39, 0);
     }
 
-    if (a8)
+    if (error)
     {
       v30 = MEMORY[0x277CCACA8];
       v31 = objc_opt_class();
@@ -868,7 +868,7 @@ LABEL_41:
       v33 = NSStringFromSelector(a2);
       v35 = objc_msgSend_stringWithFormat_(v30, v34, @"[%@ %@]: only accepts usdz file", v32, v33);
 
-      *a8 = sub_239EADFF4(v35);
+      *error = sub_239EADFF4(v35);
     }
 
     v36 = v18;
@@ -882,10 +882,10 @@ LABEL_41:
   return v18;
 }
 
-- (MDLAsset)initWithURL:(id)a3 options:(id)a4 error:(id *)a5
+- (MDLAsset)initWithURL:(id)l options:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v164.receiver = self;
   v164.super_class = MDLAsset;
   v11 = [(MDLAsset *)&v164 init];
@@ -905,8 +905,8 @@ LABEL_41:
   DWORD1(v161) = 1078530011;
   sub_239E552A0(&v161 + 8, "");
   v163 = 0uLL;
-  sub_239E55358(v10, &v159);
-  objc_storeStrong(&v11->_URL, a3);
+  sub_239E55358(optionsCopy, &v159);
+  objc_storeStrong(&v11->_URL, l);
   if (v160)
   {
     v12 = v160;
@@ -1282,7 +1282,7 @@ LABEL_103:
           else if (sub_239E55D74(&v156, "IES"))
           {
             v100 = [MDLPhotometricLight alloc];
-            v102 = objc_msgSend_initWithIESProfile_(v100, v101, v9);
+            v102 = objc_msgSend_initWithIESProfile_(v100, v101, lCopy);
             objc_msgSend_generateCubemapFromLight_(v102, v103, 128);
             objc_msgSend_generateSphericalHarmonicsFromLight_(v102, v104, 3);
             objc_msgSend_addObject_(v11, v105, v102);
@@ -1404,10 +1404,10 @@ LABEL_110:
   v57 = v125;
   objc_storeStrong(&v11->_vertexDescriptor, *(&v159 + 1));
 LABEL_113:
-  if (a5)
+  if (error)
   {
     v90 = v57;
-    *a5 = v57;
+    *error = v57;
   }
 
   _Block_object_dispose(&v149, 8);
@@ -1443,27 +1443,27 @@ LABEL_125:
   return v11;
 }
 
-- (id)initThroughSCNKitBridgeWithURL:(id)a3 options:(id)a4 error:(id)a5
+- (id)initThroughSCNKitBridgeWithURL:(id)l options:(id)options error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  optionsCopy = options;
+  errorCopy = error;
   self->_isSceneKitBridged = 1;
-  v12 = objc_msgSend_objectForKeyedSubscript_(v9, v11, @"kMDLAssetPreserveTopology");
+  v12 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v11, @"kMDLAssetPreserveTopology");
   v15 = objc_msgSend_BOOLValue(v12, v13, v14);
 
   if (v15)
   {
-    v24 = v10;
+    v24 = errorCopy;
     v17 = &v24;
-    v18 = objc_msgSend_initWithURL_bufferAllocator_preserveIndexing_options_error_(self, v16, v8, 0, 1, v9, &v24);
+    v18 = objc_msgSend_initWithURL_bufferAllocator_preserveIndexing_options_error_(self, v16, lCopy, 0, 1, optionsCopy, &v24);
   }
 
   else
   {
-    v23 = v10;
+    v23 = errorCopy;
     v17 = &v23;
-    v18 = objc_msgSend_initWithURL_vertexDescriptor_bufferAllocator_preserveTopology_error_(self, v16, v8, 0, 0, 0, &v23);
+    v18 = objc_msgSend_initWithURL_vertexDescriptor_bufferAllocator_preserveTopology_error_(self, v16, lCopy, 0, 0, 0, &v23);
   }
 
   v19 = v18;

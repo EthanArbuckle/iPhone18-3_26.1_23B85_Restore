@@ -1,51 +1,51 @@
 @interface HandoverLearnerState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHandoverLearnerState:(id)a3;
-- (HandoverLearnerState)initWithCoder:(id)a3;
-- (HandoverLearnerState)initWithValues:(id)a3 rssi:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHandoverLearnerState:(id)state;
+- (HandoverLearnerState)initWithCoder:(id)coder;
+- (HandoverLearnerState)initWithValues:(id)values rssi:(int64_t)rssi;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HandoverLearnerState
 
-- (HandoverLearnerState)initWithValues:(id)a3 rssi:(int64_t)a4
+- (HandoverLearnerState)initWithValues:(id)values rssi:(int64_t)rssi
 {
   v8.receiver = self;
   v8.super_class = HandoverLearnerState;
   v6 = [(HandoverLearnerState *)&v8 init];
   if (v6)
   {
-    [(HandoverLearnerState *)v6 setNetworkID:a3];
-    [(HandoverLearnerState *)v6 setRssi_threshold:a4 > -200];
+    [(HandoverLearnerState *)v6 setNetworkID:values];
+    [(HandoverLearnerState *)v6 setRssi_threshold:rssi > -200];
   }
 
   return v6;
 }
 
-- (HandoverLearnerState)initWithCoder:(id)a3
+- (HandoverLearnerState)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HandoverLearnerState;
   v4 = [(HandoverLearnerState *)&v6 init];
   if (v4)
   {
-    -[HandoverLearnerState setNetworkID:](v4, "setNetworkID:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"networkID"]);
-    -[HandoverLearnerState setRssi_threshold:](v4, "setRssi_threshold:", [a3 decodeBoolForKey:@"rssi_threshold"]);
+    -[HandoverLearnerState setNetworkID:](v4, "setNetworkID:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"networkID"]);
+    -[HandoverLearnerState setRssi_threshold:](v4, "setRssi_threshold:", [coder decodeBoolForKey:@"rssi_threshold"]);
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -56,29 +56,29 @@
     return 0;
   }
 
-  return [(HandoverLearnerState *)self isEqualToHandoverLearnerState:a3];
+  return [(HandoverLearnerState *)self isEqualToHandoverLearnerState:equal];
 }
 
-- (BOOL)isEqualToHandoverLearnerState:(id)a3
+- (BOOL)isEqualToHandoverLearnerState:(id)state
 {
-  v5 = [(HandoverLearnerState *)self rssi_threshold];
-  if (v5 != [a3 rssi_threshold])
+  rssi_threshold = [(HandoverLearnerState *)self rssi_threshold];
+  if (rssi_threshold != [state rssi_threshold])
   {
     return 0;
   }
 
-  v7 = [(HandoverLearnerState *)self networkID];
-  v8 = [a3 networkID];
-  result = v8 == 0;
-  if (v7)
+  networkID = [(HandoverLearnerState *)self networkID];
+  networkID2 = [state networkID];
+  result = networkID2 == 0;
+  if (networkID)
   {
-    return v8 && -[NSString isEqualToString:](-[HandoverLearnerState networkID](self, "networkID"), "isEqualToString:", [a3 networkID]);
+    return networkID2 && -[NSString isEqualToString:](-[HandoverLearnerState networkID](self, "networkID"), "isEqualToString:", [state networkID]);
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
@@ -90,12 +90,12 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[HandoverLearnerState networkID](self forKey:{"networkID"), @"networkID"}];
-  v5 = [(HandoverLearnerState *)self rssi_threshold];
+  [coder encodeObject:-[HandoverLearnerState networkID](self forKey:{"networkID"), @"networkID"}];
+  rssi_threshold = [(HandoverLearnerState *)self rssi_threshold];
 
-  [a3 encodeBool:v5 forKey:@"rssi_threshold"];
+  [coder encodeBool:rssi_threshold forKey:@"rssi_threshold"];
 }
 
 - (void)dealloc

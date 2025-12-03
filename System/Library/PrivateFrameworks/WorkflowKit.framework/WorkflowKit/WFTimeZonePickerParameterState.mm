@@ -1,19 +1,19 @@
 @interface WFTimeZonePickerParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 @end
 
 @implementation WFTimeZonePickerParameterState
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v5 = a3;
-  if (v5)
+  representationCopy = representation;
+  if (representationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = representationCopy;
     }
 
     else
@@ -33,11 +33,11 @@
   return v8;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = [(MTLJSONAdapter *)WFPropertyListJSONAdapter JSONDictionaryFromModel:a3 error:0];
+    v4 = [(MTLJSONAdapter *)WFPropertyListJSONAdapter JSONDictionaryFromModel:value error:0];
   }
 
   else

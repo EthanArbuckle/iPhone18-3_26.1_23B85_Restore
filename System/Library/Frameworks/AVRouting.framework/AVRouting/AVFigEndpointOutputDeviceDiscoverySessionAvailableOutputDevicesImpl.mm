@@ -1,6 +1,6 @@
 @interface AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl
 - (AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl)init;
-- (AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl)initWithAvailableFigEndpoints:(id)a3;
+- (AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl)initWithAvailableFigEndpoints:(id)endpoints;
 - (NSArray)allDevices;
 - (void)dealloc;
 @end
@@ -16,14 +16,14 @@
   objc_exception_throw(v12);
 }
 
-- (AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl)initWithAvailableFigEndpoints:(id)a3
+- (AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl)initWithAvailableFigEndpoints:(id)endpoints
 {
   v6.receiver = self;
   v6.super_class = AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl;
   v4 = [(AVFigEndpointOutputDeviceDiscoverySessionAvailableOutputDevicesImpl *)&v6 init];
   if (v4)
   {
-    v4->_figEndpoints = a3;
+    v4->_figEndpoints = endpoints;
   }
 
   return v4;
@@ -38,19 +38,19 @@
 
 - (NSArray)allDevices
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSArray *)self->_figEndpoints count])
   {
     v4 = 0;
     do
     {
-      [(NSArray *)v3 addObject:[AVOutputDevice outputDeviceWithFigEndpoint:[(NSArray *)self->_figEndpoints objectAtIndex:v4++]]];
+      [(NSArray *)array addObject:[AVOutputDevice outputDeviceWithFigEndpoint:[(NSArray *)self->_figEndpoints objectAtIndex:v4++]]];
     }
 
     while ([(NSArray *)self->_figEndpoints count]> v4);
   }
 
-  return v3;
+  return array;
 }
 
 @end

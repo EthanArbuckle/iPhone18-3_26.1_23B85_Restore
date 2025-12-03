@@ -1,7 +1,7 @@
 @interface PXStoryPlayButtonConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PXStoryPlayButtonConfiguration)initWithViewModel:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PXStoryPlayButtonConfiguration)initWithViewModel:(id)model;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)target;
 - (unint64_t)hash;
 @end
@@ -15,10 +15,10 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -28,25 +28,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryPlayButtonConfiguration *)self target];
-      v7 = [(PXStoryPlayButtonConfiguration *)v5 target];
-      if (v6 == v7 && (v8 = [(PXStoryPlayButtonConfiguration *)self action], v8 == [(PXStoryPlayButtonConfiguration *)v5 action]))
+      v5 = equalCopy;
+      target = [(PXStoryPlayButtonConfiguration *)self target];
+      target2 = [(PXStoryPlayButtonConfiguration *)v5 target];
+      if (target == target2 && (v8 = [(PXStoryPlayButtonConfiguration *)self action], v8 == [(PXStoryPlayButtonConfiguration *)v5 action]))
       {
-        v11 = [(PXStoryPlayButtonConfiguration *)self spec];
-        v12 = [(PXStoryPlayButtonConfiguration *)v5 spec];
-        if (v11 == v12 || [v11 isEqual:v12])
+        spec = [(PXStoryPlayButtonConfiguration *)self spec];
+        spec2 = [(PXStoryPlayButtonConfiguration *)v5 spec];
+        if (spec == spec2 || [spec isEqual:spec2])
         {
-          v13 = [(PXStoryPlayButtonConfiguration *)self viewModel];
-          v14 = [(PXStoryPlayButtonConfiguration *)v5 viewModel];
-          if (v13 == v14)
+          viewModel = [(PXStoryPlayButtonConfiguration *)self viewModel];
+          viewModel2 = [(PXStoryPlayButtonConfiguration *)v5 viewModel];
+          if (viewModel == viewModel2)
           {
             v9 = 1;
           }
 
           else
           {
-            v9 = [v13 isEqual:v14];
+            v9 = [viewModel isEqual:viewModel2];
           }
         }
 
@@ -73,13 +73,13 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXStoryPlayButtonConfiguration *)self viewModel];
-  v3 = [v2 hash];
+  viewModel = [(PXStoryPlayButtonConfiguration *)self viewModel];
+  v3 = [viewModel hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithViewModel:self->_viewModel];
   WeakRetained = objc_loadWeakRetained(&self->_target);
@@ -90,16 +90,16 @@
   return v4;
 }
 
-- (PXStoryPlayButtonConfiguration)initWithViewModel:(id)a3
+- (PXStoryPlayButtonConfiguration)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXStoryPlayButtonConfiguration;
   v6 = [(PXStoryPlayButtonConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
   }
 
   return v7;

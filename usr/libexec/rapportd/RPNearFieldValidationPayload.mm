@@ -1,16 +1,16 @@
 @interface RPNearFieldValidationPayload
-- (RPNearFieldValidationPayload)initWithDictionary:(id)a3;
+- (RPNearFieldValidationPayload)initWithDictionary:(id)dictionary;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation RPNearFieldValidationPayload
 
-- (RPNearFieldValidationPayload)initWithDictionary:(id)a3
+- (RPNearFieldValidationPayload)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = RPNearFieldValidationPayload;
-  v5 = [(RPNearFieldMessagePayload *)&v11 initWithDictionary:v4];
+  v5 = [(RPNearFieldMessagePayload *)&v11 initWithDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = NSDictionaryGetNSNumber();
@@ -49,8 +49,8 @@
 
   v8.receiver = self;
   v8.super_class = RPNearFieldValidationPayload;
-  v5 = [(RPNearFieldMessagePayload *)&v8 dictionaryRepresentation];
-  v6 = [NSMutableDictionary dictionaryWithDictionary:v5];
+  dictionaryRepresentation = [(RPNearFieldMessagePayload *)&v8 dictionaryRepresentation];
+  v6 = [NSMutableDictionary dictionaryWithDictionary:dictionaryRepresentation];
 
   [v6 addEntriesFromDictionary:v4];
 

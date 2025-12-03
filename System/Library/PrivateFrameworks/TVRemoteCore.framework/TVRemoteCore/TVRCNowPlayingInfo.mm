@@ -1,10 +1,10 @@
 @interface TVRCNowPlayingInfo
-- (BOOL)isEqualToNowPlayingInfo:(id)a3;
-- (TVRCNowPlayingInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToNowPlayingInfo:(id)info;
+- (TVRCNowPlayingInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)nowPlayingInfoMergedWithNowPlayingInfo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)nowPlayingInfoMergedWithNowPlayingInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCNowPlayingInfo
@@ -14,37 +14,37 @@
   v21 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v20 = NSStringFromClass(v3);
-  v28 = [(TVRCNowPlayingInfo *)self identifier];
-  v29 = [(TVRCNowPlayingInfo *)self playbackRate];
-  v18 = [(TVRCNowPlayingInfo *)self playbackState];
-  v25 = [(TVRCNowPlayingInfo *)self metadata];
-  v27 = [v25 title];
-  v24 = [(TVRCNowPlayingInfo *)self metadata];
-  v16 = [v24 canonicalID];
-  v23 = [(TVRCNowPlayingInfo *)self metadata];
-  v26 = [v23 timestamp];
-  v19 = [(TVRCNowPlayingInfo *)self metadata];
-  v14 = [v19 timeOffset];
-  v15 = [(TVRCNowPlayingInfo *)self playerIdentifier];
+  identifier = [(TVRCNowPlayingInfo *)self identifier];
+  playbackRate = [(TVRCNowPlayingInfo *)self playbackRate];
+  playbackState = [(TVRCNowPlayingInfo *)self playbackState];
+  metadata = [(TVRCNowPlayingInfo *)self metadata];
+  title = [metadata title];
+  metadata2 = [(TVRCNowPlayingInfo *)self metadata];
+  canonicalID = [metadata2 canonicalID];
+  metadata3 = [(TVRCNowPlayingInfo *)self metadata];
+  timestamp = [metadata3 timestamp];
+  metadata4 = [(TVRCNowPlayingInfo *)self metadata];
+  timeOffset = [metadata4 timeOffset];
+  playerIdentifier = [(TVRCNowPlayingInfo *)self playerIdentifier];
   v4 = MEMORY[0x277CCABB0];
-  v17 = [(TVRCNowPlayingInfo *)self imageData];
-  v13 = [v4 numberWithUnsignedInteger:{objc_msgSend(v17, "length")}];
-  v5 = [(TVRCNowPlayingInfo *)self imageDataIsPlaceholder];
+  imageData = [(TVRCNowPlayingInfo *)self imageData];
+  v13 = [v4 numberWithUnsignedInteger:{objc_msgSend(imageData, "length")}];
+  imageDataIsPlaceholder = [(TVRCNowPlayingInfo *)self imageDataIsPlaceholder];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(TVRCNowPlayingInfo *)self rawTimedMetadata];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "length")}];
-  v9 = [(TVRCNowPlayingInfo *)self expectsTimedMetadata];
-  v10 = [(TVRCNowPlayingInfo *)self captionsEnabled];
-  v11 = [(TVRCNowPlayingInfo *)self hasValidCaptionOptions];
-  v22 = [v21 stringWithFormat:@"<%@ %p: identifier=%@ playbackRate=%@; playbackState=%@; metadata.title=%@; metadata.canonicalID=%@; timestamp=%@; timeOffset=%@; playerIdentifier=%@; imageData.length=%@; imageDataIsPlaceholder=%@; rawTimedMetadata.length=%@, expectsTimedMetadata=%@, captionsEnabled=%@, hasValidCaptionOptions=%@", v20, self, v28, v29, v18, v27, v16, v26, v14, v15, v13, v5, v8, v9, v10, v11];;
+  rawTimedMetadata = [(TVRCNowPlayingInfo *)self rawTimedMetadata];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(rawTimedMetadata, "length")}];
+  expectsTimedMetadata = [(TVRCNowPlayingInfo *)self expectsTimedMetadata];
+  captionsEnabled = [(TVRCNowPlayingInfo *)self captionsEnabled];
+  hasValidCaptionOptions = [(TVRCNowPlayingInfo *)self hasValidCaptionOptions];
+  v22 = [v21 stringWithFormat:@"<%@ %p: identifier=%@ playbackRate=%@; playbackState=%@; metadata.title=%@; metadata.canonicalID=%@; timestamp=%@; timeOffset=%@; playerIdentifier=%@; imageData.length=%@; imageDataIsPlaceholder=%@; rawTimedMetadata.length=%@, expectsTimedMetadata=%@, captionsEnabled=%@, hasValidCaptionOptions=%@", v20, self, identifier, playbackRate, playbackState, title, canonicalID, timestamp, timeOffset, playerIdentifier, v13, imageDataIsPlaceholder, v8, expectsTimedMetadata, captionsEnabled, hasValidCaptionOptions];;
 
   return v22;
 }
 
-- (BOOL)isEqualToNowPlayingInfo:(id)a3
+- (BOOL)isEqualToNowPlayingInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     goto LABEL_36;
   }
@@ -55,112 +55,112 @@
     goto LABEL_36;
   }
 
-  v5 = [(TVRCNowPlayingInfo *)self identifier];
-  v6 = [v4 identifier];
-  v7 = (v5 == 0) ^ (v6 == 0);
+  identifier = [(TVRCNowPlayingInfo *)self identifier];
+  identifier2 = [infoCopy identifier];
+  v7 = (identifier == 0) ^ (identifier2 == 0);
 
   if (v7)
   {
     goto LABEL_36;
   }
 
-  v8 = [(TVRCNowPlayingInfo *)self playbackRate];
-  v9 = [v4 playbackRate];
-  v10 = (v8 == 0) ^ (v9 == 0);
+  playbackRate = [(TVRCNowPlayingInfo *)self playbackRate];
+  playbackRate2 = [infoCopy playbackRate];
+  v10 = (playbackRate == 0) ^ (playbackRate2 == 0);
 
   if (v10)
   {
     goto LABEL_36;
   }
 
-  v11 = [(TVRCNowPlayingInfo *)self playbackState];
-  v12 = [v4 playbackState];
-  v13 = (v11 == 0) ^ (v12 == 0);
+  playbackState = [(TVRCNowPlayingInfo *)self playbackState];
+  playbackState2 = [infoCopy playbackState];
+  v13 = (playbackState == 0) ^ (playbackState2 == 0);
 
   if (v13)
   {
     goto LABEL_36;
   }
 
-  v14 = [(TVRCNowPlayingInfo *)self playerIdentifier];
-  v15 = [v4 playerIdentifier];
-  v16 = (v14 == 0) ^ (v15 == 0);
+  playerIdentifier = [(TVRCNowPlayingInfo *)self playerIdentifier];
+  playerIdentifier2 = [infoCopy playerIdentifier];
+  v16 = (playerIdentifier == 0) ^ (playerIdentifier2 == 0);
 
   if (v16)
   {
     goto LABEL_36;
   }
 
-  v17 = [(TVRCNowPlayingInfo *)self metadata];
-  v18 = [v4 metadata];
-  v19 = (v17 == 0) ^ (v18 == 0);
+  metadata = [(TVRCNowPlayingInfo *)self metadata];
+  metadata2 = [infoCopy metadata];
+  v19 = (metadata == 0) ^ (metadata2 == 0);
 
   if (v19)
   {
     goto LABEL_36;
   }
 
-  v20 = [(TVRCNowPlayingInfo *)self imageData];
-  v21 = [v4 imageData];
-  v22 = (v20 == 0) ^ (v21 == 0);
+  imageData = [(TVRCNowPlayingInfo *)self imageData];
+  imageData2 = [infoCopy imageData];
+  v22 = (imageData == 0) ^ (imageData2 == 0);
 
   if (v22)
   {
     goto LABEL_36;
   }
 
-  v23 = [(TVRCNowPlayingInfo *)self imageDataIsPlaceholder];
-  v24 = [v4 imageDataIsPlaceholder];
-  v25 = (v23 == 0) ^ (v24 == 0);
+  imageDataIsPlaceholder = [(TVRCNowPlayingInfo *)self imageDataIsPlaceholder];
+  imageDataIsPlaceholder2 = [infoCopy imageDataIsPlaceholder];
+  v25 = (imageDataIsPlaceholder == 0) ^ (imageDataIsPlaceholder2 == 0);
 
   if (v25)
   {
     goto LABEL_36;
   }
 
-  v26 = [(TVRCNowPlayingInfo *)self rawTimedMetadata];
-  v27 = [v4 rawTimedMetadata];
-  v28 = (v26 == 0) ^ (v27 == 0);
+  rawTimedMetadata = [(TVRCNowPlayingInfo *)self rawTimedMetadata];
+  rawTimedMetadata2 = [infoCopy rawTimedMetadata];
+  v28 = (rawTimedMetadata == 0) ^ (rawTimedMetadata2 == 0);
 
   if (v28)
   {
     goto LABEL_36;
   }
 
-  v29 = [(TVRCNowPlayingInfo *)self expectsTimedMetadata];
-  v30 = [v4 expectsTimedMetadata];
-  v31 = (v29 == 0) ^ (v30 == 0);
+  expectsTimedMetadata = [(TVRCNowPlayingInfo *)self expectsTimedMetadata];
+  expectsTimedMetadata2 = [infoCopy expectsTimedMetadata];
+  v31 = (expectsTimedMetadata == 0) ^ (expectsTimedMetadata2 == 0);
 
   if (v31)
   {
     goto LABEL_36;
   }
 
-  v32 = [(TVRCNowPlayingInfo *)self captionsEnabled];
-  v33 = [v4 captionsEnabled];
-  v34 = (v32 == 0) ^ (v33 == 0);
+  captionsEnabled = [(TVRCNowPlayingInfo *)self captionsEnabled];
+  captionsEnabled2 = [infoCopy captionsEnabled];
+  v34 = (captionsEnabled == 0) ^ (captionsEnabled2 == 0);
 
   if (v34)
   {
     goto LABEL_36;
   }
 
-  v35 = [(TVRCNowPlayingInfo *)self hasValidCaptionOptions];
-  v36 = [v4 hasValidCaptionOptions];
-  v37 = (v35 == 0) ^ (v36 == 0);
+  hasValidCaptionOptions = [(TVRCNowPlayingInfo *)self hasValidCaptionOptions];
+  hasValidCaptionOptions2 = [infoCopy hasValidCaptionOptions];
+  v37 = (hasValidCaptionOptions == 0) ^ (hasValidCaptionOptions2 == 0);
 
   if (v37)
   {
     goto LABEL_36;
   }
 
-  v38 = [(TVRCNowPlayingInfo *)self identifier];
-  if (v38)
+  identifier3 = [(TVRCNowPlayingInfo *)self identifier];
+  if (identifier3)
   {
-    v39 = v38;
-    v40 = [(TVRCNowPlayingInfo *)self identifier];
-    v41 = [v4 identifier];
-    v42 = [v40 isEqualToString:v41];
+    v39 = identifier3;
+    identifier4 = [(TVRCNowPlayingInfo *)self identifier];
+    identifier5 = [infoCopy identifier];
+    v42 = [identifier4 isEqualToString:identifier5];
 
     if (!v42)
     {
@@ -168,13 +168,13 @@
     }
   }
 
-  v43 = [(TVRCNowPlayingInfo *)self playbackRate];
-  if (v43)
+  playbackRate3 = [(TVRCNowPlayingInfo *)self playbackRate];
+  if (playbackRate3)
   {
-    v44 = v43;
-    v45 = [(TVRCNowPlayingInfo *)self playbackRate];
-    v46 = [v4 playbackRate];
-    v47 = [v45 isEqualToNumber:v46];
+    v44 = playbackRate3;
+    playbackRate4 = [(TVRCNowPlayingInfo *)self playbackRate];
+    playbackRate5 = [infoCopy playbackRate];
+    v47 = [playbackRate4 isEqualToNumber:playbackRate5];
 
     if (!v47)
     {
@@ -182,13 +182,13 @@
     }
   }
 
-  v48 = [(TVRCNowPlayingInfo *)self playbackState];
-  if (v48)
+  playbackState3 = [(TVRCNowPlayingInfo *)self playbackState];
+  if (playbackState3)
   {
-    v49 = v48;
-    v50 = [(TVRCNowPlayingInfo *)self playbackState];
-    v51 = [v4 playbackState];
-    v52 = [v50 isEqualToNumber:v51];
+    v49 = playbackState3;
+    playbackState4 = [(TVRCNowPlayingInfo *)self playbackState];
+    playbackState5 = [infoCopy playbackState];
+    v52 = [playbackState4 isEqualToNumber:playbackState5];
 
     if (!v52)
     {
@@ -196,13 +196,13 @@
     }
   }
 
-  v53 = [(TVRCNowPlayingInfo *)self playerIdentifier];
-  if (v53)
+  playerIdentifier3 = [(TVRCNowPlayingInfo *)self playerIdentifier];
+  if (playerIdentifier3)
   {
-    v54 = v53;
-    v55 = [(TVRCNowPlayingInfo *)self playerIdentifier];
-    v56 = [v4 playerIdentifier];
-    v57 = [v55 isEqualToString:v56];
+    v54 = playerIdentifier3;
+    playerIdentifier4 = [(TVRCNowPlayingInfo *)self playerIdentifier];
+    playerIdentifier5 = [infoCopy playerIdentifier];
+    v57 = [playerIdentifier4 isEqualToString:playerIdentifier5];
 
     if (!v57)
     {
@@ -210,13 +210,13 @@
     }
   }
 
-  v58 = [(TVRCNowPlayingInfo *)self imageDataIsPlaceholder];
-  if (v58)
+  imageDataIsPlaceholder3 = [(TVRCNowPlayingInfo *)self imageDataIsPlaceholder];
+  if (imageDataIsPlaceholder3)
   {
-    v59 = v58;
-    v60 = [(TVRCNowPlayingInfo *)self imageDataIsPlaceholder];
-    v61 = [v4 imageDataIsPlaceholder];
-    v62 = [v60 isEqualToNumber:v61];
+    v59 = imageDataIsPlaceholder3;
+    imageDataIsPlaceholder4 = [(TVRCNowPlayingInfo *)self imageDataIsPlaceholder];
+    imageDataIsPlaceholder5 = [infoCopy imageDataIsPlaceholder];
+    v62 = [imageDataIsPlaceholder4 isEqualToNumber:imageDataIsPlaceholder5];
 
     if (!v62)
     {
@@ -224,13 +224,13 @@
     }
   }
 
-  v63 = [(TVRCNowPlayingInfo *)self imageData];
-  if (v63)
+  imageData3 = [(TVRCNowPlayingInfo *)self imageData];
+  if (imageData3)
   {
-    v64 = v63;
-    v65 = [(TVRCNowPlayingInfo *)self imageData];
-    v66 = [v4 imageData];
-    v67 = [v65 isEqualToData:v66];
+    v64 = imageData3;
+    imageData4 = [(TVRCNowPlayingInfo *)self imageData];
+    imageData5 = [infoCopy imageData];
+    v67 = [imageData4 isEqualToData:imageData5];
 
     if (!v67)
     {
@@ -238,13 +238,13 @@
     }
   }
 
-  v68 = [(TVRCNowPlayingInfo *)self metadata];
-  if (v68)
+  metadata3 = [(TVRCNowPlayingInfo *)self metadata];
+  if (metadata3)
   {
-    v69 = v68;
-    v70 = [(TVRCNowPlayingInfo *)self metadata];
-    v71 = [v4 metadata];
-    v72 = [v70 isEqualToNowPlayingMetadata:v71];
+    v69 = metadata3;
+    metadata4 = [(TVRCNowPlayingInfo *)self metadata];
+    metadata5 = [infoCopy metadata];
+    v72 = [metadata4 isEqualToNowPlayingMetadata:metadata5];
 
     if (!v72)
     {
@@ -252,13 +252,13 @@
     }
   }
 
-  v73 = [(TVRCNowPlayingInfo *)self rawTimedMetadata];
-  if (v73)
+  rawTimedMetadata3 = [(TVRCNowPlayingInfo *)self rawTimedMetadata];
+  if (rawTimedMetadata3)
   {
-    v74 = v73;
-    v75 = [(TVRCNowPlayingInfo *)self rawTimedMetadata];
-    v76 = [v4 rawTimedMetadata];
-    v77 = [v75 isEqualToData:v76];
+    v74 = rawTimedMetadata3;
+    rawTimedMetadata4 = [(TVRCNowPlayingInfo *)self rawTimedMetadata];
+    rawTimedMetadata5 = [infoCopy rawTimedMetadata];
+    v77 = [rawTimedMetadata4 isEqualToData:rawTimedMetadata5];
 
     if (!v77)
     {
@@ -266,13 +266,13 @@
     }
   }
 
-  v78 = [(TVRCNowPlayingInfo *)self expectsTimedMetadata];
-  if (v78)
+  expectsTimedMetadata3 = [(TVRCNowPlayingInfo *)self expectsTimedMetadata];
+  if (expectsTimedMetadata3)
   {
-    v79 = v78;
-    v80 = [(TVRCNowPlayingInfo *)self expectsTimedMetadata];
-    v81 = [v4 expectsTimedMetadata];
-    v82 = [v80 isEqualToNumber:v81];
+    v79 = expectsTimedMetadata3;
+    expectsTimedMetadata4 = [(TVRCNowPlayingInfo *)self expectsTimedMetadata];
+    expectsTimedMetadata5 = [infoCopy expectsTimedMetadata];
+    v82 = [expectsTimedMetadata4 isEqualToNumber:expectsTimedMetadata5];
 
     if (!v82)
     {
@@ -280,16 +280,16 @@
     }
   }
 
-  v83 = [(TVRCNowPlayingInfo *)self captionsEnabled];
-  if (!v83)
+  captionsEnabled3 = [(TVRCNowPlayingInfo *)self captionsEnabled];
+  if (!captionsEnabled3)
   {
     goto LABEL_34;
   }
 
-  v84 = v83;
-  v85 = [(TVRCNowPlayingInfo *)self captionsEnabled];
-  v86 = [v4 captionsEnabled];
-  v87 = [v85 isEqualToNumber:v86];
+  v84 = captionsEnabled3;
+  captionsEnabled4 = [(TVRCNowPlayingInfo *)self captionsEnabled];
+  captionsEnabled5 = [infoCopy captionsEnabled];
+  v87 = [captionsEnabled4 isEqualToNumber:captionsEnabled5];
 
   if (!v87)
   {
@@ -300,13 +300,13 @@ LABEL_36:
   else
   {
 LABEL_34:
-    v88 = [(TVRCNowPlayingInfo *)self hasValidCaptionOptions];
-    if (v88)
+    hasValidCaptionOptions3 = [(TVRCNowPlayingInfo *)self hasValidCaptionOptions];
+    if (hasValidCaptionOptions3)
     {
-      v89 = v88;
-      v90 = [(TVRCNowPlayingInfo *)self hasValidCaptionOptions];
-      v91 = [v4 hasValidCaptionOptions];
-      v92 = [v90 isEqualToNumber:v91];
+      v89 = hasValidCaptionOptions3;
+      hasValidCaptionOptions4 = [(TVRCNowPlayingInfo *)self hasValidCaptionOptions];
+      hasValidCaptionOptions5 = [infoCopy hasValidCaptionOptions];
+      v92 = [hasValidCaptionOptions4 isEqualToNumber:hasValidCaptionOptions5];
     }
 
     else
@@ -318,7 +318,7 @@ LABEL_34:
   return v92 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TVRCNowPlayingInfo);
   v5 = [(NSString *)self->_identifier copy];
@@ -351,150 +351,150 @@ LABEL_34:
   return v4;
 }
 
-- (id)nowPlayingInfoMergedWithNowPlayingInfo:(id)a3
+- (id)nowPlayingInfoMergedWithNowPlayingInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(TVRCNowPlayingInfo *)self copy];
-  v6 = [v4 identifier];
+  identifier = [infoCopy identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v7 = [v4 identifier];
-    [v5 setIdentifier:v7];
+    identifier2 = [infoCopy identifier];
+    [v5 setIdentifier:identifier2];
   }
 
-  v8 = [v4 playbackRate];
+  playbackRate = [infoCopy playbackRate];
 
-  if (v8)
+  if (playbackRate)
   {
-    v9 = [v4 playbackRate];
-    [v5 setPlaybackRate:v9];
+    playbackRate2 = [infoCopy playbackRate];
+    [v5 setPlaybackRate:playbackRate2];
   }
 
-  v10 = [v4 playbackState];
+  playbackState = [infoCopy playbackState];
 
-  if (v10)
+  if (playbackState)
   {
-    v11 = [v4 playbackState];
-    [v5 setPlaybackState:v11];
+    playbackState2 = [infoCopy playbackState];
+    [v5 setPlaybackState:playbackState2];
   }
 
-  v12 = [v4 playerIdentifier];
+  playerIdentifier = [infoCopy playerIdentifier];
 
-  if (v12)
+  if (playerIdentifier)
   {
-    v13 = [v4 playerIdentifier];
-    [v5 setPlayerIdentifier:v13];
+    playerIdentifier2 = [infoCopy playerIdentifier];
+    [v5 setPlayerIdentifier:playerIdentifier2];
   }
 
-  v14 = [v4 metadata];
+  metadata = [infoCopy metadata];
 
-  if (v14)
+  if (metadata)
   {
-    v15 = [v4 metadata];
-    [v5 setMetadata:v15];
+    metadata2 = [infoCopy metadata];
+    [v5 setMetadata:metadata2];
   }
 
-  v16 = [v4 imageData];
+  imageData = [infoCopy imageData];
 
-  if (v16)
+  if (imageData)
   {
-    v17 = [v4 imageData];
-    [v5 setImageData:v17];
+    imageData2 = [infoCopy imageData];
+    [v5 setImageData:imageData2];
   }
 
-  v18 = [v4 imageDataIsPlaceholder];
+  imageDataIsPlaceholder = [infoCopy imageDataIsPlaceholder];
 
-  if (v18)
+  if (imageDataIsPlaceholder)
   {
-    v19 = [v4 imageDataIsPlaceholder];
-    [v5 setImageDataIsPlaceholder:v19];
+    imageDataIsPlaceholder2 = [infoCopy imageDataIsPlaceholder];
+    [v5 setImageDataIsPlaceholder:imageDataIsPlaceholder2];
   }
 
-  v20 = [v4 rawTimedMetadata];
+  rawTimedMetadata = [infoCopy rawTimedMetadata];
 
-  if (v20)
+  if (rawTimedMetadata)
   {
-    v21 = [v4 rawTimedMetadata];
-    [v5 setRawTimedMetadata:v21];
+    rawTimedMetadata2 = [infoCopy rawTimedMetadata];
+    [v5 setRawTimedMetadata:rawTimedMetadata2];
   }
 
-  v22 = [v4 expectsTimedMetadata];
+  expectsTimedMetadata = [infoCopy expectsTimedMetadata];
 
-  if (v22)
+  if (expectsTimedMetadata)
   {
-    v23 = [v4 expectsTimedMetadata];
-    [v5 setExpectsTimedMetadata:v23];
+    expectsTimedMetadata2 = [infoCopy expectsTimedMetadata];
+    [v5 setExpectsTimedMetadata:expectsTimedMetadata2];
   }
 
-  v24 = [v4 captionsEnabled];
+  captionsEnabled = [infoCopy captionsEnabled];
 
-  if (v24)
+  if (captionsEnabled)
   {
-    v25 = [v4 captionsEnabled];
-    [v5 setCaptionsEnabled:v25];
+    captionsEnabled2 = [infoCopy captionsEnabled];
+    [v5 setCaptionsEnabled:captionsEnabled2];
   }
 
-  v26 = [v4 hasValidCaptionOptions];
+  hasValidCaptionOptions = [infoCopy hasValidCaptionOptions];
 
-  if (v26)
+  if (hasValidCaptionOptions)
   {
-    v27 = [v4 hasValidCaptionOptions];
-    [v5 setHasValidCaptionOptions:v27];
+    hasValidCaptionOptions2 = [infoCopy hasValidCaptionOptions];
+    [v5 setHasValidCaptionOptions:hasValidCaptionOptions2];
   }
 
   return v5;
 }
 
-- (TVRCNowPlayingInfo)initWithCoder:(id)a3
+- (TVRCNowPlayingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = TVRCNowPlayingInfo;
   v5 = [(TVRCNowPlayingInfo *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playbackRate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playbackRate"];
     playbackRate = v5->_playbackRate;
     v5->_playbackRate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playbackState"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playbackState"];
     playbackState = v5->_playbackState;
     v5->_playbackState = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playerIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playerIdentifier"];
     playerIdentifier = v5->_playerIdentifier;
     v5->_playerIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageDataIsPlaceholder"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageDataIsPlaceholder"];
     imageDataIsPlaceholder = v5->_imageDataIsPlaceholder;
     v5->_imageDataIsPlaceholder = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawTimedMetadata"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawTimedMetadata"];
     rawTimedMetadata = v5->_rawTimedMetadata;
     v5->_rawTimedMetadata = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expectsTimedMetadata"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expectsTimedMetadata"];
     expectsTimedMetadata = v5->_expectsTimedMetadata;
     v5->_expectsTimedMetadata = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"captionsEnabled"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"captionsEnabled"];
     captionsEnabled = v5->_captionsEnabled;
     v5->_captionsEnabled = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasValidCaptionOptions"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasValidCaptionOptions"];
     hasValidCaptionOptions = v5->_hasValidCaptionOptions;
     v5->_hasValidCaptionOptions = v26;
   }
@@ -502,21 +502,21 @@ LABEL_34:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_playbackRate forKey:@"playbackRate"];
-  [v5 encodeObject:self->_playbackState forKey:@"playbackState"];
-  [v5 encodeObject:self->_playerIdentifier forKey:@"playerIdentifier"];
-  [v5 encodeObject:self->_metadata forKey:@"metadata"];
-  [v5 encodeObject:self->_imageData forKey:@"imageData"];
-  [v5 encodeObject:self->_imageDataIsPlaceholder forKey:@"imageDataIsPlaceholder"];
-  [v5 encodeObject:self->_rawTimedMetadata forKey:@"rawTimedMetadata"];
-  [v5 encodeObject:self->_expectsTimedMetadata forKey:@"expectsTimedMetadata"];
-  [v5 encodeObject:self->_captionsEnabled forKey:@"captionsEnabled"];
-  [v5 encodeObject:self->_hasValidCaptionOptions forKey:@"hasValidCaptionOptions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_playbackRate forKey:@"playbackRate"];
+  [coderCopy encodeObject:self->_playbackState forKey:@"playbackState"];
+  [coderCopy encodeObject:self->_playerIdentifier forKey:@"playerIdentifier"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeObject:self->_imageData forKey:@"imageData"];
+  [coderCopy encodeObject:self->_imageDataIsPlaceholder forKey:@"imageDataIsPlaceholder"];
+  [coderCopy encodeObject:self->_rawTimedMetadata forKey:@"rawTimedMetadata"];
+  [coderCopy encodeObject:self->_expectsTimedMetadata forKey:@"expectsTimedMetadata"];
+  [coderCopy encodeObject:self->_captionsEnabled forKey:@"captionsEnabled"];
+  [coderCopy encodeObject:self->_hasValidCaptionOptions forKey:@"hasValidCaptionOptions"];
 }
 
 @end

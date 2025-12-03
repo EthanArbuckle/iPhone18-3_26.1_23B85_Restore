@@ -1,38 +1,38 @@
 @interface _DKSyncToggle
-+ (_DKSyncToggle)toggleWithObject:(void *)a3 name:(uint64_t)a4 enableSelector:(uint64_t)a5 disableSelector:;
-- (_DKSyncToggle)initWithObject:(id)a3 name:(id)a4 enableSelector:(SEL)a5 disableSelector:(SEL)a6;
++ (_DKSyncToggle)toggleWithObject:(void *)object name:(uint64_t)name enableSelector:(uint64_t)selector disableSelector:;
+- (_DKSyncToggle)initWithObject:(id)object name:(id)name enableSelector:(SEL)selector disableSelector:(SEL)disableSelector;
 - (uint64_t)isEnabled;
 - (uint64_t)setEnabled:(uint64_t)result;
-- (void)_setEnabled:(BOOL)a3;
+- (void)_setEnabled:(BOOL)enabled;
 - (void)dealloc;
 @end
 
 @implementation _DKSyncToggle
 
-+ (_DKSyncToggle)toggleWithObject:(void *)a3 name:(uint64_t)a4 enableSelector:(uint64_t)a5 disableSelector:
++ (_DKSyncToggle)toggleWithObject:(void *)object name:(uint64_t)name enableSelector:(uint64_t)selector disableSelector:
 {
-  v8 = a3;
+  objectCopy = object;
   v9 = a2;
   objc_opt_self();
-  v10 = [[_DKSyncToggle alloc] initWithObject:v9 name:v8 enableSelector:a4 disableSelector:a5];
+  v10 = [[_DKSyncToggle alloc] initWithObject:v9 name:objectCopy enableSelector:name disableSelector:selector];
 
   return v10;
 }
 
-- (_DKSyncToggle)initWithObject:(id)a3 name:(id)a4 enableSelector:(SEL)a5 disableSelector:(SEL)a6
+- (_DKSyncToggle)initWithObject:(id)object name:(id)name enableSelector:(SEL)selector disableSelector:(SEL)disableSelector
 {
-  v10 = a3;
-  v11 = a4;
+  objectCopy = object;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = _DKSyncToggle;
   v12 = [(_DKSyncToggle *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_object, v10);
-    objc_storeStrong(&v13->_name, a4);
-    v13->_enableSelector = a5;
-    v13->_disableSelector = a6;
+    objc_storeWeak(&v12->_object, objectCopy);
+    objc_storeStrong(&v13->_name, name);
+    v13->_enableSelector = selector;
+    v13->_disableSelector = disableSelector;
   }
 
   return v13;
@@ -50,14 +50,14 @@
   [(_DKSyncToggle *)&v3 dealloc];
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = +[_CDLogging syncChannel];
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-    if (v3)
+    if (enabledCopy)
     {
       if (v6)
       {
@@ -78,7 +78,7 @@
     }
 
     [(_DKSyncToggle *)self willChangeValueForKey:@"isEnabled"];
-    self->_enabled = v3;
+    self->_enabled = enabledCopy;
     [(_DKSyncToggle *)self didChangeValueForKey:@"isEnabled"];
     WeakRetained = objc_loadWeakRetained(&self->_object);
     [WeakRetained performSelector:*(&self->super.isa + v7)];
@@ -101,9 +101,9 @@
 
 - (uint64_t)isEnabled
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else

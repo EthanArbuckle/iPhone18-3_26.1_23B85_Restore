@@ -1,12 +1,12 @@
 @interface SCNParticleSystem
 + (SCNParticleSystem)particleSystem;
 + (SCNParticleSystem)particleSystemNamed:(NSString *)name inDirectory:(NSString *)directory;
-+ (SCNParticleSystem)particleSystemWithParticleSystemRef:(__C3DParticleSystem *)a3;
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4;
++ (SCNParticleSystem)particleSystemWithParticleSystemRef:(__C3DParticleSystem *)ref;
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key;
 - (BOOL)affectedByGravity;
 - (BOOL)affectedByPhysicsFields;
 - (BOOL)blackPassEnabled;
-- (BOOL)isAnimationForKeyPaused:(id)a3;
+- (BOOL)isAnimationForKeyPaused:(id)paused;
 - (BOOL)isLocal;
 - (BOOL)lightingEnabled;
 - (BOOL)loops;
@@ -62,8 +62,8 @@
 - (SCNParticleOrientationMode)orientationMode;
 - (SCNParticleSortingMode)sortingMode;
 - (SCNParticleSystem)init;
-- (SCNParticleSystem)initWithCoder:(id)a3;
-- (SCNParticleSystem)initWithParticleSystemRef:(__C3DParticleSystem *)a3;
+- (SCNParticleSystem)initWithCoder:(id)coder;
+- (SCNParticleSystem)initWithParticleSystemRef:(__C3DParticleSystem *)ref;
 - (SCNVector3)acceleration;
 - (SCNVector3)emittingDirection;
 - (SCNVector3)orientationDirection;
@@ -73,45 +73,45 @@
 - (__C3DScene)sceneRef;
 - (double)fixedTimeStep;
 - (double)lightEmissionRadiusFactor;
-- (id)_scnAnimationForKey:(id)a3;
-- (id)animationForKey:(id)a3;
-- (id)animationPlayerForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_scnAnimationForKey:(id)key;
+- (id)animationForKey:(id)key;
+- (id)animationPlayerForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
-- (id)initPresentationSystemWithSystemRef:(__C3DParticleSystem *)a3;
+- (id)initPresentationSystemWithSystemRef:(__C3DParticleSystem *)ref;
 - (id)name;
 - (id)particleGeometries;
 - (id)presentationInstance;
 - (id)scene;
 - (int64_t)renderingMode;
 - (int64_t)seed;
-- (signed)typeOfProperty:(id)a3;
-- (void)_copyAnimationsFrom:(id)a3;
-- (void)_customDecodingOfSCNParticleSystem:(id)a3;
-- (void)_customEncodingOfSCNParticleSystem:(id)a3;
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5;
-- (void)_setParticleImagePath:(id)a3 withResolvedPath:(id)a4;
+- (signed)typeOfProperty:(id)property;
+- (void)_copyAnimationsFrom:(id)from;
+- (void)_customDecodingOfSCNParticleSystem:(id)system;
+- (void)_customEncodingOfSCNParticleSystem:(id)system;
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node;
+- (void)_setParticleImagePath:(id)path withResolvedPath:(id)resolvedPath;
 - (void)_syncEntityObjCModel;
 - (void)_syncObjCAnimations;
 - (void)_syncObjCModel;
-- (void)_updateParticleC3DImage:(id)a3;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4;
+- (void)_updateParticleC3DImage:(id)image;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)addAnimationPlayer:(id)player forKey:(id)key;
 - (void)addModifierForProperties:(NSArray *)properties atStage:(SCNParticleModifierStage)stage withBlock:(SCNParticleModifierBlock)block;
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6;
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handleEvent:(SCNParticleEvent)event forProperties:(NSArray *)properties withBlock:(SCNParticleEventBlock)block;
-- (void)pauseAnimationForKey:(id)a3;
+- (void)pauseAnimationForKey:(id)key;
 - (void)removeAllAnimations;
-- (void)removeAllAnimationsWithBlendOutDuration:(double)a3;
+- (void)removeAllAnimationsWithBlendOutDuration:(double)duration;
 - (void)removeAllBindings;
 - (void)removeAllModifiers;
-- (void)removeAnimationForKey:(id)a3;
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(double)a4;
+- (void)removeAnimationForKey:(id)key;
+- (void)removeAnimationForKey:(id)key blendOutDuration:(double)duration;
 - (void)removeModifiersOfStage:(SCNParticleModifierStage)stage;
 - (void)reset;
-- (void)resumeAnimationForKey:(id)a3;
+- (void)resumeAnimationForKey:(id)key;
 - (void)setAcceleration:(SCNVector3)acceleration;
 - (void)setAffectedByGravity:(BOOL)affectedByGravity;
 - (void)setAffectedByPhysicsFields:(BOOL)affectedByPhysicsFields;
@@ -127,9 +127,9 @@
 - (void)setEmissionDurationVariation:(CGFloat)emissionDurationVariation;
 - (void)setEmitterShape:(SCNGeometry *)emitterShape;
 - (void)setEmittingDirection:(SCNVector3)emittingDirection;
-- (void)setFixedTimeStep:(double)a3;
+- (void)setFixedTimeStep:(double)step;
 - (void)setFresnelExponent:(CGFloat)fresnelExponent;
-- (void)setIdentifier:(id)a3;
+- (void)setIdentifier:(id)identifier;
 - (void)setIdleDuration:(CGFloat)idleDuration;
 - (void)setIdleDurationVariation:(CGFloat)idleDurationVariation;
 - (void)setImageSequenceAnimationMode:(SCNParticleImageSequenceAnimationMode)imageSequenceAnimationMode;
@@ -139,11 +139,11 @@
 - (void)setImageSequenceInitialFrame:(CGFloat)imageSequenceInitialFrame;
 - (void)setImageSequenceInitialFrameVariation:(CGFloat)imageSequenceInitialFrameVariation;
 - (void)setImageSequenceRowCount:(NSUInteger)imageSequenceRowCount;
-- (void)setIsLocal:(BOOL)a3;
-- (void)setLightEmissionRadiusFactor:(double)a3;
+- (void)setIsLocal:(BOOL)local;
+- (void)setLightEmissionRadiusFactor:(double)factor;
 - (void)setLightingEnabled:(BOOL)lightingEnabled;
 - (void)setLoops:(BOOL)loops;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 - (void)setOrientationDirection:(SCNVector3)orientationDirection;
 - (void)setOrientationMode:(SCNParticleOrientationMode)orientationMode;
 - (void)setParticleAngle:(CGFloat)particleAngle;
@@ -159,7 +159,7 @@
 - (void)setParticleDiesOnCollision:(BOOL)particleDiesOnCollision;
 - (void)setParticleFriction:(CGFloat)particleFriction;
 - (void)setParticleFrictionVariation:(CGFloat)particleFrictionVariation;
-- (void)setParticleGeometries:(id)a3;
+- (void)setParticleGeometries:(id)geometries;
 - (void)setParticleImage:(id)particleImage;
 - (void)setParticleIntensity:(CGFloat)particleIntensity;
 - (void)setParticleIntensityVariation:(CGFloat)particleIntensityVariation;
@@ -171,14 +171,14 @@
 - (void)setParticleSizeVariation:(CGFloat)particleSizeVariation;
 - (void)setParticleVelocity:(CGFloat)particleVelocity;
 - (void)setParticleVelocityVariation:(CGFloat)particleVelocityVariation;
-- (void)setPhysicsCollisionsEnabled:(BOOL)a3;
+- (void)setPhysicsCollisionsEnabled:(BOOL)enabled;
 - (void)setPropertyControllers:(NSDictionary *)propertyControllers;
-- (void)setReferenceName:(id)a3;
-- (void)setRenderingMode:(int64_t)a3;
-- (void)setSeed:(int64_t)a3;
-- (void)setSoftParticlesEnabled:(BOOL)a3;
+- (void)setReferenceName:(id)name;
+- (void)setRenderingMode:(int64_t)mode;
+- (void)setSeed:(int64_t)seed;
+- (void)setSoftParticlesEnabled:(BOOL)enabled;
 - (void)setSortingMode:(SCNParticleSortingMode)sortingMode;
-- (void)setSpeed:(double)a3 forAnimationKey:(id)a4;
+- (void)setSpeed:(double)speed forAnimationKey:(id)key;
 - (void)setSpeedFactor:(CGFloat)speedFactor;
 - (void)setSpreadingAngle:(CGFloat)spreadingAngle;
 - (void)setStretchFactor:(CGFloat)stretchFactor;
@@ -187,12 +187,12 @@
 - (void)setSystemSpawnedOnLiving:(SCNParticleSystem *)systemSpawnedOnLiving;
 - (void)setWarmupDuration:(CGFloat)warmupDuration;
 - (void)setWritesToDepthBuffer:(BOOL)writesToDepthBuffer;
-- (void)unbindAnimatablePath:(id)a3;
+- (void)unbindAnimatablePath:(id)path;
 @end
 
 @implementation SCNParticleSystem
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   if (*(self + 16))
   {
@@ -203,20 +203,20 @@
     }
   }
 
-  else if (a3 | self->_name)
+  else if (name | self->_name)
   {
-    if (([a3 isEqual:?] & 1) == 0)
+    if (([name isEqual:?] & 1) == 0)
     {
 
-      self->_name = [a3 copy];
-      v5 = [(SCNParticleSystem *)self sceneRef];
+      self->_name = [name copy];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __29__SCNParticleSystem_setName___block_invoke;
       v7[3] = &unk_2782FC950;
       v7[4] = self;
-      v7[5] = a3;
-      [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+      v7[5] = name;
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
     }
   }
 }
@@ -236,11 +236,11 @@ CFStringRef __29__SCNParticleSystem_setName___block_invoke(uint64_t a1)
     return self->_name;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  v5 = v4;
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  v5 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v4);
+    C3DSceneLock(sceneRef);
   }
 
   Name = C3DEntityGetName([(SCNParticleSystem *)self __CFObject]);
@@ -252,32 +252,32 @@ CFStringRef __29__SCNParticleSystem_setName___block_invoke(uint64_t a1)
   return Name;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [(SCNParticleSystem *)self __CFObject];
+  __CFObject = [(SCNParticleSystem *)self __CFObject];
 
-  C3DEntitySetID(v4, a3);
+  C3DEntitySetID(__CFObject, identifier);
 }
 
 - (id)identifier
 {
-  v2 = [(SCNParticleSystem *)self __CFObject];
+  __CFObject = [(SCNParticleSystem *)self __CFObject];
 
-  return C3DEntityGetID(v2);
+  return C3DEntityGetID(__CFObject);
 }
 
 - (void)_syncEntityObjCModel
 {
-  v3 = [(SCNParticleSystem *)self __CFObject];
+  __CFObject = [(SCNParticleSystem *)self __CFObject];
 
-  self->_name = C3DEntityGetName(v3);
+  self->_name = C3DEntityGetName(__CFObject);
 }
 
 - (__C3DScene)sceneRef
 {
-  v2 = [(SCNParticleSystem *)self __CFObject];
+  __CFObject = [(SCNParticleSystem *)self __CFObject];
 
-  return C3DGetScene(v2);
+  return C3DGetScene(__CFObject);
 }
 
 - (id)scene
@@ -304,20 +304,20 @@ CFStringRef __29__SCNParticleSystem_setName___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     return 0;
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
-  v7 = [-[SCNOrderedDictionary objectForKey:](self->_animations objectForKey:{a4), "animation"}] == a3;
+  v7 = [-[SCNOrderedDictionary objectForKey:](self->_animations objectForKey:{key), "animation"}] == animation;
   if (v7)
   {
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a4];
-    v8 = [(SCNParticleSystem *)self __CFObject];
-    if ((CFTypeIsC3DEntity(v8) & 1) == 0)
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
+    __CFObject = [(SCNParticleSystem *)self __CFObject];
+    if ((CFTypeIsC3DEntity(__CFObject) & 1) == 0)
     {
       v9 = scn_default_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -326,21 +326,21 @@ CFStringRef __29__SCNParticleSystem_setName___block_invoke(uint64_t a1)
       }
     }
 
-    C3DEntityRemoveAnimationForKey(v8, a4, 1);
+    C3DEntityRemoveAnimationForKey(__CFObject, key, 1);
   }
 
   os_unfair_lock_unlock(&self->_animationsLock);
   return v7;
 }
 
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4
+- (void)addAnimationPlayer:(id)player forKey:(id)key
 {
-  if (a3)
+  if (player)
   {
-    v5 = a4;
-    if (!a4)
+    keyCopy = key;
+    if (!key)
     {
-      v5 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+      keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
     }
 
     os_unfair_lock_lock(&self->_animationsLock);
@@ -351,17 +351,17 @@ CFStringRef __29__SCNParticleSystem_setName___block_invoke(uint64_t a1)
       self->_animations = animations;
     }
 
-    [(SCNOrderedDictionary *)animations setObject:a3 forKey:v5];
+    [(SCNOrderedDictionary *)animations setObject:player forKey:keyCopy];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v8 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__SCNParticleSystem_addAnimationPlayer_forKey___block_invoke;
     v10[3] = &unk_2782FC928;
-    v10[4] = a3;
+    v10[4] = player;
     v10[5] = self;
-    v10[6] = v5;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v10];
+    v10[6] = keyCopy;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v10];
   }
 
   else
@@ -387,25 +387,25 @@ void __47__SCNParticleSystem_addAnimationPlayer_forKey___block_invoke(uint64_t a
   }
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  if (a3)
+  if (animation)
   {
-    v5 = a4;
-    v6 = a3;
-    if (!a4)
+    keyCopy = key;
+    animationCopy = animation;
+    if (!key)
     {
-      v5 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+      keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [SCNAnimation animationWithCAAnimation:v6];
+      animationCopy = [SCNAnimation animationWithCAAnimation:animationCopy];
     }
 
-    v7 = [SCNAnimationPlayer animationPlayerWithSCNAnimation:v6];
-    [(SCNParticleSystem *)self addAnimationPlayer:v7 forKey:v5];
+    v7 = [SCNAnimationPlayer animationPlayerWithSCNAnimation:animationCopy];
+    [(SCNParticleSystem *)self addAnimationPlayer:v7 forKey:keyCopy];
 
     [(SCNAnimationPlayer *)v7 play];
   }
@@ -425,75 +425,75 @@ void __47__SCNParticleSystem_addAnimationPlayer_forKey___block_invoke(uint64_t a
   os_unfair_lock_lock(&self->_animationsLock);
   [(SCNOrderedDictionary *)self->_animations removeAllObjects];
   os_unfair_lock_unlock(&self->_animationsLock);
-  v3 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __40__SCNParticleSystem_removeAllAnimations__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
-- (void)removeAllAnimationsWithBlendOutDuration:(double)a3
+- (void)removeAllAnimationsWithBlendOutDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_animationsLock);
   [(SCNOrderedDictionary *)self->_animations removeAllObjects];
   os_unfair_lock_unlock(&self->_animationsLock);
-  v5 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__SCNParticleSystem_removeAllAnimationsWithBlendOutDuration___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
-  *&v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  *&v6[5] = duration;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)removeAnimationForKey:(id)a3
+- (void)removeAnimationForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __43__SCNParticleSystem_removeAnimationForKey___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = self;
-    v6[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    v6[5] = key;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(double)a4
+- (void)removeAnimationForKey:(id)key blendOutDuration:(double)duration
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v7 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __60__SCNParticleSystem_removeAnimationForKey_blendOutDuration___block_invoke;
     v8[3] = &unk_2782FB630;
     v8[4] = self;
-    v8[5] = a3;
-    *&v8[6] = a4;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    v8[5] = key;
+    *&v8[6] = duration;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
 - (NSArray)animationKeys
 {
   os_unfair_lock_lock(&self->_animationsLock);
-  v3 = [(SCNOrderedDictionary *)self->_animations allKeys];
+  allKeys = [(SCNOrderedDictionary *)self->_animations allKeys];
   os_unfair_lock_unlock(&self->_animationsLock);
-  if ([(NSArray *)v3 count])
+  if ([(NSArray *)allKeys count])
   {
-    return v3;
+    return allKeys;
   }
 
   else
@@ -504,22 +504,22 @@ void __47__SCNParticleSystem_addAnimationPlayer_forKey___block_invoke(uint64_t a
 
 - (void)_syncObjCAnimations
 {
-  v3 = [(SCNParticleSystem *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
 
   self->_animations = objc_alloc_init(SCNOrderedDictionary);
   os_unfair_lock_unlock(&self->_animationsLock);
-  v5 = [(SCNParticleSystem *)self __CFObject];
-  if (v5)
+  __CFObject = [(SCNParticleSystem *)self __CFObject];
+  if (__CFObject)
   {
-    v6 = v5;
-    if ((CFTypeIsC3DEntity(v5) & 1) == 0)
+    v6 = __CFObject;
+    if ((CFTypeIsC3DEntity(__CFObject) & 1) == 0)
     {
       v7 = scn_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -544,46 +544,46 @@ void __47__SCNParticleSystem_addAnimationPlayer_forKey___block_invoke(uint64_t a
   }
 }
 
-- (id)animationForKey:(id)a3
+- (id)animationForKey:(id)key
 {
-  v3 = [(SCNParticleSystem *)self _scnAnimationForKey:a3];
+  v3 = [(SCNParticleSystem *)self _scnAnimationForKey:key];
   v4 = MEMORY[0x277CD9DF8];
 
   return [v4 animationWithSCNAnimation:v3];
 }
 
-- (id)_scnAnimationForKey:(id)a3
+- (id)_scnAnimationForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = [-[SCNOrderedDictionary objectForKey:](animations objectForKey:{v3), "animation"}];
+      keyCopy = [-[SCNOrderedDictionary objectForKey:](animations objectForKey:{keyCopy), "animation"}];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_copyAnimationsFrom:(id)a3
+- (void)_copyAnimationsFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 animationKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  animationKeys = [from animationKeys];
+  v6 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -594,99 +594,99 @@ void __47__SCNParticleSystem_addAnimationPlayer_forKey___block_invoke(uint64_t a
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(animationKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [objc_msgSend(a3 animationPlayerForKey:{v10), "copy"}];
+        v11 = [objc_msgSend(from animationPlayerForKey:{v10), "copy"}];
         [(SCNParticleSystem *)self addAnimationPlayer:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)animationPlayerForKey:(id)a3
+- (id)animationPlayerForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = [(SCNOrderedDictionary *)animations objectForKey:v3];
+      keyCopy = [(SCNOrderedDictionary *)animations objectForKey:keyCopy];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = [(SCNParticleSystem *)self __CFObject];
-  if (v9)
+  nodeCopy = node;
+  animationCopy = animation;
+  __CFObject = [(SCNParticleSystem *)self __CFObject];
+  if (__CFObject)
   {
-    v10 = v9;
-    v11 = [(SCNParticleSystem *)self animationManager];
-    if (v11)
+    v10 = __CFObject;
+    animationManager = [(SCNParticleSystem *)self animationManager];
+    if (animationManager)
     {
-      v12 = v11;
+      v12 = animationManager;
       v13 = CACurrentMediaTime();
 
-      C3DAnimationManagerPauseAnimationForKey(v12, v10, a4, v7, v5, v13);
+      C3DAnimationManagerPauseAnimationForKey(v12, v10, key, animationCopy, nodeCopy, v13);
     }
   }
 }
 
-- (void)pauseAnimationForKey:(id)a3
+- (void)pauseAnimationForKey:(id)key
 {
-  v5 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SCNParticleSystem_pauseAnimationForKey___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = key;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)resumeAnimationForKey:(id)a3
+- (void)resumeAnimationForKey:(id)key
 {
-  v5 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__SCNParticleSystem_resumeAnimationForKey___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = key;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)setSpeed:(double)a3 forAnimationKey:(id)a4
+- (void)setSpeed:(double)speed forAnimationKey:(id)key
 {
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"animations.%@.speed", a4];
-  v8 = [(SCNParticleSystem *)self sceneRef];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"animations.%@.speed", key];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__SCNParticleSystem_setSpeed_forAnimationKey___block_invoke;
   v9[3] = &unk_2782FB630;
   v9[4] = self;
-  v9[5] = a4;
-  *&v9[6] = a3;
-  [SCNTransaction postCommandWithContext:v8 object:self keyPath:v7 applyBlock:v9];
+  v9[5] = key;
+  *&v9[6] = speed;
+  [SCNTransaction postCommandWithContext:sceneRef object:self keyPath:v7 applyBlock:v9];
 }
 
 void __46__SCNParticleSystem_setSpeed_forAnimationKey___block_invoke(uint64_t a1)
@@ -706,23 +706,23 @@ void __46__SCNParticleSystem_setSpeed_forAnimationKey___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)isAnimationForKeyPaused:(id)a3
+- (BOOL)isAnimationForKeyPaused:(id)paused
 {
-  v5 = [(SCNParticleSystem *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
-  v7 = [(SCNParticleSystem *)self __CFObject];
-  if (v7)
+  __CFObject = [(SCNParticleSystem *)self __CFObject];
+  if (__CFObject)
   {
-    v8 = v7;
-    v9 = [(SCNParticleSystem *)self animationManager];
-    if (v9)
+    v8 = __CFObject;
+    animationManager = [(SCNParticleSystem *)self animationManager];
+    if (animationManager)
     {
-      IsPaused = C3DAnimationManagerGetAnimationForKeyIsPaused(v9, v8, a3);
+      IsPaused = C3DAnimationManagerGetAnimationForKeyIsPaused(animationManager, v8, paused);
       if (!v6)
       {
         return IsPaused;
@@ -742,17 +742,17 @@ LABEL_8:
   return IsPaused;
 }
 
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options
 {
-  if (self != a4)
+  if (self != object)
   {
     v16[15] = v6;
     v16[16] = v7;
     v13 = objc_alloc_init(C3DBinding);
-    [(C3DBinding *)v13 setSourceObject:a4];
-    [(C3DBinding *)v13 setKeyPathDst:a3];
-    [(C3DBinding *)v13 setKeyPathSrc:a5];
-    [(C3DBinding *)v13 setOptions:a6];
+    [(C3DBinding *)v13 setSourceObject:object];
+    [(C3DBinding *)v13 setKeyPathDst:path];
+    [(C3DBinding *)v13 setKeyPathSrc:keyPath];
+    [(C3DBinding *)v13 setOptions:options];
     bindings = self->_bindings;
     if (!bindings)
     {
@@ -760,19 +760,19 @@ LABEL_8:
       self->_bindings = bindings;
     }
 
-    [(NSMutableDictionary *)bindings setValue:v13 forKey:a3];
+    [(NSMutableDictionary *)bindings setValue:v13 forKey:path];
 
-    v15 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__SCNParticleSystem_bindAnimatablePath_toObject_withKeyPath_options___block_invoke;
     v16[3] = &unk_2782FC978;
     v16[4] = self;
-    v16[5] = a4;
-    v16[6] = a3;
-    v16[7] = a5;
-    v16[8] = a6;
-    [SCNTransaction postCommandWithContext:v15 object:self applyBlock:v16];
+    v16[5] = object;
+    v16[6] = path;
+    v16[7] = keyPath;
+    v16[8] = options;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v16];
   }
 }
 
@@ -787,7 +787,7 @@ void __69__SCNParticleSystem_bindAnimatablePath_toObject_withKeyPath_options___b
   C3DEntityAddBinding(v2, v3);
 }
 
-- (void)unbindAnimatablePath:(id)a3
+- (void)unbindAnimatablePath:(id)path
 {
   [(NSMutableDictionary *)self->_bindings removeObjectForKey:?];
   if (![(NSMutableDictionary *)self->_bindings count])
@@ -796,14 +796,14 @@ void __69__SCNParticleSystem_bindAnimatablePath_toObject_withKeyPath_options___b
     self->_bindings = 0;
   }
 
-  v5 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SCNParticleSystem_unbindAnimatablePath___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = path;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __42__SCNParticleSystem_unbindAnimatablePath___block_invoke(uint64_t a1)
@@ -817,13 +817,13 @@ void __42__SCNParticleSystem_unbindAnimatablePath___block_invoke(uint64_t a1)
 - (void)removeAllBindings
 {
   self->_bindings = 0;
-  v3 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __38__SCNParticleSystem_removeAllBindings__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
 void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
@@ -835,19 +835,19 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
 
 + (SCNParticleSystem)particleSystem
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (SCNParticleSystem)particleSystemNamed:(NSString *)name inDirectory:(NSString *)directory
 {
-  v6 = [(NSString *)name pathExtension];
+  pathExtension = [(NSString *)name pathExtension];
   v7 = SCNGetResourceBundle();
-  v8 = [(NSString *)name stringByDeletingPathExtension];
-  if ([(NSString *)v6 length])
+  stringByDeletingPathExtension = [(NSString *)name stringByDeletingPathExtension];
+  if ([(NSString *)pathExtension length])
   {
-    v9 = v6;
+    v9 = pathExtension;
   }
 
   else
@@ -855,7 +855,7 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
     v9 = @"scnp";
   }
 
-  v10 = [v7 URLForResource:v8 withExtension:v9 subdirectory:directory];
+  v10 = [v7 URLForResource:stringByDeletingPathExtension withExtension:v9 subdirectory:directory];
   if (!v10)
   {
     return 0;
@@ -905,17 +905,17 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (SCNParticleSystem)initWithParticleSystemRef:(__C3DParticleSystem *)a3
+- (SCNParticleSystem)initWithParticleSystemRef:(__C3DParticleSystem *)ref
 {
   v6.receiver = self;
   v6.super_class = SCNParticleSystem;
   v4 = [(SCNParticleSystem *)&v6 init];
   if (v4)
   {
-    v4->_particleSystem = CFRetain(a3);
-    if (a3)
+    v4->_particleSystem = CFRetain(ref);
+    if (ref)
     {
-      C3DEntitySetObjCWrapper(a3, v4);
+      C3DEntitySetObjCWrapper(ref, v4);
     }
 
     v4->_animationsLock._os_unfair_lock_opaque = 0;
@@ -926,14 +926,14 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)initPresentationSystemWithSystemRef:(__C3DParticleSystem *)a3
+- (id)initPresentationSystemWithSystemRef:(__C3DParticleSystem *)ref
 {
   v6.receiver = self;
   v6.super_class = SCNParticleSystem;
   v4 = [(SCNParticleSystem *)&v6 init];
   if (v4)
   {
-    v4->_particleSystem = CFRetain(a3);
+    v4->_particleSystem = CFRetain(ref);
     *(v4 + 16) |= 1u;
     v4->_animationsLock._os_unfair_lock_opaque = 0;
   }
@@ -960,86 +960,86 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
 
 - (void)_syncObjCModel
 {
-  v3 = [(SCNParticleSystem *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
-  v5 = [(SCNParticleSystem *)self particleSystemRef];
-  self->_emissionDuration = C3DParticleSystemGetEmissionDuration(v5);
-  self->_emissionDurationVariation = C3DParticleSystemGetEmissionDurationVariation(v5);
-  self->_idleDuration = C3DParticleSystemGetIdleDuration(v5);
-  self->_idleDurationVariation = C3DParticleSystemGetIdleDurationVariation(v5);
-  self->_birthRate = C3DParticleSystemGetBirthRate(v5);
-  self->_birthRateVariation = C3DParticleSystemGetBirthRateVariation(v5);
-  self->_warmupDuration = C3DParticleSystemGetWarmupDuration(v5);
-  EmitterShape = C3DParticleSystemGetEmitterShape(v5);
+  particleSystemRef = [(SCNParticleSystem *)self particleSystemRef];
+  self->_emissionDuration = C3DParticleSystemGetEmissionDuration(particleSystemRef);
+  self->_emissionDurationVariation = C3DParticleSystemGetEmissionDurationVariation(particleSystemRef);
+  self->_idleDuration = C3DParticleSystemGetIdleDuration(particleSystemRef);
+  self->_idleDurationVariation = C3DParticleSystemGetIdleDurationVariation(particleSystemRef);
+  self->_birthRate = C3DParticleSystemGetBirthRate(particleSystemRef);
+  self->_birthRateVariation = C3DParticleSystemGetBirthRateVariation(particleSystemRef);
+  self->_warmupDuration = C3DParticleSystemGetWarmupDuration(particleSystemRef);
+  EmitterShape = C3DParticleSystemGetEmitterShape(particleSystemRef);
   if (EmitterShape)
   {
     [(SCNParticleSystem *)self setEmitterShape:[SCNGeometry geometryWithGeometryRef:EmitterShape]];
   }
 
-  self->_birthLocation = C3DParticleSystemGetBirthLocation(v5);
-  self->_birthDirection = C3DParticleSystemGetBirthDirection(v5);
-  EmittingDirection = C3DParticleSystemGetEmittingDirection(v5);
+  self->_birthLocation = C3DParticleSystemGetBirthLocation(particleSystemRef);
+  self->_birthDirection = C3DParticleSystemGetBirthDirection(particleSystemRef);
+  EmittingDirection = C3DParticleSystemGetEmittingDirection(particleSystemRef);
   *&self->_emittingDirection.x = EmittingDirection.n128_u64[0];
   LODWORD(self->_emittingDirection.z) = EmittingDirection.n128_u32[2];
-  OrientationDirection = C3DParticleSystemGetOrientationDirection(v5);
+  OrientationDirection = C3DParticleSystemGetOrientationDirection(particleSystemRef);
   *&self->_orientationDirection.x = OrientationDirection.n128_u64[0];
   LODWORD(self->_orientationDirection.z) = OrientationDirection.n128_u32[2];
-  Acceleration = C3DParticleSystemGetAcceleration(v5);
+  Acceleration = C3DParticleSystemGetAcceleration(particleSystemRef);
   *&self->_acceleration.x = Acceleration.n128_u64[0];
   LODWORD(self->_acceleration.z) = Acceleration.n128_u32[2];
-  self->_spreadingAngle = C3DParticleSystemGetSpreadingAngle(v5);
-  self->_loops = C3DParticleSystemGetLoops(v5);
-  self->_isLocal = C3DParticleSystemGetIsLocal(v5);
-  self->_affectedByGravity = C3DParticleSystemGetAffectedByGravity(v5);
-  self->_affectedByPhysicsFields = C3DParticleSystemGetAffectedByPhysicsFields(v5);
-  self->_physicsCollisionsEnabled = C3DParticleSystemGetPhysicsCollisionsEnabled(v5);
-  self->_lightingEnabled = C3DParticleSystemGetLightingEnabled(v5);
-  self->_softParticlesEnabled = C3DParticleSystemGetSoftParticlesEnabled(v5);
-  self->_particleDiesOnCollision = C3DParticleSystemGetParticleDiesOnCollision(v5);
-  self->_blackPassEnabled = C3DParticleSystemGetBlackPassEnabled(v5);
-  self->_writesToDepthBuffer = C3DParticleSystemGetWritesToDepthBuffer(v5);
-  self->_particleAngle = C3DParticleSystemGetParticleAngle(v5);
-  self->_particleAngleVariation = C3DParticleSystemGetParticleAngleVariation(v5);
-  self->_particleVelocity = C3DParticleSystemGetParticleVelocity(v5);
-  self->_particleVelocityVariation = C3DParticleSystemGetParticleVelocityVariation(v5);
-  self->_particleAngularVelocity = C3DParticleSystemGetParticleAngularVelocity(v5);
-  self->_particleAngularVelocityVariation = C3DParticleSystemGetParticleAngularVelocityVariation(v5);
-  self->_particleLifeSpan = C3DParticleSystemGetParticleLifeSpan(v5);
-  self->_particleLifeSpanVariation = C3DParticleSystemGetParticleLifeSpanVariation(v5);
-  self->_particleBounce = C3DParticleSystemGetParticleBounce(v5);
-  self->_particleBounceVariation = C3DParticleSystemGetParticleBounceVariation(v5);
-  self->_particleFriction = C3DParticleSystemGetParticleFriction(v5);
-  self->_particleFrictionVariation = C3DParticleSystemGetParticleFrictionVariation(v5);
-  ParticleColor = C3DParticleSystemGetParticleColor(v5);
+  self->_spreadingAngle = C3DParticleSystemGetSpreadingAngle(particleSystemRef);
+  self->_loops = C3DParticleSystemGetLoops(particleSystemRef);
+  self->_isLocal = C3DParticleSystemGetIsLocal(particleSystemRef);
+  self->_affectedByGravity = C3DParticleSystemGetAffectedByGravity(particleSystemRef);
+  self->_affectedByPhysicsFields = C3DParticleSystemGetAffectedByPhysicsFields(particleSystemRef);
+  self->_physicsCollisionsEnabled = C3DParticleSystemGetPhysicsCollisionsEnabled(particleSystemRef);
+  self->_lightingEnabled = C3DParticleSystemGetLightingEnabled(particleSystemRef);
+  self->_softParticlesEnabled = C3DParticleSystemGetSoftParticlesEnabled(particleSystemRef);
+  self->_particleDiesOnCollision = C3DParticleSystemGetParticleDiesOnCollision(particleSystemRef);
+  self->_blackPassEnabled = C3DParticleSystemGetBlackPassEnabled(particleSystemRef);
+  self->_writesToDepthBuffer = C3DParticleSystemGetWritesToDepthBuffer(particleSystemRef);
+  self->_particleAngle = C3DParticleSystemGetParticleAngle(particleSystemRef);
+  self->_particleAngleVariation = C3DParticleSystemGetParticleAngleVariation(particleSystemRef);
+  self->_particleVelocity = C3DParticleSystemGetParticleVelocity(particleSystemRef);
+  self->_particleVelocityVariation = C3DParticleSystemGetParticleVelocityVariation(particleSystemRef);
+  self->_particleAngularVelocity = C3DParticleSystemGetParticleAngularVelocity(particleSystemRef);
+  self->_particleAngularVelocityVariation = C3DParticleSystemGetParticleAngularVelocityVariation(particleSystemRef);
+  self->_particleLifeSpan = C3DParticleSystemGetParticleLifeSpan(particleSystemRef);
+  self->_particleLifeSpanVariation = C3DParticleSystemGetParticleLifeSpanVariation(particleSystemRef);
+  self->_particleBounce = C3DParticleSystemGetParticleBounce(particleSystemRef);
+  self->_particleBounceVariation = C3DParticleSystemGetParticleBounceVariation(particleSystemRef);
+  self->_particleFriction = C3DParticleSystemGetParticleFriction(particleSystemRef);
+  self->_particleFrictionVariation = C3DParticleSystemGetParticleFrictionVariation(particleSystemRef);
+  ParticleColor = C3DParticleSystemGetParticleColor(particleSystemRef);
   [(SCNParticleSystem *)self setParticleColor:C3DColor4ToRGBCFColor(ParticleColor)];
-  self->_particleColorVariation = C3DParticleSystemGetParticleColorVariation(v5);
-  self->_particleSize = C3DParticleSystemGetParticleSize(v5);
-  self->_particleSizeVariation = C3DParticleSystemGetParticleSizeVariation(v5);
-  self->_particleIntensity = C3DParticleSystemGetParticleIntensity(v5);
-  self->_particleIntensityVariation = C3DParticleSystemGetParticleIntensityVariation(v5);
-  self->_seed = C3DParticleSystemGetSeed(v5);
-  self->_blendMode = C3DParticleSystemGetBlendMode(v5);
-  self->_renderingMode = C3DParticleSystemGetRenderingMode(v5);
-  self->_orientationMode = C3DParticleSystemGetOrientationMode(v5);
-  self->_imageSequenceAnimationMode = C3DParticleSystemGetImageSequenceAnimationMode(v5);
-  self->_sortingMode = C3DParticleSystemGetSortingMode(v5);
-  self->_particleMass = C3DParticleSystemGetParticleMass(v5);
-  self->_particleMassVariation = C3DParticleSystemGetParticleMassVariation(v5);
-  self->_dampingFactor = C3DParticleSystemGetDampingFactor(v5);
-  self->_speedFactor = C3DParticleSystemGetSpeedFactor(v5);
-  self->_fixedTimeStep = C3DParticleSystemGetFixedTimeStep(v5);
-  self->_stretchFactor = C3DParticleSystemGetStretchFactor(v5);
-  self->_imageSequenceRowCount = C3DParticleSystemGetImageSequenceRowCount(v5);
-  self->_imageSequenceColumnCount = C3DParticleSystemGetImageSequenceColumnCount(v5);
-  self->_imageSequenceInitialFrame = C3DParticleSystemGetImageSequenceInitialFrame(v5);
-  self->_imageSequenceInitialFrameVariation = C3DParticleSystemGetImageSequenceInitialFrameVariation(v5);
-  self->_imageSequenceFrameRate = C3DParticleSystemGetImageSequenceFrameRate(v5);
-  self->_imageSequenceFrameRateVariation = C3DParticleSystemGetImageSequenceFrameRateVariation(v5);
+  self->_particleColorVariation = C3DParticleSystemGetParticleColorVariation(particleSystemRef);
+  self->_particleSize = C3DParticleSystemGetParticleSize(particleSystemRef);
+  self->_particleSizeVariation = C3DParticleSystemGetParticleSizeVariation(particleSystemRef);
+  self->_particleIntensity = C3DParticleSystemGetParticleIntensity(particleSystemRef);
+  self->_particleIntensityVariation = C3DParticleSystemGetParticleIntensityVariation(particleSystemRef);
+  self->_seed = C3DParticleSystemGetSeed(particleSystemRef);
+  self->_blendMode = C3DParticleSystemGetBlendMode(particleSystemRef);
+  self->_renderingMode = C3DParticleSystemGetRenderingMode(particleSystemRef);
+  self->_orientationMode = C3DParticleSystemGetOrientationMode(particleSystemRef);
+  self->_imageSequenceAnimationMode = C3DParticleSystemGetImageSequenceAnimationMode(particleSystemRef);
+  self->_sortingMode = C3DParticleSystemGetSortingMode(particleSystemRef);
+  self->_particleMass = C3DParticleSystemGetParticleMass(particleSystemRef);
+  self->_particleMassVariation = C3DParticleSystemGetParticleMassVariation(particleSystemRef);
+  self->_dampingFactor = C3DParticleSystemGetDampingFactor(particleSystemRef);
+  self->_speedFactor = C3DParticleSystemGetSpeedFactor(particleSystemRef);
+  self->_fixedTimeStep = C3DParticleSystemGetFixedTimeStep(particleSystemRef);
+  self->_stretchFactor = C3DParticleSystemGetStretchFactor(particleSystemRef);
+  self->_imageSequenceRowCount = C3DParticleSystemGetImageSequenceRowCount(particleSystemRef);
+  self->_imageSequenceColumnCount = C3DParticleSystemGetImageSequenceColumnCount(particleSystemRef);
+  self->_imageSequenceInitialFrame = C3DParticleSystemGetImageSequenceInitialFrame(particleSystemRef);
+  self->_imageSequenceInitialFrameVariation = C3DParticleSystemGetImageSequenceInitialFrameVariation(particleSystemRef);
+  self->_imageSequenceFrameRate = C3DParticleSystemGetImageSequenceFrameRate(particleSystemRef);
+  self->_imageSequenceFrameRateVariation = C3DParticleSystemGetImageSequenceFrameRateVariation(particleSystemRef);
   [(SCNParticleSystem *)self _syncEntityObjCModel];
   if (v4)
   {
@@ -1048,7 +1048,7 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   +[SCNTransaction begin];
@@ -1165,12 +1165,12 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (SCNParticleSystem)particleSystemWithParticleSystemRef:(__C3DParticleSystem *)a3
++ (SCNParticleSystem)particleSystemWithParticleSystemRef:(__C3DParticleSystem *)ref
 {
-  result = C3DEntityGetObjCWrapper(a3);
+  result = C3DEntityGetObjCWrapper(ref);
   if (!result)
   {
-    v6 = [[a1 alloc] initWithParticleSystemRef:a3];
+    v6 = [[self alloc] initWithParticleSystemRef:ref];
 
     return v6;
   }
@@ -1204,7 +1204,7 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
   return result;
 }
 
-- (signed)typeOfProperty:(id)a3
+- (signed)typeOfProperty:(id)property
 {
   v9[12] = *MEMORY[0x277D85DE8];
   v4 = typeOfProperty__s_properties;
@@ -1239,7 +1239,7 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
     v4 = typeOfProperty__s_properties;
   }
 
-  v6 = [v4 objectForKey:a3];
+  v6 = [v4 objectForKey:property];
   if (v6)
   {
     LOWORD(v6) = [v6 intValue];
@@ -1248,7 +1248,7 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)setParticleGeometries:(id)a3
+- (void)setParticleGeometries:(id)geometries
 {
   if (*(self + 16))
   {
@@ -1259,12 +1259,12 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_particleGeometries != a3)
+  else if (self->_particleGeometries != geometries)
   {
-    self->_particleGeometries = a3;
-    v4 = [(SCNParticleSystem *)self sceneRef];
+    self->_particleGeometries = geometries;
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
 
-    [SCNTransaction postCommandWithContext:v4 object:self applyBlock:&__block_literal_global_71];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:&__block_literal_global_71];
   }
 }
 
@@ -1305,14 +1305,14 @@ void __38__SCNParticleSystem_removeAllBindings__block_invoke(uint64_t a1)
     {
 
       self->_colliderNodes = [(NSArray *)colliderNodes copy];
-      v6 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __38__SCNParticleSystem_setColliderNodes___block_invoke;
       v8[3] = &unk_2782FC950;
       v8[4] = colliderNodes;
       v8[5] = self;
-      [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
     }
   }
 }
@@ -1356,14 +1356,14 @@ void __38__SCNParticleSystem_setColliderNodes___block_invoke_2(uint64_t a1, void
   {
 
     self->_propertyControllers = [(NSDictionary *)propertyControllers copy];
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __44__SCNParticleSystem_setPropertyControllers___block_invoke;
     v7[3] = &unk_2782FC950;
     v7[4] = propertyControllers;
     v7[5] = self;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -1522,16 +1522,16 @@ LABEL_32:
   C3DParticleSystemSetProperyControllers(*(*(a1 + 40) + 8), cf);
 }
 
-- (void)_updateParticleC3DImage:(id)a3
+- (void)_updateParticleC3DImage:(id)image
 {
-  v5 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__SCNParticleSystem__updateParticleC3DImage___block_invoke;
   v6[3] = &unk_2782FC950;
-  v6[4] = a3;
+  v6[4] = image;
   v6[5] = self;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __45__SCNParticleSystem__updateParticleC3DImage___block_invoke(uint64_t a1)
@@ -1580,7 +1580,7 @@ void __45__SCNParticleSystem__updateParticleC3DImage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setParticleImagePath:(id)a3 withResolvedPath:(id)a4
+- (void)_setParticleImagePath:(id)path withResolvedPath:(id)resolvedPath
 {
   if (*(self + 16))
   {
@@ -1594,9 +1594,9 @@ void __45__SCNParticleSystem__updateParticleC3DImage___block_invoke(uint64_t a1)
   else
   {
 
-    self->_particleImage = a3;
+    self->_particleImage = path;
 
-    [(SCNParticleSystem *)self _updateParticleC3DImage:a4];
+    [(SCNParticleSystem *)self _updateParticleC3DImage:resolvedPath];
   }
 }
 
@@ -1604,11 +1604,11 @@ void __45__SCNParticleSystem__updateParticleC3DImage___block_invoke(uint64_t a1)
 {
   if (*(self + 16))
   {
-    v5 = [(SCNParticleSystem *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     OrientationDirection = C3DParticleSystemGetOrientationDirection(self->_particleSystem);
@@ -1656,7 +1656,7 @@ void __45__SCNParticleSystem__updateParticleC3DImage___block_invoke(uint64_t a1)
       self->_orientationDirection.x = x;
       self->_orientationDirection.y = y;
       self->_orientationDirection.z = z;
-      v7 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __45__SCNParticleSystem_setOrientationDirection___block_invoke;
@@ -1665,7 +1665,7 @@ void __45__SCNParticleSystem__updateParticleC3DImage___block_invoke(uint64_t a1)
       v10 = x;
       v11 = y;
       v12 = z;
-      [SCNTransaction postCommandWithContext:v7 object:self key:@"orientationDirection" applyBlock:v9];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"orientationDirection" applyBlock:v9];
     }
   }
 }
@@ -1684,20 +1684,20 @@ void __45__SCNParticleSystem_setOrientationDirection___block_invoke(uint64_t a1,
     return self->_lightEmissionRadiusFactor;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetLightEmissionRadiusFactor(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   LightEmissionRadiusFactor = C3DParticleSystemGetLightEmissionRadiusFactor(self->_particleSystem);
   C3DSceneUnlock(v5);
   return LightEmissionRadiusFactor;
 }
 
-- (void)setLightEmissionRadiusFactor:(double)a3
+- (void)setLightEmissionRadiusFactor:(double)factor
 {
   if (*(self + 16))
   {
@@ -1708,17 +1708,17 @@ void __45__SCNParticleSystem_setOrientationDirection___block_invoke(uint64_t a1,
     }
   }
 
-  else if (self->_lightEmissionRadiusFactor != a3)
+  else if (self->_lightEmissionRadiusFactor != factor)
   {
-    self->_lightEmissionRadiusFactor = a3;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    self->_lightEmissionRadiusFactor = factor;
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    *&v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"fixedTimeStep" applyBlock:v7];
+    *&v7[5] = factor;
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"fixedTimeStep" applyBlock:v7];
   }
 }
 
@@ -1733,11 +1733,11 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
 {
   if (*(self + 16))
   {
-    v5 = [(SCNParticleSystem *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     Acceleration = C3DParticleSystemGetAcceleration(self->_particleSystem);
@@ -1771,11 +1771,11 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
     return self->_affectedByGravity;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     AffectedByGravity = C3DParticleSystemGetAffectedByGravity(self->_particleSystem);
     C3DSceneUnlock(v5);
     return AffectedByGravity;
@@ -1803,14 +1803,14 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
   else if (self->_affectedByGravity != affectedByGravity)
   {
     self->_affectedByGravity = affectedByGravity;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __42__SCNParticleSystem_setAffectedByGravity___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
     v8 = affectedByGravity;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"affectedByGravity" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"affectedByGravity" applyBlock:v7];
   }
 }
 
@@ -1821,11 +1821,11 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
     return self->_affectedByPhysicsFields;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     AffectedByPhysicsFields = C3DParticleSystemGetAffectedByPhysicsFields(self->_particleSystem);
     C3DSceneUnlock(v5);
     return AffectedByPhysicsFields;
@@ -1853,14 +1853,14 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
   else if (self->_affectedByPhysicsFields != affectedByPhysicsFields)
   {
     self->_affectedByPhysicsFields = affectedByPhysicsFields;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__SCNParticleSystem_setAffectedByPhysicsFields___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
     v8 = affectedByPhysicsFields;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -1871,14 +1871,14 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
     return self->_birthDirection;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetBirthDirection(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   BirthDirection = C3DParticleSystemGetBirthDirection(self->_particleSystem);
   C3DSceneUnlock(v5);
   return BirthDirection;
@@ -1898,14 +1898,14 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
   else if (self->_birthDirection != birthDirection)
   {
     self->_birthDirection = birthDirection;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __39__SCNParticleSystem_setBirthDirection___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = birthDirection;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -1916,14 +1916,14 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
     return self->_birthLocation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetBirthLocation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   BirthLocation = C3DParticleSystemGetBirthLocation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return BirthLocation;
@@ -1943,14 +1943,14 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
   else if (self->_birthLocation != birthLocation)
   {
     self->_birthLocation = birthLocation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__SCNParticleSystem_setBirthLocation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = birthLocation;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -1961,14 +1961,14 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
     return self->_birthRate;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetBirthRate(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   BirthRate = C3DParticleSystemGetBirthRate(self->_particleSystem);
   C3DSceneUnlock(v5);
   return BirthRate;
@@ -1988,14 +1988,14 @@ float __50__SCNParticleSystem_setLightEmissionRadiusFactor___block_invoke(uint64
   else if (self->_birthRate != birthRate)
   {
     self->_birthRate = birthRate;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __34__SCNParticleSystem_setBirthRate___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = birthRate;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"birthRate" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"birthRate" applyBlock:v7];
   }
 }
 
@@ -2013,14 +2013,14 @@ float __34__SCNParticleSystem_setBirthRate___block_invoke(uint64_t a1)
     return self->_birthRateVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetBirthRateVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   BirthRateVariation = C3DParticleSystemGetBirthRateVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return BirthRateVariation;
@@ -2040,14 +2040,14 @@ float __34__SCNParticleSystem_setBirthRate___block_invoke(uint64_t a1)
   else if (self->_birthRateVariation != birthRateVariation)
   {
     self->_birthRateVariation = birthRateVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __43__SCNParticleSystem_setBirthRateVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = birthRateVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"birthRateVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"birthRateVariation" applyBlock:v7];
   }
 }
 
@@ -2065,11 +2065,11 @@ float __43__SCNParticleSystem_setBirthRateVariation___block_invoke(uint64_t a1)
     return self->_blackPassEnabled;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     BlackPassEnabled = C3DParticleSystemGetBlackPassEnabled(self->_particleSystem);
     C3DSceneUnlock(v5);
     return BlackPassEnabled;
@@ -2097,14 +2097,14 @@ float __43__SCNParticleSystem_setBirthRateVariation___block_invoke(uint64_t a1)
   else if (self->_blackPassEnabled != blackPassEnabled)
   {
     self->_blackPassEnabled = blackPassEnabled;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__SCNParticleSystem_setBlackPassEnabled___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
     v8 = blackPassEnabled;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -2115,14 +2115,14 @@ float __43__SCNParticleSystem_setBirthRateVariation___block_invoke(uint64_t a1)
     return self->_blendMode;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetBlendMode(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   BlendMode = C3DParticleSystemGetBlendMode(self->_particleSystem);
   C3DSceneUnlock(v5);
   return BlendMode;
@@ -2142,14 +2142,14 @@ float __43__SCNParticleSystem_setBirthRateVariation___block_invoke(uint64_t a1)
   else if (self->_blendMode != blendMode)
   {
     self->_blendMode = blendMode;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __34__SCNParticleSystem_setBlendMode___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = blendMode;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -2160,14 +2160,14 @@ float __43__SCNParticleSystem_setBirthRateVariation___block_invoke(uint64_t a1)
     return self->_dampingFactor;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetDampingFactor(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   DampingFactor = C3DParticleSystemGetDampingFactor(self->_particleSystem);
   C3DSceneUnlock(v5);
   return DampingFactor;
@@ -2187,14 +2187,14 @@ float __43__SCNParticleSystem_setBirthRateVariation___block_invoke(uint64_t a1)
   else if (self->_dampingFactor != dampingFactor)
   {
     self->_dampingFactor = dampingFactor;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__SCNParticleSystem_setDampingFactor___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = dampingFactor;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"dampingFactor" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"dampingFactor" applyBlock:v7];
   }
 }
 
@@ -2212,14 +2212,14 @@ float __38__SCNParticleSystem_setDampingFactor___block_invoke(uint64_t a1)
     return self->_emissionDuration;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetEmissionDuration(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   EmissionDuration = C3DParticleSystemGetEmissionDuration(self->_particleSystem);
   C3DSceneUnlock(v5);
   return EmissionDuration;
@@ -2239,14 +2239,14 @@ float __38__SCNParticleSystem_setDampingFactor___block_invoke(uint64_t a1)
   else if (self->_emissionDuration != emissionDuration)
   {
     self->_emissionDuration = emissionDuration;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__SCNParticleSystem_setEmissionDuration___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = emissionDuration;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"emissionDuration" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"emissionDuration" applyBlock:v7];
   }
 }
 
@@ -2264,14 +2264,14 @@ float __41__SCNParticleSystem_setEmissionDuration___block_invoke(uint64_t a1)
     return self->_emissionDurationVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetEmissionDurationVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   EmissionDurationVariation = C3DParticleSystemGetEmissionDurationVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return EmissionDurationVariation;
@@ -2291,14 +2291,14 @@ float __41__SCNParticleSystem_setEmissionDuration___block_invoke(uint64_t a1)
   else if (self->_emissionDurationVariation != emissionDurationVariation)
   {
     self->_emissionDurationVariation = emissionDurationVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__SCNParticleSystem_setEmissionDurationVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = emissionDurationVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"emissionDurationVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"emissionDurationVariation" applyBlock:v7];
   }
 }
 
@@ -2313,11 +2313,11 @@ float __50__SCNParticleSystem_setEmissionDurationVariation___block_invoke(uint64
 {
   if (*(self + 16))
   {
-    v4 = [(SCNParticleSystem *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     EmitterShape = C3DParticleSystemGetEmitterShape(self->_particleSystem);
@@ -2364,14 +2364,14 @@ float __50__SCNParticleSystem_setEmissionDurationVariation___block_invoke(uint64
     {
 
       self->_emitterShape = emitterShape;
-      v6 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __37__SCNParticleSystem_setEmitterShape___block_invoke;
       v8[3] = &unk_2782FC950;
       v8[4] = self;
       v8[5] = emitterShape;
-      [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
     }
   }
 }
@@ -2388,11 +2388,11 @@ CFTypeRef __37__SCNParticleSystem_setEmitterShape___block_invoke(uint64_t a1)
 {
   if (*(self + 16))
   {
-    v5 = [(SCNParticleSystem *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     EmittingDirection = C3DParticleSystemGetEmittingDirection(self->_particleSystem);
@@ -2426,20 +2426,20 @@ CFTypeRef __37__SCNParticleSystem_setEmitterShape___block_invoke(uint64_t a1)
     return self->_fixedTimeStep;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetFixedTimeStep(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   FixedTimeStep = C3DParticleSystemGetFixedTimeStep(self->_particleSystem);
   C3DSceneUnlock(v5);
   return FixedTimeStep;
 }
 
-- (void)setFixedTimeStep:(double)a3
+- (void)setFixedTimeStep:(double)step
 {
   if (*(self + 16))
   {
@@ -2450,17 +2450,17 @@ CFTypeRef __37__SCNParticleSystem_setEmitterShape___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_fixedTimeStep != a3)
+  else if (self->_fixedTimeStep != step)
   {
-    self->_fixedTimeStep = a3;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    self->_fixedTimeStep = step;
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__SCNParticleSystem_setFixedTimeStep___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    *&v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"fixedTimeStep" applyBlock:v7];
+    *&v7[5] = step;
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"fixedTimeStep" applyBlock:v7];
   }
 }
 
@@ -2478,14 +2478,14 @@ float __38__SCNParticleSystem_setFixedTimeStep___block_invoke(uint64_t a1)
     return self->_fresnelExponent;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetFresnelExponent(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   FresnelExponent = C3DParticleSystemGetFresnelExponent(self->_particleSystem);
   C3DSceneUnlock(v5);
   return FresnelExponent;
@@ -2505,14 +2505,14 @@ float __38__SCNParticleSystem_setFixedTimeStep___block_invoke(uint64_t a1)
   else if (self->_fresnelExponent != fresnelExponent)
   {
     self->_fresnelExponent = fresnelExponent;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40__SCNParticleSystem_setFresnelExponent___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = fresnelExponent;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"fresnelExponent" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"fresnelExponent" applyBlock:v7];
   }
 }
 
@@ -2530,14 +2530,14 @@ float __40__SCNParticleSystem_setFresnelExponent___block_invoke(uint64_t a1)
     return self->_idleDuration;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetIdleDuration(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   IdleDuration = C3DParticleSystemGetIdleDuration(self->_particleSystem);
   C3DSceneUnlock(v5);
   return IdleDuration;
@@ -2557,14 +2557,14 @@ float __40__SCNParticleSystem_setFresnelExponent___block_invoke(uint64_t a1)
   else if (self->_idleDuration != idleDuration)
   {
     self->_idleDuration = idleDuration;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__SCNParticleSystem_setIdleDuration___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = idleDuration;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"idleDuration" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"idleDuration" applyBlock:v7];
   }
 }
 
@@ -2582,14 +2582,14 @@ float __37__SCNParticleSystem_setIdleDuration___block_invoke(uint64_t a1)
     return self->_idleDurationVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetIdleDurationVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   IdleDurationVariation = C3DParticleSystemGetIdleDurationVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return IdleDurationVariation;
@@ -2609,14 +2609,14 @@ float __37__SCNParticleSystem_setIdleDuration___block_invoke(uint64_t a1)
   else if (self->_idleDurationVariation != idleDurationVariation)
   {
     self->_idleDurationVariation = idleDurationVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__SCNParticleSystem_setIdleDurationVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = idleDurationVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"idleDurationVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"idleDurationVariation" applyBlock:v7];
   }
 }
 
@@ -2634,14 +2634,14 @@ float __46__SCNParticleSystem_setIdleDurationVariation___block_invoke(uint64_t a
     return self->_imageSequenceAnimationMode;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetImageSequenceAnimationMode(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ImageSequenceAnimationMode = C3DParticleSystemGetImageSequenceAnimationMode(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ImageSequenceAnimationMode;
@@ -2661,14 +2661,14 @@ float __46__SCNParticleSystem_setIdleDurationVariation___block_invoke(uint64_t a
   else if (self->_imageSequenceAnimationMode != imageSequenceAnimationMode)
   {
     self->_imageSequenceAnimationMode = imageSequenceAnimationMode;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __51__SCNParticleSystem_setImageSequenceAnimationMode___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = imageSequenceAnimationMode;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -2679,14 +2679,14 @@ float __46__SCNParticleSystem_setIdleDurationVariation___block_invoke(uint64_t a
     return self->_imageSequenceColumnCount;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetImageSequenceColumnCount(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ImageSequenceColumnCount = C3DParticleSystemGetImageSequenceColumnCount(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ImageSequenceColumnCount;
@@ -2706,14 +2706,14 @@ float __46__SCNParticleSystem_setIdleDurationVariation___block_invoke(uint64_t a
   else if (self->_imageSequenceColumnCount != imageSequenceColumnCount)
   {
     self->_imageSequenceColumnCount = imageSequenceColumnCount;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __49__SCNParticleSystem_setImageSequenceColumnCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = imageSequenceColumnCount;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"imageSequenceColumnCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"imageSequenceColumnCount" applyBlock:v7];
   }
 }
 
@@ -2724,14 +2724,14 @@ float __46__SCNParticleSystem_setIdleDurationVariation___block_invoke(uint64_t a
     return self->_imageSequenceFrameRate;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetImageSequenceFrameRate(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ImageSequenceFrameRate = C3DParticleSystemGetImageSequenceFrameRate(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ImageSequenceFrameRate;
@@ -2751,14 +2751,14 @@ float __46__SCNParticleSystem_setIdleDurationVariation___block_invoke(uint64_t a
   else if (self->_imageSequenceFrameRate != imageSequenceFrameRate)
   {
     self->_imageSequenceFrameRate = imageSequenceFrameRate;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __47__SCNParticleSystem_setImageSequenceFrameRate___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = imageSequenceFrameRate;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"imageSequenceFrameRate" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"imageSequenceFrameRate" applyBlock:v7];
   }
 }
 
@@ -2776,14 +2776,14 @@ float __47__SCNParticleSystem_setImageSequenceFrameRate___block_invoke(uint64_t 
     return self->_imageSequenceFrameRateVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetImageSequenceFrameRateVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ImageSequenceFrameRateVariation = C3DParticleSystemGetImageSequenceFrameRateVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ImageSequenceFrameRateVariation;
@@ -2803,14 +2803,14 @@ float __47__SCNParticleSystem_setImageSequenceFrameRate___block_invoke(uint64_t 
   else if (self->_imageSequenceFrameRateVariation != imageSequenceFrameRateVariation)
   {
     self->_imageSequenceFrameRateVariation = imageSequenceFrameRateVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __56__SCNParticleSystem_setImageSequenceFrameRateVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = imageSequenceFrameRateVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"imageSequenceFrameRateVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"imageSequenceFrameRateVariation" applyBlock:v7];
   }
 }
 
@@ -2828,14 +2828,14 @@ float __56__SCNParticleSystem_setImageSequenceFrameRateVariation___block_invoke(
     return self->_imageSequenceInitialFrame;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetImageSequenceInitialFrame(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ImageSequenceInitialFrame = C3DParticleSystemGetImageSequenceInitialFrame(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ImageSequenceInitialFrame;
@@ -2855,14 +2855,14 @@ float __56__SCNParticleSystem_setImageSequenceFrameRateVariation___block_invoke(
   else if (self->_imageSequenceInitialFrame != imageSequenceInitialFrame)
   {
     self->_imageSequenceInitialFrame = imageSequenceInitialFrame;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__SCNParticleSystem_setImageSequenceInitialFrame___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = imageSequenceInitialFrame;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"imageSequenceInitialFrame" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"imageSequenceInitialFrame" applyBlock:v7];
   }
 }
 
@@ -2880,14 +2880,14 @@ float __50__SCNParticleSystem_setImageSequenceInitialFrame___block_invoke(uint64
     return self->_imageSequenceInitialFrameVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetImageSequenceInitialFrameVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ImageSequenceInitialFrameVariation = C3DParticleSystemGetImageSequenceInitialFrameVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ImageSequenceInitialFrameVariation;
@@ -2907,14 +2907,14 @@ float __50__SCNParticleSystem_setImageSequenceInitialFrame___block_invoke(uint64
   else if (self->_imageSequenceInitialFrameVariation != imageSequenceInitialFrameVariation)
   {
     self->_imageSequenceInitialFrameVariation = imageSequenceInitialFrameVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = imageSequenceInitialFrameVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"imageSequenceInitialFrameVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"imageSequenceInitialFrameVariation" applyBlock:v7];
   }
 }
 
@@ -2932,14 +2932,14 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
     return self->_imageSequenceRowCount;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetImageSequenceRowCount(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ImageSequenceRowCount = C3DParticleSystemGetImageSequenceRowCount(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ImageSequenceRowCount;
@@ -2959,14 +2959,14 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
   else if (self->_imageSequenceRowCount != imageSequenceRowCount)
   {
     self->_imageSequenceRowCount = imageSequenceRowCount;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__SCNParticleSystem_setImageSequenceRowCount___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = imageSequenceRowCount;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"imageSequenceRowCount" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"imageSequenceRowCount" applyBlock:v7];
   }
 }
 
@@ -2977,11 +2977,11 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
     return self->_isLocal;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     IsLocal = C3DParticleSystemGetIsLocal(self->_particleSystem);
     C3DSceneUnlock(v5);
     return IsLocal;
@@ -2995,7 +2995,7 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
   }
 }
 
-- (void)setIsLocal:(BOOL)a3
+- (void)setIsLocal:(BOOL)local
 {
   if (*(self + 16))
   {
@@ -3006,17 +3006,17 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
     }
   }
 
-  else if (self->_isLocal != a3)
+  else if (self->_isLocal != local)
   {
-    self->_isLocal = a3;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    self->_isLocal = local;
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __32__SCNParticleSystem_setIsLocal___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
-    v8 = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"isLocal" applyBlock:v7];
+    localCopy = local;
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"isLocal" applyBlock:v7];
   }
 }
 
@@ -3027,11 +3027,11 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
     return self->_lightingEnabled;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     LightingEnabled = C3DParticleSystemGetLightingEnabled(self->_particleSystem);
     C3DSceneUnlock(v5);
     return LightingEnabled;
@@ -3059,14 +3059,14 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
   else if (self->_lightingEnabled != lightingEnabled)
   {
     self->_lightingEnabled = lightingEnabled;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40__SCNParticleSystem_setLightingEnabled___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
     v8 = lightingEnabled;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -3077,11 +3077,11 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
     return self->_loops;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     Loops = C3DParticleSystemGetLoops(self->_particleSystem);
     C3DSceneUnlock(v5);
     return Loops;
@@ -3109,14 +3109,14 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
   else if (self->_loops != loops)
   {
     self->_loops = loops;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __30__SCNParticleSystem_setLoops___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
     v8 = loops;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"loops" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"loops" applyBlock:v7];
   }
 }
 
@@ -3127,14 +3127,14 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
     return self->_orientationMode;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetOrientationMode(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   OrientationMode = C3DParticleSystemGetOrientationMode(self->_particleSystem);
   C3DSceneUnlock(v5);
   return OrientationMode;
@@ -3154,14 +3154,14 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
   else if (self->_orientationMode != orientationMode)
   {
     self->_orientationMode = orientationMode;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40__SCNParticleSystem_setOrientationMode___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = orientationMode;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -3172,14 +3172,14 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
     return self->_particleAngle;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleAngle(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleAngle = C3DParticleSystemGetParticleAngle(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleAngle;
@@ -3199,14 +3199,14 @@ float __59__SCNParticleSystem_setImageSequenceInitialFrameVariation___block_invo
   else if (self->_particleAngle != particleAngle)
   {
     self->_particleAngle = particleAngle;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__SCNParticleSystem_setParticleAngle___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleAngle;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleAngle" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleAngle" applyBlock:v7];
   }
 }
 
@@ -3224,14 +3224,14 @@ float __38__SCNParticleSystem_setParticleAngle___block_invoke(uint64_t a1)
     return self->_particleAngleVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleAngleVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleAngleVariation = C3DParticleSystemGetParticleAngleVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleAngleVariation;
@@ -3251,14 +3251,14 @@ float __38__SCNParticleSystem_setParticleAngle___block_invoke(uint64_t a1)
   else if (self->_particleAngleVariation != particleAngleVariation)
   {
     self->_particleAngleVariation = particleAngleVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __47__SCNParticleSystem_setParticleAngleVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleAngleVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleAngleVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleAngleVariation" applyBlock:v7];
   }
 }
 
@@ -3276,14 +3276,14 @@ float __47__SCNParticleSystem_setParticleAngleVariation___block_invoke(uint64_t 
     return self->_particleAngularVelocity;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleAngularVelocity(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleAngularVelocity = C3DParticleSystemGetParticleAngularVelocity(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleAngularVelocity;
@@ -3303,14 +3303,14 @@ float __47__SCNParticleSystem_setParticleAngleVariation___block_invoke(uint64_t 
   else if (self->_particleAngularVelocity != particleAngularVelocity)
   {
     self->_particleAngularVelocity = particleAngularVelocity;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__SCNParticleSystem_setParticleAngularVelocity___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleAngularVelocity;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleAngularVelocity" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleAngularVelocity" applyBlock:v7];
   }
 }
 
@@ -3328,14 +3328,14 @@ float __48__SCNParticleSystem_setParticleAngularVelocity___block_invoke(uint64_t
     return self->_particleAngularVelocityVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleAngularVelocityVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleAngularVelocityVariation = C3DParticleSystemGetParticleAngularVelocityVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleAngularVelocityVariation;
@@ -3355,14 +3355,14 @@ float __48__SCNParticleSystem_setParticleAngularVelocity___block_invoke(uint64_t
   else if (self->_particleAngularVelocityVariation != particleAngularVelocityVariation)
   {
     self->_particleAngularVelocityVariation = particleAngularVelocityVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __57__SCNParticleSystem_setParticleAngularVelocityVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleAngularVelocityVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleAngularVelocityVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleAngularVelocityVariation" applyBlock:v7];
   }
 }
 
@@ -3380,14 +3380,14 @@ float __57__SCNParticleSystem_setParticleAngularVelocityVariation___block_invoke
     return self->_particleBounce;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleBounce(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleBounce = C3DParticleSystemGetParticleBounce(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleBounce;
@@ -3407,14 +3407,14 @@ float __57__SCNParticleSystem_setParticleAngularVelocityVariation___block_invoke
   else if (self->_particleBounce != particleBounce)
   {
     self->_particleBounce = particleBounce;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __39__SCNParticleSystem_setParticleBounce___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleBounce;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleBounce" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleBounce" applyBlock:v7];
   }
 }
 
@@ -3432,14 +3432,14 @@ float __39__SCNParticleSystem_setParticleBounce___block_invoke(uint64_t a1)
     return self->_particleBounceVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleBounceVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleBounceVariation = C3DParticleSystemGetParticleBounceVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleBounceVariation;
@@ -3459,14 +3459,14 @@ float __39__SCNParticleSystem_setParticleBounce___block_invoke(uint64_t a1)
   else if (self->_particleBounceVariation != particleBounceVariation)
   {
     self->_particleBounceVariation = particleBounceVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__SCNParticleSystem_setParticleBounceVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleBounceVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleBounceVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleBounceVariation" applyBlock:v7];
   }
 }
 
@@ -3484,14 +3484,14 @@ float __48__SCNParticleSystem_setParticleBounceVariation___block_invoke(uint64_t
     return self->_particleCharge;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleCharge(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleCharge = C3DParticleSystemGetParticleCharge(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleCharge;
@@ -3511,14 +3511,14 @@ float __48__SCNParticleSystem_setParticleBounceVariation___block_invoke(uint64_t
   else if (self->_particleCharge != particleCharge)
   {
     self->_particleCharge = particleCharge;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __39__SCNParticleSystem_setParticleCharge___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleCharge;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleCharge" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleCharge" applyBlock:v7];
   }
 }
 
@@ -3536,14 +3536,14 @@ float __39__SCNParticleSystem_setParticleCharge___block_invoke(uint64_t a1)
     return self->_particleChargeVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleChargeVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleChargeVariation = C3DParticleSystemGetParticleChargeVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleChargeVariation;
@@ -3563,14 +3563,14 @@ float __39__SCNParticleSystem_setParticleCharge___block_invoke(uint64_t a1)
   else if (self->_particleChargeVariation != particleChargeVariation)
   {
     self->_particleChargeVariation = particleChargeVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__SCNParticleSystem_setParticleChargeVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleChargeVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleChargeVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleChargeVariation" applyBlock:v7];
   }
 }
 
@@ -3585,11 +3585,11 @@ float __48__SCNParticleSystem_setParticleChargeVariation___block_invoke(uint64_t
 {
   if (*(self + 16))
   {
-    v4 = [(SCNParticleSystem *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     ParticleColor = C3DParticleSystemGetParticleColor(self->_particleSystem);
@@ -3628,14 +3628,14 @@ float __48__SCNParticleSystem_setParticleChargeVariation___block_invoke(uint64_t
     {
 
       self->_particleColor = [(UIColor *)particleColor copy];
-      v6 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __38__SCNParticleSystem_setParticleColor___block_invoke;
       v8[3] = &unk_2782FC950;
       v8[4] = particleColor;
       v8[5] = self;
-      [SCNTransaction postCommandWithContext:v6 object:self key:@"particleColor" applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleColor" applyBlock:v8];
     }
   }
 }
@@ -3652,11 +3652,11 @@ double __38__SCNParticleSystem_setParticleColor___block_invoke(uint64_t a1)
 {
   if (*(self + 16))
   {
-    v4 = [(SCNParticleSystem *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     ParticleColorVariation = C3DParticleSystemGetParticleColorVariation(self->_particleSystem);
@@ -3690,11 +3690,11 @@ double __38__SCNParticleSystem_setParticleColor___block_invoke(uint64_t a1)
     return self->_particleDiesOnCollision;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     ParticleDiesOnCollision = C3DParticleSystemGetParticleDiesOnCollision(self->_particleSystem);
     C3DSceneUnlock(v5);
     return ParticleDiesOnCollision;
@@ -3722,14 +3722,14 @@ double __38__SCNParticleSystem_setParticleColor___block_invoke(uint64_t a1)
   else if (self->_particleDiesOnCollision != particleDiesOnCollision)
   {
     self->_particleDiesOnCollision = particleDiesOnCollision;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__SCNParticleSystem_setParticleDiesOnCollision___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
     v8 = particleDiesOnCollision;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -3740,14 +3740,14 @@ double __38__SCNParticleSystem_setParticleColor___block_invoke(uint64_t a1)
     return self->_particleFriction;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleFriction(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleFriction = C3DParticleSystemGetParticleFriction(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleFriction;
@@ -3767,14 +3767,14 @@ double __38__SCNParticleSystem_setParticleColor___block_invoke(uint64_t a1)
   else if (self->_particleFriction != particleFriction)
   {
     self->_particleFriction = particleFriction;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__SCNParticleSystem_setParticleFriction___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleFriction;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleFriction" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleFriction" applyBlock:v7];
   }
 }
 
@@ -3792,14 +3792,14 @@ float __41__SCNParticleSystem_setParticleFriction___block_invoke(uint64_t a1)
     return self->_particleFrictionVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleFrictionVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleFrictionVariation = C3DParticleSystemGetParticleFrictionVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleFrictionVariation;
@@ -3819,14 +3819,14 @@ float __41__SCNParticleSystem_setParticleFriction___block_invoke(uint64_t a1)
   else if (self->_particleFrictionVariation != particleFrictionVariation)
   {
     self->_particleFrictionVariation = particleFrictionVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__SCNParticleSystem_setParticleFrictionVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleFrictionVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleFrictionVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleFrictionVariation" applyBlock:v7];
   }
 }
 
@@ -3844,14 +3844,14 @@ float __50__SCNParticleSystem_setParticleFrictionVariation___block_invoke(uint64
     return self->_particleLifeSpan;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleLifeSpan(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleLifeSpan = C3DParticleSystemGetParticleLifeSpan(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleLifeSpan;
@@ -3871,14 +3871,14 @@ float __50__SCNParticleSystem_setParticleFrictionVariation___block_invoke(uint64
   else if (self->_particleLifeSpan != particleLifeSpan)
   {
     self->_particleLifeSpan = particleLifeSpan;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__SCNParticleSystem_setParticleLifeSpan___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleLifeSpan;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleLifeSpan" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleLifeSpan" applyBlock:v7];
   }
 }
 
@@ -3896,14 +3896,14 @@ float __41__SCNParticleSystem_setParticleLifeSpan___block_invoke(uint64_t a1)
     return self->_particleLifeSpanVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleLifeSpanVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleLifeSpanVariation = C3DParticleSystemGetParticleLifeSpanVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleLifeSpanVariation;
@@ -3923,14 +3923,14 @@ float __41__SCNParticleSystem_setParticleLifeSpan___block_invoke(uint64_t a1)
   else if (self->_particleLifeSpanVariation != particleLifeSpanVariation)
   {
     self->_particleLifeSpanVariation = particleLifeSpanVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__SCNParticleSystem_setParticleLifeSpanVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleLifeSpanVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleLifeSpanVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleLifeSpanVariation" applyBlock:v7];
   }
 }
 
@@ -3948,14 +3948,14 @@ float __50__SCNParticleSystem_setParticleLifeSpanVariation___block_invoke(uint64
     return self->_particleMass;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleMass(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleMass = C3DParticleSystemGetParticleMass(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleMass;
@@ -3975,14 +3975,14 @@ float __50__SCNParticleSystem_setParticleLifeSpanVariation___block_invoke(uint64
   else if (self->_particleMass != particleMass)
   {
     self->_particleMass = particleMass;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__SCNParticleSystem_setParticleMass___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleMass;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleMass" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleMass" applyBlock:v7];
   }
 }
 
@@ -4000,14 +4000,14 @@ float __37__SCNParticleSystem_setParticleMass___block_invoke(uint64_t a1)
     return self->_particleMassVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleMassVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleMassVariation = C3DParticleSystemGetParticleMassVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleMassVariation;
@@ -4027,14 +4027,14 @@ float __37__SCNParticleSystem_setParticleMass___block_invoke(uint64_t a1)
   else if (self->_particleMassVariation != particleMassVariation)
   {
     self->_particleMassVariation = particleMassVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__SCNParticleSystem_setParticleMassVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleMassVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleMassVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleMassVariation" applyBlock:v7];
   }
 }
 
@@ -4052,14 +4052,14 @@ float __46__SCNParticleSystem_setParticleMassVariation___block_invoke(uint64_t a
     return self->_particleSize;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleSize(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleSize = C3DParticleSystemGetParticleSize(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleSize;
@@ -4079,14 +4079,14 @@ float __46__SCNParticleSystem_setParticleMassVariation___block_invoke(uint64_t a
   else if (self->_particleSize != particleSize)
   {
     self->_particleSize = particleSize;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __37__SCNParticleSystem_setParticleSize___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleSize;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleSize" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleSize" applyBlock:v7];
   }
 }
 
@@ -4104,14 +4104,14 @@ float __37__SCNParticleSystem_setParticleSize___block_invoke(uint64_t a1)
     return self->_particleSizeVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleSizeVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleSizeVariation = C3DParticleSystemGetParticleSizeVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleSizeVariation;
@@ -4131,14 +4131,14 @@ float __37__SCNParticleSystem_setParticleSize___block_invoke(uint64_t a1)
   else if (self->_particleSizeVariation != particleSizeVariation)
   {
     self->_particleSizeVariation = particleSizeVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__SCNParticleSystem_setParticleSizeVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleSizeVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleSizeVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleSizeVariation" applyBlock:v7];
   }
 }
 
@@ -4156,14 +4156,14 @@ float __46__SCNParticleSystem_setParticleSizeVariation___block_invoke(uint64_t a
     return self->_particleVelocity;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleVelocity(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleVelocity = C3DParticleSystemGetParticleVelocity(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleVelocity;
@@ -4183,14 +4183,14 @@ float __46__SCNParticleSystem_setParticleSizeVariation___block_invoke(uint64_t a
   else if (self->_particleVelocity != particleVelocity)
   {
     self->_particleVelocity = particleVelocity;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__SCNParticleSystem_setParticleVelocity___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleVelocity;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleVelocity" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleVelocity" applyBlock:v7];
   }
 }
 
@@ -4208,14 +4208,14 @@ float __41__SCNParticleSystem_setParticleVelocity___block_invoke(uint64_t a1)
     return self->_particleVelocityVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleVelocityVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleVelocityVariation = C3DParticleSystemGetParticleVelocityVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleVelocityVariation;
@@ -4235,14 +4235,14 @@ float __41__SCNParticleSystem_setParticleVelocity___block_invoke(uint64_t a1)
   else if (self->_particleVelocityVariation != particleVelocityVariation)
   {
     self->_particleVelocityVariation = particleVelocityVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleVelocityVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleVelocityVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleVelocityVariation" applyBlock:v7];
   }
 }
 
@@ -4260,11 +4260,11 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     return self->_physicsCollisionsEnabled;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     PhysicsCollisionsEnabled = C3DParticleSystemGetPhysicsCollisionsEnabled(self->_particleSystem);
     C3DSceneUnlock(v5);
     return PhysicsCollisionsEnabled;
@@ -4278,7 +4278,7 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
   }
 }
 
-- (void)setPhysicsCollisionsEnabled:(BOOL)a3
+- (void)setPhysicsCollisionsEnabled:(BOOL)enabled
 {
   if (*(self + 16))
   {
@@ -4289,17 +4289,17 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     }
   }
 
-  else if (self->_physicsCollisionsEnabled != a3)
+  else if (self->_physicsCollisionsEnabled != enabled)
   {
-    self->_physicsCollisionsEnabled = a3;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    self->_physicsCollisionsEnabled = enabled;
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __49__SCNParticleSystem_setPhysicsCollisionsEnabled___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
-    v8 = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    enabledCopy = enabled;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -4310,20 +4310,20 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     return self->_renderingMode;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetRenderingMode(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   RenderingMode = C3DParticleSystemGetRenderingMode(self->_particleSystem);
   C3DSceneUnlock(v5);
   return RenderingMode;
 }
 
-- (void)setRenderingMode:(int64_t)a3
+- (void)setRenderingMode:(int64_t)mode
 {
   if (*(self + 16))
   {
@@ -4334,17 +4334,17 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     }
   }
 
-  else if (self->_renderingMode != a3)
+  else if (self->_renderingMode != mode)
   {
-    self->_renderingMode = a3;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    self->_renderingMode = mode;
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__SCNParticleSystem_setRenderingMode___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    v7[5] = mode;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -4355,20 +4355,20 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     return self->_seed;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetSeed(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   Seed = C3DParticleSystemGetSeed(self->_particleSystem);
   C3DSceneUnlock(v5);
   return Seed;
 }
 
-- (void)setSeed:(int64_t)a3
+- (void)setSeed:(int64_t)seed
 {
   if (*(self + 16))
   {
@@ -4379,17 +4379,17 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     }
   }
 
-  else if (self->_seed != a3)
+  else if (self->_seed != seed)
   {
-    self->_seed = a3;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    self->_seed = seed;
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __29__SCNParticleSystem_setSeed___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    v7[5] = seed;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -4400,11 +4400,11 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     return self->_softParticlesEnabled;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     SoftParticlesEnabled = C3DParticleSystemGetSoftParticlesEnabled(self->_particleSystem);
     C3DSceneUnlock(v5);
     return SoftParticlesEnabled;
@@ -4418,7 +4418,7 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
   }
 }
 
-- (void)setSoftParticlesEnabled:(BOOL)a3
+- (void)setSoftParticlesEnabled:(BOOL)enabled
 {
   if (*(self + 16))
   {
@@ -4429,17 +4429,17 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     }
   }
 
-  else if (self->_softParticlesEnabled != a3)
+  else if (self->_softParticlesEnabled != enabled)
   {
-    self->_softParticlesEnabled = a3;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    self->_softParticlesEnabled = enabled;
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __45__SCNParticleSystem_setSoftParticlesEnabled___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
-    v8 = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    enabledCopy = enabled;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -4450,14 +4450,14 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     return self->_sortingMode;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetSortingMode(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   SortingMode = C3DParticleSystemGetSortingMode(self->_particleSystem);
   C3DSceneUnlock(v5);
   return SortingMode;
@@ -4477,14 +4477,14 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
   else if (self->_sortingMode != sortingMode)
   {
     self->_sortingMode = sortingMode;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__SCNParticleSystem_setSortingMode___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = sortingMode;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -4495,14 +4495,14 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
     return self->_speedFactor;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetSpeedFactor(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   SpeedFactor = C3DParticleSystemGetSpeedFactor(self->_particleSystem);
   C3DSceneUnlock(v5);
   return SpeedFactor;
@@ -4522,14 +4522,14 @@ float __50__SCNParticleSystem_setParticleVelocityVariation___block_invoke(uint64
   else if (self->_speedFactor != speedFactor)
   {
     self->_speedFactor = speedFactor;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__SCNParticleSystem_setSpeedFactor___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = speedFactor;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"speedFactor" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"speedFactor" applyBlock:v7];
   }
 }
 
@@ -4547,14 +4547,14 @@ float __36__SCNParticleSystem_setSpeedFactor___block_invoke(uint64_t a1)
     return self->_spreadingAngle;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetSpreadingAngle(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   SpreadingAngle = C3DParticleSystemGetSpreadingAngle(self->_particleSystem);
   C3DSceneUnlock(v5);
   return SpreadingAngle;
@@ -4574,14 +4574,14 @@ float __36__SCNParticleSystem_setSpeedFactor___block_invoke(uint64_t a1)
   else if (self->_spreadingAngle != spreadingAngle)
   {
     self->_spreadingAngle = spreadingAngle;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __39__SCNParticleSystem_setSpreadingAngle___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = spreadingAngle;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"spreadingAngle" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"spreadingAngle" applyBlock:v7];
   }
 }
 
@@ -4599,14 +4599,14 @@ float __39__SCNParticleSystem_setSpreadingAngle___block_invoke(uint64_t a1)
     return self->_stretchFactor;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetStretchFactor(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   StretchFactor = C3DParticleSystemGetStretchFactor(self->_particleSystem);
   C3DSceneUnlock(v5);
   return StretchFactor;
@@ -4626,14 +4626,14 @@ float __39__SCNParticleSystem_setSpreadingAngle___block_invoke(uint64_t a1)
   else if (self->_stretchFactor != stretchFactor)
   {
     self->_stretchFactor = stretchFactor;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__SCNParticleSystem_setStretchFactor___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = stretchFactor;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"stretchFactor" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"stretchFactor" applyBlock:v7];
   }
 }
 
@@ -4662,14 +4662,14 @@ float __38__SCNParticleSystem_setStretchFactor___block_invoke(uint64_t a1)
     {
 
       self->_systemSpawnedOnCollision = systemSpawnedOnCollision;
-      v6 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __49__SCNParticleSystem_setSystemSpawnedOnCollision___block_invoke;
       v8[3] = &unk_2782FC950;
       v8[4] = self;
       v8[5] = systemSpawnedOnCollision;
-      [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
     }
   }
 }
@@ -4700,14 +4700,14 @@ CFTypeRef __49__SCNParticleSystem_setSystemSpawnedOnCollision___block_invoke(uin
     {
 
       self->_systemSpawnedOnDying = systemSpawnedOnDying;
-      v6 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __45__SCNParticleSystem_setSystemSpawnedOnDying___block_invoke;
       v8[3] = &unk_2782FC950;
       v8[4] = self;
       v8[5] = systemSpawnedOnDying;
-      [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
     }
   }
 }
@@ -4738,14 +4738,14 @@ CFTypeRef __45__SCNParticleSystem_setSystemSpawnedOnDying___block_invoke(uint64_
     {
 
       self->_systemSpawnedOnLiving = systemSpawnedOnLiving;
-      v6 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __46__SCNParticleSystem_setSystemSpawnedOnLiving___block_invoke;
       v8[3] = &unk_2782FC950;
       v8[4] = self;
       v8[5] = systemSpawnedOnLiving;
-      [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
     }
   }
 }
@@ -4765,14 +4765,14 @@ CFTypeRef __46__SCNParticleSystem_setSystemSpawnedOnLiving___block_invoke(uint64
     return self->_warmupDuration;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetWarmupDuration(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   WarmupDuration = C3DParticleSystemGetWarmupDuration(self->_particleSystem);
   C3DSceneUnlock(v5);
   return WarmupDuration;
@@ -4792,14 +4792,14 @@ CFTypeRef __46__SCNParticleSystem_setSystemSpawnedOnLiving___block_invoke(uint64
   else if (self->_warmupDuration != warmupDuration)
   {
     self->_warmupDuration = warmupDuration;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __39__SCNParticleSystem_setWarmupDuration___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = warmupDuration;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"warmupDuration" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"warmupDuration" applyBlock:v7];
   }
 }
 
@@ -4817,11 +4817,11 @@ float __39__SCNParticleSystem_setWarmupDuration___block_invoke(uint64_t a1)
     return self->_writesToDepthBuffer;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     WritesToDepthBuffer = C3DParticleSystemGetWritesToDepthBuffer(self->_particleSystem);
     C3DSceneUnlock(v5);
     return WritesToDepthBuffer;
@@ -4849,14 +4849,14 @@ float __39__SCNParticleSystem_setWarmupDuration___block_invoke(uint64_t a1)
   else if (self->_writesToDepthBuffer != writesToDepthBuffer)
   {
     self->_writesToDepthBuffer = writesToDepthBuffer;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __44__SCNParticleSystem_setWritesToDepthBuffer___block_invoke;
     v7[3] = &unk_2782FB7F8;
     v7[4] = self;
     v8 = writesToDepthBuffer;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -4867,14 +4867,14 @@ float __39__SCNParticleSystem_setWarmupDuration___block_invoke(uint64_t a1)
     return self->_particleIntensity;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleIntensity(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleIntensity = C3DParticleSystemGetParticleIntensity(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleIntensity;
@@ -4894,14 +4894,14 @@ float __39__SCNParticleSystem_setWarmupDuration___block_invoke(uint64_t a1)
   else if (self->_particleIntensity != particleIntensity)
   {
     self->_particleIntensity = particleIntensity;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __42__SCNParticleSystem_setParticleIntensity___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleIntensity;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleIntensity" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleIntensity" applyBlock:v7];
   }
 }
 
@@ -4919,14 +4919,14 @@ float __42__SCNParticleSystem_setParticleIntensity___block_invoke(uint64_t a1)
     return self->_particleIntensityVariation;
   }
 
-  v4 = [(SCNParticleSystem *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DParticleSystemGetParticleIntensityVariation(self->_particleSystem);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   ParticleIntensityVariation = C3DParticleSystemGetParticleIntensityVariation(self->_particleSystem);
   C3DSceneUnlock(v5);
   return ParticleIntensityVariation;
@@ -4946,14 +4946,14 @@ float __42__SCNParticleSystem_setParticleIntensity___block_invoke(uint64_t a1)
   else if (self->_particleIntensityVariation != particleIntensityVariation)
   {
     self->_particleIntensityVariation = particleIntensityVariation;
-    v5 = [(SCNParticleSystem *)self sceneRef];
+    sceneRef = [(SCNParticleSystem *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __51__SCNParticleSystem_setParticleIntensityVariation___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     *&v7[5] = particleIntensityVariation;
-    [SCNTransaction postCommandWithContext:v5 object:self key:@"particleIntensityVariation" applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleIntensityVariation" applyBlock:v7];
   }
 }
 
@@ -4987,7 +4987,7 @@ float __51__SCNParticleSystem_setParticleIntensityVariation___block_invoke(uint6
       self->_particleColorVariation.y = y;
       self->_particleColorVariation.z = z;
       self->_particleColorVariation.w = w;
-      v8 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __47__SCNParticleSystem_setParticleColorVariation___block_invoke;
@@ -4997,7 +4997,7 @@ float __51__SCNParticleSystem_setParticleIntensityVariation___block_invoke(uint6
       v12 = y;
       v13 = z;
       v14 = w;
-      [SCNTransaction postCommandWithContext:v8 object:self key:@"particleColorVariation" applyBlock:v10];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"particleColorVariation" applyBlock:v10];
     }
   }
 }
@@ -5023,7 +5023,7 @@ float __51__SCNParticleSystem_setParticleIntensityVariation___block_invoke(uint6
       self->_emittingDirection.x = x;
       self->_emittingDirection.y = y;
       self->_emittingDirection.z = z;
-      v7 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __42__SCNParticleSystem_setEmittingDirection___block_invoke;
@@ -5032,7 +5032,7 @@ float __51__SCNParticleSystem_setParticleIntensityVariation___block_invoke(uint6
       v10 = x;
       v11 = y;
       v12 = z;
-      [SCNTransaction postCommandWithContext:v7 object:self key:@"emittingDirection" applyBlock:v9];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"emittingDirection" applyBlock:v9];
     }
   }
 }
@@ -5065,7 +5065,7 @@ void __42__SCNParticleSystem_setEmittingDirection___block_invoke(uint64_t a1, __
       self->_acceleration.x = x;
       self->_acceleration.y = y;
       self->_acceleration.z = z;
-      v7 = [(SCNParticleSystem *)self sceneRef];
+      sceneRef = [(SCNParticleSystem *)self sceneRef];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __37__SCNParticleSystem_setAcceleration___block_invoke;
@@ -5074,7 +5074,7 @@ void __42__SCNParticleSystem_setEmittingDirection___block_invoke(uint64_t a1, __
       v10 = x;
       v11 = y;
       v12 = z;
-      [SCNTransaction postCommandWithContext:v7 object:self key:@"acceleration" applyBlock:v9];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"acceleration" applyBlock:v9];
     }
   }
 }
@@ -5088,10 +5088,10 @@ void __37__SCNParticleSystem_setAcceleration___block_invoke(uint64_t a1, __n128 
 
 - (void)reset
 {
-  v3 = [(SCNParticleSystem *)self sceneRef];
-  if (v3)
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
+  if (sceneRef)
   {
-    [SCNTransaction postCommandWithContext:MEMORY[0x277D85DD0] object:3221225472 applyBlock:__26__SCNParticleSystem_reset__block_invoke, &unk_2782FB7D0, self, v3];
+    [SCNTransaction postCommandWithContext:MEMORY[0x277D85DD0] object:3221225472 applyBlock:__26__SCNParticleSystem_reset__block_invoke, &unk_2782FB7D0, self, sceneRef];
   }
 }
 
@@ -5108,7 +5108,7 @@ void __26__SCNParticleSystem_reset__block_invoke(uint64_t a1)
 
 - (void)handleEvent:(SCNParticleEvent)event forProperties:(NSArray *)properties withBlock:(SCNParticleEventBlock)block
 {
-  v9 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__SCNParticleSystem_handleEvent_forProperties_withBlock___block_invoke;
@@ -5117,7 +5117,7 @@ void __26__SCNParticleSystem_reset__block_invoke(uint64_t a1)
   v10[7] = event;
   v10[4] = self;
   v10[5] = properties;
-  [SCNTransaction postCommandWithContext:v9 object:self applyBlock:v10];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v10];
 }
 
 void __57__SCNParticleSystem_handleEvent_forProperties_withBlock___block_invoke(uint64_t a1)
@@ -5132,7 +5132,7 @@ void __57__SCNParticleSystem_handleEvent_forProperties_withBlock___block_invoke(
 
 - (void)addModifierForProperties:(NSArray *)properties atStage:(SCNParticleModifierStage)stage withBlock:(SCNParticleModifierBlock)block
 {
-  v9 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__SCNParticleSystem_addModifierForProperties_atStage_withBlock___block_invoke;
@@ -5141,7 +5141,7 @@ void __57__SCNParticleSystem_handleEvent_forProperties_withBlock___block_invoke(
   v10[7] = stage;
   v10[4] = properties;
   v10[5] = self;
-  [SCNTransaction postCommandWithContext:v9 object:self applyBlock:v10];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v10];
 }
 
 void __64__SCNParticleSystem_addModifierForProperties_atStage_withBlock___block_invoke(uint64_t a1)
@@ -5160,67 +5160,67 @@ void __64__SCNParticleSystem_addModifierForProperties_atStage_withBlock___block_
 
 - (void)removeModifiersOfStage:(SCNParticleModifierStage)stage
 {
-  v5 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__SCNParticleSystem_removeModifiersOfStage___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
   v6[5] = stage;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 - (void)removeAllModifiers
 {
-  v3 = [(SCNParticleSystem *)self sceneRef];
+  sceneRef = [(SCNParticleSystem *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__SCNParticleSystem_removeAllModifiers__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
-- (void)setReferenceName:(id)a3
+- (void)setReferenceName:(id)name
 {
   referenceName = self->_referenceName;
-  if (referenceName != a3)
+  if (referenceName != name)
   {
 
-    self->_referenceName = a3;
+    self->_referenceName = name;
   }
 }
 
-- (void)_customEncodingOfSCNParticleSystem:(id)a3
+- (void)_customEncodingOfSCNParticleSystem:(id)system
 {
-  [a3 encodeBool:self->_loops forKey:@"loops"];
+  [system encodeBool:self->_loops forKey:@"loops"];
   particleColor = self->_particleColor;
   if (particleColor)
   {
-    SCNEncodeUnsafeObjectForKey(a3, particleColor, @"particleColor");
+    SCNEncodeUnsafeObjectForKey(system, particleColor, @"particleColor");
   }
 
   particleImage = self->_particleImage;
   if (particleImage)
   {
 
-    SCNEncodeImageContentsForKey(a3, particleImage, @"particleImage");
+    SCNEncodeImageContentsForKey(system, particleImage, @"particleImage");
   }
 }
 
-- (void)_customDecodingOfSCNParticleSystem:(id)a3
+- (void)_customDecodingOfSCNParticleSystem:(id)system
 {
-  if ([a3 containsValueForKey:@"loops"])
+  if ([system containsValueForKey:@"loops"])
   {
-    -[SCNParticleSystem setLoops:](self, "setLoops:", [a3 decodeBoolForKey:@"loops"]);
+    -[SCNParticleSystem setLoops:](self, "setLoops:", [system decodeBoolForKey:@"loops"]);
   }
 
-  [(SCNParticleSystem *)self setParticleColor:SCNDecodeUnsecureColor(a3, @"particleColor")];
-  v5 = SCNDecodeImageContents(a3, @"particleImage");
+  [(SCNParticleSystem *)self setParticleColor:SCNDecodeUnsecureColor(system, @"particleColor")];
+  v5 = SCNDecodeImageContents(system, @"particleImage");
   if (v5)
   {
     v6 = v5;
-    v7 = SCNEnclosingURLForSceneDecoder(a3);
+    v7 = SCNEnclosingURLForSceneDecoder(system);
     if (v7 && (v8 = SCNResolveImageContents(v6, v7)) != 0)
     {
       [(SCNParticleSystem *)self _updateParticleC3DImage:v8];
@@ -5236,7 +5236,7 @@ void __64__SCNParticleSystem_addModifierForProperties_atStage_withBlock___block_
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (*(self + 16))
   {
@@ -5245,129 +5245,129 @@ void __64__SCNParticleSystem_addModifierForProperties_atStage_withBlock___block_
 
   if ([(SCNParticleSystem *)self _isAReference])
   {
-    v5 = [(SCNParticleSystem *)self referenceName];
+    referenceName = [(SCNParticleSystem *)self referenceName];
 
-    [a3 encodeObject:v5 forKey:@"referenceName"];
+    [coder encodeObject:referenceName forKey:@"referenceName"];
   }
 
   else
   {
-    [(SCNParticleSystem *)self _customEncodingOfSCNParticleSystem:a3];
+    [(SCNParticleSystem *)self _customEncodingOfSCNParticleSystem:coder];
     name = self->_name;
     if (name)
     {
-      [a3 encodeObject:name forKey:@"name"];
+      [coder encodeObject:name forKey:@"name"];
     }
 
-    [a3 encodeDouble:@"emissionDuration" forKey:self->_emissionDuration];
-    [a3 encodeDouble:@"emissionDurationVariation" forKey:self->_emissionDurationVariation];
-    [a3 encodeDouble:@"idleDuration" forKey:self->_idleDuration];
-    [a3 encodeDouble:@"idleDurationVariation" forKey:self->_idleDurationVariation];
-    [a3 encodeDouble:@"birthRate" forKey:self->_birthRate];
-    [a3 encodeDouble:@"birthRateVariation" forKey:self->_birthRateVariation];
-    [a3 encodeDouble:@"warmupDuration" forKey:self->_warmupDuration];
+    [coder encodeDouble:@"emissionDuration" forKey:self->_emissionDuration];
+    [coder encodeDouble:@"emissionDurationVariation" forKey:self->_emissionDurationVariation];
+    [coder encodeDouble:@"idleDuration" forKey:self->_idleDuration];
+    [coder encodeDouble:@"idleDurationVariation" forKey:self->_idleDurationVariation];
+    [coder encodeDouble:@"birthRate" forKey:self->_birthRate];
+    [coder encodeDouble:@"birthRateVariation" forKey:self->_birthRateVariation];
+    [coder encodeDouble:@"warmupDuration" forKey:self->_warmupDuration];
     emitterShape = self->_emitterShape;
     if (emitterShape)
     {
-      [a3 encodeObject:emitterShape forKey:@"emitterShape"];
+      [coder encodeObject:emitterShape forKey:@"emitterShape"];
     }
 
-    [a3 encodeInteger:self->_birthLocation forKey:@"birthLocation"];
-    [a3 encodeInteger:self->_birthDirection forKey:@"birthDirection"];
-    SCNEncodeVector3(a3, @"emittingDirection", self->_emittingDirection.x, self->_emittingDirection.y, self->_emittingDirection.z);
-    SCNEncodeVector3(a3, @"orientationDirection", self->_orientationDirection.x, self->_orientationDirection.y, self->_orientationDirection.z);
-    SCNEncodeVector3(a3, @"acceleration", self->_acceleration.x, self->_acceleration.y, self->_acceleration.z);
-    [a3 encodeDouble:@"spreadingAngle" forKey:self->_spreadingAngle];
-    [a3 encodeBool:self->_isLocal forKey:@"isLocal"];
-    [a3 encodeBool:self->_affectedByGravity forKey:@"affectedByGravity"];
-    [a3 encodeBool:self->_affectedByPhysicsFields forKey:@"affectedByPhysicsFields"];
-    [a3 encodeBool:self->_physicsCollisionsEnabled forKey:@"physicsCollisionsEnabled"];
-    [a3 encodeBool:self->_lightingEnabled forKey:@"lightingEnabled"];
-    [a3 encodeBool:self->_softParticlesEnabled forKey:@"softParticlesEnabled"];
-    [a3 encodeBool:self->_particleDiesOnCollision forKey:@"particleDiesOnCollision"];
-    [a3 encodeBool:self->_blackPassEnabled forKey:@"blackPassEnabled"];
-    [a3 encodeBool:self->_writesToDepthBuffer forKey:@"writesToDepthBuffer"];
-    [a3 encodeDouble:@"particleAngle" forKey:self->_particleAngle];
-    [a3 encodeDouble:@"particleAngleVariation" forKey:self->_particleAngleVariation];
-    [a3 encodeDouble:@"particleVelocity" forKey:self->_particleVelocity];
-    [a3 encodeDouble:@"particleVelocityVariation" forKey:self->_particleVelocityVariation];
-    [a3 encodeDouble:@"particleAngularVelocity" forKey:self->_particleAngularVelocity];
-    [a3 encodeDouble:@"particleAngularVelocityVariation" forKey:self->_particleAngularVelocityVariation];
-    [a3 encodeDouble:@"particleLifeSpan" forKey:self->_particleLifeSpan];
-    [a3 encodeDouble:@"particleLifeSpanVariation" forKey:self->_particleLifeSpanVariation];
-    [a3 encodeDouble:@"particleBounce" forKey:self->_particleBounce];
-    [a3 encodeDouble:@"particleBounceVariation" forKey:self->_particleBounceVariation];
-    [a3 encodeDouble:@"particleFriction" forKey:self->_particleFriction];
-    [a3 encodeDouble:@"particleFrictionVariation" forKey:self->_particleFrictionVariation];
-    [a3 encodeDouble:@"particleCharge" forKey:self->_particleCharge];
-    [a3 encodeDouble:@"particleChargeVariation" forKey:self->_particleChargeVariation];
-    SCNEncodeVector4(a3, @"particleColorVariation", self->_particleColorVariation.x, self->_particleColorVariation.y, self->_particleColorVariation.z, self->_particleColorVariation.w);
+    [coder encodeInteger:self->_birthLocation forKey:@"birthLocation"];
+    [coder encodeInteger:self->_birthDirection forKey:@"birthDirection"];
+    SCNEncodeVector3(coder, @"emittingDirection", self->_emittingDirection.x, self->_emittingDirection.y, self->_emittingDirection.z);
+    SCNEncodeVector3(coder, @"orientationDirection", self->_orientationDirection.x, self->_orientationDirection.y, self->_orientationDirection.z);
+    SCNEncodeVector3(coder, @"acceleration", self->_acceleration.x, self->_acceleration.y, self->_acceleration.z);
+    [coder encodeDouble:@"spreadingAngle" forKey:self->_spreadingAngle];
+    [coder encodeBool:self->_isLocal forKey:@"isLocal"];
+    [coder encodeBool:self->_affectedByGravity forKey:@"affectedByGravity"];
+    [coder encodeBool:self->_affectedByPhysicsFields forKey:@"affectedByPhysicsFields"];
+    [coder encodeBool:self->_physicsCollisionsEnabled forKey:@"physicsCollisionsEnabled"];
+    [coder encodeBool:self->_lightingEnabled forKey:@"lightingEnabled"];
+    [coder encodeBool:self->_softParticlesEnabled forKey:@"softParticlesEnabled"];
+    [coder encodeBool:self->_particleDiesOnCollision forKey:@"particleDiesOnCollision"];
+    [coder encodeBool:self->_blackPassEnabled forKey:@"blackPassEnabled"];
+    [coder encodeBool:self->_writesToDepthBuffer forKey:@"writesToDepthBuffer"];
+    [coder encodeDouble:@"particleAngle" forKey:self->_particleAngle];
+    [coder encodeDouble:@"particleAngleVariation" forKey:self->_particleAngleVariation];
+    [coder encodeDouble:@"particleVelocity" forKey:self->_particleVelocity];
+    [coder encodeDouble:@"particleVelocityVariation" forKey:self->_particleVelocityVariation];
+    [coder encodeDouble:@"particleAngularVelocity" forKey:self->_particleAngularVelocity];
+    [coder encodeDouble:@"particleAngularVelocityVariation" forKey:self->_particleAngularVelocityVariation];
+    [coder encodeDouble:@"particleLifeSpan" forKey:self->_particleLifeSpan];
+    [coder encodeDouble:@"particleLifeSpanVariation" forKey:self->_particleLifeSpanVariation];
+    [coder encodeDouble:@"particleBounce" forKey:self->_particleBounce];
+    [coder encodeDouble:@"particleBounceVariation" forKey:self->_particleBounceVariation];
+    [coder encodeDouble:@"particleFriction" forKey:self->_particleFriction];
+    [coder encodeDouble:@"particleFrictionVariation" forKey:self->_particleFrictionVariation];
+    [coder encodeDouble:@"particleCharge" forKey:self->_particleCharge];
+    [coder encodeDouble:@"particleChargeVariation" forKey:self->_particleChargeVariation];
+    SCNEncodeVector4(coder, @"particleColorVariation", self->_particleColorVariation.x, self->_particleColorVariation.y, self->_particleColorVariation.z, self->_particleColorVariation.w);
     systemSpawnedOnCollision = self->_systemSpawnedOnCollision;
     if (systemSpawnedOnCollision)
     {
-      [a3 encodeObject:systemSpawnedOnCollision forKey:@"systemSpawnedOnCollision"];
+      [coder encodeObject:systemSpawnedOnCollision forKey:@"systemSpawnedOnCollision"];
     }
 
     systemSpawnedOnDying = self->_systemSpawnedOnDying;
     if (systemSpawnedOnDying)
     {
-      [a3 encodeObject:systemSpawnedOnDying forKey:@"systemSpawnedOnDying"];
+      [coder encodeObject:systemSpawnedOnDying forKey:@"systemSpawnedOnDying"];
     }
 
     systemSpawnedOnLiving = self->_systemSpawnedOnLiving;
     if (systemSpawnedOnLiving)
     {
-      [a3 encodeObject:systemSpawnedOnLiving forKey:@"systemSpawnedOnLiving"];
+      [coder encodeObject:systemSpawnedOnLiving forKey:@"systemSpawnedOnLiving"];
     }
 
-    [a3 encodeDouble:@"particleSize" forKey:self->_particleSize];
-    [a3 encodeDouble:@"particleSizeVariation" forKey:self->_particleSizeVariation];
-    [a3 encodeDouble:@"particleIntensity" forKey:self->_particleIntensity];
-    [a3 encodeDouble:@"particleIntensityVariation" forKey:self->_particleIntensityVariation];
-    [a3 encodeInteger:self->_seed forKey:@"seed"];
-    [a3 encodeInteger:self->_blendMode forKey:@"blendMode"];
-    [a3 encodeInteger:self->_renderingMode forKey:@"renderingMode"];
-    [a3 encodeInteger:self->_orientationMode forKey:@"orientationMode"];
-    [a3 encodeInteger:self->_imageSequenceAnimationMode forKey:@"imageSequenceAnimationMode"];
+    [coder encodeDouble:@"particleSize" forKey:self->_particleSize];
+    [coder encodeDouble:@"particleSizeVariation" forKey:self->_particleSizeVariation];
+    [coder encodeDouble:@"particleIntensity" forKey:self->_particleIntensity];
+    [coder encodeDouble:@"particleIntensityVariation" forKey:self->_particleIntensityVariation];
+    [coder encodeInteger:self->_seed forKey:@"seed"];
+    [coder encodeInteger:self->_blendMode forKey:@"blendMode"];
+    [coder encodeInteger:self->_renderingMode forKey:@"renderingMode"];
+    [coder encodeInteger:self->_orientationMode forKey:@"orientationMode"];
+    [coder encodeInteger:self->_imageSequenceAnimationMode forKey:@"imageSequenceAnimationMode"];
     particleGeometries = self->_particleGeometries;
     if (particleGeometries)
     {
-      [a3 encodeObject:particleGeometries forKey:@"particleGeometries"];
+      [coder encodeObject:particleGeometries forKey:@"particleGeometries"];
     }
 
     colliderNodes = self->_colliderNodes;
     if (colliderNodes)
     {
-      [a3 encodeObject:colliderNodes forKey:@"colliderNodes"];
+      [coder encodeObject:colliderNodes forKey:@"colliderNodes"];
     }
 
     propertyControllers = self->_propertyControllers;
     if (propertyControllers)
     {
-      [a3 encodeObject:propertyControllers forKey:@"propertyControllers"];
+      [coder encodeObject:propertyControllers forKey:@"propertyControllers"];
     }
 
-    [a3 encodeInteger:self->_sortingMode forKey:@"sortingMode"];
-    [a3 encodeDouble:@"particleMass" forKey:self->_particleMass];
-    [a3 encodeDouble:@"particleMassVariation" forKey:self->_particleMassVariation];
-    [a3 encodeDouble:@"dampingFactor" forKey:self->_dampingFactor];
-    [a3 encodeDouble:@"speedFactor" forKey:self->_speedFactor];
-    [a3 encodeDouble:@"fixedTimeStep" forKey:self->_fixedTimeStep];
-    [a3 encodeDouble:@"stretchFactor" forKey:self->_stretchFactor];
-    [a3 encodeDouble:@"fresnelExponent" forKey:self->_fresnelExponent];
-    [a3 encodeInteger:self->_imageSequenceColumnCount forKey:@"imageSequenceColumnCount"];
-    [a3 encodeInteger:self->_imageSequenceRowCount forKey:@"imageSequenceRowCount"];
-    [a3 encodeDouble:@"imageSequenceInitialFrame" forKey:self->_imageSequenceInitialFrame];
-    [a3 encodeDouble:@"imageSequenceInitialFrameVariation" forKey:self->_imageSequenceInitialFrameVariation];
-    [a3 encodeDouble:@"imageSequenceFrameRate" forKey:self->_imageSequenceFrameRate];
-    [a3 encodeDouble:@"imageSequenceFrameRateVariation" forKey:self->_imageSequenceFrameRateVariation];
-    SCNEncodeEntity(a3, self);
+    [coder encodeInteger:self->_sortingMode forKey:@"sortingMode"];
+    [coder encodeDouble:@"particleMass" forKey:self->_particleMass];
+    [coder encodeDouble:@"particleMassVariation" forKey:self->_particleMassVariation];
+    [coder encodeDouble:@"dampingFactor" forKey:self->_dampingFactor];
+    [coder encodeDouble:@"speedFactor" forKey:self->_speedFactor];
+    [coder encodeDouble:@"fixedTimeStep" forKey:self->_fixedTimeStep];
+    [coder encodeDouble:@"stretchFactor" forKey:self->_stretchFactor];
+    [coder encodeDouble:@"fresnelExponent" forKey:self->_fresnelExponent];
+    [coder encodeInteger:self->_imageSequenceColumnCount forKey:@"imageSequenceColumnCount"];
+    [coder encodeInteger:self->_imageSequenceRowCount forKey:@"imageSequenceRowCount"];
+    [coder encodeDouble:@"imageSequenceInitialFrame" forKey:self->_imageSequenceInitialFrame];
+    [coder encodeDouble:@"imageSequenceInitialFrameVariation" forKey:self->_imageSequenceInitialFrameVariation];
+    [coder encodeDouble:@"imageSequenceFrameRate" forKey:self->_imageSequenceFrameRate];
+    [coder encodeDouble:@"imageSequenceFrameRateVariation" forKey:self->_imageSequenceFrameRateVariation];
+    SCNEncodeEntity(coder, self);
 
-    SCNEncodeAnimations(a3, self);
+    SCNEncodeAnimations(coder, self);
   }
 }
 
-- (SCNParticleSystem)initWithCoder:(id)a3
+- (SCNParticleSystem)initWithCoder:(id)coder
 {
   v18[4] = *MEMORY[0x277D85DE8];
   v17.receiver = self;
@@ -5375,15 +5375,15 @@ void __64__SCNParticleSystem_addModifierForProperties_atStage_withBlock___block_
   v4 = [(SCNParticleSystem *)&v17 init];
   if (v4)
   {
-    if ([a3 containsValueForKey:@"referenceName"])
+    if ([coder containsValueForKey:@"referenceName"])
     {
-      -[SCNParticleSystem setReferenceName:](v4, "setReferenceName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"referenceName"]);
+      -[SCNParticleSystem setReferenceName:](v4, "setReferenceName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"referenceName"]);
       if ([(SCNParticleSystem *)v4 referenceName])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v5 = [objc_msgSend(a3 "assetCatalog")];
+          v5 = [objc_msgSend(coder "assetCatalog")];
           if (v5)
           {
             v6 = v5;
@@ -5423,132 +5423,132 @@ void __64__SCNParticleSystem_addModifierForProperties_atStage_withBlock___block_
     }
 
     [(SCNParticleSystem *)v4 _syncObjCModel];
-    [(SCNParticleSystem *)v4 _customDecodingOfSCNParticleSystem:a3];
-    -[SCNParticleSystem setName:](v4, "setName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
-    [a3 decodeDoubleForKey:@"emissionDuration"];
+    [(SCNParticleSystem *)v4 _customDecodingOfSCNParticleSystem:coder];
+    -[SCNParticleSystem setName:](v4, "setName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
+    [coder decodeDoubleForKey:@"emissionDuration"];
     [(SCNParticleSystem *)v4 setEmissionDuration:?];
-    [a3 decodeDoubleForKey:@"emissionDurationVariation"];
+    [coder decodeDoubleForKey:@"emissionDurationVariation"];
     [(SCNParticleSystem *)v4 setEmissionDurationVariation:?];
-    [a3 decodeDoubleForKey:@"idleDuration"];
+    [coder decodeDoubleForKey:@"idleDuration"];
     [(SCNParticleSystem *)v4 setIdleDuration:?];
-    [a3 decodeDoubleForKey:@"idleDurationVariation"];
+    [coder decodeDoubleForKey:@"idleDurationVariation"];
     [(SCNParticleSystem *)v4 setIdleDurationVariation:?];
-    [a3 decodeDoubleForKey:@"birthRate"];
+    [coder decodeDoubleForKey:@"birthRate"];
     [(SCNParticleSystem *)v4 setBirthRate:?];
-    [a3 decodeDoubleForKey:@"birthRateVariation"];
+    [coder decodeDoubleForKey:@"birthRateVariation"];
     [(SCNParticleSystem *)v4 setBirthRateVariation:?];
-    [a3 decodeDoubleForKey:@"warmupDuration"];
+    [coder decodeDoubleForKey:@"warmupDuration"];
     [(SCNParticleSystem *)v4 setWarmupDuration:?];
-    -[SCNParticleSystem setEmitterShape:](v4, "setEmitterShape:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"emitterShape"]);
-    -[SCNParticleSystem setBirthLocation:](v4, "setBirthLocation:", [a3 decodeIntegerForKey:@"birthLocation"]);
-    -[SCNParticleSystem setBirthDirection:](v4, "setBirthDirection:", [a3 decodeIntegerForKey:@"birthDirection"]);
-    *&v11 = SCNDecodeVector3(a3, @"emittingDirection");
+    -[SCNParticleSystem setEmitterShape:](v4, "setEmitterShape:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"emitterShape"]);
+    -[SCNParticleSystem setBirthLocation:](v4, "setBirthLocation:", [coder decodeIntegerForKey:@"birthLocation"]);
+    -[SCNParticleSystem setBirthDirection:](v4, "setBirthDirection:", [coder decodeIntegerForKey:@"birthDirection"]);
+    *&v11 = SCNDecodeVector3(coder, @"emittingDirection");
     [(SCNParticleSystem *)v4 setEmittingDirection:v11];
-    *&v12 = SCNDecodeVector3(a3, @"orientationDirection");
+    *&v12 = SCNDecodeVector3(coder, @"orientationDirection");
     [(SCNParticleSystem *)v4 setOrientationDirection:v12];
-    *&v13 = SCNDecodeVector3(a3, @"acceleration");
+    *&v13 = SCNDecodeVector3(coder, @"acceleration");
     [(SCNParticleSystem *)v4 setAcceleration:v13];
-    [a3 decodeDoubleForKey:@"spreadingAngle"];
+    [coder decodeDoubleForKey:@"spreadingAngle"];
     [(SCNParticleSystem *)v4 setSpreadingAngle:?];
-    -[SCNParticleSystem setIsLocal:](v4, "setIsLocal:", [a3 decodeBoolForKey:@"isLocal"]);
-    -[SCNParticleSystem setAffectedByGravity:](v4, "setAffectedByGravity:", [a3 decodeBoolForKey:@"affectedByGravity"]);
-    -[SCNParticleSystem setAffectedByPhysicsFields:](v4, "setAffectedByPhysicsFields:", [a3 decodeBoolForKey:@"affectedByPhysicsFields"]);
-    -[SCNParticleSystem setPhysicsCollisionsEnabled:](v4, "setPhysicsCollisionsEnabled:", [a3 decodeBoolForKey:@"physicsCollisionsEnabled"]);
-    -[SCNParticleSystem setLightingEnabled:](v4, "setLightingEnabled:", [a3 decodeBoolForKey:@"lightingEnabled"]);
-    -[SCNParticleSystem setSoftParticlesEnabled:](v4, "setSoftParticlesEnabled:", [a3 decodeBoolForKey:@"softParticlesEnabled"]);
-    -[SCNParticleSystem setParticleDiesOnCollision:](v4, "setParticleDiesOnCollision:", [a3 decodeBoolForKey:@"particleDiesOnCollision"]);
-    -[SCNParticleSystem setBlackPassEnabled:](v4, "setBlackPassEnabled:", [a3 decodeBoolForKey:@"blackPassEnabled"]);
-    [a3 decodeDoubleForKey:@"particleAngle"];
+    -[SCNParticleSystem setIsLocal:](v4, "setIsLocal:", [coder decodeBoolForKey:@"isLocal"]);
+    -[SCNParticleSystem setAffectedByGravity:](v4, "setAffectedByGravity:", [coder decodeBoolForKey:@"affectedByGravity"]);
+    -[SCNParticleSystem setAffectedByPhysicsFields:](v4, "setAffectedByPhysicsFields:", [coder decodeBoolForKey:@"affectedByPhysicsFields"]);
+    -[SCNParticleSystem setPhysicsCollisionsEnabled:](v4, "setPhysicsCollisionsEnabled:", [coder decodeBoolForKey:@"physicsCollisionsEnabled"]);
+    -[SCNParticleSystem setLightingEnabled:](v4, "setLightingEnabled:", [coder decodeBoolForKey:@"lightingEnabled"]);
+    -[SCNParticleSystem setSoftParticlesEnabled:](v4, "setSoftParticlesEnabled:", [coder decodeBoolForKey:@"softParticlesEnabled"]);
+    -[SCNParticleSystem setParticleDiesOnCollision:](v4, "setParticleDiesOnCollision:", [coder decodeBoolForKey:@"particleDiesOnCollision"]);
+    -[SCNParticleSystem setBlackPassEnabled:](v4, "setBlackPassEnabled:", [coder decodeBoolForKey:@"blackPassEnabled"]);
+    [coder decodeDoubleForKey:@"particleAngle"];
     [(SCNParticleSystem *)v4 setParticleAngle:?];
-    [a3 decodeDoubleForKey:@"particleAngleVariation"];
+    [coder decodeDoubleForKey:@"particleAngleVariation"];
     [(SCNParticleSystem *)v4 setParticleAngleVariation:?];
-    [a3 decodeDoubleForKey:@"particleVelocity"];
+    [coder decodeDoubleForKey:@"particleVelocity"];
     [(SCNParticleSystem *)v4 setParticleVelocity:?];
-    [a3 decodeDoubleForKey:@"particleVelocityVariation"];
+    [coder decodeDoubleForKey:@"particleVelocityVariation"];
     [(SCNParticleSystem *)v4 setParticleVelocityVariation:?];
-    [a3 decodeDoubleForKey:@"particleAngularVelocity"];
+    [coder decodeDoubleForKey:@"particleAngularVelocity"];
     [(SCNParticleSystem *)v4 setParticleAngularVelocity:?];
-    [a3 decodeDoubleForKey:@"particleAngularVelocityVariation"];
+    [coder decodeDoubleForKey:@"particleAngularVelocityVariation"];
     [(SCNParticleSystem *)v4 setParticleAngularVelocityVariation:?];
-    [a3 decodeDoubleForKey:@"particleLifeSpan"];
+    [coder decodeDoubleForKey:@"particleLifeSpan"];
     [(SCNParticleSystem *)v4 setParticleLifeSpan:?];
-    [a3 decodeDoubleForKey:@"particleLifeSpanVariation"];
+    [coder decodeDoubleForKey:@"particleLifeSpanVariation"];
     [(SCNParticleSystem *)v4 setParticleLifeSpanVariation:?];
-    [a3 decodeDoubleForKey:@"particleBounce"];
+    [coder decodeDoubleForKey:@"particleBounce"];
     [(SCNParticleSystem *)v4 setParticleBounce:?];
-    [a3 decodeDoubleForKey:@"particleBounceVariation"];
+    [coder decodeDoubleForKey:@"particleBounceVariation"];
     [(SCNParticleSystem *)v4 setParticleBounceVariation:?];
-    [a3 decodeDoubleForKey:@"particleFriction"];
+    [coder decodeDoubleForKey:@"particleFriction"];
     [(SCNParticleSystem *)v4 setParticleFriction:?];
-    [a3 decodeDoubleForKey:@"particleFrictionVariation"];
+    [coder decodeDoubleForKey:@"particleFrictionVariation"];
     [(SCNParticleSystem *)v4 setParticleFrictionVariation:?];
-    [a3 decodeDoubleForKey:@"particleCharge"];
+    [coder decodeDoubleForKey:@"particleCharge"];
     [(SCNParticleSystem *)v4 setParticleCharge:?];
-    [a3 decodeDoubleForKey:@"particleChargeVariation"];
+    [coder decodeDoubleForKey:@"particleChargeVariation"];
     [(SCNParticleSystem *)v4 setParticleChargeVariation:?];
-    *&v14 = SCNDecodeVector4(a3, @"particleColorVariation");
+    *&v14 = SCNDecodeVector4(coder, @"particleColorVariation");
     [(SCNParticleSystem *)v4 setParticleColorVariation:v14];
-    -[SCNParticleSystem setSystemSpawnedOnCollision:](v4, "setSystemSpawnedOnCollision:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"systemSpawnedOnCollision"]);
-    -[SCNParticleSystem setSystemSpawnedOnDying:](v4, "setSystemSpawnedOnDying:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"systemSpawnedOnDying"]);
-    -[SCNParticleSystem setSystemSpawnedOnLiving:](v4, "setSystemSpawnedOnLiving:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"systemSpawnedOnLiving"]);
-    [a3 decodeDoubleForKey:@"particleSize"];
+    -[SCNParticleSystem setSystemSpawnedOnCollision:](v4, "setSystemSpawnedOnCollision:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"systemSpawnedOnCollision"]);
+    -[SCNParticleSystem setSystemSpawnedOnDying:](v4, "setSystemSpawnedOnDying:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"systemSpawnedOnDying"]);
+    -[SCNParticleSystem setSystemSpawnedOnLiving:](v4, "setSystemSpawnedOnLiving:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"systemSpawnedOnLiving"]);
+    [coder decodeDoubleForKey:@"particleSize"];
     [(SCNParticleSystem *)v4 setParticleSize:?];
-    [a3 decodeDoubleForKey:@"particleSizeVariation"];
+    [coder decodeDoubleForKey:@"particleSizeVariation"];
     [(SCNParticleSystem *)v4 setParticleSizeVariation:?];
-    if ([a3 containsValueForKey:@"particleIntensity"])
+    if ([coder containsValueForKey:@"particleIntensity"])
     {
-      [a3 decodeDoubleForKey:@"particleIntensity"];
+      [coder decodeDoubleForKey:@"particleIntensity"];
       [(SCNParticleSystem *)v4 setParticleIntensity:?];
-      [a3 decodeDoubleForKey:@"particleIntensityVariation"];
+      [coder decodeDoubleForKey:@"particleIntensityVariation"];
       [(SCNParticleSystem *)v4 setParticleIntensityVariation:?];
     }
 
-    if ([a3 containsValueForKey:@"writesToDepthBuffer"])
+    if ([coder containsValueForKey:@"writesToDepthBuffer"])
     {
-      -[SCNParticleSystem setWritesToDepthBuffer:](v4, "setWritesToDepthBuffer:", [a3 decodeBoolForKey:@"writesToDepthBuffer"]);
+      -[SCNParticleSystem setWritesToDepthBuffer:](v4, "setWritesToDepthBuffer:", [coder decodeBoolForKey:@"writesToDepthBuffer"]);
     }
 
-    -[SCNParticleSystem setSeed:](v4, "setSeed:", [a3 decodeIntegerForKey:@"seed"]);
-    -[SCNParticleSystem setBlendMode:](v4, "setBlendMode:", [a3 decodeIntegerForKey:@"blendMode"]);
-    -[SCNParticleSystem setRenderingMode:](v4, "setRenderingMode:", [a3 decodeIntegerForKey:@"renderingMode"]);
-    -[SCNParticleSystem setOrientationMode:](v4, "setOrientationMode:", [a3 decodeIntegerForKey:@"orientationMode"]);
-    -[SCNParticleSystem setImageSequenceAnimationMode:](v4, "setImageSequenceAnimationMode:", [a3 decodeIntegerForKey:@"imageSequenceAnimationMode"]);
-    -[SCNParticleSystem setParticleGeometries:](v4, "setParticleGeometries:", [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"particleGeometries"]);
-    -[SCNParticleSystem setColliderNodes:](v4, "setColliderNodes:", [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"colliderNodes"]);
+    -[SCNParticleSystem setSeed:](v4, "setSeed:", [coder decodeIntegerForKey:@"seed"]);
+    -[SCNParticleSystem setBlendMode:](v4, "setBlendMode:", [coder decodeIntegerForKey:@"blendMode"]);
+    -[SCNParticleSystem setRenderingMode:](v4, "setRenderingMode:", [coder decodeIntegerForKey:@"renderingMode"]);
+    -[SCNParticleSystem setOrientationMode:](v4, "setOrientationMode:", [coder decodeIntegerForKey:@"orientationMode"]);
+    -[SCNParticleSystem setImageSequenceAnimationMode:](v4, "setImageSequenceAnimationMode:", [coder decodeIntegerForKey:@"imageSequenceAnimationMode"]);
+    -[SCNParticleSystem setParticleGeometries:](v4, "setParticleGeometries:", [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"particleGeometries"]);
+    -[SCNParticleSystem setColliderNodes:](v4, "setColliderNodes:", [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"colliderNodes"]);
     v15 = MEMORY[0x277CBEB98];
     v18[0] = objc_opt_class();
     v18[1] = objc_opt_class();
     v18[2] = objc_opt_class();
     v18[3] = objc_opt_class();
-    -[SCNParticleSystem setPropertyControllers:](v4, "setPropertyControllers:", [a3 decodeObjectOfClasses:objc_msgSend(v15 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v18, 4)), @"propertyControllers"}]);
-    -[SCNParticleSystem setSortingMode:](v4, "setSortingMode:", [a3 decodeIntegerForKey:@"sortingMode"]);
-    [a3 decodeDoubleForKey:@"particleMass"];
+    -[SCNParticleSystem setPropertyControllers:](v4, "setPropertyControllers:", [coder decodeObjectOfClasses:objc_msgSend(v15 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v18, 4)), @"propertyControllers"}]);
+    -[SCNParticleSystem setSortingMode:](v4, "setSortingMode:", [coder decodeIntegerForKey:@"sortingMode"]);
+    [coder decodeDoubleForKey:@"particleMass"];
     [(SCNParticleSystem *)v4 setParticleMass:?];
-    [a3 decodeDoubleForKey:@"particleMassVariation"];
+    [coder decodeDoubleForKey:@"particleMassVariation"];
     [(SCNParticleSystem *)v4 setParticleMassVariation:?];
-    [a3 decodeDoubleForKey:@"dampingFactor"];
+    [coder decodeDoubleForKey:@"dampingFactor"];
     [(SCNParticleSystem *)v4 setDampingFactor:?];
-    [a3 decodeDoubleForKey:@"speedFactor"];
+    [coder decodeDoubleForKey:@"speedFactor"];
     [(SCNParticleSystem *)v4 setSpeedFactor:?];
-    [a3 decodeDoubleForKey:@"fixedTimeStep"];
+    [coder decodeDoubleForKey:@"fixedTimeStep"];
     [(SCNParticleSystem *)v4 setFixedTimeStep:?];
-    [a3 decodeDoubleForKey:@"stretchFactor"];
+    [coder decodeDoubleForKey:@"stretchFactor"];
     [(SCNParticleSystem *)v4 setStretchFactor:?];
-    [a3 decodeDoubleForKey:@"fresnelExponent"];
+    [coder decodeDoubleForKey:@"fresnelExponent"];
     [(SCNParticleSystem *)v4 setFresnelExponent:?];
-    -[SCNParticleSystem setImageSequenceColumnCount:](v4, "setImageSequenceColumnCount:", [a3 decodeIntegerForKey:@"imageSequenceColumnCount"]);
-    -[SCNParticleSystem setImageSequenceRowCount:](v4, "setImageSequenceRowCount:", [a3 decodeIntegerForKey:@"imageSequenceRowCount"]);
-    [a3 decodeDoubleForKey:@"imageSequenceInitialFrame"];
+    -[SCNParticleSystem setImageSequenceColumnCount:](v4, "setImageSequenceColumnCount:", [coder decodeIntegerForKey:@"imageSequenceColumnCount"]);
+    -[SCNParticleSystem setImageSequenceRowCount:](v4, "setImageSequenceRowCount:", [coder decodeIntegerForKey:@"imageSequenceRowCount"]);
+    [coder decodeDoubleForKey:@"imageSequenceInitialFrame"];
     [(SCNParticleSystem *)v4 setImageSequenceInitialFrame:?];
-    [a3 decodeDoubleForKey:@"imageSequenceInitialFrameVariation"];
+    [coder decodeDoubleForKey:@"imageSequenceInitialFrameVariation"];
     [(SCNParticleSystem *)v4 setImageSequenceInitialFrameVariation:?];
-    [a3 decodeDoubleForKey:@"imageSequenceFrameRate"];
+    [coder decodeDoubleForKey:@"imageSequenceFrameRate"];
     [(SCNParticleSystem *)v4 setImageSequenceFrameRate:?];
-    [a3 decodeDoubleForKey:@"imageSequenceFrameRateVariation"];
+    [coder decodeDoubleForKey:@"imageSequenceFrameRateVariation"];
     [(SCNParticleSystem *)v4 setImageSequenceFrameRateVariation:?];
     v4->_animationsLock._os_unfair_lock_opaque = 0;
-    SCNDecodeEntity(a3, v4);
-    SCNDecodeAnimations(a3, v4);
+    SCNDecodeEntity(coder, v4);
+    SCNDecodeAnimations(coder, v4);
     [SCNTransaction setImmediateMode:v9];
   }
 

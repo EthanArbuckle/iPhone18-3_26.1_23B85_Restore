@@ -1,20 +1,20 @@
 @interface CMIOExtensionSession
-+ (id)sessionWithDelegate:(id)a3;
-- (CMIOExtensionSession)initWithDelegate:(id)a3;
++ (id)sessionWithDelegate:(id)delegate;
+- (CMIOExtensionSession)initWithDelegate:(id)delegate;
 - (NSDictionary)extensions;
 - (void)dealloc;
 @end
 
 @implementation CMIOExtensionSession
 
-+ (id)sessionWithDelegate:(id)a3
++ (id)sessionWithDelegate:(id)delegate
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithDelegate:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithDelegate:delegate];
 
   return v3;
 }
 
-- (CMIOExtensionSession)initWithDelegate:(id)a3
+- (CMIOExtensionSession)initWithDelegate:(id)delegate
 {
   v54 = *MEMORY[0x277D85DE8];
   v43.receiver = self;
@@ -25,7 +25,7 @@
   {
     v4->_lock._os_unfair_lock_opaque = 0;
     v4->_extensions = objc_alloc_init(MEMORY[0x277CBEB38]);
-    objc_storeWeak(&v5->_delegate, a3);
+    objc_storeWeak(&v5->_delegate, delegate);
     mach_service = xpc_connection_create_mach_service("com.apple.cmio.registerassistantservice.system-extensions", 0, 2uLL);
     v5->_registerExtensionServiceConnection = mach_service;
     if (mach_service)
@@ -290,7 +290,7 @@ void __41__CMIOExtensionSession_initWithDelegate___block_invoke(uint64_t a1, voi
         v11 = 2080;
         v12 = "[CMIOExtensionSession dealloc]";
         v13 = 2112;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
       }
     }

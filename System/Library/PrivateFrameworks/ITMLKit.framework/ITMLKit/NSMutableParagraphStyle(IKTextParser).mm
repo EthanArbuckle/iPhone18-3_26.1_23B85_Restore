@@ -6,33 +6,33 @@
 
 - (void)ik_applyViewElementStyle:()IKTextParser
 {
-  v4 = [a3 lineHeight];
-  if (v4)
+  lineHeight = [a3 lineHeight];
+  if (lineHeight)
   {
-    v10 = v4;
-    v5 = [v4 ik_unit];
+    v10 = lineHeight;
+    ik_unit = [lineHeight ik_unit];
     [v10 doubleValue];
     v7 = v6;
-    if (v5 == 1)
+    if (ik_unit == 1)
     {
-      [a1 setMaximumLineHeight:v6];
+      [self setMaximumLineHeight:v6];
       [v10 doubleValue];
-      [a1 setMinimumLineHeight:?];
+      [self setMinimumLineHeight:?];
     }
 
     else
     {
-      v8 = [v10 ik_unit];
+      ik_unit2 = [v10 ik_unit];
       v9 = v7 / 100.0;
-      if (v8 != 2)
+      if (ik_unit2 != 2)
       {
         v9 = v7;
       }
 
-      [a1 setLineHeightMultiple:v9];
+      [self setLineHeightMultiple:v9];
     }
 
-    v4 = v10;
+    lineHeight = v10;
   }
 }
 

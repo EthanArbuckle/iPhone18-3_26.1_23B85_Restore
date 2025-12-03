@@ -1,5 +1,5 @@
 @interface GQDWPLayout
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 - (void)dealloc;
 @end
 
@@ -12,13 +12,13 @@
   [(GQDWPBlockList *)&v3 dealloc];
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  AttributeNs = xmlTextReaderGetAttributeNs(a3, "style", *(qword_A35E8 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, "style", *(qword_A35E8 + 16));
   if (AttributeNs)
   {
     v7 = AttributeNs;
-    v8 = [objc_msgSend(objc_msgSend(a4 "documentState")];
+    v8 = [objc_msgSend(objc_msgSend(processor "documentState")];
     v9 = [v8 styleWithIdentifier:v7];
     self->mLayoutStyle = v9;
     if (!v9)

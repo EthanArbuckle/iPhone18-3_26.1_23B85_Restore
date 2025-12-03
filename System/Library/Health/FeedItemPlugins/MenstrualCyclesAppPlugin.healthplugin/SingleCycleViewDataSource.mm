@@ -1,12 +1,12 @@
 @interface SingleCycleViewDataSource
 - (_TtC24MenstrualCyclesAppPlugin25SingleCycleViewDataSource)init;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 @end
 
 @implementation SingleCycleViewDataSource
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   sub_29DEDB978();
   MEMORY[0x2A1C7C4A8](v5 - 8);
@@ -17,7 +17,7 @@
   MEMORY[0x2A1C7C4A8](v11 - 8);
   v13 = &v21 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   v14 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin25SingleCycleViewDataSource_today;
-  v15 = self;
+  selfCopy = self;
   sub_29E02CAF8(self + v14, v13);
   v16 = sub_29E2C31A4();
   v17 = *(v16 - 8);
@@ -33,17 +33,17 @@
   return v19;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v5 = sub_29E2BCFB4();
   v6 = *(v5 - 8);
   MEMORY[0x2A1C7C4A8](v5);
   v8 = &v15 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v9 = a3;
+  viewCopy = view;
   v10 = sub_29E2C33A4();
   v11 = sub_29E2BCF24();
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v11];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v11];
 
   (*(v6 + 8))(v8, v5);
   type metadata accessor for CycleHistoryCycleDayCell();

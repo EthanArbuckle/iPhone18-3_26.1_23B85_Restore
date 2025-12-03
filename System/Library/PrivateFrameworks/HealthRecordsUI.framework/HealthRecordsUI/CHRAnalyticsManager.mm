@@ -1,8 +1,8 @@
 @interface CHRAnalyticsManager
 + (CHRAnalyticsManager)shared;
-- (void)postOnboardingFunnelEventWithStep:(int64_t)a3 context:(int64_t)a4 gatewayUrl:(id)a5;
-- (void)postPrivacyInteractionEventWithType:(int64_t)a3 context:(int64_t)a4 action:(BOOL)a5;
-- (void)postUserInteractionEventWithType:(int64_t)a3 context:(int64_t)a4 action:(int64_t)a5 category:(id)a6 conceptIdentifier:(id)a7;
+- (void)postOnboardingFunnelEventWithStep:(int64_t)step context:(int64_t)context gatewayUrl:(id)url;
+- (void)postPrivacyInteractionEventWithType:(int64_t)type context:(int64_t)context action:(BOOL)action;
+- (void)postUserInteractionEventWithType:(int64_t)type context:(int64_t)context action:(int64_t)action category:(id)category conceptIdentifier:(id)identifier;
 - (void)submitAndFlushQueuedEvents;
 @end
 
@@ -22,29 +22,29 @@
 
 - (void)submitAndFlushQueuedEvents
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D1223F40();
 }
 
-- (void)postOnboardingFunnelEventWithStep:(int64_t)a3 context:(int64_t)a4 gatewayUrl:(id)a5
+- (void)postOnboardingFunnelEventWithStep:(int64_t)step context:(int64_t)context gatewayUrl:(id)url
 {
-  v9 = a5;
-  v10 = self;
-  sub_1D122101C(a3, a4, a5);
+  urlCopy = url;
+  selfCopy = self;
+  sub_1D122101C(step, context, url);
 }
 
-- (void)postUserInteractionEventWithType:(int64_t)a3 context:(int64_t)a4 action:(int64_t)a5 category:(id)a6 conceptIdentifier:(id)a7
+- (void)postUserInteractionEventWithType:(int64_t)type context:(int64_t)context action:(int64_t)action category:(id)category conceptIdentifier:(id)identifier
 {
-  v13 = a6;
-  v14 = a7;
-  v15 = self;
-  sub_1D122157C(a3, a4, a5, a6, a7);
+  categoryCopy = category;
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_1D122157C(type, context, action, category, identifier);
 }
 
-- (void)postPrivacyInteractionEventWithType:(int64_t)a3 context:(int64_t)a4 action:(BOOL)a5
+- (void)postPrivacyInteractionEventWithType:(int64_t)type context:(int64_t)context action:(BOOL)action
 {
-  v8 = self;
-  sub_1D1223978(a3, a4, a5);
+  selfCopy = self;
+  sub_1D1223978(type, context, action);
 }
 
 @end

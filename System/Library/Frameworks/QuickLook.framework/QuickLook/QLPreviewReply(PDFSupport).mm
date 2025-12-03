@@ -6,20 +6,20 @@
 
 - (id)updateFromDocumentCreationBlock
 {
-  v2 = [a1 documentCreationBlock];
+  documentCreationBlock = [self documentCreationBlock];
 
-  if (v2)
+  if (documentCreationBlock)
   {
-    v3 = [a1 documentCreationBlock];
+    documentCreationBlock2 = [self documentCreationBlock];
     v7 = 0;
-    v4 = (v3)[2](v3, a1, &v7);
-    v2 = v7;
+    v4 = (documentCreationBlock2)[2](documentCreationBlock2, self, &v7);
+    documentCreationBlock = v7;
 
-    v5 = [v4 dataRepresentation];
-    [a1 updateWithPDFData:v5];
+    dataRepresentation = [v4 dataRepresentation];
+    [self updateWithPDFData:dataRepresentation];
   }
 
-  return v2;
+  return documentCreationBlock;
 }
 
 @end

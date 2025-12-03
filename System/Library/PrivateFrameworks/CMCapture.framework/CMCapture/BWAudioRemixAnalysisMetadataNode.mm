@@ -2,11 +2,11 @@
 + (void)initialize;
 - (BWAudioRemixAnalysisMetadataNode)init;
 - (__n128)_sendRemixMetadataSampleBuffer;
-- (void)_emitCopyOfMarkerBuffer:(void *)a3 onOutput:(int)a4 isStartMarkerBuffer:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_emitCopyOfMarkerBuffer:(void *)buffer onOutput:(int)output isStartMarkerBuffer:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 - (void)resetAnalyzer;
 @end
 
@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     fig_note_initialize_category_with_default_work_cf();
 
@@ -127,32 +127,32 @@
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   [(AudioRemixSessionManager *)self->_movieRemixSessionManager abortSessionIfNeeded];
   [(AudioRemixSessionManager *)self->_movieRemixSessionManager setFormatSampleRate:0 andChannelCount:0.0];
-  [(BWNodeOutput *)self->super._output markEndOfLiveOutputForConfigurationID:a3];
+  [(BWNodeOutput *)self->super._output markEndOfLiveOutputForConfigurationID:d];
   metadataOutput = self->_metadataOutput;
 
-  [(BWNodeOutput *)metadataOutput markEndOfLiveOutputForConfigurationID:a3];
+  [(BWNodeOutput *)metadataOutput markEndOfLiveOutputForConfigurationID:d];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v23, 0, sizeof(v23));
-  CMSampleBufferGetPresentationTimeStamp(&v23, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v23, buffer);
   *(&self->_startRecordingPTS.epoch + 4) = *&v23.value;
   *&self->_currentPTS.flags = v23.epoch;
-  if (!BWSampleBufferIsMarkerBuffer(a3))
+  if (!BWSampleBufferIsMarkerBuffer(buffer))
   {
     if (!self->_shouldSendData || ![(AudioRemixSessionManager *)self->_movieRemixSessionManager sessionReady])
     {
       goto LABEL_15;
     }
 
-    if (a3)
+    if (buffer)
     {
-      FormatDescription = CMSampleBufferGetFormatDescription(a3);
+      FormatDescription = CMSampleBufferGetFormatDescription(buffer);
       StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription);
       if (!FormatDescription)
       {
@@ -184,13 +184,13 @@ LABEL_12:
       v11 = StreamBasicDescription;
       if (StreamBasicDescription)
       {
-        v12 = [objc_alloc(MEMORY[0x1E69583D0]) initWithLayoutTag:StreamBasicDescription->mChannelsPerFrame | 0x930000];
-        v11 = [objc_alloc(MEMORY[0x1E6958418]) initWithStreamDescription:v11 channelLayout:v12];
+        0x930000 = [objc_alloc(MEMORY[0x1E69583D0]) initWithLayoutTag:StreamBasicDescription->mChannelsPerFrame | 0x930000];
+        v11 = [objc_alloc(MEMORY[0x1E6958418]) initWithStreamDescription:v11 channelLayout:0x930000];
 
-        NumSamples = CMSampleBufferGetNumSamples(a3);
+        NumSamples = CMSampleBufferGetNumSamples(buffer);
         FormatDescription = [objc_alloc(MEMORY[0x1E6958440]) initWithPCMFormat:v11 frameCapacity:NumSamples];
         [(opaqueCMFormatDescription *)FormatDescription setFrameLength:NumSamples];
-        v14 = CMSampleBufferCopyPCMDataIntoAudioBufferList(a3, 0, NumSamples, [(opaqueCMFormatDescription *)FormatDescription mutableAudioBufferList]);
+        v14 = CMSampleBufferCopyPCMDataIntoAudioBufferList(buffer, 0, NumSamples, [(opaqueCMFormatDescription *)FormatDescription mutableAudioBufferList]);
         if (v14)
         {
           [BWAudioRemixAnalysisMetadataNode renderSampleBuffer:forInput:];
@@ -220,7 +220,7 @@ LABEL_12:
     goto LABEL_32;
   }
 
-  v6 = CMGetAttachment(a3, @"FileWriterAction", 0);
+  v6 = CMGetAttachment(buffer, @"FileWriterAction", 0);
   v7 = CFEqual(v6, @"Start");
   v8 = CFEqual(v6, @"Stop");
   if (v6)
@@ -257,12 +257,12 @@ LABEL_12:
     }
 
 LABEL_15:
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3, v18, v19];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer, v18, v19];
     return;
   }
 
 LABEL_21:
-  [(BWAudioRemixAnalysisMetadataNode *)self renderSampleBuffer:a3 forInput:v7 != 0];
+  [(BWAudioRemixAnalysisMetadataNode *)self renderSampleBuffer:buffer forInput:v7 != 0];
 }
 
 - (void)resetAnalyzer
@@ -278,11 +278,11 @@ LABEL_21:
   *&self->_currentPTS.flags = v5;
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  [(BWNodeOutput *)self->super._output makeConfiguredFormatLive:a3];
+  [(BWNodeOutput *)self->super._output makeConfiguredFormatLive:d];
   [(BWNodeOutput *)self->_metadataOutput makeConfiguredFormatLive];
-  StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription([a4 audioFormatDescription]);
+  StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription([format audioFormatDescription]);
   movieRemixSessionManager = self->_movieRemixSessionManager;
   if (movieRemixSessionManager)
   {
@@ -301,24 +301,24 @@ LABEL_21:
 
 - (__n128)_sendRemixMetadataSampleBuffer
 {
-  if (a1)
+  if (self)
   {
-    v2 = (a1 + 180);
-    if (*(a1 + 192))
+    v2 = (self + 180);
+    if (*(self + 192))
     {
-      v3 = (a1 + 156);
-      if (*(a1 + 168))
+      v3 = (self + 156);
+      if (*(self + 168))
       {
-        v4 = *(a1 + 128);
+        v4 = *(self + 128);
         v9 = *v3;
-        v10 = *(a1 + 172);
+        v10 = *(self + 172);
         v7 = *v2;
         v8 = *(v2 + 2);
         [v4 finishAndGetResultsBlockingWithStartingPTS:&v9 andEndingPTS:&v7];
         v5 = MEMORY[0x1E6960C70];
         result = *MEMORY[0x1E6960C70];
-        *(a1 + 156) = *MEMORY[0x1E6960C70];
-        *(a1 + 172) = *(v5 + 16);
+        *(self + 156) = *MEMORY[0x1E6960C70];
+        *(self + 172) = *(v5 + 16);
       }
     }
   }
@@ -326,16 +326,16 @@ LABEL_21:
   return result;
 }
 
-- (void)_emitCopyOfMarkerBuffer:(void *)a3 onOutput:(int)a4 isStartMarkerBuffer:
+- (void)_emitCopyOfMarkerBuffer:(void *)buffer onOutput:(int)output isStartMarkerBuffer:
 {
-  if (a1 && a3)
+  if (self && buffer)
   {
     sampleBufferOut = 0;
     memset(&v11, 0, sizeof(v11));
     CMSampleBufferGetPresentationTimeStamp(&v11, sbuf);
     if (CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], sbuf, &sampleBufferOut))
     {
-      if (*(a1 + 144) == a3)
+      if (*(self + 144) == buffer)
       {
         v8 = &BWDroppedSampleReasonCinematicVideoMetadataFailure;
       }
@@ -347,17 +347,17 @@ LABEL_21:
 
       v9 = *v8;
       v10 = v11;
-      [a3 emitDroppedSample:{+[BWDroppedSample newDroppedSampleWithReason:pts:](BWDroppedSample, "newDroppedSampleWithReason:pts:", v9, &v10)}];
+      [buffer emitDroppedSample:{+[BWDroppedSample newDroppedSampleWithReason:pts:](BWDroppedSample, "newDroppedSampleWithReason:pts:", v9, &v10)}];
     }
 
     else
     {
-      if (a4 && *(a1 + 144) == a3)
+      if (output && *(self + 144) == buffer)
       {
-        CMSetAttachment(sampleBufferOut, @"TrackFormatDescription", *(a1 + 208), 1u);
+        CMSetAttachment(sampleBufferOut, @"TrackFormatDescription", *(self + 208), 1u);
       }
 
-      [a3 emitSampleBuffer:sampleBufferOut];
+      [buffer emitSampleBuffer:sampleBufferOut];
       if (sampleBufferOut)
       {
         CFRelease(sampleBufferOut);

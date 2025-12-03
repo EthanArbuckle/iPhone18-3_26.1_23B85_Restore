@@ -1,18 +1,18 @@
 @interface CBABModuleiOS
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)handleAODStateUpdate:(unint64_t)a3 transitionTime:(float)a4 context:(id)a5;
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4;
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (BOOL)shouldMitigateHarmony:(__IOHIDServiceClient *)a3;
-- (CBABModuleiOS)initWithDisplayModule:(id)a3 andQueue:(id)a4;
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)handleAODStateUpdate:(unint64_t)update transitionTime:(float)time context:(id)context;
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from;
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (BOOL)shouldMitigateHarmony:(__IOHIDServiceClient *)harmony;
+- (CBABModuleiOS)initWithDisplayModule:(id)module andQueue:(id)queue;
 - (id)copyIdentifiers;
-- (id)copyPropertyInternalForKey:(id)a3;
-- (id)newGrimaldiFactory:(int)a3;
+- (id)copyPropertyInternalForKey:(id)key;
+- (id)newGrimaldiFactory:(int)factory;
 - (void)dealloc;
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4;
+- (void)sendNotificationForKey:(id)key withValue:(id)value;
 - (void)setupAABRear;
-- (void)updateCurveStrategy:(UpdateCurveStrategy *)a3 withSettingsProvider:(id)a4;
+- (void)updateCurveStrategy:(UpdateCurveStrategy *)strategy withSettingsProvider:(id)provider;
 @end
 
 @implementation CBABModuleiOS
@@ -30,13 +30,13 @@ uint64_t __29__CBABModuleiOS_setupAABRear__block_invoke(uint64_t result, uint64_
   return result;
 }
 
-- (CBABModuleiOS)initWithDisplayModule:(id)a3 andQueue:(id)a4
+- (CBABModuleiOS)initWithDisplayModule:(id)module andQueue:(id)queue
 {
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
-  v33 = a3;
-  v32 = a4;
-  if (!a3 || !v32)
+  moduleCopy = module;
+  queueCopy = queue;
+  if (!module || !queueCopy)
   {
     if (_COREBRIGHTNESS_LOG_DEFAULT)
     {
@@ -61,17 +61,17 @@ uint64_t __29__CBABModuleiOS_setupAABRear__block_invoke(uint64_t result, uint64_
     return 0;
   }
 
-  v28.receiver = v35;
+  v28.receiver = selfCopy;
   v28.super_class = CBABModuleiOS;
-  v35 = [(CBModule *)&v28 initWithQueue:v32];
-  if (!v35)
+  selfCopy = [(CBModule *)&v28 initWithQueue:queueCopy];
+  if (!selfCopy)
   {
-    return v35;
+    return selfCopy;
   }
 
   v4 = os_log_create("com.apple.CoreBrightness.CBABModuleiOS", "default");
-  v35->super._logHandle = v4;
-  if (!v35->super._logHandle)
+  selfCopy->super._logHandle = v4;
+  if (!selfCopy->super._logHandle)
   {
     v18 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
     v27 = v18;
@@ -86,25 +86,25 @@ uint64_t __29__CBABModuleiOS_setupAABRear__block_invoke(uint64_t result, uint64_
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v35->_alsServiceClients = v5;
+  selfCopy->_alsServiceClients = v5;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v35->_otherServiceClients = v6;
-  if (v35->_alsServiceClients && v35->_otherServiceClients)
+  selfCopy->_otherServiceClients = v6;
+  if (selfCopy->_alsServiceClients && selfCopy->_otherServiceClients)
   {
-    v7 = MEMORY[0x1E69E5928](v33);
-    v35->_display = v7;
+    v7 = MEMORY[0x1E69E5928](moduleCopy);
+    selfCopy->_display = v7;
     v8 = [CBALSTelemetry alloc];
-    v9 = [(CBALSTelemetry *)v8 initWithQueue:v32];
-    v35->_alsTelemetry = v9;
-    [(CBModule *)v35->_alsTelemetry registerNotificationBlock:?];
+    v9 = [(CBALSTelemetry *)v8 initWithQueue:queueCopy];
+    selfCopy->_alsTelemetry = v9;
+    [(CBModule *)selfCopy->_alsTelemetry registerNotificationBlock:?];
     v10 = +[CBAgregateSettingsProvider sharedInstance];
-    v35->_settingsProvider = v10;
-    return v35;
+    selfCopy->_settingsProvider = v10;
+    return selfCopy;
   }
 
-  if (v35->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v35->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -132,8 +132,8 @@ uint64_t __29__CBABModuleiOS_setupAABRear__block_invoke(uint64_t result, uint64_
     _os_log_error_impl(&dword_1DE8E5000, v12, v13, "failed to instantiate service containers", v22, 2u);
   }
 
-  MEMORY[0x1E69E5920](v35);
-  v35 = 0;
+  MEMORY[0x1E69E5920](selfCopy);
+  selfCopy = 0;
   return 0;
 }
 
@@ -152,61 +152,61 @@ uint64_t __48__CBABModuleiOS_initWithDisplayModule_andQueue___block_invoke(uint6
 
 - (void)dealloc
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   if (self->_AABC)
   {
-    (*(*v7->_AABC + 104))(v7->_AABC, v7->super._queue);
-    (*(*v7->_AABC + 72))(v7->_AABC, [(CBDisplayModuleiOS *)v7->_display displayInternal]);
-    (*(*v7->_AABC + 56))(v7->_AABC, 0);
-    AABC = v7->_AABC;
+    (*(*selfCopy->_AABC + 104))(selfCopy->_AABC, selfCopy->super._queue);
+    (*(*selfCopy->_AABC + 72))(selfCopy->_AABC, [(CBDisplayModuleiOS *)selfCopy->_display displayInternal]);
+    (*(*selfCopy->_AABC + 56))(selfCopy->_AABC, 0);
+    AABC = selfCopy->_AABC;
     if (AABC)
     {
       (*(*AABC + 40))(AABC);
     }
 
-    v7->_AABC = 0;
+    selfCopy->_AABC = 0;
   }
 
-  if (v7->_AABRear)
+  if (selfCopy->_AABRear)
   {
-    MEMORY[0x1E69E5920](v7->_AABRear);
+    MEMORY[0x1E69E5920](selfCopy->_AABRear);
   }
 
-  MEMORY[0x1E69E5920](v7->_alsServiceClients);
-  v7->_alsServiceClients = 0;
-  *&v2 = MEMORY[0x1E69E5920](v7->_otherServiceClients).n128_u64[0];
-  v7->_otherServiceClients = 0;
-  [(CBALSTelemetry *)v7->_alsTelemetry stop];
-  MEMORY[0x1E69E5920](v7->_alsTelemetry);
-  v7->_alsTelemetry = 0;
-  *&v3 = MEMORY[0x1E69E5920](v7->_boltsProvider).n128_u64[0];
-  v7->_boltsProvider = 0;
-  v5.receiver = v7;
+  MEMORY[0x1E69E5920](selfCopy->_alsServiceClients);
+  selfCopy->_alsServiceClients = 0;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_otherServiceClients).n128_u64[0];
+  selfCopy->_otherServiceClients = 0;
+  [(CBALSTelemetry *)selfCopy->_alsTelemetry stop];
+  MEMORY[0x1E69E5920](selfCopy->_alsTelemetry);
+  selfCopy->_alsTelemetry = 0;
+  *&v3 = MEMORY[0x1E69E5920](selfCopy->_boltsProvider).n128_u64[0];
+  selfCopy->_boltsProvider = 0;
+  v5.receiver = selfCopy;
   v5.super_class = CBABModuleiOS;
   [(CBModule *)&v5 dealloc];
 }
 
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v48 = *MEMORY[0x1E69E9840];
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
-  v44 = a3;
-  if (IOHIDServiceClientConformsTo(a3, 0xFF00u, 4u))
+  clientCopy = client;
+  if (IOHIDServiceClientConformsTo(client, 0xFF00u, 4u))
   {
-    v43 = [[CBALSNode alloc] initWithALSServiceClient:v44];
-    if ([(NSMutableArray *)v46->_alsServiceClients count]|| v46->_AABC)
+    v43 = [[CBALSNode alloc] initWithALSServiceClient:clientCopy];
+    if ([(NSMutableArray *)selfCopy->_alsServiceClients count]|| selfCopy->_AABC)
     {
-      if (v46->_AABC)
+      if (selfCopy->_AABC)
       {
-        (*(*v46->_AABC + 80))(v46->_AABC, v44);
+        (*(*selfCopy->_AABC + 80))(selfCopy->_AABC, clientCopy);
       }
     }
 
     else
     {
-      RegistryID = IOHIDServiceClientGetRegistryID(v44);
+      RegistryID = IOHIDServiceClientGetRegistryID(clientCopy);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -216,15 +216,15 @@ uint64_t __48__CBABModuleiOS_initWithDisplayModule_andQueue___block_invoke(uint6
           MatchingService = IOServiceGetMatchingService(*MEMORY[0x1E696CD60], v41);
           if (MatchingService)
           {
-            if (!v46->_AABC)
+            if (!selfCopy->_AABC)
             {
               v39 = 0;
-              [(CBABModuleiOS *)v46 updateCurveStrategy:&v39 withSettingsProvider:v46->_settingsProvider];
+              [(CBABModuleiOS *)selfCopy updateCurveStrategy:&v39 withSettingsProvider:selfCopy->_settingsProvider];
               if (!v39)
               {
-                if (v46->super._logHandle)
+                if (selfCopy->super._logHandle)
                 {
-                  logHandle = v46->super._logHandle;
+                  logHandle = selfCopy->super._logHandle;
                 }
 
                 else
@@ -255,47 +255,47 @@ uint64_t __48__CBABModuleiOS_initWithDisplayModule_andQueue___block_invoke(uint6
                 AABC::alloc(*MEMORY[0x1E695E480], v4);
               }
 
-              v46->_AABC = AABC::alloc(*MEMORY[0x1E695E480], v39, v3);
+              selfCopy->_AABC = AABC::alloc(*MEMORY[0x1E695E480], v39, v3);
             }
 
-            settingsProvider = v46->_settingsProvider;
+            settingsProvider = selfCopy->_settingsProvider;
             if (objc_opt_respondsToSelector())
             {
-              v7 = v46->_settingsProvider;
+              v7 = selfCopy->_settingsProvider;
               v30 = MEMORY[0x1E69E9820];
               v31 = -1073741824;
               v32 = 0;
               v33 = __37__CBABModuleiOS_addHIDServiceClient___block_invoke;
               v34 = &unk_1E867B480;
-              v35 = v46;
+              v35 = selfCopy;
               [(CBAdaptiveAutoBrightnessSettingsProvider *)v7 registerAutoBrightnessSettingsUpdateHandler:?];
             }
 
-            if (!v46->_AABC)
+            if (!selfCopy->_AABC)
             {
               AABC::alloc(*MEMORY[0x1E695E480], v6);
             }
 
-            AABC::open(v46->_AABC, MatchingService, 1, AABCCallback, v46);
-            (*(*v46->_AABC + 64))(v46->_AABC, [(CBDisplayModuleiOS *)v46->_display displayInternal]);
-            (*(*v46->_AABC + 96))(v46->_AABC, v46->super._queue);
-            (*(*v46->_AABC + 80))(v46->_AABC, v44);
-            otherServiceClients = v46->_otherServiceClients;
+            AABC::open(selfCopy->_AABC, MatchingService, 1, AABCCallback, selfCopy);
+            (*(*selfCopy->_AABC + 64))(selfCopy->_AABC, [(CBDisplayModuleiOS *)selfCopy->_display displayInternal]);
+            (*(*selfCopy->_AABC + 96))(selfCopy->_AABC, selfCopy->super._queue);
+            (*(*selfCopy->_AABC + 80))(selfCopy->_AABC, clientCopy);
+            otherServiceClients = selfCopy->_otherServiceClients;
             v24 = MEMORY[0x1E69E9820];
             v25 = -1073741824;
             v26 = 0;
             v27 = __37__CBABModuleiOS_addHIDServiceClient___block_invoke_37;
             v28 = &unk_1E867B668;
-            v29 = v46;
+            v29 = selfCopy;
             [(NSMutableArray *)otherServiceClients enumerateObjectsUsingBlock:?];
             v23 = [[CBAPEndpoint alloc] initWithServiceName:@"cbroot-service" role:@"DCP"];
-            [(CBABModuleiOS *)v46 setupAABRear];
+            [(CBABModuleiOS *)selfCopy setupAABRear];
             if (v23)
             {
               NSLog(&cfstr_CbapendpointRe.isa);
-              if (v46->_AABC)
+              if (selfCopy->_AABC)
               {
-                AABC::registerEndpoint(v46->_AABC, v23);
+                AABC::registerEndpoint(selfCopy->_AABC, v23);
               }
 
               MEMORY[0x1E69E5920](v23);
@@ -306,11 +306,11 @@ uint64_t __48__CBABModuleiOS_initWithDisplayModule_andQueue___block_invoke(uint6
               NSLog(&cfstr_CbapendpointIn.isa);
             }
 
-            if (v46->_AABC)
+            if (selfCopy->_AABC)
             {
-              if (v46->super._logHandle)
+              if (selfCopy->super._logHandle)
               {
-                v15 = v46->super._logHandle;
+                v15 = selfCopy->super._logHandle;
               }
 
               else
@@ -338,23 +338,23 @@ uint64_t __48__CBABModuleiOS_initWithDisplayModule_andQueue___block_invoke(uint6
                 _os_log_debug_impl(&dword_1DE8E5000, v12, v13, "ALS service for internal display ready", v20, 2u);
               }
 
-              [(CBABModuleiOS *)v46 sendNotificationForKey:@"ALSServiceReady" withValue:MEMORY[0x1E695E118]];
+              [(CBABModuleiOS *)selfCopy sendNotificationForKey:@"ALSServiceReady" withValue:MEMORY[0x1E695E118]];
             }
           }
         }
       }
     }
 
-    [(NSMutableArray *)v46->_alsServiceClients addObject:v44];
-    if ([(CBALSTelemetry *)v46->_alsTelemetry setALSService:v44])
+    [(NSMutableArray *)selfCopy->_alsServiceClients addObject:clientCopy];
+    if ([(CBALSTelemetry *)selfCopy->_alsTelemetry setALSService:clientCopy])
     {
-      [(CBALSTelemetry *)v46->_alsTelemetry start];
+      [(CBALSTelemetry *)selfCopy->_alsTelemetry start];
     }
 
     MEMORY[0x1E69E5920](v43);
-    if (v46->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v11 = v46->super._logHandle;
+      v11 = selfCopy->super._logHandle;
     }
 
     else
@@ -374,19 +374,19 @@ uint64_t __48__CBABModuleiOS_initWithDisplayModule_andQueue___block_invoke(uint6
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_66(v47, v46->_alsServiceClients);
+      __os_log_helper_16_2_1_8_66(v47, selfCopy->_alsServiceClients);
       _os_log_impl(&dword_1DE8E5000, v11, OS_LOG_TYPE_DEFAULT, "Als service clients: %{public}@", v47, 0xCu);
     }
   }
 
   else
   {
-    if (v46->_AABC)
+    if (selfCopy->_AABC)
     {
-      (*(*v46->_AABC + 80))(v46->_AABC, v44);
+      (*(*selfCopy->_AABC + 80))(selfCopy->_AABC, clientCopy);
     }
 
-    [(NSMutableArray *)v46->_otherServiceClients addObject:v44];
+    [(NSMutableArray *)selfCopy->_otherServiceClients addObject:clientCopy];
   }
 
   *MEMORY[0x1E69E9840];
@@ -458,19 +458,19 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)updateCurveStrategy:(UpdateCurveStrategy *)a3 withSettingsProvider:(id)a4
+- (void)updateCurveStrategy:(UpdateCurveStrategy *)strategy withSettingsProvider:(id)provider
 {
   v23 = *MEMORY[0x1E69E9840];
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
-  if (a4)
+  strategyCopy = strategy;
+  providerCopy = provider;
+  if (provider)
   {
-    v17 = [v18 aabUpdateStrategyType];
-    if (v21->super._logHandle)
+    aabUpdateStrategyType = [providerCopy aabUpdateStrategyType];
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v21->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -492,44 +492,44 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
     v15 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      updated = aabUpdateStrategyTypeToString(v17);
+      updated = aabUpdateStrategyTypeToString(aabUpdateStrategyType);
       __os_log_helper_16_2_1_8_66(v22, updated);
       _os_log_impl(&dword_1DE8E5000, v16, v15, "Use CBAABUpdateStrategyType = %{public}@", v22, 0xCu);
     }
 
-    if (!v17)
+    if (!aabUpdateStrategyType)
     {
       operator new();
     }
 
-    if (!v21->_boltsProvider)
+    if (!selfCopy->_boltsProvider)
     {
-      v21->_boltsProvider = [[CBBOLTSProvider alloc] initWithQueue:v21->super._queue];
+      selfCopy->_boltsProvider = [[CBBOLTSProvider alloc] initWithQueue:selfCopy->super._queue];
     }
 
-    v14 = [(CBBOLTSProvider *)v21->_boltsProvider newBOLTSModule];
-    if (v14)
+    newBOLTSModule = [(CBBOLTSProvider *)selfCopy->_boltsProvider newBOLTSModule];
+    if (newBOLTSModule)
     {
-      switch(v17)
+      switch(aabUpdateStrategyType)
       {
         case 1:
-          *v19 = v14;
+          *strategyCopy = newBOLTSModule;
           break;
         case 2:
           operator new();
         case 3:
           operator new();
         default:
-          *v19 = 0;
+          *strategyCopy = 0;
           break;
       }
     }
 
     else
     {
-      if (v21->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v8 = v21->super._logHandle;
+        v8 = selfCopy->super._logHandle;
       }
 
       else
@@ -562,13 +562,13 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from
 {
-  if (([(NSMutableArray *)self->_alsServiceClients containsObject:a4]& 1) != 0 || ([(NSMutableArray *)self->_otherServiceClients containsObject:a4]& 1) != 0)
+  if (([(NSMutableArray *)self->_alsServiceClients containsObject:from]& 1) != 0 || ([(NSMutableArray *)self->_otherServiceClients containsObject:from]& 1) != 0)
   {
     if (self->_AABC)
     {
-      (*(*self->_AABC + 48))(self->_AABC, a4, a3);
+      (*(*self->_AABC + 48))(self->_AABC, from, event);
     }
 
     return 1;
@@ -579,37 +579,37 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
     return 1;
   }
 
-  return [self->_AABRear handleHIDEvent:a3 from:a4];
+  return [self->_AABRear handleHIDEvent:event from:from];
 }
 
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client
 {
   if (self->_AABC)
   {
-    (*(*self->_AABC + 88))(self->_AABC, a3);
+    (*(*self->_AABC + 88))(self->_AABC, client);
   }
 
-  [self->_AABRear removeHIDServiceClient:a3];
-  [(NSMutableArray *)self->_alsServiceClients removeObject:a3];
-  [(NSMutableArray *)self->_otherServiceClients removeObject:a3];
+  [self->_AABRear removeHIDServiceClient:client];
+  [(NSMutableArray *)self->_alsServiceClients removeObject:client];
+  [(NSMutableArray *)self->_otherServiceClients removeObject:client];
   return 1;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v5 = 0;
   if (self->_AABC)
   {
-    (*(*self->_AABC + 120))(self->_AABC, a4, a3, 0);
+    (*(*self->_AABC + 120))(self->_AABC, key, property, 0);
     v5 = 1;
   }
 
-  [self->_AABRear setProperty:a3 forKey:a4];
-  [(CBALSTelemetry *)self->_alsTelemetry setProperty:a3 forKey:a4];
+  [self->_AABRear setProperty:property forKey:key];
+  [(CBALSTelemetry *)self->_alsTelemetry setProperty:property forKey:key];
   return v5 & 1;
 }
 
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4
+- (void)sendNotificationForKey:(id)key withValue:(id)value
 {
   if (self->super._notificationBlock)
   {
@@ -617,10 +617,10 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)newGrimaldiFactory:(int)a3
+- (id)newGrimaldiFactory:(int)factory
 {
   v5 = objc_alloc_init(CBGrimaldiFactory);
-  if (a3 == 1)
+  if (factory == 1)
   {
     v4 = objc_alloc_init(CBGrimaldiSamplingStrategySingleSample);
   }
@@ -637,25 +637,25 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
 
 - (void)setupAABRear
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
   v26 = 0;
   if (([(CBBacklightNode *)[(CBDisplayModuleiOS *)self->_display backlightParams] loadUint:@"grimaldi-disabled" toDestination:&v26]& 1) == 0 || !v26)
   {
-    if (!v28->_AABRear)
+    if (!selfCopy->_AABRear)
     {
       v25 = 0;
-      [(CBBacklightNode *)[(CBDisplayModuleiOS *)v28->_display backlightParams] loadUint:@"grimaldi-sampling-strategy" toDestination:&v25];
-      v24 = [(CBABModuleiOS *)v28 newGrimaldiFactory:v25];
+      [(CBBacklightNode *)[(CBDisplayModuleiOS *)selfCopy->_display backlightParams] loadUint:@"grimaldi-sampling-strategy" toDestination:&v25];
+      v24 = [(CBABModuleiOS *)selfCopy newGrimaldiFactory:v25];
       v2 = [AABRear alloc];
-      v3 = [(AABRear *)v2 initWithQueue:v28->super._queue andGrimaldiFactory:v24];
-      v28->_AABRear = v3;
+      v3 = [(AABRear *)v2 initWithQueue:selfCopy->super._queue andGrimaldiFactory:v24];
+      selfCopy->_AABRear = v3;
       MEMORY[0x1E69E5920](v24);
-      if (v28->_AABRear)
+      if (selfCopy->_AABRear)
       {
-        if (v28->super._logHandle)
+        if (selfCopy->super._logHandle)
         {
-          logHandle = v28->super._logHandle;
+          logHandle = selfCopy->super._logHandle;
         }
 
         else
@@ -683,25 +683,25 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
           _os_log_impl(&dword_1DE8E5000, log, type, "Rear AAB has been initialized.", v21, 2u);
         }
 
-        AABRear = v28->_AABRear;
+        AABRear = selfCopy->_AABRear;
         v15 = MEMORY[0x1E69E9820];
         v16 = -1073741824;
         v17 = 0;
         v18 = __29__CBABModuleiOS_setupAABRear__block_invoke;
         v19 = &unk_1E867B558;
-        v20 = v28;
+        v20 = selfCopy;
         [(CBModule *)AABRear registerNotificationBlock:?];
       }
     }
 
-    if (v28->_AABRear && v28->_AABC)
+    if (selfCopy->_AABRear && selfCopy->_AABC)
     {
       v9 = MEMORY[0x1E69E9820];
       v10 = -1073741824;
       v11 = 0;
       v12 = __29__CBABModuleiOS_setupAABRear__block_invoke_2;
       v13 = &unk_1E867B480;
-      v14 = v28;
+      v14 = selfCopy;
       v30 = &[CBABModuleiOS setupAABRear]::onceToken;
       v29 = &v9;
       if ([CBABModuleiOS setupAABRear]::onceToken != -1)
@@ -712,23 +712,23 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)shouldMitigateHarmony:(__IOHIDServiceClient *)a3
+- (BOOL)shouldMitigateHarmony:(__IOHIDServiceClient *)harmony
 {
   v4 = 0;
   if (self->_AABC)
   {
-    v5 = AABC::getALSSensorTypeFromService(self->_AABC, a3) == 8;
-    return (v5 | (AABC::getALSSensorTypeFromService(self->_AABC, a3) == 9)) != 0;
+    v5 = AABC::getALSSensorTypeFromService(self->_AABC, harmony) == 8;
+    return (v5 | (AABC::getALSSensorTypeFromService(self->_AABC, harmony) == 9)) != 0;
   }
 
   return v4;
 }
 
-- (id)copyPropertyInternalForKey:(id)a3
+- (id)copyPropertyInternalForKey:(id)key
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  if ([a3 isEqualToString:@"StatusInfo"])
+  if ([key isEqualToString:@"StatusInfo"])
   {
     v7 = [CBStatusInfoHelper copyStatusInfoFor:self];
     if (v7)
@@ -739,19 +739,19 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
     *&v3 = MEMORY[0x1E69E5920](v7).n128_u64[0];
   }
 
-  else if ([a3 isEqualToString:@"BLControlAlsSupported"])
+  else if ([key isEqualToString:@"BLControlAlsSupported"])
   {
     v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:self->_AABC != 0];
   }
 
   else if (self->_AABC)
   {
-    v8 = [(*(*self->_AABC + 112))(self->_AABC a3];
+    v8 = [(*(*self->_AABC + 112))(self->_AABC key];
   }
 
   if (!v8)
   {
-    v8 = [(CBALSTelemetry *)self->_alsTelemetry copyPropertyForKey:a3, v3];
+    v8 = [(CBALSTelemetry *)self->_alsTelemetry copyPropertyForKey:key, v3];
   }
 
   if (self->super._logHandle)
@@ -776,7 +776,7 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v11, a3, v8);
+    __os_log_helper_16_2_2_8_64_8_64(v11, key, v8);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "key=%@ result=%@", v11, 0x16u);
   }
 
@@ -786,16 +786,16 @@ void __37__CBABModuleiOS_addHIDServiceClient___block_invoke_2(uint64_t a1)
 
 - (id)copyIdentifiers
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"TrustedLux", @"Lux", @"BLControlAlsSupported", @"ALSUserPreference", @"EcoMode", @"ALSCurveInfo", @"EventTimestampFirstALSSample", @"SemanticAmbientLightLevel", 0}];
 }
 
-- (BOOL)handleAODStateUpdate:(unint64_t)a3 transitionTime:(float)a4 context:(id)a5
+- (BOOL)handleAODStateUpdate:(unint64_t)update transitionTime:(float)time context:(id)context
 {
   if (self->_AABC)
   {
-    AABC::handleAODStateUpdate(self->_AABC, a3, a5, a4);
+    AABC::handleAODStateUpdate(self->_AABC, update, context, time);
   }
 
   return 1;

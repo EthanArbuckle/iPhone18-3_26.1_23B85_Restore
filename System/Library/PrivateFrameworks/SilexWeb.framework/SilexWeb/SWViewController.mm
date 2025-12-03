@@ -1,92 +1,92 @@
 @interface SWViewController
 - (BOOL)allowsRemoteInspection;
-- (BOOL)webView:(id)a3 shouldPreviewElement:(id)a4;
+- (BOOL)webView:(id)view shouldPreviewElement:(id)element;
 - (NSURL)URL;
-- (SWViewController)initWithWebView:(id)a3 setupManager:(id)a4 scriptsManager:(id)a5 messageHandlerManager:(id)a6 navigationManager:(id)a7 errorReporter:(id)a8 documentStateReporter:(id)a9 timeoutManager:(id)a10 terminationManager:(id)a11 contentRuleManager:(id)a12 reachabilityProvider:(id)a13 logger:(id)a14 sessionManager:(id)a15 datastoreSynchronizationManager:(id)a16 localDatastoreManager:(id)a17 URLSchemeHandlerManager:(id)a18;
+- (SWViewController)initWithWebView:(id)view setupManager:(id)manager scriptsManager:(id)scriptsManager messageHandlerManager:(id)handlerManager navigationManager:(id)navigationManager errorReporter:(id)reporter documentStateReporter:(id)stateReporter timeoutManager:(id)self0 terminationManager:(id)self1 contentRuleManager:(id)self2 reachabilityProvider:(id)self3 logger:(id)self4 sessionManager:(id)self5 datastoreSynchronizationManager:(id)self6 localDatastoreManager:(id)self7 URLSchemeHandlerManager:(id)self8;
 - (id)accessibilityElements;
 - (id)inputAccessoryView;
-- (id)webView:(id)a3 previewingViewControllerForElement:(id)a4 defaultActions:(id)a5;
-- (void)_webView:(id)a3 navigation:(id)a4 didSameDocumentNavigation:(int64_t)a5;
-- (void)initiateLoadingWithLoader:(id)a3;
-- (void)loadHTMLString:(id)a3 baseURL:(id)a4;
-- (void)loadLocalDatastore:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)loadURL:(id)a3 cachePolicy:(unint64_t)a4;
+- (id)webView:(id)view previewingViewControllerForElement:(id)element defaultActions:(id)actions;
+- (void)_webView:(id)view navigation:(id)navigation didSameDocumentNavigation:(int64_t)documentNavigation;
+- (void)initiateLoadingWithLoader:(id)loader;
+- (void)loadHTMLString:(id)string baseURL:(id)l;
+- (void)loadLocalDatastore:(id)datastore options:(unint64_t)options completion:(id)completion;
+- (void)loadURL:(id)l cachePolicy:(unint64_t)policy;
 - (void)prewarm;
-- (void)removeMenusForIdentifiers:(id)a3;
-- (void)setHiddenPocketEdges:(unint64_t)a3;
-- (void)setInputAccessoryView:(id)a3;
-- (void)setShortcutsBarWithLeadingGroups:(id)a3 trailingGroups:(id)a4;
-- (void)setTextInputTraits:(id)a3;
+- (void)removeMenusForIdentifiers:(id)identifiers;
+- (void)setHiddenPocketEdges:(unint64_t)edges;
+- (void)setInputAccessoryView:(id)view;
+- (void)setShortcutsBarWithLeadingGroups:(id)groups trailingGroups:(id)trailingGroups;
+- (void)setTextInputTraits:(id)traits;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 commitPreviewingViewController:(id)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
+- (void)webView:(id)view commitPreviewingViewController:(id)controller;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
 - (void)webViewSetNeedsLayout;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation SWViewController
 
-- (SWViewController)initWithWebView:(id)a3 setupManager:(id)a4 scriptsManager:(id)a5 messageHandlerManager:(id)a6 navigationManager:(id)a7 errorReporter:(id)a8 documentStateReporter:(id)a9 timeoutManager:(id)a10 terminationManager:(id)a11 contentRuleManager:(id)a12 reachabilityProvider:(id)a13 logger:(id)a14 sessionManager:(id)a15 datastoreSynchronizationManager:(id)a16 localDatastoreManager:(id)a17 URLSchemeHandlerManager:(id)a18
+- (SWViewController)initWithWebView:(id)view setupManager:(id)manager scriptsManager:(id)scriptsManager messageHandlerManager:(id)handlerManager navigationManager:(id)navigationManager errorReporter:(id)reporter documentStateReporter:(id)stateReporter timeoutManager:(id)self0 terminationManager:(id)self1 contentRuleManager:(id)self2 reachabilityProvider:(id)self3 logger:(id)self4 sessionManager:(id)self5 datastoreSynchronizationManager:(id)self6 localDatastoreManager:(id)self7 URLSchemeHandlerManager:(id)self8
 {
-  v23 = a3;
-  v42 = a4;
-  v41 = a5;
-  v40 = a6;
-  v39 = a7;
-  v29 = a8;
-  v38 = a8;
-  v37 = a9;
-  v24 = a10;
-  v44 = a11;
-  v36 = a12;
-  v35 = a13;
-  v34 = a14;
-  v33 = a15;
-  v32 = a16;
-  v31 = a17;
-  v30 = a18;
+  viewCopy = view;
+  managerCopy = manager;
+  scriptsManagerCopy = scriptsManager;
+  handlerManagerCopy = handlerManager;
+  navigationManagerCopy = navigationManager;
+  reporterCopy = reporter;
+  reporterCopy2 = reporter;
+  stateReporterCopy = stateReporter;
+  timeoutManagerCopy = timeoutManager;
+  terminationManagerCopy = terminationManager;
+  ruleManagerCopy = ruleManager;
+  providerCopy = provider;
+  loggerCopy = logger;
+  sessionManagerCopy = sessionManager;
+  synchronizationManagerCopy = synchronizationManager;
+  datastoreManagerCopy = datastoreManager;
+  schemeHandlerManagerCopy = schemeHandlerManager;
   v50.receiver = self;
   v50.super_class = SWViewController;
   v25 = [(SWViewController *)&v50 initWithNibName:0 bundle:0];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_webView, a3);
+    objc_storeStrong(&v25->_webView, view);
     [(SWWebView *)v26->_webView setNavigationDelegate:v26];
     [(SWWebView *)v26->_webView setUIDelegate:v26];
     [(SWWebView *)v26->_webView _setFullscreenDelegate:v26];
     [(SWWebView *)v26->_webView _setInputDelegate:v26];
-    objc_storeStrong(&v26->_setupManager, a4);
-    objc_storeStrong(&v26->_scriptsManager, a5);
-    objc_storeStrong(&v26->_messageHandlerManager, a6);
-    objc_storeStrong(&v26->_navigationManager, a7);
-    objc_storeStrong(&v26->_errorReporter, v29);
-    objc_storeStrong(&v26->_documentStateReporter, a9);
-    objc_storeStrong(&v26->_timeoutManager, a10);
-    objc_storeStrong(&v26->_terminationManager, a11);
-    objc_storeStrong(&v26->_contentRuleManager, a12);
-    objc_storeStrong(&v26->_reachabilityProvider, a13);
-    objc_storeStrong(&v26->_logger, a14);
-    objc_storeStrong(&v26->_sessionManager, a15);
-    objc_storeStrong(&v26->_datastoreSynchronizationManager, a16);
-    objc_storeStrong(&v26->_localDatastoreManager, a17);
-    objc_storeStrong(&v26->_URLSchemeHandlerManager, a18);
+    objc_storeStrong(&v26->_setupManager, manager);
+    objc_storeStrong(&v26->_scriptsManager, scriptsManager);
+    objc_storeStrong(&v26->_messageHandlerManager, handlerManager);
+    objc_storeStrong(&v26->_navigationManager, navigationManager);
+    objc_storeStrong(&v26->_errorReporter, reporterCopy);
+    objc_storeStrong(&v26->_documentStateReporter, stateReporter);
+    objc_storeStrong(&v26->_timeoutManager, timeoutManager);
+    objc_storeStrong(&v26->_terminationManager, terminationManager);
+    objc_storeStrong(&v26->_contentRuleManager, ruleManager);
+    objc_storeStrong(&v26->_reachabilityProvider, provider);
+    objc_storeStrong(&v26->_logger, logger);
+    objc_storeStrong(&v26->_sessionManager, sessionManager);
+    objc_storeStrong(&v26->_datastoreSynchronizationManager, synchronizationManager);
+    objc_storeStrong(&v26->_localDatastoreManager, datastoreManager);
+    objc_storeStrong(&v26->_URLSchemeHandlerManager, schemeHandlerManager);
     objc_initWeak(&location, v26);
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __314__SWViewController_initWithWebView_setupManager_scriptsManager_messageHandlerManager_navigationManager_errorReporter_documentStateReporter_timeoutManager_terminationManager_contentRuleManager_reachabilityProvider_logger_sessionManager_datastoreSynchronizationManager_localDatastoreManager_URLSchemeHandlerManager___block_invoke;
     v47[3] = &unk_1E84DB2B8;
     objc_copyWeak(&v48, &location);
-    [v24 onTimeout:v47];
+    [timeoutManagerCopy onTimeout:v47];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __314__SWViewController_initWithWebView_setupManager_scriptsManager_messageHandlerManager_navigationManager_errorReporter_documentStateReporter_timeoutManager_terminationManager_contentRuleManager_reachabilityProvider_logger_sessionManager_datastoreSynchronizationManager_localDatastoreManager_URLSchemeHandlerManager___block_invoke_2;
     v45[3] = &unk_1E84DB2B8;
     objc_copyWeak(&v46, &location);
-    [v44 onRetry:v45];
+    [terminationManagerCopy onRetry:v45];
     objc_destroyWeak(&v46);
     objc_destroyWeak(&v48);
     objc_destroyWeak(&location);
@@ -114,13 +114,13 @@ void __314__SWViewController_initWithWebView_setupManager_scriptsManager_message
   v7.receiver = self;
   v7.super_class = SWViewController;
   [(SWViewController *)&v7 viewDidLoad];
-  v3 = [(SWViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SWViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [(SWViewController *)self view];
-  v6 = [(SWViewController *)self webView];
-  [v5 addSubview:v6];
+  view2 = [(SWViewController *)self view];
+  webView = [(SWViewController *)self webView];
+  [view2 addSubview:webView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -130,45 +130,45 @@ void __314__SWViewController_initWithWebView_setupManager_scriptsManager_message
   [(SWViewController *)&v5 viewDidLayoutSubviews];
   if (!self->_isWebViewPresentingInFullScreen)
   {
-    v3 = [(SWViewController *)self webView];
-    v4 = [(SWViewController *)self view];
-    [v4 bounds];
-    [v3 setFrame:?];
+    webView = [(SWViewController *)self webView];
+    view = [(SWViewController *)self view];
+    [view bounds];
+    [webView setFrame:?];
   }
 }
 
 - (void)prewarm
 {
-  v3 = [(SWViewController *)self webView];
-  v2 = [v3 loadHTMLString:&stru_1F5242A90 baseURL:0];
+  webView = [(SWViewController *)self webView];
+  v2 = [webView loadHTMLString:&stru_1F5242A90 baseURL:0];
 }
 
 - (void)webViewSetNeedsLayout
 {
-  v2 = [(SWViewController *)self webView];
-  [v2 setNeedsLayout];
+  webView = [(SWViewController *)self webView];
+  [webView setNeedsLayout];
 }
 
 - (NSURL)URL
 {
-  v2 = [(SWViewController *)self webView];
-  v3 = [v2 URL];
+  webView = [(SWViewController *)self webView];
+  v3 = [webView URL];
 
   return v3;
 }
 
-- (void)loadURL:(id)a3 cachePolicy:(unint64_t)a4
+- (void)loadURL:(id)l cachePolicy:(unint64_t)policy
 {
-  v6 = a3;
+  lCopy = l;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __40__SWViewController_loadURL_cachePolicy___block_invoke;
   v12 = &unk_1E84DBB60;
   objc_copyWeak(v14, &location);
-  v7 = v6;
+  v7 = lCopy;
   v13 = v7;
-  v14[1] = a4;
+  v14[1] = policy;
   v8 = [SWLoader loaderWithBlock:&v9];
   [(SWViewController *)self initiateLoadingWithLoader:v8, v9, v10, v11, v12];
 
@@ -248,19 +248,19 @@ id __40__SWViewController_loadURL_cachePolicy___block_invoke_2(uint64_t a1)
   return v10;
 }
 
-- (void)loadHTMLString:(id)a3 baseURL:(id)a4
+- (void)loadHTMLString:(id)string baseURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  lCopy = l;
   objc_initWeak(&location, self);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __43__SWViewController_loadHTMLString_baseURL___block_invoke;
   v14 = &unk_1E84DBBB0;
   objc_copyWeak(&v17, &location);
-  v8 = v7;
+  v8 = lCopy;
   v15 = v8;
-  v9 = v6;
+  v9 = stringCopy;
   v16 = v9;
   v10 = [SWLoader loaderWithBlock:&v11];
   [(SWViewController *)self initiateLoadingWithLoader:v10, v11, v12, v13, v14];
@@ -322,57 +322,57 @@ id __43__SWViewController_loadHTMLString_baseURL___block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)loadLocalDatastore:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)loadLocalDatastore:(id)datastore options:(unint64_t)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v12 = [(SWViewController *)self localDatastoreManager];
-  v10 = [(SWViewController *)self sessionManager];
-  v11 = [v10 session];
-  [v12 updateDatastore:v9 originatingSession:v11 options:a4 completion:v8];
+  completionCopy = completion;
+  datastoreCopy = datastore;
+  localDatastoreManager = [(SWViewController *)self localDatastoreManager];
+  sessionManager = [(SWViewController *)self sessionManager];
+  session = [sessionManager session];
+  [localDatastoreManager updateDatastore:datastoreCopy originatingSession:session options:options completion:completionCopy];
 }
 
-- (void)initiateLoadingWithLoader:(id)a3
+- (void)initiateLoadingWithLoader:(id)loader
 {
-  [(SWViewController *)self setLoader:a3];
-  v4 = [(SWViewController *)self loader];
-  [v4 load];
+  [(SWViewController *)self setLoader:loader];
+  loader = [(SWViewController *)self loader];
+  [loader load];
 }
 
 - (BOOL)allowsRemoteInspection
 {
-  v2 = [(SWViewController *)self webView];
-  v3 = [v2 _allowsRemoteInspection];
+  webView = [(SWViewController *)self webView];
+  _allowsRemoteInspection = [webView _allowsRemoteInspection];
 
-  return v3;
+  return _allowsRemoteInspection;
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
-  v3 = [(SWViewController *)self terminationManager];
-  [v3 webContentProcessTerminated];
+  terminationManager = [(SWViewController *)self terminationManager];
+  [terminationManager webContentProcessTerminated];
 }
 
-- (void)_webView:(id)a3 navigation:(id)a4 didSameDocumentNavigation:(int64_t)a5
+- (void)_webView:(id)view navigation:(id)navigation didSameDocumentNavigation:(int64_t)documentNavigation
 {
-  v5 = [(SWViewController *)self documentStateReporter:a3];
+  v5 = [(SWViewController *)self documentStateReporter:view];
   [v5 documentIsReady];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v12 = a4;
-  v7 = a5;
-  if ([v12 navigationType])
+  actionCopy = action;
+  handlerCopy = handler;
+  if ([actionCopy navigationType])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(SWViewController *)self navigationManager];
-    v10 = [v12 request];
-    v11 = [v9 actionForRequest:v10];
+    navigationManager = [(SWViewController *)self navigationManager];
+    request = [actionCopy request];
+    v11 = [navigationManager actionForRequest:request];
 
     if (v11 > 2)
     {
@@ -382,62 +382,62 @@ id __43__SWViewController_loadHTMLString_baseURL___block_invoke_2(uint64_t a1)
     v8 = qword_1D7651930[v11];
   }
 
-  v7[2](v7, v8);
+  handlerCopy[2](handlerCopy, v8);
 LABEL_6:
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
-  v7 = [(SWViewController *)self errorReporter];
-  [v7 reportError:v6];
+  errorCopy = error;
+  errorReporter = [(SWViewController *)self errorReporter];
+  [errorReporter reportError:errorCopy];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
-  v7 = [(SWViewController *)self errorReporter];
-  [v7 reportError:v6];
+  errorCopy = error;
+  errorReporter = [(SWViewController *)self errorReporter];
+  [errorReporter reportError:errorCopy];
 }
 
-- (BOOL)webView:(id)a3 shouldPreviewElement:(id)a4
+- (BOOL)webView:(id)view shouldPreviewElement:(id)element
 {
-  v5 = a4;
-  v6 = [(SWViewController *)self navigationManager];
+  elementCopy = element;
+  navigationManager = [(SWViewController *)self navigationManager];
   v7 = MEMORY[0x1E696AF68];
-  v8 = [v5 linkURL];
+  linkURL = [elementCopy linkURL];
 
-  v9 = [v7 requestWithURL:v8];
-  LOBYTE(v7) = [v6 shouldPreviewRequest:v9];
+  v9 = [v7 requestWithURL:linkURL];
+  LOBYTE(v7) = [navigationManager shouldPreviewRequest:v9];
 
   return v7;
 }
 
-- (id)webView:(id)a3 previewingViewControllerForElement:(id)a4 defaultActions:(id)a5
+- (id)webView:(id)view previewingViewControllerForElement:(id)element defaultActions:(id)actions
 {
-  v6 = a4;
-  v7 = [(SWViewController *)self navigationManager];
+  elementCopy = element;
+  navigationManager = [(SWViewController *)self navigationManager];
   v8 = MEMORY[0x1E696AF68];
-  v9 = [v6 linkURL];
+  linkURL = [elementCopy linkURL];
 
-  v10 = [v8 requestWithURL:v9];
-  v11 = [v7 previewViewControllerForRequest:v10];
+  v10 = [v8 requestWithURL:linkURL];
+  v11 = [navigationManager previewViewControllerForRequest:v10];
 
   return v11;
 }
 
-- (void)webView:(id)a3 commitPreviewingViewController:(id)a4
+- (void)webView:(id)view commitPreviewingViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(SWViewController *)self navigationManager];
-  [v6 commitViewController:v5];
+  controllerCopy = controller;
+  navigationManager = [(SWViewController *)self navigationManager];
+  [navigationManager commitViewController:controllerCopy];
 }
 
 - (id)accessibilityElements
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SWViewController *)self webView];
-  v6[0] = v2;
+  webView = [(SWViewController *)self webView];
+  v6[0] = webView;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -447,49 +447,49 @@ LABEL_6:
 
 - (id)inputAccessoryView
 {
-  v2 = [(SWViewController *)self webView];
-  v3 = [v2 inputAccessoryView];
+  webView = [(SWViewController *)self webView];
+  inputAccessoryView = [webView inputAccessoryView];
 
-  return v3;
+  return inputAccessoryView;
 }
 
-- (void)setInputAccessoryView:(id)a3
+- (void)setInputAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [(SWViewController *)self webView];
-  [v5 setInputAccessoryView:v4];
+  viewCopy = view;
+  webView = [(SWViewController *)self webView];
+  [webView setInputAccessoryView:viewCopy];
 
-  v6 = [(SWViewController *)self firstResponder];
-  [v6 reloadInputViews];
+  firstResponder = [(SWViewController *)self firstResponder];
+  [firstResponder reloadInputViews];
 }
 
-- (void)setTextInputTraits:(id)a3
+- (void)setTextInputTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [(SWViewController *)self webView];
-  [v5 setTextInputTraits:v4];
+  traitsCopy = traits;
+  webView = [(SWViewController *)self webView];
+  [webView setTextInputTraits:traitsCopy];
 }
 
-- (void)setShortcutsBarWithLeadingGroups:(id)a3 trailingGroups:(id)a4
+- (void)setShortcutsBarWithLeadingGroups:(id)groups trailingGroups:(id)trailingGroups
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWViewController *)self webView];
-  [v8 setShortcutsBarWithLeadingGroups:v7 trailingGroups:v6];
+  trailingGroupsCopy = trailingGroups;
+  groupsCopy = groups;
+  webView = [(SWViewController *)self webView];
+  [webView setShortcutsBarWithLeadingGroups:groupsCopy trailingGroups:trailingGroupsCopy];
 }
 
-- (void)removeMenusForIdentifiers:(id)a3
+- (void)removeMenusForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(SWViewController *)self webView];
-  [v5 removeMenusForIdentifiers:v4];
+  identifiersCopy = identifiers;
+  webView = [(SWViewController *)self webView];
+  [webView removeMenusForIdentifiers:identifiersCopy];
 }
 
-- (void)setHiddenPocketEdges:(unint64_t)a3
+- (void)setHiddenPocketEdges:(unint64_t)edges
 {
-  v5 = [(SWViewController *)self webView];
-  v4 = [v5 scrollView];
-  [v4 _setHiddenPocketEdges:a3];
+  webView = [(SWViewController *)self webView];
+  scrollView = [webView scrollView];
+  [scrollView _setHiddenPocketEdges:edges];
 }
 
 @end

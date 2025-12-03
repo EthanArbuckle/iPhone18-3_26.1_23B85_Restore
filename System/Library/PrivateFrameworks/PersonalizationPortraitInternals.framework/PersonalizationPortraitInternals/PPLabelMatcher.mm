@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (PPLabelMatcher)init;
 - (id)_generateMap;
-- (unint64_t)matchFromLabel:(id)a3 toLabel:(id)a4;
+- (unint64_t)matchFromLabel:(id)label toLabel:(id)toLabel;
 @end
 
 @implementation PPLabelMatcher
@@ -132,21 +132,21 @@
   return v2;
 }
 
-- (unint64_t)matchFromLabel:(id)a3 toLabel:(id)a4
+- (unint64_t)matchFromLabel:(id)label toLabel:(id)toLabel
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  labelCopy = label;
+  toLabelCopy = toLabel;
+  v8 = toLabelCopy;
   v9 = 1;
-  if (v6 && v7)
+  if (labelCopy && toLabelCopy)
   {
-    v10 = [(NSDictionary *)self->_map objectForKeyedSubscript:v7];
+    v10 = [(NSDictionary *)self->_map objectForKeyedSubscript:toLabelCopy];
 
     if (v10)
     {
-      v11 = [(NSDictionary *)self->_map objectForKeyedSubscript:v6];
-      v12 = [v11 strong];
-      v13 = [v12 containsObject:v8];
+      v11 = [(NSDictionary *)self->_map objectForKeyedSubscript:labelCopy];
+      strong = [v11 strong];
+      v13 = [strong containsObject:v8];
 
       if (v13)
       {
@@ -155,15 +155,15 @@
 
       else
       {
-        v14 = [(NSDictionary *)self->_map objectForKeyedSubscript:v6];
-        v15 = [v14 weak];
-        v16 = [v15 containsObject:v8];
+        v14 = [(NSDictionary *)self->_map objectForKeyedSubscript:labelCopy];
+        weak = [v14 weak];
+        v16 = [weak containsObject:v8];
 
         v9 = v16;
       }
     }
 
-    else if ([v6 caseInsensitiveCompare:v8])
+    else if ([labelCopy caseInsensitiveCompare:v8])
     {
       v9 = 1;
     }
@@ -185,9 +185,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(PPLabelMatcher *)v2 _generateMap];
+    _generateMap = [(PPLabelMatcher *)v2 _generateMap];
     map = v3->_map;
-    v3->_map = v4;
+    v3->_map = _generateMap;
   }
 
   return v3;

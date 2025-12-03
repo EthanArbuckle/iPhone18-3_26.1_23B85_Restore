@@ -13,12 +13,12 @@
   {
     if ([v9 containsObject:v8])
     {
-      [a1 entry];
+      [self entry];
     }
 
     else
     {
-      [a1 disabledEntry];
+      [self disabledEntry];
     }
     v10 = ;
   }
@@ -40,9 +40,9 @@
   {
     if (([v11 containsObject:v10] & 1) == 0)
     {
-      v13 = [a1 disabledEntry];
+      disabledEntry = [self disabledEntry];
 
-      v12 = v13;
+      v12 = disabledEntry;
     }
 
     v14 = v12;

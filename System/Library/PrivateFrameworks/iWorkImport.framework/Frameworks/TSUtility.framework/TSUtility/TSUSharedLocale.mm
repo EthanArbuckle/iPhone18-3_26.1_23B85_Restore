@@ -1,10 +1,10 @@
 @interface TSUSharedLocale
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedLocale;
 - (TSUSharedLocale)init;
 - (__CFLocale)currentLocale;
-- (void)datePreferencesChanged:(id)a3;
+- (void)datePreferencesChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSUSharedLocale;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_27703E4BC;
   block[3] = &unk_27A701A20;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A639A8 != -1)
   {
     dispatch_once(&qword_280A639A8, block);
@@ -34,7 +34,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUSharedLocale allocWithZone:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSULocale.mm"];
@@ -112,9 +112,9 @@
   return result;
 }
 
-- (void)datePreferencesChanged:(id)a3
+- (void)datePreferencesChanged:(id)changed
 {
-  v7 = a3;
+  changedCopy = changed;
   mCurrentLocale = self->mCurrentLocale;
   self->mCurrentLocale = 0;
   __dmb(0xBu);

@@ -1,13 +1,13 @@
 @interface PXSmartAlbumLensModelCondition
-+ (id)defaultSingleQueryForEditingContext:(id)a3;
++ (id)defaultSingleQueryForEditingContext:(id)context;
 - (NSArray)lensModels;
 - (NSString)lensModel;
-- (void)setLensModel:(id)a3;
+- (void)setLensModel:(id)model;
 @end
 
 @implementation PXSmartAlbumLensModelCondition
 
-+ (id)defaultSingleQueryForEditingContext:(id)a3
++ (id)defaultSingleQueryForEditingContext:(id)context
 {
   v3 = objc_alloc_init(MEMORY[0x1E69BF300]);
   [v3 setKey:305];
@@ -17,36 +17,36 @@
   return v3;
 }
 
-- (void)setLensModel:(id)a3
+- (void)setLensModel:(id)model
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"lensModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumEXIFCondition.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"lensModel"}];
   }
 
-  v6 = [(PXSmartAlbumCondition *)self singleQuery];
-  [v6 setStringValue:v5];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  [singleQuery setStringValue:modelCopy];
   v7 = PLUIGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = modelCopy;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: lens model set to: %@", buf, 0xCu);
   }
 
-  v8 = [(PXSmartAlbumCondition *)self delegate];
-  [v8 conditionDidChange:self];
+  delegate = [(PXSmartAlbumCondition *)self delegate];
+  [delegate conditionDidChange:self];
 }
 
 - (NSString)lensModel
 {
-  v2 = [(PXSmartAlbumCondition *)self singleQuery];
-  v3 = [v2 stringValue];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  stringValue = [singleQuery stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (NSArray)lensModels
@@ -54,10 +54,10 @@
   lensModels = self->_lensModels;
   if (!lensModels)
   {
-    v4 = [(PXSmartAlbumCondition *)self editingContext];
-    v5 = [v4 lensModels];
+    editingContext = [(PXSmartAlbumCondition *)self editingContext];
+    lensModels = [editingContext lensModels];
     v6 = self->_lensModels;
-    self->_lensModels = v5;
+    self->_lensModels = lensModels;
 
     lensModels = self->_lensModels;
   }

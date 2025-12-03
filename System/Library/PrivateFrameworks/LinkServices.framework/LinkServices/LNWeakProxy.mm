@@ -1,12 +1,12 @@
 @interface LNWeakProxy
-- (LNWeakProxy)initWithValue:(id)a3;
-- (LNWeakProxy)initWithValue:(id)a3 wrapper:(id)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (LNWeakProxy)initWithValue:(id)value;
+- (LNWeakProxy)initWithValue:(id)value wrapper:(id)wrapper;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation LNWeakProxy
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v5 = self->_value;
   if (v5)
@@ -30,16 +30,16 @@
 
   v7 = v6;
 
-  v8 = [v7 value];
+  value = [v7 value];
 
-  if (v8)
+  if (value)
   {
     wrapper = self->_wrapper;
 
     if (wrapper)
     {
       v10 = self->_wrapper;
-      v11 = NSStringFromSelector(a3);
+      v11 = NSStringFromSelector(selector);
       v10[2](v10, v11, self->_value);
     }
   }
@@ -49,13 +49,13 @@
   return value;
 }
 
-- (LNWeakProxy)initWithValue:(id)a3 wrapper:(id)a4
+- (LNWeakProxy)initWithValue:(id)value wrapper:(id)wrapper
 {
-  v6 = a4;
-  v7 = [(LNWeakProxy *)self initWithValue:a3];
+  wrapperCopy = wrapper;
+  v7 = [(LNWeakProxy *)self initWithValue:value];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(wrapperCopy);
     wrapper = v7->_wrapper;
     v7->_wrapper = v8;
 
@@ -65,15 +65,15 @@
   return v7;
 }
 
-- (LNWeakProxy)initWithValue:(id)a3
+- (LNWeakProxy)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = LNWeakProxy;
   v5 = [(LNWeakProxy *)&v10 init];
   if (v5)
   {
-    v6 = [[LNLoggingProxy alloc] initWithValue:v4];
+    v6 = [[LNLoggingProxy alloc] initWithValue:valueCopy];
     value = v5->_value;
     v5->_value = v6;
 

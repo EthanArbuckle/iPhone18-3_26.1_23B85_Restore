@@ -1,7 +1,7 @@
 @interface VCWeakObjectHolder
-+ (id)weakObjectHolderWithObject:(id)a3;
++ (id)weakObjectHolderWithObject:(id)object;
 - (VCWeakObjectHolder)init;
-- (VCWeakObjectHolder)initWithObject:(id)a3;
+- (VCWeakObjectHolder)initWithObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   return 0;
 }
 
-- (VCWeakObjectHolder)initWithObject:(id)a3
+- (VCWeakObjectHolder)initWithObject:(id)object
 {
   v7.receiver = self;
   v7.super_class = VCWeakObjectHolder;
@@ -23,16 +23,16 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_weakObject, a3);
+    objc_storeWeak(&v4->_weakObject, object);
     FigCFWeakReferenceStore();
   }
 
   return v5;
 }
 
-+ (id)weakObjectHolderWithObject:(id)a3
++ (id)weakObjectHolderWithObject:(id)object
 {
-  v3 = [[VCWeakObjectHolder alloc] initWithObject:a3];
+  v3 = [[VCWeakObjectHolder alloc] initWithObject:object];
 
   return v3;
 }

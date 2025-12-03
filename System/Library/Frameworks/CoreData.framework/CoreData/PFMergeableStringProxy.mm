@@ -1,26 +1,26 @@
 @interface PFMergeableStringProxy
-- (PFMergeableStringProxy)initWithContainer:(id)a3 key:(id)a4 mergeableString:(id)a5;
+- (PFMergeableStringProxy)initWithContainer:(id)container key:(id)key mergeableString:(id)string;
 - (uint64_t)performOperation:(uint64_t)result;
-- (void)appendString:(id)a3;
+- (void)appendString:(id)string;
 - (void)dealloc;
-- (void)insertString:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeSubrange:(_NSRange)a3;
-- (void)replaceSubrange:(_NSRange)a3 withString:(id)a4;
-- (void)setString:(id)a3;
+- (void)insertString:(id)string atIndex:(unint64_t)index;
+- (void)removeSubrange:(_NSRange)subrange;
+- (void)replaceSubrange:(_NSRange)subrange withString:(id)string;
+- (void)setString:(id)string;
 @end
 
 @implementation PFMergeableStringProxy
 
-- (PFMergeableStringProxy)initWithContainer:(id)a3 key:(id)a4 mergeableString:(id)a5
+- (PFMergeableStringProxy)initWithContainer:(id)container key:(id)key mergeableString:(id)string
 {
   v10.receiver = self;
   v10.super_class = PFMergeableStringProxy;
   v8 = [(PFMergeableStringProxy *)&v10 init];
   if (v8)
   {
-    v8->_container = a3;
-    v8->_key = [a4 copy];
-    v8->_mergeableString = a5;
+    v8->_container = container;
+    v8->_key = [key copy];
+    v8->_mergeableString = string;
   }
 
   return v8;
@@ -63,60 +63,60 @@
   return result;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __39__PFMergeableStringProxy_appendString___block_invoke;
   v3[3] = &unk_1E6EC1600;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = string;
   [(PFMergeableStringProxy *)self performOperation:v3];
 }
 
-- (void)insertString:(id)a3 atIndex:(unint64_t)a4
+- (void)insertString:(id)string atIndex:(unint64_t)index
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__PFMergeableStringProxy_insertString_atIndex___block_invoke;
   v4[3] = &unk_1E6EC1C40;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = string;
+  v4[6] = index;
   [(PFMergeableStringProxy *)self performOperation:v4];
 }
 
-- (void)removeSubrange:(_NSRange)a3
+- (void)removeSubrange:(_NSRange)subrange
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__PFMergeableStringProxy_removeSubrange___block_invoke;
   v3[3] = &unk_1E6EC1C68;
   v3[4] = self;
-  v4 = a3;
+  subrangeCopy = subrange;
   [(PFMergeableStringProxy *)self performOperation:v3];
 }
 
-- (void)replaceSubrange:(_NSRange)a3 withString:(id)a4
+- (void)replaceSubrange:(_NSRange)subrange withString:(id)string
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__PFMergeableStringProxy_replaceSubrange_withString___block_invoke;
   v4[3] = &unk_1E6EC1C90;
-  v5 = a3;
+  subrangeCopy = subrange;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = string;
   [(PFMergeableStringProxy *)self performOperation:v4];
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __36__PFMergeableStringProxy_setString___block_invoke;
   v3[3] = &unk_1E6EC1600;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = string;
   [(PFMergeableStringProxy *)self performOperation:v3];
 }
 

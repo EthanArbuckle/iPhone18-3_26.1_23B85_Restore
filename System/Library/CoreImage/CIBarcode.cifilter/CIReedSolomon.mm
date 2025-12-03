@@ -1,16 +1,16 @@
 @interface CIReedSolomon
-- ($B716781559FB179C01A6A83DB44EE660)addOrSubtractPoly:(id *)a3 with:(id *)a4;
-- ($B716781559FB179C01A6A83DB44EE660)buildGenerator:(int)a3;
-- ($B716781559FB179C01A6A83DB44EE660)copyPoly:(id *)a3;
-- ($B716781559FB179C01A6A83DB44EE660)createMonomial:(int)a3 coefficient:(int)a4;
-- ($B716781559FB179C01A6A83DB44EE660)divide:(id *)a3 by:(id *)a4;
-- ($B716781559FB179C01A6A83DB44EE660)multiplyPoly:(id *)a3 with:(id *)a4;
-- (BOOL)fillPoly:(id *)a3 coefficients:(int *)a4 length:(int)a5;
+- ($B716781559FB179C01A6A83DB44EE660)addOrSubtractPoly:(id *)poly with:(id *)with;
+- ($B716781559FB179C01A6A83DB44EE660)buildGenerator:(int)generator;
+- ($B716781559FB179C01A6A83DB44EE660)copyPoly:(id *)poly;
+- ($B716781559FB179C01A6A83DB44EE660)createMonomial:(int)monomial coefficient:(int)coefficient;
+- ($B716781559FB179C01A6A83DB44EE660)divide:(id *)divide by:(id *)by;
+- ($B716781559FB179C01A6A83DB44EE660)multiplyPoly:(id *)poly with:(id *)with;
+- (BOOL)fillPoly:(id *)poly coefficients:(int *)coefficients length:(int)length;
 - (id)initReedSolomon;
-- (int)inverse:(int)a3;
-- (int)multiply:(int)a3 with:(int)a4;
-- (int)polyCoefficient:(id *)a3 degree:(int)a4;
-- (void)clearPoly:(id *)a3;
+- (int)inverse:(int)inverse;
+- (int)multiply:(int)multiply with:(int)with;
+- (int)polyCoefficient:(id *)coefficient degree:(int)degree;
+- (void)clearPoly:(id *)poly;
 - (void)dealloc;
 @end
 
@@ -70,11 +70,11 @@ LABEL_13:
   return v10;
 }
 
-- (int)inverse:(int)a3
+- (int)inverse:(int)inverse
 {
-  if (a3)
+  if (inverse)
   {
-    return self->_expTable[255 - self->_logTable[a3]];
+    return self->_expTable[255 - self->_logTable[inverse]];
   }
 
   v4 = sub_D58();
@@ -86,33 +86,33 @@ LABEL_13:
   return 0x7FFFFFFF;
 }
 
-- (int)multiply:(int)a3 with:(int)a4
+- (int)multiply:(int)multiply with:(int)with
 {
   v4 = 0;
-  if (a3 && a4)
+  if (multiply && with)
   {
-    if (a3 == 1)
+    if (multiply == 1)
     {
-      return a4;
+      return with;
     }
 
-    else if (a4 == 1)
+    else if (with == 1)
     {
-      return a3;
+      return multiply;
     }
 
     else
     {
-      return self->_expTable[(self->_logTable[a4] + self->_logTable[a3]) % 255];
+      return self->_expTable[(self->_logTable[with] + self->_logTable[multiply]) % 255];
     }
   }
 
   return v4;
 }
 
-- ($B716781559FB179C01A6A83DB44EE660)createMonomial:(int)a3 coefficient:(int)a4
+- ($B716781559FB179C01A6A83DB44EE660)createMonomial:(int)monomial coefficient:(int)coefficient
 {
-  if (a3 < 0)
+  if (monomial < 0)
   {
     v11 = sub_D58();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -123,9 +123,9 @@ LABEL_13:
     return 0;
   }
 
-  if (a4)
+  if (coefficient)
   {
-    v6 = (a3 + 1);
+    v6 = (monomial + 1);
     v7 = malloc_type_calloc(v6, 4uLL, 0x100004052888210uLL);
     if (!v7)
     {
@@ -133,7 +133,7 @@ LABEL_13:
     }
 
     v8 = v7;
-    *v7 = a4;
+    *v7 = coefficient;
     v9 = malloc_type_calloc(1uLL, 0x10uLL, 0x1010040A1D9428BuLL);
     if (!v9)
     {
@@ -163,23 +163,23 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)fillPoly:(id *)a3 coefficients:(int *)a4 length:(int)a5
+- (BOOL)fillPoly:(id *)poly coefficients:(int *)coefficients length:(int)length
 {
-  if (a3 && (v5 = a4) != 0 && a5)
+  if (poly && (v5 = coefficients) != 0 && length)
   {
-    if (a5 < 2 || *a4)
+    if (length < 2 || *coefficients)
     {
-      a3->var1 = a5;
-      if (a3->var0)
+      poly->var1 = length;
+      if (poly->var0)
       {
-        free(a3->var0);
+        free(poly->var0);
       }
 
-      v8 = malloc_type_calloc(a5, 4uLL, 0x100004052888210uLL);
-      a3->var0 = v8;
+      v8 = malloc_type_calloc(length, 4uLL, 0x100004052888210uLL);
+      poly->var0 = v8;
       if (v8)
       {
-        v9 = 4 * a5;
+        v9 = 4 * length;
 LABEL_10:
         memcpy(v8, v5, v9);
 LABEL_11:
@@ -189,8 +189,8 @@ LABEL_11:
 
     else
     {
-      v5 = a4 + 1;
-      v11 = a5 - 1;
+      v5 = coefficients + 1;
+      v11 = length - 1;
       while (!*v5)
       {
         ++v5;
@@ -203,22 +203,22 @@ LABEL_11:
       if (!v11)
       {
 LABEL_25:
-        [(CIReedSolomon *)self clearPoly:a3];
+        [(CIReedSolomon *)self clearPoly:poly];
         goto LABEL_11;
       }
 
-      a3->var1 = v11;
-      if (a3->var0)
+      poly->var1 = v11;
+      if (poly->var0)
       {
-        free(a3->var0);
-        LODWORD(v11) = a3->var1;
+        free(poly->var0);
+        LODWORD(v11) = poly->var1;
       }
 
       v8 = malloc_type_calloc(v11, 4uLL, 0x100004052888210uLL);
-      a3->var0 = v8;
+      poly->var0 = v8;
       if (v8)
       {
-        v9 = 4 * a3->var1;
+        v9 = 4 * poly->var1;
         goto LABEL_10;
       }
     }
@@ -238,23 +238,23 @@ LABEL_25:
   return v8;
 }
 
-- (void)clearPoly:(id *)a3
+- (void)clearPoly:(id *)poly
 {
-  if (a3)
+  if (poly)
   {
-    free(a3->var0);
-    a3->var1 = 0;
+    free(poly->var0);
+    poly->var1 = 0;
   }
 }
 
-- (int)polyCoefficient:(id *)a3 degree:(int)a4
+- (int)polyCoefficient:(id *)coefficient degree:(int)degree
 {
-  if ((a4 & 0x80000000) == 0)
+  if ((degree & 0x80000000) == 0)
   {
-    var1 = a3->var1;
-    if (var1 > a4)
+    var1 = coefficient->var1;
+    if (var1 > degree)
     {
-      return a3->var0[var1 + ~a4];
+      return coefficient->var0[var1 + ~degree];
     }
   }
 
@@ -267,28 +267,28 @@ LABEL_25:
   return 0;
 }
 
-- ($B716781559FB179C01A6A83DB44EE660)copyPoly:(id *)a3
+- ($B716781559FB179C01A6A83DB44EE660)copyPoly:(id *)poly
 {
   v4 = malloc_type_calloc(1uLL, 0x10uLL, 0x1010040A1D9428BuLL);
   if (v4)
   {
-    var1 = a3->var1;
+    var1 = poly->var1;
     v4->var1 = var1;
     v6 = malloc_type_calloc(var1, 4uLL, 0x100004052888210uLL);
     v4->var0 = v6;
     if (v6)
     {
-      if (a3->var1 >= 1)
+      if (poly->var1 >= 1)
       {
         v7 = 0;
-        var0 = a3->var0;
+        var0 = poly->var0;
         do
         {
           v6[v7] = var0[v7];
           ++v7;
         }
 
-        while (v7 < a3->var1);
+        while (v7 < poly->var1);
       }
     }
 
@@ -302,25 +302,25 @@ LABEL_25:
   return v4;
 }
 
-- ($B716781559FB179C01A6A83DB44EE660)addOrSubtractPoly:(id *)a3 with:(id *)a4
+- ($B716781559FB179C01A6A83DB44EE660)addOrSubtractPoly:(id *)poly with:(id *)with
 {
   var0 = 0;
-  if (!a3 || !a4)
+  if (!poly || !with)
   {
     return var0;
   }
 
-  if (![(CIReedSolomon *)self isZero:a3->var0, *&a3->var1])
+  if (![(CIReedSolomon *)self isZero:poly->var0, *&poly->var1])
   {
-    if ([(CIReedSolomon *)self isZero:a4->var0, *&a4->var1])
+    if ([(CIReedSolomon *)self isZero:with->var0, *&with->var1])
     {
-      v8 = self;
-      v9 = a3;
+      selfCopy2 = self;
+      withCopy3 = poly;
       goto LABEL_7;
     }
 
-    var1 = a3->var1;
-    v12 = a4->var1;
+    var1 = poly->var1;
+    v12 = with->var1;
     if (var1 <= v12)
     {
       v13 = v12;
@@ -333,36 +333,36 @@ LABEL_25:
 
     if (var1 <= v12)
     {
-      v14 = a3;
+      withCopy = poly;
     }
 
     else
     {
-      v14 = a4;
+      withCopy = with;
     }
 
     if (var1 <= v12)
     {
-      v15 = a4;
+      polyCopy3 = with;
     }
 
     else
     {
-      v15 = a3;
+      polyCopy3 = poly;
     }
 
-    var0 = v15->var0;
-    if (v15->var0)
+    var0 = polyCopy3->var0;
+    if (polyCopy3->var0)
     {
-      v16 = v14->var0;
+      v16 = withCopy->var0;
       if (var1 >= v12)
       {
-        v17 = a4->var1;
+        v17 = with->var1;
       }
 
       else
       {
-        v17 = a3->var1;
+        v17 = poly->var1;
       }
 
       v18 = malloc_type_calloc(v13, 4uLL, 0x100004052888210uLL);
@@ -416,19 +416,19 @@ LABEL_25:
     return var0;
   }
 
-  v8 = self;
-  v9 = a4;
+  selfCopy2 = self;
+  withCopy3 = with;
 LABEL_7:
 
-  return [(CIReedSolomon *)v8 copyPoly:v9];
+  return [(CIReedSolomon *)selfCopy2 copyPoly:withCopy3];
 }
 
-- ($B716781559FB179C01A6A83DB44EE660)multiplyPoly:(id *)a3 with:(id *)a4
+- ($B716781559FB179C01A6A83DB44EE660)multiplyPoly:(id *)poly with:(id *)with
 {
   result = 0;
-  if (a3 && a4)
+  if (poly && with)
   {
-    if ([(CIReedSolomon *)self isZero:a3->var0, *&a3->var1]|| [(CIReedSolomon *)self isZero:a4->var0, *&a4->var1])
+    if ([(CIReedSolomon *)self isZero:poly->var0, *&poly->var1]|| [(CIReedSolomon *)self isZero:with->var0, *&with->var1])
     {
       result = malloc_type_calloc(1uLL, 0x10uLL, 0x1010040A1D9428BuLL);
       if (result)
@@ -439,10 +439,10 @@ LABEL_7:
 
     else
     {
-      var1 = a3->var1;
-      var0 = a4->var0;
-      v20 = a3->var0;
-      v9 = a4->var1;
+      var1 = poly->var1;
+      var0 = with->var0;
+      v20 = poly->var0;
+      v9 = with->var1;
       result = malloc_type_calloc(var1 + v9 - 1, 4uLL, 0x100004052888210uLL);
       v18 = result;
       if (result)
@@ -497,21 +497,21 @@ LABEL_7:
   return result;
 }
 
-- ($B716781559FB179C01A6A83DB44EE660)divide:(id *)a3 by:(id *)a4
+- ($B716781559FB179C01A6A83DB44EE660)divide:(id *)divide by:(id *)by
 {
-  if (a3 && a4 && ![(CIReedSolomon *)self isZero:a4->var0, *&a4->var1])
+  if (divide && by && ![(CIReedSolomon *)self isZero:by->var0, *&by->var1])
   {
-    v9 = [(CIReedSolomon *)self copyPoly:a3];
-    v10 = [(CIReedSolomon *)self inverse:[(CIReedSolomon *)self polyCoefficient:a4 degree:[(CIReedSolomon *)self Degree:a4->var0, *&a4->var1]]];
+    v9 = [(CIReedSolomon *)self copyPoly:divide];
+    v10 = [(CIReedSolomon *)self inverse:[(CIReedSolomon *)self polyCoefficient:by degree:[(CIReedSolomon *)self Degree:by->var0, *&by->var1]]];
     while (1)
     {
       v11 = [(CIReedSolomon *)self Degree:v9->var0, *&v9->var1];
-      if (v11 < [(CIReedSolomon *)self Degree:a4->var0, *&a4->var1])
+      if (v11 < [(CIReedSolomon *)self Degree:by->var0, *&by->var1])
       {
         break;
       }
 
-      v12 = [(CIReedSolomon *)self multiplyByMonomial:a4 degree:[(CIReedSolomon *)self Degree:v9->var0 coefficient:*&v9->var1]- [(CIReedSolomon *)self Degree:a4->var0, *&a4->var1], [(CIReedSolomon *)self multiply:[(CIReedSolomon *)self polyCoefficient:v9 degree:[(CIReedSolomon *)self Degree:v9->var0 with:*&v9->var1]], v10]];
+      v12 = [(CIReedSolomon *)self multiplyByMonomial:by degree:[(CIReedSolomon *)self Degree:v9->var0 coefficient:*&v9->var1]- [(CIReedSolomon *)self Degree:by->var0, *&by->var1], [(CIReedSolomon *)self multiply:[(CIReedSolomon *)self polyCoefficient:v9 degree:[(CIReedSolomon *)self Degree:v9->var0 with:*&v9->var1]], v10]];
       v13 = [(CIReedSolomon *)self addOrSubtractPoly:v9 with:v12];
       [(CIReedSolomon *)self clearPoly:v12];
       free(v12);
@@ -550,18 +550,18 @@ LABEL_7:
   return v8;
 }
 
-- ($B716781559FB179C01A6A83DB44EE660)buildGenerator:(int)a3
+- ($B716781559FB179C01A6A83DB44EE660)buildGenerator:(int)generator
 {
   cachedGeneratorNum = self->_cachedGeneratorNum;
   cachedGenerators = self->_cachedGenerators;
-  if (cachedGeneratorNum > a3)
+  if (cachedGeneratorNum > generator)
   {
-    return &cachedGenerators[a3];
+    return &cachedGenerators[generator];
   }
 
   v8 = cachedGeneratorNum;
   v9 = &cachedGenerators[cachedGeneratorNum - 1];
-  v18 = a3 + 1;
+  v18 = generator + 1;
   v10 = (cachedGeneratorNum - 1);
   while (1)
   {
@@ -602,7 +602,7 @@ LABEL_7:
     ++cachedGeneratorNum;
     v10 = (v10 + 1);
     ++v8;
-    if (a3 == v10)
+    if (generator == v10)
     {
       self->_cachedGeneratorNum = v18;
       return &v17[v8 - 1];

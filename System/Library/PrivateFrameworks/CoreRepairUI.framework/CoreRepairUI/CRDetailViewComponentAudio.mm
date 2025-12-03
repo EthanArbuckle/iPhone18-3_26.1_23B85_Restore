@@ -37,17 +37,17 @@
   if (v2)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(CRUDetailViewComponent *)v2 locale];
-    v6 = [v5 localizedStringWithKey:@"AUDIO_KB_URL" defaultString:@"AUDIO_KB_URL"];
+    locale = [(CRUDetailViewComponent *)v2 locale];
+    v6 = [locale localizedStringWithKey:@"AUDIO_KB_URL" defaultString:@"AUDIO_KB_URL"];
     v7 = [v4 URLWithString:v6];
     [(CRUDetailViewComponent *)v3 setKbArticleURL:v7];
 
-    v8 = [(CRUDetailViewComponent *)v3 locale];
-    v9 = [v8 localizedStringWithKey:@"AUDIO_SETTINGS_TITLE" defaultString:@"AUDIO_SETTINGS_TITLE"];
+    locale2 = [(CRUDetailViewComponent *)v3 locale];
+    v9 = [locale2 localizedStringWithKey:@"AUDIO_SETTINGS_TITLE" defaultString:@"AUDIO_SETTINGS_TITLE"];
     [(CRUDetailViewComponent *)v3 setTitleText:v9];
 
-    v10 = [(CRUDetailViewComponent *)v3 locale];
-    v11 = [v10 localizedStringWithKey:@"AUDIO_DESC" defaultString:@"AUDIO_DESC"];
+    locale3 = [(CRUDetailViewComponent *)v3 locale];
+    v11 = [locale3 localizedStringWithKey:@"AUDIO_DESC" defaultString:@"AUDIO_DESC"];
     [(CRUDetailViewComponent *)v3 setInformativeText:v11];
   }
 

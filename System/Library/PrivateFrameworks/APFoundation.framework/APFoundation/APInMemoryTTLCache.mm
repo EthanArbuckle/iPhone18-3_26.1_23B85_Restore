@@ -1,13 +1,13 @@
 @interface APInMemoryTTLCache
-- (APInMemoryTTLCache)initWithExpirationInterval:(double)a3 flushQueue:(id)a4;
-- (BOOL)_updateMostRecentAccessForIdentifier:(id)a3;
-- (id)getObjectForIdentifier:(id)a3;
+- (APInMemoryTTLCache)initWithExpirationInterval:(double)interval flushQueue:(id)queue;
+- (BOOL)_updateMostRecentAccessForIdentifier:(id)identifier;
+- (id)getObjectForIdentifier:(id)identifier;
 - (void)_flushCacheStorage;
 - (void)_startFlushCacheTimer;
 - (void)_stopFlushCacheTimer;
 - (void)dealloc;
-- (void)recentlyAccessedObject:(id)a3;
-- (void)setObject:(id)a3;
+- (void)recentlyAccessedObject:(id)object;
+- (void)setObject:(id)object;
 @end
 
 @implementation APInMemoryTTLCache
@@ -15,16 +15,16 @@
 - (void)_startFlushCacheTimer
 {
   v29 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = objc_msgSend_flushCacheTimer(v2, v3, v4, v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_flushCacheTimer(selfCopy, v3, v4, v5);
   if (!v6)
   {
-    v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v2->_flushQueue);
-    objc_msgSend_setFlushCacheTimer_(v2, v7, v6, v8);
+    v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_flushQueue);
+    objc_msgSend_setFlushCacheTimer_(selfCopy, v7, v6, v8);
     if (v6)
     {
-      objc_initWeak(&location, v2);
+      objc_initWeak(&location, selfCopy);
       v21 = MEMORY[0x1E69E9820];
       v22 = 3221225472;
       v23 = sub_1BADC6CC8;
@@ -37,7 +37,7 @@
       v10 = APLogForCategory(0x15uLL);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v14 = objc_msgSend_queueLabel(v2, v11, v12, v13, v21, v22, v23, v24);
+        v14 = objc_msgSend_queueLabel(selfCopy, v11, v12, v13, v21, v22, v23, v24);
         *buf = 138543362;
         v28 = v14;
         _os_log_impl(&dword_1BADC1000, v10, OS_LOG_TYPE_DEBUG, "[%{public}@] Starting Cache Eviction Timer", buf, 0xCu);
@@ -52,7 +52,7 @@
       v15 = APLogForCategory(0x15uLL);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v19 = objc_msgSend_queueLabel(v2, v16, v17, v18);
+        v19 = objc_msgSend_queueLabel(selfCopy, v16, v17, v18);
         *buf = 138543362;
         v28 = v19;
         _os_log_impl(&dword_1BADC1000, v15, OS_LOG_TYPE_ERROR, "[%{public}@] Error: Could not create eviction timer!", buf, 0xCu);
@@ -63,7 +63,7 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v20 = *MEMORY[0x1E69E9840];
 }
 
@@ -197,31 +197,31 @@
 - (void)_stopFlushCacheTimer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = objc_msgSend_flushCacheTimer(v2, v3, v4, v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_flushCacheTimer(selfCopy, v3, v4, v5);
   v7 = v6;
   if (v6)
   {
     dispatch_source_cancel(v6);
-    objc_msgSend_setFlushCacheTimer_(v2, v8, 0, v9);
+    objc_msgSend_setFlushCacheTimer_(selfCopy, v8, 0, v9);
     v10 = APLogForCategory(0x15uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v14 = objc_msgSend_queueLabel(v2, v11, v12, v13);
+      v14 = objc_msgSend_queueLabel(selfCopy, v11, v12, v13);
       v16 = 138543362;
       v17 = v14;
       _os_log_impl(&dword_1BADC1000, v10, OS_LOG_TYPE_DEBUG, "[%{public}@] Stopping Cache Eviction Timer", &v16, 0xCu);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (APInMemoryTTLCache)initWithExpirationInterval:(double)a3 flushQueue:(id)a4
+- (APInMemoryTTLCache)initWithExpirationInterval:(double)interval flushQueue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   v29.receiver = self;
   v29.super_class = APInMemoryTTLCache;
   v8 = [(APInMemoryTTLCache *)&v29 init];
@@ -240,16 +240,16 @@
     lock = v8->_lock;
     v8->_lock = v19;
 
-    v21 = 0.0;
-    if (a3 >= 0.0)
+    intervalCopy = 0.0;
+    if (interval >= 0.0)
     {
-      v21 = a3;
+      intervalCopy = interval;
     }
 
-    v8->_timeout = v21;
-    objc_storeStrong(&v8->_flushQueue, a4);
+    v8->_timeout = intervalCopy;
+    objc_storeStrong(&v8->_flushQueue, queue);
     v22 = MEMORY[0x1E696AEC0];
-    label = dispatch_queue_get_label(v7);
+    label = dispatch_queue_get_label(queueCopy);
     v26 = objc_msgSend_stringWithFormat_(v22, v24, @"%s", v25, label);
     queueLabel = v8->_queueLabel;
     v8->_queueLabel = v26;
@@ -266,11 +266,11 @@
   [(APInMemoryTTLCache *)&v5 dealloc];
 }
 
-- (id)getObjectForIdentifier:(id)a3
+- (id)getObjectForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v9 = objc_msgSend_objectForKey_(self->_storage, v5, v4, v6);
-  if (v9 && objc_msgSend__updateMostRecentAccessForIdentifier_(self, v7, v4, v8))
+  identifierCopy = identifier;
+  v9 = objc_msgSend_objectForKey_(self->_storage, v5, identifierCopy, v6);
+  if (v9 && objc_msgSend__updateMostRecentAccessForIdentifier_(self, v7, identifierCopy, v8))
   {
     v13 = objc_msgSend_object(v9, v10, v11, v12);
   }
@@ -283,13 +283,13 @@
   return v13;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [APPurgeableCacheEntry alloc];
-  v40 = objc_msgSend_initWithObject_(v5, v6, v4, v7);
+  v40 = objc_msgSend_initWithObject_(v5, v6, objectCopy, v7);
   v11 = objc_msgSend_storage(self, v8, v9, v10);
-  v15 = objc_msgSend_identifier(v4, v12, v13, v14);
+  v15 = objc_msgSend_identifier(objectCopy, v12, v13, v14);
 
   objc_msgSend_setObject_forKey_(v11, v16, v40, v15);
   v20 = objc_msgSend_lock(self, v17, v18, v19);
@@ -305,20 +305,20 @@
   }
 }
 
-- (void)recentlyAccessedObject:(id)a3
+- (void)recentlyAccessedObject:(id)object
 {
-  v7 = objc_msgSend_identifier(a3, a2, a3, v3);
+  v7 = objc_msgSend_identifier(object, a2, object, v3);
   objc_msgSend__updateMostRecentAccessForIdentifier_(self, v5, v7, v6);
 }
 
-- (BOOL)_updateMostRecentAccessForIdentifier:(id)a3
+- (BOOL)_updateMostRecentAccessForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8 = objc_msgSend_date(MEMORY[0x1E695DF00], v5, v6, v7);
   objc_msgSend_timeIntervalSinceReferenceDate(v8, v9, v10, v11);
   v13 = v12;
 
-  v16 = objc_msgSend_objectForKey_(self->_storage, v14, v4, v15);
+  v16 = objc_msgSend_objectForKey_(self->_storage, v14, identifierCopy, v15);
   v20 = v16;
   if (!v16)
   {
@@ -331,7 +331,7 @@
     if (v13 - v21 >= self->_timeout)
     {
       v23 = objc_msgSend_storage(self, v17, v18, v19);
-      objc_msgSend_removeObjectForKey_(v23, v24, v4, v25);
+      objc_msgSend_removeObjectForKey_(v23, v24, identifierCopy, v25);
 
 LABEL_6:
       v22 = 0;

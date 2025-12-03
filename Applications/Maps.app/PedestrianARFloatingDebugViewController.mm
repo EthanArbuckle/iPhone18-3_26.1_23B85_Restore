@@ -11,9 +11,9 @@
 - (void)composeTTR;
 - (void)dealloc;
 - (void)detach;
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)setSession:(id)a3;
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)setSession:(id)session;
 - (void)startDebugInfoRefreshTimer;
 - (void)updateDebugText;
 - (void)updateViewForCurrentState;
@@ -22,21 +22,21 @@
 
 @implementation PedestrianARFloatingDebugViewController
 
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100EDD67C;
   block[3] = &unk_1016605F8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  draftCopy = draft;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = draftCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
@@ -124,12 +124,12 @@
     }
   }
 
-  v6 = [(PedestrianARFloatingDebugViewController *)self view];
-  [v6 setHidden:0];
+  view = [(PedestrianARFloatingDebugViewController *)self view];
+  [view setHidden:0];
 
-  v7 = [(PedestrianARFloatingDebugViewController *)self debugText];
-  v8 = [(PedestrianARFloatingDebugViewController *)self debugLabel];
-  [v8 setAttributedText:v7];
+  debugText = [(PedestrianARFloatingDebugViewController *)self debugText];
+  debugLabel = [(PedestrianARFloatingDebugViewController *)self debugLabel];
+  [debugLabel setAttributedText:debugText];
 }
 
 - (id)debugText
@@ -154,14 +154,14 @@
   v10 = [v8 initWithString:v9 attributes:v5];
   [v6 appendAttributedString:v10];
 
-  v11 = [(PedestrianARFloatingDebugViewController *)self platformController];
-  v12 = [v11 chromeViewController];
-  v13 = [v12 topContext];
+  platformController = [(PedestrianARFloatingDebugViewController *)self platformController];
+  chromeViewController = [platformController chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = topContext;
   }
 
   else
@@ -174,11 +174,11 @@
   v16 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v15 fullscreenViewController];
+    fullscreenViewController = [v15 fullscreenViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = fullscreenViewController;
     }
 
     else
@@ -190,25 +190,25 @@
   }
 
   v142 = v6;
-  v19 = [v16 mapView];
-  v141 = self;
-  if (v19)
+  mapView = [v16 mapView];
+  selfCopy = self;
+  if (mapView)
   {
-    v20 = v19;
+    mapView2 = mapView;
     v139 = v15;
   }
 
   else
   {
-    v21 = [(PedestrianARFloatingDebugViewController *)self platformController];
-    v22 = [v21 auxiliaryTasksManager];
-    v23 = [v22 auxilaryTaskForClass:objc_opt_class()];
+    platformController2 = [(PedestrianARFloatingDebugViewController *)self platformController];
+    auxiliaryTasksManager = [platformController2 auxiliaryTasksManager];
+    v23 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
-    v20 = [v23 mapView];
+    mapView2 = [v23 mapView];
 
     v24 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
     v25 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-    if (!v20)
+    if (!mapView2)
     {
       goto LABEL_16;
     }
@@ -226,8 +226,8 @@
 
   v29 = [NSAttributedString alloc];
   v25 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-  v30 = [v20 arWalkingDebugOutput];
-  v31 = [NSString stringWithFormat:@"\nVKMapView:\n%@", v30];
+  arWalkingDebugOutput = [mapView2 arWalkingDebugOutput];
+  v31 = [NSString stringWithFormat:@"\nVKMapView:\n%@", arWalkingDebugOutput];
   v32 = [v29 initWithString:v31 attributes:v28];
   [v6 appendAttributedString:v32];
 
@@ -243,49 +243,49 @@ LABEL_16:
   v38 = [v33 initWithString:v37 attributes:v5];
   [v6 appendAttributedString:v38];
 
-  v39 = v141;
-  v40 = [(PedestrianARFloatingDebugViewController *)v141 session];
-  v41 = [v40 configuration];
+  heading2 = selfCopy;
+  session = [(PedestrianARFloatingDebugViewController *)selfCopy session];
+  configuration = [session configuration];
   objc_opt_class();
   LOBYTE(v35) = objc_opt_isKindOfClass();
 
   v42 = v25;
   if (v35)
   {
-    v43 = [(PedestrianARFloatingDebugViewController *)v141 session];
-    v44 = [v43 configuration];
-    v45 = [v44 fileURL];
-    v46 = [v45 path];
+    session2 = [(PedestrianARFloatingDebugViewController *)selfCopy session];
+    configuration2 = [session2 configuration];
+    fileURL = [configuration2 fileURL];
+    path = [fileURL path];
 
     v47 = objc_alloc(v24[408]);
-    v48 = [v25[459] stringWithFormat:@"\nAR Recording: %@", v46];
+    v48 = [v25[459] stringWithFormat:@"\nAR Recording: %@", path];
     v49 = [v47 initWithString:v48 attributes:v5];
     [v6 appendAttributedString:v49];
   }
 
-  v50 = [(PedestrianARFloatingDebugViewController *)v141 session];
-  v51 = [v50 configuration];
+  session3 = [(PedestrianARFloatingDebugViewController *)selfCopy session];
+  configuration3 = [session3 configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v53 = [(PedestrianARFloatingDebugViewController *)v141 session];
-    v54 = [v53 configuration];
-    v55 = [v54 fileURL];
-    v56 = [v55 path];
+    session4 = [(PedestrianARFloatingDebugViewController *)selfCopy session];
+    configuration4 = [session4 configuration];
+    fileURL2 = [configuration4 fileURL];
+    path2 = [fileURL2 path];
 
     v57 = objc_alloc(v24[408]);
-    v58 = [v25[459] stringWithFormat:@"\nAR Replay: %@", v56];
+    v58 = [v25[459] stringWithFormat:@"\nAR Replay: %@", path2];
     v59 = [v57 initWithString:v58 attributes:v5];
     [v6 appendAttributedString:v59];
   }
 
   v60 = +[MapsARSessionManager sharedManager];
-  v61 = [v60 currentSessionOwner];
+  currentSessionOwner = [v60 currentSessionOwner];
 
   v62 = objc_alloc(v24[408]);
-  v63 = [v25[459] stringWithFormat:@"\nCurrent session owner: %@\n", v61];
+  v63 = [v25[459] stringWithFormat:@"\nCurrent session owner: %@\n", currentSessionOwner];
   v64 = [v62 initWithString:v63 attributes:v5];
   [v6 appendAttributedString:v64];
 
@@ -297,9 +297,9 @@ LABEL_16:
   v147 = 0u;
   v148 = 0u;
   v66 = +[MapsARSessionManager sharedManager];
-  v67 = [v66 allSessionOwners];
+  allSessionOwners = [v66 allSessionOwners];
 
-  v68 = [v67 countByEnumeratingWithState:&v147 objects:v152 count:16];
+  v68 = [allSessionOwners countByEnumeratingWithState:&v147 objects:v152 count:16];
   if (v68)
   {
     v69 = v68;
@@ -310,12 +310,12 @@ LABEL_16:
       {
         if (*v148 != v70)
         {
-          objc_enumerationMutation(v67);
+          objc_enumerationMutation(allSessionOwners);
         }
 
-        v39 = *(*(&v147 + 1) + 8 * i);
+        heading2 = *(*(&v147 + 1) + 8 * i);
         v72 = objc_alloc(v24[408]);
-        v73 = [v42[459] stringWithFormat:@"%@\n", v39];
+        v73 = [v42[459] stringWithFormat:@"%@\n", heading2];
         v74 = [v72 initWithString:v73 attributes:v5];
         [v142 appendAttributedString:v74];
 
@@ -323,29 +323,29 @@ LABEL_16:
         v42 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
       }
 
-      v69 = [v67 countByEnumeratingWithState:&v147 objects:v152 count:16];
+      v69 = [allSessionOwners countByEnumeratingWithState:&v147 objects:v152 count:16];
     }
 
     while (v69);
   }
 
-  v75 = v141;
-  v76 = [(PedestrianARFloatingDebugViewController *)v141 session];
-  v77 = [v76 currentFrame];
+  v75 = selfCopy;
+  session5 = [(PedestrianARFloatingDebugViewController *)selfCopy session];
+  currentFrame = [session5 currentFrame];
 
-  if (v77)
+  if (currentFrame)
   {
     v78 = objc_alloc(v24[408]);
     v79 = v42[459];
-    [v77 heading];
+    [currentFrame heading];
     v81 = v80;
     v82 = +[MKLocationManager sharedLocationManager];
-    v83 = [v82 heading];
-    if (v83)
+    heading = [v82 heading];
+    if (heading)
     {
       v24 = +[MKLocationManager sharedLocationManager];
-      v39 = [(Class *)v24 heading];
-      [v39 trueHeading];
+      heading2 = [(Class *)v24 heading];
+      [heading2 trueHeading];
     }
 
     else
@@ -357,13 +357,13 @@ LABEL_16:
     v86 = [v78 initWithString:v85 attributes:v5];
     [v142 appendAttributedString:v86];
 
-    v75 = v141;
-    if (v83)
+    v75 = selfCopy;
+    if (heading)
     {
     }
 
-    v87 = [v77 camera];
-    [v87 transform];
+    camera = [currentFrame camera];
+    [camera transform];
     v140 = v88;
 
     v24 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
@@ -373,21 +373,21 @@ LABEL_16:
     v91 = [v89 initWithString:v90 attributes:v5];
     [v142 appendAttributedString:v91];
 
-    v92 = [v77 location];
+    location = [currentFrame location];
 
-    if (v92)
+    if (location)
     {
       v93 = [NSAttributedString alloc];
-      v94 = [v77 location];
-      [v94 coordinate];
+      location2 = [currentFrame location];
+      [location2 coordinate];
       v96 = v95;
-      v97 = [v77 location];
-      [v97 coordinate];
+      location3 = [currentFrame location];
+      [location3 coordinate];
       v99 = v98;
-      v100 = [v77 location];
-      [v100 altitude];
-      v102 = [NSString stringWithFormat:@" Coord(%.6f, %.6f, %.6f)", v96, v99, v101];;
-      v103 = [v93 initWithString:v102 attributes:v5];
+      location4 = [currentFrame location];
+      [location4 altitude];
+      v101 = [NSString stringWithFormat:@" Coord(%.6f, %.6f, %.6f)", v96, v99, v101];;
+      v103 = [v93 initWithString:v101 attributes:v5];
       [v142 appendAttributedString:v103];
 
       v24 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
@@ -395,33 +395,33 @@ LABEL_16:
     }
 
     v104 = [NSAttributedString alloc];
-    v105 = [v77 vlState];
-    [v105 timeSinceLastLocalization];
-    v107 = [NSString stringWithFormat:@"\nlast VL localization: %f", v106];
-    v108 = [v104 initWithString:v107 attributes:v5];
+    vlState = [currentFrame vlState];
+    [vlState timeSinceLastLocalization];
+    v106 = [NSString stringWithFormat:@"\nlast VL localization: %f", v106];
+    v108 = [v104 initWithString:v106 attributes:v5];
     [v142 appendAttributedString:v108];
   }
 
   v109 = objc_alloc(v24[408]);
   v110 = v42[459];
-  v111 = [(PedestrianARFloatingDebugViewController *)v75 pedestrianARSessionTask];
-  v112 = [v111 stateManager];
-  v113 = [v112 shouldShowPedestrianAR];
+  pedestrianARSessionTask = [(PedestrianARFloatingDebugViewController *)v75 pedestrianARSessionTask];
+  stateManager = [pedestrianARSessionTask stateManager];
+  shouldShowPedestrianAR = [stateManager shouldShowPedestrianAR];
   v114 = @"🔴";
-  if (v113)
+  if (shouldShowPedestrianAR)
   {
     v114 = @"🟢";
   }
 
-  v115 = [v110 stringWithFormat:@"\nCurrent UI state: \n%@\n", v114];
-  v116 = [v109 initWithString:v115 attributes:v5];
+  v114 = [v110 stringWithFormat:@"\nCurrent UI state: \n%@\n", v114];
+  v116 = [v109 initWithString:v114 attributes:v5];
   [v142 appendAttributedString:v116];
 
-  v117 = [(PedestrianARFloatingDebugViewController *)v75 pedestrianARSessionTask];
-  v118 = [v117 stateManager];
-  v119 = [v118 allMonitors];
-  v120 = [v119 allObjects];
-  v121 = [v120 sortedArrayUsingComparator:&stru_101658AC8];
+  pedestrianARSessionTask2 = [(PedestrianARFloatingDebugViewController *)v75 pedestrianARSessionTask];
+  stateManager2 = [pedestrianARSessionTask2 stateManager];
+  allMonitors = [stateManager2 allMonitors];
+  allObjects = [allMonitors allObjects];
+  v121 = [allObjects sortedArrayUsingComparator:&stru_101658AC8];
 
   v122 = v5;
   v123 = [objc_alloc(v24[408]) initWithString:@"\nState monitors:\n" attributes:v5];
@@ -449,19 +449,19 @@ LABEL_16:
         v129 = *(*(&v143 + 1) + 8 * j);
         v130 = objc_alloc(v24[408]);
         v131 = v42[459];
-        v132 = [v129 shouldShowPedestrianAR];
+        shouldShowPedestrianAR2 = [v129 shouldShowPedestrianAR];
         v133 = @"🔴";
-        if (v132)
+        if (shouldShowPedestrianAR2)
         {
           v133 = @"🟢";
         }
 
         v134 = v133;
         v135 = [v129 debugDescription];
-        v136 = [v131 stringWithFormat:@"%@ %@\n", v134, v135];
+        v135 = [v131 stringWithFormat:@"%@ %@\n", v134, v135];
 
         v42 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-        v137 = [v130 initWithString:v136 attributes:v122];
+        v137 = [v130 initWithString:v135 attributes:v122];
         [v142 appendAttributedString:v137];
 
         v24 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
@@ -478,9 +478,9 @@ LABEL_16:
 
 - (PedestrianARSessionTask)pedestrianARSessionTask
 {
-  v2 = [(PedestrianARFloatingDebugViewController *)self platformController];
-  v3 = [v2 auxiliaryTasksManager];
-  v4 = [v3 auxilaryTaskForClass:objc_opt_class()];
+  platformController = [(PedestrianARFloatingDebugViewController *)self platformController];
+  auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+  v4 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
   return v4;
 }
@@ -488,9 +488,9 @@ LABEL_16:
 - (id)platformController
 {
   v2 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v3 = [v2 platformController];
+  platformController = [v2 platformController];
 
-  return v3;
+  return platformController;
 }
 
 - (void)composeTTR
@@ -499,7 +499,7 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v40 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Will compose TTR", buf, 0xCu);
   }
 
@@ -582,19 +582,19 @@ LABEL_16:
   [v5 addAction:v20];
 
   v21 = +[UIApplication sharedMapsDelegate];
-  v22 = [v21 chromeViewController];
-  [v22 _maps_topMostPresentViewController:v5 animated:1 completion:0];
+  chromeViewController = [v21 chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:v5 animated:1 completion:0];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   session = self->_session;
-  v7 = v5;
-  if (session != v5)
+  v7 = sessionCopy;
+  if (session != sessionCopy)
   {
     [(ARSession *)session _removeObserver:self];
-    objc_storeStrong(&self->_session, a3);
+    objc_storeStrong(&self->_session, session);
     if ([(MapsFloatingDebugViewController *)self isAttached])
     {
       if ([(MapsFloatingDebugViewController *)self viewState]== 1)
@@ -636,21 +636,21 @@ LABEL_16:
   v6.receiver = self;
   v6.super_class = PedestrianARFloatingDebugViewController;
   [(MapsFloatingDebugViewController *)&v6 updateViewForCurrentState];
-  v3 = [(MapsFloatingDebugViewController *)self viewState];
-  if (v3 == 1)
+  viewState = [(MapsFloatingDebugViewController *)self viewState];
+  if (viewState == 1)
   {
-    v5 = [(PedestrianARFloatingDebugViewController *)self session];
-    [v5 _addObserver:self];
+    session = [(PedestrianARFloatingDebugViewController *)self session];
+    [session _addObserver:self];
 
     [(PedestrianARFloatingDebugViewController *)self updateDebugText];
     [(PedestrianARFloatingDebugViewController *)self startDebugInfoRefreshTimer];
   }
 
-  else if (!v3)
+  else if (!viewState)
   {
     [(PedestrianARFloatingDebugViewController *)self setDebugInfoRefreshTimer:0];
-    v4 = [(PedestrianARFloatingDebugViewController *)self session];
-    [v4 _removeObserver:self];
+    session2 = [(PedestrianARFloatingDebugViewController *)self session];
+    [session2 _removeObserver:self];
   }
 }
 
@@ -662,8 +662,8 @@ LABEL_16:
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:7 weight:3 scale:35.0];
   v4 = [UIImage systemImageNamed:@"arkit" withConfiguration:v3];
   v5 = [v4 imageWithRenderingMode:2];
-  v6 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v6 setImage:v5];
+  thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView setImage:v5];
 
   v28 = +[NSMutableArray array];
   v7 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -675,28 +675,28 @@ LABEL_16:
   debugLabel = self->_debugLabel;
   self->_debugLabel = v7;
 
-  v10 = [(MapsFloatingDebugViewController *)self contentView];
-  [v10 addSubview:self->_debugLabel];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  [contentView addSubview:self->_debugLabel];
 
-  v26 = [(UILabel *)self->_debugLabel topAnchor];
-  v27 = [(MapsFloatingDebugViewController *)self contentView];
-  v25 = [v27 topAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:5.0];
+  topAnchor = [(UILabel *)self->_debugLabel topAnchor];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v30[0] = v24;
-  v22 = [(UILabel *)self->_debugLabel bottomAnchor];
-  v23 = [(MapsFloatingDebugViewController *)self contentView];
-  v21 = [v23 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:-5.0];
+  bottomAnchor = [(UILabel *)self->_debugLabel bottomAnchor];
+  contentView3 = [(MapsFloatingDebugViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v30[1] = v20;
-  v11 = [(UILabel *)self->_debugLabel leadingAnchor];
-  v12 = [(MapsFloatingDebugViewController *)self contentView];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:5.0];
+  leadingAnchor = [(UILabel *)self->_debugLabel leadingAnchor];
+  contentView4 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
   v30[2] = v14;
-  v15 = [(UILabel *)self->_debugLabel trailingAnchor];
-  v16 = [(MapsFloatingDebugViewController *)self contentView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:-5.0];
+  trailingAnchor = [(UILabel *)self->_debugLabel trailingAnchor];
+  contentView5 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
   v30[3] = v18;
   v19 = [NSArray arrayWithObjects:v30 count:4];
   [v28 addObjectsFromArray:v19];

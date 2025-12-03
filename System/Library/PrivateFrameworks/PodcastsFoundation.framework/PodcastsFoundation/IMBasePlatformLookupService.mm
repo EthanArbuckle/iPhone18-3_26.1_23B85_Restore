@@ -3,7 +3,7 @@
 - (NSString)protocolVersion;
 - (id)baseUrl;
 - (id)urlRequest;
-- (void)performRequest:(id)a3;
+- (void)performRequest:(id)request;
 @end
 
 @implementation IMBasePlatformLookupService
@@ -49,43 +49,43 @@
     v4 = [MEMORY[0x1E695DFF8] URLWithString:@"https://client-api.itunes.apple.com/WebObjects/MZStorePlatform.woa/wa/"];
   }
 
-  v5 = [v4 pf_components];
-  v6 = [v5 path];
-  if ([v6 hasSuffix:@"lookup"])
+  pf_components = [v4 pf_components];
+  path = [pf_components path];
+  if ([path hasSuffix:@"lookup"])
   {
-    v7 = [v6 stringByDeletingLastPathComponent];
-    [v5 setPath:v7];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+    [pf_components setPath:stringByDeletingLastPathComponent];
   }
 
-  v8 = [v5 URL];
+  v8 = [pf_components URL];
 
   return v8;
 }
 
 - (id)urlRequest
 {
-  v3 = [(IMBasePlatformLookupService *)self baseUrl];
-  v4 = [(IMBasePlatformLookupService *)self platformAction];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  baseUrl = [(IMBasePlatformLookupService *)self baseUrl];
+  platformAction = [(IMBasePlatformLookupService *)self platformAction];
+  v5 = [baseUrl URLByAppendingPathComponent:platformAction];
 
   v6 = +[PFClientUtil clientIdentifier];
   v7 = [v5 pf_URLByAppendingQueryParameterKey:@"caller" value:v6];
 
   v8 = [v7 pf_URLByAppendingQueryParameterKey:@"platform" value:@"iphone"];
 
-  v9 = [(IMBasePlatformLookupService *)self protocolVersion];
-  v10 = [v8 pf_URLByAppendingQueryParameterKey:@"version" value:v9];
+  protocolVersion = [(IMBasePlatformLookupService *)self protocolVersion];
+  v10 = [v8 pf_URLByAppendingQueryParameterKey:@"version" value:protocolVersion];
 
   v11 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v10];
 
   return v11;
 }
 
-- (void)performRequest:(id)a3
+- (void)performRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(IMBasePlatformLookupService *)self urlRequest];
-  [(IMBaseStoreService *)self performUrlRequest:v5 callback:v4];
+  requestCopy = request;
+  urlRequest = [(IMBasePlatformLookupService *)self urlRequest];
+  [(IMBaseStoreService *)self performUrlRequest:urlRequest callback:requestCopy];
 }
 
 @end

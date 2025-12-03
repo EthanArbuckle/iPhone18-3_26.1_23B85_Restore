@@ -1,19 +1,19 @@
 @interface PUIPosterSnapshotBundlePredicate
-+ (id)predicateMatchingBundleWithPosterVersionLessThan:(unint64_t)a3 posterUUID:(id)a4;
-+ (id)predicateMatchingBundlesSimilarTo:(id)a3;
-+ (id)predicateMatchingContext:(id)a3;
++ (id)predicateMatchingBundleWithPosterVersionLessThan:(unint64_t)than posterUUID:(id)d;
++ (id)predicateMatchingBundlesSimilarTo:(id)to;
++ (id)predicateMatchingContext:(id)context;
 + (id)predicateMatchingCurrentSnapshotEpochAndVersion;
-+ (id)predicateMatchingRequest:(id)a3;
++ (id)predicateMatchingRequest:(id)request;
 + (id)truePredicate;
-- (BOOL)satisfiesPredicate:(id)a3;
+- (BOOL)satisfiesPredicate:(id)predicate;
 - (NSSet)componentsToEvaluate;
-- (PUIPosterSnapshotBundlePredicate)initWithCoder:(id)a3;
-- (PUIPosterSnapshotBundlePredicate)initWithType:(int64_t)a3;
+- (PUIPosterSnapshotBundlePredicate)initWithCoder:(id)coder;
+- (PUIPosterSnapshotBundlePredicate)initWithType:(int64_t)type;
 - (id)SQLitePredicate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)predicateApplyingOptions:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)predicateApplyingOptions:(int64_t)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIPosterSnapshotBundlePredicate
@@ -49,127 +49,127 @@ uint64_t __49__PUIPosterSnapshotBundlePredicate_truePredicate__block_invoke()
   return v2;
 }
 
-+ (id)predicateMatchingRequest:(id)a3
++ (id)predicateMatchingRequest:(id)request
 {
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [PUIPosterSnapshotBundlePredicate predicateMatchingRequest:a2];
   }
 
-  v5 = v4;
+  v5 = requestCopy;
   v6 = objc_opt_new();
-  v7 = [v5 snapshotDescriptor];
-  v8 = [v7 output];
+  snapshotDescriptor = [v5 snapshotDescriptor];
+  output = [snapshotDescriptor output];
 
-  if (v8)
+  if (output)
   {
-    v9 = [v8 snapshotDefinitionIdentifier];
-    [v6 setSnapshotDefinitionIdentifier:v9];
+    snapshotDefinitionIdentifier = [output snapshotDefinitionIdentifier];
+    [v6 setSnapshotDefinitionIdentifier:snapshotDefinitionIdentifier];
 
     v10 = MEMORY[0x1E696AD98];
-    [v8 persistenceScale];
+    [output persistenceScale];
     v11 = [v10 numberWithDouble:?];
     [v6 setPersistenceScale:v11];
   }
 
-  v12 = [v5 snapshotDescriptor];
-  v13 = [v12 sceneDescriptor];
+  snapshotDescriptor2 = [v5 snapshotDescriptor];
+  sceneDescriptor = [snapshotDescriptor2 sceneDescriptor];
 
-  if (v13)
+  if (sceneDescriptor)
   {
     v14 = MEMORY[0x1E696B098];
-    [v13 canvasBounds];
+    [sceneDescriptor canvasBounds];
     v17 = [v14 valueWithCGSize:{v15, v16}];
     [v6 setAssetSize:v17];
 
     v18 = MEMORY[0x1E696AD98];
-    v19 = [v13 displayConfiguration];
-    [v19 pointScale];
+    displayConfiguration = [sceneDescriptor displayConfiguration];
+    [displayConfiguration pointScale];
     v20 = [v18 numberWithDouble:?];
     [v6 setSnapshotScale:v20];
 
-    if ([v13 userInterfaceStyle])
+    if ([sceneDescriptor userInterfaceStyle])
     {
-      v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "userInterfaceStyle")}];
+      v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(sceneDescriptor, "userInterfaceStyle")}];
       [v6 setUserInterfaceStyle:v21];
     }
 
-    if ([v13 interfaceOrientation])
+    if ([sceneDescriptor interfaceOrientation])
     {
-      v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "interfaceOrientation")}];
+      v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(sceneDescriptor, "interfaceOrientation")}];
       [v6 setInterfaceOrientation:v22];
     }
 
-    if ([v13 deviceOrientation])
+    if ([sceneDescriptor deviceOrientation])
     {
-      v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "deviceOrientation")}];
+      v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(sceneDescriptor, "deviceOrientation")}];
       [v6 setDeviceOrientation:v23];
     }
 
-    if ([v13 accessibilityContrast] != -1)
+    if ([sceneDescriptor accessibilityContrast] != -1)
     {
-      v24 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "accessibilityContrast")}];
+      v24 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(sceneDescriptor, "accessibilityContrast")}];
       [v6 setAccessibilityContrast:v24];
     }
 
-    [v13 salientContentRectangle];
+    [sceneDescriptor salientContentRectangle];
     if (!CGRectIsInfinite(v49))
     {
-      [v13 salientContentRectangle];
+      [sceneDescriptor salientContentRectangle];
       if (!CGRectIsEmpty(v50))
       {
-        [v13 salientContentRectangle];
+        [sceneDescriptor salientContentRectangle];
         v25 = NSStringFromCGRect(v51);
         [v6 setSalientContentRectangle:v25];
       }
     }
 
-    v26 = [v13 contentOcclusionRectangles];
-    if (v26)
+    contentOcclusionRectangles = [sceneDescriptor contentOcclusionRectangles];
+    if (contentOcclusionRectangles)
     {
-      v27 = v26;
-      v28 = [v13 contentOcclusionRectangles];
-      v29 = [v28 isEmpty];
+      v27 = contentOcclusionRectangles;
+      contentOcclusionRectangles2 = [sceneDescriptor contentOcclusionRectangles];
+      isEmpty = [contentOcclusionRectangles2 isEmpty];
 
-      if ((v29 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
-        v30 = [v13 contentOcclusionRectangles];
-        [v6 setContentOcclusionRectangles:v30];
+        contentOcclusionRectangles3 = [sceneDescriptor contentOcclusionRectangles];
+        [v6 setContentOcclusionRectangles:contentOcclusionRectangles3];
       }
     }
   }
 
-  v31 = [v5 snapshotDescriptor];
-  v32 = [v31 analysis];
+  snapshotDescriptor3 = [v5 snapshotDescriptor];
+  analysis = [snapshotDescriptor3 analysis];
 
-  if (v32)
+  if (analysis)
   {
     v33 = MEMORY[0x1E696AD98];
-    v34 = [v5 snapshotDescriptor];
-    v35 = [v34 analysis];
-    v36 = [v33 numberWithBool:{objc_msgSend(v35, "determineColorStatistics")}];
+    snapshotDescriptor4 = [v5 snapshotDescriptor];
+    analysis2 = [snapshotDescriptor4 analysis];
+    v36 = [v33 numberWithBool:{objc_msgSend(analysis2, "determineColorStatistics")}];
     [v6 setHasColorStatistics:v36];
   }
 
-  v37 = [v5 path];
-  v38 = [v37 isServerPosterPath];
+  path = [v5 path];
+  isServerPosterPath = [path isServerPosterPath];
 
-  if (v38)
+  if (isServerPosterPath)
   {
-    v39 = [v5 path];
-    v40 = [v39 identity];
-    v41 = [v40 posterUUID];
-    [v6 setPosterUUID:v41];
+    path2 = [v5 path];
+    identity = [path2 identity];
+    posterUUID = [identity posterUUID];
+    [v6 setPosterUUID:posterUUID];
 
     v42 = MEMORY[0x1E696AD98];
-    v43 = [v39 identity];
-    v44 = [v42 numberWithUnsignedLongLong:{objc_msgSend(v43, "version")}];
+    identity2 = [path2 identity];
+    v44 = [v42 numberWithUnsignedLongLong:{objc_msgSend(identity2, "version")}];
     [v6 setPosterVersion:v44];
 
-    v45 = [v39 identity];
-    v46 = [v45 provider];
-    [v6 setPosterProvider:v46];
+    identity3 = [path2 identity];
+    provider = [identity3 provider];
+    [v6 setPosterProvider:provider];
   }
 
   [v6 setDateInterval:0];
@@ -177,31 +177,31 @@ uint64_t __49__PUIPosterSnapshotBundlePredicate_truePredicate__block_invoke()
   return v6;
 }
 
-+ (id)predicateMatchingContext:(id)a3
++ (id)predicateMatchingContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [PUIPosterSnapshotBundlePredicate predicateMatchingContext:a2];
   }
 
-  v5 = v4;
+  v5 = contextCopy;
   v6 = [[PUIPosterSnapshotBundlePredicate alloc] initWithType:2];
-  v7 = [v5 snapshotBundleUUID];
-  [(PUIPosterSnapshotBundlePredicate *)v6 setSnapshotBundleUUID:v7];
+  snapshotBundleUUID = [v5 snapshotBundleUUID];
+  [(PUIPosterSnapshotBundlePredicate *)v6 setSnapshotBundleUUID:snapshotBundleUUID];
 
   return v6;
 }
 
-+ (id)predicateMatchingBundlesSimilarTo:(id)a3
++ (id)predicateMatchingBundlesSimilarTo:(id)to
 {
-  v4 = a3;
-  if (!v4)
+  toCopy = to;
+  if (!toCopy)
   {
     [PUIPosterSnapshotBundlePredicate predicateMatchingBundlesSimilarTo:a2];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   v6 = objc_opt_new();
   v7 = MEMORY[0x1E696B098];
   [v5 assetSize];
@@ -219,8 +219,8 @@ uint64_t __49__PUIPosterSnapshotBundlePredicate_truePredicate__block_invoke()
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "deviceOrientation")}];
   [v6 setDeviceOrientation:v12];
 
-  v13 = [v5 snapshotDefinitionIdentifier];
-  [v6 setSnapshotDefinitionIdentifier:v13];
+  snapshotDefinitionIdentifier = [v5 snapshotDefinitionIdentifier];
+  [v6 setSnapshotDefinitionIdentifier:snapshotDefinitionIdentifier];
 
   v14 = MEMORY[0x1E696AD98];
   [v5 persistenceScale];
@@ -230,14 +230,14 @@ uint64_t __49__PUIPosterSnapshotBundlePredicate_truePredicate__block_invoke()
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "hasColorStatistics")}];
   [v6 setHasColorStatistics:v16];
 
-  v17 = [v5 posterUUID];
-  [v6 setPosterUUID:v17];
+  posterUUID = [v5 posterUUID];
+  [v6 setPosterUUID:posterUUID];
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "posterVersion")}];
   [v6 setPosterVersion:v18];
 
-  v19 = [v5 posterProvider];
-  [v6 setPosterProvider:v19];
+  posterProvider = [v5 posterProvider];
+  [v6 setPosterProvider:posterProvider];
 
   if ([v5 userInterfaceStyle])
   {
@@ -251,17 +251,17 @@ uint64_t __49__PUIPosterSnapshotBundlePredicate_truePredicate__block_invoke()
     [v6 setAccessibilityContrast:v21];
   }
 
-  v22 = [v5 contentOcclusionRectangles];
-  if (v22)
+  contentOcclusionRectangles = [v5 contentOcclusionRectangles];
+  if (contentOcclusionRectangles)
   {
-    v23 = v22;
-    v24 = [v5 contentOcclusionRectangles];
-    v25 = [v24 isEmpty];
+    v23 = contentOcclusionRectangles;
+    contentOcclusionRectangles2 = [v5 contentOcclusionRectangles];
+    isEmpty = [contentOcclusionRectangles2 isEmpty];
 
-    if ((v25 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
-      v26 = [v5 contentOcclusionRectangles];
-      [v6 setContentOcclusionRectangles:v26];
+      contentOcclusionRectangles3 = [v5 contentOcclusionRectangles];
+      [v6 setContentOcclusionRectangles:contentOcclusionRectangles3];
     }
   }
 
@@ -280,16 +280,16 @@ uint64_t __49__PUIPosterSnapshotBundlePredicate_truePredicate__block_invoke()
   return v6;
 }
 
-+ (id)predicateMatchingBundleWithPosterVersionLessThan:(unint64_t)a3 posterUUID:(id)a4
++ (id)predicateMatchingBundleWithPosterVersionLessThan:(unint64_t)than posterUUID:(id)d
 {
-  if (a3)
+  if (than)
   {
-    v5 = a4;
+    dCopy = d;
     v6 = [[PUIPosterSnapshotBundlePredicate alloc] initWithType:1];
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:than];
     [(PUIPosterSnapshotBundlePredicate *)v6 setPosterVersion:v7];
 
-    [(PUIPosterSnapshotBundlePredicate *)v6 setPosterUUID:v5];
+    [(PUIPosterSnapshotBundlePredicate *)v6 setPosterUUID:dCopy];
   }
 
   else
@@ -300,14 +300,14 @@ uint64_t __49__PUIPosterSnapshotBundlePredicate_truePredicate__block_invoke()
   return v6;
 }
 
-- (id)predicateApplyingOptions:(int64_t)a3
+- (id)predicateApplyingOptions:(int64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = [(PUIPosterSnapshotBundlePredicate *)self copy];
   v5 = v4;
-  if ((v3 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
-    if ((v3 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
       goto LABEL_3;
     }
@@ -316,10 +316,10 @@ uint64_t __49__PUIPosterSnapshotBundlePredicate_truePredicate__block_invoke()
   else
   {
     [v4 setSnapshotDefinitionIdentifier:0];
-    if ((v3 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
 LABEL_3:
-      if ((v3 & 8) != 0)
+      if ((optionsCopy & 8) != 0)
       {
         goto LABEL_4;
       }
@@ -329,10 +329,10 @@ LABEL_3:
   }
 
   [v5 setPersistenceScale:0];
-  if ((v3 & 8) != 0)
+  if ((optionsCopy & 8) != 0)
   {
 LABEL_4:
-    if ((v3 & 0x10) != 0)
+    if ((optionsCopy & 0x10) != 0)
     {
       goto LABEL_5;
     }
@@ -342,10 +342,10 @@ LABEL_4:
 
 LABEL_18:
   [v5 setHasColorStatistics:0];
-  if ((v3 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
 LABEL_5:
-    if ((v3 & 0x20) != 0)
+    if ((optionsCopy & 0x20) != 0)
     {
       goto LABEL_6;
     }
@@ -355,10 +355,10 @@ LABEL_5:
 
 LABEL_19:
   [v5 setAssetSize:0];
-  if ((v3 & 0x20) != 0)
+  if ((optionsCopy & 0x20) != 0)
   {
 LABEL_6:
-    if ((v3 & 0x40) != 0)
+    if ((optionsCopy & 0x40) != 0)
     {
       goto LABEL_7;
     }
@@ -368,10 +368,10 @@ LABEL_6:
 
 LABEL_20:
   [v5 setUserInterfaceStyle:0];
-  if ((v3 & 0x40) != 0)
+  if ((optionsCopy & 0x40) != 0)
   {
 LABEL_7:
-    if ((v3 & 0x80) != 0)
+    if ((optionsCopy & 0x80) != 0)
     {
       goto LABEL_8;
     }
@@ -381,10 +381,10 @@ LABEL_7:
 
 LABEL_21:
   [v5 setInterfaceOrientation:0];
-  if ((v3 & 0x80) != 0)
+  if ((optionsCopy & 0x80) != 0)
   {
 LABEL_8:
-    if ((v3 & 0x100) != 0)
+    if ((optionsCopy & 0x100) != 0)
     {
       goto LABEL_9;
     }
@@ -394,10 +394,10 @@ LABEL_8:
 
 LABEL_22:
   [v5 setDeviceOrientation:0];
-  if ((v3 & 0x100) != 0)
+  if ((optionsCopy & 0x100) != 0)
   {
 LABEL_9:
-    if ((v3 & 0x200) != 0)
+    if ((optionsCopy & 0x200) != 0)
     {
       goto LABEL_10;
     }
@@ -407,10 +407,10 @@ LABEL_9:
 
 LABEL_23:
   [v5 setAccessibilityContrast:0];
-  if ((v3 & 0x200) != 0)
+  if ((optionsCopy & 0x200) != 0)
   {
 LABEL_10:
-    if ((v3 & 0x400) != 0)
+    if ((optionsCopy & 0x400) != 0)
     {
       goto LABEL_11;
     }
@@ -420,10 +420,10 @@ LABEL_10:
 
 LABEL_24:
   [v5 setSnapshotScale:0];
-  if ((v3 & 0x400) != 0)
+  if ((optionsCopy & 0x400) != 0)
   {
 LABEL_11:
-    if ((v3 & 0x800) != 0)
+    if ((optionsCopy & 0x800) != 0)
     {
       goto LABEL_13;
     }
@@ -433,7 +433,7 @@ LABEL_11:
 
 LABEL_25:
   [v5 setSalientContentRectangle:0];
-  if ((v3 & 0x800) == 0)
+  if ((optionsCopy & 0x800) == 0)
   {
 LABEL_12:
     [v5 setContentOcclusionRectangles:0];
@@ -444,7 +444,7 @@ LABEL_13:
   return v5;
 }
 
-- (PUIPosterSnapshotBundlePredicate)initWithType:(int64_t)a3
+- (PUIPosterSnapshotBundlePredicate)initWithType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = PUIPosterSnapshotBundlePredicate;
@@ -452,7 +452,7 @@ LABEL_13:
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     snapshotBundleVersion = v4->_snapshotBundleVersion;
     v4->_snapshotBundleVersion = &unk_1F1C92910;
 
@@ -557,10 +557,10 @@ LABEL_13:
       [v3 addObject:@"PUIPosterSnapshotBundleInfoKeySaliencyRect"];
     }
 
-    v5 = [(PUIPosterSnapshotBundlePredicate *)self contentOcclusionRectangles];
-    v6 = [v5 isEmpty];
+    contentOcclusionRectangles = [(PUIPosterSnapshotBundlePredicate *)self contentOcclusionRectangles];
+    isEmpty = [contentOcclusionRectangles isEmpty];
 
-    if ((v6 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
       [v3 addObject:@"PUIPosterSnapshotBundleInfoKeyOcclusionRects"];
     }
@@ -568,17 +568,17 @@ LABEL_13:
     dateInterval = self->_dateInterval;
     if (dateInterval)
     {
-      v8 = [(NSDateInterval *)dateInterval startDate];
-      v9 = [MEMORY[0x1E695DF00] distantPast];
-      if ([v8 isEqualToDate:v9])
+      startDate = [(NSDateInterval *)dateInterval startDate];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
+      if ([startDate isEqualToDate:distantPast])
       {
       }
 
       else
       {
-        v10 = [(NSDateInterval *)self->_dateInterval endDate];
-        v11 = [MEMORY[0x1E695DF00] distantFuture];
-        v12 = [v10 isEqualToDate:v11];
+        endDate = [(NSDateInterval *)self->_dateInterval endDate];
+        distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+        v12 = [endDate isEqualToDate:distantFuture];
 
         if ((v12 & 1) == 0)
         {
@@ -606,14 +606,14 @@ LABEL_13:
   }
 
   [v3 appendString:v5 withName:@"type"];
-  v6 = [(PUIPosterSnapshotBundlePredicate *)self componentsToEvaluate];
-  v7 = [v6 bs_array];
-  v8 = [v3 activeMultilinePrefix];
-  [v3 appendArraySection:v7 withName:@"componentsToEvaluate" multilinePrefix:v8 skipIfEmpty:1 objectTransformer:&__block_literal_global_44_0];
+  componentsToEvaluate = [(PUIPosterSnapshotBundlePredicate *)self componentsToEvaluate];
+  bs_array = [componentsToEvaluate bs_array];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
+  [v3 appendArraySection:bs_array withName:@"componentsToEvaluate" multilinePrefix:activeMultilinePrefix skipIfEmpty:1 objectTransformer:&__block_literal_global_44_0];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 __CFString *__47__PUIPosterSnapshotBundlePredicate_description__block_invoke(uint64_t a1)
@@ -638,74 +638,74 @@ id __47__PUIPosterSnapshotBundlePredicate_description__block_invoke_2(uint64_t a
   return v3;
 }
 
-- (PUIPosterSnapshotBundlePredicate)initWithCoder:(id)a3
+- (PUIPosterSnapshotBundlePredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PUIPosterSnapshotBundlePredicate *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"_dateInterval"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_dateInterval"];
     dateInterval = v5->_dateInterval;
     v5->_dateInterval = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_assetSize"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_assetSize"];
     assetSize = v5->_assetSize;
     v5->_assetSize = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_persistenceScale"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_persistenceScale"];
     persistenceScale = v5->_persistenceScale;
     v5->_persistenceScale = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_posterProvider"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_posterProvider"];
     posterProvider = v5->_posterProvider;
     v5->_posterProvider = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_snapshotScale"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_snapshotScale"];
     snapshotScale = v5->_snapshotScale;
     v5->_snapshotScale = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_userInterfaceStyle"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_userInterfaceStyle"];
     userInterfaceStyle = v5->_userInterfaceStyle;
     v5->_userInterfaceStyle = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceOrientation"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceOrientation"];
     interfaceOrientation = v5->_interfaceOrientation;
     v5->_interfaceOrientation = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_deviceOrientation"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_deviceOrientation"];
     deviceOrientation = v5->_deviceOrientation;
     v5->_deviceOrientation = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_posterUUID"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_posterUUID"];
     posterUUID = v5->_posterUUID;
     v5->_posterUUID = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_posterVersion"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_posterVersion"];
     posterVersion = v5->_posterVersion;
     v5->_posterVersion = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_snapshotDefinitionIdentifier"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_snapshotDefinitionIdentifier"];
     snapshotDefinitionIdentifier = v5->_snapshotDefinitionIdentifier;
     v5->_snapshotDefinitionIdentifier = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hasColorStatistics"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hasColorStatistics"];
     hasColorStatistics = v5->_hasColorStatistics;
     v5->_hasColorStatistics = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_snapshotBundleUUID"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_snapshotBundleUUID"];
     snapshotBundleUUID = v5->_snapshotBundleUUID;
     v5->_snapshotBundleUUID = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accessibilityContrast"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accessibilityContrast"];
     accessibilityContrast = v5->_accessibilityContrast;
     v5->_accessibilityContrast = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_salientContentRectangle"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_salientContentRectangle"];
     salientContentRectangle = v5->_salientContentRectangle;
     v5->_salientContentRectangle = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contentOcclusionRectangles"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentOcclusionRectangles"];
     contentOcclusionRectangles = v5->_contentOcclusionRectangles;
     v5->_contentOcclusionRectangles = v37;
   }
@@ -713,34 +713,34 @@ id __47__PUIPosterSnapshotBundlePredicate_description__block_invoke_2(uint64_t a
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"_dateInterval"];
-  [v5 encodeObject:self->_assetSize forKey:@"_assetSize"];
-  [v5 encodeObject:self->_persistenceScale forKey:@"_persistenceScale"];
-  [v5 encodeObject:self->_posterProvider forKey:@"_posterProvider"];
-  [v5 encodeObject:self->_snapshotScale forKey:@"_snapshotScale"];
-  [v5 encodeObject:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
-  [v5 encodeObject:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
-  [v5 encodeObject:self->_deviceOrientation forKey:@"_deviceOrientation"];
-  [v5 encodeObject:self->_posterUUID forKey:@"_posterUUID"];
-  [v5 encodeObject:self->_posterVersion forKey:@"_posterVersion"];
-  [v5 encodeObject:self->_snapshotDefinitionIdentifier forKey:@"_snapshotDefinitionIdentifier"];
-  [v5 encodeObject:self->_hasColorStatistics forKey:@"_hasColorStatistics"];
-  [v5 encodeObject:self->_snapshotBundleUUID forKey:@"_snapshotBundleUUID"];
-  [v5 encodeObject:self->_accessibilityContrast forKey:@"_accessibilityContrast"];
-  [v5 encodeObject:self->_salientContentRectangle forKey:@"_salientContentRectangle"];
-  [v5 encodeObject:self->_contentOcclusionRectangles forKey:@"_contentOcclusionRectangles"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"_dateInterval"];
+  [coderCopy encodeObject:self->_assetSize forKey:@"_assetSize"];
+  [coderCopy encodeObject:self->_persistenceScale forKey:@"_persistenceScale"];
+  [coderCopy encodeObject:self->_posterProvider forKey:@"_posterProvider"];
+  [coderCopy encodeObject:self->_snapshotScale forKey:@"_snapshotScale"];
+  [coderCopy encodeObject:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
+  [coderCopy encodeObject:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
+  [coderCopy encodeObject:self->_deviceOrientation forKey:@"_deviceOrientation"];
+  [coderCopy encodeObject:self->_posterUUID forKey:@"_posterUUID"];
+  [coderCopy encodeObject:self->_posterVersion forKey:@"_posterVersion"];
+  [coderCopy encodeObject:self->_snapshotDefinitionIdentifier forKey:@"_snapshotDefinitionIdentifier"];
+  [coderCopy encodeObject:self->_hasColorStatistics forKey:@"_hasColorStatistics"];
+  [coderCopy encodeObject:self->_snapshotBundleUUID forKey:@"_snapshotBundleUUID"];
+  [coderCopy encodeObject:self->_accessibilityContrast forKey:@"_accessibilityContrast"];
+  [coderCopy encodeObject:self->_salientContentRectangle forKey:@"_salientContentRectangle"];
+  [coderCopy encodeObject:self->_contentOcclusionRectangles forKey:@"_contentOcclusionRectangles"];
 }
 
-- (BOOL)satisfiesPredicate:(id)a3
+- (BOOL)satisfiesPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4
-    && (([v4 snapshotCacheEpoch], (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, objc_msgSend(v5, "snapshotCacheEpoch"), v8 = objc_claimAutoreleasedReturnValue(), -[PUIPosterSnapshotBundlePredicate snapshotCacheEpoch](self, "snapshotCacheEpoch"), v9 = objc_claimAutoreleasedReturnValue(), v10 = BSEqualObjects(), v9, v8, v7, v10))
+  predicateCopy = predicate;
+  v5 = predicateCopy;
+  if (predicateCopy
+    && (([predicateCopy snapshotCacheEpoch], (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, objc_msgSend(v5, "snapshotCacheEpoch"), v8 = objc_claimAutoreleasedReturnValue(), -[PUIPosterSnapshotBundlePredicate snapshotCacheEpoch](self, "snapshotCacheEpoch"), v9 = objc_claimAutoreleasedReturnValue(), v10 = BSEqualObjects(), v9, v8, v7, v10))
     && (([v5 snapshotVersion], (v11 = objc_claimAutoreleasedReturnValue()) == 0) || (v12 = v11, objc_msgSend(v5, "snapshotVersion"), v13 = objc_claimAutoreleasedReturnValue(), -[PUIPosterSnapshotBundlePredicate snapshotVersion](self, "snapshotVersion"), v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, v12, v15))
     && (([v5 snapshotBundleVersion], (v16 = objc_claimAutoreleasedReturnValue()) == 0) || (v17 = v16, objc_msgSend(v5, "snapshotBundleVersion"), v18 = objc_claimAutoreleasedReturnValue(), -[PUIPosterSnapshotBundlePredicate snapshotBundleVersion](self, "snapshotBundleVersion"), v19 = objc_claimAutoreleasedReturnValue(), v20 = BSEqualObjects(), v19, v18, v17, v20))
     && (([v5 assetSize], (v21 = objc_claimAutoreleasedReturnValue()) == 0) || (v22 = v21, objc_msgSend(v5, "assetSize"), v23 = objc_claimAutoreleasedReturnValue(), -[PUIPosterSnapshotBundlePredicate assetSize](self, "assetSize"), v24 = objc_claimAutoreleasedReturnValue(), v25 = BSEqualObjects(), v24, v23, v22, v25))
@@ -759,12 +759,12 @@ id __47__PUIPosterSnapshotBundlePredicate_description__block_invoke_2(uint64_t a
     && (([v5 salientContentRectangle], (v86 = objc_claimAutoreleasedReturnValue()) == 0) || (v87 = v86, objc_msgSend(v5, "salientContentRectangle"), v88 = objc_claimAutoreleasedReturnValue(), -[PUIPosterSnapshotBundlePredicate salientContentRectangle](self, "salientContentRectangle"), v89 = objc_claimAutoreleasedReturnValue(), v90 = BSEqualObjects(), v89, v88, v87, v90))
     && (([v5 contentOcclusionRectangles], (v91 = objc_claimAutoreleasedReturnValue()) == 0) || (v92 = v91, objc_msgSend(v5, "contentOcclusionRectangles"), v93 = objc_claimAutoreleasedReturnValue(), -[PUIPosterSnapshotBundlePredicate contentOcclusionRectangles](self, "contentOcclusionRectangles"), v94 = objc_claimAutoreleasedReturnValue(), v95 = BSEqualObjects(), v94, v93, v92, v95)))
   {
-    v96 = [v5 dateInterval];
-    if (v96)
+    dateInterval = [v5 dateInterval];
+    if (dateInterval)
     {
-      v97 = v96;
-      v98 = [v5 dateInterval];
-      v99 = [(PUIPosterSnapshotBundlePredicate *)self dateInterval];
+      v97 = dateInterval;
+      dateInterval2 = [v5 dateInterval];
+      dateInterval3 = [(PUIPosterSnapshotBundlePredicate *)self dateInterval];
       v100 = BSEqualObjects();
     }
 
@@ -782,7 +782,7 @@ id __47__PUIPosterSnapshotBundlePredicate_description__block_invoke_2(uint64_t a
   return v100 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PUIPosterSnapshotBundlePredicate);
   v4->_type = self->_type;
@@ -808,18 +808,18 @@ id __47__PUIPosterSnapshotBundlePredicate_description__block_invoke_2(uint64_t a
 {
   v4 = +[_PUIPosterSnapshotCacheRecord pf_sqliteCodingDescriptor];
   v5 = +[_PUIPosterSnapshotCacheRecord bundleInfoKeyToColumnLookup];
-  v6 = [MEMORY[0x1E69C51D0] builder];
+  builder = [MEMORY[0x1E69C51D0] builder];
   if ([(PUIPosterSnapshotBundlePredicate *)self type]== 1)
   {
     v7 = [v4 columnForName:@"_posterVersion"];
-    v8 = [(PUIPosterSnapshotBundlePredicate *)self posterVersion];
-    v9 = [v6 whereColumn:v7 lessThan:v8];
+    posterVersion = [(PUIPosterSnapshotBundlePredicate *)self posterVersion];
+    v9 = [builder whereColumn:v7 lessThan:posterVersion];
 
     v10 = [v4 columnForName:@"_posterUUID"];
-    v11 = [(PUIPosterSnapshotBundlePredicate *)self posterUUID];
-    v12 = [v6 whereColumn:v10 equalTo:v11];
+    posterUUID = [(PUIPosterSnapshotBundlePredicate *)self posterUUID];
+    v12 = [builder whereColumn:v10 equalTo:posterUUID];
 
-    v13 = [v6 buildAndPredicate];
+    buildAndPredicate = [builder buildAndPredicate];
   }
 
   else
@@ -831,11 +831,11 @@ id __47__PUIPosterSnapshotBundlePredicate_description__block_invoke_2(uint64_t a
     v16[4] = self;
     v17 = v5;
     v18 = a2;
-    v14 = [v6 andPredicate:v16];
-    v13 = [v6 buildAndPredicate];
+    v14 = [builder andPredicate:v16];
+    buildAndPredicate = [builder buildAndPredicate];
   }
 
-  return v13;
+  return buildAndPredicate;
 }
 
 void __68__PUIPosterSnapshotBundlePredicate_SQLiteAdditions__SQLitePredicate__block_invoke(uint64_t a1, void *a2)

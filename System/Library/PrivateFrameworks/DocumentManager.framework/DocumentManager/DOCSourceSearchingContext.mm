@@ -1,19 +1,19 @@
 @interface DOCSourceSearchingContext
-- (DOCSourceSearchingContext)initWithMonitoringContext:(id)a3;
+- (DOCSourceSearchingContext)initWithMonitoringContext:(id)context;
 @end
 
 @implementation DOCSourceSearchingContext
 
-- (DOCSourceSearchingContext)initWithMonitoringContext:(id)a3
+- (DOCSourceSearchingContext)initWithMonitoringContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = DOCSourceSearchingContext;
   v6 = [(DOCSourceSearchingContext *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_monitoringContext, a3);
+    objc_storeStrong(&v6->_monitoringContext, context);
     v8 = v7;
   }
 

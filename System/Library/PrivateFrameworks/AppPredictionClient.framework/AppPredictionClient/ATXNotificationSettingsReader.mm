@@ -1,21 +1,21 @@
 @interface ATXNotificationSettingsReader
 - (ATXNotificationSettingsReader)init;
-- (ATXNotificationSettingsReader)initWithModeConfigurationClient:(id)a3 notificationSettingsCenter:(id)a4;
-- (BOOL)appIsOnAllowList:(id)a3 dndModeUUID:(id)a4;
-- (BOOL)appIsOnDenyList:(id)a3 dndModeUUID:(id)a4;
-- (BOOL)contactIsOnAllowList:(id)a3 dndModeUUID:(id)a4;
-- (BOOL)contactIsOnDenyList:(id)a3 dndModeUUID:(id)a4;
+- (ATXNotificationSettingsReader)initWithModeConfigurationClient:(id)client notificationSettingsCenter:(id)center;
+- (BOOL)appIsOnAllowList:(id)list dndModeUUID:(id)d;
+- (BOOL)appIsOnDenyList:(id)list dndModeUUID:(id)d;
+- (BOOL)contactIsOnAllowList:(id)list dndModeUUID:(id)d;
+- (BOOL)contactIsOnDenyList:(id)list dndModeUUID:(id)d;
 - (BOOL)digestSetupComplete;
-- (BOOL)doesAppAllowMessageBreakthrough:(id)a3;
-- (BOOL)doesAppSendNotificationsToDigest:(id)a3;
+- (BOOL)doesAppAllowMessageBreakthrough:(id)breakthrough;
+- (BOOL)doesAppSendNotificationsToDigest:(id)digest;
 - (id)allConfiguredDigestApps;
 - (id)areHighlightsEnabled;
 - (id)areSummariesEnabled;
-- (id)modeConfiguration:(id)a3;
+- (id)modeConfiguration:(id)configuration;
 - (id)notificationDigestDeliveryTimes;
 - (id)numConfiguredModes;
-- (unint64_t)applicationConfigurationTypeForDNDModeUUID:(id)a3 success:(BOOL *)a4;
-- (unint64_t)senderConfigurationTypeForDNDModeUUID:(id)a3 success:(BOOL *)a4;
+- (unint64_t)applicationConfigurationTypeForDNDModeUUID:(id)d success:(BOOL *)success;
+- (unint64_t)senderConfigurationTypeForDNDModeUUID:(id)d success:(BOOL *)success;
 @end
 
 @implementation ATXNotificationSettingsReader
@@ -23,38 +23,38 @@
 - (ATXNotificationSettingsReader)init
 {
   v3 = +[ATXDNDModeConfigurationClient sharedInstance];
-  v4 = [MEMORY[0x1E69DF278] currentNotificationSettingsCenter];
-  v5 = [(ATXNotificationSettingsReader *)self initWithModeConfigurationClient:v3 notificationSettingsCenter:v4];
+  currentNotificationSettingsCenter = [MEMORY[0x1E69DF278] currentNotificationSettingsCenter];
+  v5 = [(ATXNotificationSettingsReader *)self initWithModeConfigurationClient:v3 notificationSettingsCenter:currentNotificationSettingsCenter];
 
   return v5;
 }
 
-- (ATXNotificationSettingsReader)initWithModeConfigurationClient:(id)a3 notificationSettingsCenter:(id)a4
+- (ATXNotificationSettingsReader)initWithModeConfigurationClient:(id)client notificationSettingsCenter:(id)center
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  centerCopy = center;
   v12.receiver = self;
   v12.super_class = ATXNotificationSettingsReader;
   v9 = [(ATXNotificationSettingsReader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_modeConfigClient, a3);
-    objc_storeStrong(&v10->_notificationSettingsCenter, a4);
+    objc_storeStrong(&v9->_modeConfigClient, client);
+    objc_storeStrong(&v10->_notificationSettingsCenter, center);
   }
 
   return v10;
 }
 
-- (BOOL)appIsOnAllowList:(id)a3 dndModeUUID:(id)a4
+- (BOOL)appIsOnAllowList:(id)list dndModeUUID:(id)d
 {
-  v6 = a3;
-  v7 = [(ATXNotificationSettingsReader *)self modeConfiguration:a4];
+  listCopy = list;
+  v7 = [(ATXNotificationSettingsReader *)self modeConfiguration:d];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 configuration];
-    v10 = [v9 exceptionForApplication:v6] == 0;
+    configuration = [v7 configuration];
+    v10 = [configuration exceptionForApplication:listCopy] == 0;
   }
 
   else
@@ -65,15 +65,15 @@
   return v10;
 }
 
-- (BOOL)appIsOnDenyList:(id)a3 dndModeUUID:(id)a4
+- (BOOL)appIsOnDenyList:(id)list dndModeUUID:(id)d
 {
-  v6 = a3;
-  v7 = [(ATXNotificationSettingsReader *)self modeConfiguration:a4];
+  listCopy = list;
+  v7 = [(ATXNotificationSettingsReader *)self modeConfiguration:d];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 configuration];
-    v10 = [v9 exceptionForApplication:v6] == 1;
+    configuration = [v7 configuration];
+    v10 = [configuration exceptionForApplication:listCopy] == 1;
   }
 
   else
@@ -84,16 +84,16 @@
   return v10;
 }
 
-- (BOOL)contactIsOnAllowList:(id)a3 dndModeUUID:(id)a4
+- (BOOL)contactIsOnAllowList:(id)list dndModeUUID:(id)d
 {
-  v6 = a3;
-  v7 = [(ATXNotificationSettingsReader *)self modeConfiguration:a4];
+  listCopy = list;
+  v7 = [(ATXNotificationSettingsReader *)self modeConfiguration:d];
   if (v7)
   {
     v8 = objc_opt_new();
-    [v8 setContactIdentifier:v6];
-    v9 = [v7 configuration];
-    v10 = [v9 exceptionForContactHandle:v8] == 0;
+    [v8 setContactIdentifier:listCopy];
+    configuration = [v7 configuration];
+    v10 = [configuration exceptionForContactHandle:v8] == 0;
   }
 
   else
@@ -104,16 +104,16 @@
   return v10;
 }
 
-- (BOOL)contactIsOnDenyList:(id)a3 dndModeUUID:(id)a4
+- (BOOL)contactIsOnDenyList:(id)list dndModeUUID:(id)d
 {
-  v6 = a3;
-  v7 = [(ATXNotificationSettingsReader *)self modeConfiguration:a4];
+  listCopy = list;
+  v7 = [(ATXNotificationSettingsReader *)self modeConfiguration:d];
   if (v7)
   {
     v8 = objc_opt_new();
-    [v8 setContactIdentifier:v6];
-    v9 = [v7 configuration];
-    v10 = [v9 exceptionForContactHandle:v8] == 1;
+    [v8 setContactIdentifier:listCopy];
+    configuration = [v7 configuration];
+    v10 = [configuration exceptionForContactHandle:v8] == 1;
   }
 
   else
@@ -124,12 +124,12 @@
   return v10;
 }
 
-- (id)modeConfiguration:(id)a3
+- (id)modeConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v5 = [(ATXDNDModeConfigurationClient *)self->_modeConfigClient modeConfigurationForDNDModeWithUUID:v4];
+    v5 = [(ATXDNDModeConfigurationClient *)self->_modeConfigClient modeConfigurationForDNDModeWithUUID:configurationCopy];
     v6 = v5;
     if (v5)
     {
@@ -141,7 +141,7 @@
       v8 = __atxlog_handle_notification_management();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(ATXNotificationSettingsReader *)v4 modeConfiguration:v8];
+        [(ATXNotificationSettingsReader *)configurationCopy modeConfiguration:v8];
       }
     }
   }
@@ -154,94 +154,94 @@
   return v6;
 }
 
-- (unint64_t)applicationConfigurationTypeForDNDModeUUID:(id)a3 success:(BOOL *)a4
+- (unint64_t)applicationConfigurationTypeForDNDModeUUID:(id)d success:(BOOL *)success
 {
-  v5 = [(ATXNotificationSettingsReader *)self modeConfiguration:a3];
+  v5 = [(ATXNotificationSettingsReader *)self modeConfiguration:d];
   v6 = v5;
   if (v5)
   {
-    *a4 = 1;
-    v7 = [v5 configuration];
-    v8 = [v7 applicationConfigurationType];
+    *success = 1;
+    configuration = [v5 configuration];
+    applicationConfigurationType = [configuration applicationConfigurationType];
   }
 
   else
   {
-    *a4 = 0;
-    v8 = 2;
+    *success = 0;
+    applicationConfigurationType = 2;
   }
 
-  return v8;
+  return applicationConfigurationType;
 }
 
-- (unint64_t)senderConfigurationTypeForDNDModeUUID:(id)a3 success:(BOOL *)a4
+- (unint64_t)senderConfigurationTypeForDNDModeUUID:(id)d success:(BOOL *)success
 {
-  v5 = [(ATXNotificationSettingsReader *)self modeConfiguration:a3];
+  v5 = [(ATXNotificationSettingsReader *)self modeConfiguration:d];
   v6 = v5;
   if (v5)
   {
-    *a4 = 1;
-    v7 = [v5 configuration];
-    v8 = [v7 senderConfigurationType];
+    *success = 1;
+    configuration = [v5 configuration];
+    senderConfigurationType = [configuration senderConfigurationType];
   }
 
   else
   {
-    *a4 = 0;
-    v8 = 2;
+    *success = 0;
+    senderConfigurationType = 2;
   }
 
-  return v8;
+  return senderConfigurationType;
 }
 
 - (id)notificationDigestDeliveryTimes
 {
-  v2 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSystemSettings];
-  if ([v2 scheduledDeliverySetting] == 2)
+  notificationSystemSettings = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSystemSettings];
+  if ([notificationSystemSettings scheduledDeliverySetting] == 2)
   {
-    v3 = [v2 scheduledDeliveryTimes];
+    scheduledDeliveryTimes = [notificationSystemSettings scheduledDeliveryTimes];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    scheduledDeliveryTimes = MEMORY[0x1E695E0F0];
   }
 
-  return v3;
+  return scheduledDeliveryTimes;
 }
 
 - (BOOL)digestSetupComplete
 {
-  v2 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSystemSettings];
-  v3 = [v2 scheduledDeliverySetting] == 2;
+  notificationSystemSettings = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSystemSettings];
+  v3 = [notificationSystemSettings scheduledDeliverySetting] == 2;
 
   return v3;
 }
 
-- (BOOL)doesAppSendNotificationsToDigest:(id)a3
+- (BOOL)doesAppSendNotificationsToDigest:(id)digest
 {
-  v3 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSourceWithIdentifier:a3];
-  v4 = [v3 sourceSettings];
-  v5 = [v4 notificationSettings];
+  v3 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSourceWithIdentifier:digest];
+  sourceSettings = [v3 sourceSettings];
+  notificationSettings = [sourceSettings notificationSettings];
 
-  LOBYTE(v4) = [v5 scheduledDeliverySetting] == 2;
-  return v4;
+  LOBYTE(sourceSettings) = [notificationSettings scheduledDeliverySetting] == 2;
+  return sourceSettings;
 }
 
-- (BOOL)doesAppAllowMessageBreakthrough:(id)a3
+- (BOOL)doesAppAllowMessageBreakthrough:(id)breakthrough
 {
-  v3 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSourceWithIdentifier:a3];
-  v4 = [v3 sourceSettings];
-  v5 = [v4 notificationSettings];
+  v3 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSourceWithIdentifier:breakthrough];
+  sourceSettings = [v3 sourceSettings];
+  notificationSettings = [sourceSettings notificationSettings];
 
-  LOBYTE(v4) = [v5 directMessagesSetting] == 2;
-  return v4;
+  LOBYTE(sourceSettings) = [notificationSettings directMessagesSetting] == 2;
+  return sourceSettings;
 }
 
 - (id)allConfiguredDigestApps
 {
-  v2 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter allNotificationSources];
-  v3 = [v2 _pas_filteredSetWithTest:&__block_literal_global_42];
+  allNotificationSources = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter allNotificationSources];
+  v3 = [allNotificationSources _pas_filteredSetWithTest:&__block_literal_global_42];
   v4 = [v3 _pas_mappedSetWithTransform:&__block_literal_global_15];
   v5 = v4;
   if (v4)
@@ -279,11 +279,11 @@ BOOL __56__ATXNotificationSettingsReader_allConfiguredDigestApps__block_invoke(u
 
 - (id)numConfiguredModes
 {
-  v2 = [(ATXDNDModeConfigurationClient *)self->_modeConfigClient configuredModes];
-  v3 = v2;
-  if (v2)
+  configuredModes = [(ATXDNDModeConfigurationClient *)self->_modeConfigClient configuredModes];
+  v3 = configuredModes;
+  if (configuredModes)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v2, "count")}];
+    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(configuredModes, "count")}];
   }
 
   else
@@ -297,8 +297,8 @@ BOOL __56__ATXNotificationSettingsReader_allConfiguredDigestApps__block_invoke(u
 - (id)areHighlightsEnabled
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSystemSettings];
-  v4 = [v2 numberWithInt:{objc_msgSend(v3, "prioritizationSetting") == 2}];
+  notificationSystemSettings = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSystemSettings];
+  v4 = [v2 numberWithInt:{objc_msgSend(notificationSystemSettings, "prioritizationSetting") == 2}];
 
   return v4;
 }
@@ -306,8 +306,8 @@ BOOL __56__ATXNotificationSettingsReader_allConfiguredDigestApps__block_invoke(u
 - (id)areSummariesEnabled
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSystemSettings];
-  v4 = [v2 numberWithInt:{objc_msgSend(v3, "summarizationSetting") == 2}];
+  notificationSystemSettings = [(UNNotificationSettingsCenter *)self->_notificationSettingsCenter notificationSystemSettings];
+  v4 = [v2 numberWithInt:{objc_msgSend(notificationSystemSettings, "summarizationSetting") == 2}];
 
   return v4;
 }

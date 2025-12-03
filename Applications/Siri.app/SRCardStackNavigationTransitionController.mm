@@ -1,48 +1,48 @@
 @interface SRCardStackNavigationTransitionController
-- (CGAffineTransform)_calculateMoveFromPlatteredCardViewToBackgroundAffineTransformForPercentComplete:(SEL)a3 withSemanticContentAttribute:(double)a4;
-- (CGAffineTransform)_prepareFromPlatteredCardViewForTransitionWithContext:(SEL)a3;
+- (CGAffineTransform)_calculateMoveFromPlatteredCardViewToBackgroundAffineTransformForPercentComplete:(SEL)complete withSemanticContentAttribute:(double)attribute;
+- (CGAffineTransform)_prepareFromPlatteredCardViewForTransitionWithContext:(SEL)context;
 - (CGRect)_backgroundEmptyPlatterViewOriginalFrame;
-- (CGRect)_convertFrameForFromPlatteredCardView:(id)a3 toContainerView:(id)a4;
+- (CGRect)_convertFrameForFromPlatteredCardView:(id)view toContainerView:(id)containerView;
 - (CGRect)_fromPlatteredCardViewOriginalFrame;
-- (CGRect)_prepareBackgroundEmptyPlatteredViewForTransitionInContext:(id)a3;
-- (CGRect)_prepareToPlatteredCardViewForTransitionInContext:(id)a3;
-- (SRCardStackNavigationTransitionController)initWithCompactResultViewController:(id)a3;
+- (CGRect)_prepareBackgroundEmptyPlatteredViewForTransitionInContext:(id)context;
+- (CGRect)_prepareToPlatteredCardViewForTransitionInContext:(id)context;
+- (SRCardStackNavigationTransitionController)initWithCompactResultViewController:(id)controller;
 - (SiriSharedUICompactResultView)_compactResultView;
 - (UINavigationController)_navigationController;
-- (double)_transitionDurationForOperation:(int64_t)a3 context:(id)a4;
-- (double)transitionDuration:(id)a3;
-- (id)_backgroundPlatteredCardViewForOperation:(int64_t)a3 recentViewControllers:(id)a4;
-- (id)_fromPlatteredCardViewGivenFromViewController:(id)a3;
-- (id)_popTransitionContextGivenOriginalContext:(id)a3 revealedViewController:(id)a4 poppedViewController:(id)a5 duration:(double)a6;
-- (id)_safelyExtractSnippetPlatterViewControllerFromViewController:(id)a3;
-- (id)_toPlatteredCardViewGivenToViewController:(id)a3;
-- (id)interactionControllerForAnimationController:(id)a3;
-- (unint64_t)_expectedPopCountForTransitionContext:(id)a3;
-- (void)_animateMultiPopKeyframe:(unint64_t)a3 outOfTotalKeyframes:(unint64_t)a4 transitionContext:(id)a5 completion:(id)a6;
-- (void)_animateOnePopTransition:(id)a3 originalContext:(id)a4 andComplete:(BOOL)a5 completion:(id)a6;
-- (void)_animatePushTransition:(id)a3;
-- (void)_animateTransitionForOperation:(int64_t)a3 context:(id)a4;
-- (void)_panGestureRecognizerDidPan:(id)a3;
-- (void)_performPushTransitionFromViewController:(id)a3 andView:(id)a4 toViewController:(id)a5 andView:(id)a6 inContainerView:(id)a7 recentViewControllers:(id)a8 transitionDuration:(double)a9 animated:(BOOL)a10 transitionCompletion:(id)a11 completion:(id)a12;
-- (void)_recursivelyAnimateNextMultiPopKeyframe:(unint64_t)a3 outOfTotalKeyframes:(unint64_t)a4 transitionContext:(id)a5;
-- (void)_transitionWithContext:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)animateTransition:(id)a3;
-- (void)configureWithNavigationController:(id)a3;
+- (double)_transitionDurationForOperation:(int64_t)operation context:(id)context;
+- (double)transitionDuration:(id)duration;
+- (id)_backgroundPlatteredCardViewForOperation:(int64_t)operation recentViewControllers:(id)controllers;
+- (id)_fromPlatteredCardViewGivenFromViewController:(id)controller;
+- (id)_popTransitionContextGivenOriginalContext:(id)context revealedViewController:(id)controller poppedViewController:(id)viewController duration:(double)duration;
+- (id)_safelyExtractSnippetPlatterViewControllerFromViewController:(id)controller;
+- (id)_toPlatteredCardViewGivenToViewController:(id)controller;
+- (id)interactionControllerForAnimationController:(id)controller;
+- (unint64_t)_expectedPopCountForTransitionContext:(id)context;
+- (void)_animateMultiPopKeyframe:(unint64_t)keyframe outOfTotalKeyframes:(unint64_t)keyframes transitionContext:(id)context completion:(id)completion;
+- (void)_animateOnePopTransition:(id)transition originalContext:(id)context andComplete:(BOOL)complete completion:(id)completion;
+- (void)_animatePushTransition:(id)transition;
+- (void)_animateTransitionForOperation:(int64_t)operation context:(id)context;
+- (void)_panGestureRecognizerDidPan:(id)pan;
+- (void)_performPushTransitionFromViewController:(id)controller andView:(id)view toViewController:(id)viewController andView:(id)andView inContainerView:(id)containerView recentViewControllers:(id)controllers transitionDuration:(double)duration animated:(BOOL)self0 transitionCompletion:(id)self1 completion:(id)self2;
+- (void)_recursivelyAnimateNextMultiPopKeyframe:(unint64_t)keyframe outOfTotalKeyframes:(unint64_t)keyframes transitionContext:(id)context;
+- (void)_transitionWithContext:(id)context animated:(BOOL)animated completion:(id)completion;
+- (void)animateTransition:(id)transition;
+- (void)configureWithNavigationController:(id)controller;
 - (void)layout;
 @end
 
 @implementation SRCardStackNavigationTransitionController
 
-- (SRCardStackNavigationTransitionController)initWithCompactResultViewController:(id)a3
+- (SRCardStackNavigationTransitionController)initWithCompactResultViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SRCardStackNavigationTransitionController;
   v6 = [(SRCardStackNavigationTransitionController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_compactResultViewController, a3);
+    objc_storeStrong(&v6->_compactResultViewController, controller);
     v8 = [[UIPanGestureRecognizer alloc] initWithTarget:v7 action:"_panGestureRecognizerDidPan:"];
     panGestureRecognizer = v7->_panGestureRecognizer;
     v7->_panGestureRecognizer = v8;
@@ -51,76 +51,76 @@
   return v7;
 }
 
-- (void)configureWithNavigationController:(id)a3
+- (void)configureWithNavigationController:(id)controller
 {
-  v4 = a3;
-  [(SRCardStackNavigationTransitionController *)self _setNavigationController:v4];
-  [v4 setNavigationBarHidden:1];
+  controllerCopy = controller;
+  [(SRCardStackNavigationTransitionController *)self _setNavigationController:controllerCopy];
+  [controllerCopy setNavigationBarHidden:1];
 }
 
-- (id)interactionControllerForAnimationController:(id)a3
+- (id)interactionControllerForAnimationController:(id)controller
 {
   if ([(SRCardStackNavigationTransitionController *)self _isGesturing])
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)_animateTransitionForOperation:(int64_t)a3 context:(id)a4
+- (void)_animateTransitionForOperation:(int64_t)operation context:(id)context
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 1)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (operation == 1)
   {
-    v8 = v6;
-    v6 = [(SRCardStackNavigationTransitionController *)self _recursivelyAnimateNextMultiPopKeyframe:0 outOfTotalKeyframes:[(SRCardStackNavigationTransitionController *)self _expectedPopCountForTransitionContext:v6] transitionContext:v7];
+    v8 = contextCopy;
+    contextCopy = [(SRCardStackNavigationTransitionController *)self _recursivelyAnimateNextMultiPopKeyframe:0 outOfTotalKeyframes:[(SRCardStackNavigationTransitionController *)self _expectedPopCountForTransitionContext:contextCopy] transitionContext:v7];
   }
 
   else
   {
-    if (a3)
+    if (operation)
     {
       goto LABEL_6;
     }
 
-    v8 = v6;
-    v6 = [(SRCardStackNavigationTransitionController *)self _animatePushTransition:v6];
+    v8 = contextCopy;
+    contextCopy = [(SRCardStackNavigationTransitionController *)self _animatePushTransition:contextCopy];
   }
 
   v7 = v8;
 LABEL_6:
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(contextCopy, v7);
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(SRCardStackNavigationTransitionController *)self operation];
-  if (v5 == 2)
+  transitionCopy = transition;
+  operation = [(SRCardStackNavigationTransitionController *)self operation];
+  if (operation == 2)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
     goto LABEL_8;
   }
 
-  if (v5 == 1)
+  if (operation == 1)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
 LABEL_8:
-    [(SRCardStackNavigationTransitionController *)v6 _animateTransitionForOperation:v7 context:v4];
+    [(SRCardStackNavigationTransitionController *)selfCopy2 _animateTransitionForOperation:v7 context:transitionCopy];
     goto LABEL_9;
   }
 
-  if (!v5 && os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_FAULT))
+  if (!operation && os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_FAULT))
   {
     sub_1000CEDCC();
   }
@@ -128,32 +128,32 @@ LABEL_8:
 LABEL_9:
 }
 
-- (double)_transitionDurationForOperation:(int64_t)a3 context:(id)a4
+- (double)_transitionDurationForOperation:(int64_t)operation context:(id)context
 {
-  if (a3 != 1)
+  if (operation != 1)
   {
     return 0.5;
   }
 
-  v6 = [(SRCardStackNavigationTransitionController *)self _expectedPopCountForTransitionContext:a4, v4, v5];
+  v6 = [(SRCardStackNavigationTransitionController *)self _expectedPopCountForTransitionContext:context, v4, v5];
   return 0.5 / v6 + (v6 - 1) * 0.05;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v5 = a3;
-  v6 = [(SRCardStackNavigationTransitionController *)self operation];
-  switch(v6)
+  durationCopy = duration;
+  operation = [(SRCardStackNavigationTransitionController *)self operation];
+  switch(operation)
   {
     case 2:
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
       goto LABEL_8;
     case 1:
-      v7 = self;
+      selfCopy2 = self;
       v8 = 0;
 LABEL_8:
-      [(SRCardStackNavigationTransitionController *)v7 _transitionDurationForOperation:v8 context:v5];
+      [(SRCardStackNavigationTransitionController *)selfCopy2 _transitionDurationForOperation:v8 context:durationCopy];
       v3 = v9;
       break;
     case 0:
@@ -171,14 +171,14 @@ LABEL_8:
 
 - (void)layout
 {
-  v3 = [(SRCardStackNavigationTransitionController *)self _navigationController];
-  v4 = [v3 viewControllers];
+  _navigationController = [(SRCardStackNavigationTransitionController *)self _navigationController];
+  viewControllers = [_navigationController viewControllers];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4;
+  v5 = viewControllers;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -214,15 +214,15 @@ LABEL_8:
     while (v7);
   }
 
-  v11 = [v5 reverseObjectEnumerator];
-  v12 = [v11 allObjects];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v13 = [[SRUIFMutableStack alloc] initWithArray:v12];
+  v13 = [[SRUIFMutableStack alloc] initWithArray:allObjects];
   v14 = objc_alloc_init(SRUIFMutableStack);
-  v15 = [v13 popTopObject];
-  if (v15)
+  popTopObject = [v13 popTopObject];
+  if (popTopObject)
   {
-    [v14 pushObject:v15];
+    [v14 pushObject:popTopObject];
   }
 
   v19[0] = _NSConcreteStackBlock;
@@ -236,37 +236,37 @@ LABEL_8:
 
 - (SiriSharedUICompactResultView)_compactResultView
 {
-  v2 = [(SRCardStackNavigationTransitionController *)self compactResultViewController];
-  v3 = [v2 compactResultView];
+  compactResultViewController = [(SRCardStackNavigationTransitionController *)self compactResultViewController];
+  compactResultView = [compactResultViewController compactResultView];
 
-  return v3;
+  return compactResultView;
 }
 
-- (void)_performPushTransitionFromViewController:(id)a3 andView:(id)a4 toViewController:(id)a5 andView:(id)a6 inContainerView:(id)a7 recentViewControllers:(id)a8 transitionDuration:(double)a9 animated:(BOOL)a10 transitionCompletion:(id)a11 completion:(id)a12
+- (void)_performPushTransitionFromViewController:(id)controller andView:(id)view toViewController:(id)viewController andView:(id)andView inContainerView:(id)containerView recentViewControllers:(id)controllers transitionDuration:(double)duration animated:(BOOL)self0 transitionCompletion:(id)self1 completion:(id)self2
 {
-  v19 = a3;
-  v52 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v54 = a11;
+  controllerCopy = controller;
+  viewCopy = view;
+  viewControllerCopy = viewController;
+  andViewCopy = andView;
+  containerViewCopy = containerView;
+  controllersCopy = controllers;
+  completionCopy = completion;
   v24 = a12;
-  v51 = v23;
-  v25 = [(SRCardStackNavigationTransitionController *)self _backgroundPlatteredCardViewForOperation:0 recentViewControllers:v23];
-  v53 = v19;
-  v26 = [(SRCardStackNavigationTransitionController *)self _fromPlatteredCardViewGivenFromViewController:v19];
-  v27 = [(SRCardStackNavigationTransitionController *)self _toPlatteredCardViewGivenToViewController:v20];
-  [v22 bounds];
-  [v21 setFrame:?];
-  [v22 addSubview:v21];
+  v51 = controllersCopy;
+  v25 = [(SRCardStackNavigationTransitionController *)self _backgroundPlatteredCardViewForOperation:0 recentViewControllers:controllersCopy];
+  v53 = controllerCopy;
+  v26 = [(SRCardStackNavigationTransitionController *)self _fromPlatteredCardViewGivenFromViewController:controllerCopy];
+  v27 = [(SRCardStackNavigationTransitionController *)self _toPlatteredCardViewGivenToViewController:viewControllerCopy];
+  [containerViewCopy bounds];
+  [andViewCopy setFrame:?];
+  [containerViewCopy addSubview:andViewCopy];
   [v26 frame];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v36 = [v26 superview];
-  [v22 convertRect:v36 fromView:{v29, v31, v33, v35}];
+  superview = [v26 superview];
+  [containerViewCopy convertRect:superview fromView:{v29, v31, v33, v35}];
   [(SRCardStackNavigationTransitionController *)self _setFromPlatteredCardViewOriginalFrame:?];
 
   if (v25)
@@ -276,12 +276,12 @@ LABEL_8:
     v40 = v39;
     v42 = v41;
     v44 = v43;
-    v45 = [v25 superview];
-    [v22 convertRect:v45 fromView:{v38, v40, v42, v44}];
+    superview2 = [v25 superview];
+    [containerViewCopy convertRect:superview2 fromView:{v38, v40, v42, v44}];
     [(SRCardStackNavigationTransitionController *)self _setBackgroundEmptyPlatterViewOriginalFrame:?];
   }
 
-  v46 = [[SRCardStackNavigationTransitionContext alloc] initWithCompletion:v54];
+  v46 = [[SRCardStackNavigationTransitionContext alloc] initWithCompletion:completionCopy];
   [(SRCardStackNavigationTransitionContext *)v46 setPercentComplete:1.0];
   [(SRCardStackNavigationTransitionContext *)v46 setBackgroundPlatteredCardView:v25];
   [(SRCardStackNavigationTransitionController *)self _backgroundEmptyPlatterViewOriginalFrame];
@@ -290,8 +290,8 @@ LABEL_8:
   [(SRCardStackNavigationTransitionContext *)v46 setFromPlatteredCardViewOriginalFrame:?];
   [(SRCardStackNavigationTransitionContext *)v46 setFromPlatteredCardView:v26];
   [(SRCardStackNavigationTransitionContext *)v46 setToPlatteredCardView:v27];
-  [(SRCardStackNavigationTransitionContext *)v46 setContainerView:v22];
-  [(SRCardStackNavigationTransitionContext *)v46 setTransitionDuration:a9];
+  [(SRCardStackNavigationTransitionContext *)v46 setContainerView:containerViewCopy];
+  [(SRCardStackNavigationTransitionContext *)v46 setTransitionDuration:duration];
   objc_initWeak(location, self);
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
@@ -300,12 +300,12 @@ LABEL_8:
   objc_copyWeak(&v59, location);
   v47 = v46;
   v57 = v47;
-  v60 = a10;
+  animatedCopy = animated;
   v48 = v24;
   v58 = v48;
   v49 = objc_retainBlock(v56);
   v50 = v49;
-  if (a10)
+  if (animated)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -324,20 +324,20 @@ LABEL_8:
   objc_destroyWeak(location);
 }
 
-- (void)_animatePushTransition:(id)a3
+- (void)_animatePushTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v20 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v6 = [v4 viewForKey:UITransitionContextFromViewKey];
-  v7 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v8 = [v4 viewForKey:UITransitionContextToViewKey];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v20 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v6 = [transitionCopy viewForKey:UITransitionContextFromViewKey];
+  v7 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v8 = [transitionCopy viewForKey:UITransitionContextToViewKey];
   v9 = [(SRCardStackNavigationTransitionController *)self _toPlatteredCardViewGivenToViewController:v7];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10007D504;
   v29[3] = &unk_100168888;
-  v10 = v4;
+  v10 = transitionCopy;
   v30 = v10;
   v11 = objc_retainBlock(v29);
   objc_initWeak(&location, self);
@@ -350,52 +350,52 @@ LABEL_8:
   v22 = v12;
   v13 = v10;
   v23 = v13;
-  v14 = v5;
+  v14 = containerView;
   v24 = v14;
   v15 = v6;
   v25 = v15;
   v16 = v8;
   v26 = v16;
   v17 = objc_retainBlock(v21);
-  v18 = [(SRCardStackNavigationTransitionController *)self _recentViewControllers];
+  _recentViewControllers = [(SRCardStackNavigationTransitionController *)self _recentViewControllers];
   [(SRCardStackNavigationTransitionController *)self transitionDuration:v13];
   LOBYTE(v19) = 1;
-  [(SRCardStackNavigationTransitionController *)self _performPushTransitionFromViewController:v20 andView:v15 toViewController:v7 andView:v16 inContainerView:v14 recentViewControllers:v18 transitionDuration:v19 animated:v11 transitionCompletion:v17 completion:?];
+  [(SRCardStackNavigationTransitionController *)self _performPushTransitionFromViewController:v20 andView:v15 toViewController:v7 andView:v16 inContainerView:v14 recentViewControllers:_recentViewControllers transitionDuration:v19 animated:v11 transitionCompletion:v17 completion:?];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
 }
 
-- (void)_recursivelyAnimateNextMultiPopKeyframe:(unint64_t)a3 outOfTotalKeyframes:(unint64_t)a4 transitionContext:(id)a5
+- (void)_recursivelyAnimateNextMultiPopKeyframe:(unint64_t)keyframe outOfTotalKeyframes:(unint64_t)keyframes transitionContext:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007D730;
   v10[3] = &unk_100168A78;
-  v12[1] = a3;
-  v12[2] = a4;
+  v12[1] = keyframe;
+  v12[2] = keyframes;
   objc_copyWeak(v12, &location);
-  v9 = v8;
+  v9 = contextCopy;
   v11 = v9;
-  [(SRCardStackNavigationTransitionController *)self _animateMultiPopKeyframe:a3 outOfTotalKeyframes:a4 transitionContext:v9 completion:v10];
+  [(SRCardStackNavigationTransitionController *)self _animateMultiPopKeyframe:keyframe outOfTotalKeyframes:keyframes transitionContext:v9 completion:v10];
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
 }
 
-- (void)_animateMultiPopKeyframe:(unint64_t)a3 outOfTotalKeyframes:(unint64_t)a4 transitionContext:(id)a5 completion:(id)a6
+- (void)_animateMultiPopKeyframe:(unint64_t)keyframe outOfTotalKeyframes:(unint64_t)keyframes transitionContext:(id)context completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(SRCardStackNavigationTransitionController *)self _recentViewControllers];
-  v13 = [v12 count];
-  v14 = [v12 objectAtIndex:v13 - 1];
-  v15 = [v12 objectAtIndex:v13 - 2];
-  [(SRCardStackNavigationTransitionController *)self transitionDuration:v10];
-  v16 = [(SRCardStackNavigationTransitionController *)self _popTransitionContextGivenOriginalContext:v10 revealedViewController:v15 poppedViewController:v14 duration:?];
-  v17 = a4 - 1 == a3;
+  contextCopy = context;
+  completionCopy = completion;
+  _recentViewControllers = [(SRCardStackNavigationTransitionController *)self _recentViewControllers];
+  v13 = [_recentViewControllers count];
+  v14 = [_recentViewControllers objectAtIndex:v13 - 1];
+  v15 = [_recentViewControllers objectAtIndex:v13 - 2];
+  [(SRCardStackNavigationTransitionController *)self transitionDuration:contextCopy];
+  v16 = [(SRCardStackNavigationTransitionController *)self _popTransitionContextGivenOriginalContext:contextCopy revealedViewController:v15 poppedViewController:v14 duration:?];
+  v17 = keyframes - 1 == keyframe;
   objc_initWeak(&location, self);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -403,27 +403,27 @@ LABEL_8:
   v19[3] = &unk_100168AA0;
   v22 = v17;
   objc_copyWeak(&v21, &location);
-  v18 = v11;
+  v18 = completionCopy;
   v20 = v18;
-  [(SRCardStackNavigationTransitionController *)self _animateOnePopTransition:v16 originalContext:v10 andComplete:v17 completion:v19];
+  [(SRCardStackNavigationTransitionController *)self _animateOnePopTransition:v16 originalContext:contextCopy andComplete:v17 completion:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
 }
 
-- (id)_popTransitionContextGivenOriginalContext:(id)a3 revealedViewController:(id)a4 poppedViewController:(id)a5 duration:(double)a6
+- (id)_popTransitionContextGivenOriginalContext:(id)context revealedViewController:(id)controller poppedViewController:(id)viewController duration:(double)duration
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 containerView];
-  [v13 setClipsToBounds:0];
-  v14 = [(SRCardStackNavigationTransitionController *)self _fromPlatteredCardViewGivenFromViewController:v12];
+  contextCopy = context;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  containerView = [contextCopy containerView];
+  [containerView setClipsToBounds:0];
+  v14 = [(SRCardStackNavigationTransitionController *)self _fromPlatteredCardViewGivenFromViewController:controllerCopy];
 
-  v15 = [(SRCardStackNavigationTransitionController *)self _toPlatteredCardViewGivenToViewController:v11];
+  v15 = [(SRCardStackNavigationTransitionController *)self _toPlatteredCardViewGivenToViewController:viewControllerCopy];
 
-  v16 = [(SRCardStackNavigationTransitionController *)self _recentViewControllers];
-  v17 = [(SRCardStackNavigationTransitionController *)self _backgroundPlatteredCardViewForOperation:1 recentViewControllers:v16];
+  _recentViewControllers = [(SRCardStackNavigationTransitionController *)self _recentViewControllers];
+  v17 = [(SRCardStackNavigationTransitionController *)self _backgroundPlatteredCardViewForOperation:1 recentViewControllers:_recentViewControllers];
 
   [(SRCardStackNavigationTransitionController *)self _backgroundEmptyPlatterViewOriginalFrame];
   v36.origin.x = CGRectZero.origin.x;
@@ -437,8 +437,8 @@ LABEL_8:
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [v14 superview];
-    [v13 convertRect:v26 fromView:{v19, v21, v23, v25}];
+    superview = [v14 superview];
+    [containerView convertRect:superview fromView:{v19, v21, v23, v25}];
     [(SRCardStackNavigationTransitionController *)self _setBackgroundEmptyPlatterViewOriginalFrame:?];
   }
 
@@ -447,8 +447,8 @@ LABEL_8:
   v32[1] = 3221225472;
   v32[2] = sub_10007DC58;
   v32[3] = &unk_100168888;
-  v33 = v10;
-  v28 = v10;
+  v33 = contextCopy;
+  v28 = contextCopy;
   v29 = [(SRCardStackNavigationTransitionContext *)v27 initWithCompletion:v32];
   [(SRCardStackNavigationTransitionContext *)v29 setPercentComplete:0.0];
   [(SRCardStackNavigationTransitionContext *)v29 setBackgroundPlatteredCardView:v17];
@@ -458,31 +458,31 @@ LABEL_8:
   [(SRCardStackNavigationTransitionContext *)v29 setFromPlatteredCardViewOriginalFrame:?];
   [(SRCardStackNavigationTransitionContext *)v29 setFromPlatteredCardView:v14];
   [(SRCardStackNavigationTransitionContext *)v29 setToPlatteredCardView:v15];
-  v30 = [v28 containerView];
-  [(SRCardStackNavigationTransitionContext *)v29 setContainerView:v30];
+  containerView2 = [v28 containerView];
+  [(SRCardStackNavigationTransitionContext *)v29 setContainerView:containerView2];
 
-  [(SRCardStackNavigationTransitionContext *)v29 setTransitionDuration:a6];
+  [(SRCardStackNavigationTransitionContext *)v29 setTransitionDuration:duration];
 
   return v29;
 }
 
-- (void)_animateOnePopTransition:(id)a3 originalContext:(id)a4 andComplete:(BOOL)a5 completion:(id)a6
+- (void)_animateOnePopTransition:(id)transition originalContext:(id)context andComplete:(BOOL)complete completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  transitionCopy = transition;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10007DDB0;
   v16[3] = &unk_100168AC8;
-  v13 = v10;
+  v13 = transitionCopy;
   v17 = v13;
   objc_copyWeak(&v20, &location);
-  v21 = a5;
-  v14 = v11;
+  completeCopy = complete;
+  v14 = contextCopy;
   v18 = v14;
-  v15 = v12;
+  v15 = completionCopy;
   v19 = v15;
   [(SRCardStackNavigationTransitionController *)self _transitionWithContext:v13 animated:1 completion:v16];
 
@@ -490,24 +490,24 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)_transitionWithContext:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_transitionWithContext:(id)context animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 backgroundPlatteredCardView];
-  v11 = [v8 fromPlatteredCardView];
-  v12 = [v8 toPlatteredCardView];
+  animatedCopy = animated;
+  contextCopy = context;
+  completionCopy = completion;
+  backgroundPlatteredCardView = [contextCopy backgroundPlatteredCardView];
+  fromPlatteredCardView = [contextCopy fromPlatteredCardView];
+  toPlatteredCardView = [contextCopy toPlatteredCardView];
   v59 = 0u;
   v60 = 0u;
   v58 = 0u;
-  [(SRCardStackNavigationTransitionController *)self _prepareFromPlatteredCardViewForTransitionWithContext:v8];
-  [(SRCardStackNavigationTransitionController *)self _prepareToPlatteredCardViewForTransitionInContext:v8];
+  [(SRCardStackNavigationTransitionController *)self _prepareFromPlatteredCardViewForTransitionWithContext:contextCopy];
+  [(SRCardStackNavigationTransitionController *)self _prepareToPlatteredCardViewForTransitionInContext:contextCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [(SRCardStackNavigationTransitionController *)self _prepareBackgroundEmptyPlatteredViewForTransitionInContext:v8];
+  [(SRCardStackNavigationTransitionController *)self _prepareBackgroundEmptyPlatteredViewForTransitionInContext:contextCopy];
   v35 = v21;
   v23 = v22;
   v25 = v24;
@@ -516,20 +516,20 @@ LABEL_8:
   v42[1] = 3221225472;
   v42[2] = sub_10007E31C;
   v42[3] = &unk_100168AF0;
-  v28 = v11;
+  v28 = fromPlatteredCardView;
   v43 = v28;
   v47 = v58;
   v48 = v59;
   v49 = v60;
-  v29 = v12;
+  v29 = toPlatteredCardView;
   v44 = v29;
   v50 = v14;
   v51 = v16;
   v52 = v18;
   v53 = v20;
-  v30 = v8;
+  v30 = contextCopy;
   v45 = v30;
-  v31 = v10;
+  v31 = backgroundPlatteredCardView;
   v46 = v31;
   v54 = v35;
   v55 = v23;
@@ -541,11 +541,11 @@ LABEL_8:
   v38[1] = 3221225472;
   v38[2] = sub_10007E394;
   v38[3] = &unk_100168B18;
-  v33 = v9;
+  v33 = completionCopy;
   v39 = v33;
   objc_copyWeak(&v40, &location);
   v34 = objc_retainBlock(v38);
-  if (v6)
+  if (animatedCopy)
   {
     [v30 transitionDuration];
     v36[4] = v34;
@@ -571,28 +571,28 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (id)_safelyExtractSnippetPlatterViewControllerFromViewController:(id)a3
+- (id)_safelyExtractSnippetPlatterViewControllerFromViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 contentPlatterViewController];
+    contentPlatterViewController = [controllerCopy contentPlatterViewController];
   }
 
   else
   {
-    v4 = 0;
+    contentPlatterViewController = 0;
   }
 
-  return v4;
+  return contentPlatterViewController;
 }
 
-- (id)_backgroundPlatteredCardViewForOperation:(int64_t)a3 recentViewControllers:(id)a4
+- (id)_backgroundPlatteredCardViewForOperation:(int64_t)operation recentViewControllers:(id)controllers
 {
-  v6 = a3 == 0;
-  v7 = a4;
-  v8 = [v7 count];
-  if (a3 == 1)
+  v6 = operation == 0;
+  controllersCopy = controllers;
+  v8 = [controllersCopy count];
+  if (operation == 1)
   {
     v9 = 3;
   }
@@ -602,22 +602,22 @@ LABEL_8:
     v9 = 2 * v6;
   }
 
-  v10 = [(SRCardStackNavigationTransitionController *)self _compactResultView];
+  _compactResultView = [(SRCardStackNavigationTransitionController *)self _compactResultView];
   if (v8 >= v9)
   {
-    v12 = [v7 objectAtIndex:&v8[-v9]];
+    v12 = [controllersCopy objectAtIndex:&v8[-v9]];
     v13 = [(SRCardStackNavigationTransitionController *)self _safelyExtractSnippetPlatterViewControllerFromViewController:v12];
 
-    v14 = [v13 contentPlatterView];
-    v15 = v14;
-    if (v14)
+    contentPlatterView = [v13 contentPlatterView];
+    v15 = contentPlatterView;
+    if (contentPlatterView)
     {
-      v16 = v14;
+      v16 = contentPlatterView;
     }
 
     else
     {
-      v16 = v10;
+      v16 = _compactResultView;
     }
 
     v11 = v16;
@@ -631,32 +631,32 @@ LABEL_8:
   return v11;
 }
 
-- (unint64_t)_expectedPopCountForTransitionContext:(id)a3
+- (unint64_t)_expectedPopCountForTransitionContext:(id)context
 {
-  v4 = [a3 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v5 = [(SRCardStackNavigationTransitionController *)self _recentViewControllers];
-  v6 = [v5 indexOfObject:v4];
-  v7 = [v5 count];
+  v4 = [context viewControllerForKey:UITransitionContextToViewControllerKey];
+  _recentViewControllers = [(SRCardStackNavigationTransitionController *)self _recentViewControllers];
+  v6 = [_recentViewControllers indexOfObject:v4];
+  v7 = [_recentViewControllers count];
 
   return v7 + ~v6;
 }
 
-- (id)_fromPlatteredCardViewGivenFromViewController:(id)a3
+- (id)_fromPlatteredCardViewGivenFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SRCardStackNavigationTransitionController *)self _compactResultView];
-  v6 = [(SRCardStackNavigationTransitionController *)self _safelyExtractSnippetPlatterViewControllerFromViewController:v4];
+  controllerCopy = controller;
+  _compactResultView = [(SRCardStackNavigationTransitionController *)self _compactResultView];
+  v6 = [(SRCardStackNavigationTransitionController *)self _safelyExtractSnippetPlatterViewControllerFromViewController:controllerCopy];
 
-  v7 = [v6 contentPlatterView];
-  v8 = v7;
-  if (v7)
+  contentPlatterView = [v6 contentPlatterView];
+  v8 = contentPlatterView;
+  if (contentPlatterView)
   {
-    v9 = v7;
+    v9 = contentPlatterView;
   }
 
   else
   {
-    v9 = v5;
+    v9 = _compactResultView;
   }
 
   v10 = v9;
@@ -664,26 +664,26 @@ LABEL_8:
   return v9;
 }
 
-- (id)_toPlatteredCardViewGivenToViewController:(id)a3
+- (id)_toPlatteredCardViewGivenToViewController:(id)controller
 {
-  v3 = [(SRCardStackNavigationTransitionController *)self _safelyExtractSnippetPlatterViewControllerFromViewController:a3];
-  v4 = [v3 contentPlatterView];
+  v3 = [(SRCardStackNavigationTransitionController *)self _safelyExtractSnippetPlatterViewControllerFromViewController:controller];
+  contentPlatterView = [v3 contentPlatterView];
 
-  return v4;
+  return contentPlatterView;
 }
 
-- (CGRect)_convertFrameForFromPlatteredCardView:(id)a3 toContainerView:(id)a4
+- (CGRect)_convertFrameForFromPlatteredCardView:(id)view toContainerView:(id)containerView
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 frame];
+  containerViewCopy = containerView;
+  viewCopy = view;
+  [viewCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 superview];
+  superview = [viewCopy superview];
 
-  [v5 convertRect:v15 fromView:{v8, v10, v12, v14}];
+  [containerViewCopy convertRect:superview fromView:{v8, v10, v12, v14}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -700,36 +700,36 @@ LABEL_8:
   return result;
 }
 
-- (CGAffineTransform)_prepareFromPlatteredCardViewForTransitionWithContext:(SEL)a3
+- (CGAffineTransform)_prepareFromPlatteredCardViewForTransitionWithContext:(SEL)context
 {
   v6 = a4;
   [v6 percentComplete];
   v8 = v7;
-  v9 = [v6 fromPlatteredCardView];
-  v10 = [v6 semanticContentAttribute];
+  fromPlatteredCardView = [v6 fromPlatteredCardView];
+  semanticContentAttribute = [v6 semanticContentAttribute];
 
   v14 = 0u;
   v15 = 0u;
   v13 = 0u;
-  [(SRCardStackNavigationTransitionController *)self _calculateMoveFromPlatteredCardViewToBackgroundAffineTransformForPercentComplete:v10 withSemanticContentAttribute:1.0 - v8];
+  [(SRCardStackNavigationTransitionController *)self _calculateMoveFromPlatteredCardViewToBackgroundAffineTransformForPercentComplete:semanticContentAttribute withSemanticContentAttribute:1.0 - v8];
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  [(SRCardStackNavigationTransitionController *)self _calculateMoveFromPlatteredCardViewToBackgroundAffineTransformForPercentComplete:v10 withSemanticContentAttribute:v8];
+  [(SRCardStackNavigationTransitionController *)self _calculateMoveFromPlatteredCardViewToBackgroundAffineTransformForPercentComplete:semanticContentAttribute withSemanticContentAttribute:v8];
   v12[0] = v13;
   v12[1] = v14;
   v12[2] = v15;
-  [v9 setTransform:v12];
+  [fromPlatteredCardView setTransform:v12];
 
   return result;
 }
 
-- (CGAffineTransform)_calculateMoveFromPlatteredCardViewToBackgroundAffineTransformForPercentComplete:(SEL)a3 withSemanticContentAttribute:(double)a4
+- (CGAffineTransform)_calculateMoveFromPlatteredCardViewToBackgroundAffineTransformForPercentComplete:(SEL)complete withSemanticContentAttribute:(double)attribute
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  CGAffineTransformMakeScale(retstr, a4 * -0.1 + 1.0, a4 * -0.1 + 1.0);
+  CGAffineTransformMakeScale(retstr, attribute * -0.1 + 1.0, attribute * -0.1 + 1.0);
   v8 = -30.0;
   if (a5 == 4)
   {
@@ -740,7 +740,7 @@ LABEL_8:
   *&v12.a = *&retstr->a;
   *&v12.c = v9;
   *&v12.tx = *&retstr->tx;
-  result = CGAffineTransformTranslate(&v13, &v12, v8 * a4, 0.0);
+  result = CGAffineTransformTranslate(&v13, &v12, v8 * attribute, 0.0);
   v11 = *&v13.c;
   *&retstr->a = *&v13.a;
   *&retstr->c = v11;
@@ -748,34 +748,34 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_prepareToPlatteredCardViewForTransitionInContext:(id)a3
+- (CGRect)_prepareToPlatteredCardViewForTransitionInContext:(id)context
 {
-  v3 = a3;
-  [v3 percentComplete];
+  contextCopy = context;
+  [contextCopy percentComplete];
   v44 = v4;
-  v5 = [v3 toPlatteredCardView];
-  v6 = [v3 containerView];
-  [v3 fromPlatteredCardViewOriginalFrame];
+  toPlatteredCardView = [contextCopy toPlatteredCardView];
+  containerView = [contextCopy containerView];
+  [contextCopy fromPlatteredCardViewOriginalFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v3 semanticContentAttribute];
+  semanticContentAttribute = [contextCopy semanticContentAttribute];
 
-  v16 = [v5 superview];
-  [v16 convertRect:v6 fromView:{v8, v10, v12, v14}];
+  superview = [toPlatteredCardView superview];
+  [superview convertRect:containerView fromView:{v8, v10, v12, v14}];
   v18 = v17;
   v20 = v19;
   v43 = v21;
   v23 = v22;
-  [v6 bounds];
+  [containerView bounds];
   v25 = v24;
   v27 = v26;
   v28 = v24 - v18;
   v29 = -(v24 - v18);
-  [v6 safeAreaInsets];
+  [containerView safeAreaInsets];
   v31 = v20 + v23 - v30;
-  [v5 sizeThatFits:{v25, v27}];
+  [toPlatteredCardView sizeThatFits:{v25, v27}];
   if (v32 >= v31)
   {
     v33 = v31;
@@ -796,7 +796,7 @@ LABEL_8:
     v34 = v23;
   }
 
-  if (v15 == 4)
+  if (semanticContentAttribute == 4)
   {
     v35 = v29;
   }
@@ -808,7 +808,7 @@ LABEL_8:
 
   v36 = v18 + v35 * v44;
   v37 = v20 - (v34 - v23);
-  if (v15 == 4)
+  if (semanticContentAttribute == 4)
   {
     v38 = -((1.0 - v44) * v25);
   }
@@ -818,7 +818,7 @@ LABEL_8:
     v38 = (1.0 - v44) * v25;
   }
 
-  [v5 setFrame:{v36, v37, v43, v34}];
+  [toPlatteredCardView setFrame:{v36, v37, v43, v34}];
 
   v39 = v18 + v38;
   v40 = v37;
@@ -831,35 +831,35 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_prepareBackgroundEmptyPlatteredViewForTransitionInContext:(id)a3
+- (CGRect)_prepareBackgroundEmptyPlatteredViewForTransitionInContext:(id)context
 {
-  v3 = a3;
-  [v3 percentComplete];
+  contextCopy = context;
+  [contextCopy percentComplete];
   v5 = v4;
-  v6 = [v3 backgroundPlatteredCardView];
-  [v3 backgroundPlatteredCardViewOriginalFrame];
+  backgroundPlatteredCardView = [contextCopy backgroundPlatteredCardView];
+  [contextCopy backgroundPlatteredCardViewOriginalFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v3 containerView];
-  v16 = [v6 superview];
-  [v16 convertRect:v15 fromView:{v8, v10, v12, v14}];
+  containerView = [contextCopy containerView];
+  superview = [backgroundPlatteredCardView superview];
+  [superview convertRect:containerView fromView:{v8, v10, v12, v14}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  v25 = [v3 semanticContentAttribute];
+  semanticContentAttribute = [contextCopy semanticContentAttribute];
   v26 = -12.0;
-  if (v25 != 4)
+  if (semanticContentAttribute != 4)
   {
     v26 = 12.0;
   }
 
   v27 = v18 + v26 * (1.0 - v5);
   v28 = v18 + v26 * v5;
-  [v6 setFrame:{v27, v20, v22, v24}];
+  [backgroundPlatteredCardView setFrame:{v27, v20, v22, v24}];
 
   v29 = v28;
   v30 = v20;
@@ -872,29 +872,29 @@ LABEL_8:
   return result;
 }
 
-- (void)_panGestureRecognizerDidPan:(id)a3
+- (void)_panGestureRecognizerDidPan:(id)pan
 {
-  v17 = a3;
-  v4 = [v17 view];
-  [v17 translationInView:v4];
+  panCopy = pan;
+  view = [panCopy view];
+  [panCopy translationInView:view];
   v6 = v5;
-  [v4 bounds];
+  [view bounds];
   v8 = v7;
-  v9 = [v4 superview];
-  [v9 bounds];
+  superview = [view superview];
+  [superview bounds];
   v11 = v8 + v10;
-  if ([v4 semanticContentAttribute] == 4)
+  if ([view semanticContentAttribute] == 4)
   {
     v11 = -v11;
   }
 
-  v12 = [v17 state];
-  if (v12 > 2)
+  state = [panCopy state];
+  if (state > 2)
   {
-    if (v12 == 3)
+    if (state == 3)
     {
       [(SRCardStackNavigationTransitionController *)self _setGesturing:0];
-      [v17 velocityInView:v4];
+      [panCopy velocityInView:view];
       if ((v6 + v16 * 0.2) / v11 > 0.15)
       {
         [(SRCardStackNavigationTransitionController *)self finishInteractiveTransition];
@@ -906,7 +906,7 @@ LABEL_8:
 
     else
     {
-      if (v12 != 4)
+      if (state != 4)
       {
         goto LABEL_17;
       }
@@ -917,14 +917,14 @@ LABEL_8:
     [(SRCardStackNavigationTransitionController *)self cancelInteractiveTransition];
   }
 
-  else if (v12 == 1)
+  else if (state == 1)
   {
     [(SRCardStackNavigationTransitionController *)self _setGesturing:1];
-    v14 = [(SRCardStackNavigationTransitionController *)self _navigationController];
-    v15 = [v14 popViewControllerAnimated:1];
+    _navigationController = [(SRCardStackNavigationTransitionController *)self _navigationController];
+    v15 = [_navigationController popViewControllerAnimated:1];
   }
 
-  else if (v12 == 2)
+  else if (state == 2)
   {
     v13 = fmin(v6 / v11, 1.0);
     if (v13 < 0.0)

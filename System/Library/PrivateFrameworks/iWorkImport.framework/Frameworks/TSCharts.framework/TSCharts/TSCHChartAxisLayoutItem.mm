@@ -3,28 +3,28 @@
 - (CGRect)protected_layoutSpaceRectForAllLabels;
 - (CGSize)calcMinSize;
 - (CGSize)chartBodySize;
-- (TSCHChartAxisLayoutItem)initWithParent:(id)a3 axisPosition:(int)a4;
+- (TSCHChartAxisLayoutItem)initWithParent:(id)parent axisPosition:(int)position;
 - (id)axis;
 - (id)p_description;
-- (id)p_subselectionHaloPositionsForLabelsSelections:(id)a3;
-- (id)p_subselectionKnobPositionsForLabelsSelection:(id)a3;
-- (id)subselectionHaloPositionsForSelections:(id)a3;
-- (id)subselectionKnobPositionsForSelection:(id)a3;
+- (id)p_subselectionHaloPositionsForLabelsSelections:(id)selections;
+- (id)p_subselectionKnobPositionsForLabelsSelection:(id)selection;
+- (id)subselectionHaloPositionsForSelections:(id)selections;
+- (id)subselectionKnobPositionsForSelection:(id)selection;
 - (void)layoutInward;
 - (void)layoutOutward;
-- (void)setChartBodySize:(CGSize)a3;
+- (void)setChartBodySize:(CGSize)size;
 @end
 
 @implementation TSCHChartAxisLayoutItem
 
-- (TSCHChartAxisLayoutItem)initWithParent:(id)a3 axisPosition:(int)a4
+- (TSCHChartAxisLayoutItem)initWithParent:(id)parent axisPosition:(int)position
 {
   v27.receiver = self;
   v27.super_class = TSCHChartAxisLayoutItem;
   v7 = [(TSCHChartLayoutItem *)&v27 initWithParent:?];
   if (v7)
   {
-    if (!a3)
+    if (!parent)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCHChartAxisLayoutItem initWithParent:axisPosition:]");
@@ -34,7 +34,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
     }
 
-    v7->_axisPosition = a4;
+    v7->_axisPosition = position;
   }
 
   return v7;
@@ -49,14 +49,14 @@
   return v16;
 }
 
-- (void)setChartBodySize:(CGSize)a3
+- (void)setChartBodySize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   axisTitle = self->_axisTitle;
   if (axisTitle)
   {
-    objc_msgSend_setChartBodySize_(axisTitle, a2, a3.width, a3.height, v3);
+    objc_msgSend_setChartBodySize_(axisTitle, a2, size.width, size.height, v3);
   }
 
   self->_chartBodySize.width = width;
@@ -229,16 +229,16 @@ LABEL_24:
 {
   v11.receiver = self;
   v11.super_class = TSCHChartAxisLayoutItem;
-  v4 = [(TSCHChartLayoutItem *)&v11 p_description];
+  p_description = [(TSCHChartLayoutItem *)&v11 p_description];
   v8 = self->_axisPosition - 1;
   if (v8 > 5)
   {
-    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v3, v5, v6, v7, v4, @" Unknown%@");
+    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v3, v5, v6, v7, p_description, @" Unknown%@");
   }
 
   else
   {
-    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v3, v5, v6, v7, v4, off_27A6B7210[v8]);
+    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v3, v5, v6, v7, p_description, off_27A6B7210[v8]);
   }
   v9 = ;
 
@@ -638,17 +638,17 @@ LABEL_53:
   return result;
 }
 
-- (id)p_subselectionKnobPositionsForLabelsSelection:(id)a3
+- (id)p_subselectionKnobPositionsForLabelsSelection:(id)selection
 {
   v109 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selectionCopy = selection;
   v9 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v5, v6, v7, v8);
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v10 = v4;
-  v11 = self;
+  v10 = selectionCopy;
+  selfCopy = self;
   obj = v10;
   v100 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v12, v13, v14, v15, &v104, v108, 16);
   if (v100)
@@ -675,8 +675,8 @@ LABEL_53:
         if ((isEqual & 1) != 0 || (objc_msgSend_seriesLabelType(TSCHSelectionPathType, v36, v38, v39, v40), v101 = objc_claimAutoreleasedReturnValue(), objc_msgSend_isEqual_(v26, v41, v42, v43, v44)))
         {
           v45 = objc_msgSend_argumentAtIndex_(v25, v36, v38, v39, v40, 0);
-          v46 = v11;
-          v51 = objc_msgSend_axisID(v11, v47, v48, v49, v50);
+          v46 = selfCopy;
+          v51 = objc_msgSend_axisID(selfCopy, v47, v48, v49, v50);
           v56 = objc_msgSend_isEqual_(v45, v52, v53, v54, v55, v51);
 
           if (isEqual)
@@ -695,12 +695,12 @@ LABEL_53:
             {
 LABEL_10:
               v9 = v98;
-              v11 = v46;
+              selfCopy = v46;
               goto LABEL_23;
             }
           }
 
-          v11 = v46;
+          selfCopy = v46;
           objc_msgSend_protected_layoutSpaceRectForAllLabels(v46, v57, v58, v59, v60);
           x = v111.origin.x;
           y = v111.origin.y;
@@ -772,13 +772,13 @@ LABEL_23:
   return v9;
 }
 
-- (id)subselectionKnobPositionsForSelection:(id)a3
+- (id)subselectionKnobPositionsForSelection:(id)selection
 {
   v25.receiver = self;
   v25.super_class = TSCHChartAxisLayoutItem;
-  v4 = a3;
-  v5 = [(TSCHChartLayoutItem *)&v25 subselectionKnobPositionsForSelection:v4];
-  v10 = objc_msgSend_p_subselectionKnobPositionsForLabelsSelection_(self, v6, v7, v8, v9, v4, v25.receiver, v25.super_class);
+  selectionCopy = selection;
+  v5 = [(TSCHChartLayoutItem *)&v25 subselectionKnobPositionsForSelection:selectionCopy];
+  v10 = objc_msgSend_p_subselectionKnobPositionsForLabelsSelection_(self, v6, v7, v8, v9, selectionCopy, v25.receiver, v25.super_class);
 
   v15 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v11, v12, v13, v14);
   objc_msgSend_addEntriesFromDictionary_(v15, v16, v17, v18, v19, v5);
@@ -787,17 +787,17 @@ LABEL_23:
   return v15;
 }
 
-- (id)p_subselectionHaloPositionsForLabelsSelections:(id)a3
+- (id)p_subselectionHaloPositionsForLabelsSelections:(id)selections
 {
   v109 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selectionsCopy = selections;
   v9 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v5, v6, v7, v8);
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v10 = v4;
-  v11 = self;
+  v10 = selectionsCopy;
+  selfCopy = self;
   obj = v10;
   v100 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v12, v13, v14, v15, &v104, v108, 16);
   if (v100)
@@ -824,8 +824,8 @@ LABEL_23:
         if ((isEqual & 1) != 0 || (objc_msgSend_seriesLabelType(TSCHSelectionPathType, v36, v38, v39, v40), v101 = objc_claimAutoreleasedReturnValue(), objc_msgSend_isEqual_(v26, v41, v42, v43, v44)))
         {
           v45 = objc_msgSend_argumentAtIndex_(v25, v36, v38, v39, v40, 0);
-          v46 = v11;
-          v51 = objc_msgSend_axisID(v11, v47, v48, v49, v50);
+          v46 = selfCopy;
+          v51 = objc_msgSend_axisID(selfCopy, v47, v48, v49, v50);
           v56 = objc_msgSend_isEqual_(v45, v52, v53, v54, v55, v51);
 
           if (isEqual)
@@ -844,12 +844,12 @@ LABEL_23:
             {
 LABEL_10:
               v9 = v98;
-              v11 = v46;
+              selfCopy = v46;
               goto LABEL_23;
             }
           }
 
-          v11 = v46;
+          selfCopy = v46;
           objc_msgSend_protected_layoutSpaceRectForAllLabels(v46, v57, v58, v59, v60);
           x = v111.origin.x;
           y = v111.origin.y;
@@ -921,13 +921,13 @@ LABEL_23:
   return v9;
 }
 
-- (id)subselectionHaloPositionsForSelections:(id)a3
+- (id)subselectionHaloPositionsForSelections:(id)selections
 {
   v25.receiver = self;
   v25.super_class = TSCHChartAxisLayoutItem;
-  v4 = a3;
-  v5 = [(TSCHChartLayoutItem *)&v25 subselectionHaloPositionsForSelections:v4];
-  v10 = objc_msgSend_p_subselectionHaloPositionsForLabelsSelections_(self, v6, v7, v8, v9, v4, v25.receiver, v25.super_class);
+  selectionsCopy = selections;
+  v5 = [(TSCHChartLayoutItem *)&v25 subselectionHaloPositionsForSelections:selectionsCopy];
+  v10 = objc_msgSend_p_subselectionHaloPositionsForLabelsSelections_(self, v6, v7, v8, v9, selectionsCopy, v25.receiver, v25.super_class);
 
   v15 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v11, v12, v13, v14);
   objc_msgSend_addEntriesFromDictionary_(v15, v16, v17, v18, v19, v5);

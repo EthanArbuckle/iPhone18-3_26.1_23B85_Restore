@@ -1,22 +1,22 @@
 @interface SDAirDropHandlerCalendarEvents
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerCalendarEvents)initWithTransfer:(id)a3;
-- (id)importURLsWithError:(id *)a3;
+- (SDAirDropHandlerCalendarEvents)initWithTransfer:(id)transfer;
+- (id)importURLsWithError:(id *)error;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
-- (void)performImportWithCompletedURLs:(id)a3 completion:(id)a4;
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4;
+- (void)performImportWithCompletedURLs:(id)ls completion:(id)completion;
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion;
 - (void)triggerImport;
 - (void)updatePossibleActions;
 @end
 
 @implementation SDAirDropHandlerCalendarEvents
 
-- (SDAirDropHandlerCalendarEvents)initWithTransfer:(id)a3
+- (SDAirDropHandlerCalendarEvents)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerCalendarEvents;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.mobilecal"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.mobilecal"];
 }
 
 - (BOOL)canHandleTransfer
@@ -30,11 +30,11 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 items];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  items = [metaData items];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -45,10 +45,10 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) type];
+        type = [*(*(&v14 + 1) + 8 * i) type];
         v11 = SFIsCalendarEvent();
 
         if (!v11)
@@ -58,7 +58,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -83,10 +83,10 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
   v13 = @"CALENDAR";
-  v5 = [NSNumber numberWithUnsignedInteger:v4];
+  v5 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
   v14 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v15 = v6;
@@ -97,12 +97,12 @@ LABEL_13:
   v9 = SFLocalizedStringForKey();
   if (v6)
   {
-    [NSString localizedStringWithFormat:v9, v4, v12];
+    [NSString localizedStringWithFormat:v9, totalSharedItemsCount, v12];
   }
 
   else
   {
-    [NSString localizedStringWithFormat:v9, v3, v4];
+    [NSString localizedStringWithFormat:v9, senderName, totalSharedItemsCount];
   }
   v10 = ;
 
@@ -114,8 +114,8 @@ LABEL_13:
   v13.receiver = self;
   v13.super_class = SDAirDropHandlerCalendarEvents;
   [(SDAirDropHandler *)&v13 updatePossibleActions];
-  v3 = [(SDAirDropHandler *)self bundleProxy];
-  v4 = [(SDAirDropHandler *)self defaultActionForBundleProxy:v3];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
+  v4 = [(SDAirDropHandler *)self defaultActionForBundleProxy:bundleProxy];
 
   objc_initWeak(&location, self);
   v7 = _NSConcreteStackBlock;
@@ -126,8 +126,8 @@ LABEL_13:
   [v4 setActionHandler:&v7];
   v14 = v4;
   v5 = [NSArray arrayWithObjects:&v14 count:1, v7, v8, v9, v10];
-  v6 = [(SDAirDropHandler *)self transfer];
-  [v6 setPossibleActions:v5];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setPossibleActions:v5];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -157,16 +157,16 @@ LABEL_13:
   {
     v12 = v3;
     v6 = [NSArray arrayWithObjects:&v12 count:1];
-    v7 = [(SDAirDropHandler *)self bundleProxy];
-    v8 = [v7 bundleIdentifier];
-    v9 = [(SDAirDropHandler *)self openURLs:v6 bundleIdentifier:v8];
+    bundleProxy = [(SDAirDropHandler *)self bundleProxy];
+    bundleIdentifier = [bundleProxy bundleIdentifier];
+    v9 = [(SDAirDropHandler *)self openURLs:v6 bundleIdentifier:bundleIdentifier];
   }
 
-  v10 = [(SDAirDropHandler *)self completionHandler];
-  v10[2](v10, v9, 0, 1);
+  completionHandler = [(SDAirDropHandler *)self completionHandler];
+  completionHandler[2](completionHandler, v9, 0, 1);
 }
 
-- (id)importURLsWithError:(id *)a3
+- (id)importURLsWithError:(id *)error
 {
   off_100970DB0[0]();
   v4 = objc_opt_new();
@@ -174,16 +174,16 @@ LABEL_13:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(SDAirDropHandler *)self transfer];
-  v6 = [v5 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  obj = completedURLs;
+  v7 = [completedURLs countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
-    v10 = 0;
+    externalURL = 0;
     v11 = *v27;
     do
     {
@@ -202,8 +202,8 @@ LABEL_13:
 
         if (v15)
         {
-          v16 = [v4 defaultCalendarForNewEvents];
-          v17 = [v4 importICSData:v15 intoCalendar:v16 options:0];
+          defaultCalendarForNewEvents = [v4 defaultCalendarForNewEvents];
+          v17 = [v4 importICSData:v15 intoCalendar:defaultCalendarForNewEvents options:0];
 
           v18 = airdrop_log();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -213,10 +213,10 @@ LABEL_13:
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Calendar Events data was imported from %@", buf, 0xCu);
           }
 
-          if (!v10)
+          if (!externalURL)
           {
-            v19 = [v17 firstObject];
-            v10 = [v19 externalURL];
+            firstObject = [v17 firstObject];
+            externalURL = [firstObject externalURL];
           }
         }
 
@@ -241,43 +241,43 @@ LABEL_13:
   else
   {
     v9 = 0;
-    v10 = 0;
+    externalURL = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v20 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
-  v21 = v10;
+  v21 = externalURL;
 
-  return v10;
+  return externalURL;
 }
 
-- (void)performImportWithCompletedURLs:(id)a3 completion:(id)a4
+- (void)performImportWithCompletedURLs:(id)ls completion:(id)completion
 {
   v11 = 0;
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  lsCopy = ls;
   v8 = [(SDAirDropHandlerCalendarEvents *)self importURLsWithError:&v11];
   v9 = v11;
   v10 = objc_alloc_init(SDAirDropHandlerImportResult);
-  [(SDAirDropHandlerImportResult *)v10 setImportedFiles:v7];
+  [(SDAirDropHandlerImportResult *)v10 setImportedFiles:lsCopy];
 
   [(SDAirDropHandlerImportResult *)v10 setOpenAppURL:v8];
-  v6[2](v6, v10, v9);
+  completionCopy[2](completionCopy, v10, v9);
 }
 
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(SDAirDropHandler *)self bundleProxy];
-  v8 = [v7 bundleIdentifier];
-  v9 = [(SDAirDropHandler *)self openURLs:v6 bundleIdentifier:v8];
+  completionCopy = completion;
+  lsCopy = ls;
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
+  bundleIdentifier = [bundleProxy bundleIdentifier];
+  v9 = [(SDAirDropHandler *)self openURLs:lsCopy bundleIdentifier:bundleIdentifier];
 
-  v10[2](v10, v9, 0);
+  completionCopy[2](completionCopy, v9, 0);
 }
 
 @end

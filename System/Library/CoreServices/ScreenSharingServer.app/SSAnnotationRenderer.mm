@@ -1,15 +1,15 @@
 @interface SSAnnotationRenderer
 + (id)sharedRenderer;
 - (BOOL)hideAllPointers;
-- (BOOL)hidePointerForUser:(id)a3;
+- (BOOL)hidePointerForUser:(id)user;
 - (BOOL)showAllPointers;
-- (BOOL)showPointerForUser:(id)a3 location:(CGPoint)a4;
-- (CGPoint)convertScaledCoordinates:(CGPoint)a3;
+- (BOOL)showPointerForUser:(id)user location:(CGPoint)location;
+- (CGPoint)convertScaledCoordinates:(CGPoint)coordinates;
 - (SSAnnotationRenderer)init;
 - (void)dealloc;
-- (void)drawPointerWithRect:(CGRect)a3 flags:(unsigned int)a4;
-- (void)drawSafeViewSlateWithRect:(CGRect)a3 flags:(unsigned int)a4 orientation:(int64_t)a5;
-- (void)screenDidChange:(id)a3;
+- (void)drawPointerWithRect:(CGRect)rect flags:(unsigned int)flags;
+- (void)drawSafeViewSlateWithRect:(CGRect)rect flags:(unsigned int)flags orientation:(int64_t)orientation;
+- (void)screenDidChange:(id)change;
 - (void)stopAnnotation;
 @end
 
@@ -83,11 +83,11 @@
   return v2;
 }
 
-- (BOOL)showPointerForUser:(id)a3 location:(CGPoint)a4
+- (BOOL)showPointerForUser:(id)user location:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  userCopy = user;
   v8 = +[NSMutableDictionary dictionary];
   v9 = [NSNumber numberWithUnsignedShort:2];
   [v8 setObject:v9 forKeyedSubscript:@"messageType"];
@@ -97,12 +97,12 @@
   v13 = v12;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v7 userID];
-    v15 = [v7 displayName];
+    userID = [userCopy userID];
+    displayName = [userCopy displayName];
     v22 = 138413058;
-    v23 = v14;
+    v23 = userID;
     v24 = 2112;
-    v25 = v15;
+    v25 = displayName;
     v26 = 2048;
     v27 = v11;
     v28 = 2048;
@@ -116,11 +116,11 @@
   v17 = [NSNumber numberWithDouble:v13];
   [v8 setObject:v17 forKeyedSubscript:@"y"];
 
-  v18 = [v7 userID];
-  [v8 setObject:v18 forKeyedSubscript:@"uniqueID"];
+  userID2 = [userCopy userID];
+  [v8 setObject:userID2 forKeyedSubscript:@"uniqueID"];
 
-  v19 = [v7 displayName];
-  [v8 setObject:v19 forKeyedSubscript:@"displayName"];
+  displayName2 = [userCopy displayName];
+  [v8 setObject:displayName2 forKeyedSubscript:@"displayName"];
 
   [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"enabled"];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -129,23 +129,23 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "going to send show message", &v22, 2u);
   }
 
-  v20 = [(SSAnnotationRenderer *)self uiClient];
-  [v20 sendAsynchronousMessage:v8 withIdentifier:1 targetAccessQueue:0 completion:&stru_100068F48];
+  uiClient = [(SSAnnotationRenderer *)self uiClient];
+  [uiClient sendAsynchronousMessage:v8 withIdentifier:1 targetAccessQueue:0 completion:&stru_100068F48];
 
   return 0;
 }
 
-- (BOOL)hidePointerForUser:(id)a3
+- (BOOL)hidePointerForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 userID];
-    v6 = [v4 displayName];
+    userID = [userCopy userID];
+    displayName = [userCopy displayName];
     v12 = 138412546;
-    v13 = v5;
+    v13 = userID;
     v14 = 2112;
-    v15 = v6;
+    v15 = displayName;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "hidePointerForUser %@ %@", &v12, 0x16u);
   }
 
@@ -153,12 +153,12 @@
   v8 = [NSNumber numberWithUnsignedShort:2];
   [v7 setObject:v8 forKeyedSubscript:@"messageType"];
 
-  v9 = [v4 userID];
-  [v7 setObject:v9 forKeyedSubscript:@"uniqueID"];
+  userID2 = [userCopy userID];
+  [v7 setObject:userID2 forKeyedSubscript:@"uniqueID"];
 
   [v7 setObject:&__kCFBooleanFalse forKeyedSubscript:@"enabled"];
-  v10 = [(SSAnnotationRenderer *)self uiClient];
-  [v10 sendAsynchronousMessage:v7 withIdentifier:1 targetAccessQueue:0 completion:0];
+  uiClient = [(SSAnnotationRenderer *)self uiClient];
+  [uiClient sendAsynchronousMessage:v7 withIdentifier:1 targetAccessQueue:0 completion:0];
 
   return 0;
 }
@@ -175,8 +175,8 @@
   v4 = [NSNumber numberWithUnsignedShort:3];
   [v3 setObject:v4 forKeyedSubscript:@"messageType"];
 
-  v5 = [(SSAnnotationRenderer *)self uiClient];
-  [v5 sendAsynchronousMessage:v3 withIdentifier:1 targetAccessQueue:0 completion:0];
+  uiClient = [(SSAnnotationRenderer *)self uiClient];
+  [uiClient sendAsynchronousMessage:v3 withIdentifier:1 targetAccessQueue:0 completion:0];
 
   return 0;
 }
@@ -193,8 +193,8 @@
   v4 = [NSNumber numberWithUnsignedShort:4];
   [v3 setObject:v4 forKeyedSubscript:@"messageType"];
 
-  v5 = [(SSAnnotationRenderer *)self uiClient];
-  [v5 sendAsynchronousMessage:v3 withIdentifier:1 targetAccessQueue:0 completion:0];
+  uiClient = [(SSAnnotationRenderer *)self uiClient];
+  [uiClient sendAsynchronousMessage:v3 withIdentifier:1 targetAccessQueue:0 completion:0];
 
   return 0;
 }
@@ -211,16 +211,16 @@
   v4 = [NSNumber numberWithUnsignedShort:5];
   [v3 setObject:v4 forKeyedSubscript:@"messageType"];
 
-  v5 = [(SSAnnotationRenderer *)self uiClient];
-  [v5 sendAsynchronousMessage:v3 withIdentifier:1 targetAccessQueue:0 completion:0];
+  uiClient = [(SSAnnotationRenderer *)self uiClient];
+  [uiClient sendAsynchronousMessage:v3 withIdentifier:1 targetAccessQueue:0 completion:0];
 }
 
-- (CGPoint)convertScaledCoordinates:(CGPoint)a3
+- (CGPoint)convertScaledCoordinates:(CGPoint)coordinates
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SSAnnotationRenderer *)self mainScreen];
-  [v6 bounds];
+  y = coordinates.y;
+  x = coordinates.x;
+  mainScreen = [(SSAnnotationRenderer *)self mainScreen];
+  [mainScreen bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -233,19 +233,19 @@
   v15 = NSStringFromRect(v38);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v15 UTF8String];
-    v17 = [(SSAnnotationRenderer *)self mainScreen];
-    [v17 scale];
+    uTF8String = [v15 UTF8String];
+    mainScreen2 = [(SSAnnotationRenderer *)self mainScreen];
+    [mainScreen2 scale];
     v19 = v18;
-    v20 = [(SSAnnotationRenderer *)self mainScreen];
-    v21 = [v20 currentMode];
-    [v21 size];
+    mainScreen3 = [(SSAnnotationRenderer *)self mainScreen];
+    currentMode = [mainScreen3 currentMode];
+    [currentMode size];
     v23 = v22;
-    v24 = [(SSAnnotationRenderer *)self mainScreen];
-    v25 = [v24 currentMode];
-    [v25 size];
+    mainScreen4 = [(SSAnnotationRenderer *)self mainScreen];
+    currentMode2 = [mainScreen4 currentMode];
+    [currentMode2 size];
     v29 = 136315906;
-    v30 = v16;
+    v30 = uTF8String;
     v31 = 2048;
     v32 = v19;
     v33 = 2048;
@@ -262,12 +262,12 @@
   return result;
 }
 
-- (void)drawPointerWithRect:(CGRect)a3 flags:(unsigned int)a4
+- (void)drawPointerWithRect:(CGRect)rect flags:(unsigned int)flags
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -288,7 +288,7 @@
   v33.size.width = width;
   v33.size.height = height;
   v12 = CGRectEqualToRect(v30, v33);
-  if (a4)
+  if (flags)
   {
     v13 = 0;
   }
@@ -342,9 +342,9 @@ LABEL_15:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v17 UTF8String];
+    uTF8String = [v17 UTF8String];
     *buf = 136315138;
-    *&buf[4] = v19;
+    *&buf[4] = uTF8String;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "rect: %s", buf, 0xCu);
   }
 
@@ -354,36 +354,36 @@ LABEL_15:
     CFRelease(v16);
   }
 
-  v20 = [NSNumber numberWithUnsignedInteger:a4];
+  v20 = [NSNumber numberWithUnsignedInteger:flags];
   [v10 setObject:v20 forKeyedSubscript:@"flags"];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v21 = v17;
-    v22 = [v17 UTF8String];
+    uTF8String2 = [v17 UTF8String];
     *buf = 136315394;
-    *&buf[4] = v22;
+    *&buf[4] = uTF8String2;
     *&buf[12] = 1024;
-    *&buf[14] = a4;
+    *&buf[14] = flags;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "rect: %s, flags: %x", buf, 0x12u);
   }
 
   v23 = 0;
-  if ((a4 & 0x80000000) != 0)
+  if ((flags & 0x80000000) != 0)
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     atomic_compare_exchange_strong(&self->assistanceState, &v23, 1u);
     v29 = v23 == 0;
-    v25 = [(SSAnnotationRenderer *)self uiClient];
+    uiClient = [(SSAnnotationRenderer *)self uiClient];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_100041640;
     v27[3] = &unk_100068F70;
     v27[4] = self;
     v27[5] = buf;
-    [v25 sendAsynchronousMessage:v10 withIdentifier:2 targetAccessQueue:0 completion:v27];
+    [uiClient sendAsynchronousMessage:v10 withIdentifier:2 targetAccessQueue:0 completion:v27];
 
     _Block_object_dispose(buf, 8);
   }
@@ -398,23 +398,23 @@ LABEL_15:
 
     else
     {
-      v24 = [(SSAnnotationRenderer *)self uiClient];
+      uiClient2 = [(SSAnnotationRenderer *)self uiClient];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_100041668;
       v26[3] = &unk_100068FC0;
       v26[4] = self;
-      [v24 sendAsynchronousMessage:v10 withIdentifier:1 targetAccessQueue:0 completion:v26];
+      [uiClient2 sendAsynchronousMessage:v10 withIdentifier:1 targetAccessQueue:0 completion:v26];
     }
   }
 }
 
-- (void)drawSafeViewSlateWithRect:(CGRect)a3 flags:(unsigned int)a4 orientation:(int64_t)a5
+- (void)drawSafeViewSlateWithRect:(CGRect)rect flags:(unsigned int)flags orientation:(int64_t)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12 = +[NSMutableDictionary dictionary];
   v13 = [NSNumber numberWithUnsignedShort:1];
   [v12 setObject:v13 forKeyedSubscript:@"messageType"];
@@ -446,9 +446,9 @@ LABEL_15:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 136315394;
-    v26 = [v17 UTF8String];
+    uTF8String = [v17 UTF8String];
     v27 = 1024;
-    v28 = a4;
+    flagsCopy = flags;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "rect: %s, flags: %x", &v25, 0x12u);
   }
 
@@ -458,15 +458,15 @@ LABEL_15:
     CFRelease(v16);
   }
 
-  v18 = [NSNumber numberWithUnsignedInteger:a4];
+  v18 = [NSNumber numberWithUnsignedInteger:flags];
   [v12 setObject:v18 forKeyedSubscript:@"flags"];
 
-  v19 = [NSNumber numberWithInteger:a5];
+  v19 = [NSNumber numberWithInteger:orientation];
   [v12 setObject:v19 forKeyedSubscript:@"orientation"];
 
-  v20 = [(SSAnnotationRenderer *)self uiClient];
-  v21 = v20;
-  if ((a4 & 0x20000000) != 0)
+  uiClient = [(SSAnnotationRenderer *)self uiClient];
+  v21 = uiClient;
+  if ((flags & 0x20000000) != 0)
   {
     v22 = &stru_100068FE0;
     v23 = v12;
@@ -480,10 +480,10 @@ LABEL_15:
     v24 = 1;
   }
 
-  [v20 sendAsynchronousMessage:v23 withIdentifier:v24 targetAccessQueue:0 completion:v22];
+  [uiClient sendAsynchronousMessage:v23 withIdentifier:v24 targetAccessQueue:0 completion:v22];
 }
 
-- (void)screenDidChange:(id)a3
+- (void)screenDidChange:(id)change
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -500,8 +500,8 @@ LABEL_15:
   [(SSAnnotationRenderer *)self setUiClient:0];
   [(SSAnnotationRenderer *)self setQueuedMessage:0];
   [(SSAnnotationRenderer *)self setMainScreen:0];
-  v3 = [(SSAnnotationRenderer *)self orientationObserver];
-  [v3 invalidate];
+  orientationObserver = [(SSAnnotationRenderer *)self orientationObserver];
+  [orientationObserver invalidate];
 
   v4.receiver = self;
   v4.super_class = SSAnnotationRenderer;

@@ -1,173 +1,173 @@
 @interface HMMTRMutableDeviceTopology
-- (void)addDeviceAttributeValues:(id)a3 clusterClassName:(id)a4 attributeName:(id)a5 atEndpoint:(id)a6;
-- (void)addDeviceFeatureMapValue:(id)a3 clusterClassName:(id)a4 atEndpoint:(id)a5;
-- (void)addHAPDisabledCharacteristic:(id)a3 atEndpoint:(id)a4 hapServiceType:(id)a5;
-- (void)setClustersInUse:(id)a3 atEndpoint:(id)a4;
-- (void)setDeviceAttributeValues:(id)a3 atEndpoint:(id)a4;
-- (void)setDeviceFeatureMapValues:(id)a3 atEndpoint:(id)a4;
-- (void)setFixedLabels:(id)a3 atEndpoint:(id)a4;
-- (void)setHAPCategories:(id)a3 atEndpoint:(id)a4;
-- (void)setHAPDisabledCharacteristics:(id)a3 atEndpoint:(id)a4;
-- (void)setHAPLinkedServiceTypes:(id)a3 atEndpoint:(id)a4;
-- (void)setHAPServiceTypes:(id)a3 atEndpoint:(id)a4;
-- (void)setNodeLabel:(id)a3 atEndpoint:(id)a4;
-- (void)setPartsList:(id)a3 atEndpoint:(id)a4;
-- (void)setVersion:(id)a3 for:(id)a4;
+- (void)addDeviceAttributeValues:(id)values clusterClassName:(id)name attributeName:(id)attributeName atEndpoint:(id)endpoint;
+- (void)addDeviceFeatureMapValue:(id)value clusterClassName:(id)name atEndpoint:(id)endpoint;
+- (void)addHAPDisabledCharacteristic:(id)characteristic atEndpoint:(id)endpoint hapServiceType:(id)type;
+- (void)setClustersInUse:(id)use atEndpoint:(id)endpoint;
+- (void)setDeviceAttributeValues:(id)values atEndpoint:(id)endpoint;
+- (void)setDeviceFeatureMapValues:(id)values atEndpoint:(id)endpoint;
+- (void)setFixedLabels:(id)labels atEndpoint:(id)endpoint;
+- (void)setHAPCategories:(id)categories atEndpoint:(id)endpoint;
+- (void)setHAPDisabledCharacteristics:(id)characteristics atEndpoint:(id)endpoint;
+- (void)setHAPLinkedServiceTypes:(id)types atEndpoint:(id)endpoint;
+- (void)setHAPServiceTypes:(id)types atEndpoint:(id)endpoint;
+- (void)setNodeLabel:(id)label atEndpoint:(id)endpoint;
+- (void)setPartsList:(id)list atEndpoint:(id)endpoint;
+- (void)setVersion:(id)version for:(id)for;
 @end
 
 @implementation HMMTRMutableDeviceTopology
 
-- (void)setVersion:(id)a3 for:(id)a4
+- (void)setVersion:(id)version for:(id)for
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMMTRDeviceTopology *)self versions];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  forCopy = for;
+  versionCopy = version;
+  versions = [(HMMTRDeviceTopology *)self versions];
+  [versions setObject:versionCopy forKeyedSubscript:forCopy];
 }
 
-- (void)setFixedLabels:(id)a3 atEndpoint:(id)a4
+- (void)setFixedLabels:(id)labels atEndpoint:(id)endpoint
 {
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v10 = [v6 arrayWithArray:a3];
-  v8 = [(HMMTRDeviceTopology *)self fixedLabels];
-  v9 = [v7 stringValue];
+  endpointCopy = endpoint;
+  v10 = [v6 arrayWithArray:labels];
+  fixedLabels = [(HMMTRDeviceTopology *)self fixedLabels];
+  stringValue = [endpointCopy stringValue];
 
-  [v8 setObject:v10 forKeyedSubscript:v9];
+  [fixedLabels setObject:v10 forKeyedSubscript:stringValue];
 }
 
-- (void)setPartsList:(id)a3 atEndpoint:(id)a4
+- (void)setPartsList:(id)list atEndpoint:(id)endpoint
 {
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v10 = [v6 arrayWithArray:a3];
-  v8 = [(HMMTRDeviceTopology *)self partsList];
-  v9 = [v7 stringValue];
+  endpointCopy = endpoint;
+  v10 = [v6 arrayWithArray:list];
+  partsList = [(HMMTRDeviceTopology *)self partsList];
+  stringValue = [endpointCopy stringValue];
 
-  [v8 setObject:v10 forKeyedSubscript:v9];
+  [partsList setObject:v10 forKeyedSubscript:stringValue];
 }
 
-- (void)setNodeLabel:(id)a3 atEndpoint:(id)a4
+- (void)setNodeLabel:(id)label atEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMMTRDeviceTopology *)self nodeLabels];
-  v8 = [v6 stringValue];
+  endpointCopy = endpoint;
+  labelCopy = label;
+  nodeLabels = [(HMMTRDeviceTopology *)self nodeLabels];
+  stringValue = [endpointCopy stringValue];
 
-  [v9 setObject:v7 forKeyedSubscript:v8];
+  [nodeLabels setObject:labelCopy forKeyedSubscript:stringValue];
 }
 
-- (void)addDeviceAttributeValues:(id)a3 clusterClassName:(id)a4 attributeName:(id)a5 atEndpoint:(id)a6
+- (void)addDeviceAttributeValues:(id)values clusterClassName:(id)name attributeName:(id)attributeName atEndpoint:(id)endpoint
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v17 = [a3 componentsJoinedByString:@":"];
-  v13 = [(HMMTRDeviceTopology *)self deviceAttributeValues];
-  v14 = [v10 stringValue];
+  endpointCopy = endpoint;
+  attributeNameCopy = attributeName;
+  nameCopy = name;
+  v17 = [values componentsJoinedByString:@":"];
+  deviceAttributeValues = [(HMMTRDeviceTopology *)self deviceAttributeValues];
+  stringValue = [endpointCopy stringValue];
 
-  v15 = [v13 objectForKeyedSubscript:v14];
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:%@", v12, v11, v17];
+  v15 = [deviceAttributeValues objectForKeyedSubscript:stringValue];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:%@", nameCopy, attributeNameCopy, v17];
 
   [v15 addObject:v16];
 }
 
-- (void)addDeviceFeatureMapValue:(id)a3 clusterClassName:(id)a4 atEndpoint:(id)a5
+- (void)addDeviceFeatureMapValue:(id)value clusterClassName:(id)name atEndpoint:(id)endpoint
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v14 = [(HMMTRDeviceTopology *)self deviceFeatureMapValues];
-  v11 = [v8 stringValue];
+  endpointCopy = endpoint;
+  nameCopy = name;
+  valueCopy = value;
+  deviceFeatureMapValues = [(HMMTRDeviceTopology *)self deviceFeatureMapValues];
+  stringValue = [endpointCopy stringValue];
 
-  v12 = [v14 objectForKeyedSubscript:v11];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v9, v10];
+  v12 = [deviceFeatureMapValues objectForKeyedSubscript:stringValue];
+  valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", nameCopy, valueCopy];
 
-  [v12 addObject:v13];
+  [v12 addObject:valueCopy];
 }
 
-- (void)addHAPDisabledCharacteristic:(id)a3 atEndpoint:(id)a4 hapServiceType:(id)a5
+- (void)addHAPDisabledCharacteristic:(id)characteristic atEndpoint:(id)endpoint hapServiceType:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v14 = [(HMMTRDeviceTopology *)self hapDisabledCharacteristics];
-  v11 = [v9 stringValue];
+  typeCopy = type;
+  endpointCopy = endpoint;
+  characteristicCopy = characteristic;
+  hapDisabledCharacteristics = [(HMMTRDeviceTopology *)self hapDisabledCharacteristics];
+  stringValue = [endpointCopy stringValue];
 
-  v12 = [v14 objectForKeyedSubscript:v11];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v8, v10];
+  v12 = [hapDisabledCharacteristics objectForKeyedSubscript:stringValue];
+  characteristicCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", typeCopy, characteristicCopy];
 
-  [v12 addObject:v13];
+  [v12 addObject:characteristicCopy];
 }
 
-- (void)setDeviceAttributeValues:(id)a3 atEndpoint:(id)a4
+- (void)setDeviceAttributeValues:(id)values atEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMMTRDeviceTopology *)self deviceAttributeValues];
-  v8 = [v6 stringValue];
+  endpointCopy = endpoint;
+  valuesCopy = values;
+  deviceAttributeValues = [(HMMTRDeviceTopology *)self deviceAttributeValues];
+  stringValue = [endpointCopy stringValue];
 
-  [v9 setObject:v7 forKeyedSubscript:v8];
+  [deviceAttributeValues setObject:valuesCopy forKeyedSubscript:stringValue];
 }
 
-- (void)setDeviceFeatureMapValues:(id)a3 atEndpoint:(id)a4
+- (void)setDeviceFeatureMapValues:(id)values atEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMMTRDeviceTopology *)self deviceFeatureMapValues];
-  v8 = [v6 stringValue];
+  endpointCopy = endpoint;
+  valuesCopy = values;
+  deviceFeatureMapValues = [(HMMTRDeviceTopology *)self deviceFeatureMapValues];
+  stringValue = [endpointCopy stringValue];
 
-  [v9 setObject:v7 forKeyedSubscript:v8];
+  [deviceFeatureMapValues setObject:valuesCopy forKeyedSubscript:stringValue];
 }
 
-- (void)setHAPDisabledCharacteristics:(id)a3 atEndpoint:(id)a4
+- (void)setHAPDisabledCharacteristics:(id)characteristics atEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMMTRDeviceTopology *)self hapDisabledCharacteristics];
-  v8 = [v6 stringValue];
+  endpointCopy = endpoint;
+  characteristicsCopy = characteristics;
+  hapDisabledCharacteristics = [(HMMTRDeviceTopology *)self hapDisabledCharacteristics];
+  stringValue = [endpointCopy stringValue];
 
-  [v9 setObject:v7 forKeyedSubscript:v8];
+  [hapDisabledCharacteristics setObject:characteristicsCopy forKeyedSubscript:stringValue];
 }
 
-- (void)setHAPCategories:(id)a3 atEndpoint:(id)a4
+- (void)setHAPCategories:(id)categories atEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMMTRDeviceTopology *)self hapCategories];
-  v8 = [v6 stringValue];
+  endpointCopy = endpoint;
+  categoriesCopy = categories;
+  hapCategories = [(HMMTRDeviceTopology *)self hapCategories];
+  stringValue = [endpointCopy stringValue];
 
-  [v9 setObject:v7 forKeyedSubscript:v8];
+  [hapCategories setObject:categoriesCopy forKeyedSubscript:stringValue];
 }
 
-- (void)setClustersInUse:(id)a3 atEndpoint:(id)a4
+- (void)setClustersInUse:(id)use atEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMMTRDeviceTopology *)self clustersInUse];
-  v8 = [v6 stringValue];
+  endpointCopy = endpoint;
+  useCopy = use;
+  clustersInUse = [(HMMTRDeviceTopology *)self clustersInUse];
+  stringValue = [endpointCopy stringValue];
 
-  [v9 setObject:v7 forKeyedSubscript:v8];
+  [clustersInUse setObject:useCopy forKeyedSubscript:stringValue];
 }
 
-- (void)setHAPLinkedServiceTypes:(id)a3 atEndpoint:(id)a4
+- (void)setHAPLinkedServiceTypes:(id)types atEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMMTRDeviceTopology *)self hapLinkedServiceTypes];
-  v8 = [v6 stringValue];
+  endpointCopy = endpoint;
+  typesCopy = types;
+  hapLinkedServiceTypes = [(HMMTRDeviceTopology *)self hapLinkedServiceTypes];
+  stringValue = [endpointCopy stringValue];
 
-  [v9 setObject:v7 forKeyedSubscript:v8];
+  [hapLinkedServiceTypes setObject:typesCopy forKeyedSubscript:stringValue];
 }
 
-- (void)setHAPServiceTypes:(id)a3 atEndpoint:(id)a4
+- (void)setHAPServiceTypes:(id)types atEndpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMMTRDeviceTopology *)self hapServiceTypes];
-  v8 = [v6 stringValue];
+  endpointCopy = endpoint;
+  typesCopy = types;
+  hapServiceTypes = [(HMMTRDeviceTopology *)self hapServiceTypes];
+  stringValue = [endpointCopy stringValue];
 
-  [v9 setObject:v7 forKeyedSubscript:v8];
+  [hapServiceTypes setObject:typesCopy forKeyedSubscript:stringValue];
 }
 
 @end

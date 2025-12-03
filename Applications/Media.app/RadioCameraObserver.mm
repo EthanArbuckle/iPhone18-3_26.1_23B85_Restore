@@ -1,7 +1,7 @@
 @interface RadioCameraObserver
 + (RadioCameraObserver)sharedInstance;
 - (RadioCameraObserver)init;
-- (void)_cameraIrisStateChangedWithToken:(int)a3;
+- (void)_cameraIrisStateChangedWithToken:(int)token;
 - (void)dealloc;
 - (void)startObservingCameraIris;
 - (void)stopObservingCameraIris;
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000025F0;
   block[3] = &unk_1000DEF40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000EF3C8[0] != -1)
   {
     dispatch_once(qword_1000EF3C8, block);
@@ -48,10 +48,10 @@
   [(RadioCameraObserver *)&v3 dealloc];
 }
 
-- (void)_cameraIrisStateChangedWithToken:(int)a3
+- (void)_cameraIrisStateChangedWithToken:(int)token
 {
   state64 = 0;
-  notify_get_state(a3, &state64);
+  notify_get_state(token, &state64);
   v4 = state64;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {

@@ -1,16 +1,16 @@
 @interface CMSLogger
 + (id)_LoggingQueue;
-- (BOOL)_checkDictionary:(id)a3 forKeyType:(Class)a4 andValueType:(Class)a5;
+- (BOOL)_checkDictionary:(id)dictionary forKeyType:(Class)type andValueType:(Class)valueType;
 - (id)_loggerStorage;
-- (id)createNewSessionForType:(id)a3 withMetadata:(id)a4;
-- (id)initForIdentity:(id)a3;
+- (id)createNewSessionForType:(id)type withMetadata:(id)metadata;
+- (id)initForIdentity:(id)identity;
 - (id)sendEvent;
 - (void)_fileMetrics;
 - (void)_loadAnalyticsData;
 - (void)_saveAnalyticsData;
-- (void)_sumbitFromSessionType:(id)a3 withMetadata:(id)a4 withEventDurations:(id)a5 withEventOccurance:(id)a6;
-- (void)setReportFrequency:(double)a3;
-- (void)setSendEvent:(id)a3;
+- (void)_sumbitFromSessionType:(id)type withMetadata:(id)metadata withEventDurations:(id)durations withEventOccurance:(id)occurance;
+- (void)setReportFrequency:(double)frequency;
+- (void)setSendEvent:(id)event;
 @end
 
 @implementation CMSLogger
@@ -27,15 +27,15 @@
   return v3;
 }
 
-- (id)initForIdentity:(id)a3
+- (id)initForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v24.receiver = self;
   v24.super_class = CMSLogger;
   v5 = [(CMSLogger *)&v24 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identityCopy copy];
     logIdentity = v5->_logIdentity;
     v5->_logIdentity = v6;
 
@@ -75,7 +75,7 @@
   return v5;
 }
 
-- (void)setReportFrequency:(double)a3
+- (void)setReportFrequency:(double)frequency
 {
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
@@ -83,7 +83,7 @@
   block[2] = sub_100031320;
   block[3] = &unk_100052800;
   objc_copyWeak(v5, &location);
-  v5[1] = *&a3;
+  v5[1] = *&frequency;
   dispatch_async(&_dispatch_main_q, block);
   objc_destroyWeak(v5);
   objc_destroyWeak(&location);
@@ -96,40 +96,40 @@
   return v2;
 }
 
-- (void)setSendEvent:(id)a3
+- (void)setSendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[CMSLogger _LoggingQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003155C;
   v7[3] = &unk_100052828;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(v5, v7);
 }
 
-- (id)createNewSessionForType:(id)a3 withMetadata:(id)a4
+- (id)createNewSessionForType:(id)type withMetadata:(id)metadata
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CMSLoggingSession alloc] initForType:v7 withMetadata:v6];
+  metadataCopy = metadata;
+  typeCopy = type;
+  v8 = [[CMSLoggingSession alloc] initForType:typeCopy withMetadata:metadataCopy];
 
   [v8 setBelongedLogger:self];
 
   return v8;
 }
 
-- (void)_sumbitFromSessionType:(id)a3 withMetadata:(id)a4 withEventDurations:(id)a5 withEventOccurance:(id)a6
+- (void)_sumbitFromSessionType:(id)type withMetadata:(id)metadata withEventDurations:(id)durations withEventOccurance:(id)occurance
 {
   performanceData = self->performanceData;
-  v11 = a6;
-  v12 = a5;
-  v26 = a4;
-  v13 = a3;
-  v14 = [(NSMutableDictionary *)performanceData objectForKeyedSubscript:v13];
-  v15 = [(NSMutableDictionary *)self->performanceDataCount objectForKeyedSubscript:v13];
+  occuranceCopy = occurance;
+  durationsCopy = durations;
+  metadataCopy = metadata;
+  typeCopy = type;
+  v14 = [(NSMutableDictionary *)performanceData objectForKeyedSubscript:typeCopy];
+  v15 = [(NSMutableDictionary *)self->performanceDataCount objectForKeyedSubscript:typeCopy];
   v16 = [NSMutableDictionary dictionaryWithDictionary:v14];
   [NSMutableDictionary dictionaryWithDictionary:v15];
   v33[0] = _NSConcreteStackBlock;
@@ -143,15 +143,15 @@
   v18 = v36;
   v27 = v15;
   v19 = v14;
-  [v12 enumerateKeysAndObjectsUsingBlock:v33];
+  [durationsCopy enumerateKeysAndObjectsUsingBlock:v33];
 
   v20 = [v19 objectForKeyedSubscript:@"Count"];
   v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v20 unsignedIntegerValue] + 1);
   [v17 setObject:v21 forKeyedSubscript:@"Count"];
 
-  [(NSMutableDictionary *)self->performanceData setObject:v17 forKeyedSubscript:v13];
-  [(NSMutableDictionary *)self->performanceDataCount setObject:v18 forKeyedSubscript:v13];
-  v22 = [(NSMutableDictionary *)self->occuranceData objectForKeyedSubscript:v13];
+  [(NSMutableDictionary *)self->performanceData setObject:v17 forKeyedSubscript:typeCopy];
+  [(NSMutableDictionary *)self->performanceDataCount setObject:v18 forKeyedSubscript:typeCopy];
+  v22 = [(NSMutableDictionary *)self->occuranceData objectForKeyedSubscript:typeCopy];
   [NSMutableDictionary dictionaryWithDictionary:v22];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
@@ -160,7 +160,7 @@
   v23 = v31 = v22;
   v32 = v23;
   v24 = v22;
-  [v11 enumerateKeysAndObjectsUsingBlock:v30];
+  [occuranceCopy enumerateKeysAndObjectsUsingBlock:v30];
 
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
@@ -169,8 +169,8 @@
   v29 = v23;
   v25 = v23;
   [v24 enumerateKeysAndObjectsUsingBlock:v28];
-  [(NSMutableDictionary *)self->occuranceData setObject:v25 forKeyedSubscript:v13];
-  [(NSMutableDictionary *)self->metadata setObject:v26 forKeyedSubscript:v13];
+  [(NSMutableDictionary *)self->occuranceData setObject:v25 forKeyedSubscript:typeCopy];
+  [(NSMutableDictionary *)self->metadata setObject:metadataCopy forKeyedSubscript:typeCopy];
 
   [(CMSLogger *)self _saveAnalyticsData];
 }
@@ -197,20 +197,20 @@
 
 - (void)_saveAnalyticsData
 {
-  v3 = [(CMSLogger *)self _loggerStorage];
-  [v3 setObject:self->_lastTransitTimestamp forKey:@"lastTransitTimestamp"];
-  [v3 setObject:self->performanceData forKey:@"performanceData"];
-  [v3 setObject:self->performanceDataCount forKey:@"performanceDataCount"];
-  [v3 setObject:self->occuranceData forKey:@"occuranceData"];
-  [v3 setObject:self->metadata forKey:@"metadata"];
+  _loggerStorage = [(CMSLogger *)self _loggerStorage];
+  [_loggerStorage setObject:self->_lastTransitTimestamp forKey:@"lastTransitTimestamp"];
+  [_loggerStorage setObject:self->performanceData forKey:@"performanceData"];
+  [_loggerStorage setObject:self->performanceDataCount forKey:@"performanceDataCount"];
+  [_loggerStorage setObject:self->occuranceData forKey:@"occuranceData"];
+  [_loggerStorage setObject:self->metadata forKey:@"metadata"];
   [(NSTimer *)self->reportTimer timeInterval];
-  [v3 setDouble:@"ReportInterval" forKey:?];
-  [v3 synchronize];
+  [_loggerStorage setDouble:@"ReportInterval" forKey:?];
+  [_loggerStorage synchronize];
 }
 
-- (BOOL)_checkDictionary:(id)a3 forKeyType:(Class)a4 andValueType:(Class)a5
+- (BOOL)_checkDictionary:(id)dictionary forKeyType:(Class)type andValueType:(Class)valueType
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -219,27 +219,27 @@
   v9[1] = 3221225472;
   v9[2] = sub_1000323F8;
   v9[3] = &unk_1000528F0;
-  v9[5] = a4;
-  v9[6] = a5;
+  v9[5] = type;
+  v9[6] = valueType;
   v9[4] = &v10;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
-  LOBYTE(a5) = *(v11 + 24);
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
+  LOBYTE(valueType) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return a5;
+  return valueType;
 }
 
 - (void)_loadAnalyticsData
 {
-  v13 = [(CMSLogger *)self _loggerStorage];
-  v3 = [v13 objectForKey:@"lastTransitTimestamp"];
+  _loggerStorage = [(CMSLogger *)self _loggerStorage];
+  v3 = [_loggerStorage objectForKey:@"lastTransitTimestamp"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(&self->_lastTransitTimestamp, v3);
   }
 
-  v4 = [v13 objectForKey:@"performanceData"];
+  v4 = [_loggerStorage objectForKey:@"performanceData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -250,7 +250,7 @@
     }
   }
 
-  v6 = [v13 objectForKey:@"performanceDataCount"];
+  v6 = [_loggerStorage objectForKey:@"performanceDataCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -261,7 +261,7 @@
     }
   }
 
-  v8 = [v13 objectForKey:@"occuranceData"];
+  v8 = [_loggerStorage objectForKey:@"occuranceData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -272,7 +272,7 @@
     }
   }
 
-  v10 = [v13 objectForKey:@"metadata"];
+  v10 = [_loggerStorage objectForKey:@"metadata"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -283,7 +283,7 @@
     }
   }
 
-  [v13 doubleForKey:@"ReportInterval"];
+  [_loggerStorage doubleForKey:@"ReportInterval"];
   if (v12 > 0.0)
   {
     [(CMSLogger *)self setReportFrequency:?];

@@ -5,9 +5,9 @@
 - (SLDServiceProxy)syndicationServiceProxy;
 - (void)_disconnectSyndicationServiceConnectionIfNecessary;
 - (void)_sendCurrentRemovalsToDaemonAndDisconnect;
-- (void)removeMessageGUIDFromSyndication:(id)a3;
-- (void)serviceProxyDidConnect:(id)a3;
-- (void)serviceProxyDidDisconnect:(id)a3;
+- (void)removeMessageGUIDFromSyndication:(id)syndication;
+- (void)serviceProxyDidConnect:(id)connect;
+- (void)serviceProxyDidDisconnect:(id)disconnect;
 @end
 
 @implementation SLSyndicationController
@@ -33,10 +33,10 @@ uint64_t __43__SLSyndicationController_sharedController__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)removeMessageGUIDFromSyndication:(id)a3
+- (void)removeMessageGUIDFromSyndication:(id)syndication
 {
-  v4 = a3;
-  if ([v4 length])
+  syndicationCopy = syndication;
+  if ([syndicationCopy length])
   {
     v5 = +[SLSyndicationController syndicationProcessingQueue];
     v6[0] = MEMORY[0x277D85DD0];
@@ -44,7 +44,7 @@ uint64_t __43__SLSyndicationController_sharedController__block_invoke()
     v6[2] = __60__SLSyndicationController_removeMessageGUIDFromSyndication___block_invoke;
     v6[3] = &unk_278925CF0;
     v6[4] = self;
-    v7 = v4;
+    v7 = syndicationCopy;
     dispatch_async(v5, v6);
   }
 }
@@ -146,17 +146,17 @@ void __77__SLSyndicationController__disconnectSyndicationServiceConnectionIfNece
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceProxyDidConnect:(id)a3
+- (void)serviceProxyDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = +[SLSyndicationController syndicationProcessingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SLSyndicationController_serviceProxyDidConnect___block_invoke;
   v7[3] = &unk_278925CF0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = connectCopy;
+  selfCopy = self;
+  v6 = connectCopy;
   dispatch_async(v5, v7);
 }
 
@@ -173,17 +173,17 @@ void __50__SLSyndicationController_serviceProxyDidConnect___block_invoke(uint64_
   }
 }
 
-- (void)serviceProxyDidDisconnect:(id)a3
+- (void)serviceProxyDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = +[SLSyndicationController syndicationProcessingQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SLSyndicationController_serviceProxyDidDisconnect___block_invoke;
   v7[3] = &unk_278925CF0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = disconnectCopy;
+  selfCopy = self;
+  v6 = disconnectCopy;
   dispatch_async(v5, v7);
 }
 

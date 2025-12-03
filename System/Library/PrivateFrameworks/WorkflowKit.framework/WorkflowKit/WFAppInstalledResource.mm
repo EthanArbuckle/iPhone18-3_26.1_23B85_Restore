@@ -1,22 +1,22 @@
 @interface WFAppInstalledResource
-- (BOOL)appDescriptorOrAccompanyingExtensionIsInstalled:(id)a3;
+- (BOOL)appDescriptorOrAccompanyingExtensionIsInstalled:(id)installed;
 - (BOOL)descriptorIsIntentDescriptor;
 - (BOOL)intentIsEligibleForRemoteExecution;
 - (BOOL)intentIsLocallyAvailable;
 - (WFAppInstalledResourceDelegate)delegate;
-- (id)_initWithDescriptor:(id)a3 requiresAppToBeInstalled:(BOOL)a4 isSyncedFromOtherDevice:(BOOL)a5;
-- (id)appNeedsUpdateErrorWithAppName:(id)a3;
+- (id)_initWithDescriptor:(id)descriptor requiresAppToBeInstalled:(BOOL)installed isSyncedFromOtherDevice:(BOOL)device;
+- (id)appNeedsUpdateErrorWithAppName:(id)name;
 - (id)appNotInstalledError;
 - (id)appNotResolvedError;
 - (id)bundleIdentifier;
 - (id)eventDictionary;
 - (id)intentDescriptor;
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 userInterface:(id)a5 completionHandler:(id)a6;
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchiTunesStoreObjectForAppWithCompletionBlock:(id)a3;
-- (void)notifyDelegateWithUpdatedDescriptor:(id)a3;
+- (void)fetchiTunesStoreObjectForAppWithCompletionBlock:(id)block;
+- (void)notifyDelegateWithUpdatedDescriptor:(id)descriptor;
 - (void)refreshAvailability;
-- (void)updateDescriptorsWithSelectedApp:(id)a3;
+- (void)updateDescriptorsWithSelectedApp:(id)app;
 @end
 
 @implementation WFAppInstalledResource
@@ -28,15 +28,15 @@
   return WeakRetained;
 }
 
-- (void)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4 userInterface:(id)a5 completionHandler:(id)a6
+- (void)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index userInterface:(id)interface completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  if ([a3 code])
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  if ([error code])
   {
-    if (v10)
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -46,8 +46,8 @@
     v11[1] = 3221225472;
     v11[2] = __95__WFAppInstalledResource_attemptRecoveryFromError_optionIndex_userInterface_completionHandler___block_invoke;
     v11[3] = &unk_1E8378A08;
-    v13 = v10;
-    v12 = v9;
+    v13 = handlerCopy;
+    v12 = interfaceCopy;
     [(WFAppInstalledResource *)self fetchiTunesStoreObjectForAppWithCompletionBlock:v11];
   }
 }
@@ -98,31 +98,31 @@ uint64_t __95__WFAppInstalledResource_attemptRecoveryFromError_optionIndex_userI
   return result;
 }
 
-- (id)appNeedsUpdateErrorWithAppName:(id)a3
+- (id)appNeedsUpdateErrorWithAppName:(id)name
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = WFLocalizedString(@"This action requires an updated version of %@.");
-    v7 = [v5 localizedStringWithFormat:v6, v4];
+    nameCopy = [v5 localizedStringWithFormat:v6, nameCopy];
 
     v8 = MEMORY[0x1E696AEC0];
     v9 = WFLocalizedString(@"This shortcut requires an updated version of %@.");
-    v10 = [v8 localizedStringWithFormat:v9, v4];
+    nameCopy2 = [v8 localizedStringWithFormat:v9, nameCopy];
   }
 
   else
   {
-    v7 = WFLocalizedString(@"This action cannot be run because a required app is missing.");
-    v10 = WFLocalizedString(@"This shortcut cannot be imported because a required app is missing");
+    nameCopy = WFLocalizedString(@"This action cannot be run because a required app is missing.");
+    nameCopy2 = WFLocalizedString(@"This shortcut cannot be imported because a required app is missing");
   }
 
   v18[0] = *MEMORY[0x1E696A588];
   v18[1] = @"WFResourceErrorImportErrorReason";
-  v19[0] = v7;
-  v19[1] = v10;
+  v19[0] = nameCopy;
+  v19[1] = nameCopy2;
   v18[2] = *MEMORY[0x1E696A590];
   v11 = WFLocalizedString(@"View in App Store");
   v17 = v11;
@@ -142,16 +142,16 @@ uint64_t __95__WFAppInstalledResource_attemptRecoveryFromError_optionIndex_userI
 - (id)appNotResolvedError
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v3 = [(WFAppInstalledResource *)self appName];
-  if ([v3 length])
+  appName = [(WFAppInstalledResource *)self appName];
+  if ([appName length])
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = WFLocalizedString(@"This action requires %@ but it may not be installed.");
-    v6 = [v4 localizedStringWithFormat:v5, v3];
+    v6 = [v4 localizedStringWithFormat:v5, appName];
 
     v7 = MEMORY[0x1E696AEC0];
     v8 = WFLocalizedString(@"This shortcut requires %@ but it may not be installed.");
-    v9 = [v7 localizedStringWithFormat:v8, v3];
+    v9 = [v7 localizedStringWithFormat:v8, appName];
   }
 
   else
@@ -185,16 +185,16 @@ uint64_t __95__WFAppInstalledResource_attemptRecoveryFromError_optionIndex_userI
 - (id)appNotInstalledError
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v3 = [(WFAppInstalledResource *)self appName];
-  if ([v3 length])
+  appName = [(WFAppInstalledResource *)self appName];
+  if ([appName length])
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = WFLocalizedString(@"This action requires %@ to be installed.");
-    v6 = [v4 localizedStringWithFormat:v5, v3];
+    v6 = [v4 localizedStringWithFormat:v5, appName];
 
     v7 = MEMORY[0x1E696AEC0];
     v8 = WFLocalizedString(@"This shortcut requires %@ to be installed.");
-    v9 = [v7 localizedStringWithFormat:v8, v3];
+    v9 = [v7 localizedStringWithFormat:v8, appName];
   }
 
   else
@@ -229,29 +229,29 @@ uint64_t __95__WFAppInstalledResource_attemptRecoveryFromError_optionIndex_userI
 {
   if ([(WFAppInstalledResource *)self intentIsEligibleForRemoteExecution])
   {
-    v3 = [(WFAppInstalledResource *)self descriptor];
-    v4 = [v3 isInstalled];
+    descriptor = [(WFAppInstalledResource *)self descriptor];
+    isInstalled = [descriptor isInstalled];
 
-    if (v4)
+    if (isInstalled)
     {
       if ([(WFAppInstalledResource *)self descriptorIsIntentDescriptor])
       {
-        v5 = [(WFAppInstalledResource *)self intentDescriptor];
-        v6 = [v5 canRunOnLocalDevice];
+        intentDescriptor = [(WFAppInstalledResource *)self intentDescriptor];
+        canRunOnLocalDevice = [intentDescriptor canRunOnLocalDevice];
       }
 
       else
       {
-        v6 = 1;
+        canRunOnLocalDevice = 1;
       }
     }
 
     else
     {
-      v6 = 0;
+      canRunOnLocalDevice = 0;
     }
 
-    return v6 & 1;
+    return canRunOnLocalDevice & 1;
   }
 
   else
@@ -263,25 +263,25 @@ uint64_t __95__WFAppInstalledResource_attemptRecoveryFromError_optionIndex_userI
 
 - (BOOL)intentIsEligibleForRemoteExecution
 {
-  v3 = [(WFAppInstalledResource *)self descriptorIsIntentDescriptor];
-  if (v3)
+  descriptorIsIntentDescriptor = [(WFAppInstalledResource *)self descriptorIsIntentDescriptor];
+  if (descriptorIsIntentDescriptor)
   {
 
-    LOBYTE(v3) = [(WFAppInstalledResource *)self intentIsSynced];
+    LOBYTE(descriptorIsIntentDescriptor) = [(WFAppInstalledResource *)self intentIsSynced];
   }
 
-  return v3;
+  return descriptorIsIntentDescriptor;
 }
 
 - (id)intentDescriptor
 {
-  v2 = [(WFAppInstalledResource *)self descriptor];
-  if (v2)
+  descriptor = [(WFAppInstalledResource *)self descriptor];
+  if (descriptor)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = descriptor;
     }
 
     else
@@ -302,25 +302,25 @@ uint64_t __95__WFAppInstalledResource_attemptRecoveryFromError_optionIndex_userI
 
 - (BOOL)descriptorIsIntentDescriptor
 {
-  v2 = [(WFAppInstalledResource *)self descriptor];
+  descriptor = [(WFAppInstalledResource *)self descriptor];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)fetchiTunesStoreObjectForAppWithCompletionBlock:(id)a3
+- (void)fetchiTunesStoreObjectForAppWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__WFAppInstalledResource_fetchiTunesStoreObjectForAppWithCompletionBlock___block_invoke;
   block[3] = &unk_1E8379538;
-  v9 = v5;
+  v9 = blockCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = blockCopy;
   dispatch_async(stateQueue, block);
 }
 
@@ -459,66 +459,66 @@ uint64_t __74__WFAppInstalledResource_fetchiTunesStoreObjectForAppWithCompletion
   return [v5 setCurrentAppNameLookupSessionManager:0];
 }
 
-- (void)notifyDelegateWithUpdatedDescriptor:(id)a3
+- (void)notifyDelegateWithUpdatedDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v4 = [(WFAppInstalledResource *)self delegate];
+  descriptorCopy = descriptor;
+  delegate = [(WFAppInstalledResource *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(WFAppInstalledResource *)self delegate];
-    [v5 appInstalledResource:self didUpdateAppDescriptor:v6];
+    delegate2 = [(WFAppInstalledResource *)self delegate];
+    [delegate2 appInstalledResource:self didUpdateAppDescriptor:descriptorCopy];
   }
 }
 
-- (void)updateDescriptorsWithSelectedApp:(id)a3
+- (void)updateDescriptorsWithSelectedApp:(id)app
 {
-  v20 = a3;
+  appCopy = app;
   if ([(WFAppInstalledResource *)self descriptorIsIntentDescriptor])
   {
-    v4 = [(WFAppInstalledResource *)self descriptor];
+    descriptor = [(WFAppInstalledResource *)self descriptor];
     v16 = objc_alloc(MEMORY[0x1E696E890]);
-    v17 = v4;
-    v19 = [v4 intentClassName];
-    v18 = [v20 localizedName];
-    v5 = [v20 bundleIdentifier];
-    v6 = [v20 bundleIdentifier];
-    v7 = [v20 extensionBundleIdentifier];
-    v15 = [v4 uiExtensionBundleIdentifier];
-    v14 = [v20 counterpartIdentifiers];
-    v8 = [v20 teamIdentifier];
-    v9 = [v4 preferredCallProvider];
-    v10 = [v20 supportedIntents];
-    v11 = [v20 bundleURL];
-    v12 = [v20 documentTypes];
-    v13 = [v16 initWithIntentClassName:v19 localizedName:v18 bundleIdentifier:v5 displayableBundleIdentifier:v6 extensionBundleIdentifier:v7 uiExtensionBundleIdentifier:v15 counterpartIdentifiers:v14 teamIdentifier:v8 preferredCallProvider:v9 supportedIntents:v10 bundleURL:v11 documentTypes:v12];
+    v17 = descriptor;
+    intentClassName = [descriptor intentClassName];
+    localizedName = [appCopy localizedName];
+    bundleIdentifier = [appCopy bundleIdentifier];
+    bundleIdentifier2 = [appCopy bundleIdentifier];
+    extensionBundleIdentifier = [appCopy extensionBundleIdentifier];
+    uiExtensionBundleIdentifier = [descriptor uiExtensionBundleIdentifier];
+    counterpartIdentifiers = [appCopy counterpartIdentifiers];
+    teamIdentifier = [appCopy teamIdentifier];
+    preferredCallProvider = [descriptor preferredCallProvider];
+    supportedIntents = [appCopy supportedIntents];
+    bundleURL = [appCopy bundleURL];
+    documentTypes = [appCopy documentTypes];
+    v13 = [v16 initWithIntentClassName:intentClassName localizedName:localizedName bundleIdentifier:bundleIdentifier displayableBundleIdentifier:bundleIdentifier2 extensionBundleIdentifier:extensionBundleIdentifier uiExtensionBundleIdentifier:uiExtensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier preferredCallProvider:preferredCallProvider supportedIntents:supportedIntents bundleURL:bundleURL documentTypes:documentTypes];
     [(WFAppInstalledResource *)self setDescriptor:v13];
   }
 
   else
   {
-    [(WFAppInstalledResource *)self setDescriptor:v20];
+    [(WFAppInstalledResource *)self setDescriptor:appCopy];
   }
 }
 
 - (void)refreshAvailability
 {
   dispatch_assert_queue_not_V2(self->_stateQueue);
-  v3 = [(WFAppInstalledResource *)self descriptor];
-  v4 = [v3 bundleIdentifier];
-  if (v4)
+  descriptor = [(WFAppInstalledResource *)self descriptor];
+  bundleIdentifier = [descriptor bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v5 = v4;
+    v5 = bundleIdentifier;
     v6 = MEMORY[0x1E698B0D0];
-    v7 = [(WFAppInstalledResource *)self descriptor];
-    v8 = [v7 bundleIdentifier];
-    v9 = [v6 applicationWithBundleIdentifier:v8];
-    v10 = [v9 isHidden];
+    descriptor2 = [(WFAppInstalledResource *)self descriptor];
+    bundleIdentifier2 = [descriptor2 bundleIdentifier];
+    v9 = [v6 applicationWithBundleIdentifier:bundleIdentifier2];
+    isHidden = [v9 isHidden];
 
-    if (v10)
+    if (isHidden)
     {
-      v19 = [(WFAppInstalledResource *)self appNotInstalledError];
-      [(WFResource *)self updateAvailability:0 withError:v19];
+      appNotInstalledError = [(WFAppInstalledResource *)self appNotInstalledError];
+      [(WFResource *)self updateAvailability:0 withError:appNotInstalledError];
 
       return;
     }
@@ -530,16 +530,16 @@ uint64_t __74__WFAppInstalledResource_fetchiTunesStoreObjectForAppWithCompletion
 
   if (![(WFAppInstalledResource *)self intentIsEligibleForRemoteExecution])
   {
-    v11 = [(WFAppInstalledResource *)self descriptor];
-    if ([v11 requiresUserConfirmation])
+    descriptor3 = [(WFAppInstalledResource *)self descriptor];
+    if ([descriptor3 requiresUserConfirmation])
     {
-      v12 = [(WFAppInstalledResource *)self appNotResolvedError];
-      [(WFResource *)self updateAvailability:0 withError:v12];
+      appNotResolvedError = [(WFAppInstalledResource *)self appNotResolvedError];
+      [(WFResource *)self updateAvailability:0 withError:appNotResolvedError];
     }
 
     else
     {
-      if (![(WFAppInstalledResource *)self requiresAppToBeInstalled]|| [(WFAppInstalledResource *)self appDescriptorOrAccompanyingExtensionIsInstalled:v11])
+      if (![(WFAppInstalledResource *)self requiresAppToBeInstalled]|| [(WFAppInstalledResource *)self appDescriptorOrAccompanyingExtensionIsInstalled:descriptor3])
       {
         [(WFResource *)self updateAvailability:1 withError:0];
         goto LABEL_21;
@@ -552,18 +552,18 @@ uint64_t __74__WFAppInstalledResource_fetchiTunesStoreObjectForAppWithCompletion
         block[1] = 3221225472;
         block[2] = __45__WFAppInstalledResource_refreshAvailability__block_invoke;
         block[3] = &unk_1E837F870;
-        v21 = v11;
-        v22 = self;
+        v21 = descriptor3;
+        selfCopy = self;
         dispatch_sync(stateQueue, block);
-        v16 = [(WFAppInstalledResource *)self appNotInstalledError];
-        [(WFResource *)self updateAvailability:0 withError:v16];
+        appNotInstalledError2 = [(WFAppInstalledResource *)self appNotInstalledError];
+        [(WFResource *)self updateAvailability:0 withError:appNotInstalledError2];
 
         goto LABEL_21;
       }
 
-      v12 = [(WFAppInstalledResource *)self descriptor];
-      v17 = [v12 localizedName];
-      v18 = [(WFAppInstalledResource *)self appNeedsUpdateErrorWithAppName:v17];
+      appNotResolvedError = [(WFAppInstalledResource *)self descriptor];
+      localizedName = [appNotResolvedError localizedName];
+      v18 = [(WFAppInstalledResource *)self appNeedsUpdateErrorWithAppName:localizedName];
       [(WFResource *)self updateAvailability:0 withError:v18];
     }
 
@@ -655,16 +655,16 @@ void __45__WFAppInstalledResource_refreshAvailability__block_invoke_3(uint64_t a
   }
 }
 
-- (BOOL)appDescriptorOrAccompanyingExtensionIsInstalled:(id)a3
+- (BOOL)appDescriptorOrAccompanyingExtensionIsInstalled:(id)installed
 {
-  v3 = a3;
-  if ([v3 isInstalled])
+  installedCopy = installed;
+  if ([installedCopy isInstalled])
   {
     goto LABEL_4;
   }
 
-  v4 = [v3 extensionBundleIdentifier];
-  v5 = [v4 length];
+  extensionBundleIdentifier = [installedCopy extensionBundleIdentifier];
+  v5 = [extensionBundleIdentifier length];
 
   if (!v5)
   {
@@ -672,8 +672,8 @@ void __45__WFAppInstalledResource_refreshAvailability__block_invoke_3(uint64_t a
   }
 
   v6 = objc_alloc(MEMORY[0x1E69635D0]);
-  v7 = [v3 extensionBundleIdentifier];
-  v8 = [v6 initWithBundleIdentifier:v7 error:0];
+  extensionBundleIdentifier2 = [installedCopy extensionBundleIdentifier];
+  v8 = [v6 initWithBundleIdentifier:extensionBundleIdentifier2 error:0];
 
   if (v8)
   {
@@ -694,33 +694,33 @@ LABEL_5:
 {
   v7.receiver = self;
   v7.super_class = WFAppInstalledResource;
-  v3 = [(WFResource *)&v7 eventDictionary];
-  v4 = [v3 mutableCopy];
+  eventDictionary = [(WFResource *)&v7 eventDictionary];
+  v4 = [eventDictionary mutableCopy];
 
-  v5 = [(WFAppInstalledResource *)self bundleIdentifier];
-  [v4 setValue:v5 forKey:@"resource_app"];
+  bundleIdentifier = [(WFAppInstalledResource *)self bundleIdentifier];
+  [v4 setValue:bundleIdentifier forKey:@"resource_app"];
 
   return v4;
 }
 
 - (id)bundleIdentifier
 {
-  v2 = [(WFAppInstalledResource *)self descriptor];
-  v3 = [v2 bundleIdentifier];
+  descriptor = [(WFAppInstalledResource *)self descriptor];
+  bundleIdentifier = [descriptor bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (void)dealloc
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFAppInstalledResource *)self descriptor];
-  v4 = [v3 bundleIdentifier];
+  descriptor = [(WFAppInstalledResource *)self descriptor];
+  bundleIdentifier = [descriptor bundleIdentifier];
 
-  if (v4 && [(WFAppInstalledResource *)self requiresAppToBeInstalled])
+  if (bundleIdentifier && [(WFAppInstalledResource *)self requiresAppToBeInstalled])
   {
     v5 = +[WFInterchangeAppRegistry sharedRegistry];
-    v9[0] = v4;
+    v9[0] = bundleIdentifier;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     [v5 removeInstallStatusObserver:self forAppIdentifiers:v6];
   }
@@ -731,34 +731,34 @@ LABEL_5:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithDescriptor:(id)a3 requiresAppToBeInstalled:(BOOL)a4 isSyncedFromOtherDevice:(BOOL)a5
+- (id)_initWithDescriptor:(id)descriptor requiresAppToBeInstalled:(BOOL)installed isSyncedFromOtherDevice:(BOOL)device
 {
-  v6 = a4;
+  installedCopy = installed;
   v25[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  descriptorCopy = descriptor;
   v24.receiver = self;
   v24.super_class = WFAppInstalledResource;
   v10 = [(WFResource *)&v24 initWithDefinition:MEMORY[0x1E695E0F8]];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_descriptor, a3);
-    v12 = [v9 localizedName];
+    objc_storeStrong(&v10->_descriptor, descriptor);
+    localizedName = [descriptorCopy localizedName];
     appName = v11->_appName;
-    v11->_appName = v12;
+    v11->_appName = localizedName;
 
     v14 = dispatch_queue_create("WFAppInstalledResource-state", 0);
     stateQueue = v11->_stateQueue;
     v11->_stateQueue = v14;
 
     v11->_skipLookup = 0;
-    v11->_requiresAppToBeInstalled = v6;
-    v11->_intentIsSynced = a5;
-    v16 = [(INAppDescriptor *)v11->_descriptor bundleIdentifier];
+    v11->_requiresAppToBeInstalled = installedCopy;
+    v11->_intentIsSynced = device;
+    bundleIdentifier = [(INAppDescriptor *)v11->_descriptor bundleIdentifier];
 
-    if (v16)
+    if (bundleIdentifier)
     {
-      v17 = !v6;
+      v17 = !installedCopy;
     }
 
     else
@@ -769,8 +769,8 @@ LABEL_5:
     if (!v17)
     {
       v18 = +[WFInterchangeAppRegistry sharedRegistry];
-      v19 = [(INAppDescriptor *)v11->_descriptor bundleIdentifier];
-      v25[0] = v19;
+      bundleIdentifier2 = [(INAppDescriptor *)v11->_descriptor bundleIdentifier];
+      v25[0] = bundleIdentifier2;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
       [v18 addInstallStatusObserver:v11 forAppIdentifiers:v20];
     }

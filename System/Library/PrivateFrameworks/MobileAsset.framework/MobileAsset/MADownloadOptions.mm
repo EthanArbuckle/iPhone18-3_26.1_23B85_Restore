@@ -1,11 +1,11 @@
 @interface MADownloadOptions
 - (MADownloadOptions)init;
-- (MADownloadOptions)initWithCoder:(id)a3;
-- (MADownloadOptions)initWithPlist:(id)a3;
+- (MADownloadOptions)initWithCoder:(id)coder;
+- (MADownloadOptions)initWithPlist:(id)plist;
 - (id)description;
 - (id)encodeAsPlist;
-- (id)tightSummaryIncludingAdditional:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)tightSummaryIncludingAdditional:(BOOL)additional;
+- (void)encodeWithCoder:(id)coder;
 - (void)logOptions;
 @end
 
@@ -113,12 +113,12 @@
     [v3 setValue:sessionId forKey:@"SessionId"];
   }
 
-  v19 = [(MADownloadOptions *)self analyticsData];
+  analyticsData = [(MADownloadOptions *)self analyticsData];
 
-  if (v19)
+  if (analyticsData)
   {
-    v20 = [(MADownloadOptions *)self analyticsData];
-    [v3 setValue:v20 forKey:@"AnalyticsData"];
+    analyticsData2 = [(MADownloadOptions *)self analyticsData];
+    [v3 setValue:analyticsData2 forKey:@"AnalyticsData"];
   }
 
   return v3;
@@ -142,17 +142,17 @@
 - (id)description
 {
   v21 = MEMORY[0x1E696AEC0];
-  v20 = [(MADownloadOptions *)self allowsCellularAccess];
-  v18 = [(MADownloadOptions *)self timeoutIntervalForResource];
-  v16 = [(MADownloadOptions *)self canUseLocalCacheServer];
-  v15 = [(MADownloadOptions *)self discretionary];
-  v14 = [(MADownloadOptions *)self disableUI];
-  v19 = [(MADownloadOptions *)self sessionId];
-  v17 = [(MADownloadOptions *)self additionalServerParams];
-  v3 = stringWithoutNewlines(v17);
-  v13 = [(MADownloadOptions *)self allowsExpensiveAccess];
-  v4 = [(MADownloadOptions *)self requiresPowerPluggedIn];
-  v5 = [(MADownloadOptions *)self prefersInfraWiFi];
+  allowsCellularAccess = [(MADownloadOptions *)self allowsCellularAccess];
+  timeoutIntervalForResource = [(MADownloadOptions *)self timeoutIntervalForResource];
+  canUseLocalCacheServer = [(MADownloadOptions *)self canUseLocalCacheServer];
+  discretionary = [(MADownloadOptions *)self discretionary];
+  disableUI = [(MADownloadOptions *)self disableUI];
+  sessionId = [(MADownloadOptions *)self sessionId];
+  additionalServerParams = [(MADownloadOptions *)self additionalServerParams];
+  v3 = stringWithoutNewlines(additionalServerParams);
+  allowsExpensiveAccess = [(MADownloadOptions *)self allowsExpensiveAccess];
+  requiresPowerPluggedIn = [(MADownloadOptions *)self requiresPowerPluggedIn];
+  prefersInfraWiFi = [(MADownloadOptions *)self prefersInfraWiFi];
   if (self->_liveServerCatalogOnlyIsOverridden)
   {
     liveServerCatalogOnly = self->_liveServerCatalogOnly;
@@ -163,9 +163,9 @@
     liveServerCatalogOnly = 0xFFFFFFFFLL;
   }
 
-  v7 = [(MADownloadOptions *)self downloadAuthorizationHeader];
+  downloadAuthorizationHeader = [(MADownloadOptions *)self downloadAuthorizationHeader];
   v8 = @"present";
-  if (v7)
+  if (downloadAuthorizationHeader)
   {
     v9 = @"present";
   }
@@ -175,30 +175,30 @@
     v9 = @"not present";
   }
 
-  v10 = [(MADownloadOptions *)self analyticsData];
-  if (!v10)
+  analyticsData = [(MADownloadOptions *)self analyticsData];
+  if (!analyticsData)
   {
     v8 = @"not present";
   }
 
-  v11 = [v21 stringWithFormat:@"MADownloadOptions allowsCellular: %d resourceTimeout: %ld canUseCacheServer: %d discretionary: %d disableUI: %d sessionId: %@ additionalServerParams:%@ allowsExpensiveAccess:%d requiresPowerPluggedIn: %d prefersInfraWiFi: %d liveServerOnly: %d DownloadAuthorizationHeader: %@ analyticsData: %@ allowDaemonConnectionRetries: %d", v20, v18, v16, v15, v14, v19, v3, v13, v4, v5, liveServerCatalogOnly, v9, v8, -[MADownloadOptions allowDaemonConnectionRetries](self, "allowDaemonConnectionRetries")];
+  v11 = [v21 stringWithFormat:@"MADownloadOptions allowsCellular: %d resourceTimeout: %ld canUseCacheServer: %d discretionary: %d disableUI: %d sessionId: %@ additionalServerParams:%@ allowsExpensiveAccess:%d requiresPowerPluggedIn: %d prefersInfraWiFi: %d liveServerOnly: %d DownloadAuthorizationHeader: %@ analyticsData: %@ allowDaemonConnectionRetries: %d", allowsCellularAccess, timeoutIntervalForResource, canUseLocalCacheServer, discretionary, disableUI, sessionId, v3, allowsExpensiveAccess, requiresPowerPluggedIn, prefersInfraWiFi, liveServerCatalogOnly, v9, v8, -[MADownloadOptions allowDaemonConnectionRetries](self, "allowDaemonConnectionRetries")];
 
   return v11;
 }
 
-- (MADownloadOptions)initWithCoder:(id)a3
+- (MADownloadOptions)initWithCoder:(id)coder
 {
   v37[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = MADownloadOptions;
   v5 = [(MADownloadOptions *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SessionId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SessionId"];
     [(MADownloadOptions *)v5 setSessionId:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AdditionalServerParams"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AdditionalServerParams"];
     v8 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:0];
     v9 = plistDecodeClasses();
     v10 = [v8 decodeObjectOfClasses:v9 forKey:*MEMORY[0x1E696A508]];
@@ -219,51 +219,51 @@
     }
 
     [v8 finishDecoding];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsCellularAccess"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsCellularAccess"];
     v5->_allowsCellularAccess = [v12 BOOLValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsExpensive"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsExpensive"];
     v5->_allowsExpensiveAccess = [v13 BOOLValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowsConstrained"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowsConstrained"];
     v5->_allowsConstrainedAccess = [v14 BOOLValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requiresPowerPluggedIn"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requiresPowerPluggedIn"];
     v5->_requiresPowerPluggedIn = [v15 BOOLValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prefersInfraWiFi"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prefersInfraWiFi"];
     v5->_prefersInfraWiFi = [v16 BOOLValue];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeoutIntervalForResource"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeoutIntervalForResource"];
     v5->_timeoutIntervalForResource = [v17 longValue];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"canUseLocalCacheServer"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"canUseLocalCacheServer"];
     v5->_canUseLocalCacheServer = [v18 BOOLValue];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discretionary"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discretionary"];
     v5->_discretionary = [v19 BOOLValue];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disableUI"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disableUI"];
     v5->_disableUI = [v20 BOOLValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"decryptionKey"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"decryptionKey"];
     decryptionKey = v5->_decryptionKey;
     v5->_decryptionKey = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceDirectory"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceDirectory"];
     sourceDirectory = v5->_sourceDirectory;
     v5->_sourceDirectory = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowDaemonConnectionRetries"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowDaemonConnectionRetries"];
     v5->_allowDaemonConnectionRetries = [v25 BOOLValue];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LiveServerOnly"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LiveServerOnly"];
     v5->_liveServerCatalogOnly = [v26 BOOLValue];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LiveServerOnlyIsOverridden"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LiveServerOnlyIsOverridden"];
     v5->_liveServerCatalogOnlyIsOverridden = [v27 BOOLValue];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DownloadAuthorizationHeader"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DownloadAuthorizationHeader"];
     [(MADownloadOptions *)v5 setDownloadAuthorizationHeader:v28];
 
     v29 = MEMORY[0x1E695DFD8];
@@ -278,7 +278,7 @@
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:8];
     v31 = [v29 setWithArray:v30];
 
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"AnalyticsData"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"AnalyticsData"];
     [(MADownloadOptions *)v5 setAnalyticsData:v32];
   }
 
@@ -286,18 +286,18 @@
   return v5;
 }
 
-- (MADownloadOptions)initWithPlist:(id)a3
+- (MADownloadOptions)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v21.receiver = self;
   v21.super_class = MADownloadOptions;
   v5 = [(MADownloadOptions *)&v21 init];
   if (v5)
   {
-    v6 = getPlistString(v4, @"SessionId");
+    v6 = getPlistString(plistCopy, @"SessionId");
     [(MADownloadOptions *)v5 setSessionId:v6];
 
-    v7 = getPlistData(v4, @"AdditionalServerParams");
+    v7 = getPlistData(plistCopy, @"AdditionalServerParams");
     v8 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:0];
     v9 = plistDecodeClasses();
     v10 = [v8 decodeObjectOfClasses:v9 forKey:*MEMORY[0x1E696A508]];
@@ -318,28 +318,28 @@
     }
 
     [v8 finishDecoding];
-    v5->_allowsCellularAccess = getPlistNumberAsBool(v4, @"allowsCellularAccess");
-    v5->_allowsExpensiveAccess = getPlistNumberAsBool(v4, @"allowsExpensive");
-    v5->_allowsConstrainedAccess = getPlistNumberAsBool(v4, @"allowsConstrained");
-    v5->_requiresPowerPluggedIn = getPlistNumberAsBool(v4, @"requiresPowerPluggedIn");
-    v5->_prefersInfraWiFi = getPlistNumberAsBool(v4, @"prefersInfraWiFi");
-    v12 = getPlistNumber(v4, @"timeoutIntervalForResource");
+    v5->_allowsCellularAccess = getPlistNumberAsBool(plistCopy, @"allowsCellularAccess");
+    v5->_allowsExpensiveAccess = getPlistNumberAsBool(plistCopy, @"allowsExpensive");
+    v5->_allowsConstrainedAccess = getPlistNumberAsBool(plistCopy, @"allowsConstrained");
+    v5->_requiresPowerPluggedIn = getPlistNumberAsBool(plistCopy, @"requiresPowerPluggedIn");
+    v5->_prefersInfraWiFi = getPlistNumberAsBool(plistCopy, @"prefersInfraWiFi");
+    v12 = getPlistNumber(plistCopy, @"timeoutIntervalForResource");
     v5->_timeoutIntervalForResource = [v12 longValue];
 
-    v5->_canUseLocalCacheServer = getPlistNumberAsBool(v4, @"canUseLocalCacheServer");
-    v5->_discretionary = getPlistNumberAsBool(v4, @"discretionary");
-    v13 = getPlistData(v4, @"decryptionKey");
+    v5->_canUseLocalCacheServer = getPlistNumberAsBool(plistCopy, @"canUseLocalCacheServer");
+    v5->_discretionary = getPlistNumberAsBool(plistCopy, @"discretionary");
+    v13 = getPlistData(plistCopy, @"decryptionKey");
     decryptionKey = v5->_decryptionKey;
     v5->_decryptionKey = v13;
 
-    v15 = getPlistString(v4, @"sourceDirectory");
+    v15 = getPlistString(plistCopy, @"sourceDirectory");
     sourceDirectory = v5->_sourceDirectory;
     v5->_sourceDirectory = v15;
 
-    v5->_allowDaemonConnectionRetries = getPlistNumberAsBool(v4, @"allowDaemonConnectionRetries");
-    v5->_liveServerCatalogOnly = getPlistNumberAsBool(v4, @"LiveServerOnly");
-    v5->_liveServerCatalogOnlyIsOverridden = getPlistNumberAsBool(v4, @"LiveServerOnlyIsOverridden");
-    v17 = getPlistDictionary(v4, @"AnalyticsData");
+    v5->_allowDaemonConnectionRetries = getPlistNumberAsBool(plistCopy, @"allowDaemonConnectionRetries");
+    v5->_liveServerCatalogOnly = getPlistNumberAsBool(plistCopy, @"LiveServerOnly");
+    v5->_liveServerCatalogOnlyIsOverridden = getPlistNumberAsBool(plistCopy, @"LiveServerOnlyIsOverridden");
+    v17 = getPlistDictionary(plistCopy, @"AnalyticsData");
     analyticsData = v5->_analyticsData;
     v5->_analyticsData = v17;
   }
@@ -347,83 +347,83 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v22 = a3;
+  coderCopy = coder;
   if (self->_additionalServerParams)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_additionalServerParams requiringSecureCoding:1 error:0];
-      [v22 encodeObject:v4 forKey:@"AdditionalServerParams"];
+      [coderCopy encodeObject:v4 forKey:@"AdditionalServerParams"];
     }
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_allowsCellularAccess];
-  [v22 encodeObject:v5 forKey:@"allowsCellularAccess"];
+  [coderCopy encodeObject:v5 forKey:@"allowsCellularAccess"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_allowsExpensiveAccess];
-  [v22 encodeObject:v6 forKey:@"allowsExpensive"];
+  [coderCopy encodeObject:v6 forKey:@"allowsExpensive"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_requiresPowerPluggedIn];
-  [v22 encodeObject:v7 forKey:@"requiresPowerPluggedIn"];
+  [coderCopy encodeObject:v7 forKey:@"requiresPowerPluggedIn"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_allowsConstrainedAccess];
-  [v22 encodeObject:v8 forKey:@"allowsConstrained"];
+  [coderCopy encodeObject:v8 forKey:@"allowsConstrained"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_prefersInfraWiFi];
-  [v22 encodeObject:v9 forKey:@"prefersInfraWiFi"];
+  [coderCopy encodeObject:v9 forKey:@"prefersInfraWiFi"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithLong:self->_timeoutIntervalForResource];
-  [v22 encodeObject:v10 forKey:@"timeoutIntervalForResource"];
+  [coderCopy encodeObject:v10 forKey:@"timeoutIntervalForResource"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_canUseLocalCacheServer];
-  [v22 encodeObject:v11 forKey:@"canUseLocalCacheServer"];
+  [coderCopy encodeObject:v11 forKey:@"canUseLocalCacheServer"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:self->_discretionary];
-  [v22 encodeObject:v12 forKey:@"discretionary"];
+  [coderCopy encodeObject:v12 forKey:@"discretionary"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_disableUI];
-  [v22 encodeObject:v13 forKey:@"disableUI"];
+  [coderCopy encodeObject:v13 forKey:@"disableUI"];
 
   decryptionKey = self->_decryptionKey;
   if (decryptionKey)
   {
-    [v22 encodeObject:decryptionKey forKey:@"decryptionKey"];
+    [coderCopy encodeObject:decryptionKey forKey:@"decryptionKey"];
   }
 
   sourceDirectory = self->_sourceDirectory;
   if (sourceDirectory)
   {
-    [v22 encodeObject:sourceDirectory forKey:@"sourceDirectory"];
+    [coderCopy encodeObject:sourceDirectory forKey:@"sourceDirectory"];
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_allowDaemonConnectionRetries];
-  [v22 encodeObject:v16 forKey:@"allowDaemonConnectionRetries"];
+  [coderCopy encodeObject:v16 forKey:@"allowDaemonConnectionRetries"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_liveServerCatalogOnly];
-  [v22 encodeObject:v17 forKey:@"LiveServerOnly"];
+  [coderCopy encodeObject:v17 forKey:@"LiveServerOnly"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_liveServerCatalogOnlyIsOverridden];
-  [v22 encodeObject:v18 forKey:@"LiveServerOnlyIsOverridden"];
+  [coderCopy encodeObject:v18 forKey:@"LiveServerOnlyIsOverridden"];
 
-  v19 = [(MADownloadOptions *)self downloadAuthorizationHeader];
-  [v22 encodeObject:v19 forKey:@"DownloadAuthorizationHeader"];
+  downloadAuthorizationHeader = [(MADownloadOptions *)self downloadAuthorizationHeader];
+  [coderCopy encodeObject:downloadAuthorizationHeader forKey:@"DownloadAuthorizationHeader"];
 
   sessionId = self->_sessionId;
   if (sessionId)
   {
-    [v22 encodeObject:sessionId forKey:@"SessionId"];
+    [coderCopy encodeObject:sessionId forKey:@"SessionId"];
   }
 
-  v21 = [(MADownloadOptions *)self analyticsData];
-  [v22 encodeObject:v21 forKey:@"AnalyticsData"];
+  analyticsData = [(MADownloadOptions *)self analyticsData];
+  [coderCopy encodeObject:analyticsData forKey:@"AnalyticsData"];
 }
 
-- (id)tightSummaryIncludingAdditional:(BOOL)a3
+- (id)tightSummaryIncludingAdditional:(BOOL)additional
 {
-  v29 = a3;
+  additionalCopy = additional;
   v28 = MEMORY[0x1E696AEC0];
   if ([(MADownloadOptions *)self discretionary])
   {
@@ -510,33 +510,33 @@
   }
 
   v12 = [v28 stringWithFormat:@"disc:%@, cell:%@, expen:%@, power:%@, cache:%@, pwifi:%@, live:%@, retry:%@", v4, v5, v6, v7, v8, v9, v10, v11];
-  if (!v29)
+  if (!additionalCopy)
   {
     goto LABEL_31;
   }
 
-  v13 = [(MADownloadOptions *)self additionalServerParams];
-  if (!v13)
+  additionalServerParams = [(MADownloadOptions *)self additionalServerParams];
+  if (!additionalServerParams)
   {
     goto LABEL_31;
   }
 
-  v14 = v13;
-  v15 = [(MADownloadOptions *)self additionalServerParams];
-  v16 = [v15 count];
+  v14 = additionalServerParams;
+  additionalServerParams2 = [(MADownloadOptions *)self additionalServerParams];
+  v16 = [additionalServerParams2 count];
 
   if (v16)
   {
-    v17 = [(MADownloadOptions *)self sessionId];
+    sessionId = [(MADownloadOptions *)self sessionId];
 
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [(MADownloadOptions *)self additionalServerParams];
-    v20 = stringWithoutNewlines(v19);
+    additionalServerParams3 = [(MADownloadOptions *)self additionalServerParams];
+    v20 = stringWithoutNewlines(additionalServerParams3);
     v21 = v20;
-    if (v17)
+    if (sessionId)
     {
-      v22 = [(MADownloadOptions *)self sessionId];
-      v23 = [v18 stringWithFormat:@"%@, +%@, ssn:%@", v12, v21, v22];
+      sessionId2 = [(MADownloadOptions *)self sessionId];
+      v23 = [v18 stringWithFormat:@"%@, +%@, ssn:%@", v12, v21, sessionId2];
 
       v12 = v23;
     }
@@ -552,16 +552,16 @@
   else
   {
 LABEL_31:
-    v24 = [(MADownloadOptions *)self sessionId];
+    sessionId3 = [(MADownloadOptions *)self sessionId];
 
-    if (!v24)
+    if (!sessionId3)
     {
       goto LABEL_34;
     }
 
     v25 = MEMORY[0x1E696AEC0];
-    v19 = [(MADownloadOptions *)self sessionId];
-    [v25 stringWithFormat:@"%@, ssn:%@", v12, v19];
+    additionalServerParams3 = [(MADownloadOptions *)self sessionId];
+    [v25 stringWithFormat:@"%@, ssn:%@", v12, additionalServerParams3];
     v12 = v21 = v12;
   }
 

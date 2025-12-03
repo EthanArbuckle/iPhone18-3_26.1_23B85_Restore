@@ -1,24 +1,24 @@
 @interface BobbleSettingsViewController
-+ (BOOL)bobbleSupported:(id)a3;
++ (BOOL)bobbleSupported:(id)supported;
 + (NSArray)bobbleMainSepcifier;
-+ (id)headGestureOnInput:(id)a3;
++ (id)headGestureOnInput:(id)input;
 - (HPMHeadphoneDevice)headphoneDevice;
-- (_TtC16HeadphoneConfigs28BobbleSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16HeadphoneConfigs28BobbleSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)acceptReplyPlayPauseStringMapping;
 - (id)declineDismissSkipStringMapping;
-- (id)getVoiceEnvironment:(id)a3;
+- (id)getVoiceEnvironment:(id)environment;
 - (id)headGesturesEnabled;
 - (id)specifiers;
 - (void)presentBobbleTutorials;
-- (void)setHeadGesturesEnabledWithEnabled:(id)a3;
-- (void)setHeadphoneDevice:(id)a3;
+- (void)setHeadGesturesEnabledWithEnabled:(id)enabled;
+- (void)setHeadphoneDevice:(id)device;
 @end
 
 @implementation BobbleSettingsViewController
 
 - (void)presentBobbleTutorials
 {
-  v2 = self;
+  selfCopy = self;
   sub_2511E572C();
 }
 
@@ -29,18 +29,18 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setHeadphoneDevice:(id)a3
+- (void)setHeadphoneDevice:(id)device
 {
   v5 = OBJC_IVAR____TtC16HeadphoneConfigs28BobbleSettingsViewController_headphoneDevice;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.super.super.isa + v5) = device;
+  deviceCopy = device;
 }
 
-- (_TtC16HeadphoneConfigs28BobbleSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16HeadphoneConfigs28BobbleSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_25121179C();
     v7 = v6;
@@ -52,13 +52,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return BobbleSettingsViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return BobbleSettingsViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BobbleSettingsViewController.specifiers()();
 
   if (v3)
@@ -76,24 +76,24 @@
 
 - (id)headGesturesEnabled
 {
-  v2 = self;
+  selfCopy = self;
   sub_2511EC13C();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHeadGesturesEnabledWithEnabled:(id)a3
+- (void)setHeadGesturesEnabledWithEnabled:(id)enabled
 {
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16HeadphoneConfigs28BobbleSettingsViewController_viewModel);
   if (v3)
   {
-    v5 = a3;
-    v9 = self;
+    enabledCopy = enabled;
+    selfCopy = self;
 
-    v6 = [v5 BOOLValue];
+    bOOLValue = [enabledCopy BOOLValue];
     v7 = *v3 + 144;
-    if (v6)
+    if (bOOLValue)
     {
       v8 = 1;
     }
@@ -112,7 +112,7 @@
   }
 }
 
-- (id)getVoiceEnvironment:(id)a3
+- (id)getVoiceEnvironment:(id)environment
 {
   sub_2511E326C();
   v3 = sub_25121176C();
@@ -120,7 +120,7 @@
   return v3;
 }
 
-+ (BOOL)bobbleSupported:(id)a3
++ (BOOL)bobbleSupported:(id)supported
 {
   swift_unknownObjectRetain();
   v3 = _s16HeadphoneConfigs28BobbleSettingsViewControllerC15bobbleSupportedySbyXlFZ_0();
@@ -138,10 +138,10 @@
   return v2;
 }
 
-+ (id)headGestureOnInput:(id)a3
++ (id)headGestureOnInput:(id)input
 {
-  v3 = a3;
-  sub_2511EDED4(v3);
+  inputCopy = input;
+  sub_2511EDED4(inputCopy);
 
   v4 = sub_25121176C();
 
@@ -154,7 +154,7 @@
   if (v2)
   {
     v3 = *(*v2 + 232);
-    v4 = self;
+    selfCopy = self;
 
     LOBYTE(v3) = v3(v5);
 
@@ -179,7 +179,7 @@
   if (v2)
   {
     v3 = *(*v2 + 184);
-    v4 = self;
+    selfCopy = self;
 
     LOBYTE(v3) = v3(v5);
 

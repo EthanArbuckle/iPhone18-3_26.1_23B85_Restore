@@ -1,24 +1,24 @@
 @interface VKDaVinciGestureCameraController
-- (VKDaVinciGestureCameraController)initWithCameraController:(id)a3 cameraManager:(void *)a4;
-- (void)beginPan:(CGPoint)a3;
-- (void)beginPitch:(CGPoint)a3;
-- (void)beginRotate:(CGPoint)a3;
-- (void)beginZoom:(CGPoint)a3;
-- (void)endPan:(CGPoint)a3;
-- (void)endPitch:(CGPoint)a3;
-- (void)endRotate:(CGPoint)a3;
-- (void)endZoom:(CGPoint)a3;
-- (void)updatePan:(CGPoint)a3 lastScreenPoint:(CGPoint)a4;
-- (void)updatePitch:(CGPoint)a3 degrees:(double)a4;
-- (void)updatePitch:(CGPoint)a3 translation:(double)a4;
-- (void)updateRotate:(double)a3 atScreenPoint:(CGPoint)a4;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
-- (void)updateZoom:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
+- (VKDaVinciGestureCameraController)initWithCameraController:(id)controller cameraManager:(void *)manager;
+- (void)beginPan:(CGPoint)pan;
+- (void)beginPitch:(CGPoint)pitch;
+- (void)beginRotate:(CGPoint)rotate;
+- (void)beginZoom:(CGPoint)zoom;
+- (void)endPan:(CGPoint)pan;
+- (void)endPitch:(CGPoint)pitch;
+- (void)endRotate:(CGPoint)rotate;
+- (void)endZoom:(CGPoint)zoom;
+- (void)updatePan:(CGPoint)pan lastScreenPoint:(CGPoint)point;
+- (void)updatePitch:(CGPoint)pitch degrees:(double)degrees;
+- (void)updatePitch:(CGPoint)pitch translation:(double)translation;
+- (void)updateRotate:(double)rotate atScreenPoint:(CGPoint)point;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
+- (void)updateZoom:(CGPoint)zoom oldFactor:(double)factor newFactor:(double)newFactor;
 @end
 
 @implementation VKDaVinciGestureCameraController
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
@@ -41,27 +41,27 @@
   }
 }
 
-- (void)endPitch:(CGPoint)a3
+- (void)endPitch:(CGPoint)pitch
 {
-  y = a3.y;
-  x = a3.x;
+  y = pitch.y;
+  x = pitch.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   [WeakRetained cursorFromScreenPoint:{x, y}];
   cameraManager[130] = 1;
 }
 
-- (void)updatePitch:(CGPoint)a3 degrees:(double)a4
+- (void)updatePitch:(CGPoint)pitch degrees:(double)degrees
 {
-  y = a3.y;
-  x = a3.x;
+  y = pitch.y;
+  x = pitch.x;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
-  v9 = [WeakRetained isPitchEnabled];
+  isPitchEnabled = [WeakRetained isPitchEnabled];
 
-  if (v9)
+  if (isPitchEnabled)
   {
     self->super._rotating = 0;
-    v10 = a4 * 0.0174532925;
+    v10 = degrees * 0.0174532925;
     self->_isPitchIncreasing = self->_currentDoublePanPitch < v10;
     if (!self->super._pitching)
     {
@@ -112,17 +112,17 @@
   }
 }
 
-- (void)updatePitch:(CGPoint)a3 translation:(double)a4
+- (void)updatePitch:(CGPoint)pitch translation:(double)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = pitch.y;
+  x = pitch.x;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
-  v9 = [WeakRetained isPitchEnabled];
+  isPitchEnabled = [WeakRetained isPitchEnabled];
 
-  if (v9)
+  if (isPitchEnabled)
   {
     self->super._rotating = 0;
-    self->_isPitchIncreasing = a4 < 0.0;
+    self->_isPitchIncreasing = translation < 0.0;
     if (!self->super._pitching)
     {
       cameraManager = self->_cameraManager;
@@ -162,7 +162,7 @@
     v19 = self->_cameraManager;
     v20 = objc_loadWeakRetained(&self->super._cameraController);
     v21 = [v20 cursorFromScreenPoint:{x, y}];
-    v22 = fmin(fmax(rubberBandOffsetForOffset(beganDoublePanPitch - a4, v17, 0.0, 0.0698131701), 0.0), v17 + 0.0698131701);
+    v22 = fmin(fmax(rubberBandOffsetForOffset(beganDoublePanPitch - translation, v17, 0.0, 0.0698131701), 0.0), v17 + 0.0698131701);
     v23 = v22 - self->_currentDoublePanPitch;
     *(v19 + 20) = v21;
     v19[22] = v23 + v19[22];
@@ -173,10 +173,10 @@
   }
 }
 
-- (void)beginPitch:(CGPoint)a3
+- (void)beginPitch:(CGPoint)pitch
 {
-  y = a3.y;
-  x = a3.x;
+  y = pitch.y;
+  x = pitch.x;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   v7 = WeakRetained;
   if (WeakRetained)
@@ -208,32 +208,32 @@
   *(cameraManager + 21) = v11;
 }
 
-- (void)endRotate:(CGPoint)a3
+- (void)endRotate:(CGPoint)rotate
 {
-  y = a3.y;
-  x = a3.x;
+  y = rotate.y;
+  x = rotate.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   [WeakRetained cursorFromScreenPoint:{x, y}];
   cameraManager[83] = 1;
 }
 
-- (void)updateRotate:(double)a3 atScreenPoint:(CGPoint)a4
+- (void)updateRotate:(double)rotate atScreenPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   self->super._pitching = 0;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   v8 = [WeakRetained cursorFromScreenPoint:{x, y}];
-  cameraManager[15] = cameraManager[15] + a3;
+  cameraManager[15] = cameraManager[15] + rotate;
   *(cameraManager + 14) = v8;
 }
 
-- (void)beginRotate:(CGPoint)a3
+- (void)beginRotate:(CGPoint)rotate
 {
-  y = a3.y;
-  x = a3.x;
+  y = rotate.y;
+  x = rotate.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   v6 = [WeakRetained cursorFromScreenPoint:{x, y}];
@@ -243,29 +243,29 @@
   *(cameraManager + 15) = 0;
 }
 
-- (void)endPan:(CGPoint)a3
+- (void)endPan:(CGPoint)pan
 {
-  y = a3.y;
-  x = a3.x;
+  y = pan.y;
+  x = pan.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   [WeakRetained cursorFromScreenPoint:{x, y}];
   cameraManager[18] = 1;
 }
 
-- (void)updatePan:(CGPoint)a3 lastScreenPoint:(CGPoint)a4
+- (void)updatePan:(CGPoint)pan lastScreenPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = pan.y;
+  x = pan.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   *(cameraManager + 20) = [WeakRetained cursorFromScreenPoint:{x, y}];
 }
 
-- (void)beginPan:(CGPoint)a3
+- (void)beginPan:(CGPoint)pan
 {
-  y = a3.y;
-  x = a3.x;
+  y = pan.y;
+  x = pan.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   v6 = [WeakRetained cursorFromScreenPoint:{x, y}];
@@ -277,31 +277,31 @@
   *(cameraManager + 28) = v6;
 }
 
-- (void)endZoom:(CGPoint)a3
+- (void)endZoom:(CGPoint)zoom
 {
-  y = a3.y;
-  x = a3.x;
+  y = zoom.y;
+  x = zoom.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   [WeakRetained cursorFromScreenPoint:{x, y}];
   cameraManager[186] = 1;
 }
 
-- (void)updateZoom:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updateZoom:(CGPoint)zoom oldFactor:(double)factor newFactor:(double)newFactor
 {
-  y = a3.y;
-  x = a3.x;
+  y = zoom.y;
+  x = zoom.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   v10 = [WeakRetained cursorFromScreenPoint:{x, y}];
-  cameraManager[28] = cameraManager[28] * (a4 * 0.7 / a5 + 0.3);
+  cameraManager[28] = cameraManager[28] * (factor * 0.7 / newFactor + 0.3);
   *(cameraManager + 27) = v10;
 }
 
-- (void)beginZoom:(CGPoint)a3
+- (void)beginZoom:(CGPoint)zoom
 {
-  y = a3.y;
-  x = a3.x;
+  y = zoom.y;
+  x = zoom.x;
   cameraManager = self->_cameraManager;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   v6 = [WeakRetained cursorFromScreenPoint:{x, y}];
@@ -312,15 +312,15 @@
   *(cameraManager + 240) = 0;
 }
 
-- (VKDaVinciGestureCameraController)initWithCameraController:(id)a3 cameraManager:(void *)a4
+- (VKDaVinciGestureCameraController)initWithCameraController:(id)controller cameraManager:(void *)manager
 {
   v6.receiver = self;
   v6.super_class = VKDaVinciGestureCameraController;
-  result = [(VKGestureCameraBehavior *)&v6 initWithCameraController:a3];
+  result = [(VKGestureCameraBehavior *)&v6 initWithCameraController:controller];
   if (result)
   {
     result->super._notifyCameraStateChanges = 1;
-    result->_cameraManager = a4;
+    result->_cameraManager = manager;
   }
 
   return result;

@@ -1,18 +1,18 @@
 @interface AXGestureRecorderGradientViewAnimationDelegate
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation AXGestureRecorderGradientViewAnimationDelegate
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v5 = [(AXGestureRecorderGradientViewAnimationDelegate *)self completionBlock];
-  if (v5)
+  finishedCopy = finished;
+  completionBlock = [(AXGestureRecorderGradientViewAnimationDelegate *)self completionBlock];
+  if (completionBlock)
   {
-    v6 = v5;
-    v5[2](v5, v4);
-    v5 = v6;
+    v6 = completionBlock;
+    completionBlock[2](completionBlock, finishedCopy);
+    completionBlock = v6;
   }
 }
 

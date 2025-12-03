@@ -2,30 +2,30 @@
 - (CGPoint)centerPointForCurrentVideoGroupCorner;
 - (CGPoint)transformedCenter;
 - (CGRect)cornerLocationsRect;
-- (PHVideoCallVideoGroupView)initWithFrame:(CGRect)a3;
+- (PHVideoCallVideoGroupView)initWithFrame:(CGRect)frame;
 - (PHVideoCallVideoGroupViewDelegate)delegate;
-- (double)_gridViewRubberBandValueForValue:(double)result target:(double)a4 timeInterval:(double)a5 velocity:(double *)a6;
+- (double)_gridViewRubberBandValueForValue:(double)result target:(double)target timeInterval:(double)interval velocity:(double *)velocity;
 - (void)addPanningGestureRecognizer;
 - (void)cancelThrowAnimation;
 - (void)dealloc;
 - (void)finishedThrowAnimation;
-- (void)handlePanDetected:(id)a3;
-- (void)handlePanGestureFinished:(id)a3;
+- (void)handlePanDetected:(id)detected;
+- (void)handlePanGestureFinished:(id)finished;
 - (void)refreshPositionInCorner;
-- (void)setCorner:(int64_t)a3;
-- (void)setCornerLocationsRect:(CGRect)a3;
-- (void)setTransformForNewCenter:(CGPoint)a3;
+- (void)setCorner:(int64_t)corner;
+- (void)setCornerLocationsRect:(CGRect)rect;
+- (void)setTransformForNewCenter:(CGPoint)center;
 - (void)startThrowAnimation;
-- (void)updateThrowAnimation:(id)a3;
+- (void)updateThrowAnimation:(id)animation;
 @end
 
 @implementation PHVideoCallVideoGroupView
 
-- (PHVideoCallVideoGroupView)initWithFrame:(CGRect)a3
+- (PHVideoCallVideoGroupView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PHVideoCallVideoGroupView;
-  v3 = [(PHVideoCallVideoGroupView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHVideoCallVideoGroupView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -70,10 +70,10 @@
   return result;
 }
 
-- (void)setTransformForNewCenter:(CGPoint)a3
+- (void)setTransformForNewCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(PHVideoCallVideoGroupView *)self transform];
   v6 = v13[24];
   [(PHVideoCallVideoGroupView *)self transform];
@@ -94,14 +94,14 @@
   [(PHVideoCallVideoGroupView *)self setTransform:v13];
 }
 
-- (void)setCornerLocationsRect:(CGRect)a3
+- (void)setCornerLocationsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_cornerLocationsRect = &self->_cornerLocationsRect;
-  if (!CGRectEqualToRect(a3, self->_cornerLocationsRect))
+  if (!CGRectEqualToRect(rect, self->_cornerLocationsRect))
   {
     p_cornerLocationsRect->origin.x = x;
     p_cornerLocationsRect->origin.y = y;
@@ -113,15 +113,15 @@
   }
 }
 
-- (void)setCorner:(int64_t)a3
+- (void)setCorner:(int64_t)corner
 {
-  self->_corner = a3;
+  self->_corner = corner;
   p_target = &self->_target;
   [(PHVideoCallVideoGroupView *)self centerPointForCurrentVideoGroupCorner];
   p_target->x = v6;
   p_target->y = v7;
-  v8 = [(PHVideoCallVideoGroupView *)self delegate];
-  [v8 videoGroupView:self didUpdateCorner:a3];
+  delegate = [(PHVideoCallVideoGroupView *)self delegate];
+  [delegate videoGroupView:self didUpdateCorner:corner];
 }
 
 - (CGPoint)centerPointForCurrentVideoGroupCorner
@@ -202,11 +202,11 @@ LABEL_10:
   [(UIPanGestureRecognizer *)v5 setDelegate:self];
 }
 
-- (void)handlePanGestureFinished:(id)a3
+- (void)handlePanGestureFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(PHVideoCallVideoGroupView *)self superview];
-  [v4 velocityInView:v5];
+  finishedCopy = finished;
+  superview = [(PHVideoCallVideoGroupView *)self superview];
+  [finishedCopy velocityInView:superview];
   v22 = v7;
   v23 = v6;
 
@@ -246,26 +246,26 @@ LABEL_10:
   [(PHVideoCallVideoGroupView *)self startThrowAnimation];
 }
 
-- (void)handlePanDetected:(id)a3
+- (void)handlePanDetected:(id)detected
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if ((v5 - 3) >= 3)
+  detectedCopy = detected;
+  state = [detectedCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v5 == 1)
+    if (state == 1)
     {
       [(PHVideoCallVideoGroupView *)self finishedThrowAnimation];
-      v9 = [(PHVideoCallVideoGroupView *)self superview];
-      [v4 setTranslation:v9 inView:{CGPointZero.x, CGPointZero.y}];
+      superview = [(PHVideoCallVideoGroupView *)self superview];
+      [detectedCopy setTranslation:superview inView:{CGPointZero.x, CGPointZero.y}];
 
-      v10 = [(PHVideoCallVideoGroupView *)self delegate];
-      [v10 videoGroupViewDidStartDrag:self];
+      delegate = [(PHVideoCallVideoGroupView *)self delegate];
+      [delegate videoGroupViewDidStartDrag:self];
     }
 
     else
     {
-      v11 = [(PHVideoCallVideoGroupView *)self superview];
-      [v4 translationInView:v11];
+      superview2 = [(PHVideoCallVideoGroupView *)self superview];
+      [detectedCopy translationInView:superview2];
       v13 = v12;
       v15 = v14;
 
@@ -301,27 +301,27 @@ LABEL_10:
     v24 = 0;
     v25 = 0;
     [(PHVideoCallVideoGroupView *)self setTransform:&v20];
-    [(PHVideoCallVideoGroupView *)self handlePanGestureFinished:v4];
+    [(PHVideoCallVideoGroupView *)self handlePanGestureFinished:detectedCopy];
   }
 }
 
-- (double)_gridViewRubberBandValueForValue:(double)result target:(double)a4 timeInterval:(double)a5 velocity:(double *)a6
+- (double)_gridViewRubberBandValueForValue:(double)result target:(double)target timeInterval:(double)interval velocity:(double *)velocity
 {
-  v6 = a5;
-  v7 = *a6;
-  if (v6 >= 1)
+  intervalCopy = interval;
+  v7 = *velocity;
+  if (intervalCopy >= 1)
   {
     do
     {
-      v7 = (v7 + (a4 - result) * 0.000140000004) * 0.980000019;
+      v7 = (v7 + (target - result) * 0.000140000004) * 0.980000019;
       result = result + v7;
-      --v6;
+      --intervalCopy;
     }
 
-    while (v6);
+    while (intervalCopy);
   }
 
-  *a6 = v7;
+  *velocity = v7;
   return result;
 }
 
@@ -342,12 +342,12 @@ LABEL_10:
   [(CADisplayLink *)v6 addToRunLoop:v7 forMode:NSRunLoopCommonModes];
 }
 
-- (void)updateThrowAnimation:(id)a3
+- (void)updateThrowAnimation:(id)animation
 {
-  v18 = a3;
+  animationCopy = animation;
   if (!self->_startedThrowAnimation)
   {
-    [v18 timestamp];
+    [animationCopy timestamp];
     qword_1003B0C98 = v4;
     self->_startedThrowAnimation = 1;
   }
@@ -359,14 +359,14 @@ LABEL_10:
   UIDistanceBetweenPoints();
   if (v10 > 1.0 || fabs(self->_velocity.y) >= 0.00999999978 || fabs(self->_velocity.x) >= 0.00999999978)
   {
-    [v18 timestamp];
+    [animationCopy timestamp];
     v13 = *&v12;
     v14 = (v12 - *&qword_1003B0C98) * 1000.0;
     [(PHVideoCallVideoGroupView *)self _gridViewRubberBandValueForValue:&self->_velocity target:v6 timeInterval:p_target->x velocity:v14];
     v16 = v15;
     [(PHVideoCallVideoGroupView *)self _gridViewRubberBandValueForValue:&self->_velocity.y target:v8 timeInterval:self->_target.y velocity:v14];
     [(PHVideoCallVideoGroupView *)self setTransformForNewCenter:v16, v17];
-    v11 = v18;
+    v11 = animationCopy;
     qword_1003B0C98 = v13;
   }
 
@@ -374,7 +374,7 @@ LABEL_10:
   {
     [(PHVideoCallVideoGroupView *)self setTransformForNewCenter:p_target->x, self->_target.y];
     [(PHVideoCallVideoGroupView *)self finishedThrowAnimation];
-    v11 = v18;
+    v11 = animationCopy;
   }
 }
 

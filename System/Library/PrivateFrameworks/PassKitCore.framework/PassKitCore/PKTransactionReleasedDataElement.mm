@@ -1,82 +1,82 @@
 @interface PKTransactionReleasedDataElement
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReleasedDataElement:(id)a3;
-- (PKTransactionReleasedDataElement)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReleasedDataElement:(id)element;
+- (PKTransactionReleasedDataElement)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionReleasedDataElement
 
-- (PKTransactionReleasedDataElement)initWithCoder:(id)a3
+- (PKTransactionReleasedDataElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKTransactionReleasedDataElement;
   v5 = [(PKTransactionReleasedDataElement *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"elementNamespace"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"elementNamespace"];
     elementNamespace = v5->_elementNamespace;
     v5->_elementNamespace = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v5->_retentionIntent = [v4 decodeIntegerForKey:@"retentionIntent"];
-    v5->_retentionPeriod = [v4 decodeIntegerForKey:@"retentionPeriod"];
+    v5->_retentionIntent = [coderCopy decodeIntegerForKey:@"retentionIntent"];
+    v5->_retentionPeriod = [coderCopy decodeIntegerForKey:@"retentionPeriod"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   elementNamespace = self->_elementNamespace;
-  v5 = a3;
-  [v5 encodeObject:elementNamespace forKey:@"elementNamespace"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_retentionIntent forKey:@"retentionIntent"];
-  [v5 encodeInteger:self->_retentionPeriod forKey:@"retentionPeriod"];
+  coderCopy = coder;
+  [coderCopy encodeObject:elementNamespace forKey:@"elementNamespace"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_retentionIntent forKey:@"retentionIntent"];
+  [coderCopy encodeInteger:self->_retentionPeriod forKey:@"retentionPeriod"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_elementNamespace];
-  [v3 safelyAddObject:self->_identifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_elementNamespace];
+  [array safelyAddObject:self->_identifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_retentionIntent - v4 + 32 * v4;
   v6 = self->_retentionPeriod - v5 + 32 * v5;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReleasedDataElement *)self isEqualToReleasedDataElement:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReleasedDataElement *)self isEqualToReleasedDataElement:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToReleasedDataElement:(id)a3
+- (BOOL)isEqualToReleasedDataElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   elementNamespace = self->_elementNamespace;
-  v6 = v4[1];
+  v6 = elementCopy[1];
   if (elementNamespace)
   {
     v7 = v6 == 0;
@@ -101,7 +101,7 @@
   }
 
   identifier = self->_identifier;
-  v9 = v4[2];
+  v9 = elementCopy[2];
   if (!identifier || !v9)
   {
     if (identifier == v9)
@@ -120,12 +120,12 @@ LABEL_16:
   }
 
 LABEL_14:
-  if (self->_retentionIntent != v4[3])
+  if (self->_retentionIntent != elementCopy[3])
   {
     goto LABEL_16;
   }
 
-  v10 = self->_retentionPeriod == v4[4];
+  v10 = self->_retentionPeriod == elementCopy[4];
 LABEL_17:
 
   return v10;

@@ -1,7 +1,7 @@
 @interface MKContactMigrator
 - (MKContactMigrator)init;
-- (void)import:(id)a3;
-- (void)importVCard:(id)a3;
+- (void)import:(id)import;
+- (void)importVCard:(id)card;
 @end
 
 @implementation MKContactMigrator
@@ -23,32 +23,32 @@
   return v2;
 }
 
-- (void)importVCard:(id)a3
+- (void)importVCard:(id)card
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  cardCopy = card;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_autoreleasePoolPush();
-  [(MKContactMigrator *)v4 import:v6];
+  [(MKContactMigrator *)selfCopy import:cardCopy];
   objc_autoreleasePoolPop(v5);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)import:(id)a3
+- (void)import:(id)import
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  importCopy = import;
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = +[MKLog log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v42 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_2592D2000, v6, OS_LOG_TYPE_INFO, "%@ will import a vcard.", buf, 0xCu);
   }
 
   v39 = 0;
-  v7 = [MEMORY[0x277CBDAC8] contactsWithData:v4 error:&v39];
+  v7 = [MEMORY[0x277CBDAC8] contactsWithData:importCopy error:&v39];
   v8 = v39;
   if (v8)
   {
@@ -60,7 +60,7 @@
 
 LABEL_20:
 
-    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
+    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:importCopy encoding:4];
     if ([v10 length])
     {
       v18 = [v10 mk_occurrenceCountOfString:@"BEGIN:VCARD"];
@@ -142,7 +142,7 @@ LABEL_20:
   }
 
   v20 = [v10 count];
-  v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
+  v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:importCopy encoding:4];
   if ([v21 length])
   {
     v22 = [v21 mk_occurrenceCountOfString:@"BEGIN:VCARD"];
@@ -153,7 +153,7 @@ LABEL_20:
   }
 
   [(MKMigrator *)self migratorDidImportWithCount:v20];
-  -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [v4 length]);
+  -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [importCopy length]);
 
   v8 = 0;
 LABEL_30:
@@ -162,23 +162,23 @@ LABEL_30:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v42 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_2592D2000, v23, OS_LOG_TYPE_INFO, "%@ did import a vcard.", buf, 0xCu);
   }
 
   v24 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v24);
-  v25 = [v24 payload];
-  v26 = [v25 contacts];
+  payload = [v24 payload];
+  contacts = [payload contacts];
 
-  v27 = [MEMORY[0x277CBEAA8] date];
-  [v27 timeIntervalSinceDate:v5];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceDate:date];
   v29 = v28;
 
   v30 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:v29];
-  v31 = [v26 importElapsedTime];
-  v32 = [v31 decimalNumberByAdding:v30];
-  [v26 setImportElapsedTime:v32];
+  importElapsedTime = [contacts importElapsedTime];
+  v32 = [importElapsedTime decimalNumberByAdding:v30];
+  [contacts setImportElapsedTime:v32];
 
   objc_sync_exit(v24);
   v33 = *MEMORY[0x277D85DE8];

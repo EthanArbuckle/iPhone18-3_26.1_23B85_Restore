@@ -1,22 +1,22 @@
 @interface ResultEntityResolutionResult
-+ (id)confirmationRequiredWithResultEntityToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithResultEntitysToDisambiguate:(id)a3;
-+ (id)successWithResolvedResultEntity:(id)a3;
++ (id)confirmationRequiredWithResultEntityToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithResultEntitysToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedResultEntity:(id)entity;
 @end
 
 @implementation ResultEntityResolutionResult
 
-+ (id)successWithResolvedResultEntity:(id)a3
++ (id)successWithResolvedResultEntity:(id)entity
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ResultEntityResolutionResult.success(with:)(v4);
+  entityCopy = entity;
+  v5 = static ResultEntityResolutionResult.success(with:)(entityCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithResultEntitysToDisambiguate:(id)a3
++ (id)disambiguationWithResultEntitysToDisambiguate:(id)disambiguate
 {
   type metadata accessor for ResultEntity();
   v3 = sub_269854CB4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithResultEntityToConfirm:(id)a3
++ (id)confirmationRequiredWithResultEntityToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ResultEntityResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static ResultEntityResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_26984C7F8();
   sub_269854CB4();

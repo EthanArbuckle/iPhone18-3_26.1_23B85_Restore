@@ -1,7 +1,7 @@
 @interface HomeOutlineSectionControllerConfiguration
 - (ActionCoordination)actionCoordinator;
 - (HomeActionDelegate)homeActionDelegate;
-- (HomeOutlineSectionControllerConfiguration)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4 delegate:(id)a5 actionCoordinator:(id)a6 homeActionDelegate:(id)a7 storage:(id)a8;
+- (HomeOutlineSectionControllerConfiguration)initWithCollectionView:(id)view sectionIdentifier:(id)identifier delegate:(id)delegate actionCoordinator:(id)coordinator homeActionDelegate:(id)actionDelegate storage:(id)storage;
 - (HomeOutlineSectionControllerDelegate)delegate;
 @end
 
@@ -28,26 +28,26 @@
   return WeakRetained;
 }
 
-- (HomeOutlineSectionControllerConfiguration)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4 delegate:(id)a5 actionCoordinator:(id)a6 homeActionDelegate:(id)a7 storage:(id)a8
+- (HomeOutlineSectionControllerConfiguration)initWithCollectionView:(id)view sectionIdentifier:(id)identifier delegate:(id)delegate actionCoordinator:(id)coordinator homeActionDelegate:(id)actionDelegate storage:(id)storage
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  viewCopy = view;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  coordinatorCopy = coordinator;
+  actionDelegateCopy = actionDelegate;
+  storageCopy = storage;
   v24.receiver = self;
   v24.super_class = HomeOutlineSectionControllerConfiguration;
   v21 = [(HomeOutlineSectionControllerConfiguration *)&v24 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_collectionView, a3);
-    objc_storeStrong(&v22->_sectionIdentifier, a4);
-    objc_storeWeak(&v22->_delegate, v17);
-    objc_storeWeak(&v22->_actionCoordinator, v18);
-    objc_storeWeak(&v22->_homeActionDelegate, v19);
-    objc_storeStrong(&v22->_storage, a8);
+    objc_storeStrong(&v21->_collectionView, view);
+    objc_storeStrong(&v22->_sectionIdentifier, identifier);
+    objc_storeWeak(&v22->_delegate, delegateCopy);
+    objc_storeWeak(&v22->_actionCoordinator, coordinatorCopy);
+    objc_storeWeak(&v22->_homeActionDelegate, actionDelegateCopy);
+    objc_storeStrong(&v22->_storage, storage);
   }
 
   return v22;

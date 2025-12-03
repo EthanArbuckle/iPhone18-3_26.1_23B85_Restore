@@ -1,12 +1,12 @@
 @interface MFNanoServerMessageContentURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
 + (_MFNanoServerMessageContentURLProtocolRegistry)registry;
-+ (id)URLForLoadingContext:(id)a3;
-+ (id)loadingContextForURL:(id)a3;
++ (id)URLForLoadingContext:(id)context;
++ (id)loadingContextForURL:(id)l;
 + (void)initialize;
-- (MFNanoServerMessageContentURLProtocol)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5;
-- (id)_cachedResponseWithData:(id)a3 error:(id *)a4;
-- (void)_didLoadContentEvent:(id)a3 error:(id)a4;
+- (MFNanoServerMessageContentURLProtocol)initWithRequest:(id)request cachedResponse:(id)response client:(id)client;
+- (id)_cachedResponseWithData:(id)data error:(id *)error;
+- (void)_didLoadContentEvent:(id)event error:(id)error;
 - (void)dealloc;
 - (void)startLoading;
 - (void)stopLoading;
@@ -16,10 +16,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [NSURLProtocol registerClass:a1];
+    [NSURLProtocol registerClass:self];
   }
 }
 
@@ -38,41 +38,41 @@
   return v2;
 }
 
-+ (id)URLForLoadingContext:(id)a3
++ (id)URLForLoadingContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 registry];
-  v6 = [a1 scheme];
-  v7 = [v5 URLForLoadingContext:v4 scheme:v6];
+  contextCopy = context;
+  registry = [self registry];
+  scheme = [self scheme];
+  v7 = [registry URLForLoadingContext:contextCopy scheme:scheme];
 
   return v7;
 }
 
-+ (id)loadingContextForURL:(id)a3
++ (id)loadingContextForURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 registry];
-  v6 = [v5 loadingContextForURL:v4];
+  lCopy = l;
+  registry = [self registry];
+  v6 = [registry loadingContextForURL:lCopy];
 
   return v6;
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v4 = [a3 URL];
+  v4 = [request URL];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 scheme];
-    v7 = [a1 scheme];
-    if ([v6 caseInsensitiveCompare:v7])
+    scheme = [v4 scheme];
+    scheme2 = [self scheme];
+    if ([scheme caseInsensitiveCompare:scheme2])
     {
       v8 = 0;
     }
 
     else
     {
-      v9 = [a1 loadingContextForURL:v5];
+      v9 = [self loadingContextForURL:v5];
       v8 = v9 != 0;
     }
   }
@@ -93,18 +93,18 @@
   [(MFNanoServerMessageContentURLProtocol *)&v3 dealloc];
 }
 
-- (MFNanoServerMessageContentURLProtocol)initWithRequest:(id)a3 cachedResponse:(id)a4 client:(id)a5
+- (MFNanoServerMessageContentURLProtocol)initWithRequest:(id)request cachedResponse:(id)response client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  clientCopy = client;
   v31.receiver = self;
   v31.super_class = MFNanoServerMessageContentURLProtocol;
-  v11 = [(MFNanoServerMessageContentURLProtocol *)&v31 initWithRequest:v8 cachedResponse:v9 client:v10];
+  v11 = [(MFNanoServerMessageContentURLProtocol *)&v31 initWithRequest:requestCopy cachedResponse:responseCopy client:clientCopy];
   if (v11)
   {
     v12 = objc_opt_class();
-    v13 = [v8 URL];
+    v13 = [requestCopy URL];
     v14 = [v12 loadingContextForURL:v13];
     loadingContext = v11->_loadingContext;
     v11->_loadingContext = v14;
@@ -117,26 +117,26 @@
     promise = v11->_promise;
     v11->_promise = v18;
 
-    v20 = [(EFPromise *)v11->_promise future];
+    future = [(EFPromise *)v11->_promise future];
     objc_initWeak(&location, v11);
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_100092194;
     v28[3] = &unk_100159A80;
     objc_copyWeak(&v29, &location);
-    [v20 addSuccessBlock:v28];
+    [future addSuccessBlock:v28];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000922BC;
     v26[3] = &unk_100159AA8;
     objc_copyWeak(&v27, &location);
-    [v20 addFailureBlock:v26];
+    [future addFailureBlock:v26];
     v21 = v11->_token;
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100092358;
     v24[3] = &unk_100156400;
-    v22 = v20;
+    v22 = future;
     v25 = v22;
     [(EFManualCancelationToken *)v21 addCancelationBlock:v24];
 
@@ -148,20 +148,20 @@
   return v11;
 }
 
-- (id)_cachedResponseWithData:(id)a3 error:(id *)a4
+- (id)_cachedResponseWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v20 = NSURLErrorFailingURLErrorKey;
-    v15 = [(MFNanoServerMessageContentURLProtocol *)self request];
-    v16 = [v15 URL];
+    request = [(MFNanoServerMessageContentURLProtocol *)self request];
+    v16 = [request URL];
     v21 = v16;
     v17 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v14 = [NSError errorWithDomain:NSURLErrorDomain code:-1008 userInfo:v17];
 
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -170,19 +170,19 @@
   }
 
   v7 = [NSURLResponse alloc];
-  v8 = [(MFNanoServerMessageContentURLProtocol *)self request];
-  v9 = [v8 URL];
-  v10 = [v6 length];
+  request2 = [(MFNanoServerMessageContentURLProtocol *)self request];
+  v9 = [request2 URL];
+  v10 = [dataCopy length];
   v11 = MFCharsetForEncoding();
   v12 = [v7 initWithURL:v9 MIMEType:@"text/html" expectedContentLength:v10 textEncodingName:v11];
 
-  v13 = [[NSCachedURLResponse alloc] initWithResponse:v12 data:v6 userInfo:0 storagePolicy:2];
+  v13 = [[NSCachedURLResponse alloc] initWithResponse:v12 data:dataCopy userInfo:0 storagePolicy:2];
   v14 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v18 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
 LABEL_6:
@@ -209,22 +209,22 @@ LABEL_6:
 
 - (void)stopLoading
 {
-  v3 = [(MFNanoServerMessageContentURLProtocol *)self promise];
+  promise = [(MFNanoServerMessageContentURLProtocol *)self promise];
   v8 = NSURLErrorFailingURLErrorKey;
-  v4 = [(MFNanoServerMessageContentURLProtocol *)self request];
-  v5 = [v4 URL];
+  request = [(MFNanoServerMessageContentURLProtocol *)self request];
+  v5 = [request URL];
   v9 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v7 = [NSError errorWithDomain:NSURLErrorDomain code:-999 userInfo:v6];
-  [v3 finishWithError:v7];
+  [promise finishWithError:v7];
 
   [(EFManualCancelationToken *)self->_token cancel];
 }
 
-- (void)_didLoadContentEvent:(id)a3 error:(id)a4
+- (void)_didLoadContentEvent:(id)event error:(id)error
 {
-  v38 = a3;
-  v35 = a4;
+  eventCopy = event;
+  errorCopy = error;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -237,37 +237,37 @@ LABEL_6:
   v48 = v37;
   v49 = &v50;
   v39 = objc_retainBlock(v47);
-  v5 = [v38 context];
-  v40 = [v5 attachmentManager];
+  context = [eventCopy context];
+  attachmentManager = [context attachmentManager];
 
-  v6 = [v38 content];
-  if (!v6)
+  content = [eventCopy content];
+  if (!content)
   {
     v7 = EMLogCategoryMessageLoading();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v31 = [(MFNanoServerMessageContentURLProtocol *)self loadingContext];
-      v32 = [v31 message];
-      v33 = [v32 messageID];
-      v34 = [v35 ef_publicDescription];
+      loadingContext = [(MFNanoServerMessageContentURLProtocol *)self loadingContext];
+      message = [loadingContext message];
+      messageID = [message messageID];
+      ef_publicDescription = [errorCopy ef_publicDescription];
       *buf = 138543618;
-      v56 = v33;
+      v56 = messageID;
       v57 = 2114;
-      v58 = v34;
+      v58 = ef_publicDescription;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "loading message %{public}@ had error %{public}@", buf, 0x16u);
     }
 
-    v8 = [v35 mf_markupString];
-    (v39[2])(v39, v8);
+    mf_markupString = [errorCopy mf_markupString];
+    (v39[2])(v39, mf_markupString);
 
-    v6 = 0;
+    content = 0;
   }
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v6;
+  obj = content;
   v9 = [obj countByEnumeratingWithState:&v43 objects:v54 count:16];
   if (v9)
   {
@@ -286,12 +286,12 @@ LABEL_6:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v40 attachmentForTextAttachment:v12 error:0];
-          v15 = v14;
+          v14 = [attachmentManager attachmentForTextAttachment:v12 error:0];
+          htmlData = v14;
           if (v14)
           {
-            v16 = [v14 fetchLocalData];
-            v17 = [v15 markupStringForDisplayWithData:v16 allowAttachmentElement:1];
+            fetchLocalData = [v14 fetchLocalData];
+            v17 = [htmlData markupStringForDisplayWithData:fetchLocalData allowAttachmentElement:1];
             v18 = +[NSUserDefaults em_userDefaults];
             v19 = [v18 BOOLForKey:@"ShowAttachmentMarkup"];
 
@@ -322,10 +322,10 @@ LABEL_27:
         if (objc_opt_isKindOfClass())
         {
           v17 = v12;
-          v15 = [v17 htmlData];
-          if (v15)
+          htmlData = [v17 htmlData];
+          if (htmlData)
           {
-            v21 = [v17 preferredCharacterSet];
+            preferredCharacterSet = [v17 preferredCharacterSet];
             v22 = MFEncodingForCharset();
             *buf = -1;
             v23 = MFCreateStringWithData();
@@ -363,16 +363,16 @@ LABEL_28:
   {
     v24 = [NSBundle bundleForClass:objc_opt_class()];
     v25 = [v24 localizedStringForKey:@"NO_BODY" value:&stru_10015BEC8 table:@"Main"];
-    v26 = [v25 mf_stringByEscapingHTMLCodes];
-    v27 = [NSString localizedStringWithFormat:@"<html dir=auto><body><i><font color=#888>%@</font></i></body></html>", v26];
+    mf_stringByEscapingHTMLCodes = [v25 mf_stringByEscapingHTMLCodes];
+    v27 = [NSString localizedStringWithFormat:@"<html dir=auto><body><i><font color=#888>%@</font></i></body></html>", mf_stringByEscapingHTMLCodes];
 
     (v39[2])(v39, v27);
   }
 
   [v37 done];
-  v28 = [v37 data];
+  data = [v37 data];
   v42 = 0;
-  v29 = [(MFNanoServerMessageContentURLProtocol *)self _cachedResponseWithData:v28 error:&v42];
+  v29 = [(MFNanoServerMessageContentURLProtocol *)self _cachedResponseWithData:data error:&v42];
   v30 = v42;
   [(EFPromise *)self->_promise finishWithResult:v29 error:v30];
 

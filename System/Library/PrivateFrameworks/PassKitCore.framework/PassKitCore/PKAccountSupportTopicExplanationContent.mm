@@ -1,16 +1,16 @@
 @interface PKAccountSupportTopicExplanationContent
-- (PKAccountSupportTopicExplanationContent)initWithDictionary:(id)a3;
+- (PKAccountSupportTopicExplanationContent)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKAccountSupportTopicExplanationContent
 
-- (PKAccountSupportTopicExplanationContent)initWithDictionary:(id)a3
+- (PKAccountSupportTopicExplanationContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PKAccountSupportTopicExplanationContent;
   v5 = [(PKAccountSupportTopicExplanationContent *)&v14 init];
-  if (!v5 || ([v4 PKStringForKey:@"contentTitle"], v6 = objc_claimAutoreleasedReturnValue(), title = v5->_title, v5->_title = v6, title, objc_msgSend(v4, "PKStringForKey:", @"contentBody"), v8 = objc_claimAutoreleasedReturnValue(), subtitle = v5->_subtitle, v5->_subtitle = v8, subtitle, objc_msgSend(v4, "PKStringForKey:", @"contentSystemImageName"), v10 = objc_claimAutoreleasedReturnValue(), systemImageName = v5->_systemImageName, v5->_systemImageName = v10, systemImageName, v5->_title) || v5->_subtitle)
+  if (!v5 || ([dictionaryCopy PKStringForKey:@"contentTitle"], v6 = objc_claimAutoreleasedReturnValue(), title = v5->_title, v5->_title = v6, title, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"contentBody"), v8 = objc_claimAutoreleasedReturnValue(), subtitle = v5->_subtitle, v5->_subtitle = v8, subtitle, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"contentSystemImageName"), v10 = objc_claimAutoreleasedReturnValue(), systemImageName = v5->_systemImageName, v5->_systemImageName = v10, systemImageName, v5->_title) || v5->_subtitle)
   {
     v12 = v5;
   }

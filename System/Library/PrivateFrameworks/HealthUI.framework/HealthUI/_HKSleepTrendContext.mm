@@ -1,33 +1,33 @@
 @interface _HKSleepTrendContext
 - (HKOverlaySleepRoomContextChangeDelegate)contextChangeDelegate;
-- (_HKSleepTrendContext)initWithBaseDisplayType:(id)a3 trendModel:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 overlayMode:(int64_t)a7 contextChangeDelegate:(id)a8;
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5;
+- (_HKSleepTrendContext)initWithBaseDisplayType:(id)type trendModel:(id)model overlayChartController:(id)controller applicationItems:(id)items overlayMode:(int64_t)mode contextChangeDelegate:(id)delegate;
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller;
 @end
 
 @implementation _HKSleepTrendContext
 
-- (_HKSleepTrendContext)initWithBaseDisplayType:(id)a3 trendModel:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 overlayMode:(int64_t)a7 contextChangeDelegate:(id)a8
+- (_HKSleepTrendContext)initWithBaseDisplayType:(id)type trendModel:(id)model overlayChartController:(id)controller applicationItems:(id)items overlayMode:(int64_t)mode contextChangeDelegate:(id)delegate
 {
-  v15 = a3;
-  v16 = a8;
+  typeCopy = type;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = _HKSleepTrendContext;
-  v17 = [(HKOverlayRoomTrendContext *)&v20 initWithBaseDisplayType:v15 trendModel:a4 overlayChartController:a5 applicationItems:a6 overlayMode:a7];
+  v17 = [(HKOverlayRoomTrendContext *)&v20 initWithBaseDisplayType:typeCopy trendModel:model overlayChartController:controller applicationItems:items overlayMode:mode];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_baseDisplayType, a3);
-    objc_storeWeak(&v18->_contextChangeDelegate, v16);
+    objc_storeStrong(&v17->_baseDisplayType, type);
+    objc_storeWeak(&v18->_contextChangeDelegate, delegateCopy);
   }
 
   return v18;
 }
 
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller
 {
-  v5 = a3;
-  v6 = [(_HKSleepTrendContext *)self contextChangeDelegate:a3];
-  [v6 setDurationContextSelected:v5];
+  changeCopy = change;
+  v6 = [(_HKSleepTrendContext *)self contextChangeDelegate:change];
+  [v6 setDurationContextSelected:changeCopy];
 }
 
 - (HKOverlaySleepRoomContextChangeDelegate)contextChangeDelegate

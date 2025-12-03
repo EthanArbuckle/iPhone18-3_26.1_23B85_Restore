@@ -1,41 +1,41 @@
 @interface SBDynamicFlashlightActivityElementView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBDynamicFlashlightActivityElementView)initWithFrame:(CGRect)a3 beamState:(CGPoint)a4 optionsProvider:(id)a5;
-- (id)_flashlightStateForWidth:(double)a3 intensity:(double)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBDynamicFlashlightActivityElementView)initWithFrame:(CGRect)frame beamState:(CGPoint)state optionsProvider:(id)provider;
+- (id)_flashlightStateForWidth:(double)width intensity:(double)intensity;
 - (void)_applyBeamState;
 - (void)_layoutSensorShadow;
-- (void)_setupBeamState:(CGPoint)a3;
+- (void)_setupBeamState:(CGPoint)state;
 - (void)_setupLayers;
 - (void)_transitionToCollapsedState;
-- (void)_transitionToExpandedStateWithIntensity:(double)a3 width:(double)a4;
+- (void)_transitionToExpandedStateWithIntensity:(double)intensity width:(double)width;
 - (void)layoutSubviews;
-- (void)setBeamState:(CGPoint)a3;
-- (void)setExpanded:(BOOL)a3 intensity:(double)a4 width:(double)a5;
-- (void)setTouching:(BOOL)a3;
+- (void)setBeamState:(CGPoint)state;
+- (void)setExpanded:(BOOL)expanded intensity:(double)intensity width:(double)width;
+- (void)setTouching:(BOOL)touching;
 @end
 
 @implementation SBDynamicFlashlightActivityElementView
 
-- (SBDynamicFlashlightActivityElementView)initWithFrame:(CGRect)a3 beamState:(CGPoint)a4 optionsProvider:(id)a5
+- (SBDynamicFlashlightActivityElementView)initWithFrame:(CGRect)frame beamState:(CGPoint)state optionsProvider:(id)provider
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v13 = a5;
+  y = state.y;
+  x = state.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  providerCopy = provider;
   v25.receiver = self;
   v25.super_class = SBDynamicFlashlightActivityElementView;
-  v14 = [(SBDynamicFlashlightActivityElementView *)&v25 initWithFrame:v11, v10, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(SBDynamicFlashlightActivityElementView *)&v25 initWithFrame:v11, v10, width, height];
+  v15 = height;
+  if (height)
   {
-    packageState = v14->_packageState;
-    v14->_packageState = @"State 0";
+    packageState = height->_packageState;
+    height->_packageState = @"State 0";
 
     v15->_isExpanded = 0;
-    objc_storeStrong(&v15->_optionsProvider, a5);
+    objc_storeStrong(&v15->_optionsProvider, provider);
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v18 = [v17 URLForResource:@"Flashlight-Dynamic" withExtension:@"ca"];
 
@@ -49,8 +49,8 @@
 
     [(SBDynamicFlashlightActivityElementView *)v15 _setupLayers];
     [(SBDynamicFlashlightActivityElementView *)v15 _setupBeamState:x, y];
-    v23 = [MEMORY[0x277D75348] blackColor];
-    [(SBDynamicFlashlightActivityElementView *)v15 setBackgroundColor:v23];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SBDynamicFlashlightActivityElementView *)v15 setBackgroundColor:blackColor];
 
     [(SBDynamicFlashlightActivityElementView *)v15 setNeedsLayout];
   }
@@ -61,20 +61,20 @@
 - (void)_setupLayers
 {
   [(SBDynamicFlashlightActivityElementView *)self addSubview:self->_packageView];
-  v3 = [(SBDynamicFlashlightActivityElementPackageLayerController *)self->_layerManager sensorShadowPortalLayer];
+  sensorShadowPortalLayer = [(SBDynamicFlashlightActivityElementPackageLayerController *)self->_layerManager sensorShadowPortalLayer];
   sensorShadowLayer = self->_sensorShadowLayer;
-  self->_sensorShadowLayer = v3;
+  self->_sensorShadowLayer = sensorShadowPortalLayer;
 
-  v5 = [(SBDynamicFlashlightActivityElementView *)self layer];
-  [v5 addSublayer:self->_sensorShadowLayer];
+  layer = [(SBDynamicFlashlightActivityElementView *)self layer];
+  [layer addSublayer:self->_sensorShadowLayer];
 
   [(SBDynamicFlashlightActivityElementView *)self setNeedsLayout];
 }
 
-- (void)_setupBeamState:(CGPoint)a3
+- (void)_setupBeamState:(CGPoint)state
 {
-  y = a3.y;
-  x = a3.x;
+  y = state.y;
+  x = state.x;
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = [objc_alloc(MEMORY[0x277D75D50]) initWithLength:2];
   beamState = self->_beamState;
@@ -117,7 +117,7 @@ void __58__SBDynamicFlashlightActivityElementView__setupBeamState___block_invoke
   [WeakRetained _applyBeamState];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 238.666667;
   v4 = 339.333333;
@@ -145,8 +145,8 @@ void __58__SBDynamicFlashlightActivityElementView__setupBeamState___block_invoke
 
 - (void)_layoutSensorShadow
 {
-  v3 = [SBApp systemApertureControllerForMainDisplay];
-  [v3 defaultIslandFrameInCoordinateSpace:self];
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  [systemApertureControllerForMainDisplay defaultIslandFrameInCoordinateSpace:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -172,19 +172,19 @@ void __58__SBDynamicFlashlightActivityElementView__setupBeamState___block_invoke
   }
 }
 
-- (void)setExpanded:(BOOL)a3 intensity:(double)a4 width:(double)a5
+- (void)setExpanded:(BOOL)expanded intensity:(double)intensity width:(double)width
 {
-  v7 = a3;
+  expandedCopy = expanded;
   v9 = SBLogFlashlightHUD();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [SBDynamicFlashlightActivityElementView setExpanded:intensity:width:];
   }
 
-  self->_isExpanded = v7;
-  if (v7)
+  self->_isExpanded = expandedCopy;
+  if (expandedCopy)
   {
-    [(SBDynamicFlashlightActivityElementView *)self _transitionToExpandedStateWithIntensity:a4 width:a5];
+    [(SBDynamicFlashlightActivityElementView *)self _transitionToExpandedStateWithIntensity:intensity width:width];
   }
 
   else
@@ -193,12 +193,12 @@ void __58__SBDynamicFlashlightActivityElementView__setupBeamState___block_invoke
   }
 }
 
-- (void)_transitionToExpandedStateWithIntensity:(double)a3 width:(double)a4
+- (void)_transitionToExpandedStateWithIntensity:(double)intensity width:(double)width
 {
   [(BSUICAPackageView *)self->_packageView setState:@"State 0" animated:0];
-  [(SBDynamicFlashlightActivityElementPackageLayerController *)self->_layerManager setBeamIntensity:0 width:a3 animated:a4];
+  [(SBDynamicFlashlightActivityElementPackageLayerController *)self->_layerManager setBeamIntensity:0 width:intensity animated:width];
   [MEMORY[0x277CD9FF0] begin];
-  v7 = [(SBDynamicFlashlightActivityElementView *)self _flashlightStateForWidth:a4 intensity:a3];
+  v7 = [(SBDynamicFlashlightActivityElementView *)self _flashlightStateForWidth:width intensity:intensity];
   v8 = SBLogFlashlightHUD();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -222,14 +222,14 @@ void __58__SBDynamicFlashlightActivityElementView__setupBeamState___block_invoke
   [v3 commit];
 }
 
-- (void)setBeamState:(CGPoint)a3
+- (void)setBeamState:(CGPoint)state
 {
   beamState = self->_beamState;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__SBDynamicFlashlightActivityElementView_setBeamState___block_invoke;
   v4[3] = &__block_descriptor_48_e9_v16__0_d8l;
-  v5 = a3;
+  stateCopy = state;
   [(UIViewVectorAnimatableProperty *)beamState _mutateValue:v4];
 }
 
@@ -242,9 +242,9 @@ __n128 __55__SBDynamicFlashlightActivityElementView_setBeamState___block_invoke(
 
 - (void)_applyBeamState
 {
-  v3 = [(UIViewVectorAnimatableProperty *)self->_beamState _presentationValue];
-  v4 = *v3;
-  v5 = v3[1];
+  _presentationValue = [(UIViewVectorAnimatableProperty *)self->_beamState _presentationValue];
+  v4 = *_presentationValue;
+  v5 = _presentationValue[1];
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   v6 = [(SBDynamicFlashlightActivityElementView *)self _flashlightStateForWidth:v4 intensity:v5];
@@ -266,16 +266,16 @@ __n128 __55__SBDynamicFlashlightActivityElementView_setBeamState___block_invoke(
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (id)_flashlightStateForWidth:(double)a3 intensity:(double)a4
+- (id)_flashlightStateForWidth:(double)width intensity:(double)intensity
 {
   [(SBDynamicFlashlightOptionsProvider *)self->_optionsProvider minimumIntensity];
   v7 = @"State 1";
-  if (a3 < 0.12)
+  if (width < 0.12)
   {
     v7 = @"State 1 - narrowest";
   }
 
-  if (v6 <= a4)
+  if (v6 <= intensity)
   {
     return v7;
   }
@@ -286,7 +286,7 @@ __n128 __55__SBDynamicFlashlightActivityElementView_setBeamState___block_invoke(
   }
 }
 
-- (void)setTouching:(BOOL)a3
+- (void)setTouching:(BOOL)touching
 {
   v5 = SBLogFlashlightHUD();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -294,7 +294,7 @@ __n128 __55__SBDynamicFlashlightActivityElementView_setBeamState___block_invoke(
     [SBDynamicFlashlightActivityElementView setTouching:];
   }
 
-  self->_touching = a3;
+  self->_touching = touching;
 }
 
 @end

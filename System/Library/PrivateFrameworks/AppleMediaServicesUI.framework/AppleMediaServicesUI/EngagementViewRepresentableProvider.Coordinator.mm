@@ -1,36 +1,36 @@
 @interface EngagementViewRepresentableProvider.Coordinator
-- (BOOL)engagementViewController:(id)a3 handleDynamicDelegateAction:(id)a4 completionHandler:(id)a5;
-- (void)engagementViewController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
-- (void)engagementViewControllerShouldDismiss:(id)a3;
+- (BOOL)engagementViewController:(id)controller handleDynamicDelegateAction:(id)action completionHandler:(id)handler;
+- (void)engagementViewController:(id)controller didFinishWithResult:(id)result error:(id)error;
+- (void)engagementViewControllerShouldDismiss:(id)dismiss;
 @end
 
 @implementation EngagementViewRepresentableProvider.Coordinator
 
-- (void)engagementViewControllerShouldDismiss:(id)a3
+- (void)engagementViewControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1BB15B140();
 }
 
-- (void)engagementViewController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)engagementViewController:(id)controller didFinishWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_1BB15B214(v11, a4, a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1BB15B214(errorCopy, result, error);
 }
 
-- (BOOL)engagementViewController:(id)a3 handleDynamicDelegateAction:(id)a4 completionHandler:(id)a5
+- (BOOL)engagementViewController:(id)controller handleDynamicDelegateAction:(id)action completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  LOBYTE(self) = sub_1BB15B534(v12, v11, sub_1BB13CA10, v9);
+  controllerCopy = controller;
+  actionCopy = action;
+  selfCopy = self;
+  LOBYTE(self) = sub_1BB15B534(selfCopy, actionCopy, sub_1BB13CA10, v9);
 
   return self & 1;
 }

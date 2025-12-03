@@ -1,16 +1,16 @@
 @interface RETextContentProvider
-+ (id)contentProviderFromAttributedString:(id)a3;
-- (RETextContentProvider)initWithCoder:(id)a3;
++ (id)contentProviderFromAttributedString:(id)string;
+- (RETextContentProvider)initWithCoder:(id)coder;
 - (id)attributedStringRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RETextContentProvider
 
-+ (id)contentProviderFromAttributedString:(id)a3
++ (id)contentProviderFromAttributedString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = [REAttributedTextContentProvider textContentProviderWithAttributedText:?];
   }
@@ -33,16 +33,16 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_7();
@@ -50,7 +50,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (RETextContentProvider)initWithCoder:(id)a3
+- (RETextContentProvider)initWithCoder:(id)coder
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_7();

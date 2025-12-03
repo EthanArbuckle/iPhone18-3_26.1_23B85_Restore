@@ -1,12 +1,12 @@
 @interface CLIntersiloServiceMock
-- (id)getPayloadForKey:(id)a3;
-- (id)getPayloadForSelector:(SEL)a3;
-- (id)syncgetPayloadForSelector:(SEL)a3;
+- (id)getPayloadForKey:(id)key;
+- (id)getPayloadForSelector:(SEL)selector;
+- (id)syncgetPayloadForSelector:(SEL)selector;
 - (void)beginService;
-- (void)removePayloadForKey:(id)a3;
-- (void)removePayloadForSelector:(SEL)a3;
-- (void)setPayload:(id)a3 forKey:(id)a4;
-- (void)setPayload:(id)a3 forSelector:(SEL)a4;
+- (void)removePayloadForKey:(id)key;
+- (void)removePayloadForSelector:(SEL)selector;
+- (void)setPayload:(id)payload forKey:(id)key;
+- (void)setPayload:(id)payload forSelector:(SEL)selector;
 @end
 
 @implementation CLIntersiloServiceMock
@@ -17,14 +17,14 @@
   [(CLIntersiloServiceMock *)self setKeyedPayloads:v3];
 }
 
-- (void)setPayload:(id)a3 forKey:(id)a4
+- (void)setPayload:(id)payload forKey:(id)key
 {
   v26 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v6 = a4;
-  v7 = [(CLIntersiloServiceMock *)self keyedPayloads];
+  payloadCopy = payload;
+  keyCopy = key;
+  keyedPayloads = [(CLIntersiloServiceMock *)self keyedPayloads];
 
-  if (!v7)
+  if (!keyedPayloads)
   {
     v12 = sub_1DF814218();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -73,8 +73,8 @@ LABEL_19:
     abort_report_np();
   }
 
-  v8 = [(CLIntersiloServiceMock *)self keyedPayloads];
-  v9 = [v8 objectForKey:v6];
+  keyedPayloads2 = [(CLIntersiloServiceMock *)self keyedPayloads];
+  v9 = [keyedPayloads2 objectForKey:keyCopy];
 
   if (v9)
   {
@@ -123,19 +123,19 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v10 = [(CLIntersiloServiceMock *)self keyedPayloads];
-  [v10 setObject:v17 forKey:v6];
+  keyedPayloads3 = [(CLIntersiloServiceMock *)self keyedPayloads];
+  [keyedPayloads3 setObject:payloadCopy forKey:keyCopy];
 
-  [v17 setInUse:1];
+  [payloadCopy setInUse:1];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getPayloadForKey:(id)a3
+- (id)getPayloadForKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CLIntersiloServiceMock *)self keyedPayloads];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  keyedPayloads = [(CLIntersiloServiceMock *)self keyedPayloads];
+  v6 = [keyedPayloads objectForKey:keyCopy];
 
   if (!v6)
   {
@@ -189,12 +189,12 @@ LABEL_19:
   return v6;
 }
 
-- (void)removePayloadForKey:(id)a3
+- (void)removePayloadForKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v4 = [(CLIntersiloServiceMock *)self keyedPayloads];
-  v5 = [v4 objectForKey:v11];
+  keyCopy = key;
+  keyedPayloads = [(CLIntersiloServiceMock *)self keyedPayloads];
+  v5 = [keyedPayloads objectForKey:keyCopy];
 
   if (!v5)
   {
@@ -243,38 +243,38 @@ LABEL_19:
     abort_report_np();
   }
 
-  v6 = [(CLIntersiloServiceMock *)self keyedPayloads];
-  [v6 removeObjectForKey:v11];
+  keyedPayloads2 = [(CLIntersiloServiceMock *)self keyedPayloads];
+  [keyedPayloads2 removeObjectForKey:keyCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPayload:(id)a3 forSelector:(SEL)a4
+- (void)setPayload:(id)payload forSelector:(SEL)selector
 {
-  v6 = a3;
-  v7 = NSStringFromSelector(a4);
-  [(CLIntersiloServiceMock *)self setPayload:v6 forKey:v7];
+  payloadCopy = payload;
+  v7 = NSStringFromSelector(selector);
+  [(CLIntersiloServiceMock *)self setPayload:payloadCopy forKey:v7];
 }
 
-- (id)syncgetPayloadForSelector:(SEL)a3
+- (id)syncgetPayloadForSelector:(SEL)selector
 {
-  v4 = NSStringFromSelector(a3);
+  v4 = NSStringFromSelector(selector);
   v5 = [(CLIntersiloServiceMock *)self getPayloadForKey:v4];
 
   return v5;
 }
 
-- (id)getPayloadForSelector:(SEL)a3
+- (id)getPayloadForSelector:(SEL)selector
 {
-  v4 = NSStringFromSelector(a3);
+  v4 = NSStringFromSelector(selector);
   v5 = [(CLIntersiloServiceMock *)self getPayloadForKey:v4];
 
   return v5;
 }
 
-- (void)removePayloadForSelector:(SEL)a3
+- (void)removePayloadForSelector:(SEL)selector
 {
-  v4 = NSStringFromSelector(a3);
+  v4 = NSStringFromSelector(selector);
   [(CLIntersiloServiceMock *)self removePayloadForKey:v4];
 }
 

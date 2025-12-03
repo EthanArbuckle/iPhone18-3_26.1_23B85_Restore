@@ -1,17 +1,17 @@
 @interface SFWrappedKeyCiphertext
-- (SFWrappedKeyCiphertext)initWithCiphertext:(id)a3 ciphertextKey:(id)a4;
+- (SFWrappedKeyCiphertext)initWithCiphertext:(id)ciphertext ciphertextKey:(id)key;
 @end
 
 @implementation SFWrappedKeyCiphertext
 
-- (SFWrappedKeyCiphertext)initWithCiphertext:(id)a3 ciphertextKey:(id)a4
+- (SFWrappedKeyCiphertext)initWithCiphertext:(id)ciphertext ciphertextKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  ciphertextCopy = ciphertext;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (ciphertextCopy)
   {
-    if (v7)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -30,11 +30,11 @@
 LABEL_3:
   v12.receiver = self;
   v12.super_class = SFWrappedKeyCiphertext;
-  v9 = [(_SFCiphertext *)&v12 initWithCiphertext:v6];
+  v9 = [(_SFCiphertext *)&v12 initWithCiphertext:ciphertextCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9->_wrappedKeyCiphertextInternal + 1, a4);
+    objc_storeStrong(v9->_wrappedKeyCiphertextInternal + 1, key);
   }
 
   return v10;

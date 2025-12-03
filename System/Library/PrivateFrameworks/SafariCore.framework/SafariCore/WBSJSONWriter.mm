@@ -1,28 +1,28 @@
 @interface WBSJSONWriter
 + (void)initialize;
-- (BOOL)_checkCurrentState:(id)a3 doesNotContainKey:(id)a4 error:(id *)a5;
-- (BOOL)_checkHasNoRootWithError:(id *)a3;
-- (BOOL)_writeBuffer:(const char *)a3 length:(int64_t)a4 error:(id *)a5;
-- (BOOL)_writeCommaIfNeededForState:(id)a3 error:(id *)a4;
-- (BOOL)_writeConstantASCIIString:(const char *)a3 error:(id *)a4;
-- (BOOL)_writeData:(id)a3 error:(id *)a4;
-- (BOOL)_writeObjectKey:(id)a3 error:(id *)a4;
-- (BOOL)_writePrettyPrintedData:(id)a3 forEntry:(id)a4 error:(id *)a5;
-- (BOOL)_writeString:(id)a3 error:(id *)a4;
-- (BOOL)addEntry:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)appendAndBeginArrayWithError:(id *)a3;
-- (BOOL)appendAndBeginObjectWithError:(id *)a3;
-- (BOOL)appendEntry:(id)a3 error:(id *)a4;
-- (BOOL)beginArrayForKey:(id)a3 error:(id *)a4;
-- (BOOL)beginArrayWithError:(id *)a3;
-- (BOOL)beginObjectForKey:(id)a3 error:(id *)a4;
-- (BOOL)beginObjectWithError:(id *)a3;
-- (BOOL)closeCurrentEntryWithError:(id *)a3;
-- (BOOL)finishEncodingWithError:(id *)a3;
-- (WBSJSONWriter)initWithFileHandle:(id)a3 options:(unint64_t)a4;
-- (WBSJSONWriter)initWithOutputStream:(id)a3 options:(unint64_t)a4;
-- (id)_currentEntryStateOfKind:(int64_t)a3 error:(id *)a4;
-- (id)_dataForJSONObject:(id)a3 error:(id *)a4;
+- (BOOL)_checkCurrentState:(id)state doesNotContainKey:(id)key error:(id *)error;
+- (BOOL)_checkHasNoRootWithError:(id *)error;
+- (BOOL)_writeBuffer:(const char *)buffer length:(int64_t)length error:(id *)error;
+- (BOOL)_writeCommaIfNeededForState:(id)state error:(id *)error;
+- (BOOL)_writeConstantASCIIString:(const char *)string error:(id *)error;
+- (BOOL)_writeData:(id)data error:(id *)error;
+- (BOOL)_writeObjectKey:(id)key error:(id *)error;
+- (BOOL)_writePrettyPrintedData:(id)data forEntry:(id)entry error:(id *)error;
+- (BOOL)_writeString:(id)string error:(id *)error;
+- (BOOL)addEntry:(id)entry forKey:(id)key error:(id *)error;
+- (BOOL)appendAndBeginArrayWithError:(id *)error;
+- (BOOL)appendAndBeginObjectWithError:(id *)error;
+- (BOOL)appendEntry:(id)entry error:(id *)error;
+- (BOOL)beginArrayForKey:(id)key error:(id *)error;
+- (BOOL)beginArrayWithError:(id *)error;
+- (BOOL)beginObjectForKey:(id)key error:(id *)error;
+- (BOOL)beginObjectWithError:(id *)error;
+- (BOOL)closeCurrentEntryWithError:(id *)error;
+- (BOOL)finishEncodingWithError:(id *)error;
+- (WBSJSONWriter)initWithFileHandle:(id)handle options:(unint64_t)options;
+- (WBSJSONWriter)initWithOutputStream:(id)stream options:(unint64_t)options;
+- (id)_currentEntryStateOfKind:(int64_t)kind error:(id *)error;
+- (id)_dataForJSONObject:(id)object error:(id *)error;
 - (id)_prefixStringForCurrentDepth;
 - (int64_t)currentEntryKind;
 @end
@@ -40,42 +40,42 @@
   nullLiteralData = v4;
 }
 
-- (WBSJSONWriter)initWithOutputStream:(id)a3 options:(unint64_t)a4
+- (WBSJSONWriter)initWithOutputStream:(id)stream options:(unint64_t)options
 {
-  v7 = a3;
+  streamCopy = stream;
   v14.receiver = self;
   v14.super_class = WBSJSONWriter;
   v8 = [(WBSJSONWriter *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_outputStream, a3);
-    v10 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v8->_outputStream, stream);
+    array = [MEMORY[0x1E695DF70] array];
     stateStack = v9->_stateStack;
-    v9->_stateStack = v10;
+    v9->_stateStack = array;
 
-    v9->_options = a4;
+    v9->_options = options;
     v12 = v9;
   }
 
   return v9;
 }
 
-- (WBSJSONWriter)initWithFileHandle:(id)a3 options:(unint64_t)a4
+- (WBSJSONWriter)initWithFileHandle:(id)handle options:(unint64_t)options
 {
-  v7 = a3;
+  handleCopy = handle;
   v14.receiver = self;
   v14.super_class = WBSJSONWriter;
   v8 = [(WBSJSONWriter *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_fileHandle, a3);
-    v10 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v8->_fileHandle, handle);
+    array = [MEMORY[0x1E695DF70] array];
     stateStack = v9->_stateStack;
-    v9->_stateStack = v10;
+    v9->_stateStack = array;
 
-    v9->_options = a4;
+    v9->_options = options;
     v12 = v9;
   }
 
@@ -90,18 +90,18 @@
     objc_exception_throw(v6);
   }
 
-  v3 = [(NSMutableArray *)self->_stateStack lastObject];
-  v4 = [v3 kind];
+  lastObject = [(NSMutableArray *)self->_stateStack lastObject];
+  kind = [lastObject kind];
 
-  return v4;
+  return kind;
 }
 
-- (BOOL)beginObjectWithError:(id *)a3
+- (BOOL)beginObjectWithError:(id *)error
 {
   v5 = [(WBSJSONWriter *)self _checkHasNoRootWithError:?];
   if (v5)
   {
-    v5 = [(WBSJSONWriter *)self _writeConstantASCIIString:"{" error:a3];
+    v5 = [(WBSJSONWriter *)self _writeConstantASCIIString:"{" error:error];
     if (v5)
     {
       stateStack = self->_stateStack;
@@ -115,25 +115,25 @@
   return v5;
 }
 
-- (BOOL)addEntry:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)addEntry:(id)entry forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WBSJSONWriter *)self _currentEntryStateOfKind:0 error:a5];
-  if (v10 && [(WBSJSONWriter *)self _checkCurrentState:v10 doesNotContainKey:v9 error:a5])
+  entryCopy = entry;
+  keyCopy = key;
+  v10 = [(WBSJSONWriter *)self _currentEntryStateOfKind:0 error:error];
+  if (v10 && [(WBSJSONWriter *)self _checkCurrentState:v10 doesNotContainKey:keyCopy error:error])
   {
-    v11 = [(WBSJSONWriter *)self _dataForJSONObject:v8 error:a5];
-    if (v11 && [(WBSJSONWriter *)self _writeCommaIfNeededForState:v10 error:a5])
+    v11 = [(WBSJSONWriter *)self _dataForJSONObject:entryCopy error:error];
+    if (v11 && [(WBSJSONWriter *)self _writeCommaIfNeededForState:v10 error:error])
     {
       if (self->_options)
       {
-        if ([(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:a5])
+        if ([(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:error])
         {
-          v13 = [(WBSJSONWriter *)self _prefixStringForCurrentDepth];
-          if ([(WBSJSONWriter *)self _writeString:v13 error:a5]&& [(WBSJSONWriter *)self _writeObjectKey:v9 error:a5]&& [(WBSJSONWriter *)self _writeConstantASCIIString:" : " error:a5])
+          _prefixStringForCurrentDepth = [(WBSJSONWriter *)self _prefixStringForCurrentDepth];
+          if ([(WBSJSONWriter *)self _writeString:_prefixStringForCurrentDepth error:error]&& [(WBSJSONWriter *)self _writeObjectKey:keyCopy error:error]&& [(WBSJSONWriter *)self _writeConstantASCIIString:" : " error:error])
           {
-            [v10 addKey:v9];
-            v12 = [(WBSJSONWriter *)self _writePrettyPrintedData:v11 forEntry:v8 error:a5];
+            [v10 addKey:keyCopy];
+            v12 = [(WBSJSONWriter *)self _writePrettyPrintedData:v11 forEntry:entryCopy error:error];
           }
 
           else
@@ -145,10 +145,10 @@
         }
       }
 
-      else if ([(WBSJSONWriter *)self _writeObjectKey:v9 error:a5]&& [(WBSJSONWriter *)self _writeConstantASCIIString:":" error:a5])
+      else if ([(WBSJSONWriter *)self _writeObjectKey:keyCopy error:error]&& [(WBSJSONWriter *)self _writeConstantASCIIString:":" error:error])
       {
-        [v10 addKey:v9];
-        v12 = [(WBSJSONWriter *)self _writeData:v11 error:a5];
+        [v10 addKey:keyCopy];
+        v12 = [(WBSJSONWriter *)self _writeData:v11 error:error];
 LABEL_16:
 
         goto LABEL_17;
@@ -165,16 +165,16 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)beginObjectForKey:(id)a3 error:(id *)a4
+- (BOOL)beginObjectForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WBSJSONWriter *)self _currentEntryStateOfKind:0 error:a4];
-  if (v7 && [(WBSJSONWriter *)self _checkCurrentState:v7 doesNotContainKey:v6 error:a4]&& [(WBSJSONWriter *)self _writeCommaIfNeededForState:v7 error:a4])
+  keyCopy = key;
+  v7 = [(WBSJSONWriter *)self _currentEntryStateOfKind:0 error:error];
+  if (v7 && [(WBSJSONWriter *)self _checkCurrentState:v7 doesNotContainKey:keyCopy error:error]&& [(WBSJSONWriter *)self _writeCommaIfNeededForState:v7 error:error])
   {
     if (self->_options)
     {
       v8 = [@"\n" stringByPaddingToLength:(2 * -[WBSJSONWriter currentDepth](self withString:"currentDepth")) | 1 startingAtIndex:{@" ", 0}];
-      if (![(WBSJSONWriter *)self _writeString:v8 error:a4])
+      if (![(WBSJSONWriter *)self _writeString:v8 error:error])
       {
         goto LABEL_15;
       }
@@ -185,12 +185,12 @@ LABEL_17:
       v8 = &stru_1F3064D08;
     }
 
-    if ([(WBSJSONWriter *)self _writeObjectKey:v6 error:a4])
+    if ([(WBSJSONWriter *)self _writeObjectKey:keyCopy error:error])
     {
       v11 = (self->_options & 1) != 0 ? " : {" : ":{";
-      if ([(WBSJSONWriter *)self _writeConstantASCIIString:v11 error:a4])
+      if ([(WBSJSONWriter *)self _writeConstantASCIIString:v11 error:error])
       {
-        [v7 addKey:v6];
+        [v7 addKey:keyCopy];
         stateStack = self->_stateStack;
         v13 = [[_WBSJSONEntryState alloc] initWithKind:0];
         [(NSMutableArray *)stateStack addObject:v13];
@@ -213,13 +213,13 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)beginArrayForKey:(id)a3 error:(id *)a4
+- (BOOL)beginArrayForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WBSJSONWriter *)self _currentEntryStateOfKind:0 error:a4];
-  if (v7 && [(WBSJSONWriter *)self _checkCurrentState:v7 doesNotContainKey:v6 error:a4]&& [(WBSJSONWriter *)self _writeCommaIfNeededForState:v7 error:a4]&& ((self->_options & 1) == 0 || [(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:a4]&& ([(WBSJSONWriter *)self _prefixStringForCurrentDepth], v12 = objc_claimAutoreleasedReturnValue(), v13 = [(WBSJSONWriter *)self _writeString:v12 error:a4], v12, v13)) && [(WBSJSONWriter *)self _writeObjectKey:v6 error:a4]&& ((self->_options & 1) != 0 ? (v8 = " : [") : (v8 = ":["), [(WBSJSONWriter *)self _writeConstantASCIIString:v8 error:a4]))
+  keyCopy = key;
+  v7 = [(WBSJSONWriter *)self _currentEntryStateOfKind:0 error:error];
+  if (v7 && [(WBSJSONWriter *)self _checkCurrentState:v7 doesNotContainKey:keyCopy error:error]&& [(WBSJSONWriter *)self _writeCommaIfNeededForState:v7 error:error]&& ((self->_options & 1) == 0 || [(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:error]&& ([(WBSJSONWriter *)self _prefixStringForCurrentDepth], v12 = objc_claimAutoreleasedReturnValue(), v13 = [(WBSJSONWriter *)self _writeString:v12 error:error], v12, v13)) && [(WBSJSONWriter *)self _writeObjectKey:keyCopy error:error]&& ((self->_options & 1) != 0 ? (v8 = " : [") : (v8 = ":["), [(WBSJSONWriter *)self _writeConstantASCIIString:v8 error:error]))
   {
-    [v7 addKey:v6];
+    [v7 addKey:keyCopy];
     stateStack = self->_stateStack;
     v10 = 1;
     v11 = [[_WBSJSONEntryState alloc] initWithKind:1];
@@ -234,9 +234,9 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)beginArrayWithError:(id *)a3
+- (BOOL)beginArrayWithError:(id *)error
 {
-  if (![(WBSJSONWriter *)self _checkHasNoRootWithError:?]|| ![(WBSJSONWriter *)self _writeConstantASCIIString:"[" error:a3])
+  if (![(WBSJSONWriter *)self _checkHasNoRootWithError:?]|| ![(WBSJSONWriter *)self _writeConstantASCIIString:"[" error:error])
   {
     return 0;
   }
@@ -249,19 +249,19 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)appendEntry:(id)a3 error:(id *)a4
+- (BOOL)appendEntry:(id)entry error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WBSJSONWriter *)self _currentEntryStateOfKind:1 error:a4];
+  entryCopy = entry;
+  v7 = [(WBSJSONWriter *)self _currentEntryStateOfKind:1 error:error];
   if (v7)
   {
-    v8 = [(WBSJSONWriter *)self _dataForJSONObject:v6 error:a4];
-    if (v8 && [(WBSJSONWriter *)self _writeCommaIfNeededForState:v7 error:a4])
+    v8 = [(WBSJSONWriter *)self _dataForJSONObject:entryCopy error:error];
+    if (v8 && [(WBSJSONWriter *)self _writeCommaIfNeededForState:v7 error:error])
     {
       if ((self->_options & 1) == 0)
       {
         [v7 addEntry];
-        v9 = [(WBSJSONWriter *)self _writeData:v8 error:a4];
+        v9 = [(WBSJSONWriter *)self _writeData:v8 error:error];
 LABEL_9:
         v10 = v9;
 LABEL_11:
@@ -270,14 +270,14 @@ LABEL_11:
       }
 
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [(WBSJSONWriter *)self _prefixStringForCurrentDepth];
-      v13 = [v11 stringWithFormat:@"\n%@", v12];
-      v14 = [(WBSJSONWriter *)self _writeString:v13 error:a4];
+      _prefixStringForCurrentDepth = [(WBSJSONWriter *)self _prefixStringForCurrentDepth];
+      v13 = [v11 stringWithFormat:@"\n%@", _prefixStringForCurrentDepth];
+      v14 = [(WBSJSONWriter *)self _writeString:v13 error:error];
 
       if (v14)
       {
         [v7 addEntry];
-        v9 = [(WBSJSONWriter *)self _writePrettyPrintedData:v8 forEntry:v6 error:a4];
+        v9 = [(WBSJSONWriter *)self _writePrettyPrintedData:v8 forEntry:entryCopy error:error];
         goto LABEL_9;
       }
     }
@@ -292,10 +292,10 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)appendAndBeginObjectWithError:(id *)a3
+- (BOOL)appendAndBeginObjectWithError:(id *)error
 {
-  v5 = [(WBSJSONWriter *)self _currentEntryStateOfKind:1 error:a3];
-  if (v5 && [(WBSJSONWriter *)self _writeCommaIfNeededForState:v5 error:a3]&& ((self->_options & 1) == 0 || [(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:a3]&& ([(WBSJSONWriter *)self _prefixStringForCurrentDepth], v9 = objc_claimAutoreleasedReturnValue(), v10 = [(WBSJSONWriter *)self _writeString:v9 error:a3], v9, v10)) && [(WBSJSONWriter *)self _writeConstantASCIIString:"{" error:a3])
+  v5 = [(WBSJSONWriter *)self _currentEntryStateOfKind:1 error:error];
+  if (v5 && [(WBSJSONWriter *)self _writeCommaIfNeededForState:v5 error:error]&& ((self->_options & 1) == 0 || [(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:error]&& ([(WBSJSONWriter *)self _prefixStringForCurrentDepth], v9 = objc_claimAutoreleasedReturnValue(), v10 = [(WBSJSONWriter *)self _writeString:v9 error:error], v9, v10)) && [(WBSJSONWriter *)self _writeConstantASCIIString:"{" error:error])
   {
     [v5 addEntry];
     stateStack = self->_stateStack;
@@ -313,10 +313,10 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)appendAndBeginArrayWithError:(id *)a3
+- (BOOL)appendAndBeginArrayWithError:(id *)error
 {
-  v5 = [(WBSJSONWriter *)self _currentEntryStateOfKind:1 error:a3];
-  if (v5 && [(WBSJSONWriter *)self _writeCommaIfNeededForState:v5 error:a3]&& ((self->_options & 1) == 0 || [(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:a3]&& ([(WBSJSONWriter *)self _prefixStringForCurrentDepth], v9 = objc_claimAutoreleasedReturnValue(), v10 = [(WBSJSONWriter *)self _writeString:v9 error:a3], v9, v10)) && [(WBSJSONWriter *)self _writeConstantASCIIString:"[" error:a3])
+  v5 = [(WBSJSONWriter *)self _currentEntryStateOfKind:1 error:error];
+  if (v5 && [(WBSJSONWriter *)self _writeCommaIfNeededForState:v5 error:error]&& ((self->_options & 1) == 0 || [(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:error]&& ([(WBSJSONWriter *)self _prefixStringForCurrentDepth], v9 = objc_claimAutoreleasedReturnValue(), v10 = [(WBSJSONWriter *)self _writeString:v9 error:error], v9, v10)) && [(WBSJSONWriter *)self _writeConstantASCIIString:"[" error:error])
   {
     [v5 addEntry];
     stateStack = self->_stateStack;
@@ -333,29 +333,29 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)closeCurrentEntryWithError:(id *)a3
+- (BOOL)closeCurrentEntryWithError:(id *)error
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v5 = [(NSMutableArray *)self->_stateStack lastObject];
-  v6 = v5;
-  if (v5)
+  lastObject = [(NSMutableArray *)self->_stateStack lastObject];
+  v6 = lastObject;
+  if (lastObject)
   {
     if (self->_options)
     {
-      if (![v5 numberOfEntries] && !-[WBSJSONWriter _writeConstantASCIIString:error:](self, "_writeConstantASCIIString:error:", "\n", a3))
+      if (![lastObject numberOfEntries] && !-[WBSJSONWriter _writeConstantASCIIString:error:](self, "_writeConstantASCIIString:error:", "\n", error))
       {
         goto LABEL_16;
       }
 
-      if (![(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:a3])
+      if (![(WBSJSONWriter *)self _writeConstantASCIIString:"\n" error:error])
       {
         goto LABEL_16;
       }
 
       [(NSMutableArray *)self->_stateStack removeLastObject];
-      v11 = [(WBSJSONWriter *)self _prefixStringForCurrentDepth];
+      _prefixStringForCurrentDepth = [(WBSJSONWriter *)self _prefixStringForCurrentDepth];
       [(NSMutableArray *)self->_stateStack addObject:v6];
-      v12 = [(WBSJSONWriter *)self _writeString:v11 error:a3];
+      v12 = [(WBSJSONWriter *)self _writeString:_prefixStringForCurrentDepth error:error];
 
       if (!v12)
       {
@@ -363,10 +363,10 @@ LABEL_12:
       }
     }
 
-    v7 = [v6 kind];
-    if (v7)
+    kind = [v6 kind];
+    if (kind)
     {
-      if (v7 == 1 && ![(WBSJSONWriter *)self _writeConstantASCIIString:"]" error:a3])
+      if (kind == 1 && ![(WBSJSONWriter *)self _writeConstantASCIIString:"]" error:error])
       {
         goto LABEL_16;
       }
@@ -374,20 +374,20 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    if ([(WBSJSONWriter *)self _writeConstantASCIIString:"}" error:a3])
+    if ([(WBSJSONWriter *)self _writeConstantASCIIString:"}" error:error])
     {
 LABEL_15:
       [(NSMutableArray *)self->_stateStack removeLastObject];
-      LOBYTE(a3) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_17;
     }
 
 LABEL_16:
-    LOBYTE(a3) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_17;
   }
 
-  if (a3)
+  if (error)
   {
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A598];
@@ -396,7 +396,7 @@ LABEL_16:
     v16[0] = @"JSON serialization was not started";
     v16[1] = @"Call -beginObjectWithError: or -beginArrayWithError: first.";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
-    *a3 = [v8 errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:1 userInfo:v10];
+    *error = [v8 errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:1 userInfo:v10];
 
     goto LABEL_16;
   }
@@ -404,32 +404,32 @@ LABEL_16:
 LABEL_17:
 
   v13 = *MEMORY[0x1E69E9840];
-  return a3;
+  return error;
 }
 
-- (BOOL)finishEncodingWithError:(id *)a3
+- (BOOL)finishEncodingWithError:(id *)error
 {
   do
   {
-    v5 = [(WBSJSONWriter *)self closeCurrentEntryWithError:a3];
+    v5 = [(WBSJSONWriter *)self closeCurrentEntryWithError:error];
   }
 
   while (v5 && [(NSMutableArray *)self->_stateStack count]);
   return v5;
 }
 
-- (BOOL)_checkHasNoRootWithError:(id *)a3
+- (BOOL)_checkHasNoRootWithError:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = [(NSMutableArray *)self->_stateStack count];
   v5 = v4;
-  if (a3 && v4)
+  if (error && v4)
   {
     v6 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E696A578];
     v11[0] = @"JSON serialization has already started";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a3 = [v6 errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:2 userInfo:v7];
+    *error = [v6 errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:2 userInfo:v7];
   }
 
   result = v5 == 0;
@@ -437,33 +437,33 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)_checkCurrentState:(id)a3 doesNotContainKey:(id)a4 error:(id *)a5
+- (BOOL)_checkCurrentState:(id)state doesNotContainKey:(id)key error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [a3 containsKey:v7];
+  keyCopy = key;
+  v8 = [state containsKey:keyCopy];
   v9 = v8;
-  if (a5 && v8)
+  if (error && v8)
   {
     v10 = MEMORY[0x1E696ABC0];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Key '%@' was already added to the current object", v7, *MEMORY[0x1E696A578]];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Key '%@' was already added to the current object", keyCopy, *MEMORY[0x1E696A578]];
     v16[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a5 = [v10 errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:5 userInfo:v12];
+    *error = [v10 errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:5 userInfo:v12];
   }
 
   v13 = *MEMORY[0x1E69E9840];
   return v9 ^ 1;
 }
 
-- (id)_currentEntryStateOfKind:(int64_t)a3 error:(id *)a4
+- (id)_currentEntryStateOfKind:(int64_t)kind error:(id *)error
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v6 = [(NSMutableArray *)self->_stateStack lastObject];
-  v7 = v6;
-  if (!v6)
+  lastObject = [(NSMutableArray *)self->_stateStack lastObject];
+  v7 = lastObject;
+  if (!lastObject)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -480,20 +480,20 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  if ([v6 kind] == a3)
+  if ([lastObject kind] == kind)
   {
-    a4 = v7;
+    error = v7;
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
-    if (a3)
+    if (kind)
     {
-      if (a3 != 1)
+      if (kind != 1)
       {
 LABEL_12:
-        a4 = 0;
+        error = 0;
         goto LABEL_13;
       }
 
@@ -522,7 +522,7 @@ LABEL_12:
     }
 
 LABEL_11:
-    *a4 = [v11 errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:v12 userInfo:v10];
+    *error = [v11 errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:v12 userInfo:v10];
 
     goto LABEL_12;
   }
@@ -531,26 +531,26 @@ LABEL_13:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_writeCommaIfNeededForState:(id)a3 error:(id *)a4
+- (BOOL)_writeCommaIfNeededForState:(id)state error:(id *)error
 {
-  if (![a3 numberOfEntries])
+  if (![state numberOfEntries])
   {
     return 1;
   }
 
-  return [(WBSJSONWriter *)self _writeConstantASCIIString:" error:", a4];
+  return [(WBSJSONWriter *)self _writeConstantASCIIString:" error:", error];
 }
 
 - (id)_prefixStringForCurrentDepth
 {
-  v2 = [(WBSJSONWriter *)self currentDepth];
-  if (v2)
+  currentDepth = [(WBSJSONWriter *)self currentDepth];
+  if (currentDepth)
   {
-    v3 = 2 * v2;
-    Mutable = CFStringCreateMutable(*MEMORY[0x1E695E480], 2 * v2);
+    v3 = 2 * currentDepth;
+    Mutable = CFStringCreateMutable(*MEMORY[0x1E695E480], 2 * currentDepth);
     CFStringPad(Mutable, @" ", v3, 0);
   }
 
@@ -562,38 +562,38 @@ LABEL_13:
   return Mutable;
 }
 
-- (BOOL)_writePrettyPrintedData:(id)a3 forEntry:(id)a4 error:(id *)a5
+- (BOOL)_writePrettyPrintedData:(id)data forEntry:(id)entry error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WBSJSONWriter *)self _prefixStringForCurrentDepth];
+  dataCopy = data;
+  entryCopy = entry;
+  _prefixStringForCurrentDepth = [(WBSJSONWriter *)self _prefixStringForCurrentDepth];
   if (objc_opt_respondsToSelector())
   {
-    if ([v9 count])
+    if ([entryCopy count])
     {
-      v11 = [v8 length];
+      v11 = [dataCopy length];
       if (v11)
       {
         v12 = 0;
         while (1)
         {
-          v13 = [v8 rangeOfData:newLineData options:0 range:{v12, v11}];
+          v13 = [dataCopy rangeOfData:newLineData options:0 range:{v12, v11}];
           if (v13 == 0x7FFFFFFFFFFFFFFFLL)
           {
             break;
           }
 
           v15 = v13 + v14;
-          v16 = [v8 subdataWithRange:{v12, v13 + v14 - v12}];
-          v17 = [(WBSJSONWriter *)self _writeData:v16 error:a5];
+          v16 = [dataCopy subdataWithRange:{v12, v13 + v14 - v12}];
+          v17 = [(WBSJSONWriter *)self _writeData:v16 error:error];
 
-          if (!v17 || ![(WBSJSONWriter *)self _writeString:v10 error:a5])
+          if (!v17 || ![(WBSJSONWriter *)self _writeString:_prefixStringForCurrentDepth error:error])
           {
             v19 = 0;
             goto LABEL_20;
           }
 
-          v18 = [v8 length];
+          v18 = [dataCopy length];
           v12 = v15;
           v11 = v18 - v15;
           if (v18 == v15)
@@ -611,8 +611,8 @@ LABEL_13:
       }
 
 LABEL_18:
-      v20 = [v8 subdataWithRange:{v15, v11}];
-      v21 = [(WBSJSONWriter *)self _writeData:v20 error:a5];
+      v20 = [dataCopy subdataWithRange:{v15, v11}];
+      v21 = [(WBSJSONWriter *)self _writeData:v20 error:error];
     }
 
     else
@@ -620,15 +620,15 @@ LABEL_18:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"[\n\n%@]", v10];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"[\n\n%@]", _prefixStringForCurrentDepth];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"{\n\n%@}", v10];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"{\n\n%@}", _prefixStringForCurrentDepth];
       }
       v20 = ;
-      v21 = [(WBSJSONWriter *)self _writeString:v20 error:a5];
+      v21 = [(WBSJSONWriter *)self _writeString:v20 error:error];
     }
 
     v19 = v21;
@@ -636,7 +636,7 @@ LABEL_18:
 
   else
   {
-    v19 = [(WBSJSONWriter *)self _writeData:v8 error:a5];
+    v19 = [(WBSJSONWriter *)self _writeData:dataCopy error:error];
   }
 
 LABEL_20:
@@ -644,22 +644,22 @@ LABEL_20:
   return v19;
 }
 
-- (id)_dataForJSONObject:(id)a3 error:(id *)a4
+- (id)_dataForJSONObject:(id)object error:(id *)error
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  objectCopy = object;
+  if (objectCopy)
   {
     v7 = objc_autoreleasePoolPush();
     options = self->_options;
     v14[0] = 0;
-    v9 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v6 options:options | 4 error:v14];
+    v9 = [MEMORY[0x1E696ACB0] dataWithJSONObject:objectCopy options:options | 4 error:v14];
     v10 = v14[0];
     objc_autoreleasePoolPop(v7);
-    if (a4)
+    if (error)
     {
       v11 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -673,12 +673,12 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)_writeObjectKey:(id)a3 error:(id *)a4
+- (BOOL)_writeObjectKey:(id)key error:(id *)error
 {
-  v6 = [(WBSJSONWriter *)self _dataForJSONObject:a3 error:?];
+  v6 = [(WBSJSONWriter *)self _dataForJSONObject:key error:?];
   if (v6)
   {
-    v7 = [(WBSJSONWriter *)self _writeData:v6 error:a4];
+    v7 = [(WBSJSONWriter *)self _writeData:v6 error:error];
   }
 
   else
@@ -689,85 +689,85 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)_writeString:(id)a3 error:(id *)a4
+- (BOOL)_writeString:(id)string error:(id *)error
 {
-  v6 = a3;
-  CStringPtr = CFStringGetCStringPtr(v6, 0x600u);
-  if (CStringPtr || (CStringPtr = CFStringGetCStringPtr(v6, 0x8000100u)) != 0)
+  stringCopy = string;
+  CStringPtr = CFStringGetCStringPtr(stringCopy, 0x600u);
+  if (CStringPtr || (CStringPtr = CFStringGetCStringPtr(stringCopy, 0x8000100u)) != 0)
   {
-    v8 = [(WBSJSONWriter *)self _writeBuffer:CStringPtr length:strlen(CStringPtr) error:a4];
+    v8 = [(WBSJSONWriter *)self _writeBuffer:CStringPtr length:strlen(CStringPtr) error:error];
   }
 
   else
   {
-    ExternalRepresentation = CFStringCreateExternalRepresentation(*MEMORY[0x1E695E480], v6, 0x8000100u, 0);
-    v8 = [(WBSJSONWriter *)self _writeData:ExternalRepresentation error:a4];
+    ExternalRepresentation = CFStringCreateExternalRepresentation(*MEMORY[0x1E695E480], stringCopy, 0x8000100u, 0);
+    v8 = [(WBSJSONWriter *)self _writeData:ExternalRepresentation error:error];
   }
 
   return v8;
 }
 
-- (BOOL)_writeConstantASCIIString:(const char *)a3 error:(id *)a4
+- (BOOL)_writeConstantASCIIString:(const char *)string error:(id *)error
 {
-  v7 = strlen(a3);
+  v7 = strlen(string);
 
-  return [(WBSJSONWriter *)self _writeBuffer:a3 length:v7 error:a4];
+  return [(WBSJSONWriter *)self _writeBuffer:string length:v7 error:error];
 }
 
-- (BOOL)_writeData:(id)a3 error:(id *)a4
+- (BOOL)_writeData:(id)data error:(id *)error
 {
   fileHandle = self->_fileHandle;
   if (fileHandle)
   {
-    v7 = a3;
-    v8 = [(NSFileHandle *)fileHandle writeData:v7 error:a4];
+    dataCopy = data;
+    v8 = [(NSFileHandle *)fileHandle writeData:dataCopy error:error];
 
     return v8;
   }
 
   else
   {
-    v11 = a3;
-    v12 = a3;
-    v13 = [v12 bytes];
-    v14 = [v12 length];
+    dataCopy2 = data;
+    dataCopy3 = data;
+    bytes = [dataCopy3 bytes];
+    v14 = [dataCopy3 length];
 
-    return [(WBSJSONWriter *)self _writeBuffer:v13 length:v14 error:a4];
+    return [(WBSJSONWriter *)self _writeBuffer:bytes length:v14 error:error];
   }
 }
 
-- (BOOL)_writeBuffer:(const char *)a3 length:(int64_t)a4 error:(id *)a5
+- (BOOL)_writeBuffer:(const char *)buffer length:(int64_t)length error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  lengthCopy = length;
+  bufferCopy = buffer;
   v19[1] = *MEMORY[0x1E69E9840];
   fileHandle = self->_fileHandle;
   if (!fileHandle)
   {
-    if (a4)
+    if (length)
     {
       while ([(NSOutputStream *)self->_outputStream hasSpaceAvailable])
       {
-        v13 = [(NSOutputStream *)self->_outputStream write:v7 maxLength:v6];
-        v7 += v13;
-        v6 -= v13;
-        if (!v6)
+        v13 = [(NSOutputStream *)self->_outputStream write:bufferCopy maxLength:lengthCopy];
+        bufferCopy += v13;
+        lengthCopy -= v13;
+        if (!lengthCopy)
         {
           goto LABEL_8;
         }
       }
 
-      if (a5)
+      if (error)
       {
         v18 = *MEMORY[0x1E696A578];
         v19[0] = @"Cannot write more data to the output stream";
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
         v15 = [v14 mutableCopy];
 
-        v16 = [(NSOutputStream *)self->_outputStream streamError];
-        [v15 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+        streamError = [(NSOutputStream *)self->_outputStream streamError];
+        [v15 setObject:streamError forKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-        *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:6 userInfo:v15];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Safari.Core.WBSJSONWriterErrorDomain" code:6 userInfo:v15];
       }
 
       goto LABEL_11;
@@ -778,12 +778,12 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (write([(NSFileHandle *)fileHandle fileDescriptor], a3, a4) != -1)
+  if (write([(NSFileHandle *)fileHandle fileDescriptor], buffer, length) != -1)
   {
     goto LABEL_8;
   }
 
-  if (!a5)
+  if (!error)
   {
 LABEL_11:
     result = 0;
@@ -793,7 +793,7 @@ LABEL_11:
   v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:512 userInfo:0];
   v11 = v10;
   result = 0;
-  *a5 = v10;
+  *error = v10;
 LABEL_12:
   v17 = *MEMORY[0x1E69E9840];
   return result;

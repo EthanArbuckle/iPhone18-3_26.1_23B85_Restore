@@ -2,18 +2,18 @@
 - (BOOL)isRunningTests;
 - (BOOL)pageRenderMetricsEnabled;
 - (SKUIApplicationController)applicationController;
-- (SKUIJSApplication)initWithAppContext:(id)a3 applicationController:(id)a4;
-- (void)launchComplete:(id)a3;
+- (SKUIJSApplication)initWithAppContext:(id)context applicationController:(id)controller;
+- (void)launchComplete:(id)complete;
 - (void)launchFailed;
-- (void)sendDocumentMessage:(id)a3 :(id)a4 :(id)a5;
+- (void)sendDocumentMessage:(id)message :(id)a4 :(id)a5;
 @end
 
 @implementation SKUIJSApplication
 
-- (SKUIJSApplication)initWithAppContext:(id)a3 applicationController:(id)a4
+- (SKUIJSApplication)initWithAppContext:(id)context applicationController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIJSApplication initWithAppContext:applicationController:];
@@ -21,11 +21,11 @@
 
   v11.receiver = self;
   v11.super_class = SKUIJSApplication;
-  v8 = [(IKJSObject *)&v11 initWithAppContext:v6];
+  v8 = [(IKJSObject *)&v11 initWithAppContext:contextCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_applicationController, v7);
+    objc_storeWeak(&v8->_applicationController, controllerCopy);
   }
 
   return v9;
@@ -58,26 +58,26 @@ void __45__SKUIJSApplication_pageRenderMetricsEnabled__block_invoke(uint64_t a1)
 
 - (void)launchFailed
 {
-  v2 = [(SKUIJSApplication *)self applicationController];
-  [v2 performSelectorOnMainThread:sel_showErrorViewForLaunchFailure withObject:0 waitUntilDone:0];
+  applicationController = [(SKUIJSApplication *)self applicationController];
+  [applicationController performSelectorOnMainThread:sel_showErrorViewForLaunchFailure withObject:0 waitUntilDone:0];
 }
 
-- (void)launchComplete:(id)a3
+- (void)launchComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(SKUIJSApplication *)self applicationController];
-  [v5 performSelectorOnMainThread:sel__jsLaunchFinishedWithLaunchMetrics_ withObject:v4 waitUntilDone:0];
+  completeCopy = complete;
+  applicationController = [(SKUIJSApplication *)self applicationController];
+  [applicationController performSelectorOnMainThread:sel__jsLaunchFinishedWithLaunchMetrics_ withObject:completeCopy waitUntilDone:0];
 }
 
-- (void)sendDocumentMessage:(id)a3 :(id)a4 :(id)a5
+- (void)sendDocumentMessage:(id)message :(id)a4 :(id)a5
 {
   v7 = a4;
   v8 = a5;
-  v9 = [a3 appBridge];
+  appBridge = [message appBridge];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = appBridge;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__SKUIJSApplication_sendDocumentMessage_::__block_invoke;

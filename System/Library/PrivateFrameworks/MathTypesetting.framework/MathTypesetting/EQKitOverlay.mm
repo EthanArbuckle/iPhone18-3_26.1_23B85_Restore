@@ -1,18 +1,18 @@
 @interface EQKitOverlay
 - (CGRect)erasableBounds;
-- (EQKitOverlay)initWithLayout:(id)a3 scale:(double)a4;
-- (id)pLineBoxFrom:(CGPoint)a3 to:(CGPoint)a4 withWithRGBA:(double *)a5 scale:(double)a6;
-- (id)pOpticalAlignOverlayBoxesForBox:(id)a3 topLevelBox:(id)a4 minDistance:(double)a5;
+- (EQKitOverlay)initWithLayout:(id)layout scale:(double)scale;
+- (id)pLineBoxFrom:(CGPoint)from to:(CGPoint)to withWithRGBA:(double *)a scale:(double)scale;
+- (id)pOpticalAlignOverlayBoxesForBox:(id)box topLevelBox:(id)levelBox minDistance:(double)distance;
 - (void)addErasableBounds;
-- (void)addOpticalAlignForEdge:(unsigned int)a3 config:(id)a4;
-- (void)addOpticalAlignWithMinimumDistance:(double)a3;
-- (void)addOverlayBox:(id)a3 offset:(CGPoint)a4;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (void)addOpticalAlignForEdge:(unsigned int)edge config:(id)config;
+- (void)addOpticalAlignWithMinimumDistance:(double)distance;
+- (void)addOverlayBox:(id)box offset:(CGPoint)offset;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitOverlay
 
-- (EQKitOverlay)initWithLayout:(id)a3 scale:(double)a4
+- (EQKitOverlay)initWithLayout:(id)layout scale:(double)scale
 {
   v12.receiver = self;
   v12.super_class = EQKitOverlay;
@@ -20,22 +20,22 @@
   if (v6)
   {
     v6->_overlayBoxes = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6->_box = [a3 box];
-    [a3 erasableBounds];
+    v6->_box = [layout box];
+    [layout erasableBounds];
     v6->_erasableBounds.origin.y = v7;
     v6->_erasableBounds.size.width = v8;
     v6->_erasableBounds.size.height = v9;
-    v6->_scale = a4;
+    v6->_scale = scale;
     v6->_erasableBounds.origin.x = v10;
   }
 
   return v6;
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
@@ -56,7 +56,7 @@
           objc_enumerationMutation(overlayBoxes);
         }
 
-        [*(*(&v12 + 1) + 8 * i) renderIntoContext:a3 offset:{x, y}];
+        [*(*(&v12 + 1) + 8 * i) renderIntoContext:context offset:{x, y}];
       }
 
       v9 = [(NSMutableArray *)overlayBoxes countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -66,17 +66,17 @@
   }
 }
 
-- (void)addOverlayBox:(id)a3 offset:(CGPoint)a4
+- (void)addOverlayBox:(id)box offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v8 = [EQKitPaddedBox alloc];
-  [a3 height];
+  [box height];
   v10 = v9;
-  [a3 width];
+  [box width];
   v12 = v11;
-  [a3 depth];
-  v14 = [(EQKitPaddedBox *)v8 initWithBox:a3 height:v10 width:v12 depth:v13 lspace:x voffset:y];
+  [box depth];
+  v14 = [(EQKitPaddedBox *)v8 initWithBox:box height:v10 width:v12 depth:v13 lspace:x voffset:y];
   overlayBoxes = self->_overlayBoxes;
 
   [(NSMutableArray *)overlayBoxes addObject:v14];
@@ -99,14 +99,14 @@
   CGPathRelease(Mutable);
 }
 
-- (void)addOpticalAlignWithMinimumDistance:(double)a3
+- (void)addOpticalAlignWithMinimumDistance:(double)distance
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(EQKitOverlay *)self pOpticalAlignOverlayBoxesForBox:self->_box topLevelBox:self->_box minDistance:a3, 0];
+  v4 = [(EQKitOverlay *)self pOpticalAlignOverlayBoxesForBox:self->_box topLevelBox:self->_box minDistance:distance, 0];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -134,12 +134,12 @@
   }
 }
 
-- (id)pLineBoxFrom:(CGPoint)a3 to:(CGPoint)a4 withWithRGBA:(double *)a5 scale:(double)a6
+- (id)pLineBoxFrom:(CGPoint)from to:(CGPoint)to withWithRGBA:(double *)a scale:(double)scale
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  y = to.y;
+  x = to.x;
+  v10 = from.y;
+  v11 = from.x;
   result = CGPathCreateMutable();
   if (result)
   {
@@ -147,24 +147,24 @@
     CGPathMoveToPoint(result, 0, v11, v10);
     CGPathAddLineToPoint(v13, 0, x, y);
     v14 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF458]);
-    v15 = CGColorCreate(v14, a5);
+    v15 = CGColorCreate(v14, a);
     CGColorSpaceRelease(v14);
-    v16 = [[EQKitPathBox alloc] initWithCGPath:v13 height:v15 cgColor:2 drawingMode:0.0 lineWidth:1.0 / a6];
+    scale = [[EQKitPathBox alloc] initWithCGPath:v13 height:v15 cgColor:2 drawingMode:0.0 lineWidth:1.0 / scale];
     CGColorRelease(v15);
     CGPathRelease(v13);
-    return v16;
+    return scale;
   }
 
   return result;
 }
 
-- (id)pOpticalAlignOverlayBoxesForBox:(id)a3 topLevelBox:(id)a4 minDistance:(double)a5
+- (id)pOpticalAlignOverlayBoxesForBox:(id)box topLevelBox:(id)levelBox minDistance:(double)distance
 {
   v51 = *MEMORY[0x277D85DE8];
   EQKitPath::QuantizationConfig::QuantizationConfig(v47);
   v9 = objc_opt_class();
-  v10 = EQKitUtilDynamicCast(v9, a3);
-  v11 = [MEMORY[0x277CBEB18] array];
+  v10 = EQKitUtilDynamicCast(v9, box);
+  array = [MEMORY[0x277CBEB18] array];
   memset(v45, 0, sizeof(v45));
   v46 = 0;
   memset(v43, 0, sizeof(v43));
@@ -173,8 +173,8 @@
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v12 = [v10 childBoxes];
-  v13 = [v12 countByEnumeratingWithState:&v39 objects:v50 count:16];
+  childBoxes = [v10 childBoxes];
+  v13 = [childBoxes countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v13)
   {
     v14 = 0;
@@ -186,16 +186,16 @@
       {
         if (*v40 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(childBoxes);
         }
 
         v18 = *(*(&v39 + 1) + 8 * i);
         v37 = 0u;
         v38 = 0u;
         v36 = 0u;
-        if (a4)
+        if (levelBox)
         {
-          [a4 transformFromDescendant:v18];
+          [levelBox transformFromDescendant:v18];
         }
 
         if (v14)
@@ -215,18 +215,18 @@
           v28 = 0;
           v29 = 0;
           v26 = 0;
-          isDistanceSmallerThanThreshold = EQKit::OpticalKern::Edge::Composite::isDistanceSmallerThanThreshold(&v32, v34, &v26, &v30, &__p, a5);
+          isDistanceSmallerThanThreshold = EQKit::OpticalKern::Edge::Composite::isDistanceSmallerThanThreshold(&v32, v34, &v26, &v30, &__p, distance);
           NSLog(&cfstr_MoveOffsetF.isa, v26);
           v20 = _pathBoxForCompositeEdge(v34, self->_scale);
           if (v20)
           {
-            [v11 addObject:v20];
+            [array addObject:v20];
           }
 
           v21 = _pathBoxForCompositeEdge(&v32, self->_scale);
           if (v21)
           {
-            [v11 addObject:v21];
+            [array addObject:v21];
           }
 
           if (isDistanceSmallerThanThreshold)
@@ -237,10 +237,10 @@
             v48[1] = unk_2582D07B0;
             for (j = __p; j != v28; j += 4)
             {
-              [v11 addObject:{-[EQKitOverlay pLineBoxFrom:to:withWithRGBA:scale:](self, "pLineBoxFrom:to:withWithRGBA:scale:", v49, *j, j[1], j[2], j[3], self->_scale)}];
+              [array addObject:{-[EQKitOverlay pLineBoxFrom:to:withWithRGBA:scale:](self, "pLineBoxFrom:to:withWithRGBA:scale:", v49, *j, j[1], j[2], j[3], self->_scale)}];
             }
 
-            [v11 addObject:{-[EQKitOverlay pLineBoxFrom:to:withWithRGBA:scale:](self, "pLineBoxFrom:to:withWithRGBA:scale:", v48, v30, *&v31, *(&v31 + 1), self->_scale * 0.5)}];
+            [array addObject:{-[EQKitOverlay pLineBoxFrom:to:withWithRGBA:scale:](self, "pLineBoxFrom:to:withWithRGBA:scale:", v48, v30, *&v31, *(&v31 + 1), self->_scale * 0.5)}];
           }
 
           if (__p)
@@ -262,11 +262,11 @@ LABEL_24:
         v24 = EQKitUtilDynamicCast(v23, v18);
         if (v24)
         {
-          [v11 addObjectsFromArray:{-[EQKitOverlay pOpticalAlignOverlayBoxesForBox:topLevelBox:minDistance:](self, "pOpticalAlignOverlayBoxesForBox:topLevelBox:minDistance:", v24, a4, a5)}];
+          [array addObjectsFromArray:{-[EQKitOverlay pOpticalAlignOverlayBoxesForBox:topLevelBox:minDistance:](self, "pOpticalAlignOverlayBoxesForBox:topLevelBox:minDistance:", v24, levelBox, distance)}];
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v39 objects:v50 count:16];
+      v13 = [childBoxes countByEnumeratingWithState:&v39 objects:v50 count:16];
     }
 
     while (v13);
@@ -276,18 +276,18 @@ LABEL_24:
   std::vector<EQKit::OpticalKern::Spec::Entry>::__destroy_vector::operator()[abi:ne200100](&v36);
   *&v36 = v45;
   std::vector<EQKit::OpticalKern::Spec::Entry>::__destroy_vector::operator()[abi:ne200100](&v36);
-  return v11;
+  return array;
 }
 
-- (void)addOpticalAlignForEdge:(unsigned int)a3 config:(id)a4
+- (void)addOpticalAlignForEdge:(unsigned int)edge config:(id)config
 {
   memset(v25, 0, sizeof(v25));
-  v26 = a3;
+  edgeCopy = edge;
   v6 = MEMORY[0x277CBF348];
   [(EQKitBox *)self->_box appendOpticalAlignToSpec:v25 offset:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
-  if ([a4 length])
+  if ([config length])
   {
-    v7 = [MEMORY[0x277CCAC80] scannerWithString:a4];
+    v7 = [MEMORY[0x277CCAC80] scannerWithString:config];
     __src = 0;
     v23 = 0;
     v24 = 0;

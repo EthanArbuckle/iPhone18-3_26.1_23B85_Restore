@@ -1,6 +1,6 @@
 @interface MCCellularPayload
 + (id)typeStrings;
-- (MCCellularPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCCellularPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)APNConfigurationDescription;
 - (id)APNsDescription;
 - (id)APNsLabel;
@@ -27,20 +27,20 @@
   return v2;
 }
 
-- (MCCellularPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCCellularPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v56.receiver = self;
   v56.super_class = MCCellularPayload;
-  v9 = [(MCPayload *)&v56 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v56 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (!v9)
   {
     goto LABEL_14;
   }
 
   v55 = 0;
-  v10 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"AttachAPN" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v55];
+  v10 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"AttachAPN" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v55];
   v11 = v55;
   if (v11)
   {
@@ -55,7 +55,7 @@
     }
 
     v26 = [MCAPNConfiguration alloc];
-    v27 = a5;
+    errorCopy = error;
     v28 = [v10 mutableCopy];
     v54 = 0;
     v29 = v10;
@@ -65,18 +65,18 @@
     v9->_attachAPN = v30;
     v10 = v29;
 
-    a5 = v27;
+    error = errorCopy;
     if (!v12)
     {
 LABEL_17:
       v53 = 0;
-      v32 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"APNs" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v53];
+      v32 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"APNs" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v53];
       v33 = v53;
       v34 = v33;
       if (v32)
       {
         v45 = v10;
-        v46 = a5;
+        errorCopy2 = error;
         v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v32, "count")}];
         v49 = 0u;
         v50 = 0u;
@@ -144,7 +144,7 @@ LABEL_32:
         }
 
         v10 = v45;
-        a5 = v46;
+        error = errorCopy2;
         v32 = v44;
       }
 
@@ -165,10 +165,10 @@ LABEL_32:
 LABEL_5:
   v13 = [(MCPayload *)v9 malformedPayloadErrorWithError:v12];
   v14 = v13;
-  if (a5)
+  if (error)
   {
     v15 = v13;
-    *a5 = v14;
+    *error = v14;
   }
 
   v16 = _MCLogObjects;
@@ -177,27 +177,27 @@ LABEL_5:
     v17 = v16;
     v18 = objc_opt_class();
     v19 = v18;
-    v20 = [v14 MCVerboseDescription];
+    mCVerboseDescription = [v14 MCVerboseDescription];
     *buf = 138543618;
     v58 = v18;
     v59 = 2114;
-    v60 = v20;
+    v60 = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v17, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
   }
 
   v9 = 0;
 LABEL_10:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v21 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v22 = v21;
-      v23 = [(MCPayload *)v9 friendlyName];
+      friendlyName = [(MCPayload *)v9 friendlyName];
       *buf = 138543618;
-      v58 = v23;
+      v58 = friendlyName;
       v59 = 2114;
-      v60 = v8;
+      v60 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v22, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -212,31 +212,31 @@ LABEL_14:
   v26 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = MCCellularPayload;
-  v3 = [(MCPayload *)&v24 stubDictionary];
-  v4 = [(MCCellularPayload *)self attachAPN];
+  stubDictionary = [(MCPayload *)&v24 stubDictionary];
+  attachAPN = [(MCCellularPayload *)self attachAPN];
 
-  if (v4)
+  if (attachAPN)
   {
-    v5 = [(MCCellularPayload *)self attachAPN];
-    v6 = [v5 stubDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"AttachAPN"];
+    attachAPN2 = [(MCCellularPayload *)self attachAPN];
+    stubDictionary2 = [attachAPN2 stubDictionary];
+    [stubDictionary setObject:stubDictionary2 forKeyedSubscript:@"AttachAPN"];
   }
 
-  v7 = [(MCCellularPayload *)self APNs];
-  v8 = [v7 count];
+  aPNs = [(MCCellularPayload *)self APNs];
+  v8 = [aPNs count];
 
   if (v8)
   {
     v9 = MEMORY[0x1E695DF70];
-    v10 = [(MCCellularPayload *)self APNs];
-    v11 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    aPNs2 = [(MCCellularPayload *)self APNs];
+    v11 = [v9 arrayWithCapacity:{objc_msgSend(aPNs2, "count")}];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [(MCCellularPayload *)self APNs];
-    v13 = [v12 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    aPNs3 = [(MCCellularPayload *)self APNs];
+    v13 = [aPNs3 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -247,25 +247,25 @@ LABEL_14:
         {
           if (*v21 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(aPNs3);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * i) stubDictionary];
-          [v11 addObject:v17];
+          stubDictionary3 = [*(*(&v20 + 1) + 8 * i) stubDictionary];
+          [v11 addObject:stubDictionary3];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v14 = [aPNs3 countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"APNs"];
+    [stubDictionary setObject:v11 forKeyedSubscript:@"APNs"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
@@ -273,31 +273,31 @@ LABEL_14:
   v23 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = MCCellularPayload;
-  v3 = [(MCPayload *)&v21 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v21 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
-  v5 = [(MCCellularPayload *)self attachAPN];
+  attachAPN = [(MCCellularPayload *)self attachAPN];
 
-  if (v5)
+  if (attachAPN)
   {
-    v6 = [(MCCellularPayload *)self attachAPN];
-    [v4 appendFormat:@"Attach APN  :\n%@\n", v6];
+    attachAPN2 = [(MCCellularPayload *)self attachAPN];
+    [v4 appendFormat:@"Attach APN  :\n%@\n", attachAPN2];
   }
 
-  v7 = [(MCCellularPayload *)self APNs];
-  v8 = [v7 count];
+  aPNs = [(MCCellularPayload *)self APNs];
+  v8 = [aPNs count];
 
   if (v8)
   {
-    v9 = [(MCCellularPayload *)self APNs];
-    [v4 appendFormat:@"%d APN configurations.\n", objc_msgSend(v9, "count")];
+    aPNs2 = [(MCCellularPayload *)self APNs];
+    [v4 appendFormat:@"%d APN configurations.\n", objc_msgSend(aPNs2, "count")];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [(MCCellularPayload *)self APNs];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    aPNs3 = [(MCCellularPayload *)self APNs];
+    v11 = [aPNs3 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -308,13 +308,13 @@ LABEL_14:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(aPNs3);
           }
 
           [v4 appendFormat:@"%@\n", *(*(&v17 + 1) + 8 * i)];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v12 = [aPNs3 countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v12);
@@ -331,19 +331,19 @@ LABEL_14:
   v63 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
   v4 = MEMORY[0x1E695DF70];
-  v5 = [(MCCellularPayload *)self APNs];
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  aPNs = [(MCCellularPayload *)self APNs];
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(aPNs, "count")}];
 
-  v7 = [(MCCellularPayload *)self attachAPN];
+  attachAPN = [(MCCellularPayload *)self attachAPN];
 
-  if (v7)
+  if (attachAPN)
   {
-    v8 = [(MCCellularPayload *)self attachAPN];
-    [v6 addObject:v8];
+    attachAPN2 = [(MCCellularPayload *)self attachAPN];
+    [v6 addObject:attachAPN2];
   }
 
-  v9 = [(MCCellularPayload *)self APNs];
-  [v6 addObjectsFromArray:v9];
+  aPNs2 = [(MCCellularPayload *)self APNs];
+  [v6 addObjectsFromArray:aPNs2];
 
   v60 = 0u;
   v61 = 0u;
@@ -366,45 +366,45 @@ LABEL_14:
 
         v14 = *(*(&v58 + 1) + 8 * i);
         v15 = objc_opt_new();
-        v16 = [v14 name];
+        name = [v14 name];
 
-        if (v16)
+        if (name)
         {
           v17 = [MCKeyValue alloc];
-          v18 = [v14 name];
+          name2 = [v14 name];
           v19 = MCLocalizedString(@"CELLULAR_CONFIG_NAME");
-          v20 = [(MCKeyValue *)v17 initWithLocalizedString:v18 localizedKey:v19];
+          v20 = [(MCKeyValue *)v17 initWithLocalizedString:name2 localizedKey:v19];
 
           [v15 addObject:v20];
         }
 
-        v21 = [v14 authenticationType];
+        authenticationType = [v14 authenticationType];
 
-        if (v21)
+        if (authenticationType)
         {
           v22 = [MCKeyValue alloc];
-          v23 = [v14 localizedAuthenticationType];
+          localizedAuthenticationType = [v14 localizedAuthenticationType];
           v24 = MCLocalizedString(@"AUTHENTICATION_TYPE");
-          v25 = [(MCKeyValue *)v22 initWithLocalizedString:v23 localizedKey:v24];
+          v25 = [(MCKeyValue *)v22 initWithLocalizedString:localizedAuthenticationType localizedKey:v24];
 
           [v15 addObject:v25];
         }
 
-        v26 = [v14 username];
+        username = [v14 username];
 
-        if (v26)
+        if (username)
         {
           v27 = [MCKeyValue alloc];
-          v28 = [v14 username];
+          username2 = [v14 username];
           v29 = MCLocalizedString(@"USERNAME");
-          v30 = [(MCKeyValue *)v27 initWithLocalizedString:v28 localizedKey:v29];
+          v30 = [(MCKeyValue *)v27 initWithLocalizedString:username2 localizedKey:v29];
 
           [v15 addObject:v30];
         }
 
-        v31 = [v14 password];
+        password = [v14 password];
 
-        if (v31)
+        if (password)
         {
           v32 = [MCKeyValue alloc];
           v33 = MCLocalizedString(@"PRESENT");
@@ -414,25 +414,25 @@ LABEL_14:
           [v15 addObject:v35];
         }
 
-        v36 = [v14 proxyServer];
+        proxyServer = [v14 proxyServer];
 
-        if (v36)
+        if (proxyServer)
         {
           v37 = [MCKeyValue alloc];
-          v38 = [v14 proxyServer];
+          proxyServer2 = [v14 proxyServer];
           v39 = MCLocalizedString(@"PROXY");
-          v40 = [(MCKeyValue *)v37 initWithLocalizedString:v38 localizedKey:v39];
+          v40 = [(MCKeyValue *)v37 initWithLocalizedString:proxyServer2 localizedKey:v39];
 
           [v15 addObject:v40];
         }
 
-        v41 = [v14 proxyPort];
+        proxyPort = [v14 proxyPort];
 
-        if (v41)
+        if (proxyPort)
         {
           v42 = MEMORY[0x1E696AEC0];
-          v43 = [v14 proxyPort];
-          v44 = [v42 stringWithFormat:@"%d", objc_msgSend(v43, "intValue")];
+          proxyPort2 = [v14 proxyPort];
+          v44 = [v42 stringWithFormat:@"%d", objc_msgSend(proxyPort2, "intValue")];
 
           v45 = [MCKeyValue alloc];
           v46 = MCLocalizedString(@"PORT");
@@ -441,13 +441,13 @@ LABEL_14:
           [v15 addObject:v47];
         }
 
-        v48 = [v14 enableXLAT464];
+        enableXLAT464 = [v14 enableXLAT464];
 
-        if (v48)
+        if (enableXLAT464)
         {
           v49 = [MCKeyValue alloc];
-          v50 = [v14 enableXLAT464];
-          v51 = MCLocalizedStringForBool([v50 BOOLValue]);
+          enableXLAT4642 = [v14 enableXLAT464];
+          v51 = MCLocalizedStringForBool([enableXLAT4642 BOOLValue]);
           v52 = MCLocalizedString(@"CELLULAR_ENABLE_XLAT464");
           v53 = [(MCKeyValue *)v49 initWithLocalizedString:v51 localizedKey:v52];
 
@@ -480,9 +480,9 @@ LABEL_14:
 
 - (id)attachAPNConfigurationLabel
 {
-  v2 = [(MCCellularPayload *)self attachAPN];
+  attachAPN = [(MCCellularPayload *)self attachAPN];
 
-  if (v2)
+  if (attachAPN)
   {
     v3 = MCLocalizedString(@"ATTACH_APN_LABEL_COLON");
   }
@@ -497,26 +497,26 @@ LABEL_14:
 
 - (id)APNConfigurationDescription
 {
-  v3 = [(MCCellularPayload *)self attachAPN];
+  attachAPN = [(MCCellularPayload *)self attachAPN];
 
-  if (v3)
+  if (attachAPN)
   {
-    v4 = [(MCCellularPayload *)self attachAPN];
-    v5 = [v4 name];
+    attachAPN2 = [(MCCellularPayload *)self attachAPN];
+    name = [attachAPN2 name];
   }
 
   else
   {
-    v5 = 0;
+    name = 0;
   }
 
-  return v5;
+  return name;
 }
 
 - (id)APNsLabel
 {
-  v3 = [(MCCellularPayload *)self APNs];
-  v4 = [v3 count];
+  aPNs = [(MCCellularPayload *)self APNs];
+  v4 = [aPNs count];
 
   if (v4 == 1)
   {
@@ -526,8 +526,8 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v6 = [(MCCellularPayload *)self APNs];
-  v7 = [v6 count];
+  aPNs2 = [(MCCellularPayload *)self APNs];
+  v7 = [aPNs2 count];
 
   if (v7 >= 2)
   {
@@ -543,30 +543,30 @@ LABEL_7:
 
 - (id)APNsDescription
 {
-  v3 = [(MCCellularPayload *)self APNs];
-  v4 = [v3 count];
+  aPNs = [(MCCellularPayload *)self APNs];
+  v4 = [aPNs count];
 
-  v5 = [(MCCellularPayload *)self APNs];
-  v6 = v5;
+  aPNs2 = [(MCCellularPayload *)self APNs];
+  aPNs3 = aPNs2;
   if (v4 == 1)
   {
-    v7 = [v5 objectAtIndexedSubscript:0];
-    v8 = [v7 name];
+    v7 = [aPNs2 objectAtIndexedSubscript:0];
+    name = [v7 name];
 LABEL_5:
-    v12 = v8;
+    v12 = name;
 
     goto LABEL_7;
   }
 
-  v9 = [v5 count];
+  v9 = [aPNs2 count];
 
   if (v9 >= 2)
   {
     v10 = MEMORY[0x1E696AEC0];
     v11 = MEMORY[0x1E696AD98];
-    v6 = [(MCCellularPayload *)self APNs];
-    v7 = [v11 numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
-    v8 = [v10 stringWithFormat:@"%@", v7];
+    aPNs3 = [(MCCellularPayload *)self APNs];
+    v7 = [v11 numberWithUnsignedInteger:{objc_msgSend(aPNs3, "count")}];
+    name = [v10 stringWithFormat:@"%@", v7];
     goto LABEL_5;
   }
 
@@ -578,104 +578,104 @@ LABEL_7:
 
 - (id)subtitle1Label
 {
-  v3 = [(MCCellularPayload *)self attachAPN];
+  attachAPN = [(MCCellularPayload *)self attachAPN];
 
-  if (v3)
+  if (attachAPN)
   {
-    v4 = [(MCCellularPayload *)self attachAPNConfigurationLabel];
+    attachAPNConfigurationLabel = [(MCCellularPayload *)self attachAPNConfigurationLabel];
   }
 
   else
   {
-    v5 = [(MCCellularPayload *)self APNs];
-    v6 = [v5 count];
+    aPNs = [(MCCellularPayload *)self APNs];
+    v6 = [aPNs count];
 
     if (v6)
     {
-      v4 = [(MCCellularPayload *)self APNsLabel];
+      attachAPNConfigurationLabel = [(MCCellularPayload *)self APNsLabel];
     }
 
     else
     {
-      v4 = 0;
+      attachAPNConfigurationLabel = 0;
     }
   }
 
-  return v4;
+  return attachAPNConfigurationLabel;
 }
 
 - (id)subtitle1Description
 {
-  v3 = [(MCCellularPayload *)self attachAPN];
+  attachAPN = [(MCCellularPayload *)self attachAPN];
 
-  if (v3)
+  if (attachAPN)
   {
-    v4 = [(MCCellularPayload *)self APNConfigurationDescription];
+    aPNConfigurationDescription = [(MCCellularPayload *)self APNConfigurationDescription];
   }
 
   else
   {
-    v5 = [(MCCellularPayload *)self APNs];
-    v6 = [v5 count];
+    aPNs = [(MCCellularPayload *)self APNs];
+    v6 = [aPNs count];
 
     if (v6)
     {
-      v4 = [(MCCellularPayload *)self APNsDescription];
+      aPNConfigurationDescription = [(MCCellularPayload *)self APNsDescription];
     }
 
     else
     {
-      v4 = 0;
+      aPNConfigurationDescription = 0;
     }
   }
 
-  return v4;
+  return aPNConfigurationDescription;
 }
 
 - (id)subtitle2Label
 {
-  v3 = [(MCCellularPayload *)self attachAPN];
-  if (v3)
+  attachAPN = [(MCCellularPayload *)self attachAPN];
+  if (attachAPN)
   {
-    v4 = v3;
-    v5 = [(MCCellularPayload *)self APNs];
-    v6 = [v5 count];
+    v4 = attachAPN;
+    aPNs = [(MCCellularPayload *)self APNs];
+    v6 = [aPNs count];
 
     if (v6)
     {
-      v3 = [(MCCellularPayload *)self APNsLabel];
+      attachAPN = [(MCCellularPayload *)self APNsLabel];
     }
 
     else
     {
-      v3 = 0;
+      attachAPN = 0;
     }
   }
 
-  return v3;
+  return attachAPN;
 }
 
 - (id)subtitle2Description
 {
-  v3 = [(MCCellularPayload *)self attachAPN];
-  if (v3)
+  attachAPN = [(MCCellularPayload *)self attachAPN];
+  if (attachAPN)
   {
-    v4 = v3;
-    v5 = [(MCCellularPayload *)self APNs];
-    v6 = [v5 count];
+    v4 = attachAPN;
+    aPNs = [(MCCellularPayload *)self APNs];
+    v6 = [aPNs count];
 
     if (v6)
     {
-      v3 = [(MCCellularPayload *)self APNsDescription];
+      attachAPN = [(MCCellularPayload *)self APNsDescription];
     }
 
     else
     {
-      v3 = 0;
+      attachAPN = 0;
     }
   }
 
-  return v3;
+  return attachAPN;
 }
 
 - (id)installationWarnings

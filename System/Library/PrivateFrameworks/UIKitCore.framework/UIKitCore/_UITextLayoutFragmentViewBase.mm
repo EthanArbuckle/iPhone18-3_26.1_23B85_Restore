@@ -6,14 +6,14 @@
 - (CGRect)clipFrame;
 - (CGRect)clipRect;
 - (CGSize)containerSize;
-- (_UITextLayoutFragmentViewBase)initWithLayoutFragment:(id)a3 containerOrigin:(CGPoint)a4 containerSize:(CGSize)a5 clipRect:(CGRect)a6;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_UITextLayoutFragmentViewBase)initWithLayoutFragment:(id)fragment containerOrigin:(CGPoint)origin containerSize:(CGSize)size clipRect:(CGRect)rect;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateGeometry;
 - (void)_updateTextAttachmentGeometry;
 - (void)didMoveToSuperview;
-- (void)enumerateTextAttachmentViewsUsingBlock:(id)a3;
+- (void)enumerateTextAttachmentViewsUsingBlock:(id)block;
 - (void)layoutSubviews;
-- (void)performChanges:(id)a3;
+- (void)performChanges:(id)changes;
 @end
 
 @implementation _UITextLayoutFragmentViewBase
@@ -174,9 +174,9 @@
   [(UIView *)&v4 didMoveToSuperview];
   if (self->_textAttachmentGeometryNeedsUpdate)
   {
-    v3 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (v3)
+    if (superview)
     {
       [(_UITextLayoutFragmentViewBase *)self _updateTextAttachmentGeometry];
     }
@@ -188,9 +188,9 @@
   v4.receiver = self;
   v4.super_class = _UITextLayoutFragmentViewBase;
   [(UIView *)&v4 layoutSubviews];
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(_UITextLayoutFragmentViewBase *)self _updateTextAttachmentGeometry];
   }
@@ -234,17 +234,17 @@
   return result;
 }
 
-- (_UITextLayoutFragmentViewBase)initWithLayoutFragment:(id)a3 containerOrigin:(CGPoint)a4 containerSize:(CGSize)a5 clipRect:(CGRect)a6
+- (_UITextLayoutFragmentViewBase)initWithLayoutFragment:(id)fragment containerOrigin:(CGPoint)origin containerSize:(CGSize)size clipRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5.height;
-  v11 = a5.width;
-  v12 = a4.y;
-  v13 = a4.x;
-  v16 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = size.height;
+  v11 = size.width;
+  v12 = origin.y;
+  v13 = origin.x;
+  fragmentCopy = fragment;
   v27.receiver = self;
   v27.super_class = _UITextLayoutFragmentViewBase;
   v17 = [(UIView *)&v27 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -253,7 +253,7 @@
   {
     [(UIView *)v17 setOpaque:0];
     [(UIView *)v18 setContentMode:3];
-    objc_storeStrong(&v18->_layoutFragment, a3);
+    objc_storeStrong(&v18->_layoutFragment, fragment);
     v18->_containerOrigin.x = v13;
     v18->_containerOrigin.y = v12;
     v18->_containerSize.width = v11;
@@ -288,12 +288,12 @@
         {
           v22 = +[UIColor systemTealColor];
           v23 = [v22 colorWithAlphaComponent:0.5];
-          v24 = [v23 CGColor];
-          v25 = [(UIView *)v18 layer];
-          [v25 setBorderColor:v24];
+          cGColor = [v23 CGColor];
+          layer = [(UIView *)v18 layer];
+          [layer setBorderColor:cGColor];
 
-          v26 = [(UIView *)v18 layer];
-          [v26 setBorderWidth:1.0];
+          layer2 = [(UIView *)v18 layer];
+          [layer2 setBorderWidth:1.0];
         }
       }
     }
@@ -304,36 +304,36 @@ LABEL_5:
   return v18;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  (*(a3 + 2))(a3, self);
+  (*(changes + 2))(changes, self);
 
   [(_UITextLayoutFragmentViewBase *)self _updateGeometry];
 }
 
-- (void)enumerateTextAttachmentViewsUsingBlock:(id)a3
+- (void)enumerateTextAttachmentViewsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NSTextLayoutFragment *)self->_layoutFragment textElement];
+  blockCopy = block;
+  textElement = [(NSTextLayoutFragment *)self->_layoutFragment textElement];
 
-  if (v5)
+  if (textElement)
   {
-    v6 = [(NSTextLayoutFragment *)self->_layoutFragment textAttachmentViewProviders];
+    textAttachmentViewProviders = [(NSTextLayoutFragment *)self->_layoutFragment textAttachmentViewProviders];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __72___UITextLayoutFragmentViewBase_enumerateTextAttachmentViewsUsingBlock___block_invoke;
     v7[3] = &unk_1E70F6CD0;
     v7[4] = self;
-    v8 = v4;
-    [v6 enumerateObjectsUsingBlock:v7];
+    v8 = blockCopy;
+    [textAttachmentViewProviders enumerateObjectsUsingBlock:v7];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = _UITextLayoutFragmentViewBase;
-  v5 = [(UIView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

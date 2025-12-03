@@ -1,11 +1,11 @@
 @interface NotificationListener
 + (id)sharedInstance;
-- (BOOL)registerForNotification:(id)a3 callback:(id)a4;
+- (BOOL)registerForNotification:(id)notification callback:(id)callback;
 - (NotificationListener)init;
-- (int)_tokenForName:(id)a3;
-- (unint64_t)_stateForToken:(int)a3;
-- (unint64_t)stateForNotification:(id)a3;
-- (void)_executeCallbackForToken:(int)a3 withState:(unint64_t)a4;
+- (int)_tokenForName:(id)name;
+- (unint64_t)_stateForToken:(int)token;
+- (unint64_t)stateForNotification:(id)notification;
+- (void)_executeCallbackForToken:(int)token withState:(unint64_t)state;
 - (void)unregisterAll;
 @end
 
@@ -46,9 +46,9 @@
   return v3;
 }
 
-- (int)_tokenForName:(id)a3
+- (int)_tokenForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -63,7 +63,7 @@
   block[2] = sub_100008474;
   block[3] = &unk_100020A80;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   v12 = v6;
   v13 = &v15;
   v14 = &v19;
@@ -71,10 +71,10 @@
   if (*(v20 + 6))
   {
     v7 = [NSString stringWithFormat:@"notify_register_check failed: %lu", *(v20 + 6)];
-    v8 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
-      sub_100013644(v7, v8);
+      sub_100013644(v7, logger);
     }
 
     v9 = -1;
@@ -91,9 +91,9 @@
   return v9;
 }
 
-- (unint64_t)_stateForToken:(int)a3
+- (unint64_t)_stateForToken:(int)token
 {
-  if (a3 < 0)
+  if (token < 0)
   {
     return 0;
   }
@@ -102,21 +102,21 @@
   {
     v6 = i;
     state64 = 0;
-    state = notify_get_state(a3, &state64);
+    state = notify_get_state(token, &state64);
     if (!state)
     {
       break;
     }
 
-    v8 = [NSString stringWithFormat:@"notify_get_state failed: %lu", state];
-    v9 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    state = [NSString stringWithFormat:@"notify_get_state failed: %lu", state];
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
       v13 = "[NotificationListener _stateForToken:]";
       v14 = 2114;
-      v15 = v8;
-      _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}s: %{public}@", buf, 0x16u);
+      v15 = state;
+      _os_log_error_impl(&_mh_execute_header, logger, OS_LOG_TYPE_ERROR, "%{public}s: %{public}@", buf, 0x16u);
     }
 
     if ((v6 & 1) == 0)
@@ -128,89 +128,89 @@
   return state64;
 }
 
-- (unint64_t)stateForNotification:(id)a3
+- (unint64_t)stateForNotification:(id)notification
 {
-  v4 = [(NotificationListener *)self _tokenForName:a3];
+  v4 = [(NotificationListener *)self _tokenForName:notification];
 
   return [(NotificationListener *)self _stateForToken:v4];
 }
 
-- (void)_executeCallbackForToken:(int)a3 withState:(unint64_t)a4
+- (void)_executeCallbackForToken:(int)token withState:(unint64_t)state
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008864;
   block[3] = &unk_100020AA8;
-  v6 = a3;
+  tokenCopy = token;
   block[4] = self;
-  block[5] = a4;
+  block[5] = state;
   dispatch_sync(queue, block);
 }
 
-- (BOOL)registerForNotification:(id)a3 callback:(id)a4
+- (BOOL)registerForNotification:(id)notification callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NotificationListener *)v8 _tokenForName:v6];
+  notificationCopy = notification;
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NotificationListener *)selfCopy _tokenForName:notificationCopy];
   out_token = v9;
-  v10 = [NSString stringWithFormat:@"Register for notification %@ token = %d", v6, v9];
-  v11 = [(MDRBaseObject *)v8 logger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  v10 = [NSString stringWithFormat:@"Register for notification %@ token = %d", notificationCopy, v9];
+  logger = [(MDRBaseObject *)selfCopy logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v25 = v10;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  v12 = v6;
-  v13 = [v6 UTF8String];
+  v12 = notificationCopy;
+  uTF8String = [notificationCopy UTF8String];
   v14 = dispatch_get_global_queue(0, 0);
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100008BBC;
   handler[3] = &unk_100020AD0;
-  handler[4] = v8;
-  v15 = notify_register_dispatch(v13, &out_token, v14, handler);
+  handler[4] = selfCopy;
+  v15 = notify_register_dispatch(uTF8String, &out_token, v14, handler);
 
   if (!v15)
   {
     v16 = [NSString stringWithFormat:@"notify_register_dispatch OK"];
-    v17 = [(MDRBaseObject *)v8 logger];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    logger2 = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000136D0(v16, v17);
+      sub_1000136D0(v16, logger2);
     }
 
-    v18 = +[NSValue valueWithPointer:](NSValue, "valueWithPointer:", [v7 copy]);
-    tokenMap = v8->_tokenMap;
+    v18 = +[NSValue valueWithPointer:](NSValue, "valueWithPointer:", [callbackCopy copy]);
+    tokenMap = selfCopy->_tokenMap;
     v20 = [NSNumber numberWithInt:out_token];
     [(NSMutableDictionary *)tokenMap setObject:v18 forKeyedSubscript:v20];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v15 == 0;
 }
 
 - (void)unregisterAll
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSMutableDictionary *)v2->_tokenMap enumerateKeysAndObjectsUsingBlock:&stru_100020B10];
-  [(NSMutableDictionary *)v2->_tokenMap removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_tokenMap enumerateKeysAndObjectsUsingBlock:&stru_100020B10];
+  [(NSMutableDictionary *)selfCopy->_tokenMap removeAllObjects];
   v3 = [NSString stringWithFormat:@"All notifications are unregistered"];
-  v4 = [(MDRBaseObject *)v2 logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)selfCopy logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
     v6 = v3;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@", &v5, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v5, 0xCu);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 @end

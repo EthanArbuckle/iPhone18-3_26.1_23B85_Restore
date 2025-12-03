@@ -1,31 +1,31 @@
 @interface OnDemandAudioDiagnosticTriggerController
 - (OnDemandAudioDiagnosticTriggerController)init;
 - (void)cancel;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation OnDemandAudioDiagnosticTriggerController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10000134C(a3, a4);
+  selfCopy = self;
+  sub_10000134C(inputs, responder);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_100001498();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000225C(1u);
 }
 

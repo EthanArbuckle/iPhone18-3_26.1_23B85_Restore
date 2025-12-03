@@ -1,55 +1,55 @@
 @interface SFVisibleSectionHeaderFeedback
-- (SFVisibleSectionHeaderFeedback)initWithCoder:(id)a3;
-- (SFVisibleSectionHeaderFeedback)initWithSection:(id)a3 headerType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SFVisibleSectionHeaderFeedback)initWithCoder:(id)coder;
+- (SFVisibleSectionHeaderFeedback)initWithSection:(id)section headerType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFVisibleSectionHeaderFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFVisibleSectionHeaderFeedback;
-  v4 = a3;
-  [(SFFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_section forKey:{@"_section", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_headerType forKey:@"_headerType"];
+  coderCopy = coder;
+  [(SFFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_section forKey:{@"_section", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_headerType forKey:@"_headerType"];
 }
 
-- (SFVisibleSectionHeaderFeedback)initWithCoder:(id)a3
+- (SFVisibleSectionHeaderFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFVisibleSectionHeaderFeedback;
-  v5 = [(SFFeedback *)&v9 initWithCoder:v4];
+  v5 = [(SFFeedback *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_section"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_section"];
     section = v5->_section;
     v5->_section = v6;
 
-    v5->_headerType = [v4 decodeIntegerForKey:@"_headerType"];
+    v5->_headerType = [coderCopy decodeIntegerForKey:@"_headerType"];
   }
 
   return v5;
 }
 
-- (SFVisibleSectionHeaderFeedback)initWithSection:(id)a3 headerType:(unint64_t)a4
+- (SFVisibleSectionHeaderFeedback)initWithSection:(id)section headerType:(unint64_t)type
 {
-  v6 = a3;
+  sectionCopy = section;
   v13.receiver = self;
   v13.super_class = SFVisibleSectionHeaderFeedback;
   v7 = [(SFFeedback *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [sectionCopy copy];
     section = v7->_section;
     v7->_section = v8;
 
-    v7->_headerType = a4;
-    v10 = [(SFResultSection *)v7->_section results];
-    v11 = [v10 firstObject];
-    v7->super._queryId = [v11 queryId];
+    v7->_headerType = type;
+    results = [(SFResultSection *)v7->_section results];
+    firstObject = [results firstObject];
+    v7->super._queryId = [firstObject queryId];
   }
 
   return v7;

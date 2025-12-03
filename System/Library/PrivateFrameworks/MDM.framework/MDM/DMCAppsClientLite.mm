@@ -1,11 +1,11 @@
 @interface DMCAppsClientLite
 - (DMCAppsClientLite)init;
-- (id)preservedAppIDsAndReturnError:(id *)a3;
+- (id)preservedAppIDsAndReturnError:(id *)error;
 @end
 
 @implementation DMCAppsClientLite
 
-- (id)preservedAppIDsAndReturnError:(id *)a3
+- (id)preservedAppIDsAndReturnError:(id *)error
 {
   v3 = sub_25624D42C();
   v4 = *(v3 - 8);

@@ -1,14 +1,14 @@
 @interface AdaptiveClamping
-- (AdaptiveClamping)initWithMetalContext:(id)a3;
+- (AdaptiveClamping)initWithMetalContext:(id)context;
 - (int)_initShaders;
-- (int)clampFromPixelBuffer:(__CVBuffer *)a3 Mask:(__CVBuffer *)a4 MaxDisparity:(float)a5 Percentiles:(id)a6 CommandBuffer:;
+- (int)clampFromPixelBuffer:(__CVBuffer *)buffer Mask:(__CVBuffer *)mask MaxDisparity:(float)disparity Percentiles:(id)percentiles CommandBuffer:;
 @end
 
 @implementation AdaptiveClamping
 
-- (AdaptiveClamping)initWithMetalContext:(id)a3
+- (AdaptiveClamping)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v37.receiver = self;
   v37.super_class = AdaptiveClamping;
   v6 = [(AdaptiveClamping *)&v37 init];
@@ -21,7 +21,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   if (!v7->_metalContext)
   {
     v16 = MEMORY[0x29EDB9F48];
@@ -64,22 +64,22 @@ LABEL_8:
   return v35;
 }
 
-- (int)clampFromPixelBuffer:(__CVBuffer *)a3 Mask:(__CVBuffer *)a4 MaxDisparity:(float)a5 Percentiles:(id)a6 CommandBuffer:
+- (int)clampFromPixelBuffer:(__CVBuffer *)buffer Mask:(__CVBuffer *)mask MaxDisparity:(float)disparity Percentiles:(id)percentiles CommandBuffer:
 {
   v276 = v6;
-  v281 = a5;
-  v11 = a6;
-  if (!a3)
+  disparityCopy = disparity;
+  percentilesCopy = percentiles;
+  if (!buffer)
   {
     sub_2957657BC();
 LABEL_46:
     v154 = 0;
     v67 = 0;
-    a4 = 0;
+    mask = 0;
     goto LABEL_47;
   }
 
-  if (!a4)
+  if (!mask)
   {
     sub_295765744();
     v154 = 0;
@@ -92,19 +92,19 @@ LABEL_47:
     goto LABEL_26;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) != 1278226536 && CVPixelBufferGetPixelFormatType(a3) != 1751411059)
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1278226536 && CVPixelBufferGetPixelFormatType(buffer) != 1751411059)
   {
     sub_2957650B4();
     goto LABEL_46;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a4) != 1380411457)
+  if (CVPixelBufferGetPixelFormatType(mask) != 1380411457)
   {
     sub_29576512C();
     goto LABEL_46;
   }
 
-  if (a5 <= 0.0)
+  if (disparity <= 0.0)
   {
     sub_2957656CC();
     goto LABEL_46;
@@ -122,15 +122,15 @@ LABEL_47:
     goto LABEL_46;
   }
 
-  if ((CVPixelBufferGetWidth(a3) & 3) != 0)
+  if ((CVPixelBufferGetWidth(buffer) & 3) != 0)
   {
     sub_2957651A4();
     goto LABEL_46;
   }
 
-  if (v11)
+  if (percentilesCopy)
   {
-    v20 = v11;
+    v20 = percentilesCopy;
   }
 
   else
@@ -143,7 +143,7 @@ LABEL_47:
       sub_295765564();
       v154 = 0;
       v67 = 0;
-      a4 = 0;
+      mask = 0;
       v36 = 0;
 LABEL_37:
       v58 = 0;
@@ -154,23 +154,23 @@ LABEL_40:
   }
 
   metalContext = self->_metalContext;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v36 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(metalContext, v33, a3, 25, 1, 0, v34, v35, *&Width, Height);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  v36 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(metalContext, v33, buffer, 25, 1, 0, v34, v35, *&Width, Height);
   if (!v36)
   {
     sub_2957654EC();
     v154 = 0;
     v67 = 0;
-    a4 = 0;
+    mask = 0;
     goto LABEL_37;
   }
 
   v37 = self->_metalContext;
-  v38 = CVPixelBufferGetWidth(a4);
-  v39 = CVPixelBufferGetHeight(a4);
-  a4 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(v37, v40, a4, 115, 1, 0, v41, v42, *&v38, v39);
-  if (!a4)
+  v38 = CVPixelBufferGetWidth(mask);
+  v39 = CVPixelBufferGetHeight(mask);
+  mask = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(v37, v40, mask, 115, 1, 0, v41, v42, *&v38, v39);
+  if (!mask)
   {
     sub_295765474();
     v154 = 0;
@@ -209,14 +209,14 @@ LABEL_40:
   }
 
   v275 = v20;
-  v94 = v11;
+  v94 = percentilesCopy;
   v95 = ((objc_msgSend_width(v36, v86, v87, v88, v89, v90, v91, v92, v93) >> 1) + 31) >> 5;
   v104 = ((objc_msgSend_height(v36, v96, v97, v98, v99, v100, v101, v102, v103) >> 1) + 31) >> 5;
   objc_msgSend_setComputePipelineState_(v58, v105, self->_pipelineStates[0], v106, v107, v108, v109, v110, v111);
   objc_msgSend_setTexture_atIndex_(v58, v112, v36, 0, v113, v114, v115, v116, v117);
-  objc_msgSend_setTexture_atIndex_(v58, v118, a4, 1, v119, v120, v121, v122, v123);
+  objc_msgSend_setTexture_atIndex_(v58, v118, mask, 1, v119, v120, v121, v122, v123);
   objc_msgSend_setBuffer_offset_atIndex_(v58, v124, v67, 0, 0, v125, v126, v127, v128);
-  objc_msgSend_setBytes_length_atIndex_(v58, v129, &v281, 4, 1, v130, v131, v132, v133);
+  objc_msgSend_setBytes_length_atIndex_(v58, v129, &disparityCopy, 4, 1, v130, v131, v132, v133);
   v279.i64[0] = v95;
   v279.i64[1] = v104;
   v280 = 1;
@@ -239,16 +239,16 @@ LABEL_44:
   objc_msgSend_setComputePipelineState_(v58, v164, self->_pipelineStates[1], v165, v166, v167, v168, v169, *&v276);
   objc_msgSend_setBuffer_offset_atIndex_(v58, v170, v67, 0, 0, v171, v172, v173, v174);
   objc_msgSend_setBuffer_offset_atIndex_(v58, v175, v154, 0, 1, v176, v177, v178, v179);
-  objc_msgSend_setBytes_length_atIndex_(v58, v180, &v281, 4, 2, v181, v182, v183, v184);
+  objc_msgSend_setBytes_length_atIndex_(v58, v180, &disparityCopy, 4, 2, v181, v182, v183, v184);
   v279 = vdupq_n_s64(1uLL);
   v280 = 1;
   v277 = v279;
   v278 = 1;
   objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v58, v185, &v279, &v277, v186, v187, v188, v189, *v279.i32);
   v190 = self->_metalContext;
-  v191 = vcvts_n_f32_u64(CVPixelBufferGetWidth(a3), 2uLL);
-  v192 = CVPixelBufferGetHeight(a3);
-  v196 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(v190, v193, a3, 115, 3, 0, v194, v195, *&v191, v192);
+  v191 = vcvts_n_f32_u64(CVPixelBufferGetWidth(buffer), 2uLL);
+  v192 = CVPixelBufferGetHeight(buffer);
+  v196 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_textureSize_plane_(v190, v193, buffer, 115, 3, 0, v194, v195, *&v191, v192);
 
   if (!v196)
   {
@@ -272,7 +272,7 @@ LABEL_44:
   v278 = 1;
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v58, v251, &v279, &v277, v252, v253, v254, v255, v256);
   objc_msgSend_endEncoding(v58, v257, v258, v259, v260, v261, v262, v263, v264);
-  v11 = v94;
+  percentilesCopy = v94;
   if (!v94)
   {
     v20 = v275;

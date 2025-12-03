@@ -1,29 +1,29 @@
 @interface TTMSchemaTTMOverrideTCUResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTMSchemaTTMOverrideTCUResult)initWithDictionary:(id)a3;
-- (TTMSchemaTTMOverrideTCUResult)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTMSchemaTTMOverrideTCUResult)initWithDictionary:(id)dictionary;
+- (TTMSchemaTTMOverrideTCUResult)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addOverrideResults:(id)a3;
-- (void)setHasOverrideType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addOverrideResults:(id)results;
+- (void)setHasOverrideType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTMSchemaTTMOverrideTCUResult
 
-- (TTMSchemaTTMOverrideTCUResult)initWithDictionary:(id)a3
+- (TTMSchemaTTMOverrideTCUResult)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = TTMSchemaTTMOverrideTCUResult;
   v5 = [(TTMSchemaTTMOverrideTCUResult *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tcuId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tcuId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,21 +31,21 @@
       [(TTMSchemaTTMOverrideTCUResult *)v5 setTcuId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"recommendation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"recommendation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTMSchemaTTMOverrideTCUResult setRecommendation:](v5, "setRecommendation:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"overrideType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"overrideType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTMSchemaTTMOverrideTCUResult setOverrideType:](v5, "setOverrideType:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"overrideResults"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"overrideResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,30 +95,30 @@
   return v5;
 }
 
-- (TTMSchemaTTMOverrideTCUResult)initWithJSON:(id)a3
+- (TTMSchemaTTMOverrideTCUResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTMSchemaTTMOverrideTCUResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTMSchemaTTMOverrideTCUResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTMSchemaTTMOverrideTCUResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -132,10 +132,10 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_overrideResults count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -155,16 +155,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -174,7 +174,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"overrideResults"];
+    [dictionary setObject:array forKeyedSubscript:@"overrideResults"];
   }
 
   has = self->_has;
@@ -191,7 +191,7 @@
       v14 = off_1E78E7FE0[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:{@"overrideType", v21}];
+    [dictionary setObject:v14 forKeyedSubscript:{@"overrideType", v21}];
     has = self->_has;
   }
 
@@ -208,28 +208,28 @@
       v16 = off_1E78E8028[v15];
     }
 
-    [v3 setObject:v16 forKeyedSubscript:{@"recommendation", v21}];
+    [dictionary setObject:v16 forKeyedSubscript:{@"recommendation", v21}];
   }
 
   if (self->_tcuId)
   {
-    v17 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    tcuId = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
+    dictionaryRepresentation2 = [tcuId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"tcuId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"tcuId"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"tcuId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"tcuId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v21];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v21];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -259,28 +259,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSArray *)self->_overrideResults hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
-  v6 = [v4 tcuId];
-  if ((v5 != 0) == (v6 == 0))
+  tcuId = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
+  tcuId2 = [equalCopy tcuId];
+  if ((tcuId != 0) == (tcuId2 == 0))
   {
     goto LABEL_18;
   }
 
-  v7 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
-  if (v7)
+  tcuId3 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
+  if (tcuId3)
   {
-    v8 = v7;
-    v9 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
-    v10 = [v4 tcuId];
-    v11 = [v9 isEqual:v10];
+    v8 = tcuId3;
+    tcuId4 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
+    tcuId5 = [equalCopy tcuId];
+    v11 = [tcuId4 isEqual:tcuId5];
 
     if (!v11)
     {
@@ -293,7 +293,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v13 = v4[32];
+  v13 = equalCopy[32];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_19;
@@ -302,13 +302,13 @@ LABEL_3:
   if (*&has)
   {
     recommendation = self->_recommendation;
-    if (recommendation != [v4 recommendation])
+    if (recommendation != [equalCopy recommendation])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -320,23 +320,23 @@ LABEL_3:
   if (v15)
   {
     overrideType = self->_overrideType;
-    if (overrideType != [v4 overrideType])
+    if (overrideType != [equalCopy overrideType])
     {
       goto LABEL_19;
     }
   }
 
-  v5 = [(TTMSchemaTTMOverrideTCUResult *)self overrideResults];
-  v6 = [v4 overrideResults];
-  if ((v5 != 0) == (v6 == 0))
+  tcuId = [(TTMSchemaTTMOverrideTCUResult *)self overrideResults];
+  tcuId2 = [equalCopy overrideResults];
+  if ((tcuId != 0) == (tcuId2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v17 = [(TTMSchemaTTMOverrideTCUResult *)self overrideResults];
-  if (!v17)
+  overrideResults = [(TTMSchemaTTMOverrideTCUResult *)self overrideResults];
+  if (!overrideResults)
   {
 
 LABEL_22:
@@ -344,10 +344,10 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v18 = v17;
-  v19 = [(TTMSchemaTTMOverrideTCUResult *)self overrideResults];
-  v20 = [v4 overrideResults];
-  v21 = [v19 isEqual:v20];
+  v18 = overrideResults;
+  overrideResults2 = [(TTMSchemaTTMOverrideTCUResult *)self overrideResults];
+  overrideResults3 = [equalCopy overrideResults];
+  v21 = [overrideResults2 isEqual:overrideResults3];
 
   if (v21)
   {
@@ -361,15 +361,15 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
+  toCopy = to;
+  tcuId = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
 
-  if (v5)
+  if (tcuId)
   {
-    v6 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
+    tcuId2 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -414,27 +414,27 @@ LABEL_20:
   }
 }
 
-- (void)addOverrideResults:(id)a3
+- (void)addOverrideResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   overrideResults = self->_overrideResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!overrideResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_overrideResults;
-    self->_overrideResults = v6;
+    self->_overrideResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     overrideResults = self->_overrideResults;
   }
 
-  [(NSArray *)overrideResults addObject:v4];
+  [(NSArray *)overrideResults addObject:resultsCopy];
 }
 
-- (void)setHasOverrideType:(BOOL)a3
+- (void)setHasOverrideType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -447,23 +447,23 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = TTMSchemaTTMOverrideTCUResult;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  tcuId = [(TTMSchemaTTMOverrideTCUResult *)self tcuId];
+  v7 = [tcuId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(TTMSchemaTTMOverrideTCUResult *)self deleteTcuId];
   }
 
-  v9 = [(TTMSchemaTTMOverrideTCUResult *)self overrideResults];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  overrideResults = [(TTMSchemaTTMOverrideTCUResult *)self overrideResults];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:overrideResults underConditions:policyCopy];
   [(TTMSchemaTTMOverrideTCUResult *)self setOverrideResults:v10];
 
   return v5;

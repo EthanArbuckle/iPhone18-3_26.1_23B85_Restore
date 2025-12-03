@@ -4,8 +4,8 @@
 - (CPUIVideoAvailability)init;
 - (id)_currentCarPlayDevice;
 - (int64_t)playbackState;
-- (void)_postVideoAvailabilityChanged:(id)a3;
-- (void)setVideoActive:(BOOL)a3 completionHandler:(id)a4;
+- (void)_postVideoAvailabilityChanged:(id)changed;
+- (void)setVideoActive:(BOOL)active completionHandler:(id)handler;
 @end
 
 @implementation CPUIVideoAvailability
@@ -17,19 +17,19 @@
   v2 = [(CPUIVideoAvailability *)&v10 init];
   if (v2 && _os_feature_enabled_impl())
   {
-    v3 = [MEMORY[0x277CB8698] sharedSystemRemoteDisplayContext];
+    mEMORY[0x277CB8698] = [MEMORY[0x277CB8698] sharedSystemRemoteDisplayContext];
     outputContext = v2->_outputContext;
-    v2->_outputContext = v3;
+    v2->_outputContext = mEMORY[0x277CB8698];
 
     v5 = [objc_alloc(MEMORY[0x277CF89F8]) initWithOptions:0];
     sessionStatus = v2->_sessionStatus;
     v2->_sessionStatus = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__postVideoAvailabilityChanged_ name:*MEMORY[0x277CB8670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__postVideoAvailabilityChanged_ name:*MEMORY[0x277CB8670] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel__postVideoAvailabilityChanged_ name:*MEMORY[0x277CF8958] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__postVideoAvailabilityChanged_ name:*MEMORY[0x277CF8958] object:0];
   }
 
   return v2;
@@ -40,12 +40,12 @@
   v3 = _os_feature_enabled_impl();
   if (v3)
   {
-    v4 = [(CPUIVideoAvailability *)self sessionStatus];
-    v5 = [v4 currentSession];
-    v6 = [v5 configuration];
-    v7 = [v6 videoPlaybackSupported];
+    sessionStatus = [(CPUIVideoAvailability *)self sessionStatus];
+    currentSession = [sessionStatus currentSession];
+    configuration = [currentSession configuration];
+    videoPlaybackSupported = [configuration videoPlaybackSupported];
 
-    LOBYTE(v3) = v7;
+    LOBYTE(v3) = videoPlaybackSupported;
   }
 
   return v3;
@@ -53,10 +53,10 @@
 
 - (BOOL)isVideoAllowed
 {
-  v2 = [(CPUIVideoAvailability *)self _currentCarPlayDevice];
-  v3 = [v2 isCarPlayVideoAllowed];
+  _currentCarPlayDevice = [(CPUIVideoAvailability *)self _currentCarPlayDevice];
+  isCarPlayVideoAllowed = [_currentCarPlayDevice isCarPlayVideoAllowed];
 
-  if ((v3 & 1) == 0)
+  if ((isCarPlayVideoAllowed & 1) == 0)
   {
     v4 = CarPlayUIGeneralLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -66,16 +66,16 @@
     }
   }
 
-  return v3;
+  return isCarPlayVideoAllowed;
 }
 
 - (int64_t)playbackState
 {
   if ([(CPUIVideoAvailability *)self isVideoSupported])
   {
-    v3 = [(CPUIVideoAvailability *)self _currentCarPlayDevice];
-    v4 = [v3 mediaSessionStatus];
-    if (v4 < 2)
+    _currentCarPlayDevice = [(CPUIVideoAvailability *)self _currentCarPlayDevice];
+    mediaSessionStatus = [_currentCarPlayDevice mediaSessionStatus];
+    if (mediaSessionStatus < 2)
     {
       v5 = CarPlayUIGeneralLogging();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -88,7 +88,7 @@
       goto LABEL_13;
     }
 
-    if (v4 == 2)
+    if (mediaSessionStatus == 2)
     {
       v8 = CarPlayUIGeneralLogging();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -97,7 +97,7 @@
         _os_log_impl(&dword_243134000, v8, OS_LOG_TYPE_DEFAULT, "playable / playing video", v11, 2u);
       }
 
-      if (([v3 isCarPlayVideoAllowed]& 1) != 0)
+      if (([_currentCarPlayDevice isCarPlayVideoAllowed]& 1) != 0)
       {
         v6 = 3;
         goto LABEL_14;
@@ -114,7 +114,7 @@
       goto LABEL_13;
     }
 
-    if (v4 == 3)
+    if (mediaSessionStatus == 3)
     {
       v5 = CarPlayUIGeneralLogging();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -137,11 +137,11 @@ LABEL_13:
 
   else
   {
-    v3 = CarPlayUIGeneralLogging();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    _currentCarPlayDevice = CarPlayUIGeneralLogging();
+    if (os_log_type_enabled(_currentCarPlayDevice, OS_LOG_TYPE_DEFAULT))
     {
       *v13 = 0;
-      _os_log_impl(&dword_243134000, v3, OS_LOG_TYPE_DEFAULT, "video unsupported", v13, 2u);
+      _os_log_impl(&dword_243134000, _currentCarPlayDevice, OS_LOG_TYPE_DEFAULT, "video unsupported", v13, 2u);
     }
   }
 
@@ -151,26 +151,26 @@ LABEL_14:
   return v6;
 }
 
-- (void)setVideoActive:(BOOL)a3 completionHandler:(id)a4
+- (void)setVideoActive:(BOOL)active completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CPUIVideoAvailability *)self _currentCarPlayDevice];
-  [v7 setCarPlayVideoActive:v4 completionHandler:v6];
+  activeCopy = active;
+  handlerCopy = handler;
+  _currentCarPlayDevice = [(CPUIVideoAvailability *)self _currentCarPlayDevice];
+  [_currentCarPlayDevice setCarPlayVideoActive:activeCopy completionHandler:handlerCopy];
 }
 
 - (id)_currentCarPlayDevice
 {
-  v2 = [(CPUIVideoAvailability *)self outputContext];
-  v3 = [v2 outputDevices];
+  outputContext = [(CPUIVideoAvailability *)self outputContext];
+  outputDevices = [outputContext outputDevices];
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_5];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
-  v6 = [v5 firstObject];
+  v5 = [outputDevices filteredArrayUsingPredicate:v4];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-- (void)_postVideoAvailabilityChanged:(id)a3
+- (void)_postVideoAvailabilityChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

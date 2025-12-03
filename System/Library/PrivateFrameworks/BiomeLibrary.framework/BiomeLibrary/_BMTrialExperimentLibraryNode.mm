@@ -2,25 +2,25 @@
 + (id)NamespaceUpdates;
 + (id)configurationForNamespaceUpdates;
 + (id)storeConfigurationForNamespaceUpdates;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMTrialExperimentLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"NamespaceUpdates"])
+  if ([name isEqualToString:@"NamespaceUpdates"])
   {
-    v4 = [a1 NamespaceUpdates];
+    namespaceUpdates = [self NamespaceUpdates];
   }
 
   else
   {
-    v4 = 0;
+    namespaceUpdates = 0;
   }
 
-  return v4;
+  return namespaceUpdates;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForNamespaceUpdates
 {
-  v3 = [a1 storeConfigurationForNamespaceUpdates];
-  v4 = [a1 syncPolicyForNamespaceUpdates];
+  storeConfigurationForNamespaceUpdates = [self storeConfigurationForNamespaceUpdates];
+  syncPolicyForNamespaceUpdates = [self syncPolicyForNamespaceUpdates];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"DBD6E49F-36D5-4E40-9D33-10A5C6DB37F7"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Trial.Experiment.NamespaceUpdates" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.triald" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Trial.Experiment.NamespaceUpdates" eventClass:objc_opt_class() storeConfig:storeConfigurationForNamespaceUpdates syncPolicy:syncPolicyForNamespaceUpdates legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.triald" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)NamespaceUpdates
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForNamespaceUpdates];
+  configurationForNamespaceUpdates = [self configurationForNamespaceUpdates];
   v3 = +[BMTrialNamespaceUpdates columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Trial.Experiment.NamespaceUpdates" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Trial.Experiment.NamespaceUpdates" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Trial.Experiment.NamespaceUpdates" schema:v9 configuration:configurationForNamespaceUpdates];
 
   v11 = *MEMORY[0x1E69E9840];
 

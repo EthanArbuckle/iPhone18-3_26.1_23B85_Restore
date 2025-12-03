@@ -6,22 +6,22 @@
 
 - (id)pu_hardwareIdentifier
 {
-  v1 = a1;
+  selfCopy = self;
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 displayConfiguration];
-    v3 = [v2 hardwareIdentifier];
-    v4 = [v2 deviceName];
-    v5 = v4;
-    if (v3)
+    displayConfiguration = [self displayConfiguration];
+    hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+    deviceName = [displayConfiguration deviceName];
+    v5 = deviceName;
+    if (hardwareIdentifier)
     {
-      v6 = v3;
+      selfCopy = hardwareIdentifier;
     }
 
-    else if (v4)
+    else if (deviceName)
     {
-      v6 = v4;
+      selfCopy = deviceName;
     }
 
     else
@@ -30,17 +30,17 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v10 = v1;
+        v10 = selfCopy;
         _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_ERROR, "UIScreen had nil hardware identifier and nil name: %@", buf, 0xCu);
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v1];
+      selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", selfCopy];
     }
 
-    v1 = v6;
+    selfCopy = selfCopy;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

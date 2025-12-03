@@ -2,18 +2,18 @@
 - (NSString)description;
 - (SBPIPPositionHyperregionComposerDelegate)delegate;
 - (SBSystemNotesPositionHyperregionComposer)init;
-- (id)positionRegionsForRegions:(id)a3 geometry:(SBPIPPositionGeometryContext *)a4 interaction:(SBPIPPositionInteractionStateContext *)a5;
-- (void)_addOffscreenCornersToRegions:(id)a3 geometry:(SBPIPPositionGeometryContext *)a4;
+- (id)positionRegionsForRegions:(id)regions geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction;
+- (void)_addOffscreenCornersToRegions:(id)regions geometry:(SBPIPPositionGeometryContext *)geometry;
 - (void)_setupStateCapture;
 - (void)dealloc;
 - (void)invalidate;
-- (void)performActionsWithTransientStateChange:(id)a3;
+- (void)performActionsWithTransientStateChange:(id)change;
 - (void)setupForEdgeProtectCornerSwipe;
 - (void)setupForInteractiveCornerGesture;
 - (void)setupForInteractiveCornerGestureEnd;
-- (void)setupForInteractiveDismissalToSize:(CGSize)a3;
+- (void)setupForInteractiveDismissalToSize:(CGSize)size;
 - (void)setupForStandardBehavior;
-- (void)setupForSwipesFromCorners:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setupForSwipesFromCorners:(unint64_t)corners animated:(BOOL)animated;
 @end
 
 @implementation SBSystemNotesPositionHyperregionComposer
@@ -110,10 +110,10 @@ id __62__SBSystemNotesPositionHyperregionComposer__setupStateCapture__block_invo
   return v12;
 }
 
-- (void)performActionsWithTransientStateChange:(id)a3
+- (void)performActionsWithTransientStateChange:(id)change
 {
   state = self->_state;
-  (*(a3 + 2))(a3, a2);
+  (*(change + 2))(change, a2);
   if (self->_state != state)
   {
     self->_state = state;
@@ -122,11 +122,11 @@ id __62__SBSystemNotesPositionHyperregionComposer__setupStateCapture__block_invo
   }
 }
 
-- (void)setupForSwipesFromCorners:(unint64_t)a3 animated:(BOOL)a4
+- (void)setupForSwipesFromCorners:(unint64_t)corners animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v17 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (animated)
   {
     v6 = 2;
   }
@@ -136,10 +136,10 @@ id __62__SBSystemNotesPositionHyperregionComposer__setupStateCapture__block_invo
     v6 = 0;
   }
 
-  if (self->_state != 1 || self->_offscreenCorners != a3 || self->_animationState != v6)
+  if (self->_state != 1 || self->_offscreenCorners != corners || self->_animationState != v6)
   {
     self->_state = 1;
-    self->_offscreenCorners = a3;
+    self->_offscreenCorners = corners;
     self->_animationState = v6;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained positionRegionComposerNeedsUpdate:self behavior:self->_animationState];
@@ -154,7 +154,7 @@ id __62__SBSystemNotesPositionHyperregionComposer__setupStateCapture__block_invo
       v13 = 2114;
       v14 = v10;
       v15 = 1024;
-      v16 = v4;
+      v16 = animatedCopy;
       _os_log_debug_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEBUG, "[%{public}@][Hyper] corners: %{public}@ animated: %{BOOL}u", &v11, 0x1Cu);
     }
   }
@@ -203,15 +203,15 @@ id __62__SBSystemNotesPositionHyperregionComposer__setupStateCapture__block_invo
   }
 }
 
-- (void)setupForInteractiveDismissalToSize:(CGSize)a3
+- (void)setupForInteractiveDismissalToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_state != 4 || (self->_dismissToSize.width == a3.width ? (v6 = self->_dismissToSize.height == a3.height) : (v6 = 0), !v6))
+  if (self->_state != 4 || (self->_dismissToSize.width == size.width ? (v6 = self->_dismissToSize.height == size.height) : (v6 = 0), !v6))
   {
     self->_state = 4;
-    self->_dismissToSize = a3;
+    self->_dismissToSize = size;
     self->_animationState = 2;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained positionRegionComposerNeedsUpdate:self behavior:self->_animationState];
@@ -255,29 +255,29 @@ id __62__SBSystemNotesPositionHyperregionComposer__setupStateCapture__block_invo
   [WeakRetained positionRegionComposerDidInvalidate:self];
 }
 
-- (id)positionRegionsForRegions:(id)a3 geometry:(SBPIPPositionGeometryContext *)a4 interaction:(SBPIPPositionInteractionStateContext *)a5
+- (id)positionRegionsForRegions:(id)regions geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction
 {
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:regions];
   v9 = v8;
-  pipAnchorPointOffset = a4->pipAnchorPointOffset;
-  pipStashedSize = a4->pipStashedSize;
+  pipAnchorPointOffset = geometry->pipAnchorPointOffset;
+  pipStashedSize = geometry->pipStashedSize;
   v61 = pipAnchorPointOffset;
-  size = a4->containerBounds.size;
-  origin = a4->containerBounds.origin;
+  size = geometry->containerBounds.size;
+  origin = geometry->containerBounds.origin;
   v63 = size;
-  pipLastSteadySize = a4->pipLastSteadySize;
-  pipCurrentSize = a4->pipCurrentSize;
+  pipLastSteadySize = geometry->pipLastSteadySize;
+  pipCurrentSize = geometry->pipCurrentSize;
   v59 = pipLastSteadySize;
-  v14 = *&a4->edgeInsets.top;
-  v13 = *&a4->edgeInsets.bottom;
-  v15 = *&a4->minimumPadding.bottom;
-  v56 = *&a4->minimumPadding.top;
+  v14 = *&geometry->edgeInsets.top;
+  v13 = *&geometry->edgeInsets.bottom;
+  v15 = *&geometry->minimumPadding.bottom;
+  v56 = *&geometry->minimumPadding.top;
   v57 = v15;
-  top = a4->stashedMinimumPadding.top;
-  left = a4->stashedMinimumPadding.left;
-  bottom = a4->stashedMinimumPadding.bottom;
-  right = a4->stashedMinimumPadding.right;
-  orientation = a4->orientation;
+  top = geometry->stashedMinimumPadding.top;
+  left = geometry->stashedMinimumPadding.left;
+  bottom = geometry->stashedMinimumPadding.bottom;
+  right = geometry->stashedMinimumPadding.right;
+  orientation = geometry->orientation;
   offscreenCorners = self->_offscreenCorners;
   state = self->_state;
   if (state <= 2)
@@ -327,9 +327,9 @@ id __62__SBSystemNotesPositionHyperregionComposer__setupStateCapture__block_invo
       if (state == 5)
       {
         v39 = *(&v13 + 1);
-        Height = CGRectGetHeight(a4->containerBounds);
-        v24 = a4->edgeInsets.left;
-        v25 = Height - a4->pipStashedSize.height + -25.0;
+        Height = CGRectGetHeight(geometry->containerBounds);
+        v24 = geometry->edgeInsets.left;
+        v25 = Height - geometry->pipStashedSize.height + -25.0;
         regionsLibrary = self->_regionsLibrary;
         v42 = pipStashedSize;
         v43 = v61;
@@ -410,7 +410,7 @@ id __62__SBSystemNotesPositionHyperregionComposer__setupStateCapture__block_invo
   v55 = orientation;
   v35 = [(SBPIPPositionHyperregionLibrary *)v34 regionWithType:5 geometry:&v40];
   [v9 setObject:v35 forKey:&unk_283371828];
-  if (!a5->isStashed && self->_state != 4)
+  if (!interaction->isStashed && self->_state != 4)
   {
     v42 = pipStashedSize;
     v43 = v61;
@@ -438,31 +438,31 @@ LABEL_16:
   return v9;
 }
 
-- (void)_addOffscreenCornersToRegions:(id)a3 geometry:(SBPIPPositionGeometryContext *)a4
+- (void)_addOffscreenCornersToRegions:(id)regions geometry:(SBPIPPositionGeometryContext *)geometry
 {
   regionsLibrary = self->_regionsLibrary;
-  v5 = *&a4->stashedMinimumPadding.bottom;
-  v23 = *&a4->stashedMinimumPadding.top;
+  v5 = *&geometry->stashedMinimumPadding.bottom;
+  v23 = *&geometry->stashedMinimumPadding.top;
   v24 = v5;
-  v25 = *&a4->offscreenCorners;
-  v6 = *&a4->edgeInsets.bottom;
-  v19 = *&a4->edgeInsets.top;
+  v25 = *&geometry->offscreenCorners;
+  v6 = *&geometry->edgeInsets.bottom;
+  v19 = *&geometry->edgeInsets.top;
   v20 = v6;
-  v7 = *&a4->minimumPadding.bottom;
-  v21 = *&a4->minimumPadding.top;
+  v7 = *&geometry->minimumPadding.bottom;
+  v21 = *&geometry->minimumPadding.top;
   v22 = v7;
-  pipAnchorPointOffset = a4->pipAnchorPointOffset;
-  pipStashedSize = a4->pipStashedSize;
+  pipAnchorPointOffset = geometry->pipAnchorPointOffset;
+  pipStashedSize = geometry->pipStashedSize;
   v16 = pipAnchorPointOffset;
-  size = a4->containerBounds.size;
-  origin = a4->containerBounds.origin;
+  size = geometry->containerBounds.size;
+  origin = geometry->containerBounds.origin;
   v18 = size;
-  pipLastSteadySize = a4->pipLastSteadySize;
-  pipCurrentSize = a4->pipCurrentSize;
+  pipLastSteadySize = geometry->pipLastSteadySize;
+  pipCurrentSize = geometry->pipCurrentSize;
   v14 = pipLastSteadySize;
-  v11 = a3;
+  regionsCopy = regions;
   v12 = [(SBPIPPositionHyperregionLibrary *)regionsLibrary regionWithType:4 geometry:&pipCurrentSize];
-  [v11 setObject:v12 forKey:{&unk_283371870, pipCurrentSize, v14, pipStashedSize, v16, origin, v18, v19, v20, v21, v22, v23, v24, v25}];
+  [regionsCopy setObject:v12 forKey:{&unk_283371870, pipCurrentSize, v14, pipStashedSize, v16, origin, v18, v19, v20, v21, v22, v23, v24, v25}];
 }
 
 - (SBPIPPositionHyperregionComposerDelegate)delegate

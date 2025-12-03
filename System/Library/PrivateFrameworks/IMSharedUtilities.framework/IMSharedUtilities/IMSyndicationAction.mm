@@ -1,107 +1,107 @@
 @interface IMSyndicationAction
-+ (id)dateFromNanoSeconds:(id)a3;
-+ (id)nanoSecondsFromDate:(id)a3;
++ (id)dateFromNanoSeconds:(id)seconds;
++ (id)nanoSecondsFromDate:(id)date;
 + (id)unarchiveClasses;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IMSyndicationAction)init;
-- (IMSyndicationAction)initWithChatGUID:(id)a3 syndicationStartDate:(id)a4 syndicationActionType:(unsigned __int8)a5;
-- (IMSyndicationAction)initWithCoder:(id)a3;
-- (IMSyndicationAction)initWithDictionary:(id)a3;
-- (id)_stringFromActionType:(unsigned __int8)a3;
-- (id)_stringFromItemType:(unsigned __int8)a3;
+- (IMSyndicationAction)initWithChatGUID:(id)d syndicationStartDate:(id)date syndicationActionType:(unsigned __int8)type;
+- (IMSyndicationAction)initWithCoder:(id)coder;
+- (IMSyndicationAction)initWithDictionary:(id)dictionary;
+- (id)_stringFromActionType:(unsigned __int8)type;
+- (id)_stringFromItemType:(unsigned __int8)type;
 - (id)copyDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithIMRemoteObjectSerializedDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithIMRemoteObjectSerializedDictionary:(id)dictionary;
 @end
 
 @implementation IMSyndicationAction
 
-- (id)_stringFromActionType:(unsigned __int8)a3
+- (id)_stringFromActionType:(unsigned __int8)type
 {
-  if ((a3 & 4) != 0)
+  if ((type & 4) != 0)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    [v4 addObject:@"IMSyndicationActionTypeAddItem"];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObject:@"IMSyndicationActionTypeAddItem"];
   }
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
   v5 = @"IMSyndicationActionTypeRemoveItem";
-  if ((a3 & 8) == 0)
+  if ((type & 8) == 0)
   {
     v5 = 0;
   }
 
   v6 = v5;
-  if ((a3 & 8) != 0)
+  if ((type & 8) != 0)
   {
-    if (!v4)
+    if (!array)
     {
-      v4 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    [v4 addObject:@"IMSyndicationActionTypeRemoveItem"];
+    [array addObject:@"IMSyndicationActionTypeRemoveItem"];
   }
 
   v7 = @"IMSyndicationActionTypeUndonateItem";
-  if ((a3 & 0x10) == 0)
+  if ((type & 0x10) == 0)
   {
     v7 = 0;
   }
 
   v8 = v7;
-  if ((a3 & 0x10) != 0)
+  if ((type & 0x10) != 0)
   {
-    if (!v4)
+    if (!array)
     {
-      v4 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    [v4 addObject:@"IMSyndicationActionTypeUndonateItem"];
+    [array addObject:@"IMSyndicationActionTypeUndonateItem"];
   }
 
   v9 = @"IMSyndicationActionTypeDonateItem";
-  if ((a3 & 0x20) == 0)
+  if ((type & 0x20) == 0)
   {
     v9 = 0;
   }
 
   v10 = v9;
-  if ((a3 & 0x20) != 0)
+  if ((type & 0x20) != 0)
   {
-    if (!v4)
+    if (!array)
     {
-      v4 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    [v4 addObject:@"IMSyndicationActionTypeDonateItem"];
+    [array addObject:@"IMSyndicationActionTypeDonateItem"];
   }
 
   v11 = @"IMSyndicationActionTypeInteractedWithItem";
-  if ((a3 & 0x40) == 0)
+  if ((type & 0x40) == 0)
   {
     v11 = 0;
   }
 
   v12 = v11;
-  if ((a3 & 0x40) != 0)
+  if ((type & 0x40) != 0)
   {
-    if (!v4)
+    if (!array)
     {
-      v4 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    [v4 addObject:@"IMSyndicationActionTypeInteractedWithItem"];
+    [array addObject:@"IMSyndicationActionTypeInteractedWithItem"];
   }
 
-  if (v4)
+  if (array)
   {
-    v13 = [v4 componentsJoinedByString:@" | "];
+    v13 = [array componentsJoinedByString:@" | "];
   }
 
   else
@@ -112,26 +112,26 @@
   return v13;
 }
 
-- (id)_stringFromItemType:(unsigned __int8)a3
+- (id)_stringFromItemType:(unsigned __int8)type
 {
-  if (a3 > 2u)
+  if (type > 2u)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7827FE0[a3];
+    return off_1E7827FE0[type];
   }
 }
 
-- (void)encodeWithIMRemoteObjectSerializedDictionary:(id)a3
+- (void)encodeWithIMRemoteObjectSerializedDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(IMSyndicationAction *)self copyDictionaryRepresentation];
-  if (v5)
+  dictionaryCopy = dictionary;
+  copyDictionaryRepresentation = [(IMSyndicationAction *)self copyDictionaryRepresentation];
+  if (copyDictionaryRepresentation)
   {
-    [v4 addEntriesFromDictionary:v5];
+    [dictionaryCopy addEntriesFromDictionary:copyDictionaryRepresentation];
   }
 
   else
@@ -155,11 +155,11 @@
   return 0;
 }
 
-+ (id)dateFromNanoSeconds:(id)a3
++ (id)dateFromNanoSeconds:(id)seconds
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 longLongValue])
+  secondsCopy = seconds;
+  v4 = secondsCopy;
+  if (secondsCopy && [secondsCopy longLongValue])
   {
     v5 = [MEMORY[0x1E695DF00] __im_dateWithNanosecondTimeIntervalSinceReferenceDate:{objc_msgSend(v4, "longLongValue")}];
   }
@@ -172,11 +172,11 @@
   return v5;
 }
 
-+ (id)nanoSecondsFromDate:(id)a3
++ (id)nanoSecondsFromDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(a3, "__im_nanosecondTimeInterval")}];
+    v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(date, "__im_nanosecondTimeInterval")}];
   }
 
   else
@@ -189,28 +189,28 @@
 
 - (id)copyDictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[IMSyndicationAction syndicationActionType](self, "syndicationActionType")}];
-  [v3 setObject:v4 forKeyedSubscript:@"sat2"];
+  [dictionary setObject:v4 forKeyedSubscript:@"sat2"];
 
-  v5 = [(IMSyndicationAction *)self chatGUID];
-  [v3 setObject:v5 forKeyedSubscript:@"sacg"];
+  chatGUID = [(IMSyndicationAction *)self chatGUID];
+  [dictionary setObject:chatGUID forKeyedSubscript:@"sacg"];
 
   v6 = objc_opt_class();
-  v7 = [(IMSyndicationAction *)self syndicationStartDate];
-  v8 = [v6 nanoSecondsFromDate:v7];
-  [v3 setObject:v8 forKeyedSubscript:@"sasd"];
+  syndicationStartDate = [(IMSyndicationAction *)self syndicationStartDate];
+  v8 = [v6 nanoSecondsFromDate:syndicationStartDate];
+  [dictionary setObject:v8 forKeyedSubscript:@"sasd"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[IMSyndicationAction syndicatedItemType](self, "syndicatedItemType")}];
-  [v3 setObject:v9 forKeyedSubscript:@"sait"];
+  [dictionary setObject:v9 forKeyedSubscript:@"sait"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithShort:{-[IMSyndicationAction version](self, "version")}];
-  [v3 setObject:v10 forKeyedSubscript:@"savs"];
+  [dictionary setObject:v10 forKeyedSubscript:@"savs"];
 
-  return v3;
+  return dictionary;
 }
 
-- (IMSyndicationAction)initWithDictionary:(id)a3
+- (IMSyndicationAction)initWithDictionary:(id)dictionary
 {
   v4 = IMLogHandleForCategory("IMSyndicationAction");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -221,11 +221,11 @@
   return 0;
 }
 
-- (IMSyndicationAction)initWithChatGUID:(id)a3 syndicationStartDate:(id)a4 syndicationActionType:(unsigned __int8)a5
+- (IMSyndicationAction)initWithChatGUID:(id)d syndicationStartDate:(id)date syndicationActionType:(unsigned __int8)type
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  dCopy = d;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = IMSyndicationAction;
   v10 = [(IMSyndicationAction *)&v18 init];
@@ -234,30 +234,30 @@
     goto LABEL_24;
   }
 
-  if (v8 && [v8 length])
+  if (dCopy && [dCopy length])
   {
-    v11 = v5 & 0xFFFFFFFB;
-    if ((v5 & 4) == 0)
+    v11 = typeCopy & 0xFFFFFFFB;
+    if ((typeCopy & 4) == 0)
     {
-      v11 = v5;
+      v11 = typeCopy;
     }
 
-    if ((v5 & 8) != 0)
+    if ((typeCopy & 8) != 0)
     {
       v11 &= ~8u;
     }
 
-    if ((v5 & 0x10) != 0)
+    if ((typeCopy & 0x10) != 0)
     {
       v11 &= ~0x10u;
     }
 
-    if ((v5 & 0x20) != 0)
+    if ((typeCopy & 0x20) != 0)
     {
       v11 &= ~0x20u;
     }
 
-    if ((v5 & 0x40) != 0)
+    if ((typeCopy & 0x40) != 0)
     {
       v11 &= ~0x40u;
     }
@@ -267,20 +267,20 @@
       v12 = IMLogHandleForCategory("IMSyndicationAction");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_1A88C187C(v5, v12);
+        sub_1A88C187C(typeCopy, v12);
       }
 
       goto LABEL_21;
     }
 
-    if (v9)
+    if (dateCopy)
     {
-      v15 = [v8 copy];
+      v15 = [dCopy copy];
       chatGUID = v10->_chatGUID;
       v10->_chatGUID = v15;
 
-      v10->_syndicationActionType = v5;
-      objc_storeStrong(&v10->_syndicationStartDate, a4);
+      v10->_syndicationActionType = typeCopy;
+      objc_storeStrong(&v10->_syndicationStartDate, date);
       v10->_version = 2;
 LABEL_24:
       v14 = v10;
@@ -310,7 +310,7 @@ LABEL_25:
   return v14;
 }
 
-- (IMSyndicationAction)initWithCoder:(id)a3
+- (IMSyndicationAction)initWithCoder:(id)coder
 {
   v4 = IMLogHandleForCategory("IMSyndicationAction");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -321,20 +321,20 @@ LABEL_25:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(IMSyndicationAction *)self chatGUID];
-  [v6 encodeObject:v4 forKey:@"sacg"];
+  coderCopy = coder;
+  chatGUID = [(IMSyndicationAction *)self chatGUID];
+  [coderCopy encodeObject:chatGUID forKey:@"sacg"];
 
-  v5 = [(IMSyndicationAction *)self syndicationStartDate];
-  [v6 encodeObject:v5 forKey:@"sasd"];
+  syndicationStartDate = [(IMSyndicationAction *)self syndicationStartDate];
+  [coderCopy encodeObject:syndicationStartDate forKey:@"sasd"];
 
-  [v6 encodeInt64:-[IMSyndicationAction syndicationActionType](self forKey:{"syndicationActionType"), @"sat2"}];
-  [v6 encodeInt64:-[IMSyndicationAction version](self forKey:{"version"), @"savs"}];
+  [coderCopy encodeInt64:-[IMSyndicationAction syndicationActionType](self forKey:{"syndicationActionType"), @"sat2"}];
+  [coderCopy encodeInt64:-[IMSyndicationAction version](self forKey:{"version"), @"savs"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = IMLogHandleForCategory("IMSyndicationAction");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -351,19 +351,19 @@ LABEL_25:
   v11.receiver = self;
   v11.super_class = IMSyndicationAction;
   v4 = [(IMSyndicationAction *)&v11 description];
-  v5 = [(IMSyndicationAction *)self chatGUID];
+  chatGUID = [(IMSyndicationAction *)self chatGUID];
   v6 = [(IMSyndicationAction *)self _stringFromItemType:[(IMSyndicationAction *)self syndicatedItemType]];
   v7 = [(IMSyndicationAction *)self _stringFromActionType:[(IMSyndicationAction *)self syndicationActionType]];
-  v8 = [(IMSyndicationAction *)self syndicationStartDate];
-  v9 = [v3 stringWithFormat:@"%@ chatGUID: %@, syndicatedItemType: %@, syndicationActionType: %@, syndicationStartDate: %@, version: %d", v4, v5, v6, v7, v8, -[IMSyndicationAction version](self, "version")];
+  syndicationStartDate = [(IMSyndicationAction *)self syndicationStartDate];
+  v9 = [v3 stringWithFormat:@"%@ chatGUID: %@, syndicatedItemType: %@, syndicationActionType: %@, syndicationStartDate: %@, version: %d", v4, chatGUID, v6, v7, syndicationStartDate, -[IMSyndicationAction version](self, "version")];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v11) = 1;
   }
@@ -373,13 +373,13 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(IMSyndicationAction *)self syndicationActionType];
-      if (v5 == [(IMSyndicationAction *)v4 syndicationActionType])
+      syndicationActionType = [(IMSyndicationAction *)self syndicationActionType];
+      if (syndicationActionType == [(IMSyndicationAction *)equalCopy syndicationActionType])
       {
-        v6 = [(IMSyndicationAction *)self syndicationStartDate];
-        v7 = [(IMSyndicationAction *)v4 syndicationStartDate];
-        v8 = v6;
-        v9 = v7;
+        syndicationStartDate = [(IMSyndicationAction *)self syndicationStartDate];
+        syndicationStartDate2 = [(IMSyndicationAction *)equalCopy syndicationStartDate];
+        v8 = syndicationStartDate;
+        v9 = syndicationStartDate2;
         v10 = v9;
         if (v8 == v9)
         {
@@ -406,10 +406,10 @@ LABEL_19:
           }
         }
 
-        v14 = [(IMSyndicationAction *)self chatGUID];
-        v15 = [(IMSyndicationAction *)v4 chatGUID];
-        v13 = v14;
-        v16 = v15;
+        chatGUID = [(IMSyndicationAction *)self chatGUID];
+        chatGUID2 = [(IMSyndicationAction *)equalCopy chatGUID];
+        v13 = chatGUID;
+        v16 = chatGUID2;
         v12 = v16;
         if (v13 == v16)
         {

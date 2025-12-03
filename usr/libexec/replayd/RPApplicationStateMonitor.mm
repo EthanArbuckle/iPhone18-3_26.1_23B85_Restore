@@ -1,10 +1,10 @@
 @interface RPApplicationStateMonitor
 - (RPApplicationStateMonitor)init;
 - (int64_t)observersCount;
-- (void)addSystemObserver:(id)a3;
-- (void)applicationStateDidChange:(id)a3;
-- (void)handleApplicationStateChange:(id)a3;
-- (void)notifyInAppSessionShouldPauseOrResume:(id)a3;
+- (void)addSystemObserver:(id)observer;
+- (void)applicationStateDidChange:(id)change;
+- (void)handleApplicationStateChange:(id)change;
+- (void)notifyInAppSessionShouldPauseOrResume:(id)resume;
 - (void)observersCountDidChange;
 - (void)removeSystemObserver;
 @end
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (void)addSystemObserver:(id)a3
+- (void)addSystemObserver:(id)observer
 {
-  [(RPApplicationStateMonitor *)self setSystemObserver:a3];
+  [(RPApplicationStateMonitor *)self setSystemObserver:observer];
 
   [(RPApplicationStateMonitor *)self observersCountDidChange];
 }
@@ -49,10 +49,10 @@
 
 - (int64_t)observersCount
 {
-  v3 = [(RPApplicationStateMonitor *)self observers];
-  v4 = [v3 count];
-  v5 = [(RPApplicationStateMonitor *)self systemObserver];
-  if (v5)
+  observers = [(RPApplicationStateMonitor *)self observers];
+  v4 = [observers count];
+  systemObserver = [(RPApplicationStateMonitor *)self systemObserver];
+  if (systemObserver)
   {
     v6 = v4 + 1;
   }
@@ -69,48 +69,48 @@
 {
   if ([(RPApplicationStateMonitor *)self observersCount]>= 1)
   {
-    v3 = [(RPApplicationStateMonitor *)self applicationStateMonitor];
-    v4 = [v3 handler];
+    applicationStateMonitor = [(RPApplicationStateMonitor *)self applicationStateMonitor];
+    handler = [applicationStateMonitor handler];
 
-    if (!v4)
+    if (!handler)
     {
       objc_initWeak(&location, self);
-      v5 = [(RPApplicationStateMonitor *)self applicationStateMonitor];
+      applicationStateMonitor2 = [(RPApplicationStateMonitor *)self applicationStateMonitor];
       v10 = _NSConcreteStackBlock;
       v11 = 3221225472;
       v12 = sub_10001FC64;
       v13 = &unk_1000A1B28;
       objc_copyWeak(&v14, &location);
-      [v5 setHandler:&v10];
+      [applicationStateMonitor2 setHandler:&v10];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
     }
   }
 
-  v6 = [(RPApplicationStateMonitor *)self applicationStateMonitor:v10];
-  v7 = [v6 handler];
-  if (v7)
+  applicationStateMonitor3 = [(RPApplicationStateMonitor *)self applicationStateMonitor:v10];
+  handler2 = [applicationStateMonitor3 handler];
+  if (handler2)
   {
-    v8 = v7;
-    v9 = [(RPApplicationStateMonitor *)self observersCount];
+    v8 = handler2;
+    observersCount = [(RPApplicationStateMonitor *)self observersCount];
 
-    if (v9)
+    if (observersCount)
     {
       return;
     }
 
-    v6 = [(RPApplicationStateMonitor *)self applicationStateMonitor];
-    [v6 setHandler:0];
+    applicationStateMonitor3 = [(RPApplicationStateMonitor *)self applicationStateMonitor];
+    [applicationStateMonitor3 setHandler:0];
   }
 }
 
-- (void)applicationStateDidChange:(id)a3
+- (void)applicationStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(RPApplicationStateMonitor *)self previousState];
+    previousState = [(RPApplicationStateMonitor *)self previousState];
     v9 = 136447234;
     v10 = "[RPApplicationStateMonitor applicationStateDidChange:]";
     v11 = 1024;
@@ -118,57 +118,57 @@
     v13 = 2080;
     v14 = "[RPApplicationStateMonitor applicationStateDidChange:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = changeCopy;
     v17 = 2112;
-    v18 = v5;
+    v18 = previousState;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d %s userInfo %@ previousState %@", &v9, 0x30u);
   }
 
-  v6 = [(RPApplicationStateMonitor *)self systemObserver];
+  systemObserver = [(RPApplicationStateMonitor *)self systemObserver];
 
-  if (v6)
+  if (systemObserver)
   {
-    [(RPApplicationStateMonitor *)self handleApplicationStateChange:v4];
+    [(RPApplicationStateMonitor *)self handleApplicationStateChange:changeCopy];
   }
 
-  v7 = [(RPApplicationStateMonitor *)self observers];
-  v8 = [v7 count];
+  observers = [(RPApplicationStateMonitor *)self observers];
+  v8 = [observers count];
 
   if (v8)
   {
-    [(RPApplicationStateMonitor *)self notifyInAppSessionShouldPauseOrResume:v4];
+    [(RPApplicationStateMonitor *)self notifyInAppSessionShouldPauseOrResume:changeCopy];
   }
 }
 
-- (void)handleApplicationStateChange:(id)a3
+- (void)handleApplicationStateChange:(id)change
 {
-  v10 = a3;
-  v4 = [v10 objectForKeyedSubscript:BKSApplicationStateAppIsFrontmostKey];
-  v5 = [v4 BOOLValue];
+  changeCopy = change;
+  v4 = [changeCopy objectForKeyedSubscript:BKSApplicationStateAppIsFrontmostKey];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = v10;
-  if (v5)
+  v6 = changeCopy;
+  if (bOOLValue)
   {
-    v7 = [v10 objectForKeyedSubscript:BKSApplicationStateDisplayIDKey];
+    v7 = [changeCopy objectForKeyedSubscript:BKSApplicationStateDisplayIDKey];
     v8 = SBSCopyFrontmostApplicationDisplayIdentifier();
     if ([v7 isEqualToString:v8])
     {
-      v9 = [(RPApplicationStateMonitor *)self systemObserver];
-      [v9 frontmostApplicationDidChange:v7];
+      systemObserver = [(RPApplicationStateMonitor *)self systemObserver];
+      [systemObserver frontmostApplicationDidChange:v7];
     }
 
-    v6 = v10;
+    v6 = changeCopy;
   }
 }
 
-- (void)notifyInAppSessionShouldPauseOrResume:(id)a3
+- (void)notifyInAppSessionShouldPauseOrResume:(id)resume
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:BKSApplicationStateProcessIDKey];
+  resumeCopy = resume;
+  v5 = [resumeCopy objectForKeyedSubscript:BKSApplicationStateProcessIDKey];
   v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 integerValue]);
 
-  v7 = [(RPApplicationStateMonitor *)self observers];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  observers = [(RPApplicationStateMonitor *)self observers];
+  v8 = [observers objectForKeyedSubscript:v6];
 
   if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -187,12 +187,12 @@
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:BKSApplicationStateKey];
-    v10 = [v9 unsignedIntValue];
+    v9 = [resumeCopy objectForKeyedSubscript:BKSApplicationStateKey];
+    unsignedIntValue = [v9 unsignedIntValue];
 
-    v11 = [(RPApplicationStateMonitor *)self previousState];
-    v12 = [v11 objectForKeyedSubscript:v6];
-    v13 = [v12 unsignedIntValue];
+    previousState = [(RPApplicationStateMonitor *)self previousState];
+    v12 = [previousState objectForKeyedSubscript:v6];
+    unsignedIntValue2 = [v12 unsignedIntValue];
 
     if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -203,15 +203,15 @@
       v21 = 2080;
       v22 = "[RPApplicationStateMonitor notifyInAppSessionShouldPauseOrResume:]";
       v23 = 1024;
-      *v24 = v10;
+      *v24 = unsignedIntValue;
       *&v24[4] = 1024;
-      *&v24[6] = v13;
+      *&v24[6] = unsignedIntValue2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d %s state %i previousState %i", &v17, 0x28u);
     }
 
-    if (v10 == 8)
+    if (unsignedIntValue == 8)
     {
-      if (v13 != 8)
+      if (unsignedIntValue2 != 8)
       {
         if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
@@ -228,7 +228,7 @@
       }
     }
 
-    else if (v13 == 8)
+    else if (unsignedIntValue2 == 8)
     {
       if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -244,13 +244,13 @@
       [v8 clientApplicationDidEnterBackground];
     }
 
-    v14 = [NSNumber numberWithUnsignedInt:v10];
-    v15 = [(RPApplicationStateMonitor *)self previousState];
-    [v15 setObject:v14 forKeyedSubscript:v6];
+    v14 = [NSNumber numberWithUnsignedInt:unsignedIntValue];
+    previousState2 = [(RPApplicationStateMonitor *)self previousState];
+    [previousState2 setObject:v14 forKeyedSubscript:v6];
 
     if (!dword_1000B6840 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(RPApplicationStateMonitor *)self previousState];
+      previousState3 = [(RPApplicationStateMonitor *)self previousState];
       v17 = 136447234;
       v18 = "[RPApplicationStateMonitor notifyInAppSessionShouldPauseOrResume:]";
       v19 = 1024;
@@ -258,9 +258,9 @@
       v21 = 2080;
       v22 = "[RPApplicationStateMonitor notifyInAppSessionShouldPauseOrResume:]";
       v23 = 1024;
-      *v24 = v10;
+      *v24 = unsignedIntValue;
       *&v24[4] = 2112;
-      *&v24[6] = v16;
+      *&v24[6] = previousState3;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d %s state %i previousState %@", &v17, 0x2Cu);
     }
   }

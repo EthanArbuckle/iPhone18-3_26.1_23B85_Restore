@@ -1,12 +1,12 @@
 @interface MTSSystemCommissionerPairing
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (MTSSystemCommissionerPairing)initWithCoder:(id)a3;
-- (MTSSystemCommissionerPairing)initWithUUID:(id)a3 nodeID:(id)a4 vendorID:(id)a5 productID:(id)a6 deviceType:(id)a7 serialNumber:(id)a8 name:(id)a9 setupPayload:(id)a10 threadCredentialManagementEnabled:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (MTSSystemCommissionerPairing)initWithCoder:(id)coder;
+- (MTSSystemCommissionerPairing)initWithUUID:(id)d nodeID:(id)iD vendorID:(id)vendorID productID:(id)productID deviceType:(id)type serialNumber:(id)number name:(id)name setupPayload:(id)self0 threadCredentialManagementEnabled:(id)self1;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSSystemCommissionerPairing
@@ -15,40 +15,40 @@
 {
   v33[9] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v32 = [(MTSSystemCommissionerPairing *)self uuid];
-  v31 = [v3 initWithName:@"UUID" value:v32];
+  uuid = [(MTSSystemCommissionerPairing *)self uuid];
+  v31 = [v3 initWithName:@"UUID" value:uuid];
   v33[0] = v31;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v30 = [(MTSSystemCommissionerPairing *)self nodeID];
-  v29 = [v4 initWithName:@"Node ID" value:v30];
+  nodeID = [(MTSSystemCommissionerPairing *)self nodeID];
+  v29 = [v4 initWithName:@"Node ID" value:nodeID];
   v33[1] = v29;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v28 = [(MTSSystemCommissionerPairing *)self vendorID];
-  v27 = [v5 initWithName:@"Vendor ID" value:v28];
+  vendorID = [(MTSSystemCommissionerPairing *)self vendorID];
+  v27 = [v5 initWithName:@"Vendor ID" value:vendorID];
   v33[2] = v27;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v26 = [(MTSSystemCommissionerPairing *)self productID];
-  v25 = [v6 initWithName:@"Product ID" value:v26];
+  productID = [(MTSSystemCommissionerPairing *)self productID];
+  v25 = [v6 initWithName:@"Product ID" value:productID];
   v33[3] = v25;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v24 = [(MTSSystemCommissionerPairing *)self deviceType];
-  v8 = [v7 initWithName:@"Device Type" value:v24];
+  deviceType = [(MTSSystemCommissionerPairing *)self deviceType];
+  v8 = [v7 initWithName:@"Device Type" value:deviceType];
   v33[4] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(MTSSystemCommissionerPairing *)self serialNumber];
-  v11 = [v9 initWithName:@"Serial Number" value:v10];
+  serialNumber = [(MTSSystemCommissionerPairing *)self serialNumber];
+  v11 = [v9 initWithName:@"Serial Number" value:serialNumber];
   v33[5] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(MTSSystemCommissionerPairing *)self name];
-  v14 = [v12 initWithName:@"Name" value:v13];
+  name = [(MTSSystemCommissionerPairing *)self name];
+  v14 = [v12 initWithName:@"Name" value:name];
   v33[6] = v14;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(MTSSystemCommissionerPairing *)self setupPayload];
-  v17 = [v15 initWithName:@"Setup Payload" value:v16];
+  setupPayload = [(MTSSystemCommissionerPairing *)self setupPayload];
+  v17 = [v15 initWithName:@"Setup Payload" value:setupPayload];
   v33[7] = v17;
   v18 = objc_alloc(MEMORY[0x277D0F778]);
-  v19 = [(MTSSystemCommissionerPairing *)self threadCredentialManagementEnabled];
-  v20 = [v18 initWithName:@"Thread Credential Management" value:v19];
+  threadCredentialManagementEnabled = [(MTSSystemCommissionerPairing *)self threadCredentialManagementEnabled];
+  v20 = [v18 initWithName:@"Thread Credential Management" value:threadCredentialManagementEnabled];
   v33[8] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:9];
 
@@ -64,36 +64,36 @@
   return [v2 shortDescription];
 }
 
-- (MTSSystemCommissionerPairing)initWithCoder:(id)a3
+- (MTSSystemCommissionerPairing)initWithCoder:(id)coder
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.uuid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.nodeID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.vendorID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.productID"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.deviceType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.uuid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.nodeID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.vendorID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.productID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.deviceType"];
   v10 = v5;
   if (v5 && v6 && v7 && v8 && v9)
   {
-    v26 = self;
+    selfCopy = self;
     v11 = v6;
     v12 = v9;
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.serialNumber"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.name"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.setupPayload"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.threadCM"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.serialNumber"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.name"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.setupPayload"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSSCP.threadCM"];
     v16 = v11;
-    v17 = [(MTSSystemCommissionerPairing *)v26 initWithUUID:v10 nodeID:v11 vendorID:v7 productID:v8 deviceType:v12 serialNumber:v13 name:v25 setupPayload:v14 threadCredentialManagementEnabled:v15];
+    selfCopy2 = [(MTSSystemCommissionerPairing *)selfCopy initWithUUID:v10 nodeID:v11 vendorID:v7 productID:v8 deviceType:v12 serialNumber:v13 name:v25 setupPayload:v14 threadCredentialManagementEnabled:v15];
 
-    v18 = v17;
+    v18 = selfCopy2;
   }
 
   else
   {
     v19 = v9;
     v20 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -123,52 +123,52 @@
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSSystemCommissionerPairing *)self uuid];
-  [v4 encodeObject:v5 forKey:@"MTSSCP.uuid"];
+  coderCopy = coder;
+  uuid = [(MTSSystemCommissionerPairing *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"MTSSCP.uuid"];
 
-  v6 = [(MTSSystemCommissionerPairing *)self nodeID];
-  [v4 encodeObject:v6 forKey:@"MTSSCP.nodeID"];
+  nodeID = [(MTSSystemCommissionerPairing *)self nodeID];
+  [coderCopy encodeObject:nodeID forKey:@"MTSSCP.nodeID"];
 
-  v7 = [(MTSSystemCommissionerPairing *)self vendorID];
-  [v4 encodeObject:v7 forKey:@"MTSSCP.vendorID"];
+  vendorID = [(MTSSystemCommissionerPairing *)self vendorID];
+  [coderCopy encodeObject:vendorID forKey:@"MTSSCP.vendorID"];
 
-  v8 = [(MTSSystemCommissionerPairing *)self productID];
-  [v4 encodeObject:v8 forKey:@"MTSSCP.productID"];
+  productID = [(MTSSystemCommissionerPairing *)self productID];
+  [coderCopy encodeObject:productID forKey:@"MTSSCP.productID"];
 
-  v9 = [(MTSSystemCommissionerPairing *)self deviceType];
-  [v4 encodeObject:v9 forKey:@"MTSSCP.deviceType"];
+  deviceType = [(MTSSystemCommissionerPairing *)self deviceType];
+  [coderCopy encodeObject:deviceType forKey:@"MTSSCP.deviceType"];
 
-  v10 = [(MTSSystemCommissionerPairing *)self serialNumber];
-  [v4 encodeObject:v10 forKey:@"MTSSCP.serialNumber"];
+  serialNumber = [(MTSSystemCommissionerPairing *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"MTSSCP.serialNumber"];
 
-  v11 = [(MTSSystemCommissionerPairing *)self name];
-  [v4 encodeObject:v11 forKey:@"MTSSCP.name"];
+  name = [(MTSSystemCommissionerPairing *)self name];
+  [coderCopy encodeObject:name forKey:@"MTSSCP.name"];
 
-  v12 = [(MTSSystemCommissionerPairing *)self setupPayload];
-  [v4 encodeObject:v12 forKey:@"MTSSCP.setupPayload"];
+  setupPayload = [(MTSSystemCommissionerPairing *)self setupPayload];
+  [coderCopy encodeObject:setupPayload forKey:@"MTSSCP.setupPayload"];
 
-  v13 = [(MTSSystemCommissionerPairing *)self threadCredentialManagementEnabled];
-  [v4 encodeObject:v13 forKey:@"MTSSCP.threadCM"];
+  threadCredentialManagementEnabled = [(MTSSystemCommissionerPairing *)self threadCredentialManagementEnabled];
+  [coderCopy encodeObject:threadCredentialManagementEnabled forKey:@"MTSSCP.threadCM"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MTSSystemCommissionerPairing *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(MTSSystemCommissionerPairing *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -179,41 +179,41 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSSystemCommissionerPairing *)self uuid];
-    v8 = [v6 uuid];
-    if ([v7 isEqual:v8])
+    uuid = [(MTSSystemCommissionerPairing *)self uuid];
+    uuid2 = [v6 uuid];
+    if ([uuid isEqual:uuid2])
     {
-      v9 = [(MTSSystemCommissionerPairing *)self nodeID];
-      v10 = [v6 nodeID];
-      if ([v9 isEqual:v10])
+      nodeID = [(MTSSystemCommissionerPairing *)self nodeID];
+      nodeID2 = [v6 nodeID];
+      if ([nodeID isEqual:nodeID2])
       {
-        v11 = [(MTSSystemCommissionerPairing *)self vendorID];
-        v12 = [v6 vendorID];
-        if ([v11 isEqual:v12])
+        vendorID = [(MTSSystemCommissionerPairing *)self vendorID];
+        vendorID2 = [v6 vendorID];
+        if ([vendorID isEqual:vendorID2])
         {
-          v13 = [(MTSSystemCommissionerPairing *)self productID];
-          v32 = [v6 productID];
-          if ([v13 isEqual:?])
+          productID = [(MTSSystemCommissionerPairing *)self productID];
+          productID2 = [v6 productID];
+          if ([productID isEqual:?])
           {
-            v30 = v11;
-            v14 = [(MTSSystemCommissionerPairing *)self deviceType];
+            v30 = vendorID;
+            deviceType = [(MTSSystemCommissionerPairing *)self deviceType];
             [v6 deviceType];
-            v29 = v31 = v14;
-            if ([v14 isEqual:?])
+            v29 = v31 = deviceType;
+            if ([deviceType isEqual:?])
             {
-              v28 = v13;
-              v15 = [(MTSSystemCommissionerPairing *)self serialNumber];
-              v16 = [v6 serialNumber];
+              v28 = productID;
+              serialNumber = [(MTSSystemCommissionerPairing *)self serialNumber];
+              serialNumber2 = [v6 serialNumber];
               v24 = HMFEqualObjects();
 
-              v11 = v30;
+              vendorID = v30;
               if (!v24)
               {
                 goto LABEL_20;
               }
 
-              v25 = [(MTSSystemCommissionerPairing *)self name];
-              v17 = [v6 name];
+              name = [(MTSSystemCommissionerPairing *)self name];
+              name2 = [v6 name];
               v22 = HMFEqualObjects();
 
               if (!v22)
@@ -221,14 +221,14 @@
                 goto LABEL_20;
               }
 
-              v26 = [(MTSSystemCommissionerPairing *)self setupPayload];
-              v18 = [v6 setupPayload];
+              setupPayload = [(MTSSystemCommissionerPairing *)self setupPayload];
+              setupPayload2 = [v6 setupPayload];
               v23 = HMFEqualObjects();
 
               if (v23)
               {
-                v27 = [(MTSSystemCommissionerPairing *)self threadCredentialManagementEnabled];
-                v19 = [v6 threadCredentialManagementEnabled];
+                threadCredentialManagementEnabled = [(MTSSystemCommissionerPairing *)self threadCredentialManagementEnabled];
+                threadCredentialManagementEnabled2 = [v6 threadCredentialManagementEnabled];
                 v20 = HMFEqualObjects();
               }
 
@@ -238,13 +238,13 @@ LABEL_20:
                 v20 = 0;
               }
 
-              v13 = v28;
+              productID = v28;
             }
 
             else
             {
               v20 = 0;
-              v11 = v30;
+              vendorID = v30;
             }
           }
 
@@ -280,111 +280,111 @@ LABEL_20:
   return v20;
 }
 
-- (MTSSystemCommissionerPairing)initWithUUID:(id)a3 nodeID:(id)a4 vendorID:(id)a5 productID:(id)a6 deviceType:(id)a7 serialNumber:(id)a8 name:(id)a9 setupPayload:(id)a10 threadCredentialManagementEnabled:(id)a11
+- (MTSSystemCommissionerPairing)initWithUUID:(id)d nodeID:(id)iD vendorID:(id)vendorID productID:(id)productID deviceType:(id)type serialNumber:(id)number name:(id)name setupPayload:(id)self0 threadCredentialManagementEnabled:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  if (!v17)
+  dCopy = d;
+  iDCopy = iD;
+  vendorIDCopy = vendorID;
+  productIDCopy = productID;
+  typeCopy = type;
+  numberCopy = number;
+  nameCopy = name;
+  payloadCopy = payload;
+  enabledCopy = enabled;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v18)
+  if (!iDCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v19)
+  if (!vendorIDCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!productIDCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  if (!v21)
+  if (!typeCopy)
   {
 LABEL_16:
     v57 = _HMFPreconditionFailure();
     return +[(MTSSystemCommissionerPairing *)v57];
   }
 
-  v26 = v25;
+  v26 = enabledCopy;
   v60.receiver = self;
   v60.super_class = MTSSystemCommissionerPairing;
   v27 = [(MTSSystemCommissionerPairing *)&v60 init];
   if (v27)
   {
-    v28 = [v17 copy];
+    v28 = [dCopy copy];
     uuid = v27->_uuid;
     v27->_uuid = v28;
 
-    v30 = [v18 copy];
+    v30 = [iDCopy copy];
     nodeID = v27->_nodeID;
     v27->_nodeID = v30;
 
-    v32 = [v19 copy];
+    v32 = [vendorIDCopy copy];
     vendorID = v27->_vendorID;
     v27->_vendorID = v32;
 
-    v34 = [v20 copy];
+    v34 = [productIDCopy copy];
     productID = v27->_productID;
     v27->_productID = v34;
 
-    v36 = [v21 copy];
+    v36 = [typeCopy copy];
     deviceType = v27->_deviceType;
     v27->_deviceType = v36;
 
-    v38 = [v22 copy];
+    v38 = [numberCopy copy];
     serialNumber = v27->_serialNumber;
     v27->_serialNumber = v38;
 
-    v40 = [v23 copy];
+    v40 = [nameCopy copy];
     name = v27->_name;
     v27->_name = v40;
 
-    v42 = [v24 copy];
+    v42 = [payloadCopy copy];
     setupPayload = v27->_setupPayload;
     v27->_setupPayload = v42;
 
     if (v26)
     {
-      v59 = v21;
-      v44 = v20;
-      v45 = v19;
-      v46 = v18;
-      v47 = v17;
-      v48 = v24;
-      v49 = v23;
-      v50 = v22;
+      v59 = typeCopy;
+      v44 = productIDCopy;
+      v45 = vendorIDCopy;
+      v46 = iDCopy;
+      v47 = dCopy;
+      v48 = payloadCopy;
+      v49 = nameCopy;
+      v50 = numberCopy;
       v51 = MEMORY[0x277CCABB0];
-      v52 = [v26 BOOLValue];
+      bOOLValue = [v26 BOOLValue];
       v53 = v51;
-      v22 = v50;
-      v23 = v49;
-      v24 = v48;
-      v17 = v47;
-      v18 = v46;
-      v19 = v45;
-      v20 = v44;
-      v21 = v59;
-      v54 = [v53 numberWithBool:v52];
+      numberCopy = v50;
+      nameCopy = v49;
+      payloadCopy = v48;
+      dCopy = v47;
+      iDCopy = v46;
+      vendorIDCopy = v45;
+      productIDCopy = v44;
+      typeCopy = v59;
+      v54 = [v53 numberWithBool:bOOLValue];
     }
 
     else

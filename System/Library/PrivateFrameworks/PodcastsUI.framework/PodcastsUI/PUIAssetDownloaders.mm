@@ -1,6 +1,6 @@
 @interface PUIAssetDownloaders
 + (PUIAssetDownloaders)sharedDownloaders;
-- (void)registerBackgroundCompletion:(id)a3 forSession:(id)a4;
+- (void)registerBackgroundCompletion:(id)completion forSession:(id)session;
 @end
 
 @implementation PUIAssetDownloaders
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (void)registerBackgroundCompletion:(id)a3 forSession:(id)a4
+- (void)registerBackgroundCompletion:(id)completion forSession:(id)session
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = sub_21B4C9708();
   v9 = v8;
-  v10 = self;
+  selfCopy = self;
   sub_21B424D90(sub_21B42542C, v6, v7, v9);
 }
 

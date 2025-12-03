@@ -1,12 +1,12 @@
 @interface ACCExternalAccessorySessionBasic
 - (BOOL)closeDataPipes;
-- (__CFData)returnEASessionDataFromApp:(unsigned int)a3;
-- (unsigned)readEASessionDataFromApp:(id)a3 maxReadSize:(unsigned int)a4;
+- (__CFData)returnEASessionDataFromApp:(unsigned int)app;
+- (unsigned)readEASessionDataFromApp:(id)app maxReadSize:(unsigned int)size;
 - (void)_openPipeFromApp;
 - (void)_openPipeToApp;
 - (void)dealloc;
-- (void)sendEABufferDataToApp:(char *)a3 withLength:(unsigned int)a4;
-- (void)sendEABufferDataToApp:(id)a3;
+- (void)sendEABufferDataToApp:(char *)app withLength:(unsigned int)length;
+- (void)sendEABufferDataToApp:(id)app;
 - (void)shuttingDownSession;
 - (void)startIncomingDataNotifications;
 - (void)stopIncomingDataNotifications;
@@ -224,15 +224,15 @@ void __98__ACCExternalAccessorySessionBasic_initWithEASessionUUID_protocolID_leg
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SUCCESS - session=%d for legacyConnectionID=0x%llx opened pipe from app", buf, 0x12u);
   }
 
-  v7 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
-  [v7 lock];
+  sessionNotificationLock = [(ACCExternalAccessorySession *)self sessionNotificationLock];
+  [sessionNotificationLock lock];
 
   v8 = dispatch_source_create(&_dispatch_source_type_read, self->super._sock, 0, self->_msgSerialQueue);
   readSource = self->_readSource;
   self->_readSource = v8;
 
-  v10 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
-  [v10 unlock];
+  sessionNotificationLock2 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
+  [sessionNotificationLock2 unlock];
 
   v11 = self->_readSource;
   handler[0] = _NSConcreteStackBlock;
@@ -248,8 +248,8 @@ void __98__ACCExternalAccessorySessionBasic_initWithEASessionUUID_protocolID_leg
   v18[3] = &unk_100225968;
   v18[4] = self;
   dispatch_source_set_cancel_handler(v12, v18);
-  v13 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
-  [v13 lock];
+  sessionNotificationLock3 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
+  [sessionNotificationLock3 lock];
 
   if (self->_continueRunningSession)
   {
@@ -272,15 +272,15 @@ void __98__ACCExternalAccessorySessionBasic_initWithEASessionUUID_protocolID_leg
 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(ACCExternalAccessorySession *)self eaSessionUUID];
+      eaSessionUUID = [(ACCExternalAccessorySession *)self eaSessionUUID];
       *buf = 138412290;
-      v21[0] = v16;
+      v21[0] = eaSessionUUID;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "eaSessionUUID %@ was already activated, resume readsource", buf, 0xCu);
     }
   }
 
-  v17 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
-  [v17 unlock];
+  sessionNotificationLock4 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
+  [sessionNotificationLock4 unlock];
 }
 
 void __52__ACCExternalAccessorySessionBasic__openPipeFromApp__block_invoke(uint64_t a1)
@@ -368,9 +368,9 @@ id __52__ACCExternalAccessorySessionBasic__openPipeFromApp__block_invoke_73(uint
   return 1;
 }
 
-- (void)sendEABufferDataToApp:(id)a3
+- (void)sendEABufferDataToApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   if (self->super._sock != -1)
   {
     if (gLogObjects)
@@ -401,26 +401,26 @@ id __52__ACCExternalAccessorySessionBasic__openPipeFromApp__block_invoke_73(uint
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [ACCExternalAccessorySessionBasic sendEABufferDataToApp:v4];
+      [ACCExternalAccessorySessionBasic sendEABufferDataToApp:appCopy];
     }
 
-    send(self->super._sock, [v4 bytes], objc_msgSend(v4, "length"), 0);
+    send(self->super._sock, [appCopy bytes], objc_msgSend(appCopy, "length"), 0);
   }
 }
 
-- (void)sendEABufferDataToApp:(char *)a3 withLength:(unsigned int)a4
+- (void)sendEABufferDataToApp:(char *)app withLength:(unsigned int)length
 {
   sock = self->super._sock;
   if (sock != -1)
   {
-    send(sock, a3, a4, 0);
+    send(sock, app, length, 0);
   }
 }
 
-- (unsigned)readEASessionDataFromApp:(id)a3 maxReadSize:(unsigned int)a4
+- (unsigned)readEASessionDataFromApp:(id)app maxReadSize:(unsigned int)size
 {
-  v6 = a3;
-  v7 = recv(self->super._sock, [v6 mutableBytes] + 2, a4, 0);
+  appCopy = app;
+  v7 = recv(self->super._sock, [appCopy mutableBytes] + 2, size, 0);
   v8 = v7;
   if (v7 == -1)
   {
@@ -475,7 +475,7 @@ id __52__ACCExternalAccessorySessionBasic__openPipeFromApp__block_invoke_73(uint
       [ACCExternalAccessorySessionBasic readEASessionDataFromApp:? maxReadSize:?];
     }
 
-    [v6 setLength:v8 + 2];
+    [appCopy setLength:v8 + 2];
     if (gLogObjects && gNumLogObjects >= 10)
     {
       v12 = *(gLogObjects + 72);
@@ -494,7 +494,7 @@ id __52__ACCExternalAccessorySessionBasic__openPipeFromApp__block_invoke_73(uint
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [ACCExternalAccessorySessionBasic readEASessionDataFromApp:v6 maxReadSize:?];
+      [ACCExternalAccessorySessionBasic readEASessionDataFromApp:appCopy maxReadSize:?];
     }
 
     goto LABEL_38;
@@ -518,11 +518,11 @@ id __52__ACCExternalAccessorySessionBasic__openPipeFromApp__block_invoke_73(uint
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v17 = [(ACCExternalAccessorySession *)self eaSessionUUID];
+    eaSessionUUID = [(ACCExternalAccessorySession *)self eaSessionUUID];
     v19 = 134218242;
     v20 = v8;
     v21 = 2112;
-    v22 = v17;
+    v22 = eaSessionUUID;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Read %lld bytes for sessionUUID %@, not appending data", &v19, 0x16u);
   }
 
@@ -532,11 +532,11 @@ LABEL_38:
   return v8;
 }
 
-- (__CFData)returnEASessionDataFromApp:(unsigned int)a3
+- (__CFData)returnEASessionDataFromApp:(unsigned int)app
 {
-  v5 = a3;
-  v6 = malloc_type_calloc(1uLL, a3, 0x85C1B4AuLL);
-  v7 = recv(self->super._sock, v6 + 2, v5 - 2, 0);
+  appCopy = app;
+  v6 = malloc_type_calloc(1uLL, app, 0x85C1B4AuLL);
+  v7 = recv(self->super._sock, v6 + 2, appCopy - 2, 0);
   v8 = v7;
   if (v7 == -1)
   {
@@ -566,9 +566,9 @@ LABEL_38:
         v24 = 2080;
         v25 = "[ACCExternalAccessorySessionBasic returnEASessionDataFromApp:]";
         v26 = 1024;
-        v27 = 391;
+        sessionID = 391;
         v28 = 1024;
-        v29 = v17;
+        appCopy2 = v17;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "ERROR - %s:%s - %d error reading data from pipe (errno=%d)\n", &v22, 0x22u);
       }
     }
@@ -594,15 +594,15 @@ LABEL_38:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [(ACCExternalAccessorySession *)self eaSessionUUID];
+      eaSessionUUID = [(ACCExternalAccessorySession *)self eaSessionUUID];
       v22 = 134218754;
       v23 = v8;
       v24 = 2112;
-      v25 = v21;
+      v25 = eaSessionUUID;
       v26 = 1024;
-      v27 = [(ACCExternalAccessorySession *)self sessionID];
+      sessionID = [(ACCExternalAccessorySession *)self sessionID];
       v28 = 1024;
-      v29 = a3;
+      appCopy2 = app;
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Read %lld bytes for sessionUUID %@ sessionID %d, maxReadSize (including two extra bytes of padding) = %d", &v22, 0x22u);
     }
 
@@ -651,11 +651,11 @@ LABEL_38:
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v19 = [(ACCExternalAccessorySession *)self eaSessionUUID];
+    eaSessionUUID2 = [(ACCExternalAccessorySession *)self eaSessionUUID];
     v22 = 134218242;
     v23 = v8;
     v24 = 2112;
-    v25 = v19;
+    v25 = eaSessionUUID2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Read %lld bytes for sessionUUID %@, not appending data", &v22, 0x16u);
   }
 
@@ -667,8 +667,8 @@ LABEL_39:
 
 - (void)stopIncomingDataNotifications
 {
-  v3 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
-  [v3 lock];
+  sessionNotificationLock = [(ACCExternalAccessorySession *)self sessionNotificationLock];
+  [sessionNotificationLock lock];
 
   if (self->_continueRunningSession)
   {
@@ -681,14 +681,14 @@ LABEL_39:
     self->_continueRunningSession = 0;
   }
 
-  v5 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
-  [v5 unlock];
+  sessionNotificationLock2 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
+  [sessionNotificationLock2 unlock];
 }
 
 - (void)startIncomingDataNotifications
 {
-  v3 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
-  [v3 lock];
+  sessionNotificationLock = [(ACCExternalAccessorySession *)self sessionNotificationLock];
+  [sessionNotificationLock lock];
 
   if (!self->_continueRunningSession)
   {
@@ -719,16 +719,16 @@ LABEL_39:
 
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v7 = [(ACCExternalAccessorySession *)self eaSessionUUID];
+        eaSessionUUID = [(ACCExternalAccessorySession *)self eaSessionUUID];
         v9 = 138412290;
-        v10 = v7;
+        v10 = eaSessionUUID;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "readsource not yet created for EA session UUID %@", &v9, 0xCu);
       }
     }
   }
 
-  v8 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
-  [v8 unlock];
+  sessionNotificationLock2 = [(ACCExternalAccessorySession *)self sessionNotificationLock];
+  [sessionNotificationLock2 unlock];
 }
 
 void __52__ACCExternalAccessorySessionBasic__openPipeFromApp__block_invoke_cold_2(uint64_t a1)

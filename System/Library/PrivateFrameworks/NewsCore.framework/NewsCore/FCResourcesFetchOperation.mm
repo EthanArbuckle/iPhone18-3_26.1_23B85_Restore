@@ -1,12 +1,12 @@
 @interface FCResourcesFetchOperation
 - (BOOL)validateOperation;
 - (FCResourcesFetchOperation)init;
-- (FCResourcesFetchOperation)initWithContext:(id)a3 resourceIDs:(id)a4 downloadAssets:(BOOL)a5;
+- (FCResourcesFetchOperation)initWithContext:(id)context resourceIDs:(id)ds downloadAssets:(BOOL)assets;
 - (id)completeFetchOperation;
-- (id)downloadAssetsWithCompletion:(id)a3;
-- (id)fetchResourcesWithCompletion:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
-- (void)setResources:(uint64_t)a1;
+- (id)downloadAssetsWithCompletion:(id)completion;
+- (id)fetchResourcesWithCompletion:(id)completion;
+- (void)operationWillFinishWithError:(id)error;
+- (void)setResources:(uint64_t)resources;
 @end
 
 @implementation FCResourcesFetchOperation
@@ -16,8 +16,8 @@
   v15 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = FCResourcesFetchOperation;
-  v2 = [(FCOperation *)&v6 validateOperation];
-  if (!v2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  validateOperation = [(FCOperation *)&v6 validateOperation];
+  if (!validateOperation && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"resources fetch operation's superclass failed validation"];
     *buf = 136315906;
@@ -32,7 +32,7 @@
   }
 
   v3 = *MEMORY[0x1E69E9840];
-  return v2;
+  return validateOperation;
 }
 
 - (id)completeFetchOperation
@@ -71,19 +71,19 @@
   objc_exception_throw(v6);
 }
 
-- (FCResourcesFetchOperation)initWithContext:(id)a3 resourceIDs:(id)a4 downloadAssets:(BOOL)a5
+- (FCResourcesFetchOperation)initWithContext:(id)context resourceIDs:(id)ds downloadAssets:(BOOL)assets
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = FCResourcesFetchOperation;
   v11 = [(FCMultiStepFetchOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_context, a3);
-    objc_storeStrong(&v12->_resourceIDs, a4);
-    v12->_downloadAssets = a5;
+    objc_storeStrong(&v11->_context, context);
+    objc_storeStrong(&v12->_resourceIDs, ds);
+    v12->_downloadAssets = assets;
     v12->_cacheLifetimeHint = 0;
     [(FCMultiStepFetchOperation *)v12 addFetchStep:sel_fetchResourcesWithCompletion_];
     [(FCMultiStepFetchOperation *)v12 addFetchStep:sel_downloadAssetsWithCompletion_];
@@ -92,9 +92,9 @@
   return v12;
 }
 
-- (id)fetchResourcesWithCompletion:(id)a3
+- (id)fetchResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -151,9 +151,9 @@
     }
 
     v10 = context;
-    v11 = [(FCContentContext *)v10 internalContentContext];
-    v12 = [v11 resourceRecordSource];
-    v13 = [v12 fetchOperationForRecordsWithIDs:v22[5]];
+    internalContentContext = [(FCContentContext *)v10 internalContentContext];
+    resourceRecordSource = [internalContentContext resourceRecordSource];
+    v13 = [resourceRecordSource fetchOperationForRecordsWithIDs:v22[5]];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -161,7 +161,7 @@
     v15[3] = &unk_1E7C37CB0;
     v15[4] = self;
     v16 = v8;
-    v17 = v4;
+    v17 = completionCopy;
     [v13 setFetchCompletionBlock:v15];
 
     if (v13)
@@ -175,7 +175,7 @@
     [(FCResourcesFetchOperation *)self setResources:v8];
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
   v13 = 0;
 LABEL_10:
 
@@ -242,11 +242,11 @@ FCResource *__58__FCResourcesFetchOperation_fetchResourcesWithCompletion___block
   return v8;
 }
 
-- (void)setResources:(uint64_t)a1
+- (void)setResources:(uint64_t)resources
 {
-  if (a1)
+  if (resources)
   {
-    objc_storeStrong((a1 + 504), a2);
+    objc_storeStrong((resources + 504), a2);
   }
 }
 
@@ -298,11 +298,11 @@ FCResource *__58__FCResourcesFetchOperation_fetchResourcesWithCompletion___block
   return v14;
 }
 
-- (id)downloadAssetsWithCompletion:(id)a3
+- (id)downloadAssetsWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   if (self && self->_downloadAssets)
   {
     v21 = 0u;
@@ -325,12 +325,12 @@ FCResource *__58__FCResourcesFetchOperation_fetchResourcesWithCompletion___block
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [v11 assetHandle];
+          assetHandle = [v11 assetHandle];
 
-          if (v12)
+          if (assetHandle)
           {
-            v13 = [v11 assetHandle];
-            [v5 addObject:v13];
+            assetHandle2 = [v11 assetHandle];
+            [array addObject:assetHandle2];
           }
         }
 
@@ -341,29 +341,29 @@ FCResource *__58__FCResourcesFetchOperation_fetchResourcesWithCompletion___block
     }
   }
 
-  v14 = [[FCAssetsFetchOperation alloc] initWithAssetHandles:v5];
+  v14 = [[FCAssetsFetchOperation alloc] initWithAssetHandles:array];
   [(FCAssetsFetchOperation *)v14 setMaxConcurrentFetchCount:[(FCResourcesFetchOperation *)self maxConcurrentFetchCount]];
-  v15 = [(FCResourcesFetchOperation *)self progressHandler];
-  [(FCAssetsFetchOperation *)v14 setProgressHandler:v15];
+  progressHandler = [(FCResourcesFetchOperation *)self progressHandler];
+  [(FCAssetsFetchOperation *)v14 setProgressHandler:progressHandler];
 
-  [(FCFetchOperation *)v14 setFetchCompletionBlock:v4];
-  v16 = [(FCResourcesFetchOperation *)self interestTokenHandler];
-  [(FCAssetsFetchOperation *)v14 setInterestTokenHandler:v16];
+  [(FCFetchOperation *)v14 setFetchCompletionBlock:completionCopy];
+  interestTokenHandler = [(FCResourcesFetchOperation *)self interestTokenHandler];
+  [(FCAssetsFetchOperation *)v14 setInterestTokenHandler:interestTokenHandler];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
-    v4 = [(FCResourcesFetchOperation *)self archiveHandler];
+    archiveHandler = [(FCResourcesFetchOperation *)self archiveHandler];
 
-    if (v4)
+    if (archiveHandler)
     {
-      v7 = [(FCResourcesFetchOperation *)self archiveHandler];
+      archiveHandler2 = [(FCResourcesFetchOperation *)self archiveHandler];
       if (self)
       {
         resources = self->_resources;
@@ -374,8 +374,8 @@ FCResource *__58__FCResourcesFetchOperation_fetchResourcesWithCompletion___block
         resources = 0;
       }
 
-      v6 = [(NSArray *)resources contentArchive];
-      v7[2](v7, v6);
+      contentArchive = [(NSArray *)resources contentArchive];
+      archiveHandler2[2](archiveHandler2, contentArchive);
     }
   }
 }

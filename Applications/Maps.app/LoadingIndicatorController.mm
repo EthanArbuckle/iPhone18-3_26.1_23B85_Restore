@@ -5,16 +5,16 @@
 - (id)beginShowingLoadingIndicator;
 - (void)_didInvalidateLoadingToken;
 - (void)_updateLoadingIndicator;
-- (void)setSuppressed:(BOOL)a3;
+- (void)setSuppressed:(BOOL)suppressed;
 @end
 
 @implementation LoadingIndicatorController
 
 + (void)setAsSharedInstanceClass
 {
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
     v4 = qword_10195F058;
     qword_10195F058 = v3;
   }
@@ -25,7 +25,7 @@
   v3 = qword_10195F058;
   if (!qword_10195F058)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = qword_10195F058;
     qword_10195F058 = v4;
 
@@ -98,8 +98,8 @@
 
 - (BOOL)_isLoading
 {
-  v2 = [(NSHashTable *)self->_loadingTokens allObjects];
-  v3 = [v2 count] != 0;
+  allObjects = [(NSHashTable *)self->_loadingTokens allObjects];
+  v3 = [allObjects count] != 0;
 
   return v3;
 }
@@ -125,11 +125,11 @@
   }
 }
 
-- (void)setSuppressed:(BOOL)a3
+- (void)setSuppressed:(BOOL)suppressed
 {
-  if (self->_suppressed != a3)
+  if (self->_suppressed != suppressed)
   {
-    self->_suppressed = a3;
+    self->_suppressed = suppressed;
     [(LoadingIndicatorController *)self _updateLoadingIndicator];
   }
 }

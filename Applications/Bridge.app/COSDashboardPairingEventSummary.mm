@@ -1,12 +1,12 @@
 @interface COSDashboardPairingEventSummary
-- (void)setEventValue:(id)a3;
+- (void)setEventValue:(id)value;
 @end
 
 @implementation COSDashboardPairingEventSummary
 
-- (void)setEventValue:(id)a3
+- (void)setEventValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -19,7 +19,7 @@
   }
 
   eventValue = self->_eventValue;
-  self->_eventValue = v4;
+  self->_eventValue = valueCopy;
 }
 
 @end

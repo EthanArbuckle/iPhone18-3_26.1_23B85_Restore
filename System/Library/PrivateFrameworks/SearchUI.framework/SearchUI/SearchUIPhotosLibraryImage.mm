@@ -1,20 +1,20 @@
 @interface SearchUIPhotosLibraryImage
 - (id)fetchAsset;
-- (void)fetchAssetWithCompletionHandler:(id)a3;
-- (void)rejectPerson:(id)a3;
+- (void)fetchAssetWithCompletionHandler:(id)handler;
+- (void)rejectPerson:(id)person;
 @end
 
 @implementation SearchUIPhotosLibraryImage
 
 - (id)fetchAsset
 {
-  v2 = [(SearchUIImage *)self sfImage];
-  v3 = [v2 photoIdentifier];
+  sfImage = [(SearchUIImage *)self sfImage];
+  photoIdentifier = [sfImage photoIdentifier];
 
-  if (v3)
+  if (photoIdentifier)
   {
     v4 = +[SearchUIPhotoAssetCache sharedCache];
-    v5 = [v4 assetForImage:v2];
+    v5 = [v4 assetForImage:sfImage];
   }
 
   else
@@ -31,16 +31,16 @@
   return v5;
 }
 
-- (void)fetchAssetWithCompletionHandler:(id)a3
+- (void)fetchAssetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUIImage *)self sfImage];
-  v6 = [v5 photoIdentifier];
+  handlerCopy = handler;
+  sfImage = [(SearchUIImage *)self sfImage];
+  photoIdentifier = [sfImage photoIdentifier];
 
-  if (v6)
+  if (photoIdentifier)
   {
     v7 = +[SearchUIPhotoAssetCache sharedCache];
-    [v7 fetchAssetForImage:v5 completionHandler:v4];
+    [v7 fetchAssetForImage:sfImage completionHandler:handlerCopy];
   }
 
   else
@@ -51,19 +51,19 @@
       [SearchUIPhotosLibraryImage fetchAssetWithCompletionHandler:v8];
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)rejectPerson:(id)a3
+- (void)rejectPerson:(id)person
 {
-  v4 = [(SearchUIImage *)self sfImage];
+  sfImage = [(SearchUIImage *)self sfImage];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SearchUIPhotosLibraryImage_rejectPerson___block_invoke;
   v6[3] = &unk_1E85B3E90;
-  v7 = v4;
-  v5 = v4;
+  v7 = sfImage;
+  v5 = sfImage;
   [(SearchUIPhotosLibraryImage *)self fetchAssetWithCompletionHandler:v6];
 }
 

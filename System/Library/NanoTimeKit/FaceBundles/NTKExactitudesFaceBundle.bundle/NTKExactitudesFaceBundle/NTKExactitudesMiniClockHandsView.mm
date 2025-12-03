@@ -1,10 +1,10 @@
 @interface NTKExactitudesMiniClockHandsView
-- (_TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView)initWithCoder:(id)a3;
-- (_TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView)initWithDiameter:(double)a3 forDevice:(id)a4;
+- (_TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView)initWithCoder:(id)coder;
+- (_TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView)initWithDiameter:(double)diameter forDevice:(id)device;
 - (double)hourHandLength;
 - (double)minuteHandLength;
 - (double)secondHandLength;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)secondHandConfiguration;
 @end
 
@@ -55,7 +55,7 @@
   return v3;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   sub_216EC();
   sub_216DC();
@@ -65,13 +65,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
-  v5 = sub_1C5E8(a3);
+  deviceCopy = device;
+  v5 = sub_1C5E8(device);
 
   return v5;
 }
 
-- (_TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView)initWithDiameter:(double)a3 forDevice:(id)a4
+- (_TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView)initWithDiameter:(double)diameter forDevice:(id)device
 {
   sub_216EC();
   sub_216DC();
@@ -81,13 +81,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a4;
-  v7 = sub_1D248(v6, a3);
+  deviceCopy = device;
+  v7 = sub_1D248(deviceCopy, diameter);
 
   return v7;
 }
 
-- (_TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView)initWithCoder:(id)a3
+- (_TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView)initWithCoder:(id)coder
 {
   sub_216EC();
   sub_216DC();
@@ -114,12 +114,12 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for NTKExactitudesMiniClockHandsView();
-  v3 = self;
+  selfCopy = self;
   result = [(NTKExactitudesMiniClockHandsView *)&v6 secondHandConfiguration];
   if (result)
   {
     v5 = result;
-    [result setHandLength:{*&v3->metrics[OBJC_IVAR____TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView_metrics + 8], v6.receiver, v6.super_class}];
+    [result setHandLength:{*&selfCopy->metrics[OBJC_IVAR____TtC24NTKExactitudesFaceBundle32NTKExactitudesMiniClockHandsView_metrics + 8], v6.receiver, v6.super_class}];
 
     return v5;
   }

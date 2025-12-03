@@ -1,22 +1,22 @@
 @interface CuratedCollectionSyncManager
 + (id)sharedManager;
-- (BOOL)collectionIsSaved:(id)a3;
-- (BOOL)collectionIsSavedWithIdentifier:(id)a3;
+- (BOOL)collectionIsSaved:(id)saved;
+- (BOOL)collectionIsSavedWithIdentifier:(id)identifier;
 - (CuratedCollectionSyncManager)init;
-- (void)_addCachedCuratedCollections:(id)a3 completion:(id)a4;
-- (void)_cacheSyncedCollections:(id)a3;
-- (void)_removeSavedCuratedCollectionWithIdentifierMuid:(unint64_t)a3 resultProviderId:(int)a4 completion:(id)a5;
-- (void)_updateCachedCuratedCollection:(id)a3 withCollection:(id)a4 completion:(id)a5;
+- (void)_addCachedCuratedCollections:(id)collections completion:(id)completion;
+- (void)_cacheSyncedCollections:(id)collections;
+- (void)_removeSavedCuratedCollectionWithIdentifierMuid:(unint64_t)muid resultProviderId:(int)id completion:(id)completion;
+- (void)_updateCachedCuratedCollection:(id)collection withCollection:(id)withCollection completion:(id)completion;
 - (void)_updateContent;
-- (void)_updateSyncedCollectionResultProviderIdIfNeededWithCollection:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addSavedCuratedCollection:(id)a3 completion:(id)a4;
-- (void)fetchCachedCollectionsWithCuratedCollections:(id)a3 completion:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)removeSavedCuratedCollection:(id)a3 completion:(id)a4;
-- (void)removeSavedMapsSyncCuratedCollection:(id)a3 completion:(id)a4;
-- (void)storeDidChange:(id)a3;
-- (void)updateSavedCuratedCollection:(id)a3 completion:(id)a4;
+- (void)_updateSyncedCollectionResultProviderIdIfNeededWithCollection:(id)collection;
+- (void)addObserver:(id)observer;
+- (void)addSavedCuratedCollection:(id)collection completion:(id)completion;
+- (void)fetchCachedCollectionsWithCuratedCollections:(id)collections completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)removeSavedCuratedCollection:(id)collection completion:(id)completion;
+- (void)removeSavedMapsSyncCuratedCollection:(id)collection completion:(id)completion;
+- (void)storeDidChange:(id)change;
+- (void)updateSavedCuratedCollection:(id)collection completion:(id)completion;
 @end
 
 @implementation CuratedCollectionSyncManager
@@ -75,15 +75,15 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)collectionIsSavedWithIdentifier:(id)a3
+- (BOOL)collectionIsSavedWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CuratedCollectionSyncManager *)self queryContents];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  queryContents = [(CuratedCollectionSyncManager *)self queryContents];
+  v6 = [queryContents countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -93,14 +93,14 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(queryContents);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 curatedCollectionIdentifier];
-        if (v10 == [v4 muid])
+        curatedCollectionIdentifier = [v9 curatedCollectionIdentifier];
+        if (curatedCollectionIdentifier == [identifierCopy muid])
         {
-          if (![v9 resultProviderIdentifier] || (v11 = objc_msgSend(v9, "resultProviderIdentifier"), v11 == objc_msgSend(v4, "resultProviderID")))
+          if (![v9 resultProviderIdentifier] || (v11 = objc_msgSend(v9, "resultProviderIdentifier"), v11 == objc_msgSend(identifierCopy, "resultProviderID")))
           {
             LOBYTE(v6) = 1;
             goto LABEL_13;
@@ -108,7 +108,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [queryContents countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -123,31 +123,31 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)collectionIsSaved:(id)a3
+- (BOOL)collectionIsSaved:(id)saved
 {
-  v4 = [a3 collectionIdentifier];
-  LOBYTE(self) = [(CuratedCollectionSyncManager *)self collectionIsSavedWithIdentifier:v4];
+  collectionIdentifier = [saved collectionIdentifier];
+  LOBYTE(self) = [(CuratedCollectionSyncManager *)self collectionIsSavedWithIdentifier:collectionIdentifier];
 
   return self;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionSyncManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CuratedCollectionSyncManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionSyncManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CuratedCollectionSyncManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MSCuratedCollectionRequest);
   v6[0] = _NSConcreteStackBlock;
@@ -161,13 +161,13 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)_cacheSyncedCollections:(id)a3
+- (void)_cacheSyncedCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   if (![(CuratedCollectionSyncManager *)self isPopulatingCachedCollections])
   {
     [(CuratedCollectionSyncManager *)self setIsPopulatingCachedCollections:1];
-    v5 = sub_100021DB0(v4, &stru_101627B88);
+    v5 = sub_100021DB0(collectionsCopy, &stru_101627B88);
     v6 = +[MKMapService sharedService];
     v7 = [v6 ticketForCuratedCollections:v5 isBatchLookup:0 traits:0];
 
@@ -183,20 +183,20 @@ LABEL_13:
   }
 }
 
-- (void)_updateSyncedCollectionResultProviderIdIfNeededWithCollection:(id)a3
+- (void)_updateSyncedCollectionResultProviderIdIfNeededWithCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 collectionIdentifier];
-  v6 = [v5 resultProviderID];
+  collectionCopy = collection;
+  collectionIdentifier = [collectionCopy collectionIdentifier];
+  resultProviderID = [collectionIdentifier resultProviderID];
 
-  if (v6)
+  if (resultProviderID)
   {
     queryContents = self->_queryContents;
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100733EA4;
     v25[3] = &unk_101656A98;
-    v26 = v4;
+    v26 = collectionCopy;
     v8 = [NSPredicate predicateWithBlock:v25];
     v9 = [(NSArray *)queryContents filteredArrayUsingPredicate:v8];
 
@@ -220,7 +220,7 @@ LABEL_13:
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          [v15 setResultProviderIdentifier:v6];
+          [v15 setResultProviderIdentifier:resultProviderID];
           v16 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
           v29 = v15;
           v17 = [NSArray arrayWithObjects:&v29 count:1];
@@ -248,68 +248,68 @@ LABEL_13:
   }
 }
 
-- (void)_updateCachedCuratedCollection:(id)a3 withCollection:(id)a4 completion:(id)a5
+- (void)_updateCachedCuratedCollection:(id)collection withCollection:(id)withCollection completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  withCollectionCopy = withCollection;
+  completionCopy = completion;
   v11 = +[MKSystemController sharedInstance];
   [v11 screenScale];
   v13 = v12;
 
   v14 = v13 * 70.0;
-  if (![v8 resultProviderIdentifier])
+  if (![collectionCopy resultProviderIdentifier])
   {
-    v15 = [v9 collectionIdentifier];
-    v16 = [v15 resultProviderID];
+    collectionIdentifier = [withCollectionCopy collectionIdentifier];
+    resultProviderID = [collectionIdentifier resultProviderID];
 
-    if (v16)
+    if (resultProviderID)
     {
-      v17 = [v9 collectionIdentifier];
-      [v8 setResultProviderIdentifier:{objc_msgSend(v17, "resultProviderID")}];
+      collectionIdentifier2 = [withCollectionCopy collectionIdentifier];
+      [collectionCopy setResultProviderIdentifier:{objc_msgSend(collectionIdentifier2, "resultProviderID")}];
     }
   }
 
-  v18 = [v9 collectionTitle];
-  [v8 setTitle:v18];
+  collectionTitle = [withCollectionCopy collectionTitle];
+  [collectionCopy setTitle:collectionTitle];
 
-  [v8 setPlacesCount:{objc_msgSend(v9, "numberOfItems")}];
-  v19 = [v9 publisherAttributionIdentifierString];
-  [v8 setPublisherAttribution:v19];
+  [collectionCopy setPlacesCount:{objc_msgSend(withCollectionCopy, "numberOfItems")}];
+  publisherAttributionIdentifierString = [withCollectionCopy publisherAttributionIdentifierString];
+  [collectionCopy setPublisherAttribution:publisherAttributionIdentifierString];
 
-  v20 = [v9 photos];
-  v21 = [v20 _geo_firstPhotoOfAtLeastSize:{v14, v14}];
+  photos = [withCollectionCopy photos];
+  v21 = [photos _geo_firstPhotoOfAtLeastSize:{v14, v14}];
 
   if (v21)
   {
     v22 = [v21 url];
-    v23 = [v22 absoluteString];
-    [v8 setImageUrl:v23];
+    absoluteString = [v22 absoluteString];
+    [collectionCopy setImageUrl:absoluteString];
   }
 
   v24 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
-  v26 = v8;
+  v26 = collectionCopy;
   v25 = [NSArray arrayWithObjects:&v26 count:1];
   [v24 saveWithObjects:v25 error:0];
 
-  [(CuratedCollectionSyncManager *)self _updateSyncedCollectionResultProviderIdIfNeededWithCollection:v9];
-  if (v10)
+  [(CuratedCollectionSyncManager *)self _updateSyncedCollectionResultProviderIdIfNeededWithCollection:withCollectionCopy];
+  if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_addCachedCuratedCollections:(id)a3 completion:(id)a4
+- (void)_addCachedCuratedCollections:(id)collections completion:(id)completion
 {
-  v6 = a3;
-  v17 = a4;
+  collectionsCopy = collections;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = collectionsCopy;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -328,11 +328,11 @@ LABEL_13:
         v12 = *(*(&v23 + 1) + 8 * v11);
         dispatch_group_enter(v7);
         v13 = objc_alloc_init(MSCachedCuratedCollection);
-        v14 = [v12 collectionIdentifier];
-        [v13 setCuratedCollectionIdentifier:{objc_msgSend(v14, "muid")}];
+        collectionIdentifier = [v12 collectionIdentifier];
+        [v13 setCuratedCollectionIdentifier:{objc_msgSend(collectionIdentifier, "muid")}];
 
-        v15 = [v12 collectionIdentifier];
-        [v13 setResultProviderIdentifier:{objc_msgSend(v15, "resultProviderID")}];
+        collectionIdentifier2 = [v12 collectionIdentifier];
+        [v13 setResultProviderIdentifier:{objc_msgSend(collectionIdentifier2, "resultProviderID")}];
 
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
@@ -356,21 +356,21 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_1007343D8;
   block[3] = &unk_101661760;
-  v20 = v17;
-  v16 = v17;
+  v20 = completionCopy;
+  v16 = completionCopy;
   dispatch_group_notify(v7, &_dispatch_main_q, block);
 }
 
-- (void)_removeSavedCuratedCollectionWithIdentifierMuid:(unint64_t)a3 resultProviderId:(int)a4 completion:(id)a5
+- (void)_removeSavedCuratedCollectionWithIdentifierMuid:(unint64_t)muid resultProviderId:(int)id completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queryContents = self->_queryContents;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100734594;
   v19[3] = &unk_101627B48;
-  v19[4] = a3;
-  v20 = a4;
+  v19[4] = muid;
+  idCopy = id;
   v10 = [NSPredicate predicateWithBlock:v19];
   v11 = [(NSArray *)queryContents filteredArrayUsingPredicate:v10];
 
@@ -379,8 +379,8 @@ LABEL_13:
   v17[1] = 3221225472;
   v17[2] = sub_100734608;
   v17[3] = &unk_101627B48;
-  v17[4] = a3;
-  v18 = a4;
+  v17[4] = muid;
+  idCopy2 = id;
   v13 = [NSPredicate predicateWithBlock:v17];
   v14 = [(NSArray *)cachedCuratedCollections filteredArrayUsingPredicate:v13];
 
@@ -388,49 +388,49 @@ LABEL_13:
   v16 = [v11 arrayByAddingObjectsFromArray:v14];
   [v15 deleteWithObjects:v16 error:0];
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)removeSavedMapsSyncCuratedCollection:(id)a3 completion:(id)a4
+- (void)removeSavedMapsSyncCuratedCollection:(id)collection completion:(id)completion
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [v6 curatedCollectionIdentifier];
-  v8 = [v6 resultProviderIdentifier];
+  completionCopy = completion;
+  collectionCopy = collection;
+  curatedCollectionIdentifier = [collectionCopy curatedCollectionIdentifier];
+  resultProviderIdentifier = [collectionCopy resultProviderIdentifier];
 
-  [(CuratedCollectionSyncManager *)self _removeSavedCuratedCollectionWithIdentifierMuid:v7 resultProviderId:v8 completion:v9];
+  [(CuratedCollectionSyncManager *)self _removeSavedCuratedCollectionWithIdentifierMuid:curatedCollectionIdentifier resultProviderId:resultProviderIdentifier completion:completionCopy];
 }
 
-- (void)removeSavedCuratedCollection:(id)a3 completion:(id)a4
+- (void)removeSavedCuratedCollection:(id)collection completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [v7 collectionIdentifier];
-  v8 = [v10 muid];
-  v9 = [v7 collectionIdentifier];
+  completionCopy = completion;
+  collectionCopy = collection;
+  collectionIdentifier = [collectionCopy collectionIdentifier];
+  muid = [collectionIdentifier muid];
+  collectionIdentifier2 = [collectionCopy collectionIdentifier];
 
-  -[CuratedCollectionSyncManager _removeSavedCuratedCollectionWithIdentifierMuid:resultProviderId:completion:](self, "_removeSavedCuratedCollectionWithIdentifierMuid:resultProviderId:completion:", v8, [v9 resultProviderID], v6);
+  -[CuratedCollectionSyncManager _removeSavedCuratedCollectionWithIdentifierMuid:resultProviderId:completion:](self, "_removeSavedCuratedCollectionWithIdentifierMuid:resultProviderId:completion:", muid, [collectionIdentifier2 resultProviderID], completionCopy);
 }
 
-- (void)updateSavedCuratedCollection:(id)a3 completion:(id)a4
+- (void)updateSavedCuratedCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [v6 collectionIdentifier];
-  v9 = [v8 muid];
+  collectionIdentifier = [collectionCopy collectionIdentifier];
+  muid = [collectionIdentifier muid];
 
-  v10 = [v6 collectionIdentifier];
-  v11 = [v10 resultProviderID];
+  collectionIdentifier2 = [collectionCopy collectionIdentifier];
+  resultProviderID = [collectionIdentifier2 resultProviderID];
 
   v12 = objc_alloc_init(MSCuratedCollection);
-  [v12 setCuratedCollectionIdentifier:v9];
-  [v12 setResultProviderIdentifier:v11];
+  [v12 setCuratedCollectionIdentifier:muid];
+  [v12 setResultProviderIdentifier:resultProviderID];
   v13 = objc_alloc_init(MSCuratedCollection);
-  [v13 setCuratedCollectionIdentifier:v9];
+  [v13 setCuratedCollectionIdentifier:muid];
   [v13 setResultProviderIdentifier:0];
   v22[0] = v12;
   v22[1] = v13;
@@ -440,9 +440,9 @@ LABEL_13:
   v17[2] = sub_1007349B8;
   v17[3] = &unk_101627B28;
   objc_copyWeak(&v20, &location);
-  v15 = v6;
+  v15 = collectionCopy;
   v18 = v15;
-  v16 = v7;
+  v16 = completionCopy;
   v19 = v16;
   [(CuratedCollectionSyncManager *)self fetchCachedCollectionsWithCuratedCollections:v14 completion:v17];
 
@@ -450,17 +450,17 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)fetchCachedCollectionsWithCuratedCollections:(id)a3 completion:(id)a4
+- (void)fetchCachedCollectionsWithCuratedCollections:(id)collections completion:(id)completion
 {
-  v5 = a3;
-  v24 = a4;
+  collectionsCopy = collections;
+  completionCopy = completion;
   v6 = objc_alloc_init(NSMutableArray);
   v7 = objc_alloc_init(NSMutableArray);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v5;
+  obj = collectionsCopy;
   v8 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v8)
   {
@@ -500,38 +500,38 @@ LABEL_13:
   v27[2] = sub_100734D20;
   v27[3] = &unk_10165D3F0;
   v28 = v6;
-  v29 = self;
+  selfCopy = self;
   v30 = obj;
-  v31 = v24;
-  v21 = v24;
+  v31 = completionCopy;
+  v21 = completionCopy;
   v22 = obj;
   v23 = v6;
   [v20 fetchWithOptions:v19 completionHandler:v27];
 }
 
-- (void)addSavedCuratedCollection:(id)a3 completion:(id)a4
+- (void)addSavedCuratedCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(CuratedCollectionSyncManager *)self collectionIsSaved:v6])
+  collectionCopy = collection;
+  completionCopy = completion;
+  if (![(CuratedCollectionSyncManager *)self collectionIsSaved:collectionCopy])
   {
-    v16 = v6;
+    v16 = collectionCopy;
     v8 = [NSArray arrayWithObjects:&v16 count:1];
     [(CuratedCollectionSyncManager *)self _addCachedCuratedCollections:v8 completion:0];
 
     v9 = objc_alloc_init(MSCuratedCollection);
-    v10 = [v6 collectionIdentifier];
-    [v9 setCuratedCollectionIdentifier:{objc_msgSend(v10, "muid")}];
+    collectionIdentifier = [collectionCopy collectionIdentifier];
+    [v9 setCuratedCollectionIdentifier:{objc_msgSend(collectionIdentifier, "muid")}];
 
-    v11 = [v6 collectionIdentifier];
-    [v9 setResultProviderIdentifier:{objc_msgSend(v11, "resultProviderID")}];
+    collectionIdentifier2 = [collectionCopy collectionIdentifier];
+    [v9 setResultProviderIdentifier:{objc_msgSend(collectionIdentifier2, "resultProviderID")}];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100735154;
     v13[3] = &unk_101661090;
     v14 = v9;
-    v15 = v7;
+    v15 = completionCopy;
     v12 = v9;
     dispatch_async(&_dispatch_main_q, v13);
   }

@@ -1,12 +1,12 @@
 @interface HDSQLiteJoinClause
-+ (id)innerJoinClauseFromTable:(id)a3 toTargetEntity:(Class)a4 as:(id)a5 localReference:(id)a6 targetKey:(id)a7;
-+ (id)leftJoinClauseFromTable:(id)a3 toTargetEntity:(Class)a4 as:(id)a5 localReference:(id)a6 targetKey:(id)a7;
-+ (id)leftJoinClauseFromTable:(id)a3 toTargetEntity:(Class)a4 as:(id)a5 localReference:(id)a6 targetKey:(id)a7 additionalPredicate:(id)a8;
-- (BOOL)isEqual:(id)a3;
++ (id)innerJoinClauseFromTable:(id)table toTargetEntity:(Class)entity as:(id)as localReference:(id)reference targetKey:(id)key;
++ (id)leftJoinClauseFromTable:(id)table toTargetEntity:(Class)entity as:(id)as localReference:(id)reference targetKey:(id)key;
++ (id)leftJoinClauseFromTable:(id)table toTargetEntity:(Class)entity as:(id)as localReference:(id)reference targetKey:(id)key additionalPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
 - (NSString)joinAsName;
 - (id)SQLJoinClause;
-- (id)_initWithJoinType:(void *)a3 fromTable:(void *)a4 toTargetEntity:(void *)a5 as:(void *)a6 localReference:(void *)a7 targetKey:(void *)a8 additionalPredicate:;
-- (id)copyWithJoinType:(int64_t)a3;
+- (id)_initWithJoinType:(void *)type fromTable:(void *)table toTargetEntity:(void *)entity as:(void *)as localReference:(void *)reference targetKey:(void *)key additionalPredicate:;
+- (id)copyWithJoinType:(int64_t)type;
 - (unint64_t)hash;
 @end
 
@@ -29,20 +29,20 @@
   joinAsName = self->_joinAsName;
   if (joinAsName)
   {
-    v3 = joinAsName;
+    disambiguatedDatabaseTable = joinAsName;
   }
 
   else
   {
-    v3 = [(objc_class *)self->_targetEntityClass disambiguatedDatabaseTable];
+    disambiguatedDatabaseTable = [(objc_class *)self->_targetEntityClass disambiguatedDatabaseTable];
   }
 
-  return v3;
+  return disambiguatedDatabaseTable;
 }
 
 - (id)SQLJoinClause
 {
-  v3 = [(objc_class *)self->_targetEntityClass disambiguatedDatabaseTable];
+  disambiguatedDatabaseTable = [(objc_class *)self->_targetEntityClass disambiguatedDatabaseTable];
   v4 = [(NSString *)self->_localReferenceProperty isEqualToString:self->_targetKeyProperty];
   v5 = MEMORY[0x277CCACA8];
   if (v4)
@@ -54,8 +54,8 @@
   {
     localTable = self->_localTable;
     localReferenceProperty = self->_localReferenceProperty;
-    v9 = [(HDSQLiteJoinClause *)self joinAsName];
-    v10 = [v5 stringWithFormat:@"%@.%@=%@.%@", localTable, localReferenceProperty, v9, self->_targetKeyProperty];
+    joinAsName = [(HDSQLiteJoinClause *)self joinAsName];
+    v10 = [v5 stringWithFormat:@"%@.%@=%@.%@", localTable, localReferenceProperty, joinAsName, self->_targetKeyProperty];
 
     additionalPredicate = self->_additionalPredicate;
     if (additionalPredicate)
@@ -89,32 +89,32 @@
 
   if (self->_joinAsName)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ JOIN %@ AS %@ %@", v14, v3, self->_joinAsName, v6];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ JOIN %@ AS %@ %@", v14, disambiguatedDatabaseTable, self->_joinAsName, v6];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ JOIN %@ %@", v14, v3, v6, v18];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ JOIN %@ %@", v14, disambiguatedDatabaseTable, v6, v18];
   }
   v15 = ;
 
   return v15;
 }
 
-+ (id)innerJoinClauseFromTable:(id)a3 toTargetEntity:(Class)a4 as:(id)a5 localReference:(id)a6 targetKey:(id)a7
++ (id)innerJoinClauseFromTable:(id)table toTargetEntity:(Class)entity as:(id)as localReference:(id)reference targetKey:(id)key
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [[HDSQLiteJoinClause alloc] _initWithJoinType:v14 fromTable:a4 toTargetEntity:v13 as:v12 localReference:v11 targetKey:0 additionalPredicate:?];
+  keyCopy = key;
+  referenceCopy = reference;
+  asCopy = as;
+  tableCopy = table;
+  v15 = [[HDSQLiteJoinClause alloc] _initWithJoinType:tableCopy fromTable:entity toTargetEntity:asCopy as:referenceCopy localReference:keyCopy targetKey:0 additionalPredicate:?];
 
   return v15;
 }
 
-- (id)copyWithJoinType:(int64_t)a3
+- (id)copyWithJoinType:(int64_t)type
 {
-  if (self->_joinType == a3)
+  if (self->_joinType == type)
   {
 
     return self;
@@ -124,23 +124,23 @@
   {
     v6[1] = v3;
     v6[2] = v4;
-    [(HDSQLiteJoinClause *)&self->super.isa copyWithJoinType:a3, v6];
+    [(HDSQLiteJoinClause *)&self->super.isa copyWithJoinType:type, v6];
     return v6[0];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     targetEntityClass = self->_targetEntityClass;
-    if (targetEntityClass == [v7 targetEntityClass])
+    if (targetEntityClass == [equalCopy targetEntityClass])
     {
       localTable = self->_localTable;
-      v12 = [v7 localTable];
-      if (!-[NSString isEqualToString:](localTable, "isEqualToString:", v12) || (joinType = self->_joinType, joinType != [v7 joinType]))
+      localTable = [equalCopy localTable];
+      if (!-[NSString isEqualToString:](localTable, "isEqualToString:", localTable) || (joinType = self->_joinType, joinType != [equalCopy joinType]))
       {
         v9 = 0;
 LABEL_19:
@@ -148,33 +148,33 @@ LABEL_19:
         goto LABEL_4;
       }
 
-      v14 = [(HDSQLiteJoinClause *)self joinAsName];
-      v15 = [v7 joinAsName];
-      if (v14 == v15)
+      joinAsName = [(HDSQLiteJoinClause *)self joinAsName];
+      joinAsName2 = [equalCopy joinAsName];
+      if (joinAsName == joinAsName2)
       {
         goto LABEL_12;
       }
 
-      v16 = [v7 joinAsName];
-      if (!v16)
+      joinAsName3 = [equalCopy joinAsName];
+      if (!joinAsName3)
       {
         v9 = 0;
         goto LABEL_18;
       }
 
-      v3 = v16;
-      v4 = [(HDSQLiteJoinClause *)self joinAsName];
-      v5 = [v7 joinAsName];
-      if ([v4 isEqualToString:v5])
+      v3 = joinAsName3;
+      joinAsName4 = [(HDSQLiteJoinClause *)self joinAsName];
+      joinAsName5 = [equalCopy joinAsName];
+      if ([joinAsName4 isEqualToString:joinAsName5])
       {
 LABEL_12:
         localReferenceProperty = self->_localReferenceProperty;
-        v18 = [v7 localReferenceProperty];
-        if ([(NSString *)localReferenceProperty isEqualToString:v18])
+        localReferenceProperty = [equalCopy localReferenceProperty];
+        if ([(NSString *)localReferenceProperty isEqualToString:localReferenceProperty])
         {
           targetKeyProperty = self->_targetKeyProperty;
-          v20 = [v7 targetKeyProperty];
-          v9 = [(NSString *)targetKeyProperty isEqualToString:v20];
+          targetKeyProperty = [equalCopy targetKeyProperty];
+          v9 = [(NSString *)targetKeyProperty isEqualToString:targetKeyProperty];
         }
 
         else
@@ -183,7 +183,7 @@ LABEL_12:
           v9 = 0;
         }
 
-        if (v14 == v15)
+        if (joinAsName == joinAsName2)
         {
           goto LABEL_18;
         }
@@ -205,21 +205,21 @@ LABEL_4:
   return v9;
 }
 
-- (id)_initWithJoinType:(void *)a3 fromTable:(void *)a4 toTargetEntity:(void *)a5 as:(void *)a6 localReference:(void *)a7 targetKey:(void *)a8 additionalPredicate:
+- (id)_initWithJoinType:(void *)type fromTable:(void *)table toTargetEntity:(void *)entity as:(void *)as localReference:(void *)reference targetKey:(void *)key additionalPredicate:
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!a1)
+  typeCopy = type;
+  entityCopy = entity;
+  asCopy = as;
+  referenceCopy = reference;
+  keyCopy = key;
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  if (v15)
+  if (typeCopy)
   {
-    if (a4)
+    if (table)
     {
       goto LABEL_4;
     }
@@ -227,24 +227,24 @@ LABEL_4:
 
   else
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     OUTLINED_FUNCTION_0_2();
     [v31 handleFailureInMethod:@"localTable != nil" object:? file:? lineNumber:? description:?];
 
-    if (a4)
+    if (table)
     {
 LABEL_4:
-      if (v17)
+      if (asCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_11:
-      v38 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       OUTLINED_FUNCTION_0_2();
       [v33 handleFailureInMethod:@"localReferenceProperty != nil" object:? file:? lineNumber:? description:?];
 
-      if (v18)
+      if (referenceCopy)
       {
         goto LABEL_6;
       }
@@ -253,80 +253,80 @@ LABEL_11:
     }
   }
 
-  v37 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_2();
   [v32 handleFailureInMethod:@"targetEntityClass != nil" object:? file:? lineNumber:? description:?];
 
-  if (!v17)
+  if (!asCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  if (v18)
+  if (referenceCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_12:
-  v34 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_2();
   [v35 handleFailureInMethod:@"targetKeyProperty != nil" object:? file:? lineNumber:? description:?];
 
 LABEL_6:
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = HDSQLiteJoinClause;
-  a1 = objc_msgSendSuper2(&v39, sel_init);
-  if (a1)
+  self = objc_msgSendSuper2(&v39, sel_init);
+  if (self)
   {
-    v20 = [v15 copy];
-    v21 = a1[2];
-    a1[2] = v20;
+    v20 = [typeCopy copy];
+    v21 = self[2];
+    self[2] = v20;
 
-    objc_storeStrong(a1 + 3, a4);
-    v22 = [v16 copy];
-    v23 = a1[1];
-    a1[1] = v22;
+    objc_storeStrong(self + 3, table);
+    v22 = [entityCopy copy];
+    v23 = self[1];
+    self[1] = v22;
 
-    v24 = [v17 copy];
-    v25 = a1[4];
-    a1[4] = v24;
+    v24 = [asCopy copy];
+    v25 = self[4];
+    self[4] = v24;
 
-    v26 = [v18 copy];
-    v27 = a1[5];
-    a1[5] = v26;
+    v26 = [referenceCopy copy];
+    v27 = self[5];
+    self[5] = v26;
 
-    v28 = [v19 copy];
-    v29 = a1[7];
-    a1[7] = v28;
+    v28 = [keyCopy copy];
+    v29 = self[7];
+    self[7] = v28;
 
-    a1[6] = a2;
+    self[6] = a2;
   }
 
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
-+ (id)leftJoinClauseFromTable:(id)a3 toTargetEntity:(Class)a4 as:(id)a5 localReference:(id)a6 targetKey:(id)a7
++ (id)leftJoinClauseFromTable:(id)table toTargetEntity:(Class)entity as:(id)as localReference:(id)reference targetKey:(id)key
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [[HDSQLiteJoinClause alloc] _initWithJoinType:v14 fromTable:a4 toTargetEntity:v13 as:v12 localReference:v11 targetKey:0 additionalPredicate:?];
+  keyCopy = key;
+  referenceCopy = reference;
+  asCopy = as;
+  tableCopy = table;
+  v15 = [[HDSQLiteJoinClause alloc] _initWithJoinType:tableCopy fromTable:entity toTargetEntity:asCopy as:referenceCopy localReference:keyCopy targetKey:0 additionalPredicate:?];
 
   return v15;
 }
 
-+ (id)leftJoinClauseFromTable:(id)a3 toTargetEntity:(Class)a4 as:(id)a5 localReference:(id)a6 targetKey:(id)a7 additionalPredicate:(id)a8
++ (id)leftJoinClauseFromTable:(id)table toTargetEntity:(Class)entity as:(id)as localReference:(id)reference targetKey:(id)key additionalPredicate:(id)predicate
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a3;
-  v18 = [[HDSQLiteJoinClause alloc] _initWithJoinType:v17 fromTable:a4 toTargetEntity:v16 as:v15 localReference:v14 targetKey:v13 additionalPredicate:?];
+  predicateCopy = predicate;
+  keyCopy = key;
+  referenceCopy = reference;
+  asCopy = as;
+  tableCopy = table;
+  v18 = [[HDSQLiteJoinClause alloc] _initWithJoinType:tableCopy fromTable:entity toTargetEntity:asCopy as:referenceCopy localReference:keyCopy targetKey:predicateCopy additionalPredicate:?];
 
   return v18;
 }

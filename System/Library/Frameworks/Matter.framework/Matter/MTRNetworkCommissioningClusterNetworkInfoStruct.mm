@@ -1,6 +1,6 @@
 @interface MTRNetworkCommissioningClusterNetworkInfoStruct
 - (MTRNetworkCommissioningClusterNetworkInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     networkID = v2->_networkID;
-    v2->_networkID = v3;
+    v2->_networkID = data;
 
     connected = v2->_connected;
     v2->_connected = &unk_284C3E588;
@@ -30,20 +30,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterNetworkInfoStruct);
-  v5 = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)self networkID];
-  [(MTRNetworkCommissioningClusterNetworkInfoStruct *)v4 setNetworkID:v5];
+  networkID = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)self networkID];
+  [(MTRNetworkCommissioningClusterNetworkInfoStruct *)v4 setNetworkID:networkID];
 
-  v6 = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)self connected];
-  [(MTRNetworkCommissioningClusterNetworkInfoStruct *)v4 setConnected:v6];
+  connected = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)self connected];
+  [(MTRNetworkCommissioningClusterNetworkInfoStruct *)v4 setConnected:connected];
 
-  v7 = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)self networkIdentifier];
-  [(MTRNetworkCommissioningClusterNetworkInfoStruct *)v4 setNetworkIdentifier:v7];
+  networkIdentifier = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)self networkIdentifier];
+  [(MTRNetworkCommissioningClusterNetworkInfoStruct *)v4 setNetworkIdentifier:networkIdentifier];
 
-  v8 = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)self clientIdentifier];
-  [(MTRNetworkCommissioningClusterNetworkInfoStruct *)v4 setClientIdentifier:v8];
+  clientIdentifier = [(MTRNetworkCommissioningClusterNetworkInfoStruct *)self clientIdentifier];
+  [(MTRNetworkCommissioningClusterNetworkInfoStruct *)v4 setClientIdentifier:clientIdentifier];
 
   return v4;
 }

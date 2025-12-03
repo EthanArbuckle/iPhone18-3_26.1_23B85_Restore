@@ -5,33 +5,33 @@
 - (double)_extraHeight;
 - (double)_footerHeight;
 - (double)_tableContentWidth;
-- (double)heightForLayout:(unint64_t)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (double)heightForLayout:(unint64_t)layout;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (void)_dismiss;
 - (void)_reloadContactForFirstDisplay;
-- (void)_updateSharingFooterWithIdentity:(id)a3;
-- (void)_updateWithSharingIdentity:(id)a3;
-- (void)capabilityLevelFetcher:(id)a3 didUpdateCapabilityLevelsForHandles:(id)a4;
-- (void)cellDidFinishRingAnimation:(id)a3;
+- (void)_updateSharingFooterWithIdentity:(id)identity;
+- (void)_updateWithSharingIdentity:(id)identity;
+- (void)capabilityLevelFetcher:(id)fetcher didUpdateCapabilityLevelsForHandles:(id)handles;
+- (void)cellDidFinishRingAnimation:(id)animation;
 - (void)dealloc;
 - (void)dismissAfterDelay;
-- (void)handleDismissAction:(id)a3;
-- (void)headerViewTapped:(id)a3;
-- (void)sharedTripService:(id)a3 didUpdateReceivers:(id)a4;
-- (void)sharedTripServiceDidUpdateSendingAvailability:(id)a3;
-- (void)suggestionsDataSourceDidUpdateContactsForDisplay:(id)a3;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleDismissAction:(id)action;
+- (void)headerViewTapped:(id)tapped;
+- (void)sharedTripService:(id)service didUpdateReceivers:(id)receivers;
+- (void)sharedTripServiceDidUpdateSendingAvailability:(id)availability;
+- (void)suggestionsDataSourceDidUpdateContactsForDisplay:(id)display;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NavShareETAViewController
@@ -43,12 +43,12 @@
   return WeakRetained;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   self->_userInteracted = 1;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  if ([(SharedTripSuggestionsDataSource *)self->_dataSource isContactSearchItemAtIndexPath:v6])
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  if ([(SharedTripSuggestionsDataSource *)self->_dataSource isContactSearchItemAtIndexPath:pathCopy])
   {
     v7 = sub_100035E6C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -69,20 +69,20 @@
 
   else
   {
-    v10 = [(SharedTripSuggestionsDataSource *)self->_dataSource contactForItemIndexPath:v6];
+    v10 = [(SharedTripSuggestionsDataSource *)self->_dataSource contactForItemIndexPath:pathCopy];
     v11 = v10;
     if (v10)
     {
       cellsByContactStringValue = self->_cellsByContactStringValue;
-      v13 = [v10 stringValue];
-      v14 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:v13];
+      stringValue = [v10 stringValue];
+      v14 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:stringValue];
 
       if ([v14 sharingState])
       {
-        v15 = [v14 sharingState];
+        sharingState = [v14 sharingState];
         v16 = sub_100035E6C();
         v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
-        if (v15 == 1)
+        if (sharingState == 1)
         {
           if (v17)
           {
@@ -130,15 +130,15 @@
       }
 
       [GEOAPPortal captureUserAction:v20 target:649 value:0];
-      v21 = [(ContaineeViewController *)self cardPresentationController];
-      [v21 updateHeightForCurrentLayout];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController updateHeightForCurrentLayout];
     }
   }
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if ([a3 numberOfSections] - 1 <= a4)
+  if ([view numberOfSections] - 1 <= section)
   {
     v5 = self->_footerView;
   }
@@ -151,9 +151,9 @@
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  if ([a3 numberOfSections] - 1 > a4)
+  if ([view numberOfSections] - 1 > section)
   {
     return 0.0;
   }
@@ -162,63 +162,63 @@
   return result;
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v9 = a4;
+  cellCopy = cell;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v9;
+  v6 = cellCopy;
   if (isKindOfClass)
   {
-    v7 = [v9 contact];
-    if (v7)
+    contact = [cellCopy contact];
+    if (contact)
     {
       v8 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-      [v8 cancelCapabilityLevelRequestForContact:v7];
+      [v8 cancelCapabilityLevelRequestForContact:contact];
     }
 
-    v6 = v9;
+    v6 = cellCopy;
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 contact];
-    if (v6)
+    contact = [cellCopy contact];
+    if (contact)
     {
       v7 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-      v9 = v6;
+      v9 = contact;
       v8 = [NSArray arrayWithObjects:&v9 count:1];
       [v7 requestCapabilityLevelsForContacts:v8];
     }
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SharedTripSuggestionsDataSource *)self->_dataSource isContactSearchItemAtIndexPath:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(SharedTripSuggestionsDataSource *)self->_dataSource isContactSearchItemAtIndexPath:pathCopy])
   {
-    v8 = [(NavShareETAViewController *)self openContactsCell];
-    v9 = v8;
+    openContactsCell = [(NavShareETAViewController *)self openContactsCell];
+    v9 = openContactsCell;
   }
 
   else
   {
-    v10 = [v6 dataSource];
-    if (v10 == self)
+    dataSource = [viewCopy dataSource];
+    if (dataSource == self)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = [(SharedTripSuggestionsDataSource *)self->_dataSource contactForItemIndexPath:v7];
+      v9 = [(SharedTripSuggestionsDataSource *)self->_dataSource contactForItemIndexPath:pathCopy];
     }
 
     sizingCell = self->_sizingCell;
@@ -233,67 +233,67 @@
 
     [(NavShareETACell *)sizingCell setContact:v9];
     [(NavShareETACell *)self->_sizingCell setSharingState:3 animated:0];
-    v8 = self->_sizingCell;
+    openContactsCell = self->_sizingCell;
   }
 
   [(NavShareETAViewController *)self _tableContentWidth];
-  [v8 heightForWidth:?];
+  [openContactsCell heightForWidth:?];
   v15 = v14;
 
   return v15;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v4 = [[UITableViewCell alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v6 = a5;
-  v7 = [(SharedTripSuggestionsDataSource *)self->_dataSource contactSearchItemIdentifier];
-  v8 = [v6 isEqual:v7];
+  identifierCopy = identifier;
+  contactSearchItemIdentifier = [(SharedTripSuggestionsDataSource *)self->_dataSource contactSearchItemIdentifier];
+  v8 = [identifierCopy isEqual:contactSearchItemIdentifier];
 
   if (v8)
   {
-    v9 = [(NavShareETAViewController *)self openContactsCell];
+    openContactsCell = [(NavShareETAViewController *)self openContactsCell];
     goto LABEL_9;
   }
 
-  v10 = [(SharedTripSuggestionsDataSource *)self->_dataSource contactForItemIdentifier:v6];
+  v10 = [(SharedTripSuggestionsDataSource *)self->_dataSource contactForItemIdentifier:identifierCopy];
   cellsByContactStringValue = self->_cellsByContactStringValue;
-  v12 = [v10 stringValue];
-  v9 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:v12];
+  stringValue = [v10 stringValue];
+  openContactsCell = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:stringValue];
 
-  if (v9)
+  if (openContactsCell)
   {
     v13 = [(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:v10];
-    v14 = v9;
+    v14 = openContactsCell;
     v15 = 1;
   }
 
   else
   {
-    v16 = [v10 stringValue];
-    v17 = [v16 length];
+    stringValue2 = [v10 stringValue];
+    v17 = [stringValue2 length];
 
     if (!v17)
     {
-      v9 = 0;
+      openContactsCell = 0;
       goto LABEL_8;
     }
 
-    v9 = [[NavShareETACell alloc] initWithStyle:0 reuseIdentifier:0];
+    openContactsCell = [[NavShareETACell alloc] initWithStyle:0 reuseIdentifier:0];
     v18 = self->_cellsByContactStringValue;
-    v19 = [v10 stringValue];
-    [(NSMutableDictionary *)v18 setObject:v9 forKey:v19];
+    stringValue3 = [v10 stringValue];
+    [(NSMutableDictionary *)v18 setObject:openContactsCell forKey:stringValue3];
 
-    [(NavShareETACell *)v9 setDelegate:self];
-    [(NavShareETACell *)v9 setContact:v10];
+    [(NavShareETACell *)openContactsCell setDelegate:self];
+    [(NavShareETACell *)openContactsCell setContact:v10];
     v13 = [(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:v10];
-    v14 = v9;
+    v14 = openContactsCell;
     v15 = 0;
   }
 
@@ -304,10 +304,10 @@ LABEL_8:
   v21 = [v20 capabilityTypeForContact:v10 serviceName:&v24 isActiveReceiver:0];
   v22 = v24;
 
-  [(NavShareETACell *)v9 setCapabilityType:v21 serviceName:v22];
+  [(NavShareETACell *)openContactsCell setCapabilityType:v21 serviceName:v22];
 LABEL_9:
 
-  return v9;
+  return openContactsCell;
 }
 
 - (double)_tableContentWidth
@@ -331,8 +331,8 @@ LABEL_9:
 
 - (double)_extraHeight
 {
-  v2 = [(ContaineeViewController *)self cardPresentationController];
-  [v2 bottomSafeOffset];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController bottomSafeOffset];
   if (v3 <= 0.0)
   {
     v4 = 16.0;
@@ -346,14 +346,14 @@ LABEL_9:
   return v4;
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 == 1)
+  if (layout == 1)
   {
     [(ContaineeViewController *)self headerHeight];
     v12 = v11;
-    v13 = [(ContaineeViewController *)self cardPresentationController];
-    [v13 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v4 = v14 + v12;
 LABEL_13:
 
@@ -361,7 +361,7 @@ LABEL_13:
   }
 
   v4 = -1.0;
-  if (a3 == 2)
+  if (layout == 2)
   {
     if ([(UITableView *)self->_tableView numberOfSections]< 1)
     {
@@ -402,8 +402,8 @@ LABEL_13:
     v18 = v16 + v17;
     [(NavShareETAViewController *)self _extraHeight];
     v20 = v6 + v19;
-    v13 = [(ContaineeViewController *)self cardPresentationController];
-    [v13 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v4 = v18 + v21 + v20;
     goto LABEL_13;
   }
@@ -411,17 +411,17 @@ LABEL_13:
   return v4;
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v6.receiver = self;
   v6.super_class = NavShareETAViewController;
-  [(ContaineeViewController *)&v6 handleDismissAction:v4];
+  [(ContaineeViewController *)&v6 handleDismissAction:actionCopy];
   v5 = sub_100035E6C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Dismissed ShareETA from %@", buf, 0xCu);
   }
 
@@ -442,14 +442,14 @@ LABEL_13:
   [(ContaineeViewController *)&v4 handleDismissAction:0];
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  v7 = v6;
-  if (v5 == 1)
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  v7 = cardPresentationController2;
+  if (containeeLayout == 1)
   {
     v8 = 2;
   }
@@ -459,18 +459,18 @@ LABEL_13:
     v8 = 1;
   }
 
-  [v6 wantsLayout:v8];
+  [cardPresentationController2 wantsLayout:v8];
 
   [GEOAPPortal captureUserAction:3 target:649 value:0];
 }
 
-- (void)capabilityLevelFetcher:(id)a3 didUpdateCapabilityLevelsForHandles:(id)a4
+- (void)capabilityLevelFetcher:(id)fetcher didUpdateCapabilityLevelsForHandles:(id)handles
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a4;
+  obj = handles;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -487,11 +487,11 @@ LABEL_13:
         }
 
         v9 = [(NSMutableDictionary *)self->_cellsByContactStringValue objectForKey:*(*(&v18 + 1) + 8 * v8)];
-        v10 = [v9 contact];
-        v11 = v10;
+        contact = [v9 contact];
+        v11 = contact;
         if (v9)
         {
-          v12 = v10 == 0;
+          v12 = contact == 0;
         }
 
         else
@@ -520,42 +520,42 @@ LABEL_13:
   }
 }
 
-- (void)sharedTripService:(id)a3 didUpdateReceivers:(id)a4
+- (void)sharedTripService:(id)service didUpdateReceivers:(id)receivers
 {
   headerView = self->_headerView;
-  v6 = a4;
-  v7 = [(NavShareETAHeaderView *)headerView activeContacts];
-  v8 = [v7 count];
-  v9 = [v6 count];
+  receiversCopy = receivers;
+  activeContacts = [(NavShareETAHeaderView *)headerView activeContacts];
+  v8 = [activeContacts count];
+  v9 = [receiversCopy count];
 
-  [(NavShareETAHeaderView *)self->_headerView setActiveContacts:v6];
+  [(NavShareETAHeaderView *)self->_headerView setActiveContacts:receiversCopy];
   if (v8 != v9)
   {
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 updateHeightForCurrentLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
   }
 }
 
-- (void)_updateWithSharingIdentity:(id)a3
+- (void)_updateWithSharingIdentity:(id)identity
 {
-  v4 = a3;
-  [(NavShareETAViewController *)self _updateSharingFooterWithIdentity:v4];
-  v5 = [v4 hasValidAccount];
+  identityCopy = identity;
+  [(NavShareETAViewController *)self _updateSharingFooterWithIdentity:identityCopy];
+  hasValidAccount = [identityCopy hasValidAccount];
 
-  if ((v5 & 1) == 0)
+  if ((hasValidAccount & 1) == 0)
   {
 
     [(NavShareETAViewController *)self _dismiss];
   }
 }
 
-- (void)sharedTripServiceDidUpdateSendingAvailability:(id)a3
+- (void)sharedTripServiceDidUpdateSendingAvailability:(id)availability
 {
-  v4 = [a3 sharingIdentity];
-  [(NavShareETAViewController *)self _updateWithSharingIdentity:v4];
+  sharingIdentity = [availability sharingIdentity];
+  [(NavShareETAViewController *)self _updateWithSharingIdentity:sharingIdentity];
 }
 
-- (void)suggestionsDataSourceDidUpdateContactsForDisplay:(id)a3
+- (void)suggestionsDataSourceDidUpdateContactsForDisplay:(id)display
 {
   v23 = 0u;
   v24 = 0u;
@@ -581,8 +581,8 @@ LABEL_13:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v8 = [(NSMutableDictionary *)self->_cellsByContactStringValue objectEnumerator];
-        v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        objectEnumerator = [(NSMutableDictionary *)self->_cellsByContactStringValue objectEnumerator];
+        v9 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v9)
         {
           v10 = v9;
@@ -593,11 +593,11 @@ LABEL_13:
             {
               if (*v20 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(objectEnumerator);
               }
 
-              v13 = [*(*(&v19 + 1) + 8 * j) contact];
-              v14 = [v13 isEqual:v7];
+              contact = [*(*(&v19 + 1) + 8 * j) contact];
+              v14 = [contact isEqual:v7];
 
               if (v14)
               {
@@ -606,7 +606,7 @@ LABEL_13:
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v10 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v10)
             {
               continue;
@@ -642,25 +642,25 @@ LABEL_16:
   }
 }
 
-- (void)cellDidFinishRingAnimation:(id)a3
+- (void)cellDidFinishRingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v5 = sub_100035E6C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 contact];
+    contact = [animationCopy contact];
     v10 = 138477827;
-    v11 = v6;
+    v11 = contact;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Now starting share to %{private}@", &v10, 0xCu);
   }
 
   dataSource = self->_dataSource;
-  v8 = [v4 contact];
-  [(SharedTripSuggestionsDataSource *)dataSource toggleContact:v8];
+  contact2 = [animationCopy contact];
+  [(SharedTripSuggestionsDataSource *)dataSource toggleContact:contact2];
 
   [(NavShareETAViewController *)self dismissAfterDelay];
-  v9 = [(ContaineeViewController *)self cardPresentationController];
-  [v9 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
 - (void)dismissAfterDelay
@@ -682,28 +682,28 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)_updateSharingFooterWithIdentity:(id)a3
+- (void)_updateSharingFooterWithIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[NSBundle mainBundle];
   v10 = [v5 localizedStringForKey:@"[SharedETA] sender info label" value:@"localized string not found" table:0];
 
-  v6 = [v4 name];
-  v7 = [v4 handle];
+  name = [identityCopy name];
+  handle = [identityCopy handle];
 
-  v8 = [NSString stringWithFormat:v10, v6, v7];
+  v8 = [NSString stringWithFormat:v10, name, handle];
   [(NavShareETAFooterView *)self->_footerView setFooterText:v8];
 
   [(UITableView *)self->_tableView reloadData];
-  v9 = [(ContaineeViewController *)self cardPresentationController];
-  [v9 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
 - (void)_reloadContactForFirstDisplay
 {
   v3 = +[MSPSharedTripService sharedInstance];
-  v4 = [v3 receivers];
-  [(NavShareETAHeaderView *)self->_headerView setActiveContacts:v4];
+  receivers = [v3 receivers];
+  [(NavShareETAHeaderView *)self->_headerView setActiveContacts:receivers];
 
   [(SharedTripSuggestionsDataSource *)self->_dataSource resetContactsForDisplayOrdering];
   tableView = self->_tableView;
@@ -726,35 +726,35 @@ LABEL_16:
   return openContactsCell;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = NavShareETAViewController;
-  v4 = a3;
-  [(MapsThemeViewController *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(MapsThemeViewController *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(NavShareETAViewController *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(UITableView *)self->_tableView reloadData];
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    [v8 updateHeightForCurrentLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v18.receiver = self;
   v18.super_class = NavShareETAViewController;
-  [(NavShareETAViewController *)&v18 viewDidDisappear:a3];
+  [(NavShareETAViewController *)&v18 viewDidDisappear:disappear];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_cellsByContactStringValue objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_cellsByContactStringValue objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -765,21 +765,21 @@ LABEL_16:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 sharingState] == 1)
         {
           dataSource = self->_dataSource;
-          v11 = [v9 contact];
-          [(SharedTripSuggestionsDataSource *)dataSource toggleContact:v11];
+          contact = [v9 contact];
+          [(SharedTripSuggestionsDataSource *)dataSource toggleContact:contact];
 
           [v9 setSharingState:3 animated:0];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v6);
@@ -795,21 +795,21 @@ LABEL_16:
   self->_visible = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NavShareETAViewController;
-  [(NavShareETAViewController *)&v4 viewDidAppear:a3];
+  [(NavShareETAViewController *)&v4 viewDidAppear:appear];
   self->_visible = 1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = NavShareETAViewController;
-  [(ContaineeViewController *)&v13 viewWillAppear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setHideGrabber:1];
+  [(ContaineeViewController *)&v13 viewWillAppear:appear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setHideGrabber:1];
 
   [(SharedTripSuggestionsDataSource *)self->_dataSource addTableView:self->_tableView cellProvider:self];
   [(NavShareETAViewController *)self _reloadContactForFirstDisplay];
@@ -834,11 +834,11 @@ LABEL_16:
   v58.receiver = self;
   v58.super_class = NavShareETAViewController;
   [(ContaineeViewController *)&v58 viewDidLoad];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setEdgeAttachedRegularHeightDimmingBehavior:2];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setEdgeAttachedRegularHeightDimmingBehavior:2];
 
-  v4 = [(NavShareETAViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"NavShareETAView"];
+  view = [(NavShareETAViewController *)self view];
+  [view setAccessibilityIdentifier:@"NavShareETAView"];
 
   v5 = objc_opt_new();
   trayHeader = self->_trayHeader;
@@ -848,8 +848,8 @@ LABEL_16:
   [(ContainerHeaderView *)self->_trayHeader setDelegate:self];
   [(ContainerHeaderView *)self->_trayHeader setHairLineAlpha:0.0];
   [(ContainerHeaderView *)self->_trayHeader setHeaderSize:2];
-  v7 = [(NavShareETAViewController *)self view];
-  [v7 addSubview:self->_trayHeader];
+  view2 = [(NavShareETAViewController *)self view];
+  [view2 addSubview:self->_trayHeader];
 
   v8 = objc_opt_new();
   headerView = self->_headerView;
@@ -863,8 +863,8 @@ LABEL_16:
 
   [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_contentView setAccessibilityIdentifier:@"NavShareETAContent"];
-  v12 = [(NavShareETAViewController *)self view];
-  [v12 addSubview:self->_contentView];
+  view3 = [(NavShareETAViewController *)self view];
+  [view3 addSubview:self->_contentView];
 
   v13 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   tableView = self->_tableView;
@@ -889,55 +889,55 @@ LABEL_16:
   footerView = self->_footerView;
   self->_footerView = v16;
 
-  v56 = [(ContainerHeaderView *)self->_trayHeader topAnchor];
-  v57 = [(NavShareETAViewController *)self view];
-  v55 = [v57 topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  topAnchor = [(ContainerHeaderView *)self->_trayHeader topAnchor];
+  view4 = [(NavShareETAViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v59[0] = v54;
-  v52 = [(ContainerHeaderView *)self->_trayHeader leadingAnchor];
-  v53 = [(NavShareETAViewController *)self view];
-  v51 = [v53 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  leadingAnchor = [(ContainerHeaderView *)self->_trayHeader leadingAnchor];
+  view5 = [(NavShareETAViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v59[1] = v50;
-  v48 = [(ContainerHeaderView *)self->_trayHeader trailingAnchor];
-  v49 = [(NavShareETAViewController *)self view];
-  v47 = [v49 trailingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  trailingAnchor = [(ContainerHeaderView *)self->_trayHeader trailingAnchor];
+  view6 = [(NavShareETAViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v59[2] = v46;
-  v45 = [(UIView *)self->_contentView topAnchor];
-  v44 = [(ContainerHeaderView *)self->_trayHeader bottomAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  topAnchor3 = [(UIView *)self->_contentView topAnchor];
+  bottomAnchor = [(ContainerHeaderView *)self->_trayHeader bottomAnchor];
+  v43 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v59[3] = v43;
-  v41 = [(UIView *)self->_contentView leadingAnchor];
-  v42 = [(NavShareETAViewController *)self view];
-  v40 = [v42 leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor3 = [(UIView *)self->_contentView leadingAnchor];
+  view7 = [(NavShareETAViewController *)self view];
+  leadingAnchor4 = [view7 leadingAnchor];
+  v39 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v59[4] = v39;
-  v37 = [(UIView *)self->_contentView trailingAnchor];
-  v38 = [(NavShareETAViewController *)self view];
-  v36 = [v38 trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  trailingAnchor3 = [(UIView *)self->_contentView trailingAnchor];
+  view8 = [(NavShareETAViewController *)self view];
+  trailingAnchor4 = [view8 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v59[5] = v35;
-  v33 = [(UIView *)self->_contentView bottomAnchor];
-  v34 = [(NavShareETAViewController *)self view];
-  v32 = [v34 bottomAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  bottomAnchor2 = [(UIView *)self->_contentView bottomAnchor];
+  view9 = [(NavShareETAViewController *)self view];
+  bottomAnchor3 = [view9 bottomAnchor];
+  v31 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v59[6] = v31;
-  v30 = [(UITableView *)self->_tableView topAnchor];
-  v29 = [(UIView *)self->_contentView topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  topAnchor4 = [(UITableView *)self->_tableView topAnchor];
+  topAnchor5 = [(UIView *)self->_contentView topAnchor];
+  v28 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v59[7] = v28;
-  v27 = [(UITableView *)self->_tableView leadingAnchor];
-  v26 = [(UIView *)self->_contentView leadingAnchor];
-  v18 = [v27 constraintEqualToAnchor:v26];
+  leadingAnchor5 = [(UITableView *)self->_tableView leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_contentView leadingAnchor];
+  v18 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v59[8] = v18;
-  v19 = [(UITableView *)self->_tableView trailingAnchor];
-  v20 = [(UIView *)self->_contentView trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  trailingAnchor5 = [(UITableView *)self->_tableView trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_contentView trailingAnchor];
+  v21 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v59[9] = v21;
-  v22 = [(UITableView *)self->_tableView bottomAnchor];
-  v23 = [(UIView *)self->_contentView bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  bottomAnchor4 = [(UITableView *)self->_tableView bottomAnchor];
+  bottomAnchor5 = [(UIView *)self->_contentView bottomAnchor];
+  v24 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v59[10] = v24;
   v25 = [NSArray arrayWithObjects:v59 count:11];
   [NSLayoutConstraint activateConstraints:v25];
@@ -968,15 +968,15 @@ LABEL_16:
   v3 = v2;
   if (v2)
   {
-    v4 = [(ContaineeViewController *)v2 cardPresentationController];
-    [v4 setBlurInCardView:0];
+    cardPresentationController = [(ContaineeViewController *)v2 cardPresentationController];
+    [cardPresentationController setBlurInCardView:0];
 
     v5 = [UIColor colorNamed:@"NavigationMaterialColor"];
-    v6 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v6 setCardColor:v5];
+    cardPresentationController2 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController2 setCardColor:v5];
 
-    v7 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v7 setMaximumLayoutForEdgeInsetUpdate:0];
+    cardPresentationController3 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController3 setMaximumLayoutForEdgeInsetUpdate:0];
 
     v8 = objc_alloc_init(NSMutableDictionary);
     cellsByContactStringValue = v3->_cellsByContactStringValue;

@@ -1,50 +1,50 @@
 @interface BKUbiquityEligibilityManager
-- (BKUbiquityEligibilityManager)initWithQuotaFetcher:(id)a3 eligibleBooksProvider:(id)a4 ubiquityStatusMonitor:(id)a5;
-- (id)mq_setupAndStartQueryWithGroup:(id)a3;
-- (void)determineCloudEligibility:(id)a3;
-- (void)mq_queryDidFinish:(id)a3;
-- (void)mq_tearDownQuery:(id)a3;
-- (void)ubiquityDocumentsURLChanged:(id)a3;
+- (BKUbiquityEligibilityManager)initWithQuotaFetcher:(id)fetcher eligibleBooksProvider:(id)provider ubiquityStatusMonitor:(id)monitor;
+- (id)mq_setupAndStartQueryWithGroup:(id)group;
+- (void)determineCloudEligibility:(id)eligibility;
+- (void)mq_queryDidFinish:(id)finish;
+- (void)mq_tearDownQuery:(id)query;
+- (void)ubiquityDocumentsURLChanged:(id)changed;
 @end
 
 @implementation BKUbiquityEligibilityManager
 
-- (BKUbiquityEligibilityManager)initWithQuotaFetcher:(id)a3 eligibleBooksProvider:(id)a4 ubiquityStatusMonitor:(id)a5
+- (BKUbiquityEligibilityManager)initWithQuotaFetcher:(id)fetcher eligibleBooksProvider:(id)provider ubiquityStatusMonitor:(id)monitor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fetcherCopy = fetcher;
+  providerCopy = provider;
+  monitorCopy = monitor;
   v15.receiver = self;
   v15.super_class = BKUbiquityEligibilityManager;
   v12 = [(BKUbiquityEligibilityManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_quotaFetcher, a3);
-    objc_storeStrong(&v13->_eligibleBooksProvider, a4);
-    objc_storeStrong(&v13->_ubiquityStatusMonitor, a5);
+    objc_storeStrong(&v12->_quotaFetcher, fetcher);
+    objc_storeStrong(&v13->_eligibleBooksProvider, provider);
+    objc_storeStrong(&v13->_ubiquityStatusMonitor, monitor);
     [(IMUbiquityStatusMonitor *)v13->_ubiquityStatusMonitor addObserver:v13];
   }
 
   return v13;
 }
 
-- (void)determineCloudEligibility:(id)a3
+- (void)determineCloudEligibility:(id)eligibility
 {
-  v4 = a3;
+  eligibilityCopy = eligibility;
   if (!+[NSThread isMainThread])
   {
     sub_8D328();
   }
 
-  v5 = [(BKUbiquityEligibilityManager *)self eligibleBooksProvider];
-  if (v5 && (v6 = v5, [(BKUbiquityEligibilityManager *)self quotaFetcher], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  eligibleBooksProvider = [(BKUbiquityEligibilityManager *)self eligibleBooksProvider];
+  if (eligibleBooksProvider && (v6 = eligibleBooksProvider, [(BKUbiquityEligibilityManager *)self quotaFetcher], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     kdebug_trace();
     v8 = dispatch_group_create();
     dispatch_group_enter(v8);
     v9 = [(BKUbiquityEligibilityManager *)self mq_setupAndStartQueryWithGroup:v8];
-    v10 = [(BKUbiquityEligibilityManager *)self eligibleBooksProvider];
+    eligibleBooksProvider2 = [(BKUbiquityEligibilityManager *)self eligibleBooksProvider];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_66D4;
@@ -52,46 +52,46 @@
     v13[4] = self;
     v14 = v8;
     v15 = v9;
-    v16 = v4;
+    v16 = eligibilityCopy;
     v11 = v9;
     v12 = v8;
-    [v10 fetchAllLocalBooksEligibleToBeMadeUbiquitousWithCompletion:v13];
+    [eligibleBooksProvider2 fetchAllLocalBooksEligibleToBeMadeUbiquitousWithCompletion:v13];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0, 0, 0, 0);
+    (*(eligibilityCopy + 2))(eligibilityCopy, 0, 0, 0, 0, 0);
   }
 }
 
-- (id)mq_setupAndStartQueryWithGroup:(id)a3
+- (id)mq_setupAndStartQueryWithGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   if (!+[NSThread isMainThread])
   {
     sub_8D364();
   }
 
   v5 = objc_opt_new();
-  dispatch_group_enter(v4);
-  if (v4)
+  dispatch_group_enter(groupCopy);
+  if (groupCopy)
   {
-    objc_setAssociatedObject(v5, off_EE640, v4, &dword_0 + 1);
+    objc_setAssociatedObject(v5, off_EE640, groupCopy, &dword_0 + 1);
   }
 
   v6 = dispatch_group_create();
   documentsURLBecomesAvailable = self->_documentsURLBecomesAvailable;
   self->_documentsURLBecomesAvailable = v6;
 
-  v8 = [(BKUbiquityEligibilityManager *)self ubiquityStatusMonitor];
-  v9 = [v8 documentsURL];
+  ubiquityStatusMonitor = [(BKUbiquityEligibilityManager *)self ubiquityStatusMonitor];
+  documentsURL = [ubiquityStatusMonitor documentsURL];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v10 = @"nil";
-    if (v9)
+    if (documentsURL)
     {
-      v10 = v9;
+      v10 = documentsURL;
     }
 
     *buf = 138412290;
@@ -99,7 +99,7 @@
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_INFO, "Current documentsURL = %@", buf, 0xCu);
   }
 
-  if (!v9)
+  if (!documentsURL)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
@@ -125,9 +125,9 @@
   return v12;
 }
 
-- (void)mq_tearDownQuery:(id)a3
+- (void)mq_tearDownQuery:(id)query
 {
-  object = a3;
+  object = query;
   if (!+[NSThread isMainThread])
   {
     sub_8D3A0();
@@ -145,9 +145,9 @@
   }
 }
 
-- (void)mq_queryDidFinish:(id)a3
+- (void)mq_queryDidFinish:(id)finish
 {
-  object = [a3 object];
+  object = [finish object];
   [object disableUpdates];
   -[BKUbiquityEligibilityManager setNumberOfItemsIniCloud:](self, "setNumberOfItemsIniCloud:", [object resultCount]);
   [object enableUpdates];
@@ -159,15 +159,15 @@
   }
 }
 
-- (void)ubiquityDocumentsURLChanged:(id)a3
+- (void)ubiquityDocumentsURLChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v5 = @"nil";
-    if (v4)
+    if (changedCopy)
     {
-      v5 = v4;
+      v5 = changedCopy;
     }
 
     v7 = 138412290;

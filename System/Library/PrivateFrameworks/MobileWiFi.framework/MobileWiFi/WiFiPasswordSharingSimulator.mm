@@ -1,8 +1,8 @@
 @interface WiFiPasswordSharingSimulator
 - (WiFiPasswordSharingSimulator)init;
 - (void)dealloc;
-- (void)runWithSSID:(id)a3 reply:(id)a4;
-- (void)service:(id)a3 receivedNetworkInfo:(id)a4;
+- (void)runWithSSID:(id)d reply:(id)reply;
+- (void)service:(id)service receivedNetworkInfo:(id)info;
 @end
 
 @implementation WiFiPasswordSharingSimulator
@@ -61,7 +61,7 @@
   [(WiFiPasswordSharingSimulator *)&v4 dealloc];
 }
 
-- (void)runWithSSID:(id)a3 reply:(id)a4
+- (void)runWithSSID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -69,8 +69,8 @@
   block[2] = __50__WiFiPasswordSharingSimulator_runWithSSID_reply___block_invoke;
   block[3] = &unk_27991B010;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
@@ -100,15 +100,15 @@ uint64_t __50__WiFiPasswordSharingSimulator_runWithSSID_reply___block_invoke(uin
   return result;
 }
 
-- (void)service:(id)a3 receivedNetworkInfo:(id)a4
+- (void)service:(id)service receivedNetworkInfo:(id)info
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__WiFiPasswordSharingSimulator_service_receivedNetworkInfo___block_invoke;
   block[3] = &unk_27991B038;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = service;
+  block[5] = info;
   block[6] = self;
   dispatch_async(queue, block);
 }

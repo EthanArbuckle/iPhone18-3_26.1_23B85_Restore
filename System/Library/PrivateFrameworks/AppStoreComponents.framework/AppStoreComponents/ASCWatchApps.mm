@@ -1,8 +1,8 @@
 @interface ASCWatchApps
 + (ASCWatchApps)sharedWatchApps;
-- (ASCWatchApps)initWithAppOfferStateCenter:(id)a3;
-- (id)reinstallAppWithID:(id)a3;
-- (id)reinstallSystemAppWithBundleID:(id)a3;
+- (ASCWatchApps)initWithAppOfferStateCenter:(id)center;
+- (id)reinstallAppWithID:(id)d;
+- (id)reinstallSystemAppWithBundleID:(id)d;
 @end
 
 @implementation ASCWatchApps
@@ -28,9 +28,9 @@ void __31__ASCWatchApps_sharedWatchApps__block_invoke()
   sharedWatchApps_sharedWatchApps = v1;
 }
 
-- (ASCWatchApps)initWithAppOfferStateCenter:(id)a3
+- (ASCWatchApps)initWithAppOfferStateCenter:(id)center
 {
-  v5 = a3;
+  centerCopy = center;
   +[ASCEligibility assertCurrentProcessEligibility];
   v9.receiver = self;
   v9.super_class = ASCWatchApps;
@@ -38,26 +38,26 @@ void __31__ASCWatchApps_sharedWatchApps__block_invoke()
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appOfferStateCenter, a3);
+    objc_storeStrong(&v6->_appOfferStateCenter, center);
   }
 
   return v7;
 }
 
-- (id)reinstallAppWithID:(id)a3
+- (id)reinstallAppWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(ASCWatchApps *)self appOfferStateCenter];
-  v6 = [v5 reinstallWatchAppWithID:v4];
+  dCopy = d;
+  appOfferStateCenter = [(ASCWatchApps *)self appOfferStateCenter];
+  v6 = [appOfferStateCenter reinstallWatchAppWithID:dCopy];
 
   return v6;
 }
 
-- (id)reinstallSystemAppWithBundleID:(id)a3
+- (id)reinstallSystemAppWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(ASCWatchApps *)self appOfferStateCenter];
-  v6 = [v5 reinstallWatchSystemAppWithBundleID:v4];
+  dCopy = d;
+  appOfferStateCenter = [(ASCWatchApps *)self appOfferStateCenter];
+  v6 = [appOfferStateCenter reinstallWatchSystemAppWithBundleID:dCopy];
 
   return v6;
 }

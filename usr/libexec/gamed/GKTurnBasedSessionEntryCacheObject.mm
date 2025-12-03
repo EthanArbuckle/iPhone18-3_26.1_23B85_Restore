@@ -12,19 +12,19 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKTurnBasedSessionEntryCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKTurnBasedSessionEntryCacheObject internalRepresentation]", [v7 UTF8String], 4208);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKTurnBasedSessionEntryCacheObject internalRepresentation]", [lastPathComponent UTF8String], 4208);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
-  v9 = [(GKTurnBasedSessionEntryCacheObject *)self sessionID];
-  v10 = [(GKTurnBasedSessionEntryCacheObject *)self managedObjectContext];
-  v11 = [GKTurnBasedSessionCacheObject sessionWithID:v9 inManagedObjectContext:v10];
+  sessionID = [(GKTurnBasedSessionEntryCacheObject *)self sessionID];
+  managedObjectContext = [(GKTurnBasedSessionEntryCacheObject *)self managedObjectContext];
+  v11 = [GKTurnBasedSessionCacheObject sessionWithID:sessionID inManagedObjectContext:managedObjectContext];
 
-  v12 = [v11 internalRepresentation];
+  internalRepresentation = [v11 internalRepresentation];
 
-  return v12;
+  return internalRepresentation;
 }
 
 @end

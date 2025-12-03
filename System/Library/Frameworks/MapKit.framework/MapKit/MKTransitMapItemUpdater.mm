@@ -1,14 +1,14 @@
 @interface MKTransitMapItemUpdater
-- (BOOL)_isInfoExpiredRelativeToDate:(id)a3;
-- (BOOL)isStuckWithExpiredInfoRelativeToDate:(id)a3;
-- (MKTransitMapItemUpdater)initWithMapItem:(id)a3 delegate:(id)a4;
-- (void)_processUpdatedMapItems:(id)a3 identifier:(id)a4 ttl:(double)a5 error:(id)a6;
+- (BOOL)_isInfoExpiredRelativeToDate:(id)date;
+- (BOOL)isStuckWithExpiredInfoRelativeToDate:(id)date;
+- (MKTransitMapItemUpdater)initWithMapItem:(id)item delegate:(id)delegate;
+- (void)_processUpdatedMapItems:(id)items identifier:(id)identifier ttl:(double)ttl error:(id)error;
 - (void)_refreshTransitInfoIfNeeded;
 - (void)_resumeDataRefreshTimer;
-- (void)_scheduleDataUpdateForTransitItemAtDate:(id)a3;
+- (void)_scheduleDataUpdateForTransitItemAtDate:(id)date;
 - (void)_suspendDataRefreshTimer;
 - (void)_transitInfoUpdated;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation MKTransitMapItemUpdater
@@ -16,9 +16,9 @@
 - (void)_transitInfoUpdated
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(MKTransitItemReferenceDateUpdater *)self delegate];
+  delegate = [(MKTransitItemReferenceDateUpdater *)self delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = MKGetTransitItemUpdaterLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -35,44 +35,44 @@
     v5 = MKGetTransitItemUpdaterLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(MKTransitMapItemUpdater *)self mapItem];
-      v7 = [v6 name];
-      v8 = [(MKTransitMapItemUpdater *)self mapItem];
-      v9 = [v8 _identifier];
-      v10 = [v9 muid];
+      mapItem = [(MKTransitMapItemUpdater *)self mapItem];
+      name = [mapItem name];
+      mapItem2 = [(MKTransitMapItemUpdater *)self mapItem];
+      _identifier = [mapItem2 _identifier];
+      muid = [_identifier muid];
       v13 = 138412546;
-      v14 = v7;
+      v14 = name;
       v15 = 2048;
-      v16 = v10;
+      v16 = muid;
       _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_DEBUG, "MapItem %@ <muid: %llu> updated outside of the network refresh", &v13, 0x16u);
     }
 
     [(MKTransitMapItemUpdater *)self setLastInfoRefreshFailed:0];
-    v11 = [(MKTransitItemReferenceDateUpdater *)self delegate];
-    v12 = [(MKTransitMapItemUpdater *)self mapItem];
-    [v11 transitMapItemUpdater:self updatedMapItem:v12 error:0];
+    delegate2 = [(MKTransitItemReferenceDateUpdater *)self delegate];
+    mapItem3 = [(MKTransitMapItemUpdater *)self mapItem];
+    [delegate2 transitMapItemUpdater:self updatedMapItem:mapItem3 error:0];
   }
 }
 
-- (BOOL)_isInfoExpiredRelativeToDate:(id)a3
+- (BOOL)_isInfoExpiredRelativeToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MKTransitMapItemUpdater *)self mapItem];
-  v6 = [v5 _transitInfo];
+  dateCopy = date;
+  mapItem = [(MKTransitMapItemUpdater *)self mapItem];
+  _transitInfo = [mapItem _transitInfo];
 
-  v7 = [v6 lastFullScheduleValidDate];
-  [v7 timeIntervalSinceDate:v4];
+  lastFullScheduleValidDate = [_transitInfo lastFullScheduleValidDate];
+  [lastFullScheduleValidDate timeIntervalSinceDate:dateCopy];
   v9 = v8;
 
   return v9 <= 30.0;
 }
 
-- (BOOL)isStuckWithExpiredInfoRelativeToDate:(id)a3
+- (BOOL)isStuckWithExpiredInfoRelativeToDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(MKTransitMapItemUpdater *)self lastInfoRefreshFailed])
   {
-    v5 = [(MKTransitMapItemUpdater *)self _isInfoExpiredRelativeToDate:v4];
+    v5 = [(MKTransitMapItemUpdater *)self _isInfoExpiredRelativeToDate:dateCopy];
   }
 
   else
@@ -83,17 +83,17 @@
   return v5;
 }
 
-- (void)_processUpdatedMapItems:(id)a3 identifier:(id)a4 ttl:(double)a5 error:(id)a6
+- (void)_processUpdatedMapItems:(id)items identifier:(id)identifier ttl:(double)ttl error:(id)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemsCopy = items;
+  identifierCopy = identifier;
+  errorCopy = error;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v13 = v10;
+  v13 = itemsCopy;
   v14 = [v13 countByEnumeratingWithState:&v45 objects:v59 count:16];
   if (v14)
   {
@@ -109,8 +109,8 @@ LABEL_3:
       }
 
       v18 = *(*(&v45 + 1) + 8 * v17);
-      v19 = [v18 _identifier];
-      v20 = [v19 isEqual:v11];
+      _identifier = [v18 _identifier];
+      v20 = [_identifier isEqual:identifierCopy];
 
       if (v20)
       {
@@ -129,10 +129,10 @@ LABEL_3:
       }
     }
 
-    v21 = v18;
-    [v21 _markTransitInfoUpdated];
+    firstObject = v18;
+    [firstObject _markTransitInfoUpdated];
 
-    if (v21)
+    if (firstObject)
     {
       goto LABEL_14;
     }
@@ -145,61 +145,61 @@ LABEL_9:
 
   if ([v13 count] == 1)
   {
-    v21 = [v13 firstObject];
-    [v21 _markTransitInfoUpdated];
+    firstObject = [v13 firstObject];
+    [firstObject _markTransitInfoUpdated];
   }
 
   else
   {
-    v21 = 0;
+    firstObject = 0;
   }
 
 LABEL_14:
   v22 = MKGetTransitItemUpdaterLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    v44 = [(MKTransitMapItemUpdater *)self mapItem];
-    v23 = [v44 name];
-    v24 = [(MKTransitMapItemUpdater *)self mapItem];
-    v25 = v12;
-    v26 = [v24 _muid];
-    v27 = [v21 _transitInfoUpdatedDate];
+    mapItem = [(MKTransitMapItemUpdater *)self mapItem];
+    name = [mapItem name];
+    mapItem2 = [(MKTransitMapItemUpdater *)self mapItem];
+    v25 = errorCopy;
+    _muid = [mapItem2 _muid];
+    _transitInfoUpdatedDate = [firstObject _transitInfoUpdatedDate];
     *buf = 138413314;
-    v50 = *&v23;
+    ttlCopy2 = *&name;
     v51 = 2048;
-    v52 = v26;
-    v12 = v25;
+    v52 = _muid;
+    errorCopy = v25;
     v53 = 1024;
-    v54 = v21 != 0;
+    v54 = firstObject != 0;
     v55 = 2112;
-    v56 = v27;
-    v28 = v27;
+    v56 = _transitInfoUpdatedDate;
+    v28 = _transitInfoUpdatedDate;
     v57 = 2112;
     v58 = v25;
     _os_log_impl(&dword_1A2EA0000, v22, OS_LOG_TYPE_DEBUG, "MapItem %@ <muid: %llu> update (success:%d, lastRefresh:%@, error:%@)", buf, 0x30u);
   }
 
-  v29 = [v21 _transitInfo];
-  if (v29)
+  _transitInfo = [firstObject _transitInfo];
+  if (_transitInfo)
   {
-    v30 = [v21 _transitInfo];
-    [v30 timeToLive];
-    a5 = v31;
+    _transitInfo2 = [firstObject _transitInfo];
+    [_transitInfo2 timeToLive];
+    ttl = v31;
   }
 
-  if (a5 > 0.0)
+  if (ttl > 0.0)
   {
-    v32 = [v21 _transitInfoUpdatedDate];
-    if (v32)
+    _transitInfoUpdatedDate2 = [firstObject _transitInfoUpdatedDate];
+    if (_transitInfoUpdatedDate2)
     {
-      v33 = [v21 _transitInfoUpdatedDate];
-      v34 = [v33 dateByAddingTimeInterval:a5];
+      _transitInfoUpdatedDate3 = [firstObject _transitInfoUpdatedDate];
+      v34 = [_transitInfoUpdatedDate3 dateByAddingTimeInterval:ttl];
 
       v35 = MKGetTransitItemUpdaterLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218242;
-        v50 = a5;
+        ttlCopy2 = ttl;
         v51 = 2112;
         v52 = v34;
         v36 = "- Schedule TTL expires in %#.1lfs at %@";
@@ -210,12 +210,12 @@ LABEL_25:
 
     else
     {
-      v34 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a5];
+      v34 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:ttl];
       v35 = MKGetTransitItemUpdaterLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218242;
-        v50 = a5;
+        ttlCopy2 = ttl;
         v51 = 2112;
         v52 = v34;
         v36 = "- Suggesting next attempt based on previous TTL of %#.1lfs at %@";
@@ -228,36 +228,36 @@ LABEL_25:
 
   v34 = 0;
 LABEL_27:
-  v37 = [v21 _transitInfo];
-  v38 = [v37 lastFullScheduleValidDate];
+  _transitInfo3 = [firstObject _transitInfo];
+  lastFullScheduleValidDate = [_transitInfo3 lastFullScheduleValidDate];
 
-  if (v38 && (!v34 || [v38 compare:v34] == -1))
+  if (lastFullScheduleValidDate && (!v34 || [lastFullScheduleValidDate compare:v34] == -1))
   {
     v39 = MKGetTransitItemUpdaterLog();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v50 = *&v38;
+      ttlCopy2 = *&lastFullScheduleValidDate;
       _os_log_impl(&dword_1A2EA0000, v39, OS_LOG_TYPE_DEBUG, "- Schedule valid to %@", buf, 0xCu);
     }
 
-    v40 = v38;
+    v40 = lastFullScheduleValidDate;
     v34 = v40;
   }
 
-  [(MKTransitMapItemUpdater *)self setLastInfoRefreshFailed:v21 == 0];
-  if (v21)
+  [(MKTransitMapItemUpdater *)self setLastInfoRefreshFailed:firstObject == 0];
+  if (firstObject)
   {
-    v41 = [(MKTransitMapItemUpdater *)self mapItem];
-    [v41 _updateTransitInfoWithMapItem:v21];
+    mapItem3 = [(MKTransitMapItemUpdater *)self mapItem];
+    [mapItem3 _updateTransitInfoWithMapItem:firstObject];
   }
 
   [(MKTransitMapItemUpdater *)self setRefreshing:0];
   if ([(MKTransitItemReferenceDateUpdater *)self isActive])
   {
-    v42 = [(MKTransitItemReferenceDateUpdater *)self delegate];
-    v43 = [(MKTransitMapItemUpdater *)self mapItem];
-    [v42 transitMapItemUpdater:self updatedMapItem:v43 error:v12];
+    delegate = [(MKTransitItemReferenceDateUpdater *)self delegate];
+    mapItem4 = [(MKTransitMapItemUpdater *)self mapItem];
+    [delegate transitMapItemUpdater:self updatedMapItem:mapItem4 error:errorCopy];
   }
 
   [(MKTransitMapItemUpdater *)self _scheduleDataUpdateForTransitItemAtDate:v34];
@@ -266,24 +266,24 @@ LABEL_27:
 - (void)_refreshTransitInfoIfNeeded
 {
   v63 = *MEMORY[0x1E69E9840];
-  v3 = [(MKTransitMapItemUpdater *)self mapItem];
+  mapItem = [(MKTransitMapItemUpdater *)self mapItem];
 
-  if (v3)
+  if (mapItem)
   {
-    v4 = [(MKTransitItemReferenceDateUpdater *)self delegate];
+    delegate = [(MKTransitItemReferenceDateUpdater *)self delegate];
 
-    if (v4)
+    if (delegate)
     {
       if (![(MKTransitMapItemUpdater *)self isRefreshing]&& [(MKTransitItemReferenceDateUpdater *)self isActive])
       {
-        v5 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
-        [v5 invalidate];
+        dataRefreshTimer = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
+        [dataRefreshTimer invalidate];
 
         [(MKTransitMapItemUpdater *)self setDataRefreshTimer:0];
-        v6 = [(MKTransitMapItemUpdater *)self mapItem];
-        v7 = [v6 _transitInfo];
+        mapItem2 = [(MKTransitMapItemUpdater *)self mapItem];
+        _transitInfo = [mapItem2 _transitInfo];
 
-        if (!v7)
+        if (!_transitInfo)
         {
           v27 = MKGetTransitItemUpdaterLog();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -296,10 +296,10 @@ LABEL_27:
           goto LABEL_50;
         }
 
-        v8 = [(MKTransitMapItemUpdater *)self mapItem];
-        v9 = [v8 _identifier];
+        mapItem3 = [(MKTransitMapItemUpdater *)self mapItem];
+        _identifier = [mapItem3 _identifier];
 
-        if (!v9)
+        if (!_identifier)
         {
           v10 = MKGetTransitItemUpdaterLog();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -309,56 +309,56 @@ LABEL_27:
           }
         }
 
-        [v7 timeToLive];
+        [_transitInfo timeToLive];
         v12 = v11;
-        v13 = [(MKTransitMapItemUpdater *)self mapItem];
-        v14 = [v13 _transitInfoUpdatedDate];
+        mapItem4 = [(MKTransitMapItemUpdater *)self mapItem];
+        _transitInfoUpdatedDate = [mapItem4 _transitInfoUpdatedDate];
 
-        if (*&v12 <= 0.0 || v14 && ([MEMORY[0x1E695DF00] date], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "timeIntervalSinceDate:", v14), v17 = v16 < *&v12, v15, v17))
+        if (*&v12 <= 0.0 || _transitInfoUpdatedDate && ([MEMORY[0x1E695DF00] date], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "timeIntervalSinceDate:", _transitInfoUpdatedDate), v17 = v16 < *&v12, v15, v17))
         {
-          if (([v7 isTransitIncidentsTTLExpired] & 1) != 0 || (objc_msgSend(v7, "hasTransitIncidentComponent") & 1) == 0)
+          if (([_transitInfo isTransitIncidentsTTLExpired] & 1) != 0 || (objc_msgSend(_transitInfo, "hasTransitIncidentComponent") & 1) == 0)
           {
             v28 = MKGetTransitItemUpdaterLog();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
             {
-              v29 = [(MKTransitMapItemUpdater *)self mapItem];
-              v30 = [v29 name];
-              v31 = [v9 muid];
-              v32 = [v7 isTransitIncidentsTTLExpired];
-              v33 = [v7 hasTransitIncidentComponent];
+              mapItem5 = [(MKTransitMapItemUpdater *)self mapItem];
+              name = [mapItem5 name];
+              muid = [_identifier muid];
+              isTransitIncidentsTTLExpired = [_transitInfo isTransitIncidentsTTLExpired];
+              hasTransitIncidentComponent = [_transitInfo hasTransitIncidentComponent];
               *buf = 138413058;
-              v57 = v30;
+              v57 = name;
               v58 = 2048;
-              v59 = v31;
+              v59 = muid;
               v60 = 1024;
-              *v61 = v32;
+              *v61 = isTransitIncidentsTTLExpired;
               *&v61[4] = 1024;
-              *&v61[6] = v33;
+              *&v61[6] = hasTransitIncidentComponent;
               _os_log_impl(&dword_1A2EA0000, v28, OS_LOG_TYPE_DEBUG, "MapItem %@ <muid: %llu> needs update: expired: %d, hasComponent: %d", buf, 0x22u);
             }
           }
 
           else
           {
-            v18 = [v7 lastFullScheduleValidDate];
-            [v18 timeIntervalSinceNow];
+            lastFullScheduleValidDate = [_transitInfo lastFullScheduleValidDate];
+            [lastFullScheduleValidDate timeIntervalSinceNow];
             v20 = v19 > 300.0;
 
             if (v20)
             {
               v21 = 0;
 LABEL_40:
-              v37 = [(MKTransitItemReferenceDateUpdater *)self delegate];
-              v38 = [v37 ticketForTransitMapItemUpdater:self];
+              delegate2 = [(MKTransitItemReferenceDateUpdater *)self delegate];
+              v38 = [delegate2 ticketForTransitMapItemUpdater:self];
 
               if (v21)
               {
                 if (v38)
                 {
                   [(MKTransitMapItemUpdater *)self setRefreshing:1];
-                  v39 = [(MKTransitItemReferenceDateUpdater *)self delegate];
-                  v40 = [(MKTransitMapItemUpdater *)self mapItem];
-                  [v39 transitMapItemUpdater:self willUpdateMapItem:v40];
+                  delegate3 = [(MKTransitItemReferenceDateUpdater *)self delegate];
+                  mapItem6 = [(MKTransitMapItemUpdater *)self mapItem];
+                  [delegate3 transitMapItemUpdater:self willUpdateMapItem:mapItem6];
 
                   objc_initWeak(buf, self);
                   v53[0] = MEMORY[0x1E69E9820];
@@ -366,7 +366,7 @@ LABEL_40:
                   v53[2] = __54__MKTransitMapItemUpdater__refreshTransitInfoIfNeeded__block_invoke;
                   v53[3] = &unk_1E76CD698;
                   objc_copyWeak(v55, buf);
-                  v54 = v9;
+                  v54 = _identifier;
                   v55[1] = v12;
                   [v38 submitWithHandler:v53 networkActivity:0];
 
@@ -379,15 +379,15 @@ LABEL_40:
                   v42 = MKGetTransitItemUpdaterLog();
                   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
                   {
-                    v43 = [(MKTransitMapItemUpdater *)self mapItem];
-                    v44 = [v43 name];
-                    v45 = [v9 muid];
-                    v46 = [(MKTransitItemReferenceDateUpdater *)self delegate];
+                    mapItem7 = [(MKTransitMapItemUpdater *)self mapItem];
+                    name2 = [mapItem7 name];
+                    muid2 = [_identifier muid];
+                    delegate4 = [(MKTransitItemReferenceDateUpdater *)self delegate];
                     v47 = objc_opt_class();
                     *buf = 138412802;
-                    v57 = v44;
+                    v57 = name2;
                     v58 = 2048;
-                    v59 = v45;
+                    v59 = muid2;
                     v60 = 2112;
                     *v61 = v47;
                     _os_log_impl(&dword_1A2EA0000, v42, OS_LOG_TYPE_ERROR, "MapItem %@ <muid: %llu> needs update but delegate %@ failed to provide a ticket", buf, 0x20u);
@@ -403,7 +403,7 @@ LABEL_40:
               {
                 if (*&v12 > 0.0)
                 {
-                  v41 = [v14 dateByAddingTimeInterval:*&v12];
+                  v41 = [_transitInfoUpdatedDate dateByAddingTimeInterval:*&v12];
                   [(MKTransitMapItemUpdater *)self _scheduleDataUpdateForTransitItemAtDate:v41];
                 }
 
@@ -417,16 +417,16 @@ LABEL_50:
             v28 = MKGetTransitItemUpdaterLog();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
             {
-              v49 = [(MKTransitMapItemUpdater *)self mapItem];
-              v50 = [v49 name];
-              v51 = [v9 muid];
-              v52 = [v7 lastFullScheduleValidDate];
+              mapItem8 = [(MKTransitMapItemUpdater *)self mapItem];
+              name3 = [mapItem8 name];
+              muid3 = [_identifier muid];
+              lastFullScheduleValidDate2 = [_transitInfo lastFullScheduleValidDate];
               *buf = 138412802;
-              v57 = v50;
+              v57 = name3;
               v58 = 2048;
-              v59 = v51;
+              v59 = muid3;
               v60 = 2112;
-              *v61 = v52;
+              *v61 = lastFullScheduleValidDate2;
               _os_log_impl(&dword_1A2EA0000, v28, OS_LOG_TYPE_DEBUG, "MapItem %@ <muid: %llu> needs update: schedule ends %@", buf, 0x20u);
             }
           }
@@ -437,17 +437,17 @@ LABEL_50:
           v28 = MKGetTransitItemUpdaterLog();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
-            v34 = [(MKTransitMapItemUpdater *)self mapItem];
-            v35 = [v34 name];
-            v36 = [v9 muid];
+            mapItem9 = [(MKTransitMapItemUpdater *)self mapItem];
+            name4 = [mapItem9 name];
+            muid4 = [_identifier muid];
             *buf = 138413058;
-            v57 = v35;
+            v57 = name4;
             v58 = 2048;
-            v59 = v36;
+            v59 = muid4;
             v60 = 2048;
             *v61 = v12;
             *&v61[8] = 2112;
-            v62 = v14;
+            v62 = _transitInfoUpdatedDate;
             _os_log_impl(&dword_1A2EA0000, v28, OS_LOG_TYPE_DEBUG, "MapItem %@ <muid: %llu> needs update: Schedule TTL = %#.1lfs, last updated: %@", buf, 0x2Au);
           }
         }
@@ -526,17 +526,17 @@ void __54__MKTransitMapItemUpdater__refreshTransitInfoIfNeeded__block_invoke(uin
   }
 }
 
-- (void)_scheduleDataUpdateForTransitItemAtDate:(id)a3
+- (void)_scheduleDataUpdateForTransitItemAtDate:(id)date
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(MKTransitMapItemUpdater *)self setSuggestedDataRefreshDate:v4];
+  dateCopy = date;
+  [(MKTransitMapItemUpdater *)self setSuggestedDataRefreshDate:dateCopy];
   if ([(MKTransitItemReferenceDateUpdater *)self isActive]&& ([(MKTransitMapItemUpdater *)self suggestedDataRefreshDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
-    [v6 invalidate];
+    dataRefreshTimer = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
+    [dataRefreshTimer invalidate];
 
-    [v4 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     v8 = v7;
     v9 = MKGetTransitItemUpdaterLog();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -544,16 +544,16 @@ void __54__MKTransitMapItemUpdater__refreshTransitInfoIfNeeded__block_invoke(uin
     {
       if (v10)
       {
-        v27 = [(MKTransitMapItemUpdater *)self mapItem];
-        v28 = [v27 name];
-        v29 = [(MKTransitMapItemUpdater *)self mapItem];
-        v30 = [v29 _identifier];
+        mapItem = [(MKTransitMapItemUpdater *)self mapItem];
+        name = [mapItem name];
+        mapItem2 = [(MKTransitMapItemUpdater *)self mapItem];
+        _identifier = [mapItem2 _identifier];
         *buf = 138412802;
-        v34 = v28;
+        v34 = name;
         v35 = 2048;
-        v36 = [v30 muid];
+        muid = [_identifier muid];
         v37 = 2112;
-        v38 = v4;
+        v38 = dateCopy;
         _os_log_impl(&dword_1A2EA0000, v9, OS_LOG_TYPE_DEBUG, "Performing immediate mapItem update for %@ <muid: %llu>, was scheduled for %@", buf, 0x20u);
       }
 
@@ -564,16 +564,16 @@ void __54__MKTransitMapItemUpdater__refreshTransitInfoIfNeeded__block_invoke(uin
     {
       if (v10)
       {
-        v11 = [(MKTransitMapItemUpdater *)self mapItem];
-        v12 = [v11 name];
-        v13 = [(MKTransitMapItemUpdater *)self mapItem];
-        v14 = [v13 _identifier];
+        mapItem3 = [(MKTransitMapItemUpdater *)self mapItem];
+        name2 = [mapItem3 name];
+        mapItem4 = [(MKTransitMapItemUpdater *)self mapItem];
+        _identifier2 = [mapItem4 _identifier];
         *buf = 138412802;
-        v34 = v12;
+        v34 = name2;
         v35 = 2048;
-        v36 = [v14 muid];
+        muid = [_identifier2 muid];
         v37 = 2112;
-        v38 = v4;
+        v38 = dateCopy;
         _os_log_impl(&dword_1A2EA0000, v9, OS_LOG_TYPE_DEBUG, "Scheduling mapItem update for %@ <muid: %llu> at %@", buf, 0x20u);
       }
 
@@ -587,9 +587,9 @@ void __54__MKTransitMapItemUpdater__refreshTransitInfoIfNeeded__block_invoke(uin
       v16 = [v15 scheduledTimerWithTimeInterval:0 repeats:v31 block:v8];
       [(MKTransitMapItemUpdater *)self setDataRefreshTimer:v16];
 
-      v17 = [(MKTransitMapItemUpdater *)self suggestedDataRefreshDate];
-      v18 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
-      [v18 setFireDate:v17];
+      suggestedDataRefreshDate = [(MKTransitMapItemUpdater *)self suggestedDataRefreshDate];
+      dataRefreshTimer2 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
+      [dataRefreshTimer2 setFireDate:suggestedDataRefreshDate];
 
       objc_destroyWeak(&v32);
       objc_destroyWeak(buf);
@@ -601,26 +601,26 @@ void __54__MKTransitMapItemUpdater__refreshTransitInfoIfNeeded__block_invoke(uin
     v19 = MKGetTransitItemUpdaterLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(MKTransitMapItemUpdater *)self mapItem];
-      v21 = [v20 name];
-      v22 = [(MKTransitMapItemUpdater *)self mapItem];
-      v23 = [v22 _identifier];
-      v24 = [v23 muid];
-      v25 = [(MKTransitItemReferenceDateUpdater *)self isActive];
+      mapItem5 = [(MKTransitMapItemUpdater *)self mapItem];
+      name3 = [mapItem5 name];
+      mapItem6 = [(MKTransitMapItemUpdater *)self mapItem];
+      _identifier3 = [mapItem6 _identifier];
+      muid2 = [_identifier3 muid];
+      isActive = [(MKTransitItemReferenceDateUpdater *)self isActive];
       v26 = "NO";
       *buf = 138413058;
       v35 = 2048;
-      v34 = v21;
-      if (v25)
+      v34 = name3;
+      if (isActive)
       {
         v26 = "YES";
       }
 
-      v36 = v24;
+      muid = muid2;
       v37 = 2080;
       v38 = v26;
       v39 = 2112;
-      v40 = v4;
+      v40 = dateCopy;
       _os_log_impl(&dword_1A2EA0000, v19, OS_LOG_TYPE_DEBUG, "Will not schedule mapItem update for %@ <muid: %llu> (isActive:%s, date:%@)", buf, 0x2Au);
     }
 
@@ -637,31 +637,31 @@ void __67__MKTransitMapItemUpdater__scheduleDataUpdateForTransitItemAtDate___blo
 - (void)_suspendDataRefreshTimer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
+  dataRefreshTimer = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
 
-  if (v3)
+  if (dataRefreshTimer)
   {
     v4 = MKGetTransitItemUpdaterLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [(MKTransitMapItemUpdater *)self mapItem];
-      v6 = [v5 name];
-      v7 = [(MKTransitMapItemUpdater *)self mapItem];
-      v8 = [v7 _identifier];
-      v9 = [v8 muid];
-      v10 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
-      v11 = [v10 fireDate];
+      mapItem = [(MKTransitMapItemUpdater *)self mapItem];
+      name = [mapItem name];
+      mapItem2 = [(MKTransitMapItemUpdater *)self mapItem];
+      _identifier = [mapItem2 _identifier];
+      muid = [_identifier muid];
+      dataRefreshTimer2 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
+      fireDate = [dataRefreshTimer2 fireDate];
       v13 = 138412802;
-      v14 = v6;
+      v14 = name;
       v15 = 2048;
-      v16 = v9;
+      v16 = muid;
       v17 = 2112;
-      v18 = v11;
+      v18 = fireDate;
       _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_DEBUG, "Cancelling scheduled mapItem update for %@ <muid: %llu> at %@", &v13, 0x20u);
     }
 
-    v12 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
-    [v12 invalidate];
+    dataRefreshTimer3 = [(MKTransitMapItemUpdater *)self dataRefreshTimer];
+    [dataRefreshTimer3 invalidate];
 
     [(MKTransitMapItemUpdater *)self setDataRefreshTimer:0];
   }
@@ -669,12 +669,12 @@ void __67__MKTransitMapItemUpdater__scheduleDataUpdateForTransitItemAtDate___blo
 
 - (void)_resumeDataRefreshTimer
 {
-  v3 = [(MKTransitMapItemUpdater *)self suggestedDataRefreshDate];
+  suggestedDataRefreshDate = [(MKTransitMapItemUpdater *)self suggestedDataRefreshDate];
 
-  if (v3)
+  if (suggestedDataRefreshDate)
   {
-    v4 = [(MKTransitMapItemUpdater *)self suggestedDataRefreshDate];
-    [(MKTransitMapItemUpdater *)self _scheduleDataUpdateForTransitItemAtDate:v4];
+    suggestedDataRefreshDate2 = [(MKTransitMapItemUpdater *)self suggestedDataRefreshDate];
+    [(MKTransitMapItemUpdater *)self _scheduleDataUpdateForTransitItemAtDate:suggestedDataRefreshDate2];
   }
 
   else
@@ -684,34 +684,34 @@ void __67__MKTransitMapItemUpdater__scheduleDataUpdateForTransitItemAtDate___blo
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v26 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = MKTransitMapItemUpdater;
   [(MKTransitItemReferenceDateUpdater *)&v21 setActive:?];
   v5 = MKGetTransitItemUpdaterLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (activeCopy)
   {
     if (v6)
     {
-      v7 = [(MKTransitMapItemUpdater *)self mapItem];
-      v8 = [v7 name];
-      v9 = [(MKTransitMapItemUpdater *)self mapItem];
-      v10 = [v9 _identifier];
-      v11 = [v10 muid];
+      mapItem = [(MKTransitMapItemUpdater *)self mapItem];
+      name = [mapItem name];
+      mapItem2 = [(MKTransitMapItemUpdater *)self mapItem];
+      _identifier = [mapItem2 _identifier];
+      muid = [_identifier muid];
       *buf = 138412546;
-      v23 = v8;
+      v23 = name;
       v24 = 2048;
-      v25 = v11;
+      v25 = muid;
       _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_DEBUG, "Activating updater for %@ <muid: %llu>", buf, 0x16u);
     }
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    v13 = [(MKTransitMapItemUpdater *)self mapItem];
-    [v12 addObserver:self selector:sel__transitInfoUpdated name:@"kMapItemTransitInfoDidUpdateNotification" object:v13];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mapItem3 = [(MKTransitMapItemUpdater *)self mapItem];
+    [defaultCenter addObserver:self selector:sel__transitInfoUpdated name:@"kMapItemTransitInfoDidUpdateNotification" object:mapItem3];
 
     [(MKTransitMapItemUpdater *)self _resumeDataRefreshTimer];
   }
@@ -720,36 +720,36 @@ void __67__MKTransitMapItemUpdater__scheduleDataUpdateForTransitItemAtDate___blo
   {
     if (v6)
     {
-      v14 = [(MKTransitMapItemUpdater *)self mapItem];
-      v15 = [v14 name];
-      v16 = [(MKTransitMapItemUpdater *)self mapItem];
-      v17 = [v16 _identifier];
-      v18 = [v17 muid];
+      mapItem4 = [(MKTransitMapItemUpdater *)self mapItem];
+      name2 = [mapItem4 name];
+      mapItem5 = [(MKTransitMapItemUpdater *)self mapItem];
+      _identifier2 = [mapItem5 _identifier];
+      muid2 = [_identifier2 muid];
       *buf = 138412546;
-      v23 = v15;
+      v23 = name2;
       v24 = 2048;
-      v25 = v18;
+      v25 = muid2;
       _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_DEBUG, "Deactivating updater for %@ <muid: %llu>", buf, 0x16u);
     }
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    v20 = [(MKTransitMapItemUpdater *)self mapItem];
-    [v19 removeObserver:self name:@"kMapItemTransitInfoDidUpdateNotification" object:v20];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    mapItem6 = [(MKTransitMapItemUpdater *)self mapItem];
+    [defaultCenter2 removeObserver:self name:@"kMapItemTransitInfoDidUpdateNotification" object:mapItem6];
 
     [(MKTransitMapItemUpdater *)self _suspendDataRefreshTimer];
   }
 }
 
-- (MKTransitMapItemUpdater)initWithMapItem:(id)a3 delegate:(id)a4
+- (MKTransitMapItemUpdater)initWithMapItem:(id)item delegate:(id)delegate
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MKTransitMapItemUpdater;
-  v8 = [(MKTransitItemReferenceDateUpdater *)&v11 initWithDelegate:a4];
+  v8 = [(MKTransitItemReferenceDateUpdater *)&v11 initWithDelegate:delegate];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mapItem, a3);
+    objc_storeStrong(&v8->_mapItem, item);
   }
 
   return v9;

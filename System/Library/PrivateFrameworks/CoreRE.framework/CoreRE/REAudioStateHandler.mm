@@ -1,24 +1,24 @@
 @interface REAudioStateHandler
-- (REAudioStateHandler)initWithTitle:(id)a3 block:(id)a4;
+- (REAudioStateHandler)initWithTitle:(id)title block:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation REAudioStateHandler
 
-- (REAudioStateHandler)initWithTitle:(id)a3 block:(id)a4
+- (REAudioStateHandler)initWithTitle:(id)title block:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = REAudioStateHandler;
   v8 = [(REAudioStateHandler *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v14 = v7;
-    v13 = v6;
+    v14 = blockCopy;
+    v13 = titleCopy;
     v9->osStateHandle = os_state_add_handler();
   }
 

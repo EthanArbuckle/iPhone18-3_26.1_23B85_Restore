@@ -1,16 +1,16 @@
 @interface HURestrictedGuestAccessSettingsModuleController
-- (Class)cellClassForItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)userSwitchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (Class)cellClassForItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)userSwitchCell:(id)cell didTurnOn:(BOOL)on;
 @end
 
 @implementation HURestrictedGuestAccessSettingsModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -23,7 +23,7 @@
 
   v6 = v5;
 
-  v7 = [v6 sourceItem];
+  sourceItem = [v6 sourceItem];
   objc_opt_class();
   objc_opt_isKindOfClass();
 
@@ -32,15 +32,15 @@
   return v8;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v23.receiver = self;
   v23.super_class = HURestrictedGuestAccessSettingsModuleController;
-  [(HUItemModuleController *)&v23 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v23 setupCell:cellCopy forItem:itemCopy];
   objc_opt_class();
-  v8 = v7;
+  v8 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -53,14 +53,14 @@
 
   v10 = v9;
 
-  v11 = [v10 sourceItem];
+  sourceItem = [v10 sourceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     objc_opt_class();
-    v13 = v6;
+    v13 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -73,8 +73,8 @@
 
     v15 = v14;
 
-    v16 = [v8 latestResults];
-    v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+    latestResults = [v8 latestResults];
+    v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14120]];
 
     if (v17)
     {
@@ -85,12 +85,12 @@
     [v15 setShowAccessLevelDescription:1];
     [v18 setPrefersSideBySideTextAndSecondaryText:0];
     [v13 setContentConfiguration:v18];
-    v19 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [v13 setBackgroundColor:v19];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [v13 setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   objc_opt_class();
-  v20 = v6;
+  v20 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v21 = v20;
@@ -110,35 +110,35 @@
   }
 }
 
-- (void)userSwitchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)userSwitchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v65 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  cellCopy = cell;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [v7 text];
-    v11 = [v7 item];
+    text = [cellCopy text];
+    item = [cellCopy item];
     *buf = 138413314;
-    v56 = self;
+    selfCopy = self;
     v57 = 2112;
     v58 = v9;
     v59 = 2112;
-    v60 = v10;
+    v60 = text;
     v61 = 1024;
-    v62 = v4;
+    v62 = onCopy;
     v63 = 2112;
-    v64 = v11;
+    v64 = item;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped on switch cell '%@' | isOn = %{BOOL}d | item = %@", buf, 0x30u);
   }
 
   objc_opt_class();
-  v12 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = module;
   }
 
   else
@@ -149,10 +149,10 @@
   v14 = v13;
 
   objc_opt_class();
-  v15 = [v7 item];
+  item2 = [cellCopy item];
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = item2;
   }
 
   else
@@ -162,7 +162,7 @@
 
   v17 = v16;
 
-  v18 = [v17 sourceItem];
+  sourceItem = [v17 sourceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -170,10 +170,10 @@
   {
     objc_opt_class();
     v45 = v17;
-    v20 = [v17 sourceItem];
+    sourceItem2 = [v17 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v21 = v20;
+      v21 = sourceItem2;
     }
 
     else
@@ -190,23 +190,23 @@
     v43 = v14;
     v23 = v14;
     v51 = v23;
-    v54 = v4;
+    v54 = onCopy;
     v24 = v22;
     v52 = v24;
-    v46 = v7;
-    v25 = v7;
-    v26 = v4;
+    v46 = cellCopy;
+    v25 = cellCopy;
+    v26 = onCopy;
     v27 = v25;
     v53 = v25;
     v28 = _Block_copy(aBlock);
-    v29 = [v24 user];
+    user = [v24 user];
     v44 = v24;
-    v30 = [v24 home];
+    home = [v24 home];
     objc_opt_class();
-    v31 = [(HUItemModuleController *)self host];
+    host = [(HUItemModuleController *)self host];
     if (objc_opt_isKindOfClass())
     {
-      v32 = v31;
+      v32 = host;
     }
 
     else
@@ -216,7 +216,7 @@
 
     v33 = v32;
 
-    v34 = [v23 accessoryToAdd];
+    accessoryToAdd = [v23 accessoryToAdd];
     if (v33)
     {
       v35 = MEMORY[0x277D75D28];
@@ -226,7 +226,7 @@
       v47[3] = &unk_277DB7EE0;
       v48 = v27;
       v49 = v26;
-      [v35 hu_presentingLockLimitAlertIfNeededFromViewController:v33 home:v30 user:v29 accessory:v34 include:v26 continueActionBlock:v28 cancelActionBlock:v47];
+      [v35 hu_presentingLockLimitAlertIfNeededFromViewController:v33 home:home user:user accessory:accessoryToAdd include:v26 continueActionBlock:v28 cancelActionBlock:v47];
     }
 
     else
@@ -234,28 +234,28 @@
       v36 = HFLogForCategory();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v42 = [(HUItemModuleController *)self host];
+        host2 = [(HUItemModuleController *)self host];
         *buf = 136315394;
-        v56 = "[HURestrictedGuestAccessSettingsModuleController userSwitchCell:didTurnOn:]";
+        selfCopy = "[HURestrictedGuestAccessSettingsModuleController userSwitchCell:didTurnOn:]";
         v57 = 2112;
-        v58 = v42;
+        v58 = host2;
         _os_log_error_impl(&dword_20CEB6000, v36, OS_LOG_TYPE_ERROR, "(%s) Unable to find hostVC. Updating access without alert. host = %@", buf, 0x16u);
       }
 
       v28[2](v28);
     }
 
-    v7 = v46;
+    cellCopy = v46;
 
     v17 = v45;
     v14 = v43;
   }
 
-  v37 = [v14 itemUpdater];
+  itemUpdater = [v14 itemUpdater];
   v38 = MEMORY[0x277D14788];
-  v39 = [v14 itemProviders];
-  v40 = [v38 requestToReloadItemProviders:v39 senderSelector:a2];
-  v41 = [v37 performItemUpdateRequest:v40];
+  itemProviders = [v14 itemProviders];
+  v40 = [v38 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v41 = [itemUpdater performItemUpdateRequest:v40];
 }
 
 void __76__HURestrictedGuestAccessSettingsModuleController_userSwitchCell_didTurnOn___block_invoke(uint64_t a1)

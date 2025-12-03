@@ -11,8 +11,8 @@
   v5.super_class = HOMainLoadingViewController;
   [(HOMainLoadingViewController *)&v5 viewDidLoad];
   v3 = +[UIColor systemBlackColor];
-  v4 = [(HOMainLoadingViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(HOMainLoadingViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
 - (HUWallpaperView)wallpaperView
@@ -21,15 +21,15 @@
   if (!wallpaperView)
   {
     v4 = [HUWallpaperView alloc];
-    v5 = [(HOMainLoadingViewController *)self view];
-    [v5 bounds];
+    view = [(HOMainLoadingViewController *)self view];
+    [view bounds];
     v6 = [v4 initWithFrame:?];
     v7 = self->_wallpaperView;
     self->_wallpaperView = v6;
 
     [(HUWallpaperView *)self->_wallpaperView setAutoresizingMask:18];
-    v8 = [(HOMainLoadingViewController *)self view];
-    [v8 addSubview:self->_wallpaperView];
+    view2 = [(HOMainLoadingViewController *)self view];
+    [view2 addSubview:self->_wallpaperView];
 
     wallpaperView = self->_wallpaperView;
   }

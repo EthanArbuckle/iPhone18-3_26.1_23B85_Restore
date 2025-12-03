@@ -1,5 +1,5 @@
 @interface CTXPCGetMobileNetworkCodeResponse
-- (CTXPCGetMobileNetworkCodeResponse)initWithMnc:(id)a3;
+- (CTXPCGetMobileNetworkCodeResponse)initWithMnc:(id)mnc;
 - (NSString)mnc;
 @end
 
@@ -7,19 +7,19 @@
 
 - (NSString)mnc
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"mnc"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"mnc"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;
 }
 
-- (CTXPCGetMobileNetworkCodeResponse)initWithMnc:(id)a3
+- (CTXPCGetMobileNetworkCodeResponse)initWithMnc:(id)mnc
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mncCopy = mnc;
   v10 = @"mnc";
-  v11[0] = v4;
+  v11[0] = mncCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCGetMobileNetworkCodeResponse;

@@ -1,11 +1,11 @@
 @interface ICTTAudioRecording
-- (ICTTAudioRecording)initWithICCRCoder:(id)a3;
-- (ICTTAudioRecording)initWithIdentity:(id)a3 fields:(id)a4;
+- (ICTTAudioRecording)initWithICCRCoder:(id)coder;
+- (ICTTAudioRecording)initWithIdentity:(id)identity fields:(id)fields;
 @end
 
 @implementation ICTTAudioRecording
 
-- (ICTTAudioRecording)initWithIdentity:(id)a3 fields:(id)a4
+- (ICTTAudioRecording)initWithIdentity:(id)identity fields:(id)fields
 {
   v5 = sub_2150A3A00();
   v6 = *(v5 - 8);
@@ -25,12 +25,12 @@
   return v11;
 }
 
-- (ICTTAudioRecording)initWithICCRCoder:(id)a3
+- (ICTTAudioRecording)initWithICCRCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICTTAudioRecording;
-  v3 = a3;
-  v4 = [(ICCRObject *)&v6 initWithICCRCoder:v3];
+  coderCopy = coder;
+  v4 = [(ICCRObject *)&v6 initWithICCRCoder:coderCopy];
 
   if (v4)
   {

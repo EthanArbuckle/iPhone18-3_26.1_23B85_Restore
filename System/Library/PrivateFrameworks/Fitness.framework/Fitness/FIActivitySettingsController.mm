@@ -1,20 +1,20 @@
 @interface FIActivitySettingsController
-- (BOOL)_commitValue:(id)a3 forPropertyKey:(id)a4 error:(id *)a5;
-- (BOOL)_hasDirtyPropertyForPropertyKey:(id)a3;
-- (BOOL)_logAndNilError:(id *)a3 operationDescription:(id)a4;
-- (BOOL)commmitWithError:(id *)a3;
+- (BOOL)_commitValue:(id)value forPropertyKey:(id)key error:(id *)error;
+- (BOOL)_hasDirtyPropertyForPropertyKey:(id)key;
+- (BOOL)_logAndNilError:(id *)error operationDescription:(id)description;
+- (BOOL)commmitWithError:(id *)error;
 - (FIActivitySettingsController)init;
-- (FIActivitySettingsController)initWithHealthStore:(id)a3;
+- (FIActivitySettingsController)initWithHealthStore:(id)store;
 - (HKQuantity)leanBodyMass;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)experienceType;
-- (void)_setUncommitedValue:(id)a3 forPropertyKey:(id)a4;
+- (void)_setUncommitedValue:(id)value forPropertyKey:(id)key;
 - (void)populateExistingCharacteristics;
-- (void)setBiologicalSex:(int64_t)a3;
-- (void)setDateOfBirth:(id)a3;
-- (void)setHeight:(id)a3;
-- (void)setWeight:(id)a3;
-- (void)setWheelchairUse:(int64_t)a3;
+- (void)setBiologicalSex:(int64_t)sex;
+- (void)setDateOfBirth:(id)birth;
+- (void)setHeight:(id)height;
+- (void)setWeight:(id)weight;
+- (void)setWheelchairUse:(int64_t)use;
 @end
 
 @implementation FIActivitySettingsController
@@ -27,16 +27,16 @@
   return v4;
 }
 
-- (FIActivitySettingsController)initWithHealthStore:(id)a3
+- (FIActivitySettingsController)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = FIActivitySettingsController;
   v6 = [(FIActivitySettingsController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_opt_new();
     dirtyPropertiesMap = v7->_dirtyPropertiesMap;
     v7->_dirtyPropertiesMap = v8;
@@ -45,52 +45,52 @@
   return v7;
 }
 
-- (void)setDateOfBirth:(id)a3
+- (void)setDateOfBirth:(id)birth
 {
-  objc_storeStrong(&self->_dateOfBirth, a3);
-  v5 = a3;
-  [(FIActivitySettingsController *)self _setUncommitedValue:v5 forPropertyKey:@"dateOfBirth"];
+  objc_storeStrong(&self->_dateOfBirth, birth);
+  birthCopy = birth;
+  [(FIActivitySettingsController *)self _setUncommitedValue:birthCopy forPropertyKey:@"dateOfBirth"];
 }
 
-- (void)setHeight:(id)a3
+- (void)setHeight:(id)height
 {
-  objc_storeStrong(&self->_height, a3);
-  v5 = a3;
-  [(FIActivitySettingsController *)self _setUncommitedValue:v5 forPropertyKey:@"height"];
+  objc_storeStrong(&self->_height, height);
+  heightCopy = height;
+  [(FIActivitySettingsController *)self _setUncommitedValue:heightCopy forPropertyKey:@"height"];
 }
 
-- (void)setWeight:(id)a3
+- (void)setWeight:(id)weight
 {
-  objc_storeStrong(&self->_weight, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_weight, weight);
+  weightCopy = weight;
   [(FIActivitySettingsController *)self _setUncommitedValue:self->_weight forPropertyKey:@"weight"];
 }
 
-- (void)setBiologicalSex:(int64_t)a3
+- (void)setBiologicalSex:(int64_t)sex
 {
-  self->_biologicalSex = a3;
+  self->_biologicalSex = sex;
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   [(FIActivitySettingsController *)self _setUncommitedValue:v4 forPropertyKey:@"biologicalSexObject"];
 }
 
-- (void)setWheelchairUse:(int64_t)a3
+- (void)setWheelchairUse:(int64_t)use
 {
-  self->_wheelchairUse = a3;
+  self->_wheelchairUse = use;
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   [(FIActivitySettingsController *)self _setUncommitedValue:v4 forPropertyKey:@"wheelchairUse"];
 }
 
-- (BOOL)_hasDirtyPropertyForPropertyKey:(id)a3
+- (BOOL)_hasDirtyPropertyForPropertyKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_dirtyPropertiesMap objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_dirtyPropertiesMap objectForKeyedSubscript:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)_setUncommitedValue:(id)a3 forPropertyKey:(id)a4
+- (void)_setUncommitedValue:(id)value forPropertyKey:(id)key
 {
-  [(NSMutableDictionary *)self->_dirtyPropertiesMap setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)self->_dirtyPropertiesMap setObject:value forKeyedSubscript:key];
   updateHandler = self->_updateHandler;
   if (updateHandler)
   {
@@ -100,17 +100,17 @@
   }
 }
 
-- (BOOL)_commitValue:(id)a3 forPropertyKey:(id)a4 error:(id *)a5
+- (BOOL)_commitValue:(id)value forPropertyKey:(id)key error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  keyCopy = key;
   _HKInitializeLogging();
   v9 = *MEMORY[0x277CCC270];
   if (os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = keyCopy;
     _os_log_impl(&dword_24B35E000, v9, OS_LOG_TYPE_DEFAULT, "Storing property %@", &buf, 0xCu);
   }
 
@@ -126,7 +126,7 @@
   aBlock[2] = __66__FIActivitySettingsController__commitValue_forPropertyKey_error___block_invoke;
   aBlock[3] = &unk_279004ED8;
   aBlock[4] = self;
-  v10 = v7;
+  v10 = valueCopy;
   v43 = v10;
   p_buf = &buf;
   v11 = _Block_copy(aBlock);
@@ -149,7 +149,7 @@
   v35[3] = &unk_279004ED8;
   v14 = v12;
   v36 = v14;
-  v37 = self;
+  selfCopy = self;
   v38 = &buf;
   v15 = _Block_copy(v35);
   v46[2] = v15;
@@ -160,7 +160,7 @@
   v31[3] = &unk_279004ED8;
   v16 = v14;
   v32 = v16;
-  v33 = self;
+  selfCopy2 = self;
   v34 = &buf;
   v17 = _Block_copy(v31);
   v46[3] = v17;
@@ -171,17 +171,17 @@
   v27[3] = &unk_279004ED8;
   v18 = v16;
   v28 = v18;
-  v29 = self;
+  selfCopy3 = self;
   v30 = &buf;
   v19 = _Block_copy(v27);
   v46[4] = v19;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:5];
 
-  v21 = [v20 objectForKeyedSubscript:v8];
+  v21 = [v20 objectForKeyedSubscript:keyCopy];
   v22 = v21;
   if (!v21)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"No action defined for unknown property key %@", v8}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"No action defined for unknown property key %@", keyCopy}];
     goto LABEL_10;
   }
 
@@ -196,13 +196,13 @@ LABEL_10:
   _HKInitializeLogging();
   if (os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_ERROR))
   {
-    [FIActivitySettingsController _commitValue:v8 forPropertyKey:&buf + 8 error:?];
+    [FIActivitySettingsController _commitValue:keyCopy forPropertyKey:&buf + 8 error:?];
   }
 
   v23 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
 LABEL_11:
@@ -331,22 +331,22 @@ void __66__FIActivitySettingsController__commitValue_forPropertyKey_error___bloc
   }
 }
 
-- (BOOL)_logAndNilError:(id *)a3 operationDescription:(id)a4
+- (BOOL)_logAndNilError:(id *)error operationDescription:(id)description
 {
-  v5 = a4;
-  if (a3)
+  descriptionCopy = description;
+  if (error)
   {
-    v6 = *a3 == 0;
-    if (*a3)
+    v6 = *error == 0;
+    if (*error)
     {
       _HKInitializeLogging();
       if (os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_ERROR))
       {
-        [FIActivitySettingsController _logAndNilError:v5 operationDescription:a3];
+        [FIActivitySettingsController _logAndNilError:descriptionCopy operationDescription:error];
       }
     }
 
-    *a3 = 0;
+    *error = 0;
   }
 
   else
@@ -355,7 +355,7 @@ void __66__FIActivitySettingsController__commitValue_forPropertyKey_error___bloc
     v7 = *MEMORY[0x277CCC270];
     if (os_log_type_enabled(*MEMORY[0x277CCC270], OS_LOG_TYPE_ERROR))
     {
-      [FIActivitySettingsController _logAndNilError:v5 operationDescription:v7];
+      [FIActivitySettingsController _logAndNilError:descriptionCopy operationDescription:v7];
     }
 
     v6 = 0;
@@ -364,15 +364,15 @@ void __66__FIActivitySettingsController__commitValue_forPropertyKey_error___bloc
   return v6;
 }
 
-- (BOOL)commmitWithError:(id *)a3
+- (BOOL)commmitWithError:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(NSMutableDictionary *)self->_dirtyPropertiesMap allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_dirtyPropertiesMap allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -386,7 +386,7 @@ void __66__FIActivitySettingsController__commitValue_forPropertyKey_error___bloc
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v10);
@@ -395,10 +395,10 @@ void __66__FIActivitySettingsController__commitValue_forPropertyKey_error___bloc
         [(FIActivitySettingsController *)self _commitValue:v13 forPropertyKey:v12 error:&v18];
         v8 = v18;
 
-        if (a3 && v8)
+        if (error && v8)
         {
           v14 = v8;
-          *a3 = v8;
+          *error = v8;
 
           v15 = 0;
           goto LABEL_14;
@@ -409,7 +409,7 @@ void __66__FIActivitySettingsController__commitValue_forPropertyKey_error___bloc
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
         continue;
@@ -500,7 +500,7 @@ intptr_t __44__FIActivitySettingsController_leanBodyMass__block_invoke(uint64_t 
   return dispatch_semaphore_signal(v8);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FIActivitySettingsController alloc] initWithHealthStore:self->_healthStore];
   objc_storeStrong(&v4->_dateOfBirth, self->_dateOfBirth);

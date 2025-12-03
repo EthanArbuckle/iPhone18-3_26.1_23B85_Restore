@@ -1,5 +1,5 @@
 @interface SiriUITextTemplateView
-- (SiriUITextTemplateView)initWithDataSource:(id)a3;
+- (SiriUITextTemplateView)initWithDataSource:(id)source;
 - (void)_setupDisclosureButton;
 - (void)layoutDetailText;
 - (void)layoutSubviews;
@@ -9,11 +9,11 @@
 
 @implementation SiriUITextTemplateView
 
-- (SiriUITextTemplateView)initWithDataSource:(id)a3
+- (SiriUITextTemplateView)initWithDataSource:(id)source
 {
   v5.receiver = self;
   v5.super_class = SiriUITextTemplateView;
-  v3 = [(SiriUILabelStackTemplateView *)&v5 initWithDataSource:a3];
+  v3 = [(SiriUILabelStackTemplateView *)&v5 initWithDataSource:source];
   [(SiriUITextTemplateView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   return v3;
 }
@@ -41,8 +41,8 @@
 {
   v3 = objc_alloc(MEMORY[0x277D755E8]);
   v4 = MEMORY[0x277D755B8];
-  v5 = [MEMORY[0x277D75348] siriui_platterGlyphColor];
-  v6 = [v4 siriui_semiTransparentChevronImageWithColor:v5 allowNaturalLayout:0];
+  siriui_platterGlyphColor = [MEMORY[0x277D75348] siriui_platterGlyphColor];
+  v6 = [v4 siriui_semiTransparentChevronImageWithColor:siriui_platterGlyphColor allowNaturalLayout:0];
   v7 = [v3 initWithImage:v6];
   chevronView = self->_chevronView;
   self->_chevronView = v7;
@@ -69,15 +69,15 @@
 
 - (void)layoutDetailText
 {
-  v3 = [(SiriUIBaseTemplateView *)self dataSource];
-  v4 = [v3 detailText];
-  v5 = [v4 length];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  detailText = [dataSource detailText];
+  v5 = [detailText length];
 
   if (v5 && !self->_detailTextLabel)
   {
-    v6 = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
+    siriui_configuredBodyLabel = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
     detailTextLabel = self->_detailTextLabel;
-    self->_detailTextLabel = v6;
+    self->_detailTextLabel = siriui_configuredBodyLabel;
 
     [(UILabel *)self->_detailTextLabel setUseSecondaryTextColor];
     [(UILabel *)self->_detailTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -87,9 +87,9 @@
     [(UILabel *)self->_detailTextLabel setContentCompressionResistancePriority:0 forAxis:v9];
     [(UILabel *)self->_detailTextLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v10 = self->_detailTextLabel;
-    v11 = [(SiriUIBaseTemplateView *)self dataSource];
-    v12 = [v11 detailText];
-    [(UILabel *)v10 setText:v12];
+    dataSource2 = [(SiriUIBaseTemplateView *)self dataSource];
+    detailText2 = [dataSource2 detailText];
+    [(UILabel *)v10 setText:detailText2];
 
     [(UILabel *)self->_detailTextLabel sizeToFit];
     v13 = self->_detailTextLabel;
@@ -108,10 +108,10 @@
   v5.super_class = SiriUITextTemplateView;
   [(SiriUILabelStackTemplateView *)&v5 reloadData];
   [(SiriUITextTemplateView *)self layoutDetailText];
-  v3 = [(SiriUIBaseTemplateView *)self dataSource];
-  v4 = [v3 showsDisclosureIndicator];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  showsDisclosureIndicator = [dataSource showsDisclosureIndicator];
 
-  if (v4)
+  if (showsDisclosureIndicator)
   {
     [(SiriUITextTemplateView *)self setupDisclosureIndicator];
     [(SiriUITextTemplateView *)self _setupDisclosureButton];

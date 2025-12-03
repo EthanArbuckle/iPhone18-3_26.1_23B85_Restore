@@ -2,11 +2,11 @@
 + (_TtC8rapportd20RPIdentitySyncDaemon)shared;
 - (OS_dispatch_queue)dispatchQueue;
 - (void)activate;
-- (void)daemonInfoChanged:(unint64_t)a3;
+- (void)daemonInfoChanged:(unint64_t)changed;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
-- (void)startBrowsingServiceWithCompletionHandler:(id)a3;
-- (void)stopBrowsingServiceWithSessionToken:(NSString *)a3 completionHandler:(id)a4;
+- (void)setDispatchQueue:(id)queue;
+- (void)startBrowsingServiceWithCompletionHandler:(id)handler;
+- (void)stopBrowsingServiceWithSessionToken:(NSString *)token completionHandler:(id)handler;
 @end
 
 @implementation RPIdentitySyncDaemon
@@ -30,34 +30,34 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v5 = OBJC_IVAR____TtC8rapportd20RPIdentitySyncDaemon_dispatchQueue;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = queue;
+  queueCopy = queue;
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   RPIdentitySyncDaemon.activate()();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   RPIdentitySyncDaemon.invalidate()();
 }
 
-- (void)startBrowsingServiceWithCompletionHandler:(id)a3
+- (void)startBrowsingServiceWithCompletionHandler:(id)handler
 {
   v5 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -73,19 +73,19 @@
   v13[3] = 0;
   v13[4] = &unk_10014C858;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1000EED08(0, 0, v8, &unk_10014C860, v13);
 }
 
-- (void)stopBrowsingServiceWithSessionToken:(NSString *)a3 completionHandler:(id)a4
+- (void)stopBrowsingServiceWithSessionToken:(NSString *)token completionHandler:(id)handler
 {
   v7 = sub_1000C4810(&qword_1001D4F68, &qword_100149690);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = token;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -100,17 +100,17 @@
   v15[3] = 0;
   v15[4] = &unk_10014C828;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  tokenCopy = token;
+  selfCopy = self;
   sub_1000EED08(0, 0, v10, &unk_10014C838, v15);
 }
 
-- (void)daemonInfoChanged:(unint64_t)a3
+- (void)daemonInfoChanged:(unint64_t)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8rapportd20RPIdentitySyncDaemon_identitySyncService);
-  v5 = self;
-  sub_1000CFC54(v3);
+  selfCopy = self;
+  sub_1000CFC54(changedCopy);
 }
 
 @end

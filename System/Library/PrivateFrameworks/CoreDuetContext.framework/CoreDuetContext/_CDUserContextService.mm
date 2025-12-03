@@ -1,38 +1,38 @@
 @interface _CDUserContextService
-+ (id)sharedInstanceWithPersistence:(id)a3;
-+ (id)sharedInstanceWithSharedMemoryStore:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)setMappingObject:(id)a3 forContextualKeyPath:(id)a4;
-- (_CDUserContextService)initWithListener:(id)a3 withPersistence:(id)a4 withStorage:(id)a5 withStore:(id)a6;
-- (id)obtainFiredRegistrationMatchingRegistration:(id)a3 info:(id *)a4;
-- (id)subscriberForSourceDeviceUUID:(id)a3;
-- (id)subscribersForClientIdentifier:(id)a3;
-- (unint64_t)tokenForSourceDeviceUUID:(id)a3;
-- (void)addOpenRegistration:(id)a3;
-- (void)addProxyWithSourceDeviceUUID:(id)a3;
-- (void)addSubscriber:(id)a3;
-- (void)clientWasInterrupted:(id)a3;
-- (void)fetchProxySourceDeviceUUIDFromSubscriber:(id)a3;
-- (void)informClientOfFiredRegistration:(id)a3 info:(id)a4;
++ (id)sharedInstanceWithPersistence:(id)persistence;
++ (id)sharedInstanceWithSharedMemoryStore:(id)store;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)setMappingObject:(id)object forContextualKeyPath:(id)path;
+- (_CDUserContextService)initWithListener:(id)listener withPersistence:(id)persistence withStorage:(id)storage withStore:(id)store;
+- (id)obtainFiredRegistrationMatchingRegistration:(id)registration info:(id *)info;
+- (id)subscriberForSourceDeviceUUID:(id)d;
+- (id)subscribersForClientIdentifier:(id)identifier;
+- (unint64_t)tokenForSourceDeviceUUID:(id)d;
+- (void)addOpenRegistration:(id)registration;
+- (void)addProxyWithSourceDeviceUUID:(id)d;
+- (void)addSubscriber:(id)subscriber;
+- (void)clientWasInterrupted:(id)interrupted;
+- (void)fetchProxySourceDeviceUUIDFromSubscriber:(id)subscriber;
+- (void)informClientOfFiredRegistration:(id)registration info:(id)info;
 - (void)regenerateState;
-- (void)removeOpenRegistration:(id)a3;
-- (void)removeSubscriberWithToken:(unint64_t)a3 streamName:(id)a4;
-- (void)requestActivateDevicesFromAllSubscribersWithHandler:(id)a3;
-- (void)requestActivateDevicesFromSubscriber:(id)a3 withHandler:(id)a4;
-- (void)sendEvent:(id)a3 toClient:(id)a4 handler:(id)a5;
-- (void)sendEvent:(id)a3 toClient:(id)a4 replyHandler:(id)a5;
-- (void)sendEvent:(id)a3 toProxy:(id)a4 handler:(id)a5;
-- (void)sendEvent:(id)a3 toProxy:(id)a4 replyHandler:(id)a5;
+- (void)removeOpenRegistration:(id)registration;
+- (void)removeSubscriberWithToken:(unint64_t)token streamName:(id)name;
+- (void)requestActivateDevicesFromAllSubscribersWithHandler:(id)handler;
+- (void)requestActivateDevicesFromSubscriber:(id)subscriber withHandler:(id)handler;
+- (void)sendEvent:(id)event toClient:(id)client handler:(id)handler;
+- (void)sendEvent:(id)event toClient:(id)client replyHandler:(id)handler;
+- (void)sendEvent:(id)event toProxy:(id)proxy handler:(id)handler;
+- (void)sendEvent:(id)event toProxy:(id)proxy replyHandler:(id)handler;
 @end
 
 @implementation _CDUserContextService
 
-- (_CDUserContextService)initWithListener:(id)a3 withPersistence:(id)a4 withStorage:(id)a5 withStore:(id)a6
+- (_CDUserContextService)initWithListener:(id)listener withPersistence:(id)persistence withStorage:(id)storage withStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  listenerCopy = listener;
+  persistenceCopy = persistence;
+  storageCopy = storage;
+  storeCopy = store;
   v48.receiver = self;
   v48.super_class = _CDUserContextService;
   v15 = [(_CDUserContextService *)&v48 init];
@@ -46,20 +46,20 @@
     userContext = v15->_userContext;
     v15->_userContext = v18;
 
-    objc_storeStrong(&v15->_listener, a3);
-    if (v12)
+    objc_storeStrong(&v15->_listener, listener);
+    if (persistenceCopy)
     {
-      v20 = v12;
+      v20 = persistenceCopy;
     }
 
-    else if (v13)
+    else if (storageCopy)
     {
-      v20 = [_CDCoreDataContextPersisting persistenceWithStorage:v13];
+      v20 = [_CDCoreDataContextPersisting persistenceWithStorage:storageCopy];
     }
 
     else
     {
-      if (!v14)
+      if (!storeCopy)
       {
         v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", @"CDCSS"];
         v45 = [MEMORY[0x1E6997918] keyValueStoreWithName:v21 size:0];
@@ -70,7 +70,7 @@
         goto LABEL_9;
       }
 
-      v20 = [_CDSharedMemoryContextPersisting persistenceWithSharedMemoryKeyValueStore:v14];
+      v20 = [_CDSharedMemoryContextPersisting persistenceWithSharedMemoryKeyValueStore:storeCopy];
     }
 
     v21 = v15->_persistence;
@@ -100,36 +100,36 @@ LABEL_9:
 
     v32 = MEMORY[0x1E6997928];
     v33 = v15->_workQueue;
-    v34 = [MEMORY[0x1E6997908] mdcsChannel];
-    v35 = [v32 eventPublisherWithStreamName:"com.apple.coreduetcontext.mdcs_events" delegate:v15 queue:v33 log:v34 os_variant_diagnostic_subsystem:"com.apple.coreduetcontext"];
+    mdcsChannel = [MEMORY[0x1E6997908] mdcsChannel];
+    v35 = [v32 eventPublisherWithStreamName:"com.apple.coreduetcontext.mdcs_events" delegate:v15 queue:v33 log:mdcsChannel os_variant_diagnostic_subsystem:"com.apple.coreduetcontext"];
     mdcsEventPublisher = v15->_mdcsEventPublisher;
     v15->_mdcsEventPublisher = v35;
 
     v37 = MEMORY[0x1E6997928];
     v38 = v15->_workQueue;
-    v39 = [MEMORY[0x1E6997908] contextChannel];
-    v40 = [v37 eventPublisherWithStreamName:"com.apple.coreduetcontext.client_event_stream" delegate:v15 queue:v38 log:v39 os_variant_diagnostic_subsystem:"com.apple.coreduetcontext"];
+    contextChannel = [MEMORY[0x1E6997908] contextChannel];
+    v40 = [v37 eventPublisherWithStreamName:"com.apple.coreduetcontext.client_event_stream" delegate:v15 queue:v38 log:contextChannel os_variant_diagnostic_subsystem:"com.apple.coreduetcontext"];
     notificationEventPublisher = v15->_notificationEventPublisher;
     v15->_notificationEventPublisher = v40;
 
-    v42 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     remoteDevicesByDeviceID = v15->_remoteDevicesByDeviceID;
-    v15->_remoteDevicesByDeviceID = v42;
+    v15->_remoteDevicesByDeviceID = dictionary;
   }
 
   return v15;
 }
 
-+ (id)sharedInstanceWithPersistence:(id)a3
++ (id)sharedInstanceWithPersistence:(id)persistence
 {
-  v3 = a3;
+  persistenceCopy = persistence;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55___CDUserContextService_sharedInstanceWithPersistence___block_invoke;
   block[3] = &unk_1E7886288;
-  v10 = v3;
+  v10 = persistenceCopy;
   v4 = sharedInstanceWithPersistence__onceToken;
-  v5 = v3;
+  v5 = persistenceCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedInstanceWithPersistence__onceToken, block);
@@ -141,16 +141,16 @@ LABEL_9:
   return v6;
 }
 
-+ (id)sharedInstanceWithSharedMemoryStore:(id)a3
++ (id)sharedInstanceWithSharedMemoryStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61___CDUserContextService_sharedInstanceWithSharedMemoryStore___block_invoke;
   block[3] = &unk_1E7886288;
-  v10 = v3;
+  v10 = storeCopy;
   v4 = sharedInstanceWithSharedMemoryStore__onceToken;
-  v5 = v3;
+  v5 = storeCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedInstanceWithSharedMemoryStore__onceToken, block);
@@ -162,17 +162,17 @@ LABEL_9:
   return v6;
 }
 
-- (void)addOpenRegistration:(id)a3
+- (void)addOpenRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   v5 = self->_openRegistrations;
   objc_sync_enter(v5);
-  v6 = [(NSMutableSet *)self->_openRegistrations member:v4];
+  v6 = [(NSMutableSet *)self->_openRegistrations member:registrationCopy];
   objc_sync_exit(v5);
 
   if (!v6)
   {
-    v6 = v4;
+    v6 = registrationCopy;
   }
 
   objc_initWeak(&location, v6);
@@ -187,13 +187,13 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)removeOpenRegistration:(id)a3
+- (void)removeOpenRegistration:(id)registration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  registrationCopy = registration;
   v5 = self->_openRegistrations;
   objc_sync_enter(v5);
-  if ([(NSMutableSet *)self->_openRegistrations containsObject:v4])
+  if ([(NSMutableSet *)self->_openRegistrations containsObject:registrationCopy])
   {
     v14 = 0u;
     v15 = 0u;
@@ -214,7 +214,7 @@ LABEL_9:
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if ([v10 isEqual:{v4, v12}])
+          if ([v10 isEqual:{registrationCopy, v12}])
           {
             [(_CDInMemoryUserContext *)self->_userContext deregisterCallback:v10];
             [(NSMutableSet *)self->_openRegistrations removeObject:v10];
@@ -240,25 +240,25 @@ LABEL_12:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)obtainFiredRegistrationMatchingRegistration:(id)a3 info:(id *)a4
+- (id)obtainFiredRegistrationMatchingRegistration:(id)registration info:(id *)info
 {
-  v6 = a3;
+  registrationCopy = registration;
   v7 = self->_firedRegistrations;
   objc_sync_enter(v7);
-  v8 = [(NSMutableSet *)self->_firedRegistrations member:v6];
+  v8 = [(NSMutableSet *)self->_firedRegistrations member:registrationCopy];
   if (v8)
   {
     [(NSMutableSet *)self->_firedRegistrations removeObject:v8];
-    if (a4)
+    if (info)
     {
       firedRegistrationInfos = self->_firedRegistrationInfos;
-      v10 = [v8 identifier];
-      *a4 = [(NSMutableDictionary *)firedRegistrationInfos objectForKeyedSubscript:v10];
+      identifier = [v8 identifier];
+      *info = [(NSMutableDictionary *)firedRegistrationInfos objectForKeyedSubscript:identifier];
     }
 
     v11 = self->_firedRegistrationInfos;
-    v12 = [v8 identifier];
-    [(NSMutableDictionary *)v11 setObject:0 forKeyedSubscript:v12];
+    identifier2 = [v8 identifier];
+    [(NSMutableDictionary *)v11 setObject:0 forKeyedSubscript:identifier2];
   }
 
   objc_sync_exit(v7);
@@ -266,22 +266,22 @@ LABEL_12:
   return v8;
 }
 
-- (void)informClientOfFiredRegistration:(id)a3 info:(id)a4
+- (void)informClientOfFiredRegistration:(id)registration info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 clientIdentifier];
-  if (v8)
+  registrationCopy = registration;
+  infoCopy = info;
+  clientIdentifier = [registrationCopy clientIdentifier];
+  if (clientIdentifier)
   {
-    v9 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    contextChannel = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_DEBUG))
     {
-      [_CDUserContextService informClientOfFiredRegistration:v6 info:?];
+      [_CDUserContextService informClientOfFiredRegistration:registrationCopy info:?];
     }
 
-    v10 = [v6 identifier];
+    identifier = [registrationCopy identifier];
     v21 = 0;
-    v11 = [(_CDXPCCodecs *)_CDXPCContextCodecs notificationEventWithRegistrationIdentifier:v10 info:v7 error:&v21];
+    v11 = [(_CDXPCCodecs *)_CDXPCContextCodecs notificationEventWithRegistrationIdentifier:identifier info:infoCopy error:&v21];
     v12 = v21;
     if (v11)
     {
@@ -289,29 +289,29 @@ LABEL_12:
       v17 = 3221225472;
       v18 = __62___CDUserContextService_informClientOfFiredRegistration_info___block_invoke;
       v19 = &unk_1E7886808;
-      v20 = v6;
-      [(_CDUserContextService *)self sendEvent:v11 toClient:v8 handler:&v16];
-      v13 = v20;
+      v20 = registrationCopy;
+      [(_CDUserContextService *)self sendEvent:v11 toClient:clientIdentifier handler:&v16];
+      contextChannel2 = v20;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E6997908] contextChannel];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      contextChannel2 = [MEMORY[0x1E6997908] contextChannel];
+      if (os_log_type_enabled(contextChannel2, OS_LOG_TYPE_ERROR))
       {
         [_CDUserContextService informClientOfFiredRegistration:info:];
       }
     }
   }
 
-  v14 = [MEMORY[0x1E6997908] contextChannel];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+  contextChannel3 = [MEMORY[0x1E6997908] contextChannel];
+  if (os_log_type_enabled(contextChannel3, OS_LOG_TYPE_DEBUG))
   {
-    [_CDUserContextService informClientOfFiredRegistration:v6 info:?];
+    [_CDUserContextService informClientOfFiredRegistration:registrationCopy info:?];
   }
 
-  v15 = [v6 identifier];
-  notify_post([v15 UTF8String]);
+  identifier2 = [registrationCopy identifier];
+  notify_post([identifier2 UTF8String]);
 }
 
 - (void)regenerateState
@@ -322,16 +322,16 @@ LABEL_12:
   v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-1209600.0];
   [(_CDContextPersisting *)persistence deleteDataCreatedBefore:v5];
 
-  v22 = [(_CDContextPersisting *)*p_persistence loadValues];
+  loadValues = [(_CDContextPersisting *)*p_persistence loadValues];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __40___CDUserContextService_regenerateState__block_invoke;
   v30[3] = &unk_1E7886ED8;
   v30[4] = self;
-  [v22 enumerateKeysAndObjectsUsingBlock:v30];
+  [loadValues enumerateKeysAndObjectsUsingBlock:v30];
   v6 = MEMORY[0x1E695DFA8];
-  v7 = [(_CDContextPersisting *)*p_persistence loadRegistrations];
-  v8 = [v6 setWithArray:v7];
+  loadRegistrations = [(_CDContextPersisting *)*p_persistence loadRegistrations];
+  v8 = [v6 setWithArray:loadRegistrations];
   openRegistrations = self->_openRegistrations;
   self->_openRegistrations = v8;
 
@@ -388,26 +388,26 @@ LABEL_12:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientWasInterrupted:(id)a3
+- (void)clientWasInterrupted:(id)interrupted
 {
-  v4 = a3;
-  if (v4)
+  interruptedCopy = interrupted;
+  if (interruptedCopy)
   {
-    v6 = v4;
+    v6 = interruptedCopy;
     v5 = self->_clients;
     objc_sync_enter(v5);
     [(NSMutableSet *)self->_clients removeObject:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    interruptedCopy = v6;
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (os_variant_has_internal_content())
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -426,27 +426,27 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v8 = [v7 valueForEntitlement:@"com.apple.coreduetd.context"];
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.coreduetd.context"];
   v9 = v8;
   if (v8 && ([v8 BOOLValue] & 1) != 0)
   {
 
 LABEL_8:
-    v9 = [_CDUserContextServerClient clientOfService:self withConnection:v7 andContext:self->_userContext];
-    v10 = self->_clients;
-    objc_sync_enter(v10);
+    v9 = [_CDUserContextServerClient clientOfService:self withConnection:connectionCopy andContext:self->_userContext];
+    contextChannel = self->_clients;
+    objc_sync_enter(contextChannel);
     [(NSMutableSet *)self->_clients addObject:v9];
-    objc_sync_exit(v10);
+    objc_sync_exit(contextChannel);
     v11 = 1;
     goto LABEL_12;
   }
 
-  v10 = [MEMORY[0x1E6997908] contextChannel];
-  if (os_log_type_enabled(&v10->super.super, OS_LOG_TYPE_INFO))
+  contextChannel = [MEMORY[0x1E6997908] contextChannel];
+  if (os_log_type_enabled(&contextChannel->super.super, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v7;
-    _os_log_impl(&dword_1A9611000, &v10->super.super, OS_LOG_TYPE_INFO, "Client %@ does not have required entitlement", buf, 0xCu);
+    v16 = connectionCopy;
+    _os_log_impl(&dword_1A9611000, &contextChannel->super.super, OS_LOG_TYPE_INFO, "Client %@ does not have required entitlement", buf, 0xCu);
   }
 
   v11 = 0;
@@ -456,16 +456,16 @@ LABEL_12:
   return v11;
 }
 
-- (void)sendEvent:(id)a3 toProxy:(id)a4 handler:(id)a5
+- (void)sendEvent:(id)event toProxy:(id)proxy handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_CDUserContextService *)self subscriberForSourceDeviceUUID:v9];
+  eventCopy = event;
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  v11 = [(_CDUserContextService *)self subscriberForSourceDeviceUUID:proxyCopy];
   if (!v11)
   {
-    v13 = [MEMORY[0x1E6997908] mdcsChannel];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    mdcsChannel = [MEMORY[0x1E6997908] mdcsChannel];
+    if (os_log_type_enabled(mdcsChannel, OS_LOG_TYPE_ERROR))
     {
       [_CDUserContextService sendEvent:toProxy:handler:];
     }
@@ -484,25 +484,25 @@ LABEL_12:
     v16 = MEMORY[0x1E6997A40];
 LABEL_8:
     v17 = [v14 errorWithDomain:v15 code:*v16 userInfo:0];
-    v10[2](v10, v17);
+    handlerCopy[2](handlerCopy, v17);
 
     goto LABEL_9;
   }
 
-  [(_CDXPCEventPublisher *)mdcsEventPublisher sendEvent:v8 toSubscriber:v11 handler:v10];
+  [(_CDXPCEventPublisher *)mdcsEventPublisher sendEvent:eventCopy toSubscriber:v11 handler:handlerCopy];
 LABEL_9:
 }
 
-- (void)sendEvent:(id)a3 toProxy:(id)a4 replyHandler:(id)a5
+- (void)sendEvent:(id)event toProxy:(id)proxy replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_CDUserContextService *)self subscriberForSourceDeviceUUID:v9];
+  eventCopy = event;
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  v11 = [(_CDUserContextService *)self subscriberForSourceDeviceUUID:proxyCopy];
   if (!v11)
   {
-    v13 = [MEMORY[0x1E6997908] mdcsChannel];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    mdcsChannel = [MEMORY[0x1E6997908] mdcsChannel];
+    if (os_log_type_enabled(mdcsChannel, OS_LOG_TYPE_ERROR))
     {
       [_CDUserContextService sendEvent:toProxy:handler:];
     }
@@ -521,27 +521,27 @@ LABEL_9:
     v16 = MEMORY[0x1E6997A40];
 LABEL_8:
     v17 = [v14 errorWithDomain:v15 code:*v16 userInfo:0];
-    v10[2](v10, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
 
     goto LABEL_9;
   }
 
-  [(_CDXPCEventPublisher *)mdcsEventPublisher sendEvent:v8 toSubscriber:v11 replyHandler:v10];
+  [(_CDXPCEventPublisher *)mdcsEventPublisher sendEvent:eventCopy toSubscriber:v11 replyHandler:handlerCopy];
 LABEL_9:
 }
 
-- (void)sendEvent:(id)a3 toClient:(id)a4 handler:(id)a5
+- (void)sendEvent:(id)event toClient:(id)client handler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_CDUserContextService *)self subscribersForClientIdentifier:v9];
+  eventCopy = event;
+  clientCopy = client;
+  handlerCopy = handler;
+  v11 = [(_CDUserContextService *)self subscribersForClientIdentifier:clientCopy];
   v12 = v11;
   if (!v11)
   {
-    v17 = [MEMORY[0x1E6997908] mdcsChannel];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    mdcsChannel = [MEMORY[0x1E6997908] mdcsChannel];
+    if (os_log_type_enabled(mdcsChannel, OS_LOG_TYPE_ERROR))
     {
       [_CDUserContextService sendEvent:toClient:handler:];
     }
@@ -559,7 +559,7 @@ LABEL_9:
     v20 = MEMORY[0x1E6997A40];
 LABEL_15:
     v21 = [v18 errorWithDomain:v19 code:*v20 userInfo:0];
-    v10[2](v10, v21);
+    handlerCopy[2](handlerCopy, v21);
 
     goto LABEL_16;
   }
@@ -582,7 +582,7 @@ LABEL_15:
           objc_enumerationMutation(v12);
         }
 
-        [(_CDXPCEventPublisher *)self->_notificationEventPublisher sendEvent:v8 toSubscriber:*(*(&v23 + 1) + 8 * i) handler:v10];
+        [(_CDXPCEventPublisher *)self->_notificationEventPublisher sendEvent:eventCopy toSubscriber:*(*(&v23 + 1) + 8 * i) handler:handlerCopy];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -596,18 +596,18 @@ LABEL_16:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendEvent:(id)a3 toClient:(id)a4 replyHandler:(id)a5
+- (void)sendEvent:(id)event toClient:(id)client replyHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_CDUserContextService *)self subscribersForClientIdentifier:v9];
+  eventCopy = event;
+  clientCopy = client;
+  handlerCopy = handler;
+  v11 = [(_CDUserContextService *)self subscribersForClientIdentifier:clientCopy];
   v12 = v11;
   if (!v11)
   {
-    v17 = [MEMORY[0x1E6997908] mdcsChannel];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    mdcsChannel = [MEMORY[0x1E6997908] mdcsChannel];
+    if (os_log_type_enabled(mdcsChannel, OS_LOG_TYPE_ERROR))
     {
       [_CDUserContextService sendEvent:toClient:handler:];
     }
@@ -625,7 +625,7 @@ LABEL_16:
     v20 = MEMORY[0x1E6997A40];
 LABEL_15:
     v21 = [v18 errorWithDomain:v19 code:*v20 userInfo:0];
-    v10[2](v10, 0, v21);
+    handlerCopy[2](handlerCopy, 0, v21);
 
     goto LABEL_16;
   }
@@ -648,7 +648,7 @@ LABEL_15:
           objc_enumerationMutation(v12);
         }
 
-        [(_CDXPCEventPublisher *)self->_notificationEventPublisher sendEvent:v8 toSubscriber:*(*(&v23 + 1) + 8 * i) replyHandler:v10];
+        [(_CDXPCEventPublisher *)self->_notificationEventPublisher sendEvent:eventCopy toSubscriber:*(*(&v23 + 1) + 8 * i) replyHandler:handlerCopy];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -662,35 +662,35 @@ LABEL_16:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setMappingObject:(id)a3 forContextualKeyPath:(id)a4
+- (BOOL)setMappingObject:(id)object forContextualKeyPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = [MEMORY[0x1E6997908] mdcsChannel];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  objectCopy = object;
+  pathCopy = path;
+  date = [MEMORY[0x1E695DF00] date];
+  mdcsChannel = [MEMORY[0x1E6997908] mdcsChannel];
+  if (os_log_type_enabled(mdcsChannel, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412802;
-    v16 = v7;
+    v16 = pathCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = objectCopy;
     v19 = 2112;
-    v20 = v8;
-    _os_log_debug_impl(&dword_1A9611000, v9, OS_LOG_TYPE_DEBUG, "SET MAPPING %@ => %@ / %@", &v15, 0x20u);
+    v20 = date;
+    _os_log_debug_impl(&dword_1A9611000, mdcsChannel, OS_LOG_TYPE_DEBUG, "SET MAPPING %@ => %@ / %@", &v15, 0x20u);
   }
 
-  v10 = [(_CDInMemoryUserContext *)self->_userContext setObject:v6 returningMetadataForContextualKeyPath:v7];
+  v10 = [(_CDInMemoryUserContext *)self->_userContext setObject:objectCopy returningMetadataForContextualKeyPath:pathCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 setLastModifiedDate:v8];
+    [v10 setLastModifiedDate:date];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E6997908] mdcsChannel];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    mdcsChannel2 = [MEMORY[0x1E6997908] mdcsChannel];
+    if (os_log_type_enabled(mdcsChannel2, OS_LOG_TYPE_ERROR))
     {
       [_CDUserContextService setMappingObject:forContextualKeyPath:];
     }
@@ -700,12 +700,12 @@ LABEL_16:
   return v11 != 0;
 }
 
-- (void)addProxyWithSourceDeviceUUID:(id)a3
+- (void)addProxyWithSourceDeviceUUID:(id)d
 {
-  v9 = a3;
+  dCopy = d;
   v4 = +[_CDContextQueries keyPathForMDCSProxies];
   v5 = [(_CDInMemoryUserContext *)self->_userContext objectForKeyedSubscript:v4];
-  if (([v5 containsObject:v9] & 1) == 0)
+  if (([v5 containsObject:dCopy] & 1) == 0)
   {
     if (v5)
     {
@@ -718,7 +718,7 @@ LABEL_16:
     }
 
     v7 = v6;
-    [v6 addObject:v9];
+    [v6 addObject:dCopy];
     v8 = [v7 copy];
 
     [(_CDUserContextService *)self setMappingObject:v8 forContextualKeyPath:v4];
@@ -726,10 +726,10 @@ LABEL_16:
   }
 }
 
-- (id)subscriberForSourceDeviceUUID:(id)a3
+- (id)subscriberForSourceDeviceUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(_CDUserContextService *)self tokenForSourceDeviceUUID:v4];
+  dCopy = d;
+  v5 = [(_CDUserContextService *)self tokenForSourceDeviceUUID:dCopy];
   v6 = self->_mdcsEventSubscribersByToken;
   objc_sync_enter(v6);
   mdcsEventSubscribersByToken = self->_mdcsEventSubscribersByToken;
@@ -741,53 +741,53 @@ LABEL_16:
   return v9;
 }
 
-- (unint64_t)tokenForSourceDeviceUUID:(id)a3
+- (unint64_t)tokenForSourceDeviceUUID:(id)d
 {
-  v4 = a3;
-  v5 = [_CDContextQueries keyPathForMDCSUserIDWithProxySourceDeviceUUID:v4];
+  dCopy = d;
+  v5 = [_CDContextQueries keyPathForMDCSUserIDWithProxySourceDeviceUUID:dCopy];
   v6 = [(_CDInMemoryUserContext *)self->_userContext objectForKeyedSubscript:v5];
   if (v6)
   {
-    v7 = [_CDContextQueries keyPathForMDCSProxyTokenWithUserID:v6];
-    v8 = [(_CDInMemoryUserContext *)self->_userContext objectForKeyedSubscript:v7];
+    mdcsChannel2 = [_CDContextQueries keyPathForMDCSProxyTokenWithUserID:v6];
+    v8 = [(_CDInMemoryUserContext *)self->_userContext objectForKeyedSubscript:mdcsChannel2];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 unsignedLongLongValue];
+      unsignedLongLongValue = [v8 unsignedLongLongValue];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E6997908] mdcsChannel];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      mdcsChannel = [MEMORY[0x1E6997908] mdcsChannel];
+      if (os_log_type_enabled(mdcsChannel, OS_LOG_TYPE_ERROR))
       {
         [_CDUserContextService tokenForSourceDeviceUUID:];
       }
 
-      v10 = 0;
+      unsignedLongLongValue = 0;
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x1E6997908] mdcsChannel];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    mdcsChannel2 = [MEMORY[0x1E6997908] mdcsChannel];
+    if (os_log_type_enabled(mdcsChannel2, OS_LOG_TYPE_ERROR))
     {
       [_CDUserContextService tokenForSourceDeviceUUID:];
     }
 
-    v10 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v10;
+  return unsignedLongLongValue;
 }
 
-- (id)subscribersForClientIdentifier:(id)a3
+- (id)subscribersForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_notificationEventSubscribersByClientIdentifier;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_notificationEventSubscribersByClientIdentifier objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_notificationEventSubscribersByClientIdentifier objectForKeyedSubscript:identifierCopy];
   v7 = [v6 copy];
 
   objc_sync_exit(v5);
@@ -795,9 +795,9 @@ LABEL_16:
   return v7;
 }
 
-- (void)fetchProxySourceDeviceUUIDFromSubscriber:(id)a3
+- (void)fetchProxySourceDeviceUUIDFromSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   v5 = +[(_CDXPCCodecs *)_CDXPCContextCodecs];
   if (v5)
   {
@@ -807,31 +807,31 @@ LABEL_16:
     v8[2] = __66___CDUserContextService_fetchProxySourceDeviceUUIDFromSubscriber___block_invoke;
     v8[3] = &unk_1E7886D78;
     v8[4] = self;
-    v9 = v4;
+    v9 = subscriberCopy;
     [(_CDXPCEventPublisher *)mdcsEventPublisher sendEvent:v5 toSubscriber:v9 replyHandler:v8];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    contextChannel = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_ERROR))
     {
       [_CDUserContextService fetchProxySourceDeviceUUIDFromSubscriber:];
     }
   }
 }
 
-- (void)requestActivateDevicesFromAllSubscribersWithHandler:(id)a3
+- (void)requestActivateDevicesFromAllSubscribersWithHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_mdcsEventSubscribersByToken;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_mdcsEventSubscribersByToken allValues];
+  allValues = [(NSMutableDictionary *)self->_mdcsEventSubscribersByToken allValues];
   objc_sync_exit(v5);
 
-  v7 = [v6 count];
-  v18 = v4;
+  v7 = [allValues count];
+  v18 = handlerCopy;
   if (v7)
   {
     v8 = v7;
@@ -866,7 +866,7 @@ LABEL_16:
     v34 = v40;
     v11 = v8;
     v36 = v8;
-    v12 = v4;
+    v12 = handlerCopy;
     v32 = v12;
     v35 = v37;
     dispatch_after(v9, workQueue, block);
@@ -874,7 +874,7 @@ LABEL_16:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v6;
+    obj = allValues;
     v13 = [obj countByEnumeratingWithState:&v27 objects:v44 count:16];
     if (v13)
     {
@@ -918,16 +918,16 @@ LABEL_16:
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestActivateDevicesFromSubscriber:(id)a3 withHandler:(id)a4
+- (void)requestActivateDevicesFromSubscriber:(id)subscriber withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  subscriberCopy = subscriber;
+  handlerCopy = handler;
   v8 = +[(_CDXPCCodecs *)_CDXPCContextCodecs];
   if (v8)
   {
@@ -936,79 +936,79 @@ LABEL_16:
     v11[1] = 3221225472;
     v11[2] = __74___CDUserContextService_requestActivateDevicesFromSubscriber_withHandler___block_invoke;
     v11[3] = &unk_1E7886F50;
-    v12 = v7;
-    [(_CDXPCEventPublisher *)mdcsEventPublisher sendEvent:v8 toSubscriber:v6 replyHandler:v11];
+    v12 = handlerCopy;
+    [(_CDXPCEventPublisher *)mdcsEventPublisher sendEvent:v8 toSubscriber:subscriberCopy replyHandler:v11];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E6997908] contextChannel];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    contextChannel = [MEMORY[0x1E6997908] contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_ERROR))
     {
       [_CDUserContextService requestActivateDevicesFromSubscriber:withHandler:];
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [v4 streamName];
-  v6 = [v4 token];
-  v7 = [v4 uid];
+  subscriberCopy = subscriber;
+  streamName = [subscriberCopy streamName];
+  token = [subscriberCopy token];
+  v7 = [subscriberCopy uid];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduetcontext.mdcs_events"];
-  v9 = [v8 isEqualToString:v5];
+  v9 = [v8 isEqualToString:streamName];
 
   if (v9)
   {
     v10 = self->_mdcsEventSubscribersByToken;
     objc_sync_enter(v10);
     mdcsEventSubscribersByToken = self->_mdcsEventSubscribersByToken;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v6];
-    [(NSMutableDictionary *)mdcsEventSubscribersByToken setObject:v4 forKeyedSubscript:v12];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
+    [(NSMutableDictionary *)mdcsEventSubscribersByToken setObject:subscriberCopy forKeyedSubscript:v12];
 
     objc_sync_exit(v10);
-    [(_CDUserContextService *)self setToken:v6 forUserID:v7];
+    [(_CDUserContextService *)self setToken:token forUserID:v7];
   }
 
   else
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduetcontext.client_event_stream"];
-    v14 = [v13 isEqualToString:v5];
+    v14 = [v13 isEqualToString:streamName];
 
     if (v14)
     {
       v15 = self->_notificationEventSubscribersByToken;
       objc_sync_enter(v15);
       notificationEventSubscribersByToken = self->_notificationEventSubscribersByToken;
-      v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v6];
-      [(NSMutableDictionary *)notificationEventSubscribersByToken setObject:v4 forKeyedSubscript:v17];
+      v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
+      [(NSMutableDictionary *)notificationEventSubscribersByToken setObject:subscriberCopy forKeyedSubscript:v17];
 
       objc_sync_exit(v15);
-      v18 = self->_notificationEventSubscribersByClientIdentifier;
-      objc_sync_enter(v18);
-      v19 = [v4 clientIdentifier];
-      v20 = [(NSMutableDictionary *)self->_notificationEventSubscribersByClientIdentifier objectForKeyedSubscript:v19];
+      contextChannel = self->_notificationEventSubscribersByClientIdentifier;
+      objc_sync_enter(contextChannel);
+      clientIdentifier = [subscriberCopy clientIdentifier];
+      v20 = [(NSMutableDictionary *)self->_notificationEventSubscribersByClientIdentifier objectForKeyedSubscript:clientIdentifier];
       if (!v20)
       {
         v20 = [MEMORY[0x1E695DFA8] setWithCapacity:1];
-        [(NSMutableDictionary *)self->_notificationEventSubscribersByClientIdentifier setObject:v20 forKeyedSubscript:v19];
+        [(NSMutableDictionary *)self->_notificationEventSubscribersByClientIdentifier setObject:v20 forKeyedSubscript:clientIdentifier];
       }
 
-      [v20 addObject:v4];
+      [v20 addObject:subscriberCopy];
 
-      objc_sync_exit(v18);
+      objc_sync_exit(contextChannel);
     }
 
     else
     {
-      v18 = [MEMORY[0x1E6997908] contextChannel];
-      if (os_log_type_enabled(&v18->super.super, OS_LOG_TYPE_ERROR))
+      contextChannel = [MEMORY[0x1E6997908] contextChannel];
+      if (os_log_type_enabled(&contextChannel->super.super, OS_LOG_TYPE_ERROR))
       {
         [_CDUserContextService addSubscriber:];
       }
@@ -1023,27 +1023,27 @@ LABEL_16:
 
   else
   {
-    [(_CDUserContextService *)self fetchProxySourceDeviceUUIDFromSubscriber:v4];
-    [(_CDUserContextService *)self requestActivateDevicesFromSubscriber:v4 withHandler:0];
+    [(_CDUserContextService *)self fetchProxySourceDeviceUUIDFromSubscriber:subscriberCopy];
+    [(_CDUserContextService *)self requestActivateDevicesFromSubscriber:subscriberCopy withHandler:0];
   }
 }
 
-- (void)removeSubscriberWithToken:(unint64_t)a3 streamName:(id)a4
+- (void)removeSubscriberWithToken:(unint64_t)token streamName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduetcontext.mdcs_events"];
-  v8 = [v7 isEqualToString:v6];
+  v8 = [v7 isEqualToString:nameCopy];
 
   if (v8)
   {
     v9 = self->_mdcsEventSubscribersByToken;
     objc_sync_enter(v9);
     mdcsEventSubscribersByToken = self->_mdcsEventSubscribersByToken;
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
     v12 = [(NSMutableDictionary *)mdcsEventSubscribersByToken objectForKeyedSubscript:v11];
 
     v13 = self->_mdcsEventSubscribersByToken;
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
     [(NSMutableDictionary *)v13 setObject:0 forKeyedSubscript:v14];
 
     objc_sync_exit(v9);
@@ -1058,18 +1058,18 @@ LABEL_7:
   }
 
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduetcontext.client_event_stream"];
-  v16 = [v15 isEqualToString:v6];
+  v16 = [v15 isEqualToString:nameCopy];
 
   if (v16)
   {
     v17 = self->_notificationEventSubscribersByToken;
     objc_sync_enter(v17);
     notificationEventSubscribersByToken = self->_notificationEventSubscribersByToken;
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
     v12 = [(NSMutableDictionary *)notificationEventSubscribersByToken objectForKeyedSubscript:v19];
 
     v20 = self->_notificationEventSubscribersByToken;
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
     [(NSMutableDictionary *)v20 setObject:0 forKeyedSubscript:v21];
 
     objc_sync_exit(v17);
@@ -1077,8 +1077,8 @@ LABEL_7:
     {
       v22 = self->_notificationEventSubscribersByClientIdentifier;
       objc_sync_enter(v22);
-      v23 = [v12 clientIdentifier];
-      v24 = [(NSMutableDictionary *)self->_notificationEventSubscribersByClientIdentifier objectForKeyedSubscript:v23];
+      clientIdentifier = [v12 clientIdentifier];
+      v24 = [(NSMutableDictionary *)self->_notificationEventSubscribersByClientIdentifier objectForKeyedSubscript:clientIdentifier];
       [v24 removeObject:v12];
 
       objc_sync_exit(v22);
@@ -1087,8 +1087,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v25 = [MEMORY[0x1E6997908] contextChannel];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+  contextChannel = [MEMORY[0x1E6997908] contextChannel];
+  if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_ERROR))
   {
     [_CDUserContextService addSubscriber:];
   }

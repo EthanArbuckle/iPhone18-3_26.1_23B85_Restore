@@ -1,11 +1,11 @@
 @interface HMDMatterBulletinNotificationRegistration
-- (BOOL)isEqual:(id)a3;
-- (HMDMatterBulletinNotificationRegistration)initWithCoder:(id)a3;
-- (HMDMatterBulletinNotificationRegistration)initWithDictionary:(id)a3 withHome:(id)a4;
-- (HMDMatterBulletinNotificationRegistration)initWithMatterPaths:(id)a3 conditions:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDMatterBulletinNotificationRegistration)initWithCoder:(id)coder;
+- (HMDMatterBulletinNotificationRegistration)initWithDictionary:(id)dictionary withHome:(id)home;
+- (HMDMatterBulletinNotificationRegistration)initWithMatterPaths:(id)paths conditions:(id)conditions;
 - (id)attributeDescriptions;
 - (id)serializedRegistrationForRemoteMessage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDMatterBulletinNotificationRegistration
@@ -15,33 +15,33 @@
   v12[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HMDMatterBulletinNotificationRegistration;
-  v3 = [(HMDBulletinNotificationRegistration *)&v11 attributeDescriptions];
+  attributeDescriptions = [(HMDBulletinNotificationRegistration *)&v11 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDMatterBulletinNotificationRegistration *)self matterPaths];
-  v6 = [v4 initWithName:@"matterPaths" value:v5];
+  matterPaths = [(HMDMatterBulletinNotificationRegistration *)self matterPaths];
+  v6 = [v4 initWithName:@"matterPaths" value:matterPaths];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v8 = [v3 arrayByAddingObjectsFromArray:v7];
+  v8 = [attributeDescriptions arrayByAddingObjectsFromArray:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (HMDMatterBulletinNotificationRegistration)initWithCoder:(id)a3
+- (HMDMatterBulletinNotificationRegistration)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[HMDBulletinNotificationRegistration alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[HMDBulletinNotificationRegistration alloc] initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDMBNR.ck.mp"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDMBNR.ck.mp"];
     if (v6)
     {
-      v7 = [(HMDBulletinNotificationRegistration *)v5 conditions];
-      self = [(HMDMatterBulletinNotificationRegistration *)self initWithMatterPaths:v6 conditions:v7];
+      conditions = [(HMDBulletinNotificationRegistration *)v5 conditions];
+      self = [(HMDMatterBulletinNotificationRegistration *)self initWithMatterPaths:v6 conditions:conditions];
 
-      v8 = self;
+      selfCopy = self;
     }
 
     else
@@ -60,36 +60,36 @@
       }
 
       objc_autoreleasePoolPop(v9);
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMDMatterBulletinNotificationRegistration;
-  v4 = a3;
-  [(HMDBulletinNotificationRegistration *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDBulletinNotificationRegistration *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HMDMatterBulletinNotificationRegistration *)self matterPaths:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"HMDMBNR.ck.mp"];
+  [coderCopy encodeObject:v5 forKey:@"HMDMBNR.ck.mp"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -100,9 +100,9 @@
   v6 = v5;
   if (v6 && (v11.receiver = self, v11.super_class = HMDMatterBulletinNotificationRegistration, [(HMDBulletinNotificationRegistration *)&v11 isEqual:v6]))
   {
-    v7 = [(HMDMatterBulletinNotificationRegistration *)self matterPaths];
-    v8 = [v6 matterPaths];
-    v9 = [v7 isEqual:v8];
+    matterPaths = [(HMDMatterBulletinNotificationRegistration *)self matterPaths];
+    matterPaths2 = [v6 matterPaths];
+    v9 = [matterPaths isEqual:matterPaths2];
   }
 
   else
@@ -117,11 +117,11 @@
 {
   v8.receiver = self;
   v8.super_class = HMDMatterBulletinNotificationRegistration;
-  v3 = [(HMDBulletinNotificationRegistration *)&v8 serializedRegistrationForRemoteMessage];
-  v4 = [v3 mutableCopy];
+  serializedRegistrationForRemoteMessage = [(HMDBulletinNotificationRegistration *)&v8 serializedRegistrationForRemoteMessage];
+  v4 = [serializedRegistrationForRemoteMessage mutableCopy];
 
-  v5 = [(HMDMatterBulletinNotificationRegistration *)self matterPaths];
-  v6 = [v5 na_map:&__block_literal_global_101340];
+  matterPaths = [(HMDMatterBulletinNotificationRegistration *)self matterPaths];
+  v6 = [matterPaths na_map:&__block_literal_global_101340];
 
   [v4 setObject:v6 forKeyedSubscript:@"HMDMBNR.ck.mp"];
 
@@ -154,27 +154,27 @@ id __83__HMDMatterBulletinNotificationRegistration_serializedRegistrationForRemo
   return v4;
 }
 
-- (HMDMatterBulletinNotificationRegistration)initWithDictionary:(id)a3 withHome:(id)a4
+- (HMDMatterBulletinNotificationRegistration)initWithDictionary:(id)dictionary withHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  homeCopy = home;
   v8 = objc_opt_class();
-  v9 = [objc_opt_class() type];
-  LODWORD(v8) = [v8 doesTypeMatch:v6 against:v9];
+  type = [objc_opt_class() type];
+  LODWORD(v8) = [v8 doesTypeMatch:dictionaryCopy against:type];
 
   if (v8)
   {
     v20.receiver = self;
     v20.super_class = HMDMatterBulletinNotificationRegistration;
-    v10 = [(HMDBulletinNotificationRegistration *)&v20 initWithDictionary:v6];
+    v10 = [(HMDBulletinNotificationRegistration *)&v20 initWithDictionary:dictionaryCopy];
     if (v10)
     {
-      v11 = [v6 hmf_arrayForKey:@"HMDMBNR.ck.mp"];
+      v11 = [dictionaryCopy hmf_arrayForKey:@"HMDMBNR.ck.mp"];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __73__HMDMatterBulletinNotificationRegistration_initWithDictionary_withHome___block_invoke;
       v17[3] = &unk_278677E28;
-      v18 = v7;
+      v18 = homeCopy;
       v12 = v10;
       v19 = v12;
       v13 = [v11 na_map:v17];
@@ -183,15 +183,15 @@ id __83__HMDMatterBulletinNotificationRegistration_serializedRegistrationForRemo
     }
 
     self = v10;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 id __73__HMDMatterBulletinNotificationRegistration_initWithDictionary_withHome___block_invoke(uint64_t a1, void *a2)
@@ -265,20 +265,20 @@ LABEL_14:
   return v19;
 }
 
-- (HMDMatterBulletinNotificationRegistration)initWithMatterPaths:(id)a3 conditions:(id)a4
+- (HMDMatterBulletinNotificationRegistration)initWithMatterPaths:(id)paths conditions:(id)conditions
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  pathsCopy = paths;
+  conditionsCopy = conditions;
+  if (pathsCopy)
   {
-    v9 = v8;
+    v9 = conditionsCopy;
     v15.receiver = self;
     v15.super_class = HMDMatterBulletinNotificationRegistration;
-    v10 = [(HMDBulletinNotificationRegistration *)&v15 initWithConditions:v8];
+    v10 = [(HMDBulletinNotificationRegistration *)&v15 initWithConditions:conditionsCopy];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_matterPaths, a3);
+      objc_storeStrong(&v10->_matterPaths, paths);
     }
 
     return v11;

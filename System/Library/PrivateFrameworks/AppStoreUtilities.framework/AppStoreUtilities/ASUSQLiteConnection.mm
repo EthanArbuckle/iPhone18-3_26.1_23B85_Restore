@@ -1,45 +1,45 @@
 @interface ASUSQLiteConnection
-- (ASUSQLiteConnection)initWithOptions:(id)a3;
+- (ASUSQLiteConnection)initWithOptions:(id)options;
 - (ASUSQLiteConnectionDelegate)delegate;
 - (BOOL)_open;
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)finalizePreparedStatement:(id)a3 error:(id *)a4;
-- (BOOL)performSavepoint:(id)a3;
-- (BOOL)performTransaction:(id)a3 error:(id *)a4;
-- (BOOL)tableExists:(id)a3;
-- (id)_prepareStatement:(void *)a3 error:;
-- (id)_verifiedStatementForPreparedStatement:(void *)a3 error:;
-- (id)_verifiedStatementForSQL:(void *)a3 error:;
-- (id)prepareStatement:(id)a3 error:(id *)a4;
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)finalizePreparedStatement:(id)statement error:(id *)error;
+- (BOOL)performSavepoint:(id)savepoint;
+- (BOOL)performTransaction:(id)transaction error:(id *)error;
+- (BOOL)tableExists:(id)exists;
+- (id)_prepareStatement:(void *)statement error:;
+- (id)_verifiedStatementForPreparedStatement:(void *)statement error:;
+- (id)_verifiedStatementForSQL:(void *)l error:;
+- (id)prepareStatement:(id)statement error:(id *)error;
 - (int64_t)lastChangeCount;
 - (uint64_t)_close;
-- (uint64_t)_executeStatement:(void *)a3 error:;
-- (uint64_t)_executeWithError:(void *)a3 usingBlock:;
+- (uint64_t)_executeStatement:(void *)statement error:;
+- (uint64_t)_executeWithError:(void *)error usingBlock:;
 - (uint64_t)_resetAfterCorruptionError;
 - (void)dealloc;
-- (void)dispatchAfterTransaction:(id)a3;
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4;
-- (void)executeQuery:(id)a3 withResults:(id)a4;
+- (void)dispatchAfterTransaction:(id)transaction;
+- (void)executePreparedQuery:(id)query withResults:(id)results;
+- (void)executeQuery:(id)query withResults:(id)results;
 @end
 
 @implementation ASUSQLiteConnection
 
-- (ASUSQLiteConnection)initWithOptions:(id)a3
+- (ASUSQLiteConnection)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = ASUSQLiteConnection;
   v5 = [(ASUSQLiteConnection *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v6;
 
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     preparedStatements = v5->_preparedStatements;
-    v5->_preparedStatements = v8;
+    v5->_preparedStatements = strongToStrongObjectsMapTable;
   }
 
   return v5;
@@ -53,9 +53,9 @@
     v3 = ASULogHandleForCategory(1);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
-      v5 = [(ASUSQLiteConnectionOptions *)self->_options databasePath];
+      databasePath = [(ASUSQLiteConnectionOptions *)self->_options databasePath];
       *buf = 138543362;
-      v8 = v5;
+      v8 = databasePath;
       _os_log_fault_impl(&dword_2400F8000, v3, OS_LOG_TYPE_FAULT, "Connection taken down HARD, please call close before deallocating: %{public}@", buf, 0xCu);
     }
 
@@ -80,8 +80,8 @@
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v2 = [*(result + 32) objectEnumerator];
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      objectEnumerator = [*(result + 32) objectEnumerator];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         v4 = v3;
@@ -93,14 +93,14 @@
           {
             if (*v12 != v5)
             {
-              objc_enumerationMutation(v2);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             [*(*(&v11 + 1) + 8 * v6++) finalizeStatement];
           }
 
           while (v4 != v6);
-          v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v4 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v4);
@@ -147,10 +147,10 @@
   return result;
 }
 
-- (void)dispatchAfterTransaction:(id)a3
+- (void)dispatchAfterTransaction:(id)transaction
 {
-  v4 = a3;
-  v10 = v4;
+  transactionCopy = transaction;
+  v10 = transactionCopy;
   if (self->_transactionDepth)
   {
     if (!self->_afterTransactionBlocks)
@@ -159,10 +159,10 @@
       afterTransactionBlocks = self->_afterTransactionBlocks;
       self->_afterTransactionBlocks = v5;
 
-      v4 = v10;
+      transactionCopy = v10;
     }
 
-    v7 = [v4 copy];
+    v7 = [transactionCopy copy];
     v8 = self->_afterTransactionBlocks;
     v9 = MEMORY[0x245CB9940]();
     [(NSMutableArray *)v8 addObject:v9];
@@ -170,16 +170,16 @@
 
   else
   {
-    v4[2]();
+    transactionCopy[2]();
   }
 }
 
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4
+- (void)executePreparedQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v11 = 0;
-  v8 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForPreparedStatement:v6 error:&v11];
+  v8 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForPreparedStatement:queryCopy error:&v11];
   v9 = v11;
   if (v8)
   {
@@ -191,16 +191,16 @@
     v10 = 0;
   }
 
-  v7[2](v7, v10, v9);
+  resultsCopy[2](resultsCopy, v10, v9);
   [v8 clearBindings];
   [v8 reset];
 }
 
-- (id)_verifiedStatementForPreparedStatement:(void *)a3 error:
+- (id)_verifiedStatementForPreparedStatement:(void *)statement error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (v5)
     {
@@ -212,12 +212,12 @@
       v7 = 0;
     }
 
-    if (v7 == a1)
+    if (v7 == self)
     {
-      if ([(ASUSQLiteConnection *)a1 _open])
+      if ([(ASUSQLiteConnection *)self _open])
       {
         v9 = v6;
-        v10 = [a1[4] objectForKey:v9];
+        v10 = [self[4] objectForKey:v9];
         if (v10)
         {
           v11 = v10;
@@ -239,12 +239,12 @@
 
           v17 = v16;
           v20 = 0;
-          v11 = [(ASUSQLiteConnection *)a1 _prepareStatement:v17 error:&v20];
+          v11 = [(ASUSQLiteConnection *)self _prepareStatement:v17 error:&v20];
           v13 = v20;
 
           if (v11)
           {
-            [a1[4] setObject:v11 forKey:v9];
+            [self[4] setObject:v11 forKey:v9];
             v12 = 0;
           }
 
@@ -258,32 +258,32 @@
         v8 = v12;
         if (v11)
         {
-          if ([a1[7] isReadOnly] && (objc_msgSend(v11, "isReadOnly") & 1) == 0)
+          if ([self[7] isReadOnly] && (objc_msgSend(v11, "isReadOnly") & 1) == 0)
           {
             v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASUSQLiteErrorDomain" code:2 userInfo:0];
 
-            a1 = 0;
+            self = 0;
             v8 = v19;
           }
 
           else
           {
-            a1 = v11;
+            self = v11;
           }
         }
 
         else
         {
-          a1 = 0;
+          self = 0;
         }
 
-        if (a3)
+        if (statement)
         {
 LABEL_11:
-          if (!a1)
+          if (!self)
           {
             v14 = v8;
-            *a3 = v8;
+            *statement = v8;
           }
         }
 
@@ -301,8 +301,8 @@ LABEL_13:
       v8 = 0;
     }
 
-    a1 = 0;
-    if (a3)
+    self = 0;
+    if (statement)
     {
       goto LABEL_11;
     }
@@ -312,27 +312,27 @@ LABEL_13:
 
 LABEL_14:
 
-  return a1;
+  return self;
 }
 
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v16 = 0;
-  v9 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForPreparedStatement:a3 error:&v16];
+  v9 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForPreparedStatement:statement error:&v16];
   v10 = v16;
   if (v9)
   {
-    if (v8)
+    if (bindingsCopy)
     {
-      v8[2](v8, v9);
+      bindingsCopy[2](bindingsCopy, v9);
     }
 
     v15 = v10;
     v11 = [(ASUSQLiteConnection *)self _executeStatement:v9 error:&v15];
     v12 = v15;
 
-    if (v8)
+    if (bindingsCopy)
     {
       [v9 clearBindings];
     }
@@ -346,20 +346,20 @@ LABEL_14:
   }
 
   [v9 reset];
-  if (a4 && (v11 & 1) == 0)
+  if (error && (v11 & 1) == 0)
   {
     v13 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v11;
 }
 
-- (uint64_t)_executeStatement:(void *)a3 error:
+- (uint64_t)_executeStatement:(void *)statement error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -367,7 +367,7 @@ LABEL_14:
     v10[3] = &unk_278C97F58;
     v7 = v5;
     v11 = v7;
-    v8 = [(ASUSQLiteConnection *)a1 _executeWithError:a3 usingBlock:v10];
+    v8 = [(ASUSQLiteConnection *)self _executeWithError:statement usingBlock:v10];
     if (v8)
     {
       [v7 reset];
@@ -382,15 +382,15 @@ LABEL_14:
   return v8;
 }
 
-- (void)executeQuery:(id)a3 withResults:(id)a4
+- (void)executeQuery:(id)query withResults:(id)results
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v13[0] = 0;
-  v8 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForSQL:v6 error:v13];
+  v8 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForSQL:queryCopy error:v13];
   v9 = v13[0];
-  v10 = [[ASUSQLitePreparedStatement alloc] initWithConnection:v6 SQL:?];
+  v10 = [[ASUSQLitePreparedStatement alloc] initWithConnection:queryCopy SQL:?];
   if (v10)
   {
     [(NSMapTable *)self->_preparedStatements setObject:v8 forKey:v10];
@@ -406,7 +406,7 @@ LABEL_14:
     v11 = 0;
   }
 
-  v7[2](v7, v11, v9);
+  resultsCopy[2](resultsCopy, v11, v9);
   [v8 finalizeStatement];
   if (v10)
   {
@@ -416,45 +416,45 @@ LABEL_14:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_verifiedStatementForSQL:(void *)a3 error:
+- (id)_verifiedStatementForSQL:(void *)l error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if ([(ASUSQLiteConnection *)a1 _open])
+    if ([(ASUSQLiteConnection *)self _open])
     {
       v11 = 0;
-      v6 = [(ASUSQLiteConnection *)a1 _prepareStatement:v5 error:&v11];
+      v6 = [(ASUSQLiteConnection *)self _prepareStatement:v5 error:&v11];
       v7 = v11;
       if (v6)
       {
-        if ([a1[7] isReadOnly] && (objc_msgSend(v6, "isReadOnly") & 1) == 0)
+        if ([self[7] isReadOnly] && (objc_msgSend(v6, "isReadOnly") & 1) == 0)
         {
           v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASUSQLiteErrorDomain" code:2 userInfo:0];
 
           [v6 finalizeStatement];
-          a1 = 0;
+          self = 0;
           v7 = v8;
         }
 
         else
         {
-          a1 = v6;
+          self = v6;
         }
       }
 
       else
       {
-        a1 = 0;
+        self = 0;
       }
 
-      if (a3)
+      if (l)
       {
 LABEL_12:
-        if (!a1)
+        if (!self)
         {
           v9 = v7;
-          *a3 = v7;
+          *l = v7;
         }
       }
     }
@@ -462,25 +462,25 @@ LABEL_12:
     else
     {
       v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASUSQLiteErrorDomain" code:1 userInfo:0];
-      a1 = 0;
-      if (a3)
+      self = 0;
+      if (l)
       {
         goto LABEL_12;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v18 = 0;
-  v9 = a3;
-  v10 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForSQL:v9 error:&v18];
+  statementCopy = statement;
+  v10 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForSQL:statementCopy error:&v18];
   v11 = v18;
-  v12 = [[ASUSQLitePreparedStatement alloc] initWithConnection:v9 SQL:?];
+  v12 = [[ASUSQLitePreparedStatement alloc] initWithConnection:statementCopy SQL:?];
 
   if (v12)
   {
@@ -490,7 +490,7 @@ LABEL_12:
   if (!v10)
   {
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -498,9 +498,9 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (v8)
+  if (bindingsCopy)
   {
-    v8[2](v8, v10);
+    bindingsCopy[2](bindingsCopy, v10);
   }
 
   v17 = v11;
@@ -514,13 +514,13 @@ LABEL_12:
   }
 
   v11 = v14;
-  if (a4)
+  if (error)
   {
 LABEL_11:
     if ((v13 & 1) == 0)
     {
       v15 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -529,16 +529,16 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)finalizePreparedStatement:(id)a3 error:(id *)a4
+- (BOOL)finalizePreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v13 = 0;
-  v7 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForPreparedStatement:v6 error:&v13];
+  v7 = [(ASUSQLiteConnection *)&self->super.isa _verifiedStatementForPreparedStatement:statementCopy error:&v13];
   v8 = v13;
   if (!v7)
   {
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -549,13 +549,13 @@ LABEL_13:
   v9 = ASUSQLiteCreateErrorForResultCode([v7 finalizeStatement]);
 
   v10 = v9 == 0;
-  [(NSMapTable *)self->_preparedStatements removeObjectForKey:v6];
+  [(NSMapTable *)self->_preparedStatements removeObjectForKey:statementCopy];
   v8 = v9;
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_4:
@@ -578,19 +578,19 @@ LABEL_4:
 
 - (BOOL)_open
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v2 = 1;
-  if (!*(a1 + 16))
+  if (!*(self + 16))
   {
     db = 0;
     v3 = 1;
     while (1)
     {
-      v4 = ASUSQLiteOpenDatabaseAndApplyOptions(&db, *(a1 + 56));
+      v4 = ASUSQLiteOpenDatabaseAndApplyOptions(&db, *(self + 56));
       v2 = v4 == 0;
       if (!v4)
       {
@@ -599,7 +599,7 @@ LABEL_4:
 
       if (v4 <= 0x1Au && ((1 << v4) & 0x4000C02) != 0)
       {
-        v6 = v3 & [(ASUSQLiteConnection *)a1 _resetAfterCorruptionError];
+        v6 = v3 & [(ASUSQLiteConnection *)self _resetAfterCorruptionError];
         v3 = 0;
         if (v6)
         {
@@ -611,31 +611,31 @@ LABEL_4:
     }
 
     v7 = db;
-    *(a1 + 16) = db;
+    *(self + 16) = db;
     sqlite3_create_function(v7, "timestamp", 0, 1, 0, _timeIntervalSinceReferenceDate, 0, 0);
   }
 
   return v2;
 }
 
-- (BOOL)performSavepoint:(id)a3
+- (BOOL)performSavepoint:(id)savepoint
 {
-  v4 = a3;
+  savepointCopy = savepoint;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v7 stringByReplacingOccurrencesOfString:@"-" withString:&stru_285214D50];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_285214D50];
   v9 = [v5 stringWithFormat:@"SP_%@", v8];
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"SAVEPOINT %@", v9];
-  LODWORD(v7) = [(ASUSQLiteConnection *)self executeStatement:v10 error:0];
+  LODWORD(uUIDString) = [(ASUSQLiteConnection *)self executeStatement:v10 error:0];
 
-  if (!v7)
+  if (!uUIDString)
   {
     goto LABEL_5;
   }
 
-  if (!v4[2](v4))
+  if (!savepointCopy[2](savepointCopy))
   {
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"ROLLBACK TRANSACTION TO SAVEPOINT %@", v9];
     [(ASUSQLiteConnection *)self executeStatement:v13 error:0];
@@ -652,10 +652,10 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)performTransaction:(id)a3 error:(id *)a4
+- (BOOL)performTransaction:(id)transaction error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transactionCopy = transaction;
   v22[0] = 0;
   transactionDepth = self->_transactionDepth;
   if (transactionDepth < 1)
@@ -674,12 +674,12 @@ LABEL_6:
     self->_transactionDepth = transactionDepth + 1;
     if (self->_transactionWantsRollback)
     {
-      if (a4)
+      if (error)
       {
         v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASUSQLiteErrorDomain" code:6 userInfo:0];
 LABEL_22:
         v9 = 0;
-        *a4 = v8;
+        *error = v8;
         goto LABEL_25;
       }
 
@@ -688,7 +688,7 @@ LABEL_22:
   }
 
   os_variant_has_internal_content();
-  v9 = v6[2](v6);
+  v9 = transactionCopy[2](transactionCopy);
   v10 = self->_transactionDepth;
   v11 = self->_transactionWantsRollback | v9 ^ 1;
   self->_transactionWantsRollback = v11 & 1;
@@ -733,7 +733,7 @@ LABEL_22:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v18 = v9;
   }
@@ -752,7 +752,7 @@ LABEL_22:
     }
 
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASUSQLiteErrorDomain" code:0 userInfo:0];
-    *a4 = v19;
+    *error = v19;
 
 LABEL_24:
     v9 = 0;
@@ -764,16 +764,16 @@ LABEL_25:
   return v9;
 }
 
-- (id)prepareStatement:(id)a3 error:(id *)a4
+- (id)prepareStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v10 = 0;
   if ([(ASUSQLiteConnection *)self _open])
   {
-    v7 = [(ASUSQLiteConnection *)self _prepareStatement:v6 error:&v10];
+    v7 = [(ASUSQLiteConnection *)self _prepareStatement:statementCopy error:&v10];
     if (v7)
     {
-      v8 = [[ASUSQLitePreparedStatement alloc] initWithConnection:v6 SQL:?];
+      v8 = [[ASUSQLitePreparedStatement alloc] initWithConnection:statementCopy SQL:?];
       [(NSMapTable *)self->_preparedStatements setObject:v7 forKey:v8];
     }
 
@@ -782,7 +782,7 @@ LABEL_25:
       v8 = 0;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -792,7 +792,7 @@ LABEL_25:
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"ASUSQLiteErrorDomain" code:1 userInfo:0];
     v10 = v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -800,7 +800,7 @@ LABEL_25:
 
   if (!v8)
   {
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_10:
@@ -808,11 +808,11 @@ LABEL_10:
   return v8;
 }
 
-- (id)_prepareStatement:(void *)a3 error:
+- (id)_prepareStatement:(void *)statement error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v11 = 0;
     v12 = &v11;
@@ -820,15 +820,15 @@ LABEL_10:
     v14 = __Block_byref_object_copy__2;
     v15 = __Block_byref_object_dispose__2;
     v16 = 0;
-    v7 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__ASUSQLiteConnection__prepareStatement_error___block_invoke;
     v10[3] = &unk_278C97F80;
     v10[5] = &v11;
-    v10[6] = v7;
-    v10[4] = a1;
-    [(ASUSQLiteConnection *)a1 _executeWithError:a3 usingBlock:v10];
+    v10[6] = uTF8String;
+    v10[4] = self;
+    [(ASUSQLiteConnection *)self _executeWithError:statement usingBlock:v10];
     v8 = v12[5];
     _Block_object_dispose(&v11, 8);
   }
@@ -841,9 +841,9 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -852,7 +852,7 @@ LABEL_10:
   v7[1] = 3221225472;
   v7[2] = __35__ASUSQLiteConnection_tableExists___block_invoke;
   v7[3] = &unk_278C97930;
-  v5 = v4;
+  v5 = existsCopy;
   v8 = v5;
   v9 = &v10;
   [(ASUSQLiteConnection *)self executeQuery:@"SELECT name FROM sqlite_master where name = ?" withResults:v7];
@@ -872,11 +872,11 @@ void __35__ASUSQLiteConnection_tableExists___block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (uint64_t)_executeWithError:(void *)a3 usingBlock:
+- (uint64_t)_executeWithError:(void *)error usingBlock:
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!a1)
+  errorCopy = error;
+  if (!self)
   {
     v15 = 0;
     goto LABEL_31;
@@ -888,7 +888,7 @@ void __35__ASUSQLiteConnection_tableExists___block_invoke(uint64_t a1, void *a2)
   {
     v8 = objc_autoreleasePoolPush();
     buf[0] = 0;
-    v9 = v5[2](v5, buf);
+    v9 = errorCopy[2](errorCopy, buf);
     if (v9 <= 9u)
     {
       if (v9 - 5 >= 2)
@@ -963,7 +963,7 @@ LABEL_10:
     {
       v11 = ASUSQLiteCreateErrorForResultCode(v9);
       objc_autoreleasePoolPop(v8);
-      [(ASUSQLiteConnection *)a1 _resetAfterCorruptionError];
+      [(ASUSQLiteConnection *)self _resetAfterCorruptionError];
       if (!a2)
       {
         goto LABEL_30;
@@ -981,34 +981,34 @@ LABEL_10:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     v22 = objc_opt_class();
-    v23 = *(a1 + 56);
+    v23 = *(self + 56);
     v24 = v22;
-    v25 = [v23 databasePath];
+    databasePath = [v23 databasePath];
     *buf = 138412546;
     v35 = v22;
     v36 = 2114;
-    v37 = v25;
+    v37 = databasePath;
     _os_log_error_impl(&dword_2400F8000, v18, OS_LOG_TYPE_ERROR, "[%@]: Reopening database after IO error: %{public}@", buf, 0x16u);
   }
 
-  v19 = *(a1 + 8);
+  v19 = *(self + 8);
   v20 = v19;
-  v21 = *(a1 + 40);
-  if ([(ASUSQLiteConnection *)a1 _close]&& [(ASUSQLiteConnection *)a1 _open])
+  v21 = *(self + 40);
+  if ([(ASUSQLiteConnection *)self _close]&& [(ASUSQLiteConnection *)self _open])
   {
     if (v21)
     {
-      if (sqlite3_exec(*(a1 + 16), "BEGIN DEFERRED TRANSACTION", 0, 0, 0))
+      if (sqlite3_exec(*(self + 16), "BEGIN DEFERRED TRANSACTION", 0, 0, 0))
       {
         goto LABEL_38;
       }
 
-      objc_storeStrong((a1 + 8), v19);
-      *(a1 + 40) = v21;
-      *(a1 + 48) = 1;
+      objc_storeStrong((self + 8), v19);
+      *(self + 40) = v21;
+      *(self + 48) = 1;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     v27 = objc_opt_respondsToSelector();
 
     if (v27)
@@ -1017,25 +1017,25 @@ LABEL_10:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v30 = objc_opt_class();
-        v31 = *(a1 + 56);
+        v31 = *(self + 56);
         v32 = v30;
-        v33 = [v31 databasePath];
+        databasePath2 = [v31 databasePath];
         *buf = 138412546;
         v35 = v30;
         v36 = 2114;
-        v37 = v33;
+        v37 = databasePath2;
         _os_log_error_impl(&dword_2400F8000, v28, OS_LOG_TYPE_ERROR, "[%@]: Asking delegate to reset database after reopen: %{public}@", buf, 0x16u);
       }
 
-      v29 = objc_loadWeakRetained((a1 + 24));
-      [v29 connectionNeedsResetForReopen:a1];
+      v29 = objc_loadWeakRetained((self + 24));
+      [v29 connectionNeedsResetForReopen:self];
     }
   }
 
   else
   {
 LABEL_38:
-    [(ASUSQLiteConnection *)a1 _resetAfterCorruptionError];
+    [(ASUSQLiteConnection *)self _resetAfterCorruptionError];
   }
 
   if (!a2)
@@ -1062,7 +1062,7 @@ LABEL_31:
 - (uint64_t)_resetAfterCorruptionError
 {
   v23 = *MEMORY[0x277D85DE8];
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
+  WeakRetained = objc_loadWeakRetained((self + 24));
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
@@ -1071,43 +1071,43 @@ LABEL_31:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
-      v12 = *(a1 + 56);
+      v12 = *(self + 56);
       v13 = v11;
-      v14 = [v12 databasePath];
+      databasePath = [v12 databasePath];
       v19 = 138412546;
       v20 = v11;
       v21 = 2114;
-      v22 = v14;
+      v22 = databasePath;
       _os_log_error_impl(&dword_2400F8000, v4, OS_LOG_TYPE_ERROR, "[%@]: Asking delegate to reset database after corruption: %{public}@", &v19, 0x16u);
     }
 
-    v5 = objc_loadWeakRetained((a1 + 24));
-    v6 = [v5 connectionNeedsResetForCorruption:a1];
+    databasePath3 = objc_loadWeakRetained((self + 24));
+    v6 = [databasePath3 connectionNeedsResetForCorruption:self];
 LABEL_10:
     v7 = v6;
 
     goto LABEL_11;
   }
 
-  if (([*(a1 + 56) isReadOnly] & 1) == 0)
+  if (([*(self + 56) isReadOnly] & 1) == 0)
   {
     v8 = ASULogHandleForCategory(1);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
-      v16 = *(a1 + 56);
+      v16 = *(self + 56);
       v17 = v15;
-      v18 = [v16 databasePath];
+      databasePath2 = [v16 databasePath];
       v19 = 138412546;
       v20 = v15;
       v21 = 2114;
-      v22 = v18;
+      v22 = databasePath2;
       _os_log_error_impl(&dword_2400F8000, v8, OS_LOG_TYPE_ERROR, "[%@]: Deleting database after corruption: %{public}@", &v19, 0x16u);
     }
 
-    v5 = [*(a1 + 56) databasePath];
-    [(ASUSQLiteConnection *)a1 _close];
-    v6 = ASUSQLiteDeleteDatabase(v5, 0);
+    databasePath3 = [*(self + 56) databasePath];
+    [(ASUSQLiteConnection *)self _close];
+    v6 = ASUSQLiteDeleteDatabase(databasePath3, 0);
     goto LABEL_10;
   }
 

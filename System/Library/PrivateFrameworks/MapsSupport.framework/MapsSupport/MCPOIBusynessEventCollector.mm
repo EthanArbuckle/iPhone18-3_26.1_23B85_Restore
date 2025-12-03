@@ -1,8 +1,8 @@
 @interface MCPOIBusynessEventCollector
-+ (void)startProcessingPayload:(id)a3;
-- (MCPOIBusynessEventCollector)initWithBusynessData:(id)a3;
-- (void)collectBluePOI:(id)a3 analytics:(id)a4;
-- (void)collectDifferentialPrivacy:(id)a3;
++ (void)startProcessingPayload:(id)payload;
+- (MCPOIBusynessEventCollector)initWithBusynessData:(id)data;
+- (void)collectBluePOI:(id)i analytics:(id)analytics;
+- (void)collectDifferentialPrivacy:(id)privacy;
 - (void)collectRealTime;
 - (void)dealloc;
 - (void)processBluePOI;
@@ -14,19 +14,19 @@
 
 @implementation MCPOIBusynessEventCollector
 
-- (MCPOIBusynessEventCollector)initWithBusynessData:(id)a3
+- (MCPOIBusynessEventCollector)initWithBusynessData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = MCPOIBusynessEventCollector;
   v6 = [(MCPOIBusynessEventCollector *)&v14 init];
   if (v6)
   {
-    [v5 writeToDisk];
-    objc_storeStrong(&v6->_poiBusynessData, a3);
-    v7 = [v5 leechedGEOLocation];
+    [dataCopy writeToDisk];
+    objc_storeStrong(&v6->_poiBusynessData, data);
+    leechedGEOLocation = [dataCopy leechedGEOLocation];
     location = v6->_location;
-    v6->_location = v7;
+    v6->_location = leechedGEOLocation;
 
     v6->_rtEnabled = GEOConfigGetBOOL();
     v6->_dpEnabled = GEOConfigGetBOOL();
@@ -57,10 +57,10 @@
   [(MCPOIBusynessEventCollector *)&v4 dealloc];
 }
 
-+ (void)startProcessingPayload:(id)a3
++ (void)startProcessingPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [[MCPOIBusynessEventCollector alloc] initWithBusynessData:v3];
+  payloadCopy = payload;
+  v4 = [[MCPOIBusynessEventCollector alloc] initWithBusynessData:payloadCopy];
 
   [(MCPOIBusynessEventCollector *)v4 start];
 }
@@ -174,9 +174,9 @@
   {
     v3 = objc_alloc_init(MCPOIBusynessBluePOIAnalytics);
     dispatch_group_enter(self->_reportingGroup);
-    v4 = [(MCPOIBusynessData *)self->_poiBusynessData visit];
+    visit = [(MCPOIBusynessData *)self->_poiBusynessData visit];
 
-    [(MCPOIBusynessBluePOIAnalytics *)v3 setIsInVisit:v4 != 0];
+    [(MCPOIBusynessBluePOIAnalytics *)v3 setIsInVisit:visit != 0];
     v5 = GEOGetPOIBusynessLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -193,7 +193,7 @@
     v9[4] = self;
     v10 = v3;
     v8 = v3;
-    [v6 fetchInferedPlaceNames:v4 != 0 analytics:v8 completionQueue:eventCollectorQueue completion:v9];
+    [v6 fetchInferedPlaceNames:visit != 0 analytics:v8 completionQueue:eventCollectorQueue completion:v9];
   }
 
   else
@@ -203,16 +203,16 @@
   }
 }
 
-- (void)collectBluePOI:(id)a3 analytics:(id)a4
+- (void)collectBluePOI:(id)i analytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  analyticsCopy = analytics;
   dispatch_assert_queue_V2(self->_eventCollectorQueue);
   v8 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v15 = [v6 count];
+    v15 = [iCopy count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Resolving muids for %d BluePOI inferences", buf, 8u);
   }
 
@@ -223,9 +223,9 @@
   v12[2] = sub_10000D318;
   v12[3] = &unk_10001D9C8;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  [(MCRoutineHelper *)v9 findMUIDsForPlaceInferences:v6 analytics:v11 completionQueue:eventCollectorQueue completionHandler:v12];
+  v13 = analyticsCopy;
+  v11 = analyticsCopy;
+  [(MCRoutineHelper *)v9 findMUIDsForPlaceInferences:iCopy analytics:v11 completionQueue:eventCollectorQueue completionHandler:v12];
 }
 
 - (void)processDifferentialPrivacy
@@ -250,9 +250,9 @@
   }
 }
 
-- (void)collectDifferentialPrivacy:(id)a3
+- (void)collectDifferentialPrivacy:(id)privacy
 {
-  v4 = a3;
+  privacyCopy = privacy;
   dispatch_assert_queue_V2(self->_eventCollectorQueue);
   [MCPOIBusynessAnalytics report:3];
   v5 = [GEOPOIBusynessHelper dpClientVersionHashWithMCPOIBusynessVersion:@"1"];
@@ -293,7 +293,7 @@
   v14 = v5;
   v10 = v5;
   v11 = v9;
-  [v4 enumerateKeysAndObjectsUsingBlock:v12];
+  [privacyCopy enumerateKeysAndObjectsUsingBlock:v12];
 }
 
 @end

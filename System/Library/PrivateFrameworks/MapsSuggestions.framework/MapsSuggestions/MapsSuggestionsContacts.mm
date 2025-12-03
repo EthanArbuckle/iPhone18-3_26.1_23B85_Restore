@@ -1,21 +1,21 @@
 @interface MapsSuggestionsContacts
-- (MapsSuggestionsContacts)initWithConnector:(id)a3 networkRequester:(id)a4;
+- (MapsSuggestionsContacts)initWithConnector:(id)connector networkRequester:(id)requester;
 - (NSString)uniqueName;
-- (char)readMeCardAddressStringsWithHandler:(id)a3;
-- (char)readMeCardWithHandler:(id)a3;
+- (char)readMeCardAddressStringsWithHandler:(id)handler;
+- (char)readMeCardWithHandler:(id)handler;
 - (id).cxx_construct;
-- (id)contactNameForIdentifier:(id)a3;
-- (id)dataForContactWithIdentifier:(id)a3;
+- (id)contactNameForIdentifier:(id)identifier;
+- (id)dataForContactWithIdentifier:(id)identifier;
 - (id)dealloc;
-- (id)friendlyNameForIndentifier:(id)a3;
-- (id)initFromResourceDepot:(id)a3;
-- (id)profilePictureForIdentifier:(id)a3;
-- (uint64_t)_q_reloadWithHandler:(uint64_t)a1;
-- (void)_fetchMeCardShortcutsWithHandler:(uint64_t)a1;
-- (void)_q_readMeCardAddressStringsWithHandler:(uint64_t)a1;
+- (id)friendlyNameForIndentifier:(id)indentifier;
+- (id)initFromResourceDepot:(id)depot;
+- (id)profilePictureForIdentifier:(id)identifier;
+- (uint64_t)_q_reloadWithHandler:(uint64_t)handler;
+- (void)_fetchMeCardShortcutsWithHandler:(uint64_t)handler;
+- (void)_q_readMeCardAddressStringsWithHandler:(uint64_t)handler;
 - (void)dealloc;
-- (void)registerMeCardObserver:(id)a3;
-- (void)unregisterMeCardObserver:(id)a3;
+- (void)registerMeCardObserver:(id)observer;
+- (void)unregisterMeCardObserver:(id)observer;
 @end
 
 @implementation MapsSuggestionsContacts
@@ -27,13 +27,13 @@
   return self;
 }
 
-- (MapsSuggestionsContacts)initWithConnector:(id)a3 networkRequester:(id)a4
+- (MapsSuggestionsContacts)initWithConnector:(id)connector networkRequester:(id)requester
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  connectorCopy = connector;
+  requesterCopy = requester;
+  v9 = requesterCopy;
+  if (!connectorCopy)
   {
     v29 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -52,7 +52,7 @@
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!requesterCopy)
   {
     v29 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@
 
 LABEL_11:
 
-    v28 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -91,9 +91,9 @@ LABEL_11:
     name = v10->_queue._name;
     v10->_queue._name = v14;
 
-    objc_storeStrong(&v10->_connector, a3);
+    objc_storeStrong(&v10->_connector, connector);
     [(MapsSuggestionsContactsConnector *)v10->_connector setDelegate:v10];
-    objc_storeStrong(&v10->_networkRequester, a4);
+    objc_storeStrong(&v10->_networkRequester, requester);
     v16 = [[MapsSuggestionsLimitedDictionary alloc] initWithMaximumCapacity:GEOConfigGetInteger()];
     cache = v10->_cache;
     v10->_cache = v16;
@@ -121,18 +121,18 @@ LABEL_11:
   }
 
   self = v10;
-  v28 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v28;
+  return selfCopy;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -151,9 +151,9 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v6 = [v4 oneNetworkRequester];
+  oneNetworkRequester = [depotCopy oneNetworkRequester];
 
-  if (!v6)
+  if (!oneNetworkRequester)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -171,18 +171,18 @@ LABEL_12:
 
 LABEL_9:
 
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v7 = [v5 oneContactsConnector];
-  v8 = [v5 oneNetworkRequester];
-  self = [(MapsSuggestionsContacts *)self initWithConnector:v7 networkRequester:v8];
+  oneContactsConnector = [v5 oneContactsConnector];
+  oneNetworkRequester2 = [v5 oneNetworkRequester];
+  self = [(MapsSuggestionsContacts *)self initWithConnector:oneContactsConnector networkRequester:oneNetworkRequester2];
 
-  v9 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -202,13 +202,13 @@ LABEL_10:
   return [v2 description];
 }
 
-- (void)_fetchMeCardShortcutsWithHandler:(uint64_t)a1
+- (void)_fetchMeCardShortcutsWithHandler:(uint64_t)handler
 {
   v45 = *MEMORY[0x1E69E9840];
   v27 = a2;
-  if (a1)
+  if (handler)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
+    dispatch_assert_queue_V2(*(handler + 8));
     if (([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] - 3) >= 2)
     {
       v22 = GEOFindOrCreateLog();
@@ -225,7 +225,7 @@ LABEL_10:
 
     else
     {
-      v3 = *(a1 + 24);
+      v3 = *(handler + 24);
       v42 = *MEMORY[0x1E695C360];
       v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
       v41 = 0;
@@ -239,19 +239,19 @@ LABEL_10:
 
       else
       {
-        v24 = [v5 postalAddresses];
-        v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v24, "count")}];
-        v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v24, "count")}];
+        postalAddresses = [v5 postalAddresses];
+        v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
+        v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
         v26 = v5;
-        v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v24, "count")}];
-        v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v24, "count")}];
-        v10 = *(a1 + 40);
+        v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
+        v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
+        v10 = *(handler + 40);
         v11 = dispatch_group_create();
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __60__MapsSuggestionsContacts__fetchMeCardShortcutsWithHandler___block_invoke;
         v34[3] = &unk_1E81F5578;
-        v34[4] = a1;
+        v34[4] = handler;
         v12 = v7;
         v35 = v12;
         v13 = v8;
@@ -264,8 +264,8 @@ LABEL_10:
         v40 = v11;
         v16 = v11;
         v23 = v10;
-        [v24 enumerateObjectsUsingBlock:v34];
-        v17 = *(a1 + 8);
+        [postalAddresses enumerateObjectsUsingBlock:v34];
+        v17 = *(handler + 8);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __60__MapsSuggestionsContacts__fetchMeCardShortcutsWithHandler___block_invoke_41;
@@ -592,9 +592,9 @@ void __60__MapsSuggestionsContacts__fetchMeCardShortcutsWithHandler___block_invo
   v27[2](v27, v28, v29, 0);
 }
 
-- (void)registerMeCardObserver:(id)a3
+- (void)registerMeCardObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   meCardObservers = self->_meCardObservers;
   v9[0] = MEMORY[0x1E69E9820];
@@ -602,12 +602,12 @@ void __60__MapsSuggestionsContacts__fetchMeCardShortcutsWithHandler___block_invo
   v9[2] = __50__MapsSuggestionsContacts_registerMeCardObserver___block_invoke;
   v9[3] = &unk_1E81F55C8;
   objc_copyWeak(&v10, &location);
-  [(MapsSuggestionsObservers *)meCardObservers registerObserver:v4 handler:v9];
+  [(MapsSuggestionsObservers *)meCardObservers registerObserver:observerCopy handler:v9];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__MapsSuggestionsContacts_registerMeCardObserver___block_invoke_44;
   v7[3] = &unk_1E81F55F0;
-  v6 = v4;
+  v6 = observerCopy;
   v8 = v6;
   MSg::Queue::async<MapsSuggestionsContacts>(&self->_queue, self, v7);
 
@@ -654,9 +654,9 @@ void __50__MapsSuggestionsContacts_registerMeCardObserver___block_invoke_44(uint
   }
 }
 
-- (void)unregisterMeCardObserver:(id)a3
+- (void)unregisterMeCardObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   meCardObservers = self->_meCardObservers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -664,7 +664,7 @@ void __50__MapsSuggestionsContacts_registerMeCardObserver___block_invoke_44(uint
   v6[2] = __52__MapsSuggestionsContacts_unregisterMeCardObserver___block_invoke;
   v6[3] = &unk_1E81F55C8;
   objc_copyWeak(&v7, &location);
-  [(MapsSuggestionsObservers *)meCardObservers unregisterObserver:v4 handler:v6];
+  [(MapsSuggestionsObservers *)meCardObservers unregisterObserver:observerCopy handler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -700,18 +700,18 @@ void __52__MapsSuggestionsContacts_unregisterMeCardObserver___block_invoke(uint6
   }
 }
 
-- (char)readMeCardWithHandler:(id)a3
+- (char)readMeCardWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__MapsSuggestionsContacts_readMeCardWithHandler___block_invoke;
     v9[3] = &unk_1E81F5618;
-    v10 = v4;
+    v10 = handlerCopy;
     MSg::Queue::async<MapsSuggestionsContacts>(&self->_queue, self, v9);
     v6 = 1;
     v7 = v10;
@@ -739,38 +739,38 @@ void __52__MapsSuggestionsContacts_unregisterMeCardObserver___block_invoke(uint6
   return v6;
 }
 
-- (uint64_t)_q_reloadWithHandler:(uint64_t)a1
+- (uint64_t)_q_reloadWithHandler:(uint64_t)handler
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
     if (v3)
     {
-      dispatch_assert_queue_V2(*(a1 + 8));
-      objc_initWeak(&location, a1);
+      dispatch_assert_queue_V2(*(handler + 8));
+      objc_initWeak(&location, handler);
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __48__MapsSuggestionsContacts__q_reloadWithHandler___block_invoke;
       v7[3] = &unk_1E81F5668;
       objc_copyWeak(&v9, &location);
       v8 = v4;
-      [(MapsSuggestionsContacts *)a1 _fetchMeCardShortcutsWithHandler:v7];
+      [(MapsSuggestionsContacts *)handler _fetchMeCardShortcutsWithHandler:v7];
 
       objc_destroyWeak(&v9);
       objc_destroyWeak(&location);
-      a1 = 1;
+      handler = 1;
     }
 
     else
     {
       v6 = GEOFindOrCreateLog();
       [MapsSuggestionsContacts _q_reloadWithHandler:v6];
-      a1 = 0;
+      handler = 0;
     }
   }
 
-  return a1;
+  return handler;
 }
 
 void __48__MapsSuggestionsContacts__q_reloadWithHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -888,36 +888,36 @@ void __48__MapsSuggestionsContacts__q_reloadWithHandler___block_invoke_48(uint64
   [v3 meCardReader:*(a1 + 32) didUpdateMeCard:*(a1 + 40)];
 }
 
-- (void)_q_readMeCardAddressStringsWithHandler:(uint64_t)a1
+- (void)_q_readMeCardAddressStringsWithHandler:(uint64_t)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = *(a1 + 24);
+    dispatch_assert_queue_V2(*(handler + 8));
+    v4 = *(handler + 24);
     v20[0] = *MEMORY[0x1E695C360];
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
     v19 = 0;
     v6 = [v4 _crossPlatformUnifiedMeContactWithKeysToFetch:v5 error:&v19];
     v7 = v19;
 
-    v8 = [v6 postalAddresses];
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    postalAddresses = [v6 postalAddresses];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
+    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(postalAddresses, "count")}];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __66__MapsSuggestionsContacts__q_readMeCardAddressStringsWithHandler___block_invoke;
     v15[3] = &unk_1E81F56D0;
-    v15[4] = a1;
+    v15[4] = handler;
     v12 = v9;
     v16 = v12;
     v13 = v10;
     v17 = v13;
     v14 = v11;
     v18 = v14;
-    [v8 enumerateObjectsUsingBlock:v15];
+    [postalAddresses enumerateObjectsUsingBlock:v15];
     v3[2](v3, v12, v13, v14, v7);
   }
 }
@@ -997,11 +997,11 @@ void __66__MapsSuggestionsContacts__q_readMeCardAddressStringsWithHandler___bloc
   }
 }
 
-- (char)readMeCardAddressStringsWithHandler:(id)a3
+- (char)readMeCardAddressStringsWithHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] - 3) >= 2)
     {
@@ -1009,7 +1009,7 @@ void __66__MapsSuggestionsContacts__q_readMeCardAddressStringsWithHandler___bloc
       block[1] = 3221225472;
       block[2] = __63__MapsSuggestionsContacts_readMeCardAddressStringsWithHandler___block_invoke;
       block[3] = &unk_1E81F56F8;
-      v11 = v4;
+      v11 = handlerCopy;
       dispatch_async(self->_queue._innerQueue, block);
       v5 = 1;
       v6 = v11;
@@ -1021,7 +1021,7 @@ void __66__MapsSuggestionsContacts__q_readMeCardAddressStringsWithHandler___bloc
       v8[1] = 3221225472;
       v8[2] = __63__MapsSuggestionsContacts_readMeCardAddressStringsWithHandler___block_invoke_54;
       v8[3] = &unk_1E81F5618;
-      v9 = v4;
+      v9 = handlerCopy;
       MSg::Queue::async<MapsSuggestionsContacts>(&self->_queue, self, v8);
       v5 = 1;
       v6 = v9;
@@ -1064,11 +1064,11 @@ uint64_t __63__MapsSuggestionsContacts_readMeCardAddressStringsWithHandler___blo
   return (*(*(a1 + 32) + 16))();
 }
 
-- (id)contactNameForIdentifier:(id)a3
+- (id)contactNameForIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1111,7 +1111,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v5 = [(MapsSuggestionsContactsConnector *)self->_connector contactForIdentifier:v4];
+  v5 = [(MapsSuggestionsContactsConnector *)self->_connector contactForIdentifier:identifierCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695CD80] stringFromContact:v5 style:0];
@@ -1130,7 +1130,7 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "No contacts found for identifier %@", &v13, 0xCu);
     }
 
@@ -1142,11 +1142,11 @@ LABEL_16:
   return v6;
 }
 
-- (id)friendlyNameForIndentifier:(id)a3
+- (id)friendlyNameForIndentifier:(id)indentifier
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  indentifierCopy = indentifier;
+  if (!indentifierCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1189,27 +1189,27 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v5 = [(MapsSuggestionsContactsConnector *)self->_connector contactForIdentifier:v4];
+  v5 = [(MapsSuggestionsContactsConnector *)self->_connector contactForIdentifier:indentifierCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    v7 = [v5 namePrefix];
-    [v6 setNamePrefix:v7];
+    namePrefix = [v5 namePrefix];
+    [v6 setNamePrefix:namePrefix];
 
-    v8 = [v5 givenName];
-    [v6 setGivenName:v8];
+    givenName = [v5 givenName];
+    [v6 setGivenName:givenName];
 
-    v9 = [v5 middleName];
-    [v6 setMiddleName:v9];
+    middleName = [v5 middleName];
+    [v6 setMiddleName:middleName];
 
-    v10 = [v5 familyName];
-    [v6 setFamilyName:v10];
+    familyName = [v5 familyName];
+    [v6 setFamilyName:familyName];
 
-    v11 = [v5 nameSuffix];
-    [v6 setNameSuffix:v11];
+    nameSuffix = [v5 nameSuffix];
+    [v6 setNameSuffix:nameSuffix];
 
-    v12 = [v5 nickname];
-    [v6 setNickname:v12];
+    nickname = [v5 nickname];
+    [v6 setNickname:nickname];
 
     v13 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v6 style:1 options:0];
     v14 = GEOFindOrCreateLog();
@@ -1238,15 +1238,15 @@ LABEL_17:
   return v13;
 }
 
-- (id)profilePictureForIdentifier:(id)a3
+- (id)profilePictureForIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if (([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] - 3) < 2)
     {
-      v5 = [(MapsSuggestionsContactsConnector *)self->_connector imageDataForIdentifier:v4];
+      v5 = [(MapsSuggestionsContactsConnector *)self->_connector imageDataForIdentifier:identifierCopy];
       goto LABEL_10;
     }
 
@@ -1291,15 +1291,15 @@ LABEL_10:
   return v5;
 }
 
-- (id)dataForContactWithIdentifier:(id)a3
+- (id)dataForContactWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if (([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] - 3) < 2)
     {
-      v5 = [(MapsSuggestionsContactsConnector *)self->_connector dataForContactWithIdentifier:v4];
+      v5 = [(MapsSuggestionsContactsConnector *)self->_connector dataForContactWithIdentifier:identifierCopy];
       goto LABEL_10;
     }
 
@@ -1346,7 +1346,7 @@ LABEL_10:
 
 - (id)dealloc
 {
-  a2->receiver = a1;
+  a2->receiver = self;
   a2->super_class = MapsSuggestionsContacts;
   return [(objc_super *)a2 dealloc];
 }

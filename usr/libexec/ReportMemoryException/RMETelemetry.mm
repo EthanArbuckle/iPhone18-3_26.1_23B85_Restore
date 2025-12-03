@@ -1,17 +1,17 @@
 @interface RMETelemetry
-+ (void)emitTelemetryForExecName:(id)a3 bundleID:(id)a4 exceptionType:(int64_t)a5 footprint:(unint64_t)a6 footprintPeak:(unint64_t)a7 jetsamLimit:(unint64_t)a8 memgraphAttempted:(BOOL)a9 memgraphSkippedReason:(int64_t)a10 memgraphSucceeded:(BOOL)a11 memgraphFailedReason:(int64_t)a12 diagFilePath:(id)a13 isMSLEnabled:(BOOL)a14 isGcoreCapture:(BOOL)a15;
++ (void)emitTelemetryForExecName:(id)name bundleID:(id)d exceptionType:(int64_t)type footprint:(unint64_t)footprint footprintPeak:(unint64_t)peak jetsamLimit:(unint64_t)limit memgraphAttempted:(BOOL)attempted memgraphSkippedReason:(int64_t)self0 memgraphSucceeded:(BOOL)self1 memgraphFailedReason:(int64_t)self2 diagFilePath:(id)self3 isMSLEnabled:(BOOL)self4 isGcoreCapture:(BOOL)self5;
 @end
 
 @implementation RMETelemetry
 
-+ (void)emitTelemetryForExecName:(id)a3 bundleID:(id)a4 exceptionType:(int64_t)a5 footprint:(unint64_t)a6 footprintPeak:(unint64_t)a7 jetsamLimit:(unint64_t)a8 memgraphAttempted:(BOOL)a9 memgraphSkippedReason:(int64_t)a10 memgraphSucceeded:(BOOL)a11 memgraphFailedReason:(int64_t)a12 diagFilePath:(id)a13 isMSLEnabled:(BOOL)a14 isGcoreCapture:(BOOL)a15
++ (void)emitTelemetryForExecName:(id)name bundleID:(id)d exceptionType:(int64_t)type footprint:(unint64_t)footprint footprintPeak:(unint64_t)peak jetsamLimit:(unint64_t)limit memgraphAttempted:(BOOL)attempted memgraphSkippedReason:(int64_t)self0 memgraphSucceeded:(BOOL)self1 memgraphFailedReason:(int64_t)self2 diagFilePath:(id)self3 isMSLEnabled:(BOOL)self4 isGcoreCapture:(BOOL)self5
 {
-  v16 = a3;
-  v17 = a4;
-  v21 = a13;
-  v18 = v17;
-  v19 = v16;
-  v20 = v21;
+  nameCopy = name;
+  dCopy = d;
+  pathCopy = path;
+  v18 = dCopy;
+  v19 = nameCopy;
+  v20 = pathCopy;
   AnalyticsSendEventLazy();
 }
 

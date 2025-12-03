@@ -10,7 +10,7 @@
   NSSelectorFromString(&cfstr_Definitionfile.isa);
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 valueForKey:@"_definitionFileURLs"];
+    v2 = [self valueForKey:@"_definitionFileURLs"];
   }
 
   else

@@ -7,8 +7,8 @@
 - (void)px_diagnosticsItemProvidersForPoint:()PXDiagnosticsEnvironment inCoordinateSpace:
 {
   v8 = a5;
-  v9 = [a1 topViewController];
-  v10 = [v9 px_diagnosticsItemProvidersForPoint:v8 inCoordinateSpace:{a2, a3}];
+  topViewController = [self topViewController];
+  v10 = [topViewController px_diagnosticsItemProvidersForPoint:v8 inCoordinateSpace:{a2, a3}];
 
   if (v10)
   {

@@ -1,5 +1,5 @@
 @interface JavaFieldMetadata
-- (JavaFieldMetadata)initWithMetadata:(const J2ObjcFieldInfo *)a3;
+- (JavaFieldMetadata)initWithMetadata:(const J2ObjcFieldInfo *)metadata;
 - (id)genericSignature;
 - (id)javaName;
 - (id)name;
@@ -7,14 +7,14 @@
 
 @implementation JavaFieldMetadata
 
-- (JavaFieldMetadata)initWithMetadata:(const J2ObjcFieldInfo *)a3
+- (JavaFieldMetadata)initWithMetadata:(const J2ObjcFieldInfo *)metadata
 {
   v5.receiver = self;
   v5.super_class = JavaFieldMetadata;
   result = [(JavaFieldMetadata *)&v5 init];
   if (result)
   {
-    result->data_ = a3;
+    result->data_ = metadata;
   }
 
   return result;

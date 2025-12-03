@@ -1,6 +1,6 @@
 @interface CloudScribbleFeedbackSyncCoordinator
 - (CloudScribbleFeedbackSyncCoordinator)init;
-- (void)saveFeedback:(id)a3 completionHandler:(id)a4;
+- (void)saveFeedback:(id)feedback completionHandler:(id)handler;
 @end
 
 @implementation CloudScribbleFeedbackSyncCoordinator
@@ -22,19 +22,19 @@
   return v2;
 }
 
-- (void)saveFeedback:(id)a3 completionHandler:(id)a4
+- (void)saveFeedback:(id)feedback completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  feedbackCopy = feedback;
+  handlerCopy = handler;
   savingQueue = self->_savingQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100098CE8;
   v11[3] = &unk_100131990;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = feedbackCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = feedbackCopy;
   dispatch_async(savingQueue, v11);
 }
 

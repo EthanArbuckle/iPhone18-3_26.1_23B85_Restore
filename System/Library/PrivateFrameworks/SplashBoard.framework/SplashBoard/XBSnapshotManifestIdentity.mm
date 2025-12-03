@@ -1,8 +1,8 @@
 @interface XBSnapshotManifestIdentity
-+ (id)identityWithBundleIdentifier:(id)a3 store:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)identityWithBundleIdentifier:(id)identifier store:(id)store;
+- (BOOL)isEqual:(id)equal;
 - (XBSnapshotManifestIdentity)init;
-- (XBSnapshotManifestIdentity)initWithBundleIdentifier:(id)a3 store:(id)a4;
+- (XBSnapshotManifestIdentity)initWithBundleIdentifier:(id)identifier store:(id)store;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,39 +11,39 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_bundleIdentifier];
-  v5 = [v3 appendObject:self->_store];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_bundleIdentifier];
+  v5 = [builder appendObject:self->_store];
+  v6 = [builder hash];
 
   return v6;
 }
 
-+ (id)identityWithBundleIdentifier:(id)a3 store:(id)a4
++ (id)identityWithBundleIdentifier:(id)identifier store:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[XBSnapshotManifestIdentity alloc] initWithBundleIdentifier:v6 store:v5];
+  storeCopy = store;
+  identifierCopy = identifier;
+  v7 = [[XBSnapshotManifestIdentity alloc] initWithBundleIdentifier:identifierCopy store:storeCopy];
 
   return v7;
 }
 
 - (XBSnapshotManifestIdentity)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"XBSnapshotManifestIdentity.m" lineNumber:30 description:@"init is not allowed"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"XBSnapshotManifestIdentity.m" lineNumber:30 description:@"init is not allowed"];
 
   return 0;
 }
 
-- (XBSnapshotManifestIdentity)initWithBundleIdentifier:(id)a3 store:(id)a4
+- (XBSnapshotManifestIdentity)initWithBundleIdentifier:(id)identifier store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  storeCopy = store;
+  v9 = storeCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
@@ -65,11 +65,11 @@ LABEL_3:
   v10 = [(XBSnapshotManifestIdentity *)&v14 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     bundleIdentifier = v10->_bundleIdentifier;
     v10->_bundleIdentifier = v11;
 
-    objc_storeStrong(&v10->_store, a4);
+    objc_storeStrong(&v10->_store, store);
   }
 
   return v10;
@@ -80,28 +80,28 @@ LABEL_3:
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendString:self->_bundleIdentifier withName:@"bundleIdentifier"];
   v4 = [v3 appendObject:self->_store withName:@"store"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+    v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
     bundleIdentifier = self->_bundleIdentifier;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __38__XBSnapshotManifestIdentity_isEqual___block_invoke;
     v18[3] = &unk_279CF93E0;
-    v7 = v4;
+    v7 = equalCopy;
     v19 = v7;
     v8 = [v5 appendString:bundleIdentifier counterpart:v18];
     store = self->_store;

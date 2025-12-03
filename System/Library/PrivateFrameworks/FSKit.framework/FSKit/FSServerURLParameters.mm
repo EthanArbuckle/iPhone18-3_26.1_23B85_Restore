@@ -1,63 +1,63 @@
 @interface FSServerURLParameters
-- (FSServerURLParameters)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FSServerURLParameters)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSServerURLParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scheme = self->_scheme;
-  v5 = a3;
-  [v5 encodeObject:scheme forKey:@"FSSchem"];
-  [v5 encodeObject:self->_host forKey:@"FSHost"];
-  [v5 encodeObject:self->_port forKey:@"FSPort"];
-  [v5 encodeObject:self->_user forKey:@"FSUser"];
-  [v5 encodeObject:self->_password forKey:@"FSPassw"];
-  [v5 encodeObject:self->_path forKey:@"FSPath"];
-  [v5 encodeObject:self->_options forKey:@"FSOptns"];
-  [v5 encodeObject:self->_extras forKey:@"FSExtra"];
+  coderCopy = coder;
+  [coderCopy encodeObject:scheme forKey:@"FSSchem"];
+  [coderCopy encodeObject:self->_host forKey:@"FSHost"];
+  [coderCopy encodeObject:self->_port forKey:@"FSPort"];
+  [coderCopy encodeObject:self->_user forKey:@"FSUser"];
+  [coderCopy encodeObject:self->_password forKey:@"FSPassw"];
+  [coderCopy encodeObject:self->_path forKey:@"FSPath"];
+  [coderCopy encodeObject:self->_options forKey:@"FSOptns"];
+  [coderCopy encodeObject:self->_extras forKey:@"FSExtra"];
 }
 
-- (FSServerURLParameters)initWithCoder:(id)a3
+- (FSServerURLParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = FSServerURLParameters;
   v5 = [(FSServerURLParameters *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSSchem"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSSchem"];
     scheme = v5->_scheme;
     v5->_scheme = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSHost"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSHost"];
     host = v5->_host;
     v5->_host = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSPort"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSPort"];
     port = v5->_port;
     v5->_port = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSUser"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSUser"];
     user = v5->_user;
     v5->_user = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSPassw"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSPassw"];
     password = v5->_password;
     v5->_password = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSPath"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSPath"];
     path = v5->_path;
     v5->_path = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSOptns"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSOptns"];
     options = v5->_options;
     v5->_options = v18;
 
     v20 = +[FSKitConstants plistTypes];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"FSExtra"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"FSExtra"];
 
     extras = v5->_extras;
     v5->_extras = v21;
@@ -66,13 +66,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   scheme = self->_scheme;
   if (scheme)
   {
-    scheme = [(NSString *)scheme copyWithZone:a3];
+    scheme = [(NSString *)scheme copyWithZone:zone];
   }
 
   v7 = v5[1];
@@ -81,7 +81,7 @@
   host = self->_host;
   if (host)
   {
-    host = [(NSString *)host copyWithZone:a3];
+    host = [(NSString *)host copyWithZone:zone];
   }
 
   v9 = v5[2];
@@ -90,7 +90,7 @@
   port = self->_port;
   if (port)
   {
-    port = [(NSNumber *)port copyWithZone:a3];
+    port = [(NSNumber *)port copyWithZone:zone];
   }
 
   v11 = v5[3];
@@ -99,7 +99,7 @@
   user = self->_user;
   if (user)
   {
-    user = [(NSString *)user copyWithZone:a3];
+    user = [(NSString *)user copyWithZone:zone];
   }
 
   v13 = v5[4];
@@ -108,7 +108,7 @@
   password = self->_password;
   if (password)
   {
-    password = [(NSString *)password copyWithZone:a3];
+    password = [(NSString *)password copyWithZone:zone];
   }
 
   v15 = v5[5];
@@ -117,7 +117,7 @@
   path = self->_path;
   if (path)
   {
-    path = [(NSString *)path copyWithZone:a3];
+    path = [(NSString *)path copyWithZone:zone];
   }
 
   v17 = v5[6];
@@ -126,7 +126,7 @@
   options = self->_options;
   if (options)
   {
-    options = [(NSString *)options copyWithZone:a3];
+    options = [(NSString *)options copyWithZone:zone];
   }
 
   v19 = v5[7];
@@ -135,7 +135,7 @@
   extras = self->_extras;
   if (extras)
   {
-    extras = [(NSDictionary *)extras copyWithZone:a3];
+    extras = [(NSDictionary *)extras copyWithZone:zone];
   }
 
   v21 = v5[8];

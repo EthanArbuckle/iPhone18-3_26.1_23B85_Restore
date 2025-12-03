@@ -7,7 +7,7 @@
 + (void)ed_isNoBusinessMetadataFoundError:()BusinessMetadata
 {
   v3 = a3;
-  v4 = [v3 domain];
+  domain = [v3 domain];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -25,14 +25,14 @@
   if (v5)
   {
     v7 = *v5;
-    if (![v4 isEqualToString:v7])
+    if (![domain isEqualToString:v7])
     {
 LABEL_9:
 
       return;
     }
 
-    v8 = [v3 code];
+    code = [v3 code];
     v16 = 0;
     v17 = &v16;
     v18 = 0x2020000000;
@@ -49,23 +49,23 @@ LABEL_9:
     _Block_object_dispose(&v16, 8);
     if (v9)
     {
-      v11 = v8 == *v9;
+      v11 = code == *v9;
       goto LABEL_9;
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getBCSErrorDomain(void)"];
-    [v12 handleFailureInFunction:v13 file:@"NSError+BusinessMetadata.m" lineNumber:16 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v13 file:@"NSError+BusinessMetadata.m" lineNumber:16 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSInteger getBCSErrorReturnedNoDataCode(void)"];
-  [v14 handleFailureInFunction:v15 file:@"NSError+BusinessMetadata.m" lineNumber:15 description:{@"%s", dlerror()}];
+  [currentHandler2 handleFailureInFunction:v15 file:@"NSError+BusinessMetadata.m" lineNumber:15 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

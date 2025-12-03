@@ -1,5 +1,5 @@
 @interface HeadphoneAdaptiveControlsConversationAwarenessViewController
-- (_TtC20HeadphoneProxService60HeadphoneAdaptiveControlsConversationAwarenessViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService60HeadphoneAdaptiveControlsConversationAwarenessViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001E664();
 }
 
-- (_TtC20HeadphoneProxService60HeadphoneAdaptiveControlsConversationAwarenessViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService60HeadphoneAdaptiveControlsConversationAwarenessViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   *&self->presenter[OBJC_IVAR____TtC20HeadphoneProxService60HeadphoneAdaptiveControlsConversationAwarenessViewController_presenter] = 0;
@@ -19,7 +19,7 @@
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService60HeadphoneAdaptiveControlsConversationAwarenessViewController_type] = 11;
   v7.receiver = self;
   v7.super_class = ObjectType;
-  return [(HeadphoneAdaptiveControlsConversationAwarenessViewController *)&v7 initWithContentView:a3];
+  return [(HeadphoneAdaptiveControlsConversationAwarenessViewController *)&v7 initWithContentView:view];
 }
 
 @end

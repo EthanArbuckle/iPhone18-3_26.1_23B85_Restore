@@ -1,13 +1,13 @@
 @interface CNPRUISIncomingCallPosterContextNameVariations
-- (CNPRUISIncomingCallPosterContextNameVariations)initWithShortName:(id)a3 fullName:(id)a4;
+- (CNPRUISIncomingCallPosterContextNameVariations)initWithShortName:(id)name fullName:(id)fullName;
 @end
 
 @implementation CNPRUISIncomingCallPosterContextNameVariations
 
-- (CNPRUISIncomingCallPosterContextNameVariations)initWithShortName:(id)a3 fullName:(id)a4
+- (CNPRUISIncomingCallPosterContextNameVariations)initWithShortName:(id)name fullName:(id)fullName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  fullNameCopy = fullName;
   v16.receiver = self;
   v16.super_class = CNPRUISIncomingCallPosterContextNameVariations;
   v8 = [(CNPRUISIncomingCallPosterContextNameVariations *)&v16 init];
@@ -15,14 +15,14 @@
   {
     v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
     v10 = v9;
-    if (v6)
+    if (nameCopy)
     {
-      [v9 setObject:v6 forKeyedSubscript:&unk_1F0D4B850];
+      [v9 setObject:nameCopy forKeyedSubscript:&unk_1F0D4B850];
     }
 
-    if (v7)
+    if (fullNameCopy)
     {
-      [v10 setObject:v7 forKeyedSubscript:&unk_1F0D4B868];
+      [v10 setObject:fullNameCopy forKeyedSubscript:&unk_1F0D4B868];
     }
 
     v18 = 0;

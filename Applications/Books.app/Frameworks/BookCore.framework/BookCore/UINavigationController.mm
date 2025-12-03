@@ -1,20 +1,20 @@
 @interface UINavigationController
 - (id)bc_navBarSnapshot;
 - (id)im_visibleChildViewControllers;
-- (void)_bc_setActiveNavBarSnapshot:(id)a3;
-- (void)bc_updateNavBarVisibleWithTransitionCoordinator:(id)a3 duration:(double)a4;
-- (void)im_dismissChildViewController:(id)a3 animated:(BOOL)a4;
+- (void)_bc_setActiveNavBarSnapshot:(id)snapshot;
+- (void)bc_updateNavBarVisibleWithTransitionCoordinator:(id)coordinator duration:(double)duration;
+- (void)im_dismissChildViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation UINavigationController
 
 - (id)im_visibleChildViewControllers
 {
-  v3 = [(UINavigationController *)self topViewController];
-  if (v3)
+  topViewController = [(UINavigationController *)self topViewController];
+  if (topViewController)
   {
-    v4 = [(UINavigationController *)self topViewController];
-    v7 = v4;
+    topViewController2 = [(UINavigationController *)self topViewController];
+    v7 = topViewController2;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
   }
 
@@ -26,24 +26,24 @@
   return v5;
 }
 
-- (void)im_dismissChildViewController:(id)a3 animated:(BOOL)a4
+- (void)im_dismissChildViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UINavigationController *)self childViewControllers];
-  v8 = [v7 indexOfObjectIdenticalTo:v6];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  childViewControllers = [(UINavigationController *)self childViewControllers];
+  v8 = [childViewControllers indexOfObjectIdenticalTo:controllerCopy];
 
-  v9 = [(UINavigationController *)self delegate];
+  delegate = [(UINavigationController *)self delegate];
   v10 = BUProtocolCast();
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v11 = [(UINavigationController *)self topViewController];
+    topViewController = [(UINavigationController *)self topViewController];
 
-    if (v11 == v6)
+    if (topViewController == controllerCopy)
     {
-      v12 = self;
-      v13 = v4;
+      selfCopy2 = self;
+      v13 = animatedCopy;
     }
 
     else
@@ -52,29 +52,29 @@
       {
         v16.receiver = self;
         v16.super_class = UINavigationController;
-        [(UINavigationController *)&v16 im_dismissChildViewController:self animated:v4];
+        [(UINavigationController *)&v16 im_dismissChildViewController:self animated:animatedCopy];
         goto LABEL_10;
       }
 
-      v14 = [(UINavigationController *)self popToViewController:v6 animated:0];
-      v12 = self;
+      v14 = [(UINavigationController *)self popToViewController:controllerCopy animated:0];
+      selfCopy2 = self;
       v13 = 0;
     }
 
-    v15 = [(UINavigationController *)v12 popViewControllerAnimated:v13];
+    v15 = [(UINavigationController *)selfCopy2 popViewControllerAnimated:v13];
     goto LABEL_10;
   }
 
-  [v10 im_navigationController:self dismissChildViewController:v6 animated:v4];
+  [v10 im_navigationController:self dismissChildViewController:controllerCopy animated:animatedCopy];
 LABEL_10:
 }
 
-- (void)bc_updateNavBarVisibleWithTransitionCoordinator:(id)a3 duration:(double)a4
+- (void)bc_updateNavBarVisibleWithTransitionCoordinator:(id)coordinator duration:(double)duration
 {
-  v6 = a3;
+  coordinatorCopy = coordinator;
   objc_opt_class();
-  v7 = [(UINavigationController *)self topViewController];
-  v8 = [v7 presentedViewController];
+  topViewController = [(UINavigationController *)self topViewController];
+  presentedViewController = [topViewController presentedViewController];
   v9 = BUDynamicCast();
 
   if (([v9 hidesNavigationBarDuringPresentation] & 1) == 0)
@@ -84,12 +84,12 @@ LABEL_10:
     v12[2] = sub_12D5EC;
     v12[3] = &unk_2CDAE0;
     v12[4] = self;
-    *&v12[5] = a4;
+    *&v12[5] = duration;
     v10 = objc_retainBlock(v12);
     v11 = v10;
-    if (v6)
+    if (coordinatorCopy)
     {
-      [v6 animateAlongsideTransition:v10 completion:0];
+      [coordinatorCopy animateAlongsideTransition:v10 completion:0];
     }
 
     else
@@ -101,8 +101,8 @@ LABEL_10:
 
 - (id)bc_navBarSnapshot
 {
-  v2 = [(UINavigationController *)self navigationBar];
-  [v2 frame];
+  navigationBar = [(UINavigationController *)self navigationBar];
+  [navigationBar frame];
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
@@ -118,24 +118,24 @@ LABEL_10:
   v18.size.width = width;
   v18.size.height = height;
   MaxY = CGRectGetMaxY(v18);
-  v10 = [v2 resizableSnapshotViewFromRect:0 afterScreenUpdates:0.0 withCapInsets:{-(MaxY - v7), v8, v7 + MaxY - v7, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+  v10 = [navigationBar resizableSnapshotViewFromRect:0 afterScreenUpdates:0.0 withCapInsets:{-(MaxY - v7), v8, v7 + MaxY - v7, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
   v11 = [UIView alloc];
   [v10 frame];
   v12 = [v11 initWithFrame:?];
-  v13 = [v2 barTintColor];
-  [v12 setBackgroundColor:v13];
+  barTintColor = [navigationBar barTintColor];
+  [v12 setBackgroundColor:barTintColor];
 
   [v12 addSubview:v10];
 
   return v12;
 }
 
-- (void)_bc_setActiveNavBarSnapshot:(id)a3
+- (void)_bc_setActiveNavBarSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(UINavigationController *)self _bc_activeNavBarSnapshot];
-  [v5 removeFromSuperview];
-  objc_setAssociatedObject(self, &off_2CDB00, v4, &dword_0 + 1);
+  snapshotCopy = snapshot;
+  _bc_activeNavBarSnapshot = [(UINavigationController *)self _bc_activeNavBarSnapshot];
+  [_bc_activeNavBarSnapshot removeFromSuperview];
+  objc_setAssociatedObject(self, &off_2CDB00, snapshotCopy, &dword_0 + 1);
 }
 
 @end

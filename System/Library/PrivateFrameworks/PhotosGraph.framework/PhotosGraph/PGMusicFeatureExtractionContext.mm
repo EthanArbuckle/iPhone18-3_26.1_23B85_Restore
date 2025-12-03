@@ -1,6 +1,6 @@
 @interface PGMusicFeatureExtractionContext
-+ (id)appleMusicFeatureExtractionContextWithCuratorContext:(id)a3;
-+ (id)flexMusicFeatureExtractionContextWithCuratorContext:(id)a3;
++ (id)appleMusicFeatureExtractionContextWithCuratorContext:(id)context;
++ (id)flexMusicFeatureExtractionContextWithCuratorContext:(id)context;
 - (NSString)flexSongProvider;
 - (PGMusicFeatureExtractionContext)init;
 @end
@@ -32,18 +32,18 @@
   return result;
 }
 
-+ (id)appleMusicFeatureExtractionContextWithCuratorContext:(id)a3
++ (id)appleMusicFeatureExtractionContextWithCuratorContext:(id)context
 {
-  v3 = a3;
-  v4 = _s11PhotosGraph29MusicFeatureExtractionContextC05applecdeF04withAcA0c7CuratorF0C_tFZ_0(v3);
+  contextCopy = context;
+  v4 = _s11PhotosGraph29MusicFeatureExtractionContextC05applecdeF04withAcA0c7CuratorF0C_tFZ_0(contextCopy);
 
   return v4;
 }
 
-+ (id)flexMusicFeatureExtractionContextWithCuratorContext:(id)a3
++ (id)flexMusicFeatureExtractionContextWithCuratorContext:(id)context
 {
-  v3 = a3;
-  v4 = _s11PhotosGraph29MusicFeatureExtractionContextC04flexcdeF04withAcA0c7CuratorF0C_tFZ_0(v3);
+  contextCopy = context;
+  v4 = _s11PhotosGraph29MusicFeatureExtractionContextC04flexcdeF04withAcA0c7CuratorF0C_tFZ_0(contextCopy);
 
   return v4;
 }

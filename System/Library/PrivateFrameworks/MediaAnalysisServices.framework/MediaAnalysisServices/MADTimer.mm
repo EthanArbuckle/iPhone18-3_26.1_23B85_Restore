@@ -1,7 +1,7 @@
 @interface MADTimer
-+ (id)timerWithInterval:(unint64_t)a3 unit:(unint64_t)a4 oneShot:(BOOL)a5 andBlock:(id)a6;
-+ (id)timerWithIntervalSeconds:(unint64_t)a3 isOneShot:(BOOL)a4 andBlock:(id)a5;
-- (MADTimer)initWithIntervalNanoseconds:(unint64_t)a3 isOneShot:(BOOL)a4 andBlock:(id)a5;
++ (id)timerWithInterval:(unint64_t)interval unit:(unint64_t)unit oneShot:(BOOL)shot andBlock:(id)block;
++ (id)timerWithIntervalSeconds:(unint64_t)seconds isOneShot:(BOOL)shot andBlock:(id)block;
+- (MADTimer)initWithIntervalNanoseconds:(unint64_t)nanoseconds isOneShot:(BOOL)shot andBlock:(id)block;
 - (void)dealloc;
 - (void)destroy;
 - (void)handleTimerEvent;
@@ -9,9 +9,9 @@
 
 @implementation MADTimer
 
-- (MADTimer)initWithIntervalNanoseconds:(unint64_t)a3 isOneShot:(BOOL)a4 andBlock:(id)a5
+- (MADTimer)initWithIntervalNanoseconds:(unint64_t)nanoseconds isOneShot:(BOOL)shot andBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = MADTimer;
   v9 = [(MADTimer *)&v24 init];
@@ -26,24 +26,24 @@
     *(v9 + 2) = v12;
 
     atomic_store(1u, v9 + 24);
-    *(v9 + 25) = a4;
-    v14 = MEMORY[0x1CCA8ECA0](v8);
+    *(v9 + 25) = shot;
+    v14 = MEMORY[0x1CCA8ECA0](blockCopy);
     v15 = *(v9 + 4);
     *(v9 + 4) = v14;
 
     v16 = *(v9 + 2);
-    v17 = dispatch_time(0, a3);
+    v17 = dispatch_time(0, nanoseconds);
     if (*(v9 + 25))
     {
-      v18 = -1;
+      nanosecondsCopy = -1;
     }
 
     else
     {
-      v18 = a3;
+      nanosecondsCopy = nanoseconds;
     }
 
-    dispatch_source_set_timer(v16, v17, v18, 0xF4240uLL);
+    dispatch_source_set_timer(v16, v17, nanosecondsCopy, 0xF4240uLL);
     objc_initWeak(&location, v9);
     v19 = *(v9 + 2);
     v21[0] = MEMORY[0x1E69E9820];
@@ -69,13 +69,13 @@ void __59__MADTimer_initWithIntervalNanoseconds_isOneShot_andBlock___block_invok
   }
 }
 
-+ (id)timerWithInterval:(unint64_t)a3 unit:(unint64_t)a4 oneShot:(BOOL)a5 andBlock:(id)a6
++ (id)timerWithInterval:(unint64_t)interval unit:(unint64_t)unit oneShot:(BOOL)shot andBlock:(id)block
 {
-  v6 = a5;
-  v9 = a6;
-  if (a4 <= 3)
+  shotCopy = shot;
+  blockCopy = block;
+  if (unit <= 3)
   {
-    v10 = [objc_alloc(objc_opt_class()) initWithIntervalNanoseconds:+[MADTimer timerWithInterval:unit:oneShot:andBlock:]::kTimeScaler[a4] * a3 isOneShot:v6 andBlock:v9];
+    v10 = [objc_alloc(objc_opt_class()) initWithIntervalNanoseconds:+[MADTimer timerWithInterval:unit:oneShot:andBlock:]::kTimeScaler[unit] * interval isOneShot:shotCopy andBlock:blockCopy];
   }
 
   else
@@ -86,11 +86,11 @@ void __59__MADTimer_initWithIntervalNanoseconds_isOneShot_andBlock___block_invok
   return v10;
 }
 
-+ (id)timerWithIntervalSeconds:(unint64_t)a3 isOneShot:(BOOL)a4 andBlock:(id)a5
++ (id)timerWithIntervalSeconds:(unint64_t)seconds isOneShot:(BOOL)shot andBlock:(id)block
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [objc_opt_class() timerWithInterval:a3 unit:3 oneShot:v5 andBlock:v7];
+  shotCopy = shot;
+  blockCopy = block;
+  v8 = [objc_opt_class() timerWithInterval:seconds unit:3 oneShot:shotCopy andBlock:blockCopy];
 
   return v8;
 }

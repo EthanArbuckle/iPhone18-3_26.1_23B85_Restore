@@ -1,10 +1,10 @@
 @interface _HKDataCollectorPendingBatch
 - (_HKDataCollectorPendingBatch)init;
-- (_HKDataCollectorPendingBatch)initWithIdentifier:(id)a3 data:(id)a4 metadata:(id)a5 device:(id)a6 options:(unint64_t)a7 completion:(id)a8;
-- (_HKDataCollectorPendingBatch)initWithIdentifier:(id)a3 data:(id)a4 metadata:(id)a5 device:(id)a6 options:(unint64_t)a7 completions:(id)a8;
-- (id)batchByAddingData:(id)a3 completion:(id)a4;
+- (_HKDataCollectorPendingBatch)initWithIdentifier:(id)identifier data:(id)data metadata:(id)metadata device:(id)device options:(unint64_t)options completion:(id)completion;
+- (_HKDataCollectorPendingBatch)initWithIdentifier:(id)identifier data:(id)data metadata:(id)metadata device:(id)device options:(unint64_t)options completions:(id)completions;
+- (id)batchByAddingData:(id)data completion:(id)completion;
 - (id)description;
-- (void)callCompletionsWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)callCompletionsWithSuccess:(BOOL)success error:(id)error;
 @end
 
 @implementation _HKDataCollectorPendingBatch
@@ -19,26 +19,26 @@
   return 0;
 }
 
-- (_HKDataCollectorPendingBatch)initWithIdentifier:(id)a3 data:(id)a4 metadata:(id)a5 device:(id)a6 options:(unint64_t)a7 completion:(id)a8
+- (_HKDataCollectorPendingBatch)initWithIdentifier:(id)identifier data:(id)data metadata:(id)metadata device:(id)device options:(unint64_t)options completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  if (a8)
+  deviceCopy = device;
+  metadataCopy = metadata;
+  dataCopy = data;
+  identifierCopy = identifier;
+  if (completion)
   {
-    v18 = _Block_copy(a8);
+    v18 = _Block_copy(completion);
     v25[0] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-    v20 = [(_HKDataCollectorPendingBatch *)self initWithIdentifier:v17 data:v16 metadata:v15 device:v14 options:a7 completions:v19];
+    v20 = [(_HKDataCollectorPendingBatch *)self initWithIdentifier:identifierCopy data:dataCopy metadata:metadataCopy device:deviceCopy options:options completions:v19];
 
     v21 = v20;
   }
 
   else
   {
-    v22 = [(_HKDataCollectorPendingBatch *)self initWithIdentifier:v17 data:v16 metadata:v15 device:v14 options:a7 completions:MEMORY[0x1E695E0F0]];
+    v22 = [(_HKDataCollectorPendingBatch *)self initWithIdentifier:identifierCopy data:dataCopy metadata:metadataCopy device:deviceCopy options:options completions:MEMORY[0x1E695E0F0]];
 
     v21 = v22;
   }
@@ -47,36 +47,36 @@
   return v21;
 }
 
-- (_HKDataCollectorPendingBatch)initWithIdentifier:(id)a3 data:(id)a4 metadata:(id)a5 device:(id)a6 options:(unint64_t)a7 completions:(id)a8
+- (_HKDataCollectorPendingBatch)initWithIdentifier:(id)identifier data:(id)data metadata:(id)metadata device:(id)device options:(unint64_t)options completions:(id)completions
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  identifierCopy = identifier;
+  dataCopy = data;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  completionsCopy = completions;
   v31.receiver = self;
   v31.super_class = _HKDataCollectorPendingBatch;
   v19 = [(_HKDataCollectorPendingBatch *)&v31 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [identifierCopy copy];
     batchUUID = v19->_batchUUID;
     v19->_batchUUID = v20;
 
-    v22 = [v15 copy];
+    v22 = [dataCopy copy];
     data = v19->_data;
     v19->_data = v22;
 
-    v24 = [v16 copy];
+    v24 = [metadataCopy copy];
     metadata = v19->_metadata;
     v19->_metadata = v24;
 
-    v26 = [v17 copy];
+    v26 = [deviceCopy copy];
     device = v19->_device;
     v19->_device = v26;
 
-    v19->_options = a7;
-    v28 = [v18 copy];
+    v19->_options = options;
+    v28 = [completionsCopy copy];
     completions = v19->_completions;
     v19->_completions = v28;
   }
@@ -84,21 +84,21 @@
   return v19;
 }
 
-- (id)batchByAddingData:(id)a3 completion:(id)a4
+- (id)batchByAddingData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   v8 = [_HKDataCollectorPendingBatch alloc];
   batchUUID = self->_batchUUID;
-  v10 = [(NSArray *)self->_data arrayByAddingObjectsFromArray:v7];
+  v10 = [(NSArray *)self->_data arrayByAddingObjectsFromArray:dataCopy];
 
   metadata = self->_metadata;
   device = self->_device;
   options = self->_options;
   completions = self->_completions;
-  if (v6)
+  if (completionCopy)
   {
-    v15 = _Block_copy(v6);
+    v15 = _Block_copy(completionCopy);
     v16 = [(NSArray *)completions arrayByAddingObject:v15];
     v17 = [(_HKDataCollectorPendingBatch *)v8 initWithIdentifier:batchUUID data:v10 metadata:metadata device:device options:options completions:v16];
   }
@@ -111,10 +111,10 @@
   return v17;
 }
 
-- (void)callCompletionsWithSuccess:(BOOL)a3 error:(id)a4
+- (void)callCompletionsWithSuccess:(BOOL)success error:(id)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   if ([(NSArray *)self->_completions count])
   {
     _HKInitializeLogging();
@@ -126,7 +126,7 @@
       v9 = HKDiagnosticStringFromUUID(batchUUID);
       v10 = [(NSArray *)self->_completions count];
       *buf = 138543874;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
       v25 = v9;
       v26 = 2048;

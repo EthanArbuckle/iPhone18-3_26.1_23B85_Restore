@@ -1,7 +1,7 @@
 @interface SuiteInProgressViewController
-- (_TtC11Diagnostics29SuiteInProgressViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC11Diagnostics29SuiteInProgressViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC11Diagnostics29SuiteInProgressViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC11Diagnostics29SuiteInProgressViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -14,26 +14,26 @@
   v2 = v4.receiver;
   [(SuiteInProgressViewController *)&v4 viewDidLoad];
   sub_1000ED360();
-  v3 = [v2 contentView];
-  [v3 addSubview:*&v2[OBJC_IVAR____TtC11Diagnostics29SuiteInProgressViewController_progressView]];
+  contentView = [v2 contentView];
+  [contentView addSubview:*&v2[OBJC_IVAR____TtC11Diagnostics29SuiteInProgressViewController_progressView]];
 
   sub_1000EDDE8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000EE328(a3);
+  selfCopy = self;
+  sub_1000EE328(appear);
 }
 
-- (_TtC11Diagnostics29SuiteInProgressViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics29SuiteInProgressViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11Diagnostics29SuiteInProgressViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics29SuiteInProgressViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

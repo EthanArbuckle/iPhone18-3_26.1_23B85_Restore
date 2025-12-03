@@ -1,21 +1,21 @@
 @interface NTKELoadingWatchFaceViewController
-- (NTKELoadingWatchFaceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NTKELoadingWatchFaceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKELoadingWatchFaceViewController
 
-- (NTKELoadingWatchFaceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NTKELoadingWatchFaceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = NTKELoadingWatchFaceViewController;
-  v4 = [(NTKELoadingWatchFaceViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(NTKELoadingWatchFaceViewController *)&v9 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
-    v6 = [(NTKELoadingWatchFaceViewController *)v4 ntke_cancelExtensionBarButton];
-    v7 = [(NTKELoadingWatchFaceViewController *)v5 navigationItem];
-    [v7 setLeftBarButtonItem:v6];
+    ntke_cancelExtensionBarButton = [(NTKELoadingWatchFaceViewController *)v4 ntke_cancelExtensionBarButton];
+    navigationItem = [(NTKELoadingWatchFaceViewController *)v5 navigationItem];
+    [navigationItem setLeftBarButtonItem:ntke_cancelExtensionBarButton];
   }
 
   return v5;
@@ -54,19 +54,19 @@
   [v3 setTintColor:v5];
 
   [v3 startAnimating];
-  v6 = [(NTKELoadingWatchFaceViewController *)self view];
-  [v6 addSubview:v3];
+  view = [(NTKELoadingWatchFaceViewController *)self view];
+  [view addSubview:v3];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v3 centerXAnchor];
-  v8 = [(NTKELoadingWatchFaceViewController *)self view];
-  v9 = [v8 centerXAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  centerXAnchor = [v3 centerXAnchor];
+  view2 = [(NTKELoadingWatchFaceViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v22[0] = v10;
-  v11 = [v3 centerYAnchor];
-  v12 = [(NTKELoadingWatchFaceViewController *)self view];
-  v13 = [v12 centerYAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  centerYAnchor = [v3 centerYAnchor];
+  view3 = [(NTKELoadingWatchFaceViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[1] = v14;
   v15 = [NSArray arrayWithObjects:v22 count:2];
 

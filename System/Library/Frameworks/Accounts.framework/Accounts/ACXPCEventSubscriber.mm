@@ -1,7 +1,7 @@
 @interface ACXPCEventSubscriber
 + (id)sharedSubscriber;
 - (ACXPCEventSubscriber)init;
-- (void)registerAccountChangeEventHandler:(id)a3;
+- (void)registerAccountChangeEventHandler:(id)handler;
 @end
 
 @implementation ACXPCEventSubscriber
@@ -44,9 +44,9 @@ void __40__ACXPCEventSubscriber_sharedSubscriber__block_invoke()
   return v2;
 }
 
-- (void)registerAccountChangeEventHandler:(id)a3
+- (void)registerAccountChangeEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -58,8 +58,8 @@ void __40__ACXPCEventSubscriber_sharedSubscriber__block_invoke()
   handler[1] = 3221225472;
   handler[2] = __58__ACXPCEventSubscriber_registerAccountChangeEventHandler___block_invoke;
   handler[3] = &unk_1E7977528;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   xpc_set_event_stream_handler("com.apple.accounts.changes", replyQueue, handler);
 }
 

@@ -1,37 +1,37 @@
 @interface CSVoiceTriggerSecondPassRequestOption
-- (CSVoiceTriggerSecondPassRequestOption)initWithFirstPassSource:(unint64_t)a3 deviceId:(id)a4 audioProviderUUID:(id)a5 firstPassInfo:(id)a6 rejectionMHUUID:(id)a7 isSecondChanceRun:(BOOL)a8 firstpassMetrics:(id)a9 rtModelRequestOptions:(id)a10;
+- (CSVoiceTriggerSecondPassRequestOption)initWithFirstPassSource:(unint64_t)source deviceId:(id)id audioProviderUUID:(id)d firstPassInfo:(id)info rejectionMHUUID:(id)iD isSecondChanceRun:(BOOL)run firstpassMetrics:(id)metrics rtModelRequestOptions:(id)self0;
 @end
 
 @implementation CSVoiceTriggerSecondPassRequestOption
 
-- (CSVoiceTriggerSecondPassRequestOption)initWithFirstPassSource:(unint64_t)a3 deviceId:(id)a4 audioProviderUUID:(id)a5 firstPassInfo:(id)a6 rejectionMHUUID:(id)a7 isSecondChanceRun:(BOOL)a8 firstpassMetrics:(id)a9 rtModelRequestOptions:(id)a10
+- (CSVoiceTriggerSecondPassRequestOption)initWithFirstPassSource:(unint64_t)source deviceId:(id)id audioProviderUUID:(id)d firstPassInfo:(id)info rejectionMHUUID:(id)iD isSecondChanceRun:(BOOL)run firstpassMetrics:(id)metrics rtModelRequestOptions:(id)self0
 {
-  v29 = a4;
-  v28 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
+  idCopy = id;
+  dCopy = d;
+  infoCopy = info;
+  iDCopy = iD;
+  metricsCopy = metrics;
+  optionsCopy = options;
   v30.receiver = self;
   v30.super_class = CSVoiceTriggerSecondPassRequestOption;
   v20 = [(CSVoiceTriggerSecondPassRequestOption *)&v30 init];
   v21 = v20;
   if (v20)
   {
-    v20->_firstPassSource = a3;
-    objc_storeStrong(&v20->_deviceId, a4);
-    objc_storeStrong(&v21->_audioProviderUUID, a5);
-    v22 = [v16 copy];
+    v20->_firstPassSource = source;
+    objc_storeStrong(&v20->_deviceId, id);
+    objc_storeStrong(&v21->_audioProviderUUID, d);
+    v22 = [infoCopy copy];
     firstPassTriggerInfo = v21->_firstPassTriggerInfo;
     v21->_firstPassTriggerInfo = v22;
 
-    v24 = [v17 copy];
+    v24 = [iDCopy copy];
     rejectionMHUUID = v21->_rejectionMHUUID;
     v21->_rejectionMHUUID = v24;
 
-    v21->_isSecondChanceRun = a8;
-    objc_storeStrong(&v21->_firstpassMetrics, a9);
-    objc_storeStrong(&v21->_rtModelRequestOptions, a10);
+    v21->_isSecondChanceRun = run;
+    objc_storeStrong(&v21->_firstpassMetrics, metrics);
+    objc_storeStrong(&v21->_rtModelRequestOptions, options);
   }
 
   return v21;

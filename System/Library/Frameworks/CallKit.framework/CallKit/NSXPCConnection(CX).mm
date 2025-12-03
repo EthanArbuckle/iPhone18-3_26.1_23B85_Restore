@@ -12,7 +12,7 @@
 
 - (id)cx_applicationIdentifier
 {
-  v1 = [a1 valueForEntitlement:@"application-identifier"];
+  v1 = [self valueForEntitlement:@"application-identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -30,7 +30,7 @@
 - (__CFString)cx_bundleIdentifier
 {
   memset(&v5[1], 0, sizeof(audit_token_t));
-  [a1 auditToken];
+  [self auditToken];
   v5[0] = v5[1];
   v1 = SecTaskCreateWithAuditToken(0, v5);
   if (v1)
@@ -50,7 +50,7 @@
 
 - (id)cx_developerTeamIdentifier
 {
-  v1 = [a1 valueForEntitlement:@"com.apple.developer.team-identifier"];
+  v1 = [self valueForEntitlement:@"com.apple.developer.team-identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -68,7 +68,7 @@
 - (id)cx_processName
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (proc_name([a1 processIdentifier], &v4, 0x100u) < 1)
+  if (proc_name([self processIdentifier], &v4, 0x100u) < 1)
   {
     v1 = 0;
   }
@@ -85,25 +85,25 @@
 
 - (uint64_t)cx_isProcessOnDemandInstallCapable
 {
-  v1 = [a1 valueForEntitlement:@"com.apple.developer.on-demand-install-capable"];
+  v1 = [self valueForEntitlement:@"com.apple.developer.on-demand-install-capable"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)cx_capabilities
 {
   v2 = [MEMORY[0x1E695DFD8] set];
-  v3 = [a1 valueForEntitlement:@"com.apple.callkit"];
+  v3 = [self valueForEntitlement:@"com.apple.callkit"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -121,7 +121,7 @@
   v4 = a3;
   v34 = 0u;
   v35 = 0u;
-  [a1 auditToken];
+  [self auditToken];
   if ([v4 isFileURL])
   {
     v33 = 0;

@@ -6,9 +6,9 @@
 
 - (void)setupFilteringContexts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  if (!v2)
+  if (!selfCopy)
   {
     NSStringFromClass(v3);
     objc_claimAutoreleasedReturnValue();
@@ -18,7 +18,7 @@ LABEL_12:
     return;
   }
 
-  if (([(PGTopCityscapeWallpaperSuggester *)v2 isMemberOfClass:v3]& 1) == 0)
+  if (([(PGTopCityscapeWallpaperSuggester *)selfCopy isMemberOfClass:v3]& 1) == 0)
   {
     v8 = objc_opt_class();
     NSStringFromClass(v8);
@@ -34,18 +34,18 @@ LABEL_12:
   if (IsIPad)
   {
     v6 = [(PGCityscapeWallpaperSuggesterFilteringContext *)v5 initForTopCityscapesInOrientation:2];
-    [(PGCityscapeWallpaperSuggester *)v2 setPrimaryFilteringContext:v6];
+    [(PGCityscapeWallpaperSuggester *)selfCopy setPrimaryFilteringContext:v6];
 
     v12 = [[PGCityscapeWallpaperSuggesterFilteringContext alloc] initForTopCityscapesInOrientation:1];
-    [(PGCityscapeWallpaperSuggester *)v2 setSecondaryFilteringContext:v12];
+    [(PGCityscapeWallpaperSuggester *)selfCopy setSecondaryFilteringContext:v12];
   }
 
   else
   {
     v7 = [(PGCityscapeWallpaperSuggesterFilteringContext *)v5 initForTopCityscapesInOrientation:1];
-    [(PGCityscapeWallpaperSuggester *)v2 setPrimaryFilteringContext:v7];
+    [(PGCityscapeWallpaperSuggester *)selfCopy setPrimaryFilteringContext:v7];
 
-    [(PGCityscapeWallpaperSuggester *)v2 setSecondaryFilteringContext:0];
+    [(PGCityscapeWallpaperSuggester *)selfCopy setSecondaryFilteringContext:0];
   }
 }
 

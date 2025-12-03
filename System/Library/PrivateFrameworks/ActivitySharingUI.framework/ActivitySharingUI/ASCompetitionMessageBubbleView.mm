@@ -1,16 +1,16 @@
 @interface ASCompetitionMessageBubbleView
-- (ASCompetitionMessageBubbleView)initWithFrame:(CGRect)a3;
+- (ASCompetitionMessageBubbleView)initWithFrame:(CGRect)frame;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (void)layoutSubviews;
 @end
 
 @implementation ASCompetitionMessageBubbleView
 
-- (ASCompetitionMessageBubbleView)initWithFrame:(CGRect)a3
+- (ASCompetitionMessageBubbleView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = ASCompetitionMessageBubbleView;
-  v3 = [(ASCompetitionMessageBubbleView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCompetitionMessageBubbleView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MessageBubbleBackgroundPlatter();
@@ -25,8 +25,8 @@
     messageBubbleView = v3->_messageBubbleView;
     v3->_messageBubbleView = v9;
 
-    v11 = [MEMORY[0x277D75348] as_lightCompetitionGold];
-    [(UIImageView *)v3->_messageBubbleView setTintColor:v11];
+    as_lightCompetitionGold = [MEMORY[0x277D75348] as_lightCompetitionGold];
+    [(UIImageView *)v3->_messageBubbleView setTintColor:as_lightCompetitionGold];
 
     [(ASCompetitionMessageBubbleView *)v3 addSubview:v3->_messageBubbleView];
   }

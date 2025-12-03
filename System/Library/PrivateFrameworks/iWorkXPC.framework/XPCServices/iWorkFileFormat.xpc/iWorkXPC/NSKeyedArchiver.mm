@@ -1,14 +1,14 @@
 @interface NSKeyedArchiver
-+ (id)tsu_securelyArchiveRoot:(id)a3;
++ (id)tsu_securelyArchiveRoot:(id)root;
 @end
 
 @implementation NSKeyedArchiver
 
-+ (id)tsu_securelyArchiveRoot:(id)a3
++ (id)tsu_securelyArchiveRoot:(id)root
 {
-  v3 = a3;
+  rootCopy = root;
   v19 = 0;
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v19];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:rootCopy requiringSecureCoding:1 error:&v19];
   v5 = v19;
   if (!v4)
   {
@@ -24,8 +24,8 @@
       v14 = v7;
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v5 domain];
-      v18 = [v5 code];
+      domain = [v5 domain];
+      code = [v5 code];
       *buf = 67111170;
       v21 = v6;
       v22 = 2082;
@@ -35,13 +35,13 @@
       v26 = 1024;
       v27 = 21;
       v28 = 2112;
-      v29 = v3;
+      v29 = rootCopy;
       v30 = 2114;
       v31 = v16;
       v32 = 2114;
-      v33 = v17;
+      v33 = domain;
       v34 = 2048;
-      v35 = v18;
+      v35 = code;
       v36 = 2112;
       v37 = v5;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Unable to encode object %@: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x54u);
@@ -51,8 +51,8 @@
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/utility/NSKeyedArchiver_TSUAdditions.m"];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v5 domain];
-    +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v8, v9, 21, 0, "Unable to encode object %@: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", v3, v11, v12, [v5 code], v5);
+    domain2 = [v5 domain];
+    +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v8, v9, 21, 0, "Unable to encode object %@: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", rootCopy, v11, domain2, [v5 code], v5);
 
     +[TSUAssertionHandler logFullBacktrace];
   }

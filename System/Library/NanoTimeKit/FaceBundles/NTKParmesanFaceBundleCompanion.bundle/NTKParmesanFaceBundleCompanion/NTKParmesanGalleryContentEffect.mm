@@ -1,16 +1,16 @@
 @interface NTKParmesanGalleryContentEffect
 - (NTKParmesanGalleryContentEffect)init;
-- (NTKParmesanGalleryContentEffect)initWithStyleOption:(int64_t)a3 palette:(id)a4;
+- (NTKParmesanGalleryContentEffect)initWithStyleOption:(int64_t)option palette:(id)palette;
 @end
 
 @implementation NTKParmesanGalleryContentEffect
 
-- (NTKParmesanGalleryContentEffect)initWithStyleOption:(int64_t)a3 palette:(id)a4
+- (NTKParmesanGalleryContentEffect)initWithStyleOption:(int64_t)option palette:(id)palette
 {
-  *(&self->super.isa + OBJC_IVAR___NTKParmesanGalleryContentEffect_styleOption) = a3;
-  *(&self->super.isa + OBJC_IVAR___NTKParmesanGalleryContentEffect_palette) = a4;
-  v6 = a4;
-  v7 = sub_23BFBE158(a3, v6);
+  *(&self->super.isa + OBJC_IVAR___NTKParmesanGalleryContentEffect_styleOption) = option;
+  *(&self->super.isa + OBJC_IVAR___NTKParmesanGalleryContentEffect_palette) = palette;
+  paletteCopy = palette;
+  v7 = sub_23BFBE158(option, paletteCopy);
   v8 = (self + OBJC_IVAR___NTKParmesanGalleryContentEffect_style);
   *v8 = v7;
   v8[1] = v9;

@@ -1,18 +1,18 @@
 @interface ExtendedLaunchToTodayTestCase
 - (NSString)testName;
 - (_TtC7NewsUI229ExtendedLaunchToTodayTestCase)init;
-- (void)runTestWithContext:(id)a3 completion:(id)a4;
+- (void)runTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ExtendedLaunchToTodayTestCase
 
-- (void)runTestWithContext:(id)a3 completion:(id)a4
+- (void)runTestWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_2187B5C7C(sub_218967168, v7);
 }
 

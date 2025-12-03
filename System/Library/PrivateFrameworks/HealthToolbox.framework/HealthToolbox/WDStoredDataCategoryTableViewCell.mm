@@ -1,18 +1,18 @@
 @interface WDStoredDataCategoryTableViewCell
-- (void)setDisplayType:(id)a3;
+- (void)setDisplayType:(id)type;
 @end
 
 @implementation WDStoredDataCategoryTableViewCell
 
-- (void)setDisplayType:(id)a3
+- (void)setDisplayType:(id)type
 {
-  objc_storeStrong(&self->_displayType, a3);
-  v5 = a3;
-  v8 = [v5 localization];
+  objc_storeStrong(&self->_displayType, type);
+  typeCopy = type;
+  localization = [typeCopy localization];
 
-  v6 = [v8 displayName];
-  v7 = [(WDStoredDataCategoryTableViewCell *)self textLabel];
-  [v7 setText:v6];
+  displayName = [localization displayName];
+  textLabel = [(WDStoredDataCategoryTableViewCell *)self textLabel];
+  [textLabel setText:displayName];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface __NSOrderedSetReverseEnumerator
-- (__NSOrderedSetReverseEnumerator)initWithObject:(id)a3;
+- (__NSOrderedSetReverseEnumerator)initWithObject:(id)object;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -38,10 +38,10 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSOrderedSetReverseEnumerator)initWithObject:(id)a3
+- (__NSOrderedSetReverseEnumerator)initWithObject:(id)object
 {
-  self->_obj = a3;
-  self->_idx = [a3 count];
+  self->_obj = object;
+  self->_idx = [object count];
   return self;
 }
 

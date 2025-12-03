@@ -1,23 +1,23 @@
 @interface REGroupRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (REGroupRelevanceProvider)initWithDictionary:(id)a3;
-- (REGroupRelevanceProvider)initWithGroupIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REGroupRelevanceProvider)initWithDictionary:(id)dictionary;
+- (REGroupRelevanceProvider)initWithGroupIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 @end
 
 @implementation REGroupRelevanceProvider
 
-- (REGroupRelevanceProvider)initWithGroupIdentifier:(id)a3
+- (REGroupRelevanceProvider)initWithGroupIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = REGroupRelevanceProvider;
   v5 = [(RERelevanceProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     groupIdentifier = v5->_groupIdentifier;
     v5->_groupIdentifier = v6;
   }
@@ -25,9 +25,9 @@
   return v5;
 }
 
-- (REGroupRelevanceProvider)initWithDictionary:(id)a3
+- (REGroupRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"group_name"];
+  v4 = [dictionary objectForKeyedSubscript:@"group_name"];
   v5 = v4;
   v6 = &stru_283B97458;
   if (v4)
@@ -53,19 +53,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REGroupRelevanceProvider;
-  v4 = [(RERelevanceProvider *)&v6 copyWithZone:a3];
+  v4 = [(RERelevanceProvider *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 4, self->_groupIdentifier);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -74,10 +74,10 @@
   {
     v11.receiver = self;
     v11.super_class = REGroupRelevanceProvider;
-    if ([(RERelevanceProvider *)&v11 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(RERelevanceProvider *)&v11 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       groupIdentifier = self->_groupIdentifier;
-      v6 = v4->_groupIdentifier;
+      v6 = equalCopy->_groupIdentifier;
       v7 = groupIdentifier;
       v8 = v7;
       if (v7 == v6)

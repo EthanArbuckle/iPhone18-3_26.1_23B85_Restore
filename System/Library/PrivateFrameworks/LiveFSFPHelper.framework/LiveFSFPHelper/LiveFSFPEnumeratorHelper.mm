@@ -1,36 +1,36 @@
 @interface LiveFSFPEnumeratorHelper
-+ (id)newWithEnumeratedItem:(id)a3 extension:(id)a4 error:(id *)a5;
-+ (void)applyParentUpdateAcrossEnumerators:(id)a3;
-- (LiveFSFPEnumeratorHelper)initWithEnumeratedItem:(id)a3 container:(id)a4 extension:(id)a5;
++ (id)newWithEnumeratedItem:(id)item extension:(id)extension error:(id *)error;
++ (void)applyParentUpdateAcrossEnumerators:(id)enumerators;
+- (LiveFSFPEnumeratorHelper)initWithEnumeratedItem:(id)item container:(id)container extension:(id)extension;
 - (id)getDirContents;
-- (id)getItemsFromTree:(id)a3 inRange:(_NSRange)a4 error:(id *)a5;
-- (id)initForExtension:(id)a3 item:(id)a4;
-- (void)addInterestedItem:(id)a3 newName:(id)a4 forSelf:(BOOL)a5;
-- (void)applyDelete:(id)a3 newTombstone:(id)a4 toSelf:(BOOL)a5;
-- (void)currentSyncAnchorWithCompletionHandler:(id)a3;
-- (void)enumerateChangesForObserver:(id)a3 fromSyncAnchor:(id)a4;
-- (void)enumerateFileItemsForObserver:(id)a3 startingAtPage:(id)a4;
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4;
+- (id)getItemsFromTree:(id)tree inRange:(_NSRange)range error:(id *)error;
+- (id)initForExtension:(id)extension item:(id)item;
+- (void)addInterestedItem:(id)item newName:(id)name forSelf:(BOOL)self;
+- (void)applyDelete:(id)delete newTombstone:(id)tombstone toSelf:(BOOL)self;
+- (void)currentSyncAnchorWithCompletionHandler:(id)handler;
+- (void)enumerateChangesForObserver:(id)observer fromSyncAnchor:(id)anchor;
+- (void)enumerateFileItemsForObserver:(id)observer startingAtPage:(id)page;
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page;
 - (void)invalidate;
-- (void)reallyEnumerateItemsForObserver:(id)a3 startingAtPage:(id)a4;
+- (void)reallyEnumerateItemsForObserver:(id)observer startingAtPage:(id)page;
 - (void)resetHistory;
-- (void)synchronizedEnumerateChangesForObserver:(id)a3 fromSyncAnchor:(id)a4;
+- (void)synchronizedEnumerateChangesForObserver:(id)observer fromSyncAnchor:(id)anchor;
 @end
 
 @implementation LiveFSFPEnumeratorHelper
 
-- (id)initForExtension:(id)a3 item:(id)a4
+- (id)initForExtension:(id)extension item:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = LiveFSFPEnumeratorHelper;
   v9 = [(LiveFSFPEnumeratorHelper *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->ext, a3);
-    objc_storeStrong(&v10->_enumeratedItem, a4);
+    objc_storeStrong(&v9->ext, extension);
+    objc_storeStrong(&v10->_enumeratedItem, item);
     v10->_state = 0;
     *&v10->historyReset = 0;
     v11 = objc_opt_new();
@@ -47,45 +47,45 @@
   return v10;
 }
 
-- (LiveFSFPEnumeratorHelper)initWithEnumeratedItem:(id)a3 container:(id)a4 extension:(id)a5
+- (LiveFSFPEnumeratorHelper)initWithEnumeratedItem:(id)item container:(id)container extension:(id)extension
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(LiveFSFPEnumeratorHelper *)self initForExtension:a5 item:v8];
+  itemCopy = item;
+  containerCopy = container;
+  v10 = [(LiveFSFPEnumeratorHelper *)self initForExtension:extension item:itemCopy];
   if (v10)
   {
     v11 = livefs_std_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v8 path];
-      v13 = [v8 itemIdentifier];
+      path = [itemCopy path];
+      itemIdentifier = [itemCopy itemIdentifier];
       v17 = 134218754;
       v18 = v10;
       v19 = 2112;
-      v20 = v12;
+      v20 = path;
       v21 = 2048;
-      v22 = v8;
+      v22 = itemCopy;
       v23 = 2112;
-      v24 = v13;
+      v24 = itemIdentifier;
       _os_log_impl(&dword_255FE9000, v11, OS_LOG_TYPE_DEFAULT, "enumerator helper[%p]: Creating enumerator for %@[%p] id %@", &v17, 0x2Au);
     }
 
-    objc_storeStrong(&v10->_dc, a4);
+    objc_storeStrong(&v10->_dc, container);
     v10->_hasPersistentIDs = [(LiveFSFPEnumeratorDataContainer *)v10->_dc hasPersistentIDs];
     v10->_isDir = [(LiveFSFPEnumeratorDataContainer *)v10->_dc isDir];
     v10->_isVolumeWide = [(LiveFSFPEnumeratorDataContainer *)v10->_dc isVolumeWide];
     if ([(LiveFSFPExtensionHelper *)v10->ext fetchRoot])
     {
-      v14 = 1;
+      addParent = 1;
     }
 
     else
     {
-      v14 = [v9 addParent];
+      addParent = [containerCopy addParent];
     }
 
-    v10->_addParent = v14;
+    v10->_addParent = addParent;
     [(LiveFSFPEnumeratorDataContainer *)v10->_dc addEnumerator:v10];
   }
 
@@ -93,10 +93,10 @@
   return v10;
 }
 
-+ (id)newWithEnumeratedItem:(id)a3 extension:(id)a4 error:(id *)a5
++ (id)newWithEnumeratedItem:(id)item extension:(id)extension error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  extensionCopy = extension;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -115,34 +115,34 @@
   v30 = __Block_byref_object_copy__2;
   v31 = __Block_byref_object_dispose__2;
   v32 = 0;
-  v10 = [v9 enumeratorHelperQueue];
+  enumeratorHelperQueue = [extensionCopy enumeratorHelperQueue];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __66__LiveFSFPEnumeratorHelper_newWithEnumeratedItem_extension_error___block_invoke;
   v20 = &unk_27981AE98;
-  v11 = v9;
+  v11 = extensionCopy;
   v21 = v11;
   v23 = &v39;
-  v12 = v8;
+  v12 = itemCopy;
   v22 = v12;
   v24 = &v33;
   v25 = &v27;
-  v26 = a5;
-  dispatch_sync(v10, &v17);
+  errorCopy = error;
+  dispatch_sync(enumeratorHelperQueue, &v17);
 
   v13 = v28[5];
   if (v13)
   {
     v14 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
   else
   {
-    v15 = [a1 alloc];
+    v15 = [self alloc];
     v14 = [v15 initWithEnumeratedItem:v34[5] container:v40[5] extension:{v11, v17, v18, v19, v20, v21}];
   }
 
@@ -255,29 +255,29 @@ void __66__LiveFSFPEnumeratorHelper_newWithEnumeratedItem_extension_error___bloc
     enumeratedItem = self->_enumeratedItem;
     if (enumeratedItem)
     {
-      v5 = [(LiveFSFPItemHelper *)self->_enumeratedItem filename];
+      filename = [(LiveFSFPItemHelper *)self->_enumeratedItem filename];
     }
 
     else
     {
-      v5 = @"<no_enumerated_item>";
+      filename = @"<no_enumerated_item>";
     }
 
     v8 = 136315394;
     v9 = "[LiveFSFPEnumeratorHelper invalidate]";
     v10 = 2112;
-    v11 = v5;
+    v11 = filename;
     _os_log_impl(&dword_255FE9000, v3, OS_LOG_TYPE_DEFAULT, "%s: marking state as DEAD, name '%@'", &v8, 0x16u);
     if (enumeratedItem)
     {
     }
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v6->_state = 3;
-  [(LiveFSFPEnumeratorDataContainer *)v6->_dc dropEnumerator:v6];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_state = 3;
+  [(LiveFSFPEnumeratorDataContainer *)selfCopy->_dc dropEnumerator:selfCopy];
+  objc_sync_exit(selfCopy);
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -300,11 +300,11 @@ void __66__LiveFSFPEnumeratorHelper_newWithEnumeratedItem_extension_error___bloc
   return v4;
 }
 
-- (id)getItemsFromTree:(id)a3 inRange:(_NSRange)a4 error:(id *)a5
+- (id)getItemsFromTree:(id)tree inRange:(_NSRange)range error:(id *)error
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  treeCopy = tree;
   v9 = self->ext;
   objc_sync_enter(v9);
   v12[0] = MEMORY[0x277D85DD0];
@@ -312,7 +312,7 @@ void __66__LiveFSFPEnumeratorHelper_newWithEnumeratedItem_extension_error___bloc
   v12[2] = __59__LiveFSFPEnumeratorHelper_getItemsFromTree_inRange_error___block_invoke;
   v12[3] = &unk_27981AEC0;
   v12[4] = self;
-  v10 = [v8 extractItemsInRange:location withBlock:{length, v12}];
+  v10 = [treeCopy extractItemsInRange:location withBlock:{length, v12}];
   objc_sync_exit(v9);
 
   return v10;
@@ -346,11 +346,11 @@ id __59__LiveFSFPEnumeratorHelper_getItemsFromTree_inRange_error___block_invoke(
   return v6;
 }
 
-- (void)enumerateFileItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateFileItemsForObserver:(id)observer startingAtPage:(id)page
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  pageCopy = page;
   state = self->_state;
   if (state)
   {
@@ -365,7 +365,7 @@ id __59__LiveFSFPEnumeratorHelper_getItemsFromTree_inRange_error___block_invoke(
 
 LABEL_13:
 
-      [v6 finishEnumeratingWithError:v9];
+      [observerCopy finishEnumeratingWithError:v9];
       goto LABEL_14;
     }
   }
@@ -381,8 +381,8 @@ LABEL_13:
     if (dc)
     {
       v13 = MEMORY[0x277CCA9B8];
-      v14 = [(LiveFSFPEnumeratorDataContainer *)dc containerID];
-      v9 = [v13 fileProviderErrorForNonExistentItemWithIdentifier:v14];
+      containerID = [(LiveFSFPEnumeratorDataContainer *)dc containerID];
+      v9 = [v13 fileProviderErrorForNonExistentItemWithIdentifier:containerID];
     }
 
     else
@@ -401,19 +401,19 @@ LABEL_13:
 
   v16[0] = self->_enumeratedItem;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  [v6 didEnumerateItems:v11];
+  [observerCopy didEnumerateItems:v11];
 
-  [v6 finishEnumeratingUpToPage:0];
+  [observerCopy finishEnumeratingUpToPage:0];
 LABEL_14:
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reallyEnumerateItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)reallyEnumerateItemsForObserver:(id)observer startingAtPage:(id)page
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  pageCopy = page;
   v32 = 0;
   v8 = livefs_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -423,10 +423,10 @@ LABEL_14:
 
   if (!self->_state)
   {
-    v14 = [(LiveFSFPEnumeratorDataContainer *)self->_dc ensureConnectedForUpdates];
-    if (v14)
+    ensureConnectedForUpdates = [(LiveFSFPEnumeratorDataContainer *)self->_dc ensureConnectedForUpdates];
+    if (ensureConnectedForUpdates)
     {
-      [v6 finishEnumeratingWithError:v14];
+      [observerCopy finishEnumeratingWithError:ensureConnectedForUpdates];
 
       goto LABEL_48;
     }
@@ -434,8 +434,8 @@ LABEL_14:
 
   if (self->_isDir)
   {
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     state = self->_state;
     if (state)
     {
@@ -448,25 +448,25 @@ LABEL_14:
           [LiveFSFPEnumeratorHelper enumerateFileItemsForObserver:startingAtPage:];
         }
 
-        [v6 finishEnumeratingWithError:v11];
+        [observerCopy finishEnumeratingWithError:v11];
 LABEL_10:
-        v13 = 0;
+        getDirContents = 0;
 LABEL_47:
-        objc_sync_exit(v9);
+        objc_sync_exit(selfCopy);
 
         goto LABEL_48;
       }
     }
 
-    else if ([v7 isEqual:*MEMORY[0x277CC6328]])
+    else if ([pageCopy isEqual:*MEMORY[0x277CC6328]])
     {
       self->_state = 1;
     }
 
-    else if ([v7 isEqual:*MEMORY[0x277CC6320]])
+    else if ([pageCopy isEqual:*MEMORY[0x277CC6320]])
     {
       self->_state = 1;
-      v9->_sortedByDate = 1;
+      selfCopy->_sortedByDate = 1;
     }
 
     else if (!self->_state)
@@ -479,47 +479,47 @@ LABEL_47:
 
       self->_state = 3;
       v11 = [LiveFSFPExtensionHelper getNSErrorFromLiveFSErrno:22];
-      [v6 finishEnumeratingWithError:v11];
+      [observerCopy finishEnumeratingWithError:v11];
       goto LABEL_10;
     }
 
-    v13 = [(LiveFSFPEnumeratorHelper *)v9 getDirContents];
-    if (!v13)
+    getDirContents = [(LiveFSFPEnumeratorHelper *)selfCopy getDirContents];
+    if (!getDirContents)
     {
-      v15 = [(LiveFSFPEnumeratorDataContainer *)v9->_dc loadContents];
-      v13 = [(LiveFSFPEnumeratorHelper *)v9 getDirContents];
+      loadContents = [(LiveFSFPEnumeratorDataContainer *)selfCopy->_dc loadContents];
+      getDirContents = [(LiveFSFPEnumeratorHelper *)selfCopy getDirContents];
     }
 
     v16 = livefs_std_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      v34 = v9;
+      v34 = selfCopy;
       v35 = 2112;
-      v36 = v13;
+      v36 = getDirContents;
       v37 = 2048;
-      v38[0] = [v13 count];
+      v38[0] = [getDirContents count];
       _os_log_debug_impl(&dword_255FE9000, v16, OS_LOG_TYPE_DEBUG, "enumerator helper[%p]: dirContent: %@, count: %lu", buf, 0x20u);
     }
 
-    if (([v7 isEqual:*MEMORY[0x277CC6328]] & 1) != 0 || objc_msgSend(v7, "isEqual:", *MEMORY[0x277CC6320]))
+    if (([pageCopy isEqual:*MEMORY[0x277CC6328]] & 1) != 0 || objc_msgSend(pageCopy, "isEqual:", *MEMORY[0x277CC6320]))
     {
       LODWORD(v17) = 0;
       v32 = 0;
     }
 
-    else if ([v7 length] != 4 || (v25 = v7, v17 = *objc_msgSend(v7, "bytes"), v32 = v17, (v17 & 0x3F) != 0) || objc_msgSend(v13, "count") <= v17)
+    else if ([pageCopy length] != 4 || (v25 = pageCopy, v17 = *objc_msgSend(pageCopy, "bytes"), v32 = v17, (v17 & 0x3F) != 0) || objc_msgSend(getDirContents, "count") <= v17)
     {
       v11 = [LiveFSFPExtensionHelper getNSErrorFromLiveFSErrno:22];
-      [v6 finishEnumeratingWithError:v11];
+      [observerCopy finishEnumeratingWithError:v11];
       goto LABEL_47;
     }
 
-    v18 = [v13 count];
+    v18 = [getDirContents count];
     v19 = (v17 + 64);
     if (v18 <= v19)
     {
-      v20 = [v13 count] - v17;
+      v20 = [getDirContents count] - v17;
     }
 
     else
@@ -531,7 +531,7 @@ LABEL_47:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218496;
-      v34 = v9;
+      v34 = selfCopy;
       v35 = 2048;
       v36 = v17;
       v37 = 2048;
@@ -540,21 +540,21 @@ LABEL_47:
     }
 
     v31 = 0;
-    v22 = [(LiveFSFPEnumeratorHelper *)v9 getItemsFromTree:v13 inRange:v17 error:v20, &v31];
+    v22 = [(LiveFSFPEnumeratorHelper *)selfCopy getItemsFromTree:getDirContents inRange:v17 error:v20, &v31];
     v11 = v31;
     if (!v22)
     {
-      [v6 finishEnumeratingWithError:v11];
+      [observerCopy finishEnumeratingWithError:v11];
       goto LABEL_47;
     }
 
-    if ([(LiveFSFPEnumeratorDataContainer *)v9->_dc addParent])
+    if ([(LiveFSFPEnumeratorDataContainer *)selfCopy->_dc addParent])
     {
       v23 = [MEMORY[0x277CBEB18] arrayWithArray:v22];
-      [v23 addObject:v9->_enumeratedItem];
+      [v23 addObject:selfCopy->_enumeratedItem];
       v24 = v23;
 
-      [(LiveFSFPEnumeratorDataContainer *)v9->_dc setAddParent:0];
+      [(LiveFSFPEnumeratorDataContainer *)selfCopy->_dc setAddParent:0];
     }
 
     else
@@ -562,10 +562,10 @@ LABEL_47:
       v24 = v22;
     }
 
-    [v6 didEnumerateItems:v24];
+    [observerCopy didEnumerateItems:v24];
     if (v18 <= v19)
     {
-      [v6 finishEnumeratingUpToPage:0];
+      [observerCopy finishEnumeratingUpToPage:0];
       v27 = 1;
     }
 
@@ -573,18 +573,18 @@ LABEL_47:
     {
       v32 = v19;
       v26 = [MEMORY[0x277CBEA90] dataWithBytes:&v32 length:4];
-      [v6 finishEnumeratingUpToPage:v26];
+      [observerCopy finishEnumeratingUpToPage:v26];
 
       v27 = 0;
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
 
     v28 = livefs_std_log();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 134218754;
-      v34 = v9;
+      v34 = selfCopy;
       v35 = 2080;
       v36 = "[LiveFSFPEnumeratorHelper reallyEnumerateItemsForObserver:startingAtPage:]";
       v37 = 1024;
@@ -597,7 +597,7 @@ LABEL_47:
 
   else
   {
-    [(LiveFSFPEnumeratorHelper *)self enumerateFileItemsForObserver:v6 startingAtPage:v7];
+    [(LiveFSFPEnumeratorHelper *)self enumerateFileItemsForObserver:observerCopy startingAtPage:pageCopy];
   }
 
 LABEL_48:
@@ -605,18 +605,18 @@ LABEL_48:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  pageCopy = page;
   v8 = livefs_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v17 = "[LiveFSFPEnumeratorHelper enumerateItemsForObserver:startingAtPage:]";
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_255FE9000, v8, OS_LOG_TYPE_INFO, "%s: starting on %p", buf, 0x16u);
   }
 
@@ -626,45 +626,45 @@ LABEL_48:
   v13[2] = __69__LiveFSFPEnumeratorHelper_enumerateItemsForObserver_startingAtPage___block_invoke;
   v13[3] = &unk_27981A7E0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = observerCopy;
+  v15 = pageCopy;
+  v10 = pageCopy;
+  v11 = observerCopy;
   [(LiveFSFPEnumeratorDataContainer *)dc dispatchOntoUpdateQueue:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentSyncAnchorWithCompletionHandler:(id)a3
+- (void)currentSyncAnchorWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = livefs_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [LiveFSFPEnumeratorHelper currentSyncAnchorWithCompletionHandler:?];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_state == 3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_state == 3)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     v7 = currentAnchor();
-    (v4)[2](v4, v7);
+    (handlerCopy)[2](handlerCopy, v7);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)synchronizedEnumerateChangesForObserver:(id)a3 fromSyncAnchor:(id)a4
+- (void)synchronizedEnumerateChangesForObserver:(id)observer fromSyncAnchor:(id)anchor
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  anchorCopy = anchor;
   v8 = livefs_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -672,42 +672,42 @@ LABEL_48:
   }
 
   v9 = objc_opt_new();
-  v10 = self;
-  objc_sync_enter(v10);
-  if ((*(v10 + 40) & 2) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((*(selfCopy + 40) & 2) != 0)
   {
-    if ([(NSMutableSet *)v10->deletedItems count])
+    if ([(NSMutableSet *)selfCopy->deletedItems count])
     {
-      v12 = [(NSMutableSet *)v10->deletedItems allObjects];
+      allObjects = [(NSMutableSet *)selfCopy->deletedItems allObjects];
     }
 
     else
     {
-      v12 = &unk_286815038;
+      allObjects = &unk_286815038;
     }
 
     v18 = MEMORY[0x277CCA9B8];
-    v19 = [v12 objectAtIndexedSubscript:0];
+    v19 = [allObjects objectAtIndexedSubscript:0];
     v11 = [v18 fileProviderErrorForNonExistentItemWithIdentifier:v19];
 
-    [v6 finishEnumeratingWithError:v11];
+    [observerCopy finishEnumeratingWithError:v11];
     goto LABEL_18;
   }
 
-  if (v10->historyReset)
+  if (selfCopy->historyReset)
   {
-    v10->historyReset = 0;
+    selfCopy->historyReset = 0;
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC6300] code:-1002 userInfo:0];
-    [v6 finishEnumeratingWithError:v11];
-    v12 = 0;
+    [observerCopy finishEnumeratingWithError:v11];
+    allObjects = 0;
 LABEL_18:
 
 LABEL_19:
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
     goto LABEL_39;
   }
 
-  if (![(NSMutableSet *)v10->deletedItems count]&& ![(NSMutableSet *)v10->updatedItems count]&& (*(v10 + 40) & 1) == 0 && !v10->_addParent)
+  if (![(NSMutableSet *)selfCopy->deletedItems count]&& ![(NSMutableSet *)selfCopy->updatedItems count]&& (*(selfCopy + 40) & 1) == 0 && !selfCopy->_addParent)
   {
     v31 = livefs_std_log();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -716,17 +716,17 @@ LABEL_19:
       _os_log_impl(&dword_255FE9000, v31, OS_LOG_TYPE_DEFAULT, "exiting after seeing 0 changes", buf, 2u);
     }
 
-    [v6 finishEnumeratingChangesUpToSyncAnchor:v7 moreComing:0];
-    v12 = 0;
+    [observerCopy finishEnumeratingChangesUpToSyncAnchor:anchorCopy moreComing:0];
+    allObjects = 0;
     goto LABEL_19;
   }
 
   v13 = livefs_std_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    deletedItems = v10->deletedItems;
-    updatedItems = v10->updatedItems;
-    v16 = -(*(v10 + 40) & 1);
+    deletedItems = selfCopy->deletedItems;
+    updatedItems = selfCopy->updatedItems;
+    v16 = -(*(selfCopy + 40) & 1);
     *buf = 138412802;
     v41 = updatedItems;
     v42 = 2112;
@@ -736,68 +736,68 @@ LABEL_19:
     _os_log_impl(&dword_255FE9000, v13, OS_LOG_TYPE_DEFAULT, "updateds: %@ deleteds %@ self upd %u", buf, 0x1Cu);
   }
 
-  if ([(NSMutableSet *)v10->updatedItems count])
+  if ([(NSMutableSet *)selfCopy->updatedItems count])
   {
-    v17 = [(NSMutableSet *)v10->updatedItems allObjects];
+    allObjects2 = [(NSMutableSet *)selfCopy->updatedItems allObjects];
   }
 
   else
   {
-    v17 = MEMORY[0x277CBEBF8];
+    allObjects2 = MEMORY[0x277CBEBF8];
   }
 
-  if ([(NSMutableSet *)v10->deletedItems count])
+  if ([(NSMutableSet *)selfCopy->deletedItems count])
   {
-    v20 = [(NSMutableSet *)v10->deletedItems allObjects];
+    allObjects3 = [(NSMutableSet *)selfCopy->deletedItems allObjects];
   }
 
   else
   {
-    v20 = MEMORY[0x277CBEBF8];
+    allObjects3 = MEMORY[0x277CBEBF8];
   }
 
   v32 = currentAnchor();
-  [(NSMutableSet *)v10->updatedItems removeAllObjects];
-  [(NSMutableSet *)v10->deletedItems removeAllObjects];
-  if (*(v10 + 40))
+  [(NSMutableSet *)selfCopy->updatedItems removeAllObjects];
+  [(NSMutableSet *)selfCopy->deletedItems removeAllObjects];
+  if (*(selfCopy + 40))
   {
-    *(v10 + 40) &= ~1u;
-    [v9 addObject:v10->_enumeratedItem];
+    *(selfCopy + 40) &= ~1u;
+    [v9 addObject:selfCopy->_enumeratedItem];
   }
 
-  if (v10->_addParent)
+  if (selfCopy->_addParent)
   {
-    [v9 addObject:v10->_enumeratedItem];
+    [v9 addObject:selfCopy->_enumeratedItem];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
   v21 = livefs_std_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v41 = v17;
+    v41 = allObjects2;
     v42 = 2112;
-    v43 = v20;
+    v43 = allObjects3;
     _os_log_impl(&dword_255FE9000, v21, OS_LOG_TYPE_DEFAULT, "About to walk %@ and %@", buf, 0x16u);
   }
 
-  if (v10->_isDir)
+  if (selfCopy->_isDir)
   {
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __83__LiveFSFPEnumeratorHelper_synchronizedEnumerateChangesForObserver_fromSyncAnchor___block_invoke;
     v38[3] = &unk_27981AEE8;
-    v38[4] = v10;
+    v38[4] = selfCopy;
     v39 = v9;
-    [v17 enumerateObjectsUsingBlock:v38];
-    if ([v20 count])
+    [allObjects2 enumerateObjectsUsingBlock:v38];
+    if ([allObjects3 count])
     {
-      v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v20, "count")}];
-      hasPersistentIDs = v10->_hasPersistentIDs;
-      v24 = v10->_enumeratedItem;
-      v25 = [(LiveFSFPItemHelper *)v10->_enumeratedItem itemIdentifier];
-      v26 = [v25 isEqualToString:*MEMORY[0x277CC6348]];
+      v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allObjects3, "count")}];
+      hasPersistentIDs = selfCopy->_hasPersistentIDs;
+      v24 = selfCopy->_enumeratedItem;
+      itemIdentifier = [(LiveFSFPItemHelper *)selfCopy->_enumeratedItem itemIdentifier];
+      v26 = [itemIdentifier isEqualToString:*MEMORY[0x277CC6348]];
 
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
@@ -809,19 +809,19 @@ LABEL_19:
       v27 = v22;
       v35 = v27;
       v28 = v24;
-      [v20 enumerateObjectsUsingBlock:v33];
-      v12 = v27;
+      [allObjects3 enumerateObjectsUsingBlock:v33];
+      allObjects = v27;
     }
 
     else
     {
-      v12 = v20;
+      allObjects = allObjects3;
     }
   }
 
   else
   {
-    v12 = v20;
+    allObjects = allObjects3;
   }
 
   v29 = livefs_std_log();
@@ -830,19 +830,19 @@ LABEL_19:
     *buf = 136315906;
     v41 = "[LiveFSFPEnumeratorHelper synchronizedEnumerateChangesForObserver:fromSyncAnchor:]";
     v42 = 2112;
-    v43 = v17;
+    v43 = allObjects2;
     v44 = 2112;
-    v45 = v12;
+    v45 = allObjects;
     v46 = 2112;
     v47 = v9;
     _os_log_impl(&dword_255FE9000, v29, OS_LOG_TYPE_DEFAULT, "%s: exiting with updateIDs %@, tombstones %@, newItems %@", buf, 0x2Au);
   }
 
-  [v6 didDeleteItemsWithIdentifiers:v12];
-  [v6 didUpdateItems:v9];
-  [v6 finishEnumeratingChangesUpToSyncAnchor:v32 moreComing:0];
+  [observerCopy didDeleteItemsWithIdentifiers:allObjects];
+  [observerCopy didUpdateItems:v9];
+  [observerCopy finishEnumeratingChangesUpToSyncAnchor:v32 moreComing:0];
 
-  v10 = v17;
+  selfCopy = allObjects2;
 LABEL_39:
 
   v30 = *MEMORY[0x277D85DE8];
@@ -893,18 +893,18 @@ LABEL_7:
   [*(a1 + 40) addObject:v5];
 }
 
-- (void)enumerateChangesForObserver:(id)a3 fromSyncAnchor:(id)a4
+- (void)enumerateChangesForObserver:(id)observer fromSyncAnchor:(id)anchor
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  anchorCopy = anchor;
   v8 = livefs_std_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[LiveFSFPEnumeratorHelper enumerateChangesForObserver:fromSyncAnchor:]";
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_255FE9000, v8, OS_LOG_TYPE_DEFAULT, "%s: starting on %p", buf, 0x16u);
   }
 
@@ -914,61 +914,61 @@ LABEL_7:
   v13[2] = __71__LiveFSFPEnumeratorHelper_enumerateChangesForObserver_fromSyncAnchor___block_invoke;
   v13[3] = &unk_27981A7E0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = observerCopy;
+  v15 = anchorCopy;
+  v10 = anchorCopy;
+  v11 = observerCopy;
   [(LiveFSFPExtensionHelper *)ext dispatchOntoRenameQueue:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addInterestedItem:(id)a3 newName:(id)a4 forSelf:(BOOL)a5
+- (void)addInterestedItem:(id)item newName:(id)name forSelf:(BOOL)self
 {
-  v5 = a5;
-  v10 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v5)
+  selfCopy = self;
+  itemCopy = item;
+  nameCopy = name;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy)
   {
-    *(v9 + 40) |= 1u;
+    *(selfCopy2 + 40) |= 1u;
   }
 
   else
   {
-    [(NSMutableSet *)v9->deletedItems removeObject:v10];
-    [(NSMutableSet *)v9->updatedItems addObject:v8];
+    [(NSMutableSet *)selfCopy2->deletedItems removeObject:itemCopy];
+    [(NSMutableSet *)selfCopy2->updatedItems addObject:nameCopy];
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy2);
 }
 
-- (void)applyDelete:(id)a3 newTombstone:(id)a4 toSelf:(BOOL)a5
+- (void)applyDelete:(id)delete newTombstone:(id)tombstone toSelf:(BOOL)self
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v5)
+  selfCopy = self;
+  deleteCopy = delete;
+  tombstoneCopy = tombstone;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy)
   {
-    *(v10 + 40) |= 2u;
-    [(NSMutableSet *)v10->updatedItems removeAllObjects];
-    p_deletedItems = &v10->deletedItems;
-    [(NSMutableSet *)v10->deletedItems removeAllObjects];
+    *(selfCopy2 + 40) |= 2u;
+    [(NSMutableSet *)selfCopy2->updatedItems removeAllObjects];
+    p_deletedItems = &selfCopy2->deletedItems;
+    [(NSMutableSet *)selfCopy2->deletedItems removeAllObjects];
 LABEL_6:
-    [*p_deletedItems addObject:v9];
+    [*p_deletedItems addObject:tombstoneCopy];
     goto LABEL_10;
   }
 
-  updatedItems = v10->updatedItems;
+  updatedItems = selfCopy2->updatedItems;
   if (updatedItems)
   {
-    p_deletedItems = &v10->deletedItems;
-    if (v10->deletedItems)
+    p_deletedItems = &selfCopy2->deletedItems;
+    if (selfCopy2->deletedItems)
     {
-      [(NSMutableSet *)updatedItems removeObject:v8];
+      [(NSMutableSet *)updatedItems removeObject:deleteCopy];
       goto LABEL_6;
     }
   }
@@ -976,11 +976,11 @@ LABEL_6:
   v13 = livefs_std_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    [LiveFSFPEnumeratorHelper applyDelete:v10 newTombstone:? toSelf:?];
+    [LiveFSFPEnumeratorHelper applyDelete:selfCopy2 newTombstone:? toSelf:?];
   }
 
 LABEL_10:
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy2);
 }
 
 - (void)resetHistory
@@ -991,11 +991,11 @@ LABEL_10:
   objc_sync_exit(obj);
 }
 
-+ (void)applyParentUpdateAcrossEnumerators:(id)a3
++ (void)applyParentUpdateAcrossEnumerators:(id)enumerators
 {
-  v3 = a3;
-  [v3 applyParentUpdateAcrossEnumerators];
-  [v3 handleEnumeratedItemChanged];
+  enumeratorsCopy = enumerators;
+  [enumeratorsCopy applyParentUpdateAcrossEnumerators];
+  [enumeratorsCopy handleEnumeratedItemChanged];
 }
 
 void __66__LiveFSFPEnumeratorHelper_newWithEnumeratedItem_extension_error___block_invoke_cold_1(uint64_t *a1, NSObject *a2)

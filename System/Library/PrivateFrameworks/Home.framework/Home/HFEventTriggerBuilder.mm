@@ -3,7 +3,7 @@
 - (BOOL)requiresConfirmationToRun;
 - (HFCharacteristicTriggerBuilderInterface)characteristicInterface;
 - (HFEventBuilderLocationInterface)locationInterface;
-- (HFEventTriggerBuilder)initWithExistingObject:(id)a3 inHome:(id)a4 context:(id)a5;
+- (HFEventTriggerBuilder)initWithExistingObject:(id)object inHome:(id)home context:(id)context;
 - (HFEventTriggerBuilderTimeInterface)timeInterface;
 - (NSArray)eventBuilders;
 - (NSSet)characteristics;
@@ -15,59 +15,59 @@
 - (id)_updateRecurrences;
 - (id)commitCreateTrigger;
 - (id)commitEditTrigger;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)createEndEvents;
 - (id)createEvents;
 - (id)createNewTriggerBuilder;
 - (id)deleteTrigger;
 - (id)lazilyFinishCommitingTrigger;
-- (id)naturalLanguageDetailsWithOptions:(id)a3;
-- (id)naturalLanguageNameOfType:(unint64_t)a3;
-- (id)naturalLanguageNameWithOptions:(id)a3;
-- (id)updateTriggerBuilder:(id)a3;
+- (id)naturalLanguageDetailsWithOptions:(id)options;
+- (id)naturalLanguageNameOfType:(unint64_t)type;
+- (id)naturalLanguageNameWithOptions:(id)options;
+- (id)updateTriggerBuilder:(id)builder;
 - (id)validationError;
 - (void)_createEventBuilders;
-- (void)addEventBuilder:(id)a3;
-- (void)applyEventBuilderDiff:(id)a3;
-- (void)removeEventBuilder:(id)a3;
-- (void)removeServiceLikeItem:(id)a3;
-- (void)setRecurrences:(id)a3;
+- (void)addEventBuilder:(id)builder;
+- (void)applyEventBuilderDiff:(id)diff;
+- (void)removeEventBuilder:(id)builder;
+- (void)removeServiceLikeItem:(id)item;
+- (void)setRecurrences:(id)recurrences;
 @end
 
 @implementation HFEventTriggerBuilder
 
-- (HFEventTriggerBuilder)initWithExistingObject:(id)a3 inHome:(id)a4 context:(id)a5
+- (HFEventTriggerBuilder)initWithExistingObject:(id)object inHome:(id)home context:(id)context
 {
-  v9 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = HFEventTriggerBuilder;
-  v10 = [(HFTriggerBuilder *)&v21 initWithExistingObject:v9 inHome:a4 context:a5];
+  v10 = [(HFTriggerBuilder *)&v21 initWithExistingObject:objectCopy inHome:home context:context];
   v11 = v10;
   if (v10)
   {
-    v12 = [(HFTriggerBuilder *)v10 trigger];
+    trigger = [(HFTriggerBuilder *)v10 trigger];
 
-    if (v12)
+    if (trigger)
     {
-      v13 = [(HFTriggerBuilder *)v11 trigger];
+      trigger2 = [(HFTriggerBuilder *)v11 trigger];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v19 = [MEMORY[0x277CCA890] currentHandler];
-        v20 = [(HFTriggerBuilder *)v11 trigger];
-        [v19 handleFailureInMethod:a2 object:v11 file:@"HFEventTriggerBuilder.m" lineNumber:33 description:{@"HFEventTriggerBuilder must be instantiated with an HMEventTrigger. Got: %@ instead", v20}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        trigger3 = [(HFTriggerBuilder *)v11 trigger];
+        [currentHandler handleFailureInMethod:a2 object:v11 file:@"HFEventTriggerBuilder.m" lineNumber:33 description:{@"HFEventTriggerBuilder must be instantiated with an HMEventTrigger. Got: %@ instead", trigger3}];
       }
     }
 
-    v15 = [v9 hf_effectiveRecurrences];
-    [(HFEventTriggerBuilder *)v11 setRecurrences:v15];
+    hf_effectiveRecurrences = [objectCopy hf_effectiveRecurrences];
+    [(HFEventTriggerBuilder *)v11 setRecurrences:hf_effectiveRecurrences];
 
-    -[HFEventTriggerBuilder setExecuteOnce:](v11, "setExecuteOnce:", [v9 executeOnce]);
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    -[HFEventTriggerBuilder setExecuteOnce:](v11, "setExecuteOnce:", [objectCopy executeOnce]);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     extensionInterfaces = v11->_extensionInterfaces;
-    v11->_extensionInterfaces = v16;
+    v11->_extensionInterfaces = dictionary;
 
     [(HFEventTriggerBuilder *)v11 _createEventBuilders];
   }
@@ -75,56 +75,56 @@
   return v11;
 }
 
-- (void)addEventBuilder:(id)a3
+- (void)addEventBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
-  [v5 na_safeAddObject:v4];
+  builderCopy = builder;
+  mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+  [mutableEventBuilders na_safeAddObject:builderCopy];
 }
 
-- (void)removeEventBuilder:(id)a3
+- (void)removeEventBuilder:(id)builder
 {
-  if (a3)
+  if (builder)
   {
-    v4 = a3;
-    v5 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
-    [v5 removeObject:v4];
+    builderCopy = builder;
+    mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+    [mutableEventBuilders removeObject:builderCopy];
   }
 }
 
-- (void)applyEventBuilderDiff:(id)a3
+- (void)applyEventBuilderDiff:(id)diff
 {
-  v4 = a3;
-  v5 = [v4 additions];
+  diffCopy = diff;
+  additions = [diffCopy additions];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__HFEventTriggerBuilder_applyEventBuilderDiff___block_invoke;
   v8[3] = &unk_277DF4D70;
   v8[4] = self;
-  [v5 na_each:v8];
+  [additions na_each:v8];
 
-  v6 = [v4 deletions];
+  deletions = [diffCopy deletions];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__HFEventTriggerBuilder_applyEventBuilderDiff___block_invoke_2;
   v7[3] = &unk_277DF4D70;
   v7[4] = self;
-  [v6 na_each:v7];
+  [deletions na_each:v7];
 }
 
 - (NSArray)eventBuilders
 {
-  v2 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
-  v3 = [v2 allObjects];
+  mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+  allObjects = [mutableEventBuilders allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSSet)characteristics
 {
-  v2 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
-  v3 = [v2 na_map:&__block_literal_global_29];
+  mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+  v3 = [mutableEventBuilders na_map:&__block_literal_global_29];
 
   return v3;
 }
@@ -151,31 +151,31 @@ id __40__HFEventTriggerBuilder_characteristics__block_invoke(uint64_t a1, void *
   return v6;
 }
 
-- (void)setRecurrences:(id)a3
+- (void)setRecurrences:(id)recurrences
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = ([(NSArray *)v4 na_all:&__block_literal_global_11]& 1) != 0 || [(NSArray *)v4 count]== 0;
-  if (-[NSArray count](v4, "count") == 1 && (-[NSArray firstObject](v4, "firstObject"), v6 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CBEAB8] hf_dailyIntervalComponents], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "hf_isEqualToHomeKitRecurrence:", v7), v7, v6, v8))
+  recurrencesCopy = recurrences;
+  v5 = ([(NSArray *)recurrencesCopy na_all:&__block_literal_global_11]& 1) != 0 || [(NSArray *)recurrencesCopy count]== 0;
+  if (-[NSArray count](recurrencesCopy, "count") == 1 && (-[NSArray firstObject](recurrencesCopy, "firstObject"), v6 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CBEAB8] hf_dailyIntervalComponents], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "hf_isEqualToHomeKitRecurrence:", v7), v7, v6, v8))
   {
     v9 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(HFEventTriggerBuilder *)self recurrences];
-      v11 = [(HFTriggerBuilder *)self name];
+      recurrences = [(HFEventTriggerBuilder *)self recurrences];
+      name = [(HFTriggerBuilder *)self name];
       v21 = 138412546;
-      v22 = v10;
+      v22 = recurrences;
       v23 = 2112;
-      v24 = v11;
+      v24 = name;
       _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Reset recurrences: %@ to weekday components for trigger with name: %@", &v21, 0x16u);
     }
 
-    v12 = [MEMORY[0x277CBEAB8] hf_dailyWeekdayIntervalComponents];
+    hf_dailyWeekdayIntervalComponents = [MEMORY[0x277CBEAB8] hf_dailyWeekdayIntervalComponents];
   }
 
   else
   {
-    v13 = v4;
+    v13 = recurrencesCopy;
     if (v5)
     {
       goto LABEL_14;
@@ -184,19 +184,19 @@ id __40__HFEventTriggerBuilder_characteristics__block_invoke(uint64_t a1, void *
     v14 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(HFEventTriggerBuilder *)self recurrences];
-      v16 = [(HFTriggerBuilder *)self name];
+      recurrences2 = [(HFEventTriggerBuilder *)self recurrences];
+      name2 = [(HFTriggerBuilder *)self name];
       v21 = 138412546;
-      v22 = v15;
+      v22 = recurrences2;
       v23 = 2112;
-      v24 = v16;
+      v24 = name2;
       _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "Filtered to recurrences: %@ for trigger with name: %@", &v21, 0x16u);
     }
 
-    v12 = [(NSArray *)v4 na_filter:&__block_literal_global_11];
+    hf_dailyWeekdayIntervalComponents = [(NSArray *)recurrencesCopy na_filter:&__block_literal_global_11];
   }
 
-  v13 = v12;
+  v13 = hf_dailyWeekdayIntervalComponents;
 
 LABEL_14:
   recurrences = self->_recurrences;
@@ -230,8 +230,8 @@ BOOL __40__HFEventTriggerBuilder_setRecurrences___block_invoke(uint64_t a1, void
 
   else
   {
-    v4 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
-    v3 = [v4 na_map:&__block_literal_global_14];
+    mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+    v3 = [mutableEventBuilders na_map:&__block_literal_global_14];
   }
 
   return v3;
@@ -241,11 +241,11 @@ BOOL __40__HFEventTriggerBuilder_setRecurrences___block_invoke(uint64_t a1, void
 {
   v8.receiver = self;
   v8.super_class = HFEventTriggerBuilder;
-  v3 = [(HFTriggerBuilder *)&v8 validationError];
-  v4 = v3;
-  if (v3)
+  validationError = [(HFTriggerBuilder *)&v8 validationError];
+  v4 = validationError;
+  if (validationError)
   {
-    v5 = v3;
+    v5 = validationError;
   }
 
   else
@@ -260,90 +260,90 @@ BOOL __40__HFEventTriggerBuilder_setRecurrences___block_invoke(uint64_t a1, void
 
 - (BOOL)requiresConfirmationToRun
 {
-  v3 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
-  v4 = [v3 na_any:&__block_literal_global_28_0];
+  mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+  v4 = [mutableEventBuilders na_any:&__block_literal_global_28_0];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(HFEventTriggerBuilder *)self _allActionSets];
-  v6 = [v5 na_any:&__block_literal_global_75];
+  _allActionSets = [(HFEventTriggerBuilder *)self _allActionSets];
+  v6 = [_allActionSets na_any:&__block_literal_global_75];
 
   return v6;
 }
 
-- (id)naturalLanguageNameOfType:(unint64_t)a3
+- (id)naturalLanguageNameOfType:(unint64_t)type
 {
-  v3 = a3;
-  if (a3 == 4)
+  typeCopy = type;
+  if (type == 4)
   {
-    v5 = [(HFTriggerBuilder *)self context];
-    v6 = [v5 triggerContextAwareTitle];
+    context = [(HFTriggerBuilder *)self context];
+    triggerContextAwareTitle = [context triggerContextAwareTitle];
 
-    if (v6)
+    if (triggerContextAwareTitle)
     {
-      v7 = [(HFTriggerBuilder *)self context];
-      v8 = [v7 triggerContextAwareTitle];
+      context2 = [(HFTriggerBuilder *)self context];
+      triggerContextAwareTitle2 = [context2 triggerContextAwareTitle];
       goto LABEL_6;
     }
 
-    v3 = 1;
+    typeCopy = 1;
   }
 
-  v7 = [(HFItemBuilder *)self home];
-  v9 = [HFTriggerNaturalLanguageOptions optionsWithHome:v7 nameType:v3];
-  v8 = [(HFEventTriggerBuilder *)self naturalLanguageNameWithOptions:v9];
+  context2 = [(HFItemBuilder *)self home];
+  v9 = [HFTriggerNaturalLanguageOptions optionsWithHome:context2 nameType:typeCopy];
+  triggerContextAwareTitle2 = [(HFEventTriggerBuilder *)self naturalLanguageNameWithOptions:v9];
 
 LABEL_6:
 
-  return v8;
+  return triggerContextAwareTitle2;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3
+- (id)naturalLanguageNameWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFTriggerBuilder *)self trigger];
-  v6 = [v5 creator];
-  if (v6)
+  optionsCopy = options;
+  trigger = [(HFTriggerBuilder *)self trigger];
+  creator = [trigger creator];
+  if (creator)
   {
     goto LABEL_2;
   }
 
-  v8 = [(HFItemBuilder *)self home];
-  v7 = [v8 currentUser];
+  home = [(HFItemBuilder *)self home];
+  currentUser = [home currentUser];
 
-  if (!v7)
+  if (!currentUser)
   {
-    v5 = [(HFTriggerBuilder *)self trigger];
-    v13 = [(HFTriggerBuilder *)self trigger];
-    v14 = [v13 creator];
-    v15 = [(HFItemBuilder *)self home];
-    v16 = [v15 currentUser];
-    NSLog(&cfstr_UnexpectedNilU.isa, v5, v14, v16);
+    trigger = [(HFTriggerBuilder *)self trigger];
+    trigger2 = [(HFTriggerBuilder *)self trigger];
+    creator2 = [trigger2 creator];
+    home2 = [(HFItemBuilder *)self home];
+    currentUser2 = [home2 currentUser];
+    NSLog(&cfstr_UnexpectedNilU.isa, trigger, creator2, currentUser2);
 
 LABEL_2:
-    v7 = v6;
+    currentUser = creator;
   }
 
   v9 = MEMORY[0x277CD19F8];
-  v10 = [(HFEventTriggerBuilder *)self createEvents];
-  v11 = [v9 hf_naturalLanguageNameWithOptions:v4 events:v10 forUser:v7];
+  createEvents = [(HFEventTriggerBuilder *)self createEvents];
+  v11 = [v9 hf_naturalLanguageNameWithOptions:optionsCopy events:createEvents forUser:currentUser];
 
   return v11;
 }
 
-- (id)naturalLanguageDetailsWithOptions:(id)a3
+- (id)naturalLanguageDetailsWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFTriggerBuilder *)self endEventBuilders];
-  v6 = [v5 na_flatMap:&__block_literal_global_82];
+  optionsCopy = options;
+  endEventBuilders = [(HFTriggerBuilder *)self endEventBuilders];
+  v6 = [endEventBuilders na_flatMap:&__block_literal_global_82];
 
   v7 = MEMORY[0x277CD19F8];
-  v8 = [(HFEventTriggerBuilder *)self recurrences];
-  v9 = [(HFTriggerBuilder *)self conditionCollection];
-  v10 = [v7 hf_naturalLanguageDetailsWithRecurrences:v8 conditions:v9 endEvents:v6 withOptions:v4];
+  recurrences = [(HFEventTriggerBuilder *)self recurrences];
+  conditionCollection = [(HFTriggerBuilder *)self conditionCollection];
+  v10 = [v7 hf_naturalLanguageDetailsWithRecurrences:recurrences conditions:conditionCollection endEvents:v6 withOptions:optionsCopy];
 
   return v10;
 }
@@ -358,37 +358,37 @@ id __59__HFEventTriggerBuilder_naturalLanguageDetailsWithOptions___block_invoke(
 
 - (id)deleteTrigger
 {
-  v3 = [(HFItemBuilder *)self home];
-  v4 = [(HFTriggerBuilder *)self trigger];
-  v5 = [(HFTriggerBuilder *)self trigger];
-  v6 = [v5 uniqueIdentifier];
+  home = [(HFItemBuilder *)self home];
+  trigger = [(HFTriggerBuilder *)self trigger];
+  trigger2 = [(HFTriggerBuilder *)self trigger];
+  uniqueIdentifier = [trigger2 uniqueIdentifier];
 
-  if (v6 && v3)
+  if (uniqueIdentifier && home)
   {
-    v7 = [MEMORY[0x277CBEB58] setWithObject:v4];
-    v8 = [(HFTriggerBuilder *)self context];
-    v9 = [v8 unsupportedTriggers];
+    v7 = [MEMORY[0x277CBEB58] setWithObject:trigger];
+    context = [(HFTriggerBuilder *)self context];
+    unsupportedTriggers = [context unsupportedTriggers];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __38__HFEventTriggerBuilder_deleteTrigger__block_invoke;
     v28[3] = &unk_277DF4E58;
     v10 = v7;
     v29 = v10;
-    [v9 enumerateObjectsUsingBlock:v28];
+    [unsupportedTriggers enumerateObjectsUsingBlock:v28];
 
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __38__HFEventTriggerBuilder_deleteTrigger__block_invoke_2;
     v26 = &unk_277DF4E80;
-    v27 = v3;
+    v27 = home;
     v11 = [v10 na_map:&v23];
-    v12 = [v11 allObjects];
+    allObjects = [v11 allObjects];
 
     objc_opt_class();
-    v13 = [(HFTriggerBuilder *)self trigger];
+    trigger3 = [(HFTriggerBuilder *)self trigger];
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = trigger3;
     }
 
     else
@@ -397,31 +397,31 @@ id __59__HFEventTriggerBuilder_naturalLanguageDetailsWithOptions___block_invoke(
     }
 
     v15 = v14;
-    v16 = [v15 hf_unmarkTriggerAsHomeAppCreated];
-    v17 = v16;
-    if (v16)
+    hf_unmarkTriggerAsHomeAppCreated = [v15 hf_unmarkTriggerAsHomeAppCreated];
+    v17 = hf_unmarkTriggerAsHomeAppCreated;
+    if (hf_unmarkTriggerAsHomeAppCreated)
     {
-      v18 = v16;
+      futureWithNoResult = hf_unmarkTriggerAsHomeAppCreated;
     }
 
     else
     {
-      v18 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
-    v20 = v18;
+    v20 = futureWithNoResult;
 
     v21 = [MEMORY[0x277CBEB18] arrayWithObject:v20];
-    [v21 addObjectsFromArray:v12];
-    v19 = [MEMORY[0x277D2C900] combineAllFutures:v21];
+    [v21 addObjectsFromArray:allObjects];
+    futureWithNoResult2 = [MEMORY[0x277D2C900] combineAllFutures:v21];
   }
 
   else
   {
-    v19 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult2 = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v19;
+  return futureWithNoResult2;
 }
 
 id __38__HFEventTriggerBuilder_deleteTrigger__block_invoke_2(uint64_t a1, void *a2)
@@ -440,24 +440,24 @@ id __38__HFEventTriggerBuilder_deleteTrigger__block_invoke_2(uint64_t a1, void *
   return v6;
 }
 
-- (void)removeServiceLikeItem:(id)a3
+- (void)removeServiceLikeItem:(id)item
 {
   v13.receiver = self;
   v13.super_class = HFEventTriggerBuilder;
-  v4 = a3;
-  [(HFTriggerBuilder *)&v13 removeServiceLikeItem:v4];
-  v5 = [v4 services];
+  itemCopy = item;
+  [(HFTriggerBuilder *)&v13 removeServiceLikeItem:itemCopy];
+  services = [itemCopy services];
 
-  v6 = [v5 na_flatMap:&__block_literal_global_93];
+  v6 = [services na_flatMap:&__block_literal_global_93];
 
-  v7 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+  mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__HFEventTriggerBuilder_removeServiceLikeItem___block_invoke_2;
   v11[3] = &unk_277DF4EA8;
   v12 = v6;
   v8 = v6;
-  v9 = [v7 na_filter:v11];
+  v9 = [mutableEventBuilders na_filter:v11];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__HFEventTriggerBuilder_removeServiceLikeItem___block_invoke_3;
@@ -545,13 +545,13 @@ void __53__HFEventTriggerBuilder_lazilyFinishCommitingTrigger__block_invoke(uint
 
 - (id)commitCreateTrigger
 {
-  v3 = [(HFEventTriggerBuilder *)self _lazy_performValidation];
+  _lazy_performValidation = [(HFEventTriggerBuilder *)self _lazy_performValidation];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__HFEventTriggerBuilder_commitCreateTrigger__block_invoke;
   v10[3] = &unk_277DF2CE0;
   v10[4] = self;
-  v4 = [v3 flatMap:v10];
+  v4 = [_lazy_performValidation flatMap:v10];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -620,13 +620,13 @@ void __44__HFEventTriggerBuilder_commitCreateTrigger__block_invoke_107(uint64_t 
 
 - (id)commitEditTrigger
 {
-  v3 = [(HFEventTriggerBuilder *)self _lazy_performValidation];
+  _lazy_performValidation = [(HFEventTriggerBuilder *)self _lazy_performValidation];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __42__HFEventTriggerBuilder_commitEditTrigger__block_invoke;
   v10[3] = &unk_277DF2CE0;
   v10[4] = self;
-  v4 = [v3 flatMap:v10];
+  v4 = [_lazy_performValidation flatMap:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__HFEventTriggerBuilder_commitEditTrigger__block_invoke_2;
@@ -645,33 +645,33 @@ void __44__HFEventTriggerBuilder_commitCreateTrigger__block_invoke_107(uint64_t 
 
 - (id)createEvents
 {
-  v2 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
-  v3 = [v2 na_flatMap:&__block_literal_global_111];
-  v4 = [v3 allObjects];
+  mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+  v3 = [mutableEventBuilders na_flatMap:&__block_literal_global_111];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (id)createEndEvents
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFTriggerBuilder *)self endEventBuilders];
-  v4 = [v2 setWithArray:v3];
+  endEventBuilders = [(HFTriggerBuilder *)self endEventBuilders];
+  v4 = [v2 setWithArray:endEventBuilders];
   v5 = [v4 na_flatMap:&__block_literal_global_113];
-  v6 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
 - (id)_updateEvents
 {
   v3 = objc_opt_class();
-  v4 = [(HFTriggerBuilder *)self trigger];
-  if (v4)
+  trigger = [(HFTriggerBuilder *)self trigger];
+  if (trigger)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = trigger;
     }
 
     else
@@ -679,15 +679,15 @@ void __44__HFEventTriggerBuilder_commitCreateTrigger__block_invoke_107(uint64_t 
       v5 = 0;
     }
 
-    v6 = v4;
+    v6 = trigger;
     if (v5)
     {
       goto LABEL_8;
     }
 
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v7 handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
   }
 
   v6 = 0;
@@ -699,7 +699,7 @@ LABEL_8:
   v17[2] = __38__HFEventTriggerBuilder__updateEvents__block_invoke;
   v17[3] = &unk_277DF4150;
   v18 = v6;
-  v19 = self;
+  selfCopy = self;
   v10 = v6;
   v11 = [v9 futureWithErrorOnlyHandlerAdapterBlock:v17];
   v16[0] = MEMORY[0x277D85DD0];
@@ -770,9 +770,9 @@ void __38__HFEventTriggerBuilder__updateEvents__block_invoke_114(uint64_t a1, vo
 
 - (id)_updateExecuteOnce
 {
-  v3 = [(HFEventTriggerBuilder *)self _effectiveExecuteOnce];
-  v4 = [(HFEventTriggerBuilder *)self eventTypes];
-  v5 = [v4 containsObject:@"HFEventTypeTime"];
+  _effectiveExecuteOnce = [(HFEventTriggerBuilder *)self _effectiveExecuteOnce];
+  eventTypes = [(HFEventTriggerBuilder *)self eventTypes];
+  v5 = [eventTypes containsObject:@"HFEventTypeTime"];
 
   if (v5)
   {
@@ -781,30 +781,30 @@ void __38__HFEventTriggerBuilder__updateEvents__block_invoke_114(uint64_t a1, vo
     v14[2] = __43__HFEventTriggerBuilder__updateExecuteOnce__block_invoke;
     v14[3] = &unk_277DF4EF0;
     v14[4] = self;
-    v15 = v3;
-    v6 = [MEMORY[0x277D2C900] lazyFutureWithBlock:v14];
+    v15 = _effectiveExecuteOnce;
+    futureWithNoResult = [MEMORY[0x277D2C900] lazyFutureWithBlock:v14];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __43__HFEventTriggerBuilder__updateExecuteOnce__block_invoke_3;
     v12[3] = &unk_277DF4F18;
-    v13 = v3;
+    v13 = _effectiveExecuteOnce;
     v12[4] = self;
-    v7 = [v6 addSuccessBlock:v12];
+    v7 = [futureWithNoResult addSuccessBlock:v12];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __43__HFEventTriggerBuilder__updateExecuteOnce__block_invoke_115;
     v10[3] = &unk_277DF4F40;
-    v11 = v3;
+    v11 = _effectiveExecuteOnce;
     v10[4] = self;
-    v8 = [v6 addFailureBlock:v10];
+    v8 = [futureWithNoResult addFailureBlock:v10];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v6;
+  return futureWithNoResult;
 }
 
 void __43__HFEventTriggerBuilder__updateExecuteOnce__block_invoke(uint64_t a1, void *a2)
@@ -876,15 +876,15 @@ void __43__HFEventTriggerBuilder__updateExecuteOnce__block_invoke_115(uint64_t a
 
 - (id)_updateRecurrences
 {
-  v3 = [(HFEventTriggerBuilder *)self recurrences];
+  recurrences = [(HFEventTriggerBuilder *)self recurrences];
   v4 = MEMORY[0x277D2C900];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __43__HFEventTriggerBuilder__updateRecurrences__block_invoke;
   v12[3] = &unk_277DF28D8;
   v12[4] = self;
-  v13 = v3;
-  v5 = v3;
+  v13 = recurrences;
+  v5 = recurrences;
   v6 = [v4 lazyFutureWithBlock:v12];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -1028,29 +1028,29 @@ void __59__HFEventTriggerBuilder__lazilyMarkTriggerAsHomeAppCreated__block_invok
 
 - (BOOL)_effectiveExecuteOnce
 {
-  v3 = [(HFEventTriggerBuilder *)self recurrences];
-  if ([v3 count])
+  recurrences = [(HFEventTriggerBuilder *)self recurrences];
+  if ([recurrences count])
   {
-    v4 = [(HFEventTriggerBuilder *)self executeOnce];
+    executeOnce = [(HFEventTriggerBuilder *)self executeOnce];
   }
 
   else
   {
-    v5 = [(HFEventTriggerBuilder *)self eventTypes];
-    v4 = ([v5 containsObject:@"HFEventTypeTime"] & 1) != 0 || -[HFEventTriggerBuilder executeOnce](self, "executeOnce");
+    eventTypes = [(HFEventTriggerBuilder *)self eventTypes];
+    executeOnce = ([eventTypes containsObject:@"HFEventTypeTime"] & 1) != 0 || -[HFEventTriggerBuilder executeOnce](self, "executeOnce");
   }
 
-  return v4;
+  return executeOnce;
 }
 
 - (id)_allActionSets
 {
-  v3 = [(HFTriggerBuilder *)self triggerActionSets];
-  v4 = [v3 namedActionSets];
+  triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+  namedActionSets = [triggerActionSets namedActionSets];
 
-  v5 = [(HFTriggerBuilder *)self triggerActionSets];
-  v6 = [v5 anonymousActionSetBuilder];
-  v7 = [v4 arrayByAddingObject:v6];
+  triggerActionSets2 = [(HFTriggerBuilder *)self triggerActionSets];
+  anonymousActionSetBuilder = [triggerActionSets2 anonymousActionSetBuilder];
+  v7 = [namedActionSets arrayByAddingObject:anonymousActionSetBuilder];
 
   return v7;
 }
@@ -1060,18 +1060,18 @@ void __59__HFEventTriggerBuilder__lazilyMarkTriggerAsHomeAppCreated__block_invok
   v3 = [MEMORY[0x277CBEB58] set];
   [(HFEventTriggerBuilder *)self setMutableEventBuilders:v3];
 
-  v4 = [(HFTriggerBuilder *)self trigger];
-  v5 = [v4 events];
-  v6 = [v5 mutableCopy];
+  trigger = [(HFTriggerBuilder *)self trigger];
+  events = [trigger events];
+  v6 = [events mutableCopy];
 
-  v7 = [(HFTriggerBuilder *)self trigger];
-  v8 = [v7 events];
-  v9 = [v8 na_map:&__block_literal_global_121];
+  trigger2 = [(HFTriggerBuilder *)self trigger];
+  events2 = [trigger2 events];
+  v9 = [events2 na_map:&__block_literal_global_121];
 
-  v10 = [(HFEventTriggerBuilder *)self mutableEventBuilders];
-  v11 = [(HFItemBuilder *)self home];
-  v12 = [HFCharacteristicEventBuilder characteristicEventBuildersForEvents:v9 inHome:v11];
-  [v10 addObjectsFromArray:v12];
+  mutableEventBuilders = [(HFEventTriggerBuilder *)self mutableEventBuilders];
+  home = [(HFItemBuilder *)self home];
+  v12 = [HFCharacteristicEventBuilder characteristicEventBuildersForEvents:v9 inHome:home];
+  [mutableEventBuilders addObjectsFromArray:v12];
 
   [v6 removeObjectsInArray:v9];
   v13[0] = MEMORY[0x277D85DD0];
@@ -1115,21 +1115,21 @@ void __45__HFEventTriggerBuilder__createEventBuilders__block_invoke_2(uint64_t a
 
 - (id)createNewTriggerBuilder
 {
-  v2 = [(HFItemBuilder *)self home];
-  v3 = [v2 newEventTriggerBuilder];
+  home = [(HFItemBuilder *)self home];
+  newEventTriggerBuilder = [home newEventTriggerBuilder];
 
-  return v3;
+  return newEventTriggerBuilder;
 }
 
-- (id)updateTriggerBuilder:(id)a3
+- (id)updateTriggerBuilder:(id)builder
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  builderCopy = builder;
   v24.receiver = self;
   v24.super_class = HFEventTriggerBuilder;
-  v6 = [(HFTriggerBuilder *)&v24 updateTriggerBuilder:v5];
+  v6 = [(HFTriggerBuilder *)&v24 updateTriggerBuilder:builderCopy];
   objc_opt_class();
-  v7 = v5;
+  v7 = builderCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -1144,14 +1144,14 @@ void __45__HFEventTriggerBuilder__createEventBuilders__block_invoke_2(uint64_t a
 
   if (v9)
   {
-    v10 = [(HFEventTriggerBuilder *)self createEvents];
-    [v9 setEvents:v10];
+    createEvents = [(HFEventTriggerBuilder *)self createEvents];
+    [v9 setEvents:createEvents];
 
-    v11 = [(HFEventTriggerBuilder *)self createEndEvents];
-    [v9 setEndEvents:v11];
+    createEndEvents = [(HFEventTriggerBuilder *)self createEndEvents];
+    [v9 setEndEvents:createEndEvents];
 
-    v12 = [(HFEventTriggerBuilder *)self recurrences];
-    [v9 setRecurrences:v12];
+    recurrences = [(HFEventTriggerBuilder *)self recurrences];
+    [v9 setRecurrences:recurrences];
 
     [v9 setExecuteOnce:{-[HFEventTriggerBuilder _effectiveExecuteOnce](self, "_effectiveExecuteOnce")}];
     v23[0] = MEMORY[0x277D85DD0];
@@ -1225,14 +1225,14 @@ id __66__HFEventTriggerBuilder_AutomationBuilders__updateTriggerBuilder___block_
 
 - (HFCharacteristicTriggerBuilderInterface)characteristicInterface
 {
-  v3 = [(HFEventTriggerBuilder *)self extensionInterfaces];
-  v4 = [v3 objectForKeyedSubscript:@"characteristicInterface"];
+  extensionInterfaces = [(HFEventTriggerBuilder *)self extensionInterfaces];
+  v4 = [extensionInterfaces objectForKeyedSubscript:@"characteristicInterface"];
 
   if (!v4)
   {
     v4 = [(HFEventTriggerBuilderInterface *)HFCharacteristicTriggerBuilderInterface interfaceWithBuilder:self];
-    v5 = [(HFEventTriggerBuilder *)self extensionInterfaces];
-    [v5 setObject:v4 forKeyedSubscript:@"characteristicInterface"];
+    extensionInterfaces2 = [(HFEventTriggerBuilder *)self extensionInterfaces];
+    [extensionInterfaces2 setObject:v4 forKeyedSubscript:@"characteristicInterface"];
   }
 
   return v4;
@@ -1240,14 +1240,14 @@ id __66__HFEventTriggerBuilder_AutomationBuilders__updateTriggerBuilder___block_
 
 - (HFEventBuilderLocationInterface)locationInterface
 {
-  v3 = [(HFEventTriggerBuilder *)self extensionInterfaces];
-  v4 = [v3 objectForKeyedSubscript:@"locationInterface"];
+  extensionInterfaces = [(HFEventTriggerBuilder *)self extensionInterfaces];
+  v4 = [extensionInterfaces objectForKeyedSubscript:@"locationInterface"];
 
   if (!v4)
   {
     v4 = [(HFEventTriggerBuilderInterface *)HFEventBuilderLocationInterface interfaceWithBuilder:self];
-    v5 = [(HFEventTriggerBuilder *)self extensionInterfaces];
-    [v5 setObject:v4 forKeyedSubscript:@"locationInterface"];
+    extensionInterfaces2 = [(HFEventTriggerBuilder *)self extensionInterfaces];
+    [extensionInterfaces2 setObject:v4 forKeyedSubscript:@"locationInterface"];
   }
 
   return v4;
@@ -1255,30 +1255,30 @@ id __66__HFEventTriggerBuilder_AutomationBuilders__updateTriggerBuilder___block_
 
 - (HFEventTriggerBuilderTimeInterface)timeInterface
 {
-  v3 = [(HFEventTriggerBuilder *)self extensionInterfaces];
-  v4 = [v3 objectForKeyedSubscript:@"timeInterface"];
+  extensionInterfaces = [(HFEventTriggerBuilder *)self extensionInterfaces];
+  v4 = [extensionInterfaces objectForKeyedSubscript:@"timeInterface"];
 
   if (!v4)
   {
     v4 = [(HFEventTriggerBuilderInterface *)HFEventTriggerBuilderTimeInterface interfaceWithBuilder:self];
-    v5 = [(HFEventTriggerBuilder *)self extensionInterfaces];
-    [v5 setObject:v4 forKeyedSubscript:@"timeInterface"];
+    extensionInterfaces2 = [(HFEventTriggerBuilder *)self extensionInterfaces];
+    [extensionInterfaces2 setObject:v4 forKeyedSubscript:@"timeInterface"];
   }
 
   return v4;
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = HFEventTriggerBuilder;
-  v5 = [(HFTriggerBuilder *)&v10 compareToObject:v4];
+  v5 = [(HFTriggerBuilder *)&v10 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
-    v6 = [(HFEventTriggerBuilder *)self eventBuilders];
-    v7 = [v4 eventBuilders];
-    v8 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"eventBuilders" objectsA:v6 objectsB:v7];
+    eventBuilders = [(HFEventTriggerBuilder *)self eventBuilders];
+    eventBuilders2 = [objectCopy eventBuilders];
+    v8 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"eventBuilders" objectsA:eventBuilders objectsB:eventBuilders2];
     [v5 add:v8];
   }
 

@@ -1,16 +1,16 @@
 @interface PREditingIncomingCallFontPickerCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
-- (id)axFontWeight:(id)a3;
+- (id)axFontWeight:(id)weight;
 @end
 
 @implementation PREditingIncomingCallFontPickerCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingIncomingCallFontPickerCellView" isKindOfClass:@"PREditingFontPickerCellView"];
-  [v3 validateClass:@"PREditingFontPickerCellView" hasInstanceMethod:@"contentFont" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingIncomingCallFontPickerCellView" isKindOfClass:@"PREditingFontPickerCellView"];
+  [validationsCopy validateClass:@"PREditingFontPickerCellView" hasInstanceMethod:@"contentFont" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -19,21 +19,21 @@
   v3 = [(PREditingIncomingCallFontPickerCellViewAccessibility *)self safeValueForKey:@"contentFont"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 fontName];
-  v6 = [v5 componentsSeparatedByString:@"-"];
+  fontName = [v4 fontName];
+  v6 = [fontName componentsSeparatedByString:@"-"];
 
-  v7 = [v4 familyName];
-  v8 = [v6 lastObject];
-  v11 = [(PREditingIncomingCallFontPickerCellViewAccessibility *)self axFontWeight:v8];
+  familyName = [v4 familyName];
+  lastObject = [v6 lastObject];
+  v11 = [(PREditingIncomingCallFontPickerCellViewAccessibility *)self axFontWeight:lastObject];
   v9 = __UIAXStringForVariables();
 
   return v9;
 }
 
-- (id)axFontWeight:(id)a3
+- (id)axFontWeight:(id)weight
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Medium"])
+  weightCopy = weight;
+  if ([weightCopy isEqualToString:@"Medium"])
   {
     v4 = @"time.font.medium";
 LABEL_9:
@@ -41,19 +41,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"Semibold"])
+  if ([weightCopy isEqualToString:@"Semibold"])
   {
     v4 = @"time.font.bold";
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"Light"])
+  if ([weightCopy isEqualToString:@"Light"])
   {
     v4 = @"time.font.light";
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"Heavy"])
+  if ([weightCopy isEqualToString:@"Heavy"])
   {
     v4 = @"time.font.heavy";
     goto LABEL_9;

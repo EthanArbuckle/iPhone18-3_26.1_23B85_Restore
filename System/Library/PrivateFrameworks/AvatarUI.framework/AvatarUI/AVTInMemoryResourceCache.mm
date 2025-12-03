@@ -1,22 +1,22 @@
 @interface AVTInMemoryResourceCache
-- (AVTInMemoryResourceCache)initWithLockProvider:(id)a3 totalCostLimit:(unint64_t)a4 logger:(id)a5;
-- (BOOL)resourceExistsInCacheForItem:(id)a3 scope:(id)a4;
-- (id)_resourceForItem:(id)a3 scope:(id)a4 cacheMissHandler:(id)a5;
-- (id)observeChangesForItem:(id)a3 key:(id)a4;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (AVTInMemoryResourceCache)initWithLockProvider:(id)provider totalCostLimit:(unint64_t)limit logger:(id)logger;
+- (BOOL)resourceExistsInCacheForItem:(id)item scope:(id)scope;
+- (id)_resourceForItem:(id)item scope:(id)scope cacheMissHandler:(id)handler;
+- (id)observeChangesForItem:(id)item key:(id)key;
+- (void)cache:(id)cache willEvictObject:(id)object;
 - (void)dealloc;
-- (void)evictResourceFromCache:(id)a3 scope:(id)a4;
-- (void)handleChangeForItemForKey:(id)a3;
-- (void)nts_evictObjectsToFreeUpCost:(unint64_t)a3;
-- (void)performStorageWork:(id)a3;
+- (void)evictResourceFromCache:(id)cache scope:(id)scope;
+- (void)handleChangeForItemForKey:(id)key;
+- (void)nts_evictObjectsToFreeUpCost:(unint64_t)cost;
+- (void)performStorageWork:(id)work;
 @end
 
 @implementation AVTInMemoryResourceCache
 
-- (AVTInMemoryResourceCache)initWithLockProvider:(id)a3 totalCostLimit:(unint64_t)a4 logger:(id)a5
+- (AVTInMemoryResourceCache)initWithLockProvider:(id)provider totalCostLimit:(unint64_t)limit logger:(id)logger
 {
-  v8 = a3;
-  v9 = a5;
+  providerCopy = provider;
+  loggerCopy = logger;
   v18.receiver = self;
   v18.super_class = AVTInMemoryResourceCache;
   v10 = [(AVTInMemoryResourceCache *)&v18 init];
@@ -26,17 +26,17 @@
     storage = v10->_storage;
     v10->_storage = v11;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     orderedEntries = v10->_orderedEntries;
-    v10->_orderedEntries = v13;
+    v10->_orderedEntries = array;
 
-    [(NSCache *)v10->_storage setTotalCostLimit:a4];
+    [(NSCache *)v10->_storage setTotalCostLimit:limit];
     [(NSCache *)v10->_storage setDelegate:v10];
-    v15 = v8[2](v8, "com.apple.AvatarUI.AVTInMemoryResourceCache.storageLock");
+    v15 = providerCopy[2](providerCopy, "com.apple.AvatarUI.AVTInMemoryResourceCache.storageLock");
     storageLock = v10->_storageLock;
     v10->_storageLock = v15;
 
-    objc_storeStrong(&v10->_logger, a5);
+    objc_storeStrong(&v10->_logger, logger);
   }
 
   return v10;
@@ -50,18 +50,18 @@
   [(AVTInMemoryResourceCache *)&v3 dealloc];
 }
 
-- (void)performStorageWork:(id)a3
+- (void)performStorageWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTInMemoryResourceCache *)self storageLock];
+  workCopy = work;
+  storageLock = [(AVTInMemoryResourceCache *)self storageLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__AVTInMemoryResourceCache_performStorageWork___block_invoke;
   v7[3] = &unk_1E7F3A8A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = workCopy;
+  v6 = workCopy;
+  dispatch_sync(storageLock, v7);
 }
 
 void __47__AVTInMemoryResourceCache_performStorageWork___block_invoke(uint64_t a1)
@@ -71,11 +71,11 @@ void __47__AVTInMemoryResourceCache_performStorageWork___block_invoke(uint64_t a
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)resourceExistsInCacheForItem:(id)a3 scope:(id)a4
+- (BOOL)resourceExistsInCacheForItem:(id)item scope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() keyForItem:v6 scope:v7];
+  itemCopy = item;
+  scopeCopy = scope;
+  v8 = [objc_opt_class() keyForItem:itemCopy scope:scopeCopy];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -103,12 +103,12 @@ uint64_t __63__AVTInMemoryResourceCache_resourceExistsInCacheForItem_scope___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_resourceForItem:(id)a3 scope:(id)a4 cacheMissHandler:(id)a5
+- (id)_resourceForItem:(id)item scope:(id)scope cacheMissHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() keyForItem:v8 scope:v9];
+  itemCopy = item;
+  scopeCopy = scope;
+  handlerCopy = handler;
+  v11 = [objc_opt_class() keyForItem:itemCopy scope:scopeCopy];
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -130,10 +130,10 @@ uint64_t __63__AVTInMemoryResourceCache_resourceExistsInCacheForItem_scope___blo
   v28 = v12;
   v30 = &v31;
   [(AVTInMemoryResourceCache *)self performStorageWork:v27];
-  if (v10 && !v32[5])
+  if (handlerCopy && !v32[5])
   {
-    v13 = [objc_opt_class() costForItem:v8 scope:v9];
-    v14 = v10[2](v10, v8, v9);
+    v13 = [objc_opt_class() costForItem:itemCopy scope:scopeCopy];
+    v14 = handlerCopy[2](handlerCopy, itemCopy, scopeCopy);
     v15 = v32[5];
     v32[5] = v14;
 
@@ -143,8 +143,8 @@ uint64_t __63__AVTInMemoryResourceCache_resourceExistsInCacheForItem_scope___blo
     v20[3] = &unk_1E7F3A920;
     v24 = &v37;
     v21 = v12;
-    v22 = self;
-    v23 = v8;
+    selfCopy = self;
+    v23 = itemCopy;
     v25 = &v31;
     v26 = v13;
     [(AVTInMemoryResourceCache *)self performStorageWork:v20];
@@ -152,9 +152,9 @@ uint64_t __63__AVTInMemoryResourceCache_resourceExistsInCacheForItem_scope___blo
 
   if (v38[5])
   {
-    v16 = [(AVTInMemoryResourceCache *)self logger];
+    logger = [(AVTInMemoryResourceCache *)self logger];
     v17 = [v38[5] description];
-    [v16 logInMemoryCacheHitForResource:v17];
+    [logger logInMemoryCacheHitForResource:v17];
   }
 
   v18 = v32[5];
@@ -201,11 +201,11 @@ void __68__AVTInMemoryResourceCache__resourceForItem_scope_cacheMissHandler___bl
   }
 }
 
-- (void)evictResourceFromCache:(id)a3 scope:(id)a4
+- (void)evictResourceFromCache:(id)cache scope:(id)scope
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() keyForItem:v7 scope:v6];
+  scopeCopy = scope;
+  cacheCopy = cache;
+  v8 = [objc_opt_class() keyForItem:cacheCopy scope:scopeCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -216,25 +216,25 @@ void __68__AVTInMemoryResourceCache__resourceForItem_scope_cacheMissHandler___bl
   [(AVTInMemoryResourceCache *)self performStorageWork:v10];
 }
 
-- (void)nts_evictObjectsToFreeUpCost:(unint64_t)a3
+- (void)nts_evictObjectsToFreeUpCost:(unint64_t)cost
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [(AVTInMemoryResourceCache *)self storage];
-  v6 = [v5 totalCostLimit];
+  storage = [(AVTInMemoryResourceCache *)self storage];
+  totalCostLimit = [storage totalCostLimit];
 
-  v7 = [(AVTInMemoryResourceCache *)self orderedEntries];
-  v8 = [v7 count];
+  orderedEntries = [(AVTInMemoryResourceCache *)self orderedEntries];
+  v8 = [orderedEntries count];
 
   if (v8 - 1 >= 0)
   {
     v9 = 0;
-    v10 = v6 - a3;
+    v10 = totalCostLimit - cost;
     v11 = 0x7FFFFFFFFFFFFFFFLL;
     while (1)
     {
       --v8;
-      v12 = [(AVTInMemoryResourceCache *)self orderedEntries];
-      v13 = [v12 objectAtIndexedSubscript:v8];
+      orderedEntries2 = [(AVTInMemoryResourceCache *)self orderedEntries];
+      v13 = [orderedEntries2 objectAtIndexedSubscript:v8];
 
       v9 += [v13 cost];
       if (v9 > v10)
@@ -251,9 +251,9 @@ void __68__AVTInMemoryResourceCache__resourceForItem_scope_cacheMissHandler___bl
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [(AVTInMemoryResourceCache *)self orderedEntries];
+      orderedEntries3 = [(AVTInMemoryResourceCache *)self orderedEntries];
       v15 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, v11}];
-      v16 = [v14 objectsAtIndexes:v15];
+      v16 = [orderedEntries3 objectsAtIndexes:v15];
 
       v27 = 0u;
       v28 = 0u;
@@ -275,9 +275,9 @@ void __68__AVTInMemoryResourceCache__resourceForItem_scope_cacheMissHandler___bl
             }
 
             v22 = *(*(&v25 + 1) + 8 * i);
-            v23 = [(AVTInMemoryResourceCache *)self storage];
+            storage2 = [(AVTInMemoryResourceCache *)self storage];
             v24 = [v22 key];
-            [v23 removeObjectForKey:v24];
+            [storage2 removeObjectForKey:v24];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -289,10 +289,10 @@ void __68__AVTInMemoryResourceCache__resourceForItem_scope_cacheMissHandler___bl
   }
 }
 
-- (id)observeChangesForItem:(id)a3 key:(id)a4
+- (id)observeChangesForItem:(id)item key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  keyCopy = key;
   if (objc_opt_respondsToSelector())
   {
     objc_initWeak(&location, self);
@@ -301,8 +301,8 @@ void __68__AVTInMemoryResourceCache__resourceForItem_scope_cacheMissHandler___bl
     v10[2] = __54__AVTInMemoryResourceCache_observeChangesForItem_key___block_invoke;
     v10[3] = &unk_1E7F3A990;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v8 = [v6 tokenForObservingChangesWithHandler:v10];
+    v11 = keyCopy;
+    v8 = [itemCopy tokenForObservingChangesWithHandler:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -322,27 +322,27 @@ void __54__AVTInMemoryResourceCache_observeChangesForItem_key___block_invoke(uin
   [WeakRetained handleChangeForItemForKey:*(a1 + 32)];
 }
 
-- (void)handleChangeForItemForKey:(id)a3
+- (void)handleChangeForItemForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__AVTInMemoryResourceCache_handleChangeForItemForKey___block_invoke;
   v6[3] = &unk_1E7F3A948;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(AVTInMemoryResourceCache *)self performStorageWork:v6];
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v5 = a4;
-  v6 = [(AVTInMemoryResourceCache *)self logger];
-  v7 = [v5 description];
-  [v6 logInMemoryCacheEvictsResource:v7];
+  objectCopy = object;
+  logger = [(AVTInMemoryResourceCache *)self logger];
+  v7 = [objectCopy description];
+  [logger logInMemoryCacheEvictsResource:v7];
 
-  v8 = [(AVTInMemoryResourceCache *)self orderedEntries];
-  [v8 removeObject:v5];
+  orderedEntries = [(AVTInMemoryResourceCache *)self orderedEntries];
+  [orderedEntries removeObject:objectCopy];
 }
 
 @end

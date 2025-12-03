@@ -11,13 +11,13 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 codableAttribute];
-    if (v8)
+    codableAttribute = [v7 codableAttribute];
+    if (codableAttribute)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = codableAttribute;
       }
 
       else
@@ -33,7 +33,7 @@
 
     v20 = v9;
 
-    v10 = [v20 valueForIndex:{objc_msgSend(a1, "integerValue")}];
+    v10 = [v20 valueForIndex:{objc_msgSend(self, "integerValue")}];
 
     v19 = [v10 localizedDisplayNameWithLocalizer:v6];
     goto LABEL_17;
@@ -44,11 +44,11 @@
   {
     v10 = v7;
     v11 = objc_opt_new();
-    v12 = [v10 minimumUnit];
-    if (v12 <= [v10 maximumUnit])
+    minimumUnit = [v10 minimumUnit];
+    if (minimumUnit <= [v10 maximumUnit])
     {
       v13 = 0;
-      v14 = v12 - 1;
+      v14 = minimumUnit - 1;
       do
       {
         if (v14 > 2)
@@ -70,12 +70,12 @@
       {
         [v11 setAllowedUnits:v13];
         v16 = MEMORY[0x1E695DEE8];
-        v17 = [v6 languageCode];
-        v18 = [v16 if_currentCalendarWithLanguageCode:v17];
+        languageCode = [v6 languageCode];
+        v18 = [v16 if_currentCalendarWithLanguageCode:languageCode];
         [v11 setCalendar:v18];
 
         [v11 setUnitsStyle:2];
-        [a1 doubleValue];
+        [self doubleValue];
         v19 = [v11 stringFromTimeInterval:?];
 
 LABEL_17:
@@ -84,7 +84,7 @@ LABEL_17:
     }
   }
 
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = &off_1F034CD18;
   v19 = objc_msgSendSuper2(&v22, sel__intents_readableTitleWithLocalizer_metadata_, v6, v7);
 LABEL_20:

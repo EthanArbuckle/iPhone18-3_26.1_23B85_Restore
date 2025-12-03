@@ -1,22 +1,22 @@
 @interface _DASTaskDependencies
-- (_DASTaskDependencies)initWithProducedResultIdentifiers:(id)a3 dependencyIdentifiers:(id)a4;
+- (_DASTaskDependencies)initWithProducedResultIdentifiers:(id)identifiers dependencyIdentifiers:(id)dependencyIdentifiers;
 - (id)description;
 @end
 
 @implementation _DASTaskDependencies
 
-- (_DASTaskDependencies)initWithProducedResultIdentifiers:(id)a3 dependencyIdentifiers:(id)a4
+- (_DASTaskDependencies)initWithProducedResultIdentifiers:(id)identifiers dependencyIdentifiers:(id)dependencyIdentifiers
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  dependencyIdentifiersCopy = dependencyIdentifiers;
   v12.receiver = self;
   v12.super_class = _DASTaskDependencies;
   v9 = [(_DASTaskDependencies *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_producedResultIdentifiers, a3);
-    objc_storeStrong(&v10->_dependencyIdentifiers, a4);
+    objc_storeStrong(&v9->_producedResultIdentifiers, identifiers);
+    objc_storeStrong(&v10->_dependencyIdentifiers, dependencyIdentifiers);
   }
 
   return v10;

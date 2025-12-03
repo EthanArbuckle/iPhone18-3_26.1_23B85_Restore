@@ -18,7 +18,7 @@
   v12[3] = &unk_27966D7E0;
   v13 = v8;
   v9 = v8;
-  v10 = [a1 challengeComposeControllerWithMessage:a3 players:a4 completion:v12];
+  v10 = [self challengeComposeControllerWithMessage:a3 players:a4 completion:v12];
 
   return v10;
 }
@@ -28,18 +28,18 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [MEMORY[0x277D0C048] currentGame];
-  v12 = [v11 internal];
-  v13 = [v12 supportsChallenges];
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  internal = [currentGame internal];
+  supportsChallenges = [internal supportsChallenges];
 
-  if (v13)
+  if (supportsChallenges)
   {
     v14 = MEMORY[0x277D0BFF0];
-    v15 = [a1 game];
-    v16 = [MEMORY[0x277D0C138] localPlayer];
-    v17 = [v14 challengeForGame:v15 andPlayer:v16 withAchievement:a1];
+    game = [self game];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    v17 = [v14 challengeForGame:game andPlayer:localPlayer withAchievement:self];
 
-    v18 = [GKHostedChallengeIssueController hostedIssueControllerWithChallenge:v17 players:v9 defaultMessage:v8 completionHandler:v10];
+    challengesNotSupportedAlertController = [GKHostedChallengeIssueController hostedIssueControllerWithChallenge:v17 players:v9 defaultMessage:v8 completionHandler:v10];
   }
 
   else
@@ -65,14 +65,14 @@
       [GKScore(GKChallenge) challengeComposeControllerWithMessage:players:completionHandler:];
     }
 
-    v18 = [MEMORY[0x277D0BFF0] challengesNotSupportedAlertController];
+    challengesNotSupportedAlertController = [MEMORY[0x277D0BFF0] challengesNotSupportedAlertController];
     if (v10)
     {
-      (*(v10 + 2))(v10, v18, 0, 0);
+      (*(v10 + 2))(v10, challengesNotSupportedAlertController, 0, 0);
     }
   }
 
-  return v18;
+  return challengesNotSupportedAlertController;
 }
 
 - (uint64_t)challengeComposeControllerWithPlayers:()GKChallenge message:completionHandler:
@@ -144,7 +144,7 @@ LABEL_6:
   v8 = a4;
   if (!v7)
   {
-    [GKAchievement(GKChallenge) selectChallengeablePlayers:a2 withCompletionHandler:a1];
+    [GKAchievement(GKChallenge) selectChallengeablePlayers:a2 withCompletionHandler:self];
   }
 
   v9 = dispatch_group_create();
@@ -160,7 +160,7 @@ LABEL_6:
   v25[3] = __Block_byref_object_copy__13;
   v25[4] = __Block_byref_object_dispose__13;
   v26 = 0;
-  if ([a1 isReplayable])
+  if ([self isReplayable])
   {
     v10 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v7];
     v11 = v28[5];
@@ -171,8 +171,8 @@ LABEL_6:
   {
     dispatch_group_enter(v9);
     v12 = MEMORY[0x277D0BFB0];
-    v13 = [a1 identifier];
-    v14 = [a1 game];
+    identifier = [self identifier];
+    game = [self game];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __79__GKAchievement_GKChallenge__selectChallengeablePlayers_withCompletionHandler___block_invoke;
@@ -181,7 +181,7 @@ LABEL_6:
     v21 = v7;
     v24 = &v27;
     v22 = v9;
-    [v12 loadAchievementWithID:v13 forGame:v14 players:v21 complete:v20];
+    [v12 loadAchievementWithID:identifier forGame:game players:v21 complete:v20];
 
     v11 = v21;
   }

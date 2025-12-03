@@ -5,7 +5,7 @@
 - (BOOL)isInUse;
 - (BOOL)isShared;
 - (NUTextureTileAdapter)init;
-- (NUTextureTileAdapter)initWithFrameRect:(id *)a3 contentRect:(id *)a4 texture:(id)a5;
+- (NUTextureTileAdapter)initWithFrameRect:(id *)rect contentRect:(id *)contentRect texture:(id)texture;
 - (int)useCount;
 - (void)incrementUseCount;
 @end
@@ -30,58 +30,58 @@
 
 - (int)useCount
 {
-  v2 = [(NUTextureTileAdapter *)self _surface];
-  v3 = [v2 localUseCount];
+  _surface = [(NUTextureTileAdapter *)self _surface];
+  localUseCount = [_surface localUseCount];
 
-  return v3;
+  return localUseCount;
 }
 
 - (BOOL)decrementUseCount
 {
-  v2 = [(NUTextureTileAdapter *)self _surface];
-  [v2 decrementUseCount];
-  v3 = [v2 isInUse];
+  _surface = [(NUTextureTileAdapter *)self _surface];
+  [_surface decrementUseCount];
+  isInUse = [_surface isInUse];
 
-  return v3 ^ 1;
+  return isInUse ^ 1;
 }
 
 - (void)incrementUseCount
 {
-  v2 = [(NUTextureTileAdapter *)self _surface];
-  [v2 incrementUseCount];
+  _surface = [(NUTextureTileAdapter *)self _surface];
+  [_surface incrementUseCount];
 }
 
 - (BOOL)isInUse
 {
-  v2 = [(NUTextureTileAdapter *)self _surface];
-  v3 = [v2 isInUse];
+  _surface = [(NUTextureTileAdapter *)self _surface];
+  isInUse = [_surface isInUse];
 
-  return v3;
+  return isInUse;
 }
 
 - (BOOL)isShared
 {
-  v2 = [(NUTextureTileAdapter *)self _surface];
-  v3 = [v2 localUseCount];
-  if (v3 <= 1)
+  _surface = [(NUTextureTileAdapter *)self _surface];
+  localUseCount = [_surface localUseCount];
+  if (localUseCount <= 1)
   {
-    if (v3)
+    if (localUseCount)
     {
-      v4 = 0;
+      isInUse = 0;
     }
 
     else
     {
-      v4 = [v2 isInUse];
+      isInUse = [_surface isInUse];
     }
   }
 
   else
   {
-    v4 = 1;
+    isInUse = 1;
   }
 
-  return v4;
+  return isInUse;
 }
 
 - (NUTextureTileAdapter)init
@@ -116,8 +116,8 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v22 = v12;
       v23 = 2114;
@@ -136,8 +136,8 @@
     v9 = _NUAssertLogger;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v11;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -151,11 +151,11 @@
   _NUAssertFailHandler("[NUTextureTileAdapter init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageFactory.mm", 1100, @"Initializer not available: [%@ %@], use designated initializer instead.", v17, v18, v19, v20, v16);
 }
 
-- (NUTextureTileAdapter)initWithFrameRect:(id *)a3 contentRect:(id *)a4 texture:(id)a5
+- (NUTextureTileAdapter)initWithFrameRect:(id *)rect contentRect:(id *)contentRect texture:(id)texture
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!v8)
+  textureCopy = texture;
+  if (!textureCopy)
   {
     v14 = NUAssertLogger();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -174,8 +174,8 @@
       if (v18)
       {
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v21;
         v31 = 2114;
@@ -186,8 +186,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -199,14 +199,14 @@
   v28.receiver = self;
   v28.super_class = NUTextureTileAdapter;
   v9 = [(NUTextureTileAdapter *)&v28 init];
-  var1 = a3->var1;
-  v9->_frameRect.origin = a3->var0;
+  var1 = rect->var1;
+  v9->_frameRect.origin = rect->var0;
   v9->_frameRect.size = var1;
-  v11 = a4->var1;
-  v9->_contentRect.origin = a4->var0;
+  v11 = contentRect->var1;
+  v9->_contentRect.origin = contentRect->var0;
   v9->_contentRect.size = v11;
   texture = v9->_texture;
-  v9->_texture = v8;
+  v9->_texture = textureCopy;
 
   return v9;
 }

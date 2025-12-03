@@ -1,8 +1,8 @@
 @interface SagaUpdatePlaylistOperation
-- (SagaUpdatePlaylistOperation)initWithClientIdentity:(id)a3 playlistPersistentID:(int64_t)a4 properties:(id)a5 trackList:(id)a6;
-- (SagaUpdatePlaylistOperation)initWithCoder:(id)a3;
-- (SagaUpdatePlaylistOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistPersistentID:(int64_t)a5 properties:(id)a6 trackList:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (SagaUpdatePlaylistOperation)initWithClientIdentity:(id)identity playlistPersistentID:(int64_t)d properties:(id)properties trackList:(id)list;
+- (SagaUpdatePlaylistOperation)initWithCoder:(id)coder;
+- (SagaUpdatePlaylistOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistPersistentID:(int64_t)d properties:(id)properties trackList:(id)list;
+- (void)encodeWithCoder:(id)coder;
 - (void)main;
 @end
 
@@ -14,12 +14,12 @@
   v3 = [NSString stringWithFormat:@"SagaUpdatePlaylistOperation - (playlist_persistent_id = %lld)", self->_playlistPersistentID];
   v4 = [[MSVXPCTransaction alloc] initWithName:v3];
   [v4 beginTransaction];
-  v5 = [(CloudLibraryOperation *)self musicLibrary];
-  v6 = [(CloudLibraryOperation *)self clientIdentity];
-  [v5 setClientIdentity:v6];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  [musicLibrary setClientIdentity:clientIdentity];
 
-  v7 = [(CloudLibraryOperation *)self musicLibrary];
-  v8 = [ML3Container newWithPersistentID:self->_playlistPersistentID inLibrary:v7];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+  v8 = [ML3Container newWithPersistentID:self->_playlistPersistentID inLibrary:musicLibrary2];
   if (![v8 existsInLibrary])
   {
     v22 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
@@ -37,10 +37,10 @@
 
   v9 = ML3ContainerPropertyStoreCloudID;
   v10 = [v8 valueForProperty:ML3ContainerPropertyStoreCloudID];
-  v11 = [v10 unsignedIntValue];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  v79 = v11;
-  if (!v11)
+  v79 = unsignedIntValue;
+  if (!unsignedIntValue)
   {
     v24 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -63,22 +63,22 @@
   if (!v12)
   {
 LABEL_28:
-    v32 = [(CloudLibraryOperation *)self musicLibrary];
-    v33 = [v32 sagaOnDiskDatabaseRevision];
+    musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
+    sagaOnDiskDatabaseRevision = [musicLibrary3 sagaOnDiskDatabaseRevision];
 
-    if (v33 <= 1)
+    if (sagaOnDiskDatabaseRevision <= 1)
     {
       v34 = 1;
     }
 
     else
     {
-      v34 = v33;
+      v34 = sagaOnDiskDatabaseRevision;
     }
 
     v77 = v34;
-    v83 = [(CloudLibraryOperation *)self connection];
-    v35 = +[ICSetContainerPropertiesRequest requestWithDatabaseID:databaseRevision:containerID:trackList:properties:](ICSetContainerPropertiesRequest, "requestWithDatabaseID:databaseRevision:containerID:trackList:properties:", [v83 databaseID], v77, v79, self->_trackList, obj);
+    connection = [(CloudLibraryOperation *)self connection];
+    v35 = +[ICSetContainerPropertiesRequest requestWithDatabaseID:databaseRevision:containerID:trackList:properties:](ICSetContainerPropertiesRequest, "requestWithDatabaseID:databaseRevision:containerID:trackList:properties:", [connection databaseID], v77, v79, self->_trackList, obj);
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -114,7 +114,7 @@ LABEL_28:
     v93[4] = self;
     v39 = v36;
     v94 = v39;
-    [v83 sendRequest:v35 withResponseHandler:v93];
+    [connection sendRequest:v35 withResponseHandler:v93];
     dispatch_semaphore_wait(v39, 0xFFFFFFFFFFFFFFFFLL);
     if (v98[5] || (v41 = *(*&buf[8] + 40)) == 0)
     {
@@ -126,22 +126,22 @@ LABEL_28:
     {
       v75 = v41;
       v74 = [NSMutableDictionary dictionaryWithCapacity:2];
-      v42 = [v75 globalPlaylistID];
-      v43 = [v42 length] == 0;
+      globalPlaylistID = [v75 globalPlaylistID];
+      v43 = [globalPlaylistID length] == 0;
 
       if (!v43)
       {
-        v44 = [v75 globalPlaylistID];
-        [v74 setObject:v44 forKey:ML3ContainerPropertyCloudGlobalID];
+        globalPlaylistID2 = [v75 globalPlaylistID];
+        [v74 setObject:globalPlaylistID2 forKey:ML3ContainerPropertyCloudGlobalID];
       }
 
-      v45 = [v75 subscribedContainerURL];
-      v46 = [v45 length] == 0;
+      subscribedContainerURL = [v75 subscribedContainerURL];
+      v46 = [subscribedContainerURL length] == 0;
 
       if (!v46)
       {
-        v47 = [v75 subscribedContainerURL];
-        [v74 setObject:v47 forKey:ML3ContainerPropertyCloudShareURL];
+        subscribedContainerURL2 = [v75 subscribedContainerURL];
+        [v74 setObject:subscribedContainerURL2 forKey:ML3ContainerPropertyCloudShareURL];
       }
 
       if ([v74 count] && (objc_msgSend(v8, "setValuesForPropertiesWithDictionary:", v74) & 1) == 0)
@@ -155,9 +155,9 @@ LABEL_28:
         }
       }
 
-      v49 = [v75 failedItems];
-      v73 = v49;
-      if (v49 && [v49 count])
+      failedItems = [v75 failedItems];
+      v73 = failedItems;
+      if (failedItems && [failedItems count])
       {
         v78 = [(NSDictionary *)self->_properties objectForKey:v76];
 
@@ -167,11 +167,11 @@ LABEL_28:
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
             v51 = self->_playlistPersistentID;
-            v52 = [v78 longLongValue];
+            longLongValue = [v78 longLongValue];
             *v104 = 134218240;
             *v105 = v51;
             *&v105[8] = 2048;
-            *&v105[10] = v52;
+            *&v105[10] = longLongValue;
             _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "Failed to move playlist with persistent-id %lld to folder with persistent-id %lld, moving to root level.", v104, 0x16u);
           }
 
@@ -182,9 +182,9 @@ LABEL_28:
           v90[2] = sub_1000C0330;
           v90[3] = &unk_1001DEE70;
           v91 = v73;
-          v92 = self;
-          [v7 databaseConnectionAllowingWrites:1 withBlock:v90];
-          v40 = +[ICSetContainerPropertiesRequest requestWithDatabaseID:databaseRevision:containerID:trackList:properties:](ICSetContainerPropertiesRequest, "requestWithDatabaseID:databaseRevision:containerID:trackList:properties:", [v83 databaseID], v77, v79, self->_trackList, obj);
+          selfCopy = self;
+          [musicLibrary2 databaseConnectionAllowingWrites:1 withBlock:v90];
+          v40 = +[ICSetContainerPropertiesRequest requestWithDatabaseID:databaseRevision:containerID:trackList:properties:](ICSetContainerPropertiesRequest, "requestWithDatabaseID:databaseRevision:containerID:trackList:properties:", [connection databaseID], v77, v79, self->_trackList, obj);
 
           v53 = sub_100102794();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -209,7 +209,7 @@ LABEL_28:
           v86[4] = self;
           v56 = v39;
           v87 = v56;
-          [v83 sendRequest:v40 withResponseHandler:v86];
+          [connection sendRequest:v40 withResponseHandler:v86];
           dispatch_semaphore_wait(v56, 0xFFFFFFFFFFFFFFFFLL);
           if (v98[5] || (v68 = *(*&buf[8] + 40)) == 0)
           {
@@ -220,11 +220,11 @@ LABEL_28:
           {
             v82 = v68;
 
-            v69 = [v82 failedItems];
-            if (v69)
+            failedItems2 = [v82 failedItems];
+            if (failedItems2)
             {
-              v70 = [v82 failedItems];
-              v80 = [v70 count] == 0;
+              failedItems3 = [v82 failedItems];
+              v80 = [failedItems3 count] == 0;
 
               if (!v80)
               {
@@ -270,9 +270,9 @@ LABEL_28:
         v78 = v81;
       }
 
-      v60 = [v58 updateRequired];
+      updateRequired = [v58 updateRequired];
       v61 = v73;
-      if (v60)
+      if (updateRequired)
       {
         self->_libraryUpdateRequired = 1;
       }
@@ -294,9 +294,9 @@ LABEL_28:
     _Block_object_dispose(buf, 8);
 
 LABEL_68:
-    v63 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary4 = [(CloudLibraryOperation *)self musicLibrary];
     v64 = MSVTCCIdentityForCurrentProcess();
-    [v63 setClientIdentity:v64];
+    [musicLibrary4 setClientIdentity:v64];
 
     [v4 endTransaction];
     goto LABEL_69;
@@ -316,7 +316,7 @@ LABEL_68:
     goto LABEL_27;
   }
 
-  v14 = +[ML3Container newWithPersistentID:inLibrary:](ML3Container, "newWithPersistentID:inLibrary:", [v13 longLongValue], v7);
+  v14 = +[ML3Container newWithPersistentID:inLibrary:](ML3Container, "newWithPersistentID:inLibrary:", [v13 longLongValue], musicLibrary2);
   if (![v14 existsInLibrary])
   {
     v27 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
@@ -336,10 +336,10 @@ LABEL_24:
     v29 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v81 longLongValue];
+      longLongValue2 = [v81 longLongValue];
       v31 = self->_playlistPersistentID;
       *buf = 134218240;
-      *&buf[4] = v30;
+      *&buf[4] = longLongValue2;
       *&buf[12] = 2048;
       *&buf[14] = v31;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Folder with persistent-id %llu doesn't exist, moving playlist with persistent-id %lld to root level.", buf, 0x16u);
@@ -350,17 +350,17 @@ LABEL_24:
     v103[2] = sub_1000C00B4;
     v103[3] = &unk_1001DCC68;
     v103[4] = self;
-    [v7 databaseConnectionAllowingWrites:1 withBlock:v103];
+    [musicLibrary2 databaseConnectionAllowingWrites:1 withBlock:v103];
     goto LABEL_27;
   }
 
   v15 = [v14 valueForProperty:ML3ContainerPropertySmartIsFolder];
-  v16 = [v15 BOOLValue];
+  bOOLValue = [v15 BOOLValue];
 
   v17 = [v14 valueForProperty:v9];
-  v18 = [v17 longLongValue];
+  longLongValue3 = [v17 longLongValue];
 
-  if (!v16)
+  if (!bOOLValue)
   {
     v27 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -374,9 +374,9 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (v18)
+  if (longLongValue3)
   {
-    v19 = [NSNumber numberWithUnsignedLongLong:v18];
+    v19 = [NSNumber numberWithUnsignedLongLong:longLongValue3];
     [obj setObject:v19 forKey:v76];
 
     v20 = sub_10010275C();
@@ -388,7 +388,7 @@ LABEL_24:
       *&buf[12] = 2048;
       *&buf[14] = [v81 longLongValue];
       *&buf[22] = 2048;
-      v107 = v18;
+      v107 = longLongValue3;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Moving playlist with persistent-id %lld to folder with persistent-id %lld and cloud-id %llu.", buf, 0x20u);
     }
 
@@ -405,9 +405,9 @@ LABEL_27:
   }
 
   [(CloudLibraryOperation *)self setStatus:2];
-  v66 = [(CloudLibraryOperation *)self musicLibrary];
+  musicLibrary5 = [(CloudLibraryOperation *)self musicLibrary];
   v67 = MSVTCCIdentityForCurrentProcess();
-  [v66 setClientIdentity:v67];
+  [musicLibrary5 setClientIdentity:v67];
 
   [v4 endTransaction];
 LABEL_69:
@@ -415,31 +415,31 @@ LABEL_69:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaUpdatePlaylistOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:2 forKey:{@"SagaUpdatePlaylistOperationArchiveVersionKey", v5.receiver, v5.super_class}];
-  [v4 encodeInt64:self->_playlistPersistentID forKey:@"SagaUpdatePlaylistOperationPlaylistPersistentIDKey"];
-  [v4 encodeObject:self->_properties forKey:@"SagaUpdatePlaylistOperationProperties"];
-  [v4 encodeObject:self->_trackList forKey:@"SagaUpdatePlaylistOperationTrackListKey"];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:2 forKey:{@"SagaUpdatePlaylistOperationArchiveVersionKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt64:self->_playlistPersistentID forKey:@"SagaUpdatePlaylistOperationPlaylistPersistentIDKey"];
+  [coderCopy encodeObject:self->_properties forKey:@"SagaUpdatePlaylistOperationProperties"];
+  [coderCopy encodeObject:self->_trackList forKey:@"SagaUpdatePlaylistOperationTrackListKey"];
 }
 
-- (SagaUpdatePlaylistOperation)initWithCoder:(id)a3
+- (SagaUpdatePlaylistOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = SagaUpdatePlaylistOperation;
-  v5 = [(CloudLibraryOperation *)&v29 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v29 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeInt32ForKey:@"SagaUpdatePlaylistOperationArchiveVersionKey"];
-    v7 = [v4 decodeInt64ForKey:@"SagaUpdatePlaylistOperationPlaylistPersistentIDKey"];
+    v6 = [coderCopy decodeInt32ForKey:@"SagaUpdatePlaylistOperationArchiveVersionKey"];
+    v7 = [coderCopy decodeInt64ForKey:@"SagaUpdatePlaylistOperationPlaylistPersistentIDKey"];
     if (v6 == 1)
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaUpdatePlaylistOperationcloudItemIDListKey"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaUpdatePlaylistOperationcloudItemIDListKey"];
     }
 
     else
@@ -450,13 +450,13 @@ LABEL_69:
         v17 = objc_opt_class();
         v18 = objc_opt_class();
         v19 = [NSSet setWithObjects:v16, v17, v18, objc_opt_class(), 0];
-        v15 = [v4 decodeObjectOfClasses:v19 forKey:@"SagaUpdatePlaylistOperationProperties"];
+        v15 = [coderCopy decodeObjectOfClasses:v19 forKey:@"SagaUpdatePlaylistOperationProperties"];
 
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaUpdatePlaylistOperationTrackListKey"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaUpdatePlaylistOperationTrackListKey"];
         goto LABEL_15;
       }
 
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SagaUpdatePlaylistOperationItemSagaIDsKey"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SagaUpdatePlaylistOperationItemSagaIDsKey"];
       v9 = objc_alloc_init(ICCloudItemIDList);
       v25 = 0u;
       v26 = 0u;
@@ -505,22 +505,22 @@ LABEL_15:
   return v5;
 }
 
-- (SagaUpdatePlaylistOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistPersistentID:(int64_t)a5 properties:(id)a6 trackList:(id)a7
+- (SagaUpdatePlaylistOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistPersistentID:(int64_t)d properties:(id)properties trackList:(id)list
 {
-  v12 = a6;
-  v13 = a7;
+  propertiesCopy = properties;
+  listCopy = list;
   v21.receiver = self;
   v21.super_class = SagaUpdatePlaylistOperation;
-  v14 = [(CloudLibraryOperation *)&v21 initWithConfiguration:a3 clientIdentity:a4];
+  v14 = [(CloudLibraryOperation *)&v21 initWithConfiguration:configuration clientIdentity:identity];
   v15 = v14;
   if (v14)
   {
-    v14->_playlistPersistentID = a5;
-    v16 = [v12 copy];
+    v14->_playlistPersistentID = d;
+    v16 = [propertiesCopy copy];
     properties = v15->_properties;
     v15->_properties = v16;
 
-    v18 = [v13 copy];
+    v18 = [listCopy copy];
     trackList = v15->_trackList;
     v15->_trackList = v18;
   }
@@ -528,13 +528,13 @@ LABEL_15:
   return v15;
 }
 
-- (SagaUpdatePlaylistOperation)initWithClientIdentity:(id)a3 playlistPersistentID:(int64_t)a4 properties:(id)a5 trackList:(id)a6
+- (SagaUpdatePlaylistOperation)initWithClientIdentity:(id)identity playlistPersistentID:(int64_t)d properties:(id)properties trackList:(id)list
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  listCopy = list;
+  propertiesCopy = properties;
+  identityCopy = identity;
   v13 = objc_opt_new();
-  v14 = [(SagaUpdatePlaylistOperation *)self initWithConfiguration:v13 clientIdentity:v12 playlistPersistentID:a4 properties:v11 trackList:v10];
+  v14 = [(SagaUpdatePlaylistOperation *)self initWithConfiguration:v13 clientIdentity:identityCopy playlistPersistentID:d properties:propertiesCopy trackList:listCopy];
 
   return v14;
 }

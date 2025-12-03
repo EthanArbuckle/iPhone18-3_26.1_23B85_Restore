@@ -1,44 +1,44 @@
 @interface CoreDAVPropertyFindBaseTask
-- (CoreDAVPropertyFindBaseTask)initWithPropertiesToFind:(id)a3 atURL:(id)a4;
+- (CoreDAVPropertyFindBaseTask)initWithPropertiesToFind:(id)find atURL:(id)l;
 - (id)additionalHeaderValues;
-- (id)copyDefaultParserForContentType:(id)a3;
+- (id)copyDefaultParserForContentType:(id)type;
 - (id)description;
 - (id)getTotalFailureError;
-- (id)successfulValueForNameSpace:(id)a3 elementName:(id)a4;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (id)successfulValueForNameSpace:(id)space elementName:(id)name;
+- (void)finishCoreDAVTaskWithError:(id)error;
 - (void)updateMultiStatusFromResponse;
 @end
 
 @implementation CoreDAVPropertyFindBaseTask
 
-- (CoreDAVPropertyFindBaseTask)initWithPropertiesToFind:(id)a3 atURL:(id)a4
+- (CoreDAVPropertyFindBaseTask)initWithPropertiesToFind:(id)find atURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
+  findCopy = find;
+  lCopy = l;
   if ([(CoreDAVPropertyFindBaseTask *)self isMemberOfClass:objc_opt_class()])
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"CoreDAVPropertyFindBaseTask.m" lineNumber:36 description:{@"You instantiated a class that doesn't want to be instantiated.  Please choose a concrete subclass of %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CoreDAVPropertyFindBaseTask.m" lineNumber:36 description:{@"You instantiated a class that doesn't want to be instantiated.  Please choose a concrete subclass of %@", objc_opt_class()}];
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = CoreDAVPropertyFindBaseTask;
-    v12 = [(CoreDAVTask *)&v15 initWithURL:v9];
+    v12 = [(CoreDAVTask *)&v15 initWithURL:lCopy];
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_propertiesToFind, a3);
+      objc_storeStrong(&v12->_propertiesToFind, find);
     }
 
     self = v13;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
@@ -49,8 +49,8 @@
   v4 = [(CoreDAVTask *)&v7 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
-  [v3 appendFormat:@"| Number of properties to find: [%lu]", objc_msgSend(v5, "count")];
+  propertiesToFind = [(CoreDAVPropertyFindBaseTask *)self propertiesToFind];
+  [v3 appendFormat:@"| Number of properties to find: [%lu]", objc_msgSend(propertiesToFind, "count")];
 
   [v3 appendFormat:@"]"];
 
@@ -62,8 +62,8 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6.receiver = self;
   v6.super_class = CoreDAVPropertyFindBaseTask;
-  v4 = [(CoreDAVTask *)&v6 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CoreDAVTask *)&v6 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
   [v3 setObject:@"t" forKey:@"Brief"];
   [v3 setObject:@"return=minimal" forKey:@"Prefer"];
@@ -71,38 +71,38 @@
   return v3;
 }
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
   v4 = [(CoreDAVTask *)self url];
-  v5 = [(CoreDAVTask *)self lastRedirectURL];
-  v6 = v5;
-  if (v5)
+  lastRedirectURL = [(CoreDAVTask *)self lastRedirectURL];
+  v6 = lastRedirectURL;
+  if (lastRedirectURL)
   {
-    v7 = v5;
+    v7 = lastRedirectURL;
 
     v4 = v7;
   }
 
   v8 = [[CoreDAVXMLParser alloc] initWithRootElementNameSpace:@"DAV:" name:@"multistatus" parseClass:objc_opt_class() baseURL:v4];
-  v9 = [(CoreDAVPropertyFindBaseTask *)self parseHints];
-  [(CoreDAVXMLParser *)v8 setParseHints:v9];
+  parseHints = [(CoreDAVPropertyFindBaseTask *)self parseHints];
+  [(CoreDAVXMLParser *)v8 setParseHints:parseHints];
 
   return v8;
 }
 
-- (id)successfulValueForNameSpace:(id)a3 elementName:(id)a4
+- (id)successfulValueForNameSpace:(id)space elementName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  spaceCopy = space;
+  nameCopy = name;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(CoreDAVPropertyFindBaseTask *)self multiStatus];
-  v9 = [v8 responses];
+  multiStatus = [(CoreDAVPropertyFindBaseTask *)self multiStatus];
+  responses = [multiStatus responses];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [responses countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = *v18;
@@ -112,20 +112,20 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(responses);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) successfulPropertiesToValues];
-        if (v13)
+        successfulPropertiesToValues = [*(*(&v17 + 1) + 8 * i) successfulPropertiesToValues];
+        if (successfulPropertiesToValues)
         {
-          v14 = v13;
-          v10 = [v13 CDVObjectForKeyWithNameSpace:v6 andName:v7];
+          v14 = successfulPropertiesToValues;
+          v10 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:spaceCopy andName:nameCopy];
 
           goto LABEL_11;
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [responses countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -144,10 +144,10 @@ LABEL_11:
 
 - (void)updateMultiStatusFromResponse
 {
-  v3 = [(CoreDAVPropertyFindBaseTask *)self multiStatus];
-  if (!v3)
+  multiStatus = [(CoreDAVPropertyFindBaseTask *)self multiStatus];
+  if (!multiStatus)
   {
-    v4 = [(CoreDAVTask *)self responseBodyParser];
+    responseBodyParser = [(CoreDAVTask *)self responseBodyParser];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -155,17 +155,17 @@ LABEL_11:
 
     else
     {
-      v5 = [(CoreDAVTask *)self simulated];
+      simulated = [(CoreDAVTask *)self simulated];
 
-      if (!v5)
+      if (!simulated)
       {
         return;
       }
     }
 
-    v6 = [(CoreDAVTask *)self rootElement];
-    [(CoreDAVPropertyFindBaseTask *)self setMultiStatus:v6];
-    v3 = v6;
+    rootElement = [(CoreDAVTask *)self rootElement];
+    [(CoreDAVPropertyFindBaseTask *)self setMultiStatus:rootElement];
+    multiStatus = rootElement;
   }
 }
 
@@ -173,28 +173,28 @@ LABEL_11:
 {
   v34 = *MEMORY[0x277D85DE8];
   [(CoreDAVPropertyFindBaseTask *)self updateMultiStatusFromResponse];
-  v3 = [(CoreDAVPropertyFindBaseTask *)self multiStatus];
+  multiStatus = [(CoreDAVPropertyFindBaseTask *)self multiStatus];
 
-  if (v3)
+  if (multiStatus)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v4 = [(CoreDAVPropertyFindBaseTask *)self multiStatus];
-    v5 = [v4 responses];
+    multiStatus2 = [(CoreDAVPropertyFindBaseTask *)self multiStatus];
+    responses = [multiStatus2 responses];
 
-    v6 = [v5 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    v6 = [responses countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v6)
     {
       v8 = v6;
-      v25 = self;
+      selfCopy = self;
       v9 = 0;
       v10 = *v28;
       v11 = 1;
       *&v7 = 138412290;
       v24 = v7;
-      obj = v5;
+      obj = responses;
       do
       {
         for (i = 0; i != v8; ++i)
@@ -205,15 +205,15 @@ LABEL_11:
           }
 
           v13 = *(*(&v27 + 1) + 8 * i);
-          v14 = [v13 successfulPropertiesToValues];
-          v15 = [v14 count];
+          successfulPropertiesToValues = [v13 successfulPropertiesToValues];
+          v15 = [successfulPropertiesToValues count];
 
           v16 = v15 != 0;
           v17 = v15 == 0;
           if ([v13 hasPropertyError])
           {
             v18 = +[CoreDAVLogging sharedLogging];
-            WeakRetained = objc_loadWeakRetained(&v25->super._accountInfoProvider);
+            WeakRetained = objc_loadWeakRetained(&selfCopy->super._accountInfoProvider);
             v20 = [v18 logHandleForAccountInfoProvider:WeakRetained];
 
             if (v20 && os_log_type_enabled(v20, (2 * v16)))
@@ -253,19 +253,19 @@ LABEL_18:
   return v21;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {

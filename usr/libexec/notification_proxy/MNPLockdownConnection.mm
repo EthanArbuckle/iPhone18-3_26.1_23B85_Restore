@@ -1,8 +1,8 @@
 @interface MNPLockdownConnection
-- (MNPLockdownConnection)initWithConnection:(_lockdown_connection *)a3;
+- (MNPLockdownConnection)initWithConnection:(_lockdown_connection *)connection;
 - (void)dealloc;
 - (void)listen;
-- (void)sendMessage:(id)a3;
+- (void)sendMessage:(id)message;
 - (void)shutdown;
 @end
 
@@ -17,7 +17,7 @@
   [(MNPLockdownConnection *)&v4 dealloc];
 }
 
-- (MNPLockdownConnection)initWithConnection:(_lockdown_connection *)a3
+- (MNPLockdownConnection)initWithConnection:(_lockdown_connection *)connection
 {
   v12.receiver = self;
   v12.super_class = MNPLockdownConnection;
@@ -28,7 +28,7 @@
     transaction = v4->_transaction;
     v4->_transaction = v5;
 
-    v4->_conn = a3;
+    v4->_conn = connection;
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.mobile.notification_proxy_io_queue", v7);
     queue = v4->_queue;
@@ -40,11 +40,11 @@
   return v4;
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
     queue = self->_queue;
     v8[0] = _NSConcreteStackBlock;
@@ -52,7 +52,7 @@
     v8[2] = sub_100000F38;
     v8[3] = &unk_100008328;
     v8[4] = self;
-    v9 = v4;
+    v9 = messageCopy;
     dispatch_async(queue, v8);
   }
 

@@ -1,6 +1,6 @@
 @interface CNPropertyBestIDSValueQuery
-- (CNPropertyBestIDSValueQuery)initWithPropertyItems:(id)a3 service:(id)a4;
-- (CNPropertyBestIDSValueQuery)initWithPropertyItems:(id)a3 service:(id)a4 idsAvailabilityProvider:(id)a5 schedulerProvider:(id)a6;
+- (CNPropertyBestIDSValueQuery)initWithPropertyItems:(id)items service:(id)service;
+- (CNPropertyBestIDSValueQuery)initWithPropertyItems:(id)items service:(id)service idsAvailabilityProvider:(id)provider schedulerProvider:(id)schedulerProvider;
 - (CNPropertyBestIDSValueQueryDelegate)delegate;
 - (CNPropertyGroupItem)bestIDSProperty;
 - (void)cancel;
@@ -27,8 +27,8 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v5 = [(CNPropertyBestIDSValueQuery *)self validIDSHandles];
-  v6 = [v5 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  validIDSHandles = [(CNPropertyBestIDSValueQuery *)self validIDSHandles];
+  v6 = [validIDSHandles countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v6)
   {
     v8 = 0;
@@ -39,12 +39,12 @@ LABEL_25:
   }
 
   v7 = v6;
-  obj = v5;
+  obj = validIDSHandles;
   v35 = v4;
   v8 = 0;
   v37 = *v43;
   v9 = *MEMORY[0x1E695C330];
-  v36 = self;
+  selfCopy = self;
   do
   {
     for (i = 0; i != v7; ++i)
@@ -55,11 +55,11 @@ LABEL_25:
       }
 
       v11 = *(*(&v42 + 1) + 8 * i);
-      v12 = [(CNPropertyBestIDSValueQuery *)self validIDSHandles];
-      if ([v12 containsObject:v11])
+      validIDSHandles2 = [(CNPropertyBestIDSValueQuery *)self validIDSHandles];
+      if ([validIDSHandles2 containsObject:v11])
       {
-        v13 = [(CNPropertyBestIDSValueQuery *)self validIDSHandles];
-        v14 = [v13 containsObject:v8];
+        validIDSHandles3 = [(CNPropertyBestIDSValueQuery *)self validIDSHandles];
+        v14 = [validIDSHandles3 containsObject:v8];
 
         if ((v14 & 1) == 0)
         {
@@ -74,15 +74,15 @@ LABEL_25:
       {
       }
 
-      v16 = [v11 contactProperty];
-      v17 = [v16 key];
+      contactProperty = [v11 contactProperty];
+      v17 = [contactProperty key];
       if ([v17 isEqualToString:v9])
       {
-        v18 = [v8 contactProperty];
-        v19 = [v18 key];
+        contactProperty2 = [v8 contactProperty];
+        v19 = [contactProperty2 key];
         v20 = [v19 isEqualToString:v9];
 
-        self = v36;
+        self = selfCopy;
         if ((v20 & 1) == 0)
         {
           goto LABEL_16;
@@ -93,15 +93,15 @@ LABEL_25:
       {
       }
 
-      v21 = [v11 contactProperty];
-      v22 = [v21 label];
-      if ([v35 containsObject:v22])
+      contactProperty3 = [v11 contactProperty];
+      label = [contactProperty3 label];
+      if ([v35 containsObject:label])
       {
-        v23 = [v8 contactProperty];
-        v24 = [v23 label];
-        v25 = [v35 containsObject:v24];
+        contactProperty4 = [v8 contactProperty];
+        label2 = [contactProperty4 label];
+        v25 = [v35 containsObject:label2];
 
-        self = v36;
+        self = selfCopy;
         if ((v25 & 1) == 0)
         {
 LABEL_16:
@@ -129,26 +129,26 @@ LABEL_16:
 
   if (v8)
   {
-    v27 = [(CNPropertyBestIDSValueQuery *)self idsHandles];
+    idsHandles = [(CNPropertyBestIDSValueQuery *)self idsHandles];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __46__CNPropertyBestIDSValueQuery_bestIDSProperty__block_invoke;
     v40[3] = &unk_1E74E70E0;
     v8 = v8;
     v41 = v8;
-    [v27 _cn_firstObjectPassingTest:v40];
+    [idsHandles _cn_firstObjectPassingTest:v40];
     v29 = v28 = self;
 
-    v30 = [(CNPropertyBestIDSValueQuery *)v28 propertyItems];
+    propertyItems = [(CNPropertyBestIDSValueQuery *)v28 propertyItems];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __46__CNPropertyBestIDSValueQuery_bestIDSProperty__block_invoke_2;
     v38[3] = &unk_1E74E7108;
     v39 = v29;
     v31 = v29;
-    v32 = [v30 _cn_firstObjectPassingTest:v38];
+    v32 = [propertyItems _cn_firstObjectPassingTest:v38];
 
-    v5 = v41;
+    validIDSHandles = v41;
     v4 = v35;
     goto LABEL_25;
   }
@@ -171,18 +171,18 @@ uint64_t __46__CNPropertyBestIDSValueQuery_bestIDSProperty__block_invoke_2(uint6
 
 - (void)cancel
 {
-  v3 = [(CNPropertyBestIDSValueQuery *)self idsLookupToken];
-  [v3 cancel];
+  idsLookupToken = [(CNPropertyBestIDSValueQuery *)self idsLookupToken];
+  [idsLookupToken cancel];
 
   [(CNPropertyBestIDSValueQuery *)self setDelegate:0];
 }
 
-- (CNPropertyBestIDSValueQuery)initWithPropertyItems:(id)a3 service:(id)a4 idsAvailabilityProvider:(id)a5 schedulerProvider:(id)a6
+- (CNPropertyBestIDSValueQuery)initWithPropertyItems:(id)items service:(id)service idsAvailabilityProvider:(id)provider schedulerProvider:(id)schedulerProvider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  serviceCopy = service;
+  providerCopy = provider;
+  schedulerProviderCopy = schedulerProvider;
   v42.receiver = self;
   v42.super_class = CNPropertyBestIDSValueQuery;
   v14 = [(CNPropertyBestIDSValueQuery *)&v42 init];
@@ -192,17 +192,17 @@ uint64_t __46__CNPropertyBestIDSValueQuery_bestIDSProperty__block_invoke_2(uint6
     goto LABEL_15;
   }
 
-  [(CNPropertyBestIDSValueQuery *)v14 setPropertyItems:v10];
-  v16 = [(CNPropertyBestIDSValueQuery *)v15 propertyItems];
-  v17 = [v16 count];
+  [(CNPropertyBestIDSValueQuery *)v14 setPropertyItems:itemsCopy];
+  propertyItems = [(CNPropertyBestIDSValueQuery *)v15 propertyItems];
+  v17 = [propertyItems count];
 
   if (!v17)
   {
     goto LABEL_15;
   }
 
-  v18 = [(CNPropertyBestIDSValueQuery *)v15 propertyItems];
-  v19 = [v18 _cn_filter:&__block_literal_global_3_58876];
+  propertyItems2 = [(CNPropertyBestIDSValueQuery *)v15 propertyItems];
+  v19 = [propertyItems2 _cn_filter:&__block_literal_global_3_58876];
   v20 = [v19 _cn_map:&__block_literal_global_58871];
   [(CNPropertyBestIDSValueQuery *)v15 setIdsHandles:v20];
 
@@ -238,11 +238,11 @@ uint64_t __46__CNPropertyBestIDSValueQuery_bestIDSProperty__block_invoke_2(uint6
   _Block_object_dispose(&v48, 8);
   if (v25)
   {
-    if ([v11 isEqualToString:*v25])
+    if ([serviceCopy isEqualToString:*v25])
     {
       v28 = MEMORY[0x1E6996B68];
-      v29 = [(CNPropertyBestIDSValueQuery *)v22 idsHandles];
-      v30 = [v28 validateHandlesForFaceTime:v29 availabilityProvider:v12 schedulerProvider:v13 handler:v24];
+      idsHandles = [(CNPropertyBestIDSValueQuery *)v22 idsHandles];
+      v30 = [v28 validateHandlesForFaceTime:idsHandles availabilityProvider:providerCopy schedulerProvider:schedulerProviderCopy handler:v24];
       goto LABEL_13;
     }
 
@@ -268,7 +268,7 @@ uint64_t __46__CNPropertyBestIDSValueQuery_bestIDSProperty__block_invoke_2(uint6
     _Block_object_dispose(&v48, 8);
     if (v31)
     {
-      if (![v11 isEqualToString:*v31])
+      if (![serviceCopy isEqualToString:*v31])
       {
 LABEL_14:
 
@@ -277,8 +277,8 @@ LABEL_15:
       }
 
       v34 = MEMORY[0x1E6996B68];
-      v29 = [(CNPropertyBestIDSValueQuery *)v22 idsHandles];
-      v30 = [v34 validateHandlesForIMessage:v29 availabilityProvider:v12 schedulerProvider:v13 handler:v24];
+      idsHandles = [(CNPropertyBestIDSValueQuery *)v22 idsHandles];
+      v30 = [v34 validateHandlesForIMessage:idsHandles availabilityProvider:providerCopy schedulerProvider:schedulerProviderCopy handler:v24];
 LABEL_13:
       v35 = v30;
       [(CNPropertyBestIDSValueQuery *)v22 setIdsLookupToken:v30];
@@ -286,16 +286,16 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIDSServiceNameiMessage(void)"];
-    [v37 handleFailureInFunction:v38 file:@"CNUIIDS_SoftLink.h" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v38 file:@"CNUIIDS_SoftLink.h" lineNumber:23 description:{@"%s", dlerror()}];
   }
 
   else
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIDSServiceNameFaceTime(void)"];
-    [v37 handleFailureInFunction:v38 file:@"CNUIIDS_SoftLink.h" lineNumber:24 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v38 file:@"CNUIIDS_SoftLink.h" lineNumber:24 description:{@"%s", dlerror()}];
   }
 
   __break(1u);
@@ -352,14 +352,14 @@ void __103__CNPropertyBestIDSValueQuery_initWithPropertyItems_service_idsAvailab
   }
 }
 
-- (CNPropertyBestIDSValueQuery)initWithPropertyItems:(id)a3 service:(id)a4
+- (CNPropertyBestIDSValueQuery)initWithPropertyItems:(id)items service:(id)service
 {
-  v6 = a4;
-  v7 = a3;
+  serviceCopy = service;
+  itemsCopy = items;
   v8 = +[CNUIContactsEnvironment currentEnvironment];
-  v9 = [v8 idsAvailabilityProvider];
-  v10 = [v8 defaultSchedulerProvider];
-  v11 = [(CNPropertyBestIDSValueQuery *)self initWithPropertyItems:v7 service:v6 idsAvailabilityProvider:v9 schedulerProvider:v10];
+  idsAvailabilityProvider = [v8 idsAvailabilityProvider];
+  defaultSchedulerProvider = [v8 defaultSchedulerProvider];
+  v11 = [(CNPropertyBestIDSValueQuery *)self initWithPropertyItems:itemsCopy service:serviceCopy idsAvailabilityProvider:idsAvailabilityProvider schedulerProvider:defaultSchedulerProvider];
 
   return v11;
 }

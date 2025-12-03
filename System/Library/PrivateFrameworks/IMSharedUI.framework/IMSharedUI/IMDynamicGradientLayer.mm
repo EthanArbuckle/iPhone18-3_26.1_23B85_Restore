@@ -8,12 +8,12 @@
 - (void)_updateAnimation;
 - (void)_updateGradientImage;
 - (void)dealloc;
-- (void)didMoveToWindow:(id)a3;
+- (void)didMoveToWindow:(id)window;
 - (void)layoutSublayers;
-- (void)setColorSpace:(CGColorSpace *)a3;
-- (void)setColors:(id)a3;
-- (void)setReferenceView:(id)a3;
-- (void)setScreenScale:(double)a3;
+- (void)setColorSpace:(CGColorSpace *)space;
+- (void)setColors:(id)colors;
+- (void)setReferenceView:(id)view;
+- (void)setScreenScale:(double)scale;
 @end
 
 @implementation IMDynamicGradientLayer
@@ -144,9 +144,9 @@
   }
 }
 
-- (void)setReferenceView:(id)a3
+- (void)setReferenceView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_referenceView);
 
   if (WeakRetained != obj)
@@ -181,20 +181,20 @@
   MEMORY[0x2821F96F8](updated);
 }
 
-- (void)didMoveToWindow:(id)a3
+- (void)didMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
-    objc_msgSend__updateAnimation(self, a2, a3);
+    objc_msgSend__updateAnimation(self, a2, window);
   }
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v11 = a3;
-  if ((objc_msgSend_isEqualToArray_(self->_colors, v4, v11) & 1) == 0)
+  colorsCopy = colors;
+  if ((objc_msgSend_isEqualToArray_(self->_colors, v4, colorsCopy) & 1) == 0)
   {
-    v7 = objc_msgSend_copy(v11, v5, v6);
+    v7 = objc_msgSend_copy(colorsCopy, v5, v6);
     colors = self->_colors;
     self->_colors = v7;
 
@@ -202,21 +202,21 @@
   }
 }
 
-- (void)setScreenScale:(double)a3
+- (void)setScreenScale:(double)scale
 {
-  if (self->_screenScale != a3)
+  if (self->_screenScale != scale)
   {
-    self->_screenScale = a3;
+    self->_screenScale = scale;
     objc_msgSend__updateGradientImage(self, a2, v3);
   }
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
-  if (self->_colorSpace != a3 && (CGColorSpaceEqualToColorSpace() & 1) == 0)
+  if (self->_colorSpace != space && (CGColorSpaceEqualToColorSpace() & 1) == 0)
   {
     CGColorSpaceRelease(self->_colorSpace);
-    self->_colorSpace = CGColorSpaceRetain(a3);
+    self->_colorSpace = CGColorSpaceRetain(space);
 
     objc_msgSend__updateGradientImage(self, v5, v6);
   }

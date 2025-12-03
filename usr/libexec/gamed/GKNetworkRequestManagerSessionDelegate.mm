@@ -1,34 +1,34 @@
 @interface GKNetworkRequestManagerSessionDelegate
 - (GKNetworkRequestManager)networkManager;
-- (GKNetworkRequestManagerSessionDelegate)initWithNetworkManager:(id)a3;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didResumeAtOffset:(int64_t)a5 expectedTotalBytes:(int64_t)a6;
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
+- (GKNetworkRequestManagerSessionDelegate)initWithNetworkManager:(id)manager;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didResumeAtOffset:(int64_t)offset expectedTotalBytes:(int64_t)bytes;
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
 @end
 
 @implementation GKNetworkRequestManagerSessionDelegate
 
-- (GKNetworkRequestManagerSessionDelegate)initWithNetworkManager:(id)a3
+- (GKNetworkRequestManagerSessionDelegate)initWithNetworkManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = GKNetworkRequestManagerSessionDelegate;
   v5 = [(GKNetworkRequestManagerSessionDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_networkManager, v4);
+    objc_storeWeak(&v5->_networkManager, managerCopy);
   }
 
   return v6;
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didResumeAtOffset:(int64_t)a5 expectedTotalBytes:(int64_t)a6
+- (void)URLSession:(id)session downloadTask:(id)task didResumeAtOffset:(int64_t)offset expectedTotalBytes:(int64_t)bytes
 {
-  v9 = a3;
-  v10 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   v11 = objc_autoreleasePoolPush();
   if (!os_log_GKGeneral)
   {
@@ -39,24 +39,24 @@
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v14 = 134218754;
-    v15 = a5;
+    offsetCopy = offset;
     v16 = 2048;
-    v17 = a6;
+    bytesCopy = bytes;
     v18 = 2112;
-    v19 = v9;
+    v19 = sessionCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = taskCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "GKNetworkRequestManager Download resumed at offset %lld bytes out of an expected %lld bytes. Session %@ task %@\n", &v14, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = v8;
+  connectionCopy = connection;
+  handlerCopy = handler;
+  v10 = connectionCopy;
   [GKStoreBag addAuthHeadersToRequest:v10];
   v11 = [v10 valueForHTTPHeaderField:@"x-gk-sap-signature"];
   v22[0] = _NSConcreteStackBlock;
@@ -66,14 +66,14 @@
   v23 = v10;
   v12 = v23;
   v24 = v12;
-  v13 = v9;
+  v13 = handlerCopy;
   v25 = v13;
   v14 = objc_retainBlock(v22);
   v15 = v14;
   if (v11)
   {
-    v16 = [(GKNetworkRequestManagerSessionDelegate *)self networkManager];
-    if (v16)
+    networkManager = [(GKNetworkRequestManagerSessionDelegate *)self networkManager];
+    if (networkManager)
     {
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -81,7 +81,7 @@
       v19[3] = &unk_100366D80;
       v20 = v12;
       v21 = v15;
-      [v16 getFairPlaySession:v19];
+      [networkManager getFairPlaySession:v19];
     }
 
     else
@@ -107,16 +107,16 @@
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v9 response];
+  response = [taskCopy response];
   WeakRetained = objc_loadWeakRetained(&self->_networkManager);
 
-  if (!v9 || !WeakRetained)
+  if (!taskCopy || !WeakRetained)
   {
     if (!os_log_GKGeneral)
     {
@@ -127,18 +127,18 @@
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v79 = v8;
+      v79 = sessionCopy;
       v80 = 2112;
-      v81 = v9;
+      v81 = taskCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "GKNetworkRequestManager Download manager or task is nil. Session %@ task %@", buf, 0x16u);
     }
 
     goto LABEL_82;
   }
 
-  if (!v10 || [v10 code] != -999)
+  if (!errorCopy || [errorCopy code] != -999)
   {
-    if (!v12)
+    if (!response)
     {
       if (!os_log_GKGeneral)
       {
@@ -149,47 +149,47 @@
       if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v79 = v8;
+        v79 = sessionCopy;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "GKNetworkRequestManager Session %@ Task completed but repsonse was nil, going to retry", buf, 0xCu);
       }
 
-      v16 = [GKNetworkRequestManager dictionaryFromTaskDescription:v9];
-      v36 = [v9 originalRequest];
-      v17 = [GKNetworkRequestManager taskWithRequest:v36 description:v16 session:v8];
+      v16 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
+      originalRequest = [taskCopy originalRequest];
+      v17 = [GKNetworkRequestManager taskWithRequest:originalRequest description:v16 session:sessionCopy];
 
       [v17 resume];
       goto LABEL_29;
     }
 
-    v20 = [GKNetworkRequestManager uuidFromTask:v9];
+    v20 = [GKNetworkRequestManager uuidFromTask:taskCopy];
     if (v20)
     {
       v21 = objc_loadWeakRetained(&self->_networkManager);
-      v22 = [v21 resultsLocation];
-      v23 = [v21 pathToTempFile:v22 fileName:v20];
+      resultsLocation = [v21 resultsLocation];
+      v23 = [v21 pathToTempFile:resultsLocation fileName:v20];
 
       v24 = objc_loadWeakRetained(&self->_networkManager);
-      v25 = [v24 resultsLocation];
-      v77 = [v24 filePathToTempFile:v25 fileName:v20];
+      resultsLocation2 = [v24 resultsLocation];
+      v77 = [v24 filePathToTempFile:resultsLocation2 fileName:v20];
 
       v26 = v23;
       if (v23)
       {
-        v27 = [v23 absoluteString];
-        v28 = [NSDictionary dictionaryWithContentsOfFile:v27];
+        absoluteString = [v23 absoluteString];
+        v28 = [NSDictionary dictionaryWithContentsOfFile:absoluteString];
 
         if (v28)
         {
           v29 = v28;
           v72 = v20;
           v30 = [v28 objectForKey:@"status"];
-          v31 = [v30 longValue];
+          longValue = [v30 longValue];
 
           v75 = v29;
           v76 = [v29 objectForKey:@"message"];
           v26 = v23;
-          v74 = v31;
-          if (v31)
+          v74 = longValue;
+          if (longValue)
           {
             if (!os_log_GKGeneral)
             {
@@ -200,7 +200,7 @@
             if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
             {
               *buf = 134217984;
-              v79 = v31;
+              v79 = longValue;
               _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "GKNetworkRequestManager serverError %ld", buf, 0xCu);
             }
           }
@@ -210,31 +210,31 @@
           {
 LABEL_34:
             v37 = +[NSFileManager defaultManager];
-            v38 = [v77 path];
-            [v37 removeItemAtPath:v38 error:0];
+            path = [v77 path];
+            [v37 removeItemAtPath:path error:0];
 
-            v39 = [v12 statusCode];
-            if (v39 == 520)
+            statusCode = [response statusCode];
+            if (statusCode == 520)
             {
               v40 = objc_loadWeakRetained(&self->_networkManager);
-              [v40 handleRetryAfter:v9];
+              [v40 handleRetryAfter:taskCopy];
 LABEL_81:
 
               goto LABEL_82;
             }
 
-            v43 = v39 != 401 && v39 != 200 && v39 != 413 && (v39 - 433) > 1;
+            v43 = statusCode != 401 && statusCode != 200 && statusCode != 413 && (statusCode - 433) > 1;
             v71 = v26;
             if (v43 || v74 != 5000)
             {
-              v56 = v39 != 200 && v39 != 304 && v39 != 206;
-              if (!v10 && !v56 && v74 < 1)
+              v56 = statusCode != 200 && statusCode != 304 && statusCode != 206;
+              if (!errorCopy && !v56 && v74 < 1)
               {
                 goto LABEL_76;
               }
 
               v92[0] = @"statusCode";
-              v57 = [NSNumber numberWithInteger:v39];
+              v57 = [NSNumber numberWithInteger:statusCode];
               v93[0] = v57;
               v92[1] = @"serverResult";
               v58 = [NSNumber numberWithLong:v74];
@@ -264,11 +264,11 @@ LABEL_81:
 
             else
             {
-              v40 = [GKNetworkRequestManager dictionaryFromTaskDescription:v9];
+              v40 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
               v44 = [v40 objectForKeyedSubscript:@"_gkAuthRetries"];
-              v45 = [v44 longValue];
+              longValue2 = [v44 longValue];
 
-              if (v45 <= 9)
+              if (longValue2 <= 9)
               {
                 if (!os_log_GKGeneral)
                 {
@@ -279,7 +279,7 @@ LABEL_81:
                 if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
                 {
                   v48 = v47;
-                  v49 = [NSNumber numberWithInteger:v45 + 1];
+                  v49 = [NSNumber numberWithInteger:longValue2 + 1];
                   *buf = 138412546;
                   v79 = v49;
                   v80 = 2112;
@@ -287,14 +287,14 @@ LABEL_81:
                   _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "GKNetworkRequestManager auth failure, retry %@: for request: %@", buf, 0x16u);
                 }
 
-                v50 = [NSNumber numberWithInteger:v45 + 1];
+                v50 = [NSNumber numberWithInteger:longValue2 + 1];
                 [v40 setObject:v50 forKeyedSubscript:@"_gkAuthRetries"];
 
-                v51 = [v9 originalRequest];
-                [GKStoreBag addAuthHeadersToRequest:v51];
+                originalRequest2 = [taskCopy originalRequest];
+                [GKStoreBag addAuthHeadersToRequest:originalRequest2];
 
-                v52 = [v9 originalRequest];
-                v53 = [GKNetworkRequestManager taskWithRequest:v52 description:v40 session:v8];
+                originalRequest3 = [taskCopy originalRequest];
+                v53 = [GKNetworkRequestManager taskWithRequest:originalRequest3 description:v40 session:sessionCopy];
 
                 [v53 resume];
                 v26 = v71;
@@ -327,22 +327,22 @@ LABEL_76:
             {
               v73 = v20;
               log = v65;
-              v69 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 statusCode]);
+              v69 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [response statusCode]);
               v66 = [NSNumber numberWithLong:v74];
-              v67 = [GKNetworkRequestManager dictionaryFromTaskDescription:v9];
-              v68 = [v12 allHeaderFields];
+              v67 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
+              allHeaderFields = [response allHeaderFields];
               *buf = 138413826;
-              v79 = v9;
+              v79 = taskCopy;
               v80 = 2112;
               v81 = v69;
               v82 = 2112;
               v83 = v66;
               v84 = 2112;
-              v85 = v10;
+              v85 = errorCopy;
               v86 = 2112;
               v87 = v67;
               v88 = 2112;
-              v89 = v68;
+              v89 = allHeaderFields;
               v90 = 2112;
               v91 = v75;
               _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "GKNetworkRequestManager Task completed: %@ code:%@ serverCode:%@ error: %@ descriptor: %@ , headers: %@ resultsPlist: %@", buf, 0x48u);
@@ -352,7 +352,7 @@ LABEL_76:
             }
 
             v40 = objc_loadWeakRetained(&self->_networkManager);
-            [v40 handleTaskFinished:v9];
+            [v40 handleTaskFinished:taskCopy];
             goto LABEL_81;
           }
         }
@@ -392,7 +392,7 @@ LABEL_33:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v16 = v15;
-    v17 = [GKNetworkRequestManager dictionaryFromTaskDescription:v9];
+    v17 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
     *buf = 138412290;
     v79 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "GKNetworkRequestManager task was explicitly cancelled: %@", buf, 0xCu);
@@ -404,26 +404,26 @@ LABEL_82:
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v7 = a5;
-  v8 = a4;
+  lCopy = l;
+  taskCopy = task;
   v9 = +[NSFileManager defaultManager];
-  v10 = [GKNetworkRequestManager uuidFromTask:v8];
+  v10 = [GKNetworkRequestManager uuidFromTask:taskCopy];
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_networkManager);
-    v12 = [v11 resultsLocation];
-    v13 = [v11 filePathToTempFile:v12 fileName:v10];
+    resultsLocation = [v11 resultsLocation];
+    v13 = [v11 filePathToTempFile:resultsLocation fileName:v10];
 
-    v14 = [v13 path];
-    [v9 removeItemAtPath:v14 error:0];
+    path = [v13 path];
+    [v9 removeItemAtPath:path error:0];
 
     v25 = 0;
-    LODWORD(v12) = [v9 moveItemAtURL:v7 toURL:v13 error:&v25];
+    LODWORD(resultsLocation) = [v9 moveItemAtURL:lCopy toURL:v13 error:&v25];
     v15 = v25;
-    if (v12)
+    if (resultsLocation)
     {
       if (!os_log_GKGeneral)
       {
@@ -437,7 +437,7 @@ LABEL_82:
       }
 
       *buf = 138412546;
-      v27 = v7;
+      v27 = lCopy;
       v28 = 2112;
       v29 = v13;
       v18 = "GKNetworkRequestManager moved %@ to %@";
@@ -459,7 +459,7 @@ LABEL_82:
       }
 
       *buf = 138412802;
-      v27 = v7;
+      v27 = lCopy;
       v28 = 2112;
       v29 = v13;
       v30 = 2112;
@@ -490,11 +490,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  metricsCopy = metrics;
   if (!os_log_GKGeneral)
   {
     v10 = GKOSLoggers();
@@ -508,7 +508,7 @@ LABEL_17:
   }
 
   v12 = +[GKAMPController controller];
-  [v12 reportURLSessionEventWithTask:v8 metrics:v9];
+  [v12 reportURLSessionEventWithTask:taskCopy metrics:metricsCopy];
 }
 
 - (GKNetworkRequestManager)networkManager

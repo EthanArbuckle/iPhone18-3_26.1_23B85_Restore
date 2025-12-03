@@ -1,12 +1,12 @@
 @interface SYPBContentItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYPBContentItem
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = SYPBContentItem;
   v4 = [(SYPBContentItem *)&v8 description];
-  v5 = [(SYPBContentItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYPBContentItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   itemIdentifierData = self->_itemIdentifierData;
   if (itemIdentifierData)
   {
-    [v3 setObject:itemIdentifierData forKey:@"itemIdentifierData"];
+    [dictionary setObject:itemIdentifierData forKey:@"itemIdentifierData"];
   }
 
   displayTitle = self->_displayTitle;
@@ -78,15 +78,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_itemIdentifierData)
   {
     [SYPBContentItem writeTo:];
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteDataField();
   if (self->_displayTitle)
   {
@@ -131,43 +131,43 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setItemIdentifierData:self->_itemIdentifierData];
+  toCopy = to;
+  [toCopy setItemIdentifierData:self->_itemIdentifierData];
   if (self->_displayTitle)
   {
-    [v5 setDisplayTitle:?];
+    [toCopy setDisplayTitle:?];
   }
 
   if (self->_sourceIdentifier)
   {
-    [v5 setSourceIdentifier:?];
+    [toCopy setSourceIdentifier:?];
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (self->_sourceLastKnownName)
   {
-    [v5 setSourceLastKnownName:?];
-    v4 = v5;
+    [toCopy setSourceLastKnownName:?];
+    v4 = toCopy;
   }
 
   if (self->_itemURL)
   {
-    [v5 setItemURL:?];
-    v4 = v5;
+    [toCopy setItemURL:?];
+    v4 = toCopy;
   }
 
   if (self->_userActivityData)
   {
-    [v5 setUserActivityData:?];
-    v4 = v5;
+    [toCopy setUserActivityData:?];
+    v4 = toCopy;
   }
 
   if (self->_linkPreviewMetadata)
   {
-    [v5 setLinkPreviewMetadata:?];
-    v4 = v5;
+    [toCopy setLinkPreviewMetadata:?];
+    v4 = toCopy;
   }
 
   if (*&self->_has)
@@ -177,34 +177,34 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_itemIdentifierData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_itemIdentifierData copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_displayTitle copyWithZone:a3];
+  v8 = [(NSString *)self->_displayTitle copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_sourceIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_sourceIdentifier copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_sourceLastKnownName copyWithZone:a3];
+  v12 = [(NSString *)self->_sourceLastKnownName copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
-  v14 = [(NSString *)self->_itemURL copyWithZone:a3];
+  v14 = [(NSString *)self->_itemURL copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
-  v16 = [(NSData *)self->_userActivityData copyWithZone:a3];
+  v16 = [(NSData *)self->_userActivityData copyWithZone:zone];
   v17 = *(v5 + 64);
   *(v5 + 64) = v16;
 
-  v18 = [(NSData *)self->_linkPreviewMetadata copyWithZone:a3];
+  v18 = [(NSData *)self->_linkPreviewMetadata copyWithZone:zone];
   v19 = *(v5 + 40);
   *(v5 + 40) = v18;
 
@@ -217,16 +217,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   itemIdentifierData = self->_itemIdentifierData;
-  if (itemIdentifierData | *(v4 + 3))
+  if (itemIdentifierData | *(equalCopy + 3))
   {
     if (![(NSData *)itemIdentifierData isEqual:?])
     {
@@ -235,7 +235,7 @@
   }
 
   displayTitle = self->_displayTitle;
-  if (displayTitle | *(v4 + 2))
+  if (displayTitle | *(equalCopy + 2))
   {
     if (![(NSString *)displayTitle isEqual:?])
     {
@@ -244,7 +244,7 @@
   }
 
   sourceIdentifier = self->_sourceIdentifier;
-  if (sourceIdentifier | *(v4 + 6))
+  if (sourceIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)sourceIdentifier isEqual:?])
     {
@@ -253,7 +253,7 @@
   }
 
   sourceLastKnownName = self->_sourceLastKnownName;
-  if (sourceLastKnownName | *(v4 + 7))
+  if (sourceLastKnownName | *(equalCopy + 7))
   {
     if (![(NSString *)sourceLastKnownName isEqual:?])
     {
@@ -262,7 +262,7 @@
   }
 
   itemURL = self->_itemURL;
-  if (itemURL | *(v4 + 4))
+  if (itemURL | *(equalCopy + 4))
   {
     if (![(NSString *)itemURL isEqual:?])
     {
@@ -271,7 +271,7 @@
   }
 
   userActivityData = self->_userActivityData;
-  if (userActivityData | *(v4 + 8))
+  if (userActivityData | *(equalCopy + 8))
   {
     if (![(NSData *)userActivityData isEqual:?])
     {
@@ -280,7 +280,7 @@
   }
 
   linkPreviewMetadata = self->_linkPreviewMetadata;
-  if (linkPreviewMetadata | *(v4 + 5))
+  if (linkPreviewMetadata | *(equalCopy + 5))
   {
     if (![(NSData *)linkPreviewMetadata isEqual:?])
     {
@@ -288,10 +288,10 @@
     }
   }
 
-  v12 = (*(v4 + 72) & 1) == 0;
+  v12 = (*(equalCopy + 72) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) != 0 && self->_previewLoadLevel == *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) != 0 && self->_previewLoadLevel == *(equalCopy + 1))
     {
       v12 = 1;
       goto LABEL_21;
@@ -328,55 +328,55 @@ LABEL_21:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
     [(SYPBContentItem *)self setItemIdentifierData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SYPBContentItem *)self setDisplayTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(SYPBContentItem *)self setSourceIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(SYPBContentItem *)self setSourceLastKnownName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(SYPBContentItem *)self setItemURL:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(SYPBContentItem *)self setUserActivityData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(SYPBContentItem *)self setLinkPreviewMetadata:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
-    self->_previewLoadLevel = v4[1];
+    self->_previewLoadLevel = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

@@ -1,74 +1,74 @@
 @interface ICCRWeakReference
 - (ICCRDocument)document;
-- (ICCRWeakReference)initWithContents:(id)a3 document:(id)a4;
-- (ICCRWeakReference)initWithICCRCoder:(id)a3;
-- (ICCRWeakReference)initWithIdentifier:(id)a3 document:(id)a4;
+- (ICCRWeakReference)initWithContents:(id)contents document:(id)document;
+- (ICCRWeakReference)initWithICCRCoder:(id)coder;
+- (ICCRWeakReference)initWithIdentifier:(id)identifier document:(id)document;
 - (NSString)description;
 - (id)contents;
-- (void)encodeWithICCRCoder:(id)a3;
+- (void)encodeWithICCRCoder:(id)coder;
 @end
 
 @implementation ICCRWeakReference
 
-- (ICCRWeakReference)initWithContents:(id)a3 document:(id)a4
+- (ICCRWeakReference)initWithContents:(id)contents document:(id)document
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  contentsCopy = contents;
+  documentCopy = document;
+  if (contentsCopy)
   {
     v13.receiver = self;
     v13.super_class = ICCRWeakReference;
     v8 = [(ICCRWeakReference *)&v13 init];
     if (v8)
     {
-      v9 = [v6 identity];
+      identity = [contentsCopy identity];
       identifier = v8->_identifier;
-      v8->_identifier = v9;
+      v8->_identifier = identity;
 
-      objc_storeWeak(&v8->_document, v7);
+      objc_storeWeak(&v8->_document, documentCopy);
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (ICCRWeakReference)initWithIdentifier:(id)a3 document:(id)a4
+- (ICCRWeakReference)initWithIdentifier:(id)identifier document:(id)document
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  documentCopy = document;
   v12.receiver = self;
   v12.super_class = ICCRWeakReference;
   v9 = [(ICCRWeakReference *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeWeak(&v10->_document, v8);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeWeak(&v10->_document, documentCopy);
   }
 
   return v10;
 }
 
-- (ICCRWeakReference)initWithICCRCoder:(id)a3
+- (ICCRWeakReference)initWithICCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 11)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 11)
   {
-    v6 = [v4 document];
-    objc_storeWeak(&self->_document, v6);
+    document = [coderCopy document];
+    objc_storeWeak(&self->_document, document);
 
-    if (*(v5 + 48) == 11)
+    if (*(currentDocumentObjectForDecoding + 48) == 11)
     {
-      v7 = *(v5 + 40);
+      v7 = *(currentDocumentObjectForDecoding + 40);
     }
 
     else
@@ -76,42 +76,42 @@
       v7 = 0;
     }
 
-    v8 = [v4 decodeUUIDFromUUIDIndex:v7];
-    v9 = [v4 document];
-    self = [(ICCRWeakReference *)self initWithIdentifier:v8 document:v9];
+    v8 = [coderCopy decodeUUIDFromUUIDIndex:v7];
+    document2 = [coderCopy document];
+    self = [(ICCRWeakReference *)self initWithIdentifier:v8 document:document2];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithICCRCoder:(id)a3
+- (void)encodeWithICCRCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [v7 currentDocumentObjectForEncoding];
-  v5 = [(ICCRWeakReference *)self identifier];
-  v6 = [v7 encodeUUIDIndexFromUUID:v5];
-  if (*(v4 + 48) != 11)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  identifier = [(ICCRWeakReference *)self identifier];
+  v6 = [coderCopy encodeUUIDIndexFromUUID:identifier];
+  if (*(currentDocumentObjectForEncoding + 48) != 11)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
-    *(v4 + 48) = 11;
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
+    *(currentDocumentObjectForEncoding + 48) = 11;
   }
 
-  *(v4 + 40) = v6;
+  *(currentDocumentObjectForEncoding + 40) = v6;
 }
 
 - (id)contents
 {
-  v3 = [(ICCRWeakReference *)self document];
-  v4 = [v3 objects];
-  v5 = [(ICCRWeakReference *)self identifier];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  document = [(ICCRWeakReference *)self document];
+  objects = [document objects];
+  identifier = [(ICCRWeakReference *)self identifier];
+  v6 = [objects objectForKeyedSubscript:identifier];
 
   return v6;
 }
@@ -121,9 +121,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICCRWeakReference *)self identifier];
-  v7 = [v6 CR_shortDescription];
-  v8 = [v3 stringWithFormat:@"<%@ %p %@>", v5, self, v7];
+  identifier = [(ICCRWeakReference *)self identifier];
+  cR_shortDescription = [identifier CR_shortDescription];
+  v8 = [v3 stringWithFormat:@"<%@ %p %@>", v5, self, cR_shortDescription];
 
   return v8;
 }

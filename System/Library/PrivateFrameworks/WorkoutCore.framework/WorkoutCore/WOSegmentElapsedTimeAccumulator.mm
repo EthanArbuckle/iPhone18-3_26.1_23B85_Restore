@@ -1,14 +1,14 @@
 @interface WOSegmentElapsedTimeAccumulator
 - (WOSegmentElapsedTimeAccumulator)init;
-- (void)updateDuration:(double)a3;
+- (void)updateDuration:(double)duration;
 @end
 
 @implementation WOSegmentElapsedTimeAccumulator
 
-- (void)updateDuration:(double)a3
+- (void)updateDuration:(double)duration
 {
-  v4 = self;
-  SegmentElapsedTimeAccumulator.updateDuration(_:)(a3);
+  selfCopy = self;
+  SegmentElapsedTimeAccumulator.updateDuration(_:)(duration);
 }
 
 - (WOSegmentElapsedTimeAccumulator)init

@@ -23,7 +23,7 @@
     }
 
     v8 = client;
-    v9 = [(XPCClient *)v8 clientID];
+    clientID = [(XPCClient *)v8 clientID];
     if (self)
     {
       options = self->super._options;
@@ -40,15 +40,15 @@
     v30 = 2114;
     v31 = v3;
     v32 = 2114;
-    v33 = v9;
+    v33 = clientID;
     v34 = 1024;
     LODWORD(v35) = [(ASDRequestOptions *)v11 authIfNeeded];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Account lookup request by client: %{public}@ for authIfNeeded: %d", buf, 0x26u);
   }
 
   v12 = +[ACAccountStore ams_sharedAccountStore];
-  v13 = [v12 ams_activeiTunesAccount];
-  v14 = [v13 ams_DSID];
+  ams_activeiTunesAccount = [v12 ams_activeiTunesAccount];
+  ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
   v27 = 0;
   v15 = sub_100405768();
@@ -75,7 +75,7 @@
 
   else
   {
-    v21 = [v20 initWithAccountID:v14 askToBuyEnabled:v18];
+    v21 = [v20 initWithAccountID:ams_DSID askToBuyEnabled:v18];
   }
 
   v22 = v21;
@@ -94,7 +94,7 @@
     v30 = 2114;
     v31 = v3;
     v32 = 2114;
-    v33 = v14;
+    v33 = ams_DSID;
     v34 = 2048;
     v35 = v18;
     v25 = v24;

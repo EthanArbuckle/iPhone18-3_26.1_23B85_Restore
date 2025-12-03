@@ -49,16 +49,16 @@
 
 - (Class)defaultImageProviderClass
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:292 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:292 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
 - (NSString)uuid
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:288 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:288 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }

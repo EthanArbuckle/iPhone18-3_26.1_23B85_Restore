@@ -1,25 +1,25 @@
 @interface HKTitledBuddyHeaderView
-- (HKTitledBuddyHeaderView)initWithTopInset:(double)a3 linkButtonTitle:(id)a4;
+- (HKTitledBuddyHeaderView)initWithTopInset:(double)inset linkButtonTitle:(id)title;
 - (HKTitledBuddyHeaderViewDelegate)delegate;
 - (double)bottomPadding;
-- (id)_attributedBodyTextWithString:(id)a3 alignment:(int64_t)a4;
-- (void)_linkButtonTapped:(id)a3;
+- (id)_attributedBodyTextWithString:(id)string alignment:(int64_t)alignment;
+- (void)_linkButtonTapped:(id)tapped;
 - (void)_updateBodyTextViewConstraints;
 - (void)_updateForCurrentSizeCategory;
 - (void)deactivateDefaultTitleLabelBaselineConstraint;
 - (void)layoutSubviews;
-- (void)setBodyText:(id)a3;
-- (void)setBodyText:(id)a3 alignment:(int64_t)a4;
-- (void)setBodyTextAlignment:(int64_t)a3;
-- (void)setUseSolariumDesign:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBodyText:(id)text;
+- (void)setBodyText:(id)text alignment:(int64_t)alignment;
+- (void)setBodyTextAlignment:(int64_t)alignment;
+- (void)setUseSolariumDesign:(BOOL)design;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKTitledBuddyHeaderView
 
-- (HKTitledBuddyHeaderView)initWithTopInset:(double)a3 linkButtonTitle:(id)a4
+- (HKTitledBuddyHeaderView)initWithTopInset:(double)inset linkButtonTitle:(id)title
 {
-  v6 = a4;
+  titleCopy = title;
   v76.receiver = self;
   v76.super_class = HKTitledBuddyHeaderView;
   v7 = [(HKTitledBuddyHeaderView *)&v76 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -42,11 +42,11 @@
     [(UILabel *)v11 _setHyphenationFactor:v12];
     [(HKTitledBuddyHeaderView *)v8 addSubview:v11];
     v13 = objc_alloc_init(MEMORY[0x1E69DD168]);
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v13 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v13 setBackgroundColor:clearColor];
 
-    v15 = [MEMORY[0x1E69DC888] labelColor];
-    [(UITextView *)v13 setTextColor:v15];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UITextView *)v13 setTextColor:labelColor];
 
     [(UITextView *)v13 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UITextView *)v13 setScrollEnabled:0];
@@ -54,11 +54,11 @@
     [(UITextView *)v13 _setInteractiveTextSelectionDisabled:1];
     [(UITextView *)v13 setDataDetectorTypes:2];
     [(HKTitledBuddyHeaderView *)v8 addSubview:v13];
-    if (v6)
+    if (titleCopy)
     {
       v16 = MEMORY[0x1E69DC738];
       v17 = HKHealthKeyColor();
-      v18 = [v16 hk_buttonTintedWithColor:v17 title:v6 target:v8 action:sel__linkButtonTapped_];
+      v18 = [v16 hk_buttonTintedWithColor:v17 title:titleCopy target:v8 action:sel__linkButtonTapped_];
 
       [(HKTitledBuddyHeaderView *)v8 addSubview:v18];
     }
@@ -68,56 +68,56 @@
       v18 = 0;
     }
 
-    v19 = [(UILabel *)v11 firstBaselineAnchor];
-    v20 = [(HKTitledBuddyHeaderView *)v8 topAnchor];
-    v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20 constant:a3];
+    firstBaselineAnchor = [(UILabel *)v11 firstBaselineAnchor];
+    topAnchor = [(HKTitledBuddyHeaderView *)v8 topAnchor];
+    v21 = [firstBaselineAnchor constraintGreaterThanOrEqualToAnchor:topAnchor constant:inset];
     titleLabelBaselineConstraint = v8->_titleLabelBaselineConstraint;
     v8->_titleLabelBaselineConstraint = v21;
 
     [(NSLayoutConstraint *)v8->_titleLabelBaselineConstraint setActive:1];
-    v23 = [(UITextView *)v13 firstBaselineAnchor];
-    v24 = [(UILabel *)v11 lastBaselineAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:0.0];
+    firstBaselineAnchor2 = [(UITextView *)v13 firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v11 lastBaselineAnchor];
+    v25 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:0.0];
     bodyFirstBaselineConstraint = v8->_bodyFirstBaselineConstraint;
     v8->_bodyFirstBaselineConstraint = v25;
 
     [(NSLayoutConstraint *)v8->_bodyFirstBaselineConstraint setActive:1];
     if (v18)
     {
-      v27 = [(UIButton *)v18 widthAnchor];
-      v28 = [v27 constraintEqualToConstant:288.0];
+      widthAnchor = [(UIButton *)v18 widthAnchor];
+      v28 = [widthAnchor constraintEqualToConstant:288.0];
       [v28 setActive:1];
 
-      v29 = [(UIButton *)v18 centerXAnchor];
-      v30 = [(HKTitledBuddyHeaderView *)v8 centerXAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30];
+      centerXAnchor = [(UIButton *)v18 centerXAnchor];
+      centerXAnchor2 = [(HKTitledBuddyHeaderView *)v8 centerXAnchor];
+      v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v31 setActive:1];
 
-      v32 = [(UITextView *)v13 lastBaselineAnchor];
-      v33 = [(UIButton *)v18 firstBaselineAnchor];
-      v34 = [v32 constraintEqualToAnchor:v33 constant:0.0];
+      lastBaselineAnchor2 = [(UITextView *)v13 lastBaselineAnchor];
+      firstBaselineAnchor3 = [(UIButton *)v18 firstBaselineAnchor];
+      v34 = [lastBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:0.0];
       bodyLastBaselineToLinkConstraint = v8->_bodyLastBaselineToLinkConstraint;
       v8->_bodyLastBaselineToLinkConstraint = v34;
 
       [(NSLayoutConstraint *)v8->_bodyLastBaselineToLinkConstraint setActive:1];
-      v36 = [(UIButton *)v18 lastBaselineAnchor];
+      lastBaselineAnchor3 = [(UIButton *)v18 lastBaselineAnchor];
       v37 = &OBJC_IVAR___HKTitledBuddyHeaderView__linkButtonLastBaselineToBottomConstraint;
     }
 
     else
     {
-      v38 = [(UITextView *)v13 lastBaselineAnchor];
-      v39 = [(HKTitledBuddyHeaderView *)v8 bottomAnchor];
-      v40 = [v38 constraintEqualToAnchor:v39 constant:0.0];
+      lastBaselineAnchor4 = [(UITextView *)v13 lastBaselineAnchor];
+      bottomAnchor = [(HKTitledBuddyHeaderView *)v8 bottomAnchor];
+      v40 = [lastBaselineAnchor4 constraintEqualToAnchor:bottomAnchor constant:0.0];
       bodyBottomConstraint = v8->_bodyBottomConstraint;
       v8->_bodyBottomConstraint = v40;
 
-      v36 = [(UILabel *)v11 lastBaselineAnchor];
+      lastBaselineAnchor3 = [(UILabel *)v11 lastBaselineAnchor];
       v37 = &OBJC_IVAR___HKTitledBuddyHeaderView__titleBottomConstraint;
     }
 
-    v42 = [(HKTitledBuddyHeaderView *)v8 bottomAnchor];
-    v43 = [v36 constraintEqualToAnchor:v42 constant:0.0];
+    bottomAnchor2 = [(HKTitledBuddyHeaderView *)v8 bottomAnchor];
+    v43 = [lastBaselineAnchor3 constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v44 = *v37;
     v45 = *(&v8->super.super.super.isa + v44);
     *(&v8->super.super.super.isa + v44) = v43;
@@ -126,37 +126,37 @@
     [(UIView *)v8 hk_onboardingDirectionalEdgeInsets];
     v47 = v46;
     v49 = v48;
-    v50 = [(UILabel *)v11 leadingAnchor];
-    v51 = [(HKTitledBuddyHeaderView *)v8 leadingAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51 constant:v47];
+    leadingAnchor = [(UILabel *)v11 leadingAnchor];
+    leadingAnchor2 = [(HKTitledBuddyHeaderView *)v8 leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v47];
     titleLeadingConstraint = v8->_titleLeadingConstraint;
     v8->_titleLeadingConstraint = v52;
 
     [(NSLayoutConstraint *)v8->_titleLeadingConstraint setActive:1];
-    v54 = [(UILabel *)v11 trailingAnchor];
-    v55 = [(HKTitledBuddyHeaderView *)v8 trailingAnchor];
+    trailingAnchor = [(UILabel *)v11 trailingAnchor];
+    trailingAnchor2 = [(HKTitledBuddyHeaderView *)v8 trailingAnchor];
     v56 = -v49;
-    v57 = [v54 constraintEqualToAnchor:v55 constant:v56];
+    v57 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v56];
     titleTrailingConstraint = v8->_titleTrailingConstraint;
     v8->_titleTrailingConstraint = v57;
 
     [(NSLayoutConstraint *)v8->_titleTrailingConstraint setActive:1];
-    v59 = [(UITextView *)v13 leadingAnchor];
-    v60 = [(HKTitledBuddyHeaderView *)v8 leadingAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60 constant:v47];
+    leadingAnchor3 = [(UITextView *)v13 leadingAnchor];
+    leadingAnchor4 = [(HKTitledBuddyHeaderView *)v8 leadingAnchor];
+    v61 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v47];
     bodyLeadingConstraint = v8->_bodyLeadingConstraint;
     v8->_bodyLeadingConstraint = v61;
 
     [(NSLayoutConstraint *)v8->_bodyLeadingConstraint setActive:1];
-    v63 = [(UITextView *)v13 trailingAnchor];
-    v64 = [(HKTitledBuddyHeaderView *)v8 trailingAnchor];
-    v65 = [v63 constraintEqualToAnchor:v64 constant:v56];
+    trailingAnchor3 = [(UITextView *)v13 trailingAnchor];
+    trailingAnchor4 = [(HKTitledBuddyHeaderView *)v8 trailingAnchor];
+    v65 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:v56];
     bodyTrailingConstraint = v8->_bodyTrailingConstraint;
     v8->_bodyTrailingConstraint = v65;
 
     [(NSLayoutConstraint *)v8->_bodyTrailingConstraint setActive:1];
-    v67 = [(UITextView *)v13 heightAnchor];
-    v68 = [v67 constraintEqualToConstant:0.0];
+    heightAnchor = [(UITextView *)v13 heightAnchor];
+    v68 = [heightAnchor constraintEqualToConstant:0.0];
     bodyZeroHeightConstraint = v8->_bodyZeroHeightConstraint;
     v8->_bodyZeroHeightConstraint = v68;
 
@@ -178,17 +178,17 @@
   return v8;
 }
 
-- (void)setUseSolariumDesign:(BOOL)a3
+- (void)setUseSolariumDesign:(BOOL)design
 {
-  self->_useSolariumDesign = a3;
-  if (a3)
+  self->_useSolariumDesign = design;
+  if (design)
   {
     [(UILabel *)self->_titleLabel setTextAlignment:4];
     v4 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDDC0] symbolicTraits:2];
     [(UILabel *)self->_titleLabel setFont:v4];
 
-    v5 = [(UITextView *)self->_bodyTextView textContainer];
-    [v5 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)self->_bodyTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
   }
 }
 
@@ -222,12 +222,12 @@
   v18 = v6;
   v8 = [MEMORY[0x1E69DB880] defaultFontDescriptorWithTextStyle:? addingSymbolicTraits:? options:?];
   v9 = [v7 fontWithDescriptor:v8 size:0.0];
-  v10 = [(HKTitledBuddyHeaderView *)self titleLabel];
-  [v10 setFont:v9];
+  titleLabel = [(HKTitledBuddyHeaderView *)self titleLabel];
+  [titleLabel setFont:v9];
 
   v11 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v12 = [(UIButton *)self->_optionalLinkButton titleLabel];
-  [v12 setFont:v11];
+  titleLabel2 = [(UIButton *)self->_optionalLinkButton titleLabel];
+  [titleLabel2 setFont:v11];
 
   [v11 _scaledValueForValue:32.0];
   [(NSLayoutConstraint *)self->_bodyFirstBaselineConstraint setConstant:?];
@@ -242,8 +242,8 @@
   [(NSLayoutConstraint *)self->_linkButtonLastBaselineToBottomConstraint setConstant:-v14];
   [(NSLayoutConstraint *)self->_bodyBottomConstraint setConstant:v15];
   [(NSLayoutConstraint *)self->_titleBottomConstraint setConstant:v15];
-  v16 = [(HKTitledBuddyHeaderView *)self bodyText];
-  [(HKTitledBuddyHeaderView *)self setBodyText:v16];
+  bodyText = [(HKTitledBuddyHeaderView *)self bodyText];
+  [(HKTitledBuddyHeaderView *)self setBodyText:bodyText];
 }
 
 - (void)layoutSubviews
@@ -300,15 +300,15 @@
   return v4;
 }
 
-- (void)setBodyText:(id)a3
+- (void)setBodyText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_bodyText isEqualToString:?])
   {
-    objc_storeStrong(&self->_bodyText, a3);
-    if ([v6 length])
+    objc_storeStrong(&self->_bodyText, text);
+    if ([textCopy length])
     {
-      v5 = [(HKTitledBuddyHeaderView *)self _attributedBodyTextWithString:v6 alignment:self->_bodyTextAlignment];
+      v5 = [(HKTitledBuddyHeaderView *)self _attributedBodyTextWithString:textCopy alignment:self->_bodyTextAlignment];
       [(UITextView *)self->_bodyTextView setAttributedText:v5];
     }
 
@@ -316,37 +316,37 @@
   }
 }
 
-- (void)setBodyTextAlignment:(int64_t)a3
+- (void)setBodyTextAlignment:(int64_t)alignment
 {
-  if (self->_bodyTextAlignment != a3)
+  if (self->_bodyTextAlignment != alignment)
   {
-    self->_bodyTextAlignment = a3;
+    self->_bodyTextAlignment = alignment;
     if ([(NSString *)self->_bodyText length])
     {
-      v5 = [(HKTitledBuddyHeaderView *)self _attributedBodyTextWithString:self->_bodyText alignment:a3];
+      v5 = [(HKTitledBuddyHeaderView *)self _attributedBodyTextWithString:self->_bodyText alignment:alignment];
       [(UITextView *)self->_bodyTextView setAttributedText:v5];
     }
   }
 }
 
-- (void)setBodyText:(id)a3 alignment:(int64_t)a4
+- (void)setBodyText:(id)text alignment:(int64_t)alignment
 {
-  v8 = a3;
-  objc_storeStrong(&self->_bodyText, a3);
-  self->_bodyTextAlignment = a4;
+  textCopy = text;
+  objc_storeStrong(&self->_bodyText, text);
+  self->_bodyTextAlignment = alignment;
   if ([(NSString *)self->_bodyText length])
   {
-    v7 = [(HKTitledBuddyHeaderView *)self _attributedBodyTextWithString:v8 alignment:a4];
+    v7 = [(HKTitledBuddyHeaderView *)self _attributedBodyTextWithString:textCopy alignment:alignment];
     [(UITextView *)self->_bodyTextView setAttributedText:v7];
   }
 
   [(HKTitledBuddyHeaderView *)self _updateBodyTextViewConstraints];
 }
 
-- (void)_linkButtonTapped:(id)a3
+- (void)_linkButtonTapped:(id)tapped
 {
-  v4 = [(HKTitledBuddyHeaderView *)self delegate];
-  [v4 titledBuddyHeaderViewDidTapLinkButton:self];
+  delegate = [(HKTitledBuddyHeaderView *)self delegate];
+  [delegate titledBuddyHeaderViewDidTapLinkButton:self];
 }
 
 - (void)deactivateDefaultTitleLabelBaselineConstraint
@@ -358,18 +358,18 @@
   [v2 deactivateConstraints:v3];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKTitledBuddyHeaderView;
-  [(HKTitledBuddyHeaderView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKTitledBuddyHeaderView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKTitledBuddyHeaderView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKTitledBuddyHeaderView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -378,7 +378,7 @@
   }
 }
 
-- (id)_attributedBodyTextWithString:(id)a3 alignment:(int64_t)a4
+- (id)_attributedBodyTextWithString:(id)string alignment:(int64_t)alignment
 {
   v26[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69DB878];
@@ -389,19 +389,19 @@
   }
 
   v8 = *v7;
-  v9 = a3;
+  stringCopy = string;
   v10 = [v6 hk_preferredFontForTextStyle:v8];
   [v10 _scaledValueForValue:22.0];
   v12 = v11;
   [v10 _scaledValueForValue:32.0];
   v14 = v13 - v12;
-  v15 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v16 = [v15 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v16 = [defaultParagraphStyle mutableCopy];
 
   [v16 setMinimumLineHeight:v12];
   [v16 setParagraphSpacing:v14];
   [v16 setParagraphSpacingBefore:0.0];
-  [v16 setAlignment:a4];
+  [v16 setAlignment:alignment];
   v17 = *MEMORY[0x1E69DB688];
   v25[0] = *MEMORY[0x1E69DB648];
   v25[1] = v17;
@@ -421,14 +421,14 @@
   v26[2] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
 
-  v20 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v9 attributes:v19];
-  v21 = [(HKTitledBuddyHeaderView *)self delegate];
+  v20 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:stringCopy attributes:v19];
+  delegate = [(HKTitledBuddyHeaderView *)self delegate];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
-    v23 = [(HKTitledBuddyHeaderView *)self delegate];
-    [v23 updateBodyTextAttributesWithMutableString:v20];
+    delegate2 = [(HKTitledBuddyHeaderView *)self delegate];
+    [delegate2 updateBodyTextAttributesWithMutableString:v20];
   }
 
   return v20;

@@ -2,20 +2,20 @@
 + (uint64_t)initClientMap;
 + (void)initClientMap;
 - (IsolatedCoreAudioXPCSiphon)init;
-- (IsolatedCoreAudioXPCSiphon)initWithClientMap:(shared_ptr<SiphonClientMap>)a3 andServer:(shared_ptr<ClientLocalServer>)a4;
+- (IsolatedCoreAudioXPCSiphon)initWithClientMap:(shared_ptr<SiphonClientMap>)map andServer:(shared_ptr<ClientLocalServer>)server;
 - (id).cxx_construct;
 - (shared_ptr<IsolatedCoreAudioSiphon>)mSiphon;
 - (shared_ptr<SiphonClientMap>)mClientMap;
 - (uint64_t)createClientReaper;
-- (void)connectToUseCase:(unsigned int)a3 endpoint:(id)a4;
+- (void)connectToUseCase:(unsigned int)case endpoint:(id)endpoint;
 - (void)createClientReaper;
-- (void)requestAudio:(unsigned int)a3 atTime:(unint64_t)a4 atSample:(unint64_t)a5 with:(id)a6;
-- (void)setAudioLapseCallback:(unsigned int)a3 usingXPC:(id)a4 with:(id)a5;
-- (void)setMClientMap:(shared_ptr<SiphonClientMap>)a3;
-- (void)setMSiphon:(shared_ptr<IsolatedCoreAudioSiphon>)a3;
-- (void)startIO:(unsigned int)a3 targetTime:(unint64_t)a4 with:(id)a5;
-- (void)startIO:(unsigned int)a3 with:(id)a4;
-- (void)stopIO:(unsigned int)a3 with:(id)a4;
+- (void)requestAudio:(unsigned int)audio atTime:(unint64_t)time atSample:(unint64_t)sample with:(id)with;
+- (void)setAudioLapseCallback:(unsigned int)callback usingXPC:(id)c with:(id)with;
+- (void)setMClientMap:(shared_ptr<SiphonClientMap>)map;
+- (void)setMSiphon:(shared_ptr<IsolatedCoreAudioSiphon>)siphon;
+- (void)startIO:(unsigned int)o targetTime:(unint64_t)time with:(id)with;
+- (void)startIO:(unsigned int)o with:(id)with;
+- (void)stopIO:(unsigned int)o with:(id)with;
 @end
 
 @implementation IsolatedCoreAudioXPCSiphon
@@ -29,11 +29,11 @@
   return self;
 }
 
-- (void)setMClientMap:(shared_ptr<SiphonClientMap>)a3
+- (void)setMClientMap:(shared_ptr<SiphonClientMap>)map
 {
   p_mClientMap = &self->_mClientMap;
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *map.__ptr_;
+  v4 = *(map.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);
@@ -63,11 +63,11 @@
   return result;
 }
 
-- (void)setMSiphon:(shared_ptr<IsolatedCoreAudioSiphon>)a3
+- (void)setMSiphon:(shared_ptr<IsolatedCoreAudioSiphon>)siphon
 {
   p_mSiphon = &self->_mSiphon;
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *siphon.__ptr_;
+  v4 = *(siphon.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);
@@ -97,10 +97,10 @@
   return result;
 }
 
-- (void)requestAudio:(unsigned int)a3 atTime:(unint64_t)a4 atSample:(unint64_t)a5 with:(id)a6
+- (void)requestAudio:(unsigned int)audio atTime:(unint64_t)time atSample:(unint64_t)sample with:(id)with
 {
   v11 = *MEMORY[0x277D85DE8];
-  v7 = a6;
+  withCopy = with;
   [(IsolatedCoreAudioXPCSiphon *)self mSiphon];
   (*(**(v9 + 16) + 40))(*(v9 + 16));
   if (v10)
@@ -108,16 +108,16 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](v10);
   }
 
-  v7[2](v7, 0);
+  withCopy[2](withCopy, 0);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopIO:(unsigned int)a3 with:(id)a4
+- (void)stopIO:(unsigned int)o with:(id)with
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7.i32[0] = bswap32(a3);
+  withCopy = with;
+  v7.i32[0] = bswap32(o);
   v8 = vzip1_s8(v7, v7);
   v9.i64[0] = 0x1F0000001FLL;
   v9.i64[1] = 0x1F0000001FLL;
@@ -142,8 +142,8 @@
   [(IsolatedCoreAudioXPCSiphon *)self mSiphon];
   v13 = *v27;
   std::mutex::lock((*v27 + 32));
-  SiphonClientMap::disableAvailabilityCallbacksForClient(*(v13 + 8), a3);
-  SiphonClientMap::disableLapseHandlingForClient(*(v13 + 8), a3);
+  SiphonClientMap::disableAvailabilityCallbacksForClient(*(v13 + 8), o);
+  SiphonClientMap::disableLapseHandlingForClient(*(v13 + 8), o);
   v14 = *(v13 + 8) + 16;
   do
   {
@@ -187,7 +187,7 @@
     *(v13 + 24) = 0;
   }
 
-  v19 = std::__hash_table<std::__hash_value_type<unsigned int,std::shared_ptr<HALUseCase>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,std::shared_ptr<HALUseCase>>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,std::shared_ptr<HALUseCase>>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,std::shared_ptr<HALUseCase>>>>::find<unsigned int>(*(v13 + 8), a3);
+  v19 = std::__hash_table<std::__hash_value_type<unsigned int,std::shared_ptr<HALUseCase>>,std::__unordered_map_hasher<unsigned int,std::__hash_value_type<unsigned int,std::shared_ptr<HALUseCase>>,std::hash<unsigned int>,std::equal_to<unsigned int>,true>,std::__unordered_map_equal<unsigned int,std::__hash_value_type<unsigned int,std::shared_ptr<HALUseCase>>,std::equal_to<unsigned int>,std::hash<unsigned int>,true>,std::allocator<std::__hash_value_type<unsigned int,std::shared_ptr<HALUseCase>>>>::find<unsigned int>(*(v13 + 8), o);
   if (v19)
   {
     v21 = v19;
@@ -243,7 +243,7 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](v28);
   }
 
-  v6[2](v6, 0);
+  withCopy[2](withCopy, 0);
   if (v30 < 0)
   {
     operator delete(v29);
@@ -252,11 +252,11 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startIO:(unsigned int)a3 targetTime:(unint64_t)a4 with:(id)a5
+- (void)startIO:(unsigned int)o targetTime:(unint64_t)time with:(id)with
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9.i32[0] = bswap32(a3);
+  withCopy = with;
+  v9.i32[0] = bswap32(o);
   v10 = vzip1_s8(v9, v9);
   v11.i64[0] = 0x1F0000001FLL;
   v11.i64[1] = 0x1F0000001FLL;
@@ -282,12 +282,12 @@
   v15 = v25;
   atomic_store(1u, (v25 + 32));
   v16 = *v15;
-  v16[37] = a4;
+  v16[37] = time;
   v31 = v16 + 12;
   v32 = 1;
   std::__shared_mutex_base::lock((v16 + 12));
   std::mutex::lock((v16 + 4));
-  SiphonClientMap::enableAvailabilityCallbacksForClient(v16[1], a3);
+  SiphonClientMap::enableAvailabilityCallbacksForClient(v16[1], o);
   v17 = v16[1] + 16;
   do
   {
@@ -317,12 +317,12 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v20 = (*(**v16 + 48))(*v16, a4);
+  v20 = (*(**v16 + 48))(*v16, time);
   if (!v20)
   {
     *(v16 + 24) = 1;
 LABEL_9:
-    SiphonClientMap::enableLapseHandlingForClient(v16[1], a3);
+    SiphonClientMap::enableLapseHandlingForClient(v16[1], o);
     v20 = 0;
     goto LABEL_10;
   }
@@ -356,7 +356,7 @@ LABEL_9:
     _os_log_impl(&dword_255576000, v24, OS_LOG_TYPE_ERROR, "%25s:%-5d IsolatedCoreAudioClientMultiplexer::startSharedIO failed to start for use case %s with status %d", buf, 0x22u);
   }
 
-  SiphonClientMap::disableAvailabilityCallbacksForClient(v16[1], a3);
+  SiphonClientMap::disableAvailabilityCallbacksForClient(v16[1], o);
   if (v30 < 0)
   {
     operator delete(v29);
@@ -370,7 +370,7 @@ LABEL_10:
     std::__shared_weak_count::__release_shared[abi:ne200100](v26);
   }
 
-  v8[2](v8, v20);
+  withCopy[2](withCopy, v20);
   if (v28 < 0)
   {
     operator delete(__p);
@@ -379,11 +379,11 @@ LABEL_10:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startIO:(unsigned int)a3 with:(id)a4
+- (void)startIO:(unsigned int)o with:(id)with
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7.i32[0] = bswap32(a3);
+  withCopy = with;
+  v7.i32[0] = bswap32(o);
   v8 = vzip1_s8(v7, v7);
   v9.i64[0] = 0x1F0000001FLL;
   v9.i64[1] = 0x1F0000001FLL;
@@ -414,7 +414,7 @@ LABEL_10:
   v31 = 1;
   std::__shared_mutex_base::lock(v15);
   std::mutex::lock((v14 + 32));
-  SiphonClientMap::enableAvailabilityCallbacksForClient(*(v14 + 8), a3);
+  SiphonClientMap::enableAvailabilityCallbacksForClient(*(v14 + 8), o);
   v16 = *(v14 + 8) + 16;
   do
   {
@@ -449,7 +449,7 @@ LABEL_7:
   {
     *(v14 + 24) = 1;
 LABEL_9:
-    SiphonClientMap::enableLapseHandlingForClient(*(v14 + 8), a3);
+    SiphonClientMap::enableLapseHandlingForClient(*(v14 + 8), o);
     v19 = 0;
     goto LABEL_10;
   }
@@ -483,7 +483,7 @@ LABEL_9:
     _os_log_impl(&dword_255576000, v23, OS_LOG_TYPE_ERROR, "%25s:%-5d IsolatedCoreAudioClientMultiplexer::startSharedIO failed to start for use case %s with status %d", buf, 0x22u);
   }
 
-  SiphonClientMap::disableAvailabilityCallbacksForClient(*(v14 + 8), a3);
+  SiphonClientMap::disableAvailabilityCallbacksForClient(*(v14 + 8), o);
   if (v29 < 0)
   {
     operator delete(v28);
@@ -497,7 +497,7 @@ LABEL_10:
     std::__shared_weak_count::__release_shared[abi:ne200100](v25);
   }
 
-  v6[2](v6, v19);
+  withCopy[2](withCopy, v19);
   if (v27 < 0)
   {
     operator delete(__p);
@@ -506,10 +506,10 @@ LABEL_10:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAudioLapseCallback:(unsigned int)a3 usingXPC:(id)a4 with:(id)a5
+- (void)setAudioLapseCallback:(unsigned int)callback usingXPC:(id)c with:(id)with
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a5;
+  withCopy = with;
   v6 = sIsolatedCoreAudioSiphonLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -520,14 +520,14 @@ LABEL_10:
     _os_log_impl(&dword_255576000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d setAudioLapseCallback called", &v8, 0x12u);
   }
 
-  v5[2](v5, 0);
+  withCopy[2](withCopy, 0);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectToUseCase:(unsigned int)a3 endpoint:(id)a4
+- (void)connectToUseCase:(unsigned int)case endpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v6];
+  endpointCopy = endpoint;
+  v7 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:endpointCopy];
   v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28677A438];
   [v7 setRemoteObjectInterface:v8];
 
@@ -546,19 +546,19 @@ LABEL_10:
   v11.i16[0] = vaddlv_u8(v11);
   if (v11.u32[0] > 1uLL)
   {
-    v12 = a3;
-    if (v10 <= a3)
+    caseCopy = case;
+    if (v10 <= case)
     {
-      v12 = a3 % v10;
+      caseCopy = case % v10;
     }
   }
 
   else
   {
-    v12 = (v10 - 1) & a3;
+    caseCopy = (v10 - 1) & case;
   }
 
-  v13 = *(*v17 + 8 * v12);
+  v13 = *(*v17 + 8 * caseCopy);
   if (!v13 || (v14 = *v13) == 0)
   {
 LABEL_17:
@@ -568,7 +568,7 @@ LABEL_17:
   while (1)
   {
     v15 = v14[1];
-    if (v15 == a3)
+    if (v15 == case)
     {
       break;
     }
@@ -586,7 +586,7 @@ LABEL_17:
       v15 &= v10 - 1;
     }
 
-    if (v15 != v12)
+    if (v15 != caseCopy)
     {
       goto LABEL_17;
     }
@@ -599,7 +599,7 @@ LABEL_16:
     }
   }
 
-  if (*(v14 + 4) != a3)
+  if (*(v14 + 4) != case)
   {
     goto LABEL_16;
   }
@@ -610,8 +610,8 @@ LABEL_16:
     std::__shared_weak_count::__release_shared[abi:ne200100](v18);
   }
 
-  v16 = [(IsolatedCoreAudioXPCSiphon *)self reverseConnections];
-  [v16 addObject:v7];
+  reverseConnections = [(IsolatedCoreAudioXPCSiphon *)self reverseConnections];
+  [reverseConnections addObject:v7];
 }
 
 void __56__IsolatedCoreAudioXPCSiphon_connectToUseCase_endpoint___block_invoke_27(uint64_t a1, void *a2)
@@ -673,14 +673,14 @@ void __56__IsolatedCoreAudioXPCSiphon_connectToUseCase_endpoint___block_invoke()
 
 - (void)createClientReaper
 {
-  *a1 = &unk_286776900;
-  v2 = a1[2];
+  *self = &unk_286776900;
+  v2 = self[2];
   if (v2)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v2);
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)createClientReaper
@@ -698,9 +698,9 @@ void __56__IsolatedCoreAudioXPCSiphon_connectToUseCase_endpoint___block_invoke()
   return result;
 }
 
-- (IsolatedCoreAudioXPCSiphon)initWithClientMap:(shared_ptr<SiphonClientMap>)a3 andServer:(shared_ptr<ClientLocalServer>)a4
+- (IsolatedCoreAudioXPCSiphon)initWithClientMap:(shared_ptr<SiphonClientMap>)map andServer:(shared_ptr<ClientLocalServer>)server
 {
-  ptr = a3.__ptr_;
+  ptr = map.__ptr_;
   v18 = *MEMORY[0x277D85DE8];
   v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286779C98];
   v14.receiver = self;
@@ -793,14 +793,14 @@ void __56__IsolatedCoreAudioXPCSiphon_connectToUseCase_endpoint___block_invoke()
 
 + (void)initClientMap
 {
-  *a1 = &unk_286776710;
-  v2 = a1[2];
+  *self = &unk_286776710;
+  v2 = self[2];
   if (v2)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v2);
   }
 
-  return a1;
+  return self;
 }
 
 @end

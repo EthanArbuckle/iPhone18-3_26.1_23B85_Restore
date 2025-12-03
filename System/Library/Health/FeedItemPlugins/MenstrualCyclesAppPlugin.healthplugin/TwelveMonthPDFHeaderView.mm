@@ -1,13 +1,13 @@
 @interface TwelveMonthPDFHeaderView
-- (_TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation TwelveMonthPDFHeaderView
 
-- (_TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   }
@@ -21,7 +21,7 @@
   return sub_29E1B6718(v3, v4);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin24TwelveMonthPDFHeaderView_showPDF);
   *v3 = 0;

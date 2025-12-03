@@ -1,23 +1,23 @@
 @interface NTKUpNextCollectionViewFlowLayout
-- (BOOL)_hasHeaderForSection:(int64_t)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (BOOL)_hasHeaderForSection:(int64_t)section;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (NTKUpNextCollectionViewFlowLayout)init;
-- (id)flowLayoutAttributesForItemAtIndexPath:(id)a3;
-- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)flowLayoutAttributesForItemAtIndexPath:(id)path;
+- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)kind;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)_updateContentInsetsIfNeeded;
 - (void)_updateSectionHeaderListIfNeeded;
-- (void)_updateVisibilityForLayoutAttributes:(id)a3 inBounds:(CGRect)a4;
+- (void)_updateVisibilityForLayoutAttributes:(id)attributes inBounds:(CGRect)bounds;
 - (void)finalizeCollectionViewUpdates;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setHeaderAlpha:(double)a3;
-- (void)setMaximumDarkeningAmount:(double)a3;
-- (void)setTopItemsAlpha:(double)a3;
-- (void)setTopOffsetForScrolling:(double)a3;
-- (void)setTopOffsetForSnapping:(double)a3;
+- (void)setHeaderAlpha:(double)alpha;
+- (void)setMaximumDarkeningAmount:(double)amount;
+- (void)setTopItemsAlpha:(double)alpha;
+- (void)setTopOffsetForScrolling:(double)scrolling;
+- (void)setTopOffsetForSnapping:(double)snapping;
 @end
 
 @implementation NTKUpNextCollectionViewFlowLayout
@@ -30,9 +30,9 @@
   if (v2)
   {
     v3 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v4 = [v3 device];
+    device = [v3 device];
     device = v2->_device;
-    v2->_device = v4;
+    v2->_device = device;
 
     v6 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
     topElementIndexPath = v2->_topElementIndexPath;
@@ -53,22 +53,22 @@
   return v2;
 }
 
-- (void)setTopItemsAlpha:(double)a3
+- (void)setTopItemsAlpha:(double)alpha
 {
-  if (vabdd_f64(self->_topItemsAlpha, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_topItemsAlpha, alpha) > 2.22044605e-16)
   {
-    self->_topItemsAlpha = a3;
-    v5 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    v6 = [v5 numberOfSections];
+    self->_topItemsAlpha = alpha;
+    collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    numberOfSections = [collectionView numberOfSections];
 
     v15 = objc_opt_new();
     v7 = objc_opt_new();
-    if (v6 >= 1)
+    if (numberOfSections >= 1)
     {
-      for (i = 0; i != v6; ++i)
+      for (i = 0; i != numberOfSections; ++i)
       {
-        v9 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-        v10 = [v9 numberOfItemsInSection:i];
+        collectionView2 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+        v10 = [collectionView2 numberOfItemsInSection:i];
 
         if ([(NTKUpNextCollectionViewFlowLayout *)self _hasHeaderForSection:i])
         {
@@ -99,18 +99,18 @@
   }
 }
 
-- (void)setHeaderAlpha:(double)a3
+- (void)setHeaderAlpha:(double)alpha
 {
-  if (vabdd_f64(self->_headerAlpha, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_headerAlpha, alpha) > 2.22044605e-16)
   {
-    self->_headerAlpha = a3;
-    v5 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    v6 = [v5 numberOfSections];
+    self->_headerAlpha = alpha;
+    collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    numberOfSections = [collectionView numberOfSections];
 
     v10 = objc_opt_new();
-    if (v6 >= 1)
+    if (numberOfSections >= 1)
     {
-      for (i = 0; i != v6; ++i)
+      for (i = 0; i != numberOfSections; ++i)
       {
         if ([(NTKUpNextCollectionViewFlowLayout *)self _hasHeaderForSection:i])
         {
@@ -128,31 +128,31 @@
   }
 }
 
-- (void)setTopOffsetForSnapping:(double)a3
+- (void)setTopOffsetForSnapping:(double)snapping
 {
-  if (vabdd_f64(self->_topOffsetForSnapping, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_topOffsetForSnapping, snapping) > 2.22044605e-16)
   {
-    self->_topOffsetForSnapping = a3;
+    self->_topOffsetForSnapping = snapping;
     self->_needsInsetsUpdate = 1;
   }
 }
 
-- (void)setTopOffsetForScrolling:(double)a3
+- (void)setTopOffsetForScrolling:(double)scrolling
 {
-  if (vabdd_f64(self->_topOffsetForScrolling, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_topOffsetForScrolling, scrolling) > 2.22044605e-16)
   {
-    self->_topOffsetForScrolling = a3;
-    v5 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    v6 = [v5 numberOfSections];
+    self->_topOffsetForScrolling = scrolling;
+    collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    numberOfSections = [collectionView numberOfSections];
 
     v14 = objc_opt_new();
     v7 = objc_opt_new();
-    if (v6 >= 1)
+    if (numberOfSections >= 1)
     {
-      for (i = 0; i != v6; ++i)
+      for (i = 0; i != numberOfSections; ++i)
       {
-        v9 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-        v10 = [v9 numberOfItemsInSection:i];
+        collectionView2 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+        v10 = [collectionView2 numberOfItemsInSection:i];
 
         if (v10 >= 1)
         {
@@ -179,11 +179,11 @@
   }
 }
 
-- (void)setMaximumDarkeningAmount:(double)a3
+- (void)setMaximumDarkeningAmount:(double)amount
 {
-  if (vabdd_f64(self->_maximumDarkeningAmount, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_maximumDarkeningAmount, amount) > 2.22044605e-16)
   {
-    self->_maximumDarkeningAmount = a3;
+    self->_maximumDarkeningAmount = amount;
     v5 = objc_opt_new();
     [v5 setInvalidateFlowLayoutAttributes:1];
     [v5 setInvalidateFlowLayoutDelegateMetrics:0];
@@ -191,13 +191,13 @@
   }
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5.receiver = self;
   v5.super_class = NTKUpNextCollectionViewFlowLayout;
-  [(UICollectionViewFlowLayout *)&v5 invalidateLayoutWithContext:v4];
-  if (([v4 invalidateEverything] & 1) != 0 || objc_msgSend(v4, "invalidateDataSourceCounts"))
+  [(UICollectionViewFlowLayout *)&v5 invalidateLayoutWithContext:contextCopy];
+  if (([contextCopy invalidateEverything] & 1) != 0 || objc_msgSend(contextCopy, "invalidateDataSourceCounts"))
   {
     self->_needsInsetsUpdate = 1;
     self->_needsHeaderUpdate = 1;
@@ -211,8 +211,8 @@
   [(UICollectionViewFlowLayout *)&v195 prepareLayout];
   [(NTKUpNextCollectionViewFlowLayout *)self _updateContentInsetsIfNeeded];
   [(NTKUpNextCollectionViewFlowLayout *)self _updateSectionHeaderListIfNeeded];
-  v3 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   v7 = v6;
   v166 = v9;
@@ -230,8 +230,8 @@
   v159 = objc_opt_new();
   obj = objc_opt_new();
   v174 = [MEMORY[0x277CBEB58] set];
-  v13 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-  v14 = [v13 numberOfSections];
+  collectionView2 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+  numberOfSections = [collectionView2 numberOfSections];
 
   v15 = 0.0;
   v164 = v7;
@@ -241,8 +241,8 @@
   rect_16 = v16;
   v178 = v19;
   rect = v18;
-  v156 = v14;
-  if (v14 >= 1)
+  v156 = numberOfSections;
+  if (numberOfSections >= 1)
   {
     v20 = 0;
     v21 = 0;
@@ -263,8 +263,8 @@
     v187[0] = width;
     while (1)
     {
-      v29 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-      v30 = [v29 numberOfItemsInSection:v22];
+      collectionView3 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+      v30 = [collectionView3 numberOfItemsInSection:v22];
 
       v158.size.width = v169;
       v158.size.height = v168;
@@ -656,8 +656,8 @@ LABEL_45:
     {
       if ([(NTKUpNextCollectionViewFlowLayout *)self _hasHeaderForSection:v84])
       {
-        v86 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-        v87 = [v86 numberOfItemsInSection:v84];
+        collectionView4 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+        v87 = [collectionView4 numberOfItemsInSection:v84];
 
         v88 = [MEMORY[0x277CCAA70] indexPathForItem:v87 - 1 inSection:v84];
         v89 = [(NTKUpNextCollectionViewFlowLayout *)self layoutAttributesForItemAtIndexPath:v88];
@@ -761,8 +761,8 @@ LABEL_45:
           v230.size.width = v98;
           v230.size.height = v100;
           v123 = CGRectGetHeight(v230);
-          v124 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-          [v124 _inscribedRectInBoundingPathByInsettingRect:2 onEdges:1 withOptions:{MinX, v96, v123, v100}];
+          collectionView5 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+          [collectionView5 _inscribedRectInBoundingPathByInsettingRect:2 onEdges:1 withOptions:{MinX, v96, v123, v100}];
           v126 = v125;
           v128 = v127;
           v130 = v129;
@@ -844,44 +844,44 @@ LABEL_45:
     [(NTKUpNextCollectionViewFlowLayout *)self targetContentOffsetForProposedContentOffset:?];
     v5 = v4;
     v7 = v6 + self->_snappingOffset;
-    v8 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    [v8 bounds];
+    collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    [collectionView bounds];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    [v13 setBounds:{v5, v7, v10, v12}];
+    collectionView2 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    [collectionView2 setBounds:{v5, v7, v10, v12}];
   }
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
   v5.receiver = self;
   v5.super_class = NTKUpNextCollectionViewFlowLayout;
-  v3 = [(UICollectionViewFlowLayout *)&v5 invalidationContextForBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewFlowLayout *)&v5 invalidationContextForBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height];
   [v3 setInvalidateFlowLayoutAttributes:0];
   [v3 setInvalidateFlowLayoutDelegateMetrics:0];
 
   return v3;
 }
 
-- (id)flowLayoutAttributesForItemAtIndexPath:(id)a3
+- (id)flowLayoutAttributesForItemAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = NTKUpNextCollectionViewFlowLayout;
-  v3 = [(UICollectionViewFlowLayout *)&v5 layoutAttributesForItemAtIndexPath:a3];
+  v3 = [(UICollectionViewFlowLayout *)&v5 layoutAttributesForItemAtIndexPath:path];
 
   return v3;
 }
 
-- (void)_updateVisibilityForLayoutAttributes:(id)a3 inBounds:(CGRect)a4
+- (void)_updateVisibilityForLayoutAttributes:(id)attributes inBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3;
-  [v16 computedFrame];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  attributesCopy = attributes;
+  [attributesCopy computedFrame];
   MaxY = CGRectGetMaxY(v18);
   v19.origin.x = x;
   v19.origin.y = y;
@@ -890,16 +890,16 @@ LABEL_45:
   v9 = CGRectGetMinY(v19) + self->_statusBarDecorationHeight;
   [(UICollectionViewFlowLayout *)self minimumLineSpacing];
   v11 = MaxY < v9 + v10 + 0.5;
-  [v16 computedFrame];
+  [attributesCopy computedFrame];
   MinY = CGRectGetMinY(v20);
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
   LODWORD(self) = MinY >= CGRectGetMinY(v21) + self->_statusBarDecorationHeight + -0.5;
-  v14 = [v16 layoutMode];
-  v15 = v14 == 4 || v11;
-  if (v14 == 4)
+  layoutMode = [attributesCopy layoutMode];
+  v15 = layoutMode == 4 || v11;
+  if (layoutMode == 4)
   {
     self = 0;
   }
@@ -909,16 +909,16 @@ LABEL_45:
     self = self;
   }
 
-  [v16 setNotVisibleToUser:v15];
-  [v16 setFullyVisibleToUser:self];
+  [attributesCopy setNotVisibleToUser:v15];
+  [attributesCopy setFullyVisibleToUser:self];
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v42 = *MEMORY[0x277D85DE8];
   v8 = objc_opt_new();
   showingAllAttributes = self->_showingAllAttributes;
@@ -926,8 +926,8 @@ LABEL_45:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = [(NSDictionary *)self->_layoutInfo allValues];
-  v11 = [v10 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  allValues = [(NSDictionary *)self->_layoutInfo allValues];
+  v11 = [allValues countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v11)
   {
     v12 = v11;
@@ -938,7 +938,7 @@ LABEL_45:
       {
         if (*v37 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v36 + 1) + 8 * i);
@@ -968,7 +968,7 @@ LABEL_45:
         [v8 addObject:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v12);
@@ -978,8 +978,8 @@ LABEL_45:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v21 = [(NSDictionary *)self->_headerLayoutInfo allValues];
-  v22 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  allValues2 = [(NSDictionary *)self->_headerLayoutInfo allValues];
+  v22 = [allValues2 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v22)
   {
     v23 = v22;
@@ -990,7 +990,7 @@ LABEL_45:
       {
         if (*v33 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allValues2);
         }
 
         v26 = *(*(&v32 + 1) + 8 * j);
@@ -1014,7 +1014,7 @@ LABEL_45:
         [v8 addObject:v26];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v23 = [allValues2 countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v23);
@@ -1028,25 +1028,25 @@ LABEL_45:
   return v8;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  [(NTKUpNextCollectionViewFlowLayout *)self targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  [(NTKUpNextCollectionViewFlowLayout *)self targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v76 = *MEMORY[0x277D85DE8];
   if (self->_snappingEnabled)
   {
-    v7 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView:a3.x];
-    v8 = [v7 numberOfSections];
+    v7 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView:offset.x];
+    numberOfSections = [v7 numberOfSections];
 
-    if (v8 < 1)
+    if (numberOfSections < 1)
     {
       v10 = 0;
     }
@@ -1054,10 +1054,10 @@ LABEL_45:
     else
     {
       v10 = 0;
-      for (i = 0; i != v8; ++i)
+      for (i = 0; i != numberOfSections; ++i)
       {
-        v12 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-        v13 = [v12 numberOfItemsInSection:i];
+        collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+        v13 = [collectionView numberOfItemsInSection:i];
 
         v9 = v13 - 1;
         if (v13 >= 1)
@@ -1211,17 +1211,17 @@ LABEL_35:
   return result;
 }
 
-- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)a3
+- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)kind
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D767D8]])
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:*MEMORY[0x277D767D8]])
   {
     v5 = [(NSSet *)self->_previousSectionsWithHeaders mutableCopy];
     [v5 minusSet:self->_sectionsWithHeaders];
     v20.receiver = self;
     v20.super_class = NTKUpNextCollectionViewFlowLayout;
-    v6 = [(NTKUpNextCollectionViewFlowLayout *)&v20 indexPathsToDeleteForSupplementaryViewOfKind:v4];
+    v6 = [(NTKUpNextCollectionViewFlowLayout *)&v20 indexPathsToDeleteForSupplementaryViewOfKind:kindCopy];
     v7 = [v6 mutableCopy];
 
     v18 = 0u;
@@ -1258,7 +1258,7 @@ LABEL_35:
   {
     v15.receiver = self;
     v15.super_class = NTKUpNextCollectionViewFlowLayout;
-    v7 = [(NTKUpNextCollectionViewFlowLayout *)&v15 indexPathsToDeleteForSupplementaryViewOfKind:v4];
+    v7 = [(NTKUpNextCollectionViewFlowLayout *)&v15 indexPathsToDeleteForSupplementaryViewOfKind:kindCopy];
   }
 
   return v7;
@@ -1271,12 +1271,12 @@ LABEL_35:
     self->_needsHeaderUpdate = 0;
     objc_storeStrong(&self->_previousSectionsWithHeaders, self->_sectionsWithHeaders);
     v10 = objc_opt_new();
-    v4 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    v5 = [v4 numberOfSections];
+    collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    numberOfSections = [collectionView numberOfSections];
 
-    if (v5 >= 1)
+    if (numberOfSections >= 1)
     {
-      for (i = 0; i != v5; ++i)
+      for (i = 0; i != numberOfSections; ++i)
       {
         if ([(NTKUpNextCollectionViewFlowLayout *)self _hasHeaderForSection:i])
         {
@@ -1305,11 +1305,11 @@ LABEL_35:
     v56 = v2;
     v57 = v3;
     self->_needsInsetsUpdate = 0;
-    v11 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    v12 = [v11 numberOfSections];
+    collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    numberOfSections = [collectionView numberOfSections];
 
-    v13 = [(NSIndexPath *)self->_topElementIndexPath section];
-    if (v13 >= v12)
+    section = [(NSIndexPath *)self->_topElementIndexPath section];
+    if (section >= numberOfSections)
     {
       v20 = 0;
       v15 = 0;
@@ -1317,13 +1317,13 @@ LABEL_35:
 
     else
     {
-      v14 = v13;
+      v14 = section;
       v15 = 0;
       v16 = 0;
       do
       {
-        v17 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-        v18 = [v17 numberOfItemsInSection:v14];
+        collectionView2 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+        v18 = [collectionView2 numberOfItemsInSection:v14];
 
         if (v18 < 1)
         {
@@ -1346,11 +1346,11 @@ LABEL_35:
         v16 = v20;
       }
 
-      while (v14 != v12);
+      while (v14 != numberOfSections);
     }
 
-    v21 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    [v21 contentInset];
+    collectionView3 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    [collectionView3 contentInset];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -1375,8 +1375,8 @@ LABEL_35:
       v31 = CGRectGetMinY(v58) - self->_topOffsetForSnapping;
       [(UICollectionViewFlowLayout *)self collectionViewContentSize];
       v33 = v32 - v31;
-      v34 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-      [v34 bounds];
+      collectionView4 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+      [collectionView4 bounds];
       v35 = CGRectGetHeight(v59) - v33;
     }
 
@@ -1385,8 +1385,8 @@ LABEL_35:
       v35 = 0.0;
     }
 
-    v36 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    [v36 contentInset];
+    collectionView5 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    [collectionView5 contentInset];
     if (v25 == v40 && v23 == v37 && v27 == v39)
     {
       v41 = v38;
@@ -1403,27 +1403,27 @@ LABEL_25:
     {
     }
 
-    v42 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    [v42 contentOffset];
+    collectionView6 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    [collectionView6 contentOffset];
     v44 = v43;
     v46 = v45;
 
-    v47 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    [v47 setContentInset:{v23, v25, v35, v27}];
+    collectionView7 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    [collectionView7 setContentInset:{v23, v25, v35, v27}];
 
-    v48 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-    [v48 setContentOffset:0 animated:{v44, v46}];
+    collectionView8 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+    [collectionView8 setContentOffset:0 animated:{v44, v46}];
 
     goto LABEL_25;
   }
 }
 
-- (BOOL)_hasHeaderForSection:(int64_t)a3
+- (BOOL)_hasHeaderForSection:(int64_t)section
 {
-  v5 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-  v6 = [v5 delegate];
-  v7 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
-  [v6 collectionView:v7 layout:self referenceSizeForHeaderInSection:a3];
+  collectionView = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+  delegate = [collectionView delegate];
+  collectionView2 = [(NTKUpNextCollectionViewFlowLayout *)self collectionView];
+  [delegate collectionView:collectionView2 layout:self referenceSizeForHeaderInSection:section];
   v9 = v8;
   v11 = v10;
 

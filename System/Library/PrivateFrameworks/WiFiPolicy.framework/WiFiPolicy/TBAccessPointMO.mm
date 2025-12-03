@@ -1,102 +1,102 @@
 @interface TBAccessPointMO
-+ (id)generateNewAccessPointObjectFromMOC:(id)a3;
-+ (void)removeAllAccessPointsInMOC:(id)a3;
-- (TBAccessPointMO)initWithCoder:(id)a3;
++ (id)generateNewAccessPointObjectFromMOC:(id)c;
++ (void)removeAllAccessPointsInMOC:(id)c;
+- (TBAccessPointMO)initWithCoder:(id)coder;
 - (TBScore)popularityScore;
 - (TBScore)qualityScore;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TBAccessPointMO
 
 - (TBScore)qualityScore
 {
-  v2 = [(TBAccessPointMO *)self qualityScoreValue];
+  qualityScoreValue = [(TBAccessPointMO *)self qualityScoreValue];
 
-  return [TBQualityScore qualityScoreWithValue:v2];
+  return [TBQualityScore qualityScoreWithValue:qualityScoreValue];
 }
 
 - (TBScore)popularityScore
 {
-  v2 = [(TBAccessPointMO *)self popularityScoreValue];
+  popularityScoreValue = [(TBAccessPointMO *)self popularityScoreValue];
 
-  return [TBPopularityScore popularityScoreWithValue:v2];
+  return [TBPopularityScore popularityScoreWithValue:popularityScoreValue];
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[TBAccessPointMO edge](self, "edge")}];
-  [v3 setObject:v4 forKey:@"edge"];
+  [dictionary setObject:v4 forKey:@"edge"];
 
-  v5 = [(TBAccessPointMO *)self BSSID];
+  bSSID = [(TBAccessPointMO *)self BSSID];
 
-  if (v5)
+  if (bSSID)
   {
-    v6 = [(TBAccessPointMO *)self BSSID];
-    [v3 setObject:v6 forKey:@"bssid"];
+    bSSID2 = [(TBAccessPointMO *)self BSSID];
+    [dictionary setObject:bSSID2 forKey:@"bssid"];
   }
 
   v7 = MEMORY[0x277CCABB0];
   [(TBAccessPointMO *)self latitude];
   v8 = [v7 numberWithDouble:?];
-  [v3 setObject:v8 forKey:@"latitude"];
+  [dictionary setObject:v8 forKey:@"latitude"];
 
   v9 = MEMORY[0x277CCABB0];
   [(TBAccessPointMO *)self longitude];
   v10 = [v9 numberWithDouble:?];
-  [v3 setObject:v10 forKey:@"longitude"];
+  [dictionary setObject:v10 forKey:@"longitude"];
 
-  v11 = [(TBAccessPointMO *)self popularityScore];
+  popularityScore = [(TBAccessPointMO *)self popularityScore];
 
-  if (v11)
+  if (popularityScore)
   {
     v12 = MEMORY[0x277CCABB0];
-    v13 = [(TBAccessPointMO *)self popularityScore];
-    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "score")}];
-    [v3 setObject:v14 forKey:@"popularityScoreValue"];
+    popularityScore2 = [(TBAccessPointMO *)self popularityScore];
+    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(popularityScore2, "score")}];
+    [dictionary setObject:v14 forKey:@"popularityScoreValue"];
   }
 
-  v15 = [(TBAccessPointMO *)self qualityScore];
+  qualityScore = [(TBAccessPointMO *)self qualityScore];
 
-  if (v15)
+  if (qualityScore)
   {
     v16 = MEMORY[0x277CCABB0];
-    v17 = [(TBAccessPointMO *)self qualityScore];
-    v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "score")}];
-    [v3 setObject:v18 forKey:@"qualityScoreValue"];
+    qualityScore2 = [(TBAccessPointMO *)self qualityScore];
+    v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(qualityScore2, "score")}];
+    [dictionary setObject:v18 forKey:@"qualityScoreValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (TBAccessPointMO)initWithCoder:(id)a3
+- (TBAccessPointMO)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = TBAccessPointMO;
   return [(TBAccessPointMO *)&v4 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[TBAccessPointMO edge](self forKey:{"edge"), @"edge"}];
-  [v5 encodeBool:-[TBAccessPointMO tcpGood](self forKey:{"tcpGood"), @"tcpGood"}];
-  v4 = [(TBAccessPointMO *)self bssid];
-  [v5 encodeObject:v4 forKey:@"bssid"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[TBAccessPointMO edge](self forKey:{"edge"), @"edge"}];
+  [coderCopy encodeBool:-[TBAccessPointMO tcpGood](self forKey:{"tcpGood"), @"tcpGood"}];
+  bssid = [(TBAccessPointMO *)self bssid];
+  [coderCopy encodeObject:bssid forKey:@"bssid"];
 
   [(TBAccessPointMO *)self latitude];
-  [v5 encodeDouble:@"latitude" forKey:?];
+  [coderCopy encodeDouble:@"latitude" forKey:?];
   [(TBAccessPointMO *)self longitude];
-  [v5 encodeDouble:@"longitude" forKey:?];
-  [v5 encodeInt32:-[TBAccessPointMO popularityScoreValue](self forKey:{"popularityScoreValue"), @"popularityScoreValue"}];
-  [v5 encodeInt32:-[TBAccessPointMO qualityScoreValue](self forKey:{"qualityScoreValue"), @"qualityScoreValue"}];
+  [coderCopy encodeDouble:@"longitude" forKey:?];
+  [coderCopy encodeInt32:-[TBAccessPointMO popularityScoreValue](self forKey:{"popularityScoreValue"), @"popularityScoreValue"}];
+  [coderCopy encodeInt32:-[TBAccessPointMO qualityScoreValue](self forKey:{"qualityScoreValue"), @"qualityScoreValue"}];
 }
 
-+ (id)generateNewAccessPointObjectFromMOC:(id)a3
++ (id)generateNewAccessPointObjectFromMOC:(id)c
 {
-  v3 = a3;
+  cCopy = c;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -108,7 +108,7 @@
   v7[2] = __55__TBAccessPointMO_generateNewAccessPointObjectFromMOC___block_invoke;
   v7[3] = &unk_2789C7350;
   v9 = &v10;
-  v4 = v3;
+  v4 = cCopy;
   v8 = v4;
   [v4 performBlockAndWait:v7];
   v5 = v11[5];
@@ -128,12 +128,12 @@ void __55__TBAccessPointMO_generateNewAccessPointObjectFromMOC___block_invoke(ui
   *(v4 + 40) = v3;
 }
 
-+ (void)removeAllAccessPointsInMOC:(id)a3
++ (void)removeAllAccessPointsInMOC:(id)c
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  cCopy = c;
   v4 = +[TBAccessPointMO fetchRequest];
-  v5 = [v3 executeFetchRequest:v4 error:0];
+  v5 = [cCopy executeFetchRequest:v4 error:0];
 
   if (v5)
   {
@@ -157,7 +157,7 @@ void __55__TBAccessPointMO_generateNewAccessPointObjectFromMOC___block_invoke(ui
             objc_enumerationMutation(v6);
           }
 
-          [v3 deleteObject:{*(*(&v12 + 1) + 8 * v10++), v12}];
+          [cCopy deleteObject:{*(*(&v12 + 1) + 8 * v10++), v12}];
         }
 
         while (v8 != v10);

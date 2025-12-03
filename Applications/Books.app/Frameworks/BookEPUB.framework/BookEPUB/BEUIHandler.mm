@@ -1,68 +1,68 @@
 @interface BEUIHandler
 - (BEUIHandlerDelegate)delegate;
 - (BUBlockCallThrottler)alertThrottler;
-- (id)_webView:(id)a3 adjustedDataInteractionItemProvidersForItemProvider:(id)a4 representingObjects:(id)a5 additionalData:(id)a6;
-- (void)_handleContextMenuConfigurationForElement:(id)a3 completionHandler:(id)a4;
-- (void)_throttledRunJavaScriptAlertPanel:(id)a3;
-- (void)_webView:(id)a3 didNotHandleTapAsClickAtPoint:(CGPoint)a4;
-- (void)_webViewDidEnterFullscreen:(id)a3;
-- (void)_webViewDidExitFullscreen:(id)a3;
-- (void)_webViewFullscreenMayReturnToInline:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3 inWebView:(id)a4 atPoint:(CGPoint)a5;
-- (void)webView:(id)a3 runJavaScriptAlertPanelWithMessage:(id)a4 initiatedByFrame:(id)a5 completionHandler:(id)a6;
-- (void)webView:(id)a3 runJavaScriptConfirmPanelWithMessage:(id)a4 initiatedByFrame:(id)a5 completionHandler:(id)a6;
+- (id)_webView:(id)view adjustedDataInteractionItemProvidersForItemProvider:(id)provider representingObjects:(id)objects additionalData:(id)data;
+- (void)_handleContextMenuConfigurationForElement:(id)element completionHandler:(id)handler;
+- (void)_throttledRunJavaScriptAlertPanel:(id)panel;
+- (void)_webView:(id)view didNotHandleTapAsClickAtPoint:(CGPoint)point;
+- (void)_webViewDidEnterFullscreen:(id)fullscreen;
+- (void)_webViewDidExitFullscreen:(id)fullscreen;
+- (void)_webViewFullscreenMayReturnToInline:(id)inline;
+- (void)buildMenuWithBuilder:(id)builder inWebView:(id)view atPoint:(CGPoint)point;
+- (void)webView:(id)view runJavaScriptAlertPanelWithMessage:(id)message initiatedByFrame:(id)frame completionHandler:(id)handler;
+- (void)webView:(id)view runJavaScriptConfirmPanelWithMessage:(id)message initiatedByFrame:(id)frame completionHandler:(id)handler;
 @end
 
 @implementation BEUIHandler
 
-- (void)buildMenuWithBuilder:(id)a3 inWebView:(id)a4 atPoint:(CGPoint)a5
+- (void)buildMenuWithBuilder:(id)builder inWebView:(id)view atPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a3;
-  v9 = a4;
-  v10 = [(BEUIHandler *)self delegate];
+  y = point.y;
+  x = point.x;
+  builderCopy = builder;
+  viewCopy = view;
+  delegate = [(BEUIHandler *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 buildMenuWithBuilder:v11 inWebView:v9 atPoint:{x, y}];
+    [delegate buildMenuWithBuilder:builderCopy inWebView:viewCopy atPoint:{x, y}];
   }
 }
 
-- (void)webView:(id)a3 runJavaScriptAlertPanelWithMessage:(id)a4 initiatedByFrame:(id)a5 completionHandler:(id)a6
+- (void)webView:(id)view runJavaScriptAlertPanelWithMessage:(id)message initiatedByFrame:(id)frame completionHandler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_2B758;
   v10[3] = &unk_328F68;
-  v11 = a4;
-  v12 = a6;
+  messageCopy = message;
+  handlerCopy = handler;
   v10[4] = self;
-  v8 = v11;
-  v9 = v12;
+  v8 = messageCopy;
+  v9 = handlerCopy;
   [(BEUIHandler *)self _throttledRunJavaScriptAlertPanel:v10];
 }
 
-- (void)webView:(id)a3 runJavaScriptConfirmPanelWithMessage:(id)a4 initiatedByFrame:(id)a5 completionHandler:(id)a6
+- (void)webView:(id)view runJavaScriptConfirmPanelWithMessage:(id)message initiatedByFrame:(id)frame completionHandler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_2BA30;
   v10[3] = &unk_328F68;
-  v11 = a4;
-  v12 = a6;
+  messageCopy = message;
+  handlerCopy = handler;
   v10[4] = self;
-  v8 = v11;
-  v9 = v12;
+  v8 = messageCopy;
+  v9 = handlerCopy;
   [(BEUIHandler *)self _throttledRunJavaScriptAlertPanel:v10];
 }
 
-- (id)_webView:(id)a3 adjustedDataInteractionItemProvidersForItemProvider:(id)a4 representingObjects:(id)a5 additionalData:(id)a6
+- (id)_webView:(id)view adjustedDataInteractionItemProvidersForItemProvider:(id)provider representingObjects:(id)objects additionalData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [UTTypeImage identifier];
-  v13 = [v10 hasItemConformingToTypeIdentifier:v12];
+  viewCopy = view;
+  providerCopy = provider;
+  dataCopy = data;
+  identifier = [UTTypeImage identifier];
+  v13 = [providerCopy hasItemConformingToTypeIdentifier:identifier];
 
   if (v13)
   {
@@ -71,17 +71,17 @@
 
   else
   {
-    v15 = [(BEUIHandler *)self delegate];
-    v16 = v10;
-    if (v11)
+    delegate = [(BEUIHandler *)self delegate];
+    v16 = providerCopy;
+    if (dataCopy)
     {
-      v17 = [UTTypeUTF8PlainText identifier];
-      v18 = [v11 objectForKeyedSubscript:v17];
+      identifier2 = [UTTypeUTF8PlainText identifier];
+      v18 = [dataCopy objectForKeyedSubscript:identifier2];
 
       v19 = [[NSString alloc] initWithData:v18 encoding:4];
       if ([v19 length] && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v20 = [v15 handler:self citationForText:v19 webView:v9];
+        v20 = [delegate handler:self citationForText:v19 webView:viewCopy];
       }
 
       else
@@ -99,7 +99,7 @@
     {
       v24 = v16;
       v21 = [NSArray arrayWithObjects:&v24 count:1];
-      v22 = [v15 adjustedItemProvidersWithCitation:v21 withExcerptString:v20];
+      v22 = [delegate adjustedItemProvidersWithCitation:v21 withExcerptString:v20];
     }
 
     else
@@ -113,50 +113,50 @@
   return v14;
 }
 
-- (void)_webView:(id)a3 didNotHandleTapAsClickAtPoint:(CGPoint)a4
+- (void)_webView:(id)view didNotHandleTapAsClickAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  v7 = [(BEUIHandler *)self delegate];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  delegate = [(BEUIHandler *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v13 be_contentView];
-    [v8 convertPoint:v13 toView:{x, y}];
+    be_contentView = [viewCopy be_contentView];
+    [be_contentView convertPoint:viewCopy toView:{x, y}];
     v10 = v9;
     v12 = v11;
 
-    [v7 handler:self webView:v13 didNotHandleTapAsClickAtPoint:{v10, v12}];
+    [delegate handler:self webView:viewCopy didNotHandleTapAsClickAtPoint:{v10, v12}];
   }
 }
 
-- (void)_webViewDidEnterFullscreen:(id)a3
+- (void)_webViewDidEnterFullscreen:(id)fullscreen
 {
-  v5 = a3;
-  v4 = [(BEUIHandler *)self delegate];
+  fullscreenCopy = fullscreen;
+  delegate = [(BEUIHandler *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 webViewDidEnterFullscreen:v5];
+    [delegate webViewDidEnterFullscreen:fullscreenCopy];
   }
 }
 
-- (void)_webViewDidExitFullscreen:(id)a3
+- (void)_webViewDidExitFullscreen:(id)fullscreen
 {
-  v5 = a3;
-  v4 = [(BEUIHandler *)self delegate];
+  fullscreenCopy = fullscreen;
+  delegate = [(BEUIHandler *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 webViewDidExitFullscreen:v5];
+    [delegate webViewDidExitFullscreen:fullscreenCopy];
   }
 }
 
-- (void)_webViewFullscreenMayReturnToInline:(id)a3
+- (void)_webViewFullscreenMayReturnToInline:(id)inline
 {
-  v5 = a3;
-  v4 = [(BEUIHandler *)self delegate];
+  inlineCopy = inline;
+  delegate = [(BEUIHandler *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 webViewFullscreenMayReturnToInline:v5];
+    [delegate webViewFullscreenMayReturnToInline:inlineCopy];
   }
 }
 
@@ -175,19 +175,19 @@
   return alertThrottler;
 }
 
-- (void)_throttledRunJavaScriptAlertPanel:(id)a3
+- (void)_throttledRunJavaScriptAlertPanel:(id)panel
 {
-  v4 = a3;
-  v5 = [(BEUIHandler *)self alertThrottler];
+  panelCopy = panel;
+  alertThrottler = [(BEUIHandler *)self alertThrottler];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2C344;
   v9[3] = &unk_328F90;
-  v6 = v4;
+  v6 = panelCopy;
   v10 = v6;
-  LOBYTE(v4) = [v5 runBlockThrottled:v9];
+  LOBYTE(panelCopy) = [alertThrottler runBlockThrottled:v9];
 
-  if ((v4 & 1) == 0)
+  if ((panelCopy & 1) == 0)
   {
     v7 = _BookEPUBLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -200,17 +200,17 @@
   }
 }
 
-- (void)_handleContextMenuConfigurationForElement:(id)a3 completionHandler:(id)a4
+- (void)_handleContextMenuConfigurationForElement:(id)element completionHandler:(id)handler
 {
-  v11 = a4;
-  v5 = a3;
-  v6 = [v5 linkURL];
-  v7 = [v5 _activatedElementInfo];
+  handlerCopy = handler;
+  elementCopy = element;
+  linkURL = [elementCopy linkURL];
+  _activatedElementInfo = [elementCopy _activatedElementInfo];
 
-  v8 = [v7 type];
-  if (v8)
+  type = [_activatedElementInfo type];
+  if (type)
   {
-    if (v8 == &dword_0 + 1)
+    if (type == &dword_0 + 1)
     {
       v9 = 0;
 LABEL_6:
@@ -219,7 +219,7 @@ LABEL_6:
     }
   }
 
-  else if (BEURLHandlerSchemeIsOkForBookToLoad(v6))
+  else if (BEURLHandlerSchemeIsOkForBookToLoad(linkURL))
   {
     v9 = &stru_328FD0;
     goto LABEL_6;
@@ -227,7 +227,7 @@ LABEL_6:
 
   v10 = 0;
 LABEL_8:
-  v11[2](v11, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
 - (BEUIHandlerDelegate)delegate

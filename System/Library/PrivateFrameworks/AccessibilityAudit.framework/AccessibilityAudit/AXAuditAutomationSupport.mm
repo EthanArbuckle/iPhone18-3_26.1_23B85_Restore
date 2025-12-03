@@ -1,26 +1,26 @@
 @interface AXAuditAutomationSupport
-+ (__AXUIElement)createAXElementForAuditIssue:(id)a3;
++ (__AXUIElement)createAXElementForAuditIssue:(id)issue;
 + (id)_currentTimestamp;
-+ (id)longDescriptionForAuditIssue:(id)a3;
++ (id)longDescriptionForAuditIssue:(id)issue;
 + (id)sharedManager;
-+ (id)shortDescriptionForAuditIssue:(id)a3;
++ (id)shortDescriptionForAuditIssue:(id)issue;
 - (AXAuditAutomationDelegate)delegate;
 - (AXAuditAutomationSupport)init;
 - (BOOL)_initializeAXObserverIfNeeded;
 - (id)_setupWarningsFromAuditTypes;
 - (id)fetchScreenshot;
 - (void)_captureScreenshot;
-- (void)_informDelegateOfResults:(id)a3 error:(id)a4;
+- (void)_informDelegateOfResults:(id)results error:(id)error;
 - (void)_runAudit;
 - (void)_runNextAuditIfNeeded;
 - (void)_screenChangedNotification;
 - (void)_screenChangedThrottled;
-- (void)_sendResultsToDelegate:(id)a3;
+- (void)_sendResultsToDelegate:(id)delegate;
 - (void)_setupAudit;
 - (void)_startContinuousAudit;
-- (void)auditer:(id)a3 didCompleteWithResults:(id)a4;
-- (void)setAuditWarningsToIgnore:(id)a3;
-- (void)startAuditWithCompletionBlock:(id)a3;
+- (void)auditer:(id)auditer didCompleteWithResults:(id)results;
+- (void)setAuditWarningsToIgnore:(id)ignore;
+- (void)startAuditWithCompletionBlock:(id)block;
 - (void)startContinuousAudit;
 - (void)startSingleAudit;
 - (void)stopContinuousAudit;
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __41__AXAuditAutomationSupport_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_6 != -1)
   {
     dispatch_once(&sharedManager_onceToken_6, block);
@@ -53,30 +53,30 @@ uint64_t __41__AXAuditAutomationSupport_sharedManager__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)shortDescriptionForAuditIssue:(id)a3
++ (id)shortDescriptionForAuditIssue:(id)issue
 {
-  v3 = a3;
+  issueCopy = issue;
   v4 = +[AXAuditIssueDescriptionManager sharedManager];
-  v5 = [v4 shortTitleForAuditIssue:v3];
+  v5 = [v4 shortTitleForAuditIssue:issueCopy];
 
   return v5;
 }
 
-+ (id)longDescriptionForAuditIssue:(id)a3
++ (id)longDescriptionForAuditIssue:(id)issue
 {
-  v3 = a3;
+  issueCopy = issue;
   v4 = +[AXAuditIssueDescriptionManager sharedManager];
-  v5 = [v4 longDescriptionForAuditIssue:v3];
+  v5 = [v4 longDescriptionForAuditIssue:issueCopy];
 
   return v5;
 }
 
-+ (__AXUIElement)createAXElementForAuditIssue:(id)a3
++ (__AXUIElement)createAXElementForAuditIssue:(id)issue
 {
-  v3 = [a3 auditElement];
-  v4 = [v3 createAxElementRefForXCTest];
+  auditElement = [issue auditElement];
+  createAxElementRefForXCTest = [auditElement createAxElementRefForXCTest];
 
-  return v4;
+  return createAxElementRefForXCTest;
 }
 
 - (AXAuditAutomationSupport)init
@@ -109,8 +109,8 @@ uint64_t __41__AXAuditAutomationSupport_sharedManager__block_invoke(uint64_t a1)
 {
   v2 = objc_opt_new();
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
-  v4 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v2 setTimeZone:v4];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [v2 setTimeZone:systemTimeZone];
 
   [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   v5 = [v2 stringFromDate:v3];
@@ -123,15 +123,15 @@ uint64_t __41__AXAuditAutomationSupport_sharedManager__block_invoke(uint64_t a1)
   v3 = objc_opt_new();
   [(AXAuditAutomationSupport *)self set_auditor:v3];
 
-  v4 = [(AXAuditAutomationSupport *)self _auditor];
-  [v4 setDelegate:self];
+  _auditor = [(AXAuditAutomationSupport *)self _auditor];
+  [_auditor setDelegate:self];
 
   v5 = +[AXAuditAutomationSupport _currentTimestamp];
   [(AXAuditAutomationSupport *)self set_auditTimestamp:v5];
 
-  v6 = [(AXAuditAutomationSupport *)self targetPid];
-  v7 = [(AXAuditAutomationSupport *)self _auditor];
-  [v7 setTargetPid:v6];
+  targetPid = [(AXAuditAutomationSupport *)self targetPid];
+  _auditor2 = [(AXAuditAutomationSupport *)self _auditor];
+  [_auditor2 setTargetPid:targetPid];
 
   v8 = +[AXAuditScreenshotManager sharedManager];
   [v8 clear];
@@ -205,14 +205,14 @@ LABEL_10:
 LABEL_14:
     v28 = v10;
     [(AXAuditAutomationSupport *)self _setupAudit];
-    v11 = [(AXAuditAutomationSupport *)self _completionBlock];
+    _completionBlock = [(AXAuditAutomationSupport *)self _completionBlock];
 
-    if (v11)
+    if (_completionBlock)
     {
       v12 = +[AXAuditPluginManager sharedManager];
-      v13 = [(AXAuditAutomationSupport *)self _auditQueue];
-      v14 = [(AXAuditAutomationSupport *)self _auditor];
-      [v14 setAuditQueue:v13];
+      _auditQueue = [(AXAuditAutomationSupport *)self _auditQueue];
+      _auditor = [(AXAuditAutomationSupport *)self _auditor];
+      [_auditor setAuditQueue:_auditQueue];
     }
 
     v15 = [MEMORY[0x277CBEB58] set];
@@ -220,8 +220,8 @@ LABEL_14:
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = [(AXAuditAutomationSupport *)self auditTypes];
-    v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    auditTypes = [(AXAuditAutomationSupport *)self auditTypes];
+    v17 = [auditTypes countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v17)
     {
       v18 = v17;
@@ -232,13 +232,13 @@ LABEL_14:
         {
           if (*v32 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(auditTypes);
           }
 
           v21 = *(*(&v31 + 1) + 8 * i);
-          v22 = [(AXAuditAutomationSupport *)self _auditor];
-          v23 = [v22 allSupportedAuditTypes];
-          v24 = [v23 containsObject:v21];
+          _auditor2 = [(AXAuditAutomationSupport *)self _auditor];
+          allSupportedAuditTypes = [_auditor2 allSupportedAuditTypes];
+          v24 = [allSupportedAuditTypes containsObject:v21];
 
           if (v24)
           {
@@ -246,13 +246,13 @@ LABEL_14:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v18 = [auditTypes countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v18);
     }
 
-    v25 = [(AXAuditAutomationSupport *)self _auditQueue];
+    _auditQueue2 = [(AXAuditAutomationSupport *)self _auditQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__AXAuditAutomationSupport__runAudit__block_invoke;
@@ -260,7 +260,7 @@ LABEL_14:
     block[4] = self;
     v30 = v15;
     v26 = v15;
-    dispatch_async(v25, block);
+    dispatch_async(_auditQueue2, block);
 
     v10 = v28;
   }
@@ -283,14 +283,14 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)startAuditWithCompletionBlock:(id)a3
+- (void)startAuditWithCompletionBlock:(id)block
 {
-  [(AXAuditAutomationSupport *)self set_completionBlock:a3];
-  v4 = [(AXAuditAutomationSupport *)self _setupWarningsFromAuditTypes];
-  v5 = v4;
-  if (v4)
+  [(AXAuditAutomationSupport *)self set_completionBlock:block];
+  _setupWarningsFromAuditTypes = [(AXAuditAutomationSupport *)self _setupWarningsFromAuditTypes];
+  v5 = _setupWarningsFromAuditTypes;
+  if (_setupWarningsFromAuditTypes)
   {
-    [(AXAuditAutomationSupport *)self _informDelegateOfResults:0 error:v4];
+    [(AXAuditAutomationSupport *)self _informDelegateOfResults:0 error:_setupWarningsFromAuditTypes];
   }
 
   else
@@ -299,31 +299,31 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_informDelegateOfResults:(id)a3 error:(id)a4
+- (void)_informDelegateOfResults:(id)results error:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXAuditAutomationSupport *)self delegate];
+  resultsCopy = results;
+  errorCopy = error;
+  delegate = [(AXAuditAutomationSupport *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(AXAuditAutomationSupport *)self delegate];
-    [v9 automationSupport:self didFindResults:v6 success:v7 == 0];
+    delegate2 = [(AXAuditAutomationSupport *)self delegate];
+    [delegate2 automationSupport:self didFindResults:resultsCopy success:errorCopy == 0];
   }
 
-  v10 = [(AXAuditAutomationSupport *)self _completionBlock];
+  _completionBlock = [(AXAuditAutomationSupport *)self _completionBlock];
 
-  if (v10)
+  if (_completionBlock)
   {
-    v25 = v7;
+    v25 = errorCopy;
     v11 = objc_opt_new();
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v26 = v6;
-    v12 = v6;
+    v26 = resultsCopy;
+    v12 = resultsCopy;
     v13 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v13)
     {
@@ -344,8 +344,8 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v18 = [v17 allIssues];
-          v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          allIssues = [v17 allIssues];
+          v19 = [allIssues countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v19)
           {
             v20 = v19;
@@ -357,14 +357,14 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
               {
                 if (*v28 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(allIssues);
                 }
 
                 [v11 addObject:*(*(&v27 + 1) + 8 * v22++)];
               }
 
               while (v20 != v22);
-              v20 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v20 = [allIssues countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v20);
@@ -380,12 +380,12 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
       while (v14);
     }
 
-    v23 = [(AXAuditAutomationSupport *)self _completionBlock];
-    v7 = v25;
-    (v23)[2](v23, v11, v25);
+    _completionBlock2 = [(AXAuditAutomationSupport *)self _completionBlock];
+    errorCopy = v25;
+    (_completionBlock2)[2](_completionBlock2, v11, v25);
 
     [(AXAuditAutomationSupport *)self set_completionBlock:0];
-    v6 = v26;
+    resultsCopy = v26;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -421,9 +421,9 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
 
 - (void)startSingleAudit
 {
-  v3 = [(AXAuditAutomationSupport *)self runningContinuousAudit];
+  runningContinuousAudit = [(AXAuditAutomationSupport *)self runningContinuousAudit];
   [(AXAuditAutomationSupport *)self set_singleAuditPendingCount:[(AXAuditAutomationSupport *)self _singleAuditPendingCount]+ 1];
-  if (!v3)
+  if (!runningContinuousAudit)
   {
 
     [(AXAuditAutomationSupport *)self _runNextAuditIfNeeded];
@@ -449,36 +449,36 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
 
 - (void)_captureScreenshot
 {
-  v6 = [(AXAuditAutomationSupport *)self _auditTimestamp];
+  _auditTimestamp = [(AXAuditAutomationSupport *)self _auditTimestamp];
   v2 = +[AXAuditPluginManager sharedManager];
-  v3 = [v2 platformPlugin];
-  v4 = [v3 screenshotInfoForTransportWithFrame:{0.0, 0.0, 0.0, 0.0}];
+  platformPlugin = [v2 platformPlugin];
+  v4 = [platformPlugin screenshotInfoForTransportWithFrame:{0.0, 0.0, 0.0, 0.0}];
 
   if (v4)
   {
     v5 = +[AXAuditScreenshotManager sharedManager];
-    [v5 addScreenshotWithInfo:v4 timestamp:v6 completion:&__block_literal_global_25];
+    [v5 addScreenshotWithInfo:v4 timestamp:_auditTimestamp completion:&__block_literal_global_25];
   }
 }
 
 - (id)fetchScreenshot
 {
   v2 = +[AXAuditPluginManager sharedManager];
-  v3 = [v2 platformPlugin];
-  v4 = [v3 screenshotInfoForTransportWithFrame:{0.0, 0.0, 0.0, 0.0}];
+  platformPlugin = [v2 platformPlugin];
+  v4 = [platformPlugin screenshotInfoForTransportWithFrame:{0.0, 0.0, 0.0, 0.0}];
 
   return v4;
 }
 
-- (void)auditer:(id)a3 didCompleteWithResults:(id)a4
+- (void)auditer:(id)auditer didCompleteWithResults:(id)results
 {
-  v5 = a4;
-  v6 = [(AXAuditAutomationSupport *)self _completionBlock];
+  resultsCopy = results;
+  _completionBlock = [(AXAuditAutomationSupport *)self _completionBlock];
 
-  if (v6)
+  if (_completionBlock)
   {
-    v7 = [(AXAuditAutomationSupport *)self _auditTimestamp];
-    updateTimestampOfResults(v5, v7);
+    _auditTimestamp = [(AXAuditAutomationSupport *)self _auditTimestamp];
+    updateTimestampOfResults(resultsCopy, _auditTimestamp);
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -486,7 +486,7 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
     block[3] = &unk_278BE2CD0;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    [(AXAuditAutomationSupport *)self _sendResultsToDelegate:v5];
+    [(AXAuditAutomationSupport *)self _sendResultsToDelegate:resultsCopy];
   }
 
   else
@@ -496,7 +496,7 @@ void __37__AXAuditAutomationSupport__runAudit__block_invoke(uint64_t a1)
     v8[2] = __59__AXAuditAutomationSupport_auditer_didCompleteWithResults___block_invoke_2;
     v8[3] = &unk_278BE2CA8;
     v8[4] = self;
-    v9 = v5;
+    v9 = resultsCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 }
@@ -544,26 +544,26 @@ void __59__AXAuditAutomationSupport_auditer_didCompleteWithResults___block_invok
   }
 }
 
-- (void)_sendResultsToDelegate:(id)a3
+- (void)_sendResultsToDelegate:(id)delegate
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AXAuditAutomationSupport *)self auditWarningsToCapture];
-  v6 = [v5 count];
+  delegateCopy = delegate;
+  auditWarningsToCapture = [(AXAuditAutomationSupport *)self auditWarningsToCapture];
+  v6 = [auditWarningsToCapture count];
 
-  v7 = [(AXAuditAutomationSupport *)self elementIdentifiersToIgnore];
-  v40 = [v7 count];
+  elementIdentifiersToIgnore = [(AXAuditAutomationSupport *)self elementIdentifiersToIgnore];
+  v40 = [elementIdentifiersToIgnore count];
   v41 = v6;
 
   if (v6 | v40)
   {
-    v39 = self;
+    selfCopy = self;
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v29 = v4;
-    obj = v4;
+    v29 = delegateCopy;
+    obj = delegateCopy;
     v32 = [obj countByEnumeratingWithState:&v50 objects:v56 count:16];
     if (!v32)
     {
@@ -587,8 +587,8 @@ void __59__AXAuditAutomationSupport_auditer_didCompleteWithResults___block_invok
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v34 = [v9 caseResults];
-        v36 = [v34 countByEnumeratingWithState:&v46 objects:v55 count:16];
+        caseResults = [v9 caseResults];
+        v36 = [caseResults countByEnumeratingWithState:&v46 objects:v55 count:16];
         if (v36)
         {
           v35 = *v47;
@@ -599,18 +599,18 @@ void __59__AXAuditAutomationSupport_auditer_didCompleteWithResults___block_invok
             {
               if (*v47 != v35)
               {
-                objc_enumerationMutation(v34);
+                objc_enumerationMutation(caseResults);
               }
 
               v37 = *(*(&v46 + 1) + 8 * v10);
               v38 = v10;
-              v11 = [v37 auditIssues];
+              auditIssues = [v37 auditIssues];
               v12 = objc_opt_new();
               v42 = 0u;
               v43 = 0u;
               v44 = 0u;
               v45 = 0u;
-              v13 = v11;
+              v13 = auditIssues;
               v14 = [v13 countByEnumeratingWithState:&v42 objects:v54 count:16];
               if (v14)
               {
@@ -628,10 +628,10 @@ void __59__AXAuditAutomationSupport_auditer_didCompleteWithResults___block_invok
                     v18 = *(*(&v42 + 1) + 8 * i);
                     if (v41)
                     {
-                      v19 = [*(*(&v42 + 1) + 8 * i) issueClassification];
-                      v20 = [MEMORY[0x277CCABB0] numberWithLong:v19];
-                      v21 = [(AXAuditAutomationSupport *)v39 auditWarningsToCapture];
-                      v22 = [v21 containsObject:v20];
+                      issueClassification = [*(*(&v42 + 1) + 8 * i) issueClassification];
+                      v20 = [MEMORY[0x277CCABB0] numberWithLong:issueClassification];
+                      auditWarningsToCapture2 = [(AXAuditAutomationSupport *)selfCopy auditWarningsToCapture];
+                      v22 = [auditWarningsToCapture2 containsObject:v20];
 
                       if (v22)
                       {
@@ -659,9 +659,9 @@ void __59__AXAuditAutomationSupport_auditer_didCompleteWithResults___block_invok
                       goto LABEL_31;
                     }
 
-                    v24 = [v18 auditElement];
-                    v25 = [v24 accessibilityIdentifier];
-                    if (![v25 length])
+                    auditElement = [v18 auditElement];
+                    accessibilityIdentifier = [auditElement accessibilityIdentifier];
+                    if (![accessibilityIdentifier length])
                     {
 
 LABEL_31:
@@ -669,8 +669,8 @@ LABEL_31:
                       continue;
                     }
 
-                    v26 = [(AXAuditAutomationSupport *)v39 elementIdentifiersToIgnore];
-                    v27 = [v26 containsObject:v25];
+                    elementIdentifiersToIgnore2 = [(AXAuditAutomationSupport *)selfCopy elementIdentifiersToIgnore];
+                    v27 = [elementIdentifiersToIgnore2 containsObject:accessibilityIdentifier];
 
                     if ((v27 & 1) == 0)
                     {
@@ -689,7 +689,7 @@ LABEL_31:
             }
 
             while (v38 + 1 != v36);
-            v36 = [v34 countByEnumeratingWithState:&v46 objects:v55 count:16];
+            v36 = [caseResults countByEnumeratingWithState:&v46 objects:v55 count:16];
           }
 
           while (v36);
@@ -704,14 +704,14 @@ LABEL_31:
       {
 LABEL_38:
 
-        [(AXAuditAutomationSupport *)v39 _informDelegateOfResults:obj error:0];
-        v4 = v29;
+        [(AXAuditAutomationSupport *)selfCopy _informDelegateOfResults:obj error:0];
+        delegateCopy = v29;
         goto LABEL_39;
       }
     }
   }
 
-  [(AXAuditAutomationSupport *)self _informDelegateOfResults:v4 error:0];
+  [(AXAuditAutomationSupport *)self _informDelegateOfResults:delegateCopy error:0];
 LABEL_39:
 
   v28 = *MEMORY[0x277D85DE8];
@@ -727,22 +727,22 @@ LABEL_39:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)setAuditWarningsToIgnore:(id)a3
+- (void)setAuditWarningsToIgnore:(id)ignore
 {
-  objc_storeStrong(&self->_auditWarningsToIgnore, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_auditWarningsToIgnore, ignore);
+  ignoreCopy = ignore;
   v6 = +[AXAuditIssueDescriptionManager allAuditIssueClassificationCodes];
   v8 = [v6 mutableCopy];
 
-  [v8 removeObjectsInArray:v5];
+  [v8 removeObjectsInArray:ignoreCopy];
   v7 = [v8 copy];
   [(AXAuditAutomationSupport *)self setAuditWarningsToCapture:v7];
 }
 
 - (void)_screenChangedNotification
 {
-  v2 = [(AXAuditAutomationSupport *)self _screenChangedThrottler];
-  [v2 scheduleNow];
+  _screenChangedThrottler = [(AXAuditAutomationSupport *)self _screenChangedThrottler];
+  [_screenChangedThrottler scheduleNow];
 }
 
 - (BOOL)_initializeAXObserverIfNeeded

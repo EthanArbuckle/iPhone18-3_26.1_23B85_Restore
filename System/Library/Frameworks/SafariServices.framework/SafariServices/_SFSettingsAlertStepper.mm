@@ -1,22 +1,22 @@
 @interface _SFSettingsAlertStepper
 + (id)stepperForBrowsingAssistant;
-- (_SFSettingsAlertStepper)initWithFrame:(CGRect)a3;
-- (id)_button:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)initUsingResetButton:(BOOL)a3 usingTopSeparator:(BOOL)a4;
-- (void)setEnabled:(BOOL)a3 forButton:(int64_t)a4;
-- (void)setImage:(id)a3 forButton:(int64_t)a4;
-- (void)setText:(id)a3 forButton:(int64_t)a4;
+- (_SFSettingsAlertStepper)initWithFrame:(CGRect)frame;
+- (id)_button:(int64_t)_button;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)initUsingResetButton:(BOOL)button usingTopSeparator:(BOOL)separator;
+- (void)setEnabled:(BOOL)enabled forButton:(int64_t)button;
+- (void)setImage:(id)image forButton:(int64_t)button;
+- (void)setText:(id)text forButton:(int64_t)button;
 @end
 
 @implementation _SFSettingsAlertStepper
 
-- (_SFSettingsAlertStepper)initWithFrame:(CGRect)a3
+- (_SFSettingsAlertStepper)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(_SFSettingsAlertStepper *)self initUsingResetButton:1 usingTopSeparator:0];
   v8 = v7;
   if (v7)
@@ -30,23 +30,23 @@
 
 + (id)stepperForBrowsingAssistant
 {
-  v2 = [[a1 alloc] initUsingResetButton:0 usingTopSeparator:0];
+  v2 = [[self alloc] initUsingResetButton:0 usingTopSeparator:0];
   v3 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDC8]];
-  v4 = [v2[63] imageView];
-  [v4 setPreferredSymbolConfiguration:v3];
+  imageView = [v2[63] imageView];
+  [imageView setPreferredSymbolConfiguration:v3];
 
-  v5 = [v2[62] imageView];
-  [v5 setPreferredSymbolConfiguration:v3];
+  imageView2 = [v2[62] imageView];
+  [imageView2 setPreferredSymbolConfiguration:v3];
 
   [v2 setDefaultBackgroundMode:0];
 
   return v2;
 }
 
-- (id)initUsingResetButton:(BOOL)a3 usingTopSeparator:(BOOL)a4
+- (id)initUsingResetButton:(BOOL)button usingTopSeparator:(BOOL)separator
 {
-  v4 = a4;
-  v5 = a3;
+  separatorCopy = separator;
+  buttonCopy = button;
   v80[7] = *MEMORY[0x1E69E9840];
   v77.receiver = self;
   v77.super_class = _SFSettingsAlertStepper;
@@ -54,7 +54,7 @@
   v7 = v6;
   if (v6)
   {
-    if (v4)
+    if (separatorCopy)
     {
       v8 = 3;
     }
@@ -65,8 +65,8 @@
     }
 
     [(_SFSettingsAlertControl *)v6 setDefaultBackgroundMode:v8];
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(_SFSettingsAlertStepper *)v7 setTintColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(_SFSettingsAlertStepper *)v7 setTintColor:labelColor];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -86,8 +86,8 @@
     v10[62] = v14;
 
     [v10[62] setAccessibilityIdentifier:@"Increment"];
-    v70 = v5;
-    if (v5)
+    v70 = buttonCopy;
+    if (buttonCopy)
     {
       v16 = v11[2](v11, sel__resetTapped_, 6);
       v17 = v10[64];
@@ -97,29 +97,29 @@
     }
 
     v72 = v11;
-    v18 = [v10[62] widthAnchor];
-    v19 = [v10[63] widthAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    widthAnchor = [v10[62] widthAnchor];
+    widthAnchor2 = [v10[63] widthAnchor];
+    v20 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
 
     LODWORD(v21) = 1144733696;
     [v20 setPriority:v21];
     _SFOnePixel();
     v23 = v22;
-    LODWORD(v18) = [MEMORY[0x1E69C8880] isBrowsingAssistantEnabled];
+    LODWORD(widthAnchor) = [MEMORY[0x1E69C8880] isBrowsingAssistantEnabled];
     v58 = MEMORY[0x1E696ACD8];
-    v67 = [v10[63] leadingAnchor];
-    v65 = [v10 leadingAnchor];
-    v63 = [v67 constraintEqualToAnchor:v65];
+    leadingAnchor = [v10[63] leadingAnchor];
+    leadingAnchor2 = [v10 leadingAnchor];
+    v63 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v80[0] = v63;
-    v61 = [v10[63] topAnchor];
-    v60 = [v10 topAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    topAnchor = [v10[63] topAnchor];
+    topAnchor2 = [v10 topAnchor];
+    v59 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v80[1] = v59;
-    v24 = [v10[63] bottomAnchor];
-    v57 = v24;
-    v25 = [v10 bottomAnchor];
-    v56 = v25;
-    if (v18)
+    bottomAnchor = [v10[63] bottomAnchor];
+    v57 = bottomAnchor;
+    bottomAnchor2 = [v10 bottomAnchor];
+    v56 = bottomAnchor2;
+    if (widthAnchor)
     {
       v26 = -0.0;
     }
@@ -129,19 +129,19 @@
       v26 = -v23;
     }
 
-    v55 = [v24 constraintEqualToAnchor:v25 constant:v26];
+    v55 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v26];
     v80[2] = v55;
-    v54 = [v10[62] topAnchor];
-    v27 = [v10 topAnchor];
-    v28 = [v54 constraintEqualToAnchor:v27];
+    topAnchor3 = [v10[62] topAnchor];
+    topAnchor4 = [v10 topAnchor];
+    v28 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v80[3] = v28;
-    v29 = [v10[62] bottomAnchor];
-    v30 = [v10 bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:v26];
+    bottomAnchor3 = [v10[62] bottomAnchor];
+    bottomAnchor4 = [v10 bottomAnchor];
+    v31 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v26];
     v80[4] = v31;
-    v32 = [v10[62] trailingAnchor];
-    v33 = [v10 trailingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    trailingAnchor = [v10[62] trailingAnchor];
+    trailingAnchor2 = [v10 trailingAnchor];
+    v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v80[5] = v34;
     v80[6] = v20;
     v74 = v20;
@@ -150,45 +150,45 @@
 
     if (v70)
     {
-      v36 = [v10[64] widthAnchor];
-      v37 = [v10[62] widthAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      widthAnchor3 = [v10[64] widthAnchor];
+      widthAnchor4 = [v10[62] widthAnchor];
+      leadingAnchor5 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
 
       [v74 priority];
       *&v40 = v39 + -1.0;
-      [v38 setPriority:v40];
+      [leadingAnchor5 setPriority:v40];
       v66 = MEMORY[0x1E696ACD8];
-      v71 = [v10[64] leadingAnchor];
-      v41 = [v10[63] trailingAnchor];
-      v42 = [v71 constraintEqualToAnchor:v41];
+      leadingAnchor3 = [v10[64] leadingAnchor];
+      trailingAnchor3 = [v10[63] trailingAnchor];
+      v42 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3];
       v79[0] = v42;
-      v69 = [v10[64] topAnchor];
-      v68 = [v10 topAnchor];
-      v64 = [v69 constraintEqualToAnchor:v68];
+      topAnchor5 = [v10[64] topAnchor];
+      topAnchor6 = [v10 topAnchor];
+      v64 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
       v79[1] = v64;
-      v62 = [v10[64] bottomAnchor];
-      v43 = [v10 bottomAnchor];
+      bottomAnchor5 = [v10[64] bottomAnchor];
+      bottomAnchor6 = [v10 bottomAnchor];
       _SFOnePixel();
-      v45 = [v62 constraintEqualToAnchor:v43 constant:-v44];
+      v45 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-v44];
       v79[2] = v45;
-      v46 = [v10[62] leadingAnchor];
-      v47 = [v10[64] trailingAnchor];
-      v48 = [v46 constraintEqualToAnchor:v47];
+      leadingAnchor4 = [v10[62] leadingAnchor];
+      trailingAnchor4 = [v10[64] trailingAnchor];
+      v48 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4];
       v79[3] = v48;
-      v79[4] = v38;
+      v79[4] = leadingAnchor5;
       v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:5];
       [v66 activateConstraints:v49];
 
-      v50 = v71;
+      trailingAnchor5 = leadingAnchor3;
     }
 
     else
     {
       v51 = MEMORY[0x1E696ACD8];
-      v38 = [v10[62] leadingAnchor];
-      v50 = [v10[63] trailingAnchor];
-      v41 = [v38 constraintEqualToAnchor:v50];
-      v78 = v41;
+      leadingAnchor5 = [v10[62] leadingAnchor];
+      trailingAnchor5 = [v10[63] trailingAnchor];
+      trailingAnchor3 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor5];
+      v78 = trailingAnchor3;
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v78 count:1];
       [v51 activateConstraints:v42];
     }
@@ -200,42 +200,42 @@
   return v7;
 }
 
-- (void)setImage:(id)a3 forButton:(int64_t)a4
+- (void)setImage:(id)image forButton:(int64_t)button
 {
-  v6 = a3;
-  v7 = [(_SFSettingsAlertStepper *)self _button:a4];
-  [v7 setImage:v6];
+  imageCopy = image;
+  v7 = [(_SFSettingsAlertStepper *)self _button:button];
+  [v7 setImage:imageCopy];
 }
 
-- (void)setText:(id)a3 forButton:(int64_t)a4
+- (void)setText:(id)text forButton:(int64_t)button
 {
-  v6 = a3;
-  v7 = [(_SFSettingsAlertStepper *)self _button:a4];
-  [v7 setText:v6];
+  textCopy = text;
+  v7 = [(_SFSettingsAlertStepper *)self _button:button];
+  [v7 setText:textCopy];
 }
 
-- (void)setEnabled:(BOOL)a3 forButton:(int64_t)a4
+- (void)setEnabled:(BOOL)enabled forButton:(int64_t)button
 {
-  v4 = a3;
-  v5 = [(_SFSettingsAlertStepper *)self _button:a4];
-  [v5 setEnabled:v4];
+  enabledCopy = enabled;
+  v5 = [(_SFSettingsAlertStepper *)self _button:button];
+  [v5 setEnabled:enabledCopy];
 }
 
-- (id)_button:(int64_t)a3
+- (id)_button:(int64_t)_button
 {
-  if (a3 <= 2)
+  if (_button <= 2)
   {
-    a2 = *(&self->super.super.super.super.super.isa + *off_1E84943F8[a3]);
+    a2 = *(&self->super.super.super.super.super.isa + *off_1E84943F8[_button]);
   }
 
   return a2;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = _SFSettingsAlertStepper;
-  v5 = [(_SFSettingsAlertStepper *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(_SFSettingsAlertStepper *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

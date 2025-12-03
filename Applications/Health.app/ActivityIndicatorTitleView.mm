@@ -1,8 +1,8 @@
 @interface ActivityIndicatorTitleView
 - (UIActivityIndicatorView)activityIndicatorView;
 - (UILabel)titleLabel;
-- (_TtC6Health26ActivityIndicatorTitleView)initWithCoder:(id)a3;
-- (_TtC6Health26ActivityIndicatorTitleView)initWithFrame:(CGRect)a3;
+- (_TtC6Health26ActivityIndicatorTitleView)initWithCoder:(id)coder;
+- (_TtC6Health26ActivityIndicatorTitleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ActivityIndicatorTitleView
@@ -21,12 +21,12 @@
   return Strong;
 }
 
-- (_TtC6Health26ActivityIndicatorTitleView)initWithFrame:(CGRect)a3
+- (_TtC6Health26ActivityIndicatorTitleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
   v9.receiver = self;
@@ -34,14 +34,14 @@
   return [(ActivityIndicatorTitleView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC6Health26ActivityIndicatorTitleView)initWithCoder:(id)a3
+- (_TtC6Health26ActivityIndicatorTitleView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for ActivityIndicatorTitleView();
-  v5 = a3;
-  v6 = [(ActivityIndicatorTitleView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ActivityIndicatorTitleView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

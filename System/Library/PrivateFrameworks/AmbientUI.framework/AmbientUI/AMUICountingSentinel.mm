@@ -1,23 +1,23 @@
 @interface AMUICountingSentinel
-- (void)_addToCounter:(int64_t)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)_addToCounter:(int64_t)counter;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)decrement;
 - (void)increment;
-- (void)performWhenCountAtZero:(uint64_t)a1;
+- (void)performWhenCountAtZero:(uint64_t)zero;
 @end
 
 @implementation AMUICountingSentinel
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__AMUICountingSentinel_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_278C75DD8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 
@@ -33,14 +33,14 @@ id __53__AMUICountingSentinel_appendDescriptionToFormatter___block_invoke(uint64
   return result;
 }
 
-- (void)_addToCounter:(int64_t)a3
+- (void)_addToCounter:(int64_t)counter
 {
   v18 = *MEMORY[0x277D85DE8];
   counter = self->_counter;
-  self->_counter = (counter + a3) & ~((counter + a3) >> 63);
+  self->_counter = (counter + counter) & ~((counter + counter) >> 63);
   if (counter)
   {
-    v4 = counter + a3 <= 0;
+    v4 = counter + counter <= 0;
   }
 
   else
@@ -86,40 +86,40 @@ id __53__AMUICountingSentinel_appendDescriptionToFormatter___block_invoke(uint64
 
 - (void)increment
 {
-  if (a1)
+  if (self)
   {
-    return [a1 _addToCounter:1];
+    return [self _addToCounter:1];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)decrement
 {
-  if (a1)
+  if (self)
   {
-    return [a1 _addToCounter:-1];
+    return [self _addToCounter:-1];
   }
 
-  return a1;
+  return self;
 }
 
-- (void)performWhenCountAtZero:(uint64_t)a1
+- (void)performWhenCountAtZero:(uint64_t)zero
 {
   v3 = a2;
-  if (a1)
+  if (zero)
   {
     v9 = v3;
-    if (*(a1 + 8))
+    if (*(zero + 8))
     {
-      v4 = *(a1 + 16);
+      v4 = *(zero + 16);
       if (!v4)
       {
-        v5 = [MEMORY[0x277CBEB18] array];
-        v6 = *(a1 + 16);
-        *(a1 + 16) = v5;
+        array = [MEMORY[0x277CBEB18] array];
+        v6 = *(zero + 16);
+        *(zero + 16) = array;
 
-        v4 = *(a1 + 16);
+        v4 = *(zero + 16);
       }
 
       v7 = [v9 copy];

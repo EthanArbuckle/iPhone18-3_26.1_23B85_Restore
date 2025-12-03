@@ -1,33 +1,33 @@
 @interface GKPlayerProfileCacheObject
 + (id)_familiarityLookup;
-+ (id)filterPlayerIDs:(id)a3 familiarity:(int)a4 includeSelf:(BOOL)a5;
-+ (id)localPlayerInManagedObjectContext:(id)a3;
-+ (id)playerProfileWithPlayerID:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)playerProfilesWithPlayerIDs:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)playerProfilesWithPlayers:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)playersByFamiliarity:(id)a3;
-+ (id)profileForPlayer:(id)a3 context:(id)a4;
++ (id)filterPlayerIDs:(id)ds familiarity:(int)familiarity includeSelf:(BOOL)self;
++ (id)localPlayerInManagedObjectContext:(id)context;
++ (id)playerProfileWithPlayerID:(id)d inManagedObjectContext:(id)context;
++ (id)playerProfilesWithPlayerIDs:(id)ds inManagedObjectContext:(id)context;
++ (id)playerProfilesWithPlayers:(id)players inManagedObjectContext:(id)context;
++ (id)playersByFamiliarity:(id)familiarity;
++ (id)profileForPlayer:(id)player context:(id)context;
 + (id)selfPlayerID;
-+ (int)familiarityForPlayerID:(id)a3;
-+ (unsigned)piecesToLoadForFamiliarity:(int)a3;
-+ (void)addFamiliarPlayerIDs:(id)a3 familiarity:(int)a4;
-+ (void)buildFamiliarilyLookupForProfile:(id)a3;
-+ (void)removeFamiliarPlayerIDs:(id)a3 familiarity:(int)a4;
-+ (void)setFamiliarPlayerIDs:(id)a3 familiarity:(int)a4;
++ (int)familiarityForPlayerID:(id)d;
++ (unsigned)piecesToLoadForFamiliarity:(int)familiarity;
++ (void)addFamiliarPlayerIDs:(id)ds familiarity:(int)familiarity;
++ (void)buildFamiliarilyLookupForProfile:(id)profile;
++ (void)removeFamiliarPlayerIDs:(id)ds familiarity:(int)familiarity;
++ (void)setFamiliarPlayerIDs:(id)ds familiarity:(int)familiarity;
 - (BOOL)isFindable;
 - (BOOL)isLocalPlayer;
 - (BOOL)isUnderage;
 - (BOOL)isValid;
 - (id)internalRepresentation;
-- (id)internalRepresentationWithPieces:(unsigned __int8)a3;
-- (id)updateImagesWithImageURLs:(id)a3;
+- (id)internalRepresentationWithPieces:(unsigned __int8)pieces;
+- (id)updateImagesWithImageURLs:(id)ls;
 - (int)familiarity;
 - (void)clearImages;
 - (void)deleteCachedAvatars;
-- (void)deleteCachedImage:(id)a3;
-- (void)expireRecentMatchesWithGame:(id)a3;
+- (void)deleteCachedImage:(id)image;
+- (void)expireRecentMatchesWithGame:(id)game;
 - (void)invalidate;
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4 pieces:(unsigned __int8)a5;
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date pieces:(unsigned __int8)pieces;
 @end
 
 @implementation GKPlayerProfileCacheObject
@@ -41,8 +41,8 @@
     return 0;
   }
 
-  v4 = [(GKPlayerProfileCacheObject *)self alias];
-  v3 = v4 != 0;
+  alias = [(GKPlayerProfileCacheObject *)self alias];
+  v3 = alias != 0;
 
   return v3;
 }
@@ -60,9 +60,9 @@
   v5.receiver = self;
   v5.super_class = GKPlayerProfileCacheObject;
   v2 = [(GKPlayerProfileCacheObject *)&v5 primitiveValueForKey:@"underage"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isFindable
@@ -70,9 +70,9 @@
   v5.receiver = self;
   v5.super_class = GKPlayerProfileCacheObject;
   v2 = [(GKPlayerProfileCacheObject *)&v5 primitiveValueForKey:@"findable"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)clearImages
@@ -83,8 +83,8 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKPlayerProfileCacheObject clearImages]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKPlayerProfileCacheObject clearImages]", [v7 UTF8String], 722);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKPlayerProfileCacheObject clearImages]", [lastPathComponent UTF8String], 722);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -93,19 +93,19 @@
   {
     v9 = [NSString stringWithFormat:@"Assertion failed"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([self conformsToProtocol:@protocol(GKCacheObjectImageProtocol)])\n[%s (%s:%d)]", v9, "-[GKPlayerProfileCacheObject clearImages]", [v11 UTF8String], 723);
+    lastPathComponent2 = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([self conformsToProtocol:@protocol(GKCacheObjectImageProtocol)])\n[%s (%s:%d)]", v9, "-[GKPlayerProfileCacheObject clearImages]", [lastPathComponent2 UTF8String], 723);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
   }
 
-  v13 = [(GKCacheObject *)self imageCacheKeyPathsByKey];
+  imageCacheKeyPathsByKey = [(GKCacheObject *)self imageCacheKeyPathsByKey];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100125264;
   v14[3] = &unk_100367928;
   v14[4] = self;
-  [v13 enumerateKeysAndObjectsUsingBlock:v14];
+  [imageCacheKeyPathsByKey enumerateKeysAndObjectsUsingBlock:v14];
 
   [(GKPlayerProfileCacheObject *)self deleteCachedAvatars];
 }
@@ -128,21 +128,21 @@
     v5 = +[NSThread callStackSymbols];
     v6 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKPlayerProfileCacheObject deleteCachedAvatars]", v5];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v6, "-[GKPlayerProfileCacheObject deleteCachedAvatars]", [v8 UTF8String], 740);
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v6, "-[GKPlayerProfileCacheObject deleteCachedAvatars]", [lastPathComponent UTF8String], 740);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v9];
   }
 
-  v10 = [(GKPlayerProfileCacheObject *)self playerID];
+  playerID = [(GKPlayerProfileCacheObject *)self playerID];
   v11 = GKAvatarSubdirectoryNameForPlayerID();
 
   [(GKPlayerProfileCacheObject *)self deleteCachedImage:v11];
 }
 
-- (void)deleteCachedImage:(id)a3
+- (void)deleteCachedImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -159,13 +159,13 @@
     v7 = +[NSThread callStackSymbols];
     v8 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKPlayerProfileCacheObject deleteCachedImage:]", v7];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v10 = [v9 lastPathComponent];
-    v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v8, "-[GKPlayerProfileCacheObject deleteCachedImage:]", [v10 UTF8String], 751);
+    lastPathComponent = [v9 lastPathComponent];
+    v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v8, "-[GKPlayerProfileCacheObject deleteCachedImage:]", [lastPathComponent UTF8String], 751);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v11];
   }
 
-  v12 = [NSURL URLWithString:v4];
+  v12 = [NSURL URLWithString:imageCopy];
   if ([v12 isFileURL])
   {
     if (!os_log_GKGeneral)
@@ -199,36 +199,36 @@
   {
     v17.receiver = self;
     v17.super_class = GKPlayerProfileCacheObject;
-    [(GKCacheObject *)&v17 deleteCachedImage:v4];
+    [(GKCacheObject *)&v17 deleteCachedImage:imageCopy];
   }
 }
 
-+ (id)localPlayerInManagedObjectContext:(id)a3
++ (id)localPlayerInManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKPlayerProfileCacheObject localPlayerInManagedObjectContext:]", v6);
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "+[GKPlayerProfileCacheObject localPlayerInManagedObjectContext:]", [v9 UTF8String], 769);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "+[GKPlayerProfileCacheObject localPlayerInManagedObjectContext:]", [lastPathComponent UTF8String], 769);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
-  v11 = objc_getAssociatedObject(v4, @"GKLocalPlayerObjectIDKey");
-  v12 = [v4 objectRegisteredForID:v11];
+  v11 = objc_getAssociatedObject(contextCopy, @"GKLocalPlayerObjectIDKey");
+  v12 = [contextCopy objectRegisteredForID:v11];
   if (!v12)
   {
-    v13 = [a1 selfPlayerID];
-    if (v13)
+    selfPlayerID = [self selfPlayerID];
+    if (selfPlayerID)
     {
-      v14 = [NSPredicate predicateWithFormat:@"playerID = %@", v13];
-      v12 = [(GKCacheObject *)GKPlayerProfileCacheObject firstObjectMatchingPredicate:v14 context:v4];
+      v14 = [NSPredicate predicateWithFormat:@"playerID = %@", selfPlayerID];
+      v12 = [(GKCacheObject *)GKPlayerProfileCacheObject firstObjectMatchingPredicate:v14 context:contextCopy];
 
-      objc_setAssociatedObject(v4, @"GKLocalPlayerObjectIDKey", v11, 1);
+      objc_setAssociatedObject(contextCopy, @"GKLocalPlayerObjectIDKey", v11, 1);
     }
 
     else
@@ -240,71 +240,71 @@
   return v12;
 }
 
-+ (id)playerProfileWithPlayerID:(id)a3 inManagedObjectContext:(id)a4
++ (id)playerProfileWithPlayerID:(id)d inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contextCopy = context;
   v8 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v8, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v9 = +[NSThread callStackSymbols];
     v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKPlayerProfileCacheObject playerProfileWithPlayerID:inManagedObjectContext:]", v9);
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "+[GKPlayerProfileCacheObject playerProfileWithPlayerID:inManagedObjectContext:]", [v12 UTF8String], 784);
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "+[GKPlayerProfileCacheObject playerProfileWithPlayerID:inManagedObjectContext:]", [lastPathComponent UTF8String], 784);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v13];
   }
 
-  if (v6 && ([a1 selfPlayerID], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v6, "isEqualToString:", v14), v14, !v15))
+  if (dCopy && ([self selfPlayerID], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(dCopy, "isEqualToString:", v14), v14, !v15))
   {
-    v20 = v6;
+    v20 = dCopy;
     v17 = [NSArray arrayWithObjects:&v20 count:1];
-    v18 = [a1 playerProfilesWithPlayerIDs:v17 inManagedObjectContext:v7];
-    v16 = [v18 lastObject];
+    v18 = [self playerProfilesWithPlayerIDs:v17 inManagedObjectContext:contextCopy];
+    lastObject = [v18 lastObject];
   }
 
   else
   {
-    v16 = [a1 localPlayerInManagedObjectContext:v7];
+    lastObject = [self localPlayerInManagedObjectContext:contextCopy];
   }
 
-  return v16;
+  return lastObject;
 }
 
-+ (id)profileForPlayer:(id)a3 context:(id)a4
++ (id)profileForPlayer:(id)player context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 playerID];
+  playerCopy = player;
+  contextCopy = context;
+  playerID = [playerCopy playerID];
 
-  if (v7)
+  if (playerID)
   {
-    v8 = [v5 playerID];
-    v9 = [GKPlayerProfileCacheObject playerProfileWithPlayerID:v8 inManagedObjectContext:v6];
+    playerID2 = [playerCopy playerID];
+    v9 = [GKPlayerProfileCacheObject playerProfileWithPlayerID:playerID2 inManagedObjectContext:contextCopy];
   }
 
   else
   {
-    v9 = [GKPlayerProfileCacheObject localPlayerInManagedObjectContext:v6];
+    v9 = [GKPlayerProfileCacheObject localPlayerInManagedObjectContext:contextCopy];
   }
 
   return v9;
 }
 
-+ (id)playerProfilesWithPlayers:(id)a3 inManagedObjectContext:(id)a4
++ (id)playerProfilesWithPlayers:(id)players inManagedObjectContext:(id)context
 {
-  v6 = a4;
-  v7 = [a3 _gkFilterWithBlock:&stru_100367950];
-  v8 = [a1 playerProfilesWithPlayerIDs:v7 inManagedObjectContext:v6];
+  contextCopy = context;
+  v7 = [players _gkFilterWithBlock:&stru_100367950];
+  v8 = [self playerProfilesWithPlayerIDs:v7 inManagedObjectContext:contextCopy];
 
   return v8;
 }
 
-+ (id)playerProfilesWithPlayerIDs:(id)a3 inManagedObjectContext:(id)a4
++ (id)playerProfilesWithPlayerIDs:(id)ds inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  contextCopy = context;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -321,28 +321,28 @@
     v10 = +[NSThread callStackSymbols];
     v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:inManagedObjectContext:]", v10);
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v11, "+[GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:inManagedObjectContext:]", [v13 UTF8String], 813);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v11, "+[GKPlayerProfileCacheObject playerProfilesWithPlayerIDs:inManagedObjectContext:]", [lastPathComponent UTF8String], 813);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
 
-  v15 = [a1 uniqueObjectIDLookupWithContext:v7];
+  v15 = [self uniqueObjectIDLookupWithContext:contextCopy];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100125E18;
   v19[3] = &unk_100367978;
-  v20 = v7;
-  v21 = a1;
-  v16 = v7;
-  v17 = [v15 uniqueObjectsForKeys:v6 context:v16 newObject:v19];
+  v20 = contextCopy;
+  selfCopy = self;
+  v16 = contextCopy;
+  v17 = [v15 uniqueObjectsForKeys:dsCopy context:v16 newObject:v19];
 
   return v17;
 }
 
-- (id)updateImagesWithImageURLs:(id)a3
+- (id)updateImagesWithImageURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -360,8 +360,8 @@
     v8 = +[NSThread callStackSymbols];
     v9 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKPlayerProfileCacheObject updateImagesWithImageURLs:]", v8];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v9, "-[GKPlayerProfileCacheObject updateImagesWithImageURLs:]", [v11 UTF8String], 830);
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v9, "-[GKPlayerProfileCacheObject updateImagesWithImageURLs:]", [lastPathComponent UTF8String], 830);
 
     v7 = &_sScA15unownedExecutorScevgTj_ptr;
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
@@ -371,14 +371,14 @@
   {
     v13 = [NSString stringWithFormat:@"Assertion failed"];
     v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v15 = [v14 lastPathComponent];
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([self conformsToProtocol:@protocol(GKCacheObjectImageProtocol)])\n[%s (%s:%d)]", v13, "-[GKPlayerProfileCacheObject updateImagesWithImageURLs:]", [v15 UTF8String], 831);
+    lastPathComponent2 = [v14 lastPathComponent];
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([self conformsToProtocol:@protocol(GKCacheObjectImageProtocol)])\n[%s (%s:%d)]", v13, "-[GKPlayerProfileCacheObject updateImagesWithImageURLs:]", [lastPathComponent2 UTF8String], 831);
 
     [v7[171] raise:@"GameKit Exception" format:{@"%@", v16}];
   }
 
-  v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
-  v18 = [v4 objectForKeyedSubscript:@"template"];
+  v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lsCopy count]);
+  v18 = [lsCopy objectForKeyedSubscript:@"template"];
   v19 = [(GKPlayerProfileCacheObject *)self valueForKeyPath:@"imageTemplate"];
   v20 = v19;
   if (v19 != v18 && ([v19 isEqualToString:v18] & 1) == 0)
@@ -391,29 +391,29 @@
   return v17;
 }
 
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4 pieces:(unsigned __int8)a5
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date pieces:(unsigned __int8)pieces
 {
-  v75 = a5;
-  v7 = a3;
-  v8 = a4;
+  piecesCopy = pieces;
+  representationCopy = representation;
+  dateCopy = date;
   v9 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v9, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v10 = +[NSThread callStackSymbols];
     v11 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKPlayerProfileCacheObject updateWithServerRepresentation:expirationDate:pieces:]", v10];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v11, "-[GKPlayerProfileCacheObject updateWithServerRepresentation:expirationDate:pieces:]", [v13 UTF8String], 854);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v11, "-[GKPlayerProfileCacheObject updateWithServerRepresentation:expirationDate:pieces:]", [lastPathComponent UTF8String], 854);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
 
   v77.receiver = self;
   v77.super_class = GKPlayerProfileCacheObject;
-  [(GKExpiringCacheObject *)&v77 updateWithServerRepresentation:v7 expirationDate:v8];
-  if (v7)
+  [(GKExpiringCacheObject *)&v77 updateWithServerRepresentation:representationCopy expirationDate:dateCopy];
+  if (representationCopy)
   {
-    v15 = [v7 objectForKey:GKPlayerIDKey];
+    v15 = [representationCopy objectForKey:GKPlayerIDKey];
     v73 = v15;
     if (v15)
     {
@@ -433,23 +433,23 @@
       }
     }
 
-    v17 = [v7 objectForKeyedSubscript:GKAliasKey];
+    v17 = [representationCopy objectForKeyedSubscript:GKAliasKey];
     [(GKPlayerProfileCacheObject *)self setAlias:v17];
 
-    v18 = [v7 objectForKeyedSubscript:GKPlayerStatusKey];
+    v18 = [representationCopy objectForKeyedSubscript:GKPlayerStatusKey];
     [(GKPlayerProfileCacheObject *)self setStatus:v18];
 
-    v19 = [v7 objectForKeyedSubscript:@"pb-account"];
+    v19 = [representationCopy objectForKeyedSubscript:@"pb-account"];
     -[GKPlayerProfileCacheObject setPurpleBuddyAccount:](self, "setPurpleBuddyAccount:", [v19 BOOLValue]);
 
-    v20 = [v7 objectForKeyedSubscript:GKUnderageKey];
+    v20 = [representationCopy objectForKeyedSubscript:GKUnderageKey];
     v21 = v20;
     if (v20)
     {
       -[GKPlayerProfileCacheObject setUnderage:](self, "setUnderage:", [v20 BOOLValue]);
     }
 
-    v22 = [v7 objectForKeyedSubscript:GKFindableKey];
+    v22 = [representationCopy objectForKeyedSubscript:GKFindableKey];
 
     if (v22)
     {
@@ -458,27 +458,27 @@
 
     if ([(GKPlayerProfileCacheObject *)self isLocalPlayer])
     {
-      v23 = [(GKPlayerProfileCacheObject *)self photoPendingExpirationDate];
-      [v23 timeIntervalSinceNow];
+      photoPendingExpirationDate = [(GKPlayerProfileCacheObject *)self photoPendingExpirationDate];
+      [photoPendingExpirationDate timeIntervalSinceNow];
       v25 = v24;
 
       if (v25 < 0.0)
       {
-        v26 = [v7 objectForKey:GKPhotoPendingKey];
+        v26 = [representationCopy objectForKey:GKPhotoPendingKey];
         -[GKPlayerProfileCacheObject setPhotoPending:](self, "setPhotoPending:", [v26 BOOLValue]);
       }
 
       if ([(GKPlayerProfileCacheObject *)self photoPending])
       {
-        v27 = [(GKCacheObject *)self imageURLDictionary];
-        if ([v27 count])
+        imageURLDictionary = [(GKCacheObject *)self imageURLDictionary];
+        if ([imageURLDictionary count])
         {
           v76[0] = _NSConcreteStackBlock;
           v76[1] = 3221225472;
           v76[2] = sub_100126BD8;
           v76[3] = &unk_1003679A0;
           v76[4] = self;
-          [v27 enumerateKeysAndObjectsUsingBlock:v76];
+          [imageURLDictionary enumerateKeysAndObjectsUsingBlock:v76];
         }
 
         else
@@ -487,10 +487,10 @@
         }
       }
 
-      [GKContactsIntegrationUserSettings applySettingsToObject:self fromResults:v7];
+      [GKContactsIntegrationUserSettings applySettingsToObject:self fromResults:representationCopy];
     }
 
-    v28 = [v7 objectForKeyedSubscript:GKPrivacySettingsKey];
+    v28 = [representationCopy objectForKeyedSubscript:GKPrivacySettingsKey];
     v29 = v28;
     if (v28)
     {
@@ -511,24 +511,24 @@
       [(GKPlayerProfileCacheObject *)self setGamesPlayedVisibility:2];
     }
 
-    v33 = [v7 objectForKeyedSubscript:GKGlobalFriendListAccessKey];
+    v33 = [representationCopy objectForKeyedSubscript:GKGlobalFriendListAccessKey];
     [(GKPlayerProfileCacheObject *)self setGlobalFriendListAccess:sub_100126D04(v33, v33)];
 
-    v34 = [v7 objectForKeyedSubscript:GKIsArcadeSubscriberKey];
+    v34 = [representationCopy objectForKeyedSubscript:GKIsArcadeSubscriberKey];
     v71 = v34;
     if (v34)
     {
-      v35 = [v34 BOOLValue];
+      bOOLValue = [v34 BOOLValue];
     }
 
     else
     {
-      v35 = 0;
+      bOOLValue = 0;
     }
 
-    v74 = v8;
-    [(GKPlayerProfileCacheObject *)self setIsArcadeSubscriber:v35];
-    v36 = [v7 objectForKey:GKPhotoURLsKey];
+    v74 = dateCopy;
+    [(GKPlayerProfileCacheObject *)self setIsArcadeSubscriber:bOOLValue];
+    v36 = [representationCopy objectForKey:GKPhotoURLsKey];
     if (v36 && ([(GKPlayerProfileCacheObject *)self photoPending]& 1) == 0)
     {
       v37 = [(GKPlayerProfileCacheObject *)self updateImagesWithImageURLs:v36];
@@ -541,25 +541,25 @@
       [(GKPlayerProfileCacheObject *)self setAvatarType:v38];
     }
 
-    v39 = [v7 objectForKeyedSubscript:@"avatar"];
+    v39 = [representationCopy objectForKeyedSubscript:@"avatar"];
     v40 = [GKCDAvatarArtwork alloc];
-    v41 = [(GKPlayerProfileCacheObject *)self managedObjectContext];
-    v42 = [(GKCDAvatarArtwork *)v40 initWithContext:v41];
+    managedObjectContext = [(GKPlayerProfileCacheObject *)self managedObjectContext];
+    v42 = [(GKCDAvatarArtwork *)v40 initWithContext:managedObjectContext];
 
     v43 = [v39 objectForKeyedSubscript:@"type"];
     [(GKCDAvatarArtwork *)v42 setType:v43];
 
     v44 = [v39 objectForKeyedSubscript:@"artwork"];
-    v45 = [(GKPlayerProfileCacheObject *)self managedObjectContext];
+    managedObjectContext2 = [(GKPlayerProfileCacheObject *)self managedObjectContext];
     v70 = v44;
-    v46 = [GKCDArtwork artworkFromServerRepresentation:v44 moc:v45];
+    v46 = [GKCDArtwork artworkFromServerRepresentation:v44 moc:managedObjectContext2];
 
     v69 = v46;
     [(GKCDAvatarArtwork *)v42 setArtwork:v46];
     [(GKPlayerProfileCacheObject *)self setAvatarArtwork:v42];
-    v47 = [v7 objectForKeyedSubscript:GKFriendBiDirectionalKey];
-    v48 = [v7 objectForKeyedSubscript:GKFriendPlayedWithKey];
-    v49 = [v7 objectForKeyedSubscript:GKFriendPlayedNearbyKey];
+    v47 = [representationCopy objectForKeyedSubscript:GKFriendBiDirectionalKey];
+    v48 = [representationCopy objectForKeyedSubscript:GKFriendPlayedWithKey];
+    v49 = [representationCopy objectForKeyedSubscript:GKFriendPlayedNearbyKey];
     v67 = v49;
     v68 = v48;
     if (v47)
@@ -582,9 +582,9 @@
 
     else
     {
-      v53 = [(GKPlayerProfileCacheObject *)self firstName];
+      firstName = [(GKPlayerProfileCacheObject *)self firstName];
 
-      if (v53)
+      if (firstName)
       {
         v54 = &off_100382628;
       }
@@ -597,57 +597,57 @@
       [(GKPlayerProfileCacheObject *)self setFriendLevel:v54];
     }
 
-    v55 = [v7 objectForKey:GKNumberOfFriendsKey];
-    v56 = [v55 integerValue];
+    v55 = [representationCopy objectForKey:GKNumberOfFriendsKey];
+    integerValue = [v55 integerValue];
 
-    if (v56 != [(GKPlayerProfileCacheObject *)self numberOfFriends])
+    if (integerValue != [(GKPlayerProfileCacheObject *)self numberOfFriends])
     {
-      [(GKPlayerProfileCacheObject *)self setNumberOfFriends:v56];
+      [(GKPlayerProfileCacheObject *)self setNumberOfFriends:integerValue];
     }
 
-    v57 = [v7 objectForKey:GKNumberOfGamesPlayedKey];
+    v57 = [representationCopy objectForKey:GKNumberOfGamesPlayedKey];
     -[GKPlayerProfileCacheObject setNumberOfGames:](self, "setNumberOfGames:", [v57 integerValue]);
 
-    v58 = [v7 objectForKey:GKNumberOfAchievementsKey];
+    v58 = [representationCopy objectForKey:GKNumberOfAchievementsKey];
     -[GKPlayerProfileCacheObject setNumberOfAchievements:](self, "setNumberOfAchievements:", [v58 integerValue]);
 
-    v59 = [v7 objectForKey:GKNumberOfAchievementPointsKey];
+    v59 = [representationCopy objectForKey:GKNumberOfAchievementPointsKey];
     -[GKPlayerProfileCacheObject setNumberOfAchievementPoints:](self, "setNumberOfAchievementPoints:", [v59 integerValue]);
 
-    if ((v75 & 0x10) != 0)
+    if ((piecesCopy & 0x10) != 0)
     {
-      v60 = [v7 objectForKey:GKNumberOfFriendsInCommonKey];
+      v60 = [representationCopy objectForKey:GKNumberOfFriendsInCommonKey];
       -[GKPlayerProfileCacheObject setNumberOfFriendsInCommon:](self, "setNumberOfFriendsInCommon:", [v60 integerValue]);
 
-      v61 = [v7 objectForKey:GKNumberOfGamesInCommonKey];
+      v61 = [representationCopy objectForKey:GKNumberOfGamesInCommonKey];
       -[GKPlayerProfileCacheObject setNumberOfGamesInCommon:](self, "setNumberOfGamesInCommon:", [v61 integerValue]);
     }
 
-    v62 = [v7 objectForKeyedSubscript:@"allow-friend-invites-from-challenges"];
+    v62 = [representationCopy objectForKeyedSubscript:@"allow-friend-invites-from-challenges"];
     -[GKPlayerProfileCacheObject setAllowChallengeFriendInvites:](self, "setAllowChallengeFriendInvites:", [v62 isEqualToString:@"allowed"]);
 
-    v63 = [v7 objectForKeyedSubscript:@"allow-friend-invites-from-multiplayer-invites"];
+    v63 = [representationCopy objectForKeyedSubscript:@"allow-friend-invites-from-multiplayer-invites"];
     -[GKPlayerProfileCacheObject setAllowMultiplayerFriendInvites:](self, "setAllowMultiplayerFriendInvites:", [v63 isEqualToString:@"allowed"]);
 
-    v64 = [v7 objectForKeyedSubscript:GKIsChallengeable];
+    v64 = [representationCopy objectForKeyedSubscript:GKIsChallengeable];
     -[GKPlayerProfileCacheObject setIsChallengeable:](self, "setIsChallengeable:", [v64 BOOLValue]);
 
-    v65 = [v7 objectForKeyedSubscript:GKSupportsMultiplayerActivities];
+    v65 = [representationCopy objectForKeyedSubscript:GKSupportsMultiplayerActivities];
     -[GKPlayerProfileCacheObject setSupportsMultiplayerActivities:](self, "setSupportsMultiplayerActivities:", [v65 BOOLValue]);
 
-    if ((v75 & 0x80) != 0)
+    if ((piecesCopy & 0x80) != 0)
     {
-      v66 = [v7 objectForKeyedSubscript:@"can-receive-friend-invitation"];
+      v66 = [representationCopy objectForKeyedSubscript:@"can-receive-friend-invitation"];
       -[GKPlayerProfileCacheObject setAllowReceivingFriendInvites:](self, "setAllowReceivingFriendInvites:", [v66 BOOLValue]);
     }
 
-    [(GKPlayerProfileCacheObject *)self setAvailablePieces:v75];
+    [(GKPlayerProfileCacheObject *)self setAvailablePieces:piecesCopy];
 
-    v8 = v74;
+    dateCopy = v74;
   }
 }
 
-- (id)internalRepresentationWithPieces:(unsigned __int8)a3
+- (id)internalRepresentationWithPieces:(unsigned __int8)pieces
 {
   v4 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v4, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
@@ -655,8 +655,8 @@
     v5 = +[NSThread callStackSymbols];
     v6 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKPlayerProfileCacheObject internalRepresentationWithPieces:]", v5];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v6, "-[GKPlayerProfileCacheObject internalRepresentationWithPieces:]", [v8 UTF8String], 1031);
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v6, "-[GKPlayerProfileCacheObject internalRepresentationWithPieces:]", [lastPathComponent UTF8String], 1031);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v9];
   }
@@ -685,8 +685,8 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKPlayerProfileCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKPlayerProfileCacheObject internalRepresentation]", [v7 UTF8String], 1057);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKPlayerProfileCacheObject internalRepresentation]", [lastPathComponent UTF8String], 1057);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -696,21 +696,21 @@
   return [(GKPlayerProfileCacheObject *)self internalRepresentationWithPieces:v9];
 }
 
-- (void)expireRecentMatchesWithGame:(id)a3
+- (void)expireRecentMatchesWithGame:(id)game
 {
-  v8 = a3;
-  v4 = [(GKPlayerProfileCacheObject *)self managedObjectContext];
-  if (v8)
+  gameCopy = game;
+  managedObjectContext = [(GKPlayerProfileCacheObject *)self managedObjectContext];
+  if (gameCopy)
   {
-    v5 = [NSPredicate predicateWithFormat:@"player = %@ AND game = %@", self, v8];
-    [(GKExpiringCacheObject *)GKRecentPlayerListCacheObject expireObjectsMatchingPredicate:v5 context:v4];
+    gameCopy = [NSPredicate predicateWithFormat:@"player = %@ AND game = %@", self, gameCopy];
+    [(GKExpiringCacheObject *)GKRecentPlayerListCacheObject expireObjectsMatchingPredicate:gameCopy context:managedObjectContext];
   }
 
   v6 = [NSPredicate predicateWithFormat:@"player = %@ && game == nil", self];
-  [(GKExpiringCacheObject *)GKRecentPlayerListCacheObject expireObjectsMatchingPredicate:v6 context:v4];
+  [(GKExpiringCacheObject *)GKRecentPlayerListCacheObject expireObjectsMatchingPredicate:v6 context:managedObjectContext];
 
   v7 = [NSPredicate predicateWithFormat:@"player = %@ OR otherPlayer = %@", self, self];
-  [(GKExpiringCacheObject *)GKRecentGameListCacheObject expireObjectsMatchingPredicate:v7 context:v4];
+  [(GKExpiringCacheObject *)GKRecentGameListCacheObject expireObjectsMatchingPredicate:v7 context:managedObjectContext];
 }
 
 + (id)_familiarityLookup
@@ -721,8 +721,8 @@
     v3 = +[NSThread callStackSymbols];
     v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s not invoked on managed object context queue at %@", "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) _familiarityLookup]", v3);
     v5 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v6 = [v5 lastPathComponent];
-    v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v4, "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) _familiarityLookup]", [v6 UTF8String], 1092);
+    lastPathComponent = [v5 lastPathComponent];
+    v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v4, "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) _familiarityLookup]", [lastPathComponent UTF8String], 1092);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v7];
   }
@@ -738,74 +738,74 @@
   return v9;
 }
 
-+ (void)buildFamiliarilyLookupForProfile:(id)a3
++ (void)buildFamiliarilyLookupForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 playerID];
+  profileCopy = profile;
+  playerID = [profileCopy playerID];
 
-  if (v5)
+  if (playerID)
   {
     v19[0] = &off_100382640;
-    v17 = [v4 playerID];
-    v18 = a1;
-    v20[0] = v17;
+    playerID2 = [profileCopy playerID];
+    selfCopy = self;
+    v20[0] = playerID2;
     v19[1] = &off_100382658;
-    v16 = [v4 friendList];
-    v6 = [v16 playerIDs];
-    v7 = [NSSet setWithArray:v6];
+    friendList = [profileCopy friendList];
+    playerIDs = [friendList playerIDs];
+    v7 = [NSSet setWithArray:playerIDs];
     v20[1] = v7;
     v19[2] = &off_100382670;
-    v8 = [v4 friendRequestList];
-    v9 = [v8 playerIDs];
-    v10 = [NSSet setWithArray:v9];
+    friendRequestList = [profileCopy friendRequestList];
+    playerIDs2 = [friendRequestList playerIDs];
+    v10 = [NSSet setWithArray:playerIDs2];
     v20[2] = v10;
     v19[3] = &off_100382688;
-    v11 = [v4 friendRecommendationList];
-    v12 = [v11 playerIDs];
-    v13 = [NSSet setWithArray:v12];
+    friendRecommendationList = [profileCopy friendRecommendationList];
+    playerIDs3 = [friendRecommendationList playerIDs];
+    v13 = [NSSet setWithArray:playerIDs3];
     v20[3] = v13;
     v14 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:4];
 
-    v15 = [v18 _familiarityLookup];
-    [v15 addEntriesFromDictionary:v14];
+    _familiarityLookup = [selfCopy _familiarityLookup];
+    [_familiarityLookup addEntriesFromDictionary:v14];
   }
 }
 
 + (id)selfPlayerID
 {
-  v2 = [a1 _familiarityLookup];
-  v3 = [v2 objectForKeyedSubscript:&off_100382640];
+  _familiarityLookup = [self _familiarityLookup];
+  v3 = [_familiarityLookup objectForKeyedSubscript:&off_100382640];
 
   return v3;
 }
 
-+ (int)familiarityForPlayerID:(id)a3
++ (int)familiarityForPlayerID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     goto LABEL_10;
   }
 
-  v5 = [a1 _familiarityLookup];
-  v6 = [v5 objectForKeyedSubscript:&off_100382640];
-  if ([v6 isEqualToString:v4])
+  _familiarityLookup = [self _familiarityLookup];
+  v6 = [_familiarityLookup objectForKeyedSubscript:&off_100382640];
+  if ([v6 isEqualToString:dCopy])
   {
 
     v7 = 1;
     goto LABEL_11;
   }
 
-  v8 = [v5 objectForKeyedSubscript:&off_100382658];
-  if ([v8 containsObject:v4])
+  v8 = [_familiarityLookup objectForKeyedSubscript:&off_100382658];
+  if ([v8 containsObject:dCopy])
   {
 
     v7 = 2;
     goto LABEL_11;
   }
 
-  v9 = [v5 objectForKeyedSubscript:&off_100382670];
-  if ([v9 containsObject:v4])
+  v9 = [_familiarityLookup objectForKeyedSubscript:&off_100382670];
+  if ([v9 containsObject:dCopy])
   {
     v10 = 0;
     v7 = 3;
@@ -813,8 +813,8 @@
 
   else
   {
-    v11 = [v5 objectForKeyedSubscript:&off_100382688];
-    v10 = [v11 containsObject:v4] ^ 1;
+    v11 = [_familiarityLookup objectForKeyedSubscript:&off_100382688];
+    v10 = [v11 containsObject:dCopy] ^ 1;
 
     v7 = 4;
   }
@@ -832,98 +832,98 @@ LABEL_11:
 
 - (int)familiarity
 {
-  v2 = [(GKPlayerProfileCacheObject *)self playerID];
-  v3 = [GKPlayerProfileCacheObject familiarityForPlayerID:v2];
+  playerID = [(GKPlayerProfileCacheObject *)self playerID];
+  v3 = [GKPlayerProfileCacheObject familiarityForPlayerID:playerID];
 
   return v3;
 }
 
-+ (void)addFamiliarPlayerIDs:(id)a3 familiarity:(int)a4
++ (void)addFamiliarPlayerIDs:(id)ds familiarity:(int)familiarity
 {
-  v4 = *&a4;
-  v14 = a3;
+  v4 = *&familiarity;
+  dsCopy = ds;
   if (v4 == 1)
   {
     v6 = [NSString stringWithFormat:@"Assertion failed"];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (familiarity != GKPlayerFamiliaritySelf)\n[%s (%s:%d)]", v6, "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) addFamiliarPlayerIDs:familiarity:]", [v8 UTF8String], 1164);
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (familiarity != GKPlayerFamiliaritySelf)\n[%s (%s:%d)]", v6, "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) addFamiliarPlayerIDs:familiarity:]", [lastPathComponent UTF8String], 1164);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v9];
   }
 
-  v10 = [a1 _familiarityLookup];
+  _familiarityLookup = [self _familiarityLookup];
   v11 = [NSNumber numberWithInt:v4];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [_familiarityLookup objectForKeyedSubscript:v11];
   v13 = [v12 mutableCopy];
-  [v13 addObjectsFromArray:v14];
-  [v10 setObject:v13 forKeyedSubscript:v11];
+  [v13 addObjectsFromArray:dsCopy];
+  [_familiarityLookup setObject:v13 forKeyedSubscript:v11];
 }
 
-+ (void)removeFamiliarPlayerIDs:(id)a3 familiarity:(int)a4
++ (void)removeFamiliarPlayerIDs:(id)ds familiarity:(int)familiarity
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&familiarity;
+  dsCopy = ds;
   if (v4 == 1)
   {
     v7 = [NSString stringWithFormat:@"Assertion failed"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (familiarity != GKPlayerFamiliaritySelf)\n[%s (%s:%d)]", v7, "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) removeFamiliarPlayerIDs:familiarity:]", [v9 UTF8String], 1177);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (familiarity != GKPlayerFamiliaritySelf)\n[%s (%s:%d)]", v7, "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) removeFamiliarPlayerIDs:familiarity:]", [lastPathComponent UTF8String], 1177);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
-  v11 = [a1 _familiarityLookup];
+  _familiarityLookup = [self _familiarityLookup];
   v12 = [NSNumber numberWithInt:v4];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  v13 = [_familiarityLookup objectForKeyedSubscript:v12];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100127A18;
   v15[3] = &unk_100366858;
   v16 = [v13 mutableCopy];
   v14 = v16;
-  [v6 enumerateObjectsUsingBlock:v15];
-  [v11 setObject:v14 forKeyedSubscript:v12];
+  [dsCopy enumerateObjectsUsingBlock:v15];
+  [_familiarityLookup setObject:v14 forKeyedSubscript:v12];
 }
 
-+ (void)setFamiliarPlayerIDs:(id)a3 familiarity:(int)a4
++ (void)setFamiliarPlayerIDs:(id)ds familiarity:(int)familiarity
 {
-  v4 = *&a4;
-  v13 = a3;
+  v4 = *&familiarity;
+  dsCopy = ds;
   if (v4 == 1)
   {
     v6 = [NSString stringWithFormat:@"Assertion failed"];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (familiarity != GKPlayerFamiliaritySelf)\n[%s (%s:%d)]", v6, "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) setFamiliarPlayerIDs:familiarity:]", [v8 UTF8String], 1198);
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (familiarity != GKPlayerFamiliaritySelf)\n[%s (%s:%d)]", v6, "+[GKPlayerProfileCacheObject(GKPlayerFamiliarity) setFamiliarPlayerIDs:familiarity:]", [lastPathComponent UTF8String], 1198);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v9];
   }
 
-  v10 = [a1 _familiarityLookup];
+  _familiarityLookup = [self _familiarityLookup];
   v11 = [NSNumber numberWithInt:v4];
-  v12 = [NSSet setWithArray:v13];
-  [v10 setObject:v12 forKeyedSubscript:v11];
+  v12 = [NSSet setWithArray:dsCopy];
+  [_familiarityLookup setObject:v12 forKeyedSubscript:v11];
 }
 
 - (BOOL)isLocalPlayer
 {
-  v2 = [(GKPlayerProfileCacheObject *)self playerID];
-  v3 = [GKPlayerProfileCacheObject familiarityForPlayerID:v2]== 1;
+  playerID = [(GKPlayerProfileCacheObject *)self playerID];
+  v3 = [GKPlayerProfileCacheObject familiarityForPlayerID:playerID]== 1;
 
   return v3;
 }
 
-+ (id)playersByFamiliarity:(id)a3
++ (id)playersByFamiliarity:(id)familiarity
 {
-  v4 = a3;
-  v31 = [a1 _familiarityLookup];
-  v26 = [v31 objectForKeyedSubscript:&off_100382640];
-  v5 = [v31 objectForKeyedSubscript:&off_100382658];
-  v6 = [v31 objectForKeyedSubscript:&off_100382670];
-  v7 = [v31 objectForKeyedSubscript:&off_100382688];
-  v8 = [v4 count];
+  familiarityCopy = familiarity;
+  _familiarityLookup = [self _familiarityLookup];
+  v26 = [_familiarityLookup objectForKeyedSubscript:&off_100382640];
+  v5 = [_familiarityLookup objectForKeyedSubscript:&off_100382658];
+  v6 = [_familiarityLookup objectForKeyedSubscript:&off_100382670];
+  v7 = [_familiarityLookup objectForKeyedSubscript:&off_100382688];
+  v8 = [familiarityCopy count];
   v9 = [NSMutableSet setWithCapacity:1];
   v10 = [NSMutableSet setWithCapacity:v8];
   v11 = [NSMutableSet setWithCapacity:v8];
@@ -950,33 +950,33 @@ LABEL_11:
   v28 = v5;
   v16 = v9;
   v27 = v26;
-  [v4 enumerateObjectsUsingBlock:v32];
+  [familiarityCopy enumerateObjectsUsingBlock:v32];
 
   v42[0] = &off_100382640;
-  v17 = [v16 allObjects];
-  v43[0] = v17;
+  allObjects = [v16 allObjects];
+  v43[0] = allObjects;
   v42[1] = &off_100382658;
-  v18 = [v15 allObjects];
-  v43[1] = v18;
+  allObjects2 = [v15 allObjects];
+  v43[1] = allObjects2;
   v42[2] = &off_100382670;
-  v19 = [v14 allObjects];
-  v43[2] = v19;
+  allObjects3 = [v14 allObjects];
+  v43[2] = allObjects3;
   v42[3] = &off_100382688;
-  v20 = [v25 allObjects];
-  v43[3] = v20;
+  allObjects4 = [v25 allObjects];
+  v43[3] = allObjects4;
   v42[4] = &off_1003826A0;
   v21 = v13;
-  v22 = [v13 allObjects];
-  v43[4] = v22;
+  allObjects5 = [v13 allObjects];
+  v43[4] = allObjects5;
   v24 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:5];
 
   return v24;
 }
 
-+ (unsigned)piecesToLoadForFamiliarity:(int)a3
++ (unsigned)piecesToLoadForFamiliarity:(int)familiarity
 {
-  v3 = 0x8183832B01uLL >> (8 * a3);
-  if (a3 >= 5)
+  v3 = 0x8183832B01uLL >> (8 * familiarity);
+  if (familiarity >= 5)
   {
     LOBYTE(v3) = 1;
   }
@@ -984,17 +984,17 @@ LABEL_11:
   return v3;
 }
 
-+ (id)filterPlayerIDs:(id)a3 familiarity:(int)a4 includeSelf:(BOOL)a5
++ (id)filterPlayerIDs:(id)ds familiarity:(int)familiarity includeSelf:(BOOL)self
 {
-  v5 = a5;
-  v6 = *&a4;
-  v8 = a3;
-  v9 = [a1 playersByFamiliarity:v8];
+  selfCopy = self;
+  v6 = *&familiarity;
+  dsCopy = ds;
+  v9 = [self playersByFamiliarity:dsCopy];
   v10 = [NSNumber numberWithInt:v6];
   v11 = [v9 objectForKeyedSubscript:v10];
   v12 = [NSSet setWithArray:v11];
 
-  if (v5)
+  if (selfCopy)
   {
     v13 = [v9 objectForKeyedSubscript:&off_100382640];
     v14 = [v12 setByAddingObjectsFromArray:v13];
@@ -1008,7 +1008,7 @@ LABEL_11:
   v18[3] = &unk_100363430;
   v19 = v12;
   v15 = v12;
-  v16 = [v8 _gkFilterWithBlock:v18];
+  v16 = [dsCopy _gkFilterWithBlock:v18];
 
   return v16;
 }

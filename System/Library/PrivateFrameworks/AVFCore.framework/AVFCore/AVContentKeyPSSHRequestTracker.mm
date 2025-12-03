@@ -1,12 +1,12 @@
 @interface AVContentKeyPSSHRequestTracker
-- (AVContentKeyPSSHRequestTracker)initWithRequestCount:(int64_t)a3;
+- (AVContentKeyPSSHRequestTracker)initWithRequestCount:(int64_t)count;
 - (id)requests;
 - (void)dealloc;
 @end
 
 @implementation AVContentKeyPSSHRequestTracker
 
-- (AVContentKeyPSSHRequestTracker)initWithRequestCount:(int64_t)a3
+- (AVContentKeyPSSHRequestTracker)initWithRequestCount:(int64_t)count
 {
   v7.receiver = self;
   v7.super_class = AVContentKeyPSSHRequestTracker;
@@ -14,7 +14,7 @@
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4->_totalExpectedRequestCount = a3;
+    v4->_totalExpectedRequestCount = count;
     v4->_requests = v5;
   }
 

@@ -1,18 +1,18 @@
 @interface KNArchivedSlideCollectionSelection
-- (KNArchivedSlideCollectionSelection)initWithContext:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setSelection:(id)a3;
+- (KNArchivedSlideCollectionSelection)initWithContext:(id)context;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation KNArchivedSlideCollectionSelection
 
-- (KNArchivedSlideCollectionSelection)initWithContext:(id)a3
+- (KNArchivedSlideCollectionSelection)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = KNArchivedSlideCollectionSelection;
-  v5 = [(KNArchivedSlideCollectionSelection *)&v9 initWithContext:v4];
+  v5 = [(KNArchivedSlideCollectionSelection *)&v9 initWithContext:contextCopy];
   if (v5)
   {
     v6 = objc_alloc_init(KNSlideCollectionSelection);
@@ -23,11 +23,11 @@
   return v5;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v11 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v11, v4, off_2812EA908[98]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812EA908[98]);
 
   v6 = off_27A696D50;
   if (*(v5 + 56) <= 0 && (*(v5 + 16) & 2) == 0)
@@ -36,24 +36,24 @@
   }
 
   v7 = objc_alloc(*v6);
-  v9 = objc_msgSend_initWithArchive_unarchiver_(v7, v8, v5, v11);
+  v9 = objc_msgSend_initWithArchive_unarchiver_(v7, v8, v5, unarchiverCopy);
   selection = self->_selection;
   self->_selection = v9;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_275DC9B0C, off_2812EA908[98]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275DC9B0C, off_2812EA908[98]);
 
-  objc_msgSend_saveToArchive_archiver_(self->_selection, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self->_selection, v6, v5, archiverCopy);
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v6 = a3;
-  if (v6)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -69,7 +69,7 @@
 
   objc_msgSend_willModify(self, v4, v5);
   selection = self->_selection;
-  self->_selection = v6;
+  self->_selection = selectionCopy;
 }
 
 @end

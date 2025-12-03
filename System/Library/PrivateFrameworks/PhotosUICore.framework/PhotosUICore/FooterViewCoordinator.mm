@@ -1,26 +1,26 @@
 @interface FooterViewCoordinator
 - (_TtC12PhotosUICore21FooterViewCoordinator)init;
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4;
-- (void)photosGlobalFooterViewDidChangeHeight:(id)a3;
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller;
+- (void)photosGlobalFooterViewDidChangeHeight:(id)height;
 @end
 
 @implementation FooterViewCoordinator
 
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1A46A7F68(a4);
+  selfCopy = self;
+  sub_1A46A7F68(controller);
 
   swift_unknownObjectRelease();
 }
 
-- (void)photosGlobalFooterViewDidChangeHeight:(id)a3
+- (void)photosGlobalFooterViewDidChangeHeight:(id)height
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A46A80F0(v4);
+  heightCopy = height;
+  selfCopy = self;
+  sub_1A46A80F0(heightCopy);
 }
 
 - (_TtC12PhotosUICore21FooterViewCoordinator)init

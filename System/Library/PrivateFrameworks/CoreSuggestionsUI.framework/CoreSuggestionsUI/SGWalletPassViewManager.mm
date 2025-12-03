@@ -1,5 +1,5 @@
 @interface SGWalletPassViewManager
-- (SGWalletPassViewManager)initWithData:(id)a3;
+- (SGWalletPassViewManager)initWithData:(id)data;
 - (double)passTimeInterval;
 - (id)addPassViewController;
 - (id)icon;
@@ -76,15 +76,15 @@
 
 - (id)passStyle
 {
-  v2 = [(PKPass *)self->_pass style];
-  if (v2 > 8)
+  style = [(PKPass *)self->_pass style];
+  if (style > 8)
   {
     v3 = @"SuggestionsWalletPassStyleGeneric";
   }
 
   else
   {
-    v3 = off_1E7CD92F0[v2];
+    v3 = off_1E7CD92F0[style];
   }
 
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
@@ -101,15 +101,15 @@
     return 0.0;
   }
 
-  v4 = [(PKPass *)pass relevantDate];
+  relevantDate = [(PKPass *)pass relevantDate];
 
-  if (!v4)
+  if (!relevantDate)
   {
     return 0.0;
   }
 
-  v5 = [(PKPass *)self->_pass relevantDate];
-  [v5 timeIntervalSinceReferenceDate];
+  relevantDate2 = [(PKPass *)self->_pass relevantDate];
+  [relevantDate2 timeIntervalSinceReferenceDate];
   v7 = v6;
 
   return v7;
@@ -132,15 +132,15 @@
   pass = self->_pass;
   if (pass)
   {
-    v4 = [(PKPass *)pass localizedDescription];
+    localizedDescription = [(PKPass *)pass localizedDescription];
   }
 
   else
   {
-    v4 = &stru_1F3012140;
+    localizedDescription = &stru_1F3012140;
   }
 
-  return v4;
+  return localizedDescription;
 }
 
 - (id)passes
@@ -152,15 +152,15 @@
   return v2;
 }
 
-- (SGWalletPassViewManager)initWithData:(id)a3
+- (SGWalletPassViewManager)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = SGWalletPassViewManager;
   v5 = [(SGWalletPassViewManager *)&v18 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     passData = v5->_passData;
     v5->_passData = v6;
 

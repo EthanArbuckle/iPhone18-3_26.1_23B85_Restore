@@ -6,7 +6,7 @@
 
 - (void)report
 {
-  v2 = self;
+  selfCopy = self;
   sub_192CCCBE0();
 }
 

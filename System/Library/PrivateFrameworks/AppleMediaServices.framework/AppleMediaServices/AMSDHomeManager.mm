@@ -1,31 +1,31 @@
 @interface AMSDHomeManager
-+ (id)homeIdentifierForRecord:(id)a3;
-+ (id)homeIdentifierForRecordZone:(id)a3 inDatabase:(id)a4;
-+ (id)homeUserIdentifierForRecord:(id)a3;
-+ (id)homeUserIdentifierForRecordZone:(id)a3 inDatabase:(id)a4;
-+ (id)identifiersForRecord:(id)a3;
-+ (id)identifiersForRecordZone:(id)a3 inDatabase:(id)a4;
-+ (id)identifiersForRecordZone:(id)a3 inDatabase:(id)a4 qualityOfService:(int64_t)a5;
-+ (unint64_t)multiUserStatusForHomeUser:(id)a3 inHome:(id)a4;
-- (AMSDHomeManager)initWithDataSource:(id)a3;
++ (id)homeIdentifierForRecord:(id)record;
++ (id)homeIdentifierForRecordZone:(id)zone inDatabase:(id)database;
++ (id)homeUserIdentifierForRecord:(id)record;
++ (id)homeUserIdentifierForRecordZone:(id)zone inDatabase:(id)database;
++ (id)identifiersForRecord:(id)record;
++ (id)identifiersForRecordZone:(id)zone inDatabase:(id)database;
++ (id)identifiersForRecordZone:(id)zone inDatabase:(id)database qualityOfService:(int64_t)service;
++ (unint64_t)multiUserStatusForHomeUser:(id)user inHome:(id)home;
+- (AMSDHomeManager)initWithDataSource:(id)source;
 - (AMSPromise)allHomes;
-- (id)homeForRecord:(id)a3;
-- (id)homeForRecordZone:(id)a3 inDatabase:(id)a4;
-- (id)homeWithHomeIdentifier:(id)a3;
-- (id)sendCloudShare:(id)a3 inContainer:(id)a4 toOwnerOfHome:(id)a5;
-- (id)settingForKeyPath:(id)a3;
-- (id)settingForKeyPath:(id)a3 user:(id)a4 home:(id)a5;
-- (void)registerToAcceptCloudSharesForContainers:(id)a3;
+- (id)homeForRecord:(id)record;
+- (id)homeForRecordZone:(id)zone inDatabase:(id)database;
+- (id)homeWithHomeIdentifier:(id)identifier;
+- (id)sendCloudShare:(id)share inContainer:(id)container toOwnerOfHome:(id)home;
+- (id)settingForKeyPath:(id)path;
+- (id)settingForKeyPath:(id)path user:(id)user home:(id)home;
+- (void)registerToAcceptCloudSharesForContainers:(id)containers;
 - (void)teardownMultiUser;
 @end
 
 @implementation AMSDHomeManager
 
-- (id)homeForRecord:(id)a3
+- (id)homeForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v5 isEqualToString:@"AMSHomeParticipant"];
+  recordCopy = record;
+  type = [recordCopy type];
+  v6 = [type isEqualToString:@"AMSHomeParticipant"];
 
   if ((v6 & 1) == 0)
   {
@@ -34,7 +34,7 @@
     goto LABEL_5;
   }
 
-  v7 = [objc_opt_class() homeIdentifierForRecord:v4];
+  v7 = [objc_opt_class() homeIdentifierForRecord:recordCopy];
   if (v7)
   {
     v8 = [(AMSDHomeManager *)self homeWithHomeIdentifier:v7];
@@ -51,11 +51,11 @@ LABEL_6:
   return v9;
 }
 
-- (id)homeForRecordZone:(id)a3 inDatabase:(id)a4
+- (id)homeForRecordZone:(id)zone inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [v6 fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:v7];
+  databaseCopy = database;
+  identifier = [zone identifier];
+  v8 = [databaseCopy fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:identifier];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -67,9 +67,9 @@ LABEL_6:
   return v9;
 }
 
-+ (id)homeIdentifierForRecord:(id)a3
++ (id)homeIdentifierForRecord:(id)record
 {
-  v3 = [a3 fieldForKey:@"AMSHomeParticipant_HomeIdentifier"];
+  v3 = [record fieldForKey:@"AMSHomeParticipant_HomeIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -94,25 +94,25 @@ LABEL_6:
   return v5;
 }
 
-+ (id)homeIdentifierForRecordZone:(id)a3 inDatabase:(id)a4
++ (id)homeIdentifierForRecordZone:(id)zone inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [v6 fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:v7];
+  databaseCopy = database;
+  identifier = [zone identifier];
+  v8 = [databaseCopy fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:identifier];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100065B4C;
   v11[3] = &unk_1002B0FD0;
-  v11[4] = a1;
+  v11[4] = self;
   v9 = [v8 thenWithBlock:v11];
 
   return v9;
 }
 
-+ (id)homeUserIdentifierForRecord:(id)a3
++ (id)homeUserIdentifierForRecord:(id)record
 {
-  v3 = [a3 fieldForKey:@"AMSHomeParticipant_HomeUserIdentifier"];
+  v3 = [record fieldForKey:@"AMSHomeParticipant_HomeUserIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -137,27 +137,27 @@ LABEL_6:
   return v5;
 }
 
-+ (id)homeUserIdentifierForRecordZone:(id)a3 inDatabase:(id)a4
++ (id)homeUserIdentifierForRecordZone:(id)zone inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [v6 fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:v7];
+  databaseCopy = database;
+  identifier = [zone identifier];
+  v8 = [databaseCopy fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:identifier];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100065DC0;
   v11[3] = &unk_1002B0FD0;
-  v11[4] = a1;
+  v11[4] = self;
   v9 = [v8 thenWithBlock:v11];
 
   return v9;
 }
 
-+ (id)identifiersForRecord:(id)a3
++ (id)identifiersForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [a1 homeIdentifierForRecord:v4];
-  v6 = [a1 homeUserIdentifierForRecord:v4];
+  recordCopy = record;
+  v5 = [self homeIdentifierForRecord:recordCopy];
+  v6 = [self homeUserIdentifierForRecord:recordCopy];
 
   v7 = 0;
   if (v5 && v6)
@@ -168,36 +168,36 @@ LABEL_6:
   return v7;
 }
 
-+ (id)identifiersForRecordZone:(id)a3 inDatabase:(id)a4
++ (id)identifiersForRecordZone:(id)zone inDatabase:(id)database
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() identifiersForRecordZone:v6 inDatabase:v5 qualityOfService:9];
+  databaseCopy = database;
+  zoneCopy = zone;
+  v7 = [objc_opt_class() identifiersForRecordZone:zoneCopy inDatabase:databaseCopy qualityOfService:9];
 
   return v7;
 }
 
-+ (id)identifiersForRecordZone:(id)a3 inDatabase:(id)a4 qualityOfService:(int64_t)a5
++ (id)identifiersForRecordZone:(id)zone inDatabase:(id)database qualityOfService:(int64_t)service
 {
-  v8 = a4;
-  v9 = [a3 identifier];
-  v10 = [v8 fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:v9 qualityOfService:a5];
+  databaseCopy = database;
+  identifier = [zone identifier];
+  v10 = [databaseCopy fetchRecordWithName:@"AMSHomeParticipant" zoneIdentifier:identifier qualityOfService:service];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000660B8;
   v13[3] = &unk_1002B0FD0;
-  v13[4] = a1;
+  v13[4] = self;
   v11 = [v10 thenWithBlock:v13];
 
   return v11;
 }
 
-+ (unint64_t)multiUserStatusForHomeUser:(id)a3 inHome:(id)a4
++ (unint64_t)multiUserStatusForHomeUser:(id)user inHome:(id)home
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isMultiUserEnabled] & 1) == 0)
+  userCopy = user;
+  homeCopy = home;
+  if (([homeCopy isMultiUserEnabled] & 1) == 0)
   {
     v12 = +[AMSLogConfig sharedAccountsMultiUserConfig];
     if (!v12)
@@ -205,8 +205,8 @@ LABEL_6:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -220,14 +220,14 @@ LABEL_6:
       v24 = v16;
       v25 = 2114;
       v26 = v17;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Multi-user isn't enabled. home = %{public}@ | user = %{public}@", &v19, 0x2Au);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Multi-user isn't enabled. home = %{public}@ | user = %{public}@", &v19, 0x2Au);
     }
 
     goto LABEL_13;
   }
 
-  v7 = [v5 identifier];
-  v8 = [v6 isRestrictedGuestUserIdentifier:v7];
+  identifier = [userCopy identifier];
+  v8 = [homeCopy isRestrictedGuestUserIdentifier:identifier];
 
   if (v8)
   {
@@ -236,7 +236,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [v6 mediaProfileEnabledForUser:v5];
+  v9 = [homeCopy mediaProfileEnabledForUser:userCopy];
   v10 = 1;
   if (v9 == 2)
   {
@@ -258,16 +258,16 @@ LABEL_14:
   return v11;
 }
 
-- (AMSDHomeManager)initWithDataSource:(id)a3
+- (AMSDHomeManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = AMSDHomeManager;
   v6 = [(AMSDHomeManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
@@ -275,14 +275,14 @@ LABEL_14:
 
 - (void)teardownMultiUser
 {
-  v3 = [(AMSDHomeManager *)self dataSource];
+  dataSource = [(AMSDHomeManager *)self dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(AMSDHomeManager *)self dataSource];
-    [v5 teardownMultiUser];
+    dataSource2 = [(AMSDHomeManager *)self dataSource];
+    [dataSource2 teardownMultiUser];
   }
 
   [(AMSDHomeManager *)self setDataSource:0];
@@ -290,62 +290,62 @@ LABEL_14:
 
 - (AMSPromise)allHomes
 {
-  v2 = [(AMSDHomeManager *)self dataSource];
-  v3 = [v2 allHomes];
-  v4 = [v3 thenWithBlock:&stru_1002B1010];
+  dataSource = [(AMSDHomeManager *)self dataSource];
+  allHomes = [dataSource allHomes];
+  v4 = [allHomes thenWithBlock:&stru_1002B1010];
 
   return v4;
 }
 
-- (id)homeWithHomeIdentifier:(id)a3
+- (id)homeWithHomeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSDHomeManager *)self allHomes];
+  identifierCopy = identifier;
+  allHomes = [(AMSDHomeManager *)self allHomes];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000665A8;
   v9[3] = &unk_1002B0310;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 thenWithBlock:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allHomes thenWithBlock:v9];
 
   return v7;
 }
 
-- (void)registerToAcceptCloudSharesForContainers:(id)a3
+- (void)registerToAcceptCloudSharesForContainers:(id)containers
 {
-  v4 = a3;
-  v5 = [(AMSDHomeManager *)self dataSource];
-  [v5 registerToAcceptCloudSharesForContainers:v4];
+  containersCopy = containers;
+  dataSource = [(AMSDHomeManager *)self dataSource];
+  [dataSource registerToAcceptCloudSharesForContainers:containersCopy];
 }
 
-- (id)sendCloudShare:(id)a3 inContainer:(id)a4 toOwnerOfHome:(id)a5
+- (id)sendCloudShare:(id)share inContainer:(id)container toOwnerOfHome:(id)home
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AMSDHomeManager *)self dataSource];
-  v12 = [v11 sendCloudShare:v10 inContainer:v9 toOwnerOfHome:v8];
+  homeCopy = home;
+  containerCopy = container;
+  shareCopy = share;
+  dataSource = [(AMSDHomeManager *)self dataSource];
+  v12 = [dataSource sendCloudShare:shareCopy inContainer:containerCopy toOwnerOfHome:homeCopy];
 
   return v12;
 }
 
-- (id)settingForKeyPath:(id)a3
+- (id)settingForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AMSDHomeManager *)self dataSource];
-  v6 = [v5 settingForKeyPath:v4];
+  pathCopy = path;
+  dataSource = [(AMSDHomeManager *)self dataSource];
+  v6 = [dataSource settingForKeyPath:pathCopy];
 
   return v6;
 }
 
-- (id)settingForKeyPath:(id)a3 user:(id)a4 home:(id)a5
+- (id)settingForKeyPath:(id)path user:(id)user home:(id)home
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AMSDHomeManager *)self dataSource];
-  v12 = [v11 settingForKeyPath:v10 user:v9 home:v8];
+  homeCopy = home;
+  userCopy = user;
+  pathCopy = path;
+  dataSource = [(AMSDHomeManager *)self dataSource];
+  v12 = [dataSource settingForKeyPath:pathCopy user:userCopy home:homeCopy];
 
   return v12;
 }

@@ -1,10 +1,10 @@
 @interface APPBUserTransparencyResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBUserTransparencyResponse
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = APPBUserTransparencyResponse;
   v3 = [(APPBUserTransparencyResponse *)&v7 description];
-  v4 = [(APPBUserTransparencyResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBUserTransparencyResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -26,42 +26,42 @@
   transparencyDetails = self->_transparencyDetails;
   if (transparencyDetails)
   {
-    v5 = [(APPBTransparencyDetails *)transparencyDetails dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"transparencyDetails"];
+    dictionaryRepresentation = [(APPBTransparencyDetails *)transparencyDetails dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"transparencyDetails"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_transparencyDetails)
   {
     sub_100394060();
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBTransparencyDetails *)self->_transparencyDetails copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBTransparencyDetails *)self->_transparencyDetails copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     transparencyDetails = self->_transparencyDetails;
-    if (transparencyDetails | v4[1])
+    if (transparencyDetails | equalCopy[1])
     {
       v6 = [(APPBTransparencyDetails *)transparencyDetails isEqual:?];
     }
@@ -80,11 +80,11 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   transparencyDetails = self->_transparencyDetails;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (transparencyDetails)
   {
     if (v6)

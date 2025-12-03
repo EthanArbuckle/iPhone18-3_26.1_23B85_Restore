@@ -1,20 +1,20 @@
 @interface FBSceneManager
 + (FBSceneManager)sharedInstance;
 + (id)keyboardScene;
-+ (id)observeKeyboardSceneAvailability:(id)a3;
++ (id)observeKeyboardSceneAvailability:(id)availability;
 + (void)_clearKeyboardScene;
-+ (void)setKeyboardScene:(id)a3;
++ (void)setKeyboardScene:(id)scene;
 - (FBSceneManager)init;
-- (id)_initWithProcessManager:(id)a3;
-- (id)createLegacySceneFromRemnant:(id)a3 withSettings:(id)a4 transitionContext:(id)a5;
-- (id)createSceneWithDefinition:(id)a3 initialParameters:(id)a4;
-- (id)createSceneWithIdentifier:(id)a3 parameters:(id)a4 clientProvider:(id)a5 transitionContext:(id)a6;
-- (id)newSceneIdentityTokenForIdentity:(id)a3;
-- (id)sceneFromIdentityTokenStringRepresentation:(id)a3;
-- (id)scenesPassingTest:(id)a3;
+- (id)_initWithProcessManager:(id)manager;
+- (id)createLegacySceneFromRemnant:(id)remnant withSettings:(id)settings transitionContext:(id)context;
+- (id)createSceneWithDefinition:(id)definition initialParameters:(id)parameters;
+- (id)createSceneWithIdentifier:(id)identifier parameters:(id)parameters clientProvider:(id)provider transitionContext:(id)context;
+- (id)newSceneIdentityTokenForIdentity:(id)identity;
+- (id)sceneFromIdentityTokenStringRepresentation:(id)representation;
+- (id)scenesPassingTest:(id)test;
 - (void)dealloc;
-- (void)destroyScene:(id)a3 withTransitionContext:(id)a4;
-- (void)enumerateScenesWithBlock:(id)a3;
+- (void)destroyScene:(id)scene withTransitionContext:(id)context;
+- (void)enumerateScenesWithBlock:(id)block;
 @end
 
 @implementation FBSceneManager
@@ -41,17 +41,17 @@
   __fbKeyboardScene = 0;
 }
 
-+ (void)setKeyboardScene:(id)a3
++ (void)setKeyboardScene:(id)scene
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sceneCopy = scene;
   if (__fbKeyboardScene)
   {
-    [(FBSceneManager(Keyboard) *)a2 setKeyboardScene:a1];
+    [(FBSceneManager(Keyboard) *)a2 setKeyboardScene:self];
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = sceneCopy;
+  if (!sceneCopy)
   {
     [FBSceneManager(Keyboard) setKeyboardScene:a2];
   }
@@ -59,7 +59,7 @@
   BSDispatchQueueAssertMain();
   if (!__fbKeyboardScene)
   {
-    objc_storeStrong(&__fbKeyboardScene, a3);
+    objc_storeStrong(&__fbKeyboardScene, scene);
     v8 = [__availabilityObserverMap copy];
     [__availabilityObserverMap removeAllObjects];
     v9 = __availabilityObserverMap;
@@ -69,8 +69,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [v8 keyEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    keyEnumerator = [v8 keyEnumerator];
+    v11 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -81,14 +81,14 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v15 = [v8 objectForKey:*(*(&v17 + 1) + 8 * i)];
           v15[2](v15, __fbKeyboardScene);
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v12);
@@ -98,15 +98,15 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)observeKeyboardSceneAvailability:(id)a3
++ (id)observeKeyboardSceneAvailability:(id)availability
 {
-  v4 = a3;
-  if (!v4)
+  availabilityCopy = availability;
+  if (!availabilityCopy)
   {
     [FBSceneManager(Keyboard) observeKeyboardSceneAvailability:a2];
   }
 
-  v5 = v4;
+  v5 = availabilityCopy;
   BSDispatchQueueAssertMain();
   if (__fbKeyboardScene)
   {
@@ -140,15 +140,15 @@
   return v3;
 }
 
-- (id)_initWithProcessManager:(id)a3
+- (id)_initWithProcessManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = FBSceneManager;
   v5 = [(FBSceneManager *)&v9 init];
   if (v5)
   {
-    v6 = [[FBSceneWorkspace alloc] _initWithProcessManager:v4 identifier:@"FBSceneManager"];
+    v6 = [[FBSceneWorkspace alloc] _initWithProcessManager:managerCopy identifier:@"FBSceneManager"];
     workspace = v5->_workspace;
     v5->_workspace = v6;
   }
@@ -161,7 +161,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FBSceneManager should not deallocate"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -179,16 +179,16 @@
   __break(0);
 }
 
-- (void)enumerateScenesWithBlock:(id)a3
+- (void)enumerateScenesWithBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(FBSceneWorkspace *)self->_workspace allScenes];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allScenes = [(FBSceneWorkspace *)self->_workspace allScenes];
+  v6 = [allScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -199,12 +199,12 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allScenes);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 0;
-      v4[2](v4, v10, &v12);
+      blockCopy[2](blockCopy, v10, &v12);
       if (v12)
       {
         break;
@@ -212,7 +212,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [allScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -226,17 +226,17 @@ LABEL_3:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)scenesPassingTest:(id)a3
+- (id)scenesPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = [MEMORY[0x1E695DFA8] set];
-  if (v4)
+  if (testCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __36__FBSceneManager_scenesPassingTest___block_invoke;
     v7[3] = &unk_1E783CBD0;
-    v9 = v4;
+    v9 = testCopy;
     v8 = v5;
     [(FBSceneManager *)self enumerateScenesWithBlock:v7];
   }
@@ -253,10 +253,10 @@ void __36__FBSceneManager_scenesPassingTest___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)sceneFromIdentityTokenStringRepresentation:(id)a3
+- (id)sceneFromIdentityTokenStringRepresentation:(id)representation
 {
-  v5 = a3;
-  if (!v5)
+  representationCopy = representation;
+  if (!representationCopy)
   {
     [FBSceneManager sceneFromIdentityTokenStringRepresentation:a2];
   }
@@ -271,7 +271,7 @@ void __36__FBSceneManager_scenesPassingTest___block_invoke(uint64_t a1, void *a2
   v9[1] = 3221225472;
   v9[2] = __61__FBSceneManager_sceneFromIdentityTokenStringRepresentation___block_invoke;
   v9[3] = &unk_1E783CBF8;
-  v6 = v5;
+  v6 = representationCopy;
   v10 = v6;
   v11 = &v12;
   [(FBSceneManager *)self enumerateScenesWithBlock:v9];
@@ -296,30 +296,30 @@ void __61__FBSceneManager_sceneFromIdentityTokenStringRepresentation___block_inv
   }
 }
 
-- (id)createSceneWithDefinition:(id)a3 initialParameters:(id)a4
+- (id)createSceneWithDefinition:(id)definition initialParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 clientIdentity];
-  if (([v8 isLocal] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69C75F0], "identityOfCurrentProcess"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqual:", v8), v9, v10))
+  definitionCopy = definition;
+  parametersCopy = parameters;
+  clientIdentity = [definitionCopy clientIdentity];
+  if (([clientIdentity isLocal] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69C75F0], "identityOfCurrentProcess"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqual:", clientIdentity), v9, v10))
   {
-    v11 = [(FBWorkspaceEventDispatcher *)self->_workspace domain];
-    v12 = [v11 syncLocalSceneClientProvider];
+    domain = [(FBWorkspaceEventDispatcher *)self->_workspace domain];
+    syncLocalSceneClientProvider = [domain syncLocalSceneClientProvider];
   }
 
   else
   {
-    v11 = [(FBWorkspaceEventDispatcher *)self->_workspace domain];
-    v13 = [v8 processIdentity];
-    v14 = [v11 processForIdentity:v13];
-    v12 = [v14 workspace];
+    domain = [(FBWorkspaceEventDispatcher *)self->_workspace domain];
+    processIdentity = [clientIdentity processIdentity];
+    v14 = [domain processForIdentity:processIdentity];
+    syncLocalSceneClientProvider = [v14 workspace];
   }
 
-  if (v12)
+  if (syncLocalSceneClientProvider)
   {
-    v15 = [v7 settings];
-    v16 = [v7 clientSettings];
-    v17 = [(FBSceneManager *)self _createSceneWithDefinition:v6 settings:v15 initialClientSettings:v16 transitionContext:0 fromRemnant:0 usingClientProvider:v12 completion:0];
+    settings = [parametersCopy settings];
+    clientSettings = [parametersCopy clientSettings];
+    v17 = [(FBSceneManager *)self _createSceneWithDefinition:definitionCopy settings:settings initialClientSettings:clientSettings transitionContext:0 fromRemnant:0 usingClientProvider:syncLocalSceneClientProvider completion:0];
   }
 
   else
@@ -327,7 +327,7 @@ void __61__FBSceneManager_sceneFromIdentityTokenStringRepresentation___block_inv
     v18 = FBLogScene();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [(FBSceneManager *)v6 createSceneWithDefinition:v8 initialParameters:v18];
+      [(FBSceneManager *)definitionCopy createSceneWithDefinition:clientIdentity initialParameters:v18];
     }
 
     v17 = 0;
@@ -336,13 +336,13 @@ void __61__FBSceneManager_sceneFromIdentityTokenStringRepresentation___block_inv
   return v17;
 }
 
-- (id)createSceneWithIdentifier:(id)a3 parameters:(id)a4 clientProvider:(id)a5 transitionContext:(id)a6
+- (id)createSceneWithIdentifier:(id)identifier parameters:(id)parameters clientProvider:(id)provider transitionContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v13;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  providerCopy = provider;
+  contextCopy = context;
+  v15 = providerCopy;
   if (!v15)
   {
     [FBSceneManager createSceneWithIdentifier:a2 parameters:? clientProvider:? transitionContext:?];
@@ -359,37 +359,37 @@ void __61__FBSceneManager_sceneFromIdentityTokenStringRepresentation___block_inv
   v18 = MEMORY[0x1E699FBD8];
   if (isKindOfClass)
   {
-    v19 = [v16 process];
-    v20 = [v19 identity];
-    v21 = [v18 identityForProcessIdentity:v20];
+    process = [v16 process];
+    identity = [process identity];
+    localIdentity = [v18 identityForProcessIdentity:identity];
   }
 
   else
   {
-    v21 = [MEMORY[0x1E699FBD8] localIdentity];
+    localIdentity = [MEMORY[0x1E699FBD8] localIdentity];
   }
 
-  v22 = [MEMORY[0x1E699FB50] definition];
-  v23 = [MEMORY[0x1E699FC10] identityForIdentifier:v11];
-  [v22 setIdentity:v23];
+  definition = [MEMORY[0x1E699FB50] definition];
+  v23 = [MEMORY[0x1E699FC10] identityForIdentifier:identifierCopy];
+  [definition setIdentity:v23];
 
-  [v22 setClientIdentity:v21];
-  v24 = [v12 specification];
-  [v22 setSpecification:v24];
+  [definition setClientIdentity:localIdentity];
+  specification = [parametersCopy specification];
+  [definition setSpecification:specification];
 
-  v25 = [v12 settings];
-  v26 = [v12 clientSettings];
-  v27 = [(FBSceneManager *)self _createSceneWithDefinition:v22 settings:v25 initialClientSettings:v26 transitionContext:v14 fromRemnant:0 usingClientProvider:v16 completion:0];
+  settings = [parametersCopy settings];
+  clientSettings = [parametersCopy clientSettings];
+  v27 = [(FBSceneManager *)self _createSceneWithDefinition:definition settings:settings initialClientSettings:clientSettings transitionContext:contextCopy fromRemnant:0 usingClientProvider:v16 completion:0];
 
   return v27;
 }
 
-- (id)createLegacySceneFromRemnant:(id)a3 withSettings:(id)a4 transitionContext:(id)a5
+- (id)createLegacySceneFromRemnant:(id)remnant withSettings:(id)settings transitionContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  remnantCopy = remnant;
+  settingsCopy = settings;
+  contextCopy = context;
+  v12 = remnantCopy;
   NSClassFromString(&cfstr_Fbsceneremnant_1.isa);
   if (!v12)
   {
@@ -406,17 +406,17 @@ void __61__FBSceneManager_sceneFromIdentityTokenStringRepresentation___block_inv
     [FBSceneManager createLegacySceneFromRemnant:a2 withSettings:? transitionContext:?];
   }
 
-  v13 = [v12 _workspace];
-  if (v13)
+  _workspace = [v12 _workspace];
+  if (_workspace)
   {
-    v14 = [v12 _assertion];
-    v15 = [v14 isValid];
+    _assertion = [v12 _assertion];
+    isValid = [_assertion isValid];
 
-    if (v15)
+    if (isValid)
     {
-      v16 = [v12 definition];
-      v17 = [v12 _clientSettings];
-      v18 = [(FBSceneManager *)self _createSceneWithDefinition:v16 settings:v10 initialClientSettings:v17 transitionContext:v11 fromRemnant:v12 usingClientProvider:v13 completion:0];
+      definition = [v12 definition];
+      _clientSettings = [v12 _clientSettings];
+      v18 = [(FBSceneManager *)self _createSceneWithDefinition:definition settings:settingsCopy initialClientSettings:_clientSettings transitionContext:contextCopy fromRemnant:v12 usingClientProvider:_workspace completion:0];
 
       if ([v18 isValid])
       {
@@ -431,16 +431,16 @@ LABEL_9:
   return v18;
 }
 
-- (void)destroyScene:(id)a3 withTransitionContext:(id)a4
+- (void)destroyScene:(id)scene withTransitionContext:(id)context
 {
-  v10 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  contextCopy = context;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __FB_REPORT_MAIN_THREAD_VIOLATION__(0, "[FBSceneManager destroyScene:withTransitionContext:]");
   }
 
-  if (!v10)
+  if (!sceneCopy)
   {
     [FBSceneManager destroyScene:a2 withTransitionContext:?];
   }
@@ -454,15 +454,15 @@ LABEL_9:
       [FBSceneManager destroyScene:a2 withTransitionContext:?];
     }
 
-    [v9 deactivateWithTransitionContext:v7];
+    [v9 deactivateWithTransitionContext:contextCopy];
   }
 }
 
-- (id)newSceneIdentityTokenForIdentity:(id)a3
+- (id)newSceneIdentityTokenForIdentity:(id)identity
 {
   workspace = self->_workspace;
-  v4 = [a3 identifier];
-  v5 = [(FBSceneWorkspace *)workspace sceneIdentityTokenForIdentifier:v4];
+  identifier = [identity identifier];
+  v5 = [(FBSceneWorkspace *)workspace sceneIdentityTokenForIdentifier:identifier];
 
   return v5;
 }

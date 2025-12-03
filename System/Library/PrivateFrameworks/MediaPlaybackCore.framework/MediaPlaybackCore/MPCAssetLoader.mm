@@ -1,10 +1,10 @@
 @interface MPCAssetLoader
-- (BOOL)_configureItem:(id)a3 playerItem:(id)a4 error:(id *)a5;
-- (MPCAssetLoader)initWithDelegate:(id)a3;
+- (BOOL)_configureItem:(id)item playerItem:(id)playerItem error:(id *)error;
+- (MPCAssetLoader)initWithDelegate:(id)delegate;
 - (MPCAssetLoaderDelegate)delegate;
 - (double)unloadingPlaybackAssetsOnIdleDuration;
-- (void)loadAssetFor:(id)a3 task:(id)a4 completion:(id)a5;
-- (void)loadAssetValuesFor:(id)a3 keys:(id)a4 completion:(id)a5;
+- (void)loadAssetFor:(id)for task:(id)task completion:(id)completion;
+- (void)loadAssetValuesFor:(id)for keys:(id)keys completion:(id)completion;
 @end
 
 @implementation MPCAssetLoader
@@ -16,13 +16,13 @@
   return WeakRetained;
 }
 
-- (BOOL)_configureItem:(id)a3 playerItem:(id)a4 error:(id *)a5
+- (BOOL)_configureItem:(id)item playerItem:(id)playerItem error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  playerItemCopy = playerItem;
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
-  v11 = os_signpost_id_make_with_pointer(v10, v8);
+  v11 = os_signpost_id_make_with_pointer(v10, itemCopy);
 
   v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
   v13 = v12;
@@ -32,30 +32,30 @@
     _os_signpost_emit_with_name_impl(&dword_1C5C61000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "ConfigureItem", "", buf, 2u);
   }
 
-  v14 = [(MPCAssetLoader *)self configurator];
+  configurator = [(MPCAssetLoader *)self configurator];
   v24 = 0;
-  [v14 configureQueueItem:v8 playerItem:v9 error:&v24];
+  [configurator configureQueueItem:itemCopy playerItem:playerItemCopy error:&v24];
 
   v15 = v24;
   v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
   v17 = v16;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v18 = [v8 analyticsContentType];
-    v19 = [v18 UTF8String];
-    v20 = [v8 analyticsFormatType];
-    v21 = [v20 UTF8String];
+    analyticsContentType = [itemCopy analyticsContentType];
+    uTF8String = [analyticsContentType UTF8String];
+    analyticsFormatType = [itemCopy analyticsFormatType];
+    uTF8String2 = [analyticsFormatType UTF8String];
     *buf = 136446466;
-    v26 = v19;
+    v26 = uTF8String;
     v27 = 2082;
-    v28 = v21;
+    v28 = uTF8String2;
     _os_signpost_emit_with_name_impl(&dword_1C5C61000, v17, OS_SIGNPOST_INTERVAL_END, v11, "ConfigureItem", " enableTelemetry=YES contentType=%{public, signpost.telemetry:string1, name=contentType}s format=%{public, signpost.telemetry:string2, name=format}s", buf, 0x16u);
   }
 
-  if (a5 && v15)
+  if (error && v15)
   {
     v22 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   return v15 == 0;
@@ -63,82 +63,82 @@
 
 - (double)unloadingPlaybackAssetsOnIdleDuration
 {
-  v2 = [(MPCAssetLoader *)self configurator];
-  v3 = [v2 resetPassthrougOutputStateIfEnabled];
+  configurator = [(MPCAssetLoader *)self configurator];
+  resetPassthrougOutputStateIfEnabled = [configurator resetPassthrougOutputStateIfEnabled];
 
-  if (v3)
+  if (resetPassthrougOutputStateIfEnabled)
   {
     return 2.0;
   }
 
-  v5 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  [v5 unloadingPlaybackAssetsOnIdleDuration];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  [standardUserDefaults unloadingPlaybackAssetsOnIdleDuration];
   v7 = v6;
 
   return v7;
 }
 
-- (void)loadAssetValuesFor:(id)a3 keys:(id)a4 completion:(id)a5
+- (void)loadAssetValuesFor:(id)for keys:(id)keys completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 isAssetLoaded])
+  forCopy = for;
+  keysCopy = keys;
+  completionCopy = completion;
+  if ([forCopy isAssetLoaded])
   {
-    v10 = [v7 asset];
+    asset = [forCopy asset];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __53__MPCAssetLoader_loadAssetValuesFor_keys_completion___block_invoke;
     v11[3] = &unk_1E8239528;
-    v12 = v9;
-    [v10 loadValuesAsynchronouslyForKeys:v8 completionHandler:v11];
+    v12 = completionCopy;
+    [asset loadValuesAsynchronouslyForKeys:keysCopy completionHandler:v11];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:0 debugDescription:@"Asset is not loaded or was recently released due to MediaServices interruption"];
-    (*(v9 + 2))(v9, v10);
+    asset = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:0 debugDescription:@"Asset is not loaded or was recently released due to MediaServices interruption"];
+    (*(completionCopy + 2))(completionCopy, asset);
   }
 }
 
-- (void)loadAssetFor:(id)a3 task:(id)a4 completion:(id)a5
+- (void)loadAssetFor:(id)for task:(id)task completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(MPCAssetLoader *)self configurator];
+  forCopy = for;
+  taskCopy = task;
+  completionCopy = completion;
+  configurator = [(MPCAssetLoader *)self configurator];
 
-  if (!v12)
+  if (!configurator)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"MPCAssetLoader.m" lineNumber:68 description:@"MPCAssetLoader must have a configurator set to work properly"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCAssetLoader.m" lineNumber:68 description:@"MPCAssetLoader must have a configurator set to work properly"];
   }
 
-  if (([v9 hasLoadableAsset] & 1) == 0)
+  if (([forCopy hasLoadableAsset] & 1) == 0)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"MPCAssetLoader.m" lineNumber:69 description:{@"Attempting to load an item which has no loadable asset: %@", v9}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCAssetLoader.m" lineNumber:69 description:{@"Attempting to load an item which has no loadable asset: %@", forCopy}];
   }
 
-  v13 = v9;
+  v13 = forCopy;
   v33 = MEMORY[0x1E69E9820];
   v34 = 3221225472;
   v35 = __47__MPCAssetLoader_loadAssetFor_task_completion___block_invoke;
   v36 = &unk_1E82392C0;
-  v37 = self;
+  selfCopy = self;
   v38 = v13;
   msv_dispatch_on_main_queue();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__MPCAssetLoader_loadAssetFor_task_completion___block_invoke_2;
   aBlock[3] = &unk_1E8234FB0;
-  v14 = v11;
+  v14 = completionCopy;
   v32 = v14;
   v15 = v38;
   v30 = v15;
-  v31 = self;
+  selfCopy2 = self;
   v16 = _Block_copy(aBlock);
-  if ([v10 isCancelled])
+  if ([taskCopy isCancelled])
   {
     v17 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:28 debugDescription:{@"MPCAssetLoadingOperation - Asset loading cancelled - Item:%@", v15}];
     v16[2](v16, 0, v17);
@@ -151,19 +151,19 @@
     {
       configurator = self->_configurator;
       v19 = v15;
-      v20 = [(MPCPlayerItemConfigurator *)configurator audioAssetTypeSelector];
-      [v19 setAudioAssetTypeSelector:v20];
+      audioAssetTypeSelector = [(MPCPlayerItemConfigurator *)configurator audioAssetTypeSelector];
+      [v19 setAudioAssetTypeSelector:audioAssetTypeSelector];
     }
 
-    v21 = [MPCMFAssetLoadingTask wrap:v10];
+    v21 = [MPCMFAssetLoadingTask wrap:taskCopy];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __47__MPCAssetLoader_loadAssetFor_task_completion___block_invoke_4;
     v24[3] = &unk_1E8234FD8;
-    v25 = v10;
+    v25 = taskCopy;
     v28 = v16;
     v26 = v15;
-    v27 = self;
+    selfCopy3 = self;
     [v26 _loadAssetAndPlayerItemWithTask:v21 completion:v24];
 
     v17 = v25;
@@ -236,16 +236,16 @@ void __47__MPCAssetLoader_loadAssetFor_task_completion___block_invoke_3(uint64_t
   [v2 assetLoadingDidCompleteForItem:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (MPCAssetLoader)initWithDelegate:(id)a3
+- (MPCAssetLoader)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MPCAssetLoader;
   v5 = [(MPCAssetLoader *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

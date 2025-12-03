@@ -1,15 +1,15 @@
 @interface HKInteractiveChartAnnotationFormatter
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartAnnotationFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19 = 0u;
@@ -35,8 +35,8 @@
           v12 = *(*(&v19 + 1) + 8 * i);
           v13 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
           v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v15 = [v12 annotation];
-          v16 = [v14 initWithString:v15];
+          annotation = [v12 annotation];
+          v16 = [v14 initWithString:annotation];
           [(HKSelectedRangeData *)v13 setAttributedString:v16];
 
           [(HKSelectedRangeData *)v13 setValueAsNumber:0];

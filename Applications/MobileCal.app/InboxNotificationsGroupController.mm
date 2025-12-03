@@ -1,48 +1,48 @@
 @interface InboxNotificationsGroupController
-- (BOOL)canSelectRow:(int64_t)a3;
-- (InboxNotificationsGroupController)initWithModel:(id)a3 delegate:(id)a4;
+- (BOOL)canSelectRow:(int64_t)row;
+- (InboxNotificationsGroupController)initWithModel:(id)model delegate:(id)delegate;
 - (InboxTableViewGroupControllerDelegate)delegate;
-- (id)_eventForIndexPath:(id)a3;
-- (id)cellForRow:(int64_t)a3 allowAsyncLoading:(BOOL)a4;
-- (id)conflictInfoForNotification:(id)a3;
-- (id)eventForRow:(int64_t)a3;
-- (id)noContentStringForInboxTableView:(id)a3;
+- (id)_eventForIndexPath:(id)path;
+- (id)cellForRow:(int64_t)row allowAsyncLoading:(BOOL)loading;
+- (id)conflictInfoForNotification:(id)notification;
+- (id)eventForRow:(int64_t)row;
+- (id)noContentStringForInboxTableView:(id)view;
 - (id)tableView;
-- (void)_cachedBlockedContactsChanged:(id)a3;
-- (void)_localeChanged:(id)a3;
-- (void)_notificationsChanged:(id)a3;
-- (void)_performAction:(int64_t)a3 forEventInvitationNotification:(id)a4 avoidUserInteraction:(BOOL)a5 cancelled:(id)a6 cell:(id)a7;
-- (void)_performAction:(int64_t)a3 forSuggestionNotification:(id)a4 save:(id)a5;
-- (void)_performActionForAllNotifications:(int64_t)a3 save:(id)a4;
-- (void)_performActionForAttendeeReplyNotification:(id)a3 save:(id)a4;
-- (void)_performActionForInviteReplayNotification:(id)a3;
-- (void)_performActionForResourceChangeNotification:(id)a3;
+- (void)_cachedBlockedContactsChanged:(id)changed;
+- (void)_localeChanged:(id)changed;
+- (void)_notificationsChanged:(id)changed;
+- (void)_performAction:(int64_t)action forEventInvitationNotification:(id)notification avoidUserInteraction:(BOOL)interaction cancelled:(id)cancelled cell:(id)cell;
+- (void)_performAction:(int64_t)action forSuggestionNotification:(id)notification save:(id)save;
+- (void)_performActionForAllNotifications:(int64_t)notifications save:(id)save;
+- (void)_performActionForAttendeeReplyNotification:(id)notification save:(id)save;
+- (void)_performActionForInviteReplayNotification:(id)notification;
+- (void)_performActionForResourceChangeNotification:(id)notification;
 - (void)_savePendingComments;
-- (void)_saveStatus:(int64_t)a3 forEventInvitationNotification:(id)a4 commit:(BOOL)a5;
+- (void)_saveStatus:(int64_t)status forEventInvitationNotification:(id)notification commit:(BOOL)commit;
 - (void)attemptDisplayReviewPrompt;
-- (void)messageCell:(id)a3 committedComment:(id)a4;
-- (void)performAction:(int64_t)a3 forCell:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 appliesToAll:(BOOL)a7 ifCancelled:(id)a8;
+- (void)messageCell:(id)cell committedComment:(id)comment;
+- (void)performAction:(int64_t)action forCell:(id)cell sourceView:(id)view sourceRect:(CGRect)rect appliesToAll:(BOOL)all ifCancelled:(id)cancelled;
 - (void)prefetchConflictInfo;
-- (void)prefetchRow:(int64_t)a3;
+- (void)prefetchRow:(int64_t)row;
 - (void)refreshIfNeeded;
-- (void)rowSelected:(int64_t)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)rowSelected:(int64_t)selected;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation InboxNotificationsGroupController
 
-- (InboxNotificationsGroupController)initWithModel:(id)a3 delegate:(id)a4
+- (InboxNotificationsGroupController)initWithModel:(id)model delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = InboxNotificationsGroupController;
   v9 = [(InboxNotificationsGroupController *)&v32 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_model, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_model, model);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v10->_needsRefresh = 1;
     v11 = objc_opt_new();
     pendingComments = v10->_pendingComments;
@@ -92,27 +92,27 @@
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   [(InboxNotificationsGroupController *)self setVisible:1];
   [(InboxNotificationsGroupController *)self refreshIfNeeded];
-  v5 = [(InboxNotificationsGroupController *)self tableView];
-  v4 = [v5 visibleCells];
-  [v4 enumerateObjectsUsingBlock:&stru_100210378];
+  tableView = [(InboxNotificationsGroupController *)self tableView];
+  visibleCells = [tableView visibleCells];
+  [visibleCells enumerateObjectsUsingBlock:&stru_100210378];
 }
 
-- (id)conflictInfoForNotification:(id)a3
+- (id)conflictInfoForNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = sub_1000A0F80;
   v27 = sub_1000A0F90;
   v28 = 0;
-  if (![v4 type] || objc_msgSend(v4, "type") == 1)
+  if (![notificationCopy type] || objc_msgSend(notificationCopy, "type") == 1)
   {
-    v5 = v4;
+    v5 = notificationCopy;
     conflictsQueue = self->_conflictsQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -125,14 +125,14 @@
     dispatch_sync(conflictsQueue, block);
     if (!v24[5])
     {
-      v8 = [v7 objectID];
+      objectID = [v7 objectID];
 
-      if (v8)
+      if (objectID)
       {
-        v9 = [(CUIKCalendarModel *)self->_model eventStore];
-        v10 = [v7 objectID];
-        v11 = [v7 startDate];
-        v8 = [v9 eventForObjectID:v10 occurrenceDate:v11 checkValid:0];
+        eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+        objectID2 = [v7 objectID];
+        startDate = [v7 startDate];
+        objectID = [eventStore eventForObjectID:objectID2 occurrenceDate:startDate checkValid:0];
       }
 
       conflictsScanningQueue = self->_conflictsScanningQueue;
@@ -143,8 +143,8 @@
       v16[4] = self;
       v19 = &v23;
       v17 = v7;
-      v18 = v8;
-      v13 = v8;
+      v18 = objectID;
+      v13 = objectID;
       dispatch_sync(conflictsScanningQueue, v16);
     }
   }
@@ -164,12 +164,12 @@
   v6[2] = sub_1000A12E4;
   v6[3] = &unk_10020EC68;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(prefetchConflictsQueue, v6);
 }
 
-- (void)prefetchRow:(int64_t)a3
+- (void)prefetchRow:(int64_t)row
 {
   prefetchNamesQueue = self->_prefetchNamesQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -177,7 +177,7 @@
   v4[2] = sub_1000A148C;
   v4[3] = &unk_10020EE00;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = row;
   dispatch_async(prefetchNamesQueue, v4);
 }
 
@@ -189,21 +189,21 @@
     if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[INBOX] Refreshing inbox notifications group controller: %{public}@.", buf, 0xCu);
     }
 
-    v4 = [(CUIKCalendarModel *)self->_model eventNotificationReferencesForCurrentIdentity];
-    objc_storeStrong(&self->_allNotificationReferences, v4);
+    eventNotificationReferencesForCurrentIdentity = [(CUIKCalendarModel *)self->_model eventNotificationReferencesForCurrentIdentity];
+    objc_storeStrong(&self->_allNotificationReferences, eventNotificationReferencesForCurrentIdentity);
     v5 = kCalUILogInboxHandle;
     if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = v4;
+      selfCopy = eventNotificationReferencesForCurrentIdentity;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[INBOX] Event notification references for current identity: %{public}@.", buf, 0xCu);
     }
 
-    v6 = [(InboxNotificationsGroupController *)self filteredNotificationsFromArray:v4];
+    v6 = [(InboxNotificationsGroupController *)self filteredNotificationsFromArray:eventNotificationReferencesForCurrentIdentity];
     v7 = [v6 mutableCopy];
     notificationReferences = self->_notificationReferences;
     self->_notificationReferences = v7;
@@ -213,7 +213,7 @@
     {
       v10 = self->_notificationReferences;
       *buf = 138543362;
-      v23 = v10;
+      selfCopy = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Filtered event notification references for selected identity: %{public}@.", buf, 0xCu);
     }
 
@@ -221,8 +221,8 @@
     [(InboxNotificationsGroupController *)self prefetchConflictInfo];
     if ([(NSMutableDictionary *)self->_pendingComments count])
     {
-      v12 = [(NSMutableDictionary *)self->_pendingComments allKeys];
-      v13 = [v12 mutableCopy];
+      allKeys = [(NSMutableDictionary *)self->_pendingComments allKeys];
+      v13 = [allKeys mutableCopy];
 
       v14 = self->_notificationReferences;
       v20[0] = _NSConcreteStackBlock;
@@ -241,34 +241,34 @@
       v17 = v16;
       v18 = [NSNumber numberWithUnsignedInteger:v11];
       *buf = 138543362;
-      v23 = v18;
+      selfCopy = v18;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Number of notifications after refresh: [%{public}@].", buf, 0xCu);
     }
 
     self->_needsRefresh = 0;
-    v19 = [(InboxNotificationsGroupController *)self delegate];
-    [v19 inboxTableViewGroupController:self addedRows:0 removedRows:0 updatedRows:0];
+    delegate = [(InboxNotificationsGroupController *)self delegate];
+    [delegate inboxTableViewGroupController:self addedRows:0 removedRows:0 updatedRows:0];
   }
 }
 
-- (id)cellForRow:(int64_t)a3 allowAsyncLoading:(BOOL)a4
+- (id)cellForRow:(int64_t)row allowAsyncLoading:(BOOL)loading
 {
-  v4 = a4;
+  loadingCopy = loading;
   v7 = objc_alloc_init(CalendarMessageCell);
   if ([(NSMutableArray *)self->_notificationReferences count])
   {
-    v8 = [(NSMutableArray *)self->_notificationReferences objectAtIndex:a3];
-    v9 = [v8 notification];
-    v10 = v9;
-    if (v9)
+    v8 = [(NSMutableArray *)self->_notificationReferences objectAtIndex:row];
+    notification = [v8 notification];
+    v10 = notification;
+    if (notification)
     {
-      v11 = [v9 URL];
+      v11 = [notification URL];
       if ([v10 type] != 8 || (-[NSMutableArray containsObject:](self->_sharedCalendarInvitationsReplyPending, "containsObject:", v11) & 1) == 0)
       {
         v12 = [CalendarMessageCell cellClassForNotification:v10];
         v35 = NSStringFromClass(v12);
-        v13 = [(InboxNotificationsGroupController *)self tableView];
-        v14 = [v13 dequeueReusableCellWithIdentifier:v35];
+        tableView = [(InboxNotificationsGroupController *)self tableView];
+        v14 = [tableView dequeueReusableCellWithIdentifier:v35];
 
         v7 = v14;
         if (!v14)
@@ -314,7 +314,7 @@
             v39[3] = &unk_1002103F0;
             objc_copyWeak(&v42, location);
             v40 = v8;
-            v41 = self;
+            selfCopy = self;
             dispatch_async(prefetchConflictsQueue, v39);
 
             objc_destroyWeak(&v42);
@@ -346,14 +346,14 @@
           [(CalendarMessageCell *)v7 setOrganizerName:*(*(&buf + 1) + 40)];
         }
 
-        v26 = [(CalendarMessageCell *)v7 authorView];
+        authorView = [(CalendarMessageCell *)v7 authorView];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v28 = [(CalendarMessageCell *)v7 authorView];
-          [v28 setLoadContactsAsynchronously:v4];
+          authorView2 = [(CalendarMessageCell *)v7 authorView];
+          [authorView2 setLoadContactsAsynchronously:loadingCopy];
         }
 
         [(CalendarMessageCell *)v7 setDelegate:self];
@@ -381,7 +381,7 @@
       if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 134217984;
-        *(&buf + 4) = a3;
+        *(&buf + 4) = row;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Notification reference is nil for inbox cell in row %ld.", &buf, 0xCu);
       }
 
@@ -401,76 +401,76 @@
   if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = row;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "Loading notification cell at row: [%ld]", &buf, 0xCu);
   }
 
   return v7;
 }
 
-- (void)rowSelected:(int64_t)a3
+- (void)rowSelected:(int64_t)selected
 {
-  v9 = [(InboxNotificationsGroupController *)self cellForRow:a3 allowAsyncLoading:0];
+  v9 = [(InboxNotificationsGroupController *)self cellForRow:selected allowAsyncLoading:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v9 proposedTimeAttendee], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = v5;
-    v7 = [(InboxNotificationsGroupController *)self delegate];
-    v8 = [(InboxNotificationsGroupController *)self eventForRow:a3];
-    [v7 inboxTableViewGroupController:self viewProposedTimeForAttendee:v6 onEvent:v8];
+    delegate2 = v5;
+    delegate = [(InboxNotificationsGroupController *)self delegate];
+    v8 = [(InboxNotificationsGroupController *)self eventForRow:selected];
+    [delegate inboxTableViewGroupController:self viewProposedTimeForAttendee:delegate2 onEvent:v8];
   }
 
   else
   {
-    v6 = [(InboxNotificationsGroupController *)self delegate];
-    v7 = [(InboxNotificationsGroupController *)self eventForRow:a3];
-    [v6 inboxTableViewGroupController:self inspectEvent:v7];
+    delegate2 = [(InboxNotificationsGroupController *)self delegate];
+    delegate = [(InboxNotificationsGroupController *)self eventForRow:selected];
+    [delegate2 inboxTableViewGroupController:self inspectEvent:delegate];
   }
 }
 
-- (BOOL)canSelectRow:(int64_t)a3
+- (BOOL)canSelectRow:(int64_t)row
 {
-  v3 = [(InboxNotificationsGroupController *)self eventForRow:a3];
+  v3 = [(InboxNotificationsGroupController *)self eventForRow:row];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)eventForRow:(int64_t)a3
+- (id)eventForRow:(int64_t)row
 {
-  if ([(NSMutableArray *)self->_notificationReferences count]<= a3)
+  if ([(NSMutableArray *)self->_notificationReferences count]<= row)
   {
     v13 = 0;
     goto LABEL_21;
   }
 
-  v5 = [(NSMutableArray *)self->_notificationReferences objectAtIndex:a3];
-  v6 = [v5 notification];
+  v5 = [(NSMutableArray *)self->_notificationReferences objectAtIndex:row];
+  notification = [v5 notification];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [v7 objectID];
+    v7 = notification;
+    objectID = [v7 objectID];
 
-    v9 = [(CUIKCalendarModel *)self->_model eventStore];
-    if (!v8)
+    eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+    if (!objectID)
     {
-      v10 = [v7 URL];
-      v13 = [v9 _eventWithURI:v10 checkValid:1];
+      objectID2 = [v7 URL];
+      v13 = [eventStore _eventWithURI:objectID2 checkValid:1];
       goto LABEL_18;
     }
 
-    v10 = [v7 objectID];
-    v11 = [v7 startDateForNextOccurrence];
-    v12 = v11;
-    if (!v11)
+    objectID2 = [v7 objectID];
+    startDateForNextOccurrence = [v7 startDateForNextOccurrence];
+    startDate = startDateForNextOccurrence;
+    if (!startDateForNextOccurrence)
     {
-      v12 = [v7 startDate];
+      startDate = [v7 startDate];
     }
 
-    v13 = [v9 eventForObjectID:v10 occurrenceDate:v12 checkValid:0];
-    if (!v11)
+    v13 = [eventStore eventForObjectID:objectID2 occurrenceDate:startDate checkValid:0];
+    if (!startDateForNextOccurrence)
     {
     }
 
@@ -485,20 +485,20 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v6;
-    v15 = [(CUIKCalendarModel *)self->_model eventStore];
-    v16 = [v14 eventID];
-    v11 = [v15 eventWithIdentifier:v16];
+    v14 = notification;
+    eventStore2 = [(CUIKCalendarModel *)self->_model eventStore];
+    eventID = [v14 eventID];
+    startDateForNextOccurrence = [eventStore2 eventWithIdentifier:eventID];
 
-    if (!v11)
+    if (!startDateForNextOccurrence)
     {
       v13 = 0;
       goto LABEL_19;
     }
 
-    v9 = +[NSDate CalSimulatedDateForNow];
-    v17 = [v11 nextOccurrenceOrDetachmentAfter:v9];
-    v10 = v17;
+    eventStore = +[NSDate CalSimulatedDateForNow];
+    v17 = [startDateForNextOccurrence nextOccurrenceOrDetachmentAfter:eventStore];
+    objectID2 = v17;
     if (v17)
     {
       v18 = v17;
@@ -506,7 +506,7 @@ LABEL_19:
 
     else
     {
-      v18 = v11;
+      v18 = startDateForNextOccurrence;
     }
 
     v13 = v18;
@@ -521,82 +521,82 @@ LABEL_21:
   return v13;
 }
 
-- (void)_saveStatus:(int64_t)a3 forEventInvitationNotification:(id)a4 commit:(BOOL)a5
+- (void)_saveStatus:(int64_t)status forEventInvitationNotification:(id)notification commit:(BOOL)commit
 {
-  v5 = a5;
-  v8 = a4;
+  commitCopy = commit;
+  notificationCopy = notification;
   v9 = kCalUILogInboxHandle;
   if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [NSNumber numberWithInteger:a3];
+    v11 = [NSNumber numberWithInteger:status];
     *buf = 138543618;
     v40 = v11;
     v41 = 2114;
-    v42 = v8;
+    v42 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Saving participant status: [%{public}@] for event invitation notification: %{public}@.", buf, 0x16u);
   }
 
-  v12 = [(CUIKCalendarModel *)self->_model eventStore];
-  v13 = [v8 eventFromEventStore:v12];
+  eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+  v13 = [notificationCopy eventFromEventStore:eventStore];
 
   [v13 setInvitationStatus:0];
-  v14 = [(InboxNotificationsGroupController *)self delegate];
-  v15 = [v14 editorForGroupController:self];
+  delegate = [(InboxNotificationsGroupController *)self delegate];
+  v15 = [delegate editorForGroupController:self];
 
-  if ([v8 type] == 2)
+  if ([notificationCopy type] == 2)
   {
     [v15 deleteEvent:v13 span:2 error:0];
   }
 
   else
   {
-    v16 = [v13 calendar];
-    v17 = [v16 source];
-    v18 = [v17 constraints];
-    v19 = [v18 mustAcknowledgeMasterEvent];
+    calendar = [v13 calendar];
+    source = [calendar source];
+    constraints = [source constraints];
+    mustAcknowledgeMasterEvent = [constraints mustAcknowledgeMasterEvent];
 
-    if (v19)
+    if (mustAcknowledgeMasterEvent)
     {
       if ([v13 hasRecurrenceRules])
       {
-        v20 = 4;
+        hasRecurrenceRules = 4;
       }
 
       else
       {
-        v20 = 0;
+        hasRecurrenceRules = 0;
       }
 
-      if (a3)
+      if (status)
       {
-        [v13 setParticipationStatus:a3];
+        [v13 setParticipationStatus:status];
       }
     }
 
-    else if (a3)
+    else if (status)
     {
-      [v13 setParticipationStatus:a3];
-      v20 = 2;
+      [v13 setParticipationStatus:status];
+      hasRecurrenceRules = 2;
     }
 
     else
     {
-      v20 = [v13 hasRecurrenceRules];
+      hasRecurrenceRules = [v13 hasRecurrenceRules];
     }
 
     pendingComments = self->_pendingComments;
-    v22 = [v8 URL];
+    v22 = [notificationCopy URL];
     v23 = [(NSMutableDictionary *)pendingComments objectForKeyedSubscript:v22];
 
     if (v23)
     {
       v24 = self->_pendingComments;
-      v25 = [v8 URL];
+      v25 = [notificationCopy URL];
       [(NSMutableDictionary *)v24 removeObjectForKey:v25];
 
-      v26 = [v13 responseComment];
-      v27 = [CUIKNotificationDescriptionGenerator stringWithAutoCommentRemoved:v26];
+      responseComment = [v13 responseComment];
+      v27 = [CUIKNotificationDescriptionGenerator stringWithAutoCommentRemoved:responseComment];
 
       if (!v27)
       {
@@ -611,17 +611,17 @@ LABEL_21:
           v23 = 0;
         }
 
-        v28 = [v13 proposedStartDate];
-        v29 = [v13 timeZone];
-        v30 = [CUIKNotificationDescriptionGenerator comment:v23 withInsertedAutoCommentForDate:v28 timeZone:v29];
+        proposedStartDate = [v13 proposedStartDate];
+        timeZone = [v13 timeZone];
+        v30 = [CUIKNotificationDescriptionGenerator comment:v23 withInsertedAutoCommentForDate:proposedStartDate timeZone:timeZone];
         [v13 setResponseComment:v30];
       }
     }
 
-    if (v5)
+    if (commitCopy)
     {
       v38 = 0;
-      v31 = [v15 saveEvent:v13 span:v20 error:&v38];
+      v31 = [v15 saveEvent:v13 span:hasRecurrenceRules error:&v38];
       v32 = v38;
       if ((v31 & 1) == 0)
       {
@@ -637,9 +637,9 @@ LABEL_21:
 
     else
     {
-      v34 = [v13 eventStore];
+      eventStore2 = [v13 eventStore];
       v37 = 0;
-      v35 = [v34 saveEvent:v13 span:v20 commit:0 error:&v37];
+      v35 = [eventStore2 saveEvent:v13 span:hasRecurrenceRules commit:0 error:&v37];
       v32 = v37;
 
       if ((v35 & 1) == 0)
@@ -670,17 +670,17 @@ LABEL_21:
   [(NSMutableDictionary *)self->_pendingComments removeAllObjects];
 }
 
-- (void)_performAction:(int64_t)a3 forSuggestionNotification:(id)a4 save:(id)a5
+- (void)_performAction:(int64_t)action forSuggestionNotification:(id)notification save:(id)save
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CUIKCalendarModel *)self->_model eventStore];
-  v11 = [v8 resourceChangeFromEventStore:v10];
+  notificationCopy = notification;
+  saveCopy = save;
+  eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+  v11 = [notificationCopy resourceChangeFromEventStore:eventStore];
 
-  v12 = [v11 calendarItem];
-  v13 = [(CUIKCalendarModel *)self->_model eventStore];
+  calendarItem = [v11 calendarItem];
+  eventStore2 = [(CUIKCalendarModel *)self->_model eventStore];
   v34 = 0;
-  v14 = [v13 removeResourceChange:v11 error:&v34];
+  v14 = [eventStore2 removeResourceChange:v11 error:&v34];
   v15 = v34;
 
   if ((v14 & 1) == 0)
@@ -696,74 +696,74 @@ LABEL_21:
     v15 = 0;
   }
 
-  v17 = [v8 eventID];
-  v18 = [(CUIKCalendarModel *)self->_model eventStore];
-  v19 = [v18 eventWithIdentifier:v17];
+  eventID = [notificationCopy eventID];
+  eventStore3 = [(CUIKCalendarModel *)self->_model eventStore];
+  v19 = [eventStore3 eventWithIdentifier:eventID];
 
   if (v19)
   {
     v20 = v19;
 
-    v12 = v20;
+    calendarItem = v20;
   }
 
-  v32 = v9;
-  if (a3 > 127)
+  v32 = saveCopy;
+  if (action > 127)
   {
-    if (a3 != 128)
+    if (action != 128)
     {
-      if (a3 == 0x100000)
+      if (action == 0x100000)
       {
         goto LABEL_13;
       }
 
 LABEL_20:
-      v31 = [v12 suggestionInfo];
-      [v31 setChangedFields:0];
+      suggestionInfo = [calendarItem suggestionInfo];
+      [suggestionInfo setChangedFields:0];
 
       v25 = v32;
-      (*(v32 + 2))(v32, v12, 0);
+      (*(v32 + 2))(v32, calendarItem, 0);
       goto LABEL_21;
     }
 
-    v29 = [v12 suggestionInfo];
-    v30 = [v29 uniqueKey];
-    [EKSuggestionsServiceLogger logEventRejectedInboxWithUniqueKey:v30];
+    suggestionInfo2 = [calendarItem suggestionInfo];
+    uniqueKey = [suggestionInfo2 uniqueKey];
+    [EKSuggestionsServiceLogger logEventRejectedInboxWithUniqueKey:uniqueKey];
 
-    v27 = [(CUIKCalendarModel *)self->_model eventStore];
-    [v27 deleteSuggestedEvent:v12];
+    eventStore4 = [(CUIKCalendarModel *)self->_model eventStore];
+    [eventStore4 deleteSuggestedEvent:calendarItem];
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  if (a3 == 8)
+  if (action == 8)
   {
     [(InboxNotificationsGroupController *)self attemptDisplayReviewPrompt];
-    v26 = [(CUIKCalendarModel *)self->_model eventStore];
-    [v26 acceptSuggestedEvent:v12];
+    eventStore5 = [(CUIKCalendarModel *)self->_model eventStore];
+    [eventStore5 acceptSuggestedEvent:calendarItem];
 
-    v27 = [v12 suggestionInfo];
-    v28 = [v27 uniqueKey];
-    [EKSuggestionsServiceLogger logEventConfirmedInboxWithUniqueKey:v28];
+    eventStore4 = [calendarItem suggestionInfo];
+    uniqueKey2 = [eventStore4 uniqueKey];
+    [EKSuggestionsServiceLogger logEventConfirmedInboxWithUniqueKey:uniqueKey2];
 
     goto LABEL_19;
   }
 
-  if (a3 != 16)
+  if (action != 16)
   {
     goto LABEL_20;
   }
 
 LABEL_13:
-  v21 = [(InboxNotificationsGroupController *)self delegate];
-  v22 = [v21 editorForGroupController:self];
+  delegate = [(InboxNotificationsGroupController *)self delegate];
+  v22 = [delegate editorForGroupController:self];
 
   v33 = v15;
-  LOBYTE(v21) = [v22 deleteEvent:v12 span:0 error:&v33];
+  LOBYTE(delegate) = [v22 deleteEvent:calendarItem span:0 error:&v33];
   v23 = v33;
 
-  if ((v21 & 1) == 0)
+  if ((delegate & 1) == 0)
   {
     v24 = kCalUILogInboxHandle;
     if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_ERROR))
@@ -779,13 +779,13 @@ LABEL_13:
 LABEL_21:
 }
 
-- (void)_performActionForAttendeeReplyNotification:(id)a3 save:(id)a4
+- (void)_performActionForAttendeeReplyNotification:(id)notification save:(id)save
 {
-  v11 = a4;
+  saveCopy = save;
   model = self->_model;
-  v7 = a3;
-  v8 = [(CUIKCalendarModel *)model eventStore];
-  v9 = [v7 eventFromEventStore:v8];
+  notificationCopy = notification;
+  eventStore = [(CUIKCalendarModel *)model eventStore];
+  v9 = [notificationCopy eventFromEventStore:eventStore];
 
   if (v9)
   {
@@ -800,23 +800,23 @@ LABEL_21:
       v10 = 0;
     }
 
-    v11[2](v11, v9, v10);
+    saveCopy[2](saveCopy, v9, v10);
   }
 }
 
-- (void)_performActionForInviteReplayNotification:(id)a3
+- (void)_performActionForInviteReplayNotification:(id)notification
 {
   model = self->_model;
-  v5 = a3;
-  v6 = [(CUIKCalendarModel *)model eventStore];
-  v7 = [v5 inviteReplyNotificationFromEventStore:v6];
+  notificationCopy = notification;
+  eventStore = [(CUIKCalendarModel *)model eventStore];
+  v7 = [notificationCopy inviteReplyNotificationFromEventStore:eventStore];
 
-  v8 = [(CUIKCalendarModel *)self->_model eventStore];
+  eventStore2 = [(CUIKCalendarModel *)self->_model eventStore];
   v11 = 0;
-  LOBYTE(v6) = [v8 removeInviteReplyNotification:v7 error:&v11];
+  LOBYTE(eventStore) = [eventStore2 removeInviteReplyNotification:v7 error:&v11];
   v9 = v11;
 
-  if ((v6 & 1) == 0)
+  if ((eventStore & 1) == 0)
   {
     v10 = kCalUILogInboxHandle;
     if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_ERROR))
@@ -828,19 +828,19 @@ LABEL_21:
   }
 }
 
-- (void)_performActionForResourceChangeNotification:(id)a3
+- (void)_performActionForResourceChangeNotification:(id)notification
 {
   model = self->_model;
-  v5 = a3;
-  v6 = [(CUIKCalendarModel *)model eventStore];
-  v7 = [v5 resourceChangeFromEventStore:v6];
+  notificationCopy = notification;
+  eventStore = [(CUIKCalendarModel *)model eventStore];
+  v7 = [notificationCopy resourceChangeFromEventStore:eventStore];
 
-  v8 = [(CUIKCalendarModel *)self->_model eventStore];
+  eventStore2 = [(CUIKCalendarModel *)self->_model eventStore];
   v11 = 0;
-  LOBYTE(v6) = [v8 removeResourceChange:v7 error:&v11];
+  LOBYTE(eventStore) = [eventStore2 removeResourceChange:v7 error:&v11];
   v9 = v11;
 
-  if ((v6 & 1) == 0)
+  if ((eventStore & 1) == 0)
   {
     v10 = kCalUILogInboxHandle;
     if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_ERROR))
@@ -852,27 +852,27 @@ LABEL_21:
   }
 }
 
-- (void)_performAction:(int64_t)a3 forEventInvitationNotification:(id)a4 avoidUserInteraction:(BOOL)a5 cancelled:(id)a6 cell:(id)a7
+- (void)_performAction:(int64_t)action forEventInvitationNotification:(id)notification avoidUserInteraction:(BOOL)interaction cancelled:(id)cancelled cell:(id)cell
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  interactionCopy = interaction;
+  notificationCopy = notification;
+  cancelledCopy = cancelled;
+  cellCopy = cell;
   v15 = kCalUILogInboxHandle;
   if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v98 = v12;
+    v98 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Event invitation notification: %{public}@.", buf, 0xCu);
   }
 
-  v16 = [(CUIKCalendarModel *)self->_model eventStore];
-  v17 = [v12 eventFromEventStore:v16];
+  eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+  v17 = [notificationCopy eventFromEventStore:eventStore];
 
   if (v17)
   {
-    v85 = v14;
-    v86 = self;
+    v85 = cellCopy;
+    selfCopy = self;
     v18 = kCalUILogInboxHandle;
     if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -883,18 +883,18 @@ LABEL_21:
 
     v19 = 3;
     v20 = 4;
-    if (a3 != 2)
+    if (action != 2)
     {
       v20 = 0;
     }
 
-    if (a3 != 4)
+    if (action != 4)
     {
       v19 = v20;
     }
 
-    v21 = a3 != 1 && a3 == 4;
-    if (a3 == 1)
+    v21 = action != 1 && action == 4;
+    if (action == 1)
     {
       v22 = 2;
     }
@@ -907,11 +907,11 @@ LABEL_21:
     v23 = kCalUILogInboxHandle;
     if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEFAULT))
     {
-      v83 = v12;
+      v83 = notificationCopy;
       v24 = v17;
-      v25 = v13;
+      v25 = cancelledCopy;
       v26 = v23;
-      v27 = [NSNumber numberWithInteger:a3];
+      v27 = [NSNumber numberWithInteger:action];
       v28 = [NSNumber numberWithInteger:v22];
       *buf = 138543618;
       v98 = v27;
@@ -919,18 +919,18 @@ LABEL_21:
       v100 = v28;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Translated event status button action: [%{public}@] to participant status: [%{public}@].", buf, 0x16u);
 
-      v13 = v25;
+      cancelledCopy = v25;
       v17 = v24;
-      v12 = v83;
+      notificationCopy = v83;
     }
 
-    if (v9)
+    if (interactionCopy)
     {
-      v29 = v86;
+      v29 = selfCopy;
 LABEL_37:
-      [(InboxNotificationsGroupController *)v29 _saveStatus:v22 forEventInvitationNotification:v12 commit:1];
+      [(InboxNotificationsGroupController *)v29 _saveStatus:v22 forEventInvitationNotification:notificationCopy commit:1];
 LABEL_38:
-      v14 = v85;
+      cellCopy = v85;
       goto LABEL_39;
     }
 
@@ -939,23 +939,23 @@ LABEL_38:
       if ([v17 allowsResponseCommentModifications])
       {
         v30 = +[CUIKPreferences sharedPreferences];
-        v31 = [v30 promptForCommentWhenDeclining];
+        promptForCommentWhenDeclining = [v30 promptForCommentWhenDeclining];
 
-        if (v31 == 2 || v31 == 1 && ([v17 calendar], v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "source"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "wantsCommentPromptWhenDeclining"), v33, v32, v34))
+        if (promptForCommentWhenDeclining == 2 || promptForCommentWhenDeclining == 1 && ([v17 calendar], v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "source"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "wantsCommentPromptWhenDeclining"), v33, v32, v34))
         {
-          v35 = [v17 responseComment];
-          v36 = [CUIKNotificationDescriptionGenerator stringWithAutoCommentRemoved:v35];
+          responseComment = [v17 responseComment];
+          v36 = [CUIKNotificationDescriptionGenerator stringWithAutoCommentRemoved:responseComment];
 
           if (!v36)
           {
             v36 = &stru_1002133B8;
           }
 
-          pendingComments = v86->_pendingComments;
-          v38 = [v12 URL];
+          pendingComments = selfCopy->_pendingComments;
+          v38 = [notificationCopy URL];
           [(NSMutableDictionary *)pendingComments setObject:v36 forKeyedSubscript:v38];
 
-          v14 = v85;
+          cellCopy = v85;
           [v85 setShowsCommentPrompt:1 animated:1 initialValue:v36];
 
           goto LABEL_39;
@@ -963,14 +963,14 @@ LABEL_38:
       }
     }
 
-    if (a3 == 1 && [v17 hasRecurrenceRules])
+    if (action == 1 && [v17 hasRecurrenceRules])
     {
-      v39 = [v17 selfAttendee];
-      if ([v39 participantType] == 2)
+      selfAttendee = [v17 selfAttendee];
+      if ([selfAttendee participantType] == 2)
       {
 
 LABEL_33:
-        v42 = [(InboxNotificationsGroupController *)v86 conflictInfoForNotification:v12];
+        v42 = [(InboxNotificationsGroupController *)selfCopy conflictInfoForNotification:notificationCopy];
         if (v42)
         {
           v43 = [NSBundle bundleForClass:objc_opt_class()];
@@ -985,51 +985,51 @@ LABEL_33:
           v47 = [NSBundle bundleForClass:objc_opt_class()];
           v79 = [v47 localizedStringForKey:@"Cancel" value:&stru_1002133B8 table:0];
 
-          v48 = [v42 totalOccurrencesInSeries];
+          totalOccurrencesInSeries = [v42 totalOccurrencesInSeries];
           v81 = v45;
-          v82 = v13;
-          if (v48 == [v42 totalConflictsInSeries])
+          v82 = cancelledCopy;
+          if (totalOccurrencesInSeries == [v42 totalConflictsInSeries])
           {
             v49 = [NSBundle bundleForClass:objc_opt_class()];
             v50 = [v49 localizedStringForKey:@"All %d occurrences of the event “%@” conflict with other events on your calendar. If you accept value:all occurrences will overlap with other scheduled events." table:{&stru_1002133B8, 0}];
 
-            v51 = [v42 totalConflictsInSeries];
-            v52 = [v17 title];
-            v53 = [NSString localizedStringWithFormat:v50, v51, v52];
+            totalConflictsInSeries = [v42 totalConflictsInSeries];
+            title = [v17 title];
+            v53 = [NSString localizedStringWithFormat:v50, totalConflictsInSeries, title];
 
-            v54 = v86;
+            v54 = selfCopy;
             v55 = v53;
-            v56 = [NSBundle bundleForClass:objc_opt_class()];
-            v57 = [v56 localizedStringForKey:@"Accept" value:&stru_1002133B8 table:0];
+            title2 = [NSBundle bundleForClass:objc_opt_class()];
+            v57 = [title2 localizedStringForKey:@"Accept" value:&stru_1002133B8 table:0];
 
             v81 = v57;
           }
 
           else
           {
-            v58 = [v42 totalConflictsInSeries];
+            totalConflictsInSeries2 = [v42 totalConflictsInSeries];
             v59 = +[NSBundle mainBundle];
             v60 = v59;
-            if (v58 == 1)
+            if (totalConflictsInSeries2 == 1)
             {
               v50 = [v59 localizedStringForKey:@"1 of %d occurrences of the event “%@” conflicts with other events on your calendar. If you accept all occurrences value:one will overlap with another scheduled event." table:{&stru_1002133B8, 0}];
 
-              v61 = [v42 totalConflictsInSeries];
-              v56 = [v17 title];
-              [NSString localizedStringWithFormat:v50, v61, v56, v77];
+              totalConflictsInSeries3 = [v42 totalConflictsInSeries];
+              title2 = [v17 title];
+              [NSString localizedStringWithFormat:v50, totalConflictsInSeries3, title2, v77];
             }
 
             else
             {
               v50 = [v59 localizedStringForKey:@"%d of %d occurrences of the event “%@” conflict with other events on your calendar. If you accept all occurrences value:some will overlap with other scheduled events. " table:{&stru_1002133B8, 0}];
 
-              v62 = [v42 totalConflictsInSeries];
-              v63 = [v42 totalOccurrencesInSeries];
-              v56 = [v17 title];
-              [NSString localizedStringWithFormat:v50, v62, v63, v56];
+              totalConflictsInSeries4 = [v42 totalConflictsInSeries];
+              totalOccurrencesInSeries2 = [v42 totalOccurrencesInSeries];
+              title2 = [v17 title];
+              [NSString localizedStringWithFormat:v50, totalConflictsInSeries4, totalOccurrencesInSeries2, title2];
             }
             v55 = ;
-            v54 = v86;
+            v54 = selfCopy;
           }
 
           v92[0] = _NSConcreteStackBlock;
@@ -1038,7 +1038,7 @@ LABEL_33:
           v92[3] = &unk_100210418;
           v92[4] = v54;
           v96 = v22;
-          v64 = v12;
+          v64 = notificationCopy;
           v93 = v64;
           v78 = v42;
           v65 = v42;
@@ -1060,8 +1060,8 @@ LABEL_33:
           v88 = v82;
           v68 = objc_retainBlock(v87);
           v69 = [UIAlertController alertControllerWithTitle:v84 message:v55 preferredStyle:1];
-          v70 = [v65 totalOccurrencesInSeries];
-          if (v70 != [v65 totalConflictsInSeries])
+          totalOccurrencesInSeries3 = [v65 totalOccurrencesInSeries];
+          if (totalOccurrencesInSeries3 != [v65 totalConflictsInSeries])
           {
             v71 = [UIAlertAction actionWithTitle:v80 style:0 handler:v66];
             [v69 addAction:v71];
@@ -1073,44 +1073,44 @@ LABEL_33:
           v73 = [UIAlertAction actionWithTitle:v79 style:1 handler:v68];
           [v69 addAction:v73];
 
-          v74 = [(InboxNotificationsGroupController *)v86 delegate];
-          [v74 parentTableViewControllerForGroupController:v86];
+          delegate = [(InboxNotificationsGroupController *)selfCopy delegate];
+          [delegate parentTableViewControllerForGroupController:selfCopy];
           v76 = v75 = v66;
           [v76 presentViewController:v69 animated:1 completion:0];
 
-          v13 = v82;
+          cancelledCopy = v82;
           v42 = v78;
         }
 
         goto LABEL_38;
       }
 
-      v40 = [v17 selfAttendee];
-      v41 = [v40 participantType];
+      selfAttendee2 = [v17 selfAttendee];
+      participantType = [selfAttendee2 participantType];
 
-      if (v41 == 3)
+      if (participantType == 3)
       {
         goto LABEL_33;
       }
     }
 
-    v29 = v86;
+    v29 = selfCopy;
     goto LABEL_37;
   }
 
 LABEL_39:
 }
 
-- (void)_performActionForAllNotifications:(int64_t)a3 save:(id)a4
+- (void)_performActionForAllNotifications:(int64_t)notifications save:(id)save
 {
-  v64 = a4;
-  v65 = self;
+  saveCopy = save;
+  selfCopy = self;
   obj = [(NSArray *)self->_allNotificationReferences CalMap:&stru_1002104A8];
-  if (a3 <= 31)
+  if (notifications <= 31)
   {
-    if ((a3 - 1) >= 2 && a3 != 4)
+    if ((notifications - 1) >= 2 && notifications != 4)
     {
-      if (a3 == 16)
+      if (notifications == 16)
       {
         goto LABEL_5;
       }
@@ -1120,7 +1120,7 @@ LABEL_23:
       if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_ERROR))
       {
         v22 = v21;
-        v23 = [NSNumber numberWithInteger:a3];
+        v23 = [NSNumber numberWithInteger:notifications];
         *buf = 138412290;
         v84 = v23;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Asked to perform action [%@] for all notifications, but this action is not intended to apply to multiple notifications", buf, 0xCu);
@@ -1153,12 +1153,12 @@ LABEL_23:
           {
             v30 = v28;
             v31 = [CalendarMessageEventInvitationCell actionsForNotification:v30];
-            v32 = [NSNumber numberWithInteger:a3];
+            v32 = [NSNumber numberWithInteger:notifications];
             v33 = [v31 containsObject:v32];
 
             if (v33)
             {
-              [(InboxNotificationsGroupController *)v65 _performAction:a3 forEventInvitationNotification:v30 avoidUserInteraction:1 cancelled:0 cell:0];
+              [(InboxNotificationsGroupController *)selfCopy _performAction:notifications forEventInvitationNotification:v30 avoidUserInteraction:1 cancelled:0 cell:0];
             }
           }
         }
@@ -1172,7 +1172,7 @@ LABEL_23:
     goto LABEL_71;
   }
 
-  if (a3 == 32)
+  if (notifications == 32)
   {
     v77 = 0u;
     v78 = 0u;
@@ -1207,7 +1207,7 @@ LABEL_23:
 
           if (v49)
           {
-            [(InboxNotificationsGroupController *)v65 _performAction:32 forEventInvitationNotification:v44 avoidUserInteraction:1 cancelled:0 cell:0];
+            [(InboxNotificationsGroupController *)selfCopy _performAction:32 forEventInvitationNotification:v44 avoidUserInteraction:1 cancelled:0 cell:0];
           }
 
           goto LABEL_53;
@@ -1217,15 +1217,15 @@ LABEL_23:
         if (v40 == objc_opt_class())
         {
           v44 = v38;
-          v50 = [(CUIKCalendarModel *)v65->_model eventStore];
-          v45 = [CalendarMessageAttendeeReplyCell actionsForNotification:v44 proposedTimeAttendee:0 eventStore:v50];
+          eventStore = [(CUIKCalendarModel *)selfCopy->_model eventStore];
+          v45 = [CalendarMessageAttendeeReplyCell actionsForNotification:v44 proposedTimeAttendee:0 eventStore:eventStore];
 
           v51 = [NSNumber numberWithInteger:32];
           v52 = [v45 containsObject:v51];
 
           if (v52)
           {
-            [(InboxNotificationsGroupController *)v65 _performActionForAttendeeReplyNotification:v44 save:v64];
+            [(InboxNotificationsGroupController *)selfCopy _performActionForAttendeeReplyNotification:v44 save:saveCopy];
           }
 
 LABEL_53:
@@ -1236,7 +1236,7 @@ LABEL_53:
         v41 = [CalendarMessageCell cellClassForNotification:v38];
         if (v41 == objc_opt_class())
         {
-          [(InboxNotificationsGroupController *)v65 _performActionForInviteReplayNotification:v38];
+          [(InboxNotificationsGroupController *)selfCopy _performActionForInviteReplayNotification:v38];
         }
 
         else
@@ -1257,13 +1257,13 @@ LABEL_53:
 
             if (v47)
             {
-              [(InboxNotificationsGroupController *)v65 _performAction:32 forSuggestionNotification:v44 save:v64];
+              [(InboxNotificationsGroupController *)selfCopy _performAction:32 forSuggestionNotification:v44 save:saveCopy];
             }
 
             goto LABEL_53;
           }
 
-          [(InboxNotificationsGroupController *)v65 _performActionForResourceChangeNotification:v38];
+          [(InboxNotificationsGroupController *)selfCopy _performActionForResourceChangeNotification:v38];
         }
 
 LABEL_54:
@@ -1280,9 +1280,9 @@ LABEL_54:
     }
   }
 
-  if (a3 != 128)
+  if (notifications != 128)
   {
-    if (a3 == 0x100000)
+    if (notifications == 0x100000)
     {
 LABEL_5:
       v69 = 0u;
@@ -1319,12 +1319,12 @@ LABEL_7:
         {
           v14 = v11;
           v15 = [CalendarMessageEventInvitationCell actionsForNotification:v14];
-          v16 = [NSNumber numberWithInteger:a3];
+          v16 = [NSNumber numberWithInteger:notifications];
           v17 = [v15 containsObject:v16];
 
           if (v17)
           {
-            [(InboxNotificationsGroupController *)v65 _performAction:a3 forEventInvitationNotification:v14 avoidUserInteraction:1 cancelled:0 cell:0];
+            [(InboxNotificationsGroupController *)selfCopy _performAction:notifications forEventInvitationNotification:v14 avoidUserInteraction:1 cancelled:0 cell:0];
           }
 
 LABEL_16:
@@ -1345,12 +1345,12 @@ LABEL_16:
 
       v18 = v11;
       v15 = [p_superclass + 9 actionsForNotification:v18];
-      v19 = [NSNumber numberWithInteger:a3];
+      v19 = [NSNumber numberWithInteger:notifications];
       v20 = [v15 containsObject:v19];
 
       if (v20)
       {
-        [(InboxNotificationsGroupController *)v65 _performAction:a3 forSuggestionNotification:v18 save:v64];
+        [(InboxNotificationsGroupController *)selfCopy _performAction:notifications forSuggestionNotification:v18 save:saveCopy];
       }
 
       goto LABEL_16;
@@ -1388,7 +1388,7 @@ LABEL_16:
 
           if (v63)
           {
-            [(InboxNotificationsGroupController *)v65 _performAction:128 forSuggestionNotification:v60 save:v64];
+            [(InboxNotificationsGroupController *)selfCopy _performAction:128 forSuggestionNotification:v60 save:saveCopy];
           }
         }
       }
@@ -1402,29 +1402,29 @@ LABEL_16:
 LABEL_71:
 }
 
-- (void)performAction:(int64_t)a3 forCell:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 appliesToAll:(BOOL)a7 ifCancelled:(id)a8
+- (void)performAction:(int64_t)action forCell:(id)cell sourceView:(id)view sourceRect:(CGRect)rect appliesToAll:(BOOL)all ifCancelled:(id)cancelled
 {
-  v9 = a7;
-  v118 = a4;
-  v116 = a5;
-  v115 = a8;
+  allCopy = all;
+  cellCopy = cell;
+  viewCopy = view;
+  cancelledCopy = cancelled;
   v13 = kCalUILogInboxHandle;
   if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [NSNumber numberWithInteger:a3];
-    v16 = [NSNumber numberWithBool:v9];
+    v15 = [NSNumber numberWithInteger:action];
+    v16 = [NSNumber numberWithBool:allCopy];
     *buf = 138543874;
     v153 = v15;
     v154 = 2114;
-    v155 = v118;
+    v155 = cellCopy;
     v156 = 2114;
     v157 = v16;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Perform action [%{public}@] for cell: %{public}@, appliesToAll: %{public}@.", buf, 0x20u);
   }
 
-  v17 = [(InboxNotificationsGroupController *)self delegate];
-  v18 = [v17 editorForGroupController:self];
+  delegate = [(InboxNotificationsGroupController *)self delegate];
+  v18 = [delegate editorForGroupController:self];
 
   v147[0] = _NSConcreteStackBlock;
   v147[1] = 3221225472;
@@ -1433,13 +1433,13 @@ LABEL_71:
   v114 = v18;
   v148 = v114;
   v117 = objc_retainBlock(v147);
-  if (v9)
+  if (allCopy)
   {
-    [(InboxNotificationsGroupController *)self _performActionForAllNotifications:a3 save:v117];
+    [(InboxNotificationsGroupController *)self _performActionForAllNotifications:action save:v117];
     goto LABEL_90;
   }
 
-  if ((a3 & 0x700) == 0)
+  if ((action & 0x700) == 0)
   {
     v146[0] = _NSConcreteStackBlock;
     v146[1] = 3221225472;
@@ -1447,38 +1447,38 @@ LABEL_71:
     v146[3] = &unk_100210520;
     v146[4] = self;
     v113 = objc_retainBlock(v146);
-    if ((a3 & 0x10000) != 0)
+    if ((action & 0x10000) != 0)
     {
-      v31 = [v118 notification];
-      v32 = [v31 type] == 8;
+      notification = [cellCopy notification];
+      v32 = [notification type] == 8;
 
-      v119 = [v118 notification];
-      v33 = [(CUIKCalendarModel *)self->_model eventStore];
+      notification2 = [cellCopy notification];
+      eventStore = [(CUIKCalendarModel *)self->_model eventStore];
       if (!v32)
       {
-        v63 = [v119 eventFromEventStore:v33];
+        v63 = [notification2 eventFromEventStore:eventStore];
 
-        v64 = [(InboxNotificationsGroupController *)self delegate];
-        v65 = [v64 parentTableViewControllerForGroupController:self];
+        delegate2 = [(InboxNotificationsGroupController *)self delegate];
+        v65 = [delegate2 parentTableViewControllerForGroupController:self];
         PresentJunkAlertControllerForEvent();
 
 LABEL_89:
         goto LABEL_90;
       }
 
-      v34 = [v119 calendarFromEventStore:v33];
+      v34 = [notification2 calendarFromEventStore:eventStore];
 
       if (v34)
       {
-        v35 = [(InboxNotificationsGroupController *)self delegate];
-        v36 = [v35 parentTableViewControllerForGroupController:self];
+        delegate3 = [(InboxNotificationsGroupController *)self delegate];
+        v36 = [delegate3 parentTableViewControllerForGroupController:self];
         v139 = _NSConcreteStackBlock;
         v140 = 3221225472;
         v141 = sub_1000A596C;
         v142 = &unk_100210548;
         v143 = v34;
         v145 = v113;
-        v144 = v119;
+        v144 = notification2;
         PresentJunkAlertControllerWithHandler();
       }
 
@@ -1488,7 +1488,7 @@ LABEL_89:
         if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v153 = v119;
+          v153 = notification2;
           _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "Error reading shared calendar invitation: could not get a calendar for shared calendar notification: %@", buf, 0xCu);
         }
       }
@@ -1496,31 +1496,31 @@ LABEL_89:
       goto LABEL_88;
     }
 
-    if ((a3 & 0x1000) == 0)
+    if ((action & 0x1000) == 0)
     {
-      if ((a3 & 0x2000) != 0)
+      if ((action & 0x2000) != 0)
       {
-        v66 = [v118 notification];
-        v67 = [(CUIKCalendarModel *)self->_model eventStore];
-        v119 = [v66 eventFromEventStore:v67];
+        notification3 = [cellCopy notification];
+        eventStore2 = [(CUIKCalendarModel *)self->_model eventStore];
+        notification2 = [notification3 eventFromEventStore:eventStore2];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v68 = [v118 proposedTimeAttendee];
+          proposedTimeAttendee = [cellCopy proposedTimeAttendee];
         }
 
         else
         {
-          v68 = 0;
+          proposedTimeAttendee = 0;
         }
 
         v130 = 0u;
         v131 = 0u;
         v128 = 0u;
         v129 = 0u;
-        v89 = [v119 attendees];
-        v90 = [v89 countByEnumeratingWithState:&v128 objects:v150 count:16];
+        attendees = [notification2 attendees];
+        v90 = [attendees countByEnumeratingWithState:&v128 objects:v150 count:16];
         if (v90)
         {
           v91 = *v129;
@@ -1530,7 +1530,7 @@ LABEL_89:
             {
               if (*v129 != v91)
               {
-                objc_enumerationMutation(v89);
+                objc_enumerationMutation(attendees);
               }
 
               v93 = *(*(&v128 + 1) + 8 * i);
@@ -1539,7 +1539,7 @@ LABEL_89:
               {
                 v94 = v93;
                 v95 = [v94 URL];
-                v96 = [v68 URL];
+                v96 = [proposedTimeAttendee URL];
                 v97 = [v95 isEqual:v96];
 
                 if (v97)
@@ -1552,29 +1552,29 @@ LABEL_89:
               }
             }
 
-            v90 = [v89 countByEnumeratingWithState:&v128 objects:v150 count:16];
+            v90 = [attendees countByEnumeratingWithState:&v128 objects:v150 count:16];
           }
 
           while (v90);
         }
 
-        (v117[2])(v117, v119, 0);
+        (v117[2])(v117, notification2, 0);
         goto LABEL_88;
       }
 
-      v24 = [v118 notification];
-      if ((a3 & 0x4000) != 0)
+      notification4 = [cellCopy notification];
+      if ((action & 0x4000) != 0)
       {
-        v70 = [(CUIKCalendarModel *)self->_model eventStore];
-        v119 = [v24 eventFromEventStore:v70];
+        eventStore3 = [(CUIKCalendarModel *)self->_model eventStore];
+        notification2 = [notification4 eventFromEventStore:eventStore3];
 
         v71 = objc_opt_new();
         v127 = 0u;
         v125 = 0u;
         v126 = 0u;
         v124 = 0u;
-        v72 = [v119 attendees];
-        v73 = [v72 countByEnumeratingWithState:&v124 objects:v149 count:16];
+        attendees2 = [notification2 attendees];
+        v73 = [attendees2 countByEnumeratingWithState:&v124 objects:v149 count:16];
         if (v73)
         {
           v74 = *v125;
@@ -1584,7 +1584,7 @@ LABEL_89:
             {
               if (*v125 != v74)
               {
-                objc_enumerationMutation(v72);
+                objc_enumerationMutation(attendees2);
               }
 
               v76 = *(*(&v124 + 1) + 8 * j);
@@ -1599,7 +1599,7 @@ LABEL_89:
               }
             }
 
-            v73 = [v72 countByEnumeratingWithState:&v124 objects:v149 count:16];
+            v73 = [attendees2 countByEnumeratingWithState:&v124 objects:v149 count:16];
           }
 
           while (v73);
@@ -1608,29 +1608,29 @@ LABEL_89:
         v78 = [NSBundle bundleForClass:objc_opt_class()];
         v79 = [v78 localizedStringForKey:@"RE:" value:&stru_1002133B8 table:0];
 
-        v80 = [[EKUIEmailCompositionManager alloc] initWithEvent:v119 participantRecipients:v71 subjectPrefix:v79 bodyPrefix:0];
+        v80 = [[EKUIEmailCompositionManager alloc] initWithEvent:notification2 participantRecipients:v71 subjectPrefix:v79 bodyPrefix:0];
         [(InboxNotificationsGroupController *)self setMessageSendingManager:v80];
 
-        v81 = [(InboxNotificationsGroupController *)self messageSendingManager];
-        objc_initWeak(buf, v81);
+        messageSendingManager = [(InboxNotificationsGroupController *)self messageSendingManager];
+        objc_initWeak(buf, messageSendingManager);
 
         v122[0] = _NSConcreteStackBlock;
         v122[1] = 3221225472;
         v122[2] = sub_1000A5A1C;
         v122[3] = &unk_100210598;
         objc_copyWeak(&v123, buf);
-        v82 = [(InboxNotificationsGroupController *)self messageSendingManager];
-        [v82 setMessageSendingComplete:v122];
+        messageSendingManager2 = [(InboxNotificationsGroupController *)self messageSendingManager];
+        [messageSendingManager2 setMessageSendingComplete:v122];
 
-        v83 = [(InboxNotificationsGroupController *)self messageSendingManager];
-        v84 = [v83 viewController];
-        [v84 setModalPresentationStyle:2];
+        messageSendingManager3 = [(InboxNotificationsGroupController *)self messageSendingManager];
+        viewController = [messageSendingManager3 viewController];
+        [viewController setModalPresentationStyle:2];
 
-        v85 = [(InboxNotificationsGroupController *)self delegate];
-        v86 = [v85 parentTableViewControllerForGroupController:self];
-        v87 = [(InboxNotificationsGroupController *)self messageSendingManager];
-        v88 = [v87 viewController];
-        [v86 presentViewController:v88 animated:1 completion:0];
+        delegate4 = [(InboxNotificationsGroupController *)self delegate];
+        v86 = [delegate4 parentTableViewControllerForGroupController:self];
+        messageSendingManager4 = [(InboxNotificationsGroupController *)self messageSendingManager];
+        viewController2 = [messageSendingManager4 viewController];
+        [v86 presentViewController:viewController2 animated:1 completion:0];
 
         objc_destroyWeak(&v123);
         objc_destroyWeak(buf);
@@ -1638,40 +1638,40 @@ LABEL_89:
         goto LABEL_88;
       }
 
-      v25 = [CalendarMessageCell cellClassForNotification:v24];
+      v25 = [CalendarMessageCell cellClassForNotification:notification4];
       if (v25 == objc_opt_class())
       {
-        [(InboxNotificationsGroupController *)self _performAction:a3 forEventInvitationNotification:v24 avoidUserInteraction:0 cancelled:v115 cell:v118];
+        [(InboxNotificationsGroupController *)self _performAction:action forEventInvitationNotification:notification4 avoidUserInteraction:0 cancelled:cancelledCopy cell:cellCopy];
       }
 
       else
       {
-        v26 = [CalendarMessageCell cellClassForNotification:v24];
+        v26 = [CalendarMessageCell cellClassForNotification:notification4];
         if (v26 != objc_opt_class())
         {
-          v27 = [CalendarMessageCell cellClassForNotification:v24];
+          v27 = [CalendarMessageCell cellClassForNotification:notification4];
           if (v27 != objc_opt_class())
           {
-            v28 = [CalendarMessageCell cellClassForNotification:v24, v113, v114];
-            if (v28 == objc_opt_class())
+            v114 = [CalendarMessageCell cellClassForNotification:notification4, v113, v114];
+            if (v114 == objc_opt_class())
             {
-              [(InboxNotificationsGroupController *)self _performActionForInviteReplayNotification:v24];
+              [(InboxNotificationsGroupController *)self _performActionForInviteReplayNotification:notification4];
             }
 
             else
             {
-              v29 = [CalendarMessageCell cellClassForNotification:v24];
+              v29 = [CalendarMessageCell cellClassForNotification:notification4];
               if (v29 == objc_opt_class())
               {
-                [(InboxNotificationsGroupController *)self _performActionForResourceChangeNotification:v24];
+                [(InboxNotificationsGroupController *)self _performActionForResourceChangeNotification:notification4];
               }
 
               else
               {
-                v30 = [CalendarMessageCell cellClassForNotification:v24];
+                v30 = [CalendarMessageCell cellClassForNotification:notification4];
                 if (v30 == objc_opt_class())
                 {
-                  [(InboxNotificationsGroupController *)self _performAction:a3 forSuggestionNotification:v24 save:v117];
+                  [(InboxNotificationsGroupController *)self _performAction:action forSuggestionNotification:notification4 save:v117];
                 }
               }
             }
@@ -1679,21 +1679,21 @@ LABEL_89:
             goto LABEL_87;
           }
 
-          v119 = v24;
-          v98 = [(CUIKCalendarModel *)self->_model eventStore];
-          v99 = [v119 calendarFromEventStore:v98];
+          notification2 = notification4;
+          eventStore4 = [(CUIKCalendarModel *)self->_model eventStore];
+          v99 = [notification2 calendarFromEventStore:eventStore4];
 
           if (v99)
           {
-            if (a3 == 0x20000 || a3 == 64)
+            if (action == 0x20000 || action == 64)
             {
               [v99 setInvitationStatus:{0, v113, v114}];
-              v100 = [v99 calendarIdentifier];
-              if (v100)
+              calendarIdentifier = [v99 calendarIdentifier];
+              if (calendarIdentifier)
               {
-                v101 = a3 == 64;
-                v102 = [v119 URL];
-                (v113[2])(v113, v119);
+                v101 = action == 64;
+                v102 = [notification2 URL];
+                (v113[2])(v113, notification2);
                 v103 = +[DADConnection sharedConnection];
                 if (v101)
                 {
@@ -1705,8 +1705,8 @@ LABEL_89:
                   v104 = 2;
                 }
 
-                v105 = [v99 source];
-                v106 = [v105 externalID];
+                source = [v99 source];
+                externalID = [source externalID];
                 v120[0] = _NSConcreteStackBlock;
                 v120[1] = 3221225472;
                 v120[2] = sub_1000A5A90;
@@ -1714,14 +1714,14 @@ LABEL_89:
                 v120[4] = self;
                 v107 = v102;
                 v121 = v107;
-                [v103 respondToSharedCalendarInvite:v104 forCalendarWithID:v100 accountID:v106 queue:&_dispatch_main_q completionBlock:v120];
+                [v103 respondToSharedCalendarInvite:v104 forCalendarWithID:calendarIdentifier accountID:externalID queue:&_dispatch_main_q completionBlock:v120];
 
                 if (v101)
                 {
-                  v108 = [v99 sharedOwnerName];
-                  v109 = [v99 sharedOwnerEmail];
-                  v110 = [v99 sharedOwnerPhoneNumber];
-                  [EKRecents recordRecentForContactWithName:v108 emailAddress:v109 phoneNumber:v110];
+                  sharedOwnerName = [v99 sharedOwnerName];
+                  sharedOwnerEmail = [v99 sharedOwnerEmail];
+                  sharedOwnerPhoneNumber = [v99 sharedOwnerPhoneNumber];
+                  [EKRecents recordRecentForContactWithName:sharedOwnerName emailAddress:sharedOwnerEmail phoneNumber:sharedOwnerPhoneNumber];
                 }
               }
 
@@ -1746,7 +1746,7 @@ LABEL_89:
             if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v153 = v119;
+              v153 = notification2;
               _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_ERROR, "Error reading shared calendar invitation: could not get a calendar for shared calendar notification: %@", buf, 0xCu);
             }
           }
@@ -1755,25 +1755,25 @@ LABEL_88:
           goto LABEL_89;
         }
 
-        [(InboxNotificationsGroupController *)self _performActionForAttendeeReplyNotification:v24 save:v117];
+        [(InboxNotificationsGroupController *)self _performActionForAttendeeReplyNotification:notification4 save:v117];
       }
 
 LABEL_87:
-      v119 = v24;
+      notification2 = notification4;
       goto LABEL_88;
     }
 
-    v37 = [v118 notification];
-    v38 = [(CUIKCalendarModel *)self->_model eventStore];
-    v119 = [v37 eventFromEventStore:v38];
+    notification5 = [cellCopy notification];
+    eventStore5 = [(CUIKCalendarModel *)self->_model eventStore];
+    notification2 = [notification5 eventFromEventStore:eventStore5];
 
     v137 = 0u;
     v138 = 0u;
     v135 = 0u;
     v136 = 0u;
-    v39 = [v119 attendees];
+    attendees3 = [notification2 attendees];
     v40 = 0;
-    v41 = [v39 countByEnumeratingWithState:&v135 objects:v151 count:16];
+    v41 = [attendees3 countByEnumeratingWithState:&v135 objects:v151 count:16];
     if (v41)
     {
       v42 = *v136;
@@ -1783,7 +1783,7 @@ LABEL_87:
         {
           if (*v136 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(attendees3);
           }
 
           v44 = *(*(&v135 + 1) + 8 * k);
@@ -1795,7 +1795,7 @@ LABEL_87:
             [v45 setStatusChanged:0];
             if ([v45 proposedStartDateChanged])
             {
-              v46 = [v45 proposedStartDateForEvent:v119];
+              v46 = [v45 proposedStartDateForEvent:notification2];
 
               [v45 setProposedStartDateChanged:0];
               v40 = v46;
@@ -1803,7 +1803,7 @@ LABEL_87:
           }
         }
 
-        v41 = [v39 countByEnumeratingWithState:&v135 objects:v151 count:16];
+        v41 = [attendees3 countByEnumeratingWithState:&v135 objects:v151 count:16];
       }
 
       while (v41);
@@ -1813,23 +1813,23 @@ LABEL_87:
         goto LABEL_38;
       }
 
-      v47 = [v119 endDate];
-      v48 = [v119 startDate];
-      [v47 timeIntervalSinceDate:v48];
+      endDate = [notification2 endDate];
+      startDate = [notification2 startDate];
+      [endDate timeIntervalSinceDate:startDate];
       v50 = v49;
 
-      [v119 setStartDate:v40];
-      v39 = [v40 dateByAddingTimeInterval:v50];
-      [v119 setEndDate:v39];
+      [notification2 setStartDate:v40];
+      attendees3 = [v40 dateByAddingTimeInterval:v50];
+      [notification2 setEndDate:attendees3];
     }
 
 LABEL_38:
-    [v119 dismissAcceptedProposeNewTimeNotification];
-    if ([v119 hasRecurrenceRules])
+    [notification2 dismissAcceptedProposeNewTimeNotification];
+    if ([notification2 hasRecurrenceRules])
     {
-      v51 = [(InboxNotificationsGroupController *)self delegate];
-      v52 = [v51 parentTableViewControllerForGroupController:self];
-      [v118 bounds];
+      delegate5 = [(InboxNotificationsGroupController *)self delegate];
+      v52 = [delegate5 parentTableViewControllerForGroupController:self];
+      [cellCopy bounds];
       v54 = v53;
       v56 = v55;
       v58 = v57;
@@ -1840,45 +1840,45 @@ LABEL_38:
       v132[3] = &unk_100210570;
       v132[4] = self;
       v134 = v117;
-      v133 = v119;
-      v61 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v52 sourceView:v118 sourceRect:v133 forEvent:v132 withCompletionHandler:v54, v56, v58, v60];
+      v133 = notification2;
+      v61 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v52 sourceView:cellCopy sourceRect:v133 forEvent:v132 withCompletionHandler:v54, v56, v58, v60];
       recurrenceAlertController = self->_recurrenceAlertController;
       self->_recurrenceAlertController = v61;
     }
 
     else
     {
-      (v117[2])(v117, v119, 0);
+      (v117[2])(v117, notification2, 0);
     }
 
     goto LABEL_88;
   }
 
-  v19 = a3 == 1024;
-  v20 = [(InboxNotificationsGroupController *)self delegate];
-  v21 = [(InboxNotificationsGroupController *)self tableView];
-  v22 = [v21 indexPathForCell:v118];
+  v19 = action == 1024;
+  delegate6 = [(InboxNotificationsGroupController *)self delegate];
+  tableView = [(InboxNotificationsGroupController *)self tableView];
+  v22 = [tableView indexPathForCell:cellCopy];
   v23 = -[InboxNotificationsGroupController eventForRow:](self, "eventForRow:", [v22 row]);
   if (v19)
   {
-    [v20 inboxTableViewGroupController:self inspectEvent:v23];
+    [delegate6 inboxTableViewGroupController:self inspectEvent:v23];
   }
 
   else
   {
-    [v20 inboxTableViewGroupController:self viewCommentsForEvent:v23];
+    [delegate6 inboxTableViewGroupController:self viewCommentsForEvent:v23];
   }
 
 LABEL_90:
 }
 
-- (void)messageCell:(id)a3 committedComment:(id)a4
+- (void)messageCell:(id)cell committedComment:(id)comment
 {
   pendingComments = self->_pendingComments;
-  v6 = a4;
-  v8 = [a3 notification];
-  v7 = [v8 URL];
-  [(NSMutableDictionary *)pendingComments setObject:v6 forKeyedSubscript:v7];
+  commentCopy = comment;
+  notification = [cell notification];
+  v7 = [notification URL];
+  [(NSMutableDictionary *)pendingComments setObject:commentCopy forKeyedSubscript:v7];
 }
 
 - (void)attemptDisplayReviewPrompt
@@ -1893,7 +1893,7 @@ LABEL_90:
   }
 }
 
-- (id)noContentStringForInboxTableView:(id)a3
+- (id)noContentStringForInboxTableView:(id)view
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"No Invitations" value:&stru_1002133B8 table:0];
@@ -1901,16 +1901,16 @@ LABEL_90:
   return v4;
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = kCalUILogInboxHandle;
   if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%@] received the following notification: [%@]", buf, 0x16u);
   }
 
@@ -1922,14 +1922,14 @@ LABEL_90:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_notificationsChanged:(id)a3
+- (void)_notificationsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = kCalUILogInboxHandle;
   if (os_log_type_enabled(kCalUILogInboxHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v8 = v4;
+    v8 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Received notifications changed notification: %{public}@.", buf, 0xCu);
   }
 
@@ -1941,7 +1941,7 @@ LABEL_90:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_cachedBlockedContactsChanged:(id)a3
+- (void)_cachedBlockedContactsChanged:(id)changed
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   self->_needsRefresh = 1;
@@ -1960,16 +1960,16 @@ LABEL_90:
 
 - (id)tableView
 {
-  v3 = [(InboxNotificationsGroupController *)self delegate];
-  v4 = [v3 parentTableViewControllerForGroupController:self];
-  v5 = [v4 tableView];
+  delegate = [(InboxNotificationsGroupController *)self delegate];
+  v4 = [delegate parentTableViewControllerForGroupController:self];
+  tableView = [v4 tableView];
 
-  return v5;
+  return tableView;
 }
 
-- (id)_eventForIndexPath:(id)a3
+- (id)_eventForIndexPath:(id)path
 {
-  v4 = [a3 row];
+  v4 = [path row];
   if (v4 >= [(NSMutableArray *)self->_notificationReferences count])
   {
     v12 = 0;
@@ -1977,26 +1977,26 @@ LABEL_90:
   }
 
   v5 = [(NSMutableArray *)self->_notificationReferences objectAtIndex:v4];
-  v6 = [v5 notification];
+  notification = [v5 notification];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [v7 objectID];
+    eventStore2 = notification;
+    objectID = [eventStore2 objectID];
 
-    v9 = [(CUIKCalendarModel *)self->_model eventStore];
-    if (v8)
+    eventStore = [(CUIKCalendarModel *)self->_model eventStore];
+    if (objectID)
     {
-      v10 = [v7 objectID];
-      v11 = [v7 startDate];
-      v12 = [v9 eventForObjectID:v10 occurrenceDate:v11 checkValid:0];
+      objectID2 = [eventStore2 objectID];
+      startDate = [eventStore2 startDate];
+      v12 = [eventStore eventForObjectID:objectID2 occurrenceDate:startDate checkValid:0];
     }
 
     else
     {
-      v10 = [v7 URL];
-      v12 = [v9 _eventWithURI:v10 checkValid:1];
+      objectID2 = [eventStore2 URL];
+      v12 = [eventStore _eventWithURI:objectID2 checkValid:1];
     }
 
     goto LABEL_11;
@@ -2006,11 +2006,11 @@ LABEL_90:
   if (objc_opt_isKindOfClass())
   {
     model = self->_model;
-    v14 = v6;
-    v7 = [(CUIKCalendarModel *)model eventStore];
-    v9 = [v14 eventID];
+    v14 = notification;
+    eventStore2 = [(CUIKCalendarModel *)model eventStore];
+    eventStore = [v14 eventID];
 
-    v12 = [v7 eventWithIdentifier:v9];
+    v12 = [eventStore2 eventWithIdentifier:eventStore];
 LABEL_11:
 
     goto LABEL_12;

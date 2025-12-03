@@ -1,15 +1,15 @@
 @interface MFReadableContentMarginCalculator
-+ (UIEdgeInsets)readableContentMarginsForWidth:(double)a3 minMargins:(UIEdgeInsets)a4 safeAreaInsets:(UIEdgeInsets)a5;
++ (UIEdgeInsets)readableContentMarginsForWidth:(double)width minMargins:(UIEdgeInsets)margins safeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation MFReadableContentMarginCalculator
 
-+ (UIEdgeInsets)readableContentMarginsForWidth:(double)a3 minMargins:(UIEdgeInsets)a4 safeAreaInsets:(UIEdgeInsets)a5
++ (UIEdgeInsets)readableContentMarginsForWidth:(double)width minMargins:(UIEdgeInsets)margins safeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   [MEMORY[0x277D74300] _readableWidth];
   UIRoundToViewScale();
   if (v9 >= left)

@@ -1,12 +1,12 @@
 @interface LinkMenuItemView
-- (_TtC8PaperKit16LinkMenuItemView)initWithCoder:(id)a3;
-- (_TtC8PaperKit16LinkMenuItemView)initWithFrame:(CGRect)a3;
-- (void)tapGestureHandler:(id)a3;
+- (_TtC8PaperKit16LinkMenuItemView)initWithCoder:(id)coder;
+- (_TtC8PaperKit16LinkMenuItemView)initWithFrame:(CGRect)frame;
+- (void)tapGestureHandler:(id)handler;
 @end
 
 @implementation LinkMenuItemView
 
-- (_TtC8PaperKit16LinkMenuItemView)initWithCoder:(id)a3
+- (_TtC8PaperKit16LinkMenuItemView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit16LinkMenuItemView____lazy_storage___imageView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit16LinkMenuItemView____lazy_storage___titleLabel) = 0;
@@ -18,14 +18,14 @@
   return result;
 }
 
-- (void)tapGestureHandler:(id)a3
+- (void)tapGestureHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
+  handlerCopy = handler;
+  selfCopy = self;
   specialized LinkMenuItemView.tapGestureHandler(_:)();
 }
 
-- (_TtC8PaperKit16LinkMenuItemView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit16LinkMenuItemView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

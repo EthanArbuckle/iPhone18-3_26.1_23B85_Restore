@@ -1,14 +1,14 @@
 @interface NTKRichComplicationExtraLargeCircularClosedGaugeTextView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationExtraLargeCircularClosedGaugeTextView)init;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationExtraLargeCircularClosedGaugeTextView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -22,20 +22,20 @@
   return [(NTKRichComplicationBaseCircularClosedGaugeTextView *)&v3 initWithFamily:12];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [v5 centerTextProvider];
-  v7 = [(NTKRichComplicationBaseCircularClosedGaugeTextView *)self centerLabel];
-  [v7 setTextProvider:v6];
+  templateCopy = template;
+  centerTextProvider = [templateCopy centerTextProvider];
+  centerLabel = [(NTKRichComplicationBaseCircularClosedGaugeTextView *)self centerLabel];
+  [centerLabel setTextProvider:centerTextProvider];
 
-  v8 = [v5 gaugeProvider];
+  gaugeProvider = [templateCopy gaugeProvider];
 
-  v9 = [(NTKRichComplicationBaseCircularClosedGaugeTextView *)self progressView];
-  [v9 setGaugeProvider:v8];
+  progressView = [(NTKRichComplicationBaseCircularClosedGaugeTextView *)self progressView];
+  [progressView setGaugeProvider:gaugeProvider];
 
-  v10 = [(NTKRichComplicationBaseCircularClosedGaugeTextView *)self progressView];
-  [v10 setStyle:1];
+  progressView2 = [(NTKRichComplicationBaseCircularClosedGaugeTextView *)self progressView];
+  [progressView2 setStyle:1];
 }
 
 @end

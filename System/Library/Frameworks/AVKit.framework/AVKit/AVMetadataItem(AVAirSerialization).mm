@@ -11,38 +11,38 @@
 {
   v46 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [a1 identifier];
-  [v2 setObject:v3 forKeyedSubscript:@"identifier"];
+  identifier = [self identifier];
+  [v2 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v4 = [a1 extendedLanguageTag];
-  [v2 setObject:v4 forKeyedSubscript:@"extendedLanguageTag"];
+  extendedLanguageTag = [self extendedLanguageTag];
+  [v2 setObject:extendedLanguageTag forKeyedSubscript:@"extendedLanguageTag"];
 
-  v5 = [a1 locale];
-  v6 = [v5 localeIdentifier];
-  [v2 setObject:v6 forKeyedSubscript:@"localeIdentifier"];
+  locale = [self locale];
+  localeIdentifier = [locale localeIdentifier];
+  [v2 setObject:localeIdentifier forKeyedSubscript:@"localeIdentifier"];
 
-  [a1 time];
+  [self time];
   if (v43)
   {
     v7 = MEMORY[0x1E696AD98];
-    [a1 time];
+    [self time];
     v8 = [v7 numberWithDouble:CMTimeGetSeconds(&time)];
     [v2 setObject:v8 forKeyedSubscript:@"time"];
   }
 
-  [a1 duration];
+  [self duration];
   if (v42)
   {
     v9 = MEMORY[0x1E696AD98];
-    [a1 duration];
+    [self duration];
     v10 = [v9 numberWithDouble:CMTimeGetSeconds(&time)];
     [v2 setObject:v10 forKeyedSubscript:@"duration"];
   }
 
-  v11 = [a1 dataType];
-  [v2 setObject:v11 forKeyedSubscript:@"dataType"];
+  dataType = [self dataType];
+  [v2 setObject:dataType forKeyedSubscript:@"dataType"];
 
-  if (![a1 statusOfValueForKey:@"value" error:0])
+  if (![self statusOfValueForKey:@"value" error:0])
   {
     v12 = _avairlog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -50,47 +50,47 @@
       LODWORD(time.value) = 136315394;
       *(&time.value + 4) = "[AVMetadataItem(AVAirSerialization) airDictionaryRepresentation]";
       LOWORD(time.flags) = 2112;
-      *(&time.flags + 2) = a1;
+      *(&time.flags + 2) = self;
       _os_log_impl(&dword_18B49C000, v12, OS_LOG_TYPE_DEFAULT, "%s ** WARNING: the value of this metadata item %@ has not yet been loaded; we're about to force it", &time, 0x16u);
     }
   }
 
-  v13 = [a1 value];
+  value = [self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v13 base64EncodedStringWithOptions:32];
+    v14 = [value base64EncodedStringWithOptions:32];
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"b64:%@", v14];
 
-    v13 = v15;
+    value = v15;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v16 = +[AVInternetDateFormatter internetDateFormatter];
-    v17 = [v16 stringFromDate:v13];
+    v17 = [v16 stringFromDate:value];
 
-    v13 = v17;
+    value = v17;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [a1 stringValue];
+    stringValue = [self stringValue];
 
-    v13 = v18;
+    value = stringValue;
   }
 
-  v37 = v13;
-  [v2 setObject:v13 forKeyedSubscript:@"value"];
-  v19 = [a1 startDate];
+  v37 = value;
+  [v2 setObject:value forKeyedSubscript:@"value"];
+  startDate = [self startDate];
 
-  if (v19)
+  if (startDate)
   {
     v20 = +[AVInternetDateFormatter internetDateFormatter];
-    v21 = [a1 startDate];
-    v22 = [v20 stringFromDate:v21];
+    startDate2 = [self startDate];
+    v22 = [v20 stringFromDate:startDate2];
     [v2 setObject:v22 forKeyedSubscript:@"startDate"];
   }
 
@@ -98,10 +98,10 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v23 = [a1 extraAttributes];
-  v24 = [v23 allKeys];
+  extraAttributes = [self extraAttributes];
+  allKeys = [extraAttributes allKeys];
 
-  v25 = [v24 countByEnumeratingWithState:&v38 objects:v44 count:16];
+  v25 = [allKeys countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v25)
   {
     v26 = v25;
@@ -112,34 +112,34 @@
       {
         if (*v39 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allKeys);
         }
 
         v29 = *(*(&v38 + 1) + 8 * i);
-        v30 = [v2 objectForKeyedSubscript:v29];
-        if (!v30)
+        extraAttributes3 = [v2 objectForKeyedSubscript:v29];
+        if (!extraAttributes3)
         {
-          v31 = [a1 extraAttributes];
-          [v31 objectForKeyedSubscript:v29];
-          v33 = v32 = a1;
+          extraAttributes2 = [self extraAttributes];
+          [extraAttributes2 objectForKeyedSubscript:v29];
+          v33 = v32 = self;
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
-          a1 = v32;
+          self = v32;
           if ((isKindOfClass & 1) == 0)
           {
             continue;
           }
 
-          v30 = [v32 extraAttributes];
-          v35 = [v30 objectForKeyedSubscript:v29];
+          extraAttributes3 = [v32 extraAttributes];
+          v35 = [extraAttributes3 objectForKeyedSubscript:v29];
           [v2 setObject:v35 forKeyedSubscript:v29];
 
-          a1 = v32;
+          self = v32;
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v38 objects:v44 count:16];
+      v26 = [allKeys countByEnumeratingWithState:&v38 objects:v44 count:16];
     }
 
     while (v26);
@@ -172,7 +172,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 itemWithAirDictionaryRepresentation:{*(*(&v13 + 1) + 8 * i), v13}];
+        v11 = [self itemWithAirDictionaryRepresentation:{*(*(&v13 + 1) + 8 * i), v13}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -214,10 +214,10 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) airDictionaryRepresentation];
-          if (v10)
+          airDictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) airDictionaryRepresentation];
+          if (airDictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [v4 addObject:airDictionaryRepresentation];
           }
         }
 
@@ -374,17 +374,17 @@
     goto LABEL_37;
   }
 
-  v28 = [v4 identifier];
-  if (([v28 isEqualToString:*MEMORY[0x1E6987628]] & 1) == 0)
+  identifier = [v4 identifier];
+  if (([identifier isEqualToString:*MEMORY[0x1E6987628]] & 1) == 0)
   {
-    v29 = [v4 identifier];
-    if (([v29 isEqualToString:*MEMORY[0x1E6987780]] & 1) == 0)
+    identifier2 = [v4 identifier];
+    if (([identifier2 isEqualToString:*MEMORY[0x1E6987780]] & 1) == 0)
     {
-      v30 = [v4 identifier];
-      if (![v30 isEqualToString:*MEMORY[0x1E6987800]])
+      identifier3 = [v4 identifier];
+      if (![identifier3 isEqualToString:*MEMORY[0x1E6987800]])
       {
-        v57 = [v4 identifier];
-        v58 = [v57 isEqualToString:*MEMORY[0x1E6987758]];
+        identifier4 = [v4 identifier];
+        v58 = [identifier4 isEqualToString:*MEMORY[0x1E6987758]];
 
         if ((v58 & 1) == 0)
         {
@@ -394,11 +394,11 @@
             goto LABEL_43;
           }
 
-          v36 = [v4 identifier];
+          identifier5 = [v4 identifier];
           LODWORD(buf.value) = 136315394;
           *(&buf.value + 4) = "+[AVMetadataItem(AVAirSerialization) itemWithAirDictionaryRepresentation:]";
           LOWORD(buf.flags) = 2114;
-          *(&buf.flags + 2) = v36;
+          *(&buf.flags + 2) = identifier5;
           v37 = "%s The value passed for '%{public}@' is raw data, but we do not expect it. Discarding.";
           goto LABEL_42;
         }
@@ -431,11 +431,11 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v36 = [v4 identifier];
+    identifier5 = [v4 identifier];
     LODWORD(buf.value) = 136315394;
     *(&buf.value + 4) = "+[AVMetadataItem(AVAirSerialization) itemWithAirDictionaryRepresentation:]";
     LOWORD(buf.flags) = 2112;
-    *(&buf.flags + 2) = v36;
+    *(&buf.flags + 2) = identifier5;
     v37 = "%s Metadata values should not be arrays/dictionaries. Lookin' at you, '%@'.";
 LABEL_42:
     _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, v37, &buf, 0x16u);
@@ -452,9 +452,9 @@ LABEL_42:
     goto LABEL_40;
   }
 
-  v40 = [v4 value];
+  value = [v4 value];
 
-  if (!v40)
+  if (!value)
   {
     v41 = [v3 objectForKeyedSubscript:@"value"];
     [v4 setValue:v41];

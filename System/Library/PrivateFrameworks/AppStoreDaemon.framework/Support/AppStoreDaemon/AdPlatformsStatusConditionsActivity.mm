@@ -16,8 +16,8 @@
 
 - (void)run
 {
-  v2 = [objc_opt_self() sharedInstance];
-  sub_1002F5C20(v2);
+  sharedInstance = [objc_opt_self() sharedInstance];
+  sub_1002F5C20(sharedInstance);
 }
 
 - (_TtC9appstored35AdPlatformsStatusConditionsActivity)init
@@ -26,15 +26,15 @@
   {
     v9 = v2;
     v10 = v3;
-    v4 = self;
+    selfCopy = self;
     v5 = OBJC_IVAR____TtC9appstored35AdPlatformsStatusConditionsActivity_deadline;
     ObjectType = swift_getObjectType();
-    *(v4 + v5) = 32 * XPC_ACTIVITY_INTERVAL_1_DAY;
-    v7 = (v4 + OBJC_IVAR____TtC9appstored35AdPlatformsStatusConditionsActivity_descriptiveName);
+    *(selfCopy + v5) = 32 * XPC_ACTIVITY_INTERVAL_1_DAY;
+    v7 = (selfCopy + OBJC_IVAR____TtC9appstored35AdPlatformsStatusConditionsActivity_descriptiveName);
     *v7 = 0xD00000000000001DLL;
     v7[1] = 0x800000010044FD00;
-    *(v4 + OBJC_IVAR____TtC9appstored35AdPlatformsStatusConditionsActivity_isEnabled) = 1;
-    v8.receiver = v4;
+    *(selfCopy + OBJC_IVAR____TtC9appstored35AdPlatformsStatusConditionsActivity_isEnabled) = 1;
+    v8.receiver = selfCopy;
     v8.super_class = ObjectType;
     return [(ActivityClass *)&v8 init];
   }

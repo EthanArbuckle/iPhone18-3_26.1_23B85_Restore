@@ -1,19 +1,19 @@
 @interface PAEFill
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (PAEFill)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (PAEFill)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEFill
 
-- (PAEFill)initWithAPIManager:(id)a3
+- (PAEFill)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEFill;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -59,9 +59,9 @@ uint64_t __21__PAEFill_properties__block_invoke()
   return v3 != 0;
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
-  if (a3 != 1)
+  if (changed != 1)
   {
     return 1;
   }
@@ -132,7 +132,7 @@ uint64_t __21__PAEFill_properties__block_invoke()
   return v8;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E548];
@@ -154,23 +154,23 @@ uint64_t __21__PAEFill_properties__block_invoke()
   }
 
   v79 = 0;
-  [v9 getIntValue:&v79 fromParm:1 atFxTime:a5->var0.var1];
-  v16 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
-  [v9 mixAmountAtTime:a5->var0.var1];
+  [v9 getIntValue:&v79 fromParm:1 atFxTime:info->var0.var1];
+  v16 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
+  [v9 mixAmountAtTime:info->var0.var1];
   if (!v16)
   {
     return 0;
   }
 
   v18 = v17;
-  if ([a4 imageType] != 3)
+  if ([input imageType] != 3)
   {
     return 0;
   }
 
-  if (a4)
+  if (input)
   {
-    [a4 heliumRef];
+    [input heliumRef];
   }
 
   else
@@ -208,9 +208,9 @@ uint64_t __21__PAEFill_properties__block_invoke()
     v76 = 0.0;
     v77 = 0.0;
     v63 = 0;
-    [v10 getGradientSamples:*(v26 + 10) numSamples:1024 depth:1 fromParm:3 atFxTime:{a5->var0.var1, v27}];
-    [v10 getGradientStartEnd:v65 startY:&v77 endX:&v76 endY:&v64 type:&v63 fromParm:3 atFxTime:a5->var0.var1];
-    [a3 pixelAspect];
+    [v10 getGradientSamples:*(v26 + 10) numSamples:1024 depth:1 fromParm:3 atFxTime:{info->var0.var1, v27}];
+    [v10 getGradientStartEnd:v65 startY:&v77 endX:&v76 endY:&v64 type:&v63 fromParm:3 atFxTime:info->var0.var1];
+    [output pixelAspect];
     v29 = v28;
     v30 = v76;
     v31 = v77;
@@ -281,7 +281,7 @@ uint64_t __21__PAEFill_properties__block_invoke()
   v66 = 0.0;
   v65[0] = 0.0;
   v77 = 0.0;
-  [v9 getRedValue:&v66 greenValue:v65 blueValue:&v77 fromParm:2 atFxTime:a5->var0.var1];
+  [v9 getRedValue:&v66 greenValue:v65 blueValue:&v77 fromParm:2 atFxTime:info->var0.var1];
   *&v36 = COERCE_DOUBLE(HGObject::operator new(0x1A0uLL));
   HgcFillColor::HgcFillColor(v36);
   (*(*v36 + 120))(v36, 0, v78);
@@ -293,7 +293,7 @@ uint64_t __21__PAEFill_properties__block_invoke()
   (*(*v36 + 96))(v36, 1, v40, 0.0, 0.0, 0.0);
   v76 = *&v36;
   (*(*v36 + 16))(v36);
-  [a3 setHeliumRef:&v76];
+  [output setHeliumRef:&v76];
   if (v76 != 0.0)
   {
     (*(**&v76 + 24))(COERCE_DOUBLE(*&v76));
@@ -308,15 +308,15 @@ uint64_t __21__PAEFill_properties__block_invoke()
   return 1;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

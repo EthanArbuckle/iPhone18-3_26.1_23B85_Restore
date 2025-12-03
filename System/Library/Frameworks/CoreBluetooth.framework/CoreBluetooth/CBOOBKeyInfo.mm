@@ -1,10 +1,10 @@
 @interface CBOOBKeyInfo
-- (BOOL)isEqual:(id)a3;
-- (CBOOBKeyInfo)initWithXPCObject:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (CBOOBKeyInfo)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)proxyHash;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBOOBKeyInfo
@@ -19,10 +19,10 @@
 
   else
   {
-    v4 = [(CBOOBKeyInfo *)self btAddressData];
-    v5 = [v4 hash];
-    v6 = [(CBOOBKeyInfo *)self irkData];
-    v7 = [v6 hash];
+    btAddressData = [(CBOOBKeyInfo *)self btAddressData];
+    v5 = [btAddressData hash];
+    irkData = [(CBOOBKeyInfo *)self irkData];
+    v7 = [irkData hash];
 
     return v7 ^ v5;
   }
@@ -30,25 +30,25 @@
 
 - (unint64_t)proxyHash
 {
-  v3 = [(CBOOBKeyInfo *)self irkData];
-  v4 = [v3 hash];
-  v5 = [(CBOOBKeyInfo *)self keyType];
+  irkData = [(CBOOBKeyInfo *)self irkData];
+  v4 = [irkData hash];
+  keyType = [(CBOOBKeyInfo *)self keyType];
 
-  return v4 ^ v5;
+  return v4 ^ keyType;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   btAddressData = self->_btAddressData;
-  xdict = v4;
+  xdict = objectCopy;
   if (btAddressData)
   {
     v6 = btAddressData;
-    v7 = [(NSData *)v6 bytes];
-    if (v7)
+    bytes = [(NSData *)v6 bytes];
+    if (bytes)
     {
-      v8 = v7;
+      v8 = bytes;
     }
 
     else
@@ -72,10 +72,10 @@
     v12 = irkData;
     v13 = xdict;
     v14 = irkData;
-    v15 = [(NSData *)v14 bytes];
-    if (v15)
+    bytes2 = [(NSData *)v14 bytes];
+    if (bytes2)
     {
-      v16 = v15;
+      v16 = bytes2;
     }
 
     else
@@ -98,13 +98,13 @@
 
 - (id)description
 {
-  v3 = [(CBOOBKeyInfo *)self btAddressData];
-  v4 = [v3 length];
-  v5 = [(CBOOBKeyInfo *)self btAddressData];
-  v6 = v5;
+  btAddressData = [(CBOOBKeyInfo *)self btAddressData];
+  v4 = [btAddressData length];
+  btAddressData2 = [(CBOOBKeyInfo *)self btAddressData];
+  v6 = btAddressData2;
   if (v4 == 7)
   {
-    v7 = [v5 subdataWithRange:{1, 6}];
+    v7 = [btAddressData2 subdataWithRange:{1, 6}];
 
     v6 = v7;
   }
@@ -112,7 +112,7 @@
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
   v9 = CUPrintNSDataAddress();
   v10 = self->_addressType | self->_btAddressType;
-  v11 = [(CBOOBKeyInfo *)self irkData];
+  irkData = [(CBOOBKeyInfo *)self irkData];
   v12 = CUPrintNSObjectMasked();
   keyType = self->_keyType;
   v14 = CUPrintFlags32();
@@ -121,13 +121,13 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v14 = 1;
       goto LABEL_20;
@@ -137,16 +137,16 @@
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
-      v7 = [(CBOOBKeyInfo *)self addressType];
-      if (v7 != [(CBOOBKeyInfo *)v6 addressType])
+      addressType = [(CBOOBKeyInfo *)self addressType];
+      if (addressType != [(CBOOBKeyInfo *)v6 addressType])
       {
         goto LABEL_18;
       }
 
-      v8 = [(CBOOBKeyInfo *)self btAddressData];
-      v9 = [(CBOOBKeyInfo *)v6 btAddressData];
-      v10 = v8;
-      v11 = v9;
+      btAddressData = [(CBOOBKeyInfo *)self btAddressData];
+      btAddressData2 = [(CBOOBKeyInfo *)v6 btAddressData];
+      v10 = btAddressData;
+      v11 = btAddressData2;
       v12 = v11;
       if (v10 == v11)
       {
@@ -167,23 +167,23 @@
         }
       }
 
-      v15 = [(CBOOBKeyInfo *)self btAddressType];
-      if (v15 != [(CBOOBKeyInfo *)v6 btAddressType])
+      btAddressType = [(CBOOBKeyInfo *)self btAddressType];
+      if (btAddressType != [(CBOOBKeyInfo *)v6 btAddressType])
       {
         goto LABEL_18;
       }
 
-      v16 = [(CBOOBKeyInfo *)self irkData];
-      v17 = [(CBOOBKeyInfo *)v6 irkData];
-      v10 = v16;
-      v18 = v17;
+      irkData = [(CBOOBKeyInfo *)self irkData];
+      irkData2 = [(CBOOBKeyInfo *)v6 irkData];
+      v10 = irkData;
+      v18 = irkData2;
       v12 = v18;
       if (v10 == v18)
       {
 
 LABEL_22:
-        v21 = [(CBOOBKeyInfo *)self keyType];
-        v14 = v21 == [(CBOOBKeyInfo *)v6 keyType];
+        keyType = [(CBOOBKeyInfo *)self keyType];
+        v14 = keyType == [(CBOOBKeyInfo *)v6 keyType];
         goto LABEL_19;
       }
 
@@ -215,9 +215,9 @@ LABEL_20:
   return v14;
 }
 
-- (CBOOBKeyInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBOOBKeyInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

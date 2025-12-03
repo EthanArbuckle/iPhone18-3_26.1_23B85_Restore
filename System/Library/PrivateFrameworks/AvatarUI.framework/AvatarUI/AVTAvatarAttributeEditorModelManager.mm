@@ -1,103 +1,103 @@
 @interface AVTAvatarAttributeEditorModelManager
-- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)a3;
-- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)a3 coreModel:(id)a4 editorColorsState:(id)a5 imageProvider:(id)a6 colorLayerProvider:(id)a7 preloader:(id)a8 environment:(id)a9 stickerRenderer:(id)a10;
-- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)a3 coreModel:(id)a4 imageProvider:(id)a5 colorLayerProvider:(id)a6 preloader:(id)a7 environment:(id)a8 stickerRenderer:(id)a9;
+- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)record;
+- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)record coreModel:(id)model editorColorsState:(id)state imageProvider:(id)provider colorLayerProvider:(id)layerProvider preloader:(id)preloader environment:(id)environment stickerRenderer:(id)self0;
+- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)record coreModel:(id)model imageProvider:(id)provider colorLayerProvider:(id)layerProvider preloader:(id)preloader environment:(id)environment stickerRenderer:(id)renderer;
 - (AVTAvatarAttributeEditorModelManagerDelegate)delegate;
 - (AVTMemoji)avatar;
-- (BOOL)primaryColorOfCategory:(int64_t)a3 doesMatchColorOfDependentCategory:(int64_t)a4;
-- (BOOL)shouldDisplaySectionForCategory:(int64_t)a3;
-- (BOOL)shouldDisplaySectionWithDisplayCondition:(id)a3 inCategoryAtIndex:(unint64_t)a4;
+- (BOOL)primaryColorOfCategory:(int64_t)category doesMatchColorOfDependentCategory:(int64_t)dependentCategory;
+- (BOOL)shouldDisplaySectionForCategory:(int64_t)category;
+- (BOOL)shouldDisplaySectionWithDisplayCondition:(id)condition inCategoryAtIndex:(unint64_t)index;
 - (id)buildInitialEditorState;
-- (id)buildUIModelWithSelectedCategory:(id)a3 atIndex:(unint64_t)a4;
-- (void)applyConfigurationToAvatar:(id)a3 animated:(BOOL)a4;
-- (void)applyPairColorUpdateIfNeeded:(id)a3 forCategoryRight:(int64_t)a4 categoryLeft:(int64_t)a5;
-- (void)applyPairColorUpdatesIfNeeded:(id)a3;
+- (id)buildUIModelWithSelectedCategory:(id)category atIndex:(unint64_t)index;
+- (void)applyConfigurationToAvatar:(id)avatar animated:(BOOL)animated;
+- (void)applyPairColorUpdateIfNeeded:(id)needed forCategoryRight:(int64_t)right categoryLeft:(int64_t)left;
+- (void)applyPairColorUpdatesIfNeeded:(id)needed;
 - (void)buildIntitialColorsState;
 - (void)flushResourcesForEnteringBackground;
 - (void)loadResourcesIfNeeded;
-- (void)setInitialColorStateForColorPicker:(id)a3 forMulticolor:(BOOL)a4;
-- (void)updateAvatarByApplyingPresetOverrides:(id)a3 animated:(BOOL)a4;
-- (void)updateAvatarByDeletingSectionItems:(id)a3 animated:(BOOL)a4;
-- (void)updateAvatarBySelectingSectionItem:(id)a3 animated:(BOOL)a4;
-- (void)updateAvatarBySelectingSupplementalPickerItem:(id)a3 animated:(BOOL)a4;
+- (void)setInitialColorStateForColorPicker:(id)picker forMulticolor:(BOOL)multicolor;
+- (void)updateAvatarByApplyingPresetOverrides:(id)overrides animated:(BOOL)animated;
+- (void)updateAvatarByDeletingSectionItems:(id)items animated:(BOOL)animated;
+- (void)updateAvatarBySelectingSectionItem:(id)item animated:(BOOL)animated;
+- (void)updateAvatarBySelectingSupplementalPickerItem:(id)item animated:(BOOL)animated;
 - (void)updateAvatarRecordFromAvatar;
-- (void)updateAvatarWithAvatarUpdater:(id)a3 animated:(BOOL)a4;
-- (void)updateEditorStateBySelectingSectionItem:(id)a3 animated:(BOOL)a4;
+- (void)updateAvatarWithAvatarUpdater:(id)updater animated:(BOOL)animated;
+- (void)updateEditorStateBySelectingSectionItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation AVTAvatarAttributeEditorModelManager
 
-- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)a3
+- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = +[AVTUIEnvironment defaultEnvironment];
-  v6 = [v5 editorCoreModel];
+  editorCoreModel = [v5 editorCoreModel];
   v7 = objc_alloc_init(AVTColorLayerProvider);
-  v8 = [(AVTAvatarAttributeEditorModelManager *)self initWithAvatarRecord:v4 coreModel:v6 imageProvider:0 colorLayerProvider:v7 preloader:0 environment:v5 stickerRenderer:0];
+  v8 = [(AVTAvatarAttributeEditorModelManager *)self initWithAvatarRecord:recordCopy coreModel:editorCoreModel imageProvider:0 colorLayerProvider:v7 preloader:0 environment:v5 stickerRenderer:0];
 
   return v8;
 }
 
-- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)a3 coreModel:(id)a4 imageProvider:(id)a5 colorLayerProvider:(id)a6 preloader:(id)a7 environment:(id)a8 stickerRenderer:(id)a9
+- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)record coreModel:(id)model imageProvider:(id)provider colorLayerProvider:(id)layerProvider preloader:(id)preloader environment:(id)environment stickerRenderer:(id)renderer
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  rendererCopy = renderer;
+  environmentCopy = environment;
+  preloaderCopy = preloader;
+  layerProviderCopy = layerProvider;
+  providerCopy = provider;
+  modelCopy = model;
+  recordCopy = record;
   v22 = [AVTAvatarEditorColorsState alloc];
-  v23 = [v20 colors];
-  v24 = [v23 variationStore];
-  v25 = [(AVTAvatarEditorColorsState *)v22 initWithVariationStore:v24];
+  colors = [modelCopy colors];
+  variationStore = [colors variationStore];
+  v25 = [(AVTAvatarEditorColorsState *)v22 initWithVariationStore:variationStore];
 
-  v26 = [(AVTAvatarAttributeEditorModelManager *)self initWithAvatarRecord:v21 coreModel:v20 editorColorsState:v25 imageProvider:v19 colorLayerProvider:v18 preloader:v17 environment:v16 stickerRenderer:v15];
+  v26 = [(AVTAvatarAttributeEditorModelManager *)self initWithAvatarRecord:recordCopy coreModel:modelCopy editorColorsState:v25 imageProvider:providerCopy colorLayerProvider:layerProviderCopy preloader:preloaderCopy environment:environmentCopy stickerRenderer:rendererCopy];
   return v26;
 }
 
-- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)a3 coreModel:(id)a4 editorColorsState:(id)a5 imageProvider:(id)a6 colorLayerProvider:(id)a7 preloader:(id)a8 environment:(id)a9 stickerRenderer:(id)a10
+- (AVTAvatarAttributeEditorModelManager)initWithAvatarRecord:(id)record coreModel:(id)model editorColorsState:(id)state imageProvider:(id)provider colorLayerProvider:(id)layerProvider preloader:(id)preloader environment:(id)environment stickerRenderer:(id)self0
 {
-  v16 = a3;
-  v36 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v32 = a8;
-  v17 = a9;
-  v31 = a10;
+  recordCopy = record;
+  modelCopy = model;
+  stateCopy = state;
+  providerCopy = provider;
+  layerProviderCopy = layerProvider;
+  preloaderCopy = preloader;
+  environmentCopy = environment;
+  rendererCopy = renderer;
   v37.receiver = self;
   v37.super_class = AVTAvatarAttributeEditorModelManager;
   v18 = [(AVTAvatarAttributeEditorModelManager *)&v37 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_environment, a9);
-    objc_storeStrong(&v19->_coreModel, a4);
-    objc_storeStrong(&v19->_colorsState, a5);
-    v20 = [v16 copy];
+    objc_storeStrong(&v18->_environment, environment);
+    objc_storeStrong(&v19->_coreModel, model);
+    objc_storeStrong(&v19->_colorsState, state);
+    v20 = [recordCopy copy];
     avatarRecord = v19->_avatarRecord;
     v19->_avatarRecord = v20;
 
-    v22 = [MEMORY[0x1E698E328] memojiForRecord:v16 usageIntent:4];
+    v22 = [MEMORY[0x1E698E328] memojiForRecord:recordCopy usageIntent:4];
     avatar = v19->_avatar;
     v19->_avatar = v22;
 
-    v24 = [AVTAvatarConfiguration configurationFromAvatar:v19->_avatar coreModel:v36];
+    v24 = [AVTAvatarConfiguration configurationFromAvatar:v19->_avatar coreModel:modelCopy];
     avatarConfiguration = v19->_avatarConfiguration;
     v19->_avatarConfiguration = v24;
 
-    objc_storeStrong(&v19->_imageProvider, a6);
-    objc_storeStrong(&v19->_colorLayerProvider, a7);
-    objc_storeStrong(&v19->_stickerRenderer, a10);
-    objc_storeStrong(&v19->_preloader, a8);
-    v26 = [v17 logger];
+    objc_storeStrong(&v19->_imageProvider, provider);
+    objc_storeStrong(&v19->_colorLayerProvider, layerProvider);
+    objc_storeStrong(&v19->_stickerRenderer, renderer);
+    objc_storeStrong(&v19->_preloader, preloader);
+    logger = [environmentCopy logger];
     logger = v19->_logger;
-    v19->_logger = v26;
+    v19->_logger = logger;
 
-    v28 = [(AVTAvatarAttributeEditorModelManager *)v19 buildInitialEditorState];
+    buildInitialEditorState = [(AVTAvatarAttributeEditorModelManager *)v19 buildInitialEditorState];
     editorState = v19->_editorState;
-    v19->_editorState = v28;
+    v19->_editorState = buildInitialEditorState;
 
     [(AVTAvatarAttributeEditorModelManager *)v19 buildIntitialColorsState];
   }
@@ -118,8 +118,8 @@
   avatar = self->_avatar;
   self->_avatar = 0;
 
-  v4 = [(AVTAvatarAttributeEditorModelManager *)self environment];
-  [v4 flushResourcesForEnteringBackground];
+  environment = [(AVTAvatarAttributeEditorModelManager *)self environment];
+  [environment flushResourcesForEnteringBackground];
 }
 
 - (void)loadResourcesIfNeeded
@@ -127,11 +127,11 @@
   if (!self->_avatar)
   {
     v4 = MEMORY[0x1E698E328];
-    v5 = [(AVTAvatarAttributeEditorModelManager *)self avatarRecord];
-    v6 = [v4 memojiForRecord:v5 usageIntent:4];
+    avatarRecord = [(AVTAvatarAttributeEditorModelManager *)self avatarRecord];
+    v6 = [v4 memojiForRecord:avatarRecord usageIntent:4];
 
-    v7 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-    [v7 applyToAvatar:v6 animated:0];
+    avatarConfiguration = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+    [avatarConfiguration applyToAvatar:v6 animated:0];
 
     avatar = self->_avatar;
     self->_avatar = v6;
@@ -145,11 +145,11 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v3 = [(AVTAvatarAttributeEditorModelManager *)self coreModel];
-  v4 = [v3 groups];
+  coreModel = [(AVTAvatarAttributeEditorModelManager *)self coreModel];
+  groups = [coreModel groups];
 
-  obj = v4;
-  v22 = [v4 countByEnumeratingWithState:&v41 objects:v48 count:16];
+  obj = groups;
+  v22 = [groups countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v22)
   {
     v21 = *v42;
@@ -169,8 +169,8 @@
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v24 = [v6 categories];
-        v26 = [v24 countByEnumeratingWithState:&v37 objects:v47 count:16];
+        categories = [v6 categories];
+        v26 = [categories countByEnumeratingWithState:&v37 objects:v47 count:16];
         if (v26)
         {
           v25 = *v38;
@@ -181,7 +181,7 @@
             {
               if (*v38 != v25)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(categories);
               }
 
               v27 = v7;
@@ -190,8 +190,8 @@
               v34 = 0u;
               v35 = 0u;
               v36 = 0u;
-              v28 = [v8 pickers];
-              v9 = [v28 countByEnumeratingWithState:&v33 objects:v46 count:16];
+              pickers = [v8 pickers];
+              v9 = [pickers countByEnumeratingWithState:&v33 objects:v46 count:16];
               if (v9)
               {
                 v10 = v9;
@@ -203,7 +203,7 @@
                   {
                     if (*v34 != v11)
                     {
-                      objc_enumerationMutation(v28);
+                      objc_enumerationMutation(pickers);
                     }
 
                     v13 = *(*(&v33 + 1) + 8 * v12);
@@ -215,8 +215,8 @@
                       v30 = 0u;
                       v31 = 0u;
                       v32 = 0u;
-                      v15 = [v14 subpickers];
-                      v16 = [v15 countByEnumeratingWithState:&v29 objects:v45 count:16];
+                      subpickers = [v14 subpickers];
+                      v16 = [subpickers countByEnumeratingWithState:&v29 objects:v45 count:16];
                       if (v16)
                       {
                         v17 = v16;
@@ -228,14 +228,14 @@
                           {
                             if (*v30 != v18)
                             {
-                              objc_enumerationMutation(v15);
+                              objc_enumerationMutation(subpickers);
                             }
 
                             [(AVTAvatarAttributeEditorModelManager *)self setInitialColorStateForColorPicker:*(*(&v29 + 1) + 8 * v19++) forMulticolor:1];
                           }
 
                           while (v17 != v19);
-                          v17 = [v15 countByEnumeratingWithState:&v29 objects:v45 count:16];
+                          v17 = [subpickers countByEnumeratingWithState:&v29 objects:v45 count:16];
                         }
 
                         while (v17);
@@ -255,7 +255,7 @@
                   }
 
                   while (v12 != v10);
-                  v10 = [v28 countByEnumeratingWithState:&v33 objects:v46 count:16];
+                  v10 = [pickers countByEnumeratingWithState:&v33 objects:v46 count:16];
                 }
 
                 while (v10);
@@ -265,7 +265,7 @@
             }
 
             while (v27 + 1 != v26);
-            v26 = [v24 countByEnumeratingWithState:&v37 objects:v47 count:16];
+            v26 = [categories countByEnumeratingWithState:&v37 objects:v47 count:16];
           }
 
           while (v26);
@@ -282,25 +282,25 @@
   }
 }
 
-- (BOOL)primaryColorOfCategory:(int64_t)a3 doesMatchColorOfDependentCategory:(int64_t)a4
+- (BOOL)primaryColorOfCategory:(int64_t)category doesMatchColorOfDependentCategory:(int64_t)dependentCategory
 {
-  v7 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-  v8 = [v7 colorPresetForSettingKind:{1, a3}];
+  avatarConfiguration = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+  v8 = [avatarConfiguration colorPresetForSettingKind:{1, category}];
 
-  v9 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-  v10 = [v9 colorPresetForSettingKind:{1, a4}];
+  avatarConfiguration2 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+  v10 = [avatarConfiguration2 colorPresetForSettingKind:{1, dependentCategory}];
 
-  v11 = [v8 colorPreset];
-  v12 = [v11 name];
-  v13 = [v10 colorPreset];
-  v14 = [v13 name];
-  if ([v12 isEqualToString:v14])
+  colorPreset = [v8 colorPreset];
+  name = [colorPreset name];
+  colorPreset2 = [v10 colorPreset];
+  name2 = [colorPreset2 name];
+  if ([name isEqualToString:name2])
   {
-    v15 = [v8 colorPreset];
-    [v15 variation];
+    colorPreset3 = [v8 colorPreset];
+    [colorPreset3 variation];
     v17 = v16;
-    v18 = [v10 colorPreset];
-    [v18 variation];
+    colorPreset4 = [v10 colorPreset];
+    [colorPreset4 variation];
     v20 = v17 == v19;
   }
 
@@ -312,15 +312,15 @@
   return v20;
 }
 
-- (void)setInitialColorStateForColorPicker:(id)a3 forMulticolor:(BOOL)a4
+- (void)setInitialColorStateForColorPicker:(id)picker forMulticolor:(BOOL)multicolor
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [v15 colorCategory] == 15 && -[AVTAvatarAttributeEditorModelManager primaryColorOfCategory:doesMatchColorOfDependentCategory:](self, "primaryColorOfCategory:doesMatchColorOfDependentCategory:", 1, 15);
-  if ([v15 colorCategory] == 16)
+  multicolorCopy = multicolor;
+  pickerCopy = picker;
+  v6 = [pickerCopy colorCategory] == 15 && -[AVTAvatarAttributeEditorModelManager primaryColorOfCategory:doesMatchColorOfDependentCategory:](self, "primaryColorOfCategory:doesMatchColorOfDependentCategory:", 1, 15);
+  if ([pickerCopy colorCategory] == 16)
   {
     v7 = [(AVTAvatarAttributeEditorModelManager *)self primaryColorOfCategory:2 doesMatchColorOfDependentCategory:16];
-    if (!v4)
+    if (!multicolorCopy)
     {
       goto LABEL_9;
     }
@@ -335,111 +335,111 @@ LABEL_8:
   }
 
   v7 = 0;
-  if (v4)
+  if (multicolorCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  v8 = [v15 destination];
-  v9 = [v15 colorCategory];
-  v10 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-  v11 = [v10 colorPresetForSettingKind:{v8, v9}];
+  destination = [pickerCopy destination];
+  colorCategory = [pickerCopy colorCategory];
+  avatarConfiguration = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+  v11 = [avatarConfiguration colorPresetForSettingKind:{destination, colorCategory}];
 
-  v12 = [(AVTAvatarAttributeEditorModelManager *)self colorsState];
-  v13 = [v11 colorPreset];
-  v14 = [v11 color];
-  [v12 setSelectedColorPreset:v13 forCoreModelColor:v14];
+  colorsState = [(AVTAvatarAttributeEditorModelManager *)self colorsState];
+  colorPreset = [v11 colorPreset];
+  color = [v11 color];
+  [colorsState setSelectedColorPreset:colorPreset forCoreModelColor:color];
 
 LABEL_10:
 }
 
-- (id)buildUIModelWithSelectedCategory:(id)a3 atIndex:(unint64_t)a4
+- (id)buildUIModelWithSelectedCategory:(id)category atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(AVTAvatarAttributeEditorModelManager *)self coreModel];
-  v8 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-  v9 = [(AVTAvatarAttributeEditorModelManager *)self imageProvider];
-  v10 = [(AVTAvatarAttributeEditorModelManager *)self colorLayerProvider];
-  v11 = [(AVTAvatarAttributeEditorModelManager *)self stickerRenderer];
-  v12 = [AVTAvatarAttributeEditorModelBuilder buildDataSourceCategoriesFromCoreModel:v7 selectingFromAvatarConfiguration:v8 imageProvider:v9 colorLayerProvider:v10 stickerRenderer:v11 modelManager:self withSelectedCategory:v6 atIndex:a4];
+  categoryCopy = category;
+  coreModel = [(AVTAvatarAttributeEditorModelManager *)self coreModel];
+  avatarConfiguration = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+  imageProvider = [(AVTAvatarAttributeEditorModelManager *)self imageProvider];
+  colorLayerProvider = [(AVTAvatarAttributeEditorModelManager *)self colorLayerProvider];
+  stickerRenderer = [(AVTAvatarAttributeEditorModelManager *)self stickerRenderer];
+  v12 = [AVTAvatarAttributeEditorModelBuilder buildDataSourceCategoriesFromCoreModel:coreModel selectingFromAvatarConfiguration:avatarConfiguration imageProvider:imageProvider colorLayerProvider:colorLayerProvider stickerRenderer:stickerRenderer modelManager:self withSelectedCategory:categoryCopy atIndex:index];
 
   return v12;
 }
 
 - (id)buildInitialEditorState
 {
-  v3 = [(AVTAvatarAttributeEditorModelManager *)self coreModel];
-  v4 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-  v5 = [AVTAvatarAttributeEditorState buildStateFromCoreModel:v3 avatarConfiguration:v4];
+  coreModel = [(AVTAvatarAttributeEditorModelManager *)self coreModel];
+  avatarConfiguration = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+  v5 = [AVTAvatarAttributeEditorState buildStateFromCoreModel:coreModel avatarConfiguration:avatarConfiguration];
 
   return v5;
 }
 
 - (void)updateAvatarRecordFromAvatar
 {
-  v3 = [(AVTAvatarAttributeEditorModelManager *)self avatar];
-  v5 = [v3 dataRepresentation];
+  avatar = [(AVTAvatarAttributeEditorModelManager *)self avatar];
+  dataRepresentation = [avatar dataRepresentation];
 
-  if (!v5)
+  if (!dataRepresentation)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Can't encode avatar"];
   }
 
-  v4 = [(AVTAvatarAttributeEditorModelManager *)self avatarRecord];
-  [v4 setAvatarData:v5];
+  avatarRecord = [(AVTAvatarAttributeEditorModelManager *)self avatarRecord];
+  [avatarRecord setAvatarData:dataRepresentation];
 }
 
-- (void)updateEditorStateBySelectingSectionItem:(id)a3 animated:(BOOL)a4
+- (void)updateEditorStateBySelectingSectionItem:(id)item animated:(BOOL)animated
 {
-  v13 = a3;
-  v5 = [v13 conformsToProtocol:&unk_1F39ECD80];
-  v6 = v13;
+  itemCopy = item;
+  v5 = [itemCopy conformsToProtocol:&unk_1F39ECD80];
+  v6 = itemCopy;
   if (v5)
   {
-    v7 = v13;
-    v8 = [v7 editorStateUpdater];
-    if (v8)
+    v7 = itemCopy;
+    editorStateUpdater = [v7 editorStateUpdater];
+    if (editorStateUpdater)
     {
-      v9 = v8;
-      v10 = [(AVTAvatarAttributeEditorModelManager *)self editorState];
+      v9 = editorStateUpdater;
+      editorState = [(AVTAvatarAttributeEditorModelManager *)self editorState];
 
-      if (v10)
+      if (editorState)
       {
-        v11 = [v7 editorStateUpdater];
-        v12 = [(AVTAvatarAttributeEditorModelManager *)self editorState];
-        (v11)[2](v11, v12);
+        editorStateUpdater2 = [v7 editorStateUpdater];
+        editorState2 = [(AVTAvatarAttributeEditorModelManager *)self editorState];
+        (editorStateUpdater2)[2](editorStateUpdater2, editorState2);
       }
     }
 
-    v6 = v13;
+    v6 = itemCopy;
   }
 
   MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)updateAvatarBySelectingSectionItem:(id)a3 animated:(BOOL)a4
+- (void)updateAvatarBySelectingSectionItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if ([v7 conformsToProtocol:&unk_1F39BBC08])
+  animatedCopy = animated;
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_1F39BBC08])
   {
-    v6 = [v7 avatarUpdater];
-    [(AVTAvatarAttributeEditorModelManager *)self updateAvatarWithAvatarUpdater:v6 animated:v4];
+    avatarUpdater = [itemCopy avatarUpdater];
+    [(AVTAvatarAttributeEditorModelManager *)self updateAvatarWithAvatarUpdater:avatarUpdater animated:animatedCopy];
   }
 }
 
-- (void)updateAvatarByDeletingSectionItems:(id)a3 animated:(BOOL)a4
+- (void)updateAvatarByDeletingSectionItems:(id)items animated:(BOOL)animated
 {
-  v17 = a4;
+  animatedCopy = animated;
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -463,13 +463,13 @@ LABEL_10:
         }
 
         v12 = v11;
-        v13 = [v12 removalUpdater];
+        removalUpdater = [v12 removalUpdater];
 
-        if (v13)
+        if (removalUpdater)
         {
-          v14 = [v12 removalUpdater];
+          removalUpdater2 = [v12 removalUpdater];
           v15 = MEMORY[0x1BFB0DE80]();
-          [v5 addObject:v15];
+          [array addObject:v15];
         }
 
         ++v10;
@@ -482,83 +482,83 @@ LABEL_10:
     while (v8);
   }
 
-  v16 = [AVTAvatarUpdaterFactory updaterForAggregatingUpdaters:v5];
-  [(AVTAvatarAttributeEditorModelManager *)self updateAvatarWithAvatarUpdater:v16 animated:v17];
+  v16 = [AVTAvatarUpdaterFactory updaterForAggregatingUpdaters:array];
+  [(AVTAvatarAttributeEditorModelManager *)self updateAvatarWithAvatarUpdater:v16 animated:animatedCopy];
   [(AVTAvatarAttributeEditorModelManager *)self updateAvatarRecordFromAvatar];
 }
 
-- (void)updateAvatarBySelectingSupplementalPickerItem:(id)a3 animated:(BOOL)a4
+- (void)updateAvatarBySelectingSupplementalPickerItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v13 = a3;
-  v6 = [v13 editorUpdater];
-  if (v6)
+  animatedCopy = animated;
+  itemCopy = item;
+  editorUpdater = [itemCopy editorUpdater];
+  if (editorUpdater)
   {
-    v7 = v6;
-    v8 = [(AVTAvatarAttributeEditorModelManager *)self editorState];
+    v7 = editorUpdater;
+    editorState = [(AVTAvatarAttributeEditorModelManager *)self editorState];
 
-    if (v8)
+    if (editorState)
     {
-      v9 = [v13 editorUpdater];
-      v10 = [(AVTAvatarAttributeEditorModelManager *)self editorState];
-      (v9)[2](v9, v10);
+      editorUpdater2 = [itemCopy editorUpdater];
+      editorState2 = [(AVTAvatarAttributeEditorModelManager *)self editorState];
+      (editorUpdater2)[2](editorUpdater2, editorState2);
     }
   }
 
-  v11 = [v13 avatarUpdater];
+  avatarUpdater = [itemCopy avatarUpdater];
 
-  if (v11)
+  if (avatarUpdater)
   {
-    v12 = [v13 avatarUpdater];
-    [(AVTAvatarAttributeEditorModelManager *)self updateAvatarWithAvatarUpdater:v12 animated:v4];
+    avatarUpdater2 = [itemCopy avatarUpdater];
+    [(AVTAvatarAttributeEditorModelManager *)self updateAvatarWithAvatarUpdater:avatarUpdater2 animated:animatedCopy];
   }
 }
 
-- (void)updateAvatarWithAvatarUpdater:(id)a3 animated:(BOOL)a4
+- (void)updateAvatarWithAvatarUpdater:(id)updater animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  updaterCopy = updater;
+  if (updaterCopy)
   {
-    v12 = v6;
-    v7 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-    v8 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-    v12[2](v12, v8);
+    v12 = updaterCopy;
+    avatarConfiguration = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+    avatarConfiguration2 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+    v12[2](v12, avatarConfiguration2);
 
-    v9 = [(AVTAvatarAttributeEditorModelManager *)self presetOverriddenConfiguration];
+    presetOverriddenConfiguration = [(AVTAvatarAttributeEditorModelManager *)self presetOverriddenConfiguration];
 
-    if (v9)
+    if (presetOverriddenConfiguration)
     {
-      v10 = [(AVTAvatarAttributeEditorModelManager *)self presetOverriddenConfiguration];
+      presetOverriddenConfiguration2 = [(AVTAvatarAttributeEditorModelManager *)self presetOverriddenConfiguration];
 
-      v11 = [(AVTAvatarAttributeEditorModelManager *)self presetOverriddenConfiguration];
-      v12[2](v12, v11);
+      presetOverriddenConfiguration3 = [(AVTAvatarAttributeEditorModelManager *)self presetOverriddenConfiguration];
+      v12[2](v12, presetOverriddenConfiguration3);
 
-      v7 = v10;
+      avatarConfiguration = presetOverriddenConfiguration2;
     }
 
-    [(AVTAvatarAttributeEditorModelManager *)self applyConfigurationToAvatar:v7 animated:v4];
+    [(AVTAvatarAttributeEditorModelManager *)self applyConfigurationToAvatar:avatarConfiguration animated:animatedCopy];
     [(AVTAvatarAttributeEditorModelManager *)self updateAvatarRecordFromAvatar];
 
-    v6 = v12;
+    updaterCopy = v12;
   }
 }
 
-- (void)updateAvatarByApplyingPresetOverrides:(id)a3 animated:(BOOL)a4
+- (void)updateAvatarByApplyingPresetOverrides:(id)overrides animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  overridesCopy = overrides;
+  if (overridesCopy)
   {
-    v7 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-    v8 = [v7 copy];
+    avatarConfiguration = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+    v8 = [avatarConfiguration copy];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v6;
+    v9 = overridesCopy;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -583,55 +583,55 @@ LABEL_10:
     }
 
     [(AVTAvatarAttributeEditorModelManager *)self setPresetOverriddenConfiguration:v8];
-    v14 = [(AVTAvatarAttributeEditorModelManager *)self presetOverriddenConfiguration];
-    [(AVTAvatarAttributeEditorModelManager *)self applyConfigurationToAvatar:v14 animated:v4];
+    presetOverriddenConfiguration = [(AVTAvatarAttributeEditorModelManager *)self presetOverriddenConfiguration];
+    [(AVTAvatarAttributeEditorModelManager *)self applyConfigurationToAvatar:presetOverriddenConfiguration animated:animatedCopy];
   }
 
   else
   {
     [(AVTAvatarAttributeEditorModelManager *)self setPresetOverriddenConfiguration:0];
-    v15 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
-    [(AVTAvatarAttributeEditorModelManager *)self applyConfigurationToAvatar:v15 animated:1];
+    avatarConfiguration2 = [(AVTAvatarAttributeEditorModelManager *)self avatarConfiguration];
+    [(AVTAvatarAttributeEditorModelManager *)self applyConfigurationToAvatar:avatarConfiguration2 animated:1];
 
     [(AVTAvatarAttributeEditorModelManager *)self updateAvatarRecordFromAvatar];
   }
 }
 
-- (void)applyPairColorUpdateIfNeeded:(id)a3 forCategoryRight:(int64_t)a4 categoryLeft:(int64_t)a5
+- (void)applyPairColorUpdateIfNeeded:(id)needed forCategoryRight:(int64_t)right categoryLeft:(int64_t)left
 {
-  v8 = a3;
+  neededCopy = needed;
   v9 = AVTAvatarSettingColorIndexForColorDestination(1);
-  v10 = [(AVTAvatarAttributeEditorModelManager *)self avatar];
-  v32 = [v10 colorPresetForCategory:a4 colorIndex:v9];
+  avatar = [(AVTAvatarAttributeEditorModelManager *)self avatar];
+  v32 = [avatar colorPresetForCategory:right colorIndex:v9];
 
-  v11 = [(AVTAvatarAttributeEditorModelManager *)self avatar];
-  v12 = [v11 colorPresetForCategory:a5 colorIndex:v9];
+  avatar2 = [(AVTAvatarAttributeEditorModelManager *)self avatar];
+  v12 = [avatar2 colorPresetForCategory:left colorIndex:v9];
 
-  v13 = [v8 colorPresetForSettingKind:{1, a4}];
-  v14 = [v13 colorPreset];
+  v13 = [neededCopy colorPresetForSettingKind:{1, right}];
+  colorPreset = [v13 colorPreset];
 
-  v15 = [v8 colorPresetForSettingKind:{1, a5}];
+  v15 = [neededCopy colorPresetForSettingKind:{1, left}];
 
-  v16 = [v15 colorPreset];
+  colorPreset2 = [v15 colorPreset];
 
-  if (v14 | v32)
+  if (colorPreset | v32)
   {
-    v17 = [v14 name];
-    v18 = [v32 name];
-    if ([v17 isEqualToString:v18] && (objc_msgSend(v14, "variation"), v20 = v19, objc_msgSend(v32, "variation"), v20 == v21) || !(v16 | v12))
+    name = [colorPreset name];
+    name2 = [v32 name];
+    if ([name isEqualToString:name2] && (objc_msgSend(colorPreset, "variation"), v20 = v19, objc_msgSend(v32, "variation"), v20 == v21) || !(colorPreset2 | v12))
     {
     }
 
     else
     {
-      v22 = [v16 name];
-      v23 = [v12 name];
-      v31 = v22;
-      v24 = v22;
-      v25 = v23;
-      if ([v24 isEqualToString:v23])
+      name3 = [colorPreset2 name];
+      name4 = [v12 name];
+      v31 = name3;
+      v24 = name3;
+      v25 = name4;
+      if ([v24 isEqualToString:name4])
       {
-        [v16 variation];
+        [colorPreset2 variation];
         v27 = v26;
         [v12 variation];
         v29 = v28;
@@ -646,47 +646,47 @@ LABEL_10:
       {
       }
 
-      v30 = [(AVTAvatarAttributeEditorModelManager *)self avatar];
-      [v30 setColorPreset:v14 forCategory:a4 colorIndex:v9];
+      avatar3 = [(AVTAvatarAttributeEditorModelManager *)self avatar];
+      [avatar3 setColorPreset:colorPreset forCategory:right colorIndex:v9];
 
-      v17 = [(AVTAvatarAttributeEditorModelManager *)self avatar];
-      [v17 setColorPreset:v16 forCategory:a5 colorIndex:v9];
+      name = [(AVTAvatarAttributeEditorModelManager *)self avatar];
+      [name setColorPreset:colorPreset2 forCategory:left colorIndex:v9];
     }
   }
 
 LABEL_12:
 }
 
-- (void)applyPairColorUpdatesIfNeeded:(id)a3
+- (void)applyPairColorUpdatesIfNeeded:(id)needed
 {
-  v4 = a3;
-  [(AVTAvatarAttributeEditorModelManager *)self applyPairColorUpdateIfNeeded:v4 forCategoryRight:31 categoryLeft:30];
-  [(AVTAvatarAttributeEditorModelManager *)self applyPairColorUpdateIfNeeded:v4 forCategoryRight:26 categoryLeft:25];
+  neededCopy = needed;
+  [(AVTAvatarAttributeEditorModelManager *)self applyPairColorUpdateIfNeeded:neededCopy forCategoryRight:31 categoryLeft:30];
+  [(AVTAvatarAttributeEditorModelManager *)self applyPairColorUpdateIfNeeded:neededCopy forCategoryRight:26 categoryLeft:25];
 }
 
-- (void)applyConfigurationToAvatar:(id)a3 animated:(BOOL)a4
+- (void)applyConfigurationToAvatar:(id)avatar animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(AVTAvatarAttributeEditorModelManager *)self applyPairColorUpdatesIfNeeded:v6];
-  v7 = [(AVTAvatarAttributeEditorModelManager *)self logger];
-  v8 = [v6 description];
-  [v7 logUpdatingLiveAvatarWithConfiguration:v8];
+  animatedCopy = animated;
+  avatarCopy = avatar;
+  [(AVTAvatarAttributeEditorModelManager *)self applyPairColorUpdatesIfNeeded:avatarCopy];
+  logger = [(AVTAvatarAttributeEditorModelManager *)self logger];
+  v8 = [avatarCopy description];
+  [logger logUpdatingLiveAvatarWithConfiguration:v8];
 
-  v9 = [(AVTAvatarAttributeEditorModelManager *)self avatar];
-  [v6 applyToAvatar:v9 animated:v4];
+  avatar = [(AVTAvatarAttributeEditorModelManager *)self avatar];
+  [avatarCopy applyToAvatar:avatar animated:animatedCopy];
 }
 
-- (BOOL)shouldDisplaySectionForCategory:(int64_t)a3
+- (BOOL)shouldDisplaySectionForCategory:(int64_t)category
 {
-  v5 = [(AVTAvatarAttributeEditorModelManager *)self editorState];
-  v6 = [v5 isCategoryPaired:a3];
+  editorState = [(AVTAvatarAttributeEditorModelManager *)self editorState];
+  v6 = [editorState isCategoryPaired:category];
 
-  v7 = [(AVTAvatarAttributeEditorModelManager *)self delegate];
+  delegate = [(AVTAvatarAttributeEditorModelManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(AVTAvatarAttributeEditorModelManager *)self delegate];
-    v9 = [v8 shouldDisplaySectionForCategory:a3];
+    delegate2 = [(AVTAvatarAttributeEditorModelManager *)self delegate];
+    v9 = [delegate2 shouldDisplaySectionForCategory:category];
   }
 
   else
@@ -697,23 +697,23 @@ LABEL_12:
   return (v6 ^ 1) & v9;
 }
 
-- (BOOL)shouldDisplaySectionWithDisplayCondition:(id)a3 inCategoryAtIndex:(unint64_t)a4
+- (BOOL)shouldDisplaySectionWithDisplayCondition:(id)condition inCategoryAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(AVTAvatarAttributeEditorModelManager *)self delegate];
-  v8 = [v7 conformsToProtocol:&unk_1F39D17F0];
+  conditionCopy = condition;
+  delegate = [(AVTAvatarAttributeEditorModelManager *)self delegate];
+  v8 = [delegate conformsToProtocol:&unk_1F39D17F0];
 
   if ((v8 & 1) == 0)
   {
     v9 = MEMORY[0x1E695DF30];
-    v10 = [(AVTAvatarAttributeEditorModelManager *)self delegate];
-    [v9 raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", v10}];
+    delegate2 = [(AVTAvatarAttributeEditorModelManager *)self delegate];
+    [v9 raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", delegate2}];
   }
 
-  v11 = [(AVTAvatarAttributeEditorModelManager *)self delegate];
+  delegate3 = [(AVTAvatarAttributeEditorModelManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v11 shouldDisplaySectionWithDisplayCondition:v6 inCategoryAtIndex:a4];
+    v12 = [delegate3 shouldDisplaySectionWithDisplayCondition:conditionCopy inCategoryAtIndex:index];
   }
 
   else

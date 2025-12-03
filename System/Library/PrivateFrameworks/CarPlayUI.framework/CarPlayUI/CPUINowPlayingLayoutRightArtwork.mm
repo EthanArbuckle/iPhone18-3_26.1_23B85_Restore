@@ -1,7 +1,7 @@
 @interface CPUINowPlayingLayoutRightArtwork
 - (BOOL)playModeControlButtonsFullWidth;
 - (CGSize)maximumTitleViewSize;
-- (CPUINowPlayingLayoutRightArtwork)initWithSafeArea:(CGRect)a3 frame:(CGRect)a4 displayScale:(double)a5 showsArtwork:(BOOL)a6;
+- (CPUINowPlayingLayoutRightArtwork)initWithSafeArea:(CGRect)area frame:(CGRect)frame displayScale:(double)scale showsArtwork:(BOOL)artwork;
 - (UIEdgeInsets)layoutMargins;
 - (double)albumArtWidthMultiplier;
 - (unint64_t)trackInfoFontStyle;
@@ -9,19 +9,19 @@
 
 @implementation CPUINowPlayingLayoutRightArtwork
 
-- (CPUINowPlayingLayoutRightArtwork)initWithSafeArea:(CGRect)a3 frame:(CGRect)a4 displayScale:(double)a5 showsArtwork:(BOOL)a6
+- (CPUINowPlayingLayoutRightArtwork)initWithSafeArea:(CGRect)area frame:(CGRect)frame displayScale:(double)scale showsArtwork:(BOOL)artwork
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = area.size.height;
+  v11 = area.size.width;
+  v12 = area.origin.y;
+  v13 = area.origin.x;
   v29.receiver = self;
   v29.super_class = CPUINowPlayingLayoutRightArtwork;
-  v14 = [(_CPUINowPlayingLayout *)&v29 initWithSafeArea:a6 frame:a3.origin.x displayScale:*&a5 showsArtwork:?];
+  v14 = [(_CPUINowPlayingLayout *)&v29 initWithSafeArea:artwork frame:area.origin.x displayScale:*&scale showsArtwork:?];
   v15 = v14;
   if (v14)
   {

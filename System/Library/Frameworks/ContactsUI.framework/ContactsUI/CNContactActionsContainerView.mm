@@ -1,14 +1,14 @@
 @interface CNContactActionsContainerView
-- (CNContactActionsContainerView)initWithArrangedSubviews:(id)a3;
+- (CNContactActionsContainerView)initWithArrangedSubviews:(id)subviews;
 @end
 
 @implementation CNContactActionsContainerView
 
-- (CNContactActionsContainerView)initWithArrangedSubviews:(id)a3
+- (CNContactActionsContainerView)initWithArrangedSubviews:(id)subviews
 {
   v6.receiver = self;
   v6.super_class = CNContactActionsContainerView;
-  v3 = [(NUIContainerBoxView *)&v6 initWithArrangedSubviews:a3];
+  v3 = [(NUIContainerBoxView *)&v6 initWithArrangedSubviews:subviews];
   v4 = v3;
   if (v3)
   {

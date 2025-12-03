@@ -1,8 +1,8 @@
 @interface CBFlashlightManager
-- (CBFlashlightManager)initWithQueue:(id)a3 andSamplingTime:(unint64_t)a4;
+- (CBFlashlightManager)initWithQueue:(id)queue andSamplingTime:(unint64_t)time;
 - (void)dealloc;
 - (void)getStrobeState;
-- (void)handleCameraServiceArrival:(unsigned int)a3;
+- (void)handleCameraServiceArrival:(unsigned int)arrival;
 - (void)registerForCameraArrivalNotifications;
 - (void)startCameraServiceLookup;
 - (void)timerCallback;
@@ -11,53 +11,53 @@
 
 @implementation CBFlashlightManager
 
-- (CBFlashlightManager)initWithQueue:(id)a3 andSamplingTime:(unint64_t)a4
+- (CBFlashlightManager)initWithQueue:(id)queue andSamplingTime:(unint64_t)time
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  timeCopy = time;
   v6.receiver = self;
   v6.super_class = CBFlashlightManager;
-  v10 = [(CBFlashlightManager *)&v6 init];
-  if (v10)
+  selfCopy = [(CBFlashlightManager *)&v6 init];
+  if (selfCopy)
   {
-    *(v10 + 4) = v8;
-    dispatch_retain(*(v10 + 4));
-    *(v10 + 6) = v7;
-    *(v10 + 2) = 0;
-    *(v10 + 2) = 0;
-    *(v10 + 6) = 0;
+    *(selfCopy + 4) = queueCopy;
+    dispatch_retain(*(selfCopy + 4));
+    *(selfCopy + 6) = timeCopy;
+    *(selfCopy + 2) = 0;
+    *(selfCopy + 2) = 0;
+    *(selfCopy + 6) = 0;
     v4 = os_log_create("com.apple.CoreBrightness.CBFlashlightManager", "default");
-    *(v10 + 5) = v4;
+    *(selfCopy + 5) = v4;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v4->_logHandle);
-    v4->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  if (v4->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v4->_queue);
-    v4->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  if (v4->_cameraService)
+  if (selfCopy->_cameraService)
   {
-    IOObjectRelease(v4->_cameraService);
-    v4->_cameraService = 0;
+    IOObjectRelease(selfCopy->_cameraService);
+    selfCopy->_cameraService = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBFlashlightManager;
   [(CBFlashlightManager *)&v2 dealloc];
 }
@@ -80,22 +80,22 @@
 
 - (void)registerForCameraArrivalNotifications
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   dispatch_assert_queue_V2(self->_queue);
-  [(CBFlashlightManager *)v10 unregisterForCameraArrivalNotifications];
-  v10->_ioNotificationPort = IONotificationPortCreate(*MEMORY[0x1E696CD60]);
-  if (v10->_ioNotificationPort)
+  [(CBFlashlightManager *)selfCopy unregisterForCameraArrivalNotifications];
+  selfCopy->_ioNotificationPort = IONotificationPortCreate(*MEMORY[0x1E696CD60]);
+  if (selfCopy->_ioNotificationPort)
   {
-    IONotificationPortSetDispatchQueue(v10->_ioNotificationPort, v10->_queue);
-    [(CBFlashlightManager *)v10 startCameraServiceLookup];
+    IONotificationPortSetDispatchQueue(selfCopy->_ioNotificationPort, selfCopy->_queue);
+    [(CBFlashlightManager *)selfCopy startCameraServiceLookup];
   }
 
   else
   {
-    if (v10->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v10->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -144,23 +144,23 @@
   }
 }
 
-- (void)handleCameraServiceArrival:(unsigned int)a3
+- (void)handleCameraServiceArrival:(unsigned int)arrival
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  if (a3)
+  arrivalCopy = arrival;
+  if (arrival)
   {
-    v12->_cameraService = v10;
-    IOObjectRetain(v12->_cameraService);
-    [(CBFlashlightManager *)v12 timerCallback];
+    selfCopy->_cameraService = arrivalCopy;
+    IOObjectRetain(selfCopy->_cameraService);
+    [(CBFlashlightManager *)selfCopy timerCallback];
   }
 
   else
   {
-    if (v12->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v12->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -192,18 +192,18 @@
 
 - (void)timerCallback
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   dispatch_assert_queue_V2(self->_queue);
-  [(CBFlashlightManager *)v11 getStrobeState];
-  v2 = dispatch_time(0, v11->_samplingTime);
-  queue = v11->_queue;
+  [(CBFlashlightManager *)selfCopy getStrobeState];
+  v2 = dispatch_time(0, selfCopy->_samplingTime);
+  queue = selfCopy->_queue;
   block = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __36__CBFlashlightManager_timerCallback__block_invoke;
   v8 = &unk_1E867B480;
-  v9 = v11;
+  v9 = selfCopy;
   dispatch_after(v2, queue, &block);
 }
 

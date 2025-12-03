@@ -1,17 +1,17 @@
 @interface PUWallpaperPosterMotionEffect
-- (CGPoint)parallaxVectorFromKeyPathsAndRelativeValues:(id)a3;
+- (CGPoint)parallaxVectorFromKeyPathsAndRelativeValues:(id)values;
 - (PUWallpaperPosterMotionEffect)init;
 @end
 
 @implementation PUWallpaperPosterMotionEffect
 
-- (CGPoint)parallaxVectorFromKeyPathsAndRelativeValues:(id)a3
+- (CGPoint)parallaxVectorFromKeyPathsAndRelativeValues:(id)values
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"focusDirectionX"];
+  valuesCopy = values;
+  v4 = [valuesCopy objectForKeyedSubscript:@"focusDirectionX"];
   [v4 doubleValue];
   v6 = v5;
-  v7 = [v3 objectForKeyedSubscript:@"focusDirectionY"];
+  v7 = [valuesCopy objectForKeyedSubscript:@"focusDirectionY"];
 
   [v7 doubleValue];
   v9 = v8;

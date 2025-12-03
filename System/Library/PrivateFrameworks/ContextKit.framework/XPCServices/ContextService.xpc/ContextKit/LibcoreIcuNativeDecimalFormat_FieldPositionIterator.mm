@@ -1,7 +1,7 @@
 @interface LibcoreIcuNativeDecimalFormat_FieldPositionIterator
-+ (id)forFieldPositionWithJavaTextFieldPosition:(id)a3;
++ (id)forFieldPositionWithJavaTextFieldPosition:(id)position;
 + (void)initialize;
-+ (void)setFieldPositionWithLibcoreIcuNativeDecimalFormat_FieldPositionIterator:(id)a3 withJavaTextFieldPosition:(id)a4;
++ (void)setFieldPositionWithLibcoreIcuNativeDecimalFormat_FieldPositionIterator:(id)iterator withJavaTextFieldPosition:(id)position;
 - (BOOL)next;
 - (id)field;
 - (int)fieldId;
@@ -12,7 +12,7 @@
 
 @implementation LibcoreIcuNativeDecimalFormat_FieldPositionIterator
 
-+ (id)forFieldPositionWithJavaTextFieldPosition:(id)a3
++ (id)forFieldPositionWithJavaTextFieldPosition:(id)position
 {
   if ((atomic_load_explicit(LibcoreIcuNativeDecimalFormat_FieldPositionIterator__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -22,11 +22,11 @@
   return 0;
 }
 
-+ (void)setFieldPositionWithLibcoreIcuNativeDecimalFormat_FieldPositionIterator:(id)a3 withJavaTextFieldPosition:(id)a4
++ (void)setFieldPositionWithLibcoreIcuNativeDecimalFormat_FieldPositionIterator:(id)iterator withJavaTextFieldPosition:(id)position
 {
   if (atomic_load_explicit(LibcoreIcuNativeDecimalFormat_FieldPositionIterator__initialized, memory_order_acquire))
   {
-    if (!a3)
+    if (!iterator)
     {
       return;
     }
@@ -35,26 +35,26 @@
   else
   {
     sub_1001F08BC();
-    if (!a3)
+    if (!iterator)
     {
       return;
     }
   }
 
-  if (a4)
+  if (position)
   {
-    v6 = sub_1001F01D8(a4);
+    v6 = sub_1001F01D8(position);
     if (v6 != -1)
     {
       v7 = v6;
-      while ([a3 next])
+      while ([iterator next])
       {
-        if ([a3 fieldId] == v7)
+        if ([iterator fieldId] == v7)
         {
-          [a4 setBeginIndexWithInt:{objc_msgSend(a3, "start")}];
-          v8 = [a3 limit];
+          [position setBeginIndexWithInt:{objc_msgSend(iterator, "start")}];
+          limit = [iterator limit];
 
-          [a4 setEndIndexWithInt:v8];
+          [position setEndIndexWithInt:limit];
           return;
         }
       }
@@ -168,7 +168,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(JavaTextNumberFormat_Field__initialized, memory_order_acquire) & 1) == 0)
     {

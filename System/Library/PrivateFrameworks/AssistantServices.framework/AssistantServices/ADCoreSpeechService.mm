@@ -1,18 +1,18 @@
 @interface ADCoreSpeechService
 + (id)sharedService;
 - (ADCoreSpeechService)init;
-- (void)_handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6;
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6;
-- (void)sendMessageWithPayload:(id)a3 toPeer:(id)a4 withReply:(id)a5;
+- (void)_handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)sendMessageWithPayload:(id)payload toPeer:(id)peer withReply:(id)reply;
 @end
 
 @implementation ADCoreSpeechService
 
-- (void)sendMessageWithPayload:(id)a3 toPeer:(id)a4 withReply:(id)a5
+- (void)sendMessageWithPayload:(id)payload toPeer:(id)peer withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  peerCopy = peer;
+  replyCopy = reply;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -27,33 +27,33 @@
   v14[2] = sub_1000C9DCC;
   v14[3] = &unk_100514DE0;
   v14[4] = self;
-  v15 = v10;
-  v13 = v10;
-  [v12 sendMessage:v8 messageType:@"corespeech" toDeviceWithIDSIdentifier:v9 completion:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [v12 sendMessage:payloadCopy messageType:@"corespeech" toDeviceWithIDSIdentifier:peerCopy completion:v14];
 }
 
-- (void)_handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6
+- (void)_handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v16 = 136315650;
     v17 = "[ADCoreSpeechService _handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
     v18 = 2112;
-    v19 = v10;
+    v19 = typeCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s %@ %@", &v16, 0x20u);
   }
 
-  if ([v10 isEqualToString:@"corespeech"])
+  if ([typeCopy isEqualToString:@"corespeech"])
   {
     v14 = +[CSP2PService sharedInstance];
-    [v14 processRemoteCommandWithPayload:v9 fromPeer:v11 withReply:v12];
+    [v14 processRemoteCommandWithPayload:messageCopy fromPeer:identifierCopy withReply:completionCopy];
   }
 
   else
@@ -64,35 +64,35 @@
       v16 = 136315394;
       v17 = "[ADCoreSpeechService _handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
       v18 = 2112;
-      v19 = v10;
+      v19 = typeCopy;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s Received message from unknown message type: %@", &v16, 0x16u);
     }
 
     v14 = [AFError errorWithCode:1004];
-    v12[2](v12, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 }
 
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CA1B0;
   block[3] = &unk_10051D2A0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = messageCopy;
+  v21 = typeCopy;
+  v22 = identifierCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = identifierCopy;
+  v17 = typeCopy;
+  v18 = messageCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -125,7 +125,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000CA338;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10058FFD8 != -1)
   {
     dispatch_once(&qword_10058FFD8, block);

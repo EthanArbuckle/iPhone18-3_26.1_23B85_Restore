@@ -1,31 +1,31 @@
 @interface TCNamedData
-+ (id)namedDataWithData:(id)a3 named:(id)a4;
-- (TCNamedData)initWithData:(id)a3 named:(id)a4;
++ (id)namedDataWithData:(id)data named:(id)named;
+- (TCNamedData)initWithData:(id)data named:(id)named;
 @end
 
 @implementation TCNamedData
 
-+ (id)namedDataWithData:(id)a3 named:(id)a4
++ (id)namedDataWithData:(id)data named:(id)named
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[TCNamedData alloc] initWithData:v5 named:v6];
+  dataCopy = data;
+  namedCopy = named;
+  v7 = [[TCNamedData alloc] initWithData:dataCopy named:namedCopy];
 
   return v7;
 }
 
-- (TCNamedData)initWithData:(id)a3 named:(id)a4
+- (TCNamedData)initWithData:(id)data named:(id)named
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  namedCopy = named;
   v12.receiver = self;
   v12.super_class = TCNamedData;
   v9 = [(TCNamedData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mData, a3);
-    objc_storeStrong(&v10->mName, a4);
+    objc_storeStrong(&v9->mData, data);
+    objc_storeStrong(&v10->mName, named);
   }
 
   return v10;

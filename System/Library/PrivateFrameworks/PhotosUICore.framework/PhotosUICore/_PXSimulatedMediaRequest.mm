@@ -1,51 +1,51 @@
 @interface _PXSimulatedMediaRequest
-+ (id)defaultSimulatedMediaRequestWithOriginalOptions:(id)a3 simulatedResultHandler:(id)a4;
-- (_PXSimulatedMediaRequest)initWithOriginalOptions:(id)a3 simulatedResultHandler:(id)a4;
-- (_PXSimulatedMediaRequest)initWithWrappedMediaRequest:(id)a3;
-- (void)handleOriginalProgress:(double)a3 error:(id)a4 stop:(BOOL *)a5 info:(id)a6;
++ (id)defaultSimulatedMediaRequestWithOriginalOptions:(id)options simulatedResultHandler:(id)handler;
+- (_PXSimulatedMediaRequest)initWithOriginalOptions:(id)options simulatedResultHandler:(id)handler;
+- (_PXSimulatedMediaRequest)initWithWrappedMediaRequest:(id)request;
+- (void)handleOriginalProgress:(double)progress error:(id)error stop:(BOOL *)stop info:(id)info;
 @end
 
 @implementation _PXSimulatedMediaRequest
 
-- (void)handleOriginalProgress:(double)a3 error:(id)a4 stop:(BOOL *)a5 info:(id)a6
+- (void)handleOriginalProgress:(double)progress error:(id)error stop:(BOOL *)stop info:(id)info
 {
   originalProgressHandler = self->_originalProgressHandler;
   if (originalProgressHandler)
   {
-    originalProgressHandler[2](originalProgressHandler, a4, a5, a6, a3);
+    originalProgressHandler[2](originalProgressHandler, error, stop, info, progress);
   }
 }
 
-- (_PXSimulatedMediaRequest)initWithWrappedMediaRequest:(id)a3
+- (_PXSimulatedMediaRequest)initWithWrappedMediaRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 simulatedOptions];
+  requestCopy = request;
+  simulatedOptions = [requestCopy simulatedOptions];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56___PXSimulatedMediaRequest_initWithWrappedMediaRequest___block_invoke;
   v9[3] = &unk_1E7743F20;
-  v10 = v4;
-  v6 = v4;
-  v7 = [(_PXSimulatedMediaRequest *)self initWithOriginalOptions:v5 simulatedResultHandler:v9];
+  v10 = requestCopy;
+  v6 = requestCopy;
+  v7 = [(_PXSimulatedMediaRequest *)self initWithOriginalOptions:simulatedOptions simulatedResultHandler:v9];
 
   return v7;
 }
 
-- (_PXSimulatedMediaRequest)initWithOriginalOptions:(id)a3 simulatedResultHandler:(id)a4
+- (_PXSimulatedMediaRequest)initWithOriginalOptions:(id)options simulatedResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = _PXSimulatedMediaRequest;
   v8 = [(_PXSimulatedMediaRequest *)&v23 init];
   if (v8)
   {
-    v9 = [v6 progressHandler];
-    v10 = [v9 copy];
+    progressHandler = [optionsCopy progressHandler];
+    v10 = [progressHandler copy];
     originalProgressHandler = v8->_originalProgressHandler;
     v8->_originalProgressHandler = v10;
 
-    v12 = [v6 copyWithZone:0];
+    v12 = [optionsCopy copyWithZone:0];
     simulatedOptions = v8->_simulatedOptions;
     v8->_simulatedOptions = v12;
 
@@ -56,7 +56,7 @@
     v20 = &unk_1E774A490;
     objc_copyWeak(&v21, &location);
     [(_RequestOptions *)v8->_simulatedOptions setProgressHandler:&v17];
-    v14 = [v7 copy];
+    v14 = [handlerCopy copy];
     simulatedResultHandler = v8->_simulatedResultHandler;
     v8->_simulatedResultHandler = v14;
 
@@ -67,12 +67,12 @@
   return v8;
 }
 
-+ (id)defaultSimulatedMediaRequestWithOriginalOptions:(id)a3 simulatedResultHandler:(id)a4
++ (id)defaultSimulatedMediaRequestWithOriginalOptions:(id)options simulatedResultHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
   v7 = +[PXMediaProviderSettings sharedInstance];
-  v8 = [[_PXSimulatedMediaRequest alloc] initWithOriginalOptions:v6 simulatedResultHandler:v5];
+  v8 = [[_PXSimulatedMediaRequest alloc] initWithOriginalOptions:optionsCopy simulatedResultHandler:handlerCopy];
 
   [v7 simulatedDelay];
   if (v9 > 0.0)

@@ -1,7 +1,7 @@
 @interface PXGenerativeStoryFeatureEligibilityRow
 - (PXGenerativeStoryFeatureEligibilityRow)init;
-- (PXGenerativeStoryFeatureEligibilityRow)initWithPhotoLibrary:(id)a3 titleKeyPath:(id)a4 imageKeyPath:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXGenerativeStoryFeatureEligibilityRow)initWithPhotoLibrary:(id)library titleKeyPath:(id)path imageKeyPath:(id)keyPath;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultUIAction;
 @end
 
@@ -97,31 +97,31 @@ LABEL_5:
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXGenerativeStoryFeatureEligibilityRow alloc];
   photoLibrary = self->_photoLibrary;
-  v6 = [(PXGenerativeStoryFeatureEligibilityRow *)self titleKeyPath];
-  v7 = [(PXGenerativeStoryFeatureEligibilityRow *)self imageKeyPath];
-  v8 = [(PXGenerativeStoryFeatureEligibilityRow *)v4 initWithPhotoLibrary:photoLibrary titleKeyPath:v6 imageKeyPath:v7];
+  titleKeyPath = [(PXGenerativeStoryFeatureEligibilityRow *)self titleKeyPath];
+  imageKeyPath = [(PXGenerativeStoryFeatureEligibilityRow *)self imageKeyPath];
+  v8 = [(PXGenerativeStoryFeatureEligibilityRow *)v4 initWithPhotoLibrary:photoLibrary titleKeyPath:titleKeyPath imageKeyPath:imageKeyPath];
 
   return v8;
 }
 
-- (PXGenerativeStoryFeatureEligibilityRow)initWithPhotoLibrary:(id)a3 titleKeyPath:(id)a4 imageKeyPath:(id)a5
+- (PXGenerativeStoryFeatureEligibilityRow)initWithPhotoLibrary:(id)library titleKeyPath:(id)path imageKeyPath:(id)keyPath
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  pathCopy = path;
+  keyPathCopy = keyPath;
   v15.receiver = self;
   v15.super_class = PXGenerativeStoryFeatureEligibilityRow;
   v12 = [(PXGenerativeStoryFeatureEligibilityRow *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photoLibrary, a3);
-    [(PXGenerativeStoryFeatureEligibilityRow *)v13 setTitleKeyPath:v10];
-    [(PXGenerativeStoryFeatureEligibilityRow *)v13 setImageKeyPath:v11];
+    objc_storeStrong(&v12->_photoLibrary, library);
+    [(PXGenerativeStoryFeatureEligibilityRow *)v13 setTitleKeyPath:pathCopy];
+    [(PXGenerativeStoryFeatureEligibilityRow *)v13 setImageKeyPath:keyPathCopy];
   }
 
   return v13;
@@ -129,8 +129,8 @@ LABEL_5:
 
 - (PXGenerativeStoryFeatureEligibilityRow)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGenerativeStoryFeatureEligibilityRow.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXGenerativeStoryFeatureEligibilityRow init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGenerativeStoryFeatureEligibilityRow.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXGenerativeStoryFeatureEligibilityRow init]"}];
 
   abort();
 }

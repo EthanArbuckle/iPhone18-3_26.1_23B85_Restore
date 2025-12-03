@@ -6,32 +6,32 @@
 - (TUIVisibilityOptions)visibilityOptions;
 - (UIView)view;
 - (UIViewController)viewController;
-- (_TUIHostedViewState)initWithController:(id)a3 provider:(id)a4 identifier:(id)a5;
+- (_TUIHostedViewState)initWithController:(id)controller provider:(id)provider identifier:(id)identifier;
 - (void)_updateAnchorPoint;
 - (void)dealloc;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)presentationDidDismiss;
-- (void)recycleViewWithController:(id)a3;
-- (void)setAnchorPoint:(CGPoint)a3;
-- (void)setVisible:(BOOL)a3;
+- (void)recycleViewWithController:(id)controller;
+- (void)setAnchorPoint:(CGPoint)point;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation _TUIHostedViewState
 
-- (_TUIHostedViewState)initWithController:(id)a3 provider:(id)a4 identifier:(id)a5
+- (_TUIHostedViewState)initWithController:(id)controller provider:(id)provider identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  providerCopy = provider;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = _TUIHostedViewState;
   v11 = [(_TUIHostedViewState *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_controller, v8);
-    objc_storeStrong(&v12->_provider, a4);
-    objc_storeStrong(&v12->_identifier, a5);
+    objc_storeWeak(&v11->_controller, controllerCopy);
+    objc_storeStrong(&v12->_provider, provider);
+    objc_storeStrong(&v12->_identifier, identifier);
     v12->_anchorPoint = vdupq_n_s64(0x7FF8000000000000uLL);
   }
 
@@ -44,16 +44,16 @@
   viewController = self->_viewController;
   if (viewController)
   {
-    v4 = [(UIViewController *)viewController parentViewController];
+    parentViewController = [(UIViewController *)viewController parentViewController];
 
     v5 = self->_viewController;
-    if (v4)
+    if (parentViewController)
     {
       if ([(UIViewController *)v5 _appearState]== 2)
       {
         [(UIViewController *)self->_viewController beginAppearanceTransition:0 animated:0];
-        v6 = [(UIViewController *)self->_viewController viewIfLoaded];
-        [v6 removeFromSuperview];
+        viewIfLoaded = [(UIViewController *)self->_viewController viewIfLoaded];
+        [viewIfLoaded removeFromSuperview];
 
         [(UIViewController *)self->_viewController endAppearanceTransition];
       }
@@ -63,9 +63,9 @@
 
     else
     {
-      v7 = [(UIViewController *)v5 presentingViewController];
+      presentingViewController = [(UIViewController *)v5 presentingViewController];
 
-      if (v7)
+      if (presentingViewController)
       {
         v8 = self->_viewController;
         WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -87,41 +87,41 @@
   [(_TUIHostedViewState *)&v11 dealloc];
 }
 
-- (void)recycleViewWithController:(id)a3
+- (void)recycleViewWithController:(id)controller
 {
-  v3 = [(_TUIHostedViewState *)self view];
-  [v3 removeFromSuperview];
+  view = [(_TUIHostedViewState *)self view];
+  [view removeFromSuperview];
 }
 
 - (BOOL)needsLayout
 {
-  v2 = [(_TUIHostedViewState *)self viewController];
-  v3 = [v2 viewIfLoaded];
-  v4 = [v3 isHidden];
+  viewController = [(_TUIHostedViewState *)self viewController];
+  viewIfLoaded = [viewController viewIfLoaded];
+  isHidden = [viewIfLoaded isHidden];
 
-  return v4;
+  return isHidden;
 }
 
 - (BOOL)isAvailable
 {
-  v2 = [(_TUIHostedViewState *)self viewController];
-  v3 = v2 != 0;
+  viewController = [(_TUIHostedViewState *)self viewController];
+  v3 = viewController != 0;
 
   return v3;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    v3 = a3;
-    self->_visible = a3;
+    visibleCopy = visible;
+    self->_visible = visible;
     if (objc_opt_respondsToSelector())
     {
       provider = self->_provider;
       viewController = self->_viewController;
 
-      [(TUIHostedViewProviding *)provider hostedViewProviderDidChangeVisibility:v3 viewController:viewController];
+      [(TUIHostedViewProviding *)provider hostedViewProviderDidChangeVisibility:visibleCopy viewController:viewController];
     }
   }
 }
@@ -140,13 +140,13 @@
       {
         v10 = objc_loadWeakRetained(&self->_controller);
         v11 = [v10 _propertiesForIdentifier:self->_identifier];
-        v12 = [v11 presentation];
+        presentation = [v11 presentation];
 
-        if (!v12)
+        if (!presentation)
         {
           v13 = objc_loadWeakRetained(&self->_controller);
-          v14 = [v13 viewController];
-          [v14 addChildViewController:self->_viewController];
+          viewController = [v13 viewController];
+          [viewController addChildViewController:self->_viewController];
         }
 
         if (v5)
@@ -167,28 +167,28 @@
 
 - (UIView)view
 {
-  v2 = [(_TUIHostedViewState *)self viewController];
-  v3 = [v2 view];
+  viewController = [(_TUIHostedViewState *)self viewController];
+  view = [viewController view];
 
-  return v3;
+  return view;
 }
 
 - (TUIVisibilityOptions)visibilityOptions
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(TUIHostedViewProviding *)self->_provider hostedViewProviderVisibilityOptions];
+    hostedViewProviderVisibilityOptions = [(TUIHostedViewProviding *)self->_provider hostedViewProviderVisibilityOptions];
   }
 
   else
   {
-    v3 = 0;
+    hostedViewProviderVisibilityOptions = 0;
   }
 
-  return v3;
+  return hostedViewProviderVisibilityOptions;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   [(_TUIHostedViewState *)self setVisible:0];
   WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -202,11 +202,11 @@
   [WeakRetained _removeProviderForViewState:self];
 }
 
-- (void)setAnchorPoint:(CGPoint)a3
+- (void)setAnchorPoint:(CGPoint)point
 {
-  if (self->_anchorPoint.x != a3.x || self->_anchorPoint.y != a3.y)
+  if (self->_anchorPoint.x != point.x || self->_anchorPoint.y != point.y)
   {
-    self->_anchorPoint = a3;
+    self->_anchorPoint = point;
     [(_TUIHostedViewState *)self _updateAnchorPoint];
   }
 }

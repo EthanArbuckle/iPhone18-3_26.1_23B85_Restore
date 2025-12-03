@@ -6,7 +6,7 @@
 
 - (uint64_t)_requestTextExtraction:()WKTextExtraction completionHandler:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
+  WeakRetained = objc_loadWeakRetained((self + 16));
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F9DB8;
   v5[1] = WeakRetained;
@@ -22,7 +22,7 @@
     v6 = v10;
   }
 
-  (*(*(a1 + 8) + 16))(*(a1 + 8));
+  (*(*(self + 8) + 16))(*(self + 8));
   if (v6)
   {
   }

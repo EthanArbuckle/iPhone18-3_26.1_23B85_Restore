@@ -1,25 +1,25 @@
 @interface FedStatsCombinationType
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4;
-- (FedStatsCombinationType)initWithCombinationSpec:(id)a3;
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4;
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4;
-- (id)sampleForIndex:(unint64_t)a3;
++ (id)createFromDict:(id)dict possibleError:(id *)error;
+- (FedStatsCombinationType)initWithCombinationSpec:(id)spec;
+- (id)decodeFromIndex:(id)index possibleError:(id *)error;
+- (id)encodeToIndex:(id)index possibleError:(id *)error;
+- (id)sampleForIndex:(unint64_t)index;
 @end
 
 @implementation FedStatsCombinationType
 
-- (FedStatsCombinationType)initWithCombinationSpec:(id)a3
+- (FedStatsCombinationType)initWithCombinationSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   v40.receiver = self;
   v40.super_class = FedStatsCombinationType;
   v6 = [(FedStatsCombinationType *)&v40 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_combinationSpec, a3);
-    v8 = [v5 allKeys];
-    v9 = [v8 sortedArrayUsingComparator:&stru_10002C770];
+    objc_storeStrong(&v6->_combinationSpec, spec);
+    allKeys = [specCopy allKeys];
+    v9 = [allKeys sortedArrayUsingComparator:&stru_10002C770];
     orderedKeys = v7->_orderedKeys;
     v7->_orderedKeys = v9;
 
@@ -27,8 +27,8 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = [(FedStatsCombinationType *)v7 orderedKeys];
-    v12 = [v11 countByEnumeratingWithState:&v36 objects:v42 count:16];
+    orderedKeys = [(FedStatsCombinationType *)v7 orderedKeys];
+    v12 = [orderedKeys countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v12)
     {
       v13 = v12;
@@ -40,14 +40,14 @@
         {
           if (*v37 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(orderedKeys);
           }
 
-          v17 = [v5 objectForKeyedSubscript:*(*(&v36 + 1) + 8 * i)];
+          v17 = [specCopy objectForKeyedSubscript:*(*(&v36 + 1) + 8 * i)];
           v15 *= [v17 classCount];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v36 objects:v42 count:16];
+        v13 = [orderedKeys countByEnumeratingWithState:&v36 objects:v42 count:16];
       }
 
       while (v13);
@@ -62,14 +62,14 @@
     v35.super_class = FedStatsCombinationType;
     [(FedStatsBoundedULongType *)&v35 setBound:v15 - 1];
     v7->_classCount = v15;
-    v18 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v5 count]);
+    v18 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [specCopy count]);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v30 = v7;
-    v19 = [(FedStatsCombinationType *)v7 orderedKeys];
-    v20 = [v19 countByEnumeratingWithState:&v31 objects:v41 count:16];
+    orderedKeys2 = [(FedStatsCombinationType *)v7 orderedKeys];
+    v20 = [orderedKeys2 countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v20)
     {
       v21 = v20;
@@ -80,18 +80,18 @@
         {
           if (*v32 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(orderedKeys2);
           }
 
           v24 = *(*(&v31 + 1) + 8 * j);
-          v25 = [v5 objectForKeyedSubscript:v24];
+          v25 = [specCopy objectForKeyedSubscript:v24];
           v15 /= [v25 classCount];
 
           v26 = [NSNumber numberWithUnsignedLong:v15];
           [v18 setObject:v26 forKeyedSubscript:v24];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v31 objects:v41 count:16];
+        v21 = [orderedKeys2 countByEnumeratingWithState:&v31 objects:v41 count:16];
       }
 
       while (v21);
@@ -106,18 +106,18 @@
   return v7;
 }
 
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4
++ (id)createFromDict:(id)dict possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKey:@"structure"];
+  dictCopy = dict;
+  v7 = [dictCopy objectForKey:@"structure"];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v8 = [NSString stringWithFormat:@"Missing key %@", @"structure"];
       v9 = 300;
 LABEL_11:
-      *a4 = [FedStatsError errorWithCode:v9 description:v8];
+      *error = [FedStatsError errorWithCode:v9 description:v8];
 
       goto LABEL_12;
     }
@@ -128,7 +128,7 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       [NSString stringWithFormat:@"The value of the key %@ must be an array", @"structure"];
       goto LABEL_10;
@@ -141,7 +141,7 @@ LABEL_12:
 
   if ([v7 count] <= 1)
   {
-    if (a4)
+    if (error)
     {
       [NSString stringWithFormat:@"The value of the key %@ must have at least 2 elements", @"structure"];
       v8 = LABEL_10:;
@@ -152,7 +152,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v37 = a1;
+  selfCopy = self;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
@@ -176,10 +176,10 @@ LABEL_12:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v32 = [NSString stringWithFormat:@"Every entry in the value of the key %@ must be a string", @"structure"];
-            *a4 = [FedStatsError errorWithCode:302 description:v32];
+            *error = [FedStatsError errorWithCode:302 description:v32];
           }
 
           goto LABEL_12;
@@ -196,7 +196,7 @@ LABEL_12:
     }
   }
 
-  v18 = [v6 objectForKey:@"availableTypes"];
+  v18 = [dictCopy objectForKey:@"availableTypes"];
   if (v18)
   {
     objc_opt_class();
@@ -206,8 +206,8 @@ LABEL_12:
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v19 = [v18 allValues];
-      v20 = [v19 countByEnumeratingWithState:&v42 objects:v51 count:16];
+      allValues = [v18 allValues];
+      v20 = [allValues countByEnumeratingWithState:&v42 objects:v51 count:16];
       if (v20)
       {
         v21 = v20;
@@ -218,16 +218,16 @@ LABEL_12:
           {
             if (*v43 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(allValues);
             }
 
             if (([*(*(&v42 + 1) + 8 * j) conformsToProtocol:&OBJC_PROTOCOL___FedStatsDataTypeProtocol] & 1) == 0)
             {
               v31 = v18;
-              if (a4)
+              if (error)
               {
                 v34 = [NSString stringWithFormat:@"Every value in the %@ dictionary must be a class conforming to %@", @"availableTypes", @"FedStatsDataTypeProtocol"];
-                *a4 = [FedStatsError errorWithCode:302 description:v34];
+                *error = [FedStatsError errorWithCode:302 description:v34];
               }
 
 LABEL_57:
@@ -236,7 +236,7 @@ LABEL_57:
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v42 objects:v51 count:16];
+          v21 = [allValues countByEnumeratingWithState:&v42 objects:v51 count:16];
           if (v21)
           {
             continue;
@@ -246,7 +246,7 @@ LABEL_57:
         }
       }
 
-      v19 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v12 count]);
+      allValues = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v12 count]);
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
@@ -268,17 +268,17 @@ LABEL_57:
 
             v28 = *(*(&v38 + 1) + 8 * k);
             v29 = [v18 objectForKey:v28];
-            [v19 setObject:v29 forKeyedSubscript:v28];
+            [allValues setObject:v29 forKeyedSubscript:v28];
 
-            v30 = [v19 objectForKeyedSubscript:v28];
+            v30 = [allValues objectForKeyedSubscript:v28];
 
             if (!v30)
             {
               v31 = v18;
-              if (a4)
+              if (error)
               {
                 v35 = [NSString stringWithFormat:@"There is no type defined for %@", v28];
-                *a4 = [FedStatsError errorWithCode:302 description:v35];
+                *error = [FedStatsError errorWithCode:302 description:v35];
               }
 
               goto LABEL_57;
@@ -297,14 +297,14 @@ LABEL_57:
 
       v31 = v18;
 
-      v10 = [[v37 alloc] initWithCombinationSpec:v19];
+      v10 = [[selfCopy alloc] initWithCombinationSpec:allValues];
       goto LABEL_58;
     }
 
     v31 = v18;
-    if (a4)
+    if (error)
     {
-      v19 = [NSString stringWithFormat:@"The value of the key %@ must be a dictionary", @"availableTypes"];
+      allValues = [NSString stringWithFormat:@"The value of the key %@ must be a dictionary", @"availableTypes"];
       v33 = 302;
       goto LABEL_50;
     }
@@ -313,13 +313,13 @@ LABEL_57:
   else
   {
     v31 = 0;
-    if (a4)
+    if (error)
     {
-      v19 = [NSString stringWithFormat:@"Missing key %@", @"availableTypes"];
+      allValues = [NSString stringWithFormat:@"Missing key %@", @"availableTypes"];
       v33 = 300;
 LABEL_50:
-      [FedStatsError errorWithCode:v33 description:v19];
-      *a4 = v10 = 0;
+      [FedStatsError errorWithCode:v33 description:allValues];
+      *error = v10 = 0;
 LABEL_58:
 
       goto LABEL_59;
@@ -334,9 +334,9 @@ LABEL_13:
   return v10;
 }
 
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4
+- (id)encodeToIndex:(id)index possibleError:(id *)error
 {
-  v6 = a3;
+  indexCopy = index;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -344,8 +344,8 @@ LABEL_13:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v7 = [(FedStatsCombinationType *)self orderedKeys];
-    v8 = [v7 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    orderedKeys = [(FedStatsCombinationType *)self orderedKeys];
+    v8 = [orderedKeys countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v8)
     {
       v9 = v8;
@@ -356,25 +356,25 @@ LABEL_13:
         {
           if (*v40 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(orderedKeys);
           }
 
           v12 = *(*(&v39 + 1) + 8 * i);
-          v13 = [v6 objectForKey:v12];
+          v13 = [indexCopy objectForKey:v12];
 
           if (!v13)
           {
-            if (a4)
+            if (error)
             {
               v26 = [NSString stringWithFormat:@"The combination type requires the key %@ to be in the value dictionary", v12];
-              *a4 = [FedStatsError errorWithCode:401 description:v26];
+              *error = [FedStatsError errorWithCode:401 description:v26];
             }
 
             goto LABEL_27;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v39 objects:v44 count:16];
+        v9 = [orderedKeys countByEnumeratingWithState:&v39 objects:v44 count:16];
         if (v9)
         {
           continue;
@@ -392,7 +392,7 @@ LABEL_13:
     v33 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v33)
     {
-      v30 = a4;
+      errorCopy = error;
       v14 = 0;
       v32 = *v36;
       while (2)
@@ -405,30 +405,30 @@ LABEL_13:
           }
 
           v16 = *(*(&v35 + 1) + 8 * j);
-          v17 = [(FedStatsCombinationType *)self combinationSpec];
-          v18 = [v17 objectForKey:v16];
+          combinationSpec = [(FedStatsCombinationType *)self combinationSpec];
+          v18 = [combinationSpec objectForKey:v16];
 
-          v19 = [v6 objectForKeyedSubscript:v16];
+          v19 = [indexCopy objectForKeyedSubscript:v16];
           v34 = 0;
           v20 = [v18 encodeToIndex:v19 possibleError:&v34];
           v21 = v34;
 
           if (!v20)
           {
-            if (v30)
+            if (errorCopy)
             {
-              v27 = [*v30 code];
+              code = [*errorCopy code];
               v28 = [NSString stringWithFormat:@"Error with %@ value in the encoder.", v16];
-              *v30 = [FedStatsError errorWithCode:v27 underlyingError:v21 description:v28];
+              *errorCopy = [FedStatsError errorWithCode:code underlyingError:v21 description:v28];
             }
 
             goto LABEL_27;
           }
 
-          v22 = [(FedStatsCombinationType *)self strides];
-          v23 = [v22 objectForKey:v16];
-          v24 = [v23 unsignedLongValue];
-          v14 += [v20 unsignedLongValue] * v24;
+          strides = [(FedStatsCombinationType *)self strides];
+          v23 = [strides objectForKey:v16];
+          unsignedLongValue = [v23 unsignedLongValue];
+          v14 += [v20 unsignedLongValue] * unsignedLongValue;
         }
 
         v33 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -449,10 +449,10 @@ LABEL_13:
     v25 = [NSNumber numberWithUnsignedInteger:v14];
   }
 
-  else if (a4)
+  else if (error)
   {
     [FedStatsError errorWithCode:401 description:@"The combination type encoder requires a dictionary to process."];
-    *a4 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -464,18 +464,18 @@ LABEL_27:
   return v25;
 }
 
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4
+- (id)decodeFromIndex:(id)index possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  indexCopy = index;
+  v7 = indexCopy;
+  if (!indexCopy)
   {
-    if (a4)
+    if (error)
     {
       v26 = @"The decoder can only work with a valid number type";
 LABEL_16:
       [FedStatsError errorWithCode:500 description:v26];
-      *a4 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_22;
     }
 
@@ -484,10 +484,10 @@ LABEL_17:
     goto LABEL_22;
   }
 
-  v8 = [v6 unsignedLongValue];
-  if (v8 >= [(FedStatsCombinationType *)self classCount])
+  unsignedLongValue = [indexCopy unsignedLongValue];
+  if (unsignedLongValue >= [(FedStatsCombinationType *)self classCount])
   {
-    if (a4)
+    if (error)
     {
       v26 = @"The decoder requires a number less than the class count";
       goto LABEL_16;
@@ -497,9 +497,9 @@ LABEL_17:
   }
 
   v31 = v7;
-  v9 = [v7 unsignedLongValue];
-  v10 = [(FedStatsCombinationType *)self orderedKeys];
-  v36 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v10 count]);
+  unsignedLongValue2 = [v7 unsignedLongValue];
+  orderedKeys = [(FedStatsCombinationType *)self orderedKeys];
+  v36 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [orderedKeys count]);
 
   v40 = 0u;
   v41 = 0u;
@@ -509,7 +509,7 @@ LABEL_17:
   v35 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v35)
   {
-    v33 = self;
+    selfCopy = self;
     v34 = *v39;
     while (2)
     {
@@ -521,29 +521,29 @@ LABEL_17:
         }
 
         v12 = *(*(&v38 + 1) + 8 * i);
-        v13 = [(FedStatsCombinationType *)self strides];
-        v14 = [v13 objectForKey:v12];
-        v15 = [v14 unsignedLongValue];
+        strides = [(FedStatsCombinationType *)self strides];
+        v14 = [strides objectForKey:v12];
+        unsignedLongValue3 = [v14 unsignedLongValue];
 
-        v37 = v15;
-        v16 = v9 / v15;
-        v17 = [NSNumber numberWithUnsignedLong:v9 / v15];
-        v18 = [(FedStatsCombinationType *)self combinationSpec];
-        [v18 objectForKey:v12];
-        v20 = v19 = v9;
-        v21 = a4;
-        v22 = [v20 decodeFromIndex:v17 possibleError:a4];
+        v37 = unsignedLongValue3;
+        v16 = unsignedLongValue2 / unsignedLongValue3;
+        v17 = [NSNumber numberWithUnsignedLong:unsignedLongValue2 / unsignedLongValue3];
+        combinationSpec = [(FedStatsCombinationType *)self combinationSpec];
+        [combinationSpec objectForKey:v12];
+        v20 = v19 = unsignedLongValue2;
+        errorCopy = error;
+        v22 = [v20 decodeFromIndex:v17 possibleError:error];
         [v36 setValue:v22 forKey:v12];
 
         v23 = [v36 objectForKey:v12];
 
         if (!v23)
         {
-          if (v21)
+          if (errorCopy)
           {
-            v27 = v21;
-            v28 = [*v21 localizedDescription];
-            v29 = [NSString stringWithFormat:@"Could not decode %@ value in the combination: %@", v12, v28];
+            v27 = errorCopy;
+            localizedDescription = [*errorCopy localizedDescription];
+            v29 = [NSString stringWithFormat:@"Could not decode %@ value in the combination: %@", v12, localizedDescription];
             *v27 = [FedStatsError errorWithCode:500 description:v29];
           }
 
@@ -552,10 +552,10 @@ LABEL_17:
           goto LABEL_21;
         }
 
-        v9 = v19 - v16 * v37;
+        unsignedLongValue2 = v19 - v16 * v37;
 
-        a4 = v21;
-        self = v33;
+        error = errorCopy;
+        self = selfCopy;
       }
 
       v35 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -578,10 +578,10 @@ LABEL_22:
   return v25;
 }
 
-- (id)sampleForIndex:(unint64_t)a3
+- (id)sampleForIndex:(unint64_t)index
 {
-  v5 = [(FedStatsCombinationType *)self orderedKeys];
-  v19 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v5 count]);
+  orderedKeys = [(FedStatsCombinationType *)self orderedKeys];
+  v19 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [orderedKeys count]);
 
   v22 = 0u;
   v23 = 0u;
@@ -603,16 +603,16 @@ LABEL_22:
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [(FedStatsCombinationType *)self strides];
-        v11 = [v10 objectForKey:v9];
-        v12 = [v11 unsignedLongValue];
+        strides = [(FedStatsCombinationType *)self strides];
+        v11 = [strides objectForKey:v9];
+        unsignedLongValue = [v11 unsignedLongValue];
 
-        v13 = [(FedStatsCombinationType *)self combinationSpec];
-        v14 = [v13 objectForKey:v9];
-        v15 = [v14 sampleForIndex:a3 / v12];
+        combinationSpec = [(FedStatsCombinationType *)self combinationSpec];
+        v14 = [combinationSpec objectForKey:v9];
+        v15 = [v14 sampleForIndex:index / unsignedLongValue];
         [v19 setObject:v15 forKey:v9];
 
-        a3 %= v12;
+        index %= unsignedLongValue;
       }
 
       v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];

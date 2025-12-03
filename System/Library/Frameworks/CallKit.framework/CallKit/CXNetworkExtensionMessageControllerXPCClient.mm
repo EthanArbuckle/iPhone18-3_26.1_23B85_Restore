@@ -3,9 +3,9 @@
 - (NSXPCConnection)connection;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendNetworkExtensionMessage:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
-- (void)sendNetworkExtensionPushToTalkMessage:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
-- (void)setConnection:(id)a3;
+- (void)sendNetworkExtensionMessage:(id)message forBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)sendNetworkExtensionPushToTalkMessage:(id)message forBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation CXNetworkExtensionMessageControllerXPCClient
@@ -41,8 +41,8 @@
     v5 = self->_connection;
     self->_connection = v4;
 
-    v6 = [MEMORY[0x1E696B0D0] cx_networkExtensionMessageControllerHostInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v6];
+    cx_networkExtensionMessageControllerHostInterface = [MEMORY[0x1E696B0D0] cx_networkExtensionMessageControllerHostInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:cx_networkExtensionMessageControllerHostInterface];
 
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
@@ -111,13 +111,13 @@ void __58__CXNetworkExtensionMessageControllerXPCClient_connection__block_invoke
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_connection != v5)
+  if (self->_connection != connectionCopy)
   {
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&self->_connection, connection);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -131,26 +131,26 @@ void __58__CXNetworkExtensionMessageControllerXPCClient_connection__block_invoke
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)sendNetworkExtensionMessage:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)sendNetworkExtensionMessage:(id)message forBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CXNetworkExtensionMessageControllerXPCClient *)self connection];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  messageCopy = message;
+  connection = [(CXNetworkExtensionMessageControllerXPCClient *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __107__CXNetworkExtensionMessageControllerXPCClient_sendNetworkExtensionMessage_forBundleIdentifier_completion___block_invoke;
   v17[3] = &unk_1E7C07230;
-  v12 = v8;
+  v12 = completionCopy;
   v18 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v17];
+  v13 = [connection remoteObjectProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __107__CXNetworkExtensionMessageControllerXPCClient_sendNetworkExtensionMessage_forBundleIdentifier_completion___block_invoke_6;
   v15[3] = &unk_1E7C07758;
   v16 = v12;
   v14 = v12;
-  [v13 sendNetworkExtensionMessage:v10 forBundleIdentifier:v9 reply:v15];
+  [v13 sendNetworkExtensionMessage:messageCopy forBundleIdentifier:identifierCopy reply:v15];
 }
 
 void __107__CXNetworkExtensionMessageControllerXPCClient_sendNetworkExtensionMessage_forBundleIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -180,26 +180,26 @@ uint64_t __107__CXNetworkExtensionMessageControllerXPCClient_sendNetworkExtensio
   return result;
 }
 
-- (void)sendNetworkExtensionPushToTalkMessage:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)sendNetworkExtensionPushToTalkMessage:(id)message forBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CXNetworkExtensionMessageControllerXPCClient *)self connection];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  messageCopy = message;
+  connection = [(CXNetworkExtensionMessageControllerXPCClient *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __117__CXNetworkExtensionMessageControllerXPCClient_sendNetworkExtensionPushToTalkMessage_forBundleIdentifier_completion___block_invoke;
   v17[3] = &unk_1E7C07230;
-  v12 = v8;
+  v12 = completionCopy;
   v18 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v17];
+  v13 = [connection remoteObjectProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __117__CXNetworkExtensionMessageControllerXPCClient_sendNetworkExtensionPushToTalkMessage_forBundleIdentifier_completion___block_invoke_8;
   v15[3] = &unk_1E7C07758;
   v16 = v12;
   v14 = v12;
-  [v13 sendNetworkExtensionPushToTalkMessage:v10 forBundleIdentifier:v9 reply:v15];
+  [v13 sendNetworkExtensionPushToTalkMessage:messageCopy forBundleIdentifier:identifierCopy reply:v15];
 }
 
 void __117__CXNetworkExtensionMessageControllerXPCClient_sendNetworkExtensionPushToTalkMessage_forBundleIdentifier_completion___block_invoke(uint64_t a1, void *a2)

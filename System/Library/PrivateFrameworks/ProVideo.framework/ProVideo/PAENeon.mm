@@ -1,21 +1,21 @@
 @interface PAENeon
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (HGRef<HGNode>)blurNodeWithRadius:(double)a3 xScale:(double)a4 yScale:(double)a5 inputNode:(HGRef<HGNode>)a6;
-- (PAENeon)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (HGRef<HGNode>)blurNodeWithRadius:(double)radius xScale:(double)scale yScale:(double)yScale inputNode:(HGRef<HGNode>)node;
+- (PAENeon)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 @end
 
 @implementation PAENeon
 
-- (PAENeon)initWithAPIManager:(id)a3
+- (PAENeon)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAENeon;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -41,13 +41,13 @@ uint64_t __21__PAENeon_properties__block_invoke()
   return result;
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (!v6)
   {
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"Unable to retrieve FxParameterRetrievalAPI object", *MEMORY[0x277CCA450], 0}];
-    if (a4)
+    if (error)
     {
       v16 = v15;
       v17 = MEMORY[0x277CCA9B8];
@@ -56,7 +56,7 @@ uint64_t __21__PAENeon_properties__block_invoke()
 LABEL_20:
       v21 = [v17 errorWithDomain:v18 code:v19 userInfo:v16];
       result = 0;
-      *a4 = v21;
+      *error = v21;
       return result;
     }
 
@@ -66,14 +66,14 @@ LABEL_20:
   v7 = v6;
   v26 = 0x3FF0000000000000;
   v25 = 0.0;
-  if (![v6 getFloatValue:&v26 fromParm:1 atFxTime:a3.var1])
+  if (![v6 getFloatValue:&v26 fromParm:1 atFxTime:time.var1])
   {
     v24 = 0x3FF0000000000000;
     goto LABEL_16;
   }
 
   v24 = 0x3FF0000000000000;
-  if (![v7 getFloatValue:&v25 fromParm:3 atFxTime:a3.var1])
+  if (![v7 getFloatValue:&v25 fromParm:3 atFxTime:time.var1])
   {
 LABEL_16:
     v23 = 0.0;
@@ -81,7 +81,7 @@ LABEL_16:
   }
 
   v23 = 0.0;
-  if (([v7 getFloatValue:&v24 fromParm:2 atFxTime:a3.var1] & 1) == 0)
+  if (([v7 getFloatValue:&v24 fromParm:2 atFxTime:time.var1] & 1) == 0)
   {
 LABEL_17:
     v22 = 0x3FF0000000000000;
@@ -89,11 +89,11 @@ LABEL_17:
   }
 
   v22 = 0x3FF0000000000000;
-  if (([v7 getFloatValue:&v23 fromParm:5 atFxTime:a3.var1] & 1) == 0 || (objc_msgSend(v7, "getFloatValue:fromParm:atFxTime:", &v22, 4, a3.var1) & 1) == 0)
+  if (([v7 getFloatValue:&v23 fromParm:5 atFxTime:time.var1] & 1) == 0 || (objc_msgSend(v7, "getFloatValue:fromParm:atFxTime:", &v22, 4, time.var1) & 1) == 0)
   {
 LABEL_18:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"Unable to retrieve a parameter in [-PAEGaussianBlur dynamicPropertiesAtTime:withError:]", *MEMORY[0x277CCA450], 0}];
-    if (a4)
+    if (error)
     {
       v16 = v20;
       v17 = MEMORY[0x277CCA9B8];
@@ -147,7 +147,7 @@ LABEL_18:
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -156,22 +156,22 @@ LABEL_18:
     return 0;
   }
 
-  v12 = [v10 versionAtCreation];
+  versionAtCreation = [v10 versionAtCreation];
   *&v47 = 1.0;
-  [v9 getFloatValue:&v47 fromParm:1 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v47 fromParm:1 atFxTime:info->var0.var1];
   v46 = 0.0;
-  [v9 getFloatValue:&v46 fromParm:3 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v46 fromParm:3 atFxTime:info->var0.var1];
   *&v45 = 1.0;
-  [v9 getFloatValue:&v45 fromParm:2 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v45 fromParm:2 atFxTime:info->var0.var1];
   v44 = 0.0;
-  [v9 getFloatValue:&v44 fromParm:5 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v44 fromParm:5 atFxTime:info->var0.var1];
   *&v43 = 1.0;
-  [v9 getFloatValue:&v43 fromParm:4 atFxTime:a5->var0.var1];
-  v13 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
-  v14 = [a4 imageType];
+  [v9 getFloatValue:&v43 fromParm:4 atFxTime:info->var0.var1];
+  v13 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
+  imageType = [input imageType];
   if (v13)
   {
-    v15 = v14 == 3;
+    v15 = imageType == 3;
   }
 
   else
@@ -182,9 +182,9 @@ LABEL_18:
   v11 = v15;
   if (v15)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -192,7 +192,7 @@ LABEL_18:
       v42 = 0;
     }
 
-    [(PAESharedDefaultBase *)self getScaleForImage:a4];
+    [(PAESharedDefaultBase *)self getScaleForImage:input];
     v16 = *&v47;
     v38 = v42;
     if (v42)
@@ -266,7 +266,7 @@ LABEL_18:
     HGHWMultiBlend::HGHWMultiBlend(v25);
     (*(*v25 + 120))(v25, 0, v39);
     v26 = *(*v25 + 120);
-    if (v12 < 4)
+    if (versionAtCreation < 4)
     {
       v26(v25, 1, v35);
       v27 = &v31;
@@ -281,7 +281,7 @@ LABEL_18:
     (*(*v25 + 120))(v25, 2, *v27);
     v29 = v25;
     (*(*v25 + 16))(v25);
-    [a3 setHeliumRef:&v29];
+    [output setHeliumRef:&v29];
     if (v29)
     {
       (*(*v29 + 24))(v29);
@@ -322,59 +322,59 @@ LABEL_18:
   return v11;
 }
 
-- (HGRef<HGNode>)blurNodeWithRadius:(double)a3 xScale:(double)a4 yScale:(double)a5 inputNode:(HGRef<HGNode>)a6
+- (HGRef<HGNode>)blurNodeWithRadius:(double)radius xScale:(double)scale yScale:(double)yScale inputNode:(HGRef<HGNode>)node
 {
   v11 = v6;
   v12 = HGObject::operator new(0x1B0uLL);
   HGaussianBlur::HGaussianBlur(v12);
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  HGaussianBlur::init(v12, v13, v14, v15, 0, 0, 0);
-  v16.var0 = (*(*v12 + 120))(v12, 0, *a6.var0);
+  radiusCopy = radius;
+  scaleCopy = scale;
+  yScaleCopy = yScale;
+  HGaussianBlur::init(v12, radiusCopy, scaleCopy, yScaleCopy, 0, 0, 0);
+  v16.var0 = (*(*v12 + 120))(v12, 0, *node.var0);
   *v11 = v12;
   return v16;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v11 = v10;
   if (v10)
   {
     v18 = 0.0;
-    [v10 getFloatValue:&v18 fromParm:3 atFxTime:a6->var0.var1];
+    [v10 getFloatValue:&v18 fromParm:3 atFxTime:info->var0.var1];
     v17 = 0.0;
-    [v11 getFloatValue:&v17 fromParm:5 atFxTime:a6->var0.var1];
+    [v11 getFloatValue:&v17 fromParm:5 atFxTime:info->var0.var1];
     v12 = v18;
     if (v18 < v17)
     {
       v12 = v17;
     }
 
-    var1 = a5->var1;
+    var1 = input->var1;
     v14 = v12;
     v15 = (2 * vcvtps_s32_f32(v14));
-    if (a3)
+    if (width)
     {
-      *a3 = a5->var0 + v15;
+      *width = input->var0 + v15;
     }
 
-    if (a4)
+    if (height)
     {
-      *a4 = var1 + v15;
+      *height = var1 + v15;
     }
   }
 

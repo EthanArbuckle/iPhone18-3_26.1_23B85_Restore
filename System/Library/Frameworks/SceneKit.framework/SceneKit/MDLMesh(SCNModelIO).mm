@@ -40,7 +40,7 @@
   if (v7)
   {
     v8 = 0;
-    v84 = 0;
+    vectorCount = 0;
     while (1)
     {
       if (v8 >= [objc_msgSend(a3 "geometrySources")] || v8 >= v7)
@@ -82,9 +82,9 @@
 
       std::vector<int>::push_back[abi:nn200100](v10, &v107);
 LABEL_19:
-      if (!(LODWORD(v107.__begin_) | v84))
+      if (!(LODWORD(v107.__begin_) | vectorCount))
       {
-        v84 = [v9 vectorCount];
+        vectorCount = [v9 vectorCount];
       }
 
       ++v8;
@@ -101,7 +101,7 @@ LABEL_25:
 
   LODWORD(v107.__begin_) = v11;
   std::vector<int>::push_back[abi:nn200100](&v117, &v107);
-  v84 = 0;
+  vectorCount = 0;
 LABEL_27:
   v13 = objc_alloc_init(MEMORY[0x277CD7B90]);
   v86 = objc_opt_new();
@@ -112,11 +112,11 @@ LABEL_27:
   v105 = 0;
   v106 = 0;
   *v104 = [objc_msgSend(objc_msgSend(a3 "geometryElements")];
-  v65 = uniqueIndexBufferWithSCNGeometryElements([a3 geometryElements], v84, &v107, &v104[4], v104);
+  v65 = uniqueIndexBufferWithSCNGeometryElements([a3 geometryElements], vectorCount, &v107, &v104[4], v104);
   v15 = [v65 count];
   if (v15)
   {
-    v82 = v84 + (((v105 - *&v104[4]) >> 2) / (*v104 + 1));
+    v82 = vectorCount + (((v105 - *&v104[4]) >> 2) / (*v104 + 1));
     v83 = ((v105 - *&v104[4]) >> 2) / (*v104 + 1);
   }
 
@@ -131,7 +131,7 @@ LABEL_27:
   v101 = 0u;
   v16 = [v14 countByEnumeratingWithState:&v100 objects:v123 count:16];
   v87 = v15;
-  v63 = a1;
+  selfCopy = self;
   if (!v16)
   {
     v18 = 0;
@@ -165,7 +165,7 @@ LABEL_27:
       if (v87)
       {
         v23 = [v85 newBuffer:12 * v82 type:1];
-        remapVertexAttributeBuffer(v21, *(v117 + v17), &v107, &v104[4], v73, v84, v83, [objc_msgSend(v23 "map")]);
+        remapVertexAttributeBuffer(v21, *(v117 + v17), &v107, &v104[4], v73, vectorCount, v83, [objc_msgSend(v23 "map")]);
         [objc_msgSend(objc_msgSend(v13 "attributes")];
         [objc_msgSend(objc_msgSend(v13 "layouts")];
       }
@@ -228,7 +228,7 @@ LABEL_46:
         if (v87)
         {
           v31 = [v85 newBuffer:12 * v82 type:1];
-          remapVertexAttributeBuffer(v29, *(v114 + v26), &v107, &v104[4], v74, v84, v83, [objc_msgSend(v31 "map")]);
+          remapVertexAttributeBuffer(v29, *(v114 + v26), &v107, &v104[4], v74, vectorCount, v83, [objc_msgSend(v31 "map")]);
           [objc_msgSend(objc_msgSend(v13 "attributes")];
           [objc_msgSend(objc_msgSend(v13 "layouts")];
         }
@@ -336,7 +336,7 @@ LABEL_46:
       if (v87)
       {
         v41 = [v85 newBuffer:8 * v82 type:1];
-        remapVertexAttributeBuffer(v37, *(v111 + v34), &v107, &v104[4], v67, v84, v83, [objc_msgSend(v41 "map")]);
+        remapVertexAttributeBuffer(v37, *(v111 + v34), &v107, &v104[4], v67, vectorCount, v83, [objc_msgSend(v41 "map")]);
         [objc_msgSend(objc_msgSend(v13 "attributes")];
         [objc_msgSend(objc_msgSend(v13 "layouts")];
 LABEL_86:
@@ -416,7 +416,7 @@ LABEL_94:
         if (v87)
         {
           v51 = [v85 newBuffer:objc_msgSend(v49 type:{"dataStride") * v82, 1}];
-          remapVertexAttributeBuffer(v49, *(v108 + v44), &v107, &v104[4], v81, v84, v83, [objc_msgSend(v51 "map")]);
+          remapVertexAttributeBuffer(v49, *(v108 + v44), &v107, &v104[4], v81, vectorCount, v83, [objc_msgSend(v51 "map")]);
           [objc_msgSend(objc_msgSend(v13 "attributes")];
           [objc_msgSend(objc_msgSend(v13 "layouts")];
         }
@@ -445,12 +445,12 @@ LABEL_94:
   v107.__end_ = v107.__begin_;
   v105 = *&v104[4];
   v52 = objc_opt_new();
-  v53 = [v64 geometryElementCount];
+  geometryElementCount = [v64 geometryElementCount];
   v54 = [objc_msgSend(v64 "materials")];
-  if (v53)
+  if (geometryElementCount)
   {
     v55 = v54;
-    for (k = 0; k != v53; ++k)
+    for (k = 0; k != geometryElementCount; ++k)
     {
       v57 = [v64 geometryElementAtIndex:k];
       if (v87)
@@ -473,7 +473,7 @@ LABEL_94:
     }
   }
 
-  v61 = [[v63 alloc] initWithVertexBuffers:v86 vertexCount:v82 descriptor:v13 submeshes:v52];
+  v61 = [[selfCopy alloc] initWithVertexBuffers:v86 vertexCount:v82 descriptor:v13 submeshes:v52];
 
   [v61 setName:{objc_msgSend(v64, "name")}];
   objc_setAssociatedObject(v61, @"SCNSceneKitAssociatedObject", v64, 0x301);

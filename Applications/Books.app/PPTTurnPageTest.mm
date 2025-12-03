@@ -1,25 +1,25 @@
 @interface PPTTurnPageTest
-- (PPTTurnPageTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6;
-- (void)_handlePageTurnAnimationEnd:(id)a3;
-- (void)_handlePageTurnAnimationStart:(id)a3;
-- (void)_handleSetupEnd:(id)a3;
-- (void)_handleSetupStart:(id)a3;
+- (PPTTurnPageTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test;
+- (void)_handlePageTurnAnimationEnd:(id)end;
+- (void)_handlePageTurnAnimationStart:(id)start;
+- (void)_handleSetupEnd:(id)end;
+- (void)_handleSetupStart:(id)start;
 - (void)startTest;
 - (void)subscribe;
 @end
 
 @implementation PPTTurnPageTest
 
-- (PPTTurnPageTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6
+- (PPTTurnPageTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test
 {
-  v6 = a6;
-  v10 = a5;
+  testCopy = test;
+  definitionCopy = definition;
   v14.receiver = self;
   v14.super_class = PPTTurnPageTest;
-  v11 = [(PPTBasicTest *)&v14 initWithName:a3 options:a4 testDefinition:v10 isMainTest:v6];
+  v11 = [(PPTBasicTest *)&v14 initWithName:name options:options testDefinition:definitionCopy isMainTest:testCopy];
   if (v11)
   {
-    v12 = [v10 objectForKeyedSubscript:@"glitch-free"];
+    v12 = [definitionCopy objectForKeyedSubscript:@"glitch-free"];
     v11->_glitchFree = [v12 BOOLValue];
   }
 
@@ -47,27 +47,27 @@
   }
 }
 
-- (void)_handleSetupStart:(id)a3
+- (void)_handleSetupStart:(id)start
 {
   if ([(PPTBasicTest *)self running]&& [(PPTBasicTest *)self mainTest])
   {
     v5 = +[UIApplication sharedApplication];
-    v4 = [(PPTBasicTest *)self name];
-    [v5 startedSubTest:@"setup" forTest:v4 withMetrics:&off_100A43E28];
+    name = [(PPTBasicTest *)self name];
+    [v5 startedSubTest:@"setup" forTest:name withMetrics:&off_100A43E28];
   }
 }
 
-- (void)_handleSetupEnd:(id)a3
+- (void)_handleSetupEnd:(id)end
 {
   if ([(PPTBasicTest *)self running]&& [(PPTBasicTest *)self mainTest])
   {
     v5 = +[UIApplication sharedApplication];
-    v4 = [(PPTBasicTest *)self name];
-    [v5 finishedSubTest:@"setup" forTest:v4];
+    name = [(PPTBasicTest *)self name];
+    [v5 finishedSubTest:@"setup" forTest:name];
   }
 }
 
-- (void)_handlePageTurnAnimationStart:(id)a3
+- (void)_handlePageTurnAnimationStart:(id)start
 {
   if ([(PPTBasicTest *)self running])
   {
@@ -78,20 +78,20 @@
       v5[1] = 3221225472;
       v5[2] = sub_10014E93C;
       v6 = v5[3] = &unk_100A03440;
-      v7 = self;
+      selfCopy = self;
       v4 = v6;
       [v4 installCACommitCompletionBlock:v5];
     }
   }
 }
 
-- (void)_handlePageTurnAnimationEnd:(id)a3
+- (void)_handlePageTurnAnimationEnd:(id)end
 {
   if ([(PPTBasicTest *)self running]&& [(PPTBasicTest *)self mainTest])
   {
     v5 = +[UIApplication sharedApplication];
-    v4 = [(PPTBasicTest *)self name];
-    [v5 finishedSubTest:@"page-turn" forTest:v4];
+    name = [(PPTBasicTest *)self name];
+    [v5 finishedSubTest:@"page-turn" forTest:name];
   }
 }
 

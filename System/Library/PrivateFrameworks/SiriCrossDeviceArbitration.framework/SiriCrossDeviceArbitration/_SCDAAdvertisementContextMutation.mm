@@ -1,5 +1,5 @@
 @interface _SCDAAdvertisementContextMutation
-- (_SCDAAdvertisementContextMutation)initWithBase:(id)a3;
+- (_SCDAAdvertisementContextMutation)initWithBase:(id)base;
 - (double)getContextFetchDelay;
 - (id)getContextData;
 - (unint64_t)getGeneration;
@@ -22,15 +22,15 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_contextData;
+    contextData = self->_contextData;
   }
 
   else
   {
-    v2 = [(SCDAAdvertisementContext *)self->_base contextData];
+    contextData = [(SCDAAdvertisementContext *)self->_base contextData];
   }
 
-  return v2;
+  return contextData;
 }
 
 - (unint64_t)getGeneration
@@ -46,16 +46,16 @@
   }
 }
 
-- (_SCDAAdvertisementContextMutation)initWithBase:(id)a3
+- (_SCDAAdvertisementContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SCDAAdvertisementContextMutation;
   v6 = [(_SCDAAdvertisementContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

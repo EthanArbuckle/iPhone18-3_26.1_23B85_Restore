@@ -6,8 +6,8 @@
 
 - (uint64_t)convertABSValue:()ABSExtentions toCNValue:error:
 {
-  v6 = [a1 CNValueFromABSValue:?];
-  [a1 assertValueType:v6];
+  v6 = [self CNValueFromABSValue:?];
+  [self assertValueType:v6];
   v7 = v6;
   *a4 = v6;
 

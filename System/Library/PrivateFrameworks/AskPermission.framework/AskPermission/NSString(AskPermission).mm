@@ -6,8 +6,8 @@
 
 - (id)ap_percentEncodedString
 {
-  v2 = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
-  v3 = [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  uRLHostAllowedCharacterSet = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
+  v3 = [self stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
 
   return v3;
 }

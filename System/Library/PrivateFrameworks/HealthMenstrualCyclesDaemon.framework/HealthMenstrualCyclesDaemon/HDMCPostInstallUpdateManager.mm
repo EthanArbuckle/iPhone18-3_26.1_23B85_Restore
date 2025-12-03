@@ -1,40 +1,40 @@
 @interface HDMCPostInstallUpdateManager
-- (BOOL)_triggerInitialAnalysisWithError:(id *)a3;
-- (BOOL)_updateDeviceScopedStorageWithError:(id *)a3;
-- (HDMCPostInstallUpdateManager)initWithProfileExtension:(id)a3;
-- (void)daemonReady:(id)a3;
-- (void)performPostInstallUpdateTaskForManager:(id)a3 completion:(id)a4;
+- (BOOL)_triggerInitialAnalysisWithError:(id *)error;
+- (BOOL)_updateDeviceScopedStorageWithError:(id *)error;
+- (HDMCPostInstallUpdateManager)initWithProfileExtension:(id)extension;
+- (void)daemonReady:(id)ready;
+- (void)performPostInstallUpdateTaskForManager:(id)manager completion:(id)completion;
 @end
 
 @implementation HDMCPostInstallUpdateManager
 
-- (HDMCPostInstallUpdateManager)initWithProfileExtension:(id)a3
+- (HDMCPostInstallUpdateManager)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v11.receiver = self;
   v11.super_class = HDMCPostInstallUpdateManager;
   v5 = [(HDMCPostInstallUpdateManager *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profileExtension, v4);
-    v8 = [v4 profile];
-    v9 = [v8 daemon];
-    [v9 registerDaemonReadyObserver:v6 queue:0];
+    v7 = objc_storeWeak(&v5->_profileExtension, extensionCopy);
+    profile = [extensionCopy profile];
+    daemon = [profile daemon];
+    [daemon registerDaemonReadyObserver:v6 queue:0];
   }
 
   return v6;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
-  v4 = [a3 postInstallUpdateManager];
-  [v4 registerUpdateTaskHandler:self queue:0];
+  postInstallUpdateManager = [ready postInstallUpdateManager];
+  [postInstallUpdateManager registerUpdateTaskHandler:self queue:0];
 }
 
-- (void)performPostInstallUpdateTaskForManager:(id)a3 completion:(id)a4
+- (void)performPostInstallUpdateTaskForManager:(id)manager completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v14 = 0;
   v6 = [(HDMCPostInstallUpdateManager *)self _updateDeviceScopedStorageWithError:&v14];
   v7 = v14;
@@ -57,17 +57,17 @@
       v12 = v10;
     }
 
-    (v5)[2](v5, v11, v12);
+    (completionCopy)[2](completionCopy, v11, v12);
     v8 = v10;
   }
 
   else
   {
-    (v5)[2](v5, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 }
 
-- (BOOL)_triggerInitialAnalysisWithError:(id *)a3
+- (BOOL)_triggerInitialAnalysisWithError:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -82,14 +82,14 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained analysisManager];
-  v10 = [v9 analyzeWithError:a3];
+  analysisManager = [WeakRetained analysisManager];
+  v10 = [analysisManager analyzeWithError:error];
 
   v11 = *MEMORY[0x277D85DE8];
   return v10 != 0;
 }
 
-- (BOOL)_updateDeviceScopedStorageWithError:(id *)a3
+- (BOOL)_updateDeviceScopedStorageWithError:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -104,8 +104,8 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained deviceScopedStorageManager];
-  v10 = [v9 updateLocalDeviceValuesNowWithError:a3];
+  deviceScopedStorageManager = [WeakRetained deviceScopedStorageManager];
+  v10 = [deviceScopedStorageManager updateLocalDeviceValuesNowWithError:error];
 
   v11 = *MEMORY[0x277D85DE8];
   return v10;

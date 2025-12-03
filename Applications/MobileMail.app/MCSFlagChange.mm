@@ -1,25 +1,25 @@
 @interface MCSFlagChange
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5;
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages;
 - (BOOL)willMarkUnread;
 - (BOOL)willUnflag;
-- (MCSFlagChange)initWithFlagsToSet:(id)a3 flagsToClear:(id)a4 reason:(int64_t)a5;
-- (id)_applyFlagChange:(id)a3 toObjects:(id)a4;
-- (id)applyPendingChangeToObjects:(id)a3;
+- (MCSFlagChange)initWithFlagsToSet:(id)set flagsToClear:(id)clear reason:(int64_t)reason;
+- (id)_applyFlagChange:(id)change toObjects:(id)objects;
+- (id)applyPendingChangeToObjects:(id)objects;
 - (id)localizedShortOperationDescription;
-- (void)_sortMessages:(id)a3 intoLibraryMesages:(id)a4 nonLibraryMessages:(id)a5;
+- (void)_sortMessages:(id)messages intoLibraryMesages:(id)mesages nonLibraryMessages:(id)libraryMessages;
 @end
 
 @implementation MCSFlagChange
 
-- (MCSFlagChange)initWithFlagsToSet:(id)a3 flagsToClear:(id)a4 reason:(int64_t)a5
+- (MCSFlagChange)initWithFlagsToSet:(id)set flagsToClear:(id)clear reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 intersectsSet:v9];
+  setCopy = set;
+  clearCopy = clear;
+  v10 = [setCopy intersectsSet:clearCopy];
   if (v10)
   {
-    sub_100140318(v10, v11, v12, v13, v14, v15, v16, v17, v8);
-    if ([v8 intersectsSet:v9])
+    sub_100140318(v10, v11, v12, v13, v14, v15, v16, v17, setCopy);
+    if ([setCopy intersectsSet:clearCopy])
     {
       __assert_rtn("[MCSFlagChange initWithFlagsToSet:flagsToClear:reason:]", "MCSFlagChange.m", 43, "[flagsToSet intersectsSet:flagsToClear] == __objc_no");
     }
@@ -34,14 +34,14 @@
     flagChanges = v18->_flagChanges;
     v18->_flagChanges = v19;
 
-    v21 = [NSNumber numberWithInteger:a5];
+    v21 = [NSNumber numberWithInteger:reason];
     [(NSMutableDictionary *)v18->_flagChanges setObject:v21 forKeyedSubscript:MFMessageChangeReason];
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v22 = v8;
+    v22 = setCopy;
     v23 = [v22 countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v23)
     {
@@ -71,7 +71,7 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v26 = v9;
+    v26 = clearCopy;
     v27 = [v26 countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v27)
     {
@@ -103,24 +103,24 @@
   return v18;
 }
 
-- (id)_applyFlagChange:(id)a3 toObjects:(id)a4
+- (id)_applyFlagChange:(id)change toObjects:(id)objects
 {
-  v22 = a3;
-  v6 = a4;
+  changeCopy = change;
+  objectsCopy = objects;
   if (![(MCSOperation *)self isFinalized])
   {
     __assert_rtn("[MCSFlagChange _applyFlagChange:toObjects:]", "MCSFlagChange.m", 66, "[self isFinalized]");
   }
 
   v7 = [[NSMutableDictionary alloc] initWithCapacity:5];
-  v8 = [v22 objectForKey:MFMessageIsFlagged];
-  v9 = [v22 objectForKey:MessageIsRead];
-  v21 = [v22 objectForKey:MessageIsDeleted];
+  v8 = [changeCopy objectForKey:MFMessageIsFlagged];
+  v9 = [changeCopy objectForKey:MessageIsRead];
+  v21 = [changeCopy objectForKey:MessageIsDeleted];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = objectsCopy;
   v10 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v10)
   {
@@ -170,9 +170,9 @@
           [v7 addObject:v13 toSetForKey:@"MCSChangeSetDeletedMessages"];
         }
 
-        v16 = [v13 messageFlags];
+        messageFlags = [v13 messageFlags];
         v17 = MFMessageFlagsByApplyingDictionary();
-        if (v17 != v16)
+        if (v17 != messageFlags)
         {
           [v13 setMessageFlagsWithoutCommitting:v17];
         }
@@ -195,23 +195,23 @@
   return v7;
 }
 
-- (id)applyPendingChangeToObjects:(id)a3
+- (id)applyPendingChangeToObjects:(id)objects
 {
-  v3 = [(MCSFlagChange *)self _applyFlagChange:self->_flagChanges toObjects:a3];
+  v3 = [(MCSFlagChange *)self _applyFlagChange:self->_flagChanges toObjects:objects];
 
   return v3;
 }
 
-- (void)_sortMessages:(id)a3 intoLibraryMesages:(id)a4 nonLibraryMessages:(id)a5
+- (void)_sortMessages:(id)messages intoLibraryMesages:(id)mesages nonLibraryMessages:(id)libraryMessages
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  messagesCopy = messages;
+  mesagesCopy = mesages;
+  libraryMessagesCopy = libraryMessages;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v7;
+  v10 = messagesCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -228,12 +228,12 @@
         v14 = *(*(&v16 + 1) + 8 * i);
         if ([v14 isLibraryMessage])
         {
-          v15 = v8;
+          v15 = mesagesCopy;
         }
 
         else
         {
-          v15 = v9;
+          v15 = libraryMessagesCopy;
         }
 
         [v15 addObject:v14];
@@ -246,11 +246,11 @@
   }
 }
 
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages
 {
-  v22 = a3;
-  v20 = a4;
-  v21 = a5;
+  messagesCopy = messages;
+  failuresCopy = failures;
+  newMessagesCopy = newMessages;
   if (![(MCSOperation *)self isFinalized])
   {
     __assert_rtn("[MCSFlagChange commitToMessages:failures:newMessages:]", "MCSFlagChange.m", 125, "[self isFinalized]");
@@ -258,11 +258,11 @@
 
   v23 = objc_alloc_init(NSMutableSet);
   v8 = objc_alloc_init(NSMutableSet);
-  [(MCSFlagChange *)self _sortMessages:v22 intoLibraryMesages:v23 nonLibraryMessages:v8];
+  [(MCSFlagChange *)self _sortMessages:messagesCopy intoLibraryMesages:v23 nonLibraryMessages:v8];
   if ([v23 count])
   {
-    v19 = [v22 allObjects];
-    [v19 mf_dictionaryWithMessagesSortedByStore];
+    allObjects = [messagesCopy allObjects];
+    [allObjects mf_dictionaryWithMessagesSortedByStore];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;

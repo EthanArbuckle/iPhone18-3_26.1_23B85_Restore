@@ -1,17 +1,17 @@
 @interface GKDiscovery
-- (GKDiscovery)initWithDomain:(id)a3 type:(id)a4;
+- (GKDiscovery)initWithDomain:(id)domain type:(id)type;
 - (id)playerFoundHandler;
 - (id)playerLostHandler;
 - (id)receiveDataHandler;
 - (void)dealloc;
-- (void)setPlayerFoundHandler:(id)a3;
-- (void)setPlayerLostHandler:(id)a3;
-- (void)setReceiveDataHandler:(id)a3;
+- (void)setPlayerFoundHandler:(id)handler;
+- (void)setPlayerLostHandler:(id)handler;
+- (void)setReceiveDataHandler:(id)handler;
 @end
 
 @implementation GKDiscovery
 
-- (GKDiscovery)initWithDomain:(id)a3 type:(id)a4
+- (GKDiscovery)initWithDomain:(id)domain type:(id)type
 {
   v8.receiver = self;
   v8.super_class = GKDiscovery;
@@ -19,7 +19,7 @@
   if (v6)
   {
     VRTraceReset();
-    v6->_manager = [[GKDiscoveryManager alloc] initWithDomain:a3 type:a4];
+    v6->_manager = [[GKDiscoveryManager alloc] initWithDomain:domain type:type];
   }
 
   return v6;
@@ -34,44 +34,44 @@
 
 - (id)playerFoundHandler
 {
-  v2 = [(GKDiscovery *)self manager];
+  manager = [(GKDiscovery *)self manager];
 
-  return [(GKDiscoveryManager *)v2 playerFoundHandler];
+  return [(GKDiscoveryManager *)manager playerFoundHandler];
 }
 
-- (void)setPlayerFoundHandler:(id)a3
+- (void)setPlayerFoundHandler:(id)handler
 {
-  v4 = [(GKDiscovery *)self manager];
+  manager = [(GKDiscovery *)self manager];
 
-  [(GKDiscoveryManager *)v4 setPlayerFoundHandler:a3];
+  [(GKDiscoveryManager *)manager setPlayerFoundHandler:handler];
 }
 
 - (id)playerLostHandler
 {
-  v2 = [(GKDiscovery *)self manager];
+  manager = [(GKDiscovery *)self manager];
 
-  return [(GKDiscoveryManager *)v2 playerLostHandler];
+  return [(GKDiscoveryManager *)manager playerLostHandler];
 }
 
-- (void)setPlayerLostHandler:(id)a3
+- (void)setPlayerLostHandler:(id)handler
 {
-  v4 = [(GKDiscovery *)self manager];
+  manager = [(GKDiscovery *)self manager];
 
-  [(GKDiscoveryManager *)v4 setPlayerLostHandler:a3];
+  [(GKDiscoveryManager *)manager setPlayerLostHandler:handler];
 }
 
 - (id)receiveDataHandler
 {
-  v2 = [(GKDiscovery *)self manager];
+  manager = [(GKDiscovery *)self manager];
 
-  return [(GKDiscoveryManager *)v2 receiveDataHandler];
+  return [(GKDiscoveryManager *)manager receiveDataHandler];
 }
 
-- (void)setReceiveDataHandler:(id)a3
+- (void)setReceiveDataHandler:(id)handler
 {
-  v4 = [(GKDiscovery *)self manager];
+  manager = [(GKDiscovery *)self manager];
 
-  [(GKDiscoveryManager *)v4 setReceiveDataHandler:a3];
+  [(GKDiscoveryManager *)manager setReceiveDataHandler:handler];
 }
 
 @end

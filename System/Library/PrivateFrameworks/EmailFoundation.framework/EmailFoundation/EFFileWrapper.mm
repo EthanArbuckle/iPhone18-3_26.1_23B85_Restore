@@ -1,14 +1,14 @@
 @interface EFFileWrapper
 - (EFFileWrapper)init;
-- (EFFileWrapper)initWithSerializedRepresentation:(id)a3;
-- (EFFileWrapper)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)initDirectoryWithFileWrappers:(id)a3;
-- (id)initRegularFileWithContents:(id)a3;
+- (EFFileWrapper)initWithSerializedRepresentation:(id)representation;
+- (EFFileWrapper)initWithURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)initDirectoryWithFileWrappers:(id)wrappers;
+- (id)initRegularFileWithContents:(id)contents;
 - (void)_initializePathComponents;
-- (void)setFilename:(id)a3;
-- (void)setFilenamePathComponent:(id)a3;
-- (void)setPreferredFilename:(id)a3;
-- (void)setPreferredFilenamePathComponent:(id)a3;
+- (void)setFilename:(id)filename;
+- (void)setFilenamePathComponent:(id)component;
+- (void)setPreferredFilename:(id)filename;
+- (void)setPreferredFilenamePathComponent:(id)component;
 @end
 
 @implementation EFFileWrapper
@@ -29,30 +29,30 @@
 
 - (void)_initializePathComponents
 {
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = EFFileWrapper;
     v2 = objc_msgSendSuper2(&v9, sel_filename);
     v3 = [EFPathComponent pathComponentWithString:v2];
-    v4 = a1[12];
-    a1[12] = v3;
+    v4 = self[12];
+    self[12] = v3;
 
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = EFFileWrapper;
     v5 = objc_msgSendSuper2(&v8, sel_preferredFilename);
     v6 = [EFPathComponent pathComponentWithString:v5];
-    v7 = a1[11];
-    a1[11] = v6;
+    v7 = self[11];
+    self[11] = v6;
   }
 }
 
-- (id)initRegularFileWithContents:(id)a3
+- (id)initRegularFileWithContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v8.receiver = self;
   v8.super_class = EFFileWrapper;
-  v5 = [(EFFileWrapper *)&v8 initRegularFileWithContents:v4];
+  v5 = [(EFFileWrapper *)&v8 initRegularFileWithContents:contentsCopy];
   v6 = v5;
   if (v5)
   {
@@ -62,12 +62,12 @@
   return v6;
 }
 
-- (EFFileWrapper)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (EFFileWrapper)initWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = EFFileWrapper;
-  v9 = [(EFFileWrapper *)&v12 initWithURL:v8 options:a4 error:a5];
+  v9 = [(EFFileWrapper *)&v12 initWithURL:lCopy options:options error:error];
   v10 = v9;
   if (v9)
   {
@@ -77,12 +77,12 @@
   return v10;
 }
 
-- (id)initDirectoryWithFileWrappers:(id)a3
+- (id)initDirectoryWithFileWrappers:(id)wrappers
 {
-  v4 = a3;
+  wrappersCopy = wrappers;
   v8.receiver = self;
   v8.super_class = EFFileWrapper;
-  v5 = [(EFFileWrapper *)&v8 initDirectoryWithFileWrappers:v4];
+  v5 = [(EFFileWrapper *)&v8 initDirectoryWithFileWrappers:wrappersCopy];
   v6 = v5;
   if (v5)
   {
@@ -92,12 +92,12 @@
   return v6;
 }
 
-- (EFFileWrapper)initWithSerializedRepresentation:(id)a3
+- (EFFileWrapper)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v8.receiver = self;
   v8.super_class = EFFileWrapper;
-  v5 = [(EFFileWrapper *)&v8 initWithSerializedRepresentation:v4];
+  v5 = [(EFFileWrapper *)&v8 initWithSerializedRepresentation:representationCopy];
   v6 = v5;
   if (v5)
   {
@@ -107,35 +107,35 @@
   return v6;
 }
 
-- (void)setPreferredFilenamePathComponent:(id)a3
+- (void)setPreferredFilenamePathComponent:(id)component
 {
-  v5 = a3;
-  objc_storeStrong(&self->_preferredFilenamePathComponent, a3);
-  v6 = [v5 sanitizedString];
+  componentCopy = component;
+  objc_storeStrong(&self->_preferredFilenamePathComponent, component);
+  sanitizedString = [componentCopy sanitizedString];
   v7.receiver = self;
   v7.super_class = EFFileWrapper;
-  [(EFFileWrapper *)&v7 setPreferredFilename:v6];
+  [(EFFileWrapper *)&v7 setPreferredFilename:sanitizedString];
 }
 
-- (void)setFilenamePathComponent:(id)a3
+- (void)setFilenamePathComponent:(id)component
 {
-  v5 = a3;
-  objc_storeStrong(&self->_filenamePathComponent, a3);
-  v6 = [v5 sanitizedString];
+  componentCopy = component;
+  objc_storeStrong(&self->_filenamePathComponent, component);
+  sanitizedString = [componentCopy sanitizedString];
   v7.receiver = self;
   v7.super_class = EFFileWrapper;
-  [(EFFileWrapper *)&v7 setFilename:v6];
+  [(EFFileWrapper *)&v7 setFilename:sanitizedString];
 }
 
-- (void)setPreferredFilename:(id)a3
+- (void)setPreferredFilename:(id)filename
 {
-  v4 = [EFPathComponent pathComponentWithString:a3];
+  v4 = [EFPathComponent pathComponentWithString:filename];
   [(EFFileWrapper *)self setPreferredFilenamePathComponent:?];
 }
 
-- (void)setFilename:(id)a3
+- (void)setFilename:(id)filename
 {
-  v4 = [EFPathComponent pathComponentWithString:a3];
+  v4 = [EFPathComponent pathComponentWithString:filename];
   [(EFFileWrapper *)self setFilenamePathComponent:?];
 }
 

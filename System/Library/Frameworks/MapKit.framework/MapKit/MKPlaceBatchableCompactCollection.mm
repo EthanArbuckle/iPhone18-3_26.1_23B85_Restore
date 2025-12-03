@@ -1,30 +1,30 @@
 @interface MKPlaceBatchableCompactCollection
-- (BOOL)isEqual:(id)a3;
-- (MKPlaceBatchableCompactCollection)initWithIdentifier:(id)a3;
-- (MKPlaceBatchableCompactCollection)initWithWorldwideViewModel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MKPlaceBatchableCompactCollection)initWithIdentifier:(id)identifier;
+- (MKPlaceBatchableCompactCollection)initWithWorldwideViewModel:(id)model;
 - (id)description;
 @end
 
 @implementation MKPlaceBatchableCompactCollection
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(MKPlaceBatchableCompactCollection *)self guideLocationIdentifier];
-    v8 = [(MKPlaceBatchableCompactCollection *)v6 guideLocationIdentifier];
-    if ([v7 isEqual:v8])
+    guideLocationIdentifier = [(MKPlaceBatchableCompactCollection *)self guideLocationIdentifier];
+    guideLocationIdentifier2 = [(MKPlaceBatchableCompactCollection *)v6 guideLocationIdentifier];
+    if ([guideLocationIdentifier isEqual:guideLocationIdentifier2])
     {
-      v9 = [(MKPlaceBatchableCompactCollection *)self viewModel];
-      v10 = [v9 isEqual:v6];
+      viewModel = [(MKPlaceBatchableCompactCollection *)self viewModel];
+      v10 = [viewModel isEqual:v6];
     }
 
     else
@@ -44,40 +44,40 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MKPlaceBatchableCompactCollection *)self guideLocationIdentifier];
-  v5 = [v4 muid];
-  v6 = [(MKPlaceCompactCollectionViewModel *)self->_viewModel title];
-  v7 = [v6 string];
-  v8 = [v3 stringWithFormat:@"%llu - %@", v5, v7];
+  guideLocationIdentifier = [(MKPlaceBatchableCompactCollection *)self guideLocationIdentifier];
+  muid = [guideLocationIdentifier muid];
+  title = [(MKPlaceCompactCollectionViewModel *)self->_viewModel title];
+  string = [title string];
+  v8 = [v3 stringWithFormat:@"%llu - %@", muid, string];
 
   return v8;
 }
 
-- (MKPlaceBatchableCompactCollection)initWithWorldwideViewModel:(id)a3
+- (MKPlaceBatchableCompactCollection)initWithWorldwideViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = MKPlaceBatchableCompactCollection;
   v6 = [(MKPlaceBatchableCompactCollection *)&v9 init];
   v7 = v6;
-  if (v5)
+  if (modelCopy)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
   }
 
   return v7;
 }
 
-- (MKPlaceBatchableCompactCollection)initWithIdentifier:(id)a3
+- (MKPlaceBatchableCompactCollection)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MKPlaceBatchableCompactCollection;
   v6 = [(MKPlaceBatchableCompactCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_guideLocationIdentifier, a3);
+    objc_storeStrong(&v6->_guideLocationIdentifier, identifier);
   }
 
   return v7;

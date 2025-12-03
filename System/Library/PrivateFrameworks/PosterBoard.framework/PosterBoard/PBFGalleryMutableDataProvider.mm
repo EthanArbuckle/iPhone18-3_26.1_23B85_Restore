@@ -1,31 +1,31 @@
 @interface PBFGalleryMutableDataProvider
-- (BOOL)_isSectionIdentifierValid:(id)a3;
-- (BOOL)_isValidItem:(id)a3 withinSectionIdentifier:(id)a4;
-- (void)addToSection:(id)a3 item:(id)a4;
-- (void)configureForGallery:(id)a3;
-- (void)executeBulkUpdate:(id)a3;
-- (void)insertSectionWithIdentifier:(id)a3 toIndex:(unint64_t)a4 localizedTitle:(id)a5 localizedSubtitle:(id)a6 type:(int64_t)a7 items:(id)a8;
-- (void)removeFromSection:(id)a3 item:(id)a4;
-- (void)removeSectionWithIdentifier:(id)a3;
-- (void)setItems:(id)a3 forSectionIdentifier:(id)a4;
-- (void)sortItemsWithinSectionAtIdentifier:(id)a3 comparator:(id)a4;
-- (void)sortSectionsWithComparator:(id)a3;
+- (BOOL)_isSectionIdentifierValid:(id)valid;
+- (BOOL)_isValidItem:(id)item withinSectionIdentifier:(id)identifier;
+- (void)addToSection:(id)section item:(id)item;
+- (void)configureForGallery:(id)gallery;
+- (void)executeBulkUpdate:(id)update;
+- (void)insertSectionWithIdentifier:(id)identifier toIndex:(unint64_t)index localizedTitle:(id)title localizedSubtitle:(id)subtitle type:(int64_t)type items:(id)items;
+- (void)removeFromSection:(id)section item:(id)item;
+- (void)removeSectionWithIdentifier:(id)identifier;
+- (void)setItems:(id)items forSectionIdentifier:(id)identifier;
+- (void)sortItemsWithinSectionAtIdentifier:(id)identifier comparator:(id)comparator;
+- (void)sortSectionsWithComparator:(id)comparator;
 @end
 
 @implementation PBFGalleryMutableDataProvider
 
-- (void)insertSectionWithIdentifier:(id)a3 toIndex:(unint64_t)a4 localizedTitle:(id)a5 localizedSubtitle:(id)a6 type:(int64_t)a7 items:(id)a8
+- (void)insertSectionWithIdentifier:(id)identifier toIndex:(unint64_t)index localizedTitle:(id)title localizedSubtitle:(id)subtitle type:(int64_t)type items:(id)items
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  if (!v14)
+  identifierCopy = identifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  itemsCopy = items;
+  if (!identifierCopy)
   {
     [PBFGalleryMutableDataProvider insertSectionWithIdentifier:toIndex:localizedTitle:localizedSubtitle:type:items:];
   }
 
-  if (![(PBFGalleryMutableDataProvider *)self _isSectionTypeValid:a7])
+  if (![(PBFGalleryMutableDataProvider *)self _isSectionTypeValid:type])
   {
     [PBFGalleryMutableDataProvider insertSectionWithIdentifier:toIndex:localizedTitle:localizedSubtitle:type:items:];
   }
@@ -34,16 +34,16 @@
   v22[1] = 3221225472;
   v22[2] = __113__PBFGalleryMutableDataProvider_insertSectionWithIdentifier_toIndex_localizedTitle_localizedSubtitle_type_items___block_invoke;
   v22[3] = &unk_2782C9608;
-  v27 = a4;
-  v28 = a7;
-  v23 = v14;
-  v24 = v15;
-  v25 = v16;
-  v26 = v17;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
+  indexCopy = index;
+  typeCopy = type;
+  v23 = identifierCopy;
+  v24 = titleCopy;
+  v25 = subtitleCopy;
+  v26 = itemsCopy;
+  v18 = itemsCopy;
+  v19 = subtitleCopy;
+  v20 = titleCopy;
+  v21 = identifierCopy;
   [(PBFGalleryMutableDataProvider *)self executeBulkUpdate:v22];
 }
 
@@ -97,11 +97,11 @@ void __113__PBFGalleryMutableDataProvider_insertSectionWithIdentifier_toIndex_lo
   [v15 _markChangeDidOccur];
 }
 
-- (void)setItems:(id)a3 forSectionIdentifier:(id)a4
+- (void)setItems:(id)items forSectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(PBFGalleryMutableDataProvider *)self _isSectionIdentifierValid:v7])
+  itemsCopy = items;
+  identifierCopy = identifier;
+  if (![(PBFGalleryMutableDataProvider *)self _isSectionIdentifierValid:identifierCopy])
   {
     [PBFGalleryMutableDataProvider setItems:forSectionIdentifier:];
   }
@@ -110,10 +110,10 @@ void __113__PBFGalleryMutableDataProvider_insertSectionWithIdentifier_toIndex_lo
   v10[1] = 3221225472;
   v10[2] = __63__PBFGalleryMutableDataProvider_setItems_forSectionIdentifier___block_invoke;
   v10[3] = &unk_2782C9658;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = itemsCopy;
+  v8 = itemsCopy;
+  v9 = identifierCopy;
   [(PBFGalleryMutableDataProvider *)self executeBulkUpdate:v10];
 }
 
@@ -192,13 +192,13 @@ void __63__PBFGalleryMutableDataProvider_setItems_forSectionIdentifier___block_i
   [v5 setObject:v3 forKey:v4];
 }
 
-- (void)addToSection:(id)a3 item:(id)a4
+- (void)addToSection:(id)section item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PBFGalleryMutableDataProvider *)self _isSectionIdentifierValid:v6])
+  sectionCopy = section;
+  itemCopy = item;
+  if ([(PBFGalleryMutableDataProvider *)self _isSectionIdentifierValid:sectionCopy])
   {
-    if (v7)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -207,7 +207,7 @@ void __63__PBFGalleryMutableDataProvider_setItems_forSectionIdentifier___block_i
   else
   {
     [PBFGalleryMutableDataProvider addToSection:item:];
-    if (v7)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -215,14 +215,14 @@ void __63__PBFGalleryMutableDataProvider_setItems_forSectionIdentifier___block_i
 
   [PBFGalleryMutableDataProvider addToSection:item:];
 LABEL_3:
-  if (![(PBFGalleryMutableDataProvider *)self _isValidItem:v7 withinSectionIdentifier:v6])
+  if (![(PBFGalleryMutableDataProvider *)self _isValidItem:itemCopy withinSectionIdentifier:sectionCopy])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__PBFGalleryMutableDataProvider_addToSection_item___block_invoke;
     v8[3] = &unk_2782C9658;
-    v9 = v6;
-    v10 = v7;
+    v9 = sectionCopy;
+    v10 = itemCopy;
     [(PBFGalleryMutableDataProvider *)self executeBulkUpdate:v8];
   }
 }
@@ -249,17 +249,17 @@ void __51__PBFGalleryMutableDataProvider_addToSection_item___block_invoke(uint64
   [v9 _markChangeDidOccur];
 }
 
-- (void)removeSectionWithIdentifier:(id)a3
+- (void)removeSectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(PBFGalleryMutableDataProvider *)self _isSectionIdentifierValid:v4])
+  identifierCopy = identifier;
+  if ([(PBFGalleryMutableDataProvider *)self _isSectionIdentifierValid:identifierCopy])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __61__PBFGalleryMutableDataProvider_removeSectionWithIdentifier___block_invoke;
     v5[3] = &unk_2782C9658;
     v5[4] = self;
-    v6 = v4;
+    v6 = identifierCopy;
     [(PBFGalleryMutableDataProvider *)self executeBulkUpdate:v5];
   }
 }
@@ -303,14 +303,14 @@ void __61__PBFGalleryMutableDataProvider_removeSectionWithIdentifier___block_inv
   [v5 removeObjectForKey:v4];
 }
 
-- (void)removeFromSection:(id)a3 item:(id)a4
+- (void)removeFromSection:(id)section item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  sectionCopy = section;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (sectionCopy)
   {
-    if (v7)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -327,14 +327,14 @@ void __61__PBFGalleryMutableDataProvider_removeSectionWithIdentifier___block_inv
 
   [PBFGalleryMutableDataProvider removeFromSection:item:];
 LABEL_3:
-  if ([(PBFGalleryMutableDataProvider *)self _isValidItem:v8 withinSectionIdentifier:v6])
+  if ([(PBFGalleryMutableDataProvider *)self _isValidItem:v8 withinSectionIdentifier:sectionCopy])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __56__PBFGalleryMutableDataProvider_removeFromSection_item___block_invoke;
     v9[3] = &unk_2782C9658;
     v10 = v8;
-    v11 = v6;
+    v11 = sectionCopy;
     [(PBFGalleryMutableDataProvider *)self executeBulkUpdate:v9];
   }
 }
@@ -354,14 +354,14 @@ void __56__PBFGalleryMutableDataProvider_removeFromSection_item___block_invoke(u
   [v7 removeObject:*(a1 + 32)];
 }
 
-- (void)sortSectionsWithComparator:(id)a3
+- (void)sortSectionsWithComparator:(id)comparator
 {
-  v4 = a3;
-  v5 = [(PBFPosterGalleryDataProvider *)self orderedSectionIdentifiers];
-  v6 = [v5 mutableCopy];
-  [v5 sortUsingComparator:v4];
+  comparatorCopy = comparator;
+  orderedSectionIdentifiers = [(PBFPosterGalleryDataProvider *)self orderedSectionIdentifiers];
+  v6 = [orderedSectionIdentifiers mutableCopy];
+  [orderedSectionIdentifiers sortUsingComparator:comparatorCopy];
 
-  if (([v6 isEqual:v5] & 1) == 0)
+  if (([v6 isEqual:orderedSectionIdentifiers] & 1) == 0)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -385,18 +385,18 @@ void __60__PBFGalleryMutableDataProvider_sortSectionsWithComparator___block_invo
   [v6 _markChangeDidOccur];
 }
 
-- (void)sortItemsWithinSectionAtIdentifier:(id)a3 comparator:(id)a4
+- (void)sortItemsWithinSectionAtIdentifier:(id)identifier comparator:(id)comparator
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  comparatorCopy = comparator;
+  if (!identifierCopy)
   {
     [PBFGalleryMutableDataProvider sortItemsWithinSectionAtIdentifier:comparator:];
   }
 
-  v8 = [(PBFPosterGalleryDataProvider *)self itemsForSectionWithIdentifier:v6];
+  v8 = [(PBFPosterGalleryDataProvider *)self itemsForSectionWithIdentifier:identifierCopy];
   v9 = [v8 mutableCopy];
-  [v9 sortUsingComparator:v7];
+  [v9 sortUsingComparator:comparatorCopy];
   if (([v9 isEqual:v8] & 1) == 0)
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -404,8 +404,8 @@ void __60__PBFGalleryMutableDataProvider_sortSectionsWithComparator___block_invo
     v10[2] = __79__PBFGalleryMutableDataProvider_sortItemsWithinSectionAtIdentifier_comparator___block_invoke;
     v10[3] = &unk_2782C96A8;
     v11 = v9;
-    v12 = v6;
-    v13 = self;
+    v12 = identifierCopy;
+    selfCopy = self;
     [(PBFGalleryMutableDataProvider *)self executeBulkUpdate:v10];
   }
 }
@@ -420,50 +420,50 @@ uint64_t __79__PBFGalleryMutableDataProvider_sortItemsWithinSectionAtIdentifier_
   return [v4 _markChangeDidOccur];
 }
 
-- (void)executeBulkUpdate:(id)a3
+- (void)executeBulkUpdate:(id)update
 {
-  v4 = a3;
-  if (!v4)
+  updateCopy = update;
+  if (!updateCopy)
   {
     [PBFGalleryMutableDataProvider executeBulkUpdate:];
   }
 
   [(PBFPosterGalleryDataProvider *)self _incrementTransactionCount:1];
-  v4[2](v4, self);
+  updateCopy[2](updateCopy, self);
   [(PBFPosterGalleryDataProvider *)self _decrementTransactionCount:1];
 }
 
-- (void)configureForGallery:(id)a3
+- (void)configureForGallery:(id)gallery
 {
-  v4 = a3;
+  galleryCopy = gallery;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
   v18[3] = __Block_byref_object_copy__10;
   v18[4] = __Block_byref_object_dispose__10;
-  v5 = [(PBFPosterGalleryDataProvider *)self sectionIdentifiers];
-  v19 = [v5 array];
+  sectionIdentifiers = [(PBFPosterGalleryDataProvider *)self sectionIdentifiers];
+  array = [sectionIdentifiers array];
 
-  v6 = [v4 sectionIdentifiers];
-  v7 = [v6 array];
+  sectionIdentifiers2 = [galleryCopy sectionIdentifiers];
+  array2 = [sectionIdentifiers2 array];
 
-  v8 = [v4 snapshotProvider];
-  [(PBFPosterGalleryDataProvider *)self setSnapshotProvider:v8];
-  v9 = [v4 complicationSnapshotProvider];
-  [(PBFPosterGalleryDataProvider *)self setComplicationSnapshotProvider:v9];
-  v10 = [v4 extensionProvider];
-  [(PBFPosterGalleryDataProvider *)self setExtensionProvider:v10];
+  snapshotProvider = [galleryCopy snapshotProvider];
+  [(PBFPosterGalleryDataProvider *)self setSnapshotProvider:snapshotProvider];
+  complicationSnapshotProvider = [galleryCopy complicationSnapshotProvider];
+  [(PBFPosterGalleryDataProvider *)self setComplicationSnapshotProvider:complicationSnapshotProvider];
+  extensionProvider = [galleryCopy extensionProvider];
+  [(PBFPosterGalleryDataProvider *)self setExtensionProvider:extensionProvider];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__PBFGalleryMutableDataProvider_configureForGallery___block_invoke;
   v13[3] = &unk_2782C96D0;
-  v11 = v7;
+  v11 = array2;
   v14 = v11;
   v17 = v18;
-  v12 = v4;
+  v12 = galleryCopy;
   v15 = v12;
-  v16 = self;
+  selfCopy = self;
   [(PBFGalleryMutableDataProvider *)self executeBulkUpdate:v13];
 
   _Block_object_dispose(v18, 8);
@@ -593,20 +593,20 @@ void __53__PBFGalleryMutableDataProvider_configureForGallery___block_invoke(uint
   }
 }
 
-- (BOOL)_isSectionIdentifierValid:(id)a3
+- (BOOL)_isSectionIdentifierValid:(id)valid
 {
-  v4 = a3;
-  v5 = [(PBFPosterGalleryDataProvider *)self orderedSectionIdentifiers];
-  v6 = [v5 containsObject:v4];
+  validCopy = valid;
+  orderedSectionIdentifiers = [(PBFPosterGalleryDataProvider *)self orderedSectionIdentifiers];
+  v6 = [orderedSectionIdentifiers containsObject:validCopy];
 
   return v6;
 }
 
-- (BOOL)_isValidItem:(id)a3 withinSectionIdentifier:(id)a4
+- (BOOL)_isValidItem:(id)item withinSectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(PBFPosterGalleryDataProvider *)self itemsForSectionWithIdentifier:a4];
-  LOBYTE(self) = [v7 containsObject:v6];
+  itemCopy = item;
+  v7 = [(PBFPosterGalleryDataProvider *)self itemsForSectionWithIdentifier:identifier];
+  LOBYTE(self) = [v7 containsObject:itemCopy];
 
   return self;
 }

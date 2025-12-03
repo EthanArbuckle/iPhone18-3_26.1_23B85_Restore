@@ -13,12 +13,12 @@
   v4 = [(CoreDAVItem *)&v9 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVCurrentUserPrincipalItem *)self href];
-  v6 = [v5 payloadAsString];
-  [v3 appendFormat:@"\n  HREF: [%@]", v6];
+  href = [(CoreDAVCurrentUserPrincipalItem *)self href];
+  payloadAsString = [href payloadAsString];
+  [v3 appendFormat:@"\n  HREF: [%@]", payloadAsString];
 
-  v7 = [(CoreDAVCurrentUserPrincipalItem *)self unauthenticated];
-  [v3 appendFormat:@"\n  Unauthenticated: [%@]", v7];
+  unauthenticated = [(CoreDAVCurrentUserPrincipalItem *)self unauthenticated];
+  [v3 appendFormat:@"\n  Unauthenticated: [%@]", unauthenticated];
 
   return v3;
 }
@@ -26,7 +26,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -39,7 +39,7 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[CoreDAVItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 

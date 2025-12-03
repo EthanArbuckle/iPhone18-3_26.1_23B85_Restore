@@ -1,19 +1,19 @@
 @interface HMDNetworkRouterFirewallRuleWAN
-+ (BOOL)__decodeAddress:(id)a3 subject:(id *)a4;
-+ (BOOL)__decodeAddressRange:(id)a3 endValue:(id)a4 subject:(id *)a5;
-+ (BOOL)__decodeAddresses:(id)a3 subject:(id *)a4;
-+ (BOOL)__decodeFlags:(id)a3 critical:(BOOL *)a4;
-+ (BOOL)__decodeHostnames:(id)a3 subject:(id *)a4;
-+ (BOOL)__decodePorts:(id)a3 portStart:(unsigned __int16 *)a4 portEnd:(unsigned __int16 *)a5;
-+ (BOOL)__decodePurpose:(id)a3 purpose:(unint64_t *)a4;
-+ (BOOL)__decodeSubject:(id)a3 subject:(id *)a4;
-+ (BOOL)__decodeType:(id)a3 transportProtocol:(unsigned __int8 *)a4 error:(id *)a5;
++ (BOOL)__decodeAddress:(id)address subject:(id *)subject;
++ (BOOL)__decodeAddressRange:(id)range endValue:(id)value subject:(id *)subject;
++ (BOOL)__decodeAddresses:(id)addresses subject:(id *)subject;
++ (BOOL)__decodeFlags:(id)flags critical:(BOOL *)critical;
++ (BOOL)__decodeHostnames:(id)hostnames subject:(id *)subject;
++ (BOOL)__decodePorts:(id)ports portStart:(unsigned __int16 *)start portEnd:(unsigned __int16 *)end;
++ (BOOL)__decodePurpose:(id)purpose purpose:(unint64_t *)a4;
++ (BOOL)__decodeSubject:(id)subject subject:(id *)a4;
++ (BOOL)__decodeType:(id)type transportProtocol:(unsigned __int8 *)protocol error:(id *)error;
 + (HMFNetAddress)ipAddressAny;
 + (HMFNetAddress)ipAddressAnyIPv4;
 + (HMFNetAddress)ipAddressAnyIPv6;
-+ (id)__nonWildcardAddressFrom:(id)a3 key:(id)a4;
-+ (id)createWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)__nonWildcardAddressFrom:(id)from key:(id)key;
++ (id)createWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)attributeDescriptions;
 - (id)prettyJSONDictionary;
 - (unint64_t)hash;
@@ -25,24 +25,24 @@
 {
   v23.receiver = self;
   v23.super_class = HMDNetworkRouterFirewallRuleWAN;
-  v3 = [(HMDNetworkRouterFirewallRule *)&v23 prettyJSONDictionary];
-  v4 = [v3 mutableCopy];
+  prettyJSONDictionary = [(HMDNetworkRouterFirewallRule *)&v23 prettyJSONDictionary];
+  v4 = [prettyJSONDictionary mutableCopy];
 
   v5 = [objc_opt_class() __transportProtocolToString:{-[HMDNetworkRouterFirewallRuleWAN transportProtocol](self, "transportProtocol")}];
   [v4 setObject:v5 forKeyedSubscript:@"transportProtocol"];
 
-  v6 = [(HMDNetworkRouterFirewallRuleWAN *)self purpose];
+  purpose = [(HMDNetworkRouterFirewallRuleWAN *)self purpose];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (!v6)
+  if (!purpose)
   {
     goto LABEL_41;
   }
 
   v8 = 1;
-  v9 = v6;
+  v9 = purpose;
   do
   {
-    if ((v8 & v6) == 0)
+    if ((v8 & purpose) == 0)
     {
       goto LABEL_38;
     }
@@ -158,7 +158,7 @@ LABEL_38:
     v8 *= 2;
   }
 
-  while (v8 - 1 < v6);
+  while (v8 - 1 < purpose);
   if (v9)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (0x%llx)", v9];
@@ -177,17 +177,17 @@ LABEL_41:
   }
 
   [v4 setObject:v12 forKeyedSubscript:@"purpose"];
-  v13 = [(HMDNetworkRouterFirewallRuleWAN *)self subject];
-  v14 = [v13 prettyJSONDictionary];
-  [v4 addEntriesFromDictionary:v14];
+  subject = [(HMDNetworkRouterFirewallRuleWAN *)self subject];
+  prettyJSONDictionary2 = [subject prettyJSONDictionary];
+  [v4 addEntriesFromDictionary:prettyJSONDictionary2];
 
-  v15 = [(HMDNetworkRouterFirewallRuleWAN *)self transportProtocol];
-  if (v15 >= 2)
+  transportProtocol = [(HMDNetworkRouterFirewallRuleWAN *)self transportProtocol];
+  if (transportProtocol >= 2)
   {
-    if (v15 == 2)
+    if (transportProtocol == 2)
     {
-      v18 = [(HMDNetworkRouterFirewallRuleWAN *)self icmpTypes];
-      v20 = [v18 na_map:&__block_literal_global_216_144118];
+      icmpTypes = [(HMDNetworkRouterFirewallRuleWAN *)self icmpTypes];
+      v20 = [icmpTypes na_map:&__block_literal_global_216_144118];
       [v4 setObject:v20 forKeyedSubscript:@"icmpTypes"];
 
       goto LABEL_51;
@@ -196,23 +196,23 @@ LABEL_41:
 
   else
   {
-    v16 = [(HMDNetworkRouterFirewallRuleWAN *)self portStart];
-    v17 = [(HMDNetworkRouterFirewallRuleWAN *)self portEnd];
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[HMDNetworkRouterFirewallRuleWAN portStart](self, "portStart")}];
-    if (v16 == v17)
+    portStart = [(HMDNetworkRouterFirewallRuleWAN *)self portStart];
+    portEnd = [(HMDNetworkRouterFirewallRuleWAN *)self portEnd];
+    icmpTypes = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[HMDNetworkRouterFirewallRuleWAN portStart](self, "portStart")}];
+    if (portStart == portEnd)
     {
       v19 = @"port";
     }
 
     else
     {
-      [v4 setObject:v18 forKeyedSubscript:@"portStart"];
+      [v4 setObject:icmpTypes forKeyedSubscript:@"portStart"];
 
-      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[HMDNetworkRouterFirewallRuleWAN portEnd](self, "portEnd")}];
+      icmpTypes = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[HMDNetworkRouterFirewallRuleWAN portEnd](self, "portEnd")}];
       v19 = @"portEnd";
     }
 
-    [v4 setObject:v18 forKeyedSubscript:v19];
+    [v4 setObject:icmpTypes forKeyedSubscript:v19];
 LABEL_51:
   }
 
@@ -226,7 +226,7 @@ LABEL_51:
   v27[6] = *MEMORY[0x277D85DE8];
   v26.receiver = self;
   v26.super_class = HMDNetworkRouterFirewallRuleWAN;
-  v3 = [(HMDNetworkRouterFirewallRule *)&v26 attributeDescriptions];
+  attributeDescriptions = [(HMDNetworkRouterFirewallRule *)&v26 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[HMDNetworkRouterFirewallRuleWAN purpose](self, "purpose")}];
   v24 = [v4 initWithName:@"Purpose" value:v25];
@@ -236,8 +236,8 @@ LABEL_51:
   v22 = [v5 initWithName:@"TransportProtocol" value:v23];
   v27[1] = v22;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMDNetworkRouterFirewallRuleWAN *)self subject];
-  v7 = [v6 initWithName:@"Subject" value:v21];
+  subject = [(HMDNetworkRouterFirewallRuleWAN *)self subject];
+  v7 = [v6 initWithName:@"Subject" value:subject];
   v27[2] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[HMDNetworkRouterFirewallRuleWAN portStart](self, "portStart")}];
@@ -248,11 +248,11 @@ LABEL_51:
   v13 = [v11 initWithName:@"PortEnd" value:v12];
   v27[4] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
-  v15 = [(HMDNetworkRouterFirewallRuleWAN *)self icmpTypes];
-  v16 = [v14 initWithName:@"ICMPTypes" value:v15];
+  icmpTypes = [(HMDNetworkRouterFirewallRuleWAN *)self icmpTypes];
+  v16 = [v14 initWithName:@"ICMPTypes" value:icmpTypes];
   v27[5] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:6];
-  v18 = [v3 arrayByAddingObjectsFromArray:v17];
+  v18 = [attributeDescriptions arrayByAddingObjectsFromArray:v17];
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -261,23 +261,23 @@ LABEL_51:
 
 - (unint64_t)hash
 {
-  v3 = [(HMDNetworkRouterFirewallRuleWAN *)self purpose];
-  v4 = [(HMDNetworkRouterFirewallRuleWAN *)self transportProtocol];
-  v5 = [(HMDNetworkRouterFirewallRuleWAN *)self subject];
-  v6 = v3 ^ [v5 hash] ^ v4;
+  purpose = [(HMDNetworkRouterFirewallRuleWAN *)self purpose];
+  transportProtocol = [(HMDNetworkRouterFirewallRuleWAN *)self transportProtocol];
+  subject = [(HMDNetworkRouterFirewallRuleWAN *)self subject];
+  v6 = purpose ^ [subject hash] ^ transportProtocol;
 
-  v7 = [(HMDNetworkRouterFirewallRuleWAN *)self portStart];
-  v8 = v6 ^ v7 ^ [(HMDNetworkRouterFirewallRuleWAN *)self portEnd];
-  v9 = [(HMDNetworkRouterFirewallRuleWAN *)self icmpTypes];
-  v10 = [v9 hash];
+  portStart = [(HMDNetworkRouterFirewallRuleWAN *)self portStart];
+  v8 = v6 ^ portStart ^ [(HMDNetworkRouterFirewallRuleWAN *)self portEnd];
+  icmpTypes = [(HMDNetworkRouterFirewallRuleWAN *)self icmpTypes];
+  v10 = [icmpTypes hash];
 
   return v8 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -286,9 +286,9 @@ LABEL_51:
   {
     v18.receiver = self;
     v18.super_class = HMDNetworkRouterFirewallRuleWAN;
-    if ([(HMDNetworkRouterFirewallRule *)&v18 isEqual:v4])
+    if ([(HMDNetworkRouterFirewallRule *)&v18 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -304,12 +304,12 @@ LABEL_51:
 
       if (v7 && (v8 = [(HMDNetworkRouterFirewallRuleWAN *)self purpose], v8 == [(HMDNetworkRouterFirewallRuleWAN *)v7 purpose]) && (v9 = [(HMDNetworkRouterFirewallRuleWAN *)self transportProtocol], v9 == [(HMDNetworkRouterFirewallRuleWAN *)v7 transportProtocol]))
       {
-        v10 = [(HMDNetworkRouterFirewallRuleWAN *)self subject];
-        v11 = [(HMDNetworkRouterFirewallRuleWAN *)v7 subject];
-        if ([v10 isEqual:v11] && (v12 = -[HMDNetworkRouterFirewallRuleWAN portStart](self, "portStart"), v12 == -[HMDNetworkRouterFirewallRuleWAN portStart](v7, "portStart")) && (v13 = -[HMDNetworkRouterFirewallRuleWAN portEnd](self, "portEnd"), v13 == -[HMDNetworkRouterFirewallRuleWAN portEnd](v7, "portEnd")))
+        subject = [(HMDNetworkRouterFirewallRuleWAN *)self subject];
+        subject2 = [(HMDNetworkRouterFirewallRuleWAN *)v7 subject];
+        if ([subject isEqual:subject2] && (v12 = -[HMDNetworkRouterFirewallRuleWAN portStart](self, "portStart"), v12 == -[HMDNetworkRouterFirewallRuleWAN portStart](v7, "portStart")) && (v13 = -[HMDNetworkRouterFirewallRuleWAN portEnd](self, "portEnd"), v13 == -[HMDNetworkRouterFirewallRuleWAN portEnd](v7, "portEnd")))
         {
-          v14 = [(HMDNetworkRouterFirewallRuleWAN *)self icmpTypes];
-          v15 = [(HMDNetworkRouterFirewallRuleWAN *)v7 icmpTypes];
+          icmpTypes = [(HMDNetworkRouterFirewallRuleWAN *)self icmpTypes];
+          icmpTypes2 = [(HMDNetworkRouterFirewallRuleWAN *)v7 icmpTypes];
           v16 = HMFEqualObjects();
         }
 
@@ -334,12 +334,12 @@ LABEL_51:
   return v16;
 }
 
-+ (id)createWithJSONDictionary:(id)a3 error:(id *)a4
++ (id)createWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v30 = 0;
-  if (![a1 __decodeType:v6 transportProtocol:&v30 error:a4])
+  if (![self __decodeType:dictionaryCopy transportProtocol:&v30 error:error])
   {
 LABEL_15:
     v14 = 0;
@@ -347,12 +347,12 @@ LABEL_15:
   }
 
   v29 = 0;
-  if (([a1 __decodeFlags:v6 critical:&v29] & 1) == 0)
+  if (([self __decodeFlags:dictionaryCopy critical:&v29] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a4 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_33;
     }
 
@@ -360,13 +360,13 @@ LABEL_15:
   }
 
   v7 = [HMDNetworkRouterFirewallRule alloc];
-  v8 = [(HMDNetworkRouterFirewallRule *)v7 initWithJSONDictionary:v6 critical:v29];
-  if (!v8 || (v28 = 0, ([a1 __decodePurpose:v6 purpose:&v28] & 1) == 0))
+  v8 = [(HMDNetworkRouterFirewallRule *)v7 initWithJSONDictionary:dictionaryCopy critical:v29];
+  if (!v8 || (v28 = 0, ([self __decodePurpose:dictionaryCopy purpose:&v28] & 1) == 0))
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -377,7 +377,7 @@ LABEL_15:
     goto LABEL_32;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"r"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"r"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -394,7 +394,7 @@ LABEL_15:
   if (!v11)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -404,15 +404,15 @@ LABEL_15:
       v33 = 2112;
       v34 = @"r";
       v35 = 2112;
-      v36 = v6;
+      v36 = dictionaryCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@WAN rule contains an invalid '%@' value: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -424,7 +424,7 @@ LABEL_15:
   }
 
   v27 = 0;
-  v12 = [a1 __decodeSubject:v11 subject:&v27];
+  v12 = [self __decodeSubject:v11 subject:&v27];
   v13 = v27;
   if ((v12 & 1) == 0)
   {
@@ -435,7 +435,7 @@ LABEL_15:
   v26 = 0;
   if (v30 < 2u)
   {
-    if ([a1 __decodePorts:v11 portStart:buf portEnd:&v26])
+    if ([self __decodePorts:v11 portStart:buf portEnd:&v26])
     {
       goto LABEL_28;
     }
@@ -454,10 +454,10 @@ LABEL_28:
   if (!v19)
   {
 LABEL_25:
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -469,12 +469,12 @@ LABEL_25:
   }
 
 LABEL_29:
-  v20 = [a1 alloc];
-  v21 = [(HMDNetworkRouterFirewallRule *)v8 name];
-  v22 = [(HMDNetworkRouterFirewallRule *)v8 isCritical];
+  v20 = [self alloc];
+  name = [(HMDNetworkRouterFirewallRule *)v8 name];
+  isCritical = [(HMDNetworkRouterFirewallRule *)v8 isCritical];
   WORD1(v25) = v26;
   LOWORD(v25) = *buf;
-  v14 = [v20 initWithJSONDictionary:v6 name:v21 critical:v22 purpose:v28 transportProtocol:v30 subject:v13 portStart:v25 portEnd:v19 icmpTypes:?];
+  v14 = [v20 initWithJSONDictionary:dictionaryCopy name:name critical:isCritical purpose:v28 transportProtocol:v30 subject:v13 portStart:v25 portEnd:v19 icmpTypes:?];
 
 LABEL_30:
 LABEL_31:
@@ -487,24 +487,24 @@ LABEL_33:
   return v14;
 }
 
-+ (BOOL)__decodePorts:(id)a3 portStart:(unsigned __int16 *)a4 portEnd:(unsigned __int16 *)a5
++ (BOOL)__decodePorts:(id)ports portStart:(unsigned __int16 *)start portEnd:(unsigned __int16 *)end
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  portsCopy = ports;
   v19 = 0;
   v9 = 0;
-  if (decodePortFromJSONDictionary(v8, @"p", 1, &v19, 0))
+  if (decodePortFromJSONDictionary(portsCopy, @"p", 1, &v19, 0))
   {
     v18 = 0;
     v17 = 0;
     v9 = 0;
-    if (decodePortFromJSONDictionary(v8, @"q", 0, &v18, &v17))
+    if (decodePortFromJSONDictionary(portsCopy, @"q", 0, &v18, &v17))
     {
       v10 = v19;
       if (v17 && (v10 = v18, v19 > v18))
       {
         v11 = objc_autoreleasePoolPush();
-        v12 = a1;
+        selfCopy = self;
         v13 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
@@ -520,8 +520,8 @@ LABEL_33:
 
       else
       {
-        *a4 = v19;
-        *a5 = v10;
+        *start = v19;
+        *end = v10;
         v9 = 1;
       }
     }
@@ -531,19 +531,19 @@ LABEL_33:
   return v9;
 }
 
-+ (BOOL)__decodeSubject:(id)a3 subject:(id *)a4
++ (BOOL)__decodeSubject:(id)subject subject:(id *)a4
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"h"];
-  v8 = [v6 objectForKeyedSubscript:@"i"];
-  v9 = [v6 objectForKeyedSubscript:@"j"];
-  v10 = [v6 objectForKeyedSubscript:@"is"];
+  subjectCopy = subject;
+  v7 = [subjectCopy objectForKeyedSubscript:@"h"];
+  v8 = [subjectCopy objectForKeyedSubscript:@"i"];
+  v9 = [subjectCopy objectForKeyedSubscript:@"j"];
+  v10 = [subjectCopy objectForKeyedSubscript:@"is"];
   v11 = v10;
   if (!v7 && !v8 && !v10)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -584,7 +584,7 @@ LABEL_24:
   if (!v19 || v18)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -601,7 +601,7 @@ LABEL_24:
   if (v9 && !v8)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy3 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -621,7 +621,7 @@ LABEL_25:
 
   if (v7)
   {
-    v23 = [a1 __decodeHostnames:v7 subject:a4];
+    v23 = [self __decodeHostnames:v7 subject:a4];
 LABEL_36:
     v20 = v23;
     goto LABEL_26;
@@ -639,7 +639,7 @@ LABEL_36:
 
   if (v24 && !v10)
   {
-    v23 = [a1 __decodeAddressRange:v8 endValue:v9 subject:a4];
+    v23 = [self __decodeAddressRange:v8 endValue:v9 subject:a4];
     goto LABEL_36;
   }
 
@@ -668,7 +668,7 @@ LABEL_36:
   v28 = v27;
   if (v28)
   {
-    v20 = [a1 __decodeAddresses:v28 subject:a4];
+    v20 = [self __decodeAddresses:v28 subject:a4];
   }
 
   else
@@ -689,13 +689,13 @@ LABEL_36:
 
     if (v31)
     {
-      v20 = [a1 __decodeAddress:v31 subject:a4];
+      v20 = [self __decodeAddress:v31 subject:a4];
     }
 
     else
     {
       context = objc_autoreleasePoolPush();
-      v32 = a1;
+      selfCopy4 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -721,22 +721,22 @@ LABEL_26:
   return v20;
 }
 
-+ (BOOL)__decodeAddressRange:(id)a3 endValue:(id)a4 subject:(id *)a5
++ (BOOL)__decodeAddressRange:(id)range endValue:(id)value subject:(id *)subject
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 __nonWildcardAddressFrom:v8 key:@"addressStart"];
+  rangeCopy = range;
+  valueCopy = value;
+  v10 = [self __nonWildcardAddressFrom:rangeCopy key:@"addressStart"];
   if (v10)
   {
-    v11 = [a1 __nonWildcardAddressFrom:v9 key:@"addressEnd"];
+    v11 = [self __nonWildcardAddressFrom:valueCopy key:@"addressEnd"];
     if (v11)
     {
-      v12 = [v10 addressFamily];
-      if (v12 == [v11 addressFamily])
+      addressFamily = [v10 addressFamily];
+      if (addressFamily == [v11 addressFamily])
       {
         v13 = [[HMDNetworkRouterFirewallRuleWANAddressRange alloc] initWithAddressStart:v10 addressEnd:v11];
-        *a5 = [[HMDNetworkRouterFirewallRuleWANSubject alloc] initWithHostnames:0 addresses:0 addressRange:v13];
+        *subject = [[HMDNetworkRouterFirewallRuleWANSubject alloc] initWithHostnames:0 addresses:0 addressRange:v13];
 
         v14 = 1;
 LABEL_10:
@@ -745,7 +745,7 @@ LABEL_10:
       }
 
       v15 = objc_autoreleasePoolPush();
-      v16 = a1;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -769,12 +769,12 @@ LABEL_11:
   return v14;
 }
 
-+ (id)__nonWildcardAddressFrom:(id)a3 key:(id)a4
++ (id)__nonWildcardAddressFrom:(id)from key:(id)key
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  fromCopy = from;
+  keyCopy = key;
+  v8 = fromCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -791,7 +791,7 @@ LABEL_11:
   if (!v10)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = a1;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -799,7 +799,7 @@ LABEL_11:
       v28 = 138543874;
       v29 = v14;
       v30 = 2112;
-      v31 = v7;
+      v31 = keyCopy;
       v32 = 2112;
       v33 = v8;
       v15 = "%{public}@WAN rule contains a non-string %@: %@";
@@ -816,7 +816,7 @@ LABEL_11:
   if ([v10 isEqualToString:@"*"])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = a1;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -824,7 +824,7 @@ LABEL_11:
       v28 = 138543874;
       v29 = v14;
       v30 = 2112;
-      v31 = v7;
+      v31 = keyCopy;
       v32 = 2112;
       v33 = v10;
       v15 = "%{public}@WAN rule contains a wildcard address for %@: %@";
@@ -840,15 +840,15 @@ LABEL_10:
   v17 = createHMFNetAddressFromIPAddressString(v10);
   if (v17)
   {
-    v18 = [a1 ipAddressAnyIPv4];
-    if ([v17 isEqual:v18])
+    ipAddressAnyIPv4 = [self ipAddressAnyIPv4];
+    if ([v17 isEqual:ipAddressAnyIPv4])
     {
     }
 
     else
     {
-      v24 = [a1 ipAddressAnyIPv6];
-      v25 = [v17 isEqual:v24];
+      ipAddressAnyIPv6 = [self ipAddressAnyIPv6];
+      v25 = [v17 isEqual:ipAddressAnyIPv6];
 
       if (!v25)
       {
@@ -858,7 +858,7 @@ LABEL_10:
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy4 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -866,7 +866,7 @@ LABEL_10:
       v28 = 138543874;
       v29 = v22;
       v30 = 2112;
-      v31 = v7;
+      v31 = keyCopy;
       v32 = 2112;
       v33 = v10;
       v23 = "%{public}@WAN rule contains a wildcard address for %@: %@";
@@ -877,7 +877,7 @@ LABEL_10:
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy4 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -885,7 +885,7 @@ LABEL_10:
       v28 = 138543874;
       v29 = v22;
       v30 = 2112;
-      v31 = v7;
+      v31 = keyCopy;
       v32 = 2112;
       v33 = v10;
       v23 = "%{public}@WAN rule contains an invalid %@: %@";
@@ -904,14 +904,14 @@ LABEL_23:
   return v16;
 }
 
-+ (BOOL)__decodeAddresses:(id)a3 subject:(id *)a4
++ (BOOL)__decodeAddresses:(id)addresses subject:(id *)subject
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![v6 count])
+  addressesCopy = addresses;
+  if (![addressesCopy count])
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = a1;
+    selfCopy = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -926,13 +926,13 @@ LABEL_23:
     goto LABEL_48;
   }
 
-  v55 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  v53 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
+  v55 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(addressesCopy, "count")}];
+  v53 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v7 = v6;
+  v7 = addressesCopy;
   v57 = [v7 countByEnumeratingWithState:&v58 objects:v66 count:16];
   if (!v57)
   {
@@ -940,8 +940,8 @@ LABEL_23:
     goto LABEL_41;
   }
 
-  v50 = a4;
-  v51 = v6;
+  subjectCopy = subject;
+  v51 = addressesCopy;
   v54 = 0;
   v52 = 0;
   v56 = 0;
@@ -976,7 +976,7 @@ LABEL_23:
       if (!v15)
       {
         v38 = objc_autoreleasePoolPush();
-        v39 = a1;
+        selfCopy2 = self;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -994,7 +994,7 @@ LABEL_23:
 
       if ([v15 isEqualToString:@"*"])
       {
-        v16 = [a1 ipAddressAny];
+        ipAddressAny = [self ipAddressAny];
         v54 = 1;
 LABEL_15:
         v56 = 1;
@@ -1005,7 +1005,7 @@ LABEL_15:
       if (!v17)
       {
         v44 = objc_autoreleasePoolPush();
-        v45 = a1;
+        selfCopy3 = self;
         v46 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
@@ -1019,47 +1019,47 @@ LABEL_15:
 
         objc_autoreleasePoolPop(v44);
 LABEL_45:
-        v6 = v51;
+        addressesCopy = v51;
 
 LABEL_46:
         v37 = 0;
         goto LABEL_47;
       }
 
-      v16 = v17;
-      v18 = [a1 ipAddressAnyIPv4];
-      v19 = [v16 isEqual:v18];
+      ipAddressAny = v17;
+      ipAddressAnyIPv4 = [self ipAddressAnyIPv4];
+      v19 = [ipAddressAny isEqual:ipAddressAnyIPv4];
 
       if (v19)
       {
         goto LABEL_15;
       }
 
-      v26 = [a1 ipAddressAnyIPv6];
-      v27 = [v16 isEqual:v26];
+      ipAddressAnyIPv6 = [self ipAddressAnyIPv6];
+      v27 = [ipAddressAny isEqual:ipAddressAnyIPv6];
 
       if (v27)
       {
         v54 = 1;
       }
 
-      else if ([v16 addressFamily] == 1)
+      else if ([ipAddressAny addressFamily] == 1)
       {
         LODWORD(v52) = 1;
       }
 
       else
       {
-        HIDWORD(v52) |= [v16 addressFamily] == 2;
+        HIDWORD(v52) |= [ipAddressAny addressFamily] == 2;
       }
 
 LABEL_16:
-      if ([v10 containsObject:v16])
+      if ([v10 containsObject:ipAddressAny])
       {
         v20 = v8;
         v21 = v7;
         v22 = objc_autoreleasePoolPush();
-        v23 = a1;
+        selfCopy4 = self;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
@@ -1067,7 +1067,7 @@ LABEL_16:
           *buf = 138543618;
           v63 = v25;
           v64 = 2112;
-          v65 = v16;
+          v65 = ipAddressAny;
           _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@WAN rule contains a duplicate address: %@", buf, 0x16u);
 
           v10 = v53;
@@ -1081,8 +1081,8 @@ LABEL_16:
 
       else
       {
-        [v55 addObject:v16];
-        [v10 addObject:v16];
+        [v55 addObject:ipAddressAny];
+        [v10 addObject:ipAddressAny];
       }
 
       ++v11;
@@ -1095,12 +1095,12 @@ LABEL_16:
 
   while (v28);
 
-  a4 = v50;
-  v6 = v51;
+  subject = subjectCopy;
+  addressesCopy = v51;
   if (v56 & v52 & 1) != 0 || (v54 & HIDWORD(v52))
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = a1;
+    selfCopy5 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -1119,7 +1119,7 @@ LABEL_16:
 LABEL_41:
   v42 = [HMDNetworkRouterFirewallRuleWANSubject alloc];
   v43 = [v55 copy];
-  *a4 = [(HMDNetworkRouterFirewallRuleWANSubject *)v42 initWithHostnames:0 addresses:v43 addressRange:0];
+  *subject = [(HMDNetworkRouterFirewallRuleWANSubject *)v42 initWithHostnames:0 addresses:v43 addressRange:0];
 
   v37 = 1;
 LABEL_47:
@@ -1129,27 +1129,27 @@ LABEL_48:
   return v37;
 }
 
-+ (BOOL)__decodeAddress:(id)a3 subject:(id *)a4
++ (BOOL)__decodeAddress:(id)address subject:(id *)subject
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  addressCopy = address;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v11 count:1];
+  addressCopy2 = address;
+  v8 = [v6 arrayWithObjects:&addressCopy count:1];
 
-  LOBYTE(a4) = [a1 __decodeAddresses:v8 subject:{a4, v11, v12}];
+  LOBYTE(subject) = [self __decodeAddresses:v8 subject:{subject, addressCopy, v12}];
   v9 = *MEMORY[0x277D85DE8];
-  return a4;
+  return subject;
 }
 
-+ (BOOL)__decodeHostnames:(id)a3 subject:(id *)a4
++ (BOOL)__decodeHostnames:(id)hostnames subject:(id *)subject
 {
   v117 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  hostnamesCopy = hostnames;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = hostnamesCopy;
   }
 
   else
@@ -1159,17 +1159,17 @@ LABEL_48:
 
   v8 = v7;
 
-  v9 = v6;
+  v9 = hostnamesCopy;
   if (!v8)
   {
-    v104 = v6;
+    v104 = hostnamesCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v104 count:1];
   }
 
   if (![v9 count])
   {
     v40 = objc_autoreleasePoolPush();
-    v41 = a1;
+    selfCopy = self;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
@@ -1184,7 +1184,7 @@ LABEL_48:
     goto LABEL_57;
   }
 
-  v88 = a4;
+  subjectCopy = subject;
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
   v11 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v9, "count")}];
   v95 = 0u;
@@ -1202,7 +1202,7 @@ LABEL_48:
   v15 = *v96;
   v91 = v11;
   v92 = v12;
-  v93 = a1;
+  selfCopy2 = self;
   v94 = v9;
   v89 = v10;
   v86 = *v96;
@@ -1234,7 +1234,7 @@ LABEL_10:
   if (!v21)
   {
     v63 = objc_autoreleasePoolPush();
-    v64 = a1;
+    selfCopy3 = self;
     v65 = HMFGetOSLogHandle();
     v9 = v94;
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -1372,13 +1372,13 @@ LABEL_30:
           }
 
           objc_autoreleasePoolPop(v73);
-          a1 = v93;
+          self = selfCopy2;
           v9 = v94;
           goto LABEL_51;
         }
 
-        v32 = [v23 lastObject];
-        if ([v32 isEqualToString:@"local"])
+        lastObject = [v23 lastObject];
+        if ([lastObject isEqualToString:@"local"])
         {
           v77 = objc_autoreleasePoolPush();
           v78 = objc_opt_class();
@@ -1393,13 +1393,13 @@ LABEL_30:
             _os_log_impl(&dword_2531F8000, v79, OS_LOG_TYPE_INFO, "%{public}@Hostname '%@' is invalid because its last component is 'local'", v105, 0x16u);
           }
 
-          a1 = v93;
+          self = selfCopy2;
           v9 = v94;
           goto LABEL_76;
         }
 
-        a1 = v93;
-        if ([v32 containsString:@"*"])
+        self = selfCopy2;
+        if ([lastObject containsString:@"*"])
         {
           v77 = objc_autoreleasePoolPush();
           v78 = objc_opt_class();
@@ -1414,7 +1414,7 @@ LABEL_30:
             v108 = v22;
             _os_log_impl(&dword_2531F8000, v79, OS_LOG_TYPE_INFO, "%{public}@Hostname '%@' is invalid because its last component contains a wildcard", v105, 0x16u);
 
-            a1 = v93;
+            self = selfCopy2;
           }
 
 LABEL_76:
@@ -1424,7 +1424,7 @@ LABEL_76:
         }
 
         v33 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"];
-        if ([v32 rangeOfCharacterFromSet:v33] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([lastObject rangeOfCharacterFromSet:v33] == 0x7FFFFFFFFFFFFFFFLL)
         {
           v82 = objc_autoreleasePoolPush();
           v83 = objc_opt_class();
@@ -1438,7 +1438,7 @@ LABEL_76:
             v108 = v22;
             _os_log_impl(&dword_2531F8000, v84, OS_LOG_TYPE_INFO, "%{public}@Hostname '%@' is invalid because its last component does not contain letters", v105, 0x16u);
 
-            a1 = v93;
+            self = selfCopy2;
           }
 
           objc_autoreleasePoolPop(v82);
@@ -1450,7 +1450,7 @@ LABEL_76:
         if ([v91 containsObject:v22])
         {
           v34 = objc_autoreleasePoolPush();
-          v35 = v93;
+          v35 = selfCopy2;
           v36 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
@@ -1461,7 +1461,7 @@ LABEL_76:
             v116 = v22;
             _os_log_impl(&dword_2531F8000, v36, OS_LOG_TYPE_ERROR, "%{public}@WAN rule contains a duplicate hostname: %@", buf, 0x16u);
 
-            a1 = v93;
+            self = selfCopy2;
           }
 
           objc_autoreleasePoolPop(v34);
@@ -1488,7 +1488,7 @@ LABEL_41:
 
             v38 = [HMDNetworkRouterFirewallRuleWANSubject alloc];
             v12 = [v10 copy];
-            *v88 = [(HMDNetworkRouterFirewallRuleWANSubject *)v38 initWithHostnames:v12 addresses:0 addressRange:0];
+            *subjectCopy = [(HMDNetworkRouterFirewallRuleWANSubject *)v38 initWithHostnames:v12 addresses:0 addressRange:0];
             v39 = 1;
             goto LABEL_56;
           }
@@ -1523,7 +1523,7 @@ LABEL_41:
 
 LABEL_50:
     v12 = v92;
-    a1 = v93;
+    self = selfCopy2;
     v9 = v94;
 
     objc_autoreleasePoolPop(v44);
@@ -1552,7 +1552,7 @@ LABEL_51:
   v11 = v91;
 LABEL_52:
   v52 = objc_autoreleasePoolPush();
-  v53 = a1;
+  selfCopy4 = self;
   v54 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
   {
@@ -1575,35 +1575,35 @@ LABEL_57:
   return v39;
 }
 
-+ (BOOL)__decodeType:(id)a3 transportProtocol:(unsigned __int8 *)a4 error:(id *)a5
++ (BOOL)__decodeType:(id)type transportProtocol:(unsigned __int8 *)protocol error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  typeCopy = type;
   v21 = 0;
-  v9 = decodeUnsignedIntegerFromJSONDictionary(v8, @"t", 1, 0xFFuLL, &v21);
+  v9 = decodeUnsignedIntegerFromJSONDictionary(typeCopy, @"t", 1, 0xFFuLL, &v21);
   v10 = v21;
   v11 = v10;
   if (v9)
   {
-    v12 = [v10 unsignedCharValue];
-    switch(v12)
+    unsignedCharValue = [v10 unsignedCharValue];
+    switch(unsignedCharValue)
     {
       case 5:
-        *a4 = 2;
+        *protocol = 2;
         goto LABEL_11;
       case 2:
         v14 = 1;
-        *a4 = 1;
+        *protocol = 1;
         goto LABEL_17;
       case 1:
-        *a4 = 0;
+        *protocol = 0;
 LABEL_11:
         v14 = 1;
         goto LABEL_17;
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -1613,12 +1613,12 @@ LABEL_11:
       v24 = 2112;
       v25 = v11;
       v26 = 2112;
-      v27 = v8;
+      v27 = typeCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@WAN rule contains an unkown type value %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    if (a5)
+    if (error)
     {
       v13 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1070];
       goto LABEL_8;
@@ -1629,7 +1629,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_16;
   }
@@ -1637,31 +1637,31 @@ LABEL_16:
   v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
 LABEL_8:
   v14 = 0;
-  *a5 = v13;
+  *error = v13;
 LABEL_17:
 
   v19 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-+ (BOOL)__decodeFlags:(id)a3 critical:(BOOL *)a4
++ (BOOL)__decodeFlags:(id)flags critical:(BOOL *)critical
 {
   v9 = 0;
-  v5 = decodeUnsignedIntegerFromJSONDictionary(a3, @"f", 0, 0xFFFFFFFFuLL, &v9);
+  v5 = decodeUnsignedIntegerFromJSONDictionary(flags, @"f", 0, 0xFFFFFFFFuLL, &v9);
   v6 = v9;
   v7 = v6;
   if (v5)
   {
-    *a4 = [v6 unsignedLongValue] & 1;
+    *critical = [v6 unsignedLongValue] & 1;
   }
 
   return v5;
 }
 
-+ (BOOL)__decodePurpose:(id)a3 purpose:(unint64_t *)a4
++ (BOOL)__decodePurpose:(id)purpose purpose:(unint64_t *)a4
 {
   v9 = 0;
-  v5 = decodeUnsignedIntegerFromJSONDictionary(a3, @"u", 1, 0xFFFFFFFFFFFFFFFFLL, &v9);
+  v5 = decodeUnsignedIntegerFromJSONDictionary(purpose, @"u", 1, 0xFFFFFFFFFFFFFFFFLL, &v9);
   v6 = v9;
   v7 = v6;
   if (v5)

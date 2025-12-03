@@ -1,16 +1,16 @@
 @interface WFChangeCaseMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFChangeCaseMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"142") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"142") == 3)
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.text.changecase", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.text.changecase", migrationCopy);
   }
 
   else
@@ -28,8 +28,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -41,18 +41,18 @@
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v18 + 1) + 8 * v7);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKeyedSubscript:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKeyedSubscript:actionIdentifierKey];
         v11 = [v10 isEqualToString:@"is.workflow.actions.text.changecase"];
 
         if (v11)
         {
-          v12 = [(WFWorkflowMigration *)self actionParametersKey];
-          v13 = [v8 objectForKey:v12];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v13 = [v8 objectForKey:actionParametersKey];
 
           v14 = [v13 objectForKeyedSubscript:@"WFCaseType"];
           objc_opt_class();
@@ -76,7 +76,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [actions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);

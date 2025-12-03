@@ -1,12 +1,12 @@
 @interface VCPMADServiceImageAsset
-+ (VCPMADServiceImageAsset)assetWithImageData:(id)a3 uniformTypeIdentifier:(id)a4 identifier:(id)a5 clientBundleID:(id)a6 clientTeamID:(id)a7;
-+ (VCPMADServiceImageAsset)assetWithPhotosAsset:(id)a3 clientBundleID:(id)a4 clientTeamID:(id)a5;
-+ (VCPMADServiceImageAsset)assetWithPhotosAsset:(id)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 clientBundleID:(id)a6 clientTeamID:(id)a7;
-+ (VCPMADServiceImageAsset)assetWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 identifier:(id)a5 clientBundleID:(id)a6 clientTeamID:(id)a7;
-+ (VCPMADServiceImageAsset)assetWithURL:(id)a3 identifier:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6;
++ (VCPMADServiceImageAsset)assetWithImageData:(id)data uniformTypeIdentifier:(id)identifier identifier:(id)a5 clientBundleID:(id)d clientTeamID:(id)iD;
++ (VCPMADServiceImageAsset)assetWithPhotosAsset:(id)asset clientBundleID:(id)d clientTeamID:(id)iD;
++ (VCPMADServiceImageAsset)assetWithPhotosAsset:(id)asset pixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation clientBundleID:(id)d clientTeamID:(id)iD;
++ (VCPMADServiceImageAsset)assetWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation identifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD;
++ (VCPMADServiceImageAsset)assetWithURL:(id)l identifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD;
 - (CGSize)resolution;
-- (VCPMADServiceImageAsset)initWithClientBundleID:(id)a3 clientTeamID:(id)a4;
-- (id)vcp_annotationWithTypes:(unint64_t)a3;
+- (VCPMADServiceImageAsset)initWithClientBundleID:(id)d clientTeamID:(id)iD;
+- (id)vcp_annotationWithTypes:(unint64_t)types;
 - (id)vcp_scenenetAnnotation;
 - (id)vcp_textAnnotation;
 @end
@@ -15,10 +15,10 @@
 
 - (id)vcp_textAnnotation
 {
-  v2 = [(VCPMADServiceImageAsset *)self documentObservations];
-  if (v2)
+  documentObservations = [(VCPMADServiceImageAsset *)self documentObservations];
+  if (documentObservations)
   {
-    v3 = [MEMORY[0x1E69E04A8] textBlockWithDocumentObservations:v2];
+    v3 = [MEMORY[0x1E69E04A8] textBlockWithDocumentObservations:documentObservations];
   }
 
   else
@@ -32,16 +32,16 @@
 - (id)vcp_scenenetAnnotation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v2 = [(VCPMADServiceImageAsset *)self scenenetClassifications];
-  if (v2)
+  scenenetClassifications = [(VCPMADServiceImageAsset *)self scenenetClassifications];
+  if (scenenetClassifications)
   {
-    v29 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v28 = v2;
-    v3 = v2;
+    v28 = scenenetClassifications;
+    v3 = scenenetClassifications;
     v4 = [v3 countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v4)
     {
@@ -57,13 +57,13 @@
           }
 
           v8 = *(*(&v30 + 1) + 8 * i);
-          v9 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-          v10 = [v9 nodeForExtendedSceneClassId:{objc_msgSend(v8, "extendedSceneIdentifier")}];
+          vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+          v10 = [vcp_sharedTaxonomy nodeForExtendedSceneClassId:{objc_msgSend(v8, "extendedSceneIdentifier")}];
 
           if (v10 && ([v10 name], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
           {
             v12 = objc_alloc(MEMORY[0x1E69E0490]);
-            v13 = [v10 name];
+            name = [v10 name];
             [v8 boundingBox];
             v15 = v14;
             v17 = v16;
@@ -71,15 +71,15 @@
             v21 = v20;
             [v8 confidence];
             *&v23 = v22;
-            v24 = [v12 initWithLabel:v13 normalizedBoundingBox:v15 confidence:{v17, v19, v21, v23}];
-            [v29 addObject:v24];
+            v24 = [v12 initWithLabel:name normalizedBoundingBox:v15 confidence:{v17, v19, v21, v23}];
+            [array addObject:v24];
           }
 
           else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v8 extendedSceneIdentifier];
+            extendedSceneIdentifier = [v8 extendedSceneIdentifier];
             *buf = 134217984;
-            v35 = v25;
+            v35 = extendedSceneIdentifier;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[SceneNet] Failed to find label for identifier %llu", buf, 0xCu);
           }
         }
@@ -90,8 +90,8 @@
       while (v5);
     }
 
-    v26 = [objc_alloc(MEMORY[0x1E69E0498]) initWithAnnotations:v29 revision:3737841665];
-    v2 = v28;
+    v26 = [objc_alloc(MEMORY[0x1E69E0498]) initWithAnnotations:array revision:3737841665];
+    scenenetClassifications = v28;
   }
 
   else
@@ -102,15 +102,15 @@
   return v26;
 }
 
-- (id)vcp_annotationWithTypes:(unint64_t)a3
+- (id)vcp_annotationWithTypes:(unint64_t)types
 {
-  v3 = a3;
-  v4 = self;
+  typesCopy = types;
+  selfCopy = self;
   v148 = *MEMORY[0x1E69E9840];
-  if ((a3 & 3) == 0)
+  if ((types & 3) == 0)
   {
-    v6 = 0;
-    v125 = 0;
+    array = 0;
+    array2 = 0;
     v120 = 0;
     goto LABEL_79;
   }
@@ -118,44 +118,44 @@
   v5 = [(VCPMADServiceImageAsset *)self facesWithDetectionTypes:0];
   if ([v5 count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    v126 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [v5 firstObject];
-    v8 = [v7 photoLibrary];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    firstObject = [v5 firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v123 = v6;
+    v123 = array;
     v111 = v5;
-    v112 = v8;
-    v113 = v3;
-    v115 = v4;
-    if (v8)
+    v112 = photoLibrary;
+    v113 = typesCopy;
+    v115 = selfCopy;
+    if (photoLibrary)
     {
       goto LABEL_4;
     }
 
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v53 = [(VCPMADServiceImageAsset *)v4 identifier];
+      identifier = [(VCPMADServiceImageAsset *)selfCopy identifier];
       *buf = 138412290;
-      v143 = v53;
+      v143 = identifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VI][%@] -> face without photoLibrary", buf, 0xCu);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v54 = [(VCPMADServiceImageAsset *)v4 photoLibrary];
+      photoLibrary2 = [(VCPMADServiceImageAsset *)selfCopy photoLibrary];
       v55 = MediaAnalysisLogLevel();
-      v112 = v54;
-      if (v54)
+      v112 = photoLibrary2;
+      if (photoLibrary2)
       {
         if (v55 >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
-          v56 = [(VCPMADServiceImageAsset *)v4 identifier];
+          identifier2 = [(VCPMADServiceImageAsset *)selfCopy identifier];
           *buf = 138412546;
-          v143 = v56;
+          v143 = identifier2;
           v144 = 2112;
-          v145 = v54;
+          v145 = photoLibrary2;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[VI][%@] -> asset's photoLibrary %@", buf, 0x16u);
         }
 
@@ -192,17 +192,17 @@ LABEL_4:
           {
             v17 = objc_autoreleasePoolPush();
             v18 = [v13 objectAtIndexedSubscript:v15];
-            v19 = [v18 localIdentifier];
-            [v126 setObject:v18 forKeyedSubscript:v19];
+            localIdentifier = [v18 localIdentifier];
+            [dictionary setObject:v18 forKeyedSubscript:localIdentifier];
 
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
             {
-              v20 = [v18 localIdentifier];
-              v21 = [v18 verifiedType];
+              localIdentifier2 = [v18 localIdentifier];
+              verifiedType = [v18 verifiedType];
               *buf = 138412546;
-              v143 = v20;
+              v143 = localIdentifier2;
               v144 = 2048;
-              v145 = v21;
+              v145 = verifiedType;
               _os_log_impl(&dword_1C9B70000, v16, OS_LOG_TYPE_DEBUG, "[VI][Identity] -> identitity %@ with verified type %ld", buf, 0x16u);
             }
 
@@ -221,15 +221,15 @@ LABEL_4:
           _os_signpost_emit_with_name_impl(&dword_1C9B70000, v23, OS_SIGNPOST_INTERVAL_END, spid, "MADVIFetchVerifiedPeople", "", buf, 2u);
         }
 
-        v3 = v113;
+        typesCopy = v113;
         if ((v113 & 1) == 0)
         {
 LABEL_20:
           v120 = 0;
-          if ((v3 & 2) != 0)
+          if ((typesCopy & 2) != 0)
           {
 LABEL_21:
-            v125 = [MEMORY[0x1E695DF70] array];
+            array2 = [MEMORY[0x1E695DF70] array];
             v131 = 0u;
             v132 = 0u;
             v133 = 0u;
@@ -263,32 +263,32 @@ LABEL_21:
                     v40 = objc_alloc(*(v28 + 1168));
                     LODWORD(v41) = 1.0;
                     v42 = [v40 initWithLabel:@"Human" normalizedBoundingBox:v33 confidence:{v35, v37, v39, v41}];
-                    [v125 addObject:v42];
+                    [array2 addObject:v42];
 
-                    v43 = [v30 personLocalIdentifier];
-                    v44 = [v126 objectForKeyedSubscript:v43];
+                    personLocalIdentifier = [v30 personLocalIdentifier];
+                    v44 = [dictionary objectForKeyedSubscript:personLocalIdentifier];
 
                     if (v44 && [v44 faceCount])
                     {
                       v45 = v28;
-                      v46 = [v44 faceCount];
+                      faceCount = [v44 faceCount];
                       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                       {
-                        v47 = [v30 personLocalIdentifier];
-                        v48 = [v44 name];
+                        personLocalIdentifier2 = [v30 personLocalIdentifier];
+                        name = [v44 name];
                         *buf = 138412802;
-                        v143 = v47;
+                        v143 = personLocalIdentifier2;
                         v144 = 2112;
-                        v145 = v48;
+                        v145 = name;
                         v146 = 2048;
-                        v147 = v46;
+                        v147 = faceCount;
                         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VI][Identity] Creating VIReducePersonOverTriggerRegionalAnnotation for human (torso) identity %@ (%@) with %ld faces in Photos library", buf, 0x20u);
                       }
 
                       v49 = objc_alloc(MEMORY[0x1E69E0480]);
-                      v50 = [v30 personLocalIdentifier];
+                      personLocalIdentifier3 = [v30 personLocalIdentifier];
                       LODWORD(v51) = 1.0;
-                      v52 = [v49 initWithLabel:v50 boundingBox:v46 confidence:v33 faceCount:{v35, v37, v39, v51}];
+                      v52 = [v49 initWithLabel:personLocalIdentifier3 boundingBox:faceCount confidence:v33 faceCount:{v35, v37, v39, v51}];
 
                       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                       {
@@ -297,7 +297,7 @@ LABEL_21:
                         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VI][Identity] Created VIReducePersonOverTriggerRegionalAnnotation %@", buf, 0xCu);
                       }
 
-                      v6 = v123;
+                      array = v123;
                       [v123 addObject:v52];
 
                       v28 = v45;
@@ -314,28 +314,28 @@ LABEL_21:
               while (v26);
             }
 
-            v3 = v113;
-            v4 = v115;
+            typesCopy = v113;
+            selfCopy = v115;
             v5 = v111;
             goto LABEL_77;
           }
 
 LABEL_76:
-          v125 = 0;
+          array2 = 0;
 LABEL_77:
 
           goto LABEL_78;
         }
 
 LABEL_57:
-        v63 = [MEMORY[0x1E695DF70] array];
+        array3 = [MEMORY[0x1E695DF70] array];
         v135 = 0u;
         v136 = 0u;
         v137 = 0u;
         v138 = 0u;
         v64 = v5;
         v65 = [v64 countByEnumeratingWithState:&v135 objects:v141 count:16];
-        v120 = v63;
+        v120 = array3;
         if (v65)
         {
           v66 = v65;
@@ -361,31 +361,31 @@ LABEL_57:
                 v79 = objc_alloc(MEMORY[0x1E69E0490]);
                 LODWORD(v80) = 1.0;
                 v81 = [v79 initWithLabel:@"Face" normalizedBoundingBox:v72 confidence:{v74, v76, v78, v80}];
-                [v63 addObject:v81];
+                [array3 addObject:v81];
 
-                v82 = [v69 personLocalIdentifier];
-                v83 = [v126 objectForKeyedSubscript:v82];
+                personLocalIdentifier4 = [v69 personLocalIdentifier];
+                v83 = [dictionary objectForKeyedSubscript:personLocalIdentifier4];
 
                 if (v83 && [v83 faceCount])
                 {
-                  v84 = [v83 faceCount];
+                  faceCount2 = [v83 faceCount];
                   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                   {
-                    v85 = [v69 personLocalIdentifier];
-                    v86 = [v83 name];
+                    personLocalIdentifier5 = [v69 personLocalIdentifier];
+                    name2 = [v83 name];
                     *buf = 138412802;
-                    v143 = v85;
+                    v143 = personLocalIdentifier5;
                     v144 = 2112;
-                    v145 = v86;
+                    v145 = name2;
                     v146 = 2048;
-                    v147 = v84;
+                    v147 = faceCount2;
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VI][Identity] Creating VIReducePersonOverTriggerRegionalAnnotation for face identity %@ (%@) with %ld faces in Photos library", buf, 0x20u);
                   }
 
                   v87 = objc_alloc(MEMORY[0x1E69E0480]);
-                  v88 = [v69 personLocalIdentifier];
+                  personLocalIdentifier6 = [v69 personLocalIdentifier];
                   LODWORD(v89) = 1.0;
-                  v90 = [v87 initWithLabel:v88 boundingBox:v84 confidence:v72 faceCount:{v74, v76, v78, v89}];
+                  v90 = [v87 initWithLabel:personLocalIdentifier6 boundingBox:faceCount2 confidence:v72 faceCount:{v74, v76, v78, v89}];
 
                   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                   {
@@ -394,10 +394,10 @@ LABEL_57:
                     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VI][Identity] Created VIReducePersonOverTriggerRegionalAnnotation %@", buf, 0xCu);
                   }
 
-                  v6 = v123;
+                  array = v123;
                   [v123 addObject:v90];
 
-                  v63 = v120;
+                  array3 = v120;
                 }
               }
 
@@ -410,8 +410,8 @@ LABEL_57:
           while (v66);
         }
 
-        v3 = v113;
-        v4 = v115;
+        typesCopy = v113;
+        selfCopy = v115;
         v5 = v111;
         if ((v113 & 2) != 0)
         {
@@ -423,21 +423,21 @@ LABEL_57:
 
       if (v55 >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v62 = [(VCPMADServiceImageAsset *)v4 identifier];
+        identifier3 = [(VCPMADServiceImageAsset *)selfCopy identifier];
         *buf = 138412290;
-        v143 = v62;
+        v143 = identifier3;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VI][%@] -> asset without photoLibrary", buf, 0xCu);
       }
     }
 
     else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v57 = [(VCPMADServiceImageAsset *)v4 identifier];
+      identifier4 = [(VCPMADServiceImageAsset *)selfCopy identifier];
       v58 = objc_opt_class();
       v59 = v58;
       v60 = objc_opt_class();
       *buf = 138412802;
-      v143 = v57;
+      v143 = identifier4;
       v144 = 2112;
       v145 = v58;
       v146 = 2112;
@@ -445,11 +445,11 @@ LABEL_57:
       v61 = v60;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VI][%@] -> faces from %@ (expected %@)", buf, 0x20u);
 
-      v6 = v123;
+      array = v123;
     }
 
     v112 = 0;
-    if ((v3 & 1) == 0)
+    if ((typesCopy & 1) == 0)
     {
       goto LABEL_20;
     }
@@ -457,18 +457,18 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  v6 = 0;
-  v125 = 0;
+  array = 0;
+  array2 = 0;
   v120 = 0;
 LABEL_78:
 
 LABEL_79:
-  if ([v6 count])
+  if ([array count])
   {
-    v91 = [objc_alloc(MEMORY[0x1E69E0478]) initWithRegionsItems:v6];
+    v91 = [objc_alloc(MEMORY[0x1E69E0478]) initWithRegionsItems:array];
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v92 = [v6 count];
+      v92 = [array count];
       *buf = 134218242;
       v143 = v92;
       v144 = 2112;
@@ -476,18 +476,18 @@ LABEL_79:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VI][Identity] Packaged VIReducePersonOverTriggerAnnotation with %lu VIReducePersonOverTriggerRegionalAnnotation - %@", buf, 0x16u);
     }
 
-    if ((v3 & 4) == 0)
+    if ((typesCopy & 4) == 0)
     {
 LABEL_84:
-      v93 = 0;
-      if ((v3 & 8) != 0)
+      array4 = 0;
+      if ((typesCopy & 8) != 0)
       {
         goto LABEL_85;
       }
 
 LABEL_104:
-      v94 = 0;
-      if ((v3 & 0x10) != 0)
+      vcp_textAnnotation = 0;
+      if ((typesCopy & 0x10) != 0)
       {
         goto LABEL_86;
       }
@@ -499,25 +499,25 @@ LABEL_104:
   else
   {
     v91 = 0;
-    if ((v3 & 4) == 0)
+    if ((typesCopy & 4) == 0)
     {
       goto LABEL_84;
     }
   }
 
-  v96 = [(VCPMADServiceImageAsset *)v4 nsfwClassifications];
-  if (v96)
+  nsfwClassifications = [(VCPMADServiceImageAsset *)selfCopy nsfwClassifications];
+  if (nsfwClassifications)
   {
     typea = v91;
-    v114 = v3;
-    v116 = v4;
-    v124 = v6;
-    v93 = [MEMORY[0x1E695DF70] array];
+    v114 = typesCopy;
+    v116 = selfCopy;
+    v124 = array;
+    array4 = [MEMORY[0x1E695DF70] array];
     v127 = 0u;
     v128 = 0u;
     v129 = 0u;
     v130 = 0u;
-    v97 = v96;
+    v97 = nsfwClassifications;
     v98 = [v97 countByEnumeratingWithState:&v127 objects:v139 count:16];
     if (v98)
     {
@@ -540,14 +540,14 @@ LABEL_104:
             [v102 confidence];
             *&v106 = v105;
             v107 = [v104 initWithLabel:v103 normalizedBoundingBox:0.0 confidence:{0.0, 1.0, 1.0, v106}];
-            [v93 addObject:v107];
+            [array4 addObject:v107];
           }
 
           else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v108 = [v102 extendedSceneIdentifier];
+            extendedSceneIdentifier = [v102 extendedSceneIdentifier];
             *buf = 134217984;
-            v143 = v108;
+            v143 = extendedSceneIdentifier;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[NSFW] Failed to find label for identifier %llu", buf, 0xCu);
           }
         }
@@ -558,107 +558,107 @@ LABEL_104:
       while (v99);
     }
 
-    v6 = v124;
-    v3 = v114;
-    v4 = v116;
+    array = v124;
+    typesCopy = v114;
+    selfCopy = v116;
     v91 = typea;
   }
 
   else
   {
-    v93 = 0;
+    array4 = 0;
   }
 
-  if ((v3 & 8) == 0)
+  if ((typesCopy & 8) == 0)
   {
     goto LABEL_104;
   }
 
 LABEL_85:
-  v94 = [(VCPMADServiceImageAsset *)v4 vcp_textAnnotation];
-  if ((v3 & 0x10) != 0)
+  vcp_textAnnotation = [(VCPMADServiceImageAsset *)selfCopy vcp_textAnnotation];
+  if ((typesCopy & 0x10) != 0)
   {
 LABEL_86:
-    v95 = [(VCPMADServiceImageAsset *)v4 vcp_scenenetAnnotation];
+    vcp_scenenetAnnotation = [(VCPMADServiceImageAsset *)selfCopy vcp_scenenetAnnotation];
     goto LABEL_106;
   }
 
 LABEL_105:
-  v95 = 0;
+  vcp_scenenetAnnotation = 0;
 LABEL_106:
-  v109 = [objc_alloc(MEMORY[0x1E69E0448]) initWithReducePersonOverTriggerAnnotation:v91 faceAnnotations:v120 humanAnnotations:v125 nsfwAnnotations:v93 textBlockAnnotation:v94 scenenetAnnotation:v95 barcodeAnnotation:0];
+  v109 = [objc_alloc(MEMORY[0x1E69E0448]) initWithReducePersonOverTriggerAnnotation:v91 faceAnnotations:v120 humanAnnotations:array2 nsfwAnnotations:array4 textBlockAnnotation:vcp_textAnnotation scenenetAnnotation:vcp_scenenetAnnotation barcodeAnnotation:0];
 
   return v109;
 }
 
-- (VCPMADServiceImageAsset)initWithClientBundleID:(id)a3 clientTeamID:(id)a4
+- (VCPMADServiceImageAsset)initWithClientBundleID:(id)d clientTeamID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = VCPMADServiceImageAsset;
   v9 = [(VCPMADServiceImageAsset *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientBundleID, a3);
-    objc_storeStrong(&v10->_clientTeamID, a4);
+    objc_storeStrong(&v9->_clientBundleID, d);
+    objc_storeStrong(&v10->_clientTeamID, iD);
   }
 
   return v10;
 }
 
-+ (VCPMADServiceImageAsset)assetWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 identifier:(id)a5 clientBundleID:(id)a6 clientTeamID:(id)a7
++ (VCPMADServiceImageAsset)assetWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation identifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v9 = *&a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [[VCPMADServiceImagePixelBufferAsset alloc] initWithPixelBuffer:a3 orientation:v9 andIdentifier:v11 clientBundleID:v12 clientTeamID:v13];
+  v9 = *&orientation;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  v14 = [[VCPMADServiceImagePixelBufferAsset alloc] initWithPixelBuffer:buffer orientation:v9 andIdentifier:identifierCopy clientBundleID:dCopy clientTeamID:iDCopy];
 
   return v14;
 }
 
-+ (VCPMADServiceImageAsset)assetWithURL:(id)a3 identifier:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6
++ (VCPMADServiceImageAsset)assetWithURL:(id)l identifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[VCPMADServiceImageURLAsset alloc] initWithURL:v9 identifier:v10 clientBundleID:v11 clientTeamID:v12];
+  lCopy = l;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  v13 = [[VCPMADServiceImageURLAsset alloc] initWithURL:lCopy identifier:identifierCopy clientBundleID:dCopy clientTeamID:iDCopy];
 
   return v13;
 }
 
-+ (VCPMADServiceImageAsset)assetWithImageData:(id)a3 uniformTypeIdentifier:(id)a4 identifier:(id)a5 clientBundleID:(id)a6 clientTeamID:(id)a7
++ (VCPMADServiceImageAsset)assetWithImageData:(id)data uniformTypeIdentifier:(id)identifier identifier:(id)a5 clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v11 = a3;
-  v12 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[VCPMADServiceImageDataAsset alloc] initWithImageData:v11 uniformTypeIdentifier:v12 identifier:v13 clientBundleID:v14 clientTeamID:v15];
+  dCopy = d;
+  iDCopy = iD;
+  v16 = [[VCPMADServiceImageDataAsset alloc] initWithImageData:dataCopy uniformTypeIdentifier:identifierCopy identifier:v13 clientBundleID:dCopy clientTeamID:iDCopy];
 
   return v16;
 }
 
-+ (VCPMADServiceImageAsset)assetWithPhotosAsset:(id)a3 clientBundleID:(id)a4 clientTeamID:(id)a5
++ (VCPMADServiceImageAsset)assetWithPhotosAsset:(id)asset clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[VCPMADServiceImagePhotosAsset alloc] initWithPhotosAsset:v7 clientBundleID:v8 clientTeamID:v9];
+  assetCopy = asset;
+  dCopy = d;
+  iDCopy = iD;
+  v10 = [[VCPMADServiceImagePhotosAsset alloc] initWithPhotosAsset:assetCopy clientBundleID:dCopy clientTeamID:iDCopy];
 
   return v10;
 }
 
-+ (VCPMADServiceImageAsset)assetWithPhotosAsset:(id)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 clientBundleID:(id)a6 clientTeamID:(id)a7
++ (VCPMADServiceImageAsset)assetWithPhotosAsset:(id)asset pixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v9 = *&a5;
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [[VCPMADServiceImagePhotosAsset alloc] initWithPhotosAsset:v11 pixelBuffer:a4 orientation:v9 clientBundleID:v12 clientTeamID:v13];
+  v9 = *&orientation;
+  assetCopy = asset;
+  dCopy = d;
+  iDCopy = iD;
+  v14 = [[VCPMADServiceImagePhotosAsset alloc] initWithPhotosAsset:assetCopy pixelBuffer:buffer orientation:v9 clientBundleID:dCopy clientTeamID:iDCopy];
 
   return v14;
 }

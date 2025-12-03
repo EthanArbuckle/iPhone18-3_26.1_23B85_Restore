@@ -1,55 +1,55 @@
 @interface AEAConcreteXPCConnectionPrimitives
-- (BOOL)connectionCanFetchActiveRestrictionUUIDs:(id)a3;
-- (BOOL)connectionCanPublishAssessmentState:(id)a3;
-- (BOOL)connectionCanRegisterAsAssessmentSource:(id)a3;
-- (BOOL)connectionCanUsePrivateConfigurationSPI:(id)a3;
-- (id)auditTokenForConnection:(id)a3;
+- (BOOL)connectionCanFetchActiveRestrictionUUIDs:(id)ds;
+- (BOOL)connectionCanPublishAssessmentState:(id)state;
+- (BOOL)connectionCanRegisterAsAssessmentSource:(id)source;
+- (BOOL)connectionCanUsePrivateConfigurationSPI:(id)i;
+- (id)auditTokenForConnection:(id)connection;
 - (id)makeActiveRestrictionUUIDFetchingListener;
 - (id)makeSourceRegisteringListener;
-- (int64_t)connectionTypeForConnection:(id)a3;
+- (int64_t)connectionTypeForConnection:(id)connection;
 @end
 
 @implementation AEAConcreteXPCConnectionPrimitives
 
-- (BOOL)connectionCanPublishAssessmentState:(id)a3
+- (BOOL)connectionCanPublishAssessmentState:(id)state
 {
-  v3 = [a3 valueForEntitlement:AEAssessmentModeEntitlement];
-  v4 = [v3 BOOLValue];
+  v3 = [state valueForEntitlement:AEAssessmentModeEntitlement];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)connectionCanRegisterAsAssessmentSource:(id)a3
+- (BOOL)connectionCanRegisterAsAssessmentSource:(id)source
 {
-  v3 = [a3 valueForEntitlement:AEAssessmentModeEntitlement];
-  v4 = [v3 BOOLValue];
+  v3 = [source valueForEntitlement:AEAssessmentModeEntitlement];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)connectionCanFetchActiveRestrictionUUIDs:(id)a3
+- (BOOL)connectionCanFetchActiveRestrictionUUIDs:(id)ds
 {
-  v3 = [a3 valueForEntitlement:AEAssessmentModeFetchActiveRestrictionUUIDEntitlement];
-  v4 = [v3 BOOLValue];
+  v3 = [ds valueForEntitlement:AEAssessmentModeFetchActiveRestrictionUUIDEntitlement];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)connectionCanUsePrivateConfigurationSPI:(id)a3
+- (BOOL)connectionCanUsePrivateConfigurationSPI:(id)i
 {
-  v3 = [a3 valueForEntitlement:AEAssessmentModePrivateConfigurationSPIEntitlement];
-  v4 = [v3 BOOLValue];
+  v3 = [i valueForEntitlement:AEAssessmentModePrivateConfigurationSPIEntitlement];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)auditTokenForConnection:(id)a3
+- (id)auditTokenForConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = [AEAConcreteAuditToken alloc];
-  if (v3)
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -78,11 +78,11 @@
   return v3;
 }
 
-- (int64_t)connectionTypeForConnection:(id)a3
+- (int64_t)connectionTypeForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 serviceName];
-  v5 = [v4 isEqualToString:AEAssessmentStatePublisherRegisteringMachServiceName];
+  connectionCopy = connection;
+  serviceName = [connectionCopy serviceName];
+  v5 = [serviceName isEqualToString:AEAssessmentStatePublisherRegisteringMachServiceName];
 
   if (v5)
   {
@@ -91,8 +91,8 @@
 
   else
   {
-    v7 = [v3 serviceName];
-    v8 = [v7 isEqualToString:AEAssessmentActiveRestrictionUUIDFetchingMachServiceName];
+    serviceName2 = [connectionCopy serviceName];
+    v8 = [serviceName2 isEqualToString:AEAssessmentActiveRestrictionUUIDFetchingMachServiceName];
 
     if (v8)
     {

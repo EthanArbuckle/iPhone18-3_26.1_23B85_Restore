@@ -2,7 +2,7 @@
 + (id)sharedObserver;
 - (AFPairedBluetoothDevicesObserver)init;
 - (id)pairedBluetoothDevices;
-- (void)updatePairedDevices:(id)a3;
+- (void)updatePairedDevices:(id)devices;
 @end
 
 @implementation AFPairedBluetoothDevicesObserver
@@ -16,14 +16,14 @@
   return v3;
 }
 
-- (void)updatePairedDevices:(id)a3
+- (void)updatePairedDevices:(id)devices
 {
-  v4 = [getBluetoothManagerClass() sharedInstance];
-  v5 = [v4 pairedDevices];
+  sharedInstance = [getBluetoothManagerClass() sharedInstance];
+  pairedDevices = [sharedInstance pairedDevices];
 
   os_unfair_lock_lock(&self->_pairedDevicesLock);
   pairedDevices = self->_pairedDevices;
-  self->_pairedDevices = v5;
+  self->_pairedDevices = pairedDevices;
 
   os_unfair_lock_unlock(&self->_pairedDevicesLock);
 }
@@ -37,9 +37,9 @@
   if (v2)
   {
     v2->_pairedDevicesLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v5 = getBluetoothPairedStatusChangedNotification_45900();
-    [v4 addObserver:v3 selector:sel_updatePairedDevices_ name:v5 object:0];
+    [defaultCenter addObserver:v3 selector:sel_updatePairedDevices_ name:v5 object:0];
 
     [(AFPairedBluetoothDevicesObserver *)v3 updatePairedDevices:0];
   }

@@ -1,18 +1,18 @@
 @interface MapsSearchPrintingInfo
-- (MapsSearchPrintingInfo)initWithNumberOfPages:(int64_t)a3 searchResultCells:(id)a4;
+- (MapsSearchPrintingInfo)initWithNumberOfPages:(int64_t)pages searchResultCells:(id)cells;
 @end
 
 @implementation MapsSearchPrintingInfo
 
-- (MapsSearchPrintingInfo)initWithNumberOfPages:(int64_t)a3 searchResultCells:(id)a4
+- (MapsSearchPrintingInfo)initWithNumberOfPages:(int64_t)pages searchResultCells:(id)cells
 {
-  v6 = a4;
+  cellsCopy = cells;
   v12.receiver = self;
   v12.super_class = MapsSearchPrintingInfo;
-  v7 = [(MapsPrintingInfo *)&v12 initWithNumberOfPages:a3];
+  v7 = [(MapsPrintingInfo *)&v12 initWithNumberOfPages:pages];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [cellsCopy copy];
     searchResultCells = v7->_searchResultCells;
     v7->_searchResultCells = v8;
 

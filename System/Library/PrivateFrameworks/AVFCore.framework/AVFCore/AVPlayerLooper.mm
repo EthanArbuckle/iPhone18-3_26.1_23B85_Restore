@@ -6,25 +6,25 @@
 - (AVPlayerLooper)initWithPlayer:(AVQueuePlayer *)player templateItem:(AVPlayerItem *)itemToLoop timeRange:(CMTimeRange *)loopRange existingItemsOrdering:(AVPlayerLooperItemOrdering)itemOrdering;
 - (AVPlayerLooperStatus)status;
 - (BOOL)_isWaitingForLastCopyToFinishSet;
-- (BOOL)_setupLoopingReturningError:(id *)a3;
+- (BOOL)_setupLoopingReturningError:(id *)error;
 - (NSArray)loopingPlayerItems;
 - (NSError)error;
 - (NSInteger)loopCount;
 - (int)_calculateNumberOfCopiesNeeded;
-- (void)_changeStatusToFailedWithError:(id)a3;
+- (void)_changeStatusToFailedWithError:(id)error;
 - (void)_cleanupAfterPlayingLastLoopingCopy;
-- (void)_configureLoopingItem:(id)a3;
+- (void)_configureLoopingItem:(id)item;
 - (void)_turnOffLooping;
 - (void)dealloc;
 - (void)disableLooping;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation AVPlayerLooper
 
 + (AVPlayerLooper)playerLooperWithPlayer:(AVQueuePlayer *)player templateItem:(AVPlayerItem *)itemToLoop timeRange:(CMTimeRange *)loopRange
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v9 = *&loopRange->start.epoch;
   v11[0] = *&loopRange->start.value;
   v11[1] = v9;
@@ -34,7 +34,7 @@
 
 + (AVPlayerLooper)playerLooperWithPlayer:(AVQueuePlayer *)player templateItem:(AVPlayerItem *)itemToLoop
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = *(MEMORY[0x1E6960C98] + 16);
   v9[0] = *MEMORY[0x1E6960C98];
   v9[1] = v7;
@@ -144,13 +144,13 @@ LABEL_15:
     *&v20->loopRange.start.value = v21;
     v12->_looper->weakReference = [[AVWeakReference alloc] initWithReferencedObject:v12];
     v12->_looper->existingItemsPrecede = itemOrdering == AVPlayerLooperItemOrderingLoopingItemsPrecedeExistingItems;
-    v23 = [(AVPlayerItem *)v12->_looper->loopingItem asset];
+    asset = [(AVPlayerItem *)v12->_looper->loopingItem asset];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __78__AVPlayerLooper_initWithPlayer_templateItem_timeRange_existingItemsOrdering___block_invoke;
     v58[3] = &unk_1E7460C00;
     v58[4] = v12;
-    [(AVAsset *)v23 loadValuesAsynchronouslyForKeys:&unk_1F0AD3610 completionHandler:v58];
+    [(AVAsset *)asset loadValuesAsynchronouslyForKeys:&unk_1F0AD3610 completionHandler:v58];
   }
 
   else
@@ -379,7 +379,7 @@ id __23__AVPlayerLooper_error__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_changeStatusToFailedWithError:(id)a3
+- (void)_changeStatusToFailedWithError:(id)error
 {
   [(AVPlayerLooper *)self willChangeValueForKey:@"error"];
   [(AVPlayerLooper *)self willChangeValueForKey:@"status"];
@@ -389,7 +389,7 @@ id __23__AVPlayerLooper_error__block_invoke(uint64_t a1)
   v6[2] = __49__AVPlayerLooper__changeStatusToFailedWithError___block_invoke;
   v6[3] = &unk_1E7460DF0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = error;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v6);
   [(AVPlayerLooper *)self didChangeValueForKey:@"error"];
   [(AVPlayerLooper *)self didChangeValueForKey:@"status"];
@@ -462,21 +462,21 @@ uint64_t __36__AVPlayerLooper_loopingPlayerItems__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_configureLoopingItem:(id)a3
+- (void)_configureLoopingItem:(id)item
 {
   looper = self->_looper;
   if ((looper->loopRange.start.flags & 1) != 0 && (looper->loopRange.duration.flags & 1) != 0 && !looper->loopRange.duration.epoch && (looper->loopRange.duration.value & 0x8000000000000000) == 0)
   {
     *&range.start.value = *&looper->loopRange.start.value;
     range.start.epoch = looper->loopRange.start.epoch;
-    [a3 setReversePlaybackEndTime:&range];
+    [item setReversePlaybackEndTime:&range];
     v6 = self->_looper;
     v7 = *&v6->loopRange.start.epoch;
     *&range.start.value = *&v6->loopRange.start.value;
     *&range.start.epoch = v7;
     *&range.duration.timescale = *&v6->loopRange.duration.timescale;
     CMTimeRangeGetEnd(&v10, &range);
-    [a3 setForwardPlaybackEndTime:&v10];
+    [item setForwardPlaybackEndTime:&v10];
     looper = self->_looper;
   }
 
@@ -484,7 +484,7 @@ uint64_t __36__AVPlayerLooper_loopingPlayerItems__block_invoke(uint64_t a1)
   range.start.epoch = looper->forwardPlaybackStartTime.epoch;
   v10 = **&MEMORY[0x1E6960CC0];
   v8 = v10;
-  [a3 seekToTime:&range toleranceBefore:&v10 toleranceAfter:&v8 completionHandler:0];
+  [item seekToTime:&range toleranceBefore:&v10 toleranceAfter:&v8 completionHandler:0];
 }
 
 - (int)_calculateNumberOfCopiesNeeded
@@ -547,7 +547,7 @@ uint64_t __36__AVPlayerLooper_loopingPlayerItems__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_setupLoopingReturningError:(id *)a3
+- (BOOL)_setupLoopingReturningError:(id *)error
 {
   v72[1] = *MEMORY[0x1E69E9840];
   if ([(AVPlayerLooper *)self status])
@@ -579,7 +579,7 @@ uint64_t __36__AVPlayerLooper_loopingPlayerItems__block_invoke(uint64_t a1)
         time1 = v43->loopRange.start;
         if ((CMTimeCompare(&time1, &time2.start) & 0x80000000) == 0)
         {
-          if (a3)
+          if (error)
           {
             v71 = *MEMORY[0x1E695E618];
             v72[0] = @"Loop range must start within [0, item duration]";
@@ -611,7 +611,7 @@ uint64_t __36__AVPlayerLooper_loopingPlayerItems__block_invoke(uint64_t a1)
 
         if (CMTimeCompare(&time1, &time2.start) >= 1)
         {
-          if (a3)
+          if (error)
           {
             v69 = *MEMORY[0x1E695E618];
             v70 = @"Loop range must be within [0, item duration]";
@@ -634,10 +634,10 @@ uint64_t __36__AVPlayerLooper_loopingPlayerItems__block_invoke(uint64_t a1)
     }
   }
 
-  v7 = [(AVPlayerLooper *)self _calculateNumberOfCopiesNeeded];
-  if (!v7)
+  _calculateNumberOfCopiesNeeded = [(AVPlayerLooper *)self _calculateNumberOfCopiesNeeded];
+  if (!_calculateNumberOfCopiesNeeded)
   {
-    if (a3)
+    if (error)
     {
       v67 = *MEMORY[0x1E695E618];
       v68 = @"Template AVPlayerItem's duration must not be 0";
@@ -647,7 +647,7 @@ uint64_t __36__AVPlayerLooper_loopingPlayerItems__block_invoke(uint64_t a1)
 LABEL_45:
       v41 = AVLocalizedError(@"AVFoundationErrorDomain", -11838, [v38 dictionaryWithObjects:v39 forKeys:v40 count:1]);
       LOBYTE(v5) = 0;
-      *a3 = v41;
+      *error = v41;
       return v5;
     }
 
@@ -656,8 +656,8 @@ LABEL_62:
     return v5;
   }
 
-  v8 = v7;
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
+  v8 = _calculateNumberOfCopiesNeeded;
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:_calculateNumberOfCopiesNeeded];
   if (v8 < 1)
   {
 LABEL_12:
@@ -686,11 +686,11 @@ LABEL_12:
       v15 = self->_looper;
     }
 
-    v16 = [(AVPlayer *)v15->loopingPlayer currentItem];
-    v17 = v16;
-    if (v16)
+    currentItem = [(AVPlayer *)v15->loopingPlayer currentItem];
+    v17 = currentItem;
+    if (currentItem)
     {
-      v18 = v16;
+      v18 = currentItem;
     }
 
     v57 = 0u;
@@ -849,13 +849,13 @@ uint64_t __46__AVPlayerLooper__setupLoopingReturningError___block_invoke_2(uint6
   v6[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v6);
   [(AVPlayerLooper *)self didChangeValueForKey:@"status"];
-  v4 = [(AVPlayer *)self->_looper->loopingPlayer dispatchQueue];
+  dispatchQueue = [(AVPlayer *)self->_looper->loopingPlayer dispatchQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __33__AVPlayerLooper__turnOffLooping__block_invoke_2;
   v5[3] = &unk_1E7460C00;
   v5[4] = self;
-  AVSerializeOnQueueAsyncIfNecessary(v4, v5);
+  AVSerializeOnQueueAsyncIfNecessary(dispatchQueue, v5);
 }
 
 uint64_t __33__AVPlayerLooper__turnOffLooping__block_invoke(uint64_t result)
@@ -1040,13 +1040,13 @@ void __33__AVPlayerLooper__turnOffLooping__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   if ([(AVPlayerLooper *)self status]== AVPlayerLooperStatusReady || [(AVPlayerLooper *)self _isWaitingForLastCopyToFinishSet])
   {
-    if (a6 == @"AVPlayerLooperObservationCurrentItemContext")
+    if (context == @"AVPlayerLooperObservationCurrentItemContext")
     {
-      v10 = [a5 objectForKey:*MEMORY[0x1E696A500]];
+      v10 = [change objectForKey:*MEMORY[0x1E696A500]];
       if ([(AVPlayerLooper *)self status]== AVPlayerLooperStatusReady)
       {
         if (v10 != [MEMORY[0x1E695DFB0] null] && -[NSMutableArray indexOfObjectIdenticalTo:](self->_looper->loopingItemCopies, "indexOfObjectIdenticalTo:", v10) != 0x7FFFFFFFFFFFFFFFLL && self->_looper->lastEnqueuedLoopingItem)
@@ -1081,9 +1081,9 @@ void __33__AVPlayerLooper__turnOffLooping__block_invoke_2(uint64_t a1)
       }
     }
 
-    else if (a4 && a6 == @"AVPlayerLooperObservationItemStatusContext" && -[NSMutableArray indexOfObjectIdenticalTo:](self->_looper->loopingItemCopies, "indexOfObjectIdenticalTo:", a4) != 0x7FFFFFFFFFFFFFFFLL && [a4 status] == 2)
+    else if (object && context == @"AVPlayerLooperObservationItemStatusContext" && -[NSMutableArray indexOfObjectIdenticalTo:](self->_looper->loopingItemCopies, "indexOfObjectIdenticalTo:", object) != 0x7FFFFFFFFFFFFFFFLL && [object status] == 2)
     {
-      -[AVPlayerLooper _changeStatusToFailedWithError:](self, "_changeStatusToFailedWithError:", [a4 error]);
+      -[AVPlayerLooper _changeStatusToFailedWithError:](self, "_changeStatusToFailedWithError:", [object error]);
 
       [(AVPlayerLooper *)self _turnOffLooping];
     }

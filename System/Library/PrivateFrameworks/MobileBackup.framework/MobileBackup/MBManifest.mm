@@ -1,31 +1,31 @@
 @interface MBManifest
-+ (id)manifestWithProperties:(id)a3 database:(id)a4 databaseIndex:(id)a5;
++ (id)manifestWithProperties:(id)properties database:(id)database databaseIndex:(id)index;
 - (MBDatabaseIndex)databaseIndex;
-- (MBManifest)initWithProperties:(id)a3 database:(id)a4 databaseIndex:(id)a5;
-- (id)fileWithID:(id)a3;
+- (MBManifest)initWithProperties:(id)properties database:(id)database databaseIndex:(id)index;
+- (id)fileWithID:(id)d;
 - (void)buildIndexFromDatabaseIfNeeded;
 @end
 
 @implementation MBManifest
 
-+ (id)manifestWithProperties:(id)a3 database:(id)a4 databaseIndex:(id)a5
++ (id)manifestWithProperties:(id)properties database:(id)database databaseIndex:(id)index
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MBManifest alloc] initWithProperties:v9 database:v8 databaseIndex:v7];
+  indexCopy = index;
+  databaseCopy = database;
+  propertiesCopy = properties;
+  v10 = [[MBManifest alloc] initWithProperties:propertiesCopy database:databaseCopy databaseIndex:indexCopy];
 
   return v10;
 }
 
-- (MBManifest)initWithProperties:(id)a3 database:(id)a4 databaseIndex:(id)a5
+- (MBManifest)initWithProperties:(id)properties database:(id)database databaseIndex:(id)index
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  propertiesCopy = properties;
+  databaseCopy = database;
+  indexCopy = index;
+  if (propertiesCopy)
   {
-    if (v11)
+    if (databaseCopy)
     {
       goto LABEL_3;
     }
@@ -36,7 +36,7 @@
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"MBManifest.m" lineNumber:24 description:@"Null manifest properties"];
 
-    if (v11)
+    if (databaseCopy)
     {
       goto LABEL_3;
     }
@@ -52,9 +52,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_properties, a3);
-    objc_storeStrong(&v14->_database, a4);
-    objc_storeStrong(&v14->_databaseIndex, a5);
+    objc_storeStrong(&v13->_properties, properties);
+    objc_storeStrong(&v14->_database, database);
+    objc_storeStrong(&v14->_databaseIndex, index);
   }
 
   return v14;
@@ -74,9 +74,9 @@ LABEL_3:
   return databaseIndex;
 }
 
-- (id)fileWithID:(id)a3
+- (id)fileWithID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   databaseIndex = self->_databaseIndex;
   if (!databaseIndex)
   {
@@ -86,7 +86,7 @@ LABEL_3:
     databaseIndex = self->_databaseIndex;
   }
 
-  v7 = [(MBDatabaseIndex *)databaseIndex offsetForFileID:v5];
+  v7 = [(MBDatabaseIndex *)databaseIndex offsetForFileID:dCopy];
   if (v7 < 0)
   {
     v8 = 0;
@@ -95,17 +95,17 @@ LABEL_3:
   else
   {
     v8 = [(MBDatabase *)self->_database fileAtOffset:v7];
-    v9 = [v8 fileID];
-    v10 = [v9 isEqualToFileID:v5];
+    fileID = [v8 fileID];
+    v10 = [fileID isEqualToFileID:dCopy];
 
     if ((v10 & 1) == 0)
     {
       v11 = [MBException alloc];
-      v12 = [v8 domain];
-      v13 = [v12 name];
-      v14 = [v8 relativePath];
-      v15 = [v8 fileID];
-      v16 = [v11 initWithCode:11 format:{@"File ID doesn't match index: %@-%@ (%@ vs %@)", v13, v14, v15, v5}];
+      domain = [v8 domain];
+      name = [domain name];
+      relativePath = [v8 relativePath];
+      fileID2 = [v8 fileID];
+      v16 = [v11 initWithCode:11 format:{@"File ID doesn't match index: %@-%@ (%@ vs %@)", name, relativePath, fileID2, dCopy}];
       v17 = v16;
 
       objc_exception_throw(v16);

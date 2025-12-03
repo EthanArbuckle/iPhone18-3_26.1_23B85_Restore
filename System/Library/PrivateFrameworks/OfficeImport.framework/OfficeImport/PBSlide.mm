@@ -1,29 +1,29 @@
 @interface PBSlide
-+ (id)notesSlideFromSlideContainer:(id)a3 state:(id)a4;
-+ (void)readFromSlideContainer:(id)a3 toSlide:(id)a4 state:(id)a5;
-+ (void)readThemeOverridesFromSlideContainer:(id)a3 toSlideChild:(id)a4 doesFollowMasterScheme:(BOOL)a5 state:(id)a6;
++ (id)notesSlideFromSlideContainer:(id)container state:(id)state;
++ (void)readFromSlideContainer:(id)container toSlide:(id)slide state:(id)state;
++ (void)readThemeOverridesFromSlideContainer:(id)container toSlideChild:(id)child doesFollowMasterScheme:(BOOL)scheme state:(id)state;
 @end
 
 @implementation PBSlide
 
-+ (void)readThemeOverridesFromSlideContainer:(id)a3 toSlideChild:(id)a4 doesFollowMasterScheme:(BOOL)a5 state:(id)a6
++ (void)readThemeOverridesFromSlideContainer:(id)container toSlideChild:(id)child doesFollowMasterScheme:(BOOL)scheme state:(id)state
 {
-  v38 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v11 officeArtState];
-  v13 = [v12 xmlDocumentState];
-  v14 = [v13 officeArtState];
+  containerCopy = container;
+  childCopy = child;
+  stateCopy = state;
+  officeArtState = [stateCopy officeArtState];
+  xmlDocumentState = [officeArtState xmlDocumentState];
+  officeArtState2 = [xmlDocumentState officeArtState];
 
-  v15 = [v38 firstChildOfType:1038];
+  v15 = [containerCopy firstChildOfType:1038];
   Atom = ESDAtomAccess<PptRoundTripThemeAtom>::extractAtom(v15, 0);
 
-  v17 = [v11 officeArtState];
-  v18 = [v17 useXmlBlobs];
+  officeArtState3 = [stateCopy officeArtState];
+  useXmlBlobs = [officeArtState3 useXmlBlobs];
 
   if (Atom)
   {
-    v19 = v18;
+    v19 = useXmlBlobs;
   }
 
   else
@@ -37,48 +37,48 @@
     v21 = v20;
     if (v20)
     {
-      v22 = [(OADColorScheme *)v20 mainDocumentPart];
-      v23 = [v22 firstPartWithRelationshipOfType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/themeOverride"];
+      mainDocumentPart = [(OADColorScheme *)v20 mainDocumentPart];
+      v23 = [mainDocumentPart firstPartWithRelationshipOfType:@"http://schemas.openxmlformats.org/officeDocument/2006/relationships/themeOverride"];
 
-      v24 = [v10 themeOverrides];
-      [OAXThemeOverrides readFromPackagePart:v23 toThemeOverrides:v24 drawingState:v14];
+      themeOverrides = [childCopy themeOverrides];
+      [OAXThemeOverrides readFromPackagePart:v23 toThemeOverrides:themeOverrides drawingState:officeArtState2];
     }
 
-    v25 = [v10 themeOverrides];
-    v26 = [v25 styleMatrix];
+    themeOverrides2 = [childCopy themeOverrides];
+    styleMatrix = [themeOverrides2 styleMatrix];
 
-    if (v26)
+    if (styleMatrix)
     {
-      [v14 setStyleMatrix:v26];
+      [officeArtState2 setStyleMatrix:styleMatrix];
     }
   }
 
   else
   {
-    if (a5)
+    if (scheme)
     {
       goto LABEL_13;
     }
 
     v21 = objc_alloc_init(OADColorScheme);
-    v27 = [v10 themeOverrides];
-    [v27 setColorScheme:v21];
+    themeOverrides3 = [childCopy themeOverrides];
+    [themeOverrides3 setColorScheme:v21];
 
     v28 = objc_alloc_init(OADColorMap);
-    [v10 setColorMapOverride:v28];
-    [a1 readColorScheme:v38 colorScheme:v21 colorMap:v28 state:v11];
+    [childCopy setColorMapOverride:v28];
+    [self readColorScheme:containerCopy colorScheme:v21 colorMap:v28 state:stateCopy];
   }
 
 LABEL_13:
-  v29 = [v38 firstChildOfType:1039];
+  v29 = [containerCopy firstChildOfType:1039];
   v30 = ESDAtomAccess<PptRoundTripColorMappingAtom>::extractAtom(v29, 0);
 
-  v31 = [v11 officeArtState];
-  v32 = [v31 useXmlBlobs];
+  officeArtState4 = [stateCopy officeArtState];
+  useXmlBlobs2 = [officeArtState4 useXmlBlobs];
 
   if (v30)
   {
-    v33 = v32;
+    v33 = useXmlBlobs2;
   }
 
   else
@@ -91,13 +91,13 @@ LABEL_13:
     v34 = CXGetRootElement(*(v30 + 9), *(v30 + 16));
     if (v34)
     {
-      v35 = [v14 OAXMainNamespace];
-      v36 = OCXFindChild(v34, v35, "overrideClrMapping");
+      oAXMainNamespace = [officeArtState2 OAXMainNamespace];
+      v36 = OCXFindChild(v34, oAXMainNamespace, "overrideClrMapping");
 
       if (v36)
       {
         v37 = objc_alloc_init(OADColorMap);
-        [v10 setColorMapOverride:v37];
+        [childCopy setColorMapOverride:v37];
         [OAXColorMap readFromXmlNode:v36 toColorMap:v37];
       }
 
@@ -106,15 +106,15 @@ LABEL_13:
   }
 }
 
-+ (void)readFromSlideContainer:(id)a3 toSlide:(id)a4 state:(id)a5
++ (void)readFromSlideContainer:(id)container toSlide:(id)slide state:(id)state
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
+  containerCopy = container;
+  slideCopy = slide;
+  stateCopy = state;
   v10 = objc_autoreleasePoolPush();
-  v11 = [v19 firstChildOfType:1007];
-  v12 = [v11 eshObject];
-  if (v12)
+  v11 = [containerCopy firstChildOfType:1007];
+  eshObject = [v11 eshObject];
+  if (eshObject)
   {
   }
 
@@ -123,42 +123,42 @@ LABEL_13:
     v13 = 0;
   }
 
-  [v8 setShowMasterShapes:v13[92]];
-  v14 = [v9 officeArtState];
-  v15 = [v14 xmlDocumentState];
-  v16 = [v15 officeArtState];
+  [slideCopy setShowMasterShapes:v13[92]];
+  officeArtState = [stateCopy officeArtState];
+  xmlDocumentState = [officeArtState xmlDocumentState];
+  officeArtState2 = [xmlDocumentState officeArtState];
 
-  v17 = [v16 styleMatrix];
-  [a1 readThemeOverridesFromSlideContainer:v19 toSlideChild:v8 doesFollowMasterScheme:v13[93] state:v9];
-  [a1 readComments:v19 slide:v8 state:v9];
-  [a1 readDrawingGroup:v19 slide:v8 state:v9];
-  if ([v9 hasSlideNumberPlaceholder])
+  styleMatrix = [officeArtState2 styleMatrix];
+  [self readThemeOverridesFromSlideContainer:containerCopy toSlideChild:slideCopy doesFollowMasterScheme:v13[93] state:stateCopy];
+  [self readComments:containerCopy slide:slideCopy state:stateCopy];
+  [self readDrawingGroup:containerCopy slide:slideCopy state:stateCopy];
+  if ([stateCopy hasSlideNumberPlaceholder])
   {
-    v18 = [v8 slideLayout];
-    [PBSlideBase mapSlideNumberPlaceholder:v18 tgtSlideBase:v8 state:v9];
+    slideLayout = [slideCopy slideLayout];
+    [PBSlideBase mapSlideNumberPlaceholder:slideLayout tgtSlideBase:slideCopy state:stateCopy];
   }
 
-  [v9 setHasSlideNumberPlaceholder:0];
-  [v16 setStyleMatrix:v17];
+  [stateCopy setHasSlideNumberPlaceholder:0];
+  [officeArtState2 setStyleMatrix:styleMatrix];
 
   objc_autoreleasePoolPop(v10);
 }
 
-+ (id)notesSlideFromSlideContainer:(id)a3 state:(id)a4
++ (id)notesSlideFromSlideContainer:(id)container state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 tgtPresentation];
-  v9 = [v8 notesMasterAtIndex:0];
+  containerCopy = container;
+  stateCopy = state;
+  tgtPresentation = [stateCopy tgtPresentation];
+  v9 = [tgtPresentation notesMasterAtIndex:0];
   if (v9)
   {
     v10 = objc_alloc_init(PDNotesSlide);
     [(PDNotesSlide *)v10 setNotesMaster:v9];
-    v11 = [v6 firstChildOfType:1009];
+    v11 = [containerCopy firstChildOfType:1009];
     Atom = ESDAtomAccess<PptNotesAtom>::extractAtom(v11, 1);
 
-    [a1 readThemeOverridesFromSlideContainer:v6 toSlideChild:v10 doesFollowMasterScheme:Atom[53] state:v7];
-    [PBSlideBase readDrawingGroup:v6 slide:v10 state:v7];
+    [self readThemeOverridesFromSlideContainer:containerCopy toSlideChild:v10 doesFollowMasterScheme:Atom[53] state:stateCopy];
+    [PBSlideBase readDrawingGroup:containerCopy slide:v10 state:stateCopy];
   }
 
   else

@@ -12,39 +12,39 @@
 
 + (id)mb_stringWithFileSystemRepresentation:()MobileBackup
 {
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 stringWithFileSystemRepresentation:a3 length:strlen(a3)];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager stringWithFileSystemRepresentation:a3 length:strlen(a3)];
 
   return v5;
 }
 
 - (id)mb_stringByAppendingSlash
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 stringByAppendingString:@"/"];
+    selfCopy = [self stringByAppendingString:@"/"];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)mb_pathComponentExistsInSet:()MobileBackup
 {
   v4 = a3;
-  v5 = a1;
-  if ([v4 containsObject:v5])
+  selfCopy = self;
+  if ([v4 containsObject:selfCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = v5;
+    v7 = selfCopy;
     while (1)
     {
       v8 = [v7 length];
@@ -54,16 +54,16 @@
         break;
       }
 
-      v5 = [v7 stringByDeletingLastPathComponent];
+      selfCopy = [v7 stringByDeletingLastPathComponent];
 
-      v7 = v5;
-      if ([v4 containsObject:v5])
+      v7 = selfCopy;
+      if ([v4 containsObject:selfCopy])
       {
         goto LABEL_8;
       }
     }
 
-    v5 = v7;
+    selfCopy = v7;
   }
 
 LABEL_8:
@@ -94,7 +94,7 @@ LABEL_8:
           objc_enumerationMutation(v2);
         }
 
-        if ([a1 hasSuffix:{*(*(&v10 + 1) + 8 * v6), v10}])
+        if ([self hasSuffix:{*(*(&v10 + 1) + 8 * v6), v10}])
         {
           v7 = 1;
           goto LABEL_11;
@@ -127,7 +127,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __60__NSString_MobileBackup__mb_stringByAppendingGreenteaSuffix__block_invoke;
   block[3] = &unk_1E8684460;
-  block[4] = a1;
+  block[4] = self;
   block[5] = a2;
   if (mb_stringByAppendingGreenteaSuffix_once != -1)
   {
@@ -136,45 +136,45 @@ LABEL_11:
 
   if (mb_stringByAppendingGreenteaSuffix_isGreenTea == 1)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_CH", a1];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_CH", self];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)mb_backupIDByAddingCKPrefix
 {
-  if ([a1 hasPrefix:@"D:"])
+  if ([self hasPrefix:@"D:"])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"D:", a1];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"D:", self];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)mb_backupIDByRemovingCKPrefix
 {
-  if ([a1 hasPrefix:@"D:"])
+  if ([self hasPrefix:@"D:"])
   {
-    v2 = [a1 substringFromIndex:{objc_msgSend(@"D:", "length")}];
+    selfCopy = [self substringFromIndex:{objc_msgSend(@"D:", "length")}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

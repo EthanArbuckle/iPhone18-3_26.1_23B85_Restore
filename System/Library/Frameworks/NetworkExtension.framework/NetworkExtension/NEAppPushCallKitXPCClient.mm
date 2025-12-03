@@ -2,8 +2,8 @@
 - (NEAppPushCallKitXPCClient)init;
 - (void)dealloc;
 - (void)registerVoIPMessagePayload;
-- (void)setConnection:(uint64_t)a1;
-- (void)voipNetworkExtensionPayloadReceived:(id)a3 mustPostCall:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)setConnection:(uint64_t)connection;
+- (void)voipNetworkExtensionPayloadReceived:(id)received mustPostCall:(BOOL)call withCompletionHandler:(id)handler;
 - (void)voipNetworkExtensionRegistrationFailed;
 @end
 
@@ -16,30 +16,30 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "%@ registration with CallKit failed", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)voipNetworkExtensionPayloadReceived:(id)a3 mustPostCall:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)voipNetworkExtensionPayloadReceived:(id)received mustPostCall:(BOOL)call withCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  receivedCopy = received;
+  handlerCopy = handler;
   v9 = ne_log_obj();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *v20 = 138412546;
     *&v20[4] = self;
     *&v20[12] = 2112;
-    *&v20[14] = v7;
+    *&v20[14] = receivedCopy;
     _os_log_debug_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEBUG, "%@ callkit delivered payload %@", v20, 0x16u);
   }
 
-  v10 = v7;
-  v11 = v8;
+  v10 = receivedCopy;
+  v11 = handlerCopy;
   v12 = objc_opt_self();
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -171,67 +171,67 @@ void __33__NEAppPushCallKitXPCClient_init__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConnection:(uint64_t)a1
+- (void)setConnection:(uint64_t)connection
 {
-  os_unfair_lock_lock((a1 + 8));
-  if (*(a1 + 16))
+  os_unfair_lock_lock((connection + 8));
+  if (*(connection + 16))
   {
-    objc_storeStrong((a1 + 16), 0);
+    objc_storeStrong((connection + 16), 0);
   }
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((connection + 8));
 }
 
 - (void)registerVoIPMessagePayload
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 16);
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 16);
     if (!v2)
     {
       v3 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.callkit.networkextension.voip" options:0];
-      v4 = *(a1 + 16);
-      *(a1 + 16) = v3;
+      v4 = *(self + 16);
+      *(self + 16) = v3;
 
       v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F38CF330];
-      [*(a1 + 16) setExportedInterface:v5];
+      [*(self + 16) setExportedInterface:v5];
 
-      [*(a1 + 16) setExportedObject:a1];
+      [*(self + 16) setExportedObject:self];
       v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F38D50B0];
-      [*(a1 + 16) setRemoteObjectInterface:v6];
+      [*(self + 16) setRemoteObjectInterface:v6];
 
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       *&buf = MEMORY[0x1E69E9820];
       *(&buf + 1) = 3221225472;
       v18 = __39__NEAppPushCallKitXPCClient_connection__block_invoke;
       v19 = &unk_1E7F0AA58;
       objc_copyWeak(v20, &location);
-      [*(a1 + 16) setInterruptionHandler:&buf];
+      [*(self + 16) setInterruptionHandler:&buf];
       v11 = MEMORY[0x1E69E9820];
       v12 = 3221225472;
       v13 = __39__NEAppPushCallKitXPCClient_connection__block_invoke_13;
       v14 = &unk_1E7F0AA58;
       objc_copyWeak(&v15, &location);
-      [*(a1 + 16) setInvalidationHandler:&v11];
-      [*(a1 + 16) resume];
+      [*(self + 16) setInvalidationHandler:&v11];
+      [*(self + 16) resume];
       objc_destroyWeak(&v15);
       objc_destroyWeak(v20);
       objc_destroyWeak(&location);
-      v2 = *(a1 + 16);
+      v2 = *(self + 16);
     }
 
     v7 = v2;
-    os_unfair_lock_unlock((a1 + 8));
-    v8 = [v7 remoteObjectProxy];
-    [v8 registerVoIPNetworkExtension];
+    os_unfair_lock_unlock((self + 8));
+    remoteObjectProxy = [v7 remoteObjectProxy];
+    [remoteObjectProxy registerVoIPNetworkExtension];
 
     v9 = ne_log_obj();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = a1;
+      *(&buf + 4) = self;
       _os_log_debug_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEBUG, "%@ registered with CallKit", &buf, 0xCu);
     }
   }

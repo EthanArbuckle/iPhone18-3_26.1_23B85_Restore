@@ -1,6 +1,6 @@
 @interface SPUISearchHeaderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (SPUISearchHeaderAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateDictationButton;
@@ -8,19 +8,19 @@
 
 @implementation SPUISearchHeaderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SPUISearchHeader" hasInstanceMethod:@"init" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPUISearchHeader" hasInstanceMethod:@"searchField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPUITextField" isKindOfClass:@"UITextField"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SPUISearchHeader" hasInstanceMethod:@"init" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPUISearchHeader" hasInstanceMethod:@"searchField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPUITextField" isKindOfClass:@"UITextField"];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SBIconController"];
-    [v3 validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"SBIconController" hasInstanceMethod:@"iconManager" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"_isShowingSearchableTodayView" withFullSignature:{"B", 0}];
-    [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"dismissSpotlightOrTodayViewAnimated:" withFullSignature:{"B", "B", 0}];
+    [validationsCopy validateClass:@"SBIconController"];
+    [validationsCopy validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"SBIconController" hasInstanceMethod:@"iconManager" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"_isShowingSearchableTodayView" withFullSignature:{"B", 0}];
+    [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"dismissSpotlightOrTodayViewAnimated:" withFullSignature:{"B", "B", 0}];
   }
 }
 
@@ -31,8 +31,8 @@
   v4 = [(SPUISearchHeaderAccessibility *)self safeValueForKey:@"searchField"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 rightView];
-  [v6 setAccessibilityLabel:v3];
+  rightView = [v5 rightView];
+  [rightView setAccessibilityLabel:v3];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -57,13 +57,13 @@
   return v3;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v4 = [MEMORY[0x29ED37100](@"SBIconController" a2)];
   v5 = [v4 safeValueForKey:@"iconManager"];
 
   v6 = [v5 safeBoolForKey:@"_isShowingSearchableTodayView"];
-  if (a3 == 2)
+  if (scroll == 2)
   {
     v7 = v6;
   }

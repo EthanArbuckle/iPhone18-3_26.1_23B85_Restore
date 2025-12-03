@@ -1,15 +1,15 @@
 @interface FMDCommandHandler
 - (BOOL)isPreviouslyHandledCommand;
-- (FMDCommandHandler)initWithParams:(id)a3 provider:(id)a4;
+- (FMDCommandHandler)initWithParams:(id)params provider:(id)provider;
 - (FMDServiceProvider)provider;
 - (NSDictionary)ackDataForCommand;
 - (NSString)commandID;
 - (NSString)commandName;
 - (id)fm_logID;
 - (void)dealloc;
-- (void)didHandleCommandWithAckData:(id)a3;
+- (void)didHandleCommandWithAckData:(id)data;
 - (void)executeCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation FMDCommandHandler
@@ -30,9 +30,9 @@
     v5 = sub_100002880();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FMDCommandHandler *)self fm_logID];
+      fm_logID = [(FMDCommandHandler *)self fm_logID];
       *buf = 138412290;
-      v13 = v6;
+      v13 = fm_logID;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ already seen before. Ignoring this & sending the same ack as last time...", buf, 0xCu);
     }
 
@@ -48,9 +48,9 @@
     }
   }
 
-  v7 = [(FMDCommandHandler *)self provider];
-  v8 = [(FMDCommandHandler *)self commandID];
-  v9 = [v7 futureForCommandId:v8];
+  provider = [(FMDCommandHandler *)self provider];
+  commandID = [(FMDCommandHandler *)self commandID];
+  v9 = [provider futureForCommandId:commandID];
 
   if (v9)
   {
@@ -70,8 +70,8 @@
 
 - (BOOL)isPreviouslyHandledCommand
 {
-  v3 = [(FMDCommandHandler *)self commandName];
-  v4 = [NSString stringWithFormat:@"command-%@-id", v3];
+  commandName = [(FMDCommandHandler *)self commandName];
+  v4 = [NSString stringWithFormat:@"command-%@-id", commandName];
 
   v5 = [FMPreferencesUtil stringForKey:v4 inDomain:kFMDPrefDomain];
   if (v5 && (-[FMDCommandHandler commandID](self, "commandID"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:v5], v6, (v7 & 1) != 0))
@@ -81,14 +81,14 @@
 
   else
   {
-    v9 = [(FMDCommandHandler *)self commandContext];
-    v10 = [v9 lastCompletedIntentDictionary];
-    v11 = [v10 objectForKeyedSubscript:@"id"];
+    commandContext = [(FMDCommandHandler *)self commandContext];
+    lastCompletedIntentDictionary = [commandContext lastCompletedIntentDictionary];
+    v11 = [lastCompletedIntentDictionary objectForKeyedSubscript:@"id"];
 
     if (v11)
     {
-      v12 = [(FMDCommandHandler *)self commandID];
-      v8 = [v12 isEqualToString:v11];
+      commandID = [(FMDCommandHandler *)self commandID];
+      v8 = [commandID isEqualToString:v11];
     }
 
     else
@@ -102,16 +102,16 @@
 
 - (NSString)commandName
 {
-  v2 = [(FMDCommandHandler *)self commandParams];
-  v3 = [v2 objectForKeyedSubscript:@"cmd"];
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v3 = [commandParams objectForKeyedSubscript:@"cmd"];
 
   return v3;
 }
 
 - (NSString)commandID
 {
-  v2 = [(FMDCommandHandler *)self commandParams];
-  v3 = [v2 objectForKeyedSubscript:@"id"];
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v3 = [commandParams objectForKeyedSubscript:@"id"];
 
   return v3;
 }
@@ -125,24 +125,24 @@
 
 - (id)fm_logID
 {
-  v3 = [(FMDCommandHandler *)self commandName];
-  v4 = [NSString stringWithFormat:@"Command-%@(0x%p)", v3, self];
+  commandName = [(FMDCommandHandler *)self commandName];
+  v4 = [NSString stringWithFormat:@"Command-%@(0x%p)", commandName, self];
 
   return v4;
 }
 
-- (FMDCommandHandler)initWithParams:(id)a3 provider:(id)a4
+- (FMDCommandHandler)initWithParams:(id)params provider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = FMDCommandHandler;
   v8 = [(FMDCommandHandler *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(FMDCommandHandler *)v8 setCommandParams:v6];
-    [(FMDCommandHandler *)v9 setProvider:v7];
+    [(FMDCommandHandler *)v8 setCommandParams:paramsCopy];
+    [(FMDCommandHandler *)v9 setProvider:providerCopy];
     [(FMDCommandHandler *)v9 setRequiresAsynchronousAck:0];
   }
 
@@ -162,17 +162,17 @@
   v3 = self->_ackDataForCommand;
   if (!v3)
   {
-    v4 = [(FMDCommandHandler *)self commandContext];
+    commandContext = [(FMDCommandHandler *)self commandContext];
 
-    if (v4)
+    if (commandContext)
     {
       v3 = &off_1002E8D90;
     }
 
     else
     {
-      v5 = [(FMDCommandHandler *)self commandName];
-      v6 = [NSString stringWithFormat:@"command-%@-ackData", v5];
+      commandName = [(FMDCommandHandler *)self commandName];
+      v6 = [NSString stringWithFormat:@"command-%@-ackData", commandName];
 
       v3 = [FMPreferencesUtil dictionaryForKey:v6 inDomain:kFMDPrefDomain];
     }
@@ -181,26 +181,26 @@
   return v3;
 }
 
-- (void)didHandleCommandWithAckData:(id)a3
+- (void)didHandleCommandWithAckData:(id)data
 {
-  v12 = a3;
-  v4 = [(FMDCommandHandler *)self commandContext];
+  dataCopy = data;
+  commandContext = [(FMDCommandHandler *)self commandContext];
 
-  if (!v4)
+  if (!commandContext)
   {
-    v5 = [(FMDCommandHandler *)self commandName];
-    v6 = [NSString stringWithFormat:@"command-%@-id", v5];
+    commandName = [(FMDCommandHandler *)self commandName];
+    v6 = [NSString stringWithFormat:@"command-%@-id", commandName];
 
-    v7 = [(FMDCommandHandler *)self commandName];
-    v8 = [NSString stringWithFormat:@"command-%@-ackData", v7];
+    commandName2 = [(FMDCommandHandler *)self commandName];
+    v8 = [NSString stringWithFormat:@"command-%@-ackData", commandName2];
 
-    v9 = [(FMDCommandHandler *)self commandID];
-    [FMPreferencesUtil setString:v9 forKey:v6 inDomain:kFMDPrefDomain];
+    commandID = [(FMDCommandHandler *)self commandID];
+    [FMPreferencesUtil setString:commandID forKey:v6 inDomain:kFMDPrefDomain];
 
-    v10 = [(FMDCommandHandler *)self commandID];
-    if (v10)
+    commandID2 = [(FMDCommandHandler *)self commandID];
+    if (commandID2)
     {
-      v11 = v12;
+      v11 = dataCopy;
     }
 
     else
@@ -211,18 +211,18 @@
     [FMPreferencesUtil setDictionary:v11 forKey:v8 inDomain:kFMDPrefDomain];
   }
 
-  [(FMDCommandHandler *)self setAckDataForCommand:v12];
+  [(FMDCommandHandler *)self setAckDataForCommand:dataCopy];
   if ([(FMDCommandHandler *)self requiresAsynchronousAck])
   {
     [(FMDCommandHandler *)self sendAckWithCompletion:&stru_1002CF0D0];
   }
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 

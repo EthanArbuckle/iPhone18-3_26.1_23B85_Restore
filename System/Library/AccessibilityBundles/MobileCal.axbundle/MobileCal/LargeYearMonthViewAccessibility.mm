@@ -1,14 +1,14 @@
 @interface LargeYearMonthViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation LargeYearMonthViewAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(LargeYearMonthViewAccessibility *)self _accessibilityVisibleFrame];
   if (CGRectIsEmpty(v12))
   {
@@ -19,7 +19,7 @@
   {
     v10.receiver = self;
     v10.super_class = LargeYearMonthViewAccessibility;
-    v8 = [(LargeYearMonthViewAccessibility *)&v10 _accessibilityHitTest:v7 withEvent:x, y];
+    v8 = [(LargeYearMonthViewAccessibility *)&v10 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   return v8;

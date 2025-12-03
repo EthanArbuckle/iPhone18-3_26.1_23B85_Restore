@@ -1,5 +1,5 @@
 @interface SBSUIRemoteAlertItemContentViewController
-- (void)getPreferredContentSizeWithReplyBlock:(id)a3;
+- (void)getPreferredContentSizeWithReplyBlock:(id)block;
 - (void)invalidatePreferredContentSize;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -17,9 +17,9 @@
 
 - (void)invalidatePreferredContentSize
 {
-  v3 = [(SBSUIRemoteAlertItemContentViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(SBSUIRemoteAlertItemContentViewController *)self _remoteViewControllerProxy];
   [(SBSUIRemoteAlertItemContentViewController *)self preferredContentSize];
-  [v3 setPreferredContentSize:?];
+  [_remoteViewControllerProxy setPreferredContentSize:?];
 }
 
 - (void)viewDidLayoutSubviews
@@ -30,13 +30,13 @@
   [(SBSUIRemoteAlertItemContentViewController *)self invalidatePreferredContentSize];
 }
 
-- (void)getPreferredContentSizeWithReplyBlock:(id)a3
+- (void)getPreferredContentSizeWithReplyBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v5 = a3;
+    blockCopy = block;
     [(SBSUIRemoteAlertItemContentViewController *)self preferredContentSize];
-    (*(a3 + 2))(v5);
+    (*(block + 2))(blockCopy);
   }
 }
 

@@ -1,12 +1,12 @@
 @interface NGMPBDevicePreKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NGMPBDevicePreKey
@@ -17,55 +17,55 @@
   v8.receiver = self;
   v8.super_class = NGMPBDevicePreKey;
   v4 = [(NGMPBDevicePreKey *)&v8 description];
-  v5 = [(NGMPBDevicePreKey *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NGMPBDevicePreKey *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   dhKey = self->_dhKey;
   if (dhKey)
   {
-    v5 = [(NGMPBP256Key *)dhKey dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"dhKey"];
+    dictionaryRepresentation = [(NGMPBP256Key *)dhKey dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"dhKey"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
-  [v3 setObject:v6 forKey:@"timestamp"];
+  [dictionary setObject:v6 forKey:@"timestamp"];
 
   prekeySignature = self->_prekeySignature;
   if (prekeySignature)
   {
-    [v3 setObject:prekeySignature forKey:@"prekeySignature"];
+    [dictionary setObject:prekeySignature forKey:@"prekeySignature"];
   }
 
   tetraPrivateKey = self->_tetraPrivateKey;
   if (tetraPrivateKey)
   {
-    [v3 setObject:tetraPrivateKey forKey:@"tetraPrivateKey"];
+    [dictionary setObject:tetraPrivateKey forKey:@"tetraPrivateKey"];
   }
 
   tetraRegistrationData = self->_tetraRegistrationData;
   if (tetraRegistrationData)
   {
-    [v3 setObject:tetraRegistrationData forKey:@"tetraRegistrationData"];
+    [dictionary setObject:tetraRegistrationData forKey:@"tetraRegistrationData"];
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tetraVersion];
-    [v3 setObject:v10 forKey:@"tetraVersion"];
+    [dictionary setObject:v10 forKey:@"tetraVersion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_dhKey)
   {
     PBDataWriterWriteSubmessage();
@@ -89,27 +89,27 @@
     PBDataWriterWriteDataField();
   }
 
-  v5 = v7;
+  v5 = toCopy;
   if (*&self->_has)
   {
     tetraVersion = self->_tetraVersion;
     PBDataWriterWriteUint32Field();
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_dhKey)
   {
-    [v4 setDhKey:?];
-    v4 = v5;
+    [toCopy setDhKey:?];
+    toCopy = v5;
   }
 
-  v4[1] = self->_timestamp;
-  [v4 setPrekeySignature:self->_prekeySignature];
+  toCopy[1] = self->_timestamp;
+  [toCopy setPrekeySignature:self->_prekeySignature];
   if (self->_tetraPrivateKey)
   {
     [v5 setTetraPrivateKey:?];
@@ -127,23 +127,23 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NGMPBP256Key *)self->_dhKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NGMPBP256Key *)self->_dhKey copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 8) = self->_timestamp;
-  v8 = [(NSData *)self->_prekeySignature copyWithZone:a3];
+  v8 = [(NSData *)self->_prekeySignature copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSData *)self->_tetraPrivateKey copyWithZone:a3];
+  v10 = [(NSData *)self->_tetraPrivateKey copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSData *)self->_tetraRegistrationData copyWithZone:a3];
+  v12 = [(NSData *)self->_tetraRegistrationData copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -156,16 +156,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   dhKey = self->_dhKey;
-  if (dhKey | *(v4 + 2))
+  if (dhKey | *(equalCopy + 2))
   {
     if (![(NGMPBP256Key *)dhKey isEqual:?])
     {
@@ -173,13 +173,13 @@
     }
   }
 
-  if (self->_timestamp != *(v4 + 1))
+  if (self->_timestamp != *(equalCopy + 1))
   {
     goto LABEL_15;
   }
 
   prekeySignature = self->_prekeySignature;
-  if (prekeySignature | *(v4 + 3))
+  if (prekeySignature | *(equalCopy + 3))
   {
     if (![(NSData *)prekeySignature isEqual:?])
     {
@@ -188,7 +188,7 @@
   }
 
   tetraPrivateKey = self->_tetraPrivateKey;
-  if (tetraPrivateKey | *(v4 + 4))
+  if (tetraPrivateKey | *(equalCopy + 4))
   {
     if (![(NSData *)tetraPrivateKey isEqual:?])
     {
@@ -197,7 +197,7 @@
   }
 
   tetraRegistrationData = self->_tetraRegistrationData;
-  if (tetraRegistrationData | *(v4 + 5))
+  if (tetraRegistrationData | *(equalCopy + 5))
   {
     if (![(NSData *)tetraRegistrationData isEqual:?])
     {
@@ -205,10 +205,10 @@
     }
   }
 
-  v9 = (*(v4 + 52) & 1) == 0;
+  v9 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) != 0 && self->_tetraVersion == *(v4 + 12))
+    if ((*(equalCopy + 52) & 1) != 0 && self->_tetraVersion == *(equalCopy + 12))
     {
       v9 = 1;
       goto LABEL_16;
@@ -272,12 +272,12 @@ LABEL_16:
   return v12 ^ v3 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   dhKey = self->_dhKey;
-  v6 = *(v4 + 2);
-  v7 = v4;
+  v6 = *(fromCopy + 2);
+  v7 = fromCopy;
   if (dhKey)
   {
     if (!v6)
@@ -298,30 +298,30 @@ LABEL_16:
     [(NGMPBDevicePreKey *)self setDhKey:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_timestamp = *(v4 + 1);
-  if (*(v4 + 3))
+  self->_timestamp = *(fromCopy + 1);
+  if (*(fromCopy + 3))
   {
     [(NGMPBDevicePreKey *)self setPrekeySignature:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NGMPBDevicePreKey *)self setTetraPrivateKey:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NGMPBDevicePreKey *)self setTetraRegistrationData:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
-    self->_tetraVersion = *(v4 + 12);
+    self->_tetraVersion = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 

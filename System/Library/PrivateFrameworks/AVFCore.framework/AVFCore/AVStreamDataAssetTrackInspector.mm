@@ -3,7 +3,7 @@
 - (BOOL)isEnabled;
 - (CGSize)dimensions;
 - (CGSize)naturalSize;
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
 - (id)formatDescriptions;
 - (id)mediaCharacteristics;
 - (id)mediaType;
@@ -13,16 +13,16 @@
 
 @implementation AVStreamDataAssetTrackInspector
 
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
   v10.receiver = self;
   v10.super_class = AVStreamDataAssetTrackInspector;
-  v7 = [(AVAssetTrackInspector *)&v10 _initWithAsset:a3 trackID:*&a4 trackIndex:a5];
+  v7 = [(AVAssetTrackInspector *)&v10 _initWithAsset:asset trackID:*&d trackIndex:index];
   v8 = v7;
   if (v7)
   {
-    *(v7 + 10) = a4;
-    *(v7 + 4) = [a3 _weakReference];
+    *(v7 + 10) = d;
+    *(v7 + 4) = [asset _weakReference];
   }
 
   return v8;
@@ -37,17 +37,17 @@
 
 - (unsigned)figMediaType
 {
-  v2 = [(AVStreamDataAssetTrackInspector *)self mediaType];
+  mediaType = [(AVStreamDataAssetTrackInspector *)self mediaType];
 
-  return AVOSTypeForString(v2);
+  return AVOSTypeForString(mediaType);
 }
 
 - (id)mediaType
 {
-  v3 = [(AVWeakReference *)self->_weakReferenceToAsset referencedObject];
+  referencedObject = [(AVWeakReference *)self->_weakReferenceToAsset referencedObject];
   trackID = self->_trackID;
 
-  return [v3 mediaTypeForTrackID:trackID];
+  return [referencedObject mediaTypeForTrackID:trackID];
 }
 
 - (BOOL)isEnabled
@@ -67,10 +67,10 @@
 
 - (CGSize)naturalSize
 {
-  v3 = [(AVStreamDataAssetTrackInspector *)self formatDescriptions];
-  if ([v3 count] && objc_msgSend(-[AVStreamDataAssetTrackInspector mediaType](self, "mediaType"), "isEqual:", @"vide"))
+  formatDescriptions = [(AVStreamDataAssetTrackInspector *)self formatDescriptions];
+  if ([formatDescriptions count] && objc_msgSend(-[AVStreamDataAssetTrackInspector mediaType](self, "mediaType"), "isEqual:", @"vide"))
   {
-    PresentationDimensions = CMVideoFormatDescriptionGetPresentationDimensions([v3 firstObject], 1u, 1u);
+    PresentationDimensions = CMVideoFormatDescriptionGetPresentationDimensions([formatDescriptions firstObject], 1u, 1u);
     height = PresentationDimensions.height;
     width = PresentationDimensions.width;
   }
@@ -88,10 +88,10 @@
 
 - (CGSize)dimensions
 {
-  v3 = [(AVStreamDataAssetTrackInspector *)self formatDescriptions];
-  if ([v3 count] && objc_msgSend(-[AVStreamDataAssetTrackInspector mediaType](self, "mediaType"), "isEqual:", @"vide"))
+  formatDescriptions = [(AVStreamDataAssetTrackInspector *)self formatDescriptions];
+  if ([formatDescriptions count] && objc_msgSend(-[AVStreamDataAssetTrackInspector mediaType](self, "mediaType"), "isEqual:", @"vide"))
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions([v3 firstObject]);
+    Dimensions = CMVideoFormatDescriptionGetDimensions([formatDescriptions firstObject]);
     width = Dimensions.width;
     height = Dimensions.height;
   }
@@ -109,10 +109,10 @@
 
 - (id)formatDescriptions
 {
-  v3 = [(AVWeakReference *)self->_weakReferenceToAsset referencedObject];
+  referencedObject = [(AVWeakReference *)self->_weakReferenceToAsset referencedObject];
   trackID = self->_trackID;
 
-  return [v3 formatDescriptionsForTrackID:trackID];
+  return [referencedObject formatDescriptionsForTrackID:trackID];
 }
 
 - (id)mediaCharacteristics

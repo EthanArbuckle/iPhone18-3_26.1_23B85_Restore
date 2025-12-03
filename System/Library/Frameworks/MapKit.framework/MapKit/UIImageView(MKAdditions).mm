@@ -29,7 +29,7 @@
   {
     if (a3 == 0x8000000000000000)
     {
-      return a1;
+      return self;
     }
 
     if (a3 != 1)
@@ -38,20 +38,20 @@
     }
   }
 
-  return [a1 setContentMode:a3];
+  return [self setContentMode:a3];
 }
 
 - (unint64_t)_mapkit_imageContentMode
 {
-  v1 = [a1 contentMode];
-  if (v1 > 4)
+  contentMode = [self contentMode];
+  if (contentMode > 4)
   {
     return 0x8000000000000000;
   }
 
   else
   {
-    return qword_1A30F7460[v1];
+    return qword_1A30F7460[contentMode];
   }
 }
 

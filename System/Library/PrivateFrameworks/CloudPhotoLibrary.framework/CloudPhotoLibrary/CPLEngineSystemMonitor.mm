@@ -1,8 +1,8 @@
 @interface CPLEngineSystemMonitor
-+ (double)nextOverrideTimeIntervalForSystemBudgets:(unint64_t)a3;
-+ (id)descriptionForBudget:(unint64_t)a3;
-+ (id)descriptionForBudgets:(unint64_t)a3;
-+ (void)enumerateSystemBudgets:(unint64_t)a3 withBlock:(id)a4;
++ (double)nextOverrideTimeIntervalForSystemBudgets:(unint64_t)budgets;
++ (id)descriptionForBudget:(unint64_t)budget;
++ (id)descriptionForBudgets:(unint64_t)budgets;
++ (void)enumerateSystemBudgets:(unint64_t)budgets withBlock:(id)block;
 + (void)initialize;
 - (BOOL)canBoostBackgroundOperations;
 - (BOOL)isDataBudgetOverriden;
@@ -10,30 +10,30 @@
 - (BOOL)isNetworkConstrained;
 - (BOOL)isOnCellularOrUnknown;
 - (CPLEngineLibrary)engineLibrary;
-- (CPLEngineSystemMonitor)initWithEngineLibrary:(id)a3;
+- (CPLEngineSystemMonitor)initWithEngineLibrary:(id)library;
 - (double)_minimumBatteryLevelForAutoOverrideEnergyBudget;
 - (unint64_t)diskPressureState;
 - (unint64_t)freeDiskSpaceSize;
-- (void)_attemptScheduleRecoveryOverride:(unint64_t)a3 withReason:(unint64_t)a4;
+- (void)_attemptScheduleRecoveryOverride:(unint64_t)override withReason:(unint64_t)reason;
 - (void)_permanentDataOverrideHasChanged;
-- (void)_startOverridingBudget:(unint64_t)a3 reason:(unint64_t)a4;
+- (void)_startOverridingBudget:(unint64_t)budget reason:(unint64_t)reason;
 - (void)_startWatchingPermanentDataOverride;
-- (void)_stopOverridingBudget:(unint64_t)a3 reason:(unint64_t)a4;
+- (void)_stopOverridingBudget:(unint64_t)budget reason:(unint64_t)reason;
 - (void)_stopWatchingPermanentDataOverride;
-- (void)_withSystemBudgetOverride:(id)a3;
-- (void)batteryLevelDidChangeWithLevel:(double)a3;
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4;
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3;
-- (void)getStatusWithCompletionHandler:(id)a3;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)scheduledOverrideDidEnd:(id)a3;
-- (void)startAutomaticOverridingSystemBudgets:(unint64_t)a3;
-- (void)startOverridingSystemBudgets:(unint64_t)a3 reason:(unint64_t)a4;
-- (void)startOverridingSystemBudgetsForClient:(unint64_t)a3;
-- (void)stopAutomaticOverridingSystemBudgets:(unint64_t)a3;
-- (void)stopOverridingSystemBudgets:(unint64_t)a3 reason:(unint64_t)a4;
-- (void)stopOverridingSystemBudgetsForClient:(unint64_t)a3;
-- (void)watcher:(id)a3 stateDidChangeToNetworkState:(id)a4;
+- (void)_withSystemBudgetOverride:(id)override;
+- (void)batteryLevelDidChangeWithLevel:(double)level;
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler;
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)getStatusWithCompletionHandler:(id)handler;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)scheduledOverrideDidEnd:(id)end;
+- (void)startAutomaticOverridingSystemBudgets:(unint64_t)budgets;
+- (void)startOverridingSystemBudgets:(unint64_t)budgets reason:(unint64_t)reason;
+- (void)startOverridingSystemBudgetsForClient:(unint64_t)client;
+- (void)stopAutomaticOverridingSystemBudgets:(unint64_t)budgets;
+- (void)stopOverridingSystemBudgets:(unint64_t)budgets reason:(unint64_t)reason;
+- (void)stopOverridingSystemBudgetsForClient:(unint64_t)client;
+- (void)watcher:(id)watcher stateDidChangeToNetworkState:(id)state;
 @end
 
 @implementation CPLEngineSystemMonitor
@@ -74,10 +74,10 @@
     v4 = v8;
     if (v7)
     {
-      v9 = [v8 unsignedLongLongValue];
-      if (v9 >> 29)
+      unsignedLongLongValue = [v8 unsignedLongLongValue];
+      if (unsignedLongLongValue >> 29)
       {
-        v3 = v9 >> 30 == 0;
+        v3 = unsignedLongLongValue >> 30 == 0;
       }
 
       else
@@ -92,16 +92,16 @@
     }
   }
 
-  v10 = [(CPLEngineSystemMonitor *)self engineLibrary];
-  [v10 setLowDiskSpace:v3 != 0 veryLowDiskSpace:v3 == 2];
+  engineLibrary = [(CPLEngineSystemMonitor *)self engineLibrary];
+  [engineLibrary setLowDiskSpace:v3 != 0 veryLowDiskSpace:v3 == 2];
 
   return v3;
 }
 
-- (void)batteryLevelDidChangeWithLevel:(double)a3
+- (void)batteryLevelDidChangeWithLevel:(double)level
 {
   [(CPLEngineSystemMonitor *)self _minimumBatteryLevelForAutoOverrideEnergyBudget];
-  if (v5 >= a3)
+  if (v5 >= level)
   {
 
     [(CPLEngineSystemMonitor *)self stopAutomaticOverridingSystemBudgets:2];
@@ -135,16 +135,16 @@ void __73__CPLEngineSystemMonitor__minimumBatteryLevelForAutoOverrideEnergyBudge
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)watcher:(id)a3 stateDidChangeToNetworkState:(id)a4
+- (void)watcher:(id)watcher stateDidChangeToNetworkState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__CPLEngineSystemMonitor_watcher_stateDidChangeToNetworkState___block_invoke;
   v11[3] = &unk_1E861B290;
   v11[4] = self;
-  v12 = v5;
+  v12 = stateCopy;
   v7 = v11;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -152,7 +152,7 @@ void __73__CPLEngineSystemMonitor__minimumBatteryLevelForAutoOverrideEnergyBudge
   block[3] = &unk_1E861B4E0;
   v14 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = stateCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
@@ -223,7 +223,7 @@ void __63__CPLEngineSystemMonitor_watcher_stateDidChangeToNetworkState___block_i
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopAutomaticOverridingSystemBudgets:(unint64_t)a3
+- (void)stopAutomaticOverridingSystemBudgets:(unint64_t)budgets
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -231,7 +231,7 @@ void __63__CPLEngineSystemMonitor_watcher_stateDidChangeToNetworkState___block_i
   v4[2] = __63__CPLEngineSystemMonitor_stopAutomaticOverridingSystemBudgets___block_invoke;
   v4[3] = &unk_1E861B100;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = budgets;
   dispatch_async(queue, v4);
 }
 
@@ -282,7 +282,7 @@ void __63__CPLEngineSystemMonitor_stopAutomaticOverridingSystemBudgets___block_i
   }
 }
 
-- (void)startAutomaticOverridingSystemBudgets:(unint64_t)a3
+- (void)startAutomaticOverridingSystemBudgets:(unint64_t)budgets
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -290,7 +290,7 @@ void __63__CPLEngineSystemMonitor_stopAutomaticOverridingSystemBudgets___block_i
   v4[2] = __64__CPLEngineSystemMonitor_startAutomaticOverridingSystemBudgets___block_invoke;
   v4[3] = &unk_1E861B100;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = budgets;
   dispatch_sync(queue, v4);
 }
 
@@ -351,9 +351,9 @@ void __64__CPLEngineSystemMonitor_startAutomaticOverridingSystemBudgets___block_
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _unlimitedSyncOverCellularDidChange, @"com.apple.mobileslideshow.PLNotificationUnlimitedSyncOverCellularChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  v4 = [(CPLEngineSystemMonitor *)self _hasPermanentDataOverride];
-  self->_overrideDataSystemBudgetPermanently = v4;
-  if (v4)
+  _hasPermanentDataOverride = [(CPLEngineSystemMonitor *)self _hasPermanentDataOverride];
+  self->_overrideDataSystemBudgetPermanently = _hasPermanentDataOverride;
+  if (_hasPermanentDataOverride)
   {
 
     [(CPLEngineSystemMonitor *)self _startOverridingBudget:1 reason:4];
@@ -428,26 +428,26 @@ _BYTE *__58__CPLEngineSystemMonitor__permanentDataOverrideHasChanged__block_invo
   return result;
 }
 
-- (void)scheduledOverrideDidEnd:(id)a3
+- (void)scheduledOverrideDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   if (self->_supportsBudgetOverride)
   {
     dispatch_assert_queue_V2(self->_queue);
-    v5 = [v4 budget];
+    budget = [endCopy budget];
     scheduledOverrides = self->_scheduledOverrides;
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:budget];
     v8 = [(NSMutableDictionary *)scheduledOverrides objectForKeyedSubscript:v7];
 
-    if (v8 == v4)
+    if (v8 == endCopy)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __50__CPLEngineSystemMonitor_scheduledOverrideDidEnd___block_invoke;
       v9[3] = &unk_1E861B128;
-      v10 = v4;
-      v11 = self;
-      v12 = v5;
+      v10 = endCopy;
+      selfCopy = self;
+      v12 = budget;
       [(CPLEngineSystemMonitor *)self _withSystemBudgetOverride:v9];
     }
   }
@@ -502,7 +502,7 @@ void __47__CPLEngineSystemMonitor_isDataBudgetOverriden__block_invoke(uint64_t a
   *(*(*(a1 + 40) + 8) + 24) = [v2 count] != 0;
 }
 
-- (void)stopOverridingSystemBudgetsForClient:(unint64_t)a3
+- (void)stopOverridingSystemBudgetsForClient:(unint64_t)client
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -510,7 +510,7 @@ void __47__CPLEngineSystemMonitor_isDataBudgetOverriden__block_invoke(uint64_t a
   v4[2] = __63__CPLEngineSystemMonitor_stopOverridingSystemBudgetsForClient___block_invoke;
   v4[3] = &unk_1E861B100;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = client;
   dispatch_sync(queue, v4);
 }
 
@@ -562,7 +562,7 @@ void __63__CPLEngineSystemMonitor_stopOverridingSystemBudgetsForClient___block_i
   }
 }
 
-- (void)startOverridingSystemBudgetsForClient:(unint64_t)a3
+- (void)startOverridingSystemBudgetsForClient:(unint64_t)client
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -570,7 +570,7 @@ void __63__CPLEngineSystemMonitor_stopOverridingSystemBudgetsForClient___block_i
   v4[2] = __64__CPLEngineSystemMonitor_startOverridingSystemBudgetsForClient___block_invoke;
   v4[3] = &unk_1E861B100;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = client;
   dispatch_sync(queue, v4);
 }
 
@@ -620,7 +620,7 @@ void __64__CPLEngineSystemMonitor_startOverridingSystemBudgetsForClient___block_
   }
 }
 
-- (void)stopOverridingSystemBudgets:(unint64_t)a3 reason:(unint64_t)a4
+- (void)stopOverridingSystemBudgets:(unint64_t)budgets reason:(unint64_t)reason
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -628,8 +628,8 @@ void __64__CPLEngineSystemMonitor_startOverridingSystemBudgetsForClient___block_
   block[2] = __61__CPLEngineSystemMonitor_stopOverridingSystemBudgets_reason___block_invoke;
   block[3] = &unk_1E861FEE8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = budgets;
+  block[6] = reason;
   dispatch_sync(queue, block);
 }
 
@@ -660,7 +660,7 @@ uint64_t __61__CPLEngineSystemMonitor_stopOverridingSystemBudgets_reason___block
   return [v3 enumerateSystemBudgets:v4 withBlock:v7];
 }
 
-- (void)startOverridingSystemBudgets:(unint64_t)a3 reason:(unint64_t)a4
+- (void)startOverridingSystemBudgets:(unint64_t)budgets reason:(unint64_t)reason
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -668,8 +668,8 @@ uint64_t __61__CPLEngineSystemMonitor_stopOverridingSystemBudgets_reason___block
   block[2] = __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___block_invoke;
   block[3] = &unk_1E861FEE8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = budgets;
+  block[6] = reason;
   dispatch_sync(queue, block);
 }
 
@@ -700,15 +700,15 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
   return [v3 enumerateSystemBudgets:v4 withBlock:v7];
 }
 
-- (void)_withSystemBudgetOverride:(id)a3
+- (void)_withSystemBudgetOverride:(id)override
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->_supportsBudgetOverride)
   {
     self->_modifyingBudgetOverride = 1;
-    (*(a3 + 2))(a3, a2);
-    v4 = [(CPLEngineSystemMonitor *)self engineLibrary];
-    v5 = [v4 transport];
+    (*(override + 2))(override, a2);
+    engineLibrary = [(CPLEngineSystemMonitor *)self engineLibrary];
+    transport = [engineLibrary transport];
 
     newBudgetsToOverride = self->_newBudgetsToOverride;
     if (newBudgetsToOverride)
@@ -727,7 +727,7 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
         newBudgetsToOverride = self->_newBudgetsToOverride;
       }
 
-      [v5 setShouldOverride:1 forSystemBudgets:newBudgetsToOverride];
+      [transport setShouldOverride:1 forSystemBudgets:newBudgetsToOverride];
       self->_newBudgetsToOverride = 0;
     }
 
@@ -748,7 +748,7 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
         newBudgetsToStopOverriding = self->_newBudgetsToStopOverriding;
       }
 
-      [v5 setShouldOverride:0 forSystemBudgets:newBudgetsToStopOverriding];
+      [transport setShouldOverride:0 forSystemBudgets:newBudgetsToStopOverriding];
       self->_newBudgetsToStopOverriding = 0;
     }
 
@@ -758,7 +758,7 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_stopOverridingBudget:(unint64_t)a3 reason:(unint64_t)a4
+- (void)_stopOverridingBudget:(unint64_t)budget reason:(unint64_t)reason
 {
   v29 = *MEMORY[0x1E69E9840];
   if (!self->_closed && self->_supportsBudgetOverride)
@@ -775,9 +775,9 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
         }
       }
 
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSystemMonitor.m"];
-      [v23 handleFailureInMethod:a2 object:self file:v24 lineNumber:781 description:@"Trying to modify system budget override outside of an override transaction"];
+      [currentHandler handleFailureInMethod:a2 object:self file:v24 lineNumber:781 description:@"Trying to modify system budget override outside of an override transaction"];
 
       abort();
     }
@@ -786,22 +786,22 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
     v9 = [(NSMutableDictionary *)reasonsToOverrideSystemBudget objectForKeyedSubscript:v8];
 
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
     v11 = [v9 countForObject:v10];
 
     if (v11)
     {
-      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
       [v9 removeObject:v12];
 
       if (![v9 count])
       {
         v13 = self->_reasonsToOverrideSystemBudget;
-        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:budget];
         [(NSMutableDictionary *)v13 removeObjectForKey:v14];
 
-        v15 = self->_newBudgetsToStopOverriding | a3;
-        self->_newBudgetsToOverride &= ~a3;
+        v15 = self->_newBudgetsToStopOverriding | budget;
+        self->_newBudgetsToOverride &= ~budget;
         self->_newBudgetsToStopOverriding = v15;
       }
     }
@@ -811,16 +811,16 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
       v16 = __CPLSystemMonitorOSLogDomain();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [objc_opt_class() descriptionForBudget:a3];
+        v17 = [objc_opt_class() descriptionForBudget:budget];
         v18 = v17;
-        if (a4 - 1 > 3)
+        if (reason - 1 > 3)
         {
           v19 = @"forced by user";
         }
 
         else
         {
-          v19 = off_1E861FD50[a4 - 1];
+          v19 = off_1E861FD50[reason - 1];
         }
 
         v25 = 138543618;
@@ -835,7 +835,7 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startOverridingBudget:(unint64_t)a3 reason:(unint64_t)a4
+- (void)_startOverridingBudget:(unint64_t)budget reason:(unint64_t)reason
 {
   if (!self->_closed && self->_supportsBudgetOverride)
   {
@@ -851,9 +851,9 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
         }
       }
 
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLEngineSystemMonitor.m"];
-      [v15 handleFailureInMethod:a2 object:self file:v16 lineNumber:763 description:@"Trying to modify system budget override outside of an override transaction"];
+      [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:763 description:@"Trying to modify system budget override outside of an override transaction"];
 
       abort();
     }
@@ -866,15 +866,15 @@ uint64_t __62__CPLEngineSystemMonitor_startOverridingSystemBudgets_reason___bloc
     {
       v17 = objc_alloc_init(MEMORY[0x1E696AB50]);
       v9 = self->_reasonsToOverrideSystemBudget;
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:budget];
       [(NSMutableDictionary *)v9 setObject:v17 forKeyedSubscript:v10];
 
-      v11 = self->_newBudgetsToStopOverriding & ~a3;
-      self->_newBudgetsToOverride |= a3;
+      v11 = self->_newBudgetsToStopOverriding & ~budget;
+      self->_newBudgetsToOverride |= budget;
       self->_newBudgetsToStopOverriding = v11;
     }
 
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reason];
     [v17 addObject:v12];
   }
 }
@@ -993,17 +993,17 @@ void __44__CPLEngineSystemMonitor_isNetworkConnected__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 isConnected];
 }
 
-- (void)getStatusDictionaryWithCompletionHandler:(id)a3
+- (void)getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__CPLEngineSystemMonitor_getStatusDictionaryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E861AA50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1270,17 +1270,17 @@ void __67__CPLEngineSystemMonitor_getStatusDictionaryWithCompletionHandler___blo
   }
 }
 
-- (void)getStatusWithCompletionHandler:(id)a3
+- (void)getStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__CPLEngineSystemMonitor_getStatusWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E861AA50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1605,17 +1605,17 @@ LABEL_10:
   }
 }
 
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__CPLEngineSystemMonitor_closeAndDeactivate_completionHandler___block_invoke;
   v8[3] = &unk_1E861AA50;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -1647,17 +1647,17 @@ uint64_t __63__CPLEngineSystemMonitor_closeAndDeactivate_completionHandler___blo
   return result;
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__CPLEngineSystemMonitor_openWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E861AA50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1778,7 +1778,7 @@ uint64_t __52__CPLEngineSystemMonitor_openWithCompletionHandler___block_invoke_2
   return [v4 _attemptScheduleRecoveryOverride:a2 withReason:1];
 }
 
-- (void)_attemptScheduleRecoveryOverride:(unint64_t)a3 withReason:(unint64_t)a4
+- (void)_attemptScheduleRecoveryOverride:(unint64_t)override withReason:(unint64_t)reason
 {
   if (self->_supportsBudgetOverride)
   {
@@ -1788,30 +1788,30 @@ uint64_t __52__CPLEngineSystemMonitor_openWithCompletionHandler___block_invoke_2
 
     if (!v9)
     {
-      v12 = [[_CPLScheduledOverride alloc] initWithBudget:a3 withReason:a4 queue:self->_queue];
+      v12 = [[_CPLScheduledOverride alloc] initWithBudget:override withReason:reason queue:self->_queue];
       if ([(_CPLScheduledOverride *)v12 scheduleEndFromPersistedOverride])
       {
         [(_CPLScheduledOverride *)v12 setDelegate:self];
         v10 = self->_scheduledOverrides;
-        v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+        v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:override];
         [(NSMutableDictionary *)v10 setObject:v12 forKeyedSubscript:v11];
 
-        [(CPLEngineSystemMonitor *)self _startOverridingBudget:a3 reason:a4];
+        [(CPLEngineSystemMonitor *)self _startOverridingBudget:override reason:reason];
       }
     }
   }
 }
 
-- (CPLEngineSystemMonitor)initWithEngineLibrary:(id)a3
+- (CPLEngineSystemMonitor)initWithEngineLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = CPLEngineSystemMonitor;
   v5 = [(CPLEngineSystemMonitor *)&v16 init];
   if (v5)
   {
-    v6 = [v4 clientLibraryBaseURL];
-    v7 = [v6 copy];
+    clientLibraryBaseURL = [libraryCopy clientLibraryBaseURL];
+    v7 = [clientLibraryBaseURL copy];
     volumeURL = v5->_volumeURL;
     v5->_volumeURL = v7;
 
@@ -1819,7 +1819,7 @@ uint64_t __52__CPLEngineSystemMonitor_openWithCompletionHandler___block_invoke_2
     queue = v5->_queue;
     v5->_queue = v9;
 
-    objc_storeWeak(&v5->_engineLibrary, v4);
+    objc_storeWeak(&v5->_engineLibrary, libraryCopy);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     reasonsToOverrideSystemBudget = v5->_reasonsToOverrideSystemBudget;
     v5->_reasonsToOverrideSystemBudget = v11;
@@ -1829,13 +1829,13 @@ uint64_t __52__CPLEngineSystemMonitor_openWithCompletionHandler___block_invoke_2
     v5->_scheduledOverrides = v13;
 
     v5->_hasSetupBatteryMonitor = 0;
-    v5->_supportsBudgetOverride = [v4 isSystemLibrary];
+    v5->_supportsBudgetOverride = [libraryCopy isSystemLibrary];
   }
 
   return v5;
 }
 
-+ (double)nextOverrideTimeIntervalForSystemBudgets:(unint64_t)a3
++ (double)nextOverrideTimeIntervalForSystemBudgets:(unint64_t)budgets
 {
   v8 = 0;
   v9 = &v8;
@@ -1847,7 +1847,7 @@ uint64_t __52__CPLEngineSystemMonitor_openWithCompletionHandler___block_invoke_2
   v7[2] = __67__CPLEngineSystemMonitor_nextOverrideTimeIntervalForSystemBudgets___block_invoke;
   v7[3] = &unk_1E861FCF8;
   v7[4] = &v8;
-  [v4 enumerateSystemBudgets:a3 withBlock:v7];
+  [v4 enumerateSystemBudgets:budgets withBlock:v7];
   v5 = fmin(v9[3], 86400.0);
   v9[3] = v5;
   _Block_object_dispose(&v8, 8);
@@ -1867,14 +1867,14 @@ uint64_t __67__CPLEngineSystemMonitor_nextOverrideTimeIntervalForSystemBudgets__
   return result;
 }
 
-+ (void)enumerateSystemBudgets:(unint64_t)a3 withBlock:(id)a4
++ (void)enumerateSystemBudgets:(unint64_t)budgets withBlock:(id)block
 {
   v6 = 1;
   do
   {
-    if ((v6 & a3) != 0)
+    if ((v6 & budgets) != 0)
     {
-      (*(a4 + 2))(a4, v6);
+      (*(block + 2))(block, v6);
     }
 
     v7 = v6 >> 5;
@@ -1884,9 +1884,9 @@ uint64_t __67__CPLEngineSystemMonitor_nextOverrideTimeIntervalForSystemBudgets__
   while (v7 < 0x121);
 }
 
-+ (id)descriptionForBudgets:(unint64_t)a3
++ (id)descriptionForBudgets:(unint64_t)budgets
 {
-  if (a3)
+  if (budgets)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v9 = MEMORY[0x1E69E9820];
@@ -1894,9 +1894,9 @@ uint64_t __67__CPLEngineSystemMonitor_nextOverrideTimeIntervalForSystemBudgets__
     v11 = __48__CPLEngineSystemMonitor_descriptionForBudgets___block_invoke;
     v12 = &unk_1E861FCD0;
     v13 = v5;
-    v14 = a1;
+    selfCopy = self;
     v6 = v5;
-    [a1 enumerateSystemBudgets:a3 withBlock:&v9];
+    [self enumerateSystemBudgets:budgets withBlock:&v9];
     v7 = [v6 componentsJoinedByString:{@", ", v9, v10, v11, v12}];
   }
 
@@ -1915,85 +1915,85 @@ void __48__CPLEngineSystemMonitor_descriptionForBudgets___block_invoke(uint64_t 
   [v2 addObject:v3];
 }
 
-+ (id)descriptionForBudget:(unint64_t)a3
++ (id)descriptionForBudget:(unint64_t)budget
 {
-  if (a3 > 15)
+  if (budget > 15)
   {
-    if (a3 <= 2047)
+    if (budget <= 2047)
     {
-      if (a3 == 16)
+      if (budget == 16)
       {
-        v3 = @"Low Data Mode";
+        budget = @"Low Data Mode";
         goto LABEL_25;
       }
 
-      if (a3 == 32)
+      if (budget == 32)
       {
-        v3 = @"Low Power Mode";
+        budget = @"Low Power Mode";
         goto LABEL_25;
       }
     }
 
     else
     {
-      switch(a3)
+      switch(budget)
       {
         case 0x800uLL:
-          v3 = @"Thermal Moderate";
+          budget = @"Thermal Moderate";
           goto LABEL_25;
         case 0x4000uLL:
-          v3 = @"All Other";
+          budget = @"All Other";
           goto LABEL_25;
         case 0x4837uLL:
-          v3 = @"All";
+          budget = @"All";
           goto LABEL_25;
       }
     }
   }
 
-  else if (a3 <= 1)
+  else if (budget <= 1)
   {
-    if (!a3)
+    if (!budget)
     {
-      v3 = @"None";
+      budget = @"None";
       goto LABEL_25;
     }
 
-    if (a3 == 1)
+    if (budget == 1)
     {
-      v3 = @"Data";
+      budget = @"Data";
       goto LABEL_25;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(budget)
     {
       case 2uLL:
-        v3 = @"Energy";
+        budget = @"Energy";
         goto LABEL_25;
       case 4uLL:
-        v3 = @"SignificantWork";
+        budget = @"SignificantWork";
         goto LABEL_25;
       case 8uLL:
-        v3 = @"Foreground";
+        budget = @"Foreground";
         goto LABEL_25;
     }
   }
 
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"???(0x%lx)", a3];
+  budget = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"???(0x%lx)", budget];
 LABEL_25:
 
-  return v3;
+  return budget;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    _shouldIgnoreLowDiskSpace = [v2 BOOLForKey:@"CPLShouldIgnoreLowDiskSpace"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    _shouldIgnoreLowDiskSpace = [standardUserDefaults BOOLForKey:@"CPLShouldIgnoreLowDiskSpace"];
   }
 }
 

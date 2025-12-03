@@ -1,15 +1,15 @@
 @interface RCWeakReferenceWrapper
-+ (id)withReference:(id)a3;
++ (id)withReference:(id)reference;
 - (id)weakReference;
 @end
 
 @implementation RCWeakReferenceWrapper
 
-+ (id)withReference:(id)a3
++ (id)withReference:(id)reference
 {
-  v3 = a3;
+  referenceCopy = reference;
   v4 = objc_alloc_init(RCWeakReferenceWrapper);
-  [(RCWeakReferenceWrapper *)v4 setWeakReference:v3];
+  [(RCWeakReferenceWrapper *)v4 setWeakReference:referenceCopy];
 
   return v4;
 }

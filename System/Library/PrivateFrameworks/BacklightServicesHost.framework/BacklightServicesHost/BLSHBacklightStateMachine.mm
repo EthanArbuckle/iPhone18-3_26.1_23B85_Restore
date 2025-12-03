@@ -1,35 +1,35 @@
 @interface BLSHBacklightStateMachine
 - (BLSHBacklightHostTelemetryDelegate)telemetryDelegate;
-- (BLSHBacklightStateMachine)initWithPlatformProvider:(id)a3 eventPerformer:(id)a4 osInterfaceProvider:(id)a5;
+- (BLSHBacklightStateMachine)initWithPlatformProvider:(id)provider eventPerformer:(id)performer osInterfaceProvider:(id)interfaceProvider;
 - (BOOL)deviceSupportsAlwaysOn;
 - (BOOL)isAlwaysOnDisabledByAssertion;
 - (BOOL)isAlwaysOnEnabled;
-- (id)performChangeRequest:(id)a3;
+- (id)performChangeRequest:(id)request;
 - (os_unfair_lock_s)activeOnAPAwakeAssertionIsActive;
 - (os_unfair_lock_s)enableAlwaysOnAfterInitialization;
-- (uint64_t)onMain_notifyInitialStateForObserver:(uint64_t)a1;
-- (void)addObserver:(id)a3;
-- (void)backlight:(id)a3 didCompleteUpdateToFlipbookState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6;
-- (void)backlight:(id)a3 didUpdateToDisplayMode:(int64_t)a4 fromDisplayMode:(int64_t)a5 activeEvents:(id)a6 abortedEvents:(id)a7;
-- (void)backlight:(id)a3 didUpdateVisualContentsToBeginTransitionToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6;
-- (void)backlight:(id)a3 willUpdateToDisplayMode:(int64_t)a4 fromDisplayMode:(int64_t)a5 forEvents:(id)a6 abortedEvents:(id)a7;
+- (uint64_t)onMain_notifyInitialStateForObserver:(uint64_t)observer;
+- (void)addObserver:(id)observer;
+- (void)backlight:(id)backlight didCompleteUpdateToFlipbookState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents;
+- (void)backlight:(id)backlight didUpdateToDisplayMode:(int64_t)mode fromDisplayMode:(int64_t)displayMode activeEvents:(id)events abortedEvents:(id)abortedEvents;
+- (void)backlight:(id)backlight didUpdateVisualContentsToBeginTransitionToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents;
+- (void)backlight:(id)backlight willUpdateToDisplayMode:(int64_t)mode fromDisplayMode:(int64_t)displayMode forEvents:(id)events abortedEvents:(id)abortedEvents;
 - (void)dealloc;
-- (void)endSuppressionServiceWithExplanation:(void *)a3 logBlock:;
-- (void)notifyObserversWithBlock:(uint64_t)a1;
-- (void)onMain_handleSuppressionEvent:(uint64_t)a1;
-- (void)onMain_performChangeRequest:(uint64_t)a1;
+- (void)endSuppressionServiceWithExplanation:(void *)explanation logBlock:;
+- (void)notifyObserversWithBlock:(uint64_t)block;
+- (void)onMain_handleSuppressionEvent:(uint64_t)event;
+- (void)onMain_performChangeRequest:(uint64_t)request;
 - (void)onMain_updateAlwaysOnConfiguration;
-- (void)performUnexpectedSleepRequest:(id)a3;
-- (void)platformProvider:(id)a3 didChangeAlwaysOnSetting:(BOOL)a4;
-- (void)platformProviderDidDetectSignificantUserInteraction:(id)a3;
-- (void)registerHandlersForService:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setAlwaysOnDisabledByAssertion:(BOOL)a3;
-- (void)startSuppressionServiceWithLogBlock:(uint64_t)a1;
-- (void)systemSleepAction:(id)a3 performWithCompletion:(id)a4;
-- (void)systemSleepAction:(id)a3 systemWillWakeForReason:(id)a4;
-- (void)updateSuppressionServiceForActivityState:(_BYTE *)a1;
+- (void)performUnexpectedSleepRequest:(id)request;
+- (void)platformProvider:(id)provider didChangeAlwaysOnSetting:(BOOL)setting;
+- (void)platformProviderDidDetectSignificantUserInteraction:(id)interaction;
+- (void)registerHandlersForService:(id)service;
+- (void)removeObserver:(id)observer;
+- (void)setAlwaysOnDisabledByAssertion:(BOOL)assertion;
+- (void)startSuppressionServiceWithLogBlock:(uint64_t)block;
+- (void)systemSleepAction:(id)action performWithCompletion:(id)completion;
+- (void)systemSleepAction:(id)action systemWillWakeForReason:(id)reason;
+- (void)updateSuppressionServiceForActivityState:(_BYTE *)state;
 @end
 
 @implementation BLSHBacklightStateMachine
@@ -45,12 +45,12 @@
 - (void)onMain_updateAlwaysOnConfiguration
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_15;
   }
 
-  OUTLINED_FUNCTION_12_2(a1);
+  OUTLINED_FUNCTION_12_2(self);
   if (*(v1 + 126) == 1 && *(v1 + 121) == 1 && (*(v1 + 122) & 1) == 0)
   {
     v2 = *(v1 + 123);
@@ -67,24 +67,24 @@
   if (v5 != v3)
   {
     *(v1 + 120) = v3;
-    v6 = [*(v1 + 32) changeRequest];
+    changeRequest = [*(v1 + 32) changeRequest];
     if (v4)
     {
       goto LABEL_8;
     }
 
 LABEL_10:
-    v8 = [*(v1 + 144) backlightState];
+    backlightState = [*(v1 + 144) backlightState];
     if (*(v1 + 120) == 1)
     {
       [*(v1 + 144) isAlwaysOnSuppressed];
     }
 
-    v7 = v8 != BLSBacklightStateForBacklightActivityStateAlwaysOnAvailable();
+    v7 = backlightState != BLSBacklightStateForBacklightActivityStateAlwaysOnAvailable();
     goto LABEL_13;
   }
 
-  v6 = 0;
+  changeRequest = 0;
   if (!v4)
   {
     goto LABEL_10;
@@ -113,7 +113,7 @@ LABEL_13:
       }
 
       v11 = v10;
-      v12 = v6;
+      v12 = changeRequest;
       if (!v12)
       {
         v12 = [objc_alloc(MEMORY[0x277CF0890]) initWithRequestedActivityState:v4 explanation:v11 timestamp:mach_continuous_time() sourceEvent:12 sourceEventMetadata:0];
@@ -170,12 +170,12 @@ void __63__BLSHBacklightStateMachine_onMain_updateAlwaysOnConfiguration__block_i
   return WeakRetained;
 }
 
-- (BLSHBacklightStateMachine)initWithPlatformProvider:(id)a3 eventPerformer:(id)a4 osInterfaceProvider:(id)a5
+- (BLSHBacklightStateMachine)initWithPlatformProvider:(id)provider eventPerformer:(id)performer osInterfaceProvider:(id)interfaceProvider
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  performerCopy = performer;
+  interfaceProviderCopy = interfaceProvider;
   v37.receiver = self;
   v37.super_class = BLSHBacklightStateMachine;
   v11 = [(BLSHBacklightStateMachine *)&v37 init];
@@ -185,7 +185,7 @@ void __63__BLSHBacklightStateMachine_onMain_updateAlwaysOnConfiguration__block_i
     goto LABEL_16;
   }
 
-  objc_storeStrong(&v11->_osInterfaceProvider, a5);
+  objc_storeStrong(&v11->_osInterfaceProvider, interfaceProvider);
   v12->_lock._os_unfair_lock_opaque = 0;
   v12->_lock_nextEventID = 1;
   v13 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:517 capacity:2];
@@ -194,9 +194,9 @@ void __63__BLSHBacklightStateMachine_onMain_updateAlwaysOnConfiguration__block_i
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v8 suppressionSupported];
-    v12->_suppressionSupported = v15;
-    if (!v15)
+    suppressionSupported = [providerCopy suppressionSupported];
+    v12->_suppressionSupported = suppressionSupported;
+    if (!suppressionSupported)
     {
 LABEL_6:
       if (os_variant_has_internal_diagnostics())
@@ -212,10 +212,10 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [v9 backlightState];
+  [performerCopy backlightState];
   if (BLSBacklightStateIsActive())
   {
-    v17 = [v10 mach_continuous_time];
+    mach_continuous_time = [interfaceProviderCopy mach_continuous_time];
     v18 = [(BLSHOSInterfaceProviding *)v12->_osInterfaceProvider createSystemActivityAssertionWithIdentifier:@"BacklightServices.backlightActiveOn.startup" configurator:&__block_literal_global_11];
     lock_activeOnAPAwakeAssertion = v12->_lock_activeOnAPAwakeAssertion;
     v12->_lock_activeOnAPAwakeAssertion = v18;
@@ -225,30 +225,30 @@ LABEL_6:
     v33[1] = 3221225472;
     v33[2] = __89__BLSHBacklightStateMachine_initWithPlatformProvider_eventPerformer_osInterfaceProvider___block_invoke_2;
     v33[3] = &unk_27841F988;
-    v34 = v10;
+    v34 = interfaceProviderCopy;
     v35 = v12;
-    v36 = v17;
+    v36 = mach_continuous_time;
     [(BLSHSystemActivityAsserting *)v20 acquireWithTimeout:v33 handler:0.0];
   }
 
-  v12->_deviceSupportsAlwaysOn = [v10 deviceSupportsAlwaysOn];
-  objc_storeStrong(&v12->_eventPerformer, a4);
+  v12->_deviceSupportsAlwaysOn = [interfaceProviderCopy deviceSupportsAlwaysOn];
+  objc_storeStrong(&v12->_eventPerformer, performer);
   v12->_lock_activityState = BLSBacklightActivityStateForBLSBacklightState();
-  [v9 setPerformerDelegate:v12];
+  [performerCopy setPerformerDelegate:v12];
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v8 isAlwaysOnEnabled];
+    isAlwaysOnEnabled = [providerCopy isAlwaysOnEnabled];
   }
 
   else
   {
-    v21 = 0;
+    isAlwaysOnEnabled = 0;
   }
 
-  v12->_lock_alwaysOnEnabledByPlatform = v21;
+  v12->_lock_alwaysOnEnabledByPlatform = isAlwaysOnEnabled;
   v12->_lock_alwaysOnEnabledResolved = 0;
-  [v8 addObserver:v12];
-  v22 = [BLSHOnSystemSleepAction actionWithIdentifier:@"BacklightStateMachine-Action" delegate:v12 osInterfaceProvider:v10];
+  [providerCopy addObserver:v12];
+  v22 = [BLSHOnSystemSleepAction actionWithIdentifier:@"BacklightStateMachine-Action" delegate:v12 osInterfaceProvider:interfaceProviderCopy];
   sleepAction = v12->_sleepAction;
   v12->_sleepAction = v22;
 
@@ -278,7 +278,7 @@ LABEL_6:
   v30[3] = &unk_27841F9B0;
   objc_copyWeak(&v31, &location);
   v30[4] = buf;
-  v26 = [v10 scheduledTimerWithIdentifier:@"backlightAssertionInitialization" interval:v30 leewayInterval:5.0 handler:1.0];
+  v26 = [interfaceProviderCopy scheduledTimerWithIdentifier:@"backlightAssertionInitialization" interval:v30 leewayInterval:5.0 handler:1.0];
   v27 = *(*&buf[8] + 40);
   *(*&buf[8] + 40) = v26;
 
@@ -367,9 +367,9 @@ void __89__BLSHBacklightStateMachine_initWithPlatformProvider_eventPerformer_osI
   [(BLSHBacklightStateMachine *)&v3 dealloc];
 }
 
-- (void)registerHandlersForService:(id)a3
+- (void)registerHandlersForService:(id)service
 {
-  v7 = a3;
+  serviceCopy = service;
   v4 = [BLSHDisableAlwaysOnAttributeHandler registerHandlerForService:"registerHandlerForService:provider:" provider:?];
   if (!v4)
   {
@@ -377,7 +377,7 @@ void __89__BLSHBacklightStateMachine_initWithPlatformProvider_eventPerformer_osI
   }
 
   v5 = v4;
-  v6 = [(BLSHLocalAssertionAttributeHandler *)BLSHValidWhenBacklightInactiveAttributeHandler registerHandlerForService:v7];
+  v6 = [(BLSHLocalAssertionAttributeHandler *)BLSHValidWhenBacklightInactiveAttributeHandler registerHandlerForService:serviceCopy];
 
   if (!v6)
   {
@@ -393,10 +393,10 @@ void __89__BLSHBacklightStateMachine_initWithPlatformProvider_eventPerformer_osI
   return deviceSupportsAlwaysOn;
 }
 
-- (id)performChangeRequest:(id)a3
+- (id)performChangeRequest:(id)request
 {
-  v5 = a3;
-  v3 = v5;
+  requestCopy = request;
+  v3 = requestCopy;
   BSDispatchMain();
 
   return 0;
@@ -693,66 +693,66 @@ void __70__BLSHBacklightStateMachine_updateSuppressionServiceForActivityState___
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endSuppressionServiceWithExplanation:(void *)a3 logBlock:
+- (void)endSuppressionServiceWithExplanation:(void *)explanation logBlock:
 {
   v16 = a2;
-  v5 = a3;
-  if (a1)
+  explanationCopy = explanation;
+  if (self)
   {
-    v6 = [*(a1 + 8) isSuppressionServiceActive];
-    v5[2](v5, v6);
-    if (v6)
+    isSuppressionServiceActive = [*(self + 8) isSuppressionServiceActive];
+    explanationCopy[2](explanationCopy, isSuppressionServiceActive);
+    if (isSuppressionServiceActive)
     {
-      [*(a1 + 8) endSuppressionService];
+      [*(self + 8) endSuppressionService];
     }
 
-    os_unfair_lock_lock((a1 + 96));
-    v7 = [*(a1 + 144) isAlwaysOnSuppressed];
-    [*(a1 + 144) setAlwaysOnSuppressed:0];
-    if ((v6 & 1) == 0 && v7)
+    os_unfair_lock_lock((self + 96));
+    isAlwaysOnSuppressed = [*(self + 144) isAlwaysOnSuppressed];
+    [*(self + 144) setAlwaysOnSuppressed:0];
+    if ((isSuppressionServiceActive & 1) == 0 && isAlwaysOnSuppressed)
     {
-      [BLSHBacklightStateMachine endSuppressionServiceWithExplanation:a1 logBlock:sel_endSuppressionServiceWithExplanation_logBlock_];
+      [BLSHBacklightStateMachine endSuppressionServiceWithExplanation:self logBlock:sel_endSuppressionServiceWithExplanation_logBlock_];
     }
 
-    if (v6 & v7)
+    if (isSuppressionServiceActive & isAlwaysOnSuppressed)
     {
       v8 = mach_continuous_time();
       v9 = objc_alloc(MEMORY[0x277CF0890]);
-      v10 = *(a1 + 112);
+      v10 = *(self + 112);
       v11 = objc_alloc(MEMORY[0x277CF0898]);
       v12 = [[BLSHSuppressionEvent alloc] initWithType:2 reason:0x80000000 timestamp:v8];
       v13 = [v11 initWithSuppressionEvent:v12];
       v14 = [v9 initWithRequestedActivityState:v10 explanation:v16 timestamp:v8 sourceEvent:14 sourceEventMetadata:v13];
 
-      os_unfair_lock_unlock((a1 + 96));
+      os_unfair_lock_unlock((self + 96));
       if (v14)
       {
-        v15 = [a1 performChangeRequest:v14];
+        v15 = [self performChangeRequest:v14];
       }
     }
 
     else
     {
-      os_unfair_lock_unlock((a1 + 96));
+      os_unfair_lock_unlock((self + 96));
     }
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v4];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
-  v5 = v4;
+  v5 = observerCopy;
   BSDispatchMain();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -822,19 +822,19 @@ void __105__BLSHBacklightStateMachine_backlight_didUpdateToDisplayMode_fromDispl
   }
 }
 
-- (void)platformProvider:(id)a3 didChangeAlwaysOnSetting:(BOOL)a4
+- (void)platformProvider:(id)provider didChangeAlwaysOnSetting:(BOOL)setting
 {
-  v4 = a4;
+  settingCopy = setting;
   v12 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_alwaysOnEnabledByPlatform = v4;
+  self->_lock_alwaysOnEnabledByPlatform = settingCopy;
   v6 = bls_backlight_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v4;
+    v11 = settingCopy;
     _os_log_impl(&dword_21FD11000, v6, OS_LOG_TYPE_DEFAULT, "BSM:%p didChangeAlwaysOnSetting:%{BOOL}u", buf, 0x12u);
   }
 
@@ -843,7 +843,7 @@ void __105__BLSHBacklightStateMachine_backlight_didUpdateToDisplayMode_fromDispl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)platformProviderDidDetectSignificantUserInteraction:(id)a3
+- (void)platformProviderDidDetectSignificantUserInteraction:(id)interaction
 {
   if (self->_suppressionSupported)
   {
@@ -915,20 +915,20 @@ void __81__BLSHBacklightStateMachine_platformProviderDidDetectSignificantUserInt
   return lock_alwaysOnDisabledByAssertion;
 }
 
-- (void)setAlwaysOnDisabledByAssertion:(BOOL)a3
+- (void)setAlwaysOnDisabledByAssertion:(BOOL)assertion
 {
-  v3 = a3;
+  assertionCopy = assertion;
   v11 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_alwaysOnDisabledByAssertion = v3;
+  self->_lock_alwaysOnDisabledByAssertion = assertionCopy;
   self->_lock_alwaysOnEnabledAfterInitialization = 1;
   v5 = bls_backlight_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = v3;
+    v10 = assertionCopy;
     _os_log_impl(&dword_21FD11000, v5, OS_LOG_TYPE_INFO, "BSM:%p setAlwaysOnDisabledByAssertion:%{BOOL}u", buf, 0x12u);
   }
 
@@ -937,17 +937,17 @@ void __81__BLSHBacklightStateMachine_platformProviderDidDetectSignificantUserInt
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemSleepAction:(id)a3 performWithCompletion:(id)a4
+- (void)systemSleepAction:(id)action performWithCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   [(BLSHBacklightStateMachine *)self backlightState];
   IsActive = BLSBacklightStateIsActive();
   if (IsActive && [(BLSHBacklightStateMachine *)self activeOnAPAwakeAssertionIsActive])
   {
     v10 = [objc_alloc(MEMORY[0x277CF0890]) initWithRequestedActivityState:0 explanation:@"unexpected system sleep" timestamp:mach_continuous_time() sourceEvent:12 sourceEventMetadata:0];
     os_unfair_lock_lock(&self->_lock);
-    v11 = MEMORY[0x223D70730](v5);
+    v11 = MEMORY[0x223D70730](completionCopy);
     lock_sleepActionCompletion = self->_lock_sleepActionCompletion;
     self->_lock_sleepActionCompletion = v11;
 
@@ -966,7 +966,7 @@ void __81__BLSHBacklightStateMachine_platformProviderDidDetectSignificantUserInt
         BLSLoggingStringForContinuousMachTime();
         v25 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *buf = 134219010;
-        v32 = self;
+        selfCopy2 = self;
         v33 = 2114;
         v34 = v25;
         v35 = 2048;
@@ -994,7 +994,7 @@ void __81__BLSHBacklightStateMachine_platformProviderDidDetectSignificantUserInt
       if (v18)
       {
         *buf = 134218498;
-        v32 = self;
+        selfCopy2 = self;
         v33 = 2048;
         v34 = 0.5 - v15;
         v35 = 2114;
@@ -1022,7 +1022,7 @@ void __81__BLSHBacklightStateMachine_platformProviderDidDetectSignificantUserInt
 
   else
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
     v7 = 1;
   }
 
@@ -1047,17 +1047,17 @@ uint64_t __69__BLSHBacklightStateMachine_systemSleepAction_performWithCompletion
   return [v3 performUnexpectedSleepRequest:v4];
 }
 
-- (void)performUnexpectedSleepRequest:(id)a3
+- (void)performUnexpectedSleepRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_lock);
   v5 = MEMORY[0x223D70730](self->_lock_sleepActionCompletion);
   lock_sleepActionCompletion = self->_lock_sleepActionCompletion;
-  v7 = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
-  v8 = [v7 aggregateState];
+  systemSleepMonitor = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
+  aggregateState = [systemSleepMonitor aggregateState];
 
-  v9 = (lock_sleepActionCompletion != 0) & [v8 isAwakeOrAbortingSleep];
+  v9 = (lock_sleepActionCompletion != 0) & [aggregateState isAwakeOrAbortingSleep];
   if (v9 == 1)
   {
     v10 = self->_lock_sleepActionCompletion;
@@ -1077,13 +1077,13 @@ uint64_t __69__BLSHBacklightStateMachine_systemSleepAction_performWithCompletion
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v25 = 134218754;
-      v26 = self;
+      selfCopy5 = self;
       v27 = 1024;
       *v28 = 1;
       *&v28[4] = 2114;
-      *&v28[6] = v8;
+      *&v28[6] = aggregateState;
       *&v28[14] = 2114;
-      *&v28[16] = v4;
+      *&v28[16] = requestCopy;
       _os_log_impl(&dword_21FD11000, v13, OS_LOG_TYPE_INFO, "BSM:%p (no longer requested) unexpected system sleep - hasSleepActionCompletion:%{BOOL}u %{public}@ - will not send request:%{public}@", &v25, 0x26u);
     }
 
@@ -1102,20 +1102,20 @@ LABEL_12:
     }
 
     v25 = 134218498;
-    v26 = self;
+    selfCopy5 = self;
     v27 = 2114;
-    *v28 = v4;
+    *v28 = requestCopy;
     *&v28[8] = 2114;
-    *&v28[10] = v8;
+    *&v28[10] = aggregateState;
     v15 = "BSM:%p (no sleep action completion) unexpected system sleep - will not send request:%{public}@ %{public}@";
     goto LABEL_10;
   }
 
   v19 = IsActive;
-  v20 = [(BLSHBacklightStateMachine *)self activeOnAPAwakeAssertionIsActive];
-  if ((v19 & v20) != 1)
+  activeOnAPAwakeAssertionIsActive = [(BLSHBacklightStateMachine *)self activeOnAPAwakeAssertionIsActive];
+  if ((v19 & activeOnAPAwakeAssertionIsActive) != 1)
   {
-    v23 = v20;
+    v23 = activeOnAPAwakeAssertionIsActive;
     v14 = bls_backlight_log();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1123,25 +1123,25 @@ LABEL_12:
     }
 
     v25 = 134219010;
-    v26 = self;
+    selfCopy5 = self;
     v27 = 1024;
     *v28 = v19;
     *&v28[4] = 1024;
     *&v28[6] = v23 & 1;
     *&v28[10] = 2114;
-    *&v28[12] = v4;
+    *&v28[12] = requestCopy;
     *&v28[20] = 2114;
-    *&v28[22] = v8;
+    *&v28[22] = aggregateState;
     v15 = "BSM:%p (no longer active) unexpected system sleep - isActive:%{BOOL}u activeOnAPAssertion:%{BOOL}u – will not send request:%{public}@ %{public}@";
     v16 = v14;
     v17 = 44;
     goto LABEL_11;
   }
 
-  v21 = [v8 isAwakeOrAbortingSleep];
+  isAwakeOrAbortingSleep = [aggregateState isAwakeOrAbortingSleep];
   v22 = bls_backlight_log();
   v14 = v22;
-  if (v21)
+  if (isAwakeOrAbortingSleep)
   {
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -1149,11 +1149,11 @@ LABEL_12:
     }
 
     v25 = 134218498;
-    v26 = self;
+    selfCopy5 = self;
     v27 = 2114;
-    *v28 = v4;
+    *v28 = requestCopy;
     *&v28[8] = 2114;
-    *&v28[10] = v8;
+    *&v28[10] = aggregateState;
     v15 = "BSM:%p (sleep not requested) unexpected system sleep – will not send request:%{public}@ %{public}@";
 LABEL_10:
     v16 = v14;
@@ -1166,24 +1166,24 @@ LABEL_11:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
     v25 = 134218498;
-    v26 = self;
+    selfCopy5 = self;
     v27 = 2114;
-    *v28 = v4;
+    *v28 = requestCopy;
     *&v28[8] = 2114;
-    *&v28[10] = v8;
+    *&v28[10] = aggregateState;
     _os_log_error_impl(&dword_21FD11000, v14, OS_LOG_TYPE_ERROR, "BSM:%p unexpected system sleep - will deactivate backlight with request:%{public}@ %{public}@", &v25, 0x20u);
   }
 
-  v24 = [(BLSHBacklightStateMachine *)self performChangeRequest:v4];
+  v24 = [(BLSHBacklightStateMachine *)self performChangeRequest:requestCopy];
 LABEL_13:
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)systemSleepAction:(id)a3 systemWillWakeForReason:(id)a4
+- (void)systemSleepAction:(id)action systemWillWakeForReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   v6 = MEMORY[0x223D70730](self->_lock_sleepActionCompletion);
   lock_sleepActionCompletion = self->_lock_sleepActionCompletion;
@@ -1199,14 +1199,14 @@ LABEL_13:
     v9 = bls_backlight_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
-      v11 = [v10 aggregateState];
+      systemSleepMonitor = [(BLSHOSInterfaceProviding *)self->_osInterfaceProvider systemSleepMonitor];
+      aggregateState = [systemSleepMonitor aggregateState];
       v13 = 134218498;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v5;
+      v16 = reasonCopy;
       v17 = 2114;
-      v18 = v11;
+      v18 = aggregateState;
       _os_log_impl(&dword_21FD11000, v9, OS_LOG_TYPE_INFO, "BSM:%p (will not sleep - %@) unexpected system sleep - will not send request %{public}@", &v13, 0x20u);
     }
 
@@ -1216,11 +1216,11 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSuppressionServiceForActivityState:(_BYTE *)a1
+- (void)updateSuppressionServiceForActivityState:(_BYTE *)state
 {
-  if (a1 && a1[125] == 1)
+  if (state && state[125] == 1)
   {
-    [a1 isAlwaysOnEnabled];
+    [state isAlwaysOnEnabled];
     v4 = BLSBacklightStateForBacklightActivityStateAlwaysOnAvailable();
     if (v4)
     {
@@ -1230,10 +1230,10 @@ LABEL_13:
         v6[1] = 3221225472;
         v6[2] = __70__BLSHBacklightStateMachine_updateSuppressionServiceForActivityState___block_invoke;
         v6[3] = &unk_27841FAC8;
-        v6[4] = a1;
+        v6[4] = state;
         v6[5] = a2;
         v6[6] = 1;
-        [(BLSHBacklightStateMachine *)a1 startSuppressionServiceWithLogBlock:v6];
+        [(BLSHBacklightStateMachine *)state startSuppressionServiceWithLogBlock:v6];
       }
     }
 
@@ -1243,10 +1243,10 @@ LABEL_13:
       OUTLINED_FUNCTION_3_2();
       v5[2] = __70__BLSHBacklightStateMachine_updateSuppressionServiceForActivityState___block_invoke_141;
       v5[3] = &unk_27841FAC8;
-      v5[4] = a1;
+      v5[4] = state;
       v5[5] = a2;
       v5[6] = 0;
-      [(BLSHBacklightStateMachine *)a1 endSuppressionServiceWithExplanation:v5 logBlock:?];
+      [(BLSHBacklightStateMachine *)state endSuppressionServiceWithExplanation:v5 logBlock:?];
     }
   }
 }
@@ -1256,76 +1256,76 @@ LABEL_13:
   if (result)
   {
     OUTLINED_FUNCTION_12_2(result);
-    v2 = [*(v1 + 48) isActive];
+    isActive = [*(v1 + 48) isActive];
     os_unfair_lock_unlock((v1 + 96));
-    return v2;
+    return isActive;
   }
 
   return result;
 }
 
-- (void)onMain_performChangeRequest:(uint64_t)a1
+- (void)onMain_performChangeRequest:(uint64_t)request
 {
   v82[1] = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (request)
   {
-    os_unfair_lock_lock((a1 + 96));
-    v4 = *(a1 + 124);
-    os_unfair_lock_unlock((a1 + 96));
+    os_unfair_lock_lock((request + 96));
+    v4 = *(request + 124);
+    os_unfair_lock_unlock((request + 96));
     if (v4 == 1)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __57__BLSHBacklightStateMachine_onMain_performChangeRequest___block_invoke;
       block[3] = &unk_27841E538;
-      block[4] = a1;
+      block[4] = request;
       v77 = v3;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
 
     else
     {
-      os_unfair_lock_lock((a1 + 96));
-      v6 = *(a1 + 144);
-      v7 = [v6 backlightState];
-      v8 = [v3 requestedActivityState];
-      if (*(a1 + 120) == 1)
+      os_unfair_lock_lock((request + 96));
+      v6 = *(request + 144);
+      backlightState = [v6 backlightState];
+      requestedActivityState = [v3 requestedActivityState];
+      if (*(request + 120) == 1)
       {
-        [*(a1 + 144) isAlwaysOnSuppressed];
+        [*(request + 144) isAlwaysOnSuppressed];
       }
 
       v9 = BLSBacklightStateForBacklightActivityStateAlwaysOnAvailable();
-      v10 = [v6 isTransitioning];
-      v11 = *(a1 + 104);
-      *(a1 + 104) = v11 + 1;
-      v12 = [objc_alloc(MEMORY[0x277CF0888]) initWithEventID:v11 state:v9 previousState:v7 wasTransitioning:v10 changeRequest:v3];
-      objc_storeStrong((a1 + 32), v12);
-      *(a1 + 112) = v8;
-      *(a1 + 124) = 1;
-      v42 = *(a1 + 72);
-      v13 = *(a1 + 48);
-      v44 = *(a1 + 80);
-      v45 = v7;
-      if (!*(a1 + 40))
+      isTransitioning = [v6 isTransitioning];
+      v11 = *(request + 104);
+      *(request + 104) = v11 + 1;
+      v12 = [objc_alloc(MEMORY[0x277CF0888]) initWithEventID:v11 state:v9 previousState:backlightState wasTransitioning:isTransitioning changeRequest:v3];
+      objc_storeStrong((request + 32), v12);
+      *(request + 112) = requestedActivityState;
+      *(request + 124) = 1;
+      v42 = *(request + 72);
+      v13 = *(request + 48);
+      v44 = *(request + 80);
+      v45 = backlightState;
+      if (!*(request + 40))
       {
         v14 = MEMORY[0x277CF0868];
         v15 = [BLSHDisableFlipbookPowerSavingAttribute disablePowerSavingForReason:1];
         v82[0] = v15;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:1];
         v17 = [v14 acquireWithExplanation:@"BacklightEvent" observer:0 attributes:v16];
-        v18 = *(a1 + 40);
-        *(a1 + 40) = v17;
+        v18 = *(request + 40);
+        *(request + 40) = v17;
 
-        v7 = v45;
+        backlightState = v45;
       }
 
-      os_unfair_lock_unlock((a1 + 96));
+      os_unfair_lock_unlock((request + 96));
       v19 = bls_backlight_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v79 = a1;
+        requestCopy = request;
         v80 = 2114;
         v81 = v12;
         _os_log_impl(&dword_21FD11000, v19, OS_LOG_TYPE_DEFAULT, "BSM:%p will performRequest with event:%{public}@", buf, 0x16u);
@@ -1335,20 +1335,20 @@ LABEL_13:
       [v3 timestamp];
       kdebug_trace();
       [v6 prewarmEvent:v12];
-      v20 = [a1 telemetryDelegate];
+      telemetryDelegate = [request telemetryDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v20 backlightTelemetrySource:a1 willPerformEvent:v12];
+        [telemetryDelegate backlightTelemetrySource:request willPerformEvent:v12];
       }
 
       else
       {
-        [v20 backlightTelemetrySource:a1 willTransitionToState:v9 forEvent:v12];
+        [telemetryDelegate backlightTelemetrySource:request willTransitionToState:v9 forEvent:v12];
       }
 
-      [(BLSHBacklightStateMachine *)a1 updateSuppressionServiceForActivityState:v8];
-      v43 = *(a1 + 8);
-      v41 = v20;
+      [(BLSHBacklightStateMachine *)request updateSuppressionServiceForActivityState:requestedActivityState];
+      v43 = *(request + 8);
+      v41 = telemetryDelegate;
       if (BLSBacklightStateIsActive())
       {
         if (v13)
@@ -1357,7 +1357,7 @@ LABEL_13:
           v58 = 3221225472;
           v59 = __57__BLSHBacklightStateMachine_onMain_performChangeRequest___block_invoke_2_118;
           v60 = &unk_27841E538;
-          v61 = a1;
+          requestCopy2 = request;
           v62 = v12;
           BSDispatchMain();
           v25 = v62;
@@ -1373,7 +1373,7 @@ LABEL_13:
           v70[3] = &unk_27841F9D8;
           v40 = v6;
           v71 = v40;
-          v72 = a1;
+          requestCopy3 = request;
           v21 = v12;
           v73 = v21;
           v22 = v3;
@@ -1389,9 +1389,9 @@ LABEL_13:
           v63[2] = __57__BLSHBacklightStateMachine_onMain_performChangeRequest___block_invoke_2;
           v63[3] = &unk_27841FA28;
           v24 = v23;
-          v7 = v45;
+          backlightState = v45;
           v64 = v24;
-          v65 = a1;
+          requestCopy4 = request;
           v66 = v21;
           v67 = v22;
           v44 = v39;
@@ -1403,18 +1403,18 @@ LABEL_13:
         }
       }
 
-      if (v7 == v9)
+      if (backlightState == v9)
       {
         v26 = v42;
       }
 
       else
       {
-        v27 = [*(a1 + 16) state];
+        state = [*(request + 16) state];
         v26 = v42;
         if (!(v13 | v42))
         {
-          if (v27 == 1)
+          if (state == 1)
           {
             v26 = 0;
           }
@@ -1422,15 +1422,15 @@ LABEL_13:
           else
           {
             v28 = MEMORY[0x277CCACA8];
-            v29 = [v12 changeRequest];
-            v30 = [v28 stringWithFormat:@"BacklightServices.performEvent:%p:%d", v12, objc_msgSend(v29, "sourceEvent")];
+            changeRequest = [v12 changeRequest];
+            v30 = [v28 stringWithFormat:@"BacklightServices.performEvent:%p:%d", v12, objc_msgSend(changeRequest, "sourceEvent")];
             v26 = [v43 createSystemActivityAssertionWithIdentifier:v30 configurator:&__block_literal_global_123];
 
             v53[0] = MEMORY[0x277D85DD0];
             v53[1] = 3221225472;
             v53[2] = __57__BLSHBacklightStateMachine_onMain_performChangeRequest___block_invoke_4;
             v53[3] = &unk_27841FA50;
-            v53[4] = a1;
+            v53[4] = request;
             v54 = v12;
             v55 = v3;
             v56 = v43;
@@ -1442,39 +1442,39 @@ LABEL_13:
         v50[1] = 3221225472;
         v50[2] = __57__BLSHBacklightStateMachine_onMain_performChangeRequest___block_invoke_124;
         v50[3] = &unk_27841FA78;
-        v50[4] = a1;
+        v50[4] = request;
         v52 = v9;
         v51 = v12;
-        [(BLSHBacklightStateMachine *)a1 notifyObserversWithBlock:v50];
+        [(BLSHBacklightStateMachine *)request notifyObserversWithBlock:v50];
       }
 
-      os_unfair_lock_lock((a1 + 96));
-      v31 = *(a1 + 72);
-      *(a1 + 72) = v26;
+      os_unfair_lock_lock((request + 96));
+      v31 = *(request + 72);
+      *(request + 72) = v26;
       v32 = v26;
 
-      v33 = *(a1 + 48);
-      *(a1 + 48) = v13;
+      v33 = *(request + 48);
+      *(request + 48) = v13;
       v34 = v13;
 
-      v35 = *(a1 + 80);
-      *(a1 + 80) = v44;
+      v35 = *(request + 80);
+      *(request + 80) = v44;
       v36 = v44;
 
-      *(a1 + 124) = 0;
-      os_unfair_lock_unlock((a1 + 96));
+      *(request + 124) = 0;
+      os_unfair_lock_unlock((request + 96));
       LOBYTE(v35) = BLSBacklightStateIsActive();
       IsActive = BLSBacklightStateIsActive();
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __57__BLSHBacklightStateMachine_onMain_performChangeRequest___block_invoke_2_128;
       v46[3] = &unk_27841FAA0;
-      v46[4] = a1;
+      v46[4] = request;
       v47 = v12;
       v48 = (v35 ^ 1) & IsActive;
       v49 = v35 & (IsActive ^ 1);
       v38 = v12;
-      [(BLSHBacklightStateMachine *)a1 notifyObserversWithBlock:v46];
+      [(BLSHBacklightStateMachine *)request notifyObserversWithBlock:v46];
       [v6 performEvent:v38];
     }
   }
@@ -1482,20 +1482,20 @@ LABEL_13:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversWithBlock:(uint64_t)a1
+- (void)notifyObserversWithBlock:(uint64_t)block
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    os_unfair_lock_lock((a1 + 96));
-    v4 = [*(a1 + 88) allObjects];
-    os_unfair_lock_unlock((a1 + 96));
+    os_unfair_lock_lock((block + 96));
+    allObjects = [*(block + 88) allObjects];
+    os_unfair_lock_unlock((block + 96));
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v4;
+    v5 = allObjects;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -1525,40 +1525,40 @@ LABEL_13:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSuppressionServiceWithLogBlock:(uint64_t)a1
+- (void)startSuppressionServiceWithLogBlock:(uint64_t)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v4 = [*(a1 + 8) isSuppressionServiceActive];
-    v5 = v4;
-    v3[2](v3, v4 ^ 1u);
+    isSuppressionServiceActive = [*(block + 8) isSuppressionServiceActive];
+    v5 = isSuppressionServiceActive;
+    v3[2](v3, isSuppressionServiceActive ^ 1u);
     if ((v5 & 1) == 0)
     {
-      v6 = *(a1 + 8);
+      v6 = *(block + 8);
       OUTLINED_FUNCTION_0_5();
       OUTLINED_FUNCTION_18();
       v9 = __65__BLSHBacklightStateMachine_startSuppressionServiceWithLogBlock___block_invoke;
       v10 = &unk_27841FAF0;
-      v11 = a1;
+      blockCopy = block;
       [v7 startSuppressionServiceWithHandler:v8];
     }
   }
 }
 
-- (void)onMain_handleSuppressionEvent:(uint64_t)a1
+- (void)onMain_handleSuppressionEvent:(uint64_t)event
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    if ([*(a1 + 8) isSuppressionServiceActive])
+    if ([*(event + 8) isSuppressionServiceActive])
     {
-      os_unfair_lock_lock((a1 + 96));
-      v4 = [v3 wantsSuppression];
-      [*(a1 + 144) setAlwaysOnSuppressed:v4];
+      os_unfair_lock_lock((event + 96));
+      wantsSuppression = [v3 wantsSuppression];
+      [*(event + 144) setAlwaysOnSuppressed:wantsSuppression];
       v5 = MEMORY[0x277CCACA8];
-      if (v4)
+      if (wantsSuppression)
       {
         v6 = @"alwaysOn suppressed";
       }
@@ -1573,12 +1573,12 @@ LABEL_13:
       v8 = [v5 stringWithFormat:@"%@ — %@", v6, v7];
 
       v9 = objc_alloc(MEMORY[0x277CF0890]);
-      v10 = *(a1 + 112);
-      v11 = [v3 machContinuousTimestamp];
+      v10 = *(event + 112);
+      machContinuousTimestamp = [v3 machContinuousTimestamp];
       v12 = [objc_alloc(MEMORY[0x277CF0898]) initWithSuppressionEvent:v3];
-      v13 = [v9 initWithRequestedActivityState:v10 explanation:v8 timestamp:v11 sourceEvent:14 sourceEventMetadata:v12];
+      v13 = [v9 initWithRequestedActivityState:v10 explanation:v8 timestamp:machContinuousTimestamp sourceEvent:14 sourceEventMetadata:v12];
 
-      os_unfair_lock_unlock((a1 + 96));
+      os_unfair_lock_unlock((event + 96));
       v14 = bls_backlight_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -1591,7 +1591,7 @@ LABEL_13:
         _os_log_impl(&dword_21FD11000, v14, OS_LOG_TYPE_INFO, "BSM:%p suppressionEvent explanation:%{public}@ request:%{public}@ event:%{public}@", buf, 0x2Au);
       }
 
-      v16 = [a1 performChangeRequest:v13];
+      v16 = [event performChangeRequest:v13];
     }
 
     else
@@ -1621,48 +1621,48 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)onMain_notifyInitialStateForObserver:(uint64_t)a1
+- (uint64_t)onMain_notifyInitialStateForObserver:(uint64_t)observer
 {
   v3 = a2;
-  if (a1)
+  if (observer)
   {
     v45 = v3;
-    os_unfair_lock_lock((a1 + 96));
-    v4 = [*(a1 + 88) containsObject:v45];
-    v5 = *(a1 + 120);
-    os_unfair_lock_unlock((a1 + 96));
+    os_unfair_lock_lock((observer + 96));
+    v4 = [*(observer + 88) containsObject:v45];
+    v5 = *(observer + 120);
+    os_unfair_lock_unlock((observer + 96));
     if (v4)
     {
       if (objc_opt_respondsToSelector())
       {
-        v6 = [a1 backlightState];
-        [OUTLINED_FUNCTION_2_8(v6 v7];
+        backlightState = [observer backlightState];
+        [OUTLINED_FUNCTION_2_8(backlightState v7];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        v14 = [a1 backlightState];
-        [OUTLINED_FUNCTION_2_8(v14 v15];
+        backlightState2 = [observer backlightState];
+        [OUTLINED_FUNCTION_2_8(backlightState2 v15];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v45 backlight:a1 didChangeAlwaysOnEnabled:v5];
+        [v45 backlight:observer didChangeAlwaysOnEnabled:v5];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v22 = [a1 flipbookState];
-        [OUTLINED_FUNCTION_2_8(v22 v23];
+        flipbookState = [observer flipbookState];
+        [OUTLINED_FUNCTION_2_8(flipbookState v23];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        v30 = [a1 flipbookState];
-        [OUTLINED_FUNCTION_2_8(v30 v31];
+        flipbookState2 = [observer flipbookState];
+        [OUTLINED_FUNCTION_2_8(flipbookState2 v31];
       }
 
-      v38 = IsBlankedForBLSBacklightDisplayMode([*(a1 + 144) backlightDisplayMode]);
+      v38 = IsBlankedForBLSBacklightDisplayMode([*(observer + 144) backlightDisplayMode]);
       if ((objc_opt_respondsToSelector() & 1) != 0 && [v45 observesUpdateToDisplayMode])
       {
         OUTLINED_FUNCTION_3_6();
@@ -1693,34 +1693,34 @@ LABEL_13:
   return MEMORY[0x2821F9730]();
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents
 {
   v56 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
+  eventsCopy = events;
+  abortedEventsCopy = abortedEvents;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_transitioningEvent && [v9 containsObject:?])
+  if (self->_lock_transitioningEvent && [eventsCopy containsObject:?])
   {
     lock_transitioningEvent = self->_lock_transitioningEvent;
     self->_lock_transitioningEvent = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v12 = [v9 firstObject];
-  v13 = [v12 changeRequest];
-  [v12 previousState];
-  [v13 sourceEvent];
-  [v13 timestamp];
+  firstObject = [eventsCopy firstObject];
+  changeRequest = [firstObject changeRequest];
+  [firstObject previousState];
+  [changeRequest sourceEvent];
+  [changeRequest timestamp];
   kdebug_trace();
-  v14 = [v9 count];
+  v14 = [eventsCopy count];
   v15 = bls_backlight_log();
   v16 = 2 * (v14 == 0);
   if (os_log_type_enabled(v15, v16))
   {
     NSStringFromBLSBacklightState();
-    v41 = a4;
-    v17 = v13;
-    v19 = v18 = v10;
+    stateCopy = state;
+    v17 = changeRequest;
+    v19 = v18 = abortedEventsCopy;
     [v17 timestamp];
     mach_continuous_time();
     BSTimeDifferenceFromMachTimeToMachTime();
@@ -1734,22 +1734,22 @@ LABEL_13:
     v55 = v24;
     _os_log_impl(&dword_21FD11000, v15, v16, "BSM:%p didCompleteUpdateToState:%{public}@ elapsed:%.4lfs forEvents:%{public}@", buf, 0x2Au);
 
-    v10 = v18;
-    v13 = v17;
-    a4 = v41;
+    abortedEventsCopy = v18;
+    changeRequest = v17;
+    state = stateCopy;
   }
 
   if (v14)
   {
-    v25 = [(BLSHBacklightStateMachine *)self telemetryDelegate];
+    telemetryDelegate = [(BLSHBacklightStateMachine *)self telemetryDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v25 backlightTelemetrySource:self didCompleteUpdateToState:a4 forEvents:v9 abortedEvents:v10];
+      [telemetryDelegate backlightTelemetrySource:self didCompleteUpdateToState:state forEvents:eventsCopy abortedEvents:abortedEventsCopy];
     }
 
     else
     {
-      [v25 backlightTelemetrySource:self didCompleteUpdateToState:a4 forEvent:v12];
+      [telemetryDelegate backlightTelemetrySource:self didCompleteUpdateToState:state forEvent:firstObject];
     }
   }
 
@@ -1757,13 +1757,13 @@ LABEL_13:
   OUTLINED_FUNCTION_18();
   v43 = __88__BLSHBacklightStateMachine_backlight_didCompleteUpdateToState_forEvents_abortedEvents___block_invoke;
   v44 = &unk_27841FB18;
-  v45 = self;
-  v49 = a4;
-  v26 = v9;
+  selfCopy = self;
+  stateCopy2 = state;
+  v26 = eventsCopy;
   v46 = v26;
-  v27 = v10;
+  v27 = abortedEventsCopy;
   v47 = v27;
-  v28 = v12;
+  v28 = firstObject;
   v48 = v28;
   [(BLSHBacklightStateMachine *)self notifyObserversWithBlock:v42];
   os_unfair_lock_lock(&self->_lock);
@@ -1819,43 +1819,43 @@ LABEL_13:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToFlipbookState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6
+- (void)backlight:(id)backlight didCompleteUpdateToFlipbookState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [v9 firstObject];
-  v12 = [(BLSHBacklightStateMachine *)self telemetryDelegate];
+  eventsCopy = events;
+  abortedEventsCopy = abortedEvents;
+  firstObject = [eventsCopy firstObject];
+  telemetryDelegate = [(BLSHBacklightStateMachine *)self telemetryDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v12 backlightTelemetrySource:self didCompleteUpdateToFlipbookState:a4 forEvents:v9 abortedEvents:v10];
+    [telemetryDelegate backlightTelemetrySource:self didCompleteUpdateToFlipbookState:state forEvents:eventsCopy abortedEvents:abortedEventsCopy];
   }
 
   else
   {
-    [v12 backlightTelemetrySource:self didCompleteUpdateToFlipbookState:a4 forEvent:v11];
+    [telemetryDelegate backlightTelemetrySource:self didCompleteUpdateToFlipbookState:state forEvent:firstObject];
   }
 
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_18();
   v17 = __96__BLSHBacklightStateMachine_backlight_didCompleteUpdateToFlipbookState_forEvents_abortedEvents___block_invoke;
   v18 = &unk_27841FB18;
-  v22 = v11;
-  v23 = a4;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v22 = firstObject;
+  stateCopy = state;
+  selfCopy = self;
+  v20 = eventsCopy;
+  v21 = abortedEventsCopy;
+  v13 = firstObject;
+  v14 = abortedEventsCopy;
+  v15 = eventsCopy;
   [(BLSHBacklightStateMachine *)self notifyObserversWithBlock:v16];
 }
 
-- (void)backlight:(id)a3 didUpdateVisualContentsToBeginTransitionToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6
+- (void)backlight:(id)backlight didUpdateVisualContentsToBeginTransitionToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [v9 firstObject];
-  v12 = [(BLSHBacklightStateMachine *)self telemetryDelegate];
+  eventsCopy = events;
+  abortedEventsCopy = abortedEvents;
+  firstObject = [eventsCopy firstObject];
+  telemetryDelegate = [(BLSHBacklightStateMachine *)self telemetryDelegate];
   if (objc_opt_respondsToSelector())
   {
     [OUTLINED_FUNCTION_6_4() backlightTelemetrySource:? didUpdateVisualContentsToBeginTransitionToState:? forEvents:? abortedEvents:?];
@@ -1871,41 +1871,41 @@ LABEL_13:
   v15[2] = __111__BLSHBacklightStateMachine_backlight_didUpdateVisualContentsToBeginTransitionToState_forEvents_abortedEvents___block_invoke;
   v15[3] = &unk_27841FB40;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = a4;
-  v13 = v10;
-  v14 = v9;
+  v16 = eventsCopy;
+  v17 = abortedEventsCopy;
+  stateCopy = state;
+  v13 = abortedEventsCopy;
+  v14 = eventsCopy;
   [(BLSHBacklightStateMachine *)self notifyObserversWithBlock:v15];
 }
 
-- (void)backlight:(id)a3 willUpdateToDisplayMode:(int64_t)a4 fromDisplayMode:(int64_t)a5 forEvents:(id)a6 abortedEvents:(id)a7
+- (void)backlight:(id)backlight willUpdateToDisplayMode:(int64_t)mode fromDisplayMode:(int64_t)displayMode forEvents:(id)events abortedEvents:(id)abortedEvents
 {
-  v11 = a6;
-  v12 = a7;
-  WillUnblankForDisplayModeTransition(a5, a4);
+  eventsCopy = events;
+  abortedEventsCopy = abortedEvents;
+  WillUnblankForDisplayModeTransition(displayMode, mode);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v16[2] = __103__BLSHBacklightStateMachine_backlight_willUpdateToDisplayMode_fromDisplayMode_forEvents_abortedEvents___block_invoke;
   v16[3] = &unk_27841FB68;
-  v19 = a4;
-  v20 = a5;
+  modeCopy = mode;
+  displayModeCopy = displayMode;
   v16[4] = self;
-  v17 = v11;
-  v18 = v12;
+  v17 = eventsCopy;
+  v18 = abortedEventsCopy;
   v21 = v13;
-  v14 = v12;
-  v15 = v11;
+  v14 = abortedEventsCopy;
+  v15 = eventsCopy;
   [(BLSHBacklightStateMachine *)self notifyObserversWithBlock:v16];
 }
 
-- (void)backlight:(id)a3 didUpdateToDisplayMode:(int64_t)a4 fromDisplayMode:(int64_t)a5 activeEvents:(id)a6 abortedEvents:(id)a7
+- (void)backlight:(id)backlight didUpdateToDisplayMode:(int64_t)mode fromDisplayMode:(int64_t)displayMode activeEvents:(id)events abortedEvents:(id)abortedEvents
 {
-  v11 = a6;
-  v12 = a7;
-  v13 = WillUnblankForDisplayModeTransition(a5, a4);
-  v14 = [v11 firstObject];
-  v15 = [(BLSHBacklightStateMachine *)self telemetryDelegate];
+  eventsCopy = events;
+  abortedEventsCopy = abortedEvents;
+  v13 = WillUnblankForDisplayModeTransition(displayMode, mode);
+  firstObject = [eventsCopy firstObject];
+  telemetryDelegate = [(BLSHBacklightStateMachine *)self telemetryDelegate];
   if (v13)
   {
     if (objc_opt_respondsToSelector())
@@ -1913,34 +1913,34 @@ LABEL_13:
       [OUTLINED_FUNCTION_6_4() backlightTelemetrySource:? didUnblankToDisplayMode:? fromDisplayMode:? activeEvents:? abortedEvents:?];
     }
 
-    else if (v14)
+    else if (firstObject)
     {
-      v16 = BLSBacklightStateForBLSBacklightDisplayMode(a4);
+      v16 = BLSBacklightStateForBLSBacklightDisplayMode(mode);
       if (objc_opt_respondsToSelector())
       {
-        [v15 backlightTelemetrySource:self didUpdateDisplayForState:v16 forEvents:v11 abortedEvents:v12];
+        [telemetryDelegate backlightTelemetrySource:self didUpdateDisplayForState:v16 forEvents:eventsCopy abortedEvents:abortedEventsCopy];
       }
 
       else
       {
-        [v15 backlightTelemetrySource:self didUpdateDisplayForState:v16 forEvent:v14];
+        [telemetryDelegate backlightTelemetrySource:self didUpdateDisplayForState:v16 forEvent:firstObject];
       }
     }
   }
 
-  WillBlankForDisplayModeTransition(a5, a4);
+  WillBlankForDisplayModeTransition(displayMode, mode);
   OUTLINED_FUNCTION_12();
   OUTLINED_FUNCTION_3_2();
   v20[2] = __105__BLSHBacklightStateMachine_backlight_didUpdateToDisplayMode_fromDisplayMode_activeEvents_abortedEvents___block_invoke;
   v20[3] = &unk_27841FB68;
-  v23 = a4;
-  v24 = a5;
+  modeCopy = mode;
+  displayModeCopy = displayMode;
   v20[4] = self;
-  v21 = v11;
-  v22 = v12;
+  v21 = eventsCopy;
+  v22 = abortedEventsCopy;
   v25 = v17;
-  v18 = v12;
-  v19 = v11;
+  v18 = abortedEventsCopy;
+  v19 = eventsCopy;
   [(BLSHBacklightStateMachine *)self notifyObserversWithBlock:v20];
 }
 

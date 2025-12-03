@@ -1,8 +1,8 @@
 @interface CollapsingButton
 - (BOOL)isAccessibilityElement;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (double)systemLayoutSizeFittingSize:(void *)a1;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (double)systemLayoutSizeFittingSize:(void *)size;
 - (unint64_t)accessibilityTraits;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -10,9 +10,9 @@
 
 @implementation CollapsingButton
 
-- (double)systemLayoutSizeFittingSize:(void *)a1
+- (double)systemLayoutSizeFittingSize:(void *)size
 {
-  v1 = a1;
+  sizeCopy = size;
   *&v4 = *&CollapsingButton.sizeThatFits(_:)(__PAIR128__(v3, v2));
 
   return v4;
@@ -20,13 +20,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CollapsingButton.layoutSubviews()();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CollapsingButton.intrinsicContentSize.getter();
   v5 = v4;
 
@@ -37,9 +37,9 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  v5 = self;
+  selfCopy = self;
   v10 = CollapsingButton.systemLayoutSizeFitting(_:withHorizontalFittingPriority:verticalFittingPriority:)(__PAIR128__(v7, v6), v8, v9);
 
   width = v10.width;
@@ -51,13 +51,13 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   CollapsingButton.didMoveToWindow()();
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CollapsingButton.isAccessibilityElement.getter();
 
   return v3 & 1;
@@ -65,7 +65,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CollapsingButton.accessibilityTraits.getter();
 
   return v3;

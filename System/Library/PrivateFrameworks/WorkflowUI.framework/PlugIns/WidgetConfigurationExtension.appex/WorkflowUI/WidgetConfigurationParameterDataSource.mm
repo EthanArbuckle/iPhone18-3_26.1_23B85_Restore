@@ -1,22 +1,22 @@
 @interface WidgetConfigurationParameterDataSource
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
-- (void)parameterAttributesDidChange:(id)a3;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
+- (void)parameterAttributesDidChange:(id)change;
 @end
 
 @implementation WidgetConfigurationParameterDataSource
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
   sub_10001B8E4();
-  v6 = a3;
-  v7 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_10000C118();
 }
 
-- (void)parameterAttributesDidChange:(id)a3
+- (void)parameterAttributesDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_10000C5B8();
 }
 

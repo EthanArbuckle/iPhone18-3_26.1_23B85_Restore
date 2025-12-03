@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B58E80();
 
   v3 = sub_190D56ED0();

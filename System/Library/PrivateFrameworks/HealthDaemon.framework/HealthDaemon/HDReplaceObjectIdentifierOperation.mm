@@ -1,31 +1,31 @@
 @interface HDReplaceObjectIdentifierOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDReplaceObjectIdentifierOperation)initWithCoder:(id)a3;
-- (HDReplaceObjectIdentifierOperation)initWithWithObjectIdentifier:(id)a3 replacementIdentifier:(id)a4 schemaIdentifier:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDReplaceObjectIdentifierOperation)initWithCoder:(id)coder;
+- (HDReplaceObjectIdentifierOperation)initWithWithObjectIdentifier:(id)identifier replacementIdentifier:(id)replacementIdentifier schemaIdentifier:(id)schemaIdentifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDReplaceObjectIdentifierOperation
 
-- (HDReplaceObjectIdentifierOperation)initWithWithObjectIdentifier:(id)a3 replacementIdentifier:(id)a4 schemaIdentifier:(id)a5
+- (HDReplaceObjectIdentifierOperation)initWithWithObjectIdentifier:(id)identifier replacementIdentifier:(id)replacementIdentifier schemaIdentifier:(id)schemaIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  replacementIdentifierCopy = replacementIdentifier;
+  schemaIdentifierCopy = schemaIdentifier;
   v19.receiver = self;
   v19.super_class = HDReplaceObjectIdentifierOperation;
   v11 = [(HDReplaceObjectIdentifierOperation *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     objectIdentifier = v11->_objectIdentifier;
     v11->_objectIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [replacementIdentifierCopy copy];
     replacementIdentifier = v11->_replacementIdentifier;
     v11->_replacementIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [schemaIdentifierCopy copy];
     schemaIdentifier = v11->_schemaIdentifier;
     v11->_schemaIdentifier = v16;
   }
@@ -33,10 +33,10 @@
   return v11;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  transactionCopy = transaction;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objectIdentifier = self->_objectIdentifier;
   schemaIdentifier = self->_schemaIdentifier;
@@ -46,7 +46,7 @@
   v26[3] = &unk_27861B210;
   v11 = v8;
   v27 = v11;
-  if ([HDAttachmentReferenceEntity enumerateReferencesForObjectIdentifier:objectIdentifier schemaIdentifier:schemaIdentifier transaction:v7 error:a5 enumerationHandler:v26]&& [HDAttachmentReferenceEntity deleteReferences:v11 cloudStatus:0 transaction:v7 error:a5])
+  if ([HDAttachmentReferenceEntity enumerateReferencesForObjectIdentifier:objectIdentifier schemaIdentifier:schemaIdentifier transaction:transactionCopy error:error enumerationHandler:v26]&& [HDAttachmentReferenceEntity deleteReferences:v11 cloudStatus:0 transaction:transactionCopy error:error])
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -72,7 +72,7 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [HDAttachmentReferenceEntity _insertReference:*(*(&v21 + 1) + 8 * i) databaseTransaction:v7 error:a5, v21];
+          v17 = [HDAttachmentReferenceEntity _insertReference:*(*(&v21 + 1) + 8 * i) databaseTransaction:transactionCopy error:error, v21];
 
           if (!v17)
           {
@@ -104,26 +104,26 @@ LABEL_14:
   return v18;
 }
 
-- (HDReplaceObjectIdentifierOperation)initWithCoder:(id)a3
+- (HDReplaceObjectIdentifierOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"object_identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replacement_identifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"schema_identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"object_identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replacement_identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"schema_identifier"];
 
   v8 = [(HDReplaceObjectIdentifierOperation *)self initWithWithObjectIdentifier:v5 replacementIdentifier:v6 schemaIdentifier:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDReplaceObjectIdentifierOperation;
-  v4 = a3;
-  [(HDJournalableOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_objectIdentifier forKey:{@"object_identifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_replacementIdentifier forKey:@"replacement_identifier"];
-  [v4 encodeObject:self->_schemaIdentifier forKey:@"schema_identifier"];
+  coderCopy = coder;
+  [(HDJournalableOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_objectIdentifier forKey:{@"object_identifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_replacementIdentifier forKey:@"replacement_identifier"];
+  [coderCopy encodeObject:self->_schemaIdentifier forKey:@"schema_identifier"];
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface HKVerticalMarginView
-- (HKVerticalMarginView)initWithSubview:(id)a3 offsetOptions:(unint64_t)a4;
-- (double)_bottomOffsetWithController:(id)a3;
-- (double)_findTabBarHeightWithController:(id)a3;
-- (double)_topOffsetWithController:(id)a3;
+- (HKVerticalMarginView)initWithSubview:(id)subview offsetOptions:(unint64_t)options;
+- (double)_bottomOffsetWithController:(id)controller;
+- (double)_findTabBarHeightWithController:(id)controller;
+- (double)_topOffsetWithController:(id)controller;
 - (id)_findViewController;
 - (void)dealloc;
-- (void)keyboardWasShown:(id)a3;
+- (void)keyboardWasShown:(id)shown;
 - (void)layoutSubviews;
 @end
 
 @implementation HKVerticalMarginView
 
-- (HKVerticalMarginView)initWithSubview:(id)a3 offsetOptions:(unint64_t)a4
+- (HKVerticalMarginView)initWithSubview:(id)subview offsetOptions:(unint64_t)options
 {
-  v6 = a3;
+  subviewCopy = subview;
   v14.receiver = self;
   v14.super_class = HKVerticalMarginView;
   v7 = [(HKVerticalMarginView *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
   {
-    v7->_offsetOptions = a4;
+    v7->_offsetOptions = options;
     marginDelegate = v7->_marginDelegate;
     v7->_marginDelegate = 0;
 
     v8->_currentKeyboardHeight = 0.0;
-    v10 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(HKVerticalMarginView *)v8 setBackgroundColor:v10];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(HKVerticalMarginView *)v8 setBackgroundColor:secondarySystemBackgroundColor];
 
-    [(HKVerticalMarginView *)v8 addSubview:v6];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v8 selector:sel_keyboardWasShown_ name:*MEMORY[0x1E69DDF78] object:0];
+    [(HKVerticalMarginView *)v8 addSubview:subviewCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_keyboardWasShown_ name:*MEMORY[0x1E69DDF78] object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v8 selector:sel_keyboardWillBeHidden_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel_keyboardWillBeHidden_ name:*MEMORY[0x1E69DE078] object:0];
   }
 
   return v8;
@@ -41,11 +41,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
 
   v5.receiver = self;
   v5.super_class = HKVerticalMarginView;
@@ -57,25 +57,25 @@
   v17.receiver = self;
   v17.super_class = HKVerticalMarginView;
   [(HKVerticalMarginView *)&v17 layoutSubviews];
-  v3 = [(HKVerticalMarginView *)self subviews];
-  v4 = [v3 objectAtIndex:0];
+  subviews = [(HKVerticalMarginView *)self subviews];
+  v4 = [subviews objectAtIndex:0];
 
   [(HKVerticalMarginView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(HKVerticalMarginView *)self _findViewController];
-  [(HKVerticalMarginView *)self _topOffsetWithController:v13];
+  _findViewController = [(HKVerticalMarginView *)self _findViewController];
+  [(HKVerticalMarginView *)self _topOffsetWithController:_findViewController];
   v15 = v14;
-  [(HKVerticalMarginView *)self _bottomOffsetWithController:v13];
+  [(HKVerticalMarginView *)self _bottomOffsetWithController:_findViewController];
   [v4 setFrame:{v6, v8 + v15, v10, v12 - (v15 + v16)}];
 }
 
-- (void)keyboardWasShown:(id)a3
+- (void)keyboardWasShown:(id)shown
 {
-  v7 = [a3 userInfo];
-  v4 = [v7 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [shown userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v4 CGRectValue];
   v6 = v5;
 
@@ -83,18 +83,18 @@
   [(HKVerticalMarginView *)self setNeedsLayout];
 }
 
-- (double)_topOffsetWithController:(id)a3
+- (double)_topOffsetWithController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
+  controllerCopy = controller;
+  v5 = controllerCopy;
   offsetOptions = self->_offsetOptions;
   if (offsetOptions)
   {
-    v8 = [v4 view];
-    v9 = [v8 window];
-    v10 = [v9 windowScene];
-    v11 = [v10 statusBarManager];
-    [v11 statusBarFrame];
+    view = [controllerCopy view];
+    window = [view window];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v13 = v12;
 
     v7 = v13 + 0.0;
@@ -113,12 +113,12 @@
     }
   }
 
-  v14 = [v5 navigationController];
-  v15 = v14;
-  if (v14 && ([v14 isNavigationBarHidden] & 1) == 0)
+  navigationController = [v5 navigationController];
+  v15 = navigationController;
+  if (navigationController && ([navigationController isNavigationBarHidden] & 1) == 0)
   {
-    v16 = [v15 navigationBar];
-    [v16 frame];
+    navigationBar = [v15 navigationBar];
+    [navigationBar frame];
     v7 = v7 + v17;
   }
 
@@ -133,16 +133,16 @@ LABEL_9:
   return v7;
 }
 
-- (double)_bottomOffsetWithController:(id)a3
+- (double)_bottomOffsetWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   offsetOptions = self->_offsetOptions;
   if ((offsetOptions & 8) == 0 || (currentKeyboardHeight = self->_currentKeyboardHeight, currentKeyboardHeight <= 0.0))
   {
     currentKeyboardHeight = 0.0;
     if ((offsetOptions & 4) != 0)
     {
-      [(HKVerticalMarginView *)self _findTabBarHeightWithController:v4];
+      [(HKVerticalMarginView *)self _findTabBarHeightWithController:controllerCopy];
       currentKeyboardHeight = v7 + 0.0;
     }
   }
@@ -150,17 +150,17 @@ LABEL_9:
   return currentKeyboardHeight;
 }
 
-- (double)_findTabBarHeightWithController:(id)a3
+- (double)_findTabBarHeightWithController:(id)controller
 {
-  v3 = [a3 tabBarController];
-  v4 = v3;
-  if (v3)
+  tabBarController = [controller tabBarController];
+  v4 = tabBarController;
+  if (tabBarController)
   {
-    v5 = [v3 tabBar];
+    tabBar = [tabBarController tabBar];
     v6 = 0.0;
-    if (([v5 isHidden] & 1) == 0)
+    if (([tabBar isHidden] & 1) == 0)
     {
-      [v5 frame];
+      [tabBar frame];
       v6 = v7;
     }
   }
@@ -175,8 +175,8 @@ LABEL_9:
 
 - (id)_findViewController
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
@@ -186,21 +186,21 @@ LABEL_9:
         break;
       }
 
-      v3 = [(HKVerticalMarginView *)v2 nextResponder];
+      nextResponder = [(HKVerticalMarginView *)selfCopy nextResponder];
 
-      v2 = v3;
-      if (!v3)
+      selfCopy = nextResponder;
+      if (!nextResponder)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    selfCopy = selfCopy;
   }
 
 LABEL_6:
 
-  return v2;
+  return selfCopy;
 }
 
 @end

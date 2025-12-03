@@ -3,7 +3,7 @@
 - (void)configureTimeLabel;
 - (void)handleLocaleChange;
 - (void)layoutSubviews;
-- (void)setTime:(double)a3;
+- (void)setTime:(double)time;
 - (void)sizeLabelToFit;
 @end
 
@@ -46,11 +46,11 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v5 = [(MTATimeView *)&v11 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v6 = v5;
-  if (v5)
+  height = [(MTATimeView *)&v11 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v6 = height;
+  if (height)
   {
-    [(MTATimeView *)v5 setOpaque:1];
+    [(MTATimeView *)height setOpaque:1];
     if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) == 0)
     {
       v7 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -98,9 +98,9 @@
   [(MTATimeView *)self setNeedsLayout];
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  self->_timeValue = a3;
+  self->_timeValue = time;
   [(MTATimeView *)self showSubseconds];
   v4 = FormatTime();
   [(UILabel *)self->_timeLabel setText:v4];

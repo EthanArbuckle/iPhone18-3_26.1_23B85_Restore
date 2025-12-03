@@ -1,15 +1,15 @@
 @interface PHAMusicForYouCacheJob
-- (BOOL)shouldRunForLibrary:(id)a3 graphManager:(id)a4;
+- (BOOL)shouldRunForLibrary:(id)library graphManager:(id)manager;
 - (PHAMusicForYouCacheJob)init;
-- (void)runWithGraphManager:(id)a3 progressBlock:(id)a4 completionHandler:(id)a5;
+- (void)runWithGraphManager:(id)manager progressBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation PHAMusicForYouCacheJob
 
-- (BOOL)shouldRunForLibrary:(id)a3 graphManager:(id)a4
+- (BOOL)shouldRunForLibrary:(id)library graphManager:(id)manager
 {
-  v4 = a4;
-  if ([MEMORY[0x277D3BAF0] requiresGraph] && (objc_msgSend(v4, "isReady") & 1) == 0)
+  managerCopy = manager;
+  if ([MEMORY[0x277D3BAF0] requiresGraph] && (objc_msgSend(managerCopy, "isReady") & 1) == 0)
   {
     if (__PXLog_genericOnceToken != -1)
     {
@@ -41,21 +41,21 @@ uint64_t __59__PHAMusicForYouCacheJob_shouldRunForLibrary_graphManager___block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)runWithGraphManager:(id)a3 progressBlock:(id)a4 completionHandler:(id)a5
+- (void)runWithGraphManager:(id)manager progressBlock:(id)block completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  objc_initWeak(&location, a3);
+  blockCopy = block;
+  handlerCopy = handler;
+  objc_initWeak(&location, manager);
   runQueue = self->_runQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__PHAMusicForYouCacheJob_runWithGraphManager_progressBlock_completionHandler___block_invoke;
   v13[3] = &unk_2788B2D20;
   objc_copyWeak(&v16, &location);
-  v14 = v9;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = handlerCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = handlerCopy;
   dispatch_async(runQueue, v13);
 
   objc_destroyWeak(&v16);

@@ -1,44 +1,44 @@
 @interface WKScrollView
-- (BOOL)_setContentScrollInsetInternal:(UIEdgeInsets)a3;
+- (BOOL)_setContentScrollInsetInternal:(UIEdgeInsets)internal;
 - (BOOL)_usesHardTopScrollEdgeEffect;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isScrollEnabled;
 - (CGSize)_currentTopLeftRubberbandAmount;
 - (UIEdgeInsets)_systemContentInset;
-- (WKScrollView)initWithFrame:(CGRect)a3;
+- (WKScrollView)initWithFrame:(CGRect)frame;
 - (id).cxx_construct;
 - (id)_wk_bottomEdgeEffect;
 - (id)_wk_leftEdgeEffect;
 - (id)_wk_rightEdgeEffect;
 - (id)_wk_topEdgeEffect;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_adjustForAutomaticKeyboardInfo:(id)a3 animated:(BOOL)a4 lastAdjustment:(double *)a5;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_adjustForAutomaticKeyboardInfo:(id)info animated:(BOOL)animated lastAdjustment:(double *)adjustment;
 - (void)_didChangeTopScrollEdgeEffectStyle;
 - (void)_resetContentInset;
-- (void)_restoreContentOffsetWithRubberbandAmount:(CGSize)a3;
-- (void)_setBackgroundColorInternal:(id)a3;
-- (void)_setBouncesInternal:(BOOL)a3 vertical:(BOOL)a4;
-- (void)_setContentInsetAdjustmentBehaviorInternal:(int64_t)a3;
-- (void)_setContentScrollInset:(UIEdgeInsets)a3;
-- (void)_setContentSizePreservingContentOffsetDuringRubberband:(CGSize)a3;
-- (void)_setDecelerationRateInternal:(double)a3;
-- (void)_setIndicatorStyleInternal:(int64_t)a3;
-- (void)_setInternalTopPocketColor:(id)a3;
-- (void)_setPocketColor:(id)a3 forEdge:(unint64_t)a4;
+- (void)_restoreContentOffsetWithRubberbandAmount:(CGSize)amount;
+- (void)_setBackgroundColorInternal:(id)internal;
+- (void)_setBouncesInternal:(BOOL)internal vertical:(BOOL)vertical;
+- (void)_setContentInsetAdjustmentBehaviorInternal:(int64_t)internal;
+- (void)_setContentScrollInset:(UIEdgeInsets)inset;
+- (void)_setContentSizePreservingContentOffsetDuringRubberband:(CGSize)rubberband;
+- (void)_setDecelerationRateInternal:(double)internal;
+- (void)_setIndicatorStyleInternal:(int64_t)internal;
+- (void)_setInternalTopPocketColor:(id)color;
+- (void)_setPocketColor:(id)color forEdge:(unint64_t)edge;
 - (void)_updateBouncability;
 - (void)_updateContentScrollInset;
 - (void)_updateDelegate;
 - (void)_updateScrollability;
 - (void)_updateTopPocketColor;
 - (void)_updateZoomability;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentInsetAdjustmentBehavior:(int64_t)a3;
-- (void)setDecelerationRate:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setIndicatorStyle:(int64_t)a3;
-- (void)setInternalDelegate:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentInsetAdjustmentBehavior:(int64_t)behavior;
+- (void)setDecelerationRate:(double)rate;
+- (void)setDelegate:(id)delegate;
+- (void)setIndicatorStyle:(int64_t)style;
+- (void)setInternalDelegate:(id)delegate;
 @end
 
 @implementation WKScrollView
@@ -131,11 +131,11 @@ LABEL_7:
   }
 }
 
-- (WKScrollView)initWithFrame:(CGRect)a3
+- (WKScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = WKScrollView;
-  v3 = [(WKBaseScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WKBaseScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -156,16 +156,16 @@ LABEL_7:
   return v4;
 }
 
-- (void)setInternalDelegate:(id)a3
+- (void)setInternalDelegate:(id)delegate
 {
-  if (self->_internalDelegate != a3)
+  if (self->_internalDelegate != delegate)
   {
-    self->_internalDelegate = a3;
+    self->_internalDelegate = delegate;
     [(WKScrollView *)self _updateDelegate];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_externalDelegate.m_weakReference);
   v6 = WeakRetained;
@@ -173,15 +173,15 @@ LABEL_7:
   {
   }
 
-  if (v6 != a3)
+  if (v6 != delegate)
   {
-    objc_storeWeak(&self->_externalDelegate.m_weakReference, a3);
+    objc_storeWeak(&self->_externalDelegate.m_weakReference, delegate);
 
     [(WKScrollView *)self _updateDelegate];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -189,10 +189,10 @@ LABEL_7:
     return 0;
   }
 
-  return [a4 shouldDeferGestureRecognizer:a3];
+  return [gestureRecognizer shouldDeferGestureRecognizer:recognizer];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -200,12 +200,12 @@ LABEL_7:
     return 0;
   }
 
-  return [a3 shouldDeferGestureRecognizer:a4];
+  return [recognizer shouldDeferGestureRecognizer:gestureRecognizer];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  self->_backgroundColorSetByClient = a3 != 0;
+  self->_backgroundColorSetByClient = color != 0;
   v4.receiver = self;
   v4.super_class = WKScrollView;
   [(WKScrollView *)&v4 setBackgroundColor:?];
@@ -216,20 +216,20 @@ LABEL_7:
   }
 }
 
-- (void)_setBackgroundColorInternal:(id)a3
+- (void)_setBackgroundColorInternal:(id)internal
 {
   if (!self->_backgroundColorSetByClient)
   {
     v4.receiver = self;
     v4.super_class = WKScrollView;
-    [(WKScrollView *)&v4 setBackgroundColor:a3];
+    [(WKScrollView *)&v4 setBackgroundColor:internal];
     [(BEScrollViewDelegate *)self->_internalDelegate _resetCachedScrollViewBackgroundColor];
   }
 }
 
-- (void)setIndicatorStyle:(int64_t)a3
+- (void)setIndicatorStyle:(int64_t)style
 {
-  self->_indicatorStyleSetByClient = a3 != 0;
+  self->_indicatorStyleSetByClient = style != 0;
   v4.receiver = self;
   v4.super_class = WKScrollView;
   [(WKScrollView *)&v4 setIndicatorStyle:?];
@@ -239,39 +239,39 @@ LABEL_7:
   }
 }
 
-- (void)_setIndicatorStyleInternal:(int64_t)a3
+- (void)_setIndicatorStyleInternal:(int64_t)internal
 {
   if (!self->_indicatorStyleSetByClient)
   {
     v3.receiver = self;
     v3.super_class = WKScrollView;
-    [(WKScrollView *)&v3 setIndicatorStyle:a3];
+    [(WKScrollView *)&v3 setIndicatorStyle:internal];
   }
 }
 
-- (void)setDecelerationRate:(double)a3
+- (void)setDecelerationRate:(double)rate
 {
   self->_decelerationRateSetByClient = 1;
   v3.receiver = self;
   v3.super_class = WKScrollView;
-  [(WKScrollView *)&v3 setDecelerationRate:a3];
+  [(WKScrollView *)&v3 setDecelerationRate:rate];
 }
 
-- (void)_setDecelerationRateInternal:(double)a3
+- (void)_setDecelerationRateInternal:(double)internal
 {
   if (!self->_decelerationRateSetByClient)
   {
     v3.receiver = self;
     v3.super_class = WKScrollView;
-    [(WKScrollView *)&v3 setDecelerationRate:a3];
+    [(WKScrollView *)&v3 setDecelerationRate:internal];
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   v4.receiver = self;
   v4.super_class = WKScrollView;
-  [(WKScrollView *)&v4 setContentInset:a3.top, a3.left, a3.bottom, a3.right];
+  [(WKScrollView *)&v4 setContentInset:inset.top, inset.left, inset.bottom, inset.right];
   self->_contentInsetWasExternallyOverridden = 1;
   [(BEScrollViewDelegate *)self->_internalDelegate _scheduleVisibleContentRectUpdate];
 }
@@ -288,25 +288,25 @@ LABEL_7:
   [(BEScrollViewDelegate *)self->_internalDelegate _scheduleVisibleContentRectUpdate];
 }
 
-- (void)setContentInsetAdjustmentBehavior:(int64_t)a3
+- (void)setContentInsetAdjustmentBehavior:(int64_t)behavior
 {
   self->_contentInsetAdjustmentBehaviorWasExternallyOverridden = 1;
-  if ([(WKScrollView *)self contentInsetAdjustmentBehavior]!= a3)
+  if ([(WKScrollView *)self contentInsetAdjustmentBehavior]!= behavior)
   {
     v5.receiver = self;
     v5.super_class = WKScrollView;
-    [(WKScrollView *)&v5 setContentInsetAdjustmentBehavior:a3];
+    [(WKScrollView *)&v5 setContentInsetAdjustmentBehavior:behavior];
     [(BEScrollViewDelegate *)self->_internalDelegate _scheduleVisibleContentRectUpdate];
   }
 }
 
-- (void)_setContentInsetAdjustmentBehaviorInternal:(int64_t)a3
+- (void)_setContentInsetAdjustmentBehaviorInternal:(int64_t)internal
 {
-  if ([(WKScrollView *)self contentInsetAdjustmentBehavior]!= a3)
+  if ([(WKScrollView *)self contentInsetAdjustmentBehavior]!= internal)
   {
     v5.receiver = self;
     v5.super_class = WKScrollView;
-    [(WKScrollView *)&v5 setContentInsetAdjustmentBehavior:a3];
+    [(WKScrollView *)&v5 setContentInsetAdjustmentBehavior:internal];
   }
 }
 
@@ -355,10 +355,10 @@ LABEL_7:
   return result;
 }
 
-- (void)_restoreContentOffsetWithRubberbandAmount:(CGSize)a3
+- (void)_restoreContentOffsetWithRubberbandAmount:(CGSize)amount
 {
-  height = a3.height;
-  width = a3.width;
+  height = amount.height;
+  width = amount.width;
   [(WKScrollView *)self contentInset];
   v7 = v6;
   v9 = v8;
@@ -376,10 +376,10 @@ LABEL_7:
   [(WKScrollView *)self setContentOffset:v10, v11];
 }
 
-- (void)_setContentSizePreservingContentOffsetDuringRubberband:(CGSize)a3
+- (void)_setContentSizePreservingContentOffsetDuringRubberband:(CGSize)rubberband
 {
-  height = a3.height;
-  width = a3.width;
+  height = rubberband.height;
+  width = rubberband.width;
   [(WKScrollView *)self contentSize];
   v7 = v6;
   v9 = v8;
@@ -403,14 +403,14 @@ LABEL_7:
   }
 }
 
-- (void)_adjustForAutomaticKeyboardInfo:(id)a3 animated:(BOOL)a4 lastAdjustment:(double *)a5
+- (void)_adjustForAutomaticKeyboardInfo:(id)info animated:(BOOL)animated lastAdjustment:(double *)adjustment
 {
-  v6 = a4;
+  animatedCopy = animated;
   [objc_msgSend(MEMORY[0x1E69DCD68] "sharedInstance")];
   self->_keyboardBottomInsetAdjustment = v9;
   v10.receiver = self;
   v10.super_class = WKScrollView;
-  [(WKScrollView *)&v10 _adjustForAutomaticKeyboardInfo:a3 animated:v6 lastAdjustment:a5];
+  [(WKScrollView *)&v10 _adjustForAutomaticKeyboardInfo:info animated:animatedCopy lastAdjustment:adjustment];
 }
 
 - (BOOL)isScrollEnabled
@@ -436,10 +436,10 @@ LABEL_7:
   [(WKScrollView *)&v5 setScrollEnabled:v4];
 }
 
-- (void)_setBouncesInternal:(BOOL)a3 vertical:(BOOL)a4
+- (void)_setBouncesInternal:(BOOL)internal vertical:(BOOL)vertical
 {
-  self->_bouncesHorizontalInternal = a3;
-  self->_bouncesVerticalInternal = a4;
+  self->_bouncesHorizontalInternal = internal;
+  self->_bouncesVerticalInternal = vertical;
   [(WKScrollView *)self _updateBouncability];
 }
 
@@ -465,10 +465,10 @@ LABEL_7:
   [(WKScrollView *)&v5 setZoomEnabled:v4];
 }
 
-- (void)_setContentScrollInset:(UIEdgeInsets)a3
+- (void)_setContentScrollInset:(UIEdgeInsets)inset
 {
   engaged = self->_contentScrollInsetFromClient.__engaged_;
-  self->_contentScrollInsetFromClient.var0.__val_ = a3;
+  self->_contentScrollInsetFromClient.var0.__val_ = inset;
   if (!engaged)
   {
     self->_contentScrollInsetFromClient.__engaged_ = 1;
@@ -477,7 +477,7 @@ LABEL_7:
   [(WKScrollView *)self _updateContentScrollInset];
 }
 
-- (BOOL)_setContentScrollInsetInternal:(UIEdgeInsets)a3
+- (BOOL)_setContentScrollInsetInternal:(UIEdgeInsets)internal
 {
   if (self->_contentScrollInsetFromClient.__engaged_)
   {
@@ -487,27 +487,27 @@ LABEL_7:
   p_contentScrollInsetInternal = &self->_contentScrollInsetInternal;
   if (self->_contentScrollInsetInternal.__engaged_)
   {
-    v7.f64[0] = a3.top;
-    v7.f64[1] = a3.left;
-    v8.f64[0] = a3.bottom;
-    v8.f64[1] = a3.right;
+    v7.f64[0] = internal.top;
+    v7.f64[1] = internal.left;
+    v8.f64[0] = internal.bottom;
+    v8.f64[1] = internal.right;
     if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*p_contentScrollInsetInternal, v7), vceqq_f64(*&self->_contentScrollInsetInternal.var0.__val_.bottom, v8)))))
     {
       return 0;
     }
 
-    p_contentScrollInsetInternal->f64[0] = a3.top;
-    self->_contentScrollInsetInternal.var0.__val_.left = a3.left;
-    self->_contentScrollInsetInternal.var0.__val_.bottom = a3.bottom;
-    self->_contentScrollInsetInternal.var0.__val_.right = a3.right;
+    p_contentScrollInsetInternal->f64[0] = internal.top;
+    self->_contentScrollInsetInternal.var0.__val_.left = internal.left;
+    self->_contentScrollInsetInternal.var0.__val_.bottom = internal.bottom;
+    self->_contentScrollInsetInternal.var0.__val_.right = internal.right;
   }
 
   else
   {
-    p_contentScrollInsetInternal->f64[0] = a3.top;
-    self->_contentScrollInsetInternal.var0.__val_.left = a3.left;
-    self->_contentScrollInsetInternal.var0.__val_.bottom = a3.bottom;
-    self->_contentScrollInsetInternal.var0.__val_.right = a3.right;
+    p_contentScrollInsetInternal->f64[0] = internal.top;
+    self->_contentScrollInsetInternal.var0.__val_.left = internal.left;
+    self->_contentScrollInsetInternal.var0.__val_.bottom = internal.bottom;
+    self->_contentScrollInsetInternal.var0.__val_.right = internal.right;
     self->_contentScrollInsetInternal.__engaged_ = 1;
   }
 
@@ -538,18 +538,18 @@ LABEL_7:
     right = self->_contentScrollInsetInternal.var0.__val_.right;
     top = self->_contentScrollInsetInternal.var0.__val_.top;
     left = self->_contentScrollInsetInternal.var0.__val_.left;
-    v6 = &v7;
-    v7 = self;
+    v6 = &selfCopy;
+    selfCopy = self;
   }
 
   v6->super_class = WKScrollView;
-  [(objc_super *)v6 _setContentScrollInset:top, left, bottom, right, v7];
+  [(objc_super *)v6 _setContentScrollInset:top, left, bottom, right, selfCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v8 = *(self->_internalDelegate + 82);
   if (v8)
   {
@@ -564,7 +564,7 @@ LABEL_7:
 
   v11.receiver = self;
   v11.super_class = WKScrollView;
-  v9 = [(WKScrollView *)&v11 hitTest:a4 withEvent:x, y];
+  v9 = [(WKScrollView *)&v11 hitTest:event withEvent:x, y];
   WTF::ScopeExit<WTF::Function<void ()(void)>>::~ScopeExit(v12);
   return v9;
 }
@@ -581,14 +581,14 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = WKScrollView;
-    v6 = [(WKScrollView *)&v9 topEdgeEffect];
-    if (!v6)
+    topEdgeEffect = [(WKScrollView *)&v9 topEdgeEffect];
+    if (!topEdgeEffect)
     {
       return 0;
     }
 
-    v7 = v6;
-    v8 = v6;
+    v7 = topEdgeEffect;
+    v8 = topEdgeEffect;
     m_ptr = [[WKUIScrollEdgeEffect alloc] initWithScrollView:self scrollEdgeEffect:v7 boxSide:0];
     WebCore::RectEdges<WTF::RetainPtr<WKUIScrollEdgeEffect>>::setAt(&self->_edgeEffectWrappers, 0, m_ptr);
 
@@ -614,14 +614,14 @@ LABEL_7:
   {
     v10.receiver = self;
     v10.super_class = WKScrollView;
-    v7 = [(WKScrollView *)&v10 leftEdgeEffect];
-    if (!v7)
+    leftEdgeEffect = [(WKScrollView *)&v10 leftEdgeEffect];
+    if (!leftEdgeEffect)
     {
       return 0;
     }
 
-    v8 = v7;
-    v9 = v7;
+    v8 = leftEdgeEffect;
+    v9 = leftEdgeEffect;
     m_ptr = [[WKUIScrollEdgeEffect alloc] initWithScrollView:self scrollEdgeEffect:v8 boxSide:3];
     WebCore::RectEdges<WTF::RetainPtr<WKUIScrollEdgeEffect>>::setAt(p_edgeEffectWrappers, 3u, m_ptr);
 
@@ -647,14 +647,14 @@ LABEL_7:
   {
     v10.receiver = self;
     v10.super_class = WKScrollView;
-    v7 = [(WKScrollView *)&v10 rightEdgeEffect];
-    if (!v7)
+    rightEdgeEffect = [(WKScrollView *)&v10 rightEdgeEffect];
+    if (!rightEdgeEffect)
     {
       return 0;
     }
 
-    v8 = v7;
-    v9 = v7;
+    v8 = rightEdgeEffect;
+    v9 = rightEdgeEffect;
     m_ptr = [[WKUIScrollEdgeEffect alloc] initWithScrollView:self scrollEdgeEffect:v8 boxSide:1];
     WebCore::RectEdges<WTF::RetainPtr<WKUIScrollEdgeEffect>>::setAt(p_edgeEffectWrappers, 1u, m_ptr);
 
@@ -680,14 +680,14 @@ LABEL_7:
   {
     v10.receiver = self;
     v10.super_class = WKScrollView;
-    v7 = [(WKScrollView *)&v10 bottomEdgeEffect];
-    if (!v7)
+    bottomEdgeEffect = [(WKScrollView *)&v10 bottomEdgeEffect];
+    if (!bottomEdgeEffect)
     {
       return 0;
     }
 
-    v8 = v7;
-    v9 = v7;
+    v8 = bottomEdgeEffect;
+    v9 = bottomEdgeEffect;
     m_ptr = [[WKUIScrollEdgeEffect alloc] initWithScrollView:self scrollEdgeEffect:v8 boxSide:2];
     WebCore::RectEdges<WTF::RetainPtr<WKUIScrollEdgeEffect>>::setAt(p_edgeEffectWrappers, 2u, m_ptr);
 
@@ -700,15 +700,15 @@ LABEL_7:
   return m_ptr;
 }
 
-- (void)_setInternalTopPocketColor:(id)a3
+- (void)_setInternalTopPocketColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v5 = a3;
+    colorCopy = color;
   }
 
   m_ptr = self->_topPocketColorSetInternally.m_ptr;
-  self->_topPocketColorSetInternally.m_ptr = a3;
+  self->_topPocketColorSetInternally.m_ptr = color;
   if (m_ptr)
   {
   }
@@ -716,17 +716,17 @@ LABEL_7:
   [(WKScrollView *)self _updateTopPocketColor];
 }
 
-- (void)_setPocketColor:(id)a3 forEdge:(unint64_t)a4
+- (void)_setPocketColor:(id)color forEdge:(unint64_t)edge
 {
-  if (a4 == 1)
+  if (edge == 1)
   {
-    if (a3)
+    if (color)
     {
-      v6 = a3;
+      colorCopy = color;
     }
 
     m_ptr = self->_topPocketColorSetByClient.m_ptr;
-    self->_topPocketColorSetByClient.m_ptr = a3;
+    self->_topPocketColorSetByClient.m_ptr = color;
     if (m_ptr)
     {
     }
@@ -738,7 +738,7 @@ LABEL_7:
   {
     v8.receiver = self;
     v8.super_class = WKScrollView;
-    [(WKScrollView *)&v8 _setPocketColor:a3 forEdge:?];
+    [(WKScrollView *)&v8 _setPocketColor:color forEdge:?];
   }
 }
 
@@ -766,9 +766,9 @@ LABEL_7:
 
 - (BOOL)_usesHardTopScrollEdgeEffect
 {
-  v2 = [(WKScrollView *)self _wk_topEdgeEffect];
+  _wk_topEdgeEffect = [(WKScrollView *)self _wk_topEdgeEffect];
 
-  return [v2 usesHardStyle];
+  return [_wk_topEdgeEffect usesHardStyle];
 }
 
 - (void)_didChangeTopScrollEdgeEffectStyle

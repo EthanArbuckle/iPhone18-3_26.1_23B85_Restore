@@ -1,13 +1,13 @@
 @interface VNHumanBodyPose3DSpecifier
-+ (id)_stringRepresentationForRequestRevision:(unint64_t)a3 abpkJoint:(id)a4 error:(id *)a5;
++ (id)_stringRepresentationForRequestRevision:(unint64_t)revision abpkJoint:(id)joint error:(id *)error;
 + (id)supportedHumanBodyPose3DKeypointsRev1;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)inputSize;
-- (VNHumanBodyPose3DSpecifier)initWithCoder:(id)a3;
-- (VNHumanBodyPose3DSpecifier)initWithHumanBody3DOutput:(id)a3 originatingRequestSpecifier:(id)a4;
+- (VNHumanBodyPose3DSpecifier)initWithCoder:(id)coder;
+- (VNHumanBodyPose3DSpecifier)initWithHumanBody3DOutput:(id)output originatingRequestSpecifier:(id)specifier;
 - (id)availableGroupKeys;
 - (id)pointKeyGroupLabelsMapping;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNHumanBodyPose3DSpecifier
@@ -21,48 +21,48 @@
   return result;
 }
 
-- (VNHumanBodyPose3DSpecifier)initWithCoder:(id)a3
+- (VNHumanBodyPose3DSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = VNHumanBodyPose3DSpecifier;
-  v5 = [(VNRecognizedPoints3DSpecifier *)&v30 initWithCoder:v4];
+  v5 = [(VNRecognizedPoints3DSpecifier *)&v30 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"OrderedHuman3DKeypoints"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"OrderedHuman3DKeypoints"];
     orderedHumanBodyPose3DKeypoints = v5->_orderedHumanBodyPose3DKeypoints;
     v5->_orderedHumanBodyPose3DKeypoints = v9;
 
     if (v5->_orderedHumanBodyPose3DKeypoints)
     {
-      [v4 vn_decode3x3MatrixForKey:@"CameraIntrinsics"];
+      [coderCopy vn_decode3x3MatrixForKey:@"CameraIntrinsics"];
       *v5->_anon_80 = v11;
       *&v5->_anon_80[8] = v12;
       *&v5->_anon_80[16] = v13;
       *&v5->_anon_80[24] = v14;
       *&v5->_anon_80[40] = v15;
       *&v5->_anon_80[32] = v16;
-      v17 = [v4 error];
+      error = [coderCopy error];
 
-      if (!v17)
+      if (!error)
       {
-        [v4 vn_decode4x4MatrixForKey:@"CameraTransform"];
+        [coderCopy vn_decode4x4MatrixForKey:@"CameraTransform"];
         *v5->_anon_20 = v18;
         *&v5->_anon_20[16] = v19;
         *&v5->_anon_20[32] = v20;
         *&v5->_anon_20[48] = v21;
-        v22 = [v4 error];
+        error2 = [coderCopy error];
 
-        if (!v22)
+        if (!error2)
         {
-          [v4 decodeFloatForKey:@"HeightEstimatedScale"];
+          [coderCopy decodeFloatForKey:@"HeightEstimatedScale"];
           v5->_heightEstimatedScale = v23;
-          [v4 decodeFloatForKey:@"HumanHeight"];
+          [coderCopy decodeFloatForKey:@"HumanHeight"];
           v5->_humanHeight = v24;
-          [v4 vn_decodeSizeForKey:@"InputSize"];
+          [coderCopy vn_decodeSizeForKey:@"InputSize"];
           v5->_inputSize.width = v25;
           v5->_inputSize.height = v26;
           v27 = v5;
@@ -76,7 +76,7 @@ LABEL_9:
     else
     {
       v28 = [VNError errorForDataUnavailableWithLocalizedDescription:@"ordered model human keypoints were not available"];
-      [v4 failWithError:v28];
+      [coderCopy failWithError:v28];
     }
 
     v27 = 0;
@@ -89,20 +89,20 @@ LABEL_10:
   return v27;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = VNHumanBodyPose3DSpecifier;
-  [(VNRecognizedPoints3DSpecifier *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_orderedHumanBodyPose3DKeypoints forKey:@"OrderedHuman3DKeypoints"];
-  [v4 vn_encode3x3Matrix:@"CameraIntrinsics" forKey:{*self->_anon_80, *&self->_anon_80[16], *&self->_anon_80[32]}];
-  [v4 vn_encode4x4Matrix:@"CameraTransform" forKey:{*self->_anon_20, *&self->_anon_20[16], *&self->_anon_20[32], *&self->_anon_20[48]}];
+  [(VNRecognizedPoints3DSpecifier *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_orderedHumanBodyPose3DKeypoints forKey:@"OrderedHuman3DKeypoints"];
+  [coderCopy vn_encode3x3Matrix:@"CameraIntrinsics" forKey:{*self->_anon_80, *&self->_anon_80[16], *&self->_anon_80[32]}];
+  [coderCopy vn_encode4x4Matrix:@"CameraTransform" forKey:{*self->_anon_20, *&self->_anon_20[16], *&self->_anon_20[32], *&self->_anon_20[48]}];
   *&v5 = self->_heightEstimatedScale;
-  [v4 encodeFloat:@"HeightEstimatedScale" forKey:v5];
+  [coderCopy encodeFloat:@"HeightEstimatedScale" forKey:v5];
   *&v6 = self->_humanHeight;
-  [v4 encodeFloat:@"HumanHeight" forKey:v6];
-  [v4 vn_encodeSize:@"InputSize" forKey:{self->_inputSize.width, self->_inputSize.height}];
+  [coderCopy encodeFloat:@"HumanHeight" forKey:v6];
+  [coderCopy vn_encodeSize:@"InputSize" forKey:{self->_inputSize.width, self->_inputSize.height}];
 }
 
 - (id)pointKeyGroupLabelsMapping
@@ -168,10 +168,10 @@ void __48__VNHumanBodyPose3DSpecifier_availableGroupKeys__block_invoke()
   [VNHumanBodyPose3DSpecifier availableGroupKeys]::groupKeys = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -180,9 +180,9 @@ void __48__VNHumanBodyPose3DSpecifier_availableGroupKeys__block_invoke()
   {
     v11.receiver = self;
     v11.super_class = VNHumanBodyPose3DSpecifier;
-    if ([(VNRecognizedPoints3DSpecifier *)&v11 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNRecognizedPoints3DSpecifier *)&v11 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       v7 = self->_inputSize.width == v5->_inputSize.width && self->_inputSize.height == v5->_inputSize.height;
       v9 = v7 && self->_heightEstimatedScale == v5->_heightEstimatedScale && self->_humanHeight == v5->_humanHeight && (v8 = vandq_s8(vandq_s8(vceqq_f32(*&self->_anon_80[16], *&v5->_anon_80[16]), vceqq_f32(*self->_anon_80, *v5->_anon_80)), vceqq_f32(*&self->_anon_80[32], *&v5->_anon_80[32])), v8.i32[3] = v8.i32[2], (vminvq_u32(v8) & 0x80000000) != 0) && (vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(*&self->_anon_20[16], *&v5->_anon_20[16]), vceqq_f32(*self->_anon_20, *v5->_anon_20)), vandq_s8(vceqq_f32(*&self->_anon_20[32], *&v5->_anon_20[32]), vceqq_f32(*&self->_anon_20[48], *&v5->_anon_20[48])))) & 0x80000000) != 0 && [(NSArray *)self->_orderedHumanBodyPose3DKeypoints isEqualToArray:v5->_orderedHumanBodyPose3DKeypoints];
@@ -197,62 +197,62 @@ void __48__VNHumanBodyPose3DSpecifier_availableGroupKeys__block_invoke()
   return v9;
 }
 
-- (VNHumanBodyPose3DSpecifier)initWithHumanBody3DOutput:(id)a3 originatingRequestSpecifier:(id)a4
+- (VNHumanBodyPose3DSpecifier)initWithHumanBody3DOutput:(id)output originatingRequestSpecifier:(id)specifier
 {
-  v5 = a3;
-  v73 = a4;
-  v76 = v5;
-  v6 = [v5 liftedSkeleton];
-  v86 = v6;
-  v7 = [v6 skeletonDefinition];
-  v8 = [v7 jointCount];
+  outputCopy = output;
+  specifierCopy = specifier;
+  v76 = outputCopy;
+  liftedSkeleton = [outputCopy liftedSkeleton];
+  v86 = liftedSkeleton;
+  skeletonDefinition = [liftedSkeleton skeletonDefinition];
+  jointCount = [skeletonDefinition jointCount];
 
-  v83 = [v73 requestRevision];
-  v75 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v8];
-  v74 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
-  if (v8)
+  requestRevision = [specifierCopy requestRevision];
+  v75 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:jointCount];
+  v74 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:jointCount];
+  if (jointCount)
   {
     v9 = 0;
     v10 = 0;
     v11 = 0;
     while (1)
     {
-      v12 = [v6 modelPoses];
-      v81 = *(v12 + v9 + 16);
-      v82 = *(v12 + v9);
-      v79 = *(v12 + v9 + 48);
-      v80 = *(v12 + v9 + 32);
-      v13 = [v6 localPoses];
-      v77 = *(v13 + v10);
-      v78 = *(v13 + v10 + 16);
-      v14 = [v6 skeletonDefinition];
-      v85 = [v14 jointName:v11];
+      modelPoses = [liftedSkeleton modelPoses];
+      v81 = *(modelPoses + v9 + 16);
+      v82 = *(modelPoses + v9);
+      v79 = *(modelPoses + v9 + 48);
+      v80 = *(modelPoses + v9 + 32);
+      localPoses = [liftedSkeleton localPoses];
+      v77 = *(localPoses + v10);
+      v78 = *(localPoses + v10 + 16);
+      skeletonDefinition2 = [liftedSkeleton skeletonDefinition];
+      v85 = [skeletonDefinition2 jointName:v11];
 
       v15 = objc_opt_class();
       v89[0] = 0;
-      v16 = [v15 _stringRepresentationForRequestRevision:v83 abpkJoint:v85 error:v89];
+      v16 = [v15 _stringRepresentationForRequestRevision:requestRevision abpkJoint:v85 error:v89];
       v17 = v89[0];
       v18 = v17;
       if (!v16)
       {
-        v53 = [v17 localizedDescription];
-        [VNError VNAssert:0 log:v53];
+        localizedDescription = [v17 localizedDescription];
+        [VNError VNAssert:0 log:localizedDescription];
 
         v50 = 0;
         goto LABEL_17;
       }
 
-      v19 = [v86 skeletonDefinition];
-      v20 = [v19 parentJoint:v11];
+      skeletonDefinition3 = [v86 skeletonDefinition];
+      v20 = [skeletonDefinition3 parentJoint:v11];
 
-      v21 = [v86 skeletonDefinition];
-      v22 = v21;
+      skeletonDefinition4 = [v86 skeletonDefinition];
+      v22 = skeletonDefinition4;
       v23 = v20 >= 0 ? v20 : v11;
-      v24 = [v21 jointName:v23];
+      v24 = [skeletonDefinition4 jointName:v23];
 
       v25 = objc_opt_class();
       v88 = v18;
-      v26 = [v25 _stringRepresentationForRequestRevision:v83 abpkJoint:v24 error:&v88];
+      v26 = [v25 _stringRepresentationForRequestRevision:requestRevision abpkJoint:v24 error:&v88];
       v27 = v88;
 
       if (v26)
@@ -288,15 +288,15 @@ void __48__VNHumanBodyPose3DSpecifier_availableGroupKeys__block_invoke()
           FMLS            S0, S3, V19.S[1]
         }
 
-        v49 = [(VNHumanBodyRecognizedPoint3D *)v28 initWithModelPosition:v16 localPosition:v26 jointName:*&v82 parentJoint:*&v81, *&v80, *&v79, v41, v45, COERCE_DOUBLE(__PAIR64__(_S6 + _S6, (v40 + (v77.f32[2] * v77.f32[0])) + (v40 + (v77.f32[2] * v77.f32[0])))), *&v78];
-        [v75 setObject:v49 forKey:v16];
-        [v74 addObject:v49];
+        localizedDescription2 = [(VNHumanBodyRecognizedPoint3D *)v28 initWithModelPosition:v16 localPosition:v26 jointName:*&v82 parentJoint:*&v81, *&v80, *&v79, v41, v45, COERCE_DOUBLE(__PAIR64__(_S6 + _S6, (v40 + (v77.f32[2] * v77.f32[0])) + (v40 + (v77.f32[2] * v77.f32[0])))), *&v78];
+        [v75 setObject:localizedDescription2 forKey:v16];
+        [v74 addObject:localizedDescription2];
       }
 
       else
       {
-        v49 = [v27 localizedDescription];
-        [VNError VNAssert:0 log:v49];
+        localizedDescription2 = [v27 localizedDescription];
+        [VNError VNAssert:0 log:localizedDescription2];
       }
 
       if (!v26)
@@ -307,29 +307,29 @@ void __48__VNHumanBodyPose3DSpecifier_availableGroupKeys__block_invoke()
       ++v11;
       v10 += 32;
       v9 += 64;
-      v5 = v76;
-      v6 = v86;
-      if (v8 == v11)
+      outputCopy = v76;
+      liftedSkeleton = v86;
+      if (jointCount == v11)
       {
         goto LABEL_12;
       }
     }
 
     v50 = 0;
-    v5 = v76;
+    outputCopy = v76;
 LABEL_17:
-    v6 = v86;
-    v54 = self;
+    liftedSkeleton = v86;
+    selfCopy = self;
     goto LABEL_20;
   }
 
 LABEL_12:
   v87.receiver = self;
   v87.super_class = VNHumanBodyPose3DSpecifier;
-  v50 = [(VNRecognizedPoints3DSpecifier *)&v87 initWithOriginatingRequestSpecifier:v73 allRecognizedPoints:v75];
+  v50 = [(VNRecognizedPoints3DSpecifier *)&v87 initWithOriginatingRequestSpecifier:specifierCopy allRecognizedPoints:v75];
   if (v50)
   {
-    [v6 estimatedScale];
+    [liftedSkeleton estimatedScale];
     *(v50 + 25) = v51;
     if (v51 == -1.0)
     {
@@ -338,32 +338,32 @@ LABEL_12:
 
     else
     {
-      [v6 computeHeight];
+      [liftedSkeleton computeHeight];
     }
 
     *(v50 + 24) = v52;
-    [v6 cameraRootTransform];
+    [liftedSkeleton cameraRootTransform];
     *(v50 + 2) = v55;
     *(v50 + 3) = v56;
     *(v50 + 4) = v57;
     *(v50 + 5) = v58;
-    [v6 renderingCameraRootTransform];
+    [liftedSkeleton renderingCameraRootTransform];
     *(v50 + 11) = v59;
     *(v50 + 12) = v60;
     *(v50 + 13) = v61;
     *(v50 + 14) = v62;
-    [v5 cameraIntrinsics];
+    [outputCopy cameraIntrinsics];
     *(v50 + 16) = v63;
     *(v50 + 34) = v64;
     *(v50 + 18) = v65;
     *(v50 + 38) = v66;
     *(v50 + 42) = v67;
     *(v50 + 20) = v68;
-    [v5 inputSize];
+    [outputCopy inputSize];
     *(v50 + 13) = v69;
     *(v50 + 14) = v70;
     v71 = [v74 copy];
-    v54 = *(v50 + 3);
+    selfCopy = *(v50 + 3);
     *(v50 + 3) = v71;
 LABEL_20:
   }
@@ -371,19 +371,19 @@ LABEL_20:
   return v50;
 }
 
-+ (id)_stringRepresentationForRequestRevision:(unint64_t)a3 abpkJoint:(id)a4 error:(id *)a5
++ (id)_stringRepresentationForRequestRevision:(unint64_t)revision abpkJoint:(id)joint error:(id *)error
 {
-  v7 = a4;
-  if (a3 == 1)
+  jointCopy = joint;
+  if (revision == 1)
   {
-    v8 = [objc_opt_class() supportedHumanBodyPose3DKeypointsRev1];
-    v9 = [v8 objectForKey:v7];
+    supportedHumanBodyPose3DKeypointsRev1 = [objc_opt_class() supportedHumanBodyPose3DKeypointsRev1];
+    v9 = [supportedHumanBodyPose3DKeypointsRev1 objectForKey:jointCopy];
   }
 
-  else if (a5)
+  else if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequestClass:objc_opt_class()];
-    *a5 = v9 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequestClass:objc_opt_class()];
+    *error = v9 = 0;
   }
 
   else

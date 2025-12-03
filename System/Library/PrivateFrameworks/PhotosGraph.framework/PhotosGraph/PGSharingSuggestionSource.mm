@@ -1,30 +1,30 @@
 @interface PGSharingSuggestionSource
 - (id)description;
 - (id)sourceDescription;
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
-- (id)suggestionResultWithPerson:(id)a3 weight:(double)a4;
-- (id)suggestionResultsWithPersons:(id)a3;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
+- (id)suggestionResultWithPerson:(id)person weight:(double)weight;
+- (id)suggestionResultsWithPersons:(id)persons;
 @end
 
 @implementation PGSharingSuggestionSource
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  inputCopy = input;
+  optionsCopy = options;
   abort();
 }
 
-- (id)suggestionResultsWithPersons:(id)a3
+- (id)suggestionResultsWithPersons:(id)persons
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  personsCopy = persons;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = personsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -54,14 +54,14 @@
   return v5;
 }
 
-- (id)suggestionResultWithPerson:(id)a3 weight:(double)a4
+- (id)suggestionResultWithPerson:(id)person weight:(double)weight
 {
-  v6 = a3;
+  personCopy = person;
   v7 = [PGSharingSuggestionResult alloc];
   [(PGSharingSuggestionSource *)self weight];
   v9 = v8;
-  v10 = [(PGSharingSuggestionSource *)self name];
-  v11 = [(PGSharingSuggestionResult *)v7 initWithPerson:v6 weight:v10 sourceWeight:a4 sourceName:v9];
+  name = [(PGSharingSuggestionSource *)self name];
+  v11 = [(PGSharingSuggestionResult *)v7 initWithPerson:personCopy weight:name sourceWeight:weight sourceName:v9];
 
   return v11;
 }
@@ -69,9 +69,9 @@
 - (id)sourceDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PGSharingSuggestionSource *)self name];
+  name = [(PGSharingSuggestionSource *)self name];
   [(PGSharingSuggestionSource *)self weight];
-  v6 = [v3 stringWithFormat:@"%@ (weight %.2f)", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ (weight %.2f)", name, v5];
 
   return v6;
 }
@@ -82,9 +82,9 @@
   v9.receiver = self;
   v9.super_class = PGSharingSuggestionSource;
   v4 = [(PGSharingSuggestionSource *)&v9 description];
-  v5 = [(PGSharingSuggestionSource *)self name];
+  name = [(PGSharingSuggestionSource *)self name];
   [(PGSharingSuggestionSource *)self weight];
-  v7 = [v3 stringWithFormat:@"%@ - name:%@, weight:%.2f", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@ - name:%@, weight:%.2f", v4, name, v6];
 
   return v7;
 }

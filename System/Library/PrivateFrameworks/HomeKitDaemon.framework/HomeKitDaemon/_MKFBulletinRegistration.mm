@@ -1,13 +1,13 @@
 @interface _MKFBulletinRegistration
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)context;
 - (MKFBulletinRegistrationDatabaseID)databaseID;
 - (MKFHome)home;
 - (NSArray)conditions;
-- (id)createConditionsRelationOfType:(id)a3 modelID:(id)a4;
-- (id)materializeOrCreateConditionsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
-- (void)residentSyncContextualizeConditions:(id)a3 userContext:(id)a4;
+- (id)createConditionsRelationOfType:(id)type modelID:(id)d;
+- (id)materializeOrCreateConditionsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
+- (void)residentSyncContextualizeConditions:(id)conditions userContext:(id)context;
 @end
 
 @implementation _MKFBulletinRegistration
@@ -24,9 +24,9 @@
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -38,20 +38,20 @@
   objc_exception_throw(v10);
 }
 
-- (id)createConditionsRelationOfType:(id)a3 modelID:(id)a4
+- (id)createConditionsRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"conditions_" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"conditions_" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateConditionsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateConditionsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"conditions_" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"conditions_" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
@@ -59,17 +59,17 @@
 - (NSArray)conditions
 {
   v2 = [(_MKFBulletinRegistration *)self valueForKey:@"conditions_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFHome)home
 {
-  v2 = [(_MKFBulletinRegistration *)self user];
-  v3 = [v2 home];
+  user = [(_MKFBulletinRegistration *)self user];
+  home = [user home];
 
-  return v3;
+  return home;
 }
 
 - (MKFBulletinRegistrationDatabaseID)databaseID
@@ -79,43 +79,43 @@
   return v2;
 }
 
-- (void)residentSyncContextualizeConditions:(id)a3 userContext:(id)a4
+- (void)residentSyncContextualizeConditions:(id)conditions userContext:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = v7[2];
+  conditionsCopy = conditions;
+  contextCopy = context;
+  v8 = contextCopy;
+  v9 = contextCopy[2];
   if (!v9)
   {
-    v10 = [v7 targetDeviceAddress];
+    targetDeviceAddress = [contextCopy targetDeviceAddress];
 
-    if (v10)
+    if (targetDeviceAddress)
     {
       v11 = +[_MKFBulletinRegistration fetchRequest];
       [v11 setResultType:1];
-      v12 = [v8 targetUser];
-      v13 = [v12 isRestrictedGuest];
+      targetUser = [v8 targetUser];
+      isRestrictedGuest = [targetUser isRestrictedGuest];
 
       v14 = MEMORY[0x277CCAC30];
-      v15 = [v8 targetUser];
-      v16 = [v8 targetDeviceAddress];
-      v17 = [v16 idsIdentifier];
-      v18 = v17;
+      targetUser2 = [v8 targetUser];
+      targetDeviceAddress2 = [v8 targetDeviceAddress];
+      idsIdentifier = [targetDeviceAddress2 idsIdentifier];
+      v18 = idsIdentifier;
       v19 = @"user";
-      if (v13)
+      if (isRestrictedGuest)
       {
         v19 = @"guest";
       }
 
-      v20 = [v14 predicateWithFormat:@"(%K == %@) && (%K == %@)", v19, v15, @"deviceIdsIdentifier", v17];
+      v20 = [v14 predicateWithFormat:@"(%K == %@) && (%K == %@)", v19, targetUser2, @"deviceIdsIdentifier", idsIdentifier];
       [v11 setPredicate:v20];
 
       v41 = 0;
       v21 = [v11 execute:&v41];
       v22 = v41;
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       v26 = v25;
       if (v21)
@@ -124,13 +124,13 @@
         {
           HMFGetLogIdentifier();
           v27 = v40 = v22;
-          v28 = [v8 targetDeviceAddress];
+          targetDeviceAddress3 = [v8 targetDeviceAddress];
           *buf = 138543874;
           v43 = v27;
           v44 = 2114;
           v45 = v21;
           v46 = 2112;
-          v47 = v28;
+          v47 = targetDeviceAddress3;
           _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_DEBUG, "%{public}@Setting context->_relevantBulletinRegistrations to: %{public}@ for targetDeviceAddress: %@", buf, 0x20u);
 
           v22 = v40;
@@ -163,7 +163,7 @@
     else
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = self;
+      selfCopy2 = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
@@ -182,25 +182,25 @@
     v9 = v8[2];
   }
 
-  v37 = [(_MKFBulletinRegistration *)self objectID];
-  v38 = [v9 containsObject:v37];
+  objectID = [(_MKFBulletinRegistration *)self objectID];
+  v38 = [v9 containsObject:objectID];
 
   if (v38)
   {
-    [v6 addCondition:@"deviceIsTargetDevice"];
+    [conditionsCopy addCondition:@"deviceIsTargetDevice"];
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)a3
+- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = selfCopy;
   }
 
   else
@@ -212,14 +212,14 @@
 
   if (v7)
   {
-    v8 = [(_MKFBulletinRegistration *)v7 characteristic];
-    v9 = [v8 service];
-    v10 = [v9 accessory];
+    characteristic = [(_MKFBulletinRegistration *)v7 characteristic];
+    service = [characteristic service];
+    accessory = [service accessory];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = accessory;
     }
 
     else
@@ -231,7 +231,7 @@
 
     if (v12)
     {
-      v13 = [v12 shouldIncludeForRestrictedGuestWithContext:v4];
+      v13 = [v12 shouldIncludeForRestrictedGuestWithContext:contextCopy];
     }
 
     else

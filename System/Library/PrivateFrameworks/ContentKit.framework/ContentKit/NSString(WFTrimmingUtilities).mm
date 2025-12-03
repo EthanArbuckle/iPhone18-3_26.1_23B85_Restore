@@ -12,16 +12,16 @@
 
 - (id)wf_stringByReplacingNewlinesWithSpaces
 {
-  v2 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v3 = [a1 wf_stringByReplacingCharactersInSet:v2 withString:@" "];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v3 = [self wf_stringByReplacingCharactersInSet:newlineCharacterSet withString:@" "];
 
   return v3;
 }
 
 - (uint64_t)wf_stringContainsNewlineCharacters
 {
-  v2 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v3 = [a1 wf_stringContainsCharacterInSet:v2];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v3 = [self wf_stringContainsCharacterInSet:newlineCharacterSet];
 
   return v3;
 }
@@ -29,7 +29,7 @@
 - (id)wf_stringByReplacingCharactersInSet:()WFTrimmingUtilities withString:
 {
   v6 = a4;
-  v7 = [a1 componentsSeparatedByCharactersInSet:a3];
+  v7 = [self componentsSeparatedByCharactersInSet:a3];
   v8 = [v7 if_objectsPassingTest:&__block_literal_global_12721];
   v9 = [v8 componentsJoinedByString:v6];
 
@@ -38,24 +38,24 @@
 
 - (id)wf_stringByTrimmingTrailingWhitespaceAndNewlineCharacters
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 wf_stringByTrimmingTrailingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self wf_stringByTrimmingTrailingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
 
 - (id)wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 wf_stringByTrimmingLeadingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self wf_stringByTrimmingLeadingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
 
 - (__CFString)wf_stringByTrimmingTrailingCharactersInSet:()WFTrimmingUtilities
 {
-  v4 = [a3 invertedSet];
-  v5 = [a1 rangeOfCharacterFromSet:v4 options:4];
+  invertedSet = [a3 invertedSet];
+  v5 = [self rangeOfCharacterFromSet:invertedSet options:4];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -64,7 +64,7 @@
 
   else
   {
-    v6 = [a1 substringToIndex:v5 + 1];
+    v6 = [self substringToIndex:v5 + 1];
   }
 
   return v6;
@@ -72,8 +72,8 @@
 
 - (__CFString)wf_stringByTrimmingLeadingCharactersInSet:()WFTrimmingUtilities
 {
-  v4 = [a3 invertedSet];
-  v5 = [a1 rangeOfCharacterFromSet:v4];
+  invertedSet = [a3 invertedSet];
+  v5 = [self rangeOfCharacterFromSet:invertedSet];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -82,7 +82,7 @@
 
   else
   {
-    v6 = [a1 substringFromIndex:v5];
+    v6 = [self substringFromIndex:v5];
   }
 
   return v6;

@@ -1,9 +1,9 @@
 @interface ATXAppGroupedNotificationDigestRanker
 - (ATXAppGroupedNotificationDigestRanker)init;
-- (ATXAppGroupedNotificationDigestRanker)initWithDigestFeedback:(id)a3;
-- (id)bfsSelectGlobalMarqueeGroupsFromApps:(id)a3 maxCount:(unint64_t)a4 groupFilter:(id)a5;
-- (id)createDigestForAppGroupedNotificationStacks:(id)a3 maxGlobalMarqueeGroups:(unint64_t)a4 maxAppMarqueeGroups:(unint64_t)a5 outError:(id *)a6;
-- (id)getRankedAppsFromAppGroupedNotificationStacks:(id)a3 maxAppMarqueeGroups:(unint64_t)a4;
+- (ATXAppGroupedNotificationDigestRanker)initWithDigestFeedback:(id)feedback;
+- (id)bfsSelectGlobalMarqueeGroupsFromApps:(id)apps maxCount:(unint64_t)count groupFilter:(id)filter;
+- (id)createDigestForAppGroupedNotificationStacks:(id)stacks maxGlobalMarqueeGroups:(unint64_t)groups maxAppMarqueeGroups:(unint64_t)marqueeGroups outError:(id *)error;
+- (id)getRankedAppsFromAppGroupedNotificationStacks:(id)stacks maxAppMarqueeGroups:(unint64_t)groups;
 @end
 
 @implementation ATXAppGroupedNotificationDigestRanker
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (ATXAppGroupedNotificationDigestRanker)initWithDigestFeedback:(id)a3
+- (ATXAppGroupedNotificationDigestRanker)initWithDigestFeedback:(id)feedback
 {
-  v5 = a3;
+  feedbackCopy = feedback;
   v11.receiver = self;
   v11.super_class = ATXAppGroupedNotificationDigestRanker;
   v6 = [(ATXAppGroupedNotificationDigestRanker *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_digestFeedback, a3);
+    objc_storeStrong(&v6->_digestFeedback, feedback);
     v8 = +[ATXNotificationDigestRankingConstants sharedInstance];
     c = v7->_c;
     v7->_c = v8;
@@ -34,10 +34,10 @@
   return v7;
 }
 
-- (id)createDigestForAppGroupedNotificationStacks:(id)a3 maxGlobalMarqueeGroups:(unint64_t)a4 maxAppMarqueeGroups:(unint64_t)a5 outError:(id *)a6
+- (id)createDigestForAppGroupedNotificationStacks:(id)stacks maxGlobalMarqueeGroups:(unint64_t)groups maxAppMarqueeGroups:(unint64_t)marqueeGroups outError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  stacksCopy = stacks;
   v11 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -48,16 +48,16 @@
     _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_INFO, "[%@] Generating a notification digest", buf, 0xCu);
   }
 
-  if (v10 || !a6)
+  if (stacksCopy || !error)
   {
-    v18 = [(ATXAppGroupedNotificationDigestRanker *)self getRankedAppsFromAppGroupedNotificationStacks:v10 maxAppMarqueeGroups:a5];
+    v18 = [(ATXAppGroupedNotificationDigestRanker *)self getRankedAppsFromAppGroupedNotificationStacks:stacksCopy maxAppMarqueeGroups:marqueeGroups];
     v19 = objc_opt_new();
-    v20 = [(ATXAppGroupedNotificationDigestRanker *)self bfsSelectGlobalMarqueeGroupsFromApps:v18 maxCount:a4 groupFilter:&__block_literal_global_115];
+    v20 = [(ATXAppGroupedNotificationDigestRanker *)self bfsSelectGlobalMarqueeGroupsFromApps:v18 maxCount:groups groupFilter:&__block_literal_global_115];
     [v19 addObjectsFromArray:v20];
 
-    if ([v19 count] < a4)
+    if ([v19 count] < groups)
     {
-      v21 = [(ATXAppGroupedNotificationDigestRanker *)self bfsSelectGlobalMarqueeGroupsFromApps:v18 maxCount:a4 groupFilter:&__block_literal_global_117_1];
+      v21 = [(ATXAppGroupedNotificationDigestRanker *)self bfsSelectGlobalMarqueeGroupsFromApps:v18 maxCount:groups groupFilter:&__block_literal_global_117_1];
       [v19 addObjectsFromArray:v21];
     }
 
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v27 = [*(*(&v31 + 1) + 8 * i) groupsWithComms];
-          [v22 addObjectsFromArray:v27];
+          groupsWithComms = [*(*(&v31 + 1) + 8 * i) groupsWithComms];
+          [v22 addObjectsFromArray:groupsWithComms];
         }
 
         v24 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -103,7 +103,7 @@
     v37 = @"Missing argument. Notification stacks were nil.";
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     [v14 errorWithDomain:v15 code:22 userInfo:v16];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -125,7 +125,7 @@ id __137__ATXAppGroupedNotificationDigestRanker_createDigestForAppGroupedNotific
   return v8;
 }
 
-- (id)getRankedAppsFromAppGroupedNotificationStacks:(id)a3 maxAppMarqueeGroups:(unint64_t)a4
+- (id)getRankedAppsFromAppGroupedNotificationStacks:(id)stacks maxAppMarqueeGroups:(unint64_t)groups
 {
   v38 = *MEMORY[0x277D85DE8];
   v30[0] = MEMORY[0x277D85DD0];
@@ -133,8 +133,8 @@ id __137__ATXAppGroupedNotificationDigestRanker_createDigestForAppGroupedNotific
   v30[2] = __107__ATXAppGroupedNotificationDigestRanker_getRankedAppsFromAppGroupedNotificationStacks_maxAppMarqueeGroups___block_invoke;
   v30[3] = &unk_2785A1CC8;
   v30[4] = self;
-  v30[5] = a4;
-  v4 = [a3 _pas_mappedArrayWithTransform:v30];
+  v30[5] = groups;
+  v4 = [stacks _pas_mappedArrayWithTransform:v30];
   v5 = MEMORY[0x277CEBCC0];
   v6 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_129_0];
   v7 = [v5 sampleWeightedArray:v6];
@@ -236,14 +236,14 @@ uint64_t __107__ATXAppGroupedNotificationDigestRanker_getRankedAppsFromAppGroupe
   return [v2 numberWithDouble:?];
 }
 
-- (id)bfsSelectGlobalMarqueeGroupsFromApps:(id)a3 maxCount:(unint64_t)a4 groupFilter:(id)a5
+- (id)bfsSelectGlobalMarqueeGroupsFromApps:(id)apps maxCount:(unint64_t)count groupFilter:(id)filter
 {
   v27 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v7 = a5;
+  appsCopy = apps;
+  filterCopy = filter;
   v8 = objc_opt_new();
-  v21 = a4;
-  if (a4)
+  countCopy = count;
+  if (count)
   {
     v9 = 0;
     do
@@ -253,7 +253,7 @@ uint64_t __107__ATXAppGroupedNotificationDigestRanker_getRankedAppsFromAppGroupe
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v10 = v19;
+      v10 = appsCopy;
       v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v11)
       {
@@ -268,10 +268,10 @@ uint64_t __107__ATXAppGroupedNotificationDigestRanker_getRankedAppsFromAppGroupe
               objc_enumerationMutation(v10);
             }
 
-            v15 = v7[2](v7, *(*(&v22 + 1) + 8 * i));
+            v15 = filterCopy[2](filterCopy, *(*(&v22 + 1) + 8 * i));
             if (v9 < [v15 count])
             {
-              if ([v8 count] == v21)
+              if ([v8 count] == countCopy)
               {
 
                 goto LABEL_15;
@@ -294,7 +294,7 @@ uint64_t __107__ATXAppGroupedNotificationDigestRanker_getRankedAppsFromAppGroupe
 
 LABEL_15:
 
-      if ([v8 count] == v21)
+      if ([v8 count] == countCopy)
       {
         break;
       }
@@ -307,7 +307,7 @@ LABEL_15:
       ++v9;
     }
 
-    while (v9 != v21);
+    while (v9 != countCopy);
   }
 
   v17 = *MEMORY[0x277D85DE8];

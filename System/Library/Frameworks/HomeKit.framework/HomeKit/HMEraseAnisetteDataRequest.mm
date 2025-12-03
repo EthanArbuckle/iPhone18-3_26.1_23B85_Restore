@@ -1,6 +1,6 @@
 @interface HMEraseAnisetteDataRequest
-+ (id)objWithDict:(id)a3;
-+ (id)objWithMessage:(id)a3;
++ (id)objWithDict:(id)dict;
++ (id)objWithMessage:(id)message;
 - (NSDictionary)messagePayload;
 - (NSString)description;
 @end
@@ -22,8 +22,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = encodeRootObject(self);
-  v4 = [(HMEraseAnisetteDataRequest *)self messageName];
-  v8 = v4;
+  messageName = [(HMEraseAnisetteDataRequest *)self messageName];
+  v8 = messageName;
   v9[0] = v3;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
@@ -32,12 +32,12 @@
   return v5;
 }
 
-+ (id)objWithMessage:(id)a3
++ (id)objWithMessage:(id)message
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_dataForKey:@"kHMEraseAnisetteDataRequest"];
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v6 = [messagePayload hmf_dataForKey:@"kHMEraseAnisetteDataRequest"];
 
   v15 = 0;
   v7 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v15];
@@ -45,7 +45,7 @@
   if (!v7)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -65,18 +65,18 @@
   return v7;
 }
 
-+ (id)objWithDict:(id)a3
++ (id)objWithDict:(id)dict
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hmf_dataForKey:@"kHMEraseAnisetteDataRequest"];
+  dictCopy = dict;
+  v5 = [dictCopy hmf_dataForKey:@"kHMEraseAnisetteDataRequest"];
   v14 = 0;
   v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v14];
   v7 = v14;
   if (!v6)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {

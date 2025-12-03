@@ -11,8 +11,8 @@
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v1 = [a1 allKeys];
-  v2 = [v1 countByEnumeratingWithState:&v77 objects:v82 count:16];
+  allKeys = [self allKeys];
+  v2 = [allKeys countByEnumeratingWithState:&v77 objects:v82 count:16];
   if (v2)
   {
     obj = 0;
@@ -23,7 +23,7 @@
       {
         if (*v78 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(allKeys);
         }
 
         v5 = *(*(&v77 + 1) + 8 * i);
@@ -32,7 +32,7 @@
           v6 = obj;
           if (!obj)
           {
-            v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+            v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
           }
 
           obj = v6;
@@ -40,7 +40,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v77 objects:v82 count:16];
+      v2 = [allKeys countByEnumeratingWithState:&v77 objects:v82 count:16];
     }
 
     while (v2);
@@ -78,7 +78,7 @@
           }
 
           v11 = *(*(&v73 + 1) + 8 * v9);
-          v70 = [a1 objectForKey:v11];
+          v70 = [self objectForKey:v11];
           v12 = [v11 length];
           if (mf_fixupRFC2231Values_onceToken != -1)
           {
@@ -102,17 +102,17 @@
             v26 = v25;
             if (v20 == 0x7FFFFFFFFFFFFFFFLL && v23 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v63 = -1;
+              intValue = -1;
               v14 = 1;
             }
 
             else
             {
-              v63 = -1;
+              intValue = -1;
               if (v20 != 0x7FFFFFFFFFFFFFFFLL && v22)
               {
                 v39 = [v11 substringWithRange:{v20, v22}];
-                v63 = [v39 intValue];
+                intValue = [v39 intValue];
               }
 
               v14 = v24 != 0x7FFFFFFFFFFFFFFFLL && v26 != 0;
@@ -123,7 +123,7 @@
           {
             v69 = v11;
             v14 = 0;
-            v63 = -1;
+            intValue = -1;
           }
 
           if (v66 && ([v66 isEqualToString:?] & 1) != 0)
@@ -316,20 +316,20 @@ LABEL_87:
 LABEL_89:
           if (v8)
           {
-            [a1 removeObjectForKey:v11];
+            [self removeObjectForKey:v11];
             if (v65)
             {
               v52 = v69;
 
               v66 = v52;
-              [a1 setObject:v8 forKey:v52];
+              [self setObject:v8 forKey:v52];
             }
 
-            else if (v63)
+            else if (intValue)
             {
-              if (v63 >= 1)
+              if (intValue >= 1)
               {
-                v53 = [a1 objectForKey:v66];
+                v53 = [self objectForKey:v66];
                 v54 = [objc_allocWithZone(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(v8, "length") + objc_msgSend(v53, "length")}];
                 v55 = v54;
                 if (v53)
@@ -338,13 +338,13 @@ LABEL_89:
                 }
 
                 [v55 appendString:v8];
-                [a1 setObject:v55 forKey:v66];
+                [self setObject:v55 forKey:v66];
               }
             }
 
             else
             {
-              [a1 setObject:v8 forKey:v66];
+              [self setObject:v8 forKey:v66];
             }
           }
 
@@ -358,7 +358,7 @@ LABEL_89:
         {
 LABEL_102:
 
-          v1 = obja;
+          allKeys = obja;
           goto LABEL_103;
         }
       }

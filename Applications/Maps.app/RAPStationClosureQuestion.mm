@@ -3,59 +3,59 @@
 - (id)commentQuestion;
 - (id)localizedTitle;
 - (id)selectableIssues;
-- (void)_fillSubmissionParameters:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
 @end
 
 @implementation RAPStationClosureQuestion
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v20 = a3;
-  [(RAPPlaceClosureQuestion *)self _setupSubmissionParameters:v20];
-  v4 = [v20 details];
-  v5 = [v4 transitPoiFeedback];
+  parametersCopy = parameters;
+  [(RAPPlaceClosureQuestion *)self _setupSubmissionParameters:parametersCopy];
+  details = [parametersCopy details];
+  transitPoiFeedback = [details transitPoiFeedback];
 
-  if (!v5)
+  if (!transitPoiFeedback)
   {
     v6 = objc_opt_new();
-    v7 = [v20 details];
-    [v7 setTransitPoiFeedback:v6];
+    details2 = [parametersCopy details];
+    [details2 setTransitPoiFeedback:v6];
   }
 
-  v8 = [v20 details];
-  v9 = [v8 transitPoiFeedback];
-  v10 = [v9 corrections];
+  details3 = [parametersCopy details];
+  transitPoiFeedback2 = [details3 transitPoiFeedback];
+  corrections = [transitPoiFeedback2 corrections];
 
-  if (!v10)
+  if (!corrections)
   {
     v11 = objc_opt_new();
-    v12 = [v20 details];
-    v13 = [v12 transitPoiFeedback];
-    [v13 setCorrections:v11];
+    details4 = [parametersCopy details];
+    transitPoiFeedback3 = [details4 transitPoiFeedback];
+    [transitPoiFeedback3 setCorrections:v11];
   }
 
-  v14 = [v20 details];
-  v15 = [v14 transitPoiFeedback];
-  [v15 setCorrectionType:1];
+  details5 = [parametersCopy details];
+  transitPoiFeedback4 = [details5 transitPoiFeedback];
+  [transitPoiFeedback4 setCorrectionType:1];
 
-  v16 = [v20 details];
-  v17 = [v16 transitPoiFeedback];
-  v18 = [v17 corrections];
-  v19 = [(RAPPlaceClosureQuestion *)self _geoBusinessHours];
-  [v18 addBusinessHours:v19];
+  details6 = [parametersCopy details];
+  transitPoiFeedback5 = [details6 transitPoiFeedback];
+  corrections2 = [transitPoiFeedback5 corrections];
+  _geoBusinessHours = [(RAPPlaceClosureQuestion *)self _geoBusinessHours];
+  [corrections2 addBusinessHours:_geoBusinessHours];
 }
 
 - (BOOL)_isRecursivelyComplete
 {
   v5.receiver = self;
   v5.super_class = RAPStationClosureQuestion;
-  v3 = [(RAPQuestion *)&v5 _isRecursivelyComplete];
-  if (v3)
+  _isRecursivelyComplete = [(RAPQuestion *)&v5 _isRecursivelyComplete];
+  if (_isRecursivelyComplete)
   {
-    LOBYTE(v3) = [(RAPQuestion *)self->super._commentQuestion _isRecursivelyComplete];
+    LOBYTE(_isRecursivelyComplete) = [(RAPQuestion *)self->super._commentQuestion _isRecursivelyComplete];
   }
 
-  return v3;
+  return _isRecursivelyComplete;
 }
 
 - (id)commentQuestion
@@ -64,11 +64,11 @@
   if (!commentQuestion)
   {
     v4 = [RAPCommentQuestion alloc];
-    v5 = [(RAPQuestion *)self report];
+    report = [(RAPQuestion *)self report];
     v6 = +[RAPCommentQuestion _localizedInformationTitle];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Tell us more about this station closure" value:@"localized string not found" table:0];
-    v9 = [(RAPCommentQuestion *)v4 initWithReport:v5 parentQuestion:self title:v6 placeholderText:v8 emphasis:2];
+    v9 = [(RAPCommentQuestion *)v4 initWithReport:report parentQuestion:self title:v6 placeholderText:v8 emphasis:2];
     v10 = self->super._commentQuestion;
     self->super._commentQuestion = v9;
 

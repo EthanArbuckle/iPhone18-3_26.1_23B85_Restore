@@ -1,71 +1,71 @@
 @interface CAMPortraitLightingEffectStrengthCommand
-- (CAMPortraitLightingEffectStrengthCommand)initWithCoder:(id)a3;
-- (CAMPortraitLightingEffectStrengthCommand)initWithEffectStrength:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPortraitLightingEffectStrengthCommand)initWithCoder:(id)coder;
+- (CAMPortraitLightingEffectStrengthCommand)initWithEffectStrength:(double)strength;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPortraitLightingEffectStrengthCommand
 
-- (CAMPortraitLightingEffectStrengthCommand)initWithEffectStrength:(double)a3
+- (CAMPortraitLightingEffectStrengthCommand)initWithEffectStrength:(double)strength
 {
   v5.receiver = self;
   v5.super_class = CAMPortraitLightingEffectStrengthCommand;
   result = [(CAMCaptureCommand *)&v5 initWithSubcommands:0];
   if (result)
   {
-    result->_effectStrength = a3;
+    result->_effectStrength = strength;
   }
 
   return result;
 }
 
-- (CAMPortraitLightingEffectStrengthCommand)initWithCoder:(id)a3
+- (CAMPortraitLightingEffectStrengthCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMPortraitLightingEffectStrengthCommand;
-  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"CAMPortraitCommandLightingEffectStrength"];
+    [coderCopy decodeDoubleForKey:@"CAMPortraitCommandLightingEffectStrength"];
     v5->_effectStrength = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMPortraitLightingEffectStrengthCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"CAMPortraitCommandLightingEffectStrength" forKey:{self->_effectStrength, v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"CAMPortraitCommandLightingEffectStrength" forKey:{self->_effectStrength, v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CAMPortraitLightingEffectStrengthCommand;
-  result = [(CAMCaptureCommand *)&v5 copyWithZone:a3];
+  result = [(CAMCaptureCommand *)&v5 copyWithZone:zone];
   *(result + 3) = *&self->_effectStrength;
   return result;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDeviceInput];
-  v6 = [v4 currentVideoDeviceFormat];
+  contextCopy = context;
+  currentVideoDeviceInput = [contextCopy currentVideoDeviceInput];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
 
   [(CAMPortraitLightingEffectStrengthCommand *)self effectStrength];
   v8 = v7;
-  [v6 minPortraitLightingEffectStrength];
+  [currentVideoDeviceFormat minPortraitLightingEffectStrength];
   v10 = v9;
-  [v6 maxPortraitLightingEffectStrength];
+  [currentVideoDeviceFormat maxPortraitLightingEffectStrength];
   v12 = v11;
   v13 = v10;
   if (v8 > v10)
@@ -97,7 +97,7 @@
   }
 
   *&v12 = v14;
-  [v5 setPortraitLightingEffectStrength:v12];
+  [currentVideoDeviceInput setPortraitLightingEffectStrength:v12];
 }
 
 @end

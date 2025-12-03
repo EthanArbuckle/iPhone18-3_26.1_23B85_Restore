@@ -1,16 +1,16 @@
 @interface IPAAdjustmentVersion
-+ (id)validatePlatformString:(id)a3;
-+ (id)versionForMajor:(unint64_t)a3 minor:(unint64_t)a4 platform:(id)a5;
-+ (id)versionFromArchivalRepresentation:(id)a3;
++ (id)validatePlatformString:(id)string;
++ (id)versionForMajor:(unint64_t)major minor:(unint64_t)minor platform:(id)platform;
++ (id)versionFromArchivalRepresentation:(id)representation;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAdjustmentVersion:(id)a3;
-- (IPAAdjustmentVersion)initWithMajor:(unint64_t)a3 minor:(unint64_t)a4 platform:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAdjustmentVersion:(id)version;
+- (IPAAdjustmentVersion)initWithMajor:(unint64_t)major minor:(unint64_t)minor platform:(id)platform;
 - (id)archivalRepresentation;
 - (id)debugDescription;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)setMinorVersion:(unint64_t)a3;
+- (void)setMinorVersion:(unint64_t)version;
 @end
 
 @implementation IPAAdjustmentVersion
@@ -18,38 +18,38 @@
 - (id)debugDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(IPAAdjustmentVersion *)self archivalRepresentation];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  archivalRepresentation = [(IPAAdjustmentVersion *)self archivalRepresentation];
+  v4 = [v2 stringWithFormat:@"%@", archivalRepresentation];
 
   return v4;
 }
 
-- (BOOL)isEqualToAdjustmentVersion:(id)a3
+- (BOOL)isEqualToAdjustmentVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(IPAAdjustmentVersion *)self archivalRepresentation];
-  v6 = [v4 archivalRepresentation];
+  versionCopy = version;
+  archivalRepresentation = [(IPAAdjustmentVersion *)self archivalRepresentation];
+  archivalRepresentation2 = [versionCopy archivalRepresentation];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(versionCopy) = [archivalRepresentation isEqual:archivalRepresentation2];
+  return versionCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAdjustmentVersion *)self isEqualToAdjustmentVersion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAdjustmentVersion *)self isEqualToAdjustmentVersion:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IPAAdjustmentVersion *)self archivalRepresentation];
-  if (v2)
+  archivalRepresentation = [(IPAAdjustmentVersion *)self archivalRepresentation];
+  if (archivalRepresentation)
   {
-    v3 = v2;
-    v4 = [v2 hash];
+    v3 = archivalRepresentation;
+    v4 = [archivalRepresentation hash];
 
     return v4;
   }
@@ -63,9 +63,9 @@
   return result;
 }
 
-- (void)setMinorVersion:(unint64_t)a3
+- (void)setMinorVersion:(unint64_t)version
 {
-  if (a3 >= 0x3E8)
+  if (version >= 0x3E8)
   {
     v3 = _PFAssertFailHandler();
     [(IPAAdjustmentVersion *)v3 compare:v4, v5];
@@ -73,18 +73,18 @@
 
   else
   {
-    self->_minorVersion = a3;
+    self->_minorVersion = version;
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v3 = self->_minorVersion + 1000 * self->_majorVersion;
-  v4 = a3;
-  v5 = [v4 majorVersion];
-  v6 = [v4 minorVersion];
+  compareCopy = compare;
+  majorVersion = [compareCopy majorVersion];
+  minorVersion = [compareCopy minorVersion];
 
-  v7 = v6 + 1000 * v5;
+  v7 = minorVersion + 1000 * majorVersion;
   v8 = v3 < v7;
   v9 = v3 != v7;
   if (v8)
@@ -127,13 +127,13 @@ LABEL_7:
   return v4;
 }
 
-- (IPAAdjustmentVersion)initWithMajor:(unint64_t)a3 minor:(unint64_t)a4 platform:(id)a5
+- (IPAAdjustmentVersion)initWithMajor:(unint64_t)major minor:(unint64_t)minor platform:(id)platform
 {
-  if (a4 < 0x3E8)
+  if (minor < 0x3E8)
   {
-    v10 = [IPAAdjustmentVersion validatePlatformString:a5];
+    v10 = [IPAAdjustmentVersion validatePlatformString:platform];
     v11 = v10;
-    if (!a5 || v10)
+    if (!platform || v10)
     {
       v14.receiver = self;
       v14.super_class = IPAAdjustmentVersion;
@@ -141,8 +141,8 @@ LABEL_7:
       v6 = v12;
       if (v12)
       {
-        v12->_majorVersion = a3;
-        v12->_minorVersion = a4;
+        v12->_majorVersion = major;
+        v12->_minorVersion = minor;
         objc_storeStrong(&v12->_platform, v11);
       }
     }
@@ -163,13 +163,13 @@ LABEL_7:
   return v6;
 }
 
-+ (id)versionFromArchivalRepresentation:(id)a3
++ (id)versionFromArchivalRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = +[IPAAdjustmentVersion versionForMajor:minor:](IPAAdjustmentVersion, "versionForMajor:minor:", [v3 unsignedIntegerValue], 0);
+    v4 = +[IPAAdjustmentVersion versionForMajor:minor:](IPAAdjustmentVersion, "versionForMajor:minor:", [representationCopy unsignedIntegerValue], 0);
     goto LABEL_13;
   }
 
@@ -180,44 +180,44 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v5 = [v3 lowercaseString];
-  v6 = [v5 length];
-  v7 = [s_platformFormatVersionRegex firstMatchInString:v5 options:0 range:{0, v6}];
+  lowercaseString = [representationCopy lowercaseString];
+  v6 = [lowercaseString length];
+  v7 = [s_platformFormatVersionRegex firstMatchInString:lowercaseString options:0 range:{0, v6}];
   if (v7)
   {
     v8 = v7;
     v9 = [v7 rangeAtIndex:1];
-    v11 = [v5 substringWithRange:{v9, v10}];
-    v12 = [v11 integerValue];
+    v11 = [lowercaseString substringWithRange:{v9, v10}];
+    integerValue = [v11 integerValue];
 
     v13 = [v8 rangeAtIndex:2];
-    v15 = [v5 substringWithRange:{v13, v14}];
-    v16 = [v15 integerValue];
+    v15 = [lowercaseString substringWithRange:{v13, v14}];
+    integerValue2 = [v15 integerValue];
 
     v17 = [v8 rangeAtIndex:3];
-    v19 = [v5 substringWithRange:{v17, v18}];
+    v19 = [lowercaseString substringWithRange:{v17, v18}];
   }
 
   else
   {
-    v20 = [s_formatVersionRegex firstMatchInString:v5 options:0 range:{0, v6}];
+    v20 = [s_formatVersionRegex firstMatchInString:lowercaseString options:0 range:{0, v6}];
     if (v20)
     {
       v8 = v20;
       v21 = [v20 rangeAtIndex:1];
-      v23 = [v5 substringWithRange:{v21, v22}];
-      v12 = [v23 integerValue];
+      v23 = [lowercaseString substringWithRange:{v21, v22}];
+      integerValue = [v23 integerValue];
 
       v24 = [v8 rangeAtIndex:2];
-      v26 = [v5 substringWithRange:{v24, v25}];
-      v16 = [v26 integerValue];
+      v26 = [lowercaseString substringWithRange:{v24, v25}];
+      integerValue2 = [v26 integerValue];
 
       v19 = 0;
     }
 
     else
     {
-      v27 = [s_formatVersionSimpleRegex firstMatchInString:v5 options:0 range:{0, v6}];
+      v27 = [s_formatVersionSimpleRegex firstMatchInString:lowercaseString options:0 range:{0, v6}];
       if (!v27)
       {
         v4 = 0;
@@ -226,15 +226,15 @@ LABEL_7:
 
       v8 = v27;
       v28 = [v27 rangeAtIndex:1];
-      v30 = [v5 substringWithRange:{v28, v29}];
-      v12 = [v30 integerValue];
+      v30 = [lowercaseString substringWithRange:{v28, v29}];
+      integerValue = [v30 integerValue];
 
       v19 = 0;
-      v16 = 0;
+      integerValue2 = 0;
     }
   }
 
-  v4 = [[IPAAdjustmentVersion alloc] initWithMajor:v12 minor:v16 platform:v19];
+  v4 = [[IPAAdjustmentVersion alloc] initWithMajor:integerValue minor:integerValue2 platform:v19];
 
 LABEL_12:
 LABEL_13:
@@ -242,19 +242,19 @@ LABEL_13:
   return v4;
 }
 
-+ (id)versionForMajor:(unint64_t)a3 minor:(unint64_t)a4 platform:(id)a5
++ (id)versionForMajor:(unint64_t)major minor:(unint64_t)minor platform:(id)platform
 {
-  v8 = a5;
-  v9 = [[a1 alloc] initWithMajor:a3 minor:a4 platform:v8];
+  platformCopy = platform;
+  v9 = [[self alloc] initWithMajor:major minor:minor platform:platformCopy];
 
   return v9;
 }
 
-+ (id)validatePlatformString:(id)a3
++ (id)validatePlatformString:(id)string
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v12 = 0u;
     v13 = 0u;
@@ -275,7 +275,7 @@ LABEL_13:
           }
 
           v8 = *(*(&v10 + 1) + 8 * i);
-          if (![v3 compare:v8 options:{3, v10}])
+          if (![stringCopy compare:v8 options:{3, v10}])
           {
             v5 = v8;
             goto LABEL_12;

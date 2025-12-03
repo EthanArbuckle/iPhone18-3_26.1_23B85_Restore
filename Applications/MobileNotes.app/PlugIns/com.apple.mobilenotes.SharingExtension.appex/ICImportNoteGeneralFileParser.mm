@@ -1,12 +1,12 @@
 @interface ICImportNoteGeneralFileParser
-- (BOOL)canHandleFileURL:(id)a3;
+- (BOOL)canHandleFileURL:(id)l;
 - (ICImportNoteGeneralFileParser)init;
 - (NSArray)allowedContentTypes;
-- (id)attributedStringContentFromFileURL:(id)a3 error:(id *)a4;
-- (id)getTypeIdentifierForFileURL:(id)a3;
-- (void)addTitleInContent:(id)a3 titleString:(id)a4;
-- (void)parseFileURL:(id)a3 newNoteBlock:(id)a4 updatedNoteBlock:(id)a5 errorBlock:(id)a6 completionBlock:(id)a7;
-- (void)totalNotesFoundAtFileURL:(id)a3 completionBlock:(id)a4;
+- (id)attributedStringContentFromFileURL:(id)l error:(id *)error;
+- (id)getTypeIdentifierForFileURL:(id)l;
+- (void)addTitleInContent:(id)content titleString:(id)string;
+- (void)parseFileURL:(id)l newNoteBlock:(id)block updatedNoteBlock:(id)noteBlock errorBlock:(id)errorBlock completionBlock:(id)completionBlock;
+- (void)totalNotesFoundAtFileURL:(id)l completionBlock:(id)block;
 @end
 
 @implementation ICImportNoteGeneralFileParser
@@ -28,23 +28,23 @@
 
 - (NSArray)allowedContentTypes
 {
-  v2 = [UTType importedTypeWithIdentifier:@"net.daringfireball.markdown", UTTypeText, UTTypeHTML, UTTypeRTF, UTTypeRTFD];
-  v5[4] = v2;
+  uTTypeRTFD = [UTType importedTypeWithIdentifier:@"net.daringfireball.markdown", UTTypeText, UTTypeHTML, UTTypeRTF, UTTypeRTFD];
+  v5[4] = uTTypeRTFD;
   v3 = [NSArray arrayWithObjects:v5 count:5];
 
   return v3;
 }
 
-- (BOOL)canHandleFileURL:(id)a3
+- (BOOL)canHandleFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICImportNoteGeneralFileParser *)self getTypeIdentifierForFileURL:v4];
+  lCopy = l;
+  v5 = [(ICImportNoteGeneralFileParser *)self getTypeIdentifierForFileURL:lCopy];
   v6 = [ICUTType typeWithIdentifier:v5];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(ICImportNoteGeneralFileParser *)self allowedContentTypes];
+  allowedContentTypes = [(ICImportNoteGeneralFileParser *)self allowedContentTypes];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10002CD94;
@@ -54,32 +54,32 @@
   v12 = v8;
   v9 = v6;
   v13 = v9;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [allowedContentTypes enumerateObjectsUsingBlock:v11];
 
-  LOBYTE(v7) = *(v16 + 24);
+  LOBYTE(allowedContentTypes) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return v7;
+  return allowedContentTypes;
 }
 
-- (void)totalNotesFoundAtFileURL:(id)a3 completionBlock:(id)a4
+- (void)totalNotesFoundAtFileURL:(id)l completionBlock:(id)block
 {
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, a3 != 0);
+    (*(block + 2))(block, l != 0);
   }
 }
 
-- (void)parseFileURL:(id)a3 newNoteBlock:(id)a4 updatedNoteBlock:(id)a5 errorBlock:(id)a6 completionBlock:(id)a7
+- (void)parseFileURL:(id)l newNoteBlock:(id)block updatedNoteBlock:(id)noteBlock errorBlock:(id)errorBlock completionBlock:(id)completionBlock
 {
-  v12 = a3;
-  v42 = a4;
-  v43 = a5;
-  v13 = a6;
-  v14 = a7;
+  lCopy = l;
+  blockCopy = block;
+  noteBlockCopy = noteBlock;
+  errorBlockCopy = errorBlock;
+  completionBlockCopy = completionBlock;
   [(ICImportNoteGeneralFileParser *)self setIsParsing:1];
   v68 = 0;
-  v15 = [(ICImportNoteGeneralFileParser *)self attributedStringContentFromFileURL:v12 error:&v68];
+  v15 = [(ICImportNoteGeneralFileParser *)self attributedStringContentFromFileURL:lCopy error:&v68];
   v16 = v68;
   if (v16)
   {
@@ -90,9 +90,9 @@
       sub_1000B485C(v17);
     }
 
-    if (v13)
+    if (errorBlockCopy)
     {
-      v13[2](v13, v17);
+      errorBlockCopy[2](errorBlockCopy, v17);
     }
 
     goto LABEL_14;
@@ -108,8 +108,8 @@ LABEL_14:
   }
 
   v19 = +[ICCloudConfiguration sharedConfiguration];
-  v20 = [v19 maximumAttachmentSizeMB];
-  v21 = [v20 unsignedLongLongValue];
+  maximumAttachmentSizeMB = [v19 maximumAttachmentSizeMB];
+  unsignedLongLongValue = [maximumAttachmentSizeMB unsignedLongLongValue];
 
   v64 = 0;
   v65 = &v64;
@@ -124,11 +124,11 @@ LABEL_14:
   v55[1] = 3221225472;
   v55[2] = sub_10002D544;
   v55[3] = &unk_1000F2FB8;
-  v40 = v12;
+  v40 = lCopy;
   v56 = v40;
   v57 = &v64;
   v58 = &v60;
-  v59 = v21 << 20;
+  v59 = unsignedLongLongValue << 20;
   [v15 enumerateAttribute:NSAttachmentAttributeName inRange:0 options:v22 usingBlock:{0, v55}];
   if (*(v65 + 24) == 1)
   {
@@ -136,7 +136,7 @@ LABEL_14:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       v36 = [NSByteCountFormatter stringFromByteCount:v61[3] countStyle:0];
-      v37 = [NSByteCountFormatter stringFromByteCount:v21 << 20 countStyle:0];
+      v37 = [NSByteCountFormatter stringFromByteCount:unsignedLongLongValue << 20 countStyle:0];
       *buf = 138412802;
       v72 = v36;
       v73 = 2112;
@@ -154,9 +154,9 @@ LABEL_14:
     v25 = [NSDictionary dictionaryWithObjects:v70 forKeys:v69 count:2];
     v26 = [NSError errorWithDomain:ICErrorDomain code:202 userInfo:v25];
 
-    if (v13)
+    if (errorBlockCopy)
     {
-      v13[2](v13, 0);
+      errorBlockCopy[2](errorBlockCopy, 0);
     }
 
     _Block_object_dispose(&v60, 8);
@@ -166,9 +166,9 @@ LABEL_14:
 
   _Block_object_dispose(&v60, 8);
   _Block_object_dispose(&v64, 8);
-  if (v42)
+  if (blockCopy)
   {
-    v28 = v42[2]();
+    v28 = blockCopy[2]();
   }
 
   else
@@ -176,7 +176,7 @@ LABEL_14:
     v28 = 0;
   }
 
-  v29 = [v28 managedObjectContext];
+  managedObjectContext = [v28 managedObjectContext];
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_10002D7B0;
@@ -184,7 +184,7 @@ LABEL_14:
   v30 = v28;
   v53 = v30;
   v54 = v15;
-  [v29 performBlockAndWait:v52];
+  [managedObjectContext performBlockAndWait:v52];
 
   v51 = 0;
   v50 = 0;
@@ -215,7 +215,7 @@ LABEL_14:
     }
   }
 
-  v34 = [v30 managedObjectContext];
+  managedObjectContext2 = [v30 managedObjectContext];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_10002D8E4;
@@ -226,28 +226,28 @@ LABEL_14:
   v47 = v38;
   v41 = v38;
   v35 = v39;
-  [v34 performBlockAndWait:v44];
+  [managedObjectContext2 performBlockAndWait:v44];
 
-  if (v43 && v27)
+  if (noteBlockCopy && v27)
   {
-    v43[2](v43, v27);
+    noteBlockCopy[2](noteBlockCopy, v27);
   }
 
 LABEL_15:
   [(ICImportNoteGeneralFileParser *)self setIsParsing:0];
-  if (v14)
+  if (completionBlockCopy)
   {
-    v14[2](v14);
+    completionBlockCopy[2](completionBlockCopy);
   }
 }
 
-- (id)attributedStringContentFromFileURL:(id)a3 error:(id *)a4
+- (id)attributedStringContentFromFileURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ICImportNoteGeneralFileParser *)self getTypeIdentifierForFileURL:v6];
+  lCopy = l;
+  v7 = [(ICImportNoteGeneralFileParser *)self getTypeIdentifierForFileURL:lCopy];
   if (!v7)
   {
-    v21 = 0;
+    createRenderableAttributedString = 0;
     goto LABEL_19;
   }
 
@@ -257,12 +257,12 @@ LABEL_15:
 
   if (v10)
   {
-    v11 = [NSString stringWithContentsOfURL:v6 encoding:4 error:a4];
+    v11 = [NSString stringWithContentsOfURL:lCopy encoding:4 error:error];
     v12 = v11;
-    if (!a4 || !*a4)
+    if (!error || !*error)
     {
-      v22 = [[ICMarkdownRepresentation alloc] initWithPlainMarkdown:v11 error:a4];
-      v21 = [v22 createRenderableAttributedString];
+      v22 = [[ICMarkdownRepresentation alloc] initWithPlainMarkdown:v11 error:error];
+      createRenderableAttributedString = [v22 createRenderableAttributedString];
 
       goto LABEL_19;
     }
@@ -295,7 +295,7 @@ LABEL_17:
         v44 = NSDocumentTypeDocumentAttribute;
         v45 = v17;
         v27 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-        v21 = [v26 initWithURL:v6 options:v27 documentAttributes:0 error:a4];
+        createRenderableAttributedString = [v26 initWithURL:lCopy options:v27 documentAttributes:0 error:error];
 
         goto LABEL_19;
       }
@@ -309,16 +309,16 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v15 = [NSString stringWithContentsOfURL:v6 encoding:4 error:a4];
+  v15 = [NSString stringWithContentsOfURL:lCopy encoding:4 error:error];
   v16 = v15;
-  if (a4 && *a4)
+  if (error && *error)
   {
 
     goto LABEL_10;
   }
 
-  v28 = [v6 URLByDeletingLastPathComponent];
-  v29 = [ICNote attributedStringFromHTMLString:v16 baseURL:v28 readerDelegate:0];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  v29 = [ICNote attributedStringFromHTMLString:v16 baseURL:uRLByDeletingLastPathComponent readerDelegate:0];
   v30 = [v29 mutableCopy];
 
   v38 = 0;
@@ -328,7 +328,7 @@ LABEL_17:
   v42 = sub_10002DE14;
   v43 = 0;
   v31 = dispatch_semaphore_create(0);
-  v32 = [(ICImportNoteGeneralFileParser *)self notesImporterClient];
+  notesImporterClient = [(ICImportNoteGeneralFileParser *)self notesImporterClient];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_10002DE1C;
@@ -336,29 +336,29 @@ LABEL_17:
   v37 = &v38;
   v33 = v31;
   v36 = v33;
-  [v32 parseTitleFromHTMLString:v16 completionBlock:v35];
+  [notesImporterClient parseTitleFromHTMLString:v16 completionBlock:v35];
 
   dispatch_semaphore_wait(v33, 0xFFFFFFFFFFFFFFFFLL);
   [(ICImportNoteGeneralFileParser *)self addTitleInContent:v30 titleString:v39[5]];
-  v21 = [v30 copy];
+  createRenderableAttributedString = [v30 copy];
 
   _Block_object_dispose(&v38, 8);
 LABEL_19:
 
-  return v21;
+  return createRenderableAttributedString;
 }
 
-- (void)addTitleInContent:(id)a3 titleString:(id)a4
+- (void)addTitleInContent:(id)content titleString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  contentCopy = content;
+  stringCopy = string;
   v7 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  v8 = [stringCopy stringByTrimmingCharactersInSet:v7];
 
   if ([v8 length])
   {
     v9 = [[NSAttributedString alloc] initWithString:@"\n"];
-    [v5 insertAttributedString:v9 atIndex:0];
+    [contentCopy insertAttributedString:v9 atIndex:0];
 
     v10 = [ICTTParagraphStyle paragraphStyleNamed:0];
     v11 = [NSAttributedString alloc];
@@ -368,16 +368,16 @@ LABEL_19:
     v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v14 = [v11 initWithString:v12 attributes:v13];
 
-    [v5 insertAttributedString:v14 atIndex:0];
+    [contentCopy insertAttributedString:v14 atIndex:0];
   }
 }
 
-- (id)getTypeIdentifierForFileURL:(id)a3
+- (id)getTypeIdentifierForFileURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v10 = 0;
   v9 = 0;
-  v4 = [v3 getResourceValue:&v10 forKey:NSURLTypeIdentifierKey error:&v9];
+  v4 = [lCopy getResourceValue:&v10 forKey:NSURLTypeIdentifierKey error:&v9];
   v5 = v10;
   v6 = v9;
   if ((v4 & 1) == 0)

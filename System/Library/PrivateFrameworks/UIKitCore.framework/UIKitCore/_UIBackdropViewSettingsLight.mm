@@ -1,5 +1,5 @@
 @interface _UIBackdropViewSettingsLight
-- (void)computeOutputSettingsUsingModel:(id)a3;
+- (void)computeOutputSettingsUsingModel:(id)model;
 - (void)setDefaultValues;
 @end
 
@@ -61,12 +61,12 @@ LABEL_7:
   self->super._legibleColor = v15;
 }
 
-- (void)computeOutputSettingsUsingModel:(id)a3
+- (void)computeOutputSettingsUsingModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v24.receiver = self;
   v24.super_class = _UIBackdropViewSettingsLight;
-  [(_UIBackdropViewSettings *)&v24 computeOutputSettingsUsingModel:v4];
+  [(_UIBackdropViewSettings *)&v24 computeOutputSettingsUsingModel:modelCopy];
   if (self->super._enabled)
   {
     if (self->super._selected)
@@ -100,8 +100,8 @@ LABEL_7:
     if (self->super._highlighted)
     {
 LABEL_15:
-      objc_storeStrong(&self->super._colorTint, *(v4 + 16));
-      self->super._colorTintAlpha = *(v4 + 17) * 0.6;
+      objc_storeStrong(&self->super._colorTint, *(modelCopy + 16));
+      self->super._colorTintAlpha = *(modelCopy + 17) * 0.6;
       goto LABEL_18;
     }
 
@@ -110,28 +110,28 @@ LABEL_15:
     self->super._colorTint = 0;
 
     self->super._colorTintAlpha = 0.0;
-    self->super._grayscaleTintAlpha = *(v4 + 12);
-    v16 = *(v4 + 16);
+    self->super._grayscaleTintAlpha = *(modelCopy + 12);
+    v16 = *(modelCopy + 16);
     if (v16)
     {
       objc_storeStrong(&self->super._colorTint, v16);
-      v17 = *(v4 + 17);
+      v17 = *(modelCopy + 17);
     }
 
     else
     {
-      if (*(v4 + 7) != 1 || (v18 = *(v4 + 8), (v18 & 0x8000000000000000) != 0) || (v19 = v18 * 0.04 + 0.08, v19 <= 0.0))
+      if (*(modelCopy + 7) != 1 || (v18 = *(modelCopy + 8), (v18 & 0x8000000000000000) != 0) || (v19 = v18 * 0.04 + 0.08, v19 <= 0.0))
       {
 LABEL_34:
         v22 = self->super._graphicsQuality;
         if (v22 == 10)
         {
-          self->super._grayscaleTintLevel = fmin(self->super._grayscaleTintLevel + *(v4 + 8) * 0.1, 1.0);
+          self->super._grayscaleTintLevel = fmin(self->super._grayscaleTintLevel + *(modelCopy + 8) * 0.1, 1.0);
         }
 
         else if (v22 == 100)
         {
-          self->super._grayscaleTintAlpha = fmin(self->super._grayscaleTintAlpha * (*(v4 + 8) * 0.5 + 1.0), 1.0);
+          self->super._grayscaleTintAlpha = fmin(self->super._grayscaleTintAlpha * (*(modelCopy + 8) * 0.5 + 1.0), 1.0);
         }
 
         goto LABEL_18;
@@ -141,7 +141,7 @@ LABEL_34:
       v21 = *p_colorTint;
       *p_colorTint = v20;
 
-      v17 = v19 * *(v4 + 17);
+      v17 = v19 * *(modelCopy + 17);
     }
 
     self->super._colorTintAlpha = v17;
@@ -170,9 +170,9 @@ LABEL_17:
   }
 
 LABEL_18:
-  [*(v4 + 6) averageBrightness];
+  [*(modelCopy + 6) averageBrightness];
   v9 = v8;
-  v10 = *(v4 + 16);
+  v10 = *(modelCopy + 16);
   v11 = v10;
   if (v10)
   {

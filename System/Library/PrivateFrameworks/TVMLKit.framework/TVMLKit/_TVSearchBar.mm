@@ -2,17 +2,17 @@
 + (id)_listItemSelectedOverlayFillColor;
 + (id)_listItemTextColor;
 - (BOOL)hasText;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)text;
-- (_TVSearchBar)initWithFrame:(CGRect)a3;
+- (_TVSearchBar)initWithFrame:(CGRect)frame;
 - (_TVSearchBarDelegate)delegate;
 - (id)keyCommands;
-- (void)_submit:(id)a3;
+- (void)_submit:(id)_submit;
 - (void)deleteBackward;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)insertText:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)insertText:(id)text;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation _TVSearchBar
@@ -24,12 +24,12 @@
     +[_TVSearchBar _listItemTextColor];
   }
 
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v5 = &_listItemTextColor___darkThemeColor;
-  if (v4 != 2)
+  if (userInterfaceStyle != 2)
   {
     v5 = &_listItemTextColor___lightThemeColor;
   }
@@ -46,12 +46,12 @@
     +[_TVSearchBar _listItemSelectedOverlayFillColor];
   }
 
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v5 = &_listItemSelectedOverlayFillColor___darkThemeColor;
-  if (v4 != 2)
+  if (userInterfaceStyle != 2)
   {
     v5 = &_listItemSelectedOverlayFillColor___lightThemeColor;
   }
@@ -61,11 +61,11 @@
   return v6;
 }
 
-- (_TVSearchBar)initWithFrame:(CGRect)a3
+- (_TVSearchBar)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = _TVSearchBar;
-  v3 = [(_TVSearchBar *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVSearchBar *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75BB8]);
@@ -76,8 +76,8 @@
     [(UITextField *)v3->_textField setAdjustsFontForContentSizeCategory:1];
     [(UITextField *)v3->_textField setBorderStyle:3];
     v7 = v3->_textField;
-    v8 = [objc_opt_class() _listItemSelectedOverlayFillColor];
-    [(UITextField *)v7 setBackgroundColor:v8];
+    _listItemSelectedOverlayFillColor = [objc_opt_class() _listItemSelectedOverlayFillColor];
+    [(UITextField *)v7 setBackgroundColor:_listItemSelectedOverlayFillColor];
 
     [(_TVSearchBar *)v3 addSubview:v3->_textField];
     v9 = objc_alloc_init(MEMORY[0x277D750E8]);
@@ -85,8 +85,8 @@
     v3->_activityIndicatorView = v9;
 
     v11 = v3->_activityIndicatorView;
-    v12 = [objc_opt_class() _listItemTextColor];
-    [(UIActivityIndicatorView *)v11 setColor:v12];
+    _listItemTextColor = [objc_opt_class() _listItemTextColor];
+    [(UIActivityIndicatorView *)v11 setColor:_listItemTextColor];
 
     [(UIActivityIndicatorView *)v3->_activityIndicatorView setHidesWhenStopped:1];
     [(UIActivityIndicatorView *)v3->_activityIndicatorView stopAnimating];
@@ -96,52 +96,52 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(_TVSearchBar *)self textField];
-  [v5 setText:v4];
+  textCopy = text;
+  textField = [(_TVSearchBar *)self textField];
+  [textField setText:textCopy];
 }
 
 - (NSString)text
 {
-  v2 = [(_TVSearchBar *)self textField];
-  v3 = [v2 text];
+  textField = [(_TVSearchBar *)self textField];
+  text = [textField text];
 
-  return v3;
+  return text;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v12.receiver = self;
   v12.super_class = _TVSearchBar;
-  v6 = a3;
-  [(_TVSearchBar *)&v12 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedView];
+  contextCopy = context;
+  [(_TVSearchBar *)&v12 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  v8 = [v7 isDescendantOfView:self];
-  v9 = [(_TVSearchBar *)self textField];
-  v10 = v9;
+  v8 = [nextFocusedView isDescendantOfView:self];
+  textField = [(_TVSearchBar *)self textField];
+  v10 = textField;
   if (v8)
   {
-    [v9 setBackgroundColor:0];
+    [textField setBackgroundColor:0];
 
     [(_TVSearchBar *)self becomeFirstResponder];
   }
 
   else
   {
-    v11 = [objc_opt_class() _listItemSelectedOverlayFillColor];
-    [v10 setBackgroundColor:v11];
+    _listItemSelectedOverlayFillColor = [objc_opt_class() _listItemSelectedOverlayFillColor];
+    [v10 setBackgroundColor:_listItemSelectedOverlayFillColor];
 
     [(_TVSearchBar *)self resignFirstResponder];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIView *)self tv_padding:a3.width];
+  width = fits.width;
+  [(UIView *)self tv_padding:fits.width];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -158,8 +158,8 @@
     v15 = v13;
   }
 
-  v16 = [(_TVSearchBar *)self textField];
-  [v16 sizeThatFits:{v15, 0.0}];
+  textField = [(_TVSearchBar *)self textField];
+  [textField sizeThatFits:{v15, 0.0}];
   v18 = v17;
 
   v19 = v12 + v8 + v15 + 8.0;
@@ -189,8 +189,8 @@
     v13 = v11;
   }
 
-  v14 = [(_TVSearchBar *)self textField];
-  [v14 sizeThatFits:{v13, 0.0}];
+  textField = [(_TVSearchBar *)self textField];
+  [textField sizeThatFits:{v13, 0.0}];
   v16 = v15;
 
   v17 = v13 + 8.0;
@@ -199,8 +199,8 @@
   v20 = floorf(v19);
   v21 = (v6 - v18) * 0.5;
   v22 = floorf(v21);
-  v23 = [(_TVSearchBar *)self textField];
-  [v23 setFrame:{v20, v22, v17, v18}];
+  textField2 = [(_TVSearchBar *)self textField];
+  [textField2 setFrame:{v20, v22, v17, v18}];
 
   v29.origin.x = v20;
   v29.origin.y = v22;
@@ -217,8 +217,8 @@
   v31.size.width = v17;
   v31.size.height = v18;
   v26 = CGRectGetHeight(v31);
-  v27 = [(_TVSearchBar *)self activityIndicatorView];
-  [v27 setFrame:{MaxX, 0.0, Height, v26}];
+  activityIndicatorView = [(_TVSearchBar *)self activityIndicatorView];
+  [activityIndicatorView setFrame:{MaxX, 0.0, Height, v26}];
 }
 
 - (id)keyCommands
@@ -226,8 +226,8 @@
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
   v9.receiver = self;
   v9.super_class = _TVSearchBar;
-  v4 = [(_TVSearchBar *)&v9 keyCommands];
-  v5 = [v3 initWithArray:v4];
+  keyCommands = [(_TVSearchBar *)&v9 keyCommands];
+  v5 = [v3 initWithArray:keyCommands];
 
   v6 = [MEMORY[0x277D75650] keyCommandWithInput:@"\r" modifierFlags:0 action:sel__submit_];
   [v5 addObject:v6];
@@ -240,31 +240,31 @@
 
 - (BOOL)hasText
 {
-  v2 = [(_TVSearchBar *)self text];
-  v3 = [v2 length];
+  text = [(_TVSearchBar *)self text];
+  v3 = [text length];
 
   return v3 != 0;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v5 = [(_TVSearchBar *)self text];
-  if ([v5 length])
+  text = [(_TVSearchBar *)self text];
+  if ([text length])
   {
-    [v4 appendString:v5];
+    [v4 appendString:text];
   }
 
-  [v4 appendString:v9];
+  [v4 appendString:textCopy];
   [(_TVSearchBar *)self setText:v4];
-  v6 = [(_TVSearchBar *)self delegate];
+  delegate = [(_TVSearchBar *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_TVSearchBar *)self delegate];
-    [v8 searchBarDidChangeText:self];
+    delegate2 = [(_TVSearchBar *)self delegate];
+    [delegate2 searchBarDidChangeText:self];
   }
 }
 
@@ -272,30 +272,30 @@
 {
   if ([(_TVSearchBar *)self hasText])
   {
-    v3 = [(_TVSearchBar *)self text];
-    v7 = [v3 substringToIndex:{objc_msgSend(v3, "length") - 1}];
+    text = [(_TVSearchBar *)self text];
+    v7 = [text substringToIndex:{objc_msgSend(text, "length") - 1}];
 
     [(_TVSearchBar *)self setText:v7];
-    v4 = [(_TVSearchBar *)self delegate];
+    delegate = [(_TVSearchBar *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(_TVSearchBar *)self delegate];
-      [v6 searchBarDidChangeText:self];
+      delegate2 = [(_TVSearchBar *)self delegate];
+      [delegate2 searchBarDidChangeText:self];
     }
   }
 }
 
-- (void)_submit:(id)a3
+- (void)_submit:(id)_submit
 {
-  v4 = [(_TVSearchBar *)self delegate];
+  delegate = [(_TVSearchBar *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_TVSearchBar *)self delegate];
-    [v6 searchBarDidSubmit:self];
+    delegate2 = [(_TVSearchBar *)self delegate];
+    [delegate2 searchBarDidSubmit:self];
   }
 }
 

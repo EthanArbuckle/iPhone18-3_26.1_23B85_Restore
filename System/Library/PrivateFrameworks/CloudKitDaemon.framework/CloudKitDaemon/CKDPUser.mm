@@ -1,12 +1,12 @@
 @interface CKDPUser
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPUser
@@ -68,116 +68,116 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_alias)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_firstName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_lastName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_protectionInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     isInNetwork = self->_isInNetwork;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   identifier = self->_identifier;
-  v11 = v4;
+  v11 = toCopy;
   if (identifier)
   {
-    objc_msgSend_setIdentifier_(v4, v5, identifier);
-    v4 = v11;
+    objc_msgSend_setIdentifier_(toCopy, v5, identifier);
+    toCopy = v11;
   }
 
   alias = self->_alias;
   if (alias)
   {
     objc_msgSend_setAlias_(v11, v5, alias);
-    v4 = v11;
+    toCopy = v11;
   }
 
   firstName = self->_firstName;
   if (firstName)
   {
     objc_msgSend_setFirstName_(v11, v5, firstName);
-    v4 = v11;
+    toCopy = v11;
   }
 
   lastName = self->_lastName;
   if (lastName)
   {
     objc_msgSend_setLastName_(v11, v5, lastName);
-    v4 = v11;
+    toCopy = v11;
   }
 
   protectionInfo = self->_protectionInfo;
   if (protectionInfo)
   {
     objc_msgSend_setProtectionInfo_(v11, v5, protectionInfo);
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (*&self->_has)
   {
-    v4[48] = self->_isInNetwork;
-    v4[52] |= 1u;
+    toCopy[48] = self->_isInNetwork;
+    toCopy[52] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_alias, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_alias, v14, zone);
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_firstName, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_firstName, v17, zone);
   v19 = *(v10 + 16);
   *(v10 + 16) = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_lastName, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_lastName, v20, zone);
   v22 = *(v10 + 32);
   *(v10 + 32) = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_protectionInfo, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_protectionInfo, v23, zone);
   v25 = *(v10 + 40);
   *(v10 + 40) = v24;
 
@@ -190,17 +190,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_14;
   }
 
   identifier = self->_identifier;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (identifier | v9)
   {
     if (!objc_msgSend_isEqual_(identifier, v7, v9))
@@ -210,7 +210,7 @@
   }
 
   alias = self->_alias;
-  v11 = v4[1];
+  v11 = equalCopy[1];
   if (alias | v11)
   {
     if (!objc_msgSend_isEqual_(alias, v7, v11))
@@ -220,7 +220,7 @@
   }
 
   firstName = self->_firstName;
-  v13 = v4[2];
+  v13 = equalCopy[2];
   if (firstName | v13)
   {
     if (!objc_msgSend_isEqual_(firstName, v7, v13))
@@ -230,7 +230,7 @@
   }
 
   lastName = self->_lastName;
-  v15 = v4[4];
+  v15 = equalCopy[4];
   if (lastName | v15)
   {
     if (!objc_msgSend_isEqual_(lastName, v7, v15))
@@ -240,7 +240,7 @@
   }
 
   protectionInfo = self->_protectionInfo;
-  v17 = v4[5];
+  v17 = equalCopy[5];
   if (protectionInfo | v17)
   {
     if (!objc_msgSend_isEqual_(protectionInfo, v7, v17))
@@ -249,10 +249,10 @@
     }
   }
 
-  v18 = (*(v4 + 52) & 1) == 0;
+  v18 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
 LABEL_14:
       v18 = 0;
@@ -261,13 +261,13 @@ LABEL_14:
 
     if (self->_isInNetwork)
     {
-      if ((v4[6] & 1) == 0)
+      if ((equalCopy[6] & 1) == 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_14;
     }
@@ -300,12 +300,12 @@ LABEL_15:
   return v7 ^ v4 ^ v10 ^ v13 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   identifier = self->_identifier;
-  v6 = *(v4 + 3);
-  v13 = v4;
+  v6 = *(fromCopy + 3);
+  v13 = fromCopy;
   if (identifier)
   {
     if (!v6)
@@ -313,7 +313,7 @@ LABEL_15:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(identifier, v4, v6);
+    objc_msgSend_mergeFrom_(identifier, fromCopy, v6);
   }
 
   else
@@ -323,13 +323,13 @@ LABEL_15:
       goto LABEL_7;
     }
 
-    objc_msgSend_setIdentifier_(self, v4, v6);
+    objc_msgSend_setIdentifier_(self, fromCopy, v6);
   }
 
-  v4 = v13;
+  fromCopy = v13;
 LABEL_7:
   alias = self->_alias;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (alias)
   {
     if (!v8)
@@ -337,7 +337,7 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    objc_msgSend_mergeFrom_(alias, v4, v8);
+    objc_msgSend_mergeFrom_(alias, fromCopy, v8);
   }
 
   else
@@ -347,27 +347,27 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    objc_msgSend_setAlias_(self, v4, v8);
+    objc_msgSend_setAlias_(self, fromCopy, v8);
   }
 
-  v4 = v13;
+  fromCopy = v13;
 LABEL_13:
-  v9 = *(v4 + 2);
+  v9 = *(fromCopy + 2);
   if (v9)
   {
-    objc_msgSend_setFirstName_(self, v4, v9);
-    v4 = v13;
+    objc_msgSend_setFirstName_(self, fromCopy, v9);
+    fromCopy = v13;
   }
 
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   if (v10)
   {
-    objc_msgSend_setLastName_(self, v4, v10);
-    v4 = v13;
+    objc_msgSend_setLastName_(self, fromCopy, v10);
+    fromCopy = v13;
   }
 
   protectionInfo = self->_protectionInfo;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   if (protectionInfo)
   {
     if (!v12)
@@ -375,7 +375,7 @@ LABEL_13:
       goto LABEL_23;
     }
 
-    objc_msgSend_mergeFrom_(protectionInfo, v4, v12);
+    objc_msgSend_mergeFrom_(protectionInfo, fromCopy, v12);
   }
 
   else
@@ -385,14 +385,14 @@ LABEL_13:
       goto LABEL_23;
     }
 
-    objc_msgSend_setProtectionInfo_(self, v4, v12);
+    objc_msgSend_setProtectionInfo_(self, fromCopy, v12);
   }
 
-  v4 = v13;
+  fromCopy = v13;
 LABEL_23:
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
-    self->_isInNetwork = *(v4 + 48);
+    self->_isInNetwork = *(fromCopy + 48);
     *&self->_has |= 1u;
   }
 

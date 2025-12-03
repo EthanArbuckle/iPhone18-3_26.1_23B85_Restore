@@ -42,19 +42,19 @@
 {
   v8.receiver = self;
   v8.super_class = OADConnectorProperties;
-  v2 = [(OADGraphicProperties *)&v8 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADGraphicProperties *)&v8 initWithDefaults];
+  if (initWithDefaults)
   {
     v3 = objc_alloc_init(OADConnection);
-    v4 = *&v2->super.mIsTextBox;
-    *&v2->super.mIsTextBox = v3;
+    v4 = *&initWithDefaults->super.mIsTextBox;
+    *&initWithDefaults->super.mIsTextBox = v3;
 
     v5 = objc_alloc_init(OADConnection);
-    mFrom = v2->mFrom;
-    v2->mFrom = v5;
+    mFrom = initWithDefaults->mFrom;
+    initWithDefaults->mFrom = v5;
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
 void __43__OADConnectorProperties_defaultProperties__block_invoke()

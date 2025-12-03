@@ -1,25 +1,25 @@
 @interface EFInt64Set
 + (id)indexSet;
-+ (id)indexSetWithIndexesInRange:(_EFInt64Range)a3;
-- (BOOL)containsIndex:(int64_t)a3;
++ (id)indexSetWithIndexesInRange:(_EFInt64Range)range;
+- (BOOL)containsIndex:(int64_t)index;
 - (EFInt64Set)init;
 - (NSString)commaSeparatedString;
 - (NSString)description;
 - (NSString)ef_SQLExpression;
 - (_EFInt64Range)_lastRange;
 - (id).cxx_construct;
-- (id)_initWithIndexesInRange:(_EFInt64Range)a3;
-- (id)_initWithUnderlyingSet:(const void *)a3;
-- (id)lowestIndexesInRange:(_EFInt64Range)a3 maxCount:(unint64_t)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithIndexesInRange:(_EFInt64Range)range;
+- (id)_initWithUnderlyingSet:(const void *)set;
+- (id)lowestIndexesInRange:(_EFInt64Range)range maxCount:(unint64_t)count;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)firstIndex;
-- (int64_t)indexGreaterThanIndex:(int64_t)a3;
+- (int64_t)indexGreaterThanIndex:(int64_t)index;
 - (int64_t)lastIndex;
-- (unint64_t)_enumerateIndexesInRange:(_EFInt64Range *)a3 maxCount:(unint64_t)a4 withBlock:(id)a5;
-- (unint64_t)getIndexes:(int64_t *)a3 maxCount:(unint64_t)a4 inIndexRange:(_EFInt64Range *)a5;
-- (void)_appendRange:(_EFInt64Range)a3 toString:(id)a4 withSeparator:(BOOL)a5;
-- (void)ef_renderSQLExpressionInto:(id)a3 conjoiner:(id)a4;
-- (void)enumerateIndexesUsingBlock:(id)a3;
+- (unint64_t)_enumerateIndexesInRange:(_EFInt64Range *)range maxCount:(unint64_t)count withBlock:(id)block;
+- (unint64_t)getIndexes:(int64_t *)indexes maxCount:(unint64_t)count inIndexRange:(_EFInt64Range *)range;
+- (void)_appendRange:(_EFInt64Range)range toString:(id)string withSeparator:(BOOL)separator;
+- (void)ef_renderSQLExpressionInto:(id)into conjoiner:(id)conjoiner;
+- (void)enumerateIndexesUsingBlock:(id)block;
 @end
 
 @implementation EFInt64Set
@@ -42,7 +42,7 @@
   return self;
 }
 
-- (id)_initWithUnderlyingSet:(const void *)a3
+- (id)_initWithUnderlyingSet:(const void *)set
 {
   v8.receiver = self;
   v8.super_class = EFInt64Set;
@@ -50,7 +50,7 @@
   p_underlying = &v4->_underlying;
   if (v4)
   {
-    v6 = p_underlying == a3;
+    v6 = p_underlying == set;
   }
 
   else
@@ -60,16 +60,16 @@
 
   if (!v6)
   {
-    std::__tree<long long>::__assign_multi<std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>>(p_underlying, *a3, a3 + 1);
+    std::__tree<long long>::__assign_multi<std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>>(p_underlying, *set, set + 1);
   }
 
   return v4;
 }
 
-- (id)_initWithIndexesInRange:(_EFInt64Range)a3
+- (id)_initWithIndexesInRange:(_EFInt64Range)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v5 = [(EFInt64Set *)self init];
   if (v5)
   {
@@ -85,19 +85,19 @@
 
 + (id)indexSet
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)indexSetWithIndexesInRange:(_EFInt64Range)a3
++ (id)indexSetWithIndexesInRange:(_EFInt64Range)range
 {
-  v3 = [[a1 alloc] _initWithIndexesInRange:{a3.var0, a3.var1}];
+  v3 = [[self alloc] _initWithIndexesInRange:{range.var0, range.var1}];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   memset(v5, 170, sizeof(v5));
   std::set<long long>::set[abi:ne200100](v5, &self->_underlying);
@@ -106,7 +106,7 @@
   return v3;
 }
 
-- (BOOL)containsIndex:(int64_t)a3
+- (BOOL)containsIndex:(int64_t)index
 {
   left = self->_underlying.__tree_.__end_node_.__left_;
   p_end_node = &self->_underlying.__tree_.__end_node_;
@@ -119,16 +119,16 @@
   v6 = p_end_node;
   do
   {
-    if (v4[4].__left_ >= a3)
+    if (v4[4].__left_ >= index)
     {
       v6 = v4;
     }
 
-    v4 = v4[v4[4].__left_ < a3].__left_;
+    v4 = v4[v4[4].__left_ < index].__left_;
   }
 
   while (v4);
-  if (v6 == p_end_node || v6[4].__left_ > a3)
+  if (v6 == p_end_node || v6[4].__left_ > index)
   {
 LABEL_8:
     v6 = p_end_node;
@@ -186,34 +186,34 @@ LABEL_8:
   return v4[4];
 }
 
-- (unint64_t)getIndexes:(int64_t *)a3 maxCount:(unint64_t)a4 inIndexRange:(_EFInt64Range *)a5
+- (unint64_t)getIndexes:(int64_t *)indexes maxCount:(unint64_t)count inIndexRange:(_EFInt64Range *)range
 {
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__EFInt64Set_getIndexes_maxCount_inIndexRange___block_invoke;
   v10[3] = &__block_descriptor_40_e11_v24__0Q8q16l;
-  v10[4] = a3;
-  result = [(EFInt64Set *)self _enumerateIndexesInRange:a5 maxCount:a4 withBlock:v10];
-  if (a5)
+  v10[4] = indexes;
+  result = [(EFInt64Set *)self _enumerateIndexesInRange:range maxCount:count withBlock:v10];
+  if (range)
   {
     if (result)
     {
-      v8 = a3[result - 1];
-      v9 = a5->var0 + a5->var1 + ~v8;
-      a5->var0 = v8 + 1;
-      a5->var1 = v9;
+      v8 = indexes[result - 1];
+      v9 = range->var0 + range->var1 + ~v8;
+      range->var0 = v8 + 1;
+      range->var1 = v9;
     }
   }
 
   return result;
 }
 
-- (id)lowestIndexesInRange:(_EFInt64Range)a3 maxCount:(unint64_t)a4
+- (id)lowestIndexesInRange:(_EFInt64Range)range maxCount:(unint64_t)count
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v20 = a3;
-  if ([(EFInt64Set *)self count]> a4 || var0 > [(EFInt64Set *)self firstIndex]|| (var1 + var0) <= [(EFInt64Set *)self lastIndex])
+  var1 = range.var1;
+  var0 = range.var0;
+  rangeCopy = range;
+  if ([(EFInt64Set *)self count]> count || var0 > [(EFInt64Set *)self firstIndex]|| (var1 + var0) <= [(EFInt64Set *)self lastIndex])
   {
     v12 = 0;
     v13 = &v12;
@@ -229,7 +229,7 @@ LABEL_8:
     v11[2] = __44__EFInt64Set_lowestIndexesInRange_maxCount___block_invoke;
     v11[3] = &unk_1E8248CA0;
     v11[4] = &v12;
-    [(EFInt64Set *)self _enumerateIndexesInRange:&v20 maxCount:a4 withBlock:v11];
+    [(EFInt64Set *)self _enumerateIndexesInRange:&rangeCopy maxCount:count withBlock:v11];
     v9 = [EFInt64Set alloc];
     v8 = [(EFInt64Set *)v9 _initWithUnderlyingSet:v13 + 6];
     _Block_object_dispose(&v12, 8);
@@ -244,12 +244,12 @@ LABEL_8:
   return v8;
 }
 
-- (unint64_t)_enumerateIndexesInRange:(_EFInt64Range *)a3 maxCount:(unint64_t)a4 withBlock:(id)a5
+- (unint64_t)_enumerateIndexesInRange:(_EFInt64Range *)range maxCount:(unint64_t)count withBlock:(id)block
 {
-  v8 = a5;
-  if (a3)
+  blockCopy = block;
+  if (range)
   {
-    var1 = a3->var1;
+    var1 = range->var1;
     if (!var1)
     {
 LABEL_18:
@@ -257,8 +257,8 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    var0 = a3->var0;
-    v11 = a3->var0 + var1 - 1;
+    var0 = range->var0;
+    v11 = range->var0 + var1 - 1;
   }
 
   else
@@ -302,7 +302,7 @@ LABEL_18:
   }
 
   while (v12);
-  v20 = v15 == p_end_node || a4 == 0;
+  v20 = v15 == p_end_node || count == 0;
   if (v20)
   {
     goto LABEL_18;
@@ -311,7 +311,7 @@ LABEL_18:
   v22 = 0;
   do
   {
-    (v8)[2](v8, v22, v15[4].__left_);
+    (blockCopy)[2](blockCopy, v22, v15[4].__left_);
     v23 = v15[1].__left_;
     if (v23)
     {
@@ -345,13 +345,13 @@ LABEL_18:
     v15 = v24;
   }
 
-  while (v22 < a4);
+  while (v22 < count);
 LABEL_19:
 
   return v22;
 }
 
-- (int64_t)indexGreaterThanIndex:(int64_t)a3
+- (int64_t)indexGreaterThanIndex:(int64_t)index
 {
   left = self->_underlying.__tree_.__end_node_.__left_;
   p_end_node = &self->_underlying.__tree_.__end_node_;
@@ -364,12 +364,12 @@ LABEL_19:
   v6 = p_end_node;
   do
   {
-    if (v4[4].__left_ >= a3)
+    if (v4[4].__left_ >= index)
     {
       v6 = v4;
     }
 
-    v4 = v4[v4[4].__left_ < a3].__left_;
+    v4 = v4[v4[4].__left_ < index].__left_;
   }
 
   while (v4);
@@ -381,7 +381,7 @@ LABEL_19:
   while (1)
   {
     v7 = v6[4].__left_;
-    if (v7 != a3)
+    if (v7 != index)
     {
       break;
     }
@@ -420,13 +420,13 @@ LABEL_19:
   return v7;
 }
 
-- (void)enumerateIndexesUsingBlock:(id)a3
+- (void)enumerateIndexesUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"EFInt64Set.mm" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFInt64Set.mm" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v12 = 0;
@@ -436,7 +436,7 @@ LABEL_19:
   {
     do
     {
-      v5[2](v5, begin_node[4].__left_, &v12);
+      blockCopy[2](blockCopy, begin_node[4].__left_, &v12);
       if (v12)
       {
         break;
@@ -537,9 +537,9 @@ LABEL_16:
       {
         if (v6 > -v5 && ((v5 + v6) & 0x8000000000000000) != 0)
         {
-          v12 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-          [v12 handleFailureInFunction:v13 file:@"EFInt64Set.h" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"(uint64_t)loc + len <= INT64_MAX"}];
+          [currentHandler handleFailureInFunction:v13 file:@"EFInt64Set.h" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"(uint64_t)loc + len <= INT64_MAX"}];
 LABEL_42:
         }
       }
@@ -548,16 +548,16 @@ LABEL_42:
       {
         if ((v6 & 0x8000000000000000) != 0)
         {
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-          [v20 handleFailureInFunction:v21 file:@"EFInt64Set.h" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"len <= INT64_MAX"}];
+          [currentHandler2 handleFailureInFunction:v21 file:@"EFInt64Set.h" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"len <= INT64_MAX"}];
         }
 
         if ((v6 ^ 0x7FFFFFFFFFFFFFFFLL) < v5)
         {
-          v12 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-          [v12 handleFailureInFunction:v13 file:@"EFInt64Set.h" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"INT64_MAX - (int64_t)len >= loc"}];
+          [currentHandler handleFailureInFunction:v13 file:@"EFInt64Set.h" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"INT64_MAX - (int64_t)len >= loc"}];
           goto LABEL_42;
         }
       }
@@ -571,9 +571,9 @@ LABEL_42:
   {
     if (v6 > -v5 && ((v5 + v6) & 0x8000000000000000) != 0)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-      [v24 handleFailureInFunction:v22 file:@"EFInt64Set.h" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"(uint64_t)loc + len <= INT64_MAX"}];
+      [currentHandler3 handleFailureInFunction:v22 file:@"EFInt64Set.h" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"(uint64_t)loc + len <= INT64_MAX"}];
       goto LABEL_24;
     }
   }
@@ -582,16 +582,16 @@ LABEL_42:
   {
     if ((v6 & 0x8000000000000000) != 0)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-      [v25 handleFailureInFunction:v23 file:@"EFInt64Set.h" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"len <= INT64_MAX"}];
+      [currentHandler4 handleFailureInFunction:v23 file:@"EFInt64Set.h" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"len <= INT64_MAX"}];
     }
 
     if ((v6 ^ 0x7FFFFFFFFFFFFFFFLL) < v5)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-      [v24 handleFailureInFunction:v22 file:@"EFInt64Set.h" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"INT64_MAX - (int64_t)len >= loc"}];
+      [currentHandler3 handleFailureInFunction:v22 file:@"EFInt64Set.h" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"INT64_MAX - (int64_t)len >= loc"}];
 LABEL_24:
     }
   }
@@ -606,11 +606,11 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v14 = [(EFInt64Set *)self _lastRange];
+  _lastRange = [(EFInt64Set *)self _lastRange];
   v16 = v15;
   if (v15)
   {
-    v17 = v14;
+    v17 = _lastRange;
     v18 = self->_underlying.__tree_.__size_ - (v15 + v7);
     if (v18)
     {
@@ -626,27 +626,27 @@ LABEL_38:
   return v3;
 }
 
-- (void)_appendRange:(_EFInt64Range)a3 toString:(id)a4 withSeparator:(BOOL)a5
+- (void)_appendRange:(_EFInt64Range)range toString:(id)string withSeparator:(BOOL)separator
 {
-  v5 = a5;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = a4;
+  separatorCopy = separator;
+  var1 = range.var1;
+  var0 = range.var0;
+  stringCopy = string;
   if (var1)
   {
-    if (v5)
+    if (separatorCopy)
     {
-      [v8 appendString:{@", "}];
+      [stringCopy appendString:{@", "}];
     }
 
     if (var1 == 1)
     {
-      [v8 appendFormat:@"%lld", var0];
+      [stringCopy appendFormat:@"%lld", var0];
     }
 
     else
     {
-      [v8 appendFormat:@"%lld:%lld", var0, var1 + var0 - 1];
+      [stringCopy appendFormat:@"%lld:%lld", var0, var1 + var0 - 1];
     }
   }
 }
@@ -814,17 +814,17 @@ LABEL_38:
     {
       if ((v7 & 0x8000000000000000) != 0)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-        [v20 handleFailureInFunction:v21 file:@"EFInt64Set.h" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"len <= INT64_MAX"}];
+        [currentHandler handleFailureInFunction:v21 file:@"EFInt64Set.h" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"len <= INT64_MAX"}];
       }
 
 LABEL_32:
       if ((v7 ^ 0x7FFFFFFFFFFFFFFFLL) < v8)
       {
-        v22 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-        [v22 handleFailureInFunction:v23 file:@"EFInt64Set.h" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"INT64_MAX - (int64_t)len >= loc"}];
+        [currentHandler2 handleFailureInFunction:v23 file:@"EFInt64Set.h" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"INT64_MAX - (int64_t)len >= loc"}];
 LABEL_38:
 
         goto LABEL_36;
@@ -836,9 +836,9 @@ LABEL_38:
 
   if (v7 > -v8 && ((v7 + v8) & 0x8000000000000000) != 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"EFInt64Range EFMakeInt64Range(int64_t, uint64_t)"}];
-    [v22 handleFailureInFunction:v23 file:@"EFInt64Set.h" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"(uint64_t)loc + len <= INT64_MAX"}];
+    [currentHandler2 handleFailureInFunction:v23 file:@"EFInt64Set.h" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"(uint64_t)loc + len <= INT64_MAX"}];
     goto LABEL_38;
   }
 
@@ -927,16 +927,16 @@ LABEL_36:
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFInt64Set *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFInt64Set *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3 conjoiner:(id)a4
+- (void)ef_renderSQLExpressionInto:(id)into conjoiner:(id)conjoiner
 {
-  v6 = a3;
-  v7 = a4;
+  intoCopy = into;
+  conjoinerCopy = conjoiner;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -945,11 +945,11 @@ LABEL_36:
   v10[1] = 3221225472;
   v10[2] = __69__EFInt64Set_EFSQLExpressable__ef_renderSQLExpressionInto_conjoiner___block_invoke;
   v10[3] = &unk_1E8249CC0;
-  v12 = v7;
+  v12 = conjoinerCopy;
   v13 = v14;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  v11 = intoCopy;
+  v8 = conjoinerCopy;
+  v9 = intoCopy;
   [(EFInt64Set *)self enumerateIndexesUsingBlock:v10];
 
   _Block_object_dispose(v14, 8);

@@ -2,17 +2,17 @@
 + (UITargetedPreview)new;
 - (BOOL)_effectiveBackgroundColorResolvesToMaterial;
 - (BOOL)_isLikelyOpaque;
-- (BOOL)_isRoughlyEqualToPreview:(id)a3;
-- (BOOL)_isVisibleIncludingAlpha:(BOOL)a3;
+- (BOOL)_isRoughlyEqualToPreview:(id)preview;
+- (BOOL)_isVisibleIncludingAlpha:(BOOL)alpha;
 - (BOOL)_mayInferCornerRadiusFromVisiblePath;
 - (BOOL)_shouldHostSourceView;
-- (BOOL)containsPoint:(CGPoint)a3 fromView:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point fromView:(id)view;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)_center;
 - (CGPoint)_morphCenterPoint;
 - (CGRect)_frame;
-- (CGSize)_sizeRespectingOverridesUsingPresentationLayer:(BOOL)a3;
-- (CGSize)_sizeUsingPresentationLayer:(BOOL)a3;
+- (CGSize)_sizeRespectingOverridesUsingPresentationLayer:(BOOL)layer;
+- (CGSize)_sizeUsingPresentationLayer:(BOOL)layer;
 - (CGSize)size;
 - (NSString)description;
 - (UITargetedPreview)init;
@@ -22,16 +22,16 @@
 - (UITargetedPreview)retargetedPreviewWithTarget:(UIPreviewTarget *)newTarget;
 - (UIView)_viewToSnapshot;
 - (_UIShape)_outlineShape;
-- (id)_defaultTargetForView:(id)a3 withCenter:(CGPoint)a4 version:(unsigned int)a5;
-- (id)_initWithView:(id)a3 fromCurrentState:(BOOL)a4 fallbackBackgroundColor:(id)a5 contentScale:(double)a6;
+- (id)_defaultTargetForView:(id)view withCenter:(CGPoint)center version:(unsigned int)version;
+- (id)_initWithView:(id)view fromCurrentState:(BOOL)state fallbackBackgroundColor:(id)color contentScale:(double)scale;
 - (id)_morphContainerView;
 - (id)_resolvedBackgroundMaterial;
 - (id)_resolvedMorphablePreview;
 - (id)_trueSourceViewIfPortal;
-- (void)_setPrefersUnmaskedPlatterStyle:(BOOL)a3;
-- (void)_transferAnimationsToView:(id)a3;
+- (void)_setPrefersUnmaskedPlatterStyle:(BOOL)style;
+- (void)_transferAnimationsToView:(id)view;
 - (void)_typedStorage;
-- (void)set_springboardPlatterStyle:(BOOL)a3;
+- (void)set_springboardPlatterStyle:(BOOL)style;
 @end
 
 @implementation UITargetedPreview
@@ -40,21 +40,21 @@
 {
   if (!dyld_program_sdk_at_least())
   {
-    v5 = [(UITargetedPreview *)self view];
-    [v5 bounds];
+    view = [(UITargetedPreview *)self view];
+    [view bounds];
     v8 = v11;
     v10 = v12;
     goto LABEL_5;
   }
 
-  v3 = [(UITargetedPreview *)self parameters];
-  v4 = [v3 visiblePath];
+  parameters = [(UITargetedPreview *)self parameters];
+  visiblePath = [parameters visiblePath];
 
-  if (v4)
+  if (visiblePath)
   {
-    v5 = [(UITargetedPreview *)self parameters];
-    v6 = [v5 visiblePath];
-    [v6 bounds];
+    view = [(UITargetedPreview *)self parameters];
+    visiblePath2 = [view visiblePath];
+    [visiblePath2 bounds];
     v8 = v7;
     v10 = v9;
 
@@ -73,16 +73,16 @@ LABEL_9:
 
 - (BOOL)_isLikelyOpaque
 {
-  v3 = [(UITargetedPreview *)self parameters];
-  v4 = [v3 visiblePath];
-  if (v4)
+  parameters = [(UITargetedPreview *)self parameters];
+  visiblePath = [parameters visiblePath];
+  if (visiblePath)
   {
-    v5 = v4;
-    v6 = [(UITargetedPreview *)self parameters];
-    v7 = [v6 visiblePath];
-    v8 = [v7 _isRoundedRect];
+    v5 = visiblePath;
+    parameters2 = [(UITargetedPreview *)self parameters];
+    visiblePath2 = [parameters2 visiblePath];
+    _isRoundedRect = [visiblePath2 _isRoundedRect];
 
-    if (!v8)
+    if (!_isRoundedRect)
     {
       return 0;
     }
@@ -92,14 +92,14 @@ LABEL_9:
   {
   }
 
-  v10 = [(UITargetedPreview *)self parameters];
-  v11 = [v10 _effectiveBackgroundColor];
-  v12 = [(UITargetedPreview *)self view];
-  v13 = [v12 traitCollection];
-  v14 = [v11 resolvedColorWithTraitCollection:v13];
-  v15 = [v14 _isOpaque];
+  parameters3 = [(UITargetedPreview *)self parameters];
+  _effectiveBackgroundColor = [parameters3 _effectiveBackgroundColor];
+  view = [(UITargetedPreview *)self view];
+  traitCollection = [view traitCollection];
+  v14 = [_effectiveBackgroundColor resolvedColorWithTraitCollection:traitCollection];
+  _isOpaque = [v14 _isOpaque];
 
-  return v15;
+  return _isOpaque;
 }
 
 - (BOOL)_shouldHostSourceView
@@ -120,14 +120,14 @@ LABEL_9:
 
 - (_UIShape)_outlineShape
 {
-  v3 = [(UITargetedPreview *)self parameters];
-  v4 = [v3 _overrideCornerRadii];
+  parameters = [(UITargetedPreview *)self parameters];
+  _overrideCornerRadii = [parameters _overrideCornerRadii];
 
-  if (v4)
+  if (_overrideCornerRadii)
   {
-    [v4 radii];
-    v5 = [(UITargetedPreview *)self target];
-    [v5 _contentScale];
+    [_overrideCornerRadii radii];
+    target = [(UITargetedPreview *)self target];
+    [target _contentScale];
     v56 = vmulq_n_f64(v61, v6);
     v58 = vmulq_n_f64(v60, v6);
     v52 = vmulq_n_f64(v63, v6);
@@ -136,19 +136,19 @@ LABEL_9:
     [(UITargetedPreview *)self size];
     v8 = v7;
     v10 = v9;
-    v11 = [v4 curve];
+    curve = [_overrideCornerRadii curve];
     v60 = v58;
     v61 = v56;
     v62 = v54;
     v63 = v52;
-    v12 = [_UIShape shapeWithRoundedRect:&v60 cornerRadii:v11 cornerCurve:0.0, 0.0, v8, v10];
+    v12 = [_UIShape shapeWithRoundedRect:&v60 cornerRadii:curve cornerCurve:0.0, 0.0, v8, v10];
     goto LABEL_30;
   }
 
-  v13 = [(UITargetedPreview *)self view];
-  v11 = [v13 layer];
+  view = [(UITargetedPreview *)self view];
+  curve = [view layer];
 
-  if (!v11)
+  if (!curve)
   {
     v62 = 0u;
     v63 = 0u;
@@ -164,71 +164,71 @@ LABEL_9:
     }
 
 LABEL_7:
-    v14 = *MEMORY[0x1E69796E0];
-    v15 = [(UITargetedPreview *)self parameters];
-    if ([v15 _previewMode] == 1)
+    cornerCurve2 = *MEMORY[0x1E69796E0];
+    parameters2 = [(UITargetedPreview *)self parameters];
+    if ([parameters2 _previewMode] == 1)
     {
-      v16 = v14;
+      _trueSourceViewIfPortal = cornerCurve2;
       v17 = 13.0;
-      v18 = 15;
-      v14 = *MEMORY[0x1E69796E8];
+      _cornerMask = 15;
+      cornerCurve2 = *MEMORY[0x1E69796E8];
       goto LABEL_24;
     }
 
-    v19 = [(UITargetedPreview *)self _mayInferCornerRadiusFromVisiblePath];
-    v20 = [v15 visiblePath];
-    v16 = v20;
-    if (v19)
+    _mayInferCornerRadiusFromVisiblePath = [(UITargetedPreview *)self _mayInferCornerRadiusFromVisiblePath];
+    visiblePath = [parameters2 visiblePath];
+    _trueSourceViewIfPortal = visiblePath;
+    if (_mayInferCornerRadiusFromVisiblePath)
     {
-      if ([v20 _isRoundedRect])
+      if ([visiblePath _isRoundedRect])
       {
-        v18 = [v16 _cornerMask];
-        [v16 _cornerRadius];
+        _cornerMask = [_trueSourceViewIfPortal _cornerMask];
+        [_trueSourceViewIfPortal _cornerRadius];
         v17 = v21;
-        v22 = [v16 _hasContinuousCorners];
+        _hasContinuousCorners = [_trueSourceViewIfPortal _hasContinuousCorners];
         v23 = *MEMORY[0x1E69796E8];
-        if (!v22)
+        if (!_hasContinuousCorners)
         {
-          v23 = v14;
+          v23 = cornerCurve2;
         }
 
         v24 = v23;
 
-        v14 = v24;
+        cornerCurve2 = v24;
       }
 
       else
       {
         v17 = 0.0;
-        v18 = 15;
+        _cornerMask = 15;
       }
 
       goto LABEL_24;
     }
 
-    if (v20)
+    if (visiblePath)
     {
-      v31 = [v15 _previewMode];
+      _previewMode = [parameters2 _previewMode];
 
-      if (v31 != 5)
+      if (_previewMode != 5)
       {
-        v51 = [v15 visiblePath];
-        if (v51)
+        visiblePath2 = [parameters2 visiblePath];
+        if (visiblePath2)
         {
-          v47 = v51;
-          v49 = [_UIShape shapeWithPath:v51];
+          target2 = visiblePath2;
+          v49 = [_UIShape shapeWithPath:visiblePath2];
           goto LABEL_28;
         }
 
         v42 = 0.0;
-        v18 = 15;
+        _cornerMask = 15;
 LABEL_27:
         [(UITargetedPreview *)self size];
         v44 = v43;
         v46 = v45;
-        v47 = [(UITargetedPreview *)self target];
-        [v47 _contentScale];
-        v49 = [_UIShape shapeWithRoundedRect:v14 cornerRadius:v18 cornerCurve:0.0 cornerMask:0.0, v44, v46, v42 * v48];
+        target2 = [(UITargetedPreview *)self target];
+        [target2 _contentScale];
+        v49 = [_UIShape shapeWithRoundedRect:cornerCurve2 cornerRadius:_cornerMask cornerCurve:0.0 cornerMask:0.0, v44, v46, v42 * v48];
 LABEL_28:
         v12 = v49;
 
@@ -236,38 +236,38 @@ LABEL_28:
       }
     }
 
-    v16 = [(UITargetedPreview *)self _trueSourceViewIfPortal];
-    v32 = [(UITargetedPreview *)self view];
-    if (v16 != v32)
+    _trueSourceViewIfPortal = [(UITargetedPreview *)self _trueSourceViewIfPortal];
+    view2 = [(UITargetedPreview *)self view];
+    if (_trueSourceViewIfPortal != view2)
     {
-      [v16 _cornerRadius];
+      [_trueSourceViewIfPortal _cornerRadius];
       v34 = v33;
-      v35 = [(UITargetedPreview *)self view];
-      [v35 _cornerRadius];
+      view3 = [(UITargetedPreview *)self view];
+      [view3 _cornerRadius];
       v37 = v36;
 
       if (v34 > v37)
       {
 LABEL_22:
-        v38 = [v16 layer];
-        v18 = [v38 maskedCorners];
+        layer = [_trueSourceViewIfPortal layer];
+        _cornerMask = [layer maskedCorners];
 
-        [v16 _cornerRadius];
+        [_trueSourceViewIfPortal _cornerRadius];
         v17 = v39;
-        v40 = [v16 layer];
-        v41 = [v40 cornerCurve];
+        layer2 = [_trueSourceViewIfPortal layer];
+        cornerCurve = [layer2 cornerCurve];
 
-        v14 = v41;
+        cornerCurve2 = cornerCurve;
 LABEL_24:
 
-        if (v18)
+        if (_cornerMask)
         {
           v42 = v17;
         }
 
         else
         {
-          v18 = 15;
+          _cornerMask = 15;
           v42 = 0.0;
         }
 
@@ -275,22 +275,22 @@ LABEL_24:
       }
 
       [(UITargetedPreview *)self view];
-      v16 = v32 = v16;
+      _trueSourceViewIfPortal = view2 = _trueSourceViewIfPortal;
     }
 
     goto LABEL_22;
   }
 
-  [v11 cornerRadii];
+  [curve cornerRadii];
   if (CACornerRadiiEqualToRadii())
   {
     goto LABEL_7;
   }
 
-  [v11 cornerRadii];
+  [curve cornerRadii];
 LABEL_15:
-  v25 = [(UITargetedPreview *)self target];
-  [v25 _contentScale];
+  target3 = [(UITargetedPreview *)self target];
+  [target3 _contentScale];
   v57 = vmulq_n_f64(v61, v26);
   v59 = vmulq_n_f64(v60, v26);
   v53 = vmulq_n_f64(v63, v26);
@@ -299,12 +299,12 @@ LABEL_15:
   [(UITargetedPreview *)self size];
   v28 = v27;
   v30 = v29;
-  v14 = [v11 cornerCurve];
+  cornerCurve2 = [curve cornerCurve];
   v60 = v59;
   v61 = v57;
   v62 = v55;
   v63 = v53;
-  v12 = [_UIShape shapeWithRoundedRect:&v60 cornerRadii:v14 cornerCurve:0.0, 0.0, v28, v30];
+  v12 = [_UIShape shapeWithRoundedRect:&v60 cornerRadii:cornerCurve2 cornerCurve:0.0, 0.0, v28, v30];
 LABEL_29:
 
 LABEL_30:
@@ -314,28 +314,28 @@ LABEL_30:
 
 - (BOOL)_mayInferCornerRadiusFromVisiblePath
 {
-  v3 = [(UITargetedPreview *)self parameters];
-  v4 = [v3 visiblePath];
+  parameters = [(UITargetedPreview *)self parameters];
+  visiblePath = [parameters visiblePath];
 
-  if (v4)
+  if (visiblePath)
   {
-    v5 = [(UITargetedPreview *)self _trueSourceViewIfPortal];
-    [v4 bounds];
+    _trueSourceViewIfPortal = [(UITargetedPreview *)self _trueSourceViewIfPortal];
+    [visiblePath bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v5 _currentScreenScale];
+    [_trueSourceViewIfPortal _currentScreenScale];
     v15 = UIRectRoundToScale(v7, v9, v11, v13, v14);
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    [v4 bounds];
+    [visiblePath bounds];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    [v5 _currentScreenScale];
+    [_trueSourceViewIfPortal _currentScreenScale];
     v37.origin.x = UIRectRoundToScale(v23, v25, v27, v29, v30);
     v37.origin.y = v31;
     v37.size.width = v32;
@@ -357,35 +357,35 @@ LABEL_30:
 
 - (id)_morphContainerView
 {
-  v2 = [(UITargetedPreview *)self target];
-  v3 = [v2 container];
+  target = [(UITargetedPreview *)self target];
+  container = [target container];
 
-  return v3;
+  return container;
 }
 
 - (id)_trueSourceViewIfPortal
 {
-  v2 = [(UITargetedPreview *)self view];
+  view = [(UITargetedPreview *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 sourceView];
-    v4 = v3;
-    if (v3)
+    sourceView = [view sourceView];
+    v4 = sourceView;
+    if (sourceView)
     {
-      v5 = v3;
+      v5 = sourceView;
 
-      v2 = v5;
+      view = v5;
     }
   }
 
-  return v2;
+  return view;
 }
 
 - (CGPoint)_morphCenterPoint
 {
-  v2 = [(UITargetedPreview *)self target];
-  [v2 center];
+  target = [(UITargetedPreview *)self target];
+  [target center];
   v4 = v3;
   v6 = v5;
 
@@ -398,7 +398,7 @@ LABEL_30:
 
 - (id)_resolvedMorphablePreview
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18923BFBC();
 
   return v3;
@@ -406,7 +406,7 @@ LABEL_30:
 
 - (CGPoint)_center
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18923C150();
   v5 = v4;
 
@@ -417,10 +417,10 @@ LABEL_30:
   return result;
 }
 
-- (CGSize)_sizeRespectingOverridesUsingPresentationLayer:(BOOL)a3
+- (CGSize)_sizeRespectingOverridesUsingPresentationLayer:(BOOL)layer
 {
-  v3 = a3;
-  v4 = self;
+  layerCopy = layer;
+  selfCopy = self;
   sub_18923B9EC(&v14);
   v25 = v14;
   v6 = v15;
@@ -438,7 +438,7 @@ LABEL_30:
   v28 = v17;
   if (sub_188F36334(&v25) == 1 || (v7 & 1) != 0)
   {
-    [(UITargetedPreview *)v4 _sizeUsingPresentationLayer:v3];
+    [(UITargetedPreview *)selfCopy _sizeUsingPresentationLayer:layerCopy];
     v9 = v8;
     v11 = v10;
   }
@@ -470,8 +470,8 @@ LABEL_30:
     }
 
 LABEL_8:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"parameters != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"parameters != nil"}];
 
     if (v12)
     {
@@ -481,8 +481,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
 
   if (!v11)
   {
@@ -496,8 +496,8 @@ LABEL_3:
   }
 
 LABEL_9:
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"target != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"target != nil"}];
 
 LABEL_4:
   v27.receiver = self;
@@ -507,9 +507,9 @@ LABEL_4:
   if (v13)
   {
     objc_storeStrong(&v13->_view, view);
-    v15 = [(UIView *)v10 layer];
+    layer = [(UIView *)v10 layer];
     layer = v14->_layer;
-    v14->_layer = v15;
+    v14->_layer = layer;
 
     [(UIView *)v10 _cropInsets];
     v14->_cropInsets.top = v17;
@@ -518,8 +518,8 @@ LABEL_4:
     v14->_cropInsets.right = v20;
     objc_storeStrong(&v14->_parameters, parameters);
     objc_storeStrong(&v14->_target, target);
-    v21 = [(UIView *)v14->_view window];
-    v14->_sourceViewIsInViewHierarchy = v21 != 0;
+    window = [(UIView *)v14->_view window];
+    v14->_sourceViewIsInViewHierarchy = window != 0;
 
     *&v14->_hasCustomTarget = 257;
     v22 = v14;
@@ -534,13 +534,13 @@ LABEL_4:
   v8 = parameters;
   if (!v7)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
   }
 
-  v9 = [(UIView *)v7 _window];
+  _window = [(UIView *)v7 _window];
 
-  if (!v9)
+  if (!_window)
   {
     v10 = objc_opt_class();
     BUG_IN_CLIENT_OF_TARGETED_PREVIEW__VIEW_IS_NOT_IN_A_WINDOW(v10, v7);
@@ -551,16 +551,16 @@ LABEL_4:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(UIPreviewParameters *)v8 visiblePath];
+  visiblePath = [(UIPreviewParameters *)v8 visiblePath];
 
-  if (v19)
+  if (visiblePath)
   {
-    v20 = [(UIPreviewParameters *)v8 visiblePath];
-    [v20 bounds];
+    visiblePath2 = [(UIPreviewParameters *)v8 visiblePath];
+    [visiblePath2 bounds];
     v23 = v22 + v21 * 0.5;
     v26 = v25 + v24 * 0.5;
-    v27 = [(UIView *)v7 superview];
-    [(UIView *)v7 convertPoint:v27 toView:v23, v26];
+    superview = [(UIView *)v7 superview];
+    [(UIView *)v7 convertPoint:superview toView:v23, v26];
     v29 = v28;
     v31 = v30;
   }
@@ -581,9 +581,9 @@ LABEL_4:
 - (UITargetedPreview)initWithView:(UIView *)view
 {
   v4 = view;
-  v5 = [(UIView *)v4 _window];
+  _window = [(UIView *)v4 _window];
 
-  if (!v5)
+  if (!_window)
   {
     v6 = objc_opt_class();
     BUG_IN_CLIENT_OF_TARGETED_PREVIEW__VIEW_IS_NOT_IN_A_WINDOW(v6, v4);
@@ -607,16 +607,16 @@ LABEL_4:
   return v7;
 }
 
-- (id)_initWithView:(id)a3 fromCurrentState:(BOOL)a4 fallbackBackgroundColor:(id)a5 contentScale:(double)a6
+- (id)_initWithView:(id)view fromCurrentState:(BOOL)state fallbackBackgroundColor:(id)color contentScale:(double)scale
 {
-  v8 = a4;
+  stateCopy = state;
   v99 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  viewCopy = view;
+  colorCopy = color;
   v12 = objc_alloc_init(UIPreviewParameters);
-  v13 = [v10 backgroundColor];
-  v14 = v13;
-  if (v13 || (v14 = v11) != 0)
+  backgroundColor = [viewCopy backgroundColor];
+  v14 = backgroundColor;
+  if (backgroundColor || (v14 = colorCopy) != 0)
   {
     [(UIPreviewParameters *)v12 setBackgroundColor:v14];
   }
@@ -627,42 +627,42 @@ LABEL_4:
     [(UIPreviewParameters *)v12 setBackgroundColor:v71];
   }
 
-  v15 = [v10 layer];
-  v16 = [v15 shadowPath];
+  layer = [viewCopy layer];
+  shadowPath = [layer shadowPath];
 
-  if (v16)
+  if (shadowPath)
   {
-    v17 = [v10 layer];
-    v18 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [v17 shadowPath]);
+    layer2 = [viewCopy layer];
+    v18 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [layer2 shadowPath]);
 
-    CGAffineTransformMakeScale(&v79, a6, a6);
+    CGAffineTransformMakeScale(&v79, scale, scale);
     [v18 applyTransform:&v79];
     [(UIPreviewParameters *)v12 setShadowPath:v18];
   }
 
-  v19 = [v10 _outermostLayer];
-  v20 = v19;
-  if (v19)
+  _outermostLayer = [viewCopy _outermostLayer];
+  v20 = _outermostLayer;
+  if (_outermostLayer)
   {
-    v21 = v19;
+    layer3 = _outermostLayer;
   }
 
   else
   {
-    v21 = [v10 layer];
+    layer3 = [viewCopy layer];
   }
 
-  v22 = v21;
+  v22 = layer3;
 
-  v72 = a6;
-  if (v8)
+  scaleCopy = scale;
+  if (stateCopy)
   {
-    v23 = [v22 presentationLayer];
-    v24 = [v23 superlayer];
+    presentationLayer = [v22 presentationLayer];
+    superlayer = [presentationLayer superlayer];
 
-    if (v24)
+    if (superlayer)
     {
-      v25 = v23;
+      v25 = presentationLayer;
 
       v22 = v25;
     }
@@ -671,25 +671,25 @@ LABEL_4:
   [v22 bounds];
   v28 = v27 + v26 * 0.5;
   v31 = v30 + v29 * 0.5;
-  v32 = [v22 superlayer];
-  [v22 convertPoint:v32 toLayer:{v28, v31}];
+  superlayer2 = [v22 superlayer];
+  [v22 convertPoint:superlayer2 toLayer:{v28, v31}];
   v34 = v33;
   v36 = v35;
 
-  [v10 bounds];
+  [viewCopy bounds];
   v38 = v37;
   v40 = v39;
   v42 = v41;
   v44 = v43;
-  v45 = [v10 traitCollection];
-  [v45 displayScale];
+  traitCollection = [viewCopy traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale(v38, v40, v42, v44, v34, v36, v46);
   v48 = v47;
   v50 = v49;
   v52 = v51;
   v54 = v53;
 
-  [v10 _cropInsets];
+  [viewCopy _cropInsets];
   v56 = v55;
   v58 = v57;
   v60 = v59;
@@ -733,34 +733,34 @@ LABEL_4:
   *&v79.tx = *(MEMORY[0x1E69792E8] + 32);
   v80 = v66;
   CATransform3DSetDecomposition_();
-  v67 = [v10 superview];
+  superview = [viewCopy superview];
   v75 = v81;
   v76 = v82;
   v77 = v83;
   v78 = v84;
   v73 = v79;
   v74 = v80;
-  v68 = [UIPreviewTarget _targetWithContainer:v67 center:&v73 transform3D:v48 + v58 + (v52 - (v58 + v62)) * 0.5, v50 + v56 + (v54 - (v56 + v60)) * 0.5];
+  v68 = [UIPreviewTarget _targetWithContainer:superview center:&v73 transform3D:v48 + v58 + (v52 - (v58 + v62)) * 0.5, v50 + v56 + (v54 - (v56 + v60)) * 0.5];
 
-  [v68 _setContentScale:v72];
-  v69 = [(UITargetedPreview *)self initWithView:v10 parameters:v12 target:v68];
+  [v68 _setContentScale:scaleCopy];
+  v69 = [(UITargetedPreview *)self initWithView:viewCopy parameters:v12 target:v68];
 
   return v69;
 }
 
-- (id)_defaultTargetForView:(id)a3 withCenter:(CGPoint)a4 version:(unsigned int)a5
+- (id)_defaultTargetForView:(id)view withCenter:(CGPoint)center version:(unsigned int)version
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = center.y;
+  x = center.x;
+  viewCopy = view;
   v8 = dyld_program_sdk_at_least();
   v9 = [UIPreviewTarget alloc];
-  v10 = [v7 superview];
+  superview = [viewCopy superview];
   if (v8)
   {
-    if (v7)
+    if (viewCopy)
     {
-      [v7 transform];
+      [viewCopy transform];
     }
 
     else
@@ -768,12 +768,12 @@ LABEL_4:
       memset(v14, 0, sizeof(v14));
     }
 
-    v11 = [(UIPreviewTarget *)v9 initWithContainer:v10 center:v14 transform:x, y];
+    v11 = [(UIPreviewTarget *)v9 initWithContainer:superview center:v14 transform:x, y];
   }
 
   else
   {
-    v11 = [(UIPreviewTarget *)v9 initWithContainer:v10 center:x, y];
+    v11 = [(UIPreviewTarget *)v9 initWithContainer:superview center:x, y];
   }
 
   v12 = v11;
@@ -783,28 +783,28 @@ LABEL_4:
 
 - (UITargetedPreview)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:355 description:@"not implemented"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:355 description:@"not implemented"];
 
   return 0;
 }
 
 + (UITargetedPreview)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"UITargetedPreview.m" lineNumber:360 description:@"not implemented"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:360 description:@"not implemented"];
 
   return 0;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 fromView:(id)a4
+- (BOOL)containsPoint:(CGPoint)point fromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   target = self->_target;
-  v8 = a4;
-  v9 = [(UIPreviewTarget *)target container];
-  [v9 convertPoint:v8 fromView:{x, y}];
+  viewCopy = view;
+  container = [(UIPreviewTarget *)target container];
+  [container convertPoint:viewCopy fromView:{x, y}];
   v11 = v10;
   v13 = v12;
 
@@ -813,12 +813,12 @@ LABEL_4:
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(UIPreviewParameters *)self->_parameters visiblePath];
+  visiblePath = [(UIPreviewParameters *)self->_parameters visiblePath];
 
-  if (v22)
+  if (visiblePath)
   {
-    v23 = [(UIPreviewParameters *)self->_parameters visiblePath];
-    [v23 bounds];
+    visiblePath2 = [(UIPreviewParameters *)self->_parameters visiblePath];
+    [visiblePath2 bounds];
     v15 = v24;
     v17 = v25;
     v19 = v26;
@@ -854,17 +854,17 @@ LABEL_4:
   return CGRectContainsPoint(v39, v36);
 }
 
-- (CGSize)_sizeUsingPresentationLayer:(BOOL)a3
+- (CGSize)_sizeUsingPresentationLayer:(BOOL)layer
 {
-  v3 = a3;
-  v5 = [(UITargetedPreview *)self parameters];
-  v6 = [v5 visiblePath];
+  layerCopy = layer;
+  parameters = [(UITargetedPreview *)self parameters];
+  visiblePath = [parameters visiblePath];
 
-  if (v6)
+  if (visiblePath)
   {
-    v7 = [(UITargetedPreview *)self parameters];
-    v8 = [v7 visiblePath];
-    [v8 bounds];
+    parameters2 = [(UITargetedPreview *)self parameters];
+    visiblePath2 = [parameters2 visiblePath];
+    [visiblePath2 bounds];
     v10 = v9;
     v12 = v11;
   }
@@ -872,29 +872,29 @@ LABEL_4:
   else
   {
     v13 = self->_layer;
-    v7 = v13;
-    if (v3)
+    parameters2 = v13;
+    if (layerCopy)
     {
-      v14 = [(CALayer *)v13 presentationLayer];
+      presentationLayer = [(CALayer *)v13 presentationLayer];
 
-      if (v14)
+      if (presentationLayer)
       {
-        v15 = [v7 presentationLayer];
+        presentationLayer2 = [parameters2 presentationLayer];
 
-        v7 = v15;
+        parameters2 = presentationLayer2;
       }
     }
 
-    [v7 bounds];
+    [parameters2 bounds];
     v10 = v16 - (self->_cropInsets.left + self->_cropInsets.right);
     v12 = v17 - (self->_cropInsets.top + self->_cropInsets.bottom);
   }
 
-  v18 = [(UITargetedPreview *)self target];
-  [v18 _contentScale];
+  target = [(UITargetedPreview *)self target];
+  [target _contentScale];
   v20 = v10 * v19;
-  v21 = [(UITargetedPreview *)self target];
-  [v21 _contentScale];
+  target2 = [(UITargetedPreview *)self target];
+  [target2 _contentScale];
   v23 = v12 * v22;
 
   v24 = v20;
@@ -909,33 +909,33 @@ LABEL_4:
   v5 = newTarget;
   if (!v5)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:421 description:{@"Invalid parameter not satisfying: %@", @"newTarget != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:421 description:{@"Invalid parameter not satisfying: %@", @"newTarget != nil"}];
   }
 
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(UITargetedPreview *)self view];
-  v8 = [(UITargetedPreview *)self parameters];
-  v9 = [v6 initWithView:v7 parameters:v8 target:v5];
+  view = [(UITargetedPreview *)self view];
+  parameters = [(UITargetedPreview *)self parameters];
+  v9 = [v6 initWithView:view parameters:parameters target:v5];
 
   [v9 _setDefaultPreview:{-[UITargetedPreview _isDefaultPreview](self, "_isDefaultPreview")}];
-  v10 = [(UITargetedPreview *)self overridePositionTrackingView];
-  [v9 _setOverridePositionTrackingView:v10];
+  overridePositionTrackingView = [(UITargetedPreview *)self overridePositionTrackingView];
+  [v9 _setOverridePositionTrackingView:overridePositionTrackingView];
 
   v9[48] = self->_sourceViewIsInViewHierarchy;
   [v9 _setSourceHostingBehavior:{-[UITargetedPreview _sourceHostingBehavior](self, "_sourceHostingBehavior")}];
   [v9 set_captureHierarchyBelowSourceView:{-[UITargetedPreview _captureHierarchyBelowSourceView](self, "_captureHierarchyBelowSourceView")}];
-  v11 = [(UITargetedPreview *)self _internalIdentifier];
-  [v9 set_internalIdentifier:v11];
+  _internalIdentifier = [(UITargetedPreview *)self _internalIdentifier];
+  [v9 set_internalIdentifier:_internalIdentifier];
 
-  v12 = [(UITargetedPreview *)self _matchableProperties];
-  [v9 set_matchableProperties:v12];
+  _matchableProperties = [(UITargetedPreview *)self _matchableProperties];
+  [v9 set_matchableProperties:_matchableProperties];
 
   typedStorage = self->_typedStorage;
   if (typedStorage)
   {
-    v14 = [(UITargetedPreview *)v9 _typedStorage];
-    [(_UITypedStorage *)typedStorage copyInto:v14];
+    _typedStorage = [(UITargetedPreview *)v9 _typedStorage];
+    [(_UITypedStorage *)typedStorage copyInto:_typedStorage];
   }
 
   return v9;
@@ -943,45 +943,45 @@ LABEL_4:
 
 - (void)_typedStorage
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[8];
+    selfCopy = self;
+    v3 = self[8];
     if (!v3)
     {
       v4 = objc_opt_new();
-      v5 = v2[8];
-      v2[8] = v4;
+      v5 = selfCopy[8];
+      selfCopy[8] = v4;
 
-      v3 = v2[8];
+      v3 = selfCopy[8];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)_isVisibleIncludingAlpha:(BOOL)a3
+- (BOOL)_isVisibleIncludingAlpha:(BOOL)alpha
 {
-  v3 = a3;
-  v5 = [(UITargetedPreview *)self target];
-  v6 = [v5 container];
+  alphaCopy = alpha;
+  target = [(UITargetedPreview *)self target];
+  container = [target container];
 
-  v7 = [(UITargetedPreview *)self view];
-  v8 = [v6 _window];
-  if (!v8 || ([v6 isHidden] & 1) != 0 || (objc_msgSend(v6, "_isHiddenForReuse") & 1) != 0 || (objc_msgSend(v7, "isHidden") & 1) != 0)
+  view = [(UITargetedPreview *)self view];
+  _window = [container _window];
+  if (!_window || ([container isHidden] & 1) != 0 || (objc_msgSend(container, "_isHiddenForReuse") & 1) != 0 || (objc_msgSend(view, "isHidden") & 1) != 0)
   {
   }
 
   else
   {
-    v11 = [v7 _isHiddenForReuse];
+    _isHiddenForReuse = [view _isHiddenForReuse];
 
-    if ((v11 & 1) == 0)
+    if ((_isHiddenForReuse & 1) == 0)
     {
-      if (!v3 || ([v6 alpha], v12 >= 0.01) && (objc_msgSend(v7, "alpha"), v13 >= 0.01))
+      if (!alphaCopy || ([container alpha], v12 >= 0.01) && (objc_msgSend(view, "alpha"), v13 >= 0.01))
       {
         v9 = 1;
         goto LABEL_7;
@@ -997,16 +997,16 @@ LABEL_7:
 
 - (BOOL)_effectiveBackgroundColorResolvesToMaterial
 {
-  v3 = [(UITargetedPreview *)self parameters];
-  v4 = [v3 _effectiveBackgroundColor];
+  parameters = [(UITargetedPreview *)self parameters];
+  _effectiveBackgroundColor = [parameters _effectiveBackgroundColor];
 
-  v5 = [(UITargetedPreview *)self view];
-  v6 = [v5 traitCollection];
+  view = [(UITargetedPreview *)self view];
+  traitCollection = [view traitCollection];
 
-  v7 = [v4 _resolvedMaterialWithTraitCollection:v6];
-  LOBYTE(v5) = v7 != 0;
+  v7 = [_effectiveBackgroundColor _resolvedMaterialWithTraitCollection:traitCollection];
+  LOBYTE(view) = v7 != 0;
 
-  return v5;
+  return view;
 }
 
 - (CGRect)_frame
@@ -1014,8 +1014,8 @@ LABEL_7:
   [(UITargetedPreview *)self size];
   v4 = v3;
   v6 = v5;
-  v7 = [(UITargetedPreview *)self target];
-  [v7 center];
+  target = [(UITargetedPreview *)self target];
+  [target center];
   v9 = round(v8 - v6 * 0.5);
   v11 = round(v10 - v4 * 0.5);
 
@@ -1030,13 +1030,13 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)_isRoughlyEqualToPreview:(id)a3
+- (BOOL)_isRoughlyEqualToPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(UITargetedPreview *)self view];
-  v6 = [v4 view];
+  previewCopy = preview;
+  view = [(UITargetedPreview *)self view];
+  view2 = [previewCopy view];
 
-  if (v5 == v6)
+  if (view == view2)
   {
     v45 = 1;
   }
@@ -1046,30 +1046,30 @@ LABEL_7:
     [(UITargetedPreview *)self size];
     v8 = v7;
     v10 = v9;
-    v11 = [(UITargetedPreview *)self target];
-    [v11 center];
+    target = [(UITargetedPreview *)self target];
+    [target center];
     v13 = round(v12 - v10 * 0.5);
     v15 = round(v14 - v8 * 0.5);
 
-    v16 = [(UITargetedPreview *)self target];
-    v17 = [v16 container];
-    [v17 convertRect:0 toView:{v15, v13, v8, v10}];
+    target2 = [(UITargetedPreview *)self target];
+    container = [target2 container];
+    [container convertRect:0 toView:{v15, v13, v8, v10}];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    [v4 size];
+    [previewCopy size];
     v27 = v26;
     v29 = v28;
-    v30 = [v4 target];
-    [v30 center];
+    target3 = [previewCopy target];
+    [target3 center];
     v32 = round(v31 - v29 * 0.5);
     v34 = round(v33 - v27 * 0.5);
 
-    v35 = [v4 target];
-    v36 = [v35 container];
-    [v36 convertRect:0 toView:{v34, v32, v27, v29}];
+    target4 = [previewCopy target];
+    container2 = [target4 container];
+    [container2 convertRect:0 toView:{v34, v32, v27, v29}];
     v38 = v37;
     v40 = v39;
     v42 = v41;
@@ -1089,19 +1089,19 @@ LABEL_7:
   return v45;
 }
 
-- (void)_transferAnimationsToView:(id)a3
+- (void)_transferAnimationsToView:(id)view
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITargetedPreview *)self view];
-  v6 = [v5 layer];
+  viewCopy = view;
+  view = [(UITargetedPreview *)self view];
+  layer = [view layer];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(UITargetedPreview *)self _transferrableAnimationKeys];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _transferrableAnimationKeys = [(UITargetedPreview *)self _transferrableAnimationKeys];
+  v8 = [_transferrableAnimationKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1112,31 +1112,31 @@ LABEL_7:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_transferrableAnimationKeys);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v6 animationForKey:v12];
+        v13 = [layer animationForKey:v12];
         v14 = [v13 copy];
 
         if (v14)
         {
-          [v6 removeAnimationForKey:v12];
-          v15 = [v4 layer];
-          [v15 addAnimation:v14 forKey:v12];
+          [layer removeAnimationForKey:v12];
+          layer2 = [viewCopy layer];
+          [layer2 addAnimation:v14 forKey:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [_transferrableAnimationKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_setPrefersUnmaskedPlatterStyle:(BOOL)a3
+- (void)_setPrefersUnmaskedPlatterStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 5;
   }
@@ -1149,9 +1149,9 @@ LABEL_7:
   [(UITargetedPreview *)self _setPreviewMode:v3];
 }
 
-- (void)set_springboardPlatterStyle:(BOOL)a3
+- (void)set_springboardPlatterStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 4;
   }
@@ -1164,16 +1164,16 @@ LABEL_7:
   [(UITargetedPreview *)self _setPreviewMode:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UITargetedPreview *)self _internalIdentifier];
-    v7 = [v5 _internalIdentifier];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    _internalIdentifier = [(UITargetedPreview *)self _internalIdentifier];
+    _internalIdentifier2 = [v5 _internalIdentifier];
+    v8 = [_internalIdentifier isEqual:_internalIdentifier2];
 
     if (v8)
     {
@@ -1182,31 +1182,31 @@ LABEL_7:
 
     else
     {
-      v10 = [v5 view];
-      v11 = [(UITargetedPreview *)self view];
-      if (v10 == v11 && (v12 = [v5 _isDefaultPreview], v12 == -[UITargetedPreview _isDefaultPreview](self, "_isDefaultPreview")) && (v13 = objc_msgSend(v5, "_sourceViewIsInViewHierarchy"), v13 == -[UITargetedPreview _sourceViewIsInViewHierarchy](self, "_sourceViewIsInViewHierarchy")) && (v14 = objc_msgSend(v5, "_hasCustomParameters"), v14 == -[UITargetedPreview _hasCustomParameters](self, "_hasCustomParameters")) && (v15 = objc_msgSend(v5, "_hasCustomTarget"), v15 == -[UITargetedPreview _hasCustomTarget](self, "_hasCustomTarget")) && (v16 = objc_msgSend(v5, "_previewMode"), v16 == -[UITargetedPreview _previewMode](self, "_previewMode")))
+      view = [v5 view];
+      view2 = [(UITargetedPreview *)self view];
+      if (view == view2 && (v12 = [v5 _isDefaultPreview], v12 == -[UITargetedPreview _isDefaultPreview](self, "_isDefaultPreview")) && (v13 = objc_msgSend(v5, "_sourceViewIsInViewHierarchy"), v13 == -[UITargetedPreview _sourceViewIsInViewHierarchy](self, "_sourceViewIsInViewHierarchy")) && (v14 = objc_msgSend(v5, "_hasCustomParameters"), v14 == -[UITargetedPreview _hasCustomParameters](self, "_hasCustomParameters")) && (v15 = objc_msgSend(v5, "_hasCustomTarget"), v15 == -[UITargetedPreview _hasCustomTarget](self, "_hasCustomTarget")) && (v16 = objc_msgSend(v5, "_previewMode"), v16 == -[UITargetedPreview _previewMode](self, "_previewMode")))
       {
-        v17 = [v5 overridePositionTrackingView];
-        v18 = [(UITargetedPreview *)self overridePositionTrackingView];
-        if (v17 == v18)
+        overridePositionTrackingView = [v5 overridePositionTrackingView];
+        overridePositionTrackingView2 = [(UITargetedPreview *)self overridePositionTrackingView];
+        if (overridePositionTrackingView == overridePositionTrackingView2)
         {
           WeakRetained = objc_loadWeakRetained(v5 + 12);
           v21 = objc_loadWeakRetained(&self->_viewToSnapshot);
           if (WeakRetained == v21 && v5[13] == self->__PreviewProvider)
           {
-            v22 = [v5 target];
-            v28 = [(UITargetedPreview *)self target];
-            v29 = v22;
-            if ([v22 isEqual:v28])
+            target = [v5 target];
+            target2 = [(UITargetedPreview *)self target];
+            v29 = target;
+            if ([target isEqual:target2])
             {
-              v23 = [v5 parameters];
-              v26 = [(UITargetedPreview *)self parameters];
-              v27 = v23;
-              if ([v23 isEqual:v26])
+              parameters = [v5 parameters];
+              parameters2 = [(UITargetedPreview *)self parameters];
+              v27 = parameters;
+              if ([parameters isEqual:parameters2])
               {
-                v25 = [v5 _accessoryViews];
-                v24 = [(UITargetedPreview *)self _accessoryViews];
-                v9 = [v25 isEqual:?];
+                _accessoryViews = [v5 _accessoryViews];
+                _accessoryViews2 = [(UITargetedPreview *)self _accessoryViews];
+                v9 = [_accessoryViews isEqual:?];
               }
 
               else
@@ -1252,13 +1252,13 @@ LABEL_7:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UITargetedPreview *)self view];
-  if (v5)
+  view = [(UITargetedPreview *)self view];
+  if (view)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v6 stringWithFormat:@"<%@: %p>", v8, v5];
+    v9 = [v6 stringWithFormat:@"<%@: %p>", v8, view];
   }
 
   else
@@ -1266,13 +1266,13 @@ LABEL_7:
     v9 = @"(nil)";
   }
 
-  v10 = [(UITargetedPreview *)self parameters];
-  if (v10)
+  parameters = [(UITargetedPreview *)self parameters];
+  if (parameters)
   {
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v11 stringWithFormat:@"<%@: %p>", v13, v10];
+    v14 = [v11 stringWithFormat:@"<%@: %p>", v13, parameters];
   }
 
   else
@@ -1280,13 +1280,13 @@ LABEL_7:
     v14 = @"(nil)";
   }
 
-  v15 = [(UITargetedPreview *)self target];
-  if (v15)
+  target = [(UITargetedPreview *)self target];
+  if (target)
   {
     v16 = MEMORY[0x1E696AEC0];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v16 stringWithFormat:@"<%@: %p>", v18, v15];
+    v19 = [v16 stringWithFormat:@"<%@: %p>", v18, target];
   }
 
   else
@@ -1308,10 +1308,10 @@ LABEL_7:
 
 - (id)_resolvedBackgroundMaterial
 {
-  v2 = [(UITargetedPreview *)self view];
-  v3 = [v2 _resolvedBackgroundMaterial];
+  view = [(UITargetedPreview *)self view];
+  _resolvedBackgroundMaterial = [view _resolvedBackgroundMaterial];
 
-  return v3;
+  return _resolvedBackgroundMaterial;
 }
 
 @end

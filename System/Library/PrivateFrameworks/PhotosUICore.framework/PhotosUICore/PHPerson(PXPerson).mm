@@ -9,54 +9,54 @@
 
 - (BOOL)px_isHuman
 {
-  v1 = [a1 detectionType];
+  detectionType = [self detectionType];
 
-  return [PXPeopleUtilities isDetectionTypeHuman:v1];
+  return [PXPeopleUtilities isDetectionTypeHuman:detectionType];
 }
 
 - (id)px_keyPhotoDate
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 photoLibrary];
-  v3 = [v2 px_standardLibrarySpecificFetchOptions];
+  photoLibrary = [self photoLibrary];
+  px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
 
-  [v3 setFetchLimit:1];
-  [v3 setSortDescriptors:MEMORY[0x1E695E0F0]];
-  [v3 setIncludeTorsoAndFaceDetectionData:1];
-  v4 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v3 setIncludedDetectionTypes:v4];
+  [px_standardLibrarySpecificFetchOptions setFetchLimit:1];
+  [px_standardLibrarySpecificFetchOptions setSortDescriptors:MEMORY[0x1E695E0F0]];
+  [px_standardLibrarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [px_standardLibrarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  v5 = [MEMORY[0x1E69787C8] px_fetchKeyFaceForPerson:a1 options:v3];
-  v6 = [v5 firstObject];
+  v5 = [MEMORY[0x1E69787C8] px_fetchKeyFaceForPerson:self options:px_standardLibrarySpecificFetchOptions];
+  firstObject = [v5 firstObject];
 
-  [v3 setIncludeHiddenAssets:0];
+  [px_standardLibrarySpecificFetchOptions setIncludeHiddenAssets:0];
   v15[0] = *MEMORY[0x1E6978CA8];
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  [v3 addFetchPropertySets:v7];
+  [px_standardLibrarySpecificFetchOptions addFetchPropertySets:v7];
 
   v8 = MEMORY[0x1E6978630];
-  v14 = v6;
+  v14 = firstObject;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
-  v10 = [v8 fetchAssetsForFaces:v9 options:v3];
+  v10 = [v8 fetchAssetsForFaces:v9 options:px_standardLibrarySpecificFetchOptions];
 
-  v11 = [v10 firstObject];
-  v12 = [v11 creationDate];
+  firstObject2 = [v10 firstObject];
+  creationDate = [firstObject2 creationDate];
 
-  return v12;
+  return creationDate;
 }
 
 - (uint64_t)numberOfAssets
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v3 setShouldPrefetchCount:1];
-  [v3 setIncludeTorsoAndFaceDetectionData:1];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
   v4 = MEMORY[0x1E6978630];
-  v9[0] = a1;
+  v9[0] = self;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  v6 = [v4 fetchAssetsForPersons:v5 options:v3];
+  v6 = [v4 fetchAssetsForPersons:v5 options:librarySpecificFetchOptions];
 
   v7 = [v6 count];
   return v7;
@@ -65,7 +65,7 @@
 - (uint64_t)requestFaceCropImageWithTargetSize:()PXPerson displayScale:cropFactor:style:cacheResult:synchronous:resultHandler:
 {
   v18 = a10;
-  v19 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:a1 targetSize:a2 displayScale:a3, a4];
+  v19 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:self targetSize:a2 displayScale:a3, a4];
   [(PXPeopleFaceCropFetchOptions *)v19 setCropFactor:a6];
   [(PXPeopleFaceCropFetchOptions *)v19 setCornerStyle:a7];
   [(PXPeopleFaceCropFetchOptions *)v19 setShouldCacheResult:a8];

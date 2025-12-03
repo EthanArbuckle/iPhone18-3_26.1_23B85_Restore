@@ -9,7 +9,7 @@
 - (uint64_t)containsDotDotPathComponents
 {
   v14 = *MEMORY[0x1E69E9840];
-  [a1 pathComponents];
+  [self pathComponents];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;

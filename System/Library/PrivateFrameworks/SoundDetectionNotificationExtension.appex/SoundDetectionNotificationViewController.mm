@@ -1,5 +1,5 @@
 @interface SoundDetectionNotificationViewController
-- (void)didReceiveNotification:(id)a3;
+- (void)didReceiveNotification:(id)notification;
 - (void)viewDidLoad;
 @end
 
@@ -12,13 +12,13 @@
   [(SoundDetectionNotificationViewController *)&v2 viewDidLoad];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = AXLogUltron();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100000B44(v3, v4);
+    sub_100000B44(notificationCopy, v4);
   }
 }
 

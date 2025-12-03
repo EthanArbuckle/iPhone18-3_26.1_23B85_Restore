@@ -1,8 +1,8 @@
 @interface PXStoryResizedTimeline
-- (CGRect)transformedRectForOriginalClipInfo:(id *)a3 originalRect:(CGRect)a4;
+- (CGRect)transformedRectForOriginalClipInfo:(id *)info originalRect:(CGRect)rect;
 - (CGSize)originalSize;
 - (CGSize)targetSize;
-- (PXStoryResizedTimeline)initWithOriginalTimeline:(id)a3 targetSize:(CGSize)a4 options:(unint64_t)a5;
+- (PXStoryResizedTimeline)initWithOriginalTimeline:(id)timeline targetSize:(CGSize)size options:(unint64_t)options;
 - (id)description;
 @end
 
@@ -17,12 +17,12 @@
   return result;
 }
 
-- (CGRect)transformedRectForOriginalClipInfo:(id *)a3 originalRect:(CGRect)a4
+- (CGRect)transformedRectForOriginalClipInfo:(id *)info originalRect:(CGRect)rect
 {
   v10.receiver = self;
   v10.super_class = PXStoryResizedTimeline;
   [PXStoryTransformedTimeline transformedRectForOriginalClipInfo:sel_transformedRectForOriginalClipInfo_originalRect_ originalRect:?];
-  if ((a3->var3 & 4) != 0)
+  if ((info->var3 & 4) != 0)
   {
     if (([(PXStoryResizedTimeline *)self options]& 1) == 0)
     {
@@ -43,8 +43,8 @@
 
 - (CGSize)originalSize
 {
-  v2 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  [v2 originalSize];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  [originalTimeline originalSize];
   v4 = v3;
   v6 = v5;
 
@@ -64,19 +64,19 @@
   v6 = NSStringFromCGSize(v13);
   [(PXStoryResizedTimeline *)self targetSize];
   v7 = NSStringFromCGSize(v14);
-  v8 = [(PXStoryResizedTimeline *)self options];
-  v9 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v10 = [v3 initWithFormat:@"<%@ %p; %@ => %@; options: %lx; Original Timeline:\n\t%@>", v5, self, v6, v7, v8, v9];
+  options = [(PXStoryResizedTimeline *)self options];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v10 = [v3 initWithFormat:@"<%@ %p; %@ => %@; options: %lx; Original Timeline:\n\t%@>", v5, self, v6, v7, options, originalTimeline];
 
   return v10;
 }
 
-- (PXStoryResizedTimeline)initWithOriginalTimeline:(id)a3 targetSize:(CGSize)a4 options:(unint64_t)a5
+- (PXStoryResizedTimeline)initWithOriginalTimeline:(id)timeline targetSize:(CGSize)size options:(unint64_t)options
 {
   v7 = 0u;
   v8 = 0u;
   v6 = 0u;
-  [a3 originalSize];
+  [timeline originalSize];
   PXAffineTransformMakeFromRects();
 }
 

@@ -1,18 +1,18 @@
 @interface MTL4RenderPassDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id)a3 width:(unint64_t *)a4 height:(unint64_t *)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id)validate width:(unint64_t *)width height:(unint64_t *)height;
 - (MTL4RenderPassDescriptor)init;
 - (MTLRenderPassDepthAttachmentDescriptor)depthAttachment;
 - (MTLRenderPassStencilAttachmentDescriptor)stencilAttachment;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)getSamplePositions:(id *)a3 count:(unint64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)getSamplePositions:(id *)positions count:(unint64_t)count;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setDepthAttachment:(id)a3;
-- (void)setRasterizationRateMap:(id)a3;
-- (void)setSamplePositions:(id *)a3 count:(unint64_t)a4;
-- (void)setStencilAttachment:(id)a3;
-- (void)setVisibilityResultBuffer:(id)a3;
+- (void)setDepthAttachment:(id)attachment;
+- (void)setRasterizationRateMap:(id)map;
+- (void)setSamplePositions:(id *)positions count:(unint64_t)count;
+- (void)setStencilAttachment:(id)attachment;
+- (void)setVisibilityResultBuffer:(id)buffer;
 @end
 
 @implementation MTL4RenderPassDescriptor
@@ -42,7 +42,7 @@
   [(MTL4RenderPassDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(MTL4RenderPassDescriptor);
   *&v5->_private.imageBlockSampleLength = *&self->_private.imageBlockSampleLength;
@@ -58,13 +58,13 @@
   v5->_private.visibilityResultBuffer = self->_private.visibilityResultBuffer;
   do
   {
-    v5->_private.attachments->_color_descriptors[v6] = [(MTLRenderPassColorAttachmentDescriptorInternal *)self->_private.attachments->_color_descriptors[v6] copyWithZone:a3];
+    v5->_private.attachments->_color_descriptors[v6] = [(MTLRenderPassColorAttachmentDescriptorInternal *)self->_private.attachments->_color_descriptors[v6] copyWithZone:zone];
     ++v6;
   }
 
   while (v6 != 8);
-  v5->_private.attachments->_depth_descriptor = [(MTLRenderPassDepthAttachmentDescriptorInternal *)self->_private.attachments->_depth_descriptor copyWithZone:a3];
-  v5->_private.attachments->_stencil_descriptor = [(MTLRenderPassStencilAttachmentDescriptorInternal *)self->_private.attachments->_stencil_descriptor copyWithZone:a3];
+  v5->_private.attachments->_depth_descriptor = [(MTLRenderPassDepthAttachmentDescriptorInternal *)self->_private.attachments->_depth_descriptor copyWithZone:zone];
+  v5->_private.attachments->_stencil_descriptor = [(MTLRenderPassStencilAttachmentDescriptorInternal *)self->_private.attachments->_stencil_descriptor copyWithZone:zone];
   numCustomSamplePositions = self->_private.numCustomSamplePositions;
   v5->_private.numCustomSamplePositions = numCustomSamplePositions;
   if (numCustomSamplePositions)
@@ -115,9 +115,9 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v25) = 1;
     return v25;
@@ -136,14 +136,14 @@
   v53 = v13;
   v54 = v14;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3) || self->_private.renderTargetArrayLength != *(a3 + 7) || self->_private.imageBlockSampleLength != *(a3 + 11) || self->_private.threadgroupMemoryLength != *(a3 + 12) || self->_private.tileWidth != *(a3 + 8) || self->_private.tileHeight != *(a3 + 9) || self->_private.var0.defaultSampleCount != *(a3 + 10) || self->_private.defaultColorSampleCount != *(a3 + 5) || self->_private.renderTargetWidth != *(a3 + 3) || self->_private.renderTargetHeight != *(a3 + 4) || self->_private.visibilityResultType != *(a3 + 25) || self->_private.visibilityResultBuffer != *(a3 + 2) || self->_private.rasterizationRateMap != *(a3 + 22) || self->_private.supportColorAttachmentMapping != *(a3 + 208))
+  if (Class != object_getClass(equal) || self->_private.renderTargetArrayLength != *(equal + 7) || self->_private.imageBlockSampleLength != *(equal + 11) || self->_private.threadgroupMemoryLength != *(equal + 12) || self->_private.tileWidth != *(equal + 8) || self->_private.tileHeight != *(equal + 9) || self->_private.var0.defaultSampleCount != *(equal + 10) || self->_private.defaultColorSampleCount != *(equal + 5) || self->_private.renderTargetWidth != *(equal + 3) || self->_private.renderTargetHeight != *(equal + 4) || self->_private.visibilityResultType != *(equal + 25) || self->_private.visibilityResultBuffer != *(equal + 2) || self->_private.rasterizationRateMap != *(equal + 22) || self->_private.supportColorAttachmentMapping != *(equal + 208))
   {
     goto LABEL_62;
   }
 
   v18 = 0;
   p_private = &self->_private;
-  v20 = a3 + 8;
+  v20 = equal + 8;
   do
   {
     v21 = p_private->attachments->_color_descriptors[v18];
@@ -161,7 +161,7 @@
       }
 
       v23 = objc_alloc_init(MTLRenderPassColorAttachmentDescriptorInternal);
-      v24 = (a3 + 8);
+      v24 = (equal + 8);
       v22 = v23;
     }
 
@@ -225,7 +225,7 @@ LABEL_24:
   if (v31)
   {
     v32 = objc_alloc_init(MTLRenderPassDepthAttachmentDescriptorInternal);
-    v33 = (a3 + 8);
+    v33 = (equal + 8);
     v29 = v32;
 LABEL_38:
     v33->attachments->_depth_descriptor = v32;
@@ -274,7 +274,7 @@ LABEL_41:
     if (v37)
     {
       v38 = objc_alloc_init(MTLRenderPassStencilAttachmentDescriptorInternal);
-      p_private = (a3 + 8);
+      p_private = (equal + 8);
       v35 = v38;
 LABEL_53:
       p_private->attachments->_stencil_descriptor = v38;
@@ -285,14 +285,14 @@ LABEL_53:
     {
 LABEL_55:
       numCustomSamplePositions = self->_private.numCustomSamplePositions;
-      if (numCustomSamplePositions != *(a3 + 21))
+      if (numCustomSamplePositions != *(equal + 21))
       {
         goto LABEL_62;
       }
 
       if (numCustomSamplePositions)
       {
-        v40 = (a3 + 108);
+        v40 = (equal + 108);
         p_y = &self->_private.customSamplePositions[0].y;
         LOBYTE(v25) = 1;
         while (*(p_y - 1) == *(v40 - 1) && *p_y == *v40)
@@ -319,26 +319,26 @@ LABEL_62:
   return v25;
 }
 
-- (void)setRasterizationRateMap:(id)a3
+- (void)setRasterizationRateMap:(id)map
 {
-  self->_private.rasterizationRateMap = a3;
+  self->_private.rasterizationRateMap = map;
 
-  v4 = a3;
+  mapCopy = map;
 }
 
-- (void)setVisibilityResultBuffer:(id)a3
+- (void)setVisibilityResultBuffer:(id)buffer
 {
-  self->_private.visibilityResultBuffer = a3;
+  self->_private.visibilityResultBuffer = buffer;
 
-  v4 = a3;
+  bufferCopy = buffer;
 }
 
-- (void)setSamplePositions:(id *)a3 count:(unint64_t)a4
+- (void)setSamplePositions:(id *)positions count:(unint64_t)count
 {
-  v9 = a3;
-  if (a4 <= 8 && ((1 << a4) & 0x115) != 0)
+  positionsCopy = positions;
+  if (count <= 8 && ((1 << count) & 0x115) != 0)
   {
-    if (a3)
+    if (positions)
     {
       goto LABEL_5;
     }
@@ -346,77 +346,77 @@ LABEL_62:
 
   else
   {
-    MTLReportFailure(0, "[MTL4RenderPassDescriptor setSamplePositions:count:]", 403, @"count (%lu) is not a supported sample count for custom positions. count must be 0, 2, 4 or 8.", v4, v5, v6, v7, a4);
-    if (v9)
+    MTLReportFailure(0, "[MTL4RenderPassDescriptor setSamplePositions:count:]", 403, @"count (%lu) is not a supported sample count for custom positions. count must be 0, 2, 4 or 8.", v4, v5, v6, v7, count);
+    if (positionsCopy)
     {
       goto LABEL_5;
     }
   }
 
-  if (a4)
+  if (count)
   {
-    [(MTL4RenderPassDescriptor *)a4 setSamplePositions:a2 count:a3, a4, v4, v5, v6, v7];
+    [(MTL4RenderPassDescriptor *)count setSamplePositions:a2 count:positions, count, v4, v5, v6, v7];
     return;
   }
 
 LABEL_5:
-  if (v9 && a4 <= 8)
+  if (positionsCopy && count <= 8)
   {
-    if (a4)
+    if (count)
     {
       v11 = 0;
       do
       {
-        var0 = v9->var0;
-        if (v9->var0 < 0.0 || var0 >= 1.0)
+        var0 = positionsCopy->var0;
+        if (positionsCopy->var0 < 0.0 || var0 >= 1.0)
         {
           MTLReportFailure(0, "[MTL4RenderPassDescriptor setSamplePositions:count:]", 419, @"Provided sample position x-coodinate (%f) at index %u is not within the range [0,1."), v4, v5, v6, v7, COERCE__INT64(var0));
         }
 
-        var1 = v9->var1;
+        var1 = positionsCopy->var1;
         if (var1 < 0.0 || var1 >= 1.0)
         {
           MTLReportFailure(0, "[MTL4RenderPassDescriptor setSamplePositions:count:]", 421, @"Provided sample position y-coodinate (%f) at index %u is not within the range [0,1."), v4, v5, v6, v7, COERCE__INT64(var1));
         }
 
-        v16 = *v9++;
+        v16 = *positionsCopy++;
         self->_private.customSamplePositions[v11++] = v16;
       }
 
-      while (a4 != v11);
+      while (count != v11);
     }
 
-    self->_private.numCustomSamplePositions = a4;
+    self->_private.numCustomSamplePositions = count;
   }
 }
 
-- (unint64_t)getSamplePositions:(id *)a3 count:(unint64_t)a4
+- (unint64_t)getSamplePositions:(id *)positions count:(unint64_t)count
 {
-  if (!a3 && a4)
+  if (!positions && count)
   {
-    [(MTL4RenderPassDescriptor *)a4 getSamplePositions:a2 count:0, a4, v4, v5, v6, v7];
+    [(MTL4RenderPassDescriptor *)count getSamplePositions:a2 count:0, count, v4, v5, v6, v7];
   }
 
-  else if (!a4)
+  else if (!count)
   {
     goto LABEL_6;
   }
 
-  if (self->_private.numCustomSamplePositions != a4)
+  if (self->_private.numCustomSamplePositions != count)
   {
-    MTLReportFailure(0, "[MTL4RenderPassDescriptor getSamplePositions:count:]", 435, @"Non-zero count (%lu) does not match the number of programmed custom sample positions (%lu).", v4, v5, v6, v7, a4);
+    MTLReportFailure(0, "[MTL4RenderPassDescriptor getSamplePositions:count:]", 435, @"Non-zero count (%lu) does not match the number of programmed custom sample positions (%lu).", v4, v5, v6, v7, count);
   }
 
 LABEL_6:
   result = self->_private.numCustomSamplePositions;
-  if (a3 && result == a4)
+  if (positions && result == count)
   {
-    if (a4)
+    if (count)
     {
       v12 = 0;
       do
       {
-        a3[v12] = self->_private.customSamplePositions[v12];
+        positions[v12] = self->_private.customSamplePositions[v12];
         ++v12;
         result = self->_private.numCustomSamplePositions;
       }
@@ -453,9 +453,9 @@ LABEL_6:
   return &self->_private.attachments->_depth_descriptor->super;
 }
 
-- (void)setDepthAttachment:(id)a3
+- (void)setDepthAttachment:(id)attachment
 {
-  if (a3)
+  if (attachment)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -466,10 +466,10 @@ LABEL_6:
   }
 
   attachments = self->_private.attachments;
-  if (attachments->_depth_descriptor != a3)
+  if (attachments->_depth_descriptor != attachment)
   {
     depth_descriptor = attachments->_depth_descriptor;
-    self->_private.attachments->_depth_descriptor = [a3 copy];
+    self->_private.attachments->_depth_descriptor = [attachment copy];
   }
 }
 
@@ -493,9 +493,9 @@ LABEL_6:
   return &self->_private.attachments->_stencil_descriptor->super;
 }
 
-- (void)setStencilAttachment:(id)a3
+- (void)setStencilAttachment:(id)attachment
 {
-  if (a3)
+  if (attachment)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -506,19 +506,19 @@ LABEL_6:
   }
 
   attachments = self->_private.attachments;
-  if (attachments->_stencil_descriptor != a3)
+  if (attachments->_stencil_descriptor != attachment)
   {
     stencil_descriptor = attachments->_stencil_descriptor;
-    self->_private.attachments->_stencil_descriptor = [a3 copy];
+    self->_private.attachments->_stencil_descriptor = [attachment copy];
   }
 }
 
-- (BOOL)validate:(id)a3 width:(unint64_t *)a4 height:(unint64_t *)a5
+- (BOOL)validate:(id)validate width:(unint64_t *)width height:(unint64_t *)height
 {
   v14 = 0;
   memset(v13, 0, sizeof(v13));
-  _MTLMessageContextBegin_(v13, "[MTL4RenderPassDescriptor validate:width:height:]", 548, a3, 11, "Render Pass Descriptor Validation");
-  _MTLValidateRenderPassDescriptorCommon(v13, &self->_private.attachments, a3, a4, a5, v9, v10, v11);
+  _MTLMessageContextBegin_(v13, "[MTL4RenderPassDescriptor validate:width:height:]", 548, validate, 11, "Render Pass Descriptor Validation");
+  _MTLValidateRenderPassDescriptorCommon(v13, &self->_private.attachments, validate, width, height, v9, v10, v11);
   _MTLMessageContextEnd(v13);
   return 1;
 }

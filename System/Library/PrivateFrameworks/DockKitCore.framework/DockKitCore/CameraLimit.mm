@@ -1,21 +1,21 @@
 @interface CameraLimit
 - (_TtC11DockKitCore11CameraLimit)init;
-- (_TtC11DockKitCore11CameraLimit)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC11DockKitCore11CameraLimit)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CameraLimit
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CameraLimit.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CameraLimit.encode(with:)(coderCopy);
 }
 
-- (_TtC11DockKitCore11CameraLimit)initWithCoder:(id)a3
+- (_TtC11DockKitCore11CameraLimit)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_22452F02C();
 
   return v4;

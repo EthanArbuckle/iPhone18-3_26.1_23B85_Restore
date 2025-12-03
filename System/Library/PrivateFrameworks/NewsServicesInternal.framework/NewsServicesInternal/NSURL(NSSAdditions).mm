@@ -38,19 +38,19 @@
 
 - (uint64_t)nss_isNewsURL
 {
-  v2 = [a1 _nss_valueForQueryParameterWithKey:@"open_in"];
+  v2 = [self _nss_valueForQueryParameterWithKey:@"open_in"];
   v3 = [v2 isEqualToString:@"app"];
 
-  return ([a1 fc_isNewsURL] | v3) & 1;
+  return ([self fc_isNewsURL] | v3) & 1;
 }
 
 - (uint64_t)nss_isAudioURL
 {
-  result = [a1 nss_isNewsURL];
+  result = [self nss_isNewsURL];
   if (result)
   {
-    v3 = [a1 pathComponents];
-    v4 = [v3 containsObject:@"nowPlaying"];
+    pathComponents = [self pathComponents];
+    v4 = [pathComponents containsObject:@"nowPlaying"];
 
     return v4;
   }
@@ -67,36 +67,36 @@
     +[NSURL(NSSAdditions) nss_NewsURLForWebLinkURL:];
   }
 
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"http"])
+  scheme = [v3 scheme];
+  if ([scheme isEqualToString:@"http"])
   {
-    v5 = [v3 absoluteString];
-    v6 = v5;
+    absoluteString = [v3 absoluteString];
+    v6 = absoluteString;
     v7 = @"http";
     v8 = @"applenews";
   }
 
   else
   {
-    if (![v4 isEqualToString:@"https"])
+    if (![scheme isEqualToString:@"https"])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = scheme;
         _os_log_impl(&dword_25BF0A000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported scheme: %@", &v13, 0xCu);
       }
 
       goto LABEL_12;
     }
 
-    v5 = [v3 absoluteString];
-    v6 = v5;
+    absoluteString = [v3 absoluteString];
+    v6 = absoluteString;
     v7 = @"https";
     v8 = @"applenewss";
   }
 
-  v9 = [v5 fc_stringByReplacingPrefix:v7 withString:v8];
+  v9 = [absoluteString fc_stringByReplacingPrefix:v7 withString:v8];
 
   if (v9)
   {
@@ -142,7 +142,7 @@ LABEL_13:
 LABEL_10:
     v9[0] = v4;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-    v6 = [a1 nss_NewsURLWithPathComponents:v5 internal:0];
+    v6 = [self nss_NewsURLWithPathComponents:v5 internal:0];
 
     goto LABEL_13;
   }
@@ -183,7 +183,7 @@ LABEL_13:
 LABEL_10:
     v9[0] = v4;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-    v6 = [a1 nss_NewsURLWithPathComponents:v5 internal:0];
+    v6 = [self nss_NewsURLWithPathComponents:v5 internal:0];
 
     goto LABEL_13;
   }
@@ -225,7 +225,7 @@ LABEL_10:
     v9[0] = v4;
     v9[1] = @"archive";
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
-    v6 = [a1 nss_NewsURLWithPathComponents:v5 internal:0];
+    v6 = [self nss_NewsURLWithPathComponents:v5 internal:0];
 
     goto LABEL_13;
   }
@@ -266,7 +266,7 @@ LABEL_13:
 LABEL_10:
     v9[0] = v4;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-    v6 = [a1 nss_NewsURLWithPathComponents:v5 internal:0];
+    v6 = [self nss_NewsURLWithPathComponents:v5 internal:0];
 
     goto LABEL_13;
   }
@@ -282,7 +282,7 @@ LABEL_13:
 + (id)nss_NewsURLForArticleID:()NSSAdditions title:
 {
   v6 = a4;
-  v7 = [a1 nss_NewsURLForArticleID:a3 internal:0 targetIsVideo:0 hardPaywall:0];
+  v7 = [self nss_NewsURLForArticleID:a3 internal:0 targetIsVideo:0 hardPaywall:0];
   [v7 _setTitle:v6];
 
   return v7;
@@ -290,10 +290,10 @@ LABEL_13:
 
 - (uint64_t)nss_hasRefreshParameter
 {
-  result = [a1 nss_isNewsURL];
+  result = [self nss_isNewsURL];
   if (result)
   {
-    v3 = [a1 _nss_valueForQueryParameterWithKey:@"r"];
+    v3 = [self _nss_valueForQueryParameterWithKey:@"r"];
     v4 = [v3 isEqualToString:@"1"];
 
     return v4;
@@ -365,7 +365,7 @@ LABEL_23:
   }
 
 LABEL_24:
-  v12 = [a1 nss_NewsURLWithPathComponents:v7 queryItems:v8 internal:0];
+  v12 = [self nss_NewsURLWithPathComponents:v7 queryItems:v8 internal:0];
 
   return v12;
 }
@@ -392,14 +392,14 @@ LABEL_24:
     [v9 addObject:v10];
   }
 
-  v11 = [a1 nss_NewsURLWithPathComponents:v8 queryItems:v9 internal:0];
+  v11 = [self nss_NewsURLWithPathComponents:v8 queryItems:v9 internal:0];
 
   return v11;
 }
 
 - (uint64_t)nss_isSubscribeURL
 {
-  v1 = [a1 _nss_valueForQueryParameterWithKey:@"subscribe"];
+  v1 = [self _nss_valueForQueryParameterWithKey:@"subscribe"];
   v2 = [v1 isEqualToString:@"1"];
 
   return v2;
@@ -410,7 +410,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"foryou";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -422,7 +422,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"magazines";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -434,7 +434,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"mymagazines";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -446,7 +446,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"puzzles";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -458,7 +458,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"mysports";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -470,7 +470,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"myscores";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -482,7 +482,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"mysportshighlights";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -494,7 +494,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"saved";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -506,7 +506,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"history";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -518,7 +518,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"favoritespicker";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -530,7 +530,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"notifications";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -542,7 +542,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"puzzle";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -554,7 +554,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"food";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -566,7 +566,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"recipes";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -580,7 +580,7 @@ LABEL_24:
   v4 = MEMORY[0x277CBEA60];
   v5 = a3;
   v6 = [v4 arrayWithObjects:&v10 count:1];
-  v7 = [a1 nss_NewsURLWithPathComponents:v6 queryItems:v5 internal:{0, v10, v11}];
+  v7 = [self nss_NewsURLWithPathComponents:v6 queryItems:v5 internal:{0, v10, v11}];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -592,7 +592,7 @@ LABEL_24:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"savedRecipes";
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v3 = [a1 nss_NewsURLWithPathComponents:v2 internal:0];
+  v3 = [self nss_NewsURLWithPathComponents:v2 internal:0];
 
   v4 = *MEMORY[0x277D85DE8];
 
@@ -608,7 +608,7 @@ LABEL_24:
   }
 
   v5 = [MEMORY[0x277CCAD18] queryItemWithName:@"campaign_id" value:v4];
-  v6 = [a1 _nss_URLByAppendingQueryItem:v5];
+  v6 = [self _nss_URLByAppendingQueryItem:v5];
 
   return v6;
 }
@@ -621,10 +621,10 @@ LABEL_24:
     [NSURL(NSSAdditions) _nss_URLByAppendingQueryItem:];
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:a1 resolvingAgainstBaseURL:1];
+  v5 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:self resolvingAgainstBaseURL:1];
   v6 = MEMORY[0x277CBEB18];
-  v7 = [v5 queryItems];
-  v8 = [v6 arrayWithArray:v7];
+  queryItems = [v5 queryItems];
+  v8 = [v6 arrayWithArray:queryItems];
 
   [v8 addObject:v4];
   [v5 setQueryItems:v8];
@@ -637,9 +637,9 @@ LABEL_24:
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 query];
-  v6 = [v5 stringByRemovingPercentEncoding];
-  v7 = [v6 componentsSeparatedByString:@"&"];
+  query = [self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v7 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v22 = 0u;
   v23 = 0u;
@@ -662,11 +662,11 @@ LABEL_24:
         }
 
         v13 = [*(*(&v20 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v14 = [v13 firstObject];
-        v15 = [v13 lastObject];
-        if ([v14 isEqualToString:v4])
+        firstObject = [v13 firstObject];
+        lastObject = [v13 lastObject];
+        if ([firstObject isEqualToString:v4])
         {
-          v16 = v15;
+          v16 = lastObject;
 
           v10 = v16;
         }
@@ -693,11 +693,11 @@ LABEL_24:
   v7 = a4;
   v8 = MEMORY[0x277CBEB18];
   v9 = a3;
-  v10 = [v8 array];
-  [v10 addObject:@"/"];
-  [v10 addObjectsFromArray:v9];
+  array = [v8 array];
+  [array addObject:@"/"];
+  [array addObjectsFromArray:v9];
 
-  v11 = [MEMORY[0x277CCACA8] pathWithComponents:v10];
+  v11 = [MEMORY[0x277CCACA8] pathWithComponents:array];
   v12 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v12 setPath:v11];
   if ([v7 count])
@@ -734,16 +734,16 @@ LABEL_24:
 
 + (id)nss_MarketingPageURL
 {
-  v0 = [MEMORY[0x277CBEAF8] currentLocale];
-  v1 = [v0 objectForKey:*MEMORY[0x277CBE690]];
-  v2 = [v1 lowercaseString];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v1 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+  lowercaseString = [v1 lowercaseString];
 
-  v3 = [&unk_286D8E490 objectForKeyedSubscript:v2];
+  v3 = [&unk_286D8E490 objectForKeyedSubscript:lowercaseString];
 
   if (v3)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [&unk_286D8E490 objectForKeyedSubscript:v2];
+    v5 = [&unk_286D8E490 objectForKeyedSubscript:lowercaseString];
     v6 = [v4 stringWithFormat:@"https://www.apple.com/%@/news", v5];
   }
 

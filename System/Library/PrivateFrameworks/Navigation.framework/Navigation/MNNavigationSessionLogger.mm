@@ -1,39 +1,39 @@
 @interface MNNavigationSessionLogger
 - (MNNavigationSessionLogger)init;
-- (id)_stringForLocationType:(unint64_t)a3;
-- (void)_updateCameraStyleAttributesForLocation:(id)a3;
-- (void)navigationSession:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationSession:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationSession:(id)a3 didFailRerouteWithError:(id)a4;
-- (void)navigationSession:(id)a3 didInsertWaypoint:(id)a4;
-- (void)navigationSession:(id)a3 didRemoveWaypoint:(id)a4;
-- (void)navigationSession:(id)a3 didReroute:(id)a4 withLocation:(id)a5 withAlternateRoutes:(id)a6 rerouteReason:(unint64_t)a7;
-- (void)navigationSession:(id)a3 didRerouteWithWaypoints:(id)a4;
-- (void)navigationSession:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)navigationSession:(id)a3 didSendNavigationServiceCallback:(id)a4;
-- (void)navigationSession:(id)a3 didStartWithRoute:(id)a4 navigationType:(int64_t)a5 isResumingMultipointRoute:(BOOL)a6 isReconnecting:(BOOL)a7;
-- (void)navigationSession:(id)a3 didSuppressReroute:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateAlternateRoutes:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateDestination:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationSession:(id)a3 didUpdateETAResponseForRoute:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateTargetLegIndex:(unint64_t)a4;
-- (void)navigationSession:(id)a3 matchedToStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)navigationSession:(id)a3 updateSignsWithARInfo:(id)a4;
-- (void)navigationSession:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationSessionDidArrive:(id)a3;
-- (void)navigationSessionDidCancelReroute:(id)a3;
-- (void)navigationSessionDidEnterPreArrivalState:(id)a3;
-- (void)navigationSessionWillReroute:(id)a3;
+- (id)_stringForLocationType:(unint64_t)type;
+- (void)_updateCameraStyleAttributesForLocation:(id)location;
+- (void)navigationSession:(id)session didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationSession:(id)session didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationSession:(id)session didFailRerouteWithError:(id)error;
+- (void)navigationSession:(id)session didInsertWaypoint:(id)waypoint;
+- (void)navigationSession:(id)session didRemoveWaypoint:(id)waypoint;
+- (void)navigationSession:(id)session didReroute:(id)reroute withLocation:(id)location withAlternateRoutes:(id)routes rerouteReason:(unint64_t)reason;
+- (void)navigationSession:(id)session didRerouteWithWaypoints:(id)waypoints;
+- (void)navigationSession:(id)session didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)navigationSession:(id)session didSendNavigationServiceCallback:(id)callback;
+- (void)navigationSession:(id)session didStartWithRoute:(id)route navigationType:(int64_t)type isResumingMultipointRoute:(BOOL)multipointRoute isReconnecting:(BOOL)reconnecting;
+- (void)navigationSession:(id)session didSuppressReroute:(id)reroute;
+- (void)navigationSession:(id)session didUpdateAlternateRoutes:(id)routes;
+- (void)navigationSession:(id)session didUpdateDestination:(id)destination;
+- (void)navigationSession:(id)session didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationSession:(id)session didUpdateETAResponseForRoute:(id)route;
+- (void)navigationSession:(id)session didUpdateMatchedLocation:(id)location;
+- (void)navigationSession:(id)session didUpdateTargetLegIndex:(unint64_t)index;
+- (void)navigationSession:(id)session matchedToStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)navigationSession:(id)session updateSignsWithARInfo:(id)info;
+- (void)navigationSession:(id)session updateSignsWithInfo:(id)info;
+- (void)navigationSessionDidArrive:(id)arrive;
+- (void)navigationSessionDidCancelReroute:(id)reroute;
+- (void)navigationSessionDidEnterPreArrivalState:(id)state;
+- (void)navigationSessionWillReroute:(id)reroute;
 @end
 
 @implementation MNNavigationSessionLogger
 
-- (void)_updateCameraStyleAttributesForLocation:(id)a3
+- (void)_updateCameraStyleAttributesForLocation:(id)location
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v5 = GEOFindOrCreateLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -42,20 +42,20 @@
     goto LABEL_104;
   }
 
-  v7 = [v4 routeMatch];
-  v8 = [v7 route];
+  routeMatch = [locationCopy routeMatch];
+  route = [routeMatch route];
 
-  v49 = v4;
-  v9 = [v4 routeMatch];
-  [v9 routeCoordinate];
+  v49 = locationCopy;
+  routeMatch2 = [locationCopy routeMatch];
+  [routeMatch2 routeCoordinate];
 
   v10 = [MEMORY[0x1E696AC70] hashTableWithOptions:512];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v11 = [v8 cameraInfos];
-  v12 = [v11 countByEnumeratingWithState:&v65 objects:v76 count:16];
+  cameraInfos = [route cameraInfos];
+  v12 = [cameraInfos countByEnumeratingWithState:&v65 objects:v76 count:16];
   if (v12)
   {
     v13 = v12;
@@ -66,7 +66,7 @@
       {
         if (*v66 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(cameraInfos);
         }
 
         v16 = *(*(&v65 + 1) + 8 * i);
@@ -77,7 +77,7 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v65 objects:v76 count:16];
+      v13 = [cameraInfos countByEnumeratingWithState:&v65 objects:v76 count:16];
     }
 
     while (v13);
@@ -87,10 +87,10 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v17 = [v8 mutableData];
-  v18 = [v17 updateableCameraInfos];
+  mutableData = [route mutableData];
+  updateableCameraInfos = [mutableData updateableCameraInfos];
 
-  v19 = [v18 countByEnumeratingWithState:&v61 objects:v75 count:16];
+  v19 = [updateableCameraInfos countByEnumeratingWithState:&v61 objects:v75 count:16];
   if (v19)
   {
     v20 = v19;
@@ -101,7 +101,7 @@
       {
         if (*v62 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(updateableCameraInfos);
         }
 
         v23 = *(*(&v61 + 1) + 8 * j);
@@ -112,7 +112,7 @@
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v61 objects:v75 count:16];
+      v20 = [updateableCameraInfos countByEnumeratingWithState:&v61 objects:v75 count:16];
     }
 
     while (v20);
@@ -145,12 +145,12 @@
         v30 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v29 type];
-          if (v31 <= 65639)
+          type = [v29 type];
+          if (type <= 65639)
           {
-            if (v31 > 65635)
+            if (type > 65635)
             {
-              switch(v31)
+              switch(type)
               {
                 case 65636:
                   v32 = @"Windshield Mode";
@@ -166,7 +166,7 @@
 
             else
             {
-              switch(v31)
+              switch(type)
               {
                 case 0:
                   v32 = @"None";
@@ -181,9 +181,9 @@
             }
           }
 
-          else if (v31 <= 65643)
+          else if (type <= 65643)
           {
-            switch(v31)
+            switch(type)
             {
               case 65640:
                 v32 = @"Urban Canyon";
@@ -197,15 +197,15 @@
             }
           }
 
-          else if (v31 > 0x20000)
+          else if (type > 0x20000)
           {
-            if (v31 == 131073)
+            if (type == 131073)
             {
               v32 = @"Exit Number";
               goto LABEL_57;
             }
 
-            if (v31 == 131074)
+            if (type == 131074)
             {
               v32 = @"Significant Road Name";
               goto LABEL_57;
@@ -214,13 +214,13 @@
 
           else
           {
-            if (v31 == 65644)
+            if (type == 65644)
             {
               v32 = @"Traffic Camera";
               goto LABEL_57;
             }
 
-            if (v31 == 65647)
+            if (type == 65647)
             {
               v32 = @"Covered";
 LABEL_57:
@@ -232,7 +232,7 @@ LABEL_57:
             }
           }
 
-          v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unexpected visual info type: %lu>", v31];
+          v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unexpected visual info type: %lu>", type];
           goto LABEL_57;
         }
 
@@ -270,20 +270,20 @@ LABEL_58:
       }
 
       v39 = *(*(&v53 + 1) + 8 * m);
-      v40 = [v39 styleAttributes];
-      v41 = [v40 attributes];
-      v42 = [v41 firstObject];
-      v43 = [v42 value];
+      styleAttributes = [v39 styleAttributes];
+      attributes = [styleAttributes attributes];
+      firstObject = [attributes firstObject];
+      value = [firstObject value];
 
       v44 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [v39 type];
-        if (v45 <= 65639)
+        type2 = [v39 type];
+        if (type2 <= 65639)
         {
-          if (v45 > 65635)
+          if (type2 > 65635)
           {
-            switch(v45)
+            switch(type2)
             {
               case 65636:
                 v46 = @"Windshield Mode";
@@ -299,7 +299,7 @@ LABEL_58:
 
           else
           {
-            switch(v45)
+            switch(type2)
             {
               case 0:
                 v46 = @"None";
@@ -314,9 +314,9 @@ LABEL_58:
           }
         }
 
-        else if (v45 <= 65643)
+        else if (type2 <= 65643)
         {
-          switch(v45)
+          switch(type2)
           {
             case 65640:
               v46 = @"Urban Canyon";
@@ -330,15 +330,15 @@ LABEL_58:
           }
         }
 
-        else if (v45 > 0x20000)
+        else if (type2 > 0x20000)
         {
-          if (v45 == 131073)
+          if (type2 == 131073)
           {
             v46 = @"Exit Number";
             goto LABEL_97;
           }
 
-          if (v45 == 131074)
+          if (type2 == 131074)
           {
             v46 = @"Significant Road Name";
             goto LABEL_97;
@@ -347,27 +347,27 @@ LABEL_58:
 
         else
         {
-          if (v45 == 65644)
+          if (type2 == 65644)
           {
             v46 = @"Traffic Camera";
             goto LABEL_97;
           }
 
-          if (v45 == 65647)
+          if (type2 == 65647)
           {
             v46 = @"Covered";
 LABEL_97:
             *buf = 138412546;
             v70 = v46;
             v71 = 1024;
-            v72 = v43;
+            v72 = value;
             _os_log_impl(&dword_1D311E000, v44, OS_LOG_TYPE_DEFAULT, "Activating camera style attribute: { %@: %u }", buf, 0x12u);
 
             goto LABEL_98;
           }
         }
 
-        v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unexpected visual info type: %lu>", v45];
+        v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<unexpected visual info type: %lu>", type2];
         goto LABEL_97;
       }
 
@@ -392,60 +392,60 @@ LABEL_100:
 
   objc_storeStrong(location, v47);
 
-  v4 = v49;
+  locationCopy = v49;
 LABEL_104:
 
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_stringForLocationType:(unint64_t)a3
+- (id)_stringForLocationType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E8430770[a3];
+    return off_1E8430770[type];
   }
 }
 
-- (void)navigationSession:(id)a3 didSendNavigationServiceCallback:(id)a4
+- (void)navigationSession:(id)session didSendNavigationServiceCallback:(id)callback
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [v4 type];
-  if (v5 == 12)
+  callbackCopy = callback;
+  type = [callbackCopy type];
+  if (type == 12)
   {
-    v10 = v4;
+    v10 = callbackCopy;
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v10 trafficIncidentAlert];
+      trafficIncidentAlert = [v10 trafficIncidentAlert];
       v13 = 138412290;
-      v14 = v11;
+      v14 = trafficIncidentAlert;
       _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_DEFAULT, "Received Dodgeball alert: %@", &v13, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  if (v5 == 2)
+  if (type == 2)
   {
-    v6 = v4;
+    v6 = callbackCopy;
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 reason];
-      if ((v8 - 1) > 9)
+      reason = [v6 reason];
+      if ((reason - 1) > 9)
       {
         v9 = @"Unknown";
       }
 
       else
       {
-        v9 = off_1E8430720[v8 - 1];
+        v9 = off_1E8430720[reason - 1];
       }
 
       v13 = 138412290;
@@ -459,10 +459,10 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 updateSignsWithARInfo:(id)a4
+- (void)navigationSession:(id)session updateSignsWithARInfo:(id)info
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  infoCopy = info;
   v7 = GEOFindOrCreateLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -470,13 +470,13 @@ LABEL_10:
   {
     lastARInfos = self->_lastARInfos;
     p_lastARInfos = &self->_lastARInfos;
-    if (![MNComparison isValue:lastARInfos equalTo:v6])
+    if (![MNComparison isValue:lastARInfos equalTo:infoCopy])
     {
-      objc_storeStrong(p_lastARInfos, a4);
+      objc_storeStrong(p_lastARInfos, info);
       v11 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v6 componentsJoinedByString:@"\n\t"];
+        v12 = [infoCopy componentsJoinedByString:@"\n\t"];
         v14 = 138412290;
         v15 = v12;
         _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_DEFAULT, "Updated AR events:\n\t%@", &v14, 0xCu);
@@ -487,32 +487,32 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationSession:(id)session updateSignsWithInfo:(id)info
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  infoCopy = info;
   v6 = GEOFindOrCreateLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
   if (v7)
   {
     lastGuidanceSignID = self->_lastGuidanceSignID;
-    v9 = [v5 primarySign];
-    v10 = [v9 uniqueID];
-    LOBYTE(lastGuidanceSignID) = [(NSUUID *)lastGuidanceSignID isEqual:v10];
+    primarySign = [infoCopy primarySign];
+    uniqueID = [primarySign uniqueID];
+    LOBYTE(lastGuidanceSignID) = [(NSUUID *)lastGuidanceSignID isEqual:uniqueID];
 
     if ((lastGuidanceSignID & 1) == 0)
     {
-      v11 = [v5 primarySign];
-      v12 = [v11 uniqueID];
+      primarySign2 = [infoCopy primarySign];
+      uniqueID2 = [primarySign2 uniqueID];
       v13 = self->_lastGuidanceSignID;
-      self->_lastGuidanceSignID = v12;
+      self->_lastGuidanceSignID = uniqueID2;
 
       v14 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v5;
+        v17 = infoCopy;
         _os_log_impl(&dword_1D311E000, v14, OS_LOG_TYPE_DEFAULT, "Updated sign: %@", &v16, 0xCu);
       }
     }
@@ -521,46 +521,46 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didRemoveWaypoint:(id)a4
+- (void)navigationSession:(id)session didRemoveWaypoint:(id)waypoint
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  waypointCopy = waypoint;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 humanDescriptionWithAddressAndLatLng];
+    humanDescriptionWithAddressAndLatLng = [waypointCopy humanDescriptionWithAddressAndLatLng];
     v8 = 138477827;
-    v9 = v6;
+    v9 = humanDescriptionWithAddressAndLatLng;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "Removed waypoint: %{private}@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didInsertWaypoint:(id)a4
+- (void)navigationSession:(id)session didInsertWaypoint:(id)waypoint
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  waypointCopy = waypoint;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 humanDescriptionWithAddressAndLatLng];
+    humanDescriptionWithAddressAndLatLng = [waypointCopy humanDescriptionWithAddressAndLatLng];
     v8 = 138477827;
-    v9 = v6;
+    v9 = humanDescriptionWithAddressAndLatLng;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "Inserted waypoint: %{private}@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didRerouteWithWaypoints:(id)a4
+- (void)navigationSession:(id)session didRerouteWithWaypoints:(id)waypoints
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  waypointsCopy = waypoints;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 _geo_compactMap:&__block_literal_global_19386];
+    v6 = [waypointsCopy _geo_compactMap:&__block_literal_global_19386];
     v7 = [v6 componentsJoinedByString:@" | "];
     v9 = 138477827;
     v10 = v7;
@@ -570,40 +570,40 @@ LABEL_10:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didUpdateDestination:(id)a4
+- (void)navigationSession:(id)session didUpdateDestination:(id)destination
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  destinationCopy = destination;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 humanDescriptionWithAddressAndLatLng];
+    humanDescriptionWithAddressAndLatLng = [destinationCopy humanDescriptionWithAddressAndLatLng];
     v8 = 138477827;
-    v9 = v6;
+    v9 = humanDescriptionWithAddressAndLatLng;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "Updated destination: %{private}@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didUpdateAlternateRoutes:(id)a4
+- (void)navigationSession:(id)session didUpdateAlternateRoutes:(id)routes
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  routesCopy = routes;
   v5 = GEOFindOrCreateLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
   if (v6)
   {
-    if ([v4 count])
+    if ([routesCopy count])
     {
-      v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+      v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(routesCopy, "count")}];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v22 = v4;
-      obj = v4;
+      v22 = routesCopy;
+      obj = routesCopy;
       v8 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
       if (v8)
       {
@@ -620,11 +620,11 @@ LABEL_10:
 
             v12 = *(*(&v24 + 1) + 8 * i);
             v13 = MEMORY[0x1E696AEC0];
-            v14 = [v12 route];
-            v15 = [v14 name];
-            v16 = [v12 route];
-            v17 = [v16 uniqueRouteID];
-            v18 = [v13 stringWithFormat:@"%@ (%@)", v15, v17];
+            route = [v12 route];
+            name = [route name];
+            route2 = [v12 route];
+            uniqueRouteID = [route2 uniqueRouteID];
+            v18 = [v13 stringWithFormat:@"%@ (%@)", name, uniqueRouteID];
 
             [v7 addObject:v18];
           }
@@ -635,7 +635,7 @@ LABEL_10:
         while (v9);
       }
 
-      v4 = v22;
+      routesCopy = v22;
     }
 
     else
@@ -656,52 +656,52 @@ LABEL_10:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didFailRerouteWithError:(id)a4
+- (void)navigationSession:(id)session didFailRerouteWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  errorCopy = error;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = errorCopy;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_ERROR, "Reroute error: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didReroute:(id)a4 withLocation:(id)a5 withAlternateRoutes:(id)a6 rerouteReason:(unint64_t)a7
+- (void)navigationSession:(id)session didReroute:(id)reroute withLocation:(id)location withAlternateRoutes:(id)routes rerouteReason:(unint64_t)reason
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  rerouteCopy = reroute;
   v10 = GEOFindOrCreateLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
   if (v11)
   {
-    v12 = [v9 route];
+    route = [rerouteCopy route];
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      if (a7 - 1 > 0xF)
+      if (reason - 1 > 0xF)
       {
         v14 = @"Unknown";
       }
 
       else
       {
-        v14 = off_1E84306A0[a7 - 1];
+        v14 = off_1E84306A0[reason - 1];
       }
 
-      v15 = [v12 name];
-      v16 = [v9 routeID];
+      name = [route name];
+      routeID = [rerouteCopy routeID];
       v20 = 138412803;
       v21 = v14;
       v22 = 2113;
-      v23 = v15;
+      v23 = name;
       v24 = 2112;
-      v25 = v16;
+      v25 = routeID;
     }
   }
 
@@ -714,7 +714,7 @@ LABEL_10:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSessionDidCancelReroute:(id)a3
+- (void)navigationSessionDidCancelReroute:(id)reroute
 {
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -724,36 +724,36 @@ LABEL_10:
   }
 }
 
-- (void)navigationSession:(id)a3 didSuppressReroute:(id)a4
+- (void)navigationSession:(id)session didSuppressReroute:(id)reroute
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  sessionCopy = session;
+  rerouteCopy = reroute;
+  if (rerouteCopy)
   {
     previousSuppressedRerouteError = self->_previousSuppressedRerouteError;
     p_previousSuppressedRerouteError = &self->_previousSuppressedRerouteError;
     v8 = previousSuppressedRerouteError;
-    if (!previousSuppressedRerouteError || (v11 = -[NSError code](v8, "code"), v11 != [v7 code]))
+    if (!previousSuppressedRerouteError || (v11 = -[NSError code](v8, "code"), v11 != [rerouteCopy code]))
     {
       v12 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v7 userInfo];
-        v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A278]];
+        userInfo = [rerouteCopy userInfo];
+        v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A278]];
         v16 = 138412290;
         v17 = v14;
         _os_log_impl(&dword_1D311E000, v12, OS_LOG_TYPE_DEFAULT, "%@", &v16, 0xCu);
       }
 
-      objc_storeStrong(p_previousSuppressedRerouteError, a4);
+      objc_storeStrong(p_previousSuppressedRerouteError, reroute);
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSessionWillReroute:(id)a3
+- (void)navigationSessionWillReroute:(id)reroute
 {
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -763,17 +763,17 @@ LABEL_10:
   }
 }
 
-- (void)navigationSession:(id)a3 didUpdateETAResponseForRoute:(id)a4
+- (void)navigationSession:(id)session didUpdateETAResponseForRoute:(id)route
 {
-  v5 = a4;
-  v6 = [a3 routeManager];
-  v7 = [v6 currentRouteInfo];
+  routeCopy = route;
+  routeManager = [session routeManager];
+  currentRouteInfo = [routeManager currentRouteInfo];
 
-  v8 = [v7 routeID];
-  v9 = [v5 routeID];
+  routeID = [currentRouteInfo routeID];
+  routeID2 = [routeCopy routeID];
 
-  LODWORD(v5) = [v8 isEqual:v9];
-  if (v5)
+  LODWORD(routeCopy) = [routeID isEqual:routeID2];
+  if (routeCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -784,12 +784,12 @@ LABEL_10:
   }
 }
 
-- (void)navigationSession:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationSession:(id)session didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  aCopy = a;
+  distanceCopy = distance;
+  infoCopy = info;
   v12 = GEOFindOrCreateLog();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
 
@@ -797,15 +797,15 @@ LABEL_10:
   {
     if (!self->_displayETALookup)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       displayETALookup = self->_displayETALookup;
-      self->_displayETALookup = v14;
+      self->_displayETALookup = dictionary;
     }
 
-    v16 = [v9 routeID];
-    if (v16)
+    routeID = [aCopy routeID];
+    if (routeID)
     {
-      v17 = [(NSMutableDictionary *)self->_displayETALookup objectForKeyedSubscript:v16];
+      v17 = [(NSMutableDictionary *)self->_displayETALookup objectForKeyedSubscript:routeID];
     }
 
     else
@@ -813,25 +813,25 @@ LABEL_10:
       v17 = 0;
     }
 
-    if (([v17 isEqual:v9] & 1) == 0)
+    if (([v17 isEqual:aCopy] & 1) == 0)
     {
       v18 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v20 = 138413058;
-        v21 = v9;
+        v21 = aCopy;
         v22 = 2112;
-        v23 = v10;
+        v23 = distanceCopy;
         v24 = 2112;
-        v25 = v11;
+        v25 = infoCopy;
         v26 = 2112;
-        v27 = v16;
+        v27 = routeID;
         _os_log_impl(&dword_1D311E000, v18, OS_LOG_TYPE_INFO, "Updated display ETA %@ | %@ | %@ | %@", &v20, 0x2Au);
       }
 
-      if (v16)
+      if (routeID)
       {
-        [(NSMutableDictionary *)self->_displayETALookup setObject:v9 forKeyedSubscript:v16];
+        [(NSMutableDictionary *)self->_displayETALookup setObject:aCopy forKeyedSubscript:routeID];
       }
     }
   }
@@ -839,7 +839,7 @@ LABEL_10:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSessionDidArrive:(id)a3
+- (void)navigationSessionDidArrive:(id)arrive
 {
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -849,7 +849,7 @@ LABEL_10:
   }
 }
 
-- (void)navigationSessionDidEnterPreArrivalState:(id)a3
+- (void)navigationSessionDidEnterPreArrivalState:(id)state
 {
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -859,40 +859,40 @@ LABEL_10:
   }
 }
 
-- (void)navigationSession:(id)a3 didUpdateTargetLegIndex:(unint64_t)a4
+- (void)navigationSession:(id)session didUpdateTargetLegIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   v8 = *MEMORY[0x1E69E9840];
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v4;
+    v7[1] = indexCopy;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "Updated target leg index: %d", v7, 8u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)navigationSession:(id)session didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
-  v7 = a5;
+  indexCopy = index;
   v14 = *MEMORY[0x1E69E9840];
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (a6 - 1 > 5)
+    if (reason - 1 > 5)
     {
       v9 = @"Unknown";
     }
 
     else
     {
-      v9 = off_1E8430638[a6 - 1];
+      v9 = off_1E8430638[reason - 1];
     }
 
     v11[0] = 67109378;
-    v11[1] = v7;
+    v11[1] = indexCopy;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_DEFAULT, "Resumed navigating from leg: %d reason: %@", v11, 0x12u);
@@ -901,61 +901,61 @@ LABEL_10:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationSession:(id)session didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v5 = a5;
+  indexCopy = index;
   v9 = *MEMORY[0x1E69E9840];
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v5;
+    v8[1] = indexCopy;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_DEFAULT, "Arrived at end of leg: %d", v8, 8u);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationSession:(id)session didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v5 = a5;
+  indexCopy = index;
   v9 = *MEMORY[0x1E69E9840];
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v5;
+    v8[1] = indexCopy;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_DEFAULT, "Entered pre-arrival state for leg: %d", v8, 8u);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 matchedToStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationSession:(id)session matchedToStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  v5 = a5;
+  segmentIndexCopy = segmentIndex;
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [(MNNavigationSessionState *)self->_navigationSessionState currentRouteInfo];
-  v8 = [v7 route];
+  currentRouteInfo = [(MNNavigationSessionState *)self->_navigationSessionState currentRouteInfo];
+  route = [currentRouteInfo route];
 
-  v9 = [v8 steps];
-  if ([v9 count] <= a4)
+  steps = [route steps];
+  if ([steps count] <= index)
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [v8 steps];
-    v11 = [v10 objectAtIndexedSubscript:a4];
+    steps2 = [route steps];
+    v11 = [steps2 objectAtIndexedSubscript:index];
   }
 
-  v12 = [v11 maneuverAndInstructionDescription];
-  v13 = v12;
+  maneuverAndInstructionDescription = [v11 maneuverAndInstructionDescription];
+  v13 = maneuverAndInstructionDescription;
   v14 = &stru_1F4EB6B70;
-  if (v12)
+  if (maneuverAndInstructionDescription)
   {
-    v14 = v12;
+    v14 = maneuverAndInstructionDescription;
   }
 
   v15 = v14;
@@ -964,31 +964,31 @@ LABEL_10:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v18[0] = 67109634;
-    v18[1] = a4;
+    v18[1] = index;
     v19 = 2112;
     v20 = v15;
     v21 = 1024;
-    v22 = v5;
+    v22 = segmentIndexCopy;
     _os_log_impl(&dword_1D311E000, v16, OS_LOG_TYPE_DEFAULT, "Changed step index: %d %@| segment index: %d", v18, 0x18u);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationSession:(id)session didUpdateMatchedLocation:(id)location
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  locationCopy = location;
   v6 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 uuid];
+    uuid = [locationCopy uuid];
     *buf = 138412290;
-    v38 = v7;
+    v38 = uuid;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in MNNavigationSessionLogger::navigationSession:didUpdateMatchedLocation:", buf, 0xCu);
   }
 
-  if ([v5 state] == 1)
+  if ([locationCopy state] == 1)
   {
     previousSuppressedRerouteError = self->_previousSuppressedRerouteError;
     self->_previousSuppressedRerouteError = 0;
@@ -999,52 +999,52 @@ LABEL_10:
 
   if (v10)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v12 = MEMORY[0x1E696AEC0];
-    [v5 coordinate];
+    [locationCopy coordinate];
     v14 = v13;
-    [v5 coordinate];
+    [locationCopy coordinate];
     v16 = [v12 stringWithFormat:@"(%.6f, %.6f)", v14, v15];
-    [v11 addObject:v16];
+    [array addObject:v16];
 
-    if ([v5 state] == 1)
+    if ([locationCopy state] == 1)
     {
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [v5 routeMatch];
-      v19 = [v18 routeCoordinate];
-      v20 = [v5 routeMatch];
-      v21 = [v17 stringWithFormat:@"[%u, %0.2f]", v19, COERCE_FLOAT(objc_msgSend(v20, "routeCoordinate") >> 32)];
-      [v11 addObject:v21];
+      routeMatch = [locationCopy routeMatch];
+      routeCoordinate = [routeMatch routeCoordinate];
+      routeMatch2 = [locationCopy routeMatch];
+      v21 = [v17 stringWithFormat:@"[%u, %0.2f]", routeCoordinate, COERCE_FLOAT(objc_msgSend(routeMatch2, "routeCoordinate") >> 32)];
+      [array addObject:v21];
     }
 
     v22 = MEMORY[0x1E696AEC0];
-    [v5 course];
+    [locationCopy course];
     v24 = [v22 stringWithFormat:@"%0.1f°", v23];
-    [v11 addObject:v24];
+    [array addObject:v24];
 
-    v25 = [v5 roadName];
-    v26 = [v25 length];
+    roadName = [locationCopy roadName];
+    v26 = [roadName length];
 
     if (v26)
     {
-      v27 = [v5 roadName];
-      [v11 addObject:v27];
+      roadName2 = [locationCopy roadName];
+      [array addObject:roadName2];
     }
 
-    if ([v5 state])
+    if ([locationCopy state])
     {
-      if ([v5 speedLimit])
+      if ([locationCopy speedLimit])
       {
         v28 = MEMORY[0x1E696AEC0];
-        v29 = [v5 speedLimit];
-        v30 = [v5 speedLimitIsMPH];
+        speedLimit = [locationCopy speedLimit];
+        speedLimitIsMPH = [locationCopy speedLimitIsMPH];
         v31 = @"km/h";
-        if (v30)
+        if (speedLimitIsMPH)
         {
           v31 = @"mph";
         }
 
-        v32 = [v28 stringWithFormat:@"%d %@", v29, v31];
+        v32 = [v28 stringWithFormat:@"%d %@", speedLimit, v31];
       }
 
       else
@@ -1052,75 +1052,75 @@ LABEL_10:
         v32 = @"No speed limit";
       }
 
-      [v11 addObject:v32];
+      [array addObject:v32];
     }
 
-    v33 = -[MNNavigationSessionLogger _stringForLocationType:](self, "_stringForLocationType:", [v5 state]);
-    [v11 addObject:v33];
+    v33 = -[MNNavigationSessionLogger _stringForLocationType:](self, "_stringForLocationType:", [locationCopy state]);
+    [array addObject:v33];
 
     v34 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [v11 componentsJoinedByString:@" | "];
+      v35 = [array componentsJoinedByString:@" | "];
       *buf = 138477827;
       v38 = v35;
       _os_log_impl(&dword_1D311E000, v34, OS_LOG_TYPE_INFO, "Location update: %{private}@", buf, 0xCu);
     }
   }
 
-  [(MNNavigationSessionLogger *)self _updateCameraStyleAttributesForLocation:v5];
+  [(MNNavigationSessionLogger *)self _updateCameraStyleAttributesForLocation:locationCopy];
 
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationSession:(id)a3 didStartWithRoute:(id)a4 navigationType:(int64_t)a5 isResumingMultipointRoute:(BOOL)a6 isReconnecting:(BOOL)a7
+- (void)navigationSession:(id)session didStartWithRoute:(id)route navigationType:(int64_t)type isResumingMultipointRoute:(BOOL)multipointRoute isReconnecting:(BOOL)reconnecting
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  routeCopy = route;
   v10 = GEOFindOrCreateLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
   if (v11)
   {
-    v12 = [v9 route];
-    v13 = [v12 destination];
+    route = [routeCopy route];
+    destination = [route destination];
     v14 = GEOFindOrCreateLog();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (a7)
+    if (reconnecting)
     {
       if (v15)
       {
-        v16 = [v13 humanDescriptionWithAddressAndLatLng];
-        v17 = [v9 routeID];
-        v18 = [v12 transportType];
-        if (v18 >= 7)
+        humanDescriptionWithAddressAndLatLng = [destination humanDescriptionWithAddressAndLatLng];
+        routeID = [routeCopy routeID];
+        transportType = [route transportType];
+        if (transportType >= 7)
         {
-          v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v18];
+          routeID2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", transportType];
         }
 
         else
         {
-          v19 = off_1E8430668[v18];
+          routeID2 = off_1E8430668[transportType];
         }
 
-        v22 = [(__CFString *)v19 capitalizedString];
-        v21 = v22;
-        if ((a5 - 1) > 3)
+        capitalizedString = [(__CFString *)routeID2 capitalizedString];
+        v21 = capitalizedString;
+        if ((type - 1) > 3)
         {
           v23 = @"None";
         }
 
         else
         {
-          v23 = off_1E84305D0[a5 - 1];
+          v23 = off_1E84305D0[type - 1];
         }
 
         *buf = 138478595;
-        v29 = v16;
+        v29 = humanDescriptionWithAddressAndLatLng;
         v30 = 2112;
-        v31 = v17;
+        v31 = routeID;
         v32 = 2112;
-        v33 = v22;
+        v33 = capitalizedString;
         v34 = 2112;
         v35 = v23;
         _os_log_impl(&dword_1D311E000, v14, OS_LOG_TYPE_DEFAULT, "Restarted navigation session to [%{private}@] (%@) | %@ %@", buf, 0x2Au);
@@ -1130,40 +1130,40 @@ LABEL_19:
 
     else if (v15)
     {
-      v16 = [v13 humanDescriptionWithAddressAndLatLng];
-      v17 = [v12 name];
-      v19 = [v9 routeID];
-      v20 = [v12 transportType];
-      if (v20 >= 7)
+      humanDescriptionWithAddressAndLatLng = [destination humanDescriptionWithAddressAndLatLng];
+      routeID = [route name];
+      routeID2 = [routeCopy routeID];
+      transportType2 = [route transportType];
+      if (transportType2 >= 7)
       {
-        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v20];
+        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", transportType2];
       }
 
       else
       {
-        v21 = off_1E8430668[v20];
+        v21 = off_1E8430668[transportType2];
       }
 
-      v24 = [(__CFString *)v21 capitalizedString];
-      v25 = v24;
-      if ((a5 - 1) > 3)
+      capitalizedString2 = [(__CFString *)v21 capitalizedString];
+      v25 = capitalizedString2;
+      if ((type - 1) > 3)
       {
         v26 = @"None";
       }
 
       else
       {
-        v26 = off_1E84305D0[a5 - 1];
+        v26 = off_1E84305D0[type - 1];
       }
 
       *buf = 138478851;
-      v29 = v16;
+      v29 = humanDescriptionWithAddressAndLatLng;
       v30 = 2113;
-      v31 = v17;
+      v31 = routeID;
       v32 = 2112;
-      v33 = v19;
+      v33 = routeID2;
       v34 = 2112;
-      v35 = v24;
+      v35 = capitalizedString2;
       v36 = 2112;
       v37 = v26;
       _os_log_impl(&dword_1D311E000, v14, OS_LOG_TYPE_DEFAULT, "Started navigation session to [%{private}@] via %{private}@ (%@) | %@ %@", buf, 0x34u);

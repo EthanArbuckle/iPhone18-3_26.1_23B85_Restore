@@ -1,12 +1,12 @@
 @interface PKSpendingSummaryPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKSpendingSummaryPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureView:(id)a3 item:(id)a4 presentationStyle:(unint64_t)a5;
-- (void)swapSummaryInCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
+- (void)_configureView:(id)view item:(id)item presentationStyle:(unint64_t)style;
+- (void)swapSummaryInCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKSpendingSummaryPresenter
@@ -38,46 +38,46 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = [a4 dequeueReusableCellWithReuseIdentifier:@"spendingPresenter" forIndexPath:a5];
-  v10 = [v9 hostedContentView];
+  itemCopy = item;
+  v9 = [view dequeueReusableCellWithReuseIdentifier:@"spendingPresenter" forIndexPath:path];
+  hostedContentView = [v9 hostedContentView];
 
-  if (!v10)
+  if (!hostedContentView)
   {
     v11 = [PKSpendingSummaryView alloc];
     v12 = [(PKSpendingSummaryView *)v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [v9 setHostedContentView:v12];
   }
 
-  v13 = [v9 hostedContentView];
-  [(PKSpendingSummaryPresenter *)self _configureView:v13 item:v8 presentationStyle:0];
+  hostedContentView2 = [v9 hostedContentView];
+  [(PKSpendingSummaryPresenter *)self _configureView:hostedContentView2 item:itemCopy presentationStyle:0];
 
   return v9;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [v10 hostedContentView];
-  [(PKSpendingSummaryPresenter *)self _configureView:v9 item:v8 presentationStyle:1];
+  cellCopy = cell;
+  itemCopy = item;
+  hostedContentView = [cellCopy hostedContentView];
+  [(PKSpendingSummaryPresenter *)self _configureView:hostedContentView item:itemCopy presentationStyle:1];
 }
 
-- (void)swapSummaryInCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)swapSummaryInCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [v10 hostedContentView];
-  [(PKSpendingSummaryPresenter *)self _configureView:v9 item:v8 presentationStyle:2];
+  cellCopy = cell;
+  itemCopy = item;
+  hostedContentView = [cellCopy hostedContentView];
+  [(PKSpendingSummaryPresenter *)self _configureView:hostedContentView item:itemCopy presentationStyle:2];
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_needsSizing)
   {
     sampleView = self->_sampleView;
@@ -91,10 +91,10 @@
       sampleView = self->_sampleView;
     }
 
-    [(PKSpendingSummaryPresenter *)self _configureView:sampleView item:v10 presentationStyle:0];
+    [(PKSpendingSummaryPresenter *)self _configureView:sampleView item:itemCopy presentationStyle:0];
     v17 = self->_sampleView;
     +[PKDashboardCollectionViewCell defaultHorizontalInset];
-    [(PKSpendingSummaryView *)v17 sizeThatFits:a5 + v18 * -2.0, 3.40282347e38];
+    [(PKSpendingSummaryView *)v17 sizeThatFits:width + v18 * -2.0, 3.40282347e38];
     width = v19;
     height = v21;
     self->_summarySize.width = v19;
@@ -107,24 +107,24 @@
     height = self->_summarySize.height;
   }
 
-  v23 = width;
+  widthCopy = width;
   v24 = height;
   result.height = v24;
-  result.width = v23;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         self->_needsSizing = 1;
@@ -137,13 +137,13 @@
   }
 }
 
-- (void)_configureView:(id)a3 item:(id)a4 presentationStyle:(unint64_t)a5
+- (void)_configureView:(id)view item:(id)item presentationStyle:(unint64_t)style
 {
-  if (a3)
+  if (view)
   {
-    v7 = a3;
-    v8 = [a4 spendingSummary];
-    [v7 configureWithSummary:v8 presentationStyle:a5];
+    viewCopy = view;
+    spendingSummary = [item spendingSummary];
+    [viewCopy configureWithSummary:spendingSummary presentationStyle:style];
   }
 }
 

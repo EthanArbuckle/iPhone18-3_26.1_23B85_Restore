@@ -1,25 +1,25 @@
 @interface PFPosterPathsAssertion
-- (PFPosterPathsAssertion)initWithCoder:(id)a3;
-- (PFPosterPathsAssertion)initWithPaths:(id)a3 queue:(id)a4 invalidationHandler:(id)a5;
-- (id)_initWithPaths:(id)a3 invalidationAction:(id)a4;
+- (PFPosterPathsAssertion)initWithCoder:(id)coder;
+- (PFPosterPathsAssertion)initWithPaths:(id)paths queue:(id)queue invalidationHandler:(id)handler;
+- (id)_initWithPaths:(id)paths invalidationAction:(id)action;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)invalidateWithResponder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)invalidateWithResponder:(id)responder;
 @end
 
 @implementation PFPosterPathsAssertion
 
-- (PFPosterPathsAssertion)initWithPaths:(id)a3 queue:(id)a4 invalidationHandler:(id)a5
+- (PFPosterPathsAssertion)initWithPaths:(id)paths queue:(id)queue invalidationHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  pathsCopy = paths;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!queueCopy)
   {
     [PFPosterPathsAssertion initWithPaths:a2 queue:? invalidationHandler:?];
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
     [PFPosterPathsAssertion initWithPaths:a2 queue:? invalidationHandler:?];
   }
@@ -29,12 +29,12 @@
   v18[1] = 3221225472;
   v18[2] = __66__PFPosterPathsAssertion_initWithPaths_queue_invalidationHandler___block_invoke;
   v18[3] = &unk_1E8189B38;
-  v19 = v11;
-  v13 = v11;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
   v14 = [v12 responderWithHandler:v18];
-  [v14 setQueue:v10];
+  [v14 setQueue:queueCopy];
   v15 = [objc_alloc(MEMORY[0x1E698E5F0]) initWithInfo:0 responder:v14];
-  v16 = [(PFPosterPathsAssertion *)self _initWithPaths:v9 invalidationAction:v15];
+  v16 = [(PFPosterPathsAssertion *)self _initWithPaths:pathsCopy invalidationAction:v15];
 
   return v16;
 }
@@ -69,12 +69,12 @@ void __66__PFPosterPathsAssertion_initWithPaths_queue_invalidationHandler___bloc
   [v8 invalidate];
 }
 
-- (id)_initWithPaths:(id)a3 invalidationAction:(id)a4
+- (id)_initWithPaths:(id)paths invalidationAction:(id)action
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  pathsCopy = paths;
+  actionCopy = action;
+  v9 = pathsCopy;
   NSClassFromString(&cfstr_Nsarray.isa);
   if (!v9)
   {
@@ -133,19 +133,19 @@ void __66__PFPosterPathsAssertion_initWithPaths_queue_invalidationHandler___bloc
     paths = v16->_paths;
     v16->_paths = v17;
 
-    objc_storeStrong(&v16->_invalidationAction, a4);
+    objc_storeStrong(&v16->_invalidationAction, action);
   }
 
   v19 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (void)invalidateWithResponder:(id)a3
+- (void)invalidateWithResponder:(id)responder
 {
-  v9 = a3;
-  if (v9 && (v4 = self->_invalidationAction) != 0 && [(BSAction *)v4 canSendResponse])
+  responderCopy = responder;
+  if (responderCopy && (v4 = self->_invalidationAction) != 0 && [(BSAction *)v4 canSendResponse])
   {
-    v5 = [objc_alloc(MEMORY[0x1E698E5F0]) initWithInfo:0 responder:v9];
+    v5 = [objc_alloc(MEMORY[0x1E698E5F0]) initWithInfo:0 responder:responderCopy];
     v6 = objc_alloc_init(MEMORY[0x1E698E700]);
     [v6 setObject:v5 forSetting:1];
     invalidationAction = self->_invalidationAction;
@@ -156,7 +156,7 @@ void __66__PFPosterPathsAssertion_initWithPaths_queue_invalidationHandler___bloc
   else
   {
     [(BSAction *)self->_invalidationAction invalidate];
-    [v9 annul];
+    [responderCopy annul];
   }
 }
 
@@ -203,14 +203,14 @@ void __66__PFPosterPathsAssertion_initWithPaths_queue_invalidationHandler___bloc
   return v7;
 }
 
-- (PFPosterPathsAssertion)initWithCoder:(id)a3
+- (PFPosterPathsAssertion)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"p"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"p"];
 
   v19 = 0u;
   v20 = 0u;
@@ -240,21 +240,21 @@ void __66__PFPosterPathsAssertion_initWithPaths_queue_invalidationHandler___bloc
     }
   }
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
   v14 = [(PFPosterPathsAssertion *)self _initWithPaths:v9 invalidationAction:v13];
 
   v15 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_paths forKey:@"p"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_paths forKey:@"p"];
   invalidationAction = self->_invalidationAction;
   if (invalidationAction)
   {
-    [v5 encodeObject:invalidationAction forKey:@"i"];
+    [coderCopy encodeObject:invalidationAction forKey:@"i"];
   }
 }
 

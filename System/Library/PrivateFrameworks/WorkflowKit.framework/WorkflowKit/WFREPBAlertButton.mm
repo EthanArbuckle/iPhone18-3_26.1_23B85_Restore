@@ -1,42 +1,42 @@
 @interface WFREPBAlertButton
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsStyle:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (int)StringAsStyle:(id)style;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBAlertButton
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(WFREPBAlertButton *)self setTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_style = *(v4 + 2);
-  self->_preferred = *(v4 + 24);
+  self->_style = *(fromCopy + 2);
+  self->_preferred = *(fromCopy + 24);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | *(v4 + 2))) || -[NSString isEqual:](title, "isEqual:")) && self->_style == *(v4 + 2) && self->_preferred == v4[24];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | *(equalCopy + 2))) || -[NSString isEqual:](title, "isEqual:")) && self->_style == *(equalCopy + 2) && self->_preferred == equalCopy[24];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -45,24 +45,24 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   title = self->_title;
-  v5 = a3;
-  [v5 setTitle:title];
-  *(v5 + 2) = self->_style;
-  *(v5 + 24) = self->_preferred;
+  toCopy = to;
+  [toCopy setTitle:title];
+  *(toCopy + 2) = self->_style;
+  *(toCopy + 24) = self->_preferred;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_title)
   {
     __assert_rtn("[WFREPBAlertButton writeTo:]", "WFREPBAlertButton.m", 94, "nil != self->_title");
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteStringField();
   style = self->_style;
   PBDataWriterWriteInt32Field();
@@ -72,12 +72,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   style = self->_style;
@@ -105,26 +105,26 @@
   v8.receiver = self;
   v8.super_class = WFREPBAlertButton;
   v4 = [(WFREPBAlertButton *)&v8 description];
-  v5 = [(WFREPBAlertButton *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBAlertButton *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsStyle:(id)a3
+- (int)StringAsStyle:(id)style
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  styleCopy = style;
+  if ([styleCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Cancel"])
+  else if ([styleCopy isEqualToString:@"Cancel"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Destructive"])
+  else if ([styleCopy isEqualToString:@"Destructive"])
   {
     v4 = 2;
   }

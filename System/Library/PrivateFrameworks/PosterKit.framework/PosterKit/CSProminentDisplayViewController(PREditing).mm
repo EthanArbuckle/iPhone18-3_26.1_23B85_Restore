@@ -7,20 +7,20 @@
 
 - (uint64_t)pr_setSubtitleHidden:()PREditing
 {
-  v5 = [a1 elements] & 0xFFFFFFFFFFFFFFFDLL;
+  v5 = [self elements] & 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
   if (a3)
   {
     v6 = 0;
   }
 
-  return [a1 setElements:v5 | v6];
+  return [self setElements:v5 | v6];
 }
 
 - (void)pr_setForcesActiveAppearance:()PREditing
 {
-  v1 = [a1 traitOverrides];
-  [v1 setNSIntegerValue:1 forTrait:objc_opt_class()];
+  traitOverrides = [self traitOverrides];
+  [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
 }
 
 @end

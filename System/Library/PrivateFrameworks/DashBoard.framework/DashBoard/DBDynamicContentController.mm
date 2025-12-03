@@ -1,32 +1,32 @@
 @interface DBDynamicContentController
 - (BOOL)hidden;
-- (CGRect)sceneFrameForApplication:(id)a3;
-- (CGRect)sceneFrameForApplication:(id)a3 proxyApplication:(id)a4;
+- (CGRect)sceneFrameForApplication:(id)application;
+- (CGRect)sceneFrameForApplication:(id)application proxyApplication:(id)proxyApplication;
 - (FBSDisplayConfiguration)displayConfiguration;
 - (FBSDisplayIdentity)displayIdentity;
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3;
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3 proxyApplication:(id)a4;
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application;
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application proxyApplication:(id)proxyApplication;
 - (_TtC9DashBoard26DBDynamicContentController)init;
-- (_TtC9DashBoard26DBDynamicContentController)initWithWindowScene:(id)a3 windowFrame:(CGRect)a4 layoutEngine:(id)a5 environment:(id)a6;
+- (_TtC9DashBoard26DBDynamicContentController)initWithWindowScene:(id)scene windowFrame:(CGRect)frame layoutEngine:(id)engine environment:(id)environment;
 - (double)cornerRadius;
-- (id)sceneIdentifierForApplication:(id)a3;
+- (id)sceneIdentifierForApplication:(id)application;
 - (void)invalidate;
-- (void)setCornerRadius:(double)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation DBDynamicContentController
 
-- (_TtC9DashBoard26DBDynamicContentController)initWithWindowScene:(id)a3 windowFrame:(CGRect)a4 layoutEngine:(id)a5 environment:(id)a6
+- (_TtC9DashBoard26DBDynamicContentController)initWithWindowScene:(id)scene windowFrame:(CGRect)frame layoutEngine:(id)engine environment:(id)environment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sceneCopy = scene;
+  engineCopy = engine;
   swift_unknownObjectRetain();
-  v14 = sub_248263644(v12, v13, a6, x, y, width, height);
+  v14 = sub_248263644(sceneCopy, engineCopy, environment, x, y, width, height);
 
   swift_unknownObjectRelease();
   return v14;
@@ -39,12 +39,12 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5 = OBJC_IVAR____TtC9DashBoard26DBDynamicContentController_isHidden;
   swift_beginAccess();
-  *(&self->super.isa + v5) = v3;
+  *(&self->super.isa + v5) = hiddenCopy;
   [*(&self->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__window) setHidden_];
 }
 
@@ -55,15 +55,15 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC9DashBoard26DBDynamicContentController_cornerRadius;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = radius;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__window);
-  v7 = self;
-  v8 = [v6 layer];
-  [v8 setCornerRadius_];
+  selfCopy = self;
+  layer = [v6 layer];
+  [layer setCornerRadius_];
 }
 
 - (_TtC9DashBoard26DBDynamicContentController)init
@@ -78,9 +78,9 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__sceneCoordinator);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 invalidate];
-    [*(&v3->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__window) setHidden_];
+    [*(&selfCopy->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__window) setHidden_];
   }
 
   else
@@ -91,24 +91,24 @@
 
 - (FBSDisplayIdentity)displayIdentity
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__environmentConfiguration) displayIdentity];
+  displayIdentity = [*(&self->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__environmentConfiguration) displayIdentity];
 
-  return v2;
+  return displayIdentity;
 }
 
 - (FBSDisplayConfiguration)displayConfiguration
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__environmentConfiguration) displayConfiguration];
+  displayConfiguration = [*(&self->super.isa + OBJC_IVAR____TtC9DashBoard26DBDynamicContentController__environmentConfiguration) displayConfiguration];
 
-  return v2;
+  return displayConfiguration;
 }
 
-- (id)sceneIdentifierForApplication:(id)a3
+- (id)sceneIdentifierForApplication:(id)application
 {
   Strong = swift_unknownObjectUnownedLoadStrong();
-  v6 = a3;
-  v7 = self;
-  v8 = [Strong sceneIdentifierForApplication_];
+  applicationCopy = application;
+  selfCopy = self;
+  sceneIdentifierForApplication_ = [Strong sceneIdentifierForApplication_];
   swift_unknownObjectRelease();
   sub_248383960();
 
@@ -119,7 +119,7 @@
   return v9;
 }
 
-- (CGRect)sceneFrameForApplication:(id)a3
+- (CGRect)sceneFrameForApplication:(id)application
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -132,9 +132,9 @@
   return result;
 }
 
-- (CGRect)sceneFrameForApplication:(id)a3 proxyApplication:(id)a4
+- (CGRect)sceneFrameForApplication:(id)application proxyApplication:(id)proxyApplication
 {
-  [(DBDynamicContentController *)self sceneFrameForApplication:a3, a4];
+  [(DBDynamicContentController *)self sceneFrameForApplication:application, proxyApplication];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -142,7 +142,7 @@
   return result;
 }
 
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application
 {
   v3 = *MEMORY[0x277D768C8];
   v4 = *(MEMORY[0x277D768C8] + 8);
@@ -155,9 +155,9 @@
   return result;
 }
 
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3 proxyApplication:(id)a4
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application proxyApplication:(id)proxyApplication
 {
-  [(DBDynamicContentController *)self safeAreaInsetsForApplication:a3, a4];
+  [(DBDynamicContentController *)self safeAreaInsetsForApplication:application, proxyApplication];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;

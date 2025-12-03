@@ -1,14 +1,14 @@
 @interface SBSWidgetMetricsServer
 + (id)checkOutServerInstance;
-+ (void)returnServerInstance:(id)a3;
++ (void)returnServerInstance:(id)instance;
 - (SBSWidgetMetricsServer)init;
 - (id)_init;
-- (id)previewMetricsSpecificationForBundleIdentifier:(id)a3;
-- (id)previewMetricsSpecificationForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5;
-- (id)previewMetricsSpecificationsForBundleIdentifier:(id)a3;
-- (id)previewMetricsSpecificationsForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5;
-- (id)systemMetricsForWidget:(id)a3;
-- (id)systemMetricsForWidget:(id)a3 inHostingEnvironment:(id)a4;
+- (id)previewMetricsSpecificationForBundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationsForBundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationsForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier;
+- (id)systemMetricsForWidget:(id)widget;
+- (id)systemMetricsForWidget:(id)widget inHostingEnvironment:(id)environment;
 - (void)_createConnection;
 - (void)dealloc;
 @end
@@ -21,9 +21,9 @@
   v2 = __sharedServerInstance;
   if (!__sharedServerInstance)
   {
-    v3 = [[SBSWidgetMetricsServer alloc] _init];
+    _init = [[SBSWidgetMetricsServer alloc] _init];
     v4 = __sharedServerInstance;
-    __sharedServerInstance = v3;
+    __sharedServerInstance = _init;
 
     v2 = __sharedServerInstance;
   }
@@ -35,21 +35,21 @@
   return v5;
 }
 
-+ (void)returnServerInstance:(id)a3
++ (void)returnServerInstance:(id)instance
 {
-  v5 = a3;
+  instanceCopy = instance;
   os_unfair_lock_lock(&__sharedServerInstanceLock);
   v6 = __sharedServerInstance;
 
-  if (v6 != v5)
+  if (v6 != instanceCopy)
   {
-    [(SBSWidgetMetricsServer *)a2 returnServerInstance:a1];
+    [(SBSWidgetMetricsServer *)a2 returnServerInstance:self];
   }
 
   v7 = __sharedServerInstanceCheckoutCount;
   if (!__sharedServerInstanceCheckoutCount)
   {
-    [(SBSWidgetMetricsServer *)a2 returnServerInstance:a1, &v9];
+    [(SBSWidgetMetricsServer *)a2 returnServerInstance:self, &v9];
     v7 = v9;
   }
 
@@ -65,8 +65,8 @@
 
 - (SBSWidgetMetricsServer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBSWidgetMetricsServer.m" lineNumber:60 description:@"Use +checkOutServerInstance"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSWidgetMetricsServer.m" lineNumber:60 description:@"Use +checkOutServerInstance"];
 
   return 0;
 }
@@ -93,67 +93,67 @@
   [(SBSWidgetMetricsServer *)&v3 dealloc];
 }
 
-- (id)systemMetricsForWidget:(id)a3
+- (id)systemMetricsForWidget:(id)widget
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(BSServiceConnection *)connection remoteTarget];
-  v6 = [v5 systemMetricsForWidget:v4];
+  widgetCopy = widget;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v6 = [remoteTarget systemMetricsForWidget:widgetCopy];
 
   return v6;
 }
 
-- (id)previewMetricsSpecificationForBundleIdentifier:(id)a3
+- (id)previewMetricsSpecificationForBundleIdentifier:(id)identifier
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(BSServiceConnection *)connection remoteTarget];
-  v6 = [v5 previewMetricsSpecificationForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v6 = [remoteTarget previewMetricsSpecificationForBundleIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)previewMetricsSpecificationForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5
+- (id)previewMetricsSpecificationForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier
 {
   connection = self->_connection;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BSServiceConnection *)connection remoteTarget];
-  v12 = [v11 previewMetricsSpecificationForDeviceContext:v10 displayContext:v9 bundleIdentifier:v8];
+  identifierCopy = identifier;
+  displayContextCopy = displayContext;
+  contextCopy = context;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v12 = [remoteTarget previewMetricsSpecificationForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
   return v12;
 }
 
-- (id)systemMetricsForWidget:(id)a3 inHostingEnvironment:(id)a4
+- (id)systemMetricsForWidget:(id)widget inHostingEnvironment:(id)environment
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BSServiceConnection *)connection remoteTarget];
-  v9 = [v8 systemMetricsForWidget:v7 inHostingEnvironment:v6];
+  environmentCopy = environment;
+  widgetCopy = widget;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v9 = [remoteTarget systemMetricsForWidget:widgetCopy inHostingEnvironment:environmentCopy];
 
   return v9;
 }
 
-- (id)previewMetricsSpecificationsForBundleIdentifier:(id)a3
+- (id)previewMetricsSpecificationsForBundleIdentifier:(id)identifier
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(BSServiceConnection *)connection remoteTarget];
-  v6 = [v5 previewMetricsSpecificationsForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v6 = [remoteTarget previewMetricsSpecificationsForBundleIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)previewMetricsSpecificationsForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5
+- (id)previewMetricsSpecificationsForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier
 {
   connection = self->_connection;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BSServiceConnection *)connection remoteTarget];
-  v12 = [v11 previewMetricsSpecificationsForDeviceContext:v10 displayContext:v9 bundleIdentifier:v8];
+  identifierCopy = identifier;
+  displayContextCopy = displayContext;
+  contextCopy = context;
+  remoteTarget = [(BSServiceConnection *)connection remoteTarget];
+  v12 = [remoteTarget previewMetricsSpecificationsForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
   return v12;
 }
@@ -161,9 +161,9 @@
 - (void)_createConnection
 {
   v3 = MEMORY[0x1E698F498];
-  v4 = [MEMORY[0x1E698F498] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
   v5 = +[SBSWidgetMetricsServiceInterfaceSpecification identifier];
-  v8 = [v3 endpointForMachName:v4 service:v5 instance:0];
+  v8 = [v3 endpointForMachName:defaultShellMachName service:v5 instance:0];
 
   v6 = [MEMORY[0x1E698F490] connectionWithEndpoint:v8];
   connection = self->_connection;

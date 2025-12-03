@@ -1,42 +1,42 @@
 @interface SKUIViewModification
-- (SKUIViewModification)initWithViewReusePool:(id)a3;
-- (id)_addImageViewWithReuseIdentifier:(id)a3 viewElement:(id)a4 context:(id)a5;
-- (id)_attributedStringViewForLayout:(id)a3;
-- (id)_itemStateForButton:(id)a3;
-- (id)addBadgeViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addBarRatingWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addButtonWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addDividerWithElement:(id)a3 context:(id)a4;
-- (id)addHeaderViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addHorizontalListWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addHorizontalLockupWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addImageDeckViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addImageGridViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addImageViewWithElement:(id)a3 context:(id)a4;
-- (id)addImageViewWithVideoElement:(id)a3 context:(id)a4;
-- (id)addLabelViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addLabelViewWithOrdinalElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addMenuButtonWithTitleItem:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addOfferViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addResponseViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addReusableViewWithReuseIdentifier:(id)a3;
-- (id)addReviewListTitleViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addStackItemViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addStackListViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addStarRatingControlViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addStarRatingViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addTabularLockupWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addTextViewWithElement:(id)a3 width:(double)a4 context:(id)a5;
-- (id)addTomatoRatingViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)_styleItemOfferButton:(id)a3 forElement:(id)a4 context:(id)a5;
-- (void)setTextProperties:(id)a3 forView:(id)a4;
+- (SKUIViewModification)initWithViewReusePool:(id)pool;
+- (id)_addImageViewWithReuseIdentifier:(id)identifier viewElement:(id)element context:(id)context;
+- (id)_attributedStringViewForLayout:(id)layout;
+- (id)_itemStateForButton:(id)button;
+- (id)addBadgeViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addBarRatingWithElement:(id)element width:(double)width context:(id)context;
+- (id)addButtonWithElement:(id)element width:(double)width context:(id)context;
+- (id)addDividerWithElement:(id)element context:(id)context;
+- (id)addHeaderViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addHorizontalListWithElement:(id)element width:(double)width context:(id)context;
+- (id)addHorizontalLockupWithElement:(id)element width:(double)width context:(id)context;
+- (id)addImageDeckViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addImageGridViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addImageViewWithElement:(id)element context:(id)context;
+- (id)addImageViewWithVideoElement:(id)element context:(id)context;
+- (id)addLabelViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addLabelViewWithOrdinalElement:(id)element width:(double)width context:(id)context;
+- (id)addMenuButtonWithTitleItem:(id)item width:(double)width context:(id)context;
+- (id)addOfferViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addResponseViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addReusableViewWithReuseIdentifier:(id)identifier;
+- (id)addReviewListTitleViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addStackItemViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addStackListViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addStarRatingControlViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addStarRatingViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (id)addTabularLockupWithElement:(id)element width:(double)width context:(id)context;
+- (id)addTextViewWithElement:(id)element width:(double)width context:(id)context;
+- (id)addTomatoRatingViewWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)_styleItemOfferButton:(id)button forElement:(id)element context:(id)context;
+- (void)setTextProperties:(id)properties forView:(id)view;
 @end
 
 @implementation SKUIViewModification
 
-- (SKUIViewModification)initWithViewReusePool:(id)a3
+- (SKUIViewModification)initWithViewReusePool:(id)pool
 {
-  v5 = a3;
+  poolCopy = pool;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIViewModification initWithViewReusePool:];
@@ -48,7 +48,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewPool, a3);
+    objc_storeStrong(&v6->_viewPool, pool);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     views = v7->_views;
     v7->_views = v8;
@@ -57,9 +57,9 @@
   return v7;
 }
 
-- (id)addReusableViewWithReuseIdentifier:(id)a3
+- (id)addReusableViewWithReuseIdentifier:(id)identifier
 {
-  v4 = [(SKUIViewReusePool *)self->_viewPool dequeueReusableViewWithReuseIdentifier:a3];
+  v4 = [(SKUIViewReusePool *)self->_viewPool dequeueReusableViewWithReuseIdentifier:identifier];
   if (v4)
   {
     [(NSMutableArray *)self->_views addObject:v4];
@@ -68,10 +68,10 @@
   return v4;
 }
 
-- (void)setTextProperties:(id)a3 forView:(id)a4
+- (void)setTextProperties:(id)properties forView:(id)view
 {
-  v10 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  viewCopy = view;
   if (!self->_allViewTextProperties)
   {
     v7 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:1];
@@ -80,21 +80,21 @@
   }
 
   v9 = self->_allViewTextProperties;
-  if (v10)
+  if (propertiesCopy)
   {
-    [(NSMapTable *)v9 setObject:v10 forKey:v6];
+    [(NSMapTable *)v9 setObject:propertiesCopy forKey:viewCopy];
   }
 
   else
   {
-    [(NSMapTable *)v9 removeObjectForKey:v6];
+    [(NSMapTable *)v9 removeObjectForKey:viewCopy];
   }
 }
 
-- (id)addBadgeViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addBadgeViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -107,69 +107,69 @@
     }
   }
 
-  if ([v8 badgeType] == 1)
+  if ([elementCopy badgeType] == 1)
   {
-    v18 = [v9 labelLayoutCache];
-    v19 = [v18 layoutForWidth:a4 viewElement:v8];
+    labelLayoutCache = [contextCopy labelLayoutCache];
+    v19 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
     v20 = [(SKUIViewModification *)self _attributedStringViewForLayout:v19];
     [v20 setLayout:v19];
     [v20 setStringTreatment:1];
-    v21 = [v8 style];
-    v22 = [v21 ikBackgroundColor];
-    v23 = [v22 color];
-    [v20 setTreatmentColor:v23];
+    style = [elementCopy style];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
+    [v20 setTreatmentColor:color];
 
     goto LABEL_20;
   }
 
-  v24 = [v8 resourceName];
-  v21 = v24;
-  if (v24)
+  resourceName = [elementCopy resourceName];
+  style = resourceName;
+  if (resourceName)
   {
-    v25 = SKUIImageWithResourceName(v24);
+    fallbackImage = SKUIImageWithResourceName(resourceName);
   }
 
   else
   {
-    v26 = [v8 URL];
+    v26 = [elementCopy URL];
 
     if (v26)
     {
-      v27 = [v9 requestIdentifierForViewElement:v8];
+      v27 = [contextCopy requestIdentifierForViewElement:elementCopy];
       if (v27)
       {
-        v28 = [v9 resourceLoader];
-        v19 = [v28 cachedResourceForRequestIdentifier:{objc_msgSend(v27, "unsignedIntegerValue")}];
-        if (!v19 && ([v28 trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v27, "unsignedIntegerValue")}] & 1) == 0)
+        resourceLoader = [contextCopy resourceLoader];
+        v19 = [resourceLoader cachedResourceForRequestIdentifier:{objc_msgSend(v27, "unsignedIntegerValue")}];
+        if (!v19 && ([resourceLoader trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v27, "unsignedIntegerValue")}] & 1) == 0)
         {
-          [v9 loadTemplatedImageForBadgeElement:v8 reason:1];
+          [contextCopy loadTemplatedImageForBadgeElement:elementCopy reason:1];
         }
       }
 
       else
       {
-        [v9 loadTemplatedImageForBadgeElement:v8 reason:1];
+        [contextCopy loadTemplatedImageForBadgeElement:elementCopy reason:1];
         v19 = 0;
       }
 
       goto LABEL_19;
     }
 
-    v25 = [v8 fallbackImage];
+    fallbackImage = [elementCopy fallbackImage];
   }
 
-  v19 = v25;
+  v19 = fallbackImage;
 LABEL_19:
   v20 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C7E8];
-  v29 = [v8 accessibilityText];
-  [v20 setAccessibilityLabel:v29];
+  accessibilityText = [elementCopy accessibilityText];
+  [v20 setAccessibilityLabel:accessibilityText];
 
   [v20 setImage:v19];
-  [v8 size];
+  [elementCopy size];
   [v20 setImageSize:?];
-  v30 = [v8 style];
-  v31 = SKUIViewElementPlainColorWithStyle(v30, 0);
+  style2 = [elementCopy style];
+  v31 = SKUIViewElementPlainColorWithStyle(style2, 0);
   [v20 setTintColor:v31];
 
   [v20 setUserInteractionEnabled:0];
@@ -178,10 +178,10 @@ LABEL_20:
   return v20;
 }
 
-- (id)addBarRatingWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addBarRatingWithElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
-  v8 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -195,31 +195,31 @@ LABEL_20:
   }
 
   v17 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C6A8];
-  [v8 ratingValue];
+  [elementCopy ratingValue];
   [v17 setRatingValue:?];
-  v18 = [v8 style];
+  style = [elementCopy style];
 
-  v19 = [v7 tintColor];
-  v20 = SKUIViewElementPlainColorWithStyle(v18, v19);
+  tintColor = [contextCopy tintColor];
+  blackColor = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v20)
+  if (!blackColor)
   {
-    v20 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  [v17 setTintColor:v20];
-  v21 = [v7 clientContext];
-  v22 = SKUIUserInterfaceIdiom(v21) != 1;
+  [v17 setTintColor:blackColor];
+  clientContext = [contextCopy clientContext];
+  v22 = SKUIUserInterfaceIdiom(clientContext) != 1;
 
   [v17 setBarRatingStyle:v22];
 
   return v17;
 }
 
-- (id)addButtonWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addButtonWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -232,64 +232,64 @@ LABEL_20:
     }
   }
 
-  v18 = [v8 buttonViewType];
-  v19 = v18;
+  buttonViewType = [elementCopy buttonViewType];
+  v19 = buttonViewType;
   v20 = 0;
-  if (v18 <= 5)
+  if (buttonViewType <= 5)
   {
-    if (v18 > 1)
+    if (buttonViewType > 1)
     {
-      if ((v18 - 2) < 2)
+      if ((buttonViewType - 2) < 2)
       {
-        v64 = [(SKUIViewModification *)self _itemStateForButton:v8];
+        v64 = [(SKUIViewModification *)self _itemStateForButton:elementCopy];
         v20 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C828];
-        [v20 setElement:v8];
+        [v20 setElement:elementCopy];
       }
 
       else
       {
-        if (v18 != 4)
+        if (buttonViewType != 4)
         {
-          if (v18 == 5)
+          if (buttonViewType == 5)
           {
             v20 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C788];
-            v21 = [v20 imageView];
-            v22 = [v20 additionalImageView];
-            v23 = [v8 buttonImage];
-            v121 = __RequestImage(v23, v9);
-            [v21 setContents:?];
-            [v9 sizeForImageElement:v23];
-            v123 = v21;
-            [v21 setImageSize:?];
-            v24 = [v8 additionalButtonImage];
-            v25 = __RequestImage(v24, v9);
-            [v22 setContents:v25];
-            [v9 sizeForImageElement:v24];
-            [v22 setImageSize:?];
-            v26 = [v23 accessibilityText];
-            if (!v26)
+            imageView = [v20 imageView];
+            additionalImageView = [v20 additionalImageView];
+            buttonImage = [elementCopy buttonImage];
+            v121 = __RequestImage(buttonImage, contextCopy);
+            [imageView setContents:?];
+            [contextCopy sizeForImageElement:buttonImage];
+            v123 = imageView;
+            [imageView setImageSize:?];
+            additionalButtonImage = [elementCopy additionalButtonImage];
+            v25 = __RequestImage(additionalButtonImage, contextCopy);
+            [additionalImageView setContents:v25];
+            [contextCopy sizeForImageElement:additionalButtonImage];
+            [additionalImageView setImageSize:?];
+            accessibilityText = [buttonImage accessibilityText];
+            if (!accessibilityText)
             {
-              v26 = [v8 accessibilityText];
+              accessibilityText = [elementCopy accessibilityText];
             }
 
-            [v20 setAccessibilityLabel:v26];
-            v27 = [v8 isEnabled];
+            [v20 setAccessibilityLabel:accessibilityText];
+            isEnabled = [elementCopy isEnabled];
             v28 = 0.4;
-            if (v27)
+            if (isEnabled)
             {
               v28 = 1.0;
             }
 
             [v20 setAlpha:v28];
-            [v20 setEnabled:v27];
-            v29 = [v8 style];
-            v30 = SKUIViewElementPlainColorWithStyle(v29, 0);
+            [v20 setEnabled:isEnabled];
+            style = [elementCopy style];
+            v30 = SKUIViewElementPlainColorWithStyle(style, 0);
             [v20 setTintColor:v30];
 
-            if ([v8 isBigHitButton])
+            if ([elementCopy isBigHitButton])
             {
               [v20 setUseBigHitTarget:1];
-              [v8 bigHitSize];
+              [elementCopy bigHitSize];
               v32 = -v31;
               v33 = v31 == 0.0;
               v34 = -15.0;
@@ -311,20 +311,20 @@ LABEL_20:
         }
 
         v20 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C828];
-        v64 = [(SKUIViewModification *)self _itemStateForButton:v8];
+        v64 = [(SKUIViewModification *)self _itemStateForButton:elementCopy];
       }
 
-      v70 = [v8 buyButtonDescriptor];
-      v71 = [v9 clientContext];
-      [v20 setValuesUsingBuyButtonDescriptor:v70 itemState:v64 clientContext:v71 animated:0];
+      buyButtonDescriptor = [elementCopy buyButtonDescriptor];
+      clientContext = [contextCopy clientContext];
+      [v20 setValuesUsingBuyButtonDescriptor:buyButtonDescriptor itemState:v64 clientContext:clientContext animated:0];
 
-      [(SKUIViewModification *)self _styleItemOfferButton:v20 forElement:v8 context:v9];
+      [(SKUIViewModification *)self _styleItemOfferButton:v20 forElement:elementCopy context:contextCopy];
       goto LABEL_87;
     }
 
-    if (v18)
+    if (buttonViewType)
     {
-      if (v18 != 1)
+      if (buttonViewType != 1)
       {
         goto LABEL_87;
       }
@@ -335,20 +335,20 @@ LABEL_20:
     goto LABEL_30;
   }
 
-  if (v18 <= 0xD)
+  if (buttonViewType <= 0xD)
   {
-    if (((1 << v18) & 0x2D00) != 0)
+    if (((1 << buttonViewType) & 0x2D00) != 0)
     {
 LABEL_30:
-      v45 = [v8 buttonViewSubType];
-      if (v45 == 1)
+      buttonViewSubType = [elementCopy buttonViewSubType];
+      if (buttonViewSubType == 1)
       {
         v46 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C9C8];
-        v47 = [v8 nonToggledText];
-        [v46 setNonToggledTitle:v47];
+        nonToggledText = [elementCopy nonToggledText];
+        [v46 setNonToggledTitle:nonToggledText];
 
-        v48 = [v8 toggledText];
-        [v46 setToggledTitle:v48];
+        toggledText = [elementCopy toggledText];
+        [v46 setToggledTitle:toggledText];
 
         v49 = v46;
         v50 = v49;
@@ -372,48 +372,48 @@ LABEL_30:
 
       [v50 setButtonType:v51];
       v52 = [SKUIButtonBorderStyle alloc];
-      v53 = [v8 style];
-      v54 = [(SKUIButtonBorderStyle *)v52 initWithElementStyle:v53];
+      style2 = [elementCopy style];
+      imageView2 = [(SKUIButtonBorderStyle *)v52 initWithElementStyle:style2];
 
-      [v50 setBorderStyle:v54];
-      v55 = [v9 labelLayoutCache];
-      v56 = [v55 layoutForWidth:a4 viewElement:v8];
+      [v50 setBorderStyle:imageView2];
+      labelLayoutCache = [contextCopy labelLayoutCache];
+      v56 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
       [v50 setTitleLayout:v56];
 
-      v57 = [v8 isEnabled];
-      [v50 setEnabled:v57];
+      isEnabled2 = [elementCopy isEnabled];
+      [v50 setEnabled:isEnabled2];
       v58 = 0.4;
-      if (v57)
+      if (isEnabled2)
       {
         v58 = 1.0;
       }
 
       [v50 setAlpha:v58];
-      if (v45 == 1)
+      if (buttonViewSubType == 1)
       {
-        v59 = [v8 toggleItemIdentifier];
-        if ([v59 length])
+        toggleItemIdentifier = [elementCopy toggleItemIdentifier];
+        if ([toggleItemIdentifier length])
         {
           v60 = +[SKUIToggleStateCenter defaultCenter];
-          [v49 setToggleItemIdentifier:v59];
-          v61 = [v60 itemForIdentifier:v59];
+          [v49 setToggleItemIdentifier:toggleItemIdentifier];
+          v61 = [v60 itemForIdentifier:toggleItemIdentifier];
           v62 = v61;
           if (!v61 || ([v61 toggled] & 0x80000000) != 0)
           {
-            v63 = [v8 isToggled];
+            isToggled = [elementCopy isToggled];
           }
 
           else
           {
-            v63 = [v62 toggled] == 1;
+            isToggled = [v62 toggled] == 1;
           }
 
-          [v49 setToggled:v63 animated:0];
+          [v49 setToggled:isToggled animated:0];
         }
 
         else
         {
-          [v49 setToggled:objc_msgSend(v8 animated:{"isToggled"), 0}];
+          [v49 setToggled:objc_msgSend(elementCopy animated:{"isToggled"), 0}];
         }
       }
 
@@ -423,101 +423,101 @@ LABEL_64:
       goto LABEL_87;
     }
 
-    if (v18 == 9)
+    if (buttonViewType == 9)
     {
       v20 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C6C8];
       [v20 setAlpha:1.0];
       [v20 setBorderStyle:0];
-      v72 = 1;
+      isEnabled3 = 1;
       [v20 setButtonType:1];
-      v73 = [v9 labelLayoutCache];
-      v74 = [v73 layoutForWidth:a4 viewElement:v8];
+      labelLayoutCache2 = [contextCopy labelLayoutCache];
+      v74 = [labelLayoutCache2 layoutForWidth:width viewElement:elementCopy];
       [v20 setTitleLayout:v74];
 
-      v37 = [(SKUIViewModification *)self _itemStateForButton:v8];
-      v75 = [v8 buyButtonDescriptor];
-      v76 = [v9 clientContext];
-      [v20 setValuesUsingBuyButtonDescriptor:v75 itemState:v37 clientContext:v76 animated:0];
+      playItemIdentifier = [(SKUIViewModification *)self _itemStateForButton:elementCopy];
+      buyButtonDescriptor2 = [elementCopy buyButtonDescriptor];
+      clientContext2 = [contextCopy clientContext];
+      [v20 setValuesUsingBuyButtonDescriptor:buyButtonDescriptor2 itemState:playItemIdentifier clientContext:clientContext2 animated:0];
 
       if (([v20 isUsingItemOfferAppearance] & 1) == 0)
       {
-        v72 = [v8 isEnabled];
+        isEnabled3 = [elementCopy isEnabled];
       }
 
-      [v20 setEnabled:v72];
-      v77 = [v8 style];
-      v78 = SKUIViewElementPlainColorWithStyle(v77, 0);
+      [v20 setEnabled:isEnabled3];
+      style3 = [elementCopy style];
+      v78 = SKUIViewElementPlainColorWithStyle(style3, 0);
 
       [v20 setTintColor:v78];
       goto LABEL_86;
     }
 
-    if (v18 == 12)
+    if (buttonViewType == 12)
     {
       v20 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C848];
-      v35 = [v8 sizeVariant];
-      v36 = [v35 isEqualToString:@"large"];
+      sizeVariant = [elementCopy sizeVariant];
+      v36 = [sizeVariant isEqualToString:@"large"];
 
       [v20 setStyle:v36];
-      v37 = [v8 playItemIdentifier];
+      playItemIdentifier = [elementCopy playItemIdentifier];
       if ([v20 isIndeterminate])
       {
         [v20 endIndeterminateAnimation];
       }
 
-      [v20 setShowOnDemand:{objc_msgSend(v8, "showOnDemand")}];
+      [v20 setShowOnDemand:{objc_msgSend(elementCopy, "showOnDemand")}];
       [v20 showPlayIndicator:1];
-      [v20 setPlayItemIdentifier:v37];
-      [v20 setItemIdentifier:{objc_msgSend(v37, "longLongValue")}];
+      [v20 setPlayItemIdentifier:playItemIdentifier];
+      [v20 setItemIdentifier:{objc_msgSend(playItemIdentifier, "longLongValue")}];
       [v20 setBigHitInsets:{-15.0, -15.0, -15.0, -15.0}];
-      v38 = [v8 style];
-      v39 = [v38 ikBackgroundColor];
+      style4 = [elementCopy style];
+      ikBackgroundColor = [style4 ikBackgroundColor];
 
-      v40 = [v39 colorType];
-      if (v40 == 2)
+      colorType = [ikBackgroundColor colorType];
+      if (colorType == 2)
       {
-        v43 = 0;
-        v44 = 0;
+        color2 = 0;
+        color = 0;
       }
 
       else
       {
-        if (v40 == 3)
+        if (colorType == 3)
         {
-          v41 = [v39 gradientDirectionType] == 2;
-          v42 = [v39 gradientColors];
-          [v20 setBackgroundGradientColors:v42 withGradientType:v41];
-          v43 = 0;
-          v44 = 0;
-          v40 = 4;
+          v41 = [ikBackgroundColor gradientDirectionType] == 2;
+          gradientColors = [ikBackgroundColor gradientColors];
+          [v20 setBackgroundGradientColors:gradientColors withGradientType:v41];
+          color2 = 0;
+          color = 0;
+          colorType = 4;
         }
 
         else
         {
-          v44 = [v39 color];
-          v42 = [v8 style];
-          v96 = [v42 ikColor];
-          v43 = [v96 color];
+          color = [ikBackgroundColor color];
+          gradientColors = [elementCopy style];
+          ikColor = [gradientColors ikColor];
+          color2 = [ikColor color];
 
-          v40 = 1;
+          colorType = 1;
         }
       }
 
-      [v20 setItemIdentifier:{objc_msgSend(v37, "longLongValue")}];
-      [v20 setBackgroundType:v40];
-      if (v43)
+      [v20 setItemIdentifier:{objc_msgSend(playItemIdentifier, "longLongValue")}];
+      [v20 setBackgroundType:colorType];
+      if (color2)
       {
-        [v20 setControlForegroundColor:v43];
+        [v20 setControlForegroundColor:color2];
       }
 
-      if (v44)
+      if (color)
       {
-        [v20 setControlColor:v44];
+        [v20 setControlColor:color];
       }
 
-      [v20 setElement:v8];
-      [v20 setEnabled:{objc_msgSend(v8, "isEnabled")}];
-      [v20 setDisabledButSelectable:{objc_msgSend(v8, "isDisabledButSelectable")}];
+      [v20 setElement:elementCopy];
+      [v20 setEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+      [v20 setDisabledButSelectable:{objc_msgSend(elementCopy, "isDisabledButSelectable")}];
       [v20 setHidden:{objc_msgSend(v20, "showOnDemand")}];
 
 LABEL_86:
@@ -525,18 +525,18 @@ LABEL_86:
     }
   }
 
-  if (v18 == 6)
+  if (buttonViewType == 6)
   {
-    if ([v8 buttonViewSubType] == 1)
+    if ([elementCopy buttonViewSubType] == 1)
     {
       v79 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C9C8];
-      v80 = [v8 nonToggledText];
-      [v79 setNonToggledTitle:v80];
+      nonToggledText2 = [elementCopy nonToggledText];
+      [v79 setNonToggledTitle:nonToggledText2];
 
-      v81 = [v8 toggledText];
-      [v79 setToggledTitle:v81];
+      toggledText2 = [elementCopy toggledText];
+      [v79 setToggledTitle:toggledText2];
 
-      [v79 setAutoIncrement:{objc_msgSend(v8, "autoIncrementCount")}];
+      [v79 setAutoIncrement:{objc_msgSend(elementCopy, "autoIncrementCount")}];
       v49 = v79;
       v82 = v49;
     }
@@ -548,10 +548,10 @@ LABEL_86:
     }
 
     [v82 setBorderStyle:0];
-    v83 = [SKUIStyledButton buttonTypeForElement:v8];
-    if ([v8 isBigHitButton])
+    v83 = [SKUIStyledButton buttonTypeForElement:elementCopy];
+    if ([elementCopy isBigHitButton])
     {
-      [v8 bigHitSize];
+      [elementCopy bigHitSize];
       v85 = -v84;
       v33 = v84 == 0.0;
       v86 = -15.0;
@@ -565,35 +565,35 @@ LABEL_86:
     }
 
     [v82 setButtonType:v83];
-    v87 = [v9 labelLayoutCache];
-    v88 = [v87 layoutForWidth:a4 viewElement:v8];
+    labelLayoutCache3 = [contextCopy labelLayoutCache];
+    v88 = [labelLayoutCache3 layoutForWidth:width viewElement:elementCopy];
     [v82 setTitleLayout:v88];
 
-    v89 = [v8 style];
-    [v89 elementPadding];
+    style5 = [elementCopy style];
+    [style5 elementPadding];
     [v82 setButtonPadding:?];
 
-    v90 = [v8 isEnabled];
-    [v82 setEnabled:v90];
+    isEnabled4 = [elementCopy isEnabled];
+    [v82 setEnabled:isEnabled4];
     v91 = 0.4;
-    if (v90)
+    if (isEnabled4)
     {
       v91 = 1.0;
     }
 
     [v82 setAlpha:v91];
-    v54 = [v82 imageView];
-    v92 = [v8 buttonImage];
-    v93 = __RequestImage(v92, v9);
+    imageView2 = [v82 imageView];
+    buttonImage2 = [elementCopy buttonImage];
+    v93 = __RequestImage(buttonImage2, contextCopy);
     if (v49)
     {
-      [v49 setElement:v8];
-      v94 = [v8 toggleItemIdentifier];
+      [v49 setElement:elementCopy];
+      toggleItemIdentifier2 = [elementCopy toggleItemIdentifier];
       v122 = +[SKUIToggleStateCenter defaultCenter];
-      if ([v94 length])
+      if ([toggleItemIdentifier2 length])
       {
-        [v49 setToggleItemIdentifier:v94];
-        v95 = [v122 itemForIdentifier:v94];
+        [v49 setToggleItemIdentifier:toggleItemIdentifier2];
+        v95 = [v122 itemForIdentifier:toggleItemIdentifier2];
       }
 
       else
@@ -603,20 +603,20 @@ LABEL_86:
 
       if (([v95 toggled] & 0x80000000) != 0)
       {
-        v120 = [v8 isToggled];
+        isToggled2 = [elementCopy isToggled];
       }
 
       else
       {
-        v120 = [v95 count];
+        isToggled2 = [v95 count];
       }
 
       v124 = v95;
-      v105 = [v8 additionalButtonImage];
-      if (v105)
+      additionalButtonImage2 = [elementCopy additionalButtonImage];
+      if (additionalButtonImage2)
       {
         [v49 setToggleButtonType:1];
-        v106 = __RequestImage(v105, v9);
+        v106 = __RequestImage(additionalButtonImage2, contextCopy);
       }
 
       else
@@ -625,60 +625,60 @@ LABEL_86:
         v106 = 0;
       }
 
-      if ([v8 autoIncrementCount] && objc_msgSend(v124, "toggled") == -1)
+      if ([elementCopy autoIncrementCount] && objc_msgSend(v124, "toggled") == -1)
       {
-        v114 = v54;
-        v115 = v94;
-        v118 = [v49 titleLayout];
-        v110 = [v118 attributedString];
-        v111 = [v110 string];
+        v114 = imageView2;
+        v115 = toggleItemIdentifier2;
+        titleLayout = [v49 titleLayout];
+        attributedString = [titleLayout attributedString];
+        string = [attributedString string];
 
-        v119 = v111;
-        if ([v111 length])
+        v119 = string;
+        if ([string length])
         {
           if (addButtonWithElement_width_context__sOnceToken != -1)
           {
             [SKUIViewModification(SKUIViewElementView) addButtonWithElement:width:context:];
           }
 
-          v94 = v115;
-          v54 = v114;
+          toggleItemIdentifier2 = v115;
+          imageView2 = v114;
           v112 = [addButtonWithElement_width_context__sNumberFormatter numberFromString:v119];
           if (v112)
           {
             v116 = v112;
-            v120 = [v112 integerValue];
+            isToggled2 = [v112 integerValue];
             v112 = v116;
           }
         }
 
         else
         {
-          v54 = v114;
-          v94 = v115;
+          imageView2 = v114;
+          toggleItemIdentifier2 = v115;
         }
 
-        if (v120 < 1)
+        if (isToggled2 < 1)
         {
           [v49 setButtonTitleText:@" "];
-          [v49 setAutoIncrementCount:v120];
+          [v49 setAutoIncrementCount:isToggled2];
         }
 
         else
         {
-          [v49 setAutoIncrementCount:v120];
+          [v49 setAutoIncrementCount:isToggled2];
           [v49 setButtonTitleText:v119];
         }
 
-        [v49 setAutoIncrementCount:v120];
-        [v49 setToggled:{objc_msgSend(v8, "isToggled")}];
+        [v49 setAutoIncrementCount:isToggled2];
+        [v49 setToggled:{objc_msgSend(elementCopy, "isToggled")}];
       }
 
-      else if ([v8 autoIncrementCount])
+      else if ([elementCopy autoIncrementCount])
       {
-        v117 = v105;
+        v117 = additionalButtonImage2;
         [v49 setToggled:{objc_msgSend(v124, "toggled") == 1}];
-        if (v120 < 1)
+        if (isToggled2 < 1)
         {
           [v49 setButtonTitleText:@" "];
         }
@@ -687,19 +687,19 @@ LABEL_86:
         {
           [v124 toggledString];
           v107 = v93;
-          v109 = v108 = v94;
+          v109 = v108 = toggleItemIdentifier2;
           [v49 setButtonTitleText:v109];
 
-          v94 = v108;
+          toggleItemIdentifier2 = v108;
           v93 = v107;
         }
 
-        v105 = v117;
+        additionalButtonImage2 = v117;
       }
 
       else
       {
-        [v49 setToggled:{objc_msgSend(v8, "isToggled")}];
+        [v49 setToggled:{objc_msgSend(elementCopy, "isToggled")}];
       }
 
       [v49 setNonToggledContents:v93];
@@ -714,22 +714,22 @@ LABEL_86:
         v113 = v93;
       }
 
-      [(SKUIButtonBorderStyle *)v54 setContents:v113];
+      [(SKUIButtonBorderStyle *)imageView2 setContents:v113];
     }
 
     else
     {
-      [(SKUIButtonBorderStyle *)v54 setContents:v93];
+      [(SKUIButtonBorderStyle *)imageView2 setContents:v93];
     }
 
-    [v9 sizeForImageElement:v92];
-    [(SKUIButtonBorderStyle *)v54 setImageSize:?];
+    [contextCopy sizeForImageElement:buttonImage2];
+    [(SKUIButtonBorderStyle *)imageView2 setImageSize:?];
     v20 = v82;
 
     goto LABEL_64;
   }
 
-  if (v18 != 7)
+  if (buttonViewType != 7)
   {
     goto LABEL_87;
   }
@@ -748,22 +748,22 @@ LABEL_46:
   }
 
   [v20 setButtonType:v65];
-  v66 = [v9 labelLayoutCache];
-  v67 = [v66 layoutForWidth:a4 viewElement:v8];
+  labelLayoutCache4 = [contextCopy labelLayoutCache];
+  v67 = [labelLayoutCache4 layoutForWidth:width viewElement:elementCopy];
   [v20 setTitleLayout:v67];
 
-  v68 = [v8 isEnabled];
-  [v20 setEnabled:v68];
+  isEnabled5 = [elementCopy isEnabled];
+  [v20 setEnabled:isEnabled5];
   v69 = 0.4;
-  if (v68)
+  if (isEnabled5)
   {
     v69 = 1.0;
   }
 
   [v20 setAlpha:v69];
 LABEL_87:
-  v97 = [v8 attributes];
-  v98 = [v97 objectForKeyedSubscript:@"privacy"];
+  attributes = [elementCopy attributes];
+  v98 = [attributes objectForKeyedSubscript:@"privacy"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -781,17 +781,17 @@ LABEL_87:
   if (objc_opt_isKindOfClass())
   {
     v100 = v20;
-    v101 = [v8 buttonTitleStyle];
-    v102 = v101;
-    if (!v101)
+    buttonTitleStyle = [elementCopy buttonTitleStyle];
+    style6 = buttonTitleStyle;
+    if (!buttonTitleStyle)
     {
-      v102 = [v8 style];
+      style6 = [elementCopy style];
     }
 
-    v103 = [v102 ikColor];
-    [v100 setUsesTintColor:{objc_msgSend(v103, "colorType") == 1}];
+    ikColor2 = [style6 ikColor];
+    [v100 setUsesTintColor:{objc_msgSend(ikColor2, "colorType") == 1}];
 
-    if (!v101)
+    if (!buttonTitleStyle)
     {
     }
   }
@@ -810,10 +810,10 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   return [v2 setNumberStyle:1];
 }
 
-- (id)addDividerWithElement:(id)a3 context:(id)a4
+- (id)addDividerWithElement:(id)element context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -827,14 +827,14 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v16 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x282804AE8];
-  v17 = [v6 style];
-  v18 = [v7 tintColor];
+  style = [elementCopy style];
+  tintColor = [contextCopy tintColor];
 
-  v19 = SKUIViewElementPlainColorWithStyle(v17, v18);
+  v19 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (v19 || [v6 dividerType] == 3)
+  if (v19 || [elementCopy dividerType] == 3)
   {
-    if ([v6 dividerType] == 3)
+    if ([elementCopy dividerType] == 3)
     {
 
       v19 = 0;
@@ -851,10 +851,10 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   return v16;
 }
 
-- (id)addHeaderViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addHeaderViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -868,15 +868,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C708];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addHorizontalListWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addHorizontalListWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -890,19 +890,19 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C728];
-  v19 = [v9 style];
-  [v19 elementPadding];
+  style = [elementCopy style];
+  [style elementPadding];
   [v18 setContentInset:?];
 
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addHorizontalLockupWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addHorizontalLockupWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -916,15 +916,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C768];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addImageDeckViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addImageDeckViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -938,15 +938,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C7A8];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addImageGridViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addImageGridViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -960,15 +960,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C7C8];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addImageViewWithElement:(id)a3 context:(id)a4
+- (id)addImageViewWithElement:(id)element context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -981,102 +981,102 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
     }
   }
 
-  v16 = [v6 style];
-  v17 = [v16 imageTreatment];
-  v18 = SKUIImageTreatmentForString(v17);
+  style = [elementCopy style];
+  imageTreatment = [style imageTreatment];
+  v18 = SKUIImageTreatmentForString(imageTreatment);
 
   if (v18 == 13)
   {
-    v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C868 viewElement:v6 context:v7];
-    if (v16)
+    v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C868 viewElement:elementCopy context:contextCopy];
+    if (style)
     {
-      [v16 transform];
+      [style transform];
       [v19 setTransform:v35];
     }
 
-    v21 = SKUIViewElementPlainColorWithStyle(v16, 0);
+    v21 = SKUIViewElementPlainColorWithStyle(style, 0);
     [v19 setTintColor:v21];
 
-    [v16 elementPadding];
+    [style elementPadding];
     [v19 setImagePadding:?];
-    v20 = [v16 ikBackgroundColor];
-    v22 = [v20 color];
-    [v19 setBackgroundColor:v22];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
+    [v19 setBackgroundColor:color];
   }
 
   else if (v18 == 7)
   {
-    v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C8C8 viewElement:v6 context:v7];
-    v20 = [v7 borderDrawingCache];
-    [v19 setBorderDrawingCache:v20];
+    v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C8C8 viewElement:elementCopy context:contextCopy];
+    ikBackgroundColor = [contextCopy borderDrawingCache];
+    [v19 setBorderDrawingCache:ikBackgroundColor];
   }
 
   else
   {
-    v23 = [v6 children];
-    v24 = [v23 count];
+    children = [elementCopy children];
+    v24 = [children count];
 
     if (v24)
     {
-      v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C648 viewElement:v6 context:v7];
-      [v6 size];
-      [v19 reloadWithViewElement:v6 width:v7 context:?];
+      v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C648 viewElement:elementCopy context:contextCopy];
+      [elementCopy size];
+      [v19 reloadWithViewElement:elementCopy width:contextCopy context:?];
     }
 
     else
     {
-      [v6 shadowOffset];
+      [elementCopy shadowOffset];
       if (v26 == *MEMORY[0x277CBF3A8] && v25 == *(MEMORY[0x277CBF3A8] + 8))
       {
-        v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C7E8 viewElement:v6 context:v7];
-        [v6 layerShadowOpacity];
+        v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C7E8 viewElement:elementCopy context:contextCopy];
+        [elementCopy layerShadowOpacity];
         if (v28 != 0.0)
         {
-          v29 = [v19 layer];
-          [v29 setMasksToBounds:0];
+          layer = [v19 layer];
+          [layer setMasksToBounds:0];
 
-          v30 = [v19 layer];
-          [v6 layerShadowOpacity];
-          [v30 setShadowOpacity:?];
+          layer2 = [v19 layer];
+          [elementCopy layerShadowOpacity];
+          [layer2 setShadowOpacity:?];
 
-          v31 = [v19 layer];
-          [v6 layerShadowOffset];
-          [v31 setShadowOffset:?];
+          layer3 = [v19 layer];
+          [elementCopy layerShadowOffset];
+          [layer3 setShadowOffset:?];
         }
 
-        [v6 layerShadowRadius];
+        [elementCopy layerShadowRadius];
         if (v32 != 0.0)
         {
-          v33 = [v19 layer];
-          [v6 layerShadowRadius];
-          [v33 setShadowRadius:?];
+          layer4 = [v19 layer];
+          [elementCopy layerShadowRadius];
+          [layer4 setShadowRadius:?];
         }
       }
 
       else
       {
-        v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C808 viewElement:v6 context:v7];
+        v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280C808 viewElement:elementCopy context:contextCopy];
         [v19 setContentMode:4];
       }
     }
 
-    if (v16)
+    if (style)
     {
-      [v16 transform];
+      [style transform];
       [v19 setTransform:v35];
     }
 
-    v20 = SKUIViewElementPlainColorWithStyle(v16, 0);
-    [v19 setTintColor:v20];
+    ikBackgroundColor = SKUIViewElementPlainColorWithStyle(style, 0);
+    [v19 setTintColor:ikBackgroundColor];
   }
 
   return v19;
 }
 
-- (id)addImageViewWithVideoElement:(id)a3 context:(id)a4
+- (id)addImageViewWithVideoElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1089,33 +1089,33 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
     }
   }
 
-  v16 = [v7 thumbnailImage];
-  v17 = [v7 isEnabled];
+  thumbnailImage = [elementCopy thumbnailImage];
+  isEnabled = [elementCopy isEnabled];
 
-  if (v17)
+  if (isEnabled)
   {
-    v18 = [v16 style];
-    v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280CA08 viewElement:v16 context:v6];
-    if (v18)
+    style = [thumbnailImage style];
+    v19 = [(SKUIViewModification *)self _addImageViewWithReuseIdentifier:0x28280CA08 viewElement:thumbnailImage context:contextCopy];
+    if (style)
     {
-      [v18 transform];
+      [style transform];
       [v19 setTransform:&v21];
     }
   }
 
   else
   {
-    v19 = [(SKUIViewModification *)self addImageViewWithElement:v16 context:v6];
+    v19 = [(SKUIViewModification *)self addImageViewWithElement:thumbnailImage context:contextCopy];
   }
 
   return v19;
 }
 
-- (id)addLabelViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addLabelViewWithElement:(id)element width:(double)width context:(id)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1128,39 +1128,39 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
     }
   }
 
-  v18 = [v9 labelLayoutCache];
-  v19 = [v18 layoutForWidth:a4 viewElement:v8];
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  v19 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
   v20 = [(SKUIViewModification *)self _attributedStringViewForLayout:v19];
   [v20 setLayout:v19];
-  [v20 setContainsLinks:{objc_msgSend(v8, "containsLinks")}];
-  if ([v8 containsLinks])
+  [v20 setContainsLinks:{objc_msgSend(elementCopy, "containsLinks")}];
+  if ([elementCopy containsLinks])
   {
-    v21 = [v8 linkDelegate];
-    [v20 setLinkDelegate:v21];
+    linkDelegate = [elementCopy linkDelegate];
+    [v20 setLinkDelegate:linkDelegate];
   }
 
   [v20 setStringTreatment:0];
   [v20 setTreatmentColor:0];
-  v22 = [v8 style];
-  v23 = [v22 ikColor];
-  [v20 setTextColorFollowsTintColor:{objc_msgSend(v23, "colorType") == 1}];
+  style = [elementCopy style];
+  ikColor = [style ikColor];
+  [v20 setTextColorFollowsTintColor:{objc_msgSend(ikColor, "colorType") == 1}];
 
   if (v19)
   {
-    v24 = [v8 trailingBadges];
-    v25 = [v9 badgeImageLoader];
-    v26 = [v8 badges];
+    trailingBadges = [elementCopy trailingBadges];
+    badgeImageLoader = [contextCopy badgeImageLoader];
+    badges = [elementCopy badges];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v27 = [v26 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    v27 = [badges countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v27)
     {
       v28 = v27;
-      v35 = v24;
-      v36 = v9;
+      v35 = trailingBadges;
+      v36 = contextCopy;
       LOBYTE(v29) = 0;
       v30 = *v38;
       do
@@ -1169,7 +1169,7 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
         {
           if (*v38 != v30)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(badges);
           }
 
           v32 = *(*(&v37 + 1) + 8 * i);
@@ -1180,41 +1180,41 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
 
           else
           {
-            v33 = [*(*(&v37 + 1) + 8 * i) image];
-            v29 = v33 == 0;
+            image = [*(*(&v37 + 1) + 8 * i) image];
+            v29 = image == 0;
           }
 
-          [v25 loadImageForBadge:v32 layout:v19 reason:{1, v35, v36}];
+          [badgeImageLoader loadImageForBadge:v32 layout:v19 reason:{1, v35, v36}];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v28 = [badges countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v28);
-      v24 = v35;
-      v9 = v36;
+      trailingBadges = v35;
+      contextCopy = v36;
       if (v29)
       {
-        [v25 connectStringView:v20];
+        [badgeImageLoader connectStringView:v20];
       }
     }
   }
 
   else
   {
-    v24 = 0;
+    trailingBadges = 0;
   }
 
-  [v20 setRequiredBadges:v24];
-  [v20 setBadgePlacement:{objc_msgSend(v8, "badgePlacement") == 1}];
+  [v20 setRequiredBadges:trailingBadges];
+  [v20 setBadgePlacement:{objc_msgSend(elementCopy, "badgePlacement") == 1}];
 
   return v20;
 }
 
-- (id)addLabelViewWithOrdinalElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addLabelViewWithOrdinalElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1227,25 +1227,25 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
     }
   }
 
-  v18 = [v8 labelLayoutCache];
-  v19 = [v18 layoutForWidth:a4 viewElement:v9];
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  v19 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
   v20 = [(SKUIViewModification *)self _attributedStringViewForLayout:v19];
   [v20 setLayout:v19];
   [v20 setStringTreatment:0];
   [v20 setTreatmentColor:0];
-  v21 = [v9 style];
+  style = [elementCopy style];
 
-  v22 = [v21 ikColor];
-  [v20 setTextColorFollowsTintColor:{objc_msgSend(v22, "colorType") == 1}];
+  ikColor = [style ikColor];
+  [v20 setTextColorFollowsTintColor:{objc_msgSend(ikColor, "colorType") == 1}];
 
   return v20;
 }
 
-- (id)addMenuButtonWithTitleItem:(id)a3 width:(double)a4 context:(id)a5
+- (id)addMenuButtonWithTitleItem:(id)item width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1261,10 +1261,10 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C6C8];
   [v18 setBorderStyle:0];
   [v18 setButtonType:2];
-  [v18 setEnabled:{objc_msgSend(v9, "isEnabled")}];
-  v19 = [v8 labelLayoutCache];
+  [v18 setEnabled:{objc_msgSend(itemCopy, "isEnabled")}];
+  labelLayoutCache = [contextCopy labelLayoutCache];
 
-  v20 = [v19 layoutForWidth:a4 viewElement:v9];
+  v20 = [labelLayoutCache layoutForWidth:width viewElement:itemCopy];
 
   [v18 setTitleLayout:v20];
   [v18 setUsesTintColor:1];
@@ -1272,10 +1272,10 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   return v18;
 }
 
-- (id)addOfferViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addOfferViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1289,15 +1289,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x282803688];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addStackListViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addStackListViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1311,19 +1311,19 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C8E8];
-  v19 = [v9 style];
-  [v19 elementPadding];
+  style = [elementCopy style];
+  [style elementPadding];
   [v18 setContentInset:?];
 
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addStackItemViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addStackItemViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1337,19 +1337,19 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280A788];
-  v19 = [v9 style];
-  [v19 elementPadding];
+  style = [elementCopy style];
+  [style elementPadding];
   [v18 setContentInset:?];
 
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addReviewListTitleViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addReviewListTitleViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1363,15 +1363,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C8A8];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addResponseViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addResponseViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1385,15 +1385,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C888];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addStarRatingViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addStarRatingViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1408,15 +1408,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C908];
   [v18 setElementSpacing:3];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addStarRatingControlViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addStarRatingControlViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1430,16 +1430,16 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C928];
-  [v18 setEnabled:{objc_msgSend(v9, "isEnabled")}];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 setEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addTabularLockupWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addTabularLockupWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1453,15 +1453,15 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C988];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)addTextViewWithElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addTextViewWithElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1475,44 +1475,44 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C9A8];
-  v19 = [v9 editorialLayoutForLabelElement:v8 width:a4];
+  v19 = [contextCopy editorialLayoutForLabelElement:elementCopy width:width];
   v20 = [v19 bodyTextLayoutForOrientation:0];
   [v18 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   [v18 setEnabled:0];
   [v18 setFixedWidthTextFrame:{objc_msgSend(v20, "textFrame")}];
-  v21 = [v8 moreButtonTitle];
-  [v18 setMoreButtonTitle:v21];
+  moreButtonTitle = [elementCopy moreButtonTitle];
+  [v18 setMoreButtonTitle:moreButtonTitle];
 
-  if ([v20 requiresTruncation] && (objc_msgSend(v9, "isEditorialLayoutExpanded:", v19) & 1) == 0)
+  if ([v20 requiresTruncation] && (objc_msgSend(contextCopy, "isEditorialLayoutExpanded:", v19) & 1) == 0)
   {
-    v22 = [v8 isEnabled];
+    isEnabled = [elementCopy isEnabled];
   }
 
   else
   {
-    v22 = 0;
+    isEnabled = 0;
   }
 
-  [v18 setUserInteractionEnabled:v22];
-  if ([v9 isEditorialLayoutExpanded:v19])
+  [v18 setUserInteractionEnabled:isEnabled];
+  if ([contextCopy isEditorialLayoutExpanded:v19])
   {
-    v23 = 0;
+    numberOfLines = 0;
   }
 
   else
   {
-    v23 = [v8 numberOfLines];
+    numberOfLines = [elementCopy numberOfLines];
   }
 
-  [v18 setNumberOfVisibleLines:v23];
+  [v18 setNumberOfVisibleLines:numberOfLines];
 
   return v18;
 }
 
-- (id)addTomatoRatingViewWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (id)addTomatoRatingViewWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1526,23 +1526,23 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   }
 
   v18 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:0x28280C9E8];
-  [v18 reloadWithViewElement:v9 width:v8 context:a4];
+  [v18 reloadWithViewElement:elementCopy width:contextCopy context:width];
 
   return v18;
 }
 
-- (id)_addImageViewWithReuseIdentifier:(id)a3 viewElement:(id)a4 context:(id)a5
+- (id)_addImageViewWithReuseIdentifier:(id)identifier viewElement:(id)element context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:a3];
-  v11 = [v9 accessibilityText];
-  [v10 setAccessibilityLabel:v11];
+  contextCopy = context;
+  elementCopy = element;
+  v10 = [(SKUIViewModification *)self addReusableViewWithReuseIdentifier:identifier];
+  accessibilityText = [elementCopy accessibilityText];
+  [v10 setAccessibilityLabel:accessibilityText];
 
-  [v10 setUserInteractionEnabled:{objc_msgSend(v9, "isEnabled")}];
-  v12 = __RequestImage(v9, v8);
+  [v10 setUserInteractionEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+  v12 = __RequestImage(elementCopy, contextCopy);
   [v10 setContents:v12];
-  [v8 sizeForImageElement:v9];
+  [contextCopy sizeForImageElement:elementCopy];
   v14 = v13;
   v16 = v15;
 
@@ -1551,22 +1551,22 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   return v10;
 }
 
-- (id)_itemStateForButton:(id)a3
+- (id)_itemStateForButton:(id)button
 {
-  v3 = a3;
-  v4 = [v3 itemIdentifier];
-  v5 = [v3 storeIdentifier];
-  if (!v5 && v4)
+  buttonCopy = button;
+  itemIdentifier = [buttonCopy itemIdentifier];
+  storeIdentifier = [buttonCopy storeIdentifier];
+  if (!storeIdentifier && itemIdentifier)
   {
-    v5 = [[SKUIStoreIdentifier alloc] initWithLongLong:v4];
+    storeIdentifier = [[SKUIStoreIdentifier alloc] initWithLongLong:itemIdentifier];
   }
 
-  if (v5)
+  if (storeIdentifier)
   {
     v6 = +[SKUIItemStateCenter defaultCenter];
-    v7 = [v6 stateForItemWithStoreIdentifier:v5];
+    v7 = [v6 stateForItemWithStoreIdentifier:storeIdentifier];
 
-    if (v7 && ([v3 buyButtonDescriptor], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "canPersonalizeUsingItemState:", v7), v8, v9))
+    if (v7 && ([buttonCopy buyButtonDescriptor], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "canPersonalizeUsingItemState:", v7), v8, v9))
     {
       v10 = v7;
     }
@@ -1585,52 +1585,52 @@ uint64_t __80__SKUIViewModification_SKUIViewElementView__addButtonWithElement_wi
   return v10;
 }
 
-- (void)_styleItemOfferButton:(id)a3 forElement:(id)a4 context:(id)a5
+- (void)_styleItemOfferButton:(id)button forElement:(id)element context:(id)context
 {
-  v20 = a3;
-  v7 = a4;
-  v8 = [a5 tintColor];
-  v9 = [v7 style];
-  v10 = SKUIViewElementPlainColorWithStyle(v9, v8);
+  buttonCopy = button;
+  elementCopy = element;
+  tintColor = [context tintColor];
+  style = [elementCopy style];
+  v10 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  [v20 setTintColor:v10];
-  v11 = v7;
+  [buttonCopy setTintColor:v10];
+  v11 = elementCopy;
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    parent = v11;
     do
     {
-      v14 = v13;
-      v15 = [v13 style];
-      v16 = [v15 ikBackgroundColor];
-      v17 = SKUIViewElementPlainColorWithIKColor(v16, v8);
+      v14 = parent;
+      style2 = [parent style];
+      ikBackgroundColor = [style2 ikBackgroundColor];
+      v17 = SKUIViewElementPlainColorWithIKColor(ikBackgroundColor, tintColor);
 
-      v13 = [v14 parent];
+      parent = [v14 parent];
     }
 
-    while (v13 && !v17);
+    while (parent && !v17);
   }
 
   else
   {
     v17 = 0;
-    v13 = 0;
+    parent = 0;
   }
 
   v18 = [objc_opt_class() cloudTintColorForBackgroundColor:v17];
-  [v20 setCloudTintColor:v18];
+  [buttonCopy setCloudTintColor:v18];
 
-  [v20 setElement:v12];
-  [v20 setEnabled:{objc_msgSend(v12, "isEnabled")}];
-  [v20 setDisabledButSelectable:{objc_msgSend(v12, "isDisabledButSelectable")}];
-  v19 = [v12 badgeResourceName];
-  [v20 setUniversal:{objc_msgSend(v19, "isEqualToString:", @"plus"}];
+  [buttonCopy setElement:v12];
+  [buttonCopy setEnabled:{objc_msgSend(v12, "isEnabled")}];
+  [buttonCopy setDisabledButSelectable:{objc_msgSend(v12, "isDisabledButSelectable")}];
+  badgeResourceName = [v12 badgeResourceName];
+  [buttonCopy setUniversal:{objc_msgSend(badgeResourceName, "isEqualToString:", @"plus"}];
 }
 
-- (id)_attributedStringViewForLayout:(id)a3
+- (id)_attributedStringViewForLayout:(id)layout
 {
-  [a3 edgeInsetsForShadow];
+  [layout edgeInsetsForShadow];
   v5.f64[1] = v4;
   v7.f64[1] = v6;
   if (vaddvq_s32(vandq_s8(vuzp1q_s32(vceqq_f64(v5, *MEMORY[0x277D768C8]), vceqq_f64(v7, *(MEMORY[0x277D768C8] + 16))), xmmword_215F3F960)) == 15)

@@ -1,5 +1,5 @@
 @interface AFBBufRef
-- (AFBBufRef)initWithData:(id)a3;
+- (AFBBufRef)initWithData:(id)data;
 - (void)dealloc;
 @end
 
@@ -18,16 +18,16 @@
   [(AFBBufRef *)&v4 dealloc];
 }
 
-- (AFBBufRef)initWithData:(id)a3
+- (AFBBufRef)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = AFBBufRef;
   v6 = [(AFBBufRef *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
     context.version = 0;
     context.info = v7;
     memset(&context.retain, 0, 24);

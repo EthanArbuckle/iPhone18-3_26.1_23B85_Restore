@@ -1,32 +1,32 @@
 @interface TVRCMediaInfo
-+ (id)imageTemplateFromDict:(id)a3;
-+ (id)mediaInfoWithDictionary:(id)a3;
-+ (unint64_t)kindForMediaType:(id)a3;
-- (BOOL)isEqualToMediaInfo:(id)a3;
++ (id)imageTemplateFromDict:(id)dict;
++ (id)mediaInfoWithDictionary:(id)dictionary;
++ (unint64_t)kindForMediaType:(id)type;
+- (BOOL)isEqualToMediaInfo:(id)info;
 - (NSArray)roleCategories;
 - (NSString)primaryTitle;
-- (TVRCMediaInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TVRCMediaInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCMediaInfo
 
-+ (id)mediaInfoWithDictionary:(id)a3
++ (id)mediaInfoWithDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"content"];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"content"];
   if (!v6)
   {
-    v6 = v4;
+    v6 = dictionaryCopy;
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"roles"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"roles"];
   if (!v7)
   {
-    v7 = [v4 objectForKeyedSubscript:@"roles"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"roles"];
   }
 
   v8 = [v6 objectForKeyedSubscript:@"id"];
@@ -36,7 +36,7 @@
   [v5 setTitle:v9];
 
   v10 = [v6 objectForKeyedSubscript:@"type"];
-  [v5 setKind:{objc_msgSend(a1, "kindForMediaType:", v10)}];
+  [v5 setKind:{objc_msgSend(self, "kindForMediaType:", v10)}];
 
   v11 = [v6 objectForKeyedSubscript:@"description"];
   [v5 setExtendedDescription:v11];
@@ -45,11 +45,11 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 objectForKeyedSubscript:@"name"];
+      v14 = [firstObject objectForKeyedSubscript:@"name"];
     }
 
     else
@@ -64,7 +64,7 @@
   }
 
   [v5 setGenre:v14];
-  v15 = [a1 imageTemplateFromDict:v6];
+  v15 = [self imageTemplateFromDict:v6];
   [v5 setImageURLTemplate:v15];
 
   v16 = [v6 objectForKeyedSubscript:@"rating"];
@@ -157,9 +157,9 @@
   else
   {
     v39 = [TVRCRottenTomatoesReview rottenTomatoesReviewWithDictionary:v6];
-    v40 = [v39 percentage];
+    percentage = [v39 percentage];
 
-    if (!v40)
+    if (!percentage)
     {
 
       v39 = 0;
@@ -188,70 +188,70 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(TVRCMediaInfo *)self identifier];
-  [v4 setIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  identifier = [(TVRCMediaInfo *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v6 = [(TVRCMediaInfo *)self title];
-  [v4 setTitle:v6];
+  title = [(TVRCMediaInfo *)self title];
+  [v4 setTitle:title];
 
   [v4 setKind:{-[TVRCMediaInfo kind](self, "kind")}];
-  v7 = [(TVRCMediaInfo *)self extendedDescription];
-  [v4 setExtendedDescription:v7];
+  extendedDescription = [(TVRCMediaInfo *)self extendedDescription];
+  [v4 setExtendedDescription:extendedDescription];
 
-  v8 = [(TVRCMediaInfo *)self genre];
-  [v4 setGenre:v8];
+  genre = [(TVRCMediaInfo *)self genre];
+  [v4 setGenre:genre];
 
-  v9 = [(TVRCMediaInfo *)self imageURLTemplate];
-  [v4 setImageURLTemplate:v9];
+  imageURLTemplate = [(TVRCMediaInfo *)self imageURLTemplate];
+  [v4 setImageURLTemplate:imageURLTemplate];
 
-  v10 = [(TVRCMediaInfo *)self channelImageURLTemplate];
-  [v4 setChannelImageURLTemplate:v10];
+  channelImageURLTemplate = [(TVRCMediaInfo *)self channelImageURLTemplate];
+  [v4 setChannelImageURLTemplate:channelImageURLTemplate];
 
-  v11 = [(TVRCMediaInfo *)self ratingDescription];
-  [v4 setRatingDescription:v11];
+  ratingDescription = [(TVRCMediaInfo *)self ratingDescription];
+  [v4 setRatingDescription:ratingDescription];
 
-  v12 = [(TVRCMediaInfo *)self duration];
-  [v4 setDuration:v12];
+  duration = [(TVRCMediaInfo *)self duration];
+  [v4 setDuration:duration];
 
-  v13 = [(TVRCMediaInfo *)self showTitle];
-  [v4 setShowTitle:v13];
+  showTitle = [(TVRCMediaInfo *)self showTitle];
+  [v4 setShowTitle:showTitle];
 
-  v14 = [(TVRCMediaInfo *)self seasonNumber];
-  [v4 setSeasonNumber:v14];
+  seasonNumber = [(TVRCMediaInfo *)self seasonNumber];
+  [v4 setSeasonNumber:seasonNumber];
 
-  v15 = [(TVRCMediaInfo *)self episodeNumber];
-  [v4 setEpisodeNumber:v15];
+  episodeNumber = [(TVRCMediaInfo *)self episodeNumber];
+  [v4 setEpisodeNumber:episodeNumber];
 
-  v16 = [(TVRCMediaInfo *)self productURL];
-  [v4 setProductURL:v16];
+  productURL = [(TVRCMediaInfo *)self productURL];
+  [v4 setProductURL:productURL];
 
-  v17 = [(TVRCMediaInfo *)self showURL];
-  [v4 setShowURL:v17];
+  showURL = [(TVRCMediaInfo *)self showURL];
+  [v4 setShowURL:showURL];
 
-  v18 = [(TVRCMediaInfo *)self showIdentifier];
-  [v4 setShowIdentifier:v18];
+  showIdentifier = [(TVRCMediaInfo *)self showIdentifier];
+  [v4 setShowIdentifier:showIdentifier];
 
   [v4 setIsAppleOriginal:{-[TVRCMediaInfo isAppleOriginal](self, "isAppleOriginal")}];
-  v19 = [(TVRCMediaInfo *)self roles];
-  [v4 setRoles:v19];
+  roles = [(TVRCMediaInfo *)self roles];
+  [v4 setRoles:roles];
 
-  v20 = [(TVRCMediaInfo *)self releaseDate];
-  [v4 setReleaseDate:v20];
+  releaseDate = [(TVRCMediaInfo *)self releaseDate];
+  [v4 setReleaseDate:releaseDate];
 
-  v21 = [(TVRCMediaInfo *)self rottenTomatoesReview];
-  v22 = [v21 copy];
+  rottenTomatoesReview = [(TVRCMediaInfo *)self rottenTomatoesReview];
+  v22 = [rottenTomatoesReview copy];
   [v4 setRottenTomatoesReview:v22];
 
   return v4;
 }
 
-- (BOOL)isEqualToMediaInfo:(id)a3
+- (BOOL)isEqualToMediaInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     goto LABEL_46;
   }
@@ -262,145 +262,145 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     goto LABEL_46;
   }
 
-  v5 = [(TVRCMediaInfo *)self extendedDescription];
-  v6 = [v4 extendedDescription];
-  v7 = (v5 == 0) ^ (v6 == 0);
+  extendedDescription = [(TVRCMediaInfo *)self extendedDescription];
+  extendedDescription2 = [infoCopy extendedDescription];
+  v7 = (extendedDescription == 0) ^ (extendedDescription2 == 0);
 
   if (v7)
   {
     goto LABEL_46;
   }
 
-  v8 = [(TVRCMediaInfo *)self genre];
-  v9 = [v4 genre];
-  v10 = (v8 == 0) ^ (v9 == 0);
+  genre = [(TVRCMediaInfo *)self genre];
+  genre2 = [infoCopy genre];
+  v10 = (genre == 0) ^ (genre2 == 0);
 
   if (v10)
   {
     goto LABEL_46;
   }
 
-  v11 = [(TVRCMediaInfo *)self imageURLTemplate];
-  v12 = [v4 imageURLTemplate];
-  v13 = (v11 == 0) ^ (v12 == 0);
+  imageURLTemplate = [(TVRCMediaInfo *)self imageURLTemplate];
+  imageURLTemplate2 = [infoCopy imageURLTemplate];
+  v13 = (imageURLTemplate == 0) ^ (imageURLTemplate2 == 0);
 
   if (v13)
   {
     goto LABEL_46;
   }
 
-  v14 = [(TVRCMediaInfo *)self channelImageURLTemplate];
-  v15 = [v4 channelImageURLTemplate];
-  v16 = (v14 == 0) ^ (v15 == 0);
+  channelImageURLTemplate = [(TVRCMediaInfo *)self channelImageURLTemplate];
+  channelImageURLTemplate2 = [infoCopy channelImageURLTemplate];
+  v16 = (channelImageURLTemplate == 0) ^ (channelImageURLTemplate2 == 0);
 
   if (v16)
   {
     goto LABEL_46;
   }
 
-  v17 = [(TVRCMediaInfo *)self ratingDescription];
-  v18 = [v4 ratingDescription];
-  v19 = (v17 == 0) ^ (v18 == 0);
+  ratingDescription = [(TVRCMediaInfo *)self ratingDescription];
+  ratingDescription2 = [infoCopy ratingDescription];
+  v19 = (ratingDescription == 0) ^ (ratingDescription2 == 0);
 
   if (v19)
   {
     goto LABEL_46;
   }
 
-  v20 = [(TVRCMediaInfo *)self showTitle];
-  v21 = [v4 showTitle];
-  v22 = (v20 == 0) ^ (v21 == 0);
+  showTitle = [(TVRCMediaInfo *)self showTitle];
+  showTitle2 = [infoCopy showTitle];
+  v22 = (showTitle == 0) ^ (showTitle2 == 0);
 
   if (v22)
   {
     goto LABEL_46;
   }
 
-  v23 = [(TVRCMediaInfo *)self seasonNumber];
-  v24 = [v4 seasonNumber];
-  v25 = (v23 == 0) ^ (v24 == 0);
+  seasonNumber = [(TVRCMediaInfo *)self seasonNumber];
+  seasonNumber2 = [infoCopy seasonNumber];
+  v25 = (seasonNumber == 0) ^ (seasonNumber2 == 0);
 
   if (v25)
   {
     goto LABEL_46;
   }
 
-  v26 = [(TVRCMediaInfo *)self episodeNumber];
-  v27 = [v4 episodeNumber];
-  v28 = (v26 == 0) ^ (v27 == 0);
+  episodeNumber = [(TVRCMediaInfo *)self episodeNumber];
+  episodeNumber2 = [infoCopy episodeNumber];
+  v28 = (episodeNumber == 0) ^ (episodeNumber2 == 0);
 
   if (v28)
   {
     goto LABEL_46;
   }
 
-  v29 = [(TVRCMediaInfo *)self showURL];
-  v30 = [v4 showURL];
-  v31 = (v29 == 0) ^ (v30 == 0);
+  showURL = [(TVRCMediaInfo *)self showURL];
+  showURL2 = [infoCopy showURL];
+  v31 = (showURL == 0) ^ (showURL2 == 0);
 
   if (v31)
   {
     goto LABEL_46;
   }
 
-  v32 = [(TVRCMediaInfo *)self showIdentifier];
-  v33 = [v4 showIdentifier];
-  v34 = (v32 == 0) ^ (v33 == 0);
+  showIdentifier = [(TVRCMediaInfo *)self showIdentifier];
+  showIdentifier2 = [infoCopy showIdentifier];
+  v34 = (showIdentifier == 0) ^ (showIdentifier2 == 0);
 
   if (v34)
   {
     goto LABEL_46;
   }
 
-  v35 = [(TVRCMediaInfo *)self releaseDate];
-  v36 = [v4 releaseDate];
-  v37 = (v35 == 0) ^ (v36 == 0);
+  releaseDate = [(TVRCMediaInfo *)self releaseDate];
+  releaseDate2 = [infoCopy releaseDate];
+  v37 = (releaseDate == 0) ^ (releaseDate2 == 0);
 
   if (v37)
   {
     goto LABEL_46;
   }
 
-  v38 = [(TVRCMediaInfo *)self rottenTomatoesReview];
-  v39 = [v4 rottenTomatoesReview];
-  v40 = (v38 == 0) ^ (v39 == 0);
+  rottenTomatoesReview = [(TVRCMediaInfo *)self rottenTomatoesReview];
+  rottenTomatoesReview2 = [infoCopy rottenTomatoesReview];
+  v40 = (rottenTomatoesReview == 0) ^ (rottenTomatoesReview2 == 0);
 
   if (v40)
   {
     goto LABEL_46;
   }
 
-  v41 = [(TVRCMediaInfo *)self identifier];
-  v42 = [v4 identifier];
-  v43 = [v41 isEqualToString:v42];
+  identifier = [(TVRCMediaInfo *)self identifier];
+  identifier2 = [infoCopy identifier];
+  v43 = [identifier isEqualToString:identifier2];
 
   if (!v43)
   {
     goto LABEL_46;
   }
 
-  v44 = [(TVRCMediaInfo *)self title];
-  v45 = [v4 title];
-  v46 = [v44 isEqualToString:v45];
+  title = [(TVRCMediaInfo *)self title];
+  title2 = [infoCopy title];
+  v46 = [title isEqualToString:title2];
 
   if (!v46)
   {
     goto LABEL_46;
   }
 
-  v47 = [(TVRCMediaInfo *)self kind];
-  if (v47 != [v4 kind])
+  kind = [(TVRCMediaInfo *)self kind];
+  if (kind != [infoCopy kind])
   {
     goto LABEL_46;
   }
 
-  v48 = [(TVRCMediaInfo *)self extendedDescription];
-  if (v48)
+  extendedDescription3 = [(TVRCMediaInfo *)self extendedDescription];
+  if (extendedDescription3)
   {
-    v49 = v48;
-    v50 = [(TVRCMediaInfo *)self extendedDescription];
-    v51 = [v4 extendedDescription];
-    v52 = [v50 isEqualToString:v51];
+    v49 = extendedDescription3;
+    extendedDescription4 = [(TVRCMediaInfo *)self extendedDescription];
+    extendedDescription5 = [infoCopy extendedDescription];
+    v52 = [extendedDescription4 isEqualToString:extendedDescription5];
 
     if (!v52)
     {
@@ -408,13 +408,13 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v53 = [(TVRCMediaInfo *)self genre];
-  if (v53)
+  genre3 = [(TVRCMediaInfo *)self genre];
+  if (genre3)
   {
-    v54 = v53;
-    v55 = [(TVRCMediaInfo *)self genre];
-    v56 = [v4 genre];
-    v57 = [v55 isEqualToString:v56];
+    v54 = genre3;
+    genre4 = [(TVRCMediaInfo *)self genre];
+    genre5 = [infoCopy genre];
+    v57 = [genre4 isEqualToString:genre5];
 
     if (!v57)
     {
@@ -422,13 +422,13 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v58 = [(TVRCMediaInfo *)self imageURLTemplate];
-  if (v58)
+  imageURLTemplate3 = [(TVRCMediaInfo *)self imageURLTemplate];
+  if (imageURLTemplate3)
   {
-    v59 = v58;
-    v60 = [(TVRCMediaInfo *)self imageURLTemplate];
-    v61 = [v4 imageURLTemplate];
-    v62 = [v60 isEqual:v61];
+    v59 = imageURLTemplate3;
+    imageURLTemplate4 = [(TVRCMediaInfo *)self imageURLTemplate];
+    imageURLTemplate5 = [infoCopy imageURLTemplate];
+    v62 = [imageURLTemplate4 isEqual:imageURLTemplate5];
 
     if (!v62)
     {
@@ -436,13 +436,13 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v63 = [(TVRCMediaInfo *)self channelImageURLTemplate];
-  if (v63)
+  channelImageURLTemplate3 = [(TVRCMediaInfo *)self channelImageURLTemplate];
+  if (channelImageURLTemplate3)
   {
-    v64 = v63;
-    v65 = [(TVRCMediaInfo *)self channelImageURLTemplate];
-    v66 = [v4 channelImageURLTemplate];
-    v67 = [v65 isEqual:v66];
+    v64 = channelImageURLTemplate3;
+    channelImageURLTemplate4 = [(TVRCMediaInfo *)self channelImageURLTemplate];
+    channelImageURLTemplate5 = [infoCopy channelImageURLTemplate];
+    v67 = [channelImageURLTemplate4 isEqual:channelImageURLTemplate5];
 
     if (!v67)
     {
@@ -450,13 +450,13 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v68 = [(TVRCMediaInfo *)self ratingDescription];
-  if (v68)
+  ratingDescription3 = [(TVRCMediaInfo *)self ratingDescription];
+  if (ratingDescription3)
   {
-    v69 = v68;
-    v70 = [(TVRCMediaInfo *)self ratingDescription];
-    v71 = [v4 ratingDescription];
-    v72 = [v70 isEqualToString:v71];
+    v69 = ratingDescription3;
+    ratingDescription4 = [(TVRCMediaInfo *)self ratingDescription];
+    ratingDescription5 = [infoCopy ratingDescription];
+    v72 = [ratingDescription4 isEqualToString:ratingDescription5];
 
     if (!v72)
     {
@@ -464,22 +464,22 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v73 = [(TVRCMediaInfo *)self duration];
-  v74 = [v4 duration];
-  v75 = [v73 isEqualToNumber:v74];
+  duration = [(TVRCMediaInfo *)self duration];
+  duration2 = [infoCopy duration];
+  v75 = [duration isEqualToNumber:duration2];
 
   if (!v75)
   {
     goto LABEL_46;
   }
 
-  v76 = [(TVRCMediaInfo *)self showTitle];
-  if (v76)
+  showTitle3 = [(TVRCMediaInfo *)self showTitle];
+  if (showTitle3)
   {
-    v77 = v76;
-    v78 = [(TVRCMediaInfo *)self showTitle];
-    v79 = [v4 showTitle];
-    v80 = [v78 isEqualToString:v79];
+    v77 = showTitle3;
+    showTitle4 = [(TVRCMediaInfo *)self showTitle];
+    showTitle5 = [infoCopy showTitle];
+    v80 = [showTitle4 isEqualToString:showTitle5];
 
     if (!v80)
     {
@@ -487,13 +487,13 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v81 = [(TVRCMediaInfo *)self seasonNumber];
-  if (v81)
+  seasonNumber3 = [(TVRCMediaInfo *)self seasonNumber];
+  if (seasonNumber3)
   {
-    v82 = v81;
-    v83 = [(TVRCMediaInfo *)self seasonNumber];
-    v84 = [v4 seasonNumber];
-    v85 = [v83 isEqualToNumber:v84];
+    v82 = seasonNumber3;
+    seasonNumber4 = [(TVRCMediaInfo *)self seasonNumber];
+    seasonNumber5 = [infoCopy seasonNumber];
+    v85 = [seasonNumber4 isEqualToNumber:seasonNumber5];
 
     if (!v85)
     {
@@ -501,13 +501,13 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v86 = [(TVRCMediaInfo *)self episodeNumber];
-  if (v86)
+  episodeNumber3 = [(TVRCMediaInfo *)self episodeNumber];
+  if (episodeNumber3)
   {
-    v87 = v86;
-    v88 = [(TVRCMediaInfo *)self episodeNumber];
-    v89 = [v4 episodeNumber];
-    v90 = [v88 isEqualToNumber:v89];
+    v87 = episodeNumber3;
+    episodeNumber4 = [(TVRCMediaInfo *)self episodeNumber];
+    episodeNumber5 = [infoCopy episodeNumber];
+    v90 = [episodeNumber4 isEqualToNumber:episodeNumber5];
 
     if (!v90)
     {
@@ -515,22 +515,22 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v91 = [(TVRCMediaInfo *)self productURL];
-  v92 = [v4 productURL];
-  v93 = [v91 isEqual:v92];
+  productURL = [(TVRCMediaInfo *)self productURL];
+  productURL2 = [infoCopy productURL];
+  v93 = [productURL isEqual:productURL2];
 
   if (!v93)
   {
     goto LABEL_46;
   }
 
-  v94 = [(TVRCMediaInfo *)self showURL];
-  if (v94)
+  showURL3 = [(TVRCMediaInfo *)self showURL];
+  if (showURL3)
   {
-    v95 = v94;
-    v96 = [(TVRCMediaInfo *)self showURL];
-    v97 = [v4 showURL];
-    v98 = [v96 isEqual:v97];
+    v95 = showURL3;
+    showURL4 = [(TVRCMediaInfo *)self showURL];
+    showURL5 = [infoCopy showURL];
+    v98 = [showURL4 isEqual:showURL5];
 
     if (!v98)
     {
@@ -538,13 +538,13 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v99 = [(TVRCMediaInfo *)self showIdentifier];
-  if (v99)
+  showIdentifier3 = [(TVRCMediaInfo *)self showIdentifier];
+  if (showIdentifier3)
   {
-    v100 = v99;
-    v101 = [(TVRCMediaInfo *)self showIdentifier];
-    v102 = [v4 showIdentifier];
-    v103 = [v101 isEqualToString:v102];
+    v100 = showIdentifier3;
+    showIdentifier4 = [(TVRCMediaInfo *)self showIdentifier];
+    showIdentifier5 = [infoCopy showIdentifier];
+    v103 = [showIdentifier4 isEqualToString:showIdentifier5];
 
     if (!v103)
     {
@@ -552,31 +552,31 @@ id __41__TVRCMediaInfo_mediaInfoWithDictionary___block_invoke(uint64_t a1, void 
     }
   }
 
-  v104 = [(TVRCMediaInfo *)self isAppleOriginal];
-  if (v104 != [v4 isAppleOriginal])
+  isAppleOriginal = [(TVRCMediaInfo *)self isAppleOriginal];
+  if (isAppleOriginal != [infoCopy isAppleOriginal])
   {
     goto LABEL_46;
   }
 
-  v105 = [(TVRCMediaInfo *)self roles];
-  v106 = [v4 roles];
-  v107 = [v105 isEqualToArray:v106];
+  roles = [(TVRCMediaInfo *)self roles];
+  roles2 = [infoCopy roles];
+  v107 = [roles isEqualToArray:roles2];
 
   if (!v107)
   {
     goto LABEL_46;
   }
 
-  v108 = [(TVRCMediaInfo *)self releaseDate];
-  if (!v108)
+  releaseDate3 = [(TVRCMediaInfo *)self releaseDate];
+  if (!releaseDate3)
   {
     goto LABEL_44;
   }
 
-  v109 = v108;
-  v110 = [(TVRCMediaInfo *)self releaseDate];
-  v111 = [v4 releaseDate];
-  v112 = [v110 isEqualToDate:v111];
+  v109 = releaseDate3;
+  releaseDate4 = [(TVRCMediaInfo *)self releaseDate];
+  releaseDate5 = [infoCopy releaseDate];
+  v112 = [releaseDate4 isEqualToDate:releaseDate5];
 
   if (!v112)
   {
@@ -587,13 +587,13 @@ LABEL_46:
   else
   {
 LABEL_44:
-    v113 = [(TVRCMediaInfo *)self rottenTomatoesReview];
-    if (v113)
+    rottenTomatoesReview3 = [(TVRCMediaInfo *)self rottenTomatoesReview];
+    if (rottenTomatoesReview3)
     {
-      v114 = v113;
-      v115 = [(TVRCMediaInfo *)self rottenTomatoesReview];
-      v116 = [v4 rottenTomatoesReview];
-      v117 = [v115 isEqualToRottenTomatoesReview:v116];
+      v114 = rottenTomatoesReview3;
+      rottenTomatoesReview4 = [(TVRCMediaInfo *)self rottenTomatoesReview];
+      rottenTomatoesReview5 = [infoCopy rottenTomatoesReview];
+      v117 = [rottenTomatoesReview4 isEqualToRottenTomatoesReview:rottenTomatoesReview5];
     }
 
     else
@@ -617,9 +617,9 @@ LABEL_44:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v27 = self;
-    v6 = [(TVRCMediaInfo *)self roles];
-    v7 = [v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    selfCopy = self;
+    roles = [(TVRCMediaInfo *)self roles];
+    v7 = [roles countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v7)
     {
       v8 = v7;
@@ -630,28 +630,28 @@ LABEL_44:
         {
           if (*v33 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(roles);
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          v12 = [v11 roleDescription];
-          if ([v12 length])
+          roleDescription = [v11 roleDescription];
+          if ([roleDescription length])
           {
-            v13 = [v11 roleDescription];
-            v14 = [v5 objectForKeyedSubscript:v13];
+            roleDescription2 = [v11 roleDescription];
+            v14 = [v5 objectForKeyedSubscript:roleDescription2];
 
             if (!v14)
             {
-              [v4 addObject:v12];
+              [v4 addObject:roleDescription];
               v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-              [v5 setObject:v14 forKeyedSubscript:v12];
+              [v5 setObject:v14 forKeyedSubscript:roleDescription];
             }
 
             [v14 addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v8 = [roles countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v8);
@@ -692,10 +692,10 @@ LABEL_44:
       while (v18);
     }
 
-    v24 = v27->_roleCategories;
-    v27->_roleCategories = v15;
+    v24 = selfCopy->_roleCategories;
+    selfCopy->_roleCategories = v15;
 
-    roleCategories = v27->_roleCategories;
+    roleCategories = selfCopy->_roleCategories;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -705,8 +705,8 @@ LABEL_44:
 
 - (NSString)primaryTitle
 {
-  v3 = [(TVRCMediaInfo *)self showTitle];
-  v4 = [v3 length];
+  showTitle = [(TVRCMediaInfo *)self showTitle];
+  v4 = [showTitle length];
 
   if (v4)
   {
@@ -722,81 +722,81 @@ LABEL_44:
   return v5;
 }
 
-- (TVRCMediaInfo)initWithCoder:(id)a3
+- (TVRCMediaInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = TVRCMediaInfo;
   v5 = [(TVRCMediaInfo *)&v41 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v5->_kind = [v4 decodeIntegerForKey:@"kind"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extendedDescription"];
+    v5->_kind = [coderCopy decodeIntegerForKey:@"kind"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extendedDescription"];
     extendedDescription = v5->_extendedDescription;
     v5->_extendedDescription = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"genre"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"genre"];
     genre = v5->_genre;
     v5->_genre = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURLTemplate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURLTemplate"];
     imageURLTemplate = v5->_imageURLTemplate;
     v5->_imageURLTemplate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channelImageURLTemplate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channelImageURLTemplate"];
     channelImageURLTemplate = v5->_channelImageURLTemplate;
     v5->_channelImageURLTemplate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ratingDescription"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ratingDescription"];
     ratingDescription = v5->_ratingDescription;
     v5->_ratingDescription = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"duration"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"duration"];
     duration = v5->_duration;
     v5->_duration = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"showTitle"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"showTitle"];
     showTitle = v5->_showTitle;
     v5->_showTitle = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seasonNumber"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seasonNumber"];
     seasonNumber = v5->_seasonNumber;
     v5->_seasonNumber = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"episodeNumber"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"episodeNumber"];
     episodeNumber = v5->_episodeNumber;
     v5->_episodeNumber = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productURL"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productURL"];
     productURL = v5->_productURL;
     v5->_productURL = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"showURL"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"showURL"];
     showURL = v5->_showURL;
     v5->_showURL = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"showIdentifier"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"showIdentifier"];
     showIdentifier = v5->_showIdentifier;
     v5->_showIdentifier = v32;
 
-    v5->_isAppleOriginal = [v4 decodeBoolForKey:@"isAppleOriginal"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roles"];
+    v5->_isAppleOriginal = [coderCopy decodeBoolForKey:@"isAppleOriginal"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roles"];
     roles = v5->_roles;
     v5->_roles = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseDate"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseDate"];
     releaseDate = v5->_releaseDate;
     v5->_releaseDate = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rottenTomatoesReview"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rottenTomatoesReview"];
     rottenTomatoesReview = v5->_rottenTomatoesReview;
     v5->_rottenTomatoesReview = v38;
   }
@@ -804,50 +804,50 @@ LABEL_44:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeInteger:self->_kind forKey:@"kind"];
-  [v5 encodeObject:self->_extendedDescription forKey:@"extendedDescription"];
-  [v5 encodeObject:self->_genre forKey:@"genre"];
-  [v5 encodeObject:self->_imageURLTemplate forKey:@"imageURLTemplate"];
-  [v5 encodeObject:self->_channelImageURLTemplate forKey:@"channelImageURLTemplate"];
-  [v5 encodeObject:self->_ratingDescription forKey:@"ratingDescription"];
-  [v5 encodeObject:self->_duration forKey:@"duration"];
-  [v5 encodeObject:self->_showTitle forKey:@"showTitle"];
-  [v5 encodeObject:self->_seasonNumber forKey:@"seasonNumber"];
-  [v5 encodeObject:self->_episodeNumber forKey:@"episodeNumber"];
-  [v5 encodeObject:self->_productURL forKey:@"productURL"];
-  [v5 encodeObject:self->_showURL forKey:@"showURL"];
-  [v5 encodeObject:self->_showIdentifier forKey:@"showIdentifier"];
-  [v5 encodeBool:self->_isAppleOriginal forKey:@"isAppleOriginal"];
-  [v5 encodeObject:self->_roles forKey:@"roles"];
-  [v5 encodeObject:self->_releaseDate forKey:@"releaseDate"];
-  [v5 encodeObject:self->_rottenTomatoesReview forKey:@"rottenTomatoesReview"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeInteger:self->_kind forKey:@"kind"];
+  [coderCopy encodeObject:self->_extendedDescription forKey:@"extendedDescription"];
+  [coderCopy encodeObject:self->_genre forKey:@"genre"];
+  [coderCopy encodeObject:self->_imageURLTemplate forKey:@"imageURLTemplate"];
+  [coderCopy encodeObject:self->_channelImageURLTemplate forKey:@"channelImageURLTemplate"];
+  [coderCopy encodeObject:self->_ratingDescription forKey:@"ratingDescription"];
+  [coderCopy encodeObject:self->_duration forKey:@"duration"];
+  [coderCopy encodeObject:self->_showTitle forKey:@"showTitle"];
+  [coderCopy encodeObject:self->_seasonNumber forKey:@"seasonNumber"];
+  [coderCopy encodeObject:self->_episodeNumber forKey:@"episodeNumber"];
+  [coderCopy encodeObject:self->_productURL forKey:@"productURL"];
+  [coderCopy encodeObject:self->_showURL forKey:@"showURL"];
+  [coderCopy encodeObject:self->_showIdentifier forKey:@"showIdentifier"];
+  [coderCopy encodeBool:self->_isAppleOriginal forKey:@"isAppleOriginal"];
+  [coderCopy encodeObject:self->_roles forKey:@"roles"];
+  [coderCopy encodeObject:self->_releaseDate forKey:@"releaseDate"];
+  [coderCopy encodeObject:self->_rottenTomatoesReview forKey:@"rottenTomatoesReview"];
 }
 
-+ (unint64_t)kindForMediaType:(id)a3
++ (unint64_t)kindForMediaType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Episode"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Episode"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Movie"])
+  else if ([typeCopy isEqualToString:@"Movie"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Show"])
+  else if ([typeCopy isEqualToString:@"Show"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SportingEvent"])
+  else if ([typeCopy isEqualToString:@"SportingEvent"])
   {
     v4 = 5;
   }
@@ -860,10 +860,10 @@ LABEL_44:
   return v4;
 }
 
-+ (id)imageTemplateFromDict:(id)a3
++ (id)imageTemplateFromDict:(id)dict
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKeyedSubscript:@"images"];
+  v3 = [dict objectForKeyedSubscript:@"images"];
   if (v3 && (v15 = 0u, v16 = 0u, v13 = 0u, v14 = 0u, (v4 = [&unk_287E66CA0 countByEnumeratingWithState:&v13 objects:v17 count:16]) != 0))
   {
     v5 = v4;

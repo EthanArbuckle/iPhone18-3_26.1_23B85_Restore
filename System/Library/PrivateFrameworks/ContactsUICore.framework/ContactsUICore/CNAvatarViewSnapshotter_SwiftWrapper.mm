@@ -1,15 +1,15 @@
 @interface CNAvatarViewSnapshotter_SwiftWrapper
-+ (CGImage)renderImmediateSnapshotWithContact:(id)a3 scope:(id)a4;
++ (CGImage)renderImmediateSnapshotWithContact:(id)contact scope:(id)scope;
 - (_TtC14ContactsUICore36CNAvatarViewSnapshotter_SwiftWrapper)init;
 @end
 
 @implementation CNAvatarViewSnapshotter_SwiftWrapper
 
-+ (CGImage)renderImmediateSnapshotWithContact:(id)a3 scope:(id)a4
++ (CGImage)renderImmediateSnapshotWithContact:(id)contact scope:(id)scope
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _s14ContactsUICore36CNAvatarViewSnapshotter_SwiftWrapperC23renderImmediateSnapshot7contact5scopeSo10CGImageRefaSgSo9CNContactC_So26CNUILikenessRenderingScopeCtFZ_0(v5, v6);
+  contactCopy = contact;
+  scopeCopy = scope;
+  v7 = _s14ContactsUICore36CNAvatarViewSnapshotter_SwiftWrapperC23renderImmediateSnapshot7contact5scopeSo10CGImageRefaSgSo9CNContactC_So26CNUILikenessRenderingScopeCtFZ_0(contactCopy, scopeCopy);
 
   return v7;
 }

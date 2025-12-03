@@ -1,18 +1,18 @@
 @interface AVTStickerPagingControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation AVTStickerPagingControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTStickerPagingController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVTStickerPagingController" hasProperty:@"collectionView" withType:"@"];
-  [v3 validateClass:@"AVTStickerPagingController" conformsToProtocol:@"AVTStickerSheetControllerDelegate"];
-  [v3 validateProtocol:@"AVTStickerSheetControllerDelegate" hasMethod:@"stickerSheetController:didInteractWithStickerItem:atIndex:byPeeling:" isInstanceMethod:1 isRequired:1];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTStickerPagingController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVTStickerPagingController" hasProperty:@"collectionView" withType:"@"];
+  [validationsCopy validateClass:@"AVTStickerPagingController" conformsToProtocol:@"AVTStickerSheetControllerDelegate"];
+  [validationsCopy validateProtocol:@"AVTStickerSheetControllerDelegate" hasMethod:@"stickerSheetController:didInteractWithStickerItem:atIndex:byPeeling:" isInstanceMethod:1 isRequired:1];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

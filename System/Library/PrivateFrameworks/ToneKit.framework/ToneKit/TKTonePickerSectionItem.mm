@@ -1,30 +1,30 @@
 @interface TKTonePickerSectionItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TKTonePickerController)_parentTonePickerController;
-- (id)childItemAtIndex:(int64_t)a3;
+- (id)childItemAtIndex:(int64_t)index;
 - (unint64_t)hash;
-- (void)_appendDescriptionOfAttributesToString:(id)a3;
+- (void)_appendDescriptionOfAttributesToString:(id)string;
 @end
 
 @implementation TKTonePickerSectionItem
 
-- (id)childItemAtIndex:(int64_t)a3
+- (id)childItemAtIndex:(int64_t)index
 {
-  v5 = [(TKTonePickerSectionItem *)self _parentTonePickerController];
-  v6 = [v5 _pickerRowItemAtIndex:a3 inSectionForItem:self];
+  _parentTonePickerController = [(TKTonePickerSectionItem *)self _parentTonePickerController];
+  v6 = [_parentTonePickerController _pickerRowItemAtIndex:index inSectionForItem:self];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v6 = [v5 supportsReflectionRemixes];
+  equalCopy = equal;
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v6)
+  if (supportsReflectionRemixes)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v10 = 1;
     }
@@ -34,7 +34,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v4;
+        v7 = equalCopy;
         v12.receiver = self;
         v10 = [(TKPickerSectionItem *)&v12 isEqual:v7]&& ([(TKTonePickerSectionItem *)self _parentTonePickerController], v8 = v12.super_class = TKTonePickerSectionItem;
       }
@@ -50,7 +50,7 @@
   {
     v13.receiver = self;
     v13.super_class = TKTonePickerSectionItem;
-    v10 = [(TKPickerSectionItem *)&v13 isEqual:v4];
+    v10 = [(TKPickerSectionItem *)&v13 isEqual:equalCopy];
   }
 
   return v10;
@@ -58,16 +58,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v4 = [v3 supportsReflectionRemixes];
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v4)
+  if (supportsReflectionRemixes)
   {
     v9.receiver = self;
     v9.super_class = TKTonePickerSectionItem;
     v5 = [(TKPickerSectionItem *)&v9 hash];
-    v6 = [(TKTonePickerSectionItem *)self _parentTonePickerController];
-    v7 = [v6 hash] ^ v5;
+    _parentTonePickerController = [(TKTonePickerSectionItem *)self _parentTonePickerController];
+    v7 = [_parentTonePickerController hash] ^ v5;
 
     return v7 ^ self->_numberOfChildren ^ self->_sectionHeader ^ self->_regularToneSectionIndex;
   }
@@ -80,12 +80,12 @@
   }
 }
 
-- (void)_appendDescriptionOfAttributesToString:(id)a3
+- (void)_appendDescriptionOfAttributesToString:(id)string
 {
   v7.receiver = self;
   v7.super_class = TKTonePickerSectionItem;
-  v4 = a3;
-  [(TKPickerSectionItem *)&v7 _appendDescriptionOfAttributesToString:v4];
+  stringCopy = string;
+  [(TKPickerSectionItem *)&v7 _appendDescriptionOfAttributesToString:stringCopy];
   v5 = [(TKTonePickerSectionItem *)self sectionHeader:v7.receiver];
   if (v5 > 4)
   {
@@ -97,8 +97,8 @@
     v6 = off_278316A10[v5];
   }
 
-  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"sectionHeader" withStringValue:v6 toString:v4];
-  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"regularToneSectionIndex" withIntegerValue:[(TKTonePickerSectionItem *)self regularToneSectionIndex] toString:v4];
+  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"sectionHeader" withStringValue:v6 toString:stringCopy];
+  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"regularToneSectionIndex" withIntegerValue:[(TKTonePickerSectionItem *)self regularToneSectionIndex] toString:stringCopy];
 }
 
 - (TKTonePickerController)_parentTonePickerController

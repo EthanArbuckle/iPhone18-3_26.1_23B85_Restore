@@ -6,21 +6,21 @@
 
 - (id)predictionContext
 {
-  v2 = [a1 context];
+  context = [self context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [a1 context];
+    context2 = [self context];
   }
 
   else
   {
-    v4 = 0;
+    context2 = 0;
   }
 
-  return v4;
+  return context2;
 }
 
 @end

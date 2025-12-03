@@ -1,24 +1,24 @@
 @interface OspreyChannel
-- (OspreyChannel)initWithURL:(id)a3 configuration:(id)a4 useCache:(BOOL)a5;
-- (id)_buildRequestWithMethodName:(id)a3 requestBuilder:(id)a4;
-- (id)bidirectionalStreamingRequestWithMethodName:(id)a3 requestBuilder:(id)a4 streamingResponseHandler:(id)a5 completion:(id)a6;
-- (id)clientStreamingRequestWithMethodName:(id)a3 requestBuilder:(id)a4 responseHandler:(id)a5;
-- (void)_prepareChannelWithRequest:(id)a3 continueWith:(id)a4;
-- (void)_prepareDeviceAuthenticationWithCompletion:(id)a3;
+- (OspreyChannel)initWithURL:(id)l configuration:(id)configuration useCache:(BOOL)cache;
+- (id)_buildRequestWithMethodName:(id)name requestBuilder:(id)builder;
+- (id)bidirectionalStreamingRequestWithMethodName:(id)name requestBuilder:(id)builder streamingResponseHandler:(id)handler completion:(id)completion;
+- (id)clientStreamingRequestWithMethodName:(id)name requestBuilder:(id)builder responseHandler:(id)handler;
+- (void)_prepareChannelWithRequest:(id)request continueWith:(id)with;
+- (void)_prepareDeviceAuthenticationWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)initializeDeviceAuthenticationSessionWithCompletion:(id)a3;
-- (void)performBidirectionalStreamingRequest:(id)a3 handler:(id)a4 completion:(id)a5;
-- (void)performRequest:(id)a3 handler:(id)a4;
-- (void)serverStreamingRequestWithMethodName:(id)a3 requestData:(id)a4 requestBuilder:(id)a5 streamingResponseHandler:(id)a6 completion:(id)a7;
-- (void)unaryRequestWithMethodName:(id)a3 requestData:(id)a4 requestBuilder:(id)a5 responseHandler:(id)a6;
+- (void)initializeDeviceAuthenticationSessionWithCompletion:(id)completion;
+- (void)performBidirectionalStreamingRequest:(id)request handler:(id)handler completion:(id)completion;
+- (void)performRequest:(id)request handler:(id)handler;
+- (void)serverStreamingRequestWithMethodName:(id)name requestData:(id)data requestBuilder:(id)builder streamingResponseHandler:(id)handler completion:(id)completion;
+- (void)unaryRequestWithMethodName:(id)name requestData:(id)data requestBuilder:(id)builder responseHandler:(id)handler;
 @end
 
 @implementation OspreyChannel
 
-- (OspreyChannel)initWithURL:(id)a3 configuration:(id)a4 useCache:(BOOL)a5
+- (OspreyChannel)initWithURL:(id)l configuration:(id)configuration useCache:(BOOL)cache
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  configurationCopy = configuration;
   v36.receiver = self;
   v36.super_class = OspreyChannel;
   v10 = [(OspreyChannel *)&v36 init];
@@ -31,19 +31,19 @@
       [OspreyChannel initWithURL:v11 configuration:? useCache:?];
     }
 
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     url = v10->_url;
     v10->_url = v12;
 
-    v14 = [(NSURL *)v10->_url host];
-    v15 = [v9 copy];
+    host = [(NSURL *)v10->_url host];
+    v15 = [configurationCopy copy];
     configuration = v10->_configuration;
     v10->_configuration = v15;
 
-    v17 = [@"OspreyChannel." stringByAppendingString:v14];
-    v18 = [v17 UTF8String];
+    v17 = [@"OspreyChannel." stringByAppendingString:host];
+    uTF8String = [v17 UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String, v19);
     queue = v10->_queue;
     v10->_queue = v20;
 
@@ -53,7 +53,7 @@
     preferences = v10->_preferences;
     v10->_preferences = v24;
 
-    v26 = [(OspreyPreferences *)v10->_preferences connectionPreferencesForHost:v14];
+    v26 = [(OspreyPreferences *)v10->_preferences connectionPreferencesForHost:host];
     connectionPreferences = v10->_connectionPreferences;
     v10->_connectionPreferences = v26;
 
@@ -70,12 +70,12 @@
     signatureError = v10->_signatureError;
     v10->_signatureError = 0;
 
-    if (!a5)
+    if (!cache)
     {
-      [v9 setRequestCachePolicy:4];
+      [configurationCopy setRequestCachePolicy:4];
     }
 
-    v33 = [[OspreyGRPCChannel alloc] initWithURL:v8 configuration:v9 queue:v10->_queue];
+    v33 = [[OspreyGRPCChannel alloc] initWithURL:lCopy configuration:configurationCopy queue:v10->_queue];
     channel = v10->_channel;
     v10->_channel = v33;
   }
@@ -91,22 +91,22 @@
   [(OspreyChannel *)&v3 dealloc];
 }
 
-- (void)unaryRequestWithMethodName:(id)a3 requestData:(id)a4 requestBuilder:(id)a5 responseHandler:(id)a6
+- (void)unaryRequestWithMethodName:(id)name requestData:(id)data requestBuilder:(id)builder responseHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(OspreyChannel *)self _buildRequestWithMethodName:a3 requestBuilder:a5];
+  dataCopy = data;
+  handlerCopy = handler;
+  v12 = [(OspreyChannel *)self _buildRequestWithMethodName:name requestBuilder:builder];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __87__OspreyChannel_unaryRequestWithMethodName_requestData_requestBuilder_responseHandler___block_invoke;
   v16[3] = &unk_2799F20E8;
   v16[4] = self;
   v17 = v12;
-  v18 = v10;
-  v19 = v11;
-  v13 = v10;
+  v18 = dataCopy;
+  v19 = handlerCopy;
+  v13 = dataCopy;
   v14 = v12;
-  v15 = v11;
+  v15 = handlerCopy;
   [(OspreyChannel *)self _prepareChannelWithRequest:v14 continueWith:v16];
 }
 
@@ -123,25 +123,25 @@ uint64_t __87__OspreyChannel_unaryRequestWithMethodName_requestData_requestBuild
   }
 }
 
-- (void)serverStreamingRequestWithMethodName:(id)a3 requestData:(id)a4 requestBuilder:(id)a5 streamingResponseHandler:(id)a6 completion:(id)a7
+- (void)serverStreamingRequestWithMethodName:(id)name requestData:(id)data requestBuilder:(id)builder streamingResponseHandler:(id)handler completion:(id)completion
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(OspreyChannel *)self _buildRequestWithMethodName:a3 requestBuilder:a5];
+  dataCopy = data;
+  handlerCopy = handler;
+  completionCopy = completion;
+  v15 = [(OspreyChannel *)self _buildRequestWithMethodName:name requestBuilder:builder];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __117__OspreyChannel_serverStreamingRequestWithMethodName_requestData_requestBuilder_streamingResponseHandler_completion___block_invoke;
   v20[3] = &unk_2799F2110;
   v20[4] = self;
   v21 = v15;
-  v22 = v12;
-  v23 = v14;
-  v24 = v13;
-  v16 = v13;
-  v17 = v12;
+  v22 = dataCopy;
+  v23 = completionCopy;
+  v24 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = dataCopy;
   v18 = v15;
-  v19 = v14;
+  v19 = completionCopy;
   [(OspreyChannel *)self _prepareChannelWithRequest:v18 continueWith:v20];
 }
 
@@ -158,12 +158,12 @@ uint64_t __117__OspreyChannel_serverStreamingRequestWithMethodName_requestData_r
   }
 }
 
-- (id)clientStreamingRequestWithMethodName:(id)a3 requestBuilder:(id)a4 responseHandler:(id)a5
+- (id)clientStreamingRequestWithMethodName:(id)name requestBuilder:(id)builder responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(OspreyChannel *)self _buildRequestWithMethodName:v8 requestBuilder:v9];
+  nameCopy = name;
+  builderCopy = builder;
+  handlerCopy = handler;
+  v11 = [(OspreyChannel *)self _buildRequestWithMethodName:nameCopy requestBuilder:builderCopy];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3032000000;
@@ -185,7 +185,7 @@ uint64_t __117__OspreyChannel_serverStreamingRequestWithMethodName_requestData_r
   v26[1] = 3221225472;
   v26[2] = __85__OspreyChannel_clientStreamingRequestWithMethodName_requestBuilder_responseHandler___block_invoke_2;
   v26[3] = &unk_2799F20C0;
-  v13 = v10;
+  v13 = handlerCopy;
   v27 = v13;
   v28 = v32;
   v14 = MEMORY[0x25F8A5BA0](v26);
@@ -247,24 +247,24 @@ uint64_t __85__OspreyChannel_clientStreamingRequestWithMethodName_requestBuilder
   }
 }
 
-- (id)bidirectionalStreamingRequestWithMethodName:(id)a3 requestBuilder:(id)a4 streamingResponseHandler:(id)a5 completion:(id)a6
+- (id)bidirectionalStreamingRequestWithMethodName:(id)name requestBuilder:(id)builder streamingResponseHandler:(id)handler completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [(OspreyChannel *)self _buildRequestWithMethodName:a3 requestBuilder:a4];
-  v13 = [(OspreyGRPCChannel *)self->_channel clientStreamingContextForRequest:v12 streamingResponseHandler:v11 completion:v10];
+  completionCopy = completion;
+  handlerCopy = handler;
+  v12 = [(OspreyChannel *)self _buildRequestWithMethodName:name requestBuilder:builder];
+  v13 = [(OspreyGRPCChannel *)self->_channel clientStreamingContextForRequest:v12 streamingResponseHandler:handlerCopy completion:completionCopy];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __112__OspreyChannel_bidirectionalStreamingRequestWithMethodName_requestBuilder_streamingResponseHandler_completion___block_invoke;
   v20[3] = &unk_2799F20E8;
-  v23 = v10;
+  v23 = completionCopy;
   v20[4] = self;
   v21 = v12;
   v14 = v13;
   v22 = v14;
   v15 = v12;
-  v16 = v10;
+  v16 = completionCopy;
   [(OspreyChannel *)self _prepareChannelWithRequest:v15 continueWith:v20];
   v17 = v22;
   v18 = v14;
@@ -285,9 +285,9 @@ uint64_t __112__OspreyChannel_bidirectionalStreamingRequestWithMethodName_reques
   }
 }
 
-- (void)initializeDeviceAuthenticationSessionWithCompletion:(id)a3
+- (void)initializeDeviceAuthenticationSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_enableDeviceAuthentication)
   {
     queue = self->_queue;
@@ -297,7 +297,7 @@ uint64_t __112__OspreyChannel_bidirectionalStreamingRequestWithMethodName_reques
     v9[2] = __69__OspreyChannel_initializeDeviceAuthenticationSessionWithCompletion___block_invoke;
     v9[3] = &unk_2799F2188;
     v9[4] = self;
-    v10 = v4;
+    v10 = completionCopy;
     v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v6, 0, v9);
     dispatch_async(queue, v7);
   }
@@ -311,7 +311,7 @@ uint64_t __112__OspreyChannel_bidirectionalStreamingRequestWithMethodName_reques
       [OspreyChannel initializeDeviceAuthenticationSessionWithCompletion:v8];
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -347,39 +347,39 @@ void __69__OspreyChannel_initializeDeviceAuthenticationSessionWithCompletion___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_buildRequestWithMethodName:(id)a3 requestBuilder:(id)a4
+- (id)_buildRequestWithMethodName:(id)name requestBuilder:(id)builder
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[OspreyMutableRequest alloc] initWithMethodName:v7];
+  builderCopy = builder;
+  nameCopy = name;
+  v8 = [[OspreyMutableRequest alloc] initWithMethodName:nameCopy];
 
   [(OspreyMutableRequest *)v8 setEnableDeviceAuthentication:self->_enableDeviceAuthentication];
   [(OspreyChannelRequestOptions *)self->_defaultRequestOptions applyToOspreyMutableRequest:v8];
-  if (v6)
+  if (builderCopy)
   {
-    v6[2](v6, v8);
+    builderCopy[2](builderCopy, v8);
   }
 
-  v9 = [(OspreyMutableRequest *)v8 buildInternalRequest];
+  buildInternalRequest = [(OspreyMutableRequest *)v8 buildInternalRequest];
 
-  return v9;
+  return buildInternalRequest;
 }
 
-- (void)_prepareChannelWithRequest:(id)a3 continueWith:(id)a4
+- (void)_prepareChannelWithRequest:(id)request continueWith:(id)with
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  withCopy = with;
   queue = self->_queue;
   v9 = qos_class_self();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__OspreyChannel__prepareChannelWithRequest_continueWith___block_invoke;
   block[3] = &unk_2799F21D8;
-  v15 = self;
-  v16 = v7;
-  v14 = v6;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v16 = withCopy;
+  v14 = requestCopy;
+  v10 = withCopy;
+  v11 = requestCopy;
   v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v9, 0, block);
   dispatch_async(queue, v12);
 }
@@ -424,10 +424,10 @@ void __57__OspreyChannel__prepareChannelWithRequest_continueWith___block_invoke_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_prepareDeviceAuthenticationWithCompletion:(id)a3
+- (void)_prepareDeviceAuthenticationWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_deviceAuthenticator)
   {
@@ -436,8 +436,8 @@ void __57__OspreyChannel__prepareChannelWithRequest_continueWith___block_invoke_
     self->_deviceAuthenticator = v5;
   }
 
-  v7 = [(OspreyConnectionPreferences *)self->_connectionPreferences deviceAttestationData];
-  if (v7)
+  deviceAttestationData = [(OspreyConnectionPreferences *)self->_connectionPreferences deviceAttestationData];
+  if (deviceAttestationData)
   {
     OspreyLoggingInit();
     v8 = OspreyLogContextChannel;
@@ -448,7 +448,7 @@ void __57__OspreyChannel__prepareChannelWithRequest_continueWith___block_invoke_
       _os_log_impl(&dword_25DDE6000, v8, OS_LOG_TYPE_INFO, "%s Reusing existing session info", buf, 0xCu);
     }
 
-    v4[2](v4, v7, 0);
+    completionCopy[2](completionCopy, deviceAttestationData, 0);
   }
 
   else
@@ -462,7 +462,7 @@ void __57__OspreyChannel__prepareChannelWithRequest_continueWith___block_invoke_
       block[2] = __60__OspreyChannel__prepareDeviceAuthenticationWithCompletion___block_invoke;
       block[3] = &unk_2799F1F48;
       block[4] = self;
-      v19 = v4;
+      v19 = completionCopy;
       dispatch_group_notify(validationGroup, queue, block);
       v11 = v19;
     }
@@ -478,7 +478,7 @@ void __57__OspreyChannel__prepareChannelWithRequest_continueWith___block_invoke_
       v16[2] = __60__OspreyChannel__prepareDeviceAuthenticationWithCompletion___block_invoke_2;
       v16[3] = &unk_2799F2228;
       v16[4] = self;
-      v17 = v4;
+      v17 = completionCopy;
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __60__OspreyChannel__prepareDeviceAuthenticationWithCompletion___block_invoke_16;
@@ -585,19 +585,19 @@ void __60__OspreyChannel__prepareDeviceAuthenticationWithCompletion___block_invo
   dispatch_group_leave(v5);
 }
 
-- (void)performRequest:(id)a3 handler:(id)a4
+- (void)performRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 methodName];
-  v9 = [v6 data];
+  requestCopy = request;
+  handlerCopy = handler;
+  methodName = [requestCopy methodName];
+  data = [requestCopy data];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__OspreyChannel_performRequest_handler___block_invoke;
   v11[3] = &unk_2799F2278;
-  v12 = v6;
-  v10 = v6;
-  [(OspreyChannel *)self unaryRequestWithMethodName:v8 requestData:v9 requestBuilder:v11 responseHandler:v7];
+  v12 = requestCopy;
+  v10 = requestCopy;
+  [(OspreyChannel *)self unaryRequestWithMethodName:methodName requestData:data requestBuilder:v11 responseHandler:handlerCopy];
 }
 
 void __40__OspreyChannel_performRequest_handler___block_invoke(uint64_t a1, void *a2)
@@ -612,27 +612,27 @@ void __40__OspreyChannel_performRequest_handler___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)performBidirectionalStreamingRequest:(id)a3 handler:(id)a4 completion:(id)a5
+- (void)performBidirectionalStreamingRequest:(id)request handler:(id)handler completion:(id)completion
 {
-  v8 = a3;
+  requestCopy = request;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__OspreyChannel_performBidirectionalStreamingRequest_handler_completion___block_invoke;
   v17[3] = &unk_2799F2278;
-  v9 = v8;
+  v9 = requestCopy;
   v18 = v9;
-  v10 = a5;
-  v11 = a4;
+  completionCopy = completion;
+  handlerCopy = handler;
   v12 = MEMORY[0x25F8A5BA0](v17);
-  v13 = [v9 methodName];
-  v14 = [(OspreyChannel *)self bidirectionalStreamingRequestWithMethodName:v13 requestBuilder:v12 streamingResponseHandler:v11 completion:v10];
+  methodName = [v9 methodName];
+  v14 = [(OspreyChannel *)self bidirectionalStreamingRequestWithMethodName:methodName requestBuilder:v12 streamingResponseHandler:handlerCopy completion:completionCopy];
 
-  v15 = [v9 data];
+  data = [v9 data];
 
-  if (v15)
+  if (data)
   {
-    v16 = [v9 data];
-    [v14 writeFrame:v16];
+    data2 = [v9 data];
+    [v14 writeFrame:data2];
 
     [v14 finishWriting];
   }

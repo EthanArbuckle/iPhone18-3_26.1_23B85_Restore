@@ -1,39 +1,39 @@
 @interface RTIInputSystemService
-+ (id)sharedServiceWithMachName:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)sharedServiceWithMachName:(id)name;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RTIInputSystemDelegate)delegate;
-- (RTIInputSystemService)initWithMachName:(id)a3;
+- (RTIInputSystemService)initWithMachName:(id)name;
 - (RTIInputSystemServiceSession)currentSession;
 - (void)_createListenerIfNecessary;
 - (void)_destroyListenerIfNecessary;
 - (void)dealloc;
-- (void)inputSession:(id)a3 didAddRTISupplementalLexicon:(id)a4;
-- (void)inputSession:(id)a3 didAddSupplementalLexicon:(id)a4;
-- (void)inputSession:(id)a3 didChangePause:(BOOL)a4 withReason:(id)a5;
-- (void)inputSession:(id)a3 didReceiveConnection:(id)a4;
-- (void)inputSession:(id)a3 didRemoveRTISupplementalLexicon:(id)a4;
-- (void)inputSession:(id)a3 didRemoveSupplementalLexicon:(id)a4;
-- (void)inputSession:(id)a3 documentStateDidChange:(id)a4;
-- (void)inputSession:(id)a3 documentTraitsDidChange:(id)a4;
-- (void)inputSession:(id)a3 performInputOperation:(id)a4;
-- (void)inputSession:(id)a3 performInputOperation:(id)a4 withResponse:(id)a5;
-- (void)inputSession:(id)a3 textSuggestionsChanged:(id)a4;
-- (void)inputSessionDidBegin:(id)a3 options:(id)a4;
-- (void)inputSessionDidDie:(id)a3;
-- (void)inputSessionDidEnd:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)prepareForInputSession:(id)a3 options:(id)a4;
-- (void)setEnabled:(BOOL)a3;
+- (void)inputSession:(id)session didAddRTISupplementalLexicon:(id)lexicon;
+- (void)inputSession:(id)session didAddSupplementalLexicon:(id)lexicon;
+- (void)inputSession:(id)session didChangePause:(BOOL)pause withReason:(id)reason;
+- (void)inputSession:(id)session didReceiveConnection:(id)connection;
+- (void)inputSession:(id)session didRemoveRTISupplementalLexicon:(id)lexicon;
+- (void)inputSession:(id)session didRemoveSupplementalLexicon:(id)lexicon;
+- (void)inputSession:(id)session documentStateDidChange:(id)change;
+- (void)inputSession:(id)session documentTraitsDidChange:(id)change;
+- (void)inputSession:(id)session performInputOperation:(id)operation;
+- (void)inputSession:(id)session performInputOperation:(id)operation withResponse:(id)response;
+- (void)inputSession:(id)session textSuggestionsChanged:(id)changed;
+- (void)inputSessionDidBegin:(id)begin options:(id)options;
+- (void)inputSessionDidDie:(id)die;
+- (void)inputSessionDidEnd:(id)end options:(id)options completion:(id)completion;
+- (void)prepareForInputSession:(id)session options:(id)options;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation RTIInputSystemService
 
-+ (id)sharedServiceWithMachName:(id)a3
++ (id)sharedServiceWithMachName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   if (sharedServiceWithMachName__onceToken == -1)
   {
-    if (v3)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -71,9 +71,9 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (RTIInputSystemService)initWithMachName:(id)a3
+- (RTIInputSystemService)initWithMachName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = RTIInputSystemService;
   v6 = [(RTIInputSystemService *)&v15 init];
@@ -93,7 +93,7 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
     dispatchQueue = v7->_dispatchQueue;
     v7->_dispatchQueue = v12;
 
-    objc_storeStrong(&v7->_machName, a3);
+    objc_storeStrong(&v7->_machName, name);
     [(RTIInputSystemService *)v7 _createListenerIfNecessary];
   }
 
@@ -114,16 +114,16 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
   {
     if ([(NSString *)self->_machName isEqualToString:@"Anonymous"])
     {
-      v4 = [MEMORY[0x1E696B0D8] anonymousListener];
+      anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     }
 
     else
     {
-      v4 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:self->_machName];
+      anonymousListener = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:self->_machName];
     }
 
     listener = self->_listener;
-    self->_listener = v4;
+    self->_listener = anonymousListener;
 
     [(NSXPCListener *)self->_listener setDelegate:self];
     [(NSXPCListener *)self->_listener _setQueue:self->_dispatchQueue];
@@ -145,18 +145,18 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
   }
 }
 
-- (void)inputSession:(id)a3 didReceiveConnection:(id)a4
+- (void)inputSession:(id)session didReceiveConnection:(id)connection
 {
-  v12 = a3;
-  v6 = a4;
-  [v12 setSessionDelegate:self];
-  [v6 _setQueue:self->_dispatchQueue];
+  sessionCopy = session;
+  connectionCopy = connection;
+  [sessionCopy setSessionDelegate:self];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   os_unfair_lock_lock(&self->_sessionsLock);
-  [(NSMutableSet *)self->_sessions addObject:v12];
+  [(NSMutableSet *)self->_sessions addObject:sessionCopy];
   os_unfair_lock_unlock(&self->_sessionsLock);
   if ([(RTIInputSystemService *)self _canResumeConnection])
   {
-    [v6 resume];
+    [connectionCopy resume];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -169,16 +169,16 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 inputSystemService:self didCreateInputSession:v12];
+      [v11 inputSystemService:self didCreateInputSession:sessionCopy];
     }
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [objc_msgSend(objc_opt_class() "serviceSessionClass")];
-  [(RTIInputSystemService *)self inputSession:v6 didReceiveConnection:v5];
+  [(RTIInputSystemService *)self inputSession:v6 didReceiveConnection:connectionCopy];
 
   return 1;
 }
@@ -192,10 +192,10 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
-  if (a3)
+  self->_enabled = enabled;
+  if (enabled)
   {
     [(RTIInputSystemService *)self _createListenerIfNecessary];
   }
@@ -206,10 +206,10 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
   }
 }
 
-- (void)prepareForInputSession:(id)a3 options:(id)a4
+- (void)prepareForInputSession:(id)session options:(id)options
 {
-  v12 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  optionsCopy = options;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -220,44 +220,44 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 inputSystemService:self prepareForInputSession:v12 options:v6];
+      [v11 inputSystemService:self prepareForInputSession:sessionCopy options:optionsCopy];
     }
   }
 }
 
-- (void)inputSessionDidBegin:(id)a3 options:(id)a4
+- (void)inputSessionDidBegin:(id)begin options:(id)options
 {
-  v27 = a3;
-  v7 = a4;
+  beginCopy = begin;
+  optionsCopy = options;
   os_unfair_lock_lock(&self->_sessionsLock);
   lastAppId = self->_lastAppId;
-  v9 = [v27 documentTraits];
-  v10 = [v9 appId];
-  v11 = v10;
+  documentTraits = [beginCopy documentTraits];
+  appId = [documentTraits appId];
+  v11 = appId;
   if (lastAppId)
   {
-    v12 = [(NSString *)lastAppId isEqualToString:v10];
+    v12 = [(NSString *)lastAppId isEqualToString:appId];
 
-    v13 = [v27 documentTraits];
-    v14 = [v13 appId];
+    documentTraits2 = [beginCopy documentTraits];
+    appId2 = [documentTraits2 appId];
     v15 = self->_lastAppId;
-    self->_lastAppId = v14;
+    self->_lastAppId = appId2;
 
-    objc_storeStrong(&self->_currentSession, a3);
+    objc_storeStrong(&self->_currentSession, begin);
     os_unfair_lock_unlock(&self->_sessionsLock);
     if (!v12)
     {
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 postNotificationName:@"RTIInputSessionWillChangeToNewProcessNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"RTIInputSessionWillChangeToNewProcessNotification" object:0];
     }
   }
 
   else
   {
     v17 = self->_lastAppId;
-    self->_lastAppId = v10;
+    self->_lastAppId = appId;
 
-    objc_storeStrong(&self->_currentSession, a3);
+    objc_storeStrong(&self->_currentSession, begin);
     os_unfair_lock_unlock(&self->_sessionsLock);
   }
 
@@ -270,13 +270,13 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
 
     if (v21)
     {
-      if (!v7)
+      if (!optionsCopy)
       {
-        v7 = +[RTISessionOptions defaultBeginOptions];
+        optionsCopy = +[RTISessionOptions defaultBeginOptions];
       }
 
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 inputSystemService:self inputSessionDidBegin:v27 options:v7];
+      [v22 inputSystemService:self inputSessionDidBegin:beginCopy options:optionsCopy];
       goto LABEL_13;
     }
   }
@@ -291,22 +291,22 @@ uint64_t __51__RTIInputSystemService_sharedServiceWithMachName___block_invoke()
     if (v26)
     {
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 inputSystemService:self inputSessionDidBegin:v27];
+      [v22 inputSystemService:self inputSessionDidBegin:beginCopy];
 LABEL_13:
     }
   }
 }
 
-- (void)inputSessionDidEnd:(id)a3 options:(id)a4 completion:(id)a5
+- (void)inputSessionDidEnd:(id)end options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  endCopy = end;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = dispatch_group_create();
   v12 = dispatch_time(0, 2100000000);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v14 = WeakRetained;
-  if (!v10 || !WeakRetained)
+  if (!completionCopy || !WeakRetained)
   {
 
     goto LABEL_8;
@@ -321,13 +321,13 @@ LABEL_8:
     v18 = objc_loadWeakRetained(&self->_delegate);
     if (v18 && (v19 = v18, v20 = objc_loadWeakRetained(&self->_delegate), v21 = objc_opt_respondsToSelector(), v20, v19, (v21 & 1) != 0))
     {
-      if (!v9)
+      if (!optionsCopy)
       {
-        v9 = +[RTISessionOptions defaultEndOptions];
+        optionsCopy = +[RTISessionOptions defaultEndOptions];
       }
 
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 inputSystemService:self inputSessionDidEnd:v8 options:v9];
+      [v22 inputSystemService:self inputSessionDidEnd:endCopy options:optionsCopy];
     }
 
     else
@@ -348,15 +348,15 @@ LABEL_8:
       }
 
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 inputSystemService:self inputSessionDidEnd:v8];
+      [v22 inputSystemService:self inputSessionDidEnd:endCopy];
     }
 
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!optionsCopy)
   {
-    v9 = +[RTISessionOptions defaultEndOptions];
+    optionsCopy = +[RTISessionOptions defaultEndOptions];
   }
 
   dispatch_group_enter(v11);
@@ -366,36 +366,36 @@ LABEL_8:
   v29[2] = __63__RTIInputSystemService_inputSessionDidEnd_options_completion___block_invoke;
   v29[3] = &unk_1E75140C8;
   v30 = v11;
-  [v17 inputSystemService:self inputSessionDidEnd:v8 options:v9 completion:v29];
+  [v17 inputSystemService:self inputSessionDidEnd:endCopy options:optionsCopy completion:v29];
 
 LABEL_17:
   os_unfair_lock_lock(&self->_sessionsLock);
   currentSession = self->_currentSession;
-  if (currentSession == v8)
+  if (currentSession == endCopy)
   {
     self->_currentSession = 0;
   }
 
-  [(NSMutableSet *)self->_sessions removeObject:v8];
+  [(NSMutableSet *)self->_sessions removeObject:endCopy];
   os_unfair_lock_unlock(&self->_sessionsLock);
-  if (v10)
+  if (completionCopy)
   {
     if (dispatch_group_wait(v11, v12))
     {
       v28 = RTIInputSessionChangeLogFacility();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        [RTIInputSystemService inputSessionDidEnd:v8 options:v28 completion:?];
+        [RTIInputSystemService inputSessionDidEnd:endCopy options:v28 completion:?];
       }
     }
 
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)inputSessionDidDie:(id)a3
+- (void)inputSessionDidDie:(id)die
 {
-  v20 = a3;
+  dieCopy = die;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -406,7 +406,7 @@ LABEL_17:
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 inputSystemService:self inputSessionDidDie:v20];
+      [v8 inputSystemService:self inputSessionDidDie:dieCopy];
 LABEL_10:
 
       goto LABEL_11;
@@ -425,7 +425,7 @@ LABEL_10:
       v8 = +[RTISessionOptions defaultOptions];
       [v8 setShouldResign:0];
       v13 = objc_loadWeakRetained(&self->_delegate);
-      [v13 inputSystemService:self inputSessionDidEnd:v20 options:v8];
+      [v13 inputSystemService:self inputSessionDidEnd:dieCopy options:v8];
 
       goto LABEL_10;
     }
@@ -441,30 +441,30 @@ LABEL_10:
     if (v17)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 inputSystemService:self inputSessionDidEnd:v20];
+      [v8 inputSystemService:self inputSessionDidEnd:dieCopy];
       goto LABEL_10;
     }
   }
 
 LABEL_11:
   currentSession = self->_currentSession;
-  if (currentSession == v20)
+  if (currentSession == dieCopy)
   {
     self->_currentSession = 0;
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 postNotificationName:@"RTIInputSessionDidEndUnexpectedlyNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"RTIInputSessionDidEndUnexpectedlyNotification" object:0];
   }
 
   os_unfair_lock_lock(&self->_sessionsLock);
-  [(NSMutableSet *)self->_sessions removeObject:v20];
+  [(NSMutableSet *)self->_sessions removeObject:dieCopy];
   os_unfair_lock_unlock(&self->_sessionsLock);
 }
 
-- (void)inputSession:(id)a3 documentTraitsDidChange:(id)a4
+- (void)inputSession:(id)session documentTraitsDidChange:(id)change
 {
-  v16 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -475,7 +475,7 @@ LABEL_11:
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 inputSystemService:self inputSession:v16 documentTraitsDidChange:v6];
+      [v11 inputSystemService:self inputSession:sessionCopy documentTraitsDidChange:changeCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -492,7 +492,7 @@ LABEL_7:
     if (v15)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 inputSystemService:self inputSessionDocumentDidChange:v16];
+      [v11 inputSystemService:self inputSessionDocumentDidChange:sessionCopy];
       goto LABEL_7;
     }
   }
@@ -500,10 +500,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)inputSession:(id)a3 documentStateDidChange:(id)a4
+- (void)inputSession:(id)session documentStateDidChange:(id)change
 {
-  v16 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -514,7 +514,7 @@ LABEL_8:
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 inputSystemService:self inputSession:v16 documentStateDidChange:v6];
+      [v11 inputSystemService:self inputSession:sessionCopy documentStateDidChange:changeCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -531,7 +531,7 @@ LABEL_7:
     if (v15)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 inputSystemService:self inputSessionDocumentDidChange:v16];
+      [v11 inputSystemService:self inputSessionDocumentDidChange:sessionCopy];
       goto LABEL_7;
     }
   }
@@ -539,14 +539,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)inputSession:(id)a3 didChangePause:(BOOL)a4 withReason:(id)a5
+- (void)inputSession:(id)session didChangePause:(BOOL)pause withReason:(id)reason
 {
-  v6 = a4;
-  v16 = a3;
-  v8 = a5;
+  pauseCopy = pause;
+  sessionCopy = session;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = WeakRetained;
-  if (v6)
+  if (pauseCopy)
   {
     if (WeakRetained)
     {
@@ -556,7 +556,7 @@ LABEL_8:
       if (v12)
       {
         v13 = objc_loadWeakRetained(&self->_delegate);
-        [v13 inputSystemService:self inputSessionDidPause:v16 withReason:v8];
+        [v13 inputSystemService:self inputSessionDidPause:sessionCopy withReason:reasonCopy];
 LABEL_8:
       }
     }
@@ -570,108 +570,108 @@ LABEL_8:
     if (v15)
     {
       v13 = objc_loadWeakRetained(&self->_delegate);
-      [v13 inputSystemService:self inputSessionDidUnpause:v16 withReason:v8];
+      [v13 inputSystemService:self inputSessionDidUnpause:sessionCopy withReason:reasonCopy];
       goto LABEL_8;
     }
   }
 }
 
-- (void)inputSession:(id)a3 textSuggestionsChanged:(id)a4
+- (void)inputSession:(id)session textSuggestionsChanged:(id)changed
 {
-  v10 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 inputSystemService:self inputSession:v10 textSuggestionsChanged:v6];
+    [v9 inputSystemService:self inputSession:sessionCopy textSuggestionsChanged:changedCopy];
   }
 }
 
-- (void)inputSession:(id)a3 didAddSupplementalLexicon:(id)a4
+- (void)inputSession:(id)session didAddSupplementalLexicon:(id)lexicon
 {
-  v10 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  lexiconCopy = lexicon;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 inputSystemService:self inputSession:v10 didAddSupplementalLexicon:v6];
+    [v9 inputSystemService:self inputSession:sessionCopy didAddSupplementalLexicon:lexiconCopy];
   }
 }
 
-- (void)inputSession:(id)a3 didAddRTISupplementalLexicon:(id)a4
+- (void)inputSession:(id)session didAddRTISupplementalLexicon:(id)lexicon
 {
-  v10 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  lexiconCopy = lexicon;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 inputSystemService:self inputSession:v10 didAddRTISupplementalLexicon:v6];
+    [v9 inputSystemService:self inputSession:sessionCopy didAddRTISupplementalLexicon:lexiconCopy];
   }
 }
 
-- (void)inputSession:(id)a3 didRemoveSupplementalLexicon:(id)a4
+- (void)inputSession:(id)session didRemoveSupplementalLexicon:(id)lexicon
 {
-  v10 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  lexiconCopy = lexicon;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 inputSystemService:self inputSession:v10 didRemoveSupplementalLexicon:v6];
+    [v9 inputSystemService:self inputSession:sessionCopy didRemoveSupplementalLexicon:lexiconCopy];
   }
 }
 
-- (void)inputSession:(id)a3 didRemoveRTISupplementalLexicon:(id)a4
+- (void)inputSession:(id)session didRemoveRTISupplementalLexicon:(id)lexicon
 {
-  v10 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  lexiconCopy = lexicon;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 inputSystemService:self inputSession:v10 didRemoveRTISupplementalLexicon:v6];
+    [v9 inputSystemService:self inputSession:sessionCopy didRemoveRTISupplementalLexicon:lexiconCopy];
   }
 }
 
-- (void)inputSession:(id)a3 performInputOperation:(id)a4
+- (void)inputSession:(id)session performInputOperation:(id)operation
 {
-  v10 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  operationCopy = operation;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 inputSystemService:self inputSession:v10 performInputOperation:v6];
+    [v9 inputSystemService:self inputSession:sessionCopy performInputOperation:operationCopy];
   }
 }
 
-- (void)inputSession:(id)a3 performInputOperation:(id)a4 withResponse:(id)a5
+- (void)inputSession:(id)session performInputOperation:(id)operation withResponse:(id)response
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  operationCopy = operation;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 inputSystemService:self inputSession:v13 performInputOperation:v8 withResponse:v9];
+    [v12 inputSystemService:self inputSession:sessionCopy performInputOperation:operationCopy withResponse:responseCopy];
   }
 }
 

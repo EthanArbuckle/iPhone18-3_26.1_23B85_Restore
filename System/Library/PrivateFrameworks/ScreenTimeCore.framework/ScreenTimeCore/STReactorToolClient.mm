@@ -1,11 +1,11 @@
 @interface STReactorToolClient
 + (id)_newConnection;
-- (BOOL)scheduleFailStuckMessagesWithError:(id *)a3;
-- (BOOL)scheduleMessageRetryWithError:(id *)a3;
-- (BOOL)scheduleStoreClenaupWithError:(id *)a3;
-- (BOOL)shutdownReactorWithError:(id *)a3;
+- (BOOL)scheduleFailStuckMessagesWithError:(id *)error;
+- (BOOL)scheduleMessageRetryWithError:(id *)error;
+- (BOOL)scheduleStoreClenaupWithError:(id *)error;
+- (BOOL)shutdownReactorWithError:(id *)error;
 - (STReactorToolClient)init;
-- (id)currentMessageTransportReachabilityMap:(id *)a3;
+- (id)currentMessageTransportReachabilityMap:(id *)map;
 - (void)dealloc;
 @end
 
@@ -41,7 +41,7 @@
   return v2;
 }
 
-- (BOOL)shutdownReactorWithError:(id *)a3
+- (BOOL)shutdownReactorWithError:(id *)error
 {
   v5 = +[STLog reactorTool];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -56,18 +56,18 @@
   v14 = sub_10006C250;
   v15 = sub_10006C260;
   v16 = 0;
-  v6 = [(STReactorToolClient *)self connection];
+  connection = [(STReactorToolClient *)self connection];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10006C268;
   v10[3] = &unk_1001A3750;
   v10[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   [v7 shutdownReactorWithCompletion:&stru_1001A55D8];
-  if (a3)
+  if (error)
   {
-    *a3 = *(v12 + 5);
+    *error = *(v12 + 5);
   }
 
   v8 = *(v12 + 5) == 0;
@@ -76,7 +76,7 @@
   return v8;
 }
 
-- (BOOL)scheduleMessageRetryWithError:(id *)a3
+- (BOOL)scheduleMessageRetryWithError:(id *)error
 {
   v5 = +[STLog reactorTool];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -91,18 +91,18 @@
   v14 = sub_10006C250;
   v15 = sub_10006C260;
   v16 = 0;
-  v6 = [(STReactorToolClient *)self connection];
+  connection = [(STReactorToolClient *)self connection];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10006C478;
   v10[3] = &unk_1001A3750;
   v10[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   [v7 scheduleMessageRetryActivity:&stru_1001A55F8];
-  if (a3)
+  if (error)
   {
-    *a3 = *(v12 + 5);
+    *error = *(v12 + 5);
   }
 
   v8 = *(v12 + 5) == 0;
@@ -111,7 +111,7 @@
   return v8;
 }
 
-- (BOOL)scheduleStoreClenaupWithError:(id *)a3
+- (BOOL)scheduleStoreClenaupWithError:(id *)error
 {
   v5 = +[STLog reactorTool];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -126,18 +126,18 @@
   v14 = sub_10006C250;
   v15 = sub_10006C260;
   v16 = 0;
-  v6 = [(STReactorToolClient *)self connection];
+  connection = [(STReactorToolClient *)self connection];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10006C688;
   v10[3] = &unk_1001A3750;
   v10[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   [v7 scheduleStoreCleanupActivity:&stru_1001A5618];
-  if (a3)
+  if (error)
   {
-    *a3 = *(v12 + 5);
+    *error = *(v12 + 5);
   }
 
   v8 = *(v12 + 5) == 0;
@@ -146,7 +146,7 @@
   return v8;
 }
 
-- (BOOL)scheduleFailStuckMessagesWithError:(id *)a3
+- (BOOL)scheduleFailStuckMessagesWithError:(id *)error
 {
   v5 = +[STLog reactorTool];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -161,18 +161,18 @@
   v14 = sub_10006C250;
   v15 = sub_10006C260;
   v16 = 0;
-  v6 = [(STReactorToolClient *)self connection];
+  connection = [(STReactorToolClient *)self connection];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10006C898;
   v10[3] = &unk_1001A3750;
   v10[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   [v7 scheduleFailStuckMessagesActivity:&stru_1001A5638];
-  if (a3)
+  if (error)
   {
-    *a3 = *(v12 + 5);
+    *error = *(v12 + 5);
   }
 
   v8 = *(v12 + 5) == 0;
@@ -181,7 +181,7 @@
   return v8;
 }
 
-- (id)currentMessageTransportReachabilityMap:(id *)a3
+- (id)currentMessageTransportReachabilityMap:(id *)map
 {
   v5 = +[STLog reactorTool];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -196,13 +196,13 @@
   v21 = sub_10006C250;
   v22 = sub_10006C260;
   v23 = 0;
-  v6 = [(STReactorToolClient *)self connection];
+  connection = [(STReactorToolClient *)self connection];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10006CB58;
   v17[3] = &unk_1001A3750;
   v17[4] = buf;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v17];
 
   v11 = 0;
   v12 = &v11;
@@ -216,9 +216,9 @@
   v10[3] = &unk_1001A5660;
   v10[4] = &v11;
   [v7 currentMessageTransportReachabilityMap:v10];
-  if (a3)
+  if (map)
   {
-    *a3 = *(v19 + 5);
+    *map = *(v19 + 5);
   }
 
   v8 = v12[5];

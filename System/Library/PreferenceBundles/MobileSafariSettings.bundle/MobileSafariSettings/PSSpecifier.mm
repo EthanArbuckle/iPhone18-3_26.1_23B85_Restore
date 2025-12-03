@@ -1,16 +1,16 @@
 @interface PSSpecifier
 - (unint64_t)diskUsage;
-- (void)setUsage:(unint64_t)a3;
+- (void)setUsage:(unint64_t)usage;
 @end
 
 @implementation PSSpecifier
 
-- (void)setUsage:(unint64_t)a3
+- (void)setUsage:(unint64_t)usage
 {
-  v5 = [(PSSpecifier *)self userInfo];
-  v6 = [v5 mutableCopy];
+  userInfo = [(PSSpecifier *)self userInfo];
+  v6 = [userInfo mutableCopy];
 
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
+  v7 = [NSNumber numberWithUnsignedLongLong:usage];
   [v6 setObject:v7 forKeyedSubscript:@"DISK_USAGE"];
 
   [(PSSpecifier *)self setUserInfo:v6];
@@ -22,25 +22,25 @@
 
 - (unint64_t)diskUsage
 {
-  v2 = [(PSSpecifier *)self userInfo];
-  v3 = v2;
-  if (v2)
+  userInfo = [(PSSpecifier *)self userInfo];
+  v3 = userInfo;
+  if (userInfo)
   {
-    v4 = [v2 objectForKeyedSubscript:@"DISK_USAGE"];
+    unsignedLongLongValue = [userInfo objectForKeyedSubscript:@"DISK_USAGE"];
 
-    if (v4)
+    if (unsignedLongLongValue)
     {
       v5 = [v3 objectForKeyedSubscript:@"DISK_USAGE"];
-      v4 = [v5 unsignedLongLongValue];
+      unsignedLongLongValue = [v5 unsignedLongLongValue];
     }
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 @end

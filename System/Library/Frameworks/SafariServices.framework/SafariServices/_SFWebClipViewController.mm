@@ -3,37 +3,37 @@
 - (BOOL)_shouldUseTranslucentAppearance;
 - (BOOL)_showDemoModeFeatureDisabledAlert;
 - (BOOL)createAndAddToHomeScreenBundle;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (CGPoint)_centerForIconView;
 - (UIEdgeInsets)_cellInset;
-- (_SFWebClipViewController)initWithStyle:(int64_t)a3;
+- (_SFWebClipViewController)initWithStyle:(int64_t)style;
 - (_SFWebClipViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_add;
 - (void)_cancel;
-- (void)_textFieldChanged:(id)a3;
-- (void)bookmarkTextEntryTableViewController:(id)a3 dismissedWithText:(id)a4;
+- (void)_textFieldChanged:(id)changed;
+- (void)bookmarkTextEntryTableViewController:(id)controller dismissedWithText:(id)text;
 - (void)dealloc;
 - (void)loadView;
-- (void)setCanEditAndSave:(BOOL)a3;
-- (void)switchTableViewCell:(id)a3 didChangeSwitchState:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateUIAnimated:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setCanEditAndSave:(BOOL)save;
+- (void)switchTableViewCell:(id)cell didChangeSwitchState:(BOOL)state;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateUIAnimated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation _SFWebClipViewController
 
-- (_SFWebClipViewController)initWithStyle:(int64_t)a3
+- (_SFWebClipViewController)initWithStyle:(int64_t)style
 {
   v14.receiver = self;
   v14.super_class = _SFWebClipViewController;
@@ -47,14 +47,14 @@
     v6 = _WBSLocalizedString();
     v7 = [v5 initWithTitle:v6 style:2 target:v3 action:sel__add];
 
-    v8 = [(_SFWebClipViewController *)v3 navigationItem];
-    [v8 setRightBarButtonItem:v7];
+    navigationItem = [(_SFWebClipViewController *)v3 navigationItem];
+    [navigationItem setRightBarButtonItem:v7];
 
     [v7 setEnabled:0];
     v9 = objc_alloc(MEMORY[0x1E69DC708]);
     v10 = [v9 initWithBarButtonSystemItem:objc_msgSend(MEMORY[0x1E69DC708] target:"_sf_popoverCancelButtonItem") action:{v3, sel__cancel}];
-    v11 = [(_SFWebClipViewController *)v3 navigationItem];
-    [v11 setLeftBarButtonItem:v10];
+    navigationItem2 = [(_SFWebClipViewController *)v3 navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v10];
 
     v3->_canEditAndSave = 0;
     v12 = v3;
@@ -73,16 +73,16 @@
   self->_titleCell = &v3->super;
 
   [(UITableViewCell *)self->_titleCell setSelectionStyle:0];
-  v5 = [(UITableViewCell *)self->_titleCell editableTextField];
-  [v5 setEnabled:self->_canEditAndSave];
+  editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+  [editableTextField setEnabled:self->_canEditAndSave];
 
   v6 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:0];
   addressCell = self->_addressCell;
   self->_addressCell = v6;
 
   [(UITableViewCell *)self->_addressCell setSelectionStyle:0];
-  v8 = [(UITableViewCell *)self->_addressCell textLabel];
-  [v8 setEnabled:0];
+  textLabel = [(UITableViewCell *)self->_addressCell textLabel];
+  [textLabel setEnabled:0];
 
   self->_shouldOpenAsWebApp = 1;
   v9 = [[SFSwitchTableViewCell alloc] initWithReuseIdentifier:0];
@@ -91,29 +91,29 @@
 
   [(SFSwitchTableViewCell *)self->_opensAsWebAppSwitchCell setDelegate:self];
   v11 = _WBSLocalizedString();
-  v12 = [(SFSwitchTableViewCell *)self->_opensAsWebAppSwitchCell textLabel];
-  [v12 setText:v11];
+  textLabel2 = [(SFSwitchTableViewCell *)self->_opensAsWebAppSwitchCell textLabel];
+  [textLabel2 setText:v11];
 
   [(SFSwitchTableViewCell *)self->_opensAsWebAppSwitchCell setSelectionStyle:0];
   [(SFSwitchTableViewCell *)self->_opensAsWebAppSwitchCell setSwitchOn:self->_shouldOpenAsWebApp];
-  v13 = [(UITableViewCell *)self->_titleCell editableTextField];
-  [v13 setDelegate:self];
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 addObserver:self selector:sel__textFieldChanged_ name:*MEMORY[0x1E69DE5C0] object:v13];
+  editableTextField2 = [(UITableViewCell *)self->_titleCell editableTextField];
+  [editableTextField2 setDelegate:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__textFieldChanged_ name:*MEMORY[0x1E69DE5C0] object:editableTextField2];
 
-  v15 = [(_SFWebClipViewController *)self tableView];
+  tableView = [(_SFWebClipViewController *)self tableView];
   v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 60.0, 60.0}];
   iconImageView = self->_iconImageView;
   self->_iconImageView = v16;
 
-  v18 = [(UIImageView *)self->_iconImageView layer];
-  [v18 setZPosition:1.0];
+  layer = [(UIImageView *)self->_iconImageView layer];
+  [layer setZPosition:1.0];
 
-  [v15 addSubview:self->_iconImageView];
+  [tableView addSubview:self->_iconImageView];
   if ([(_SFWebClipViewController *)self _shouldUseTranslucentAppearance])
   {
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [v15 setBackgroundColor:v19];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [tableView setBackgroundColor:clearColor];
   }
 }
 
@@ -125,32 +125,32 @@
   [(_SFWebClipViewController *)self updateUIAnimated:0];
 }
 
-- (void)updateUIAnimated:(BOOL)a3
+- (void)updateUIAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(_SFWebClipViewController *)self isViewLoaded])
   {
-    v5 = [(UIWebClip *)self->_webClip title];
-    v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    title = [(UIWebClip *)self->_webClip title];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v7 = [title stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v8 = [(UITableViewCell *)self->_titleCell editableTextField];
-    [v8 setText:v7];
+    editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+    [editableTextField setText:v7];
 
-    v9 = [(UIWebClip *)self->_webClip pageURL];
-    v10 = [v9 safari_userVisibleString];
-    v11 = [(UITableViewCell *)self->_addressCell textLabel];
-    [v11 setText:v10];
+    pageURL = [(UIWebClip *)self->_webClip pageURL];
+    safari_userVisibleString = [pageURL safari_userVisibleString];
+    textLabel = [(UITableViewCell *)self->_addressCell textLabel];
+    [textLabel setText:safari_userVisibleString];
 
-    v12 = [(_SFWebClipViewController *)self tableView];
-    v13 = [v12 footerViewForSection:0];
+    tableView = [(_SFWebClipViewController *)self tableView];
+    v13 = [tableView footerViewForSection:0];
 
-    v14 = [v13 defaultContentConfiguration];
-    v15 = [(_SFWebClipViewController *)self tableView];
-    v16 = [(_SFWebClipViewController *)self tableView:v15 titleForFooterInSection:0];
-    [v14 setText:v16];
+    defaultContentConfiguration = [v13 defaultContentConfiguration];
+    tableView2 = [(_SFWebClipViewController *)self tableView];
+    v16 = [(_SFWebClipViewController *)self tableView:tableView2 titleForFooterInSection:0];
+    [defaultContentConfiguration setText:v16];
 
-    [v13 setContentConfiguration:v14];
+    [v13 setContentConfiguration:defaultContentConfiguration];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __45___SFWebClipViewController_updateUIAnimated___block_invoke;
@@ -158,11 +158,11 @@
     aBlock[4] = self;
     v17 = _Block_copy(aBlock);
     v18 = v17;
-    if (v3)
+    if (animatedCopy)
     {
       v19 = MEMORY[0x1E69DD250];
-      v20 = [(_SFWebClipViewController *)self view];
-      [v19 transitionWithView:v20 duration:5242880 options:v18 animations:0 completion:0.349999994];
+      view = [(_SFWebClipViewController *)self view];
+      [v19 transitionWithView:view duration:5242880 options:v18 animations:0 completion:0.349999994];
     }
 
     else
@@ -172,59 +172,59 @@
   }
 }
 
-- (void)setCanEditAndSave:(BOOL)a3
+- (void)setCanEditAndSave:(BOOL)save
 {
-  if (self->_canEditAndSave != a3)
+  if (self->_canEditAndSave != save)
   {
-    self->_canEditAndSave = a3;
-    v4 = [(UITableViewCell *)self->_titleCell editableTextField];
-    [v4 setEnabled:self->_canEditAndSave];
+    self->_canEditAndSave = save;
+    editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+    [editableTextField setEnabled:self->_canEditAndSave];
 
-    v6 = [(_SFWebClipViewController *)self navigationItem];
-    v5 = [v6 rightBarButtonItem];
-    [v5 setEnabled:{-[_SFWebClipViewController _canAddWebClip](self, "_canAddWebClip")}];
+    navigationItem = [(_SFWebClipViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:{-[_SFWebClipViewController _canAddWebClip](self, "_canAddWebClip")}];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = _SFWebClipViewController;
-  [(_SFWebClipViewController *)&v9 viewWillAppear:a3];
+  [(_SFWebClipViewController *)&v9 viewWillAppear:appear];
   [(_SFWebClipViewController *)self updateUIAnimated:0];
   self->_suspendAfterDismiss = 0;
-  v4 = [(_SFWebClipViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(_SFWebClipViewController *)self tableView];
+  [tableView reloadData];
 
-  v5 = [(_SFWebClipViewController *)self tableView];
+  tableView2 = [(_SFWebClipViewController *)self tableView];
   v6 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-  v7 = [v5 cellForRowAtIndexPath:v6];
+  v7 = [tableView2 cellForRowAtIndexPath:v6];
 
   if (([(_SFWebClipViewController *)self _isInPopoverPresentation]& 1) == 0)
   {
-    v8 = [(UITableViewCell *)self->_titleCell editableTextField];
-    [v8 becomeFirstResponder];
+    editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+    [editableTextField becomeFirstResponder];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(UITableViewCell *)self->_titleCell editableTextField];
-  [v5 resignFirstResponder];
+  disappearCopy = disappear;
+  editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+  [editableTextField resignFirstResponder];
 
   v6.receiver = self;
   v6.super_class = _SFWebClipViewController;
-  [(_SFWebClipViewController *)&v6 viewWillDisappear:v3];
+  [(_SFWebClipViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(_SFWebClipViewController *)self navigationController];
-  v6 = [v5 topViewController];
+  disappearCopy = disappear;
+  navigationController = [(_SFWebClipViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v6 == self)
+  if (topViewController == self)
   {
     if (self->_suspendAfterDismiss)
     {
@@ -234,7 +234,7 @@
 
     v8.receiver = self;
     v8.super_class = _SFWebClipViewController;
-    [(_SFWebClipViewController *)&v8 viewDidDisappear:v3];
+    [(_SFWebClipViewController *)&v8 viewDidDisappear:disappearCopy];
     if (!self->_delegateNotifiedOfResult)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -243,9 +243,9 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     return 1;
   }
@@ -256,11 +256,11 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
-  v7 = [v5 section];
+  pathCopy = path;
+  v6 = [pathCopy row];
+  section = [pathCopy section];
 
   v8 = &OBJC_IVAR____SFWebClipViewController__addressCell;
   if (!v6)
@@ -268,7 +268,7 @@
     v8 = &OBJC_IVAR____SFWebClipViewController__titleCell;
   }
 
-  if (v7)
+  if (section)
   {
     v8 = &OBJC_IVAR____SFWebClipViewController__opensAsWebAppSwitchCell;
   }
@@ -278,10 +278,10 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
     if (self->_webClip && self->_shouldOpenAsWebApp)
     {
@@ -299,11 +299,11 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = v5;
-  if (self->_canEditAndSave && ![v5 row])
+  pathCopy = path;
+  v6 = pathCopy;
+  if (self->_canEditAndSave && ![pathCopy row])
   {
     v7 = v6;
   }
@@ -316,23 +316,23 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  if (![a4 section])
+  if (![path section])
   {
     v5 = [_SFBookmarkTextEntryTableViewController alloc];
-    v6 = [(UITableViewCell *)self->_titleCell editableTextField];
-    v7 = [v6 text];
-    v9 = [(_SFBookmarkTextEntryTableViewController *)v5 initWithBookmarkInfoViewField:0 text:v7 autocapitalizationType:2 autocorrectionType:0 delegate:self];
+    editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+    text = [editableTextField text];
+    v9 = [(_SFBookmarkTextEntryTableViewController *)v5 initWithBookmarkInfoViewField:0 text:text autocapitalizationType:2 autocorrectionType:0 delegate:self];
 
-    v8 = [(_SFWebClipViewController *)self navigationController];
-    [v8 pushViewController:v9 animated:1];
+    navigationController = [(_SFWebClipViewController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(_SFWebClipViewController *)self tableView:a3];
+  v4 = [(_SFWebClipViewController *)self tableView:view];
   [v4 safeAreaInsets];
   v6 = v5;
 
@@ -347,8 +347,8 @@
 
 - (UIEdgeInsets)_cellInset
 {
-  v2 = [(_SFWebClipViewController *)self view];
-  [v2 _sf_safeAreaInsetsFlippedForLayoutDirectionality];
+  view = [(_SFWebClipViewController *)self view];
+  [view _sf_safeAreaInsetsFlippedForLayoutDirectionality];
   v4 = v3 + 90.0;
 
   v5 = 0.0;
@@ -364,20 +364,20 @@
 
 - (CGPoint)_centerForIconView
 {
-  v3 = [(_SFWebClipViewController *)self tableView];
-  [v3 rectForSection:0];
+  tableView = [(_SFWebClipViewController *)self tableView];
+  [tableView rectForSection:0];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 rectForHeaderInSection:0];
+  [tableView rectForHeaderInSection:0];
   v13 = v12;
-  [v3 rectForFooterInSection:0];
+  [tableView rectForFooterInSection:0];
   v15 = v14;
-  v16 = [(_SFWebClipViewController *)self view];
-  [v16 _sf_usesLeftToRightLayout];
+  view = [(_SFWebClipViewController *)self view];
+  [view _sf_usesLeftToRightLayout];
 
-  [v3 safeAreaInsets];
+  [tableView safeAreaInsets];
   v24.size.height = v11 + v13 - v15;
   v24.origin.x = v5;
   v24.origin.y = v7;
@@ -399,17 +399,17 @@
   iconImageView = self->_iconImageView;
   [(_SFWebClipViewController *)self _centerForIconView];
   [(UIImageView *)iconImageView setCenter:?];
-  v5 = [(_SFWebClipViewController *)self tableView];
-  v4 = [(_SFWebClipViewController *)self view];
-  [v4 bounds];
-  [v5 sizeThatFits:{CGRectGetWidth(v7), 1.79769313e308}];
+  tableView = [(_SFWebClipViewController *)self tableView];
+  view = [(_SFWebClipViewController *)self view];
+  [view bounds];
+  [tableView sizeThatFits:{CGRectGetWidth(v7), 1.79769313e308}];
   [(_SFWebClipViewController *)self setPreferredContentSize:0.0];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(UITableViewCell *)self->_titleCell editableTextField];
-  [v3 setUserInteractionEnabled:1];
+  editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+  [editableTextField setUserInteractionEnabled:1];
 
   [(UITableViewCell *)self->_titleCell setAccessoryType:0];
   [(UITableViewCell *)self->_titleCell setSelectionStyle:0];
@@ -433,12 +433,12 @@
 {
   if (![(_SFWebClipViewController *)self _showDemoModeFeatureDisabledAlert])
   {
-    v3 = [(UITableViewCell *)self->_titleCell editableTextField];
-    [v3 resignFirstResponder];
+    editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+    [editableTextField resignFirstResponder];
 
     [(UIWebClip *)self->_webClip setFullScreen:self->_shouldOpenAsWebApp];
-    v4 = [(_SFWebClipViewController *)self createAndAddToHomeScreenBundle];
-    if (v4)
+    createAndAddToHomeScreenBundle = [(_SFWebClipViewController *)self createAndAddToHomeScreenBundle];
+    if (createAndAddToHomeScreenBundle)
     {
       self->_suspendAfterDismiss = 1;
     }
@@ -461,14 +461,14 @@
     [(UIWebClip *)self->_webClip cancelMediaUpdate];
     self->_delegateNotifiedOfResult = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained webClipViewController:self didFinishWithResult:v4];
+    [WeakRetained webClipViewController:self didFinishWithResult:createAndAddToHomeScreenBundle];
   }
 }
 
 - (BOOL)_showDemoModeFeatureDisabledAlert
 {
-  v3 = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
-  if (v3 && !self->_showingDemoModeAlert)
+  isRunningInStoreDemoMode = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
+  if (isRunningInStoreDemoMode && !self->_showingDemoModeAlert)
   {
     self->_showingDemoModeAlert = 1;
     v4 = MEMORY[0x1E69DC650];
@@ -488,15 +488,15 @@
     [(_SFWebClipViewController *)self presentViewController:v6 animated:1 completion:0];
   }
 
-  return v3;
+  return isRunningInStoreDemoMode;
 }
 
 - (BOOL)createAndAddToHomeScreenBundle
 {
-  v3 = [(UIWebClip *)self->_webClip pageURL];
-  v4 = [v3 absoluteString];
+  pageURL = [(UIWebClip *)self->_webClip pageURL];
+  absoluteString = [pageURL absoluteString];
 
-  if (![v4 length] || (-[UIWebClip title](self->_webClip, "title"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, !v6))
+  if (![absoluteString length] || (-[UIWebClip title](self->_webClip, "title"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, !v6))
   {
     v16 = WBS_LOG_CHANNEL_PREFIXWebApp();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -515,23 +515,23 @@ LABEL_9:
   }
 
   v7 = *MEMORY[0x1E69DDA98];
-  v8 = [(UIWebClip *)self->_webClip identifier];
-  [v7 addWebClipToHomeScreen:v8];
+  identifier = [(UIWebClip *)self->_webClip identifier];
+  [v7 addWebClipToHomeScreen:identifier];
 
-  v9 = [(UIWebClip *)self->_webClip _sf_applicationManifest];
+  _sf_applicationManifest = [(UIWebClip *)self->_webClip _sf_applicationManifest];
 
-  if (v9)
+  if (_sf_applicationManifest)
   {
     v10 = MEMORY[0x1E696ACC8];
-    v11 = [(UIWebClip *)self->_webClip _sf_applicationManifest];
-    v12 = [v10 archivedDataWithRootObject:v11 requiringSecureCoding:0 error:0];
+    _sf_applicationManifest2 = [(UIWebClip *)self->_webClip _sf_applicationManifest];
+    v12 = [v10 archivedDataWithRootObject:_sf_applicationManifest2 requiringSecureCoding:0 error:0];
 
-    v13 = [(UIWebClip *)self->_webClip _sf_applicationManifestPath];
-    [v12 writeToURL:v13 atomically:1];
+    _sf_applicationManifestPath = [(UIWebClip *)self->_webClip _sf_applicationManifestPath];
+    [v12 writeToURL:_sf_applicationManifestPath atomically:1];
   }
 
-  v14 = [MEMORY[0x1E69C8810] sharedLogger];
-  [v14 didAddWebClip];
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  [mEMORY[0x1E69C8810] didAddWebClip];
 
   v15 = 1;
 LABEL_10:
@@ -546,44 +546,44 @@ LABEL_10:
     return 0;
   }
 
-  v2 = [(UIWebClip *)self->_webClip title];
-  v3 = [v2 length] != 0;
+  title = [(UIWebClip *)self->_webClip title];
+  v3 = [title length] != 0;
 
   return v3;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [(_SFWebClipViewController *)self _canAddWebClip];
-  if (v4)
+  _canAddWebClip = [(_SFWebClipViewController *)self _canAddWebClip];
+  if (_canAddWebClip)
   {
     [(_SFWebClipViewController *)self _add];
   }
 
-  return v4;
+  return _canAddWebClip;
 }
 
-- (void)_textFieldChanged:(id)a3
+- (void)_textFieldChanged:(id)changed
 {
   webClip = self->_webClip;
-  v5 = [(UITableViewCell *)self->_titleCell editableTextField];
-  v6 = [v5 text];
-  v7 = [v6 _web_stringByTrimmingWhitespace];
-  [(UIWebClip *)webClip setTitle:v7];
+  editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+  text = [editableTextField text];
+  _web_stringByTrimmingWhitespace = [text _web_stringByTrimmingWhitespace];
+  [(UIWebClip *)webClip setTitle:_web_stringByTrimmingWhitespace];
 
-  v8 = [(_SFWebClipViewController *)self _canAddWebClip];
-  v10 = [(_SFWebClipViewController *)self navigationItem];
-  v9 = [v10 rightBarButtonItem];
-  [v9 setEnabled:v8];
+  _canAddWebClip = [(_SFWebClipViewController *)self _canAddWebClip];
+  navigationItem = [(_SFWebClipViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:_canAddWebClip];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(UITableViewCell *)self->_titleCell editableTextField];
-  [v4 setDelegate:0];
+  editableTextField = [(UITableViewCell *)self->_titleCell editableTextField];
+  [editableTextField setDelegate:0];
 
   v5.receiver = self;
   v5.super_class = _SFWebClipViewController;
@@ -600,20 +600,20 @@ LABEL_10:
   return [(_SFWebClipViewController *)self _isInPopoverPresentation];
 }
 
-- (void)bookmarkTextEntryTableViewController:(id)a3 dismissedWithText:(id)a4
+- (void)bookmarkTextEntryTableViewController:(id)controller dismissedWithText:(id)text
 {
-  v5 = a4;
-  if ([v5 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    [(UIWebClip *)self->_webClip setTitle:v5];
+    [(UIWebClip *)self->_webClip setTitle:textCopy];
   }
 }
 
-- (void)switchTableViewCell:(id)a3 didChangeSwitchState:(BOOL)a4
+- (void)switchTableViewCell:(id)cell didChangeSwitchState:(BOOL)state
 {
-  self->_shouldOpenAsWebApp = a4;
-  v4 = [(_SFWebClipViewController *)self tableView];
-  [v4 reloadData];
+  self->_shouldOpenAsWebApp = state;
+  tableView = [(_SFWebClipViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (_SFWebClipViewControllerDelegate)delegate

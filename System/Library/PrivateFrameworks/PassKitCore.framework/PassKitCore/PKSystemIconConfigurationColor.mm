@@ -1,13 +1,13 @@
 @interface PKSystemIconConfigurationColor
-- (BOOL)isEqual:(id)a3;
-- (PKSystemIconConfigurationColor)initWithCoder:(id)a3;
-- (PKSystemIconConfigurationColor)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSystemIconConfigurationColor)initWithCoder:(id)coder;
+- (PKSystemIconConfigurationColor)initWithDictionary:(id)dictionary;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSystemIconConfigurationColor
@@ -19,18 +19,18 @@
   return [(PKSystemIconConfigurationColor *)&v3 init];
 }
 
-- (PKSystemIconConfigurationColor)initWithDictionary:(id)a3
+- (PKSystemIconConfigurationColor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKSystemIconConfigurationColor;
   v5 = [(PKSystemIconConfigurationColor *)&v11 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     v5->_type = PKSystemIconConfigurationColorTypeFromString(v6);
 
-    v7 = [v4 PKStringForKey:@"colorValue"];
+    v7 = [dictionaryCopy PKStringForKey:@"colorValue"];
     v8 = v7;
     type = v5->_type;
     if (type == 1)
@@ -80,18 +80,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -187,38 +187,38 @@ LABEL_17:
   return v3;
 }
 
-- (PKSystemIconConfigurationColor)initWithCoder:(id)a3
+- (PKSystemIconConfigurationColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKSystemIconConfigurationColor;
   v5 = [(PKSystemIconConfigurationColor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hexString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hexString"];
     hexString = v5->_hexString;
     v5->_hexString = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_builtInColor = [v4 decodeIntegerForKey:@"builtInColor"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_builtInColor = [coderCopy decodeIntegerForKey:@"builtInColor"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hexString = self->_hexString;
-  v5 = a3;
-  [v5 encodeObject:hexString forKey:@"hexString"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_builtInColor forKey:@"builtInColor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:hexString forKey:@"hexString"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_builtInColor forKey:@"builtInColor"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKSystemIconConfigurationColor allocWithZone:](PKSystemIconConfigurationColor init];
-  v6 = [(NSString *)self->_hexString copyWithZone:a3];
+  v6 = [(NSString *)self->_hexString copyWithZone:zone];
   hexString = v5->_hexString;
   v5->_hexString = v6;
 

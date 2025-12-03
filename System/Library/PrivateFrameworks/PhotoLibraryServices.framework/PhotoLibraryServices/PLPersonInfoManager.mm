@@ -1,53 +1,53 @@
 @interface PLPersonInfoManager
-- (PLPersonInfoManager)initWithPathManager:(id)a3 lazyAssetsdClient:(id)a4;
-- (id)emailForPersonID:(id)a3;
-- (id)emailsForInvitationRecordGUID:(id)a3;
-- (id)firstNameForPersonID:(id)a3;
-- (id)fullNameForPersonID:(id)a3;
-- (id)lastNameForPersonID:(id)a3;
-- (id)personInfoForPersonID:(id)a3;
-- (id)phonesForInvitationRecordGUID:(id)a3;
+- (PLPersonInfoManager)initWithPathManager:(id)manager lazyAssetsdClient:(id)client;
+- (id)emailForPersonID:(id)d;
+- (id)emailsForInvitationRecordGUID:(id)d;
+- (id)firstNameForPersonID:(id)d;
+- (id)fullNameForPersonID:(id)d;
+- (id)lastNameForPersonID:(id)d;
+- (id)personInfoForPersonID:(id)d;
+- (id)phonesForInvitationRecordGUID:(id)d;
 - (void)_loadDictionariesIfNeeded;
-- (void)clearCacheForPersonID:(id)a3;
+- (void)clearCacheForPersonID:(id)d;
 - (void)dealloc;
-- (void)deleteEmailsAndPhonesForInvitationRecordGUID:(id)a3;
+- (void)deleteEmailsAndPhonesForInvitationRecordGUID:(id)d;
 - (void)removePersistedInfo;
-- (void)setEmails:(id)a3 phones:(id)a4 forInvitationRecordGUID:(id)a5;
-- (void)setFirstName:(id)a3 lastName:(id)a4 fullName:(id)a5 email:(id)a6 forPersonID:(id)a7;
-- (void)setPersonInfo:(id)a3 forPersonID:(id)a4;
+- (void)setEmails:(id)emails phones:(id)phones forInvitationRecordGUID:(id)d;
+- (void)setFirstName:(id)name lastName:(id)lastName fullName:(id)fullName email:(id)email forPersonID:(id)d;
+- (void)setPersonInfo:(id)info forPersonID:(id)d;
 @end
 
 @implementation PLPersonInfoManager
 
-- (void)setPersonInfo:(id)a3 forPersonID:(id)a4
+- (void)setPersonInfo:(id)info forPersonID:(id)d
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   v8 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
     v39 = objc_opt_class();
     v40 = 2112;
-    v41 = v7;
+    v41 = dCopy;
     v42 = 2112;
-    v43 = v6;
+    v43 = infoCopy;
     v9 = v39;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "%@ setPersonInfo %@ %@", buf, 0x20u);
   }
 
-  if (v7)
+  if (dCopy)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    [(PLPersonInfoManager *)v10 _loadDictionariesIfNeeded];
-    v11 = [(NSMutableDictionary *)v10->_personDictsForPersonID objectForKey:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(PLPersonInfoManager *)selfCopy _loadDictionariesIfNeeded];
+    v11 = [(NSMutableDictionary *)selfCopy->_personDictsForPersonID objectForKey:dCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 isEqualToDictionary:v6] ^ 1;
-      if (v6)
+      v13 = [v11 isEqualToDictionary:infoCopy] ^ 1;
+      if (infoCopy)
       {
         goto LABEL_6;
       }
@@ -56,30 +56,30 @@
     else
     {
       v13 = 1;
-      if (v6)
+      if (infoCopy)
       {
 LABEL_6:
-        v14 = [v6 count];
-        personDictsForPersonID = v10->_personDictsForPersonID;
+        v14 = [infoCopy count];
+        personDictsForPersonID = selfCopy->_personDictsForPersonID;
         if (v14)
         {
-          [(NSMutableDictionary *)personDictsForPersonID setObject:v6 forKey:v7];
+          [(NSMutableDictionary *)personDictsForPersonID setObject:infoCopy forKey:dCopy];
           goto LABEL_11;
         }
 
 LABEL_10:
-        [(NSMutableDictionary *)personDictsForPersonID removeObjectForKey:v7];
+        [(NSMutableDictionary *)personDictsForPersonID removeObjectForKey:dCopy];
 LABEL_11:
 
-        objc_sync_exit(v10);
+        objc_sync_exit(selfCopy);
         if ((PLIsAssetsd() & 1) == 0)
         {
-          v16 = [(PLPersonInfoManager *)v10 assetsdClient];
-          v24 = [(PLPersonInfoManager *)v16 cloudInternalClient];
-          v25 = v24;
-          if (v6)
+          assetsdClient = [(PLPersonInfoManager *)selfCopy assetsdClient];
+          cloudInternalClient = [(PLPersonInfoManager *)assetsdClient cloudInternalClient];
+          v25 = cloudInternalClient;
+          if (infoCopy)
           {
-            v26 = v6;
+            v26 = infoCopy;
           }
 
           else
@@ -87,18 +87,18 @@ LABEL_11:
             v26 = MEMORY[0x1E695E0F8];
           }
 
-          [v24 setPersonInfoDictionary:v26 forPersonID:v7];
+          [cloudInternalClient setPersonInfoDictionary:v26 forPersonID:dCopy];
 
           goto LABEL_29;
         }
 
-        v16 = v10;
-        objc_sync_enter(v16);
+        assetsdClient = selfCopy;
+        objc_sync_enter(assetsdClient);
         if (v13)
         {
-          v17 = [MEMORY[0x1E696AE40] dataWithPropertyList:v10->_personDictsForPersonID format:100 options:0 error:0];
-          v18 = [(PLPersonInfoManager *)v16 plistPath];
-          v19 = [v17 writeToFile:v18 options:1073741825 error:0];
+          v17 = [MEMORY[0x1E696AE40] dataWithPropertyList:selfCopy->_personDictsForPersonID format:100 options:0 error:0];
+          plistPath = [(PLPersonInfoManager *)assetsdClient plistPath];
+          v19 = [v17 writeToFile:plistPath options:1073741825 error:0];
 
           if (v19)
           {
@@ -120,16 +120,16 @@ LABEL_14:
           }
 
           v29 = objc_opt_new();
-          v30 = [(PLPersonInfoManager *)v16 plistPath];
-          v31 = [v30 stringByDeletingLastPathComponent];
+          plistPath2 = [(PLPersonInfoManager *)assetsdClient plistPath];
+          stringByDeletingLastPathComponent = [plistPath2 stringByDeletingLastPathComponent];
           v37 = 0;
-          v32 = [v29 createDirectoryAtPath:v31 withIntermediateDirectories:1 attributes:0 error:&v37];
+          v32 = [v29 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v37];
           v33 = v37;
 
           if (v32)
           {
-            v34 = [(PLPersonInfoManager *)v16 plistPath];
-            v35 = [v17 writeToFile:v34 options:1073741825 error:0];
+            plistPath3 = [(PLPersonInfoManager *)assetsdClient plistPath];
+            v35 = [v17 writeToFile:plistPath3 options:1073741825 error:0];
 
             if (v35)
             {
@@ -138,8 +138,8 @@ LABEL_14:
             }
           }
 
-          v36 = [(PLPersonInfoManager *)v16 plistPath];
-          NSLog(&cfstr_FailedToWriteP.isa, v36, v33);
+          plistPath4 = [(PLPersonInfoManager *)assetsdClient plistPath];
+          NSLog(&cfstr_FailedToWriteP.isa, plistPath4, v33);
         }
 
         else
@@ -156,35 +156,35 @@ LABEL_14:
         }
 
 LABEL_28:
-        objc_sync_exit(v16);
+        objc_sync_exit(assetsdClient);
 LABEL_29:
 
         goto LABEL_30;
       }
     }
 
-    personDictsForPersonID = v10->_personDictsForPersonID;
+    personDictsForPersonID = selfCopy->_personDictsForPersonID;
     goto LABEL_10;
   }
 
 LABEL_30:
 }
 
-- (id)personInfoForPersonID:(id)a3
+- (id)personInfoForPersonID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v6 = 0;
     goto LABEL_13;
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  [(PLPersonInfoManager *)v5 _loadDictionariesIfNeeded];
-  v6 = [(NSMutableDictionary *)v5->_personDictsForPersonID objectForKey:v4];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PLPersonInfoManager *)selfCopy _loadDictionariesIfNeeded];
+  v6 = [(NSMutableDictionary *)selfCopy->_personDictsForPersonID objectForKey:dCopy];
+  objc_sync_exit(selfCopy);
 
   if (v6)
   {
@@ -193,13 +193,13 @@ LABEL_30:
 
   if ([MEMORY[0x1E69BF2F0] isEntitledForPhotoKit])
   {
-    v7 = v5;
+    v7 = selfCopy;
     objc_sync_enter(v7);
-    personDictsForPersonID = v5->_personDictsForPersonID;
-    v5->_personDictsForPersonID = 0;
+    personDictsForPersonID = selfCopy->_personDictsForPersonID;
+    selfCopy->_personDictsForPersonID = 0;
 
     [(PLPersonInfoManager *)v7 _loadDictionariesIfNeeded];
-    v6 = [(NSMutableDictionary *)v5->_personDictsForPersonID objectForKey:v4];
+    v6 = [(NSMutableDictionary *)selfCopy->_personDictsForPersonID objectForKey:dCopy];
     objc_sync_exit(v7);
 
     if (v6)
@@ -211,10 +211,10 @@ LABEL_30:
     goto LABEL_9;
   }
 
-  v10 = [(PLPersonInfoManager *)v5 assetsdClient];
-  v11 = [v10 cloudInternalClient];
+  assetsdClient = [(PLPersonInfoManager *)selfCopy assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v14 = 0;
-  v6 = [v11 personInfoDictionaryForPersonID:v4 error:&v14];
+  v6 = [cloudInternalClient personInfoDictionaryForPersonID:dCopy error:&v14];
   v9 = v14;
 
   if (!v6)
@@ -224,7 +224,7 @@ LABEL_9:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v16 = v4;
+      v16 = dCopy;
       v17 = 2112;
       v18 = v9;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Error getting person info with personID: %@, error: %@", buf, 0x16u);
@@ -234,9 +234,9 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v12 = v5;
+  v12 = selfCopy;
   objc_sync_enter(v12);
-  [(NSMutableDictionary *)v5->_personDictsForPersonID setObject:v6 forKey:v4];
+  [(NSMutableDictionary *)selfCopy->_personDictsForPersonID setObject:v6 forKey:dCopy];
   objc_sync_exit(v12);
 LABEL_12:
 
@@ -257,9 +257,9 @@ LABEL_13:
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%@ removing persisted person info", &v7, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(PLPersonInfoManager *)self plistPath];
-  [v5 removeItemAtPath:v6 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  plistPath = [(PLPersonInfoManager *)self plistPath];
+  [defaultManager removeItemAtPath:plistPath error:0];
 }
 
 - (void)_loadDictionariesIfNeeded
@@ -271,8 +271,8 @@ LABEL_13:
     if ([MEMORY[0x1E69BF2F0] isEntitledForPhotoKit])
     {
       v5 = MEMORY[0x1E695DF20];
-      v6 = [(PLPersonInfoManager *)self plistPath];
-      v7 = [v5 dictionaryWithContentsOfFile:v6];
+      plistPath = [(PLPersonInfoManager *)self plistPath];
+      v7 = [v5 dictionaryWithContentsOfFile:plistPath];
       v8 = [v7 mutableCopy];
       personDictsForPersonID = self->_personDictsForPersonID;
       self->_personDictsForPersonID = v8;
@@ -297,154 +297,154 @@ LABEL_13:
   }
 }
 
-- (void)clearCacheForPersonID:(id)a3
+- (void)clearCacheForPersonID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 2112;
-    v12 = v4;
+    v12 = dCopy;
     v7 = v10;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "%@ clearing cache due to photosPersonInfoChanged %@", &v9, 0x16u);
   }
 
-  personDictsForPersonID = v5->_personDictsForPersonID;
-  if (v4)
+  personDictsForPersonID = selfCopy->_personDictsForPersonID;
+  if (dCopy)
   {
-    [(NSMutableDictionary *)personDictsForPersonID removeObjectForKey:v4];
+    [(NSMutableDictionary *)personDictsForPersonID removeObjectForKey:dCopy];
   }
 
   else
   {
-    v5->_personDictsForPersonID = 0;
+    selfCopy->_personDictsForPersonID = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)phonesForInvitationRecordGUID:(id)a3
+- (id)phonesForInvitationRecordGUID:(id)d
 {
-  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:a3];
+  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:d];
   v4 = [v3 objectForKey:PLKInvitationRecordInfoAllPhonesKey];
 
   return v4;
 }
 
-- (id)emailsForInvitationRecordGUID:(id)a3
+- (id)emailsForInvitationRecordGUID:(id)d
 {
-  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:a3];
+  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:d];
   v4 = [v3 objectForKey:PLKInvitationRecordInfoAllEmailsKey];
 
   return v4;
 }
 
-- (void)deleteEmailsAndPhonesForInvitationRecordGUID:(id)a3
+- (void)deleteEmailsAndPhonesForInvitationRecordGUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = MEMORY[0x1E695DF90];
-    v5 = a3;
+    dCopy = d;
     v6 = objc_alloc_init(v4);
-    [(PLPersonInfoManager *)self setPersonInfo:v6 forPersonID:v5];
+    [(PLPersonInfoManager *)self setPersonInfo:v6 forPersonID:dCopy];
   }
 }
 
-- (void)setEmails:(id)a3 phones:(id)a4 forInvitationRecordGUID:(id)a5
+- (void)setEmails:(id)emails phones:(id)phones forInvitationRecordGUID:(id)d
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9 && ([v8 count] || objc_msgSend(v12, "count")))
+  emailsCopy = emails;
+  phonesCopy = phones;
+  dCopy = d;
+  if (dCopy && ([phonesCopy count] || objc_msgSend(emailsCopy, "count")))
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11 = v10;
-    if (v12)
+    if (emailsCopy)
     {
-      [v10 setObject:v12 forKey:PLKInvitationRecordInfoAllEmailsKey];
+      [v10 setObject:emailsCopy forKey:PLKInvitationRecordInfoAllEmailsKey];
     }
 
-    if (v8)
+    if (phonesCopy)
     {
-      [v11 setObject:v8 forKey:PLKInvitationRecordInfoAllPhonesKey];
+      [v11 setObject:phonesCopy forKey:PLKInvitationRecordInfoAllPhonesKey];
     }
 
-    [(PLPersonInfoManager *)self setPersonInfo:v11 forPersonID:v9];
+    [(PLPersonInfoManager *)self setPersonInfo:v11 forPersonID:dCopy];
   }
 }
 
-- (id)emailForPersonID:(id)a3
+- (id)emailForPersonID:(id)d
 {
-  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:a3];
+  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:d];
   v4 = [v3 objectForKey:PLKPersonInfoEmailNameKey];
 
   return v4;
 }
 
-- (id)fullNameForPersonID:(id)a3
+- (id)fullNameForPersonID:(id)d
 {
-  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:a3];
+  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:d];
   v4 = [v3 objectForKey:PLKPersonInfoFullNameKey];
 
   return v4;
 }
 
-- (id)lastNameForPersonID:(id)a3
+- (id)lastNameForPersonID:(id)d
 {
-  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:a3];
+  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:d];
   v4 = [v3 objectForKey:PLKPersonInfoLastNameKey];
 
   return v4;
 }
 
-- (id)firstNameForPersonID:(id)a3
+- (id)firstNameForPersonID:(id)d
 {
-  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:a3];
+  v3 = [(PLPersonInfoManager *)self personInfoForPersonID:d];
   v4 = [v3 objectForKey:PLKPersonInfoFirstNameKey];
 
   return v4;
 }
 
-- (void)setFirstName:(id)a3 lastName:(id)a4 fullName:(id)a5 email:(id)a6 forPersonID:(id)a7
+- (void)setFirstName:(id)name lastName:(id)lastName fullName:(id)fullName email:(id)email forPersonID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  nameCopy = name;
+  lastNameCopy = lastName;
+  fullNameCopy = fullName;
+  emailCopy = email;
+  dCopy = d;
+  if (dCopy)
   {
-    if (v12 || v13 || v14 || v15)
+    if (nameCopy || lastNameCopy || fullNameCopy || emailCopy)
     {
       v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v17 = v19;
-      if (v12)
+      if (nameCopy)
       {
-        [v19 setObject:v12 forKey:PLKPersonInfoFirstNameKey];
+        [v19 setObject:nameCopy forKey:PLKPersonInfoFirstNameKey];
       }
 
-      if (v13)
+      if (lastNameCopy)
       {
-        [v17 setObject:v13 forKey:PLKPersonInfoLastNameKey];
+        [v17 setObject:lastNameCopy forKey:PLKPersonInfoLastNameKey];
       }
 
-      if (v14)
+      if (fullNameCopy)
       {
-        [v17 setObject:v14 forKey:PLKPersonInfoFullNameKey];
+        [v17 setObject:fullNameCopy forKey:PLKPersonInfoFullNameKey];
       }
 
-      if (v15)
+      if (emailCopy)
       {
-        [v17 setObject:v15 forKey:PLKPersonInfoEmailNameKey];
+        [v17 setObject:emailCopy forKey:PLKPersonInfoEmailNameKey];
       }
 
-      [(PLPersonInfoManager *)self setPersonInfo:v17 forPersonID:v16];
+      [(PLPersonInfoManager *)self setPersonInfo:v17 forPersonID:dCopy];
     }
 
     else
@@ -474,15 +474,15 @@ LABEL_13:
   [(PLPersonInfoManager *)&v4 dealloc];
 }
 
-- (PLPersonInfoManager)initWithPathManager:(id)a3 lazyAssetsdClient:(id)a4
+- (PLPersonInfoManager)initWithPathManager:(id)manager lazyAssetsdClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  managerCopy = manager;
+  clientCopy = client;
+  v10 = clientCopy;
+  if (!managerCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLPersonInfoManager.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersonInfoManager.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
     if (v10)
     {
@@ -490,13 +490,13 @@ LABEL_13:
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLPersonInfoManager.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"lazyAssetsdClient"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPersonInfoManager.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"lazyAssetsdClient"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!clientCopy)
   {
     goto LABEL_8;
   }
@@ -508,8 +508,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_pathManager, a3);
-    objc_storeStrong(&v12->_lazyAssetsdClient, a4);
+    objc_storeStrong(&v11->_pathManager, manager);
+    objc_storeStrong(&v12->_lazyAssetsdClient, client);
     if ((PLIsAssetsd() & 1) == 0)
     {
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();

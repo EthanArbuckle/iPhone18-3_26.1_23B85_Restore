@@ -1,21 +1,21 @@
 @interface RTWorkoutDistance
-+ (id)createWithManagedObject:(id)a3;
-+ (id)createWithWorkoutDistanceMO:(id)a3;
++ (id)createWithManagedObject:(id)object;
++ (id)createWithWorkoutDistanceMO:(id)o;
 - (NSString)description;
-- (RTWorkoutDistance)initWithObjectID:(id)a3 firstWorkout:(id)a4 secondWorkout:(id)a5 distanceMetric:(int64_t)a6 workoutActivityType:(int64_t)a7 areBothWorkoutsDecimated:(BOOL)a8 distance:(double)a9 isVisited:(BOOL)a10 date:(id)a11;
-- (id)managedObjectWithContext:(id)a3;
+- (RTWorkoutDistance)initWithObjectID:(id)d firstWorkout:(id)workout secondWorkout:(id)secondWorkout distanceMetric:(int64_t)metric workoutActivityType:(int64_t)type areBothWorkoutsDecimated:(BOOL)decimated distance:(double)distance isVisited:(BOOL)self0 date:(id)self1;
+- (id)managedObjectWithContext:(id)context;
 @end
 
 @implementation RTWorkoutDistance
 
-- (RTWorkoutDistance)initWithObjectID:(id)a3 firstWorkout:(id)a4 secondWorkout:(id)a5 distanceMetric:(int64_t)a6 workoutActivityType:(int64_t)a7 areBothWorkoutsDecimated:(BOOL)a8 distance:(double)a9 isVisited:(BOOL)a10 date:(id)a11
+- (RTWorkoutDistance)initWithObjectID:(id)d firstWorkout:(id)workout secondWorkout:(id)secondWorkout distanceMetric:(int64_t)metric workoutActivityType:(int64_t)type areBothWorkoutsDecimated:(BOOL)decimated distance:(double)distance isVisited:(BOOL)self0 date:(id)self1
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a11;
-  v23 = v22;
-  if (!v20)
+  dCopy = d;
+  workoutCopy = workout;
+  secondWorkoutCopy = secondWorkout;
+  dateCopy = date;
+  v23 = dateCopy;
+  if (!workoutCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!v21)
+  if (!secondWorkoutCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (!a7)
+  if (!type)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (!a6)
+  if (!metric)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -69,7 +69,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (!v22)
+  if (!dateCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@ LABEL_25:
 
 LABEL_26:
 
-    v29 = 0;
+    selfCopy = 0;
     goto LABEL_27;
   }
 
@@ -91,61 +91,61 @@ LABEL_26:
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_objectID, a3);
-    v26 = [v20 compare:v21];
+    objc_storeStrong(&v24->_objectID, d);
+    v26 = [workoutCopy compare:secondWorkoutCopy];
     if (v26 == -1)
     {
-      v27 = v20;
+      v27 = workoutCopy;
     }
 
     else
     {
-      v27 = v21;
+      v27 = secondWorkoutCopy;
     }
 
     if (v26 == -1)
     {
-      v28 = v21;
+      v28 = secondWorkoutCopy;
     }
 
     else
     {
-      v28 = v20;
+      v28 = workoutCopy;
     }
 
     objc_storeStrong(&v25->_firstWorkout, v27);
     objc_storeStrong(&v25->_secondWorkout, v28);
-    v25->_distanceMetric = a6;
-    v25->_workoutActivityType = a7;
-    v25->_areBothWorkoutsDecimated = a8;
-    v25->_distance = a9;
-    v25->_isVisited = a10;
-    objc_storeStrong(&v25->_date, a11);
+    v25->_distanceMetric = metric;
+    v25->_workoutActivityType = type;
+    v25->_areBothWorkoutsDecimated = decimated;
+    v25->_distance = distance;
+    v25->_isVisited = visited;
+    objc_storeStrong(&v25->_date, date);
   }
 
   self = v25;
-  v29 = self;
+  selfCopy = self;
 LABEL_27:
 
-  return v29;
+  return selfCopy;
 }
 
 - (NSString)description
 {
   v17 = MEMORY[0x277CCACA8];
-  v3 = [(RTWorkoutDistance *)self objectID];
-  if (v3)
+  objectID = [(RTWorkoutDistance *)self objectID];
+  if (objectID)
   {
-    v4 = [(RTWorkoutDistance *)self objectID];
+    objectID2 = [(RTWorkoutDistance *)self objectID];
   }
 
   else
   {
-    v4 = @"nil";
+    objectID2 = @"nil";
   }
 
-  v5 = [(RTWorkoutDistance *)self firstWorkout];
-  v6 = [(RTWorkoutDistance *)self secondWorkout];
+  firstWorkout = [(RTWorkoutDistance *)self firstWorkout];
+  secondWorkout = [(RTWorkoutDistance *)self secondWorkout];
   v7 = [RTDistanceCalculator distanceMetricToString:[(RTWorkoutDistance *)self distanceMetric]];
   v8 = [objc_opt_class() stringFromRTHealthKitWorkoutActivityType:{-[RTWorkoutDistance workoutActivityType](self, "workoutActivityType")}];
   v9 = @"YES";
@@ -166,27 +166,27 @@ LABEL_27:
     v9 = @"NO";
   }
 
-  v13 = [(RTWorkoutDistance *)self date];
-  v14 = [v13 stringFromDate];
-  v15 = [v17 stringWithFormat:@"objectId, %@, firstWorkout, %@, secondWorkout, %@, distanceMetric, %@, workoutActivityType, %@, areBothWorkoutsDecimated, %@, distance, %.2f, isVisited, %@, date, %@", v4, v5, v6, v7, v8, v10, v12, v9, v14];
+  date = [(RTWorkoutDistance *)self date];
+  stringFromDate = [date stringFromDate];
+  v15 = [v17 stringWithFormat:@"objectId, %@, firstWorkout, %@, secondWorkout, %@, distanceMetric, %@, workoutActivityType, %@, areBothWorkoutsDecimated, %@, distance, %.2f, isVisited, %@, date, %@", objectID2, firstWorkout, secondWorkout, v7, v8, v10, v12, v9, stringFromDate];
 
-  if (v3)
+  if (objectID)
   {
   }
 
   return v15;
 }
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_opt_class() createWithWorkoutDistanceMO:v3];
+      v4 = [objc_opt_class() createWithWorkoutDistanceMO:objectCopy];
       goto LABEL_8;
     }
 
@@ -194,7 +194,7 @@ LABEL_27:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412802;
-      v8 = v3;
+      v8 = objectCopy;
       v9 = 2080;
       v10 = "+[RTWorkoutDistance(RTCoreDataTransformable) createWithManagedObject:]";
       v11 = 1024;
@@ -209,11 +209,11 @@ LABEL_8:
   return v4;
 }
 
-+ (id)createWithWorkoutDistanceMO:(id)a3
++ (id)createWithWorkoutDistanceMO:(id)o
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (oCopy)
   {
     *buf = 0;
     v13 = buf;
@@ -221,14 +221,14 @@ LABEL_8:
     v15 = __Block_byref_object_copy__182;
     v16 = __Block_byref_object_dispose__182;
     v17 = 0;
-    v5 = [v3 managedObjectContext];
+    managedObjectContext = [oCopy managedObjectContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __74__RTWorkoutDistance_RTCoreDataTransformable__createWithWorkoutDistanceMO___block_invoke;
     v9[3] = &unk_2788C7FB0;
     v11 = buf;
     v10 = v4;
-    [v5 performBlockAndWait:v9];
+    [managedObjectContext performBlockAndWait:v9];
 
     v6 = *(v13 + 5);
     _Block_object_dispose(buf, 8);
@@ -269,11 +269,11 @@ void __74__RTWorkoutDistance_RTCoreDataTransformable__createWithWorkoutDistanceM
   *(v13 + 40) = v12;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTWorkoutDistanceMO managedObjectWithWorkoutDistance:self inManagedObjectContext:a3];
+    v3 = [RTWorkoutDistanceMO managedObjectWithWorkoutDistance:self inManagedObjectContext:context];
   }
 
   else

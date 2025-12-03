@@ -1,36 +1,36 @@
 @interface ICDelegationServiceConnection
-- (ICDelegationServiceConnection)initWithConnectionRole:(int64_t)a3 inputStream:(id)a4 outputStream:(id)a5 securitySettings:(id)a6;
+- (ICDelegationServiceConnection)initWithConnectionRole:(int64_t)role inputStream:(id)stream outputStream:(id)outputStream securitySettings:(id)settings;
 - (ICDelegationServiceConnectionDelegate)delegate;
-- (void)_finishPendingRequestsWithError:(id)a3;
-- (void)_sendMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)_sendRequest:(id)a3 withResponseHandler:(id)a4;
-- (void)_sendResponse:(id)a3 forRequest:(id)a4 withCompletionHandler:(id)a5;
+- (void)_finishPendingRequestsWithError:(id)error;
+- (void)_sendMessage:(id)message withCompletionHandler:(id)handler;
+- (void)_sendRequest:(id)request withResponseHandler:(id)handler;
+- (void)_sendResponse:(id)response forRequest:(id)request withCompletionHandler:(id)handler;
 - (void)_streamDidClose;
-- (void)_streamDidParseMessage:(id)a3;
-- (void)_streamEncounteredError:(id)a3;
+- (void)_streamDidParseMessage:(id)message;
+- (void)_streamEncounteredError:(id)error;
 - (void)close;
 - (void)dealloc;
-- (void)delegationServicePairingSession:(id)a3 sendData:(id)a4 withCompletionHandler:(id)a5;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)parser:(id)a3 didParseMessage:(id)a4;
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4;
-- (void)sendResponse:(id)a3 forRequest:(id)a4 withCompletionHandler:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)delegationServicePairingSession:(id)session sendData:(id)data withCompletionHandler:(id)handler;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)parser:(id)parser didParseMessage:(id)message;
+- (void)sendRequest:(id)request withResponseHandler:(id)handler;
+- (void)sendResponse:(id)response forRequest:(id)request withCompletionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ICDelegationServiceConnection
 
-- (void)_streamEncounteredError:(id)a3
+- (void)_streamEncounteredError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v4;
+    v16 = errorCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_ERROR, "%{public}@: Stream encountered error %{public}@", buf, 0x16u);
   }
 
@@ -39,9 +39,9 @@
     self->_isStarted = 0;
     [(MSVStreamWriter *)self->_streamWriter stop];
     [(MSVStreamReader *)self->_streamReader stop];
-    if (v4)
+    if (errorCopy)
     {
-      [(ICDelegationServiceConnection *)self _finishPendingRequestsWithError:v4];
+      [(ICDelegationServiceConnection *)self _finishPendingRequestsWithError:errorCopy];
     }
 
     else
@@ -59,28 +59,28 @@
       block[2] = __57__ICDelegationServiceConnection__streamEncounteredError___block_invoke;
       block[3] = &unk_1E7BFA178;
       v10 = v7;
-      v11 = self;
-      v12 = v4;
+      selfCopy2 = self;
+      v12 = errorCopy;
       dispatch_async(calloutQueue, block);
     }
   }
 }
 
-- (void)_finishPendingRequestsWithError:(id)a3
+- (void)_finishPendingRequestsWithError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 msv_description];
+      msv_description = [errorCopy msv_description];
       *buf = 138543618;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v7;
+      v20 = msv_description;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_ERROR, "%{public}@: Finished pending requests error=%{public}@", buf, 0x16u);
     }
   }
@@ -88,12 +88,12 @@
   else if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Finished pending requests", buf, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_pendingRequestIDToRequestContext objectEnumerator];
-  v9 = [v8 allObjects];
+  objectEnumerator = [(NSMutableDictionary *)self->_pendingRequestIDToRequestContext objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   pendingRequestIDToRequestContext = self->_pendingRequestIDToRequestContext;
   self->_pendingRequestIDToRequestContext = 0;
@@ -103,10 +103,10 @@
   v14[1] = 3221225472;
   v14[2] = __65__ICDelegationServiceConnection__finishPendingRequestsWithError___block_invoke;
   v14[3] = &unk_1E7BFA078;
-  v15 = v9;
-  v16 = v4;
-  v12 = v4;
-  v13 = v9;
+  v15 = allObjects;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = allObjects;
   dispatch_async(calloutQueue, v14);
 }
 
@@ -151,23 +151,23 @@ void __65__ICDelegationServiceConnection__finishPendingRequestsWithError___block
   }
 }
 
-- (void)_streamDidParseMessage:(id)a3
+- (void)_streamDidParseMessage:(id)message
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v4;
+    v22 = messageCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Received message: %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (messageCopy)
   {
-    v6 = v4[1];
+    v6 = messageCopy[1];
     if (v6)
     {
       v7 = v6;
@@ -181,7 +181,7 @@ void __65__ICDelegationServiceConnection__finishPendingRequestsWithError___block
         block[3] = &unk_1E7BFA178;
         v8 = v8;
         v16 = v8;
-        v17 = self;
+        selfCopy2 = self;
         v7 = v7;
         v18 = v7;
         dispatch_async(calloutQueue, block);
@@ -205,7 +205,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v11 = v4[2];
+    v11 = messageCopy[2];
     if (v11)
     {
       v7 = v11;
@@ -214,11 +214,11 @@ LABEL_13:
       if (v10)
       {
         [(NSMutableDictionary *)self->_pendingRequestIDToRequestContext removeObjectForKey:v8];
-        v12 = [(ICPBDGSResponse *)v10 responseHandler];
-        v13 = v12;
-        if (v12)
+        responseHandler = [(ICPBDGSResponse *)v10 responseHandler];
+        v13 = responseHandler;
+        if (responseHandler)
         {
-          (*(v12 + 16))(v12, v7, 0);
+          (*(responseHandler + 16))(responseHandler, v7, 0);
         }
       }
 
@@ -290,7 +290,7 @@ void __56__ICDelegationServiceConnection__streamDidParseMessage___block_invoke_2
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Stream did close.", buf, 0xCu);
   }
 
@@ -328,7 +328,7 @@ void __56__ICDelegationServiceConnection__streamDidParseMessage___block_invoke_2
     v13[2] = __48__ICDelegationServiceConnection__streamDidClose__block_invoke_3;
     v13[3] = &unk_1E7BFA078;
     v14 = v10;
-    v15 = self;
+    selfCopy2 = self;
     v12 = v10;
     dispatch_group_notify(v8, calloutQueue, v13);
   }
@@ -367,16 +367,16 @@ void __48__ICDelegationServiceConnection__streamDidClose__block_invoke_3(uint64_
   }
 }
 
-- (void)_sendResponse:(id)a3 forRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)_sendResponse:(id)response forRequest:(id)request withCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = v9;
-  if (a4)
+  handlerCopy = handler;
+  responseCopy = response;
+  v10 = responseCopy;
+  if (request)
   {
-    v11 = *(a4 + 6);
-    if (!v9)
+    v11 = *(request + 6);
+    if (!responseCopy)
     {
       goto LABEL_4;
     }
@@ -385,11 +385,11 @@ void __48__ICDelegationServiceConnection__streamDidClose__block_invoke_3(uint64_
   }
 
   v11 = 0;
-  if (v9)
+  if (responseCopy)
   {
 LABEL_3:
-    *(v9 + 32) |= 1u;
-    *(v9 + 4) = v11;
+    *(responseCopy + 32) |= 1u;
+    *(responseCopy + 4) = v11;
   }
 
 LABEL_4:
@@ -397,35 +397,35 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_response, a3);
+    objc_storeStrong(&v12->_response, response);
   }
 
   v14 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v13;
     _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Sending response message: %@", &v15, 0x16u);
   }
 
-  [(ICDelegationServiceConnection *)self _sendMessage:v13 withCompletionHandler:v8];
+  [(ICDelegationServiceConnection *)self _sendMessage:v13 withCompletionHandler:handlerCopy];
 }
 
-- (void)_sendRequest:(id)a3 withResponseHandler:(id)a4
+- (void)_sendRequest:(id)request withResponseHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(ICDelegationServiceConnection *)self _nextRequestUniqueID];
-  if (v7)
+  requestCopy = request;
+  handlerCopy = handler;
+  _nextRequestUniqueID = [(ICDelegationServiceConnection *)self _nextRequestUniqueID];
+  if (requestCopy)
   {
-    v7[28] |= 1u;
-    *(v7 + 6) = v9;
+    requestCopy[28] |= 1u;
+    *(requestCopy + 6) = _nextRequestUniqueID;
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v9];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:_nextRequestUniqueID];
   if (!self->_pendingRequestIDToRequestContext)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -433,20 +433,20 @@ LABEL_4:
     self->_pendingRequestIDToRequestContext = v11;
   }
 
-  v13 = [[_ICDelegationServiceConnectionPendingRequestContext alloc] initWithRequest:v7 responseHandler:v8];
+  v13 = [[_ICDelegationServiceConnectionPendingRequestContext alloc] initWithRequest:requestCopy responseHandler:handlerCopy];
   [(NSMutableDictionary *)self->_pendingRequestIDToRequestContext setObject:v13 forKey:v10];
   v14 = objc_alloc_init(ICPBDGSMessage);
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_request, a3);
+    objc_storeStrong(&v14->_request, request);
   }
 
   v16 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v15;
     _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Sending request message: %@", buf, 0x16u);
@@ -458,8 +458,8 @@ LABEL_4:
   v19[3] = &unk_1E7BF9240;
   v19[4] = self;
   v20 = v10;
-  v21 = v8;
-  v17 = v8;
+  v21 = handlerCopy;
+  v17 = handlerCopy;
   v18 = v10;
   [(ICDelegationServiceConnection *)self _sendMessage:v15 withCompletionHandler:v19];
 }
@@ -520,23 +520,23 @@ void __66__ICDelegationServiceConnection__sendRequest_withResponseHandler___bloc
   }
 }
 
-- (void)_sendMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)_sendMessage:(id)message withCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   dispatch_assert_queue_barrier(self->_accessQueue);
   pairingSession = self->_pairingSession;
   if (pairingSession)
   {
-    v9 = [v6 data];
+    data = [messageCopy data];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __68__ICDelegationServiceConnection__sendMessage_withCompletionHandler___block_invoke;
     v12[3] = &unk_1E7BF9FB0;
     v12[4] = self;
-    v13 = v7;
-    [(ICDelegationServicePairingSession *)pairingSession getEncryptedDataForData:v9 withCompletionHandler:v12];
+    v13 = handlerCopy;
+    [(ICDelegationServicePairingSession *)pairingSession getEncryptedDataForData:data withCompletionHandler:v12];
   }
 
   else
@@ -545,14 +545,14 @@ void __66__ICDelegationServiceConnection__sendRequest_withResponseHandler___bloc
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Failing to send message as there is no longer a pairing session", buf, 0xCu);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:0 userInfo:0];
-      (*(v7 + 2))(v7, 0, v11);
+      (*(handlerCopy + 2))(handlerCopy, 0, v11);
     }
   }
 }
@@ -627,54 +627,54 @@ void __68__ICDelegationServiceConnection__sendMessage_withCompletionHandler___bl
   }
 }
 
-- (void)sendResponse:(id)a3 forRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)sendResponse:(id)response forRequest:(id)request withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__ICDelegationServiceConnection_sendResponse_forRequest_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E7BF9E78;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = responseCopy;
+  v17 = requestCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = requestCopy;
+  v14 = responseCopy;
   dispatch_barrier_async(accessQueue, v15);
 }
 
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4
+- (void)sendRequest:(id)request withResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__ICDelegationServiceConnection_sendRequest_withResponseHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_barrier_async(accessQueue, block);
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__ICDelegationServiceConnection_openWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -883,17 +883,17 @@ void __38__ICDelegationServiceConnection_close__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__ICDelegationServiceConnection_setDelegate___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -919,9 +919,9 @@ void __38__ICDelegationServiceConnection_close__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)parser:(id)a3 didParseMessage:(id)a4
+- (void)parser:(id)parser didParseMessage:(id)message
 {
-  if (a4)
+  if (message)
   {
     pairingSession = self->_pairingSession;
     v5[0] = MEMORY[0x1E69E9820];
@@ -929,7 +929,7 @@ void __38__ICDelegationServiceConnection_close__block_invoke(uint64_t a1)
     v5[2] = __56__ICDelegationServiceConnection_parser_didParseMessage___block_invoke;
     v5[3] = &unk_1E7BF6200;
     v5[4] = self;
-    [(ICDelegationServicePairingSession *)pairingSession getDecryptedDataForEncryptedData:a4 withCompletionHandler:v5];
+    [(ICDelegationServicePairingSession *)pairingSession getDecryptedDataForEncryptedData:message withCompletionHandler:v5];
   }
 }
 
@@ -952,20 +952,20 @@ void __56__ICDelegationServiceConnection_parser_didParseMessage___block_invoke(u
   }
 }
 
-- (void)delegationServicePairingSession:(id)a3 sendData:(id)a4 withCompletionHandler:(id)a5
+- (void)delegationServicePairingSession:(id)session sendData:(id)data withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   streamWriterQueue = self->_streamWriterQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__ICDelegationServiceConnection_delegationServicePairingSession_sendData_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = dataCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dataCopy;
   dispatch_async(streamWriterQueue, block);
 }
 
@@ -1024,11 +1024,11 @@ void __96__ICDelegationServiceConnection_delegationServicePairingSession_sendDat
   [(ICDelegationServiceConnection *)&v3 dealloc];
 }
 
-- (ICDelegationServiceConnection)initWithConnectionRole:(int64_t)a3 inputStream:(id)a4 outputStream:(id)a5 securitySettings:(id)a6
+- (ICDelegationServiceConnection)initWithConnectionRole:(int64_t)role inputStream:(id)stream outputStream:(id)outputStream securitySettings:(id)settings
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
+  settingsCopy = settings;
   v43.receiver = self;
   v43.super_class = ICDelegationServiceConnection;
   v13 = [(ICDelegationServiceConnection *)&v43 init];
@@ -1050,15 +1050,15 @@ void __96__ICDelegationServiceConnection_delegationServicePairingSession_sendDat
     streamWriterQueue = v13->_streamWriterQueue;
     v13->_streamWriterQueue = v20;
 
-    v13->_connectionRole = a3;
-    objc_storeStrong(&v13->_securitySettings, a6);
+    v13->_connectionRole = role;
+    objc_storeStrong(&v13->_securitySettings, settings);
     objc_initWeak(&location, v13);
     v22 = objc_alloc_init(MEMORY[0x1E69B1438]);
     messageParser = v13->_messageParser;
     v13->_messageParser = v22;
 
     [(MSVMessageParser *)v13->_messageParser setDelegate:v13];
-    v24 = [objc_alloc(MEMORY[0x1E69B14B0]) initWithInputStream:v10 queue:v13->_streamReaderQueue];
+    v24 = [objc_alloc(MEMORY[0x1E69B14B0]) initWithInputStream:streamCopy queue:v13->_streamReaderQueue];
     streamReader = v13->_streamReader;
     v13->_streamReader = v24;
 
@@ -1084,7 +1084,7 @@ void __96__ICDelegationServiceConnection_delegationServicePairingSession_sendDat
     objc_copyWeak(&v37, &location);
     [(MSVStreamReader *)v28 setDidFinishReadingBlock:&v33];
     v29 = objc_alloc(MEMORY[0x1E69B14B8]);
-    v30 = [v29 initWithOutputStream:v11 queue:{v13->_streamWriterQueue, v33, v34, v35, v36}];
+    v30 = [v29 initWithOutputStream:outputStreamCopy queue:{v13->_streamWriterQueue, v33, v34, v35, v36}];
     streamWriter = v13->_streamWriter;
     v13->_streamWriter = v30;
 

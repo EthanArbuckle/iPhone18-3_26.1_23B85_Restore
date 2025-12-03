@@ -1,8 +1,8 @@
 @interface PreviewDebugOverlay.OverlayView
 - (CGSize)intrinsicContentSize;
 - (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)init;
-- (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)initWithCoder:(id)a3;
-- (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)initWithFrame:(CGRect)a3;
+- (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)initWithCoder:(id)coder;
+- (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -21,7 +21,7 @@
   return v4;
 }
 
-- (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)initWithCoder:(id)a3
+- (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView_labelPadding) = 0x4010000000000000;
   result = sub_25F52A620();
@@ -45,7 +45,7 @@
 {
   v3 = OBJC_IVAR____TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView_label;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView_label);
-  v5 = self;
+  selfCopy = self;
   [v4 intrinsicContentSize];
   v7 = v6 + 4.0;
   [*(&self->super.super.super.isa + v3) intrinsicContentSize];
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)initWithFrame:(CGRect)a3
+- (_TtCC19PreviewsOSSupportUI19PreviewDebugOverlayP33_2167D653BE9BA0FB6EEBD3EBB5DDB07011OverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

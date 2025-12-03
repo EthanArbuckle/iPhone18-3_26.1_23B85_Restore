@@ -1,7 +1,7 @@
 @interface SleepMeasurementsConfigurationProvider
 - (_TtC24MenstrualCyclesAppPlugin38SleepMeasurementsConfigurationProvider)init;
-- (void)sleepStore:(id)a3 sleepEventRecordDidChange:(id)a4;
-- (void)sleepStore:(id)a3 sleepFocusConfigurationDidUpdate:(id)a4;
+- (void)sleepStore:(id)store sleepEventRecordDidChange:(id)change;
+- (void)sleepStore:(id)store sleepFocusConfigurationDidUpdate:(id)update;
 @end
 
 @implementation SleepMeasurementsConfigurationProvider
@@ -13,20 +13,20 @@
   return result;
 }
 
-- (void)sleepStore:(id)a3 sleepEventRecordDidChange:(id)a4
+- (void)sleepStore:(id)store sleepEventRecordDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29E10FE80(v6, v7);
+  storeCopy = store;
+  changeCopy = change;
+  selfCopy = self;
+  sub_29E10FE80(storeCopy, changeCopy);
 }
 
-- (void)sleepStore:(id)a3 sleepFocusConfigurationDidUpdate:(id)a4
+- (void)sleepStore:(id)store sleepFocusConfigurationDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29E110914(v6);
+  storeCopy = store;
+  updateCopy = update;
+  selfCopy = self;
+  sub_29E110914(storeCopy);
 }
 
 @end

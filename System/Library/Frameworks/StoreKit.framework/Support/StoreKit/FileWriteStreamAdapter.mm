@@ -1,43 +1,43 @@
 @interface FileWriteStreamAdapter
-- (FileWriteStreamAdapter)initWithDownloadPath:(id)a3;
-- (void)consumeData:(id)a3 withCompletionHandler:(id)a4;
-- (void)finishWithCompletionHandler:(id)a3;
-- (void)prepareWithCompletionHandler:(id)a3;
-- (void)resetWithCompletionHandler:(id)a3;
-- (void)suspendWithCompletionHandler:(id)a3;
-- (void)truncateWithCompletionHandler:(id)a3;
+- (FileWriteStreamAdapter)initWithDownloadPath:(id)path;
+- (void)consumeData:(id)data withCompletionHandler:(id)handler;
+- (void)finishWithCompletionHandler:(id)handler;
+- (void)prepareWithCompletionHandler:(id)handler;
+- (void)resetWithCompletionHandler:(id)handler;
+- (void)suspendWithCompletionHandler:(id)handler;
+- (void)truncateWithCompletionHandler:(id)handler;
 @end
 
 @implementation FileWriteStreamAdapter
 
-- (FileWriteStreamAdapter)initWithDownloadPath:(id)a3
+- (FileWriteStreamAdapter)initWithDownloadPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = FileWriteStreamAdapter;
   v6 = [(FileWriteStreamAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_downloadPath, a3);
+    objc_storeStrong(&v6->_downloadPath, path);
   }
 
   return v7;
 }
 
-- (void)consumeData:(id)a3 withCompletionHandler:(id)a4
+- (void)consumeData:(id)data withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   verifier = self->_verifier;
   if (verifier)
   {
     v12 = 0;
-    v9 = [(DigestVerifier *)verifier verifyData:v6 error:&v12];
+    v9 = [(DigestVerifier *)verifier verifyData:dataCopy error:&v12];
     v10 = v12;
     if (!v9)
     {
-      v7[2](v7, v10, 0);
+      handlerCopy[2](handlerCopy, v10, 0);
       goto LABEL_9;
     }
   }
@@ -47,25 +47,25 @@
     v10 = 0;
   }
 
-  if (-[NSOutputStream write:maxLength:](self->_outputStream, "write:maxLength:", [v6 bytes], objc_msgSend(v6, "length")) == -1)
+  if (-[NSOutputStream write:maxLength:](self->_outputStream, "write:maxLength:", [dataCopy bytes], objc_msgSend(dataCopy, "length")) == -1)
   {
-    v11 = [(NSOutputStream *)self->_outputStream streamError];
+    streamError = [(NSOutputStream *)self->_outputStream streamError];
   }
 
   else
   {
-    v11 = 0;
-    self->_savedBytes += [v6 length];
+    streamError = 0;
+    self->_savedBytes += [dataCopy length];
   }
 
-  v7[2](v7, v11, 0);
+  handlerCopy[2](handlerCopy, streamError, 0);
 
 LABEL_9:
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   verifier = self->_verifier;
   if (verifier)
   {
@@ -91,12 +91,12 @@ LABEL_9:
   }
 
   [(NSOutputStream *)self->_outputStream close];
-  (v4)[2](v4, v9);
+  (handlerCopy)[2](handlerCopy, v9);
 }
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_digest)
   {
     v5 = [[DigestVerifier alloc] initWithChunkedDigest:self->_digest resumptionOffset:0];
@@ -129,9 +129,9 @@ LABEL_9:
 
       while (1)
       {
-        v11 = [(ChunkedDigest *)self->_digest chunkSize];
+        chunkSize = [(ChunkedDigest *)self->_digest chunkSize];
         v42 = 0;
-        v12 = [v7 readDataUpToLength:v11 error:&v42];
+        v12 = [v7 readDataUpToLength:chunkSize error:&v42];
         v13 = v42;
         if (v13)
         {
@@ -176,9 +176,9 @@ LABEL_9:
     }
 
 LABEL_18:
-    v20 = [(DigestVerifier *)self->_verifier bytesValidated];
+    bytesValidated = [(DigestVerifier *)self->_verifier bytesValidated];
     v40 = 0;
-    v21 = [v7 truncateAtOffset:v20 error:&v40];
+    v21 = [v7 truncateAtOffset:bytesValidated error:&v40];
     v22 = v40;
     if (v21)
     {
@@ -281,22 +281,22 @@ LABEL_18:
   self->_outputStream = v35;
 
   [(NSOutputStream *)self->_outputStream open];
-  v37 = [(NSOutputStream *)self->_outputStream streamError];
-  v4[2](v4, self->_savedBytes, v37);
+  streamError = [(NSOutputStream *)self->_outputStream streamError];
+  handlerCopy[2](handlerCopy, self->_savedBytes, streamError);
 }
 
-- (void)suspendWithCompletionHandler:(id)a3
+- (void)suspendWithCompletionHandler:(id)handler
 {
   outputStream = self->_outputStream;
-  v4 = a3;
+  handlerCopy = handler;
   [(NSOutputStream *)outputStream close];
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)truncateWithCompletionHandler:(id)a3
+- (void)truncateWithCompletionHandler:(id)handler
 {
   outputStream = self->_outputStream;
-  v5 = a3;
+  handlerCopy = handler;
   [(NSOutputStream *)outputStream close];
   v6 = +[NSFileManager defaultManager];
   downloadPath = self->_downloadPath;
@@ -304,15 +304,15 @@ LABEL_18:
   [v6 removeItemAtPath:downloadPath error:&v9];
   v8 = v9;
 
-  v5[2](v5, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (void)resetWithCompletionHandler:(id)a3
+- (void)resetWithCompletionHandler:(id)handler
 {
   outputStream = self->_outputStream;
-  v4 = a3;
+  handlerCopy = handler;
   [(NSOutputStream *)outputStream close];
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

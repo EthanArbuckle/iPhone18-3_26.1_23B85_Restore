@@ -1,6 +1,6 @@
 @interface MTRMessagesClusterMessageCompleteEvent
 - (MTRMessagesClusterMessageCompleteEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTRMessagesClusterMessageCompleteEvent *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     messageID = v2->_messageID;
-    v2->_messageID = v3;
+    v2->_messageID = data;
 
     responseID = v2->_responseID;
     v2->_responseID = 0;
@@ -30,20 +30,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMessagesClusterMessageCompleteEvent);
-  v5 = [(MTRMessagesClusterMessageCompleteEvent *)self messageID];
-  [(MTRMessagesClusterMessageCompleteEvent *)v4 setMessageID:v5];
+  messageID = [(MTRMessagesClusterMessageCompleteEvent *)self messageID];
+  [(MTRMessagesClusterMessageCompleteEvent *)v4 setMessageID:messageID];
 
-  v6 = [(MTRMessagesClusterMessageCompleteEvent *)self responseID];
-  [(MTRMessagesClusterMessageCompleteEvent *)v4 setResponseID:v6];
+  responseID = [(MTRMessagesClusterMessageCompleteEvent *)self responseID];
+  [(MTRMessagesClusterMessageCompleteEvent *)v4 setResponseID:responseID];
 
-  v7 = [(MTRMessagesClusterMessageCompleteEvent *)self reply];
-  [(MTRMessagesClusterMessageCompleteEvent *)v4 setReply:v7];
+  reply = [(MTRMessagesClusterMessageCompleteEvent *)self reply];
+  [(MTRMessagesClusterMessageCompleteEvent *)v4 setReply:reply];
 
-  v8 = [(MTRMessagesClusterMessageCompleteEvent *)self futureMessagesPreference];
-  [(MTRMessagesClusterMessageCompleteEvent *)v4 setFutureMessagesPreference:v8];
+  futureMessagesPreference = [(MTRMessagesClusterMessageCompleteEvent *)self futureMessagesPreference];
+  [(MTRMessagesClusterMessageCompleteEvent *)v4 setFutureMessagesPreference:futureMessagesPreference];
 
   return v4;
 }

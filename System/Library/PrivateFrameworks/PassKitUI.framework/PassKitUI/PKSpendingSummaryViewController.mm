@@ -1,43 +1,43 @@
 @interface PKSpendingSummaryViewController
-- (PKSpendingSummaryViewController)initWithTransactionSourceCollection:(id)a3 familyCollection:(id)a4 avatarManager:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8 fetcher:(id)a9 weeks:(id)a10 months:(id)a11 years:(id)a12 type:(unint64_t)a13 unit:(unint64_t)a14 currentMonthTransactions:(id)a15 pendingPayments:(id)a16 upcomingScheduledPayments:(id)a17 dispayType:(unint64_t)a18;
+- (PKSpendingSummaryViewController)initWithTransactionSourceCollection:(id)collection familyCollection:(id)familyCollection avatarManager:(id)manager account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards fetcher:(id)fetcher weeks:(id)self0 months:(id)self1 years:(id)self2 type:(unint64_t)self3 unit:(unint64_t)self4 currentMonthTransactions:(id)self5 pendingPayments:(id)self6 upcomingScheduledPayments:(id)self7 dispayType:(unint64_t)self8;
 - (PKSpendingSummaryViewControllerDelegate)delegate;
 - (double)footerViewContentHeight;
-- (id)cachedDataAtIndex:(int64_t)a3;
-- (id)loadingDataObjectWithCurrentData:(id)a3 index:(int64_t)a4 swap:(BOOL)a5;
+- (id)cachedDataAtIndex:(int64_t)index;
+- (id)loadingDataObjectWithCurrentData:(id)data index:(int64_t)index swap:(BOOL)swap;
 - (id)pkNavigationController;
-- (unint64_t)_newDataSetIndexAfterTransitionFromMode:(unint64_t)a3 toMode:(unint64_t)a4;
-- (void)_changeModeTo:(unint64_t)a3;
-- (void)_reportTappedButtonWithTag:(id)a3;
+- (unint64_t)_newDataSetIndexAfterTransitionFromMode:(unint64_t)mode toMode:(unint64_t)toMode;
+- (void)_changeModeTo:(unint64_t)to;
+- (void)_reportTappedButtonWithTag:(id)tag;
 - (void)_updateBackTitle;
 - (void)dealloc;
-- (void)didMoveToPrimaryIndex:(int64_t)a3;
-- (void)fetchDataAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)invalidatedSpendingSummaryOfType:(unint64_t)a3 startingWithDate:(id)a4;
+- (void)didMoveToPrimaryIndex:(int64_t)index;
+- (void)fetchDataAtIndex:(int64_t)index completion:(id)completion;
+- (void)invalidatedSpendingSummaryOfType:(unint64_t)type startingWithDate:(id)date;
 - (void)invalidatedSummariesAvailable;
 - (void)prefetchDataIfNecessary;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKSpendingSummaryViewController
 
-- (PKSpendingSummaryViewController)initWithTransactionSourceCollection:(id)a3 familyCollection:(id)a4 avatarManager:(id)a5 account:(id)a6 accountUserCollection:(id)a7 physicalCards:(id)a8 fetcher:(id)a9 weeks:(id)a10 months:(id)a11 years:(id)a12 type:(unint64_t)a13 unit:(unint64_t)a14 currentMonthTransactions:(id)a15 pendingPayments:(id)a16 upcomingScheduledPayments:(id)a17 dispayType:(unint64_t)a18
+- (PKSpendingSummaryViewController)initWithTransactionSourceCollection:(id)collection familyCollection:(id)familyCollection avatarManager:(id)manager account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards fetcher:(id)fetcher weeks:(id)self0 months:(id)self1 years:(id)self2 type:(unint64_t)self3 unit:(unint64_t)self4 currentMonthTransactions:(id)self5 pendingPayments:(id)self6 upcomingScheduledPayments:(id)self7 dispayType:(unint64_t)self8
 {
   v87[3] = *MEMORY[0x1E69E9840];
-  v71 = a3;
-  v73 = a4;
-  v72 = a5;
-  v78 = a6;
-  v74 = a7;
-  v75 = a8;
-  v65 = a9;
-  v66 = a10;
-  v67 = a11;
-  v68 = a12;
-  v76 = a15;
-  v77 = a16;
-  v23 = a17;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  managerCopy = manager;
+  accountCopy = account;
+  userCollectionCopy = userCollection;
+  cardsCopy = cards;
+  fetcherCopy = fetcher;
+  weeksCopy = weeks;
+  monthsCopy = months;
+  yearsCopy = years;
+  transactionsCopy = transactions;
+  paymentsCopy = payments;
+  scheduledPaymentsCopy = scheduledPayments;
   v86.receiver = self;
   v86.super_class = PKSpendingSummaryViewController;
   v24 = [(PKHorizontalScrollingViewController *)&v86 init];
@@ -50,29 +50,29 @@
   pendingUpdates = v24->_pendingUpdates;
   v24->_pendingUpdates = v25;
 
-  objc_storeStrong(&v24->_account, a6);
-  objc_storeStrong(&v24->_accountUserCollection, a7);
-  objc_storeStrong(&v24->_transactionSourceCollection, a3);
-  v27 = [(PKTransactionSourceCollection *)v24->_transactionSourceCollection paymentPass];
+  objc_storeStrong(&v24->_account, account);
+  objc_storeStrong(&v24->_accountUserCollection, userCollection);
+  objc_storeStrong(&v24->_transactionSourceCollection, collection);
+  paymentPass = [(PKTransactionSourceCollection *)v24->_transactionSourceCollection paymentPass];
   pass = v24->_pass;
-  v24->_pass = v27;
+  v24->_pass = paymentPass;
 
-  v24->_currentSummaryType = a13;
-  objc_storeStrong(&v24->_summaryFetcher, a9);
+  v24->_currentSummaryType = type;
+  objc_storeStrong(&v24->_summaryFetcher, fetcher);
   [(PKSpendingSummaryFetcher *)v24->_summaryFetcher registerObserver:v24];
-  objc_storeStrong(&v24->_currentMonthTransactions, a15);
-  objc_storeStrong(&v24->_familyCollection, a4);
-  objc_storeStrong(&v24->_avatarManager, a5);
-  v24->_displayType = a18;
+  objc_storeStrong(&v24->_currentMonthTransactions, transactions);
+  objc_storeStrong(&v24->_familyCollection, familyCollection);
+  objc_storeStrong(&v24->_avatarManager, manager);
+  v24->_displayType = dispayType;
   v24->_lockUpdate._os_unfair_lock_opaque = 0;
   v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v30 = v24->_pendingUpdates;
   v24->_pendingUpdates = v29;
 
-  objc_storeStrong(&v24->_weeks, a10);
-  objc_storeStrong(&v24->_months, a11);
+  objc_storeStrong(&v24->_weeks, weeks);
+  objc_storeStrong(&v24->_months, months);
   p_years = &v24->_years;
-  objc_storeStrong(&v24->_years, a12);
+  objc_storeStrong(&v24->_years, years);
   currentSummaryType = v24->_currentSummaryType;
   if (currentSummaryType)
   {
@@ -107,29 +107,29 @@ LABEL_10:
     v24->_startingIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  else if (a14 == 0x7FFFFFFFFFFFFFFFLL)
+  else if (unit == 0x7FFFFFFFFFFFFFFFLL)
   {
     v24->_startingIndex = [(PKSpendingSummaryViewController *)v24 numberOfItems]- 1;
   }
 
   else
   {
-    v34 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v35 = [(PKSpendingSummaryViewController *)v24 numberOfItems];
-    while (v35-- >= 1)
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    numberOfItems = [(PKSpendingSummaryViewController *)v24 numberOfItems];
+    while (numberOfItems-- >= 1)
     {
-      v37 = [(NSArray *)v24->_currentDataSet objectAtIndex:v35];
-      v38 = [v34 component:v33 fromDate:v37];
+      v37 = [(NSArray *)v24->_currentDataSet objectAtIndex:numberOfItems];
+      v38 = [currentCalendar component:v33 fromDate:v37];
 
-      if (v38 == a14)
+      if (v38 == unit)
       {
         goto LABEL_19;
       }
     }
 
-    v35 = [(PKSpendingSummaryViewController *)v24 numberOfItems]- 1;
+    numberOfItems = [(PKSpendingSummaryViewController *)v24 numberOfItems]- 1;
 LABEL_19:
-    v24->_startingIndex = v35;
+    v24->_startingIndex = numberOfItems;
   }
 
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -138,17 +138,17 @@ LABEL_19:
   v42 = 0;
   do
   {
-    v43 = [[PKSpendingSingleSummaryViewController alloc] initWithTransationSourceCollection:v71 familyCollection:v73 avatarManager:v72 account:v78 accountUserCollection:v74 physicalCards:v75 transactionGroupPresenter:v40 summaryPresenter:v41 currentMonthTransactions:v76 pendingPayments:v77 upcomingScheduledPayments:v23 displayType:a18];
+    v43 = [[PKSpendingSingleSummaryViewController alloc] initWithTransationSourceCollection:collectionCopy familyCollection:familyCollectionCopy avatarManager:managerCopy account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy transactionGroupPresenter:v40 summaryPresenter:v41 currentMonthTransactions:transactionsCopy pendingPayments:paymentsCopy upcomingScheduledPayments:scheduledPaymentsCopy displayType:dispayType];
     [(PKSpendingSingleSummaryViewController *)v43 setSummaryDelegate:v24];
     [v39 addObject:v43];
   }
 
-  while (v42++ < 5 && a18 != 1);
+  while (v42++ < 5 && dispayType != 1);
   v46 = [v39 copy];
   emptyViewControllers = v24->_emptyViewControllers;
   v24->_emptyViewControllers = v46;
 
-  if ([v78 supportsSchedulePayment])
+  if ([accountCopy supportsSchedulePayment])
   {
     v48 = [PKDashboardViewControllerFooterContainer alloc];
     v49 = [(PKDashboardViewControllerFooterContainer *)v48 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -156,8 +156,8 @@ LABEL_19:
     v24->_footerView = v49;
   }
 
-  v51 = [(PKSpendingSummaryViewController *)v24 navigationItem];
-  if (!a18)
+  navigationItem = [(PKSpendingSummaryViewController *)v24 navigationItem];
+  if (!dispayType)
   {
     [(PKAccount *)v24->_account feature];
     objc_initWeak(&location, v24);
@@ -193,8 +193,8 @@ LABEL_19:
     v69 = [v58 initWithFrame:v56 actions:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
     [v69 setSelectedSegmentIndex:v24->_currentSummaryType];
-    [v51 setTitleView:v69];
-    [v51 setBackButtonDisplayMode:2];
+    [navigationItem setTitleView:v69];
+    [navigationItem setBackButtonDisplayMode:2];
     [(PKSpendingSummaryViewController *)v24 _updateBackTitle];
 
     objc_destroyWeak(&v80);
@@ -242,10 +242,10 @@ void __261__PKSpendingSummaryViewController_initWithTransactionSourceCollection_
 
 - (id)pkNavigationController
 {
-  v2 = [(PKSpendingSummaryViewController *)self navigationController];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  navigationController = [(PKSpendingSummaryViewController *)self navigationController];
+  if (navigationController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 
   else
@@ -264,17 +264,17 @@ void __261__PKSpendingSummaryViewController_initWithTransactionSourceCollection_
     return 0.0;
   }
 
-  v3 = [(PKSpendingSummaryViewController *)self view];
-  [v3 bounds];
+  view = [(PKSpendingSummaryViewController *)self view];
+  [view bounds];
   [(PKHorizontalScrollingFooterViewProtocol *)footerView sizeThatFits:v4, v5];
   v7 = v6;
 
   return v7;
 }
 
-- (id)cachedDataAtIndex:(int64_t)a3
+- (id)cachedDataAtIndex:(int64_t)index
 {
-  if (a3 > 0x7FFFFFFFFFFFFFFELL || [(NSArray *)self->_currentDataSet count]<= a3)
+  if (index > 0x7FFFFFFFFFFFFFFELL || [(NSArray *)self->_currentDataSet count]<= index)
   {
     v7 = 0;
   }
@@ -282,7 +282,7 @@ void __261__PKSpendingSummaryViewController_initWithTransactionSourceCollection_
   else
   {
     summaryFetcher = self->_summaryFetcher;
-    v6 = [(NSArray *)self->_currentDataSet objectAtIndex:a3];
+    v6 = [(NSArray *)self->_currentDataSet objectAtIndex:index];
     v7 = [(PKSpendingSummaryFetcher *)summaryFetcher cachedSpendingSummaryStartingWithDate:v6 type:self->_currentSummaryType];
   }
 
@@ -368,26 +368,26 @@ LABEL_15:
   }
 }
 
-- (void)fetchDataAtIndex:(int64_t)a3 completion:(id)a4
+- (void)fetchDataAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
-  if (a3 > 0x7FFFFFFFFFFFFFFELL || [(NSArray *)self->_currentDataSet count]<= a3)
+  completionCopy = completion;
+  if (index > 0x7FFFFFFFFFFFFFFELL || [(NSArray *)self->_currentDataSet count]<= index)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     objc_initWeak(&location, self);
     summaryFetcher = self->_summaryFetcher;
-    v8 = [(NSArray *)self->_currentDataSet objectAtIndex:a3];
+    v8 = [(NSArray *)self->_currentDataSet objectAtIndex:index];
     currentSummaryType = self->_currentSummaryType;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __63__PKSpendingSummaryViewController_fetchDataAtIndex_completion___block_invoke;
     v10[3] = &unk_1E8014DA8;
     objc_copyWeak(&v12, &location);
-    v11 = v6;
+    v11 = completionCopy;
     [(PKSpendingSummaryFetcher *)summaryFetcher spendingSummaryStartingWithDate:v8 type:currentSummaryType includingLastPeriodChange:1 completion:v10];
 
     objc_destroyWeak(&v12);
@@ -432,17 +432,17 @@ void __63__PKSpendingSummaryViewController_fetchDataAtIndex_completion___block_i
   }
 }
 
-- (id)loadingDataObjectWithCurrentData:(id)a3 index:(int64_t)a4 swap:(BOOL)a5
+- (id)loadingDataObjectWithCurrentData:(id)data index:(int64_t)index swap:(BOOL)swap
 {
-  v8 = a3;
-  v9 = [(NSArray *)self->_currentDataSet objectAtIndex:a4];
+  dataCopy = data;
+  v9 = [(NSArray *)self->_currentDataSet objectAtIndex:index];
   v10 = [(PKSpendingSummaryFetcher *)self->_summaryFetcher cachedSpendingSummaryStartingWithDate:v9 type:self->_currentSummaryType];
-  if (v8)
+  if (dataCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v8;
+      v11 = dataCopy;
     }
 
     else
@@ -458,7 +458,7 @@ void __63__PKSpendingSummaryViewController_fetchDataAtIndex_completion___block_i
 
   v12 = v11;
   v13 = v12;
-  if (a5 || [v12 summaryType] == self->_currentSummaryType && (objc_msgSend(v13, "startDate"), v15 = objc_claimAutoreleasedReturnValue(), v16 = PKEqualObjects(), v15, (v16 & 1) != 0))
+  if (swap || [v12 summaryType] == self->_currentSummaryType && (objc_msgSend(v13, "startDate"), v15 = objc_claimAutoreleasedReturnValue(), v16 = PKEqualObjects(), v15, (v16 & 1) != 0))
   {
     v14 = 0;
     goto LABEL_22;
@@ -485,50 +485,50 @@ void __63__PKSpendingSummaryViewController_fetchDataAtIndex_completion___block_i
     {
       if (currentSummaryType)
       {
-        v25 = 0;
+        altDSID2 = 0;
         goto LABEL_20;
       }
 
       v27 = [MEMORY[0x1E69B92A8] nextStartOfWeekFromDate:v9];
     }
 
-    v25 = v27;
+    altDSID2 = v27;
 LABEL_20:
-    v28 = [v25 dateByAddingTimeInterval:-1.0];
+    v28 = [altDSID2 dateByAddingTimeInterval:-1.0];
     [v14 setEndDate:v28];
 
-    v29 = [(PKSpendingSummaryFetcher *)self->_summaryFetcher accountUser];
-    v30 = [v29 altDSID];
-    [v14 setAltDSID:v30];
+    accountUser = [(PKSpendingSummaryFetcher *)self->_summaryFetcher accountUser];
+    altDSID = [accountUser altDSID];
+    [v14 setAltDSID:altDSID];
 
     goto LABEL_21;
   }
 
   [v17 setSummaryType:{objc_msgSend(v10, "summaryType")}];
-  v18 = [v10 startDate];
-  [v14 setStartDate:v18];
+  startDate = [v10 startDate];
+  [v14 setStartDate:startDate];
 
-  v19 = [v10 endDate];
-  [v14 setEndDate:v19];
+  endDate = [v10 endDate];
+  [v14 setEndDate:endDate];
 
   [v14 setSummaryUnit:{objc_msgSend(v10, "summaryUnit")}];
-  v20 = [v10 totalSpending];
-  [v14 setTotalSpending:v20];
+  totalSpending = [v10 totalSpending];
+  [v14 setTotalSpending:totalSpending];
 
-  v21 = [v10 previousMaxAmount];
-  [v14 setPreviousMaxAmount:v21];
+  previousMaxAmount = [v10 previousMaxAmount];
+  [v14 setPreviousMaxAmount:previousMaxAmount];
 
-  v22 = [v10 previousTotalSpending];
-  [v14 setPreviousTotalSpending:v22];
+  previousTotalSpending = [v10 previousTotalSpending];
+  [v14 setPreviousTotalSpending:previousTotalSpending];
 
-  v23 = [v10 spendingsPerCalendarUnit];
-  [v14 setSpendingsPerCalendarUnit:v23];
+  spendingsPerCalendarUnit = [v10 spendingsPerCalendarUnit];
+  [v14 setSpendingsPerCalendarUnit:spendingsPerCalendarUnit];
 
-  v24 = [v10 totalSpendingPerAltDSID];
-  [v14 setTotalSpendingPerAltDSID:v24];
+  totalSpendingPerAltDSID = [v10 totalSpendingPerAltDSID];
+  [v14 setTotalSpendingPerAltDSID:totalSpendingPerAltDSID];
 
-  v25 = [v10 altDSID];
-  [v14 setAltDSID:v25];
+  altDSID2 = [v10 altDSID];
+  [v14 setAltDSID:altDSID2];
 LABEL_21:
 
   [v14 setIsLoading:1];
@@ -537,9 +537,9 @@ LABEL_22:
   return v14;
 }
 
-- (void)didMoveToPrimaryIndex:(int64_t)a3
+- (void)didMoveToPrimaryIndex:(int64_t)index
 {
-  v4 = [(NSArray *)self->_currentDataSet objectAtIndex:a3];
+  v4 = [(NSArray *)self->_currentDataSet objectAtIndex:index];
   [(PKSpendingSummaryFetcher *)self->_summaryFetcher prioritizeSpendingSummaryStartingWithDate:v4 type:self->_currentSummaryType];
 }
 
@@ -556,16 +556,16 @@ LABEL_22:
   v4.receiver = self;
   v4.super_class = PKSpendingSummaryViewController;
   [(PKHorizontalScrollingViewController *)&v4 viewDidLoad];
-  v3 = [(PKSpendingSummaryViewController *)self view];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9C98]];
+  view = [(PKSpendingSummaryViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9C98]];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKSpendingSummaryViewController;
-  [(PKSpendingSummaryViewController *)&v8 viewDidAppear:a3];
+  [(PKSpendingSummaryViewController *)&v8 viewDidAppear:appear];
   v4 = MEMORY[0x1E69B8540];
   v5 = *MEMORY[0x1E69BABE8];
   v9[0] = *MEMORY[0x1E69BA680];
@@ -577,14 +577,14 @@ LABEL_22:
   [v4 reportDashboardEventIfNecessary:v7 forPass:self->_pass];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PKSpendingSummaryViewController;
-  [(PKSpendingSummaryViewController *)&v9 viewDidDisappear:a3];
-  v4 = [(PKSpendingSummaryViewController *)self pkNavigationController];
-  [v4 promptAppStoreReviewForTrigger:1];
+  [(PKSpendingSummaryViewController *)&v9 viewDidDisappear:disappear];
+  pkNavigationController = [(PKSpendingSummaryViewController *)self pkNavigationController];
+  [pkNavigationController promptAppStoreReviewForTrigger:1];
 
   v5 = MEMORY[0x1E69B8540];
   v6 = *MEMORY[0x1E69BABE8];
@@ -609,11 +609,11 @@ LABEL_22:
     v4 = PKLocalizedFeatureString();
   }
 
-  v3 = [(PKSpendingSummaryViewController *)self navigationItem];
-  [v3 setBackButtonTitle:v4];
+  navigationItem = [(PKSpendingSummaryViewController *)self navigationItem];
+  [navigationItem setBackButtonTitle:v4];
 }
 
-- (void)_changeModeTo:(unint64_t)a3
+- (void)_changeModeTo:(unint64_t)to
 {
   if (!self->_transitioningMode)
   {
@@ -621,18 +621,18 @@ LABEL_22:
     [(PKHorizontalScrollingViewController *)self clearPendingDataCollectionViewUpdates];
     [(PKHorizontalScrollingViewController *)self enableScrollView:0];
     currentSummaryType = self->_currentSummaryType;
-    if (a3 <= 2)
+    if (to <= 2)
     {
-      v6 = off_1E8014E30[a3];
-      v7 = qword_1E8014E48[a3];
+      v6 = off_1E8014E30[to];
+      v7 = qword_1E8014E48[to];
       PKSetBroadwaySummaryType();
-      self->_currentSummaryType = a3;
+      self->_currentSummaryType = to;
       objc_storeStrong(&self->_currentDataSet, *(&self->super.super.super.super.isa + *v6));
       [(PKSpendingSummaryViewController *)self _reportTappedButtonWithTag:*v7];
     }
 
     [(PKSpendingSummaryViewController *)self _updateBackTitle];
-    v8 = [(PKSpendingSummaryViewController *)self _newDataSetIndexAfterTransitionFromMode:currentSummaryType toMode:a3];
+    v8 = [(PKSpendingSummaryViewController *)self _newDataSetIndexAfterTransitionFromMode:currentSummaryType toMode:to];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = [(PKSpendingSummaryViewController *)self numberOfItems]- 1;
@@ -651,26 +651,26 @@ LABEL_22:
   }
 }
 
-- (unint64_t)_newDataSetIndexAfterTransitionFromMode:(unint64_t)a3 toMode:(unint64_t)a4
+- (unint64_t)_newDataSetIndexAfterTransitionFromMode:(unint64_t)mode toMode:(unint64_t)toMode
 {
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = [(PKHorizontalScrollingViewController *)self primaryIndex];
-  switch(a3)
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  primaryIndex = [(PKHorizontalScrollingViewController *)self primaryIndex];
+  switch(mode)
   {
     case 0uLL:
-      v10 = [(NSArray *)self->_weeks objectAtIndex:v9];
-      if (a4 == 1)
+      v10 = [(NSArray *)self->_weeks objectAtIndex:primaryIndex];
+      if (toMode == 1)
       {
         v20 = [(NSArray *)self->_months count];
-        v11 = [v7 components:14 fromDate:v10];
+        v11 = [currentCalendar components:14 fromDate:v10];
         if (v20)
         {
           v15 = 0;
           while (1)
           {
             v21 = [(NSArray *)self->_months objectAtIndex:v15];
-            v22 = [v7 date:v21 matchesComponents:v11];
+            v22 = [currentCalendar date:v21 matchesComponents:v11];
 
             if (v22)
             {
@@ -688,14 +688,14 @@ LABEL_22:
       else
       {
         v23 = [(NSArray *)self->_years count];
-        v11 = [v7 components:6 fromDate:v10];
+        v11 = [currentCalendar components:6 fromDate:v10];
         if (v23)
         {
           v15 = 0;
           while (1)
           {
             v24 = [(NSArray *)self->_years objectAtIndex:v15];
-            v25 = [v7 date:v24 matchesComponents:v11];
+            v25 = [currentCalendar date:v24 matchesComponents:v11];
 
             if (v25)
             {
@@ -712,10 +712,10 @@ LABEL_22:
 
       goto LABEL_38;
     case 1uLL:
-      v10 = [(NSArray *)self->_months objectAtIndex:v9];
-      if (a4)
+      v10 = [(NSArray *)self->_months objectAtIndex:primaryIndex];
+      if (toMode)
       {
-        v11 = [v7 components:6 fromDate:v10];
+        v11 = [currentCalendar components:6 fromDate:v10];
         v16 = [(NSArray *)self->_years count];
         if (v16)
         {
@@ -724,7 +724,7 @@ LABEL_22:
           while (1)
           {
             v18 = [(NSArray *)self->_years objectAtIndex:v15];
-            v19 = [v7 date:v18 matchesComponents:v11];
+            v19 = [currentCalendar date:v18 matchesComponents:v11];
 
             if (v19)
             {
@@ -741,9 +741,9 @@ LABEL_22:
         goto LABEL_38;
       }
 
-      v11 = [v7 components:14 fromDate:v10];
-      v41 = v8;
-      v32 = [v7 date:v8 matchesComponents:v11];
+      v11 = [currentCalendar components:14 fromDate:v10];
+      v41 = date;
+      v32 = [currentCalendar date:date matchesComponents:v11];
       v33 = [(NSArray *)self->_weeks count];
       v27 = v33;
       if ((v32 & 1) == 0)
@@ -757,7 +757,7 @@ LABEL_22:
           while (1)
           {
             v37 = [(NSArray *)self->_weeks objectAtIndex:v15, v40];
-            v38 = [v7 date:v37 matchesComponents:v11];
+            v38 = [currentCalendar date:v37 matchesComponents:v11];
 
             if (v38)
             {
@@ -784,13 +784,13 @@ LABEL_44:
 LABEL_33:
       v15 = v27 - 1;
 LABEL_47:
-      v8 = v41;
+      date = v41;
       goto LABEL_48;
     case 2uLL:
-      v10 = [(NSArray *)self->_years objectAtIndex:v9];
-      v11 = [v7 components:6 fromDate:v10];
-      v12 = [v7 date:v8 matchesComponents:v11];
-      if (a4 == 1)
+      v10 = [(NSArray *)self->_years objectAtIndex:primaryIndex];
+      v11 = [currentCalendar components:6 fromDate:v10];
+      v12 = [currentCalendar date:date matchesComponents:v11];
+      if (toMode == 1)
       {
         v13 = [(NSArray *)self->_months count];
         v14 = v13;
@@ -808,7 +808,7 @@ LABEL_48:
           do
           {
             v34 = [(NSArray *)self->_months objectAtIndex:v15];
-            v35 = [v7 date:v34 matchesComponents:v11];
+            v35 = [currentCalendar date:v34 matchesComponents:v11];
 
             if (v35)
             {
@@ -824,7 +824,7 @@ LABEL_38:
         goto LABEL_48;
       }
 
-      v41 = v8;
+      v41 = date;
       v26 = [(NSArray *)self->_weeks count];
       v27 = v26;
       if ((v12 & 1) == 0)
@@ -838,7 +838,7 @@ LABEL_38:
           while (1)
           {
             v30 = [(NSArray *)self->_weeks objectAtIndex:v15, v40];
-            v31 = [v7 date:v30 matchesComponents:v11];
+            v31 = [currentCalendar date:v30 matchesComponents:v11];
 
             if (v31)
             {
@@ -858,7 +858,7 @@ LABEL_38:
 
 LABEL_45:
           v10 = v40;
-          v8 = v41;
+          date = v41;
           goto LABEL_48;
         }
 
@@ -876,10 +876,10 @@ LABEL_49:
   return v15;
 }
 
-- (void)invalidatedSpendingSummaryOfType:(unint64_t)a3 startingWithDate:(id)a4
+- (void)invalidatedSpendingSummaryOfType:(unint64_t)type startingWithDate:(id)date
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  dateCopy = date;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   os_unfair_lock_lock(&self->_lockUpdate);
   v8 = [(NSMutableDictionary *)self->_pendingUpdates objectForKey:v7];
   if (!v8)
@@ -888,14 +888,14 @@ LABEL_49:
     [(NSMutableDictionary *)self->_pendingUpdates setObject:v8 forKey:v7];
   }
 
-  if ([v8 containsObject:v6])
+  if ([v8 containsObject:dateCopy])
   {
     os_unfair_lock_unlock(&self->_lockUpdate);
   }
 
   else
   {
-    [v8 addObject:v6];
+    [v8 addObject:dateCopy];
     os_unfair_lock_unlock(&self->_lockUpdate);
     v9 = dispatch_time(0, 3000000000);
     v10[0] = MEMORY[0x1E69E9820];
@@ -904,8 +904,8 @@ LABEL_49:
     v10[3] = &unk_1E8014DD0;
     v10[4] = self;
     v11 = v7;
-    v12 = v6;
-    v13 = a3;
+    v12 = dateCopy;
+    typeCopy = type;
     dispatch_after(v9, MEMORY[0x1E69E96A0], v10);
   }
 }
@@ -1016,7 +1016,7 @@ LABEL_7:
   [a1[4] updateScrollViewContentOffsetWithNewPrimaryIndex:v5];
 }
 
-- (void)_reportTappedButtonWithTag:(id)a3
+- (void)_reportTappedButtonWithTag:(id)tag
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69BA680];
@@ -1027,9 +1027,9 @@ LABEL_7:
   v11[1] = v5;
   v6 = MEMORY[0x1E69B8540];
   v10[2] = *MEMORY[0x1E69BA440];
-  v11[2] = a3;
+  v11[2] = tag;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a3;
+  tagCopy = tag;
   v9 = [v7 dictionaryWithObjects:v11 forKeys:v10 count:3];
   [v6 reportDashboardEventIfNecessary:v9 forPass:self->_pass];
 }

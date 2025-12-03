@@ -1,30 +1,30 @@
 @interface AVAssetDownloadCache
-- (AVAssetDownloadCache)initWithAsset:(id)a3;
+- (AVAssetDownloadCache)initWithAsset:(id)asset;
 - (BOOL)isPlayableOffline;
 - (id)URL;
-- (id)mediaSelectionOptionsInMediaSelectionGroup:(id)a3;
+- (id)mediaSelectionOptionsInMediaSelectionGroup:(id)group;
 - (void)dealloc;
 @end
 
 @implementation AVAssetDownloadCache
 
-- (AVAssetDownloadCache)initWithAsset:(id)a3
+- (AVAssetDownloadCache)initWithAsset:(id)asset
 {
   v7.receiver = self;
   v7.super_class = AVAssetDownloadCache;
-  v4 = [(AVAssetCache *)&v7 _init];
-  if (v4)
+  _init = [(AVAssetCache *)&v7 _init];
+  if (_init)
   {
     v5 = objc_alloc_init(AVAssetDownloadCacheInternal);
-    v4->_internal = v5;
-    if (!v5 || ([a3 _figAsset], FigAssetCacheInspectorCreate_Remote()))
+    _init->_internal = v5;
+    if (!v5 || ([asset _figAsset], FigAssetCacheInspectorCreate_Remote()))
     {
 
       return 0;
     }
   }
 
-  return v4;
+  return _init;
 }
 
 - (id)URL
@@ -46,17 +46,17 @@
   return v4;
 }
 
-- (id)mediaSelectionOptionsInMediaSelectionGroup:(id)a3
+- (id)mediaSelectionOptionsInMediaSelectionGroup:(id)group
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0;
   assetCacheInspector = self->_internal->assetCacheInspector;
-  v7 = [a3 dictionary];
+  dictionary = [group dictionary];
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v8)
   {
-    v8(assetCacheInspector, v7, 0, &v22);
+    v8(assetCacheInspector, dictionary, 0, &v22);
     v9 = v22;
   }
 
@@ -84,13 +84,13 @@
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [a3 options];
+        options = [group options];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __67__AVAssetDownloadCache_mediaSelectionOptionsInMediaSelectionGroup___block_invoke;
         v17[3] = &unk_1E74650A0;
         v17[4] = v14;
-        [v5 addObject:{objc_msgSend(objc_msgSend(a3, "options"), "objectAtIndex:", objc_msgSend(v15, "indexOfObjectPassingTest:", v17))}];
+        [array addObject:{objc_msgSend(objc_msgSend(group, "options"), "objectAtIndex:", objc_msgSend(options, "indexOfObjectPassingTest:", v17))}];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -99,7 +99,7 @@
     while (v11);
   }
 
-  return [v5 copy];
+  return [array copy];
 }
 
 uint64_t __67__AVAssetDownloadCache_mediaSelectionOptionsInMediaSelectionGroup___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)

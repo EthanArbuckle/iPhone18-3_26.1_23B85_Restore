@@ -1,26 +1,26 @@
 @interface CLLocationButtonMechanism
-- (BOOL)bkHidEventHitTestInfoValid:(id)a3 fromStart:(BOOL)a4;
-- (BOOL)builtOnOrAfterSDKVersion:(id)a3;
+- (BOOL)bkHidEventHitTestInfoValid:(id)valid fromStart:(BOOL)start;
+- (BOOL)builtOnOrAfterSDKVersion:(id)version;
 - (BOOL)useSeparatedTransformGrading;
-- (BOOL)validateTransformForHitTestInfo:(id)a3;
-- (CLLocationButtonMechanism)initWithConnection:(id)a3;
-- (void)deriveAnalyticsFromTag:(id)a3;
-- (void)getRemoteContentForStyle:(id)a3 layerContext:(unint64_t)a4 tag:(id)a5 sandboxExtension:(id)a6 completionHandler:(id)a7;
-- (void)onPrimaryTouchDownEvent:(id)a3;
+- (BOOL)validateTransformForHitTestInfo:(id)info;
+- (CLLocationButtonMechanism)initWithConnection:(id)connection;
+- (void)deriveAnalyticsFromTag:(id)tag;
+- (void)getRemoteContentForStyle:(id)style layerContext:(unint64_t)context tag:(id)tag sandboxExtension:(id)extension completionHandler:(id)handler;
+- (void)onPrimaryTouchDownEvent:(id)event;
 @end
 
 @implementation CLLocationButtonMechanism
 
-- (CLLocationButtonMechanism)initWithConnection:(id)a3
+- (CLLocationButtonMechanism)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [[UISSlotMachine alloc] initWithSlotDrawer:self options:3];
   slotMachine = self->_slotMachine;
   self->_slotMachine = v5;
 
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -40,7 +40,7 @@
   contentsGrader = self->_contentsGrader;
   self->_contentsGrader = v10;
 
-  v12 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [v4 processIdentifier]);
+  v12 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [connectionCopy processIdentifier]);
   v21 = 0;
   v13 = [RBSProcessHandle handleForIdentifier:v12 error:&v21];
   v14 = v21;
@@ -55,13 +55,13 @@
 
   else
   {
-    v16 = [v13 bundle];
+    bundle = [v13 bundle];
     processBundle = self->_processBundle;
-    self->_processBundle = v16;
+    self->_processBundle = bundle;
 
     if (self->_processBundle)
     {
-      v15 = self;
+      selfCopy = self;
       goto LABEL_10;
     }
 
@@ -71,45 +71,45 @@
     }
 
     v24[0] = @"ClientKey";
-    v19 = [(RBSProcessBundle *)self->_processBundle identifier];
+    identifier = [(RBSProcessBundle *)self->_processBundle identifier];
     v24[1] = @"ReasonType";
-    v25[0] = v19;
+    v25[0] = identifier;
     v25[1] = @"InvalidBundleID";
     v20 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
     AnalyticsSendEvent();
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)getRemoteContentForStyle:(id)a3 layerContext:(unint64_t)a4 tag:(id)a5 sandboxExtension:(id)a6 completionHandler:(id)a7
+- (void)getRemoteContentForStyle:(id)style layerContext:(unint64_t)context tag:(id)tag sandboxExtension:(id)extension completionHandler:(id)handler
 {
-  v14 = a7;
-  v11 = a5;
-  v12 = a3;
-  [(CLLocationButtonMechanism *)self setImagedTag:v11];
-  [(CLLocationButtonMechanism *)self setSlotStyle:v12];
-  v13 = [(UISSlotMachine *)self->_slotMachine remoteContentForLayerContextWithId:a4 style:v12 tag:v11];
+  handlerCopy = handler;
+  tagCopy = tag;
+  styleCopy = style;
+  [(CLLocationButtonMechanism *)self setImagedTag:tagCopy];
+  [(CLLocationButtonMechanism *)self setSlotStyle:styleCopy];
+  v13 = [(UISSlotMachine *)self->_slotMachine remoteContentForLayerContextWithId:context style:styleCopy tag:tagCopy];
 
-  [(CLLocationButtonMechanism *)self deriveAnalyticsFromTag:v11];
+  [(CLLocationButtonMechanism *)self deriveAnalyticsFromTag:tagCopy];
   if (objc_opt_respondsToSelector())
   {
     -[CLLocationButtonMechanism setSlotId:](self, "setSlotId:", [v13 performSelector:"slotID"]);
   }
 
-  v14[2](v14, v13);
+  handlerCopy[2](handlerCopy, v13);
 }
 
-- (void)onPrimaryTouchDownEvent:(id)a3
+- (void)onPrimaryTouchDownEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CLLocationButtonMechanism *)self imagedTag];
-  v6 = [v5 renderedSuccessfully];
+  eventCopy = event;
+  imagedTag = [(CLLocationButtonMechanism *)self imagedTag];
+  renderedSuccessfully = [imagedTag renderedSuccessfully];
 
-  if ((v6 & 1) == 0)
+  if ((renderedSuccessfully & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
@@ -117,9 +117,9 @@ LABEL_10:
     }
 
     v45[0] = @"ClientKey";
-    v12 = [(RBSProcessBundle *)self->_processBundle identifier];
+    identifier = [(RBSProcessBundle *)self->_processBundle identifier];
     v45[1] = @"ReasonType";
-    v46[0] = v12;
+    v46[0] = identifier;
     v46[1] = @"RenderingFailed";
     v13 = v46;
     v14 = v45;
@@ -127,7 +127,7 @@ LABEL_10:
   }
 
   v7 = +[BKSHIDEventDeliveryManager sharedInstance];
-  v8 = [v7 authenticateMessage:v4];
+  v8 = [v7 authenticateMessage:eventCopy];
 
   if (v8 != 2)
   {
@@ -137,9 +137,9 @@ LABEL_10:
     }
 
     v43[0] = @"ClientKey";
-    v12 = [(RBSProcessBundle *)self->_processBundle identifier];
+    identifier = [(RBSProcessBundle *)self->_processBundle identifier];
     v43[1] = @"ReasonType";
-    v44[0] = v12;
+    v44[0] = identifier;
     v44[1] = @"AuthenicationStatusInvalid";
     v13 = v44;
     v14 = v43;
@@ -150,34 +150,34 @@ LABEL_10:
   v29 = *self->_auditToken.val;
   v30 = v9;
   v10 = BSVersionedPIDForAuditToken();
-  if ([v4 versionedPID] != v10)
+  if ([eventCopy versionedPID] != v10)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
-      sub_100002C08(v4);
+      sub_100002C08(eventCopy);
     }
 
     v41[0] = @"ClientKey";
-    v12 = [(RBSProcessBundle *)self->_processBundle identifier];
+    identifier = [(RBSProcessBundle *)self->_processBundle identifier];
     v41[1] = @"ReasonType";
-    v42[0] = v12;
+    v42[0] = identifier;
     v42[1] = @"MismatchedPid";
     v13 = v42;
     v14 = v41;
     goto LABEL_21;
   }
 
-  if ([v4 context] != 0x9FB774E4B8F165C9)
+  if ([eventCopy context] != 0x9FB774E4B8F165C9)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
-      sub_100002C9C(v4);
+      sub_100002C9C(eventCopy);
     }
 
     v39[0] = @"ClientKey";
-    v12 = [(RBSProcessBundle *)self->_processBundle identifier];
+    identifier = [(RBSProcessBundle *)self->_processBundle identifier];
     v39[1] = @"ReasonType";
-    v40[0] = v12;
+    v40[0] = identifier;
     v40[1] = @"AuthMessageContextInvalid";
     v13 = v40;
     v14 = v39;
@@ -185,17 +185,17 @@ LABEL_10:
   }
 
   v11 = mach_continuous_time();
-  if ([v4 timestamp] > v11)
+  if ([eventCopy timestamp] > v11)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000030C0(v4);
+      sub_1000030C0(eventCopy);
     }
 
     v37[0] = @"ClientKey";
-    v12 = [(RBSProcessBundle *)self->_processBundle identifier];
+    identifier = [(RBSProcessBundle *)self->_processBundle identifier];
     v37[1] = @"ReasonType";
-    v38[0] = v12;
+    v38[0] = identifier;
     v38[1] = @"AuthMessageFuturistic";
     v13 = v38;
     v14 = v37;
@@ -206,37 +206,37 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (CLCommonConvertTicksToSeconds(v11 - [v4 timestamp]) > 3.0)
+  if (CLCommonConvertTicksToSeconds(v11 - [eventCopy timestamp]) > 3.0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
-      sub_100003024(v4);
+      sub_100003024(eventCopy);
     }
 
     v35[0] = @"ClientKey";
-    v12 = [(RBSProcessBundle *)self->_processBundle identifier];
+    identifier = [(RBSProcessBundle *)self->_processBundle identifier];
     v35[1] = @"ReasonType";
-    v36[0] = v12;
+    v36[0] = identifier;
     v36[1] = @"AuthMessageExpired";
     v13 = v36;
     v14 = v35;
     goto LABEL_21;
   }
 
-  v16 = [v4 targetSlotID];
-  v17 = [(CLLocationButtonMechanism *)self slotId];
+  targetSlotID = [eventCopy targetSlotID];
+  slotId = [(CLLocationButtonMechanism *)self slotId];
   v18 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
-  if (v16 != v17)
+  if (targetSlotID != slotId)
   {
     if (v18)
     {
-      sub_100002D18(self, v4);
+      sub_100002D18(self, eventCopy);
     }
 
     v33[0] = @"ClientKey";
-    v12 = [(RBSProcessBundle *)self->_processBundle identifier];
+    identifier = [(RBSProcessBundle *)self->_processBundle identifier];
     v33[1] = @"ReasonType";
-    v34[0] = v12;
+    v34[0] = identifier;
     v34[1] = @"SlotIdInvalid";
     v13 = v34;
     v14 = v33;
@@ -248,8 +248,8 @@ LABEL_21:
     sub_100002DC0();
   }
 
-  v19 = [v4 hitTestInformationFromStartEvent];
-  v20 = [(CLLocationButtonMechanism *)self bkHidEventHitTestInfoValid:v19 fromStart:1];
+  hitTestInformationFromStartEvent = [eventCopy hitTestInformationFromStartEvent];
+  v20 = [(CLLocationButtonMechanism *)self bkHidEventHitTestInfoValid:hitTestInformationFromStartEvent fromStart:1];
 
   v21 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
   if (v20)
@@ -259,8 +259,8 @@ LABEL_21:
       sub_100002E48();
     }
 
-    v22 = [v4 hitTestInformationFromEndEvent];
-    v23 = [(CLLocationButtonMechanism *)self bkHidEventHitTestInfoValid:v22 fromStart:0];
+    hitTestInformationFromEndEvent = [eventCopy hitTestInformationFromEndEvent];
+    v23 = [(CLLocationButtonMechanism *)self bkHidEventHitTestInfoValid:hitTestInformationFromEndEvent fromStart:0];
 
     v24 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
     if (v23)
@@ -271,9 +271,9 @@ LABEL_21:
       }
 
       v31[0] = @"ClientKey";
-      v25 = [(RBSProcessBundle *)self->_processBundle identifier];
+      identifier2 = [(RBSProcessBundle *)self->_processBundle identifier];
       v31[1] = @"ReasonType";
-      v32[0] = v25;
+      v32[0] = identifier2;
       v32[1] = @"Success";
       v26 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
       AnalyticsSendEvent();
@@ -313,31 +313,31 @@ LABEL_21:
 LABEL_22:
 }
 
-- (BOOL)bkHidEventHitTestInfoValid:(id)a3 fromStart:(BOOL)a4
+- (BOOL)bkHidEventHitTestInfoValid:(id)valid fromStart:(BOOL)start
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  startCopy = start;
+  validCopy = valid;
+  if (!validCopy)
   {
 LABEL_10:
     v11 = 0;
     goto LABEL_11;
   }
 
-  v7 = [(CLLocationButtonMechanism *)self validateTransformForHitTestInfo:v6];
-  v8 = [v6 detectedOcclusion];
-  v9 = [(CLLocationButtonMechanism *)self imagedTag];
-  [v6 cumulativeOpacity];
-  v10 = [v9 contrastValidForBgColorAndFgTextWithCumulativeOpacity:?];
+  v7 = [(CLLocationButtonMechanism *)self validateTransformForHitTestInfo:validCopy];
+  detectedOcclusion = [validCopy detectedOcclusion];
+  imagedTag = [(CLLocationButtonMechanism *)self imagedTag];
+  [validCopy cumulativeOpacity];
+  v10 = [imagedTag contrastValidForBgColorAndFgTextWithCumulativeOpacity:?];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109888;
     v25 = v7;
     v26 = 1024;
-    v27 = [v6 hasInsecureFilter];
+    hasInsecureFilter = [validCopy hasInsecureFilter];
     v28 = 1024;
-    v29 = v8;
+    v29 = detectedOcclusion;
     v30 = 1024;
     v31 = v10;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "#locationButton bkHidEventHitTestInfo - caTransformIsValid: %d hasInseccureFilter: %d detectedOcclusion: %d contrastValid: %d", buf, 0x1Au);
@@ -351,7 +351,7 @@ LABEL_10:
   {
 LABEL_7:
     v12 = @"EndHitTestInfo";
-    if (v4)
+    if (startCopy)
     {
       v12 = @"StartHitTestInfo";
     }
@@ -359,21 +359,21 @@ LABEL_7:
     v22[0] = @"ClientKey";
     processBundle = self->_processBundle;
     v14 = v12;
-    v15 = [(RBSProcessBundle *)processBundle identifier];
-    v23[0] = v15;
+    identifier = [(RBSProcessBundle *)processBundle identifier];
+    v23[0] = identifier;
     v23[1] = v14;
     v22[1] = @"ReasonType";
     v22[2] = @"TransformInValid";
     v16 = [NSNumber numberWithInt:v7 ^ 1];
     v23[2] = v16;
     v22[3] = @"DetectedOcclusion";
-    v17 = [NSNumber numberWithBool:v8];
+    v17 = [NSNumber numberWithBool:detectedOcclusion];
     v23[3] = v17;
     v22[4] = @"ContrastInValid";
     v18 = [NSNumber numberWithInt:v10 ^ 1];
     v23[4] = v18;
     v22[5] = @"InsecureFilter";
-    v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 hasInsecureFilter]);
+    v19 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [validCopy hasInsecureFilter]);
     v23[5] = v19;
     v20 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:6];
 
@@ -381,7 +381,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if ((v10 & ~([v6 hasInsecureFilter] | v8) & 1) == 0)
+  if ((v10 & ~([validCopy hasInsecureFilter] | detectedOcclusion) & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -392,10 +392,10 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)validateTransformForHitTestInfo:(id)a3
+- (BOOL)validateTransformForHitTestInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
+  infoCopy = info;
+  v5 = infoCopy;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -404,9 +404,9 @@ LABEL_11:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  if (v4)
+  if (infoCopy)
   {
-    [v4 cumulativeContentsTransform];
+    [infoCopy cumulativeContentsTransform];
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -465,13 +465,13 @@ LABEL_11:
   return (v7 | v9) == 0;
 }
 
-- (void)deriveAnalyticsFromTag:(id)a3
+- (void)deriveAnalyticsFromTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(RBSProcessBundle *)self->_processBundle identifier];
-  objc_initWeak(&location, v5);
+  tagCopy = tag;
+  identifier = [(RBSProcessBundle *)self->_processBundle identifier];
+  objc_initWeak(&location, identifier);
 
-  v6 = v4;
+  v6 = tagCopy;
   objc_copyWeak(&v7, &location);
   AnalyticsSendEventLazy();
   objc_destroyWeak(&v7);
@@ -494,13 +494,13 @@ LABEL_11:
   }
 }
 
-- (BOOL)builtOnOrAfterSDKVersion:(id)a3
+- (BOOL)builtOnOrAfterSDKVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = [LSApplicationRecord alloc];
-  v6 = [(RBSProcessBundle *)self->_processBundle identifier];
+  identifier = [(RBSProcessBundle *)self->_processBundle identifier];
   v13 = 0;
-  v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v13];
+  v7 = [v5 initWithBundleIdentifier:identifier allowPlaceholder:0 error:&v13];
   v8 = v13;
 
   if (v8)
@@ -515,12 +515,12 @@ LABEL_11:
 
   else
   {
-    v10 = [v7 compatibilityObject];
-    v11 = [v10 sdkVersion];
+    compatibilityObject = [v7 compatibilityObject];
+    sdkVersion = [compatibilityObject sdkVersion];
 
-    if (v11)
+    if (sdkVersion)
     {
-      v9 = [v11 compare:v4 options:64] < 2;
+      v9 = [sdkVersion compare:versionCopy options:64] < 2;
     }
 
     else

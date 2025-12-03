@@ -1,64 +1,64 @@
 @interface VUIDownloadCollectionViewCell
-+ (id)_generateMetaDataHeaderFirstLabelForDownloadEntity:(id)a3;
-+ (void)_movieConfigurationForVUIDownloadEntityCollectionViewCell:(id)a3 withDownloadEntity:(id)a4;
-+ (void)_showConfigurationForVUIDownloadEntityCollectionViewCell:(id)a3 withDownloadEntity:(id)a4;
-+ (void)configureVUIDownloadEntityCollectionViewCell:(id)a3 withDownloadEntity:(id)a4 width:(double)a5 forMetrics:(BOOL)a6;
++ (id)_generateMetaDataHeaderFirstLabelForDownloadEntity:(id)entity;
++ (void)_movieConfigurationForVUIDownloadEntityCollectionViewCell:(id)cell withDownloadEntity:(id)entity;
++ (void)_showConfigurationForVUIDownloadEntityCollectionViewCell:(id)cell withDownloadEntity:(id)entity;
++ (void)configureVUIDownloadEntityCollectionViewCell:(id)cell withDownloadEntity:(id)entity width:(double)width forMetrics:(BOOL)metrics;
 - (BOOL)_hasSecondaryLabel;
-- (CGSize)_layoutForAccessibility:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)_layoutForCompact:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutForAccessibility:(CGSize)accessibility metricsOnly:(BOOL)only;
+- (CGSize)_layoutForCompact:(CGSize)compact metricsOnly:(BOOL)only;
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (VUIDownloadCollectionViewCellDelegate)delegate;
-- (void)_addDownloadButtonIfRequired:(id)a3;
-- (void)_addMetaDataLabelsIfRequired:(id)a3;
+- (void)_addDownloadButtonIfRequired:(id)required;
+- (void)_addMetaDataLabelsIfRequired:(id)required;
 - (void)_configureViewElementsForAX;
 - (void)_updateViewForEditState;
-- (void)downloadEntity:(id)a3 numberOfItemsDidChange:(unint64_t)a4;
-- (void)downloadEntity:(id)a3 numberOfItemsDownloadingDidChange:(id)a4;
+- (void)downloadEntity:(id)entity numberOfItemsDidChange:(unint64_t)change;
+- (void)downloadEntity:(id)entity numberOfItemsDownloadingDidChange:(id)change;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDotSeparatorLabel:(id)a3;
-- (void)setDownloadButton:(id)a3;
-- (void)setEditImageView:(id)a3;
-- (void)setMetaDataHeaderFirstLabel:(id)a3;
-- (void)setMetaDataHeaderSecondLabel:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setDotSeparatorLabel:(id)label;
+- (void)setDownloadButton:(id)button;
+- (void)setEditImageView:(id)view;
+- (void)setMetaDataHeaderFirstLabel:(id)label;
+- (void)setMetaDataHeaderSecondLabel:(id)label;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation VUIDownloadCollectionViewCell
 
-+ (void)configureVUIDownloadEntityCollectionViewCell:(id)a3 withDownloadEntity:(id)a4 width:(double)a5 forMetrics:(BOOL)a6
++ (void)configureVUIDownloadEntityCollectionViewCell:(id)cell withDownloadEntity:(id)entity width:(double)width forMetrics:(BOOL)metrics
 {
-  v20 = a3;
-  v9 = a4;
-  [v20 setDownloadEntity:v9];
-  v10 = [v9 mediaEntities];
-  v11 = [v10 firstObject];
+  cellCopy = cell;
+  entityCopy = entity;
+  [cellCopy setDownloadEntity:entityCopy];
+  mediaEntities = [entityCopy mediaEntities];
+  firstObject = [mediaEntities firstObject];
 
-  [v20 setImageAspectRatio:0.5625];
-  if (!a6)
+  [cellCopy setImageAspectRatio:0.5625];
+  if (!metrics)
   {
-    [VUILibraryLockupViewCell configureImageViewArtworkForLockupCell:v20 withMedia:v11 width:a5];
-    [v9 setDelegate:v20];
+    [VUILibraryLockupViewCell configureImageViewArtworkForLockupCell:cellCopy withMedia:firstObject width:width];
+    [entityCopy setDelegate:cellCopy];
   }
 
-  v12 = [v9 title];
+  title = [entityCopy title];
 
-  if (v12)
+  if (title)
   {
     v13 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v13 setTextStyle:14];
     [(VUITextLayout *)v13 setFontWeight:0];
-    v14 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    [(VUITextLayout *)v13 setColor:v14];
+    vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    [(VUITextLayout *)v13 setColor:vui_primaryTextColor];
 
     [(VUITextLayout *)v13 setNumberOfLines:2];
-    v15 = [v9 title];
-    v16 = v15;
-    if (v15)
+    title2 = [entityCopy title];
+    v16 = title2;
+    if (title2)
     {
-      v17 = v15;
+      v17 = title2;
     }
 
     else
@@ -66,8 +66,8 @@
       v17 = &stru_1F5DB25C0;
     }
 
-    v18 = [v20 titleLabel];
-    v19 = [VUILabel labelWithString:v17 textLayout:v13 existingLabel:v18];
+    titleLabel = [cellCopy titleLabel];
+    v19 = [VUILabel labelWithString:v17 textLayout:v13 existingLabel:titleLabel];
   }
 
   else
@@ -75,55 +75,55 @@
     v19 = 0;
   }
 
-  [v20 setTitleLabel:v19];
-  if ([v9 downloadType])
+  [cellCopy setTitleLabel:v19];
+  if ([entityCopy downloadType])
   {
-    if ([v9 downloadType] == 1 || objc_msgSend(v9, "downloadType") == 2)
+    if ([entityCopy downloadType] == 1 || objc_msgSend(entityCopy, "downloadType") == 2)
     {
-      [VUIDownloadCollectionViewCell _showConfigurationForVUIDownloadEntityCollectionViewCell:v20 withDownloadEntity:v9];
+      [VUIDownloadCollectionViewCell _showConfigurationForVUIDownloadEntityCollectionViewCell:cellCopy withDownloadEntity:entityCopy];
     }
   }
 
   else
   {
-    [VUIDownloadCollectionViewCell _movieConfigurationForVUIDownloadEntityCollectionViewCell:v20 withDownloadEntity:v9];
+    [VUIDownloadCollectionViewCell _movieConfigurationForVUIDownloadEntityCollectionViewCell:cellCopy withDownloadEntity:entityCopy];
   }
 }
 
-+ (void)_movieConfigurationForVUIDownloadEntityCollectionViewCell:(id)a3 withDownloadEntity:(id)a4
++ (void)_movieConfigurationForVUIDownloadEntityCollectionViewCell:(id)cell withDownloadEntity:(id)entity
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 _addMetaDataLabelsIfRequired:v5];
-  v7 = [v5 mediaEntities];
+  entityCopy = entity;
+  cellCopy = cell;
+  [cellCopy _addMetaDataLabelsIfRequired:entityCopy];
+  mediaEntities = [entityCopy mediaEntities];
 
-  v8 = [v7 firstObject];
+  firstObject = [mediaEntities firstObject];
 
-  [v6 _addDownloadButtonIfRequired:v8];
+  [cellCopy _addDownloadButtonIfRequired:firstObject];
 }
 
-+ (void)_showConfigurationForVUIDownloadEntityCollectionViewCell:(id)a3 withDownloadEntity:(id)a4
++ (void)_showConfigurationForVUIDownloadEntityCollectionViewCell:(id)cell withDownloadEntity:(id)entity
 {
-  v5 = a3;
-  v6 = [VUIDownloadCollectionViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:a4];
-  [v5 setMetaDataHeaderFirstLabel:v6];
+  cellCopy = cell;
+  v6 = [VUIDownloadCollectionViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:entity];
+  [cellCopy setMetaDataHeaderFirstLabel:v6];
 }
 
-+ (id)_generateMetaDataHeaderFirstLabelForDownloadEntity:(id)a3
++ (id)_generateMetaDataHeaderFirstLabelForDownloadEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [v3 numberOfMediaItemsDownloading];
-  v5 = [v4 intValue];
+  entityCopy = entity;
+  numberOfMediaItemsDownloading = [entityCopy numberOfMediaItemsDownloading];
+  intValue = [numberOfMediaItemsDownloading intValue];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = +[VUILocalizationManager sharedInstance];
   v8 = v7;
-  if (v5 < 1)
+  if (intValue < 1)
   {
     v13 = [v7 localizedStringForKey:@"NUMBER_OF_EPISODES"];
-    v14 = [v3 numberOfMediaItems];
+    numberOfMediaItems = [entityCopy numberOfMediaItems];
 
-    v11 = [v6 localizedStringWithValidatedFormat:v13 validFormatSpecifiers:@"%d" error:0, objc_msgSend(v14, "intValue")];
+    v11 = [v6 localizedStringWithValidatedFormat:v13 validFormatSpecifiers:@"%d" error:0, objc_msgSend(numberOfMediaItems, "intValue")];
 
     v12 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v12 setTextStyle:16];
@@ -135,9 +135,9 @@
   else
   {
     v9 = [v7 localizedStringForKey:@"DOWNLOADING_NUMBER_OF_EPISODES"];
-    v10 = [v3 numberOfMediaItemsDownloading];
+    numberOfMediaItemsDownloading2 = [entityCopy numberOfMediaItemsDownloading];
 
-    v11 = [v6 localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%d" error:0, objc_msgSend(v10, "intValue")];
+    v11 = [v6 localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%d" error:0, objc_msgSend(numberOfMediaItemsDownloading2, "intValue")];
 
     v12 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v12 setTextStyle:16];
@@ -153,129 +153,129 @@
   return v16;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = VUIDownloadCollectionViewCell;
-  [(VUIDownloadCollectionViewCell *)&v4 setSelected:a3];
+  [(VUIDownloadCollectionViewCell *)&v4 setSelected:selected];
   if (self->_editing)
   {
     [(VUIDownloadCollectionViewCell *)self _updateViewForEditState];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = VUIDownloadCollectionViewCell;
-  [(VUIDownloadCollectionViewCell *)&v5 setSelected:a3 animated:a4];
+  [(VUIDownloadCollectionViewCell *)&v5 setSelected:selected animated:animated];
   if (self->_editing)
   {
     [(VUIDownloadCollectionViewCell *)self _updateViewForEditState];
   }
 }
 
-- (void)setMetaDataHeaderFirstLabel:(id)a3
+- (void)setMetaDataHeaderFirstLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   metaDataHeaderFirstLabel = self->_metaDataHeaderFirstLabel;
-  if (metaDataHeaderFirstLabel != v5)
+  if (metaDataHeaderFirstLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)metaDataHeaderFirstLabel removeFromSuperview];
-    objc_storeStrong(&self->_metaDataHeaderFirstLabel, a3);
+    objc_storeStrong(&self->_metaDataHeaderFirstLabel, label);
     if (self->_metaDataHeaderFirstLabel)
     {
-      v7 = [(VUIDownloadCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_metaDataHeaderFirstLabel];
+      contentView = [(VUIDownloadCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_metaDataHeaderFirstLabel];
     }
 
     [(VUIDownloadCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setMetaDataHeaderSecondLabel:(id)a3
+- (void)setMetaDataHeaderSecondLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   metaDataHeaderSecondLabel = self->_metaDataHeaderSecondLabel;
-  if (metaDataHeaderSecondLabel != v5)
+  if (metaDataHeaderSecondLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)metaDataHeaderSecondLabel removeFromSuperview];
-    objc_storeStrong(&self->_metaDataHeaderSecondLabel, a3);
+    objc_storeStrong(&self->_metaDataHeaderSecondLabel, label);
     if (self->_metaDataHeaderSecondLabel)
     {
-      v7 = [(VUIDownloadCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_metaDataHeaderSecondLabel];
+      contentView = [(VUIDownloadCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_metaDataHeaderSecondLabel];
     }
 
     [(VUIDownloadCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setDotSeparatorLabel:(id)a3
+- (void)setDotSeparatorLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   dotSeparatorLabel = self->_dotSeparatorLabel;
-  if (dotSeparatorLabel != v5)
+  if (dotSeparatorLabel != labelCopy)
   {
-    v8 = v5;
+    v8 = labelCopy;
     [(VUILabel *)dotSeparatorLabel removeFromSuperview];
-    objc_storeStrong(&self->_dotSeparatorLabel, a3);
+    objc_storeStrong(&self->_dotSeparatorLabel, label);
     if (self->_dotSeparatorLabel)
     {
-      v7 = [(VUIDownloadCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_dotSeparatorLabel];
+      contentView = [(VUIDownloadCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_dotSeparatorLabel];
     }
 
     [(VUIDownloadCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    labelCopy = v8;
   }
 }
 
-- (void)setEditImageView:(id)a3
+- (void)setEditImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   editImageView = self->_editImageView;
-  if (editImageView != v5)
+  if (editImageView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIImageView *)editImageView removeFromSuperview];
-    objc_storeStrong(&self->_editImageView, a3);
+    objc_storeStrong(&self->_editImageView, view);
     if (self->_editImageView)
     {
-      v7 = [(VUIDownloadCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_editImageView];
+      contentView = [(VUIDownloadCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_editImageView];
     }
 
     [(VUIDownloadCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setDownloadButton:(id)a3
+- (void)setDownloadButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   downloadButton = self->_downloadButton;
-  if (downloadButton != v5)
+  if (downloadButton != buttonCopy)
   {
-    v8 = v5;
+    v8 = buttonCopy;
     if (downloadButton)
     {
       [(VUIDownloadButton *)downloadButton removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_downloadButton, a3);
+    objc_storeStrong(&self->_downloadButton, button);
     if (v8)
     {
-      v7 = [(VUIDownloadCollectionViewCell *)self contentView];
-      [v7 addSubview:v8];
+      contentView = [(VUIDownloadCollectionViewCell *)self contentView];
+      [contentView addSubview:v8];
     }
 
     [(VUIDownloadCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    buttonCopy = v8;
   }
 }
 
@@ -284,8 +284,8 @@
   v4.receiver = self;
   v4.super_class = VUIDownloadCollectionViewCell;
   [(VUILibraryLockupViewCell *)&v4 prepareForReuse];
-  v3 = [(VUIDownloadCollectionViewCell *)self downloadEntity];
-  [v3 setDelegate:0];
+  downloadEntity = [(VUIDownloadCollectionViewCell *)self downloadEntity];
+  [downloadEntity setDelegate:0];
 
   [(VUIDownloadCollectionViewCell *)self setDownloadEntity:0];
   [(VUIDownloadCollectionViewCell *)self setEditImageView:0];
@@ -298,9 +298,9 @@
   [(VUIDownloadCollectionViewCell *)self setEditing:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIDownloadCollectionViewCell *)self _layoutWithSize:1 metricsOnly:a3.width, a3.height];
+  [(VUIDownloadCollectionViewCell *)self _layoutWithSize:1 metricsOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -317,39 +317,39 @@
   [(VUIDownloadCollectionViewCell *)self _layoutWithSize:0 metricsOnly:Width, CGRectGetHeight(v6)];
 }
 
-- (void)downloadEntity:(id)a3 numberOfItemsDownloadingDidChange:(id)a4
+- (void)downloadEntity:(id)entity numberOfItemsDownloadingDidChange:(id)change
 {
-  v5 = [VUIDownloadCollectionViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:a3, a4];
-  [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderFirstLabel:v5];
+  change = [VUIDownloadCollectionViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:entity, change];
+  [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderFirstLabel:change];
   [(VUIDownloadCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)downloadEntity:(id)a3 numberOfItemsDidChange:(unint64_t)a4
+- (void)downloadEntity:(id)entity numberOfItemsDidChange:(unint64_t)change
 {
-  v5 = [VUIDownloadCollectionViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:a3, a4];
-  [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderFirstLabel:v5];
+  change = [VUIDownloadCollectionViewCell _generateMetaDataHeaderFirstLabelForDownloadEntity:entity, change];
+  [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderFirstLabel:change];
   [(VUIDownloadCollectionViewCell *)self setNeedsLayout];
 }
 
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  onlyCopy = only;
+  height = size.height;
+  width = size.width;
   [(VUIDownloadCollectionViewCell *)self _configureViewElementsForAX];
-  v8 = [(VUIDownloadCollectionViewCell *)self traitCollection];
-  v9 = [v8 isAXEnabled];
+  traitCollection = [(VUIDownloadCollectionViewCell *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  if (v9)
+  if (isAXEnabled)
   {
 
-    [(VUIDownloadCollectionViewCell *)self _layoutForAccessibility:v4 metricsOnly:width, height];
+    [(VUIDownloadCollectionViewCell *)self _layoutForAccessibility:onlyCopy metricsOnly:width, height];
   }
 
   else
   {
 
-    [(VUIDownloadCollectionViewCell *)self _layoutForCompact:v4 metricsOnly:width, height];
+    [(VUIDownloadCollectionViewCell *)self _layoutForCompact:onlyCopy metricsOnly:width, height];
   }
 
   result.height = v11;
@@ -357,21 +357,21 @@
   return result;
 }
 
-- (CGSize)_layoutForCompact:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutForCompact:(CGSize)compact metricsOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+  height = compact.height;
+  width = compact.width;
+  downloadButton = [(VUIDownloadCollectionViewCell *)self downloadButton];
 
-  if (v8)
+  if (downloadButton)
   {
     [(VUIDownloadButton *)self->_downloadButton sizeToFit];
-    v9 = [(VUIDownloadCollectionViewCell *)self downloadButton];
-    [v9 frame];
+    downloadButton2 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+    [downloadButton2 frame];
     v10 = CGRectGetWidth(v167);
 
-    v11 = [(VUIDownloadCollectionViewCell *)self downloadButton];
-    [v11 frame];
+    downloadButton3 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+    [downloadButton3 frame];
     v12 = CGRectGetHeight(v168);
 
     v13 = v10;
@@ -379,10 +379,10 @@
 
   else
   {
-    v14 = [(VUIDownloadCollectionViewCell *)self editImageView];
+    editImageView = [(VUIDownloadCollectionViewCell *)self editImageView];
 
     v12 = 0.0;
-    if (v14)
+    if (editImageView)
     {
       v10 = 22.0;
     }
@@ -395,13 +395,13 @@
     v13 = 0.0;
   }
 
-  v15 = [(VUILibraryLockupViewCell *)self titleLabel];
-  [v15 sizeThatFits:{width - v10, height}];
+  titleLabel = [(VUILibraryLockupViewCell *)self titleLabel];
+  [titleLabel sizeThatFits:{width - v10, height}];
   v163 = v16;
   v18 = v17;
 
-  v19 = [(VUILibraryLockupViewCell *)self titleLabel];
-  [v19 topMarginWithBaselineMargin:24.0];
+  titleLabel2 = [(VUILibraryLockupViewCell *)self titleLabel];
+  [titleLabel2 topMarginWithBaselineMargin:24.0];
   v21 = v20;
 
   [(VUILabel *)self->_metaDataHeaderFirstLabel sizeThatFits:width, height];
@@ -417,18 +417,18 @@
   v29 = v28;
   [(VUILabel *)self->_metaDataHeaderSecondLabel topMarginWithBaselineMargin:20.0];
   v31 = v30;
-  v32 = [(VUILibraryLockupViewCell *)self titleLabel];
+  titleLabel3 = [(VUILibraryLockupViewCell *)self titleLabel];
 
-  if (v32)
+  if (titleLabel3)
   {
-    v33 = [(VUILibraryLockupViewCell *)self titleLabel];
-    v34 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
-    [v33 topMarginToLabel:v34 withBaselineMargin:20.0];
+    titleLabel4 = [(VUILibraryLockupViewCell *)self titleLabel];
+    metaDataHeaderFirstLabel = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
+    [titleLabel4 topMarginToLabel:metaDataHeaderFirstLabel withBaselineMargin:20.0];
     v153 = v35;
 
-    v36 = [(VUILibraryLockupViewCell *)self titleLabel];
-    v37 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
-    [v36 topMarginToLabel:v37 withBaselineMargin:20.0];
+    titleLabel5 = [(VUILibraryLockupViewCell *)self titleLabel];
+    metaDataHeaderSecondLabel = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
+    [titleLabel5 topMarginToLabel:metaDataHeaderSecondLabel withBaselineMargin:20.0];
     v161 = v38;
   }
 
@@ -438,14 +438,14 @@
     v161 = v31;
   }
 
-  v39 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
-  if (v39)
+  metaDataHeaderFirstLabel2 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
+  if (metaDataHeaderFirstLabel2)
   {
-    v40 = v39;
-    v41 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
+    v40 = metaDataHeaderFirstLabel2;
+    metaDataHeaderSecondLabel2 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
 
     v42 = v13 + v156 + v159 + v148 + 12.0;
-    if (!v41)
+    if (!metaDataHeaderSecondLabel2)
     {
       v42 = v13 + v156 + v159;
     }
@@ -459,12 +459,12 @@
   v43 = ceil(width * 0.5625);
   v141 = v42;
   v44 = v42 > width;
-  v45 = [(VUIDownloadCollectionViewCell *)self dotSeparatorLabel];
-  [v45 setHidden:v44];
+  dotSeparatorLabel = [(VUIDownloadCollectionViewCell *)self dotSeparatorLabel];
+  [dotSeparatorLabel setHidden:v44];
 
-  v46 = [(VUIDownloadCollectionViewCell *)self _hasSecondaryLabel];
+  _hasSecondaryLabel = [(VUIDownloadCollectionViewCell *)self _hasSecondaryLabel];
   v47 = v43;
-  if (v46)
+  if (_hasSecondaryLabel)
   {
     v48 = v151 + v153;
     if (v151 + v153 < v143 + v161)
@@ -481,9 +481,9 @@
   }
 
   v150 = v47;
-  v49 = [(VUILibraryLockupViewCell *)self titleLabel];
+  titleLabel6 = [(VUILibraryLockupViewCell *)self titleLabel];
 
-  if (!a4)
+  if (!only)
   {
     v130 = v13;
     v132 = v12;
@@ -498,9 +498,9 @@
     v169.size.width = width;
     v169.size.height = v43;
     MaxY = CGRectGetMaxY(v169);
-    v53 = [(VUILibraryLockupViewCell *)self titleLabel];
+    titleLabel7 = [(VUILibraryLockupViewCell *)self titleLabel];
 
-    if (v53)
+    if (titleLabel7)
     {
       v170.origin.y = v21 + MaxY;
       v170.origin.x = 0.0;
@@ -521,7 +521,7 @@
       v138 = v50;
     }
 
-    v54 = [(VUIDownloadCollectionViewCell *)self _hasSecondaryLabel];
+    _hasSecondaryLabel2 = [(VUIDownloadCollectionViewCell *)self _hasSecondaryLabel];
     v55 = v165;
     v56 = v51;
     v57 = v164;
@@ -534,11 +534,11 @@
     v64 = v51;
     rect = v164;
     v65 = v50;
-    if (v54)
+    if (_hasSecondaryLabel2)
     {
-      v66 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
+      metaDataHeaderFirstLabel3 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
 
-      if (v66)
+      if (metaDataHeaderFirstLabel3)
       {
         v64 = v156;
         v171.origin.y = v153 + v126;
@@ -559,8 +559,8 @@
         v154 = v50;
       }
 
-      v67 = [(VUIDownloadCollectionViewCell *)self dotSeparatorLabel];
-      if (v67 && (v68 = v67, -[VUIDownloadCollectionViewCell dotSeparatorLabel](self, "dotSeparatorLabel"), v69 = objc_claimAutoreleasedReturnValue(), v70 = [v69 isHidden], v69, v68, (v70 & 1) == 0))
+      dotSeparatorLabel2 = [(VUIDownloadCollectionViewCell *)self dotSeparatorLabel];
+      if (dotSeparatorLabel2 && (v68 = dotSeparatorLabel2, -[VUIDownloadCollectionViewCell dotSeparatorLabel](self, "dotSeparatorLabel"), v69 = objc_claimAutoreleasedReturnValue(), v70 = [v69 isHidden], v69, v68, (v70 & 1) == 0))
       {
         v172.size.height = v151;
         v172.origin.x = v154;
@@ -583,9 +583,9 @@
         v136 = v50;
       }
 
-      v71 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
+      metaDataHeaderSecondLabel3 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
 
-      if (v71)
+      if (metaDataHeaderSecondLabel3)
       {
         if (v141 <= width)
         {
@@ -601,9 +601,9 @@
 
         else
         {
-          v72 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
+          metaDataHeaderFirstLabel4 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
 
-          if (v72)
+          if (metaDataHeaderFirstLabel4)
           {
             v63 = v151;
             v65 = v154;
@@ -660,12 +660,12 @@
     v162 = v64;
     v152 = v63;
     v155 = v65;
-    v74 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+    downloadButton4 = [(VUIDownloadCollectionViewCell *)self downloadButton];
     v75 = v164;
     v76 = v165;
     v77 = v51;
     v78 = v50;
-    if (v74)
+    if (downloadButton4)
     {
       editing = self->_editing;
 
@@ -682,8 +682,8 @@
 
     v131 = v78;
     v133 = v75;
-    v80 = [(VUIDownloadCollectionViewCell *)self editImageView];
-    if (v80)
+    editImageView2 = [(VUIDownloadCollectionViewCell *)self editImageView];
+    if (editImageView2)
     {
       v81 = self->_editing;
 
@@ -712,8 +712,8 @@
     v85 = 0.0;
     if ([(VUIDownloadCollectionViewCell *)self effectiveUserInterfaceLayoutDirection]== 1)
     {
-      v86 = [(VUIDownloadCollectionViewCell *)self contentView];
-      [v86 bounds];
+      contentView = [(VUIDownloadCollectionViewCell *)self contentView];
+      [contentView bounds];
 
       VUIRectWithFlippedOriginRelativeToBoundingRect();
       v125 = v87;
@@ -767,8 +767,8 @@
     v118 = [(VUILibraryLockupViewCell *)self imageView:*&v122];
     [v118 setFrame:{v125, v85, v127, v43}];
 
-    v119 = [(VUILibraryLockupViewCell *)self titleLabel];
-    [v119 setFrame:{v138, v140, v163, v139}];
+    titleLabel8 = [(VUILibraryLockupViewCell *)self titleLabel];
+    [titleLabel8 setFrame:{v138, v140, v163, v139}];
 
     [(VUILabel *)self->_metaDataHeaderFirstLabel setFrame:v155, rect, v162, v152];
     [(VUILabel *)self->_metaDataHeaderSecondLabel setFrame:v147, v144, v142, v160];
@@ -780,7 +780,7 @@
   }
 
   v120 = v150;
-  if (v49)
+  if (titleLabel6)
   {
     v120 = v18 + v21 + v150;
   }
@@ -791,17 +791,17 @@
   return result;
 }
 
-- (CGSize)_layoutForAccessibility:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutForAccessibility:(CGSize)accessibility metricsOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(VUILibraryLockupViewCell *)self titleLabel];
-  [v8 sizeThatFits:{width, height}];
+  height = accessibility.height;
+  width = accessibility.width;
+  titleLabel = [(VUILibraryLockupViewCell *)self titleLabel];
+  [titleLabel sizeThatFits:{width, height}];
   v119 = v9;
   v11 = v10;
 
-  v12 = [(VUILibraryLockupViewCell *)self titleLabel];
-  [v12 topMarginWithBaselineMargin:24.0];
+  titleLabel2 = [(VUILibraryLockupViewCell *)self titleLabel];
+  [titleLabel2 topMarginWithBaselineMargin:24.0];
   v14 = v13;
 
   [(VUILabel *)self->_metaDataHeaderFirstLabel sizeThatFits:width, height];
@@ -814,15 +814,15 @@
   v22 = v21;
   [(VUILabel *)self->_metaDataHeaderSecondLabel topMarginWithBaselineMargin:20.0];
   v24 = v23;
-  v25 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+  downloadButton = [(VUIDownloadCollectionViewCell *)self downloadButton];
 
-  if (v25)
+  if (downloadButton)
   {
     [(VUIDownloadButton *)self->_downloadButton sizeToFit];
   }
 
   v26 = ceil(width * 0.5625);
-  if (!a4)
+  if (!only)
   {
     v97 = v22;
     v98 = v24;
@@ -839,10 +839,10 @@
     v118 = v26;
     v124.size.height = v26;
     MaxY = CGRectGetMaxY(v124);
-    v32 = [(VUILibraryLockupViewCell *)self titleLabel];
+    titleLabel3 = [(VUILibraryLockupViewCell *)self titleLabel];
 
     v104 = v30;
-    if (v32)
+    if (titleLabel3)
     {
       v33 = v28;
       v34 = v27;
@@ -868,9 +868,9 @@
     }
 
     v36 = v35;
-    v37 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
+    metaDataHeaderFirstLabel = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
 
-    if (v37)
+    if (metaDataHeaderFirstLabel)
     {
       v126.origin.y = v97 + MaxY;
       v126.origin.x = 0.0;
@@ -890,9 +890,9 @@
       v114 = v33;
     }
 
-    v38 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
+    metaDataHeaderSecondLabel = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
 
-    if (v38)
+    if (metaDataHeaderSecondLabel)
     {
       v127.origin.y = v98 + MaxY;
       v127.origin.x = 0.0;
@@ -915,12 +915,12 @@
     }
 
     v96 = v11;
-    v40 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+    downloadButton2 = [(VUIDownloadCollectionViewCell *)self downloadButton];
     v41 = v29;
     v42 = v39;
     v43 = v33;
     v44 = v34;
-    if (v40)
+    if (downloadButton2)
     {
       editing = self->_editing;
 
@@ -944,11 +944,11 @@
     v95 = v41;
     v108 = v42;
     v46 = v36;
-    v47 = [(VUIDownloadCollectionViewCell *)self editImageView];
+    editImageView = [(VUIDownloadCollectionViewCell *)self editImageView];
 
     v48 = v39;
     v49 = 0.0;
-    if (v47)
+    if (editImageView)
     {
       v29 = 22.0;
       v50 = 22.0;
@@ -959,7 +959,7 @@
       v50 = v48;
     }
 
-    if (v47)
+    if (editImageView)
     {
       v51 = MaxY;
     }
@@ -971,7 +971,7 @@
 
     v103 = v51;
     v105 = v50;
-    if (v47)
+    if (editImageView)
     {
       v52 = 0.0;
     }
@@ -984,8 +984,8 @@
     v102 = v52;
     if ([(VUIDownloadCollectionViewCell *)self effectiveUserInterfaceLayoutDirection]== 1)
     {
-      v53 = [(VUIDownloadCollectionViewCell *)self contentView];
-      [v53 bounds];
+      contentView = [(VUIDownloadCollectionViewCell *)self contentView];
+      [contentView bounds];
 
       VUIRectWithFlippedOriginRelativeToBoundingRect();
       v92 = v54;
@@ -1042,8 +1042,8 @@
     v79 = ;
     [v79 setFrame:{v92, v49, v93, v94}];
 
-    v80 = [(VUILibraryLockupViewCell *)self titleLabel];
-    [v80 setFrame:{v115, v117, v120, v116}];
+    titleLabel4 = [(VUILibraryLockupViewCell *)self titleLabel];
+    [titleLabel4 setFrame:{v115, v117, v120, v116}];
 
     [(VUILabel *)self->_metaDataHeaderFirstLabel setFrame:v113, v114, v121, v112];
     [(VUILabel *)self->_metaDataHeaderSecondLabel setFrame:v110, v111, v122, v109];
@@ -1053,9 +1053,9 @@
     v26 = v118;
   }
 
-  v81 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
+  metaDataHeaderFirstLabel2 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
 
-  if (v81)
+  if (metaDataHeaderFirstLabel2)
   {
     v82 = v17 + v26 + v22;
   }
@@ -1065,29 +1065,29 @@
     v82 = v26;
   }
 
-  v83 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
+  metaDataHeaderSecondLabel2 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
 
-  if (v83)
+  if (metaDataHeaderSecondLabel2)
   {
     v82 = v20 + v24 + v82;
   }
 
-  v84 = [(VUILibraryLockupViewCell *)self titleLabel];
+  titleLabel5 = [(VUILibraryLockupViewCell *)self titleLabel];
 
-  if (v84)
+  if (titleLabel5)
   {
     v82 = v11 + v14 + v82;
   }
 
-  v85 = [(VUIDownloadCollectionViewCell *)self downloadButton];
-  if (v85)
+  downloadButton3 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+  if (downloadButton3)
   {
     v86 = self->_editing;
 
     if (!v86)
     {
-      v87 = [(VUIDownloadCollectionViewCell *)self downloadButton];
-      [v87 frame];
+      downloadButton4 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+      [downloadButton4 frame];
       v82 = v82 + CGRectGetHeight(v130);
     }
   }
@@ -1099,48 +1099,48 @@
   return result;
 }
 
-- (void)_addMetaDataLabelsIfRequired:(id)a3
+- (void)_addMetaDataLabelsIfRequired:(id)required
 {
-  v29 = a3;
-  v4 = [v29 mediaEntities];
-  v5 = [v4 firstObject];
+  requiredCopy = required;
+  mediaEntities = [requiredCopy mediaEntities];
+  firstObject = [mediaEntities firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 rentalExpirationDate];
-    v8 = [v6 downloadExpirationDate];
-    v9 = [v6 availabilityEndDate];
-    v10 = [v6 assetController];
+    v6 = firstObject;
+    rentalExpirationDate = [v6 rentalExpirationDate];
+    downloadExpirationDate = [v6 downloadExpirationDate];
+    availabilityEndDate = [v6 availabilityEndDate];
+    assetController = [v6 assetController];
 
-    v11 = [v10 state];
-    v12 = +[VUIRentalExpirationLabel labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:](VUIRentalExpirationLabel, "labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:", v7, v8, v9, [v11 status]);
+    state = [assetController state];
+    stringValue = +[VUIRentalExpirationLabel labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:](VUIRentalExpirationLabel, "labelForRentalExpirationDate:downloadExpirationDate:contentAvailabilityDate:downloadStatus:", rentalExpirationDate, downloadExpirationDate, availabilityEndDate, [state status]);
 
-    if (v12)
+    if (stringValue)
     {
-      [v12 setDelegate:self];
-      [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderFirstLabel:v12];
+      [stringValue setDelegate:self];
+      [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderFirstLabel:stringValue];
       [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderSecondLabel:0];
       [(VUIDownloadCollectionViewCell *)self setDotSeparatorLabel:0];
       goto LABEL_13;
     }
   }
 
-  v13 = [v29 releaseYear];
-  v12 = [v13 stringValue];
+  releaseYear = [requiredCopy releaseYear];
+  stringValue = [releaseYear stringValue];
 
-  if (v12)
+  if (stringValue)
   {
     v14 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v14 setTextStyle:16];
     [(VUITextLayout *)v14 setFontWeight:10];
     [(VUITextLayout *)v14 setNumberOfLines:1];
-    v15 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-    [(VUITextLayout *)v14 setColor:v15];
+    vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+    [(VUITextLayout *)v14 setColor:vui_secondaryTextColor];
 
-    v16 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
-    v17 = [VUILabel labelWithString:v12 textLayout:v14 existingLabel:v16];
+    metaDataHeaderFirstLabel = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
+    v17 = [VUILabel labelWithString:stringValue textLayout:v14 existingLabel:metaDataHeaderFirstLabel];
   }
 
   else
@@ -1149,8 +1149,8 @@
   }
 
   [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderFirstLabel:v17];
-  v18 = [v29 duration];
-  if (!v18)
+  duration = [requiredCopy duration];
+  if (!duration)
   {
     [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderSecondLabel:0];
     v24 = 0;
@@ -1158,20 +1158,20 @@
   }
 
   v19 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E69DF858]];
-  v20 = [v19 transformedValue:v18];
+  v20 = [v19 transformedValue:duration];
 
   v21 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v21 setTextStyle:16];
   [(VUITextLayout *)v21 setFontWeight:10];
   [(VUITextLayout *)v21 setNumberOfLines:1];
-  v22 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  [(VUITextLayout *)v21 setColor:v22];
+  vui_secondaryTextColor2 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  [(VUITextLayout *)v21 setColor:vui_secondaryTextColor2];
 
-  v23 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
-  v24 = [VUILabel labelWithString:v20 textLayout:v21 existingLabel:v23];
+  metaDataHeaderSecondLabel = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
+  v24 = [VUILabel labelWithString:v20 textLayout:v21 existingLabel:metaDataHeaderSecondLabel];
 
   [(VUIDownloadCollectionViewCell *)self setMetaDataHeaderSecondLabel:v24];
-  if (!v12)
+  if (!stringValue)
   {
 LABEL_11:
     v28 = 0;
@@ -1180,12 +1180,12 @@ LABEL_11:
 
   v25 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v25 setTextStyle:22];
-  v26 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  [(VUITextLayout *)v25 setColor:v26];
+  vui_secondaryTextColor3 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  [(VUITextLayout *)v25 setColor:vui_secondaryTextColor3];
 
   [(VUITextLayout *)v25 setNumberOfLines:1];
-  v27 = [(VUIDownloadCollectionViewCell *)self dotSeparatorLabel];
-  v28 = [VUILabel labelWithString:@"·" textLayout:v25 existingLabel:v27];
+  dotSeparatorLabel = [(VUIDownloadCollectionViewCell *)self dotSeparatorLabel];
+  v28 = [VUILabel labelWithString:@"·" textLayout:v25 existingLabel:dotSeparatorLabel];
 
 LABEL_12:
   [(VUIDownloadCollectionViewCell *)self setDotSeparatorLabel:v28];
@@ -1193,24 +1193,24 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_addDownloadButtonIfRequired:(id)a3
+- (void)_addDownloadButtonIfRequired:(id)required
 {
-  v4 = a3;
-  v5 = [v4 assetController];
+  requiredCopy = required;
+  assetController = [requiredCopy assetController];
 
-  if (v5)
+  if (assetController)
   {
-    v6 = [(VUIDownloadCollectionViewCell *)self downloadButton];
-    if (v6)
+    downloadButton = [(VUIDownloadCollectionViewCell *)self downloadButton];
+    if (downloadButton)
     {
-      v7 = v6;
-      v8 = [v4 assetController];
-      [(VUIDownloadButton *)v7 updateWithAssetController:v8];
+      v7 = downloadButton;
+      assetController2 = [requiredCopy assetController];
+      [(VUIDownloadButton *)v7 updateWithAssetController:assetController2];
     }
 
     else
     {
-      v7 = [[VUIDownloadButton alloc] initWithMediaEntity:v4 type:9];
+      v7 = [[VUIDownloadButton alloc] initWithMediaEntity:requiredCopy type:9];
       [(VUIDownloadButton *)v7 setUsesDefaultConfiguration:1];
       objc_initWeak(&location, self);
       v9 = MEMORY[0x1E69E9820];
@@ -1251,25 +1251,25 @@ void __62__VUIDownloadCollectionViewCell__addDownloadButtonIfRequired___block_in
 
 - (void)_configureViewElementsForAX
 {
-  v3 = [(VUIDownloadCollectionViewCell *)self traitCollection];
-  v4 = [v3 isAXEnabled];
+  traitCollection = [(VUIDownloadCollectionViewCell *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  v5 = [(VUIDownloadCollectionViewCell *)self dotSeparatorLabel];
-  [v5 setHidden:v4];
+  dotSeparatorLabel = [(VUIDownloadCollectionViewCell *)self dotSeparatorLabel];
+  [dotSeparatorLabel setHidden:isAXEnabled];
 }
 
 - (BOOL)_hasSecondaryLabel
 {
-  v3 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
-  if (v3)
+  metaDataHeaderFirstLabel = [(VUIDownloadCollectionViewCell *)self metaDataHeaderFirstLabel];
+  if (metaDataHeaderFirstLabel)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
-    v4 = v5 != 0;
+    metaDataHeaderSecondLabel = [(VUIDownloadCollectionViewCell *)self metaDataHeaderSecondLabel];
+    v4 = metaDataHeaderSecondLabel != 0;
   }
 
   return v4;
@@ -1282,41 +1282,41 @@ void __62__VUIDownloadCollectionViewCell__addDownloadButtonIfRequired___block_in
     if ([(VUIDownloadCollectionViewCell *)self isSelected])
     {
       v3 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark.circle.fill"];
-      v4 = [MEMORY[0x1E69DC888] vui_keyColor];
-      v10 = [v3 vui_imageWithColor:v4];
+      vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+      v10 = [v3 vui_imageWithColor:vui_keyColor];
     }
 
     else
     {
       v3 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"circle"];
-      v4 = [MEMORY[0x1E69DC888] systemGrayColor];
-      v7 = [v3 vui_imageWithColor:v4];
+      vui_keyColor = [MEMORY[0x1E69DC888] systemGrayColor];
+      v7 = [v3 vui_imageWithColor:vui_keyColor];
       v10 = [v7 imageWithRenderingMode:1];
     }
 
     v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v10];
     [(VUIDownloadCollectionViewCell *)self setEditImageView:v8];
-    v9 = [(VUIDownloadCollectionViewCell *)self downloadButton];
-    [v9 removeFromSuperview];
+    downloadButton = [(VUIDownloadCollectionViewCell *)self downloadButton];
+    [downloadButton removeFromSuperview];
   }
 
   else
   {
     [(VUIDownloadCollectionViewCell *)self setEditImageView:0];
-    v5 = [(VUIDownloadCollectionViewCell *)self downloadButton];
-    if (!v5)
+    downloadButton2 = [(VUIDownloadCollectionViewCell *)self downloadButton];
+    if (!downloadButton2)
     {
       goto LABEL_9;
     }
 
-    v10 = v5;
-    v6 = [(VUIDownloadCollectionViewCell *)self contentView];
-    [v6 addSubview:v10];
+    v10 = downloadButton2;
+    contentView = [(VUIDownloadCollectionViewCell *)self contentView];
+    [contentView addSubview:v10];
 
     [(VUIDownloadCollectionViewCell *)self setNeedsLayout];
   }
 
-  v5 = v10;
+  downloadButton2 = v10;
 LABEL_9:
 }
 

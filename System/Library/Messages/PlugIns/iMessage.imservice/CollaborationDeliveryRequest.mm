@@ -1,28 +1,28 @@
 @interface CollaborationDeliveryRequest
 - (_TtC8iMessage28CollaborationDeliveryRequest)init;
-- (_TtC8iMessage28CollaborationDeliveryRequest)initWithRecipients:(id)a3 message:(id)a4;
-- (void)sendWithCompletionHandler:(id)a3;
+- (_TtC8iMessage28CollaborationDeliveryRequest)initWithRecipients:(id)recipients message:(id)message;
+- (void)sendWithCompletionHandler:(id)handler;
 @end
 
 @implementation CollaborationDeliveryRequest
 
-- (_TtC8iMessage28CollaborationDeliveryRequest)initWithRecipients:(id)a3 message:(id)a4
+- (_TtC8iMessage28CollaborationDeliveryRequest)initWithRecipients:(id)recipients message:(id)message
 {
   *(&self->super.isa + OBJC_IVAR____TtC8iMessage28CollaborationDeliveryRequest_recipients) = sub_BD954();
-  *(&self->super.isa + OBJC_IVAR____TtC8iMessage28CollaborationDeliveryRequest_message) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC8iMessage28CollaborationDeliveryRequest_message) = message;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CollaborationDeliveryRequest();
-  v6 = a4;
+  messageCopy = message;
   return [(CollaborationDeliveryRequest *)&v8 init];
 }
 
-- (void)sendWithCompletionHandler:(id)a3
+- (void)sendWithCompletionHandler:(id)handler
 {
   v5 = sub_94950(&qword_123ED8, &qword_CEE50);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -38,7 +38,7 @@
   v13[3] = 0;
   v13[4] = &unk_CEAE8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_B18FC(0, 0, v8, &unk_CEAF8, v13);
 }
 

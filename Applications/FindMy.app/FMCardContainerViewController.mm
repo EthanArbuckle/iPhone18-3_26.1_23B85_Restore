@@ -1,29 +1,29 @@
 @interface FMCardContainerViewController
 - (BOOL)collapseCard;
 - (BOOL)expandCard;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (UITraitCollection)traitCollection;
-- (_TtC6FindMy29FMCardContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (_TtC6FindMy29FMCardContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (void)handleCloseAction;
-- (void)handlePanGestureWithSender:(id)a3;
+- (void)handlePanGestureWithSender:(id)sender;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)unwindToBaseAction;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation FMCardContainerViewController
 
-- (_TtC6FindMy29FMCardContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy29FMCardContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -35,13 +35,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10001C69C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10001C69C(v5, v7, bundle);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000237EC();
 }
 
@@ -59,44 +59,44 @@
 
 - (UITraitCollection)traitCollection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100024544();
 
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000277F0(a3, &selRef_viewWillAppear_);
+  selfCopy = self;
+  sub_1000277F0(appear, &selRef_viewWillAppear_);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10004C4FC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10004C4FC(change);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100050618();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000277F0(a3, &selRef_viewWillDisappear_);
+  selfCopy = self;
+  sub_1000277F0(disappear, &selRef_viewWillDisappear_);
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v5 = self;
-  v6 = [(FMCardContainerViewController *)v5 traitCollection];
-  v7 = [(UITraitCollection *)v6 horizontalSizeClass];
+  selfCopy = self;
+  traitCollection = [(FMCardContainerViewController *)selfCopy traitCollection];
+  horizontalSizeClass = [(UITraitCollection *)traitCollection horizontalSizeClass];
 
-  if (v7 == 1)
+  if (horizontalSizeClass == 1)
   {
     v8 = type metadata accessor for FMCardPresentedCompactTransition();
   }
@@ -111,13 +111,13 @@
   return v9;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = self;
-  v4 = [(FMCardContainerViewController *)v3 traitCollection];
-  v5 = [(UITraitCollection *)v4 horizontalSizeClass];
+  selfCopy = self;
+  traitCollection = [(FMCardContainerViewController *)selfCopy traitCollection];
+  horizontalSizeClass = [(UITraitCollection *)traitCollection horizontalSizeClass];
 
-  if (v5 == 1)
+  if (horizontalSizeClass == 1)
   {
     v6 = type metadata accessor for FMCardDismissedCompactTransition();
   }
@@ -134,29 +134,29 @@
 
 - (void)handleCloseAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024D71C();
 }
 
 - (void)unwindToBaseAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024D8DC();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_10024FFD8(a4, width, height);
+  selfCopy = self;
+  sub_10024FFD8(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (BOOL)expandCard
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000490B0();
   v4 = v3 > 0.3 || v3 < -1.0;
   v5 = v3 > 0.85 || v3 < 0.3;
@@ -168,7 +168,7 @@
 
 - (BOOL)collapseCard
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000490B0();
   if (v3 > 0.3 || v3 < -1.0)
   {
@@ -186,31 +186,31 @@
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1005370B4(v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_1005370B4(gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100537244(v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_100537244(gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (void)handlePanGestureWithSender:(id)a3
+- (void)handlePanGestureWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005362DC(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1005362DC(senderCopy);
 }
 
 @end

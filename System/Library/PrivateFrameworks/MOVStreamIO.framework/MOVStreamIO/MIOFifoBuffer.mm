@@ -1,6 +1,6 @@
 @interface MIOFifoBuffer
-- (BOOL)enqueue:(id)a3;
-- (MIOFifoBuffer)initWithCapacity:(unint64_t)a3;
+- (BOOL)enqueue:(id)enqueue;
+- (MIOFifoBuffer)initWithCapacity:(unint64_t)capacity;
 - (id)dequeue;
 - (void)dealloc;
 - (void)emptyFifoBuffer;
@@ -8,7 +8,7 @@
 
 @implementation MIOFifoBuffer
 
-- (MIOFifoBuffer)initWithCapacity:(unint64_t)a3
+- (MIOFifoBuffer)initWithCapacity:(unint64_t)capacity
 {
   v7.receiver = self;
   v7.super_class = MIOFifoBuffer;
@@ -16,8 +16,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_capacity = a3;
-    CMSimpleQueueCreate(*MEMORY[0x277CBECE8], a3, &v4->_queue);
+    v4->_capacity = capacity;
+    CMSimpleQueueCreate(*MEMORY[0x277CBECE8], capacity, &v4->_queue);
   }
 
   return v5;
@@ -39,19 +39,19 @@
 
 - (void)emptyFifoBuffer
 {
-  v2 = self;
+  selfCopy = self;
   while ([(MIOFifoBuffer *)self usage])
   {
-    v3 = [(MIOFifoBuffer *)v2 dequeue];
-    self = v2;
+    dequeue = [(MIOFifoBuffer *)selfCopy dequeue];
+    self = selfCopy;
   }
 }
 
-- (BOOL)enqueue:(id)a3
+- (BOOL)enqueue:(id)enqueue
 {
-  v4 = a3;
+  enqueueCopy = enqueue;
   queue = self->_queue;
-  v6 = v4;
+  v6 = enqueueCopy;
   LOBYTE(queue) = CMSimpleQueueEnqueue(queue, v6) == 0;
 
   return queue;

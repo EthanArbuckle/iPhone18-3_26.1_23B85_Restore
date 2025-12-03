@@ -1,32 +1,32 @@
 @interface PLSearchOCRUtilities
-+ (id)_ocrTextLineCandidatesFromTextBlockObservation:(id)a3 tokenizer:(id)a4 allowLowConfidence:(BOOL)a5;
-+ (id)_ocrTextLinesFromDocumentObservation:(id)a3 allowLowConfidence:(BOOL)a4;
++ (id)_ocrTextLineCandidatesFromTextBlockObservation:(id)observation tokenizer:(id)tokenizer allowLowConfidence:(BOOL)confidence;
++ (id)_ocrTextLinesFromDocumentObservation:(id)observation allowLowConfidence:(BOOL)confidence;
 + (id)_textFoundLine;
-+ (id)_wordsFromString:(id)a3 usingTokenizer:(id)a4;
-+ (id)jsonOCRTextLinesFromDocumentObservation:(id)a3;
-+ (id)spotlightTextLinesFromDocumentObservation:(id)a3;
++ (id)_wordsFromString:(id)string usingTokenizer:(id)tokenizer;
++ (id)jsonOCRTextLinesFromDocumentObservation:(id)observation;
++ (id)spotlightTextLinesFromDocumentObservation:(id)observation;
 @end
 
 @implementation PLSearchOCRUtilities
 
-+ (id)_wordsFromString:(id)a3 usingTokenizer:(id)a4
++ (id)_wordsFromString:(id)string usingTokenizer:(id)tokenizer
 {
-  v5 = a4;
-  v6 = a3;
+  tokenizerCopy = tokenizer;
+  stringCopy = string;
   v7 = objc_opt_new();
-  [v5 setString:v6];
+  [tokenizerCopy setString:stringCopy];
 
-  v8 = [v5 string];
-  v9 = [v8 length];
+  string = [tokenizerCopy string];
+  v9 = [string length];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke;
   v15[3] = &unk_1E75747F0;
-  v16 = v5;
+  v16 = tokenizerCopy;
   v10 = v7;
   v17 = v10;
-  v11 = v5;
+  v11 = tokenizerCopy;
   [v11 enumerateTokensInRange:0 usingBlock:{v9, v15}];
   v12 = v17;
   v13 = v10;
@@ -47,17 +47,17 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
   [v9 addObject:v10];
 }
 
-+ (id)_ocrTextLineCandidatesFromTextBlockObservation:(id)a3 tokenizer:(id)a4 allowLowConfidence:(BOOL)a5
++ (id)_ocrTextLineCandidatesFromTextBlockObservation:(id)observation tokenizer:(id)tokenizer allowLowConfidence:(BOOL)confidence
 {
-  v5 = a5;
+  confidenceCopy = confidence;
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v26 = a4;
-  if (v7)
+  observationCopy = observation;
+  tokenizerCopy = tokenizer;
+  if (observationCopy)
   {
     v27 = objc_opt_new();
-    v24 = v7;
-    v8 = [v7 topCandidates:1];
+    v24 = observationCopy;
+    v8 = [observationCopy topCandidates:1];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -78,10 +78,10 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
 
           v13 = *(*(&v28 + 1) + 8 * i);
           [v13 confidence];
-          if (v14 > 0.3 || v5)
+          if (v14 > 0.3 || confidenceCopy)
           {
-            v16 = [v13 string];
-            v17 = [a1 _wordsFromString:v16 usingTokenizer:v26];
+            string = [v13 string];
+            v17 = [self _wordsFromString:string usingTokenizer:tokenizerCopy];
             v18 = v17;
             if (!v17)
             {
@@ -89,7 +89,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v33 = v16;
+                v33 = string;
                 _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Failed to get NL tokenized words for OCR line %@", buf, 0xCu);
               }
 
@@ -98,7 +98,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
 
             v20 = [PLSearchOCRTextLineCandidate alloc];
             [v13 confidence];
-            v22 = [(PLSearchOCRTextLineCandidate *)v20 initWithLine:v16 words:v18 confidence:v21];
+            v22 = [(PLSearchOCRTextLineCandidate *)v20 initWithLine:string words:v18 confidence:v21];
             [v27 addObject:v22];
           }
         }
@@ -109,7 +109,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
       while (v10);
     }
 
-    v7 = v24;
+    observationCopy = v24;
   }
 
   else
@@ -120,17 +120,17 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
   return v27;
 }
 
-+ (id)_ocrTextLinesFromDocumentObservation:(id)a3 allowLowConfidence:(BOOL)a4
++ (id)_ocrTextLinesFromDocumentObservation:(id)observation allowLowConfidence:(BOOL)confidence
 {
-  v4 = a4;
+  confidenceCopy = confidence;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  observationCopy = observation;
+  if (observationCopy)
   {
     v7 = [objc_alloc(MEMORY[0x1E6977A88]) initWithUnit:0];
-    v22 = v6;
+    v22 = observationCopy;
     v23 = objc_opt_new();
-    v8 = [v6 blocksWithTypes:8 inRegion:{0.0, 0.0, 1.0, 1.0}];
+    v8 = [observationCopy blocksWithTypes:8 inRegion:{0.0, 0.0, 1.0, 1.0}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -150,7 +150,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
           }
 
           v13 = *(*(&v24 + 1) + 8 * i);
-          v14 = [a1 _ocrTextLineCandidatesFromTextBlockObservation:v13 tokenizer:v7 allowLowConfidence:v4];
+          v14 = [self _ocrTextLineCandidatesFromTextBlockObservation:v13 tokenizer:v7 allowLowConfidence:confidenceCopy];
           if ([v14 count])
           {
             v15 = [PLSearchOCRTextLine alloc];
@@ -166,7 +166,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
       while (v10);
     }
 
-    v6 = v22;
+    observationCopy = v22;
   }
 
   else
@@ -182,7 +182,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E6977A88]) initWithUnit:0];
   v4 = PLServicesLocalizedFrameworkString();
-  v5 = [a1 _wordsFromString:v4 usingTokenizer:v3];
+  v5 = [self _wordsFromString:v4 usingTokenizer:v3];
   v6 = [[PLSearchOCRTextLineCandidate alloc] initWithLine:v4 words:v5 confidence:1.0];
   v7 = [PLSearchOCRTextLine alloc];
   v11[0] = v6;
@@ -192,19 +192,19 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
   return v9;
 }
 
-+ (id)jsonOCRTextLinesFromDocumentObservation:(id)a3
++ (id)jsonOCRTextLinesFromDocumentObservation:(id)observation
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  observationCopy = observation;
+  if (observationCopy)
   {
     v31 = objc_opt_new();
-    v5 = [PLSearchOCRUtilities _ocrTextLinesFromDocumentObservation:v4 allowLowConfidence:1];
-    v28 = v4;
+    v5 = [PLSearchOCRUtilities _ocrTextLinesFromDocumentObservation:observationCopy allowLowConfidence:1];
+    v28 = observationCopy;
     if ([v5 count])
     {
-      v6 = [a1 _textFoundLine];
-      v7 = [v5 arrayByAddingObject:v6];
+      _textFoundLine = [self _textFoundLine];
+      v7 = [v5 arrayByAddingObject:_textFoundLine];
 
       v5 = v7;
     }
@@ -236,8 +236,8 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
           v38 = 0u;
           v39 = 0u;
           v33 = v9;
-          v35 = [v9 candidates];
-          v11 = [v35 countByEnumeratingWithState:&v36 objects:v48 count:16];
+          candidates = [v9 candidates];
+          v11 = [candidates countByEnumeratingWithState:&v36 objects:v48 count:16];
           if (v11)
           {
             v12 = v11;
@@ -248,18 +248,18 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
               {
                 if (*v37 != v13)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(candidates);
                 }
 
                 v15 = *(*(&v36 + 1) + 8 * i);
                 [v15 confidence];
                 v17 = v16 > 0.3;
                 v46[0] = @"line";
-                v18 = [v15 line];
-                v47[0] = v18;
+                line = [v15 line];
+                v47[0] = line;
                 v46[1] = @"words";
-                v19 = [v15 words];
-                v47[1] = v19;
+                words = [v15 words];
+                v47[1] = words;
                 v46[2] = @"confidence";
                 v20 = MEMORY[0x1E696AD98];
                 [v15 confidence];
@@ -273,7 +273,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
                 [v10 addObject:v23];
               }
 
-              v12 = [v35 countByEnumeratingWithState:&v36 objects:v48 count:16];
+              v12 = [candidates countByEnumeratingWithState:&v36 objects:v48 count:16];
             }
 
             while (v12);
@@ -301,7 +301,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
       while (v32);
     }
 
-    v4 = v28;
+    observationCopy = v28;
   }
 
   else
@@ -312,11 +312,11 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
   return v31;
 }
 
-+ (id)spotlightTextLinesFromDocumentObservation:(id)a3
++ (id)spotlightTextLinesFromDocumentObservation:(id)observation
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  observationCopy = observation;
+  if (observationCopy)
   {
     if (spotlightTextLinesFromDocumentObservation__onceToken != -1)
     {
@@ -324,12 +324,12 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
     }
 
     v29 = objc_opt_new();
-    v5 = [PLSearchOCRUtilities ocrTextLinesFromDocumentObservation:v4];
-    v26 = v4;
+    v5 = [PLSearchOCRUtilities ocrTextLinesFromDocumentObservation:observationCopy];
+    v26 = observationCopy;
     if ([v5 count])
     {
-      v6 = [a1 _textFoundLine];
-      v7 = [v5 arrayByAddingObject:v6];
+      _textFoundLine = [self _textFoundLine];
+      v7 = [v5 arrayByAddingObject:_textFoundLine];
 
       v5 = v7;
     }
@@ -360,8 +360,8 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v16 = [v9 candidates];
-          v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          candidates = [v9 candidates];
+          v17 = [candidates countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (v17)
           {
             v18 = v17;
@@ -372,22 +372,22 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
               {
                 if (*v32 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(candidates);
                 }
 
                 v21 = *(*(&v31 + 1) + 8 * j);
                 v22 = spotlightTextLinesFromDocumentObservation__disableOCRDonationWorkaround;
-                v23 = [v21 line];
+                line = [v21 line];
                 v24 = 1.0;
                 if (v22 == 1)
                 {
                   [v21 confidence];
                 }
 
-                [v15 addCandidate:v23 confidence:v24];
+                [v15 addCandidate:line confidence:v24];
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
+              v18 = [candidates countByEnumeratingWithState:&v31 objects:v39 count:16];
             }
 
             while (v18);
@@ -402,7 +402,7 @@ void __56__PLSearchOCRUtilities__wordsFromString_usingTokenizer___block_invoke(u
       while (v30);
     }
 
-    v4 = v26;
+    observationCopy = v26;
   }
 
   else

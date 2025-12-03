@@ -1,30 +1,30 @@
 @interface HKWorkoutEffortRelationshipQuery
-+ (void)configureClientInterface:(id)a3;
-- (HKWorkoutEffortRelationshipQuery)initWithPredicate:(id)a3 anchor:(id)a4 options:(int64_t)a5 resultsHandler:(id)a6;
-- (void)client_deliverWorkoutEffortRelationships:(id)a3 isFinalBatch:(BOOL)a4 anchor:(id)a5 forQuery:(id)a6;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (HKWorkoutEffortRelationshipQuery)initWithPredicate:(id)predicate anchor:(id)anchor options:(int64_t)options resultsHandler:(id)handler;
+- (void)client_deliverWorkoutEffortRelationships:(id)relationships isFinalBatch:(BOOL)batch anchor:(id)anchor forQuery:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKWorkoutEffortRelationshipQuery
 
-- (HKWorkoutEffortRelationshipQuery)initWithPredicate:(id)a3 anchor:(id)a4 options:(int64_t)a5 resultsHandler:(id)a6
+- (HKWorkoutEffortRelationshipQuery)initWithPredicate:(id)predicate anchor:(id)anchor options:(int64_t)options resultsHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a3;
+  anchorCopy = anchor;
+  handlerCopy = handler;
+  predicateCopy = predicate;
   v14 = +[HKObjectType workoutType];
   v19.receiver = self;
   v19.super_class = HKWorkoutEffortRelationshipQuery;
-  v15 = [(HKQuery *)&v19 _initWithObjectType:v14 predicate:v13];
+  v15 = [(HKQuery *)&v19 _initWithObjectType:v14 predicate:predicateCopy];
 
   if (v15)
   {
-    objc_storeStrong(&v15->_anchor, a4);
-    v15->_options = a5;
-    v16 = [v12 copy];
+    objc_storeStrong(&v15->_anchor, anchor);
+    v15->_options = options;
+    v16 = [handlerCopy copy];
     resultsHandler = v15->_resultsHandler;
     v15->_resultsHandler = v16;
   }
@@ -32,37 +32,37 @@
   return v15;
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v11.receiver = a1;
+  interfaceCopy = interface;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___HKWorkoutEffortRelationshipQuery;
-  objc_msgSendSuper2(&v11, sel_configureClientInterface_, v4);
+  objc_msgSendSuper2(&v11, sel_configureClientInterface_, interfaceCopy);
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  [v4 setClasses:v8 forSelector:sel_client_deliverWorkoutEffortRelationships_isFinalBatch_anchor_forQuery_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v8 forSelector:sel_client_deliverWorkoutEffortRelationships_isFinalBatch_anchor_forQuery_ argumentIndex:0 ofReply:0];
 
-  v9 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverWorkoutEffortRelationships_isFinalBatch_anchor_forQuery_ argumentIndex:2 ofReply:0];
-  v10 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverWorkoutEffortRelationships_isFinalBatch_anchor_forQuery_ argumentIndex:3 ofReply:0];
+  v9 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverWorkoutEffortRelationships_isFinalBatch_anchor_forQuery_ argumentIndex:2 ofReply:0];
+  v10 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverWorkoutEffortRelationships_isFinalBatch_anchor_forQuery_ argumentIndex:3 ofReply:0];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKWorkoutEffortRelationshipQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setAnchor:{self->_anchor, v5.receiver, v5.super_class}];
-  [v4 setOptions:self->_options];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setAnchor:{self->_anchor, v5.receiver, v5.super_class}];
+  [configurationCopy setOptions:self->_options];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKWorkoutEffortRelationshipQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }
@@ -74,43 +74,43 @@
   [(HKQuery *)&v2 queue_validate];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_resultsHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__HKWorkoutEffortRelationshipQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)client_deliverWorkoutEffortRelationships:(id)a3 isFinalBatch:(BOOL)a4 anchor:(id)a5 forQuery:(id)a6
+- (void)client_deliverWorkoutEffortRelationships:(id)relationships isFinalBatch:(BOOL)batch anchor:(id)anchor forQuery:(id)query
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(HKQuery *)self queue];
+  relationshipsCopy = relationships;
+  anchorCopy = anchor;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106__HKWorkoutEffortRelationshipQuery_client_deliverWorkoutEffortRelationships_isFinalBatch_anchor_forQuery___block_invoke;
   block[3] = &unk_1E737B920;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v12;
-  v20 = v11;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = relationshipsCopy;
+  batchCopy = batch;
+  v19 = queryCopy;
+  v20 = anchorCopy;
+  v14 = anchorCopy;
+  v15 = queryCopy;
+  v16 = relationshipsCopy;
+  dispatch_async(queue, block);
 }
 
 void __106__HKWorkoutEffortRelationshipQuery_client_deliverWorkoutEffortRelationships_isFinalBatch_anchor_forQuery___block_invoke(uint64_t a1)

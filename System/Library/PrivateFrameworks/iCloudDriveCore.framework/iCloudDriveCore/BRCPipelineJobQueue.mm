@@ -1,9 +1,9 @@
 @interface BRCPipelineJobQueue
 - (BRCPipelineJobQueue)init;
-- (void)addJob:(id)a3 withGroupIdentifier:(id)a4;
-- (void)dequeueHighestQualityOfServiceJobsWithHandler:(id)a3;
-- (void)dumpToContext:(id)a3;
-- (void)removeJob:(id)a3 withGroupIdentifier:(id)a4;
+- (void)addJob:(id)job withGroupIdentifier:(id)identifier;
+- (void)dequeueHighestQualityOfServiceJobsWithHandler:(id)handler;
+- (void)dumpToContext:(id)context;
+- (void)removeJob:(id)job withGroupIdentifier:(id)identifier;
 @end
 
 @implementation BRCPipelineJobQueue
@@ -27,79 +27,79 @@
   return v2;
 }
 
-- (void)addJob:(id)a3 withGroupIdentifier:(id)a4
+- (void)addJob:(id)job withGroupIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (!v6)
+  jobCopy = job;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!identifierCopy)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    identifierCopy = [MEMORY[0x277CBEB68] null];
   }
 
-  v8 = [v12 qualityOfService];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
-  v10 = [(NSMutableDictionary *)v7->_qosToGroupingToJobMapping objectForKey:v9];
+  qualityOfService = [jobCopy qualityOfService];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:qualityOfService];
+  v10 = [(NSMutableDictionary *)selfCopy->_qosToGroupingToJobMapping objectForKey:v9];
   if (!v10)
   {
     v10 = objc_opt_new();
-    [(NSMutableDictionary *)v7->_qosToGroupingToJobMapping setObject:v10 forKeyedSubscript:v9];
-    [(NSMutableIndexSet *)v7->_activeQOSValues addIndex:v8];
+    [(NSMutableDictionary *)selfCopy->_qosToGroupingToJobMapping setObject:v10 forKeyedSubscript:v9];
+    [(NSMutableIndexSet *)selfCopy->_activeQOSValues addIndex:qualityOfService];
   }
 
-  v11 = [v10 objectForKeyedSubscript:v6];
+  v11 = [v10 objectForKeyedSubscript:identifierCopy];
   if (!v11)
   {
     v11 = objc_opt_new();
-    [v10 setObject:v11 forKeyedSubscript:v6];
+    [v10 setObject:v11 forKeyedSubscript:identifierCopy];
   }
 
-  [v11 addObject:v12];
+  [v11 addObject:jobCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeJob:(id)a3 withGroupIdentifier:(id)a4
+- (void)removeJob:(id)job withGroupIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (!v6)
+  jobCopy = job;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!identifierCopy)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    identifierCopy = [MEMORY[0x277CBEB68] null];
   }
 
-  v8 = [v12 qualityOfService];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
-  v10 = [(NSMutableDictionary *)v7->_qosToGroupingToJobMapping objectForKey:v9];
-  v11 = [v10 objectForKeyedSubscript:v6];
-  [v11 removeObject:v12];
+  qualityOfService = [jobCopy qualityOfService];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:qualityOfService];
+  v10 = [(NSMutableDictionary *)selfCopy->_qosToGroupingToJobMapping objectForKey:v9];
+  v11 = [v10 objectForKeyedSubscript:identifierCopy];
+  [v11 removeObject:jobCopy];
   if (![v11 count])
   {
-    [v10 setObject:0 forKeyedSubscript:v6];
+    [v10 setObject:0 forKeyedSubscript:identifierCopy];
     if (![v10 count])
     {
-      [(NSMutableDictionary *)v7->_qosToGroupingToJobMapping removeObjectForKey:v9];
-      [(NSMutableIndexSet *)v7->_activeQOSValues removeIndex:v8];
+      [(NSMutableDictionary *)selfCopy->_qosToGroupingToJobMapping removeObjectForKey:v9];
+      [(NSMutableIndexSet *)selfCopy->_activeQOSValues removeIndex:qualityOfService];
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)dequeueHighestQualityOfServiceJobsWithHandler:(id)a3
+- (void)dequeueHighestQualityOfServiceJobsWithHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(NSMutableDictionary *)v5->_qosToGroupingToJobMapping count])
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableDictionary *)selfCopy->_qosToGroupingToJobMapping count])
   {
-    v18 = [(NSMutableIndexSet *)v5->_activeQOSValues lastIndex];
+    lastIndex = [(NSMutableIndexSet *)selfCopy->_activeQOSValues lastIndex];
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-    v7 = [(NSMutableDictionary *)v5->_qosToGroupingToJobMapping objectForKey:v6];
+    v7 = [(NSMutableDictionary *)selfCopy->_qosToGroupingToJobMapping objectForKey:v6];
     if (![v7 count])
     {
       v16 = brc_bread_crumbs();
@@ -153,7 +153,7 @@
             objc_enumerationMutation(v8);
           }
 
-          if ((v4[2](v4, *(*(&v20 + 1) + 8 * v13)) & 1) == 0)
+          if ((handlerCopy[2](handlerCopy, *(*(&v20 + 1) + 8 * v13)) & 1) == 0)
           {
             v11 = v14;
             goto LABEL_13;
@@ -181,8 +181,8 @@ LABEL_13:
       [v19 setObject:0 forKeyedSubscript:v26[5]];
       if (![v19 count])
       {
-        [(NSMutableDictionary *)v5->_qosToGroupingToJobMapping setObject:0 forKeyedSubscript:v10];
-        [(NSMutableIndexSet *)v5->_activeQOSValues removeIndex:v18];
+        [(NSMutableDictionary *)selfCopy->_qosToGroupingToJobMapping setObject:0 forKeyedSubscript:v10];
+        [(NSMutableIndexSet *)selfCopy->_activeQOSValues removeIndex:lastIndex];
       }
     }
 
@@ -196,7 +196,7 @@ LABEL_13:
     _Block_object_dispose(&v31, 8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -213,22 +213,22 @@ void __69__BRCPipelineJobQueue_dequeueHighestQualityOfServiceJobsWithHandler___b
   *a4 = 1;
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  activeQOSValues = v5->_activeQOSValues;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeQOSValues = selfCopy->_activeQOSValues;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__BRCPipelineJobQueue_dumpToContext___block_invoke;
   v8[3] = &unk_2785020F0;
-  v7 = v4;
+  v7 = contextCopy;
   v9 = v7;
-  v10 = v5;
+  v10 = selfCopy;
   [(NSMutableIndexSet *)activeQOSValues enumerateIndexesWithOptions:2 usingBlock:v8];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __37__BRCPipelineJobQueue_dumpToContext___block_invoke(uint64_t a1, uint64_t a2)

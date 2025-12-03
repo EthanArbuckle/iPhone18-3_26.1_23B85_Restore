@@ -1,21 +1,21 @@
 @interface ARUIRenderState
-- (ARUIRenderState)initWithDevice:(id)a3 library:(id)a4;
+- (ARUIRenderState)initWithDevice:(id)device library:(id)library;
 @end
 
 @implementation ARUIRenderState
 
-- (ARUIRenderState)initWithDevice:(id)a3 library:(id)a4
+- (ARUIRenderState)initWithDevice:(id)device library:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = ARUIRenderState;
   v8 = [(ARUIRenderState *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v10 = [(ARUIRenderState *)v8 renderPipelineDescriptorFromLibrary:v7];
-    v11 = [v6 newRenderPipelineStateWithDescriptor:v10 error:0];
+    v10 = [(ARUIRenderState *)v8 renderPipelineDescriptorFromLibrary:libraryCopy];
+    v11 = [deviceCopy newRenderPipelineStateWithDescriptor:v10 error:0];
     [(ARUIRenderState *)v9 setRenderPipelineState:v11];
   }
 

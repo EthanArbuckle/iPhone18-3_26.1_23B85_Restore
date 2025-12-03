@@ -1,49 +1,49 @@
 @interface SKDJournalProcessingJob
-- (SKDJournalProcessingJob)initWithName:(id)a3 version:(id)a4 pipelines:(id)a5;
+- (SKDJournalProcessingJob)initWithName:(id)name version:(id)version pipelines:(id)pipelines;
 @end
 
 @implementation SKDJournalProcessingJob
 
-- (SKDJournalProcessingJob)initWithName:(id)a3 version:(id)a4 pipelines:(id)a5
+- (SKDJournalProcessingJob)initWithName:(id)name version:(id)version pipelines:(id)pipelines
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 count] != 1)
+  nameCopy = name;
+  versionCopy = version;
+  pipelinesCopy = pipelines;
+  if ([pipelinesCopy count] != 1)
   {
     [SKDJournalProcessingJob initWithName:version:pipelines:];
   }
 
   v30.receiver = self;
   v30.super_class = SKDJournalProcessingJob;
-  v11 = [(SKDBaseItemProcessingJob *)&v30 initWithName:v8 version:v9 pipelines:v10];
+  v11 = [(SKDBaseItemProcessingJob *)&v30 initWithName:nameCopy version:versionCopy pipelines:pipelinesCopy];
   if (v11)
   {
-    v12 = [v10 objectAtIndexedSubscript:0];
-    v13 = [v12 descriptor];
-    v14 = [v13 requiredBundles];
+    v12 = [pipelinesCopy objectAtIndexedSubscript:0];
+    descriptor = [v12 descriptor];
+    requiredBundles = [descriptor requiredBundles];
     requiredBundleIDs = v11->_requiredBundleIDs;
-    v11->_requiredBundleIDs = v14;
+    v11->_requiredBundleIDs = requiredBundles;
 
-    v16 = [v10 objectAtIndexedSubscript:0];
-    v17 = [v16 descriptor];
-    v18 = [v17 excludedBundles];
+    v16 = [pipelinesCopy objectAtIndexedSubscript:0];
+    descriptor2 = [v16 descriptor];
+    excludedBundles = [descriptor2 excludedBundles];
     excludedBundleIDs = v11->_excludedBundleIDs;
-    v11->_excludedBundleIDs = v18;
+    v11->_excludedBundleIDs = excludedBundles;
 
-    v20 = [v10 objectAtIndexedSubscript:0];
-    v21 = [v20 requiredAttributes];
+    v20 = [pipelinesCopy objectAtIndexedSubscript:0];
+    requiredAttributes = [v20 requiredAttributes];
     requiredAttributes = v11->_requiredAttributes;
-    v11->_requiredAttributes = v21;
+    v11->_requiredAttributes = requiredAttributes;
 
-    v23 = [v10 objectAtIndexedSubscript:0];
-    v24 = [v23 fetchAttributes];
+    v23 = [pipelinesCopy objectAtIndexedSubscript:0];
+    fetchAttributes = [v23 fetchAttributes];
     fetchAttributes = v11->_fetchAttributes;
-    v11->_fetchAttributes = v24;
+    v11->_fetchAttributes = fetchAttributes;
 
     v26 = [SKDJournalItemProcessor alloc];
-    v27 = [(SKDBaseJob *)v11 pipelines];
-    v28 = [(SKDItemProcessor *)v26 initWithPipelines:v27];
+    pipelines = [(SKDBaseJob *)v11 pipelines];
+    v28 = [(SKDItemProcessor *)v26 initWithPipelines:pipelines];
 
     [(SKDBaseCSItemProcessingJob *)v11 setItemProcessor:v28];
   }

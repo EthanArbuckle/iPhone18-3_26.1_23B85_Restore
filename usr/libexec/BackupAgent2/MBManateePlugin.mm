@@ -1,46 +1,46 @@
 @interface MBManateePlugin
-- (id)startingBackupWithEngine:(id)a3;
+- (id)startingBackupWithEngine:(id)engine;
 @end
 
 @implementation MBManateePlugin
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v3 = a3;
-  if (![v3 backsUpPrimaryAccount])
+  engineCopy = engine;
+  if (![engineCopy backsUpPrimaryAccount])
   {
     v6 = 0;
     goto LABEL_80;
   }
 
   v90 = 0;
-  if (![v3 isCloudKitEngine])
+  if (![engineCopy isCloudKitEngine])
   {
     v59 = 0;
     goto LABEL_7;
   }
 
   v89 = 0;
-  v4 = [v3 fetchDeviceToDeviceEncryptionSupportedByAccount:&v90 error:&v89];
+  v4 = [engineCopy fetchDeviceToDeviceEncryptionSupportedByAccount:&v90 error:&v89];
   v5 = v89;
   if (v4)
   {
     v59 = v5;
 LABEL_7:
-    v7 = [v3 domainManager];
-    v8 = [v7 allDomains];
+    domainManager = [engineCopy domainManager];
+    allDomains = [domainManager allDomains];
 
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    obj = v8;
+    obj = allDomains;
     v62 = [obj countByEnumeratingWithState:&v85 objects:v99 count:16];
     if (v62)
     {
       v61 = *v86;
       v9 = &DLContentsOfDirectory_ptr;
-      v64 = v3;
+      v64 = engineCopy;
       do
       {
         v10 = 0;
@@ -52,20 +52,20 @@ LABEL_7:
           }
 
           v11 = *(*(&v85 + 1) + 8 * v10);
-          v12 = [v11 relativePathsToBackupToDriveAndStandardAccount];
+          relativePathsToBackupToDriveAndStandardAccount = [v11 relativePathsToBackupToDriveAndStandardAccount];
 
-          if (v12)
+          if (relativePathsToBackupToDriveAndStandardAccount)
           {
             v63 = v10;
-            v13 = [v11 relativePathsToBackupToDriveAndStandardAccount];
-            v14 = [v13 mutableCopy];
+            relativePathsToBackupToDriveAndStandardAccount2 = [v11 relativePathsToBackupToDriveAndStandardAccount];
+            v14 = [relativePathsToBackupToDriveAndStandardAccount2 mutableCopy];
 
-            v15 = [v11 relativePathsToBackupAndRestore];
+            relativePathsToBackupAndRestore = [v11 relativePathsToBackupAndRestore];
 
-            if (v15)
+            if (relativePathsToBackupAndRestore)
             {
-              v16 = [v11 relativePathsToBackupAndRestore];
-              v17 = [v16 mutableCopy];
+              relativePathsToBackupAndRestore2 = [v11 relativePathsToBackupAndRestore];
+              v17 = [relativePathsToBackupAndRestore2 mutableCopy];
             }
 
             else
@@ -116,7 +116,7 @@ LABEL_7:
               while (v20);
             }
 
-            v3 = v64;
+            engineCopy = v64;
             if ([v64 isCloudKitEngine])
             {
               if (qword_10011E4A0 != -1)
@@ -149,13 +149,13 @@ LABEL_7:
 
                     v68 = v30;
                     v31 = *(*(&v77 + 1) + 8 * v30);
-                    v32 = [v11 rootPath];
-                    v33 = [v31 hasPrefix:v32];
+                    rootPath = [v11 rootPath];
+                    v33 = [v31 hasPrefix:rootPath];
 
                     if (v33)
                     {
-                      v34 = [v9[506] defaultManager];
-                      v35 = [v34 fileExistsAtPath:v31];
+                      defaultManager = [v9[506] defaultManager];
+                      v35 = [defaultManager fileExistsAtPath:v31];
 
                       v36 = MBGetDefaultLog();
                       v37 = os_log_type_enabled(v36, OS_LOG_TYPE_INFO);
@@ -257,10 +257,10 @@ LABEL_7:
                 while (v28);
               }
 
-              v3 = v64;
+              engineCopy = v64;
             }
 
-            if (([v3 isDeviceTransferEngine] & 1) != 0 || objc_msgSend(v3, "isDriveEngine") && (objc_msgSend(v3, "encrypted") & 1) != 0 || objc_msgSend(v3, "isCloudKitEngine") && (v90 & 1) == 0)
+            if (([engineCopy isDeviceTransferEngine] & 1) != 0 || objc_msgSend(engineCopy, "isDriveEngine") && (objc_msgSend(engineCopy, "encrypted") & 1) != 0 || objc_msgSend(engineCopy, "isCloudKitEngine") && (v90 & 1) == 0)
             {
               v71 = 0u;
               v72 = 0u;
@@ -302,7 +302,7 @@ LABEL_7:
                 while (v48);
               }
 
-              v3 = v64;
+              engineCopy = v64;
             }
 
             [v11 setRelativePathsToBackupAndRestore:{v17, v57}];

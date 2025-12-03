@@ -1,9 +1,9 @@
 @interface AKBirthDayKeychain
 - (AKBirthDayKeychain)init;
-- (BOOL)deleteBirthdayForAltDSID:(id)a3 error:(id *)a4;
-- (BOOL)updateBirthdayForAltDSID:(id)a3 userInformation:(id)a4 error:(id *)a5;
-- (id)_birthDayKeychainDescriptorForAltDSID:(id)a3;
-- (id)fetchBirthDayForAltDSID:(id)a3 error:(id *)a4;
+- (BOOL)deleteBirthdayForAltDSID:(id)d error:(id *)error;
+- (BOOL)updateBirthdayForAltDSID:(id)d userInformation:(id)information error:(id *)error;
+- (id)_birthDayKeychainDescriptorForAltDSID:(id)d;
+- (id)fetchBirthDayForAltDSID:(id)d error:(id *)error;
 @end
 
 @implementation AKBirthDayKeychain
@@ -30,13 +30,13 @@
   return v5;
 }
 
-- (id)fetchBirthDayForAltDSID:(id)a3 error:(id *)a4
+- (id)fetchBirthDayForAltDSID:(id)d error:(id *)error
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30 = a4;
+  objc_storeStrong(location, d);
+  errorCopy = error;
   v29 = _AKLogSystem();
   v28 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -46,26 +46,26 @@
   }
 
   objc_storeStrong(&v29, 0);
-  v27 = [(AKBirthDayKeychain *)v32 _birthDayKeychainDescriptorForAltDSID:location[0]];
+  v27 = [(AKBirthDayKeychain *)selfCopy _birthDayKeychainDescriptorForAltDSID:location[0]];
   v26 = 0;
-  keychainManager = v32->_keychainManager;
+  keychainManager = selfCopy->_keychainManager;
   v24 = 0;
   v11 = [(AAFKeychainManager *)keychainManager keychainItemForDescriptor:v27 error:&v24];
   objc_storeStrong(&v26, v24);
   v25 = v11;
-  v23 = [v11 value];
+  value = [v11 value];
   v21 = 0;
   v12 = 0;
   if ([v26 code] == -25300)
   {
-    v22 = [v26 domain];
+    domain = [v26 domain];
     v21 = 1;
-    v12 = [v22 isEqualToString:NSOSStatusErrorDomain];
+    v12 = [domain isEqualToString:NSOSStatusErrorDomain];
   }
 
   if (v21)
   {
-    _objc_release(v22);
+    _objc_release(domain);
   }
 
   if (v12)
@@ -88,10 +88,10 @@
     v17 = 0;
     v5 = objc_opt_class();
     obj = v17;
-    v10 = [NSKeyedUnarchiver unarchivedObjectOfClass:v5 fromData:v23 error:&obj];
+    v10 = [NSKeyedUnarchiver unarchivedObjectOfClass:v5 fromData:value error:&obj];
     objc_storeStrong(&v17, obj);
     v16 = v10;
-    if (v23)
+    if (value)
     {
       v33 = _objc_retain(v16);
       v18 = 1;
@@ -107,11 +107,11 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      if (v30)
+      if (errorCopy)
       {
         v9 = v17;
         v6 = v17;
-        *v30 = v9;
+        *errorCopy = v9;
       }
 
       v33 = 0;
@@ -122,7 +122,7 @@
     objc_storeStrong(&v17, 0);
   }
 
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&value, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v27, 0);
@@ -132,15 +132,15 @@
   return v7;
 }
 
-- (BOOL)updateBirthdayForAltDSID:(id)a3 userInformation:(id)a4 error:(id *)a5
+- (BOOL)updateBirthdayForAltDSID:(id)d userInformation:(id)information error:(id *)error
 {
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v49 = 0;
-  objc_storeStrong(&v49, a4);
-  v48 = a5;
+  objc_storeStrong(&v49, information);
+  errorCopy = error;
   v47 = 0;
   v46 = 0;
   v23 = +[AKAccountManager sharedInstance];
@@ -151,15 +151,15 @@
   _objc_release(v23);
   if (v45)
   {
-    v18 = [v49 birthMonth];
-    v17 = [v49 birthDay];
+    birthMonth = [v49 birthMonth];
+    birthDay = [v49 birthDay];
     v16 = +[AKAccountManager sharedInstance];
     v15 = [(AKAccountManager *)v16 birthYearForAccount:v45];
-    v43 = [NSString stringWithFormat:@"%@-%@-%@", v18, v17, v15];
+    v43 = [NSString stringWithFormat:@"%@-%@-%@", birthMonth, birthDay, v15];
     _objc_release(v15);
     _objc_release(v16);
-    _objc_release(v17);
-    _objc_release(v18);
+    _objc_release(birthDay);
+    _objc_release(birthMonth);
     v42 = objc_alloc_init(NSDateFormatter);
     [v42 setDateFormat:@"MM-dd-yyyy"];
     v41 = [v42 dateFromString:v43];
@@ -169,11 +169,11 @@
     v40 = v19;
     if (v19)
     {
-      v35 = [(AKBirthDayKeychain *)v51 _birthDayKeychainDescriptorForAltDSID:location[0]];
+      v35 = [(AKBirthDayKeychain *)selfCopy _birthDayKeychainDescriptorForAltDSID:location[0]];
       v6 = [AAFKeychainItem alloc];
       v34 = [v6 initWithDescriptor:v35 value:v40];
       v33 = 0;
-      keychainManager = v51->_keychainManager;
+      keychainManager = selfCopy->_keychainManager;
       v32 = 0;
       [(AAFKeychainManager *)keychainManager addOrUpdateKeychainItem:v34 error:&v32];
       objc_storeStrong(&v33, v32);
@@ -188,11 +188,11 @@
         }
 
         objc_storeStrong(&oslog, 0);
-        if (v48)
+        if (errorCopy)
         {
           v13 = v33;
           v8 = v33;
-          *v48 = v13;
+          *errorCopy = v13;
         }
 
         v52 = 0;
@@ -202,8 +202,8 @@
       else
       {
         v29 = +[AKAccountManager sharedInstance];
-        v28 = [v29 altDSIDforPrimaryiCloudAccount];
-        if ([location[0] isEqualToString:v28])
+        altDSIDforPrimaryiCloudAccount = [v29 altDSIDforPrimaryiCloudAccount];
+        if ([location[0] isEqualToString:altDSIDforPrimaryiCloudAccount])
         {
           [v41 timeIntervalSince1970];
           v11 = xpc_date_create((v9 * 1000000000.0));
@@ -226,7 +226,7 @@
 
         v52 = 1;
         v36 = 1;
-        objc_storeStrong(&v28, 0);
+        objc_storeStrong(&altDSIDforPrimaryiCloudAccount, 0);
         objc_storeStrong(&v29, 0);
       }
 
@@ -246,11 +246,11 @@
       }
 
       objc_storeStrong(&v38, 0);
-      if (v48)
+      if (errorCopy)
       {
         v14 = v47;
         v5 = v47;
-        *v48 = v14;
+        *errorCopy = v14;
       }
 
       v52 = 0;
@@ -291,21 +291,21 @@
   return v52 & 1;
 }
 
-- (BOOL)deleteBirthdayForAltDSID:(id)a3 error:(id *)a4
+- (BOOL)deleteBirthdayForAltDSID:(id)d error:(id *)error
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
-  v7 = [(AKBirthDayKeychain *)v10 _birthDayKeychainDescriptorForAltDSID:location[0]];
-  [(AAFKeychainManager *)v10->_keychainManager deleteKeychainItemsForDescriptor:v7 error:a4];
-  if (a4)
+  objc_storeStrong(location, d);
+  errorCopy = error;
+  v7 = [(AKBirthDayKeychain *)selfCopy _birthDayKeychainDescriptorForAltDSID:location[0]];
+  [(AAFKeychainManager *)selfCopy->_keychainManager deleteKeychainItemsForDescriptor:v7 error:error];
+  if (error)
   {
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000194D4(v12, *v8);
+      sub_1000194D4(v12, *errorCopy);
       _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "Birthday keychain delete failed with error: %@", v12, 0xCu);
     }
 
@@ -323,12 +323,12 @@
   return v11 & 1;
 }
 
-- (id)_birthDayKeychainDescriptorForAltDSID:(id)a3
+- (id)_birthDayKeychainDescriptorForAltDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = objc_alloc_init(AAFKeychainItemDescriptor);
   [v6 setItemClass:?];
   [v6 setInvisible:?];

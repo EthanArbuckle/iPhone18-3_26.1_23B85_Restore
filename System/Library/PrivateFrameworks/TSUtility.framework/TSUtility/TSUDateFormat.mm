@@ -1,36 +1,36 @@
 @interface TSUDateFormat
-+ (id)formatWithFormat:(id)a3 name:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSUDateFormat)initWithFormat:(id)a3 name:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)formatWithFormat:(id)format name:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (TSUDateFormat)initWithFormat:(id)format name:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setFormatName:(id)a3;
+- (void)setFormatName:(id)name;
 @end
 
 @implementation TSUDateFormat
 
-+ (id)formatWithFormat:(id)a3 name:(id)a4
++ (id)formatWithFormat:(id)format name:(id)name
 {
-  v4 = [[a1 alloc] initWithFormat:a3 name:a4];
+  v4 = [[self alloc] initWithFormat:format name:name];
 
   return v4;
 }
 
-- (TSUDateFormat)initWithFormat:(id)a3 name:(id)a4
+- (TSUDateFormat)initWithFormat:(id)format name:(id)name
 {
   v8.receiver = self;
   v8.super_class = TSUDateFormat;
   v6 = [(TSUDateFormat *)&v8 init];
   if (v6)
   {
-    v6->mFormat = a3;
-    v6->mName = a4;
+    v6->mFormat = format;
+    v6->mName = name;
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mFormat = self->mFormat;
@@ -49,16 +49,16 @@
   [(TSUDateFormat *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->mFormat isEqualToString:*(a3 + 1)];
+    v5 = [(NSString *)self->mFormat isEqualToString:*(equal + 1)];
     if (v5)
     {
       mName = self->mName;
-      if (mName | *(a3 + 2))
+      if (mName | *(equal + 2))
       {
 
         LOBYTE(v5) = [(NSString *)mName isEqualToString:?];
@@ -79,11 +79,11 @@
   return v5;
 }
 
-- (void)setFormatName:(id)a3
+- (void)setFormatName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
 
-  self->mName = a3;
+  self->mName = name;
 }
 
 @end

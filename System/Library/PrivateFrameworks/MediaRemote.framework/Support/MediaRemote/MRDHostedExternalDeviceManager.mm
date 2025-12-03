@@ -1,15 +1,15 @@
 @interface MRDHostedExternalDeviceManager
-- (BOOL)isDirectConnectedToOutputDeviceUID:(id)a3;
+- (BOOL)isDirectConnectedToOutputDeviceUID:(id)d;
 - (MRDHostedExternalDeviceManager)init;
 - (MRDHostedExternalDeviceManagerDelegate)delegate;
 - (NSDictionary)availableExternalDevices;
-- (id)disconnectUndiscoverableEndpoints:(id)a3;
-- (id)hostedExternalDeviceForEndpointIdentifier:(id)a3;
-- (void)_handleExternalDeviceConnectionStateDidChangeNotification:(id)a3;
-- (void)_removeExternalDeviceWithEndpointIdentifier:(id)a3 error:(id)a4;
-- (void)_removeExternalDeviceWithOutputDeviceUID:(id)a3 error:(id)a4;
-- (void)_tombstoneHostedExternalDevice:(id)a3 error:(id)a4;
-- (void)addHostedExternalDevice:(id)a3 endpoint:(id)a4;
+- (id)disconnectUndiscoverableEndpoints:(id)endpoints;
+- (id)hostedExternalDeviceForEndpointIdentifier:(id)identifier;
+- (void)_handleExternalDeviceConnectionStateDidChangeNotification:(id)notification;
+- (void)_removeExternalDeviceWithEndpointIdentifier:(id)identifier error:(id)error;
+- (void)_removeExternalDeviceWithOutputDeviceUID:(id)d error:(id)error;
+- (void)_tombstoneHostedExternalDevice:(id)device error:(id)error;
+- (void)addHostedExternalDevice:(id)device endpoint:(id)endpoint;
 @end
 
 @implementation MRDHostedExternalDeviceManager
@@ -45,90 +45,90 @@
 
 - (NSDictionary)availableExternalDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_hostedExternalDeviceMap copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_hostedExternalDeviceMap copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)addHostedExternalDevice:(id)a3 endpoint:(id)a4
+- (void)addHostedExternalDevice:(id)device endpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = MRLogCategoryDiscovery();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 uniqueIdentifier];
-    v11 = [v6 externalDevice];
+    uniqueIdentifier = [endpointCopy uniqueIdentifier];
+    externalDevice = [deviceCopy externalDevice];
     *buf = 138543874;
-    v16 = v6;
+    v16 = deviceCopy;
     v17 = 2114;
-    v18 = v10;
+    v18 = uniqueIdentifier;
     v19 = 2112;
-    v20 = v11;
+    v20 = externalDevice;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[MRDHostedExternalDeviceManager] Created new hostedExternalDevice=%{public}@, endpoint=%{public}@ externalDevice=%@", buf, 0x20u);
   }
 
-  hostedExternalDeviceMap = v8->_hostedExternalDeviceMap;
-  v13 = [v7 uniqueIdentifier];
-  [(NSMutableDictionary *)hostedExternalDeviceMap setObject:v6 forKeyedSubscript:v13];
+  hostedExternalDeviceMap = selfCopy->_hostedExternalDeviceMap;
+  uniqueIdentifier2 = [endpointCopy uniqueIdentifier];
+  [(NSMutableDictionary *)hostedExternalDeviceMap setObject:deviceCopy forKeyedSubscript:uniqueIdentifier2];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100175208;
   block[3] = &unk_1004B6D08;
-  block[4] = v8;
+  block[4] = selfCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)hostedExternalDeviceForEndpointIdentifier:(id)a3
+- (id)hostedExternalDeviceForEndpointIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_hostedExternalDeviceMap objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_hostedExternalDeviceMap objectForKeyedSubscript:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)isDirectConnectedToOutputDeviceUID:(id)a3
+- (BOOL)isDirectConnectedToOutputDeviceUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  hostedExternalDeviceMap = v5->_hostedExternalDeviceMap;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hostedExternalDeviceMap = selfCopy->_hostedExternalDeviceMap;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001753C8;
   v10[3] = &unk_1004BF928;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   v8 = [(NSMutableDictionary *)hostedExternalDeviceMap msv_firstWhere:v10];
   LOBYTE(hostedExternalDeviceMap) = v8 != 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return hostedExternalDeviceMap;
 }
 
-- (id)disconnectUndiscoverableEndpoints:(id)a3
+- (id)disconnectUndiscoverableEndpoints:(id)endpoints
 {
-  v4 = a3;
+  endpointsCopy = endpoints;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_alloc_init(NSMutableDictionary);
-  hostedExternalDeviceMap = v6->_hostedExternalDeviceMap;
+  hostedExternalDeviceMap = selfCopy->_hostedExternalDeviceMap;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100175590;
   v15[3] = &unk_1004BFD90;
-  v9 = v4;
+  v9 = endpointsCopy;
   v16 = v9;
   v10 = v7;
   v17 = v10;
@@ -137,38 +137,38 @@
   v13[1] = 3221225472;
   v13[2] = sub_1001756A8;
   v13[3] = &unk_1004BFD90;
-  v13[4] = v6;
+  v13[4] = selfCopy;
   v11 = v5;
   v14 = v11;
   [v10 enumerateKeysAndObjectsUsingBlock:v13];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
-- (void)_removeExternalDeviceWithEndpointIdentifier:(id)a3 error:(id)a4
+- (void)_removeExternalDeviceWithEndpointIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_hostedExternalDeviceMap objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  errorCopy = error;
+  v8 = [(NSMutableDictionary *)self->_hostedExternalDeviceMap objectForKeyedSubscript:identifierCopy];
   v9 = MRLogCategoryDiscovery();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 externalDevice];
+    externalDevice = [v8 externalDevice];
     *buf = 138544130;
     v13 = v8;
     v14 = 2114;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = errorCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = externalDevice;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[MRDHostedExternalDeviceManager] Removing hostedExternalDevice=%{public}@, endpointIdentifier=%{public}@ reason=%{public}@ externalDevice=%@", buf, 0x2Au);
   }
 
-  [(MRDHostedExternalDeviceManager *)self _tombstoneHostedExternalDevice:v8 error:v7];
-  [(NSMutableDictionary *)self->_hostedExternalDeviceMap setObject:0 forKeyedSubscript:v6];
+  [(MRDHostedExternalDeviceManager *)self _tombstoneHostedExternalDevice:v8 error:errorCopy];
+  [(NSMutableDictionary *)self->_hostedExternalDeviceMap setObject:0 forKeyedSubscript:identifierCopy];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10017599C;
@@ -177,19 +177,19 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_removeExternalDeviceWithOutputDeviceUID:(id)a3 error:(id)a4
+- (void)_removeExternalDeviceWithOutputDeviceUID:(id)d error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  errorCopy = error;
   v8 = objc_opt_new();
   hostedExternalDeviceMap = self->_hostedExternalDeviceMap;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100175BAC;
   v22[3] = &unk_1004BFDB8;
-  v10 = v6;
+  v10 = dCopy;
   v23 = v10;
-  v11 = v7;
+  v11 = errorCopy;
   v24 = v11;
   v12 = v8;
   v25 = v12;
@@ -226,11 +226,11 @@
   }
 }
 
-- (void)_tombstoneHostedExternalDevice:(id)a3 error:(id)a4
+- (void)_tombstoneHostedExternalDevice:(id)device error:(id)error
 {
-  v6 = a3;
-  [v6 tombstoneWithError:a4];
-  [(NSMutableArray *)self->_hostedExternalDeviceGraveyard addObject:v6];
+  deviceCopy = device;
+  [deviceCopy tombstoneWithError:error];
+  [(NSMutableArray *)self->_hostedExternalDeviceGraveyard addObject:deviceCopy];
   if (qword_1005295B0 != -1)
   {
     sub_1003ABD74();
@@ -243,47 +243,47 @@
   v10[2] = sub_100175E38;
   v10[3] = &unk_1004B68F0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = deviceCopy;
+  v9 = deviceCopy;
   dispatch_after(v7, v8, v10);
 }
 
-- (void)_handleExternalDeviceConnectionStateDidChangeNotification:(id)a3
+- (void)_handleExternalDeviceConnectionStateDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:kMRExternalDeviceConnectionStateUserInfoKey];
-  v7 = [v6 unsignedIntValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:kMRExternalDeviceConnectionStateUserInfoKey];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  v8 = [v4 object];
-  if (v7 == 3)
+  object = [notificationCopy object];
+  if (unsignedIntValue == 3)
   {
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
     v22 = sub_10003520C;
     v23 = sub_100035ABC;
     v24 = 0;
-    hostedExternalDeviceMap = v9->_hostedExternalDeviceMap;
+    hostedExternalDeviceMap = selfCopy->_hostedExternalDeviceMap;
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_100176080;
     v16 = &unk_1004BFE00;
-    v17 = v8;
+    v17 = object;
     v18 = &v19;
     [(NSMutableDictionary *)hostedExternalDeviceMap enumerateKeysAndObjectsUsingBlock:&v13];
     if (v20[5])
     {
-      v11 = [v4 userInfo];
-      v12 = [v11 objectForKey:NSUnderlyingErrorKey];
+      userInfo2 = [notificationCopy userInfo];
+      v12 = [userInfo2 objectForKey:NSUnderlyingErrorKey];
 
-      [(MRDHostedExternalDeviceManager *)v9 _removeExternalDeviceWithEndpointIdentifier:v20[5] error:v12];
+      [(MRDHostedExternalDeviceManager *)selfCopy _removeExternalDeviceWithEndpointIdentifier:v20[5] error:v12];
     }
 
     _Block_object_dispose(&v19, 8);
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 

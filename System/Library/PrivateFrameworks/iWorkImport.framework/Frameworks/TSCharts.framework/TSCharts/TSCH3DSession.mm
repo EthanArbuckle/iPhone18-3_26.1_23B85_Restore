@@ -1,33 +1,33 @@
 @interface TSCH3DSession
-- (BOOL)hasEnoughFreeMemoryOfBytes:(unint64_t)a3;
-- (BOOL)isProtectedResource:(id)a3;
+- (BOOL)hasEnoughFreeMemoryOfBytes:(unint64_t)bytes;
+- (BOOL)isProtectedResource:(id)resource;
 - (TSCH3DContext)context;
 - (TSCH3DSession)init;
-- (TSCH3DSession)initWithSharegroupToken:(id)a3 dataCache:(id)a4;
-- (id)handleOfResource:(id)a3 loader:(id)a4;
-- (id)loadResource:(id)a3 reload:(BOOL)a4 withLoader:(id)a5 config:(id)a6;
-- (id)shaderForShaderContext:(id)a3 initializeProgramBlock:(id)a4;
+- (TSCH3DSession)initWithSharegroupToken:(id)token dataCache:(id)cache;
+- (id)handleOfResource:(id)resource loader:(id)loader;
+- (id)loadResource:(id)resource reload:(BOOL)reload withLoader:(id)loader config:(id)config;
+- (id)shaderForShaderContext:(id)context initializeProgramBlock:(id)block;
 - (int)performance;
 - (int64_t)virtualScreen;
-- (void)addActiveResource:(id)a3;
-- (void)beginFrameWithSharegroupDelegate:(id)a3;
+- (void)addActiveResource:(id)resource;
+- (void)beginFrameWithSharegroupDelegate:(id)delegate;
 - (void)dealloc;
-- (void)endFrameWithSharegroupDelegate:(id)a3;
-- (void)flushMemoryForResources:(id)a3;
-- (void)flushResources:(id)a3;
+- (void)endFrameWithSharegroupDelegate:(id)delegate;
+- (void)flushMemoryForResources:(id)resources;
+- (void)flushResources:(id)resources;
 - (void)flushResourcesIfNecessary;
 - (void)flushTrackedResources;
-- (void)forceFlushResources:(id)a3;
+- (void)forceFlushResources:(id)resources;
 - (void)garbageCollectAllUnretainedResources;
-- (void)p_setContext:(id)a3;
-- (void)protectResource:(id)a3 unprotectOnFail:(BOOL)a4;
+- (void)p_setContext:(id)context;
+- (void)protectResource:(id)resource unprotectOnFail:(BOOL)fail;
 - (void)resetTrackingToActiveResources;
 - (void)setFailed;
-- (void)setIfIsMoreDemandingPerformance:(int)a3;
-- (void)setPerformance:(int)a3;
-- (void)setVirtualScreen:(int64_t)a3;
-- (void)trackResourcesInBlock:(id)a3;
-- (void)unprotectResource:(id)a3 clearOnFailProtection:(BOOL)a4;
+- (void)setIfIsMoreDemandingPerformance:(int)performance;
+- (void)setPerformance:(int)performance;
+- (void)setVirtualScreen:(int64_t)screen;
+- (void)trackResourcesInBlock:(id)block;
+- (void)unprotectResource:(id)resource clearOnFailProtection:(BOOL)protection;
 @end
 
 @implementation TSCH3DSession
@@ -39,16 +39,16 @@
   return 0;
 }
 
-- (TSCH3DSession)initWithSharegroupToken:(id)a3 dataCache:(id)a4
+- (TSCH3DSession)initWithSharegroupToken:(id)token dataCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  cacheCopy = cache;
   v36.receiver = self;
   v36.super_class = TSCH3DSession;
   v9 = [(TSCH3DSession *)&v36 init];
   if (v9)
   {
-    v14 = objc_msgSend_sharegroupForToken_(TSCH3DGPUSharegroup, v8, v10, v11, v12, v6);
+    v14 = objc_msgSend_sharegroupForToken_(TSCH3DGPUSharegroup, v8, v10, v11, v12, tokenCopy);
     if (byte_280A46430 == 1)
     {
       v18 = objc_opt_class();
@@ -78,7 +78,7 @@
     v9->_scopeProtectedResourceSet = v33;
 
     v9->_virtualScreen = -1;
-    objc_storeStrong(&v9->_dataCache, a4);
+    objc_storeStrong(&v9->_dataCache, cache);
   }
 
   return v9;
@@ -197,9 +197,9 @@
   return context;
 }
 
-- (void)p_setContext:(id)a3
+- (void)p_setContext:(id)context
 {
-  v30 = a3;
+  contextCopy = context;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v5, v6, v7, v8) & 1) == 0)
   {
     v13 = MEMORY[0x277D81150];
@@ -212,16 +212,16 @@
 
   context = self->_context;
   p_context = &self->_context;
-  if (context != v30)
+  if (context != contextCopy)
   {
-    objc_storeStrong(p_context, a3);
+    objc_storeStrong(p_context, context);
   }
 }
 
-- (id)handleOfResource:(id)a3 loader:(id)a4
+- (id)handleOfResource:(id)resource loader:(id)loader
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  loaderCopy = loader;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v8, v9, v10, v11) & 1) == 0)
   {
     v16 = MEMORY[0x277D81150];
@@ -233,16 +233,16 @@
   }
 
   cache = self->_cache;
-  v32 = objc_msgSend_virtualScreenForContext_(v7, v12, v13, v14, v15, self->_context);
-  v37 = objc_msgSend_keyForLoader_resource_virtualScreen_(cache, v33, v34, v35, v36, v7, v6, v32);
+  v32 = objc_msgSend_virtualScreenForContext_(loaderCopy, v12, v13, v14, v15, self->_context);
+  v37 = objc_msgSend_keyForLoader_resource_virtualScreen_(cache, v33, v34, v35, v36, loaderCopy, resourceCopy, v32);
   v42 = objc_msgSend_handleForKey_(self->_cache, v38, v39, v40, v41, v37);
 
   return v42;
 }
 
-- (void)addActiveResource:(id)a3
+- (void)addActiveResource:(id)resource
 {
-  v31 = a3;
+  resourceCopy = resource;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v4, v5, v6, v7) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -253,15 +253,15 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_msgSend_addObject_(self->_activeResourceSet, v8, v9, v10, v11, v31);
-  objc_msgSend_addObject_(self->_allResourceSet, v27, v28, v29, v30, v31);
+  objc_msgSend_addObject_(self->_activeResourceSet, v8, v9, v10, v11, resourceCopy);
+  objc_msgSend_addObject_(self->_allResourceSet, v27, v28, v29, v30, resourceCopy);
 }
 
-- (id)loadResource:(id)a3 reload:(BOOL)a4 withLoader:(id)a5 config:(id)a6
+- (id)loadResource:(id)resource reload:(BOOL)reload withLoader:(id)loader config:(id)config
 {
-  v10 = a3;
-  v11 = a5;
-  v185 = a6;
+  resourceCopy = resource;
+  loaderCopy = loader;
+  configCopy = config;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v12, v13, v14, v15) & 1) == 0)
   {
     v20 = MEMORY[0x277D81150];
@@ -275,15 +275,15 @@
   if (byte_280A46430 == 1)
   {
     v35 = objc_opt_class();
-    NSLog(&cfstr_PLoad.isa, v35, self, v10);
+    NSLog(&cfstr_PLoad.isa, v35, self, resourceCopy);
   }
 
   v36 = objc_alloc_init(TSCH3DSessionLoadResourceResult);
   cache = self->_cache;
-  v42 = objc_msgSend_virtualScreenForContext_(v11, v38, v39, v40, v41, self->_context);
-  v47 = objc_msgSend_keyForLoader_resource_virtualScreen_(cache, v43, v44, v45, v46, v11, v10, v42);
+  v42 = objc_msgSend_virtualScreenForContext_(loaderCopy, v38, v39, v40, v41, self->_context);
+  v47 = objc_msgSend_keyForLoader_resource_virtualScreen_(cache, v43, v44, v45, v46, loaderCopy, resourceCopy, v42);
   v52 = objc_msgSend_resource(v47, v48, v49, v50, v51);
-  LOBYTE(cache) = objc_msgSend_isEqual_(v52, v53, v54, v55, v56, v10);
+  LOBYTE(cache) = objc_msgSend_isEqual_(v52, v53, v54, v55, v56, resourceCopy);
 
   if ((cache & 1) == 0)
   {
@@ -300,18 +300,18 @@
   v82 = objc_msgSend_handleForKey_(self->_cache, v77, v78, v79, v80, v47);
   if (v82)
   {
-    if (a4)
+    if (reload)
     {
       shouldReuploadHandle_config = 1;
     }
 
     else
     {
-      shouldReuploadHandle_config = objc_msgSend_shouldReuploadHandle_config_(v11, v81, v83, v84, v85, v82, v185);
+      shouldReuploadHandle_config = objc_msgSend_shouldReuploadHandle_config_(loaderCopy, v81, v83, v84, v85, v82, configCopy);
     }
 
     v101 = v82;
-    objc_msgSend_bindHandle_config_(v11, v81, v83, v84, v85, v82, v185);
+    objc_msgSend_bindHandle_config_(loaderCopy, v81, v83, v84, v85, v82, configCopy);
     goto LABEL_17;
   }
 
@@ -329,7 +329,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v93 = objc_msgSend_generateHandleWithConfig_(v11, v88, v89, v90, v91, v185);
+  v93 = objc_msgSend_generateHandleWithConfig_(loaderCopy, v88, v89, v90, v91, configCopy);
   if (!v93)
   {
     v165 = MEMORY[0x277D81150];
@@ -345,7 +345,7 @@ LABEL_26:
   objc_msgSend_setHandle_forKey_(self->_cache, v97, v98, v99, v100, v93, v47);
   shouldReuploadHandle_config = 1;
   v101 = v93;
-  objc_msgSend_bindHandle_config_(v11, v102, v103, v104, v105, v93, v185);
+  objc_msgSend_bindHandle_config_(loaderCopy, v102, v103, v104, v105, v93, configCopy);
 LABEL_17:
   hasFailed = objc_msgSend_hasFailed(self, v106, v107, v108, v109);
   if (hasFailed & 1 | ((shouldReuploadHandle_config & 1) == 0))
@@ -362,14 +362,14 @@ LABEL_17:
       NSLog(&cfstr_PUpload.isa, v121, self, v76);
     }
 
-    v122 = objc_msgSend_uploadResource_handle_insideSession_config_(v11, v116, v118, v119, v120, v76, v101, self, v185);
+    v122 = objc_msgSend_uploadResource_handle_insideSession_config_(loaderCopy, v116, v118, v119, v120, v76, v101, self, configCopy);
     objc_msgSend_setBytesUploaded_forKey_(self->_cache, v123, v124, v125, v126, v122, v47);
     hasEnoughFreeMemoryOfBytes = objc_msgSend_hasEnoughFreeMemoryOfBytes_(self->_cache, v127, v128, v129, v130, 0);
     objc_msgSend_setUploaded_(v36, v131, v132, v133, v134, 1);
     objc_autoreleasePoolPop(v117);
   }
 
-  objc_msgSend_postbindHandle_config_(v11, v111, v112, v113, v114, v101, v185);
+  objc_msgSend_postbindHandle_config_(loaderCopy, v111, v112, v113, v114, v101, configCopy);
   objc_msgSend_addActiveResource_(self, v135, v136, v137, v138, v76);
   objc_msgSend_setHandle_(v36, v139, v140, v141, v142, v101);
   v147 = objc_msgSend_keyForKey_(self->_cache, v143, v144, v145, v146, v47);
@@ -387,9 +387,9 @@ LABEL_27:
   return v36;
 }
 
-- (void)trackResourcesInBlock:(id)a3
+- (void)trackResourcesInBlock:(id)block
 {
-  v51 = a3;
+  blockCopy = block;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v4, v5, v6, v7) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -405,7 +405,7 @@ LABEL_27:
   activeResourceSet = self->_activeResourceSet;
   self->_activeResourceSet = v28;
 
-  v51[2]();
+  blockCopy[2]();
   objc_msgSend_updateUsageCountForResourceSet_fromPreviousResourceSet_(self->_cache, v30, v31, v32, v33, self->_activeResourceSet, v27);
   objc_msgSend_flushMemoryForResourceSet_(self->_sharegroup, v34, v35, v36, v37, self->_activeResourceSet);
   v42 = objc_msgSend_mutableCopy(v27, v38, v39, v40, v41);
@@ -447,7 +447,7 @@ LABEL_27:
   MEMORY[0x2821F9670](sharegroup, sel_garbageCollectAllUnretainedResources, v7, v8, v9);
 }
 
-- (BOOL)hasEnoughFreeMemoryOfBytes:(unint64_t)a3
+- (BOOL)hasEnoughFreeMemoryOfBytes:(unint64_t)bytes
 {
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, a2, v3, v4, v5) & 1) == 0)
   {
@@ -461,13 +461,13 @@ LABEL_27:
 
   cache = self->_cache;
 
-  return objc_msgSend_hasEnoughFreeMemoryOfBytes_(cache, v8, v9, v10, v11, a3);
+  return objc_msgSend_hasEnoughFreeMemoryOfBytes_(cache, v8, v9, v10, v11, bytes);
 }
 
-- (void)protectResource:(id)a3 unprotectOnFail:(BOOL)a4
+- (void)protectResource:(id)resource unprotectOnFail:(BOOL)fail
 {
-  v4 = a4;
-  v33 = a3;
+  failCopy = fail;
+  resourceCopy = resource;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v6, v7, v8, v9) & 1) == 0)
   {
     v14 = MEMORY[0x277D81150];
@@ -478,20 +478,20 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  if (!v4 || (objc_msgSend_hasFailed(self, v10, v11, v12, v13) & 1) == 0)
+  if (!failCopy || (objc_msgSend_hasFailed(self, v10, v11, v12, v13) & 1) == 0)
   {
-    objc_msgSend_protectResource_(self->_cache, v10, v11, v12, v13, v33);
-    if (v4)
+    objc_msgSend_protectResource_(self->_cache, v10, v11, v12, v13, resourceCopy);
+    if (failCopy)
     {
-      objc_msgSend_addObject_(self->_scopeProtectedResourceSet, v29, v30, v31, v32, v33);
+      objc_msgSend_addObject_(self->_scopeProtectedResourceSet, v29, v30, v31, v32, resourceCopy);
     }
   }
 }
 
-- (void)unprotectResource:(id)a3 clearOnFailProtection:(BOOL)a4
+- (void)unprotectResource:(id)resource clearOnFailProtection:(BOOL)protection
 {
-  v4 = a4;
-  v52 = a3;
+  protectionCopy = protection;
+  resourceCopy = resource;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v6, v7, v8, v9) & 1) == 0)
   {
     v14 = MEMORY[0x277D81150];
@@ -502,26 +502,26 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  objc_msgSend_unprotectResource_(self->_cache, v10, v11, v12, v13, v52);
-  if (v4)
+  objc_msgSend_unprotectResource_(self->_cache, v10, v11, v12, v13, resourceCopy);
+  if (protectionCopy)
   {
-    if ((objc_msgSend_containsObject_(self->_scopeProtectedResourceSet, v29, v30, v31, v32, v52) & 1) == 0)
+    if ((objc_msgSend_containsObject_(self->_scopeProtectedResourceSet, v29, v30, v31, v32, resourceCopy) & 1) == 0)
     {
       v37 = MEMORY[0x277D81150];
       v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, v34, v35, v36, "[TSCH3DSession unprotectResource:clearOnFailProtection:]");
       v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, v40, v41, v42, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DSession.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v37, v44, v45, v46, v47, v38, v43, 271, 0, "invalid resource to clear on fail protection %@", v52);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v37, v44, v45, v46, v47, v38, v43, 271, 0, "invalid resource to clear on fail protection %@", resourceCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v48, v49, v50, v51);
     }
 
-    objc_msgSend_removeObject_(self->_scopeProtectedResourceSet, v33, v34, v35, v36, v52);
+    objc_msgSend_removeObject_(self->_scopeProtectedResourceSet, v33, v34, v35, v36, resourceCopy);
   }
 }
 
-- (BOOL)isProtectedResource:(id)a3
+- (BOOL)isProtectedResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v5, v6, v7, v8) & 1) == 0)
   {
     v13 = MEMORY[0x277D81150];
@@ -532,14 +532,14 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
   }
 
-  isProtectedResource = objc_msgSend_isProtectedResource_(self->_cache, v9, v10, v11, v12, v4);
+  isProtectedResource = objc_msgSend_isProtectedResource_(self->_cache, v9, v10, v11, v12, resourceCopy);
 
   return isProtectedResource;
 }
 
-- (void)flushMemoryForResources:(id)a3
+- (void)flushMemoryForResources:(id)resources
 {
-  v27 = a3;
+  resourcesCopy = resources;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v4, v5, v6, v7) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -550,7 +550,7 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_msgSend_flushMemoryForResources_(self->_cache, v8, v9, v10, v11, v27);
+  objc_msgSend_flushMemoryForResources_(self->_cache, v8, v9, v10, v11, resourcesCopy);
 }
 
 - (void)resetTrackingToActiveResources
@@ -584,9 +584,9 @@ LABEL_27:
   objc_msgSend_garbageCollectResources_(sharegroup, v35, v36, v37, v38, allResourceSet);
 }
 
-- (void)flushResources:(id)a3
+- (void)flushResources:(id)resources
 {
-  v27 = a3;
+  resourcesCopy = resources;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v4, v5, v6, v7) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -597,12 +597,12 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_msgSend_flushResourceSet_(self->_sharegroup, v8, v9, v10, v11, v27);
+  objc_msgSend_flushResourceSet_(self->_sharegroup, v8, v9, v10, v11, resourcesCopy);
 }
 
-- (void)forceFlushResources:(id)a3
+- (void)forceFlushResources:(id)resources
 {
-  v35 = a3;
+  resourcesCopy = resources;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v4, v5, v6, v7) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -613,15 +613,15 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_msgSend_minusSet_(self->_activeResourceSet, v8, v9, v10, v11, v35);
-  objc_msgSend_minusSet_(self->_allResourceSet, v27, v28, v29, v30, v35);
-  objc_msgSend_forceFlushResourceSet_(self->_sharegroup, v31, v32, v33, v34, v35);
+  objc_msgSend_minusSet_(self->_activeResourceSet, v8, v9, v10, v11, resourcesCopy);
+  objc_msgSend_minusSet_(self->_allResourceSet, v27, v28, v29, v30, resourcesCopy);
+  objc_msgSend_forceFlushResourceSet_(self->_sharegroup, v31, v32, v33, v34, resourcesCopy);
 }
 
-- (id)shaderForShaderContext:(id)a3 initializeProgramBlock:(id)a4
+- (id)shaderForShaderContext:(id)context initializeProgramBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  blockCopy = block;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v8, v9, v10, v11) & 1) == 0)
   {
     v16 = MEMORY[0x277D81150];
@@ -633,14 +633,14 @@ LABEL_27:
   }
 
   v31 = objc_msgSend_shaderCache(self->_sharegroup, v12, v13, v14, v15);
-  v36 = objc_msgSend_shaderForShaderContext_initializeProgramBlock_(v31, v32, v33, v34, v35, v6, v7);
+  v36 = objc_msgSend_shaderForShaderContext_initializeProgramBlock_(v31, v32, v33, v34, v35, contextCopy, blockCopy);
 
   return v36;
 }
 
-- (void)beginFrameWithSharegroupDelegate:(id)a3
+- (void)beginFrameWithSharegroupDelegate:(id)delegate
 {
-  v47 = a3;
+  delegateCopy = delegate;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v4, v5, v6, v7) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -663,12 +663,12 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
   }
 
-  objc_msgSend_setDelegate_(self->_sharegroup, v28, v29, v30, v31, v47);
+  objc_msgSend_setDelegate_(self->_sharegroup, v28, v29, v30, v31, delegateCopy);
 }
 
-- (void)endFrameWithSharegroupDelegate:(id)a3
+- (void)endFrameWithSharegroupDelegate:(id)delegate
 {
-  v47 = a3;
+  delegateCopy = delegate;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, v4, v5, v6, v7) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -681,7 +681,7 @@ LABEL_27:
 
   v27 = objc_msgSend_delegate(self->_sharegroup, v8, v9, v10, v11);
 
-  if (v27 != v47)
+  if (v27 != delegateCopy)
   {
     v32 = MEMORY[0x277D81150];
     v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, v29, v30, v31, "[TSCH3DSession endFrameWithSharegroupDelegate:]");
@@ -694,7 +694,7 @@ LABEL_27:
   objc_msgSend_setDelegate_(self->_sharegroup, v28, v29, v30, v31, 0);
 }
 
-- (void)setIfIsMoreDemandingPerformance:(int)a3
+- (void)setIfIsMoreDemandingPerformance:(int)performance
 {
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, a2, v3, v4, v5) & 1) == 0)
   {
@@ -711,9 +711,9 @@ LABEL_27:
   MEMORY[0x2821F9670](sharegroup, sel_setIfIsMoreDemandingPerformance_, v8, v9, v10);
 }
 
-- (void)setPerformance:(int)a3
+- (void)setPerformance:(int)performance
 {
-  v6 = *&a3;
+  v6 = *&performance;
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, a2, v3, v4, v5) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -744,7 +744,7 @@ LABEL_27:
   return self->_virtualScreen;
 }
 
-- (void)setVirtualScreen:(int64_t)a3
+- (void)setVirtualScreen:(int64_t)screen
 {
   if ((objc_msgSend_isCurrentThreadOwner(self->_sharegroup, a2, v3, v4, v5) & 1) == 0)
   {
@@ -756,7 +756,7 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  self->_virtualScreen = a3;
+  self->_virtualScreen = screen;
 }
 
 - (int)performance

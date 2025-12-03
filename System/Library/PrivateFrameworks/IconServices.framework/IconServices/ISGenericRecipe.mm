@@ -1,13 +1,13 @@
 @interface ISGenericRecipe
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISGenericRecipe
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v8 setSize:width, height];
   [(ISLayer *)v8 setName:@"layer"];
@@ -20,8 +20,8 @@
   if ([(ISGenericRecipe *)self borderWidth])
   {
     v10 = [objc_alloc(MEMORY[0x1E69A8968]) initWithWhite:0.5 alpha:1.0];
-    v11 = [[ISBorderEffect alloc] initWithLineWidth:v10 color:[(ISGenericRecipe *)self borderWidth]* a4];
-    [(ISLayer *)v8 setEffect:v11];
+    scale = [[ISBorderEffect alloc] initWithLineWidth:v10 color:[(ISGenericRecipe *)self borderWidth]* scale];
+    [(ISLayer *)v8 setEffect:scale];
   }
 
   return v8;

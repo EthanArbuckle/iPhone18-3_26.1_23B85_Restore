@@ -83,12 +83,12 @@
   v12 = v11;
   [(CIVector *)self->inputCenter Y];
   v14 = [CIVector vectorWithX:v12 Y:v13 Z:v4];
-  v15 = [(_CIScreenFilter *)self _kernel];
+  _kernel = [(_CIScreenFilter *)self _kernel];
   [(CIImage *)self->inputImage extent];
   v21[0] = self->inputImage;
   v21[1] = v14;
   v21[2] = v10;
-  return [v15 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v21, 3), v16, v17, v18, v19}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v21, 3), v16, v17, v18, v19}];
 }
 
 @end

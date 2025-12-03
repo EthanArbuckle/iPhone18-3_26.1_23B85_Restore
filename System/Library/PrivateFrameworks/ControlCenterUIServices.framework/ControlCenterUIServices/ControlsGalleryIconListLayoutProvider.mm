@@ -1,6 +1,6 @@
 @interface ControlsGalleryIconListLayoutProvider
 - (_TtC23ControlCenterUIServices37ControlsGalleryIconListLayoutProvider)init;
-- (_TtC23ControlCenterUIServices37ControlsGalleryIconListLayoutProvider)initWithListLayouts:(id)a3 defaultLayout:(id)a4;
+- (_TtC23ControlCenterUIServices37ControlsGalleryIconListLayoutProvider)initWithListLayouts:(id)layouts defaultLayout:(id)layout;
 @end
 
 @implementation ControlsGalleryIconListLayoutProvider
@@ -30,7 +30,7 @@
   return v10;
 }
 
-- (_TtC23ControlCenterUIServices37ControlsGalleryIconListLayoutProvider)initWithListLayouts:(id)a3 defaultLayout:(id)a4
+- (_TtC23ControlCenterUIServices37ControlsGalleryIconListLayoutProvider)initWithListLayouts:(id)layouts defaultLayout:(id)layout
 {
   type metadata accessor for SBIconLocation(0);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EDDD820, &qword_2442B78C0);
@@ -41,7 +41,7 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for ControlsGalleryIconListLayoutProvider();
-  v7 = [(SBHCustomIconListLayoutProvider *)&v9 initWithListLayouts:v6 defaultLayout:a4];
+  v7 = [(SBHCustomIconListLayoutProvider *)&v9 initWithListLayouts:v6 defaultLayout:layout];
 
   swift_unknownObjectRelease();
   return v7;

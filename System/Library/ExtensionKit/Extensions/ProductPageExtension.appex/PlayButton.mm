@@ -1,6 +1,6 @@
 @interface PlayButton
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_TtC20ProductPageExtension10PlayButton)initWithFrame:(CGRect)a3;
+- (_TtC20ProductPageExtension10PlayButton)initWithFrame:(CGRect)frame;
 - (void)didTap;
 - (void)layoutSubviews;
 @end
@@ -31,7 +31,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004BE564();
 }
 
@@ -40,7 +40,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension10PlayButton_tapActionBlock);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10001CE50(v2);
     v2(v4);
 
@@ -48,7 +48,7 @@
   }
 }
 
-- (_TtC20ProductPageExtension10PlayButton)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension10PlayButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

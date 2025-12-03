@@ -1,96 +1,96 @@
 @interface SPBeaconingKey
-- (SPBeaconingKey)initWithCoder:(id)a3;
-- (SPBeaconingKey)initWithDateInterval:(id)a3 key:(id)a4;
-- (SPBeaconingKey)initWithDateInterval:(id)a3 key:(id)a4 secondaryKey:(id)a5 primaryIndex:(unint64_t)a6 secondaryIndex:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPBeaconingKey)initWithCoder:(id)coder;
+- (SPBeaconingKey)initWithDateInterval:(id)interval key:(id)key;
+- (SPBeaconingKey)initWithDateInterval:(id)interval key:(id)key secondaryKey:(id)secondaryKey primaryIndex:(unint64_t)index secondaryIndex:(unint64_t)secondaryIndex;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPBeaconingKey
 
-- (SPBeaconingKey)initWithDateInterval:(id)a3 key:(id)a4
+- (SPBeaconingKey)initWithDateInterval:(id)interval key:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  intervalCopy = interval;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = SPBeaconingKey;
   v9 = [(SPBeaconingKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dateInterval, a3);
-    objc_storeStrong(&v10->_key, a4);
+    objc_storeStrong(&v9->_dateInterval, interval);
+    objc_storeStrong(&v10->_key, key);
   }
 
   return v10;
 }
 
-- (SPBeaconingKey)initWithDateInterval:(id)a3 key:(id)a4 secondaryKey:(id)a5 primaryIndex:(unint64_t)a6 secondaryIndex:(unint64_t)a7
+- (SPBeaconingKey)initWithDateInterval:(id)interval key:(id)key secondaryKey:(id)secondaryKey primaryIndex:(unint64_t)index secondaryIndex:(unint64_t)secondaryIndex
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  intervalCopy = interval;
+  keyCopy = key;
+  secondaryKeyCopy = secondaryKey;
   v19.receiver = self;
   v19.super_class = SPBeaconingKey;
   v16 = [(SPBeaconingKey *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_dateInterval, a3);
-    objc_storeStrong(&v17->_key, a4);
-    objc_storeStrong(&v17->_secondaryKey, a5);
-    v17->_primaryIndex = a6;
-    v17->_secondaryIndex = a7;
+    objc_storeStrong(&v16->_dateInterval, interval);
+    objc_storeStrong(&v17->_key, key);
+    objc_storeStrong(&v17->_secondaryKey, secondaryKey);
+    v17->_primaryIndex = index;
+    v17->_secondaryIndex = secondaryIndex;
   }
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPBeaconingKey alloc];
-  v5 = [(SPBeaconingKey *)self dateInterval];
+  dateInterval = [(SPBeaconingKey *)self dateInterval];
   v6 = [(SPBeaconingKey *)self key];
-  v7 = [(SPBeaconingKey *)self secondaryKey];
-  v8 = [(SPBeaconingKey *)v4 initWithDateInterval:v5 key:v6 secondaryKey:v7 primaryIndex:[(SPBeaconingKey *)self primaryIndex] secondaryIndex:[(SPBeaconingKey *)self secondaryIndex]];
+  secondaryKey = [(SPBeaconingKey *)self secondaryKey];
+  v8 = [(SPBeaconingKey *)v4 initWithDateInterval:dateInterval key:v6 secondaryKey:secondaryKey primaryIndex:[(SPBeaconingKey *)self primaryIndex] secondaryIndex:[(SPBeaconingKey *)self secondaryIndex]];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_key forKey:@"key"];
-  [v5 encodeObject:self->_secondaryKey forKey:@"secondaryKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_key forKey:@"key"];
+  [coderCopy encodeObject:self->_secondaryKey forKey:@"secondaryKey"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_primaryIndex];
-  [v5 encodeObject:v6 forKey:@"primaryIndex"];
+  [coderCopy encodeObject:v6 forKey:@"primaryIndex"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_secondaryIndex];
-  [v5 encodeObject:v7 forKey:@"secondaryIndex"];
+  [coderCopy encodeObject:v7 forKey:@"secondaryIndex"];
 }
 
-- (SPBeaconingKey)initWithCoder:(id)a3
+- (SPBeaconingKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
   dateInterval = self->_dateInterval;
   self->_dateInterval = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
   key = self->_key;
   self->_key = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryKey"];
   secondaryKey = self->_secondaryKey;
   self->_secondaryKey = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryIndex"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryIndex"];
   self->_primaryIndex = [v11 unsignedIntegerValue];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryIndex"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryIndex"];
 
   self->_secondaryIndex = [v12 unsignedIntegerValue];
   return self;
@@ -100,10 +100,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPBeaconingKey *)self dateInterval];
+  dateInterval = [(SPBeaconingKey *)self dateInterval];
   v6 = [(SPBeaconingKey *)self key];
-  v7 = [(SPBeaconingKey *)self secondaryKey];
-  v8 = [v3 stringWithFormat:@"<%@: %p -- dateInterval: %@ key: %@ secondaryKey: %@ primaryIndex: %llu secondaryIndex: %llu>", v4, self, v5, v6, v7, -[SPBeaconingKey primaryIndex](self, "primaryIndex"), -[SPBeaconingKey secondaryIndex](self, "secondaryIndex")];
+  secondaryKey = [(SPBeaconingKey *)self secondaryKey];
+  v8 = [v3 stringWithFormat:@"<%@: %p -- dateInterval: %@ key: %@ secondaryKey: %@ primaryIndex: %llu secondaryIndex: %llu>", v4, self, dateInterval, v6, secondaryKey, -[SPBeaconingKey primaryIndex](self, "primaryIndex"), -[SPBeaconingKey secondaryIndex](self, "secondaryIndex")];
 
   return v8;
 }

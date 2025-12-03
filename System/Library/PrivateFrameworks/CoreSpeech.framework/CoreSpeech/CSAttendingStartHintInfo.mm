@@ -1,5 +1,5 @@
 @interface CSAttendingStartHintInfo
-- (CSAttendingStartHintInfo)initWithOrigin:(unint64_t)a3 reason:(unint64_t)a4 recordContext:(id)a5 rootRequestId:(id)a6 mhUUID:(id)a7;
+- (CSAttendingStartHintInfo)initWithOrigin:(unint64_t)origin reason:(unint64_t)reason recordContext:(id)context rootRequestId:(id)id mhUUID:(id)d;
 - (id)_reasonString;
 - (id)description;
 @end
@@ -13,8 +13,8 @@
   v7.super_class = CSAttendingStartHintInfo;
   v4 = [(CSAttendingHintInfo *)&v7 description];
   [v3 appendFormat:@"%@", v4];
-  v5 = [(CSAttendingStartHintInfo *)self _reasonString];
-  [v3 appendFormat:@"[reason: %@]", v5];
+  _reasonString = [(CSAttendingStartHintInfo *)self _reasonString];
+  [v3 appendFormat:@"[reason: %@]", _reasonString];
 
   [v3 appendFormat:@"[recordContext: %@]", self->_recordContext];
   [v3 appendFormat:@"[rootRequestId: %@]", self->_rootRequestId];
@@ -43,21 +43,21 @@
   }
 }
 
-- (CSAttendingStartHintInfo)initWithOrigin:(unint64_t)a3 reason:(unint64_t)a4 recordContext:(id)a5 rootRequestId:(id)a6 mhUUID:(id)a7
+- (CSAttendingStartHintInfo)initWithOrigin:(unint64_t)origin reason:(unint64_t)reason recordContext:(id)context rootRequestId:(id)id mhUUID:(id)d
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  contextCopy = context;
+  idCopy = id;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = CSAttendingStartHintInfo;
-  v16 = [(CSAttendingHintInfo *)&v19 initWithOrigin:a3];
+  v16 = [(CSAttendingHintInfo *)&v19 initWithOrigin:origin];
   v17 = v16;
   if (v16)
   {
-    v16->_reason = a4;
-    objc_storeStrong(&v16->_recordContext, a5);
-    objc_storeStrong(&v17->_rootRequestId, a6);
-    objc_storeStrong(&v17->_mhUUID, a7);
+    v16->_reason = reason;
+    objc_storeStrong(&v16->_recordContext, context);
+    objc_storeStrong(&v17->_rootRequestId, id);
+    objc_storeStrong(&v17->_mhUUID, d);
   }
 
   return v17;

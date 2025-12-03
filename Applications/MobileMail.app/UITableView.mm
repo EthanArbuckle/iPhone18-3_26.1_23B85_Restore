@@ -1,6 +1,6 @@
 @interface UITableView
-- (BOOL)mf_isIndexPathVisible:(id)a3;
-- (BOOL)mf_isIndexPathVisible:(id)a3 overlap:(CGRect)a4;
+- (BOOL)mf_isIndexPathVisible:(id)visible;
+- (BOOL)mf_isIndexPathVisible:(id)visible overlap:(CGRect)overlap;
 - (CGRect)mf_safeVisibleBounds;
 @end
 
@@ -27,15 +27,15 @@
   return result;
 }
 
-- (BOOL)mf_isIndexPathVisible:(id)a3
+- (BOOL)mf_isIndexPathVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(UITableView *)self indexPathsForVisibleRows];
-  v6 = [v5 containsObject:v4];
+  visibleCopy = visible;
+  indexPathsForVisibleRows = [(UITableView *)self indexPathsForVisibleRows];
+  v6 = [indexPathsForVisibleRows containsObject:visibleCopy];
 
   if (v6)
   {
-    [(UITableView *)self rectForRowAtIndexPath:v4];
+    [(UITableView *)self rectForRowAtIndexPath:visibleCopy];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -56,15 +56,15 @@
   return v15;
 }
 
-- (BOOL)mf_isIndexPathVisible:(id)a3 overlap:(CGRect)a4
+- (BOOL)mf_isIndexPathVisible:(id)visible overlap:(CGRect)overlap
 {
-  v5 = a3;
-  v6 = [(UITableView *)self indexPathsForVisibleRows];
-  v7 = [v6 containsObject:v5];
+  visibleCopy = visible;
+  indexPathsForVisibleRows = [(UITableView *)self indexPathsForVisibleRows];
+  v7 = [indexPathsForVisibleRows containsObject:visibleCopy];
 
   if (v7)
   {
-    [(UITableView *)self rectForRowAtIndexPath:v5];
+    [(UITableView *)self rectForRowAtIndexPath:visibleCopy];
     [(UITableView *)self convertRect:self toView:?];
     v9 = v8;
     v11 = v10;
@@ -97,18 +97,18 @@
       v20 = CGRectIntersectsRect(v25, v27);
     }
 
-    if (!CGRectIsNull(a4))
+    if (!CGRectIsNull(overlap))
     {
       v28.origin.x = v9;
       v28.origin.y = v11;
       v28.size.width = v13;
       v28.size.height = v15;
-      v21 = CGRectContainsRect(a4, v28);
+      v21 = CGRectContainsRect(overlap, v28);
       v29.origin.x = v9;
       v29.origin.y = v11;
       v29.size.width = v13;
       v29.size.height = v15;
-      CGRectIntersectsRect(a4, v29);
+      CGRectIntersectsRect(overlap, v29);
       v20 &= !v21;
     }
   }

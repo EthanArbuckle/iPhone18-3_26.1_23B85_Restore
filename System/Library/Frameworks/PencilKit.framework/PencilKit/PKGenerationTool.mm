@@ -1,6 +1,6 @@
 @interface PKGenerationTool
 - (PKGenerationTool)init;
-- (id)_initWithInk:(id)a3;
+- (id)_initWithInk:(id)ink;
 @end
 
 @implementation PKGenerationTool
@@ -16,10 +16,10 @@
   return v5;
 }
 
-- (id)_initWithInk:(id)a3
+- (id)_initWithInk:(id)ink
 {
-  v4 = [a3 color];
-  v5 = [PKInk inkWithType:@"com.apple.ink.generationtool" color:v4 weight:1.0 azimuth:0.0];
+  color = [ink color];
+  v5 = [PKInk inkWithType:@"com.apple.ink.generationtool" color:color weight:1.0 azimuth:0.0];
   v8.receiver = self;
   v8.super_class = PKGenerationTool;
   v6 = [(PKTool *)&v8 _initWithInk:v5];

@@ -1,22 +1,22 @@
 @interface CIDisparitySmoothingProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (void)compilePipelines:(id)a3;
-+ (void)compilePipelinesIfNeeded:(id)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (void)compilePipelines:(id)pipelines;
++ (void)compilePipelinesIfNeeded:(id)needed;
 + (void)releasePipelines;
 @end
 
 @implementation CIDisparitySmoothingProcessor
 
-+ (void)compilePipelines:(id)a3
++ (void)compilePipelines:(id)pipelines
 {
   v7 = 0;
-  v4 = [a3 newDefaultLibraryWithBundle:objc_msgSend(MEMORY[0x1E696AAE8] error:{"bundleForClass:", objc_opt_class()), 0}];
+  v4 = [pipelines newDefaultLibraryWithBundle:objc_msgSend(MEMORY[0x1E696AAE8] error:{"bundleForClass:", objc_opt_class()), 0}];
   v5 = [v4 newFunctionWithName:@"CIDisparitySmoothing"];
-  shaderDisparitySmoothing = [a3 newComputePipelineStateWithFunction:v5 error:&v7];
+  shaderDisparitySmoothing = [pipelines newComputePipelineStateWithFunction:v5 error:&v7];
   if (v7)
   {
-    v6 = [v7 localizedDescription];
-    NSLog(&cfstr_FailedToInitia.isa, v6, [v7 localizedFailureReason]);
+    localizedDescription = [v7 localizedDescription];
+    NSLog(&cfstr_FailedToInitia.isa, localizedDescription, [v7 localizedFailureReason]);
   }
 }
 
@@ -29,12 +29,12 @@
   shaderDisparitySmoothing = 0;
 }
 
-+ (void)compilePipelinesIfNeeded:(id)a3
++ (void)compilePipelinesIfNeeded:(id)needed
 {
   v5 = +[CIDisparitySmoothingProcessor compilePipelinesIfNeeded:]::targetedDevice;
-  if (+[CIDisparitySmoothingProcessor compilePipelinesIfNeeded:]::targetedDevice == a3)
+  if (+[CIDisparitySmoothingProcessor compilePipelinesIfNeeded:]::targetedDevice == needed)
   {
-    if ([a1 hasValidPipelines])
+    if ([self hasValidPipelines])
     {
       return;
     }
@@ -42,56 +42,56 @@
     v5 = +[CIDisparitySmoothingProcessor compilePipelinesIfNeeded:]::targetedDevice;
   }
 
-  if (v5 != a3)
+  if (v5 != needed)
   {
-    [a1 releasePipelines];
-    +[CIDisparitySmoothingProcessor compilePipelinesIfNeeded:]::targetedDevice = a3;
+    [self releasePipelines];
+    +[CIDisparitySmoothingProcessor compilePipelinesIfNeeded:]::targetedDevice = needed;
   }
 
-  if (([a1 hasValidPipelines] & 1) == 0)
+  if (([self hasValidPipelines] & 1) == 0)
   {
 
-    [a1 compilePipelines:a3];
+    [self compilePipelines:needed];
   }
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v9 = [a5 metalCommandBuffer];
-  [a1 compilePipelinesIfNeeded:{objc_msgSend(v9, "device")}];
-  v10 = [a1 hasValidPipelines];
-  if (v10)
+  metalCommandBuffer = [output metalCommandBuffer];
+  [self compilePipelinesIfNeeded:{objc_msgSend(metalCommandBuffer, "device")}];
+  hasValidPipelines = [self hasValidPipelines];
+  if (hasValidPipelines)
   {
-    v11 = [a3 objectAtIndexedSubscript:0];
-    v12 = [v11 metalTexture];
-    v13 = [a5 metalTexture];
+    v11 = [inputs objectAtIndexedSubscript:0];
+    metalTexture = [v11 metalTexture];
+    metalTexture2 = [output metalTexture];
     [v11 region];
     v15 = v14;
     [v11 region];
     LODWORD(v11) = v15 >> 1;
     v17 = v16 >> 1;
     v27 = 0;
-    v18 = [shaderDisparitySmoothing maxTotalThreadsPerThreadgroup];
-    mtlutl_ComputeThreadGroupParameters(v18, [shaderDisparitySmoothing threadExecutionWidth], &v27 + 1, &v27, v11, v17);
+    maxTotalThreadsPerThreadgroup = [shaderDisparitySmoothing maxTotalThreadsPerThreadgroup];
+    mtlutl_ComputeThreadGroupParameters(maxTotalThreadsPerThreadgroup, [shaderDisparitySmoothing threadExecutionWidth], &v27 + 1, &v27, v11, v17);
     v20 = v27;
     v19 = HIDWORD(v27);
     v21 = v11 / HIDWORD(v27);
     v22 = v17 / v27;
-    v23 = [v9 computeCommandEncoder];
-    [v23 setComputePipelineState:shaderDisparitySmoothing];
-    [v23 setTexture:v12 atIndex:0];
-    [v23 setTexture:v13 atIndex:1];
+    computeCommandEncoder = [metalCommandBuffer computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:shaderDisparitySmoothing];
+    [computeCommandEncoder setTexture:metalTexture atIndex:0];
+    [computeCommandEncoder setTexture:metalTexture2 atIndex:1];
     v26[0] = v21;
     v26[1] = v22;
     v26[2] = 1;
     v25[0] = v19;
     v25[1] = v20;
     v25[2] = 1;
-    [v23 dispatchThreadgroups:v26 threadsPerThreadgroup:v25];
-    [v23 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v26 threadsPerThreadgroup:v25];
+    [computeCommandEncoder endEncoding];
   }
 
-  return v10;
+  return hasValidPipelines;
 }
 
 @end

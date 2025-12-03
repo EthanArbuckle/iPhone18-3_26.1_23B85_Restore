@@ -1,23 +1,23 @@
 @interface NSString
-+ (id)hexStringWithData:(id)a3;
-- (id)initHexStringWithData:(id)a3;
++ (id)hexStringWithData:(id)data;
+- (id)initHexStringWithData:(id)data;
 @end
 
 @implementation NSString
 
-+ (id)hexStringWithData:(id)a3
++ (id)hexStringWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[NSString alloc] initHexStringWithData:v3];
+  dataCopy = data;
+  v4 = [[NSString alloc] initHexStringWithData:dataCopy];
 
   return v4;
 }
 
-- (id)initHexStringWithData:(id)a3
+- (id)initHexStringWithData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 length], v7 = objc_msgSend(v5, "bytes"), v8 = 2 * v6, (v9 = malloc_type_malloc(2 * v6, 0x100004077774924uLL)) != 0))
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && (v6 = [dataCopy length], v7 = objc_msgSend(v5, "bytes"), v8 = 2 * v6, (v9 = malloc_type_malloc(2 * v6, 0x100004077774924uLL)) != 0))
   {
     if (v6)
     {
@@ -57,15 +57,15 @@
     }
 
     self = [(NSString *)self initWithBytesNoCopy:v9 length:v8 encoding:1 freeWhenDone:1];
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

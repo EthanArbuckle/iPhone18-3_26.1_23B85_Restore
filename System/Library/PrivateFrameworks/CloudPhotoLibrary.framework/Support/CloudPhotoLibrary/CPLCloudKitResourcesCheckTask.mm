@@ -1,32 +1,32 @@
 @interface CPLCloudKitResourcesCheckTask
-- (BOOL)_checkResource:(id)a3 record:(id)a4 error:(id *)a5;
-- (CPLCloudKitResourcesCheckTask)initWithController:(id)a3 resources:(id)a4 targetMapping:(id)a5 transportScopeMapping:(id)a6 completionHandler:(id)a7;
+- (BOOL)_checkResource:(id)resource record:(id)record error:(id *)error;
+- (CPLCloudKitResourcesCheckTask)initWithController:(id)controller resources:(id)resources targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitResourcesCheckTask
 
-- (CPLCloudKitResourcesCheckTask)initWithController:(id)a3 resources:(id)a4 targetMapping:(id)a5 transportScopeMapping:(id)a6 completionHandler:(id)a7
+- (CPLCloudKitResourcesCheckTask)initWithController:(id)controller resources:(id)resources targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  resourcesCopy = resources;
+  mappingCopy = mapping;
+  scopeMappingCopy = scopeMapping;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = CPLCloudKitResourcesCheckTask;
-  v16 = [(CPLCloudKitTransportTask *)&v22 initWithController:a3];
+  v16 = [(CPLCloudKitTransportTask *)&v22 initWithController:controller];
   if (v16)
   {
-    v17 = [v15 copy];
+    v17 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v17;
 
-    v19 = [v12 copy];
+    v19 = [resourcesCopy copy];
     resources = v16->_resources;
     v16->_resources = v19;
 
-    objc_storeStrong(&v16->_targetMapping, a5);
-    [(CPLCloudKitTransportTask *)v16 setTransportScopeMapping:v14];
+    objc_storeStrong(&v16->_targetMapping, mapping);
+    [(CPLCloudKitTransportTask *)v16 setTransportScopeMapping:scopeMappingCopy];
     [(CPLCloudKitTransportTask *)v16 setForeground:1];
   }
 
@@ -59,7 +59,7 @@
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v21 = self;
+    selfCopy = self;
     v9 = self->_resources;
     v10 = [(NSArray *)v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v10)
@@ -76,16 +76,16 @@
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [(NSArray *)v14 itemScopedIdentifier];
-          if (v15)
+          itemScopedIdentifier = [(NSArray *)v14 itemScopedIdentifier];
+          if (itemScopedIdentifier)
           {
-            v16 = [v8 objectForKeyedSubscript:v15];
+            v16 = [v8 objectForKeyedSubscript:itemScopedIdentifier];
             v17 = [v16 mutableCopy];
 
             if (!v17)
             {
               v17 = objc_alloc_init(NSMutableArray);
-              [v8 setObject:v17 forKeyedSubscript:v15];
+              [v8 setObject:v17 forKeyedSubscript:itemScopedIdentifier];
             }
 
             [v17 addObject:v14];
@@ -116,16 +116,16 @@ LABEL_19:
       while (v11);
     }
 
-    v18 = [v8 allKeys];
-    targetMapping = v21->_targetMapping;
+    allKeys = [v8 allKeys];
+    targetMapping = selfCopy->_targetMapping;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1000B4000;
     v23[3] = &unk_100275080;
-    v23[4] = v21;
+    v23[4] = selfCopy;
     v24 = v8;
     v20 = v8;
-    [(CPLCloudKitTransportTask *)v21 fetchFullRecordsForScopedIdentifiers:v18 targetMapping:targetMapping completionHandler:v23];
+    [(CPLCloudKitTransportTask *)selfCopy fetchFullRecordsForScopedIdentifiers:allKeys targetMapping:targetMapping completionHandler:v23];
 
     v5 = v22;
   }
@@ -136,37 +136,37 @@ LABEL_19:
   }
 }
 
-- (BOOL)_checkResource:(id)a3 record:(id)a4 error:(id *)a5
+- (BOOL)_checkResource:(id)resource record:(id)record error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 resourceType];
-  v10 = [v8 resourceForType:v9];
+  resourceCopy = resource;
+  recordCopy = record;
+  resourceType = [resourceCopy resourceType];
+  v10 = [recordCopy resourceForType:resourceType];
 
   if (!v10)
   {
-    v11 = [CPLResource shortDescriptionForResourceType:v9];
-    v25 = [CPLErrors cplErrorWithCode:26 description:@"Unable to find resource %@ on cloud record", v11];
+    identity = [CPLResource shortDescriptionForResourceType:resourceType];
+    resourceCopy = [CPLErrors cplErrorWithCode:26 description:@"Unable to find resource %@ on cloud record", identity];
     goto LABEL_18;
   }
 
-  v11 = [v7 identity];
-  v12 = [v10 identity];
-  [v11 imageDimensions];
+  identity = [resourceCopy identity];
+  identity2 = [v10 identity];
+  [identity imageDimensions];
   v14 = v13;
   v16 = v15;
-  [v12 imageDimensions];
+  [identity2 imageDimensions];
   if (v14 == v18 && v16 == v17)
   {
-    v20 = [v11 fileSize];
-    if (v20 == [v12 fileSize])
+    fileSize = [identity fileSize];
+    if (fileSize == [identity2 fileSize])
     {
-      v21 = [v11 fileUTI];
-      v22 = [v12 fileUTI];
-      v23 = v22;
-      if (v21 && v22)
+      fileUTI = [identity fileUTI];
+      fileUTI2 = [identity2 fileUTI];
+      v23 = fileUTI2;
+      if (fileUTI && fileUTI2)
       {
-        v24 = [v21 isEqual:v22];
+        v24 = [fileUTI isEqual:fileUTI2];
 
         if ((v24 & 1) == 0)
         {
@@ -174,12 +174,12 @@ LABEL_19:
         }
 
 LABEL_14:
-        v26 = [v11 fingerPrint];
-        v27 = [v12 fingerPrint];
-        v28 = v27;
-        if (v26 && v27)
+        fingerPrint = [identity fingerPrint];
+        fingerPrint2 = [identity2 fingerPrint];
+        v28 = fingerPrint2;
+        if (fingerPrint && fingerPrint2)
         {
-          v29 = [v26 isEqual:v27];
+          v29 = [fingerPrint isEqual:fingerPrint2];
 
           if ((v29 & 1) == 0)
           {
@@ -190,18 +190,18 @@ LABEL_14:
         else
         {
 
-          if (v26 | v28)
+          if (fingerPrint | v28)
           {
             goto LABEL_17;
           }
         }
 
-        v25 = 0;
+        resourceCopy = 0;
         v32 = 1;
         goto LABEL_21;
       }
 
-      if (!(v21 | v23))
+      if (!(fileUTI | v23))
       {
         goto LABEL_14;
       }
@@ -209,15 +209,15 @@ LABEL_14:
   }
 
 LABEL_17:
-  v30 = [CPLResource shortDescriptionForResourceType:v9];
-  v25 = [CPLErrors cplErrorWithCode:26 description:@"Resource %@ on cloud record is different from %@", v30, v7];
+  v30 = [CPLResource shortDescriptionForResourceType:resourceType];
+  resourceCopy = [CPLErrors cplErrorWithCode:26 description:@"Resource %@ on cloud record is different from %@", v30, resourceCopy];
 
 LABEL_18:
-  if (a5)
+  if (error)
   {
-    v31 = v25;
+    v31 = resourceCopy;
     v32 = 0;
-    *a5 = v25;
+    *error = resourceCopy;
   }
 
   else

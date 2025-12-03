@@ -1,16 +1,16 @@
 @interface HMDAppleMediaAccessoriesStateManager
 + (id)logCategory;
-- (HMDAppleMediaAccessoriesStateManager)initWithIdentifier:(id)a3 messenger:(id)a4 metricsDispatcher:(id)a5;
+- (HMDAppleMediaAccessoriesStateManager)initWithIdentifier:(id)identifier messenger:(id)messenger metricsDispatcher:(id)dispatcher;
 - (HMDAppleMediaAccessoriesStateManagerDataSource)dataSource;
 - (id)dataSourceAppleMediaAccessories;
 - (id)logIdentifier;
 - (id)remoteAppleMediaAccessories;
 - (id)remoteAppleMediaAccessoriesByIdentifier;
-- (id)sendModelIdentifierRequestMessageForAppleMediaAccessory:(id)a3 accessoryIdentifier:(id)a4;
-- (void)_correctStateForMatchingIdentifier:(id)a3 appleMediaAccessories:(id)a4 sendList:(id)a5;
-- (void)appleMediaAccessoriesStateMessenger:(id)a3 didReceiveModelIdentifierRequestMessage:(id)a4 withAccessoryIdentifier:(id)a5;
-- (void)correctStateForMatchingAppleMediaAccessories:(id)a3 modelIdentifier:(id)a4;
-- (void)correctStateForMatchingIdentifier:(id)a3 appleMediaAccessories:(id)a4;
+- (id)sendModelIdentifierRequestMessageForAppleMediaAccessory:(id)accessory accessoryIdentifier:(id)identifier;
+- (void)_correctStateForMatchingIdentifier:(id)identifier appleMediaAccessories:(id)accessories sendList:(id)list;
+- (void)appleMediaAccessoriesStateMessenger:(id)messenger didReceiveModelIdentifierRequestMessage:(id)message withAccessoryIdentifier:(id)identifier;
+- (void)correctStateForMatchingAppleMediaAccessories:(id)accessories modelIdentifier:(id)identifier;
+- (void)correctStateForMatchingIdentifier:(id)identifier appleMediaAccessories:(id)accessories;
 - (void)run;
 - (void)runMultipleIdentifierCorrectionSequence;
 @end
@@ -26,26 +26,26 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAppleMediaAccessoriesStateManager *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDAppleMediaAccessoriesStateManager *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)dataSourceAppleMediaAccessories
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAppleMediaAccessoriesStateManager *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDAppleMediaAccessoriesStateManager *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 appleMediaAccessoriesForStateManager:self];
+    v5 = [dataSource appleMediaAccessoriesForStateManager:self];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -66,8 +66,8 @@
 
 - (id)remoteAppleMediaAccessories
 {
-  v2 = [(HMDAppleMediaAccessoriesStateManager *)self dataSourceAppleMediaAccessories];
-  v3 = [v2 na_filter:&__block_literal_global_772];
+  dataSourceAppleMediaAccessories = [(HMDAppleMediaAccessoriesStateManager *)self dataSourceAppleMediaAccessories];
+  v3 = [dataSourceAppleMediaAccessories na_filter:&__block_literal_global_772];
 
   return v3;
 }
@@ -75,13 +75,13 @@
 - (id)remoteAppleMediaAccessoriesByIdentifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDAppleMediaAccessoriesStateManager *)self remoteAppleMediaAccessories];
-  v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  remoteAppleMediaAccessories = [(HMDAppleMediaAccessoriesStateManager *)self remoteAppleMediaAccessories];
+  v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(remoteAppleMediaAccessories, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v2;
+  obj = remoteAppleMediaAccessories;
   v4 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v4)
   {
@@ -99,10 +99,10 @@
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        if (v10)
+        identifier = [v9 identifier];
+        if (identifier)
         {
-          v11 = [v3 objectForKey:v10];
+          v11 = [v3 objectForKey:identifier];
           v12 = v11;
           v13 = MEMORY[0x277CBEBF8];
           if (v11)
@@ -114,13 +114,13 @@
 
           v15 = [v14 arrayByAddingObject:v9];
 
-          [v3 setObject:v15 forKey:v10];
+          [v3 setObject:v15 forKey:identifier];
         }
 
         else
         {
           v16 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy = self;
           v18 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
@@ -147,13 +147,13 @@
   return v3;
 }
 
-- (void)correctStateForMatchingAppleMediaAccessories:(id)a3 modelIdentifier:(id)a4
+- (void)correctStateForMatchingAppleMediaAccessories:(id)accessories modelIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoriesCopy = accessories;
+  identifierCopy = identifier;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -161,9 +161,9 @@
     *buf = 138543874;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = accessoriesCopy;
     *&buf[22] = 2112;
-    v22 = v7;
+    v22 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Correcting state for matching apple media accessories: %@ model identifier: %@", buf, 0x20u);
   }
 
@@ -176,13 +176,13 @@
   v16 = 3221225472;
   v17 = __101__HMDAppleMediaAccessoriesStateManager_correctStateForMatchingAppleMediaAccessories_modelIdentifier___block_invoke;
   v18 = &unk_279720A40;
-  v12 = v7;
+  v12 = identifierCopy;
   v19 = v12;
   v20 = buf;
-  [v6 na_each:&v15];
+  [accessoriesCopy na_each:&v15];
   if (*(*&buf[8] + 24))
   {
-    v13 = [(HMDAppleMediaAccessoriesStateManager *)v9 metricsDispatcher:v15];
+    v13 = [(HMDAppleMediaAccessoriesStateManager *)selfCopy metricsDispatcher:v15];
     [v13 submitMatchingIdentifierRemovalEventWithRemovalCount:*(*&buf[8] + 24)];
   }
 
@@ -203,23 +203,23 @@ void __101__HMDAppleMediaAccessoriesStateManager_correctStateForMatchingAppleMed
   }
 }
 
-- (id)sendModelIdentifierRequestMessageForAppleMediaAccessory:(id)a3 accessoryIdentifier:(id)a4
+- (id)sendModelIdentifierRequestMessageForAppleMediaAccessory:(id)accessory accessoryIdentifier:(id)identifier
 {
-  v6 = a3;
+  accessoryCopy = accessory;
   v7 = MEMORY[0x277D2C900];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(v7);
-  v10 = [(HMDAppleMediaAccessoriesStateManager *)self messenger];
+  messenger = [(HMDAppleMediaAccessoriesStateManager *)self messenger];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessageForAppleMediaAccessory_accessoryIdentifier___block_invoke;
   v16[3] = &unk_279720A18;
   v16[4] = self;
-  v17 = v6;
+  v17 = accessoryCopy;
   v11 = v9;
   v18 = v11;
-  v12 = v6;
-  [v10 sendModelIdentifierRequestMessageToAppleMediaAccessory:v12 withAccessoryIdentifier:v8 completion:v16];
+  v12 = accessoryCopy;
+  [messenger sendModelIdentifierRequestMessageToAppleMediaAccessory:v12 withAccessoryIdentifier:identifierCopy completion:v16];
 
   v13 = v18;
   v14 = v11;
@@ -267,23 +267,23 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_correctStateForMatchingIdentifier:(id)a3 appleMediaAccessories:(id)a4 sendList:(id)a5
+- (void)_correctStateForMatchingIdentifier:(id)identifier appleMediaAccessories:(id)accessories sendList:(id)list
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 count])
+  identifierCopy = identifier;
+  accessoriesCopy = accessories;
+  listCopy = list;
+  if ([listCopy count])
   {
-    v11 = [v10 firstObject];
-    [v10 removeObjectAtIndex:0];
-    v12 = [(HMDAppleMediaAccessoriesStateManager *)self sendModelIdentifierRequestMessageForAppleMediaAccessory:v11 accessoryIdentifier:v8];
+    firstObject = [listCopy firstObject];
+    [listCopy removeObjectAtIndex:0];
+    v12 = [(HMDAppleMediaAccessoriesStateManager *)self sendModelIdentifierRequestMessageForAppleMediaAccessory:firstObject accessoryIdentifier:identifierCopy];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __106__HMDAppleMediaAccessoriesStateManager__correctStateForMatchingIdentifier_appleMediaAccessories_sendList___block_invoke;
     v25[3] = &unk_279729328;
     v25[4] = self;
-    v13 = v9;
+    v13 = accessoriesCopy;
     v26 = v13;
     v14 = [v12 addSuccessBlock:v25];
     v21[0] = MEMORY[0x277D85DD0];
@@ -291,16 +291,16 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
     v21[2] = __106__HMDAppleMediaAccessoriesStateManager__correctStateForMatchingIdentifier_appleMediaAccessories_sendList___block_invoke_2;
     v21[3] = &unk_279730430;
     v21[4] = self;
-    v22 = v8;
+    v22 = identifierCopy;
     v23 = v13;
-    v24 = v10;
+    v24 = listCopy;
     v15 = [v12 addFailureBlock:v21];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -308,7 +308,7 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
       *buf = 138543618;
       v28 = v19;
       v29 = 2112;
-      v30 = v8;
+      v30 = identifierCopy;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to correct matching identifier state for identifier %@", buf, 0x16u);
     }
 
@@ -318,13 +318,13 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)correctStateForMatchingIdentifier:(id)a3 appleMediaAccessories:(id)a4
+- (void)correctStateForMatchingIdentifier:(id)identifier appleMediaAccessories:(id)accessories
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  accessoriesCopy = accessories;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -332,15 +332,15 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
     v14 = 138543874;
     v15 = v11;
     v16 = 2112;
-    v17 = v6;
+    v17 = identifierCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = accessoriesCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Correcting state for matching identifier: %@ apple media accessories: %@", &v14, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v7 mutableCopy];
-  [(HMDAppleMediaAccessoriesStateManager *)v9 _correctStateForMatchingIdentifier:v6 appleMediaAccessories:v7 sendList:v12];
+  v12 = [accessoriesCopy mutableCopy];
+  [(HMDAppleMediaAccessoriesStateManager *)selfCopy _correctStateForMatchingIdentifier:identifierCopy appleMediaAccessories:accessoriesCopy sendList:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -349,7 +349,7 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -360,13 +360,13 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDAppleMediaAccessoriesStateManager *)v4 remoteAppleMediaAccessoriesByIdentifier];
+  remoteAppleMediaAccessoriesByIdentifier = [(HMDAppleMediaAccessoriesStateManager *)selfCopy remoteAppleMediaAccessoriesByIdentifier];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v7 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [remoteAppleMediaAccessoriesByIdentifier allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -377,21 +377,21 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v7 objectForKey:v13];
+        v14 = [remoteAppleMediaAccessoriesByIdentifier objectForKey:v13];
         if ([v14 count] >= 2)
         {
-          v15 = [(HMDAppleMediaAccessoriesStateManager *)v4 metricsDispatcher];
-          [v15 submitMatchingIdentifierEventWithMatchingCount:{objc_msgSend(v14, "count")}];
+          metricsDispatcher = [(HMDAppleMediaAccessoriesStateManager *)selfCopy metricsDispatcher];
+          [metricsDispatcher submitMatchingIdentifierEventWithMatchingCount:{objc_msgSend(v14, "count")}];
 
-          [(HMDAppleMediaAccessoriesStateManager *)v4 correctStateForMatchingIdentifier:v13 appleMediaAccessories:v14];
+          [(HMDAppleMediaAccessoriesStateManager *)selfCopy correctStateForMatchingIdentifier:v13 appleMediaAccessories:v14];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -404,7 +404,7 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -415,30 +415,30 @@ void __116__HMDAppleMediaAccessoriesStateManager_sendModelIdentifierRequestMessa
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDAppleMediaAccessoriesStateManager *)v4 runMultipleIdentifierCorrectionSequence];
+  [(HMDAppleMediaAccessoriesStateManager *)selfCopy runMultipleIdentifierCorrectionSequence];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAppleMediaAccessoriesStateManager)initWithIdentifier:(id)a3 messenger:(id)a4 metricsDispatcher:(id)a5
+- (HMDAppleMediaAccessoriesStateManager)initWithIdentifier:(id)identifier messenger:(id)messenger metricsDispatcher:(id)dispatcher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  messengerCopy = messenger;
+  dispatcherCopy = dispatcher;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!messengerCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = dispatcherCopy;
+  if (!dispatcherCopy)
   {
 LABEL_9:
     v16 = _HMFPreconditionFailure();
@@ -451,9 +451,9 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v14->_messenger, a4);
-    objc_storeStrong(&v14->_metricsDispatcher, a5);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_messenger, messenger);
+    objc_storeStrong(&v14->_metricsDispatcher, dispatcher);
   }
 
   return v14;
@@ -479,12 +479,12 @@ uint64_t __51__HMDAppleMediaAccessoriesStateManager_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)appleMediaAccessoriesStateMessenger:(id)a3 didReceiveModelIdentifierRequestMessage:(id)a4 withAccessoryIdentifier:(id)a5
+- (void)appleMediaAccessoriesStateMessenger:(id)messenger didReceiveModelIdentifierRequestMessage:(id)message withAccessoryIdentifier:(id)identifier
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messengerCopy = messenger;
+  messageCopy = message;
+  identifierCopy = identifier;
   [(HMDAppleMediaAccessoriesStateManager *)self dataSourceAppleMediaAccessories];
   v34 = 0u;
   v35 = 0u;
@@ -494,9 +494,9 @@ uint64_t __51__HMDAppleMediaAccessoriesStateManager_logCategory__block_invoke()
   if (v12)
   {
     v13 = v12;
-    v32 = v9;
-    v33 = v8;
-    v14 = 0;
+    v32 = messageCopy;
+    v33 = messengerCopy;
+    uuid = 0;
     v15 = *v35;
     while (2)
     {
@@ -508,25 +508,25 @@ uint64_t __51__HMDAppleMediaAccessoriesStateManager_logCategory__block_invoke()
         }
 
         v17 = *(*(&v34 + 1) + 8 * i);
-        v18 = [v17 identifier];
-        if ([v18 isEqualToString:v10])
+        identifier = [v17 identifier];
+        if ([identifier isEqualToString:identifierCopy])
         {
-          v19 = [v17 isCurrentAccessory];
+          isCurrentAccessory = [v17 isCurrentAccessory];
 
-          if (v19)
+          if (isCurrentAccessory)
           {
-            if (v14)
+            if (uuid)
             {
               v26 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-              v9 = v32;
+              messageCopy = v32;
               [v32 respondWithError:v26];
 
               v24 = v11;
-              v8 = v33;
+              messengerCopy = v33;
               goto LABEL_22;
             }
 
-            v14 = [v17 uuid];
+            uuid = [v17 uuid];
           }
         }
 
@@ -544,12 +544,12 @@ uint64_t __51__HMDAppleMediaAccessoriesStateManager_logCategory__block_invoke()
       break;
     }
 
-    v9 = v32;
-    v8 = v33;
-    if (v14)
+    messageCopy = v32;
+    messengerCopy = v33;
+    if (uuid)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -557,16 +557,16 @@ uint64_t __51__HMDAppleMediaAccessoriesStateManager_logCategory__block_invoke()
         *buf = 138543874;
         v39 = v23;
         v40 = 2112;
-        v41 = v14;
+        v41 = uuid;
         v42 = 2112;
-        v43 = v10;
+        v43 = identifierCopy;
         _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@Responding with found model identifier: %@ for accessory identifier: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v20);
-      v24 = [[HMDAppleMediaAccessoryModelIdentifierResponseMessagePayload alloc] initWithModelIdentifier:v14];
-      v25 = [(HMDAppleMediaAccessoryModelIdentifierResponseMessagePayload *)v24 payloadCopy];
-      [v32 respondWithPayload:v25];
+      v24 = [[HMDAppleMediaAccessoryModelIdentifierResponseMessagePayload alloc] initWithModelIdentifier:uuid];
+      payloadCopy = [(HMDAppleMediaAccessoryModelIdentifierResponseMessagePayload *)v24 payloadCopy];
+      [v32 respondWithPayload:payloadCopy];
 
       goto LABEL_22;
     }
@@ -577,7 +577,7 @@ uint64_t __51__HMDAppleMediaAccessoriesStateManager_logCategory__block_invoke()
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy2 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
@@ -585,14 +585,14 @@ uint64_t __51__HMDAppleMediaAccessoriesStateManager_logCategory__block_invoke()
     *buf = 138543618;
     v39 = v30;
     v40 = 2112;
-    v41 = v10;
+    v41 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to determine the model identifier for a current accessory with identifier: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v27);
   v24 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-  [v9 respondWithError:v24];
-  v14 = 0;
+  [messageCopy respondWithError:v24];
+  uuid = 0;
 LABEL_22:
 
   v31 = *MEMORY[0x277D85DE8];

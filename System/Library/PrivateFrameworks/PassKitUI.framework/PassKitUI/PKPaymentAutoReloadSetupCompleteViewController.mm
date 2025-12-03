@@ -1,47 +1,47 @@
 @interface PKPaymentAutoReloadSetupCompleteViewController
-- (PKPaymentAutoReloadSetupCompleteViewController)initWithPass:(id)a3 amount:(id)a4 threshold:(id)a5 setupMode:(int64_t)a6 paymentDataProvider:(id)a7 delegate:(id)a8;
+- (PKPaymentAutoReloadSetupCompleteViewController)initWithPass:(id)pass amount:(id)amount threshold:(id)threshold setupMode:(int64_t)mode paymentDataProvider:(id)provider delegate:(id)delegate;
 - (void)dealloc;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
-- (void)showBalanceUpdatedUIWithAnimation:(BOOL)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
+- (void)showBalanceUpdatedUIWithAnimation:(BOOL)animation;
 - (void)showWaitingOnBalanceUpdateUI;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentAutoReloadSetupCompleteViewController
 
-- (PKPaymentAutoReloadSetupCompleteViewController)initWithPass:(id)a3 amount:(id)a4 threshold:(id)a5 setupMode:(int64_t)a6 paymentDataProvider:(id)a7 delegate:(id)a8
+- (PKPaymentAutoReloadSetupCompleteViewController)initWithPass:(id)pass amount:(id)amount threshold:(id)threshold setupMode:(int64_t)mode paymentDataProvider:(id)provider delegate:(id)delegate
 {
-  v15 = a3;
-  v24 = a4;
-  v23 = a5;
-  v16 = a7;
-  v17 = a8;
+  passCopy = pass;
+  amountCopy = amount;
+  thresholdCopy = threshold;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = PKPaymentAutoReloadSetupCompleteViewController;
   v18 = [(PKExplanationViewController *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pass, a3);
-    objc_storeStrong(&v19->_amount, a4);
-    objc_storeStrong(&v19->_threshold, a5);
-    v19->_setupMode = a6;
-    objc_storeWeak(&v19->_delegate, v17);
-    objc_storeStrong(&v19->_paymentDataProvider, a7);
-    v20 = [(PKPaymentPass *)v19->_pass autoTopUpMerchantTokenIdentifier];
-    if (v20)
+    objc_storeStrong(&v18->_pass, pass);
+    objc_storeStrong(&v19->_amount, amount);
+    objc_storeStrong(&v19->_threshold, threshold);
+    v19->_setupMode = mode;
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    objc_storeStrong(&v19->_paymentDataProvider, provider);
+    autoTopUpMerchantTokenIdentifier = [(PKPaymentPass *)v19->_pass autoTopUpMerchantTokenIdentifier];
+    if (autoTopUpMerchantTokenIdentifier)
     {
-      v21 = [(PKPaymentPass *)v19->_pass isAutoTopEnabled];
+      isAutoTopEnabled = [(PKPaymentPass *)v19->_pass isAutoTopEnabled];
     }
 
     else
     {
-      v21 = 0;
+      isAutoTopEnabled = 0;
     }
 
-    v19->_passUpdated = (a6 != 1) & v21;
+    v19->_passUpdated = (mode != 1) & isAutoTopEnabled;
     if (objc_opt_respondsToSelector())
     {
       [(PKPaymentDataProvider *)v19->_paymentDataProvider addDelegate:v19];
@@ -73,20 +73,20 @@
   [(PKExplanationViewController *)&v28 viewDidLoad];
   [(PKExplanationViewController *)self setShowCancelButton:0];
   [(PKPaymentAutoReloadSetupCompleteViewController *)self setModalInPresentation:1];
-  v3 = [(PKPaymentAutoReloadSetupCompleteViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(PKPaymentAutoReloadSetupCompleteViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setTopMargin:80.0];
-  [v4 setShowPrivacyView:0];
-  [v4 setDelegate:self];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setTopMargin:80.0];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setDelegate:self];
   v5 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:60.0];
-  v6 = [(PKCurrencyAmount *)self->_amount currency];
-  v7 = v6;
-  if (v6 == @"KRW" || v6 && (v8 = [(__CFString *)v6 isEqualToString:@"KRW"], v7, v8))
+  currency = [(PKCurrencyAmount *)self->_amount currency];
+  v7 = currency;
+  if (currency == @"KRW" || currency && (v8 = [(__CFString *)currency isEqualToString:@"KRW"], v7, v8))
   {
-    v9 = PKPassKitUIBundle();
-    v10 = [v9 URLForResource:@"WonIconArrowCirclePath" withExtension:@"pdf"];
+    whiteColor = PKPassKitUIBundle();
+    v10 = [whiteColor URLForResource:@"WonIconArrowCirclePath" withExtension:@"pdf"];
     v11 = PKUIScreenScale();
     v12 = PKUIImageFromPDF(v10, 80.0, 80.0, v11);
   }
@@ -94,21 +94,21 @@
   else
   {
     v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"dollarsign.arrow.circlepath" withConfiguration:v5];
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    v12 = [v10 imageWithTintColor:v9];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v12 = [v10 imageWithTintColor:whiteColor];
   }
 
   v13 = v12;
 
-  v14 = [MEMORY[0x1E69DC888] blackColor];
-  v15 = PKUIImageWithBackgroundAndCornerRadius(v13, v14, 80.0, 80.0, 0.0);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v15 = PKUIImageWithBackgroundAndCornerRadius(v13, blackColor, 80.0, 80.0, 0.0);
 
   v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v15];
-  v17 = [v16 layer];
-  [v17 setCornerCurve:*MEMORY[0x1E69796E8]];
-  [v17 setCornerRadius:14.0];
-  [v17 setMasksToBounds:1];
-  [v4 setHeroView:v16];
+  layer = [v16 layer];
+  [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+  [layer setCornerRadius:14.0];
+  [layer setMasksToBounds:1];
+  [explanationView setHeroView:v16];
   if (self->_passUpdated)
   {
     [(PKPaymentAutoReloadSetupCompleteViewController *)self showBalanceUpdatedUIWithAnimation:0];
@@ -179,39 +179,39 @@ void __61__PKPaymentAutoReloadSetupCompleteViewController_viewDidLoad__block_inv
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentAutoReloadSetupCompleteViewController;
-  [(PKPaymentAutoReloadSetupCompleteViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentAutoReloadSetupCompleteViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
 - (void)showWaitingOnBalanceUpdateUI
 {
-  v6 = [(PKExplanationViewController *)self explanationView];
-  [v6 setShowSpinner:1];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowSpinner:1];
   v2 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_4.isa);
-  [v6 setTitleText:v2];
+  [explanationView setTitleText:v2];
 
-  v3 = [v6 dockView];
-  [v3 setButtonsEnabled:0];
-  v4 = [v3 primaryButton];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:0];
+  primaryButton = [dockView primaryButton];
   v5 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_5.isa);
-  [v4 setTitle:v5 forState:0];
+  [primaryButton setTitle:v5 forState:0];
 }
 
-- (void)showBalanceUpdatedUIWithAnimation:(BOOL)a3
+- (void)showBalanceUpdatedUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v13 = [(PKExplanationViewController *)self explanationView];
-  [v13 setShowSpinner:0];
-  v5 = [(PKCurrencyAmount *)self->_amount formattedStringValue];
-  v6 = [(PKCurrencyAmount *)self->_threshold formattedStringValue];
-  v7 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_6.isa, &stru_1F3BD6370.isa, v5, v6);
-  [v13 setBodyText:v7];
+  animationCopy = animation;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowSpinner:0];
+  formattedStringValue = [(PKCurrencyAmount *)self->_amount formattedStringValue];
+  formattedStringValue2 = [(PKCurrencyAmount *)self->_threshold formattedStringValue];
+  v7 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_6.isa, &stru_1F3BD6370.isa, formattedStringValue, formattedStringValue2);
+  [explanationView setBodyText:v7];
 
-  [v13 showCheckmark:1 animated:v3];
+  [explanationView showCheckmark:1 animated:animationCopy];
   if (self->_setupMode == 1)
   {
     v8 = @"PASS_DETAILS_AUTO_RELOAD_SETUP_COMPLETE_CHANGES_SAVED";
@@ -223,25 +223,25 @@ void __61__PKPaymentAutoReloadSetupCompleteViewController_viewDidLoad__block_inv
   }
 
   v9 = PKLocalizedPaymentString(&v8->isa);
-  [v13 setTitleText:v9];
+  [explanationView setTitleText:v9];
 
-  v10 = [v13 dockView];
-  [v10 setButtonsEnabled:1];
-  v11 = [v10 primaryButton];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:1];
+  primaryButton = [dockView primaryButton];
   v12 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_5.isa);
-  [v11 setTitle:v12 forState:0];
+  [primaryButton setTitle:v12 forState:0];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __106__PKPaymentAutoReloadSetupCompleteViewController_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdate___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -267,7 +267,7 @@ void __106__PKPaymentAutoReloadSetupCompleteViewController_paymentPassWithUnique
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v9[1] = *MEMORY[0x1E69E9840];
   reporter = self->_reporter;

@@ -1,34 +1,34 @@
 @interface PKPassAuxiliaryRegistrationRequirement
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassAuxiliaryRegistrationRequirement:(id)a3;
-- (PKPassAuxiliaryRegistrationRequirement)initWithCoder:(id)a3;
-- (PKPassAuxiliaryRegistrationRequirement)initWithDictionary:(id)a3;
-- (id)_initWithIdentifier:(id)a3 numberOfKeys:(id)a4 canLocallyInvalidateRegistrationState:(id)a5 canLocallyValidateRegistrationState:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassAuxiliaryRegistrationRequirement:(id)requirement;
+- (PKPassAuxiliaryRegistrationRequirement)initWithCoder:(id)coder;
+- (PKPassAuxiliaryRegistrationRequirement)initWithDictionary:(id)dictionary;
+- (id)_initWithIdentifier:(id)identifier numberOfKeys:(id)keys canLocallyInvalidateRegistrationState:(id)state canLocallyValidateRegistrationState:(id)registrationState;
 - (id)_mutableDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_copyInto:(id)a3;
-- (void)_decorateDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_copyInto:(id)into;
+- (void)_decorateDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAuxiliaryRegistrationRequirement
 
-- (PKPassAuxiliaryRegistrationRequirement)initWithDictionary:(id)a3
+- (PKPassAuxiliaryRegistrationRequirement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"identifier"];
-  v6 = [v4 PKNumberForKey:@"numberOfKeys"];
-  v7 = [v4 PKNumberForKey:@"canLocallyInvalidRegistrationState"];
-  v8 = [v4 PKNumberForKey:@"canLocallyValidateRegistrationState"];
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"identifier"];
+  v6 = [dictionaryCopy PKNumberForKey:@"numberOfKeys"];
+  v7 = [dictionaryCopy PKNumberForKey:@"canLocallyInvalidRegistrationState"];
+  v8 = [dictionaryCopy PKNumberForKey:@"canLocallyValidateRegistrationState"];
+  if (dictionaryCopy)
   {
     v9 = [(PKPassAuxiliaryRegistrationRequirement *)self _initWithIdentifier:v5 numberOfKeys:v6 canLocallyInvalidateRegistrationState:v7 canLocallyValidateRegistrationState:v8];
     if (v9)
     {
-      v10 = [v4 PKArrayContaining:objc_opt_class() forKey:@"supportedVersions"];
+      v10 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"supportedVersions"];
       self = *(v9 + 4);
       *(v9 + 4) = v10;
     }
@@ -47,22 +47,22 @@
   return v9;
 }
 
-- (id)_initWithIdentifier:(id)a3 numberOfKeys:(id)a4 canLocallyInvalidateRegistrationState:(id)a5 canLocallyValidateRegistrationState:(id)a6
+- (id)_initWithIdentifier:(id)identifier numberOfKeys:(id)keys canLocallyInvalidateRegistrationState:(id)state canLocallyValidateRegistrationState:(id)registrationState
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  keysCopy = keys;
+  stateCopy = state;
+  registrationStateCopy = registrationState;
   v21.receiver = self;
   v21.super_class = PKPassAuxiliaryRegistrationRequirement;
   v15 = [(PKPassAuxiliaryRegistrationRequirement *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    if (v12)
+    objc_storeStrong(&v15->_identifier, identifier);
+    if (keysCopy)
     {
-      v17 = v12;
+      v17 = keysCopy;
     }
 
     else
@@ -71,9 +71,9 @@
     }
 
     v16->_numberOfKeys = [v17 integerValue];
-    if (v13)
+    if (stateCopy)
     {
-      v18 = v13;
+      v18 = stateCopy;
     }
 
     else
@@ -82,9 +82,9 @@
     }
 
     v16->_canLocallyInvalidateRegistrationState = [v18 BOOLValue];
-    if (v14)
+    if (registrationStateCopy)
     {
-      v19 = v14;
+      v19 = registrationStateCopy;
     }
 
     else
@@ -100,8 +100,8 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = [(PKPassAuxiliaryRegistrationRequirement *)self _mutableDictionaryRepresentation];
-  v3 = [v2 copy];
+  _mutableDictionaryRepresentation = [(PKPassAuxiliaryRegistrationRequirement *)self _mutableDictionaryRepresentation];
+  v3 = [_mutableDictionaryRepresentation copy];
 
   return v3;
 }
@@ -120,32 +120,32 @@
   [v3 setObject:v6 forKeyedSubscript:@"canLocallyValidateRegistrationState"];
 
   [v3 setObject:self->_supportedVersions forKeyedSubscript:@"supportedVersions"];
-  v7 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self->_keyCreationMetadata dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"metadata"];
+  dictionaryRepresentation = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self->_keyCreationMetadata dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"metadata"];
 
   return v3;
 }
 
-- (PKPassAuxiliaryRegistrationRequirement)initWithCoder:(id)a3
+- (PKPassAuxiliaryRegistrationRequirement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = PKPassAuxiliaryRegistrationRequirement;
   v5 = [(PKPassAuxiliaryRegistrationRequirement *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_registrationBackoffCounter = [v4 decodeIntegerForKey:@"registrationBackoffCounter"];
-    v5->_numberOfKeys = [v4 decodeIntegerForKey:@"numberOfKeys"];
-    v5->_canLocallyInvalidateRegistrationState = [v4 decodeBoolForKey:@"canLocallyInvalidateRegistrationState"];
-    v5->_canLocallyValidateRegistrationState = [v4 decodeBoolForKey:@"canLocallyValidateRegistrationState"];
+    v5->_registrationBackoffCounter = [coderCopy decodeIntegerForKey:@"registrationBackoffCounter"];
+    v5->_numberOfKeys = [coderCopy decodeIntegerForKey:@"numberOfKeys"];
+    v5->_canLocallyInvalidateRegistrationState = [coderCopy decodeBoolForKey:@"canLocallyInvalidateRegistrationState"];
+    v5->_canLocallyValidateRegistrationState = [coderCopy decodeBoolForKey:@"canLocallyValidateRegistrationState"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"supportedVersions"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"supportedVersions"];
     supportedVersions = v5->_supportedVersions;
     v5->_supportedVersions = v11;
 
@@ -159,7 +159,7 @@
     v19 = objc_opt_class();
     v20 = objc_opt_class();
     v21 = [v25 initWithObjects:{v13, v14, v15, v16, v17, v18, v19, v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"keyCreationMetadata"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"keyCreationMetadata"];
     keyCreationMetadata = v5->_keyCreationMetadata;
     v5->_keyCreationMetadata = v22;
   }
@@ -167,28 +167,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_registrationBackoffCounter forKey:@"registrationBackoffCounter"];
-  [v5 encodeInteger:self->_numberOfKeys forKey:@"numberOfKeys"];
-  [v5 encodeBool:self->_canLocallyInvalidateRegistrationState forKey:@"canLocallyInvalidateRegistrationState"];
-  [v5 encodeBool:self->_canLocallyValidateRegistrationState forKey:@"canLocallyValidateRegistrationState"];
-  [v5 encodeObject:self->_supportedVersions forKey:@"supportedVersions"];
-  [v5 encodeObject:self->_keyCreationMetadata forKey:@"keyCreationMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_registrationBackoffCounter forKey:@"registrationBackoffCounter"];
+  [coderCopy encodeInteger:self->_numberOfKeys forKey:@"numberOfKeys"];
+  [coderCopy encodeBool:self->_canLocallyInvalidateRegistrationState forKey:@"canLocallyInvalidateRegistrationState"];
+  [coderCopy encodeBool:self->_canLocallyValidateRegistrationState forKey:@"canLocallyValidateRegistrationState"];
+  [coderCopy encodeObject:self->_supportedVersions forKey:@"supportedVersions"];
+  [coderCopy encodeObject:self->_keyCreationMetadata forKey:@"keyCreationMetadata"];
 }
 
-- (void)_decorateDescription:(id)a3
+- (void)_decorateDescription:(id)description
 {
-  v7 = a3;
+  descriptionCopy = description;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PKPassAuxiliaryRegistrationRequirement role](self, "role")}];
-  [v7 appendFormat:@"role: '%@'; ", v4];
+  [descriptionCopy appendFormat:@"role: '%@'; ", v4];
 
-  [v7 appendFormat:@"identifier: '%@'; ", self->_identifier];
-  [v7 appendFormat:@"backoff: '%lu'; ", self->_registrationBackoffCounter];
-  [v7 appendFormat:@"numberOfKeys: '%ld'; ", self->_numberOfKeys];
+  [descriptionCopy appendFormat:@"identifier: '%@'; ", self->_identifier];
+  [descriptionCopy appendFormat:@"backoff: '%lu'; ", self->_registrationBackoffCounter];
+  [descriptionCopy appendFormat:@"numberOfKeys: '%ld'; ", self->_numberOfKeys];
   if (self->_canLocallyInvalidateRegistrationState)
   {
     v5 = @"YES";
@@ -199,7 +199,7 @@
     v5 = @"NO";
   }
 
-  [v7 appendFormat:@"canLocallyInvalidate: '%@'; ", v5];
+  [descriptionCopy appendFormat:@"canLocallyInvalidate: '%@'; ", v5];
   if (self->_canLocallyValidateRegistrationState)
   {
     v6 = @"YES";
@@ -210,11 +210,11 @@
     v6 = @"NO";
   }
 
-  [v7 appendFormat:@"canLocallyValidate: '%@'; ", v6];
-  [v7 appendFormat:@"supportedVersions: '%@'; ", self->_supportedVersions];
+  [descriptionCopy appendFormat:@"canLocallyValidate: '%@'; ", v6];
+  [descriptionCopy appendFormat:@"supportedVersions: '%@'; ", self->_supportedVersions];
   if (self->_keyCreationMetadata)
   {
-    [v7 appendFormat:@"metadata: '%@'; ", self->_keyCreationMetadata];
+    [descriptionCopy appendFormat:@"metadata: '%@'; ", self->_keyCreationMetadata];
   }
 }
 
@@ -234,12 +234,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_supportedVersions];
-  v4 = PKCombinedHash(17, v3);
-  v5 = [(PKPassAuxiliaryRegistrationRequirement *)self role];
-  v6 = self->_registrationBackoffCounter - (v5 - v4 + 32 * v4) + 32 * (v5 - v4 + 32 * v4);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_supportedVersions];
+  v4 = PKCombinedHash(17, array);
+  role = [(PKPassAuxiliaryRegistrationRequirement *)self role];
+  v6 = self->_registrationBackoffCounter - (role - v4 + 32 * v4) + 32 * (role - v4 + 32 * v4);
   v7 = self->_numberOfKeys - v6 + 32 * v6;
   v8 = self->_canLocallyInvalidateRegistrationState - v7 + 32 * v7;
   v9 = self->_canLocallyValidateRegistrationState - v8 + 32 * v8;
@@ -247,38 +247,38 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassAuxiliaryRegistrationRequirement *)self isEqualToPassAuxiliaryRegistrationRequirement:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassAuxiliaryRegistrationRequirement *)self isEqualToPassAuxiliaryRegistrationRequirement:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassAuxiliaryRegistrationRequirement:(id)a3
+- (BOOL)isEqualToPassAuxiliaryRegistrationRequirement:(id)requirement
 {
-  v4 = a3;
-  if (!v4)
+  requirementCopy = requirement;
+  if (!requirementCopy)
   {
     goto LABEL_17;
   }
 
-  v5 = [(PKPassAuxiliaryRegistrationRequirement *)self role];
-  if (v5 != [v4 role] || self->_registrationBackoffCounter != v4[5])
+  role = [(PKPassAuxiliaryRegistrationRequirement *)self role];
+  if (role != [requirementCopy role] || self->_registrationBackoffCounter != requirementCopy[5])
   {
     goto LABEL_17;
   }
 
-  v6 = v4[2];
+  v6 = requirementCopy[2];
   v7 = self->_identifier;
   v8 = v6;
   v9 = v8;
@@ -304,13 +304,13 @@ LABEL_17:
     }
   }
 
-  if (self->_numberOfKeys != v4[3] || self->_canLocallyInvalidateRegistrationState != *(v4 + 8) || self->_canLocallyValidateRegistrationState != *(v4 + 9))
+  if (self->_numberOfKeys != requirementCopy[3] || self->_canLocallyInvalidateRegistrationState != *(requirementCopy + 8) || self->_canLocallyValidateRegistrationState != *(requirementCopy + 9))
   {
     goto LABEL_17;
   }
 
   supportedVersions = self->_supportedVersions;
-  v12 = v4[4];
+  v12 = requirementCopy[4];
   if (supportedVersions && v12)
   {
     v13 = [(NSArray *)supportedVersions isEqual:?];
@@ -326,32 +326,32 @@ LABEL_18:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKPassAuxiliaryRegistrationRequirement);
   [(PKPassAuxiliaryRegistrationRequirement *)self _copyInto:v4];
   return v4;
 }
 
-- (void)_copyInto:(id)a3
+- (void)_copyInto:(id)into
 {
   identifier = self->_identifier;
-  v5 = a3;
+  intoCopy = into;
   v6 = [(NSString *)identifier copy];
-  v7 = v5[2];
-  v5[2] = v6;
+  v7 = intoCopy[2];
+  intoCopy[2] = v6;
 
-  v5[5] = self->_registrationBackoffCounter;
-  v5[3] = self->_numberOfKeys;
-  *(v5 + 8) = self->_canLocallyInvalidateRegistrationState;
-  *(v5 + 9) = self->_canLocallyValidateRegistrationState;
+  intoCopy[5] = self->_registrationBackoffCounter;
+  intoCopy[3] = self->_numberOfKeys;
+  *(intoCopy + 8) = self->_canLocallyInvalidateRegistrationState;
+  *(intoCopy + 9) = self->_canLocallyValidateRegistrationState;
   v8 = [(NSArray *)self->_supportedVersions copy];
-  v9 = v5[4];
-  v5[4] = v8;
+  v9 = intoCopy[4];
+  intoCopy[4] = v8;
 
   v10 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self->_keyCreationMetadata copy];
-  v11 = v5[6];
-  v5[6] = v10;
+  v11 = intoCopy[6];
+  intoCopy[6] = v10;
 }
 
 @end

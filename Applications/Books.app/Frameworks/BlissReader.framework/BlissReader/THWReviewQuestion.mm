@@ -4,22 +4,22 @@
 - (CGSize)referenceContentSize;
 - (Class)evaluatorClass;
 - (Class)layoutClass;
-- (THWReviewQuestion)initWithContext:(id)a3 type:(int)a4 text:(BOOL)a5 numberOfChoices:(unint64_t)a6 titleAccessibilityDescription:(id)a7 imageAccessibilityDescription:(id)a8;
+- (THWReviewQuestion)initWithContext:(id)context type:(int)type text:(BOOL)text numberOfChoices:(unint64_t)choices titleAccessibilityDescription:(id)description imageAccessibilityDescription:(id)accessibilityDescription;
 - (TSDImageInfo)imageInfo;
-- (id)choiceAtIndex:(unint64_t)a3;
-- (id)p_defaultListLabelParagraphStyleFromStyle:(id)a3;
+- (id)choiceAtIndex:(unint64_t)index;
+- (id)p_defaultListLabelParagraphStyleFromStyle:(id)style;
 - (int)cardinality;
-- (int)evaluateAnswerWithResponseController:(id)a3 updateScore:(BOOL)a4 choiceBlock:(id)a5;
+- (int)evaluateAnswerWithResponseController:(id)controller updateScore:(BOOL)score choiceBlock:(id)block;
 - (int)imagePlacement;
-- (void)addChoice:(id)a3;
+- (void)addChoice:(id)choice;
 - (void)dealloc;
 - (void)p_ensureChoicesAreValid;
-- (void)setQuestionID:(id)a3;
+- (void)setQuestionID:(id)d;
 @end
 
 @implementation THWReviewQuestion
 
-- (THWReviewQuestion)initWithContext:(id)a3 type:(int)a4 text:(BOOL)a5 numberOfChoices:(unint64_t)a6 titleAccessibilityDescription:(id)a7 imageAccessibilityDescription:(id)a8
+- (THWReviewQuestion)initWithContext:(id)context type:(int)type text:(BOOL)text numberOfChoices:(unint64_t)choices titleAccessibilityDescription:(id)description imageAccessibilityDescription:(id)accessibilityDescription
 {
   v17.receiver = self;
   v17.super_class = THWReviewQuestion;
@@ -27,13 +27,13 @@
   v15 = v14;
   if (v14)
   {
-    v14->_type = a4;
-    v14->_text = a5;
+    v14->_type = type;
+    v14->_text = text;
     v14->_cardinality = 0;
-    v14->_context = a3;
-    v14->_numberOfChoices = a6;
-    v14->_titleAccessibilityDescription = [a7 copy];
-    v15->_imageAccessibilityDescription = [a8 copy];
+    v14->_context = context;
+    v14->_numberOfChoices = choices;
+    v14->_titleAccessibilityDescription = [description copy];
+    v15->_imageAccessibilityDescription = [accessibilityDescription copy];
   }
 
   return v15;
@@ -48,15 +48,15 @@
 
 - (BOOL)p_referenceContentIsImage
 {
-  v3 = [(THWReviewQuestion *)self referenceContentType];
-  if (![(THWReviewQuestion *)self referenceContent]|| !v3)
+  referenceContentType = [(THWReviewQuestion *)self referenceContentType];
+  if (![(THWReviewQuestion *)self referenceContent]|| !referenceContentType)
   {
     return 0;
   }
 
   v4 = TSWReviewQuestionDescriptionReferenceContentTypeImageValue;
 
-  return [(NSString *)v3 isEqual:v4];
+  return [(NSString *)referenceContentType isEqual:v4];
 }
 
 - (TSDImageInfo)imageInfo
@@ -103,7 +103,7 @@
   return result;
 }
 
-- (id)p_defaultListLabelParagraphStyleFromStyle:(id)a3
+- (id)p_defaultListLabelParagraphStyleFromStyle:(id)style
 {
   v4 = [-[TSWPStorage paragraphStyleAtParIndex:effectiveRange:](self->_prompt paragraphStyleAtParIndex:0 effectiveRange:{0), "valueForProperty:", 16}];
   if (!v4)
@@ -115,27 +115,27 @@
   LODWORD(v6) = 20.0;
   [v5 setFloatValue:17 forProperty:v6];
   [v5 setObject:v4 forProperty:16];
-  v7 = [a3 stylesheet];
+  stylesheet = [style stylesheet];
 
-  return [v7 variationOfStyle:a3 propertyMap:v5];
+  return [stylesheet variationOfStyle:style propertyMap:v5];
 }
 
 - (void)p_ensureChoicesAreValid
 {
   if (self->_type == 1)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = objc_alloc_init(NSMutableArray);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    choices = v2->_choices;
+    choices = selfCopy->_choices;
     v5 = [(NSMutableArray *)choices countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v5)
     {
       v6 = v5;
-      v20 = v2;
+      v20 = selfCopy;
       v7 = 0;
       v8 = 0;
       v9 = *v26;
@@ -149,18 +149,18 @@
           }
 
           v11 = *(*(&v25 + 1) + 8 * i);
-          v12 = [v11 contentStorage];
-          if (v12)
+          contentStorage = [v11 contentStorage];
+          if (contentStorage)
           {
-            v13 = [v12 paragraphStyleAtParIndex:0 effectiveRange:0];
+            v13 = [contentStorage paragraphStyleAtParIndex:0 effectiveRange:0];
             v14 = v13;
             if (!v7)
             {
               v7 = v13;
             }
 
-            v15 = [v13 overridePropertyMap];
-            if ([v15 containsProperty:16] && (objc_msgSend(v15, "containsProperty:", 17) & 1) != 0)
+            overridePropertyMap = [v13 overridePropertyMap];
+            if ([overridePropertyMap containsProperty:16] && (objc_msgSend(overridePropertyMap, "containsProperty:", 17) & 1) != 0)
             {
               if (!v8)
               {
@@ -179,7 +179,7 @@
       }
 
       while (v6);
-      v2 = v20;
+      selfCopy = v20;
       if (![v3 count])
       {
         goto LABEL_31;
@@ -203,7 +203,7 @@ LABEL_31:
       v7 = 0;
     }
 
-    v8 = [(THWReviewQuestion *)v2 p_defaultListLabelParagraphStyleFromStyle:v7];
+    v8 = [(THWReviewQuestion *)selfCopy p_defaultListLabelParagraphStyleFromStyle:v7];
 LABEL_24:
     v23 = 0u;
     v24 = 0u;
@@ -236,9 +236,9 @@ LABEL_24:
   }
 }
 
-- (void)addChoice:(id)a3
+- (void)addChoice:(id)choice
 {
-  if (a3)
+  if (choice)
   {
     choices = self->_choices;
     if (!choices)
@@ -247,7 +247,7 @@ LABEL_24:
       self->_choices = choices;
     }
 
-    [(NSMutableArray *)choices addObject:a3];
+    [(NSMutableArray *)choices addObject:choice];
     if ([(NSMutableArray *)self->_choices count]== self->_numberOfChoices)
     {
 
@@ -256,25 +256,25 @@ LABEL_24:
   }
 }
 
-- (id)choiceAtIndex:(unint64_t)a3
+- (id)choiceAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_choices count]<= a3)
+  if ([(NSMutableArray *)self->_choices count]<= index)
   {
     return 0;
   }
 
   choices = self->_choices;
 
-  return [(NSMutableArray *)choices objectAtIndex:a3];
+  return [(NSMutableArray *)choices objectAtIndex:index];
 }
 
-- (void)setQuestionID:(id)a3
+- (void)setQuestionID:(id)d
 {
   questionID = self->_questionID;
-  if (questionID != a3)
+  if (questionID != d)
   {
 
-    self->_questionID = [a3 copy];
+    self->_questionID = [d copy];
   }
 }
 
@@ -378,16 +378,16 @@ LABEL_24:
   }
 }
 
-- (int)evaluateAnswerWithResponseController:(id)a3 updateScore:(BOOL)a4 choiceBlock:(id)a5
+- (int)evaluateAnswerWithResponseController:(id)controller updateScore:(BOOL)score choiceBlock:(id)block
 {
-  v5 = a4;
-  v25[4] = a5;
+  scoreCopy = score;
+  v25[4] = block;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_17E9F0;
   v26[3] = &unk_45E400;
-  v26[4] = a5;
-  v24[4] = a5;
+  v26[4] = block;
+  v24[4] = block;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_17EA0C;
@@ -396,24 +396,24 @@ LABEL_24:
   v24[1] = 3221225472;
   v24[2] = sub_17EA28;
   v24[3] = &unk_45E400;
-  if (a4)
+  if (score)
   {
-    v8 = 0;
+    newTemporateReviewResponseMOC = 0;
   }
 
   else
   {
-    v8 = [a3 newTemporateReviewResponseMOC];
+    newTemporateReviewResponseMOC = [controller newTemporateReviewResponseMOC];
   }
 
-  v9 = [a3 responseForQuestionID:-[THWReviewQuestion questionID](self temporaryMOC:{"questionID"), v8}];
+  v9 = [controller responseForQuestionID:-[THWReviewQuestion questionID](self temporaryMOC:{"questionID"), newTemporateReviewResponseMOC}];
   v10 = [[TSWReviewResponseEvaluatorDataSource alloc] initWithResponse:v9];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [(THWReviewQuestion *)self choices];
-  v12 = [(NSArray *)v11 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  choices = [(THWReviewQuestion *)self choices];
+  v12 = [(NSArray *)choices countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -424,14 +424,14 @@ LABEL_24:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(choices);
         }
 
         [*(*(&v20 + 1) + 8 * i) fraction];
         [(TSWReviewResponseEvaluatorDataSource *)v10 addFraction:?];
       }
 
-      v13 = [(NSArray *)v11 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      v13 = [(NSArray *)choices countByEnumeratingWithState:&v20 objects:v27 count:16];
     }
 
     while (v13);
@@ -441,7 +441,7 @@ LABEL_24:
   if (![v16 correctCount])
   {
     v17 = 3;
-    if (!v5)
+    if (!scoreCopy)
     {
       goto LABEL_17;
     }
@@ -453,14 +453,14 @@ LABEL_16:
     v19[3] = &unk_45AE58;
     v19[4] = v9;
     v19[5] = v16;
-    [a3 mutateResponse:v9 block:v19];
+    [controller mutateResponse:v9 block:v19];
     goto LABEL_17;
   }
 
   if ([v16 incorrectCount])
   {
     v17 = 4;
-    if (!v5)
+    if (!scoreCopy)
     {
       goto LABEL_17;
     }
@@ -478,7 +478,7 @@ LABEL_16:
     v17 = 6;
   }
 
-  if (v5)
+  if (scoreCopy)
   {
     goto LABEL_16;
   }

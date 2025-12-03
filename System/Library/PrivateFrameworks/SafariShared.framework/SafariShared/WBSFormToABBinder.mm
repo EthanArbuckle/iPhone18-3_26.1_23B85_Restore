@@ -1,49 +1,49 @@
 @interface WBSFormToABBinder
-+ (id)allSynonymsForMatch:(id)a3 formAppearsToBeChinese:(BOOL)a4;
-+ (id)specifierForAutocompleteToken:(id)a3;
-+ (id)specifierForClassification:(id)a3 hints:(id)a4 orderedParts:(id)a5;
-+ (id)specifierForLabel:(id)a3;
-+ (unint64_t)indexOfBestMatchForString:(id)a3 inArray:(id)a4 startingPosition:(unint64_t *)a5;
++ (id)allSynonymsForMatch:(id)match formAppearsToBeChinese:(BOOL)chinese;
++ (id)specifierForAutocompleteToken:(id)token;
++ (id)specifierForClassification:(id)classification hints:(id)hints orderedParts:(id)parts;
++ (id)specifierForLabel:(id)label;
++ (unint64_t)indexOfBestMatchForString:(id)string inArray:(id)array startingPosition:(unint64_t *)position;
 @end
 
 @implementation WBSFormToABBinder
 
-+ (id)allSynonymsForMatch:(id)a3 formAppearsToBeChinese:(BOOL)a4
++ (id)allSynonymsForMatch:(id)match formAppearsToBeChinese:(BOOL)chinese
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 key];
+  chineseCopy = chinese;
+  matchCopy = match;
+  v6 = [matchCopy key];
 
   if (v6)
   {
-    if (v4)
+    if (chineseCopy)
     {
-      v7 = [v5 key];
+      v7 = [matchCopy key];
       if ([v7 isEqualToString:@"City"])
       {
 
 LABEL_7:
-        v8 = [v5 stringValue];
-        v13 = [MEMORY[0x1E695DF70] arrayWithObject:v8];
-        if (([v8 hasSuffix:@"省"] & 1) != 0 || objc_msgSend(v8, "hasSuffix:", @"市"))
+        stringValue = [matchCopy stringValue];
+        v13 = [MEMORY[0x1E695DF70] arrayWithObject:stringValue];
+        if (([stringValue hasSuffix:@"省"] & 1) != 0 || objc_msgSend(stringValue, "hasSuffix:", @"市"))
         {
-          v9 = [v8 substringWithRange:{0, objc_msgSend(v8, "length") - objc_msgSend(@"省", "length")}];
-          [v13 addObject:v9];
+          stringValue2 = [stringValue substringWithRange:{0, objc_msgSend(stringValue, "length") - objc_msgSend(@"省", "length")}];
+          [v13 addObject:stringValue2];
         }
 
         else
         {
-          v18 = [v8 stringByAppendingString:@"省"];
+          v18 = [stringValue stringByAppendingString:@"省"];
           [v13 addObject:v18];
 
-          v9 = [v8 stringByAppendingString:@"市"];
-          [v13 addObject:v9];
+          stringValue2 = [stringValue stringByAppendingString:@"市"];
+          [v13 addObject:stringValue2];
         }
 
         goto LABEL_15;
       }
 
-      v11 = [v5 key];
+      v11 = [matchCopy key];
       v12 = [v11 isEqualToString:@"State"];
 
       if (v12)
@@ -52,8 +52,8 @@ LABEL_7:
       }
     }
 
-    v14 = [v5 property];
-    v15 = findEntry<SafariShared::AddressBookAutoCompleteMappingData::SynonymCollectionMap>(&SafariShared::AddressBookAutoCompleteMappingData::synonyms, v14);
+    property = [matchCopy property];
+    v15 = findEntry<SafariShared::AddressBookAutoCompleteMappingData::SynonymCollectionMap>(&SafariShared::AddressBookAutoCompleteMappingData::synonyms, property);
     if (v15)
     {
       v16 = v15[1];
@@ -64,16 +64,16 @@ LABEL_7:
       v16 = 0;
     }
 
-    v8 = [v5 key];
-    v9 = [v5 stringValue];
-    v10 = lookupSynonyms(v16, v8, v9);
+    stringValue = [matchCopy key];
+    stringValue2 = [matchCopy stringValue];
+    v10 = lookupSynonyms(v16, stringValue, stringValue2);
   }
 
   else
   {
-    v8 = [v5 property];
-    v9 = [v5 stringValue];
-    v10 = lookupSynonyms(0, v8, v9);
+    stringValue = [matchCopy property];
+    stringValue2 = [matchCopy stringValue];
+    v10 = lookupSynonyms(0, stringValue, stringValue2);
   }
 
   v13 = v10;
@@ -82,37 +82,37 @@ LABEL_15:
   return v13;
 }
 
-+ (id)specifierForLabel:(id)a3
++ (id)specifierForLabel:(id)label
 {
-  v3 = lookupSpecifier(&SafariShared::AddressBookAutoCompleteMappingData::fieldLabelMap, a3);
+  v3 = lookupSpecifier(&SafariShared::AddressBookAutoCompleteMappingData::fieldLabelMap, label);
 
   return v3;
 }
 
-+ (id)specifierForAutocompleteToken:(id)a3
++ (id)specifierForAutocompleteToken:(id)token
 {
-  v3 = lookupSpecifier(&SafariShared::AddressBookAutoCompleteMappingData::autocompleteTokenMap, a3);
+  v3 = lookupSpecifier(&SafariShared::AddressBookAutoCompleteMappingData::autocompleteTokenMap, token);
 
   return v3;
 }
 
-+ (unint64_t)indexOfBestMatchForString:(id)a3 inArray:(id)a4 startingPosition:(unint64_t *)a5
++ (unint64_t)indexOfBestMatchForString:(id)string inArray:(id)array startingPosition:(unint64_t *)position
 {
-  v7 = a3;
-  v8 = a4;
-  v21 = v7;
+  stringCopy = string;
+  arrayCopy = array;
+  v21 = stringCopy;
   Predefined = CFCharacterSetGetPredefined(kCFCharacterSetAlphaNumeric);
-  v10 = [v7 stringByReplacingOccurrencesOfString:@"." withString:&stru_1F3A5E418];
-  v11 = [v8 count];
+  v10 = [stringCopy stringByReplacingOccurrencesOfString:@"." withString:&stru_1F3A5E418];
+  v11 = [arrayCopy count];
   if (v11)
   {
     v12 = 0;
     v13 = 0;
-    v22 = a5;
+    positionCopy = position;
     v23 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v14 = [v8 safari_stringAtIndex:v13];
+      v14 = [arrayCopy safari_stringAtIndex:v13];
       v15 = [v14 stringByReplacingOccurrencesOfString:@"." withString:&stru_1F3A5E418];
 
       v16 = [v15 rangeOfString:v10 options:1];
@@ -126,9 +126,9 @@ LABEL_15:
       {
         v19 = v15;
 
-        if (v22)
+        if (positionCopy)
         {
-          *v22 = v17;
+          *positionCopy = v17;
         }
 
         v23 = v13;
@@ -150,12 +150,12 @@ LABEL_15:
   return v23;
 }
 
-+ (id)specifierForClassification:(id)a3 hints:(id)a4 orderedParts:(id)a5
++ (id)specifierForClassification:(id)classification hints:(id)hints orderedParts:(id)parts
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  classificationCopy = classification;
+  hintsCopy = hints;
+  partsCopy = parts;
+  v10 = classificationCopy;
   v11 = v10;
   if (v10)
   {
@@ -165,18 +165,18 @@ LABEL_15:
       v12 = @"name";
     }
 
-    if ([v9 count] == 1 && -[__CFString isEqualToString:](v12, "isEqualToString:", @"name"))
+    if ([partsCopy count] == 1 && -[__CFString isEqualToString:](v12, "isEqualToString:", @"name"))
     {
-      v13 = [v9 objectAtIndexedSubscript:0];
+      v13 = [partsCopy objectAtIndexedSubscript:0];
 
       v12 = v13;
     }
 
-    v14 = [v8 firstObject];
+    firstObject = [hintsCopy firstObject];
     if (@"FullNameComposite")
     {
       v15 = &qword_1E7FB8BD0;
-      while (![v15[1] isEqualToString:v12] || v14 && !objc_msgSend(v14, "isEqualToString:", v15[2]))
+      while (![v15[1] isEqualToString:v12] || firstObject && !objc_msgSend(firstObject, "isEqualToString:", v15[2]))
       {
         v16 = v15[3];
         v15 += 7;

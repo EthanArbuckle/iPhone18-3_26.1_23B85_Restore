@@ -1,12 +1,12 @@
 @interface CNSerializedPoseConfiguration
 + (id)log;
-- (BOOL)isEqual:(id)a3;
-- (CNSerializedPoseConfiguration)initWithCoder:(id)a3;
-- (CNSerializedPoseConfiguration)initWithPoseConfiguration:(id)a3;
-- (CNSerializedPoseConfiguration)initWithPoseName:(id)a3 pose:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNSerializedPoseConfiguration)initWithCoder:(id)coder;
+- (CNSerializedPoseConfiguration)initWithPoseConfiguration:(id)configuration;
+- (CNSerializedPoseConfiguration)initWithPoseName:(id)name pose:(id)pose;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNSerializedPoseConfiguration
@@ -32,40 +32,40 @@ uint64_t __36__CNSerializedPoseConfiguration_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNSerializedPoseConfiguration)initWithPoseName:(id)a3 pose:(id)a4
+- (CNSerializedPoseConfiguration)initWithPoseName:(id)name pose:(id)pose
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  poseCopy = pose;
   v13.receiver = self;
   v13.super_class = CNSerializedPoseConfiguration;
   v8 = [(CNSerializedPoseConfiguration *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     poseName = v8->_poseName;
     v8->_poseName = v9;
 
-    objc_storeStrong(&v8->_pose, a4);
+    objc_storeStrong(&v8->_pose, pose);
     v11 = v8;
   }
 
   return v8;
 }
 
-- (CNSerializedPoseConfiguration)initWithPoseConfiguration:(id)a3
+- (CNSerializedPoseConfiguration)initWithPoseConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 physicalizedPose];
+  configurationCopy = configuration;
+  name = [configurationCopy name];
+  physicalizedPose = [configurationCopy physicalizedPose];
 
-  v7 = [(CNSerializedPoseConfiguration *)self initWithPoseName:v5 pose:v6];
+  v7 = [(CNSerializedPoseConfiguration *)self initWithPoseName:name pose:physicalizedPose];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -73,10 +73,10 @@ uint64_t __36__CNSerializedPoseConfiguration_log__block_invoke()
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((poseName = self->_poseName, !(poseName | v4->_poseName)) || -[NSString isEqual:](poseName, "isEqual:")) && (-[AVTAvatarPhysicalizedPose pose](self->_pose, "pose"), v6 = objc_claimAutoreleasedReturnValue(), [v6 dictionaryRepresentation], v7 = objc_claimAutoreleasedReturnValue(), -[AVTAvatarPhysicalizedPose pose](v4->_pose, "pose"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "dictionaryRepresentation"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v7, "isEqualToDictionary:", v9), v9, v8, v7, v6, v10))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((poseName = self->_poseName, !(poseName | equalCopy->_poseName)) || -[NSString isEqual:](poseName, "isEqual:")) && (-[AVTAvatarPhysicalizedPose pose](self->_pose, "pose"), v6 = objc_claimAutoreleasedReturnValue(), [v6 dictionaryRepresentation], v7 = objc_claimAutoreleasedReturnValue(), -[AVTAvatarPhysicalizedPose pose](equalCopy->_pose, "pose"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "dictionaryRepresentation"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v7, "isEqualToDictionary:", v9), v9, v8, v7, v6, v10))
     {
       v11 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:self->_pose];
-      v12 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:v4->_pose];
+      v12 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:equalCopy->_pose];
       v13 = [v11 isEqualToDictionary:v12];
     }
 
@@ -93,9 +93,9 @@ uint64_t __36__CNSerializedPoseConfiguration_log__block_invoke()
 {
   v3 = [MEMORY[0x1E6996730] objectHash:self->_poseName];
   v4 = MEMORY[0x1E6996730];
-  v5 = [(AVTAvatarPhysicalizedPose *)self->_pose pose];
-  v6 = [v5 dictionaryRepresentation];
-  v7 = [v4 dictionaryHash:v6] - v3 + 32 * v3;
+  pose = [(AVTAvatarPhysicalizedPose *)self->_pose pose];
+  dictionaryRepresentation = [pose dictionaryRepresentation];
+  v7 = [v4 dictionaryHash:dictionaryRepresentation] - v3 + 32 * v3;
 
   v8 = MEMORY[0x1E6996730];
   v9 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:self->_pose];
@@ -104,27 +104,27 @@ uint64_t __36__CNSerializedPoseConfiguration_log__block_invoke()
   return v10 + 506447;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNSerializedPoseConfiguration alloc];
-  v5 = [(CNSerializedPoseConfiguration *)self poseName];
-  v6 = [(CNSerializedPoseConfiguration *)self pose];
-  v7 = [(CNSerializedPoseConfiguration *)v4 initWithPoseName:v5 pose:v6];
+  poseName = [(CNSerializedPoseConfiguration *)self poseName];
+  pose = [(CNSerializedPoseConfiguration *)self pose];
+  v7 = [(CNSerializedPoseConfiguration *)v4 initWithPoseName:poseName pose:pose];
 
   return v7;
 }
 
-- (CNSerializedPoseConfiguration)initWithCoder:(id)a3
+- (CNSerializedPoseConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"poseName"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"poseName"];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v5 setWithObjects:{v6, v7, v8, v9, objc_opt_class(), 0}];
-  v11 = [v3 decodeObjectOfClasses:v10 forKey:@"poseRepresentation"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"poseRepresentation"];
 
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
@@ -132,7 +132,7 @@ uint64_t __36__CNSerializedPoseConfiguration_log__block_invoke()
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = [v12 setWithObjects:{v13, v14, v15, v16, objc_opt_class(), 0}];
-  v18 = [v3 decodeObjectOfClasses:v17 forKey:@"posePhysicsStatesRepresentation"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"posePhysicsStatesRepresentation"];
 
   v26 = 0;
   v27 = &v26;
@@ -158,17 +158,17 @@ uint64_t __36__CNSerializedPoseConfiguration_log__block_invoke()
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   poseName = self->_poseName;
-  v5 = a3;
-  [v5 encodeObject:poseName forKey:@"poseName"];
-  v6 = [(AVTAvatarPhysicalizedPose *)self->_pose pose];
-  v7 = [v6 dictionaryRepresentation];
-  [v5 encodeObject:v7 forKey:@"poseRepresentation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:poseName forKey:@"poseName"];
+  pose = [(AVTAvatarPhysicalizedPose *)self->_pose pose];
+  dictionaryRepresentation = [pose dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"poseRepresentation"];
 
   v8 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:self->_pose];
-  [v5 encodeObject:v8 forKey:@"posePhysicsStatesRepresentation"];
+  [coderCopy encodeObject:v8 forKey:@"posePhysicsStatesRepresentation"];
 }
 
 @end

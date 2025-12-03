@@ -1,84 +1,84 @@
 @interface PXSharedLibraryIncludedPeopleDataSourceManager
-- (PXSharedLibraryIncludedPeopleDataSourceManager)initWithViewModel:(id)a3;
-- (id)_infosForPersonIdentifiers:(id)a3;
+- (PXSharedLibraryIncludedPeopleDataSourceManager)initWithViewModel:(id)model;
+- (id)_infosForPersonIdentifiers:(id)identifiers;
 - (id)createInitialDataSource;
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4;
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier;
 - (void)_resetIfNeeded;
 - (void)_updateDataSource;
-- (void)_updateDataSourceWithItemChanges:(id)a3 fromDataSourceIdentifier:(int64_t)a4;
+- (void)_updateDataSourceWithItemChanges:(id)changes fromDataSourceIdentifier:(int64_t)identifier;
 - (void)_updateViewModel;
 - (void)_updateViewModelInitially;
-- (void)addInfos:(id)a3;
-- (void)addSelectedPersonIdentifiers:(id)a3;
+- (void)addInfos:(id)infos;
+- (void)addSelectedPersonIdentifiers:(id)identifiers;
 - (void)didCreateInitialDataSource;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)removeAllItems;
-- (void)removeInfo:(id)a3;
-- (void)replaceInfo:(id)a3 withInfo:(id)a4;
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3;
-- (void)setDataSource:(id)a3 changeDetailsArray:(id)a4;
-- (void)setViewModelSyncingDisabled:(BOOL)a3;
+- (void)removeInfo:(id)info;
+- (void)replaceInfo:(id)info withInfo:(id)withInfo;
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading;
+- (void)setDataSource:(id)source changeDetailsArray:(id)array;
+- (void)setViewModelSyncingDisabled:(BOOL)disabled;
 @end
 
 @implementation PXSharedLibraryIncludedPeopleDataSourceManager
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSharedLibraryAssistantViewModelObservationContext_132151 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryAssistantViewModelObservationContext_132151 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:550 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:550 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v11 = v9;
-  if ((v6 & 0x20) != 0)
+  v11 = observableCopy;
+  if ((changeCopy & 0x20) != 0)
   {
     [(PXSharedLibraryIncludedPeopleDataSourceManager *)self _updateDataSource];
-    v9 = v11;
+    observableCopy = v11;
   }
 
-  if (v6 < 0)
+  if (changeCopy < 0)
   {
     [(PXSharedLibraryIncludedPeopleDataSourceManager *)self _resetIfNeeded];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:536 description:@"Resuming changes is not supported in PXSharedLibraryIncludedPeopleDataSourceManager."];
+  loadingCopy = loading;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:536 description:@"Resuming changes is not supported in PXSharedLibraryIncludedPeopleDataSourceManager."];
 
   abort();
 }
 
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:532 description:@"Pausing changes is not supported in PXSharedLibraryIncludedPeopleDataSourceManager."];
+  identifierCopy = identifier;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:532 description:@"Pausing changes is not supported in PXSharedLibraryIncludedPeopleDataSourceManager."];
 
   abort();
 }
 
-- (void)replaceInfo:(id)a3 withInfo:(id)a4
+- (void)replaceInfo:(id)info withInfo:(id)withInfo
 {
-  v25 = a3;
-  v7 = a4;
+  infoCopy = info;
+  withInfoCopy = withInfo;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:493 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager replaceInfo:withInfo:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:493 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager replaceInfo:withInfo:]"}];
   }
 
-  if (v25)
+  if (infoCopy)
   {
-    if (v7)
+    if (withInfoCopy)
     {
       goto LABEL_5;
     }
@@ -86,138 +86,138 @@
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:494 description:{@"Invalid parameter not satisfying: %@", @"oldInfo != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:494 description:{@"Invalid parameter not satisfying: %@", @"oldInfo != nil"}];
 
-    if (v7)
+    if (withInfoCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:495 description:{@"Invalid parameter not satisfying: %@", @"newInfo != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:495 description:{@"Invalid parameter not satisfying: %@", @"newInfo != nil"}];
 
 LABEL_5:
-  v8 = [(PXSectionedDataSourceManager *)self dataSource];
-  if ([v8 numberOfSections] != 1)
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  if ([dataSource numberOfSections] != 1)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:498 description:@"Expected there to be only one section"];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:498 description:@"Expected there to be only one section"];
   }
 
-  v9 = [(NSMutableArray *)self->_infos indexOfObject:v25];
+  v9 = [(NSMutableArray *)self->_infos indexOfObject:infoCopy];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:501 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:501 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
   }
 
-  [(NSMutableArray *)self->_infos replaceObjectAtIndex:v9 withObject:v7];
-  v10 = [(NSMutableArray *)self->_infosWithoutPeople indexOfObject:v25];
+  [(NSMutableArray *)self->_infos replaceObjectAtIndex:v9 withObject:withInfoCopy];
+  v10 = [(NSMutableArray *)self->_infosWithoutPeople indexOfObject:infoCopy];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v10;
-    v12 = [v7 person];
+    person = [withInfoCopy person];
 
     infosWithoutPeople = self->_infosWithoutPeople;
-    if (v12)
+    if (person)
     {
-      [(NSMutableArray *)infosWithoutPeople removeObject:v25];
+      [(NSMutableArray *)infosWithoutPeople removeObject:infoCopy];
     }
 
     else
     {
-      [(NSMutableArray *)infosWithoutPeople replaceObjectAtIndex:v11 withObject:v7];
+      [(NSMutableArray *)infosWithoutPeople replaceObjectAtIndex:v11 withObject:withInfoCopy];
     }
   }
 
-  v14 = [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants indexOfObject:v25];
-  v15 = [v7 person];
-  v16 = v15;
+  v14 = [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants indexOfObject:infoCopy];
+  person2 = [withInfoCopy person];
+  v16 = person2;
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v15)
+    if (person2)
     {
-      v17 = [v7 participant];
+      participant = [withInfoCopy participant];
 
-      if (v17)
+      if (participant)
       {
-        [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants addObject:v7];
+        [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants addObject:withInfoCopy];
       }
     }
   }
 
-  else if (v15 && ([v7 participant], v18 = objc_claimAutoreleasedReturnValue(), v18, v16, v18))
+  else if (person2 && ([withInfoCopy participant], v18 = objc_claimAutoreleasedReturnValue(), v18, v16, v18))
   {
-    [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants replaceObjectAtIndex:v14 withObject:v7];
+    [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants replaceObjectAtIndex:v14 withObject:withInfoCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants removeObject:v25];
+    [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants removeObject:infoCopy];
   }
 
   v19 = [off_1E7721450 changeDetailsWithChangedIndexRange:{v9, 1}];
-  -[PXSharedLibraryIncludedPeopleDataSourceManager _updateDataSourceWithItemChanges:fromDataSourceIdentifier:](self, "_updateDataSourceWithItemChanges:fromDataSourceIdentifier:", v19, [v8 identifier]);
+  -[PXSharedLibraryIncludedPeopleDataSourceManager _updateDataSourceWithItemChanges:fromDataSourceIdentifier:](self, "_updateDataSourceWithItemChanges:fromDataSourceIdentifier:", v19, [dataSource identifier]);
 }
 
-- (void)removeInfo:(id)a3
+- (void)removeInfo:(id)info
 {
-  v12 = a3;
+  infoCopy = info;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:472 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager removeInfo:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:472 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager removeInfo:]"}];
   }
 
-  if (!v12)
+  if (!infoCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:473 description:{@"Invalid parameter not satisfying: %@", @"info != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:473 description:{@"Invalid parameter not satisfying: %@", @"info != nil"}];
   }
 
-  v5 = [(PXSectionedDataSourceManager *)self dataSource];
-  if ([v5 numberOfSections] != 1)
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  if ([dataSource numberOfSections] != 1)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:476 description:@"Expected there to be only one section"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:476 description:@"Expected there to be only one section"];
   }
 
-  v6 = [v12 participant];
-  if (v6)
+  participant = [infoCopy participant];
+  if (participant)
   {
-    [(NSMutableSet *)self->_removedParticipants addObject:v6];
+    [(NSMutableSet *)self->_removedParticipants addObject:participant];
   }
 
   v7 = [(NSMutableArray *)self->_infos count];
-  [(NSMutableArray *)self->_infos removeObject:v12];
-  [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants removeObject:v12];
-  [(NSMutableArray *)self->_infosWithoutPeople removeObject:v12];
+  [(NSMutableArray *)self->_infos removeObject:infoCopy];
+  [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants removeObject:infoCopy];
+  [(NSMutableArray *)self->_infosWithoutPeople removeObject:infoCopy];
   v8 = [off_1E7721450 changeDetailsWithRemovedIndexRange:{v7, 1}];
-  -[PXSharedLibraryIncludedPeopleDataSourceManager _updateDataSourceWithItemChanges:fromDataSourceIdentifier:](self, "_updateDataSourceWithItemChanges:fromDataSourceIdentifier:", v8, [v5 identifier]);
+  -[PXSharedLibraryIncludedPeopleDataSourceManager _updateDataSourceWithItemChanges:fromDataSourceIdentifier:](self, "_updateDataSourceWithItemChanges:fromDataSourceIdentifier:", v8, [dataSource identifier]);
 }
 
-- (void)addInfos:(id)a3
+- (void)addInfos:(id)infos
 {
-  v5 = a3;
+  infosCopy = infos;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:441 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager addInfos:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:441 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager addInfos:]"}];
   }
 
-  if (![v5 count])
+  if (![infosCopy count])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"infos.count > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"infos.count > 0"}];
   }
 
   [(PXSectionedDataSourceManager *)self dataSource];
   if ([objc_claimAutoreleasedReturnValue() numberOfSections] != 1)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:445 description:@"Expected there to be only one section"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:445 description:@"Expected there to be only one section"];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -260,60 +260,60 @@ LABEL_9:
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:424 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager removeAllItems]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:424 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager removeAllItems]"}];
   }
 
   PXMap();
 }
 
-- (void)setViewModelSyncingDisabled:(BOOL)a3
+- (void)setViewModelSyncingDisabled:(BOOL)disabled
 {
-  if (self->_viewModelSyncingDisabled != a3)
+  if (self->_viewModelSyncingDisabled != disabled)
   {
-    self->_viewModelSyncingDisabled = a3;
+    self->_viewModelSyncingDisabled = disabled;
     [(PXSharedLibraryIncludedPeopleDataSourceManager *)self _updateViewModel];
   }
 }
 
-- (void)addSelectedPersonIdentifiers:(id)a3
+- (void)addSelectedPersonIdentifiers:(id)identifiers
 {
-  v7 = a3;
+  identifiersCopy = identifiers;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:409 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager addSelectedPersonIdentifiers:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryIncludedPeopleDataSourceManager.m" lineNumber:409 description:{@"%s must be called on the main thread", "-[PXSharedLibraryIncludedPeopleDataSourceManager addSelectedPersonIdentifiers:]"}];
   }
 
-  v5 = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self _infosForPersonIdentifiers:v7];
+  v5 = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self _infosForPersonIdentifiers:identifiersCopy];
   if ([v5 count])
   {
     [(PXSharedLibraryIncludedPeopleDataSourceManager *)self addInfos:v5];
   }
 }
 
-- (id)_infosForPersonIdentifiers:(id)a3
+- (id)_infosForPersonIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v5 = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModel];
-    v6 = [v5 sourceLibraryInfo];
+    viewModel = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModel];
+    sourceLibraryInfo = [viewModel sourceLibraryInfo];
 
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v7 = v6;
+      v7 = sourceLibraryInfo;
 
       if (v7)
       {
-        v8 = [v7 photoLibrary];
-        v9 = [v8 librarySpecificFetchOptions];
+        photoLibrary = [v7 photoLibrary];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-        [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:v4 options:v9];
-        v10 = [objc_claimAutoreleasedReturnValue() px_fetchedObjectIDsSortedByLocalIdentifiers:{objc_msgSend(objc_alloc(MEMORY[0x1E695DFB8]), "initWithArray:", v4)}];
+        [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:identifiersCopy options:librarySpecificFetchOptions];
+        v10 = [objc_claimAutoreleasedReturnValue() px_fetchedObjectIDsSortedByLocalIdentifiers:{objc_msgSend(objc_alloc(MEMORY[0x1E695DFB8]), "initWithArray:", identifiersCopy)}];
         v11 = objc_alloc(MEMORY[0x1E69788E0]);
-        v12 = [v7 photoLibrary];
-        [v11 initWithOids:v10 photoLibrary:v12 fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+        photoLibrary2 = [v7 photoLibrary];
+        [v11 initWithOids:v10 photoLibrary:photoLibrary2 fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
         PXMap();
       }
@@ -335,19 +335,19 @@ PXSharedLibraryIncludedPeopleInfo *__77__PXSharedLibraryIncludedPeopleDataSource
   return v3;
 }
 
-- (void)_updateDataSourceWithItemChanges:(id)a3 fromDataSourceIdentifier:(int64_t)a4
+- (void)_updateDataSourceWithItemChanges:(id)changes fromDataSourceIdentifier:(int64_t)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  changesCopy = changes;
   v7 = [[PXSharedLibraryIncludedPeopleDataSource alloc] initWithInfos:self->_infos infosWithBothPeopleAndParticipants:self->_infosWithBothPeopleAndParticipants infosWithoutPeople:self->_infosWithoutPeople];
   v8 = [off_1E77218B0 alloc];
-  v9 = [(PXSharedLibraryIncludedPeopleDataSource *)v7 identifier];
-  v10 = [off_1E7721450 changeDetailsWithNoChanges];
+  identifier = [(PXSharedLibraryIncludedPeopleDataSource *)v7 identifier];
+  changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
   v13 = &unk_1F190B968;
-  v14[0] = v6;
+  v14[0] = changesCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
-  v12 = [v8 initWithFromDataSourceIdentifier:a4 toDataSourceIdentifier:v9 sectionChanges:v10 itemChangeDetailsBySection:v11 subitemChangeDetailsByItemBySection:0];
+  v12 = [v8 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v11 subitemChangeDetailsByItemBySection:0];
   [(PXSectionedDataSourceManager *)self setDataSource:v7 changeDetails:v12];
 }
 
@@ -359,12 +359,12 @@ PXSharedLibraryIncludedPeopleInfo *__77__PXSharedLibraryIncludedPeopleDataSource
     [(NSMutableArray *)self->_infos removeAllObjects];
     [(NSMutableArray *)self->_infosWithBothPeopleAndParticipants removeAllObjects];
     [(NSMutableArray *)self->_infosWithoutPeople removeAllObjects];
-    v3 = [(PXSectionedDataSourceManager *)self dataSourceIfExists];
+    dataSourceIfExists = [(PXSectionedDataSourceManager *)self dataSourceIfExists];
 
-    if (v3)
+    if (dataSourceIfExists)
     {
-      v4 = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self createInitialDataSource];
-      [(PXSectionedDataSourceManager *)self setDataSource:v4 changeDetails:0];
+      createInitialDataSource = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self createInitialDataSource];
+      [(PXSectionedDataSourceManager *)self setDataSource:createInitialDataSource changeDetails:0];
     }
   }
 }
@@ -372,9 +372,9 @@ PXSharedLibraryIncludedPeopleInfo *__77__PXSharedLibraryIncludedPeopleDataSource
 - (void)_updateDataSource
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(PXSharedLibraryAssistantViewModel *)self->_viewModel participantDataSource];
-  v5 = [v4 participants];
-  v6 = [v3 setWithArray:v5];
+  participantDataSource = [(PXSharedLibraryAssistantViewModel *)self->_viewModel participantDataSource];
+  participants = [participantDataSource participants];
+  v6 = [v3 setWithArray:participants];
 
   [(NSMutableSet *)self->_removedParticipants intersectSet:v6];
   [(PXSectionedDataSourceManager *)self dataSource];
@@ -465,34 +465,34 @@ BOOL __67__PXSharedLibraryIncludedPeopleDataSourceManager__updateDataSource__blo
 {
   if ([(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModelSyncingDisabled])
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allPersonUUIDs = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v4 = [(PXSectionedDataSourceManager *)self dataSource];
-    v3 = [v4 allPersonUUIDs];
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+    allPersonUUIDs = [dataSource allPersonUUIDs];
   }
 
-  v5 = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModel];
+  viewModel = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PXSharedLibraryIncludedPeopleDataSourceManager__updateViewModel__block_invoke;
   v7[3] = &unk_1E7749B98;
-  v8 = v3;
-  v6 = v3;
-  [v5 performChanges:v7];
+  v8 = allPersonUUIDs;
+  v6 = allPersonUUIDs;
+  [viewModel performChanges:v7];
 }
 
 - (void)_updateViewModelInitially
 {
-  v3 = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModel];
+  viewModel = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModel];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __75__PXSharedLibraryIncludedPeopleDataSourceManager__updateViewModelInitially__block_invoke;
   v4[3] = &unk_1E7749B98;
   v4[4] = self;
-  [v3 performInitialChanges:v4];
+  [viewModel performInitialChanges:v4];
 }
 
 void __75__PXSharedLibraryIncludedPeopleDataSourceManager__updateViewModelInitially__block_invoke(uint64_t a1, void *a2)
@@ -504,11 +504,11 @@ void __75__PXSharedLibraryIncludedPeopleDataSourceManager__updateViewModelInitia
   [v3 setPersonUUIDs:v4];
 }
 
-- (void)setDataSource:(id)a3 changeDetailsArray:(id)a4
+- (void)setDataSource:(id)source changeDetailsArray:(id)array
 {
   v5.receiver = self;
   v5.super_class = PXSharedLibraryIncludedPeopleDataSourceManager;
-  [(PXSectionedDataSourceManager *)&v5 setDataSource:a3 changeDetailsArray:a4];
+  [(PXSectionedDataSourceManager *)&v5 setDataSource:source changeDetailsArray:array];
   [(PXSharedLibraryIncludedPeopleDataSourceManager *)self _updateViewModel];
 }
 
@@ -523,33 +523,33 @@ void __75__PXSharedLibraryIncludedPeopleDataSourceManager__updateViewModelInitia
 - (id)createInitialDataSource
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModel];
-  v4 = [v3 sharedLibrary];
-  v5 = [v4 isInPreview];
+  viewModel = [(PXSharedLibraryIncludedPeopleDataSourceManager *)self viewModel];
+  sharedLibrary = [viewModel sharedLibrary];
+  isInPreview = [sharedLibrary isInPreview];
 
-  if (v5)
+  if (isInPreview)
   {
-    [v3 personUUIDs];
+    [viewModel personUUIDs];
     objc_claimAutoreleasedReturnValue();
     PXMap();
   }
 
-  v27 = v3;
-  if ([v3 mode] == 2)
+  v27 = viewModel;
+  if ([viewModel mode] == 2)
   {
-    v6 = [v3 sharedLibrary];
-    PXSharedLibraryUIParticipantsForSharedLibrary(v6, 2u);
+    sharedLibrary2 = [viewModel sharedLibrary];
+    PXSharedLibraryUIParticipantsForSharedLibrary(sharedLibrary2, 2u);
   }
 
-  v7 = [v3 participantDataSource];
-  v8 = [v7 participants];
+  participantDataSource = [viewModel participantDataSource];
+  participants = [participantDataSource participants];
 
-  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(participants, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v8;
+  v10 = participants;
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v11)
   {
@@ -638,9 +638,9 @@ id __73__PXSharedLibraryIncludedPeopleDataSourceManager_createInitialDataSource_
   return v3;
 }
 
-- (PXSharedLibraryIncludedPeopleDataSourceManager)initWithViewModel:(id)a3
+- (PXSharedLibraryIncludedPeopleDataSourceManager)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v16.receiver = self;
   v16.super_class = PXSharedLibraryIncludedPeopleDataSourceManager;
   v6 = [(PXSectionedDataSourceManager *)&v16 init];
@@ -662,7 +662,7 @@ id __73__PXSharedLibraryIncludedPeopleDataSourceManager_createInitialDataSource_
     removedParticipants = v6->_removedParticipants;
     v6->_removedParticipants = v13;
 
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXSharedLibraryAssistantViewModel *)v6->_viewModel registerChangeObserver:v6 context:PXSharedLibraryAssistantViewModelObservationContext_132151];
   }
 

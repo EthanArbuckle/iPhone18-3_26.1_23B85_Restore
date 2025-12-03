@@ -1,16 +1,16 @@
 @interface DRPDropletViewConfiguration
-+ (id)edgeAdaptiveKeylineWithCanvasSize:(CGSize)a3 edge:(unint64_t)a4 protrusionFromEdge:(double)a5 centerAlongEdge:(double)a6 containerSize:(CGSize)a7 containerCornerRadius:(double)a8 transform3D:(CATransform3D *)a9 dropletRadius:(double)a10;
-+ (id)edgeContentPresentedWithCanvasSize:(CGSize)a3 edge:(unint64_t)a4 lengthAlongEdge:(double)a5 protrusionFromEdge:(double)a6 centerAlongEdge:(double)a7 inflationProgress:(double)a8 dropletRadius:(double)a9;
-+ (id)edgeHintWithCanvasSize:(CGSize)a3 hintSize:(double)a4 edge:(unint64_t)a5 centerAlongEdge:(double)a6 progress:(double)a7 dropletRadius:(double)a8;
-+ (id)rightEdgeContentPresentedWithCanvasSize:(CGSize)a3 contentSize:(CGSize)a4 centerY:(double)a5 dropletRadius:(double)a6 isOffscreen:(BOOL)a7 inflationProgress:(double)a8;
-+ (id)rightEdgeHintWithCanvasSize:(CGSize)a3 centerY:(double)a4 progress:(double)a5;
-+ (id)trailingHintWithCanvasSize:(CGSize)a3 centerY:(double)a4 progress:(double)a5;
++ (id)edgeAdaptiveKeylineWithCanvasSize:(CGSize)size edge:(unint64_t)edge protrusionFromEdge:(double)fromEdge centerAlongEdge:(double)alongEdge containerSize:(CGSize)containerSize containerCornerRadius:(double)radius transform3D:(CATransform3D *)d dropletRadius:(double)self0;
++ (id)edgeContentPresentedWithCanvasSize:(CGSize)size edge:(unint64_t)edge lengthAlongEdge:(double)alongEdge protrusionFromEdge:(double)fromEdge centerAlongEdge:(double)centerAlongEdge inflationProgress:(double)progress dropletRadius:(double)radius;
++ (id)edgeHintWithCanvasSize:(CGSize)size hintSize:(double)hintSize edge:(unint64_t)edge centerAlongEdge:(double)alongEdge progress:(double)progress dropletRadius:(double)radius;
++ (id)rightEdgeContentPresentedWithCanvasSize:(CGSize)size contentSize:(CGSize)contentSize centerY:(double)y dropletRadius:(double)radius isOffscreen:(BOOL)offscreen inflationProgress:(double)progress;
++ (id)rightEdgeHintWithCanvasSize:(CGSize)size centerY:(double)y progress:(double)progress;
++ (id)trailingHintWithCanvasSize:(CGSize)size centerY:(double)y progress:(double)progress;
 - (BOOL)disableDropletEffectFilters;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CATransform3D)containerTransform;
 - (DRPDropletContextKeylineStyle)keylineStyle;
 - (DRPDropletViewConfiguration)init;
-- (DRPDropletViewConfiguration)initWithCenterX:(double)a3 centerY:(double)a4 boundaryEdges:(unint64_t)a5 containerCornerRadius:(double)a6 containerHeight:(double)a7 containerWidth:(double)a8 containerTransform:(CATransform3D *)a9 dropletColor:(id)a10 dropletRadius:(double)a11 disableDropletEffectFilters:(BOOL)a12 boundaryOutsets:(UIEdgeInsets)a13 keylineStyle:(id)a14;
+- (DRPDropletViewConfiguration)initWithCenterX:(double)x centerY:(double)y boundaryEdges:(unint64_t)edges containerCornerRadius:(double)radius containerHeight:(double)height containerWidth:(double)width containerTransform:(CATransform3D *)transform dropletColor:(id)self0 dropletRadius:(double)self1 disableDropletEffectFilters:(BOOL)self2 boundaryOutsets:(UIEdgeInsets)self3 keylineStyle:(id)self4;
 - (NSString)debugDescription;
 - (NSString)description;
 - (UIColor)dropletColor;
@@ -21,30 +21,30 @@
 - (double)containerHeight;
 - (double)containerWidth;
 - (double)dropletRadius;
-- (id)animationBlockForKeyPath:(id)a3;
-- (id)animationCompletionBlockForKeyPath:(id)a3;
+- (id)animationBlockForKeyPath:(id)path;
+- (id)animationCompletionBlockForKeyPath:(id)path;
 - (id)anyAnimationCompletionBlock;
-- (id)behaviorSettingsForKeyPath:(id)a3;
+- (id)behaviorSettingsForKeyPath:(id)path;
 - (id)copy;
 - (unint64_t)boundaryEdges;
-- (void)addAlongsideAnimationBlockForKeyPath:(id)a3 animationBlock:(id)a4;
-- (void)addAnimationCompletionBlockForKeyPath:(id)a3 animationCompletionBlock:(id)a4;
-- (void)addAnyAnimationCompletionBlock:(id)a3;
-- (void)defaultResetKeylineForCanvasSize:(CGSize)a3;
+- (void)addAlongsideAnimationBlockForKeyPath:(id)path animationBlock:(id)block;
+- (void)addAnimationCompletionBlockForKeyPath:(id)path animationCompletionBlock:(id)block;
+- (void)addAnyAnimationCompletionBlock:(id)block;
+- (void)defaultResetKeylineForCanvasSize:(CGSize)size;
 - (void)removeAnyAnimationCompletionBlocks;
-- (void)setBehaviorSettingsForKeyPath:(id)a3 behaviorSettings:(id)a4;
-- (void)setBoundaryEdges:(unint64_t)a3;
-- (void)setBoundaryOutsets:(UIEdgeInsets)a3;
-- (void)setCenterX:(double)a3;
-- (void)setCenterY:(double)a3;
-- (void)setContainerCornerRadius:(double)a3;
-- (void)setContainerHeight:(double)a3;
-- (void)setContainerTransform:(CATransform3D *)a3;
-- (void)setContainerWidth:(double)a3;
-- (void)setDisableDropletEffectFilters:(BOOL)a3;
-- (void)setDropletColor:(id)a3;
-- (void)setDropletRadius:(double)a3;
-- (void)setKeylineStyle:(id)a3;
+- (void)setBehaviorSettingsForKeyPath:(id)path behaviorSettings:(id)settings;
+- (void)setBoundaryEdges:(unint64_t)edges;
+- (void)setBoundaryOutsets:(UIEdgeInsets)outsets;
+- (void)setCenterX:(double)x;
+- (void)setCenterY:(double)y;
+- (void)setContainerCornerRadius:(double)radius;
+- (void)setContainerHeight:(double)height;
+- (void)setContainerTransform:(CATransform3D *)transform;
+- (void)setContainerWidth:(double)width;
+- (void)setDisableDropletEffectFilters:(BOOL)filters;
+- (void)setDropletColor:(id)color;
+- (void)setDropletRadius:(double)radius;
+- (void)setKeylineStyle:(id)style;
 @end
 
 @implementation DRPDropletViewConfiguration
@@ -56,11 +56,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCenterX:(double)a3
+- (void)setCenterX:(double)x
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_centerX;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = x;
 }
 
 - (double)centerY
@@ -70,11 +70,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCenterY:(double)a3
+- (void)setCenterY:(double)y
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_centerY;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = y;
 }
 
 - (unint64_t)boundaryEdges
@@ -84,11 +84,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setBoundaryEdges:(unint64_t)a3
+- (void)setBoundaryEdges:(unint64_t)edges
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_boundaryEdges;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = edges;
 }
 
 - (double)containerCornerRadius
@@ -98,11 +98,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setContainerCornerRadius:(double)a3
+- (void)setContainerCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_containerCornerRadius;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = radius;
 }
 
 - (double)containerHeight
@@ -112,11 +112,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setContainerHeight:(double)a3
+- (void)setContainerHeight:(double)height
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_containerHeight;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = height;
 }
 
 - (double)containerWidth
@@ -126,11 +126,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setContainerWidth:(double)a3
+- (void)setContainerWidth:(double)width
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_containerWidth;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = width;
 }
 
 - (CATransform3D)containerTransform
@@ -152,17 +152,17 @@
   return result;
 }
 
-- (void)setContainerTransform:(CATransform3D *)a3
+- (void)setContainerTransform:(CATransform3D *)transform
 {
   v3 = (self + OBJC_IVAR___DRPDropletViewConfiguration_containerTransform);
-  v11 = *&a3->m11;
-  v7 = *&a3->m13;
-  v10 = *&a3->m21;
-  v5 = *&a3->m33;
-  v6 = *&a3->m23;
-  v8 = *&a3->m41;
-  v9 = *&a3->m31;
-  v4 = *&a3->m43;
+  v11 = *&transform->m11;
+  v7 = *&transform->m13;
+  v10 = *&transform->m21;
+  v5 = *&transform->m33;
+  v6 = *&transform->m23;
+  v8 = *&transform->m41;
+  v9 = *&transform->m31;
+  v4 = *&transform->m43;
   swift_beginAccess();
   *v3 = v11;
   v3[1] = v7;
@@ -181,13 +181,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDropletColor:(id)a3
+- (void)setDropletColor:(id)color
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_dropletColor;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = color;
+  colorCopy = color;
 }
 
 - (double)dropletRadius
@@ -197,11 +197,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDropletRadius:(double)a3
+- (void)setDropletRadius:(double)radius
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_dropletRadius;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = radius;
 }
 
 - (BOOL)disableDropletEffectFilters
@@ -211,11 +211,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDisableDropletEffectFilters:(BOOL)a3
+- (void)setDisableDropletEffectFilters:(BOOL)filters
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_disableDropletEffectFilters;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = filters;
 }
 
 - (UIEdgeInsets)boundaryOutsets
@@ -233,12 +233,12 @@
   return result;
 }
 
-- (void)setBoundaryOutsets:(UIEdgeInsets)a3
+- (void)setBoundaryOutsets:(UIEdgeInsets)outsets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
   v7 = (self + OBJC_IVAR___DRPDropletViewConfiguration_boundaryOutsets);
   swift_beginAccess();
   *v7 = top;
@@ -257,12 +257,12 @@
   return v5;
 }
 
-- (void)setKeylineStyle:(id)a3
+- (void)setKeylineStyle:(id)style
 {
   v5 = OBJC_IVAR___DRPDropletViewConfiguration_keylineStyle;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = style;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -296,24 +296,24 @@
   v4 = *(&self->centerX + OBJC_IVAR___DRPDropletViewConfiguration__anyAnimationCompletionBlock);
   *v2 = 0;
   v2[1] = 0;
-  v5 = self;
+  selfCopy = self;
   sub_249E9F570(v3);
 }
 
-- (void)addAnyAnimationCompletionBlock:(id)a3
+- (void)addAnyAnimationCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   DRPDropletViewConfiguration.addAnyAnimationCompletionBlock(_:)(sub_249EB0F28, v5);
 }
 
-- (id)animationBlockForKeyPath:(id)a3
+- (id)animationBlockForKeyPath:(id)path
 {
   v4 = sub_249ED6C70();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = DRPDropletViewConfiguration.animationBlock(forKeyPath:)(v4, v6);
   v10 = v9;
 
@@ -331,9 +331,9 @@
   return v8;
 }
 
-- (void)addAlongsideAnimationBlockForKeyPath:(id)a3 animationBlock:(id)a4
+- (void)addAlongsideAnimationBlockForKeyPath:(id)path animationBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   v6 = sub_249ED6C70();
   v8 = v7;
   if (v5)
@@ -348,38 +348,38 @@
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   DRPDropletViewConfiguration.addAlongsideAnimationBlock(forKeyPath:animationBlock:)(v6, v8, v5, v9);
   sub_249E9F570(v5);
 }
 
-- (id)behaviorSettingsForKeyPath:(id)a3
+- (id)behaviorSettingsForKeyPath:(id)path
 {
   v4 = sub_249ED6C70();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = DRPDropletViewConfiguration.behaviorSettings(forKeyPath:)(v4, v6);
 
   return v8;
 }
 
-- (void)setBehaviorSettingsForKeyPath:(id)a3 behaviorSettings:(id)a4
+- (void)setBehaviorSettingsForKeyPath:(id)path behaviorSettings:(id)settings
 {
   v6 = sub_249ED6C70();
   v8 = v7;
   swift_beginAccess();
   swift_unknownObjectRetain_n();
-  v9 = self;
-  sub_249EAA96C(a4, v6, v8);
+  selfCopy = self;
+  sub_249EAA96C(settings, v6, v8);
   swift_endAccess();
   swift_unknownObjectRelease();
 }
 
-- (id)animationCompletionBlockForKeyPath:(id)a3
+- (id)animationCompletionBlockForKeyPath:(id)path
 {
   v4 = sub_249ED6C70();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = DRPDropletViewConfiguration.animationCompletionBlock(forKeyPath:)(v4, v6);
   v10 = v9;
 
@@ -397,9 +397,9 @@
   return v8;
 }
 
-- (void)addAnimationCompletionBlockForKeyPath:(id)a3 animationCompletionBlock:(id)a4
+- (void)addAnimationCompletionBlockForKeyPath:(id)path animationCompletionBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   v6 = sub_249ED6C70();
   v8 = v7;
   if (v5)
@@ -414,28 +414,28 @@
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   DRPDropletViewConfiguration.addAnimationCompletionBlock(forKeyPath:animationCompletionBlock:)(v6, v8, v5, v9);
   sub_249E9F570(v5);
 }
 
-- (DRPDropletViewConfiguration)initWithCenterX:(double)a3 centerY:(double)a4 boundaryEdges:(unint64_t)a5 containerCornerRadius:(double)a6 containerHeight:(double)a7 containerWidth:(double)a8 containerTransform:(CATransform3D *)a9 dropletColor:(id)a10 dropletRadius:(double)a11 disableDropletEffectFilters:(BOOL)a12 boundaryOutsets:(UIEdgeInsets)a13 keylineStyle:(id)a14
+- (DRPDropletViewConfiguration)initWithCenterX:(double)x centerY:(double)y boundaryEdges:(unint64_t)edges containerCornerRadius:(double)radius containerHeight:(double)height containerWidth:(double)width containerTransform:(CATransform3D *)transform dropletColor:(id)self0 dropletRadius:(double)self1 disableDropletEffectFilters:(BOOL)self2 boundaryOutsets:(UIEdgeInsets)self3 keylineStyle:(id)self4
 {
-  v22 = *&a9->m13;
-  v34[0] = *&a9->m11;
+  v22 = *&transform->m13;
+  v34[0] = *&transform->m11;
   v34[1] = v22;
-  v23 = *&a9->m23;
-  v34[2] = *&a9->m21;
+  v23 = *&transform->m23;
+  v34[2] = *&transform->m21;
   v34[3] = v23;
-  v24 = *&a9->m33;
-  v34[4] = *&a9->m31;
+  v24 = *&transform->m33;
+  v34[4] = *&transform->m31;
   v34[5] = v24;
-  v25 = *&a9->m43;
-  v34[6] = *&a9->m41;
+  v25 = *&transform->m43;
+  v34[6] = *&transform->m41;
   v34[7] = v25;
-  v26 = a10;
+  colorCopy = color;
   swift_unknownObjectRetain();
-  v30 = sub_249EAFC84(a5, v34, a10, a12, a14, a3, a4, a6, a7, a8, a11, a13.top, a13.left, v27, v28, v29, *&a13.bottom, *&a13.right);
+  v30 = sub_249EAFC84(edges, v34, color, filters, style, x, y, radius, height, width, dropletRadius, outsets.top, outsets.left, v27, v28, v29, *&outsets.bottom, *&outsets.right);
 
   swift_unknownObjectRelease();
   return v30;
@@ -450,7 +450,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_249EAC358(0);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EF29548, &qword_249ED8EA0);
   sub_249EAFF14(&qword_27EF29550, &qword_27EF29548, &qword_249ED8EA0);
@@ -463,7 +463,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   DRPDropletViewConfiguration.debugDescription.getter();
 
   v3 = sub_249ED6C60();
@@ -471,11 +471,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_249ED6D90();
     swift_unknownObjectRelease();
@@ -484,7 +484,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = DRPDropletViewConfiguration.isEqual(_:)(v8);
@@ -500,50 +500,50 @@
   return result;
 }
 
-- (void)defaultResetKeylineForCanvasSize:(CGSize)a3
+- (void)defaultResetKeylineForCanvasSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   DRPDropletViewConfiguration.defaultResetKeyline(forCanvasSize:)(__PAIR128__(*&height, *&width));
 }
 
-+ (id)trailingHintWithCanvasSize:(CGSize)a3 centerY:(double)a4 progress:(double)a5
++ (id)trailingHintWithCanvasSize:(CGSize)size centerY:(double)y progress:(double)progress
 {
-  v5 = [a1 rightEdgeHintWithCanvasSize:a3.width centerY:a3.height progress:{a4, a5}];
+  v5 = [self rightEdgeHintWithCanvasSize:size.width centerY:size.height progress:{y, progress}];
 
   return v5;
 }
 
-+ (id)rightEdgeHintWithCanvasSize:(CGSize)a3 centerY:(double)a4 progress:(double)a5
++ (id)rightEdgeHintWithCanvasSize:(CGSize)size centerY:(double)y progress:(double)progress
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [objc_opt_self() rootSettings];
-  [v10 rightEdgeHintSize];
+  height = size.height;
+  width = size.width;
+  rootSettings = [objc_opt_self() rootSettings];
+  [rootSettings rightEdgeHintSize];
   v12 = v11;
-  [v10 rightEdgeHintDropletRadius];
-  v14 = [a1 edgeHintWithCanvasSize:8 hintSize:width edge:height centerAlongEdge:v12 progress:a4 dropletRadius:{a5, v13}];
+  [rootSettings rightEdgeHintDropletRadius];
+  v14 = [self edgeHintWithCanvasSize:8 hintSize:width edge:height centerAlongEdge:v12 progress:y dropletRadius:{progress, v13}];
 
   return v14;
 }
 
-+ (id)edgeHintWithCanvasSize:(CGSize)a3 hintSize:(double)a4 edge:(unint64_t)a5 centerAlongEdge:(double)a6 progress:(double)a7 dropletRadius:(double)a8
++ (id)edgeHintWithCanvasSize:(CGSize)size hintSize:(double)hintSize edge:(unint64_t)edge centerAlongEdge:(double)alongEdge progress:(double)progress dropletRadius:(double)radius
 {
-  v8 = sub_249EB0328(a5, a3.width, a3.height, a4, a6, a7, a8);
+  v8 = sub_249EB0328(edge, size.width, size.height, hintSize, alongEdge, progress, radius);
 
   return v8;
 }
 
-+ (id)rightEdgeContentPresentedWithCanvasSize:(CGSize)a3 contentSize:(CGSize)a4 centerY:(double)a5 dropletRadius:(double)a6 isOffscreen:(BOOL)a7 inflationProgress:(double)a8
++ (id)rightEdgeContentPresentedWithCanvasSize:(CGSize)size contentSize:(CGSize)contentSize centerY:(double)y dropletRadius:(double)radius isOffscreen:(BOOL)offscreen inflationProgress:(double)progress
 {
-  v8 = a7;
-  width = a4.width;
-  height = a3.height;
-  v11 = a3.width;
-  v12 = [a1 edgeContentPresentedWithCanvasSize:8 edge:a3.width lengthAlongEdge:a3.height protrusionFromEdge:a4.height centerAlongEdge:a4.width inflationProgress:a5 dropletRadius:{a8, a6}];
+  offscreenCopy = offscreen;
+  width = contentSize.width;
+  height = size.height;
+  v11 = size.width;
+  v12 = [self edgeContentPresentedWithCanvasSize:8 edge:size.width lengthAlongEdge:size.height protrusionFromEdge:contentSize.height centerAlongEdge:contentSize.width inflationProgress:y dropletRadius:{progress, radius}];
   v13 = v12;
-  if (v8)
+  if (offscreenCopy)
   {
     [v12 centerX];
     [v13 setCenterX_];
@@ -554,31 +554,31 @@
   return v13;
 }
 
-+ (id)edgeContentPresentedWithCanvasSize:(CGSize)a3 edge:(unint64_t)a4 lengthAlongEdge:(double)a5 protrusionFromEdge:(double)a6 centerAlongEdge:(double)a7 inflationProgress:(double)a8 dropletRadius:(double)a9
++ (id)edgeContentPresentedWithCanvasSize:(CGSize)size edge:(unint64_t)edge lengthAlongEdge:(double)alongEdge protrusionFromEdge:(double)fromEdge centerAlongEdge:(double)centerAlongEdge inflationProgress:(double)progress dropletRadius:(double)radius
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_getObjCClassMetadata();
-  v17 = sub_249EADE54(a4, width, height, a5, a6, a7, a8, a9);
+  v17 = sub_249EADE54(edge, width, height, alongEdge, fromEdge, centerAlongEdge, progress, radius);
 
   return v17;
 }
 
-+ (id)edgeAdaptiveKeylineWithCanvasSize:(CGSize)a3 edge:(unint64_t)a4 protrusionFromEdge:(double)a5 centerAlongEdge:(double)a6 containerSize:(CGSize)a7 containerCornerRadius:(double)a8 transform3D:(CATransform3D *)a9 dropletRadius:(double)a10
++ (id)edgeAdaptiveKeylineWithCanvasSize:(CGSize)size edge:(unint64_t)edge protrusionFromEdge:(double)fromEdge centerAlongEdge:(double)alongEdge containerSize:(CGSize)containerSize containerCornerRadius:(double)radius transform3D:(CATransform3D *)d dropletRadius:(double)self0
 {
-  v10 = *&a9->m13;
-  v16[0] = *&a9->m11;
+  v10 = *&d->m13;
+  v16[0] = *&d->m11;
   v16[1] = v10;
-  v11 = *&a9->m23;
-  v16[2] = *&a9->m21;
+  v11 = *&d->m23;
+  v16[2] = *&d->m21;
   v16[3] = v11;
-  v12 = *&a9->m33;
-  v16[4] = *&a9->m31;
+  v12 = *&d->m33;
+  v16[4] = *&d->m31;
   v16[5] = v12;
-  v13 = *&a9->m43;
-  v16[6] = *&a9->m41;
+  v13 = *&d->m43;
+  v16[6] = *&d->m41;
   v16[7] = v13;
-  v14 = sub_249EB08F0(a4, v16, a3.width, a3.height, a5, a6, a7.width, a7.height, a8, a10);
+  v14 = sub_249EB08F0(edge, v16, size.width, size.height, fromEdge, alongEdge, containerSize.width, containerSize.height, radius, dropletRadius);
 
   return v14;
 }

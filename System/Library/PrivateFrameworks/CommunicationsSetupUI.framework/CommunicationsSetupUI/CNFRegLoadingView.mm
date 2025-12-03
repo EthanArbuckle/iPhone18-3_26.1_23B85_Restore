@@ -1,20 +1,20 @@
 @interface CNFRegLoadingView
-- (CNFRegLoadingView)initWithFrame:(CGRect)a3;
+- (CNFRegLoadingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setMessage:(id)a3;
+- (void)setMessage:(id)message;
 @end
 
 @implementation CNFRegLoadingView
 
-- (CNFRegLoadingView)initWithFrame:(CGRect)a3
+- (CNFRegLoadingView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = CNFRegLoadingView;
-  v3 = [(CNFRegLoadingView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNFRegLoadingView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
-    v5 = [v4 colorWithAlphaComponent:0.600000024];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v5 = [blackColor colorWithAlphaComponent:0.600000024];
     [(CNFRegLoadingView *)v3 setBackgroundColor:v5];
 
     v6 = objc_alloc(MEMORY[0x277D756B8]);
@@ -30,11 +30,11 @@
     v12 = [v10 localizedStringForKey:@"LOADING" value:&stru_2856D3978 table:v11];
     [(UILabel *)v3->_label setText:v12];
 
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v3->_label setTextColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v3->_label setTextColor:whiteColor];
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v3->_label setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v3->_label setBackgroundColor:clearColor];
 
     [(CNFRegLoadingView *)v3 addSubview:v3->_label];
     v15 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:1];
@@ -119,23 +119,23 @@
   [(UILabel *)label setFrame:v25, v26, v13, v31];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
-  v9 = v4;
-  if (!v4)
+  messageCopy = message;
+  v9 = messageCopy;
+  if (!messageCopy)
   {
     v5 = CommunicationsSetupUIBundle();
     v6 = CNFRegStringTableName();
-    v4 = [v5 localizedStringForKey:@"LOADING" value:&stru_2856D3978 table:v6];
+    messageCopy = [v5 localizedStringForKey:@"LOADING" value:&stru_2856D3978 table:v6];
   }
 
-  v7 = [(UILabel *)self->_label text];
-  v8 = [v4 isEqualToString:v7];
+  text = [(UILabel *)self->_label text];
+  v8 = [messageCopy isEqualToString:text];
 
   if ((v8 & 1) == 0)
   {
-    [(UILabel *)self->_label setText:v4];
+    [(UILabel *)self->_label setText:messageCopy];
     [(CNFRegLoadingView *)self setNeedsLayout];
   }
 }

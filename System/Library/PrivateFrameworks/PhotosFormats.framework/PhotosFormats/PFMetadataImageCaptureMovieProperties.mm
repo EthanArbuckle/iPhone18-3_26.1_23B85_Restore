@@ -1,8 +1,8 @@
 @interface PFMetadataImageCaptureMovieProperties
-- (BOOL)configureWithMetadataPlist:(id)a3;
+- (BOOL)configureWithMetadataPlist:(id)plist;
 - (BOOL)isSloMo;
 - (BOOL)isTimelapse;
-- (PFMetadataImageCaptureMovieProperties)initWithImageCaptureMovieProperties:(id)a3 contentType:(id)a4 timeZoneLookup:(id)a5;
+- (PFMetadataImageCaptureMovieProperties)initWithImageCaptureMovieProperties:(id)properties contentType:(id)type timeZoneLookup:(id)lookup;
 - (id)_makeGPSProperties;
 - (id)plistForEncoding;
 @end
@@ -13,8 +13,8 @@
 {
   v6.receiver = self;
   v6.super_class = PFMetadataImageCaptureMovieProperties;
-  v3 = [(PFMetadata *)&v6 plistForEncoding];
-  v4 = [v3 mutableCopy];
+  plistForEncoding = [(PFMetadata *)&v6 plistForEncoding];
+  v4 = [plistForEncoding mutableCopy];
 
   [v4 setObject:self->_iccMovieProperties forKeyedSubscript:PFMetadataICCMovieProperties];
 
@@ -53,28 +53,28 @@
 - (BOOL)isTimelapse
 {
   v2 = [(NSDictionary *)self->_iccMovieProperties objectForKeyedSubscript:PFMetadataImageCapturePropertyTimeLapse];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isSloMo
 {
   v2 = [(NSDictionary *)self->_iccMovieProperties objectForKeyedSubscript:PFMetadataImageCapturePropertyHighFramerate];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)configureWithMetadataPlist:(id)a3
+- (BOOL)configureWithMetadataPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v9.receiver = self;
   v9.super_class = PFMetadataImageCaptureMovieProperties;
-  v5 = [(PFMetadata *)&v9 configureWithMetadataPlist:v4];
+  v5 = [(PFMetadata *)&v9 configureWithMetadataPlist:plistCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:PFMetadataICCMovieProperties];
+    v6 = [plistCopy objectForKeyedSubscript:PFMetadataICCMovieProperties];
     iccMovieProperties = self->_iccMovieProperties;
     self->_iccMovieProperties = v6;
   }
@@ -82,18 +82,18 @@
   return v5;
 }
 
-- (PFMetadataImageCaptureMovieProperties)initWithImageCaptureMovieProperties:(id)a3 contentType:(id)a4 timeZoneLookup:(id)a5
+- (PFMetadataImageCaptureMovieProperties)initWithImageCaptureMovieProperties:(id)properties contentType:(id)type timeZoneLookup:(id)lookup
 {
-  v9 = a3;
-  if (v9)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     v13.receiver = self;
     v13.super_class = PFMetadataImageCaptureMovieProperties;
-    v10 = [(PFMetadata *)&v13 initWithContentType:a4 options:12 timeZoneLookup:a5];
+    v10 = [(PFMetadata *)&v13 initWithContentType:type options:12 timeZoneLookup:lookup];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_iccMovieProperties, a3);
+      objc_storeStrong(&v10->_iccMovieProperties, properties);
       [(PFMetadata *)v11 setSourceType:11];
     }
   }

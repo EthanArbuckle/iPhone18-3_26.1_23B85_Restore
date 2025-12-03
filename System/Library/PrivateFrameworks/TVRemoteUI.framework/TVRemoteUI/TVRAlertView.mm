@@ -1,36 +1,36 @@
 @interface TVRAlertView
 - (BOOL)resignFirstResponder;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TVRAlertView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TVRAlertView)initWithFrame:(CGRect)frame;
 - (TVRAlertViewDelegate)delegate;
-- (void)_cancelButton:(id)a3;
+- (void)_cancelButton:(id)button;
 - (void)_passcodeFieldTapped;
-- (void)_pinTextDidChange:(id)a3;
+- (void)_pinTextDidChange:(id)change;
 - (void)layoutSubviews;
 @end
 
 @implementation TVRAlertView
 
-- (TVRAlertView)initWithFrame:(CGRect)a3
+- (TVRAlertView)initWithFrame:(CGRect)frame
 {
   v57.receiver = self;
   v57.super_class = TVRAlertView;
-  v3 = [(TVRAlertView *)&v57 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TVRAlertView *)&v57 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TVRAlertView *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(TVRAlertView *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v6 = [(TVRAlertView *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer2 = [(TVRAlertView *)v4 layer];
+    [layer2 setAllowsGroupBlending:0];
 
-    v7 = [(TVRAlertView *)v4 layer];
+    layer3 = [(TVRAlertView *)v4 layer];
     v8 = *MEMORY[0x277CDA138];
-    [v7 setCornerCurve:*MEMORY[0x277CDA138]];
+    [layer3 setCornerCurve:*MEMORY[0x277CDA138]];
 
-    v9 = [(TVRAlertView *)v4 layer];
-    [v9 setCornerRadius:13.0];
+    layer4 = [(TVRAlertView *)v4 layer];
+    [layer4 setCornerRadius:13.0];
 
     [(TVRAlertView *)v4 setClipsToBounds:1];
     v10 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -41,11 +41,11 @@
     v13 = [MEMORY[0x277D75348] colorWithDisplayP3Red:0.17254902 green:0.17254902 blue:0.180392157 alpha:1.0];
     [(UIView *)v12 setBackgroundColor:v13];
 
-    v14 = [(UIView *)v4->_blendModeView layer];
-    [v14 setCornerCurve:v8];
+    layer5 = [(UIView *)v4->_blendModeView layer];
+    [layer5 setCornerCurve:v8];
 
-    v15 = [(UIView *)v4->_blendModeView layer];
-    [v15 setCornerRadius:13.0];
+    layer6 = [(UIView *)v4->_blendModeView layer];
+    [layer6 setCornerRadius:13.0];
 
     [(TVRAlertView *)v4 addSubview:v4->_blendModeView];
     v16 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -57,8 +57,8 @@
     [(UILabel *)v18 setFont:v19];
 
     v20 = v4->_titleLabel;
-    v21 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UILabel *)v20 setTextColor:v21];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UILabel *)v20 setTextColor:systemWhiteColor];
 
     [(UILabel *)v4->_titleLabel setTextAlignment:1];
     [(UILabel *)v4->_titleLabel setNumberOfLines:4];
@@ -85,46 +85,46 @@
     [(_TVRMAlertButton *)v26 setTitle:v28 forState:0];
 
     v29 = v4->_cancelButton;
-    v30 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(_TVRMAlertButton *)v29 setTitleColor:v30 forState:1];
+    systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+    [(_TVRMAlertButton *)v29 setTitleColor:systemWhiteColor2 forState:1];
 
-    v31 = [(_TVRMAlertButton *)v4->_cancelButton titleLabel];
+    titleLabel = [(_TVRMAlertButton *)v4->_cancelButton titleLabel];
     v32 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    [v31 setFont:v32];
+    [titleLabel setFont:v32];
 
     [(_TVRMAlertButton *)v4->_cancelButton addTarget:v4 action:sel__cancelButton_ forControlEvents:0x2000];
-    v33 = [(_TVRMAlertButton *)v4->_cancelButton layer];
-    [v33 setAllowsGroupOpacity:0];
+    layer7 = [(_TVRMAlertButton *)v4->_cancelButton layer];
+    [layer7 setAllowsGroupOpacity:0];
 
-    v34 = [(_TVRMAlertButton *)v4->_cancelButton layer];
-    [v34 setAllowsGroupBlending:0];
+    layer8 = [(_TVRMAlertButton *)v4->_cancelButton layer];
+    [layer8 setAllowsGroupBlending:0];
 
     [(TVRAlertView *)v4 addSubview:v4->_cancelButton];
     v35 = objc_alloc_init(MEMORY[0x277D75D18]);
     v36 = [MEMORY[0x277D75348] colorWithDisplayP3Red:0.109803922 green:0.109803922 blue:0.117647059 alpha:1.0];
     [v35 setBackgroundColor:v36];
 
-    v37 = [v35 layer];
+    layer9 = [v35 layer];
     v38 = *MEMORY[0x277CDA298];
     v39 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA298]];
-    [v37 setCompositingFilter:v39];
+    [layer9 setCompositingFilter:v39];
 
     [(_TVRMAlertButton *)v4->_cancelButton setBurnView:v35];
     v40 = objc_alloc_init(MEMORY[0x277D75D18]);
     v41 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.04];
     [v40 setBackgroundColor:v41];
 
-    v42 = [v40 layer];
+    layer10 = [v40 layer];
     v43 = [MEMORY[0x277CD9EA0] filterWithType:v38];
-    [v42 setCompositingFilter:v43];
+    [layer10 setCompositingFilter:v43];
 
     [(_TVRMAlertButton *)v4->_cancelButton setPlusDView:v40];
     v44 = objc_alloc_init(MEMORY[0x277D75D18]);
     hairlineView = v4->_hairlineView;
     v4->_hairlineView = v44;
 
-    v46 = [(UIView *)v4->_hairlineView layer];
-    [v46 setAllowsGroupBlending:0];
+    layer11 = [(UIView *)v4->_hairlineView layer];
+    [layer11 setAllowsGroupBlending:0];
 
     [(TVRAlertView *)v4 addSubview:v4->_hairlineView];
     v47 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -132,9 +132,9 @@
     [v47 setBackgroundColor:v48];
 
     [v47 setAutoresizingMask:18];
-    v49 = [v47 layer];
+    layer12 = [v47 layer];
     v50 = [MEMORY[0x277CD9EA0] filterWithType:v38];
-    [v49 setCompositingFilter:v50];
+    [layer12 setCompositingFilter:v50];
 
     [(UIView *)v4->_hairlineView addSubview:v47];
     v51 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -142,9 +142,9 @@
     [v51 setBackgroundColor:v52];
 
     [v51 setAutoresizingMask:18];
-    v53 = [v51 layer];
+    layer13 = [v51 layer];
     v54 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5D8]];
-    [v53 setCompositingFilter:v54];
+    [layer13 setCompositingFilter:v54];
 
     [(UIView *)v4->_hairlineView addSubview:v51];
   }
@@ -152,10 +152,10 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UILabel *)self->_titleLabel sizeThatFits:a3.width, 1.79769313e308];
+  width = fits.width;
+  [(UILabel *)self->_titleLabel sizeThatFits:fits.width, 1.79769313e308];
   v6 = v5;
   [(_TVRMAlertButton *)self->_cancelButton sizeThatFits:width, 1.79769313e308];
   v8 = ceil(v6) + 20.0 + 19.0 + 60.0;
@@ -185,8 +185,8 @@
   v10 = v9 + 20.0 + 19.0;
   [(TVRPasscodeField *)self->_passcodeField setFrame:0.0, v10, v7, 60.0];
   v11 = v10 + 60.0;
-  v12 = [(TVRAlertView *)self _screen];
-  [v12 scale];
+  _screen = [(TVRAlertView *)self _screen];
+  [_screen scale];
   v14 = v13;
 
   [(UIView *)self->_hairlineView setFrame:0.0, v11 - 1.0 / v14, v7];
@@ -218,7 +218,7 @@
   return [(TVRPasscodeField *)self->_passcodeField resignFirstResponder];
 }
 
-- (void)_cancelButton:(id)a3
+- (void)_cancelButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -240,17 +240,17 @@
   }
 }
 
-- (void)_pinTextDidChange:(id)a3
+- (void)_pinTextDidChange:(id)change
 {
-  v8 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v8 text];
-    [v6 alertView:self didUpdateText:v7];
+    text = [changeCopy text];
+    [v6 alertView:self didUpdateText:text];
   }
 }
 

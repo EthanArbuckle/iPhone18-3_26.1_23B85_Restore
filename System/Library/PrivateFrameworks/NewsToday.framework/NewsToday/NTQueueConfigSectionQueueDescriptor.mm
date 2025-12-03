@@ -1,6 +1,6 @@
 @interface NTQueueConfigSectionQueueDescriptor
 - (NTQueueConfigSectionQueueDescriptor)init;
-- (NTQueueConfigSectionQueueDescriptor)initWithQueueConfig:(id)a3 appConfiguration:(id)a4 todayData:(id)a5 inFavoritesOnlyMode:(BOOL)a6 respectsWidgetVisibleSectionsLimit:(BOOL)a7 groupingService:(id)a8;
+- (NTQueueConfigSectionQueueDescriptor)initWithQueueConfig:(id)config appConfiguration:(id)configuration todayData:(id)data inFavoritesOnlyMode:(BOOL)mode respectsWidgetVisibleSectionsLimit:(BOOL)limit groupingService:(id)service;
 @end
 
 @implementation NTQueueConfigSectionQueueDescriptor
@@ -31,23 +31,23 @@
   objc_exception_throw(v6);
 }
 
-- (NTQueueConfigSectionQueueDescriptor)initWithQueueConfig:(id)a3 appConfiguration:(id)a4 todayData:(id)a5 inFavoritesOnlyMode:(BOOL)a6 respectsWidgetVisibleSectionsLimit:(BOOL)a7 groupingService:(id)a8
+- (NTQueueConfigSectionQueueDescriptor)initWithQueueConfig:(id)config appConfiguration:(id)configuration todayData:(id)data inFavoritesOnlyMode:(BOOL)mode respectsWidgetVisibleSectionsLimit:(BOOL)limit groupingService:(id)service
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (!v14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  limitCopy = limit;
+  configCopy = config;
+  configurationCopy = configuration;
+  dataCopy = data;
+  serviceCopy = service;
+  if (!configCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTQueueConfigSectionQueueDescriptor initWithQueueConfig:appConfiguration:todayData:inFavoritesOnlyMode:respectsWidgetVisibleSectionsLimit:groupingService:];
-    if (v15)
+    if (configurationCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v15)
+  else if (configurationCopy)
   {
     goto LABEL_6;
   }
@@ -63,30 +63,30 @@ LABEL_6:
   v18 = [(NTQueueConfigSectionQueueDescriptor *)&v32 init];
   if (v18)
   {
-    v19 = [v14 todaySectionConfigs];
+    todaySectionConfigs = [configCopy todaySectionConfigs];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __157__NTQueueConfigSectionQueueDescriptor_initWithQueueConfig_appConfiguration_todayData_inFavoritesOnlyMode_respectsWidgetVisibleSectionsLimit_groupingService___block_invoke;
     v27 = &unk_2799838C8;
-    v31 = a6;
-    v28 = v16;
-    v29 = v15;
-    v30 = v17;
-    v20 = [v19 fc_arrayByTransformingWithBlock:&v24];
+    modeCopy = mode;
+    v28 = dataCopy;
+    v29 = configurationCopy;
+    v30 = serviceCopy;
+    v20 = [todaySectionConfigs fc_arrayByTransformingWithBlock:&v24];
     sectionDescriptors = v18->_sectionDescriptors;
     v18->_sectionDescriptors = v20;
 
-    if (v9)
+    if (limitCopy)
     {
-      v22 = [v14 widgetVisibleSectionsLimit];
+      widgetVisibleSectionsLimit = [configCopy widgetVisibleSectionsLimit];
     }
 
     else
     {
-      v22 = -1;
+      widgetVisibleSectionsLimit = -1;
     }
 
-    v18->_visibleSectionConfigsLimit = v22;
+    v18->_visibleSectionConfigsLimit = widgetVisibleSectionsLimit;
   }
 
   return v18;

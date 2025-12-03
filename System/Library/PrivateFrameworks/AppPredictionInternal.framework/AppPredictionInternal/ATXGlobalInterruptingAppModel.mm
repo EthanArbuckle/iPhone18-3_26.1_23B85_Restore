@@ -1,7 +1,7 @@
 @interface ATXGlobalInterruptingAppModel
 + (ATXGlobalInterruptingAppModel)modelWithAllInstalledAppsKnownToSpringBoard;
-- (ATXGlobalInterruptingAppModel)initWithBundleIds:(id)a3;
-- (double)scoreForBundleId:(id)a3 scalingFactor:(double)a4;
+- (ATXGlobalInterruptingAppModel)initWithBundleIds:(id)ids;
+- (double)scoreForBundleId:(id)id scalingFactor:(double)factor;
 - (id)_computePriors;
 - (id)loadGlobalPriorsAsset;
 - (void)dealloc;
@@ -15,23 +15,23 @@
 {
   v2 = objc_alloc(MEMORY[0x277CBEB58]);
   v3 = +[_ATXAppIconState sharedInstance];
-  v4 = [v3 allInstalledAppsKnownToSpringBoard];
-  v5 = [v2 initWithArray:v4];
+  allInstalledAppsKnownToSpringBoard = [v3 allInstalledAppsKnownToSpringBoard];
+  v5 = [v2 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   v6 = [objc_alloc(objc_opt_class()) initWithBundleIds:v5];
 
   return v6;
 }
 
-- (ATXGlobalInterruptingAppModel)initWithBundleIds:(id)a3
+- (ATXGlobalInterruptingAppModel)initWithBundleIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v15.receiver = self;
   v15.super_class = ATXGlobalInterruptingAppModel;
   v5 = [(ATXGlobalInterruptingAppModel *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idsCopy copy];
     bundleIds = v5->_bundleIds;
     v5->_bundleIds = v6;
 
@@ -39,13 +39,13 @@
     index = v5->_index;
     v5->_index = v8;
 
-    v10 = [(ATXGlobalInterruptingAppModel *)v5 _computePriors];
+    _computePriors = [(ATXGlobalInterruptingAppModel *)v5 _computePriors];
     priors = v5->_priors;
-    v5->_priors = v10;
+    v5->_priors = _computePriors;
 
-    v12 = [MEMORY[0x277CEBC88] sharedInstance];
+    mEMORY[0x277CEBC88] = [MEMORY[0x277CEBC88] sharedInstance];
     memoryPressureMonitor = v5->_memoryPressureMonitor;
-    v5->_memoryPressureMonitor = v12;
+    v5->_memoryPressureMonitor = mEMORY[0x277CEBC88];
 
     [(ATXMemoryPressureMonitor *)v5->_memoryPressureMonitor registerObserver:v5];
   }
@@ -124,8 +124,8 @@ LABEL_12:
     _os_log_impl(&dword_2263AA000, v3, OS_LOG_TYPE_INFO, "ATXGlobalInterruptingAppModel: _computePriors", v19, 2u);
   }
 
-  v4 = [(ATXGlobalInterruptingAppModel *)self loadGlobalPriorsAsset];
-  if (v4)
+  loadGlobalPriorsAsset = [(ATXGlobalInterruptingAppModel *)self loadGlobalPriorsAsset];
+  if (loadGlobalPriorsAsset)
   {
     v5 = objc_opt_new();
     v20 = 0u;
@@ -152,7 +152,7 @@ LABEL_12:
           {
             v12 = v11;
             *v19 = 0;
-            [v4 getBytes:v19 range:{(4 * v11 - 4), 4}];
+            [loadGlobalPriorsAsset getBytes:v19 range:{(4 * v11 - 4), 4}];
             LODWORD(v13) = *v19;
             v14 = [MEMORY[0x277CCABB0] numberWithDouble:v13 / 4294967300.0];
             v15 = [MEMORY[0x277CCABB0] numberWithInt:v12];
@@ -190,12 +190,12 @@ LABEL_12:
   objc_sync_exit(obj);
 }
 
-- (double)scoreForBundleId:(id)a3 scalingFactor:(double)a4
+- (double)scoreForBundleId:(id)id scalingFactor:(double)factor
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (!v7->_priors && v7->_assetOffloadedDueToMemoryPressure)
+  idCopy = id;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_priors && selfCopy->_assetOffloadedDueToMemoryPressure)
   {
     v8 = __atxlog_handle_modes();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -204,21 +204,21 @@ LABEL_12:
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_INFO, "ATXGlobalInterruptingAppModel: loading global priors after it was previously offloaded due to memory pressure.", v18, 2u);
     }
 
-    v9 = [(ATXGlobalInterruptingAppModel *)v7 _computePriors];
-    priors = v7->_priors;
-    v7->_priors = v9;
+    _computePriors = [(ATXGlobalInterruptingAppModel *)selfCopy _computePriors];
+    priors = selfCopy->_priors;
+    selfCopy->_priors = _computePriors;
 
-    v7->_assetOffloadedDueToMemoryPressure = 0;
+    selfCopy->_assetOffloadedDueToMemoryPressure = 0;
   }
 
-  v11 = [(ATXGlobalInterruptingAppModel *)v7 indexForBundleId:v6];
-  v12 = v7->_priors;
+  v11 = [(ATXGlobalInterruptingAppModel *)selfCopy indexForBundleId:idCopy];
+  v12 = selfCopy->_priors;
   v13 = [MEMORY[0x277CCABB0] numberWithInt:v11];
   v14 = [(NSDictionary *)v12 objectForKeyedSubscript:v13];
   [v14 doubleValue];
-  v16 = v15 * a4;
+  v16 = v15 * factor;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   return v16;
 }
 

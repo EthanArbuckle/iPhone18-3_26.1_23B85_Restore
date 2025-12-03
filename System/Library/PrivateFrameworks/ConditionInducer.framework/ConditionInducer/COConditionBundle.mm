@@ -1,21 +1,21 @@
 @interface COConditionBundle
-- (BOOL)isRunnable:(id *)a3;
-- (BOOL)loadAndReturnError:(id *)a3;
-- (COConditionBundle)initWithURL:(id)a3;
-- (Class)classNamed:(id)a3 error:(id *)a4;
+- (BOOL)isRunnable:(id *)runnable;
+- (BOOL)loadAndReturnError:(id *)error;
+- (COConditionBundle)initWithURL:(id)l;
+- (Class)classNamed:(id)named error:(id *)error;
 - (id)conditions;
 @end
 
 @implementation COConditionBundle
 
-- (COConditionBundle)initWithURL:(id)a3
+- (COConditionBundle)initWithURL:(id)l
 {
   v4.receiver = self;
   v4.super_class = COConditionBundle;
-  return [(COConditionBundle *)&v4 initWithURL:a3];
+  return [(COConditionBundle *)&v4 initWithURL:l];
 }
 
-- (BOOL)loadAndReturnError:(id *)a3
+- (BOOL)loadAndReturnError:(id *)error
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -53,11 +53,11 @@
     [COConditionBundle loadAndReturnError:?];
   }
 
-  if (a3)
+  if (error)
   {
     v11 = v7;
     v10 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -77,9 +77,9 @@ LABEL_15:
   outCount = 0;
   if (([(COConditionBundle *)self isLoaded]& 1) != 0)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
-    v4 = [(COConditionBundle *)self executablePath];
-    v5 = objc_copyClassNamesForImage([v4 UTF8String], &outCount);
+    array = [MEMORY[0x277CBEB18] array];
+    executablePath = [(COConditionBundle *)self executablePath];
+    v5 = objc_copyClassNamesForImage([executablePath UTF8String], &outCount);
     v6 = v5;
     if (outCount)
     {
@@ -101,9 +101,9 @@ LABEL_15:
         {
           if (v13)
           {
-            v14 = [(COConditionBundle *)self bundlePath];
+            bundlePath = [(COConditionBundle *)self bundlePath];
             *buf = 138412802;
-            v23 = v14;
+            v23 = bundlePath;
             v24 = 2112;
             v25 = v9;
             v26 = 2112;
@@ -117,17 +117,17 @@ LABEL_15:
           if (v13)
           {
             [(COConditionBundle *)self bundlePath];
-            v15 = v19 = v4;
+            v15 = v19 = executablePath;
             *buf = 138412546;
             v23 = v15;
             v24 = 2112;
             v25 = v9;
             _os_log_debug_impl(&dword_243E0F000, v10, OS_LOG_TYPE_DEBUG, "Bundle: %@ found COCondition Class: %@", buf, 0x16u);
 
-            v4 = v19;
+            executablePath = v19;
           }
 
-          [v3 addObject:v12];
+          [array addObject:v12];
         }
 
         ++v7;
@@ -139,7 +139,7 @@ LABEL_15:
     else if (!v5)
     {
 LABEL_17:
-      v16 = v3;
+      v16 = array;
 
       goto LABEL_18;
     }
@@ -160,30 +160,30 @@ LABEL_18:
   return v16;
 }
 
-- (Class)classNamed:(id)a3 error:(id *)a4
+- (Class)classNamed:(id)named error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  namedCopy = named;
+  if (namedCopy)
   {
     v24.receiver = self;
     v24.super_class = COConditionBundle;
-    v7 = [(COConditionBundle *)&v24 classNamed:v6];
+    principalClass = [(COConditionBundle *)&v24 classNamed:namedCopy];
   }
 
   else
   {
-    v7 = [(COConditionBundle *)self principalClass];
+    principalClass = [(COConditionBundle *)self principalClass];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = principalClass;
+  if (!principalClass)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      if (v6)
+      if (namedCopy)
       {
-        v14 = v6;
+        v14 = namedCopy;
       }
 
       else
@@ -196,9 +196,9 @@ LABEL_18:
       _os_log_error_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Class: %@ not found", buf, 0xCu);
     }
 
-    else if (v6)
+    else if (namedCopy)
     {
-      v14 = v6;
+      v14 = namedCopy;
     }
 
     else
@@ -208,7 +208,7 @@ LABEL_18:
 
     v9 = createConditionInducerError("[COConditionBundle classNamed:error:]", 104, 1, 0, @"Class: %@ not found", v11, v12, v13, v14);
     v10 = &stru_28570BA10;
-    if (!a4)
+    if (!error)
     {
 LABEL_22:
       v8 = 0;
@@ -218,11 +218,11 @@ LABEL_22:
 LABEL_12:
     v15 = v9;
     v8 = 0;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_24;
   }
 
-  if (([(objc_class *)v7 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)principalClass isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     if (([(objc_class *)v8 instancesRespondToSelector:sel_setUp]& 1) != 0)
     {
@@ -254,8 +254,8 @@ LABEL_12:
       goto LABEL_24;
     }
 
-    v9 = createConditionInducerError("[COConditionBundle classNamed:error:]", 130, 3, 0, @"Class %@, does not conform to required COConditionProtocol. Missing methods: %@", v18, v19, v20, v6);
-    if (!a4)
+    v9 = createConditionInducerError("[COConditionBundle classNamed:error:]", 130, 3, 0, @"Class %@, does not conform to required COConditionProtocol. Missing methods: %@", v18, v19, v20, namedCopy);
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -272,7 +272,7 @@ LABEL_24:
   return v8;
 }
 
-- (BOOL)isRunnable:(id *)a3
+- (BOOL)isRunnable:(id *)runnable
 {
   v44 = *MEMORY[0x277D85DE8];
   v5 = [(COConditionBundle *)self objectForInfoDictionaryKey:@"RequiresRootPrivileges"];
@@ -300,8 +300,8 @@ LABEL_24:
         [COConditionBundle isRunnable:?];
       }
 
-      v27 = [(COConditionBundle *)self bundlePath];
-      v25 = createConditionInducerError("[COConditionBundle isRunnable:]", 172, 5, 0, @"%@ must be loaded as root.", v28, v29, v30, v27);
+      bundlePath = [(COConditionBundle *)self bundlePath];
+      v25 = createConditionInducerError("[COConditionBundle isRunnable:]", 172, 5, 0, @"%@ must be loaded as root.", v28, v29, v30, bundlePath);
 
       v11 = 0;
       v9 = 0;
@@ -327,7 +327,7 @@ LABEL_24:
   {
 LABEL_13:
     v34 = v5;
-    v35 = a3;
+    runnableCopy = runnable;
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v37 = 0u;
     v38 = 0u;
@@ -374,7 +374,7 @@ LABEL_13:
     }
 
     v5 = v34;
-    a3 = v35;
+    runnable = runnableCopy;
     goto LABEL_24;
   }
 
@@ -384,7 +384,7 @@ LABEL_24:
   {
     v25 = 0;
     v26 = 1;
-    if (!a3)
+    if (!runnable)
     {
       goto LABEL_35;
     }
@@ -400,11 +400,11 @@ LABEL_24:
   v25 = createConditionInducerError("[COConditionBundle isRunnable:]", 202, 5, 0, @"Missing required entitlements: %@", v22, v23, v24, v11);
 LABEL_33:
   v26 = 0;
-  if (a3)
+  if (runnable)
   {
 LABEL_34:
     v31 = v25;
-    *a3 = v25;
+    *runnable = v25;
   }
 
 LABEL_35:

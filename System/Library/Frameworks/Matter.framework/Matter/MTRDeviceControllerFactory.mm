@@ -6,8 +6,8 @@
 - (MTRDeviceControllerFactory)init;
 - (NSArray)knownFabrics;
 - (id).cxx_construct;
-- (id)accessGrantsForFabricIndex:(unsigned __int8)a3 clusterPath:(id)a4;
-- (id)neededReadPrivilegeForClusterID:(id)a3 attributeID:(id)a4;
+- (id)accessGrantsForFabricIndex:(unsigned __int8)index clusterPath:(id)path;
+- (id)neededReadPrivilegeForClusterID:(id)d attributeID:(id)iD;
 - (void)dealloc;
 - (void)preWarmCommissioningSession;
 - (void)stopControllerFactory;
@@ -228,9 +228,9 @@
 
   else
   {
-    v9 = [(MTRDeviceControllerStartupParams *)v6 operationalCertificate];
-    v10 = [(MTRDeviceControllerStartupParams *)v6 rootCertificate];
-    v11 = sub_238DC9B0C(self, v9, v10);
+    operationalCertificate = [(MTRDeviceControllerStartupParams *)v6 operationalCertificate];
+    rootCertificate = [(MTRDeviceControllerStartupParams *)v6 rootCertificate];
+    v11 = sub_238DC9B0C(self, operationalCertificate, rootCertificate);
 
     if (v11)
     {
@@ -257,12 +257,12 @@
 {
   v6 = startupParams;
   sub_238DC7868(self);
-  v7 = [(MTRDeviceControllerStartupParams *)v6 vendorID];
+  vendorID = [(MTRDeviceControllerStartupParams *)v6 vendorID];
 
-  if (v7)
+  if (vendorID)
   {
-    v8 = [(MTRDeviceControllerStartupParams *)v6 intermediateCertificate];
-    if (!v8 || ([(MTRDeviceControllerStartupParams *)v6 rootCertificate], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+    intermediateCertificate = [(MTRDeviceControllerStartupParams *)v6 intermediateCertificate];
+    if (!intermediateCertificate || ([(MTRDeviceControllerStartupParams *)v6 rootCertificate], v9 = objc_claimAutoreleasedReturnValue(), v9, intermediateCertificate, v9))
     {
       v10 = [MTRDeviceController_Concrete alloc];
       v16[0] = MEMORY[0x277D85DD0];
@@ -336,30 +336,30 @@ LABEL_19:
   dispatch_async(chipWorkQueue, block);
 }
 
-- (id)accessGrantsForFabricIndex:(unsigned __int8)a3 clusterPath:(id)a4
+- (id)accessGrantsForFabricIndex:(unsigned __int8)index clusterPath:(id)path
 {
-  v4 = a3;
-  v6 = a4;
+  indexCopy = index;
+  pathCopy = path;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceControllerFactory.mm", 1056);
-  v7 = [v6 endpoint];
-  v8 = [(MTRServerEndpoint *)self->_otaProviderEndpoint endpointID];
-  v9 = [v7 isEqual:v8];
+  endpoint = [pathCopy endpoint];
+  endpointID = [(MTRServerEndpoint *)self->_otaProviderEndpoint endpointID];
+  v9 = [endpoint isEqual:endpointID];
 
   if (v9)
   {
     otaProviderEndpoint = self->_otaProviderEndpoint;
-    v11 = [v6 cluster];
-    v12 = [(MTRServerEndpoint *)otaProviderEndpoint matterAccessGrantsForCluster:v11];
+    cluster = [pathCopy cluster];
+    v12 = [(MTRServerEndpoint *)otaProviderEndpoint matterAccessGrantsForCluster:cluster];
 LABEL_5:
     v14 = v12;
     goto LABEL_6;
   }
 
-  v13 = sub_238DCB13C(self, v4, 0, 1);
-  v11 = v13;
+  v13 = sub_238DCB13C(self, indexCopy, 0, 1);
+  cluster = v13;
   if (v13)
   {
-    v12 = [v13 accessGrantsForClusterPath:v6];
+    v12 = [v13 accessGrantsForClusterPath:pathCopy];
     goto LABEL_5;
   }
 
@@ -369,17 +369,17 @@ LABEL_6:
   return v14;
 }
 
-- (id)neededReadPrivilegeForClusterID:(id)a3 attributeID:(id)a4
+- (id)neededReadPrivilegeForClusterID:(id)d attributeID:(id)iD
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceControllerFactory.mm", 1078);
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v26 = self;
+  selfCopy = self;
   obj = [(MTRServerEndpoint *)self->_otaProviderEndpoint serverClusters];
   v8 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v8)
@@ -396,8 +396,8 @@ LABEL_6:
         }
 
         v10 = *(*(&v38 + 1) + 8 * i);
-        v11 = [v10 clusterID];
-        v12 = [v11 isEqual:v6];
+        clusterID = [v10 clusterID];
+        v12 = [clusterID isEqual:dCopy];
 
         if (v12)
         {
@@ -405,8 +405,8 @@ LABEL_6:
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v13 = [v10 attributes];
-          v14 = [v13 countByEnumeratingWithState:&v34 objects:v43 count:16];
+          attributes = [v10 attributes];
+          v14 = [attributes countByEnumeratingWithState:&v34 objects:v43 count:16];
           if (v14)
           {
             v15 = *v35;
@@ -416,12 +416,12 @@ LABEL_6:
               {
                 if (*v35 != v15)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(attributes);
                 }
 
                 v17 = *(*(&v34 + 1) + 8 * j);
-                v18 = [v17 attributeID];
-                v19 = [v18 isEqual:v7];
+                attributeID = [v17 attributeID];
+                v19 = [attributeID isEqual:iDCopy];
 
                 if (v19)
                 {
@@ -431,7 +431,7 @@ LABEL_6:
                 }
               }
 
-              v14 = [v13 countByEnumeratingWithState:&v34 objects:v43 count:16];
+              v14 = [attributes countByEnumeratingWithState:&v34 objects:v43 count:16];
               if (v14)
               {
                 continue;
@@ -453,7 +453,7 @@ LABEL_6:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = sub_238DC9394(v26);
+  obj = sub_238DC9394(selfCopy);
   v20 = [obj countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v20)
   {
@@ -467,7 +467,7 @@ LABEL_20:
         objc_enumerationMutation(obj);
       }
 
-      v23 = [*(*(&v30 + 1) + 8 * v22) neededReadPrivilegeForClusterID:v6 attributeID:v7];
+      v23 = [*(*(&v30 + 1) + 8 * v22) neededReadPrivilegeForClusterID:dCopy attributeID:iDCopy];
       if (v23)
       {
         break;

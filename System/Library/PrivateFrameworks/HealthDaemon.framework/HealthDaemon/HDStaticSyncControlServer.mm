@@ -1,35 +1,35 @@
 @interface HDStaticSyncControlServer
 + (id)requiredEntitlements;
-- (id)remote_runStaticSyncExportWithOptions:(unint64_t)a3 storeIdentifier:(id)a4 URL:(id)a5 batchSize:(unint64_t)a6 completion:(id)a7;
-- (id)remote_runStaticSyncImportWithOptions:(unint64_t)a3 storeIdentifier:(id)a4 URL:(id)a5 completion:(id)a6;
+- (id)remote_runStaticSyncExportWithOptions:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l batchSize:(unint64_t)size completion:(id)completion;
+- (id)remote_runStaticSyncImportWithOptions:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l completion:(id)completion;
 @end
 
 @implementation HDStaticSyncControlServer
 
-- (id)remote_runStaticSyncExportWithOptions:(unint64_t)a3 storeIdentifier:(id)a4 URL:(id)a5 batchSize:(unint64_t)a6 completion:(id)a7
+- (id)remote_runStaticSyncExportWithOptions:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l batchSize:(unint64_t)size completion:(id)completion
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
+  completionCopy = completion;
+  lCopy = l;
+  identifierCopy = identifier;
   v15 = [HDStaticSyncExportTask alloc];
-  v16 = [(HDStandardTaskServer *)self profile];
-  v17 = [(HDStaticSyncExportTask *)v15 initWithProfile:v16 options:a3 storeIdentifier:v14 URL:v13 batchSize:a6];
+  profile = [(HDStandardTaskServer *)self profile];
+  v17 = [(HDStaticSyncExportTask *)v15 initWithProfile:profile options:options storeIdentifier:identifierCopy URL:lCopy batchSize:size];
 
-  v18 = [(HDStaticSyncExportTask *)v17 runWithCompletion:v12];
+  v18 = [(HDStaticSyncExportTask *)v17 runWithCompletion:completionCopy];
 
   return v18;
 }
 
-- (id)remote_runStaticSyncImportWithOptions:(unint64_t)a3 storeIdentifier:(id)a4 URL:(id)a5 completion:(id)a6
+- (id)remote_runStaticSyncImportWithOptions:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  completionCopy = completion;
+  lCopy = l;
+  identifierCopy = identifier;
   v13 = [HDStaticSyncImportTask alloc];
-  v14 = [(HDStandardTaskServer *)self profile];
-  v15 = [(HDStaticSyncImportTask *)v13 initWithProfile:v14 options:a3 storeIdentifier:v12 URL:v11];
+  profile = [(HDStandardTaskServer *)self profile];
+  v15 = [(HDStaticSyncImportTask *)v13 initWithProfile:profile options:options storeIdentifier:identifierCopy URL:lCopy];
 
-  v16 = [(HDStaticSyncImportTask *)v15 runWithCompletion:v10];
+  v16 = [(HDStaticSyncImportTask *)v15 runWithCompletion:completionCopy];
 
   return v16;
 }

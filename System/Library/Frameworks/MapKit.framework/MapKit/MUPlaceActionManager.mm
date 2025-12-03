@@ -2,26 +2,26 @@
 - (BOOL)_showWebsite;
 - (id)createFooterActions;
 - (id)createMenuActions;
-- (void)_addAddressFooterActions:(id)a3;
-- (void)_addBasicFooterActions:(id)a3;
-- (void)_addDeveloperPlaceCardFooterActions:(id)a3;
-- (void)_addDroppedPinFooterActions:(id)a3;
-- (void)_addHomeActionIfNeeded:(id)a3;
-- (void)_addItemIfInMapsApp:(id)a3 actions:(id)a4;
-- (void)_addMyLocationFooterActions:(id)a3;
-- (void)_addReportAProblemActionIfNeed:(id)a3;
+- (void)_addAddressFooterActions:(id)actions;
+- (void)_addBasicFooterActions:(id)actions;
+- (void)_addDeveloperPlaceCardFooterActions:(id)actions;
+- (void)_addDroppedPinFooterActions:(id)actions;
+- (void)_addHomeActionIfNeeded:(id)needed;
+- (void)_addItemIfInMapsApp:(id)app actions:(id)actions;
+- (void)_addMyLocationFooterActions:(id)actions;
+- (void)_addReportAProblemActionIfNeed:(id)need;
 @end
 
 @implementation MUPlaceActionManager
 
 - (BOOL)_showWebsite
 {
-  v3 = [(MKPlaceActionManager *)self contact];
-  v4 = [v3 urlAddresses];
-  if ([v4 count])
+  contact = [(MKPlaceActionManager *)self contact];
+  urlAddresses = [contact urlAddresses];
+  if ([urlAddresses count])
   {
-    v5 = [(MKPlaceActionManager *)self placeItem];
-    v6 = ([v5 options] & 8) == 0;
+    placeItem = [(MKPlaceActionManager *)self placeItem];
+    v6 = ([placeItem options] & 8) == 0;
   }
 
   else
@@ -32,43 +32,43 @@
   return v6;
 }
 
-- (void)_addHomeActionIfNeeded:(id)a3
+- (void)_addHomeActionIfNeeded:(id)needed
 {
-  v5 = a3;
+  neededCopy = needed;
   if ([(MKPlaceActionManager *)self _showHomeShortcutItem])
   {
-    v4 = [(MKPlaceActionManager *)self homeActionItem];
-    [v5 addObject:v4];
+    homeActionItem = [(MKPlaceActionManager *)self homeActionItem];
+    [neededCopy addObject:homeActionItem];
   }
 }
 
-- (void)_addReportAProblemActionIfNeed:(id)a3
+- (void)_addReportAProblemActionIfNeed:(id)need
 {
-  v8 = a3;
-  v4 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-  v5 = [v4 countryCode];
-  v6 = [v5 isEqualToString:@"KR"];
+  needCopy = need;
+  mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+  countryCode = [mEMORY[0x1E69A1CD8] countryCode];
+  v6 = [countryCode isEqualToString:@"KR"];
 
   if (!v6 || ([(MKPlaceActionManager *)self options]& 0x80000) == 0 && ([(MKPlaceActionManager *)self options]& 0x40000) == 0)
   {
-    v7 = [(MKPlaceActionManager *)self reportAProblemFooterAction];
-    [v8 addObject:v7];
+    reportAProblemFooterAction = [(MKPlaceActionManager *)self reportAProblemFooterAction];
+    [needCopy addObject:reportAProblemFooterAction];
   }
 }
 
-- (void)_addAddressFooterActions:(id)a3
+- (void)_addAddressFooterActions:(id)actions
 {
-  v5 = a3;
-  v4 = [(MKPlaceActionManager *)self reportAProblemAddPlaceFooterAction];
-  [(MUPlaceActionManager *)self _addItemIfInMapsApp:v4 actions:v5];
+  actionsCopy = actions;
+  reportAProblemAddPlaceFooterAction = [(MKPlaceActionManager *)self reportAProblemAddPlaceFooterAction];
+  [(MUPlaceActionManager *)self _addItemIfInMapsApp:reportAProblemAddPlaceFooterAction actions:actionsCopy];
 
-  [(MUPlaceActionManager *)self _addReportAProblemActionIfNeed:v5];
-  [(MUPlaceActionManager *)self _addHomeActionIfNeeded:v5];
+  [(MUPlaceActionManager *)self _addReportAProblemActionIfNeed:actionsCopy];
+  [(MUPlaceActionManager *)self _addHomeActionIfNeeded:actionsCopy];
 }
 
-- (void)_addMyLocationFooterActions:(id)a3
+- (void)_addMyLocationFooterActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   if (([(MKPlaceActionManager *)self options]& 0x20000000) != 0)
   {
     [(MKPlaceActionManager *)self reportAProblemAddPlaceFooterAction];
@@ -79,125 +79,125 @@
     [(MKPlaceActionManager *)self reportAProblemFooterAction];
   }
   v5 = ;
-  [v4 addObject:v5];
+  [actionsCopy addObject:v5];
 }
 
-- (void)_addDroppedPinFooterActions:(id)a3
+- (void)_addDroppedPinFooterActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(MKPlaceActionManager *)self reportAProblemAddPlaceFooterAction];
-  [(MUPlaceActionManager *)self _addItemIfInMapsApp:v5 actions:v4];
+  actionsCopy = actions;
+  reportAProblemAddPlaceFooterAction = [(MKPlaceActionManager *)self reportAProblemAddPlaceFooterAction];
+  [(MUPlaceActionManager *)self _addItemIfInMapsApp:reportAProblemAddPlaceFooterAction actions:actionsCopy];
 
-  [(MUPlaceActionManager *)self _addHomeActionIfNeeded:v4];
-  v6 = [(MKPlaceActionManager *)self removeMarkerItem];
-  [v4 addObject:v6];
+  [(MUPlaceActionManager *)self _addHomeActionIfNeeded:actionsCopy];
+  removeMarkerItem = [(MKPlaceActionManager *)self removeMarkerItem];
+  [actionsCopy addObject:removeMarkerItem];
 }
 
-- (void)_addDeveloperPlaceCardFooterActions:(id)a3
+- (void)_addDeveloperPlaceCardFooterActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(MKPlaceActionManager *)self developerPlaceCardGetDirectionsFooterAction];
-  [v4 addObject:v5];
+  actionsCopy = actions;
+  developerPlaceCardGetDirectionsFooterAction = [(MKPlaceActionManager *)self developerPlaceCardGetDirectionsFooterAction];
+  [actionsCopy addObject:developerPlaceCardGetDirectionsFooterAction];
 
-  v6 = [(MKPlaceActionManager *)self developerPlaceCardOpenInMapsFooterAction];
-  [v4 addObject:v6];
+  developerPlaceCardOpenInMapsFooterAction = [(MKPlaceActionManager *)self developerPlaceCardOpenInMapsFooterAction];
+  [actionsCopy addObject:developerPlaceCardOpenInMapsFooterAction];
 }
 
-- (void)_addBasicFooterActions:(id)a3
+- (void)_addBasicFooterActions:(id)actions
 {
-  v6 = a3;
+  actionsCopy = actions;
   if ([(MKPlaceActionManager *)self _showReportAProblemFooterAction])
   {
-    v4 = [(MKPlaceActionManager *)self reportAProblemFooterAction];
-    [v6 addObject:v4];
+    reportAProblemFooterAction = [(MKPlaceActionManager *)self reportAProblemFooterAction];
+    [actionsCopy addObject:reportAProblemFooterAction];
   }
 
-  [(MUPlaceActionManager *)self _addHomeActionIfNeeded:v6];
+  [(MUPlaceActionManager *)self _addHomeActionIfNeeded:actionsCopy];
   if ([(MKPlaceActionManager *)self _canShowClaimThisBusiness])
   {
-    v5 = [(MKPlaceActionManager *)self claimBusinessActionItem];
-    [v6 addObject:v5];
+    claimBusinessActionItem = [(MKPlaceActionManager *)self claimBusinessActionItem];
+    [actionsCopy addObject:claimBusinessActionItem];
   }
 }
 
 - (id)createMenuActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MKPlaceActionManager *)self flyoverActionItem];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  flyoverActionItem = [(MKPlaceActionManager *)self flyoverActionItem];
+  if (flyoverActionItem)
   {
-    [v3 addObject:v4];
+    [array addObject:flyoverActionItem];
   }
 
-  v5 = [(MKPlaceActionManager *)self dataProvider];
-  v6 = [v5 supportsAddingPhotos];
+  dataProvider = [(MKPlaceActionManager *)self dataProvider];
+  supportsAddingPhotos = [dataProvider supportsAddingPhotos];
 
-  if (v6)
+  if (supportsAddingPhotos)
   {
     v7 = [MKPlaceCardActionItem actionItemWithType:9 actionDataProvider:self enabled:1];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
   if (GEOSupportsOfflineMaps() && ([(MKPlaceActionManager *)self options]& 0x1000000000) == 0)
   {
     v8 = [MKPlaceCardActionItem actionItemWithType:34];
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
   v14.receiver = self;
   v14.super_class = MUPlaceActionManager;
   v9 = [(MKPlaceActionManager *)&v14 createRowActionsWithStyle:0];
-  [v3 addObjectsFromArray:v9];
+  [array addObjectsFromArray:v9];
 
   v13.receiver = self;
   v13.super_class = MUPlaceActionManager;
-  v10 = [(MKPlaceActionManager *)&v13 createFooterActions];
-  [v3 addObjectsFromArray:v10];
+  createFooterActions = [(MKPlaceActionManager *)&v13 createFooterActions];
+  [array addObjectsFromArray:createFooterActions];
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
 
-- (void)_addItemIfInMapsApp:(id)a3 actions:(id)a4
+- (void)_addItemIfInMapsApp:(id)app actions:(id)actions
 {
-  v7 = a3;
-  v6 = a4;
+  appCopy = app;
+  actionsCopy = actions;
   if (([(MKPlaceActionManager *)self options]& 0x20000000) != 0)
   {
-    [v6 addObject:v7];
+    [actionsCopy addObject:appCopy];
   }
 }
 
 - (id)createFooterActions
 {
-  v3 = [(MKPlaceActionManager *)self mapItem];
-  v4 = [v3 _placeDisplayStyle];
+  mapItem = [(MKPlaceActionManager *)self mapItem];
+  _placeDisplayStyle = [mapItem _placeDisplayStyle];
 
-  if (v4 == 2)
+  if (_placeDisplayStyle == 2)
   {
-    v5 = [(MKPlaceActionManager *)self shortPlacecardFooterActions];
+    shortPlacecardFooterActions = [(MKPlaceActionManager *)self shortPlacecardFooterActions];
     goto LABEL_14;
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(MKPlaceActionManager *)self options];
-  v8 = [(MKPlaceActionManager *)self isCurrentLocation];
-  v9 = [(MKPlaceActionManager *)self placeItem];
-  v10 = [v9 options];
+  options = [(MKPlaceActionManager *)self options];
+  isCurrentLocation = [(MKPlaceActionManager *)self isCurrentLocation];
+  placeItem = [(MKPlaceActionManager *)self placeItem];
+  options2 = [placeItem options];
 
-  v11 = [(MKPlaceActionManager *)self placeItem];
-  v12 = [v11 mapItem];
-  v13 = [v12 _isMapItemTypeAddress];
+  placeItem2 = [(MKPlaceActionManager *)self placeItem];
+  mapItem2 = [placeItem2 mapItem];
+  _isMapItemTypeAddress = [mapItem2 _isMapItemTypeAddress];
 
-  if ((v7 & 0x8000000000) != 0)
+  if ((options & 0x8000000000) != 0)
   {
     [(MUPlaceActionManager *)self _addDeveloperPlaceCardFooterActions:v6];
   }
 
   else
   {
-    if (v8)
+    if (isCurrentLocation)
     {
       [(MUPlaceActionManager *)self _addMyLocationFooterActions:v6];
 LABEL_12:
@@ -205,13 +205,13 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if ((v10 & 2) != 0)
+    if ((options2 & 2) != 0)
     {
       [(MUPlaceActionManager *)self _addDroppedPinFooterActions:v6];
       goto LABEL_12;
     }
 
-    if (!v13)
+    if (!_isMapItemTypeAddress)
     {
       [(MUPlaceActionManager *)self _addBasicFooterActions:v6];
       goto LABEL_12;
@@ -221,11 +221,11 @@ LABEL_12:
   }
 
 LABEL_13:
-  v5 = [v6 copy];
+  shortPlacecardFooterActions = [v6 copy];
 
 LABEL_14:
 
-  return v5;
+  return shortPlacecardFooterActions;
 }
 
 @end

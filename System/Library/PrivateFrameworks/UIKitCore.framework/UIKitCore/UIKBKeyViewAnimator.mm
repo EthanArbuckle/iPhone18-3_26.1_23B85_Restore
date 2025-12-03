@@ -1,91 +1,91 @@
 @interface UIKBKeyViewAnimator
-+ (id)normalizedAnimationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5;
-+ (id)normalizedUnwindAnimationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5 offset:(double)a6;
-+ (id)normalizedUnwindAnimationWithKeyPath:(id)a3 originallyFromValue:(id)a4 toValue:(id)a5 offset:(double)a6;
-+ (id)normalizedUnwindOpacityAnimationWithKeyPath:(id)a3 originallyFromValue:(id)a4 toValue:(id)a5 offset:(double)a6;
++ (id)normalizedAnimationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue;
++ (id)normalizedUnwindAnimationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue offset:(double)offset;
++ (id)normalizedUnwindAnimationWithKeyPath:(id)path originallyFromValue:(id)value toValue:(id)toValue offset:(double)offset;
++ (id)normalizedUnwindOpacityAnimationWithKeyPath:(id)path originallyFromValue:(id)value toValue:(id)toValue offset:(double)offset;
 - (CGRect)primaryGlyphNormalizedExitRect;
 - (CGRect)secondaryGlyphNormalizedExitRect;
-- (Class)_keyViewClassForSpecialtyKey:(id)a3 screenTraits:(id)a4;
-- (Class)keyViewClassForKey:(id)a3 renderTraits:(id)a4 screenTraits:(id)a5;
-- (double)delayedDeactivationTimeForKeyView:(id)a3;
-- (id)keycapAlternateDualStringTransform:(id)a3;
-- (id)keycapAlternateTransform:(id)a3;
-- (id)keycapMeshTransformFromRect:(CGRect)a3 toRect:(CGRect)a4;
-- (id)keycapMeshTransformFromRect:(CGRect)a3 toRect:(CGRect)a4 scale:(double)a5;
-- (id)keycapPrimaryDualStringTransform:(id)a3;
+- (Class)_keyViewClassForSpecialtyKey:(id)key screenTraits:(id)traits;
+- (Class)keyViewClassForKey:(id)key renderTraits:(id)traits screenTraits:(id)screenTraits;
+- (double)delayedDeactivationTimeForKeyView:(id)view;
+- (id)keycapAlternateDualStringTransform:(id)transform;
+- (id)keycapAlternateTransform:(id)transform;
+- (id)keycapMeshTransformFromRect:(CGRect)rect toRect:(CGRect)toRect;
+- (id)keycapMeshTransformFromRect:(CGRect)rect toRect:(CGRect)toRect scale:(double)scale;
+- (id)keycapPrimaryDualStringTransform:(id)transform;
 - (id)keycapPrimaryExitTransform;
-- (void)_fadeInKeyView:(id)a3 duration:(double)a4 completion:(id)a5;
-- (void)_fadeOutKeyView:(id)a3 duration:(double)a4 completion:(id)a5;
-- (void)endTransitionForKeyView:(id)a3;
-- (void)transitionEndedForKeyView:(id)a3 alternateCount:(unint64_t)a4;
-- (void)transitionKeyView:(id)a3 fromState:(int)a4 toState:(int)a5 completion:(id)a6;
-- (void)transitionOutKeyView:(id)a3 fromState:(int)a4 toState:(int)a5 completion:(id)a6;
-- (void)transitionStartedForKeyView:(id)a3 alternateCount:(unint64_t)a4 toLeft:(BOOL)a5;
-- (void)updateTransitionForKeyView:(id)a3 normalizedDragSize:(CGSize)a4;
+- (void)_fadeInKeyView:(id)view duration:(double)duration completion:(id)completion;
+- (void)_fadeOutKeyView:(id)view duration:(double)duration completion:(id)completion;
+- (void)endTransitionForKeyView:(id)view;
+- (void)transitionEndedForKeyView:(id)view alternateCount:(unint64_t)count;
+- (void)transitionKeyView:(id)view fromState:(int)state toState:(int)toState completion:(id)completion;
+- (void)transitionOutKeyView:(id)view fromState:(int)state toState:(int)toState completion:(id)completion;
+- (void)transitionStartedForKeyView:(id)view alternateCount:(unint64_t)count toLeft:(BOOL)left;
+- (void)updateTransitionForKeyView:(id)view normalizedDragSize:(CGSize)size;
 @end
 
 @implementation UIKBKeyViewAnimator
 
-- (Class)_keyViewClassForSpecialtyKey:(id)a3 screenTraits:(id)a4
+- (Class)_keyViewClassForSpecialtyKey:(id)key screenTraits:(id)traits
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 displayType];
+  keyCopy = key;
+  traitsCopy = traits;
+  displayType = [keyCopy displayType];
   v8 = 0;
-  if (v7 > 35)
+  if (displayType > 35)
   {
-    if (v7 == 36)
+    if (displayType == 36)
     {
       if (!+[UIKeyboard isRemoteEmojiCollectionViewEnabled](UIKeyboard, "isRemoteEmojiCollectionViewEnabled") && (!_UIApplicationIsStickerPickerService() || +[UIKeyboard canShowEmojiKeyboardInsideStickerPickerService]))
       {
-        if (v6)
+        if (traitsCopy)
         {
-          v12 = [v6 idiom];
+          idiom = [traitsCopy idiom];
         }
 
         else
         {
           v14 = +[UIDevice currentDevice];
-          v12 = [v14 userInterfaceIdiom];
+          idiom = [v14 userInterfaceIdiom];
         }
 
-        v10 = [UIKeyboardEmojiKeyDisplayController classForInputView:v12];
+        v10 = [UIKeyboardEmojiKeyDisplayController classForInputView:idiom];
         goto LABEL_15;
       }
     }
 
     else
     {
-      if (v7 != 37)
+      if (displayType != 37)
       {
         goto LABEL_16;
       }
 
       if (!+[UIKeyboard isRemoteEmojiCollectionViewEnabled])
       {
-        if (v6)
+        if (traitsCopy)
         {
-          v9 = [v6 idiom];
+          idiom2 = [traitsCopy idiom];
         }
 
         else
         {
           v13 = +[UIDevice currentDevice];
-          v9 = [v13 userInterfaceIdiom];
+          idiom2 = [v13 userInterfaceIdiom];
         }
 
-        v10 = [UIKeyboardEmojiKeyDisplayController classForCategoryControl:v9];
+        v10 = [UIKeyboardEmojiKeyDisplayController classForCategoryControl:idiom2];
         goto LABEL_15;
       }
     }
   }
 
-  else if (v7 == 1)
+  else if (displayType == 1)
   {
-    [v5 rendering];
+    [keyCopy rendering];
   }
 
-  else if (v7 != 12)
+  else if (displayType != 12)
   {
     goto LABEL_16;
   }
@@ -98,14 +98,14 @@ LABEL_16:
   return v8;
 }
 
-- (Class)keyViewClassForKey:(id)a3 renderTraits:(id)a4 screenTraits:(id)a5
+- (Class)keyViewClassForKey:(id)key renderTraits:(id)traits screenTraits:(id)screenTraits
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 blendForm] == 3)
+  keyCopy = key;
+  traitsCopy = traits;
+  screenTraitsCopy = screenTraits;
+  if ([traitsCopy blendForm] == 3)
   {
-    v11 = [v9 controlOpacities] ^ 1;
+    v11 = [traitsCopy controlOpacities] ^ 1;
   }
 
   else
@@ -113,7 +113,7 @@ LABEL_16:
     LOBYTE(v11) = 0;
   }
 
-  if ([v9 blurBlending] & 1) != 0 || (objc_msgSend(v9, "variantTraits"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "blurBlending") | v11, v12, (v13) || (v17 = -[UIKBKeyViewAnimator _keyViewClassForSpecialtyKey:screenTraits:](self, "_keyViewClassForSpecialtyKey:screenTraits:", v8, v10)) == 0)
+  if ([traitsCopy blurBlending] & 1) != 0 || (objc_msgSend(traitsCopy, "variantTraits"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "blurBlending") | v11, v12, (v13) || (v17 = -[UIKBKeyViewAnimator _keyViewClassForSpecialtyKey:screenTraits:](self, "_keyViewClassForSpecialtyKey:screenTraits:", keyCopy, screenTraitsCopy)) == 0)
   {
     v14 = objc_opt_class();
   }
@@ -128,18 +128,18 @@ LABEL_16:
   return v15;
 }
 
-- (double)delayedDeactivationTimeForKeyView:(id)a3
+- (double)delayedDeactivationTimeForKeyView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 key];
+  viewCopy = view;
+  v4 = [viewCopy key];
   if ([v4 displayTypeHint] == 10)
   {
-    v5 = [v3 layerForRenderFlags:4];
+    v5 = [viewCopy layerForRenderFlags:4];
     v6 = [v5 animationForKey:@"pan opacity"];
 
     if (v6)
     {
-      [v3 endingTransitionDuration];
+      [viewCopy endingTransitionDuration];
       v8 = v7;
     }
 
@@ -157,18 +157,18 @@ LABEL_16:
   return v8;
 }
 
-- (void)_fadeOutKeyView:(id)a3 duration:(double)a4 completion:(id)a5
+- (void)_fadeOutKeyView:(id)view duration:(double)duration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__UIKBKeyViewAnimator__fadeOutKeyView_duration_completion___block_invoke;
   aBlock[3] = &unk_1E7101F90;
-  v9 = v7;
+  v9 = viewCopy;
   v20 = v9;
   v21 = 0;
-  v22 = a4 > 0.0;
+  v22 = duration > 0.0;
   v10 = _Block_copy(aBlock);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -177,11 +177,11 @@ LABEL_16:
   v11 = v9;
   v15 = v11;
   v17 = 0;
-  v12 = v8;
+  v12 = completionCopy;
   v16 = v12;
-  v18 = a4 > 0.0;
+  v18 = duration > 0.0;
   v13 = _Block_copy(v14);
-  if (a4 == 0.0)
+  if (duration == 0.0)
   {
     v10[2](v10);
     v13[2](v13, 1);
@@ -189,7 +189,7 @@ LABEL_16:
 
   else
   {
-    [UIView animateWithDuration:50331648 delay:v10 options:v13 animations:a4 completion:0.0];
+    [UIView animateWithDuration:50331648 delay:v10 options:v13 animations:duration completion:0.0];
   }
 }
 
@@ -239,17 +239,17 @@ void __59__UIKBKeyViewAnimator__fadeOutKeyView_duration_completion___block_invok
   }
 }
 
-- (void)_fadeInKeyView:(id)a3 duration:(double)a4 completion:(id)a5
+- (void)_fadeInKeyView:(id)view duration:(double)duration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 setAlpha:0.0];
-  if (a4 <= 0.0)
+  viewCopy = view;
+  completionCopy = completion;
+  [viewCopy setAlpha:0.0];
+  if (duration <= 0.0)
   {
-    [v7 setAlpha:1.0];
-    if (v8)
+    [viewCopy setAlpha:1.0];
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -259,13 +259,13 @@ void __59__UIKBKeyViewAnimator__fadeOutKeyView_duration_completion___block_invok
     v11[1] = 3221225472;
     v11[2] = __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_invoke;
     v11[3] = &unk_1E70F3590;
-    v12 = v7;
+    v12 = viewCopy;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_invoke_2;
     v9[3] = &unk_1E70F3608;
-    v10 = v8;
-    [UIView animateWithDuration:50331648 delay:v11 options:v9 animations:a4 completion:0.0];
+    v10 = completionCopy;
+    [UIView animateWithDuration:50331648 delay:v11 options:v9 animations:duration completion:0.0];
   }
 }
 
@@ -306,16 +306,16 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   return result;
 }
 
-- (id)keycapMeshTransformFromRect:(CGRect)a3 toRect:(CGRect)a4
+- (id)keycapMeshTransformFromRect:(CGRect)rect toRect:(CGRect)toRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = toRect.size.height;
+  width = toRect.size.width;
+  y = toRect.origin.y;
+  x = toRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   [(UIKBKeyViewAnimator *)self keyScale];
   v14 = v13;
   v15 = 2.0;
@@ -327,20 +327,20 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   return [(UIKBKeyViewAnimator *)self keycapMeshTransformFromRect:v11 toRect:v10 scale:v9, v8, x, y, width, height, *&v15];
 }
 
-- (id)keycapMeshTransformFromRect:(CGRect)a3 toRect:(CGRect)a4 scale:(double)a5
+- (id)keycapMeshTransformFromRect:(CGRect)rect toRect:(CGRect)toRect scale:(double)scale
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (a5 != 1.0)
+  if (scale != 1.0)
   {
-    v5 = (a5 + -1.0) * 0.5;
-    a3.origin.x = 1.0 / a5 * (a3.origin.x + v5);
-    a3.origin.y = 1.0 / a5 * (a3.origin.y + v5);
-    a3.size.width = a3.size.width * (1.0 / a5);
-    a3.size.height = a3.size.height * (1.0 / a5);
-    a4.origin.x = 1.0 / a5 * (a4.origin.x + v5);
-    a4.origin.y = 1.0 / a5 * (a4.origin.y + v5);
-    a4.size.width = a4.size.width * (1.0 / a5);
-    a4.size.height = a4.size.height * (1.0 / a5);
+    v5 = (scale + -1.0) * 0.5;
+    rect.origin.x = 1.0 / scale * (rect.origin.x + v5);
+    rect.origin.y = 1.0 / scale * (rect.origin.y + v5);
+    rect.size.width = rect.size.width * (1.0 / scale);
+    rect.size.height = rect.size.height * (1.0 / scale);
+    toRect.origin.x = 1.0 / scale * (toRect.origin.x + v5);
+    toRect.origin.y = 1.0 / scale * (toRect.origin.y + v5);
+    toRect.size.width = toRect.size.width * (1.0 / scale);
+    toRect.size.height = toRect.size.height * (1.0 / scale);
   }
 
   memset(v14, 0, 32);
@@ -354,25 +354,25 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   v14[7] = xmmword_18A659030;
   v14[8] = xmmword_18A64B730;
   v14[9] = xmmword_18A655850;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v17 = a4.origin.x;
-  v18 = a4.origin.y;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  v17 = toRect.origin.x;
+  v18 = toRect.origin.y;
   v19 = 0x3FE0000000000000;
-  v20 = a3.origin.x + a3.size.width;
-  v21 = a3.origin.y;
-  v22 = a4.origin.x + a4.size.width;
-  v23 = a4.origin.y;
+  v20 = rect.origin.x + rect.size.width;
+  v21 = rect.origin.y;
+  v22 = toRect.origin.x + toRect.size.width;
+  v23 = toRect.origin.y;
   v24 = 0x3FE0000000000000;
-  v25 = a3.origin.x + a3.size.width;
-  v26 = a3.origin.y + a3.size.height;
-  v27 = a4.origin.x + a4.size.width;
-  v28 = a4.origin.y + a4.size.height;
+  v25 = rect.origin.x + rect.size.width;
+  v26 = rect.origin.y + rect.size.height;
+  v27 = toRect.origin.x + toRect.size.width;
+  v28 = toRect.origin.y + toRect.size.height;
   v29 = 0x3FE0000000000000;
-  v30 = a3.origin.x;
-  v31 = a3.origin.y + a3.size.height;
-  v32 = a4.origin.x;
-  v33 = a4.origin.y + a4.size.height;
+  v30 = rect.origin.x;
+  v31 = rect.origin.y + rect.size.height;
+  v32 = toRect.origin.x;
+  v33 = toRect.origin.y + toRect.size.height;
   v34 = 0x3FE0000000000000;
   v11.i64[0] = 0x80000000800000;
   v11.i64[1] = 0x80000000800000;
@@ -391,26 +391,26 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   return v12;
 }
 
-- (id)keycapPrimaryDualStringTransform:(id)a3
+- (id)keycapPrimaryDualStringTransform:(id)transform
 {
-  v4 = a3;
-  v5 = [v4 keyplane];
-  v6 = [v5 visualStyling] & 0x3F;
+  transformCopy = transform;
+  keyplane = [transformCopy keyplane];
+  v6 = [keyplane visualStyling] & 0x3F;
 
   if (v6 == 23)
   {
-    v7 = [v4 factory];
-    v8 = [v4 key];
-    v9 = [v4 keyplane];
-    [v7 dualStringKeyBottomTextOffset:v8 keyplane:v9];
+    factory = [transformCopy factory];
+    v8 = [transformCopy key];
+    keyplane2 = [transformCopy keyplane];
+    [factory dualStringKeyBottomTextOffset:v8 keyplane:keyplane2];
     v11 = v10;
     v13 = v12;
 
-    v14 = [v4 key];
+    v14 = [transformCopy key];
     [v14 frame];
     v16 = v11 / v15 + 0.115;
 
-    v17 = [v4 key];
+    v17 = [transformCopy key];
     [v17 frame];
     v19 = v13 / v18 + 0.28;
 
@@ -419,9 +419,9 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
 
   else
   {
-    v21 = [v4 isDynamicKey];
+    isDynamicKey = [transformCopy isDynamicKey];
     v22 = 2.0;
-    if (v21)
+    if (isDynamicKey)
     {
       v22 = 1.0;
     }
@@ -434,17 +434,17 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   return v23;
 }
 
-- (id)keycapAlternateTransform:(id)a3
+- (id)keycapAlternateTransform:(id)transform
 {
-  v4 = a3;
-  v5 = [v4 key];
-  v6 = [v5 secondaryDisplayStrings];
-  v7 = [v6 firstObject];
-  v8 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v9 = [v7 rangeOfCharacterFromSet:v8] == 0x7FFFFFFFFFFFFFFFLL;
+  transformCopy = transform;
+  v5 = [transformCopy key];
+  secondaryDisplayStrings = [v5 secondaryDisplayStrings];
+  firstObject = [secondaryDisplayStrings firstObject];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  v9 = [firstObject rangeOfCharacterFromSet:decimalDigitCharacterSet] == 0x7FFFFFFFFFFFFFFFLL;
 
   v10 = dbl_18A67EEB0[v9];
-  LODWORD(v5) = [v4 isDynamicKey];
+  LODWORD(v5) = [transformCopy isDynamicKey];
 
   v11 = 2.0;
   if (v5)
@@ -455,26 +455,26 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   return [(UIKBKeyViewAnimator *)self keycapMeshTransformFromRect:0.115 toRect:0.28 scale:0.77, 0.44, 0.25, 0.13, 0.5, v10, *&v11];
 }
 
-- (id)keycapAlternateDualStringTransform:(id)a3
+- (id)keycapAlternateDualStringTransform:(id)transform
 {
-  v4 = a3;
-  v5 = [v4 keyplane];
-  v6 = [v5 visualStyling] & 0x3F;
+  transformCopy = transform;
+  keyplane = [transformCopy keyplane];
+  v6 = [keyplane visualStyling] & 0x3F;
 
   if (v6 == 23)
   {
-    v7 = [v4 factory];
-    v8 = [v4 key];
-    v9 = [v4 keyplane];
-    [v7 dualStringKeyTopTextOffset:v8 keyplane:v9];
+    factory = [transformCopy factory];
+    v8 = [transformCopy key];
+    keyplane2 = [transformCopy keyplane];
+    [factory dualStringKeyTopTextOffset:v8 keyplane:keyplane2];
     v11 = v10;
     v13 = v12;
 
-    v14 = [v4 key];
+    v14 = [transformCopy key];
     [v14 frame];
     v16 = v11 / v15 + 0.115;
 
-    v17 = [v4 key];
+    v17 = [transformCopy key];
     [v17 frame];
     v19 = v13 / v18 + 0.28;
 
@@ -483,9 +483,9 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
 
   else
   {
-    v21 = [v4 isDynamicKey];
+    isDynamicKey = [transformCopy isDynamicKey];
     v22 = 2.0;
-    if (v21)
+    if (isDynamicKey)
     {
       v22 = 1.0;
     }
@@ -505,15 +505,15 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   return [(UIKBKeyViewAnimator *)self keycapMeshTransformFromRect:0.115 toRect:0.28, 0.77, 0.44, v3, v4, v5, v6];
 }
 
-+ (id)normalizedAnimationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5
++ (id)normalizedAnimationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue
 {
   v7 = MEMORY[0x1E6979318];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 animationWithKeyPath:v10];
+  toValueCopy = toValue;
+  valueCopy = value;
+  pathCopy = path;
+  v11 = [v7 animationWithKeyPath:pathCopy];
   [v11 setBeginTime:1.0e-100];
-  LODWORD(v7) = [v10 isEqualToString:@"opacity"];
+  LODWORD(v7) = [pathCopy isEqualToString:@"opacity"];
 
   v12 = 0.4;
   if (!v7)
@@ -524,40 +524,40 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   [v11 setDuration:v12];
   [v11 setFillMode:*MEMORY[0x1E69797E0]];
   [v11 setRemovedOnCompletion:0];
-  [v11 setFromValue:v9];
+  [v11 setFromValue:valueCopy];
 
-  [v11 setToValue:v8];
+  [v11 setToValue:toValueCopy];
 
   return v11;
 }
 
-+ (id)normalizedUnwindAnimationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5 offset:(double)a6
++ (id)normalizedUnwindAnimationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue offset:(double)offset
 {
   v9 = MEMORY[0x1E6979318];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 animationWithKeyPath:a3];
-  [v12 setTimeOffset:(1.0 - a6) * 0.150000006];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v12 = [v9 animationWithKeyPath:path];
+  [v12 setTimeOffset:(1.0 - offset) * 0.150000006];
   [v12 setDuration:0.150000006];
   [v12 setFillMode:*MEMORY[0x1E69797E0]];
   [v12 setRemovedOnCompletion:1];
-  [v12 setFromValue:v11];
+  [v12 setFromValue:valueCopy];
 
-  [v12 setToValue:v10];
+  [v12 setToValue:toValueCopy];
 
   return v12;
 }
 
-+ (id)normalizedUnwindOpacityAnimationWithKeyPath:(id)a3 originallyFromValue:(id)a4 toValue:(id)a5 offset:(double)a6
++ (id)normalizedUnwindOpacityAnimationWithKeyPath:(id)path originallyFromValue:(id)value toValue:(id)toValue offset:(double)offset
 {
   v18[3] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E6979390];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 animationWithKeyPath:a3];
-  v18[0] = v10;
-  v18[1] = v10;
-  v18[2] = v11;
+  toValueCopy = toValue;
+  valueCopy = value;
+  v12 = [v9 animationWithKeyPath:path];
+  v18[0] = toValueCopy;
+  v18[1] = toValueCopy;
+  v18[2] = valueCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
   [v12 setValues:v13];
 
@@ -568,7 +568,7 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
 
   [v12 setTimingFunctions:v15];
-  [v12 setTimeOffset:(1.0 - a6) * 0.200000003];
+  [v12 setTimeOffset:(1.0 - offset) * 0.200000003];
   [v12 setDuration:0.200000003];
   [v12 setFillMode:*MEMORY[0x1E69797E0]];
   [v12 setRemovedOnCompletion:1];
@@ -576,34 +576,34 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   return v12;
 }
 
-+ (id)normalizedUnwindAnimationWithKeyPath:(id)a3 originallyFromValue:(id)a4 toValue:(id)a5 offset:(double)a6
++ (id)normalizedUnwindAnimationWithKeyPath:(id)path originallyFromValue:(id)value toValue:(id)toValue offset:(double)offset
 {
   v9 = MEMORY[0x1E6979318];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 animationWithKeyPath:a3];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v12 = [v9 animationWithKeyPath:path];
   v13 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
   [v12 setTimingFunction:v13];
 
-  [v12 setTimeOffset:(1.0 - a6) * 0.200000003];
+  [v12 setTimeOffset:(1.0 - offset) * 0.200000003];
   [v12 setDuration:0.200000003];
   [v12 setFillMode:*MEMORY[0x1E69797E0]];
   [v12 setRemovedOnCompletion:1];
-  [v12 setFromValue:v10];
+  [v12 setFromValue:toValueCopy];
 
-  [v12 setToValue:v11];
+  [v12 setToValue:valueCopy];
 
   return v12;
 }
 
-- (void)transitionKeyView:(id)a3 fromState:(int)a4 toState:(int)a5 completion:(id)a6
+- (void)transitionKeyView:(id)view fromState:(int)state toState:(int)toState completion:(id)completion
 {
-  v37 = a3;
-  v10 = a6;
-  v11 = [v37 key];
-  v12 = [v37 isDynamicKey];
+  viewCopy = view;
+  completionCopy = completion;
+  v11 = [viewCopy key];
+  isDynamicKey = [viewCopy isDynamicKey];
   v13 = 2.0;
-  if (v12)
+  if (isDynamicKey)
   {
     v13 = 1.0;
   }
@@ -611,14 +611,14 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
   [(UIKBKeyViewAnimator *)self setKeyScale:v13];
   if ([v11 displayTypeHint] == 10)
   {
-    v14 = [v11 displayType];
-    if (a4 != 4 && a5 == 4)
+    displayType = [v11 displayType];
+    if (state != 4 && toState == 4)
     {
-      v15 = v14;
-      v16 = [v37 layerForRenderFlags:4];
+      v15 = displayType;
+      v16 = [viewCopy layerForRenderFlags:4];
       if (v15 == 7)
       {
-        [(UIKBKeyViewAnimator *)self keycapPrimaryDualStringTransform:v37];
+        [(UIKBKeyViewAnimator *)self keycapPrimaryDualStringTransform:viewCopy];
       }
 
       else
@@ -629,33 +629,33 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
       [v16 setMeshTransform:v17];
 
       [v16 setShouldRasterize:1];
-      v18 = [v11 secondaryRepresentedStrings];
-      v19 = [v18 count];
+      secondaryRepresentedStrings = [v11 secondaryRepresentedStrings];
+      v19 = [secondaryRepresentedStrings count];
 
       if (v19 == 1)
       {
-        v20 = [v37 layerForRenderFlags:16];
+        v20 = [viewCopy layerForRenderFlags:16];
         v22 = v20;
         if (v15 == 7)
         {
           LODWORD(v21) = 1.0;
           [v20 setOpacity:v21];
-          v23 = [(UIKBKeyViewAnimator *)self keycapAlternateDualStringTransform:v37];
+          v23 = [(UIKBKeyViewAnimator *)self keycapAlternateDualStringTransform:viewCopy];
         }
 
         else
         {
-          v33 = [v37 renderConfig];
-          v34 = [v33 lightKeyboard];
+          renderConfig = [viewCopy renderConfig];
+          lightKeyboard = [renderConfig lightKeyboard];
           LODWORD(v35) = 1050253722;
-          if (v34)
+          if (lightKeyboard)
           {
             *&v35 = 0.25;
           }
 
           [v22 setOpacity:v35];
 
-          v23 = [(UIKBKeyViewAnimator *)self keycapAlternateTransform:v37];
+          v23 = [(UIKBKeyViewAnimator *)self keycapAlternateTransform:viewCopy];
         }
 
         v36 = v23;
@@ -666,8 +666,8 @@ uint64_t __58__UIKBKeyViewAnimator__fadeInKeyView_duration_completion___block_in
 
       else
       {
-        v24 = [v11 secondaryRepresentedStrings];
-        v25 = [v24 count];
+        secondaryRepresentedStrings2 = [v11 secondaryRepresentedStrings];
+        v25 = [secondaryRepresentedStrings2 count];
 
         if (v25 != 2)
         {
@@ -676,9 +676,9 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v22 = [v37 layerForRenderFlags:16];
-        v26 = [v37 renderConfig];
-        if ([v26 lightKeyboard])
+        v22 = [viewCopy layerForRenderFlags:16];
+        renderConfig2 = [viewCopy renderConfig];
+        if ([renderConfig2 lightKeyboard])
         {
           *&v27 = 0.25;
         }
@@ -690,13 +690,13 @@ LABEL_25:
 
         [v22 setOpacity:v27];
 
-        v28 = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
-        [v22 setMeshTransform:v28];
+        keycapLeftTransform = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
+        [v22 setMeshTransform:keycapLeftTransform];
 
         [v22 setShouldRasterize:1];
-        v29 = [v37 layerForRenderFlags:32];
-        v30 = [v37 renderConfig];
-        if ([v30 lightKeyboard])
+        v29 = [viewCopy layerForRenderFlags:32];
+        renderConfig3 = [viewCopy renderConfig];
+        if ([renderConfig3 lightKeyboard])
         {
           *&v31 = 0.25;
         }
@@ -708,8 +708,8 @@ LABEL_25:
 
         [v29 setOpacity:v31];
 
-        v32 = [(UIKBKeyViewAnimator *)self keycapRightTransform];
-        [v29 setMeshTransform:v32];
+        keycapRightTransform = [(UIKBKeyViewAnimator *)self keycapRightTransform];
+        [v29 setMeshTransform:keycapRightTransform];
 
         [v29 setShouldRasterize:1];
       }
@@ -719,36 +719,36 @@ LABEL_25:
   }
 
 LABEL_26:
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)transitionOutKeyView:(id)a3 fromState:(int)a4 toState:(int)a5 completion:(id)a6
+- (void)transitionOutKeyView:(id)view fromState:(int)state toState:(int)toState completion:(id)completion
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 key];
+  completionCopy = completion;
+  viewCopy = view;
+  v12 = [viewCopy key];
   v13 = 0.0;
   v14 = v12;
-  if (a4 != 4 && a4 > a5 && [v12 interactionType] != 20 && (objc_msgSend(v14, "displayType") == 13 || objc_msgSend(v14, "displayType") == 5))
+  if (state != 4 && state > toState && [v12 interactionType] != 20 && (objc_msgSend(v14, "displayType") == 13 || objc_msgSend(v14, "displayType") == 5))
   {
     v13 = 0.5;
   }
 
-  [v11 changeBackgroundToActiveIfNecessary];
-  [(UIKBKeyViewAnimator *)self _fadeOutKeyView:v11 duration:v10 completion:v13];
+  [viewCopy changeBackgroundToActiveIfNecessary];
+  [(UIKBKeyViewAnimator *)self _fadeOutKeyView:viewCopy duration:completionCopy completion:v13];
 }
 
-- (void)transitionStartedForKeyView:(id)a3 alternateCount:(unint64_t)a4 toLeft:(BOOL)a5
+- (void)transitionStartedForKeyView:(id)view alternateCount:(unint64_t)count toLeft:(BOOL)left
 {
-  v5 = a5;
-  v67 = a3;
-  v8 = [v67 layerForRenderFlags:4];
-  v9 = [v67 isDynamicKey];
+  leftCopy = left;
+  viewCopy = view;
+  v8 = [viewCopy layerForRenderFlags:4];
+  isDynamicKey = [viewCopy isDynamicKey];
   v10 = 2.0;
-  if (v9)
+  if (isDynamicKey)
   {
     v10 = 1.0;
   }
@@ -756,9 +756,9 @@ LABEL_26:
   [(UIKBKeyViewAnimator *)self setKeyScale:v10];
   v11 = [v8 animationForKey:@"pan transform"];
 
-  if (a4 != 1 || v11)
+  if (count != 1 || v11)
   {
-    if (a4 != 2)
+    if (count != 2)
     {
       goto LABEL_40;
     }
@@ -767,8 +767,8 @@ LABEL_26:
 
     v19 = [v8 animationForKey:@"pan transform right"];
 
-    v20 = !v19 || v5;
-    v21 = v18 && v5;
+    v20 = !v19 || leftCopy;
+    v21 = v18 && leftCopy;
     if (v21 || !v20)
     {
       goto LABEL_40;
@@ -789,8 +789,8 @@ LABEL_26:
       [v8 removeAnimationForKey:v22];
     }
 
-    v12 = [v67 layerForRenderFlags:16];
-    v23 = [v67 layerForRenderFlags:32];
+    v12 = [viewCopy layerForRenderFlags:16];
+    v23 = [viewCopy layerForRenderFlags:32];
     [v8 setShouldRasterize:0];
     [v12 setShouldRasterize:0];
     [v23 setShouldRasterize:0];
@@ -799,16 +799,16 @@ LABEL_26:
     v65 = v23;
     [v23 setSpeed:0.0];
     v66 = [objc_opt_class() normalizedAnimationWithKeyPath:@"opacity" fromValue:&unk_1EFE2E6F8 toValue:&unk_1EFE310F0];
-    v24 = [(UIKBKeyViewAnimator *)self keycapPrimaryTransform];
-    v63 = v24;
-    if (v5)
+    keycapPrimaryTransform = [(UIKBKeyViewAnimator *)self keycapPrimaryTransform];
+    v63 = keycapPrimaryTransform;
+    if (leftCopy)
     {
-      v62 = [(UIKBKeyViewAnimator *)self keycapLeftSelectPrimaryTransform];
-      v25 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v24 toValue:v62];
+      keycapLeftSelectPrimaryTransform = [(UIKBKeyViewAnimator *)self keycapLeftSelectPrimaryTransform];
+      v25 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:keycapPrimaryTransform toValue:keycapLeftSelectPrimaryTransform];
       v26 = objc_opt_class();
       v27 = MEMORY[0x1E696AD98];
-      v28 = [v67 renderConfig];
-      if ([v28 lightKeyboard])
+      renderConfig = [viewCopy renderConfig];
+      if ([renderConfig lightKeyboard])
       {
         v29 = 0.25;
       }
@@ -821,14 +821,14 @@ LABEL_26:
       v30 = [v27 numberWithDouble:v29];
       v31 = [v26 normalizedAnimationWithKeyPath:@"opacity" fromValue:v30 toValue:&unk_1EFE2E6F8];
 
-      v32 = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
-      v60 = [(UIKBKeyViewAnimator *)self keycapLeftSelectLeftTransform];
-      v61 = v32;
-      v33 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v32 toValue:v60];
+      keycapLeftTransform = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
+      keycapLeftSelectLeftTransform = [(UIKBKeyViewAnimator *)self keycapLeftSelectLeftTransform];
+      v61 = keycapLeftTransform;
+      v33 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:keycapLeftTransform toValue:keycapLeftSelectLeftTransform];
       v34 = objc_opt_class();
       v35 = MEMORY[0x1E696AD98];
-      v36 = [v67 renderConfig];
-      if ([v36 lightKeyboard])
+      renderConfig2 = [viewCopy renderConfig];
+      if ([renderConfig2 lightKeyboard])
       {
         v37 = 0.25;
       }
@@ -841,20 +841,20 @@ LABEL_26:
       v38 = [v35 numberWithDouble:v37];
       v39 = [v34 normalizedAnimationWithKeyPath:@"opacity" fromValue:v38 toValue:&unk_1EFE310F0];
 
-      v40 = [(UIKBKeyViewAnimator *)self keycapRightTransform];
-      v41 = [(UIKBKeyViewAnimator *)self keycapLeftSelectRightTransform];
-      v42 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v40 toValue:v41];
+      keycapRightTransform = [(UIKBKeyViewAnimator *)self keycapRightTransform];
+      keycapLeftSelectRightTransform = [(UIKBKeyViewAnimator *)self keycapLeftSelectRightTransform];
+      keycapNullTransform = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:keycapRightTransform toValue:keycapLeftSelectRightTransform];
       v43 = @"pan transform left";
     }
 
     else
     {
-      v62 = [(UIKBKeyViewAnimator *)self keycapRightSelectPrimaryTransform];
-      v25 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v24 toValue:v62];
+      keycapLeftSelectPrimaryTransform = [(UIKBKeyViewAnimator *)self keycapRightSelectPrimaryTransform];
+      v25 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:keycapPrimaryTransform toValue:keycapLeftSelectPrimaryTransform];
       v49 = objc_opt_class();
       v50 = MEMORY[0x1E696AD98];
-      v51 = [v67 renderConfig];
-      if ([v51 lightKeyboard])
+      renderConfig3 = [viewCopy renderConfig];
+      if ([renderConfig3 lightKeyboard])
       {
         v52 = 0.25;
       }
@@ -867,14 +867,14 @@ LABEL_26:
       v53 = [v50 numberWithDouble:v52];
       v31 = [v49 normalizedAnimationWithKeyPath:@"opacity" fromValue:v53 toValue:&unk_1EFE310F0];
 
-      v54 = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
-      v60 = [(UIKBKeyViewAnimator *)self keycapRightSelectLeftTransform];
-      v61 = v54;
-      v33 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v54 toValue:v60];
+      keycapLeftTransform2 = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
+      keycapLeftSelectLeftTransform = [(UIKBKeyViewAnimator *)self keycapRightSelectLeftTransform];
+      v61 = keycapLeftTransform2;
+      v33 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:keycapLeftTransform2 toValue:keycapLeftSelectLeftTransform];
       v55 = objc_opt_class();
       v56 = MEMORY[0x1E696AD98];
-      v57 = [v67 renderConfig];
-      if ([v57 lightKeyboard])
+      renderConfig4 = [viewCopy renderConfig];
+      if ([renderConfig4 lightKeyboard])
       {
         v58 = 0.25;
       }
@@ -887,9 +887,9 @@ LABEL_26:
       v59 = [v56 numberWithDouble:v58];
       v39 = [v55 normalizedAnimationWithKeyPath:@"opacity" fromValue:v59 toValue:&unk_1EFE2E6F8];
 
-      v40 = [(UIKBKeyViewAnimator *)self keycapRightTransform];
-      v41 = [(UIKBKeyViewAnimator *)self keycapRightSelectRightTransform];
-      v42 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v40 toValue:v41];
+      keycapRightTransform = [(UIKBKeyViewAnimator *)self keycapRightTransform];
+      keycapLeftSelectRightTransform = [(UIKBKeyViewAnimator *)self keycapRightSelectRightTransform];
+      keycapNullTransform = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:keycapRightTransform toValue:keycapLeftSelectRightTransform];
       v43 = @"pan transform right";
     }
 
@@ -899,24 +899,24 @@ LABEL_26:
     [v12 addAnimation:v33 forKey:@"pan transform"];
     v48 = v65;
     [v65 addAnimation:v39 forKey:@"pan opacity"];
-    [v65 addAnimation:v42 forKey:@"pan transform"];
+    [v65 addAnimation:keycapNullTransform forKey:@"pan transform"];
   }
 
   else
   {
-    v12 = [v67 layerForRenderFlags:16];
+    v12 = [viewCopy layerForRenderFlags:16];
     [v8 setShouldRasterize:0];
     [v12 setShouldRasterize:0];
     [v8 setSpeed:0.0];
     [v12 setSpeed:0.0];
-    v13 = [v67 key];
-    v14 = [v13 displayType];
+    v13 = [viewCopy key];
+    displayType = [v13 displayType];
 
     v15 = 1.0;
-    if (v14 != 7)
+    if (displayType != 7)
     {
-      v16 = [v67 renderConfig];
-      if ([v16 lightKeyboard])
+      renderConfig5 = [viewCopy renderConfig];
+      if ([renderConfig5 lightKeyboard])
       {
         v15 = 0.25;
       }
@@ -928,9 +928,9 @@ LABEL_26:
     }
 
     v17 = [objc_opt_class() normalizedAnimationWithKeyPath:@"opacity" fromValue:&unk_1EFE2E6F8 toValue:&unk_1EFE310F0];
-    if (v14 == 7)
+    if (displayType == 7)
     {
-      [(UIKBKeyViewAnimator *)self keycapPrimaryDualStringTransform:v67];
+      [(UIKBKeyViewAnimator *)self keycapPrimaryDualStringTransform:viewCopy];
     }
 
     else
@@ -945,18 +945,18 @@ LABEL_26:
     v46 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
     v33 = [v45 normalizedAnimationWithKeyPath:@"opacity" fromValue:v46 toValue:&unk_1EFE2E6F8];
 
-    if (v14 == 7)
+    if (displayType == 7)
     {
-      [(UIKBKeyViewAnimator *)self keycapAlternateDualStringTransform:v67];
+      [(UIKBKeyViewAnimator *)self keycapAlternateDualStringTransform:viewCopy];
     }
 
     else
     {
-      [(UIKBKeyViewAnimator *)self keycapAlternateTransform:v67];
+      [(UIKBKeyViewAnimator *)self keycapAlternateTransform:viewCopy];
     }
     v39 = ;
-    v42 = [(UIKBKeyViewAnimator *)self keycapNullTransform];
-    v47 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v39 toValue:v42];
+    keycapNullTransform = [(UIKBKeyViewAnimator *)self keycapNullTransform];
+    v47 = [objc_opt_class() normalizedAnimationWithKeyPath:@"meshTransform" fromValue:v39 toValue:keycapNullTransform];
     [v8 addAnimation:v17 forKey:@"pan opacity"];
     [v8 addAnimation:v31 forKey:@"pan transform"];
     [v12 addAnimation:v33 forKey:@"pan opacity"];
@@ -969,15 +969,15 @@ LABEL_26:
 LABEL_40:
 }
 
-- (void)transitionEndedForKeyView:(id)a3 alternateCount:(unint64_t)a4
+- (void)transitionEndedForKeyView:(id)view alternateCount:(unint64_t)count
 {
-  v83 = a3;
-  v6 = [v83 layerForRenderFlags:4];
+  viewCopy = view;
+  v6 = [viewCopy layerForRenderFlags:4];
   [v6 timeOffset];
-  [v83 setEndingTransitionDuration:v7 * 0.200000003];
-  v8 = [v83 isDynamicKey];
+  [viewCopy setEndingTransitionDuration:v7 * 0.200000003];
+  isDynamicKey = [viewCopy isDynamicKey];
   v9 = 2.0;
-  if (v8)
+  if (isDynamicKey)
   {
     v9 = 1.0;
   }
@@ -985,10 +985,10 @@ LABEL_40:
   [(UIKBKeyViewAnimator *)self setKeyScale:v9];
   v10 = [v6 animationForKey:@"pan transform"];
 
-  if (a4 == 1 && v10)
+  if (count == 1 && v10)
   {
-    [v83 changeBackgroundToEnabled];
-    v11 = [v83 layerForRenderFlags:16];
+    [viewCopy changeBackgroundToEnabled];
+    v11 = [viewCopy layerForRenderFlags:16];
     [v6 setShouldRasterize:1];
     [v11 setShouldRasterize:1];
     [v6 timeOffset];
@@ -1001,14 +1001,14 @@ LABEL_40:
     [v11 setSpeed:v16];
     [v6 setTimeOffset:0.0];
     [v11 setTimeOffset:0.0];
-    v17 = [v83 key];
-    v18 = [v17 displayType];
+    v17 = [viewCopy key];
+    displayType = [v17 displayType];
 
     v19 = 1.0;
-    if (v18 != 7)
+    if (displayType != 7)
     {
-      v20 = [v83 renderConfig];
-      if ([v20 lightKeyboard])
+      renderConfig = [viewCopy renderConfig];
+      if ([renderConfig lightKeyboard])
       {
         v19 = 0.25;
       }
@@ -1021,9 +1021,9 @@ LABEL_40:
 
     v79 = v11;
     v21 = [objc_opt_class() normalizedUnwindOpacityAnimationWithKeyPath:@"opacity" originallyFromValue:&unk_1EFE2E6F8 toValue:&unk_1EFE310F0 offset:v13];
-    if (v18 == 7)
+    if (displayType == 7)
     {
-      [(UIKBKeyViewAnimator *)self keycapPrimaryDualStringTransform:v83];
+      [(UIKBKeyViewAnimator *)self keycapPrimaryDualStringTransform:viewCopy];
     }
 
     else
@@ -1038,18 +1038,18 @@ LABEL_40:
     v59 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
     v43 = [v58 normalizedUnwindOpacityAnimationWithKeyPath:@"opacity" originallyFromValue:v59 toValue:&unk_1EFE2E6F8 offset:v15];
 
-    if (v18 == 7)
+    if (displayType == 7)
     {
-      [(UIKBKeyViewAnimator *)self keycapAlternateDualStringTransform:v83];
+      [(UIKBKeyViewAnimator *)self keycapAlternateDualStringTransform:viewCopy];
     }
 
     else
     {
-      [(UIKBKeyViewAnimator *)self keycapAlternateTransform:v83];
+      [(UIKBKeyViewAnimator *)self keycapAlternateTransform:viewCopy];
     }
     v49 = ;
-    v53 = [(UIKBKeyViewAnimator *)self keycapNullTransform];
-    v60 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:v49 toValue:v53 offset:v15];
+    keycapNullTransform = [(UIKBKeyViewAnimator *)self keycapNullTransform];
+    v60 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:v49 toValue:keycapNullTransform offset:v15];
     [v6 addAnimation:v21 forKey:@"pan opacity"];
     [v6 addAnimation:v57 forKey:@"pan transform"];
     v61 = v79;
@@ -1060,7 +1060,7 @@ LABEL_40:
     goto LABEL_27;
   }
 
-  if (a4 == 2)
+  if (count == 2)
   {
     v22 = [v6 animationForKey:@"pan transform left"];
 
@@ -1069,8 +1069,8 @@ LABEL_40:
 
     if (v24)
     {
-      v25 = [v83 layerForRenderFlags:16];
-      v26 = [v83 layerForRenderFlags:32];
+      v25 = [viewCopy layerForRenderFlags:16];
+      v26 = [viewCopy layerForRenderFlags:32];
       [v6 setShouldRasterize:1];
       [v25 setShouldRasterize:1];
       [v26 setShouldRasterize:1];
@@ -1091,16 +1091,16 @@ LABEL_40:
       [v25 setTimeOffset:0.0];
       [v26 setTimeOffset:0.0];
       v81 = [objc_opt_class() normalizedUnwindOpacityAnimationWithKeyPath:@"opacity" originallyFromValue:&unk_1EFE2E6F8 toValue:&unk_1EFE310F0 offset:v28];
-      v35 = [(UIKBKeyViewAnimator *)self keycapPrimaryTransform];
+      keycapPrimaryTransform = [(UIKBKeyViewAnimator *)self keycapPrimaryTransform];
       v74 = v26;
       if (v22)
       {
-        v76 = [(UIKBKeyViewAnimator *)self keycapLeftSelectPrimaryTransform];
-        v77 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:v35 toValue:v76 offset:v28];
+        keycapLeftSelectPrimaryTransform = [(UIKBKeyViewAnimator *)self keycapLeftSelectPrimaryTransform];
+        v77 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:keycapPrimaryTransform toValue:keycapLeftSelectPrimaryTransform offset:v28];
         v36 = objc_opt_class();
         v37 = MEMORY[0x1E696AD98];
-        v38 = [v83 renderConfig];
-        if ([v38 lightKeyboard])
+        renderConfig2 = [viewCopy renderConfig];
+        if ([renderConfig2 lightKeyboard])
         {
           v39 = 0.25;
         }
@@ -1113,13 +1113,13 @@ LABEL_40:
         v40 = [v37 numberWithDouble:v39];
         v75 = [v36 normalizedUnwindOpacityAnimationWithKeyPath:@"opacity" originallyFromValue:v40 toValue:&unk_1EFE2E6F8 offset:v30];
 
-        v41 = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
-        v42 = [(UIKBKeyViewAnimator *)self keycapLeftSelectLeftTransform];
-        v43 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:v41 toValue:v42 offset:v30];
+        keycapLeftTransform = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
+        keycapLeftSelectLeftTransform = [(UIKBKeyViewAnimator *)self keycapLeftSelectLeftTransform];
+        v43 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:keycapLeftTransform toValue:keycapLeftSelectLeftTransform offset:v30];
         v44 = objc_opt_class();
         v45 = MEMORY[0x1E696AD98];
-        v46 = [v83 renderConfig];
-        if ([v46 lightKeyboard])
+        renderConfig3 = [viewCopy renderConfig];
+        if ([renderConfig3 lightKeyboard])
         {
           v47 = 0.25;
         }
@@ -1132,21 +1132,21 @@ LABEL_40:
         v48 = [v45 numberWithDouble:v47];
         v49 = [v44 normalizedUnwindOpacityAnimationWithKeyPath:@"opacity" originallyFromValue:v48 toValue:&unk_1EFE310F0 offset:v32];
 
-        v50 = [(UIKBKeyViewAnimator *)self keycapRightTransform];
-        v51 = [(UIKBKeyViewAnimator *)self keycapLeftSelectRightTransform];
+        keycapRightTransform = [(UIKBKeyViewAnimator *)self keycapRightTransform];
+        keycapLeftSelectRightTransform = [(UIKBKeyViewAnimator *)self keycapLeftSelectRightTransform];
         v52 = v77;
-        v53 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:v50 toValue:v51 offset:v32];
+        keycapNullTransform = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:keycapRightTransform toValue:keycapLeftSelectRightTransform offset:v32];
         v54 = @"pan transform left";
       }
 
       else
       {
-        v76 = [(UIKBKeyViewAnimator *)self keycapRightSelectPrimaryTransform];
-        v52 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:v35 toValue:v76 offset:v28];
+        keycapLeftSelectPrimaryTransform = [(UIKBKeyViewAnimator *)self keycapRightSelectPrimaryTransform];
+        v52 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:keycapPrimaryTransform toValue:keycapLeftSelectPrimaryTransform offset:v28];
         v63 = objc_opt_class();
         v64 = MEMORY[0x1E696AD98];
-        v65 = [v83 renderConfig];
-        if ([v65 lightKeyboard])
+        renderConfig4 = [viewCopy renderConfig];
+        if ([renderConfig4 lightKeyboard])
         {
           v66 = 0.25;
         }
@@ -1159,13 +1159,13 @@ LABEL_40:
         v67 = [v64 numberWithDouble:v66];
         v75 = [v63 normalizedUnwindOpacityAnimationWithKeyPath:@"opacity" originallyFromValue:v67 toValue:&unk_1EFE310F0 offset:v30];
 
-        v41 = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
-        v42 = [(UIKBKeyViewAnimator *)self keycapRightSelectLeftTransform];
-        v43 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:v41 toValue:v42 offset:v30];
+        keycapLeftTransform = [(UIKBKeyViewAnimator *)self keycapLeftTransform];
+        keycapLeftSelectLeftTransform = [(UIKBKeyViewAnimator *)self keycapRightSelectLeftTransform];
+        v43 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:keycapLeftTransform toValue:keycapLeftSelectLeftTransform offset:v30];
         v68 = objc_opt_class();
         v69 = MEMORY[0x1E696AD98];
-        v70 = [v83 renderConfig];
-        if ([v70 lightKeyboard])
+        renderConfig5 = [viewCopy renderConfig];
+        if ([renderConfig5 lightKeyboard])
         {
           v71 = 0.25;
         }
@@ -1178,9 +1178,9 @@ LABEL_40:
         v72 = [v69 numberWithDouble:v71];
         v49 = [v68 normalizedUnwindOpacityAnimationWithKeyPath:@"opacity" originallyFromValue:v72 toValue:&unk_1EFE2E6F8 offset:v32];
 
-        v50 = [(UIKBKeyViewAnimator *)self keycapRightTransform];
-        v51 = [(UIKBKeyViewAnimator *)self keycapRightSelectRightTransform];
-        v53 = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:v50 toValue:v51 offset:v32];
+        keycapRightTransform = [(UIKBKeyViewAnimator *)self keycapRightTransform];
+        keycapLeftSelectRightTransform = [(UIKBKeyViewAnimator *)self keycapRightSelectRightTransform];
+        keycapNullTransform = [objc_opt_class() normalizedUnwindAnimationWithKeyPath:@"meshTransform" originallyFromValue:keycapRightTransform toValue:keycapLeftSelectRightTransform offset:v32];
         v54 = @"pan transform right";
       }
 
@@ -1194,7 +1194,7 @@ LABEL_40:
       v21 = v74;
       v61 = v80;
       [v74 addAnimation:v49 forKey:@"pan opacity"];
-      [v74 addAnimation:v53 forKey:@"pan transform"];
+      [v74 addAnimation:keycapNullTransform forKey:@"pan transform"];
       v57 = v75;
       v56 = v78;
 LABEL_27:
@@ -1202,15 +1202,15 @@ LABEL_27:
   }
 }
 
-- (void)updateTransitionForKeyView:(id)a3 normalizedDragSize:(CGSize)a4
+- (void)updateTransitionForKeyView:(id)view normalizedDragSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v21 = a3;
-  v7 = [v21 key];
-  v8 = [v21 isDynamicKey];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  v7 = [viewCopy key];
+  isDynamicKey = [viewCopy isDynamicKey];
   v9 = 2.0;
-  if (v8)
+  if (isDynamicKey)
   {
     v9 = 1.0;
   }
@@ -1218,14 +1218,14 @@ LABEL_27:
   [(UIKBKeyViewAnimator *)self setKeyScale:v9];
   if ([v7 displayTypeHint] == 10)
   {
-    v10 = [v7 secondaryRepresentedStrings];
-    v11 = [v10 count];
+    secondaryRepresentedStrings = [v7 secondaryRepresentedStrings];
+    v11 = [secondaryRepresentedStrings count];
 
     if (v11 == 2)
     {
-      v12 = [v21 layerForRenderFlags:4];
-      v13 = [v21 layerForRenderFlags:16];
-      v16 = [v21 layerForRenderFlags:32];
+      v12 = [viewCopy layerForRenderFlags:4];
+      v13 = [viewCopy layerForRenderFlags:16];
+      v16 = [viewCopy layerForRenderFlags:32];
       v17 = -width;
       if (width >= 0.0)
       {
@@ -1254,7 +1254,7 @@ LABEL_27:
         v20 = v18;
       }
 
-      [(UIKBKeyViewAnimator *)self transitionStartedForKeyView:v21 alternateCount:2 toLeft:width < 0.0];
+      [(UIKBKeyViewAnimator *)self transitionStartedForKeyView:viewCopy alternateCount:2 toLeft:width < 0.0];
       [v12 setTimeOffset:v20];
       [v13 setTimeOffset:v20];
       [v16 setTimeOffset:v20];
@@ -1267,9 +1267,9 @@ LABEL_27:
         goto LABEL_21;
       }
 
-      v12 = [v21 layerForRenderFlags:4];
-      v13 = [v21 layerForRenderFlags:16];
-      [(UIKBKeyViewAnimator *)self transitionStartedForKeyView:v21 alternateCount:1 toLeft:0];
+      v12 = [viewCopy layerForRenderFlags:4];
+      v13 = [viewCopy layerForRenderFlags:16];
+      [(UIKBKeyViewAnimator *)self transitionStartedForKeyView:viewCopy alternateCount:1 toLeft:0];
       v14 = fmin(height + -0.07 + height + -0.07, 1.0);
       if (v14 >= 0.0)
       {
@@ -1289,13 +1289,13 @@ LABEL_27:
 LABEL_21:
 }
 
-- (void)endTransitionForKeyView:(id)a3
+- (void)endTransitionForKeyView:(id)view
 {
-  v9 = a3;
-  v4 = [v9 key];
-  v5 = [v9 isDynamicKey];
+  viewCopy = view;
+  v4 = [viewCopy key];
+  isDynamicKey = [viewCopy isDynamicKey];
   v6 = 2.0;
-  if (v5)
+  if (isDynamicKey)
   {
     v6 = 1.0;
   }
@@ -1303,12 +1303,12 @@ LABEL_21:
   [(UIKBKeyViewAnimator *)self setKeyScale:v6];
   if ([v4 displayTypeHint] == 10)
   {
-    v7 = [v4 secondaryRepresentedStrings];
-    v8 = [v7 count];
+    secondaryRepresentedStrings = [v4 secondaryRepresentedStrings];
+    v8 = [secondaryRepresentedStrings count];
 
     if (v8)
     {
-      [(UIKBKeyViewAnimator *)self transitionEndedForKeyView:v9 alternateCount:v8];
+      [(UIKBKeyViewAnimator *)self transitionEndedForKeyView:viewCopy alternateCount:v8];
     }
   }
 }

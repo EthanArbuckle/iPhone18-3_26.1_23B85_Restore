@@ -1,24 +1,24 @@
 @interface _ATXScoreTypes
-+ (id)aggdStringForScoreInput:(unint64_t)a3;
++ (id)aggdStringForScoreInput:(unint64_t)input;
 + (id)scoreInputsToNames;
-+ (id)stringForScoreInput:(unint64_t)a3;
-+ (unint64_t)mappingForDayOfWeekDistributionSignals:(unint64_t)a3 forScoreInputCategory:(unint64_t)a4;
-+ (unint64_t)mappingForTimeOfDayDistributionSignals:(unint64_t)a3 forScoreInputCategory:(unint64_t)a4;
-+ (unint64_t)mappingForTopRankedCoarseGeoHashSignals:(unint64_t)a3 forScoreInputCategory:(unint64_t)a4;
-+ (unint64_t)mappingForTopRankedGeoHashSignalsWithResolution:(unint64_t)a3 withRank:(unint64_t)a4 forScoreInputCategory:(unint64_t)a5;
-+ (unint64_t)mappingForTopRankedSpecificGeoHashSignals:(unint64_t)a3 forScoreInputCategory:(unint64_t)a4;
-+ (unint64_t)mappingForTopRankedZoom7GeoHashSignals:(unint64_t)a3;
-+ (unint64_t)scoreInputForAggdString:(id)a3;
-+ (unint64_t)scoreInputForString:(id)a3;
-+ (void)iterScoreInputsWithBlock:(id)a3;
++ (id)stringForScoreInput:(unint64_t)input;
++ (unint64_t)mappingForDayOfWeekDistributionSignals:(unint64_t)signals forScoreInputCategory:(unint64_t)category;
++ (unint64_t)mappingForTimeOfDayDistributionSignals:(unint64_t)signals forScoreInputCategory:(unint64_t)category;
++ (unint64_t)mappingForTopRankedCoarseGeoHashSignals:(unint64_t)signals forScoreInputCategory:(unint64_t)category;
++ (unint64_t)mappingForTopRankedGeoHashSignalsWithResolution:(unint64_t)resolution withRank:(unint64_t)rank forScoreInputCategory:(unint64_t)category;
++ (unint64_t)mappingForTopRankedSpecificGeoHashSignals:(unint64_t)signals forScoreInputCategory:(unint64_t)category;
++ (unint64_t)mappingForTopRankedZoom7GeoHashSignals:(unint64_t)signals;
++ (unint64_t)scoreInputForAggdString:(id)string;
++ (unint64_t)scoreInputForString:(id)string;
++ (void)iterScoreInputsWithBlock:(id)block;
 @end
 
 @implementation _ATXScoreTypes
 
-+ (id)stringForScoreInput:(unint64_t)a3
++ (id)stringForScoreInput:(unint64_t)input
 {
   result = @"_ATXScoreInputAppInFolder";
-  switch(a3)
+  switch(input)
   {
     case 0uLL:
       result = @"_ATXScoreInputInstallAge";
@@ -2507,7 +2507,7 @@
       result = @"_ATXScoreInputMax";
       break;
     default:
-      if (a3 != 0xFFFFFFFF)
+      if (input != 0xFFFFFFFF)
       {
         [(_ATXScoreTypes *)a2 stringForScoreInput:?];
       }
@@ -2519,56 +2519,56 @@
   return result;
 }
 
-+ (unint64_t)scoreInputForString:(id)a3
++ (unint64_t)scoreInputForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (scoreInputForString__onceToken != -1)
   {
     +[_ATXScoreTypes scoreInputForString:];
   }
 
-  v4 = [scoreInputForString__scoreInputMap objectForKeyedSubscript:v3];
+  v4 = [scoreInputForString__scoreInputMap objectForKeyedSubscript:stringCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 0xFFFFFFFFLL;
+    integerValue = 0xFFFFFFFFLL;
   }
 
-  return v6;
+  return integerValue;
 }
 
-+ (unint64_t)scoreInputForAggdString:(id)a3
++ (unint64_t)scoreInputForAggdString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (scoreInputForAggdString__onceToken != -1)
   {
     +[_ATXScoreTypes scoreInputForAggdString:];
   }
 
-  v4 = [scoreInputForAggdString__scoreInputMap objectForKeyedSubscript:v3];
+  v4 = [scoreInputForAggdString__scoreInputMap objectForKeyedSubscript:stringCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 0xFFFFFFFFLL;
+    integerValue = 0xFFFFFFFFLL;
   }
 
-  return v6;
+  return integerValue;
 }
 
-+ (id)aggdStringForScoreInput:(unint64_t)a3
++ (id)aggdStringForScoreInput:(unint64_t)input
 {
   result = @"AppInFolder";
-  switch(a3)
+  switch(input)
   {
     case 0uLL:
       result = @"InstallAge";
@@ -5057,7 +5057,7 @@
       result = @"Max";
       break;
     default:
-      if (a3 != 0xFFFFFFFF)
+      if (input != 0xFFFFFFFF)
       {
         [(_ATXScoreTypes *)a2 aggdStringForScoreInput:?];
       }
@@ -5074,7 +5074,7 @@
   v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:828];
   for (i = 0; i != 828; ++i)
   {
-    v5 = [a1 aggdStringForScoreInput:i];
+    v5 = [self aggdStringForScoreInput:i];
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
     [v3 setObject:v5 forKeyedSubscript:v6];
   }
@@ -5082,15 +5082,15 @@
   return v3;
 }
 
-+ (void)iterScoreInputsWithBlock:(id)a3
++ (void)iterScoreInputsWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
   v8 = 0;
   do
   {
     v5 = objc_autoreleasePoolPush();
-    v3[2](v3, v4, &v8);
+    blockCopy[2](blockCopy, v4, &v8);
     v6 = v8;
     objc_autoreleasePoolPop(v5);
     if (v6)
@@ -5102,63 +5102,63 @@
   while (v4++ != 827);
 }
 
-+ (unint64_t)mappingForTopRankedGeoHashSignalsWithResolution:(unint64_t)a3 withRank:(unint64_t)a4 forScoreInputCategory:(unint64_t)a5
++ (unint64_t)mappingForTopRankedGeoHashSignalsWithResolution:(unint64_t)resolution withRank:(unint64_t)rank forScoreInputCategory:(unint64_t)category
 {
-  if (a3 == 2)
+  if (resolution == 2)
   {
-    return [_ATXScoreTypes mappingForTopRankedZoom7GeoHashSignals:a4];
+    return [_ATXScoreTypes mappingForTopRankedZoom7GeoHashSignals:rank];
   }
 
-  if (a3 == 1)
+  if (resolution == 1)
   {
-    return [_ATXScoreTypes mappingForTopRankedCoarseGeoHashSignals:a4 forScoreInputCategory:a5];
+    return [_ATXScoreTypes mappingForTopRankedCoarseGeoHashSignals:rank forScoreInputCategory:category];
   }
 
-  if (a3)
+  if (resolution)
   {
     return 0xFFFFFFFFLL;
   }
 
-  return [_ATXScoreTypes mappingForTopRankedSpecificGeoHashSignals:a4 forScoreInputCategory:a5];
+  return [_ATXScoreTypes mappingForTopRankedSpecificGeoHashSignals:rank forScoreInputCategory:category];
 }
 
-+ (unint64_t)mappingForTimeOfDayDistributionSignals:(unint64_t)a3 forScoreInputCategory:(unint64_t)a4
++ (unint64_t)mappingForTimeOfDayDistributionSignals:(unint64_t)signals forScoreInputCategory:(unint64_t)category
 {
-  if (a4 == 1)
+  if (category == 1)
   {
-    if (a3 >= 0x19)
+    if (signals >= 0x19)
     {
       +[_ATXScoreTypes mappingForTimeOfDayDistributionSignals:forScoreInputCategory:];
     }
 
-    return a3 + 589;
+    return signals + 589;
   }
 
-  else if (a4)
+  else if (category)
   {
     return 0xFFFFFFFFLL;
   }
 
   else
   {
-    if (a3 >= 0x19)
+    if (signals >= 0x19)
     {
       +[_ATXScoreTypes mappingForTimeOfDayDistributionSignals:forScoreInputCategory:];
     }
 
-    return a3 + 445;
+    return signals + 445;
   }
 }
 
-+ (unint64_t)mappingForDayOfWeekDistributionSignals:(unint64_t)a3 forScoreInputCategory:(unint64_t)a4
++ (unint64_t)mappingForDayOfWeekDistributionSignals:(unint64_t)signals forScoreInputCategory:(unint64_t)category
 {
   v18[7] = *MEMORY[0x277D85DE8];
-  if (a3 >= 7)
+  if (signals >= 7)
   {
     +[_ATXScoreTypes mappingForDayOfWeekDistributionSignals:forScoreInputCategory:];
   }
 
-  if (a4 == 1)
+  if (category == 1)
   {
     v15[0] = &unk_283A54968;
     v15[1] = &unk_283A54998;
@@ -5181,9 +5181,9 @@
 
   else
   {
-    if (a4)
+    if (category)
     {
-      v12 = 0xFFFFFFFFLL;
+      intValue = 0xFFFFFFFFLL;
       goto LABEL_9;
     }
 
@@ -5207,21 +5207,21 @@
   }
 
   v9 = [v6 dictionaryWithObjects:v7 forKeys:v8 count:7];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:signals];
   v11 = [v9 objectForKeyedSubscript:v10];
-  v12 = [v11 intValue];
+  intValue = [v11 intValue];
 
 LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
-  return v12;
+  return intValue;
 }
 
-+ (unint64_t)mappingForTopRankedSpecificGeoHashSignals:(unint64_t)a3 forScoreInputCategory:(unint64_t)a4
++ (unint64_t)mappingForTopRankedSpecificGeoHashSignals:(unint64_t)signals forScoreInputCategory:(unint64_t)category
 {
   v17[15] = *MEMORY[0x277D85DE8];
-  if (a4 == 1)
+  if (category == 1)
   {
-    if (a3 >= 0xF)
+    if (signals >= 0xF)
     {
       +[_ATXScoreTypes mappingForTopRankedSpecificGeoHashSignals:forScoreInputCategory:];
     }
@@ -5263,13 +5263,13 @@ LABEL_9:
 
   else
   {
-    if (a4)
+    if (category)
     {
-      v11 = 0xFFFFFFFFLL;
+      intValue = 0xFFFFFFFFLL;
       goto LABEL_11;
     }
 
-    if (a3 >= 0xF)
+    if (signals >= 0xF)
     {
       +[_ATXScoreTypes mappingForTopRankedSpecificGeoHashSignals:forScoreInputCategory:];
     }
@@ -5310,21 +5310,21 @@ LABEL_9:
   }
 
   v8 = [v5 dictionaryWithObjects:v6 forKeys:v7 count:15];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:signals];
   v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
 LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
-  return v11;
+  return intValue;
 }
 
-+ (unint64_t)mappingForTopRankedCoarseGeoHashSignals:(unint64_t)a3 forScoreInputCategory:(unint64_t)a4
++ (unint64_t)mappingForTopRankedCoarseGeoHashSignals:(unint64_t)signals forScoreInputCategory:(unint64_t)category
 {
   v17[10] = *MEMORY[0x277D85DE8];
-  if (a4 == 1)
+  if (category == 1)
   {
-    if (a3 >= 0xA)
+    if (signals >= 0xA)
     {
       +[_ATXScoreTypes mappingForTopRankedCoarseGeoHashSignals:forScoreInputCategory:];
     }
@@ -5356,13 +5356,13 @@ LABEL_11:
 
   else
   {
-    if (a4)
+    if (category)
     {
-      v11 = 0xFFFFFFFFLL;
+      intValue = 0xFFFFFFFFLL;
       goto LABEL_11;
     }
 
-    if (a3 >= 0xA)
+    if (signals >= 0xA)
     {
       +[_ATXScoreTypes mappingForTopRankedCoarseGeoHashSignals:forScoreInputCategory:];
     }
@@ -5393,19 +5393,19 @@ LABEL_11:
   }
 
   v8 = [v5 dictionaryWithObjects:v6 forKeys:v7 count:10];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:signals];
   v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
 LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
-  return v11;
+  return intValue;
 }
 
-+ (unint64_t)mappingForTopRankedZoom7GeoHashSignals:(unint64_t)a3
++ (unint64_t)mappingForTopRankedZoom7GeoHashSignals:(unint64_t)signals
 {
   v11[10] = *MEMORY[0x277D85DE8];
-  if (a3 >= 0xA)
+  if (signals >= 0xA)
   {
     +[_ATXScoreTypes mappingForTopRankedZoom7GeoHashSignals:];
   }
@@ -5431,12 +5431,12 @@ LABEL_11:
   v11[8] = &unk_283A55190;
   v11[9] = &unk_283A551A8;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:10];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:signals];
   v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
   v8 = *MEMORY[0x277D85DE8];
-  return v7;
+  return intValue;
 }
 
 + (void)stringForScoreInput:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

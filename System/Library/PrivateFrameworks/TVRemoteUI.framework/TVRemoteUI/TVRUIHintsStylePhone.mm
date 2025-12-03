@@ -117,8 +117,8 @@
 
 - (double)siriHintContainerWidth
 {
-  v3 = [(TVRUIHintsStylePhone *)self siriImage];
-  [v3 size];
+  siriImage = [(TVRUIHintsStylePhone *)self siriImage];
+  [siriImage size];
   v5 = v4;
   [(TVRUIHintsStylePhone *)self buttonOutlineWidth];
   v7 = v5 + v6;
@@ -128,8 +128,8 @@
 
 - (double)volumeHintContainerWidth
 {
-  v3 = [(TVRUIHintsStylePhone *)self volumeImage];
-  [v3 size];
+  volumeImage = [(TVRUIHintsStylePhone *)self volumeImage];
+  [volumeImage size];
   v5 = v4;
   [(TVRUIHintsStylePhone *)self buttonOutlineWidth];
   v7 = v5 + v6;
@@ -139,8 +139,8 @@
 
 - (double)micVolumeHintContainerWidth
 {
-  v3 = [(TVRUIHintsStylePhone *)self micVolumeImage];
-  [v3 size];
+  micVolumeImage = [(TVRUIHintsStylePhone *)self micVolumeImage];
+  [micVolumeImage size];
   v5 = v4;
   [(TVRUIHintsStylePhone *)self buttonOutlineWidth];
   v7 = v5 + v6;
@@ -152,9 +152,9 @@
 {
   v4.receiver = self;
   v4.super_class = TVRUIHintsStylePhone;
-  v2 = [(TVRUIHintsStyle *)&v4 siriHintTipContext];
+  siriHintTipContext = [(TVRUIHintsStyle *)&v4 siriHintTipContext];
 
-  return v2;
+  return siriHintTipContext;
 }
 
 - (int64_t)userInterfaceStyle
@@ -166,8 +166,8 @@
 
 - (double)preferredTipWidth
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
   if (v5 <= 667.0)
@@ -186,9 +186,9 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendString:@"Phone" withName:@"idiom"];
   v4 = [v3 appendBool:-[TVRUIHintsStyle hasHomeButton](self withName:{"hasHomeButton"), @"hasHomeButton"}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

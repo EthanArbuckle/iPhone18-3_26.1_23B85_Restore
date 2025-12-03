@@ -1,7 +1,7 @@
 @interface MRDVirtualTouchDevice
-- (BOOL)handleHIDReport:(id)a3;
-- (BOOL)handleTouchEvent:(_MRHIDTouchEvent *)a3;
-- (MRDVirtualTouchDevice)initWithDeviceDescriptor:(id)a3;
+- (BOOL)handleHIDReport:(id)report;
+- (BOOL)handleTouchEvent:(_MRHIDTouchEvent *)event;
+- (MRDVirtualTouchDevice)initWithDeviceDescriptor:(id)descriptor;
 - (id)_newIOKitDeviceProperties;
 - (id)deviceProperties;
 - (void)dealloc;
@@ -9,9 +9,9 @@
 
 @implementation MRDVirtualTouchDevice
 
-- (MRDVirtualTouchDevice)initWithDeviceDescriptor:(id)a3
+- (MRDVirtualTouchDevice)initWithDeviceDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v15.receiver = self;
   v15.super_class = MRDVirtualTouchDevice;
   v5 = [(MRDVirtualTouchDevice *)&v15 init];
@@ -20,7 +20,7 @@
     goto LABEL_4;
   }
 
-  v6 = [v4 copy];
+  v6 = [descriptorCopy copy];
   deviceDescriptor = v5->_deviceDescriptor;
   v5->_deviceDescriptor = v6;
 
@@ -29,7 +29,7 @@
   activeTouchEventsForFingerIndices = v5->_activeTouchEventsForFingerIndices;
   v5->_activeTouchEventsForFingerIndices = v8;
 
-  v10 = [(MRDVirtualTouchDevice *)v5 deviceProperties];
+  deviceProperties = [(MRDVirtualTouchDevice *)v5 deviceProperties];
   v11 = IOHIDUserDeviceCreate();
   v5->_ioDevice = v11;
   if (v11)
@@ -70,9 +70,9 @@ LABEL_8:
   deviceProperties = self->_deviceProperties;
   if (!deviceProperties)
   {
-    v4 = [(MRDVirtualTouchDevice *)self _newIOKitDeviceProperties];
+    _newIOKitDeviceProperties = [(MRDVirtualTouchDevice *)self _newIOKitDeviceProperties];
     v5 = self->_deviceProperties;
-    self->_deviceProperties = v4;
+    self->_deviceProperties = _newIOKitDeviceProperties;
 
     deviceProperties = self->_deviceProperties;
   }
@@ -80,13 +80,13 @@ LABEL_8:
   return deviceProperties;
 }
 
-- (BOOL)handleHIDReport:(id)a3
+- (BOOL)handleHIDReport:(id)report
 {
   ioDevice = self->_ioDevice;
-  v6 = a3;
-  v7 = a3;
-  [v7 bytes];
-  [v7 length];
+  reportCopy = report;
+  reportCopy2 = report;
+  [reportCopy2 bytes];
+  [reportCopy2 length];
 
   v8 = IOHIDUserDeviceHandleReport();
   if (v8)
@@ -106,14 +106,14 @@ LABEL_8:
   return v8 == 0;
 }
 
-- (BOOL)handleTouchEvent:(_MRHIDTouchEvent *)a3
+- (BOOL)handleTouchEvent:(_MRHIDTouchEvent *)event
 {
-  v5 = *&a3->var2;
-  v17 = *&a3->var0.var0.var0;
+  v5 = *&event->var2;
+  v17 = *&event->var0.var0.var0;
   v18 = v5;
   v6 = [NSValue valueWithMRHIDTouchEvent:&v17];
   activeTouchEventsForFingerIndices = self->_activeTouchEventsForFingerIndices;
-  v8 = [NSNumber numberWithUnsignedInt:a3->var3];
+  v8 = [NSNumber numberWithUnsignedInt:event->var3];
   [(NSMutableDictionary *)activeTouchEventsForFingerIndices setObject:v6 forKeyedSubscript:v8];
 
   *&v17 = 0;
@@ -121,7 +121,7 @@ LABEL_8:
   *&v18 = 0x3010000000;
   *(&v18 + 1) = &unk_10044512B;
   memset(v19, 0, sizeof(v19));
-  v19[12] = a3->var1 == 5;
+  v19[12] = event->var1 == 5;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -134,14 +134,14 @@ LABEL_8:
   v14[4] = &v17;
   v14[5] = v15;
   [(NSMutableDictionary *)v9 enumerateKeysAndObjectsUsingBlock:v14];
-  if (a3->var1 - 1 >= 3)
+  if (event->var1 - 1 >= 3)
   {
     v10 = self->_activeTouchEventsForFingerIndices;
-    v11 = [NSNumber numberWithUnsignedInt:a3->var3];
+    v11 = [NSNumber numberWithUnsignedInt:event->var3];
     [(NSMutableDictionary *)v10 removeObjectForKey:v11];
   }
 
-  v12 = IOHIDUserDeviceHandleReportWithTimeStamp(self->_ioDevice, a3->var2, (*(&v17 + 1) + 32), 13) == 0;
+  v12 = IOHIDUserDeviceHandleReportWithTimeStamp(self->_ioDevice, event->var2, (*(&v17 + 1) + 32), 13) == 0;
   _Block_object_dispose(v15, 8);
   _Block_object_dispose(&v17, 8);
   return v12;

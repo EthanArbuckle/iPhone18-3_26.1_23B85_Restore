@@ -1,60 +1,60 @@
 @interface InAppReviewRequest
-+ (id)entityForContext:(id)a3;
++ (id)entityForContext:(id)context;
 - (id)valueHash;
 @end
 
 @implementation InAppReviewRequest
 
-+ (id)entityForContext:(id)a3
++ (id)entityForContext:(id)context
 {
-  v3 = [a3 persistentStoreCoordinator];
-  v4 = [v3 managedObjectModel];
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
 
-  v5 = [v4 entitiesByName];
-  v6 = [v5 objectForKey:@"InAppReviewRequest"];
+  entitiesByName = [managedObjectModel entitiesByName];
+  v6 = [entitiesByName objectForKey:@"InAppReviewRequest"];
 
   return v6;
 }
 
 - (id)valueHash
 {
-  v3 = [(InAppReviewRequest *)self bundleIdentifier];
-  if (!v3)
+  bundleIdentifier = [(InAppReviewRequest *)self bundleIdentifier];
+  if (!bundleIdentifier)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(InAppReviewRequest *)self bundleVersion];
-  if (!v5)
+  v4 = bundleIdentifier;
+  bundleVersion = [(InAppReviewRequest *)self bundleVersion];
+  if (!bundleVersion)
   {
-    v13 = 0;
+    stringValue = 0;
     goto LABEL_7;
   }
 
-  v6 = v5;
-  v7 = [(InAppReviewRequest *)self date];
+  v6 = bundleVersion;
+  date = [(InAppReviewRequest *)self date];
 
-  if (!v7)
+  if (!date)
   {
 LABEL_5:
-    v13 = 0;
+    stringValue = 0;
     goto LABEL_8;
   }
 
-  v8 = [(InAppReviewRequest *)self bundleIdentifier];
-  v9 = [(InAppReviewRequest *)self bundleVersion];
-  v10 = [(InAppReviewRequest *)self date];
-  v11 = [v10 description];
-  v4 = [NSString stringWithFormat:@"%@%@%@", v8, v9, v11];
+  bundleIdentifier2 = [(InAppReviewRequest *)self bundleIdentifier];
+  bundleVersion2 = [(InAppReviewRequest *)self bundleVersion];
+  date2 = [(InAppReviewRequest *)self date];
+  v11 = [date2 description];
+  v4 = [NSString stringWithFormat:@"%@%@%@", bundleIdentifier2, bundleVersion2, v11];
 
   v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 hash]);
-  v13 = [v12 stringValue];
+  stringValue = [v12 stringValue];
 
 LABEL_7:
 LABEL_8:
 
-  return v13;
+  return stringValue;
 }
 
 @end

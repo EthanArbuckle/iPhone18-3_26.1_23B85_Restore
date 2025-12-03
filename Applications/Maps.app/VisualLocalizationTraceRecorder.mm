@@ -2,8 +2,8 @@
 + (NSURL)traceDirectory;
 - (VisualLocalizationTraceRecorder)init;
 - (void)_finishOnIsolationQueue;
-- (void)_recordAttemptOnIsolationQueue:(id)a3;
-- (void)recordAttempt:(id)a3;
+- (void)_recordAttemptOnIsolationQueue:(id)queue;
+- (void)recordAttempt:(id)attempt;
 - (void)start;
 @end
 
@@ -81,9 +81,9 @@ LABEL_22:
   {
     v3 = v5;
     v6 = [(NSURL *)self->_baseDirectory URLByAppendingPathComponent:@"crowdsourcing_details.bin" isDirectory:0];
-    v7 = [v3 data];
+    data = [v3 data];
     v55 = 0;
-    v8 = [v7 writeToURL:v6 options:0 error:&v55];
+    v8 = [data writeToURL:v6 options:0 error:&v55];
     v9 = v55;
 
     if ((v8 & 1) == 0)
@@ -103,15 +103,15 @@ LABEL_22:
 LABEL_23:
   v12 = +[NSFileManager defaultManager];
   v13 = +[VisualLocalizationTraceRecorder traceDirectory];
-  v14 = [v13 path];
-  v15 = [v12 fileExistsAtPath:v14];
+  path = [v13 path];
+  v15 = [v12 fileExistsAtPath:path];
 
   if (v15)
   {
 LABEL_26:
     v20 = +[VisualLocalizationTraceRecorder traceDirectory];
-    v21 = [(NSURL *)self->_baseDirectory lastPathComponent];
-    v22 = [NSString stringWithFormat:@"VisualLocalization.%@", v21];
+    lastPathComponent = [(NSURL *)self->_baseDirectory lastPathComponent];
+    v22 = [NSString stringWithFormat:@"VisualLocalization.%@", lastPathComponent];
     v23 = [v20 URLByAppendingPathComponent:v22];
     v24 = [v23 URLByAppendingPathExtension:@"tar.gz"];
 
@@ -127,13 +127,13 @@ LABEL_26:
     archive_write_set_format_v7tar();
     archive_write_add_filter_gzip();
     v45 = v24;
-    v26 = [v24 path];
-    [v26 UTF8String];
+    path2 = [v24 path];
+    [path2 UTF8String];
     archive_write_open_filename();
 
     v27 = +[NSFileManager defaultManager];
-    v28 = [(NSURL *)self->_baseDirectory path];
-    v29 = [v27 subpathsAtPath:v28];
+    path3 = [(NSURL *)self->_baseDirectory path];
+    v29 = [v27 subpathsAtPath:path3];
 
     v52 = 0u;
     v53 = 0u;
@@ -160,8 +160,8 @@ LABEL_26:
           v37 = [(NSURL *)self->_baseDirectory URLByAppendingPathComponent:v35];
           v49 = 0;
           v38 = +[NSFileManager defaultManager];
-          v39 = [v37 path];
-          v40 = [v38 fileExistsAtPath:v39 isDirectory:&v49];
+          path4 = [v37 path];
+          v40 = [v38 fileExistsAtPath:path4 isDirectory:&v49];
           v41 = v49;
 
           if (v40 && (v41 & 1) == 0)
@@ -236,24 +236,24 @@ LABEL_26:
 LABEL_44:
 }
 
-- (void)_recordAttemptOnIsolationQueue:(id)a3
+- (void)_recordAttemptOnIsolationQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_queue);
   [(VisualLocalizationTraceRecorder *)self _beginTraceIfNecessary];
   if (self->_baseDirectory)
   {
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
 
-    v7 = [v4 pngData];
-    if (v7)
+    pngData = [queueCopy pngData];
+    if (pngData)
     {
-      v8 = [(NSURL *)self->_imagesDirectory URLByAppendingPathComponent:v6];
+      v8 = [(NSURL *)self->_imagesDirectory URLByAppendingPathComponent:uUIDString];
       v9 = [v8 URLByAppendingPathExtension:@"png"];
 
       v39 = 0;
-      LOBYTE(v8) = [v7 writeToURL:v9 options:0 error:&v39];
+      LOBYTE(v8) = [pngData writeToURL:v9 options:0 error:&v39];
       v10 = v39;
       if ((v8 & 1) == 0)
       {
@@ -267,19 +267,19 @@ LABEL_44:
       }
     }
 
-    v12 = [v4 inputParameters];
-    v13 = [v12 mutableCopy];
+    inputParameters = [queueCopy inputParameters];
+    v13 = [inputParameters mutableCopy];
 
     v14 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
     if (v13)
     {
-      [v13 setObject:v6 forKeyedSubscript:@"uuid"];
+      [v13 setObject:uUIDString forKeyedSubscript:@"uuid"];
       v38 = 0;
       v15 = [NSJSONSerialization dataWithJSONObject:v13 options:0 error:&v38];
       v16 = v38;
       if (v15)
       {
-        v17 = [(NSURL *)self->_parametersDirectory URLByAppendingPathComponent:v6];
+        v17 = [(NSURL *)self->_parametersDirectory URLByAppendingPathComponent:uUIDString];
         v18 = [v17 URLByAppendingPathExtension:@"json"];
 
         v37 = 0;
@@ -287,7 +287,7 @@ LABEL_44:
         v19 = v37;
         if ((v17 & 1) == 0)
         {
-          v20 = v7;
+          v20 = pngData;
           v21 = sub_1008CAD3C();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
@@ -296,7 +296,7 @@ LABEL_44:
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to write input parameters: %{public}@", buf, 0xCu);
           }
 
-          v7 = v20;
+          pngData = v20;
         }
 
         v14 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
@@ -314,20 +314,20 @@ LABEL_44:
       }
     }
 
-    v22 = [v4 results];
-    v23 = [v22 mutableCopy];
+    results = [queueCopy results];
+    v23 = [results mutableCopy];
 
     if (v23)
     {
-      [v23 setObject:v6 forKeyedSubscript:@"uuid"];
+      [v23 setObject:uUIDString forKeyedSubscript:@"uuid"];
       v24 = v14[430];
       v36 = 0;
       v25 = [v24 dataWithJSONObject:v23 options:0 error:&v36];
       v26 = v36;
       if (v25)
       {
-        v34 = v7;
-        v27 = [(NSURL *)self->_resultsDirectory URLByAppendingPathComponent:v6];
+        v34 = pngData;
+        v27 = [(NSURL *)self->_resultsDirectory URLByAppendingPathComponent:uUIDString];
         v28 = [v27 URLByAppendingPathExtension:@"json"];
 
         v35 = 0;
@@ -344,7 +344,7 @@ LABEL_44:
           }
         }
 
-        v7 = v34;
+        pngData = v34;
       }
 
       else
@@ -359,28 +359,28 @@ LABEL_44:
       }
     }
 
-    v31 = [v4 crowdsourcingDetails];
+    crowdsourcingDetails = [queueCopy crowdsourcingDetails];
 
-    if (v31)
+    if (crowdsourcingDetails)
     {
-      v32 = [v4 crowdsourcingDetails];
+      crowdsourcingDetails2 = [queueCopy crowdsourcingDetails];
       lastCrowdsourcingDetails = self->_lastCrowdsourcingDetails;
-      self->_lastCrowdsourcingDetails = v32;
+      self->_lastCrowdsourcingDetails = crowdsourcingDetails2;
     }
   }
 }
 
-- (void)recordAttempt:(id)a3
+- (void)recordAttempt:(id)attempt
 {
-  v4 = a3;
+  attemptCopy = attempt;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1008CB31C;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = attemptCopy;
+  v6 = attemptCopy;
   dispatch_async(queue, v7);
 }
 

@@ -1,6 +1,6 @@
 @interface CCUISystemControlsCoordinator
 - (CCUISystemControlsCoordinator)init;
-- (CCUISystemControlsCoordinator)initWithSystemHost:(id)a3;
+- (CCUISystemControlsCoordinator)initWithSystemHost:(id)host;
 - (void)beginObservingSystemState;
 - (void)dealloc;
 - (void)endObservingSystemState;
@@ -8,11 +8,11 @@
 
 @implementation CCUISystemControlsCoordinator
 
-- (CCUISystemControlsCoordinator)initWithSystemHost:(id)a3
+- (CCUISystemControlsCoordinator)initWithSystemHost:(id)host
 {
   *(&self->super.isa + OBJC_IVAR___CCUISystemControlsCoordinator_userInterfaceStyleMode) = 0;
   *(&self->super.isa + OBJC_IVAR___CCUISystemControlsCoordinator_silentModeObservation) = 0;
-  *(&self->super.isa + OBJC_IVAR___CCUISystemControlsCoordinator_systemHost) = a3;
+  *(&self->super.isa + OBJC_IVAR___CCUISystemControlsCoordinator_systemHost) = host;
   v4.receiver = self;
   v4.super_class = CCUISystemControlsCoordinator;
   swift_unknownObjectRetain();
@@ -23,19 +23,19 @@
 {
   v3.receiver = self;
   v3.super_class = CCUISystemControlsCoordinator;
-  v2 = self;
+  selfCopy = self;
   [(CCUISystemControlsCoordinator *)&v3 dealloc];
 }
 
 - (void)beginObservingSystemState
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA884F8();
 }
 
 - (void)endObservingSystemState
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA88730();
 }
 

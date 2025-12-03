@@ -1,21 +1,21 @@
 @interface HMDMemoryLogEvent
 - (HMDMemoryLogEvent)init;
-- (HMDMemoryLogEvent)initWithReason:(int64_t)a3 currentMemoryUsage:(unint64_t)a4 intervalMaxMemoryUsage:(unint64_t)a5;
-- (void)updateDiagnosticReportSignature:(id)a3;
+- (HMDMemoryLogEvent)initWithReason:(int64_t)reason currentMemoryUsage:(unint64_t)usage intervalMaxMemoryUsage:(unint64_t)memoryUsage;
+- (void)updateDiagnosticReportSignature:(id)signature;
 @end
 
 @implementation HMDMemoryLogEvent
 
-- (HMDMemoryLogEvent)initWithReason:(int64_t)a3 currentMemoryUsage:(unint64_t)a4 intervalMaxMemoryUsage:(unint64_t)a5
+- (HMDMemoryLogEvent)initWithReason:(int64_t)reason currentMemoryUsage:(unint64_t)usage intervalMaxMemoryUsage:(unint64_t)memoryUsage
 {
   v9.receiver = self;
   v9.super_class = HMDMemoryLogEvent;
   result = [(HMMLogEvent *)&v9 init];
   if (result)
   {
-    result->_reason = a3;
-    result->_currentMemoryUsage = a4;
-    result->_intervalMaxMemoryUsage = a5;
+    result->_reason = reason;
+    result->_currentMemoryUsage = usage;
+    result->_intervalMaxMemoryUsage = memoryUsage;
   }
 
   return result;
@@ -34,12 +34,12 @@
   objc_exception_throw(v7);
 }
 
-- (void)updateDiagnosticReportSignature:(id)a3
+- (void)updateDiagnosticReportSignature:(id)signature
 {
-  v7 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  signatureCopy = signature;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  [v4 setDouble:@"HMDDiagnosticReporterMemoryEventReportTime" forKey:?];
+  [standardUserDefaults setDouble:@"HMDDiagnosticReporterMemoryEventReportTime" forKey:?];
 
   if ([(HMDMemoryLogEvent *)self currentMemoryUsage]<= 0x5000000)
   {
@@ -51,9 +51,9 @@
     v5 = @"Memory Usage Critical Threshold";
   }
 
-  [v7 setObject:v5 forKeyedSubscript:*MEMORY[0x277D6B1F0]];
+  [signatureCopy setObject:v5 forKeyedSubscript:*MEMORY[0x277D6B1F0]];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld, %lld", -[HMDMemoryLogEvent currentMemoryUsage](self, "currentMemoryUsage"), -[HMDMemoryLogEvent intervalMaxMemoryUsage](self, "intervalMaxMemoryUsage")];
-  [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x277D6B200]];
+  [signatureCopy setObject:v6 forKeyedSubscript:*MEMORY[0x277D6B200]];
 }
 
 @end

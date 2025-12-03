@@ -1,56 +1,56 @@
 @interface OrgApacheLuceneUtilAutomatonCompiledAutomaton
-- (BOOL)isEqual:(id)a3;
-- (id)floorWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneUtilBytesRefBuilder:(id)a4;
-- (id)getTermsEnumWithOrgApacheLuceneIndexTerms:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)floorWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneUtilBytesRefBuilder:(id)builder;
+- (id)getTermsEnumWithOrgApacheLuceneIndexTerms:(id)terms;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonCompiledAutomaton
 
-- (id)getTermsEnumWithOrgApacheLuceneIndexTerms:(id)a3
+- (id)getTermsEnumWithOrgApacheLuceneIndexTerms:(id)terms
 {
-  v5 = [(JavaLangEnum *)self->type_ ordinal];
-  if (v5 > 1)
+  ordinal = [(JavaLangEnum *)self->type_ ordinal];
+  if (ordinal > 1)
   {
-    if (v5 == 2)
+    if (ordinal == 2)
     {
-      if (!a3)
+      if (!terms)
       {
         goto LABEL_21;
       }
 
-      v7 = new_OrgApacheLuceneIndexSingleTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_withOrgApacheLuceneUtilBytesRef_([a3 iterator], self->term_);
+      v7 = new_OrgApacheLuceneIndexSingleTermsEnum_initWithOrgApacheLuceneIndexTermsEnum_withOrgApacheLuceneUtilBytesRef_([terms iterator], self->term_);
 
       return v7;
     }
 
     else
     {
-      if (v5 != 3)
+      if (ordinal != 3)
       {
         goto LABEL_22;
       }
 
-      if (!a3)
+      if (!terms)
       {
         goto LABEL_21;
       }
 
-      return [a3 intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:self withOrgApacheLuceneUtilBytesRef:0];
+      return [terms intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:self withOrgApacheLuceneUtilBytesRef:0];
     }
   }
 
   else
   {
-    if (v5)
+    if (ordinal)
     {
-      if (v5 == 1)
+      if (ordinal == 1)
       {
-        if (a3)
+        if (terms)
         {
 
-          return [a3 iterator];
+          return [terms iterator];
         }
 
 LABEL_21:
@@ -71,7 +71,7 @@ LABEL_22:
   }
 }
 
-- (id)floorWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneUtilBytesRefBuilder:(id)a4
+- (id)floorWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneUtilBytesRefBuilder:(id)builder
 {
   runAutomaton = self->runAutomaton_;
   if (!runAutomaton)
@@ -79,33 +79,33 @@ LABEL_22:
     goto LABEL_43;
   }
 
-  v8 = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)runAutomaton getInitialState];
-  if (!a3)
+  getInitialState = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)runAutomaton getInitialState];
+  if (!ref)
   {
     goto LABEL_43;
   }
 
-  v9 = v8;
-  if (!*(a3 + 5))
+  intValue = getInitialState;
+  if (!*(ref + 5))
   {
-    if (![(OrgApacheLuceneUtilAutomatonRunAutomaton *)self->runAutomaton_ isAcceptWithInt:v8])
+    if (![(OrgApacheLuceneUtilAutomatonRunAutomaton *)self->runAutomaton_ isAcceptWithInt:getInitialState])
     {
       return 0;
     }
 
-    if (a4)
+    if (builder)
     {
-      [a4 clear];
+      [builder clear];
 LABEL_37:
 
-      return [a4 get];
+      return [builder get];
     }
 
     goto LABEL_43;
   }
 
   v10 = new_JavaUtilArrayList_init();
-  v11 = *(a3 + 1);
+  v11 = *(ref + 1);
   if (!v11)
   {
     goto LABEL_43;
@@ -116,16 +116,16 @@ LABEL_37:
   while (1)
   {
     v14 = *(v11 + 8);
-    v15 = v13 + *(a3 + 4);
+    v15 = v13 + *(ref + 4);
     if (v15 < 0 || v15 >= v14)
     {
       IOSArray_throwOutOfBoundsWithMsg(v14, v15);
     }
 
     v16 = *(v11 + 12 + v15);
-    v17 = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)self->runAutomaton_ stepWithInt:v9 withInt:v16];
+    v17 = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)self->runAutomaton_ stepWithInt:intValue withInt:v16];
     v18 = v17;
-    if (v13 == *(a3 + 5) - 1)
+    if (v13 == *(ref + 5) - 1)
     {
       break;
     }
@@ -135,14 +135,14 @@ LABEL_37:
       goto LABEL_21;
     }
 
-    if (a4)
+    if (builder)
     {
-      [a4 growWithInt:(v13 + 1)];
-      [a4 setByteAtWithInt:v13 withByte:v16];
-      [(JavaUtilArrayList *)v12 addWithId:JavaLangInteger_valueOfWithInt_(v9)];
-      v11 = *(a3 + 1);
+      [builder growWithInt:(v13 + 1)];
+      [builder setByteAtWithInt:v13 withByte:v16];
+      [(JavaUtilArrayList *)v12 addWithId:JavaLangInteger_valueOfWithInt_(intValue)];
+      v11 = *(ref + 1);
       v13 = (v13 + 1);
-      v9 = v18;
+      intValue = v18;
       if (v11)
       {
         continue;
@@ -154,14 +154,14 @@ LABEL_37:
 
   if (v17 != -1 && [(OrgApacheLuceneUtilAutomatonRunAutomaton *)self->runAutomaton_ isAcceptWithInt:v17])
   {
-    if (a4)
+    if (builder)
     {
-      [a4 growWithInt:(v13 + 1)];
-      [a4 setByteAtWithInt:v13 withByte:v16];
-      v19 = *(a3 + 5);
-      v20 = a4;
+      [builder growWithInt:(v13 + 1)];
+      [builder setByteAtWithInt:v13 withByte:v16];
+      v19 = *(ref + 5);
+      builderCopy2 = builder;
 LABEL_36:
-      [v20 setLengthWithInt:v19];
+      [builderCopy2 setLengthWithInt:v19];
       goto LABEL_37;
     }
 
@@ -177,12 +177,12 @@ LABEL_21:
 
   while (1)
   {
-    if (![(OrgApacheLuceneUtilAutomatonAutomaton *)automaton getNumTransitionsWithInt:v9])
+    if (![(OrgApacheLuceneUtilAutomatonAutomaton *)automaton getNumTransitionsWithInt:intValue])
     {
 LABEL_34:
-      if (a4)
+      if (builder)
       {
-        v20 = a4;
+        builderCopy2 = builder;
         v19 = v13;
         goto LABEL_36;
       }
@@ -191,7 +191,7 @@ LABEL_43:
       JreThrowNullPointerException();
     }
 
-    [(OrgApacheLuceneUtilAutomatonAutomaton *)self->automaton_ getTransitionWithInt:v9 withInt:0 withOrgApacheLuceneUtilAutomatonTransition:self->transition_];
+    [(OrgApacheLuceneUtilAutomatonAutomaton *)self->automaton_ getTransitionWithInt:intValue withInt:0 withOrgApacheLuceneUtilAutomatonTransition:self->transition_];
     transition = self->transition_;
     if (!transition)
     {
@@ -203,7 +203,7 @@ LABEL_43:
       break;
     }
 
-    if ([(OrgApacheLuceneUtilAutomatonRunAutomaton *)self->runAutomaton_ isAcceptWithInt:v9])
+    if ([(OrgApacheLuceneUtilAutomatonRunAutomaton *)self->runAutomaton_ isAcceptWithInt:intValue])
     {
       goto LABEL_34;
     }
@@ -216,10 +216,10 @@ LABEL_43:
     v23 = [(JavaUtilArrayList *)v12 removeWithInt:[(JavaUtilArrayList *)v12 size]- 1];
     if (v23)
     {
-      v9 = [v23 intValue];
-      v24 = *(a3 + 1);
+      intValue = [v23 intValue];
+      v24 = *(ref + 1);
       v25 = *(v24 + 8);
-      v26 = v13 + *(a3 + 4) - 1;
+      v26 = v13 + *(ref + 4) - 1;
       if (v26 < 0 || v26 >= v25)
       {
         IOSArray_throwOutOfBoundsWithMsg(v25, v26);
@@ -237,7 +237,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  return sub_100101FF4(self, v9, a4, v13, v16);
+  return sub_100101FF4(self, intValue, builder, v13, v16);
 }
 
 - (unint64_t)hash
@@ -273,20 +273,20 @@ LABEL_43:
   return (type - (v6 + v4) + 32 * (v6 + v4));
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_6;
   }
 
-  v5 = [(OrgApacheLuceneUtilAutomatonCompiledAutomaton *)self getClass];
-  if (v5 != [a3 getClass])
+  getClass = [(OrgApacheLuceneUtilAutomatonCompiledAutomaton *)self getClass];
+  if (getClass != [equal getClass])
   {
     goto LABEL_6;
   }
@@ -298,7 +298,7 @@ LABEL_43:
   }
 
   type = self->type_;
-  if (type != *(a3 + 1))
+  if (type != *(equal + 1))
   {
     goto LABEL_6;
   }
@@ -321,7 +321,7 @@ LABEL_43:
       runAutomaton = self->runAutomaton_;
       if (runAutomaton)
       {
-        v7 = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)runAutomaton isEqual:*(a3 + 3)];
+        v7 = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)runAutomaton isEqual:*(equal + 3)];
         if (!v7)
         {
           return v7;
@@ -343,7 +343,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([(OrgApacheLuceneUtilBytesRef *)term isEqual:*(a3 + 2)])
+  if ([(OrgApacheLuceneUtilBytesRef *)term isEqual:*(equal + 2)])
   {
 LABEL_18:
     LOBYTE(v7) = 1;

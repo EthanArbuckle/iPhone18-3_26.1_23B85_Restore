@@ -1,43 +1,43 @@
 @interface UARPUpdaterServiceManager
-- (BOOL)automaticUpdatesDisabledByBootArgForService:(id)a3;
-- (BOOL)automaticUpdatesDisabledForIdentifier:(id)a3;
-- (BOOL)automaticUpdatesDisabledForService:(id)a3;
-- (BOOL)bypassProgressForUARPConsent:(id)a3 sendConsent:(BOOL)a4;
-- (BOOL)consentDisabledForModelNumber:(id)a3;
-- (BOOL)consentDisabledForUARPConsent:(id)a3 sendConsent:(BOOL)a4;
-- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)a3;
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumber:(id)a4 notifyService:(id)a5;
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5;
-- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)a3;
-- (BOOL)handleBsdNotificationReceived:(id)a3 identifier:(id)a4;
-- (BOOL)handleEAEventStreamMessage:(id)a3 updater:(id)a4 identifer:(id)a5;
-- (BOOL)handleIOKitEventStreamMessage:(id)a3 updater:(id)a4 identifier:(id)a5;
-- (BOOL)handleXPCStreamEvent:(id)a3;
-- (BOOL)isXPCEventStreamSupported:(id)a3;
+- (BOOL)automaticUpdatesDisabledByBootArgForService:(id)service;
+- (BOOL)automaticUpdatesDisabledForIdentifier:(id)identifier;
+- (BOOL)automaticUpdatesDisabledForService:(id)service;
+- (BOOL)bypassProgressForUARPConsent:(id)consent sendConsent:(BOOL)sendConsent;
+- (BOOL)consentDisabledForModelNumber:(id)number;
+- (BOOL)consentDisabledForUARPConsent:(id)consent sendConsent:(BOOL)sendConsent;
+- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)d;
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumber:(id)number notifyService:(id)service;
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service;
+- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)d;
+- (BOOL)handleBsdNotificationReceived:(id)received identifier:(id)identifier;
+- (BOOL)handleEAEventStreamMessage:(id)message updater:(id)updater identifer:(id)identifer;
+- (BOOL)handleIOKitEventStreamMessage:(id)message updater:(id)updater identifier:(id)identifier;
+- (BOOL)handleXPCStreamEvent:(id)event;
+- (BOOL)isXPCEventStreamSupported:(id)supported;
 - (BOOL)queryIsBusy;
-- (UARPUpdaterServiceManager)initWithQueue:(id)a3;
-- (id)keyComponents:(id)a3;
-- (id)queryPendingTssRequestsForUpdater:(id)a3;
-- (id)updaterForAccessoryNeedingConsentWithName:(id)a3;
-- (id)updaterForRegistryEntryID:(id)a3;
-- (id)updaterForServiceName:(id)a3;
-- (void)bsdNotificationRulesChangedForUpdaterServiceInstance:(id)a3 notificationNames:(id)a4;
+- (UARPUpdaterServiceManager)initWithQueue:(id)queue;
+- (id)keyComponents:(id)components;
+- (id)queryPendingTssRequestsForUpdater:(id)updater;
+- (id)updaterForAccessoryNeedingConsentWithName:(id)name;
+- (id)updaterForRegistryEntryID:(id)d;
+- (id)updaterForServiceName:(id)name;
+- (void)bsdNotificationRulesChangedForUpdaterServiceInstance:(id)instance notificationNames:(id)names;
 - (void)checkinDASActivities;
-- (void)checkinDASActivityRulesForUpdaterServiceInstance:(id)a3 dasActivities:(id)a4;
-- (void)consentReceived:(id)a3;
-- (void)consentReceivedPostLogoutMode:(id)a3;
-- (void)dasActivityRulesChangedForUpdaterServiceInstance:(id)a3 dasActivities:(id)a4;
+- (void)checkinDASActivityRulesForUpdaterServiceInstance:(id)instance dasActivities:(id)activities;
+- (void)consentReceived:(id)received;
+- (void)consentReceivedPostLogoutMode:(id)mode;
+- (void)dasActivityRulesChangedForUpdaterServiceInstance:(id)instance dasActivities:(id)activities;
 - (void)dealloc;
-- (void)handleDASXPCActivity:(id)a3;
+- (void)handleDASXPCActivity:(id)activity;
 - (void)initServiceNameList;
-- (void)matchingRulesChangedForUpdaterServiceInstance:(id)a3 matchingRules:(id)a4;
+- (void)matchingRulesChangedForUpdaterServiceInstance:(id)instance matchingRules:(id)rules;
 - (void)queryLaunchRules;
-- (void)tssResponse:(id)a3 updaterName:(id)a4;
+- (void)tssResponse:(id)response updaterName:(id)name;
 @end
 
 @implementation UARPUpdaterServiceManager
 
-- (UARPUpdaterServiceManager)initWithQueue:(id)a3
+- (UARPUpdaterServiceManager)initWithQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = UARPUpdaterServiceManager;
@@ -46,7 +46,7 @@
   {
     v4->_log = os_log_create("com.apple.accessoryupdater.uarp", "updaterManager");
     [(UARPUpdaterServiceManager *)v4 initServiceNameList];
-    v4->_queue = a3;
+    v4->_queue = queue;
     v4->_busyServiceNameList = objc_alloc_init(NSMutableSet);
   }
 
@@ -57,24 +57,24 @@
 {
   v3 = +[NSMutableArray array];
   v4 = [+[NSFileManager defaultManager](NSFileManager enumeratorAtURL:"enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:" includingPropertiesForKeys:[NSURL fileURLWithPath:1 isDirectory:?], 0, 1, 0];
-  v5 = [(NSDirectoryEnumerator *)v4 nextObject];
-  if (v5)
+  nextObject = [(NSDirectoryEnumerator *)v4 nextObject];
+  if (nextObject)
   {
-    v7 = v5;
+    nextObject2 = nextObject;
     *&v6 = 138412290;
     v19 = v6;
     do
     {
-      v8 = [NSBundle bundleWithURL:v7, v19];
+      v8 = [NSBundle bundleWithURL:nextObject2, v19];
       if (v8)
       {
         v9 = v8;
         if ([-[NSDictionary objectForKeyedSubscript:](-[NSBundle infoDictionary](v8 "infoDictionary")])
         {
-          v10 = [(NSBundle *)v9 bundleIdentifier];
-          if (v10)
+          bundleIdentifier = [(NSBundle *)v9 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            v11 = v10;
+            v11 = bundleIdentifier;
             log = self->_log;
             if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
             {
@@ -91,9 +91,9 @@
               v16 = self->_log;
               if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
               {
-                v17 = [(UARPUpdaterServiceInstance *)v13 serviceName];
+                serviceName = [(UARPUpdaterServiceInstance *)v13 serviceName];
                 *buf = v19;
-                v21 = v17;
+                v21 = serviceName;
                 _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "UARP updater service enabled %@", buf, 0xCu);
               }
 
@@ -109,15 +109,15 @@
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = v19;
-          v21 = v7;
+          v21 = nextObject2;
           _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Unable to access XPC bundle at %@", buf, 0xCu);
         }
       }
 
-      v7 = [(NSDirectoryEnumerator *)v4 nextObject];
+      nextObject2 = [(NSDirectoryEnumerator *)v4 nextObject];
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
   self->_updaterList = [[NSArray alloc] initWithArray:v3];
@@ -201,59 +201,59 @@
   }
 }
 
-- (void)matchingRulesChangedForUpdaterServiceInstance:(id)a3 matchingRules:(id)a4
+- (void)matchingRulesChangedForUpdaterServiceInstance:(id)instance matchingRules:(id)rules
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001679C;
   block[3] = &unk_100081800;
-  block[4] = a4;
+  block[4] = rules;
   block[5] = self;
-  block[6] = a3;
+  block[6] = instance;
   dispatch_sync(queue, block);
 }
 
-- (void)bsdNotificationRulesChangedForUpdaterServiceInstance:(id)a3 notificationNames:(id)a4
+- (void)bsdNotificationRulesChangedForUpdaterServiceInstance:(id)instance notificationNames:(id)names
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016A98;
   block[3] = &unk_100081800;
-  block[4] = a4;
+  block[4] = names;
   block[5] = self;
-  block[6] = a3;
+  block[6] = instance;
   dispatch_sync(queue, block);
 }
 
-- (void)dasActivityRulesChangedForUpdaterServiceInstance:(id)a3 dasActivities:(id)a4
+- (void)dasActivityRulesChangedForUpdaterServiceInstance:(id)instance dasActivities:(id)activities
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016CDC;
   block[3] = &unk_100081800;
-  block[4] = a4;
+  block[4] = activities;
   block[5] = self;
-  block[6] = a3;
+  block[6] = instance;
   dispatch_sync(queue, block);
 }
 
-- (void)checkinDASActivityRulesForUpdaterServiceInstance:(id)a3 dasActivities:(id)a4
+- (void)checkinDASActivityRulesForUpdaterServiceInstance:(id)instance dasActivities:(id)activities
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016F94;
   block[3] = &unk_100081800;
-  block[4] = a4;
+  block[4] = activities;
   block[5] = self;
-  block[6] = a3;
+  block[6] = instance;
   dispatch_sync(queue, block);
 }
 
-- (id)updaterForServiceName:(id)a3
+- (id)updaterForServiceName:(id)name
 {
   v11 = 0u;
   v12 = 0u;
@@ -296,7 +296,7 @@ LABEL_3:
   }
 }
 
-- (id)updaterForAccessoryNeedingConsentWithName:(id)a3
+- (id)updaterForAccessoryNeedingConsentWithName:(id)name
 {
   v11 = 0u;
   v12 = 0u;
@@ -339,13 +339,13 @@ LABEL_3:
   }
 }
 
-- (BOOL)bypassProgressForUARPConsent:(id)a3 sendConsent:(BOOL)a4
+- (BOOL)bypassProgressForUARPConsent:(id)consent sendConsent:(BOOL)sendConsent
 {
-  v4 = a4;
-  v7 = -[UARPUpdaterServiceManager updaterForAccessoryNeedingConsentWithName:](self, "updaterForAccessoryNeedingConsentWithName:", [a3 accessoryName]);
+  sendConsentCopy = sendConsent;
+  v7 = -[UARPUpdaterServiceManager updaterForAccessoryNeedingConsentWithName:](self, "updaterForAccessoryNeedingConsentWithName:", [consent accessoryName]);
   if ([v7 consentDisabledForService])
   {
-    if (!v4)
+    if (!sendConsentCopy)
     {
       goto LABEL_7;
     }
@@ -353,11 +353,11 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  v8 = -[UARPUpdaterServiceManager consentDisabledForModelNumber:](self, "consentDisabledForModelNumber:", [a3 appleModelNumber]);
-  if (v8 && v4)
+  v8 = -[UARPUpdaterServiceManager consentDisabledForModelNumber:](self, "consentDisabledForModelNumber:", [consent appleModelNumber]);
+  if (v8 && sendConsentCopy)
   {
 LABEL_6:
-    [v7 consentReceivedPostLogoutMode:a3];
+    [v7 consentReceivedPostLogoutMode:consent];
 LABEL_7:
     LOBYTE(v8) = 1;
   }
@@ -365,23 +365,23 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)consentDisabledForUARPConsent:(id)a3 sendConsent:(BOOL)a4
+- (BOOL)consentDisabledForUARPConsent:(id)consent sendConsent:(BOOL)sendConsent
 {
-  v4 = a4;
-  v7 = -[UARPUpdaterServiceManager updaterForAccessoryNeedingConsentWithName:](self, "updaterForAccessoryNeedingConsentWithName:", [a3 accessoryName]);
+  sendConsentCopy = sendConsent;
+  v7 = -[UARPUpdaterServiceManager updaterForAccessoryNeedingConsentWithName:](self, "updaterForAccessoryNeedingConsentWithName:", [consent accessoryName]);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = [v7 serviceName];
+    serviceName = [v7 serviceName];
     v13 = 2114;
-    v14 = [a3 accessoryName];
+    accessoryName = [consent accessoryName];
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Check if consent is diabled for service %{public}@ accessory %{public}@", &v11, 0x16u);
   }
 
   if ([v7 consentDisabledForService])
   {
-    if (!v4)
+    if (!sendConsentCopy)
     {
       goto LABEL_9;
     }
@@ -389,11 +389,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = -[UARPUpdaterServiceManager consentDisabledForModelNumber:](self, "consentDisabledForModelNumber:", [a3 appleModelNumber]);
-  if (v9 && v4)
+  v9 = -[UARPUpdaterServiceManager consentDisabledForModelNumber:](self, "consentDisabledForModelNumber:", [consent appleModelNumber]);
+  if (v9 && sendConsentCopy)
   {
 LABEL_8:
-    [v7 consentReceived:a3];
+    [v7 consentReceived:consent];
 LABEL_9:
     LOBYTE(v9) = 1;
   }
@@ -401,7 +401,7 @@ LABEL_9:
   return v9;
 }
 
-- (id)updaterForRegistryEntryID:(id)a3
+- (id)updaterForRegistryEntryID:(id)d
 {
   v11 = 0u;
   v12 = 0u;
@@ -426,7 +426,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 isTrackingIONotificationPortForRegistryEntryID:a3])
+    if ([v9 isTrackingIONotificationPortForRegistryEntryID:d])
     {
       return v9;
     }
@@ -444,26 +444,26 @@ LABEL_3:
   }
 }
 
-- (id)keyComponents:(id)a3
+- (id)keyComponents:(id)components
 {
   v4 = [NSCharacterSet characterSetWithCharactersInString:@", "];
 
-  return [a3 componentsSeparatedByCharactersInSet:v4];
+  return [components componentsSeparatedByCharactersInSet:v4];
 }
 
-- (BOOL)isXPCEventStreamSupported:(id)a3
+- (BOOL)isXPCEventStreamSupported:(id)supported
 {
-  if ([a3 isEqualToString:@"com.apple.iokit.matching"])
+  if ([supported isEqualToString:@"com.apple.iokit.matching"])
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"com.apple.ExternalAccessory.matching"];
+  return [supported isEqualToString:@"com.apple.ExternalAccessory.matching"];
 }
 
-- (BOOL)handleXPCStreamEvent:(id)a3
+- (BOOL)handleXPCStreamEvent:(id)event
 {
-  v5 = [(UARPUpdaterServiceManager *)self keyComponents:[NSString stringWithUTF8String:xpc_dictionary_get_string(a3, _xpc_event_key_name)]];
+  v5 = [(UARPUpdaterServiceManager *)self keyComponents:[NSString stringWithUTF8String:xpc_dictionary_get_string(event, _xpc_event_key_name)]];
   if ([v5 count] != 3)
   {
     goto LABEL_10;
@@ -488,7 +488,7 @@ LABEL_3:
   v10 = [v5 objectAtIndexedSubscript:2];
   if ([v9 isEqualToString:@"com.apple.iokit.matching"])
   {
-    if ([(UARPUpdaterServiceManager *)self handleIOKitEventStreamMessage:a3 updater:v8 identifier:v10])
+    if ([(UARPUpdaterServiceManager *)self handleIOKitEventStreamMessage:event updater:v8 identifier:v10])
     {
       goto LABEL_14;
     }
@@ -498,7 +498,7 @@ LABEL_3:
 
   if ([v9 isEqualToString:@"com.apple.ExternalAccessory.matching"])
   {
-    if ([(UARPUpdaterServiceManager *)self handleEAEventStreamMessage:a3 updater:v8 identifer:v10])
+    if ([(UARPUpdaterServiceManager *)self handleEAEventStreamMessage:event updater:v8 identifer:v10])
     {
 LABEL_14:
       [(NSMutableSet *)self->_busyServiceNameList addObject:v6];
@@ -524,16 +524,16 @@ LABEL_10:
   return v11;
 }
 
-- (void)handleDASXPCActivity:(id)a3
+- (void)handleDASXPCActivity:(id)activity
 {
-  v5 = xpc_activity_copy_criteria(a3);
+  v5 = xpc_activity_copy_criteria(activity);
   if (v5)
   {
     v6 = v5;
     v7 = _CFXPCCreateCFObjectFromXPCObject();
     xpc_release(v6);
     v8 = [v7 objectForKeyedSubscript:{+[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "name")}];
-    state = xpc_activity_get_state(a3);
+    state = xpc_activity_get_state(activity);
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
@@ -558,7 +558,7 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "RUN Handler called for activity: %@, criteria: %@", &v18, 0x16u);
       }
 
-      if (!xpc_activity_set_state(a3, 4) && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
+      if (!xpc_activity_set_state(activity, 4) && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
         sub_10004B32C();
       }
@@ -577,7 +577,7 @@ LABEL_10:
           [v15 dasActivityReceived:v17];
           [(NSMutableSet *)self->_busyServiceNameList addObject:v13];
 
-          if (!xpc_activity_set_state(a3, 5) && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
+          if (!xpc_activity_set_state(activity, 5) && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
           {
             sub_10004B40C();
           }
@@ -597,27 +597,27 @@ LABEL_10:
   }
 }
 
-- (BOOL)automaticUpdatesDisabledForIdentifier:(id)a3
+- (BOOL)automaticUpdatesDisabledForIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [identifier componentsSeparatedByString:@"."];
   v4 = CFPreferencesCopyAppValue(@"disabledProductIdentifiers", @"com.apple.mobileaccessoryupdater");
   LOBYTE(v3) = [objc_msgSend(v4 objectForKeyedSubscript:{objc_msgSend(v3, "objectAtIndex:", 0)), "BOOLValue"}];
 
   return v3;
 }
 
-- (BOOL)consentDisabledForModelNumber:(id)a3
+- (BOOL)consentDisabledForModelNumber:(id)number
 {
   v4 = CFPreferencesCopyAppValue(@"disabledConsentProductIdentifiers", @"com.apple.mobileaccessoryupdater");
-  LOBYTE(a3) = [objc_msgSend(v4 objectForKeyedSubscript:{a3), "BOOLValue"}];
+  LOBYTE(number) = [objc_msgSend(v4 objectForKeyedSubscript:{number), "BOOLValue"}];
 
-  return a3;
+  return number;
 }
 
-- (BOOL)automaticUpdatesDisabledForService:(id)a3
+- (BOOL)automaticUpdatesDisabledForService:(id)service
 {
   v5 = CFPreferencesCopyAppValue(@"disabledUARPServices", @"com.apple.mobileaccessoryupdater");
-  v6 = [objc_msgSend(v5 objectForKeyedSubscript:{a3), "BOOLValue"}];
+  v6 = [objc_msgSend(v5 objectForKeyedSubscript:{service), "BOOLValue"}];
 
   if (v6)
   {
@@ -625,7 +625,7 @@ LABEL_10:
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = a3;
+      serviceCopy = service;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "UARP updater service disabled %@", &v9, 0xCu);
     }
   }
@@ -633,9 +633,9 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)automaticUpdatesDisabledByBootArgForService:(id)a3
+- (BOOL)automaticUpdatesDisabledByBootArgForService:(id)service
 {
-  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"disable_%@", [objc_msgSend(objc_msgSend(a3 componentsSeparatedByString:{@".", "lastObject"), "lowercaseString"}]);
+  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"disable_%@", [objc_msgSend(objc_msgSend(service componentsSeparatedByString:{@".", "lastObject"), "lowercaseString"}]);
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_10004B47C();
@@ -646,53 +646,53 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)handleIOKitEventStreamMessage:(id)a3 updater:(id)a4 identifier:(id)a5
+- (BOOL)handleIOKitEventStreamMessage:(id)message updater:(id)updater identifier:(id)identifier
 {
-  v9 = [(UARPUpdaterServiceManager *)self automaticUpdatesDisabledForIdentifier:a5];
+  v9 = [(UARPUpdaterServiceManager *)self automaticUpdatesDisabledForIdentifier:identifier];
   if (v9)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = a5;
+      identifierCopy = identifier;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Ignoring IOKit event because automatic updates are disabled for %@", &v13, 0xCu);
     }
   }
 
   else
   {
-    v11 = [[UARPServiceUpdaterMatchedIOKitRule alloc] initWithIdentifier:a5 registryEntryID:xpc_dictionary_get_uint64(a3, "IOMatchLaunchServiceID")];
-    [a4 ioKitRuleMatched:v11];
+    v11 = [[UARPServiceUpdaterMatchedIOKitRule alloc] initWithIdentifier:identifier registryEntryID:xpc_dictionary_get_uint64(message, "IOMatchLaunchServiceID")];
+    [updater ioKitRuleMatched:v11];
   }
 
   return v9 ^ 1;
 }
 
-- (BOOL)handleBsdNotificationReceived:(id)a3 identifier:(id)a4
+- (BOOL)handleBsdNotificationReceived:(id)received identifier:(id)identifier
 {
-  [a3 disabledProductIdentifiers:{CFPreferencesCopyAppValue(@"disabledProductIdentifiers", @"com.apple.mobileaccessoryupdater"}];
-  [a3 bsdNotificationReceived:a4];
+  [received disabledProductIdentifiers:{CFPreferencesCopyAppValue(@"disabledProductIdentifiers", @"com.apple.mobileaccessoryupdater"}];
+  [received bsdNotificationReceived:identifier];
   return 1;
 }
 
-- (BOOL)handleEAEventStreamMessage:(id)a3 updater:(id)a4 identifer:(id)a5
+- (BOOL)handleEAEventStreamMessage:(id)message updater:(id)updater identifer:(id)identifer
 {
-  v9 = [(UARPUpdaterServiceManager *)self automaticUpdatesDisabledForIdentifier:a5];
+  v9 = [(UARPUpdaterServiceManager *)self automaticUpdatesDisabledForIdentifier:identifer];
   if (v9)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v15 = 138412290;
-      v16 = a5;
+      identiferCopy = identifer;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Ignoring EA event because automatic updates are disabled for %@", &v15, 0xCu);
     }
   }
 
   else
   {
-    value = xpc_dictionary_get_value(a3, "EAMatchingSerialNumber");
+    value = xpc_dictionary_get_value(message, "EAMatchingSerialNumber");
     v12 = value;
     if (value)
     {
@@ -707,25 +707,25 @@ LABEL_10:
       }
     }
 
-    v13 = [[UARPServiceUpdaterMatchedEARule alloc] initWithEAIdentifier:a5 accessorySerialNumber:v12];
-    [a4 eaRuleMatched:v13];
+    v13 = [[UARPServiceUpdaterMatchedEARule alloc] initWithEAIdentifier:identifer accessorySerialNumber:v12];
+    [updater eaRuleMatched:v13];
   }
 
   return v9 ^ 1;
 }
 
-- (void)consentReceived:(id)a3
+- (void)consentReceived:(id)received
 {
-  v4 = -[UARPUpdaterServiceManager updaterForAccessoryNeedingConsentWithName:](self, "updaterForAccessoryNeedingConsentWithName:", [a3 accessoryName]);
+  v4 = -[UARPUpdaterServiceManager updaterForAccessoryNeedingConsentWithName:](self, "updaterForAccessoryNeedingConsentWithName:", [received accessoryName]);
 
-  [v4 consentReceived:a3];
+  [v4 consentReceived:received];
 }
 
-- (void)consentReceivedPostLogoutMode:(id)a3
+- (void)consentReceivedPostLogoutMode:(id)mode
 {
-  v4 = -[UARPUpdaterServiceManager updaterForAccessoryNeedingConsentWithName:](self, "updaterForAccessoryNeedingConsentWithName:", [a3 accessoryName]);
+  v4 = -[UARPUpdaterServiceManager updaterForAccessoryNeedingConsentWithName:](self, "updaterForAccessoryNeedingConsentWithName:", [mode accessoryName]);
 
-  [v4 consentReceivedPostLogoutMode:a3];
+  [v4 consentReceivedPostLogoutMode:mode];
 }
 
 - (BOOL)queryIsBusy
@@ -769,12 +769,12 @@ LABEL_10:
         else
         {
           v25 = v6;
-          v9 = [v8 findAndReleaseAllIONotificationPorts];
+          findAndReleaseAllIONotificationPorts = [v8 findAndReleaseAllIONotificationPorts];
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v10 = [v9 countByEnumeratingWithState:&v26 objects:v38 count:16];
+          v10 = [findAndReleaseAllIONotificationPorts countByEnumeratingWithState:&v26 objects:v38 count:16];
           if (v10)
           {
             v11 = v10;
@@ -785,7 +785,7 @@ LABEL_10:
               {
                 if (*v27 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(findAndReleaseAllIONotificationPorts);
                 }
 
                 v14 = *(*(&v26 + 1) + 8 * i);
@@ -802,7 +802,7 @@ LABEL_10:
                 IONotificationPortDestroy([v14 pointerValue]);
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v26 objects:v38 count:16];
+              v11 = [findAndReleaseAllIONotificationPorts countByEnumeratingWithState:&v26 objects:v38 count:16];
             }
 
             while (v11);
@@ -844,10 +844,10 @@ LABEL_10:
   return v22;
 }
 
-- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)a3
+- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)d
 {
-  v5 = [a3 unsignedLongLongValue];
-  v6 = IORegistryEntryIDMatching(v5);
+  unsignedLongLongValue = [d unsignedLongLongValue];
+  v6 = IORegistryEntryIDMatching(unsignedLongLongValue);
   if (!v6)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -870,8 +870,8 @@ LABEL_10:
   }
 
   v8 = MatchingService;
-  v48 = v5;
-  v49 = a3;
+  v48 = unsignedLongLongValue;
+  dCopy = d;
   entryID = 0;
   memset(name, 0, sizeof(name));
   memset(location, 0, sizeof(location));
@@ -917,7 +917,7 @@ LABEL_10:
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "%s: service: %d (%s%s%s, 0x%llx), builtIn: %d", parent, 0x40u);
   }
 
-  v50 = self;
+  selfCopy = self;
   IOObjectRetain(v8);
   object = v8;
   while (!IORegistryEntryInPlane(v8, "IOPort"))
@@ -1228,7 +1228,7 @@ LABEL_95:
 
     IOObjectRelease(v42);
 LABEL_98:
-    if (os_log_type_enabled(v50[4], OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(selfCopy[4], OS_LOG_TYPE_ERROR))
     {
       sub_10004BA68();
     }
@@ -1287,7 +1287,7 @@ LABEL_81:
   IOObjectRelease(v8);
   if (!v33 || !v34)
   {
-    if (os_log_type_enabled(v50[4], OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(selfCopy[4], OS_LOG_TYPE_ERROR))
     {
       sub_10004B888();
     }
@@ -1309,7 +1309,7 @@ LABEL_81:
   [(__CFDictionary *)v35 setObject:[NSDictionary forKeyedSubscript:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v57 forKeys:v56 count:5], @"IOPropertyMatch"];
   *location = 0;
   v36 = IONotificationPortCreate(kIOMasterPortDefault);
-  IONotificationPortSetDispatchQueue(v36, v50[3]);
+  IONotificationPortSetDispatchQueue(v36, selfCopy[3]);
   if (v35)
   {
     v37 = CFRetain(v35);
@@ -1324,7 +1324,7 @@ LABEL_81:
   v38 = v43 == 0;
   if (v43)
   {
-    if (os_log_type_enabled(v50[4], OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(selfCopy[4], OS_LOG_TYPE_ERROR))
     {
       sub_10004B790();
     }
@@ -1334,12 +1334,12 @@ LABEL_81:
 
   else
   {
-    v44 = [(dispatch_queue_t *)v50 updaterForRegistryEntryID:v49];
-    v45 = v50[4];
+    v44 = [(dispatch_queue_t *)selfCopy updaterForRegistryEntryID:dCopy];
+    v45 = selfCopy[4];
     if (v44)
     {
       v46 = v44;
-      if (os_log_type_enabled(v50[4], OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(selfCopy[4], OS_LOG_TYPE_INFO))
       {
         *name = 136315394;
         *&name[4] = "[UARPUpdaterServiceManager enableTRMSystemAuthenticationForRegistryEntryID:]";
@@ -1348,15 +1348,15 @@ LABEL_81:
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "%s: Enabling TRM System Authentication Mode for registryEntryID: 0x%llx", name, 0x16u);
       }
 
-      [v46 storeIONotificationPort:+[NSValue valueWithPointer:](NSValue forRegistryEntryID:{"valueWithPointer:", v36, v48), v49}];
+      [v46 storeIONotificationPort:+[NSValue valueWithPointer:](NSValue forRegistryEntryID:{"valueWithPointer:", v36, v48), dCopy}];
     }
 
-    else if (os_log_type_enabled(v50[4], OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(selfCopy[4], OS_LOG_TYPE_ERROR))
     {
       sub_10004B80C();
     }
 
-    v47 = v50[3];
+    v47 = selfCopy[3];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001957C;
@@ -1368,7 +1368,7 @@ LABEL_81:
   return v38;
 }
 
-- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)a3
+- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)d
 {
   v5 = [(UARPUpdaterServiceManager *)self updaterForRegistryEntryID:?];
   if (!v5)
@@ -1379,12 +1379,12 @@ LABEL_81:
       return v10;
     }
 
-    sub_10004BCB4(a3);
+    sub_10004BCB4(d);
     goto LABEL_11;
   }
 
   v6 = v5;
-  v7 = [v5 findAndReleaseIONotificationPortForRegistryEntryID:a3];
+  v7 = [v5 findAndReleaseIONotificationPortForRegistryEntryID:d];
   log = self->_log;
   if (!v7)
   {
@@ -1394,7 +1394,7 @@ LABEL_81:
       return v10;
     }
 
-    sub_10004BC30(a3);
+    sub_10004BC30(d);
 LABEL_11:
     LOBYTE(v10) = 0;
     return v10;
@@ -1406,9 +1406,9 @@ LABEL_11:
     v12 = 136315650;
     v13 = "[UARPUpdaterServiceManager disableTRMSystemAuthenticationForRegistryEntryID:]";
     v14 = 2048;
-    v15 = [a3 unsignedLongLongValue];
+    unsignedLongLongValue = [d unsignedLongLongValue];
     v16 = 2112;
-    v17 = [v6 serviceName];
+    serviceName = [v6 serviceName];
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: Releasing registered IONotificationPort for registryEntryID: 0x%llx / %@", &v12, 0x20u);
   }
 
@@ -1418,9 +1418,9 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumber:(id)a4 notifyService:(id)a5
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumber:(id)number notifyService:(id)service
 {
-  v9 = [UARPSupportedAccessory findByAppleModelNumber:a4];
+  v9 = [UARPSupportedAccessory findByAppleModelNumber:number];
   if (!v9 || (v10 = v9, ![v9 updaterName]))
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -1442,26 +1442,26 @@ LABEL_11:
     return 0;
   }
 
-  return [v11 dynamicAssetSolicitation:a3 modelNumber:a4 notifyService:a5];
+  return [v11 dynamicAssetSolicitation:solicitation modelNumber:number notifyService:service];
 }
 
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service
 {
-  v9 = [a4 count];
+  v9 = [numbers count];
   if (v9)
   {
-    v22 = a3;
-    v23 = a5;
+    solicitationCopy = solicitation;
+    serviceCopy = service;
     v10 = +[NSMutableArray array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [a4 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v11 = [numbers countByEnumeratingWithState:&v24 objects:v34 count:16];
     if (v11)
     {
       v12 = v11;
-      v13 = 0;
+      updaterName = 0;
       v14 = *v25;
       do
       {
@@ -1469,18 +1469,18 @@ LABEL_11:
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(numbers);
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = [UARPSupportedAccessory findByAppleModelNumber:v16];
           v18 = v17;
-          if (!v13)
+          if (!updaterName)
           {
-            v13 = [v17 updaterName];
+            updaterName = [v17 updaterName];
           }
 
-          if ([v18 updaterName] && (objc_msgSend(v13, "isEqualToString:", objc_msgSend(v18, "updaterName")) & 1) != 0)
+          if ([v18 updaterName] && (objc_msgSend(updaterName, "isEqualToString:", objc_msgSend(v18, "updaterName")) & 1) != 0)
           {
             [v10 addObject:v16];
           }
@@ -1495,13 +1495,13 @@ LABEL_11:
               v30 = 2112;
               v31 = v18;
               v32 = 2112;
-              v33 = v13;
+              v33 = updaterName;
               _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "%s: Discarding accessory %@ that does not belong to selected service %@", buf, 0x20u);
             }
           }
         }
 
-        v12 = [a4 countByEnumeratingWithState:&v24 objects:v34 count:16];
+        v12 = [numbers countByEnumeratingWithState:&v24 objects:v34 count:16];
       }
 
       while (v12);
@@ -1509,13 +1509,13 @@ LABEL_11:
 
     else
     {
-      v13 = 0;
+      updaterName = 0;
     }
 
-    v20 = [(UARPUpdaterServiceManager *)self updaterForServiceName:v13];
+    v20 = [(UARPUpdaterServiceManager *)self updaterForServiceName:updaterName];
     if (v20)
     {
-      LOBYTE(v9) = [v20 dynamicAssetSolicitation:v22 modelNumbers:+[NSArray arrayWithArray:](NSArray notifyService:{"arrayWithArray:", v10), v23}];
+      LOBYTE(v9) = [v20 dynamicAssetSolicitation:solicitationCopy modelNumbers:+[NSArray arrayWithArray:](NSArray notifyService:{"arrayWithArray:", v10), serviceCopy}];
     }
 
     else
@@ -1532,7 +1532,7 @@ LABEL_11:
   return v9;
 }
 
-- (id)queryPendingTssRequestsForUpdater:(id)a3
+- (id)queryPendingTssRequestsForUpdater:(id)updater
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -1540,14 +1540,14 @@ LABEL_11:
     v9 = 136315394;
     v10 = "[UARPUpdaterServiceManager queryPendingTssRequestsForUpdater:]";
     v11 = 2112;
-    v12 = a3;
+    updaterCopy = updater;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: For service %@", &v9, 0x16u);
   }
 
-  v6 = [(UARPUpdaterServiceManager *)self updaterForServiceName:a3];
+  v6 = [(UARPUpdaterServiceManager *)self updaterForServiceName:updater];
   if (v6)
   {
-    v7 = [v6 queryPendingTssRequests];
+    queryPendingTssRequests = [v6 queryPendingTssRequests];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_10004BEB4();
@@ -1564,10 +1564,10 @@ LABEL_11:
     return &__NSArray0__struct;
   }
 
-  return v7;
+  return queryPendingTssRequests;
 }
 
-- (void)tssResponse:(id)a3 updaterName:(id)a4
+- (void)tssResponse:(id)response updaterName:(id)name
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -1575,14 +1575,14 @@ LABEL_11:
     v9 = 136315394;
     v10 = "[UARPUpdaterServiceManager tssResponse:updaterName:]";
     v11 = 2112;
-    v12 = a4;
+    nameCopy = name;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: For service %@", &v9, 0x16u);
   }
 
-  v8 = [(UARPUpdaterServiceManager *)self updaterForServiceName:a4];
+  v8 = [(UARPUpdaterServiceManager *)self updaterForServiceName:name];
   if (v8)
   {
-    [v8 tssResponse:a3];
+    [v8 tssResponse:response];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))

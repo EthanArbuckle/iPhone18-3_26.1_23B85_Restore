@@ -1,28 +1,28 @@
 @interface BMMediaUsageEvent
-- (BOOL)isValidWithContext:(id)a3 error:(id *)a4;
+- (BOOL)isValidWithContext:(id)context error:(id *)error;
 - (NSString)description;
 @end
 
 @implementation BMMediaUsageEvent
 
-- (BOOL)isValidWithContext:(id)a3 error:(id *)a4
+- (BOOL)isValidWithContext:(id)context error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = BMMediaUsageEvent;
-  return [(BMEventBase *)&v5 isValidWithContext:a3 error:a4];
+  return [(BMEventBase *)&v5 isValidWithContext:context error:error];
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(BMMediaUsageEvent *)self dateInterval];
+  dateInterval = [(BMMediaUsageEvent *)self dateInterval];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaUsageEvent isStarting](self, "isStarting")}];
-  v7 = [(BMMediaUsageEvent *)self bundleID];
+  bundleID = [(BMMediaUsageEvent *)self bundleID];
   v8 = [(BMMediaUsageEvent *)self URL];
-  v9 = [(BMMediaUsageEvent *)self mediaURL];
+  mediaURL = [(BMMediaUsageEvent *)self mediaURL];
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaUsageEvent isUsageTrusted](self, "isUsageTrusted")}];
-  v11 = [v3 stringWithFormat:@"<%@ %p> interval: %@, launch: %@, bundleID: %@, URL: %@, mediaURL: %@ isUsageTrusted: %@", v4, self, v5, v6, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"<%@ %p> interval: %@, launch: %@, bundleID: %@, URL: %@, mediaURL: %@ isUsageTrusted: %@", v4, self, dateInterval, v6, bundleID, v8, mediaURL, v10];
 
   return v11;
 }

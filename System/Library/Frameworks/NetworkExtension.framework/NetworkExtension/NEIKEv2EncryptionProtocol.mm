@@ -1,9 +1,9 @@
 @interface NEIKEv2EncryptionProtocol
-- (BOOL)isEqual:(id)a3;
-- (NEIKEv2EncryptionProtocol)initWithEncryptionType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NEIKEv2EncryptionProtocol)initWithEncryptionType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initWithEncryptionWireType:(__int16)a3 keyLength:;
+- (id)initWithEncryptionWireType:(__int16)type keyLength:;
 - (uint64_t)blockLength;
 - (uint64_t)ivLength;
 - (uint64_t)keyMaterialLength;
@@ -12,16 +12,16 @@
 
 @implementation NEIKEv2EncryptionProtocol
 
-- (NEIKEv2EncryptionProtocol)initWithEncryptionType:(unint64_t)a3
+- (NEIKEv2EncryptionProtocol)initWithEncryptionType:(unint64_t)type
 {
-  v3 = self;
+  selfCopy = self;
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 - 1 >= 9)
+  if (type - 1 >= 9)
   {
     v6 = ne_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      String = NEIKEv2EncryptionTypeCreateString(a3);
+      String = NEIKEv2EncryptionTypeCreateString(type);
       v10 = 138412290;
       v11 = String;
       _os_log_fault_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_FAULT, "Invalid NEIKEv2EncryptionType %@", &v10, 0xCu);
@@ -32,15 +32,15 @@
 
   else
   {
-    v3 = [(NEIKEv2EncryptionProtocol *)self initWithEncryptionWireType:word_1BAA4E7B4[a3 - 1] keyLength:?];
-    v4 = v3;
+    selfCopy = [(NEIKEv2EncryptionProtocol *)self initWithEncryptionWireType:word_1BAA4E7B4[type - 1] keyLength:?];
+    v4 = selfCopy;
   }
 
   v7 = *MEMORY[0x1E69E9840];
   return v4;
 }
 
-- (id)initWithEncryptionWireType:(__int16)a3 keyLength:
+- (id)initWithEncryptionWireType:(__int16)type keyLength:
 {
   if (result)
   {
@@ -50,7 +50,7 @@
     if (result)
     {
       *(result + 2) = a2;
-      *(result + 4) = a3;
+      *(result + 4) = type;
     }
 
     else
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEIKEv2EncryptionProtocol allocWithZone:a3];
+  v4 = [NEIKEv2EncryptionProtocol allocWithZone:zone];
   if (self)
   {
     wireType = self->_wireType;
@@ -97,12 +97,12 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       if (self->_wireType == *(v5 + 2))

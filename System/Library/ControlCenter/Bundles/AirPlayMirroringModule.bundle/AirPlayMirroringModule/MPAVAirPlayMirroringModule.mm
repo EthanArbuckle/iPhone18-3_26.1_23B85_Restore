@@ -1,10 +1,10 @@
 @interface MPAVAirPlayMirroringModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation MPAVAirPlayMirroringModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   mirroringViewController = self->_mirroringViewController;
   if (!mirroringViewController)

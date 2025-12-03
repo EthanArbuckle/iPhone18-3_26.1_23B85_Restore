@@ -1,8 +1,8 @@
 @interface HMDLightProfileNaturalLightingActionModel
 + (id)properties;
 - (BOOL)isNaturalLightingEnabled;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)dependentUUIDs;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __55__HMDLightProfileNaturalLightingActionModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_112595 != -1)
   {
     dispatch_once(&properties_onceToken_112595, block);
@@ -62,32 +62,32 @@ void __55__HMDLightProfileNaturalLightingActionModel_properties__block_invoke(ui
 {
   v14.receiver = self;
   v14.super_class = HMDLightProfileNaturalLightingActionModel;
-  v3 = [(HMDBackingStoreModelObject *)&v14 dependentUUIDs];
-  v4 = [v3 mutableCopy];
+  dependentUUIDs = [(HMDBackingStoreModelObject *)&v14 dependentUUIDs];
+  v4 = [dependentUUIDs mutableCopy];
 
-  v5 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v5)
+  if (parentUUID)
   {
-    v6 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v4 addObject:v6];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v4 addObject:parentUUID2];
   }
 
-  v7 = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
+  accessoryUUID = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
 
-  if (v7)
+  if (accessoryUUID)
   {
-    v8 = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
-    [v4 addObject:v8];
+    accessoryUUID2 = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
+    [v4 addObject:accessoryUUID2];
   }
 
-  v9 = [(HMDLightProfileNaturalLightingActionModel *)self serviceUUIDs];
+  serviceUUIDs = [(HMDLightProfileNaturalLightingActionModel *)self serviceUUIDs];
 
-  if (v9)
+  if (serviceUUIDs)
   {
-    v10 = [(HMDLightProfileNaturalLightingActionModel *)self serviceUUIDs];
-    v11 = [v10 allObjects];
-    [v4 addObjectsFromArray:v11];
+    serviceUUIDs2 = [(HMDLightProfileNaturalLightingActionModel *)self serviceUUIDs];
+    allObjects = [serviceUUIDs2 allObjects];
+    [v4 addObjectsFromArray:allObjects];
   }
 
   v12 = [v4 copy];
@@ -97,25 +97,25 @@ void __55__HMDLightProfileNaturalLightingActionModel_properties__block_invoke(ui
 
 - (BOOL)isNaturalLightingEnabled
 {
-  v2 = [(HMDLightProfileNaturalLightingActionModel *)self naturalLightingEnabledField];
-  v3 = [v2 BOOLValue];
+  naturalLightingEnabledField = [(HMDLightProfileNaturalLightingActionModel *)self naturalLightingEnabledField];
+  bOOLValue = [naturalLightingEnabledField BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"accessory"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"accessory"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"accessoryUUID"])
     {
-      v11 = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
-      if (v11)
+      accessoryUUID = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
+      if (accessoryUUID)
       {
-        [HMDHAPAccessoryTransaction cd_getMKFHAPAccessoryFromAccessoryUUID:v11];
+        [HMDHAPAccessoryTransaction cd_getMKFHAPAccessoryFromAccessoryUUID:accessoryUUID];
       }
 
       else
@@ -135,27 +135,27 @@ void __55__HMDLightProfileNaturalLightingActionModel_properties__block_invoke(ui
   {
     v14.receiver = self;
     v14.super_class = HMDLightProfileNaturalLightingActionModel;
-    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v12 = [(HMDBackingStoreModelObject *)&v14 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v12;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 isEqualToString:@"accessoryUUID"])
+  fieldCopy = field;
+  infoCopy = info;
+  objectCopy = object;
+  if ([fieldCopy isEqualToString:@"accessoryUUID"])
   {
-    v11 = [v10 accessory];
+    accessory = [objectCopy accessory];
 
-    v12 = [v11 modelID];
-    v13 = v12;
+    modelID = [accessory modelID];
+    v13 = modelID;
     v14 = *MEMORY[0x277CBEEE8];
-    if (v12)
+    if (modelID)
     {
-      v14 = v12;
+      v14 = modelID;
     }
 
     v15 = v14;
@@ -165,7 +165,7 @@ void __55__HMDLightProfileNaturalLightingActionModel_properties__block_invoke(ui
   {
     v17.receiver = self;
     v17.super_class = HMDLightProfileNaturalLightingActionModel;
-    v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:v10 modelObjectField:v8 modelFieldInfo:v9];
+    v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
   return v15;

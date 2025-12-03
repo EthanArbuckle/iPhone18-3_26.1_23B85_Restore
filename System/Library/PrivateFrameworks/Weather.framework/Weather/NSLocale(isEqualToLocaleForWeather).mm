@@ -7,10 +7,10 @@
 - (uint64_t)isEqualToLocaleForWeather:()isEqualToLocaleForWeather
 {
   v7 = a3;
-  v8 = [a1 localeIdentifier];
-  v100 = [v7 localeIdentifier];
-  v101 = v8;
-  if (v8 == v100)
+  localeIdentifier = [self localeIdentifier];
+  localeIdentifier2 = [v7 localeIdentifier];
+  v101 = localeIdentifier;
+  if (localeIdentifier == localeIdentifier2)
   {
     v93 = 0;
     v98 = 0;
@@ -29,24 +29,24 @@
     goto LABEL_8;
   }
 
-  v9 = [a1 localeIdentifier];
-  v3 = v9 != 0;
-  v89 = v9;
-  if (v9)
+  localeIdentifier3 = [self localeIdentifier];
+  decimalSeparator4 = localeIdentifier3 != 0;
+  v89 = localeIdentifier3;
+  if (localeIdentifier3)
   {
-    v10 = [v7 localeIdentifier];
-    if (v10)
+    localeIdentifier4 = [v7 localeIdentifier];
+    if (localeIdentifier4)
     {
-      v81 = v10;
-      v11 = [a1 localeIdentifier];
-      v73 = [v7 localeIdentifier];
-      v74 = v11;
-      if ([v11 isEqualToString:?])
+      v81 = localeIdentifier4;
+      localeIdentifier5 = [self localeIdentifier];
+      localeIdentifier6 = [v7 localeIdentifier];
+      v74 = localeIdentifier5;
+      if ([localeIdentifier5 isEqualToString:?])
       {
-        v12 = [a1 languageCode];
-        v56 = [v7 languageCode];
-        v57 = v12;
-        if (v12 == v56)
+        languageCode = [self languageCode];
+        languageCode2 = [v7 languageCode];
+        v57 = languageCode;
+        if (languageCode == languageCode2)
         {
           v93 = 1;
           memset(v95, 0, sizeof(v95));
@@ -65,51 +65,51 @@
           goto LABEL_8;
         }
 
-        v13 = 1;
-        v5 = 1;
+        quotationEndDelimiter4 = 1;
+        languageCode5 = 1;
       }
 
       else
       {
-        v5 = 0;
-        v13 = 1;
+        languageCode5 = 0;
+        quotationEndDelimiter4 = 1;
       }
     }
 
     else
     {
       v81 = 0;
-      v13 = 0;
-      v5 = 0;
+      quotationEndDelimiter4 = 0;
+      languageCode5 = 0;
     }
   }
 
   else
   {
-    v13 = 0;
-    v5 = 0;
+    quotationEndDelimiter4 = 0;
+    languageCode5 = 0;
   }
 
-  v19 = [a1 languageCode];
-  v4 = v19 != 0;
-  v87 = v19;
-  v99 = __PAIR64__(v13, v5);
-  LODWORD(v102[3]) = v19 != 0;
-  if (v19)
+  languageCode3 = [self languageCode];
+  quotationBeginDelimiter2 = languageCode3 != 0;
+  v87 = languageCode3;
+  v99 = __PAIR64__(quotationEndDelimiter4, languageCode5);
+  LODWORD(v102[3]) = languageCode3 != 0;
+  if (languageCode3)
   {
-    v20 = [v7 languageCode];
-    if (v20)
+    languageCode4 = [v7 languageCode];
+    if (languageCode4)
     {
-      v80 = v20;
-      v5 = [a1 languageCode];
-      v70 = [v7 languageCode];
-      v71 = v5;
-      if ([v5 isEqualToString:?])
+      v80 = languageCode4;
+      languageCode5 = [self languageCode];
+      languageCode6 = [v7 languageCode];
+      v71 = languageCode5;
+      if ([languageCode5 isEqualToString:?])
       {
-        v5 = [a1 countryCode];
-        v54 = [v7 countryCode];
-        v55 = v5;
-        if (v5 == v54)
+        languageCode5 = [self countryCode];
+        countryCode = [v7 countryCode];
+        v55 = languageCode5;
+        if (languageCode5 == countryCode)
         {
           *v95 = 1;
           memset(v92, 0, sizeof(v92));
@@ -119,7 +119,7 @@
           v90 = 0uLL;
           v94 = 0;
           memset(v102, 0, 24);
-          v93 = v3;
+          v93 = decimalSeparator4;
           v14 = 0;
           v91 = 0;
           v15 = 0;
@@ -129,50 +129,50 @@
           goto LABEL_8;
         }
 
-        v4 = 1;
+        quotationBeginDelimiter2 = 1;
         v21 = 1;
       }
 
       else
       {
         v21 = 0;
-        v4 = 1;
+        quotationBeginDelimiter2 = 1;
       }
     }
 
     else
     {
       v80 = 0;
-      v4 = 0;
+      quotationBeginDelimiter2 = 0;
       v21 = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    quotationBeginDelimiter2 = 0;
     v21 = 0;
   }
 
-  v22 = [a1 countryCode];
-  HIDWORD(v102[2]) = v22 != 0;
-  v86 = v22;
-  v98 = __PAIR64__(v4, v21);
-  if (v22)
+  countryCode2 = [self countryCode];
+  HIDWORD(v102[2]) = countryCode2 != 0;
+  v86 = countryCode2;
+  v98 = __PAIR64__(quotationBeginDelimiter2, v21);
+  if (countryCode2)
   {
-    v23 = [v7 countryCode];
-    if (v23)
+    countryCode3 = [v7 countryCode];
+    if (countryCode3)
     {
-      v79 = v23;
-      v24 = [a1 countryCode];
-      v68 = [v7 countryCode];
-      v69 = v24;
-      if ([v24 isEqualToString:?])
+      v79 = countryCode3;
+      countryCode4 = [self countryCode];
+      countryCode5 = [v7 countryCode];
+      v69 = countryCode4;
+      if ([countryCode4 isEqualToString:?])
       {
-        v25 = [a1 scriptCode];
-        v52 = [v7 scriptCode];
-        v53 = v25;
-        if (v25 == v52)
+        scriptCode = [self scriptCode];
+        scriptCode2 = [v7 scriptCode];
+        v53 = scriptCode;
+        if (scriptCode == scriptCode2)
         {
           *v95 = 1;
           *&v95[4] = 0;
@@ -185,7 +185,7 @@
           v91 = 0;
           v15 = 0;
           v16 = 0;
-          v93 = v3;
+          v93 = decimalSeparator4;
           *v92 = 1;
           HIDWORD(v102[2]) = 1;
           v97 = 0x100000001;
@@ -213,24 +213,24 @@
     v97 = 0;
   }
 
-  v26 = [a1 scriptCode];
-  LODWORD(v102[2]) = v26 != 0;
-  v85 = v26;
-  if (v26)
+  scriptCode3 = [self scriptCode];
+  LODWORD(v102[2]) = scriptCode3 != 0;
+  v85 = scriptCode3;
+  if (scriptCode3)
   {
-    v27 = [v7 scriptCode];
-    if (v27)
+    scriptCode4 = [v7 scriptCode];
+    if (scriptCode4)
     {
-      v78 = v27;
-      v28 = [a1 scriptCode];
-      v66 = [v7 scriptCode];
-      v67 = v28;
-      if ([v28 isEqualToString:?])
+      v78 = scriptCode4;
+      scriptCode5 = [self scriptCode];
+      scriptCode6 = [v7 scriptCode];
+      v67 = scriptCode5;
+      if ([scriptCode5 isEqualToString:?])
       {
-        v29 = [a1 calendarIdentifier];
-        v50 = [v7 calendarIdentifier];
-        v51 = v29;
-        if (v29 == v50)
+        calendarIdentifier = [self calendarIdentifier];
+        calendarIdentifier2 = [v7 calendarIdentifier];
+        v51 = calendarIdentifier;
+        if (calendarIdentifier == calendarIdentifier2)
         {
           *v95 = 1;
           *(&v90 + 4) = 0;
@@ -244,7 +244,7 @@
           v91 = 0;
           v15 = 0;
           v16 = 0;
-          v93 = v3;
+          v93 = decimalSeparator4;
           *v92 = 1;
           HIDWORD(v90) = 1;
           LODWORD(v102[2]) = 1;
@@ -273,24 +273,24 @@
     v96 = 0;
   }
 
-  v30 = [a1 calendarIdentifier];
-  HIDWORD(v102[1]) = v30 != 0;
-  v84 = v30;
-  if (v30)
+  calendarIdentifier3 = [self calendarIdentifier];
+  HIDWORD(v102[1]) = calendarIdentifier3 != 0;
+  v84 = calendarIdentifier3;
+  if (calendarIdentifier3)
   {
-    v31 = [v7 calendarIdentifier];
-    if (v31)
+    calendarIdentifier4 = [v7 calendarIdentifier];
+    if (calendarIdentifier4)
     {
-      v77 = v31;
-      v32 = [a1 calendarIdentifier];
-      v64 = [v7 calendarIdentifier];
-      v65 = v32;
-      if ([v32 isEqualToString:?])
+      v77 = calendarIdentifier4;
+      calendarIdentifier5 = [self calendarIdentifier];
+      calendarIdentifier6 = [v7 calendarIdentifier];
+      v65 = calendarIdentifier5;
+      if ([calendarIdentifier5 isEqualToString:?])
       {
-        v33 = [a1 decimalSeparator];
+        decimalSeparator = [self decimalSeparator];
         [v7 decimalSeparator];
-        v88 = v49 = v33;
-        if (v33 == v88)
+        v88 = v49 = decimalSeparator;
+        if (decimalSeparator == v88)
         {
           *&v90 = 0;
           *(v102 + 4) = 0;
@@ -301,7 +301,7 @@
           v91 = 0;
           v15 = 0;
           v16 = 0;
-          v93 = v3;
+          v93 = decimalSeparator4;
           *v92 = 1;
           *(&v90 + 1) = 0x100000001;
           HIDWORD(v102[1]) = 1;
@@ -310,51 +310,51 @@
           goto LABEL_8;
         }
 
-        v34 = 1;
+        quotationEndDelimiter3 = 1;
         *&v95[4] = 1;
       }
 
       else
       {
         *&v95[4] = 0;
-        v34 = 1;
+        quotationEndDelimiter3 = 1;
       }
     }
 
     else
     {
       v77 = 0;
-      v34 = 0;
+      quotationEndDelimiter3 = 0;
       *&v95[4] = 0;
     }
   }
 
   else
   {
-    v34 = 0;
+    quotationEndDelimiter3 = 0;
     *&v95[4] = 0;
   }
 
-  v35 = [a1 decimalSeparator];
-  LODWORD(v102[1]) = v35 != 0;
-  v83 = v35;
-  *&v95[8] = v34;
-  v93 = v3;
-  if (v35)
+  decimalSeparator2 = [self decimalSeparator];
+  LODWORD(v102[1]) = decimalSeparator2 != 0;
+  v83 = decimalSeparator2;
+  *&v95[8] = quotationEndDelimiter3;
+  v93 = decimalSeparator4;
+  if (decimalSeparator2)
   {
-    v36 = [v7 decimalSeparator];
-    if (v36)
+    decimalSeparator3 = [v7 decimalSeparator];
+    if (decimalSeparator3)
     {
-      v76 = v36;
-      v3 = [a1 decimalSeparator];
-      v62 = [v7 decimalSeparator];
-      v63 = v3;
-      if ([v3 isEqualToString:?])
+      v76 = decimalSeparator3;
+      decimalSeparator4 = [self decimalSeparator];
+      decimalSeparator5 = [v7 decimalSeparator];
+      v63 = decimalSeparator4;
+      if ([decimalSeparator4 isEqualToString:?])
       {
-        v3 = [a1 groupingSeparator];
-        v47 = [v7 groupingSeparator];
-        v48 = v3;
-        if (v3 == v47)
+        decimalSeparator4 = [self groupingSeparator];
+        groupingSeparator = [v7 groupingSeparator];
+        v48 = decimalSeparator4;
+        if (decimalSeparator4 == groupingSeparator)
         {
           *v95 = 1;
           v102[0] = 0;
@@ -392,24 +392,24 @@
     v94 = 0;
   }
 
-  v37 = [a1 groupingSeparator];
-  HIDWORD(v102[0]) = v37 != 0;
-  v82 = v37;
-  if (v37)
+  groupingSeparator2 = [self groupingSeparator];
+  HIDWORD(v102[0]) = groupingSeparator2 != 0;
+  v82 = groupingSeparator2;
+  if (groupingSeparator2)
   {
-    v38 = [v7 groupingSeparator];
-    if (v38)
+    groupingSeparator3 = [v7 groupingSeparator];
+    if (groupingSeparator3)
     {
-      v75 = v38;
-      v5 = [a1 groupingSeparator];
-      v60 = [v7 groupingSeparator];
-      v61 = v5;
-      if ([v5 isEqualToString:?])
+      v75 = groupingSeparator3;
+      languageCode5 = [self groupingSeparator];
+      groupingSeparator4 = [v7 groupingSeparator];
+      v61 = languageCode5;
+      if ([languageCode5 isEqualToString:?])
       {
-        v5 = [a1 quotationBeginDelimiter];
-        v45 = [v7 quotationBeginDelimiter];
-        v46 = v5;
-        if (v5 != v45)
+        languageCode5 = [self quotationBeginDelimiter];
+        quotationBeginDelimiter = [v7 quotationBeginDelimiter];
+        v46 = languageCode5;
+        if (languageCode5 != quotationBeginDelimiter)
         {
           *&v92[4] = 1;
           *&v92[8] = 1;
@@ -448,23 +448,23 @@ LABEL_8:
   }
 
 LABEL_131:
-  v4 = [a1 quotationBeginDelimiter];
-  LODWORD(v102[0]) = v4 != 0;
-  if (v4)
+  quotationBeginDelimiter2 = [self quotationBeginDelimiter];
+  LODWORD(v102[0]) = quotationBeginDelimiter2 != 0;
+  if (quotationBeginDelimiter2)
   {
-    v39 = [v7 quotationBeginDelimiter];
-    if (v39)
+    quotationBeginDelimiter3 = [v7 quotationBeginDelimiter];
+    if (quotationBeginDelimiter3)
     {
-      v72 = v39;
-      v40 = [a1 quotationBeginDelimiter];
-      v58 = [v7 quotationBeginDelimiter];
-      v59 = v40;
-      if ([v40 isEqualToString:?])
+      v72 = quotationBeginDelimiter3;
+      quotationBeginDelimiter4 = [self quotationBeginDelimiter];
+      quotationBeginDelimiter5 = [v7 quotationBeginDelimiter];
+      v59 = quotationBeginDelimiter4;
+      if ([quotationBeginDelimiter4 isEqualToString:?])
       {
-        v41 = [a1 quotationEndDelimiter];
-        v43 = [v7 quotationEndDelimiter];
-        v44 = v41;
-        if (v41 == v43)
+        quotationEndDelimiter = [self quotationEndDelimiter];
+        quotationEndDelimiter2 = [v7 quotationEndDelimiter];
+        v44 = quotationEndDelimiter;
+        if (quotationEndDelimiter == quotationEndDelimiter2)
         {
           *v95 = 1;
           v15 = 0;
@@ -500,15 +500,15 @@ LABEL_131:
     v91 = 0;
   }
 
-  v3 = [a1 quotationEndDelimiter];
-  if (v3)
+  decimalSeparator4 = [self quotationEndDelimiter];
+  if (decimalSeparator4)
   {
-    v5 = [v7 quotationEndDelimiter];
-    if (v5)
+    languageCode5 = [v7 quotationEndDelimiter];
+    if (languageCode5)
     {
-      v34 = [a1 quotationEndDelimiter];
-      v13 = [v7 quotationEndDelimiter];
-      v17 = [v34 isEqualToString:v13];
+      quotationEndDelimiter3 = [self quotationEndDelimiter];
+      quotationEndDelimiter4 = [v7 quotationEndDelimiter];
+      v17 = [quotationEndDelimiter3 isEqualToString:quotationEndDelimiter4];
       v42 = 1;
     }
 
@@ -712,7 +712,7 @@ LABEL_72:
   {
   }
 
-  if (v101 != v100)
+  if (v101 != localeIdentifier2)
   {
   }
 

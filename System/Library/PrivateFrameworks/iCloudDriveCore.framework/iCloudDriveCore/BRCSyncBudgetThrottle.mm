@@ -1,13 +1,13 @@
 @interface BRCSyncBudgetThrottle
 - (BRCSyncBudgetThrottle)init;
-- (BRCSyncBudgetThrottle)initWithCoder:(id)a3;
-- (double)_timeToLoseAmount:(float)a3 count:(int)a4;
-- (double)nextDateWithBudgetWithDefaults:(id)a3;
-- (float)availableBudgetWithDefaults:(id)a3;
-- (id)debugDescriptionWithDefaults:(id)a3;
+- (BRCSyncBudgetThrottle)initWithCoder:(id)coder;
+- (double)_timeToLoseAmount:(float)amount count:(int)count;
+- (double)nextDateWithBudgetWithDefaults:(id)defaults;
+- (float)availableBudgetWithDefaults:(id)defaults;
+- (id)debugDescriptionWithDefaults:(id)defaults;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateForTime:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateForTime:(double)time;
 @end
 
 @implementation BRCSyncBudgetThrottle
@@ -31,26 +31,26 @@
   v2 = [(BRCSyncBudgetThrottle *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v2->_t0 = v4;
   }
 
   return v2;
 }
 
-- (BRCSyncBudgetThrottle)initWithCoder:(id)a3
+- (BRCSyncBudgetThrottle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BRCSyncBudgetThrottle;
   v5 = [(BRCSyncBudgetThrottle *)&v13 init];
   if (v5)
   {
     v12 = 0;
-    [v4 decodeDoubleForKey:@"t0"];
+    [coderCopy decodeDoubleForKey:@"t0"];
     v5->_t0 = v6;
-    v7 = [v4 decodeBytesForKey:@"v" returnedLength:&v12];
+    v7 = [coderCopy decodeBytesForKey:@"v" returnedLength:&v12];
     if (v12 == 32)
     {
       v8 = v7[1];
@@ -72,23 +72,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   t0 = self->_t0;
-  v5 = a3;
-  [v5 encodeDouble:@"t0" forKey:t0];
-  [v5 encodeBytes:self->_values length:32 forKey:@"v"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"t0" forKey:t0];
+  [coderCopy encodeBytes:self->_values length:32 forKey:@"v"];
 }
 
-- (void)updateForTime:(double)a3
+- (void)updateForTime:(double)time
 {
   v20 = *MEMORY[0x277D85DE8];
   t0 = self->_t0;
-  v4 = vcvtmd_s64_f64((a3 - t0) / 60.0);
+  v4 = vcvtmd_s64_f64((time - t0) / 60.0);
   if (v4 < 0)
   {
 LABEL_12:
-    self->_t0 = a3;
+    self->_t0 = time;
     goto LABEL_13;
   }
 
@@ -143,7 +143,7 @@ LABEL_12:
     }
 
     while (v6 != 8);
-    a3 = t0 + v4 * 60.0;
+    time = t0 + v4 * 60.0;
     goto LABEL_12;
   }
 
@@ -151,9 +151,9 @@ LABEL_13:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_timeToLoseAmount:(float)a3 count:(int)a4
+- (double)_timeToLoseAmount:(float)amount count:(int)count
 {
-  if (a4 < 1)
+  if (count < 1)
   {
     v9 = 0.0;
   }
@@ -161,47 +161,47 @@ LABEL_13:
   else
   {
     v5 = 0;
-    v6 = a4;
+    countCopy = count;
     while (1)
     {
-      v7 = *(&self->_t0 + v6 + 1);
-      if (a3 < v7)
+      v7 = *(&self->_t0 + countCopy + 1);
+      if (amount < v7)
       {
         break;
       }
 
-      v8 = &__intervals[v6--];
+      v8 = &__intervals[countCopy--];
       v5 += *(v8 - 1);
-      a3 = a3 - v7;
-      if ((v6 + 1) < 2)
+      amount = amount - v7;
+      if ((countCopy + 1) < 2)
       {
         v9 = v5;
         return v9 * 60.0;
       }
     }
 
-    LOWORD(v4) = __intervals[v6 - 1];
-    v9 = v5 + ceilf((a3 * v4) / v7);
+    LOWORD(v4) = __intervals[countCopy - 1];
+    v9 = v5 + ceilf((amount * v4) / v7);
   }
 
   return v9 * 60.0;
 }
 
-- (double)nextDateWithBudgetWithDefaults:(id)a3
+- (double)nextDateWithBudgetWithDefaults:(id)defaults
 {
-  v4 = a3;
-  [v4 syncUpMinimalBudget];
+  defaultsCopy = defaults;
+  [defaultsCopy syncUpMinimalBudget];
   v6 = v5;
   [(BRCSyncBudgetThrottle *)self lastDay];
   v8 = v6 + v7;
-  [v4 syncUpDailyBudget];
+  [defaultsCopy syncUpDailyBudget];
   v10 = v8 - v9;
   v11 = 0.0;
   if (v10 <= 0.0 || ([(BRCSyncBudgetThrottle *)self _timeToLoseAmount:8 count:?], v11 = v12, v12 < 3600.0))
   {
     [(BRCSyncBudgetThrottle *)self lastHour];
     v14 = v6 + v13;
-    [v4 syncUpHourlyBudget];
+    [defaultsCopy syncUpHourlyBudget];
     if ((v14 - v15) > 0.0)
     {
       [(BRCSyncBudgetThrottle *)self _timeToLoseAmount:4 count:?];
@@ -216,7 +216,7 @@ LABEL_13:
   {
     [(BRCSyncBudgetThrottle *)self lastMinute];
     v18 = v6 + v17;
-    [v4 syncUpMinutelyBudget];
+    [defaultsCopy syncUpMinutelyBudget];
     if (v18 > v19)
     {
       v11 = 60.0;
@@ -228,18 +228,18 @@ LABEL_13:
   return v20;
 }
 
-- (float)availableBudgetWithDefaults:(id)a3
+- (float)availableBudgetWithDefaults:(id)defaults
 {
-  v4 = a3;
-  [v4 syncUpDailyBudget];
+  defaultsCopy = defaults;
+  [defaultsCopy syncUpDailyBudget];
   v6 = v5;
   [(BRCSyncBudgetThrottle *)self lastDay];
   v8 = v6 - v7;
-  [v4 syncUpHourlyBudget];
+  [defaultsCopy syncUpHourlyBudget];
   v10 = v9;
   [(BRCSyncBudgetThrottle *)self lastHour];
   v12 = v10 - v11;
-  [v4 syncUpMinutelyBudget];
+  [defaultsCopy syncUpMinutelyBudget];
   v14 = v13;
 
   [(BRCSyncBudgetThrottle *)self lastMinute];
@@ -262,14 +262,14 @@ LABEL_13:
   return result;
 }
 
-- (id)debugDescriptionWithDefaults:(id)a3
+- (id)debugDescriptionWithDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:64];
-  [(BRCSyncBudgetThrottle *)self nextDateWithBudgetWithDefaults:v4];
+  [(BRCSyncBudgetThrottle *)self nextDateWithBudgetWithDefaults:defaultsCopy];
   v7 = v6 - self->_t0;
-  v8 = [MEMORY[0x277CBEAA8] date];
-  [v8 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v10 = v9;
   t0 = self->_t0;
 
@@ -288,19 +288,19 @@ LABEL_13:
   [v5 appendFormat:@"  %d:%02d:%02ds ago", (v12 / 3600.0), v13, fmod(v12, 60.0)];
   [(BRCSyncBudgetThrottle *)self lastMinute];
   v15 = v14 * 100.0;
-  [v4 syncUpMinutelyBudget];
+  [defaultsCopy syncUpMinutelyBudget];
   v17 = (v15 / v16);
   [(BRCSyncBudgetThrottle *)self lastMinute];
   [v5 appendFormat:@"  m:%.1f%% (%.1f)", *&v17, v18];
   [(BRCSyncBudgetThrottle *)self lastHour];
   *&v17 = v19 * 100.0;
-  [v4 syncUpHourlyBudget];
+  [defaultsCopy syncUpHourlyBudget];
   v21 = (*&v17 / v20);
   [(BRCSyncBudgetThrottle *)self lastHour];
   [v5 appendFormat:@"  h:%.1f%% (%.1f)", *&v21, v22];
   [(BRCSyncBudgetThrottle *)self lastDay];
   *&v12 = v23 * 100.0;
-  [v4 syncUpDailyBudget];
+  [defaultsCopy syncUpDailyBudget];
   v25 = (*&v12 / v24);
   [(BRCSyncBudgetThrottle *)self lastDay];
   [v5 appendFormat:@"  d:%.1f%% (%.1f)", *&v25, v26];

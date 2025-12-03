@@ -1,29 +1,29 @@
 @interface MRUActivityAccessoryView
 - (CGPoint)contentOffset;
 - (CGSize)size;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (MRUActivityAccessoryView)initWithContentView:(id)a3 size:(CGSize)a4;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (MRUActivityAccessoryView)initWithContentView:(id)view size:(CGSize)size;
 - (UIEdgeInsets)contentInsets;
 - (void)layoutSubviews;
 @end
 
 @implementation MRUActivityAccessoryView
 
-- (MRUActivityAccessoryView)initWithContentView:(id)a3 size:(CGSize)a4
+- (MRUActivityAccessoryView)initWithContentView:(id)view size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = MRUActivityAccessoryView;
   v9 = [(MRUActivityAccessoryView *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contentView, a3);
+    objc_storeStrong(&v9->_contentView, view);
     v10->_size.width = width;
     v10->_size.height = height;
-    [(MRUActivityAccessoryView *)v10 addSubview:v8];
+    [(MRUActivityAccessoryView *)v10 addSubview:viewCopy];
   }
 
   return v10;
@@ -45,7 +45,7 @@
   [(UIView *)self->_contentView setFrame:v11.origin.x, v11.origin.y, v11.size.width, v11.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
   width = self->_size.width;
   height = self->_size.height;

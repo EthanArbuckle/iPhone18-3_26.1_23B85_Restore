@@ -1,8 +1,8 @@
 @interface BSPropertyMetadata
 - (BOOL)isNumber;
 - (id)description;
-- (void)setClassType:(uint64_t)a1;
-- (void)setDefaultValue:(uint64_t)a1;
+- (void)setClassType:(uint64_t)type;
+- (void)setDefaultValue:(uint64_t)value;
 @end
 
 @implementation BSPropertyMetadata
@@ -37,24 +37,24 @@
     defaultValue = 0;
   }
 
-  v9 = [v3 stringWithFormat:@"<%@:%p name=%@, defaultKey=%@, defaultValue=%@>", v5, self, v6, v7, defaultValue];
+  defaultValue = [v3 stringWithFormat:@"<%@:%p name=%@, defaultKey=%@, defaultValue=%@>", v5, self, v6, v7, defaultValue];
 
-  return v9;
+  return defaultValue;
 }
 
-- (void)setClassType:(uint64_t)a1
+- (void)setClassType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((type + 24), a2);
   }
 }
 
-- (void)setDefaultValue:(uint64_t)a1
+- (void)setDefaultValue:(uint64_t)value
 {
-  if (a1)
+  if (value)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((value + 64), a2);
   }
 }
 

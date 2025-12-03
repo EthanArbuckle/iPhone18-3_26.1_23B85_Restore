@@ -1,6 +1,6 @@
 @interface MUAMSResultProviderFetchOptions
 - (CGSize)artworkSize;
-- (MUAMSResultProviderFetchOptions)initWithDisplayScale:(double)a3 artworkSize:(CGSize)a4 source:(int64_t)a5;
+- (MUAMSResultProviderFetchOptions)initWithDisplayScale:(double)scale artworkSize:(CGSize)size source:(int64_t)source;
 @end
 
 @implementation MUAMSResultProviderFetchOptions
@@ -14,19 +14,19 @@
   return result;
 }
 
-- (MUAMSResultProviderFetchOptions)initWithDisplayScale:(double)a3 artworkSize:(CGSize)a4 source:(int64_t)a5
+- (MUAMSResultProviderFetchOptions)initWithDisplayScale:(double)scale artworkSize:(CGSize)size source:(int64_t)source
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = MUAMSResultProviderFetchOptions;
   result = [(MUAMSResultProviderFetchOptions *)&v10 init];
   if (result)
   {
-    result->_displayScale = a3;
+    result->_displayScale = scale;
     result->_artworkSize.width = width;
     result->_artworkSize.height = height;
-    result->_source = a5;
+    result->_source = source;
   }
 
   return result;

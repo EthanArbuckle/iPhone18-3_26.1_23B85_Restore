@@ -1,65 +1,65 @@
 @interface HMDCameraClipUploaderFactory
-- (id)createAddSignificantEventOperationForClipModelID:(id)a3 localZone:(id)a4 significantEvent:(id)a5 homePresenceByPairingIdentity:(id)a6;
-- (id)createCreateClipOperationForClipModelID:(id)a3 localZone:(id)a4 targetFragmentDuration:(double)a5 clipStartDate:(id)a6 quality:(int64_t)a7 encryptionManager:(id)a8;
-- (id)createCreateClipWithSignificantEventOperationForClipModelID:(id)a3 localZone:(id)a4 significantEvent:(id)a5 homePresenceByPairingIdentity:(id)a6 targetFragmentDuration:(double)a7 clipStartDate:(id)a8 quality:(int64_t)a9 encryptionManager:(id)a10;
-- (id)createFinalizeClipOperationForModelID:(id)a3 localZone:(id)a4;
-- (id)createUploadVideoSegmentOperationForModelID:(id)a3 localZone:(id)a4 data:(id)a5 metadata:(id)a6 encryptionManager:(id)a7;
+- (id)createAddSignificantEventOperationForClipModelID:(id)d localZone:(id)zone significantEvent:(id)event homePresenceByPairingIdentity:(id)identity;
+- (id)createCreateClipOperationForClipModelID:(id)d localZone:(id)zone targetFragmentDuration:(double)duration clipStartDate:(id)date quality:(int64_t)quality encryptionManager:(id)manager;
+- (id)createCreateClipWithSignificantEventOperationForClipModelID:(id)d localZone:(id)zone significantEvent:(id)event homePresenceByPairingIdentity:(id)identity targetFragmentDuration:(double)duration clipStartDate:(id)date quality:(int64_t)quality encryptionManager:(id)self0;
+- (id)createFinalizeClipOperationForModelID:(id)d localZone:(id)zone;
+- (id)createUploadVideoSegmentOperationForModelID:(id)d localZone:(id)zone data:(id)data metadata:(id)metadata encryptionManager:(id)manager;
 @end
 
 @implementation HMDCameraClipUploaderFactory
 
-- (id)createFinalizeClipOperationForModelID:(id)a3 localZone:(id)a4
+- (id)createFinalizeClipOperationForModelID:(id)d localZone:(id)zone
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(HMDCameraClipOperation *)[HMDCameraClipFinalizeClipOperation alloc] initWithClipModelID:v6 localZone:v5];
+  zoneCopy = zone;
+  dCopy = d;
+  v7 = [(HMDCameraClipOperation *)[HMDCameraClipFinalizeClipOperation alloc] initWithClipModelID:dCopy localZone:zoneCopy];
 
   return v7;
 }
 
-- (id)createAddSignificantEventOperationForClipModelID:(id)a3 localZone:(id)a4 significantEvent:(id)a5 homePresenceByPairingIdentity:(id)a6
+- (id)createAddSignificantEventOperationForClipModelID:(id)d localZone:(id)zone significantEvent:(id)event homePresenceByPairingIdentity:(id)identity
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[HMDCameraClipAddSignificantEventOperation alloc] initWithClipModelID:v12 localZone:v11 significantEvent:v10 homePresenceByPairingIdentity:v9];
+  identityCopy = identity;
+  eventCopy = event;
+  zoneCopy = zone;
+  dCopy = d;
+  v13 = [[HMDCameraClipAddSignificantEventOperation alloc] initWithClipModelID:dCopy localZone:zoneCopy significantEvent:eventCopy homePresenceByPairingIdentity:identityCopy];
 
   return v13;
 }
 
-- (id)createUploadVideoSegmentOperationForModelID:(id)a3 localZone:(id)a4 data:(id)a5 metadata:(id)a6 encryptionManager:(id)a7
+- (id)createUploadVideoSegmentOperationForModelID:(id)d localZone:(id)zone data:(id)data metadata:(id)metadata encryptionManager:(id)manager
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(HMDCameraClipAppendStreamingAssetOperation *)[HMDCameraClipUploadVideoSegmentOperation alloc] initWithClipModelID:v15 localZone:v14 data:v13 metadata:v12 encryptionManager:v11];
+  managerCopy = manager;
+  metadataCopy = metadata;
+  dataCopy = data;
+  zoneCopy = zone;
+  dCopy = d;
+  v16 = [(HMDCameraClipAppendStreamingAssetOperation *)[HMDCameraClipUploadVideoSegmentOperation alloc] initWithClipModelID:dCopy localZone:zoneCopy data:dataCopy metadata:metadataCopy encryptionManager:managerCopy];
 
   return v16;
 }
 
-- (id)createCreateClipWithSignificantEventOperationForClipModelID:(id)a3 localZone:(id)a4 significantEvent:(id)a5 homePresenceByPairingIdentity:(id)a6 targetFragmentDuration:(double)a7 clipStartDate:(id)a8 quality:(int64_t)a9 encryptionManager:(id)a10
+- (id)createCreateClipWithSignificantEventOperationForClipModelID:(id)d localZone:(id)zone significantEvent:(id)event homePresenceByPairingIdentity:(id)identity targetFragmentDuration:(double)duration clipStartDate:(id)date quality:(int64_t)quality encryptionManager:(id)self0
 {
-  v17 = a10;
-  v18 = a8;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [[HMDCameraClipCreateClipWithSignificantEventOperation alloc] initWithClipModelID:v22 localZone:v21 significantEvent:v20 homePresenceByPairingIdentity:v19 targetFragmentDuration:v18 clipStartDate:a9 quality:a7 encryptionManager:v17];
+  managerCopy = manager;
+  dateCopy = date;
+  identityCopy = identity;
+  eventCopy = event;
+  zoneCopy = zone;
+  dCopy = d;
+  v23 = [[HMDCameraClipCreateClipWithSignificantEventOperation alloc] initWithClipModelID:dCopy localZone:zoneCopy significantEvent:eventCopy homePresenceByPairingIdentity:identityCopy targetFragmentDuration:dateCopy clipStartDate:quality quality:duration encryptionManager:managerCopy];
 
   return v23;
 }
 
-- (id)createCreateClipOperationForClipModelID:(id)a3 localZone:(id)a4 targetFragmentDuration:(double)a5 clipStartDate:(id)a6 quality:(int64_t)a7 encryptionManager:(id)a8
+- (id)createCreateClipOperationForClipModelID:(id)d localZone:(id)zone targetFragmentDuration:(double)duration clipStartDate:(id)date quality:(int64_t)quality encryptionManager:(id)manager
 {
-  v13 = a8;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[HMDCameraClipCreateClipOperation alloc] initWithClipModelID:v16 localZone:v15 targetFragmentDuration:v14 clipStartDate:a7 quality:v13 encryptionManager:a5];
+  managerCopy = manager;
+  dateCopy = date;
+  zoneCopy = zone;
+  dCopy = d;
+  v17 = [[HMDCameraClipCreateClipOperation alloc] initWithClipModelID:dCopy localZone:zoneCopy targetFragmentDuration:dateCopy clipStartDate:quality quality:managerCopy encryptionManager:duration];
 
   return v17;
 }

@@ -1,6 +1,6 @@
 @interface COMeshCommand
 - (COMeshCommand)init;
-- (COMeshCommand)initWithCoder:(id)a3;
+- (COMeshCommand)initWithCoder:(id)coder;
 - (id)_sendingConstituent;
 - (unint64_t)rapportTransactionID;
 @end
@@ -14,9 +14,9 @@
   return [(COMeshCommand *)&v3 init];
 }
 
-- (COMeshCommand)initWithCoder:(id)a3
+- (COMeshCommand)initWithCoder:(id)coder
 {
-  if ([a3 decodeIntegerForKey:@"version"] == 1)
+  if ([coder decodeIntegerForKey:@"version"] == 1)
   {
     v5.receiver = self;
     v5.super_class = COMeshCommand;
@@ -32,20 +32,20 @@
 
 - (unint64_t)rapportTransactionID
 {
-  v2 = [(COMeshCommand *)self rapportOptions];
-  v3 = [v2 objectForKey:*MEMORY[0x277D442F8]];
-  v4 = [v3 unsignedIntegerValue];
+  rapportOptions = [(COMeshCommand *)self rapportOptions];
+  v3 = [rapportOptions objectForKey:*MEMORY[0x277D442F8]];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)_sendingConstituent
 {
-  v3 = [(COMeshCommand *)self sender];
-  v4 = v3;
-  if (v3)
+  sender = [(COMeshCommand *)self sender];
+  v4 = sender;
+  if (sender)
   {
-    [v3 remote];
+    [sender remote];
   }
 
   else

@@ -1,38 +1,38 @@
 @interface MANAutoAssetSetAtomicEntry
-- (MANAutoAssetSetAtomicEntry)initWithCoder:(id)a3;
-- (MANAutoAssetSetAtomicEntry)initWithFullAssetSelector:(id)a3 withAssetID:(id)a4 withLocalContentURL:(id)a5 withAssetAttributes:(id)a6 inhibitedFromEmergencyRemoval:(BOOL)a7;
+- (MANAutoAssetSetAtomicEntry)initWithCoder:(id)coder;
+- (MANAutoAssetSetAtomicEntry)initWithFullAssetSelector:(id)selector withAssetID:(id)d withLocalContentURL:(id)l withAssetAttributes:(id)attributes inhibitedFromEmergencyRemoval:(BOOL)removal;
 - (id)copy;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MANAutoAssetSetAtomicEntry
 
-- (MANAutoAssetSetAtomicEntry)initWithFullAssetSelector:(id)a3 withAssetID:(id)a4 withLocalContentURL:(id)a5 withAssetAttributes:(id)a6 inhibitedFromEmergencyRemoval:(BOOL)a7
+- (MANAutoAssetSetAtomicEntry)initWithFullAssetSelector:(id)selector withAssetID:(id)d withLocalContentURL:(id)l withAssetAttributes:(id)attributes inhibitedFromEmergencyRemoval:(BOOL)removal
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  selectorCopy = selector;
+  dCopy = d;
+  lCopy = l;
+  attributesCopy = attributes;
   v20.receiver = self;
   v20.super_class = MANAutoAssetSetAtomicEntry;
   v17 = [(MANAutoAssetSetAtomicEntry *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_fullAssetSelector, a3);
-    objc_storeStrong(&v18->_assetID, a4);
-    objc_storeStrong(&v18->_localContentURL, a5);
-    objc_storeStrong(&v18->_assetAttributes, a6);
-    v18->_inhibitedFromEmergencyRemoval = a7;
+    objc_storeStrong(&v17->_fullAssetSelector, selector);
+    objc_storeStrong(&v18->_assetID, d);
+    objc_storeStrong(&v18->_localContentURL, l);
+    objc_storeStrong(&v18->_assetAttributes, attributes);
+    v18->_inhibitedFromEmergencyRemoval = removal;
   }
 
   return v18;
 }
 
-- (MANAutoAssetSetAtomicEntry)initWithCoder:(id)a3
+- (MANAutoAssetSetAtomicEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MANAutoAssetSetAtomicEntry;
   v5 = [(MANAutoAssetSetAtomicEntry *)&v17 init];
@@ -49,85 +49,85 @@
     v6 = [NSArray arrayWithObjects:v18 count:8];
     v7 = [NSSet setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullAssetSelector"];
     fullAssetSelector = v5->_fullAssetSelector;
     v5->_fullAssetSelector = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
     assetID = v5->_assetID;
     v5->_assetID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localContentURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localContentURL"];
     localContentURL = v5->_localContentURL;
     v5->_localContentURL = v12;
 
-    v14 = [v4 decodeObjectOfClasses:v7 forKey:@"assetAttributes"];
+    v14 = [coderCopy decodeObjectOfClasses:v7 forKey:@"assetAttributes"];
     assetAttributes = v5->_assetAttributes;
     v5->_assetAttributes = v14;
 
-    v5->_inhibitedFromEmergencyRemoval = [v4 decodeBoolForKey:@"inhibitedFromEmergencyRemoval"];
+    v5->_inhibitedFromEmergencyRemoval = [coderCopy decodeBoolForKey:@"inhibitedFromEmergencyRemoval"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(MANAutoAssetSetAtomicEntry *)self fullAssetSelector];
-  [v8 encodeObject:v4 forKey:@"fullAssetSelector"];
+  coderCopy = coder;
+  fullAssetSelector = [(MANAutoAssetSetAtomicEntry *)self fullAssetSelector];
+  [coderCopy encodeObject:fullAssetSelector forKey:@"fullAssetSelector"];
 
-  v5 = [(MANAutoAssetSetAtomicEntry *)self assetID];
-  [v8 encodeObject:v5 forKey:@"assetID"];
+  assetID = [(MANAutoAssetSetAtomicEntry *)self assetID];
+  [coderCopy encodeObject:assetID forKey:@"assetID"];
 
-  v6 = [(MANAutoAssetSetAtomicEntry *)self localContentURL];
-  [v8 encodeObject:v6 forKey:@"localContentURL"];
+  localContentURL = [(MANAutoAssetSetAtomicEntry *)self localContentURL];
+  [coderCopy encodeObject:localContentURL forKey:@"localContentURL"];
 
-  v7 = [(MANAutoAssetSetAtomicEntry *)self assetAttributes];
-  [v8 encodeObject:v7 forKey:@"assetAttributes"];
+  assetAttributes = [(MANAutoAssetSetAtomicEntry *)self assetAttributes];
+  [coderCopy encodeObject:assetAttributes forKey:@"assetAttributes"];
 
-  [v8 encodeBool:-[MANAutoAssetSetAtomicEntry inhibitedFromEmergencyRemoval](self forKey:{"inhibitedFromEmergencyRemoval"), @"inhibitedFromEmergencyRemoval"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetAtomicEntry inhibitedFromEmergencyRemoval](self forKey:{"inhibitedFromEmergencyRemoval"), @"inhibitedFromEmergencyRemoval"}];
 }
 
 - (id)copy
 {
   v3 = [MANAutoAssetSetAtomicEntry alloc];
-  v4 = [(MANAutoAssetSetAtomicEntry *)self fullAssetSelector];
-  v5 = [(MANAutoAssetSetAtomicEntry *)self assetID];
-  v6 = [(MANAutoAssetSetAtomicEntry *)self localContentURL];
-  v7 = [(MANAutoAssetSetAtomicEntry *)self assetAttributes];
-  v8 = [(MANAutoAssetSetAtomicEntry *)v3 initWithFullAssetSelector:v4 withAssetID:v5 withLocalContentURL:v6 withAssetAttributes:v7 inhibitedFromEmergencyRemoval:[(MANAutoAssetSetAtomicEntry *)self inhibitedFromEmergencyRemoval]];
+  fullAssetSelector = [(MANAutoAssetSetAtomicEntry *)self fullAssetSelector];
+  assetID = [(MANAutoAssetSetAtomicEntry *)self assetID];
+  localContentURL = [(MANAutoAssetSetAtomicEntry *)self localContentURL];
+  assetAttributes = [(MANAutoAssetSetAtomicEntry *)self assetAttributes];
+  v8 = [(MANAutoAssetSetAtomicEntry *)v3 initWithFullAssetSelector:fullAssetSelector withAssetID:assetID withLocalContentURL:localContentURL withAssetAttributes:assetAttributes inhibitedFromEmergencyRemoval:[(MANAutoAssetSetAtomicEntry *)self inhibitedFromEmergencyRemoval]];
 
   return v8;
 }
 
 - (id)summary
 {
-  v14 = [(MANAutoAssetSetAtomicEntry *)self fullAssetSelector];
-  if (v14)
+  fullAssetSelector = [(MANAutoAssetSetAtomicEntry *)self fullAssetSelector];
+  if (fullAssetSelector)
   {
-    v13 = [(MANAutoAssetSetAtomicEntry *)self fullAssetSelector];
-    v3 = [v13 summary];
+    fullAssetSelector2 = [(MANAutoAssetSetAtomicEntry *)self fullAssetSelector];
+    summary = [fullAssetSelector2 summary];
   }
 
   else
   {
-    v3 = @"N";
+    summary = @"N";
   }
 
-  v4 = [(MANAutoAssetSetAtomicEntry *)self assetID];
-  if (v4)
+  assetID = [(MANAutoAssetSetAtomicEntry *)self assetID];
+  if (assetID)
   {
-    v5 = [(MANAutoAssetSetAtomicEntry *)self assetID];
+    assetID2 = [(MANAutoAssetSetAtomicEntry *)self assetID];
   }
 
   else
   {
-    v5 = @"N";
+    assetID2 = @"N";
   }
 
-  v6 = [(MANAutoAssetSetAtomicEntry *)self localContentURL];
-  if (v6)
+  localContentURL = [(MANAutoAssetSetAtomicEntry *)self localContentURL];
+  if (localContentURL)
   {
     v7 = @"Y";
   }
@@ -137,8 +137,8 @@
     v7 = @"N";
   }
 
-  v8 = [(MANAutoAssetSetAtomicEntry *)self assetAttributes];
-  if (v8)
+  assetAttributes = [(MANAutoAssetSetAtomicEntry *)self assetAttributes];
+  if (assetAttributes)
   {
     v9 = @"Y";
   }
@@ -158,13 +158,13 @@
     v10 = @"N";
   }
 
-  v11 = [NSString stringWithFormat:@"fullAssetSelector:%@|assetID:%@|localContentURL:%@|assetAttributes:%@|inhibitedFromEmergencyRemoval:%@", v3, v5, v7, v9, v10];
+  v11 = [NSString stringWithFormat:@"fullAssetSelector:%@|assetID:%@|localContentURL:%@|assetAttributes:%@|inhibitedFromEmergencyRemoval:%@", summary, assetID2, v7, v9, v10];
 
-  if (v4)
+  if (assetID)
   {
   }
 
-  if (v14)
+  if (fullAssetSelector)
   {
   }
 

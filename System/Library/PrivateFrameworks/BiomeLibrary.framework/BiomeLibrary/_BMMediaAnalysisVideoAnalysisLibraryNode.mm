@@ -5,26 +5,26 @@
 + (id)configurationForPerLibrary;
 + (id)storeConfigurationForPerAsset;
 + (id)storeConfigurationForPerLibrary;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMMediaAnalysisVideoAnalysisLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"PerAsset"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"PerAsset"])
   {
-    v5 = [a1 PerAsset];
+    perAsset = [self PerAsset];
 LABEL_5:
-    v6 = v5;
+    v6 = perAsset;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"PerLibrary"])
+  if ([nameCopy isEqualToString:@"PerLibrary"])
   {
-    v5 = [a1 PerLibrary];
+    perAsset = [self PerLibrary];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForPerLibrary
 {
-  v3 = [a1 storeConfigurationForPerLibrary];
-  v4 = [a1 syncPolicyForPerLibrary];
+  storeConfigurationForPerLibrary = [self storeConfigurationForPerLibrary];
+  syncPolicyForPerLibrary = [self syncPolicyForPerLibrary];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"9E33625B-B1D2-4580-98B8-BA493575E321"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MediaAnalysis.VideoAnalysis.PerLibrary" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MediaAnalysis.VideoAnalysis.PerLibrary" eventClass:objc_opt_class() storeConfig:storeConfigurationForPerLibrary syncPolicy:syncPolicyForPerLibrary legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -72,13 +72,13 @@ LABEL_7:
 
 + (id)configurationForPerAsset
 {
-  v3 = [a1 storeConfigurationForPerAsset];
-  v4 = [a1 syncPolicyForPerAsset];
+  storeConfigurationForPerAsset = [self storeConfigurationForPerAsset];
+  syncPolicyForPerAsset = [self syncPolicyForPerAsset];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"2DF8A203-72BF-4B22-AC5F-145A1AF5810A"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MediaAnalysis.VideoAnalysis.PerAsset" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MediaAnalysis.VideoAnalysis.PerAsset" eventClass:objc_opt_class() storeConfig:storeConfigurationForPerAsset syncPolicy:syncPolicyForPerAsset legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -95,7 +95,7 @@ LABEL_7:
 + (id)PerLibrary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPerLibrary];
+  configurationForPerLibrary = [self configurationForPerLibrary];
   v3 = +[BMMediaAnalysisPerLibrary columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -107,7 +107,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MediaAnalysis.VideoAnalysis.PerLibrary" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MediaAnalysis.VideoAnalysis.PerLibrary" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MediaAnalysis.VideoAnalysis.PerLibrary" schema:v9 configuration:configurationForPerLibrary];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -117,7 +117,7 @@ LABEL_7:
 + (id)PerAsset
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPerAsset];
+  configurationForPerAsset = [self configurationForPerAsset];
   v3 = +[BMMediaAnalysisPerAsset columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -129,7 +129,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MediaAnalysis.VideoAnalysis.PerAsset" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MediaAnalysis.VideoAnalysis.PerAsset" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MediaAnalysis.VideoAnalysis.PerAsset" schema:v9 configuration:configurationForPerAsset];
 
   v11 = *MEMORY[0x1E69E9840];
 

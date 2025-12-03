@@ -1,6 +1,6 @@
 @interface AEDeactivationPool
-- (id)initWithPolicyStore:(void *)a3 performancePrimitives:(void *)a4 persistentDeactivations:(void *)a5 queue:;
-- (void)deactivateWithCompletion:(uint64_t)a1;
+- (id)initWithPolicyStore:(void *)store performancePrimitives:(void *)primitives persistentDeactivations:(void *)deactivations queue:;
+- (void)deactivateWithCompletion:(uint64_t)completion;
 @end
 
 @implementation AEDeactivationPool
@@ -96,38 +96,38 @@ void __47__AEDeactivationPool_deactivateWithCompletion___block_invoke_1(uint64_t
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)initWithPolicyStore:(void *)a3 performancePrimitives:(void *)a4 persistentDeactivations:(void *)a5 queue:
+- (id)initWithPolicyStore:(void *)store performancePrimitives:(void *)primitives persistentDeactivations:(void *)deactivations queue:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  storeCopy = store;
+  primitivesCopy = primitives;
+  deactivationsCopy = deactivations;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = AEDeactivationPool;
-    a1 = objc_msgSendSuper2(&v17, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v17, sel_init);
+    if (self)
     {
-      v14 = [v12 copy];
-      v15 = a1[1];
-      a1[1] = v14;
+      v14 = [primitivesCopy copy];
+      v15 = self[1];
+      self[1] = v14;
 
-      objc_storeStrong(a1 + 2, a2);
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 4, a5);
+      objc_storeStrong(self + 2, a2);
+      objc_storeStrong(self + 3, store);
+      objc_storeStrong(self + 4, deactivations);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)deactivateWithCompletion:(uint64_t)a1
+- (void)deactivateWithCompletion:(uint64_t)completion
 {
   v36 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
     v22 = v3;
     v25 = objc_opt_new();
@@ -136,7 +136,7 @@ void __47__AEDeactivationPool_deactivateWithCompletion___block_invoke_1(uint64_t
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = *(a1 + 8);
+    obj = *(completion + 8);
     v6 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v6)
     {
@@ -156,32 +156,32 @@ void __47__AEDeactivationPool_deactivateWithCompletion___block_invoke_1(uint64_t
           v10 = AECoreLog();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [(AEPersistentDeactivation *)v9 deactivation];
-            v12 = [v11 identifier];
+            deactivation = [(AEPersistentDeactivation *)v9 deactivation];
+            identifier = [deactivation identifier];
             *buf = 138543362;
-            v34 = v12;
+            v34 = identifier;
             _os_log_impl(&dword_23C1AA000, v10, OS_LOG_TYPE_DEFAULT, "Running deactivation: %{public}@", buf, 0xCu);
           }
 
-          v13 = [(AEPersistentDeactivation *)v9 deactivation];
-          v14 = AELoggingCategoryForEvent([v13 event]);
+          deactivation2 = [(AEPersistentDeactivation *)v9 deactivation];
+          v14 = AELoggingCategoryForEvent([deactivation2 event]);
 
-          v15 = *(a1 + 24);
-          v16 = [(AEPersistentDeactivation *)v9 deactivation];
-          v17 = [v16 identifier];
-          v18 = [v15 beginIntervalWithCategory:v14 name:v17];
+          v15 = *(completion + 24);
+          deactivation3 = [(AEPersistentDeactivation *)v9 deactivation];
+          identifier2 = [deactivation3 identifier];
+          v18 = [v15 beginIntervalWithCategory:v14 name:identifier2];
 
-          v19 = [(AEPersistentDeactivation *)v9 deactivation];
+          deactivation4 = [(AEPersistentDeactivation *)v9 deactivation];
           v28[0] = MEMORY[0x277D85DD0];
           v28[1] = 3221225472;
           v28[2] = __47__AEDeactivationPool_deactivateWithCompletion___block_invoke;
           v28[3] = &unk_278BB70B8;
           v28[4] = v18;
           v28[5] = v9;
-          v28[6] = a1;
+          v28[6] = completion;
           v28[7] = v25;
           v28[8] = v5;
-          [v19 deactivateWithCompletion:v28];
+          [deactivation4 deactivateWithCompletion:v28];
         }
 
         v7 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
@@ -190,7 +190,7 @@ void __47__AEDeactivationPool_deactivateWithCompletion___block_invoke_1(uint64_t
       while (v7);
     }
 
-    v20 = *(a1 + 32);
+    v20 = *(completion + 32);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__AEDeactivationPool_deactivateWithCompletion___block_invoke_1;

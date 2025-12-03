@@ -1,29 +1,29 @@
 @interface MAResultAnnotation
 - (CLLocationCoordinate2D)coordinate;
-- (MAResultAnnotation)initWithMapItem:(id)a3;
+- (MAResultAnnotation)initWithMapItem:(id)item;
 - (NSString)title;
 - (id)_abbreviatedAddress;
 @end
 
 @implementation MAResultAnnotation
 
-- (MAResultAnnotation)initWithMapItem:(id)a3
+- (MAResultAnnotation)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = MAResultAnnotation;
   v6 = [(MAResultAnnotation *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
-    v8 = [v5 location];
-    v9 = [v8 latitude];
-    [v9 doubleValue];
+    objc_storeStrong(&v6->_mapItem, item);
+    location = [itemCopy location];
+    latitude = [location latitude];
+    [latitude doubleValue];
     v11 = v10;
-    v12 = [v5 location];
-    v13 = [v12 longitude];
-    [v13 doubleValue];
+    location2 = [itemCopy location];
+    longitude = [location2 longitude];
+    [longitude doubleValue];
     v15 = CLLocationCoordinate2DMake(v11, v14);
 
     v7->_coordinate = v15;
@@ -34,20 +34,20 @@
 
 - (NSString)title
 {
-  v2 = [(MAResultAnnotation *)self mapItem];
-  v3 = [v2 label];
+  mapItem = [(MAResultAnnotation *)self mapItem];
+  label = [mapItem label];
 
-  return v3;
+  return label;
 }
 
 - (id)_abbreviatedAddress
 {
-  v2 = [(MAResultAnnotation *)self mapItem];
-  v3 = [v2 location];
-  v4 = [v3 properties];
+  mapItem = [(MAResultAnnotation *)self mapItem];
+  location = [mapItem location];
+  properties = [location properties];
 
-  v5 = [v4 valueForKey:@"street"];
-  v6 = [v4 valueForKey:@"city"];
+  v5 = [properties valueForKey:@"street"];
+  v6 = [properties valueForKey:@"city"];
   v7 = v6;
   if (v5 | v6)
   {

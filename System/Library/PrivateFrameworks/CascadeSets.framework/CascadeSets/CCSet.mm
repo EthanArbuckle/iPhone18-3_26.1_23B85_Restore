@@ -1,23 +1,23 @@
 @interface CCSet
-+ (id)descriptorWithKey:(id)a3 descriptors:(id)a4;
-+ (id)serializedSetEnumerator:(id)a3;
-+ (id)setFromResourceSpecifier:(id)a3 inContainer:(id)a4 error:(id *)a5;
-+ (id)setFromXPCDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)descriptorWithKey:(id)key descriptors:(id)descriptors;
++ (id)serializedSetEnumerator:(id)enumerator;
++ (id)setFromResourceSpecifier:(id)specifier inContainer:(id)container error:(id *)error;
++ (id)setFromXPCDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (CCSet)init;
-- (CCSet)initWithCoder:(id)a3;
-- (CCSet)initWithSet:(id)a3 error:(id *)a4;
+- (CCSet)initWithCoder:(id)coder;
+- (CCSet)initWithSet:(id)set error:(id *)error;
 - (id)_computeUniqueHash;
 - (id)description;
-- (id)descriptorWithKey:(id)a3;
+- (id)descriptorWithKey:(id)key;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
-- (id)prefixedInstanceIdentifier:(id)a3;
-- (id)prefixedSharedIdentifier:(id)a3;
-- (id)serializeWithUseCase:(id)a3 enumerateToBookmark:(id)a4 error:(id *)a5;
+- (id)initFromDictionary:(id)dictionary;
+- (id)prefixedInstanceIdentifier:(id)identifier;
+- (id)prefixedSharedIdentifier:(id)identifier;
+- (id)serializeWithUseCase:(id)case enumerateToBookmark:(id)bookmark error:(id *)error;
 - (id)toResourceSpecifier;
 - (id)toXPCDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CCSet
@@ -102,24 +102,24 @@
   return v13;
 }
 
-+ (id)serializedSetEnumerator:(id)a3
++ (id)serializedSetEnumerator:(id)enumerator
 {
-  v3 = a3;
-  v4 = [[CCSerializedSetEnumerator alloc] initWithSerializedSetData:v3];
+  enumeratorCopy = enumerator;
+  v4 = [[CCSerializedSetEnumerator alloc] initWithSerializedSetData:enumeratorCopy];
 
   return v4;
 }
 
-+ (id)descriptorWithKey:(id)a3 descriptors:(id)a4
++ (id)descriptorWithKey:(id)key descriptors:(id)descriptors
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keyCopy = key;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  descriptorsCopy = descriptors;
+  v7 = [descriptorsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -129,12 +129,12 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(descriptorsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [v10 key];
-        v12 = [v11 isEqual:v5];
+        v12 = [v11 isEqual:keyCopy];
 
         if (v12)
         {
@@ -143,7 +143,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [descriptorsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -166,32 +166,32 @@ LABEL_11:
   objc_exception_throw(v2);
 }
 
-+ (id)setFromResourceSpecifier:(id)a3 inContainer:(id)a4 error:(id *)a5
++ (id)setFromResourceSpecifier:(id)specifier inContainer:(id)container error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  specifierCopy = specifier;
+  containerCopy = container;
   v9 = CCTypeIdentifierRegistryBridge();
-  v10 = [v7 name];
-  v11 = [v9 itemTypeForSetIdentifier:v10];
+  name = [specifierCopy name];
+  v11 = [v9 itemTypeForSetIdentifier:name];
 
   if (v11 == CCTypeIdentifierUnknown)
   {
     v12 = CCInvalidSetItemTypeIdentifierErrorForIdentifier(v11);
-    CCSetError(a5, v12);
+    CCSetError(error, v12);
   }
 
   else
   {
-    v13 = [v7 descriptors];
-    v12 = [CCSetDescriptor setDescriptorsFromResourceDescriptors:v13 error:a5];
+    descriptors = [specifierCopy descriptors];
+    v12 = [CCSetDescriptor setDescriptorsFromResourceDescriptors:descriptors error:error];
 
     if (v12)
     {
-      v14 = [v7 options];
-      v15 = [v8 isInUserVault];
+      options = [specifierCopy options];
+      isInUserVault = [containerCopy isInUserVault];
       v16 = objc_alloc(objc_opt_class());
-      v17 = [v8 personaIdentifier];
-      v18 = [v16 initWithItemType:v11 personaIdentifier:v17 descriptors:v12 options:v14 | v15 error:a5];
+      personaIdentifier = [containerCopy personaIdentifier];
+      v18 = [v16 initWithItemType:v11 personaIdentifier:personaIdentifier descriptors:v12 options:options | isInUserVault error:error];
 
       goto LABEL_6;
     }
@@ -203,139 +203,139 @@ LABEL_6:
   return v18;
 }
 
-- (CCSet)initWithSet:(id)a3 error:(id *)a4
+- (CCSet)initWithSet:(id)set error:(id *)error
 {
-  v6 = a3;
+  setCopy = set;
   v7 = objc_alloc(objc_opt_class());
-  v8 = [v6 itemType];
-  v9 = [v6 personaIdentifier];
-  v10 = [v6 encodedDescriptors];
-  v11 = [v6 descriptors];
-  v12 = [v6 options];
+  itemType = [setCopy itemType];
+  personaIdentifier = [setCopy personaIdentifier];
+  encodedDescriptors = [setCopy encodedDescriptors];
+  descriptors = [setCopy descriptors];
+  options = [setCopy options];
 
-  v13 = [v7 initWithItemType:v8 personaIdentifier:v9 encodedDescriptors:v10 descriptors:v11 options:v12 error:a4];
+  v13 = [v7 initWithItemType:itemType personaIdentifier:personaIdentifier encodedDescriptors:encodedDescriptors descriptors:descriptors options:options error:error];
   return v13;
 }
 
-- (id)descriptorWithKey:(id)a3
+- (id)descriptorWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_opt_class() descriptorWithKey:v4 descriptors:self->_descriptors];
+  keyCopy = key;
+  v5 = [objc_opt_class() descriptorWithKey:keyCopy descriptors:self->_descriptors];
 
   return v5;
 }
 
-- (id)prefixedSharedIdentifier:(id)a3
+- (id)prefixedSharedIdentifier:(id)identifier
 {
   uniqueHash = self->_uniqueHash;
-  v4 = [a3 sharedIdentifier];
-  v5 = CCConcatenateHash64(uniqueHash, v4);
+  sharedIdentifier = [identifier sharedIdentifier];
+  v5 = CCConcatenateHash64(uniqueHash, sharedIdentifier);
 
   return v5;
 }
 
-- (id)prefixedInstanceIdentifier:(id)a3
+- (id)prefixedInstanceIdentifier:(id)identifier
 {
   uniqueHash = self->_uniqueHash;
-  v4 = [a3 instanceIdentifier];
-  v5 = CCConcatenateHash64(uniqueHash, v4);
+  instanceIdentifier = [identifier instanceIdentifier];
+  v5 = CCConcatenateHash64(uniqueHash, instanceIdentifier);
 
   return v5;
 }
 
-- (id)serializeWithUseCase:(id)a3 enumerateToBookmark:(id)a4 error:(id *)a5
+- (id)serializeWithUseCase:(id)case enumerateToBookmark:(id)bookmark error:(id *)error
 {
-  v7 = a3;
+  caseCopy = case;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [[CCSerializedSet alloc] initWithSet:self useCase:v7 error:a5];
+    selfCopy = [[CCSerializedSet alloc] initWithSet:self useCase:caseCopy error:error];
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCSet *)self isEqualToSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCSet *)self isEqualToSet:v5];
   }
 
   return v6;
 }
 
-- (CCSet)initWithCoder:(id)a3
+- (CCSet)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"t"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"t"];
   if (v5 == CCTypeIdentifierUnknown)
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v7 = v5;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
     if (v8)
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
       v13 = 0;
-      v10 = -[CCSet initWithItemType:personaIdentifier:encodedDescriptors:options:error:](self, "initWithItemType:personaIdentifier:encodedDescriptors:options:error:", v7, v9, v8, [v4 decodeInt32ForKey:@"o"], &v13);
+      v10 = -[CCSet initWithItemType:personaIdentifier:encodedDescriptors:options:error:](self, "initWithItemType:personaIdentifier:encodedDescriptors:options:error:", v7, v9, v8, [coderCopy decodeInt32ForKey:@"o"], &v13);
       v11 = v13;
       if (!v10)
       {
-        [v4 failWithError:v11];
+        [coderCopy failWithError:v11];
       }
 
       self = v10;
 
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemType = self->_itemType;
-  v5 = a3;
-  [v5 encodeInteger:itemType forKey:@"t"];
-  [v5 encodeObject:self->_encodedDescriptors forKey:@"d"];
-  [v5 encodeObject:self->_personaIdentifier forKey:@"p"];
-  [v5 encodeInt32:self->_options forKey:@"o"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:itemType forKey:@"t"];
+  [coderCopy encodeObject:self->_encodedDescriptors forKey:@"d"];
+  [coderCopy encodeObject:self->_personaIdentifier forKey:@"p"];
+  [coderCopy encodeInt32:self->_options forKey:@"o"];
 }
 
-+ (id)setFromXPCDictionary:(id)a3 error:(id *)a4
++ (id)setFromXPCDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  uint64 = xpc_dictionary_get_uint64(v5, [@"t" UTF8String]);
-  v7 = _NSStringFromXPCDictionary(v5, [@"d" UTF8String]);
-  v8 = _NSStringFromXPCDictionary(v5, [@"p" UTF8String]);
-  v9 = xpc_dictionary_get_uint64(v5, [@"o" UTF8String]);
+  dictionaryCopy = dictionary;
+  uint64 = xpc_dictionary_get_uint64(dictionaryCopy, [@"t" UTF8String]);
+  v7 = _NSStringFromXPCDictionary(dictionaryCopy, [@"d" UTF8String]);
+  v8 = _NSStringFromXPCDictionary(dictionaryCopy, [@"p" UTF8String]);
+  v9 = xpc_dictionary_get_uint64(dictionaryCopy, [@"o" UTF8String]);
 
-  v10 = [objc_alloc(objc_opt_class()) initWithItemType:uint64 personaIdentifier:v8 encodedDescriptors:v7 options:v9 error:a4];
+  v10 = [objc_alloc(objc_opt_class()) initWithItemType:uint64 personaIdentifier:v8 encodedDescriptors:v7 options:v9 error:error];
 
   return v10;
 }
@@ -358,19 +358,19 @@ LABEL_6:
   return empty;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"itemType"];
-  v6 = [v5 unsignedIntValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"itemType"];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"personaIdentifier"];
-  v8 = [v4 objectForKeyedSubscript:@"descriptors"];
-  v9 = [v4 objectForKeyedSubscript:@"options"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"personaIdentifier"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"descriptors"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"options"];
 
-  LOBYTE(v4) = [v9 unsignedIntValue];
+  LOBYTE(dictionaryCopy) = [v9 unsignedIntValue];
   v17 = 0;
-  v10 = [(CCSet *)self initWithItemType:v6 personaIdentifier:v7 encodedDescriptors:v8 options:v4 error:&v17];
+  v10 = [(CCSet *)self initWithItemType:unsignedIntValue personaIdentifier:v7 encodedDescriptors:v8 options:dictionaryCopy error:&v17];
   v11 = v17;
   v12 = v10;
   v13 = v12;
@@ -398,19 +398,19 @@ LABEL_6:
   v13[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[CCSet itemType](self, "itemType")}];
-  v5 = [(CCSet *)self encodedDescriptors];
-  v13[1] = v5;
+  encodedDescriptors = [(CCSet *)self encodedDescriptors];
+  v13[1] = encodedDescriptors;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[CCSet options](self, "options")}];
   v13[2] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
   v8 = [v3 initWithObjects:v7 forKeys:&unk_1F2EC9690];
 
-  v9 = [(CCSet *)self personaIdentifier];
+  personaIdentifier = [(CCSet *)self personaIdentifier];
 
-  if (v9)
+  if (personaIdentifier)
   {
-    v10 = [(CCSet *)self personaIdentifier];
-    [v8 setObject:v10 forKeyedSubscript:@"personaIdentifier"];
+    personaIdentifier2 = [(CCSet *)self personaIdentifier];
+    [v8 setObject:personaIdentifier2 forKeyedSubscript:@"personaIdentifier"];
   }
 
   v11 = *MEMORY[0x1E69E9840];

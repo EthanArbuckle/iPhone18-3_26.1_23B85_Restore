@@ -1,29 +1,29 @@
 @interface REMDaemonUserDefaults
 - (int64_t)schedulingState;
-- (void)setSchedulingState:(int64_t)a3;
+- (void)setSchedulingState:(int64_t)state;
 @end
 
 @implementation REMDaemonUserDefaults
 
 - (int64_t)schedulingState
 {
-  v2 = [(REMDaemonUserDefaults *)self cloudKitSchemaCatchUpSyncSchedulingState];
-  v3 = [v2 integerValue];
+  cloudKitSchemaCatchUpSyncSchedulingState = [(REMDaemonUserDefaults *)self cloudKitSchemaCatchUpSyncSchedulingState];
+  integerValue = [cloudKitSchemaCatchUpSyncSchedulingState integerValue];
 
-  if (v3 >= 3)
+  if (integerValue >= 3)
   {
     return 3;
   }
 
   else
   {
-    return v3;
+    return integerValue;
   }
 }
 
-- (void)setSchedulingState:(int64_t)a3
+- (void)setSchedulingState:(int64_t)state
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:state];
   [(REMDaemonUserDefaults *)self setCloudKitSchemaCatchUpSyncSchedulingState:v4];
 }
 

@@ -12,11 +12,11 @@
   v52 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 pixelBuffer];
-  if (v8)
+  pixelBuffer = [v6 pixelBuffer];
+  if (pixelBuffer)
   {
-    v9 = v8;
-    Width = CVPixelBufferGetWidth(v8);
+    v9 = pixelBuffer;
+    Width = CVPixelBufferGetWidth(pixelBuffer);
     Height = CVPixelBufferGetHeight(v9);
   }
 
@@ -33,7 +33,7 @@
     goto LABEL_21;
   }
 
-  v15 = [v7 distortionModel];
+  distortionModel = [v7 distortionModel];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -54,7 +54,7 @@
         *buf = 138543618;
         v49 = v38;
         v50 = 2048;
-        v51 = a1;
+        selfCopy2 = self;
         v39 = "%{public}@ <%p>: Unsupported distoration model to scale for imageData";
         v40 = v36;
         v41 = OS_LOG_TYPE_ERROR;
@@ -70,7 +70,7 @@ LABEL_18:
       *buf = 138543618;
       v49 = v38;
       v50 = 2048;
-      v51 = a1;
+      selfCopy2 = self;
       v39 = "Error: %{public}@ <%p>: Unsupported distoration model to scale for imageData";
       v40 = v36;
       v41 = OS_LOG_TYPE_INFO;
@@ -92,12 +92,12 @@ LABEL_18:
   [v7 referenceDimensions];
   v24 = v23;
   v26 = v25;
-  [v15 distortionCenter];
+  [distortionModel distortionCenter];
   v28 = v27;
   v30 = v29;
-  v31 = [v15 lensDistortionLookupTable];
-  v32 = [v15 inverseLensDistortionLookupTable];
-  v33 = [v16 ar_initWithImageData:v6 cameraToPlatformTransform:v31 pixelSize:v32 referenceDimensions:v47 distortionCenter:v46 lensDistortionLookupTable:v45 inverseLensDistortionLookupTable:{v44, v22, v24, v26, v28, v30}];
+  lensDistortionLookupTable = [distortionModel lensDistortionLookupTable];
+  inverseLensDistortionLookupTable = [distortionModel inverseLensDistortionLookupTable];
+  v33 = [v16 ar_initWithImageData:v6 cameraToPlatformTransform:lensDistortionLookupTable pixelSize:inverseLensDistortionLookupTable referenceDimensions:v47 distortionCenter:v46 lensDistortionLookupTable:v45 inverseLensDistortionLookupTable:{v44, v22, v24, v26, v28, v30}];
 
 LABEL_20:
 LABEL_21:
@@ -132,7 +132,7 @@ LABEL_21:
       *buf = 138543618;
       v55 = v33;
       v56 = 2048;
-      v57 = a1;
+      selfCopy6 = self;
       v34 = "%{public}@ <%p>: calibrationData is nil";
 LABEL_22:
       v42 = v31;
@@ -153,7 +153,7 @@ LABEL_28:
     *buf = 138543618;
     v55 = v33;
     v56 = 2048;
-    v57 = a1;
+    selfCopy6 = self;
     v34 = "Error: %{public}@ <%p>: calibrationData is nil";
 LABEL_27:
     v42 = v31;
@@ -161,9 +161,9 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v6 = [v4 lensDistortionLookupTable];
+  lensDistortionLookupTable = [v4 lensDistortionLookupTable];
 
-  if (!v6)
+  if (!lensDistortionLookupTable)
   {
     if (ARShouldUseLogTypeError_onceToken_43 != -1)
     {
@@ -185,7 +185,7 @@ LABEL_27:
       *buf = 138543618;
       v55 = v33;
       v56 = 2048;
-      v57 = a1;
+      selfCopy6 = self;
       v34 = "%{public}@ <%p>: lensDistortionLookupTable is nil";
       goto LABEL_22;
     }
@@ -200,22 +200,22 @@ LABEL_27:
     *buf = 138543618;
     v55 = v33;
     v56 = 2048;
-    v57 = a1;
+    selfCopy6 = self;
     v34 = "Error: %{public}@ <%p>: lensDistortionLookupTable is nil";
     goto LABEL_27;
   }
 
-  v7 = [v5 inverseLensDistortionLookupTable];
+  inverseLensDistortionLookupTable = [v5 inverseLensDistortionLookupTable];
 
-  if (v7)
+  if (inverseLensDistortionLookupTable)
   {
     v8 = objc_alloc(MEMORY[0x1E698C178]);
     [v5 lensDistortionCenter];
     v10 = v9;
     v12 = v11;
-    v13 = [v5 lensDistortionLookupTable];
-    v14 = [v5 inverseLensDistortionLookupTable];
-    v15 = [v8 initWithDistortionCenter:v13 lensDistortionLookupTable:v14 inverseLensDistortionLookupTable:{v10, v12}];
+    lensDistortionLookupTable2 = [v5 lensDistortionLookupTable];
+    inverseLensDistortionLookupTable2 = [v5 inverseLensDistortionLookupTable];
+    v15 = [v8 initWithDistortionCenter:lensDistortionLookupTable2 lensDistortionLookupTable:inverseLensDistortionLookupTable2 inverseLensDistortionLookupTable:{v10, v12}];
 
     v16 = objc_alloc(MEMORY[0x1E698C160]);
     [v5 intrinsicMatrix];
@@ -255,7 +255,7 @@ LABEL_27:
     *buf = 138543618;
     v55 = v33;
     v56 = 2048;
-    v57 = a1;
+    selfCopy6 = self;
     v34 = "Error: %{public}@ <%p>: inverseLensDistortionLookupTable is nil";
     goto LABEL_27;
   }
@@ -267,7 +267,7 @@ LABEL_27:
     *buf = 138543618;
     v55 = v33;
     v56 = 2048;
-    v57 = a1;
+    selfCopy6 = self;
     v34 = "%{public}@ <%p>: inverseLensDistortionLookupTable is nil";
     goto LABEL_22;
   }
@@ -298,10 +298,10 @@ LABEL_30:
   [v7 lensDistortionCenter];
   v20 = v19;
   v22 = v21;
-  v23 = [v7 lensDistortionLookupTable];
-  v24 = [v7 inverseLensDistortionLookupTable];
+  lensDistortionLookupTable = [v7 lensDistortionLookupTable];
+  inverseLensDistortionLookupTable = [v7 inverseLensDistortionLookupTable];
 
-  v25 = [a1 ar_initWithImageData:v8 cameraToPlatformTransform:v23 pixelSize:v24 referenceDimensions:v30 distortionCenter:v29 lensDistortionLookupTable:v28 inverseLensDistortionLookupTable:{v27, v14, v16, v18, v20, v22}];
+  v25 = [self ar_initWithImageData:v8 cameraToPlatformTransform:lensDistortionLookupTable pixelSize:inverseLensDistortionLookupTable referenceDimensions:v30 distortionCenter:v29 lensDistortionLookupTable:v28 inverseLensDistortionLookupTable:{v27, v14, v16, v18, v20, v22}];
 
   return v25;
 }
@@ -317,7 +317,7 @@ LABEL_30:
   [v25 imageResolution];
   v30 = [objc_alloc(MEMORY[0x1E698C178]) initWithDistortionCenter:v24 lensDistortionLookupTable:v23 inverseLensDistortionLookupTable:{v28, -(v29 - a8 * v27) * -0.5 + a15 * v27}];
 
-  v31 = a1;
+  selfCopy = self;
   [v25 cameraIntrinsics];
   v42 = v33;
   v43 = v32;
@@ -326,7 +326,7 @@ LABEL_30:
   v36 = v35;
   v38 = v37;
 
-  v39 = [v31 initWithIntrinsics:v30 cameraToPlatformTransform:v43 pixelSize:v42 forReferenceDimensions:v41 withDistortionModel:{a2, a3, a4, a5, a6, v36, v38}];
+  v39 = [selfCopy initWithIntrinsics:v30 cameraToPlatformTransform:v43 pixelSize:v42 forReferenceDimensions:v41 withDistortionModel:{a2, a3, a4, a5, a6, v36, v38}];
 
   return v39;
 }

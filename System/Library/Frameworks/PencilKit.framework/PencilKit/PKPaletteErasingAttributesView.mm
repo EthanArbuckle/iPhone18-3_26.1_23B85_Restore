@@ -1,20 +1,20 @@
 @interface PKPaletteErasingAttributesView
 - (CGSize)intrinsicContentSize;
-- (PKPaletteErasingAttributesView)initWithFrame:(CGRect)a3;
+- (PKPaletteErasingAttributesView)initWithFrame:(CGRect)frame;
 - (int64_t)eraserType;
 - (void)_updateThicknessPickerToolConfiguration;
-- (void)setEraserType:(int64_t)a3;
-- (void)setHideWeightPicker:(BOOL)a3;
+- (void)setEraserType:(int64_t)type;
+- (void)setHideWeightPicker:(BOOL)picker;
 @end
 
 @implementation PKPaletteErasingAttributesView
 
-- (PKPaletteErasingAttributesView)initWithFrame:(CGRect)a3
+- (PKPaletteErasingAttributesView)initWithFrame:(CGRect)frame
 {
   v59[1] = *MEMORY[0x1E69E9840];
   v56.receiver = self;
   v56.super_class = PKPaletteErasingAttributesView;
-  v3 = [(PKPaletteErasingAttributesView *)&v56 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteErasingAttributesView *)&v56 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCF38]);
@@ -32,58 +32,58 @@
     [(PKPaletteErasingAttributesView *)v3 addSubview:v3->_thicknessPicker];
     +[PKLayoutConstants inkAttributesPickerViewOuterPadding];
     v9 = v8;
-    v10 = [(UISegmentedControl *)v3->_segmentedControl bottomAnchor];
-    v11 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
-    v12 = [v11 bottomAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:-v9];
+    bottomAnchor = [(UISegmentedControl *)v3->_segmentedControl bottomAnchor];
+    safeAreaLayoutGuide = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v9];
     v59[0] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:1];
     hiddenThicknessPickerConstraints = v3->_hiddenThicknessPickerConstraints;
     v3->_hiddenThicknessPickerConstraints = v14;
 
-    v53 = [(UISegmentedControl *)v3->_segmentedControl bottomAnchor];
-    v51 = [(_PKInkThicknessPicker *)v3->_thicknessPicker topAnchor];
-    v49 = [v53 constraintEqualToAnchor:v51 constant:-v9];
+    bottomAnchor3 = [(UISegmentedControl *)v3->_segmentedControl bottomAnchor];
+    topAnchor = [(_PKInkThicknessPicker *)v3->_thicknessPicker topAnchor];
+    v49 = [bottomAnchor3 constraintEqualToAnchor:topAnchor constant:-v9];
     v58[0] = v49;
-    v47 = [(_PKInkThicknessPicker *)v3->_thicknessPicker widthAnchor];
-    v45 = [v47 constraintEqualToConstant:280.0];
+    widthAnchor = [(_PKInkThicknessPicker *)v3->_thicknessPicker widthAnchor];
+    v45 = [widthAnchor constraintEqualToConstant:280.0];
     v58[1] = v45;
-    v44 = [(_PKInkThicknessPicker *)v3->_thicknessPicker centerXAnchor];
-    v43 = [(UISegmentedControl *)v3->_segmentedControl centerXAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    centerXAnchor = [(_PKInkThicknessPicker *)v3->_thicknessPicker centerXAnchor];
+    centerXAnchor2 = [(UISegmentedControl *)v3->_segmentedControl centerXAnchor];
+    v42 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v58[2] = v42;
-    v41 = [(_PKInkThicknessPicker *)v3->_thicknessPicker leadingAnchor];
-    v16 = [(UISegmentedControl *)v3->_segmentedControl leadingAnchor];
-    v17 = [v41 constraintGreaterThanOrEqualToAnchor:v16];
+    leadingAnchor = [(_PKInkThicknessPicker *)v3->_thicknessPicker leadingAnchor];
+    leadingAnchor2 = [(UISegmentedControl *)v3->_segmentedControl leadingAnchor];
+    v17 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v58[3] = v17;
-    v18 = [(_PKInkThicknessPicker *)v3->_thicknessPicker trailingAnchor];
-    v19 = [(UISegmentedControl *)v3->_segmentedControl trailingAnchor];
-    v20 = [v18 constraintLessThanOrEqualToAnchor:v19];
+    trailingAnchor = [(_PKInkThicknessPicker *)v3->_thicknessPicker trailingAnchor];
+    trailingAnchor2 = [(UISegmentedControl *)v3->_segmentedControl trailingAnchor];
+    v20 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v58[4] = v20;
-    v21 = [(_PKInkThicknessPicker *)v3->_thicknessPicker bottomAnchor];
-    v22 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
-    v23 = [v22 bottomAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23 constant:-v9];
+    bottomAnchor4 = [(_PKInkThicknessPicker *)v3->_thicknessPicker bottomAnchor];
+    safeAreaLayoutGuide2 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
+    bottomAnchor5 = [safeAreaLayoutGuide2 bottomAnchor];
+    v24 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-v9];
     v58[5] = v24;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:6];
     visibleThicknessPickerConstraints = v3->_visibleThicknessPickerConstraints;
     v3->_visibleThicknessPickerConstraints = v25;
 
     v46 = MEMORY[0x1E696ACD8];
-    v52 = [(UISegmentedControl *)v3->_segmentedControl topAnchor];
-    v54 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
-    v50 = [v54 topAnchor];
-    v48 = [v52 constraintEqualToAnchor:v50 constant:v9];
+    topAnchor2 = [(UISegmentedControl *)v3->_segmentedControl topAnchor];
+    safeAreaLayoutGuide3 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
+    topAnchor3 = [safeAreaLayoutGuide3 topAnchor];
+    v48 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:v9];
     v57[0] = v48;
-    v27 = [(UISegmentedControl *)v3->_segmentedControl leadingAnchor];
-    v28 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
-    v29 = [v28 leadingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:v9];
+    leadingAnchor3 = [(UISegmentedControl *)v3->_segmentedControl leadingAnchor];
+    safeAreaLayoutGuide4 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
+    leadingAnchor4 = [safeAreaLayoutGuide4 leadingAnchor];
+    v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v9];
     v57[1] = v30;
-    v31 = [(UISegmentedControl *)v3->_segmentedControl trailingAnchor];
-    v32 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
-    v33 = [v32 trailingAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33 constant:-v9];
+    trailingAnchor3 = [(UISegmentedControl *)v3->_segmentedControl trailingAnchor];
+    safeAreaLayoutGuide5 = [(PKPaletteErasingAttributesView *)v3 safeAreaLayoutGuide];
+    trailingAnchor4 = [safeAreaLayoutGuide5 trailingAnchor];
+    v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v9];
     v57[2] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:3];
     [v46 activateConstraints:v35];
@@ -103,13 +103,13 @@
   return v3;
 }
 
-- (void)setHideWeightPicker:(BOOL)a3
+- (void)setHideWeightPicker:(BOOL)picker
 {
-  if (self->_hideWeightPicker != a3)
+  if (self->_hideWeightPicker != picker)
   {
     v11 = v3;
-    self->_hideWeightPicker = a3;
-    if (a3)
+    self->_hideWeightPicker = picker;
+    if (picker)
     {
       [MEMORY[0x1E696ACD8] deactivateConstraints:self->_visibleThicknessPickerConstraints];
       [(_PKInkThicknessPicker *)self->_thicknessPicker removeFromSuperview];
@@ -129,24 +129,24 @@
   }
 }
 
-- (void)setEraserType:(int64_t)a3
+- (void)setEraserType:(int64_t)type
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((type & 0x8000000000000000) == 0)
   {
-    v8 = [(PKPaletteErasingAttributesView *)self segmentedControl];
-    if ([v8 numberOfSegments] <= a3)
+    segmentedControl = [(PKPaletteErasingAttributesView *)self segmentedControl];
+    if ([segmentedControl numberOfSegments] <= type)
     {
     }
 
     else
     {
-      v5 = [(PKPaletteErasingAttributesView *)self segmentedControl];
-      v6 = [v5 selectedSegmentIndex];
+      segmentedControl2 = [(PKPaletteErasingAttributesView *)self segmentedControl];
+      selectedSegmentIndex = [segmentedControl2 selectedSegmentIndex];
 
-      if (v6 != a3)
+      if (selectedSegmentIndex != type)
       {
-        v7 = [(PKPaletteErasingAttributesView *)self segmentedControl];
-        [v7 setSelectedSegmentIndex:a3];
+        segmentedControl3 = [(PKPaletteErasingAttributesView *)self segmentedControl];
+        [segmentedControl3 setSelectedSegmentIndex:type];
 
         [(PKPaletteErasingAttributesView *)self _updateThicknessPickerToolConfiguration];
       }
@@ -156,9 +156,9 @@
 
 - (void)_updateThicknessPickerToolConfiguration
 {
-  v3 = [(PKPaletteErasingAttributesView *)self eraserType];
+  eraserType = [(PKPaletteErasingAttributesView *)self eraserType];
   v4 = &PKInkIdentifierObjectEraser;
-  if (v3 != 1)
+  if (eraserType != 1)
   {
     v4 = &PKInkIdentifierEraser;
   }
@@ -170,18 +170,18 @@
 
 - (int64_t)eraserType
 {
-  v2 = [(PKPaletteErasingAttributesView *)self segmentedControl];
-  v3 = [v2 selectedSegmentIndex];
+  segmentedControl = [(PKPaletteErasingAttributesView *)self segmentedControl];
+  selectedSegmentIndex = [segmentedControl selectedSegmentIndex];
 
-  return v3;
+  return selectedSegmentIndex;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PKPaletteErasingAttributesView *)self segmentedControl];
+  segmentedControl = [(PKPaletteErasingAttributesView *)self segmentedControl];
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  [v3 sizeThatFits:{*MEMORY[0x1E695F060], v5}];
+  [segmentedControl sizeThatFits:{*MEMORY[0x1E695F060], v5}];
   v7 = v6;
   v9 = v8;
 
@@ -195,8 +195,8 @@
 
   else
   {
-    v14 = [(PKPaletteErasingAttributesView *)self thicknessPicker];
-    [v14 sizeThatFits:{v4, v5}];
+    thicknessPicker = [(PKPaletteErasingAttributesView *)self thicknessPicker];
+    [thicknessPicker sizeThatFits:{v4, v5}];
     v16 = v15;
     v18 = v17;
 

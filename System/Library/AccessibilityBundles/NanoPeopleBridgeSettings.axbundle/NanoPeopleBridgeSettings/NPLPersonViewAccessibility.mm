@@ -1,5 +1,5 @@
 @interface NPLPersonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsAddPersonSlot;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityPeopleViewController;
@@ -14,13 +14,13 @@
 
 @implementation NPLPersonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NPLPersonView" hasInstanceMethod:@"person" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NPLPersonView" hasInstanceMethod:@"position" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NPLPersonView" hasInstanceVariable:@"_style" withType:"q"];
-  [v3 validateClass:@"FKPerson" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NPLPersonView" hasInstanceMethod:@"person" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NPLPersonView" hasInstanceMethod:@"position" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NPLPersonView" hasInstanceVariable:@"_style" withType:"q"];
+  [validationsCopy validateClass:@"FKPerson" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -94,8 +94,8 @@
 - (void)accessibilityIncrement
 {
   v3 = [(NPLPersonViewAccessibility *)self safeUnsignedIntegerForKey:@"position"];
-  v4 = [(NPLPersonViewAccessibility *)self _accessibilityPeopleViewController];
-  [v4 _accessibilitySwapPeopleAtIndex:v3 andIndex:(v3 + 1) % 0xC];
+  _accessibilityPeopleViewController = [(NPLPersonViewAccessibility *)self _accessibilityPeopleViewController];
+  [_accessibilityPeopleViewController _accessibilitySwapPeopleAtIndex:v3 andIndex:(v3 + 1) % 0xC];
 }
 
 - (void)accessibilityDecrement
@@ -112,8 +112,8 @@
     v5 = 11;
   }
 
-  v6 = [(NPLPersonViewAccessibility *)self _accessibilityPeopleViewController];
-  [v6 _accessibilitySwapPeopleAtIndex:v4 andIndex:v5];
+  _accessibilityPeopleViewController = [(NPLPersonViewAccessibility *)self _accessibilityPeopleViewController];
+  [_accessibilityPeopleViewController _accessibilitySwapPeopleAtIndex:v4 andIndex:v5];
 }
 
 - (id)accessibilityHint
@@ -131,14 +131,14 @@
 
   else
   {
-    v4 = [(NPLPersonViewAccessibility *)self _accessibilityStyle];
+    _accessibilityStyle = [(NPLPersonViewAccessibility *)self _accessibilityStyle];
     v5 = @"person.hint";
-    if (v4 == 2)
+    if (_accessibilityStyle == 2)
     {
       v5 = @"person.triple.tap.hint";
     }
 
-    if (v4 == 1)
+    if (_accessibilityStyle == 1)
     {
       v6 = @"person.crown.hint";
     }
@@ -177,9 +177,9 @@ LABEL_11:
 - (id)_accessibilityPeopleViewController
 {
   v2 = [(NPLPersonViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_0 startWithSelf:0];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 BOOL __64__NPLPersonViewAccessibility__accessibilityPeopleViewController__block_invoke(id a1, id a2)

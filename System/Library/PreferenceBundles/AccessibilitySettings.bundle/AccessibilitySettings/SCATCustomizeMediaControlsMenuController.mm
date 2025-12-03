@@ -1,6 +1,6 @@
 @interface SCATCustomizeMediaControlsMenuController
 - (id)itemsFromPreferences;
-- (void)updateItemsInPreferences:(id)a3;
+- (void)updateItemsInPreferences:(id)preferences;
 @end
 
 @implementation SCATCustomizeMediaControlsMenuController
@@ -8,16 +8,16 @@
 - (id)itemsFromPreferences
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlMediaControlsMenuItems];
+  switchControlMediaControlsMenuItems = [v2 switchControlMediaControlsMenuItems];
 
-  return v3;
+  return switchControlMediaControlsMenuItems;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = +[AXSettings sharedInstance];
-  [v4 setSwitchControlMediaControlsMenuItems:v3];
+  [v4 setSwitchControlMediaControlsMenuItems:preferencesCopy];
 }
 
 @end

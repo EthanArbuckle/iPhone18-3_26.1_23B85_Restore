@@ -1,8 +1,8 @@
 @interface TransitTripStopItem
-- (TransitTripStopItem)initWithPlaceHolderType:(unint64_t)a3 numCollapsedStops:(unint64_t)a4;
-- (TransitTripStopItem)initWithTransitTripStop:(id)a3 stopIndex:(unint64_t)a4;
+- (TransitTripStopItem)initWithPlaceHolderType:(unint64_t)type numCollapsedStops:(unint64_t)stops;
+- (TransitTripStopItem)initWithTransitTripStop:(id)stop stopIndex:(unint64_t)index;
 - (id)description;
-- (id)placeholderTextForLine:(id)a3;
+- (id)placeholderTextForLine:(id)line;
 @end
 
 @implementation TransitTripStopItem
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (id)placeholderTextForLine:(id)a3
+- (id)placeholderTextForLine:(id)line
 {
-  v4 = [a3 isBus];
+  isBus = [line isBus];
   type = self->_type;
   if (type == 2)
   {
     v6 = +[NSBundle mainBundle];
-    if (v4)
+    if (isBus)
     {
       v7 = @"[Transit Schedule] (Bus) Additional bus stops";
     }
@@ -49,7 +49,7 @@
     }
 
     v6 = +[NSBundle mainBundle];
-    if (v4)
+    if (isBus)
     {
       v7 = @"[Transit Schedule] (Bus) Previous stops text";
     }
@@ -69,18 +69,18 @@ LABEL_11:
   return v8;
 }
 
-- (TransitTripStopItem)initWithTransitTripStop:(id)a3 stopIndex:(unint64_t)a4
+- (TransitTripStopItem)initWithTransitTripStop:(id)stop stopIndex:(unint64_t)index
 {
-  v7 = a3;
+  stopCopy = stop;
   v13.receiver = self;
   v13.super_class = TransitTripStopItem;
   v8 = [(TransitTripStopItem *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transitTripStop, a3);
+    objc_storeStrong(&v8->_transitTripStop, stop);
     v9->_type = 0;
-    v10 = [NSNumber numberWithUnsignedInteger:a4];
+    v10 = [NSNumber numberWithUnsignedInteger:index];
     identifier = v9->_identifier;
     v9->_identifier = v10;
   }
@@ -88,7 +88,7 @@ LABEL_11:
   return v9;
 }
 
-- (TransitTripStopItem)initWithPlaceHolderType:(unint64_t)a3 numCollapsedStops:(unint64_t)a4
+- (TransitTripStopItem)initWithPlaceHolderType:(unint64_t)type numCollapsedStops:(unint64_t)stops
 {
   v15.receiver = self;
   v15.super_class = TransitTripStopItem;
@@ -96,18 +96,18 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v6->_numberOfCollapsedStops = a4;
-    v6->_type = a3;
+    v6->_numberOfCollapsedStops = stops;
+    v6->_type = type;
     v8 = @"PostAlightingPlaceholder";
-    if (a3 == 1)
+    if (type == 1)
     {
       v8 = @"PreBoardingPlaceholder";
     }
 
     v9 = v8;
     v10 = +[NSUUID UUID];
-    v11 = [v10 UUIDString];
-    v12 = [NSString stringWithFormat:@"%@-%lu-%@", v9, a4, v11];
+    uUIDString = [v10 UUIDString];
+    v12 = [NSString stringWithFormat:@"%@-%lu-%@", v9, stops, uUIDString];
 
     identifier = v7->_identifier;
     v7->_identifier = v12;

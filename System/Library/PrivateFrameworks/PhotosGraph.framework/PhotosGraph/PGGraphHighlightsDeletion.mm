@@ -1,5 +1,5 @@
 @interface PGGraphHighlightsDeletion
-- (PGGraphHighlightsDeletion)initWithHighlightUUIDs:(id)a3;
+- (PGGraphHighlightsDeletion)initWithHighlightUUIDs:(id)ds;
 - (id)description;
 @end
 
@@ -16,16 +16,16 @@
   return v5;
 }
 
-- (PGGraphHighlightsDeletion)initWithHighlightUUIDs:(id)a3
+- (PGGraphHighlightsDeletion)initWithHighlightUUIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = PGGraphHighlightsDeletion;
   v6 = [(PGGraphHighlightsDeletion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_highlightUUIDs, a3);
+    objc_storeStrong(&v6->_highlightUUIDs, ds);
   }
 
   return v7;

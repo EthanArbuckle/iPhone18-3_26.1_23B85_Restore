@@ -1,27 +1,27 @@
 @interface EXPSiriSchemaEXPServerCounterfactualTriggered
-- (BOOL)isEqual:(id)a3;
-- (EXPSiriSchemaEXPServerCounterfactualTriggered)initWithDictionary:(id)a3;
-- (EXPSiriSchemaEXPServerCounterfactualTriggered)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EXPSiriSchemaEXPServerCounterfactualTriggered)initWithDictionary:(id)dictionary;
+- (EXPSiriSchemaEXPServerCounterfactualTriggered)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDiffOutcome:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDiffOutcome:(BOOL)outcome;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSiriSchemaEXPServerCounterfactualTriggered
 
-- (EXPSiriSchemaEXPServerCounterfactualTriggered)initWithDictionary:(id)a3
+- (EXPSiriSchemaEXPServerCounterfactualTriggered)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = EXPSiriSchemaEXPServerCounterfactualTriggered;
   v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pegasusId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pegasusId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(EXPSiriSchemaEXPServerCounterfactualTriggered *)v5 setPegasusId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(EXPSiriSchemaEXPServerCounterfactualTriggered *)v5 setResultCandidateId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"codepathId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"codepathId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,21 +45,21 @@
       [(EXPSiriSchemaEXPServerCounterfactualTriggered *)v5 setCodepathId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isCounterfactualDifferent"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isCounterfactualDifferent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSiriSchemaEXPServerCounterfactualTriggered setIsCounterfactualDifferent:](v5, "setIsCounterfactualDifferent:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"diffOutcome"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"diffOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSiriSchemaEXPServerCounterfactualTriggered setDiffOutcome:](v5, "setDiffOutcome:", [v13 intValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"treatmentSummary"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"treatmentSummary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(EXPSiriSchemaEXPServerCounterfactualTriggered *)v5 setTreatmentSummary:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"counterfactualSummary"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"counterfactualSummary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (EXPSiriSchemaEXPServerCounterfactualTriggered)initWithJSON:(id)a3
+- (EXPSiriSchemaEXPServerCounterfactualTriggered)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,36 +117,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_codepathId)
   {
-    v4 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    codepathId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
+    dictionaryRepresentation = [codepathId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"codepathId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"codepathId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"codepathId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"codepathId"];
     }
   }
 
   if (self->_counterfactualSummary)
   {
-    v7 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    counterfactualSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
+    dictionaryRepresentation2 = [counterfactualSummary dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"counterfactualSummary"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"counterfactualSummary"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"counterfactualSummary"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"counterfactualSummary"];
     }
   }
 
@@ -164,58 +164,58 @@
       v12 = off_1E78D4940[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"diffOutcome"];
+    [dictionary setObject:v12 forKeyedSubscript:@"diffOutcome"];
     has = self->_has;
   }
 
   if (has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[EXPSiriSchemaEXPServerCounterfactualTriggered isCounterfactualDifferent](self, "isCounterfactualDifferent")}];
-    [v3 setObject:v13 forKeyedSubscript:@"isCounterfactualDifferent"];
+    [dictionary setObject:v13 forKeyedSubscript:@"isCounterfactualDifferent"];
   }
 
   if (self->_pegasusId)
   {
-    v14 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
+    dictionaryRepresentation3 = [pegasusId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"pegasusId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"pegasusId"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"pegasusId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"pegasusId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v17 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
+    v18 = [resultCandidateId copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"resultCandidateId"];
   }
 
   if (self->_treatmentSummary)
   {
-    v19 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    treatmentSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
+    dictionaryRepresentation4 = [treatmentSummary dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"treatmentSummary"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"treatmentSummary"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"treatmentSummary"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"treatmentSummary"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -250,28 +250,28 @@ LABEL_6:
   return v8 ^ v9 ^ [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self->_counterfactualSummary hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
-  v6 = [v4 pegasusId];
-  if ((v5 != 0) == (v6 == 0))
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
+  pegasusId2 = [equalCopy pegasusId];
+  if ((pegasusId != 0) == (pegasusId2 == 0))
   {
     goto LABEL_33;
   }
 
-  v7 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
-  if (v7)
+  pegasusId3 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
+  if (pegasusId3)
   {
-    v8 = v7;
-    v9 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
-    v10 = [v4 pegasusId];
-    v11 = [v9 isEqual:v10];
+    v8 = pegasusId3;
+    pegasusId4 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
+    pegasusId5 = [equalCopy pegasusId];
+    v11 = [pegasusId4 isEqual:pegasusId5];
 
     if (!v11)
     {
@@ -283,20 +283,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
+  pegasusId2 = [equalCopy resultCandidateId];
+  if ((pegasusId != 0) == (pegasusId2 == 0))
   {
     goto LABEL_33;
   }
 
-  v12 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
-  if (v12)
+  resultCandidateId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v13 = v12;
-    v14 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v16)
     {
@@ -308,20 +308,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
-  v6 = [v4 codepathId];
-  if ((v5 != 0) == (v6 == 0))
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
+  pegasusId2 = [equalCopy codepathId];
+  if ((pegasusId != 0) == (pegasusId2 == 0))
   {
     goto LABEL_33;
   }
 
-  v17 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
-  if (v17)
+  codepathId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
+  if (codepathId)
   {
-    v18 = v17;
-    v19 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
-    v20 = [v4 codepathId];
-    v21 = [v19 isEqual:v20];
+    v18 = codepathId;
+    codepathId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
+    codepathId3 = [equalCopy codepathId];
+    v21 = [codepathId2 isEqual:codepathId3];
 
     if (!v21)
     {
@@ -334,7 +334,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v23 = v4[56];
+  v23 = equalCopy[56];
   if ((*&has & 1) != (v23 & 1))
   {
     goto LABEL_34;
@@ -343,13 +343,13 @@ LABEL_6:
   if (*&has)
   {
     isCounterfactualDifferent = self->_isCounterfactualDifferent;
-    if (isCounterfactualDifferent != [v4 isCounterfactualDifferent])
+    if (isCounterfactualDifferent != [equalCopy isCounterfactualDifferent])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v23 = v4[56];
+    v23 = equalCopy[56];
   }
 
   v25 = (*&has >> 1) & 1;
@@ -361,26 +361,26 @@ LABEL_6:
   if (v25)
   {
     diffOutcome = self->_diffOutcome;
-    if (diffOutcome != [v4 diffOutcome])
+    if (diffOutcome != [equalCopy diffOutcome])
     {
       goto LABEL_34;
     }
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
-  v6 = [v4 treatmentSummary];
-  if ((v5 != 0) == (v6 == 0))
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
+  pegasusId2 = [equalCopy treatmentSummary];
+  if ((pegasusId != 0) == (pegasusId2 == 0))
   {
     goto LABEL_33;
   }
 
-  v27 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
-  if (v27)
+  treatmentSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
+  if (treatmentSummary)
   {
-    v28 = v27;
-    v29 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
-    v30 = [v4 treatmentSummary];
-    v31 = [v29 isEqual:v30];
+    v28 = treatmentSummary;
+    treatmentSummary2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
+    treatmentSummary3 = [equalCopy treatmentSummary];
+    v31 = [treatmentSummary2 isEqual:treatmentSummary3];
 
     if (!v31)
     {
@@ -392,17 +392,17 @@ LABEL_6:
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
-  v6 = [v4 counterfactualSummary];
-  if ((v5 != 0) == (v6 == 0))
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
+  pegasusId2 = [equalCopy counterfactualSummary];
+  if ((pegasusId != 0) == (pegasusId2 == 0))
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v32 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
-  if (!v32)
+  counterfactualSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
+  if (!counterfactualSummary)
   {
 
 LABEL_37:
@@ -410,10 +410,10 @@ LABEL_37:
     goto LABEL_35;
   }
 
-  v33 = v32;
-  v34 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
-  v35 = [v4 counterfactualSummary];
-  v36 = [v34 isEqual:v35];
+  v33 = counterfactualSummary;
+  counterfactualSummary2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
+  counterfactualSummary3 = [equalCopy counterfactualSummary];
+  v36 = [counterfactualSummary2 isEqual:counterfactualSummary3];
 
   if (v36)
   {
@@ -427,29 +427,29 @@ LABEL_35:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
+  toCopy = to;
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
 
-  if (v4)
+  if (pegasusId)
   {
-    v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
+    pegasusId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
+  resultCandidateId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
+  codepathId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
 
-  if (v7)
+  if (codepathId)
   {
-    v8 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
+    codepathId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -465,29 +465,29 @@ LABEL_35:
     PBDataWriterWriteInt32Field();
   }
 
-  v10 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
+  treatmentSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
 
-  if (v10)
+  if (treatmentSummary)
   {
-    v11 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
+    treatmentSummary2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
+  counterfactualSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (counterfactualSummary)
   {
-    v14 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
+    counterfactualSummary2 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (void)setHasDiffOutcome:(BOOL)a3
+- (void)setHasDiffOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 2;
   }
@@ -500,44 +500,44 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = EXPSiriSchemaEXPServerCounterfactualTriggered;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self pegasusId];
+  v7 = [pegasusId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self deletePegasusId];
   }
 
-  v9 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  codepathId = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self codepathId];
+  v10 = [codepathId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self deleteCodepathId];
   }
 
-  v12 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  treatmentSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self treatmentSummary];
+  v13 = [treatmentSummary applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self deleteTreatmentSummary];
   }
 
-  v15 = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  counterfactualSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self counterfactualSummary];
+  v16 = [counterfactualSummary applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self deleteCounterfactualSummary];
   }

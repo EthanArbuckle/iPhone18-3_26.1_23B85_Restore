@@ -1,21 +1,21 @@
 @interface PXHistoryLineView
-- (PXHistoryLineView)initWithHistoryLine:(id)a3;
+- (PXHistoryLineView)initWithHistoryLine:(id)line;
 - (void)layoutSubviews;
-- (void)setHistoryLine:(id)a3;
+- (void)setHistoryLine:(id)line;
 @end
 
 @implementation PXHistoryLineView
 
-- (void)setHistoryLine:(id)a3
+- (void)setHistoryLine:(id)line
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"state"];
+  lineCopy = line;
+  v5 = [lineCopy objectForKeyedSubscript:@"state"];
   [(PXStateBadgeView *)self->_stateBadgeView setState:v5];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [v4 objectForKeyedSubscript:@"stage"];
-  v8 = [v4 objectForKeyedSubscript:@"agent"];
-  v9 = [v4 objectForKeyedSubscript:@"reason"];
+  v7 = [lineCopy objectForKeyedSubscript:@"stage"];
+  v8 = [lineCopy objectForKeyedSubscript:@"agent"];
+  v9 = [lineCopy objectForKeyedSubscript:@"reason"];
 
   v10 = [v6 stringWithFormat:@"%@ (%@): %@", v7, v8, v9];
 
@@ -33,9 +33,9 @@
   [(UILabel *)self->_reasonLabel setFont:v3];
 }
 
-- (PXHistoryLineView)initWithHistoryLine:(id)a3
+- (PXHistoryLineView)initWithHistoryLine:(id)line
 {
-  v4 = a3;
+  lineCopy = line;
   v11.receiver = self;
   v11.super_class = PXHistoryLineView;
   v5 = [(PXHistoryLineView *)&v11 init];
@@ -52,7 +52,7 @@
 
     [(UILabel *)v5->_reasonLabel setNumberOfLines:2];
     [(PXHistoryLineView *)v5 addSubview:v5->_reasonLabel];
-    [(PXHistoryLineView *)v5 setHistoryLine:v4];
+    [(PXHistoryLineView *)v5 setHistoryLine:lineCopy];
   }
 
   return v5;

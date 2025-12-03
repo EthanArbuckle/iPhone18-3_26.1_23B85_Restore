@@ -1,17 +1,17 @@
 @interface ICQCommerceRemoteUIDataProvider
-- (BOOL)parseData:(id)a3 returningError:(id *)a4;
+- (BOOL)parseData:(id)data returningError:(id *)error;
 - (ICQCommerceRemoteUIDelegate)parent;
-- (void)_setFailureType:(id)a3;
+- (void)_setFailureType:(id)type;
 @end
 
 @implementation ICQCommerceRemoteUIDataProvider
 
-- (BOOL)parseData:(id)a3 returningError:(id *)a4
+- (BOOL)parseData:(id)data returningError:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   self->_plist = 0;
   v13 = 0;
-  v7 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:0 format:&v13 error:0];
+  v7 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:0 format:&v13 error:0];
   v8 = v7;
   if (v7)
   {
@@ -21,33 +21,33 @@
 
     v12.receiver = self;
     v12.super_class = ICQCommerceRemoteUIDataProvider;
-    v10 = [(ISProtocolDataProvider *)&v12 parseData:v6 returningError:a4];
+    v10 = [(ISProtocolDataProvider *)&v12 parseData:dataCopy returningError:error];
   }
 
   else
   {
-    [(ISDataProvider *)self setOutput:v6];
+    [(ISDataProvider *)self setOutput:dataCopy];
     v10 = 1;
   }
 
   return v10;
 }
 
-- (void)_setFailureType:(id)a3
+- (void)_setFailureType:(id)type
 {
-  v6 = a3;
+  typeCopy = type;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v6 integerValue];
+    integerValue = [typeCopy integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  v5 = [(ICQCommerceRemoteUIDataProvider *)self parent];
-  [v5 setFailureType:v4];
+  parent = [(ICQCommerceRemoteUIDataProvider *)self parent];
+  [parent setFailureType:integerValue];
 }
 
 - (ICQCommerceRemoteUIDelegate)parent

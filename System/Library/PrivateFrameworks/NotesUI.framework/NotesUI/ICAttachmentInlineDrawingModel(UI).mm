@@ -20,9 +20,9 @@
 
 - (void)attachmentModelDealloc
 {
-  v1 = [a1 titleQuery];
-  [v1 setDelegate:0];
-  [v1 pause];
+  titleQuery = [self titleQuery];
+  [titleQuery setDelegate:0];
+  [titleQuery pause];
 }
 
 - (uint64_t)mergeWithMergeableData:()UI mergeableFieldState:
@@ -47,20 +47,20 @@
     v9 = v8;
     if (v8)
     {
-      if (![a1 actuallyMergeWithDrawing:v5])
+      if (![self actuallyMergeWithDrawing:v5])
       {
         v9 = 0;
         goto LABEL_17;
       }
 
-      v11 = [a1 attachment];
-      v10 = [v11 ic_postNotificationOnMainThreadAfterSaveWithName:@"ICAttachmentInlineDrawingModelMergeableDataDidChangeNotification"];
+      attachment = [self attachment];
+      v10 = [attachment ic_postNotificationOnMainThreadAfterSaveWithName:@"ICAttachmentInlineDrawingModelMergeableDataDidChangeNotification"];
     }
 
     else
     {
-      v11 = os_log_create("com.apple.notes", "UI");
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      attachment = os_log_create("com.apple.notes", "UI");
+      if (os_log_type_enabled(attachment, OS_LOG_TYPE_ERROR))
       {
         [ICAttachmentInlineDrawingModel(UI) mergeWithMergeableData:mergeableFieldState:];
       }
@@ -79,8 +79,8 @@ LABEL_18:
 - (uint64_t)actuallyMergeWithDrawing:()UI
 {
   v4 = a3;
-  v5 = [a1 attachment];
-  v6 = [v5 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
 
   v35 = 0;
   v36 = &v35;
@@ -97,11 +97,11 @@ LABEL_18:
   v27[2] = __63__ICAttachmentInlineDrawingModel_UI__actuallyMergeWithDrawing___block_invoke;
   v27[3] = &unk_1E8468F58;
   v29 = &v35;
-  v27[4] = a1;
+  v27[4] = self;
   v7 = v4;
   v28 = v7;
   v30 = &v31;
-  [v6 performBlockAndWait:v27];
+  [managedObjectContext performBlockAndWait:v27];
   if ([v36[5] length])
   {
     v8 = objc_alloc(MEMORY[0x1E6978410]);
@@ -127,15 +127,15 @@ LABEL_18:
     v13 = 2;
   }
 
-  v14 = [a1 handwritingRecognitionDrawingQueue];
+  handwritingRecognitionDrawingQueue = [self handwritingRecognitionDrawingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__ICAttachmentInlineDrawingModel_UI__actuallyMergeWithDrawing___block_invoke_14;
   block[3] = &unk_1E8468F80;
-  block[4] = a1;
+  block[4] = self;
   v15 = v7;
   v25 = v15;
-  dispatch_async(v14, block);
+  dispatch_async(handwritingRecognitionDrawingQueue, block);
 
   if (!v13)
   {
@@ -143,8 +143,8 @@ LABEL_18:
     v21[1] = 3221225472;
     v21[2] = __63__ICAttachmentInlineDrawingModel_UI__actuallyMergeWithDrawing___block_invoke_15;
     v21[3] = &unk_1E8468BA0;
-    v21[4] = a1;
-    [v6 performBlockAndWait:v21];
+    v21[4] = self;
+    [managedObjectContext performBlockAndWait:v21];
     goto LABEL_14;
   }
 
@@ -154,8 +154,8 @@ LABEL_18:
     v20[1] = 3221225472;
     v20[2] = __63__ICAttachmentInlineDrawingModel_UI__actuallyMergeWithDrawing___block_invoke_16;
     v20[3] = &unk_1E8468BA0;
-    v20[4] = a1;
-    [v6 performBlockAndWait:v20];
+    v20[4] = self;
+    [managedObjectContext performBlockAndWait:v20];
     goto LABEL_14;
   }
 
@@ -171,10 +171,10 @@ LABEL_14:
   v22[1] = 3221225472;
   v22[2] = __63__ICAttachmentInlineDrawingModel_UI__actuallyMergeWithDrawing___block_invoke_2;
   v22[3] = &unk_1E8468F80;
-  v22[4] = a1;
+  v22[4] = self;
   v17 = v16;
   v23 = v17;
-  [v6 performBlockAndWait:v22];
+  [managedObjectContext performBlockAndWait:v22];
 
   v18 = 1;
 LABEL_15:
@@ -193,15 +193,15 @@ LABEL_15:
   v11 = __Block_byref_object_copy__0;
   v12 = __Block_byref_object_dispose__0;
   v13 = 0;
-  v2 = [a1 attachment];
-  v3 = [v2 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__ICAttachmentInlineDrawingModel_UI__imageForActivityItem__block_invoke;
   v7[3] = &unk_1E8468FA8;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   if (v9[5])
   {
@@ -222,8 +222,8 @@ LABEL_15:
 - (ICAttachmentInlineDrawingActivityItemSource)activityItem
 {
   v2 = [ICAttachmentInlineDrawingActivityItemSource alloc];
-  v3 = [a1 attachment];
-  v4 = [(ICAttachmentActivityItemSource *)v2 initWithAttachment:v3];
+  attachment = [self attachment];
+  v4 = [(ICAttachmentActivityItemSource *)v2 initWithAttachment:attachment];
 
   return v4;
 }
@@ -231,11 +231,11 @@ LABEL_15:
 - (id)activityItems
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 activityItem];
-  v3 = v2;
-  if (v2)
+  activityItem = [self activityItem];
+  v3 = activityItem;
+  if (activityItem)
   {
-    v10[0] = v2;
+    v10[0] = activityItem;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }
 
@@ -245,8 +245,8 @@ LABEL_15:
   }
 
   v5 = [ICAttachmentActivityItemSource alloc];
-  v6 = [a1 attachment];
-  v7 = [(ICAttachmentActivityItemSource *)v5 initWithAttachment:v6];
+  attachment = [self attachment];
+  v7 = [(ICAttachmentActivityItemSource *)v5 initWithAttachment:attachment];
   v8 = [v4 arrayByAddingObject:v7];
 
   return v8;
@@ -254,28 +254,28 @@ LABEL_15:
 
 - (id)mergeableDataForCopying:()UI
 {
-  v1 = [a1 newDrawingFromMergeableData];
-  v2 = [v1 serializeTransiently];
+  newDrawingFromMergeableData = [self newDrawingFromMergeableData];
+  serializeTransiently = [newDrawingFromMergeableData serializeTransiently];
 
-  return v2;
+  return serializeTransiently;
 }
 
 - (void)updateAfterLoadWithSubAttachmentIdentifierMap:()UI
 {
-  v2 = [a1 newDrawingFromMergeableData];
-  if (v2)
+  newDrawingFromMergeableData = [self newDrawingFromMergeableData];
+  if (newDrawingFromMergeableData)
   {
-    v9 = v2;
-    v3 = [v2 uuid];
+    v9 = newDrawingFromMergeableData;
+    uuid = [newDrawingFromMergeableData uuid];
 
-    if (!v3)
+    if (!uuid)
     {
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((drawing.uuid) != nil)" functionName:"-[ICAttachmentInlineDrawingModel(UI) updateAfterLoadWithSubAttachmentIdentifierMap:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "drawing.uuid"}];
     }
 
-    v4 = [a1 attachment];
-    v5 = [v4 typeUTI];
-    if ([v5 isEqualToString:*MEMORY[0x1E69B7438]])
+    attachment = [self attachment];
+    typeUTI = [attachment typeUTI];
+    if ([typeUTI isEqualToString:*MEMORY[0x1E69B7438]])
     {
       v6 = 2;
     }
@@ -286,60 +286,60 @@ LABEL_15:
     }
 
     v7 = [v9 serializeWithVersion:v6];
-    v8 = [a1 attachment];
-    [v8 setMergeableData:v7];
+    attachment2 = [self attachment];
+    [attachment2 setMergeableData:v7];
 
-    v2 = v9;
+    newDrawingFromMergeableData = v9;
   }
 }
 
 - (void)setHandwritingRecognitionEnabled:()UI
 {
-  v5 = [a1 handwritingRecognitionDrawing];
+  handwritingRecognitionDrawing = [self handwritingRecognitionDrawing];
   if (a3)
   {
-    if (!v5)
+    if (!handwritingRecognitionDrawing)
     {
-      v6 = [a1 newDrawingFromMergeableData];
-      [a1 setHandwritingRecognitionDrawing:v6];
-      v5 = v6;
+      newDrawingFromMergeableData = [self newDrawingFromMergeableData];
+      [self setHandwritingRecognitionDrawing:newDrawingFromMergeableData];
+      handwritingRecognitionDrawing = newDrawingFromMergeableData;
     }
 
-    v7 = v5;
-    [v5 setRecognitionEnabled:1];
+    v7 = handwritingRecognitionDrawing;
+    [handwritingRecognitionDrawing setRecognitionEnabled:1];
   }
 
   else
   {
-    if (!v5)
+    if (!handwritingRecognitionDrawing)
     {
       return;
     }
 
-    v7 = v5;
-    [v5 cancelOngoingRecognitionRequests];
+    v7 = handwritingRecognitionDrawing;
+    [handwritingRecognitionDrawing cancelOngoingRecognitionRequests];
     [v7 setRecognitionEnabled:0];
-    [a1 setHandwritingRecognitionDrawing:0];
+    [self setHandwritingRecognitionDrawing:0];
   }
 }
 
 - (uint64_t)isHandwritingRecognitionEnabled
 {
-  v1 = [a1 handwritingRecognitionDrawing];
-  v2 = [v1 recognitionEnabled];
+  handwritingRecognitionDrawing = [self handwritingRecognitionDrawing];
+  recognitionEnabled = [handwritingRecognitionDrawing recognitionEnabled];
 
-  return v2;
+  return recognitionEnabled;
 }
 
 - (id)handwritingRecognitionDrawingQueue
 {
-  v2 = objc_getAssociatedObject(a1, ICHandwritingRecognitionDrawingQueueKey);
+  v2 = objc_getAssociatedObject(self, ICHandwritingRecognitionDrawingQueueKey);
   if (!v2)
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v2 = dispatch_queue_create("com.apple.notes.handwritingrecognition", v3);
 
-    [a1 setHandwritingRecognitionDrawingQueue:v2];
+    [self setHandwritingRecognitionDrawingQueue:v2];
   }
 
   return v2;
@@ -347,26 +347,26 @@ LABEL_15:
 
 - (void)setTitleQueryEnabled:()UI
 {
-  v5 = [a1 titleQuery];
+  titleQuery = [self titleQuery];
   v15 = 0;
   v16[0] = &v15;
   v16[1] = 0x3032000000;
   v16[2] = __Block_byref_object_copy__0;
   v16[3] = __Block_byref_object_dispose__0;
   v17 = 0;
-  v6 = [a1 attachment];
-  v7 = [v6 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__ICAttachmentInlineDrawingModel_UI__setTitleQueryEnabled___block_invoke;
   v14[3] = &unk_1E8468FA8;
-  v14[4] = a1;
+  v14[4] = self;
   v14[5] = &v15;
-  [v7 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
 
   if (a3)
   {
-    if (!v5)
+    if (!titleQuery)
     {
       v8 = os_log_create("com.apple.notes", "PencilKit");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -380,21 +380,21 @@ LABEL_15:
       v12[3] = __Block_byref_object_copy__0;
       v12[4] = __Block_byref_object_dispose__0;
       v13 = 0;
-      v9 = [a1 handwritingRecognitionDrawingQueue];
+      handwritingRecognitionDrawingQueue = [self handwritingRecognitionDrawingQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __59__ICAttachmentInlineDrawingModel_UI__setTitleQueryEnabled___block_invoke_29;
       block[3] = &unk_1E8468FF8;
-      block[4] = a1;
+      block[4] = self;
       block[5] = v12;
       block[6] = &v15;
-      dispatch_async(v9, block);
+      dispatch_async(handwritingRecognitionDrawingQueue, block);
 
       _Block_object_dispose(v12, 8);
     }
   }
 
-  else if (v5)
+  else if (titleQuery)
   {
     v10 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -402,8 +402,8 @@ LABEL_15:
       [(ICAttachmentInlineDrawingModel(UI) *)v16 setTitleQueryEnabled:v10];
     }
 
-    [v5 pause];
-    [a1 setTitleQuery:0];
+    [titleQuery pause];
+    [self setTitleQuery:0];
   }
 
   _Block_object_dispose(&v15, 8);
@@ -411,65 +411,65 @@ LABEL_15:
 
 - (BOOL)isTitleQueryEnabled
 {
-  v1 = [a1 titleQuery];
-  v2 = v1 != 0;
+  titleQuery = [self titleQuery];
+  v2 = titleQuery != 0;
 
   return v2;
 }
 
 - (void)titleQuery:()UI didUpdateWithItem:
 {
-  v5 = [a4 transcribedTitle];
-  v6 = [a1 attachment];
-  v7 = [v6 objectID];
+  transcribedTitle = [a4 transcribedTitle];
+  attachment = [self attachment];
+  objectID = [attachment objectID];
 
-  v8 = [MEMORY[0x1E69B7800] sharedContext];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__ICAttachmentInlineDrawingModel_UI__titleQuery_didUpdateWithItem___block_invoke;
   v11[3] = &unk_1E8469020;
-  v12 = v7;
-  v13 = v5;
-  v9 = v5;
-  v10 = v7;
-  [v8 performBackgroundTask:v11];
+  v12 = objectID;
+  v13 = transcribedTitle;
+  v9 = transcribedTitle;
+  v10 = objectID;
+  [mEMORY[0x1E69B7800] performBackgroundTask:v11];
 }
 
 - (void)drawPreviewInRect:()UI
 {
-  v10 = [MEMORY[0x1E69B7678] currentInfo];
+  currentInfo = [MEMORY[0x1E69B7678] currentInfo];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__0;
   v26 = __Block_byref_object_dispose__0;
   v27 = 0;
-  v11 = [a1 attachment];
-  v12 = [v11 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __56__ICAttachmentInlineDrawingModel_UI__drawPreviewInRect___block_invoke;
   v21[3] = &unk_1E8468FA8;
-  v21[4] = a1;
+  v21[4] = self;
   v21[5] = &v22;
-  [v12 performBlockAndWait:v21];
+  [managedObjectContext performBlockAndWait:v21];
 
   v13 = MEMORY[0x1E69B76A0];
-  v14 = [a1 attachment];
-  v15 = [v13 generateImageForAttachment:v14 fromDrawing:v23[5] fullResolution:0 appearanceInfo:v10];
+  attachment2 = [self attachment];
+  v15 = [v13 generateImageForAttachment:attachment2 fromDrawing:v23[5] fullResolution:0 appearanceInfo:currentInfo];
 
   if (!v15)
   {
-    v18 = [a1 attachment];
-    v19 = [v18 fallbackImageData];
+    attachment3 = [self attachment];
+    fallbackImageData = [attachment3 fallbackImageData];
 
-    if (!v19)
+    if (!fallbackImageData)
     {
       v15 = 0;
       goto LABEL_3;
     }
 
-    v20 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v19];
+    v20 = [MEMORY[0x1E69DCAB8] ic_imageWithData:fallbackImageData];
     v15 = [ICAttachmentPreviewImageLoader orientedImage:v20 withBackground:0];
 
     if (!v15)
@@ -478,9 +478,9 @@ LABEL_15:
     }
   }
 
-  v16 = [a1 attachment];
-  v17 = [v16 note];
-  +[ICPaperStyle drawPaperStyleType:inRect:](ICPaperStyle, "drawPaperStyleType:inRect:", [v17 paperStyleType], a2, a3, a4, a5);
+  attachment4 = [self attachment];
+  note = [attachment4 note];
+  +[ICPaperStyle drawPaperStyleType:inRect:](ICPaperStyle, "drawPaperStyleType:inRect:", [note paperStyleType], a2, a3, a4, a5);
 
   [v15 drawInRect:{a2, a3, a4, a5}];
 LABEL_3:

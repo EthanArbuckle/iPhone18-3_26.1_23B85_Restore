@@ -6,7 +6,7 @@
 
 + (id)bezierPathForFingerShape:()UIBezierPathFromFingerShape inRect:curveOnly:
 {
-  v14 = [MEMORY[0x277D75208] bezierPath];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   if (a3 >= a4)
   {
     v15 = a4;
@@ -18,22 +18,22 @@
   }
 
   v30 = v15;
-  v32.origin.x = a1;
+  v32.origin.x = self;
   v32.origin.y = a2;
   v32.size.width = a3;
   v32.size.height = a4;
   MaxX = CGRectGetMaxX(v32);
-  v33.origin.x = a1;
+  v33.origin.x = self;
   v33.origin.y = a2;
   v33.size.width = a3;
   v33.size.height = a4;
   MaxY = CGRectGetMaxY(v33);
-  v34.origin.x = a1;
+  v34.origin.x = self;
   v34.origin.y = a2;
   v34.size.width = a3;
   v34.size.height = a4;
   MinX = CGRectGetMinX(v34);
-  v35.origin.x = a1;
+  v35.origin.x = self;
   v35.origin.y = a2;
   v35.size.width = a3;
   v35.size.height = a4;
@@ -76,20 +76,20 @@
 LABEL_17:
     if (a8)
     {
-      [v14 moveToPoint:{v23, v22}];
-      [v14 addArcWithCenter:1 radius:v24 startAngle:v20 endAngle:v30 clockwise:{v19, v21}];
+      [bezierPath moveToPoint:{v23, v22}];
+      [bezierPath addArcWithCenter:1 radius:v24 startAngle:v20 endAngle:v30 clockwise:{v19, v21}];
     }
 
     else
     {
-      [v14 moveToPoint:{v24, v20}];
-      [v14 addLineToPoint:{v23, v22}];
-      [v14 addArcWithCenter:1 radius:v24 startAngle:v20 endAngle:v30 clockwise:{v19, v21}];
-      [v14 addLineToPoint:{v24, v20}];
-      [v14 closePath];
+      [bezierPath moveToPoint:{v24, v20}];
+      [bezierPath addLineToPoint:{v23, v22}];
+      [bezierPath addArcWithCenter:1 radius:v24 startAngle:v20 endAngle:v30 clockwise:{v19, v21}];
+      [bezierPath addLineToPoint:{v24, v20}];
+      [bezierPath closePath];
     }
 
-    v26 = v14;
+    v26 = bezierPath;
     goto LABEL_21;
   }
 
@@ -113,12 +113,12 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v36.origin.x = a1;
+  v36.origin.x = self;
   v36.origin.y = a2;
   v36.size.width = a3;
   v36.size.height = a4;
   MidX = CGRectGetMidX(v36);
-  v37.origin.x = a1;
+  v37.origin.x = self;
   v37.origin.y = a2;
   v37.size.width = a3;
   v37.size.height = a4;

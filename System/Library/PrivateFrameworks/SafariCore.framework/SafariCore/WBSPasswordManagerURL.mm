@@ -1,68 +1,68 @@
 @interface WBSPasswordManagerURL
-+ (BOOL)BOOLForPasswordManagerResourceDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5;
-+ (BOOL)_resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:(id)a3;
-+ (BOOL)_urlIsPasswordManagerURL:(id)a3 resourceSpecifierDictionary:(id)a4;
-+ (BOOL)isOtpauthMigrationResourceDictionary:(id)a3;
-+ (BOOL)isOtpauthResourceDictionary:(id)a3;
-+ (BOOL)isPasswordManagerFamilySharingGroupSetupURL:(id)a3;
-+ (BOOL)isPasswordManagerPasskeysResourceDictionary:(id)a3;
-+ (BOOL)isPasswordManagerPasswordOptionsResourceDictionary:(id)a3;
-+ (BOOL)isPasswordManagerSecurityRecommendationsResourceDictionary:(id)a3;
-+ (BOOL)isPasswordManagerVerificationCodesResourceDictionary:(id)a3;
-+ (BOOL)isPasswordManagerVerificationCodesURL:(id)a3;
-+ (BOOL)urlIsPasswordManagerURL:(id)a3;
++ (BOOL)BOOLForPasswordManagerResourceDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value;
++ (BOOL)_resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:(id)dictionary;
++ (BOOL)_urlIsPasswordManagerURL:(id)l resourceSpecifierDictionary:(id)dictionary;
++ (BOOL)isOtpauthMigrationResourceDictionary:(id)dictionary;
++ (BOOL)isOtpauthResourceDictionary:(id)dictionary;
++ (BOOL)isPasswordManagerFamilySharingGroupSetupURL:(id)l;
++ (BOOL)isPasswordManagerPasskeysResourceDictionary:(id)dictionary;
++ (BOOL)isPasswordManagerPasswordOptionsResourceDictionary:(id)dictionary;
++ (BOOL)isPasswordManagerSecurityRecommendationsResourceDictionary:(id)dictionary;
++ (BOOL)isPasswordManagerVerificationCodesResourceDictionary:(id)dictionary;
++ (BOOL)isPasswordManagerVerificationCodesURL:(id)l;
++ (BOOL)urlIsPasswordManagerURL:(id)l;
 + (NSURL)passwordManagerSecurityRecommendationsURL;
 + (NSURL)passwordManagerURLForGeneratedPasswords;
 + (NSURL)passwordManagerURLForRecentlyDeleted;
-+ (id)_resourceSpecifierDictionaryForURL:(id)a3;
-+ (id)dictionaryWithPasswordManagerURL:(id)a3;
-+ (id)passwordManagerURLForGroupWithID:(id)a3;
-+ (id)passwordManagerURLWithDictionary:(id)a3;
-+ (id)passwordManagerURLWithOtpauthURL:(id)a3;
-+ (id)passwordManagerURLWithPrefsURL:(id)a3;
-+ (id)resourceSpecifierEncodedKey:(id)a3 value:(id)a4;
-+ (id)urlForDetailViewOfSavedAccount:(id)a3;
-+ (id)valueForPasswordManagerResourceDictionary:(id)a3 key:(id)a4;
-+ (id)valueForPasswordManagerURL:(id)a3 key:(id)a4;
++ (id)_resourceSpecifierDictionaryForURL:(id)l;
++ (id)dictionaryWithPasswordManagerURL:(id)l;
++ (id)passwordManagerURLForGroupWithID:(id)d;
++ (id)passwordManagerURLWithDictionary:(id)dictionary;
++ (id)passwordManagerURLWithOtpauthURL:(id)l;
++ (id)passwordManagerURLWithPrefsURL:(id)l;
++ (id)resourceSpecifierEncodedKey:(id)key value:(id)value;
++ (id)urlForDetailViewOfSavedAccount:(id)account;
++ (id)valueForPasswordManagerResourceDictionary:(id)dictionary key:(id)key;
++ (id)valueForPasswordManagerURL:(id)l key:(id)key;
 @end
 
 @implementation WBSPasswordManagerURL
 
-+ (id)resourceSpecifierEncodedKey:(id)a3 value:(id)a4
++ (id)resourceSpecifierEncodedKey:(id)key value:(id)value
 {
   v5 = MEMORY[0x1E696AB08];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 URLQueryAllowedCharacterSet];
-  v9 = [v8 mutableCopy];
+  valueCopy = value;
+  keyCopy = key;
+  uRLQueryAllowedCharacterSet = [v5 URLQueryAllowedCharacterSet];
+  v9 = [uRLQueryAllowedCharacterSet mutableCopy];
 
   [v9 removeCharactersInString:@"&="];
-  v10 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v9];
+  v10 = [keyCopy stringByAddingPercentEncodingWithAllowedCharacters:v9];
 
-  v11 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v9];
+  v11 = [valueCopy stringByAddingPercentEncodingWithAllowedCharacters:v9];
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=%@", v10, v11];
 
   return v12;
 }
 
-+ (id)passwordManagerURLWithDictionary:(id)a3
++ (id)passwordManagerURLWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v4 setScheme:@"https"];
   [v4 setHost:@"passwords.apple.com"];
   [v4 setPath:@"/app"];
-  if ([v3 count])
+  if ([dictionaryCopy count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = v3;
-    v6 = v3;
+    v20 = dictionaryCopy;
+    v6 = dictionaryCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -81,7 +81,7 @@
           v12 = objc_alloc(MEMORY[0x1E696AF60]);
           v13 = [v6 objectForKeyedSubscript:v11];
           v14 = [v12 initWithName:v11 value:v13];
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -91,11 +91,11 @@
     }
 
     v15 = objc_alloc_init(MEMORY[0x1E696AF20]);
-    [v15 setQueryItems:v5];
-    v16 = [v15 string];
-    [v4 setPercentEncodedFragment:v16];
+    [v15 setQueryItems:array];
+    string = [v15 string];
+    [v4 setPercentEncodedFragment:string];
 
-    v3 = v20;
+    dictionaryCopy = v20;
   }
 
   v17 = [v4 URL];
@@ -105,16 +105,16 @@
   return v17;
 }
 
-+ (id)passwordManagerURLWithPrefsURL:(id)a3
++ (id)passwordManagerURLWithPrefsURL:(id)l
 {
   v4 = MEMORY[0x1E696AF20];
-  v5 = a3;
-  v6 = [a1 passwordManagerURLWithDictionary:0];
+  lCopy = l;
+  v6 = [self passwordManagerURLWithDictionary:0];
   v7 = [v4 componentsWithURL:v6 resolvingAgainstBaseURL:0];
 
-  v8 = [v5 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v7 setPercentEncodedFragment:v8];
+  [v7 setPercentEncodedFragment:absoluteString];
   v9 = [v7 URL];
 
   return v9;
@@ -126,24 +126,24 @@
   v7 = @"recentlyDeleted";
   v8[0] = @"true";
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v4 = [a1 passwordManagerURLWithDictionary:v3];
+  v4 = [self passwordManagerURLWithDictionary:v3];
 
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-+ (id)urlForDetailViewOfSavedAccount:(id)a3
++ (id)urlForDetailViewOfSavedAccount:(id)account
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 stableIDString];
-  v5 = v4;
-  if (v4)
+  stableIDString = [account stableIDString];
+  v5 = stableIDString;
+  if (stableIDString)
   {
     v10 = @"showDetails";
-    v11[0] = v4;
+    v11[0] = stableIDString;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v7 = [a1 passwordManagerURLWithDictionary:v6];
+    v7 = [self passwordManagerURLWithDictionary:v6];
   }
 
   else
@@ -156,16 +156,16 @@
   return v7;
 }
 
-+ (id)passwordManagerURLForGroupWithID:(id)a3
++ (id)passwordManagerURLForGroupWithID:(id)d
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = @"sharingGroupID";
-  v11[0] = a3;
+  v11[0] = d;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [a1 passwordManagerURLWithDictionary:v6];
+  v7 = [self passwordManagerURLWithDictionary:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -178,45 +178,45 @@
   v7 = @"generatedPasswords";
   v8[0] = @"true";
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v4 = [a1 passwordManagerURLWithDictionary:v3];
+  v4 = [self passwordManagerURLWithDictionary:v3];
 
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-+ (id)passwordManagerURLWithOtpauthURL:(id)a3
++ (id)passwordManagerURLWithOtpauthURL:(id)l
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"path";
   v9[1] = @"url";
   v10[0] = @"OTPAUTH_URL";
-  v4 = [a3 absoluteString];
-  v10[1] = v4;
+  absoluteString = [l absoluteString];
+  v10[1] = absoluteString;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  v6 = [a1 passwordManagerURLWithDictionary:v5];
+  v6 = [self passwordManagerURLWithDictionary:v5];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-+ (BOOL)_urlIsPasswordManagerURL:(id)a3 resourceSpecifierDictionary:(id)a4
++ (BOOL)_urlIsPasswordManagerURL:(id)l resourceSpecifierDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 scheme];
-  v9 = [v8 lowercaseString];
+  lCopy = l;
+  dictionaryCopy = dictionary;
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (([v9 isEqualToString:@"http"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"https"))
+  if (([lowercaseString isEqualToString:@"http"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"https"))
   {
-    v10 = [v6 host];
-    v11 = [v10 isEqualToString:@"passwords.apple.com"];
+    host = [lCopy host];
+    v11 = [host isEqualToString:@"passwords.apple.com"];
 
     if (v11)
     {
-      v12 = [v6 path];
-      v13 = [v12 isEqualToString:@"/app"];
+      path = [lCopy path];
+      v13 = [path isEqualToString:@"/app"];
 
       if (v13)
       {
@@ -229,8 +229,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v15 = [v6 scheme];
-  v16 = [v15 isEqualToString:@"prefs"];
+  scheme2 = [lCopy scheme];
+  v16 = [scheme2 isEqualToString:@"prefs"];
 
   if (!v16)
   {
@@ -238,69 +238,69 @@ LABEL_7:
   }
 
 LABEL_5:
-  v14 = [a1 _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:v7];
+  v14 = [self _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:dictionaryCopy];
 LABEL_8:
 
   return v14;
 }
 
-+ (BOOL)_resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:(id)a3
++ (BOOL)_resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:(id)dictionary
 {
-  v3 = [a3 safari_stringForKey:@"root"];
+  v3 = [dictionary safari_stringForKey:@"root"];
   v4 = ![v3 length] || (objc_msgSend(v3, "isEqualToString:", @"PASSWORDS") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"ACCOUNTS_AND_PASSWORDS");
 
   return v4;
 }
 
-+ (BOOL)urlIsPasswordManagerURL:(id)a3
++ (BOOL)urlIsPasswordManagerURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 _resourceSpecifierDictionaryForURL:v4];
-  LOBYTE(a1) = [a1 _urlIsPasswordManagerURL:v4 resourceSpecifierDictionary:v5];
+  lCopy = l;
+  v5 = [self _resourceSpecifierDictionaryForURL:lCopy];
+  LOBYTE(self) = [self _urlIsPasswordManagerURL:lCopy resourceSpecifierDictionary:v5];
 
-  return a1;
+  return self;
 }
 
-+ (id)_resourceSpecifierDictionaryForURL:(id)a3
++ (id)_resourceSpecifierDictionaryForURL:(id)l
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 lowercaseString];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (([v5 isEqualToString:@"http"] & 1) != 0 || (v6 = v3, objc_msgSend(v5, "isEqualToString:", @"https")))
+  if (([lowercaseString isEqualToString:@"http"] & 1) != 0 || (v6 = lCopy, objc_msgSend(lowercaseString, "isEqualToString:", @"https")))
   {
-    v7 = [MEMORY[0x1E696AF20] componentsWithURL:v3 resolvingAgainstBaseURL:0];
-    v8 = [v7 fragment];
-    v9 = [v8 length];
+    v7 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+    fragment = [v7 fragment];
+    v9 = [fragment length];
 
     if (!v9)
     {
 
-      v15 = MEMORY[0x1E695E0F8];
+      dictionary = MEMORY[0x1E695E0F8];
 LABEL_30:
-      v40 = v3;
+      v40 = lCopy;
       goto LABEL_31;
     }
 
     v10 = MEMORY[0x1E696AF20];
-    v11 = [v7 percentEncodedFragment];
-    v12 = [v10 componentsWithString:v11];
+    percentEncodedFragment = [v7 percentEncodedFragment];
+    v12 = [v10 componentsWithString:percentEncodedFragment];
 
-    v13 = [v12 queryItems];
-    v14 = [v13 count];
+    queryItems = [v12 queryItems];
+    v14 = [queryItems count];
 
     if (v14)
     {
-      v44 = v5;
-      v46 = v3;
-      v15 = [MEMORY[0x1E695DF90] dictionary];
+      v44 = lowercaseString;
+      v46 = lCopy;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v52 = 0u;
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v16 = [v12 percentEncodedQueryItems];
-      v17 = [v16 countByEnumeratingWithState:&v52 objects:v57 count:16];
+      percentEncodedQueryItems = [v12 percentEncodedQueryItems];
+      v17 = [percentEncodedQueryItems countByEnumeratingWithState:&v52 objects:v57 count:16];
       if (v17)
       {
         v18 = v17;
@@ -311,33 +311,33 @@ LABEL_30:
           {
             if (*v53 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(percentEncodedQueryItems);
             }
 
             v21 = *(*(&v52 + 1) + 8 * i);
-            v22 = [v21 value];
-            v23 = [v22 stringByRemovingPercentEncoding];
-            v24 = [v21 name];
-            [v15 setObject:v23 forKeyedSubscript:v24];
+            value = [v21 value];
+            stringByRemovingPercentEncoding = [value stringByRemovingPercentEncoding];
+            name = [v21 name];
+            [dictionary setObject:stringByRemovingPercentEncoding forKeyedSubscript:name];
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v52 objects:v57 count:16];
+          v18 = [percentEncodedQueryItems countByEnumeratingWithState:&v52 objects:v57 count:16];
         }
 
         while (v18);
       }
 
-      v5 = v44;
-      v3 = v46;
+      lowercaseString = v44;
+      lCopy = v46;
       goto LABEL_29;
     }
 
-    v25 = [v12 scheme];
-    v26 = [v25 isEqualToString:@"prefs"];
+    scheme2 = [v12 scheme];
+    v26 = [scheme2 isEqualToString:@"prefs"];
 
     if (!v26)
     {
-      v15 = MEMORY[0x1E695E0F8];
+      dictionary = MEMORY[0x1E695E0F8];
 LABEL_29:
 
       goto LABEL_30;
@@ -345,19 +345,19 @@ LABEL_29:
 
     v27 = [v12 URL];
     v28 = v27;
-    v6 = v3;
+    v6 = lCopy;
     if (v27)
     {
       v6 = v27;
     }
   }
 
-  v45 = v5;
-  v47 = v3;
-  v15 = [MEMORY[0x1E695DF90] dictionary];
+  v45 = lowercaseString;
+  v47 = lCopy;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v43 = v6;
-  v29 = [v6 resourceSpecifier];
-  v30 = [v29 componentsSeparatedByString:@"&"];
+  resourceSpecifier = [v6 resourceSpecifier];
+  v30 = [resourceSpecifier componentsSeparatedByString:@"&"];
 
   v50 = 0u;
   v51 = 0u;
@@ -383,9 +383,9 @@ LABEL_29:
         {
           v37 = [v36 objectAtIndexedSubscript:0];
           v38 = [v36 objectAtIndexedSubscript:1];
-          v39 = [v38 stringByRemovingPercentEncoding];
+          stringByRemovingPercentEncoding2 = [v38 stringByRemovingPercentEncoding];
 
-          [v15 setObject:v39 forKeyedSubscript:v37];
+          [dictionary setObject:stringByRemovingPercentEncoding2 forKeyedSubscript:v37];
         }
       }
 
@@ -395,24 +395,24 @@ LABEL_29:
     while (v33);
   }
 
-  v5 = v45;
-  v3 = v47;
+  lowercaseString = v45;
+  lCopy = v47;
   v40 = v43;
 LABEL_31:
 
   v41 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return dictionary;
 }
 
-+ (id)dictionaryWithPasswordManagerURL:(id)a3
++ (id)dictionaryWithPasswordManagerURL:(id)l
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _resourceSpecifierDictionaryForURL:v4];
-  LODWORD(a1) = [a1 _urlIsPasswordManagerURL:v4 resourceSpecifierDictionary:v5];
+  lCopy = l;
+  v5 = [self _resourceSpecifierDictionaryForURL:lCopy];
+  LODWORD(self) = [self _urlIsPasswordManagerURL:lCopy resourceSpecifierDictionary:v5];
 
-  if (a1)
+  if (self)
   {
     v6 = [v5 mutableCopy];
     v10[0] = @"root";
@@ -430,22 +430,22 @@ LABEL_31:
   return v6;
 }
 
-+ (id)valueForPasswordManagerURL:(id)a3 key:(id)a4
++ (id)valueForPasswordManagerURL:(id)l key:(id)key
 {
-  v6 = a4;
-  v7 = [a1 dictionaryWithPasswordManagerURL:a3];
-  v8 = [v7 safari_stringForKey:v6];
+  keyCopy = key;
+  v7 = [self dictionaryWithPasswordManagerURL:l];
+  v8 = [v7 safari_stringForKey:keyCopy];
 
   return v8;
 }
 
-+ (id)valueForPasswordManagerResourceDictionary:(id)a3 key:(id)a4
++ (id)valueForPasswordManagerResourceDictionary:(id)dictionary key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:v6])
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  if ([self _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:dictionaryCopy])
   {
-    v8 = [v6 safari_stringForKey:v7];
+    v8 = [dictionaryCopy safari_stringForKey:keyCopy];
   }
 
   else
@@ -456,32 +456,32 @@ LABEL_31:
   return v8;
 }
 
-+ (BOOL)BOOLForPasswordManagerResourceDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5
++ (BOOL)BOOLForPasswordManagerResourceDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value
 {
-  v5 = a5;
-  v6 = [a1 valueForPasswordManagerResourceDictionary:a3 key:a4];
+  valueCopy = value;
+  v6 = [self valueForPasswordManagerResourceDictionary:dictionary key:key];
   if (v6)
   {
     if ([@"true" isEqualToString:v6])
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(valueCopy) = 1;
     }
 
     else
     {
-      v5 &= ~[@"false" isEqualToString:v6];
+      valueCopy &= ~[@"false" isEqualToString:v6];
     }
   }
 
-  return v5;
+  return valueCopy;
 }
 
-+ (BOOL)isPasswordManagerPasswordOptionsResourceDictionary:(id)a3
++ (BOOL)isPasswordManagerPasswordOptionsResourceDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([a1 _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:v4])
+  dictionaryCopy = dictionary;
+  if ([self _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:dictionaryCopy])
   {
-    v5 = [v4 safari_stringForKey:@"path"];
+    v5 = [dictionaryCopy safari_stringForKey:@"path"];
     v6 = [v5 isEqualToString:@"PASSWORD_OPTIONS"];
   }
 
@@ -499,19 +499,19 @@ LABEL_31:
   v7 = @"path";
   v8[0] = @"SECURITY_RECOMMENDATIONS";
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v4 = [a1 passwordManagerURLWithDictionary:v3];
+  v4 = [self passwordManagerURLWithDictionary:v3];
 
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-+ (BOOL)isPasswordManagerSecurityRecommendationsResourceDictionary:(id)a3
++ (BOOL)isPasswordManagerSecurityRecommendationsResourceDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([a1 _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:v4])
+  dictionaryCopy = dictionary;
+  if ([self _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:dictionaryCopy])
   {
-    v5 = [v4 safari_stringForKey:@"path"];
+    v5 = [dictionaryCopy safari_stringForKey:@"path"];
     v6 = [v5 isEqualToString:@"SECURITY_RECOMMENDATIONS"];
   }
 
@@ -523,12 +523,12 @@ LABEL_31:
   return v6;
 }
 
-+ (BOOL)isOtpauthResourceDictionary:(id)a3
++ (BOOL)isOtpauthResourceDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([a1 _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:v4])
+  dictionaryCopy = dictionary;
+  if ([self _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:dictionaryCopy])
   {
-    v5 = [v4 safari_stringForKey:@"path"];
+    v5 = [dictionaryCopy safari_stringForKey:@"path"];
     v6 = [v5 isEqualToString:@"OTPAUTH_URL"];
   }
 
@@ -540,12 +540,12 @@ LABEL_31:
   return v6;
 }
 
-+ (BOOL)isOtpauthMigrationResourceDictionary:(id)a3
++ (BOOL)isOtpauthMigrationResourceDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([a1 _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:v4])
+  dictionaryCopy = dictionary;
+  if ([self _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:dictionaryCopy])
   {
-    v5 = [v4 safari_stringForKey:@"path"];
+    v5 = [dictionaryCopy safari_stringForKey:@"path"];
     v6 = [v5 isEqualToString:@"OTPAUTH_MIGRATION_URL"];
   }
 
@@ -557,21 +557,21 @@ LABEL_31:
   return v6;
 }
 
-+ (BOOL)isPasswordManagerVerificationCodesURL:(id)a3
++ (BOOL)isPasswordManagerVerificationCodesURL:(id)l
 {
-  v3 = [a1 dictionaryWithPasswordManagerURL:a3];
+  v3 = [self dictionaryWithPasswordManagerURL:l];
   v4 = [v3 safari_stringForKey:@"path"];
   v5 = [v4 isEqualToString:@"VERIFICATION_CODES"];
 
   return v5;
 }
 
-+ (BOOL)isPasswordManagerVerificationCodesResourceDictionary:(id)a3
++ (BOOL)isPasswordManagerVerificationCodesResourceDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([a1 _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:v4])
+  dictionaryCopy = dictionary;
+  if ([self _resourceSpecifierDictionaryIsPasswordManagerResourceSpecifierDictionary:dictionaryCopy])
   {
-    v5 = [v4 safari_stringForKey:@"path"];
+    v5 = [dictionaryCopy safari_stringForKey:@"path"];
     v6 = [v5 isEqualToString:@"VERIFICATION_CODES"];
   }
 
@@ -583,21 +583,21 @@ LABEL_31:
   return v6;
 }
 
-+ (BOOL)isPasswordManagerPasskeysResourceDictionary:(id)a3
++ (BOOL)isPasswordManagerPasskeysResourceDictionary:(id)dictionary
 {
-  v3 = [a3 safari_stringForKey:@"path"];
+  v3 = [dictionary safari_stringForKey:@"path"];
   v4 = [v3 isEqualToString:@"PASSKEYS"];
 
   return v4;
 }
 
-+ (BOOL)isPasswordManagerFamilySharingGroupSetupURL:(id)a3
++ (BOOL)isPasswordManagerFamilySharingGroupSetupURL:(id)l
 {
-  v3 = a1;
-  v4 = [a1 dictionaryWithPasswordManagerURL:a3];
-  LOBYTE(v3) = [v3 BOOLForPasswordManagerResourceDictionary:v4 key:@"familySharingGroupSetup" defaultValue:0];
+  selfCopy = self;
+  v4 = [self dictionaryWithPasswordManagerURL:l];
+  LOBYTE(selfCopy) = [selfCopy BOOLForPasswordManagerResourceDictionary:v4 key:@"familySharingGroupSetup" defaultValue:0];
 
-  return v3;
+  return selfCopy;
 }
 
 @end

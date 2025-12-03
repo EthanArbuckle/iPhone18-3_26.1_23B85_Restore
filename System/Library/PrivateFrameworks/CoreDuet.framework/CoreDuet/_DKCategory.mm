@@ -1,17 +1,17 @@
 @interface _DKCategory
-+ (id)_categoryFromManagedObject:(id)a3 readMetadata:(BOOL)a4 cache:(id)a5;
-+ (id)categoryWithInteger:(int64_t)a3 type:(id)a4;
-+ (id)fromPBCodable:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_categoryFromManagedObject:(id)object readMetadata:(BOOL)metadata cache:(id)cache;
++ (id)categoryWithInteger:(int64_t)integer type:(id)type;
++ (id)fromPBCodable:(id)codable;
+- (BOOL)copyToManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_DKCategory)initWithCoder:(id)a3;
-- (_DKCategory)initWithInteger:(int64_t)a3 type:(id)a4 cache:(id)a5;
+- (_DKCategory)initWithCoder:(id)coder;
+- (_DKCategory)initWithInteger:(int64_t)integer type:(id)type cache:(id)cache;
 - (id)stringValue;
 - (id)toPBCodable;
-- (int64_t)compareValue:(id)a3;
+- (int64_t)compareValue:(id)value;
 - (int64_t)typeCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DKCategory
@@ -21,13 +21,13 @@
   v3 = objc_alloc_init(_DKPRValue);
   v4 = objc_alloc_init(_DKPRValueType);
   [(_DKPRValue *)v3 setType:v4];
-  v5 = [(_DKPRValue *)v3 type];
-  [(_DKPRValueType *)v5 setType:?];
+  type = [(_DKPRValue *)v3 type];
+  [(_DKPRValueType *)type setType:?];
 
-  v6 = [(_DKCategory *)self categoryType];
-  v7 = [v6 typeCode];
-  v8 = [(_DKPRValue *)v3 type];
-  [(_DKPRValueType *)v8 setTypeCode:v7];
+  categoryType = [(_DKCategory *)self categoryType];
+  typeCode = [categoryType typeCode];
+  type2 = [(_DKPRValue *)v3 type];
+  [(_DKPRValueType *)type2 setTypeCode:typeCode];
 
   [(_DKPRValue *)v3 setIntegerValue:?];
 
@@ -36,28 +36,28 @@
 
 - (int64_t)typeCode
 {
-  v2 = [(_DKCategory *)self categoryType];
-  v3 = [v2 typeCode];
+  categoryType = [(_DKCategory *)self categoryType];
+  typeCode = [categoryType typeCode];
 
-  return v3;
+  return typeCode;
 }
 
-+ (id)categoryWithInteger:(int64_t)a3 type:(id)a4
++ (id)categoryWithInteger:(int64_t)integer type:(id)type
 {
-  v5 = a4;
+  typeCopy = type;
   v6 = [_DKCategory alloc];
   v7 = +[_DKCategoryCache sharedCached];
-  v8 = [(_DKCategory *)v6 initWithInteger:a3 type:v5 cache:v7];
+  v8 = [(_DKCategory *)v6 initWithInteger:integer type:typeCopy cache:v7];
 
   return v8;
 }
 
-- (_DKCategory)initWithInteger:(int64_t)a3 type:(id)a4 cache:(id)a5
+- (_DKCategory)initWithInteger:(int64_t)integer type:(id)type cache:(id)cache
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10 || ([v10 categoryWithInteger:a3 type:v9], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  typeCopy = type;
+  cacheCopy = cache;
+  v11 = cacheCopy;
+  if (!cacheCopy || ([cacheCopy categoryWithInteger:integer type:typeCopy], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v17.receiver = self;
     v17.super_class = _DKCategory;
@@ -65,8 +65,8 @@
     v14 = v13;
     if (v13)
     {
-      v13->_integerValue = a3;
-      objc_storeStrong(&v13->_categoryType, a4);
+      v13->_integerValue = integer;
+      objc_storeStrong(&v13->_categoryType, type);
     }
 
     v12 = v14;
@@ -78,16 +78,16 @@
   return v15;
 }
 
-- (_DKCategory)initWithCoder:(id)a3
+- (_DKCategory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _DKCategory;
-  v5 = [(_DKObject *)&v13 initWithCoder:v4];
+  v5 = [(_DKObject *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_integerValue = [v4 decodeInt64ForKey:@"integerValue"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"categoryType"];
+    v5->_integerValue = [coderCopy decodeInt64ForKey:@"integerValue"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryType"];
     categoryType = v5->_categoryType;
     v5->_categoryType = v6;
 
@@ -115,14 +115,14 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _DKCategory;
-  v4 = a3;
-  [(_DKObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_integerValue forKey:{@"integerValue", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_categoryType forKey:@"categoryType"];
+  coderCopy = coder;
+  [(_DKObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_integerValue forKey:{@"integerValue", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_categoryType forKey:@"categoryType"];
 }
 
 - (NSString)description
@@ -140,21 +140,21 @@
   return v9;
 }
 
-- (int64_t)compareValue:(id)a3
+- (int64_t)compareValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 categoryType];
-    v7 = [(_DKCategory *)self categoryType];
-    v8 = [v6 isEqual:v7];
+    v5 = valueCopy;
+    categoryType = [v5 categoryType];
+    categoryType2 = [(_DKCategory *)self categoryType];
+    v8 = [categoryType isEqual:categoryType2];
 
     if (v8)
     {
-      v9 = [v5 integerValue];
-      if (v9 == [(_DKCategory *)self integerValue])
+      integerValue = [v5 integerValue];
+      if (integerValue == [(_DKCategory *)self integerValue])
       {
         v10 = 0;
       }
@@ -182,38 +182,38 @@
 - (id)stringValue
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:self->_integerValue];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v14.receiver = self, v14.super_class = _DKCategory, [(_DKObject *)&v14 isEqual:v5]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v14.receiver = self, v14.super_class = _DKCategory, [(_DKObject *)&v14 isEqual:v5]))
   {
     v6 = v5;
-    v7 = [(_DKCategory *)self integerValue];
-    if (v7 == [(_DKCategory *)v6 integerValue])
+    integerValue = [(_DKCategory *)self integerValue];
+    if (integerValue == [(_DKCategory *)v6 integerValue])
     {
-      v8 = [(_DKCategory *)self categoryType];
-      v9 = [(_DKCategory *)v6 categoryType];
-      if (v8 == v9)
+      categoryType = [(_DKCategory *)self categoryType];
+      categoryType2 = [(_DKCategory *)v6 categoryType];
+      if (categoryType == categoryType2)
       {
         v12 = 1;
       }
 
       else
       {
-        v10 = [(_DKCategory *)self categoryType];
-        v11 = [(_DKCategory *)v6 categoryType];
-        v12 = [v10 isEqual:v11];
+        categoryType3 = [(_DKCategory *)self categoryType];
+        categoryType4 = [(_DKCategory *)v6 categoryType];
+        v12 = [categoryType3 isEqual:categoryType4];
       }
     }
 
@@ -231,18 +231,18 @@
   return v12;
 }
 
-+ (id)fromPBCodable:(id)a3
++ (id)fromPBCodable:(id)codable
 {
-  v3 = a3;
+  codableCopy = codable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [(_DKPRValue *)v4 integerValue];
-    v6 = [(_DKPRValue *)v4 type];
+    v4 = codableCopy;
+    integerValue = [(_DKPRValue *)v4 integerValue];
+    type = [(_DKPRValue *)v4 type];
 
-    v7 = [(_DKObjectType *)_DKCategoryType objectTypeWithTypeCode:[(_DKPRValueType *)v6 typeCode]];
-    v8 = [_DKCategory categoryWithInteger:v5 type:v7];
+    v7 = [(_DKObjectType *)_DKCategoryType objectTypeWithTypeCode:[(_DKPRValueType *)type typeCode]];
+    v8 = [_DKCategory categoryWithInteger:integerValue type:v7];
   }
 
   else
@@ -253,13 +253,13 @@
   return v8;
 }
 
-+ (id)_categoryFromManagedObject:(id)a3 readMetadata:(BOOL)a4 cache:(id)a5
++ (id)_categoryFromManagedObject:(id)object readMetadata:(BOOL)metadata cache:(id)cache
 {
-  v6 = a5;
-  v7 = a3;
-  v8 = +[_DKObjectType objectTypeWithTypeCode:](_DKCategoryType, "objectTypeWithTypeCode:", [v7 categoryType]);
-  v9 = +[_DKCategory categoryWithInteger:type:](_DKCategory, "categoryWithInteger:type:", [v7 integerValue], v8);
-  v10 = [v9 copyBaseObjectInfoFromManagedObject:v7 cache:v6];
+  cacheCopy = cache;
+  objectCopy = object;
+  v8 = +[_DKObjectType objectTypeWithTypeCode:](_DKCategoryType, "objectTypeWithTypeCode:", [objectCopy categoryType]);
+  v9 = +[_DKCategory categoryWithInteger:type:](_DKCategory, "categoryWithInteger:type:", [objectCopy integerValue], v8);
+  v10 = [v9 copyBaseObjectInfoFromManagedObject:objectCopy cache:cacheCopy];
 
   if (v10)
   {
@@ -274,16 +274,16 @@
   return v11;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = _DKCategory, [(_DKObject *)&v9 copyToManagedObject:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = _DKCategory, [(_DKObject *)&v9 copyToManagedObject:objectCopy]))
   {
-    v5 = v4;
+    v5 = objectCopy;
     [v5 setIntegerValue:{-[_DKCategory integerValue](self, "integerValue")}];
-    v6 = [(_DKCategory *)self categoryType];
-    [v5 setCategoryType:{objc_msgSend(v6, "typeCode")}];
+    categoryType = [(_DKCategory *)self categoryType];
+    [v5 setCategoryType:{objc_msgSend(categoryType, "typeCode")}];
 
     v7 = 1;
   }

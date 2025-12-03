@@ -4,13 +4,13 @@
 - (id)_propagateDisparityCombined;
 - (id)_propagateDisparityR1;
 - (id)_propagateDisparityR1Combined;
-- (id)generatePyramidLevel:(id)a3 useMetal:(BOOL)a4;
-- (id)initialConversionForSize:(CGSize)a3 useMetal:(BOOL)a4;
+- (id)generatePyramidLevel:(id)level useMetal:(BOOL)metal;
+- (id)initialConversionForSize:(CGSize)size useMetal:(BOOL)metal;
 - (id)outputImage;
-- (id)outputImageUsingMetal:(BOOL)a3;
-- (id)propagateDisparity:(id)a3 pyramids:(id *)a4 useMetal:(BOOL)a5 computedPyramidLevels:(int)a6;
-- (id)shiftmapLevelZeroWithSize:(CGSize)a3 useMetal:(BOOL)a4;
-- (id)smoothDisparityImage:(id)a3 useMetal:(BOOL)a4;
+- (id)outputImageUsingMetal:(BOOL)metal;
+- (id)propagateDisparity:(id)disparity pyramids:(id *)pyramids useMetal:(BOOL)metal computedPyramidLevels:(int)levels;
+- (id)shiftmapLevelZeroWithSize:(CGSize)size useMetal:(BOOL)metal;
+- (id)smoothDisparityImage:(id)image useMetal:(BOOL)metal;
 @end
 
 @implementation CIDisparityRefinement
@@ -170,16 +170,16 @@ CIKernel *__52__CIDisparityRefinement__propagateDisparityCombined__block_invoke(
   return result;
 }
 
-- (id)initialConversionForSize:(CGSize)a3 useMetal:(BOOL)a4
+- (id)initialConversionForSize:(CGSize)size useMetal:(BOOL)metal
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  metalCopy = metal;
+  height = size.height;
+  width = size.width;
   v37[3] = *MEMORY[0x1E69E9840];
-  v8 = [(CIImage *)self->inputImage colorSpace];
-  if (v8)
+  colorSpace = [(CIImage *)self->inputImage colorSpace];
+  if (colorSpace)
   {
-    v9 = [(CIImage *)self->inputImage imageByColorMatchingWorkingSpaceToColorSpace:v8];
+    v9 = [(CIImage *)self->inputImage imageByColorMatchingWorkingSpaceToColorSpace:colorSpace];
   }
 
   else
@@ -209,7 +209,7 @@ CIKernel *__52__CIDisparityRefinement__propagateDisparityCombined__block_invoke(
   [(CIImage *)self->inputImage extent];
   v15 = v14 / height;
   v28 = v15;
-  v16 = [(CIDisparityRefinement *)self _initialConversionRGB];
+  _initialConversionRGB = [(CIDisparityRefinement *)self _initialConversionRGB];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_invoke;
@@ -218,7 +218,7 @@ CIKernel *__52__CIDisparityRefinement__propagateDisparityCombined__block_invoke(
   v24[5] = &v25;
   v35[0] = v11;
   v35[1] = [CIVector vectorWithX:v30[6] Y:v26[6]];
-  v17 = [v16 applyWithExtent:v24 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v35, 2), 0.0, 0.0, width, height}];
+  v17 = [_initialConversionRGB applyWithExtent:v24 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v35, 2), 0.0, 0.0, width, height}];
   v23 = 0;
   v34 = v11;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
@@ -226,7 +226,7 @@ CIKernel *__52__CIDisparityRefinement__propagateDisparityCombined__block_invoke(
   v19 = +[CIGenericMetalProcessor applyWithExtent:shader:inputs:roiMethods:insetRects:scaleFactors:arguments:error:](CIGenericMetalProcessor, "applyWithExtent:shader:inputs:roiMethods:insetRects:scaleFactors:arguments:error:", @"kernel_InitialConversion", v18, &unk_1F1085578, [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1], 0, 0, 0.0, 0.0, width, height, &v23);
   if (v19)
   {
-    v20 = v4;
+    v20 = metalCopy;
   }
 
   else
@@ -239,7 +239,7 @@ CIKernel *__52__CIDisparityRefinement__propagateDisparityCombined__block_invoke(
     v17 = v19;
   }
 
-  if (v4)
+  if (metalCopy)
   {
     v21 = @"/tmp/initialConversion-Metal.tiff";
   }
@@ -267,11 +267,11 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
   return result;
 }
 
-- (id)shiftmapLevelZeroWithSize:(CGSize)a3 useMetal:(BOOL)a4
+- (id)shiftmapLevelZeroWithSize:(CGSize)size useMetal:(BOOL)metal
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  metalCopy = metal;
+  height = size.height;
+  width = size.width;
   v28[1] = *MEMORY[0x1E69E9840];
   [(CIImage *)self->inputDisparityImage extent];
   v9 = v8;
@@ -294,7 +294,7 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
   v20 = +[CIGenericMetalProcessor applyWithExtent:shader:inputs:roiMethods:insetRects:scaleFactors:arguments:error:](CIGenericMetalProcessorSingleChannel, "applyWithExtent:shader:inputs:roiMethods:insetRects:scaleFactors:arguments:error:", @"kernel_UpscaleShiftmap", v18, 0, 0, v19, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1], 0.0, 0.0, width, height, &v24);
   if (v20)
   {
-    v21 = v4;
+    v21 = metalCopy;
   }
 
   else
@@ -307,7 +307,7 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
     v17 = v20;
   }
 
-  if (v4)
+  if (metalCopy)
   {
     v22 = @"/tmp/upsampledShiftmap-Metal.tiff";
   }
@@ -321,21 +321,21 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
   return v17;
 }
 
-- (id)generatePyramidLevel:(id)a3 useMetal:(BOOL)a4
+- (id)generatePyramidLevel:(id)level useMetal:(BOOL)metal
 {
-  v4 = a4;
+  metalCopy = metal;
   v25[1] = *MEMORY[0x1E69E9840];
-  [a3 extent];
+  [level extent];
   v8 = v7 * 0.5;
   v10 = v9 * 0.5;
   v12 = v11 * 0.5;
   v14 = v13 * 0.5;
-  v15 = [(CIDisparityRefinement *)self _pyramidGenerateLevel];
-  v25[0] = a3;
-  v16 = [v15 applyWithExtent:&__block_literal_global_109 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v25, 1), v8, v10, v12, v14}];
+  _pyramidGenerateLevel = [(CIDisparityRefinement *)self _pyramidGenerateLevel];
+  v25[0] = level;
+  v16 = [_pyramidGenerateLevel applyWithExtent:&__block_literal_global_109 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v25, 1), v8, v10, v12, v14}];
   v22 = 0;
-  v24 = a3;
-  v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
+  levelCopy = level;
+  v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&levelCopy count:1];
   v23 = [CIVector vectorWithX:-1.0 Y:-1.0];
   v18 = +[CIGenericMetalProcessor applyWithExtent:shader:inputs:roiMethods:insetRects:scaleFactors:arguments:error:](CIGenericMetalProcessor, "applyWithExtent:shader:inputs:roiMethods:insetRects:scaleFactors:arguments:error:", @"kernel_PyramidGenerateLevel", v17, &unk_1F1085590, [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1], 0, 0, v8, v10, v12, v14, &v22);
   if (v22)
@@ -345,7 +345,7 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
 
   else
   {
-    v19 = v4;
+    v19 = metalCopy;
   }
 
   if (v19 && v18 != 0)
@@ -353,7 +353,7 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
     v16 = v18;
   }
 
-  if (v4)
+  if (metalCopy)
   {
     v20 = @"/tmp/pyramidLevel1-Metal.tiff";
   }
@@ -367,12 +367,12 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
   return v16;
 }
 
-- (id)smoothDisparityImage:(id)a3 useMetal:(BOOL)a4
+- (id)smoothDisparityImage:(id)image useMetal:(BOOL)metal
 {
   v55[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (image)
   {
-    v4 = a4;
+    metalCopy = metal;
     [(CIVector *)self->inputOriginalSize CGPointValue];
     v8 = v7;
     v10 = v9;
@@ -392,7 +392,7 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
     [(NSNumber *)self->inputPropagateSigmaChma floatValue];
     v45 = v24;
     v25 = *&v12 * (*&v12 + *&v12);
-    v26 = [objc_msgSend(a3 "imageByClampingToExtent")];
+    v26 = [objc_msgSend(image "imageByClampingToExtent")];
     if (v25 <= 0.0001)
     {
       v27 = 0.0001;
@@ -408,7 +408,7 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
     v30 = v28 * 4.0 + 1.0 + v29 * 4.0;
     v31 = 1.0 / v30;
     v32 = [CIVector vectorWithX:"vectorWithX:Y:Z:" Y:? Z:?];
-    v33 = [(CIDisparityRefinement *)self _smoothDisparity];
+    _smoothDisparity = [(CIDisparityRefinement *)self _smoothDisparity];
     v55[0] = v26;
     v55[1] = v32;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
@@ -416,9 +416,9 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
     v53[1] = @"kCIImageAlphaOne";
     v54[0] = [MEMORY[0x1E696AD98] numberWithInt:2053];
     v54[1] = MEMORY[0x1E695E118];
-    v35 = [v33 applyWithExtent:&__block_literal_global_124 roiCallback:v34 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v54, v53, 2), 0.0, 0.0, v19, v21}];
+    v35 = [_smoothDisparity applyWithExtent:&__block_literal_global_124 roiCallback:v34 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v54, v53, 2), 0.0, 0.0, v19, v21}];
     v49 = 0;
-    if (v4)
+    if (metalCopy)
     {
       [(NSNumber *)self->inputPropagateKernel floatValue];
       v47[1] = v36;
@@ -441,7 +441,7 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
       v41 = 1;
     }
 
-    if (v41 && v4 && v40 != 0)
+    if (v41 && metalCopy && v40 != 0)
     {
       v43 = v40;
     }
@@ -456,7 +456,7 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
       v43 = [v26 imageByCroppingToRect:{0.0, 0.0, v19, v21}];
     }
 
-    if (v4)
+    if (metalCopy)
     {
       v44 = @"/tmp/smoothDisparity-Metal.tiff";
     }
@@ -477,9 +477,9 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
   }
 }
 
-- (id)propagateDisparity:(id)a3 pyramids:(id *)a4 useMetal:(BOOL)a5 computedPyramidLevels:(int)a6
+- (id)propagateDisparity:(id)disparity pyramids:(id *)pyramids useMetal:(BOOL)metal computedPyramidLevels:(int)levels
 {
-  v60 = a5;
+  metalCopy = metal;
   v80[2] = *MEMORY[0x1E69E9840];
   [(NSNumber *)self->inputSmoothSigma floatValue];
   v11 = v10;
@@ -494,44 +494,44 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
   v71 = 0x2020000000;
   [(NSNumber *)self->inputPropagateKernel floatValue];
   v72 = v16;
-  v80[0] = a3;
+  v80[0] = disparity;
   v80[1] = 0;
   [(NSNumber *)self->inputPropagateKernel floatValue];
   v59 = vmul_f32(__PAIR64__(v61, v63), vadd_f32(__PAIR64__(v61, v63), __PAIR64__(v61, v63)));
   v64 = [CIVector vectorWithX:v17 Y:65025.0 / v59.f32[0] Z:65025.0 / v59.f32[1] W:v15];
   if (fabs(v70[6] + -1.0) >= 0.001)
   {
-    v62 = [(CIDisparityRefinement *)self _propagateDisparity];
+    _propagateDisparity = [(CIDisparityRefinement *)self _propagateDisparity];
   }
 
   else
   {
-    v62 = [(CIDisparityRefinement *)self _propagateDisparityR1];
+    _propagateDisparity = [(CIDisparityRefinement *)self _propagateDisparityR1];
   }
 
-  if (a6 >= 2)
+  if (levels >= 2)
   {
     v18 = 0;
     v19 = v11 * (v11 + v11);
-    v20 = a6 + 1;
-    v21 = &a4[a6 - 2];
+    v20 = levels + 1;
+    v21 = &pyramids[levels - 2];
     while (1)
     {
-      v22 = [a3 imageByClampingToExtent];
-      v23 = [*v21 imageByClampingToExtent];
-      v24 = [v21[1] imageByClampingToExtent];
-      if (!v22)
+      imageByClampingToExtent = [disparity imageByClampingToExtent];
+      imageByClampingToExtent2 = [*v21 imageByClampingToExtent];
+      imageByClampingToExtent3 = [v21[1] imageByClampingToExtent];
+      if (!imageByClampingToExtent)
       {
         break;
       }
 
-      if (!v23)
+      if (!imageByClampingToExtent2)
       {
         break;
       }
 
-      v25 = v24;
-      if (!v24)
+      v25 = imageByClampingToExtent3;
+      if (!imageByClampingToExtent3)
       {
         break;
       }
@@ -546,8 +546,8 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
       v68[2] = __84__CIDisparityRefinement_propagateDisparity_pyramids_useMetal_computedPyramidLevels___block_invoke;
       v68[3] = &unk_1E75C2528;
       v68[4] = &v69;
-      v79[0] = v22;
-      v79[1] = v23;
+      v79[0] = imageByClampingToExtent;
+      v79[1] = imageByClampingToExtent2;
       v79[2] = v25;
       v79[3] = v64;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:4];
@@ -556,9 +556,9 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
       v77[1] = @"kCIImageAlphaOne";
       v78[0] = v35;
       v78[1] = MEMORY[0x1E695E118];
-      v36 = [v62 applyWithExtent:v68 roiCallback:v34 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v78, v77, 2), v27, v29, v31, v33}];
+      v36 = [_propagateDisparity applyWithExtent:v68 roiCallback:v34 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v78, v77, 2), v27, v29, v31, v33}];
       v37 = v36;
-      if (v60)
+      if (metalCopy)
       {
         v67 = 0;
         v38 = [CIVector vectorWithX:-v70[6] Y:-v70[6]];
@@ -574,10 +574,10 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
         v45 = v44;
         v47 = v46;
         v49 = v48;
-        v50 = [a3 imageByClampingToExtent];
+        imageByClampingToExtent4 = [disparity imageByClampingToExtent];
         v52 = *v21;
         v51 = v21[1];
-        v76[0] = v50;
+        v76[0] = imageByClampingToExtent4;
         v76[1] = v52;
         v76[2] = [v51 imageByClampingToExtent];
         v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:3];
@@ -600,12 +600,12 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
 
         if (v56)
         {
-          a3 = v55;
+          disparity = v55;
         }
 
         else
         {
-          a3 = v37;
+          disparity = v37;
         }
 
         v57 = "Metal";
@@ -614,12 +614,12 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
       else
       {
         v57 = "CI";
-        a3 = v36;
+        disparity = v36;
       }
 
-      saveImage(a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/propagateDisparity_%d-%s.tiff", v20 - 2, v57], 1);
+      saveImage(disparity, [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/propagateDisparity_%d-%s.tiff", v20 - 2, v57], 1);
       v18 ^= 1u;
-      v80[v18] = a3;
+      v80[v18] = disparity;
       --v20;
       --v21;
       if (v20 <= 2)
@@ -628,12 +628,12 @@ double __59__CIDisparityRefinement_initialConversionForSize_useMetal___block_inv
       }
     }
 
-    a3 = v80[v18];
+    disparity = v80[v18];
   }
 
 LABEL_21:
   _Block_object_dispose(&v69, 8);
-  return a3;
+  return disparity;
 }
 
 double __84__CIDisparityRefinement_propagateDisparity_pyramids_useMetal_computedPyramidLevels___block_invoke(uint64_t a1, int a2, double result, double a4, double a5, double a6)
@@ -651,7 +651,7 @@ double __84__CIDisparityRefinement_propagateDisparity_pyramids_useMetal_computed
   return result;
 }
 
-- (id)outputImageUsingMetal:(BOOL)a3
+- (id)outputImageUsingMetal:(BOOL)metal
 {
   v43[3] = *MEMORY[0x1E69E9840];
   if (!self->inputImage)
@@ -665,7 +665,7 @@ double __84__CIDisparityRefinement_propagateDisparity_pyramids_useMetal_computed
     goto LABEL_18;
   }
 
-  v5 = a3;
+  metalCopy = metal;
   v6 = 1;
   saveImage(inputDisparityImage, @"/tmp/inputToDisparity.tiff", 1);
   [(CIVector *)self->inputOriginalSize CGPointValue];
@@ -712,7 +712,7 @@ double __84__CIDisparityRefinement_propagateDisparity_pyramids_useMetal_computed
   }
 
   memset(v43, 0, 24);
-  v32 = [(CIDisparityRefinement *)self initialConversionForSize:v5 useMetal:v19, v21];
+  v32 = [(CIDisparityRefinement *)self initialConversionForSize:metalCopy useMetal:v19, v21];
   v42 = v32;
   if (v32)
   {
@@ -723,7 +723,7 @@ double __84__CIDisparityRefinement_propagateDisparity_pyramids_useMetal_computed
       v35 = v6 - 1;
       do
       {
-        v33 = [(CIDisparityRefinement *)self generatePyramidLevel:v33 useMetal:v5];
+        v33 = [(CIDisparityRefinement *)self generatePyramidLevel:v33 useMetal:metalCopy];
         *v34++ = v33;
         --v35;
       }
@@ -732,9 +732,9 @@ double __84__CIDisparityRefinement_propagateDisparity_pyramids_useMetal_computed
     }
 
     [v43[(v6 - 1) - 1] extent];
-    v38 = [(CIDisparityRefinement *)self smoothDisparityImage:[(CIDisparityRefinement *)self propagateDisparity:[(CIDisparityRefinement *)self shiftmapLevelZeroWithSize:v5 useMetal:v36 pyramids:v37] useMetal:&v42 computedPyramidLevels:v5 useMetal:v6], v5];
-    v39 = v38;
-    if (v5)
+    metalCopy = [(CIDisparityRefinement *)self smoothDisparityImage:[(CIDisparityRefinement *)self propagateDisparity:[(CIDisparityRefinement *)self shiftmapLevelZeroWithSize:metalCopy useMetal:v36 pyramids:v37] useMetal:&v42 computedPyramidLevels:metalCopy useMetal:v6], metalCopy];
+    v39 = metalCopy;
+    if (metalCopy)
     {
       v40 = @"/tmp/smoothed-Metal.tiff";
     }
@@ -744,7 +744,7 @@ double __84__CIDisparityRefinement_propagateDisparity_pyramids_useMetal_computed
       v40 = @"/tmp/smoothed-CI.tiff";
     }
 
-    saveImage(v38, v40, 1);
+    saveImage(metalCopy, v40, 1);
     return v39;
   }
 

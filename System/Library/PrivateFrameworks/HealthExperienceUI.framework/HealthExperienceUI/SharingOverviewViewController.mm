@@ -1,11 +1,11 @@
 @interface SharingOverviewViewController
 - (NSString)sidebarSelectionIdentifier;
-- (_TtC18HealthExperienceUI29SharingOverviewViewController)initWithCoder:(id)a3;
-- (void)restoreUserActivityState:(id)a3;
+- (_TtC18HealthExperienceUI29SharingOverviewViewController)initWithCoder:(id)coder;
+- (void)restoreUserActivityState:(id)state;
 - (void)ttrButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation SharingOverviewViewController
@@ -26,7 +26,7 @@
   return v2;
 }
 
-- (_TtC18HealthExperienceUI29SharingOverviewViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI29SharingOverviewViewController)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC18HealthExperienceUI29SharingOverviewViewController____lazy_storage___store) = 0;
   *(self + OBJC_IVAR____TtC18HealthExperienceUI29SharingOverviewViewController_syncObserver) = 0;
@@ -40,54 +40,54 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA0037E8();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5 = sub_1BA4A4018();
   MEMORY[0x1EEE9AC00](v5);
-  v6 = self;
+  selfCopy = self;
   sub_1BA4A71E8();
   v9 = 8;
   sub_1B9F3AEE8();
   sub_1BA4A4008();
   sub_1BA4A71F8();
   v7 = type metadata accessor for SharingOverviewViewController();
-  v8.receiver = v6;
+  v8.receiver = selfCopy;
   v8.super_class = v7;
-  [(CompoundDataSourceCollectionViewController *)&v8 viewIsAppearing:v3];
+  [(CompoundDataSourceCollectionViewController *)&v8 viewIsAppearing:appearingCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SharingOverviewViewController();
   v4 = v7.receiver;
-  [(CompoundDataSourceCollectionViewController *)&v7 viewDidAppear:v3];
-  v5 = [v4 userActivity];
-  if (v5)
+  [(CompoundDataSourceCollectionViewController *)&v7 viewDidAppear:appearCopy];
+  userActivity = [v4 userActivity];
+  if (userActivity)
   {
-    v6 = v5;
+    v6 = userActivity;
     [v4 submitUserActivityForRestoration_];
   }
 }
 
-- (void)restoreUserActivityState:(id)a3
+- (void)restoreUserActivityState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA003E68(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1BA003E68(stateCopy);
 }
 
 - (void)ttrButtonTapped
 {
   v3 = swift_allocObject();
   *(v3 + 16) = self;
-  v4 = self;
+  selfCopy = self;
   sub_1BA1174D4(0x532068746C616548, 0xEE00676E69726168, sub_1BA349C48, v3);
 }
 

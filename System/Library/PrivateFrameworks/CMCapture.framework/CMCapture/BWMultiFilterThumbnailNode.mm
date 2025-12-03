@@ -1,40 +1,40 @@
 @interface BWMultiFilterThumbnailNode
-- (BWMultiFilterThumbnailNode)initWithFilters:(id)a3 thumbnailSize:(CGSize)a4 maxLossyCompressionLevel:(int)a5;
+- (BWMultiFilterThumbnailNode)initWithFilters:(id)filters thumbnailSize:(CGSize)size maxLossyCompressionLevel:(int)level;
 - (uint64_t)_loadAndConfigureFilterBundle;
 - (void)_releaseResources;
 - (void)_supportedPixelFormats;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWMultiFilterThumbnailNode
 
 - (void)_supportedPixelFormats
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [*(a1 + 8) format];
-  if (!v3)
+  array = [MEMORY[0x1E695DF70] array];
+  format = [*(self + 8) format];
+  if (!format)
   {
-    [v2 addObject:&unk_1F2243F30];
+    [array addObject:&unk_1F2243F30];
     v8 = 1;
     goto LABEL_8;
   }
 
-  v4 = v3;
-  IsFullRange = FigCapturePixelFormatIsFullRange([v3 pixelFormat]);
+  v4 = format;
+  IsFullRange = FigCapturePixelFormatIsFullRange([format pixelFormat]);
   v6 = FigCapturePixelFormatIsFullRange([v4 pixelFormat]);
   v7 = v6;
   if ((IsFullRange & 1) == 0)
   {
-    [v2 addObject:&unk_1F2243F30];
+    [array addObject:&unk_1F2243F30];
     v8 = 1;
     if ((v7 & 1) == 0)
     {
@@ -43,7 +43,7 @@
     }
 
 LABEL_8:
-    [v2 addObject:&unk_1F2243F48];
+    [array addObject:&unk_1F2243F48];
     v9 = 1;
     goto LABEL_9;
   }
@@ -58,16 +58,16 @@ LABEL_8:
 LABEL_9:
   if (FigCapturePlatformSupportsUniversalCompression())
   {
-    [v2 addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(4, *(a1 + 152), v8, v9, 0, 1, 0, 0)}];
+    [array addObjectsFromArray:{FigCaptureSupportedCompressedPixelFormatsForSettings(4, *(self + 152), v8, v9, 0, 1, 0, 0)}];
   }
 
-  return v2;
+  return array;
 }
 
-- (BWMultiFilterThumbnailNode)initWithFilters:(id)a3 thumbnailSize:(CGSize)a4 maxLossyCompressionLevel:(int)a5
+- (BWMultiFilterThumbnailNode)initWithFilters:(id)filters thumbnailSize:(CGSize)size maxLossyCompressionLevel:(int)level
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v17.receiver = self;
   v17.super_class = BWMultiFilterThumbnailNode;
   v9 = [(BWNode *)&v17 init];
@@ -76,19 +76,19 @@ LABEL_9:
   {
     v9->_thumbnailSize.width = width;
     v9->_thumbnailSize.height = height;
-    v9->_filters = [a3 copy];
-    v10->_maxLossyCompressionLevel = a5;
+    v9->_filters = [filters copy];
+    v10->_maxLossyCompressionLevel = level;
     v12 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v10 index:0];
-    v13 = [(BWMultiFilterThumbnailNode *)v10 _supportedPixelFormats];
+    _supportedPixelFormats = [(BWMultiFilterThumbnailNode *)v10 _supportedPixelFormats];
     v14 = objc_alloc_init(BWVideoFormatRequirements);
-    [(BWVideoFormatRequirements *)v14 setSupportedPixelFormats:v13];
+    [(BWVideoFormatRequirements *)v14 setSupportedPixelFormats:_supportedPixelFormats];
     [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v12 primaryMediaConfiguration] setFormatRequirements:v14];
     [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v12 primaryMediaConfiguration] setPassthroughMode:0];
     [(BWNode *)v10 addInput:v12];
 
     v15 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v10];
     v16 = objc_alloc_init(BWVideoFormatRequirements);
-    [(BWVideoFormatRequirements *)v16 setSupportedPixelFormats:v13];
+    [(BWVideoFormatRequirements *)v16 setSupportedPixelFormats:_supportedPixelFormats];
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v15 primaryMediaConfiguration] setFormatRequirements:v16];
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v15 primaryMediaConfiguration] setPassthroughMode:0];
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v15 primaryMediaConfiguration] setIndexOfInputWhichDrivesThisOutput:0];
@@ -114,24 +114,24 @@ LABEL_9:
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   cf = 0;
-  BWSampleBufferRemoveAttachedMedia(a3, @"Depth");
-  if (a3)
+  BWSampleBufferRemoveAttachedMedia(buffer, @"Depth");
+  if (buffer)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     if (ImageBuffer)
     {
       v7 = ImageBuffer;
-      v8 = [(BWPixelBufferPool *)[(BWNodeOutput *)[(BWNode *)self output] livePixelBufferPool] newPixelBuffer];
-      if (v8)
+      newPixelBuffer = [(BWPixelBufferPool *)[(BWNodeOutput *)[(BWNode *)self output] livePixelBufferPool] newPixelBuffer];
+      if (newPixelBuffer)
       {
-        v9 = v8;
+        v9 = newPixelBuffer;
         [(FigColorCubeMetalFilter *)self->_filter setInputPixelBuffer:v7];
         [(FigColorCubeMetalFilter *)self->_filter setMattePixelbuffer:0];
         [(FigColorCubeMetalFilter *)self->_filter setOutputPixelBuffer:v9];
-        if (![(FigColorCubeMetalFilter *)self->_filter process]&& ![(FigColorCubeMetalFilter *)self->_filter finishProcessing]&& !BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v9, &self->_mostRecentFormatDescription, &cf))
+        if (![(FigColorCubeMetalFilter *)self->_filter process]&& ![(FigColorCubeMetalFilter *)self->_filter finishProcessing]&& !BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, v9, &self->_mostRecentFormatDescription, &cf))
         {
           [(BWNodeOutput *)self->super._output emitSampleBuffer:cf];
         }
@@ -163,17 +163,17 @@ LABEL_9:
 
 - (void)_releaseResources
 {
-  if (a1)
+  if (self)
   {
 
-    a1[20] = 0;
-    a1[21] = 0;
+    self[20] = 0;
+    self[21] = 0;
 
-    a1[18] = 0;
+    self[18] = 0;
   }
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   if (self)
   {
@@ -188,9 +188,9 @@ LABEL_9:
   v7 = objc_alloc_init(BWVideoFormatRequirements);
   +[BWVideoFormatRequirements cacheModesForOptimizedHWAccess];
   [OUTLINED_FUNCTION_4() setSupportedCacheModes:?];
-  if ([a3 colorSpaceProperties])
+  if ([format colorSpaceProperties])
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
   }
 
@@ -314,12 +314,12 @@ LABEL_10:
   return result;
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   [(BWMultiFilterThumbnailNode *)&self->super.super.isa _releaseResources];
   v5.receiver = self;
   v5.super_class = BWMultiFilterThumbnailNode;
-  [(BWNode *)&v5 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v5 didReachEndOfDataForInput:input];
 }
 
 - (uint64_t)renderSampleBuffer:forInput:.cold.1()

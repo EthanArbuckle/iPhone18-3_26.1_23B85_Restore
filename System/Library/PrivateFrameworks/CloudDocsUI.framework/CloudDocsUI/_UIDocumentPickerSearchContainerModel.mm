@@ -1,21 +1,21 @@
 @interface _UIDocumentPickerSearchContainerModel
-- (_UIDocumentPickerSearchContainerModel)initWithPickableTypes:(id)a3 mode:(unint64_t)a4;
+- (_UIDocumentPickerSearchContainerModel)initWithPickableTypes:(id)types mode:(unint64_t)mode;
 - (id)_createObserver;
 - (id)displayTitle;
 - (id)scopes;
 - (void)_updateObserverForQuery;
-- (void)arrayController:(id)a3 modelChanged:(id)a4 differences:(id)a5;
-- (void)setQueryString:(id)a3;
+- (void)arrayController:(id)controller modelChanged:(id)changed differences:(id)differences;
+- (void)setQueryString:(id)string;
 - (void)startMonitoringChanges;
 @end
 
 @implementation _UIDocumentPickerSearchContainerModel
 
-- (_UIDocumentPickerSearchContainerModel)initWithPickableTypes:(id)a3 mode:(unint64_t)a4
+- (_UIDocumentPickerSearchContainerModel)initWithPickableTypes:(id)types mode:(unint64_t)mode
 {
   v5.receiver = self;
   v5.super_class = _UIDocumentPickerSearchContainerModel;
-  return [(_UIDocumentPickerURLContainerModel *)&v5 initWithURL:0 pickableTypes:a3 mode:a4];
+  return [(_UIDocumentPickerURLContainerModel *)&v5 initWithURL:0 pickableTypes:types mode:mode];
 }
 
 - (id)displayTitle
@@ -36,8 +36,8 @@
 
 - (id)scopes
 {
-  v2 = [MEMORY[0x277CFAE20] documentContainers];
-  v3 = [v2 valueForKey:@"identifier"];
+  documentContainers = [MEMORY[0x277CFAE20] documentContainers];
+  v3 = [documentContainers valueForKey:@"identifier"];
 
   return v3;
 }
@@ -45,18 +45,18 @@
 - (id)_createObserver
 {
   v3 = [_UIDocumentPickerCloudDirectoryObserver alloc];
-  v4 = [(_UIDocumentPickerSearchContainerModel *)self scopes];
-  v5 = [(_UIDocumentPickerCloudDirectoryObserver *)v3 initWithRecursiveScopes:v4 delegate:self];
+  scopes = [(_UIDocumentPickerSearchContainerModel *)self scopes];
+  v5 = [(_UIDocumentPickerCloudDirectoryObserver *)v3 initWithRecursiveScopes:scopes delegate:self];
 
   return v5;
 }
 
-- (void)setQueryString:(id)a3
+- (void)setQueryString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_queryString isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [stringCopy copy];
     queryString = self->_queryString;
     self->_queryString = v4;
 
@@ -67,11 +67,11 @@
   }
 }
 
-- (void)arrayController:(id)a3 modelChanged:(id)a4 differences:(id)a5
+- (void)arrayController:(id)controller modelChanged:(id)changed differences:(id)differences
 {
   v7.receiver = self;
   v7.super_class = _UIDocumentPickerSearchContainerModel;
-  [(_UIDocumentPickerURLContainerModel *)&v7 arrayController:a3 modelChanged:a4 differences:a5];
+  [(_UIDocumentPickerURLContainerModel *)&v7 arrayController:controller modelChanged:changed differences:differences];
   if (![(NSString *)self->_queryString length])
   {
     block[0] = MEMORY[0x277D85DD0];
@@ -102,8 +102,8 @@
     v11 = [MEMORY[0x277CCAC30] predicateWithValue:0];
   }
 
-  v10 = [(_UIDocumentPickerURLContainerModel *)self observer];
-  [v10 setQueryPredicate:v11];
+  observer = [(_UIDocumentPickerURLContainerModel *)self observer];
+  [observer setQueryPredicate:v11];
 }
 
 @end

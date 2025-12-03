@@ -1,19 +1,19 @@
 @interface LPFetcherJSONResponse
-+ (id)responseForFetcher:(id)a3 withData:(id)a4 MIMEType:(id)a5;
-- (LPFetcherJSONResponse)initWithRootObject:(id)a3 fetcher:(id)a4;
++ (id)responseForFetcher:(id)fetcher withData:(id)data MIMEType:(id)type;
+- (LPFetcherJSONResponse)initWithRootObject:(id)object fetcher:(id)fetcher;
 @end
 
 @implementation LPFetcherJSONResponse
 
-+ (id)responseForFetcher:(id)a3 withData:(id)a4 MIMEType:(id)a5
++ (id)responseForFetcher:(id)fetcher withData:(id)data MIMEType:(id)type
 {
-  v6 = a3;
+  fetcherCopy = fetcher;
   v12 = 0;
-  v7 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a4 options:0 error:&v12];
+  v7 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:&v12];
   v8 = v12;
   if (v8)
   {
-    v9 = [[LPFetcherErrorResponse alloc] initWithError:v8 fetcher:v6];
+    v9 = [[LPFetcherErrorResponse alloc] initWithError:v8 fetcher:fetcherCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_6;
@@ -21,7 +21,7 @@ LABEL_5:
 
   if (v7)
   {
-    v9 = [[LPFetcherJSONResponse alloc] initWithRootObject:v7 fetcher:v6];
+    v9 = [[LPFetcherJSONResponse alloc] initWithRootObject:v7 fetcher:fetcherCopy];
     goto LABEL_5;
   }
 
@@ -31,16 +31,16 @@ LABEL_6:
   return v10;
 }
 
-- (LPFetcherJSONResponse)initWithRootObject:(id)a3 fetcher:(id)a4
+- (LPFetcherJSONResponse)initWithRootObject:(id)object fetcher:(id)fetcher
 {
-  v7 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = LPFetcherJSONResponse;
-  v8 = [(LPFetcherResponse *)&v12 initWithState:2 fetcher:a4];
+  v8 = [(LPFetcherResponse *)&v12 initWithState:2 fetcher:fetcher];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_rootObject, a3);
+    objc_storeStrong(&v8->_rootObject, object);
     v10 = v9;
   }
 

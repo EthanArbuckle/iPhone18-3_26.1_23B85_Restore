@@ -32,8 +32,8 @@
   [v3 appendFormat:@"dynamicPixelScaleValue:%f\n", v6];
   [(UIScreen *)self _car_dynamicPointScaleValue];
   [v3 appendFormat:@"dynamicPointScaleValue:%f\n", v7];
-  v8 = [(UIScreen *)self _car_screenInfo];
-  [v3 appendFormat:@"screenInfo:%@\n", v8];
+  _car_screenInfo = [(UIScreen *)self _car_screenInfo];
+  [v3 appendFormat:@"screenInfo:%@\n", _car_screenInfo];
 
   [(UIScreen *)self scale];
   [v3 appendFormat:@"scale:%f\n", v9];
@@ -139,16 +139,16 @@
 
 - (BOOL)_car_hasScreenInfo
 {
-  v2 = [(UIScreen *)self _car_screenInfo];
-  v3 = v2 != 0;
+  _car_screenInfo = [(UIScreen *)self _car_screenInfo];
+  v3 = _car_screenInfo != 0;
 
   return v3;
 }
 
 - (CGSize)_car_physicalSize
 {
-  v2 = [(UIScreen *)self _car_screenInfo];
-  [v2 physicalSize];
+  _car_screenInfo = [(UIScreen *)self _car_screenInfo];
+  [_car_screenInfo physicalSize];
   v4 = v3;
   v6 = v5;
 
@@ -161,8 +161,8 @@
 
 - (CGSize)_car_pixelSize
 {
-  v2 = [(UIScreen *)self _car_screenInfo];
-  [v2 pixelSize];
+  _car_screenInfo = [(UIScreen *)self _car_screenInfo];
+  [_car_screenInfo pixelSize];
   v4 = v3;
   v6 = v5;
 
@@ -176,13 +176,13 @@
 - (CARScreenInfo)_car_screenInfo
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 connectedCarScreenInfos];
+  connectedCarScreenInfos = [v3 connectedCarScreenInfos];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100979A8C;
   v14[3] = &unk_10165FE40;
   v14[4] = self;
-  v5 = sub_100030774(v4, v14);
+  v5 = sub_100030774(connectedCarScreenInfos, v14);
 
   if (v5 && [(UIScreen *)self _isCarInstrumentsScreen]&& [(UIScreen *)self _car_hasDebugPhysicalSizeOverride])
   {

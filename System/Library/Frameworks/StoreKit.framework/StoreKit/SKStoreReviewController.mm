@@ -1,9 +1,9 @@
 @interface SKStoreReviewController
-+ (BOOL)_isValidScene:(id)a3;
-+ (unint64_t)convertInterfaceOrientation:(int64_t)a3;
++ (BOOL)_isValidScene:(id)scene;
++ (unint64_t)convertInterfaceOrientation:(int64_t)orientation;
 + (void)requestReview;
 + (void)requestReviewInScene:(UIWindowScene *)windowScene;
-+ (void)requestReviewViaDirectInjectionFlowInScene:(id)a3 requestToken:(id)a4;
++ (void)requestReviewViaDirectInjectionFlowInScene:(id)scene requestToken:(id)token;
 @end
 
 @implementation SKStoreReviewController
@@ -12,9 +12,9 @@
 {
   if (![SKEntitlementChecker checkForEntitlement:@"com.apple.developer.on-demand-install-capable"])
   {
-    v4 = [MEMORY[0x1E69DD2E8] keyWindow];
-    v3 = [v4 windowScene];
-    [a1 requestReviewInScene:v3];
+    keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+    windowScene = [keyWindow windowScene];
+    [self requestReviewInScene:windowScene];
   }
 }
 
@@ -28,7 +28,7 @@
   v8[2] = __48__SKStoreReviewController_requestReviewInScene___block_invoke;
   v8[3] = &unk_1E7B288C0;
   v9 = v4;
-  v10 = a1;
+  selfCopy = self;
   v7 = v4;
   [(SKXPCConnection *)v5 sendMessage:v6 withReply:v8];
 }
@@ -200,25 +200,25 @@ uint64_t __48__SKStoreReviewController_requestReviewInScene___block_invoke_23(ui
   return result;
 }
 
-+ (void)requestReviewViaDirectInjectionFlowInScene:(id)a3 requestToken:(id)a4
++ (void)requestReviewViaDirectInjectionFlowInScene:(id)scene requestToken:(id)token
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69D4938] sharedConfig];
-  v9 = [v8 shouldLog];
-  if ([v8 shouldLogToDisk])
+  sceneCopy = scene;
+  tokenCopy = token;
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v10 &= 2u;
   }
@@ -236,7 +236,7 @@ uint64_t __48__SKStoreReviewController_requestReviewInScene___block_invoke_23(ui
 
   if (v13)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v21, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v21, v16}];
     free(v13);
     SSFileLog();
 LABEL_9:
@@ -246,11 +246,11 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __83__SKStoreReviewController_requestReviewViaDirectInjectionFlowInScene_requestToken___block_invoke;
   block[3] = &unk_1E7B27B80;
-  v19 = v7;
-  v20 = a1;
-  v18 = v6;
-  v14 = v7;
-  v15 = v6;
+  v19 = tokenCopy;
+  selfCopy = self;
+  v18 = sceneCopy;
+  v14 = tokenCopy;
+  v15 = sceneCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -315,10 +315,10 @@ LABEL_15:
   [(SKStoreReviewPresentationWindow *)v3 presentViewController:v12 animated:1 completion:0];
 }
 
-+ (BOOL)_isValidScene:(id)a3
++ (BOOL)_isValidScene:(id)scene
 {
-  v3 = a3;
-  if ([v3 activationState] != -1 || (objc_msgSend(MEMORY[0x1E69DC668], "sharedApplication"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "connectedScenes"), v5 = objc_claimAutoreleasedReturnValue(), v4, v6 = objc_msgSend(v5, "containsObject:", v3), v5, v6))
+  sceneCopy = scene;
+  if ([sceneCopy activationState] != -1 || (objc_msgSend(MEMORY[0x1E69DC668], "sharedApplication"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "connectedScenes"), v5 = objc_claimAutoreleasedReturnValue(), v4, v6 = objc_msgSend(v5, "containsObject:", sceneCopy), v5, v6))
   {
     LOBYTE(v6) = 1;
   }
@@ -326,16 +326,16 @@ LABEL_15:
   return v6;
 }
 
-+ (unint64_t)convertInterfaceOrientation:(int64_t)a3
++ (unint64_t)convertInterfaceOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) >= 4)
+  if ((orientation - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return orientation;
   }
 }
 

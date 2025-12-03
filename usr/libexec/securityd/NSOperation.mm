@@ -2,11 +2,11 @@
 - (BOOL)isPending;
 - (id)debugDescription;
 - (id)description;
-- (id)pendingDependenciesString:(id)a3;
+- (id)pendingDependenciesString:(id)string;
 - (id)selfname;
-- (void)addNullableDependency:(id)a3;
-- (void)linearDependencies:(id)a3;
-- (void)linearDependenciesWithSelfFirst:(id)a3;
+- (void)addNullableDependency:(id)dependency;
+- (void)linearDependencies:(id)dependencies;
+- (void)linearDependenciesWithSelfFirst:(id)first;
 - (void)removeDependenciesUponCompletion;
 @end
 
@@ -25,9 +25,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)addNullableDependency:(id)a3
+- (void)addNullableDependency:(id)dependency
 {
-  if (a3)
+  if (dependency)
   {
     [(NSOperation *)self addDependency:?];
   }
@@ -65,18 +65,18 @@
 
   else
   {
-    v4 = [(NSOperation *)self isReady];
+    isReady = [(NSOperation *)self isReady];
     v3 = @"pending";
-    if (v4)
+    if (isReady)
     {
       v3 = @"ready";
     }
   }
 
   v5 = v3;
-  v6 = [(NSOperation *)self selfname];
+  selfname = [(NSOperation *)self selfname];
   v7 = [(NSOperation *)self pendingDependenciesString:@" dep:"];
-  v8 = [NSString stringWithFormat:@"<%@ (%p): %@%@>", v6, self, v5, v7];
+  v8 = [NSString stringWithFormat:@"<%@ (%p): %@%@>", selfname, self, v5, v7];
 
   return v8;
 }
@@ -100,28 +100,28 @@
 
   else
   {
-    v4 = [(NSOperation *)self isReady];
+    isReady = [(NSOperation *)self isReady];
     v3 = @"pending";
-    if (v4)
+    if (isReady)
     {
       v3 = @"ready";
     }
   }
 
   v5 = v3;
-  v6 = [(NSOperation *)self selfname];
+  selfname = [(NSOperation *)self selfname];
   v7 = [(NSOperation *)self pendingDependenciesString:@" dep:"];
-  v8 = [NSString stringWithFormat:@"<%@: %@%@>", v6, v5, v7];
+  v8 = [NSString stringWithFormat:@"<%@: %@%@>", selfname, v5, v7];
 
   return v8;
 }
 
-- (id)pendingDependenciesString:(id)a3
+- (id)pendingDependenciesString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSOperation *)self dependencies];
-  v7 = [v6 copy];
+  dependencies = [(NSOperation *)self dependencies];
+  v7 = [dependencies copy];
 
   v8 = [v7 indexesOfObjectsPassingTest:&stru_1003434E0];
   v9 = [v7 objectsAtIndexes:v8];
@@ -170,7 +170,7 @@
 
       --*v12;
       v22 = [v13 componentsJoinedByString:{@", "}];
-      v11 = [NSString stringWithFormat:@"%@%@", v4, v22];
+      v11 = [NSString stringWithFormat:@"%@%@", stringCopy, v22];
 
       v5 = v24;
     }
@@ -191,15 +191,15 @@
   return v11;
 }
 
-- (void)linearDependenciesWithSelfFirst:(id)a3
+- (void)linearDependenciesWithSelfFirst:(id)first
 {
-  v4 = a3;
-  objc_sync_enter(v4);
+  firstCopy = first;
+  objc_sync_enter(firstCopy);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = firstCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -246,15 +246,15 @@ LABEL_11:
   objc_sync_exit(v5);
 }
 
-- (void)linearDependencies:(id)a3
+- (void)linearDependencies:(id)dependencies
 {
-  v4 = a3;
-  objc_sync_enter(v4);
+  dependenciesCopy = dependencies;
+  objc_sync_enter(dependenciesCopy);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = dependenciesCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v6)
   {
@@ -301,14 +301,14 @@ LABEL_11:
 
 - (id)selfname
 {
-  v3 = [(NSOperation *)self name];
+  name = [(NSOperation *)self name];
 
   v4 = objc_opt_class();
   NSStringFromClass(v4);
-  if (v3)
+  if (name)
     v5 = {;
-    v6 = [(NSOperation *)self name];
-    v7 = [NSString stringWithFormat:@"%@(%@)", v5, v6];
+    name2 = [(NSOperation *)self name];
+    v7 = [NSString stringWithFormat:@"%@(%@)", v5, name2];
   }
 
   else

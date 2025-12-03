@@ -1,14 +1,14 @@
 @interface VUIScoreboardLayout
-+ (id)_textColor:(int64_t)a3;
++ (id)_textColor:(int64_t)color;
 - (_VUICornerRadii)borderRadii;
 @end
 
 @implementation VUIScoreboardLayout
 
-+ (id)_textColor:(int64_t)a3
++ (id)_textColor:(int64_t)color
 {
-  v3 = [MEMORY[0x1E69DC888] blackColor];
-  v4 = [v3 colorWithAlphaComponent:0.5];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v4 = [blackColor colorWithAlphaComponent:0.5];
 
   return v4;
 }

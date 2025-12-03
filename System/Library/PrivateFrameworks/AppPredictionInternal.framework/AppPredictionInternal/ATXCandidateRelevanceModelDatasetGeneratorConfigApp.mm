@@ -1,32 +1,32 @@
 @interface ATXCandidateRelevanceModelDatasetGeneratorConfigApp
-+ (id)candidatePublisherFromStartTime:(double)a3;
-+ (id)candidatePublisherWithStartTime:(id)a3 endTime:(id)a4;
++ (id)candidatePublisherFromStartTime:(double)time;
++ (id)candidatePublisherWithStartTime:(id)time endTime:(id)endTime;
 @end
 
 @implementation ATXCandidateRelevanceModelDatasetGeneratorConfigApp
 
-+ (id)candidatePublisherFromStartTime:(double)a3
++ (id)candidatePublisherFromStartTime:(double)time
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   v6 = [v4 candidatePublisherWithStartTime:v5 endTime:0];
 
   return v6;
 }
 
-+ (id)candidatePublisherWithStartTime:(id)a3 endTime:(id)a4
++ (id)candidatePublisherWithStartTime:(id)time endTime:(id)endTime
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a4;
-  v7 = a3;
+  endTimeCopy = endTime;
+  timeCopy = time;
   v8 = +[_ATXAppIconState sharedInstance];
-  v9 = [v8 allInstalledAppsKnownToSpringBoard];
-  v10 = [v5 setWithArray:v9];
+  allInstalledAppsKnownToSpringBoard = [v8 allInstalledAppsKnownToSpringBoard];
+  v10 = [v5 setWithArray:allInstalledAppsKnownToSpringBoard];
 
   v11 = BiomeLibrary();
   v12 = [v11 App];
-  v13 = [v12 InFocus];
-  v14 = [v13 atx_publisherWithStartTime:v7 endTime:v6 maxEvents:0 lastN:0 reversed:0];
+  inFocus = [v12 InFocus];
+  v14 = [inFocus atx_publisherWithStartTime:timeCopy endTime:endTimeCopy maxEvents:0 lastN:0 reversed:0];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;

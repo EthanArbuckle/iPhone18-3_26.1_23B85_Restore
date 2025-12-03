@@ -1,27 +1,27 @@
 @interface KTAccountKeyServer
-+ (BOOL)verifyData:(id)a3 signature:(id)a4 accountPublicKeyInfo:(id)a5 error:(id *)a6;
-+ (_PCSPublicIdentityData)decodePublicKeyInfo:(id)a3 error:(id *)a4;
-+ (id)applicationToService:(id)a3;
-+ (id)publicKeyInfoFromIdentity:(_PCSIdentityData *)a3 error:(id *)a4;
-+ (id)sharedKeyService:(id)a3;
-+ (id)sharedKeyServiceForApplication:(id)a3;
++ (BOOL)verifyData:(id)data signature:(id)signature accountPublicKeyInfo:(id)info error:(id *)error;
++ (_PCSPublicIdentityData)decodePublicKeyInfo:(id)info error:(id *)error;
++ (id)applicationToService:(id)service;
++ (id)publicKeyInfoFromIdentity:(_PCSIdentityData *)identity error:(id *)error;
++ (id)sharedKeyService:(id)service;
++ (id)sharedKeyServiceForApplication:(id)application;
 + (void)clearCachedPCSIdentities;
-+ (void)startMetrics:(id)a3 services:(id)a4;
++ (void)startMetrics:(id)metrics services:(id)services;
 - (BOOL)haveIdentity;
-- (BOOL)isAccountIdentity:(id)a3 error:(id *)a4;
-- (KTAccountKeyServer)initWithService:(id)a3;
-- (_PCSIdentitySetData)copyPCSIdentitySet:(id *)a3;
+- (BOOL)isAccountIdentity:(id)identity error:(id *)error;
+- (KTAccountKeyServer)initWithService:(id)service;
+- (_PCSIdentitySetData)copyPCSIdentitySet:(id *)set;
 - (id)copyCachedPCSIdentity;
-- (id)initKeyServiceWithApplication:(id)a3;
-- (id)pcsOptions:(id *)a3;
-- (id)publicPublicKey:(id *)a3;
-- (void)cachePCSIdentity:(id)a3;
+- (id)initKeyServiceWithApplication:(id)application;
+- (id)pcsOptions:(id *)options;
+- (id)publicPublicKey:(id *)key;
+- (void)cachePCSIdentity:(id)identity;
 - (void)clearCachedPCSIdentity;
-- (void)createIdentityForSet:(_PCSIdentitySetData *)a3 roll:(BOOL)a4 completionBlock:(id)a5;
-- (void)getPCSIdentity:(id)a3;
-- (void)rollKey:(id)a3;
-- (void)signData:(id)a3 completionBlock:(id)a4;
-- (void)wrapperPCSIdentitySetCreateManatee:(_PCSIdentitySetData *)a3 service:(__CFString *)a4 options:(id)a5 block:(id)a6;
+- (void)createIdentityForSet:(_PCSIdentitySetData *)set roll:(BOOL)roll completionBlock:(id)block;
+- (void)getPCSIdentity:(id)identity;
+- (void)rollKey:(id)key;
+- (void)signData:(id)data completionBlock:(id)block;
+- (void)wrapperPCSIdentitySetCreateManatee:(_PCSIdentitySetData *)manatee service:(__CFString *)service options:(id)options block:(id)block;
 @end
 
 @implementation KTAccountKeyServer
@@ -38,34 +38,34 @@
 - (id)copyCachedPCSIdentity
 {
   os_unfair_lock_lock(&self->_identityCacheLock);
-  v3 = [(KTAccountKeyServer *)self _pcsIdentity];
-  if (v3)
+  _pcsIdentity = [(KTAccountKeyServer *)self _pcsIdentity];
+  if (_pcsIdentity)
   {
-    v4 = [(KTAccountKeyServer *)self _pcsIdentityCachedTime];
-    [v4 timeIntervalSinceNow];
+    _pcsIdentityCachedTime = [(KTAccountKeyServer *)self _pcsIdentityCachedTime];
+    [_pcsIdentityCachedTime timeIntervalSinceNow];
     v6 = v5;
     v7 = -kKTAuthenticationLifetime;
 
     if (v6 <= v7)
     {
-      v3 = 0;
+      _pcsIdentity = 0;
     }
 
     else
     {
-      v3 = [(KTAccountKeyServer *)self _pcsIdentity];
+      _pcsIdentity = [(KTAccountKeyServer *)self _pcsIdentity];
     }
   }
 
   os_unfair_lock_unlock(&self->_identityCacheLock);
-  return v3;
+  return _pcsIdentity;
 }
 
-- (void)cachePCSIdentity:(id)a3
+- (void)cachePCSIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_identityCacheLock);
-  [(KTAccountKeyServer *)self set_pcsIdentity:v4];
+  [(KTAccountKeyServer *)self set_pcsIdentity:identityCopy];
 
   v5 = +[NSDate date];
   [(KTAccountKeyServer *)self set_pcsIdentityCachedTime:v5];
@@ -73,28 +73,28 @@
   os_unfair_lock_unlock(&self->_identityCacheLock);
 }
 
-+ (id)applicationToService:(id)a3
++ (id)applicationToService:(id)service
 {
   v3 = qword_10039CAE8;
-  v4 = a3;
+  serviceCopy = service;
   if (v3 != -1)
   {
     sub_10025D158();
   }
 
-  v5 = [qword_10039CAF0 objectForKeyedSubscript:v4];
+  v5 = [qword_10039CAF0 objectForKeyedSubscript:serviceCopy];
 
   return v5;
 }
 
-+ (id)sharedKeyServiceForApplication:(id)a3
++ (id)sharedKeyServiceForApplication:(id)application
 {
-  v3 = a3;
-  v4 = [TransparencyApplication applicationValueForIdentifier:v3];
+  applicationCopy = application;
+  v4 = [TransparencyApplication applicationValueForIdentifier:applicationCopy];
 
   if (v4)
   {
-    v5 = [objc_opt_class() applicationToService:v3];
+    v5 = [objc_opt_class() applicationToService:applicationCopy];
     if (v5)
     {
       v6 = [objc_opt_class() sharedKeyService:v5];
@@ -111,7 +111,7 @@
       if (os_log_type_enabled(qword_10039CB00, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = v3;
+        v11 = applicationCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Unknown application mapping: %@", &v10, 0xCu);
       }
 
@@ -130,7 +130,7 @@
     if (os_log_type_enabled(qword_10039CB00, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = applicationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Unknown application identifier: %@", &v10, 0xCu);
     }
 
@@ -147,8 +147,8 @@
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v2 = [qword_10039CB10 allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [qword_10039CB10 allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -160,7 +160,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v7 + 1) + 8 * v6) clearCachedPCSIdentity];
@@ -168,7 +168,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -177,40 +177,40 @@
   os_unfair_lock_unlock(&unk_10039CB08);
 }
 
-+ (id)sharedKeyService:(id)a3
++ (id)sharedKeyService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EE130;
   block[3] = &unk_100327700;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10039CB18 != -1)
   {
     dispatch_once(&qword_10039CB18, block);
   }
 
   os_unfair_lock_lock(&unk_10039CB08);
-  v5 = [qword_10039CB10 objectForKeyedSubscript:v4];
+  v5 = [qword_10039CB10 objectForKeyedSubscript:serviceCopy];
   os_unfair_lock_unlock(&unk_10039CB08);
   if (!v5)
   {
-    v5 = [objc_alloc(objc_opt_class()) initWithService:v4];
+    v5 = [objc_alloc(objc_opt_class()) initWithService:serviceCopy];
     if (v5)
     {
       os_unfair_lock_lock(&unk_10039CB08);
-      v6 = [qword_10039CB10 objectForKeyedSubscript:v4];
+      v6 = [qword_10039CB10 objectForKeyedSubscript:serviceCopy];
 
       if (v6)
       {
-        v7 = [qword_10039CB10 objectForKeyedSubscript:v4];
+        v7 = [qword_10039CB10 objectForKeyedSubscript:serviceCopy];
 
         v5 = v7;
       }
 
       else
       {
-        [qword_10039CB10 setObject:v5 forKeyedSubscript:v4];
+        [qword_10039CB10 setObject:v5 forKeyedSubscript:serviceCopy];
       }
 
       os_unfair_lock_unlock(&unk_10039CB08);
@@ -220,14 +220,14 @@
   return v5;
 }
 
-- (id)initKeyServiceWithApplication:(id)a3
+- (id)initKeyServiceWithApplication:(id)application
 {
-  v4 = a3;
-  v5 = [objc_opt_class() applicationToService:v4];
+  applicationCopy = application;
+  v5 = [objc_opt_class() applicationToService:applicationCopy];
   if (v5)
   {
-    self = [(KTAccountKeyServer *)self initWithService:v4];
-    v6 = self;
+    self = [(KTAccountKeyServer *)self initWithService:applicationCopy];
+    selfCopy = self;
   }
 
   else
@@ -241,17 +241,17 @@
     if (os_log_type_enabled(qword_10039CB00, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = applicationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Unknown application mapping: %@", &v9, 0xCu);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (KTAccountKeyServer)initWithService:(id)a3
+- (KTAccountKeyServer)initWithService:(id)service
 {
   v12.receiver = self;
   v12.super_class = KTAccountKeyServer;
@@ -275,38 +275,38 @@
   return v4;
 }
 
-+ (void)startMetrics:(id)a3 services:(id)a4
++ (void)startMetrics:(id)metrics services:(id)services
 {
-  v5 = a3;
-  v6 = a4;
-  objc_initWeak(&location, v5);
+  metricsCopy = metrics;
+  servicesCopy = services;
+  objc_initWeak(&location, metricsCopy);
   v7 = SFAnalyticsSamplerIntervalOncePerReport;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001EE5F4;
   v9[3] = &unk_100328A70;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = servicesCopy;
   v10 = v8;
-  [v5 addMultiSamplerForName:@"KTAccountKeyMultiSampler" withTimeInterval:v9 block:v7];
+  [metricsCopy addMultiSamplerForName:@"KTAccountKeyMultiSampler" withTimeInterval:v9 block:v7];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (id)pcsOptions:(id *)a3
+- (id)pcsOptions:(id *)options
 {
   v15 = 0;
   v4 = [TransparencyAccount primaryAccount:&v15];
   v5 = v15;
   if (v4)
   {
-    v6 = [v4 aa_personID];
-    v7 = v6;
-    if (v6)
+    aa_personID = [v4 aa_personID];
+    v7 = aa_personID;
+    if (aa_personID)
     {
       v16 = kPCSSetupDSID;
-      v17 = v6;
+      v17 = aa_personID;
       v8 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     }
 
@@ -321,9 +321,9 @@
       if (os_log_type_enabled(qword_10039CB00, OS_LOG_TYPE_ERROR))
       {
         v12 = v11;
-        v13 = [v4 identifier];
+        identifier = [v4 identifier];
         *buf = 138412290;
-        v19 = v13;
+        v19 = identifier;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to get primary account dsid, returning nil PCS options: %@", buf, 0xCu);
       }
 
@@ -346,18 +346,18 @@
     }
 
     v8 = 0;
-    if (a3 && v5)
+    if (options && v5)
     {
       v10 = v5;
       v8 = 0;
-      *a3 = v5;
+      *options = v5;
     }
   }
 
   return v8;
 }
 
-- (_PCSIdentitySetData)copyPCSIdentitySet:(id *)a3
+- (_PCSIdentitySetData)copyPCSIdentitySet:(id *)set
 {
   v12 = 0;
   v13 = 0;
@@ -400,11 +400,11 @@
   }
 
   v7 = 0;
-  if (a3 && v6)
+  if (set && v6)
   {
     v10 = v6;
     v7 = 0;
-    *a3 = v6;
+    *set = v6;
   }
 
 LABEL_15:
@@ -412,59 +412,59 @@ LABEL_15:
   return v7;
 }
 
-- (void)createIdentityForSet:(_PCSIdentitySetData *)a3 roll:(BOOL)a4 completionBlock:(id)a5
+- (void)createIdentityForSet:(_PCSIdentitySetData *)set roll:(BOOL)roll completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = [(KTAccountKeyServer *)self creationGroup];
-  objc_sync_enter(v9);
+  blockCopy = block;
+  creationGroup = [(KTAccountKeyServer *)self creationGroup];
+  objc_sync_enter(creationGroup);
   if ([(KTAccountKeyServer *)self outstandingCreationSignal])
   {
-    v10 = [(KTAccountKeyServer *)self creationGroup];
-    v11 = [(KTAccountKeyServer *)self creationQueue];
+    creationGroup2 = [(KTAccountKeyServer *)self creationGroup];
+    creationQueue = [(KTAccountKeyServer *)self creationQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001EEF54;
     block[3] = &unk_10031ABA0;
     block[4] = self;
-    v20 = v8;
-    v12 = v8;
-    dispatch_group_notify(v10, v11, block);
+    v20 = blockCopy;
+    v12 = blockCopy;
+    dispatch_group_notify(creationGroup2, creationQueue, block);
 
-    objc_sync_exit(v9);
+    objc_sync_exit(creationGroup);
   }
 
   else
   {
-    objc_sync_exit(v9);
+    objc_sync_exit(creationGroup);
 
-    v13 = [(KTAccountKeyServer *)self creationGroup];
-    v14 = [(KTAccountKeyServer *)self creationQueue];
+    creationGroup3 = [(KTAccountKeyServer *)self creationGroup];
+    creationQueue2 = [(KTAccountKeyServer *)self creationQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1001EEF60;
     v15[3] = &unk_100328B40;
     v15[4] = self;
-    v16 = v8;
-    v18 = a4;
-    v17 = a3;
-    v9 = v8;
-    dispatch_group_async(v13, v14, v15);
+    v16 = blockCopy;
+    rollCopy = roll;
+    setCopy = set;
+    creationGroup = blockCopy;
+    dispatch_group_async(creationGroup3, creationQueue2, v15);
   }
 }
 
-- (void)wrapperPCSIdentitySetCreateManatee:(_PCSIdentitySetData *)a3 service:(__CFString *)a4 options:(id)a5 block:(id)a6
+- (void)wrapperPCSIdentitySetCreateManatee:(_PCSIdentitySetData *)manatee service:(__CFString *)service options:(id)options block:(id)block
 {
-  v7 = a6;
-  v6 = v7;
+  blockCopy = block;
+  v6 = blockCopy;
   PCSIdentitySetCreateManatee();
 }
 
 - (BOOL)haveIdentity
 {
-  v3 = [(KTAccountKeyServer *)self copyCachedPCSIdentity];
-  if (v3)
+  copyCachedPCSIdentity = [(KTAccountKeyServer *)self copyCachedPCSIdentity];
+  if (copyCachedPCSIdentity)
   {
-    v4 = v3;
+    v4 = copyCachedPCSIdentity;
     v5 = 1;
   }
 
@@ -491,15 +491,15 @@ LABEL_15:
   return v5;
 }
 
-- (void)getPCSIdentity:(id)a3
+- (void)getPCSIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[TransparencyAnalytics logger];
-  v6 = [(KTAccountKeyServer *)self copyCachedPCSIdentity];
-  if (v6)
+  copyCachedPCSIdentity = [(KTAccountKeyServer *)self copyCachedPCSIdentity];
+  if (copyCachedPCSIdentity)
   {
-    v7 = v6;
-    v4[2](v4, v6, 0);
+    v7 = copyCachedPCSIdentity;
+    identityCopy[2](identityCopy, copyCachedPCSIdentity, 0);
   }
 
   else
@@ -526,9 +526,9 @@ LABEL_15:
         if (os_log_type_enabled(qword_10039CB00, OS_LOG_TYPE_DEFAULT))
         {
           v14 = v13;
-          v15 = [v12 kt_hexString];
+          kt_hexString = [v12 kt_hexString];
           *buf = 138412290;
-          v24 = v15;
+          v24 = kt_hexString;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Caching PCS identity: %@", buf, 0xCu);
         }
 
@@ -553,7 +553,7 @@ LABEL_15:
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "copied current account key identity", buf, 2u);
         }
 
-        v4[2](v4, v7, 0);
+        identityCopy[2](identityCopy, v7, 0);
         CFRelease(v9);
       }
 
@@ -573,7 +573,7 @@ LABEL_15:
         }
 
         [v5 logResultForEvent:@"KTAccountKeyFetch" hardFailure:0 result:0];
-        v4[2](v4, 0, 0);
+        identityCopy[2](identityCopy, 0, 0);
         CFRelease(v9);
       }
     }
@@ -581,13 +581,13 @@ LABEL_15:
     else
     {
       [v5 logResultForEvent:@"KTAccountKeyFetch" hardFailure:1 result:v10];
-      (v4)[2](v4, 0, v10);
+      (identityCopy)[2](identityCopy, 0, v10);
       v7 = 0;
     }
   }
 }
 
-+ (id)publicKeyInfoFromIdentity:(_PCSIdentityData *)a3 error:(id *)a4
++ (id)publicKeyInfoFromIdentity:(_PCSIdentityData *)identity error:(id *)error
 {
   v6 = PCSIdentityCopyPublicKeyInfo();
   if (!v6)
@@ -601,23 +601,23 @@ LABEL_15:
     if (os_log_type_enabled(qword_10039CB00, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = a3;
+      identityCopy = identity;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "failed to get PCS public key info from identity: %@", &v9, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-268 description:@"failed to get PCS public key info from identity"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-268 description:@"failed to get PCS public key info from identity"];
     }
   }
 
   return v6;
 }
 
-+ (_PCSPublicIdentityData)decodePublicKeyInfo:(id)a3 error:(id *)a4
++ (_PCSPublicIdentityData)decodePublicKeyInfo:(id)info error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v6 = 0;
     v7 = 1;
@@ -638,7 +638,7 @@ LABEL_5:
     v8 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-269 description:@"failed to create public key from data"];
     if (v7)
     {
-      if (a4)
+      if (error)
       {
         goto LABEL_14;
       }
@@ -647,13 +647,13 @@ LABEL_5:
     else
     {
       CFRelease(v6);
-      if (a4)
+      if (error)
       {
 LABEL_14:
         if (v8)
         {
           v10 = v8;
-          *a4 = v8;
+          *error = v8;
         }
       }
     }
@@ -679,9 +679,9 @@ LABEL_17:
   return v6;
 }
 
-- (void)rollKey:(id)a3
+- (void)rollKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -708,7 +708,7 @@ LABEL_17:
     v10[1] = 3221225472;
     v10[2] = sub_1001EFFCC;
     v10[3] = &unk_100328C90;
-    v11 = v4;
+    v11 = keyCopy;
     v12 = &v15;
     [(KTAccountKeyServer *)self createIdentityForSet:v8 roll:1 completionBlock:v10];
   }
@@ -718,15 +718,15 @@ LABEL_17:
     v9 = +[TransparencyAnalytics logger];
     [v9 logResultForEvent:@"KTAccountKeyRoll" hardFailure:1 result:v6];
 
-    (*(v4 + 2))(v4, 0, v6);
+    (*(keyCopy + 2))(keyCopy, 0, v6);
   }
 
   _Block_object_dispose(&v15, 8);
 }
 
-- (BOOL)isAccountIdentity:(id)a3 error:(id *)a4
+- (BOOL)isAccountIdentity:(id)identity error:(id *)error
 {
-  v6 = a3;
+  identityCopy = identity;
   v20 = 0;
   v7 = [(KTAccountKeyServer *)self copyPCSIdentitySet:&v20];
   v8 = v20;
@@ -734,7 +734,7 @@ LABEL_17:
   if (v7)
   {
     v19 = v8;
-    v10 = [KTAccountKeyServer decodePublicKeyInfo:v6 error:&v19];
+    v10 = [KTAccountKeyServer decodePublicKeyInfo:identityCopy error:&v19];
     v11 = v19;
 
     if (v10)
@@ -763,10 +763,10 @@ LABEL_17:
         }
 
         v11 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-271 description:@"failed to find identity for public identity"];
-        if (a4 && v11)
+        if (error && v11)
         {
           v15 = v11;
-          *a4 = v11;
+          *error = v11;
         }
       }
 
@@ -778,11 +778,11 @@ LABEL_17:
     {
       CFRelease(v7);
       v13 = 0;
-      if (a4 && v11)
+      if (error && v11)
       {
         v17 = v11;
         v13 = 0;
-        *a4 = v11;
+        *error = v11;
       }
     }
   }
@@ -790,11 +790,11 @@ LABEL_17:
   else
   {
     v13 = 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v16 = v8;
       v13 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     v11 = v9;
@@ -803,20 +803,20 @@ LABEL_17:
   return v13;
 }
 
-- (void)signData:(id)a3 completionBlock:(id)a4
+- (void)signData:(id)data completionBlock:(id)block
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001F05E8;
   v8[3] = &unk_100328D38;
-  v9 = a3;
-  v10 = a4;
-  v6 = v9;
-  v7 = v10;
+  dataCopy = data;
+  blockCopy = block;
+  v6 = dataCopy;
+  v7 = blockCopy;
   [(KTAccountKeyServer *)self getPCSIdentity:v8];
 }
 
-- (id)publicPublicKey:(id *)a3
+- (id)publicPublicKey:(id *)key
 {
   v14 = 0;
   v15 = &v14;
@@ -837,12 +837,12 @@ LABEL_17:
   v7[4] = &v8;
   v7[5] = &v14;
   [(KTAccountKeyServer *)self getPCSIdentity:v7];
-  if (a3)
+  if (key)
   {
     v4 = v9[5];
     if (v4)
     {
-      *a3 = v4;
+      *key = v4;
     }
   }
 
@@ -854,13 +854,13 @@ LABEL_17:
   return v5;
 }
 
-+ (BOOL)verifyData:(id)a3 signature:(id)a4 accountPublicKeyInfo:(id)a5 error:(id *)a6
++ (BOOL)verifyData:(id)data signature:(id)signature accountPublicKeyInfo:(id)info error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  dataCopy = data;
+  signatureCopy = signature;
+  infoCopy = info;
+  v12 = infoCopy;
+  if (!dataCopy)
   {
     v18 = -346;
 LABEL_17:
@@ -880,20 +880,20 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  if (!v10)
+  if (!signatureCopy)
   {
     v18 = -347;
     goto LABEL_17;
   }
 
-  if (!v11)
+  if (!infoCopy)
   {
     v18 = -348;
     goto LABEL_17;
   }
 
   v22 = 0;
-  v13 = [KTAccountKeyServer decodePublicKeyInfo:v11 error:&v22];
+  v13 = [KTAccountKeyServer decodePublicKeyInfo:infoCopy error:&v22];
   v14 = v22;
   if (v13)
   {
@@ -914,10 +914,10 @@ LABEL_17:
       }
 
       v14 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-270 description:@"failed to verify data with account key"];
-      if (a6 && v14)
+      if (error && v14)
       {
         v17 = v14;
-        *a6 = v14;
+        *error = v14;
       }
     }
 
@@ -927,11 +927,11 @@ LABEL_17:
 
 LABEL_21:
   v15 = 0;
-  if (a6 && v14)
+  if (error && v14)
   {
     v20 = v14;
     v15 = 0;
-    *a6 = v14;
+    *error = v14;
   }
 
 LABEL_24:

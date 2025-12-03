@@ -7,7 +7,7 @@
 
 - (id)waiterID
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002398A8();
 
   v3 = String._bridgeToObjectiveC()();

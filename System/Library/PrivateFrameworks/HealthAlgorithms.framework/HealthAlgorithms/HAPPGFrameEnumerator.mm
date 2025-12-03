@@ -1,29 +1,29 @@
 @interface HAPPGFrameEnumerator
-- (HAPPGFrameEnumerator)initWithBinaryRepresentation:(id)a3;
+- (HAPPGFrameEnumerator)initWithBinaryRepresentation:(id)representation;
 - (id).cxx_construct;
 - (id)nextObject;
 - (uint64_t)initWithBinaryRepresentation:;
-- (void)handleMetadata:(const void *)a3;
-- (void)handlePacket:(const void *)a3 bootTime:(double)a4;
+- (void)handleMetadata:(const void *)metadata;
+- (void)handlePacket:(const void *)packet bootTime:(double)time;
 - (void)initWithBinaryRepresentation:;
 @end
 
 @implementation HAPPGFrameEnumerator
 
-- (HAPPGFrameEnumerator)initWithBinaryRepresentation:(id)a3
+- (HAPPGFrameEnumerator)initWithBinaryRepresentation:(id)representation
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = HAPPGFrameEnumerator;
   v5 = [(HAPPGFrameEnumerator *)&v14 init];
-  v6 = [v4 copy];
+  v6 = [representationCopy copy];
   mimosaData = v5->_mimosaData;
   v5->_mimosaData = v6;
 
-  v8 = [(NSData *)v5->_mimosaData bytes];
+  bytes = [(NSData *)v5->_mimosaData bytes];
   v9 = [(NSData *)v5->_mimosaData length];
-  v5->_undecodedBytes.__data_ = v8;
+  v5->_undecodedBytes.__data_ = bytes;
   v5->_undecodedBytes.__size_ = v9;
   objc_initWeak(&location, v5);
   v21[0] = &unk_2863523C8;
@@ -130,11 +130,11 @@ LABEL_20:
   return v12;
 }
 
-- (void)handlePacket:(const void *)a3 bootTime:(double)a4
+- (void)handlePacket:(const void *)packet bootTime:(double)time
 {
   if (!self->_bootDate)
   {
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:{a3, a4}];
+    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:{packet, time}];
     bootDate = self->_bootDate;
     self->_bootDate = v5;
   }
@@ -142,7 +142,7 @@ LABEL_20:
   std::allocate_shared[abi:ne200100]<std::variant<mimosa::PacketV1,mimosa::PacketV2,mimosa::PacketV3,mimosa::PacketV4,mimosa::PacketV5,mimosa::PacketV6,mimosa::PacketV7,mimosa::PacketV8,mimosa::PacketV9,mimosa::PacketV10,mimosa::PacketV11,mimosa::PacketV12>,std::allocator<std::variant<mimosa::PacketV1,mimosa::PacketV2,mimosa::PacketV3,mimosa::PacketV4,mimosa::PacketV5,mimosa::PacketV6,mimosa::PacketV7,mimosa::PacketV8,mimosa::PacketV9,mimosa::PacketV10,mimosa::PacketV11,mimosa::PacketV12>>,std::variant<mimosa::PacketV1,mimosa::PacketV2,mimosa::PacketV3,mimosa::PacketV4,mimosa::PacketV5,mimosa::PacketV6,mimosa::PacketV7,mimosa::PacketV8,mimosa::PacketV9,mimosa::PacketV10,mimosa::PacketV11,mimosa::PacketV12> const&,0>();
 }
 
-- (void)handleMetadata:(const void *)a3
+- (void)handleMetadata:(const void *)metadata
 {
   if (!self->_ppgProcessor.__ptr_)
   {
@@ -166,7 +166,7 @@ LABEL_20:
 - (uint64_t)initWithBinaryRepresentation:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -177,9 +177,9 @@ LABEL_20:
 
 - (void)initWithBinaryRepresentation:
 {
-  objc_destroyWeak(a1 + 1);
+  objc_destroyWeak(self + 1);
 
-  operator delete(a1);
+  operator delete(self);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface CRTextDetectorModelV3Input
-- (CRTextDetectorModelV3Input)initWithImg_input:(__CVBuffer *)a3;
-- (id)featureValueForName:(id)a3;
+- (CRTextDetectorModelV3Input)initWithImg_input:(__CVBuffer *)img_input;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation CRTextDetectorModelV3Input
 
-- (CRTextDetectorModelV3Input)initWithImg_input:(__CVBuffer *)a3
+- (CRTextDetectorModelV3Input)initWithImg_input:(__CVBuffer *)img_input
 {
   if (self)
   {
-    self->_img_input = a3;
+    self->_img_input = img_input;
   }
 
   return self;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"img_input"])
+  if ([name isEqualToString:@"img_input"])
   {
     v4 = [MEMORY[0x1E695FE60] featureValueWithPixelBuffer:self->_img_input];
   }

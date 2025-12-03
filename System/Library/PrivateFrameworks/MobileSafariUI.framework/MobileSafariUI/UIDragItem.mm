@@ -6,23 +6,23 @@
 
 - (id)_safari_localTabDragMetadata
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 localObject];
+    localObject = [self localObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v1 = [v1 localObject];
+      selfCopy = [selfCopy localObject];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

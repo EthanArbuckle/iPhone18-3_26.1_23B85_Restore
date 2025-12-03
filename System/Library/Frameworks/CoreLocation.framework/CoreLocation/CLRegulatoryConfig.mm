@@ -1,15 +1,15 @@
 @interface CLRegulatoryConfig
-- (BOOL)addConfigForIsoList:(id)a3 config:(id)a4 error:(id *)a5;
-- (BOOL)addConfigForRegionList:(id)a3 config:(id)a4 error:(id *)a5;
-- (BOOL)setExtendedBorderDetection:(BOOL)a3 withExtendedDistance:(int)a4;
-- (CLRegulatoryConfig)initWithQueue:(id)a3 defaultConfig:(id)a4;
-- (void)fetchConfigForLocation:(id)a3 withReply:(id)a4;
-- (void)fetchInfoForLocation:(id)a3 withReply:(id)a4;
+- (BOOL)addConfigForIsoList:(id)list config:(id)config error:(id *)error;
+- (BOOL)addConfigForRegionList:(id)list config:(id)config error:(id *)error;
+- (BOOL)setExtendedBorderDetection:(BOOL)detection withExtendedDistance:(int)distance;
+- (CLRegulatoryConfig)initWithQueue:(id)queue defaultConfig:(id)config;
+- (void)fetchConfigForLocation:(id)location withReply:(id)reply;
+- (void)fetchInfoForLocation:(id)location withReply:(id)reply;
 @end
 
 @implementation CLRegulatoryConfig
 
-- (CLRegulatoryConfig)initWithQueue:(id)a3 defaultConfig:(id)a4
+- (CLRegulatoryConfig)initWithQueue:(id)queue defaultConfig:(id)config
 {
   v5.receiver = self;
   v5.super_class = CLRegulatoryConfig;
@@ -21,25 +21,25 @@
   return 0;
 }
 
-- (BOOL)addConfigForIsoList:(id)a3 config:(id)a4 error:(id *)a5
+- (BOOL)addConfigForIsoList:(id)list config:(id)config error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  *a5 = 0;
-  if (!a3 || (v9 = [a3 count], !a4) || !v9)
+  *error = 0;
+  if (!list || (v9 = [list count], !config) || !v9)
   {
     v35 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kCLErrorDomainPrivate" code:7 userInfo:0];
     result = 0;
-    *a5 = v35;
+    *error = v35;
     goto LABEL_81;
   }
 
   ptr = self->_config.__ptr_;
-  DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], a4, 1uLL);
+  DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], config, 1uLL);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v39 = [a3 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  v39 = [list countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (!v39)
   {
     goto LABEL_79;
@@ -53,7 +53,7 @@
     {
       if (*v45 != v38)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(list);
       }
 
       v12 = *(*(&v44 + 1) + 8 * v11);
@@ -271,7 +271,7 @@ LABEL_75:
     }
 
     while (v11 != v39);
-    v39 = [a3 countByEnumeratingWithState:&v44 objects:v48 count:16];
+    v39 = [list countByEnumeratingWithState:&v44 objects:v48 count:16];
   }
 
   while (v39);
@@ -282,26 +282,26 @@ LABEL_81:
   return result;
 }
 
-- (BOOL)addConfigForRegionList:(id)a3 config:(id)a4 error:(id *)a5
+- (BOOL)addConfigForRegionList:(id)list config:(id)config error:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  *a5 = 0;
-  if (!a3 || (v9 = [a3 count], !a4) || !v9)
+  *error = 0;
+  if (!list || (v9 = [list count], !config) || !v9)
   {
     v55 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kCLErrorDomainPrivate" code:7 userInfo:0];
     result = 0;
-    *a5 = v55;
+    *error = v55;
     goto LABEL_66;
   }
 
   ptr = self->_config.__ptr_;
-  DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], a4, 1uLL);
+  DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], config, 1uLL);
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = a3;
-  v11 = [a3 countByEnumeratingWithState:&v59 objects:v63 count:16];
+  obj = list;
+  v11 = [list countByEnumeratingWithState:&v59 objects:v63 count:16];
   if (!v11)
   {
     goto LABEL_64;
@@ -531,11 +531,11 @@ LABEL_66:
   return result;
 }
 
-- (void)fetchConfigForLocation:(id)a3 withReply:(id)a4
+- (void)fetchConfigForLocation:(id)location withReply:(id)reply
 {
   v77 = *MEMORY[0x1E69E9840];
   ptr = self->_config.__ptr_;
-  if (!a3)
+  if (!location)
   {
     if (qword_1ED519088 != -1)
     {
@@ -582,11 +582,11 @@ LABEL_66:
   v7 = qword_1ED519090;
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
-    [a3 coordinate];
+    [location coordinate];
     v9 = v8;
-    [a3 coordinate];
+    [location coordinate];
     v11 = v10;
-    [a3 horizontalAccuracy];
+    [location horizontalAccuracy];
     *buf = 134546177;
     *&buf[4] = v9;
     *&buf[12] = 2053;
@@ -605,11 +605,11 @@ LABEL_66:
       dispatch_once(&qword_1ED519088, &unk_1F0E6BB10);
     }
 
-    [a3 coordinate];
+    [location coordinate];
     v15 = v14;
-    [a3 coordinate];
+    [location coordinate];
     v17 = v16;
-    [a3 horizontalAccuracy];
+    [location horizontalAccuracy];
     *v68 = 134546177;
     *&v68[4] = v15;
     *&v68[12] = 2053;
@@ -624,7 +624,7 @@ LABEL_66:
     }
   }
 
-  [a3 horizontalAccuracy];
+  [location horizontalAccuracy];
   if (v20 < 0.0)
   {
     if (qword_1ED519088 != -1)
@@ -664,7 +664,7 @@ LABEL_66:
 LABEL_41:
     *&buf[16] = v25;
     v73 = &unk_1E753D9F0;
-    *&v74 = a4;
+    *&v74 = reply;
     *(&v74 + 1) = ptr;
 LABEL_42:
     v29 = buf;
@@ -679,12 +679,12 @@ LABEL_43:
   {
     while (1)
     {
-      [a3 coordinate];
+      [location coordinate];
       v34 = v33;
-      [a3 coordinate];
+      [location coordinate];
       v36 = sub_19B87E164(v34, v35, *v32, v32[1]);
       v37 = v32[2];
-      [a3 horizontalAccuracy];
+      [location horizontalAccuracy];
       if (v36 < v37 + v38)
       {
         break;
@@ -786,7 +786,7 @@ LABEL_43:
     *&v68[8] = 3221225472;
     *&v68[16] = sub_19B907F1C;
     v69 = &unk_1E753D9F0;
-    v70 = a4;
+    replyCopy2 = reply;
     v71 = v32;
     v29 = v68;
     goto LABEL_43;
@@ -822,7 +822,7 @@ LABEL_60:
     }
   }
 
-  v48 = sub_19B90810C(a3);
+  v48 = sub_19B90810C(location);
   if (!v48)
   {
     if (qword_1EAFE4738 != -1)
@@ -860,7 +860,7 @@ LABEL_60:
     *&buf[8] = 3221225472;
     *&buf[16] = sub_19B90973C;
     v73 = &unk_1E753D9F0;
-    *&v74 = a4;
+    *&v74 = reply;
     *(&v74 + 1) = ptr;
     goto LABEL_42;
   }
@@ -871,13 +871,13 @@ LABEL_60:
   *&v68[8] = 3221225472;
   *&v68[16] = sub_19B909750;
   v69 = &unk_1E753DA40;
-  v70 = a4;
+  replyCopy2 = reply;
   v71 = ptr;
   *buf = MEMORY[0x1E69E9820];
   *&buf[8] = 3221225472;
   *&buf[16] = sub_19B909988;
   v73 = &unk_1E753DA90;
-  *(&v74 + 1) = a4;
+  *(&v74 + 1) = reply;
   v75 = ptr;
   *&v74 = v49;
   v76 = v50;
@@ -898,11 +898,11 @@ LABEL_44:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchInfoForLocation:(id)a3 withReply:(id)a4
+- (void)fetchInfoForLocation:(id)location withReply:(id)reply
 {
   v74 = *MEMORY[0x1E69E9840];
   ptr = self->_config.__ptr_;
-  if (!a3)
+  if (!location)
   {
     if (qword_1ED519088 != -1)
     {
@@ -940,11 +940,11 @@ LABEL_44:
   v7 = qword_1ED519090;
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
-    [a3 coordinate];
+    [location coordinate];
     v9 = v8;
-    [a3 coordinate];
+    [location coordinate];
     v11 = v10;
-    [a3 horizontalAccuracy];
+    [location horizontalAccuracy];
     *buf = 134546177;
     *&buf[4] = v9;
     *&buf[12] = 2053;
@@ -963,11 +963,11 @@ LABEL_44:
       dispatch_once(&qword_1ED519088, &unk_1F0E6BB10);
     }
 
-    [a3 coordinate];
+    [location coordinate];
     v15 = v14;
-    [a3 coordinate];
+    [location coordinate];
     v17 = v16;
-    [a3 horizontalAccuracy];
+    [location horizontalAccuracy];
     *v66 = 134546177;
     *&v66[4] = v15;
     *&v66[12] = 2053;
@@ -982,7 +982,7 @@ LABEL_44:
     }
   }
 
-  [a3 horizontalAccuracy];
+  [location horizontalAccuracy];
   if (v20 < 0.0)
   {
     if (qword_1ED519088 != -1)
@@ -1024,7 +1024,7 @@ LABEL_39:
     *&buf[8] = 3221225472;
     *&buf[16] = sub_19B909F90;
     v70 = &unk_1E753D9F0;
-    *&v71 = a4;
+    *&v71 = reply;
     *(&v71 + 1) = ptr;
 LABEL_40:
     dispatch_async(v26, buf);
@@ -1037,12 +1037,12 @@ LABEL_40:
   {
     while (1)
     {
-      [a3 coordinate];
+      [location coordinate];
       v31 = v30;
-      [a3 coordinate];
+      [location coordinate];
       v33 = sub_19B87E164(v31, v32, *v29, *(v29 + 8));
       v34 = *(v29 + 16);
-      [a3 horizontalAccuracy];
+      [location horizontalAccuracy];
       if (v33 < v34 + v35)
       {
         break;
@@ -1162,7 +1162,7 @@ LABEL_40:
     *&buf[16] = sub_19B909FB0;
     v70 = &unk_1E753D688;
     *&v71 = v62;
-    *(&v71 + 1) = a4;
+    *(&v71 + 1) = reply;
     goto LABEL_40;
   }
 
@@ -1197,7 +1197,7 @@ LABEL_57:
     }
   }
 
-  v48 = sub_19B90810C(a3);
+  v48 = sub_19B90810C(location);
   if (!v48)
   {
     if (qword_1EAFE4738 != -1)
@@ -1239,7 +1239,7 @@ LABEL_57:
   *&buf[8] = 3221225472;
   *&buf[16] = sub_19B90B658;
   v70 = &unk_1E753DB30;
-  *(&v71 + 1) = a4;
+  *(&v71 + 1) = reply;
   v72 = ptr;
   *&v71 = v49;
   v73 = v50;
@@ -1250,7 +1250,7 @@ LABEL_57:
     *&v66[8] = 3221225472;
     *&v66[16] = sub_19B90B87C;
     v67 = &unk_1E753DB58;
-    *&v68 = a4;
+    *&v68 = reply;
     *(&v68 + 1) = ptr;
     v52 = v66;
   }
@@ -1266,14 +1266,14 @@ LABEL_41:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setExtendedBorderDetection:(BOOL)a3 withExtendedDistance:(int)a4
+- (BOOL)setExtendedBorderDetection:(BOOL)detection withExtendedDistance:(int)distance
 {
-  if (!a3)
+  if (!detection)
   {
-    a4 = 0;
+    distance = 0;
   }
 
-  *(self->_config.__ptr_ + 20) = a4;
+  *(self->_config.__ptr_ + 20) = distance;
   return 1;
 }
 

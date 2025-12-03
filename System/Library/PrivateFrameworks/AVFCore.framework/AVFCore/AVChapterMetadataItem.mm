@@ -1,21 +1,21 @@
 @interface AVChapterMetadataItem
 - (AVChapterMetadataItem)init;
-- (BOOL)_valueForKeyDependsOnMetadataValue:(id)a3;
-- (id)_initWithAsset:(id)a3 chapterGroupIndex:(int64_t)a4 chapterIndex:(int64_t)a5 chapterType:(id)a6 extendedLanguageTag:(id)a7 languageCode:(id)a8 chapterDataType:(id)a9 time:(id *)a10 duration:(id *)a11;
+- (BOOL)_valueForKeyDependsOnMetadataValue:(id)value;
+- (id)_initWithAsset:(id)asset chapterGroupIndex:(int64_t)index chapterIndex:(int64_t)chapterIndex chapterType:(id)type extendedLanguageTag:(id)tag languageCode:(id)code chapterDataType:(id)dataType time:(id *)self0 duration:(id *)self1;
 - (id)description;
 - (id)extraAttributes;
 - (id)locale;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)value;
 - (int64_t)_valueStatus;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
 - (void)_addFigAssetNotifications;
 - (void)_ensureValueLoadedSync;
 - (void)_removeFigAssetNotifications;
-- (void)_setValueStatus:(int64_t)a3 figErrorCode:(int)a4;
-- (void)_takeValueFrom:(id)a3;
+- (void)_setValueStatus:(int64_t)status figErrorCode:(int)code;
+- (void)_takeValueFrom:(id)from;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation AVChapterMetadataItem
@@ -29,7 +29,7 @@
   return [(AVChapterMetadataItem *)self _initWithAsset:0 chapterGroupIndex:0 chapterIndex:0 chapterType:0 extendedLanguageTag:0 languageCode:0 chapterDataType:0 time:&v5 duration:&v3];
 }
 
-- (id)_initWithAsset:(id)a3 chapterGroupIndex:(int64_t)a4 chapterIndex:(int64_t)a5 chapterType:(id)a6 extendedLanguageTag:(id)a7 languageCode:(id)a8 chapterDataType:(id)a9 time:(id *)a10 duration:(id *)a11
+- (id)_initWithAsset:(id)asset chapterGroupIndex:(int64_t)index chapterIndex:(int64_t)chapterIndex chapterType:(id)type extendedLanguageTag:(id)tag languageCode:(id)code chapterDataType:(id)dataType time:(id *)self0 duration:(id *)self1
 {
   v26.receiver = self;
   v26.super_class = AVChapterMetadataItem;
@@ -38,12 +38,12 @@
   {
     v18 = objc_alloc_init(AVChapterMetadataItemInternal);
     v17->_privChapter = v18;
-    if (!a6)
+    if (!type)
     {
       goto LABEL_16;
     }
 
-    if (!a3)
+    if (!asset)
     {
       goto LABEL_16;
     }
@@ -61,38 +61,38 @@
     }
 
     v17->_privChapter->weakReference = [[AVWeakReference alloc] initWithReferencedObject:v17];
-    v17->_privChapter->chapterGroupIndex = a4;
-    v17->_privChapter->chapterIndex = a5;
-    v17->_privChapter->chapterType = a6;
-    if (a7 || !a8)
+    v17->_privChapter->chapterGroupIndex = index;
+    v17->_privChapter->chapterIndex = chapterIndex;
+    v17->_privChapter->chapterType = type;
+    if (tag || !code)
     {
-      if (a7 && !a8)
+      if (tag && !code)
       {
-        a8 = AVLanguageCodeFromExtendedLanguageTag(a7);
+        code = AVLanguageCodeFromExtendedLanguageTag(tag);
       }
     }
 
     else
     {
       ISO639_1FromISO639_2T = FigMetadataGetISO639_1FromISO639_2T();
-      a7 = ISO639_1FromISO639_2T ? ISO639_1FromISO639_2T : a8;
+      tag = ISO639_1FromISO639_2T ? ISO639_1FromISO639_2T : code;
     }
 
-    v17->_privChapter->extendedLanguageTag = [a7 copy];
-    v17->_privChapter->languageCode = [a8 copy];
-    v17->_privChapter->chapterDataType = [a9 copy];
+    v17->_privChapter->extendedLanguageTag = [tag copy];
+    v17->_privChapter->languageCode = [code copy];
+    v17->_privChapter->chapterDataType = [dataType copy];
     privChapter = v17->_privChapter;
-    var3 = a10->var3;
-    *&privChapter->time.value = *&a10->var0;
+    var3 = time->var3;
+    *&privChapter->time.value = *&time->var0;
     privChapter->time.epoch = var3;
     v22 = v17->_privChapter;
-    v23 = *&a11->var0;
-    v22->duration.epoch = a11->var3;
+    v23 = *&duration->var0;
+    v22->duration.epoch = duration->var3;
     *&v22->duration.value = v23;
-    v24 = [a3 _figAsset];
-    if (v24)
+    _figAsset = [asset _figAsset];
+    if (_figAsset)
     {
-      v17->_privChapter->figAsset = CFRetain(v24);
+      v17->_privChapter->figAsset = CFRetain(_figAsset);
       [(AVChapterMetadataItem *)v17 _addFigAssetNotifications];
       v17->_privChapter->completions = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
     }
@@ -167,9 +167,9 @@ LABEL_16:
   [(AVMetadataItem *)&v6 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [AVMutableMetadataItem allocWithZone:a3];
+  v4 = [AVMutableMetadataItem allocWithZone:zone];
   v5 = [(AVMetadataItem *)self _figMetadataDictionaryWithValue:1 diviningValueDataType:0];
 
   return [(AVMetadataItem *)v4 _initWithFigMetadataDictionary:v5];
@@ -211,17 +211,17 @@ LABEL_16:
   return v3;
 }
 
-- (void)_takeValueFrom:(id)a3
+- (void)_takeValueFrom:(id)from
 {
-  v5 = [(AVChapterMetadataItem *)self commonKey];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E6971EB0]];
-  v7 = CFGetTypeID(a3);
+  commonKey = [(AVChapterMetadataItem *)self commonKey];
+  v6 = [commonKey isEqualToString:*MEMORY[0x1E6971EB0]];
+  v7 = CFGetTypeID(from);
   TypeID = CFDictionaryGetTypeID();
   if (v6)
   {
     if (v7 == TypeID)
     {
-      v9 = [a3 objectForKey:*MEMORY[0x1E6971878]];
+      v9 = [from objectForKey:*MEMORY[0x1E6971878]];
       v10 = v9;
       if (!v9)
       {
@@ -246,7 +246,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v12 = [a3 objectForKey:*MEMORY[0x1E69718C8]];
+  v12 = [from objectForKey:*MEMORY[0x1E69718C8]];
   v10 = v12;
   if (v12)
   {
@@ -262,7 +262,7 @@ LABEL_10:
     }
   }
 
-  v14 = [a3 objectForKey:*MEMORY[0x1E69718C0]];
+  v14 = [from objectForKey:*MEMORY[0x1E69718C0]];
   if (v14)
   {
     v15 = v14;
@@ -285,8 +285,8 @@ LABEL_11:
 
 - (id)extraAttributes
 {
-  v3 = [(AVChapterMetadataItem *)self commonKey];
-  if (([v3 isEqualToString:*MEMORY[0x1E6971EB0]] & 1) == 0)
+  commonKey = [(AVChapterMetadataItem *)self commonKey];
+  if (([commonKey isEqualToString:*MEMORY[0x1E6971EB0]] & 1) == 0)
   {
     [(AVChapterMetadataItem *)self _ensureValueLoadedSync];
   }
@@ -296,29 +296,29 @@ LABEL_11:
   return [(AVMetadataItem *)&v5 extraAttributes];
 }
 
-- (BOOL)_valueForKeyDependsOnMetadataValue:(id)a3
+- (BOOL)_valueForKeyDependsOnMetadataValue:(id)value
 {
-  if (!a3)
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  if ([a3 isEqualToString:@"value"])
+  if ([value isEqualToString:@"value"])
   {
     LOBYTE(v5) = 1;
     return v5;
   }
 
-  v7 = [a3 rangeOfString:@"Value" options:14];
+  v7 = [value rangeOfString:@"Value" options:14];
   LOBYTE(v5) = 1;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL && !v6)
   {
 LABEL_6:
-    v5 = [a3 isEqualToString:@"extraAttributes"];
+    v5 = [value isEqualToString:@"extraAttributes"];
     if (v5)
     {
-      v8 = [(AVChapterMetadataItem *)self commonKey];
-      LOBYTE(v5) = [v8 isEqualToString:*MEMORY[0x1E6971EB0]] ^ 1;
+      commonKey = [(AVChapterMetadataItem *)self commonKey];
+      LOBYTE(v5) = [commonKey isEqualToString:*MEMORY[0x1E6971EB0]] ^ 1;
     }
   }
 
@@ -345,7 +345,7 @@ LABEL_6:
   return v4;
 }
 
-- (void)_setValueStatus:(int64_t)a3 figErrorCode:(int)a4
+- (void)_setValueStatus:(int64_t)status figErrorCode:(int)code
 {
   v24 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -354,10 +354,10 @@ LABEL_6:
   v20 = __Block_byref_object_copy__3;
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
-  if (a3)
+  if (status)
   {
     readWriteQueue = self->_privChapter->readWriteQueue;
-    if (a3 == 1)
+    if (status == 1)
     {
       v5 = v16;
       v16[0] = MEMORY[0x1E69E9820];
@@ -375,8 +375,8 @@ LABEL_6:
       v14[2] = __54__AVChapterMetadataItem__setValueStatus_figErrorCode___block_invoke_2;
       v14[3] = &unk_1E7461C78;
       v14[4] = self;
-      v14[6] = a3;
-      v15 = a4;
+      v14[6] = status;
+      codeCopy = code;
     }
 
     v5[5] = &v17;
@@ -500,19 +500,19 @@ LABEL_9:
   }
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
-  if (![(AVChapterMetadataItem *)self _valueForKeyDependsOnMetadataValue:a3])
+  if (![(AVChapterMetadataItem *)self _valueForKeyDependsOnMetadataValue:key])
   {
     return 2;
   }
 
   result = [(AVChapterMetadataItem *)self _valueStatus];
-  if (a4)
+  if (error)
   {
     if (result == 3)
     {
-      *a4 = AVLocalizedErrorWithUnderlyingOSStatus(self->_privChapter->valueErrorCode, 0);
+      *error = AVLocalizedErrorWithUnderlyingOSStatus(self->_privChapter->valueErrorCode, 0);
       return 3;
     }
   }
@@ -520,15 +520,15 @@ LABEL_9:
   return result;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
   if ([(AVChapterMetadataItem *)self _valueStatus]>= 2)
   {
-    if (a4)
+    if (handler)
     {
-      v7 = *(a4 + 2);
+      v7 = *(handler + 2);
 
-      v7(a4);
+      v7(handler);
     }
 
     return;
@@ -539,12 +539,12 @@ LABEL_9:
   v19[2] = __75__AVChapterMetadataItem_loadValuesAsynchronouslyForKeys_completionHandler___block_invoke;
   v19[3] = &unk_1E7461BB8;
   v19[4] = self;
-  v19[5] = a3;
-  if ([objc_msgSend(a3 indexesOfObjectsPassingTest:{v19), "count"}])
+  v19[5] = keys;
+  if ([objc_msgSend(keys indexesOfObjectsPassingTest:{v19), "count"}])
   {
-    if (a4)
+    if (handler)
     {
-      v8 = [a4 copy];
+      v8 = [handler copy];
       readWriteQueue = self->_privChapter->readWriteQueue;
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
@@ -567,10 +567,10 @@ LABEL_9:
         v15 = v14(figAsset, chapterGroupIndex, chapterIndex, 1);
         if (!v15)
         {
-          v16 = self;
+          selfCopy2 = self;
           v17 = 1;
 LABEL_18:
-          [(AVChapterMetadataItem *)v16 _setValueStatus:v17 figErrorCode:v15];
+          [(AVChapterMetadataItem *)selfCopy2 _setValueStatus:v17 figErrorCode:v15];
           return;
         }
       }
@@ -586,14 +586,14 @@ LABEL_18:
       v15 = 4294955126;
     }
 
-    v16 = self;
+    selfCopy2 = self;
     v17 = 3;
     goto LABEL_18;
   }
 
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 

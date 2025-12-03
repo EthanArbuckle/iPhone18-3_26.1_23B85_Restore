@@ -1,6 +1,6 @@
 @interface SBSUIAXUIServerSceneRequestBuilder
 - (id)_specification;
-- (void)_customizeWorkspaceRequestOptions:(id)a3 usingRequest:(id)a4;
+- (void)_customizeWorkspaceRequestOptions:(id)options usingRequest:(id)request;
 @end
 
 @implementation SBSUIAXUIServerSceneRequestBuilder
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)_customizeWorkspaceRequestOptions:(id)a3 usingRequest:(id)a4
+- (void)_customizeWorkspaceRequestOptions:(id)options usingRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = SBSUIAXUIServerSceneRequestBuilder;
-  [(_UIApplicationSceneRequestBuilder *)&v4 _customizeWorkspaceRequestOptions:a3 usingRequest:a4];
+  [(_UIApplicationSceneRequestBuilder *)&v4 _customizeWorkspaceRequestOptions:options usingRequest:request];
 }
 
 @end

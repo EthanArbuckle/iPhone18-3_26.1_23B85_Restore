@@ -1,19 +1,19 @@
 @interface SKEntitlementChecker
-+ (BOOL)checkForEntitlement:(id)a3;
-+ (BOOL)isProcessEntitled:(id *)a3 entitlementName:(__CFString *)a4;
++ (BOOL)checkForEntitlement:(id)entitlement;
++ (BOOL)isProcessEntitled:(id *)entitled entitlementName:(__CFString *)name;
 @end
 
 @implementation SKEntitlementChecker
 
-+ (BOOL)checkForEntitlement:(id)a3
++ (BOOL)checkForEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   v4 = SecTaskCreateFromSelf(0);
   if (v4)
   {
     v5 = v4;
     error = 0;
-    v6 = SecTaskCopyValueForEntitlement(v4, v3, &error);
+    v6 = SecTaskCopyValueForEntitlement(v4, entitlementCopy, &error);
     if (v6)
     {
       v7 = v6;
@@ -43,11 +43,11 @@
   return v9;
 }
 
-+ (BOOL)isProcessEntitled:(id *)a3 entitlementName:(__CFString *)a4
++ (BOOL)isProcessEntitled:(id *)entitled entitlementName:(__CFString *)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v5 = *&entitled->var0[4];
+  *token.val = *entitled->var0;
   *&token.val[4] = v5;
   v6 = SecTaskCreateWithAuditToken(0, &token);
   if (!v6)
@@ -57,23 +57,23 @@
 
   v7 = v6;
   error = 0;
-  v8 = SecTaskCopyValueForEntitlement(v6, a4, &error);
+  v8 = SecTaskCopyValueForEntitlement(v6, name, &error);
   if (error)
   {
-    v9 = [MEMORY[0x1E69D4938] sharedConfig];
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v11;
     }
@@ -98,7 +98,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &token, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &token, v18}];
       free(v14);
       SSFileLog();
     }

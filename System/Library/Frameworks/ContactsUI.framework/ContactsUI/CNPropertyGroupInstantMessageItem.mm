@@ -1,55 +1,55 @@
 @interface CNPropertyGroupInstantMessageItem
-+ (id)emptyValueForLabel:(id)a3;
-- (BOOL)isEquivalentToItem:(id)a3;
++ (id)emptyValueForLabel:(id)label;
+- (BOOL)isEquivalentToItem:(id)item;
 - (CNInstantMessageAddress)imAddress;
 - (id)defaultActionURL;
 - (id)displayLabel;
 - (id)editingStringValue;
-- (id)valueForDisplayString:(id)a3;
+- (id)valueForDisplayString:(id)string;
 @end
 
 @implementation CNPropertyGroupInstantMessageItem
 
-- (BOOL)isEquivalentToItem:(id)a3
+- (BOOL)isEquivalentToItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = CNPropertyGroupInstantMessageItem;
-  if ([(CNPropertyGroupItem *)&v17 isEquivalentToItem:v4])
+  if ([(CNPropertyGroupItem *)&v17 isEquivalentToItem:itemCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(CNPropertyGroupItem *)self contact];
-    v7 = [v4 contact];
+    contact = [(CNPropertyGroupItem *)self contact];
+    contact2 = [itemCopy contact];
 
-    if (v6 == v7)
+    if (contact == contact2)
     {
       v5 = 0;
     }
 
     else
     {
-      v8 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-      v9 = [v8 service];
+      imAddress = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+      service = [imAddress service];
 
-      v10 = [v4 imAddress];
-      v11 = [v10 service];
+      imAddress2 = [itemCopy imAddress];
+      service2 = [imAddress2 service];
 
       v5 = 0;
-      if (v9 && v11)
+      if (service && service2)
       {
-        if ([v9 isEqualToString:v11])
+        if ([service isEqualToString:service2])
         {
-          v12 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-          v13 = [v12 username];
+          imAddress3 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+          username = [imAddress3 username];
 
-          v14 = [v4 imAddress];
-          v15 = [v14 username];
+          imAddress4 = [itemCopy imAddress];
+          username2 = [imAddress4 username];
 
-          v5 = [v13 isEqualToString:v15];
+          v5 = [username isEqualToString:username2];
         }
 
         else
@@ -65,19 +65,19 @@
 
 - (id)editingStringValue
 {
-  v2 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-  v3 = [v2 username];
+  imAddress = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+  username = [imAddress username];
 
-  return v3;
+  return username;
 }
 
-- (id)valueForDisplayString:(id)a3
+- (id)valueForDisplayString:(id)string
 {
-  v4 = a3;
-  v5 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-  v6 = [v5 mutableCopy];
+  stringCopy = string;
+  imAddress = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+  v6 = [imAddress mutableCopy];
 
-  [v6 setUsername:v4];
+  [v6 setUsername:stringCopy];
 
   return v6;
 }
@@ -85,28 +85,28 @@
 - (id)displayLabel
 {
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-  v5 = [v4 service];
-  LOBYTE(v3) = (*(v3 + 16))(v3, v5);
+  imAddress = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+  service = [imAddress service];
+  LOBYTE(v3) = (*(v3 + 16))(v3, service);
 
   if (v3)
   {
     v6 = MEMORY[0x1E695CD58];
-    v7 = [(CNPropertyGroupItem *)self property];
-    v8 = [v6 localizedStringForKey:v7];
+    property = [(CNPropertyGroupItem *)self property];
+    v8 = [v6 localizedStringForKey:property];
   }
 
   else
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-    v11 = [v10 service];
-    v7 = [v9 stringWithFormat:@"%@ IM_SERVICE_NAME", v11];
+    imAddress2 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+    service2 = [imAddress2 service];
+    property = [v9 stringWithFormat:@"%@ IM_SERVICE_NAME", service2];
 
     v12 = CNContactsUIBundle();
-    v13 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-    v14 = [v13 service];
-    v8 = [v12 localizedStringForKey:v7 value:v14 table:@"Localized"];
+    imAddress3 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+    service3 = [imAddress3 service];
+    v8 = [v12 localizedStringForKey:property value:service3 table:@"Localized"];
   }
 
   return v8;
@@ -114,18 +114,18 @@
 
 - (id)defaultActionURL
 {
-  v3 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-  v4 = [v3 service];
+  imAddress = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+  service = [imAddress service];
 
-  v5 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
-  v6 = [v5 username];
+  imAddress2 = [(CNPropertyGroupInstantMessageItem *)self imAddress];
+  username = [imAddress2 username];
 
-  v7 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v8 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v7];
+  uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v8 = [username stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
-  if ([v4 compare:*MEMORY[0x1E695C478] options:1])
+  if ([service compare:*MEMORY[0x1E695C478] options:1])
   {
-    if ([v4 compare:*MEMORY[0x1E695C498] options:1])
+    if ([service compare:*MEMORY[0x1E695C498] options:1])
     {
       v9 = 0;
 LABEL_13:
@@ -133,7 +133,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v11 = [v6 length];
+    v11 = [username length];
     if (v11 <= [@"chat.facebook.com" length])
     {
       v13 = 0;
@@ -141,7 +141,7 @@ LABEL_13:
 
     else
     {
-      v12 = [v6 substringFromIndex:{objc_msgSend(v6, "length") - objc_msgSend(@"chat.facebook.com", "length")}];
+      v12 = [username substringFromIndex:{objc_msgSend(username, "length") - objc_msgSend(@"chat.facebook.com", "length")}];
       v13 = v12;
       if (v12 && [v12 isEqualToString:@"chat.facebook.com"])
       {
@@ -180,17 +180,17 @@ LABEL_14:
 
 - (CNInstantMessageAddress)imAddress
 {
-  v2 = [(CNPropertyGroupItem *)self labeledValue];
-  v3 = [v2 value];
+  labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+  value = [labeledValue value];
 
-  return v3;
+  return value;
 }
 
-+ (id)emptyValueForLabel:(id)a3
++ (id)emptyValueForLabel:(id)label
 {
   v3 = MEMORY[0x1E695CED8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithUsername:&stru_1F0CE7398 service:v4];
+  labelCopy = label;
+  v5 = [[v3 alloc] initWithUsername:&stru_1F0CE7398 service:labelCopy];
 
   return v5;
 }

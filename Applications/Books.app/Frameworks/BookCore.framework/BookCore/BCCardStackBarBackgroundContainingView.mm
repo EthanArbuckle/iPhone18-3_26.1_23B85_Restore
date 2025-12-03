@@ -1,34 +1,34 @@
 @interface BCCardStackBarBackgroundContainingView
-- (BCCardStackBarBackgroundContainingView)initWithStatusBarBackgroundController:(id)a3;
+- (BCCardStackBarBackgroundContainingView)initWithStatusBarBackgroundController:(id)controller;
 - (BCStatusBarBackgroundController)statusBarBackgroundController;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 @end
 
 @implementation BCCardStackBarBackgroundContainingView
 
-- (BCCardStackBarBackgroundContainingView)initWithStatusBarBackgroundController:(id)a3
+- (BCCardStackBarBackgroundContainingView)initWithStatusBarBackgroundController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(BCCardStackBarBackgroundContainingView *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_statusBarBackgroundController, v4);
+    objc_storeWeak(&v5->_statusBarBackgroundController, controllerCopy);
   }
 
   return v6;
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v4 = [(BCCardStackBarBackgroundContainingView *)self statusBarBackgroundController];
-  v6 = [v4 effectiveBackgroundView];
+  statusBarBackgroundController = [(BCCardStackBarBackgroundContainingView *)self statusBarBackgroundController];
+  effectiveBackgroundView = [statusBarBackgroundController effectiveBackgroundView];
 
-  v5 = [v6 superview];
+  superview = [effectiveBackgroundView superview];
 
-  if (v5 == self)
+  if (superview == self)
   {
-    [(BCCardStackBarBackgroundContainingView *)self bringSubviewToFront:v6];
+    [(BCCardStackBarBackgroundContainingView *)self bringSubviewToFront:effectiveBackgroundView];
   }
 }
 

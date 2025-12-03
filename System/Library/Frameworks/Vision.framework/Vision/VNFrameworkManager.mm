@@ -3,33 +3,33 @@
 + (int)linktimeVersion;
 - (NSArray)allSessions;
 - (VNFrameworkManager)init;
-- (id)_locateDetectorOfClass:(Class)a3 configuredWithOptions:(id)a4 inSessions:(id)a5 excludingSession:(id)a6;
-- (id)_locateResourceObjectForIdentifier:(id)a3 requestingSession:(id)a4 creationBlock:(id)a5 error:(id *)a6;
-- (id)_locateTrackerResourcesConfiguredWithOptions:(id)a3 inSessions:(id)a4 excludingSession:(id)a5;
-- (id)detectorOfClass:(Class)a3 configuredWithOptions:(id)a4 forSession:(id)a5 error:(id *)a6;
+- (id)_locateDetectorOfClass:(Class)class configuredWithOptions:(id)options inSessions:(id)sessions excludingSession:(id)session;
+- (id)_locateResourceObjectForIdentifier:(id)identifier requestingSession:(id)session creationBlock:(id)block error:(id *)error;
+- (id)_locateTrackerResourcesConfiguredWithOptions:(id)options inSessions:(id)sessions excludingSession:(id)session;
+- (id)detectorOfClass:(Class)class configuredWithOptions:(id)options forSession:(id)session error:(id *)error;
 - (id)loadedDetectors;
-- (id)trackerResourcesConfiguredWithOptions:(id)a3 forSession:(id)a4 error:(id *)a5;
-- (id)wisdomParameterForMTLDevice:(id)a3 error:(id *)a4;
-- (id)wisdomParameterForMTLDeviceWithName:(id)a3 error:(id *)a4;
-- (void)legacyForcedCleanupOfFacePipelineWithLevel:(id)a3;
-- (void)legacyForcedCleanupOfJunkPipelineWithLevel:(id)a3;
-- (void)legacyForcedCleanupOfScenePipelineWithLevel:(id)a3;
-- (void)legacyForcedCleanupOfSmartCamPipelineWithLevel:(id)a3;
-- (void)legacyForcedCleanupWithOptions:(id)a3;
+- (id)trackerResourcesConfiguredWithOptions:(id)options forSession:(id)session error:(id *)error;
+- (id)wisdomParameterForMTLDevice:(id)device error:(id *)error;
+- (id)wisdomParameterForMTLDeviceWithName:(id)name error:(id *)error;
+- (void)legacyForcedCleanupOfFacePipelineWithLevel:(id)level;
+- (void)legacyForcedCleanupOfJunkPipelineWithLevel:(id)level;
+- (void)legacyForcedCleanupOfScenePipelineWithLevel:(id)level;
+- (void)legacyForcedCleanupOfSmartCamPipelineWithLevel:(id)level;
+- (void)legacyForcedCleanupWithOptions:(id)options;
 @end
 
 @implementation VNFrameworkManager
 
-- (void)legacyForcedCleanupOfJunkPipelineWithLevel:(id)a3
+- (void)legacyForcedCleanupOfJunkPipelineWithLevel:(id)level
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  levelCopy = level;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(VNFrameworkManager *)self allSessions];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allSessions = [(VNFrameworkManager *)self allSessions];
+  v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -40,30 +40,30 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSessions);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupOfJunkPipelineWithLevel:v4];
+        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupOfJunkPipelineWithLevel:levelCopy];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)legacyForcedCleanupOfSmartCamPipelineWithLevel:(id)a3
+- (void)legacyForcedCleanupOfSmartCamPipelineWithLevel:(id)level
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  levelCopy = level;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(VNFrameworkManager *)self allSessions];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allSessions = [(VNFrameworkManager *)self allSessions];
+  v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -74,30 +74,30 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSessions);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupOfSmartCamPipelineWithLevel:v4];
+        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupOfSmartCamPipelineWithLevel:levelCopy];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)legacyForcedCleanupOfScenePipelineWithLevel:(id)a3
+- (void)legacyForcedCleanupOfScenePipelineWithLevel:(id)level
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  levelCopy = level;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(VNFrameworkManager *)self allSessions];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allSessions = [(VNFrameworkManager *)self allSessions];
+  v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -108,30 +108,30 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSessions);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupOfFacePipelineWithLevel:v4];
+        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupOfFacePipelineWithLevel:levelCopy];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)legacyForcedCleanupOfFacePipelineWithLevel:(id)a3
+- (void)legacyForcedCleanupOfFacePipelineWithLevel:(id)level
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  levelCopy = level;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(VNFrameworkManager *)self allSessions];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allSessions = [(VNFrameworkManager *)self allSessions];
+  v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -142,30 +142,30 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSessions);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupOfFacePipelineWithLevel:v4];
+        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupOfFacePipelineWithLevel:levelCopy];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)legacyForcedCleanupWithOptions:(id)a3
+- (void)legacyForcedCleanupWithOptions:(id)options
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(VNFrameworkManager *)self allSessions];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allSessions = [(VNFrameworkManager *)self allSessions];
+  v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -176,30 +176,30 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSessions);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupWithOptions:v4];
+        [*(*(&v9 + 1) + 8 * v8++) legacyForcedCleanupWithOptions:optionsCopy];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allSessions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)wisdomParameterForMTLDeviceWithName:(id)a3 error:(id *)a4
+- (id)wisdomParameterForMTLDeviceWithName:(id)name error:(id *)error
 {
-  v4 = [(VNMTLDeviceWisdomParameters *)self->_wisdomParameters wisdomParameterForMTLDeviceWithName:a3 error:a4];
+  v4 = [(VNMTLDeviceWisdomParameters *)self->_wisdomParameters wisdomParameterForMTLDeviceWithName:name error:error];
 
   return v4;
 }
 
-- (id)wisdomParameterForMTLDevice:(id)a3 error:(id *)a4
+- (id)wisdomParameterForMTLDevice:(id)device error:(id *)error
 {
-  v4 = [(VNMTLDeviceWisdomParameters *)self->_wisdomParameters wisdomParameterForMTLDevice:a3 error:a4];
+  v4 = [(VNMTLDeviceWisdomParameters *)self->_wisdomParameters wisdomParameterForMTLDevice:device error:error];
 
   return v4;
 }
@@ -227,8 +227,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) loadedDetectors];
-        [v4 addObjectsFromArray:v9];
+        loadedDetectors = [*(*(&v12 + 1) + 8 * i) loadedDetectors];
+        [v4 addObjectsFromArray:loadedDetectors];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -237,19 +237,19 @@
     while (v6);
   }
 
-  v10 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   objc_autoreleasePoolPop(v3);
 
-  return v10;
+  return allObjects;
 }
 
-- (id)trackerResourcesConfiguredWithOptions:(id)a3 forSession:(id)a4 error:(id *)a5
+- (id)trackerResourcesConfiguredWithOptions:(id)options forSession:(id)session error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VNFrameworkManager *)self allSessions];
-  v11 = [(VNFrameworkManager *)self _locateTrackerResourcesConfiguredWithOptions:v8 inSessions:v10 excludingSession:v9];
+  optionsCopy = options;
+  sessionCopy = session;
+  allSessions = [(VNFrameworkManager *)self allSessions];
+  v11 = [(VNFrameworkManager *)self _locateTrackerResourcesConfiguredWithOptions:optionsCopy inSessions:allSessions excludingSession:sessionCopy];
   v12 = v11;
   if (v11)
   {
@@ -258,7 +258,7 @@
 
   else
   {
-    v13 = [v9 createRPNTrackerResourcesConfiguredWithOptions:v8 error:a5];
+    v13 = [sessionCopy createRPNTrackerResourcesConfiguredWithOptions:optionsCopy error:error];
   }
 
   v14 = v13;
@@ -266,12 +266,12 @@
   return v14;
 }
 
-- (id)detectorOfClass:(Class)a3 configuredWithOptions:(id)a4 forSession:(id)a5 error:(id *)a6
+- (id)detectorOfClass:(Class)class configuredWithOptions:(id)options forSession:(id)session error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [(VNFrameworkManager *)self allSessions];
-  v13 = [(VNFrameworkManager *)self _locateDetectorOfClass:a3 configuredWithOptions:v10 inSessions:v12 excludingSession:v11];
+  optionsCopy = options;
+  sessionCopy = session;
+  allSessions = [(VNFrameworkManager *)self allSessions];
+  v13 = [(VNFrameworkManager *)self _locateDetectorOfClass:class configuredWithOptions:optionsCopy inSessions:allSessions excludingSession:sessionCopy];
   if (v13)
   {
     v14 = v13;
@@ -279,14 +279,14 @@
 
   else
   {
-    [v11 _releaseDetectorsThatCanBeReplacedByDetectorOfClass:a3 withConfiguration:v10];
-    [(objc_class *)a3 VNClassCode];
+    [sessionCopy _releaseDetectorsThatCanBeReplacedByDetectorOfClass:class withConfiguration:optionsCopy];
+    [(objc_class *)class VNClassCode];
     kdebug_trace();
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v15 setObject:a3 forKeyedSubscript:@"VNDetectorNotificationDetectorClass"];
-    [v15 setObject:v10 forKeyedSubscript:@"VNDetectorNotificationConfiguration"];
+    [v15 setObject:class forKeyedSubscript:@"VNDetectorNotificationDetectorClass"];
+    [v15 setObject:optionsCopy forKeyedSubscript:@"VNDetectorNotificationConfiguration"];
     [(NSNotificationCenter *)self->_notificationCenter postNotificationName:@"VNDetectorWillLoadNotification" object:0 userInfo:v15];
-    v14 = [(objc_class *)a3 detectorWithConfigurationOptions:v10 forSession:v11 error:a6];
+    v14 = [(objc_class *)class detectorWithConfigurationOptions:optionsCopy forSession:sessionCopy error:error];
     [v14 signPostAdditionalParameter];
     kdebug_trace();
     if (v14)
@@ -300,12 +300,12 @@
   return v14;
 }
 
-- (id)_locateResourceObjectForIdentifier:(id)a3 requestingSession:(id)a4 creationBlock:(id)a5 error:(id *)a6
+- (id)_locateResourceObjectForIdentifier:(id)identifier requestingSession:(id)session creationBlock:(id)block error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  sessionCopy = session;
+  blockCopy = block;
   [(VNFrameworkManager *)self allSessions];
   v23 = 0u;
   v24 = 0u;
@@ -325,12 +325,12 @@
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        if (v17 != v11)
+        if (v17 != sessionCopy)
         {
-          v18 = [v17 cachedResourceObjectForIdentifier:v10];
+          v18 = [v17 cachedResourceObjectForIdentifier:identifierCopy];
           if (v18)
           {
-            v19 = v13;
+            identifierCopy = v13;
             goto LABEL_13;
           }
         }
@@ -346,16 +346,16 @@
     }
   }
 
-  if (v12)
+  if (blockCopy)
   {
-    v18 = v12[2](v12, a6);
+    v18 = blockCopy[2](blockCopy, error);
   }
 
-  else if (a6)
+  else if (error)
   {
-    v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"could not locate resource object %@", v10];
-    [VNError errorForDataUnavailableWithLocalizedDescription:v19];
-    *a6 = v18 = 0;
+    identifierCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"could not locate resource object %@", identifierCopy];
+    [VNError errorForDataUnavailableWithLocalizedDescription:identifierCopy];
+    *error = v18 = 0;
 LABEL_13:
   }
 
@@ -376,17 +376,17 @@ LABEL_13:
   return v4;
 }
 
-- (id)_locateTrackerResourcesConfiguredWithOptions:(id)a3 inSessions:(id)a4 excludingSession:(id)a5
+- (id)_locateTrackerResourcesConfiguredWithOptions:(id)options inSessions:(id)sessions excludingSession:(id)session
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  sessionsCopy = sessions;
+  sessionCopy = session;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v8;
+  v10 = sessionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -401,9 +401,9 @@ LABEL_3:
       }
 
       v14 = *(*(&v17 + 1) + 8 * v13);
-      if (v14 != v9)
+      if (v14 != sessionCopy)
       {
-        v15 = [v14 _cachedTrackerResourcesConfiguredWithOptions:{v7, v17}];
+        v15 = [v14 _cachedTrackerResourcesConfiguredWithOptions:{optionsCopy, v17}];
         if (v15)
         {
           break;
@@ -432,17 +432,17 @@ LABEL_10:
   return v15;
 }
 
-- (id)_locateDetectorOfClass:(Class)a3 configuredWithOptions:(id)a4 inSessions:(id)a5 excludingSession:(id)a6
+- (id)_locateDetectorOfClass:(Class)class configuredWithOptions:(id)options inSessions:(id)sessions excludingSession:(id)session
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  optionsCopy = options;
+  sessionsCopy = sessions;
+  sessionCopy = session;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v10;
+  v12 = sessionsCopy;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
@@ -457,9 +457,9 @@ LABEL_3:
       }
 
       v16 = *(*(&v19 + 1) + 8 * v15);
-      if (v16 != v11)
+      if (v16 != sessionCopy)
       {
-        v17 = [v16 _cachedDetectorOfClass:a3 configuredWithOptions:{v9, v19}];
+        v17 = [v16 _cachedDetectorOfClass:class configuredWithOptions:{optionsCopy, v19}];
         if (v17)
         {
           break;

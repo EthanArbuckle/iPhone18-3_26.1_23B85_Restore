@@ -1,29 +1,29 @@
 @interface GeometricCutTools
-+ (BOOL)derotateContentsOf:(id)a3 inImage:(vImage_Buffer *)a4 andOutputTo:(vImage_Buffer *)a5 withPadding:(CGPoint)a6 networkInputSize:(CGSize)a7;
-+ (BOOL)isPointArrayARectangle:(uint64_t)a1;
-+ (BOOL)lineThroughPoint:(double)a3 andPoint:(double)a4 andRectangle:(double)a5 intersectAtPoint:(double)a6 andPoint:(double)a7;
-+ (id)boxInNormalizedSpace:(id)a3 toImageSpaceWithSize:(CGSize)a4 plusPadding:(CGPoint)a5 destSize:(CGSize *)a6 networkInputSize:(CGSize)a7;
-+ (id)cleanTextDetectorOutput:(id)a3;
-+ (id)findCorrectedBoundingBoxOfTextFeature:(id)a3 inImageWithSize:(CGSize)a4;
-+ (id)geometricRecognitionOf:(id)a3 inDerotatedRegion:(vImage_Buffer *)a4 withPadding:(CGPoint)a5 fromCorrectedBoundingBox:(id)a6 inImageWithSize:(CGSize)a7 withCodeMap:(const int *)a8 activations:()vector<std:(std:(BOOL)a10 :(CGSize)a11 allocator<std:(unsigned __int16)a12 :vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:networkInputSize:garbageSymbol:;
-+ (id)geometricRecognitionOf:(id)a3 inDerotatedRegion:(vImage_Buffer *)a4 withPadding:(CGPoint)a5 fromCorrectedBoundingBox:(id)a6 inImageWithSize:(CGSize)a7 withCodeMap:(const int *)a8 activations:()vector<std:(std:(BOOL)a10 :(CGSize)a11 allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:networkInputSize:;
-+ (id)geometricRecognitionOf:(id)a3 inDerotatedRegion:(vImage_Buffer *)a4 withPadding:(CGPoint)a5 fromCorrectedBoundingBox:(id)a6 inImageWithSize:(CGSize)a7 withNetwork:(void *)a8 activations:()vector<std:(std:(BOOL)a10 :(unsigned __int16)a11 allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:garbageSymbol:;
-+ (id)geometricRecognitionOf:(id)a3 inDerotatedRegion:(vImage_Buffer *)a4 withPadding:(CGPoint)a5 fromCorrectedBoundingBox:(id)a6 inImageWithSize:(CGSize)a7 withNetwork:(void *)a8 activations:()vector<std:(std:(BOOL)a10 :allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:;
-+ (id)stringByInjectingSpaces:(id)a3 textFeatures:(id)a4 improved:(BOOL)a5;
++ (BOOL)derotateContentsOf:(id)of inImage:(vImage_Buffer *)image andOutputTo:(vImage_Buffer *)to withPadding:(CGPoint)padding networkInputSize:(CGSize)size;
++ (BOOL)isPointArrayARectangle:(uint64_t)rectangle;
++ (BOOL)lineThroughPoint:(double)point andPoint:(double)andPoint andRectangle:(double)rectangle intersectAtPoint:(double)atPoint andPoint:(double)a7;
++ (id)boxInNormalizedSpace:(id)space toImageSpaceWithSize:(CGSize)size plusPadding:(CGPoint)padding destSize:(CGSize *)destSize networkInputSize:(CGSize)inputSize;
++ (id)cleanTextDetectorOutput:(id)output;
++ (id)findCorrectedBoundingBoxOfTextFeature:(id)feature inImageWithSize:(CGSize)size;
++ (id)geometricRecognitionOf:(id)of inDerotatedRegion:(vImage_Buffer *)region withPadding:(CGPoint)padding fromCorrectedBoundingBox:(id)box inImageWithSize:(CGSize)size withCodeMap:(const int *)map activations:()vector<std:(std:(BOOL)self0 :(CGSize)self1 allocator<std:(unsigned __int16)self2 :vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:networkInputSize:garbageSymbol:;
++ (id)geometricRecognitionOf:(id)of inDerotatedRegion:(vImage_Buffer *)region withPadding:(CGPoint)padding fromCorrectedBoundingBox:(id)box inImageWithSize:(CGSize)size withCodeMap:(const int *)map activations:()vector<std:(std:(BOOL)self0 :(CGSize)self1 allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:networkInputSize:;
++ (id)geometricRecognitionOf:(id)of inDerotatedRegion:(vImage_Buffer *)region withPadding:(CGPoint)padding fromCorrectedBoundingBox:(id)box inImageWithSize:(CGSize)size withNetwork:(void *)network activations:()vector<std:(std:(BOOL)self0 :(unsigned __int16)self1 allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:garbageSymbol:;
++ (id)geometricRecognitionOf:(id)of inDerotatedRegion:(vImage_Buffer *)region withPadding:(CGPoint)padding fromCorrectedBoundingBox:(id)box inImageWithSize:(CGSize)size withNetwork:(void *)network activations:()vector<std:(std:(BOOL)self0 :allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:;
++ (id)stringByInjectingSpaces:(id)spaces textFeatures:(id)features improved:(BOOL)improved;
 @end
 
 @implementation GeometricCutTools
 
-+ (id)cleanTextDetectorOutput:(id)a3
++ (id)cleanTextDetectorOutput:(id)output
 {
   v51 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v33 = [MEMORY[0x277CBEB18] array];
+  outputCopy = output;
+  array = [MEMORY[0x277CBEB18] array];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v29;
+  obj = outputCopy;
   v32 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v32)
   {
@@ -38,13 +38,13 @@
         }
 
         v3 = *(*(&v44 + 1) + 8 * i);
-        v35 = [MEMORY[0x277CBEB18] array];
+        array2 = [MEMORY[0x277CBEB18] array];
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v4 = [v3 subFeatures];
-        v5 = [v4 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        subFeatures = [v3 subFeatures];
+        v5 = [subFeatures countByEnumeratingWithState:&v40 objects:v49 count:16];
         if (v5)
         {
           v6 = *v41;
@@ -54,7 +54,7 @@
             {
               if (*v41 != v6)
               {
-                objc_enumerationMutation(v4);
+                objc_enumerationMutation(subFeatures);
               }
 
               v8 = *(*(&v40 + 1) + 8 * j);
@@ -62,8 +62,8 @@
               v37 = 0u;
               v38 = 0u;
               v39 = 0u;
-              v9 = [v3 subFeatures];
-              v10 = [v9 countByEnumeratingWithState:&v36 objects:v48 count:16];
+              subFeatures2 = [v3 subFeatures];
+              v10 = [subFeatures2 countByEnumeratingWithState:&v36 objects:v48 count:16];
               if (v10)
               {
                 v11 = *v37;
@@ -73,7 +73,7 @@
                   {
                     if (*v37 != v11)
                     {
-                      objc_enumerationMutation(v9);
+                      objc_enumerationMutation(subFeatures2);
                     }
 
                     v13 = *(*(&v36 + 1) + 8 * k);
@@ -101,7 +101,7 @@
                     }
                   }
 
-                  v10 = [v9 countByEnumeratingWithState:&v36 objects:v48 count:16];
+                  v10 = [subFeatures2 countByEnumeratingWithState:&v36 objects:v48 count:16];
                   if (v10)
                   {
                     continue;
@@ -111,12 +111,12 @@
                 }
               }
 
-              [v35 addObject:v8];
+              [array2 addObject:v8];
 LABEL_22:
               ;
             }
 
-            v5 = [v4 countByEnumeratingWithState:&v40 objects:v49 count:16];
+            v5 = [subFeatures countByEnumeratingWithState:&v40 objects:v49 count:16];
           }
 
           while (v5);
@@ -133,8 +133,8 @@ LABEL_22:
         [v26 setBottomRight:?];
         [v3 bottomLeft];
         [v26 setBottomLeft:?];
-        [v26 setSubFeatures:v35];
-        [v33 addObject:v26];
+        [v26 setSubFeatures:array2];
+        [array addObject:v26];
       }
 
       v32 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
@@ -143,28 +143,28 @@ LABEL_22:
     while (v32);
   }
 
-  v27 = [MEMORY[0x277CBEA60] arrayWithArray:v33];
+  v27 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   return v27;
 }
 
-+ (id)findCorrectedBoundingBoxOfTextFeature:(id)a3 inImageWithSize:(CGSize)a4
++ (id)findCorrectedBoundingBoxOfTextFeature:(id)feature inImageWithSize:(CGSize)size
 {
   v165 = *MEMORY[0x277D85DE8];
-  v115 = a3;
-  v4 = [v115 subFeatures];
-  v5 = [v4 count];
+  featureCopy = feature;
+  subFeatures = [featureCopy subFeatures];
+  v5 = [subFeatures count];
 
   if (v5 >= 2)
   {
     v116 = objc_alloc_init(MEMORY[0x277D700A8]);
-    v130 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v159 = 0u;
     v160 = 0u;
     v157 = 0u;
     v158 = 0u;
-    v7 = [v115 subFeatures];
-    v8 = [v7 countByEnumeratingWithState:&v157 objects:v164 count:16];
+    subFeatures2 = [featureCopy subFeatures];
+    v8 = [subFeatures2 countByEnumeratingWithState:&v157 objects:v164 count:16];
     if (v8)
     {
       v9 = *v158;
@@ -174,7 +174,7 @@ LABEL_22:
         {
           if (*v158 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subFeatures2);
           }
 
           v11 = *(*(&v157 + 1) + 8 * i);
@@ -186,26 +186,26 @@ LABEL_22:
           [v11 bounds];
           v18 = v17;
           [v11 bounds];
-          [v12 setBounds:{a4.width * v14, a4.height * v16, a4.width * v18, a4.height * v19}];
-          [v130 addObject:v12];
+          [v12 setBounds:{size.width * v14, size.height * v16, size.width * v18, size.height * v19}];
+          [array addObject:v12];
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v157 objects:v164 count:16];
+        v8 = [subFeatures2 countByEnumeratingWithState:&v157 objects:v164 count:16];
       }
 
       while (v8);
     }
 
-    [v116 setSubFeatures:v130];
-    v20 = [v116 subFeatures];
-    std::vector<double>::vector[abi:ne200100](&v155, [v20 count]);
+    [v116 setSubFeatures:array];
+    subFeatures3 = [v116 subFeatures];
+    std::vector<double>::vector[abi:ne200100](&v155, [subFeatures3 count]);
 
     v153 = 0u;
     v154 = 0u;
     v151 = 0u;
     v152 = 0u;
-    v21 = [v116 subFeatures];
-    v22 = [v21 countByEnumeratingWithState:&v151 objects:v163 count:16];
+    subFeatures4 = [v116 subFeatures];
+    v22 = [subFeatures4 countByEnumeratingWithState:&v151 objects:v163 count:16];
     if (v22)
     {
       v23 = 0;
@@ -218,7 +218,7 @@ LABEL_22:
         {
           if (*v152 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(subFeatures4);
           }
 
           [*(*(&v151 + 1) + 8 * v25) bounds];
@@ -229,7 +229,7 @@ LABEL_22:
         }
 
         while (v22 != v25);
-        v22 = [v21 countByEnumeratingWithState:&v151 objects:v163 count:16];
+        v22 = [subFeatures4 countByEnumeratingWithState:&v151 objects:v163 count:16];
       }
 
       while (v22);
@@ -250,8 +250,8 @@ LABEL_22:
     v142 = 0u;
     v139 = 0u;
     v140 = 0u;
-    v29 = [v116 subFeatures];
-    v30 = [v29 countByEnumeratingWithState:&v139 objects:v162 count:16];
+    subFeatures5 = [v116 subFeatures];
+    v30 = [subFeatures5 countByEnumeratingWithState:&v139 objects:v162 count:16];
     if (v30)
     {
       v31 = *v140;
@@ -261,7 +261,7 @@ LABEL_22:
         {
           if (*v140 != v31)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(subFeatures5);
           }
 
           v33 = *(*(&v139 + 1) + 8 * j);
@@ -322,7 +322,7 @@ LABEL_29:
           }
         }
 
-        v30 = [v29 countByEnumeratingWithState:&v139 objects:v162 count:16];
+        v30 = [subFeatures5 countByEnumeratingWithState:&v139 objects:v162 count:16];
       }
 
       while (v30);
@@ -357,8 +357,8 @@ LABEL_29:
         v132 = 0u;
         v133 = 0u;
         v134 = 0u;
-        v58 = [v116 subFeatures];
-        v59 = [v58 countByEnumeratingWithState:&v131 objects:v161 count:16];
+        subFeatures6 = [v116 subFeatures];
+        v59 = [subFeatures6 countByEnumeratingWithState:&v131 objects:v161 count:16];
         v60 = sqrt(v57 * v57 + 1.0);
         v123 = v57 / v60;
         v120 = 1.0 / v60;
@@ -376,7 +376,7 @@ LABEL_29:
             {
               if (*v132 != v61)
               {
-                objc_enumerationMutation(v58);
+                objc_enumerationMutation(subFeatures6);
               }
 
               v63 = *(*(&v131 + 1) + 8 * k);
@@ -535,7 +535,7 @@ LABEL_29:
               }
             }
 
-            v59 = [v58 countByEnumeratingWithState:&v131 objects:v161 count:16];
+            v59 = [subFeatures6 countByEnumeratingWithState:&v131 objects:v161 count:16];
           }
 
           while (v59);
@@ -551,20 +551,20 @@ LABEL_29:
 
         v105 = v122 + v118 * v123;
         v106 = v121 + v118 * v117;
-        v167.x = (v105 + v128 * v120) / a4.width;
-        v167.y = (v106 + v128 * v123) / a4.height;
+        v167.x = (v105 + v128 * v120) / size.width;
+        v167.y = (v106 + v128 * v123) / size.height;
         v107 = MEMORY[0x277CBEA60];
         v108 = NSStringFromPoint(v167);
-        v168.y = (v106 + v127 * v123) / a4.height;
-        v168.x = (v105 + v127 * v120) / a4.width;
+        v168.y = (v106 + v127 * v123) / size.height;
+        v168.x = (v105 + v127 * v120) / size.width;
         v109 = NSStringFromPoint(v168);
         v110 = v122 + v119 * v123;
         v111 = v121 + v119 * v117;
-        v169.x = (v110 + v127 * v120) / a4.width;
-        v169.y = (v111 + v127 * v123) / a4.height;
+        v169.x = (v110 + v127 * v120) / size.width;
+        v169.y = (v111 + v127 * v123) / size.height;
         v112 = NSStringFromPoint(v169);
-        v170.x = (v110 + v128 * v120) / a4.width;
-        v170.y = (v111 + v128 * v123) / a4.height;
+        v170.x = (v110 + v128 * v120) / size.width;
+        v170.y = (v111 + v128 * v123) / size.height;
         v113 = NSStringFromPoint(v170);
         v6 = [v107 arrayWithObjects:{v108, v109, v112, v113, 0}];
       }
@@ -598,7 +598,7 @@ LABEL_29:
   return v6;
 }
 
-+ (BOOL)isPointArrayARectangle:(uint64_t)a1
++ (BOOL)isPointArrayARectangle:(uint64_t)rectangle
 {
   v2 = a2;
   v20 = [v2 count] == 4 && (objc_msgSend(v2, "objectAtIndexedSubscript:", 3), v3 = objc_opt_self();
@@ -606,26 +606,26 @@ LABEL_29:
   return v20;
 }
 
-+ (BOOL)lineThroughPoint:(double)a3 andPoint:(double)a4 andRectangle:(double)a5 intersectAtPoint:(double)a6 andPoint:(double)a7
++ (BOOL)lineThroughPoint:(double)point andPoint:(double)andPoint andRectangle:(double)rectangle intersectAtPoint:(double)atPoint andPoint:(double)a7
 {
   v29[7] = *MEMORY[0x277D85DE8];
   objc_opt_self();
   v21 = 0;
   v22 = 0;
   v23 = v29;
-  v28 = a5;
-  *v29 = a6;
-  *&v29[1] = a5 + a7;
-  *&v29[2] = a6;
-  *&v29[3] = a5 + a7;
-  *&v29[4] = a6 + a8;
-  *&v29[5] = a5;
-  *&v29[6] = a6 + a8;
+  rectangleCopy = rectangle;
+  *v29 = atPoint;
+  *&v29[1] = rectangle + a7;
+  *&v29[2] = atPoint;
+  *&v29[3] = rectangle + a7;
+  *&v29[4] = atPoint + a8;
+  *&v29[5] = rectangle;
+  *&v29[6] = atPoint + a8;
   v24 = 1;
   while (1)
   {
     v25 = v21 + 1;
-    if ([MEMORY[0x277D70080] checkIntersectionForLineThroughPoint:&v27 andPoint:a1 andSegmentStartingAt:a2 andEndingAt:a3 intersectAt:{a4, *(v23 - 1), *v23, *&v29[2 * ((v21 + 1) & 3) - 1], *&v29[2 * ((v21 + 1) & 3)]}])
+    if ([MEMORY[0x277D70080] checkIntersectionForLineThroughPoint:&v27 andPoint:self andSegmentStartingAt:a2 andEndingAt:point intersectAt:{andPoint, *(v23 - 1), *v23, *&v29[2 * ((v21 + 1) & 3) - 1], *&v29[2 * ((v21 + 1) & 3)]}])
     {
       break;
     }
@@ -659,54 +659,54 @@ LABEL_7:
   return v24;
 }
 
-+ (id)boxInNormalizedSpace:(id)a3 toImageSpaceWithSize:(CGSize)a4 plusPadding:(CGPoint)a5 destSize:(CGSize *)a6 networkInputSize:(CGSize)a7
++ (id)boxInNormalizedSpace:(id)space toImageSpaceWithSize:(CGSize)size plusPadding:(CGPoint)padding destSize:(CGSize *)destSize networkInputSize:(CGSize)inputSize
 {
-  height = a7.height;
-  v10 = a3;
-  v11 = [v10 objectAtIndexedSubscript:3];
+  height = inputSize.height;
+  spaceCopy = space;
+  v11 = [spaceCopy objectAtIndexedSubscript:3];
   v12 = NSPointFromString(v11);
 
-  v13 = [v10 objectAtIndexedSubscript:2];
+  v13 = [spaceCopy objectAtIndexedSubscript:2];
   v14 = NSPointFromString(v13);
 
-  v15 = [v10 objectAtIndexedSubscript:1];
+  v15 = [spaceCopy objectAtIndexedSubscript:1];
   v16 = NSPointFromString(v15);
 
-  v17 = [v10 objectAtIndexedSubscript:0];
+  v17 = [spaceCopy objectAtIndexedSubscript:0];
   v18 = NSPointFromString(v17);
 
   v19 = 0;
-  v20 = a4.width * v12.x;
-  v21 = a4.height * v12.y;
-  v22 = a4.width * v14.x;
-  v23 = a4.height * v14.y;
+  v20 = size.width * v12.x;
+  v21 = size.height * v12.y;
+  v22 = size.width * v14.x;
+  v23 = size.height * v14.y;
   v24 = sqrt((v21 - v23) * (v21 - v23) + (v20 - v22) * (v20 - v22));
   if (v24 != 0.0)
   {
-    v25 = sqrt((v21 - a4.height * v18.y) * (v21 - a4.height * v18.y) + (v20 - a4.width * v18.x) * (v20 - a4.width * v18.x));
+    v25 = sqrt((v21 - size.height * v18.y) * (v21 - size.height * v18.y) + (v20 - size.width * v18.x) * (v20 - size.width * v18.x));
     if (v25 != 0.0)
     {
-      a6->height = height;
-      if (height - a5.y <= 0.0)
+      destSize->height = height;
+      if (height - padding.y <= 0.0)
       {
         goto LABEL_15;
       }
 
-      v103 = a4.height * v18.y;
-      v105 = a4.width * v18.x;
-      v26 = v25 / (height - a5.y);
-      v27 = a5.y * v26;
+      v103 = size.height * v18.y;
+      v105 = size.width * v18.x;
+      v26 = v25 / (height - padding.y);
+      v27 = padding.y * v26;
       v28 = INFINITY;
-      if (a5.x != INFINITY)
+      if (padding.x != INFINITY)
       {
-        v28 = a5.x * v26;
-        a6->width = a5.x + v24 / v26;
+        v28 = padding.x * v26;
+        destSize->width = padding.x + v24 / v26;
       }
 
       v100 = v26;
-      v113 = a4.width * v16.x;
-      aPoint = a4.height * v16.y;
-      v110 = a4.width * v14.x;
+      v113 = size.width * v16.x;
+      aPoint = size.height * v16.y;
+      v110 = size.width * v14.x;
       v29 = atan2(v23 - v21, v22 - v20);
       v30 = v27 * -0.5;
       v31 = __sincos_stret(v29);
@@ -748,7 +748,7 @@ LABEL_7:
         v61 = NSPointFromString(v60);
 
         v62 = objc_opt_self();
-        if ([(GeometricCutTools *)v55.x lineThroughPoint:v57.x andPoint:v57.y andRectangle:1.0 intersectAtPoint:1.0 andPoint:a4.width + -2.0, a4.height + -2.0, v62, &v122, &v121]&& (v63 = objc_opt_self(), [(GeometricCutTools *)v59.x lineThroughPoint:v61.x andPoint:v61.y andRectangle:1.0 intersectAtPoint:1.0 andPoint:a4.width + -2.0, a4.height + -2.0, v63, &v120, &v119]))
+        if ([(GeometricCutTools *)v55.x lineThroughPoint:v57.x andPoint:v57.y andRectangle:1.0 intersectAtPoint:1.0 andPoint:size.width + -2.0, size.height + -2.0, v62, &v122, &v121]&& (v63 = objc_opt_self(), [(GeometricCutTools *)v59.x lineThroughPoint:v61.x andPoint:v61.y andRectangle:1.0 intersectAtPoint:1.0 andPoint:size.width + -2.0, size.height + -2.0, v63, &v120, &v119]))
         {
           v64 = *&v122;
           v109 = *&v121;
@@ -824,7 +824,7 @@ LABEL_7:
         v106 = v91.x;
         v41 = v91.y;
 
-        a6->width = sqrt((v87.y - v85.y) * (v87.y - v85.y) + (v87.x - v85.x) * (v87.x - v85.x)) / v100;
+        destSize->width = sqrt((v87.y - v85.y) * (v87.y - v85.y) + (v87.x - v85.x) * (v87.x - v85.x)) / v100;
       }
 
       else
@@ -846,25 +846,25 @@ LABEL_7:
       if (x >= 0.0)
       {
         v19 = 0;
-        if (x < a4.width && y >= 0.0)
+        if (x < size.width && y >= 0.0)
         {
           v19 = 0;
-          if (y < a4.height && v43 >= 0.0)
+          if (y < size.height && v43 >= 0.0)
           {
             v19 = 0;
-            if (v43 < a4.width && v44 >= 0.0)
+            if (v43 < size.width && v44 >= 0.0)
             {
               v19 = 0;
-              if (v44 < a4.height && v42 >= 0.0)
+              if (v44 < size.height && v42 >= 0.0)
               {
                 v19 = 0;
-                if (v42 < a4.width && aPointa >= 0.0)
+                if (v42 < size.width && aPointa >= 0.0)
                 {
                   v19 = 0;
-                  if (aPointa < a4.height && v106 >= 0.0)
+                  if (aPointa < size.height && v106 >= 0.0)
                   {
                     v19 = 0;
-                    if (v106 < a4.width && v41 >= 0.0 && v41 < a4.height)
+                    if (v106 < size.width && v41 >= 0.0 && v41 < size.height)
                     {
                       v94 = MEMORY[0x277CBEA60];
                       v132.x = x;
@@ -881,7 +881,7 @@ LABEL_7:
                       v98 = NSStringFromPoint(v135);
                       v99 = [v94 arrayWithObjects:{v95, v96, v97, v98, 0}];
 
-                      if ([(GeometricCutTools *)a1 isPointArrayARectangle:v99])
+                      if ([(GeometricCutTools *)self isPointArrayARectangle:v99])
                       {
                         v19 = v99;
                       }
@@ -910,23 +910,23 @@ LABEL_15:
   return v19;
 }
 
-+ (BOOL)derotateContentsOf:(id)a3 inImage:(vImage_Buffer *)a4 andOutputTo:(vImage_Buffer *)a5 withPadding:(CGPoint)a6 networkInputSize:(CGSize)a7
++ (BOOL)derotateContentsOf:(id)of inImage:(vImage_Buffer *)image andOutputTo:(vImage_Buffer *)to withPadding:(CGPoint)padding networkInputSize:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
-  y = a6.y;
-  x = a6.x;
-  v14 = a3;
+  height = size.height;
+  width = size.width;
+  y = padding.y;
+  x = padding.x;
+  ofCopy = of;
   v42 = 0uLL;
-  v15 = [a1 boxInNormalizedSpace:v14 toImageSpaceWithSize:&v42 plusPadding:a4->width destSize:a4->height networkInputSize:{x, y, width, height}];
+  v15 = [self boxInNormalizedSpace:ofCopy toImageSpaceWithSize:&v42 plusPadding:image->width destSize:image->height networkInputSize:{x, y, width, height}];
 
-  if (v15 && (v16 = v42.f64[0] * 0.125, v17 = (ceilf(v16) * 8.0) + -5.0, v42.f64[0] = v17, width <= v17) && v17 <= (4 * a4->width))
+  if (v15 && (v16 = v42.f64[0] * 0.125, v17 = (ceilf(v16) * 8.0) + -5.0, v42.f64[0] = v17, width <= v17) && v17 <= (4 * image->width))
   {
-    a5->data = malloc_type_malloc(v42.f64[1] * v17, 0x100004077774924uLL);
+    to->data = malloc_type_malloc(v42.f64[1] * v17, 0x100004077774924uLL);
     v20 = v42.f64[0];
     v21 = vcvtq_u64_f64(v42);
-    *&a5->height = vextq_s8(v21, v21, 8uLL);
-    a5->rowBytes = v20;
+    *&to->height = vextq_s8(v21, v21, 8uLL);
+    to->rowBytes = v20;
     v22 = [v15 objectAtIndexedSubscript:0];
     v23 = NSPointFromString(v22);
 
@@ -936,7 +936,7 @@ LABEL_15:
     v26 = [v15 objectAtIndexedSubscript:3];
     v27 = NSPointFromString(v26);
 
-    v28 = a5->height;
+    v28 = to->height;
     if (v28)
     {
       v29 = sqrt((v23.y - v27.y) * (v23.y - v27.y) + (v23.x - v27.x) * (v23.x - v27.x));
@@ -945,7 +945,7 @@ LABEL_15:
       v32 = __sincos_stret(v31 + 1.57079633);
       v33 = __sincos_stret(v31);
       v34 = 0;
-      v35 = a5->width;
+      v35 = to->width;
       do
       {
         if (v35)
@@ -954,16 +954,16 @@ LABEL_15:
           v37 = v29 * v34 / (v28 - 1);
           v38 = v23.y + v37 * v32.__sinval;
           v39 = v23.x + v37 * v32.__cosval;
-          v40 = a5->data + a5->rowBytes * v34;
+          v40 = to->data + to->rowBytes * v34;
           do
           {
             v41 = v30 * v36 / (v35 - 1);
-            v40[v36++] = *(a4->data + a4->rowBytes * (v38 + v41 * v33.__sinval) + (v39 + v41 * v33.__cosval));
-            v35 = a5->width;
+            v40[v36++] = *(image->data + image->rowBytes * (v38 + v41 * v33.__sinval) + (v39 + v41 * v33.__cosval));
+            v35 = to->width;
           }
 
           while (v35 > v36);
-          v28 = a5->height;
+          v28 = to->height;
         }
 
         ++v34;
@@ -983,32 +983,32 @@ LABEL_15:
   return v18;
 }
 
-+ (id)stringByInjectingSpaces:(id)a3 textFeatures:(id)a4 improved:(BOOL)a5
++ (id)stringByInjectingSpaces:(id)spaces textFeatures:(id)features improved:(BOOL)improved
 {
   v137 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v115 = v7;
-  v116 = [v7 mutableCopy];
-  v9 = [v8 subFeatures];
-  v10 = [v9 count];
+  spacesCopy = spaces;
+  featuresCopy = features;
+  v115 = spacesCopy;
+  v116 = [spacesCopy mutableCopy];
+  subFeatures = [featuresCopy subFeatures];
+  v10 = [subFeatures count];
 
   if (v10 < 3)
   {
     goto LABEL_137;
   }
 
-  v114 = v8;
-  v11 = [v8 subFeatures];
+  v114 = featuresCopy;
+  subFeatures2 = [featuresCopy subFeatures];
   v132[0] = 0;
-  std::vector<float>::vector[abi:ne200100](__p, [v11 count] - 1);
+  std::vector<float>::vector[abi:ne200100](__p, [subFeatures2 count] - 1);
 
   v125 = 0u;
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v12 = [v8 subFeatures];
-  v13 = [v12 countByEnumeratingWithState:&v123 objects:v136 count:16];
+  subFeatures3 = [featuresCopy subFeatures];
+  v13 = [subFeatures3 countByEnumeratingWithState:&v123 objects:v136 count:16];
   if (!v13)
   {
 
@@ -1029,7 +1029,7 @@ LABEL_17:
     {
       if (*v124 != v15)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(subFeatures3);
       }
 
       v19 = *(*(&v123 + 1) + 8 * i);
@@ -1048,7 +1048,7 @@ LABEL_17:
       v17 = v22 + v23;
     }
 
-    v13 = [v12 countByEnumeratingWithState:&v123 objects:v136 count:16];
+    v13 = [subFeatures3 countByEnumeratingWithState:&v123 objects:v136 count:16];
   }
 
   while (v13);
@@ -1072,7 +1072,7 @@ LABEL_17:
   while (v25);
   v117 = 1;
 LABEL_18:
-  v113 = a5;
+  improvedCopy = improved;
   for (j = 0; j != 18; j += 6)
   {
     v29 = &v132[j];
@@ -1279,14 +1279,14 @@ LABEL_38:
   }
 
   v67 = v26 - v56;
-  if (v113)
+  if (improvedCopy)
   {
     v121 = 0u;
     v122 = 0u;
     v119 = 0u;
     v120 = 0u;
-    v68 = [v114 subFeatures];
-    v69 = [v68 countByEnumeratingWithState:&v119 objects:v128 count:16];
+    subFeatures4 = [v114 subFeatures];
+    v69 = [subFeatures4 countByEnumeratingWithState:&v119 objects:v128 count:16];
     if (v69)
     {
       v70 = *v120;
@@ -1297,14 +1297,14 @@ LABEL_38:
         {
           if (*v120 != v70)
           {
-            objc_enumerationMutation(v68);
+            objc_enumerationMutation(subFeatures4);
           }
 
           [*(*(&v119 + 1) + 8 * ii) bounds];
           v71 = v73 + v71;
         }
 
-        v69 = [v68 countByEnumeratingWithState:&v119 objects:v128 count:16];
+        v69 = [subFeatures4 countByEnumeratingWithState:&v119 objects:v128 count:16];
       }
 
       while (v69);
@@ -1315,8 +1315,8 @@ LABEL_38:
       v71 = 0.0;
     }
 
-    v83 = [v114 subFeatures];
-    v84 = [v83 count];
+    subFeatures5 = [v114 subFeatures];
+    v84 = [subFeatures5 count];
 
     v85 = v66;
     v86 = &v132[6 * v66];
@@ -1510,7 +1510,7 @@ LABEL_38:
     std::__tree<int>::destroy(&v134[jj], *&v134[jj + 8]);
   }
 
-  v8 = v114;
+  featuresCopy = v114;
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -1522,46 +1522,46 @@ LABEL_137:
   return v116;
 }
 
-+ (id)geometricRecognitionOf:(id)a3 inDerotatedRegion:(vImage_Buffer *)a4 withPadding:(CGPoint)a5 fromCorrectedBoundingBox:(id)a6 inImageWithSize:(CGSize)a7 withNetwork:(void *)a8 activations:()vector<std:(std:(BOOL)a10 :allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:
++ (id)geometricRecognitionOf:(id)of inDerotatedRegion:(vImage_Buffer *)region withPadding:(CGPoint)padding fromCorrectedBoundingBox:(id)box inImageWithSize:(CGSize)size withNetwork:(void *)network activations:()vector<std:(std:(BOOL)self0 :allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:
 {
-  v10 = a10;
-  height = a7.height;
-  width = a7.width;
-  y = a5.y;
-  x = a5.x;
-  v20 = a3;
-  v21 = a6;
-  v22 = *&a4->width;
-  v27[0] = *&a4->data;
+  stdCopy = std;
+  height = size.height;
+  width = size.width;
+  y = padding.y;
+  x = padding.x;
+  ofCopy = of;
+  boxCopy = box;
+  v22 = *&region->width;
+  v27[0] = *&region->data;
   v27[1] = v22;
-  v23 = *(a8 + 21);
+  v23 = *(network + 21);
   memset(v26, 0, sizeof(v26));
   std::vector<std::vector<std::vector<float>>>::__init_with_size[abi:ne200100]<std::vector<std::vector<float>>*,std::vector<std::vector<float>>*>(v26, a9->var0, a9->var1, 0xAAAAAAAAAAAAAAABLL * ((a9->var1 - a9->var0) >> 3));
-  v24 = [a1 geometricRecognitionOf:v20 inDerotatedRegion:v27 withPadding:v21 fromCorrectedBoundingBox:v23 inImageWithSize:v26 withCodeMap:v10 activations:x invert:y networkInputSize:{width, height, *(a8 + 25), *(a8 + 26)}];
+  v24 = [self geometricRecognitionOf:ofCopy inDerotatedRegion:v27 withPadding:boxCopy fromCorrectedBoundingBox:v23 inImageWithSize:v26 withCodeMap:stdCopy activations:x invert:y networkInputSize:{width, height, *(network + 25), *(network + 26)}];
   *&v27[0] = v26;
   std::vector<std::vector<std::vector<float>>>::__destroy_vector::operator()[abi:ne200100](v27);
 
   return v24;
 }
 
-+ (id)geometricRecognitionOf:(id)a3 inDerotatedRegion:(vImage_Buffer *)a4 withPadding:(CGPoint)a5 fromCorrectedBoundingBox:(id)a6 inImageWithSize:(CGSize)a7 withCodeMap:(const int *)a8 activations:()vector<std:(std:(BOOL)a10 :(CGSize)a11 allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:networkInputSize:
++ (id)geometricRecognitionOf:(id)of inDerotatedRegion:(vImage_Buffer *)region withPadding:(CGPoint)padding fromCorrectedBoundingBox:(id)box inImageWithSize:(CGSize)size withCodeMap:(const int *)map activations:()vector<std:(std:(BOOL)self0 :(CGSize)self1 allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:networkInputSize:
 {
-  v11 = a10;
+  stdCopy = std;
   height = a11.height;
   width = a11.width;
-  v18 = a7.height;
-  v19 = a7.width;
-  y = a5.y;
-  x = a5.x;
+  v18 = size.height;
+  v19 = size.width;
+  y = padding.y;
+  x = padding.x;
   v184 = *MEMORY[0x277D85DE8];
-  v138 = a3;
-  v23 = a6;
-  v182 = a8;
-  if (width <= a4->width)
+  ofCopy = of;
+  boxCopy = box;
+  mapCopy = map;
+  if (width <= region->width)
   {
     v142 = v19;
     v144 = v18;
-    v137 = [a1 boxInNormalizedSpace:v23 toImageSpaceWithSize:v181 plusPadding:v19 destSize:v18 networkInputSize:{x, y, width, height}];
+    v137 = [self boxInNormalizedSpace:boxCopy toImageSpaceWithSize:v181 plusPadding:v19 destSize:v18 networkInputSize:{x, y, width, height}];
 
     if (v137)
     {
@@ -1645,24 +1645,24 @@ LABEL_137:
         }
       }
 
-      if (v11)
+      if (stdCopy)
       {
         std::__reverse[abi:ne200100]<std::_ClassicAlgPolicy,std::__wrap_iter<std::vector<float> *>,std::__wrap_iter<std::vector<float> *>>(v178, v179);
       }
 
-      v154 = [MEMORY[0x277CCAB68] string];
-      v153 = [MEMORY[0x277CCAB68] string];
-      v152 = [MEMORY[0x277CCAB68] string];
-      v45 = [MEMORY[0x277CBEB18] array];
-      v155 = [MEMORY[0x277CBEB18] array];
-      v158 = [MEMORY[0x277CBEB18] array];
+      string = [MEMORY[0x277CCAB68] string];
+      string2 = [MEMORY[0x277CCAB68] string];
+      string3 = [MEMORY[0x277CCAB68] string];
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
+      array3 = [MEMORY[0x277CBEB18] array];
       v176 = 0u;
       v177 = 0u;
       v174 = 0u;
       v175 = 0u;
-      obj = [v138 subFeatures];
+      obj = [ofCopy subFeatures];
       v46 = [obj countByEnumeratingWithState:&v174 objects:v183 count:16];
-      v150 = v45;
+      v150 = array;
       if (v46)
       {
         v47 = sqrt((v28.y - v26.y) * (v28.y - v26.y) + (v28.x - v26.x) * (v28.x - v26.x));
@@ -1707,7 +1707,7 @@ LABEL_137:
             v64 = 1.0;
             if (x != INFINITY)
             {
-              [v138 bounds];
+              [ofCopy bounds];
             }
 
             v65 = 0xAAAAAAAAAAAAAAABLL * (v60 - v61);
@@ -1732,10 +1732,10 @@ LABEL_137:
             v71 = (v178[3 * v66 + 1] - v178[3 * v66]) >> 2;
             v167 = 0;
             std::vector<double>::vector[abi:ne200100](&__p, v71);
-            v45 = v150;
-            fieldDecoding(&v178, v68, v66, &v182, 1, &v172, v150, v11);
-            fieldDecoding(&v178, v68, v66, &v182, 2, &v170, v155, v11);
-            fieldDecoding(&v178, v68, v66, &v182, 3, &__p, v158, v11);
+            array = v150;
+            fieldDecoding(&v178, v68, v66, &mapCopy, 1, &v172, v150, stdCopy);
+            fieldDecoding(&v178, v68, v66, &mapCopy, 2, &v170, array2, stdCopy);
+            fieldDecoding(&v178, v68, v66, &mapCopy, 3, &__p, array3, stdCopy);
             if (v172 == v173)
             {
               v74 = v172;
@@ -1815,17 +1815,17 @@ LABEL_137:
               while (v87 != v169);
             }
 
-            LOWORD(v167) = *(a8 + ((v74 - v172) << 29 >> 30));
-            v166 = *(a8 + ((v80 - v170) << 29 >> 30));
-            v165 = *(a8 + ((v86 - __p) << 29 >> 30));
+            LOWORD(v167) = *(map + ((v74 - v172) << 29 >> 30));
+            v166 = *(map + ((v80 - v170) << 29 >> 30));
+            v165 = *(map + ((v86 - __p) << 29 >> 30));
             v90 = [MEMORY[0x277CCACA8] stringWithCharacters:&v167 length:{1, v72}];
-            [v154 appendString:v90];
+            [string appendString:v90];
 
             v91 = [MEMORY[0x277CCACA8] stringWithCharacters:&v166 length:1];
-            [v153 appendString:v91];
+            [string2 appendString:v91];
 
             v92 = [MEMORY[0x277CCACA8] stringWithCharacters:&v165 length:1];
-            [v152 appendString:v92];
+            [string3 appendString:v92];
 
             if (__p)
             {
@@ -1893,17 +1893,17 @@ LABEL_137:
             while (v104 != v99);
           }
 
-          v96[v94++] = *(a8 + ((v102 - v98) << 30 >> 30));
+          v96[v94++] = *(map + ((v102 - v98) << 30 >> 30));
         }
 
         while (v94 != v95);
       }
 
-      v107 = [GeometricCutTools stringByInjectingSpaces:v154 textFeatures:v138 improved:0];
-      v108 = [GeometricCutTools stringByInjectingSpaces:v153 textFeatures:v138 improved:0];
-      v109 = [GeometricCutTools stringByInjectingSpaces:v152 textFeatures:v138 improved:0];
+      v107 = [GeometricCutTools stringByInjectingSpaces:string textFeatures:ofCopy improved:0];
+      v108 = [GeometricCutTools stringByInjectingSpaces:string2 textFeatures:ofCopy improved:0];
+      v109 = [GeometricCutTools stringByInjectingSpaces:string3 textFeatures:ofCopy improved:0];
       v110 = v109;
-      if (v11)
+      if (stdCopy)
       {
         v141 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v107, "length")}];
         v145 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v108, "length")}];
@@ -1938,25 +1938,25 @@ LABEL_137:
         v147 = v115;
         v146 = v117;
 
-        v118 = [v45 reverseObjectEnumerator];
-        v119 = [v118 allObjects];
-        obja = [v119 mutableCopy];
+        reverseObjectEnumerator = [array reverseObjectEnumerator];
+        allObjects = [reverseObjectEnumerator allObjects];
+        obja = [allObjects mutableCopy];
 
-        v120 = [v155 reverseObjectEnumerator];
-        v121 = [v120 allObjects];
-        v151 = [v121 mutableCopy];
+        reverseObjectEnumerator2 = [array2 reverseObjectEnumerator];
+        allObjects2 = [reverseObjectEnumerator2 allObjects];
+        v151 = [allObjects2 mutableCopy];
 
-        v122 = [v158 reverseObjectEnumerator];
-        v123 = [v122 allObjects];
-        v124 = [v123 mutableCopy];
+        reverseObjectEnumerator3 = [array3 reverseObjectEnumerator];
+        allObjects3 = [reverseObjectEnumerator3 allObjects];
+        v124 = [allObjects3 mutableCopy];
 
-        v158 = v124;
+        array3 = v124;
       }
 
       else
       {
-        obja = v45;
-        v151 = v155;
+        obja = array;
+        v151 = array2;
         v146 = v109;
         v147 = v108;
       }
@@ -1972,7 +1972,7 @@ LABEL_137:
       v132 = [v129 arrayWithObjects:{v130, v151, v131, 0}];
       v133 = MEMORY[0x277CBEA60];
       v134 = [MEMORY[0x277CCABB0] numberWithInteger:0xAAAAAAAAAAAAAAABLL * (v179 - v178)];
-      v135 = [v133 arrayWithObjects:{v146, v158, v134, 0}];
+      v135 = [v133 arrayWithObjects:{v146, array3, v134, 0}];
       v24 = [v125 dictionaryWithObjectsAndKeys:{v128, @"CardNumber", v132, @"Cardholder", v135, @"Expiration", 0}];
 
       if (v172)
@@ -1990,7 +1990,7 @@ LABEL_137:
       v24 = 0;
     }
 
-    v23 = v137;
+    boxCopy = v137;
   }
 
   else
@@ -2001,46 +2001,46 @@ LABEL_137:
   return v24;
 }
 
-+ (id)geometricRecognitionOf:(id)a3 inDerotatedRegion:(vImage_Buffer *)a4 withPadding:(CGPoint)a5 fromCorrectedBoundingBox:(id)a6 inImageWithSize:(CGSize)a7 withNetwork:(void *)a8 activations:()vector<std:(std:(BOOL)a10 :(unsigned __int16)a11 allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:garbageSymbol:
++ (id)geometricRecognitionOf:(id)of inDerotatedRegion:(vImage_Buffer *)region withPadding:(CGPoint)padding fromCorrectedBoundingBox:(id)box inImageWithSize:(CGSize)size withNetwork:(void *)network activations:()vector<std:(std:(BOOL)self0 :(unsigned __int16)self1 allocator<std::vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:garbageSymbol:
 {
-  v11 = a10;
-  height = a7.height;
-  width = a7.width;
-  y = a5.y;
-  x = a5.x;
-  v21 = a3;
-  v22 = a6;
-  v23 = *&a4->width;
-  v29[0] = *&a4->data;
+  stdCopy = std;
+  height = size.height;
+  width = size.width;
+  y = padding.y;
+  x = padding.x;
+  ofCopy = of;
+  boxCopy = box;
+  v23 = *&region->width;
+  v29[0] = *&region->data;
   v29[1] = v23;
-  v24 = *(a8 + 21);
+  v24 = *(network + 21);
   memset(v28, 0, sizeof(v28));
   std::vector<std::vector<std::vector<float>>>::__init_with_size[abi:ne200100]<std::vector<std::vector<float>>*,std::vector<std::vector<float>>*>(v28, a9->var0, a9->var1, 0xAAAAAAAAAAAAAAABLL * ((a9->var1 - a9->var0) >> 3));
   LOWORD(v27) = a11;
-  v25 = [a1 geometricRecognitionOf:v21 inDerotatedRegion:v29 withPadding:v22 fromCorrectedBoundingBox:v24 inImageWithSize:v28 withCodeMap:v11 activations:x invert:y networkInputSize:width garbageSymbol:{height, *(a8 + 25), *(a8 + 26), v27}];
+  v25 = [self geometricRecognitionOf:ofCopy inDerotatedRegion:v29 withPadding:boxCopy fromCorrectedBoundingBox:v24 inImageWithSize:v28 withCodeMap:stdCopy activations:x invert:y networkInputSize:width garbageSymbol:{height, *(network + 25), *(network + 26), v27}];
   *&v29[0] = v28;
   std::vector<std::vector<std::vector<float>>>::__destroy_vector::operator()[abi:ne200100](v29);
 
   return v25;
 }
 
-+ (id)geometricRecognitionOf:(id)a3 inDerotatedRegion:(vImage_Buffer *)a4 withPadding:(CGPoint)a5 fromCorrectedBoundingBox:(id)a6 inImageWithSize:(CGSize)a7 withCodeMap:(const int *)a8 activations:()vector<std:(std:(BOOL)a10 :(CGSize)a11 allocator<std:(unsigned __int16)a12 :vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:networkInputSize:garbageSymbol:
++ (id)geometricRecognitionOf:(id)of inDerotatedRegion:(vImage_Buffer *)region withPadding:(CGPoint)padding fromCorrectedBoundingBox:(id)box inImageWithSize:(CGSize)size withCodeMap:(const int *)map activations:()vector<std:(std:(BOOL)self0 :(CGSize)self1 allocator<std:(unsigned __int16)self2 :vector<std::vector<float>>>> *)a9 :vector<std::vector<float>> invert:networkInputSize:garbageSymbol:
 {
-  v117 = a10;
+  stdCopy = std;
   height = a11.height;
   width = a11.width;
-  v18 = a7.height;
-  v19 = a7.width;
-  y = a5.y;
-  x = a5.x;
+  v18 = size.height;
+  v19 = size.width;
+  y = padding.y;
+  x = padding.x;
   v143 = *MEMORY[0x277D85DE8];
-  v119 = a3;
-  v23 = a6;
-  if (width <= a4->width)
+  ofCopy = of;
+  boxCopy = box;
+  if (width <= region->width)
   {
     v122 = v19;
     v123 = v18;
-    v118 = [a1 boxInNormalizedSpace:v23 toImageSpaceWithSize:v141 plusPadding:v19 destSize:v18 networkInputSize:{x, y, width, height}];
+    v118 = [self boxInNormalizedSpace:boxCopy toImageSpaceWithSize:v141 plusPadding:v19 destSize:v18 networkInputSize:{x, y, width, height}];
 
     if (v118)
     {
@@ -2124,26 +2124,26 @@ LABEL_137:
         }
       }
 
-      if (v117)
+      if (stdCopy)
       {
         std::__reverse[abi:ne200100]<std::_ClassicAlgPolicy,std::__wrap_iter<std::vector<float> *>,std::__wrap_iter<std::vector<float> *>>(v138, v139);
       }
 
-      v125 = [MEMORY[0x277CCAB68] string];
-      v128 = [MEMORY[0x277CBEB18] array];
+      string = [MEMORY[0x277CCAB68] string];
+      array = [MEMORY[0x277CBEB18] array];
       v136 = 0u;
       v137 = 0u;
       v134 = 0u;
       v135 = 0u;
-      v45 = [v119 subFeatures];
-      v46 = [v45 countByEnumeratingWithState:&v134 objects:v142 count:16];
+      subFeatures = [ofCopy subFeatures];
+      v46 = [subFeatures countByEnumeratingWithState:&v134 objects:v142 count:16];
       if (v46)
       {
         v47 = sqrt((v28.y - v26.y) * (v28.y - v26.y) + (v28.x - v26.x) * (v28.x - v26.x));
         v120 = (v28.y - v26.y) / v47;
         v121 = (v28.x - v26.x) / v47;
         v124 = *v135;
-        v48 = v45;
+        v48 = subFeatures;
         do
         {
           v126 = v46;
@@ -2151,7 +2151,7 @@ LABEL_137:
           {
             if (*v135 != v124)
             {
-              objc_enumerationMutation(v45);
+              objc_enumerationMutation(subFeatures);
             }
 
             v50 = *(*(&v134 + 1) + 8 * i);
@@ -2183,7 +2183,7 @@ LABEL_137:
             v64 = 1.0;
             if (x != INFINITY)
             {
-              [v119 bounds];
+              [ofCopy bounds];
             }
 
             v65 = 0xAAAAAAAAAAAAAAABLL * (v60 - v61);
@@ -2215,7 +2215,7 @@ LABEL_137:
             v73 = (v138[3 * v66 + 1] - v138[3 * v66]) >> 2;
             v131 = 0;
             std::vector<double>::vector[abi:ne200100](&__p, v73);
-            v74 = [MEMORY[0x277CCAB68] string];
+            string2 = [MEMORY[0x277CCAB68] string];
             v76 = (v66 - (v68 >> 1)) & ~((v66 - (v68 >> 1)) >> 31);
             if (v76 <= v72)
             {
@@ -2242,7 +2242,7 @@ LABEL_137:
                   LODWORD(v75) = -8388608;
                   do
                   {
-                    if (a8[v80] != a12 && *(v78 + 4 * v80) > *&v75)
+                    if (map[v80] != a12 && *(v78 + 4 * v80) > *&v75)
                     {
                       LODWORD(v75) = *(v78 + 4 * v80);
                       v83 = v80;
@@ -2264,12 +2264,12 @@ LABEL_137:
                   v83 = -1;
                 }
 
-                LOWORD(v131) = a8[v83];
+                LOWORD(v131) = map[v83];
                 v84 = [MEMORY[0x277CCACA8] stringWithCharacters:&v131 length:{1, v75}];
-                [v74 appendString:v84];
+                [string2 appendString:v84];
 
                 v85 = [MEMORY[0x277CCABB0] numberWithInteger:v76];
-                [v128 addObject:v85];
+                [array addObject:v85];
 
                 ++v76;
               }
@@ -2308,10 +2308,10 @@ LABEL_137:
               }
             }
 
-            LOWORD(v131) = *(a8 + ((v87 - __p) << 29 >> 30));
-            v45 = v48;
+            LOWORD(v131) = *(map + ((v87 - __p) << 29 >> 30));
+            subFeatures = v48;
             v91 = [MEMORY[0x277CCACA8] stringWithCharacters:&v131 length:{1, v75}];
-            [v125 appendString:v91];
+            [string appendString:v91];
 
             if (__p)
             {
@@ -2367,13 +2367,13 @@ LABEL_137:
             while (v103 != v98);
           }
 
-          v95[v93++] = *(a8 + ((v101 - v97) << 30 >> 30));
+          v95[v93++] = *(map + ((v101 - v97) << 30 >> 30));
         }
 
         while (v93 != v94);
       }
 
-      v106 = [MEMORY[0x277CCAB68] string];
+      string3 = [MEMORY[0x277CCAB68] string];
       v107 = __p;
       if (v133 != __p)
       {
@@ -2382,7 +2382,7 @@ LABEL_137:
         {
           LOWORD(v131) = v107[v108];
           v109 = [MEMORY[0x277CCACA8] stringWithCharacters:&v131 length:1];
-          [v106 appendString:v109];
+          [string3 appendString:v109];
 
           ++v108;
           v107 = __p;
@@ -2391,9 +2391,9 @@ LABEL_137:
         while (v108 < (v133 - __p) >> 2);
       }
 
-      v110 = [GeometricCutTools stringByInjectingSpaces:v125 textFeatures:v119 improved:1];
+      v110 = [GeometricCutTools stringByInjectingSpaces:string textFeatures:ofCopy improved:1];
       v111 = v110;
-      if (v117)
+      if (stdCopy)
       {
         v112 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v110, "length")}];
         v113 = [v111 length];
@@ -2412,7 +2412,7 @@ LABEL_137:
         v115 = v110;
       }
 
-      v24 = [MEMORY[0x277CBEA60] arrayWithObjects:{v115, v128, 0}];
+      v24 = [MEMORY[0x277CBEA60] arrayWithObjects:{v115, array, 0}];
 
       if (__p)
       {
@@ -2429,7 +2429,7 @@ LABEL_137:
       v24 = 0;
     }
 
-    v23 = v118;
+    boxCopy = v118;
   }
 
   else

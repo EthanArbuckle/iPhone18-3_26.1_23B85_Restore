@@ -1,66 +1,66 @@
 @interface ICSByDayValue
-+ (id)byDayValueFromICSString:(id)a3;
-+ (int64_t)weekdayFromICSString:(id)a3;
-- (ICSByDayValue)initWithCoder:(id)a3;
-- (ICSByDayValue)initWithWeekday:(int64_t)a3 number:(id)a4;
-- (int64_t)compare:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setNumber:(id)a3;
++ (id)byDayValueFromICSString:(id)string;
++ (int64_t)weekdayFromICSString:(id)string;
+- (ICSByDayValue)initWithCoder:(id)coder;
+- (ICSByDayValue)initWithWeekday:(int64_t)weekday number:(id)number;
+- (int64_t)compare:(id)compare;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)encodeWithCoder:(id)coder;
+- (void)setNumber:(id)number;
 @end
 
 @implementation ICSByDayValue
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v8 = a4;
-  v5 = [(ICSByDayValue *)self number];
+  stringCopy = string;
+  number = [(ICSByDayValue *)self number];
 
-  if (v5)
+  if (number)
   {
-    v6 = [(ICSByDayValue *)self number];
-    [v8 appendFormat:@"%d", objc_msgSend(v6, "integerValue")];
+    number2 = [(ICSByDayValue *)self number];
+    [stringCopy appendFormat:@"%d", objc_msgSend(number2, "integerValue")];
   }
 
   v7 = iCalendarRepresentationForCALDay([(ICSByDayValue *)self weekday]);
-  [v8 appendString:v7];
+  [stringCopy appendString:v7];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ICSByDayValue *)self number];
-  if (v5)
+  compareCopy = compare;
+  number = [(ICSByDayValue *)self number];
+  if (number)
   {
-    v6 = v5;
-    v7 = [(ICSByDayValue *)v4 number];
+    v6 = number;
+    number2 = [(ICSByDayValue *)compareCopy number];
 
-    if (v7)
+    if (number2)
     {
-      v8 = [(ICSByDayValue *)self number];
-      v9 = [(ICSByDayValue *)v4 number];
+      number3 = [(ICSByDayValue *)self number];
+      number4 = [(ICSByDayValue *)compareCopy number];
 LABEL_7:
-      v10 = v9;
-      v11 = [v8 compare:v9];
+      v10 = number4;
+      v11 = [number3 compare:number4];
 
       goto LABEL_13;
     }
   }
 
-  if ([(ICSByDayValue *)self weekday]&& [(ICSByDayValue *)v4 weekday])
+  if ([(ICSByDayValue *)self weekday]&& [(ICSByDayValue *)compareCopy weekday])
   {
-    v8 = iCalendarRepresentationForCALDay([(ICSByDayValue *)self weekday]);
-    v9 = iCalendarRepresentationForCALDay([(ICSByDayValue *)v4 weekday]);
+    number3 = iCalendarRepresentationForCALDay([(ICSByDayValue *)self weekday]);
+    number4 = iCalendarRepresentationForCALDay([(ICSByDayValue *)compareCopy weekday]);
     goto LABEL_7;
   }
 
   v12 = -1;
-  if (self >= v4)
+  if (self >= compareCopy)
   {
     v12 = 1;
   }
 
-  if (self == v4)
+  if (self == compareCopy)
   {
     v11 = 0;
   }
@@ -75,40 +75,40 @@ LABEL_13:
   return v11;
 }
 
-+ (int64_t)weekdayFromICSString:(id)a3
++ (int64_t)weekdayFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SU"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"SU"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MO"])
+  else if ([stringCopy isEqualToString:@"MO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TU"])
+  else if ([stringCopy isEqualToString:@"TU"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"WE"])
+  else if ([stringCopy isEqualToString:@"WE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TH"])
+  else if ([stringCopy isEqualToString:@"TH"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FR"])
+  else if ([stringCopy isEqualToString:@"FR"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SA"])
+  else if ([stringCopy isEqualToString:@"SA"])
   {
     v4 = 7;
   }
@@ -121,26 +121,26 @@ LABEL_13:
   return v4;
 }
 
-+ (id)byDayValueFromICSString:(id)a3
++ (id)byDayValueFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] >= 2)
+  stringCopy = string;
+  if ([stringCopy length] >= 2)
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(v3, "length") - 2}];
-    v6 = [v3 substringToIndex:{objc_msgSend(v3, "length") - 2}];
+    v5 = [stringCopy substringFromIndex:{objc_msgSend(stringCopy, "length") - 2}];
+    v6 = [stringCopy substringToIndex:{objc_msgSend(stringCopy, "length") - 2}];
     v7 = [ICSByDayValue weekdayFromICSString:v5];
-    v8 = [v6 intValue];
-    if (v7 == -1 || v8 >= 54)
+    intValue = [v6 intValue];
+    if (v7 == -1 || intValue >= 54)
     {
-      NSLog(&cfstr_IcsbydayvalueI.isa, v3);
+      NSLog(&cfstr_IcsbydayvalueI.isa, stringCopy);
       v4 = 0;
     }
 
     else
     {
-      if (v8)
+      if (intValue)
       {
-        v9 = [MEMORY[0x277CCABB0] numberWithInt:v8];
+        v9 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
       }
 
       else
@@ -160,28 +160,28 @@ LABEL_13:
   return v4;
 }
 
-- (ICSByDayValue)initWithWeekday:(int64_t)a3 number:(id)a4
+- (ICSByDayValue)initWithWeekday:(int64_t)weekday number:(id)number
 {
-  v6 = a4;
+  numberCopy = number;
   v10.receiver = self;
   v10.super_class = ICSByDayValue;
   v7 = [(ICSByDayValue *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ICSByDayValue *)v7 setWeekday:a3];
-    [(ICSByDayValue *)v8 setNumber:v6];
+    [(ICSByDayValue *)v7 setWeekday:weekday];
+    [(ICSByDayValue *)v8 setNumber:numberCopy];
   }
 
   return v8;
 }
 
-- (void)setNumber:(id)a3
+- (void)setNumber:(id)number
 {
-  v7 = a3;
-  if ([(NSNumber *)v7 integerValue])
+  numberCopy = number;
+  if ([(NSNumber *)numberCopy integerValue])
   {
-    v4 = v7;
+    v4 = numberCopy;
   }
 
   else
@@ -200,26 +200,26 @@ LABEL_13:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   number = self->_number;
-  v5 = a3;
-  [v5 encodeObject:number forKey:@"Number"];
-  [v5 encodeInteger:self->_weekday forKey:@"Weekday"];
+  coderCopy = coder;
+  [coderCopy encodeObject:number forKey:@"Number"];
+  [coderCopy encodeInteger:self->_weekday forKey:@"Weekday"];
 }
 
-- (ICSByDayValue)initWithCoder:(id)a3
+- (ICSByDayValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ICSByDayValue;
   v5 = [(ICSByDayValue *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Number"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Number"];
     [(ICSByDayValue *)v5 setNumber:v6];
 
-    -[ICSByDayValue setWeekday:](v5, "setWeekday:", [v4 decodeIntegerForKey:@"Weekday"]);
+    -[ICSByDayValue setWeekday:](v5, "setWeekday:", [coderCopy decodeIntegerForKey:@"Weekday"]);
   }
 
   return v5;

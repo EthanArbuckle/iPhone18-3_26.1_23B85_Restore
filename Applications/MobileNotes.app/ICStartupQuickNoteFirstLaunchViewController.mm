@@ -6,27 +6,27 @@
 - (UILabel)titleLabel;
 - (UIView)seperator1;
 - (UIView)seperator2;
-- (id)initStartedWithPencil:(BOOL)a3 launchBlock:(id)a4;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)okAction:(id)a3;
-- (void)settingsAction:(id)a3;
+- (id)initStartedWithPencil:(BOOL)pencil launchBlock:(id)block;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)okAction:(id)action;
+- (void)settingsAction:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation ICStartupQuickNoteFirstLaunchViewController
 
-- (id)initStartedWithPencil:(BOOL)a3 launchBlock:(id)a4
+- (id)initStartedWithPencil:(BOOL)pencil launchBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  pencilCopy = pencil;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = ICStartupQuickNoteFirstLaunchViewController;
   v7 = [(ICStartupQuickNoteFirstLaunchViewController *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ICStartupQuickNoteFirstLaunchViewController *)v7 setStartedWithPencil:v4];
-    [(ICStartupQuickNoteFirstLaunchViewController *)v8 setLaunchBlock:v6];
+    [(ICStartupQuickNoteFirstLaunchViewController *)v7 setStartedWithPencil:pencilCopy];
+    [(ICStartupQuickNoteFirstLaunchViewController *)v8 setLaunchBlock:blockCopy];
     [(ICStartupQuickNoteFirstLaunchViewController *)v8 setTransitioningDelegate:v8];
     [(ICStartupQuickNoteFirstLaunchViewController *)v8 setModalPresentationStyle:4];
   }
@@ -39,63 +39,63 @@
   v25.receiver = self;
   v25.super_class = ICStartupQuickNoteFirstLaunchViewController;
   [(ICStartupQuickNoteFirstLaunchViewController *)&v25 viewDidLoad];
-  v3 = [(ICStartupQuickNoteFirstLaunchViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setCornerRadius:12.0];
+  view = [(ICStartupQuickNoteFirstLaunchViewController *)self view];
+  layer = [view layer];
+  [layer setCornerRadius:12.0];
 
-  v5 = [(ICStartupQuickNoteFirstLaunchViewController *)self imageView];
-  v6 = [v5 layer];
-  [v6 setCornerRadius:12.0];
+  imageView = [(ICStartupQuickNoteFirstLaunchViewController *)self imageView];
+  layer2 = [imageView layer];
+  [layer2 setCornerRadius:12.0];
 
   v7 = [UIColor colorWithDynamicProvider:&stru_10064A1C0];
-  v8 = [(ICStartupQuickNoteFirstLaunchViewController *)self view];
-  [v8 setBackgroundColor:v7];
+  view2 = [(ICStartupQuickNoteFirstLaunchViewController *)self view];
+  [view2 setBackgroundColor:v7];
 
-  v9 = [(ICStartupQuickNoteFirstLaunchViewController *)self view];
-  [v9 ic_backingScaleFactor];
+  view3 = [(ICStartupQuickNoteFirstLaunchViewController *)self view];
+  [view3 ic_backingScaleFactor];
   v11 = v10;
 
   if (v11 > 1.0)
   {
     v12 = 1.0 / v11;
-    v13 = [(ICStartupQuickNoteFirstLaunchViewController *)self separator1HeightConstraint];
-    [v13 setConstant:v12];
+    separator1HeightConstraint = [(ICStartupQuickNoteFirstLaunchViewController *)self separator1HeightConstraint];
+    [separator1HeightConstraint setConstant:v12];
 
-    v14 = [(ICStartupQuickNoteFirstLaunchViewController *)self separator2HeightConstraint];
-    [v14 setConstant:v12];
+    separator2HeightConstraint = [(ICStartupQuickNoteFirstLaunchViewController *)self separator2HeightConstraint];
+    [separator2HeightConstraint setConstant:v12];
   }
 
   v15 = +[UIColor labelColor];
-  v16 = [(ICStartupQuickNoteFirstLaunchViewController *)self imageView];
-  [v16 setTintColor:v15];
+  imageView2 = [(ICStartupQuickNoteFirstLaunchViewController *)self imageView];
+  [imageView2 setTintColor:v15];
 
   v17 = +[UIColor labelColor];
-  v18 = [(ICStartupQuickNoteFirstLaunchViewController *)self titleLabel];
-  [v18 setTextColor:v17];
+  titleLabel = [(ICStartupQuickNoteFirstLaunchViewController *)self titleLabel];
+  [titleLabel setTextColor:v17];
 
   v19 = +[UIColor labelColor];
-  v20 = [(ICStartupQuickNoteFirstLaunchViewController *)self messageLabel];
-  [v20 setTextColor:v19];
+  messageLabel = [(ICStartupQuickNoteFirstLaunchViewController *)self messageLabel];
+  [messageLabel setTextColor:v19];
 
   v21 = +[UIColor tableSeparatorLightColor];
-  v22 = [(ICStartupQuickNoteFirstLaunchViewController *)self seperator1];
-  [v22 setBackgroundColor:v21];
+  seperator1 = [(ICStartupQuickNoteFirstLaunchViewController *)self seperator1];
+  [seperator1 setBackgroundColor:v21];
 
   v23 = +[UIColor tableSeparatorLightColor];
-  v24 = [(ICStartupQuickNoteFirstLaunchViewController *)self seperator2];
-  [v24 setBackgroundColor:v23];
+  seperator2 = [(ICStartupQuickNoteFirstLaunchViewController *)self seperator2];
+  [seperator2 setBackgroundColor:v23];
 }
 
-- (void)okAction:(id)a3
+- (void)okAction:(id)action
 {
   [(ICStartupQuickNoteFirstLaunchViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v4 = [(ICStartupQuickNoteFirstLaunchViewController *)self launchBlock];
-  v4[2](v4, 0);
+  launchBlock = [(ICStartupQuickNoteFirstLaunchViewController *)self launchBlock];
+  launchBlock[2](launchBlock, 0);
 
   [(ICStartupQuickNoteFirstLaunchViewController *)self setLaunchBlock:0];
 }
 
-- (void)settingsAction:(id)a3
+- (void)settingsAction:(id)action
 {
   [(ICStartupQuickNoteFirstLaunchViewController *)self dismissViewControllerAnimated:1 completion:0];
   v4 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
@@ -114,11 +114,11 @@
   [v4 openApplication:@"com.apple.Preferences" withOptions:v7 completion:v8];
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ICStartupQuickNoteFirstLaunchPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[ICStartupQuickNoteFirstLaunchPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   return v8;
 }

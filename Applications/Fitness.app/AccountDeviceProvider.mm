@@ -1,10 +1,10 @@
 @interface AccountDeviceProvider
-- (void)deviceListChangedWithNotification:(id)a3;
+- (void)deviceListChangedWithNotification:(id)notification;
 @end
 
 @implementation AccountDeviceProvider
 
-- (void)deviceListChangedWithNotification:(id)a3
+- (void)deviceListChangedWithNotification:(id)notification
 {
   v4 = sub_100140278(&qword_1008E1760);
   __chkstk_darwin(v4 - 8);

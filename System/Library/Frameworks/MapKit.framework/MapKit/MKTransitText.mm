@@ -1,19 +1,19 @@
 @interface MKTransitText
-- (MKTransitText)initWithFormattedString:(id)a3;
+- (MKTransitText)initWithFormattedString:(id)string;
 @end
 
 @implementation MKTransitText
 
-- (MKTransitText)initWithFormattedString:(id)a3
+- (MKTransitText)initWithFormattedString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = MKTransitText;
   v6 = [(MKTransitText *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_text, a3);
+    objc_storeStrong(&v6->_text, string);
     v8 = v7;
   }
 

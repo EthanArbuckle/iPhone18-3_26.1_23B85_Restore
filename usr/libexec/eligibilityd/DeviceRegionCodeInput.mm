@@ -1,26 +1,26 @@
 @interface DeviceRegionCodeInput
 + (id)_mgDeviceRegionCode;
-- (BOOL)inArray:(id)a3;
+- (BOOL)inArray:(id)array;
 - (BOOL)isChinaSKU;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DeviceRegionCodeInput)init;
-- (DeviceRegionCodeInput)initWithCoder:(id)a3;
+- (DeviceRegionCodeInput)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DeviceRegionCodeInput
 
-- (BOOL)inArray:(id)a3
+- (BOOL)inArray:(id)array
 {
-  v4 = a3;
-  v5 = [(DeviceRegionCodeInput *)self deviceRegionCode];
-  if (v5)
+  arrayCopy = array;
+  deviceRegionCode = [(DeviceRegionCodeInput *)self deviceRegionCode];
+  if (deviceRegionCode)
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = arrayCopy;
     if (objc_opt_isKindOfClass())
     {
       if (v6)
@@ -28,7 +28,7 @@
         objc_opt_class();
         if (sub_100027870(v6))
         {
-          v7 = [v6 containsObject:v5];
+          v7 = [v6 containsObject:deviceRegionCode];
         }
 
         else
@@ -77,26 +77,26 @@ LABEL_12:
 
 - (NSString)description
 {
-  v3 = [(DeviceRegionCodeInput *)self deviceRegionCode];
+  deviceRegionCode = [(DeviceRegionCodeInput *)self deviceRegionCode];
   v7.receiver = self;
   v7.super_class = DeviceRegionCodeInput;
   v4 = [(EligibilityInput *)&v7 description];
-  v5 = [NSString stringWithFormat:@"[DeviceRegionCodeInput deviceRegionCode:%@ %@]", v3, v4];
+  v5 = [NSString stringWithFormat:@"[DeviceRegionCodeInput deviceRegionCode:%@ %@]", deviceRegionCode, v4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = DeviceRegionCodeInput;
-  if (![(EligibilityInput *)&v11 isEqual:v4])
+  if (![(EligibilityInput *)&v11 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_11;
@@ -105,10 +105,10 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(DeviceRegionCodeInput *)self deviceRegionCode];
-    v7 = [(DeviceRegionCodeInput *)v5 deviceRegionCode];
-    v8 = sub_1000277EC(v6, v7);
+    v5 = equalCopy;
+    deviceRegionCode = [(DeviceRegionCodeInput *)self deviceRegionCode];
+    deviceRegionCode2 = [(DeviceRegionCodeInput *)v5 deviceRegionCode];
+    v8 = sub_1000277EC(deviceRegionCode, deviceRegionCode2);
 
     if ((v8 & 1) == 0)
     {
@@ -140,25 +140,25 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = DeviceRegionCodeInput;
   v3 = [(EligibilityInput *)&v7 hash];
-  v4 = [(DeviceRegionCodeInput *)self deviceRegionCode];
-  v5 = [v4 hash];
+  deviceRegionCode = [(DeviceRegionCodeInput *)self deviceRegionCode];
+  v5 = [deviceRegionCode hash];
 
   return v5 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = DeviceRegionCodeInput;
   v5 = [(EligibilityInput *)&v9 copyWithZone:?];
-  v6 = [(DeviceRegionCodeInput *)self deviceRegionCode];
-  v7 = [v6 copyWithZone:a3];
+  deviceRegionCode = [(DeviceRegionCodeInput *)self deviceRegionCode];
+  v7 = [deviceRegionCode copyWithZone:zone];
   [v5 setDeviceRegionCode:v7];
 
   return v5;
 }
 
-- (DeviceRegionCodeInput)initWithCoder:(id)a3
+- (DeviceRegionCodeInput)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DeviceRegionCodeInput;
@@ -173,17 +173,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = DeviceRegionCodeInput;
-  [(EligibilityInput *)&v3 encodeWithCoder:a3];
+  [(EligibilityInput *)&v3 encodeWithCoder:coder];
 }
 
 - (BOOL)isChinaSKU
 {
-  v2 = [(DeviceRegionCodeInput *)self deviceRegionCode];
-  v3 = [v2 isEqualToString:@"CH"];
+  deviceRegionCode = [(DeviceRegionCodeInput *)self deviceRegionCode];
+  v3 = [deviceRegionCode isEqualToString:@"CH"];
 
   return v3;
 }

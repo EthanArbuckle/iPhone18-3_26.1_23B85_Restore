@@ -1,41 +1,41 @@
 @interface PXCMMPosterBannerView
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXCMMPosterBannerView)initWithFrame:(CGRect)a3;
-- (id)_actionButtonWithTitle:(id)a3 action:(SEL)a4;
-- (id)_attributedStringWithString:(id)a3 boldRange:(_NSRange)a4;
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXCMMPosterBannerView)initWithFrame:(CGRect)frame;
+- (id)_actionButtonWithTitle:(id)title action:(SEL)action;
+- (id)_attributedStringWithString:(id)string boldRange:(_NSRange)range;
 - (id)_headlineStringAttributes;
-- (void)_actionButtonTapped:(id)a3;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)_actionButtonTapped:(id)tapped;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)_updateActionButton;
 - (void)_updateLoadingPeopleSuggestions;
 - (void)_updateTitles;
 - (void)layoutSubviews;
-- (void)setActionButtonWithTitle:(id)a3 actionBlock:(id)a4;
-- (void)setAddingPhotos:(BOOL)a3;
-- (void)setHeadline:(id)a3 boldRange:(_NSRange)a4;
-- (void)setLoadingPeopleSuggestions:(BOOL)a3;
-- (void)setLocalizedNamesForHeadline:(id)a3;
-- (void)setSubheadline:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setActionButtonWithTitle:(id)title actionBlock:(id)block;
+- (void)setAddingPhotos:(BOOL)photos;
+- (void)setHeadline:(id)headline boldRange:(_NSRange)range;
+- (void)setLoadingPeopleSuggestions:(BOOL)suggestions;
+- (void)setLocalizedNamesForHeadline:(id)headline;
+- (void)setSubheadline:(id)subheadline;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PXCMMPosterBannerView
 
-- (id)_attributedStringWithString:(id)a3 boldRange:(_NSRange)a4
+- (id)_attributedStringWithString:(id)string boldRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(PXCMMPosterBannerView *)self _headlineStringAttributes];
-  v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v7 attributes:v8];
+  stringCopy = string;
+  _headlineStringAttributes = [(PXCMMPosterBannerView *)self _headlineStringAttributes];
+  v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:stringCopy attributes:_headlineStringAttributes];
 
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [objc_opt_class() _headlineLabelBoldFont];
+    _headlineLabelBoldFont = [objc_opt_class() _headlineLabelBoldFont];
     v13 = *MEMORY[0x1E69DB648];
-    v14[0] = v10;
+    v14[0] = _headlineLabelBoldFont;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     [v9 setAttributes:v11 range:{location, length}];
   }
@@ -50,32 +50,32 @@
   [v2 setAlignment:0];
   [v2 setLineBreakMode:0];
   v6[0] = *MEMORY[0x1E69DB648];
-  v3 = [objc_opt_class() _headlineLabelFont];
+  _headlineLabelFont = [objc_opt_class() _headlineLabelFont];
   v6[1] = *MEMORY[0x1E69DB688];
-  v7[0] = v3;
+  v7[0] = _headlineLabelFont;
   v7[1] = v2;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-- (id)_actionButtonWithTitle:(id)a3 action:(SEL)a4
+- (id)_actionButtonWithTitle:(id)title action:(SEL)action
 {
   v6 = MEMORY[0x1E69DC740];
-  v7 = a3;
-  v8 = [v6 filledButtonConfiguration];
-  [v8 setCornerStyle:4];
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  [v8 setBaseForegroundColor:v9];
+  titleCopy = title;
+  filledButtonConfiguration = [v6 filledButtonConfiguration];
+  [filledButtonConfiguration setCornerStyle:4];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [filledButtonConfiguration setBaseForegroundColor:whiteColor];
 
-  v10 = [(PXCMMPosterBannerView *)self tintColor];
-  [v8 setBaseBackgroundColor:v10];
+  tintColor = [(PXCMMPosterBannerView *)self tintColor];
+  [filledButtonConfiguration setBaseBackgroundColor:tintColor];
 
-  [v8 setTitle:v7];
-  [v8 setButtonSize:1];
-  [v8 setTitleTextAttributesTransformer:&__block_literal_global_25304];
-  v11 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v8 primaryAction:0];
-  [v11 addTarget:self action:a4 forControlEvents:0x2000];
+  [filledButtonConfiguration setTitle:titleCopy];
+  [filledButtonConfiguration setButtonSize:1];
+  [filledButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_25304];
+  v11 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
+  [v11 addTarget:self action:action forControlEvents:0x2000];
 
   return v11;
 }
@@ -89,10 +89,10 @@ id __55__PXCMMPosterBannerView__actionButtonWithTitle_action___block_invoke(uint
   return v2;
 }
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v4 = [objc_opt_class() _subheadlineLabelFont];
-  [(UILabel *)self->_subheadlineLabel setFont:v4];
+  _subheadlineLabelFont = [objc_opt_class() _subheadlineLabelFont];
+  [(UILabel *)self->_subheadlineLabel setFont:_subheadlineLabelFont];
 
   [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateTitles];
   updater = self->_updater;
@@ -100,9 +100,9 @@ id __55__PXCMMPosterBannerView__actionButtonWithTitle_action___block_invoke(uint
   [(PXUpdater *)updater setNeedsUpdateOf:sel__updateActionButton];
 }
 
-- (void)_actionButtonTapped:(id)a3
+- (void)_actionButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (self->_actionButtonAction && ![(PXCMMPosterBannerView *)self isAddingPhotos])
   {
     v5 = [self->_actionButtonAction copy];
@@ -145,8 +145,8 @@ LABEL_5:
       self->_headlineLabel = v6;
 
       [(UILabel *)self->_headlineLabel setNumberOfLines:0];
-      v8 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-      [v8 addSubview:self->_headlineLabel];
+      contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+      [contentView addSubview:self->_headlineLabel];
 
       headline = self->_headline;
       if (headline)
@@ -177,14 +177,14 @@ LABEL_9:
       v14 = self->_subheadlineLabel;
       self->_subheadlineLabel = v13;
 
-      v15 = [objc_opt_class() _subheadlineLabelFont];
-      [(UILabel *)self->_subheadlineLabel setFont:v15];
+      _subheadlineLabelFont = [objc_opt_class() _subheadlineLabelFont];
+      [(UILabel *)self->_subheadlineLabel setFont:_subheadlineLabelFont];
 
-      v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(UILabel *)self->_subheadlineLabel setTextColor:v16];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(UILabel *)self->_subheadlineLabel setTextColor:secondaryLabelColor];
 
-      v17 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-      [v17 addSubview:self->_subheadlineLabel];
+      contentView2 = [(UIVisualEffectView *)self->_visualEffectView contentView];
+      [contentView2 addSubview:self->_subheadlineLabel];
 
       subheadline = self->_subheadline;
       subheadlineLabel = self->_subheadlineLabel;
@@ -217,22 +217,22 @@ LABEL_9:
     v7 = self->_actionButton;
     self->_actionButton = v6;
 
-    v8 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-    [v8 addSubview:self->_actionButton];
+    contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+    [contentView addSubview:self->_actionButton];
   }
 
   else
   {
     [(UIButton *)actionButton removeFromSuperview];
-    v8 = self->_actionButton;
+    contentView = self->_actionButton;
     self->_actionButton = 0;
   }
 
   actionButton = self->_actionButton;
 LABEL_6:
   [(UIButton *)actionButton setEnabled:actionButtonAction != 0];
-  v9 = [(UIButton *)self->_actionButton configuration];
-  v10 = [v9 copy];
+  configuration = [(UIButton *)self->_actionButton configuration];
+  v10 = [configuration copy];
 
   [v10 setTitle:self->_actionButtonTitle];
   [(UIButton *)self->_actionButton sizeToFit];
@@ -241,12 +241,12 @@ LABEL_6:
   [(PXCMMPosterBannerView *)self setNeedsLayout];
 }
 
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames
 {
-  v4 = a4;
+  framesCopy = frames;
   [(PXUpdater *)self->_updater updateIfNeeded];
-  v43 = a3;
-  v7 = a3 + -32.0;
+  widthCopy = width;
+  v7 = width + -32.0;
   v47.origin.x = 16.0;
   v47.origin.y = 0.0;
   v47.size.width = v7;
@@ -262,9 +262,9 @@ LABEL_6:
   v13 = *(MEMORY[0x1E695F058] + 16);
   v12 = *(MEMORY[0x1E695F058] + 24);
   v14 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[PXCMMPosterBannerView semanticContentAttribute](self, "semanticContentAttribute")}];
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
-  v16 = [v15 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v16);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   actionButton = self->_actionButton;
   v41 = v13;
@@ -327,9 +327,9 @@ LABEL_6:
       v30 = MaxX - MinX;
       if (self->_localizedNamesForHeadline)
       {
-        v31 = [(PXCMMPosterBannerView *)self _headlineStringAttributes];
-        v32 = [objc_opt_class() _headlineLabelBoldFont];
-        v33 = [PXCMMSharePromptStringGenerator sharePromptStringWithAttributes:v31 boldFont:v32 lines:2 width:self->_localizedNamesForHeadline names:self->_containsUnverifiedPersons containsUnverifiedPersons:v30];
+        _headlineStringAttributes = [(PXCMMPosterBannerView *)self _headlineStringAttributes];
+        _headlineLabelBoldFont = [objc_opt_class() _headlineLabelBoldFont];
+        v33 = [PXCMMSharePromptStringGenerator sharePromptStringWithAttributes:_headlineStringAttributes boldFont:_headlineLabelBoldFont lines:2 width:self->_localizedNamesForHeadline names:self->_containsUnverifiedPersons containsUnverifiedPersons:v30];
         [(UILabel *)self->_headlineLabel setAttributedText:v33];
 
         headlineLabel = self->_headlineLabel;
@@ -357,7 +357,7 @@ LABEL_6:
   if (!self->_actionButton)
   {
     v35 = v23;
-    if (!v4)
+    if (!framesCopy)
     {
       goto LABEL_27;
     }
@@ -372,18 +372,18 @@ LABEL_6:
 
   v35 = v23;
   v10 = (v34 - v39) * 0.5;
-  if (v4)
+  if (framesCopy)
   {
 LABEL_26:
     v36 = v20;
-    [(UIVisualEffectView *)self->_visualEffectView setFrame:0.0, 0.0, v43, v34, *&v42];
+    [(UIVisualEffectView *)self->_visualEffectView setFrame:0.0, 0.0, widthCopy, v34, *&v42];
     [(UILabel *)self->_headlineLabel setFrame:v42, v45, v41, v12];
     [(UILabel *)self->_subheadlineLabel setFrame:v40, v45, v41, v12];
     [(UIButton *)self->_actionButton setFrame:v35, v10, v36, rect];
   }
 
 LABEL_27:
-  v37 = v43;
+  v37 = widthCopy;
   v38 = 0.0 + 9.0 + 0.0;
   result.height = v38;
   result.width = v37;
@@ -392,17 +392,17 @@ LABEL_27:
 
 - (void)_updateLoadingPeopleSuggestions
 {
-  v3 = [(PXCMMPosterBannerView *)self isLoadingPeopleSuggestions];
-  v4 = [(UIButton *)self->_actionButton configuration];
-  [v4 setShowsActivityIndicator:v3];
+  isLoadingPeopleSuggestions = [(PXCMMPosterBannerView *)self isLoadingPeopleSuggestions];
+  configuration = [(UIButton *)self->_actionButton configuration];
+  [configuration setShowsActivityIndicator:isLoadingPeopleSuggestions];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = PXCMMPosterBannerView;
   [(PXCMMPosterBannerView *)&v5 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateTitles];
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateActionButton];
@@ -418,42 +418,42 @@ LABEL_27:
   [(PXCMMPosterBannerView *)self _performLayoutInWidth:1 updateSubviewFrames:v3];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXCMMPosterBannerView *)self _performLayoutInWidth:0 updateSubviewFrames:a3.width, a3.height];
+  [(PXCMMPosterBannerView *)self _performLayoutInWidth:0 updateSubviewFrames:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setActionButtonWithTitle:(id)a3 actionBlock:(id)a4
+- (void)setActionButtonWithTitle:(id)title actionBlock:(id)block
 {
-  v12 = a3;
-  v6 = a4;
+  titleCopy = title;
+  blockCopy = block;
   actionButtonTitle = self->_actionButtonTitle;
-  if (actionButtonTitle != v12 && ![(NSString *)actionButtonTitle isEqualToString:v12])
+  if (actionButtonTitle != titleCopy && ![(NSString *)actionButtonTitle isEqualToString:titleCopy])
   {
-    v8 = [(NSString *)v12 copy];
+    v8 = [(NSString *)titleCopy copy];
     v9 = self->_actionButtonTitle;
     self->_actionButtonTitle = v8;
   }
 
-  v10 = [v6 copy];
+  v10 = [blockCopy copy];
   actionButtonAction = self->_actionButtonAction;
   self->_actionButtonAction = v10;
 
   [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateActionButton];
 }
 
-- (void)setSubheadline:(id)a3
+- (void)setSubheadline:(id)subheadline
 {
-  v4 = a3;
+  subheadlineCopy = subheadline;
   subheadline = self->_subheadline;
-  if (subheadline != v4)
+  if (subheadline != subheadlineCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)subheadline isEqualToString:v4];
-    v4 = v9;
+    v9 = subheadlineCopy;
+    v6 = [(NSString *)subheadline isEqualToString:subheadlineCopy];
+    subheadlineCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -461,17 +461,17 @@ LABEL_27:
       self->_subheadline = v7;
 
       [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateTitles];
-      v4 = v9;
+      subheadlineCopy = v9;
     }
   }
 }
 
-- (void)setLocalizedNamesForHeadline:(id)a3
+- (void)setLocalizedNamesForHeadline:(id)headline
 {
-  v6 = a3;
-  if (([v6 isEqualToArray:self->_localizedNamesForHeadline] & 1) == 0)
+  headlineCopy = headline;
+  if (([headlineCopy isEqualToArray:self->_localizedNamesForHeadline] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [headlineCopy copy];
     localizedNamesForHeadline = self->_localizedNamesForHeadline;
     self->_localizedNamesForHeadline = v4;
 
@@ -479,49 +479,49 @@ LABEL_27:
   }
 }
 
-- (void)setHeadline:(id)a3 boldRange:(_NSRange)a4
+- (void)setHeadline:(id)headline boldRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  headlineCopy = headline;
   headline = self->_headline;
-  v13 = v7;
-  if (headline != v7 && (v9 = [(NSString *)headline isEqualToString:v7], v7 = v13, !v9) || (self->_headlineBoldRange.location == location ? (v10 = self->_headlineBoldRange.length == length) : (v10 = 0), !v10))
+  v13 = headlineCopy;
+  if (headline != headlineCopy && (v9 = [(NSString *)headline isEqualToString:headlineCopy], headlineCopy = v13, !v9) || (self->_headlineBoldRange.location == location ? (v10 = self->_headlineBoldRange.length == length) : (v10 = 0), !v10))
   {
-    v11 = [(NSString *)v7 copy];
+    v11 = [(NSString *)headlineCopy copy];
     v12 = self->_headline;
     self->_headline = v11;
 
     self->_headlineBoldRange.location = location;
     self->_headlineBoldRange.length = length;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateTitles];
-    v7 = v13;
+    headlineCopy = v13;
   }
 }
 
-- (void)setAddingPhotos:(BOOL)a3
+- (void)setAddingPhotos:(BOOL)photos
 {
-  if (self->_addingPhotos != a3)
+  if (self->_addingPhotos != photos)
   {
-    self->_addingPhotos = a3;
+    self->_addingPhotos = photos;
     [(PXCMMPosterBannerView *)self _updateActionButton];
   }
 }
 
-- (void)setLoadingPeopleSuggestions:(BOOL)a3
+- (void)setLoadingPeopleSuggestions:(BOOL)suggestions
 {
-  if (self->_loadingPeopleSuggestions != a3)
+  if (self->_loadingPeopleSuggestions != suggestions)
   {
-    self->_loadingPeopleSuggestions = a3;
+    self->_loadingPeopleSuggestions = suggestions;
     [(PXCMMPosterBannerView *)self _updateLoadingPeopleSuggestions];
   }
 }
 
-- (PXCMMPosterBannerView)initWithFrame:(CGRect)a3
+- (PXCMMPosterBannerView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = PXCMMPosterBannerView;
-  v3 = [(PXCMMPosterBannerView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXCMMPosterBannerView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -532,8 +532,8 @@ LABEL_27:
     v4->_visualEffectView = v6;
 
     [(PXCMMPosterBannerView *)v4 addSubview:v4->_visualEffectView];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v4 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
 
     v9 = [[off_1E7721940 alloc] initWithTarget:v4];
     updater = v4->_updater;

@@ -2,9 +2,9 @@
 - (BOOL)_needsUpdate;
 - (PUSlideshowThemeDelegate)delegate;
 - (PUSlideshowThemeViewController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_didFinish;
-- (void)_didPickPreset:(id)a3;
+- (void)_didPickPreset:(id)preset;
 - (void)_invalidateBackgroundView;
 - (void)_invalidateSpec;
 - (void)_invalidateTableView;
@@ -13,14 +13,14 @@
 - (void)_updateSpecIfNeeded;
 - (void)_updateTableViewIfNeeded;
 - (void)dealloc;
-- (void)setCurrentPreset:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4;
+- (void)setCurrentPreset:(id)preset;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewControllerSpec:(id)spec didChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PUSlideshowThemeViewController
@@ -32,9 +32,9 @@
   return WeakRetained;
 }
 
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4
+- (void)viewControllerSpec:(id)spec didChange:(id)change
 {
-  if ([a4 traitCollectionChanged])
+  if ([change traitCollectionChanged])
   {
     [(PUSlideshowThemeViewController *)self setEdgesForExtendedLayout:[(PUSlideshowSettingsViewControllerSpec *)self->_spec rectEdgeForExtendedLayout]];
     [(PUSlideshowThemeViewController *)self _invalidateTableView];
@@ -44,32 +44,32 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   presets = self->_presets;
-  v8 = [v6 item];
+  item = [pathCopy item];
 
-  v9 = [(NSArray *)presets objectAtIndexedSubscript:v8];
+  v9 = [(NSArray *)presets objectAtIndexedSubscript:item];
   [(PUSlideshowThemeViewController *)self _didPickPreset:v9];
   [(PUSlideshowThemeViewController *)self _didFinish];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PUSlideshowThemeDisclosureCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PUSlideshowThemeDisclosureCell"];
   presets = self->_presets;
-  v9 = [v6 item];
+  item = [pathCopy item];
 
-  v10 = [(NSArray *)presets objectAtIndexedSubscript:v9];
-  v11 = [v10 localizedName];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  v10 = [(NSArray *)presets objectAtIndexedSubscript:item];
+  localizedName = [v10 localizedName];
+  textLabel = [v7 textLabel];
+  [textLabel setText:localizedName];
 
-  v13 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec cellBackgroundColor];
-  [v7 setBackgroundColor:v13];
+  cellBackgroundColor = [(PUSlideshowSettingsViewControllerSpec *)self->_spec cellBackgroundColor];
+  [v7 setBackgroundColor:cellBackgroundColor];
 
   if ([(OKProducerPreset *)self->_currentPreset isEqual:v10])
   {
@@ -86,16 +86,16 @@
   return v7;
 }
 
-- (void)_didPickPreset:(id)a3
+- (void)_didPickPreset:(id)preset
 {
-  v7 = a3;
+  presetCopy = preset;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 themePicker:self didPickPreset:v7];
+    [v6 themePicker:self didPickPreset:presetCopy];
   }
 }
 
@@ -133,12 +133,12 @@
   {
     [(PUSlideshowThemeViewController *)self _setNeedsUpdateBackgroundView:0];
     tableView = self->_tableView;
-    v4 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewBackgroundColor];
-    [(UITableView *)tableView setBackgroundColor:v4];
+    tableViewBackgroundColor = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewBackgroundColor];
+    [(UITableView *)tableView setBackgroundColor:tableViewBackgroundColor];
 
     v5 = self->_tableView;
-    v6 = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewHeaderView];
-    [(UITableView *)v5 setTableHeaderView:v6];
+    tableViewHeaderView = [(PUSlideshowSettingsViewControllerSpec *)self->_spec tableViewHeaderView];
+    [(UITableView *)v5 setTableHeaderView:tableViewHeaderView];
   }
 }
 
@@ -147,8 +147,8 @@
   if ([(PUSlideshowThemeViewController *)self _needsUpdateSpec])
   {
     [(PUSlideshowThemeViewController *)self _setNeedsUpdateSpec:0];
-    v3 = [(PUSlideshowThemeViewController *)self presentingViewController];
-    v4 = [v3 traitCollection];
+    presentingViewController = [(PUSlideshowThemeViewController *)self presentingViewController];
+    traitCollection = [presentingViewController traitCollection];
 
     spec = self->_spec;
     v7[0] = MEMORY[0x1E69E9820];
@@ -156,8 +156,8 @@
     v7[2] = __53__PUSlideshowThemeViewController__updateSpecIfNeeded__block_invoke;
     v7[3] = &unk_1E7B80C38;
     v7[4] = self;
-    v8 = v4;
-    v6 = v4;
+    v8 = traitCollection;
+    v6 = traitCollection;
     [(PUViewControllerSpec *)spec performChanges:v7];
   }
 }
@@ -171,8 +171,8 @@
     [(PUSlideshowThemeViewController *)self _updateBackgroundViewIfNeeded];
     if ([(PUSlideshowThemeViewController *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUSlideshowThemeViewController.m" lineNumber:168 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUSlideshowThemeViewController.m" lineNumber:168 description:@"updates still needed after an update cycle"];
     }
   }
 }
@@ -208,24 +208,24 @@
   return [(PUSlideshowThemeViewController *)self _needsUpdateBackgroundView];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowThemeViewController;
-  [(PUSlideshowThemeViewController *)&v4 traitCollectionDidChange:a3];
+  [(PUSlideshowThemeViewController *)&v4 traitCollectionDidChange:change];
   [(PUSlideshowThemeViewController *)self _invalidateSpec];
   [(PUSlideshowThemeViewController *)self _updateIfNeeded];
 }
 
-- (void)setCurrentPreset:(id)a3
+- (void)setCurrentPreset:(id)preset
 {
-  v5 = a3;
-  if (self->_currentPreset != v5)
+  presetCopy = preset;
+  if (self->_currentPreset != presetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentPreset, a3);
+    v6 = presetCopy;
+    objc_storeStrong(&self->_currentPreset, preset);
     [(UITableView *)self->_tableView reloadData];
-    v5 = v6;
+    presetCopy = v6;
   }
 }
 
@@ -235,28 +235,28 @@
   v6.super_class = PUSlideshowThemeViewController;
   [(PUSlideshowThemeViewController *)&v6 viewDidLayoutSubviews];
   tableView = self->_tableView;
-  v4 = [(PUSlideshowThemeViewController *)self view];
-  [v4 bounds];
+  view = [(PUSlideshowThemeViewController *)self view];
+  [view bounds];
   [(UITableView *)tableView setFrame:?];
 
-  v5 = [(PUSlideshowThemeViewController *)self navigationController];
+  navigationController = [(PUSlideshowThemeViewController *)self navigationController];
   [(UITableView *)self->_tableView contentSize];
-  [v5 setPreferredContentSize:?];
+  [navigationController setPreferredContentSize:?];
 
   [(PUSlideshowThemeViewController *)self _invalidateSpec];
   [(PUSlideshowThemeViewController *)self _updateIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PUSlideshowThemeViewController;
-  [(PUSlideshowThemeViewController *)&v7 viewWillDisappear:a3];
+  [(PUSlideshowThemeViewController *)&v7 viewWillDisappear:disappear];
   if ([(PUSlideshowSettingsViewControllerSpec *)self->_spec shouldUseBlurredBackground])
   {
-    v4 = [(PUSlideshowThemeViewController *)self navigationController];
-    v5 = [v4 viewControllers];
-    if ([v5 containsObject:self])
+    navigationController = [(PUSlideshowThemeViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    if ([viewControllers containsObject:self])
     {
       shouldHideTableViewWhenViewWillDisappear = self->_shouldHideTableViewWhenViewWillDisappear;
 
@@ -274,11 +274,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowThemeViewController;
-  [(PUSlideshowThemeViewController *)&v4 viewWillAppear:a3];
+  [(PUSlideshowThemeViewController *)&v4 viewWillAppear:appear];
   [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:0];
   self->_shouldHideTableViewWhenViewWillDisappear = 0;
   [(UITableView *)self->_tableView setHidden:0];
@@ -293,9 +293,9 @@
   v11.receiver = self;
   v11.super_class = PUSlideshowThemeViewController;
   [(PUSlideshowThemeViewController *)&v11 viewDidLoad];
-  v3 = [(PUSlideshowThemeViewController *)self navigationItem];
+  navigationItem = [(PUSlideshowThemeViewController *)self navigationItem];
   v4 = PULocalizedString(@"SLIDESHOW_SETTINGS_NAVBAR_THEMES_TITLE");
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
   v5 = objc_alloc(MEMORY[0x1E69DD020]);
   v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -309,8 +309,8 @@
   v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [(UITableView *)v8 setTableFooterView:v9];
 
-  v10 = [(PUSlideshowThemeViewController *)self view];
-  [v10 addSubview:self->_tableView];
+  view = [(PUSlideshowThemeViewController *)self view];
+  [view addSubview:self->_tableView];
 }
 
 - (void)dealloc
@@ -349,7 +349,7 @@
 
   v4 = v3;
   _Block_object_dispose(&v23, 8);
-  v5 = [v3 defaultManager];
+  defaultManager = [v3 defaultManager];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -373,7 +373,7 @@
   if (v6)
   {
     v9 = *v6;
-    v10 = [v5 presetsForFamily:v9];
+    v10 = [defaultManager presetsForFamily:v9];
     presets = v2->_presets;
     v2->_presets = v10;
 
@@ -385,9 +385,9 @@
     return v2;
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkOKProducerPresetsFamilyPhotosPhone(void)"];
-  [v15 handleFailureInFunction:v16 file:@"PUSlideshowThemeViewController.m" lineNumber:23 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v16 file:@"PUSlideshowThemeViewController.m" lineNumber:23 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;

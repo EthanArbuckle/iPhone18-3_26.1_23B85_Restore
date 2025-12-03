@@ -1,15 +1,15 @@
 @interface ToggleButton
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present;
 - (CGPoint)accessibilityActivationPoint;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
 - (NSString)largeContentTitle;
 - (UIImage)largeContentImage;
-- (_TtC16MagnifierSupport12ToggleButton)initWithFrame:(CGRect)a3;
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4;
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4;
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4;
+- (_TtC16MagnifierSupport12ToggleButton)initWithFrame:(CGRect)frame;
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller;
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location;
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
 @end
@@ -18,17 +18,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_257CA3DC8();
 }
 
 - (void)removeFromSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_257CA49C8();
 }
 
-- (_TtC16MagnifierSupport12ToggleButton)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport12ToggleButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -45,7 +45,7 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_257CA4ED8();
   v5 = v4;
 
@@ -58,7 +58,7 @@
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_257CA4FE8();
   v4 = v3;
 
@@ -77,22 +77,22 @@
 
 - (NSString)largeContentTitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_257CA0E28();
-  v4 = [v3 text];
+  text = [v3 text];
 
-  if (v4)
+  if (text)
   {
     sub_257ECF500();
 
-    v4 = sub_257ECF4C0();
+    text = sub_257ECF4C0();
   }
 
   else
   {
   }
 
-  return v4;
+  return text;
 }
 
 - (UIImage)largeContentImage
@@ -102,48 +102,48 @@
   return v2;
 }
 
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_257CA6044(v6);
+  interactionCopy = interaction;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9 = sub_257CA6044(interactionCopy);
 
   return v9;
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  sub_257CA5454(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  sub_257CA5454(beginCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present
 {
-  v4 = a3;
-  v5 = self;
-  sub_257CA5740(v4);
+  presentCopy = present;
+  selfCopy = self;
+  sub_257CA5740(presentCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
-  v6 = a3;
-  v7 = self;
-  sub_257CA62DC(a4);
+  endedCopy = ended;
+  selfCopy = self;
+  sub_257CA62DC(cancelled);
 }
 
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_257CA5AC8(v5);
+  interactionCopy = interaction;
+  selfCopy = self;
+  v7 = sub_257CA5AC8(interactionCopy);
 
   return v7;
 }

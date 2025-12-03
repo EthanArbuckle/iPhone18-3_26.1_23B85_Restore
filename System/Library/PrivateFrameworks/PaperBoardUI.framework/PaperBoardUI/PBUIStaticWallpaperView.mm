@@ -2,56 +2,56 @@
 + (BOOL)isRunningInPreferencesApp;
 - (BOOL)hasContentOutsideVisibleBounds;
 - (BOOL)imageRequiresLuminanceTreatment;
-- (BOOL)isDisplayingWallpaperWithConfiguration:(id)a3 forVariant:(int64_t)a4;
+- (BOOL)isDisplayingWallpaperWithConfiguration:(id)configuration forVariant:(int64_t)variant;
 - (BOOL)workaround_alwaysForceNoTreatment;
 - (CGSize)_imageSize;
-- (PBUIStaticWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8;
+- (PBUIStaticWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options;
 - (PLKColorBoxes)colorBoxes;
-- (double)_contrastInContentViewRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5;
+- (double)_contrastInContentViewRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes;
 - (double)contrast;
-- (double)contrastInRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5;
-- (id)_averageColorInContentViewRect:(CGRect)a3 smudgeRadius:(double)a4;
+- (double)contrastInRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes;
+- (id)_averageColorInContentViewRect:(CGRect)rect smudgeRadius:(double)radius;
 - (id)_computeAverageColor;
 - (id)_createColorBoxes;
 - (id)cacheUniqueIdentifier;
-- (void)_displayImage:(id)a3;
-- (void)_generateImageForImage:(id)a3 cacheKey:(id)a4 options:(unint64_t)a5 downsampleFactor:(double)a6 needsDimmingTreatment:(BOOL)a7 needsInactiveAppearanceTreatment:(BOOL)a8 averageColorProvider:(id)a9 generationHandler:(id)a10;
-- (void)_setupContentViewWithOptions:(unint64_t)a3;
-- (void)_setupWallpaperImageFromConfiguration:(id)a3 options:(unint64_t)a4;
-- (void)_updateColorBoxesWithKey:(id)a3 image:(id)a4;
+- (void)_displayImage:(id)image;
+- (void)_generateImageForImage:(id)image cacheKey:(id)key options:(unint64_t)options downsampleFactor:(double)factor needsDimmingTreatment:(BOOL)treatment needsInactiveAppearanceTreatment:(BOOL)appearanceTreatment averageColorProvider:(id)provider generationHandler:(id)self0;
+- (void)_setupContentViewWithOptions:(unint64_t)options;
+- (void)_setupWallpaperImageFromConfiguration:(id)configuration options:(unint64_t)options;
+- (void)_updateColorBoxesWithKey:(id)key image:(id)image;
 - (void)preheatImageData;
-- (void)setColorBoxes:(id)a3;
-- (void)setContentsRect:(CGRect)a3;
+- (void)setColorBoxes:(id)boxes;
+- (void)setContentsRect:(CGRect)rect;
 @end
 
 @implementation PBUIStaticWallpaperView
 
-- (void)_setupWallpaperImageFromConfiguration:(id)a3 options:(unint64_t)a4
+- (void)_setupWallpaperImageFromConfiguration:(id)configuration options:(unint64_t)options
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v44 = [v5 wallpaperOptions];
-  v49 = [v5 wallpaperImageHashData];
-  v48 = [v49 base64EncodedStringWithOptions:0];
-  [(PBUIStaticWallpaperView *)self setDisplayedImageHashData:v49];
+  configurationCopy = configuration;
+  wallpaperOptions = [configurationCopy wallpaperOptions];
+  wallpaperImageHashData = [configurationCopy wallpaperImageHashData];
+  v48 = [wallpaperImageHashData base64EncodedStringWithOptions:0];
+  [(PBUIStaticWallpaperView *)self setDisplayedImageHashData:wallpaperImageHashData];
   [(PBUIStaticWallpaperView *)self setDisplayedImageHashString:v48];
-  v6 = [v5 wallpaperImage];
-  v7 = v6;
-  if (v6)
+  wallpaperImage = [configurationCopy wallpaperImage];
+  v7 = wallpaperImage;
+  if (wallpaperImage)
   {
-    [v6 size];
+    [wallpaperImage size];
     v9 = v8;
     v11 = v10;
   }
 
   else
   {
-    [v44 cropRect];
+    [wallpaperOptions cropRect];
     v9 = v12;
     v11 = v13;
   }
 
-  v14 = [objc_opt_class() _canDownscaleSampleImage];
+  _canDownscaleSampleImage = [objc_opt_class() _canDownscaleSampleImage];
   v15 = fmax(v9, v11);
   v16 = v15 >= 16.0;
   v17 = v15 < 16.0;
@@ -65,7 +65,7 @@
     v18 = 16.0;
   }
 
-  if (v14)
+  if (_canDownscaleSampleImage)
   {
     v19 = v17;
   }
@@ -76,7 +76,7 @@
   }
 
   v43 = v19;
-  if (v14)
+  if (_canDownscaleSampleImage)
   {
     v20 = v16;
   }
@@ -86,7 +86,7 @@
     v20 = 0;
   }
 
-  if (v14)
+  if (_canDownscaleSampleImage)
   {
     v21 = v18;
   }
@@ -110,15 +110,15 @@
   }
 
   [(PBUIStaticWallpaperView *)self _setDisplayedImageURL:0];
-  v47 = [(PBUIWallpaperView *)self cacheGroup];
-  if ([v47 length])
+  cacheGroup = [(PBUIWallpaperView *)self cacheGroup];
+  if ([cacheGroup length])
   {
-    v24 = [objc_opt_class() _canCacheImages];
-    v46 = [(PBUIStaticWallpaperView *)self traitCollection];
-    if (v24)
+    _canCacheImages = [objc_opt_class() _canCacheImages];
+    traitCollection = [(PBUIStaticWallpaperView *)self traitCollection];
+    if (_canCacheImages)
     {
       PBUIWallpaperBackdropParametersMakeIdentity(buf);
-      v25 = [(PBUIWallpaperView *)self _cacheKeyForParameters:buf includingTint:0 downsampleFactor:v46 traitCollection:v21];
+      v25 = [(PBUIWallpaperView *)self _cacheKeyForParameters:buf includingTint:0 downsampleFactor:traitCollection traitCollection:v21];
       v26 = 1;
       goto LABEL_23;
     }
@@ -126,7 +126,7 @@
 
   else
   {
-    v46 = [(PBUIStaticWallpaperView *)self traitCollection];
+    traitCollection = [(PBUIStaticWallpaperView *)self traitCollection];
   }
 
   v25 = 0;
@@ -145,8 +145,8 @@ LABEL_23:
   v56[4] = self;
   v56[5] = v57;
   v27 = MEMORY[0x223D62EE0](v56);
-  v28 = [v5 needsWallpaperDimmingTreatment];
-  v29 = [v5 needsInactiveAppearanceTreatment];
+  needsWallpaperDimmingTreatment = [configurationCopy needsWallpaperDimmingTreatment];
+  needsInactiveAppearanceTreatment = [configurationCopy needsInactiveAppearanceTreatment];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __73__PBUIStaticWallpaperView__setupWallpaperImageFromConfiguration_options___block_invoke_2;
@@ -156,13 +156,13 @@ LABEL_23:
   v52[4] = self;
   v30 = v25;
   v53 = v30;
-  [(PBUIStaticWallpaperView *)self _generateImageForImage:v7 cacheKey:v30 options:a4 downsampleFactor:v28 needsDimmingTreatment:v29 needsInactiveAppearanceTreatment:v27 averageColorProvider:v21 generationHandler:v52];
+  [(PBUIStaticWallpaperView *)self _generateImageForImage:v7 cacheKey:v30 options:options downsampleFactor:needsWallpaperDimmingTreatment needsDimmingTreatment:needsInactiveAppearanceTreatment needsInactiveAppearanceTreatment:v27 averageColorProvider:v21 generationHandler:v52];
   if (v20)
   {
     if (v26)
     {
       PBUIWallpaperBackdropParametersMakeIdentity(buf);
-      v31 = [(PBUIWallpaperView *)self _cacheKeyForParameters:buf includingTint:0 downsampleFactor:v46 traitCollection:1.0];
+      v31 = [(PBUIWallpaperView *)self _cacheKeyForParameters:buf includingTint:0 downsampleFactor:traitCollection traitCollection:1.0];
     }
 
     else
@@ -177,18 +177,18 @@ LABEL_23:
     v50[4] = self;
     v32 = v31;
     v51 = v32;
-    [(PBUIStaticWallpaperView *)self _generateImageForImage:v7 cacheKey:v32 options:a4 downsampleFactor:v28 needsDimmingTreatment:v29 needsInactiveAppearanceTreatment:v27 averageColorProvider:1.0 generationHandler:v50];
+    [(PBUIStaticWallpaperView *)self _generateImageForImage:v7 cacheKey:v32 options:options downsampleFactor:needsWallpaperDimmingTreatment needsDimmingTreatment:needsInactiveAppearanceTreatment needsInactiveAppearanceTreatment:v27 averageColorProvider:1.0 generationHandler:v50];
   }
 
-  v33 = [(PBUIStaticWallpaperView *)self _computeAverageColor];
-  [(PBUIWallpaperView *)self resetLegibilitySettingsForAverageColor:v33];
+  _computeAverageColor = [(PBUIStaticWallpaperView *)self _computeAverageColor];
+  [(PBUIWallpaperView *)self resetLegibilitySettingsForAverageColor:_computeAverageColor];
 
   v34 = objc_alloc(getPUIColorStatisticsClass());
-  v35 = [(PBUIStaticWallpaperView *)self colorBoxes];
-  v36 = [v34 initWithColorBoxes:v35];
+  colorBoxes = [(PBUIStaticWallpaperView *)self colorBoxes];
+  v36 = [v34 initWithColorBoxes:colorBoxes];
 
-  v37 = [v36 averageColor];
-  if (!v37 || ([v36 averageColor], v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277D75348], "blackColor"), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v38, "_isSimilarToColor:withinPercentage:", v39, 0.00000011920929), v39, v38, v37, v40))
+  averageColor = [v36 averageColor];
+  if (!averageColor || ([v36 averageColor], v38 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277D75348], "blackColor"), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v38, "_isSimilarToColor:withinPercentage:", v39, 0.00000011920929), v39, v38, averageColor, v40))
   {
     v41 = PBUILogCommon();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -257,33 +257,6 @@ void __73__PBUIStaticWallpaperView__setupWallpaperImageFromConfiguration_options
   }
 }
 
-{
-  v13 = *MEMORY[0x277D85DE8];
-  v3 = a2;
-  v4 = PBUILogCommon();
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
-  {
-    v5 = PBUIStringForWallpaperVariant([*(a1 + 32) variant]);
-    v9 = 138543618;
-    v10 = v3;
-    v11 = 2114;
-    v12 = v5;
-    _os_log_impl(&dword_21E67D000, v4, OS_LOG_TYPE_DEFAULT, "[LegacyPoster displayedImage] generated display image %{public}@ for variant %{public}@", &v9, 0x16u);
-  }
-
-  if (v3)
-  {
-    [*(a1 + 32) _setDisplayedImage:v3];
-    v6 = *(a1 + 32);
-    v7 = +[PBUIWallpaperCache wallpaperCache];
-    v8 = [v7 imageURLForKey:*(a1 + 40)];
-    [v6 _setDisplayedImageURL:v8];
-
-    [*(a1 + 32) _displayImage:v3];
-    [*(a1 + 32) _updateColorBoxesWithKey:*(a1 + 40) image:v3];
-  }
-}
-
 + (BOOL)isRunningInPreferencesApp
 {
   if (isRunningInPreferencesApp_onceToken != -1)
@@ -308,38 +281,38 @@ void __52__PBUIStaticWallpaperView_isRunningInPreferencesApp__block_invoke()
     return 0;
   }
 
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
 
-- (void)_generateImageForImage:(id)a3 cacheKey:(id)a4 options:(unint64_t)a5 downsampleFactor:(double)a6 needsDimmingTreatment:(BOOL)a7 needsInactiveAppearanceTreatment:(BOOL)a8 averageColorProvider:(id)a9 generationHandler:(id)a10
+- (void)_generateImageForImage:(id)image cacheKey:(id)key options:(unint64_t)options downsampleFactor:(double)factor needsDimmingTreatment:(BOOL)treatment needsInactiveAppearanceTreatment:(BOOL)appearanceTreatment averageColorProvider:(id)provider generationHandler:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a9;
-  v20 = a10;
+  imageCopy = image;
+  keyCopy = key;
+  providerCopy = provider;
+  handlerCopy = handler;
   objc_initWeak(location, self);
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __178__PBUIStaticWallpaperView__generateImageForImage_cacheKey_options_downsampleFactor_needsDimmingTreatment_needsInactiveAppearanceTreatment_averageColorProvider_generationHandler___block_invoke;
   v38[3] = &unk_278362030;
   objc_copyWeak(v41, location);
-  v41[1] = a5;
+  v41[1] = options;
   v38[4] = self;
-  v21 = v17;
+  v21 = imageCopy;
   v39 = v21;
-  v42 = a8;
-  v41[2] = *&a6;
-  v43 = a7;
-  v22 = v19;
+  appearanceTreatmentCopy = appearanceTreatment;
+  v41[2] = *&factor;
+  treatmentCopy = treatment;
+  v22 = providerCopy;
   v40 = v22;
   v23 = MEMORY[0x223D62EE0](v38);
   v24 = v23;
-  if (v18)
+  if (keyCopy)
   {
-    v25 = a5 & 2;
+    v25 = options & 2;
     v26 = v25 >> 1;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
@@ -354,9 +327,9 @@ void __52__PBUIStaticWallpaperView_isRunningInPreferencesApp__block_invoke()
     v32[2] = __178__PBUIStaticWallpaperView__generateImageForImage_cacheKey_options_downsampleFactor_needsDimmingTreatment_needsInactiveAppearanceTreatment_averageColorProvider_generationHandler___block_invoke_3;
     v32[3] = &unk_2783620A8;
     v34 = v26;
-    v29 = v20;
+    v29 = handlerCopy;
     v33 = v29;
-    v30 = [v28 imageForKey:v18 generatingIfNecessaryWithBlock:v27 completion:v32];
+    v30 = [v28 imageForKey:keyCopy generatingIfNecessaryWithBlock:v27 completion:v32];
 
     (*(v29 + 2))(v29, v30, v25 != 0);
     v31 = v36;
@@ -365,7 +338,7 @@ void __52__PBUIStaticWallpaperView_isRunningInPreferencesApp__block_invoke()
   else
   {
     v31 = v23[2](v23);
-    (*(v20 + 2))(v20, v31, 1);
+    (*(handlerCopy + 2))(handlerCopy, v31, 1);
   }
 
   objc_destroyWeak(v41);
@@ -482,29 +455,29 @@ void __178__PBUIStaticWallpaperView__generateImageForImage_cacheKey_options_down
 
 - (id)cacheUniqueIdentifier
 {
-  v2 = [(PBUIStaticWallpaperView *)self displayedImageHashString];
-  v3 = [v2 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+  displayedImageHashString = [(PBUIStaticWallpaperView *)self displayedImageHashString];
+  v3 = [displayedImageHashString stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
 
   return v3;
 }
 
-- (PBUIStaticWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8
+- (PBUIStaticWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = PBUIStaticWallpaperView;
-  v18 = [(PBUIWallpaperView *)&v21 initWithFrame:v17 configuration:a5 variant:a6 cacheGroup:a7 delegate:a8 options:x, y, width, height];
-  v19 = v18;
-  if (v18)
+  height = [(PBUIWallpaperView *)&v21 initWithFrame:configurationCopy configuration:variant variant:group cacheGroup:delegate delegate:options options:x, y, width, height];
+  v19 = height;
+  if (height)
   {
-    *&v18->_overallContrast = PBUIWallpaperViewUnknownContrast;
-    v18->_needsInactiveAppearanceTreatment = [v17 needsInactiveAppearanceTreatment];
-    [(PBUIStaticWallpaperView *)v19 _setupWallpaperImageFromConfiguration:v17 options:a8];
-    [(PBUIStaticWallpaperView *)v19 _setupContentViewWithOptions:a8];
+    *&height->_overallContrast = PBUIWallpaperViewUnknownContrast;
+    height->_needsInactiveAppearanceTreatment = [configurationCopy needsInactiveAppearanceTreatment];
+    [(PBUIStaticWallpaperView *)v19 _setupWallpaperImageFromConfiguration:configurationCopy options:options];
+    [(PBUIStaticWallpaperView *)v19 _setupContentViewWithOptions:options];
   }
 
   return v19;
@@ -512,23 +485,23 @@ void __178__PBUIStaticWallpaperView__generateImageForImage_cacheKey_options_down
 
 - (void)preheatImageData
 {
-  v3 = [(PBUIStaticWallpaperView *)self traitCollection];
-  v4 = [(PBUIWallpaperView *)self _cacheKeyForParameters:v6 includingTint:0 downsampleFactor:v3 traitCollection:1.0];
+  traitCollection = [(PBUIStaticWallpaperView *)self traitCollection];
+  v4 = [(PBUIWallpaperView *)self _cacheKeyForParameters:v6 includingTint:0 downsampleFactor:traitCollection traitCollection:1.0];
 
   v5 = +[PBUIWallpaperCache wallpaperCache];
   [v5 warmupForKey:v4];
 }
 
-- (BOOL)isDisplayingWallpaperWithConfiguration:(id)a3 forVariant:(int64_t)a4
+- (BOOL)isDisplayingWallpaperWithConfiguration:(id)configuration forVariant:(int64_t)variant
 {
-  v5 = a3;
-  v6 = [v5 wallpaperImageHashData];
-  v7 = [(PBUIStaticWallpaperView *)self displayedImageHashData];
-  v8 = [(PBUIWallpaperView *)self wallpaperMode];
-  v9 = [v5 wallpaperOptions];
-  v10 = [v9 wallpaperMode];
+  configurationCopy = configuration;
+  wallpaperImageHashData = [configurationCopy wallpaperImageHashData];
+  displayedImageHashData = [(PBUIStaticWallpaperView *)self displayedImageHashData];
+  wallpaperMode = [(PBUIWallpaperView *)self wallpaperMode];
+  wallpaperOptions = [configurationCopy wallpaperOptions];
+  wallpaperMode2 = [wallpaperOptions wallpaperMode];
 
-  if (v8 == v10 && (v11 = -[PBUIWallpaperView needsWallpaperDimmingTreatment](self, "needsWallpaperDimmingTreatment"), v11 == [v5 needsWallpaperDimmingTreatment]) && (v12 = -[PBUIStaticWallpaperView needsInactiveAppearanceTreatment](self, "needsInactiveAppearanceTreatment"), v12 == objc_msgSend(v5, "needsInactiveAppearanceTreatment")) && v6 | v7)
+  if (wallpaperMode == wallpaperMode2 && (v11 = -[PBUIWallpaperView needsWallpaperDimmingTreatment](self, "needsWallpaperDimmingTreatment"), v11 == [configurationCopy needsWallpaperDimmingTreatment]) && (v12 = -[PBUIStaticWallpaperView needsInactiveAppearanceTreatment](self, "needsInactiveAppearanceTreatment"), v12 == objc_msgSend(configurationCopy, "needsInactiveAppearanceTreatment")) && wallpaperImageHashData | displayedImageHashData)
   {
     v13 = BSEqualObjects();
   }
@@ -552,8 +525,8 @@ void __178__PBUIStaticWallpaperView__generateImageForImage_cacheKey_options_down
 
 - (BOOL)hasContentOutsideVisibleBounds
 {
-  v3 = [(PBUIStaticWallpaperView *)self _displayedImage];
-  [v3 size];
+  _displayedImage = [(PBUIStaticWallpaperView *)self _displayedImage];
+  [_displayedImage size];
   v5 = v4;
   v7 = v6;
 
@@ -574,12 +547,12 @@ void __178__PBUIStaticWallpaperView__generateImageForImage_cacheKey_options_down
   return round(v7) > round(CGRectGetHeight(v14));
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([MEMORY[0x277D75D18] _isInAnimationBlock])
   {
     v11[0] = MEMORY[0x277D85DD0];
@@ -601,9 +574,9 @@ void __178__PBUIStaticWallpaperView__generateImageForImage_cacheKey_options_down
 
   else
   {
-    v9 = [(PBUIWallpaperView *)self contentView];
-    v8 = [v9 layer];
-    [v8 setContentsRect:{x, y, width, height}];
+    contentView = [(PBUIWallpaperView *)self contentView];
+    layer = [contentView layer];
+    [layer setContentsRect:{x, y, width, height}];
   }
 }
 
@@ -617,88 +590,88 @@ void __43__PBUIStaticWallpaperView_setContentsRect___block_invoke(uint64_t a1)
 
 - (BOOL)imageRequiresLuminanceTreatment
 {
-  v2 = [(PBUIWallpaperView *)self legibilitySettings];
-  v3 = [v2 style];
+  legibilitySettings = [(PBUIWallpaperView *)self legibilitySettings];
+  style = [legibilitySettings style];
 
-  return v3 != 2;
+  return style != 2;
 }
 
 - (double)contrast
 {
-  v2 = [(PBUIStaticWallpaperView *)self colorBoxes];
-  [v2 contrast];
+  colorBoxes = [(PBUIStaticWallpaperView *)self colorBoxes];
+  [colorBoxes contrast];
   v4 = v3;
 
   return v4;
 }
 
-- (double)contrastInRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5
+- (double)contrastInRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(PBUIWallpaperView *)self contentView];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  contentView = [(PBUIWallpaperView *)self contentView];
 
-  if (v12)
+  if (contentView)
   {
     v14.receiver = self;
     v14.super_class = PBUIStaticWallpaperView;
-    [(PBUIWallpaperView *)&v14 contrastInRect:a4 contrastWithinBoxes:a5 contrastBetweenBoxes:x, y, width, height];
+    [(PBUIWallpaperView *)&v14 contrastInRect:boxes contrastWithinBoxes:betweenBoxes contrastBetweenBoxes:x, y, width, height];
   }
 
   else
   {
 
-    [(PBUIStaticWallpaperView *)self _contrastInContentViewRect:a4 contrastWithinBoxes:a5 contrastBetweenBoxes:x, y, width, height];
+    [(PBUIStaticWallpaperView *)self _contrastInContentViewRect:boxes contrastWithinBoxes:betweenBoxes contrastBetweenBoxes:x, y, width, height];
   }
 
   return result;
 }
 
-- (double)_contrastInContentViewRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5
+- (double)_contrastInContentViewRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [(PBUIStaticWallpaperView *)self colorBoxes];
-  v12 = soft_PLKCalculateContrastFromColorBoxes(v11, a4, a5, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorBoxes = [(PBUIStaticWallpaperView *)self colorBoxes];
+  v12 = soft_PLKCalculateContrastFromColorBoxes(colorBoxes, boxes, betweenBoxes, x, y, width, height);
 
   return v12;
 }
 
-- (id)_averageColorInContentViewRect:(CGRect)a3 smudgeRadius:(double)a4
+- (id)_averageColorInContentViewRect:(CGRect)rect smudgeRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(PBUIStaticWallpaperView *)self colorBoxes];
-  v10 = soft_PLKAverageColorFromColorBoxes(v9, x, y, width, height, a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorBoxes = [(PBUIStaticWallpaperView *)self colorBoxes];
+  v10 = soft_PLKAverageColorFromColorBoxes(colorBoxes, x, y, width, height, radius);
 
   return v10;
 }
 
-- (void)_setupContentViewWithOptions:(unint64_t)a3
+- (void)_setupContentViewWithOptions:(unint64_t)options
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = [PBUIStaticWallpaperImageView alloc];
-  v5 = [(PBUIStaticWallpaperView *)self _displayedImage];
-  v6 = [(PBUIStaticWallpaperImageView *)v4 initWithImage:v5];
+  _displayedImage = [(PBUIStaticWallpaperView *)self _displayedImage];
+  v6 = [(PBUIStaticWallpaperImageView *)v4 initWithImage:_displayedImage];
 
   [(PBUIStaticWallpaperImageView *)v6 setOpaque:1];
-  v7 = [(PBUIStaticWallpaperImageView *)v6 layer];
-  [v7 setContentsOpaque:1];
+  layer = [(PBUIStaticWallpaperImageView *)v6 layer];
+  [layer setContentsOpaque:1];
 
   v8 = PBUILogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(PBUIStaticWallpaperView *)self _displayedImage];
+    _displayedImage2 = [(PBUIStaticWallpaperView *)self _displayedImage];
     v10 = 138543618;
     v11 = v6;
     v12 = 2114;
-    v13 = v9;
+    v13 = _displayedImage2;
     _os_log_impl(&dword_21E67D000, v8, OS_LOG_TYPE_INFO, "set up content view %{public}@ with image %{public}@", &v10, 0x16u);
   }
 
@@ -706,25 +679,25 @@ void __43__PBUIStaticWallpaperView_setContentsRect___block_invoke(uint64_t a1)
   [(PBUIWallpaperView *)self setContentView:v6];
 }
 
-- (void)_displayImage:(id)a3
+- (void)_displayImage:(id)image
 {
-  v9 = a3;
-  v4 = [(PBUIWallpaperView *)self contentView];
+  imageCopy = image;
+  contentView = [(PBUIWallpaperView *)self contentView];
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [v4 setImage:v9];
-    [v9 size];
-    [v4 setBounds:{0.0, 0.0, v7, v8}];
+    [contentView setImage:imageCopy];
+    [imageCopy size];
+    [contentView setBounds:{0.0, 0.0, v7, v8}];
   }
 }
 
 - (CGSize)_imageSize
 {
-  v2 = [(PBUIStaticWallpaperView *)self wallpaperImage];
-  [v2 size];
+  wallpaperImage = [(PBUIStaticWallpaperView *)self wallpaperImage];
+  [wallpaperImage size];
   v4 = v3;
   v6 = v5;
 
@@ -740,41 +713,41 @@ void __43__PBUIStaticWallpaperView_setContentsRect___block_invoke(uint64_t a1)
   v3 = 0;
   if ((soft_PUIFeatureEnabled(0) & 1) == 0)
   {
-    v4 = [(PBUIStaticWallpaperView *)self _wallpaperImageForAnalysis];
-    v3 = [getPLKColorBoxesClass() colorBoxesForImage:v4];
+    _wallpaperImageForAnalysis = [(PBUIStaticWallpaperView *)self _wallpaperImageForAnalysis];
+    v3 = [getPLKColorBoxesClass() colorBoxesForImage:_wallpaperImageForAnalysis];
   }
 
   return v3;
 }
 
-- (void)_updateColorBoxesWithKey:(id)a3 image:(id)a4
+- (void)_updateColorBoxesWithKey:(id)key image:(id)image
 {
-  v9 = a3;
-  if (v9)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v6 = [a4 pbui_CGImageBackedImage];
+    pbui_CGImageBackedImage = [image pbui_CGImageBackedImage];
     v7 = +[PBUIWallpaperCache wallpaperCache];
-    v8 = [v7 colorBoxesForKey:v9 generatingIfNeceesaryFromImage:v6];
+    v8 = [v7 colorBoxesForKey:keyCopy generatingIfNeceesaryFromImage:pbui_CGImageBackedImage];
 
     [(PBUIStaticWallpaperView *)self setColorBoxes:v8];
   }
 
   else
   {
-    v6 = [(PBUIStaticWallpaperView *)self _createColorBoxes];
-    [(PBUIStaticWallpaperView *)self setColorBoxes:v6];
+    pbui_CGImageBackedImage = [(PBUIStaticWallpaperView *)self _createColorBoxes];
+    [(PBUIStaticWallpaperView *)self setColorBoxes:pbui_CGImageBackedImage];
   }
 }
 
-- (void)setColorBoxes:(id)a3
+- (void)setColorBoxes:(id)boxes
 {
-  v5 = a3;
-  if (self->_colorBoxes != v5)
+  boxesCopy = boxes;
+  if (self->_colorBoxes != boxesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_colorBoxes, a3);
+    v7 = boxesCopy;
+    objc_storeStrong(&self->_colorBoxes, boxes);
     [(PLKColorBoxes *)v7 contrast];
-    v5 = v7;
+    boxesCopy = v7;
     self->_overallContrast = v6;
   }
 }
@@ -784,8 +757,8 @@ void __43__PBUIStaticWallpaperView_setContentsRect___block_invoke(uint64_t a1)
   colorBoxes = self->_colorBoxes;
   if (!colorBoxes)
   {
-    v4 = [(PBUIStaticWallpaperView *)self _createColorBoxes];
-    [(PBUIStaticWallpaperView *)self setColorBoxes:v4];
+    _createColorBoxes = [(PBUIStaticWallpaperView *)self _createColorBoxes];
+    [(PBUIStaticWallpaperView *)self setColorBoxes:_createColorBoxes];
 
     colorBoxes = self->_colorBoxes;
   }

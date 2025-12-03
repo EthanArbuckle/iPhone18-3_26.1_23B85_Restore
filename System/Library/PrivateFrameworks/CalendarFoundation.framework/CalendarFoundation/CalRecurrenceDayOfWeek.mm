@@ -1,34 +1,34 @@
 @interface CalRecurrenceDayOfWeek
-+ (id)dayOfWeek:(int64_t)a3;
-+ (id)dayOfWeek:(int64_t)a3 weekNumber:(int64_t)a4;
-+ (id)iCalendarValueFromDayOfTheWeek:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (CalRecurrenceDayOfWeek)initWithCoder:(id)a3;
-- (CalRecurrenceDayOfWeek)initWithDayOfTheWeek:(int64_t)a3 weekNumber:(int64_t)a4;
++ (id)dayOfWeek:(int64_t)week;
++ (id)dayOfWeek:(int64_t)week weekNumber:(int64_t)number;
++ (id)iCalendarValueFromDayOfTheWeek:(unint64_t)week;
+- (BOOL)isEqual:(id)equal;
+- (CalRecurrenceDayOfWeek)initWithCoder:(id)coder;
+- (CalRecurrenceDayOfWeek)initWithDayOfTheWeek:(int64_t)week weekNumber:(int64_t)number;
 - (id)description;
 - (id)iCalendarDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CalRecurrenceDayOfWeek
 
-+ (id)dayOfWeek:(int64_t)a3
++ (id)dayOfWeek:(int64_t)week
 {
-  v3 = [[a1 alloc] initWithDayOfTheWeek:a3 weekNumber:0];
+  v3 = [[self alloc] initWithDayOfTheWeek:week weekNumber:0];
 
   return v3;
 }
 
-+ (id)dayOfWeek:(int64_t)a3 weekNumber:(int64_t)a4
++ (id)dayOfWeek:(int64_t)week weekNumber:(int64_t)number
 {
-  v4 = [[a1 alloc] initWithDayOfTheWeek:a3 weekNumber:a4];
+  v4 = [[self alloc] initWithDayOfTheWeek:week weekNumber:number];
 
   return v4;
 }
 
-- (CalRecurrenceDayOfWeek)initWithDayOfTheWeek:(int64_t)a3 weekNumber:(int64_t)a4
+- (CalRecurrenceDayOfWeek)initWithDayOfTheWeek:(int64_t)week weekNumber:(int64_t)number
 {
-  if ((a3 - 8) <= 0xFFFFFFFFFFFFFFF8)
+  if ((week - 8) <= 0xFFFFFFFFFFFFFFF8)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Invalid day number"];
   }
@@ -38,46 +38,46 @@
   result = [(CalRecurrenceDayOfWeek *)&v8 init];
   if (result)
   {
-    result->_dayOfTheWeek = a3;
-    result->_weekNumber = a4;
+    result->_dayOfTheWeek = week;
+    result->_weekNumber = number;
   }
 
   return result;
 }
 
-- (CalRecurrenceDayOfWeek)initWithCoder:(id)a3
+- (CalRecurrenceDayOfWeek)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CalRecurrenceDayOfWeek;
   v5 = [(CalRecurrenceDayOfWeek *)&v7 init];
   if (v5)
   {
-    v5->_dayOfTheWeek = [v4 decodeIntegerForKey:@"dayOfTheWeek"];
-    v5->_weekNumber = [v4 decodeIntegerForKey:@"weekNumber"];
+    v5->_dayOfTheWeek = [coderCopy decodeIntegerForKey:@"dayOfTheWeek"];
+    v5->_weekNumber = [coderCopy decodeIntegerForKey:@"weekNumber"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dayOfTheWeek = self->_dayOfTheWeek;
-  v5 = a3;
-  [v5 encodeInteger:dayOfTheWeek forKey:@"dayOfTheWeek"];
-  [v5 encodeInteger:self->_weekNumber forKey:@"weekNumber"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:dayOfTheWeek forKey:@"dayOfTheWeek"];
+  [coderCopy encodeInteger:self->_weekNumber forKey:@"weekNumber"];
 }
 
-+ (id)iCalendarValueFromDayOfTheWeek:(unint64_t)a3
++ (id)iCalendarValueFromDayOfTheWeek:(unint64_t)week
 {
-  if (a3 - 1 > 6)
+  if (week - 1 > 6)
   {
     return &stru_1F379FFA8;
   }
 
   else
   {
-    return off_1E7EC7270[a3 - 1];
+    return off_1E7EC7270[week - 1];
   }
 }
 
@@ -103,16 +103,16 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CalRecurrenceDayOfWeek *)self iCalendarDescription];
-  v6 = [v3 stringWithFormat:@"%@ <%p> { %@ }", v4, self, v5];
+  iCalendarDescription = [(CalRecurrenceDayOfWeek *)self iCalendarDescription];
+  v6 = [v3 stringWithFormat:@"%@ <%p> { %@ }", v4, self, iCalendarDescription];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -122,12 +122,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CalRecurrenceDayOfWeek *)self dayOfTheWeek];
-      if (v6 == [(CalRecurrenceDayOfWeek *)v5 dayOfTheWeek])
+      v5 = equalCopy;
+      dayOfTheWeek = [(CalRecurrenceDayOfWeek *)self dayOfTheWeek];
+      if (dayOfTheWeek == [(CalRecurrenceDayOfWeek *)v5 dayOfTheWeek])
       {
-        v7 = [(CalRecurrenceDayOfWeek *)self weekNumber];
-        v8 = v7 == [(CalRecurrenceDayOfWeek *)v5 weekNumber];
+        weekNumber = [(CalRecurrenceDayOfWeek *)self weekNumber];
+        v8 = weekNumber == [(CalRecurrenceDayOfWeek *)v5 weekNumber];
       }
 
       else

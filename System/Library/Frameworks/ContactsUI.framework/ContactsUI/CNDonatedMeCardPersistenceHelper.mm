@@ -1,8 +1,8 @@
 @interface CNDonatedMeCardPersistenceHelper
-+ (BOOL)createNewMeContact:(id)a3 inStore:(id)a4;
++ (BOOL)createNewMeContact:(id)contact inStore:(id)store;
 + (id)defaultKeysForValuesToPersist;
-+ (id)mutableCopyOfContact:(id)a3 byCopyingModificationsAndValuesForKeysOnly:(id)a4;
-+ (id)mutableCopyOfContact:(id)a3 byCopyingValuesForKeysOnly:(id)a4;
++ (id)mutableCopyOfContact:(id)contact byCopyingModificationsAndValuesForKeysOnly:(id)only;
++ (id)mutableCopyOfContact:(id)contact byCopyingValuesForKeysOnly:(id)only;
 + (id)propertyGroupItemLog;
 @end
 
@@ -75,35 +75,35 @@ void __65__CNDonatedMeCardPersistenceHelper_defaultKeysForValuesToPersist__block
   defaultKeysForValuesToPersist_cn_once_object_3 = v9;
 }
 
-+ (BOOL)createNewMeContact:(id)a3 inStore:(id)a4
++ (BOOL)createNewMeContact:(id)contact inStore:(id)store
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 saveContactInStore:v7 group:0 container:0])
+  contactCopy = contact;
+  storeCopy = store;
+  if ([contactCopy saveContactInStore:storeCopy group:0 container:0])
   {
     v12 = 0;
-    v8 = [v7 setMeContact:v6 error:&v12];
-    v9 = v12;
-    if (v9)
+    v8 = [storeCopy setMeContact:contactCopy error:&v12];
+    propertyGroupItemLog2 = v12;
+    if (propertyGroupItemLog2)
     {
-      v10 = [a1 propertyGroupItemLog];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      propertyGroupItemLog = [self propertyGroupItemLog];
+      if (os_log_type_enabled(propertyGroupItemLog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138477827;
-        v14 = v9;
-        _os_log_impl(&dword_199A75000, v10, OS_LOG_TYPE_DEFAULT, "could not set new me contact: %{private}@", buf, 0xCu);
+        v14 = propertyGroupItemLog2;
+        _os_log_impl(&dword_199A75000, propertyGroupItemLog, OS_LOG_TYPE_DEFAULT, "could not set new me contact: %{private}@", buf, 0xCu);
       }
     }
   }
 
   else
   {
-    v9 = [a1 propertyGroupItemLog];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    propertyGroupItemLog2 = [self propertyGroupItemLog];
+    if (os_log_type_enabled(propertyGroupItemLog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_199A75000, v9, OS_LOG_TYPE_DEFAULT, "could not save new me contact", buf, 2u);
+      _os_log_impl(&dword_199A75000, propertyGroupItemLog2, OS_LOG_TYPE_DEFAULT, "could not save new me contact", buf, 2u);
     }
 
     v8 = 0;
@@ -112,15 +112,15 @@ void __65__CNDonatedMeCardPersistenceHelper_defaultKeysForValuesToPersist__block
   return v8;
 }
 
-+ (id)mutableCopyOfContact:(id)a3 byCopyingModificationsAndValuesForKeysOnly:(id)a4
++ (id)mutableCopyOfContact:(id)contact byCopyingModificationsAndValuesForKeysOnly:(id)only
 {
-  v6 = a3;
-  v7 = [a1 mutableCopyOfContact:v6 byCopyingValuesForKeysOnly:a4];
-  v8 = [v6 diffToSnapshotAndReturnError:0];
+  contactCopy = contact;
+  v7 = [self mutableCopyOfContact:contactCopy byCopyingValuesForKeysOnly:only];
+  v8 = [contactCopy diffToSnapshotAndReturnError:0];
 
   v9 = *MEMORY[0x1E6996530];
-  v10 = [v8 updates];
-  LOBYTE(v9) = (*(v9 + 16))(v9, v10);
+  updates = [v8 updates];
+  LOBYTE(v9) = (*(v9 + 16))(v9, updates);
 
   if (v9)
   {
@@ -136,17 +136,17 @@ void __65__CNDonatedMeCardPersistenceHelper_defaultKeysForValuesToPersist__block
   return v11;
 }
 
-+ (id)mutableCopyOfContact:(id)a3 byCopyingValuesForKeysOnly:(id)a4
++ (id)mutableCopyOfContact:(id)contact byCopyingValuesForKeysOnly:(id)only
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contactCopy = contact;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __84__CNDonatedMeCardPersistenceHelper_mutableCopyOfContact_byCopyingValuesForKeysOnly___block_invoke;
   v23[3] = &unk_1E74E5A18;
-  v6 = v5;
+  v6 = contactCopy;
   v24 = v6;
-  v7 = [a4 _cn_filter:v23];
+  v7 = [only _cn_filter:v23];
   v8 = [v7 _cn_map:&__block_literal_global_5103];
   v9 = [v8 _cn_filter:&__block_literal_global_4_5104];
 

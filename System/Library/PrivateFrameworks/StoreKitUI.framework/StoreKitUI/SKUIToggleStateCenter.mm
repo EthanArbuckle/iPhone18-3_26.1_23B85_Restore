@@ -1,14 +1,14 @@
 @interface SKUIToggleStateCenter
 + (id)defaultCenter;
-- (BOOL)updateItem:(id)a3;
+- (BOOL)updateItem:(id)item;
 - (SKUIToggleStateCenter)init;
-- (id)itemForIdentifier:(id)a3;
-- (void)_notifyObserversOfStateChanges:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)itemForIdentifier:(id)identifier;
+- (void)_notifyObserversOfStateChanges:(id)changes;
+- (void)addObserver:(id)observer;
 - (void)clearAll;
 - (void)dealloc;
 - (void)init;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SKUIToggleStateCenter
@@ -37,10 +37,10 @@
     itemStates = v3->_itemStates;
     v3->_itemStates = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = *MEMORY[0x277D69D70];
-    v12 = [MEMORY[0x277D69A20] defaultStore];
-    [v10 addObserver:v3 selector:sel__accountStoreChangeNotification_ name:v11 object:v12];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    [defaultCenter addObserver:v3 selector:sel__accountStoreChangeNotification_ name:v11 object:defaultStore];
   }
 
   return v3;
@@ -48,27 +48,27 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D69D70];
-  v5 = [MEMORY[0x277D69A20] defaultStore];
-  [v3 removeObserver:self name:v4 object:v5];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  [defaultCenter removeObserver:self name:v4 object:defaultStore];
 
   v6.receiver = self;
   v6.super_class = SKUIToggleStateCenter;
   [(SKUIToggleStateCenter *)&v6 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__SKUIToggleStateCenter_addObserver___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -145,7 +145,7 @@ void __33__SKUIToggleStateCenter_clearAll__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __38__SKUIToggleStateCenter_defaultCenter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultCenter_sOnce_0 != -1)
   {
     dispatch_once(&defaultCenter_sOnce_0, block);
@@ -165,9 +165,9 @@ uint64_t __38__SKUIToggleStateCenter_defaultCenter__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (id)itemForIdentifier:(id)a3
+- (id)itemForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -180,9 +180,9 @@ uint64_t __38__SKUIToggleStateCenter_defaultCenter__block_invoke(uint64_t a1)
   block[2] = __43__SKUIToggleStateCenter_itemForIdentifier___block_invoke;
   block[3] = &unk_2781FDA50;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -226,23 +226,23 @@ uint64_t __43__SKUIToggleStateCenter_itemForIdentifier___block_invoke(void *a1)
   return MEMORY[0x2821F96F8](v6, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SKUIToggleStateCenter_removeObserver___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (BOOL)updateItem:(id)a3
+- (BOOL)updateItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -253,9 +253,9 @@ uint64_t __43__SKUIToggleStateCenter_itemForIdentifier___block_invoke(void *a1)
   block[2] = __36__SKUIToggleStateCenter_updateItem___block_invoke;
   block[3] = &unk_2781FDA50;
   block[4] = self;
-  v9 = v4;
+  v9 = itemCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = itemCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = *(v12 + 24);
 
@@ -311,9 +311,9 @@ void __36__SKUIToggleStateCenter_updateItem___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_notifyObserversOfStateChanges:(id)a3
+- (void)_notifyObserversOfStateChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = [(NSHashTable *)self->_observers copy];
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -321,9 +321,9 @@ void __36__SKUIToggleStateCenter_updateItem___block_invoke(uint64_t a1)
   block[2] = __56__SKUIToggleStateCenter__notifyObserversOfStateChanges___block_invoke;
   block[3] = &unk_2781F8680;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = changesCopy;
+  v7 = changesCopy;
   v8 = v5;
   dispatch_async(observerQueue, block);
 }

@@ -20,8 +20,8 @@
   v8 = [[v5 alloc] _initWithIntent:v7];
 
   v9 = MEMORY[0x1E69636A8];
-  v10 = [v8 activityType];
-  v11 = [v9 _isActivityTypeAllowedForDialRequest:v10];
+  activityType = [v8 activityType];
+  v11 = [v9 _isActivityTypeAllowedForDialRequest:activityType];
 
   v19 = 0;
   v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v19];
@@ -80,8 +80,8 @@ LABEL_12:
   v8 = [[v5 alloc] _initWithIntent:v7];
 
   v9 = MEMORY[0x1E69636A8];
-  v10 = [v8 activityType];
-  v11 = [v9 _isActivityTypeAllowedForJoinRequest:v10];
+  activityType = [v8 activityType];
+  v11 = [v9 _isActivityTypeAllowedForJoinRequest:activityType];
 
   v19 = 0;
   v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v19];
@@ -134,11 +134,11 @@ LABEL_12:
 - (id)dialRequestAttachment
 {
   v2 = MEMORY[0x1E69636A8];
-  v3 = [a1 activityType];
-  LODWORD(v2) = [v2 _isActivityTypeAllowedForDialRequest:v3];
+  activityType = [self activityType];
+  LODWORD(v2) = [v2 _isActivityTypeAllowedForDialRequest:activityType];
 
-  v4 = [a1 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"dialRequest"];
+  userInfo = [self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"dialRequest"];
 
   if (v2)
   {
@@ -183,11 +183,11 @@ LABEL_12:
 - (id)joinRequestAttachment
 {
   v2 = MEMORY[0x1E69636A8];
-  v3 = [a1 activityType];
-  LODWORD(v2) = [v2 _isActivityTypeAllowedForJoinRequest:v3];
+  activityType = [self activityType];
+  LODWORD(v2) = [v2 _isActivityTypeAllowedForJoinRequest:activityType];
 
-  v4 = [a1 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"joinRequest"];
+  userInfo = [self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"joinRequest"];
 
   if (v2)
   {
@@ -231,14 +231,14 @@ LABEL_12:
 
 - (id)tu_dynamicIdentifier
 {
-  v2 = [a1 _internalUserActivity];
-  v3 = [v2 dynamicIdentifier];
+  _internalUserActivity = [self _internalUserActivity];
+  dynamicIdentifier = [_internalUserActivity dynamicIdentifier];
 
-  if (v3)
+  if (dynamicIdentifier)
   {
-    v4 = [a1 _internalUserActivity];
-    v5 = [v4 dynamicIdentifier];
-    v6 = [v5 copy];
+    _internalUserActivity2 = [self _internalUserActivity];
+    dynamicIdentifier2 = [_internalUserActivity2 dynamicIdentifier];
+    v6 = [dynamicIdentifier2 copy];
   }
 
   else

@@ -1,35 +1,35 @@
 @interface DADeviceAirpods
-- (BOOL)isEqual:(id)a3;
-- (DADeviceAirpods)initWithBluetoothDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DADeviceAirpods)initWithBluetoothDevice:(id)device;
 - (DADeviceDelegate)delegate;
 - (NSString)description;
 - (id)_deviceImageName;
 - (id)_deviceType;
 - (id)_marketingName;
 - (unint64_t)hash;
-- (void)_profileWithCommand:(id)a3;
-- (void)allowSessionAccessoryDisconnectForDuration:(id)a3;
-- (void)cancelTestWithCommand:(id)a3;
+- (void)_profileWithCommand:(id)command;
+- (void)allowSessionAccessoryDisconnectForDuration:(id)duration;
+- (void)cancelTestWithCommand:(id)command;
 - (void)clearAllowSessionAccessoryDisconnect;
-- (void)deviceConnection:(id)a3 didRecieveCommand:(id)a4;
+- (void)deviceConnection:(id)connection didRecieveCommand:(id)command;
 - (void)end;
-- (void)executeTestWithTestAttributes:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (void)getAsset:(id)a3 completion:(id)a4;
+- (void)executeTestWithTestAttributes:(id)attributes parameters:(id)parameters completion:(id)completion;
+- (void)getAsset:(id)asset completion:(id)completion;
 - (void)idle;
-- (void)requestSessionAccessoryIdentifierWithCompletion:(id)a3;
+- (void)requestSessionAccessoryIdentifierWithCompletion:(id)completion;
 - (void)resumeTests;
 - (void)start;
-- (void)startTestWithCommand:(id)a3;
+- (void)startTestWithCommand:(id)command;
 - (void)suspendTests;
 - (void)unpairSessionAccessoryOnTestCompletion;
-- (void)updateProgress:(id)a3 forTest:(id)a4;
+- (void)updateProgress:(id)progress forTest:(id)test;
 @end
 
 @implementation DADeviceAirpods
 
-- (DADeviceAirpods)initWithBluetoothDevice:(id)a3
+- (DADeviceAirpods)initWithBluetoothDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v37.receiver = self;
   v37.super_class = DADeviceAirpods;
   v6 = [(DADeviceAirpods *)&v37 init];
@@ -39,12 +39,12 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_airpodsDevice, a3);
-  v8 = [v5 address];
+  objc_storeStrong(&v6->_airpodsDevice, device);
+  address = [deviceCopy address];
   macAddress = v7->_macAddress;
-  v7->_macAddress = v8;
+  v7->_macAddress = address;
 
-  v10 = [DADeviceObserverAirpods primarySerialNumberForAirpodsDevice:v5];
+  v10 = [DADeviceObserverAirpods primarySerialNumberForAirpodsDevice:deviceCopy];
   if (v10)
   {
     serialNumber = v7->_serialNumber;
@@ -52,25 +52,25 @@
     v12 = v10;
 
     v38[0] = @"productClass";
-    v13 = [(DADeviceAirpods *)v7 _productClass];
-    v39[0] = v13;
+    _productClass = [(DADeviceAirpods *)v7 _productClass];
+    v39[0] = _productClass;
     v38[1] = @"deviceClass";
-    v14 = [(DADeviceAirpods *)v7 _deviceClass];
-    v39[1] = v14;
+    _deviceClass = [(DADeviceAirpods *)v7 _deviceClass];
+    v39[1] = _deviceClass;
     v38[2] = @"deviceType";
-    v15 = [(DADeviceAirpods *)v7 _deviceType];
-    v39[2] = v15;
+    _deviceType = [(DADeviceAirpods *)v7 _deviceType];
+    v39[2] = _deviceType;
     v38[3] = @"marketingName";
-    v16 = [(DADeviceAirpods *)v7 _marketingName];
-    v39[3] = v16;
+    _marketingName = [(DADeviceAirpods *)v7 _marketingName];
+    v39[3] = _marketingName;
     v38[4] = @"imageName";
-    v17 = [(DADeviceAirpods *)v7 _deviceImageName];
-    v39[4] = v17;
+    _deviceImageName = [(DADeviceAirpods *)v7 _deviceImageName];
+    v39[4] = _deviceImageName;
     v18 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:5];
 
     v19 = [DADeviceState alloc];
-    v20 = [(DADeviceAirpods *)v7 serialNumber];
-    v21 = [(DADeviceState *)v19 initWithSerialNumber:v20 attributes:v18];
+    serialNumber = [(DADeviceAirpods *)v7 serialNumber];
+    v21 = [(DADeviceState *)v19 initWithSerialNumber:serialNumber attributes:v18];
     state = v7->_state;
     v7->_state = v21;
 
@@ -93,8 +93,8 @@
     v7->_reportManager = v28;
 
     v30 = [DADeviceConnectionAirPods alloc];
-    v31 = [(DADeviceAirpods *)v7 state];
-    v32 = [(DADeviceConnectionAirPods *)v30 initWithState:v31 bluetoothDevice:v5];
+    state = [(DADeviceAirpods *)v7 state];
+    v32 = [(DADeviceConnectionAirPods *)v30 initWithState:state bluetoothDevice:deviceCopy];
     connection = v7->_connection;
     v7->_connection = v32;
 
@@ -118,16 +118,16 @@ LABEL_8:
 
 - (void)start
 {
-  v2 = [(DADeviceAirpods *)self connection];
-  [v2 start];
+  connection = [(DADeviceAirpods *)self connection];
+  [connection start];
 
   +[DADiagnosticAnalyticsManager recordDeviceStart];
 }
 
 - (void)idle
 {
-  v2 = [(DADeviceAirpods *)self connection];
-  [v2 idle];
+  connection = [(DADeviceAirpods *)self connection];
+  [connection idle];
 
   +[DADiagnosticAnalyticsManager recordDeviceIdle];
 }
@@ -138,15 +138,15 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Test launch suspending for %@.", &v6, 0xCu);
   }
 
-  v4 = [(DADeviceAirpods *)self testQueue];
-  [v4 setSuspended:1];
+  testQueue = [(DADeviceAirpods *)self testQueue];
+  [testQueue setSuspended:1];
 
-  v5 = [(DADeviceAirpods *)self diagnosticsManager];
-  [v5 cancelAllDiagnostics];
+  diagnosticsManager = [(DADeviceAirpods *)self diagnosticsManager];
+  [diagnosticsManager cancelAllDiagnostics];
 
   +[DADiagnosticAnalyticsManager recordDeviceSuspendTests];
 }
@@ -157,12 +157,12 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Test launch resuming for %@.", &v5, 0xCu);
   }
 
-  v4 = [(DADeviceAirpods *)self testQueue];
-  [v4 setSuspended:0];
+  testQueue = [(DADeviceAirpods *)self testQueue];
+  [testQueue setSuspended:0];
 
   +[DADiagnosticAnalyticsManager recordDeviceResumeTests];
 }
@@ -180,121 +180,121 @@ LABEL_8:
   +[DADiagnosticAnalyticsManager recordDeviceEnd];
 }
 
-- (void)startTestWithCommand:(id)a3
+- (void)startTestWithCommand:(id)command
 {
-  v13 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(DADeviceAirpods *)self connection];
-    [v4 setUnpairOnTestCompletion:0];
+    connection = [(DADeviceAirpods *)self connection];
+    [connection setUnpairOnTestCompletion:0];
 
-    v5 = [(DADeviceAirpods *)self diagnosticsManager];
-    v6 = [v13 testID];
-    v7 = [v5 attributesForIdentifier:v6];
+    diagnosticsManager = [(DADeviceAirpods *)self diagnosticsManager];
+    testID = [commandCopy testID];
+    v7 = [diagnosticsManager attributesForIdentifier:testID];
 
     if (v7)
     {
-      v8 = [(DADeviceAirpods *)self testQueue];
-      v9 = [v13 parameters];
-      v10 = [v13 completion];
-      v11 = [v10 copy];
-      [v8 enqueueTestWithTestAttributes:v7 parameters:v9 completion:v11];
+      testQueue = [(DADeviceAirpods *)self testQueue];
+      parameters = [commandCopy parameters];
+      completion = [commandCopy completion];
+      v11 = [completion copy];
+      [testQueue enqueueTestWithTestAttributes:v7 parameters:parameters completion:v11];
     }
 
     else
     {
-      v8 = [v13 completion];
-      v9 = [NSError errorWithDomain:DKErrorDomain code:-1000 userInfo:0];
-      (v8)[2](v8, 0, v9);
+      testQueue = [commandCopy completion];
+      parameters = [NSError errorWithDomain:DKErrorDomain code:-1000 userInfo:0];
+      (testQueue)[2](testQueue, 0, parameters);
     }
 
-    v12 = [v13 testID];
-    [DADiagnosticAnalyticsManager recordConnectionDidReceiveStartTestCommand:v12];
+    testID2 = [commandCopy testID];
+    [DADiagnosticAnalyticsManager recordConnectionDidReceiveStartTestCommand:testID2];
   }
 }
 
-- (void)cancelTestWithCommand:(id)a3
+- (void)cancelTestWithCommand:(id)command
 {
-  v6 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(DADeviceAirpods *)self diagnosticsManager];
-    [v4 cancelAllDiagnostics];
+    diagnosticsManager = [(DADeviceAirpods *)self diagnosticsManager];
+    [diagnosticsManager cancelAllDiagnostics];
 
-    v5 = [v6 testID];
-    [DADiagnosticAnalyticsManager recordConnectionDidReceiveCancelTestCommand:v5];
+    testID = [commandCopy testID];
+    [DADiagnosticAnalyticsManager recordConnectionDidReceiveCancelTestCommand:testID];
   }
 }
 
-- (void)executeTestWithTestAttributes:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)executeTestWithTestAttributes:(id)attributes parameters:(id)parameters completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100027FB4;
   v15[3] = &unk_1001BCF18;
-  v16 = a5;
-  v8 = v16;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  v8 = completionCopy;
+  parametersCopy = parameters;
+  attributesCopy = attributes;
   v11 = objc_retainBlock(v15);
-  v12 = [(DADeviceAirpods *)self diagnosticsManager];
-  v13 = [v10 identifier];
-  [v12 beginDiagnosticWithIdentifier:v13 parameters:v9 completion:v11];
+  diagnosticsManager = [(DADeviceAirpods *)self diagnosticsManager];
+  identifier = [attributesCopy identifier];
+  [diagnosticsManager beginDiagnosticWithIdentifier:identifier parameters:parametersCopy completion:v11];
 
-  v14 = [v10 identifier];
+  identifier2 = [attributesCopy identifier];
 
-  [DADiagnosticAnalyticsManager recordExecuteTestWith:v14];
+  [DADiagnosticAnalyticsManager recordExecuteTestWith:identifier2];
 }
 
-- (void)deviceConnection:(id)a3 didRecieveCommand:(id)a4
+- (void)deviceConnection:(id)connection didRecieveCommand:(id)command
 {
-  v7 = a4;
-  v5 = [v7 commandType];
-  if (v5 == 2)
+  commandCopy = command;
+  commandType = [commandCopy commandType];
+  if (commandType == 2)
   {
-    [(DADeviceAirpods *)self _profileWithCommand:v7];
+    [(DADeviceAirpods *)self _profileWithCommand:commandCopy];
   }
 
-  else if (v5 == 1)
+  else if (commandType == 1)
   {
-    [(DADeviceAirpods *)self cancelTestWithCommand:v7];
+    [(DADeviceAirpods *)self cancelTestWithCommand:commandCopy];
   }
 
   else
   {
-    v6 = v7;
-    if (v5)
+    v6 = commandCopy;
+    if (commandType)
     {
       goto LABEL_8;
     }
 
-    [(DADeviceAirpods *)self startTestWithCommand:v7];
+    [(DADeviceAirpods *)self startTestWithCommand:commandCopy];
   }
 
-  v6 = v7;
+  v6 = commandCopy;
 LABEL_8:
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DADeviceAirpods *)self macAddress];
-  v3 = [v2 hash];
+  macAddress = [(DADeviceAirpods *)self macAddress];
+  v3 = [macAddress hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(DADeviceAirpods *)self macAddress];
-    v7 = [v5 macAddress];
+    v5 = equalCopy;
+    macAddress = [(DADeviceAirpods *)self macAddress];
+    macAddress2 = [v5 macAddress];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [macAddress isEqualToString:macAddress2];
   }
 
   else
@@ -309,44 +309,44 @@ LABEL_8:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DADeviceAirpods *)self state];
-  v6 = [v5 serialNumber];
-  v7 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, v6];;
+  state = [(DADeviceAirpods *)self state];
+  serialNumber = [state serialNumber];
+  v7 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, serialNumber];;
 
   return v7;
 }
 
-- (void)_profileWithCommand:(id)a3
+- (void)_profileWithCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = dispatch_group_create();
     dispatch_group_enter(v5);
-    v6 = [(DADeviceAirpods *)self diagnosticsManager];
+    diagnosticsManager = [(DADeviceAirpods *)self diagnosticsManager];
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_100028678;
     v40[3] = &unk_1001BD5F0;
-    v7 = v4;
+    v7 = commandCopy;
     v41 = v7;
     v8 = v5;
     v42 = v8;
-    [v6 diagnosticsWithCompletion:v40];
+    [diagnosticsManager diagnosticsWithCompletion:v40];
 
-    v9 = [v7 components];
-    if (v9 && (v10 = v9, [v7 components], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10, v12))
+    components = [v7 components];
+    if (components && (v10 = components, [v7 components], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v10, v12))
     {
-      v29 = self;
-      v30 = v4;
+      selfCopy = self;
+      v30 = commandCopy;
       v31 = +[NSMutableSet set];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v13 = [v7 components];
-      v14 = [v13 countByEnumeratingWithState:&v36 objects:v43 count:16];
+      components2 = [v7 components];
+      v14 = [components2 countByEnumeratingWithState:&v36 objects:v43 count:16];
       if (v14)
       {
         v15 = v14;
@@ -357,7 +357,7 @@ LABEL_8:
           {
             if (*v37 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(components2);
             }
 
             v18 = *(*(&v36 + 1) + 8 * i);
@@ -374,14 +374,14 @@ LABEL_8:
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v36 objects:v43 count:16];
+          v15 = [components2 countByEnumeratingWithState:&v36 objects:v43 count:16];
         }
 
         while (v15);
       }
 
-      self = v29;
-      v4 = v30;
+      self = selfCopy;
+      commandCopy = v30;
     }
 
     else
@@ -397,7 +397,7 @@ LABEL_8:
     }
 
     dispatch_group_enter(v8);
-    v23 = [(DADeviceAirpods *)self reportManager];
+    reportManager = [(DADeviceAirpods *)self reportManager];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_1000288C8;
@@ -406,13 +406,13 @@ LABEL_8:
     v33 = v24;
     v34 = v8;
     v25 = v8;
-    [v23 reportWithComponentPredicateManifest:v31 completion:v32];
+    [reportManager reportWithComponentPredicateManifest:v31 completion:v32];
 
     v26 = dispatch_time(0, 60000000000);
     dispatch_group_wait(v25, v26);
-    v27 = [v24 completion];
-    v28 = [v24 profile];
-    (v27)[2](v27, v28);
+    completion = [v24 completion];
+    profile = [v24 profile];
+    (completion)[2](completion, profile);
 
     +[DADiagnosticAnalyticsManager recordConnectionDidReceiveProfileCommand];
   }
@@ -420,8 +420,8 @@ LABEL_8:
 
 - (id)_deviceImageName
 {
-  v2 = [(DADeviceAirpods *)self _deviceType];
-  v3 = [NSString stringWithFormat:@"%@-0.png", v2];
+  _deviceType = [(DADeviceAirpods *)self _deviceType];
+  v3 = [NSString stringWithFormat:@"%@-0.png", _deviceType];
   v4 = [v3 stringByReplacingReservedURLCharactersUsingEncoding:1];
 
   return v4;
@@ -429,28 +429,28 @@ LABEL_8:
 
 - (id)_deviceType
 {
-  v2 = [(DADeviceAirpods *)self airpodsDevice];
-  v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"AirPods_%u", [v2 productId]);
+  airpodsDevice = [(DADeviceAirpods *)self airpodsDevice];
+  v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"AirPods_%u", [airpodsDevice productId]);
 
   return v3;
 }
 
 - (id)_marketingName
 {
-  v2 = [(DADeviceAirpods *)self airpodsDevice];
-  v3 = [v2 productId];
+  airpodsDevice = [(DADeviceAirpods *)self airpodsDevice];
+  productId = [airpodsDevice productId];
 
   result = @"AirPods";
-  if (v3 > 8203)
+  if (productId > 8203)
   {
-    if (v3 > 8208)
+    if (productId > 8208)
     {
-      if (v3 == 8209)
+      if (productId == 8209)
       {
         return @"Beats Studio Buds";
       }
 
-      if (v3 == 8228)
+      if (productId == 8228)
       {
         return @"AirPods Pro";
       }
@@ -460,12 +460,12 @@ LABEL_8:
 
     else
     {
-      if (v3 == 8204)
+      if (productId == 8204)
       {
         return @"Beats Solo Pro";
       }
 
-      if (v3 == 8205)
+      if (productId == 8205)
       {
         return @"Powerbeats⁴";
       }
@@ -473,7 +473,7 @@ LABEL_8:
       v9 = 8206;
     }
 
-    if (v3 != v9)
+    if (productId != v9)
     {
       return result;
     }
@@ -482,34 +482,34 @@ LABEL_8:
   }
 
   v5 = @"Powerbeats Pro";
-  if (v3 != 8203)
+  if (productId != 8203)
   {
     v5 = @"AirPods";
   }
 
-  if (v3 == 8202)
+  if (productId == 8202)
   {
     v5 = @"AirPods Max";
   }
 
-  if (v3 == 8201)
+  if (productId == 8201)
   {
     v5 = @"Beats Studio³";
   }
 
   v6 = @"BeatsX";
   v7 = @"Beats Solo³";
-  if (v3 != 8198)
+  if (productId != 8198)
   {
     v7 = @"AirPods";
   }
 
-  if (v3 != 8197)
+  if (productId != 8197)
   {
     v6 = v7;
   }
 
-  if (v3 == 8195)
+  if (productId == 8195)
   {
     v8 = @"Powerbeats³";
   }
@@ -519,7 +519,7 @@ LABEL_8:
     v8 = v6;
   }
 
-  if (v3 <= 8200)
+  if (productId <= 8200)
   {
     return v8;
   }
@@ -530,54 +530,54 @@ LABEL_8:
   }
 }
 
-- (void)updateProgress:(id)a3 forTest:(id)a4
+- (void)updateProgress:(id)progress forTest:(id)test
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(DADeviceAirpods *)self connection];
-  v8 = [v9 progressForTest];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  testCopy = test;
+  progressCopy = progress;
+  connection = [(DADeviceAirpods *)self connection];
+  progressForTest = [connection progressForTest];
+  [progressForTest setObject:progressCopy forKeyedSubscript:testCopy];
 }
 
-- (void)getAsset:(id)a3 completion:(id)a4
+- (void)getAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DADeviceAirpods *)self connection];
+  assetCopy = asset;
+  completionCopy = completion;
+  connection = [(DADeviceAirpods *)self connection];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DADeviceAirpods *)self connection];
+    connection2 = [(DADeviceAirpods *)self connection];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100028DF0;
     v11[3] = &unk_1001BCF90;
-    v12 = v6;
-    v13 = v7;
-    [v10 requestAsset:v12 completionHandler:v11];
+    v12 = assetCopy;
+    v13 = completionCopy;
+    [connection2 requestAsset:v12 completionHandler:v11];
   }
 }
 
 - (void)unpairSessionAccessoryOnTestCompletion
 {
-  v2 = [(DADeviceAirpods *)self connection];
-  [v2 setUnpairOnTestCompletion:1];
+  connection = [(DADeviceAirpods *)self connection];
+  [connection setUnpairOnTestCompletion:1];
 }
 
-- (void)allowSessionAccessoryDisconnectForDuration:(id)a3
+- (void)allowSessionAccessoryDisconnectForDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = durationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "DK requested to allow accessory disconnect for %@", &v7, 0xCu);
   }
 
-  v6 = [(DADeviceAirpods *)self connection];
-  [v6 allowSessionAccessoryDisconnectForDuration:v4];
+  connection = [(DADeviceAirpods *)self connection];
+  [connection allowSessionAccessoryDisconnectForDuration:durationCopy];
 }
 
 - (void)clearAllowSessionAccessoryDisconnect
@@ -589,16 +589,16 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "DK requested to clear allowing accessory disconnects", v5, 2u);
   }
 
-  v4 = [(DADeviceAirpods *)self connection];
-  [v4 clearAllowSessionAccessoryDisconnect];
+  connection = [(DADeviceAirpods *)self connection];
+  [connection clearAllowSessionAccessoryDisconnect];
 }
 
-- (void)requestSessionAccessoryIdentifierWithCompletion:(id)a3
+- (void)requestSessionAccessoryIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DADeviceAirpods *)self airpodsUUID];
+  completionCopy = completion;
+  airpodsUUID = [(DADeviceAirpods *)self airpodsUUID];
 
-  if (!v5)
+  if (!airpodsUUID)
   {
     v35 = 0;
     v6 = [CBDiscovery devicesWithDiscoveryFlags:0x800000 error:&v35];
@@ -615,7 +615,7 @@ LABEL_8:
       {
         v30 = *v32;
         v26 = v6;
-        v27 = v4;
+        v27 = completionCopy;
         v25 = v7;
         while (2)
         {
@@ -627,34 +627,34 @@ LABEL_8:
             }
 
             v9 = *(*(&v31 + 1) + 8 * i);
-            v10 = [v9 serialNumber];
-            v11 = [(DADeviceAirpods *)self serialNumber];
-            if ([v10 isEqualToString:v11])
+            serialNumber = [v9 serialNumber];
+            serialNumber2 = [(DADeviceAirpods *)self serialNumber];
+            if ([serialNumber isEqualToString:serialNumber2])
             {
               goto LABEL_15;
             }
 
-            v12 = [v9 serialNumberLeft];
-            v13 = [(DADeviceAirpods *)self serialNumber];
-            if ([v12 isEqualToString:v13])
+            serialNumberLeft = [v9 serialNumberLeft];
+            serialNumber3 = [(DADeviceAirpods *)self serialNumber];
+            if ([serialNumberLeft isEqualToString:serialNumber3])
             {
 
 LABEL_15:
 LABEL_16:
               v17 = [NSUUID alloc];
-              v18 = [v9 identifier];
-              v19 = [v17 initWithUUIDString:v18];
+              identifier = [v9 identifier];
+              v19 = [v17 initWithUUIDString:identifier];
               [(DADeviceAirpods *)self setAirpodsUUID:v19];
 
               v6 = v26;
-              v4 = v27;
+              completionCopy = v27;
               v7 = v25;
               goto LABEL_17;
             }
 
-            v14 = [v9 serialNumberRight];
-            v15 = [(DADeviceAirpods *)self serialNumber];
-            v16 = [v14 isEqualToString:v15];
+            serialNumberRight = [v9 serialNumberRight];
+            serialNumber4 = [(DADeviceAirpods *)self serialNumber];
+            v16 = [serialNumberRight isEqualToString:serialNumber4];
 
             if (v16)
             {
@@ -663,7 +663,7 @@ LABEL_16:
           }
 
           v6 = v26;
-          v4 = v27;
+          completionCopy = v27;
           v7 = v25;
           v29 = [obj countByEnumeratingWithState:&v31 objects:v38 count:16];
           if (v29)
@@ -679,13 +679,13 @@ LABEL_17:
     }
   }
 
-  v20 = [(DADeviceAirpods *)self airpodsUUID];
+  airpodsUUID2 = [(DADeviceAirpods *)self airpodsUUID];
 
-  if (v20)
+  if (airpodsUUID2)
   {
-    v21 = [(DADeviceAirpods *)self airpodsUUID];
-    v22 = [v21 UUIDString];
-    v4[2](v4, v22, 0);
+    airpodsUUID3 = [(DADeviceAirpods *)self airpodsUUID];
+    uUIDString = [airpodsUUID3 UUIDString];
+    completionCopy[2](completionCopy, uUIDString, 0);
   }
 
   else
@@ -694,9 +694,9 @@ LABEL_17:
     v36 = NSLocalizedDescriptionKey;
     v37 = @"Unable to find CoreBluetooth identifier for session accessory";
     v24 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    v21 = [v23 initWithDomain:@"com.apple.Diagnostics" code:-1 userInfo:v24];
+    airpodsUUID3 = [v23 initWithDomain:@"com.apple.Diagnostics" code:-1 userInfo:v24];
 
-    (v4)[2](v4, &stru_1001C9EA8, v21);
+    (completionCopy)[2](completionCopy, &stru_1001C9EA8, airpodsUUID3);
   }
 }
 

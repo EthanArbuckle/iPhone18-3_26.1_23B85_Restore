@@ -1,26 +1,26 @@
 @interface XREngineeringTypeDefinitions
-+ (BOOL)registerEngineeringTypes:(id)a3;
-+ (id)descriptionForImplClass:(unsigned __int8)a3;
++ (BOOL)registerEngineeringTypes:(id)types;
++ (id)descriptionForImplClass:(unsigned __int8)class;
 + (id)implementationClassByEngineeringTypeMnemonic;
-+ (void)announceUsageOfEnumString:(id)a3 context:(id)a4;
++ (void)announceUsageOfEnumString:(id)string context:(id)context;
 - (NSDate)lastModificationDate;
 - (id)checksum;
-- (void)enumerateEngineeringTypeDefs:(id)a3;
-- (void)parser:(id)a3 didFinishParsingElement:(id)a4;
+- (void)enumerateEngineeringTypeDefs:(id)defs;
+- (void)parser:(id)parser didFinishParsingElement:(id)element;
 @end
 
 @implementation XREngineeringTypeDefinitions
 
-+ (id)descriptionForImplClass:(unsigned __int8)a3
++ (id)descriptionForImplClass:(unsigned __int8)class
 {
-  if ((a3 - 1) > 5)
+  if ((class - 1) > 5)
   {
     return @"invalid";
   }
 
   else
   {
-    return off_278EFC0F0[(a3 - 1)];
+    return off_278EFC0F0[(class - 1)];
   }
 }
 
@@ -93,11 +93,11 @@
   return v34;
 }
 
-- (void)enumerateEngineeringTypeDefs:(id)a3
+- (void)enumerateEngineeringTypeDefs:(id)defs
 {
-  v4 = a3;
+  defsCopy = defs;
   v17 = sub_2480998F0();
-  v5 = MEMORY[0x24C1C5B20](v4);
+  v5 = MEMORY[0x24C1C5B20](defsCopy);
 
   etypeDefHandler = self->_etypeDefHandler;
   self->_etypeDefHandler = v5;
@@ -110,9 +110,9 @@
   self->_etypeDefHandler = 0;
 }
 
-- (void)parser:(id)a3 didFinishParsingElement:(id)a4
+- (void)parser:(id)parser didFinishParsingElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -120,27 +120,27 @@
   }
 }
 
-+ (BOOL)registerEngineeringTypes:(id)a3
++ (BOOL)registerEngineeringTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_opt_new();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_24809E208;
   v10[3] = &unk_278EFBF38;
-  v11 = v3;
-  v5 = v3;
+  v11 = typesCopy;
+  v5 = typesCopy;
   objc_msgSend_enumerateEngineeringTypeDefs_(v4, v6, v10, v7, v8);
 
   return 1;
 }
 
-+ (void)announceUsageOfEnumString:(id)a3 context:(id)a4
++ (void)announceUsageOfEnumString:(id)string context:(id)context
 {
-  v12 = a4;
-  v10 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v5, @"com.apple.dt.etype.%@", v6, v7, a3);
-  v11 = v12;
-  if (!v12)
+  contextCopy = context;
+  v10 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v5, @"com.apple.dt.etype.%@", v6, v7, string);
+  v11 = contextCopy;
+  if (!contextCopy)
   {
     v11 = XRCapabilityContext;
   }

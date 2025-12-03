@@ -1,10 +1,10 @@
 @interface EditableLabelView
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (UIColor)tintColor;
-- (_TtC9MomentsUI17EditableLabelView)initWithCoder:(id)a3;
-- (_TtC9MomentsUI17EditableLabelView)initWithFrame:(CGRect)a3;
-- (void)editTitle:(id)a3;
-- (void)setTintColor:(id)a3;
+- (_TtC9MomentsUI17EditableLabelView)initWithCoder:(id)coder;
+- (_TtC9MomentsUI17EditableLabelView)initWithFrame:(CGRect)frame;
+- (void)editTitle:(id)title;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation EditableLabelView
@@ -13,24 +13,24 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for EditableLabelView();
-  v2 = [(EditableLabelView *)&v4 tintColor];
+  tintColor = [(EditableLabelView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for EditableLabelView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v8.receiver;
-  [(EditableLabelView *)&v8 setTintColor:v4];
+  [(EditableLabelView *)&v8 setTintColor:colorCopy];
   v6 = EditableLabelView.textField.getter();
-  v7 = [v5 tintColor];
+  tintColor = [v5 tintColor];
   [v6 setTintColor_];
 }
 
-- (_TtC9MomentsUI17EditableLabelView)initWithCoder:(id)a3
+- (_TtC9MomentsUI17EditableLabelView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC9MomentsUI17EditableLabelView_newTitle);
   *v3 = 0;
@@ -43,23 +43,23 @@
   return result;
 }
 
-- (void)editTitle:(id)a3
+- (void)editTitle:(id)title
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9MomentsUI17EditableLabelView_isEditing) = 1;
-  v3 = self;
+  selfCopy = self;
   EditableLabelView.isEditing.didset();
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  EditableLabelView.textFieldShouldReturn(_:)(v4);
+  returnCopy = return;
+  selfCopy = self;
+  EditableLabelView.textFieldShouldReturn(_:)(returnCopy);
 
   return 1;
 }
 
-- (_TtC9MomentsUI17EditableLabelView)initWithFrame:(CGRect)a3
+- (_TtC9MomentsUI17EditableLabelView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -5,15 +5,15 @@
 - (double)secondsAnimationFPS;
 - (double)upperDuration;
 - (id)createSecondHandView;
-- (id)createTinyBabyHandViewWithColor:(id)a3;
-- (id)initForDevice:(id)a3;
+- (id)createTinyBabyHandViewWithColor:(id)color;
+- (id)initForDevice:(id)device;
 - (id)tinyBabyHandConfiguration;
-- (void)_enumerateChronoHandViews:(id)a3;
-- (void)_enumerateFlybackChronoHands:(id)a3;
-- (void)_enumeratePrimaryChronoHands:(id)a3;
+- (void)_enumerateChronoHandViews:(id)views;
+- (void)_enumerateFlybackChronoHands:(id)hands;
+- (void)_enumeratePrimaryChronoHands:(id)hands;
 - (void)layoutHandViews;
-- (void)setMinuteHandUsesManualTime:(BOOL)a3;
-- (void)setPalette:(id)a3;
+- (void)setMinuteHandUsesManualTime:(BOOL)time;
+- (void)setPalette:(id)palette;
 - (void)showChronoMode;
 - (void)showTimeMode;
 - (void)startNewChronoAnimation;
@@ -22,11 +22,11 @@
 
 @implementation NTKChronoHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v28.receiver = self;
   v28.super_class = NTKChronoHandsView;
-  v3 = [(NTKChronoHandsView *)&v28 initForDevice:a3];
+  v3 = [(NTKChronoHandsView *)&v28 initForDevice:device];
   if (v3)
   {
     v4 = +[UIColor systemBlueColor];
@@ -40,19 +40,19 @@
     v3[6] = v8;
 
     v10 = v3[6];
-    v11 = [v3 hourHandView];
-    [v3 insertSubview:v10 belowSubview:v11];
+    hourHandView = [v3 hourHandView];
+    [v3 insertSubview:v10 belowSubview:hourHandView];
 
     [v3 insertSubview:v3[5] belowSubview:v3[6]];
     v27.receiver = v3;
     v27.super_class = NTKChronoHandsView;
-    v12 = [(NTKChronoHandsView *)&v27 createSecondHandView];
+    createSecondHandView = [(NTKChronoHandsView *)&v27 createSecondHandView];
     v13 = v3[4];
-    v3[4] = v12;
+    v3[4] = createSecondHandView;
 
     v14 = v3[4];
-    v15 = [v3 minuteHandView];
-    [v3 insertSubview:v14 aboveSubview:v15];
+    minuteHandView = [v3 minuteHandView];
+    [v3 insertSubview:v14 aboveSubview:minuteHandView];
 
     v16 = v3[4];
     v17 = +[UIColor systemOrangeColor];
@@ -61,9 +61,9 @@
     [v3[4] setDropShadowsHidden:1];
     v26.receiver = v3;
     v26.super_class = NTKChronoHandsView;
-    v18 = [(NTKChronoHandsView *)&v26 createSecondHandView];
+    createSecondHandView2 = [(NTKChronoHandsView *)&v26 createSecondHandView];
     v19 = v3[5];
-    v3[5] = v18;
+    v3[5] = createSecondHandView2;
 
     v20 = v3[5];
     v21 = +[UIColor systemBlueColor];
@@ -74,9 +74,9 @@
     [v3[4] bounds];
     [v22 setBounds:?];
     [v3 insertSubview:v3[5] belowSubview:v3[4]];
-    v23 = [v3 secondHandView];
-    v24 = [v3 hourHandView];
-    [v3 insertSubview:v23 belowSubview:v24];
+    secondHandView = [v3 secondHandView];
+    hourHandView2 = [v3 hourHandView];
+    [v3 insertSubview:secondHandView belowSubview:hourHandView2];
 
     v3[2] = 0;
   }
@@ -84,21 +84,21 @@
   return v3;
 }
 
-- (id)createTinyBabyHandViewWithColor:(id)a3
+- (id)createTinyBabyHandViewWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(NTKChronoHandsView *)self device];
+  colorCopy = color;
+  device = [(NTKChronoHandsView *)self device];
   v6 = [NTKHandView alloc];
-  v7 = [(NTKChronoHandsView *)self tinyBabyHandConfiguration];
-  v8 = [v6 initWithConfiguration:v7 forDevice:v5 maskedShadow:0];
+  tinyBabyHandConfiguration = [(NTKChronoHandsView *)self tinyBabyHandConfiguration];
+  v8 = [v6 initWithConfiguration:tinyBabyHandConfiguration forDevice:device maskedShadow:0];
 
   [v8 anchorPointFromConfiguration];
   v10 = v9;
   v12 = v11;
-  v13 = [v8 layer];
-  [v13 setAnchorPoint:{v10, v12}];
+  layer = [v8 layer];
+  [layer setAnchorPoint:{v10, v12}];
 
-  [v8 setColor:v4];
+  [v8 setColor:colorCopy];
   [v8 setRadialShadowsHidden:1];
   [v8 setDropShadowsHidden:1];
 
@@ -107,8 +107,8 @@
 
 - (id)tinyBabyHandConfiguration
 {
-  v2 = [(NTKChronoHandsView *)self device];
-  v3 = [CLKUIAnalogHandConfiguration defaultSubdialConfigurationForDevice:v2];
+  device = [(NTKChronoHandsView *)self device];
+  v3 = [CLKUIAnalogHandConfiguration defaultSubdialConfigurationForDevice:device];
 
   return v3;
 }
@@ -134,15 +134,15 @@
   [(NTKHandView *)self->_chronoFlybackSecondHandView setCenter:v4, v6];
   [(NTKHandView *)self->_chronoMinuteHandView setCenter:self->_upperDialCenter.x, self->_upperDialCenter.y];
   [(NTKHandView *)self->_chronoFlybackMinuteHandView setCenter:self->_upperDialCenter.x, self->_upperDialCenter.y];
-  v7 = [(NTKChronoHandsView *)self secondHandView];
-  [v7 setCenter:{self->_lowerDialCenter.x, self->_lowerDialCenter.y}];
+  secondHandView = [(NTKChronoHandsView *)self secondHandView];
+  [secondHandView setCenter:{self->_lowerDialCenter.x, self->_lowerDialCenter.y}];
 }
 
-- (void)setMinuteHandUsesManualTime:(BOOL)a3
+- (void)setMinuteHandUsesManualTime:(BOOL)time
 {
-  if (self->_minuteHandUsesManualTime != a3)
+  if (self->_minuteHandUsesManualTime != time)
   {
-    self->_minuteHandUsesManualTime = a3;
+    self->_minuteHandUsesManualTime = time;
     if (self->_isChronoAnimationRunning)
     {
       [(NTKChronoHandsView *)self startNewChronoAnimation];
@@ -254,75 +254,75 @@
   [(NTKChronoHandsView *)self _enumerateFlybackChronoHands:v4];
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  if (self->_palette != a3)
+  if (self->_palette != palette)
   {
-    self->_palette = a3;
-    v5 = a3;
-    v20 = [v5 foregroundColor];
-    v6 = [(NTKChronoHandsView *)self minuteHandView];
-    [v6 setColor:v20];
+    self->_palette = palette;
+    paletteCopy = palette;
+    foregroundColor = [paletteCopy foregroundColor];
+    minuteHandView = [(NTKChronoHandsView *)self minuteHandView];
+    [minuteHandView setColor:foregroundColor];
 
-    v7 = [(NTKChronoHandsView *)self hourHandView];
-    [v7 setColor:v20];
+    hourHandView = [(NTKChronoHandsView *)self hourHandView];
+    [hourHandView setColor:foregroundColor];
 
-    v8 = [(NTKChronoHandsView *)self secondHandView];
-    [v8 setColor:v20];
+    secondHandView = [(NTKChronoHandsView *)self secondHandView];
+    [secondHandView setColor:foregroundColor];
 
-    v9 = [v5 chronoHandColor];
-    [(NTKHandView *)self->_chronoSecondHandView setColor:v9];
-    [(NTKHandView *)self->_chronoMinuteHandView setColor:v9];
-    v10 = [v5 showsShadows];
-    v11 = [(NTKChronoHandsView *)self minuteHandView];
-    [v11 setShadowsHidden:v10 ^ 1];
+    chronoHandColor = [paletteCopy chronoHandColor];
+    [(NTKHandView *)self->_chronoSecondHandView setColor:chronoHandColor];
+    [(NTKHandView *)self->_chronoMinuteHandView setColor:chronoHandColor];
+    showsShadows = [paletteCopy showsShadows];
+    minuteHandView2 = [(NTKChronoHandsView *)self minuteHandView];
+    [minuteHandView2 setShadowsHidden:showsShadows ^ 1];
 
-    v12 = [(NTKChronoHandsView *)self hourHandView];
-    [v12 setShadowsHidden:v10 ^ 1];
+    hourHandView2 = [(NTKChronoHandsView *)self hourHandView];
+    [hourHandView2 setShadowsHidden:showsShadows ^ 1];
 
-    v13 = [(NTKChronoHandsView *)self chronoSecondHandView];
-    [v13 setShadowsHidden:v10 ^ 1];
+    chronoSecondHandView = [(NTKChronoHandsView *)self chronoSecondHandView];
+    [chronoSecondHandView setShadowsHidden:showsShadows ^ 1];
 
-    v14 = [(NTKChronoHandsView *)self chronoFlybackSecondHandView];
-    [v14 setShadowsHidden:v10 ^ 1];
+    chronoFlybackSecondHandView = [(NTKChronoHandsView *)self chronoFlybackSecondHandView];
+    [chronoFlybackSecondHandView setShadowsHidden:showsShadows ^ 1];
 
-    v15 = [(NTKChronoHandsView *)self chronoSecondHandView];
-    v16 = [v5 backgroundColor];
-    [v15 setHandDotColor:v16];
+    chronoSecondHandView2 = [(NTKChronoHandsView *)self chronoSecondHandView];
+    backgroundColor = [paletteCopy backgroundColor];
+    [chronoSecondHandView2 setHandDotColor:backgroundColor];
 
-    v17 = [(NTKChronoHandsView *)self chronoFlybackSecondHandView];
-    v18 = [v5 backgroundColor];
-    [v17 setHandDotColor:v18];
+    chronoFlybackSecondHandView2 = [(NTKChronoHandsView *)self chronoFlybackSecondHandView];
+    backgroundColor2 = [paletteCopy backgroundColor];
+    [chronoFlybackSecondHandView2 setHandDotColor:backgroundColor2];
 
-    v19 = [v5 inlayColor];
+    inlayColor = [paletteCopy inlayColor];
 
-    [(NTKChronoHandsView *)self setInlayColor:v19];
+    [(NTKChronoHandsView *)self setInlayColor:inlayColor];
   }
 }
 
-- (void)_enumerateChronoHandViews:(id)a3
+- (void)_enumerateChronoHandViews:(id)views
 {
-  v4 = a3;
-  [(NTKChronoHandsView *)self _enumeratePrimaryChronoHands:v4];
-  [(NTKChronoHandsView *)self _enumerateFlybackChronoHands:v4];
+  viewsCopy = views;
+  [(NTKChronoHandsView *)self _enumeratePrimaryChronoHands:viewsCopy];
+  [(NTKChronoHandsView *)self _enumerateFlybackChronoHands:viewsCopy];
 }
 
-- (void)_enumeratePrimaryChronoHands:(id)a3
+- (void)_enumeratePrimaryChronoHands:(id)hands
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (hands + 16);
+  v5 = *(hands + 2);
+  handsCopy = hands;
   v5();
-  (*v4)(v6, self->_chronoMinuteHandView);
+  (*v4)(handsCopy, self->_chronoMinuteHandView);
 }
 
-- (void)_enumerateFlybackChronoHands:(id)a3
+- (void)_enumerateFlybackChronoHands:(id)hands
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (hands + 16);
+  v5 = *(hands + 2);
+  handsCopy = hands;
   v5();
-  (*v4)(v6, self->_chronoFlybackMinuteHandView);
+  (*v4)(handsCopy, self->_chronoFlybackMinuteHandView);
 }
 
 - (double)chronoDuration

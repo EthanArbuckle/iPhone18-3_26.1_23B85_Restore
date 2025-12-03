@@ -1,9 +1,9 @@
 @interface ASRelationshipEvent
-+ (id)_relationshipEventWithCodable:(id)a3;
-+ (id)relationshipEventWithRecord:(id)a3;
-- (ASRelationshipEvent)initWithType:(unsigned __int16)a3 anchor:(unsigned __int16)a4 timestamp:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRelationshipEvent:(id)a3;
++ (id)_relationshipEventWithCodable:(id)codable;
++ (id)relationshipEventWithRecord:(id)record;
+- (ASRelationshipEvent)initWithType:(unsigned __int16)type anchor:(unsigned __int16)anchor timestamp:(id)timestamp;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRelationshipEvent:(id)event;
 - (id)_codableRelationshipEvent;
 - (id)description;
 @end
@@ -25,35 +25,35 @@
   v3 = objc_alloc_init(ASCodableCloudKitRelationshipEvent);
   [(ASCodableCloudKitRelationshipEvent *)v3 setAnchor:[(ASRelationshipEvent *)self anchor]];
   [(ASCodableCloudKitRelationshipEvent *)v3 setType:[(ASRelationshipEvent *)self type]];
-  v4 = [(ASRelationshipEvent *)self timestamp];
-  [v4 timeIntervalSinceReferenceDate];
+  timestamp = [(ASRelationshipEvent *)self timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   [(ASCodableCloudKitRelationshipEvent *)v3 setDate:?];
 
   return v3;
 }
 
-+ (id)_relationshipEventWithCodable:(id)a3
++ (id)_relationshipEventWithCodable:(id)codable
 {
-  v3 = a3;
-  v4 = [v3 anchor];
-  v5 = [v3 type];
+  codableCopy = codable;
+  anchor = [codableCopy anchor];
+  type = [codableCopy type];
   v6 = MEMORY[0x277CBEAA8];
-  [v3 date];
+  [codableCopy date];
   v8 = v7;
 
   v9 = [v6 dateWithTimeIntervalSinceReferenceDate:v8];
-  v10 = [[ASRelationshipEvent alloc] initWithType:v5 anchor:v4 timestamp:v9];
+  v10 = [[ASRelationshipEvent alloc] initWithType:type anchor:anchor timestamp:v9];
 
   return v10;
 }
 
-+ (id)relationshipEventWithRecord:(id)a3
++ (id)relationshipEventWithRecord:(id)record
 {
-  v3 = a3;
-  if (_ASCloudKitSchemaVersionForRecord(v3) == 2)
+  recordCopy = record;
+  if (_ASCloudKitSchemaVersionForRecord(recordCopy) == 2)
   {
-    v4 = [v3 encryptedValues];
-    v5 = [v4 objectForKeyedSubscript:@"EncryptedData"];
+    encryptedValues = [recordCopy encryptedValues];
+    v5 = [encryptedValues objectForKeyedSubscript:@"EncryptedData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,10 +68,10 @@
     if (v6)
     {
       v8 = [[ASCodableCloudKitRelationshipEvent alloc] initWithData:v6];
-      v9 = [(ASCodableCloudKitRelationshipEvent *)v8 anchor];
-      v10 = [(ASCodableCloudKitRelationshipEvent *)v8 type];
-      v11 = [v3 creationDate];
-      v7 = [[ASRelationshipEvent alloc] initWithType:v10 anchor:v9 timestamp:v11];
+      anchor = [(ASCodableCloudKitRelationshipEvent *)v8 anchor];
+      type = [(ASCodableCloudKitRelationshipEvent *)v8 type];
+      creationDate = [recordCopy creationDate];
+      v7 = [[ASRelationshipEvent alloc] initWithType:type anchor:anchor timestamp:creationDate];
     }
 
     else
@@ -100,27 +100,27 @@
   return v7;
 }
 
-- (ASRelationshipEvent)initWithType:(unsigned __int16)a3 anchor:(unsigned __int16)a4 timestamp:(id)a5
+- (ASRelationshipEvent)initWithType:(unsigned __int16)type anchor:(unsigned __int16)anchor timestamp:(id)timestamp
 {
-  v9 = a5;
+  timestampCopy = timestamp;
   v13.receiver = self;
   v13.super_class = ASRelationshipEvent;
   v10 = [(ASRelationshipEvent *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v10->_anchor = a4;
-    objc_storeStrong(&v10->_timestamp, a5);
+    v10->_type = type;
+    v10->_anchor = anchor;
+    objc_storeStrong(&v10->_timestamp, timestamp);
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -128,21 +128,21 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ASRelationshipEvent *)self isEqualToRelationshipEvent:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ASRelationshipEvent *)self isEqualToRelationshipEvent:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToRelationshipEvent:(id)a3
+- (BOOL)isEqualToRelationshipEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   anchor = self->_anchor;
-  if (anchor == [v4 anchor] && (type = self->_type, type == objc_msgSend(v4, "type")))
+  if (anchor == [eventCopy anchor] && (type = self->_type, type == objc_msgSend(eventCopy, "type")))
   {
     timestamp = self->_timestamp;
-    v8 = [v4 timestamp];
-    v9 = [(NSDate *)timestamp isEqualToDate:v8];
+    timestamp = [eventCopy timestamp];
+    v9 = [(NSDate *)timestamp isEqualToDate:timestamp];
   }
 
   else

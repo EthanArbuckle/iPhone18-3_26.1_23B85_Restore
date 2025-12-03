@@ -3,14 +3,14 @@
 - (CarRouteGeniusManager)init;
 - (void)_startPredictingRetryTimer;
 - (void)_stopPredictingRetryTimer;
-- (void)activateIfPossibleForChrome:(id)a3;
+- (void)activateIfPossibleForChrome:(id)chrome;
 - (void)deactivateForAllChromes;
-- (void)deactivateForChrome:(id)a3;
+- (void)deactivateForChrome:(id)chrome;
 - (void)dealloc;
-- (void)didUpdateRouteGenius:(id)a3;
-- (void)locationApprovalDidChange:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setPreciseLocationEnabled:(BOOL)a3;
+- (void)didUpdateRouteGenius:(id)genius;
+- (void)locationApprovalDidChange:(id)change;
+- (void)setActive:(BOOL)active;
+- (void)setPreciseLocationEnabled:(BOOL)enabled;
 - (void)startPredictingDestinationIfNeeded;
 - (void)stopPredictingDestinationIfNeeded;
 - (void)vehicleBatteryChangedSignificantly;
@@ -25,7 +25,7 @@
   v10[1] = 3221225472;
   v11 = sub_10008B9E8;
   v12 = &unk_101661B18;
-  v13 = self;
+  selfCopy = self;
   v4 = &_dispatch_main_q;
   v5 = v10;
   label = dispatch_queue_get_label(&_dispatch_main_q);
@@ -43,7 +43,7 @@
   }
 }
 
-- (void)locationApprovalDidChange:(id)a3
+- (void)locationApprovalDidChange:(id)change
 {
   v4 = +[MKLocationManager sharedLocationManager];
   -[CarRouteGeniusManager setPreciseLocationEnabled:](self, "setPreciseLocationEnabled:", [v4 isAuthorizedForPreciseLocation]);
@@ -62,18 +62,18 @@
   [v3 forceReroute];
 }
 
-- (void)didUpdateRouteGenius:(id)a3
+- (void)didUpdateRouteGenius:(id)genius
 {
-  v4 = a3;
+  geniusCopy = genius;
   v5 = sub_10008B0B8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = geniusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "didUpdateRouteGenius:entry: %@", &v6, 0xCu);
   }
 
-  if (v4)
+  if (geniusCopy)
   {
     [(CarRouteGeniusManager *)self _stopPredictingRetryTimer];
   }
@@ -89,9 +89,9 @@
   v3 = sub_10008B0B8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CarRouteGeniusManager *)self isActive];
+    isActive = [(CarRouteGeniusManager *)self isActive];
     v5 = @"NO";
-    if (v4)
+    if (isActive)
     {
       v5 = @"YES";
     }
@@ -109,16 +109,16 @@
     [v7 stop];
 
     v8 = +[CarDisplayController sharedInstance];
-    v9 = [v8 platformController];
-    v10 = [v9 currentSession];
+    platformController = [v8 platformController];
+    currentSession = [platformController currentSession];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
       v12 = +[CarDisplayController sharedInstance];
-      v13 = [v12 platformController];
-      [v13 clearIfCurrentSessionIsKindOfClass:objc_opt_class()];
+      platformController2 = [v12 platformController];
+      [platformController2 clearIfCurrentSessionIsKindOfClass:objc_opt_class()];
     }
   }
 }
@@ -128,9 +128,9 @@
   v3 = sub_10008B0B8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CarRouteGeniusManager *)self isActive];
+    isActive = [(CarRouteGeniusManager *)self isActive];
     v5 = @"NO";
-    if (v4)
+    if (isActive)
     {
       v5 = @"YES";
     }
@@ -157,8 +157,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Stopping predicting retry timer", v5, 2u);
   }
 
-  v4 = [(CarRouteGeniusManager *)self predictingRetryTimer];
-  [v4 invalidate];
+  predictingRetryTimer = [(CarRouteGeniusManager *)self predictingRetryTimer];
+  [predictingRetryTimer invalidate];
 
   [(CarRouteGeniusManager *)self setPredictingRetryTimer:0];
   [(CarRouteGeniusManager *)self setRetryCount:0];
@@ -167,16 +167,16 @@
 - (void)_startPredictingRetryTimer
 {
   v3 = +[MNNavigationService sharedService];
-  v4 = [v3 state];
+  state = [v3 state];
 
-  if (v4 == 1)
+  if (state == 1)
   {
     v5 = sub_10008B0B8();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = +[MNNavigationService sharedService];
       *buf = 134217984;
-      v22 = [v6 state];
+      state2 = [v6 state];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Predicting retry timer not needed state=%lu", buf, 0xCu);
     }
 
@@ -185,25 +185,25 @@
 
   else
   {
-    v7 = [(CarRouteGeniusManager *)self predictingRetryTimer];
+    predictingRetryTimer = [(CarRouteGeniusManager *)self predictingRetryTimer];
 
     v8 = sub_10008B0B8();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v7)
+    if (predictingRetryTimer)
     {
       if (v9)
       {
-        v10 = [(CarRouteGeniusManager *)self retryCount];
-        v11 = [(CarRouteGeniusManager *)self isActive];
+        retryCount = [(CarRouteGeniusManager *)self retryCount];
+        isActive = [(CarRouteGeniusManager *)self isActive];
         v12 = @"NO";
-        if (v11)
+        if (isActive)
         {
           v12 = @"YES";
         }
 
         v13 = v12;
         *buf = 134218242;
-        v22 = v10;
+        state2 = retryCount;
         v23 = 2112;
         v24 = v13;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Predicting retry timer already running retryCount=%lu routeGeniusActive=%@", buf, 0x16u);
@@ -214,17 +214,17 @@
     {
       if (v9)
       {
-        v14 = [(CarRouteGeniusManager *)self retryCount];
-        v15 = [(CarRouteGeniusManager *)self isActive];
+        retryCount2 = [(CarRouteGeniusManager *)self retryCount];
+        isActive2 = [(CarRouteGeniusManager *)self isActive];
         v16 = @"NO";
-        if (v15)
+        if (isActive2)
         {
           v16 = @"YES";
         }
 
         v17 = v16;
         *buf = 134218242;
-        v22 = v14;
+        state2 = retryCount2;
         v23 = 2112;
         v24 = v17;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Predicting retry timer being started retryCount=%lu routeGeniusActive=%@", buf, 0x16u);
@@ -245,11 +245,11 @@
   }
 }
 
-- (void)setPreciseLocationEnabled:(BOOL)a3
+- (void)setPreciseLocationEnabled:(BOOL)enabled
 {
-  if (self->_preciseLocationEnabled != a3)
+  if (self->_preciseLocationEnabled != enabled)
   {
-    self->_preciseLocationEnabled = a3;
+    self->_preciseLocationEnabled = enabled;
     v4 = sub_10008B0B8();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -264,18 +264,18 @@
       }
 
       v6 = v5;
-      v7 = [(CarRouteGeniusManager *)self activeChromes];
+      activeChromes = [(CarRouteGeniusManager *)self activeChromes];
       v9 = 138412546;
       v10 = v6;
       v11 = 2048;
-      v12 = [v7 count];
+      v12 = [activeChromes count];
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "CarRouteGeniusManager: precise location was set to %@. activeChromes.count: %ld.", &v9, 0x16u);
     }
 
     if (self->_preciseLocationEnabled)
     {
-      v8 = [(CarRouteGeniusManager *)self activeChromes];
-      -[CarRouteGeniusManager setActive:](self, "setActive:", [v8 count] != 0);
+      activeChromes2 = [(CarRouteGeniusManager *)self activeChromes];
+      -[CarRouteGeniusManager setActive:](self, "setActive:", [activeChromes2 count] != 0);
     }
 
     else
@@ -285,11 +285,11 @@
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = sub_10008B0B8();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -304,7 +304,7 @@
       }
 
       v7 = v6;
-      if (v3)
+      if (activeCopy)
       {
         v8 = @"YES";
       }
@@ -322,14 +322,14 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "setting route genius active:%@=>%@", &v13, 0x16u);
     }
 
-    self->_active = v3;
-    v10 = [(CarRouteGeniusManager *)self vehicleMonitor];
-    [v10 setActive:v3];
+    self->_active = activeCopy;
+    vehicleMonitor = [(CarRouteGeniusManager *)self vehicleMonitor];
+    [vehicleMonitor setActive:activeCopy];
 
     [(CarRouteGeniusManager *)self setRetryCount:0];
     v11 = +[CarRouteGeniusService sharedService];
     v12 = v11;
-    if (v3)
+    if (activeCopy)
     {
       [v11 registerObserver:self];
 
@@ -345,9 +345,9 @@
   }
 }
 
-- (void)deactivateForChrome:(id)a3
+- (void)deactivateForChrome:(id)chrome
 {
-  v4 = a3;
+  chromeCopy = chrome;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -391,9 +391,9 @@
   v17[1] = 3221225472;
   v18 = sub_100C8C92C;
   v19 = &unk_101661A90;
-  v8 = v4;
+  v8 = chromeCopy;
   v20 = v8;
-  v21 = self;
+  selfCopy = self;
   v9 = &_dispatch_main_q;
   v10 = v17;
   v11 = dispatch_queue_get_label(&_dispatch_main_q);
@@ -411,9 +411,9 @@
   }
 }
 
-- (void)activateIfPossibleForChrome:(id)a3
+- (void)activateIfPossibleForChrome:(id)chrome
 {
-  v4 = a3;
+  chromeCopy = chrome;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -453,7 +453,7 @@
     }
   }
 
-  v8 = v4;
+  v8 = chromeCopy;
   if ([v8 conformsToProtocol:&OBJC_PROTOCOL___CarSceneTyping])
   {
     v9 = v8;
@@ -466,12 +466,12 @@
 
   v10 = v9;
 
-  v11 = [v10 sceneType];
-  v12 = v11 - 4;
-  if (v11 >= 4)
+  sceneType = [v10 sceneType];
+  v12 = sceneType - 4;
+  if (sceneType >= 4)
   {
-    v13 = sub_10008B0B8();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    platformController = sub_10008B0B8();
+    if (os_log_type_enabled(platformController, OS_LOG_TYPE_INFO))
     {
       if (v12 > 2)
       {
@@ -487,60 +487,60 @@
       v63 = v8;
       v64 = 2112;
       v65 = v14;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "activateIfPossibleForChrome: not activating RGManager for chrome: %p because it is not a supported sceneType: %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, platformController, OS_LOG_TYPE_INFO, "activateIfPossibleForChrome: not activating RGManager for chrome: %p because it is not a supported sceneType: %@", buf, 0x16u);
     }
 
     goto LABEL_47;
   }
 
   v15 = +[GEOCountryConfiguration sharedConfiguration];
-  v16 = [v15 currentCountrySupportsRouteGenius];
+  currentCountrySupportsRouteGenius = [v15 currentCountrySupportsRouteGenius];
 
-  if ((v16 & 1) == 0)
+  if ((currentCountrySupportsRouteGenius & 1) == 0)
   {
-    v13 = sub_10008B0B8();
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    platformController = sub_10008B0B8();
+    if (!os_log_type_enabled(platformController, OS_LOG_TYPE_INFO))
     {
       goto LABEL_47;
     }
 
     v42 = +[GEOCountryConfiguration sharedConfiguration];
-    v43 = [v42 countryCode];
+    countryCode = [v42 countryCode];
     *buf = 138412290;
-    v63 = v43;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "activateIfPossibleForChrome: not activating RGManager because we're in a country (%@) that does not support RG.", buf, 0xCu);
+    v63 = countryCode;
+    _os_log_impl(&_mh_execute_header, platformController, OS_LOG_TYPE_INFO, "activateIfPossibleForChrome: not activating RGManager because we're in a country (%@) that does not support RG.", buf, 0xCu);
 
 LABEL_44:
     goto LABEL_47;
   }
 
   v17 = +[MNNavigationService sharedService];
-  v18 = [v17 state];
+  state = [v17 state];
 
-  if (!v8 || v18 >= 2)
+  if (!v8 || state >= 2)
   {
-    v13 = sub_10008B0B8();
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    platformController = sub_10008B0B8();
+    if (!os_log_type_enabled(platformController, OS_LOG_TYPE_INFO))
     {
       goto LABEL_47;
     }
 
     v42 = +[MNNavigationService sharedService];
-    v44 = [v42 state];
+    state2 = [v42 state];
     *buf = 134217984;
-    v63 = v44;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "activateIfPossibleForChrome: not activating RGManager because MNNavigationService is in state=%lu", buf, 0xCu);
+    v63 = state2;
+    _os_log_impl(&_mh_execute_header, platformController, OS_LOG_TYPE_INFO, "activateIfPossibleForChrome: not activating RGManager because MNNavigationService is in state=%lu", buf, 0xCu);
     goto LABEL_44;
   }
 
   v19 = +[CarDisplayController sharedInstance];
-  v13 = [v19 platformController];
+  platformController = [v19 platformController];
 
-  v20 = [v13 sessionStack];
-  if ([v20 count])
+  sessionStack = [platformController sessionStack];
+  if ([sessionStack count])
   {
-    v21 = [v13 sessionStack];
-    v22 = [v21 firstObject];
+    sessionStack2 = [platformController sessionStack];
+    firstObject = [sessionStack2 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -549,14 +549,14 @@ LABEL_44:
       v24 = sub_10008B0B8();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = [v13 sessionStack];
-        v26 = v25;
-        if (v25)
+        sessionStack3 = [platformController sessionStack];
+        v26 = sessionStack3;
+        if (sessionStack3)
         {
-          if ([v25 count])
+          if ([sessionStack3 count])
           {
             v55 = v24;
-            v56 = v13;
+            v56 = platformController;
             v57 = v8;
             v27 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v26 count]);
             v58 = 0u;
@@ -627,7 +627,7 @@ LABEL_39:
                 v40 = [v28 componentsJoinedByString:{@", "}];
                 v41 = [NSString stringWithFormat:@"<%p> [%@]", v28, v40];
 
-                v13 = v56;
+                platformController = v56;
                 v8 = v57;
                 v26 = v54;
                 v24 = v55;
@@ -670,13 +670,13 @@ LABEL_59:
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "activateIfPossibleForChrome: adding new active chrome: <%@: %p>", buf, 0x16u);
   }
 
-  v47 = [(CarRouteGeniusManager *)self activeChromes];
-  [v47 addObject:v8];
+  activeChromes = [(CarRouteGeniusManager *)self activeChromes];
+  [activeChromes addObject:v8];
 
   if ([(CarRouteGeniusManager *)self isPreciseLocationEnabled])
   {
-    v48 = [(CarRouteGeniusManager *)self activeChromes];
-    v49 = [v48 count];
+    activeChromes2 = [(CarRouteGeniusManager *)self activeChromes];
+    v49 = [activeChromes2 count];
 
     if (v49)
     {
@@ -741,8 +741,8 @@ LABEL_47:
       v9 = [(CarRouteGeniusVehicleBatteryMonitor *)v6 initWithRouteGeniusService:v7 virtualGarageService:v8 callbackQueue:&_dispatch_main_q];
       [(CarRouteGeniusManager *)v2 setVehicleMonitor:v9];
 
-      v10 = [(CarRouteGeniusManager *)v2 vehicleMonitor];
-      [v10 setDelegate:v2];
+      vehicleMonitor = [(CarRouteGeniusManager *)v2 vehicleMonitor];
+      [vehicleMonitor setDelegate:v2];
     }
   }
 

@@ -1,22 +1,22 @@
 @interface ATXActionToPSSuggestionConverter
-- (id)convertSuggestions:(id)a3;
-- (id)proactiveSuggestionForPeopleSuggestion:(id)a3 originalSuggestion:(id)a4;
-- (id)psRecipientFromINPerson:(id)a3;
-- (id)psSuggesetionFromINStartCallIntent:(id)a3;
-- (id)psSuggestionFromINSendMessageIntent:(id)a3;
+- (id)convertSuggestions:(id)suggestions;
+- (id)proactiveSuggestionForPeopleSuggestion:(id)suggestion originalSuggestion:(id)originalSuggestion;
+- (id)psRecipientFromINPerson:(id)person;
+- (id)psSuggesetionFromINStartCallIntent:(id)intent;
+- (id)psSuggestionFromINSendMessageIntent:(id)intent;
 @end
 
 @implementation ATXActionToPSSuggestionConverter
 
-- (id)convertSuggestions:(id)a3
+- (id)convertSuggestions:(id)suggestions
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = __atxlog_handle_blending();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v40 = [v4 count];
+    v40 = [suggestionsCopy count];
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Starting ATXAction to PSSuggestion conversion with %lu suggestions", buf, 0xCu);
   }
 
@@ -25,13 +25,13 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v4;
+  obj = suggestionsCopy;
   v6 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v35;
-    v29 = self;
+    selfCopy = self;
     do
     {
       v9 = 0;
@@ -44,11 +44,11 @@
 
         v10 = *(*(&v34 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 executableSpecification];
-        v13 = [v12 executableClassString];
+        executableSpecification = [v10 executableSpecification];
+        executableClassString = [executableSpecification executableClassString];
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
-        v16 = [v13 isEqualToString:v15];
+        v16 = [executableClassString isEqualToString:v15];
 
         if ((v16 & 1) == 0)
         {
@@ -56,11 +56,11 @@
           goto LABEL_25;
         }
 
-        v17 = [v10 executableSpecification];
-        v18 = [v17 executableObject];
+        executableSpecification2 = [v10 executableSpecification];
+        executableObject = [executableSpecification2 executableObject];
 
-        v19 = [v18 intent];
-        if (v19)
+        intent = [executableObject intent];
+        if (intent)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -68,7 +68,7 @@
             goto LABEL_15;
           }
 
-          v20 = [(ATXActionToPSSuggestionConverter *)self psSuggestionFromINSendMessageIntent:v19];
+          v20 = [(ATXActionToPSSuggestionConverter *)self psSuggestionFromINSendMessageIntent:intent];
           if (v20)
           {
             v21 = v20;
@@ -80,12 +80,12 @@
             }
 
             [v31 addObject:v22];
-            self = v29;
+            self = selfCopy;
 LABEL_15:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v24 = [(ATXActionToPSSuggestionConverter *)self psSuggesetionFromINStartCallIntent:v19];
+              v24 = [(ATXActionToPSSuggestionConverter *)self psSuggesetionFromINStartCallIntent:intent];
               if (v24)
               {
                 v25 = [(ATXActionToPSSuggestionConverter *)self proactiveSuggestionForPeopleSuggestion:v24 originalSuggestion:v10];
@@ -128,49 +128,49 @@ LABEL_25:
   return v31;
 }
 
-- (id)proactiveSuggestionForPeopleSuggestion:(id)a3 originalSuggestion:(id)a4
+- (id)proactiveSuggestionForPeopleSuggestion:(id)suggestion originalSuggestion:(id)originalSuggestion
 {
   v5 = MEMORY[0x277D420A0];
-  v6 = a4;
-  v7 = a3;
+  originalSuggestionCopy = originalSuggestion;
+  suggestionCopy = suggestion;
   v8 = [v5 alloc];
-  v9 = [v7 conversationIdentifier];
+  conversationIdentifier = [suggestionCopy conversationIdentifier];
   v10 = [MEMORY[0x277D42088] layoutConfigurationsForLayoutOptions:2];
-  v11 = [v8 initWithTitle:v9 subtitle:0 preferredLayoutConfigs:v10 allowedOnLockscreen:1 allowedOnHomeScreen:1 allowedOnSpotlight:1];
+  v11 = [v8 initWithTitle:conversationIdentifier subtitle:0 preferredLayoutConfigs:v10 allowedOnLockscreen:1 allowedOnHomeScreen:1 allowedOnSpotlight:1];
 
   v12 = objc_alloc(MEMORY[0x277D42080]);
-  v13 = [v7 description];
+  v13 = [suggestionCopy description];
   v14 = objc_opt_new();
-  v15 = [v14 UUIDString];
-  v16 = [v12 initWithExecutableObject:v7 executableDescription:v13 executableIdentifier:v15 suggestionExecutableType:6];
+  uUIDString = [v14 UUIDString];
+  v16 = [v12 initWithExecutableObject:suggestionCopy executableDescription:v13 executableIdentifier:uUIDString suggestionExecutableType:6];
 
   v17 = objc_alloc(MEMORY[0x277D42068]);
-  v18 = [v6 clientModelSpecification];
-  v19 = [v6 scoreSpecification];
+  clientModelSpecification = [originalSuggestionCopy clientModelSpecification];
+  scoreSpecification = [originalSuggestionCopy scoreSpecification];
 
-  v20 = [v17 initWithClientModelSpecification:v18 executableSpecification:v16 uiSpecification:v11 scoreSpecification:v19];
+  v20 = [v17 initWithClientModelSpecification:clientModelSpecification executableSpecification:v16 uiSpecification:v11 scoreSpecification:scoreSpecification];
 
   return v20;
 }
 
-- (id)psSuggestionFromINSendMessageIntent:(id)a3
+- (id)psSuggestionFromINSendMessageIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [v4 recipients];
-  if ([v5 count])
+  intentCopy = intent;
+  recipients = [intentCopy recipients];
+  if ([recipients count])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __72__ATXActionToPSSuggestionConverter_psSuggestionFromINSendMessageIntent___block_invoke;
     v14[3] = &unk_2785A0FF0;
     v14[4] = self;
-    v6 = [v5 _pas_mappedArrayWithTransform:v14];
+    v6 = [recipients _pas_mappedArrayWithTransform:v14];
     v7 = objc_alloc(MEMORY[0x277D3A0E0]);
-    v8 = [v4 launchId];
-    v9 = [v4 conversationIdentifier];
-    v10 = [v4 speakableGroupName];
-    v11 = [v10 spokenPhrase];
-    v12 = [v7 initWithBundleID:v8 conversationIdentifier:v9 groupName:v11 recipients:v6];
+    launchId = [intentCopy launchId];
+    conversationIdentifier = [intentCopy conversationIdentifier];
+    speakableGroupName = [intentCopy speakableGroupName];
+    spokenPhrase = [speakableGroupName spokenPhrase];
+    v12 = [v7 initWithBundleID:launchId conversationIdentifier:conversationIdentifier groupName:spokenPhrase recipients:v6];
   }
 
   else
@@ -181,22 +181,22 @@ LABEL_25:
   return v12;
 }
 
-- (id)psSuggesetionFromINStartCallIntent:(id)a3
+- (id)psSuggesetionFromINStartCallIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [v4 contacts];
-  v6 = v5;
-  if (v5)
+  intentCopy = intent;
+  contacts = [intentCopy contacts];
+  v6 = contacts;
+  if (contacts)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __71__ATXActionToPSSuggestionConverter_psSuggesetionFromINStartCallIntent___block_invoke;
     v12[3] = &unk_2785A0FF0;
     v12[4] = self;
-    v7 = [v5 _pas_mappedArrayWithTransform:v12];
+    v7 = [contacts _pas_mappedArrayWithTransform:v12];
     v8 = objc_alloc(MEMORY[0x277D3A0E0]);
-    v9 = [v4 launchId];
-    v10 = [v8 initWithBundleID:v9 conversationIdentifier:0 groupName:0 recipients:v7];
+    launchId = [intentCopy launchId];
+    v10 = [v8 initWithBundleID:launchId conversationIdentifier:0 groupName:0 recipients:v7];
   }
 
   else
@@ -207,24 +207,24 @@ LABEL_25:
   return v10;
 }
 
-- (id)psRecipientFromINPerson:(id)a3
+- (id)psRecipientFromINPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = objc_alloc(MEMORY[0x277D3A0C8]);
-  v6 = [v4 contactIdentifier];
-  v7 = v6;
-  if (!v6)
+  contactIdentifier = [personCopy contactIdentifier];
+  uUIDString = contactIdentifier;
+  if (!contactIdentifier)
   {
     v3 = objc_opt_new();
-    v7 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
   }
 
-  v8 = [v4 personHandle];
-  v9 = [v8 value];
-  v10 = [v4 displayName];
-  v11 = [v5 initWithIdentifier:v7 handle:v9 displayName:v10 contact:0];
+  personHandle = [personCopy personHandle];
+  value = [personHandle value];
+  displayName = [personCopy displayName];
+  v11 = [v5 initWithIdentifier:uUIDString handle:value displayName:displayName contact:0];
 
-  if (!v6)
+  if (!contactIdentifier)
   {
   }
 

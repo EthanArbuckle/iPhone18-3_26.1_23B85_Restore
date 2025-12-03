@@ -1,26 +1,26 @@
 @interface HUMediaSystemEditorGridItemManager
-+ (id)defaultItemProviderCreatorForMediaSystemBuilder:(id)a3 options:(unint64_t)a4;
-- (HUMediaSystemEditorGridItemManager)initWithDelegate:(id)a3 shouldGroupByRoom:(BOOL)a4 itemProvidersCreator:(id)a5;
-- (HUMediaSystemEditorGridItemManager)initWithMediaSystemBuilder:(id)a3 delegate:(id)a4;
-- (id)_itemsToHideInSet:(id)a3;
++ (id)defaultItemProviderCreatorForMediaSystemBuilder:(id)builder options:(unint64_t)options;
+- (HUMediaSystemEditorGridItemManager)initWithDelegate:(id)delegate shouldGroupByRoom:(BOOL)room itemProvidersCreator:(id)creator;
+- (HUMediaSystemEditorGridItemManager)initWithMediaSystemBuilder:(id)builder delegate:(id)delegate;
+- (id)_itemsToHideInSet:(id)set;
 - (id)_roomComparator;
-- (id)_sortedItems:(id)a3 forSectionIdentifier:(id)a4;
+- (id)_sortedItems:(id)items forSectionIdentifier:(id)identifier;
 @end
 
 @implementation HUMediaSystemEditorGridItemManager
 
-+ (id)defaultItemProviderCreatorForMediaSystemBuilder:(id)a3 options:(unint64_t)a4
++ (id)defaultItemProviderCreatorForMediaSystemBuilder:(id)builder options:(unint64_t)options
 {
-  v7 = a3;
+  builderCopy = builder;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __94__HUMediaSystemEditorGridItemManager_defaultItemProviderCreatorForMediaSystemBuilder_options___block_invoke;
   v11[3] = &unk_277DC1B30;
-  v12 = v7;
-  v13 = a4;
-  v14 = a1;
+  v12 = builderCopy;
+  optionsCopy = options;
+  selfCopy = self;
   v15 = a2;
-  v8 = v7;
+  v8 = builderCopy;
   v9 = _Block_copy(v11);
 
   return v9;
@@ -277,50 +277,50 @@ LABEL_9:
   return v10;
 }
 
-- (HUMediaSystemEditorGridItemManager)initWithDelegate:(id)a3 shouldGroupByRoom:(BOOL)a4 itemProvidersCreator:(id)a5
+- (HUMediaSystemEditorGridItemManager)initWithDelegate:(id)delegate shouldGroupByRoom:(BOOL)room itemProvidersCreator:(id)creator
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithMediaSystemBuilder_delegate_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HUMediaSystemEditorGridItemManager.m" lineNumber:128 description:{@"%s is unavailable; use %@ instead", "-[HUMediaSystemEditorGridItemManager initWithDelegate:shouldGroupByRoom:itemProvidersCreator:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMediaSystemEditorGridItemManager.m" lineNumber:128 description:{@"%s is unavailable; use %@ instead", "-[HUMediaSystemEditorGridItemManager initWithDelegate:shouldGroupByRoom:itemProvidersCreator:]", v8}];
 
   return 0;
 }
 
-- (HUMediaSystemEditorGridItemManager)initWithMediaSystemBuilder:(id)a3 delegate:(id)a4
+- (HUMediaSystemEditorGridItemManager)initWithMediaSystemBuilder:(id)builder delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [HUMediaSystemEditorGridItemManager defaultItemProviderCreatorForMediaSystemBuilder:v7 options:9];
+  builderCopy = builder;
+  delegateCopy = delegate;
+  v9 = [HUMediaSystemEditorGridItemManager defaultItemProviderCreatorForMediaSystemBuilder:builderCopy options:9];
   v15.receiver = self;
   v15.super_class = HUMediaSystemEditorGridItemManager;
-  v10 = [(HUServiceGridItemManager *)&v15 initWithDelegate:v8 shouldGroupByRoom:1 itemProvidersCreator:v9];
+  v10 = [(HUServiceGridItemManager *)&v15 initWithDelegate:delegateCopy shouldGroupByRoom:1 itemProvidersCreator:v9];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_mediaSystemBuilder, a3);
-    v11 = [(HUMediaSystemEditorGridItemManager *)v10 mediaSystemBuilder];
-    v12 = [v11 accessories];
-    v13 = [v12 na_map:&__block_literal_global_216];
+    objc_storeStrong(&v10->_mediaSystemBuilder, builder);
+    mediaSystemBuilder = [(HUMediaSystemEditorGridItemManager *)v10 mediaSystemBuilder];
+    accessories = [mediaSystemBuilder accessories];
+    v13 = [accessories na_map:&__block_literal_global_216];
     [(HUMediaSystemEditorGridItemManager *)v10 setPrioritizedRooms:v13];
   }
 
   return v10;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v30.receiver = self;
   v30.super_class = HUMediaSystemEditorGridItemManager;
-  v5 = [(HUServiceGridItemManager *)&v30 _itemsToHideInSet:v4];
+  v5 = [(HUServiceGridItemManager *)&v30 _itemsToHideInSet:setCopy];
   v24 = [v5 mutableCopy];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = setCopy;
   v6 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
@@ -344,13 +344,13 @@ LABEL_9:
         if ([v10 conformsToProtocol:&unk_28251AF08])
         {
           v11 = v10;
-          v12 = [v11 accessories];
-          v13 = [v12 count];
+          accessories = [v11 accessories];
+          v13 = [accessories count];
 
-          v14 = [v11 accessories];
-          v15 = [v14 anyObject];
+          accessories2 = [v11 accessories];
+          anyObject = [accessories2 anyObject];
 
-          if (v13 != 1 || (-[HUMediaSystemEditorGridItemManager mediaSystemBuilder](self, "mediaSystemBuilder"), v16 = objc_claimAutoreleasedReturnValue(), [v16 accessories], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", v15), v17, v16, (v18 & 1) == 0) && (-[HUMediaSystemEditorGridItemManager mediaSystemBuilder](self, "mediaSystemBuilder"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "accessories"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "anyObject"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v19, "shouldAllowAddingAccessory:", v21), v21, v20, v19, (v22 & 1) == 0))
+          if (v13 != 1 || (-[HUMediaSystemEditorGridItemManager mediaSystemBuilder](self, "mediaSystemBuilder"), v16 = objc_claimAutoreleasedReturnValue(), [v16 accessories], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", anyObject), v17, v16, (v18 & 1) == 0) && (-[HUMediaSystemEditorGridItemManager mediaSystemBuilder](self, "mediaSystemBuilder"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "accessories"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "anyObject"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v19, "shouldAllowAddingAccessory:", v21), v21, v20, v19, (v22 & 1) == 0))
           {
             [v24 addObject:v11];
           }
@@ -366,26 +366,26 @@ LABEL_9:
   return v24;
 }
 
-- (id)_sortedItems:(id)a3 forSectionIdentifier:(id)a4
+- (id)_sortedItems:(id)items forSectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUMediaSystemEditorGridItemManager *)self mediaSystemBuilder];
-  v9 = [v8 firstSetupSourceAccessory];
+  itemsCopy = items;
+  identifierCopy = identifier;
+  mediaSystemBuilder = [(HUMediaSystemEditorGridItemManager *)self mediaSystemBuilder];
+  firstSetupSourceAccessory = [mediaSystemBuilder firstSetupSourceAccessory];
 
-  if ([v6 count] >= 2 && v9)
+  if ([itemsCopy count] >= 2 && firstSetupSourceAccessory)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __72__HUMediaSystemEditorGridItemManager__sortedItems_forSectionIdentifier___block_invoke;
     v16[3] = &unk_277DB85D8;
-    v17 = v9;
-    v10 = [v6 na_firstObjectPassingTest:v16];
+    v17 = firstSetupSourceAccessory;
+    v10 = [itemsCopy na_firstObjectPassingTest:v16];
     if (v10)
     {
       v14.receiver = self;
       v14.super_class = HUMediaSystemEditorGridItemManager;
-      v11 = [(HFItemManager *)&v14 _sortedItems:v6 forSectionIdentifier:v7];
+      v11 = [(HFItemManager *)&v14 _sortedItems:itemsCopy forSectionIdentifier:identifierCopy];
       v12 = [v11 mutableCopy];
 
       [v12 removeObject:v10];
@@ -396,7 +396,7 @@ LABEL_9:
     {
       v15.receiver = self;
       v15.super_class = HUMediaSystemEditorGridItemManager;
-      v12 = [(HFItemManager *)&v15 _sortedItems:v6 forSectionIdentifier:v7];
+      v12 = [(HFItemManager *)&v15 _sortedItems:itemsCopy forSectionIdentifier:identifierCopy];
     }
   }
 
@@ -404,7 +404,7 @@ LABEL_9:
   {
     v18.receiver = self;
     v18.super_class = HUMediaSystemEditorGridItemManager;
-    v12 = [(HFItemManager *)&v18 _sortedItems:v6 forSectionIdentifier:v7];
+    v12 = [(HFItemManager *)&v18 _sortedItems:itemsCopy forSectionIdentifier:identifierCopy];
   }
 
   return v12;
@@ -432,18 +432,18 @@ uint64_t __72__HUMediaSystemEditorGridItemManager__sortedItems_forSectionIdentif
 
 - (id)_roomComparator
 {
-  v3 = [(HUMediaSystemEditorGridItemManager *)self prioritizedRooms];
+  prioritizedRooms = [(HUMediaSystemEditorGridItemManager *)self prioritizedRooms];
   v12.receiver = self;
   v12.super_class = HUMediaSystemEditorGridItemManager;
-  v4 = [(HUServiceGridItemManager *)&v12 _roomComparator];
+  _roomComparator = [(HUServiceGridItemManager *)&v12 _roomComparator];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__HUMediaSystemEditorGridItemManager__roomComparator__block_invoke;
   v9[3] = &unk_277DBCF50;
-  v10 = v3;
-  v11 = v4;
-  v5 = v4;
-  v6 = v3;
+  v10 = prioritizedRooms;
+  v11 = _roomComparator;
+  v5 = _roomComparator;
+  v6 = prioritizedRooms;
   v7 = _Block_copy(v9);
 
   return v7;

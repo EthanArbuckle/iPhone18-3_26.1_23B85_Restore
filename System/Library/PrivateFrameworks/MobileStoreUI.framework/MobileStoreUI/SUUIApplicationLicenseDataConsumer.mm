@@ -1,22 +1,22 @@
 @interface SUUIApplicationLicenseDataConsumer
-- (id)applicationLicenseWithDictionary:(id)a3;
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)applicationLicenseWithDictionary:(id)dictionary;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SUUIApplicationLicenseDataConsumer
 
-- (id)applicationLicenseWithDictionary:(id)a3
+- (id)applicationLicenseWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(SUUIApplicationLicensePage);
-  v5 = [v3 objectForKey:@"title"];
+  v5 = [dictionaryCopy objectForKey:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUUIApplicationLicensePage *)v4 setTitle:v5];
   }
 
-  v6 = [v3 objectForKey:@"item-metadata"];
+  v6 = [dictionaryCopy objectForKey:@"item-metadata"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -34,8 +34,8 @@
 
       v9 = objc_alloc(MEMORY[0x277CCACA8]);
       v10 = [MEMORY[0x277D74300] systemFontOfSize:0.0];
-      v11 = [v10 fontName];
-      v12 = [v9 initWithFormat:@"body { padding: 10px; background: white; font-family: '%@'; font-size: 13px; color: black; line-height: 18px; }p { margin-top: 0; padding-top: 0 }", v11];
+      fontName = [v10 fontName];
+      v12 = [v9 initWithFormat:@"body { padding: 10px; background: white; font-family: '%@'; font-size: 13px; color: black; line-height: 18px; }p { margin-top: 0; padding-top: 0 }", fontName];
 
       if ([v8 isEqualToString:@"markup"])
       {
@@ -55,11 +55,11 @@
   return v4;
 }
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = SUUIApplicationLicenseDataConsumer;
-  v6 = [(SSVURLProtocolConsumer *)&v9 objectForData:a3 response:a4 error:a5];
+  v6 = [(SSVURLProtocolConsumer *)&v9 objectForData:data response:response error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

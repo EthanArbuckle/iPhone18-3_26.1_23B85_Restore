@@ -1,42 +1,42 @@
 @interface TSDMaskInfo
-- (BOOL)isEqual:(id)a3;
-- (TSDMaskInfo)initWithContext:(id)a3 geometry:(id)a4;
-- (TSDMaskInfo)initWithContext:(id)a3 geometry:(id)a4 pathSource:(id)a5;
-- (id)copyWithContext:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSDMaskInfo)initWithContext:(id)context geometry:(id)geometry;
+- (TSDMaskInfo)initWithContext:(id)context geometry:(id)geometry pathSource:(id)source;
+- (id)copyWithContext:(id)context;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (void)dealloc;
-- (void)setGeometry:(id)a3;
-- (void)setPathSource:(id)a3;
+- (void)setGeometry:(id)geometry;
+- (void)setPathSource:(id)source;
 @end
 
 @implementation TSDMaskInfo
 
-- (TSDMaskInfo)initWithContext:(id)a3 geometry:(id)a4 pathSource:(id)a5
+- (TSDMaskInfo)initWithContext:(id)context geometry:(id)geometry pathSource:(id)source
 {
   v10.receiver = self;
   v10.super_class = TSDMaskInfo;
-  v6 = [(TSDDrawableInfo *)&v10 initWithContext:a3 geometry:a4];
+  v6 = [(TSDDrawableInfo *)&v10 initWithContext:context geometry:geometry];
   if (v6)
   {
-    if (!a5)
+    if (!source)
     {
-      v7 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMaskInfo initWithContext:geometry:pathSource:]"];
-      [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMaskInfo.m"), 33, @"invalid nil value for '%s'", "pathSource"}];
+      [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMaskInfo.m"), 33, @"invalid nil value for '%s'", "pathSource"}];
     }
 
-    [(TSDMaskInfo *)v6 setPathSource:a5];
+    [(TSDMaskInfo *)v6 setPathSource:source];
   }
 
   return v6;
 }
 
-- (TSDMaskInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSDMaskInfo)initWithContext:(id)context geometry:(id)geometry
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMaskInfo initWithContext:geometry:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMaskInfo.m"), 41, @"call -initWithContext:geometry:style: please"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMaskInfo.m"), 41, @"call -initWithContext:geometry:style: please"}];
   return 0;
 }
 
@@ -47,11 +47,11 @@
   [(TSDDrawableInfo *)&v3 dealloc];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = TSDMaskInfo;
-  v4 = [(TSDDrawableInfo *)&v6 copyWithContext:a3];
+  v4 = [(TSDDrawableInfo *)&v6 copyWithContext:context];
   if (v4)
   {
     v4[18] = [(TSDPathSource *)self->mPathSource copyWithZone:[(TSDMaskInfo *)self zone]];
@@ -60,7 +60,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -73,12 +73,12 @@
   return v4;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v12.receiver = self;
   v12.super_class = TSDMaskInfo;
   [(TSDDrawableInfo *)&v12 setGeometry:?];
-  if ([(TSDDrawableInfo *)self geometry]== a3)
+  if ([(TSDDrawableInfo *)self geometry]== geometry)
   {
     [(TSDInfoGeometry *)[(TSDDrawableInfo *)self geometry] size];
     v6 = v5;
@@ -93,33 +93,33 @@
   }
 }
 
-- (void)setPathSource:(id)a3
+- (void)setPathSource:(id)source
 {
-  if (!a3)
+  if (!source)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMaskInfo setPathSource:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMaskInfo.m"), 109, @"invalid nil value for '%s'", "newPathSource"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMaskInfo.m"), 109, @"invalid nil value for '%s'", "newPathSource"}];
   }
 
-  if (self->mPathSource != a3)
+  if (self->mPathSource != source)
   {
     [(TSDDrawableInfo *)self willChangeProperty:526];
     [(TSPObject *)self willModify];
 
-    self->mPathSource = a3;
+    self->mPathSource = source;
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __36__TSDMaskInfo_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __36__TSDMaskInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -153,16 +153,16 @@ uint64_t __36__TSDMaskInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__TSDMaskInfo_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDMaskInfo *__48__TSDMaskInfo_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)

@@ -87,11 +87,11 @@
       v27.size.width = width;
       v27.size.height = height;
       v17 = [CIVector vectorWithX:MidX Y:CGRectGetMidY(v27) Z:v4 + v4 W:v15];
-      v18 = [(CIVignette *)self _kernel];
+      _kernel = [(CIVignette *)self _kernel];
       [(CIImage *)self->inputImage extent];
       v23[0] = self->inputImage;
       v23[1] = v17;
-      return [v18 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v23, 2), v19, v20, v21, v22}];
+      return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v23, 2), v19, v20, v21, v22}];
     }
 
     v6 = self->inputImage;

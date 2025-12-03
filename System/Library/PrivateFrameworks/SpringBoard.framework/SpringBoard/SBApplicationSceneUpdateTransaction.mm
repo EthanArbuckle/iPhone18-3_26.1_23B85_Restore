@@ -1,13 +1,13 @@
 @interface SBApplicationSceneUpdateTransaction
-- (SBApplicationSceneUpdateTransaction)initWithApplicationSceneEntity:(id)a3 transitionRequest:(id)a4 delegate:(id)a5;
+- (SBApplicationSceneUpdateTransaction)initWithApplicationSceneEntity:(id)entity transitionRequest:(id)request delegate:(id)delegate;
 - (id)_createUpdateTransactionForPreflightCompletion;
 - (id)_customizedDescriptionProperties;
 - (void)_didComplete;
-- (void)_performSynchronizedCommit:(id)a3;
-- (void)_sceneResizeLayoutDidFinish:(id)a3;
-- (void)_sendActivationResultWithError:(id)a3;
+- (void)_performSynchronizedCommit:(id)commit;
+- (void)_sceneResizeLayoutDidFinish:(id)finish;
+- (void)_sendActivationResultWithError:(id)error;
 - (void)_willBegin;
-- (void)_willFailWithReason:(id)a3;
+- (void)_willFailWithReason:(id)reason;
 @end
 
 @implementation SBApplicationSceneUpdateTransaction
@@ -19,10 +19,10 @@
   [(FBApplicationUpdateScenesTransaction *)&v14 _willBegin];
   if (self->_requiresPreflight)
   {
-    v3 = [(SBWorkspaceTransitionContext *)self->_transitionContext request];
-    v4 = [v3 source];
+    request = [(SBWorkspaceTransitionContext *)self->_transitionContext request];
+    source = [request source];
 
-    if (v4 != 14 && v4 != 74)
+    if (source != 14 && source != 74)
     {
       if ([(SBApplicationSceneUpdateTransaction *)self isAuditHistoryEnabled])
       {
@@ -47,11 +47,11 @@
 
   else
   {
-    v8 = [(SBApplicationSceneEntity *)self->_applicationSceneEntity sceneHandle];
-    [v8 setSceneUpdateInProgress:1];
+    sceneHandle = [(SBApplicationSceneEntity *)self->_applicationSceneEntity sceneHandle];
+    [sceneHandle setSceneUpdateInProgress:1];
 
-    v9 = [(SBWorkspaceTransitionRequest *)self->_request applicationContext];
-    if ([v9 isInLiveResize])
+    applicationContext = [(SBWorkspaceTransitionRequest *)self->_request applicationContext];
+    if ([applicationContext isInLiveResize])
     {
       v10 = SBSceneLiveResizeFinishedActionEnabled();
 
@@ -61,8 +61,8 @@
       }
 
       [(SBApplicationSceneUpdateTransaction *)self addMilestone:@"SBApplicationSceneUpdateTransactionLiveResizeFinishedMilestone"];
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:self selector:sel__sceneResizeLayoutDidFinish_ name:@"SBSceneResizeLayoutDidFinishNotification" object:0];
+      applicationContext = [MEMORY[0x277CCAB98] defaultCenter];
+      [applicationContext addObserver:self selector:sel__sceneResizeLayoutDidFinish_ name:@"SBSceneResizeLayoutDidFinishNotification" object:0];
     }
   }
 }
@@ -72,8 +72,8 @@
   v6.receiver = self;
   v6.super_class = SBApplicationSceneUpdateTransaction;
   [(FBApplicationUpdateScenesTransaction *)&v6 _didComplete];
-  v3 = [(SBApplicationSceneEntity *)self->_applicationSceneEntity sceneHandle];
-  [v3 setSceneUpdateInProgress:0];
+  sceneHandle = [(SBApplicationSceneEntity *)self->_applicationSceneEntity sceneHandle];
+  [sceneHandle setSceneUpdateInProgress:0];
 
   v4 = SBWTErrorCreateForTransaction(self);
   [(SBApplicationSceneUpdateTransaction *)self _sendActivationResultWithError:v4];
@@ -85,22 +85,22 @@
   }
 }
 
-- (SBApplicationSceneUpdateTransaction)initWithApplicationSceneEntity:(id)a3 transitionRequest:(id)a4 delegate:(id)a5
+- (SBApplicationSceneUpdateTransaction)initWithApplicationSceneEntity:(id)entity transitionRequest:(id)request delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 applicationContext];
-  if (v10)
+  entityCopy = entity;
+  requestCopy = request;
+  delegateCopy = delegate;
+  applicationContext = [requestCopy applicationContext];
+  if (requestCopy)
   {
-    if (v9)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_21:
     [SBApplicationSceneUpdateTransaction initWithApplicationSceneEntity:a2 transitionRequest:self delegate:?];
-    if (v12)
+    if (applicationContext)
     {
       goto LABEL_4;
     }
@@ -109,13 +109,13 @@ LABEL_21:
   }
 
   [SBApplicationSceneUpdateTransaction initWithApplicationSceneEntity:a2 transitionRequest:self delegate:?];
-  if (!v9)
+  if (!entityCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_3:
-  if (v12)
+  if (applicationContext)
   {
     goto LABEL_4;
   }
@@ -124,67 +124,67 @@ LABEL_22:
   [SBApplicationSceneUpdateTransaction initWithApplicationSceneEntity:a2 transitionRequest:self delegate:?];
 LABEL_4:
   v51 = a2;
-  [v10 finalize];
-  v13 = [v9 sceneHandle];
-  v14 = [v9 application];
-  v15 = [v14 info];
-  v16 = [v15 processIdentity];
+  [requestCopy finalize];
+  sceneHandle = [entityCopy sceneHandle];
+  application = [entityCopy application];
+  info = [application info];
+  processIdentity = [info processIdentity];
 
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __97__SBApplicationSceneUpdateTransaction_initWithApplicationSceneEntity_transitionRequest_delegate___block_invoke;
   v57[3] = &unk_2783B7C18;
-  v17 = v13;
+  v17 = sceneHandle;
   v58 = v17;
-  v18 = v10;
+  v18 = requestCopy;
   v59 = v18;
-  v19 = v9;
+  v19 = entityCopy;
   v60 = v19;
   v56.receiver = self;
   v56.super_class = SBApplicationSceneUpdateTransaction;
-  v20 = [(FBApplicationUpdateScenesTransaction *)&v56 initWithProcessIdentity:v16 executionContextProvider:v57];
+  v20 = [(FBApplicationUpdateScenesTransaction *)&v56 initWithProcessIdentity:processIdentity executionContextProvider:v57];
   v21 = v20;
   if (v20)
   {
-    v53 = v16;
-    v54 = v11;
-    objc_storeWeak(&v20->_delegate, v11);
-    objc_storeStrong(&v21->_request, a4);
-    v55 = v12;
-    objc_storeStrong(&v21->_transitionContext, v12);
+    v53 = processIdentity;
+    v54 = delegateCopy;
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    objc_storeStrong(&v21->_request, request);
+    v55 = applicationContext;
+    objc_storeStrong(&v21->_transitionContext, applicationContext);
     v22 = [v19 copy];
     applicationSceneEntity = v21->_applicationSceneEntity;
     v21->_applicationSceneEntity = v22;
 
-    v24 = [v19 activationSettings];
-    v21->_suspendedActivation = [v24 BOOLForActivationSetting:3];
+    activationSettings = [v19 activationSettings];
+    v21->_suspendedActivation = [activationSettings BOOLForActivationSetting:3];
 
-    v25 = [v17 sceneIdentifier];
+    sceneIdentifier = [v17 sceneIdentifier];
     sceneIdentifier = v21->_sceneIdentifier;
-    v21->_sceneIdentifier = v25;
+    v21->_sceneIdentifier = sceneIdentifier;
 
-    v27 = [v17 sceneIfExists];
-    v28 = [v27 identity];
+    sceneIfExists = [v17 sceneIfExists];
+    identity = [sceneIfExists identity];
 
     v29 = +[SBSceneManagerCoordinator sharedInstance];
-    v30 = [v18 displayIdentity];
-    v31 = [v29 sceneManagerForDisplayIdentity:v30];
+    displayIdentity = [v18 displayIdentity];
+    v31 = [v29 sceneManagerForDisplayIdentity:displayIdentity];
 
-    v32 = [v17 sceneManager];
-    v33 = v32;
-    if (v28 && v31 && v32 && (BSEqualObjects() & 1) == 0)
+    sceneManager = [v17 sceneManager];
+    v33 = sceneManager;
+    if (identity && v31 && sceneManager && (BSEqualObjects() & 1) == 0)
     {
-      [v33 transferOwnershipOfSceneWithIdentity:v28 toSceneManager:v31];
+      [v33 transferOwnershipOfSceneWithIdentity:identity toSceneManager:v31];
     }
 
     v52 = v33;
-    v34 = [v18 applicationContext];
-    v35 = [v17 _createParametersFromTransitionContext:v34 entity:v19];
+    applicationContext2 = [v18 applicationContext];
+    v35 = [v17 _createParametersFromTransitionContext:applicationContext2 entity:v19];
     sceneParameters = v21->_sceneParameters;
     v21->_sceneParameters = v35;
 
-    v37 = [v18 applicationContext];
-    v38 = [v17 _createApplicationSceneTransitionContextFromContext:v37 entity:v19];
+    applicationContext3 = [v18 applicationContext];
+    v38 = [v17 _createApplicationSceneTransitionContextFromContext:applicationContext3 entity:v19];
     sceneTransitionContext = v21->_sceneTransitionContext;
     v21->_sceneTransitionContext = v38;
 
@@ -193,25 +193,25 @@ LABEL_4:
       [(FBApplicationUpdateScenesTransaction *)v21 setWaitsForSceneCommits:0];
     }
 
-    v40 = [(SBApplicationSceneEntity *)v21->_applicationSceneEntity application];
-    v41 = [v40 info];
-    v42 = [v41 applicationIdentity];
+    application2 = [(SBApplicationSceneEntity *)v21->_applicationSceneEntity application];
+    info2 = [application2 info];
+    applicationIdentity = [info2 applicationIdentity];
     applicationIdentity = v21->_applicationIdentity;
-    v21->_applicationIdentity = v42;
+    v21->_applicationIdentity = applicationIdentity;
 
     if (!v21->_applicationIdentity)
     {
       [SBApplicationSceneUpdateTransaction initWithApplicationSceneEntity:v51 transitionRequest:v21 delegate:v19];
     }
 
-    v44 = [SBApp privacyPreflightController];
+    privacyPreflightController = [SBApp privacyPreflightController];
     privacyPreflightController = v21->_privacyPreflightController;
-    v21->_privacyPreflightController = v44;
+    v21->_privacyPreflightController = privacyPreflightController;
 
-    v46 = [(FBSMutableSceneParameters *)v21->_sceneParameters settings];
-    v47 = [v46 isForeground];
+    settings = [(FBSMutableSceneParameters *)v21->_sceneParameters settings];
+    isForeground = [settings isForeground];
 
-    if (v47)
+    if (isForeground)
     {
       v48 = [(SBPrivacyPreflightController *)v21->_privacyPreflightController requiresPreflightForApplication:v21->_applicationIdentity];
     }
@@ -223,12 +223,12 @@ LABEL_4:
 
     v21->_requiresPreflight = v48;
     [(FBApplicationUpdateScenesTransaction *)v21 updateSceneWithIdentifier:v21->_sceneIdentifier parameters:v21->_sceneParameters transitionContext:v21->_sceneTransitionContext];
-    v49 = [(UIApplicationSceneTransitionContext *)v21->_sceneTransitionContext animationFence];
-    [v49 invalidate];
+    animationFence = [(UIApplicationSceneTransitionContext *)v21->_sceneTransitionContext animationFence];
+    [animationFence invalidate];
 
-    v11 = v54;
-    v12 = v55;
-    v16 = v53;
+    delegateCopy = v54;
+    applicationContext = v55;
+    processIdentity = v53;
   }
 
   return v21;
@@ -365,17 +365,17 @@ BOOL __49__SBApplicationSceneUpdateTransaction__willBegin__block_invoke_5(uint64
   return v6 != 0;
 }
 
-- (void)_performSynchronizedCommit:(id)a3
+- (void)_performSynchronizedCommit:(id)commit
 {
   applicationSceneEntity = self->_applicationSceneEntity;
-  v5 = a3;
-  v6 = [(SBApplicationSceneEntity *)applicationSceneEntity application];
-  v7 = [(SBWorkspaceTransitionRequest *)self->_request displayConfiguration];
-  v8 = [v6 _prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:v7];
+  commitCopy = commit;
+  application = [(SBApplicationSceneEntity *)applicationSceneEntity application];
+  displayConfiguration = [(SBWorkspaceTransitionRequest *)self->_request displayConfiguration];
+  v8 = [application _prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:displayConfiguration];
 
   v9.receiver = self;
   v9.super_class = SBApplicationSceneUpdateTransaction;
-  [(FBSynchronizedTransactionGroup *)&v9 _performSynchronizedCommit:v5];
+  [(FBSynchronizedTransactionGroup *)&v9 _performSynchronizedCommit:commitCopy];
 
   if (self->_shouldSendActivationResult)
   {
@@ -386,42 +386,42 @@ BOOL __49__SBApplicationSceneUpdateTransaction__willBegin__block_invoke_5(uint64
   }
 }
 
-- (void)_willFailWithReason:(id)a3
+- (void)_willFailWithReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBApplicationSceneUpdateTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v5 _willFailWithReason:a3];
-  v4 = [(SBApplicationSceneEntity *)self->_applicationSceneEntity sceneHandle];
-  [v4 setSceneUpdateInProgress:0];
+  [(FBApplicationUpdateScenesTransaction *)&v5 _willFailWithReason:reason];
+  sceneHandle = [(SBApplicationSceneEntity *)self->_applicationSceneEntity sceneHandle];
+  [sceneHandle setSceneUpdateInProgress:0];
 }
 
 - (id)_customizedDescriptionProperties
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(SBWorkspaceEntity *)self->_applicationSceneEntity succinctDescription];
-  [v3 setObject:v4 forKey:@"Application"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  succinctDescription = [(SBWorkspaceEntity *)self->_applicationSceneEntity succinctDescription];
+  [dictionary setObject:succinctDescription forKey:@"Application"];
 
   v5 = NSStringFromBOOL();
-  [v3 setObject:v5 forKey:@"Requires Preflight"];
+  [dictionary setObject:v5 forKey:@"Requires Preflight"];
 
-  [v3 setObject:self->_sceneIdentifier forKey:@"SceneID"];
-  v6 = [(SBWorkspaceTransitionRequest *)self->_request displayIdentity];
-  [v3 setObject:v6 forKey:@"Display"];
+  [dictionary setObject:self->_sceneIdentifier forKey:@"SceneID"];
+  displayIdentity = [(SBWorkspaceTransitionRequest *)self->_request displayIdentity];
+  [dictionary setObject:displayIdentity forKey:@"Display"];
 
   v7 = NSStringFromBOOL();
-  [v3 setObject:v7 forKey:@"Launch Suspended"];
+  [dictionary setObject:v7 forKey:@"Launch Suspended"];
 
-  v8 = [(UIApplicationSceneTransitionContext *)self->_sceneTransitionContext actions];
-  if ([v8 count])
+  actions = [(UIApplicationSceneTransitionContext *)self->_sceneTransitionContext actions];
+  if ([actions count])
   {
-    v21 = v3;
-    v9 = [MEMORY[0x277CBEB18] array];
+    v21 = dictionary;
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = v8;
+    v10 = actions;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -442,7 +442,7 @@ BOOL __49__SBApplicationSceneUpdateTransaction__willBegin__block_invoke_5(uint64
             v18 = [MEMORY[0x277CF0C00] descriptionForObject:v15];
           }
 
-          [v9 addObject:v18];
+          [array addObject:v18];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -451,56 +451,56 @@ BOOL __49__SBApplicationSceneUpdateTransaction__willBegin__block_invoke_5(uint64
       while (v12);
     }
 
-    if ([v9 count] < 2)
+    if ([array count] < 2)
     {
-      v19 = [v9 firstObject];
-      v3 = v21;
-      [v21 setObject:v19 forKey:@"Action"];
+      firstObject = [array firstObject];
+      dictionary = v21;
+      [v21 setObject:firstObject forKey:@"Action"];
     }
 
     else
     {
-      v3 = v21;
-      [v21 setObject:v9 forKey:@"Actions"];
+      dictionary = v21;
+      [v21 setObject:array forKey:@"Actions"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_sendActivationResultWithError:(id)a3
+- (void)_sendActivationResultWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_shouldSendActivationResult)
   {
-    v8 = v4;
-    v5 = [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext needsToSendActivationResult];
-    v4 = v8;
-    if (v5)
+    v8 = errorCopy;
+    needsToSendActivationResult = [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext needsToSendActivationResult];
+    errorCopy = v8;
+    if (needsToSendActivationResult)
     {
       [(SBWorkspaceApplicationSceneTransitionContext *)self->_transitionContext sendActivationResultError:v8];
-      v6 = [(SBApplicationSceneUpdateTransaction *)self isAuditHistoryEnabled];
-      v4 = v8;
-      if (v6)
+      isAuditHistoryEnabled = [(SBApplicationSceneUpdateTransaction *)self isAuditHistoryEnabled];
+      errorCopy = v8;
+      if (isAuditHistoryEnabled)
       {
-        v7 = [v8 localizedFailureReason];
-        [(SBApplicationSceneUpdateTransaction *)self _addAuditHistoryItem:@"Sent activation result; error = %@", v7];
+        localizedFailureReason = [v8 localizedFailureReason];
+        [(SBApplicationSceneUpdateTransaction *)self _addAuditHistoryItem:@"Sent activation result; error = %@", localizedFailureReason];
 
-        v4 = v8;
+        errorCopy = v8;
       }
     }
   }
 }
 
-- (void)_sceneResizeLayoutDidFinish:(id)a3
+- (void)_sceneResizeLayoutDidFinish:(id)finish
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:@"SBSceneResizeLayoutDidFinishNotificationSceneIdentifierKey"];
+  userInfo = [finish userInfo];
+  v6 = [userInfo objectForKey:@"SBSceneResizeLayoutDidFinishNotificationSceneIdentifierKey"];
 
   if ([v6 isEqualToString:self->_sceneIdentifier])
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:@"SBSceneResizeLayoutDidFinishNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SBSceneResizeLayoutDidFinishNotification" object:0];
 
     [(SBApplicationSceneUpdateTransaction *)self satisfyMilestone:@"SBApplicationSceneUpdateTransactionLiveResizeFinishedMilestone"];
   }
@@ -508,9 +508,9 @@ BOOL __49__SBApplicationSceneUpdateTransaction__willBegin__block_invoke_5(uint64
 
 - (id)_createUpdateTransactionForPreflightCompletion
 {
-  v3 = [(SBWorkspaceTransitionRequest *)self->_request workspace];
-  v4 = [(SBWorkspaceTransitionRequest *)self->_request displayConfiguration];
-  v5 = [v3 createRequestWithOptions:0 displayConfiguration:v4];
+  workspace = [(SBWorkspaceTransitionRequest *)self->_request workspace];
+  displayConfiguration = [(SBWorkspaceTransitionRequest *)self->_request displayConfiguration];
+  v5 = [workspace createRequestWithOptions:0 displayConfiguration:displayConfiguration];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

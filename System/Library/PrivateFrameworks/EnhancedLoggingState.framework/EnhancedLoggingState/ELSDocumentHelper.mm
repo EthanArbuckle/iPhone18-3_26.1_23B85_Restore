@@ -1,7 +1,7 @@
 @interface ELSDocumentHelper
 + (id)sharedHelper;
 - (id)initSingleton;
-- (id)saveData:(id)a3 toFilePath:(id)a4;
+- (id)saveData:(id)data toFilePath:(id)path;
 @end
 
 @implementation ELSDocumentHelper
@@ -33,22 +33,22 @@ uint64_t __33__ELSDocumentHelper_sharedHelper__block_invoke()
   if (v2)
   {
     +[ELSEntitlementUtilities assertCurrentProcessHasEntitlement];
-    v3 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     pdfData = v2->_pdfData;
-    v2->_pdfData = v3;
+    v2->_pdfData = data;
   }
 
   return v2;
 }
 
-- (id)saveData:(id)a3 toFilePath:(id)a4
+- (id)saveData:(id)data toFilePath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = MEMORY[0x277CCAA00];
-  v7 = a3;
-  v8 = [v6 defaultManager];
-  v9 = [v5 path];
-  v10 = [v8 createFileAtPath:v9 contents:v7 attributes:0];
+  dataCopy = data;
+  defaultManager = [v6 defaultManager];
+  path = [pathCopy path];
+  v10 = [defaultManager createFileAtPath:path contents:dataCopy attributes:0];
 
   v11 = 0;
   if ((v10 & 1) == 0)
@@ -60,7 +60,7 @@ uint64_t __33__ELSDocumentHelper_sharedHelper__block_invoke()
     v14 = ELSLogHandleForCategory(11);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [ELSDocumentHelper saveData:v5 toFilePath:v14];
+      [ELSDocumentHelper saveData:pathCopy toFilePath:v14];
     }
   }
 

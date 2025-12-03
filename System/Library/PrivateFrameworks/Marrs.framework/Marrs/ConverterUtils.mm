@@ -1,16 +1,16 @@
 @interface ConverterUtils
-+ (Reader)getCppReaderFromObjCObject:(SEL)a3;
-+ (id)convertMentionDetectorResponseFromCppToObjC:(void *)a3;
-+ (id)convertMentionResolverResponseFromCppToObjC:(void *)a3;
-+ (unique_ptr<sirinluinternalmention_detector::MentionDetectorRequest,)convertMentionDetectorRequestFromObjCToCpp:(id)a3;
-+ (unique_ptr<sirinluinternalmention_resolver::MentionResolverRequest,)convertMentionResolverRequestFromObjCToCpp:(id)a3;
++ (Reader)getCppReaderFromObjCObject:(SEL)object;
++ (id)convertMentionDetectorResponseFromCppToObjC:(void *)c;
++ (id)convertMentionResolverResponseFromCppToObjC:(void *)c;
++ (unique_ptr<sirinluinternalmention_detector::MentionDetectorRequest,)convertMentionDetectorRequestFromObjCToCpp:(id)cpp;
++ (unique_ptr<sirinluinternalmention_resolver::MentionResolverRequest,)convertMentionResolverRequestFromObjCToCpp:(id)cpp;
 @end
 
 @implementation ConverterUtils
 
-+ (id)convertMentionDetectorResponseFromCppToObjC:(void *)a3
++ (id)convertMentionDetectorResponseFromCppToObjC:(void *)c
 {
-  if (*a3)
+  if (*c)
   {
     operator new();
   }
@@ -18,9 +18,9 @@
   return 0;
 }
 
-+ (id)convertMentionResolverResponseFromCppToObjC:(void *)a3
++ (id)convertMentionResolverResponseFromCppToObjC:(void *)c
 {
-  if (*a3)
+  if (*c)
   {
     operator new();
   }
@@ -28,13 +28,13 @@
   return 0;
 }
 
-+ (unique_ptr<sirinluinternalmention_resolver::MentionResolverRequest,)convertMentionResolverRequestFromObjCToCpp:(id)a3
++ (unique_ptr<sirinluinternalmention_resolver::MentionResolverRequest,)convertMentionResolverRequestFromObjCToCpp:(id)cpp
 {
   v5 = v3;
-  v6 = a3;
-  if (v6)
+  cppCopy = cpp;
+  if (cppCopy)
   {
-    [a1 getCppReaderFromObjCObject:v6];
+    [self getCppReaderFromObjCObject:cppCopy];
     operator new();
   }
 
@@ -43,13 +43,13 @@
   return v7;
 }
 
-+ (unique_ptr<sirinluinternalmention_detector::MentionDetectorRequest,)convertMentionDetectorRequestFromObjCToCpp:(id)a3
++ (unique_ptr<sirinluinternalmention_detector::MentionDetectorRequest,)convertMentionDetectorRequestFromObjCToCpp:(id)cpp
 {
   v5 = v3;
-  v6 = a3;
-  if (v6)
+  cppCopy = cpp;
+  if (cppCopy)
   {
-    [a1 getCppReaderFromObjCObject:v6];
+    [self getCppReaderFromObjCObject:cppCopy];
     operator new();
   }
 
@@ -58,12 +58,12 @@
   return v7;
 }
 
-+ (Reader)getCppReaderFromObjCObject:(SEL)a3
++ (Reader)getCppReaderFromObjCObject:(SEL)object
 {
-  v7 = [a4 data];
-  v5 = [v7 bytes];
-  [v7 length];
-  PB::Reader::Reader(retstr, v5);
+  data = [a4 data];
+  bytes = [data bytes];
+  [data length];
+  PB::Reader::Reader(retstr, bytes);
 
   return result;
 }

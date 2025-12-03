@@ -1,11 +1,11 @@
 @interface SuggestionsView
-- (_TtC16CommunicationsUI15SuggestionsView)initWithCoder:(id)a3;
-- (_TtC16CommunicationsUI15SuggestionsView)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI15SuggestionsView)initWithCoder:(id)coder;
+- (_TtC16CommunicationsUI15SuggestionsView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SuggestionsView
 
-- (_TtC16CommunicationsUI15SuggestionsView)initWithCoder:(id)a3
+- (_TtC16CommunicationsUI15SuggestionsView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI15SuggestionsView_isExpanded) = 0;
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI15SuggestionsView_handler);
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC16CommunicationsUI15SuggestionsView)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI15SuggestionsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

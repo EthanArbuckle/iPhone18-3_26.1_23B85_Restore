@@ -14,8 +14,8 @@
   v8 = [(UIAccessibilityCustomRotorItemResult *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    [(UIAccessibilityCustomRotorItemResult *)v8 setUuid:v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(UIAccessibilityCustomRotorItemResult *)v8 setUuid:uUID];
 
     [(UIAccessibilityCustomRotorItemResult *)v8 setTargetElement:v6];
     [(UIAccessibilityCustomRotorItemResult *)v8 setTargetRange:v7];

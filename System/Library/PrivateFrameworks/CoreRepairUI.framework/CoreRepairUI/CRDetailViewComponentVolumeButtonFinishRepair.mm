@@ -33,30 +33,30 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CRUDetailViewComponent *)v2 locale];
-    v5 = [v4 localizedStringWithKey:@"NEW_VOLUME_BUTTON" defaultString:@"NEW_VOLUME_BUTTON"];
+    locale = [(CRUDetailViewComponent *)v2 locale];
+    v5 = [locale localizedStringWithKey:@"NEW_VOLUME_BUTTON" defaultString:@"NEW_VOLUME_BUTTON"];
     [(CRUDetailViewComponent *)v3 setTitleText:v5];
 
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [(CRUDetailViewComponent *)v3 locale];
-    v8 = [v7 localizedStringWithKey:@"FINISH_REPAIR_KB_URL" defaultString:@"FINISH_REPAIR_KB_URL"];
+    locale2 = [(CRUDetailViewComponent *)v3 locale];
+    v8 = [locale2 localizedStringWithKey:@"FINISH_REPAIR_KB_URL" defaultString:@"FINISH_REPAIR_KB_URL"];
     v9 = [v6 URLWithString:v8];
     [(CRUDetailViewComponent *)v3 setKbArticleURL:v9];
 
-    v10 = [(CRUDetailViewComponent *)v3 locale];
-    v11 = [v10 localizedStringWithKey:@"FINISH_VOLUME_BUTTON_DESC" defaultString:@"FINISH_VOLUME_BUTTON_DESC"];
+    locale3 = [(CRUDetailViewComponent *)v3 locale];
+    v11 = [locale3 localizedStringWithKey:@"FINISH_VOLUME_BUTTON_DESC" defaultString:@"FINISH_VOLUME_BUTTON_DESC"];
 
-    v12 = [(CRUDetailViewComponent *)v3 locale];
-    v13 = [v12 localizedStringWithKey:@"RESTART_FINISH_REPAIR" defaultString:@"RESTART_FINISH_REPAIR"];
+    locale4 = [(CRUDetailViewComponent *)v3 locale];
+    v13 = [locale4 localizedStringWithKey:@"RESTART_FINISH_REPAIR" defaultString:@"RESTART_FINISH_REPAIR"];
     [(CRUDetailViewComponent *)v3 setButtonTitle:v13];
 
     [(CRUDetailViewComponent *)v3 setInformativeText:v11];
-    v14 = [(CRUDetailViewComponent *)v3 locale];
-    v15 = [v14 localizedStringWithKey:@"VOLUME_BUTTON" defaultString:@"VOLUME_BUTTON"];
+    locale5 = [(CRUDetailViewComponent *)v3 locale];
+    v15 = [locale5 localizedStringWithKey:@"VOLUME_BUTTON" defaultString:@"VOLUME_BUTTON"];
     [(CRUDetailViewComponent *)v3 setComponentName:v15];
 
-    v16 = [(CRUDetailViewComponent *)v3 locale];
-    v17 = [v16 localizedStringWithKey:@"VOLUME_BUTTON_FOOTER_LEARN_MORE" defaultString:@"VOLUME_BUTTON_FOOTER_LEARN_MORE"];
+    locale6 = [(CRUDetailViewComponent *)v3 locale];
+    v17 = [locale6 localizedStringWithKey:@"VOLUME_BUTTON_FOOTER_LEARN_MORE" defaultString:@"VOLUME_BUTTON_FOOTER_LEARN_MORE"];
     [(CRUDetailViewComponent *)v3 setFooterText:v17];
   }
 

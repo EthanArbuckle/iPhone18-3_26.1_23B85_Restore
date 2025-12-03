@@ -1,6 +1,6 @@
 @interface NFSecureTransactionServicesHandoverBaseSessionInterface
 + (id)interface;
-- (NFSecureTransactionServicesHandoverBaseSessionInterface)initWithProtocol:(id)a3;
+- (NFSecureTransactionServicesHandoverBaseSessionInterface)initWithProtocol:(id)protocol;
 @end
 
 @implementation NFSecureTransactionServicesHandoverBaseSessionInterface
@@ -8,20 +8,20 @@
 + (id)interface
 {
   v2 = [[NFSecureTransactionServicesHandoverBaseSessionInterface alloc] initWithProtocol:&OBJC_PROTOCOL___NFSecureTransactionServicesHandoverBaseSessionInterface];
-  v3 = [(NFSecureTransactionServicesHandoverBaseSessionInterface *)v2 protocolInterface];
+  protocolInterface = [(NFSecureTransactionServicesHandoverBaseSessionInterface *)v2 protocolInterface];
 
-  return v3;
+  return protocolInterface;
 }
 
-- (NFSecureTransactionServicesHandoverBaseSessionInterface)initWithProtocol:(id)a3
+- (NFSecureTransactionServicesHandoverBaseSessionInterface)initWithProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v9.receiver = self;
   v9.super_class = NFSecureTransactionServicesHandoverBaseSessionInterface;
   v5 = [(NFSecureTransactionServicesHandoverBaseSessionInterface *)&v9 init];
   if (v5)
   {
-    v6 = [NSXPCInterface interfaceWithProtocol:v4];
+    v6 = [NSXPCInterface interfaceWithProtocol:protocolCopy];
     protocolInterface = v5->_protocolInterface;
     v5->_protocolInterface = v6;
 

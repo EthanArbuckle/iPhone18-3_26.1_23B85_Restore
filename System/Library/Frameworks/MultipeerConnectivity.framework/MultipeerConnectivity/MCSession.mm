@@ -1,7 +1,7 @@
 @interface MCSession
-+ (id)stringForMCSessionSendDataMode:(int64_t)a3;
-+ (id)stringForSessionState:(int64_t)a3;
-- (BOOL)isEncryptionPreferenceCompatible:(int64_t)a3;
++ (id)stringForMCSessionSendDataMode:(int64_t)mode;
++ (id)stringForSessionState:(int64_t)state;
+- (BOOL)isEncryptionPreferenceCompatible:(int64_t)compatible;
 - (BOOL)sendData:(NSData *)data toPeers:(NSArray *)peerIDs withMode:(MCSessionSendDataMode)mode error:(NSError *)error;
 - (MCSession)init;
 - (MCSession)initWithPeer:(MCPeerID *)myPeerID;
@@ -10,44 +10,44 @@
 - (NSOutputStream)startStreamWithName:(NSString *)streamName toPeer:(MCPeerID *)peerID error:(NSError *)error;
 - (NSProgress)sendResourceAtURL:(NSURL *)resourceURL withName:(NSString *)resourceName toPeer:(MCPeerID *)peerID withCompletionHandler:(void *)completionHandler;
 - (id)description;
-- (id)stringForEncryptionPreference:(int64_t)a3;
+- (id)stringForEncryptionPreference:(int64_t)preference;
 - (id)syncDetailedDescription;
-- (int64_t)connectedInterfacesForPeer:(id)a3;
+- (int64_t)connectedInterfacesForPeer:(id)peer;
 - (os_state_data_s)syncStateCapture;
 - (unint64_t)syncConnectedPeersCount;
 - (void)cancelConnectPeer:(MCPeerID *)peerID;
-- (void)cancelIncomingStream:(id)a3 fromPeer:(id)a4;
-- (void)cancelOutgoingStream:(id)a3 toPeer:(id)a4;
-- (void)closeDirectConnectionsWithPeer:(id)a3;
+- (void)cancelIncomingStream:(id)stream fromPeer:(id)peer;
+- (void)cancelOutgoingStream:(id)stream toPeer:(id)peer;
+- (void)closeDirectConnectionsWithPeer:(id)peer;
 - (void)connectPeer:(MCPeerID *)peerID withNearbyConnectionData:(NSData *)data;
 - (void)dealloc;
 - (void)disconnect;
 - (void)logSessionInfo;
 - (void)nearbyConnectionDataForPeer:(MCPeerID *)peerID withCompletionHandler:(void *)completionHandler;
-- (void)peerDidDeclineInvitation:(id)a3;
-- (void)setAWDLDisabled:(BOOL)a3;
-- (void)setHeartbeatTimeout:(unint64_t)a3;
-- (void)setICETimeoutForced:(BOOL)a3;
-- (void)setPreferNCMOverEthernet:(BOOL)a3;
-- (void)startConnectionWithIndirectPID:(unsigned int)a3;
-- (void)syncCancelIncomingStream:(id)a3 fromPeer:(id)a4;
-- (void)syncCancelOutgoingStream:(id)a3 toPeer:(id)a4;
-- (void)syncCloseIncomingStream:(id)a3 forPeer:(id)a4 state:(id)a5 error:(id)a6 reason:(int)a7 shouldTriggerCancelProgress:(BOOL)a8;
-- (void)syncCloseOutgoingStream:(id)a3 forPeer:(id)a4 state:(id)a5 error:(id)a6 shouldTriggerCancelProgress:(BOOL)a7;
-- (void)syncCloseStreamsForPeer:(id)a3;
-- (void)syncConnectPeer:(id)a3 withConnectionData:(id)a4;
-- (void)syncGetConnectionDataForPeerState:(id)a3 completionHandler:(id)a4;
-- (void)syncHandleXDataDataPacket:(char *)a3 packetSize:(int)a4 forPeer:(id)a5 state:(id)a6;
+- (void)peerDidDeclineInvitation:(id)invitation;
+- (void)setAWDLDisabled:(BOOL)disabled;
+- (void)setHeartbeatTimeout:(unint64_t)timeout;
+- (void)setICETimeoutForced:(BOOL)forced;
+- (void)setPreferNCMOverEthernet:(BOOL)ethernet;
+- (void)startConnectionWithIndirectPID:(unsigned int)d;
+- (void)syncCancelIncomingStream:(id)stream fromPeer:(id)peer;
+- (void)syncCancelOutgoingStream:(id)stream toPeer:(id)peer;
+- (void)syncCloseIncomingStream:(id)stream forPeer:(id)peer state:(id)state error:(id)error reason:(int)reason shouldTriggerCancelProgress:(BOOL)progress;
+- (void)syncCloseOutgoingStream:(id)stream forPeer:(id)peer state:(id)state error:(id)error shouldTriggerCancelProgress:(BOOL)progress;
+- (void)syncCloseStreamsForPeer:(id)peer;
+- (void)syncConnectPeer:(id)peer withConnectionData:(id)data;
+- (void)syncGetConnectionDataForPeerState:(id)state completionHandler:(id)handler;
+- (void)syncHandleXDataDataPacket:(char *)packet packetSize:(int)size forPeer:(id)peer state:(id)state;
 - (void)syncLogConnectedPeers;
 - (void)syncLogMaxConnectedPeers;
-- (void)syncPeer:(id)a3 changeStateTo:(int64_t)a4 shouldForceCallback:(BOOL)a5;
-- (void)syncSendData:(id)a3 toPeers:(id)a4 withDataMode:(int64_t)a5;
-- (void)syncSendXDataConnectionBlobPushToPID:(unsigned int)a3 connectionBlob:(id)a4;
-- (void)syncSendXDataPeerIDPushToPID:(unsigned int)a3;
-- (void)syncSendXDataStreamCloseFromReceiverToPID:(unsigned int)a3 streamID:(unsigned int)a4 closeReason:(unsigned __int16)a5;
-- (void)syncSendXDataStreamCloseFromSenderToPID:(unsigned int)a3 streamID:(unsigned int)a4 closeReason:(unsigned __int16)a5;
-- (void)syncSendXDataStreamOpenResponseToPID:(unsigned int)a3 withRequestID:(unsigned int)a4 streamID:(unsigned int)a5;
-- (void)syncStartStreamWithName:(id)a3 toPeer:(id)a4 mcFD:(int)a5 isResource:(BOOL)a6;
+- (void)syncPeer:(id)peer changeStateTo:(int64_t)to shouldForceCallback:(BOOL)callback;
+- (void)syncSendData:(id)data toPeers:(id)peers withDataMode:(int64_t)mode;
+- (void)syncSendXDataConnectionBlobPushToPID:(unsigned int)d connectionBlob:(id)blob;
+- (void)syncSendXDataPeerIDPushToPID:(unsigned int)d;
+- (void)syncSendXDataStreamCloseFromReceiverToPID:(unsigned int)d streamID:(unsigned int)iD closeReason:(unsigned __int16)reason;
+- (void)syncSendXDataStreamCloseFromSenderToPID:(unsigned int)d streamID:(unsigned int)iD closeReason:(unsigned __int16)reason;
+- (void)syncSendXDataStreamOpenResponseToPID:(unsigned int)d withRequestID:(unsigned int)iD streamID:(unsigned int)streamID;
+- (void)syncStartStreamWithName:(id)name toPeer:(id)peer mcFD:(int)d isResource:(BOOL)resource;
 @end
 
 @implementation MCSession
@@ -57,33 +57,33 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MCSession *)self myPeerID];
-  v7 = [(MCSession *)self securityIdentity];
+  myPeerID = [(MCSession *)self myPeerID];
+  securityIdentity = [(MCSession *)self securityIdentity];
   v8 = [(MCSession *)self stringForEncryptionPreference:[(MCSession *)self encryptionPreference]];
-  v9 = [(MCSession *)self connectedPeers];
+  connectedPeers = [(MCSession *)self connectedPeers];
   [(MCSession *)self delegate];
   v10 = objc_opt_class();
-  return [v3 stringWithFormat:@"<%@: %p MyPeerID = %@ SecurityIdentity = %@ EncryptionPreference = %@ ConnectedPeers = %@ Delegate = <%@: %p>>", v5, self, v6, v7, v8, v9, NSStringFromClass(v10), -[MCSession delegate](self, "delegate")];
+  return [v3 stringWithFormat:@"<%@: %p MyPeerID = %@ SecurityIdentity = %@ EncryptionPreference = %@ ConnectedPeers = %@ Delegate = <%@: %p>>", v5, self, myPeerID, securityIdentity, v8, connectedPeers, NSStringFromClass(v10), -[MCSession delegate](self, "delegate")];
 }
 
-- (id)stringForEncryptionPreference:(int64_t)a3
+- (id)stringForEncryptionPreference:(int64_t)preference
 {
-  if (a3 > 2)
+  if (preference > 2)
   {
     return @"?";
   }
 
   else
   {
-    return *(&off_278B44128 + a3);
+    return *(&off_278B44128 + preference);
   }
 }
 
-- (void)syncHandleXDataDataPacket:(char *)a3 packetSize:(int)a4 forPeer:(id)a5 state:(id)a6
+- (void)syncHandleXDataDataPacket:(char *)packet packetSize:(int)size forPeer:(id)peer state:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = (a4 - 4);
-  if (a4 <= 4)
+  v6 = (size - 4);
+  if (size <= 4)
   {
     v7 = mcs_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -100,9 +100,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v12 = bswap32(*a3);
-  v13 = [a6 incomingStreams];
-  v14 = [v13 objectForKey:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", v12)}];
+  v12 = bswap32(*packet);
+  incomingStreams = [state incomingStreams];
+  v14 = [incomingStreams objectForKey:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", v12)}];
   if (!v14)
   {
     v18 = mcs_log();
@@ -134,25 +134,25 @@ LABEL_14:
   }
 
   [v15 setSourceSuspended:0];
-  v16 = [v15 source];
+  source = [v15 source];
   v17 = *MEMORY[0x277D85DE8];
 
-  dispatch_resume(v16);
+  dispatch_resume(source);
 }
 
-- (void)syncSendXDataStreamOpenResponseToPID:(unsigned int)a3 withRequestID:(unsigned int)a4 streamID:(unsigned int)a5
+- (void)syncSendXDataStreamOpenResponseToPID:(unsigned int)d withRequestID:(unsigned int)iD streamID:(unsigned int)streamID
 {
   v22 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  dCopy = d;
   v9 = mcs_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v17 = a3;
+    dCopy2 = d;
     v18 = 1024;
-    v19 = a4;
+    iDCopy = iD;
     v20 = 1024;
-    v21 = a5;
+    streamIDCopy = streamID;
     _os_log_impl(&dword_239FB7000, v9, OS_LOG_TYPE_DEFAULT, "Streaming: sending XDataStreamOpenResponse to peer[%08X] requestID[%08X] streamID[%08X].", buf, 0x14u);
   }
 
@@ -161,16 +161,16 @@ LABEL_14:
   {
     v11 = v10;
     *v10 = 201326741;
-    *(v10 + 4) = HIBYTE(a4);
-    *(v10 + 5) = BYTE2(a4);
-    *(v10 + 6) = BYTE1(a4);
-    *(v10 + 7) = a4;
-    *(v10 + 8) = HIBYTE(a5);
-    *(v10 + 9) = BYTE2(a5);
-    *(v10 + 10) = BYTE1(a5);
-    *(v10 + 11) = a5;
+    *(v10 + 4) = HIBYTE(iD);
+    *(v10 + 5) = BYTE2(iD);
+    *(v10 + 6) = BYTE1(iD);
+    *(v10 + 7) = iD;
+    *(v10 + 8) = HIBYTE(streamID);
+    *(v10 + 9) = BYTE2(streamID);
+    *(v10 + 10) = BYTE1(streamID);
+    *(v10 + 11) = streamID;
     *buf = 0;
-    if (AGPSessionSendTo(self->_agpSession, &v15, 1, v10, 12, buf, 0, 0xAu, 1, 0))
+    if (AGPSessionSendTo(self->_agpSession, &dCopy, 1, v10, 12, buf, 0, 0xAu, 1, 0))
     {
       v12 = mcs_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -195,20 +195,20 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSendXDataStreamCloseFromSenderToPID:(unsigned int)a3 streamID:(unsigned int)a4 closeReason:(unsigned __int16)a5
+- (void)syncSendXDataStreamCloseFromSenderToPID:(unsigned int)d streamID:(unsigned int)iD closeReason:(unsigned __int16)reason
 {
-  v5 = a5;
+  reasonCopy = reason;
   v22 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  dCopy = d;
   v9 = mcs_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v17 = a3;
+    dCopy2 = d;
     v18 = 1024;
-    v19 = a4;
+    iDCopy = iD;
     v20 = 1024;
-    v21 = v5;
+    v21 = reasonCopy;
     _os_log_impl(&dword_239FB7000, v9, OS_LOG_TYPE_DEFAULT, "Streaming: sending XDataStreamCloseFromSender to peer[%08X] streamID[%08X] closeReason[%d].", buf, 0x14u);
   }
 
@@ -217,14 +217,14 @@ LABEL_14:
   {
     v11 = v10;
     *v10 = 167772318;
-    *(v10 + 4) = HIBYTE(a4);
-    *(v10 + 5) = BYTE2(a4);
-    *(v10 + 6) = BYTE1(a4);
-    *(v10 + 7) = a4;
-    *(v10 + 8) = BYTE1(v5);
-    *(v10 + 9) = v5;
+    *(v10 + 4) = HIBYTE(iD);
+    *(v10 + 5) = BYTE2(iD);
+    *(v10 + 6) = BYTE1(iD);
+    *(v10 + 7) = iD;
+    *(v10 + 8) = BYTE1(reasonCopy);
+    *(v10 + 9) = reasonCopy;
     *buf = 0;
-    if (AGPSessionSendTo(self->_agpSession, &v15, 1, v10, 10, buf, 0, 0xAu, 1, 0))
+    if (AGPSessionSendTo(self->_agpSession, &dCopy, 1, v10, 10, buf, 0, 0xAu, 1, 0))
     {
       v12 = mcs_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -249,20 +249,20 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSendXDataStreamCloseFromReceiverToPID:(unsigned int)a3 streamID:(unsigned int)a4 closeReason:(unsigned __int16)a5
+- (void)syncSendXDataStreamCloseFromReceiverToPID:(unsigned int)d streamID:(unsigned int)iD closeReason:(unsigned __int16)reason
 {
-  v5 = a5;
+  reasonCopy = reason;
   v22 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  dCopy = d;
   v9 = mcs_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v17 = a3;
+    dCopy2 = d;
     v18 = 1024;
-    v19 = a4;
+    iDCopy = iD;
     v20 = 1024;
-    v21 = v5;
+    v21 = reasonCopy;
     _os_log_impl(&dword_239FB7000, v9, OS_LOG_TYPE_DEFAULT, "Streaming: sending XDataStreamCloseFromReceiver to peer[%08X] streamID[%08X] closeReason[%d].", buf, 0x14u);
   }
 
@@ -271,14 +271,14 @@ LABEL_14:
   {
     v11 = v10;
     *v10 = 167772319;
-    *(v10 + 4) = HIBYTE(a4);
-    *(v10 + 5) = BYTE2(a4);
-    *(v10 + 6) = BYTE1(a4);
-    *(v10 + 7) = a4;
-    *(v10 + 8) = BYTE1(v5);
-    *(v10 + 9) = v5;
+    *(v10 + 4) = HIBYTE(iD);
+    *(v10 + 5) = BYTE2(iD);
+    *(v10 + 6) = BYTE1(iD);
+    *(v10 + 7) = iD;
+    *(v10 + 8) = BYTE1(reasonCopy);
+    *(v10 + 9) = reasonCopy;
     *buf = 0;
-    if (AGPSessionSendTo(self->_agpSession, &v15, 1, v10, 10, buf, 0, 0xAu, 1, 0))
+    if (AGPSessionSendTo(self->_agpSession, &dCopy, 1, v10, 10, buf, 0, 0xAu, 1, 0))
     {
       v12 = mcs_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -303,20 +303,20 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSendXDataPeerIDPushToPID:(unsigned int)a3
+- (void)syncSendXDataPeerIDPushToPID:(unsigned int)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  dCopy = d;
   v5 = mcs_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v15 = a3;
+    dCopy2 = d;
     _os_log_impl(&dword_239FB7000, v5, OS_LOG_TYPE_DEFAULT, "XData: pushing own peerID to non-neighbor peer[%08X].", buf, 8u);
   }
 
-  v6 = [(MCPeerID *)[(MCSession *)self myPeerID] serializedRepresentation];
-  v7 = [v6 length] + 4;
+  serializedRepresentation = [(MCPeerID *)[(MCSession *)self myPeerID] serializedRepresentation];
+  v7 = [serializedRepresentation length] + 4;
   v8 = malloc_type_malloc(v7, 0xCA25E3ECuLL);
   if (v8)
   {
@@ -324,9 +324,9 @@ LABEL_14:
     *v8 = 168;
     v8[2] = HIBYTE(v7);
     v8[3] = v7;
-    memcpy(v8 + 4, [v6 bytes], objc_msgSend(v6, "length"));
+    memcpy(v8 + 4, [serializedRepresentation bytes], objc_msgSend(serializedRepresentation, "length"));
     *buf = 0;
-    if (AGPSessionSendTo(self->_agpSession, &v13, 1, v9, v7, buf, 0, 0xAu, 1, 0))
+    if (AGPSessionSendTo(self->_agpSession, &dCopy, 1, v9, v7, buf, 0, 0xAu, 1, 0))
     {
       v10 = mcs_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -351,19 +351,19 @@ LABEL_14:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSendXDataConnectionBlobPushToPID:(unsigned int)a3 connectionBlob:(id)a4
+- (void)syncSendXDataConnectionBlobPushToPID:(unsigned int)d connectionBlob:(id)blob
 {
   v17 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  dCopy = d;
   v7 = mcs_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = a3;
+    dCopy2 = d;
     _os_log_impl(&dword_239FB7000, v7, OS_LOG_TYPE_DEFAULT, "XData: pushing connection data to non-neighbor peer[%08X].", buf, 8u);
   }
 
-  v8 = [a4 length] + 4;
+  v8 = [blob length] + 4;
   v9 = malloc_type_malloc(v8, 0x24C57CE6uLL);
   if (v9)
   {
@@ -371,9 +371,9 @@ LABEL_14:
     *v9 = 169;
     v9[2] = HIBYTE(v8);
     v9[3] = v8;
-    memcpy(v9 + 4, [a4 bytes], objc_msgSend(a4, "length"));
+    memcpy(v9 + 4, [blob bytes], objc_msgSend(blob, "length"));
     *buf = 0;
-    if (AGPSessionSendTo(self->_agpSession, &v14, 1, v10, v8, buf, 0, 0xAu, 1, 0))
+    if (AGPSessionSendTo(self->_agpSession, &dCopy, 1, v10, v8, buf, 0, 0xAu, 1, 0))
     {
       v11 = mcs_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -398,45 +398,45 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCloseIncomingStream:(id)a3 forPeer:(id)a4 state:(id)a5 error:(id)a6 reason:(int)a7 shouldTriggerCancelProgress:(BOOL)a8
+- (void)syncCloseIncomingStream:(id)stream forPeer:(id)peer state:(id)state error:(id)error reason:(int)reason shouldTriggerCancelProgress:(BOOL)progress
 {
-  v8 = a8;
+  progressCopy = progress;
   v34 = *MEMORY[0x277D85DE8];
   v15 = mcs_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v27 = a3;
+    streamCopy = stream;
     v28 = 2112;
-    v29 = a4;
+    peerCopy = peer;
     v30 = 2112;
-    v31 = a5;
+    stateCopy = state;
     v32 = 2112;
-    v33 = a6;
+    errorCopy = error;
     _os_log_impl(&dword_239FB7000, v15, OS_LOG_TYPE_DEFAULT, "Close incoming stream[%@] peer[%@] peerState[%@] error[%@].", buf, 0x2Au);
   }
 
-  [a3 setState:4];
-  if ([a3 source])
+  [stream setState:4];
+  if ([stream source])
   {
-    if ([a3 sourceSuspended])
+    if ([stream sourceSuspended])
     {
-      dispatch_resume([a3 source]);
+      dispatch_resume([stream source]);
     }
 
-    dispatch_source_cancel([a3 source]);
+    dispatch_source_cancel([stream source]);
   }
 
-  if ([a3 url])
+  if ([stream url])
   {
-    if (v8)
+    if (progressCopy)
     {
-      [objc_msgSend(a3 "progress")];
+      [objc_msgSend(stream "progress")];
     }
 
-    if (!a6)
+    if (!error)
     {
-      if (a7 == 1)
+      if (reason == 1)
       {
         v17 = MEMORY[0x277CCA9B8];
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObject:@"Resource transfer cancelled." forKey:*MEMORY[0x277CCA450]];
@@ -446,11 +446,11 @@ LABEL_14:
 
       else
       {
-        if (!a7)
+        if (!reason)
         {
-          [objc_msgSend(a3 "progress")];
-          v16 = [a3 url];
-          a6 = 0;
+          [objc_msgSend(stream "progress")];
+          v16 = [stream url];
+          error = 0;
 LABEL_18:
           callbackQueue = self->_callbackQueue;
           block[0] = MEMORY[0x277D85DD0];
@@ -458,13 +458,13 @@ LABEL_18:
           block[2] = __92__MCSession_syncCloseIncomingStream_forPeer_state_error_reason_shouldTriggerCancelProgress___block_invoke;
           block[3] = &unk_278B43D00;
           block[4] = self;
-          block[5] = a3;
-          block[6] = a4;
+          block[5] = stream;
+          block[6] = peer;
           block[7] = v16;
-          block[8] = a6;
+          block[8] = error;
           dispatch_async(callbackQueue, block);
-          [objc_msgSend(a3 "observer")];
-          [a3 setObserver:0];
+          [objc_msgSend(stream "observer")];
+          [stream setObserver:0];
           goto LABEL_19;
         }
 
@@ -474,7 +474,7 @@ LABEL_18:
         v20 = 0;
       }
 
-      a6 = [v19 errorWithDomain:@"MCSession" code:v20 userInfo:v18];
+      error = [v19 errorWithDomain:@"MCSession" code:v20 userInfo:v18];
     }
 
     v16 = 0;
@@ -482,9 +482,9 @@ LABEL_18:
   }
 
 LABEL_19:
-  v23 = [a5 incomingStreams];
-  [v23 removeObjectForKey:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", objc_msgSend(a3, "streamID"))}];
-  [objc_msgSend(a5 "incomingStreams")];
+  incomingStreams = [state incomingStreams];
+  [incomingStreams removeObjectForKey:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", objc_msgSend(stream, "streamID"))}];
+  [objc_msgSend(state "incomingStreams")];
   v24 = *MEMORY[0x277D85DE8];
 }
 
@@ -521,58 +521,58 @@ void __92__MCSession_syncCloseIncomingStream_forPeer_state_error_reason_shouldTr
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCloseOutgoingStream:(id)a3 forPeer:(id)a4 state:(id)a5 error:(id)a6 shouldTriggerCancelProgress:(BOOL)a7
+- (void)syncCloseOutgoingStream:(id)stream forPeer:(id)peer state:(id)state error:(id)error shouldTriggerCancelProgress:(BOOL)progress
 {
-  v7 = a7;
-  [a3 setState:{4, a4}];
-  if ([a3 url])
+  progressCopy = progress;
+  [stream setState:{4, peer}];
+  if ([stream url])
   {
-    if (v7)
+    if (progressCopy)
     {
-      [objc_msgSend(a3 "progress")];
+      [objc_msgSend(stream "progress")];
     }
 
-    if ([a3 completionHandler])
+    if ([stream completionHandler])
     {
-      v12 = [a3 completionHandler];
-      [a3 setCompletionHandler:0];
+      completionHandler = [stream completionHandler];
+      [stream setCompletionHandler:0];
       callbackQueue = self->_callbackQueue;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCancelProgress___block_invoke;
       v15[3] = &unk_278B43D28;
-      v15[4] = a6;
-      v15[5] = v12;
+      v15[4] = error;
+      v15[5] = completionHandler;
       dispatch_async(callbackQueue, v15);
     }
 
-    if ([a3 urlDownloader])
+    if ([stream urlDownloader])
     {
-      if ([objc_msgSend(objc_msgSend(a3 "urlDownloader")] != 3)
+      if ([objc_msgSend(objc_msgSend(stream "urlDownloader")] != 3)
       {
-        [objc_msgSend(objc_msgSend(a3 "urlDownloader")];
+        [objc_msgSend(objc_msgSend(stream "urlDownloader")];
       }
 
-      [a3 setUrlDownloader:0];
+      [stream setUrlDownloader:0];
     }
 
-    [objc_msgSend(a3 "observer")];
-    [a3 setObserver:0];
+    [objc_msgSend(stream "observer")];
+    [stream setObserver:0];
   }
 
-  else if ([a3 source])
+  else if ([stream source])
   {
-    if ([a3 sourceSuspended])
+    if ([stream sourceSuspended])
     {
-      dispatch_resume([a3 source]);
+      dispatch_resume([stream source]);
     }
 
-    dispatch_source_cancel([a3 source]);
+    dispatch_source_cancel([stream source]);
   }
 
-  v14 = [a5 outgoingStreams];
-  [v14 removeObjectForKey:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", objc_msgSend(a3, "streamID"))}];
-  [objc_msgSend(a5 "outgoingStreams")];
+  outgoingStreams = [state outgoingStreams];
+  [outgoingStreams removeObjectForKey:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", objc_msgSend(stream, "streamID"))}];
+  [objc_msgSend(state "outgoingStreams")];
 }
 
 void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCancelProgress___block_invoke(uint64_t a1)
@@ -582,7 +582,7 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
   v3 = *(a1 + 40);
 }
 
-- (void)syncCloseStreamsForPeer:(id)a3
+- (void)syncCloseStreamsForPeer:(id)peer
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = [(NSMutableDictionary *)self->_peerStates objectForKey:?];
@@ -616,7 +616,7 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
             v14 = [objc_msgSend(v6 "incomingStreams")];
             if (v14)
             {
-              [(MCSession *)self syncCloseIncomingStream:v14 forPeer:a3 state:v6 error:v8 reason:2 shouldTriggerCancelProgress:1];
+              [(MCSession *)self syncCloseIncomingStream:v14 forPeer:peer state:v6 error:v8 reason:2 shouldTriggerCancelProgress:1];
             }
           }
         }
@@ -653,7 +653,7 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
             v21 = [objc_msgSend(v6 "incomingStreams")];
             if (v21)
             {
-              [(MCSession *)self syncCloseOutgoingStream:v21 forPeer:a3 state:v6 error:v8 shouldTriggerCancelProgress:1];
+              [(MCSession *)self syncCloseOutgoingStream:v21 forPeer:peer state:v6 error:v8 shouldTriggerCancelProgress:1];
             }
           }
         }
@@ -671,7 +671,7 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = [a3 displayName];
+      displayName = [peer displayName];
       _os_log_impl(&dword_239FB7000, v22, OS_LOG_TYPE_DEFAULT, "No peerState object for peer [%@].", buf, 0xCu);
     }
   }
@@ -688,23 +688,23 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
   NSAppendPrintF();
   if ([(MCSession *)self sessionID])
   {
-    v3 = [(MCSession *)self sessionID];
+    sessionID = [(MCSession *)self sessionID];
   }
 
   else
   {
-    v3 = &stru_284D24468;
+    sessionID = &stru_284D24468;
   }
 
-  v17 = v3;
+  v17 = sessionID;
   NSAppendPrintF();
-  v18 = [(MCPeerID *)[(MCSession *)self myPeerID] displayNameAndPID];
+  displayNameAndPID = [(MCPeerID *)[(MCSession *)self myPeerID] displayNameAndPID];
   NSAppendPrintF();
   v19 = [(MCSession *)self stringForEncryptionPreference:[(MCSession *)self encryptionPreference]];
   NSAppendPrintF();
-  v4 = [(MCSession *)self securityIdentity];
+  securityIdentity = [(MCSession *)self securityIdentity];
   v5 = "yes";
-  if (!v4)
+  if (!securityIdentity)
   {
     v5 = "no";
   }
@@ -713,16 +713,16 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
   NSAppendPrintF();
   v21 = [(NSMutableDictionary *)[(MCSession *)self peerStates] count];
   NSAppendPrintF();
-  v22 = [(MCSession *)self syncConnectedPeersCount];
+  syncConnectedPeersCount = [(MCSession *)self syncConnectedPeersCount];
   NSAppendPrintF();
-  v23 = [(MCSession *)self maxPeers];
+  maxPeers = [(MCSession *)self maxPeers];
   NSAppendPrintF();
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(MCSession *)self peerStates];
-  v7 = [(NSMutableDictionary *)v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  peerStates = [(MCSession *)self peerStates];
+  v7 = [(NSMutableDictionary *)peerStates countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -733,14 +733,14 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(peerStates);
         }
 
-        v24 = [-[NSMutableDictionary objectForKey:](-[MCSession peerStates](self peerStates];
+        peerStates2 = [-[NSMutableDictionary objectForKey:](-[MCSession peerStates](self peerStates];
         NSAppendPrintF();
       }
 
-      v8 = [(NSMutableDictionary *)v6 countByEnumeratingWithState:&v25 objects:v30 count:16, v24];
+      v8 = [(NSMutableDictionary *)peerStates countByEnumeratingWithState:&v25 objects:v30 count:16, peerStates2];
     }
 
     while (v8);
@@ -752,7 +752,7 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
   {
     v12 = v11;
     NSAppendPrintF();
-    v24 = v12;
+    peerStates2 = v12;
     NSAppendPrintF();
     CFRelease(v12);
   }
@@ -774,13 +774,13 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
 
 - (os_state_data_s)syncStateCapture
 {
-  v2 = [(MCSession *)self syncDetailedDescription];
-  if (!v2)
+  syncDetailedDescription = [(MCSession *)self syncDetailedDescription];
+  if (!syncDetailedDescription)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:v2 format:200 options:0 error:0];
+  v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:syncDetailedDescription format:200 options:0 error:0];
   if (!v3)
   {
     return 0;
@@ -801,11 +801,11 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
   return v7;
 }
 
-- (void)startConnectionWithIndirectPID:(unsigned int)a3
+- (void)startConnectionWithIndirectPID:(unsigned int)d
 {
   v11 = 0;
   v10 = 1350;
-  if ((GCKSessionPrepareConnection(self->_gckSession, a3) & 0x80000000) != 0)
+  if ((GCKSessionPrepareConnection(self->_gckSession, d) & 0x80000000) != 0)
   {
     v7 = mcs_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -823,23 +823,23 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
     v8[1] = 3221225472;
     v8[2] = __44__MCSession_startConnectionWithIndirectPID___block_invoke;
     v8[3] = &unk_278B43D50;
-    v9 = a3;
+    dCopy = d;
     v8[4] = self;
     v8[5] = v5;
     dispatch_async(syncQueue, v8);
   }
 }
 
-- (void)syncCancelIncomingStream:(id)a3 fromPeer:(id)a4
+- (void)syncCancelIncomingStream:(id)stream fromPeer:(id)peer
 {
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MCSession" code:5 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Resource transfer cancelled.", *MEMORY[0x277CCA450])}];
-  v8 = [(NSMutableDictionary *)self->_peerStates objectForKey:a4];
-  -[MCSession syncSendXDataStreamCloseFromReceiverToPID:streamID:closeReason:](self, "syncSendXDataStreamCloseFromReceiverToPID:streamID:closeReason:", [a4 pid], objc_msgSend(a3, "streamID"), 1);
+  v8 = [(NSMutableDictionary *)self->_peerStates objectForKey:peer];
+  -[MCSession syncSendXDataStreamCloseFromReceiverToPID:streamID:closeReason:](self, "syncSendXDataStreamCloseFromReceiverToPID:streamID:closeReason:", [peer pid], objc_msgSend(stream, "streamID"), 1);
 
-  [(MCSession *)self syncCloseIncomingStream:a3 forPeer:a4 state:v8 error:v7 reason:1 shouldTriggerCancelProgress:0];
+  [(MCSession *)self syncCloseIncomingStream:stream forPeer:peer state:v8 error:v7 reason:1 shouldTriggerCancelProgress:0];
 }
 
-- (void)cancelIncomingStream:(id)a3 fromPeer:(id)a4
+- (void)cancelIncomingStream:(id)stream fromPeer:(id)peer
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -847,21 +847,21 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
   block[2] = __43__MCSession_cancelIncomingStream_fromPeer___block_invoke;
   block[3] = &unk_278B43C88;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = stream;
+  block[6] = peer;
   dispatch_async(syncQueue, block);
 }
 
-- (void)syncCancelOutgoingStream:(id)a3 toPeer:(id)a4
+- (void)syncCancelOutgoingStream:(id)stream toPeer:(id)peer
 {
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MCSession" code:5 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Resource transfer cancelled.", *MEMORY[0x277CCA450])}];
-  v8 = [(NSMutableDictionary *)self->_peerStates objectForKey:a4];
-  -[MCSession syncSendXDataStreamCloseFromSenderToPID:streamID:closeReason:](self, "syncSendXDataStreamCloseFromSenderToPID:streamID:closeReason:", [a4 pid], objc_msgSend(a3, "streamID"), 1);
+  v8 = [(NSMutableDictionary *)self->_peerStates objectForKey:peer];
+  -[MCSession syncSendXDataStreamCloseFromSenderToPID:streamID:closeReason:](self, "syncSendXDataStreamCloseFromSenderToPID:streamID:closeReason:", [peer pid], objc_msgSend(stream, "streamID"), 1);
 
-  [(MCSession *)self syncCloseOutgoingStream:a3 forPeer:a4 state:v8 error:v7 shouldTriggerCancelProgress:0];
+  [(MCSession *)self syncCloseOutgoingStream:stream forPeer:peer state:v8 error:v7 shouldTriggerCancelProgress:0];
 }
 
-- (void)cancelOutgoingStream:(id)a3 toPeer:(id)a4
+- (void)cancelOutgoingStream:(id)stream toPeer:(id)peer
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -869,20 +869,20 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
   block[2] = __41__MCSession_cancelOutgoingStream_toPeer___block_invoke;
   block[3] = &unk_278B43C88;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = stream;
+  block[6] = peer;
   dispatch_async(syncQueue, block);
 }
 
 - (unint64_t)syncConnectedPeersCount
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(NSMutableDictionary *)self->_peerStates allValues];
+  allValues = [(NSMutableDictionary *)self->_peerStates allValues];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -894,7 +894,7 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) state] == 2)
@@ -903,7 +903,7 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -918,28 +918,28 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
   return v5;
 }
 
-- (void)syncPeer:(id)a3 changeStateTo:(int64_t)a4 shouldForceCallback:(BOOL)a5
+- (void)syncPeer:(id)peer changeStateTo:(int64_t)to shouldForceCallback:(BOOL)callback
 {
-  v5 = a5;
+  callbackCopy = callback;
   v26 = *MEMORY[0x277D85DE8];
   v9 = [(NSMutableDictionary *)self->_peerStates objectForKey:?];
   if (v9)
   {
     v10 = v9;
-    v11 = [v9 state];
+    state = [v9 state];
     v12 = mcs_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v21 = [a3 displayName];
+      displayName = [peer displayName];
       v22 = 2112;
-      v23 = [MCSession stringForSessionState:v11];
+      v23 = [MCSession stringForSessionState:state];
       v24 = 2112;
-      v25 = [MCSession stringForSessionState:a4];
+      v25 = [MCSession stringForSessionState:to];
       _os_log_impl(&dword_239FB7000, v12, OS_LOG_TYPE_DEFAULT, "PeerID [%@] change state from [%@] to [%@].", buf, 0x20u);
     }
 
-    if (v11 != a4)
+    if (state != to)
     {
       goto LABEL_8;
     }
@@ -947,25 +947,25 @@ void __85__MCSession_syncCloseOutgoingStream_forPeer_state_error_shouldTriggerCa
     v13 = mcs_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [MCSession stringForSessionState:a4];
+      v14 = [MCSession stringForSessionState:to];
       *buf = 138412290;
-      v21 = v14;
+      displayName = v14;
       _os_log_impl(&dword_239FB7000, v13, OS_LOG_TYPE_DEFAULT, "Peer already in state [%@]", buf, 0xCu);
     }
 
-    if (v5)
+    if (callbackCopy)
     {
 LABEL_8:
-      if (a4)
+      if (to)
       {
-        [v10 setState:a4];
+        [v10 setState:to];
       }
 
       else
       {
-        v16 = a3;
-        -[NSMutableDictionary removeObjectForKey:](self->_peerIDMap, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "pid")}]);
-        [(NSMutableDictionary *)self->_peerStates removeObjectForKey:a3];
+        peerCopy = peer;
+        -[NSMutableDictionary removeObjectForKey:](self->_peerIDMap, "removeObjectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(peer, "pid")}]);
+        [(NSMutableDictionary *)self->_peerStates removeObjectForKey:peer];
       }
 
 LABEL_15:
@@ -975,13 +975,13 @@ LABEL_15:
       v19[2] = __56__MCSession_syncPeer_changeStateTo_shouldForceCallback___block_invoke;
       v19[3] = &unk_278B43D78;
       v19[4] = self;
-      v19[5] = a3;
-      v19[6] = a4;
-      v19[7] = v11;
+      v19[5] = peer;
+      v19[6] = to;
+      v19[7] = state;
       dispatch_async(callbackQueue, v19);
-      if (a4)
+      if (to)
       {
-        if (a4 == 2)
+        if (to == 2)
         {
           [(MCSession *)self setMaxPeers:[(MCSession *)self maxPeers]+ 1];
           [(MCSession *)self syncLogConnectedPeers];
@@ -998,9 +998,9 @@ LABEL_15:
 
   else
   {
-    if (v5)
+    if (callbackCopy)
     {
-      v11 = 0;
+      state = 0;
       goto LABEL_15;
     }
 
@@ -1008,9 +1008,9 @@ LABEL_15:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = [a3 displayName];
+      displayName = [peer displayName];
       v22 = 2112;
-      v23 = [MCSession stringForSessionState:a4];
+      v23 = [MCSession stringForSessionState:to];
       _os_log_impl(&dword_239FB7000, v15, OS_LOG_TYPE_DEFAULT, "No peerState for peerID [%@], newState [%@]. Will not callback.", buf, 0x16u);
     }
   }
@@ -1708,7 +1708,7 @@ LABEL_13:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     sessionID = v8->_sessionID;
-    v27 = [(MCPeerID *)v8->_myPeerID displayNameAndPID];
+    displayNameAndPID = [(MCPeerID *)v8->_myPeerID displayNameAndPID];
     if (v8->_securityIdentity)
     {
       v28 = "yes";
@@ -1727,7 +1727,7 @@ LABEL_13:
     v37 = 2112;
     v38 = sessionID;
     v39 = 2112;
-    v40 = v27;
+    v40 = displayNameAndPID;
     v41 = 2080;
     v42 = v28;
     v43 = 2112;
@@ -1767,12 +1767,12 @@ uint64_t __64__MCSession_initWithPeer_securityIdentity_encryptionPreference___bl
     GCKSessionRelease();
   }
 
-  v3 = [(NSMutableDictionary *)self->_peerStates allValues];
+  allValues = [(NSMutableDictionary *)self->_peerStates allValues];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1783,13 +1783,13 @@ uint64_t __64__MCSession_initWithPeer_securityIdentity_encryptionPreference___bl
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         -[MCSession syncCloseStreamsForPeer:](self, "syncCloseStreamsForPeer:", [*(*(&v10 + 1) + 8 * i) peerID]);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1809,11 +1809,11 @@ uint64_t __64__MCSession_initWithPeer_securityIdentity_encryptionPreference___bl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncGetConnectionDataForPeerState:(id)a3 completionHandler:(id)a4
+- (void)syncGetConnectionDataForPeerState:(id)state completionHandler:(id)handler
 {
   v13 = 0;
   v12 = 1350;
-  if ((GCKSessionPrepareConnection(self->_gckSession, [objc_msgSend(a3 "peerID")]) & 0x80000000) != 0)
+  if ((GCKSessionPrepareConnection(self->_gckSession, [objc_msgSend(state "peerID")]) & 0x80000000) != 0)
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MCSession" code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Unable to create connection data.", *MEMORY[0x277CCA450])}];
     v7 = 0;
@@ -1830,7 +1830,7 @@ uint64_t __64__MCSession_initWithPeer_securityIdentity_encryptionPreference___bl
     free(v13);
   }
 
-  [a3 setNearbyConnectionData:v7];
+  [state setNearbyConnectionData:v7];
   v8 = 0;
   v9 = v7;
 LABEL_5:
@@ -1840,7 +1840,7 @@ LABEL_5:
   block[2] = __65__MCSession_syncGetConnectionDataForPeerState_completionHandler___block_invoke;
   block[3] = &unk_278B43F58;
   block[5] = v8;
-  block[6] = a4;
+  block[6] = handler;
   block[4] = v9;
   dispatch_async(callbackQueue, block);
 }
@@ -1903,19 +1903,19 @@ uint64_t __63__MCSession_nearbyConnectionDataForPeer_withCompletionHandler___blo
   return v3(v1, v2, 0);
 }
 
-- (BOOL)isEncryptionPreferenceCompatible:(int64_t)a3
+- (BOOL)isEncryptionPreferenceCompatible:(int64_t)compatible
 {
-  v5 = [(MCSession *)self encryptionPreference];
-  if (a3 == 1 && v5 == MCEncryptionNone)
+  encryptionPreference = [(MCSession *)self encryptionPreference];
+  if (compatible == 1 && encryptionPreference == MCEncryptionNone)
   {
     return 0;
   }
 
-  v7 = [(MCSession *)self encryptionPreference];
-  return a3 != 2 || v7 != MCEncryptionRequired;
+  encryptionPreference2 = [(MCSession *)self encryptionPreference];
+  return compatible != 2 || encryptionPreference2 != MCEncryptionRequired;
 }
 
-- (void)syncConnectPeer:(id)a3 withConnectionData:(id)a4
+- (void)syncConnectPeer:(id)peer withConnectionData:(id)data
 {
   v26 = *MEMORY[0x277D85DE8];
   v7 = [(NSMutableDictionary *)self->_peerStates objectForKey:?];
@@ -1953,13 +1953,13 @@ LABEL_12:
     }
   }
 
-  v11 = [[MCSessionPeerConnectionData alloc] initWithConnectionDataBlob:a4];
+  v11 = [[MCSessionPeerConnectionData alloc] initWithConnectionDataBlob:data];
   if (!v11)
   {
     v14 = mcs_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [MCSession syncConnectPeer:a3 withConnectionData:?];
+      [MCSession syncConnectPeer:peer withConnectionData:?];
     }
 
     goto LABEL_24;
@@ -1972,7 +1972,7 @@ LABEL_12:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v22 = 138412546;
-      v23 = [a3 displayName];
+      displayName = [peer displayName];
       v24 = 2112;
       v25 = [(MCSession *)self stringForEncryptionPreference:[(MCSessionPeerConnectionData *)v12 encryptionPreference]];
       _os_log_error_impl(&dword_239FB7000, v15, OS_LOG_TYPE_ERROR, "Peer [%@] has incompatible encryption preference [%@].", &v22, 0x16u);
@@ -1983,11 +1983,11 @@ LABEL_12:
 
   v13 = [(MCSession *)self encryptionPreference]!= MCEncryptionNone && [(MCSessionPeerConnectionData *)v12 encryptionPreference]!= 2;
   gckSession = self->_gckSession;
-  v17 = [a3 pid];
-  v18 = [(MCSessionPeerConnectionData *)v12 hasIdentitySet];
+  v17 = [peer pid];
+  hasIdentitySet = [(MCSessionPeerConnectionData *)v12 hasIdentitySet];
   [(NSData *)[(MCSessionPeerConnectionData *)v12 gckSessionConnectionData] bytes];
   [(NSData *)[(MCSessionPeerConnectionData *)v12 gckSessionConnectionData] length];
-  if ((GCKSessionEstablishConnection(gckSession, v17, v18, v13) & 0x80000000) != 0)
+  if ((GCKSessionEstablishConnection(gckSession, v17, hasIdentitySet, v13) & 0x80000000) != 0)
   {
     v20 = mcs_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1996,7 +1996,7 @@ LABEL_12:
     }
 
 LABEL_24:
-    [(MCSession *)self syncPeer:a3 changeStateTo:0 shouldForceCallback:0];
+    [(MCSession *)self syncPeer:peer changeStateTo:0 shouldForceCallback:0];
     goto LABEL_25;
   }
 
@@ -2039,16 +2039,16 @@ uint64_t __31__MCSession_cancelConnectPeer___block_invoke(uint64_t a1)
   return GCKSessionDisposeConnection(v1, v2);
 }
 
-- (void)syncSendData:(id)a3 toPeers:(id)a4 withDataMode:(int64_t)a5
+- (void)syncSendData:(id)data toPeers:(id)peers withDataMode:(int64_t)mode
 {
   v34 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
-  v19 = a5;
-  v7 = a5 == 1;
+  modeCopy = mode;
+  v7 = mode == 1;
   v25 = 0u;
   v26 = 0u;
-  v8 = [a4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  v8 = [peers countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2060,7 +2060,7 @@ uint64_t __31__MCSession_cancelConnectPeer___block_invoke(uint64_t a1)
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(peers);
         }
 
         v12 = *(*(&v23 + 1) + 8 * v11);
@@ -2069,17 +2069,17 @@ uint64_t __31__MCSession_cancelConnectPeer___block_invoke(uint64_t a1)
         v13 = mcs_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [a3 length];
+          v14 = [data length];
           *buf = 134218496;
           v28 = v14;
           v29 = 1024;
           v30 = v21;
           v31 = 1024;
-          v32 = v19;
+          v32 = modeCopy;
           _os_log_impl(&dword_239FB7000, v13, OS_LOG_TYPE_DEFAULT, "Sending %ld bytes of data to participant %u, mode=%d.", buf, 0x18u);
         }
 
-        v15 = AGPSessionSendTo(self->_agpSession, &v21, 1, [a3 bytes], objc_msgSend(a3, "length"), &v22, v7, 5u, 1, 0);
+        v15 = AGPSessionSendTo(self->_agpSession, &v21, 1, [data bytes], objc_msgSend(data, "length"), &v22, v7, 5u, 1, 0);
         if (v15)
         {
           v16 = v15;
@@ -2096,7 +2096,7 @@ uint64_t __31__MCSession_cancelConnectPeer___block_invoke(uint64_t a1)
       }
 
       while (v9 != v11);
-      v9 = [a4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v9 = [peers countByEnumeratingWithState:&v23 objects:v33 count:16];
     }
 
     while (v9);
@@ -2159,7 +2159,7 @@ LABEL_21:
   v30 = 0x3052000000;
   v31 = __Block_byref_object_copy_;
   v32 = __Block_byref_object_dispose_;
-  v33 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -2202,7 +2202,7 @@ LABEL_21:
 
   else
   {
-    v22 = [(NSArray *)peerIDs copyDeep_MC];
+    copyDeep_MC = [(NSArray *)peerIDs copyDeep_MC];
     v23 = self->_syncQueue;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -2210,7 +2210,7 @@ LABEL_21:
     v26[3] = &unk_278B43FD0;
     v26[4] = self;
     v26[5] = v11;
-    v26[6] = v22;
+    v26[6] = copyDeep_MC;
     v26[7] = mode;
     dispatch_async(v23, v26);
   }
@@ -2269,16 +2269,16 @@ uint64_t __45__MCSession_sendData_toPeers_withMode_error___block_invoke(void *a1
 
 - (NSArray)connectedPeers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   syncQueue = self->_syncQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__MCSession_connectedPeers__block_invoke;
   v6[3] = &unk_278B43C60;
   v6[4] = self;
-  v6[5] = v3;
+  v6[5] = array;
   dispatch_sync(syncQueue, v6);
-  return v3;
+  return array;
 }
 
 uint64_t __27__MCSession_connectedPeers__block_invoke(uint64_t a1)
@@ -2397,7 +2397,7 @@ uint64_t __27__MCSession_connectedPeers__block_invoke(uint64_t a1)
         v30[8] = peerID;
         dispatch_async(v21, v30);
 
-        v22 = [(MCSessionStream *)v11 progress];
+        progress = [(MCSessionStream *)v11 progress];
       }
 
       else
@@ -2440,10 +2440,10 @@ uint64_t __27__MCSession_connectedPeers__block_invoke(uint64_t a1)
         v29[6] = v11;
         v29[7] = peerID;
         dispatch_async(v23, v29);
-        v22 = [(MCSessionStream *)v11 progress];
+        progress = [(MCSessionStream *)v11 progress];
       }
 
-      v19 = v22;
+      v19 = progress;
       goto LABEL_16;
     }
 
@@ -2714,14 +2714,14 @@ uint64_t __69__MCSession_sendResourceAtURL_withName_toPeer_withCompletionHandler
   GCKSessionDisposeAllConnections();
 }
 
-- (void)syncStartStreamWithName:(id)a3 toPeer:(id)a4 mcFD:(int)a5 isResource:(BOOL)a6
+- (void)syncStartStreamWithName:(id)name toPeer:(id)peer mcFD:(int)d isResource:(BOOL)resource
 {
-  v6 = a6;
+  resourceCopy = resource;
   v36 = *MEMORY[0x277D85DE8];
-  v11 = [(NSMutableDictionary *)self->_peerStates objectForKey:a4];
+  v11 = [(NSMutableDictionary *)self->_peerStates objectForKey:peer];
   if (!v11)
   {
-    NSLog(&cfstr_UnknownPeer.isa, a4);
+    NSLog(&cfstr_UnknownPeer.isa, peer);
     v17 = mcs_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2732,24 +2732,24 @@ uint64_t __69__MCSession_sendResourceAtURL_withName_toPeer_withCompletionHandler
   }
 
   v12 = v11;
-  v13 = [a3 UTF8String];
-  v14 = strlen(v13);
+  uTF8String = [name UTF8String];
+  v14 = strlen(uTF8String);
   v15 = v14;
   if (v14 >= 0x8000)
   {
-    NSLog(&cfstr_StreamNameTooL.isa, a3);
+    NSLog(&cfstr_StreamNameTooL.isa, name);
     v16 = mcs_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v33 = a3;
+      *v33 = name;
       _os_log_impl(&dword_239FB7000, v16, OS_LOG_TYPE_DEFAULT, "Stream name [%@] too long.", buf, 0xCu);
     }
 
 LABEL_12:
     [objc_msgSend(v12 "outgoingStreamRequests")];
 LABEL_13:
-    close(a5);
+    close(d);
     goto LABEL_14;
   }
 
@@ -2768,8 +2768,8 @@ LABEL_13:
   }
 
   v20 = v19;
-  v29 = a5;
-  if (v6)
+  dCopy = d;
+  if (resourceCopy)
   {
     v21 = [objc_msgSend(v12 "outgoingStreamRequests")];
   }
@@ -2781,30 +2781,30 @@ LABEL_13:
 
   v24 = v21;
   *v20 = -108;
-  v20[1] = v6;
+  v20[1] = resourceCopy;
   v20[2] = HIBYTE(v18);
   v20[3] = v18;
-  v28 = [v12 newStreamOpenRequestID];
-  *(v20 + 1) = bswap32(v28);
-  if (v6)
+  newStreamOpenRequestID = [v12 newStreamOpenRequestID];
+  *(v20 + 1) = bswap32(newStreamOpenRequestID);
+  if (resourceCopy)
   {
     v20[8] = [(NSProgress *)[(MCSessionStream *)v24 progress] totalUnitCount]>> 24;
     v20[9] = [(NSProgress *)[(MCSessionStream *)v24 progress] totalUnitCount]>> 16;
     v20[10] = [(NSProgress *)[(MCSessionStream *)v24 progress] totalUnitCount]>> 8;
-    v25 = [(NSProgress *)[(MCSessionStream *)v24 progress] totalUnitCount];
+    totalUnitCount = [(NSProgress *)[(MCSessionStream *)v24 progress] totalUnitCount];
   }
 
   else
   {
-    v25 = 0;
+    totalUnitCount = 0;
     v20[10] = 0;
     *(v20 + 4) = 0;
   }
 
-  v20[11] = v25;
-  memcpy(v20 + 12, v13, v15);
+  v20[11] = totalUnitCount;
+  memcpy(v20 + 12, uTF8String, v15);
   v31 = 0;
-  v30 = [a4 pid];
+  v30 = [peer pid];
   if (AGPSessionSendTo(self->_agpSession, &v30, 1, v20, v18, &v31, 0, 0xAu, 1, 0))
   {
     v26 = mcs_log();
@@ -2814,21 +2814,21 @@ LABEL_13:
     }
   }
 
-  [(MCSessionStream *)v24 setName:a3];
-  [(MCSessionStream *)v24 setPeerID:a4];
+  [(MCSessionStream *)v24 setName:name];
+  [(MCSessionStream *)v24 setPeerID:peer];
   [(MCSessionStream *)v24 setState:1];
-  [(MCSessionStream *)v24 setFd:v29];
+  [(MCSessionStream *)v24 setFd:dCopy];
   [objc_msgSend(v12 "outgoingStreamRequests")];
   [objc_msgSend(v12 "outgoingStreamRequests")];
   v27 = mcs_log();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    *v33 = v28;
+    *v33 = newStreamOpenRequestID;
     *&v33[4] = 2112;
-    *&v33[6] = a3;
+    *&v33[6] = name;
     v34 = 2112;
-    v35 = a4;
+    peerCopy = peer;
     _os_log_impl(&dword_239FB7000, v27, OS_LOG_TYPE_DEFAULT, "Streaming: sent open request: requestID[%u] stream[%@] peer[%@].", buf, 0x1Cu);
   }
 
@@ -3049,15 +3049,15 @@ uint64_t __46__MCSession_startStreamWithName_toPeer_error___block_invoke_527(uin
   v5[0] = @"sid";
   if ([(MCSession *)self sessionID])
   {
-    v3 = [(MCSession *)self sessionID];
+    sessionID = [(MCSession *)self sessionID];
   }
 
   else
   {
-    v3 = &stru_284D24468;
+    sessionID = &stru_284D24468;
   }
 
-  v6[0] = v3;
+  v6[0] = sessionID;
   v5[1] = @"localPeer";
   v6[1] = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[MCSession gckPID](self, "gckPID")}];
   v5[2] = @"auth";
@@ -3074,16 +3074,16 @@ uint64_t __46__MCSession_startStreamWithName_toPeer_error___block_invoke_527(uin
   v5[0] = @"sid";
   if ([(MCSession *)self sessionID])
   {
-    v3 = [(MCSession *)self sessionID];
+    sessionID = [(MCSession *)self sessionID];
   }
 
   else
   {
-    v3 = &stru_284D24468;
+    sessionID = &stru_284D24468;
   }
 
   v5[1] = @"peersCnt";
-  v6[0] = v3;
+  v6[0] = sessionID;
   v6[1] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MCSession syncConnectedPeersCount](self, "syncConnectedPeersCount") + 1}];
   MCDashboardLogJSON([MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:v5 count:2], 0, @"ConnectedPeers");
   v4 = *MEMORY[0x277D85DE8];
@@ -3095,16 +3095,16 @@ uint64_t __46__MCSession_startStreamWithName_toPeer_error___block_invoke_527(uin
   v6[0] = @"sid";
   if ([(MCSession *)self sessionID])
   {
-    v3 = [(MCSession *)self sessionID];
+    sessionID = [(MCSession *)self sessionID];
   }
 
   else
   {
-    v3 = &stru_284D24468;
+    sessionID = &stru_284D24468;
   }
 
   v6[1] = @"maxPeersCnt";
-  v7[0] = v3;
+  v7[0] = sessionID;
   v7[1] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MCSession maxPeers](self, "maxPeers")}];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   MCMetricsLog(@"com.apple.multipeerconnectivity.mcsession.maxconnectedpeers", v4, 0);
@@ -3112,28 +3112,28 @@ uint64_t __46__MCSession_startStreamWithName_toPeer_error___block_invoke_527(uin
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringForSessionState:(int64_t)a3
++ (id)stringForSessionState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return @"?";
   }
 
   else
   {
-    return off_278B44178[a3];
+    return off_278B44178[state];
   }
 }
 
-+ (id)stringForMCSessionSendDataMode:(int64_t)a3
++ (id)stringForMCSessionSendDataMode:(int64_t)mode
 {
   v3 = @"?";
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = @"Unreliable";
   }
 
-  if (a3)
+  if (mode)
   {
     return v3;
   }
@@ -3144,14 +3144,14 @@ uint64_t __46__MCSession_startStreamWithName_toPeer_error___block_invoke_527(uin
   }
 }
 
-- (void)peerDidDeclineInvitation:(id)a3
+- (void)peerDidDeclineInvitation:(id)invitation
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = mcs_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = [a3 displayName];
+    displayName = [invitation displayName];
     _os_log_impl(&dword_239FB7000, v5, OS_LOG_TYPE_DEFAULT, "Peer [%@] declined invitation.", buf, 0xCu);
   }
 
@@ -3161,7 +3161,7 @@ uint64_t __46__MCSession_startStreamWithName_toPeer_error___block_invoke_527(uin
   v8[2] = __47__MCSession_Private__peerDidDeclineInvitation___block_invoke;
   v8[3] = &unk_278B43C60;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = invitation;
   dispatch_async(syncQueue, v8);
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -3180,7 +3180,7 @@ uint64_t __47__MCSession_Private__peerDidDeclineInvitation___block_invoke(uint64
   return result;
 }
 
-- (int64_t)connectedInterfacesForPeer:(id)a3
+- (int64_t)connectedInterfacesForPeer:(id)peer
 {
   v7 = 0;
   v8 = &v7;
@@ -3192,7 +3192,7 @@ uint64_t __47__MCSession_Private__peerDidDeclineInvitation___block_invoke(uint64
   block[2] = __49__MCSession_Private__connectedInterfacesForPeer___block_invoke;
   block[3] = &unk_278B44098;
   block[4] = self;
-  block[5] = a3;
+  block[5] = peer;
   block[6] = &v7;
   dispatch_sync(syncQueue, block);
   v4 = *(v8 + 6);
@@ -3209,7 +3209,7 @@ uint64_t __49__MCSession_Private__connectedInterfacesForPeer___block_invoke(uint
   return GCKSessionGetInterfacesForParticipant(v2, v3, v4);
 }
 
-- (void)setHeartbeatTimeout:(unint64_t)a3
+- (void)setHeartbeatTimeout:(unint64_t)timeout
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3217,21 +3217,21 @@ uint64_t __49__MCSession_Private__connectedInterfacesForPeer___block_invoke(uint
   v4[2] = __42__MCSession_Private__setHeartbeatTimeout___block_invoke;
   v4[3] = &unk_278B440C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = timeout;
   dispatch_async(syncQueue, v4);
 }
 
-- (void)setAWDLDisabled:(BOOL)a3
+- (void)setAWDLDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v9 = *MEMORY[0x277D85DE8];
-  self->_AWDLDisabled = a3;
-  GCKSessionSetAWDLDisabled(self->_gckSession, a3);
+  self->_AWDLDisabled = disabled;
+  GCKSessionSetAWDLDisabled(self->_gckSession, disabled);
   v4 = mcs_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "no";
-    if (v3)
+    if (disabledCopy)
     {
       v5 = "yes";
     }
@@ -3244,17 +3244,17 @@ uint64_t __49__MCSession_Private__connectedInterfacesForPeer___block_invoke(uint
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPreferNCMOverEthernet:(BOOL)a3
+- (void)setPreferNCMOverEthernet:(BOOL)ethernet
 {
-  v3 = a3;
+  ethernetCopy = ethernet;
   v9 = *MEMORY[0x277D85DE8];
-  self->_preferNCMOverEthernet = a3;
-  GCKSessionSetPreferNCMOverEthernet(self->_gckSession, a3);
+  self->_preferNCMOverEthernet = ethernet;
+  GCKSessionSetPreferNCMOverEthernet(self->_gckSession, ethernet);
   v4 = mcs_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "no";
-    if (v3)
+    if (ethernetCopy)
     {
       v5 = "yes";
     }
@@ -3267,7 +3267,7 @@ uint64_t __49__MCSession_Private__connectedInterfacesForPeer___block_invoke(uint
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setICETimeoutForced:(BOOL)a3
+- (void)setICETimeoutForced:(BOOL)forced
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3275,11 +3275,11 @@ uint64_t __49__MCSession_Private__connectedInterfacesForPeer___block_invoke(uint
   v4[2] = __42__MCSession_Testing__setICETimeoutForced___block_invoke;
   v4[3] = &unk_278B43EB8;
   v4[4] = self;
-  v5 = a3;
+  forcedCopy = forced;
   dispatch_async(syncQueue, v4);
 }
 
-- (void)closeDirectConnectionsWithPeer:(id)a3
+- (void)closeDirectConnectionsWithPeer:(id)peer
 {
   syncQueue = self->_syncQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3287,7 +3287,7 @@ uint64_t __49__MCSession_Private__connectedInterfacesForPeer___block_invoke(uint
   v4[2] = __53__MCSession_Testing__closeDirectConnectionsWithPeer___block_invoke;
   v4[3] = &unk_278B43C60;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = peer;
   dispatch_async(syncQueue, v4);
 }
 

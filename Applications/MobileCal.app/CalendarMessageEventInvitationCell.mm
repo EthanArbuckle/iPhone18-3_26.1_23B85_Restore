@@ -1,6 +1,6 @@
 @interface CalendarMessageEventInvitationCell
-+ (BOOL)_notificationIsInvite:(id)a3;
-+ (id)actionsForNotification:(id)a3;
++ (BOOL)_notificationIsInvite:(id)invite;
++ (id)actionsForNotification:(id)notification;
 - (BOOL)notificationIsCancelled;
 - (BOOL)notificationIsInvite;
 - (BOOL)showAsCancelledOrDeclined;
@@ -14,7 +14,7 @@
 - (id)titleStrings;
 - (int64_t)actionBodyStringAction;
 - (int64_t)selectedResponseButton;
-- (void)setNotification:(id)a3;
+- (void)setNotification:(id)notification;
 - (void)updateAuthor;
 @end
 
@@ -22,22 +22,22 @@
 
 - (id)titleStrings
 {
-  v3 = [(CalendarMessageCell *)self notification];
-  v4 = [v3 title];
+  notification = [(CalendarMessageCell *)self notification];
+  title = [notification title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [(CalendarMessageCell *)self notification];
-    v6 = [v5 title];
-    v11 = v6;
+    notification2 = [(CalendarMessageCell *)self notification];
+    title2 = [notification2 title];
+    v11 = title2;
     v7 = &v11;
   }
 
   else
   {
-    v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [v5 localizedStringForKey:@"(No Title)" value:&stru_1002133B8 table:0];
-    v10 = v6;
+    notification2 = [NSBundle bundleForClass:objc_opt_class()];
+    title2 = [notification2 localizedStringForKey:@"(No Title)" value:&stru_1002133B8 table:0];
+    v10 = title2;
     v7 = &v10;
   }
 
@@ -48,32 +48,32 @@
 
 - (id)bodyStringDict
 {
-  v3 = [(CalendarMessageCell *)self notification];
-  v4 = [v3 descriptionStrings:CUIKCalendarNoboDescriptionProfile];
+  notification = [(CalendarMessageCell *)self notification];
+  v4 = [notification descriptionStrings:CUIKCalendarNoboDescriptionProfile];
 
   v5 = [NSMutableDictionary dictionaryWithDictionary:v4];
-  v6 = [(CalendarMessageEventInvitationCell *)self _organizerString];
-  if (v6)
+  _organizerString = [(CalendarMessageEventInvitationCell *)self _organizerString];
+  if (_organizerString)
   {
-    [v5 setObject:v6 forKeyedSubscript:CUIKNotificationDescriptionKeyPerson];
+    [v5 setObject:_organizerString forKeyedSubscript:CUIKNotificationDescriptionKeyPerson];
   }
 
-  v7 = [(CalendarMessageEventInvitationCell *)self _invitedByString];
-  if (v7)
+  _invitedByString = [(CalendarMessageEventInvitationCell *)self _invitedByString];
+  if (_invitedByString)
   {
     v8 = &CUIKNotificationDescriptionKeySecondPerson;
-    if (!v6)
+    if (!_organizerString)
     {
       v8 = &CUIKNotificationDescriptionKeyPerson;
     }
 
-    [v5 setObject:v7 forKeyedSubscript:*v8];
+    [v5 setObject:_invitedByString forKeyedSubscript:*v8];
   }
 
-  v9 = [(CalendarMessageCell *)self notification];
-  v10 = [v9 couldBeJunk];
+  notification2 = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification2 couldBeJunk];
 
-  if (v10)
+  if (couldBeJunk)
   {
     [v5 setObject:0 forKeyedSubscript:CUIKNotificationDescriptionKeyPerson];
   }
@@ -83,57 +83,57 @@
 
 - (id)preActionBodyStrings
 {
-  v3 = [(CalendarMessageCell *)self notification];
-  v4 = [v3 couldBeJunk];
+  notification = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification couldBeJunk];
 
-  if (!v4)
+  if (!couldBeJunk)
   {
     goto LABEL_12;
   }
 
-  v5 = [(CalendarMessageCell *)self notification];
-  v6 = [v5 owner];
+  notification2 = [(CalendarMessageCell *)self notification];
+  owner = [notification2 owner];
 
-  v7 = [v6 emailAddress];
+  emailAddress = [owner emailAddress];
 
-  if (v7)
+  if (emailAddress)
   {
-    v8 = [v6 emailAddress];
+    emailAddress2 = [owner emailAddress];
     goto LABEL_10;
   }
 
-  v9 = [v6 phoneNumber];
+  phoneNumber = [owner phoneNumber];
 
-  if (v9)
+  if (phoneNumber)
   {
-    v10 = +[CUIKPhoneNumberDescriptionGenerator sharedGenerator];
-    v11 = [v6 phoneNumber];
-    v12 = [v10 formattedStringForPhoneNumber:v11];
+    resourceSpecifier = +[CUIKPhoneNumberDescriptionGenerator sharedGenerator];
+    phoneNumber2 = [owner phoneNumber];
+    v12 = [resourceSpecifier formattedStringForPhoneNumber:phoneNumber2];
   }
 
   else
   {
-    v13 = [v6 URL];
-    v10 = [v13 resourceSpecifier];
+    v13 = [owner URL];
+    resourceSpecifier = [v13 resourceSpecifier];
 
-    if (v10)
+    if (resourceSpecifier)
     {
-      v8 = v10;
+      emailAddress2 = resourceSpecifier;
       goto LABEL_9;
     }
 
-    v11 = [(CalendarMessageCell *)self notification];
+    phoneNumber2 = [(CalendarMessageCell *)self notification];
     v12 = CUIKDisplayStringForNotificationIdentity();
   }
 
-  v8 = v12;
+  emailAddress2 = v12;
 
 LABEL_9:
 LABEL_10:
 
-  if (v8)
+  if (emailAddress2)
   {
-    v16[0] = v8;
+    v16[0] = emailAddress2;
     v16[1] = @" — ";
     v14 = [NSArray arrayWithObjects:v16 count:2];
 
@@ -149,10 +149,10 @@ LABEL_13:
 
 - (id)actionBodyString
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 couldBeJunk];
+  notification = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification couldBeJunk];
 
-  if (v3)
+  if (couldBeJunk)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"Report Junk…" value:&stru_1002133B8 table:0];
@@ -168,10 +168,10 @@ LABEL_13:
 
 - (int64_t)actionBodyStringAction
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 couldBeJunk];
+  notification = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification couldBeJunk];
 
-  if (v3)
+  if (couldBeJunk)
   {
     return 0x10000;
   }
@@ -184,30 +184,30 @@ LABEL_13:
 
 - (int64_t)selectedResponseButton
 {
-  v2 = [(CalendarMessageCell *)self notification];
-  v3 = [v2 participationStatus];
+  notification = [(CalendarMessageCell *)self notification];
+  participationStatus = [notification participationStatus];
 
-  if ((v3 - 2) > 2)
+  if ((participationStatus - 2) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1001F8530[(v3 - 2)];
+    return qword_1001F8530[(participationStatus - 2)];
   }
 }
 
 - (void)updateAuthor
 {
-  v3 = [(CalendarMessageCell *)self notification];
-  v4 = [v3 couldBeJunk];
+  notification = [(CalendarMessageCell *)self notification];
+  couldBeJunk = [notification couldBeJunk];
 
-  if (v4)
+  if (couldBeJunk)
   {
-    v6 = [(CalendarMessageCell *)self authorView];
+    authorView = [(CalendarMessageCell *)self authorView];
     v5 = objc_opt_new();
-    [v6 setContact:v5];
+    [authorView setContact:v5];
   }
 
   else
@@ -220,10 +220,10 @@ LABEL_13:
 
 - (id)_invitedByString
 {
-  v3 = [(CalendarMessageCell *)self notification];
-  v4 = [v3 invitedBy];
+  notification = [(CalendarMessageCell *)self notification];
+  invitedBy = [notification invitedBy];
 
-  if (v4)
+  if (invitedBy)
   {
     invitedByString = self->_invitedByString;
     if (!invitedByString)
@@ -233,7 +233,7 @@ LABEL_13:
 
       if (v7)
       {
-        v8 = [NSString localizedStringWithFormat:v7, v4];
+        v8 = [NSString localizedStringWithFormat:v7, invitedBy];
         v9 = self->_invitedByString;
         self->_invitedByString = v8;
       }
@@ -256,29 +256,29 @@ LABEL_13:
 {
   if (!self->_organizerString)
   {
-    v3 = [(CalendarMessageCell *)self notification];
-    v4 = [v3 couldBeJunk];
+    notification = [(CalendarMessageCell *)self notification];
+    couldBeJunk = [notification couldBeJunk];
 
-    if ((v4 & 1) == 0)
+    if ((couldBeJunk & 1) == 0)
     {
       if ([(CalendarMessageEventInvitationCell *)self notificationIsCancelled])
       {
         v5 = [NSBundle bundleForClass:objc_opt_class()];
-        v6 = v5;
+        notification2 = v5;
         v7 = @"Canceled by %@";
       }
 
       else
       {
-        v8 = [(CalendarMessageEventInvitationCell *)self _invitedByString];
+        _invitedByString = [(CalendarMessageEventInvitationCell *)self _invitedByString];
 
-        if (!v8)
+        if (!_invitedByString)
         {
           goto LABEL_12;
         }
 
         v5 = [NSBundle bundleForClass:objc_opt_class()];
-        v6 = v5;
+        notification2 = v5;
         v7 = @"Organized by %@";
       }
 
@@ -288,7 +288,7 @@ LABEL_13:
       v11 = organizerName;
       if (!organizerName)
       {
-        v6 = [(CalendarMessageCell *)self notification];
+        notification2 = [(CalendarMessageCell *)self notification];
         v11 = CUIKDisplayStringForNotificationIdentity();
       }
 
@@ -316,15 +316,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = [(CalendarMessageCell *)self notification];
-  if ([v4 timeChanged])
+  notification = [(CalendarMessageCell *)self notification];
+  if ([notification timeChanged])
   {
     v5 = @"Time changed to %@";
   }
 
   else
   {
-    if (![v4 dateChanged])
+    if (![notification dateChanged])
     {
       v8 = 1;
       v7 = @"%@";
@@ -340,15 +340,15 @@ LABEL_12:
   v8 = 0;
 LABEL_8:
   v9 = +[CUIKDateDescriptionGenerator sharedGenerator];
-  v10 = [v4 startDateForNextOccurrence];
-  v11 = v10;
-  if (!v10)
+  startDateForNextOccurrence = [notification startDateForNextOccurrence];
+  startDate = startDateForNextOccurrence;
+  if (!startDateForNextOccurrence)
   {
-    v11 = [v4 startDate];
+    startDate = [notification startDate];
   }
 
-  v12 = [v9 dateStringForDate:v11 allDay:objc_msgSend(v4 standalone:"isAllDay") shortFormat:v8, 0];
-  if (!v10)
+  v12 = [v9 dateStringForDate:startDate allDay:objc_msgSend(notification standalone:"isAllDay") shortFormat:v8, 0];
+  if (!startDateForNextOccurrence)
   {
   }
 
@@ -365,21 +365,21 @@ LABEL_13:
 - (id)actions
 {
   v3 = objc_opt_class();
-  v4 = [(CalendarMessageCell *)self notification];
-  v5 = [v3 actionsForNotification:v4];
+  notification = [(CalendarMessageCell *)self notification];
+  v5 = [v3 actionsForNotification:notification];
 
   return v5;
 }
 
-+ (id)actionsForNotification:(id)a3
++ (id)actionsForNotification:(id)notification
 {
-  v4 = a3;
-  if ([a1 _notificationIsInvite:v4])
+  notificationCopy = notification;
+  if ([self _notificationIsInvite:notificationCopy])
   {
     v5 = &off_10021A0B0;
   }
 
-  else if ([v4 type] == 2)
+  else if ([notificationCopy type] == 2)
   {
     v5 = &off_10021A0C8;
   }
@@ -392,10 +392,10 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)_notificationIsInvite:(id)a3
++ (BOOL)_notificationIsInvite:(id)invite
 {
-  v4 = a3;
-  v5 = ([a1 _notificationIsCancelled:v4] & 1) == 0 && objc_msgSend(v4, "participationStatus") != 2 && objc_msgSend(v4, "participationStatus") != 3 && objc_msgSend(v4, "participationStatus") != 4;
+  inviteCopy = invite;
+  v5 = ([self _notificationIsCancelled:inviteCopy] & 1) == 0 && objc_msgSend(inviteCopy, "participationStatus") != 2 && objc_msgSend(inviteCopy, "participationStatus") != 3 && objc_msgSend(inviteCopy, "participationStatus") != 4;
 
   return v5;
 }
@@ -418,8 +418,8 @@ LABEL_13:
 - (BOOL)notificationIsCancelled
 {
   v3 = objc_opt_class();
-  v4 = [(CalendarMessageCell *)self notification];
-  LOBYTE(v3) = [v3 _notificationIsCancelled:v4];
+  notification = [(CalendarMessageCell *)self notification];
+  LOBYTE(v3) = [v3 _notificationIsCancelled:notification];
 
   return v3;
 }
@@ -427,17 +427,17 @@ LABEL_13:
 - (BOOL)notificationIsInvite
 {
   v3 = objc_opt_class();
-  v4 = [(CalendarMessageCell *)self notification];
-  LOBYTE(v3) = [v3 _notificationIsInvite:v4];
+  notification = [(CalendarMessageCell *)self notification];
+  LOBYTE(v3) = [v3 _notificationIsInvite:notification];
 
   return v3;
 }
 
-- (void)setNotification:(id)a3
+- (void)setNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   blocked = self->_blocked;
-  if (blocked != [v4 containsCachedBlockedAttendee])
+  if (blocked != [notificationCopy containsCachedBlockedAttendee])
   {
     self->_blocked ^= 1u;
     v10.receiver = self;
@@ -447,18 +447,18 @@ LABEL_13:
 
   v9.receiver = self;
   v9.super_class = CalendarMessageEventInvitationCell;
-  [(CalendarMessageCell *)&v9 setNotification:v4];
+  [(CalendarMessageCell *)&v9 setNotification:notificationCopy];
   if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy())
   {
-    v6 = [(CalendarMessageEventInvitationCell *)self notificationIsInvite];
+    notificationIsInvite = [(CalendarMessageEventInvitationCell *)self notificationIsInvite];
   }
 
   else
   {
-    v6 = 0;
+    notificationIsInvite = 0;
   }
 
-  [(CalendarMessageCell *)self setHasDisclosure:v6];
+  [(CalendarMessageCell *)self setHasDisclosure:notificationIsInvite];
   organizerString = self->_organizerString;
   self->_organizerString = 0;
 

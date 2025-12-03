@@ -3,24 +3,24 @@
 - (BOOL)hasFingergprintsEnrolled;
 - (BOOL)needsToDisplayUI;
 - (UIWindow)alertWindow;
-- (id)initInBuddy:(BOOL)a3 withBKUIDevice:(id)a4;
-- (void)_getSecureIntentForAccessory:(id)a3 enrollmentOperation:(id)a4 showErrorToRetry:(BOOL)a5 withCompletionHandler:(id)a6;
-- (void)_handleTouchIDEventWithParameters:(id)a3;
+- (id)initInBuddy:(BOOL)buddy withBKUIDevice:(id)device;
+- (void)_getSecureIntentForAccessory:(id)accessory enrollmentOperation:(id)operation showErrorToRetry:(BOOL)retry withCompletionHandler:(id)handler;
+- (void)_handleTouchIDEventWithParameters:(id)parameters;
 - (void)_startMonitoringPowerButton;
 - (void)_stopMonitoringPowerButton;
 - (void)configureIntentView;
 - (void)dismissSecureIntentViewForUserInteraction;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
-- (void)getSecureIntentForAccessory:(id)a3 enrollmentOperation:(id)a4 withCompletionHandler:(id)a5;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
+- (void)getSecureIntentForAccessory:(id)accessory enrollmentOperation:(id)operation withCompletionHandler:(id)handler;
 - (void)invalidateAuthContext;
-- (void)showAlert:(id)a3 detailedText:(id)a4 withCompletionHandler:(id)a5;
+- (void)showAlert:(id)alert detailedText:(id)text withCompletionHandler:(id)handler;
 @end
 
 @implementation BKMesaSecureIntentProvider
 
-- (id)initInBuddy:(BOOL)a3 withBKUIDevice:(id)a4
+- (id)initInBuddy:(BOOL)buddy withBKUIDevice:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = BKMesaSecureIntentProvider;
   v8 = [(BKMesaSecureIntentProvider *)&v14 init];
@@ -31,8 +31,8 @@
     v8->_context = v9;
 
     [(LAContext *)v8->_context setUiDelegate:v8];
-    v8->_inBuddy = a3;
-    objc_storeStrong(&v8->_currentDevice, a4);
+    v8->_inBuddy = buddy;
+    objc_storeStrong(&v8->_currentDevice, device);
     v11 = os_log_create("com.apple.biometrickitui", "BKMesaSecureIntentProvider");
     authManagerLogs = v8->authManagerLogs;
     v8->authManagerLogs = v11;
@@ -41,16 +41,16 @@
   return v8;
 }
 
-- (void)getSecureIntentForAccessory:(id)a3 enrollmentOperation:(id)a4 withCompletionHandler:(id)a5
+- (void)getSecureIntentForAccessory:(id)accessory enrollmentOperation:(id)operation withCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BKMesaSecureIntentProvider *)self _isMonitoringPowerButton];
+  accessoryCopy = accessory;
+  operationCopy = operation;
+  handlerCopy = handler;
+  _isMonitoringPowerButton = [(BKMesaSecureIntentProvider *)self _isMonitoringPowerButton];
   authManagerLogs = self->authManagerLogs;
   v13 = os_log_type_enabled(authManagerLogs, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (_isMonitoringPowerButton)
   {
     if (v13)
     {
@@ -64,8 +64,8 @@
     if (v13)
     {
       v14 = authManagerLogs;
-      v15 = [v8 description];
-      v16 = [v9 description];
+      v15 = [accessoryCopy description];
+      v16 = [operationCopy description];
       v18 = 138412546;
       v19 = v15;
       v20 = 2112;
@@ -74,57 +74,57 @@
     }
 
     [(BKMesaSecureIntentProvider *)self _startMonitoringPowerButton];
-    [(BKMesaSecureIntentProvider *)self _getSecureIntentForAccessory:v8 enrollmentOperation:v9 showErrorToRetry:0 withCompletionHandler:v10];
+    [(BKMesaSecureIntentProvider *)self _getSecureIntentForAccessory:accessoryCopy enrollmentOperation:operationCopy showErrorToRetry:0 withCompletionHandler:handlerCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getSecureIntentForAccessory:(id)a3 enrollmentOperation:(id)a4 showErrorToRetry:(BOOL)a5 withCompletionHandler:(id)a6
+- (void)_getSecureIntentForAccessory:(id)accessory enrollmentOperation:(id)operation showErrorToRetry:(BOOL)retry withCompletionHandler:(id)handler
 {
-  v7 = a5;
+  retryCopy = retry;
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  accessoryCopy = accessory;
+  operationCopy = operation;
+  handlerCopy = handler;
   authManagerLogs = self->authManagerLogs;
   if (os_log_type_enabled(authManagerLogs, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v36 = v7;
+    v36 = retryCopy;
     _os_log_impl(&dword_241B0A000, authManagerLogs, OS_LOG_TYPE_DEFAULT, "_getSecureIntentForAccessory ... showRetry:%i", buf, 8u);
   }
 
-  v14 = [(BKMesaSecureIntentProvider *)self context];
+  context = [(BKMesaSecureIntentProvider *)self context];
 
-  if (v14)
+  if (context)
   {
-    v15 = [(BKMesaSecureIntentProvider *)self context];
-    [v15 setUiDelegate:0];
+    context2 = [(BKMesaSecureIntentProvider *)self context];
+    [context2 setUiDelegate:0];
 
     [(BKMesaSecureIntentProvider *)self setContext:0];
   }
 
-  v16 = [(BKMesaSecureIntentProvider *)self context];
+  context3 = [(BKMesaSecureIntentProvider *)self context];
 
-  if (!v16)
+  if (!context3)
   {
     v17 = objc_opt_new();
     [(BKMesaSecureIntentProvider *)self setContext:v17];
 
-    v18 = [(BKMesaSecureIntentProvider *)self context];
-    [v18 setUiDelegate:self];
+    context4 = [(BKMesaSecureIntentProvider *)self context];
+    [context4 setUiDelegate:self];
   }
 
-  if (![(BKMesaSecureIntentProvider *)self hasFingergprintsEnrolled]|| v11 || self->_hasAttemptedCrossMatch)
+  if (![(BKMesaSecureIntentProvider *)self hasFingergprintsEnrolled]|| operationCopy || self->_hasAttemptedCrossMatch)
   {
-    v19 = [MEMORY[0x277CBEB38] dictionary];
-    [v19 setObject:MEMORY[0x277CBEC28] forKey:&unk_2853CCB28];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKey:&unk_2853CCB28];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __118__BKMesaSecureIntentProvider__getSecureIntentForAccessory_enrollmentOperation_showErrorToRetry_withCompletionHandler___block_invoke_26;
     aBlock[3] = &unk_278D0A110;
-    v30 = v7;
+    v30 = retryCopy;
     aBlock[4] = self;
     v21 = _Block_copy(aBlock);
     if ([MEMORY[0x277CCACC8] isMainThread])
@@ -146,7 +146,7 @@
 
   else
   {
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v20 = self->authManagerLogs;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -157,33 +157,33 @@
     if (self->_inBuddy)
     {
 
-      v19 = 0;
+      dictionary = 0;
       self->_touchIDMatch = 0;
       self->_touchIDMatchAttemptCount = 0;
     }
 
     else
     {
-      v22 = [(BKMesaSecureIntentProvider *)self context];
-      [v22 setUiDelegate:0];
+      context5 = [(BKMesaSecureIntentProvider *)self context];
+      [context5 setUiDelegate:0];
 
-      [v19 setObject:MEMORY[0x277CBEC28] forKey:&unk_2853CCAF8];
+      [dictionary setObject:MEMORY[0x277CBEC28] forKey:&unk_2853CCAF8];
       v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v24 = [v23 localizedStringForKey:@"SI_SETTINGS_CROSS_MATCH_REQUEST_PROMPT" value:&stru_2853BB280 table:@"BiometricKitUI-A222"];
 
-      [v19 setObject:v24 forKey:&unk_2853CCB10];
+      [dictionary setObject:v24 forKey:&unk_2853CCB10];
     }
 
-    v25 = [(BKMesaSecureIntentProvider *)self context];
+    context6 = [(BKMesaSecureIntentProvider *)self context];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __118__BKMesaSecureIntentProvider__getSecureIntentForAccessory_enrollmentOperation_showErrorToRetry_withCompletionHandler___block_invoke;
     v31[3] = &unk_278D0A9D8;
     v31[4] = self;
-    v34 = v12;
-    v32 = v10;
+    v34 = handlerCopy;
+    v32 = accessoryCopy;
     v33 = 0;
-    [v25 evaluatePolicy:1 options:v19 reply:v31];
+    [context6 evaluatePolicy:1 options:dictionary reply:v31];
 
     v21 = v34;
   }
@@ -309,37 +309,37 @@ void __118__BKMesaSecureIntentProvider__getSecureIntentForAccessory_enrollmentOp
   }
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  paramsCopy = params;
+  replyCopy = reply;
   authManagerLogs = self->authManagerLogs;
   if (os_log_type_enabled(authManagerLogs, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v25 = a3;
+    eventCopy = event;
     _os_log_impl(&dword_241B0A000, authManagerLogs, OS_LOG_TYPE_DEFAULT, "TrustedAccessory local auth event %ld", buf, 0xCu);
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __49__BKMesaSecureIntentProvider_event_params_reply___block_invoke;
     v22[3] = &unk_278D09A38;
     v22[4] = self;
-    v23 = v8;
+    v23 = paramsCopy;
     dispatch_async(MEMORY[0x277D85CD0], v22);
   }
 
-  else if (a3 == 9)
+  else if (event == 9)
   {
-    v11 = [v8 objectForKeyedSubscript:&unk_2853CCB40];
+    v11 = [paramsCopy objectForKeyedSubscript:&unk_2853CCB40];
 
     if (v11)
     {
-      v12 = [v8 objectForKeyedSubscript:&unk_2853CCB40];
+      v12 = [paramsCopy objectForKeyedSubscript:&unk_2853CCB40];
       self->_authParamActive = [v12 BOOLValue];
     }
 
@@ -354,11 +354,11 @@ void __118__BKMesaSecureIntentProvider__getSecureIntentForAccessory_enrollmentOp
         _os_log_impl(&dword_241B0A000, v14, OS_LOG_TYPE_DEFAULT, "TrustedAccessory Power Button LAEventParamActive: YES", buf, 2u);
       }
 
-      v16 = [v8 objectForKeyedSubscript:&unk_2853CCB58];
+      v16 = [paramsCopy objectForKeyedSubscript:&unk_2853CCB58];
 
       if (v16)
       {
-        v17 = [v8 objectForKeyedSubscript:&unk_2853CCB58];
+        v17 = [paramsCopy objectForKeyedSubscript:&unk_2853CCB58];
         self->_pushCredentialPresent = [v17 BOOLValue];
       }
 
@@ -388,13 +388,13 @@ LABEL_18:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTouchIDEventWithParameters:(id)a3
+- (void)_handleTouchIDEventWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = v4;
+  parametersCopy = parameters;
+  v5 = parametersCopy;
   if (!self->_touchIDMatch)
   {
-    v6 = [v4 objectForKeyedSubscript:&unk_2853CCB40];
+    v6 = [parametersCopy objectForKeyedSubscript:&unk_2853CCB40];
 
     if (v6)
     {
@@ -420,12 +420,12 @@ LABEL_18:
         goto LABEL_27;
       }
 
-      v13 = [v11 integerValue];
-      if (v13 > 1)
+      integerValue = [v11 integerValue];
+      if (integerValue > 1)
       {
-        if (v13 != 2)
+        if (integerValue != 2)
         {
-          if (v13 == 3)
+          if (integerValue == 3)
           {
             v17 = self->_touchIDMatchAttemptCount + 1;
             self->_touchIDMatchAttemptCount = v17;
@@ -438,8 +438,8 @@ LABEL_18:
                 _os_log_impl(&dword_241B0A000, v22, OS_LOG_TYPE_DEFAULT, "TrustedAccessory Touch ID Max match exceeded triggering auth fail.", v24, 2u);
               }
 
-              v23 = [(BKMesaSecureIntentProvider *)self context];
-              [v23 invalidate];
+              context = [(BKMesaSecureIntentProvider *)self context];
+              [context invalidate];
             }
 
             else
@@ -468,9 +468,9 @@ LABEL_18:
 
       else
       {
-        if (v13)
+        if (integerValue)
         {
-          if (v13 != 1)
+          if (integerValue != 1)
           {
             goto LABEL_27;
           }
@@ -515,16 +515,16 @@ LABEL_28:
 
 - (void)configureIntentView
 {
-  v3 = [(BKMesaSecureIntentProvider *)self presentingView];
+  presentingView = [(BKMesaSecureIntentProvider *)self presentingView];
 
-  if (!v3)
+  if (!presentingView)
   {
-    v4 = [(BKMesaSecureIntentProvider *)self displayHost];
-    v5 = [v4 inBuddy];
+    displayHost = [(BKMesaSecureIntentProvider *)self displayHost];
+    inBuddy = [displayHost inBuddy];
 
-    if (v5)
+    if (inBuddy)
     {
-      v9 = [(BKMesaSecureIntentProvider *)self currentDevice];
+      currentDevice = [(BKMesaSecureIntentProvider *)self currentDevice];
       v6 = [BuddySecureIntentClientView instanceForBKUIDevice:?];
       [(BKMesaSecureIntentProvider *)self setPresentingView:v6];
     }
@@ -533,19 +533,19 @@ LABEL_28:
     {
       if ([(BKMesaSecureIntentProvider *)self inDemo]&& (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v7 = [BKUISettingsSecureIntentClientView instanceForDemo:1];
-        [(BKMesaSecureIntentProvider *)self setPresentingView:v7];
+        currentDevice2 = [BKUISettingsSecureIntentClientView instanceForDemo:1];
+        [(BKMesaSecureIntentProvider *)self setPresentingView:currentDevice2];
       }
 
       else
       {
-        v7 = [(BKMesaSecureIntentProvider *)self currentDevice];
-        v8 = [BKUISettingsSecureIntentClientView instanceForBKUIDevice:v7];
+        currentDevice2 = [(BKMesaSecureIntentProvider *)self currentDevice];
+        v8 = [BKUISettingsSecureIntentClientView instanceForBKUIDevice:currentDevice2];
         [(BKMesaSecureIntentProvider *)self setPresentingView:v8];
       }
 
-      v9 = [(BKMesaSecureIntentProvider *)self presentingView];
-      [v9 setSecureIntentProvider:self];
+      currentDevice = [(BKMesaSecureIntentProvider *)self presentingView];
+      [currentDevice setSecureIntentProvider:self];
     }
   }
 }
@@ -553,15 +553,15 @@ LABEL_28:
 - (void)dismissSecureIntentViewForUserInteraction
 {
   [(BKMesaSecureIntentProvider *)self invalidateAuthContext];
-  v4 = [(BKMesaSecureIntentProvider *)self displayHost];
-  v3 = [(BKMesaSecureIntentProvider *)self presentingView];
-  [v4 removeSecureIntentView:v3 didSucceed:0 wasCancelled:0];
+  displayHost = [(BKMesaSecureIntentProvider *)self displayHost];
+  presentingView = [(BKMesaSecureIntentProvider *)self presentingView];
+  [displayHost removeSecureIntentView:presentingView didSucceed:0 wasCancelled:0];
 }
 
 - (void)invalidateAuthContext
 {
-  v3 = [(BKMesaSecureIntentProvider *)self context];
-  [v3 invalidate];
+  context = [(BKMesaSecureIntentProvider *)self context];
+  [context invalidate];
 
   [(BKMesaSecureIntentProvider *)self setContext:0];
 }
@@ -582,28 +582,28 @@ LABEL_28:
 
 - (BOOL)hasFingergprintsEnrolled
 {
-  v2 = [(BKMesaSecureIntentProvider *)self displayHost];
-  v3 = [v2 _bkIdentityCount] != 0;
+  displayHost = [(BKMesaSecureIntentProvider *)self displayHost];
+  v3 = [displayHost _bkIdentityCount] != 0;
 
   return v3;
 }
 
-- (void)showAlert:(id)a3 detailedText:(id)a4 withCompletionHandler:(id)a5
+- (void)showAlert:(id)alert detailedText:(id)text withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  alertCopy = alert;
+  textCopy = text;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__BKMesaSecureIntentProvider_showAlert_detailedText_withCompletionHandler___block_invoke;
   v14[3] = &unk_278D0A9B0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = alertCopy;
+  v16 = textCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = textCopy;
+  v13 = alertCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 
@@ -638,9 +638,9 @@ uint64_t __75__BKMesaSecureIntentProvider_showAlert_detailedText_withCompletionH
 
 - (BOOL)needsToDisplayUI
 {
-  v3 = [(BKMesaSecureIntentProvider *)self presentingView];
-  v4 = [v3 superview];
-  if (v4)
+  presentingView = [(BKMesaSecureIntentProvider *)self presentingView];
+  superview = [presentingView superview];
+  if (superview)
   {
     v5 = 1;
   }

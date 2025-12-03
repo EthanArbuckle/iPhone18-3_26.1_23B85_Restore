@@ -1,33 +1,33 @@
 @interface OpusMarimbaProducer
-+ (id)_mediaAttributesForKey:(id)a3 withAttributes:(id)a4;
-+ (id)_mediaPropertiesForMediaItem:(id)a3;
-+ (id)_transitionSettingsForTransition:(id)a3;
-- (BOOL)_authorBootstrap:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorCluster:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorFinish:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorImport:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorProduce:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)author:(BOOL)a3 progressBlock:(id)a4 requiresProducer:(BOOL *)a5 error:(id *)a6;
-- (BOOL)liveAuthorInitialBootstrap:(id)a3 error:(id *)a4;
++ (id)_mediaAttributesForKey:(id)key withAttributes:(id)attributes;
++ (id)_mediaPropertiesForMediaItem:(id)item;
++ (id)_transitionSettingsForTransition:(id)transition;
+- (BOOL)_authorBootstrap:(id)bootstrap progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorCluster:(id)cluster progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorFinish:(id)finish progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorImport:(id)import progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorProduce:(id)produce progressBlock:(id)block error:(id *)error;
+- (BOOL)author:(BOOL)author progressBlock:(id)block requiresProducer:(BOOL *)producer error:(id *)error;
+- (BOOL)liveAuthorInitialBootstrap:(id)bootstrap error:(id *)error;
 - (BOOL)needsLiveAuthoring;
 - (BOOL)resetLiveAuthoring;
 - (float)currentLiveAuthoringProgress;
-- (float)liveAuthoringProgressForMediaItem:(id)a3;
+- (float)liveAuthoringProgressForMediaItem:(id)item;
 - (id)_durationDictionaryForGuidelines;
 - (id)_subtitleDictionaryForGuidelines;
-- (id)liveAuthorNextChunk:(id)a3 error:(id *)a4;
+- (id)liveAuthorNextChunk:(id)chunk error:(id *)error;
 - (unint64_t)totalNumberOfLiveAuthoringItems;
 - (void)_initCouchPotatoSettings;
-- (void)_initNavigatorSettingsForLiveAuthoring:(BOOL)a3;
+- (void)_initNavigatorSettingsForLiveAuthoring:(BOOL)authoring;
 - (void)_initTemplates;
 - (void)_updateSynopsisGuideline;
-- (void)didChangeTextForWidget:(id)a3 toSettings:(id)a4;
-- (void)didPanMediaForWidget:(id)a3 toState:(id)a4;
+- (void)didChangeTextForWidget:(id)widget toSettings:(id)settings;
+- (void)didPanMediaForWidget:(id)widget toState:(id)state;
 @end
 
 @implementation OpusMarimbaProducer
 
-- (BOOL)_authorBootstrap:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorBootstrap:(id)bootstrap progressBlock:(id)block error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -62,29 +62,29 @@
 
   v8[2] = v9;
   v8[3] = &unk_1AAEF8;
-  v8[4] = a4;
+  v8[4] = block;
   v8[5] = &v16;
   [(OpusMarimbaProducer *)self cleanupPresentation:v12, v13];
   v10 = *(v17 + 24);
-  if (a5 && *(v17 + 24))
+  if (error && *(v17 + 24))
   {
-    *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+    *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
   }
 
   _Block_object_dispose(&v16, 8);
   return v10 ^ 1;
 }
 
-- (BOOL)_authorCluster:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorCluster:(id)cluster progressBlock:(id)block error:(id *)error
 {
   v8 = 0;
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v8, a3, 0.3);
+    (*(block + 2))(block, &v8, cluster, 0.3);
     v6 = v8;
-    if (a5 && (v8 & 1) != 0)
+    if (error && (v8 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v6 = 1;
     }
   }
@@ -97,16 +97,16 @@
   return (v6 & 1) == 0;
 }
 
-- (BOOL)_authorImport:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorImport:(id)import progressBlock:(id)block error:(id *)error
 {
   v8 = 0;
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v8, a3, 0.5);
+    (*(block + 2))(block, &v8, import, 0.5);
     v6 = v8;
-    if (a5 && (v8 & 1) != 0)
+    if (error && (v8 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v6 = 1;
     }
   }
@@ -180,9 +180,9 @@ LABEL_8:
   [(OKPresentationCouch *)v3 addStep:v4];
 }
 
-- (void)_initNavigatorSettingsForLiveAuthoring:(BOOL)a3
+- (void)_initNavigatorSettingsForLiveAuthoring:(BOOL)authoring
 {
-  v3 = a3;
+  authoringCopy = authoring;
   [objc_msgSend(-[OpusMarimbaProducer presentation](self "presentation")];
   v5 = +[NSMutableDictionary dictionary];
   v6 = [objc_msgSend(objc_msgSend(objc_msgSend(-[OpusMarimbaProducer presentation](self "presentation")];
@@ -192,7 +192,7 @@ LABEL_8:
     v8 = v7;
     if ([v7 count])
     {
-      v25 = v3;
+      v25 = authoringCopy;
       v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
       v26 = 0u;
       v27 = 0u;
@@ -238,44 +238,44 @@ LABEL_8:
 
       [v5 setObject:v15 forKeyedSubscript:@"audioPlaylistLoops"];
 
-      v3 = v25;
+      authoringCopy = v25;
     }
   }
 
   v16 = [objc_msgSend(objc_msgSend(-[OpusMarimbaProducer presentation](self "presentation")];
   v17 = [-[OpusMarimbaProducer presentation](self "presentation")];
-  v18 = v17;
-  if (!v3)
+  allMediaURLs = v17;
+  if (!authoringCopy)
   {
-    v18 = [v17 allMediaURLs];
+    allMediaURLs = [v17 allMediaURLs];
   }
 
-  v19 = [(OpusMarimbaProducer *)self _subtitleDictionaryForGuidelines];
-  v20 = [(OpusMarimbaProducer *)self _durationDictionaryForGuidelines];
+  _subtitleDictionaryForGuidelines = [(OpusMarimbaProducer *)self _subtitleDictionaryForGuidelines];
+  _durationDictionaryForGuidelines = [(OpusMarimbaProducer *)self _durationDictionaryForGuidelines];
   v21 = +[NSMutableDictionary dictionary];
   [v21 setObject:&off_1BBE40 forKeyedSubscript:@"actionBindings"];
-  if (v3)
+  if (authoringCopy)
   {
-    if (!v20)
+    if (!_durationDictionaryForGuidelines)
     {
-      v20 = &__NSDictionary0__struct;
+      _durationDictionaryForGuidelines = &__NSDictionary0__struct;
     }
 
-    if (!v19)
+    if (!_subtitleDictionaryForGuidelines)
     {
-      v19 = &__NSDictionary0__struct;
+      _subtitleDictionaryForGuidelines = &__NSDictionary0__struct;
     }
 
     v31[0] = @"marimba.mediaFeeder";
     v31[1] = @"marimba.style";
-    v32[0] = v18;
+    v32[0] = allMediaURLs;
     v32[1] = v16;
     v31[2] = @"marimba.seed";
     v32[2] = [NSNumber numberWithUnsignedInt:arc4random()];
-    v32[3] = v19;
+    v32[3] = _subtitleDictionaryForGuidelines;
     v31[3] = @"marimba.subtitles";
     v31[4] = @"marimba.durations";
-    v32[4] = v20;
+    v32[4] = _durationDictionaryForGuidelines;
     [v21 addEntriesFromDictionary:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v32, v31, 5)}];
   }
 
@@ -289,11 +289,11 @@ LABEL_8:
 
   [-[OpusMarimbaProducer presentation](self "presentation")];
   v24 = kOKPresentationThumbnailNavigatorName;
-  v30 = [(OKPresentationPage *)v23 name];
+  name = [(OKPresentationPage *)v23 name];
   [-[OpusMarimbaProducer presentation](self "presentation")];
 }
 
-- (BOOL)_authorProduce:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorProduce:(id)produce progressBlock:(id)block error:(id *)error
 {
   if (OFLoggerLevel >= 5)
   {
@@ -307,13 +307,13 @@ LABEL_8:
   [(OpusMarimbaProducer *)self _updateSynopsisGuideline];
 
   self->_marimbaDocument = 0;
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v10, 0.9);
+    (*(block + 2))(block, &v10, 0.9);
     v8 = v10;
-    if (a5 && (v10 & 1) != 0)
+    if (error && (v10 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v8 = 1;
     }
   }
@@ -326,16 +326,16 @@ LABEL_8:
   return (v8 & 1) == 0;
 }
 
-- (BOOL)_authorFinish:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorFinish:(id)finish progressBlock:(id)block error:(id *)error
 {
   v8 = 0;
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v8, a3, 1.0);
+    (*(block + 2))(block, &v8, finish, 1.0);
     v6 = v8;
-    if (a5 && (v8 & 1) != 0)
+    if (error && (v8 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v6 = 1;
     }
   }
@@ -348,18 +348,18 @@ LABEL_8:
   return (v6 & 1) == 0;
 }
 
-- (BOOL)author:(BOOL)a3 progressBlock:(id)a4 requiresProducer:(BOOL *)a5 error:(id *)a6
+- (BOOL)author:(BOOL)author progressBlock:(id)block requiresProducer:(BOOL *)producer error:(id *)error
 {
-  v9 = a3;
+  authorCopy = author;
   v11 = objc_alloc_init(OpusMarimbaProducerContext);
-  if ([(OpusMarimbaProducer *)self _authorBootstrap:v11 progressBlock:a4 error:a6]&& [(OpusMarimbaProducer *)self _authorCluster:v11 progressBlock:a4 error:a6]&& (!v9 || [(OpusMarimbaProducer *)self _authorImport:v11 progressBlock:a4 error:a6]) && [(OpusMarimbaProducer *)self _authorProduce:v11 progressBlock:a4 error:a6]&& [(OpusMarimbaProducer *)self _authorFinish:v11 progressBlock:a4 error:a6])
+  if ([(OpusMarimbaProducer *)self _authorBootstrap:v11 progressBlock:block error:error]&& [(OpusMarimbaProducer *)self _authorCluster:v11 progressBlock:block error:error]&& (!authorCopy || [(OpusMarimbaProducer *)self _authorImport:v11 progressBlock:block error:error]) && [(OpusMarimbaProducer *)self _authorProduce:v11 progressBlock:block error:error]&& [(OpusMarimbaProducer *)self _authorFinish:v11 progressBlock:block error:error])
   {
     v12 = 1;
-    *a5 = 1;
+    *producer = 1;
 
-    if (a6)
+    if (error)
     {
-      return *a6 == 0;
+      return *error == 0;
     }
   }
 
@@ -378,18 +378,18 @@ LABEL_8:
   v3 = [-[OpusMarimbaProducer presentation](self "presentation")];
   if (v3)
   {
-    v4 = [v3 string];
+    string = [v3 string];
   }
 
   else
   {
-    v4 = [-[OpusMarimbaProducer presentation](self "presentation")];
+    string = [-[OpusMarimbaProducer presentation](self "presentation")];
   }
 
-  v5 = v4;
+  v5 = string;
   v6 = [objc_msgSend(objc_msgSend(-[OpusMarimbaProducer presentation](self "presentation")];
   v7 = &kCTUnderlineColorAttributeName_ptr;
-  v51 = self;
+  selfCopy = self;
   if (self->_marimbaDocument && ([v6 isEqualToString:@"KenBurns"] & 1) == 0)
   {
     v55 = v5;
@@ -431,8 +431,8 @@ LABEL_8:
           v101 = 0u;
           v60 = v12;
           v62 = v11;
-          v63 = [v12 effects];
-          v68 = [v63 countByEnumeratingWithState:&v98 objects:v137 count:16];
+          effects = [v12 effects];
+          v68 = [effects countByEnumeratingWithState:&v98 objects:v137 count:16];
           if (v68)
           {
             v65 = *v99;
@@ -454,7 +454,7 @@ LABEL_8:
               {
                 if (*v99 != v65)
                 {
-                  objc_enumerationMutation(v63);
+                  objc_enumerationMutation(effects);
                 }
 
                 v16 = v15;
@@ -463,8 +463,8 @@ LABEL_8:
                 v95 = 0u;
                 v96 = 0u;
                 v97 = 0u;
-                v18 = [v17 texts];
-                v19 = [v18 countByEnumeratingWithState:&v94 objects:v136 count:16];
+                texts = [v17 texts];
+                v19 = [texts countByEnumeratingWithState:&v94 objects:v136 count:16];
                 if (v19)
                 {
                   v20 = v19;
@@ -475,7 +475,7 @@ LABEL_8:
                     {
                       if (*v95 != v21)
                       {
-                        objc_enumerationMutation(v18);
+                        objc_enumerationMutation(texts);
                       }
 
                       v23 = *(*(&v94 + 1) + 8 * i);
@@ -495,7 +495,7 @@ LABEL_8:
                       [v77 addObject:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v135, v134, 3)}];
                     }
 
-                    v20 = [v18 countByEnumeratingWithState:&v94 objects:v136 count:16];
+                    v20 = [texts countByEnumeratingWithState:&v94 objects:v136 count:16];
                   }
 
                   while (v20);
@@ -505,7 +505,7 @@ LABEL_8:
               }
 
               while ((v16 + 1) != v68);
-              v68 = [v63 countByEnumeratingWithState:&v98 objects:v137 count:16];
+              v68 = [effects countByEnumeratingWithState:&v98 objects:v137 count:16];
             }
 
             while (v68);
@@ -515,8 +515,8 @@ LABEL_8:
           v93 = 0u;
           v90 = 0u;
           v91 = 0u;
-          v66 = [v60 effects];
-          v71 = [v66 countByEnumeratingWithState:&v90 objects:v133 count:16];
+          effects2 = [v60 effects];
+          v71 = [effects2 countByEnumeratingWithState:&v90 objects:v133 count:16];
           if (v71)
           {
             v69 = *v91;
@@ -526,7 +526,7 @@ LABEL_8:
               {
                 if (*v91 != v69)
                 {
-                  objc_enumerationMutation(v66);
+                  objc_enumerationMutation(effects2);
                 }
 
                 v27 = *(*(&v90 + 1) + 8 * j);
@@ -534,8 +534,8 @@ LABEL_8:
                 v87 = 0u;
                 v88 = 0u;
                 v89 = 0u;
-                v28 = [v27 slides];
-                v29 = [v28 countByEnumeratingWithState:&v86 objects:v132 count:16];
+                slides = [v27 slides];
+                v29 = [slides countByEnumeratingWithState:&v86 objects:v132 count:16];
                 if (v29)
                 {
                   v30 = v29;
@@ -546,7 +546,7 @@ LABEL_8:
                     {
                       if (*v87 != v31)
                       {
-                        objc_enumerationMutation(v28);
+                        objc_enumerationMutation(slides);
                       }
 
                       v33 = *(*(&v86 + 1) + 8 * k);
@@ -558,23 +558,23 @@ LABEL_8:
                         v131[1] = &off_1BBF10;
                         v130[1] = v81;
                         v130[2] = v78;
-                        v35 = [v33 path];
+                        path = [v33 path];
                         v130[3] = v10;
-                        v131[2] = v35;
+                        v131[2] = path;
                         v131[3] = v34;
                         [v75 addObject:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v131, v130, 4)}];
                         ++v9;
                       }
                     }
 
-                    v30 = [v28 countByEnumeratingWithState:&v86 objects:v132 count:16];
+                    v30 = [slides countByEnumeratingWithState:&v86 objects:v132 count:16];
                   }
 
                   while (v30);
                 }
               }
 
-              v71 = [v66 countByEnumeratingWithState:&v90 objects:v133 count:16];
+              v71 = [effects2 countByEnumeratingWithState:&v90 objects:v133 count:16];
             }
 
             while (v71);
@@ -636,7 +636,7 @@ LABEL_8:
       v80 = 0;
     }
 
-    v72 = [(OpusMarimbaProducer *)self _subtitleDictionaryForGuidelines];
+    _subtitleDictionaryForGuidelines = [(OpusMarimbaProducer *)self _subtitleDictionaryForGuidelines];
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
@@ -662,7 +662,7 @@ LABEL_8:
           }
 
           v79 = *(*(&v82 + 1) + 8 * m);
-          v45 = [v72 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(v79, "uniqueURL"), "absoluteString")}];
+          v45 = [_subtitleDictionaryForGuidelines objectForKeyedSubscript:{objc_msgSend(objc_msgSend(v79, "uniqueURL"), "absoluteString")}];
           if (v45)
           {
             v46 = v45;
@@ -722,7 +722,7 @@ LABEL_8:
     v38 = &v108;
   }
 
-  [-[OpusMarimbaProducer presentation](v51 "presentation")];
+  [-[OpusMarimbaProducer presentation](selfCopy "presentation")];
 }
 
 - (id)_subtitleDictionaryForGuidelines
@@ -768,19 +768,19 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)liveAuthorInitialBootstrap:(id)a3 error:(id *)a4
+- (BOOL)liveAuthorInitialBootstrap:(id)bootstrap error:(id *)error
 {
   v9 = 0;
   [(OpusMarimbaProducer *)self _initTemplates];
-  if (a3)
+  if (bootstrap)
   {
-    (*(a3 + 2))(a3, &v9, 0.3);
-    if (v9 == 1 || ([(OpusMarimbaProducer *)self _initCouchPotatoSettings], (*(a3 + 2))(a3, &v9, 0.6), v9 == 1) || (v7 = 1, [(OpusMarimbaProducer *)self _initNavigatorSettingsForLiveAuthoring:1], (*(a3 + 2))(a3, &v9, 0.6), (v9 & 1) != 0))
+    (*(bootstrap + 2))(bootstrap, &v9, 0.3);
+    if (v9 == 1 || ([(OpusMarimbaProducer *)self _initCouchPotatoSettings], (*(bootstrap + 2))(bootstrap, &v9, 0.6), v9 == 1) || (v7 = 1, [(OpusMarimbaProducer *)self _initNavigatorSettingsForLiveAuthoring:1], (*(bootstrap + 2))(bootstrap, &v9, 0.6), (v9 & 1) != 0))
     {
       v7 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+        *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       }
     }
   }
@@ -795,7 +795,7 @@ LABEL_8:
   return v7;
 }
 
-- (id)liveAuthorNextChunk:(id)a3 error:(id *)a4
+- (id)liveAuthorNextChunk:(id)chunk error:(id *)error
 {
   objc_sync_enter(self);
   v5 = [-[OpusMarimbaProducer presentation](self "presentation")];
@@ -827,7 +827,7 @@ LABEL_8:
   return v4;
 }
 
-- (float)liveAuthoringProgressForMediaItem:(id)a3
+- (float)liveAuthoringProgressForMediaItem:(id)item
 {
   objc_sync_enter(self);
   v5 = [objc_msgSend(-[OpusMarimbaProducer presentation](self "presentation")];
@@ -845,36 +845,36 @@ LABEL_8:
   return v6;
 }
 
-- (void)didPanMediaForWidget:(id)a3 toState:(id)a4
+- (void)didPanMediaForWidget:(id)widget toState:(id)state
 {
-  v6 = [a4 objectForKeyedSubscript:@"mediaURL"];
+  v6 = [state objectForKeyedSubscript:@"mediaURL"];
   if (v6)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_68978;
     v7[3] = &unk_1AAF48;
-    v7[4] = a4;
+    v7[4] = state;
     [-[OpusMarimbaProducer presentation](self "presentation")];
   }
 }
 
-- (void)didChangeTextForWidget:(id)a3 toSettings:(id)a4
+- (void)didChangeTextForWidget:(id)widget toSettings:(id)settings
 {
-  v7 = [a4 objectForKeyedSubscript:@"attributedText"];
+  v7 = [settings objectForKeyedSubscript:@"attributedText"];
   if (v7)
   {
     v8 = v7;
     if ([v7 length])
     {
-      v9 = [a4 objectForKeyedSubscript:@"mediaURL"];
-      if ([objc_msgSend(a4 objectForKeyedSubscript:{@"isTitle", "BOOLValue"}])
+      v9 = [settings objectForKeyedSubscript:@"mediaURL"];
+      if ([objc_msgSend(settings objectForKeyedSubscript:{@"isTitle", "BOOLValue"}])
       {
         [-[OpusMarimbaProducer presentation](self "presentation")];
-        v10 = [(OpusMarimbaProducer *)self presentation];
-        [v10 removeGuidelineForGlobalUniqueKey:{+[OKPresentationGuideline globalUniqueKeyForKey:](OKPresentationGuideline, "globalUniqueKeyForKey:", kOKPresentationGuidelineAuthoringTitle)}];
+        presentation = [(OpusMarimbaProducer *)self presentation];
+        [presentation removeGuidelineForGlobalUniqueKey:{+[OKPresentationGuideline globalUniqueKeyForKey:](OKPresentationGuideline, "globalUniqueKeyForKey:", kOKPresentationGuidelineAuthoringTitle)}];
 
-        [(OpusMarimbaProducer *)self setSettingsObject:v8 forKeyPath:@"attributedTitle" onWidget:a3];
+        [(OpusMarimbaProducer *)self setSettingsObject:v8 forKeyPath:@"attributedTitle" onWidget:widget];
       }
 
       else if (v9)
@@ -885,29 +885,29 @@ LABEL_8:
         v12[3] = &unk_1AAF48;
         v12[4] = v8;
         [-[OpusMarimbaProducer presentation](self "presentation")];
-        v11 = [objc_msgSend(objc_msgSend(a3 "mergedSettings")];
+        v11 = [objc_msgSend(objc_msgSend(widget "mergedSettings")];
         if (!v11)
         {
           v11 = objc_alloc_init(NSMutableDictionary);
         }
 
         [v11 setObject:v8 forKey:{objc_msgSend(v9, "absoluteString")}];
-        [(OpusMarimbaProducer *)self setSettingsObject:v11 forKeyPath:@"attributedSubtitles" onWidget:a3];
+        [(OpusMarimbaProducer *)self setSettingsObject:v11 forKeyPath:@"attributedSubtitles" onWidget:widget];
       }
     }
   }
 }
 
-+ (id)_mediaPropertiesForMediaItem:(id)a3
++ (id)_mediaPropertiesForMediaItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     return 0;
   }
 
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [a3 metadata];
-  [v5 duration];
+  metadata = [item metadata];
+  [metadata duration];
   if (v6 < 3.0 && v6 > 0.0)
   {
     v6 = 3.0;
@@ -917,15 +917,15 @@ LABEL_8:
   [v4 setObject:v8 forKeyedSubscript:kMPMetaDataDuration];
   [v4 setObject:&off_1BC078 forKeyedSubscript:kMPMetaDataStartTime];
   [v4 setObject:v8 forKeyedSubscript:kMPMetaDataStopTime];
-  if ([v5 creationDate])
+  if ([metadata creationDate])
   {
-    v9 = [v5 creationDate];
-    [v4 setObject:v9 forKeyedSubscript:kMPMetaDataCreationDate];
+    creationDate = [metadata creationDate];
+    [v4 setObject:creationDate forKeyedSubscript:kMPMetaDataCreationDate];
   }
 
-  [v5 resolution];
+  [metadata resolution];
   [v4 setObject:NSStringFromCGSize(v18) forKeyedSubscript:kMPMetaDataResolution];
-  if ([v5 type] == &dword_0 + 3)
+  if ([metadata type] == &dword_0 + 3)
   {
     v10 = 3;
   }
@@ -937,81 +937,81 @@ LABEL_8:
 
   v11 = [NSNumber numberWithInt:v10];
   [v4 setObject:v11 forKeyedSubscript:kMPMetaDataMediaType];
-  if ([v5 name])
+  if ([metadata name])
   {
-    v12 = [v5 name];
-    [v4 setObject:v12 forKeyedSubscript:kMPMetaDataCaption];
+    name = [metadata name];
+    [v4 setObject:name forKeyedSubscript:kMPMetaDataCaption];
   }
 
-  if ([v5 caption])
+  if ([metadata caption])
   {
-    v13 = [v5 caption];
-    [v4 setObject:v13 forKeyedSubscript:kMPMetaDataComment];
+    caption = [metadata caption];
+    [v4 setObject:caption forKeyedSubscript:kMPMetaDataComment];
   }
 
-  [v5 longitude];
+  [metadata longitude];
   v14 = [NSNumber numberWithDouble:?];
   [v4 setObject:v14 forKeyedSubscript:kMPMetaDataLongitude];
-  [v5 latitude];
+  [metadata latitude];
   v15 = [NSNumber numberWithDouble:?];
   [v4 setObject:v15 forKeyedSubscript:kMPMetaDataLatitude];
-  if ([v5 regionsOfInterest])
+  if ([metadata regionsOfInterest])
   {
-    v16 = [v5 regionsOfInterest];
-    [v4 setObject:v16 forKeyedSubscript:kMPMetaDataRegionOfInterestRectangles];
+    regionsOfInterest = [metadata regionsOfInterest];
+    [v4 setObject:regionsOfInterest forKeyedSubscript:kMPMetaDataRegionOfInterestRectangles];
   }
 
   return v4;
 }
 
-+ (id)_mediaAttributesForKey:(id)a3 withAttributes:(id)a4
++ (id)_mediaAttributesForKey:(id)key withAttributes:(id)attributes
 {
-  v6 = [a4 objectForKeyedSubscript:?];
+  v6 = [attributes objectForKeyedSubscript:?];
   if (!v6)
   {
     v6 = objc_alloc_init(OKProducerMediaAttributes);
-    [a4 setObject:v6 forKeyedSubscript:a3];
+    [attributes setObject:v6 forKeyedSubscript:key];
   }
 
   return v6;
 }
 
-+ (id)_transitionSettingsForTransition:(id)a3
++ (id)_transitionSettingsForTransition:(id)transition
 {
-  if (!a3)
+  if (!transition)
   {
     return &off_1BBE68;
   }
 
-  v4 = [a3 transitionID];
-  v5 = [a3 presetID];
-  if (([(__CFString *)v4 isEqualToString:@"Dissolve"]& 1) != 0 || ([(__CFString *)v4 isEqualToString:@"Push"]& 1) != 0 || ([(__CFString *)v4 isEqualToString:@"Reveal"]& 1) != 0 || ([(__CFString *)v4 isEqualToString:@"MoveIn"]& 1) != 0 || ([(__CFString *)v4 isEqualToString:@"Uncover"]& 1) != 0 || [(__CFString *)v4 isEqualToString:@"Cover"])
+  transitionID = [transition transitionID];
+  presetID = [transition presetID];
+  if (([(__CFString *)transitionID isEqualToString:@"Dissolve"]& 1) != 0 || ([(__CFString *)transitionID isEqualToString:@"Push"]& 1) != 0 || ([(__CFString *)transitionID isEqualToString:@"Reveal"]& 1) != 0 || ([(__CFString *)transitionID isEqualToString:@"MoveIn"]& 1) != 0 || ([(__CFString *)transitionID isEqualToString:@"Uncover"]& 1) != 0 || [(__CFString *)transitionID isEqualToString:@"Cover"])
   {
-    v6 = ([(__CFString *)v4 isEqualToString:@"Uncover"]& 1) == 0 && ![(__CFString *)v4 isEqualToString:@"Cover"];
+    v6 = ([(__CFString *)transitionID isEqualToString:@"Uncover"]& 1) == 0 && ![(__CFString *)transitionID isEqualToString:@"Cover"];
   }
 
   else
   {
     v6 = 1;
-    v4 = @"Dissolve";
+    transitionID = @"Dissolve";
   }
 
-  if ([v5 isEqualToString:@"ToLeft"])
+  if ([presetID isEqualToString:@"ToLeft"])
   {
     v8 = 1;
   }
 
-  else if ([v5 isEqualToString:@"ToRight"])
+  else if ([presetID isEqualToString:@"ToRight"])
   {
     v8 = 2;
   }
 
-  else if ([v5 isEqualToString:@"ToTop"])
+  else if ([presetID isEqualToString:@"ToTop"])
   {
     v8 = 3;
   }
 
-  else if ([v5 isEqualToString:@"ToBottom"])
+  else if ([presetID isEqualToString:@"ToBottom"])
   {
     v8 = 4;
   }
@@ -1021,7 +1021,7 @@ LABEL_8:
     v8 = 0;
   }
 
-  if ([(__CFString *)v4 isEqualToString:@"Dissolve"])
+  if ([(__CFString *)transitionID isEqualToString:@"Dissolve"])
   {
     v9 = 0;
   }
@@ -1031,12 +1031,12 @@ LABEL_8:
     v9 = v8;
   }
 
-  v11[0] = v4;
+  v11[0] = transitionID;
   v10[0] = @"transitionID";
   v10[1] = @"transitionDirection";
   v11[1] = [NSNumber numberWithUnsignedInteger:v9];
   v10[2] = @"transitionDuration";
-  [a3 duration];
+  [transition duration];
   v11[2] = [NSNumber numberWithDouble:?];
   v10[3] = @"transitionWantsOpaquePages";
   v11[3] = [NSNumber numberWithBool:v6];

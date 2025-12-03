@@ -5,9 +5,9 @@
 - (SKSoundContext)init;
 - (double)gain;
 - (void)dealloc;
-- (void)setGain:(double)a3;
-- (void)setListenerPosition:(CGPoint)a3;
-- (void)setSuspended:(BOOL)a3;
+- (void)setGain:(double)gain;
+- (void)setListenerPosition:(CGPoint)position;
+- (void)setSuspended:(BOOL)suspended;
 @end
 
 @implementation SKSoundContext
@@ -33,15 +33,15 @@
 
   if (v5)
   {
-    v6 = [v5 nonretainedObjectValue];
+    nonretainedObjectValue = [v5 nonretainedObjectValue];
   }
 
   else
   {
-    v6 = 0;
+    nonretainedObjectValue = 0;
   }
 
-  return v6;
+  return nonretainedObjectValue;
 }
 
 void __32__SKSoundContext_currentContext__block_invoke()
@@ -105,13 +105,13 @@ void __22__SKSoundContext_init__block_invoke()
   _contexts = v1;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (self->_suspended != a3)
+  if (self->_suspended != suspended)
   {
-    self->_suspended = a3;
+    self->_suspended = suspended;
     context = self->_context;
-    if (a3)
+    if (suspended)
     {
       alcSuspendContext(context);
 
@@ -151,12 +151,12 @@ void __22__SKSoundContext_init__block_invoke()
   return result;
 }
 
-- (void)setListenerPosition:(CGPoint)a3
+- (void)setListenerPosition:(CGPoint)position
 {
   if (self->_context)
   {
-    x = a3.x;
-    y = a3.y;
+    x = position.x;
+    y = position.y;
     alListener3f(4100, x, y, 0.0);
   }
 }
@@ -173,12 +173,12 @@ void __22__SKSoundContext_init__block_invoke()
   return value;
 }
 
-- (void)setGain:(double)a3
+- (void)setGain:(double)gain
 {
   if (self->_context)
   {
-    v3 = a3;
-    alListenerf(4106, v3);
+    gainCopy = gain;
+    alListenerf(4106, gainCopy);
   }
 }
 

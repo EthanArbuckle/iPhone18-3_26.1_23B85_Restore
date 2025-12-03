@@ -1,8 +1,8 @@
 @interface CSExclaveAssetManagerProxy
 + (id)sharedManager;
 - (CSExclaveAssetManagerProxy)init;
-- (void)startSecureMobileAssetLoaderService:(BOOL)a3 completion:(id)a4;
-- (void)stopSecureMobileAssetLoaderService:(id)a3;
+- (void)startSecureMobileAssetLoaderService:(BOOL)service completion:(id)completion;
+- (void)stopSecureMobileAssetLoaderService:(id)service;
 @end
 
 @implementation CSExclaveAssetManagerProxy
@@ -49,18 +49,18 @@ uint64_t __43__CSExclaveAssetManagerProxy_sharedManager__block_invoke()
   return v3;
 }
 
-- (void)startSecureMobileAssetLoaderService:(BOOL)a3 completion:(id)a4
+- (void)startSecureMobileAssetLoaderService:(BOOL)service completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__CSExclaveAssetManagerProxy_startSecureMobileAssetLoaderService_completion___block_invoke;
   block[3] = &unk_1E865C260;
-  v11 = a3;
+  serviceCopy = service;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -103,17 +103,17 @@ uint64_t __77__CSExclaveAssetManagerProxy_startSecureMobileAssetLoaderService_co
   return result;
 }
 
-- (void)stopSecureMobileAssetLoaderService:(id)a3
+- (void)stopSecureMobileAssetLoaderService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__CSExclaveAssetManagerProxy_stopSecureMobileAssetLoaderService___block_invoke;
   v7[3] = &unk_1E865CB90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = serviceCopy;
+  v6 = serviceCopy;
   dispatch_async(queue, v7);
 }
 

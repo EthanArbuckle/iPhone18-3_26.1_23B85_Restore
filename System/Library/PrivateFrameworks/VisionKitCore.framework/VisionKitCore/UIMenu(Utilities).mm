@@ -31,11 +31,11 @@
 
 - (id)vk_addNonNilItems:()Utilities
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3)
   {
-    v6 = [v4 vk_addItems:a3];
+    v6 = [selfCopy vk_addItems:a3];
 
     v5 = v6;
   }
@@ -53,28 +53,28 @@
     v5 = a3;
     v6 = [v4 arrayWithObjects:&v9 count:1];
 
-    v7 = [a1 vk_addItems:{v6, v9, v10}];
+    v7 = [self vk_addItems:{v6, v9, v10}];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)vk_addItems:()Utilities
 {
   v4 = a3;
-  v5 = [a1 children];
-  v6 = v5;
+  children = [self children];
+  v6 = children;
   v7 = MEMORY[0x1E695E0F0];
-  if (v5)
+  if (children)
   {
-    v7 = v5;
+    v7 = children;
   }
 
   v8 = v7;
 
   v9 = [v8 vk_arrayByAddingObjectsFromNonNilArray:v4];
 
-  v10 = [a1 menuByReplacingChildren:v9];
+  v10 = [self menuByReplacingChildren:v9];
 
   return v10;
 }

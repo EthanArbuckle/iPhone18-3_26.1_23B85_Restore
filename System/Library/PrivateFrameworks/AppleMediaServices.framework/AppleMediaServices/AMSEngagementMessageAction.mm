@@ -1,20 +1,20 @@
 @interface AMSEngagementMessageAction
-- (AMSEngagementMessageAction)initWithJSObject:(id)a3;
+- (AMSEngagementMessageAction)initWithJSObject:(id)object;
 - (id)exportObject;
 - (id)makeDialogAction;
 @end
 
 @implementation AMSEngagementMessageAction
 
-- (AMSEngagementMessageAction)initWithJSObject:(id)a3
+- (AMSEngagementMessageAction)initWithJSObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v37.receiver = self;
   v37.super_class = AMSEngagementMessageAction;
   v5 = [(AMSEngagementMessageAction *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clickstreamMetricsEvent"];
+    v6 = [objectCopy objectForKeyedSubscript:@"clickstreamMetricsEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
       v33 = 0;
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"deepLink"];
+    v7 = [objectCopy objectForKeyedSubscript:@"deepLink"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       v36 = 0;
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"identifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       obj = 0;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"kind"];
+    v9 = [objectCopy objectForKeyedSubscript:@"kind"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       v34 = 0;
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"iconURL"];
+    v10 = [objectCopy objectForKeyedSubscript:@"iconURL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       v11 = 0;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"requiresDelegate"];
+    v12 = [objectCopy objectForKeyedSubscript:@"requiresDelegate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
       v13 = 0;
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"metricsEvent"];
+    v14 = [objectCopy objectForKeyedSubscript:@"metricsEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,7 +98,7 @@
       v15 = 0;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"parameters"];
+    v16 = [objectCopy objectForKeyedSubscript:@"parameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
       v17 = 0;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"style"];
+    v18 = [objectCopy objectForKeyedSubscript:@"style"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -122,7 +122,7 @@
       v19 = 0;
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"title"];
+    v20 = [objectCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -168,16 +168,16 @@
     objc_storeStrong(&v5->_parameters, v17);
     if (v19)
     {
-      v29 = [v19 intValue];
+      intValue = [v19 intValue];
     }
 
     else
     {
-      v29 = 0;
+      intValue = 0;
     }
 
     title = v5->_title;
-    v5->_style = v29;
+    v5->_style = intValue;
     v5->_title = v21;
 
     if (!v5->_deepLink && !v5->_requiresDelegate)
@@ -207,79 +207,79 @@ LABEL_47:
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
   v7 = [v3 dictionaryWithDictionary:v6];
 
-  v8 = [(AMSEngagementMessageAction *)self clickstreamMetricsEvent];
+  clickstreamMetricsEvent = [(AMSEngagementMessageAction *)self clickstreamMetricsEvent];
 
-  if (v8)
+  if (clickstreamMetricsEvent)
   {
-    v9 = [(AMSEngagementMessageAction *)self clickstreamMetricsEvent];
-    [v7 setObject:v9 forKeyedSubscript:@"clickstreamMetricsEvent"];
+    clickstreamMetricsEvent2 = [(AMSEngagementMessageAction *)self clickstreamMetricsEvent];
+    [v7 setObject:clickstreamMetricsEvent2 forKeyedSubscript:@"clickstreamMetricsEvent"];
   }
 
-  v10 = [(AMSEngagementMessageAction *)self deepLink];
+  deepLink = [(AMSEngagementMessageAction *)self deepLink];
 
-  if (v10)
+  if (deepLink)
   {
-    v11 = [(AMSEngagementMessageAction *)self deepLink];
-    v12 = [v11 absoluteString];
-    [v7 setObject:v12 forKeyedSubscript:@"deepLink"];
+    deepLink2 = [(AMSEngagementMessageAction *)self deepLink];
+    absoluteString = [deepLink2 absoluteString];
+    [v7 setObject:absoluteString forKeyedSubscript:@"deepLink"];
   }
 
-  v13 = [(AMSEngagementMessageAction *)self identifier];
+  identifier = [(AMSEngagementMessageAction *)self identifier];
 
-  if (v13)
+  if (identifier)
   {
-    v14 = [(AMSEngagementMessageAction *)self identifier];
-    [v7 setObject:v14 forKeyedSubscript:@"identifier"];
+    identifier2 = [(AMSEngagementMessageAction *)self identifier];
+    [v7 setObject:identifier2 forKeyedSubscript:@"identifier"];
   }
 
-  v15 = [(AMSEngagementMessageAction *)self kind];
+  kind = [(AMSEngagementMessageAction *)self kind];
 
-  if (v15)
+  if (kind)
   {
-    v16 = [(AMSEngagementMessageAction *)self kind];
-    [v7 setObject:v16 forKeyedSubscript:@"kind"];
+    kind2 = [(AMSEngagementMessageAction *)self kind];
+    [v7 setObject:kind2 forKeyedSubscript:@"kind"];
   }
 
-  v17 = [(AMSEngagementMessageAction *)self iconURL];
+  iconURL = [(AMSEngagementMessageAction *)self iconURL];
 
-  if (v17)
+  if (iconURL)
   {
-    v18 = [(AMSEngagementMessageAction *)self iconURL];
-    v19 = [v18 absoluteString];
-    [v7 setObject:v19 forKeyedSubscript:@"iconURL"];
+    iconURL2 = [(AMSEngagementMessageAction *)self iconURL];
+    absoluteString2 = [iconURL2 absoluteString];
+    [v7 setObject:absoluteString2 forKeyedSubscript:@"iconURL"];
   }
 
-  v20 = [(AMSEngagementMessageAction *)self metricsEvent];
+  metricsEvent = [(AMSEngagementMessageAction *)self metricsEvent];
 
-  if (v20)
+  if (metricsEvent)
   {
-    v21 = [(AMSEngagementMessageAction *)self metricsEvent];
-    v22 = [v21 underlyingDictionary];
-    [v7 setObject:v22 forKeyedSubscript:@"metricsEvent"];
+    metricsEvent2 = [(AMSEngagementMessageAction *)self metricsEvent];
+    underlyingDictionary = [metricsEvent2 underlyingDictionary];
+    [v7 setObject:underlyingDictionary forKeyedSubscript:@"metricsEvent"];
   }
 
-  v23 = [(AMSEngagementMessageAction *)self parameters];
+  parameters = [(AMSEngagementMessageAction *)self parameters];
 
-  if (v23)
+  if (parameters)
   {
-    v24 = [(AMSEngagementMessageAction *)self parameters];
-    [v7 setObject:v24 forKeyedSubscript:@"parameters"];
+    parameters2 = [(AMSEngagementMessageAction *)self parameters];
+    [v7 setObject:parameters2 forKeyedSubscript:@"parameters"];
   }
 
-  v25 = [(AMSEngagementMessageAction *)self parameters];
+  parameters3 = [(AMSEngagementMessageAction *)self parameters];
 
-  if (v25)
+  if (parameters3)
   {
-    v26 = [(AMSEngagementMessageAction *)self parameters];
-    [v7 setObject:v26 forKeyedSubscript:@"parameters"];
+    parameters4 = [(AMSEngagementMessageAction *)self parameters];
+    [v7 setObject:parameters4 forKeyedSubscript:@"parameters"];
   }
 
-  v27 = [(AMSEngagementMessageAction *)self title];
+  title = [(AMSEngagementMessageAction *)self title];
 
-  if (v27)
+  if (title)
   {
-    v28 = [(AMSEngagementMessageAction *)self title];
-    [v7 setObject:v28 forKeyedSubscript:@"title"];
+    title2 = [(AMSEngagementMessageAction *)self title];
+    [v7 setObject:title2 forKeyedSubscript:@"title"];
   }
 
   return v7;
@@ -287,35 +287,35 @@ LABEL_47:
 
 - (id)makeDialogAction
 {
-  v3 = [(AMSEngagementMessageAction *)self title];
-  v4 = [AMSDialogAction actionWithTitle:v3];
+  title = [(AMSEngagementMessageAction *)self title];
+  v4 = [AMSDialogAction actionWithTitle:title];
 
-  v5 = [(AMSEngagementMessageAction *)self clickstreamMetricsEvent];
-  [v4 setClickstreamMetricsEvent:v5];
+  clickstreamMetricsEvent = [(AMSEngagementMessageAction *)self clickstreamMetricsEvent];
+  [v4 setClickstreamMetricsEvent:clickstreamMetricsEvent];
 
-  v6 = [(AMSEngagementMessageAction *)self deepLink];
-  [v4 setDeepLink:v6];
+  deepLink = [(AMSEngagementMessageAction *)self deepLink];
+  [v4 setDeepLink:deepLink];
 
-  v7 = [(AMSEngagementMessageAction *)self iconURL];
-  [v4 setIconURL:v7];
+  iconURL = [(AMSEngagementMessageAction *)self iconURL];
+  [v4 setIconURL:iconURL];
 
-  v8 = [(AMSEngagementMessageAction *)self kind];
-  [v4 setKind:v8];
+  kind = [(AMSEngagementMessageAction *)self kind];
+  [v4 setKind:kind];
 
-  v9 = [(AMSEngagementMessageAction *)self metricsEvent];
-  [v4 setMetricsEvent:v9];
+  metricsEvent = [(AMSEngagementMessageAction *)self metricsEvent];
+  [v4 setMetricsEvent:metricsEvent];
 
-  v10 = [(AMSEngagementMessageAction *)self parameters];
-  [v4 setParameters:v10];
+  parameters = [(AMSEngagementMessageAction *)self parameters];
+  [v4 setParameters:parameters];
 
   [v4 setRequiresDelegate:{-[AMSEngagementMessageAction requiresDelegate](self, "requiresDelegate")}];
   [v4 setStyle:{-[AMSEngagementMessageAction style](self, "style")}];
-  v11 = [(AMSEngagementMessageAction *)self identifier];
+  identifier = [(AMSEngagementMessageAction *)self identifier];
 
-  if (v11)
+  if (identifier)
   {
-    v12 = [(AMSEngagementMessageAction *)self identifier];
-    [v4 setIdentifier:v12];
+    identifier2 = [(AMSEngagementMessageAction *)self identifier];
+    [v4 setIdentifier:identifier2];
   }
 
   return v4;

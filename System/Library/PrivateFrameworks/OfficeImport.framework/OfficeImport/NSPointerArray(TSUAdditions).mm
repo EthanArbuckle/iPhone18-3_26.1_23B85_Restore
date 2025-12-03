@@ -9,14 +9,14 @@
 - (uint64_t)tsu_enumerateNonNullPointersUsingBlock:()TSUAdditions
 {
   v8 = 0;
-  result = [a1 count];
+  result = [self count];
   if (result)
   {
     v6 = result;
     v7 = 1;
     do
     {
-      result = [a1 pointerAtIndex:v7 - 1];
+      result = [self pointerAtIndex:v7 - 1];
       if (result)
       {
         result = (*(a3 + 16))(a3, result, v7 - 1, &v8);
@@ -38,30 +38,30 @@
 
 - (uint64_t)tsu_insertRange:()TSUAdditions
 {
-  result = [a1 count];
+  result = [self count];
   v8 = result - a3;
   if (a4 >= result - a3)
   {
     v9 = result;
     if (result == a3)
     {
-      v10 = [a1 count] + a4;
+      v10 = [self count] + a4;
 
-      return [a1 setCount:v10];
+      return [self setCount:v10];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCAC18] pointerArrayWithPointerFunctions:{objc_msgSend(a1, "pointerFunctions")}];
+      v11 = [MEMORY[0x277CCAC18] pointerArrayWithPointerFunctions:{objc_msgSend(self, "pointerFunctions")}];
       [v11 setCount:v8];
       v12 = 0;
       do
       {
-        v13 = [a1 pointerAtIndex:a3];
+        v13 = [self pointerAtIndex:a3];
         if (v13)
         {
           [v11 replacePointerAtIndex:v12 withPointer:v13];
-          [a1 replacePointerAtIndex:a3 withPointer:0];
+          [self replacePointerAtIndex:a3 withPointer:0];
         }
 
         ++v12;
@@ -69,15 +69,15 @@
       }
 
       while (v9 != a3);
-      [a1 setCount:{objc_msgSend(a1, "count") + a4}];
+      [self setCount:{objc_msgSend(self, "count") + a4}];
       v14 = 0;
-      v15 = [a1 count] - v8;
+      v15 = [self count] - v8;
       do
       {
         result = [v11 pointerAtIndex:v14];
         if (result)
         {
-          [a1 replacePointerAtIndex:v15 + v14 withPointer:result];
+          [self replacePointerAtIndex:v15 + v14 withPointer:result];
           result = [v11 replacePointerAtIndex:v14 withPointer:0];
         }
 
@@ -92,7 +92,7 @@
   {
     for (; a4; --a4)
     {
-      result = [a1 insertPointer:0 atIndex:a3];
+      result = [self insertPointer:0 atIndex:a3];
     }
   }
 
@@ -111,7 +111,7 @@
   v5[3] = &unk_2799C6700;
   v5[4] = &v6;
   v5[5] = a3;
-  [a1 tsu_enumerateNonNullPointersUsingBlock:v5];
+  [self tsu_enumerateNonNullPointersUsingBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;

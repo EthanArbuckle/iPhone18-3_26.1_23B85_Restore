@@ -1,50 +1,50 @@
 @interface DS_TKeyValueObserverGlue
-- (DS_TKeyValueObserverGlue)initWithFunctor:(const void *)a3 observedObjects:(const void *)a4 observedKeyPath:(const void *)a5;
-- (DS_TKeyValueObserverGlue)initWithFunctorWithChange:(const void *)a3 observedObjects:(const void *)a4 observedKeyPath:(const void *)a5;
+- (DS_TKeyValueObserverGlue)initWithFunctor:(const void *)functor observedObjects:(const void *)objects observedKeyPath:(const void *)path;
+- (DS_TKeyValueObserverGlue)initWithFunctorWithChange:(const void *)change observedObjects:(const void *)objects observedKeyPath:(const void *)path;
 - (id).cxx_construct;
-- (void)initCommon:(const void *)a3 observedKeyPath:(const void *)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)initCommon:(const void *)common observedKeyPath:(const void *)path;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation DS_TKeyValueObserverGlue
 
-- (DS_TKeyValueObserverGlue)initWithFunctor:(const void *)a3 observedObjects:(const void *)a4 observedKeyPath:(const void *)a5
+- (DS_TKeyValueObserverGlue)initWithFunctor:(const void *)functor observedObjects:(const void *)objects observedKeyPath:(const void *)path
 {
   v10.receiver = self;
   v10.super_class = DS_TKeyValueObserverGlue;
   v8 = [(DS_TKeyValueObserverGlue *)&v10 init];
-  std::function<void ()(void)>::operator=(v8->_functor.__f_.__buf_.__data, a3);
-  [(DS_TKeyValueObserverGlue *)v8 initCommon:a4 observedKeyPath:a5];
+  std::function<void ()(void)>::operator=(v8->_functor.__f_.__buf_.__data, functor);
+  [(DS_TKeyValueObserverGlue *)v8 initCommon:objects observedKeyPath:path];
   return v8;
 }
 
-- (DS_TKeyValueObserverGlue)initWithFunctorWithChange:(const void *)a3 observedObjects:(const void *)a4 observedKeyPath:(const void *)a5
+- (DS_TKeyValueObserverGlue)initWithFunctorWithChange:(const void *)change observedObjects:(const void *)objects observedKeyPath:(const void *)path
 {
   v10.receiver = self;
   v10.super_class = DS_TKeyValueObserverGlue;
   v8 = [(DS_TKeyValueObserverGlue *)&v10 init];
-  std::function<void ()(NSDictionary<NSString *,NSObject *> *)>::operator=(v8->_functorWithChange.__f_.__buf_.__data, a3);
-  [(DS_TKeyValueObserverGlue *)v8 initCommon:a4 observedKeyPath:a5];
+  std::function<void ()(NSDictionary<NSString *,NSObject *> *)>::operator=(v8->_functorWithChange.__f_.__buf_.__data, change);
+  [(DS_TKeyValueObserverGlue *)v8 initCommon:objects observedKeyPath:path];
   return v8;
 }
 
-- (void)initCommon:(const void *)a3 observedKeyPath:(const void *)a4
+- (void)initCommon:(const void *)common observedKeyPath:(const void *)path
 {
-  std::__hash_table<NSObject *,std::hash<std::hash>,std::equal_to<std::hash>,std::allocator<std::hash>>::operator=(&self->_observedObjects, a3);
-  if (&self->_observedKeyPath != a4)
+  std::__hash_table<NSObject *,std::hash<std::hash>,std::equal_to<std::hash>,std::allocator<std::hash>>::operator=(&self->_observedObjects, common);
+  if (&self->_observedKeyPath != path)
   {
-    v6 = *a4;
+    v6 = *path;
 
     TString::SetStringRefAsImmutable(&self->_observedKeyPath, v6);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (operator==(&self->_observedKeyPath.fString.fRef, v10) && (v15 = v11, std::__hash_table<NSObject *,std::hash<std::hash>,std::equal_to<std::hash>,std::allocator<std::hash>>::find<std::hash>(&self->_observedObjects.__table_.__bucket_list_.__ptr_, &v15)))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (operator==(&self->_observedKeyPath.fString.fRef, pathCopy) && (v15 = objectCopy, std::__hash_table<NSObject *,std::hash<std::hash>,std::equal_to<std::hash>,std::allocator<std::hash>>::find<std::hash>(&self->_observedObjects.__table_.__bucket_list_.__ptr_, &v15)))
   {
     f = self->_functor.__f_.__f_;
     if (f)
@@ -54,7 +54,7 @@
 
     else if (self->_functorWithChange.__f_.__f_)
     {
-      std::function<void ()(NSDictionary<NSString *,NSObject *> *)>::operator()(&self->_functorWithChange, v12);
+      std::function<void ()(NSDictionary<NSString *,NSObject *> *)>::operator()(&self->_functorWithChange, changeCopy);
     }
   }
 
@@ -62,7 +62,7 @@
   {
     v14.receiver = self;
     v14.super_class = DS_TKeyValueObserverGlue;
-    [(DS_TKeyValueObserverGlue *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(DS_TKeyValueObserverGlue *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface TIEventDescriptorParser
 - (TIEventDescriptorParser)init;
-- (id)parseFloatFieldSpecWithName:(id)a3 fromConfig:(id)a4 errors:(id)a5;
-- (id)parseIntegerFieldSpecWithName:(id)a3 fromConfig:(id)a4 errors:(id)a5;
-- (id)parseStringFieldSpecWithName:(id)a3 fromConfig:(id)a4 errors:(id)a5;
-- (void)parseEventDescriptor:(id *)a3 andEventSpec:(id *)a4 withName:(id)a5 fromConfig:(id)a6 errors:(id)a7;
-- (void)parseEventDescriptors:(id)a3 andEventSpecs:(id)a4 fromConfig:(id)a5 errors:(id)a6;
-- (void)parseFieldDescriptor:(id *)a3 andFieldSpec:(id *)a4 withName:(id)a5 fromConfig:(id)a6 errors:(id)a7;
+- (id)parseFloatFieldSpecWithName:(id)name fromConfig:(id)config errors:(id)errors;
+- (id)parseIntegerFieldSpecWithName:(id)name fromConfig:(id)config errors:(id)errors;
+- (id)parseStringFieldSpecWithName:(id)name fromConfig:(id)config errors:(id)errors;
+- (void)parseEventDescriptor:(id *)descriptor andEventSpec:(id *)spec withName:(id)name fromConfig:(id)config errors:(id)errors;
+- (void)parseEventDescriptors:(id)descriptors andEventSpecs:(id)specs fromConfig:(id)config errors:(id)errors;
+- (void)parseFieldDescriptor:(id *)descriptor andFieldSpec:(id *)spec withName:(id)name fromConfig:(id)config errors:(id)errors;
 @end
 
 @implementation TIEventDescriptorParser
 
-- (id)parseFloatFieldSpecWithName:(id)a3 fromConfig:(id)a4 errors:(id)a5
+- (id)parseFloatFieldSpecWithName:(id)name fromConfig:(id)config errors:(id)errors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  configCopy = config;
+  errorsCopy = errors;
   v11 = objc_opt_new();
-  if (v9)
+  if (configCopy)
   {
-    v12 = [(TIDescriptorParser *)self parseFloatForKey:@"minValue" fromConfig:v9 required:0 errors:v11];
-    v13 = [(TIDescriptorParser *)self parseFloatForKey:@"maxValue" fromConfig:v9 required:0 errors:v11];
-    v14 = [(TIDescriptorParser *)self parseIntegerForKey:@"significantDigits" fromConfig:v9 required:0 errors:v11];
+    v12 = [(TIDescriptorParser *)self parseFloatForKey:@"minValue" fromConfig:configCopy required:0 errors:v11];
+    v13 = [(TIDescriptorParser *)self parseFloatForKey:@"maxValue" fromConfig:configCopy required:0 errors:v11];
+    v14 = [(TIDescriptorParser *)self parseIntegerForKey:@"significantDigits" fromConfig:configCopy required:0 errors:v11];
   }
 
   else
@@ -32,29 +32,29 @@
 
   if ([v11 count])
   {
-    [v10 addObjectsFromArray:v11];
+    [errorsCopy addObjectsFromArray:v11];
     v15 = 0;
   }
 
   else
   {
-    v15 = [MEMORY[0x277D6F308] floatFieldSpecWithName:v8 minValue:v12 maxValue:v13 significantDigits:v14];
+    v15 = [MEMORY[0x277D6F308] floatFieldSpecWithName:nameCopy minValue:v12 maxValue:v13 significantDigits:v14];
   }
 
   return v15;
 }
 
-- (id)parseIntegerFieldSpecWithName:(id)a3 fromConfig:(id)a4 errors:(id)a5
+- (id)parseIntegerFieldSpecWithName:(id)name fromConfig:(id)config errors:(id)errors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  configCopy = config;
+  errorsCopy = errors;
   v11 = objc_opt_new();
-  if (v9)
+  if (configCopy)
   {
-    v12 = [(TIDescriptorParser *)self parseIntegerForKey:@"minValue" fromConfig:v9 required:0 errors:v11];
-    v13 = [(TIDescriptorParser *)self parseIntegerForKey:@"maxValue" fromConfig:v9 required:0 errors:v11];
-    v14 = [(TIDescriptorParser *)self parseIntegerForKey:@"significantDigits" fromConfig:v9 required:0 errors:v11];
+    v12 = [(TIDescriptorParser *)self parseIntegerForKey:@"minValue" fromConfig:configCopy required:0 errors:v11];
+    v13 = [(TIDescriptorParser *)self parseIntegerForKey:@"maxValue" fromConfig:configCopy required:0 errors:v11];
+    v14 = [(TIDescriptorParser *)self parseIntegerForKey:@"significantDigits" fromConfig:configCopy required:0 errors:v11];
   }
 
   else
@@ -66,28 +66,28 @@
 
   if ([v11 count])
   {
-    [v10 addObjectsFromArray:v11];
+    [errorsCopy addObjectsFromArray:v11];
     v15 = 0;
   }
 
   else
   {
-    v15 = [MEMORY[0x277D6F308] integerFieldSpecWithName:v8 minValue:v12 maxValue:v13 significantDigits:v14];
+    v15 = [MEMORY[0x277D6F308] integerFieldSpecWithName:nameCopy minValue:v12 maxValue:v13 significantDigits:v14];
   }
 
   return v15;
 }
 
-- (id)parseStringFieldSpecWithName:(id)a3 fromConfig:(id)a4 errors:(id)a5
+- (id)parseStringFieldSpecWithName:(id)name fromConfig:(id)config errors:(id)errors
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  configCopy = config;
+  errorsCopy = errors;
   v11 = objc_opt_new();
-  if (v9)
+  if (configCopy)
   {
-    v12 = [(TIDescriptorParser *)self parseArrayForKey:@"allowedValues" fromConfig:v9 required:0 errors:v11];
+    v12 = [(TIDescriptorParser *)self parseArrayForKey:@"allowedValues" fromConfig:configCopy required:0 errors:v11];
     v13 = v12;
     if (v12)
     {
@@ -103,7 +103,7 @@
         {
           v15 = v14;
           v16 = *v28;
-          v26 = v8;
+          v26 = nameCopy;
           while (2)
           {
             for (i = 0; i != v15; ++i)
@@ -120,13 +120,13 @@
                 v20 = [(TIDescriptorParser *)self errorWithMessage:v19 andValue:v13];
                 [v11 addObject:v20];
 
-                v8 = v26;
+                nameCopy = v26;
                 goto LABEL_17;
               }
             }
 
             v15 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
-            v8 = v26;
+            nameCopy = v26;
             if (v15)
             {
               continue;
@@ -154,13 +154,13 @@
 LABEL_17:
   if ([v11 count])
   {
-    [v10 addObjectsFromArray:v11];
+    [errorsCopy addObjectsFromArray:v11];
     v23 = 0;
   }
 
   else
   {
-    v23 = [MEMORY[0x277D6F308] stringFieldSpecWithName:v8 allowedValues:v13];
+    v23 = [MEMORY[0x277D6F308] stringFieldSpecWithName:nameCopy allowedValues:v13];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -168,21 +168,21 @@ LABEL_17:
   return v23;
 }
 
-- (void)parseFieldDescriptor:(id *)a3 andFieldSpec:(id *)a4 withName:(id)a5 fromConfig:(id)a6 errors:(id)a7
+- (void)parseFieldDescriptor:(id *)descriptor andFieldSpec:(id *)spec withName:(id)name fromConfig:(id)config errors:(id)errors
 {
-  v25 = a5;
-  v10 = a6;
-  v11 = a7;
+  nameCopy = name;
+  configCopy = config;
+  errorsCopy = errors;
   v12 = objc_opt_new();
-  v13 = [(TIDescriptorParser *)self parseStringForKey:@"fieldDescription" fromConfig:v10 required:0 errors:v12];
-  v14 = [(TIDescriptorParser *)self parseStringForKey:@"metricName" fromConfig:v10 required:1 errors:v12];
-  v15 = [(TIDescriptorParser *)self parseStringForKey:@"metricType" fromConfig:v10 required:1 errors:v12];
-  v16 = [(TIDescriptorParser *)self parseStringForKey:@"dataType" fromConfig:v10 required:1 errors:v12];
-  v17 = [(TIDescriptorParser *)self parseDictionaryForKey:@"constraints" fromConfig:v10 required:0 errors:v12];
+  v13 = [(TIDescriptorParser *)self parseStringForKey:@"fieldDescription" fromConfig:configCopy required:0 errors:v12];
+  v14 = [(TIDescriptorParser *)self parseStringForKey:@"metricName" fromConfig:configCopy required:1 errors:v12];
+  v15 = [(TIDescriptorParser *)self parseStringForKey:@"metricType" fromConfig:configCopy required:1 errors:v12];
+  v16 = [(TIDescriptorParser *)self parseStringForKey:@"dataType" fromConfig:configCopy required:1 errors:v12];
+  v17 = [(TIDescriptorParser *)self parseDictionaryForKey:@"constraints" fromConfig:configCopy required:0 errors:v12];
   if ([v16 isEqualToString:@"string"])
   {
-    v18 = [(TIDescriptorParser *)self parseStringForKey:@"inactiveValue" fromConfig:v10 required:0 errors:v12];
-    v19 = [(TIEventDescriptorParser *)self parseStringFieldSpecWithName:v25 fromConfig:v17 errors:v12];
+    v18 = [(TIDescriptorParser *)self parseStringForKey:@"inactiveValue" fromConfig:configCopy required:0 errors:v12];
+    v19 = [(TIEventDescriptorParser *)self parseStringFieldSpecWithName:nameCopy fromConfig:v17 errors:v12];
 LABEL_9:
     v20 = v19;
     goto LABEL_10;
@@ -190,22 +190,22 @@ LABEL_9:
 
   if ([v16 isEqualToString:@"integer"])
   {
-    v18 = [(TIDescriptorParser *)self parseIntegerForKey:@"inactiveValue" fromConfig:v10 required:0 errors:v12];
-    v19 = [(TIEventDescriptorParser *)self parseIntegerFieldSpecWithName:v25 fromConfig:v17 errors:v12];
+    v18 = [(TIDescriptorParser *)self parseIntegerForKey:@"inactiveValue" fromConfig:configCopy required:0 errors:v12];
+    v19 = [(TIEventDescriptorParser *)self parseIntegerFieldSpecWithName:nameCopy fromConfig:v17 errors:v12];
     goto LABEL_9;
   }
 
   if ([v16 isEqualToString:@"float"])
   {
-    v18 = [(TIDescriptorParser *)self parseNumberForKey:@"inactiveValue" fromConfig:v10 required:0 errors:v12];
-    v19 = [(TIEventDescriptorParser *)self parseFloatFieldSpecWithName:v25 fromConfig:v17 errors:v12];
+    v18 = [(TIDescriptorParser *)self parseNumberForKey:@"inactiveValue" fromConfig:configCopy required:0 errors:v12];
+    v19 = [(TIEventDescriptorParser *)self parseFloatFieldSpecWithName:nameCopy fromConfig:v17 errors:v12];
     goto LABEL_9;
   }
 
   if ([v16 isEqualToString:@"BOOLean"])
   {
-    v18 = [(TIDescriptorParser *)self parseBooleanForKey:@"inactiveValue" fromConfig:v10 required:0 errors:v12];
-    v19 = [(TIEventDescriptorParser *)self parseBooleanFieldSpecWithName:v25 fromConfig:v17 errors:v12];
+    v18 = [(TIDescriptorParser *)self parseBooleanForKey:@"inactiveValue" fromConfig:configCopy required:0 errors:v12];
+    v19 = [(TIEventDescriptorParser *)self parseBooleanFieldSpecWithName:nameCopy fromConfig:v17 errors:v12];
     goto LABEL_9;
   }
 
@@ -217,29 +217,29 @@ LABEL_9:
 LABEL_10:
   if ([v12 count])
   {
-    [v11 addObjectsFromArray:v12];
+    [errorsCopy addObjectsFromArray:v12];
   }
 
   else
   {
-    *a3 = [TIFieldDescriptor fieldDescriptorWithFieldName:v25 fieldDescription:v13 metricName:v14 metricType:v15 inactiveValue:v18];
+    *descriptor = [TIFieldDescriptor fieldDescriptorWithFieldName:nameCopy fieldDescription:v13 metricName:v14 metricType:v15 inactiveValue:v18];
     v21 = v20;
-    *a4 = v20;
+    *spec = v20;
   }
 }
 
-- (void)parseEventDescriptor:(id *)a3 andEventSpec:(id *)a4 withName:(id)a5 fromConfig:(id)a6 errors:(id)a7
+- (void)parseEventDescriptor:(id *)descriptor andEventSpec:(id *)spec withName:(id)name fromConfig:(id)config errors:(id)errors
 {
   v56 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  configCopy = config;
+  errorsCopy = errors;
   v15 = objc_opt_new();
-  v16 = [(TIDescriptorParser *)self parseStringForKey:@"eventDescription" fromConfig:v13 required:0 errors:v15];
-  v17 = [(TIDescriptorParser *)self parseBooleanForKey:@"includeTestingParameters" fromConfig:v13 required:0 errors:v15];
+  v16 = [(TIDescriptorParser *)self parseStringForKey:@"eventDescription" fromConfig:configCopy required:0 errors:v15];
+  v17 = [(TIDescriptorParser *)self parseBooleanForKey:@"includeTestingParameters" fromConfig:configCopy required:0 errors:v15];
   v43 = [v17 isEqualToNumber:MEMORY[0x277CBEC38]];
 
-  v18 = [(TIDescriptorParser *)self parseDictionaryForKey:@"fieldDescriptors" fromConfig:v13 required:1 errors:v15];
+  v18 = [(TIDescriptorParser *)self parseDictionaryForKey:@"fieldDescriptors" fromConfig:configCopy required:1 errors:v15];
   v45 = objc_opt_new();
   v44 = objc_opt_new();
   v47 = objc_opt_new();
@@ -249,11 +249,11 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v38 = a3;
+  descriptorCopy = descriptor;
   v39 = v16;
-  v40 = a4;
-  v41 = v14;
-  v42 = v13;
+  specCopy = spec;
+  v41 = errorsCopy;
+  v42 = configCopy;
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -277,9 +277,9 @@ LABEL_10:
       }
 
       v23 = *(*(&v51 + 1) + 8 * i);
-      v24 = [(TIDescriptorParser *)self context];
-      v25 = v12;
-      [v24 setObject:v12 forKey:@"event"];
+      context = [(TIDescriptorParser *)self context];
+      v25 = nameCopy;
+      [context setObject:nameCopy forKey:@"event"];
 
       v26 = [(TIDescriptorParser *)self parseDictionaryForKey:v23 fromConfig:v48 required:1 errors:v15];
       if (v26)
@@ -307,7 +307,7 @@ LABEL_10:
       [v47 addObject:v23];
 LABEL_13:
 
-      v12 = v25;
+      nameCopy = v25;
     }
 
     v20 = [obj countByEnumeratingWithState:&v51 objects:v55 count:16];
@@ -316,11 +316,11 @@ LABEL_13:
   while (v20);
 LABEL_15:
 
-  v14 = v41;
-  v13 = v42;
+  errorsCopy = v41;
+  configCopy = v42;
   v16 = v39;
-  a4 = v40;
-  a3 = v38;
+  spec = specCopy;
+  descriptor = descriptorCopy;
   if (![v45 count] && !objc_msgSend(v47, "count"))
   {
     v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Key '%@' must contain at least one value.", @"fieldDescriptors"];
@@ -331,7 +331,7 @@ LABEL_15:
 LABEL_18:
   if ([v15 count])
   {
-    [v14 addObjectsFromArray:v15];
+    [errorsCopy addObjectsFromArray:v15];
     v33 = v44;
     v32 = v45;
   }
@@ -339,31 +339,31 @@ LABEL_18:
   else
   {
     v32 = v45;
-    v34 = [v45 allValues];
-    *a3 = [TIEventDescriptor eventDescriptorWithEventName:v12 eventDescription:v16 fieldDescriptors:v34 includeTestingParameters:v43];
+    allValues = [v45 allValues];
+    *descriptor = [TIEventDescriptor eventDescriptorWithEventName:nameCopy eventDescription:v16 fieldDescriptors:allValues includeTestingParameters:v43];
 
     v35 = MEMORY[0x277D6F300];
     v33 = v44;
-    v36 = [v44 allValues];
-    *a4 = [v35 eventSpecWithName:v12 inputModeRequired:0 fieldSpecs:v36];
+    allValues2 = [v44 allValues];
+    *spec = [v35 eventSpecWithName:nameCopy inputModeRequired:0 fieldSpecs:allValues2];
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseEventDescriptors:(id)a3 andEventSpecs:(id)a4 fromConfig:(id)a5 errors:(id)a6
+- (void)parseEventDescriptors:(id)descriptors andEventSpecs:(id)specs fromConfig:(id)config errors:(id)errors
 {
   v37 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v25 = a4;
-  v10 = a5;
-  v24 = a6;
+  descriptorsCopy = descriptors;
+  specsCopy = specs;
+  configCopy = config;
+  errorsCopy = errors;
   v11 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [v10 allKeys];
+  obj = [configCopy allKeys];
   v12 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v12)
   {
@@ -379,13 +379,13 @@ LABEL_18:
         }
 
         v16 = *(*(&v30 + 1) + 8 * i);
-        v17 = [(TIDescriptorParser *)self context];
+        context = [(TIDescriptorParser *)self context];
         v34 = @"event";
         v35 = v16;
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-        [v17 setDictionary:v18];
+        [context setDictionary:v18];
 
-        v19 = [(TIDescriptorParser *)self parseDictionaryForKey:v16 fromConfig:v10 required:1 errors:v11];
+        v19 = [(TIDescriptorParser *)self parseDictionaryForKey:v16 fromConfig:configCopy required:1 errors:v11];
         if (v19)
         {
           v28 = 0;
@@ -396,8 +396,8 @@ LABEL_18:
           v22 = v21;
           if (v20 && v21)
           {
-            [v26 setObject:v20 forKey:v16];
-            [v25 setObject:v22 forKey:v16];
+            [descriptorsCopy setObject:v20 forKey:v16];
+            [specsCopy setObject:v22 forKey:v16];
           }
         }
 
@@ -414,7 +414,7 @@ LABEL_18:
     while (v13);
   }
 
-  [v24 addObjectsFromArray:v11];
+  [errorsCopy addObjectsFromArray:v11];
   v23 = *MEMORY[0x277D85DE8];
 }
 

@@ -17,72 +17,72 @@
 
 + (id)fusionKernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"fuse_image_compute"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"fuse_image_compute"];
 
   return v3;
 }
 
 + (id)blur3x3Kernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"blur_image_compute_3x3"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"blur_image_compute_3x3"];
 
   return v3;
 }
 
 + (id)blur5x5Kernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"blur_image_compute_5x5"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"blur_image_compute_5x5"];
 
   return v3;
 }
 
 + (id)blur7x7Kernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"blur_image_compute_7x7"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"blur_image_compute_7x7"];
 
   return v3;
 }
 
 + (id)nccCoarseKernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ncc_coarse_compute"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"ncc_coarse_compute"];
 
   return v3;
 }
 
 + (id)nccKernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ncc_compute"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"ncc_compute"];
 
   return v3;
 }
 
 + (id)homographyKernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"warp_homography"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"warp_homography"];
 
   return v3;
 }
 
 + (id)rgbToLumaKernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"rgba_to_luma"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"rgba_to_luma"];
 
   return v3;
 }
 
 + (id)dynamismMapRefineKernel
 {
-  v2 = [a1 longExposureFusionKernels];
-  v3 = [v2 objectForKeyedSubscript:@"jointbilateralfilter"];
+  longExposureFusionKernels = [self longExposureFusionKernels];
+  v3 = [longExposureFusionKernels objectForKeyedSubscript:@"jointbilateralfilter"];
 
   return v3;
 }

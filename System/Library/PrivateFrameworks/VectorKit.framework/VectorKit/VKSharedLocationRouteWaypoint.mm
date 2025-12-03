@@ -1,17 +1,17 @@
 @interface VKSharedLocationRouteWaypoint
-- (VKSharedLocationRouteWaypoint)initWithWaypoint:(id)a3 displayInfo:(id)a4 legIndex:(unint64_t)a5 routeCoordinate:(id)a6 adjacentRouteCoordinate:(id)a7 polylineCoordinate:(PolylineCoordinate)a8;
-- (void)setAnnotationText:(id)a3;
-- (void)setImageProvider:(id)a3 withKey:(id)a4;
+- (VKSharedLocationRouteWaypoint)initWithWaypoint:(id)waypoint displayInfo:(id)info legIndex:(unint64_t)index routeCoordinate:(id)coordinate adjacentRouteCoordinate:(id)routeCoordinate polylineCoordinate:(PolylineCoordinate)polylineCoordinate;
+- (void)setAnnotationText:(id)text;
+- (void)setImageProvider:(id)provider withKey:(id)key;
 @end
 
 @implementation VKSharedLocationRouteWaypoint
 
-- (void)setAnnotationText:(id)a3
+- (void)setAnnotationText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_annotationText isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     annotationText = self->_annotationText;
     self->_annotationText = v4;
 
@@ -19,23 +19,23 @@
   }
 }
 
-- (void)setImageProvider:(id)a3 withKey:(id)a4
+- (void)setImageProvider:(id)provider withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  keyCopy = key;
   imageProvider = self->_imageProvider;
-  self->_imageProvider = v6;
-  v10 = v6;
+  self->_imageProvider = providerCopy;
+  v10 = providerCopy;
 
   customImageKey = self->_customImageKey;
-  self->_customImageKey = v7;
+  self->_customImageKey = keyCopy;
 }
 
-- (VKSharedLocationRouteWaypoint)initWithWaypoint:(id)a3 displayInfo:(id)a4 legIndex:(unint64_t)a5 routeCoordinate:(id)a6 adjacentRouteCoordinate:(id)a7 polylineCoordinate:(PolylineCoordinate)a8
+- (VKSharedLocationRouteWaypoint)initWithWaypoint:(id)waypoint displayInfo:(id)info legIndex:(unint64_t)index routeCoordinate:(id)coordinate adjacentRouteCoordinate:(id)routeCoordinate polylineCoordinate:(PolylineCoordinate)polylineCoordinate
 {
   v14.receiver = self;
   v14.super_class = VKSharedLocationRouteWaypoint;
-  v8 = [(VKRouteWaypointInfo *)&v14 initWithWaypoint:a3 displayInfo:a4 legIndex:a5 routeCoordinate:a8 adjacentRouteCoordinate:3 polylineCoordinate:a6.var0 waypointType:a6.var1, a6.var2, a7.var0, a7.var1, a7.var2];
+  v8 = [(VKRouteWaypointInfo *)&v14 initWithWaypoint:waypoint displayInfo:info legIndex:index routeCoordinate:polylineCoordinate adjacentRouteCoordinate:3 polylineCoordinate:coordinate.var0 waypointType:coordinate.var1, coordinate.var2, routeCoordinate.var0, routeCoordinate.var1, routeCoordinate.var2];
   v9 = v8;
   if (v8)
   {

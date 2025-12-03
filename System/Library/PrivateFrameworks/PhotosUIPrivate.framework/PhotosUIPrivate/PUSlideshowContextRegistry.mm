@@ -1,6 +1,6 @@
 @interface PUSlideshowContextRegistry
-- (BOOL)addDisplayContext:(id)a3;
-- (BOOL)removeDisplayContext:(id)a3;
+- (BOOL)addDisplayContext:(id)context;
+- (BOOL)removeDisplayContext:(id)context;
 - (NSArray)displayContexts;
 - (PUSlideshowContextRegistry)init;
 - (PUSlideshowDisplayContext)currentDisplayContext;
@@ -10,45 +10,45 @@
 
 - (NSArray)displayContexts
 {
-  v2 = [(PUSlideshowContextRegistry *)self _displayContexts];
-  v3 = [v2 copy];
+  _displayContexts = [(PUSlideshowContextRegistry *)self _displayContexts];
+  v3 = [_displayContexts copy];
 
   return v3;
 }
 
 - (PUSlideshowDisplayContext)currentDisplayContext
 {
-  v2 = [(PUSlideshowContextRegistry *)self _displayContexts];
-  v3 = [v2 lastObject];
+  _displayContexts = [(PUSlideshowContextRegistry *)self _displayContexts];
+  lastObject = [_displayContexts lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (BOOL)removeDisplayContext:(id)a3
+- (BOOL)removeDisplayContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PUSlideshowContextRegistry *)self displayContexts];
-  v6 = [v5 containsObject:v4];
+  contextCopy = context;
+  displayContexts = [(PUSlideshowContextRegistry *)self displayContexts];
+  v6 = [displayContexts containsObject:contextCopy];
 
   if (v6)
   {
-    v7 = [(PUSlideshowContextRegistry *)self _displayContexts];
-    [v7 removeObject:v4];
+    _displayContexts = [(PUSlideshowContextRegistry *)self _displayContexts];
+    [_displayContexts removeObject:contextCopy];
   }
 
   return v6;
 }
 
-- (BOOL)addDisplayContext:(id)a3
+- (BOOL)addDisplayContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PUSlideshowContextRegistry *)self _displayContexts];
-  v6 = [v5 containsObject:v4];
+  contextCopy = context;
+  _displayContexts = [(PUSlideshowContextRegistry *)self _displayContexts];
+  v6 = [_displayContexts containsObject:contextCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(PUSlideshowContextRegistry *)self _displayContexts];
-    [v7 addObject:v4];
+    _displayContexts2 = [(PUSlideshowContextRegistry *)self _displayContexts];
+    [_displayContexts2 addObject:contextCopy];
   }
 
   return v6 ^ 1;
@@ -61,8 +61,8 @@
   v2 = [(PUSlideshowContextRegistry *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    [(PUSlideshowContextRegistry *)v2 _setDisplayContexts:v3];
+    array = [MEMORY[0x1E695DF70] array];
+    [(PUSlideshowContextRegistry *)v2 _setDisplayContexts:array];
   }
 
   return v2;

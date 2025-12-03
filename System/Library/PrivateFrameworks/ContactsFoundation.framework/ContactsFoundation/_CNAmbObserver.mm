@@ -1,39 +1,39 @@
 @interface _CNAmbObserver
-- (_CNAmbObserver)initWithObserver:(id)a3 delegate:(id)a4;
+- (_CNAmbObserver)initWithObserver:(id)observer delegate:(id)delegate;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation _CNAmbObserver
 
-- (_CNAmbObserver)initWithObserver:(id)a3 delegate:(id)a4
+- (_CNAmbObserver)initWithObserver:(id)observer delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = _CNAmbObserver;
   v9 = [(_CNAmbObserver *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_observer, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_observer, observer);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained observerWillRelayEvent:self];
 
   if (self->_isWinner)
   {
-    [(CNObserver *)self->_observer observerDidReceiveResult:v5];
+    [(CNObserver *)self->_observer observerDidReceiveResult:resultCopy];
   }
 }
 
@@ -50,15 +50,15 @@
   }
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained observerWillRelayEvent:self];
 
   if (self->_isWinner)
   {
-    [(CNObserver *)self->_observer observerDidFailWithError:v5];
+    [(CNObserver *)self->_observer observerDidFailWithError:errorCopy];
   }
 }
 

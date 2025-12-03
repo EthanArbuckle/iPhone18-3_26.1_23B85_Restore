@@ -1,17 +1,17 @@
 @interface HMDXPCClientConnection
 + (id)logCategory;
-+ (unint64_t)entitlementsForConnection:(id)a3;
-- (BOOL)canSendMessage:(id)a3;
++ (unint64_t)entitlementsForConnection:(id)connection;
+- (BOOL)canSendMessage:(id)message;
 - (BOOL)isAuthorizedForHomeDataAccess;
 - (BOOL)isAuthorizedForLocationAccess;
 - (BOOL)isAuthorizedForMicrophoneAccess;
 - (BOOL)isEntitledForHomeLocationAccess;
 - (BOOL)isPlatformBinary;
-- (BOOL)sendMessage:(id)a3 error:(id *)a4;
+- (BOOL)sendMessage:(id)message error:(id *)error;
 - (Class)principalClass;
 - (HMDProcessInfo)processInfo;
-- (HMDXPCClientConnection)initWithConnection:(id)a3 queue:(id)a4;
-- (HMDXPCClientConnection)initWithConnection:(id)a3 queue:(id)a4 messageCountTracker:(id)a5 requestTracker:(id)a6;
+- (HMDXPCClientConnection)initWithConnection:(id)connection queue:(id)queue;
+- (HMDXPCClientConnection)initWithConnection:(id)connection queue:(id)queue messageCountTracker:(id)tracker requestTracker:(id)requestTracker;
 - (HMDXPCClientConnectionDelegate)delegate;
 - (HMDXPCMessageSendPolicyParameters)sendPolicyParameters;
 - (NSDictionary)stateDump;
@@ -29,25 +29,25 @@
 - (unint64_t)inactiveUpdatingLevel;
 - (void)_activate;
 - (void)_deactivate;
-- (void)_handleMessage:(id)a3 responseHandler:(id)a4;
+- (void)_handleMessage:(id)message responseHandler:(id)handler;
 - (void)_invalidate;
 - (void)_start;
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
-- (void)handleMessage:(id)a3;
-- (void)handleMessage:(id)a3 responseHandler:(id)a4;
+- (void)handleMessage:(id)message;
+- (void)handleMessage:(id)message responseHandler:(id)handler;
 - (void)handleProcessStateDidChange;
 - (void)initiateRefresh;
 - (void)invalidate;
 - (void)notifyOfExternallyManagedActivation;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
-- (void)setProcessInfo:(id)a3;
-- (void)setSendPolicyParameters:(id)a3;
-- (void)setUserInfo:(id)a3;
-- (void)updateSendPolicyParameters:(id)a3;
-- (void)updateUserInfo:(id)a3;
-- (void)updateUserInfo:(id)a3 responseHandler:(id)a4;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
+- (void)setProcessInfo:(id)info;
+- (void)setSendPolicyParameters:(id)parameters;
+- (void)setUserInfo:(id)info;
+- (void)updateSendPolicyParameters:(id)parameters;
+- (void)updateUserInfo:(id)info;
+- (void)updateUserInfo:(id)info responseHandler:(id)handler;
 @end
 
 @implementation HMDXPCClientConnection
@@ -55,11 +55,11 @@
 - (BOOL)isAuthorizedForHomeDataAccess
 {
   v2 = *MEMORY[0x277D6C258];
-  v3 = [(HMDXPCClientConnection *)self xpcConnection];
-  v4 = v3;
-  if (v3)
+  xpcConnection = [(HMDXPCClientConnection *)self xpcConnection];
+  v4 = xpcConnection;
+  if (xpcConnection)
   {
-    [v3 auditToken];
+    [xpcConnection auditToken];
   }
 
   v5 = TCCAccessCheckAuditToken() != 0;
@@ -80,8 +80,8 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDXPCClientConnection *)self _displayName];
-  v5 = [v3 initWithName:@"Name" value:v4];
+  _displayName = [(HMDXPCClientConnection *)self _displayName];
+  v5 = [v3 initWithName:@"Name" value:_displayName];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   v7 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDXPCClientConnection clientPid](self, "clientPid", v5)}];
   v8 = [v6 initWithName:@"PID" value:v7];
@@ -100,62 +100,62 @@
 
 - (id)_displayName
 {
-  v3 = [(HMDXPCClientConnection *)self name];
+  name = [(HMDXPCClientConnection *)self name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [(HMDXPCClientConnection *)self name];
+    name2 = [(HMDXPCClientConnection *)self name];
   }
 
   else
   {
-    v5 = [(HMDXPCClientConnection *)self processInfo];
-    v6 = [v5 applicationInfo];
-    v7 = [v6 bundleIdentifier];
+    processInfo = [(HMDXPCClientConnection *)self processInfo];
+    applicationInfo = [processInfo applicationInfo];
+    bundleIdentifier = [applicationInfo bundleIdentifier];
 
-    if (v7)
+    if (bundleIdentifier)
     {
-      v8 = [(HMDXPCClientConnection *)self processInfo];
-      v9 = [v8 applicationInfo];
-      v4 = [v9 bundleIdentifier];
+      processInfo2 = [(HMDXPCClientConnection *)self processInfo];
+      applicationInfo2 = [processInfo2 applicationInfo];
+      name2 = [applicationInfo2 bundleIdentifier];
     }
 
     else
     {
-      v4 = @"unknown";
+      name2 = @"unknown";
     }
   }
 
-  return v4;
+  return name2;
 }
 
 - (NSString)name
 {
-  v3 = [(HMDXPCClientConnection *)self processInfo];
-  v4 = [v3 name];
-  v5 = v4;
-  if (v4)
+  processInfo = [(HMDXPCClientConnection *)self processInfo];
+  name = [processInfo name];
+  v5 = name;
+  if (name)
   {
-    v6 = v4;
+    clientName = name;
   }
 
   else
   {
-    v6 = [(HMDXPCClientConnection *)self clientName];
+    clientName = [(HMDXPCClientConnection *)self clientName];
   }
 
-  v7 = v6;
+  v7 = clientName;
 
   return v7;
 }
 
 - (int)clientPid
 {
-  v2 = [(HMDXPCClientConnection *)self xpcConnection];
-  v3 = [v2 processIdentifier];
-  if (v3)
+  xpcConnection = [(HMDXPCClientConnection *)self xpcConnection];
+  processIdentifier = [xpcConnection processIdentifier];
+  if (processIdentifier)
   {
-    v4 = v3;
+    v4 = processIdentifier;
   }
 
   else
@@ -168,8 +168,8 @@
 
 - (NSString)clientName
 {
-  v2 = [(HMDXPCClientConnection *)self userInfo];
-  v3 = [v2 hmf_stringForKey:*MEMORY[0x277CD0C88]];
+  userInfo = [(HMDXPCClientConnection *)self userInfo];
+  v3 = [userInfo hmf_stringForKey:*MEMORY[0x277CD0C88]];
 
   return v3;
 }
@@ -198,20 +198,20 @@
 - (void)_start
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDXPCClientConnection *)self state]== 3)
   {
     _HMFPreconditionFailure();
   }
 
-  v4 = [(HMDXPCClientConnection *)self state];
+  state = [(HMDXPCClientConnection *)self state];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = v7;
-  if (v4)
+  if (state)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -235,15 +235,15 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v11 = [(HMDXPCClientConnection *)v6 delegate];
-    [v11 connectionDidStart:v6];
+    delegate = [(HMDXPCClientConnection *)selfCopy delegate];
+    [delegate connectionDidStart:selfCopy];
 
-    if (![(HMDXPCClientConnection *)v6 hasExternallyManagedActivation])
+    if (![(HMDXPCClientConnection *)selfCopy hasExternallyManagedActivation])
     {
-      [(HMDXPCClientConnection *)v6 _activate];
+      [(HMDXPCClientConnection *)selfCopy _activate];
     }
 
-    [(HMDXPCClientConnection *)v6 handleProcessStateDidChange];
+    [(HMDXPCClientConnection *)selfCopy handleProcessStateDidChange];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -256,20 +256,20 @@
     return -1;
   }
 
-  v3 = [(HMDXPCClientConnection *)self userInfo];
-  v4 = [v3 hmf_numberForKey:*MEMORY[0x277CD02D8]];
+  userInfo = [(HMDXPCClientConnection *)self userInfo];
+  v4 = [userInfo hmf_numberForKey:*MEMORY[0x277CD02D8]];
 
   if (v4)
   {
-    v5 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
     if (([(HMDXPCClientConnection *)self entitlements]& 4) != 0)
     {
-      v6 = v5;
+      v6 = unsignedIntegerValue;
     }
 
     else
     {
-      v6 = v5 & 0xFFFFFFFFFFFF372FLL;
+      v6 = unsignedIntegerValue & 0xFFFFFFFFFFFF372FLL;
     }
   }
 
@@ -283,8 +283,8 @@
 
 - (id)clientUUID
 {
-  v2 = [(HMDXPCClientConnection *)self userInfo];
-  v3 = [v2 hmf_UUIDForKey:*MEMORY[0x277CD15B0]];
+  userInfo = [(HMDXPCClientConnection *)self userInfo];
+  v3 = [userInfo hmf_UUIDForKey:*MEMORY[0x277CD15B0]];
 
   return v3;
 }
@@ -298,8 +298,8 @@
 
 - (Class)principalClass
 {
-  v2 = [(HMDXPCClientConnection *)self userInfo];
-  v3 = [v2 hmf_stringForKey:*MEMORY[0x277CD0C80]];
+  userInfo = [(HMDXPCClientConnection *)self userInfo];
+  v3 = [userInfo hmf_stringForKey:*MEMORY[0x277CD0C80]];
 
   if (v3)
   {
@@ -316,8 +316,8 @@
 
 - (void)notifyOfExternallyManagedActivation
 {
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDXPCClientConnection *)self state])
   {
@@ -343,17 +343,17 @@
 
 - (unint64_t)inactiveUpdatingLevel
 {
-  v2 = [(HMDXPCClientConnection *)self userInfo];
-  v3 = [v2 hmf_numberForKey:*MEMORY[0x277CD0250]];
-  v4 = [v3 integerValue];
+  userInfo = [(HMDXPCClientConnection *)self userInfo];
+  v3 = [userInfo hmf_numberForKey:*MEMORY[0x277CD0250]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (void)activate
 {
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDXPCClientConnection *)self hasExternallyManagedActivation])
   {
@@ -371,20 +371,20 @@
 - (void)_activate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDXPCClientConnection *)self state]== 3)
   {
     _HMFPreconditionFailure();
   }
 
-  v4 = [(HMDXPCClientConnection *)self state];
+  state = [(HMDXPCClientConnection *)self state];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = v7;
-  if (v4 == 1)
+  if (state == 1)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -408,14 +408,14 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v11 = [(HMDXPCClientConnection *)v6 state];
-    [(HMDXPCClientConnection *)v6 setState:1];
-    v12 = [(HMDXPCClientConnection *)v6 delegate];
-    [v12 connectionDidActivate:v6];
+    state2 = [(HMDXPCClientConnection *)selfCopy state];
+    [(HMDXPCClientConnection *)selfCopy setState:1];
+    delegate = [(HMDXPCClientConnection *)selfCopy delegate];
+    [delegate connectionDidActivate:selfCopy];
 
-    if (v11 == 2)
+    if (state2 == 2)
     {
-      [(HMDXPCClientConnection *)v6 initiateRefresh];
+      [(HMDXPCClientConnection *)selfCopy initiateRefresh];
     }
   }
 
@@ -425,8 +425,8 @@
 - (void)initiateRefresh
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDXPCClientConnection *)self state]!= 1)
   {
@@ -435,23 +435,23 @@
 
   v4 = MEMORY[0x277D0F818];
   v5 = *MEMORY[0x277CD15A8];
-  v6 = [MEMORY[0x277D0F820] allMessageDestinations];
-  v7 = [v4 messageWithName:v5 qualityOfService:9 destination:v6 payload:0];
+  allMessageDestinations = [MEMORY[0x277D0F820] allMessageDestinations];
+  v7 = [v4 messageWithName:v5 qualityOfService:9 destination:allMessageDestinations payload:0];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
     *buf = 0;
     *&buf[8] = 0;
-    v12 = [v7 identifier];
+    identifier = [v7 identifier];
 
-    if (v12)
+    if (identifier)
     {
-      v13 = [v7 identifier];
-      [v13 getUUIDBytes:buf];
+      identifier2 = [v7 identifier];
+      [identifier2 getUUIDBytes:buf];
     }
 
     else
@@ -470,7 +470,7 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  [(HMDXPCClientConnection *)v9 sendMessage:v7 completionHandler:0];
+  [(HMDXPCClientConnection *)selfCopy sendMessage:v7 completionHandler:0];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -481,23 +481,23 @@
   clientIdentifier = self->_clientIdentifier;
   if (!clientIdentifier)
   {
-    v4 = [(HMDProcessInfo *)self->_processInfo applicationInfo];
-    v5 = [v4 bundleIdentifier];
-    v6 = v5;
-    if (v5)
+    applicationInfo = [(HMDProcessInfo *)self->_processInfo applicationInfo];
+    bundleIdentifier = [applicationInfo bundleIdentifier];
+    v6 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v7 = v5;
+      v7 = bundleIdentifier;
       v8 = self->_clientIdentifier;
       self->_clientIdentifier = v7;
     }
 
     else
     {
-      v9 = [(HMFProcessInfo *)self->_processInfo name];
-      v8 = v9;
-      if (v9)
+      name = [(HMFProcessInfo *)self->_processInfo name];
+      v8 = name;
+      if (name)
       {
-        v10 = v9;
+        v10 = name;
       }
 
       else
@@ -521,20 +521,20 @@
 - (void)handleProcessStateDidChange
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(HMDXPCClientConnection *)self hasExternallyManagedActivation])
   {
-    v4 = [(HMDXPCClientConnection *)self processInfo];
-    v5 = [v4 state];
+    processInfo = [(HMDXPCClientConnection *)self processInfo];
+    state = [processInfo state];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       if ([(HMDXPCClientConnection *)self state]== 1)
       {
         v10 = objc_autoreleasePoolPush();
-        v11 = self;
+        selfCopy = self;
         v12 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
@@ -545,14 +545,14 @@
         }
 
         objc_autoreleasePoolPop(v10);
-        [(HMDXPCClientConnection *)v11 _deactivate];
+        [(HMDXPCClientConnection *)selfCopy _deactivate];
       }
     }
 
-    else if ((v5 & 0xFFFFFFFFFFFFFFFDLL) == 0 && [(HMDXPCClientConnection *)self state]== 2)
+    else if ((state & 0xFFFFFFFFFFFFFFFDLL) == 0 && [(HMDXPCClientConnection *)self state]== 2)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy2 = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -563,64 +563,64 @@
       }
 
       objc_autoreleasePoolPop(v6);
-      [(HMDXPCClientConnection *)v7 _activate];
+      [(HMDXPCClientConnection *)selfCopy2 _activate];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)sendMessage:(id)a3 error:(id *)a4
+- (BOOL)sendMessage:(id)message error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDXPCClientConnection *)self canSendMessage:v6];
+  messageCopy = message;
+  v7 = [(HMDXPCClientConnection *)self canSendMessage:messageCopy];
   if (v7)
   {
-    if (([v6 isLocationAuthorized] & 1) != 0 || objc_msgSend(v6, "requiresHomeLocationEntitlement"))
+    if (([messageCopy isLocationAuthorized] & 1) != 0 || objc_msgSend(messageCopy, "requiresHomeLocationEntitlement"))
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = HMFGetLogIdentifier();
-        v12 = [v6 shortDescription];
+        shortDescription = [messageCopy shortDescription];
         *buf = 138543618;
         v30 = v11;
         v31 = 2112;
-        v32 = v12;
+        v32 = shortDescription;
         _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Marking location for message: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v8);
-      v13 = [(HMDXPCClientConnection *)v9 processInfo];
-      v14 = [v13 locationAuthorization];
-      [v14 mark];
+      processInfo = [(HMDXPCClientConnection *)selfCopy processInfo];
+      locationAuthorization = [processInfo locationAuthorization];
+      [locationAuthorization mark];
     }
 
-    v15 = [v6 mutableCopy];
-    v16 = [v6 identifier];
-    [v15 setIdentifier:v16];
+    v15 = [messageCopy mutableCopy];
+    identifier = [messageCopy identifier];
+    [v15 setIdentifier:identifier];
 
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [v15 setHeaderValue:v17 forKey:*MEMORY[0x277CD15E0]];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v15 setHeaderValue:date forKey:*MEMORY[0x277CD15E0]];
 
-    v18 = [(HMDXPCClientConnection *)self xpcConnection];
+    xpcConnection = [(HMDXPCClientConnection *)self xpcConnection];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __44__HMDXPCClientConnection_sendMessage_error___block_invoke;
     v28[3] = &unk_27868A250;
     v28[4] = self;
-    v19 = [v18 remoteObjectProxyWithErrorHandler:v28];
+    v19 = [xpcConnection remoteObjectProxyWithErrorHandler:v28];
 
-    v20 = [v15 responseHandler];
+    responseHandler = [v15 responseHandler];
 
     v21 = [v15 copy];
-    if (v20)
+    if (responseHandler)
     {
-      v22 = [v15 responseHandler];
-      [v19 handleMessage:v21 responseHandler:v22];
+      responseHandler2 = [v15 responseHandler];
+      [v19 handleMessage:v21 responseHandler:responseHandler2];
     }
 
     else
@@ -628,18 +628,18 @@
       [v19 handleMessage:v21];
     }
 
-    v23 = [(HMDXPCClientConnection *)self clientIdentifier];
-    if (v23)
+    clientIdentifier = [(HMDXPCClientConnection *)self clientIdentifier];
+    if (clientIdentifier)
     {
-      v24 = [(HMDXPCClientConnection *)self messageCountTracker];
-      v25 = [v6 name];
-      [v24 incrementCounterOfType:2 clientIdentifier:v23 messageName:v25];
+      messageCountTracker = [(HMDXPCClientConnection *)self messageCountTracker];
+      name = [messageCopy name];
+      [messageCountTracker incrementCounterOfType:2 clientIdentifier:clientIdentifier messageName:name];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
+    *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -667,13 +667,13 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
   v11 = 0;
-  v6 = a4;
-  v7 = [(HMDXPCClientConnection *)self sendMessage:a3 error:&v11];
+  handlerCopy = handler;
+  v7 = [(HMDXPCClientConnection *)self sendMessage:message error:&v11];
   v8 = v11;
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(handlerCopy);
 
   if (v9)
   {
@@ -691,57 +691,57 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)updateUserInfo:(id)a3 responseHandler:(id)a4
+- (void)updateUserInfo:(id)info responseHandler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v7);
+  handlerCopy = handler;
+  infoCopy = info;
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(HMDXPCClientConnection *)self setUserInfo:v6];
-  v8[2]();
+  [(HMDXPCClientConnection *)self setUserInfo:infoCopy];
+  handlerCopy[2]();
 }
 
-- (void)updateUserInfo:(id)a3
+- (void)updateUserInfo:(id)info
 {
-  v5 = a3;
-  v4 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v4);
+  infoCopy = info;
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(HMDXPCClientConnection *)self setUserInfo:v5];
+  [(HMDXPCClientConnection *)self setUserInfo:infoCopy];
 }
 
-- (void)handleMessage:(id)a3 responseHandler:(id)a4
+- (void)handleMessage:(id)message responseHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v7);
+  handlerCopy = handler;
+  messageCopy = message;
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(HMDXPCClientConnection *)self _handleMessage:v8 responseHandler:v6];
+  [(HMDXPCClientConnection *)self _handleMessage:messageCopy responseHandler:handlerCopy];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v5 = a3;
-  v4 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v4);
+  messageCopy = message;
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(HMDXPCClientConnection *)self _handleMessage:v5 responseHandler:0];
+  [(HMDXPCClientConnection *)self _handleMessage:messageCopy responseHandler:0];
 }
 
 - (void)_invalidate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HMDXPCClientConnection *)self state];
+  state = [(HMDXPCClientConnection *)self state];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = v7;
-  if (v4 == 3)
+  if (state == 3)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -765,10 +765,10 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
     }
 
     objc_autoreleasePoolPop(v5);
-    [(HMDXPCClientConnection *)v6 _deactivate];
-    [(HMDXPCClientConnection *)v6 setState:3];
-    v11 = [(HMDXPCClientConnection *)v6 delegate];
-    [v11 connectionDidInvalidate:v6];
+    [(HMDXPCClientConnection *)selfCopy _deactivate];
+    [(HMDXPCClientConnection *)selfCopy setState:3];
+    delegate = [(HMDXPCClientConnection *)selfCopy delegate];
+    [delegate connectionDidInvalidate:selfCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -777,20 +777,20 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
 - (void)_deactivate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDXPCClientConnection *)self state]== 3)
   {
     _HMFPreconditionFailure();
   }
 
-  v4 = [(HMDXPCClientConnection *)self state];
+  state = [(HMDXPCClientConnection *)self state];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = v7;
-  if (v4 == 2)
+  if (state == 2)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -814,9 +814,9 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
     }
 
     objc_autoreleasePoolPop(v5);
-    [(HMDXPCClientConnection *)v6 setState:2];
-    v11 = [(HMDXPCClientConnection *)v6 delegate];
-    [v11 connectionDidDeactivate:v6];
+    [(HMDXPCClientConnection *)selfCopy setState:2];
+    delegate = [(HMDXPCClientConnection *)selfCopy delegate];
+    [delegate connectionDidDeactivate:selfCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -824,16 +824,16 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
 
 - (void)invalidate
 {
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(HMDXPCClientConnection *)self _invalidate];
 }
 
 - (void)deactivate
 {
-  v3 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HMDXPCClientConnection *)self hasExternallyManagedActivation])
   {
@@ -848,23 +848,23 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_handleMessage:(id)a3 responseHandler:(id)a4
+- (void)_handleMessage:(id)message responseHandler:(id)handler
 {
   v83 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v57 = a4;
-  v7 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v7);
+  messageCopy = message;
+  handlerCopy = handler;
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v53 = objc_autoreleasePoolPush();
   v8 = objc_alloc(MEMORY[0x277D0F770]);
   v9 = MEMORY[0x277D0F818];
-  v10 = [v6 name];
-  v11 = [v9 activityNameWithMessageName:v10];
+  name = [messageCopy name];
+  v11 = [v9 activityNameWithMessageName:name];
   v58 = [v8 initWithName:v11];
 
-  v12 = [v6 headers];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCF1D0]];
+  headers = [messageCopy headers];
+  v13 = [headers objectForKeyedSubscript:*MEMORY[0x277CCF1D0]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -880,22 +880,22 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
   v15 = v14;
 
   [v58 setClientMetricIdentifier:v15];
-  v55 = [v6 name];
-  v56 = [v6 identifier];
+  name2 = [messageCopy name];
+  identifier = [messageCopy identifier];
   context = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v49 = HMFGetLogIdentifier();
-    v52 = [v58 identifier];
-    v51 = [v52 shortDescription];
-    v48 = [v56 UUIDString];
-    v50 = [(HMDXPCClientConnection *)v16 name];
-    v18 = [v6 destination];
-    v19 = [v18 target];
-    v47 = [v19 UUIDString];
-    if (v57)
+    identifier2 = [v58 identifier];
+    shortDescription = [identifier2 shortDescription];
+    uUIDString = [identifier UUIDString];
+    name3 = [(HMDXPCClientConnection *)selfCopy name];
+    destination = [messageCopy destination];
+    target = [destination target];
+    uUIDString2 = [target UUIDString];
+    if (handlerCopy)
     {
       v20 = "";
     }
@@ -905,28 +905,28 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
       v20 = " not";
     }
 
-    v21 = [v6 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     if (getDenylistKeys_onceToken != -1)
     {
       dispatch_once(&getDenylistKeys_onceToken, &__block_literal_global_419);
     }
 
     v22 = getDenylistKeys_denylistKeys;
-    v23 = [v21 secureDescriptionWithBlacklistKeys:v22];
-    [v6 qualityOfService];
+    v23 = [messagePayload secureDescriptionWithBlacklistKeys:v22];
+    [messageCopy qualityOfService];
     v24 = HMFQualityOfServiceToString();
     *buf = 138545411;
     v66 = v49;
     v67 = 2114;
-    v68 = v51;
+    v68 = shortDescription;
     v69 = 2114;
-    v70 = v55;
+    v70 = name2;
     v71 = 2114;
-    v72 = v48;
+    v72 = uUIDString;
     v73 = 2114;
-    v74 = v50;
+    v74 = name3;
     v75 = 2114;
-    v76 = v47;
+    v76 = uUIDString2;
     v77 = 2082;
     v78 = v20;
     v79 = 2113;
@@ -937,16 +937,16 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
   }
 
   objc_autoreleasePoolPop(context);
-  v25 = [(HMDXPCClientConnection *)v16 clientIdentifier];
-  if (v25)
+  clientIdentifier = [(HMDXPCClientConnection *)selfCopy clientIdentifier];
+  if (clientIdentifier)
   {
-    v26 = [(HMDXPCClientConnection *)v16 messageCountTracker];
-    v27 = [v6 name];
-    [v26 incrementCounterOfType:0 clientIdentifier:v25 messageName:v27];
+    messageCountTracker = [(HMDXPCClientConnection *)selfCopy messageCountTracker];
+    name4 = [messageCopy name];
+    [messageCountTracker incrementCounterOfType:0 clientIdentifier:clientIdentifier messageName:name4];
   }
 
-  [(HMDXPCClientConnection *)v16 clientName];
-  v28 = [v6 mutableCopy];
+  [(HMDXPCClientConnection *)selfCopy clientName];
+  v28 = [messageCopy mutableCopy];
   if (shouldEnableInternalDebugInterfaces__hmf_once_t48 != -1)
   {
     dispatch_once(&shouldEnableInternalDebugInterfaces__hmf_once_t48, &__block_literal_global_786);
@@ -954,9 +954,9 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
 
   if (shouldEnableInternalDebugInterfaces__hmf_once_v49)
   {
-    v29 = [v6 messagePayload];
+    messagePayload2 = [messageCopy messagePayload];
     v30 = *MEMORY[0x277CD0B10];
-    v31 = [v29 objectForKeyedSubscript:*MEMORY[0x277CD0B10]];
+    v31 = [messagePayload2 objectForKeyedSubscript:*MEMORY[0x277CD0B10]];
     v32 = v31 == 0;
 
     if (!v32)
@@ -970,41 +970,41 @@ void __44__HMDXPCClientConnection_sendMessage_error___block_invoke(uint64_t a1, 
     v30 = *MEMORY[0x277CD0B10];
   }
 
-  v33 = [v6 messagePayload];
-  v34 = [v33 mutableCopy];
+  messagePayload3 = [messageCopy messagePayload];
+  v34 = [messagePayload3 mutableCopy];
 
-  v35 = [MEMORY[0x277CCAD78] UUID];
-  v36 = [v35 UUIDString];
-  [v34 setObject:v36 forKeyedSubscript:v30];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString3 = [uUID UUIDString];
+  [v34 setObject:uUIDString3 forKeyedSubscript:v30];
 
   v37 = [v34 copy];
   [v28 setMessagePayload:v37];
 
 LABEL_20:
-  [v28 setTransport:v16];
+  [v28 setTransport:selfCopy];
   [v28 setActivity:v58];
-  v38 = [(HMDXPCClientConnection *)v16 clientIdentifier];
-  [v28 setUntrustedClientIdentifier:v38];
+  clientIdentifier2 = [(HMDXPCClientConnection *)selfCopy clientIdentifier];
+  [v28 setUntrustedClientIdentifier:clientIdentifier2];
 
-  if (v57)
+  if (handlerCopy)
   {
-    v39 = [(HMDXPCClientConnection *)v16 requestTracker];
-    v40 = [v6 identifier];
-    v41 = [v6 name];
-    [v39 addRequestWithIdentifier:v40 name:v41 qualityOfService:objc_msgSend(v6 isTimeoutDisabled:"qualityOfService") responseHandler:{objc_msgSend(v6, "hm_isXPCTimeoutDisabled"), v57}];
+    requestTracker = [(HMDXPCClientConnection *)selfCopy requestTracker];
+    identifier3 = [messageCopy identifier];
+    name5 = [messageCopy name];
+    [requestTracker addRequestWithIdentifier:identifier3 name:name5 qualityOfService:objc_msgSend(messageCopy isTimeoutDisabled:"qualityOfService") responseHandler:{objc_msgSend(messageCopy, "hm_isXPCTimeoutDisabled"), handlerCopy}];
 
-    v42 = [(HMDXPCClientConnection *)v16 clientName];
-    objc_initWeak(buf, v16);
+    clientName = [(HMDXPCClientConnection *)selfCopy clientName];
+    objc_initWeak(buf, selfCopy);
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __57__HMDXPCClientConnection__handleMessage_responseHandler___block_invoke;
     v59[3] = &unk_278674470;
     objc_copyWeak(&v64, buf);
     v60 = v58;
-    v43 = v42;
+    v43 = clientName;
     v61 = v43;
-    v62 = v56;
-    v63 = v6;
+    v62 = identifier;
+    v63 = messageCopy;
     [v28 setResponseHandler:v59];
 
     objc_destroyWeak(&v64);
@@ -1016,9 +1016,9 @@ LABEL_20:
     [v58 end];
   }
 
-  v44 = [(HMDXPCClientConnection *)v16 delegate];
+  delegate = [(HMDXPCClientConnection *)selfCopy delegate];
   v45 = [v28 copy];
-  [v44 messageTransport:v16 didReceiveMessage:v45];
+  [delegate messageTransport:selfCopy didReceiveMessage:v45];
 
   objc_autoreleasePoolPop(v53);
   v46 = *MEMORY[0x277D85DE8];
@@ -1052,25 +1052,25 @@ void __57__HMDXPCClientConnection__handleMessage_responseHandler___block_invoke(
   }
 }
 
-- (BOOL)canSendMessage:(id)a3
+- (BOOL)canSendMessage:(id)message
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 transport];
-  v6 = v5;
-  if (v5 && ([v5 isEqual:self] & 1) == 0)
+  messageCopy = message;
+  transport = [messageCopy transport];
+  v6 = transport;
+  if (transport && ([transport isEqual:self] & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543874;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v46 = 2112;
       v47 = v6;
       v12 = "%{public}@Cannot send message %@: This XPC client connection does not match the message's transport: %@";
@@ -1086,19 +1086,19 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if ([v4 requiresSPIEntitlement] && !-[HMDXPCClientConnection isEntitledForSPIAccess](self, "isEntitledForSPIAccess"))
+  if ([messageCopy requiresSPIEntitlement] && !-[HMDXPCClientConnection isEntitledForSPIAccess](self, "isEntitledForSPIAccess"))
   {
     v7 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not SPI entitled and message requires SPI entitlement";
       goto LABEL_52;
     }
@@ -1110,19 +1110,19 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if ([v4 requiresNoSPIEntitlement] && -[HMDXPCClientConnection isEntitledForSPIAccess](self, "isEntitledForSPIAccess"))
+  if ([messageCopy requiresNoSPIEntitlement] && -[HMDXPCClientConnection isEntitledForSPIAccess](self, "isEntitledForSPIAccess"))
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy3 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is SPI entitled and message requires no SPI entitlement";
 LABEL_52:
       v24 = v9;
@@ -1133,19 +1133,19 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  if ([v4 isLocationAuthorized] && !-[HMDXPCClientConnection isAuthorizedForLocationAccess](self, "isAuthorizedForLocationAccess"))
+  if ([messageCopy isLocationAuthorized] && !-[HMDXPCClientConnection isAuthorizedForLocationAccess](self, "isAuthorizedForLocationAccess"))
   {
     v7 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy4 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not location authorized and message requires location authorization";
       goto LABEL_52;
     }
@@ -1153,19 +1153,19 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  if ([v4 requiresHomeLocationEntitlement] && !-[HMDXPCClientConnection isEntitledForHomeLocationAccess](self, "isEntitledForHomeLocationAccess"))
+  if ([messageCopy requiresHomeLocationEntitlement] && !-[HMDXPCClientConnection isEntitledForHomeLocationAccess](self, "isEntitledForHomeLocationAccess"))
   {
     v7 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy5 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not entitled for the HomeKit location data. Please make sure the client has com.apple.private.homekit.home-location & com.apple.private.homekit.location entitlements.";
       goto LABEL_52;
     }
@@ -1173,19 +1173,19 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  if ([v4 requiresCameraClipsEntitlement] && !-[HMDXPCClientConnection isEntitledForCameraClipsAccess](self, "isEntitledForCameraClipsAccess"))
+  if ([messageCopy requiresCameraClipsEntitlement] && !-[HMDXPCClientConnection isEntitledForCameraClipsAccess](self, "isEntitledForCameraClipsAccess"))
   {
     v7 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy6 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not camera clips entitled and message requires camera clips entitlement";
       goto LABEL_52;
     }
@@ -1193,19 +1193,19 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  if ([v4 requiresMultiUserSetupEntitlement] && !-[HMDXPCClientConnection isEntitledForMultiUserSetupAccess](self, "isEntitledForMultiUserSetupAccess"))
+  if ([messageCopy requiresMultiUserSetupEntitlement] && !-[HMDXPCClientConnection isEntitledForMultiUserSetupAccess](self, "isEntitledForMultiUserSetupAccess"))
   {
     v7 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy7 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not multi user entitled and message requires multi user entitlement";
       goto LABEL_52;
     }
@@ -1213,19 +1213,19 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  if ([v4 requiresSetupPayloadEntitlement] && !-[HMDXPCClientConnection isEntitledToProvideAccessorySetupPayload](self, "isEntitledToProvideAccessorySetupPayload"))
+  if ([messageCopy requiresSetupPayloadEntitlement] && !-[HMDXPCClientConnection isEntitledToProvideAccessorySetupPayload](self, "isEntitledToProvideAccessorySetupPayload"))
   {
     v7 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy8 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not setup payload entitled and message requires setup payload entitlement";
       goto LABEL_52;
     }
@@ -1233,19 +1233,19 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  if ([v4 requiresMatterSetupPayloadEntitlement] && !-[HMDXPCClientConnection isEntitledToProvideMatterSetupPayload](self, "isEntitledToProvideMatterSetupPayload"))
+  if ([messageCopy requiresMatterSetupPayloadEntitlement] && !-[HMDXPCClientConnection isEntitledToProvideMatterSetupPayload](self, "isEntitledToProvideMatterSetupPayload"))
   {
     v7 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy9 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not matter setup payload entitled and message requires matter setup payload entitlement";
       goto LABEL_52;
     }
@@ -1253,19 +1253,19 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  if ([v4 requiresPersonManagerEntitlement] && !-[HMDXPCClientConnection isEntitledForPersonManagerAccess](self, "isEntitledForPersonManagerAccess"))
+  if ([messageCopy requiresPersonManagerEntitlement] && !-[HMDXPCClientConnection isEntitledForPersonManagerAccess](self, "isEntitledForPersonManagerAccess"))
   {
     v7 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy10 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not person manager entitled and message requires person manager entitlement";
       goto LABEL_52;
     }
@@ -1273,19 +1273,19 @@ LABEL_52:
     goto LABEL_55;
   }
 
-  if ([v4 requiresWalletKeyEntitlement] && !-[HMDXPCClientConnection isEntitledForWalletKeyAccess](self, "isEntitledForWalletKeyAccess"))
+  if ([messageCopy requiresWalletKeyEntitlement] && !-[HMDXPCClientConnection isEntitledForWalletKeyAccess](self, "isEntitledForWalletKeyAccess"))
   {
     v7 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy11 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 shortDescription];
+      shortDescription = [messageCopy shortDescription];
       v42 = 138543618;
       v43 = v10;
       v44 = 2112;
-      v45 = v11;
+      v45 = shortDescription;
       v12 = "%{public}@Cannot send message %@: Client is not wallet key entitled and message requires wallet key entitlement";
       goto LABEL_52;
     }
@@ -1295,24 +1295,24 @@ LABEL_52:
 
   if (![(HMDXPCClientConnection *)self isActivated])
   {
-    v13 = [(HMDXPCClientConnection *)self requestTracker];
-    v14 = [v13 requestIdentifiers];
-    v15 = [v4 identifier];
-    v16 = [v14 containsObject:v15];
+    requestTracker = [(HMDXPCClientConnection *)self requestTracker];
+    requestIdentifiers = [requestTracker requestIdentifiers];
+    identifier = [messageCopy identifier];
+    v16 = [requestIdentifiers containsObject:identifier];
 
     if ((v16 & 1) == 0)
     {
       v7 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy12 = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [v4 shortDescription];
+        shortDescription = [messageCopy shortDescription];
         v42 = 138543618;
         v43 = v10;
         v44 = 2112;
-        v45 = v11;
+        v45 = shortDescription;
         v12 = "%{public}@Cannot send message %@: Connection is not activated and the message isn't responding to a pending request";
         goto LABEL_52;
       }
@@ -1321,18 +1321,18 @@ LABEL_52:
     }
   }
 
-  v17 = [v4 sendPolicy];
-  if (v17)
+  sendPolicy = [messageCopy sendPolicy];
+  if (sendPolicy)
   {
-    v18 = v17;
-    v19 = [v4 sendPolicy];
-    v20 = [(HMDXPCClientConnection *)self sendPolicyParameters];
-    v21 = [v19 canSendWithPolicyParameters:v20];
+    v18 = sendPolicy;
+    sendPolicy2 = [messageCopy sendPolicy];
+    sendPolicyParameters = [(HMDXPCClientConnection *)self sendPolicyParameters];
+    v21 = [sendPolicy2 canSendWithPolicyParameters:sendPolicyParameters];
 
     if ((v21 & 1) == 0)
     {
       v7 = objc_autoreleasePoolPush();
-      v38 = self;
+      selfCopy13 = self;
       v9 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
@@ -1340,17 +1340,17 @@ LABEL_52:
       }
 
       v10 = HMFGetLogIdentifier();
-      v39 = [v4 shortDescription];
-      v40 = [v4 sendPolicy];
-      v41 = [(HMDXPCClientConnection *)v38 sendPolicyParameters];
+      shortDescription2 = [messageCopy shortDescription];
+      sendPolicy3 = [messageCopy sendPolicy];
+      sendPolicyParameters2 = [(HMDXPCClientConnection *)selfCopy13 sendPolicyParameters];
       v42 = 138544130;
       v43 = v10;
       v44 = 2112;
-      v45 = v39;
+      v45 = shortDescription2;
       v46 = 2112;
-      v47 = v40;
+      v47 = sendPolicy3;
       v48 = 2112;
-      v49 = v41;
+      v49 = sendPolicyParameters2;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Cannot send message %@: Message send policy %@ does not pass client connection send policy: %@", &v42, 0x2Au);
 
       goto LABEL_54;
@@ -1366,43 +1366,43 @@ LABEL_56:
 
 - (NSDictionary)stateDump
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDXPCClientConnection *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"Name"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  name = [(HMDXPCClientConnection *)self name];
+  [dictionary setObject:name forKeyedSubscript:@"Name"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDXPCClientConnection clientPid](self, "clientPid")}];
-  [v3 setObject:v5 forKeyedSubscript:@"PID"];
+  [dictionary setObject:v5 forKeyedSubscript:@"PID"];
 
   [(HMDXPCClientConnection *)self entitlements];
   v6 = HMXPCClientEntitlementsShortDescription();
-  [v3 setObject:v6 forKeyedSubscript:@"Entitlements"];
+  [dictionary setObject:v6 forKeyedSubscript:@"Entitlements"];
 
   [(HMDXPCClientConnection *)self isActivated];
   v7 = HMFBooleanToString();
-  [v3 setObject:v7 forKeyedSubscript:@"Activated"];
+  [dictionary setObject:v7 forKeyedSubscript:@"Activated"];
 
-  v8 = [(HMDXPCClientConnection *)self sendPolicyParameters];
-  v9 = [v8 description];
-  [v3 setObject:v9 forKeyedSubscript:@"Send Policy Parameters"];
+  sendPolicyParameters = [(HMDXPCClientConnection *)self sendPolicyParameters];
+  v9 = [sendPolicyParameters description];
+  [dictionary setObject:v9 forKeyedSubscript:@"Send Policy Parameters"];
 
-  v10 = [(HMDXPCClientConnection *)self userInfo];
-  [v3 setObject:v10 forKeyedSubscript:@"User Info"];
+  userInfo = [(HMDXPCClientConnection *)self userInfo];
+  [dictionary setObject:userInfo forKeyedSubscript:@"User Info"];
 
-  v11 = [(HMDXPCClientConnection *)self requestTracker];
-  v12 = [v11 requestIdentifiers];
-  [v3 setObject:v12 forKeyedSubscript:@"Active Requests"];
+  requestTracker = [(HMDXPCClientConnection *)self requestTracker];
+  requestIdentifiers = [requestTracker requestIdentifiers];
+  [dictionary setObject:requestIdentifiers forKeyedSubscript:@"Active Requests"];
 
-  v13 = [v3 copy];
+  v13 = [dictionary copy];
 
   return v13;
 }
 
-- (void)updateSendPolicyParameters:(id)a3
+- (void)updateSendPolicyParameters:(id)parameters
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1410,47 +1410,47 @@ LABEL_56:
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = parametersCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Updating sendPolicyParameters to %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDXPCClientConnection *)v6 setSendPolicyParameters:v4];
+  [(HMDXPCClientConnection *)selfCopy setSendPolicyParameters:parametersCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (NSString)applicationBundleIdentifier
 {
-  v2 = [(HMDXPCClientConnection *)self processInfo];
-  v3 = [v2 applicationInfo];
-  v4 = [v3 bundleIdentifier];
+  processInfo = [(HMDXPCClientConnection *)self processInfo];
+  applicationInfo = [processInfo applicationInfo];
+  bundleIdentifier = [applicationInfo bundleIdentifier];
 
-  if (v4)
+  if (bundleIdentifier)
   {
-    v5 = v4;
+    v5 = bundleIdentifier;
   }
 
-  return v4;
+  return bundleIdentifier;
 }
 
-- (void)setSendPolicyParameters:(id)a3
+- (void)setSendPolicyParameters:(id)parameters
 {
-  v6 = a3;
+  parametersCopy = parameters;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [parametersCopy copy];
   sendPolicyParameters = self->_sendPolicyParameters;
   self->_sendPolicyParameters = v4;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setProcessInfo:(id)a3
+- (void)setProcessInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock_with_options();
   processInfo = self->_processInfo;
-  self->_processInfo = v4;
+  self->_processInfo = infoCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1478,8 +1478,8 @@ LABEL_56:
 
 - (BOOL)isEntitledForHomeLocationAccess
 {
-  v2 = [(HMDXPCClientConnection *)self xpcConnection];
-  v3 = validateEntitlementForConnection(@"com.apple.private.homekit.home-location", v2);
+  xpcConnection = [(HMDXPCClientConnection *)self xpcConnection];
+  v3 = validateEntitlementForConnection(@"com.apple.private.homekit.home-location", xpcConnection);
 
   return v3;
 }
@@ -1488,37 +1488,37 @@ LABEL_56:
 {
   if (([(HMDXPCClientConnection *)self entitlements]& 0x400) != 0)
   {
-    v3 = [objc_opt_class() bundleForLocationManager];
-    if (!v3)
+    bundleForLocationManager = [objc_opt_class() bundleForLocationManager];
+    if (!bundleForLocationManager)
     {
       v5 = 0;
       goto LABEL_6;
     }
 
-    v4 = [objc_alloc(MEMORY[0x277D0F800]) initWithBundle:v3];
+    locationAuthorization = [objc_alloc(MEMORY[0x277D0F800]) initWithBundle:bundleForLocationManager];
   }
 
   else
   {
-    v3 = [(HMDXPCClientConnection *)self processInfo];
-    v4 = [v3 locationAuthorization];
+    bundleForLocationManager = [(HMDXPCClientConnection *)self processInfo];
+    locationAuthorization = [bundleForLocationManager locationAuthorization];
   }
 
-  v5 = v4;
+  v5 = locationAuthorization;
 LABEL_6:
 
-  v6 = [v5 isAuthorized];
-  return v6;
+  isAuthorized = [v5 isAuthorized];
+  return isAuthorized;
 }
 
 - (BOOL)isAuthorizedForMicrophoneAccess
 {
   v2 = *MEMORY[0x277D6C1A8];
-  v3 = [(HMDXPCClientConnection *)self xpcConnection];
-  v4 = v3;
-  if (v3)
+  xpcConnection = [(HMDXPCClientConnection *)self xpcConnection];
+  v4 = xpcConnection;
+  if (xpcConnection)
   {
-    [v3 auditToken];
+    [xpcConnection auditToken];
   }
 
   v5 = TCCAccessCheckAuditToken() != 0;
@@ -1526,12 +1526,12 @@ LABEL_6:
   return v5;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDXPCClientConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  queue = [(HMDXPCClientConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   os_unfair_lock_lock_with_options();
   userInfo = self->_userInfo;
@@ -1543,27 +1543,27 @@ LABEL_6:
   else
   {
     v7 = self->_userInfo;
-    v8 = [v4 copy];
+    v8 = [infoCopy copy];
     v9 = self->_userInfo;
     self->_userInfo = v8;
 
     os_unfair_lock_unlock(&self->_lock);
-    v10 = [(HMDXPCClientConnection *)self clientName];
-    if (v10)
+    clientName = [(HMDXPCClientConnection *)self clientName];
+    if (clientName)
     {
-      v11 = [(HMDXPCClientConnection *)self requestTracker];
-      [v11 setClientName:v10];
+      requestTracker = [(HMDXPCClientConnection *)self requestTracker];
+      [requestTracker setClientName:clientName];
     }
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(HMDXPCClientConnection *)self name];
-    v14 = [(HMDXPCClientConnection *)self clientPid];
-    v15 = [(HMDXPCClientConnection *)self clientUUID];
-    v16 = [v12 stringWithFormat:@"%@/%d/%@", v13, v14, v15];
+    name = [(HMDXPCClientConnection *)self name];
+    clientPid = [(HMDXPCClientConnection *)self clientPid];
+    clientUUID = [(HMDXPCClientConnection *)self clientUUID];
+    v16 = [v12 stringWithFormat:@"%@/%d/%@", name, clientPid, clientUUID];
     [(HMDXPCClientConnection *)self setLogIdentifier:v16];
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -1571,14 +1571,14 @@ LABEL_6:
       *buf = 138543618;
       v23 = v20;
       v24 = 2112;
-      v25 = v4;
+      v25 = infoCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Updated user info: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
     if (!v7)
     {
-      [(HMDXPCClientConnection *)v18 _start];
+      [(HMDXPCClientConnection *)selfCopy _start];
     }
   }
 
@@ -1588,9 +1588,9 @@ LABEL_6:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDXPCClientConnection *)self name];
-  v6 = [v3 stringWithFormat:@"%@ %@ (%d)", v4, v5, -[HMDXPCClientConnection clientPid](self, "clientPid")];
+  shortDescription = [objc_opt_class() shortDescription];
+  name = [(HMDXPCClientConnection *)self name];
+  v6 = [v3 stringWithFormat:@"%@ %@ (%d)", shortDescription, name, -[HMDXPCClientConnection clientPid](self, "clientPid")];
 
   return v6;
 }
@@ -1598,14 +1598,14 @@ LABEL_6:
 - (void)dealloc
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(HMDXPCClientConnection *)self requestTracker];
-  [v4 cancelAllRequests];
+  requestTracker = [(HMDXPCClientConnection *)self requestTracker];
+  [requestTracker cancelAllRequests];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1616,40 +1616,40 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v5);
-  v10.receiver = v6;
+  v10.receiver = selfCopy;
   v10.super_class = HMDXPCClientConnection;
   [(HMDXPCClientConnection *)&v10 dealloc];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDXPCClientConnection)initWithConnection:(id)a3 queue:(id)a4 messageCountTracker:(id)a5 requestTracker:(id)a6
+- (HMDXPCClientConnection)initWithConnection:(id)connection queue:(id)queue messageCountTracker:(id)tracker requestTracker:(id)requestTracker
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  connectionCopy = connection;
+  queueCopy = queue;
+  trackerCopy = tracker;
+  requestTrackerCopy = requestTracker;
+  if (!connectionCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!queueCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v13)
+  if (!trackerCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = requestTrackerCopy;
+  if (!requestTrackerCopy)
   {
 LABEL_11:
     v22 = _HMFPreconditionFailure();
@@ -1661,23 +1661,23 @@ LABEL_11:
   v16 = [(HMDXPCClientConnection *)&v26 init];
   if (v16)
   {
-    [v11 setQueue:v12];
-    objc_storeStrong(&v16->_xpcConnection, a3);
-    objc_storeStrong(&v16->_queue, a4);
-    objc_storeStrong(&v16->_messageCountTracker, a5);
-    objc_storeStrong(&v16->_requestTracker, a6);
+    [connectionCopy setQueue:queueCopy];
+    objc_storeStrong(&v16->_xpcConnection, connection);
+    objc_storeStrong(&v16->_queue, queue);
+    objc_storeStrong(&v16->_messageCountTracker, tracker);
+    objc_storeStrong(&v16->_requestTracker, requestTracker);
     v16->_state = 0;
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(v11, "processIdentifier")];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(connectionCopy, "processIdentifier")];
     logIdentifier = v16->_logIdentifier;
     v16->_logIdentifier = v17;
 
-    v16->_entitlements = [HMDXPCClientConnection entitlementsForConnection:v11];
-    v16->_entitledForAPIAccess = validateEntitlementForConnection(@"com.apple.developer.homekit", v11);
-    v16->_entitledForBackgroundMode = validateEntitlementForConnection(@"com.apple.developer.homekit.background-mode", v11);
-    v16->_entitledForCameraClipsAccess = validateEntitlementForConnection(@"com.apple.private.homekit.cameraclips", v11);
-    v16->_entitledForMultiUserSetupAccess = validateEntitlementForConnection(@"com.apple.private.homekit.multi-user.setup", v11);
-    v16->_entitledForPersonManagerAccess = validateEntitlementForConnection(@"com.apple.private.homekit.person-manager", v11);
-    v16->_entitledForWalletKeyAccess = validateEntitlementForConnection(@"com.apple.private.homekit.wallet-key", v11);
+    v16->_entitlements = [HMDXPCClientConnection entitlementsForConnection:connectionCopy];
+    v16->_entitledForAPIAccess = validateEntitlementForConnection(@"com.apple.developer.homekit", connectionCopy);
+    v16->_entitledForBackgroundMode = validateEntitlementForConnection(@"com.apple.developer.homekit.background-mode", connectionCopy);
+    v16->_entitledForCameraClipsAccess = validateEntitlementForConnection(@"com.apple.private.homekit.cameraclips", connectionCopy);
+    v16->_entitledForMultiUserSetupAccess = validateEntitlementForConnection(@"com.apple.private.homekit.multi-user.setup", connectionCopy);
+    v16->_entitledForPersonManagerAccess = validateEntitlementForConnection(@"com.apple.private.homekit.person-manager", connectionCopy);
+    v16->_entitledForWalletKeyAccess = validateEntitlementForConnection(@"com.apple.private.homekit.wallet-key", connectionCopy);
     v19 = [[HMDXPCMessageSendPolicyParameters alloc] initWithEntitlements:v16->_entitlements];
     sendPolicyParameters = v16->_sendPolicyParameters;
     v16->_sendPolicyParameters = v19;
@@ -1686,16 +1686,16 @@ LABEL_11:
   return v16;
 }
 
-- (HMDXPCClientConnection)initWithConnection:(id)a3 queue:(id)a4
+- (HMDXPCClientConnection)initWithConnection:(id)connection queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  connectionCopy = connection;
+  queueCopy = queue;
+  if (connectionCopy)
   {
-    v8 = v7;
+    v8 = queueCopy;
     v9 = +[HMDXPCMessageCountTracker sharedTracker];
     v10 = [[HMDXPCRequestTracker alloc] initWithQueue:v8];
-    v11 = [(HMDXPCClientConnection *)self initWithConnection:v6 queue:v8 messageCountTracker:v9 requestTracker:v10];
+    v11 = [(HMDXPCClientConnection *)self initWithConnection:connectionCopy queue:v8 messageCountTracker:v9 requestTracker:v10];
 
     return v11;
   }
@@ -1715,12 +1715,12 @@ void __37__HMDXPCClientConnection_logCategory__block_invoke()
   logCategory__hmf_once_v43_57481 = v1;
 }
 
-+ (unint64_t)entitlementsForConnection:(id)a3
++ (unint64_t)entitlementsForConnection:(id)connection
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = validateEntitlementForConnection(@"com.apple.developer.homekit", v4);
-  if (validateEntitlementForConnection(@"com.apple.developer.homekit.background-mode", v4))
+  connectionCopy = connection;
+  v5 = validateEntitlementForConnection(@"com.apple.developer.homekit", connectionCopy);
+  if (validateEntitlementForConnection(@"com.apple.developer.homekit.background-mode", connectionCopy))
   {
     v6 = v5 | 2;
   }
@@ -1730,15 +1730,15 @@ void __37__HMDXPCClientConnection_logCategory__block_invoke()
     v6 = v5;
   }
 
-  if (!validateEntitlementForConnection(@"com.apple.private.homekit", v4))
+  if (!validateEntitlementForConnection(@"com.apple.private.homekit", connectionCopy))
   {
-    if (!validateEntitlementForConnection(@"com.apple.homekit.private-spi-access", v4))
+    if (!validateEntitlementForConnection(@"com.apple.homekit.private-spi-access", connectionCopy))
     {
       goto LABEL_10;
     }
 
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -1748,7 +1748,7 @@ void __37__HMDXPCClientConnection_logCategory__block_invoke()
       v16 = 2112;
       v17 = @"com.apple.private.homekit";
       v18 = 2112;
-      v19 = v4;
+      v19 = connectionCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Client should adopt %@ entitlement: %@", &v14, 0x20u);
     }
 
@@ -1757,12 +1757,12 @@ void __37__HMDXPCClientConnection_logCategory__block_invoke()
 
   v6 |= 4uLL;
 LABEL_10:
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.pairing-identity.private", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.pairing-identity.private", connectionCopy))
   {
     v11 = v6 | 0x18;
   }
 
-  else if (validateEntitlementForConnection(@"com.apple.private.homekit.pairing-identity", v4))
+  else if (validateEntitlementForConnection(@"com.apple.private.homekit.pairing-identity", connectionCopy))
   {
     v11 = v6 | 8;
   }
@@ -1772,92 +1772,92 @@ LABEL_10:
     v11 = v6;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.remote-login.private", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.remote-login.private", connectionCopy))
   {
     v11 |= 0x20uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.developer.homekit.allow-setup-payload", v4))
+  if (validateEntitlementForConnection(@"com.apple.developer.homekit.allow-setup-payload", connectionCopy))
   {
     v11 |= 0x40uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.developer.matter.allow-setup-payload", v4))
+  if (validateEntitlementForConnection(@"com.apple.developer.matter.allow-setup-payload", connectionCopy))
   {
     v11 |= 0x200000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.cameraclips", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.cameraclips", connectionCopy))
   {
     v11 |= 0x80uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.connectivity-info", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.connectivity-info", connectionCopy))
   {
     v11 |= 0x100uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.multi-user.setup", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.multi-user.setup", connectionCopy))
   {
     v11 |= 0x200uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.location", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.location", connectionCopy))
   {
     v11 |= 0x400uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.home-location", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.home-location", connectionCopy))
   {
     v11 |= 0x80000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.shortcuts-automation-access", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.shortcuts-automation-access", connectionCopy))
   {
     v11 |= 0x800uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.messaging", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.messaging", connectionCopy))
   {
     v11 |= 0x1000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.person-manager", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.person-manager", connectionCopy))
   {
     v11 |= 0x2000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.allow-secure-access", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.allow-secure-access", connectionCopy))
   {
     v11 |= 0x4000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.diagnostics", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.diagnostics", connectionCopy))
   {
     v11 |= 0x8000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.state-dump", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.state-dump", connectionCopy))
   {
     v11 |= 0x10000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.wallet-key", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.wallet-key", connectionCopy))
   {
     v11 |= 0x20000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.assistant-identifiers", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.assistant-identifiers", connectionCopy))
   {
     v11 |= 0x40000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.location-feedback-debug", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.location-feedback-debug", connectionCopy))
   {
     v11 |= 0x100000uLL;
   }
 
-  if (validateEntitlementForConnection(@"com.apple.private.homekit.modern-messaging", v4))
+  if (validateEntitlementForConnection(@"com.apple.private.homekit.modern-messaging", connectionCopy))
   {
     v11 |= 0x400000uLL;
   }

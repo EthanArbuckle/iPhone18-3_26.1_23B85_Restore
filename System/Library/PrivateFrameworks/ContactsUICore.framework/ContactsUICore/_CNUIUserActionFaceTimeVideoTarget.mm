@@ -1,6 +1,6 @@
 @interface _CNUIUserActionFaceTimeVideoTarget
 - (_CNUIUserActionFaceTimeVideoTarget)init;
-- (id)actionsForContact:(id)a3 discoveringEnvironment:(id)a4;
+- (id)actionsForContact:(id)contact discoveringEnvironment:(id)environment;
 @end
 
 @implementation _CNUIUserActionFaceTimeVideoTarget
@@ -13,23 +13,23 @@
   return [(CNUIUserActionTarget *)&v4 initWithName:@"FaceTime" bundleIdentifier:v2 teamIdentifier:0];
 }
 
-- (id)actionsForContact:(id)a3 discoveringEnvironment:(id)a4
+- (id)actionsForContact:(id)contact discoveringEnvironment:(id)environment
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 idsContactPropertyResolver];
-  v9 = [v7 highLatencySchedulerProvider];
+  contactCopy = contact;
+  environmentCopy = environment;
+  idsContactPropertyResolver = [environmentCopy idsContactPropertyResolver];
+  highLatencySchedulerProvider = [environmentCopy highLatencySchedulerProvider];
 
-  v10 = [v8 resolveAllFaceTimeIDSPropertiesForContact:v6 schedulerProvider:v9];
+  v10 = [idsContactPropertyResolver resolveAllFaceTimeIDSPropertiesForContact:contactCopy schedulerProvider:highLatencySchedulerProvider];
 
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __79___CNUIUserActionFaceTimeVideoTarget_actionsForContact_discoveringEnvironment___block_invoke;
   v21 = &unk_1E76E8E20;
-  v22 = v6;
-  v23 = self;
-  v11 = v6;
+  v22 = contactCopy;
+  selfCopy = self;
+  v11 = contactCopy;
   v12 = [v10 map:&v18];
   v13 = [v12 allObjects:{0, v18, v19, v20, v21}];
   v14 = MEMORY[0x1E6996798];

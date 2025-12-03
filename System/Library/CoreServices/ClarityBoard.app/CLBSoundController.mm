@@ -1,17 +1,17 @@
 @interface CLBSoundController
 + (id)sharedInstance;
-- (BOOL)_playSystemSound:(id)a3;
-- (BOOL)_playToneAlert:(id)a3;
-- (BOOL)isPlaying:(id)a3;
+- (BOOL)_playSystemSound:(id)sound;
+- (BOOL)_playToneAlert:(id)alert;
+- (BOOL)isPlaying:(id)playing;
 - (BOOL)isPlayingAnySound;
-- (BOOL)playSound:(id)a3 completion:(id)a4;
+- (BOOL)playSound:(id)sound completion:(id)completion;
 - (BOOL)stopAllSounds;
-- (BOOL)stopSound:(id)a3;
+- (BOOL)stopSound:(id)sound;
 - (CLBSoundController)init;
-- (void)_cleanupSystemSound:(unsigned int)a3 andKill:(BOOL)a4;
-- (void)_cleanupToneAlertForSound:(id)a3 andKill:(BOOL)a4;
+- (void)_cleanupSystemSound:(unsigned int)sound andKill:(BOOL)kill;
+- (void)_cleanupToneAlertForSound:(id)sound andKill:(BOOL)kill;
 - (void)_endPendingCallbacksBlock;
-- (void)_enqueueCallback:(id)a3;
+- (void)_enqueueCallback:(id)callback;
 @end
 
 @implementation CLBSoundController
@@ -61,43 +61,43 @@
   return [(NSMutableDictionary *)self->_soundsBySystemSoundIDs count]|| [(NSMapTable *)self->_toneAlertsBySounds count]!= 0;
 }
 
-- (BOOL)isPlaying:(id)a3
+- (BOOL)isPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   if (!+[NSThread isMainThread])
   {
     sub_10028408C();
   }
 
-  v5 = [v4 soundType];
-  if (v5 == 1)
+  soundType = [playingCopy soundType];
+  if (soundType == 1)
   {
-    v6 = [(NSMapTable *)self->_toneAlertsBySounds objectForKey:v4];
+    v6 = [(NSMapTable *)self->_toneAlertsBySounds objectForKey:playingCopy];
     v8 = v6 != 0;
   }
 
   else
   {
-    if (v5)
+    if (soundType)
     {
       v8 = 0;
       goto LABEL_8;
     }
 
-    v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 systemSoundID]);
+    v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [playingCopy systemSoundID]);
     v7 = [(NSMutableDictionary *)self->_soundsBySystemSoundIDs objectForKey:v6];
-    v8 = [v7 isEqual:v4];
+    v8 = [v7 isEqual:playingCopy];
   }
 
 LABEL_8:
   return v8;
 }
 
-- (BOOL)playSound:(id)a3 completion:(id)a4
+- (BOOL)playSound:(id)sound completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  soundCopy = sound;
+  completionCopy = completion;
+  if (!soundCopy)
   {
     LOBYTE(v10) = 0;
     goto LABEL_18;
@@ -108,22 +108,22 @@ LABEL_8:
     sub_1002840B8();
   }
 
-  [(CLBSoundController *)self stopSound:v6];
-  v8 = [v6 soundType];
-  if (v8 == 1)
+  [(CLBSoundController *)self stopSound:soundCopy];
+  soundType = [soundCopy soundType];
+  if (soundType == 1)
   {
-    v9 = [(CLBSoundController *)self _playToneAlert:v6];
+    v9 = [(CLBSoundController *)self _playToneAlert:soundCopy];
   }
 
   else
   {
-    if (v8)
+    if (soundType)
     {
       v11 = +[CLFLog commonLog];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v15 = 138412290;
-        v16 = v6;
+        v16 = soundCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Don't know how to play this sound type: %@", &v15, 0xCu);
       }
 
@@ -131,7 +131,7 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v9 = [(CLBSoundController *)self _playSystemSound:v6];
+    v9 = [(CLBSoundController *)self _playSystemSound:soundCopy];
   }
 
   v10 = v9;
@@ -146,7 +146,7 @@ LABEL_12:
     }
 
     v15 = 138412546;
-    v16 = v6;
+    v16 = soundCopy;
     v17 = 2080;
     v18 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Sound %@ DID%s play", &v15, 0x16u);
@@ -154,7 +154,7 @@ LABEL_12:
 
   if (v10)
   {
-    [v6 setCompletionBlock:v7];
+    [soundCopy setCompletionBlock:completionCopy];
     LOBYTE(v10) = 1;
   }
 
@@ -163,37 +163,37 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)stopSound:(id)a3
+- (BOOL)stopSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   if (!+[NSThread isMainThread])
   {
     sub_1002840E4();
   }
 
-  v5 = [(CLBSoundController *)self isPlaying:v4];
+  v5 = [(CLBSoundController *)self isPlaying:soundCopy];
   if (v5)
   {
-    v6 = [v4 soundType];
-    if (v6 == 1)
+    soundType = [soundCopy soundType];
+    if (soundType == 1)
     {
-      [(CLBSoundController *)self _cleanupToneAlertForSound:v4 andKill:1];
+      [(CLBSoundController *)self _cleanupToneAlertForSound:soundCopy andKill:1];
     }
 
-    else if (v6)
+    else if (soundType)
     {
       v7 = +[CLFLog commonLog];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v9 = 138412290;
-        v10 = v4;
+        v10 = soundCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Don't know how to kill this sound type: %@", &v9, 0xCu);
       }
     }
 
     else
     {
-      -[CLBSoundController _cleanupSystemSound:andKill:](self, "_cleanupSystemSound:andKill:", [v4 systemSoundID], 1);
+      -[CLBSoundController _cleanupSystemSound:andKill:](self, "_cleanupSystemSound:andKill:", [soundCopy systemSoundID], 1);
     }
   }
 
@@ -222,8 +222,8 @@ LABEL_18:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(NSMutableDictionary *)self->_soundsBySystemSoundIDs allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  allKeys = [(NSMutableDictionary *)self->_soundsBySystemSoundIDs allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -234,13 +234,13 @@ LABEL_18:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         -[CLBSoundController _cleanupSystemSound:andKill:](self, "_cleanupSystemSound:andKill:", [*(*(&v20 + 1) + 8 * i) unsignedIntValue], 1);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v6);
@@ -279,10 +279,10 @@ LABEL_18:
   return (v14 | v3) & 1;
 }
 
-- (void)_cleanupSystemSound:(unsigned int)a3 andKill:(BOOL)a4
+- (void)_cleanupSystemSound:(unsigned int)sound andKill:(BOOL)kill
 {
-  v4 = a4;
-  v5 = *&a3;
+  killCopy = kill;
+  v5 = *&sound;
   if (!+[NSThread isMainThread])
   {
     sub_10028413C();
@@ -290,7 +290,7 @@ LABEL_18:
 
   v8 = [NSNumber numberWithUnsignedInt:v5];
   AudioServicesRemoveSystemSoundCompletion(v5);
-  if (v4)
+  if (killCopy)
   {
     AudioServicesStopSystemSound();
   }
@@ -302,31 +302,31 @@ LABEL_18:
   }
 }
 
-- (void)_cleanupToneAlertForSound:(id)a3 andKill:(BOOL)a4
+- (void)_cleanupToneAlertForSound:(id)sound andKill:(BOOL)kill
 {
-  v4 = a4;
-  v8 = a3;
+  killCopy = kill;
+  soundCopy = sound;
   v6 = [(NSMapTable *)self->_toneAlertsBySounds objectForKey:?];
   v7 = v6;
   if (v6)
   {
-    if (v4)
+    if (killCopy)
     {
       [v6 stop];
     }
 
-    [(NSMapTable *)self->_toneAlertsBySounds removeObjectForKey:v8];
+    [(NSMapTable *)self->_toneAlertsBySounds removeObjectForKey:soundCopy];
   }
 }
 
-- (BOOL)_playSystemSound:(id)a3
+- (BOOL)_playSystemSound:(id)sound
 {
-  v4 = a3;
-  v5 = [v4 systemSoundID];
-  v6 = [v4 vibrationPattern];
-  if (v6)
+  soundCopy = sound;
+  systemSoundID = [soundCopy systemSoundID];
+  vibrationPattern = [soundCopy vibrationPattern];
+  if (vibrationPattern)
   {
-    v7 = v5 == 0;
+    v7 = systemSoundID == 0;
   }
 
   else
@@ -341,7 +341,7 @@ LABEL_18:
 
   else
   {
-    v8 = v5;
+    v8 = systemSoundID;
   }
 
   v9 = [NSNumber numberWithInt:v8];
@@ -350,27 +350,27 @@ LABEL_18:
   v11 = AudioServicesAddSystemSoundCompletion(v8, Current, kCFRunLoopCommonModes, sub_100009788, 0);
   if (!v11)
   {
-    [(NSMutableDictionary *)self->_soundsBySystemSoundIDs setObject:v4 forKey:v9];
+    [(NSMutableDictionary *)self->_soundsBySystemSoundIDs setObject:soundCopy forKey:v9];
   }
 
   return v11 == 0;
 }
 
-- (BOOL)_playToneAlert:(id)a3
+- (BOOL)_playToneAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [v4 alertConfiguration];
-  v6 = [TLAlert alertWithConfiguration:v5];
+  alertCopy = alert;
+  alertConfiguration = [alertCopy alertConfiguration];
+  v6 = [TLAlert alertWithConfiguration:alertConfiguration];
   if (v6)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100009934;
     v11[3] = &unk_1002FC448;
-    v7 = v4;
+    v7 = alertCopy;
     v12 = v7;
-    v13 = v5;
-    v14 = self;
+    v13 = alertConfiguration;
+    selfCopy = self;
     [v6 playWithCompletionHandler:v11];
     [(NSMapTable *)self->_toneAlertsBySounds setObject:v6 forKey:v7];
 
@@ -431,11 +431,11 @@ LABEL_18:
   }
 }
 
-- (void)_enqueueCallback:(id)a3
+- (void)_enqueueCallback:(id)callback
 {
   if (self->_pendingCallbacks)
   {
-    v8 = [a3 copy];
+    v8 = [callback copy];
     pendedCallbacks = self->_pendedCallbacks;
     v6 = objc_retainBlock(v8);
     [(NSMutableArray *)pendedCallbacks addObject:v6];
@@ -443,9 +443,9 @@ LABEL_18:
 
   else
   {
-    v7 = *(a3 + 2);
+    v7 = *(callback + 2);
 
-    v7(a3);
+    v7(callback);
   }
 }
 

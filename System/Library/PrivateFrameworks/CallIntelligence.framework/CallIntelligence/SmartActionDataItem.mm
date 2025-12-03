@@ -1,14 +1,14 @@
 @interface SmartActionDataItem
 - (_TtC16CallIntelligence19SmartActionDataItem)init;
-- (_TtC16CallIntelligence19SmartActionDataItem)initWithTextRange:(_NSRange)a3 title:(id)a4 menuItems:(id)a5;
+- (_TtC16CallIntelligence19SmartActionDataItem)initWithTextRange:(_NSRange)range title:(id)title menuItems:(id)items;
 @end
 
 @implementation SmartActionDataItem
 
-- (_TtC16CallIntelligence19SmartActionDataItem)initWithTextRange:(_NSRange)a3 title:(id)a4 menuItems:(id)a5
+- (_TtC16CallIntelligence19SmartActionDataItem)initWithTextRange:(_NSRange)range title:(id)title menuItems:(id)items
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   ObjectType = swift_getObjectType();
   v9 = sub_1D2EE4A68();
   v11 = v10;

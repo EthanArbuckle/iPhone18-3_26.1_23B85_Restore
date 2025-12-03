@@ -1,8 +1,8 @@
 @interface CLStateTracker
 + (const)trackerStateTypeName;
 + (unint64_t)trackerStateSize;
-- (BOOL)dumpState:(void *)a3 withSize:(unint64_t)a4 hints:(os_state_hints_s *)a5;
-- (CLStateTracker)initWithQueue:(id)a3;
+- (BOOL)dumpState:(void *)state withSize:(unint64_t)size hints:(os_state_hints_s *)hints;
+- (CLStateTracker)initWithQueue:(id)queue;
 - (void)dealloc;
 - (void)identifier;
 @end
@@ -18,7 +18,7 @@
   [(CLStateTracker *)&v4 dealloc];
 }
 
-- (CLStateTracker)initWithQueue:(id)a3
+- (CLStateTracker)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = CLStateTracker;
@@ -35,7 +35,7 @@
   return v3;
 }
 
-- (BOOL)dumpState:(void *)a3 withSize:(unint64_t)a4 hints:(os_state_hints_s *)a5
+- (BOOL)dumpState:(void *)state withSize:(unint64_t)size hints:(os_state_hints_s *)hints
 {
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1ED519078 != -1)
@@ -97,7 +97,7 @@
     v12 = 2082;
     v13 = "";
     v14 = 2082;
-    ClassName = object_getClassName(a1);
+    ClassName = object_getClassName(self);
     v16 = 2082;
     Name = sel_getName(a2);
     _os_log_impl(&dword_19B873000, v4, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Subclass should have overriden this, class:%{public, location:escape_only}s, SEL:%{public, location:escape_only}s}", &v10, 0x26u);
@@ -110,7 +110,7 @@
   v5 = qword_1ED519080;
   if (os_signpost_enabled(qword_1ED519080))
   {
-    v6 = object_getClassName(a1);
+    v6 = object_getClassName(self);
     v7 = sel_getName(a2);
     v10 = 68289538;
     v11 = 0;
@@ -143,7 +143,7 @@
     v12 = 2082;
     v13 = "";
     v14 = 2082;
-    ClassName = object_getClassName(a1);
+    ClassName = object_getClassName(self);
     v16 = 2082;
     Name = sel_getName(a2);
     _os_log_impl(&dword_19B873000, v4, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Subclass should have overriden this, class:%{public, location:escape_only}s, SEL:%{public, location:escape_only}s}", &v10, 0x26u);
@@ -156,7 +156,7 @@
   v5 = qword_1ED519080;
   if (os_signpost_enabled(qword_1ED519080))
   {
-    v6 = object_getClassName(a1);
+    v6 = object_getClassName(self);
     v7 = sel_getName(a2);
     v10 = 68289538;
     v11 = 0;

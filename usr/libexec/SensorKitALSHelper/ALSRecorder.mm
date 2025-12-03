@@ -2,14 +2,14 @@
 + (void)initialize;
 - (CFTypeRef)sensorWriterDidStopMonitoring:(CFTypeRef *)result;
 - (void)dealloc;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
 @end
 
 @implementation ALSRecorder
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B248 = os_log_create("com.apple.SensorKit", "SensorKitALSHelper");
   }
@@ -60,7 +60,7 @@
   return result;
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
   if (self)
   {

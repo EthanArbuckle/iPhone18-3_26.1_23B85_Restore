@@ -1,7 +1,7 @@
 @interface HomeAttributeCleaningJob
-- (BOOL)isEqual:(id)a3;
-- (HomeAttributeCleaningJob)initWithCoder:(id)a3;
-- (HomeAttributeCleaningJob)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HomeAttributeCleaningJob)initWithCoder:(id)coder;
+- (HomeAttributeCleaningJob)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 - (NSString)description;
 @end
 
@@ -9,7 +9,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   HomeAttributeCleaningJob.description.getter();
 
   v3 = sub_252E36F04();
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_252E377F4();
     swift_unknownObjectRelease();
@@ -30,7 +30,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = HomeAttributeCleaningJob.isEqual(_:)(v8);
@@ -39,9 +39,9 @@
   return v6 & 1;
 }
 
-- (HomeAttributeCleaningJob)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (HomeAttributeCleaningJob)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_252E36F34();
     v8 = v7;
@@ -55,7 +55,7 @@
 
   v9 = sub_252E36F34();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_252E36F34();
     v14 = v13;
@@ -70,12 +70,12 @@
   return HomeAttributeCleaningJob.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (HomeAttributeCleaningJob)initWithCoder:(id)a3
+- (HomeAttributeCleaningJob)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for HomeAttributeCleaningJob();
-  v4 = a3;
-  v5 = [(HomeAttributeCleaningJob *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HomeAttributeCleaningJob *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

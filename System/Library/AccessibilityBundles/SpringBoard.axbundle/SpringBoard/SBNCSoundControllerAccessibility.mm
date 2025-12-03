@@ -1,22 +1,22 @@
 @interface SBNCSoundControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsAlarmRinging;
 - (void)_killSounds;
-- (void)_playSoundIfPossibleForNotificationRequest:(id)a3 presentingDestination:(id)a4 completion:(id)a5;
-- (void)playSoundForNotificationRequest:(id)a3 presentingDestination:(id)a4;
-- (void)stopSoundForNotificationRequest:(id)a3;
+- (void)_playSoundIfPossibleForNotificationRequest:(id)request presentingDestination:(id)destination completion:(id)completion;
+- (void)playSoundForNotificationRequest:(id)request presentingDestination:(id)destination;
+- (void)stopSoundForNotificationRequest:(id)request;
 @end
 
 @implementation SBNCSoundControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBNCSoundController" hasInstanceVariable:@"_playingSounds" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"SBNCSoundController" hasInstanceMethod:@"playSoundForNotificationRequest:presentingDestination:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"SBNCSoundController" hasInstanceMethod:@"_killSounds" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBNCSoundController" hasInstanceMethod:@"stopSoundForNotificationRequest:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBNCSoundController" hasInstanceMethod:@"_playSoundIfPossibleForNotificationRequest:presentingDestination:completion:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBNCSoundController" hasInstanceVariable:@"_playingSounds" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"SBNCSoundController" hasInstanceMethod:@"playSoundForNotificationRequest:presentingDestination:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBNCSoundController" hasInstanceMethod:@"_killSounds" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBNCSoundController" hasInstanceMethod:@"stopSoundForNotificationRequest:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBNCSoundController" hasInstanceMethod:@"_playSoundIfPossibleForNotificationRequest:presentingDestination:completion:" withFullSignature:{"v", "@", "@", "@?", 0}];
 }
 
 - (BOOL)_accessibilityIsAlarmRinging
@@ -53,25 +53,25 @@ LABEL_5:
   return v6;
 }
 
-- (void)_playSoundIfPossibleForNotificationRequest:(id)a3 presentingDestination:(id)a4 completion:(id)a5
+- (void)_playSoundIfPossibleForNotificationRequest:(id)request presentingDestination:(id)destination completion:(id)completion
 {
-  v8 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = SBNCSoundControllerAccessibility;
-  [(SBNCSoundControllerAccessibility *)&v13 _playSoundIfPossibleForNotificationRequest:v8 presentingDestination:a4 completion:a5];
-  v9 = [v8 categoryIdentifier];
-  if ([v9 isEqualToString:*MEMORY[0x29EDC5D88]])
+  [(SBNCSoundControllerAccessibility *)&v13 _playSoundIfPossibleForNotificationRequest:requestCopy presentingDestination:destination completion:completion];
+  categoryIdentifier = [requestCopy categoryIdentifier];
+  if ([categoryIdentifier isEqualToString:*MEMORY[0x29EDC5D88]])
   {
 
 LABEL_4:
-    v12 = [v8 categoryIdentifier];
-    [(SBNCSoundControllerAccessibility *)self _accessibilitySetRetainedValue:v12 forKey:@"AXAlarmSoundPlayingDataKey"];
+    categoryIdentifier2 = [requestCopy categoryIdentifier];
+    [(SBNCSoundControllerAccessibility *)self _accessibilitySetRetainedValue:categoryIdentifier2 forKey:@"AXAlarmSoundPlayingDataKey"];
 
     goto LABEL_5;
   }
 
-  v10 = [v8 categoryIdentifier];
-  v11 = [v10 isEqualToString:*MEMORY[0x29EDC5D90]];
+  categoryIdentifier3 = [requestCopy categoryIdentifier];
+  v11 = [categoryIdentifier3 isEqualToString:*MEMORY[0x29EDC5D90]];
 
   if (v11)
   {
@@ -81,25 +81,25 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)playSoundForNotificationRequest:(id)a3 presentingDestination:(id)a4
+- (void)playSoundForNotificationRequest:(id)request presentingDestination:(id)destination
 {
-  v6 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = SBNCSoundControllerAccessibility;
-  [(SBNCSoundControllerAccessibility *)&v13 playSoundForNotificationRequest:v6 presentingDestination:a4];
-  v7 = [v6 sectionIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.mobiletimer"];
+  [(SBNCSoundControllerAccessibility *)&v13 playSoundForNotificationRequest:requestCopy presentingDestination:destination];
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v8 = [sectionIdentifier isEqualToString:@"com.apple.mobiletimer"];
 
   if (v8)
   {
     v9 = [(SBNCSoundControllerAccessibility *)self safeDictionaryForKey:@"_playingSounds"];
-    v10 = [v6 notificationIdentifier];
-    v11 = [v9 objectForKey:v10];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    v11 = [v9 objectForKey:notificationIdentifier];
 
     if (v11)
     {
-      v12 = [v6 notificationIdentifier];
-      [(SBNCSoundControllerAccessibility *)self _accessibilitySetRetainedValue:v12 forKey:@"AXAlarmSoundPlayingDataKey"];
+      notificationIdentifier2 = [requestCopy notificationIdentifier];
+      [(SBNCSoundControllerAccessibility *)self _accessibilitySetRetainedValue:notificationIdentifier2 forKey:@"AXAlarmSoundPlayingDataKey"];
     }
   }
 }
@@ -112,11 +112,11 @@ LABEL_5:
   [(SBNCSoundControllerAccessibility *)self _accessibilityRemoveValueForKey:@"AXAlarmSoundPlayingDataKey"];
 }
 
-- (void)stopSoundForNotificationRequest:(id)a3
+- (void)stopSoundForNotificationRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = SBNCSoundControllerAccessibility;
-  [(SBNCSoundControllerAccessibility *)&v4 stopSoundForNotificationRequest:a3];
+  [(SBNCSoundControllerAccessibility *)&v4 stopSoundForNotificationRequest:request];
   [(SBNCSoundControllerAccessibility *)self _accessibilityRemoveValueForKey:@"AXAlarmSoundPlayingDataKey"];
 }
 

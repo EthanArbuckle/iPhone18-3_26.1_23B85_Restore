@@ -1,31 +1,31 @@
 @interface TSCERelativeTractRef
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRectangularRange;
 - (BOOL)isSingleCellOrSpanningRange;
 - (BOOL)verifySpanningSettings;
 - (TSCERelativeCellCoordinate)relativeBottomRight;
 - (TSCERelativeCellCoordinate)relativeTopLeft;
-- (TSCERelativeRangeCoordinate)relativeBoundingRangeWithContainingCell:(const TSUCellCoord *)a3;
+- (TSCERelativeRangeCoordinate)relativeBoundingRangeWithContainingCell:(const TSUCellCoord *)cell;
 - (TSCERelativeTractRef)init;
-- (TSCERelativeTractRef)initWithAbsoluteTractRef:(id)a3 hostCell:(const TSUCellCoord *)a4;
-- (TSCERelativeTractRef)initWithRangeRef:(const TSCERangeRef *)a3 hostCell:(const TSUCellCoord *)a4;
-- (TSCERelativeTractRef)initWithTableUID:(const TSKUIDStruct *)a3 preserveFlags:(const TSUPreserveFlags *)a4;
+- (TSCERelativeTractRef)initWithAbsoluteTractRef:(id)ref hostCell:(const TSUCellCoord *)cell;
+- (TSCERelativeTractRef)initWithRangeRef:(const TSCERangeRef *)ref hostCell:(const TSUCellCoord *)cell;
+- (TSCERelativeTractRef)initWithTableUID:(const TSKUIDStruct *)d preserveFlags:(const TSUPreserveFlags *)flags;
 - (TSKUIDStruct)tableUID;
 - (id).cxx_construct;
-- (id)absoluteCellTractRefForHostCell:(const TSUCellCoord *)a3 offTable:(BOOL *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)absoluteCellTractRefForHostCell:(const TSUCellCoord *)cell offTable:(BOOL *)table;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addRelativeColumn:(signed __int16)a3;
-- (void)addRelativeColumnRange:(const TSUIndexRange *)a3;
-- (void)addRelativeRow:(int)a3;
-- (void)addRelativeRowRange:(const TSUIndexRange *)a3;
-- (void)adjustRelativeIndexesBy:(const TSUColumnRowOffset *)a3;
+- (void)addRelativeColumn:(signed __int16)column;
+- (void)addRelativeColumnRange:(const TSUIndexRange *)range;
+- (void)addRelativeRow:(int)row;
+- (void)addRelativeRowRange:(const TSUIndexRange *)range;
+- (void)adjustRelativeIndexesBy:(const TSUColumnRowOffset *)by;
 - (void)normalizeSpanningSettings;
-- (void)preserveFlagsFixingInversionsForTract:(id)a3 absFromRelColumns:(const TSUIndexSet *)a4 absFromRelRows:(const TSUIndexSet *)a5;
-- (void)removeRelativeColumnRange:(const TSUIndexRange *)a3;
-- (void)removeRelativeRowRange:(const TSUIndexRange *)a3;
-- (void)setSpansAllColumns:(BOOL)a3;
-- (void)setSpansAllRows:(BOOL)a3;
+- (void)preserveFlagsFixingInversionsForTract:(id)tract absFromRelColumns:(const TSUIndexSet *)columns absFromRelRows:(const TSUIndexSet *)rows;
+- (void)removeRelativeColumnRange:(const TSUIndexRange *)range;
+- (void)removeRelativeRowRange:(const TSUIndexRange *)range;
+- (void)setSpansAllColumns:(BOOL)columns;
+- (void)setSpansAllRows:(BOOL)rows;
 @end
 
 @implementation TSCERelativeTractRef
@@ -51,7 +51,7 @@
   return v2;
 }
 
-- (TSCERelativeTractRef)initWithTableUID:(const TSKUIDStruct *)a3 preserveFlags:(const TSUPreserveFlags *)a4
+- (TSCERelativeTractRef)initWithTableUID:(const TSKUIDStruct *)d preserveFlags:(const TSUPreserveFlags *)flags
 {
   v16.receiver = self;
   v16.super_class = TSCERelativeTractRef;
@@ -60,43 +60,43 @@
   {
     TSUIndexSet::TSUIndexSet(&v15);
     v7 = [TSCECellTractRef alloc];
-    v9 = objc_msgSend_initWithColumns_rows_tableUID_(v7, v8, &v15, &v15, a3);
+    v9 = objc_msgSend_initWithColumns_rows_tableUID_(v7, v8, &v15, &v15, d);
     absTractRef = v6->_absTractRef;
     v6->_absTractRef = v9;
 
-    objc_msgSend_setPreserveFlags_(v6->_absTractRef, v11, a4->_flags, v12, v13);
+    objc_msgSend_setPreserveFlags_(v6->_absTractRef, v11, flags->_flags, v12, v13);
     TSUIndexSet::~TSUIndexSet(&v15);
   }
 
   return v6;
 }
 
-- (TSCERelativeTractRef)initWithAbsoluteTractRef:(id)a3 hostCell:(const TSUCellCoord *)a4
+- (TSCERelativeTractRef)initWithAbsoluteTractRef:(id)ref hostCell:(const TSUCellCoord *)cell
 {
-  v6 = a3;
+  refCopy = ref;
   TSUIndexSet::TSUIndexSet(&v123);
   TSUIndexSet::TSUIndexSet(&v122);
   TSUIndexSet::TSUIndexSet(&v121);
   TSUIndexSet::TSUIndexSet(&v120);
-  if (!objc_msgSend_isValid(v6, v7, v8, v9, v10))
+  if (!objc_msgSend_isValid(refCopy, v7, v8, v9, v10))
   {
     goto LABEL_6;
   }
 
-  if ((objc_msgSend_spansAllColumns(v6, v11, v12, v13, v14) & 1) != 0 || (objc_msgSend_preserveFlags(v6, v15, v16, v17, v18) & 1) != 0 && (objc_msgSend_preserveFlags(v6, v15, v16, v17, v18) & 4) != 0)
+  if ((objc_msgSend_spansAllColumns(refCopy, v11, v12, v13, v14) & 1) != 0 || (objc_msgSend_preserveFlags(refCopy, v15, v16, v17, v18) & 1) != 0 && (objc_msgSend_preserveFlags(refCopy, v15, v16, v17, v18) & 4) != 0)
   {
     goto LABEL_3;
   }
 
-  if (objc_msgSend_preserveFlags(v6, v15, v16, v17, v18))
+  if (objc_msgSend_preserveFlags(refCopy, v15, v16, v17, v18))
   {
-    v76 = objc_msgSend_columns(v6, v64, v65, v66, v67);
+    v76 = objc_msgSend_columns(refCopy, v64, v65, v66, v67);
     if (TSUIndexSet::count(v76))
     {
-      v77 = objc_msgSend_columns(v6, v19, v20, v21, v22);
+      v77 = objc_msgSend_columns(refCopy, v19, v20, v21, v22);
       TSUIndexSet::firstIndex(v77);
       TSUIndexSet::addIndex(&v123);
-      objc_msgSend_columns(v6, v78, v79, v80, v81);
+      objc_msgSend_columns(refCopy, v78, v79, v80, v81);
       TSUIndexSet::operator=();
       if (TSUIndexSet::count(&v121) >= 2)
       {
@@ -107,21 +107,21 @@
 
   else
   {
-    if ((objc_msgSend_preserveFlags(v6, v64, v65, v66, v67) & 4) == 0)
+    if ((objc_msgSend_preserveFlags(refCopy, v64, v65, v66, v67) & 4) == 0)
     {
 LABEL_3:
-      objc_msgSend_columns(v6, v15, v16, v17, v18);
+      objc_msgSend_columns(refCopy, v15, v16, v17, v18);
       TSUIndexSet::operator=();
       goto LABEL_4;
     }
 
-    v92 = objc_msgSend_columns(v6, v15, v16, v17, v18);
+    v92 = objc_msgSend_columns(refCopy, v15, v16, v17, v18);
     if (TSUIndexSet::count(v92))
     {
-      v93 = objc_msgSend_columns(v6, v19, v20, v21, v22);
+      v93 = objc_msgSend_columns(refCopy, v19, v20, v21, v22);
       TSUIndexSet::lastIndex(v93);
       TSUIndexSet::addIndex(&v123);
-      objc_msgSend_columns(v6, v94, v95, v96, v97);
+      objc_msgSend_columns(refCopy, v94, v95, v96, v97);
       TSUIndexSet::operator=();
       if (TSUIndexSet::count(&v121) >= 2)
       {
@@ -132,20 +132,20 @@ LABEL_27:
   }
 
 LABEL_4:
-  if ((objc_msgSend_spansAllRows(v6, v19, v20, v21, v22) & 1) != 0 || (objc_msgSend_preserveFlags(v6, v23, v24, v25, v26) & 2) != 0 && (objc_msgSend_preserveFlags(v6, v23, v24, v25, v26) & 8) != 0)
+  if ((objc_msgSend_spansAllRows(refCopy, v19, v20, v21, v22) & 1) != 0 || (objc_msgSend_preserveFlags(refCopy, v23, v24, v25, v26) & 2) != 0 && (objc_msgSend_preserveFlags(refCopy, v23, v24, v25, v26) & 8) != 0)
   {
     goto LABEL_5;
   }
 
-  if ((objc_msgSend_preserveFlags(v6, v23, v24, v25, v26) & 2) != 0)
+  if ((objc_msgSend_preserveFlags(refCopy, v23, v24, v25, v26) & 2) != 0)
   {
-    v82 = objc_msgSend_rows(v6, v68, v69, v70, v71);
+    v82 = objc_msgSend_rows(refCopy, v68, v69, v70, v71);
     if (TSUIndexSet::count(v82))
     {
-      v87 = objc_msgSend_rows(v6, v83, v84, v85, v86);
+      v87 = objc_msgSend_rows(refCopy, v83, v84, v85, v86);
       TSUIndexSet::firstIndex(v87);
       TSUIndexSet::addIndex(&v122);
-      objc_msgSend_rows(v6, v88, v89, v90, v91);
+      objc_msgSend_rows(refCopy, v88, v89, v90, v91);
       TSUIndexSet::operator=();
       if (TSUIndexSet::count(&v120) >= 2)
       {
@@ -156,21 +156,21 @@ LABEL_4:
 
   else
   {
-    if ((objc_msgSend_preserveFlags(v6, v68, v69, v70, v71) & 8) == 0)
+    if ((objc_msgSend_preserveFlags(refCopy, v68, v69, v70, v71) & 8) == 0)
     {
 LABEL_5:
-      objc_msgSend_rows(v6, v23, v24, v25, v26);
+      objc_msgSend_rows(refCopy, v23, v24, v25, v26);
       TSUIndexSet::operator=();
       goto LABEL_6;
     }
 
-    v98 = objc_msgSend_rows(v6, v23, v24, v25, v26);
+    v98 = objc_msgSend_rows(refCopy, v23, v24, v25, v26);
     if (TSUIndexSet::count(v98))
     {
-      v103 = objc_msgSend_rows(v6, v99, v100, v101, v102);
+      v103 = objc_msgSend_rows(refCopy, v99, v100, v101, v102);
       TSUIndexSet::lastIndex(v103);
       TSUIndexSet::addIndex(&v122);
-      objc_msgSend_rows(v6, v104, v105, v106, v107);
+      objc_msgSend_rows(refCopy, v104, v105, v106, v107);
       TSUIndexSet::operator=();
       if (TSUIndexSet::count(&v120) >= 2)
       {
@@ -184,16 +184,16 @@ LABEL_6:
   v119.receiver = self;
   v119.super_class = TSCERelativeTractRef;
   v31 = [(TSCERelativeTractRef *)&v119 init];
-  if (v31 && objc_msgSend_isValid(v6, v27, v28, v29, v30))
+  if (v31 && objc_msgSend_isValid(refCopy, v27, v28, v29, v30))
   {
     v32 = [TSCECellTractRef alloc];
-    v112 = objc_msgSend_tableUID(v6, v33, v34, v35, v36);
+    v112 = objc_msgSend_tableUID(refCopy, v33, v34, v35, v36);
     v113 = v37;
     v38 = objc_msgSend_initWithColumns_rows_tableUID_(v32, v37, &v123, &v122, &v112);
     absTractRef = v31->_absTractRef;
     v31->_absTractRef = v38;
 
-    v44 = objc_msgSend_preserveFlags(v6, v40, v41, v42, v43);
+    v44 = objc_msgSend_preserveFlags(refCopy, v40, v41, v42, v43);
     objc_msgSend_setPreserveFlags_(v31->_absTractRef, v45, v44, v46, v47);
     v112 = 0;
     v113 = &v112;
@@ -215,14 +215,14 @@ LABEL_6:
     TSUIndexSet::enumerateRangesUsingBlock();
     TSUIndexSet::operator=();
     TSUIndexSet::operator=();
-    v52 = objc_msgSend_preserveRectangular(v6, v48, v49, v50, v51, v108, 3221225472, sub_22121A354, &unk_2784618D0, v110, a4, v109, 3221225472, sub_22121A310, &unk_2784618D0, &v112, a4);
+    v52 = objc_msgSend_preserveRectangular(refCopy, v48, v49, v50, v51, v108, 3221225472, sub_22121A354, &unk_2784618D0, v110, cell, v109, 3221225472, sub_22121A310, &unk_2784618D0, &v112, cell);
     objc_msgSend_setPreserveRectangular_(v31, v53, v52, v54, v55);
-    if (objc_msgSend_spansAllColumns(v6, v56, v57, v58, v59))
+    if (objc_msgSend_spansAllColumns(refCopy, v56, v57, v58, v59))
     {
       objc_msgSend_setSpansAllColumns_(v31, v60, 1, v62, v63);
     }
 
-    else if (objc_msgSend_spansAllRows(v6, v60, v61, v62, v63))
+    else if (objc_msgSend_spansAllRows(refCopy, v60, v61, v62, v63))
     {
       objc_msgSend_setSpansAllRows_(v31, v72, 1, v73, v74);
     }
@@ -247,31 +247,31 @@ LABEL_6:
   return v31;
 }
 
-- (TSCERelativeTractRef)initWithRangeRef:(const TSCERangeRef *)a3 hostCell:(const TSUCellCoord *)a4
+- (TSCERelativeTractRef)initWithRangeRef:(const TSCERangeRef *)ref hostCell:(const TSUCellCoord *)cell
 {
   v7 = [TSCECellTractRef alloc];
-  v11 = objc_msgSend_initWithRangeRef_(v7, v8, a3, v9, v10);
-  v14 = objc_msgSend_initWithAbsoluteTractRef_hostCell_(self, v12, v11, a4, v13);
+  v11 = objc_msgSend_initWithRangeRef_(v7, v8, ref, v9, v10);
+  v14 = objc_msgSend_initWithAbsoluteTractRef_hostCell_(self, v12, v11, cell, v13);
 
   return v14;
 }
 
-- (void)setSpansAllColumns:(BOOL)a3
+- (void)setSpansAllColumns:(BOOL)columns
 {
-  v5 = a3;
-  objc_msgSend_setSpansAllColumns_(self->_absTractRef, a2, a3, v3, v4);
-  if (v5)
+  columnsCopy = columns;
+  objc_msgSend_setSpansAllColumns_(self->_absTractRef, a2, columns, v3, v4);
+  if (columnsCopy)
   {
 
     TSUIndexSet::removeAllIndexes(&self->_relativeColumns);
   }
 }
 
-- (void)setSpansAllRows:(BOOL)a3
+- (void)setSpansAllRows:(BOOL)rows
 {
-  v5 = a3;
-  objc_msgSend_setSpansAllRows_(self->_absTractRef, a2, a3, v3, v4);
-  if (v5)
+  rowsCopy = rows;
+  objc_msgSend_setSpansAllRows_(self->_absTractRef, a2, rows, v3, v4);
+  if (rowsCopy)
   {
 
     TSUIndexSet::removeAllIndexes(&self->_relativeRows);
@@ -286,7 +286,7 @@ LABEL_6:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSCERelativeTractRef alloc];
   v24[0] = objc_msgSend_tableUID(self, v5, v6, v7, v8);
@@ -302,15 +302,15 @@ LABEL_6:
   return v15;
 }
 
-- (void)addRelativeColumn:(signed __int16)a3
+- (void)addRelativeColumn:(signed __int16)column
 {
-  if (a3 == 0x7FFF)
+  if (column == 0x7FFF)
   {
 
     objc_msgSend_setSpansAllColumns_(self, a2, 1, v3, v4);
   }
 
-  else if (objc_msgSend_spansAllColumns(self, a2, a3, v3, v4))
+  else if (objc_msgSend_spansAllColumns(self, a2, column, v3, v4))
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSCERelativeTractRef addRelativeColumn:]", v7, v8);
@@ -329,15 +329,15 @@ LABEL_6:
   }
 }
 
-- (void)addRelativeRow:(int)a3
+- (void)addRelativeRow:(int)row
 {
-  if (a3 == 0x7FFFFFFF)
+  if (row == 0x7FFFFFFF)
   {
 
     objc_msgSend_setSpansAllRows_(self, a2, 1, v3, v4);
   }
 
-  else if (objc_msgSend_spansAllRows(self, a2, *&a3, v3, v4))
+  else if (objc_msgSend_spansAllRows(self, a2, *&row, v3, v4))
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSCERelativeTractRef addRelativeRow:]", v7, v8);
@@ -356,10 +356,10 @@ LABEL_6:
   }
 }
 
-- (void)addRelativeColumnRange:(const TSUIndexRange *)a3
+- (void)addRelativeColumnRange:(const TSUIndexRange *)range
 {
-  begin = a3->_begin;
-  if (a3->_begin <= 0x7FFFFFFF && a3->_end == begin)
+  begin = range->_begin;
+  if (range->_begin <= 0x7FFFFFFF && range->_end == begin)
   {
     if (begin == 0x7FFF)
     {
@@ -374,14 +374,14 @@ LABEL_6:
 
   else
   {
-    TSUIndexSet::addIndexesInRange(&self->_relativeColumns, a3);
+    TSUIndexSet::addIndexesInRange(&self->_relativeColumns, range);
   }
 }
 
-- (void)addRelativeRowRange:(const TSUIndexRange *)a3
+- (void)addRelativeRowRange:(const TSUIndexRange *)range
 {
-  begin = a3->_begin;
-  if (a3->_begin <= 0x7FFFFFFF && a3->_end == begin)
+  begin = range->_begin;
+  if (range->_begin <= 0x7FFFFFFF && range->_end == begin)
   {
     if (begin == 0x7FFFFFFF)
     {
@@ -396,20 +396,20 @@ LABEL_6:
 
   else
   {
-    TSUIndexSet::addIndexesInRange(&self->_relativeRows, a3);
+    TSUIndexSet::addIndexesInRange(&self->_relativeRows, range);
   }
 }
 
-- (void)removeRelativeColumnRange:(const TSUIndexRange *)a3
+- (void)removeRelativeColumnRange:(const TSUIndexRange *)range
 {
-  TSUIndexSet::removeIndexesInRange(&self->_relativeColumns, a3);
+  TSUIndexSet::removeIndexesInRange(&self->_relativeColumns, range);
 
   objc_msgSend_normalizeSpanningSettings(self, v4, v5, v6, v7);
 }
 
-- (void)removeRelativeRowRange:(const TSUIndexRange *)a3
+- (void)removeRelativeRowRange:(const TSUIndexRange *)range
 {
-  TSUIndexSet::removeIndexesInRange(&self->_relativeRows, a3);
+  TSUIndexSet::removeIndexesInRange(&self->_relativeRows, range);
 
   objc_msgSend_normalizeSpanningSettings(self, v4, v5, v6, v7);
 }
@@ -625,13 +625,13 @@ LABEL_21:
   return [(TSCERelativeTractRef *)&v15 hash]+ 3 * v7 + v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_msgSend_isEqual_(self->_absTractRef, v6, v5[1], v7, v8) && (objc_msgSend_relativeColumns(self, v9, v10, v11, v12), objc_msgSend_relativeColumns(v5, v13, v14, v15, v16), TSUIndexSet::operator==()))
     {
       objc_msgSend_relativeRows(self, v17, v18, v19, v20);
@@ -895,27 +895,27 @@ LABEL_5:
   return (((v16 & 4) << 54) | ((((v21 & 8) >> 3) & 1) << 48) | (Index << 32) | v15);
 }
 
-- (TSCERelativeRangeCoordinate)relativeBoundingRangeWithContainingCell:(const TSUCellCoord *)a3
+- (TSCERelativeRangeCoordinate)relativeBoundingRangeWithContainingCell:(const TSUCellCoord *)cell
 {
-  RelativeCellCoordinateFromAbsoluteCoordinates = objc_msgSend_relativeTopLeft(self, a2, a3, v3, v4);
+  RelativeCellCoordinateFromAbsoluteCoordinates = objc_msgSend_relativeTopLeft(self, a2, cell, v3, v4);
   v12 = objc_msgSend_relativeBottomRight(self, v8, v9, v10, v11);
   v17 = objc_msgSend_preserveFlags(self, v13, v14, v15, v16);
   if (v17)
   {
     v20 = v17;
-    v21 = *a3;
+    v21 = *cell;
     v37._flags = v20 & 3;
     v22 = TSCEMakeAbsoluteCellCoordinateFromRelativeCellCoordinate(v21, RelativeCellCoordinateFromAbsoluteCoordinates, &v37, v18, v19);
-    v23 = *a3;
+    v23 = *cell;
     v36._flags = (v20 >> 2) & 3;
     v26 = TSCEMakeAbsoluteCellCoordinateFromRelativeCellCoordinate(v23, v12, &v36, v24, v25);
     v35 = 0;
     v27 = &v35;
     v28 = v22;
-    RelativeCellCoordinateFromAbsoluteCoordinates = TSCERelativeCellCoordinate::makeRelativeCellCoordinateFromAbsoluteCoordinates(*a3, v28, v27, v29);
+    RelativeCellCoordinateFromAbsoluteCoordinates = TSCERelativeCellCoordinate::makeRelativeCellCoordinateFromAbsoluteCoordinates(*cell, v28, v27, v29);
     v30 = &v35;
     v31 = v26;
-    v12 = TSCERelativeCellCoordinate::makeRelativeCellCoordinateFromAbsoluteCoordinates(*a3, v31, v30, v32);
+    v12 = TSCERelativeCellCoordinate::makeRelativeCellCoordinateFromAbsoluteCoordinates(*cell, v31, v30, v32);
   }
 
   v33 = RelativeCellCoordinateFromAbsoluteCoordinates;
@@ -925,14 +925,14 @@ LABEL_5:
   return result;
 }
 
-- (void)preserveFlagsFixingInversionsForTract:(id)a3 absFromRelColumns:(const TSUIndexSet *)a4 absFromRelRows:(const TSUIndexSet *)a5
+- (void)preserveFlagsFixingInversionsForTract:(id)tract absFromRelColumns:(const TSUIndexSet *)columns absFromRelRows:(const TSUIndexSet *)rows
 {
-  v41 = a3;
+  tractCopy = tract;
   v16 = objc_msgSend_preserveFlags(self->_absTractRef, v8, v9, v10, v11);
   if (((v16 ^ (v16 >> 2)) & 3) != 0)
   {
-    v17 = objc_msgSend_topLeft(v41, v12, v13, v14, v15);
-    v23 = objc_msgSend_bottomRight(v41, v18, v19, v20, v21);
+    v17 = objc_msgSend_topLeft(tractCopy, v12, v13, v14, v15);
+    v23 = objc_msgSend_bottomRight(tractCopy, v18, v19, v20, v21);
     if ((v16 & 1) == (v16 & 4) >> 2 || objc_msgSend_spansAllColumns(self, v12, v22, v14, v15))
     {
       v24 = v16 & 5;
@@ -950,7 +950,7 @@ LABEL_5:
         if (TSUIndexSet::containsIndex(v30) != (v16 & 2) >> 1)
         {
 LABEL_27:
-          objc_msgSend_setMixedRowStartedWithPreserve_(v41, v35, 0, v37, v38);
+          objc_msgSend_setMixedRowStartedWithPreserve_(tractCopy, v35, 0, v37, v38);
           LOBYTE(v16) = v24 | 8;
           goto LABEL_8;
         }
@@ -963,24 +963,24 @@ LABEL_27:
         if ((v34 & 1) == 0)
         {
           v40 = objc_msgSend_rows(self->_absTractRef, v35, v36, v37, v38);
-          if (TSUIndexSet::containsIndex(v40) & 1) != 0 || (TSUIndexSet::containsIndex(a5))
+          if (TSUIndexSet::containsIndex(v40) & 1) != 0 || (TSUIndexSet::containsIndex(rows))
           {
             goto LABEL_27;
           }
         }
       }
 
-      objc_msgSend_setMixedRowStartedWithPreserve_(v41, v35, 1, v37, v38);
+      objc_msgSend_setMixedRowStartedWithPreserve_(tractCopy, v35, 1, v37, v38);
       LOBYTE(v16) = v24 | 2;
       goto LABEL_8;
     }
 
     if (WORD2(v23) == WORD2(v17))
     {
-      if ((v16 ^ TSUIndexSet::containsIndex(a4)))
+      if ((v16 ^ TSUIndexSet::containsIndex(columns)))
       {
 LABEL_24:
-        objc_msgSend_setMixedColumnStartedWithPreserve_(v41, v26, 0, v27, v28);
+        objc_msgSend_setMixedColumnStartedWithPreserve_(tractCopy, v26, 0, v27, v28);
         v24 = 4;
         goto LABEL_5;
       }
@@ -992,7 +992,7 @@ LABEL_24:
       if ((TSUIndexSet::containsIndex(v31) & 1) == 0)
       {
         v39 = objc_msgSend_columns(self->_absTractRef, v26, v32, v27, v28);
-        if (TSUIndexSet::containsIndex(v39) & 1) != 0 || (TSUIndexSet::containsIndex(a4))
+        if (TSUIndexSet::containsIndex(v39) & 1) != 0 || (TSUIndexSet::containsIndex(columns))
         {
           goto LABEL_24;
         }
@@ -1000,15 +1000,15 @@ LABEL_24:
     }
 
     v24 = 1;
-    objc_msgSend_setMixedColumnStartedWithPreserve_(v41, v26, 1, v27, v28);
+    objc_msgSend_setMixedColumnStartedWithPreserve_(tractCopy, v26, 1, v27, v28);
     goto LABEL_5;
   }
 
 LABEL_8:
-  objc_msgSend_setPreserveFlags_(v41, v12, v16, v14, v15);
+  objc_msgSend_setPreserveFlags_(tractCopy, v12, v16, v14, v15);
 }
 
-- (id)absoluteCellTractRefForHostCell:(const TSUCellCoord *)a3 offTable:(BOOL *)a4
+- (id)absoluteCellTractRefForHostCell:(const TSUCellCoord *)cell offTable:(BOOL *)table
 {
   v78 = 0;
   v79 = &v78;
@@ -1016,7 +1016,7 @@ LABEL_8:
   v81 = sub_22121A2E4;
   v82 = sub_22121A308;
   v83 = &unk_22188E88F;
-  objc_msgSend_columns(self->_absTractRef, a2, a3, a4, v4);
+  objc_msgSend_columns(self->_absTractRef, a2, cell, table, v4);
   *&v84 |= 3u;
   *&v8.f64[0] = 0x8000000080000000;
   *&v8.f64[1] = 0x8000000080000000;
@@ -1053,7 +1053,7 @@ LABEL_8:
   v54 = &v53;
   v55 = 0x2020000000;
   v56 = 0;
-  if (a3->row != 0x7FFFFFFF && (*a3 & 0xFFFF00000000) != 0x7FFF00000000)
+  if (cell->row != 0x7FFFFFFF && (*cell & 0xFFFF00000000) != 0x7FFF00000000)
   {
     if ((objc_msgSend_spansAllColumns(self, v13, v14, v15, v16) & 1) == 0 && TSUIndexSet::count(&self->_relativeColumns))
     {
@@ -1064,7 +1064,7 @@ LABEL_8:
       v52[14] = &v53;
       v52[15] = &v78;
       v52[16] = &v64;
-      v52[17] = a3;
+      v52[17] = cell;
       TSUIndexSet::enumerateRangesUsingBlock();
     }
 
@@ -1077,7 +1077,7 @@ LABEL_8:
       v52[6] = &v53;
       v52[7] = &v71;
       v52[8] = &v57;
-      v52[9] = a3;
+      v52[9] = cell;
       TSUIndexSet::enumerateRangesUsingBlock();
     }
   }
@@ -1101,9 +1101,9 @@ LABEL_8:
     objc_msgSend_setSpansAllRows_(v29, v47, 1, v48, v49);
   }
 
-  if (a4)
+  if (table)
   {
-    *a4 = *(v54 + 24);
+    *table = *(v54 + 24);
   }
 
   _Block_object_dispose(&v53, 8);
@@ -1119,14 +1119,14 @@ LABEL_8:
   return v29;
 }
 
-- (void)adjustRelativeIndexesBy:(const TSUColumnRowOffset *)a3
+- (void)adjustRelativeIndexesBy:(const TSUColumnRowOffset *)by
 {
-  if (a3->var0 && (objc_msgSend_spansAllColumns(self, a2, a3, v3, v4) & 1) == 0)
+  if (by->var0 && (objc_msgSend_spansAllColumns(self, a2, by, v3, v4) & 1) == 0)
   {
     TSUIndexSet::shiftAllIndexesBy(&self->_relativeColumns);
   }
 
-  if (a3->var1 && (objc_msgSend_spansAllRows(self, a2, a3, v3, v4) & 1) == 0)
+  if (by->var1 && (objc_msgSend_spansAllRows(self, a2, by, v3, v4) & 1) == 0)
   {
 
     TSUIndexSet::shiftAllIndexesBy(&self->_relativeRows);

@@ -1,53 +1,53 @@
 @interface TVRCGameControllerEvent
 - (CGPoint)joystickLocation;
-- (TVRCGameControllerEvent)initWithCoder:(id)a3;
-- (id)_initWithTimestamp:(double)a3 isDown:(BOOL)a4 joystickLocation:(CGPoint)a5;
-- (void)encodeWithCoder:(id)a3;
+- (TVRCGameControllerEvent)initWithCoder:(id)coder;
+- (id)_initWithTimestamp:(double)timestamp isDown:(BOOL)down joystickLocation:(CGPoint)location;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCGameControllerEvent
 
-- (TVRCGameControllerEvent)initWithCoder:(id)a3
+- (TVRCGameControllerEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TVRCGameControllerEvent;
   v5 = [(TVRCGameControllerEvent *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v6;
-    v5->_down = [v4 decodeBoolForKey:@"down"];
-    [v4 decodeDoubleForKey:@"joystickLocation.x"];
+    v5->_down = [coderCopy decodeBoolForKey:@"down"];
+    [coderCopy decodeDoubleForKey:@"joystickLocation.x"];
     v5->_joystickLocation.x = v7;
-    [v4 decodeDoubleForKey:@"joystickLocation.y"];
+    [coderCopy decodeDoubleForKey:@"joystickLocation.y"];
     v5->_joystickLocation.y = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeDouble:@"timestamp" forKey:timestamp];
-  [v5 encodeBool:self->_down forKey:@"down"];
-  [v5 encodeDouble:@"joystickLocation.x" forKey:self->_joystickLocation.x];
-  [v5 encodeDouble:@"joystickLocation.y" forKey:self->_joystickLocation.y];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:timestamp];
+  [coderCopy encodeBool:self->_down forKey:@"down"];
+  [coderCopy encodeDouble:@"joystickLocation.x" forKey:self->_joystickLocation.x];
+  [coderCopy encodeDouble:@"joystickLocation.y" forKey:self->_joystickLocation.y];
 }
 
-- (id)_initWithTimestamp:(double)a3 isDown:(BOOL)a4 joystickLocation:(CGPoint)a5
+- (id)_initWithTimestamp:(double)timestamp isDown:(BOOL)down joystickLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   v10.receiver = self;
   v10.super_class = TVRCGameControllerEvent;
   result = [(TVRCGameControllerEvent *)&v10 init];
   if (result)
   {
-    *(result + 8) = a4;
-    *(result + 2) = a3;
+    *(result + 8) = down;
+    *(result + 2) = timestamp;
     *(result + 3) = x;
     *(result + 4) = y;
   }

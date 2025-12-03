@@ -1,7 +1,7 @@
 @interface ACICameraManager
 + (id)singleton;
-- (ACICameraManager)initWithSourceType:(id)a3;
-- (id)createCameraStreamByKey:(id)a3;
+- (ACICameraManager)initWithSourceType:(id)type;
+- (id)createCameraStreamByKey:(id)key;
 @end
 
 @implementation ACICameraManager
@@ -26,23 +26,23 @@ uint64_t __29__ACICameraManager_singleton__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ACICameraManager)initWithSourceType:(id)a3
+- (ACICameraManager)initWithSourceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if ([(ACICameraManager *)self init])
   {
-    [v4 UTF8String];
+    [typeCopy UTF8String];
     aci::ACIObjectSP<aci::camera::Manager,char const*,BOOL>();
   }
 
   return 0;
 }
 
-- (id)createCameraStreamByKey:(id)a3
+- (id)createCameraStreamByKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 UTF8String];
-  v7 = aci::String::stringWithCString(v5, v6);
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
+  v7 = aci::String::stringWithCString(uTF8String, v6);
   v8 = v7;
   v11 = v7;
   if (v7)

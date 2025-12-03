@@ -1,12 +1,12 @@
 @interface IAPTransportManager
-- (IAPTransportManager)initWithService:(unsigned int)a3 andNotificationPort:(IONotificationPort *)a4;
+- (IAPTransportManager)initWithService:(unsigned int)service andNotificationPort:(IONotificationPort *)port;
 - (int)accResistorID;
 - (void)dealloc;
 @end
 
 @implementation IAPTransportManager
 
-- (IAPTransportManager)initWithService:(unsigned int)a3 andNotificationPort:(IONotificationPort *)a4
+- (IAPTransportManager)initWithService:(unsigned int)service andNotificationPort:(IONotificationPort *)port
 {
   v13.receiver = self;
   v13.super_class = IAPTransportManager;
@@ -15,9 +15,9 @@
   if (v6)
   {
     v6->_accResistorID = -1;
-    v6->_notificationPortRef = a4;
-    v6->_service = a3;
-    v8 = IOObjectRetain(a3);
+    v6->_notificationPortRef = port;
+    v6->_service = service;
+    v8 = IOObjectRetain(service);
     if (v8)
     {
       NSLog(@"ERROR - %s:%s - %d IOObjectRetain failed %#x", "/Library/Caches/com.apple.xbs/Sources/iapd/iaptransportd/IAPTransportManager.mm", "[IAPTransportManager initWithService:andNotificationPort:]", 64, v8);

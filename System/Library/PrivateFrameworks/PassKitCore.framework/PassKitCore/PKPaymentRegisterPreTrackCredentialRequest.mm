@@ -1,16 +1,16 @@
 @interface PKPaymentRegisterPreTrackCredentialRequest
-- (PKPaymentRegisterPreTrackCredentialRequest)initWithCredential:(id)a3 encryptedVehicleDataRequest:(id)a4 encryptedShareData:(id)a5 metadata:(id)a6;
-- (PKPaymentRegisterPreTrackCredentialRequest)initWithCredential:(id)a3 metadata:(id)a4;
-- (void)buildRequestBody:(id)a3;
+- (PKPaymentRegisterPreTrackCredentialRequest)initWithCredential:(id)credential encryptedVehicleDataRequest:(id)request encryptedShareData:(id)data metadata:(id)metadata;
+- (PKPaymentRegisterPreTrackCredentialRequest)initWithCredential:(id)credential metadata:(id)metadata;
+- (void)buildRequestBody:(id)body;
 @end
 
 @implementation PKPaymentRegisterPreTrackCredentialRequest
 
-- (PKPaymentRegisterPreTrackCredentialRequest)initWithCredential:(id)a3 metadata:(id)a4
+- (PKPaymentRegisterPreTrackCredentialRequest)initWithCredential:(id)credential metadata:(id)metadata
 {
   v8.receiver = self;
   v8.super_class = PKPaymentRegisterPreTrackCredentialRequest;
-  v4 = [(PKPaymentRegisterCredentialRequest *)&v8 initWithCredential:a3 metadata:a4];
+  v4 = [(PKPaymentRegisterCredentialRequest *)&v8 initWithCredential:credential metadata:metadata];
   v5 = v4;
   if (v4)
   {
@@ -21,13 +21,13 @@
   return v5;
 }
 
-- (PKPaymentRegisterPreTrackCredentialRequest)initWithCredential:(id)a3 encryptedVehicleDataRequest:(id)a4 encryptedShareData:(id)a5 metadata:(id)a6
+- (PKPaymentRegisterPreTrackCredentialRequest)initWithCredential:(id)credential encryptedVehicleDataRequest:(id)request encryptedShareData:(id)data metadata:(id)metadata
 {
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  dataCopy = data;
   v21.receiver = self;
   v21.super_class = PKPaymentRegisterPreTrackCredentialRequest;
-  v12 = [(PKPaymentRegisterCredentialRequest *)&v21 initWithCredential:a3 metadata:a6];
+  v12 = [(PKPaymentRegisterCredentialRequest *)&v21 initWithCredential:credential metadata:metadata];
   if (!v12)
   {
 LABEL_5:
@@ -35,15 +35,15 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v13 = dictionaryFromSubcredentialEncryptedRequest(v10);
+  v13 = dictionaryFromSubcredentialEncryptedRequest(requestCopy);
   encryptedVehicleDataRequest = v12->_encryptedVehicleDataRequest;
   v12->_encryptedVehicleDataRequest = v13;
 
   if (v12->_encryptedVehicleDataRequest)
   {
-    if (v11)
+    if (dataCopy)
     {
-      v15 = dictionaryFromSubcredentialEncryptedRequest(v11);
+      v15 = dictionaryFromSubcredentialEncryptedRequest(dataCopy);
       encryptedShareData = v12->_encryptedShareData;
       v12->_encryptedShareData = v15;
     }
@@ -64,12 +64,12 @@ LABEL_9:
   return v17;
 }
 
-- (void)buildRequestBody:(id)a3
+- (void)buildRequestBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   v10.receiver = self;
   v10.super_class = PKPaymentRegisterPreTrackCredentialRequest;
-  [(PKPaymentRegisterCredentialRequest *)&v10 buildRequestBody:v4];
+  [(PKPaymentRegisterCredentialRequest *)&v10 buildRequestBody:bodyCopy];
   if (self->_encryptedVehicleDataRequest)
   {
     if (PKSharingForceNilVehicleDataInPreTrackRequest())
@@ -89,7 +89,7 @@ LABEL_9:
       encryptedVehicleDataRequest = self->_encryptedVehicleDataRequest;
     }
 
-    [v4 setObject:encryptedVehicleDataRequest forKeyedSubscript:@"vehicleData"];
+    [bodyCopy setObject:encryptedVehicleDataRequest forKeyedSubscript:@"vehicleData"];
   }
 
   if (self->_encryptedShareData)
@@ -111,7 +111,7 @@ LABEL_9:
       encryptedShareData = self->_encryptedShareData;
     }
 
-    [v4 setObject:encryptedShareData forKeyedSubscript:@"shareData"];
+    [bodyCopy setObject:encryptedShareData forKeyedSubscript:@"shareData"];
   }
 }
 

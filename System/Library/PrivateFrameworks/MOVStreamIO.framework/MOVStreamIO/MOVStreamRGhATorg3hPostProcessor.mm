@@ -1,17 +1,17 @@
 @interface MOVStreamRGhATorg3hPostProcessor
-- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)a3 metadata:(id)a4 error:(id *)a5;
+- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)from metadata:(id)metadata error:(id *)error;
 @end
 
 @implementation MOVStreamRGhATorg3hPostProcessor
 
-- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)a3 metadata:(id)a4 error:(id *)a5
+- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)from metadata:(id)metadata error:(id *)error
 {
-  v8 = a4;
+  metadataCopy = metadata;
   pool = self->_pool;
   if (!pool)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    v11 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:Width height:CVPixelBufferGetHeight(a3) pixelFormat:[(MOVStreamDefaultPostProcessor *)self originalPixelFormat] extendedPixelsPerRow:0 minBufferCount:10 bufferCacheMode:[(MOVStreamDefaultPostProcessor *)self bufferCacheMode]];
+    Width = CVPixelBufferGetWidth(from);
+    v11 = [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:Width height:CVPixelBufferGetHeight(from) pixelFormat:[(MOVStreamDefaultPostProcessor *)self originalPixelFormat] extendedPixelsPerRow:0 minBufferCount:10 bufferCacheMode:[(MOVStreamDefaultPostProcessor *)self bufferCacheMode]];
     v12 = self->_pool;
     self->_pool = v11;
 
@@ -23,43 +23,43 @@
     }
   }
 
-  v13 = [(MIOPixelBufferPool *)pool getPixelBuffer];
-  if (![MIOPixelBufferUtility transfer_RGhABuffer:a3 torg3h:v13])
+  getPixelBuffer = [(MIOPixelBufferPool *)pool getPixelBuffer];
+  if (![MIOPixelBufferUtility transfer_RGhABuffer:from torg3h:getPixelBuffer])
   {
-    CVPixelBufferRelease(v13);
+    CVPixelBufferRelease(getPixelBuffer);
     v15 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot convert pixel buffer for kCVPixelFormatType_RGBPlanarHalf stream." code:19];
 LABEL_11:
-    if (a5)
+    if (error)
     {
       v15 = v15;
-      *a5 = v15;
+      *error = v15;
     }
 
-    v13 = 0;
+    getPixelBuffer = 0;
     goto LABEL_14;
   }
 
-  if ([(MOVStreamDefaultPostProcessor *)self shouldRemovePaddingOfPixelBuffer:v13 metadata:v8])
+  if ([(MOVStreamDefaultPostProcessor *)self shouldRemovePaddingOfPixelBuffer:getPixelBuffer metadata:metadataCopy])
   {
-    v14 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithoutPaddingFromPixelBuffer:v13 error:a5];
-    CVPixelBufferRelease(v13);
+    v14 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithoutPaddingFromPixelBuffer:getPixelBuffer error:error];
+    CVPixelBufferRelease(getPixelBuffer);
 LABEL_9:
-    v13 = v14;
+    getPixelBuffer = v14;
     goto LABEL_14;
   }
 
-  if ([(MOVStreamDefaultPostProcessor *)self shouldChangeBytesPerRowOfPixelBuffer:a3])
+  if ([(MOVStreamDefaultPostProcessor *)self shouldChangeBytesPerRowOfPixelBuffer:from])
   {
-    v16 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-    v14 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithExactBytesPerRow:v16 fromPixelBuffer:v13 error:a5];
+    exactBytesPerRow = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+    v14 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithExactBytesPerRow:exactBytesPerRow fromPixelBuffer:getPixelBuffer error:error];
 
-    CVPixelBufferRelease(v13);
+    CVPixelBufferRelease(getPixelBuffer);
     goto LABEL_9;
   }
 
 LABEL_14:
 
-  return v13;
+  return getPixelBuffer;
 }
 
 @end

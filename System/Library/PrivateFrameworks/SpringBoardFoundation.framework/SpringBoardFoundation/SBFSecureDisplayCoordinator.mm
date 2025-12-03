@@ -1,12 +1,12 @@
 @interface SBFSecureDisplayCoordinator
-- (void)setSecureMode:(BOOL)a3 postNotification:(BOOL)a4;
+- (void)setSecureMode:(BOOL)mode postNotification:(BOOL)notification;
 @end
 
 @implementation SBFSecureDisplayCoordinator
 
-- (void)setSecureMode:(BOOL)a3 postNotification:(BOOL)a4
+- (void)setSecureMode:(BOOL)mode postNotification:(BOOL)notification
 {
-  if (self->_inSecureMode == a3)
+  if (self->_inSecureMode == mode)
   {
     return;
   }
@@ -15,12 +15,12 @@
   v26 = v6;
   v27 = v4;
   v28 = v5;
-  v8 = a4;
-  v9 = a3;
-  self->_inSecureMode = a3;
+  notificationCopy = notification;
+  modeCopy = mode;
+  self->_inSecureMode = mode;
   v11 = SBLogAuthenticationController();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (modeCopy)
   {
     if (v12)
     {
@@ -28,10 +28,10 @@
       _os_log_impl(&dword_1BEA11000, v11, OS_LOG_TYPE_DEFAULT, "Enabling secure display mode.", v24, 2u);
     }
 
-    if (v8)
+    if (notificationCopy)
     {
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v13 postNotificationName:@"SBDeviceWillEnableDisplaySecureModeNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"SBDeviceWillEnableDisplaySecureModeNotification" object:self];
     }
 
     v14 = MEMORY[0x1E69DEAC8];
@@ -45,7 +45,7 @@
       _os_log_impl(&dword_1BEA11000, v11, OS_LOG_TYPE_DEFAULT, "Disabling secure display mode.", v24, 2u);
     }
 
-    if (!v8)
+    if (!notificationCopy)
     {
       goto LABEL_13;
     }
@@ -53,8 +53,8 @@
     v14 = SBDeviceWillDisableDisplaySecureModeNotification;
   }
 
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 postNotificationName:*v14 object:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:*v14 object:self];
 
 LABEL_13:
   v21[0] = MEMORY[0x1E69E9820];
@@ -62,11 +62,11 @@ LABEL_13:
   v21[2] = __62__SBFSecureDisplayCoordinator_setSecureMode_postNotification___block_invoke;
   v21[3] = &unk_1E807F1A0;
   v21[4] = self;
-  v22 = v9;
-  v23 = v8;
+  v22 = modeCopy;
+  v23 = notificationCopy;
   v16 = MEMORY[0x1BFB4D9B0](v21);
   v17 = v16;
-  if (v9)
+  if (modeCopy)
   {
     v18 = MEMORY[0x1E6979518];
     v19[0] = MEMORY[0x1E69E9820];

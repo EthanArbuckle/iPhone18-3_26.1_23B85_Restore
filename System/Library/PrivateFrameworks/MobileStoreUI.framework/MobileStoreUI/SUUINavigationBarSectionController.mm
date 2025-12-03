@@ -24,20 +24,20 @@
 
     [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setArtworkRequestDelegate:self];
     v6 = self->_viewLayoutContext;
-    v7 = [(SUUINavigationBarContext *)self->_navigationBarContext clientContext];
-    [(SUUIViewElementLayoutContext *)v6 setClientContext:v7];
+    clientContext = [(SUUINavigationBarContext *)self->_navigationBarContext clientContext];
+    [(SUUIViewElementLayoutContext *)v6 setClientContext:clientContext];
 
     v8 = self->_viewLayoutContext;
-    v9 = [(SUUINavigationBarContext *)self->_navigationBarContext parentViewController];
-    [(SUUIViewElementLayoutContext *)v8 setParentViewController:v9];
+    parentViewController = [(SUUINavigationBarContext *)self->_navigationBarContext parentViewController];
+    [(SUUIViewElementLayoutContext *)v8 setParentViewController:parentViewController];
 
     v10 = self->_viewLayoutContext;
-    v11 = [(SUUINavigationBarContext *)self->_navigationBarContext resourceLoader];
-    [(SUUIViewElementLayoutContext *)v10 setResourceLoader:v11];
+    resourceLoader = [(SUUINavigationBarContext *)self->_navigationBarContext resourceLoader];
+    [(SUUIViewElementLayoutContext *)v10 setResourceLoader:resourceLoader];
 
     v12 = [SUUIViewElementTextLayoutCache alloc];
-    v13 = [(SUUINavigationBarContext *)self->_navigationBarContext textLayoutCache];
-    v14 = [(SUUIViewElementTextLayoutCache *)v12 initWithLayoutCache:v13];
+    textLayoutCache = [(SUUINavigationBarContext *)self->_navigationBarContext textLayoutCache];
+    v14 = [(SUUIViewElementTextLayoutCache *)v12 initWithLayoutCache:textLayoutCache];
 
     [(SUUIViewElementLayoutContext *)self->_viewLayoutContext setLabelLayoutCache:v14];
     viewLayoutContext = self->_viewLayoutContext;

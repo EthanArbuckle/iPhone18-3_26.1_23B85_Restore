@@ -1,17 +1,17 @@
 @interface CRKConcreteNotificationCenterPublisher
-- (id)subscribeToNotificationWithName:(id)a3 object:(id)a4 handler:(id)a5;
+- (id)subscribeToNotificationWithName:(id)name object:(id)object handler:(id)handler;
 @end
 
 @implementation CRKConcreteNotificationCenterPublisher
 
-- (id)subscribeToNotificationWithName:(id)a3 object:(id)a4 handler:(id)a5
+- (id)subscribeToNotificationWithName:(id)name object:(id)object handler:(id)handler
 {
   v7 = MEMORY[0x277CCAB98];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 defaultCenter];
-  v12 = [CRKConcreteNotificationCenterSubscription subscriptionWithNotificationCenter:v11 notificationName:v10 object:v9 notificationHandler:v8];
+  handlerCopy = handler;
+  objectCopy = object;
+  nameCopy = name;
+  defaultCenter = [v7 defaultCenter];
+  v12 = [CRKConcreteNotificationCenterSubscription subscriptionWithNotificationCenter:defaultCenter notificationName:nameCopy object:objectCopy notificationHandler:handlerCopy];
 
   return v12;
 }

@@ -1,12 +1,12 @@
 @interface CNProviderMetadata
 + (id)log;
-- (BOOL)isEqual:(id)a3;
-- (CNProviderMetadata)initWithCoder:(id)a3;
-- (CNProviderMetadata)initWithDataRepresentation:(id)a3;
-- (CNProviderMetadata)initWithVersion:(int64_t)a3 displayName:(id)a4 userInfo:(id)a5 isResetRequested:(BOOL)a6 isContentEnumerated:(BOOL)a7 itemAnchor:(id)a8 itemOffset:(int64_t)a9 isMoreComing:(BOOL)a10;
+- (BOOL)isEqual:(id)equal;
+- (CNProviderMetadata)initWithCoder:(id)coder;
+- (CNProviderMetadata)initWithDataRepresentation:(id)representation;
+- (CNProviderMetadata)initWithVersion:(int64_t)version displayName:(id)name userInfo:(id)info isResetRequested:(BOOL)requested isContentEnumerated:(BOOL)enumerated itemAnchor:(id)anchor itemOffset:(int64_t)offset isMoreComing:(BOOL)self0;
 - (NSData)dataRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNProviderMetadata
@@ -32,56 +32,56 @@ uint64_t __25__CNProviderMetadata_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNProviderMetadata)initWithDataRepresentation:(id)a3
+- (CNProviderMetadata)initWithDataRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
     v4 = MEMORY[0x1E696ACD0];
-    v5 = a3;
+    representationCopy = representation;
     v24 = 0;
-    v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v24];
+    v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:&v24];
 
     v7 = v24;
     if (v6)
     {
-      v8 = [v6 version];
-      v9 = [v6 displayName];
-      v10 = [v6 userInfo];
-      v11 = [v6 isResetRequested];
-      v12 = [v6 isContentEnumerated];
-      v13 = [v6 itemAnchor];
-      v14 = [v6 itemOffset];
+      version = [v6 version];
+      displayName = [v6 displayName];
+      userInfo = [v6 userInfo];
+      isResetRequested = [v6 isResetRequested];
+      isContentEnumerated = [v6 isContentEnumerated];
+      itemAnchor = [v6 itemAnchor];
+      itemOffset = [v6 itemOffset];
       LOBYTE(v23) = [v6 isMoreComing];
-      self = [(CNProviderMetadata *)self initWithVersion:v8 displayName:v9 userInfo:v10 isResetRequested:v11 isContentEnumerated:v12 itemAnchor:v13 itemOffset:v14 isMoreComing:v23];
+      self = [(CNProviderMetadata *)self initWithVersion:version displayName:displayName userInfo:userInfo isResetRequested:isResetRequested isContentEnumerated:isContentEnumerated itemAnchor:itemAnchor itemOffset:itemOffset isMoreComing:v23];
 
-      v15 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = [objc_opt_class() log];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      displayName = [objc_opt_class() log];
+      if (os_log_type_enabled(displayName, OS_LOG_TYPE_ERROR))
       {
-        [(CNProviderMetadata *)v7 initWithDataRepresentation:v9, v16, v17, v18, v19, v20, v21];
+        [(CNProviderMetadata *)v7 initWithDataRepresentation:displayName, v16, v17, v18, v19, v20, v21];
       }
 
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (CNProviderMetadata)initWithVersion:(int64_t)a3 displayName:(id)a4 userInfo:(id)a5 isResetRequested:(BOOL)a6 isContentEnumerated:(BOOL)a7 itemAnchor:(id)a8 itemOffset:(int64_t)a9 isMoreComing:(BOOL)a10
+- (CNProviderMetadata)initWithVersion:(int64_t)version displayName:(id)name userInfo:(id)info isResetRequested:(BOOL)requested isContentEnumerated:(BOOL)enumerated itemAnchor:(id)anchor itemOffset:(int64_t)offset isMoreComing:(BOOL)self0
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
+  nameCopy = name;
+  infoCopy = info;
+  anchorCopy = anchor;
   v31.receiver = self;
   v31.super_class = CNProviderMetadata;
   v20 = [(CNProviderMetadata *)&v31 init];
@@ -93,25 +93,25 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3 >= 2)
+  if (version >= 2)
   {
     v23 = [objc_opt_class() log];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [CNProviderMetadata initWithVersion:a3 displayName:v23 userInfo:v24 isResetRequested:v25 isContentEnumerated:v26 itemAnchor:v27 itemOffset:v28 isMoreComing:v29];
+      [CNProviderMetadata initWithVersion:version displayName:v23 userInfo:v24 isResetRequested:v25 isContentEnumerated:v26 itemAnchor:v27 itemOffset:v28 isMoreComing:v29];
     }
 
     goto LABEL_7;
   }
 
-  v20->_version = a3;
-  objc_storeStrong(&v20->_displayName, a4);
-  objc_storeStrong(&v21->_userInfo, a5);
-  v21->_isResetRequested = a6;
-  v21->_isContentEnumerated = a7;
-  objc_storeStrong(&v21->_itemAnchor, a8);
-  v21->_itemOffset = a9;
-  v21->_isMoreComing = a10;
+  v20->_version = version;
+  objc_storeStrong(&v20->_displayName, name);
+  objc_storeStrong(&v21->_userInfo, info);
+  v21->_isResetRequested = requested;
+  v21->_isContentEnumerated = enumerated;
+  objc_storeStrong(&v21->_itemAnchor, anchor);
+  v21->_itemOffset = offset;
+  v21->_isMoreComing = coming;
   v22 = v21;
 LABEL_8:
 
@@ -140,23 +140,23 @@ LABEL_8:
   return v2;
 }
 
-- (CNProviderMetadata)initWithCoder:(id)a3
+- (CNProviderMetadata)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v20 = [v3 decodeIntegerForKey:@"version"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v19 = [v3 decodeBoolForKey:@"isResetRequested"];
-  v18 = [v3 decodeBoolForKey:@"isContentEnumerated"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"itemAnchor"];
-  v6 = [v3 decodeIntegerForKey:@"itemOffset"];
-  v7 = [v3 decodeBoolForKey:@"isMoreComing"];
+  coderCopy = coder;
+  v20 = [coderCopy decodeIntegerForKey:@"version"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v19 = [coderCopy decodeBoolForKey:@"isResetRequested"];
+  v18 = [coderCopy decodeBoolForKey:@"isContentEnumerated"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemAnchor"];
+  v6 = [coderCopy decodeIntegerForKey:@"itemOffset"];
+  v7 = [coderCopy decodeBoolForKey:@"isMoreComing"];
   v8 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v9 setWithObjects:{v10, v11, v12, objc_opt_class(), 0}];
-  v14 = [v3 decodeDictionaryWithKeysOfClasses:v8 objectsOfClasses:v13 forKey:@"userInfo"];
+  v14 = [coderCopy decodeDictionaryWithKeysOfClasses:v8 objectsOfClasses:v13 forKey:@"userInfo"];
 
   LOBYTE(v17) = v7;
   v15 = [(CNProviderMetadata *)self initWithVersion:v20 displayName:v4 userInfo:v14 isResetRequested:v19 isContentEnumerated:v18 itemAnchor:v5 itemOffset:v6 isMoreComing:v17];
@@ -164,44 +164,44 @@ LABEL_8:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInteger:version forKey:@"version"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_userInfo forKey:@"userInfo"];
-  [v5 encodeBool:self->_isResetRequested forKey:@"isResetRequested"];
-  [v5 encodeBool:self->_isContentEnumerated forKey:@"isContentEnumerated"];
-  [v5 encodeObject:self->_itemAnchor forKey:@"itemAnchor"];
-  [v5 encodeInteger:self->_itemOffset forKey:@"itemOffset"];
-  [v5 encodeBool:self->_isMoreComing forKey:@"isMoreComing"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"version"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
+  [coderCopy encodeBool:self->_isResetRequested forKey:@"isResetRequested"];
+  [coderCopy encodeBool:self->_isContentEnumerated forKey:@"isContentEnumerated"];
+  [coderCopy encodeObject:self->_itemAnchor forKey:@"itemAnchor"];
+  [coderCopy encodeInteger:self->_itemOffset forKey:@"itemOffset"];
+  [coderCopy encodeBool:self->_isMoreComing forKey:@"isMoreComing"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CNProviderMetadata);
   [(CNProviderMetadata *)v4 setVersion:[(CNProviderMetadata *)self version]];
-  v5 = [(CNProviderMetadata *)self displayName];
-  [(CNProviderMetadata *)v4 setDisplayName:v5];
+  displayName = [(CNProviderMetadata *)self displayName];
+  [(CNProviderMetadata *)v4 setDisplayName:displayName];
 
-  v6 = [(CNProviderMetadata *)self userInfo];
-  [(CNProviderMetadata *)v4 setUserInfo:v6];
+  userInfo = [(CNProviderMetadata *)self userInfo];
+  [(CNProviderMetadata *)v4 setUserInfo:userInfo];
 
   [(CNProviderMetadata *)v4 setIsResetRequested:[(CNProviderMetadata *)self isResetRequested]];
   [(CNProviderMetadata *)v4 setIsContentEnumerated:[(CNProviderMetadata *)self isContentEnumerated]];
-  v7 = [(CNProviderMetadata *)self itemAnchor];
-  [(CNProviderMetadata *)v4 setItemAnchor:v7];
+  itemAnchor = [(CNProviderMetadata *)self itemAnchor];
+  [(CNProviderMetadata *)v4 setItemAnchor:itemAnchor];
 
   [(CNProviderMetadata *)v4 setItemOffset:[(CNProviderMetadata *)self itemOffset]];
   [(CNProviderMetadata *)v4 setIsMoreComing:[(CNProviderMetadata *)self isMoreComing]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v16) = 1;
   }
@@ -209,10 +209,10 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[CNProviderMetadata version](self, "version"), v5 == -[CNProviderMetadata version](v4, "version")) && ((v6 = -[CNProviderMetadata displayName](self, "displayName"), v7 = -[CNProviderMetadata displayName](v4, "displayName"), !(v6 | v7)) || [v6 isEqual:v7]) && ((v8 = -[CNProviderMetadata userInfo](self, "userInfo"), v9 = -[CNProviderMetadata userInfo](v4, "userInfo"), !(v8 | v9)) || objc_msgSend(v8, "isEqual:", v9)) && (v10 = -[CNProviderMetadata isResetRequested](self, "isResetRequested"), v10 == -[CNProviderMetadata isResetRequested](v4, "isResetRequested")) && (v11 = -[CNProviderMetadata isContentEnumerated](self, "isContentEnumerated"), v11 == -[CNProviderMetadata isContentEnumerated](v4, "isContentEnumerated")) && ((v12 = -[CNProviderMetadata itemAnchor](self, "itemAnchor"), v13 = -[CNProviderMetadata itemAnchor](v4, "itemAnchor"), !(v12 | v13)) || objc_msgSend(v12, "isEqual:", v13)) && (v14 = -[CNProviderMetadata itemOffset](self, "itemOffset"), v14 == -[CNProviderMetadata itemOffset](v4, "itemOffset")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[CNProviderMetadata version](self, "version"), v5 == -[CNProviderMetadata version](equalCopy, "version")) && ((v6 = -[CNProviderMetadata displayName](self, "displayName"), v7 = -[CNProviderMetadata displayName](equalCopy, "displayName"), !(v6 | v7)) || [v6 isEqual:v7]) && ((v8 = -[CNProviderMetadata userInfo](self, "userInfo"), v9 = -[CNProviderMetadata userInfo](equalCopy, "userInfo"), !(v8 | v9)) || objc_msgSend(v8, "isEqual:", v9)) && (v10 = -[CNProviderMetadata isResetRequested](self, "isResetRequested"), v10 == -[CNProviderMetadata isResetRequested](equalCopy, "isResetRequested")) && (v11 = -[CNProviderMetadata isContentEnumerated](self, "isContentEnumerated"), v11 == -[CNProviderMetadata isContentEnumerated](equalCopy, "isContentEnumerated")) && ((v12 = -[CNProviderMetadata itemAnchor](self, "itemAnchor"), v13 = -[CNProviderMetadata itemAnchor](equalCopy, "itemAnchor"), !(v12 | v13)) || objc_msgSend(v12, "isEqual:", v13)) && (v14 = -[CNProviderMetadata itemOffset](self, "itemOffset"), v14 == -[CNProviderMetadata itemOffset](equalCopy, "itemOffset")))
     {
-      v15 = [(CNProviderMetadata *)self isMoreComing];
-      v16 = v15 ^ [(CNProviderMetadata *)v4 isMoreComing]^ 1;
+      isMoreComing = [(CNProviderMetadata *)self isMoreComing];
+      v16 = isMoreComing ^ [(CNProviderMetadata *)equalCopy isMoreComing]^ 1;
     }
 
     else

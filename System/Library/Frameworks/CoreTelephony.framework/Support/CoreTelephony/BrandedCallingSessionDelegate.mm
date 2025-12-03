@@ -1,48 +1,48 @@
 @interface BrandedCallingSessionDelegate
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)setPublicKeyHash:(id)a3;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)setPublicKeyHash:(id)hash;
 @end
 
 @implementation BrandedCallingSessionDelegate
 
-- (void)setPublicKeyHash:(id)a3
+- (void)setPublicKeyHash:(id)hash
 {
-  v6 = a3;
-  v4 = [[NSString alloc] initWithString:v6];
+  hashCopy = hash;
+  v4 = [[NSString alloc] initWithString:hashCopy];
   fPublicKeyHash = self->fPublicKeyHash;
   self->fPublicKeyHash = v4;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v49 = a3;
-  v50 = a4;
-  v9 = a5;
-  v54 = a6;
-  v52 = v9;
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  v52 = challengeCopy;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    v45 = [(NSString *)self->fPublicKeyHash UTF8String];
+    uTF8String = [(NSString *)self->fPublicKeyHash UTF8String];
     *buf = 136315138;
-    v58 = v45;
+    v58 = uTF8String;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Branded calling pinned public key SHA-256 hash %s", buf, 0xCu);
   }
 
-  v10 = [v9 protectionSpace];
-  v53 = [v10 authenticationMethod];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
 
-  if (![v53 isEqualToString:NSURLAuthenticationMethodServerTrust])
+  if (![authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
   {
 LABEL_50:
-    v54[2](v54, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     goto LABEL_53;
   }
 
-  v11 = [v9 protectionSpace];
-  v12 = [v11 serverTrust];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace2 serverTrust];
 
-  if (!SecTrustEvaluateWithError(v12, 0))
+  if (!SecTrustEvaluateWithError(serverTrust, 0))
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -50,11 +50,11 @@ LABEL_50:
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Branded calling server trust evaluation failed", buf, 2u);
     }
 
-    v54[2](v54, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     goto LABEL_53;
   }
 
-  v13 = SecTrustCopyCertificateChain(v12);
+  v13 = SecTrustCopyCertificateChain(serverTrust);
   v56 = v13;
   if (!v13)
   {
@@ -77,7 +77,7 @@ LABEL_50:
     }
 
 LABEL_9:
-    v54[2](v54, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     goto LABEL_52;
   }
 
@@ -103,13 +103,13 @@ LABEL_9:
     v19 = SecKeyCopyAttributes(key);
     v48 = [(__CFDictionary *)v19 objectForKeyedSubscript:kSecAttrKeyType];
     v20 = [(__CFDictionary *)v19 objectForKeyedSubscript:kSecAttrKeySizeInBits];
-    v21 = [v20 unsignedIntegerValue];
+    unsignedIntegerValue = [v20 unsignedIntegerValue];
 
     v22 = v48;
     v23 = v22;
-    if (v21 <= 2047)
+    if (unsignedIntegerValue <= 2047)
     {
-      if (v21 == 256)
+      if (unsignedIntegerValue == 256)
       {
         v33 = [v22 isEqualToString:kSecAttrKeyTypeECSECPrimeRandom];
 
@@ -133,7 +133,7 @@ LABEL_9:
         goto LABEL_43;
       }
 
-      if (v21 == 384)
+      if (unsignedIntegerValue == 384)
       {
         v24 = [v22 isEqualToString:kSecAttrKeyTypeECSECPrimeRandom];
 
@@ -164,7 +164,7 @@ LABEL_31:
       goto LABEL_43;
     }
 
-    if (v21 == 4096)
+    if (unsignedIntegerValue == 4096)
     {
       v35 = [v22 isEqualToString:kSecAttrKeyTypeRSA];
 
@@ -175,7 +175,7 @@ LABEL_31:
 
     else
     {
-      if (v21 != 2048)
+      if (unsignedIntegerValue != 2048)
       {
         goto LABEL_31;
       }
@@ -211,17 +211,17 @@ LABEL_44:
     v37 = [NSMutableData dataWithBytes:v26 length:v27];
     [v37 appendData:v18];
     v38 = v37;
-    v39 = [v37 bytes];
+    bytes = [v37 bytes];
     v40 = [v37 length];
     v41 = v36;
-    CC_SHA256(v39, v40, [v36 bytes]);
+    CC_SHA256(bytes, v40, [v36 bytes]);
     v42 = [v36 base64EncodedStringWithOptions:0];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       v43 = v42;
-      v44 = [v42 UTF8String];
+      uTF8String2 = [v42 UTF8String];
       *buf = 136315138;
-      v58 = v44;
+      v58 = uTF8String2;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Branded calling intermediate CA public key SHA-256 hash %s", buf, 0xCu);
     }
 
@@ -240,9 +240,9 @@ LABEL_48:
     }
   }
 
-  v46 = [v52 protectionSpace];
-  v47 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v46 serverTrust]);
-  (v54)[2](v54, 0, v47);
+  protectionSpace3 = [v52 protectionSpace];
+  v47 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace3 serverTrust]);
+  (handlerCopy)[2](handlerCopy, 0, v47);
 
   sub_1005A16F4(&key);
 LABEL_52:
@@ -250,23 +250,23 @@ LABEL_52:
 LABEL_53:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    v16 = [v14 URL];
-    v17 = [v16 absoluteString];
+    v16 = [requestCopy URL];
+    absoluteString = [v16 absoluteString];
     v18 = 136315138;
-    v19 = [v17 UTF8String];
+    uTF8String = [absoluteString UTF8String];
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Branded calling redirects are not allowed %s", &v18, 0xCu);
   }
 
-  v15[2](v15, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

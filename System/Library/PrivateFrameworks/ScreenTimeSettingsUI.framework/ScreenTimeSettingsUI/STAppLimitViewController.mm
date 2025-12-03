@@ -1,16 +1,16 @@
 @interface STAppLimitViewController
-- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithAltDSID:(id)a3;
-- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithCoder:(id)a3;
-- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithAltDSID:(id)d;
+- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithCoder:(id)coder;
+- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation STAppLimitViewController
 
-- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithAltDSID:(id)a3
+- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithAltDSID:(id)d
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (d)
   {
     sub_264CC45DC();
     sub_264CC339C();
@@ -29,7 +29,7 @@
   return [(STAppLimitViewController *)&v8 initWithNibName:0 bundle:0];
 }
 
-- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithCoder:(id)a3
+- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithCoder:(id)coder
 {
   result = sub_264CC49FC();
   __break(1u);
@@ -38,11 +38,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   STAppLimitViewController.viewDidLoad()();
 }
 
-- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ScreenTimeSettingsUI24STAppLimitViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

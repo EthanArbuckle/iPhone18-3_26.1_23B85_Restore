@@ -1,6 +1,6 @@
 @interface TooltipBridge
 - (_TtC7SwiftUI13TooltipBridge)init;
-- (id)toolTipInteraction:(id)a3 configurationAtPoint:(CGPoint)a4;
+- (id)toolTipInteraction:(id)interaction configurationAtPoint:(CGPoint)point;
 @end
 
 @implementation TooltipBridge
@@ -17,12 +17,12 @@
   return [(TooltipBridge *)&v5 init];
 }
 
-- (id)toolTipInteraction:(id)a3 configurationAtPoint:(CGPoint)a4
+- (id)toolTipInteraction:(id)interaction configurationAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  selfCopy = self;
   v9 = specialized TooltipBridge.toolTipInteraction(_:configurationAt:)(x, y);
 
   return v9;

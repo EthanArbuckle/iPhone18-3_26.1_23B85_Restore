@@ -1,19 +1,19 @@
 @interface UIStatusBar_ModernAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityViewIsVisible;
 - (int64_t)_accessibilitySortPriority;
 @end
 
 @implementation UIStatusBar_ModernAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIStatusBar" isKindOfClass:@"UIView"];
   [location[0] validateClass:@"UIStatusBar_Modern" hasInstanceMethod:@"statusBar" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
@@ -29,14 +29,14 @@
 
 - (int64_t)_accessibilitySortPriority
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if ((AXProcessIsSpringBoard() & 1) == 0 || (AXDeviceHasJindo() & 1) == 0 || AXRequestingClient() != 3)
   {
     return 0x7FFFFFFFLL;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = UIStatusBar_ModernAccessibility;
   return [(UIStatusBar_ModernAccessibility *)&v3 _accessibilitySortPriority];
 }

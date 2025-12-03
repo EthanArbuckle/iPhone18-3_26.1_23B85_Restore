@@ -1,15 +1,15 @@
 @interface _SwiftObject
-+ (BOOL)conformsToProtocol:(id)a3;
-+ (BOOL)isSubclassOfClass:(Class)a3;
++ (BOOL)conformsToProtocol:(id)protocol;
++ (BOOL)isSubclassOfClass:(Class)class;
 + (Class)superclass;
 + (id)alloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)debugDescription;
 + (id)description;
-+ (void)methodForSelector:(SEL)a3;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
++ (void)methodForSelector:(SEL)selector;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfClass:(Class)class;
 - (Class)superclass;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -18,31 +18,31 @@
 - (unint64_t)hash;
 - (void)_noteAssociatedObjects;
 - (void)_setWeaklyReferenced;
-- (void)doesNotRecognizeSelector:(SEL)a3;
-- (void)methodForSelector:(SEL)a3;
+- (void)doesNotRecognizeSelector:(SEL)selector;
+- (void)methodForSelector:(SEL)selector;
 @end
 
 @implementation _SwiftObject
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  InstanceSize = class_getInstanceSize(a1);
+  InstanceSize = class_getInstanceSize(self);
 
-  return swift_allocObject(a1, InstanceSize, 0xFuLL);
+  return swift_allocObject(self, InstanceSize, 0xFuLL);
 }
 
 + (id)alloc
 {
-  InstanceSize = class_getInstanceSize(a1);
+  InstanceSize = class_getInstanceSize(self);
 
-  return swift_allocObject(a1, InstanceSize, 0xFuLL);
+  return swift_allocObject(self, InstanceSize, 0xFuLL);
 }
 
 + (Class)superclass
 {
-  if (*(a1 + 1))
+  if (*(self + 1))
   {
-    return *(a1 + 1);
+    return *(self + 1);
   }
 
   else
@@ -76,12 +76,12 @@
   return result;
 }
 
-- (void)doesNotRecognizeSelector:(SEL)a3
+- (void)doesNotRecognizeSelector:(SEL)selector
 {
   v4 = (self->isa & 0x7FFFFFFFFFFFF8);
   isMetaClass = class_isMetaClass(v4);
   Name = class_getName(v4);
-  v10 = sel_getName(a3);
+  v10 = sel_getName(selector);
   v8 = 45;
   if (isMetaClass)
   {
@@ -135,11 +135,11 @@
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v3 = (self->isa & 0x7FFFFFFFFFFFF8);
   result = v3 != 0;
-  if (v3 != a3 && v3 != 0)
+  if (v3 != class && v3 != 0)
   {
     v6 = v3;
     while (1)
@@ -152,7 +152,7 @@
 
       v6 = *(v6 + 1);
       result = v7 != 0;
-      if (v7 == a3 || v7 == 0)
+      if (v7 == class || v7 == 0)
       {
         return result;
       }
@@ -164,23 +164,23 @@
   return result;
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  v3 = a1;
-  result = a1 != 0;
-  if (v3 != a3 && v3)
+  selfCopy = self;
+  result = self != 0;
+  if (selfCopy != class && selfCopy)
   {
     while (1)
     {
-      v5 = v3[1];
+      v5 = selfCopy[1];
       if (!v5)
       {
         break;
       }
 
-      v3 = v3[1];
+      selfCopy = selfCopy[1];
       result = v5 != 0;
-      if (v5 == a3 || v5 == 0)
+      if (v5 == class || v5 == 0)
       {
         return result;
       }
@@ -192,23 +192,23 @@
   return result;
 }
 
-+ (void)methodForSelector:(SEL)a3
-{
-  Class = object_getClass(a1);
-
-  return class_getMethodImplementation(Class, a3);
-}
-
-- (void)methodForSelector:(SEL)a3
++ (void)methodForSelector:(SEL)selector
 {
   Class = object_getClass(self);
 
-  return class_getMethodImplementation(Class, a3);
+  return class_getMethodImplementation(Class, selector);
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (void)methodForSelector:(SEL)selector
 {
-  if (!a3 || (self->isa & 0x7FFFFFFFFFFFF8) == 0)
+  Class = object_getClass(self);
+
+  return class_getMethodImplementation(Class, selector);
+}
+
+- (BOOL)conformsToProtocol:(id)protocol
+{
+  if (!protocol || (self->isa & 0x7FFFFFFFFFFFF8) == 0)
   {
     return 0;
   }
@@ -216,7 +216,7 @@
   Superclass = (self->isa & 0x7FFFFFFFFFFFF8);
   do
   {
-    v5 = class_conformsToProtocol(Superclass, a3);
+    v5 = class_conformsToProtocol(Superclass, protocol);
     if (v5)
     {
       break;
@@ -229,17 +229,17 @@
   return v5;
 }
 
-+ (BOOL)conformsToProtocol:(id)a3
++ (BOOL)conformsToProtocol:(id)protocol
 {
   v3 = 0;
-  if (a3)
+  if (protocol)
   {
-    Superclass = a1;
-    if (a1)
+    Superclass = self;
+    if (self)
     {
       do
       {
-        v3 = class_conformsToProtocol(Superclass, a3);
+        v3 = class_conformsToProtocol(Superclass, protocol);
         if (v3)
         {
           break;
@@ -257,15 +257,15 @@
 
 - (unint64_t)hash
 {
-  v2 = self;
-  v12 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   if (!swift::runtime::bincompat::useLegacySwiftObjCHashing(self))
   {
-    v3 = (v2->isa & 0x7FFFFFFFFFFFF8);
+    v3 = (selfCopy->isa & 0x7FFFFFFFFFFFF8);
     v4 = swift_conformsToProtocolCommon(v3, &protocol descriptor for Hashable);
     if (v4)
     {
-      return _swift_stdlib_Hashable_hashValue_indirect(&v12, v3, v4);
+      return _swift_stdlib_Hashable_hashValue_indirect(&selfCopy2, v3, v4);
     }
 
     else if (swift_conformsToProtocolCommon(v3, &protocol descriptor for Equatable))
@@ -289,28 +289,28 @@
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v12 = a3;
-  v13 = self;
-  if (self == a3)
+  equalCopy = equal;
+  selfCopy = self;
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
 
   else
   {
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_12;
     }
 
     v5 = swift::runtime::bincompat::useLegacySwiftObjCHashing(self);
     LOBYTE(v6) = 0;
-    if ((v5 & 1) == 0 && (a3 & 0x8000000000000000) == 0)
+    if ((v5 & 1) == 0 && (equal & 0x8000000000000000) == 0)
     {
       v7 = (self->isa & 0x7FFFFFFFFFFFF8);
       v6 = swift_conformsToProtocolCommon(v7, &protocol descriptor for Equatable);
@@ -328,9 +328,9 @@
         }
 
         ConformingSuperclass = swift::findConformingSuperclass(v7, v9);
-        if (_swift_class_isSubclass(*a3 & 0x7FFFFFFFFFFFF8, ConformingSuperclass))
+        if (_swift_class_isSubclass(*equal & 0x7FFFFFFFFFFFF8, ConformingSuperclass))
         {
-          LOBYTE(v6) = _swift_stdlib_Equatable_isEqual_indirect(&v13, &v12, ConformingSuperclass, v8);
+          LOBYTE(v6) = _swift_stdlib_Equatable_isEqual_indirect(&selfCopy, &equalCopy, ConformingSuperclass, v8);
           return v6 & 1;
         }
 
@@ -345,27 +345,27 @@ LABEL_12:
 
 - (NSString)description
 {
-  v6 = self;
+  selfCopy = self;
   self;
   v3 = (self->isa & 0x7FFFFFFFFFFFF8);
-  Description = swift_stdlib_getDescription(&v6, v3);
-  (*(*(v3 - 1) + 1))(&v6, v3);
+  Description = swift_stdlib_getDescription(&selfCopy, v3);
+  (*(*(v3 - 1) + 1))(&selfCopy, v3);
   return Description;
 }
 
 - (NSString)debugDescription
 {
-  v6 = self;
+  selfCopy = self;
   self;
   v3 = (self->isa & 0x7FFFFFFFFFFFF8);
-  Description = swift_stdlib_getDescription(&v6, v3);
-  (*(*(v3 - 1) + 1))(&v6, v3);
+  Description = swift_stdlib_getDescription(&selfCopy, v3);
+  (*(*(v3 - 1) + 1))(&selfCopy, v3);
   return Description;
 }
 
 + (id)description
 {
-  Name = class_getName(a1);
+  Name = class_getName(self);
   v3 = strlen(Name);
   v4 = swift_stdlib_NSStringFromUTF8(Name, v3);
 
@@ -374,7 +374,7 @@ LABEL_12:
 
 + (id)debugDescription
 {
-  Name = class_getName(a1);
+  Name = class_getName(self);
   v3 = strlen(Name);
   v4 = swift_stdlib_NSStringFromUTF8(Name, v3);
 

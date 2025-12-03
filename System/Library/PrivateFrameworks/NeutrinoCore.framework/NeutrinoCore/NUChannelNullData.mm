@@ -1,6 +1,6 @@
 @interface NUChannelNullData
 - (NUChannelNullData)init;
-- (NUChannelNullData)initWithFormat:(id)a3;
+- (NUChannelNullData)initWithFormat:(id)format;
 @end
 
 @implementation NUChannelNullData
@@ -15,10 +15,10 @@
   return v4;
 }
 
-- (NUChannelNullData)initWithFormat:(id)a3
+- (NUChannelNullData)initWithFormat:(id)format
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  formatCopy = format;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -62,8 +62,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -79,8 +79,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

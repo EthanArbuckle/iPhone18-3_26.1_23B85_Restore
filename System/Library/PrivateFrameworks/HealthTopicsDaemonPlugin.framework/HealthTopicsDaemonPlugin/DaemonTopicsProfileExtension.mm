@@ -1,6 +1,6 @@
 @interface DaemonTopicsProfileExtension
 - (_TtC24HealthTopicsDaemonPlugin28DaemonTopicsProfileExtension)init;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation DaemonTopicsProfileExtension
@@ -12,9 +12,9 @@
   return result;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v3 = self;
+  selfCopy = self;
   sub_251F61F08();
 }
 

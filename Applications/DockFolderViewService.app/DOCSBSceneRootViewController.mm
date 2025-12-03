@@ -1,12 +1,12 @@
 @interface DOCSBSceneRootViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (NSArray)keyCommands;
-- (_TtC21DockFolderViewService28DOCSBSceneRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)backgroundTappedWithSender:(id)a3;
-- (void)performDismiss:(id)a3;
-- (void)registerObserverForIdentifier:(id)a3 updateHandler:(id)a4;
+- (_TtC21DockFolderViewService28DOCSBSceneRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)backgroundTappedWithSender:(id)sender;
+- (void)performDismiss:(id)dismiss;
+- (void)registerObserverForIdentifier:(id)identifier updateHandler:(id)handler;
 - (void)removeFoldersForHiddenProviders;
-- (void)unregisterObserverForIdentifier:(id)a3;
+- (void)unregisterObserverForIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
@@ -14,13 +14,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100043928();
 }
 
-- (_TtC21DockFolderViewService28DOCSBSceneRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21DockFolderViewService28DOCSBSceneRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -32,13 +32,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10004849C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10004849C(v5, v7, bundle);
 }
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000488A4();
 
   if (v3)
@@ -55,11 +55,11 @@
   return v4.super.isa;
 }
 
-- (void)performDismiss:(id)a3
+- (void)performDismiss:(id)dismiss
 {
-  if (a3)
+  if (dismiss)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -68,7 +68,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10004896C(v6);
@@ -76,44 +76,44 @@
   sub_100006390(v6, &qword_1000BCA30, &unk_100090E80);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100048F3C(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_100048F3C(beginCopy);
 
   return self & 1;
 }
 
-- (void)backgroundTappedWithSender:(id)a3
+- (void)backgroundTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000490B4(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1000490B4(senderCopy);
 }
 
-- (void)registerObserverForIdentifier:(id)a3 updateHandler:(id)a4
+- (void)registerObserverForIdentifier:(id)identifier updateHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_10004CFD4(v6, v8, sub_1000522D0, v9);
 }
 
-- (void)unregisterObserverForIdentifier:(id)a3
+- (void)unregisterObserverForIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10004D524(v4, v6);
 }
 
 - (void)removeFoldersForHiddenProviders
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004D968();
 }
 

@@ -1,14 +1,14 @@
 @interface CallRecordingSettingsViewController
-+ (id)localizedStringForKey:(id)a3 withArgument:(id)a4;
++ (id)localizedStringForKey:(id)key withArgument:(id)argument;
 - (CallRecordingSettingsViewController)init;
 - (PSListController)parentListController;
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4;
-- (id)getCallRecordingEnabled:(id)a3;
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default;
+- (id)getCallRecordingEnabled:(id)enabled;
 - (id)specifiers;
 - (void)configurationChanged;
 - (void)emitNavigationEvent;
-- (void)setCallRecordingEnabled:(id)a3 specifier:(id)a4;
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4;
+- (void)setCallRecordingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key;
 @end
 
 @implementation CallRecordingSettingsViewController
@@ -38,14 +38,14 @@
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"Call Recording" table:0 locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"Call Recording" table:0 locale:v6 bundleURL:bundleURL];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Apps" table:0 locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Apps" table:0 locale:v11 bundleURL:bundleURL2];
 
   v15 = TUResolvedPhoneResource();
   v18[0] = v14;
@@ -105,30 +105,30 @@
   return v4;
 }
 
-+ (id)localizedStringForKey:(id)a3 withArgument:(id)a4
++ (id)localizedStringForKey:(id)key withArgument:(id)argument
 {
-  v6 = a4;
-  v7 = a3;
+  argumentCopy = argument;
+  keyCopy = key;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
-  v9 = [a1 localizationTableName];
-  v10 = [v8 localizedStringForKey:v7 value:&stru_8588 table:v9];
+  localizationTableName = [self localizationTableName];
+  v10 = [v8 localizedStringForKey:keyCopy value:&stru_8588 table:localizationTableName];
 
-  if (v6)
+  if (argumentCopy)
   {
-    v11 = [NSString stringWithFormat:v10, v6];
+    argumentCopy = [NSString stringWithFormat:v10, argumentCopy];
   }
 
   else
   {
-    v11 = v10;
+    argumentCopy = v10;
   }
 
-  v12 = v11;
+  v12 = argumentCopy;
 
   return v12;
 }
 
-- (id)getCallRecordingEnabled:(id)a3
+- (id)getCallRecordingEnabled:(id)enabled
 {
   v3 = [(CallRecordingSettingsViewController *)self getBooleanFromUserDefaults:TUCallRecordingDisabledKey default:&off_86E8];
   v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 BOOLValue] ^ 1);
@@ -136,22 +136,22 @@
   return v4;
 }
 
-- (void)setCallRecordingEnabled:(id)a3 specifier:(id)a4
+- (void)setCallRecordingEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [a3 BOOLValue] ^ 1);
+  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [enabled BOOLValue] ^ 1);
   [(CallRecordingSettingsViewController *)self setValueInUserDefaults:v5 forKey:TUCallRecordingDisabledKey];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 postNotificationName:@"CallRecordingSettingsChangedNotification" object:0];
 }
 
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default
 {
-  v5 = a4;
-  v6 = a3;
+  defaultCopy = default;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:defaultsCopy];
 
   if (v9)
   {
@@ -160,7 +160,7 @@
 
   else
   {
-    v10 = v5;
+    v10 = defaultCopy;
   }
 
   v11 = v10;
@@ -168,13 +168,13 @@
   return v10;
 }
 
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  [v8 setValue:v6 forKey:v5];
+  [v8 setValue:defaultsCopy forKey:keyCopy];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 postNotificationName:@"CallRecordingSettingsChangedNotification" object:0];

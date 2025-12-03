@@ -1,5 +1,5 @@
 @interface PDFileManager
-+ (BOOL)createDataVaultAtPath:(const char *)a3 error:(id *)a4;
++ (BOOL)createDataVaultAtPath:(const char *)path error:(id *)error;
 - (PDFileManager)init;
 - (id)topLevelDirectoryURL;
 @end
@@ -19,15 +19,15 @@
   return result;
 }
 
-+ (BOOL)createDataVaultAtPath:(const char *)a3 error:(id *)a4
++ (BOOL)createDataVaultAtPath:(const char *)path error:(id *)error
 {
   v6 = rootless_mkdir_datavault();
   v7 = v6;
-  if (a4 && v6)
+  if (error && v6)
   {
     v8 = *__error();
     v9 = __error();
-    *a4 = [NSError cls_createErrorWithCode:5 format:@"Failed to create a data vault at '%s'. Error: %d [%s]", a3, v8, strerror(*v9)];
+    *error = [NSError cls_createErrorWithCode:5 format:@"Failed to create a data vault at '%s'. Error: %d [%s]", path, v8, strerror(*v9)];
   }
 
   return v7 == 0;

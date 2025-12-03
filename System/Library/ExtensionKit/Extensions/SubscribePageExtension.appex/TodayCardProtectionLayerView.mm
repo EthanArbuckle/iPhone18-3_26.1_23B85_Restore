@@ -1,5 +1,5 @@
 @interface TodayCardProtectionLayerView
-- (_TtC22SubscribePageExtension28TodayCardProtectionLayerView)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension28TodayCardProtectionLayerView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 @end
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F8150();
 }
 
@@ -26,7 +26,7 @@
   }
 }
 
-- (_TtC22SubscribePageExtension28TodayCardProtectionLayerView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension28TodayCardProtectionLayerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

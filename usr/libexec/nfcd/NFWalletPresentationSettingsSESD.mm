@@ -1,10 +1,10 @@
 @interface NFWalletPresentationSettingsSESD
 + (id)defaultSetting;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (BOOL)isEligibleForDoubleClick;
-- (NFWalletPresentationSettingsSESD)initWithSuiteName:(id)a3;
+- (NFWalletPresentationSettingsSESD)initWithSuiteName:(id)name;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NFWalletPresentationSettingsSESD
@@ -16,23 +16,23 @@
   return v2;
 }
 
-- (NFWalletPresentationSettingsSESD)initWithSuiteName:(id)a3
+- (NFWalletPresentationSettingsSESD)initWithSuiteName:(id)name
 {
   v10.receiver = self;
   v10.super_class = NFWalletPresentationSettingsSESD;
-  v3 = [(NFWalletPresentationSettings *)&v10 initWithSuiteName:a3];
+  v3 = [(NFWalletPresentationSettings *)&v10 initWithSuiteName:name];
   v4 = v3;
   if (v3)
   {
     [(NFWalletPresentationSettingsSESD *)v3 setWalletDomain:-1];
-    v5 = [(NFWalletPresentationSettings *)v4 defaults];
-    [v5 addObserver:v4 forKeyPath:@"defaultAppIdentifier" options:5 context:off_10035D508];
+    defaults = [(NFWalletPresentationSettings *)v4 defaults];
+    [defaults addObserver:v4 forKeyPath:@"defaultAppIdentifier" options:5 context:off_10035D508];
 
-    v6 = [(NFWalletPresentationSettings *)v4 defaults];
-    [v6 addObserver:v4 forKeyPath:@"domain" options:5 context:off_10035D510];
+    defaults2 = [(NFWalletPresentationSettings *)v4 defaults];
+    [defaults2 addObserver:v4 forKeyPath:@"domain" options:5 context:off_10035D510];
 
-    v7 = [(NFWalletPresentationSettings *)v4 defaults];
-    [v7 addObserver:v4 forKeyPath:@"doubleClickEnabled" options:5 context:off_10035D518];
+    defaults3 = [(NFWalletPresentationSettings *)v4 defaults];
+    [defaults3 addObserver:v4 forKeyPath:@"doubleClickEnabled" options:5 context:off_10035D518];
 
     v8 = v4;
   }
@@ -42,14 +42,14 @@
 
 - (void)dealloc
 {
-  v3 = [(NFWalletPresentationSettings *)self defaults];
-  [v3 removeObserver:self forKeyPath:@"defaultAppIdentifier"];
+  defaults = [(NFWalletPresentationSettings *)self defaults];
+  [defaults removeObserver:self forKeyPath:@"defaultAppIdentifier"];
 
-  v4 = [(NFWalletPresentationSettings *)self defaults];
-  [v4 removeObserver:self forKeyPath:@"domain"];
+  defaults2 = [(NFWalletPresentationSettings *)self defaults];
+  [defaults2 removeObserver:self forKeyPath:@"domain"];
 
-  v5 = [(NFWalletPresentationSettings *)self defaults];
-  [v5 removeObserver:self forKeyPath:@"doubleClickEnabled"];
+  defaults3 = [(NFWalletPresentationSettings *)self defaults];
+  [defaults3 removeObserver:self forKeyPath:@"doubleClickEnabled"];
 
   v6.receiver = self;
   v6.super_class = NFWalletPresentationSettingsSESD;
@@ -58,35 +58,35 @@
 
 - (BOOL)isEligibleForDoubleClick
 {
-  v3 = [(NFWalletPresentationSettingsSESD *)self defaultAppIdentifier];
-  if ([v3 lengthOfBytesUsingEncoding:4] && (-[NFWalletPresentationSettingsSESD walletDomain](self, "walletDomain") == 1 || -[NFWalletPresentationSettingsSESD walletDomain](self, "walletDomain") == 2))
+  defaultAppIdentifier = [(NFWalletPresentationSettingsSESD *)self defaultAppIdentifier];
+  if ([defaultAppIdentifier lengthOfBytesUsingEncoding:4] && (-[NFWalletPresentationSettingsSESD walletDomain](self, "walletDomain") == 1 || -[NFWalletPresentationSettingsSESD walletDomain](self, "walletDomain") == 2))
   {
-    v4 = [(NFWalletPresentationSettingsSESD *)self doubleClickEnable];
+    doubleClickEnable = [(NFWalletPresentationSettingsSESD *)self doubleClickEnable];
   }
 
   else
   {
-    v4 = 0;
+    doubleClickEnable = 0;
   }
 
-  return v4;
+  return doubleClickEnable;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (off_10035D508 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v14 = changeCopy;
+  if (off_10035D508 == context)
   {
-    v15 = [v13 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v15 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     if (v15)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v157 = v11;
+        v157 = pathCopy;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -102,14 +102,14 @@
               isMetaClass = class_isMetaClass(Class);
               ClassName = object_getClassName(self);
               Name = sel_getName(a2);
-              v69 = [(NFWalletPresentationSettingsSESD *)self defaultAppIdentifier];
+              defaultAppIdentifier = [(NFWalletPresentationSettingsSESD *)self defaultAppIdentifier];
               v70 = 43;
               if (!isMetaClass)
               {
                 v70 = 45;
               }
 
-              v65(6, "%c[%{public}s %{public}s]:%i %@ existing=%{public}@, new=%{public}@", v70, ClassName, Name, 112, @"defaultAppIdentifier", v69, v15);
+              v65(6, "%c[%{public}s %{public}s]:%i %@ existing=%{public}@, new=%{public}@", v70, ClassName, Name, 112, @"defaultAppIdentifier", defaultAppIdentifier, v15);
             }
 
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -129,7 +129,7 @@
 
               v74 = object_getClassName(self);
               v75 = sel_getName(a2);
-              v76 = [(NFWalletPresentationSettingsSESD *)self defaultAppIdentifier];
+              defaultAppIdentifier2 = [(NFWalletPresentationSettingsSESD *)self defaultAppIdentifier];
               *buf = 67110658;
               v161 = v73;
               v162 = 2082;
@@ -141,7 +141,7 @@
               v168 = 2112;
               v169 = @"defaultAppIdentifier";
               v170 = 2114;
-              *v171 = v76;
+              *v171 = defaultAppIdentifier2;
               *&v171[8] = 2114;
               v172 = v15;
               _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %@ existing=%{public}@, new=%{public}@", buf, 0x40u);
@@ -355,9 +355,9 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if (off_10035D510 == a6)
+  if (off_10035D510 == context)
   {
-    v15 = [v13 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v15 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     objc_opt_class();
@@ -476,17 +476,17 @@ LABEL_94:
 
     if (isKindOfClass)
     {
-      v77 = [(__CFString *)v15 integerValue];
+      integerValue = [(__CFString *)v15 integerValue];
     }
 
     else
     {
-      v77 = [(__CFString *)v15 unsignedIntegerValue];
+      integerValue = [(__CFString *)v15 unsignedIntegerValue];
     }
 
-    v112 = v77;
-    v157 = v11;
-    if (v77 >= 6)
+    v112 = integerValue;
+    v157 = pathCopy;
+    if (integerValue >= 6)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v113 = NFLogGetLogger();
@@ -544,14 +544,14 @@ LABEL_94:
       v125 = class_isMetaClass(v124);
       v126 = object_getClassName(self);
       v127 = sel_getName(a2);
-      v155 = [(NFWalletPresentationSettingsSESD *)self walletDomain];
+      walletDomain = [(NFWalletPresentationSettingsSESD *)self walletDomain];
       v128 = 43;
       if (!v125)
       {
         v128 = 45;
       }
 
-      v123(6, "%c[%{public}s %{public}s]:%i %@ existing=%{public}lu, new=%{public}lu", v128, v126, v127, 137, @"domain", v155, v112);
+      v123(6, "%c[%{public}s %{public}s]:%i %@ existing=%{public}lu, new=%{public}lu", v128, v126, v127, 137, @"domain", walletDomain, v112);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -571,7 +571,7 @@ LABEL_94:
 
       v132 = object_getClassName(self);
       v133 = sel_getName(a2);
-      v134 = [(NFWalletPresentationSettingsSESD *)self walletDomain];
+      walletDomain2 = [(NFWalletPresentationSettingsSESD *)self walletDomain];
       *buf = 67110658;
       v161 = v131;
       v162 = 2082;
@@ -583,7 +583,7 @@ LABEL_94:
       v168 = 2112;
       v169 = @"domain";
       v170 = 2050;
-      *v171 = v134;
+      *v171 = walletDomain2;
       *&v171[8] = 2050;
       v172 = v112;
       _os_log_impl(&_mh_execute_header, v129, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %@ existing=%{public}lu, new=%{public}lu", buf, 0x40u);
@@ -592,13 +592,13 @@ LABEL_94:
     [(NFWalletPresentationSettingsSESD *)self setWalletDomain:v112];
 LABEL_131:
 
-    v11 = v157;
+    pathCopy = v157;
     goto LABEL_108;
   }
 
-  if (off_10035D518 == a6)
+  if (off_10035D518 == context)
   {
-    v15 = [v13 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v15 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -656,7 +656,7 @@ LABEL_131:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v78 = [(__CFString *)v15 BOOLValue];
+        bOOLValue = [(__CFString *)v15 BOOLValue];
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v79 = NFLogGetLogger();
         if (v79)
@@ -665,18 +665,18 @@ LABEL_131:
           v81 = object_getClass(self);
           v82 = class_isMetaClass(v81);
           v158 = object_getClassName(self);
-          v83 = v11;
+          v83 = pathCopy;
           v84 = sel_getName(a2);
-          v154 = [(NFWalletPresentationSettingsSESD *)self doubleClickEnable];
+          doubleClickEnable = [(NFWalletPresentationSettingsSESD *)self doubleClickEnable];
           v148 = v84;
-          v11 = v83;
+          pathCopy = v83;
           v85 = 43;
           if (!v82)
           {
             v85 = 45;
           }
 
-          v80(6, "%c[%{public}s %{public}s]:%i %@ existing=%{public}d, new=%{public}d", v85, v158, v148, 155, @"doubleClickEnabled", v154, v78);
+          v80(6, "%c[%{public}s %{public}s]:%i %@ existing=%{public}d, new=%{public}d", v85, v158, v148, 155, @"doubleClickEnabled", doubleClickEnable, bOOLValue);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -707,12 +707,12 @@ LABEL_131:
           v170 = 1026;
           *v171 = [(NFWalletPresentationSettingsSESD *)self doubleClickEnable];
           *&v171[4] = 1026;
-          *&v171[6] = v78;
+          *&v171[6] = bOOLValue;
           _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %@ existing=%{public}d, new=%{public}d", buf, 0x38u);
         }
 
-        v89 = self;
-        v90 = v78;
+        selfCopy2 = self;
+        v90 = bOOLValue;
         goto LABEL_106;
       }
 
@@ -740,10 +740,10 @@ LABEL_131:
       {
 LABEL_105:
 
-        v89 = self;
+        selfCopy2 = self;
         v90 = 0;
 LABEL_106:
-        [(NFWalletPresentationSettingsSESD *)v89 setDoubleClickEnable:v90];
+        [(NFWalletPresentationSettingsSESD *)selfCopy2 setDoubleClickEnable:v90];
         goto LABEL_107;
       }
 
@@ -779,17 +779,17 @@ LABEL_106:
 
   v159.receiver = self;
   v159.super_class = NFWalletPresentationSettingsSESD;
-  [(NFWalletPresentationSettingsSESD *)&v159 observeValueForKeyPath:v11 ofObject:v12 change:v13 context:a6];
+  [(NFWalletPresentationSettingsSESD *)&v159 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_108:
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___NFWalletPresentationSettingsSESD;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v8, "keyPathsForValuesAffectingValueForKey:", v3);
-  v5 = [v3 isEqualToString:{@"isEligibleForDoubleClick", v8.receiver, v8.super_class}];
+  keyCopy = key;
+  v4 = objc_msgSendSuper2(&v8, "keyPathsForValuesAffectingValueForKey:", keyCopy);
+  v5 = [keyCopy isEqualToString:{@"isEligibleForDoubleClick", v8.receiver, v8.super_class}];
 
   if (v5)
   {

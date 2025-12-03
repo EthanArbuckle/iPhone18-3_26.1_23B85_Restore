@@ -1,11 +1,11 @@
 @interface SUControllerScanOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUControllerScanOptions)init;
-- (SUControllerScanOptions)initWithCoder:(id)a3;
+- (SUControllerScanOptions)initWithCoder:(id)coder;
 - (id)copy;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUControllerScanOptions
@@ -23,26 +23,26 @@
   return result;
 }
 
-- (SUControllerScanOptions)initWithCoder:(id)a3
+- (SUControllerScanOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SUControllerScanOptions;
   v5 = [(SUControllerScanOptions *)&v7 init];
   if (v5)
   {
-    v5->_userInitiated = [v4 decodeBoolForKey:@"userInitiated"];
-    v5->_downloadWhenFound = [v4 decodeBoolForKey:@"downloadWhenFound"];
+    v5->_userInitiated = [coderCopy decodeBoolForKey:@"userInitiated"];
+    v5->_downloadWhenFound = [coderCopy decodeBoolForKey:@"downloadWhenFound"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[SUControllerScanOptions userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
-  [v4 encodeBool:-[SUControllerScanOptions downloadWhenFound](self forKey:{"downloadWhenFound"), @"downloadWhenFound"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SUControllerScanOptions userInitiated](self forKey:{"userInitiated"), @"userInitiated"}];
+  [coderCopy encodeBool:-[SUControllerScanOptions downloadWhenFound](self forKey:{"downloadWhenFound"), @"downloadWhenFound"}];
 }
 
 - (id)copy
@@ -53,14 +53,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(SUControllerScanOptions *)self userInitiated];
-  if (v5 == [v4 userInitiated])
+  equalCopy = equal;
+  userInitiated = [(SUControllerScanOptions *)self userInitiated];
+  if (userInitiated == [equalCopy userInitiated])
   {
-    v7 = [(SUControllerScanOptions *)self downloadWhenFound];
-    v6 = v7 ^ [v4 downloadWhenFound] ^ 1;
+    downloadWhenFound = [(SUControllerScanOptions *)self downloadWhenFound];
+    v6 = downloadWhenFound ^ [equalCopy downloadWhenFound] ^ 1;
   }
 
   else

@@ -2,13 +2,13 @@
 - (SafariFetcherServerProxy)init;
 - (WebBookmarksClientDelegateProtocol)delegate;
 - (void)clearAllReadingListArchives;
-- (void)clearReadingListArchiveWithUUID:(id)a3;
-- (void)connection:(id)a3 didCloseWithError:(id)a4;
+- (void)clearReadingListArchiveWithUUID:(id)d;
+- (void)connection:(id)connection didCloseWithError:(id)error;
 - (void)didFinishFetching;
-- (void)didStartFetchingReadingListItemWithMessage:(id)a3;
-- (void)didStopFetchingReadingListItemWithMessage:(id)a3;
-- (void)didUpdateProgressWithMessage:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)didStartFetchingReadingListItemWithMessage:(id)message;
+- (void)didStopFetchingReadingListItemWithMessage:(id)message;
+- (void)didUpdateProgressWithMessage:(id)message;
+- (void)setDelegate:(id)delegate;
 - (void)startReadingListFetcher;
 @end
 
@@ -17,9 +17,9 @@
 - (SafariFetcherServerProxy)init
 {
   v3 = +[WBFeatureManager sharedFeatureManager];
-  v4 = [v3 isOfflineReadingListAvailable];
+  isOfflineReadingListAvailable = [v3 isOfflineReadingListAvailable];
 
-  if (v4 && (v23.receiver = self, v23.super_class = SafariFetcherServerProxy, (self = [(SafariFetcherServerProxy *)&v23 init]) != 0))
+  if (isOfflineReadingListAvailable && (v23.receiver = self, v23.super_class = SafariFetcherServerProxy, (self = [(SafariFetcherServerProxy *)&v23 init]) != 0))
   {
     objc_initWeak(&location, self);
     v5 = [WebBookmarksXPCConnection alloc];
@@ -62,15 +62,15 @@
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 void __32__SafariFetcherServerProxy_init__block_invoke(uint64_t a1)
@@ -100,7 +100,7 @@ void __32__SafariFetcherServerProxy_init__block_invoke_4(uint64_t a1, uint64_t a
   [WeakRetained didStopFetchingReadingListItemWithMessage:v4];
 }
 
-- (void)connection:(id)a3 didCloseWithError:(id)a4
+- (void)connection:(id)connection didCloseWithError:(id)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -112,11 +112,11 @@ void __32__SafariFetcherServerProxy_init__block_invoke_4(uint64_t a1, uint64_t a
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = objc_storeWeak(&self->_delegate, a3);
+  v4 = objc_storeWeak(&self->_delegate, delegate);
   v5 = &kSafariFetcherUnregisterForReadingListFetcherUpdatesMessageName;
-  if (a3)
+  if (delegate)
   {
     v5 = &kSafariFetcherRegisterForReadingListFetcherUpdatesMessageName;
   }
@@ -137,20 +137,20 @@ void __32__SafariFetcherServerProxy_init__block_invoke_4(uint64_t a1, uint64_t a
   [(WebBookmarksXPCConnection *)self->_connection sendMessage:v3];
 }
 
-- (void)clearReadingListArchiveWithUUID:(id)a3
+- (void)clearReadingListArchiveWithUUID:(id)d
 {
-  v5 = a3;
-  if ([v5 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v4 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kSafariFetcherClearReadingListArchiveMessageName];
-    xpc_dictionary_set_string(v4, kWebBookmarksUUIDKey, [v5 UTF8String]);
+    xpc_dictionary_set_string(v4, kWebBookmarksUUIDKey, [dCopy UTF8String]);
     [(WebBookmarksXPCConnection *)self->_connection sendMessage:v4];
   }
 }
 
-- (void)didStartFetchingReadingListItemWithMessage:(id)a3
+- (void)didStartFetchingReadingListItemWithMessage:(id)message
 {
-  xdict = a3;
+  xdict = message;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -162,9 +162,9 @@ void __32__SafariFetcherServerProxy_init__block_invoke_4(uint64_t a1, uint64_t a
   }
 }
 
-- (void)didStopFetchingReadingListItemWithMessage:(id)a3
+- (void)didStopFetchingReadingListItemWithMessage:(id)message
 {
-  xdict = a3;
+  xdict = message;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -176,9 +176,9 @@ void __32__SafariFetcherServerProxy_init__block_invoke_4(uint64_t a1, uint64_t a
   }
 }
 
-- (void)didUpdateProgressWithMessage:(id)a3
+- (void)didUpdateProgressWithMessage:(id)message
 {
-  xdict = a3;
+  xdict = message;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 

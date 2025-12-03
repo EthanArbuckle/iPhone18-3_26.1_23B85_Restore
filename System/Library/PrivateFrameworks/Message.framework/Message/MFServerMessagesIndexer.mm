@@ -1,12 +1,12 @@
 @interface MFServerMessagesIndexer
 - (MFAccountsProvider)mailAccountsProvider;
-- (MFServerMessagesIndexer)initWithAccountsProvider:(id)a3;
+- (MFServerMessagesIndexer)initWithAccountsProvider:(id)provider;
 - (OS_dispatch_queue)searchRequestQueue;
-- (void)excludeIndexedUIDsInMailbox:(id)a3 fromUIDs:(id)a4 completion:(id)a5;
-- (void)getIndexingDiagnosticsInMailbox:(id)a3 beforeUID:(id)a4 limit:(int64_t)a5 completion:(id)a6;
-- (void)getIndexingStatisticsWithCompletion:(id)a3;
-- (void)lookUpIdentifier:(id)a3 completion:(id)a4;
-- (void)performSearchQuery:(id)a3 completion:(id)a4;
+- (void)excludeIndexedUIDsInMailbox:(id)mailbox fromUIDs:(id)ds completion:(id)completion;
+- (void)getIndexingDiagnosticsInMailbox:(id)mailbox beforeUID:(id)d limit:(int64_t)limit completion:(id)completion;
+- (void)getIndexingStatisticsWithCompletion:(id)completion;
+- (void)lookUpIdentifier:(id)identifier completion:(id)completion;
+- (void)performSearchQuery:(id)query completion:(id)completion;
 - (void)registerSystemTasks;
 @end
 
@@ -32,11 +32,11 @@
   return v5;
 }
 
-- (MFServerMessagesIndexer)initWithAccountsProvider:(id)a3
+- (MFServerMessagesIndexer)initWithAccountsProvider:(id)provider
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  return sub_1B0903D5C(a3);
+  return sub_1B0903D5C(provider);
 }
 
 - (void)registerSystemTasks
@@ -47,25 +47,25 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)performSearchQuery:(id)a3 completion:(id)a4
+- (void)performSearchQuery:(id)query completion:(id)completion
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
-  v6 = _Block_copy(a4);
+  MEMORY[0x1E69E5928](query);
+  v6 = _Block_copy(completion);
   MEMORY[0x1E69E5928](self);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  sub_1B0904C1C(a3, sub_1B091126C, v7);
+  sub_1B0904C1C(query, sub_1B091126C, v7);
 
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](query);
 }
 
-- (void)lookUpIdentifier:(id)a3 completion:(id)a4
+- (void)lookUpIdentifier:(id)identifier completion:(id)completion
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
-  v7 = _Block_copy(a4);
+  MEMORY[0x1E69E5928](identifier);
+  v7 = _Block_copy(completion);
   MEMORY[0x1E69E5928](self);
   v8 = sub_1B0E44AD8();
   v10 = v5;
@@ -73,14 +73,14 @@
   *(v9 + 16) = v7;
   sub_1B0906C1C(v8, v10, sub_1B0911284, v9);
 
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](identifier);
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)getIndexingStatisticsWithCompletion:(id)a3
+- (void)getIndexingStatisticsWithCompletion:(id)completion
 {
   swift_getObjectType();
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(completion);
   MEMORY[0x1E69E5928](self);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
@@ -89,28 +89,28 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (void)excludeIndexedUIDsInMailbox:(id)a3 fromUIDs:(id)a4 completion:(id)a5
+- (void)excludeIndexedUIDsInMailbox:(id)mailbox fromUIDs:(id)ds completion:(id)completion
 {
-  v22 = self;
-  v21 = a3;
-  v23 = a4;
-  v13 = a5;
+  selfCopy = self;
+  mailboxCopy = mailbox;
+  dsCopy = ds;
+  completionCopy = completion;
   v15 = sub_1B09119B4;
   swift_getObjectType();
   v20 = sub_1B0E42E68();
   v17 = *(v20 - 8);
   v18 = v20 - 8;
   v12 = (*(v17 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x1EEE9AC00](v21);
+  MEMORY[0x1EEE9AC00](mailboxCopy);
   v19 = &v12 - v12;
   MEMORY[0x1E69E5928](v6);
-  MEMORY[0x1E69E5928](v23);
-  v14 = _Block_copy(v13);
+  MEMORY[0x1E69E5928](dsCopy);
+  v14 = _Block_copy(completionCopy);
   MEMORY[0x1E69E5928](self);
   sub_1B0E42DE8();
   v7 = swift_allocObject();
   v8 = v15;
-  v9 = v23;
+  v9 = dsCopy;
   v10 = v7;
   v11 = v19;
   v16 = v10;
@@ -118,35 +118,35 @@
   sub_1B09090D4(v11, v9, v8, v10);
 
   (*(v17 + 8))(v19, v20);
-  MEMORY[0x1E69E5920](v21);
-  MEMORY[0x1E69E5920](v22);
-  MEMORY[0x1E69E5920](v23);
+  MEMORY[0x1E69E5920](mailboxCopy);
+  MEMORY[0x1E69E5920](selfCopy);
+  MEMORY[0x1E69E5920](dsCopy);
 }
 
-- (void)getIndexingDiagnosticsInMailbox:(id)a3 beforeUID:(id)a4 limit:(int64_t)a5 completion:(id)a6
+- (void)getIndexingDiagnosticsInMailbox:(id)mailbox beforeUID:(id)d limit:(int64_t)limit completion:(id)completion
 {
-  v26 = self;
-  v25 = a3;
-  v27 = a4;
-  v18 = a5;
-  v16 = a6;
+  selfCopy = self;
+  mailboxCopy = mailbox;
+  dCopy = d;
+  limitCopy = limit;
+  completionCopy = completion;
   v19 = sub_1B09119D4;
   swift_getObjectType();
   v24 = sub_1B0E42E68();
   v21 = *(v24 - 8);
   v22 = v24 - 8;
   v15 = (*(v21 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x1EEE9AC00](v25);
+  MEMORY[0x1EEE9AC00](mailboxCopy);
   v23 = &v14 - v15;
   MEMORY[0x1E69E5928](v7);
-  MEMORY[0x1E69E5928](v27);
-  v17 = _Block_copy(v16);
+  MEMORY[0x1E69E5928](dCopy);
+  v17 = _Block_copy(completionCopy);
   MEMORY[0x1E69E5928](self);
   sub_1B0E42DE8();
   v8 = swift_allocObject();
-  v9 = v18;
+  v9 = limitCopy;
   v10 = v19;
-  v11 = v27;
+  v11 = dCopy;
   v12 = v8;
   v13 = v23;
   v20 = v12;
@@ -154,9 +154,9 @@
   sub_1B090A68C(v13, v11, v9, v10, v12);
 
   (*(v21 + 8))(v23, v24);
-  MEMORY[0x1E69E5920](v25);
-  MEMORY[0x1E69E5920](v26);
-  MEMORY[0x1E69E5920](v27);
+  MEMORY[0x1E69E5920](mailboxCopy);
+  MEMORY[0x1E69E5920](selfCopy);
+  MEMORY[0x1E69E5920](dCopy);
 }
 
 @end

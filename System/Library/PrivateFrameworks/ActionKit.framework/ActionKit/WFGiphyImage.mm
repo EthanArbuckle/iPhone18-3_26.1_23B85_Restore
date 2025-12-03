@@ -1,24 +1,24 @@
 @interface WFGiphyImage
 + (id)JSONKeyPathsByPropertyKey;
-+ (id)JSONTransformerForKey:(id)a3;
++ (id)JSONTransformerForKey:(id)key;
 @end
 
 @implementation WFGiphyImage
 
-+ (id)JSONTransformerForKey:(id)a3
++ (id)JSONTransformerForKey:(id)key
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"url"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"videoURL"))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"url"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"videoURL"))
   {
-    v4 = [MEMORY[0x277CCAE68] mtl_URLValueTransformer];
+    mtl_URLValueTransformer = [MEMORY[0x277CCAE68] mtl_URLValueTransformer];
 LABEL_8:
-    v5 = v4;
+    v5 = mtl_URLValueTransformer;
     goto LABEL_9;
   }
 
-  if (([v3 isEqualToString:@"fileSize"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"width") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"height"))
+  if (([keyCopy isEqualToString:@"fileSize"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"width") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"height"))
   {
-    v4 = [MEMORY[0x277D7C078] transformerUsingForwardBlock:&__block_literal_global_341 reverseBlock:&__block_literal_global_346];
+    mtl_URLValueTransformer = [MEMORY[0x277D7C078] transformerUsingForwardBlock:&__block_literal_global_341 reverseBlock:&__block_literal_global_346];
     goto LABEL_8;
   }
 
@@ -44,7 +44,7 @@ uint64_t __38__WFGiphyImage_JSONTransformerForKey___block_invoke(uint64_t a1, vo
 
 + (id)JSONKeyPathsByPropertyKey
 {
-  v2 = [MEMORY[0x277CBEAC0] mtl_identityPropertyMapWithModel:a1];
+  v2 = [MEMORY[0x277CBEAC0] mtl_identityPropertyMapWithModel:self];
   v3 = [v2 mutableCopy];
 
   [v3 setObject:@"size" forKey:@"fileSize"];

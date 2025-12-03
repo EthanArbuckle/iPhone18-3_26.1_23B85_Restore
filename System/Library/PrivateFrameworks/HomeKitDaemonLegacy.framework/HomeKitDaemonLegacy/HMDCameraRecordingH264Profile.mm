@@ -1,34 +1,34 @@
 @interface HMDCameraRecordingH264Profile
-+ (id)arrayWithProfiles:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDCameraRecordingH264Profile)initWithCoder:(id)a3;
-- (HMDCameraRecordingH264Profile)initWithH264Profile:(int64_t)a3;
-- (HMDCameraRecordingH264Profile)initWithTLVData:(id)a3;
++ (id)arrayWithProfiles:(id)profiles;
+- (BOOL)isEqual:(id)equal;
+- (HMDCameraRecordingH264Profile)initWithCoder:(id)coder;
+- (HMDCameraRecordingH264Profile)initWithH264Profile:(int64_t)profile;
+- (HMDCameraRecordingH264Profile)initWithTLVData:(id)data;
 - (id)description;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCameraRecordingH264Profile
 
-- (HMDCameraRecordingH264Profile)initWithH264Profile:(int64_t)a3
+- (HMDCameraRecordingH264Profile)initWithH264Profile:(int64_t)profile
 {
   v5.receiver = self;
   v5.super_class = HMDCameraRecordingH264Profile;
   result = [(HMDCameraRecordingH264Profile *)&v5 init];
   if (result)
   {
-    result->_h264Profile = a3;
+    result->_h264Profile = profile;
   }
 
   return result;
 }
 
-- (HMDCameraRecordingH264Profile)initWithTLVData:(id)a3
+- (HMDCameraRecordingH264Profile)initWithTLVData:(id)data
 {
   v6.receiver = self;
   v6.super_class = HMDCameraRecordingH264Profile;
-  v3 = [(HAPNumberParser *)&v6 initWithTLVData:a3];
+  v3 = [(HAPNumberParser *)&v6 initWithTLVData:data];
   v4 = v3;
   if (v3)
   {
@@ -38,12 +38,12 @@
   return v4;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
+  indentCopy = indent;
+  descriptionCopy = description;
   v8 = HMDCameraRecordingH264ProfileTypeAsString([(HMDCameraRecordingH264Profile *)self h264Profile]);
-  [v7 appendFormat:@"\n%@ h264Profile = %@", v6, v8];
+  [descriptionCopy appendFormat:@"\n%@ h264Profile = %@", indentCopy, v8];
 }
 
 - (id)description
@@ -55,10 +55,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -68,8 +68,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMDCameraRecordingH264Profile *)self h264Profile];
-      v6 = v5 == [(HMDCameraRecordingH264Profile *)v4 h264Profile];
+      h264Profile = [(HMDCameraRecordingH264Profile *)self h264Profile];
+      v6 = h264Profile == [(HMDCameraRecordingH264Profile *)equalCopy h264Profile];
     }
 
     else
@@ -81,39 +81,39 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingH264Profile *)self h264Profile];
+  coderCopy = coder;
+  h264Profile = [(HMDCameraRecordingH264Profile *)self h264Profile];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s_%s", "HMDCameraRecordingH264Profile", "h264Profile"];
-  [v4 encodeInt32:v5 forKey:v6];
+  [coderCopy encodeInt32:h264Profile forKey:v6];
 }
 
-- (HMDCameraRecordingH264Profile)initWithCoder:(id)a3
+- (HMDCameraRecordingH264Profile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HMDCameraRecordingH264Profile;
   v5 = [(HMDCameraRecordingH264Profile *)&v8 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s_%s", "HMDCameraRecordingH264Profile", "h264Profile"];
-    v5->_h264Profile = [v4 decodeInt32ForKey:v6];
+    v5->_h264Profile = [coderCopy decodeInt32ForKey:v6];
   }
 
   return v5;
 }
 
-+ (id)arrayWithProfiles:(id)a3
++ (id)arrayWithProfiles:(id)profiles
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  profilesCopy = profiles;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(profilesCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = profilesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

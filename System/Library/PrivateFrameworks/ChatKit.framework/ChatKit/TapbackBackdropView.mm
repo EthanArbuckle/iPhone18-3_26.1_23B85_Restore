@@ -1,6 +1,6 @@
 @interface TapbackBackdropView
 + (Class)layerClass;
-- (_TtC7ChatKit19TapbackBackdropView)initWithCoder:(id)a3;
+- (_TtC7ChatKit19TapbackBackdropView)initWithCoder:(id)coder;
 @end
 
 @implementation TapbackBackdropView
@@ -12,7 +12,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC7ChatKit19TapbackBackdropView)initWithCoder:(id)a3
+- (_TtC7ChatKit19TapbackBackdropView)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);

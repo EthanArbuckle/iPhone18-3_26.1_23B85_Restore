@@ -1,7 +1,7 @@
 @interface TUIElementAnimation
 + (id)attributesToIgnoreWhenResolvingInvocation;
 + (id)supportedAttributes;
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementAnimation
@@ -30,11 +30,11 @@
   return v3;
 }
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v9 = a5;
-  v8 = a6;
-  [v8 defineAnimation:objc_msgSend(v9 closure:{"animationDefinitonWithNode:nameAttribute:", a4.var0, 138), objc_msgSend(v9, "closureForNode:", a4.var0)}];
+  attributesCopy = attributes;
+  contextCopy = context;
+  [contextCopy defineAnimation:objc_msgSend(attributesCopy closure:{"animationDefinitonWithNode:nameAttribute:", node.var0, 138), objc_msgSend(attributesCopy, "closureForNode:", node.var0)}];
 }
 
 @end

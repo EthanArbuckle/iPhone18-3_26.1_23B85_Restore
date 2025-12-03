@@ -1,28 +1,28 @@
 @interface AXPointerControlController
-- (id)allowCustomPointerShapes:(id)a3;
-- (id)autoHidePointer:(id)a3;
+- (id)allowCustomPointerShapes:(id)shapes;
+- (id)autoHidePointer:(id)pointer;
 - (id)globalDevicePreferences;
-- (id)ignoreTrackpad:(id)a3;
-- (id)increasePointerContrast:(id)a3;
-- (id)localizedCurrentDoubleTapDragMode:(id)a3;
-- (id)pointerColorDescription:(id)a3;
-- (id)pointerEffectScalingEnabled:(id)a3;
-- (id)pointerInertiaEnabled:(id)a3;
-- (id)pointerScrollAccelerationFactor:(id)a3;
-- (id)pointerSizeMultiplier:(id)a3;
+- (id)ignoreTrackpad:(id)trackpad;
+- (id)increasePointerContrast:(id)contrast;
+- (id)localizedCurrentDoubleTapDragMode:(id)mode;
+- (id)pointerColorDescription:(id)description;
+- (id)pointerEffectScalingEnabled:(id)enabled;
+- (id)pointerInertiaEnabled:(id)enabled;
+- (id)pointerScrollAccelerationFactor:(id)factor;
+- (id)pointerSizeMultiplier:(id)multiplier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_showAssistiveTouchSettings:(id)a3;
-- (void)setAllowCustomPointerShapes:(id)a3 specifier:(id)a4;
-- (void)setAutoHidePointer:(id)a3 specifier:(id)a4;
-- (void)setIgnoreTrackpad:(id)a3 specifier:(id)a4;
-- (void)setIncreasePointerContrast:(id)a3 specifier:(id)a4;
-- (void)setPointerEffectScalingEnabled:(id)a3 specifier:(id)a4;
-- (void)setPointerInertiaEnabled:(id)a3 specifier:(id)a4;
-- (void)setPointerScrollAccelerationFactor:(id)a3 specifier:(id)a4;
-- (void)setPointerSizeMultiplier:(id)a3 specifier:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_showAssistiveTouchSettings:(id)settings;
+- (void)setAllowCustomPointerShapes:(id)shapes specifier:(id)specifier;
+- (void)setAutoHidePointer:(id)pointer specifier:(id)specifier;
+- (void)setIgnoreTrackpad:(id)trackpad specifier:(id)specifier;
+- (void)setIncreasePointerContrast:(id)contrast specifier:(id)specifier;
+- (void)setPointerEffectScalingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPointerInertiaEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPointerScrollAccelerationFactor:(id)factor specifier:(id)specifier;
+- (void)setPointerSizeMultiplier:(id)multiplier specifier:(id)specifier;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXPointerControlController
@@ -83,9 +83,9 @@
 
     [v4 addObject:v16];
     v21 = +[AXPointerDeviceManager sharedInstance];
-    v22 = [v21 containsTrackpad];
+    containsTrackpad = [v21 containsTrackpad];
 
-    if (v22)
+    if (containsTrackpad)
     {
       v23 = settingsLocString(@"TrackpadTitle", @"Accessibility-hello");
       v24 = [PSSpecifier groupSpecifierWithName:v23];
@@ -152,8 +152,8 @@
     [v39 setProperty:@"DeviceScrollSpeed" forKey:v7];
     [v4 addObject:v39];
     v42 = +[AXMouseEventListener sharedInstance];
-    v43 = [v42 discoveredMouseDevices];
-    v44 = [v43 count];
+    discoveredMouseDevices = [v42 discoveredMouseDevices];
+    v44 = [discoveredMouseDevices count];
 
     if (v44)
     {
@@ -194,7 +194,7 @@
   return v3;
 }
 
-- (id)ignoreTrackpad:(id)a3
+- (id)ignoreTrackpad:(id)trackpad
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 ignoreTrackpad]);
@@ -202,27 +202,27 @@
   return v4;
 }
 
-- (void)setIgnoreTrackpad:(id)a3 specifier:(id)a4
+- (void)setIgnoreTrackpad:(id)trackpad specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [trackpad BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setIgnoreTrackpad:v4];
+  [v5 setIgnoreTrackpad:bOOLValue];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = AXPointerControlController;
-  v6 = a4;
-  v7 = [(AXPointerControlController *)&v12 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(AXPointerControlController *)self specifierAtIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  v7 = [(AXPointerControlController *)&v12 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(AXPointerControlController *)self specifierAtIndexPath:pathCopy, v12.receiver, v12.super_class];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 control];
+    control = [v7 control];
     scrollSpeedSlider = self->_scrollSpeedSlider;
-    self->_scrollSpeedSlider = v9;
+    self->_scrollSpeedSlider = control;
   }
 
   return v7;
@@ -239,21 +239,21 @@
   v4 = +[AXPointerDeviceManager sharedInstance];
   [v4 addObserver:self];
 
-  v5 = [(AXPointerControlController *)self table];
+  table = [(AXPointerControlController *)self table];
   v6 = objc_opt_class();
   v7 = +[AXUIScrollSpeedSlider cellReuseIdentifier];
-  [v5 registerClass:v6 forCellReuseIdentifier:v7];
+  [table registerClass:v6 forCellReuseIdentifier:v7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXPointerControlController;
-  [(AXPointerControlController *)&v4 viewWillAppear:a3];
+  [(AXPointerControlController *)&v4 viewWillAppear:appear];
   [(AXPointerControlController *)self reloadSpecifiers];
 }
 
-- (void)_showAssistiveTouchSettings:(id)a3
+- (void)_showAssistiveTouchSettings:(id)settings
 {
   v4 = objc_opt_new();
   [(AXPointerControlController *)self showController:v4 animate:1];
@@ -262,119 +262,119 @@
 - (id)globalDevicePreferences
 {
   v2 = +[BKSMousePointerService sharedInstance];
-  v3 = [v2 globalDevicePreferences];
+  globalDevicePreferences = [v2 globalDevicePreferences];
 
-  if (!v3)
+  if (!globalDevicePreferences)
   {
-    v3 = [BKSMousePointerDevicePreferences defaultPreferencesForHardwareType:9];
+    globalDevicePreferences = [BKSMousePointerDevicePreferences defaultPreferencesForHardwareType:9];
   }
 
-  return v3;
+  return globalDevicePreferences;
 }
 
-- (id)pointerSizeMultiplier:(id)a3
+- (id)pointerSizeMultiplier:(id)multiplier
 {
   _AXSPointerSizeMultiplier();
 
   return [NSNumber numberWithFloat:?];
 }
 
-- (void)setPointerSizeMultiplier:(id)a3 specifier:(id)a4
+- (void)setPointerSizeMultiplier:(id)multiplier specifier:(id)specifier
 {
-  v4 = [a3 floatValue];
+  floatValue = [multiplier floatValue];
 
-  __AXSPointerSetSizeMultiplier(v4);
+  __AXSPointerSetSizeMultiplier(floatValue);
 }
 
-- (id)allowCustomPointerShapes:(id)a3
+- (id)allowCustomPointerShapes:(id)shapes
 {
   v3 = _AXSPointerAllowAppCustomizationEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setAllowCustomPointerShapes:(id)a3 specifier:(id)a4
+- (void)setAllowCustomPointerShapes:(id)shapes specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [shapes BOOLValue];
 
-  __AXSPointerAllowAppCustomizationSetEnabled(v4);
+  __AXSPointerAllowAppCustomizationSetEnabled(bOOLValue);
 }
 
-- (id)pointerInertiaEnabled:(id)a3
+- (id)pointerInertiaEnabled:(id)enabled
 {
   v3 = _AXSPointerInertiaEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setPointerInertiaEnabled:(id)a3 specifier:(id)a4
+- (void)setPointerInertiaEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSPointerInertiaSetEnabled(v4);
+  __AXSPointerInertiaSetEnabled(bOOLValue);
 }
 
-- (id)pointerEffectScalingEnabled:(id)a3
+- (id)pointerEffectScalingEnabled:(id)enabled
 {
   v3 = _AXSPointerEffectScalingEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setPointerEffectScalingEnabled:(id)a3 specifier:(id)a4
+- (void)setPointerEffectScalingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSPointerEffectScalingSetEnabled(v4);
+  __AXSPointerEffectScalingSetEnabled(bOOLValue);
 }
 
-- (id)increasePointerContrast:(id)a3
+- (id)increasePointerContrast:(id)contrast
 {
   v3 = _AXSPointerIncreasedContrastEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setIncreasePointerContrast:(id)a3 specifier:(id)a4
+- (void)setIncreasePointerContrast:(id)contrast specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [contrast BOOLValue];
 
-  __AXSPointerIncreasedContrastSetEnabled(v4);
+  __AXSPointerIncreasedContrastSetEnabled(bOOLValue);
 }
 
-- (id)autoHidePointer:(id)a3
+- (id)autoHidePointer:(id)pointer
 {
   v3 = _AXSPointerAutoHideEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setAutoHidePointer:(id)a3 specifier:(id)a4
+- (void)setAutoHidePointer:(id)pointer specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [pointer BOOLValue];
 
-  __AXSPointerAutoHideSetEnabled(v4);
+  __AXSPointerAutoHideSetEnabled(bOOLValue);
 }
 
-- (id)pointerColorDescription:(id)a3
+- (id)pointerColorDescription:(id)description
 {
   v3 = _AXSPointerStrokeColor();
 
   return [AXPointerControlColorController localizedNameForColor:v3];
 }
 
-- (id)pointerScrollAccelerationFactor:(id)a3
+- (id)pointerScrollAccelerationFactor:(id)factor
 {
-  v3 = [(AXPointerControlController *)self globalDevicePreferences];
-  [v3 scrollAccelerationFactor];
+  globalDevicePreferences = [(AXPointerControlController *)self globalDevicePreferences];
+  [globalDevicePreferences scrollAccelerationFactor];
   v4 = [NSNumber numberWithFloat:?];
 
   return v4;
 }
 
-- (void)setPointerScrollAccelerationFactor:(id)a3 specifier:(id)a4
+- (void)setPointerScrollAccelerationFactor:(id)factor specifier:(id)specifier
 {
-  [a3 floatValue];
+  [factor floatValue];
   v6 = v5;
   if (fabs(v5 + -0.3125) < 0.03 && ([(UISlider *)self->_scrollSpeedSlider isTracking]& 1) == 0)
   {
@@ -383,17 +383,17 @@
     [(UISlider *)self->_scrollSpeedSlider setValue:1 animated:v7];
   }
 
-  v10 = [(AXPointerControlController *)self globalDevicePreferences];
+  globalDevicePreferences = [(AXPointerControlController *)self globalDevicePreferences];
   *&v8 = v6;
-  [v10 setScrollAccelerationFactor:v8];
+  [globalDevicePreferences setScrollAccelerationFactor:v8];
   v9 = +[BKSMousePointerService sharedInstance];
-  [v9 setGlobalDevicePreferences:v10];
+  [v9 setGlobalDevicePreferences:globalDevicePreferences];
 }
 
-- (id)localizedCurrentDoubleTapDragMode:(id)a3
+- (id)localizedCurrentDoubleTapDragMode:(id)mode
 {
-  v3 = [(AXPointerControlController *)self globalDevicePreferences];
-  v4 = +[AXPointerControlDraggingController localizedNameForDoubleTapDragMode:](AXPointerControlDraggingController, "localizedNameForDoubleTapDragMode:", [v3 doubleTapDragMode]);
+  globalDevicePreferences = [(AXPointerControlController *)self globalDevicePreferences];
+  v4 = +[AXPointerControlDraggingController localizedNameForDoubleTapDragMode:](AXPointerControlDraggingController, "localizedNameForDoubleTapDragMode:", [globalDevicePreferences doubleTapDragMode]);
 
   return v4;
 }

@@ -1,19 +1,19 @@
 @interface SSUniqueExecutionQueue
-- (SSUniqueExecutionQueue)initWithBlock:(id)a3;
-- (void)addCompletionBlock:(id)a3;
+- (SSUniqueExecutionQueue)initWithBlock:(id)block;
+- (void)addCompletionBlock:(id)block;
 @end
 
 @implementation SSUniqueExecutionQueue
 
-- (SSUniqueExecutionQueue)initWithBlock:(id)a3
+- (SSUniqueExecutionQueue)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = SSUniqueExecutionQueue;
   v5 = [(SSUniqueExecutionQueue *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 
@@ -33,19 +33,19 @@
   return v5;
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v5 = [(SSUniqueExecutionQueue *)self promiseAccessQueue];
+  promiseAccessQueue = [(SSUniqueExecutionQueue *)self promiseAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__SSUniqueExecutionQueue_addCompletionBlock___block_invoke;
   block[3] = &unk_1E84AD898;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(promiseAccessQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

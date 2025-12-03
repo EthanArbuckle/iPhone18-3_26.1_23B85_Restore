@@ -1,5 +1,5 @@
 @interface _UIPreviewPresentationController
-+ (id)_backgroundEffectForTraitCollection:(id)a3 interactive:(BOOL)a4;
++ (id)_backgroundEffectForTraitCollection:(id)collection interactive:(BOOL)interactive;
 - (BOOL)_canCommitPresentation;
 - (BOOL)_canDismissPresentation;
 - (BOOL)_hasPreviewActions;
@@ -8,16 +8,16 @@
 - (BOOL)_platterIsInInitialPosition;
 - (BOOL)_platterIsInInitialPositionMostly;
 - (BOOL)_platterIsSelectingPreviewActions;
-- (CGPoint)_applyLayoutAdjustmentsForManagedViewWithPosition:(CGPoint)a3;
-- (CGPoint)_dismissedActionSheetCenterForActionSheet:(id)a3;
-- (CGPoint)_presentedActionSheetCenterForActionSheet:(id)a3;
+- (CGPoint)_applyLayoutAdjustmentsForManagedViewWithPosition:(CGPoint)position;
+- (CGPoint)_dismissedActionSheetCenterForActionSheet:(id)sheet;
+- (CGPoint)_presentedActionSheetCenterForActionSheet:(id)sheet;
 - (CGPoint)centerForMenuDismissed;
-- (CGPoint)centerForMenuDismissedForActionSheet:(id)a3;
+- (CGPoint)centerForMenuDismissedForActionSheet:(id)sheet;
 - (CGPoint)centerForMenuPresented;
-- (CGPoint)centerForMenuPresentedForActionSheet:(id)a3;
+- (CGPoint)centerForMenuPresentedForActionSheet:(id)sheet;
 - (CGPoint)centerForPlatterWithMenuViewDismissed;
 - (CGPoint)centerForPlatterWithMenuViewPresented;
-- (CGPoint)centerForPlatterWithMenuViewPresentedForActionSheet:(id)a3;
+- (CGPoint)centerForPlatterWithMenuViewPresentedForActionSheet:(id)sheet;
 - (CGPoint)initialCenterForLeadingSwipeActionView;
 - (CGPoint)initialCenterForTrailingSwipeActionView;
 - (CGRect)_preferredSourceViewRect;
@@ -29,73 +29,73 @@
 - (UIPreviewInteractionController)previewInteractionController;
 - (UIViewControllerPreviewing)previewingContext;
 - (_UIForcePresentationControllerDelegate)forcePresentationControllerDelegate;
-- (_UIPreviewPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (double)_leadingQuickActionOffsetForCenterPosition:(CGPoint)a3 swipeView:(id)a4;
+- (_UIPreviewPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (double)_leadingQuickActionOffsetForCenterPosition:(CGPoint)position swipeView:(id)view;
 - (double)_quickActionSelectionOffset;
-- (double)_quickActionsSelectionThresholdForPreviewMenuItemStyle:(int64_t)a3;
-- (double)_trailingQuickActionOffsetForCenterPosition:(CGPoint)a3 swipeView:(id)a4;
+- (double)_quickActionsSelectionThresholdForPreviewMenuItemStyle:(int64_t)style;
+- (double)_trailingQuickActionOffsetForCenterPosition:(CGPoint)position swipeView:(id)view;
 - (double)platterContainerCenterX;
 - (double)platterContainerCenterY;
 - (double)presentationViewCornerRadius;
 - (id)_animatorForContainmentTransition;
-- (id)_makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:(id)a3;
+- (id)_makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:(id)items;
 - (id)_viewsParticipatingInNavigationControllerTransition;
 - (id)platterView;
 - (void)_configureActionSheetChromeViews;
 - (void)_configureDynamicsController;
 - (void)_configureInitialActionSheetViewIfNeeded;
-- (void)_dismissForHandledActionWithCompletion:(id)a3;
+- (void)_dismissForHandledActionWithCompletion:(id)completion;
 - (void)_dismissForSelectionQuickActionAnimated;
 - (void)_dismissPresentation;
-- (void)_dismissPresentationWithCompletion:(id)a3;
+- (void)_dismissPresentationWithCompletion:(id)completion;
 - (void)_hideQuickActions;
 - (void)_invokeCommitHandlerFromInteractionProgress;
 - (void)_layoutForDismissTransition;
-- (void)_layoutForPreviewInteractionProgress:(double)a3;
+- (void)_layoutForPreviewInteractionProgress:(double)progress;
 - (void)_layoutForPreviewTransition;
 - (void)_layoutForRevealTransition;
-- (void)_layoutForRevealUnhighlightTransition:(double)a3;
-- (void)_panningGestureRecognizerDidFire:(id)a3;
+- (void)_layoutForRevealUnhighlightTransition:(double)transition;
+- (void)_panningGestureRecognizerDidFire:(id)fire;
 - (void)_prepareInitialSourceViewSnapshot;
 - (void)_preparePresentationContainerViewForPreviewInteraction;
 - (void)_preparePresentationContainerViewForPreviewTransition;
-- (void)_presentSubActionSheetForPreviewActionGroup:(id)a3;
-- (void)_presentationTransitionWillBeginForContainerEffectView:(id)a3;
-- (void)_previewTransitionDidComplete:(BOOL)a3;
-- (void)_restorePlatterToInitialStatePositionAnimatedWithCompletion:(id)a3;
-- (void)_revealTransitionDidComplete:(BOOL)a3;
+- (void)_presentSubActionSheetForPreviewActionGroup:(id)group;
+- (void)_presentationTransitionWillBeginForContainerEffectView:(id)view;
+- (void)_previewTransitionDidComplete:(BOOL)complete;
+- (void)_restorePlatterToInitialStatePositionAnimatedWithCompletion:(id)completion;
+- (void)_revealTransitionDidComplete:(BOOL)complete;
 - (void)_setupInteractionProgressForBreathing;
 - (void)_stopUnhighlightPreviewCellSnapshotViewAnimationIfNeeded;
 - (void)_triggerQuickActionHandlerIfNeeded;
 - (void)_unhighlightPreviewCellSnapshotViewsIfNeeded;
-- (void)_updateBreathingTransformWithProgress:(double)a3 animated:(BOOL)a4;
-- (void)_updateRevealContainerViewForSourceRect:(CGRect)a3;
+- (void)_updateBreathingTransformWithProgress:(double)progress animated:(BOOL)animated;
+- (void)_updateRevealContainerViewForSourceRect:(CGRect)rect;
 - (void)_updateVisibiltyOfPreviewActionChromeForCurrentState;
 - (void)_willCommitPresentation;
 - (void)containerViewWillLayoutSubviews;
 - (void)dealloc;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4;
-- (void)interactionProgressDidUpdate:(id)a3;
-- (void)platterMenuDynamicsController:(id)a3 didMoveSwipeView:(id)a4 toPosition:(CGPoint)a5;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end;
+- (void)interactionProgressDidUpdate:(id)update;
+- (void)platterMenuDynamicsController:(id)controller didMoveSwipeView:(id)view toPosition:(CGPoint)position;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)setPanningGestureRecognizer:(id)a3;
-- (void)setPresentationViewCornerRadius:(double)a3;
+- (void)setPanningGestureRecognizer:(id)recognizer;
+- (void)setPresentationViewCornerRadius:(double)radius;
 - (void)setupAdditionalModalGestureRecognizers;
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3;
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container;
 - (void)updateSwipeActionsIfApplicable;
 @end
 
 @implementation _UIPreviewPresentationController
 
-- (_UIPreviewPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_UIPreviewPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v9.receiver = self;
   v9.super_class = _UIPreviewPresentationController;
-  v4 = [(UIPreviewPresentationController *)&v9 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(UIPreviewPresentationController *)&v9 initWithPresentedViewController:controller presentingViewController:viewController];
   v5 = v4;
   if (v4)
   {
@@ -120,44 +120,44 @@
 
 - (double)presentationViewCornerRadius
 {
-  v2 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v2 cornerRadius];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPresentationViewCornerRadius:(double)a3
+- (void)setPresentationViewCornerRadius:(double)radius
 {
-  v4 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v4 setCornerRadius:a3];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView setCornerRadius:radius];
 }
 
-- (void)_presentationTransitionWillBeginForContainerEffectView:(id)a3
+- (void)_presentationTransitionWillBeginForContainerEffectView:(id)view
 {
   v25.receiver = self;
   v25.super_class = _UIPreviewPresentationController;
-  [(UIPreviewPresentationController *)&v25 _presentationTransitionWillBeginForContainerEffectView:a3];
+  [(UIPreviewPresentationController *)&v25 _presentationTransitionWillBeginForContainerEffectView:view];
   [(_UIPreviewPresentationController *)self _preferredSourceViewRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   [(_UIPreviewPresentationController *)self _updateRevealContainerViewForSourceRect:?];
-  v12 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-  v13 = [v12 contentView];
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  contentView = [presentationContainerEffectView contentView];
 
-  v14 = [(_UIPreviewPresentationController *)self revealContainerView];
-  [v13 addSubview:v14];
+  revealContainerView = [(_UIPreviewPresentationController *)self revealContainerView];
+  [contentView addSubview:revealContainerView];
 
-  v15 = [(UIPresentationController *)self sourceView];
-  [v13 convertRect:v15 fromView:{v5, v7, v9, v11}];
+  sourceView = [(UIPresentationController *)self sourceView];
+  [contentView convertRect:sourceView fromView:{v5, v7, v9, v11}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(_UIPreviewPresentationController *)self revealContainerView];
-  [v24 setFrame:{v17, v19, v21, v23}];
+  revealContainerView2 = [(_UIPreviewPresentationController *)self revealContainerView];
+  [revealContainerView2 setFrame:{v17, v19, v21, v23}];
 }
 
 - (void)presentationTransitionWillBegin
@@ -165,49 +165,49 @@
   v32.receiver = self;
   v32.super_class = _UIPreviewPresentationController;
   [(UIPreviewPresentationController *)&v32 presentationTransitionWillBegin];
-  v3 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-  v4 = [v3 contentView];
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  contentView = [presentationContainerEffectView contentView];
 
   v5 = [UIScrollView alloc];
-  [v4 bounds];
+  [contentView bounds];
   v6 = [(UIScrollView *)v5 initWithFrame:?];
   [(UIView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIScrollView *)v6 setScrollEnabled:0];
-  [v4 bounds];
+  [contentView bounds];
   [(UIScrollView *)v6 setContentSize:v7, v8];
   [(UIScrollView *)v6 setShowsHorizontalScrollIndicator:0];
   [(UIScrollView *)v6 setShowsVerticalScrollIndicator:0];
-  [v4 addSubview:v6];
+  [contentView addSubview:v6];
   [(_UIPreviewPresentationController *)self setContainerScrollView:v6];
   v9 = [_UIPreviewPresentationContainerView alloc];
-  [v4 bounds];
+  [contentView bounds];
   v10 = [(_UIPreviewPresentationContainerView *)v9 initWithFrame:?];
-  v11 = [(UIPresentationController *)self presentedViewController];
-  v12 = [v11 view];
-  [(_UIPreviewPresentationContainerView *)v10 setContentView:v12];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
+  [(_UIPreviewPresentationContainerView *)v10 setContentView:view];
 
   [(UIView *)v10 setHidden:1];
   [(_UIPreviewPresentationController *)self setPresentationContainerView:v10];
   [(UIView *)v6 addSubview:v10];
   v13 = [UIView alloc];
-  [v4 bounds];
+  [contentView bounds];
   v14 = [(UIView *)v13 initWithFrame:?];
   [(UIView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addSubview:v14];
+  [contentView addSubview:v14];
   [(_UIPreviewPresentationController *)self setActionSheetContainerView:v14];
   v15 = _NSDictionaryOfVariableBindings(&cfstr_Containerscrol_0.isa, v6, v14, 0);
-  v16 = [(UIView *)v6 centerXAnchor];
-  v17 = [v4 centerXAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerXAnchor = [(UIView *)v6 centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [(_UIPreviewPresentationController *)self setContainerScrollViewXConstraint:v18];
 
-  v19 = [(UIView *)v6 widthAnchor];
-  v20 = [v4 widthAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  widthAnchor = [(UIView *)v6 widthAnchor];
+  widthAnchor2 = [contentView widthAnchor];
+  v21 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v21 setActive:1];
 
-  v22 = [(_UIPreviewPresentationController *)self containerScrollViewXConstraint];
-  [v22 setActive:1];
+  containerScrollViewXConstraint = [(_UIPreviewPresentationController *)self containerScrollViewXConstraint];
+  [containerScrollViewXConstraint setActive:1];
 
   v23 = MEMORY[0x1E69977A0];
   v24 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:|[containerScrollView]|" options:0 metrics:0 views:v15];
@@ -221,27 +221,27 @@
   v28 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:|[actionSheetContainerView]|" options:0 metrics:0 views:v15];
   [v27 activateConstraints:v28];
 
-  v29 = [(UIPresentationController *)self presentedViewController];
-  v30 = [v29 view];
-  [(_UIPreviewPresentationContainerView *)v10 setContentView:v30];
+  presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+  view2 = [presentedViewController2 view];
+  [(_UIPreviewPresentationContainerView *)v10 setContentView:view2];
 
   [(UIView *)v10 setHidden:1];
   [(_UIPreviewPresentationController *)self setPresentationContainerView:v10];
   [(UIView *)v6 addSubview:v10];
-  v31 = [(_UIPreviewPresentationController *)self forcePresentationControllerDelegate];
+  forcePresentationControllerDelegate = [(_UIPreviewPresentationController *)self forcePresentationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v31 forcePresentationTransitionWillBegin:self];
+    [forcePresentationControllerDelegate forcePresentationTransitionWillBegin:self];
   }
 
   [(_UIPreviewPresentationController *)self _unhighlightPreviewCellSnapshotViewsIfNeeded];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
   v4.receiver = self;
   v4.super_class = _UIPreviewPresentationController;
-  [(UIPreviewPresentationController *)&v4 presentationTransitionDidEnd:a3];
+  [(UIPreviewPresentationController *)&v4 presentationTransitionDidEnd:end];
   [(_UIPreviewPresentationController *)self _stopUnhighlightPreviewCellSnapshotViewAnimationIfNeeded];
 }
 
@@ -255,11 +255,11 @@
   [(_UIPreviewPresentationController *)self _endBreathing];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
   v4.receiver = self;
   v4.super_class = _UIPreviewPresentationController;
-  [(UIPreviewPresentationController *)&v4 dismissalTransitionDidEnd:a3];
+  [(UIPreviewPresentationController *)&v4 dismissalTransitionDidEnd:end];
   [(_UIPreviewPresentationController *)self _triggerQuickActionHandlerIfNeeded];
 }
 
@@ -268,25 +268,25 @@
   v6.receiver = self;
   v6.super_class = _UIPreviewPresentationController;
   [(UIPresentationController *)&v6 containerViewWillLayoutSubviews];
-  v3 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v4 = [(UIPresentationController *)self presentedViewController];
-  [v4 preferredContentSize];
-  [v3 setPreferredContentSize:?];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
+  [presentationContainerView setPreferredContentSize:?];
 
-  v5 = [(UIPresentationController *)self containerView];
-  [v5 bounds];
-  [v3 setFrame:?];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView bounds];
+  [presentationContainerView setFrame:?];
 }
 
 - (id)_viewsParticipatingInNavigationControllerTransition
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
 
-  if (v3)
+  if (presentationContainerEffectView)
   {
-    v4 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-    v7[0] = v4;
+    presentationContainerEffectView2 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+    v7[0] = presentationContainerEffectView2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -303,17 +303,17 @@
   v12[4] = *MEMORY[0x1E69E9840];
   v3 = [[_UIPreviewTransitionController alloc] initWithInteractionProgress:0 targetPresentationPhase:4];
   v11[0] = @"backgroundView";
-  v4 = [(UIPreviewPresentationController *)self presentationContainerEffectView];
-  v12[0] = v4;
+  presentationContainerEffectView = [(UIPreviewPresentationController *)self presentationContainerEffectView];
+  v12[0] = presentationContainerEffectView;
   v11[1] = @"containerView";
-  v5 = [(UIPresentationController *)self containerView];
-  v12[1] = v5;
+  containerView = [(UIPresentationController *)self containerView];
+  v12[1] = containerView;
   v11[2] = @"presentationContainerView";
-  v6 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v12[2] = v6;
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  v12[2] = presentationContainerView;
   v11[3] = @"presentationView";
-  v7 = [(UIPresentationController *)self _presentationView];
-  v12[3] = v7;
+  _presentationView = [(UIPresentationController *)self _presentationView];
+  v12[3] = _presentationView;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:4];
   [(_UIPreviewTransitionController *)v3 setViewsParticipatingInCommitTransition:v8];
 
@@ -327,42 +327,42 @@
   return v3;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v6.receiver = self;
   v6.super_class = _UIPreviewPresentationController;
-  [(UIPresentationController *)&v6 preferredContentSizeDidChangeForChildContentContainer:a3];
-  v4 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v5 = [(UIPresentationController *)self presentedViewController];
-  [v5 preferredContentSize];
-  [v4 setPreferredContentSize:?];
+  [(UIPresentationController *)&v6 preferredContentSizeDidChangeForChildContentContainer:container];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
+  [presentationContainerView setPreferredContentSize:?];
 
-  [v4 setNeedsLayout];
+  [presentationContainerView setNeedsLayout];
 }
 
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container
 {
   v6.receiver = self;
   v6.super_class = _UIPreviewPresentationController;
-  [(UIPresentationController *)&v6 systemLayoutFittingSizeDidChangeForChildContentContainer:a3];
-  v4 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v5 = [(UIPresentationController *)self presentedViewController];
-  [v5 preferredContentSize];
-  [v4 setPreferredContentSize:?];
+  [(UIPresentationController *)&v6 systemLayoutFittingSizeDidChangeForChildContentContainer:container];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
+  [presentationContainerView setPreferredContentSize:?];
 
-  [v4 setNeedsLayout];
+  [presentationContainerView setNeedsLayout];
 }
 
-- (void)interactionProgressDidUpdate:(id)a3
+- (void)interactionProgressDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
+  updateCopy = update;
+  interactionProgressForCommit = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
 
-  if (v5 == v4)
+  if (interactionProgressForCommit == updateCopy)
   {
     if (![(_UIPreviewPresentationController *)self hasAskedForCommitInternally])
     {
-      [v4 percentComplete];
+      [updateCopy percentComplete];
       if (v7 >= 1.0)
       {
         if ([(_UIPreviewPresentationController *)self _canCommitPresentation])
@@ -375,51 +375,51 @@
 
   else
   {
-    v6 = [(_UIPreviewPresentationController *)self interactionProgressForBreathing];
+    interactionProgressForBreathing = [(_UIPreviewPresentationController *)self interactionProgressForBreathing];
 
-    if (v6 == v4)
+    if (interactionProgressForBreathing == updateCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __65___UIPreviewPresentationController_interactionProgressDidUpdate___block_invoke;
       v8[3] = &unk_1E70F35B8;
       v8[4] = self;
-      v9 = v4;
+      v9 = updateCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v8);
     }
 
     else
     {
-      [v4 percentComplete];
+      [updateCopy percentComplete];
       [(_UIPreviewPresentationController *)self _layoutForPreviewInteractionProgress:?];
     }
   }
 }
 
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
+  endCopy = end;
+  progressCopy = progress;
+  interactionProgressForCommit = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
 
-  if (v7 == v6 && ![(_UIPreviewPresentationController *)self hasAskedForCommitInternally]&& v4 && [(_UIPreviewPresentationController *)self _canCommitPresentation])
+  if (interactionProgressForCommit == progressCopy && ![(_UIPreviewPresentationController *)self hasAskedForCommitInternally]&& endCopy && [(_UIPreviewPresentationController *)self _canCommitPresentation])
   {
 
     [(_UIPreviewPresentationController *)self _invokeCommitHandlerFromInteractionProgress];
   }
 }
 
-- (void)_updateBreathingTransformWithProgress:(double)a3 animated:(BOOL)a4
+- (void)_updateBreathingTransformWithProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(_UIPreviewPresentationController *)self isBreathing])
   {
-    v7 = [(_UIPreviewPresentationController *)self presentationContainerView];
-    v8 = [v7 layer];
+    presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+    layer = [presentationContainerView layer];
 
-    if (v8)
+    if (layer)
     {
-      [v8 sublayerTransform];
+      [layer sublayerTransform];
     }
 
     else
@@ -429,8 +429,8 @@
 
     CATransform3DGetAffineTransform(&m, &v36);
     v9 = m.a + m.c;
-    v10 = [(_UIPreviewPresentationController *)self platterMenuController];
-    [v10 currentVelocity];
+    platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+    [platterMenuController currentVelocity];
     v12 = v11;
 
     v13 = 1.0;
@@ -445,7 +445,7 @@
 
       if (v15 < 50.0)
       {
-        v16 = fmin(fmax(a3, 0.0), 1.0);
+        v16 = fmin(fmax(progress, 0.0), 1.0);
         v13 = 1.0 - v16 + v16 * 1.05;
         v14 = v16 * 10.0 + (1.0 - v16) * 0.0;
       }
@@ -453,18 +453,18 @@
 
     if (v13 != v9)
     {
-      if (v4)
+      if (animatedCopy)
       {
-        v17 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
+        actionSheetAvailableImageView3 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
         v18 = [MEMORY[0x1E6979318] animationWithKeyPath:@"sublayerTransform"];
         [v18 setDuration:0.1];
-        [v18 setTimingFunction:v17];
+        [v18 setTimingFunction:actionSheetAvailableImageView3];
         v19 = MEMORY[0x1E696B098];
-        v20 = [v8 presentationLayer];
-        v21 = v20;
-        if (v20)
+        presentationLayer = [layer presentationLayer];
+        v21 = presentationLayer;
+        if (presentationLayer)
         {
-          [v20 sublayerTransform];
+          [presentationLayer sublayerTransform];
         }
 
         else
@@ -481,32 +481,32 @@
         v24 = [v23 valueWithCATransform3D:&v36];
         [v18 setToValue:v24];
 
-        [v8 addAnimation:v18 forKey:@"com.apple.breathing"];
+        [layer addAnimation:v18 forKey:@"com.apple.breathing"];
         v25 = MEMORY[0x1E696B098];
         CGAffineTransformMakeScale(&m, v13, v13);
         CATransform3DMakeAffineTransform(&v36, &m);
         v26 = [v25 valueWithCATransform3D:&v36];
-        [v8 setValue:v26 forKey:@"sublayerTransform"];
+        [layer setValue:v26 forKey:@"sublayerTransform"];
 
         v27 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
 
         [v27 setDuration:0.1];
-        [v27 setTimingFunction:v17];
+        [v27 setTimingFunction:actionSheetAvailableImageView3];
         v28 = MEMORY[0x1E696B098];
         CGAffineTransformMakeTranslation(&v36, 0.0, -v14);
         v29 = [v28 valueWithCGAffineTransform:&v36];
         [v27 setToValue:v29];
 
-        v30 = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
-        v31 = [v30 layer];
-        [v31 addAnimation:v27 forKey:@"com.apple.breathing.arrow"];
+        actionSheetAvailableImageView = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
+        layer2 = [actionSheetAvailableImageView layer];
+        [layer2 addAnimation:v27 forKey:@"com.apple.breathing.arrow"];
 
         CGAffineTransformMakeTranslation(&v35, 0.0, -v14);
-        v32 = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
+        actionSheetAvailableImageView2 = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
         *&v36.m11 = *&v35.a;
         *&v36.m13 = *&v35.c;
         *&v36.m21 = *&v35.tx;
-        [v32 setTransform:&v36];
+        [actionSheetAvailableImageView2 setTransform:&v36];
       }
 
       else
@@ -514,13 +514,13 @@
         CGAffineTransformMakeScale(&v36, v13, v13);
         CATransform3DMakeAffineTransform(&v34, &v36);
         v36 = v34;
-        [v8 setSublayerTransform:&v36];
+        [layer setSublayerTransform:&v36];
         CGAffineTransformMakeTranslation(&v33, 0.0, -v14);
-        v17 = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
+        actionSheetAvailableImageView3 = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
         *&v36.m11 = *&v33.a;
         *&v36.m13 = *&v33.c;
         *&v36.m21 = *&v33.tx;
-        [v17 setTransform:&v36];
+        [actionSheetAvailableImageView3 setTransform:&v36];
       }
     }
   }
@@ -531,9 +531,9 @@
   previewActionItems = self->_previewActionItems;
   if (!previewActionItems)
   {
-    v4 = [(UIPresentationController *)self presentedViewController];
-    v5 = [v4 previewActionItems];
-    v6 = [v5 copy];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    previewActionItems = [presentedViewController previewActionItems];
+    v6 = [previewActionItems copy];
     v7 = self->_previewActionItems;
     self->_previewActionItems = v6;
 
@@ -548,9 +548,9 @@
   leadingPreviewAction = self->_leadingPreviewAction;
   if (!leadingPreviewAction)
   {
-    v4 = [(UIPresentationController *)self presentedViewController];
-    v5 = [v4 leadingPreviewAction];
-    v6 = [v5 copy];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    leadingPreviewAction = [presentedViewController leadingPreviewAction];
+    v6 = [leadingPreviewAction copy];
     v7 = self->_leadingPreviewAction;
     self->_leadingPreviewAction = v6;
 
@@ -565,9 +565,9 @@
   trailingPreviewAction = self->_trailingPreviewAction;
   if (!trailingPreviewAction)
   {
-    v4 = [(UIPresentationController *)self presentedViewController];
-    v5 = [v4 trailingPreviewAction];
-    v6 = [v5 copy];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    trailingPreviewAction = [presentedViewController trailingPreviewAction];
+    v6 = [trailingPreviewAction copy];
     v7 = self->_trailingPreviewAction;
     self->_trailingPreviewAction = v6;
 
@@ -577,15 +577,15 @@
   return trailingPreviewAction;
 }
 
-+ (id)_backgroundEffectForTraitCollection:(id)a3 interactive:(BOOL)a4
++ (id)_backgroundEffectForTraitCollection:(id)collection interactive:(BOOL)interactive
 {
-  v4 = a4;
-  v6 = a3;
+  interactiveCopy = interactive;
+  collectionCopy = collection;
   if ([objc_opt_class() _shouldApplyVisualEffectsToPresentingView])
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____UIPreviewPresentationController;
-    v7 = objc_msgSendSuper2(&v9, sel__backgroundEffectForTraitCollection_interactive_, v6, v4);
+    v7 = objc_msgSendSuper2(&v9, sel__backgroundEffectForTraitCollection_interactive_, collectionCopy, interactiveCopy);
   }
 
   else
@@ -600,37 +600,37 @@
 {
   if ([(_UIPreviewPresentationController *)self _hasPreviewActions])
   {
-    v3 = [(_UIPreviewPresentationController *)self previewActionSheet];
+    previewActionSheet = [(_UIPreviewPresentationController *)self previewActionSheet];
 
-    if (!v3)
+    if (!previewActionSheet)
     {
-      v4 = [(_UIPreviewPresentationController *)self previewActionItems];
-      v5 = [(_UIPreviewPresentationController *)self _makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:v4];
+      previewActionItems = [(_UIPreviewPresentationController *)self previewActionItems];
+      v5 = [(_UIPreviewPresentationController *)self _makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:previewActionItems];
       [(_UIPreviewPresentationController *)self setPreviewActionSheet:v5];
 
-      v11 = [(_UIPreviewPresentationController *)self previewActionSheet];
-      [(_UIPreviewPresentationController *)self _dismissedActionSheetCenterForActionSheet:v11];
+      previewActionSheet2 = [(_UIPreviewPresentationController *)self previewActionSheet];
+      [(_UIPreviewPresentationController *)self _dismissedActionSheetCenterForActionSheet:previewActionSheet2];
       v7 = v6;
       v9 = v8;
-      v10 = [(_UIPreviewPresentationController *)self previewActionSheet];
-      [v10 setCenter:{v7, v9}];
+      previewActionSheet3 = [(_UIPreviewPresentationController *)self previewActionSheet];
+      [previewActionSheet3 setCenter:{v7, v9}];
     }
   }
 }
 
-- (CGPoint)_applyLayoutAdjustmentsForManagedViewWithPosition:(CGPoint)a3
+- (CGPoint)_applyLayoutAdjustmentsForManagedViewWithPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIPreviewPresentationController *)self previewActionSheet];
-  v7 = [v6 _window];
-  [v7 _managedSafeAreaInsets];
+  y = position.y;
+  x = position.x;
+  previewActionSheet = [(_UIPreviewPresentationController *)self previewActionSheet];
+  _window = [previewActionSheet _window];
+  [_window _managedSafeAreaInsets];
   v9 = v8;
 
   if (fabs(v9) >= 2.22044605e-16)
   {
-    v10 = [(_UIPreviewPresentationController *)self previewActionSheet];
-    [v10 contentInsets];
+    previewActionSheet2 = [(_UIPreviewPresentationController *)self previewActionSheet];
+    [previewActionSheet2 contentInsets];
     v12 = v11;
 
     y = y - (v9 - v12);
@@ -647,26 +647,26 @@
 {
   [(_UIPreviewPresentationController *)self setCurrentPresentationPhase:1];
   CGAffineTransformMakeScale(&v5, 1.0175, 1.0175);
-  v3 = [(_UIPreviewPresentationController *)self revealContainerView];
+  revealContainerView = [(_UIPreviewPresentationController *)self revealContainerView];
   v4 = v5;
-  [v3 setTransform:&v4];
+  [revealContainerView setTransform:&v4];
 }
 
-- (void)_layoutForRevealUnhighlightTransition:(double)a3
+- (void)_layoutForRevealUnhighlightTransition:(double)transition
 {
-  v3 = 1.0 - a3;
-  v4 = [(_UIPreviewPresentationController *)self initialSourceViewSnapshot];
-  [v4 setAlpha:v3];
+  v3 = 1.0 - transition;
+  initialSourceViewSnapshot = [(_UIPreviewPresentationController *)self initialSourceViewSnapshot];
+  [initialSourceViewSnapshot setAlpha:v3];
 }
 
-- (void)_revealTransitionDidComplete:(BOOL)a3
+- (void)_revealTransitionDidComplete:(BOOL)complete
 {
-  v4 = [(_UIPreviewPresentationController *)self presentationPhaseCompletionBlock];
+  presentationPhaseCompletionBlock = [(_UIPreviewPresentationController *)self presentationPhaseCompletionBlock];
 
-  if (v4)
+  if (presentationPhaseCompletionBlock)
   {
-    v5 = [(_UIPreviewPresentationController *)self presentationPhaseCompletionBlock];
-    v5[2](v5, 1);
+    presentationPhaseCompletionBlock2 = [(_UIPreviewPresentationController *)self presentationPhaseCompletionBlock];
+    presentationPhaseCompletionBlock2[2](presentationPhaseCompletionBlock2, 1);
   }
 
   [(_UIPreviewPresentationController *)self _stopUnhighlightPreviewCellSnapshotViewAnimationIfNeeded];
@@ -674,38 +674,38 @@
 
 - (void)_preparePresentationContainerViewForPreviewTransition
 {
-  v3 = [(_UIPreviewPresentationController *)self revealContainerView];
-  [v3 frame];
+  revealContainerView = [(_UIPreviewPresentationController *)self revealContainerView];
+  [revealContainerView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UIPreviewPresentationController *)self presentationContainerView];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __89___UIPreviewPresentationController__preparePresentationContainerViewForPreviewTransition__block_invoke;
   v48[3] = &unk_1E70F3590;
   v48[4] = self;
   [UIView performWithoutAnimation:v48];
-  v13 = [v12 platterView];
-  [v13 bounds];
+  platterView = [presentationContainerView platterView];
+  [platterView bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [v12 platterView];
-  v23 = [v12 superview];
-  [v22 convertRect:v23 toView:{v15, v17, v19, v21}];
+  platterView2 = [presentationContainerView platterView];
+  superview = [presentationContainerView superview];
+  [platterView2 convertRect:superview toView:{v15, v17, v19, v21}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  [v12 setAlpha:0.0];
+  [presentationContainerView setAlpha:0.0];
   if (_AXSReduceMotionEnabled())
   {
-    [v12 setBlurRadius:0.0];
+    [presentationContainerView setBlurRadius:0.0];
     v32 = *(MEMORY[0x1E695EFD0] + 16);
     *&v47.a = *MEMORY[0x1E695EFD0];
     *&v47.c = v32;
@@ -715,7 +715,7 @@
 
   else
   {
-    [v12 setBlurRadius:60.0];
+    [presentationContainerView setBlurRadius:60.0];
     v44 = *(MEMORY[0x1E695EFD0] + 16);
     *&v47.a = *MEMORY[0x1E695EFD0];
     *&v47.c = v44;
@@ -764,9 +764,9 @@
     v33 = &v46;
   }
 
-  [v12 setTransform:v33];
-  [v12 setHidden:0];
-  [v12 setShouldRasterizeForTransition:1];
+  [presentationContainerView setTransform:v33];
+  [presentationContainerView setHidden:0];
+  [presentationContainerView setShouldRasterizeForTransition:1];
 }
 
 - (void)_layoutForPreviewTransition
@@ -778,47 +778,47 @@
   v10[4] = self;
   [UIView performWithoutAnimation:v10];
   [(_UIPreviewPresentationController *)self setCurrentPresentationPhase:2];
-  v3 = [(_UIPreviewPresentationController *)self revealContainerView];
-  [v3 setBlurRadius:60.0];
+  revealContainerView = [(_UIPreviewPresentationController *)self revealContainerView];
+  [revealContainerView setBlurRadius:60.0];
 
-  v4 = [(_UIPreviewPresentationController *)self revealContainerView];
-  [v4 setAlpha:0.0];
+  revealContainerView2 = [(_UIPreviewPresentationController *)self revealContainerView];
+  [revealContainerView2 setAlpha:0.0];
 
-  v5 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v5 setBlurRadius:0.0];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView setBlurRadius:0.0];
 
-  v6 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v6 setAlpha:1.0];
+  presentationContainerView2 = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView2 setAlpha:1.0];
 
-  v7 = [(_UIPreviewPresentationController *)self presentationContainerView];
+  presentationContainerView3 = [(_UIPreviewPresentationController *)self presentationContainerView];
   v8 = *(MEMORY[0x1E695EFD0] + 16);
   v9[0] = *MEMORY[0x1E695EFD0];
   v9[1] = v8;
   v9[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v7 setTransform:v9];
+  [presentationContainerView3 setTransform:v9];
 }
 
-- (void)_previewTransitionDidComplete:(BOOL)a3
+- (void)_previewTransitionDidComplete:(BOOL)complete
 {
-  v3 = a3;
-  v5 = [(_UIPreviewPresentationController *)self revealContainerView];
-  [v5 setAlpha:1.0];
+  completeCopy = complete;
+  revealContainerView = [(_UIPreviewPresentationController *)self revealContainerView];
+  [revealContainerView setAlpha:1.0];
 
-  v6 = [(_UIPreviewPresentationController *)self revealContainerView];
-  [v6 setHidden:1];
+  revealContainerView2 = [(_UIPreviewPresentationController *)self revealContainerView];
+  [revealContainerView2 setHidden:1];
 
-  v7 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v7 setShouldRasterizeForTransition:0];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView setShouldRasterizeForTransition:0];
 
-  if (v3)
+  if (completeCopy)
   {
     [(_UIPreviewPresentationController *)self _preparePresentationContainerViewForPreviewInteraction];
-    v8 = [(_UIPreviewPresentationController *)self presentationPhaseCompletionBlock];
+    presentationPhaseCompletionBlock = [(_UIPreviewPresentationController *)self presentationPhaseCompletionBlock];
 
-    if (v8)
+    if (presentationPhaseCompletionBlock)
     {
-      v9 = [(_UIPreviewPresentationController *)self presentationPhaseCompletionBlock];
-      v9[2](v9, 2);
+      presentationPhaseCompletionBlock2 = [(_UIPreviewPresentationController *)self presentationPhaseCompletionBlock];
+      presentationPhaseCompletionBlock2[2](presentationPhaseCompletionBlock2, 2);
     }
 
     [(_UIPreviewPresentationController *)self _configureActionSheetChromeViews];
@@ -835,24 +835,24 @@
 
 - (void)_layoutForDismissTransition
 {
-  v3 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v4 = [(_UIPreviewPresentationController *)self revealContainerView];
-  v5 = [v3 platterView];
-  [v5 bounds];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  revealContainerView = [(_UIPreviewPresentationController *)self revealContainerView];
+  platterView = [presentationContainerView platterView];
+  [platterView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [v3 platterView];
-  v15 = [v3 superview];
-  [v14 convertRect:v15 toView:{v7, v9, v11, v13}];
+  platterView2 = [presentationContainerView platterView];
+  superview = [presentationContainerView superview];
+  [platterView2 convertRect:superview toView:{v7, v9, v11, v13}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  [v4 frame];
+  [revealContainerView frame];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -865,7 +865,7 @@
     *&v49.a = *MEMORY[0x1E695EFD0];
     *&v49.c = v34;
     *&v49.tx = *(MEMORY[0x1E695EFD0] + 32);
-    [v3 setTransform:&v49];
+    [presentationContainerView setTransform:&v49];
     v35 = 0.0;
   }
 
@@ -914,21 +914,21 @@
     v47 = v49;
     CGAffineTransformScale(&v48, &v47, Height / v39, Height / v39);
     v49 = v48;
-    [v3 setTransform:&v48];
+    [presentationContainerView setTransform:&v48];
     v35 = 60.0;
   }
 
-  [v3 setBlurRadius:v35];
-  [v3 setAlpha:0.0];
+  [presentationContainerView setBlurRadius:v35];
+  [presentationContainerView setAlpha:0.0];
   v40 = v33[1];
   *&v49.a = *v33;
   *&v49.c = v40;
   *&v49.tx = v33[2];
-  [v4 setTransform:&v49];
-  [v4 setAlpha:1.0];
-  [v4 setBlurRadius:0.0];
-  v41 = [(UIPresentationController *)self containerView];
-  [v41 setUserInteractionEnabled:0];
+  [revealContainerView setTransform:&v49];
+  [revealContainerView setAlpha:1.0];
+  [revealContainerView setBlurRadius:0.0];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView setUserInteractionEnabled:0];
 
   [(_UIPreviewPresentationController *)self setCurrentPresentationPhase:0];
 }
@@ -945,37 +945,37 @@
   [v5 startTimingForObject:self];
 
   _UIPowerLogPeekBegan();
-  v6 = [(_UIPreviewPresentationController *)self interactionProgressForPresentation];
-  [v6 addProgressObserver:self];
+  interactionProgressForPresentation = [(_UIPreviewPresentationController *)self interactionProgressForPresentation];
+  [interactionProgressForPresentation addProgressObserver:self];
 
   [(_UIPreviewPresentationController *)self _configureInitialActionSheetViewIfNeeded];
 }
 
-- (void)_layoutForPreviewInteractionProgress:(double)a3
+- (void)_layoutForPreviewInteractionProgress:(double)progress
 {
-  CGAffineTransformMakeScale(&v6, a3, a3);
-  v4 = [(_UIPreviewPresentationController *)self presentationContainerView];
+  CGAffineTransformMakeScale(&v6, progress, progress);
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
   v5 = v6;
-  [v4 setTransform:&v5];
+  [presentationContainerView setTransform:&v5];
 }
 
 - (void)_willCommitPresentation
 {
   [(_UIPreviewPresentationController *)self _endBreathing];
-  v3 = [(_UIPreviewPresentationController *)self platterMenuController];
-  [v3 resetAnimator];
+  platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+  [platterMenuController resetAnimator];
 
-  v4 = [(_UIPreviewPresentationController *)self previewActionSheet];
-  [v4 setHidden:1];
+  previewActionSheet = [(_UIPreviewPresentationController *)self previewActionSheet];
+  [previewActionSheet setHidden:1];
 
-  v5 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-  [v5 setHidden:1];
+  leadingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+  [leadingQuickActionView setHidden:1];
 
-  v6 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-  [v6 setHidden:1];
+  trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+  [trailingQuickActionView setHidden:1];
 
-  v7 = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
-  [v7 setHidden:1];
+  actionSheetAvailableImageView = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
+  [actionSheetAvailableImageView setHidden:1];
 }
 
 - (BOOL)_canDismissPresentation
@@ -987,18 +987,18 @@
 
   if ([(_UIPreviewPresentationController *)self _hasPreviewActions])
   {
-    v3 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
+    revealPanningVelocityIntegrator = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
 
-    if (v3)
+    if (revealPanningVelocityIntegrator)
     {
-      v4 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
-      [v4 velocity];
+      revealPanningVelocityIntegrator2 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
+      [revealPanningVelocityIntegrator2 velocity];
       v6 = v5;
 
       if (v6 < 0.0)
       {
-        v7 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
-        [v7 offset];
+        revealPanningVelocityIntegrator3 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
+        [revealPanningVelocityIntegrator3 offset];
         v9 = fabs(v8);
 
         if (v9 >= 44.0)
@@ -1015,8 +1015,8 @@ LABEL_12:
   {
     if ([(_UIPreviewPresentationController *)self _platterIsInInitialPositionMostly]&& ![(_UIPreviewPresentationController *)self preDismissAnimationsInflight])
     {
-      v12 = [(_UIPreviewPresentationController *)self platterMenuController];
-      v10 = [v12 isMenuPresenting] ^ 1;
+      platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+      v10 = [platterMenuController isMenuPresenting] ^ 1;
 
       return v10;
     }
@@ -1041,41 +1041,41 @@ LABEL_8:
 
 - (void)_triggerQuickActionHandlerIfNeeded
 {
-  v15 = [(UIPresentationController *)self presentedViewController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
   if ([(_UIPreviewPresentationController *)self leadingQuickActionViewSelected])
   {
-    v3 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-    v4 = [v3 quickAction];
-    v5 = [v4 handler];
+    leadingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+    quickAction = [leadingQuickActionView quickAction];
+    handler = [quickAction handler];
 
-    if (!v5)
+    if (!handler)
     {
       goto LABEL_8;
     }
 
-    v6 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-    v7 = [v6 quickAction];
-    v8 = [v7 handler];
-    v9 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+    leadingQuickActionView2 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+    quickAction2 = [leadingQuickActionView2 quickAction];
+    handler2 = [quickAction2 handler];
+    leadingQuickActionView3 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
     goto LABEL_7;
   }
 
   if ([(_UIPreviewPresentationController *)self trailingQuickActionViewSelected])
   {
-    v10 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-    v11 = [v10 quickAction];
-    v12 = [v11 handler];
+    trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+    quickAction3 = [trailingQuickActionView quickAction];
+    handler3 = [quickAction3 handler];
 
-    if (v12)
+    if (handler3)
     {
-      v6 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-      v7 = [v6 quickAction];
-      v8 = [v7 handler];
-      v9 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+      leadingQuickActionView2 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+      quickAction2 = [leadingQuickActionView2 quickAction];
+      handler2 = [quickAction2 handler];
+      leadingQuickActionView3 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
 LABEL_7:
-      v13 = v9;
-      v14 = [v9 quickAction];
-      (v8)[2](v8, v14, v15);
+      v13 = leadingQuickActionView3;
+      quickAction4 = [leadingQuickActionView3 quickAction];
+      (handler2)[2](handler2, quickAction4, presentedViewController);
     }
   }
 
@@ -1084,57 +1084,57 @@ LABEL_8:
 
 - (void)_prepareInitialSourceViewSnapshot
 {
-  v14 = [(UIPresentationController *)self sourceView];
+  sourceView = [(UIPresentationController *)self sourceView];
   [(UIPresentationController *)self sourceRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UIPreviewPresentationController *)self previewingContext];
-  v12 = [v11 customViewForInteractiveHighlight];
+  previewingContext = [(_UIPreviewPresentationController *)self previewingContext];
+  customViewForInteractiveHighlight = [previewingContext customViewForInteractiveHighlight];
 
-  if (!v12)
+  if (!customViewForInteractiveHighlight)
   {
-    v12 = [v14 resizableSnapshotViewFromRect:0 afterScreenUpdates:v4 withCapInsets:{v6, v8, v10, 0.0, 0.0, 0.0, 0.0}];
-    [(_UIPreviewPresentationController *)self setInitialSourceViewSnapshot:v12];
+    customViewForInteractiveHighlight = [sourceView resizableSnapshotViewFromRect:0 afterScreenUpdates:v4 withCapInsets:{v6, v8, v10, 0.0, 0.0, 0.0, 0.0}];
+    [(_UIPreviewPresentationController *)self setInitialSourceViewSnapshot:customViewForInteractiveHighlight];
   }
 
   v13 = objc_alloc_init(_UIPreviewInteractionTransitionWindow);
-  [v14 convertRect:0 toView:{v4, v6, v8, v10}];
+  [sourceView convertRect:0 toView:{v4, v6, v8, v10}];
   [(UIWindow *)v13 setFrame:?];
   [(UIWindow *)v13 setHidden:0];
-  [(UIView *)v13 addSubview:v12];
+  [(UIView *)v13 addSubview:customViewForInteractiveHighlight];
   [(UIView *)v13 bounds];
-  [v12 setFrame:?];
+  [customViewForInteractiveHighlight setFrame:?];
   [(_UIPreviewPresentationController *)self setInitialSourceViewSnapshotWindow:v13];
 }
 
-- (void)_updateRevealContainerViewForSourceRect:(CGRect)a3
+- (void)_updateRevealContainerViewForSourceRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = [[_UIPreviewPresentationEffectView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v13 = [[_UIPreviewPresentationEffectView alloc] initWithFrame:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(UIView *)v13 setUserInteractionEnabled:0];
-  v8 = [(UIPresentationController *)self sourceView];
-  if (v8)
+  sourceView = [(UIPresentationController *)self sourceView];
+  if (sourceView)
   {
-    v9 = [(_UIPreviewPresentationController *)self previewingContext];
-    v10 = [v9 customViewForInteractiveHighlight];
+    previewingContext = [(_UIPreviewPresentationController *)self previewingContext];
+    customViewForInteractiveHighlight = [previewingContext customViewForInteractiveHighlight];
 
-    if (v10)
+    if (customViewForInteractiveHighlight)
     {
-      [(UIView *)v13 addSubview:v10];
+      [(UIView *)v13 addSubview:customViewForInteractiveHighlight];
     }
 
     else if (![(_UIPreviewPresentationController *)self _sourceViewSnapshotAndScaleTransformSuppressed])
     {
-      v11 = [v8 resizableSnapshotViewFromRect:0 afterScreenUpdates:x withCapInsets:{y, width, height, 0.0, 0.0, 0.0, 0.0}];
+      v11 = [sourceView resizableSnapshotViewFromRect:0 afterScreenUpdates:x withCapInsets:{y, width, height, 0.0, 0.0, 0.0, 0.0}];
       [v11 setAutoresizingMask:18];
       [(UIView *)v13 addSubview:v11];
-      v12 = [(_UIPreviewPresentationController *)self initialSourceViewSnapshot];
-      [(UIView *)v13 insertSubview:v12 aboveSubview:v11];
+      initialSourceViewSnapshot = [(_UIPreviewPresentationController *)self initialSourceViewSnapshot];
+      [(UIView *)v13 insertSubview:initialSourceViewSnapshot aboveSubview:v11];
     }
   }
 
@@ -1162,8 +1162,8 @@ LABEL_8:
 
 - (void)_stopUnhighlightPreviewCellSnapshotViewAnimationIfNeeded
 {
-  v3 = [(_UIPreviewPresentationController *)self unhighlightPreviewCellSnapshotViewAnimator];
-  [v3 stopAnimation];
+  unhighlightPreviewCellSnapshotViewAnimator = [(_UIPreviewPresentationController *)self unhighlightPreviewCellSnapshotViewAnimator];
+  [unhighlightPreviewCellSnapshotViewAnimator stopAnimation];
 
   [(_UIPreviewPresentationController *)self setUnhighlightPreviewCellSnapshotViewAnimator:0];
 
@@ -1172,9 +1172,9 @@ LABEL_8:
 
 - (CGRect)_preferredSourceViewRect
 {
-  v3 = [(UIPresentationController *)self sourceView];
+  sourceView = [(UIPresentationController *)self sourceView];
   [(UIPresentationController *)self sourceRect];
-  [UIForcePresentationHelper sourceRectForView:v3 proposedSourceRect:?];
+  [UIForcePresentationHelper sourceRectForView:sourceView proposedSourceRect:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1193,8 +1193,8 @@ LABEL_8:
 
 - (double)platterContainerCenterX
 {
-  v2 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v2 bounds];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView bounds];
   MidX = CGRectGetMidX(v5);
 
   return MidX;
@@ -1202,8 +1202,8 @@ LABEL_8:
 
 - (double)platterContainerCenterY
 {
-  v2 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v2 bounds];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView bounds];
   MidY = CGRectGetMidY(v5);
 
   return MidY;
@@ -1211,9 +1211,9 @@ LABEL_8:
 
 - (CGRect)platterBounds
 {
-  v2 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v3 = [v2 platterView];
-  [v3 bounds];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  platterView = [presentationContainerView platterView];
+  [platterView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1232,16 +1232,16 @@ LABEL_8:
 
 - (id)platterView
 {
-  v2 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v3 = [v2 platterView];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  platterView = [presentationContainerView platterView];
 
-  return v3;
+  return platterView;
 }
 
 - (CGRect)platterContainerBounds
 {
-  v2 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v2 bounds];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1260,8 +1260,8 @@ LABEL_8:
 
 - (CGPoint)centerForPlatterWithMenuViewPresented
 {
-  v3 = [(_UIPreviewPresentationController *)self previewActionSheet];
-  [(_UIPreviewPresentationController *)self centerForPlatterWithMenuViewPresentedForActionSheet:v3];
+  previewActionSheet = [(_UIPreviewPresentationController *)self previewActionSheet];
+  [(_UIPreviewPresentationController *)self centerForPlatterWithMenuViewPresentedForActionSheet:previewActionSheet];
   v5 = v4;
   v7 = v6;
 
@@ -1286,8 +1286,8 @@ LABEL_8:
 
 - (CGPoint)centerForMenuPresented
 {
-  v3 = [(_UIPreviewPresentationController *)self previewActionSheet];
-  [(_UIPreviewPresentationController *)self centerForMenuPresentedForActionSheet:v3];
+  previewActionSheet = [(_UIPreviewPresentationController *)self previewActionSheet];
+  [(_UIPreviewPresentationController *)self centerForMenuPresentedForActionSheet:previewActionSheet];
   v5 = v4;
   v7 = v6;
 
@@ -1300,8 +1300,8 @@ LABEL_8:
 
 - (CGPoint)centerForMenuDismissed
 {
-  v3 = [(_UIPreviewPresentationController *)self previewActionSheet];
-  [(_UIPreviewPresentationController *)self centerForMenuDismissedForActionSheet:v3];
+  previewActionSheet = [(_UIPreviewPresentationController *)self previewActionSheet];
+  [(_UIPreviewPresentationController *)self centerForMenuDismissedForActionSheet:previewActionSheet];
   v5 = v4;
   v7 = v6;
 
@@ -1312,85 +1312,85 @@ LABEL_8:
   return result;
 }
 
-- (void)platterMenuDynamicsController:(id)a3 didMoveSwipeView:(id)a4 toPosition:(CGPoint)a5
+- (void)platterMenuDynamicsController:(id)controller didMoveSwipeView:(id)view toPosition:(CGPoint)position
 {
-  y = a5.y;
-  x = a5.x;
-  v16 = a4;
-  v8 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+  y = position.y;
+  x = position.x;
+  viewCopy = view;
+  leadingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
 
-  if (v8 == v16)
+  if (leadingQuickActionView == viewCopy)
   {
     [(_UIPreviewPresentationController *)self _leadingQuickActionOffsetForCenterPosition:x swipeView:y];
     v12 = v14;
-    v13 = [(_UIPreviewPresentationController *)self leadingQuickActionViewEdgeConstraint];
+    leadingQuickActionViewEdgeConstraint = [(_UIPreviewPresentationController *)self leadingQuickActionViewEdgeConstraint];
   }
 
   else
   {
-    v9 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+    trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
 
-    v10 = v16;
-    if (v9 != v16)
+    v10 = viewCopy;
+    if (trailingQuickActionView != viewCopy)
     {
       goto LABEL_6;
     }
 
     [(_UIPreviewPresentationController *)self _trailingQuickActionOffsetForCenterPosition:x swipeView:y];
     v12 = v11;
-    v13 = [(_UIPreviewPresentationController *)self trailingQuickActionViewEdgeConstraint];
+    leadingQuickActionViewEdgeConstraint = [(_UIPreviewPresentationController *)self trailingQuickActionViewEdgeConstraint];
   }
 
-  v15 = v13;
-  [v13 setConstant:v12];
+  v15 = leadingQuickActionViewEdgeConstraint;
+  [leadingQuickActionViewEdgeConstraint setConstant:v12];
 
-  v10 = v16;
+  v10 = viewCopy;
 LABEL_6:
 }
 
-- (double)_trailingQuickActionOffsetForCenterPosition:(CGPoint)a3 swipeView:(id)a4
+- (double)_trailingQuickActionOffsetForCenterPosition:(CGPoint)position swipeView:(id)view
 {
-  x = a3.x;
-  [a4 bounds];
+  x = position.x;
+  [view bounds];
   v6 = x + CGRectGetWidth(v11) * 0.5;
-  v7 = [(UIPresentationController *)self containerView];
-  [v7 bounds];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView bounds];
   v9 = v8;
 
   return v6 - v9;
 }
 
-- (double)_leadingQuickActionOffsetForCenterPosition:(CGPoint)a3 swipeView:(id)a4
+- (double)_leadingQuickActionOffsetForCenterPosition:(CGPoint)position swipeView:(id)view
 {
-  x = a3.x;
-  [a4 bounds];
+  x = position.x;
+  [view bounds];
   return -(x + v5 * -0.5);
 }
 
 - (CGPoint)initialCenterForLeadingSwipeActionView
 {
-  v3 = [(_UIPreviewPresentationController *)self leadingSwipeActionView];
-  if (v3)
+  leadingSwipeActionView = [(_UIPreviewPresentationController *)self leadingSwipeActionView];
+  if (leadingSwipeActionView)
   {
     [(_UIPreviewPresentationController *)self centerForPlatterWithMenuViewDismissed];
     v5 = v4;
     v7 = v6;
-    v8 = [(_UIPreviewPresentationController *)self platterView];
-    [v8 frame];
+    platterView = [(_UIPreviewPresentationController *)self platterView];
+    [platterView frame];
     v10 = v9;
     v12 = v11;
     v13 = round(v7 - v11 * 0.5);
     v14 = round(v5 - v9 * 0.5);
 
-    [v3 bounds];
+    [leadingSwipeActionView bounds];
     v16 = v15;
     v23.origin.x = v14;
     v23.origin.y = v13;
     v23.size.width = v10;
     v23.size.height = v12;
     v17 = CGRectGetMinX(v23) + v16 * 0.5 + 2.0;
-    v18 = [(UIPresentationController *)self containerView];
-    [v18 bounds];
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView bounds];
     v19 = CGRectGetHeight(v24) * 0.5;
   }
 
@@ -1409,28 +1409,28 @@ LABEL_6:
 
 - (CGPoint)initialCenterForTrailingSwipeActionView
 {
-  v3 = [(_UIPreviewPresentationController *)self trailingSwipeActionView];
-  if (v3)
+  trailingSwipeActionView = [(_UIPreviewPresentationController *)self trailingSwipeActionView];
+  if (trailingSwipeActionView)
   {
     [(_UIPreviewPresentationController *)self centerForPlatterWithMenuViewDismissed];
     v5 = v4;
     v7 = v6;
-    v8 = [(_UIPreviewPresentationController *)self platterView];
-    [v8 frame];
+    platterView = [(_UIPreviewPresentationController *)self platterView];
+    [platterView frame];
     v10 = v9;
     v12 = v11;
     v13 = round(v7 - v11 * 0.5);
     v14 = round(v5 - v9 * 0.5);
 
-    [v3 bounds];
+    [trailingSwipeActionView bounds];
     v16 = v15;
     v23.origin.x = v14;
     v23.origin.y = v13;
     v23.size.width = v10;
     v23.size.height = v12;
     v17 = CGRectGetMaxX(v23) - (v16 * 0.5 + 2.0);
-    v18 = [(UIPresentationController *)self containerView];
-    [v18 bounds];
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView bounds];
     v19 = CGRectGetHeight(v24) * 0.5;
   }
 
@@ -1447,9 +1447,9 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)centerForPlatterWithMenuViewPresentedForActionSheet:(id)a3
+- (CGPoint)centerForPlatterWithMenuViewPresentedForActionSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   [(_UIPreviewPresentationController *)self platterContainerBounds];
   v6 = v5;
   v8 = v7;
@@ -1457,7 +1457,7 @@ LABEL_6:
   v12 = v11;
   [(_UIPreviewPresentationController *)self platterContainerCenterY];
   v14 = v13;
-  [v4 bounds];
+  [sheetCopy bounds];
   v16 = v15;
 
   v26.origin.x = v6;
@@ -1482,15 +1482,15 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)centerForMenuPresentedForActionSheet:(id)a3
+- (CGPoint)centerForMenuPresentedForActionSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   [(_UIPreviewPresentationController *)self platterContainerBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 bounds];
+  [sheetCopy bounds];
   v14 = v13;
 
   [(_UIPreviewPresentationController *)self platterContainerCenterX];
@@ -1508,12 +1508,12 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)centerForMenuDismissedForActionSheet:(id)a3
+- (CGPoint)centerForMenuDismissedForActionSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   [(_UIPreviewPresentationController *)self platterContainerBounds];
   v6 = v5;
-  [v4 bounds];
+  [sheetCopy bounds];
   v8 = v7;
 
   [(_UIPreviewPresentationController *)self platterContainerCenterX];
@@ -1525,50 +1525,50 @@ LABEL_6:
 
 - (void)_configureDynamicsController
 {
-  v3 = [(_UIPreviewPresentationController *)self previewActionSheet];
+  previewActionSheet = [(_UIPreviewPresentationController *)self previewActionSheet];
 
-  if (!v3)
+  if (!previewActionSheet)
   {
     return;
   }
 
   v4 = [_UIPlatterMenuDynamicsController alloc];
-  v5 = [(UIPresentationController *)self containerView];
-  v6 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v7 = [v6 platterView];
-  v8 = [(_UIPreviewPresentationController *)self previewActionSheet];
-  v21 = [(_UIPlatterMenuDynamicsController *)v4 initWithContainerView:v5 platterView:v7 menuView:v8 delegate:self];
+  containerView = [(UIPresentationController *)self containerView];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  platterView = [presentationContainerView platterView];
+  previewActionSheet2 = [(_UIPreviewPresentationController *)self previewActionSheet];
+  v21 = [(_UIPlatterMenuDynamicsController *)v4 initWithContainerView:containerView platterView:platterView menuView:previewActionSheet2 delegate:self];
 
   if (![(_UIPreviewPresentationController *)self _hasPreviewQuickActions])
   {
     [(_UIPlatterMenuDynamicsController *)v21 lockIntoYAxis];
   }
 
-  v9 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
+  revealPanningVelocityIntegrator = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
 
-  if (!v9)
+  if (!revealPanningVelocityIntegrator)
   {
     v14 = 0.0;
     v12 = 0.0;
     goto LABEL_15;
   }
 
-  v10 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
-  [v10 velocity];
+  revealPanningVelocityIntegrator2 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
+  [revealPanningVelocityIntegrator2 velocity];
   v12 = v11;
   v14 = v13;
 
   if (v14 < 0.0)
   {
-    v9 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
-    [v9 velocity];
+    revealPanningVelocityIntegrator = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
+    [revealPanningVelocityIntegrator velocity];
     if (fabs(v15) > -300.0)
     {
-      v16 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
-      [v16 offset];
+      revealPanningVelocityIntegrator3 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
+      [revealPanningVelocityIntegrator3 offset];
       v18 = fabs(v17);
 
-      LODWORD(v9) = v18 > 44.0;
+      LODWORD(revealPanningVelocityIntegrator) = v18 > 44.0;
       if (v18 > 44.0)
       {
         v12 = 0.0;
@@ -1578,16 +1578,16 @@ LABEL_6:
     }
   }
 
-  LODWORD(v9) = 0;
+  LODWORD(revealPanningVelocityIntegrator) = 0;
 LABEL_14:
   [(_UIPreviewPresentationController *)self setRevealPanningVelocityIntegrator:0];
 LABEL_15:
   [(_UIPreviewPresentationController *)self setPlatterMenuController:v21];
-  v19 = [(_UIPreviewPresentationController *)self panningGestureRecognizerInProgress];
-  if (v9 && !v19 && ([(_UIPreviewPresentationController *)self currentPresentationPhase]== 2 || [(_UIPreviewPresentationController *)self currentPresentationPhase]== 3))
+  panningGestureRecognizerInProgress = [(_UIPreviewPresentationController *)self panningGestureRecognizerInProgress];
+  if (revealPanningVelocityIntegrator && !panningGestureRecognizerInProgress && ([(_UIPreviewPresentationController *)self currentPresentationPhase]== 2 || [(_UIPreviewPresentationController *)self currentPresentationPhase]== 3))
   {
-    v20 = [(_UIPreviewPresentationController *)self platterMenuController];
-    [v20 _animateToPlatterPresentedWithVelocity:{v12, v14}];
+    platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+    [platterMenuController _animateToPlatterPresentedWithVelocity:{v12, v14}];
   }
 }
 
@@ -1595,40 +1595,40 @@ LABEL_15:
 {
   [(_UIPreviewPresentationController *)self setInteractionProgressForCommit:0];
   [(_UIPreviewPresentationController *)self setHasAskedForCommitInternally:1];
-  v3 = [(_UIPreviewPresentationController *)self forcePresentationControllerDelegate];
+  forcePresentationControllerDelegate = [(_UIPreviewPresentationController *)self forcePresentationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 forcePresentationControllerWantsToCommit:self];
+    [forcePresentationControllerDelegate forcePresentationControllerWantsToCommit:self];
   }
 }
 
 - (void)_dismissPresentation
 {
-  v3 = [(_UIPreviewPresentationController *)self platterMenuController];
-  [v3 resetAnimator];
+  platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+  [platterMenuController resetAnimator];
 
   [(_UIPreviewPresentationController *)self _dismissPresentationWithCompletion:0];
 }
 
 - (void)_hideQuickActions
 {
-  v3 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-  [v3 setHidden:1];
+  leadingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+  [leadingQuickActionView setHidden:1];
 
-  v4 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-  [v4 setHidden:1];
+  trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+  [trailingQuickActionView setHidden:1];
 }
 
 - (double)_quickActionSelectionOffset
 {
-  v3 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-  [v3 bounds];
+  leadingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+  [leadingQuickActionView bounds];
   Width = CGRectGetWidth(v7);
 
   if (Width <= 2.22044605e-16)
   {
-    v5 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-    [v5 bounds];
+    trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+    [trailingQuickActionView bounds];
     Width = CGRectGetWidth(v8);
   }
 
@@ -1641,11 +1641,11 @@ LABEL_15:
   return result;
 }
 
-- (double)_quickActionsSelectionThresholdForPreviewMenuItemStyle:(int64_t)a3
+- (double)_quickActionsSelectionThresholdForPreviewMenuItemStyle:(int64_t)style
 {
   [(_UIPreviewPresentationController *)self _quickActionSelectionOffset];
   v5 = 2.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     v5 = 3.5;
   }
@@ -1659,26 +1659,26 @@ LABEL_15:
   {
     if ([(_UIPreviewPresentationController *)self _hasPreviewQuickActions])
     {
-      v3 = [(_UIPreviewPresentationController *)self platterMenuController];
-      [v3 currentTranslation];
+      platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+      [platterMenuController currentTranslation];
       v5 = fabs(v4);
 
-      v6 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-      v7 = [v6 isHidden];
+      trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+      isHidden = [trailingQuickActionView isHidden];
 
-      if (v5 < 2.22044605e-16 != v7)
+      if (v5 < 2.22044605e-16 != isHidden)
       {
-        v8 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-        [v8 setHidden:v5 < 2.22044605e-16];
+        trailingQuickActionView2 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+        [trailingQuickActionView2 setHidden:v5 < 2.22044605e-16];
       }
 
-      v9 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-      v10 = [v9 isHidden];
+      leadingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+      isHidden2 = [leadingQuickActionView isHidden];
 
-      if (v5 < 2.22044605e-16 != v10)
+      if (v5 < 2.22044605e-16 != isHidden2)
       {
-        v11 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-        [v11 setHidden:v5 < 2.22044605e-16];
+        leadingQuickActionView2 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+        [leadingQuickActionView2 setHidden:v5 < 2.22044605e-16];
       }
     }
 
@@ -1694,8 +1694,8 @@ LABEL_15:
         v12 = 0.0;
       }
 
-      v13 = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
-      [v13 alpha];
+      actionSheetAvailableImageView = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
+      [actionSheetAvailableImageView alpha];
       v15 = v14;
 
       if (v12 != v15)
@@ -1714,16 +1714,16 @@ LABEL_15:
 
 - (BOOL)_hasPreviewQuickActions
 {
-  v3 = [(_UIPreviewPresentationController *)self leadingPreviewAction];
-  if (v3)
+  leadingPreviewAction = [(_UIPreviewPresentationController *)self leadingPreviewAction];
+  if (leadingPreviewAction)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_UIPreviewPresentationController *)self trailingPreviewAction];
-    v4 = v5 != 0;
+    trailingPreviewAction = [(_UIPreviewPresentationController *)self trailingPreviewAction];
+    v4 = trailingPreviewAction != 0;
   }
 
   return v4;
@@ -1741,42 +1741,42 @@ LABEL_15:
 
 - (BOOL)_hasPreviewActions
 {
-  v2 = [(_UIPreviewPresentationController *)self previewActionItems];
-  v3 = [v2 count] != 0;
+  previewActionItems = [(_UIPreviewPresentationController *)self previewActionItems];
+  v3 = [previewActionItems count] != 0;
 
   return v3;
 }
 
-- (void)_presentSubActionSheetForPreviewActionGroup:(id)a3
+- (void)_presentSubActionSheetForPreviewActionGroup:(id)group
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  groupCopy = group;
+  v5 = groupCopy;
+  if (groupCopy)
   {
-    v6 = [v4 _actions];
-    v7 = [v6 count];
+    _actions = [groupCopy _actions];
+    v7 = [_actions count];
 
     if (v7)
     {
-      v8 = [v5 _actions];
-      v9 = [(_UIPreviewPresentationController *)self _makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:v8];
+      _actions2 = [v5 _actions];
+      v9 = [(_UIPreviewPresentationController *)self _makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:_actions2];
 
-      v10 = [(_UIPreviewPresentationController *)self previewActionSheet];
+      previewActionSheet = [(_UIPreviewPresentationController *)self previewActionSheet];
       objc_initWeak(location, self);
-      v11 = [(UIPresentationController *)self containerView];
-      v12 = [v11 window];
-      [v12 setUserInteractionEnabled:0];
+      containerView = [(UIPresentationController *)self containerView];
+      window = [containerView window];
+      [window setUserInteractionEnabled:0];
 
-      v13 = [(_UIPreviewPresentationController *)self platterMenuController];
-      [v13 resetAnimator];
+      platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+      [platterMenuController resetAnimator];
 
       [(_UIPreviewPresentationController *)self centerForPlatterWithMenuViewPresentedForActionSheet:v9];
       v15 = v14;
       v17 = v16;
-      [(_UIPreviewPresentationController *)self centerForMenuPresentedForActionSheet:v10];
+      [(_UIPreviewPresentationController *)self centerForMenuPresentedForActionSheet:previewActionSheet];
       v19 = v18;
       v21 = v20;
-      [(_UIPreviewPresentationController *)self centerForMenuDismissedForActionSheet:v10];
+      [(_UIPreviewPresentationController *)self centerForMenuDismissedForActionSheet:previewActionSheet];
       v23 = v22;
       v25 = v24;
       [(_UIPreviewPresentationController *)self centerForMenuDismissedForActionSheet:v9];
@@ -1786,7 +1786,7 @@ LABEL_15:
       v42 = v31;
       v43 = v30;
       [v9 setCenter:{v27, v29}];
-      [v10 setCenter:{v19, v21}];
+      [previewActionSheet setCenter:{v19, v21}];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __80___UIPreviewPresentationController__presentSubActionSheetForPreviewActionGroup___block_invoke;
@@ -1799,7 +1799,7 @@ LABEL_15:
       v58[1] = 3221225472;
       v58[2] = __80___UIPreviewPresentationController__presentSubActionSheetForPreviewActionGroup___block_invoke_2;
       v58[3] = &unk_1E70F6848;
-      v33 = v10;
+      v33 = previewActionSheet;
       v59 = v33;
       v60 = v23;
       v61 = v25;
@@ -1850,20 +1850,20 @@ LABEL_15:
   }
 }
 
-- (id)_makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:(id)a3
+- (id)_makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:(id)items
 {
-  v4 = a3;
-  v5 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v5 _standardPreferredContentSize];
+  itemsCopy = items;
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView _standardPreferredContentSize];
   v7 = v6;
 
-  v8 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v8 bounds];
+  presentationContainerView2 = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView2 bounds];
   v9 = CGRectGetHeight(v23) * 0.7;
 
-  v10 = [[_UIPreviewActionSheetView alloc] initWithFrame:0 title:v4 items:0.0 contentInsets:0.0, v7, v9, 20.0, 0.0, 20.0, 0.0];
-  v11 = [(UIPresentationController *)self presentedViewController];
-  objc_initWeak(&location, v11);
+  v10 = [[_UIPreviewActionSheetView alloc] initWithFrame:0 title:itemsCopy items:0.0 contentInsets:0.0, v7, v9, 20.0, 0.0, 20.0, 0.0];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  objc_initWeak(&location, presentedViewController);
 
   objc_initWeak(&from, self);
   v14 = MEMORY[0x1E69E9820];
@@ -1892,16 +1892,16 @@ LABEL_15:
   return v10;
 }
 
-- (CGPoint)_dismissedActionSheetCenterForActionSheet:(id)a3
+- (CGPoint)_dismissedActionSheetCenterForActionSheet:(id)sheet
 {
-  v3 = a3;
-  v4 = [v3 superview];
-  [v4 bounds];
+  sheetCopy = sheet;
+  superview = [sheetCopy superview];
+  [superview bounds];
   MidX = CGRectGetMidX(v20);
-  v6 = [v3 superview];
-  [v6 bounds];
+  superview2 = [sheetCopy superview];
+  [superview2 bounds];
   Height = CGRectGetHeight(v21);
-  [v3 bounds];
+  [sheetCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1920,16 +1920,16 @@ LABEL_15:
   return result;
 }
 
-- (CGPoint)_presentedActionSheetCenterForActionSheet:(id)a3
+- (CGPoint)_presentedActionSheetCenterForActionSheet:(id)sheet
 {
-  v3 = a3;
-  v4 = [v3 superview];
-  [v4 bounds];
+  sheetCopy = sheet;
+  superview = [sheetCopy superview];
+  [superview bounds];
   MidX = CGRectGetMidX(v20);
-  v6 = [v3 superview];
-  [v6 bounds];
+  superview2 = [sheetCopy superview];
+  [superview2 bounds];
   Height = CGRectGetHeight(v21);
-  [v3 bounds];
+  [sheetCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1948,20 +1948,20 @@ LABEL_15:
   return result;
 }
 
-- (void)_dismissPresentationWithCompletion:(id)a3
+- (void)_dismissPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(_UIPreviewPresentationController *)self setPreDismissAnimationsInflight:1];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71___UIPreviewPresentationController__dismissPresentationWithCompletion___block_invoke;
   aBlock[3] = &unk_1E70F37C0;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v14 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
-  [v7 setHidden:1];
+  actionSheetAvailableImageView = [(_UIPreviewPresentationController *)self actionSheetAvailableImageView];
+  [actionSheetAvailableImageView setHidden:1];
 
   if (![(_UIPreviewPresentationController *)self _platterIsSelectingPreviewActions])
   {
@@ -2002,8 +2002,8 @@ LABEL_9:
 
 - (BOOL)_platterIsSelectingPreviewActions
 {
-  v2 = [(_UIPreviewPresentationController *)self platterMenuController];
-  [v2 currentTranslation];
+  platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+  [platterMenuController currentTranslation];
   v4 = fabs(v3) > 2.0;
 
   return v4;
@@ -2011,107 +2011,107 @@ LABEL_9:
 
 - (void)_configureActionSheetChromeViews
 {
-  v3 = [(_UIPreviewPresentationController *)self leadingPreviewAction];
+  leadingPreviewAction = [(_UIPreviewPresentationController *)self leadingPreviewAction];
 
-  v4 = v3 != 0;
+  v4 = leadingPreviewAction != 0;
   v5 = MEMORY[0x1E695F058];
-  if (v3)
+  if (leadingPreviewAction)
   {
     v6 = [[_UIPreviewQuickActionView alloc] initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(UIView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(_UIPreviewPresentationController *)self leadingPreviewAction];
-    [(_UIPreviewQuickActionView *)v6 setQuickAction:v7];
+    leadingPreviewAction2 = [(_UIPreviewPresentationController *)self leadingPreviewAction];
+    [(_UIPreviewQuickActionView *)v6 setQuickAction:leadingPreviewAction2];
 
     [(UIView *)v6 layoutIfNeeded];
-    v8 = [(_UIPreviewPresentationController *)self presentationContainerView];
-    [v8 addSubview:v6];
+    presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+    [presentationContainerView addSubview:v6];
 
-    v9 = [(_UIPreviewPresentationController *)self containerScrollView];
-    v10 = [v9 superview];
+    containerScrollView = [(_UIPreviewPresentationController *)self containerScrollView];
+    superview = [containerScrollView superview];
 
     v11 = v6;
-    v12 = [(_UIPreviewPresentationController *)self containerScrollView];
-    [v10 insertSubview:v11 below:v12];
+    containerScrollView2 = [(_UIPreviewPresentationController *)self containerScrollView];
+    [superview insertSubview:v11 below:containerScrollView2];
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v14 = [v10 leadingAnchor];
-    v15 = [(UIView *)v11 leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    leadingAnchor = [superview leadingAnchor];
+    leadingAnchor2 = [(UIView *)v11 leadingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(_UIPreviewPresentationController *)self setLeadingQuickActionViewEdgeConstraint:v16];
 
     [(_UIPreviewPresentationController *)self initialCenterForLeadingSwipeActionView];
     [(_UIPreviewPresentationController *)self _leadingQuickActionOffsetForCenterPosition:v11 swipeView:?];
     v18 = v17;
-    v19 = [(_UIPreviewPresentationController *)self leadingQuickActionViewEdgeConstraint];
-    [v19 setConstant:v18];
+    leadingQuickActionViewEdgeConstraint = [(_UIPreviewPresentationController *)self leadingQuickActionViewEdgeConstraint];
+    [leadingQuickActionViewEdgeConstraint setConstant:v18];
 
-    v20 = [(_UIPreviewPresentationController *)self leadingQuickActionViewEdgeConstraint];
-    [v13 addObject:v20];
+    leadingQuickActionViewEdgeConstraint2 = [(_UIPreviewPresentationController *)self leadingQuickActionViewEdgeConstraint];
+    [v13 addObject:leadingQuickActionViewEdgeConstraint2];
 
-    v21 = [v10 centerYAnchor];
-    v22 = [(_UIPreviewQuickActionView *)v11 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor = [superview centerYAnchor];
+    centerYAnchor2 = [(_UIPreviewQuickActionView *)v11 centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v13 addObject:v23];
 
     [MEMORY[0x1E69977A0] activateConstraints:v13];
     [(_UIPreviewPresentationController *)self setLeadingQuickActionView:v11];
 
-    v24 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-    [v24 setHidden:1];
+    leadingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+    [leadingQuickActionView setHidden:1];
   }
 
-  v25 = [(_UIPreviewPresentationController *)self trailingPreviewAction];
+  trailingPreviewAction = [(_UIPreviewPresentationController *)self trailingPreviewAction];
 
-  if (v25)
+  if (trailingPreviewAction)
   {
     v26 = [[_UIPreviewQuickActionView alloc] initWithFrame:*v5, v5[1], v5[2], v5[3]];
     [(UIView *)v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v27 = [(_UIPreviewPresentationController *)self trailingPreviewAction];
-    [(_UIPreviewQuickActionView *)v26 setQuickAction:v27];
+    trailingPreviewAction2 = [(_UIPreviewPresentationController *)self trailingPreviewAction];
+    [(_UIPreviewQuickActionView *)v26 setQuickAction:trailingPreviewAction2];
 
     [(UIView *)v26 layoutIfNeeded];
-    v28 = [(_UIPreviewPresentationController *)self presentationContainerView];
-    [v28 addSubview:v26];
+    presentationContainerView2 = [(_UIPreviewPresentationController *)self presentationContainerView];
+    [presentationContainerView2 addSubview:v26];
 
-    v29 = [(_UIPreviewPresentationController *)self containerScrollView];
-    v30 = [v29 superview];
+    containerScrollView3 = [(_UIPreviewPresentationController *)self containerScrollView];
+    superview2 = [containerScrollView3 superview];
 
     v31 = v26;
-    v32 = [(_UIPreviewPresentationController *)self containerScrollView];
-    [v30 insertSubview:v31 below:v32];
+    containerScrollView4 = [(_UIPreviewPresentationController *)self containerScrollView];
+    [superview2 insertSubview:v31 below:containerScrollView4];
 
     v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v34 = [(UIView *)v31 trailingAnchor];
-    v35 = [v30 trailingAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    trailingAnchor = [(UIView *)v31 trailingAnchor];
+    trailingAnchor2 = [superview2 trailingAnchor];
+    v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(_UIPreviewPresentationController *)self setTrailingQuickActionViewEdgeConstraint:v36];
 
     [(_UIPreviewPresentationController *)self initialCenterForTrailingSwipeActionView];
     [(_UIPreviewPresentationController *)self _trailingQuickActionOffsetForCenterPosition:v31 swipeView:?];
     v38 = v37;
-    v39 = [(_UIPreviewPresentationController *)self trailingQuickActionViewEdgeConstraint];
-    [v39 setConstant:v38];
+    trailingQuickActionViewEdgeConstraint = [(_UIPreviewPresentationController *)self trailingQuickActionViewEdgeConstraint];
+    [trailingQuickActionViewEdgeConstraint setConstant:v38];
 
-    v40 = [(_UIPreviewPresentationController *)self trailingQuickActionViewEdgeConstraint];
-    [v33 addObject:v40];
+    trailingQuickActionViewEdgeConstraint2 = [(_UIPreviewPresentationController *)self trailingQuickActionViewEdgeConstraint];
+    [v33 addObject:trailingQuickActionViewEdgeConstraint2];
 
-    v41 = [(_UIPreviewQuickActionView *)v31 centerYAnchor];
-    v42 = [v30 centerYAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    centerYAnchor3 = [(_UIPreviewQuickActionView *)v31 centerYAnchor];
+    centerYAnchor4 = [superview2 centerYAnchor];
+    v43 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v33 addObject:v43];
 
     [MEMORY[0x1E69977A0] activateConstraints:v33];
     [(_UIPreviewPresentationController *)self setTrailingQuickActionView:v31];
 
-    v44 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+    trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
     v4 = 1;
-    [v44 setHidden:1];
+    [trailingQuickActionView setHidden:1];
   }
 
   if ([(_UIPreviewPresentationController *)self _hasPreviewActions])
   {
-    v45 = [(_UIPreviewPresentationController *)self containerScrollView];
-    v46 = [v45 superview];
+    containerScrollView5 = [(_UIPreviewPresentationController *)self containerScrollView];
+    superview3 = [containerScrollView5 superview];
 
     v47 = _UIImageWithName(@"uippc-arrow-up-gray.png");
     v48 = [v47 imageWithRenderingMode:2];
@@ -2121,16 +2121,16 @@ LABEL_9:
     [(UIView *)v49 setTintColor:v50];
 
     [(UIImageView *)v49 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v46 addSubview:v49];
-    v51 = [(_UIPreviewPresentationController *)self platterView];
-    v52 = [(UIView *)v49 centerXAnchor];
-    v53 = [v51 centerXAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    [superview3 addSubview:v49];
+    platterView = [(_UIPreviewPresentationController *)self platterView];
+    centerXAnchor = [(UIView *)v49 centerXAnchor];
+    centerXAnchor2 = [platterView centerXAnchor];
+    v54 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v54 setActive:1];
 
-    v55 = [(UIView *)v49 bottomAnchor];
-    v56 = [v51 topAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56 constant:-12.0];
+    bottomAnchor = [(UIView *)v49 bottomAnchor];
+    topAnchor = [platterView topAnchor];
+    v57 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-12.0];
     [v57 setActive:1];
 
     [(UIView *)v49 setAlpha:0.0];
@@ -2139,18 +2139,18 @@ LABEL_9:
 
   if (v4)
   {
-    v58 = [(UIPresentationController *)self containerView];
-    [v58 setNeedsLayout];
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView setNeedsLayout];
 
-    v59 = [(UIPresentationController *)self containerView];
-    [v59 layoutIfNeeded];
+    containerView2 = [(UIPresentationController *)self containerView];
+    [containerView2 layoutIfNeeded];
   }
 }
 
 - (BOOL)_platterIsInInitialPositionMostly
 {
-  v3 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v3 bounds];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2166,9 +2166,9 @@ LABEL_9:
   v22.size.width = v9;
   v22.size.height = v11;
   v13 = round(CGRectGetMidY(v22) + -22.0);
-  v14 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v15 = [v14 platterView];
-  [v15 center];
+  presentationContainerView2 = [(_UIPreviewPresentationController *)self presentationContainerView];
+  platterView = [presentationContainerView2 platterView];
+  [platterView center];
   v20.x = v16;
   v20.y = v17;
   v23.size.width = 44.0;
@@ -2182,8 +2182,8 @@ LABEL_9:
 
 - (BOOL)_platterIsInInitialPosition
 {
-  v3 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  [v3 bounds];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
+  [presentationContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2199,9 +2199,9 @@ LABEL_9:
   v22.size.width = v9;
   v22.size.height = v11;
   v13 = round(CGRectGetMidY(v22) + -1.0);
-  v14 = [(_UIPreviewPresentationController *)self presentationContainerView];
-  v15 = [v14 platterView];
-  [v15 center];
+  presentationContainerView2 = [(_UIPreviewPresentationController *)self presentationContainerView];
+  platterView = [presentationContainerView2 platterView];
+  [platterView center];
   v20.x = v16;
   v20.y = v17;
   v23.size.width = 2.0;
@@ -2213,12 +2213,12 @@ LABEL_9:
   return v18;
 }
 
-- (void)_restorePlatterToInitialStatePositionAnimatedWithCompletion:(id)a3
+- (void)_restorePlatterToInitialStatePositionAnimatedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UIPresentationController *)self containerView];
-  v6 = [v5 window];
-  [v6 setUserInteractionEnabled:0];
+  completionCopy = completion;
+  containerView = [(UIPresentationController *)self containerView];
+  window = [containerView window];
+  [window setUserInteractionEnabled:0];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -2230,8 +2230,8 @@ LABEL_9:
   v8[2] = __96___UIPreviewPresentationController__restorePlatterToInitialStatePositionAnimatedWithCompletion___block_invoke_2;
   v8[3] = &unk_1E70FE248;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [UIView animateWithDuration:v10 animations:v8 completion:0.175];
 }
 
@@ -2240,17 +2240,17 @@ LABEL_9:
   [(_UIPreviewPresentationController *)self setPreDismissAnimationsInflight:1];
   if ([(_UIPreviewPresentationController *)self leadingQuickActionViewSelected])
   {
-    v3 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+    trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
 LABEL_5:
-    v4 = v3;
-    [v3 setHidden:1];
+    v4 = trailingQuickActionView;
+    [trailingQuickActionView setHidden:1];
 
     goto LABEL_6;
   }
 
   if ([(_UIPreviewPresentationController *)self trailingQuickActionViewSelected])
   {
-    v3 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+    trailingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
     goto LABEL_5;
   }
 
@@ -2276,25 +2276,25 @@ LABEL_6:
   [UIView animateWithDuration:v5 animations:v8 completion:0.2];
 }
 
-- (void)_dismissForHandledActionWithCompletion:(id)a3
+- (void)_dismissForHandledActionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __75___UIPreviewPresentationController__dismissForHandledActionWithCompletion___block_invoke;
   aBlock[3] = &unk_1E70F3590;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(UIPresentationController *)self presentedViewController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __75___UIPreviewPresentationController__dismissForHandledActionWithCompletion___block_invoke_2;
   v14 = &unk_1E710B1B0;
-  v15 = self;
-  v16 = v6;
-  v17 = v4;
-  v7 = v4;
-  v8 = v6;
+  selfCopy = self;
+  v16 = presentedViewController;
+  v17 = completionCopy;
+  v7 = completionCopy;
+  v8 = presentedViewController;
   v9 = _Block_copy(&v11);
   v10 = [(_UIPreviewPresentationController *)self platterMenuController:v11];
   [v10 resetAnimator];
@@ -2303,19 +2303,19 @@ LABEL_6:
   [UIView animateWithDuration:v5 animations:v9 completion:0.225];
 }
 
-- (void)setPanningGestureRecognizer:(id)a3
+- (void)setPanningGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   panningGestureRecognizer = self->_panningGestureRecognizer;
-  v8 = v5;
-  if (panningGestureRecognizer != v5)
+  v8 = recognizerCopy;
+  if (panningGestureRecognizer != recognizerCopy)
   {
     if (panningGestureRecognizer)
     {
       [(UIGestureRecognizer *)panningGestureRecognizer removeTarget:self action:0];
     }
 
-    objc_storeStrong(&self->_panningGestureRecognizer, a3);
+    objc_storeStrong(&self->_panningGestureRecognizer, recognizer);
     v7 = self->_panningGestureRecognizer;
     if (v7)
     {
@@ -2324,17 +2324,17 @@ LABEL_6:
   }
 }
 
-- (void)_panningGestureRecognizerDidFire:(id)a3
+- (void)_panningGestureRecognizerDidFire:(id)fire
 {
-  v26 = a3;
-  if ([v26 state] == 1 || objc_msgSend(v26, "state") == 2)
+  fireCopy = fire;
+  if ([fireCopy state] == 1 || objc_msgSend(fireCopy, "state") == 2)
   {
     v4 = 1;
   }
 
   else
   {
-    if ([v26 state] != 3 && objc_msgSend(v26, "state") != 5 && objc_msgSend(v26, "state") != 4)
+    if ([fireCopy state] != 3 && objc_msgSend(fireCopy, "state") != 5 && objc_msgSend(fireCopy, "state") != 4)
     {
       goto LABEL_9;
     }
@@ -2344,52 +2344,52 @@ LABEL_6:
 
   [(_UIPreviewPresentationController *)self setPanningGestureRecognizerInProgress:v4];
 LABEL_9:
-  v5 = [(_UIPreviewPresentationController *)self presentationContainerView];
+  presentationContainerView = [(_UIPreviewPresentationController *)self presentationContainerView];
   if ([(_UIPreviewPresentationController *)self currentPresentationPhase]== 1 || [(_UIPreviewPresentationController *)self currentPresentationPhase]== 2)
   {
-    v6 = [(_UIPreviewPresentationController *)self platterMenuController];
+    platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
 
-    if (!v6)
+    if (!platterMenuController)
     {
-      v7 = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
-      [v26 locationInView:v5];
-      [v7 addSample:?];
+      revealPanningVelocityIntegrator = [(_UIPreviewPresentationController *)self revealPanningVelocityIntegrator];
+      [fireCopy locationInView:presentationContainerView];
+      [revealPanningVelocityIntegrator addSample:?];
     }
   }
 
   if ([(_UIPreviewPresentationController *)self currentPresentationPhase]== 2 || [(_UIPreviewPresentationController *)self currentPresentationPhase]== 3)
   {
-    [v26 locationInView:v5];
+    [fireCopy locationInView:presentationContainerView];
     v9 = v8;
     v11 = v10;
-    if ([v26 state] == 1)
+    if ([fireCopy state] == 1)
     {
-      v12 = [(_UIPreviewPresentationController *)self platterMenuController];
+      platterMenuController2 = [(_UIPreviewPresentationController *)self platterMenuController];
 
-      if (v12)
+      if (platterMenuController2)
       {
-        v13 = [(_UIPreviewPresentationController *)self platterMenuController];
-        [v13 didBeginPanningWithPoint:{v9, v11}];
+        platterMenuController3 = [(_UIPreviewPresentationController *)self platterMenuController];
+        [platterMenuController3 didBeginPanningWithPoint:{v9, v11}];
 
         [(_UIPreviewPresentationController *)self setDidSendBeginEvent:1];
       }
     }
 
-    else if ([v26 state] == 2)
+    else if ([fireCopy state] == 2)
     {
-      v14 = [(_UIPreviewPresentationController *)self platterMenuController];
+      platterMenuController4 = [(_UIPreviewPresentationController *)self platterMenuController];
 
-      if (v14)
+      if (platterMenuController4)
       {
         if (![(_UIPreviewPresentationController *)self didSendBeginEvent])
         {
           [(_UIPreviewPresentationController *)self setDidSendBeginEvent:1];
-          v15 = [(_UIPreviewPresentationController *)self platterMenuController];
-          [v15 didBeginPanningWithPoint:{v9, v11}];
+          platterMenuController5 = [(_UIPreviewPresentationController *)self platterMenuController];
+          [platterMenuController5 didBeginPanningWithPoint:{v9, v11}];
         }
 
-        v16 = [(_UIPreviewPresentationController *)self platterMenuController];
-        [v16 didPanWithPoint:{v9, v11}];
+        platterMenuController6 = [(_UIPreviewPresentationController *)self platterMenuController];
+        [platterMenuController6 didPanWithPoint:{v9, v11}];
 
         [(_UIPreviewPresentationController *)self _updateVisibiltyOfPreviewActionChromeForCurrentState];
         [(_UIPreviewPresentationController *)self updateSwipeActionsIfApplicable];
@@ -2399,31 +2399,31 @@ LABEL_9:
     else
     {
       [(_UIPreviewPresentationController *)self setupAdditionalModalGestureRecognizers];
-      v17 = [(_UIPreviewPresentationController *)self platterMenuController];
+      platterMenuController7 = [(_UIPreviewPresentationController *)self platterMenuController];
 
-      if (v17)
+      if (platterMenuController7)
       {
         [(_UIPreviewPresentationController *)self setDidSendBeginEvent:0];
-        v18 = [(_UIPreviewPresentationController *)self platterMenuController];
-        [v18 didEndPanningWithPoint:{v9, v11}];
+        platterMenuController8 = [(_UIPreviewPresentationController *)self platterMenuController];
+        [platterMenuController8 didEndPanningWithPoint:{v9, v11}];
 
-        v19 = [(_UIPreviewPresentationController *)self platterMenuController];
+        platterMenuController9 = [(_UIPreviewPresentationController *)self platterMenuController];
         v20 = 0;
-        if (([v19 isMenuPresented] & 1) == 0)
+        if (([platterMenuController9 isMenuPresented] & 1) == 0)
         {
-          v21 = [(_UIPreviewPresentationController *)self platterMenuController];
-          v22 = [v21 isMenuPresenting];
+          platterMenuController10 = [(_UIPreviewPresentationController *)self platterMenuController];
+          isMenuPresenting = [platterMenuController10 isMenuPresenting];
 
-          v20 = v22 ^ 1;
+          v20 = isMenuPresenting ^ 1;
         }
 
-        v23 = [(_UIPreviewPresentationController *)self platterMenuController];
-        v24 = [v23 isSelectingSwipeAction];
+        platterMenuController11 = [(_UIPreviewPresentationController *)self platterMenuController];
+        isSelectingSwipeAction = [platterMenuController11 isSelectingSwipeAction];
 
-        if ((v20 & 1) != 0 || v24)
+        if ((v20 & 1) != 0 || isSelectingSwipeAction)
         {
-          v25 = [(_UIPreviewPresentationController *)self platterMenuController];
-          [v25 resetAnimator];
+          platterMenuController12 = [(_UIPreviewPresentationController *)self platterMenuController];
+          [platterMenuController12 resetAnimator];
 
           [(_UIPreviewPresentationController *)self _dismissPresentation];
         }
@@ -2436,21 +2436,21 @@ LABEL_9:
 {
   if ([(_UIPreviewPresentationController *)self _hasPreviewQuickActions])
   {
-    v3 = [(_UIPreviewPresentationController *)self platterMenuController];
-    [v3 currentTranslation];
+    platterMenuController = [(_UIPreviewPresentationController *)self platterMenuController];
+    [platterMenuController currentTranslation];
     v5 = v4;
 
-    v6 = [(UIPresentationController *)self containerView];
-    v7 = v6[13];
+    containerView = [(UIPresentationController *)self containerView];
+    v7 = containerView[13];
 
-    v8 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-    v9 = [v8 quickAction];
+    leadingQuickActionView = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+    quickAction = [leadingQuickActionView quickAction];
 
-    if (v9)
+    if (quickAction)
     {
-      v10 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-      v11 = [v10 quickAction];
-      -[_UIPreviewPresentationController _quickActionsSelectionThresholdForPreviewMenuItemStyle:](self, "_quickActionsSelectionThresholdForPreviewMenuItemStyle:", [v11 style]);
+      leadingQuickActionView2 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+      quickAction2 = [leadingQuickActionView2 quickAction];
+      -[_UIPreviewPresentationController _quickActionsSelectionThresholdForPreviewMenuItemStyle:](self, "_quickActionsSelectionThresholdForPreviewMenuItemStyle:", [quickAction2 style]);
       v13 = v12;
 
       if (v13 > 0.0)
@@ -2464,14 +2464,14 @@ LABEL_9:
       }
     }
 
-    v15 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-    v16 = [v15 quickAction];
+    trailingQuickActionView = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+    quickAction3 = [trailingQuickActionView quickAction];
 
-    if (v16)
+    if (quickAction3)
     {
-      v17 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-      v18 = [v17 quickAction];
-      -[_UIPreviewPresentationController _quickActionsSelectionThresholdForPreviewMenuItemStyle:](self, "_quickActionsSelectionThresholdForPreviewMenuItemStyle:", [v18 style]);
+      trailingQuickActionView2 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+      quickAction4 = [trailingQuickActionView2 quickAction];
+      -[_UIPreviewPresentationController _quickActionsSelectionThresholdForPreviewMenuItemStyle:](self, "_quickActionsSelectionThresholdForPreviewMenuItemStyle:", [quickAction4 style]);
       v20 = v19;
 
       if (v20 > 0.0)
@@ -2487,57 +2487,57 @@ LABEL_9:
 
     if ([(_UIPreviewPresentationController *)self trailingQuickActionViewSelected])
     {
-      v22 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-      [v22 setHidden:0];
+      trailingQuickActionView3 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+      [trailingQuickActionView3 setHidden:0];
 
-      v23 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-      [v23 setHidden:1];
+      leadingQuickActionView3 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+      [leadingQuickActionView3 setHidden:1];
     }
 
     if ([(_UIPreviewPresentationController *)self leadingQuickActionViewSelected])
     {
-      v24 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-      [v24 setHidden:0];
+      leadingQuickActionView4 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+      [leadingQuickActionView4 setHidden:0];
 
-      v25 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-      [v25 setHidden:1];
+      trailingQuickActionView4 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+      [trailingQuickActionView4 setHidden:1];
     }
 
-    v26 = [(_UIPreviewPresentationController *)self trailingQuickActionViewSelected];
-    v27 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
-    [v27 setSelected:v26];
+    trailingQuickActionViewSelected = [(_UIPreviewPresentationController *)self trailingQuickActionViewSelected];
+    trailingQuickActionView5 = [(_UIPreviewPresentationController *)self trailingQuickActionView];
+    [trailingQuickActionView5 setSelected:trailingQuickActionViewSelected];
 
-    v28 = [(_UIPreviewPresentationController *)self leadingQuickActionViewSelected];
-    v29 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
-    [v29 setSelected:v28];
+    leadingQuickActionViewSelected = [(_UIPreviewPresentationController *)self leadingQuickActionViewSelected];
+    leadingQuickActionView5 = [(_UIPreviewPresentationController *)self leadingQuickActionView];
+    [leadingQuickActionView5 setSelected:leadingQuickActionViewSelected];
 
-    v30 = [(_UIPreviewPresentationController *)self leadingQuickActionViewSelected];
-    v31 = [(_UIPreviewPresentationController *)self platterMenuController];
-    [v31 setLeadingSwipeActionViewSelected:v30];
+    leadingQuickActionViewSelected2 = [(_UIPreviewPresentationController *)self leadingQuickActionViewSelected];
+    platterMenuController2 = [(_UIPreviewPresentationController *)self platterMenuController];
+    [platterMenuController2 setLeadingSwipeActionViewSelected:leadingQuickActionViewSelected2];
 
-    v32 = [(_UIPreviewPresentationController *)self trailingQuickActionViewSelected];
-    v33 = [(_UIPreviewPresentationController *)self platterMenuController];
-    [v33 setTrailingSwipeActionViewSelected:v32];
+    trailingQuickActionViewSelected2 = [(_UIPreviewPresentationController *)self trailingQuickActionViewSelected];
+    platterMenuController3 = [(_UIPreviewPresentationController *)self platterMenuController];
+    [platterMenuController3 setTrailingSwipeActionViewSelected:trailingQuickActionViewSelected2];
   }
 }
 
 - (void)_setupInteractionProgressForBreathing
 {
-  v3 = [(_UIPreviewPresentationController *)self interactionProgressForBreathing];
+  interactionProgressForBreathing = [(_UIPreviewPresentationController *)self interactionProgressForBreathing];
 
-  if (!v3)
+  if (!interactionProgressForBreathing)
   {
     v4 = [UIPreviewForceInteractionProgress alloc];
-    v5 = [(_UIPreviewPresentationController *)self actionSheetContainerView];
-    v6 = [v5 window];
-    v7 = [(UIPreviewForceInteractionProgress *)v4 initWithView:v6 targetState:3];
+    actionSheetContainerView = [(_UIPreviewPresentationController *)self actionSheetContainerView];
+    window = [actionSheetContainerView window];
+    v7 = [(UIPreviewForceInteractionProgress *)v4 initWithView:window targetState:3];
     [(_UIPreviewPresentationController *)self setInteractionProgressForBreathing:v7];
 
-    v8 = [(_UIPreviewPresentationController *)self interactionProgressForBreathing];
-    [v8 setCompletesAtTargetState:0];
+    interactionProgressForBreathing2 = [(_UIPreviewPresentationController *)self interactionProgressForBreathing];
+    [interactionProgressForBreathing2 setCompletesAtTargetState:0];
 
-    v9 = [(_UIPreviewPresentationController *)self interactionProgressForBreathing];
-    [v9 addProgressObserver:self];
+    interactionProgressForBreathing3 = [(_UIPreviewPresentationController *)self interactionProgressForBreathing];
+    [interactionProgressForBreathing3 addProgressObserver:self];
   }
 
   [(_UIPreviewPresentationController *)self _beginBreathing];
@@ -2545,53 +2545,53 @@ LABEL_9:
 
 - (void)setupAdditionalModalGestureRecognizers
 {
-  v3 = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
+  interactionProgressForCommit = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
 
-  if (!v3)
+  if (!interactionProgressForCommit)
   {
     v4 = [UIPreviewForceInteractionProgress alloc];
-    v5 = [(_UIPreviewPresentationController *)self actionSheetContainerView];
-    v6 = [v5 window];
-    v7 = [(UIPreviewForceInteractionProgress *)v4 initWithView:v6 targetState:3];
+    actionSheetContainerView = [(_UIPreviewPresentationController *)self actionSheetContainerView];
+    window = [actionSheetContainerView window];
+    v7 = [(UIPreviewForceInteractionProgress *)v4 initWithView:window targetState:3];
     [(_UIPreviewPresentationController *)self setInteractionProgressForCommit:v7];
 
-    v8 = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
-    [v8 setCompletesAtTargetState:0];
+    interactionProgressForCommit2 = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
+    [interactionProgressForCommit2 setCompletesAtTargetState:0];
 
-    v9 = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
-    [v9 addProgressObserver:self];
+    interactionProgressForCommit3 = [(_UIPreviewPresentationController *)self interactionProgressForCommit];
+    [interactionProgressForCommit3 addProgressObserver:self];
   }
 
   [(_UIPreviewPresentationController *)self setPanningGestureRecognizer:0];
-  v10 = [(_UIPreviewPresentationController *)self modalPreviewActionsPanningGestureRecognizer];
+  modalPreviewActionsPanningGestureRecognizer = [(_UIPreviewPresentationController *)self modalPreviewActionsPanningGestureRecognizer];
 
-  if (!v10)
+  if (!modalPreviewActionsPanningGestureRecognizer)
   {
     v11 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:sel__panningGestureRecognizerDidFire_];
     [(UIPanGestureRecognizer *)v11 setMinimumNumberOfTouches:1];
     [(UIPanGestureRecognizer *)v11 setMaximumNumberOfTouches:1];
-    v12 = [(UIPresentationController *)self containerView];
-    [v12 addGestureRecognizer:v11];
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView addGestureRecognizer:v11];
 
     [(_UIPreviewPresentationController *)self setModalPreviewActionsPanningGestureRecognizer:v11];
   }
 
-  v13 = [(_UIPreviewPresentationController *)self tapToDismissGestureRecognizer];
+  tapToDismissGestureRecognizer = [(_UIPreviewPresentationController *)self tapToDismissGestureRecognizer];
 
-  if (!v13)
+  if (!tapToDismissGestureRecognizer)
   {
     v14 = [[UITapGestureRecognizer alloc] initWithTarget:self action:sel__tapToDismissPreviewWithActionsDidFire_];
     [(_UIPreviewPresentationController *)self setTapToDismissGestureRecognizer:v14];
 
-    v15 = [(_UIPreviewPresentationController *)self tapToDismissGestureRecognizer];
-    [v15 setNumberOfTapsRequired:1];
+    tapToDismissGestureRecognizer2 = [(_UIPreviewPresentationController *)self tapToDismissGestureRecognizer];
+    [tapToDismissGestureRecognizer2 setNumberOfTapsRequired:1];
 
-    v16 = [(_UIPreviewPresentationController *)self tapToDismissGestureRecognizer];
-    [v16 setNumberOfTouchesRequired:1];
+    tapToDismissGestureRecognizer3 = [(_UIPreviewPresentationController *)self tapToDismissGestureRecognizer];
+    [tapToDismissGestureRecognizer3 setNumberOfTouchesRequired:1];
 
-    v18 = [(UIPresentationController *)self containerView];
-    v17 = [(_UIPreviewPresentationController *)self tapToDismissGestureRecognizer];
-    [v18 addGestureRecognizer:v17];
+    containerView2 = [(UIPresentationController *)self containerView];
+    tapToDismissGestureRecognizer4 = [(_UIPreviewPresentationController *)self tapToDismissGestureRecognizer];
+    [containerView2 addGestureRecognizer:tapToDismissGestureRecognizer4];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface _UIActivityItemMapping
-+ (BOOL)_canLoadMetadataForActivityItem:(id)a3;
-+ (id)_attachmentNameForActivityItem:(id)a3 activityType:(id)a4;
-+ (id)_dataTypeIdentifierForActivityItem:(id)a3 activityType:(id)a4;
-+ (id)_itemProviderForActivityItem:(id)a3 typeIdentifier:(id)a4 thumbnailSize:(CGSize)a5 activityType:(id)a6;
-+ (id)_loadMetadataForActivityItem:(id)a3 activityViewController:(id)a4;
-+ (id)_openURLAnnotationForActivityItem:(id)a3 activityType:(id)a4;
-+ (id)_subjectForActivityItem:(id)a3 activityType:(id)a4;
-+ (id)_thumbnailImageDataForActivityItem:(id)a3 thumbnailSize:(CGSize)a4 activityType:(id)a5;
-+ (id)_thumbnailImageForActivityItem:(id)a3 thumbnailSize:(CGSize)a4 activityType:(id)a5;
-+ (void)_addActivityItem:(id)a3 activityViewController:(id)a4 originalActivityItem:(id)a5;
-+ (void)_addToActiveActivityViewControllers:(id)a3;
-+ (void)_clearActivityItems:(id)a3;
++ (BOOL)_canLoadMetadataForActivityItem:(id)item;
++ (id)_attachmentNameForActivityItem:(id)item activityType:(id)type;
++ (id)_dataTypeIdentifierForActivityItem:(id)item activityType:(id)type;
++ (id)_itemProviderForActivityItem:(id)item typeIdentifier:(id)identifier thumbnailSize:(CGSize)size activityType:(id)type;
++ (id)_loadMetadataForActivityItem:(id)item activityViewController:(id)controller;
++ (id)_openURLAnnotationForActivityItem:(id)item activityType:(id)type;
++ (id)_subjectForActivityItem:(id)item activityType:(id)type;
++ (id)_thumbnailImageDataForActivityItem:(id)item thumbnailSize:(CGSize)size activityType:(id)type;
++ (id)_thumbnailImageForActivityItem:(id)item thumbnailSize:(CGSize)size activityType:(id)type;
++ (void)_addActivityItem:(id)item activityViewController:(id)controller originalActivityItem:(id)activityItem;
++ (void)_addToActiveActivityViewControllers:(id)controllers;
++ (void)_clearActivityItems:(id)items;
 + (void)initialize;
 @end
 
@@ -18,7 +18,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:512 valueOptions:517 capacity:1];
     v3 = __activityViewControllers;
@@ -30,14 +30,14 @@
   }
 }
 
-+ (void)_addToActiveActivityViewControllers:(id)a3
++ (void)_addToActiveActivityViewControllers:(id)controllers
 {
   v3 = _addToActiveActivityViewControllers__onceToken;
-  v4 = a3;
-  v6 = v4;
+  controllersCopy = controllers;
+  v6 = controllersCopy;
   if (v3 == -1)
   {
-    v5 = v4;
+    v5 = controllersCopy;
   }
 
   else
@@ -49,25 +49,25 @@
   [_activeActivityViewControllers addObject:v5];
 }
 
-+ (void)_addActivityItem:(id)a3 activityViewController:(id)a4 originalActivityItem:(id)a5
++ (void)_addActivityItem:(id)item activityViewController:(id)controller originalActivityItem:(id)activityItem
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  itemCopy = item;
+  controllerCopy = controller;
+  activityItemCopy = activityItem;
+  if (activityItemCopy)
   {
-    if ((objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0 && ![v8 conformsToProtocol:&unk_1EFF36348])
+    if ((objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0 && (objc_opt_respondsToSelector() & 1) == 0 && ![activityItemCopy conformsToProtocol:&unk_1EFF36348])
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    [__activityViewControllers setObject:v7 forKey:v9];
-    [__originalItems setObject:v8 forKey:v9];
+    [__activityViewControllers setObject:controllerCopy forKey:itemCopy];
+    [__originalItems setObject:activityItemCopy forKey:itemCopy];
     goto LABEL_16;
   }
 
-  if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || ([v9 conformsToProtocol:&unk_1EFF36348])
+  if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || ([itemCopy conformsToProtocol:&unk_1EFF36348])
   {
     goto LABEL_15;
   }
@@ -75,11 +75,11 @@ LABEL_15:
 LABEL_16:
 }
 
-+ (void)_clearActivityItems:(id)a3
++ (void)_clearActivityItems:(id)items
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -101,7 +101,7 @@ LABEL_16:
 
         v10 = *(*(&v24 + 1) + 8 * i);
         v11 = [__activityViewControllers objectForKey:v10];
-        v12 = [v11 isEqual:v3];
+        v12 = [v11 isEqual:itemsCopy];
         if (v11)
         {
           v13 = v12 == 0;
@@ -114,7 +114,7 @@ LABEL_16:
 
         if (!v13)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -128,7 +128,7 @@ LABEL_16:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = v4;
+  v14 = array;
   v15 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v15)
   {
@@ -155,9 +155,9 @@ LABEL_16:
   }
 }
 
-+ (BOOL)_canLoadMetadataForActivityItem:(id)a3
++ (BOOL)_canLoadMetadataForActivityItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector())
   {
     isKindOfClass = 1;
@@ -172,13 +172,13 @@ LABEL_16:
   return isKindOfClass & 1;
 }
 
-+ (id)_loadMetadataForActivityItem:(id)a3 activityViewController:(id)a4
++ (id)_loadMetadataForActivityItem:(id)item activityViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 activityViewControllerLinkPresentationMetadata:v6];
+    v7 = [itemCopy activityViewControllerLinkPresentationMetadata:controllerCopy];
 LABEL_5:
     v8 = v7;
     goto LABEL_6;
@@ -186,7 +186,7 @@ LABEL_5:
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 activityViewControllerLinkMetadata:v6];
+    v7 = [itemCopy activityViewControllerLinkMetadata:controllerCopy];
     goto LABEL_5;
   }
 
@@ -194,7 +194,7 @@ LABEL_5:
   if (objc_opt_isKindOfClass())
   {
     v8 = objc_alloc_init(getLPLinkMetadataClass());
-    [v8 setSummary:v5];
+    [v8 setSummary:itemCopy];
     v17 = 0;
     v18 = &v17;
     v19 = 0x2050000000;
@@ -240,23 +240,23 @@ LABEL_6:
   return v9;
 }
 
-+ (id)_itemProviderForActivityItem:(id)a3 typeIdentifier:(id)a4 thumbnailSize:(CGSize)a5 activityType:(id)a6
++ (id)_itemProviderForActivityItem:(id)item typeIdentifier:(id)identifier thumbnailSize:(CGSize)size activityType:(id)type
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if ([v11 conformsToProtocol:&unk_1EFEFB658])
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  identifierCopy = identifier;
+  typeCopy = type;
+  if ([itemCopy conformsToProtocol:&unk_1EFEFB658])
   {
-    v14 = v11;
+    v14 = itemCopy;
     if (v14)
     {
       goto LABEL_5;
     }
   }
 
-  v14 = [__originalItems objectForKey:v11];
+  v14 = [__originalItems objectForKey:itemCopy];
   if (([v14 conformsToProtocol:&unk_1EFEFB658] & 1) == 0)
   {
 
@@ -266,17 +266,17 @@ LABEL_6:
   if (!v14)
   {
 LABEL_8:
-    v32 = a1;
-    v33 = v13;
+    selfCopy2 = self;
+    v33 = typeCopy;
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __97___UIActivityItemMapping__itemProviderForActivityItem_typeIdentifier_thumbnailSize_activityType___block_invoke_2;
     v39[3] = &unk_1E71FA320;
     v17 = &v40;
-    v18 = v11;
+    v18 = itemCopy;
     v40 = v18;
     v15 = MEMORY[0x18CFF58E0](v39);
-    v16 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithItem:v18 typeIdentifier:v12];
+    v16 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithItem:v18 typeIdentifier:identifierCopy];
     v14 = 0;
     v19 = 1;
     goto LABEL_14;
@@ -285,7 +285,7 @@ LABEL_8:
 LABEL_5:
   if ([v14 conformsToProtocol:&unk_1EFF36348])
   {
-    v15 = [a1 _activityViewControllerForActivityItem:v11];
+    v15 = [self _activityViewControllerForActivityItem:itemCopy];
     v16 = [v14 activityViewControllerApplicationExtensionItem:v15];
     goto LABEL_28;
   }
@@ -297,18 +297,18 @@ LABEL_5:
   v17 = &v42;
   v14 = v14;
   v42 = v14;
-  v32 = a1;
-  v45 = a1;
-  v20 = v11;
+  selfCopy2 = self;
+  selfCopy3 = self;
+  v20 = itemCopy;
   v43 = v20;
-  v21 = v13;
+  v21 = typeCopy;
   v44 = v21;
   v15 = MEMORY[0x18CFF58E0](v41);
   v16 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithItem:0 typeIdentifier:0];
-  [v16 registerItemForTypeIdentifier:v12 loadHandler:v15];
+  [v16 registerItemForTypeIdentifier:identifierCopy loadHandler:v15];
   if (objc_opt_respondsToSelector())
   {
-    v22 = [v32 _activityViewControllerForActivityItem:v20];
+    v22 = [selfCopy2 _activityViewControllerForActivityItem:v20];
     v23 = [v14 activityViewController:v22 attachmentNameForActivityType:v21];
 
     if ([v23 length])
@@ -317,20 +317,20 @@ LABEL_5:
     }
   }
 
-  v33 = v13;
+  v33 = typeCopy;
 
   v19 = 0;
 LABEL_14:
 
   v24 = *MEMORY[0x1E69638B8];
-  v25 = UTTypeConformsTo(v12, *MEMORY[0x1E69638B8]);
+  v25 = UTTypeConformsTo(identifierCopy, *MEMORY[0x1E69638B8]);
   v26 = v24;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || v25)
   {
     if ((v19 & 1) == 0)
     {
-      v28 = [v32 _activityViewControllerForActivityItem:v11];
+      v28 = [selfCopy2 _activityViewControllerForActivityItem:itemCopy];
       v29 = [v14 activityViewControllerPlaceholderItem:v28];
 
       objc_opt_class();
@@ -343,34 +343,34 @@ LABEL_14:
           v26 = v30;
         }
 
-        [v16 registerItemForTypeIdentifier:v26 loadHandler:{v15, v32}];
+        [v16 registerItemForTypeIdentifier:v26 loadHandler:{v15, selfCopy2}];
       }
     }
 
-    v13 = v33;
+    typeCopy = v33;
   }
 
   else
   {
-    if ([v11 isFileURL])
+    if ([itemCopy isFileURL])
     {
       v27 = *MEMORY[0x1E69637C0];
 
       v26 = v27;
     }
 
-    v13 = v33;
-    [v16 registerItemForTypeIdentifier:v26 loadHandler:{v15, v32}];
+    typeCopy = v33;
+    [v16 registerItemForTypeIdentifier:v26 loadHandler:{v15, selfCopy2}];
   }
 
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __97___UIActivityItemMapping__itemProviderForActivityItem_typeIdentifier_thumbnailSize_activityType___block_invoke_3;
   v34[3] = &unk_1E71FAEA0;
-  v35 = v11;
+  v35 = itemCopy;
   v37 = width;
   v38 = height;
-  v36 = v13;
+  v36 = typeCopy;
   [v16 setPreviewImageHandler:v34];
 
 LABEL_28:
@@ -378,23 +378,23 @@ LABEL_28:
   return v16;
 }
 
-+ (id)_subjectForActivityItem:(id)a3 activityType:(id)a4
++ (id)_subjectForActivityItem:(id)item activityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  typeCopy = type;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a1 _activityViewControllerForActivityItem:v6];
-    v9 = [v6 activityViewController:v8 subjectForActivityType:v7];
+    v8 = [self _activityViewControllerForActivityItem:itemCopy];
+    v9 = [itemCopy activityViewController:v8 subjectForActivityType:typeCopy];
   }
 
   else
   {
-    v8 = [__originalItems objectForKey:v6];
+    v8 = [__originalItems objectForKey:itemCopy];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [a1 _activityViewControllerForActivityItem:v6];
-      v9 = [v8 activityViewController:v10 subjectForActivityType:v7];
+      v10 = [self _activityViewControllerForActivityItem:itemCopy];
+      v9 = [v8 activityViewController:v10 subjectForActivityType:typeCopy];
     }
 
     else
@@ -406,23 +406,23 @@ LABEL_28:
   return v9;
 }
 
-+ (id)_dataTypeIdentifierForActivityItem:(id)a3 activityType:(id)a4
++ (id)_dataTypeIdentifierForActivityItem:(id)item activityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  typeCopy = type;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a1 _activityViewControllerForActivityItem:v6];
-    v9 = [v6 activityViewController:v8 dataTypeIdentifierForActivityType:v7];
+    v8 = [self _activityViewControllerForActivityItem:itemCopy];
+    v9 = [itemCopy activityViewController:v8 dataTypeIdentifierForActivityType:typeCopy];
   }
 
   else
   {
-    v8 = [__originalItems objectForKey:v6];
+    v8 = [__originalItems objectForKey:itemCopy];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [a1 _activityViewControllerForActivityItem:v6];
-      v9 = [v8 activityViewController:v10 dataTypeIdentifierForActivityType:v7];
+      v10 = [self _activityViewControllerForActivityItem:itemCopy];
+      v9 = [v8 activityViewController:v10 dataTypeIdentifierForActivityType:typeCopy];
     }
 
     else
@@ -434,12 +434,12 @@ LABEL_28:
   return v9;
 }
 
-+ (id)_thumbnailImageForActivityItem:(id)a3 thumbnailSize:(CGSize)a4 activityType:(id)a5
++ (id)_thumbnailImageForActivityItem:(id)item thumbnailSize:(CGSize)size activityType:(id)type
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  typeCopy = type;
   if (height <= 0.0)
   {
     v12 = 0;
@@ -449,17 +449,17 @@ LABEL_28:
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [a1 _activityViewControllerForActivityItem:v9];
-      v12 = [v9 activityViewController:v11 thumbnailImageForActivityType:v10 suggestedSize:{width, height}];
+      v11 = [self _activityViewControllerForActivityItem:itemCopy];
+      v12 = [itemCopy activityViewController:v11 thumbnailImageForActivityType:typeCopy suggestedSize:{width, height}];
     }
 
     else
     {
-      v11 = [__originalItems objectForKey:v9];
+      v11 = [__originalItems objectForKey:itemCopy];
       if (objc_opt_respondsToSelector())
       {
-        v13 = [a1 _activityViewControllerForActivityItem:v9];
-        v12 = [v11 activityViewController:v13 thumbnailImageForActivityType:v10 suggestedSize:{width, height}];
+        v13 = [self _activityViewControllerForActivityItem:itemCopy];
+        v12 = [v11 activityViewController:v13 thumbnailImageForActivityType:typeCopy suggestedSize:{width, height}];
       }
 
       else
@@ -472,12 +472,12 @@ LABEL_28:
   return v12;
 }
 
-+ (id)_thumbnailImageDataForActivityItem:(id)a3 thumbnailSize:(CGSize)a4 activityType:(id)a5
++ (id)_thumbnailImageDataForActivityItem:(id)item thumbnailSize:(CGSize)size activityType:(id)type
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  typeCopy = type;
   if (height <= 0.0)
   {
     v12 = 0;
@@ -487,17 +487,17 @@ LABEL_28:
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [a1 _activityViewControllerForActivityItem:v9];
-      v12 = [v9 activityViewController:v11 thumbnailImageDataForActivityType:v10 suggestedSize:{width, height}];
+      v11 = [self _activityViewControllerForActivityItem:itemCopy];
+      v12 = [itemCopy activityViewController:v11 thumbnailImageDataForActivityType:typeCopy suggestedSize:{width, height}];
     }
 
     else
     {
-      v11 = [__originalItems objectForKey:v9];
+      v11 = [__originalItems objectForKey:itemCopy];
       if (objc_opt_respondsToSelector())
       {
-        v13 = [a1 _activityViewControllerForActivityItem:v9];
-        v12 = [v11 activityViewController:v13 thumbnailImageDataForActivityType:v10 suggestedSize:{width, height}];
+        v13 = [self _activityViewControllerForActivityItem:itemCopy];
+        v12 = [v11 activityViewController:v13 thumbnailImageDataForActivityType:typeCopy suggestedSize:{width, height}];
       }
 
       else
@@ -510,23 +510,23 @@ LABEL_28:
   return v12;
 }
 
-+ (id)_attachmentNameForActivityItem:(id)a3 activityType:(id)a4
++ (id)_attachmentNameForActivityItem:(id)item activityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  typeCopy = type;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a1 _activityViewControllerForActivityItem:v6];
-    v9 = [v6 activityViewController:v8 attachmentNameForActivityType:v7];
+    v8 = [self _activityViewControllerForActivityItem:itemCopy];
+    v9 = [itemCopy activityViewController:v8 attachmentNameForActivityType:typeCopy];
   }
 
   else
   {
-    v8 = [__originalItems objectForKey:v6];
+    v8 = [__originalItems objectForKey:itemCopy];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [a1 _activityViewControllerForActivityItem:v6];
-      v9 = [v8 activityViewController:v10 attachmentNameForActivityType:v7];
+      v10 = [self _activityViewControllerForActivityItem:itemCopy];
+      v9 = [v8 activityViewController:v10 attachmentNameForActivityType:typeCopy];
     }
 
     else
@@ -538,23 +538,23 @@ LABEL_28:
   return v9;
 }
 
-+ (id)_openURLAnnotationForActivityItem:(id)a3 activityType:(id)a4
++ (id)_openURLAnnotationForActivityItem:(id)item activityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  typeCopy = type;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a1 _activityViewControllerForActivityItem:v6];
-    v9 = [v6 activityViewController:v8 openURLAnnotationForActivityType:v7];
+    v8 = [self _activityViewControllerForActivityItem:itemCopy];
+    v9 = [itemCopy activityViewController:v8 openURLAnnotationForActivityType:typeCopy];
   }
 
   else
   {
-    v8 = [__originalItems objectForKey:v6];
+    v8 = [__originalItems objectForKey:itemCopy];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [a1 _activityViewControllerForActivityItem:v6];
-      v9 = [v8 activityViewController:v10 openURLAnnotationForActivityType:v7];
+      v10 = [self _activityViewControllerForActivityItem:itemCopy];
+      v9 = [v8 activityViewController:v10 openURLAnnotationForActivityType:typeCopy];
     }
 
     else

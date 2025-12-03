@@ -1,16 +1,16 @@
 @interface ASSampleCollector
-+ (id)sampleDictionaryByIndex:(id)a3 sampleIndexBlock:(id)a4;
++ (id)sampleDictionaryByIndex:(id)index sampleIndexBlock:(id)block;
 @end
 
 @implementation ASSampleCollector
 
-+ (id)sampleDictionaryByIndex:(id)a3 sampleIndexBlock:(id)a4
++ (id)sampleDictionaryByIndex:(id)index sampleIndexBlock:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [MEMORY[0x277CBEB98] setWithArray:v5];
+  indexCopy = index;
+  blockCopy = block;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [MEMORY[0x277CBEB98] setWithArray:indexCopy];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -30,9 +30,9 @@
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = v6[2](v6, v11);
+        v12 = blockCopy[2](blockCopy, v11);
         v13 = [MEMORY[0x277CCABB0] numberWithLongLong:v12];
-        v14 = [v7 objectForKeyedSubscript:v13];
+        v14 = [dictionary objectForKeyedSubscript:v13];
         v15 = v14;
         if (v14)
         {
@@ -49,7 +49,7 @@
         v18 = [v17 setByAddingObject:v11];
 
         v19 = [MEMORY[0x277CCABB0] numberWithLongLong:v12];
-        [v7 setObject:v18 forKeyedSubscript:v19];
+        [dictionary setObject:v18 forKeyedSubscript:v19];
       }
 
       v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -58,7 +58,7 @@
     while (v9);
   }
 
-  v20 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v7];
+  v20 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   v21 = *MEMORY[0x277D85DE8];
 

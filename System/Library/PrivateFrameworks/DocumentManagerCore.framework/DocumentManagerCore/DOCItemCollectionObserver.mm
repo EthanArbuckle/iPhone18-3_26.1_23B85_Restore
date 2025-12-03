@@ -1,20 +1,20 @@
 @interface DOCItemCollectionObserver
-- (DOCItemCollectionObserver)initWithItemCollection:(id)a3;
-- (id)addSubscriber:(id)a3;
-- (void)_enumerateItemCollectionIndexPathBasedDelegatesWithBlock:(id)a3;
+- (DOCItemCollectionObserver)initWithItemCollection:(id)collection;
+- (id)addSubscriber:(id)subscriber;
+- (void)_enumerateItemCollectionIndexPathBasedDelegatesWithBlock:(id)block;
 - (void)_purgeOrphanedContainers;
-- (void)addItemCollectionDelegate:(id)a3;
-- (void)collection:(id)a3 didDeleteItemsAtIndexPaths:(id)a4;
-- (void)collection:(id)a3 didInsertItemsAtIndexPaths:(id)a4;
-- (void)collection:(id)a3 didMoveItemsFromIndexPaths:(id)a4 toIndexPaths:(id)a5;
-- (void)collection:(id)a3 didPerformBatchUpdateWithReplayBlock:(id)a4;
-- (void)collection:(id)a3 didUpdateItemsAtIndexPaths:(id)a4 changes:(id)a5;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
+- (void)addItemCollectionDelegate:(id)delegate;
+- (void)collection:(id)collection didDeleteItemsAtIndexPaths:(id)paths;
+- (void)collection:(id)collection didInsertItemsAtIndexPaths:(id)paths;
+- (void)collection:(id)collection didMoveItemsFromIndexPaths:(id)paths toIndexPaths:(id)indexPaths;
+- (void)collection:(id)collection didPerformBatchUpdateWithReplayBlock:(id)block;
+- (void)collection:(id)collection didUpdateItemsAtIndexPaths:(id)paths changes:(id)changes;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
 - (void)dealloc;
 - (void)notifySubscribers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeItemCollectionDelegate:(id)a3;
-- (void)removeSubscriber:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeItemCollectionDelegate:(id)delegate;
+- (void)removeSubscriber:(id)subscriber;
 @end
 
 @implementation DOCItemCollectionObserver
@@ -24,13 +24,13 @@
   v18 = *MEMORY[0x277D85DE8];
   if (([(FPItemCollection *)self->_itemCollection isGathering]& 1) == 0)
   {
-    v3 = [(FPItemCollection *)self->_itemCollection items];
+    items = [(FPItemCollection *)self->_itemCollection items];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(DOCItemCollectionObserver *)self subscribers];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subscribers = [(DOCItemCollectionObserver *)self subscribers];
+    v5 = [subscribers countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -41,20 +41,20 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subscribers);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 updateBlock];
+          updateBlock = [v9 updateBlock];
 
-          if (v10)
+          if (updateBlock)
           {
-            v11 = [v9 updateBlock];
-            (v11)[2](v11, v3);
+            updateBlock2 = [v9 updateBlock];
+            (updateBlock2)[2](updateBlock2, items);
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [subscribers countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -64,23 +64,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (DOCItemCollectionObserver)initWithItemCollection:(id)a3
+- (DOCItemCollectionObserver)initWithItemCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = DOCItemCollectionObserver;
   v6 = [(DOCItemCollectionObserver *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     subscribers = v6->_subscribers;
-    v6->_subscribers = v7;
+    v6->_subscribers = array;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     delegates = v6->_delegates;
-    v6->_delegates = v9;
+    v6->_delegates = array2;
 
-    objc_storeStrong(&v6->_itemCollection, a3);
+    objc_storeStrong(&v6->_itemCollection, collection);
     [(FPItemCollection *)v6->_itemCollection setDelegate:v6];
     [(FPItemCollection *)v6->_itemCollection addObserver:v6 forKeyPath:@"gathering" options:1 context:&DOCItemCollectionObserverObservationContext];
     [(FPItemCollection *)v6->_itemCollection doc_startObserving];
@@ -91,20 +91,20 @@
 
 - (void)dealloc
 {
-  v3 = [(DOCItemCollectionObserver *)self itemCollection];
-  [v3 doc_stopObserving];
+  itemCollection = [(DOCItemCollectionObserver *)self itemCollection];
+  [itemCollection doc_stopObserving];
 
-  v4 = [(DOCItemCollectionObserver *)self itemCollection];
-  [v4 removeObserver:self forKeyPath:@"gathering"];
+  itemCollection2 = [(DOCItemCollectionObserver *)self itemCollection];
+  [itemCollection2 removeObserver:self forKeyPath:@"gathering"];
 
   v5.receiver = self;
   v5.super_class = DOCItemCollectionObserver;
   [(DOCItemCollectionObserver *)&v5 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &DOCItemCollectionObserverObservationContext)
+  if (context == &DOCItemCollectionObserverObservationContext)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -118,37 +118,37 @@
   {
     v6.receiver = self;
     v6.super_class = DOCItemCollectionObserver;
-    [(DOCItemCollectionObserver *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DOCItemCollectionObserver *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (id)addSubscriber:(id)a3
+- (id)addSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [[DOCItemCollectionSubscriber alloc] initWithUpdateBlock:v4];
+  subscriberCopy = subscriber;
+  v5 = [[DOCItemCollectionSubscriber alloc] initWithUpdateBlock:subscriberCopy];
 
-  v6 = [(DOCItemCollectionObserver *)self subscribers];
-  [v6 addObject:v5];
+  subscribers = [(DOCItemCollectionObserver *)self subscribers];
+  [subscribers addObject:v5];
 
   return v5;
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [(DOCItemCollectionObserver *)self subscribers];
+  subscriberCopy = subscriber;
+  subscribers = [(DOCItemCollectionObserver *)self subscribers];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__DOCItemCollectionObserver_removeSubscriber___block_invoke;
   v9[3] = &unk_278F9BF68;
-  v6 = v4;
+  v6 = subscriberCopy;
   v10 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v7 = [subscribers indexOfObjectPassingTest:v9];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(DOCItemCollectionObserver *)self subscribers];
-    [v8 removeObjectAtIndex:v7];
+    subscribers2 = [(DOCItemCollectionObserver *)self subscribers];
+    [subscribers2 removeObjectAtIndex:v7];
   }
 }
 
@@ -166,15 +166,15 @@ uint64_t __46__DOCItemCollectionObserver_removeSubscriber___block_invoke(uint64_
   return v8;
 }
 
-- (void)addItemCollectionDelegate:(id)a3
+- (void)addItemCollectionDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegates = self->_delegates;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__DOCItemCollectionObserver_addItemCollectionDelegate___block_invoke;
   v9[3] = &unk_278F9BF90;
-  v6 = v4;
+  v6 = delegateCopy;
   v10 = v6;
   if ([(NSMutableArray *)delegates indexOfObjectPassingTest:v9]== 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -202,11 +202,11 @@ uint64_t __55__DOCItemCollectionObserver_addItemCollectionDelegate___block_invok
   return v7;
 }
 
-- (void)removeItemCollectionDelegate:(id)a3
+- (void)removeItemCollectionDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   soleUpdatableDelegate = self->_soleUpdatableDelegate;
-  if (soleUpdatableDelegate == v4)
+  if (soleUpdatableDelegate == delegateCopy)
   {
     self->_soleUpdatableDelegate = 0;
   }
@@ -216,7 +216,7 @@ uint64_t __55__DOCItemCollectionObserver_addItemCollectionDelegate___block_invok
   v9[1] = 3221225472;
   v9[2] = __58__DOCItemCollectionObserver_removeItemCollectionDelegate___block_invoke;
   v9[3] = &unk_278F9BF90;
-  v7 = v4;
+  v7 = delegateCopy;
   v10 = v7;
   v8 = [(NSMutableArray *)delegates indexOfObjectPassingTest:v9];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
@@ -260,14 +260,14 @@ BOOL __53__DOCItemCollectionObserver__purgeOrphanedContainers__block_invoke(uint
   return v3;
 }
 
-- (void)_enumerateItemCollectionIndexPathBasedDelegatesWithBlock:(id)a3
+- (void)_enumerateItemCollectionIndexPathBasedDelegatesWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self->_soleUpdatableDelegate)
   {
-    (*(v4 + 2))(v4);
+    (*(blockCopy + 2))(blockCopy);
   }
 
   else
@@ -292,10 +292,10 @@ BOOL __53__DOCItemCollectionObserver__purgeOrphanedContainers__block_invoke(uint
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * v10) weakObjectValue];
-          if ([v11 conformsToProtocol:&unk_285C792E0])
+          weakObjectValue = [*(*(&v13 + 1) + 8 * v10) weakObjectValue];
+          if ([weakObjectValue conformsToProtocol:&unk_285C792E0])
           {
-            (v5)[2](v5, v11);
+            (v5)[2](v5, weakObjectValue);
           }
 
           ++v10;
@@ -312,102 +312,102 @@ BOOL __53__DOCItemCollectionObserver__purgeOrphanedContainers__block_invoke(uint
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collection:(id)a3 didInsertItemsAtIndexPaths:(id)a4
+- (void)collection:(id)collection didInsertItemsAtIndexPaths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  pathsCopy = paths;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __67__DOCItemCollectionObserver_collection_didInsertItemsAtIndexPaths___block_invoke;
   v13 = &unk_278F9BFD8;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = collectionCopy;
+  v15 = pathsCopy;
+  v8 = pathsCopy;
+  v9 = collectionCopy;
   [(DOCItemCollectionObserver *)self _enumerateItemCollectionIndexPathBasedDelegatesWithBlock:&v10];
   [(DOCItemCollectionObserver *)self notifySubscribers:v10];
 }
 
-- (void)collection:(id)a3 didMoveItemsFromIndexPaths:(id)a4 toIndexPaths:(id)a5
+- (void)collection:(id)collection didMoveItemsFromIndexPaths:(id)paths toIndexPaths:(id)indexPaths
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  pathsCopy = paths;
+  indexPathsCopy = indexPaths;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__DOCItemCollectionObserver_collection_didMoveItemsFromIndexPaths_toIndexPaths___block_invoke;
   v14[3] = &unk_278F9C000;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = collectionCopy;
+  v16 = pathsCopy;
+  v17 = indexPathsCopy;
+  v11 = indexPathsCopy;
+  v12 = pathsCopy;
+  v13 = collectionCopy;
   [(DOCItemCollectionObserver *)self _enumerateItemCollectionIndexPathBasedDelegatesWithBlock:v14];
   [(DOCItemCollectionObserver *)self notifySubscribers];
 }
 
-- (void)collection:(id)a3 didDeleteItemsAtIndexPaths:(id)a4
+- (void)collection:(id)collection didDeleteItemsAtIndexPaths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  pathsCopy = paths;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __67__DOCItemCollectionObserver_collection_didDeleteItemsAtIndexPaths___block_invoke;
   v13 = &unk_278F9BFD8;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = collectionCopy;
+  v15 = pathsCopy;
+  v8 = pathsCopy;
+  v9 = collectionCopy;
   [(DOCItemCollectionObserver *)self _enumerateItemCollectionIndexPathBasedDelegatesWithBlock:&v10];
   [(DOCItemCollectionObserver *)self notifySubscribers:v10];
 }
 
-- (void)collection:(id)a3 didUpdateItemsAtIndexPaths:(id)a4 changes:(id)a5
+- (void)collection:(id)collection didUpdateItemsAtIndexPaths:(id)paths changes:(id)changes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  pathsCopy = paths;
+  changesCopy = changes;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__DOCItemCollectionObserver_collection_didUpdateItemsAtIndexPaths_changes___block_invoke;
   v14[3] = &unk_278F9C000;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = collectionCopy;
+  v16 = pathsCopy;
+  v17 = changesCopy;
+  v11 = changesCopy;
+  v12 = pathsCopy;
+  v13 = collectionCopy;
   [(DOCItemCollectionObserver *)self _enumerateItemCollectionIndexPathBasedDelegatesWithBlock:v14];
   [(DOCItemCollectionObserver *)self notifySubscribers];
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
-  v4 = a3;
+  reloadedCopy = reloaded;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__DOCItemCollectionObserver_dataForCollectionShouldBeReloaded___block_invoke;
   v6[3] = &unk_278F9C028;
-  v7 = v4;
-  v5 = v4;
+  v7 = reloadedCopy;
+  v5 = reloadedCopy;
   [(DOCItemCollectionObserver *)self _enumerateItemCollectionIndexPathBasedDelegatesWithBlock:v6];
   [(DOCItemCollectionObserver *)self notifySubscribers];
 }
 
-- (void)collection:(id)a3 didPerformBatchUpdateWithReplayBlock:(id)a4
+- (void)collection:(id)collection didPerformBatchUpdateWithReplayBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__DOCItemCollectionObserver_collection_didPerformBatchUpdateWithReplayBlock___block_invoke;
   v10[3] = &unk_278F9C078;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = collectionCopy;
+  selfCopy = self;
+  v13 = blockCopy;
+  v8 = blockCopy;
+  v9 = collectionCopy;
   [(DOCItemCollectionObserver *)self _enumerateItemCollectionIndexPathBasedDelegatesWithBlock:v10];
   [(DOCItemCollectionObserver *)self notifySubscribers];
 }

@@ -1,26 +1,26 @@
 @interface GestureInstructionView
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (GestureInstructionView)initWithFrame:(CGRect)a3;
-- (void)_addInstructionWithImageName:(id)a3 titleKey:(id)a4 descriptionKey:(id)a5 bundle:(id)a6;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (GestureInstructionView)initWithFrame:(CGRect)frame;
+- (void)_addInstructionWithImageName:(id)name titleKey:(id)key descriptionKey:(id)descriptionKey bundle:(id)bundle;
 - (void)_updateUI;
 - (void)layoutSubviews;
 @end
 
 @implementation GestureInstructionView
 
-- (GestureInstructionView)initWithFrame:(CGRect)a3
+- (GestureInstructionView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = GestureInstructionView;
-  v3 = [(GestureInstructionView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GestureInstructionView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor blackColor];
     [(GestureInstructionView *)v3 setBackgroundColor:v4];
 
-    v5 = [(GestureInstructionView *)v3 panGestureRecognizer];
-    [v5 setDelegate:v3];
+    panGestureRecognizer = [(GestureInstructionView *)v3 panGestureRecognizer];
+    [panGestureRecognizer setDelegate:v3];
 
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = objc_alloc_init(UILabel);
@@ -38,7 +38,7 @@
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
     v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
     v14 = +[UIApplication sharedApplication];
-    v15 = [v14 preferredContentSizeCategory];
+    preferredContentSizeCategory = [v14 preferredContentSizeCategory];
     v16 = _UIContentSizeCategoryCompareToContentSizeCategory();
 
     if (v16 == 1)
@@ -73,15 +73,15 @@
   return v3;
 }
 
-- (void)_addInstructionWithImageName:(id)a3 titleKey:(id)a4 descriptionKey:(id)a5 bundle:(id)a6
+- (void)_addInstructionWithImageName:(id)name titleKey:(id)key descriptionKey:(id)descriptionKey bundle:(id)bundle
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v15 = [v10 localizedStringForKey:a4 value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
-  v13 = [v10 localizedStringForKey:v11 value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
+  bundleCopy = bundle;
+  descriptionKeyCopy = descriptionKey;
+  nameCopy = name;
+  v15 = [bundleCopy localizedStringForKey:key value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
+  v13 = [bundleCopy localizedStringForKey:descriptionKeyCopy value:&stru_24D60 table:@"DigitalTouchBalloonProvider-Localizable"];
 
-  v14 = [[GestureInstructionItemView alloc] initWithImageName:v12 title:v15 description:v13];
+  v14 = [[GestureInstructionItemView alloc] initWithImageName:nameCopy title:v15 description:v13];
   [(GestureInstructionItemView *)v14 setUserInteractionEnabled:0];
   [(GestureInstructionView *)self addSubview:v14];
   [(NSMutableArray *)self->_itemViews addObject:v14];
@@ -93,7 +93,7 @@
   v4 = v3;
   v6 = v5;
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v7 preferredContentSizeCategory];
   if (_UIContentSizeCategoryIsAccessibilityContentSizeCategory())
   {
     v9 = 10.0;
@@ -176,15 +176,15 @@
   [(GestureInstructionView *)self setContentInset:top, left, bottom, right];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   objc_opt_class();
-  if (((objc_opt_isKindOfClass() & 1) == 0 || ([v4 view], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 == self)) && (-[GestureInstructionView bounds](self, "bounds"), v7 = v6, -[GestureInstructionView contentSize](self, "contentSize"), v7 <= v8))
+  if (((objc_opt_isKindOfClass() & 1) == 0 || ([beginCopy view], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 == self)) && (-[GestureInstructionView bounds](self, "bounds"), v7 = v6, -[GestureInstructionView contentSize](self, "contentSize"), v7 <= v8))
   {
     v11.receiver = self;
     v11.super_class = GestureInstructionView;
-    v9 = [(GestureInstructionView *)&v11 gestureRecognizerShouldBegin:v4];
+    v9 = [(GestureInstructionView *)&v11 gestureRecognizerShouldBegin:beginCopy];
   }
 
   else
@@ -195,16 +195,16 @@
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v4 = [v7 view];
-    if (v4 != self)
+    view = [recognizerCopy view];
+    if (view != self)
     {
       v10 = 1;
       goto LABEL_8;
@@ -214,8 +214,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 view];
-    v10 = v11 != self;
+    view2 = [gestureRecognizerCopy view];
+    v10 = view2 != self;
 
     if ((isKindOfClass & 1) == 0)
     {

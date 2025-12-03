@@ -2,25 +2,25 @@
 - (BOOL)_configureLeadingTransformViewIfNecessary;
 - (BOOL)_configureMinimalTransformViewIfNecessary;
 - (BOOL)_configureTrailingTransformViewIfNecessary;
-- (BOOL)_configureTransformView:(id *)a3 ifNecessaryWithProvidedView:(id)a4 assertIfConfigurationRequired:(id)a5;
-- (NSDirectionalEdgeInsets)suggestedOutsetsForLayoutMode:(int64_t)a3 maximumOutsets:(NSDirectionalEdgeInsets)a4;
-- (SAUIElementView)initWithElementViewProvider:(id)a3;
+- (BOOL)_configureTransformView:(id *)view ifNecessaryWithProvidedView:(id)providedView assertIfConfigurationRequired:(id)required;
+- (NSDirectionalEdgeInsets)suggestedOutsetsForLayoutMode:(int64_t)mode maximumOutsets:(NSDirectionalEdgeInsets)outsets;
+- (SAUIElementView)initWithElementViewProvider:(id)provider;
 - (SAUIElementViewDelegate)delegate;
 - (_SAUIProvidedViewContainerView)minimalTransformView;
-- (double)_paddingForView:(id)a3 fromProvider:(id)a4 inLayoutMode:(int64_t)a5;
+- (double)_paddingForView:(id)view fromProvider:(id)provider inLayoutMode:(int64_t)mode;
 - (id)_effectiveMinimalView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_didLayoutResizedTransformView:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_didLayoutResizedTransformView:(id)view;
 - (void)layoutSubviews;
-- (void)setLayoutAxis:(unint64_t)a3;
+- (void)setLayoutAxis:(unint64_t)axis;
 @end
 
 @implementation SAUIElementView
 
 - (BOOL)_configureTrailingTransformViewIfNecessary
 {
-  v3 = [(SAUIElementViewProviding *)self->_elementViewProvider trailingView];
-  v4 = [(SAUIElementView *)self _configureTransformView:&self->_trailingTransformView ifNecessaryWithProvidedView:v3 assertIfConfigurationRequired:0];
+  trailingView = [(SAUIElementViewProviding *)self->_elementViewProvider trailingView];
+  v4 = [(SAUIElementView *)self _configureTransformView:&self->_trailingTransformView ifNecessaryWithProvidedView:trailingView assertIfConfigurationRequired:0];
 
   if (v4)
   {
@@ -39,36 +39,36 @@
   v90.receiver = self;
   v90.super_class = SAUIElementView;
   [(SAUIElementView *)&v90 layoutSubviews];
-  v3 = [(SAUIElementView *)self _configureMinimalTransformViewIfNecessary];
-  v61 = [(SAUIElementView *)self _configureLeadingTransformViewIfNecessary];
-  v62 = [(SAUIElementView *)self _configureTrailingTransformViewIfNecessary];
+  _configureMinimalTransformViewIfNecessary = [(SAUIElementView *)self _configureMinimalTransformViewIfNecessary];
+  _configureLeadingTransformViewIfNecessary = [(SAUIElementView *)self _configureLeadingTransformViewIfNecessary];
+  _configureTrailingTransformViewIfNecessary = [(SAUIElementView *)self _configureTrailingTransformViewIfNecessary];
   [(SAUIElementView *)self bounds];
   rect.origin.x = v4;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v64 = [(SAUIElementView *)self traitCollection];
-  [v64 displayScale];
+  traitCollection = [(SAUIElementView *)self traitCollection];
+  [traitCollection displayScale];
   v65 = v11;
-  v12 = [(SAUIElementView *)self traitCollection];
-  v13 = [v12 layoutDirection];
+  traitCollection2 = [(SAUIElementView *)self traitCollection];
+  layoutDirection = [traitCollection2 layoutDirection];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v15 = [WeakRetained layoutModeForElementView:self];
 
-  v16 = [(SAUIElementViewProviding *)self->_elementViewProvider leadingView];
-  v17 = [(SAUIElementView *)self _effectiveMinimalView];
-  v18 = [(SAUIElementViewProviding *)self->_elementViewProvider trailingView];
-  v63 = v16;
-  v60 = v17;
+  leadingView = [(SAUIElementViewProviding *)self->_elementViewProvider leadingView];
+  _effectiveMinimalView = [(SAUIElementView *)self _effectiveMinimalView];
+  trailingView = [(SAUIElementViewProviding *)self->_elementViewProvider trailingView];
+  v63 = leadingView;
+  v60 = _effectiveMinimalView;
   if (v15 == 1)
   {
-    v19 = v17;
+    v19 = _effectiveMinimalView;
   }
 
   else
   {
-    v19 = v16;
+    v19 = leadingView;
   }
 
   v20 = v19;
@@ -96,7 +96,7 @@
 
     else
     {
-      if (v13 == 1)
+      if (layoutDirection == 1)
       {
         v91.origin.x = rect.origin.x;
         v91.origin.y = v6;
@@ -126,7 +126,7 @@
   v89[4] = v15;
   v38 = MEMORY[0x26D6A2080](v89);
   v39 = v38;
-  if (v3)
+  if (_configureMinimalTransformViewIfNecessary)
   {
     v40 = MEMORY[0x277D75D18];
     v82[0] = MEMORY[0x277D85DD0];
@@ -148,7 +148,7 @@
     (v38)[2](v38, self->_minimalTransformView, v20, v34, v35, v36, v37);
   }
 
-  if (v61)
+  if (_configureLeadingTransformViewIfNecessary)
   {
     v41 = MEMORY[0x277D75D18];
     v75[0] = MEMORY[0x277D85DD0];
@@ -170,14 +170,14 @@
     (v39)[2](v39, self->_leadingTransformView, v20, v34, v35, v36, v37);
   }
 
-  [v18 sizeThatFits:{v8, v10, v59}];
+  [trailingView sizeThatFits:{v8, v10, v59}];
   BSRectWithSize();
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
-  [(SAUIElementView *)self _paddingForView:v18 fromProvider:self->_elementViewProvider inLayoutMode:v15];
-  if (v13 != 1)
+  [(SAUIElementView *)self _paddingForView:trailingView fromProvider:self->_elementViewProvider inLayoutMode:v15];
+  if (layoutDirection != 1)
   {
     v93.origin.x = rect.origin.x;
     v93.origin.y = v6;
@@ -196,7 +196,7 @@
   v55 = v51.n128_u64[0];
   v56 = v52.n128_u64[0];
   v57 = v53.n128_u64[0];
-  if (v62)
+  if (_configureTrailingTransformViewIfNecessary)
   {
     v58 = MEMORY[0x277D75D18];
     *&rect.origin.y = MEMORY[0x277D85DD0];
@@ -204,8 +204,8 @@
     *&rect.size.height = __33__SAUIElementView_layoutSubviews__block_invoke_5;
     v67 = &unk_279D32968;
     v70 = v39;
-    v68 = self;
-    v69 = v18;
+    selfCopy = self;
+    v69 = trailingView;
     v71 = v54;
     v72 = v55;
     v73 = v56;
@@ -215,19 +215,19 @@
 
   else
   {
-    (v39[2])(v39, self->_trailingTransformView, v18, v50, v51, v52, v53);
+    (v39[2])(v39, self->_trailingTransformView, trailingView, v50, v51, v52, v53);
   }
 }
 
 - (BOOL)_configureMinimalTransformViewIfNecessary
 {
-  v4 = [(SAUIElementView *)self _effectiveMinimalView];
+  _effectiveMinimalView = [(SAUIElementView *)self _effectiveMinimalView];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__SAUIElementView__configureMinimalTransformViewIfNecessary__block_invoke;
   v9[3] = &unk_279D32990;
   v9[4] = self;
-  v5 = v4;
+  v5 = _effectiveMinimalView;
   v10 = v5;
   v11 = a2;
   v6 = [(SAUIElementView *)self _configureTransformView:&self->_minimalTransformView ifNecessaryWithProvidedView:v5 assertIfConfigurationRequired:v9];
@@ -248,30 +248,30 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained isMinimalViewIsolatedForElementView:self] && (objc_opt_respondsToSelector())
   {
-    v4 = [(SAUIElementViewProviding *)self->_elementViewProvider detachedMinimalView];
+    detachedMinimalView = [(SAUIElementViewProviding *)self->_elementViewProvider detachedMinimalView];
   }
 
   else
   {
-    v4 = [(SAUIElementViewProviding *)self->_elementViewProvider minimalView];
+    detachedMinimalView = [(SAUIElementViewProviding *)self->_elementViewProvider minimalView];
   }
 
-  v5 = v4;
-  if (!v4)
+  v5 = detachedMinimalView;
+  if (!detachedMinimalView)
   {
-    v6 = [(SAUIElementViewProviding *)self->_elementViewProvider minimalView];
-    v7 = v6;
-    if (v6)
+    minimalView = [(SAUIElementViewProviding *)self->_elementViewProvider minimalView];
+    v7 = minimalView;
+    if (minimalView)
     {
-      v8 = v6;
+      leadingView = minimalView;
     }
 
     else
     {
-      v8 = [(SAUIElementViewProviding *)self->_elementViewProvider leadingView];
+      leadingView = [(SAUIElementViewProviding *)self->_elementViewProvider leadingView];
     }
 
-    v5 = v8;
+    v5 = leadingView;
   }
 
   return v5;
@@ -279,8 +279,8 @@
 
 - (BOOL)_configureLeadingTransformViewIfNecessary
 {
-  v3 = [(SAUIElementViewProviding *)self->_elementViewProvider leadingView];
-  v4 = [(SAUIElementView *)self _configureTransformView:&self->_leadingTransformView ifNecessaryWithProvidedView:v3 assertIfConfigurationRequired:0];
+  leadingView = [(SAUIElementViewProviding *)self->_elementViewProvider leadingView];
+  v4 = [(SAUIElementView *)self _configureTransformView:&self->_leadingTransformView ifNecessaryWithProvidedView:leadingView assertIfConfigurationRequired:0];
 
   if (v4)
   {
@@ -335,16 +335,16 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
   return minimalTransformView;
 }
 
-- (SAUIElementView)initWithElementViewProvider:(id)a3
+- (SAUIElementView)initWithElementViewProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = SAUIElementView;
   v6 = [(SAUIElementView *)&v12 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_elementViewProvider, a3);
+    objc_storeStrong(&v6->_elementViewProvider, provider);
     v8 = [_SAUIElementViewContentView alloc];
     [(SAUIElementView *)v7 bounds];
     v9 = [(_SAUIElementViewContentView *)v8 initWithFrame:?];
@@ -358,15 +358,15 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
   return v7;
 }
 
-- (NSDirectionalEdgeInsets)suggestedOutsetsForLayoutMode:(int64_t)a3 maximumOutsets:(NSDirectionalEdgeInsets)a4
+- (NSDirectionalEdgeInsets)suggestedOutsetsForLayoutMode:(int64_t)mode maximumOutsets:(NSDirectionalEdgeInsets)outsets
 {
   v5 = *MEMORY[0x277D75060];
   v4 = *(MEMORY[0x277D75060] + 8);
   v7 = *(MEMORY[0x277D75060] + 16);
   v6 = *(MEMORY[0x277D75060] + 24);
-  if (a3 >= 1)
+  if (mode >= 1)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       layoutAxis = self->_layoutAxis;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -415,17 +415,17 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
         v16 = 1.79769313e308;
       }
 
-      v23 = [(SAUIElementView *)self _effectiveMinimalView];
+      _effectiveMinimalView = [(SAUIElementView *)self _effectiveMinimalView];
       if (objc_opt_respondsToSelector())
       {
-        [(SAUIElementViewProviding *)self->_elementViewProvider sizeThatFitsSize:v23 forProvidedView:1 inLayoutMode:v16, v15];
+        [(SAUIElementViewProviding *)self->_elementViewProvider sizeThatFitsSize:_effectiveMinimalView forProvidedView:1 inLayoutMode:v16, v15];
         v12 = v24;
         v13 = v25;
       }
 
       if (v12 == 0.0 && v13 == 0.0)
       {
-        [v23 sizeThatFits:{v16, v15}];
+        [_effectiveMinimalView sizeThatFits:{v16, v15}];
         v12 = v26;
         v13 = v27;
       }
@@ -441,7 +441,7 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
       }
 
       v29 = -v28;
-      [(SAUIElementView *)self _paddingForView:v23 fromProvider:self->_elementViewProvider inLayoutMode:1];
+      [(SAUIElementView *)self _paddingForView:_effectiveMinimalView fromProvider:self->_elementViewProvider inLayoutMode:1];
       v31 = v30;
       v4 = v29 - v30;
       v6 = 0.0;
@@ -480,27 +480,27 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
         v33 = 1.79769313e308;
         [(SAUIElementViewProviding *)self->_elementViewProvider leadingView];
       }
-      v23 = ;
-      v35 = [(SAUIElementViewProviding *)self->_elementViewProvider trailingView];
+      _effectiveMinimalView = ;
+      trailingView = [(SAUIElementViewProviding *)self->_elementViewProvider trailingView];
       v36 = 0.0;
       v37 = 0.0;
       if (objc_opt_respondsToSelector())
       {
-        [(SAUIElementViewProviding *)self->_elementViewProvider sizeThatFitsSize:v23 forProvidedView:a3 inLayoutMode:v21, v57];
+        [(SAUIElementViewProviding *)self->_elementViewProvider sizeThatFitsSize:_effectiveMinimalView forProvidedView:mode inLayoutMode:v21, v57];
         v37 = v38;
-        [(SAUIElementViewProviding *)self->_elementViewProvider sizeThatFitsSize:v35 forProvidedView:a3 inLayoutMode:v33, v56];
+        [(SAUIElementViewProviding *)self->_elementViewProvider sizeThatFitsSize:trailingView forProvidedView:mode inLayoutMode:v33, v56];
         v36 = v39;
       }
 
       if (fabs(v37) < 2.22044605e-16)
       {
-        [v23 sizeThatFits:{v21, v57}];
+        [_effectiveMinimalView sizeThatFits:{v21, v57}];
         v37 = v40;
       }
 
       if (fabs(v36) < 2.22044605e-16)
       {
-        [v35 sizeThatFits:{v33, v56}];
+        [trailingView sizeThatFits:{v33, v56}];
         v36 = v41;
       }
 
@@ -516,7 +516,7 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
       }
 
       v44 = -v43;
-      if (a3 == 3)
+      if (mode == 3)
       {
         v45 = v44;
       }
@@ -526,7 +526,7 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
         v45 = -v37;
       }
 
-      if (a3 == 3)
+      if (mode == 3)
       {
         v46 = v44;
       }
@@ -539,12 +539,12 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
       if (v45 != v4 || v5 != 0.0 || v46 != v6 || v7 != 0.0)
       {
         v47 = [(SAUIElementViewProviding *)self->_elementViewProvider leadingView:v42];
-        [(SAUIElementView *)self _paddingForView:v47 fromProvider:self->_elementViewProvider inLayoutMode:a3];
+        [(SAUIElementView *)self _paddingForView:v47 fromProvider:self->_elementViewProvider inLayoutMode:mode];
         v49 = v48;
 
         v45 = v45 - v49;
-        v50 = [(SAUIElementViewProviding *)self->_elementViewProvider trailingView];
-        [(SAUIElementView *)self _paddingForView:v50 fromProvider:self->_elementViewProvider inLayoutMode:a3];
+        trailingView2 = [(SAUIElementViewProviding *)self->_elementViewProvider trailingView];
+        [(SAUIElementView *)self _paddingForView:trailingView2 fromProvider:self->_elementViewProvider inLayoutMode:mode];
         v46 = v46 - v51;
       }
 
@@ -567,11 +567,11 @@ void __33__SAUIElementView_layoutSubviews__block_invoke(uint64_t a1, void *a2, v
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SAUIElementView;
-  v5 = [(SAUIElementView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SAUIElementView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -596,11 +596,11 @@ uint64_t __33__SAUIElementView_layoutSubviews__block_invoke_2(uint64_t a1)
   return [v2 layoutIfNeeded];
 }
 
-- (void)setLayoutAxis:(unint64_t)a3
+- (void)setLayoutAxis:(unint64_t)axis
 {
-  if (a3 - 1 <= 1 && self->_layoutAxis != a3)
+  if (axis - 1 <= 1 && self->_layoutAxis != axis)
   {
-    self->_layoutAxis = a3;
+    self->_layoutAxis = axis;
     if (objc_opt_respondsToSelector())
     {
       [(SAUIElementViewProviding *)self->_elementViewProvider setLayoutAxis:self->_layoutAxis];
@@ -610,17 +610,17 @@ uint64_t __33__SAUIElementView_layoutSubviews__block_invoke_2(uint64_t a1)
   }
 }
 
-- (double)_paddingForView:(id)a3 fromProvider:(id)a4 inLayoutMode:(int64_t)a5
+- (double)_paddingForView:(id)view fromProvider:(id)provider inLayoutMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   v10 = 12.0;
-  if (v8 && ((objc_opt_respondsToSelector() & 1) == 0 || [v9 isProvidedViewConcentric:v8 inLayoutMode:a5]))
+  if (viewCopy && ((objc_opt_respondsToSelector() & 1) == 0 || [providerCopy isProvidedViewConcentric:viewCopy inLayoutMode:mode]))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained concentricPaddingForProvidedView:v8 fromViewProvider:v9];
+      [WeakRetained concentricPaddingForProvidedView:viewCopy fromViewProvider:providerCopy];
       v10 = v12;
     }
   }
@@ -628,24 +628,24 @@ uint64_t __33__SAUIElementView_layoutSubviews__block_invoke_2(uint64_t a1)
   return v10;
 }
 
-- (BOOL)_configureTransformView:(id *)a3 ifNecessaryWithProvidedView:(id)a4 assertIfConfigurationRequired:(id)a5
+- (BOOL)_configureTransformView:(id *)view ifNecessaryWithProvidedView:(id)providedView assertIfConfigurationRequired:(id)required
 {
-  v9 = a4;
-  v10 = a5;
-  if (!a3)
+  providedViewCopy = providedView;
+  requiredCopy = required;
+  if (!view)
   {
     [SAUIElementView _configureTransformView:a2 ifNecessaryWithProvidedView:self assertIfConfigurationRequired:?];
   }
 
-  v11 = *a3;
+  v11 = *view;
   v12 = v11;
-  if (v9 && ([(_SAUIProvidedViewContainerView *)v11 providedView], v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, (v14 & 1) == 0))
+  if (providedViewCopy && ([(_SAUIProvidedViewContainerView *)v11 providedView], v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, (v14 & 1) == 0))
   {
     [(_SAUIProvidedViewContainerView *)v12 setProvidedView:0];
     [(_SAUIProvidedViewContainerView *)v12 removeFromSuperview];
     v16 = objc_alloc_init(_SAUIProvidedViewContainerView);
 
-    [(_SAUIProvidedViewContainerView *)v16 setProvidedView:v9];
+    [(_SAUIProvidedViewContainerView *)v16 setProvidedView:providedViewCopy];
     [(_SAUIProvidedViewContainerView *)v16 setElementView:self];
     v15 = 1;
     v12 = v16;
@@ -656,25 +656,25 @@ uint64_t __33__SAUIElementView_layoutSubviews__block_invoke_2(uint64_t a1)
     v15 = 0;
   }
 
-  objc_storeStrong(a3, v12);
-  if (v10 && v15)
+  objc_storeStrong(view, v12);
+  if (requiredCopy && v15)
   {
-    v10[2](v10);
+    requiredCopy[2](requiredCopy);
   }
 
-  if (!*a3 || ([*a3 superview], v17 = objc_claimAutoreleasedReturnValue(), v17, v17 == self))
+  if (!*view || ([*view superview], v17 = objc_claimAutoreleasedReturnValue(), v17, v17 == self))
   {
     v18 = 0;
   }
 
   else
   {
-    if ([*a3 portalsProvidedView])
+    if ([*view portalsProvidedView])
     {
-      [(UIView *)self->_contentView addSubview:v9];
+      [(UIView *)self->_contentView addSubview:providedViewCopy];
     }
 
-    [(SAUIElementView *)self addSubview:*a3];
+    [(SAUIElementView *)self addSubview:*view];
     v18 = 1;
   }
 
@@ -700,24 +700,24 @@ void __60__SAUIElementView__configureMinimalTransformViewIfNecessary__block_invo
   }
 }
 
-- (void)_didLayoutResizedTransformView:(id)a3
+- (void)_didLayoutResizedTransformView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
-  if (self->_minimalTransformView == v6)
+  if (self->_minimalTransformView == viewCopy)
   {
     [WeakRetained elementView:self didLayoutResizedMinimalTransformView:?];
   }
 
-  else if (self->_leadingTransformView == v6)
+  else if (self->_leadingTransformView == viewCopy)
   {
     [WeakRetained elementView:self didLayoutResizedLeadingTransformView:?];
   }
 
-  else if (self->_trailingTransformView == v6)
+  else if (self->_trailingTransformView == viewCopy)
   {
-    [WeakRetained elementView:self didLayoutResizedTrailingTransformView:v6];
+    [WeakRetained elementView:self didLayoutResizedTrailingTransformView:viewCopy];
   }
 }
 

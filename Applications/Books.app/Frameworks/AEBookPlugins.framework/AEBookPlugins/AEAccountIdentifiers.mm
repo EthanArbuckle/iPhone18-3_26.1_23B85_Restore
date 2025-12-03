@@ -1,6 +1,6 @@
 @interface AEAccountIdentifiers
-+ (id)accountIdentifiersFromPurchasedDSID:(id)a3 downloadedDSID:(id)a4 familyID:(id)a5;
-- (AEAccountIdentifiers)initWithPurchasedDSID:(id)a3 downloadedDSID:(id)a4 familyID:(id)a5;
++ (id)accountIdentifiersFromPurchasedDSID:(id)d downloadedDSID:(id)iD familyID:(id)familyID;
+- (AEAccountIdentifiers)initWithPurchasedDSID:(id)d downloadedDSID:(id)iD familyID:(id)familyID;
 - (NSString)downloadedDSID;
 - (NSString)familyID;
 - (NSString)purchasedDSID;
@@ -8,30 +8,30 @@
 
 @implementation AEAccountIdentifiers
 
-+ (id)accountIdentifiersFromPurchasedDSID:(id)a3 downloadedDSID:(id)a4 familyID:(id)a5
++ (id)accountIdentifiersFromPurchasedDSID:(id)d downloadedDSID:(id)iD familyID:(id)familyID
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithPurchasedDSID:v10 downloadedDSID:v9 familyID:v8];
+  familyIDCopy = familyID;
+  iDCopy = iD;
+  dCopy = d;
+  v11 = [[self alloc] initWithPurchasedDSID:dCopy downloadedDSID:iDCopy familyID:familyIDCopy];
 
   return v11;
 }
 
-- (AEAccountIdentifiers)initWithPurchasedDSID:(id)a3 downloadedDSID:(id)a4 familyID:(id)a5
+- (AEAccountIdentifiers)initWithPurchasedDSID:(id)d downloadedDSID:(id)iD familyID:(id)familyID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  familyIDCopy = familyID;
   v14.receiver = self;
   v14.super_class = AEAccountIdentifiers;
   v11 = [(AEAccountIdentifiers *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_purchasedDSID, v8);
-    objc_storeWeak(&v12->_downloadedDSID, v9);
-    objc_storeWeak(&v12->_familyID, v10);
+    objc_storeWeak(&v11->_purchasedDSID, dCopy);
+    objc_storeWeak(&v12->_downloadedDSID, iDCopy);
+    objc_storeWeak(&v12->_familyID, familyIDCopy);
   }
 
   return v12;

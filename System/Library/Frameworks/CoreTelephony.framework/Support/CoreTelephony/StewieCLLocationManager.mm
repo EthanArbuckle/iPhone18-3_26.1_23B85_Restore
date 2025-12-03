@@ -1,24 +1,24 @@
 @interface StewieCLLocationManager
-- (StewieCLLocationManager)initWithQueue:(id)a3 locationDataCallback:(void *)a4 authorizationChangedCallback:(void *)a5;
+- (StewieCLLocationManager)initWithQueue:(id)queue locationDataCallback:(void *)callback authorizationChangedCallback:(void *)changedCallback;
 - (id).cxx_construct;
-- (void)configureAccuracy:(int)a3;
+- (void)configureAccuracy:(int)accuracy;
 - (void)configureAccuracyBest;
 - (void)configureAccuracyBystander;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)reEvaluate;
-- (void)setEmergency:(BOOL)a3;
-- (void)setLocationUpdateRequested:(BOOL)a3;
-- (void)setupManager:(int)a3;
-- (void)updateLocationAuthStatus:(int)a3;
+- (void)setEmergency:(BOOL)emergency;
+- (void)setLocationUpdateRequested:(BOOL)requested;
+- (void)setupManager:(int)manager;
+- (void)updateLocationAuthStatus:(int)status;
 @end
 
 @implementation StewieCLLocationManager
 
-- (StewieCLLocationManager)initWithQueue:(id)a3 locationDataCallback:(void *)a4 authorizationChangedCallback:(void *)a5
+- (StewieCLLocationManager)initWithQueue:(id)queue locationDataCallback:(void *)callback authorizationChangedCallback:(void *)changedCallback
 {
-  v6 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = StewieCLLocationManager;
   if ([(StewieCLLocationManager *)&v9 init])
@@ -56,11 +56,11 @@
   [(CLLocationManager *)self->fLocationManager setDistanceFilter:100.0];
 }
 
-- (void)configureAccuracy:(int)a3
+- (void)configureAccuracy:(int)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
-    if (a3 == 1)
+    if (accuracy == 1)
     {
       [(StewieCLLocationManager *)self configureAccuracyBest];
     }
@@ -72,9 +72,9 @@
   }
 }
 
-- (void)setupManager:(int)a3
+- (void)setupManager:(int)manager
 {
-  v3 = *&a3;
+  v3 = *&manager;
   dispatch_assert_queue_V2(self->fQueue);
   v5 = sub_100032AC8(self->fLogger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -159,10 +159,10 @@
   }
 }
 
-- (void)updateLocationAuthStatus:(int)a3
+- (void)updateLocationAuthStatus:(int)status
 {
   dispatch_assert_queue_V2(self->fQueue);
-  if (self->fLocationAuthStatus != a3)
+  if (self->fLocationAuthStatus != status)
   {
     v5 = sub_100032AC8(self->fLogger.__ptr_);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -171,13 +171,13 @@
       *v8 = 136315394;
       *&v8[4] = v6;
       v9 = 2080;
-      v10 = sub_10097680C(a3);
+      v10 = sub_10097680C(status);
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I Auth status changed from:%s to %s", v8, 0x16u);
     }
 
-    self->fLocationAuthStatus = a3;
+    self->fLocationAuthStatus = status;
     f = self->fAuthorizationChangedCallback.__f_.__f_;
-    *v8 = a3;
+    *v8 = status;
     if (!f)
     {
       sub_100022DB4();
@@ -188,18 +188,18 @@
   }
 }
 
-- (void)setEmergency:(BOOL)a3
+- (void)setEmergency:(BOOL)emergency
 {
-  v3 = a3;
+  emergencyCopy = emergency;
   dispatch_assert_queue_V2(self->fQueue);
-  if (self->fIsEmergency != v3)
+  if (self->fIsEmergency != emergencyCopy)
   {
-    self->fIsEmergency = v3;
+    self->fIsEmergency = emergencyCopy;
     v5 = sub_100032AC8(self->fLogger.__ptr_);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (emergencyCopy)
       {
         v6 = @"YES";
       }
@@ -263,18 +263,18 @@
   }
 }
 
-- (void)setLocationUpdateRequested:(BOOL)a3
+- (void)setLocationUpdateRequested:(BOOL)requested
 {
-  v3 = a3;
+  requestedCopy = requested;
   dispatch_assert_queue_V2(self->fQueue);
-  if (self->fLocationUpdateRequested != v3)
+  if (self->fLocationUpdateRequested != requestedCopy)
   {
-    self->fLocationUpdateRequested = v3;
+    self->fLocationUpdateRequested = requestedCopy;
     v5 = sub_100032AC8(self->fLogger.__ptr_);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (requestedCopy)
       {
         v6 = @"YES";
       }
@@ -288,32 +288,32 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->fQueue);
-  if (![v5 code])
+  if (![errorCopy code])
   {
     v9 = sub_100032AC8(self->fLogger.__ptr_);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = errorCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I Still waiting to get location fix. Info: %@", &v10, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  v6 = [v5 code];
+  code = [errorCopy code];
   ptr = self->fLogger.__ptr_;
-  if (v6 != 1)
+  if (code != 1)
   {
     v9 = sub_100032AC8(ptr);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Got error. Error: %@", &v10, 0xCu);
     }
 
@@ -326,7 +326,7 @@ LABEL_10:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Denied; Error: %@", &v10, 0xCu);
   }
 
@@ -334,13 +334,13 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v7 = a3;
+  authorizationCopy = authorization;
   dispatch_assert_queue_V2(self->fQueue);
   v4 = +[CLLocationManager locationServicesEnabled];
-  v5 = [v7 authorizationStatus];
-  if (v5 <= 4 && ((1 << v5) & 0x19) != 0)
+  authorizationStatus = [authorizationCopy authorizationStatus];
+  if (authorizationStatus <= 4 && ((1 << authorizationStatus) & 0x19) != 0)
   {
     v6 = 2;
   }
@@ -358,23 +358,23 @@ LABEL_11:
   [(StewieCLLocationManager *)self updateLocationAuthStatus:v6];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   dispatch_assert_queue_V2(self->fQueue);
-  v8 = [v7 lastObject];
-  [v8 horizontalAccuracy];
+  lastObject = [locationsCopy lastObject];
+  [lastObject horizontalAccuracy];
   if (v9 >= 0.0)
   {
     v37 = 0u;
     v38 = 0u;
     v36 = 0u;
-    if ([v8 integrity] >= 0x19)
+    if ([lastObject integrity] >= 0x19)
     {
-      if ([v8 integrity] >= 0x32)
+      if ([lastObject integrity] >= 0x32)
       {
-        if ([v8 integrity] < 0x4B)
+        if ([lastObject integrity] < 0x4B)
         {
           v10 = 2;
         }
@@ -391,32 +391,32 @@ LABEL_11:
       }
 
       BYTE11(v38) = v10;
-      v11 = [v8 timestamp];
-      [v11 timeIntervalSince1970];
+      timestamp = [lastObject timestamp];
+      [timestamp timeIntervalSince1970];
       v13 = (v12 * 1000000.0);
 
       v33[0] = v13;
-      [v8 coordinate];
+      [lastObject coordinate];
       v33[1] = v14;
-      [v8 coordinate];
+      [lastObject coordinate];
       v33[2] = v15;
-      [v8 altitude];
+      [lastObject altitude];
       v34 = v16;
-      [v8 ellipsoidalAltitude];
+      [lastObject ellipsoidalAltitude];
       v35 = v17;
-      [v8 horizontalAccuracy];
+      [lastObject horizontalAccuracy];
       *&v36 = v18;
-      [v8 verticalAccuracy];
+      [lastObject verticalAccuracy];
       v20 = v19;
       *(&v36 + 1) = v19;
-      v21 = [v8 sourceInformation];
+      sourceInformation = [lastObject sourceInformation];
 
-      if (v21)
+      if (sourceInformation)
       {
-        v22 = [v8 sourceInformation];
-        v23 = [v22 isSimulatedBySoftware];
-        v24 = [v8 sourceInformation];
-        if ([v24 isProducedByAccessory])
+        sourceInformation2 = [lastObject sourceInformation];
+        isSimulatedBySoftware = [sourceInformation2 isSimulatedBySoftware];
+        sourceInformation3 = [lastObject sourceInformation];
+        if ([sourceInformation3 isProducedByAccessory])
         {
           v25 = 256;
         }
@@ -427,7 +427,7 @@ LABEL_11:
         }
 
         BYTE10(v38) = 1;
-        WORD4(v38) = v25 | v23;
+        WORD4(v38) = v25 | isSimulatedBySoftware;
       }
 
       if (v20 < 0.0)
@@ -438,15 +438,15 @@ LABEL_11:
       }
 
       fHorizontalScalingFactor = self->fHorizontalScalingFactor;
-      [v8 horizontalAccuracy];
+      [lastObject horizontalAccuracy];
       *&v37 = fHorizontalScalingFactor * v27;
       fVerticalScalingFactor = self->fVerticalScalingFactor;
-      [v8 verticalAccuracy];
+      [lastObject verticalAccuracy];
       *(&v37 + 1) = fVerticalScalingFactor * v29;
-      [v8 speed];
+      [lastObject speed];
       if (v30 >= 0.0)
       {
-        [v8 speed];
+        [lastObject speed];
         *&v38 = v31;
       }
 

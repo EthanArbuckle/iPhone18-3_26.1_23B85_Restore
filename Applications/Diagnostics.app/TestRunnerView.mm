@@ -7,13 +7,13 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004B14C();
 }
 
 - (void)skipPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004C3E4();
 }
 

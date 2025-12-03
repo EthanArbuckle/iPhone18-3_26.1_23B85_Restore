@@ -1,28 +1,28 @@
 @interface AKAuthenticationTrafficController
 + (AKAuthenticationTrafficController)sharedInstance;
 - (AKAuthenticationTrafficController)init;
-- (BOOL)_hasValuesInMap:(id)a3;
+- (BOOL)_hasValuesInMap:(id)map;
 - (BOOL)_isForegroundAuthenticationInProgress;
-- (BOOL)_shouldClearLimitedUICapableAuth:(id)a3;
-- (BOOL)_shouldClearRequest:(id)a3;
-- (BOOL)_shouldClearUICapableAuth:(id)a3;
+- (BOOL)_shouldClearLimitedUICapableAuth:(id)auth;
+- (BOOL)_shouldClearRequest:(id)request;
+- (BOOL)_shouldClearUICapableAuth:(id)auth;
 - (id)_nextClearedRequest;
-- (void)_clearNextEligibleRequestWithUpdateBlock:(id)a3;
-- (void)_processClearanceRequest:(id)a3 withClient:(id)a4;
-- (void)_removeAuthenticationRequestForContext:(id)a3 client:(id)a4;
-- (void)_tq_addContext:(id)a3 toAuthenticatingAppsforClient:(id)a4;
-- (void)_tq_addContext:(id)a3 toAuthenticatingDaemonsforClient:(id)a4;
-- (void)_tq_addContext:(id)a3 toAuthenticatingRequestsforClient:(id)a4;
-- (void)_tq_addContext:(id)a3 toRequestDictionary:(id)a4 forClient:(id)a5;
-- (void)_tq_invokeTrafficRequest:(id)a3;
-- (void)_updateContext:(id)a3 withPassword:(id)a4 forAppleID:(id)a5;
-- (void)_updateContextWithCachedPassword:(id)a3;
-- (void)beginAuthenticatedRequestWithContext:(id)a3 client:(id)a4 clearanceHandler:(id)a5;
-- (void)endAuthenticatedRequestWithContext:(id)a3 client:(id)a4 clearanceHandler:(id)a5;
-- (void)endAuthenticationForAppleID:(id)a3 password:(id)a4 error:(id)a5 context:(id)a6 client:(id)a7 clearanceHandler:(id)a8;
+- (void)_clearNextEligibleRequestWithUpdateBlock:(id)block;
+- (void)_processClearanceRequest:(id)request withClient:(id)client;
+- (void)_removeAuthenticationRequestForContext:(id)context client:(id)client;
+- (void)_tq_addContext:(id)context toAuthenticatingAppsforClient:(id)client;
+- (void)_tq_addContext:(id)context toAuthenticatingDaemonsforClient:(id)client;
+- (void)_tq_addContext:(id)context toAuthenticatingRequestsforClient:(id)client;
+- (void)_tq_addContext:(id)context toRequestDictionary:(id)dictionary forClient:(id)client;
+- (void)_tq_invokeTrafficRequest:(id)request;
+- (void)_updateContext:(id)context withPassword:(id)password forAppleID:(id)d;
+- (void)_updateContextWithCachedPassword:(id)password;
+- (void)beginAuthenticatedRequestWithContext:(id)context client:(id)client clearanceHandler:(id)handler;
+- (void)endAuthenticatedRequestWithContext:(id)context client:(id)client clearanceHandler:(id)handler;
+- (void)endAuthenticationForAppleID:(id)d password:(id)password error:(id)error context:(id)context client:(id)client clearanceHandler:(id)handler;
 - (void)flushCachedPasswords;
-- (void)requestClearanceForShieldWithContext:(id)a3 client:(id)a4 completionHandler:(id)a5;
-- (void)uplevelAuthenticationForUIWithContext:(id)a3 client:(id)a4 completion:(id)a5;
+- (void)requestClearanceForShieldWithContext:(id)context client:(id)client completionHandler:(id)handler;
+- (void)uplevelAuthenticationForUIWithContext:(id)context client:(id)client completion:(id)completion;
 @end
 
 @implementation AKAuthenticationTrafficController
@@ -96,17 +96,17 @@
   return v17;
 }
 
-- (void)beginAuthenticatedRequestWithContext:(id)a3 client:(id)a4 clearanceHandler:(id)a5
+- (void)beginAuthenticatedRequestWithContext:(id)context client:(id)client clearanceHandler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, client);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  queue = v20->_trafficQueue;
+  objc_storeStrong(&v17, handler);
+  queue = selfCopy->_trafficQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
@@ -114,7 +114,7 @@
   v12 = &unk_1003200A8;
   v13 = _objc_retain(v18);
   v14 = _objc_retain(location[0]);
-  v15 = _objc_retain(v20);
+  v15 = _objc_retain(selfCopy);
   v16 = _objc_retain(v17);
   dispatch_async(queue, &v8);
   objc_storeStrong(&v16, 0);
@@ -126,16 +126,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)endAuthenticatedRequestWithContext:(id)a3 client:(id)a4 clearanceHandler:(id)a5
+- (void)endAuthenticatedRequestWithContext:(id)context client:(id)client clearanceHandler:(id)handler
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, client);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, handler);
   v19 = _AKLogSystem();
   v18 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -147,14 +147,14 @@
   }
 
   objc_storeStrong(&v19, 0);
-  queue = v23->_trafficQueue;
+  queue = selfCopy->_trafficQueue;
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_10016E3B8;
   v13 = &unk_1003200A8;
   v14 = _objc_retain(v21);
-  v15 = _objc_retain(v23);
+  v15 = _objc_retain(selfCopy);
   v16 = _objc_retain(location[0]);
   v17 = _objc_retain(v20);
   dispatch_async(queue, &v9);
@@ -167,22 +167,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)endAuthenticationForAppleID:(id)a3 password:(id)a4 error:(id)a5 context:(id)a6 client:(id)a7 clearanceHandler:(id)a8
+- (void)endAuthenticationForAppleID:(id)d password:(id)password error:(id)error context:(id)context client:(id)client clearanceHandler:(id)handler
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, password);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, error);
   v31 = 0;
-  objc_storeStrong(&v31, a6);
+  objc_storeStrong(&v31, context);
   v30 = 0;
-  objc_storeStrong(&v30, a7);
+  objc_storeStrong(&v30, client);
   v29 = 0;
-  objc_storeStrong(&v29, a8);
+  objc_storeStrong(&v29, handler);
   v28 = _AKLogSystem();
   v27 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -194,13 +194,13 @@
   }
 
   objc_storeStrong(&v28, 0);
-  queue = v35->_trafficQueue;
+  queue = selfCopy->_trafficQueue;
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
   v18 = sub_10016EBD8;
   v19 = &unk_100325150;
-  v20 = _objc_retain(v35);
+  v20 = _objc_retain(selfCopy);
   v21 = _objc_retain(v31);
   v22 = _objc_retain(v30);
   v23 = _objc_retain(v33);
@@ -223,25 +223,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)uplevelAuthenticationForUIWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)uplevelAuthenticationForUIWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, client);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, completion);
   v12 = +[AKFeatureManager sharedManager];
-  v13 = [v12 isSilentAuthenticationRequestSerializationEnabled];
+  isSilentAuthenticationRequestSerializationEnabled = [v12 isSilentAuthenticationRequestSerializationEnabled];
   _objc_release(v12);
-  if (v13)
+  if (isSilentAuthenticationRequestSerializationEnabled)
   {
-    v7 = [v29 bundleID];
-    if (v7)
+    bundleID = [v29 bundleID];
+    if (bundleID)
     {
-      v5 = _objc_retain(v7);
+      v5 = _objc_retain(bundleID);
     }
 
     else
@@ -250,14 +250,14 @@
     }
 
     v23 = v5;
-    _objc_release(v7);
-    queue = v31->_trafficQueue;
+    _objc_release(bundleID);
+    queue = selfCopy->_trafficQueue;
     v14 = _NSConcreteStackBlock;
     v15 = -1073741824;
     v16 = 0;
     v17 = sub_10016F6E4;
     v18 = &unk_1003200A8;
-    v19 = _objc_retain(v31);
+    v19 = _objc_retain(selfCopy);
     v20 = _objc_retain(v23);
     v21 = _objc_retain(location[0]);
     v22 = _objc_retain(v28);
@@ -292,23 +292,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)requestClearanceForShieldWithContext:(id)a3 client:(id)a4 completionHandler:(id)a5
+- (void)requestClearanceForShieldWithContext:(id)context client:(id)client completionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, client);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  queue = v18->_trafficQueue;
+  objc_storeStrong(&v15, handler);
+  queue = selfCopy->_trafficQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_10016FB9C;
   v12 = &unk_100320878;
-  v13 = _objc_retain(v18);
+  v13 = _objc_retain(selfCopy);
   v14 = _objc_retain(v15);
   dispatch_async(queue, &v8);
   objc_storeStrong(&v14, 0);
@@ -318,18 +318,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_removeAuthenticationRequestForContext:(id)a3 client:(id)a4
+- (void)_removeAuthenticationRequestForContext:(id)context client:(id)client
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v10 = [v17 bundleID];
-  if (v10)
+  objc_storeStrong(&v17, client);
+  bundleID = [v17 bundleID];
+  if (bundleID)
   {
-    v4 = _objc_retain(v10);
+    v4 = _objc_retain(bundleID);
   }
 
   else
@@ -338,7 +338,7 @@
   }
 
   v16 = v4;
-  _objc_release(v10);
+  _objc_release(bundleID);
   v15 = _AKLogSystem();
   v14 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -363,10 +363,10 @@
     objc_storeStrong(&v13, 0);
   }
 
-  v5 = [(NSMutableDictionary *)v19->_authenticatingApps objectForKeyedSubscript:v16];
+  v5 = [(NSMutableDictionary *)selfCopy->_authenticatingApps objectForKeyedSubscript:v16];
   [v5 removeObject:location[0]];
   _objc_release(v5);
-  v6 = [(NSMutableDictionary *)v19->_authenticatingDaemons objectForKeyedSubscript:v16];
+  v6 = [(NSMutableDictionary *)selfCopy->_authenticatingDaemons objectForKeyedSubscript:v16];
   [v6 removeObject:location[0]];
   _objc_release(v6);
   objc_storeStrong(&v16, 0);
@@ -376,7 +376,7 @@
 
 - (void)flushCachedPasswords
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -389,24 +389,24 @@
   }
 
   objc_storeStrong(location, 0);
-  [(AKExpiringCache *)v7->_expiringCache flushCacheForced:1];
+  [(AKExpiringCache *)selfCopy->_expiringCache flushCacheForced:1];
 }
 
-- (BOOL)_shouldClearRequest:(id)a3
+- (BOOL)_shouldClearRequest:(id)request
 {
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v73 = 0;
   v72 = _AKLogSystem();
   v71 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
   {
     v41 = +[AKFeatureManager sharedManager];
-    v3 = [v41 isAuthenticatedRequestSerializationEnabled];
+    isAuthenticatedRequestSerializationEnabled = [v41 isAuthenticatedRequestSerializationEnabled];
     v4 = @"YES";
-    if ((v3 & 1) == 0)
+    if ((isAuthenticatedRequestSerializationEnabled & 1) == 0)
     {
       v4 = @"NO";
     }
@@ -430,25 +430,25 @@
   }
 
   objc_storeStrong(&v72, 0);
-  v38 = [location[0] authContext];
-  _objc_release(v38);
-  if (v38)
+  authContext = [location[0] authContext];
+  _objc_release(authContext);
+  if (authContext)
   {
-    v36 = [(AKAuthenticationTrafficController *)v75 surrogateManager];
-    v35 = [location[0] clientBundleID];
-    v37 = [(AKAuthenticationSurrogateManager *)v36 isSurrogateAuthInProgressForClientBundleID:?];
-    _objc_release(v35);
-    _objc_release(v36);
+    surrogateManager = [(AKAuthenticationTrafficController *)selfCopy surrogateManager];
+    clientBundleID = [location[0] clientBundleID];
+    v37 = [(AKAuthenticationSurrogateManager *)surrogateManager isSurrogateAuthInProgressForClientBundleID:?];
+    _objc_release(clientBundleID);
+    _objc_release(surrogateManager);
     if (v37)
     {
       v70 = _AKLogSystem();
       v69 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
       {
-        v34 = [location[0] clientBundleID];
-        sub_1000194D4(v78, v34);
+        clientBundleID2 = [location[0] clientBundleID];
+        sub_1000194D4(v78, clientBundleID2);
         _os_log_debug_impl(&_mh_execute_header, v70, v69, "Denying authentication clearance to client %@ due to pending surrogate auth...", v78, 0xCu);
-        _objc_release(v34);
+        _objc_release(clientBundleID2);
       }
 
       objc_storeStrong(&v70, 0);
@@ -458,13 +458,13 @@
     else
     {
       v30 = objc_opt_class();
-      v32 = [location[0] authContext];
-      v31 = sub_100171014(v30, v32);
-      v33 = [v31 protoAccountContext];
-      _objc_release(v33);
+      authContext2 = [location[0] authContext];
+      v31 = sub_100171014(v30, authContext2);
+      protoAccountContext = [v31 protoAccountContext];
+      _objc_release(protoAccountContext);
       _objc_release(v31);
-      _objc_release(v32);
-      if (v33)
+      _objc_release(authContext2);
+      if (protoAccountContext)
       {
         v68 = _AKLogSystem();
         v67 = 2;
@@ -483,23 +483,23 @@
       else
       {
         v26 = +[AKFeatureManager sharedManager];
-        v27 = 0;
+        _hasActiveAuthenticatedRequests = 0;
         if ([v26 isAuthenticatedRequestSerializationEnabled])
         {
-          v27 = [(AKAuthenticationTrafficController *)v75 _hasActiveAuthenticatedRequests];
+          _hasActiveAuthenticatedRequests = [(AKAuthenticationTrafficController *)selfCopy _hasActiveAuthenticatedRequests];
         }
 
         _objc_release(v26);
-        if (v27)
+        if (_hasActiveAuthenticatedRequests)
         {
           v65 = _AKLogSystem();
           v64 = OS_LOG_TYPE_DEBUG;
           if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
           {
-            v25 = [location[0] clientBundleID];
-            sub_1000194D4(v77, v25);
+            clientBundleID3 = [location[0] clientBundleID];
+            sub_1000194D4(v77, clientBundleID3);
             _os_log_debug_impl(&_mh_execute_header, v65, v64, "Denying authentication clearance to client %@ due to pending authenticated request inflight...", v77, 0xCu);
-            _objc_release(v25);
+            _objc_release(clientBundleID3);
           }
 
           objc_storeStrong(&v65, 0);
@@ -513,14 +513,14 @@
           v24 = 0;
           if (![v23 isSilentAuthenticationRequestSerializationEnabled])
           {
-            v63 = [location[0] authContext];
+            authContext3 = [location[0] authContext];
             v62 = 1;
-            v24 = [v63 authenticationType] == 1;
+            v24 = [authContext3 authenticationType] == 1;
           }
 
           if (v62)
           {
-            _objc_release(v63);
+            _objc_release(authContext3);
           }
 
           _objc_release(v23);
@@ -540,9 +540,9 @@
             v73 = 1;
           }
 
-          else if ([(AKAuthenticationTrafficController *)v75 _hasActiveAppAuths]|| [(AKAuthenticationTrafficController *)v75 _hasActiveDaemonAuths])
+          else if ([(AKAuthenticationTrafficController *)selfCopy _hasActiveAppAuths]|| [(AKAuthenticationTrafficController *)selfCopy _hasActiveDaemonAuths])
           {
-            if ([(AKAuthenticationTrafficController *)v75 _shouldClearUICapableAuth:location[0]])
+            if ([(AKAuthenticationTrafficController *)selfCopy _shouldClearUICapableAuth:location[0]])
             {
               v55 = _AKLogSystem();
               v54 = 2;
@@ -558,7 +558,7 @@
               v73 = 1;
             }
 
-            else if ([(AKAuthenticationTrafficController *)v75 _shouldClearLimitedUICapableAuth:location[0]])
+            else if ([(AKAuthenticationTrafficController *)selfCopy _shouldClearLimitedUICapableAuth:location[0]])
             {
               oslog = _AKLogSystem();
               v51 = OS_LOG_TYPE_DEBUG;
@@ -598,20 +598,20 @@
   else
   {
     v13 = +[AKFeatureManager sharedManager];
-    v14 = [v13 isAuthenticatedRequestSerializationEnabled];
+    isAuthenticatedRequestSerializationEnabled2 = [v13 isAuthenticatedRequestSerializationEnabled];
     _objc_release(v13);
-    if (v14)
+    if (isAuthenticatedRequestSerializationEnabled2)
     {
-      if ([(AKAuthenticationTrafficController *)v75 _hasActiveDaemonAuths])
+      if ([(AKAuthenticationTrafficController *)selfCopy _hasActiveDaemonAuths])
       {
         v46 = _AKLogSystem();
         v45 = OS_LOG_TYPE_DEBUG;
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
         {
-          v10 = [location[0] clientBundleID];
-          sub_1000194D4(v76, v10);
+          clientBundleID4 = [location[0] clientBundleID];
+          sub_1000194D4(v76, clientBundleID4);
           _os_log_debug_impl(&_mh_execute_header, v46, v45, "Denying authenticated request clearance to client %@ due to pending authentications inflight...", v76, 0xCu);
-          _objc_release(v10);
+          _objc_release(clientBundleID4);
         }
 
         objc_storeStrong(&v46, 0);
@@ -657,38 +657,38 @@
   return v7 & 1;
 }
 
-- (void)_processClearanceRequest:(id)a3 withClient:(id)a4
+- (void)_processClearanceRequest:(id)request withClient:(id)client
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, client);
   v18 = _AKLogSystem();
   v17 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    sub_100034214(v25, v21->_pendingTrafficRequests, v21->_authenticatingApps, v21->_authenticatingDaemons, v21->_authenticatedServerEndpointRequests);
+    sub_100034214(v25, selfCopy->_pendingTrafficRequests, selfCopy->_authenticatingApps, selfCopy->_authenticatingDaemons, selfCopy->_authenticatedServerEndpointRequests);
     _os_log_debug_impl(&_mh_execute_header, v18, v17, "Starting to process clearence request.  Pending requests: %@\nActive app requests: %@\nActive daemon requests: %@\nActive authenticated requests: %@", v25, 0x2Au);
   }
 
   objc_storeStrong(&v18, 0);
-  v7 = [location[0] authContext];
-  v8 = [v7 _capabilityForUIDisplay];
-  _objc_release(v7);
-  if (v8 == 3)
+  authContext = [location[0] authContext];
+  _capabilityForUIDisplay = [authContext _capabilityForUIDisplay];
+  _objc_release(authContext);
+  if (_capabilityForUIDisplay == 3)
   {
     v16 = _AKLogSystem();
     v15 = OS_LOG_TYPE_FAULT;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      v6 = [location[0] authContext];
-      v5 = [v6 _identifier];
-      sub_1000194D4(v24, v5);
+      authContext2 = [location[0] authContext];
+      _identifier = [authContext2 _identifier];
+      sub_1000194D4(v24, _identifier);
       _os_log_fault_impl(&_mh_execute_header, v16, v15, "Traffic Controller received unexpected SurrogateUI auth with ID %@. Ending processing early.", v24, 0xCu);
-      _objc_release(v5);
-      _objc_release(v6);
+      _objc_release(_identifier);
+      _objc_release(authContext2);
     }
 
     objc_storeStrong(&v16, 0);
@@ -697,7 +697,7 @@
 
   else
   {
-    v13 = [(AKAuthenticationTrafficController *)v21 _shouldClearRequest:location[0]];
+    v13 = [(AKAuthenticationTrafficController *)selfCopy _shouldClearRequest:location[0]];
     if (v13)
     {
       oslog = _AKLogSystem();
@@ -709,7 +709,7 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      [(AKAuthenticationTrafficController *)v21 _tq_invokeTrafficRequest:location[0]];
+      [(AKAuthenticationTrafficController *)selfCopy _tq_invokeTrafficRequest:location[0]];
     }
 
     else
@@ -717,14 +717,14 @@
       v10 = _AKLogSystem();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v4 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)v21->_pendingTrafficRequests count]];
+        v4 = [NSNumber numberWithUnsignedInteger:[(NSMutableArray *)selfCopy->_pendingTrafficRequests count]];
         sub_10001B098(v22, v4, location[0]);
         _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Request not cleared, adding to queue (%@) as pending: %@", v22, 0x16u);
         _objc_release(v4);
       }
 
       objc_storeStrong(&v10, 0);
-      [(NSMutableArray *)v21->_pendingTrafficRequests addObject:location[0]];
+      [(NSMutableArray *)selfCopy->_pendingTrafficRequests addObject:location[0]];
     }
 
     v14 = 0;
@@ -734,12 +734,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_hasValuesInMap:(id)a3
+- (BOOL)_hasValuesInMap:(id)map
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, map);
   v5 = 0;
   v6 = &v5;
   v7 = 0x20000000;
@@ -752,33 +752,33 @@
   return v4 & 1;
 }
 
-- (BOOL)_shouldClearUICapableAuth:(id)a3
+- (BOOL)_shouldClearUICapableAuth:(id)auth
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = [location[0] authContext];
-  _objc_release(v13);
-  if (v13)
+  objc_storeStrong(location, auth);
+  authContext = [location[0] authContext];
+  _objc_release(authContext);
+  if (authContext)
   {
-    v11 = [location[0] authContext];
+    authContext2 = [location[0] authContext];
     v19 = 0;
-    v12 = 1;
-    if ([v11 _capabilityForUIDisplay] != 2)
+    _performUIOutOfProcess = 1;
+    if ([authContext2 _capabilityForUIDisplay] != 2)
     {
-      v20 = [location[0] authContext];
+      authContext3 = [location[0] authContext];
       v19 = 1;
-      v12 = [v20 _performUIOutOfProcess];
+      _performUIOutOfProcess = [authContext3 _performUIOutOfProcess];
     }
 
     if (v19)
     {
-      _objc_release(v20);
+      _objc_release(authContext3);
     }
 
-    _objc_release(v11);
-    if (v12)
+    _objc_release(authContext2);
+    if (_performUIOutOfProcess)
     {
       v18 = _AKLogSystem();
       v17 = OS_LOG_TYPE_DEBUG;
@@ -789,19 +789,19 @@
       }
 
       objc_storeStrong(&v18, 0);
-      authenticatingApps = v23->_authenticatingApps;
-      v9 = [location[0] clientBundleID];
+      authenticatingApps = selfCopy->_authenticatingApps;
+      clientBundleID = [location[0] clientBundleID];
       v8 = [(NSMutableDictionary *)authenticatingApps objectForKeyedSubscript:?];
       v10 = [v8 count];
       _objc_release(v8);
-      _objc_release(v9);
+      _objc_release(clientBundleID);
       if (v10)
       {
         v16 = _AKLogSystem();
         v15 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          sub_10001B098(v26, location[0], v23->_authenticatingApps);
+          sub_10001B098(v26, location[0], selfCopy->_authenticatingApps);
           _os_log_impl(&_mh_execute_header, v16, v15, "Clearing UI capable auth request for %@ while another auth is in progress: %@", v26, 0x16u);
         }
 
@@ -822,13 +822,13 @@
       oslog = _AKLogSystem();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
-        v6 = [location[0] authContext];
-        v4 = [v6 _capabilityForUIDisplay];
-        v5 = [location[0] authContext];
-        sub_100171B20(v25, v4, [v5 _performUIOutOfProcess]);
+        authContext4 = [location[0] authContext];
+        _capabilityForUIDisplay = [authContext4 _capabilityForUIDisplay];
+        authContext5 = [location[0] authContext];
+        sub_100171B20(v25, _capabilityForUIDisplay, [authContext5 _performUIOutOfProcess]);
         _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "Denying clearance to AuthContext with display capability: %lu, out of process: %d", v25, 0x12u);
-        _objc_release(v5);
-        _objc_release(v6);
+        _objc_release(authContext5);
+        _objc_release(authContext4);
       }
 
       objc_storeStrong(&oslog, 0);
@@ -847,19 +847,19 @@
   return v24 & 1;
 }
 
-- (BOOL)_shouldClearLimitedUICapableAuth:(id)a3
+- (BOOL)_shouldClearLimitedUICapableAuth:(id)auth
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, auth);
   v6 = 0;
-  if ([(AKAuthenticationTrafficController *)v8 _hasActiveDaemonAuths])
+  if ([(AKAuthenticationTrafficController *)selfCopy _hasActiveDaemonAuths])
   {
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000194D4(v9, v8->_authenticatingDaemons);
+      sub_1000194D4(v9, selfCopy->_authenticatingDaemons);
       _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "Denying clearance due to pending daemons: %@", v9, 0xCu);
     }
 
@@ -869,7 +869,7 @@
 
   else
   {
-    v6 = ![(AKAuthenticationTrafficController *)v8 _isForegroundAuthenticationInProgress];
+    v6 = ![(AKAuthenticationTrafficController *)selfCopy _isForegroundAuthenticationInProgress];
   }
 
   v4 = v6;
@@ -879,13 +879,13 @@
 
 - (BOOL)_isForegroundAuthenticationInProgress
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
   {
-    sub_1000194D4(v12, v11->_authenticatingApps);
+    sub_1000194D4(v12, selfCopy->_authenticatingApps);
     _os_log_debug_impl(&_mh_execute_header, location[0], v9, "Attempting to determine foreground state for apps: %@", v12, 0xCu);
   }
 
@@ -895,57 +895,57 @@
   v6 = 0x20000000;
   v7 = 32;
   v8 = 0;
-  [(NSMutableDictionary *)v11->_authenticatingApps enumerateKeysAndObjectsUsingBlock:?];
+  [(NSMutableDictionary *)selfCopy->_authenticatingApps enumerateKeysAndObjectsUsingBlock:?];
   v3 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v3 & 1;
 }
 
-- (void)_tq_invokeTrafficRequest:(id)a3
+- (void)_tq_invokeTrafficRequest:(id)request
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = [location[0] clientBundleID];
-  v13 = [location[0] authContext];
-  _objc_release(v13);
-  if (v13)
+  objc_storeStrong(location, request);
+  clientBundleID = [location[0] clientBundleID];
+  authContext = [location[0] authContext];
+  _objc_release(authContext);
+  if (authContext)
   {
-    v11 = [location[0] authContext];
-    v12 = [v11 _capabilityForUIDisplay];
-    _objc_release(v11);
-    if (v12 == 2)
+    authContext2 = [location[0] authContext];
+    _capabilityForUIDisplay = [authContext2 _capabilityForUIDisplay];
+    _objc_release(authContext2);
+    if (_capabilityForUIDisplay == 2)
     {
-      v9 = v22;
-      v10 = [location[0] context];
+      v9 = selfCopy;
+      context = [location[0] context];
       [AKAuthenticationTrafficController _tq_addContext:v9 toAuthenticatingAppsforClient:"_tq_addContext:toAuthenticatingAppsforClient:"];
-      _objc_release(v10);
+      _objc_release(context);
     }
 
     else
     {
-      v7 = v22;
-      v8 = [location[0] context];
+      v7 = selfCopy;
+      context2 = [location[0] context];
       [AKAuthenticationTrafficController _tq_addContext:v7 toAuthenticatingDaemonsforClient:"_tq_addContext:toAuthenticatingDaemonsforClient:"];
-      _objc_release(v8);
+      _objc_release(context2);
     }
   }
 
   else
   {
-    v6 = [location[0] context];
-    _objc_release(v6);
-    if (v6)
+    context3 = [location[0] context];
+    _objc_release(context3);
+    if (context3)
     {
-      v4 = v22;
-      v5 = [location[0] context];
+      v4 = selfCopy;
+      context4 = [location[0] context];
       [AKAuthenticationTrafficController _tq_addContext:v4 toAuthenticatingRequestsforClient:"_tq_addContext:toAuthenticatingRequestsforClient:"];
-      _objc_release(v5);
+      _objc_release(context4);
     }
   }
 
-  queue = v22->_clearanceQueue;
+  queue = selfCopy->_clearanceQueue;
   v14 = _NSConcreteStackBlock;
   v15 = -1073741824;
   v16 = 0;
@@ -954,18 +954,18 @@
   v19 = _objc_retain(location[0]);
   dispatch_async(queue, &v14);
   objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&clientBundleID, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_addContext:(id)a3 toAuthenticatingAppsforClient:(id)a4
+- (void)_tq_addContext:(id)context toAuthenticatingAppsforClient:(id)client
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, client);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -974,19 +974,19 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKAuthenticationTrafficController *)v8 _tq_addContext:location[0] toRequestDictionary:v8->_authenticatingApps forClient:v6];
+  [(AKAuthenticationTrafficController *)selfCopy _tq_addContext:location[0] toRequestDictionary:selfCopy->_authenticatingApps forClient:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_addContext:(id)a3 toAuthenticatingDaemonsforClient:(id)a4
+- (void)_tq_addContext:(id)context toAuthenticatingDaemonsforClient:(id)client
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, client);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -995,19 +995,19 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKAuthenticationTrafficController *)v8 _tq_addContext:location[0] toRequestDictionary:v8->_authenticatingDaemons forClient:v6];
+  [(AKAuthenticationTrafficController *)selfCopy _tq_addContext:location[0] toRequestDictionary:selfCopy->_authenticatingDaemons forClient:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_addContext:(id)a3 toAuthenticatingRequestsforClient:(id)a4
+- (void)_tq_addContext:(id)context toAuthenticatingRequestsforClient:(id)client
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, client);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -1016,21 +1016,21 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKAuthenticationTrafficController *)v8 _tq_addContext:location[0] toRequestDictionary:v8->_authenticatedServerEndpointRequests forClient:v6];
+  [(AKAuthenticationTrafficController *)selfCopy _tq_addContext:location[0] toRequestDictionary:selfCopy->_authenticatedServerEndpointRequests forClient:v6];
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_addContext:(id)a3 toRequestDictionary:(id)a4 forClient:(id)a5
+- (void)_tq_addContext:(id)context toRequestDictionary:(id)dictionary forClient:(id)client
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, dictionary);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, client);
   v9 = [v11 objectForKeyedSubscript:v10];
   if (v9)
   {
@@ -1053,33 +1053,33 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_clearNextEligibleRequestWithUpdateBlock:(id)a3
+- (void)_clearNextEligibleRequestWithUpdateBlock:(id)block
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(NSMutableArray *)v18->_pendingTrafficRequests count])
+  objc_storeStrong(location, block);
+  if ([(NSMutableArray *)selfCopy->_pendingTrafficRequests count])
   {
-    v12 = [(AKAuthenticationTrafficController *)v18 _nextClearedRequest];
-    if (v12)
+    _nextClearedRequest = [(AKAuthenticationTrafficController *)selfCopy _nextClearedRequest];
+    if (_nextClearedRequest)
     {
       oslog = _AKLogSystem();
       v10 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000194D4(v19, v12);
+        sub_1000194D4(v19, _nextClearedRequest);
         _os_log_debug_impl(&_mh_execute_header, oslog, v10, "Cleared a pending request: %@", v19, 0xCu);
       }
 
       objc_storeStrong(&oslog, 0);
       if (location[0])
       {
-        (*(location[0] + 2))(location[0], v12);
+        (*(location[0] + 2))(location[0], _nextClearedRequest);
       }
 
-      [(AKAuthenticationTrafficController *)v18 _tq_invokeTrafficRequest:v12];
-      [(NSMutableArray *)v18->_pendingTrafficRequests removeObject:v12];
+      [(AKAuthenticationTrafficController *)selfCopy _tq_invokeTrafficRequest:_nextClearedRequest];
+      [(NSMutableArray *)selfCopy->_pendingTrafficRequests removeObject:_nextClearedRequest];
     }
 
     else
@@ -1097,7 +1097,7 @@
       objc_storeStrong(&v9, 0);
     }
 
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&_nextClearedRequest, 0);
     v13 = 0;
   }
 
@@ -1132,21 +1132,21 @@
   return v4;
 }
 
-- (void)_updateContext:(id)a3 withPassword:(id)a4 forAppleID:(id)a5
+- (void)_updateContext:(id)context withPassword:(id)password forAppleID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, password);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, d);
   if (v16)
   {
-    v7 = [location[0] _password];
-    _objc_release(v7);
-    if (v7)
+    _password = [location[0] _password];
+    _objc_release(_password);
+    if (_password)
     {
       v14 = 1;
     }
@@ -1158,8 +1158,8 @@
 
     else
     {
-      v13 = [location[0] username];
-      if (v13 && ([v13 isEqual:v15] & 1) != 0)
+      username = [location[0] username];
+      if (username && ([username isEqual:v15] & 1) != 0)
       {
         v12 = _AKLogSystem();
         v11 = OS_LOG_TYPE_DEFAULT;
@@ -1175,7 +1175,7 @@
         [location[0] _setPassword:v16];
       }
 
-      objc_storeStrong(&v13, 0);
+      objc_storeStrong(&username, 0);
       v14 = 0;
     }
   }
@@ -1190,12 +1190,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateContextWithCachedPassword:(id)a3
+- (void)_updateContextWithCachedPassword:(id)password
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, password);
   v19 = 0;
   v10 = 1;
   if ([location[0] serviceType] != 2)
@@ -1206,16 +1206,16 @@
       v10 = 1;
       if ([location[0] ignorePasswordCache] != 1)
       {
-        v20 = [location[0] _password];
+        _password = [location[0] _password];
         v19 = 1;
-        v10 = v20 != 0;
+        v10 = _password != 0;
       }
     }
   }
 
   if (v19)
   {
-    _objc_release(v20);
+    _objc_release(_password);
   }
 
   v21 = v10;
@@ -1237,14 +1237,14 @@
 
   else
   {
-    v7 = [location[0] username];
-    _objc_release(v7);
-    if (v7)
+    username = [location[0] username];
+    _objc_release(username);
+    if (username)
     {
-      expiringCache = v23->_expiringCache;
-      v6 = [location[0] username];
+      expiringCache = selfCopy->_expiringCache;
+      username2 = [location[0] username];
       v14 = [(AKExpiringCache *)expiringCache objectForKey:?];
-      _objc_release(v6);
+      _objc_release(username2);
       if (v14)
       {
         v13 = _AKLogSystem();

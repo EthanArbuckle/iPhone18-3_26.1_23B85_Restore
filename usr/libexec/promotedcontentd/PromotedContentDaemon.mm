@@ -1,14 +1,14 @@
 @interface PromotedContentDaemon
 - (_TtC16promotedcontentd21PromotedContentDaemon)init;
-- (_TtC16promotedcontentd21PromotedContentDaemon)initWithInstanceWrapper:(id)a3;
+- (_TtC16promotedcontentd21PromotedContentDaemon)initWithInstanceWrapper:(id)wrapper;
 - (void)boot;
 @end
 
 @implementation PromotedContentDaemon
 
-- (_TtC16promotedcontentd21PromotedContentDaemon)initWithInstanceWrapper:(id)a3
+- (_TtC16promotedcontentd21PromotedContentDaemon)initWithInstanceWrapper:(id)wrapper
 {
-  v3 = a3;
+  wrapperCopy = wrapper;
   v4 = sub_1001E6118();
 
   return v4;
@@ -16,7 +16,7 @@
 
 - (void)boot
 {
-  v2 = self;
+  selfCopy = self;
   PromotedContentDaemon.boot()();
 }
 

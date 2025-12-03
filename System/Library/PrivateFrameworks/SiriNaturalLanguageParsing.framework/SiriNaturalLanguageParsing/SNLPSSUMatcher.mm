@@ -1,12 +1,12 @@
 @interface SNLPSSUMatcher
-+ (id)matcherWithDirectories:(id)a3 initializeModelsPreemptively:(BOOL)a4 error:(id *)a5;
++ (id)matcherWithDirectories:(id)directories initializeModelsPreemptively:(BOOL)preemptively error:(id *)error;
 + (unordered_set<std::string,)_loadAppShortcutAlwaysTriggeredAllowList;
-- (BOOL)_performFullCacheUpdateInnerWithUserShortcuts:(id)a3 applicationInfos:(id)a4 error:(id *)a5;
-- (BOOL)deregisterApp:(id)a3 error:(id *)a4;
-- (BOOL)handleUserShortcutsDatabaseChanged:(id)a3 error:(id *)a4;
-- (BOOL)registerApp:(id)a3 error:(id *)a4;
-- (id)_initWithCacheDirectoryURL:(id)a3 cppMatcher:()unique_ptr<snlp:(std::default_delete<snlp::ssu::matcher::SSUMatcher>>)a4 :ssu::matcher::SSUMatcher;
-- (id)responseForRequest:(id)a3 error:(id *)a4;
+- (BOOL)_performFullCacheUpdateInnerWithUserShortcuts:(id)shortcuts applicationInfos:(id)infos error:(id *)error;
+- (BOOL)deregisterApp:(id)app error:(id *)error;
+- (BOOL)handleUserShortcutsDatabaseChanged:(id)changed error:(id *)error;
+- (BOOL)registerApp:(id)app error:(id *)error;
+- (id)_initWithCacheDirectoryURL:(id)l cppMatcher:()unique_ptr<snlp:(std::default_delete<snlp::ssu::matcher::SSUMatcher>>)snlp :ssu::matcher::SSUMatcher;
+- (id)responseForRequest:(id)request error:(id *)error;
 @end
 
 @implementation SNLPSSUMatcher
@@ -59,30 +59,30 @@
   return result;
 }
 
-- (BOOL)_performFullCacheUpdateInnerWithUserShortcuts:(id)a3 applicationInfos:(id)a4 error:(id *)a5
+- (BOOL)_performFullCacheUpdateInnerWithUserShortcuts:(id)shortcuts applicationInfos:(id)infos error:(id *)error
 {
   v95[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v67 = a4;
-  v64 = self;
+  shortcutsCopy = shortcuts;
+  infosCopy = infos;
+  selfCopy = self;
   v66 = self->__systemEventLock;
   objc_sync_enter(v66);
-  v68 = v7;
+  v68 = shortcutsCopy;
   v95[0] = snlp::ssu::selflogging::logBackgroundUpdateStarted(3);
   v95[1] = v8;
   LOBYTE(v83) = 0;
   v85 = 0;
-  if (v7)
+  if (shortcutsCopy)
   {
     v83 = 0;
     v84 = 0uLL;
     v85 = 1;
-    std::vector<snlp::ssu::cache::SSUCacheObjectParameter>::reserve(&v83, [v7 count]);
+    std::vector<snlp::ssu::cache::SSUCacheObjectParameter>::reserve(&v83, [shortcutsCopy count]);
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    obj = v7;
+    obj = shortcutsCopy;
     v9 = [obj countByEnumeratingWithState:&v79 objects:v94 count:16];
     if (v9)
     {
@@ -102,12 +102,12 @@
           }
 
           v12 = *(*(&v79 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = v13;
-          std::string::basic_string[abi:ne200100]<0>(buf, [v13 UTF8String]);
-          v15 = [v12 phrase];
-          v16 = v15;
-          std::string::basic_string[abi:ne200100]<0>(&__p, [v15 UTF8String]);
+          identifier = [v12 identifier];
+          v14 = identifier;
+          std::string::basic_string[abi:ne200100]<0>(buf, [identifier UTF8String]);
+          phrase = [v12 phrase];
+          v16 = phrase;
+          std::string::basic_string[abi:ne200100]<0>(&__p, [phrase UTF8String]);
           v17 = v84;
           if (v84 >= *(&v84 + 1))
           {
@@ -201,7 +201,7 @@
 
   v77 = 0;
   v78 = 0uLL;
-  v29 = [v67 count];
+  v29 = [infosCopy count];
   if (v29)
   {
     if (v29 <= 0x555555555555555)
@@ -218,7 +218,7 @@
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obja = v67;
+  obja = infosCopy;
   v31 = [obja countByEnumeratingWithState:&v73 objects:v90 count:16];
   if (v31)
   {
@@ -233,23 +233,23 @@
         }
 
         v34 = *(*(&v73 + 1) + 8 * j);
-        v35 = [v34 bundleIdentifier];
-        if ([v30 containsObject:v35])
+        bundleIdentifier = [v34 bundleIdentifier];
+        if ([v30 containsObject:bundleIdentifier])
         {
-          if (a5)
+          if (error)
           {
             v57 = *MEMORY[0x277CCA450];
             v89[0] = @"Could not perform full cache update.";
             v58 = *MEMORY[0x277CCA470];
             v88[0] = v57;
             v88[1] = v58;
-            v59 = [MEMORY[0x277CCACA8] stringWithFormat:@"There was a duplicate app bundle ID in applicationInfos: %@.", v35];
+            v59 = [MEMORY[0x277CCACA8] stringWithFormat:@"There was a duplicate app bundle ID in applicationInfos: %@.", bundleIdentifier];
             v88[2] = *MEMORY[0x277CCA498];
             v89[1] = v59;
             v89[2] = @"Ensure that only unique apps are passed.";
             v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:v88 count:3];
 
-            *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:2 userInfo:v60];
+            *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:2 userInfo:v60];
           }
 
           snlp::ssu::selflogging::logBackgroundUpdateFailed(v95);
@@ -258,14 +258,14 @@
           goto LABEL_66;
         }
 
-        [v30 addObject:v35];
-        v36 = [v34 bundleIdentifier];
-        v37 = v36;
-        std::string::basic_string[abi:ne200100]<0>(buf, [v36 UTF8String]);
-        v38 = [v34 assetURL];
-        v39 = [v38 path];
-        v40 = v39;
-        *v86 = [v39 UTF8String];
+        [v30 addObject:bundleIdentifier];
+        bundleIdentifier2 = [v34 bundleIdentifier];
+        v37 = bundleIdentifier2;
+        std::string::basic_string[abi:ne200100]<0>(buf, [bundleIdentifier2 UTF8String]);
+        assetURL = [v34 assetURL];
+        path = [assetURL path];
+        v40 = path;
+        *v86 = [path UTF8String];
         std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&__p, v86);
 
         v41 = v78;
@@ -386,8 +386,8 @@
     }
   }
 
-  snlp::ssu::matcher::SSUMatcher::performFullCacheUpdate(v64->_cppMatcher.__ptr_, &v77, &v83, buf);
-  ptr = v64->_cppMatcher.__ptr_;
+  snlp::ssu::matcher::SSUMatcher::performFullCacheUpdate(selfCopy->_cppMatcher.__ptr_, &v77, &v83, buf);
+  ptr = selfCopy->_cppMatcher.__ptr_;
   if (*(ptr + 23) < 0)
   {
     std::string::__init_copy_ctor_external(v86, *ptr, *(ptr + 1));
@@ -425,28 +425,28 @@ LABEL_66:
   return v61;
 }
 
-- (id)_initWithCacheDirectoryURL:(id)a3 cppMatcher:()unique_ptr<snlp:(std::default_delete<snlp::ssu::matcher::SSUMatcher>>)a4 :ssu::matcher::SSUMatcher
+- (id)_initWithCacheDirectoryURL:(id)l cppMatcher:()unique_ptr<snlp:(std::default_delete<snlp::ssu::matcher::SSUMatcher>>)snlp :ssu::matcher::SSUMatcher
 {
-  v7 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = SNLPSSUMatcher;
   v8 = [(SNLPSSUMatcher *)&v13 init];
-  objc_storeStrong(v8 + 2, a3);
+  objc_storeStrong(v8 + 2, l);
   v9 = objc_alloc_init(MEMORY[0x277D82BB8]);
   v10 = *(v8 + 3);
   *(v8 + 3) = v9;
 
-  v11 = *a4.__ptr_;
-  *a4.__ptr_ = 0;
+  v11 = *snlp.__ptr_;
+  *snlp.__ptr_ = 0;
   std::unique_ptr<snlp::ssu::matcher::SSUMatcher>::reset[abi:ne200100](v8 + 1, v11);
 
   return v8;
 }
 
-- (id)responseForRequest:(id)a3 error:(id *)a4
+- (id)responseForRequest:(id)request error:(id *)error
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   v6 = SNLPOSLoggerForCategory(8);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -472,7 +472,7 @@ LABEL_66:
     _os_log_impl(&dword_22284A000, v11, OS_LOG_TYPE_DEFAULT, "BEGIN SNLPSSUMatcher responseForRequest", buf, 2u);
   }
 
-  [MEMORY[0x277D5DF00] convertSSURequestFromObjCToCpp:v5];
+  [MEMORY[0x277D5DF00] convertSSURequestFromObjCToCpp:requestCopy];
   if (v23)
   {
     if (*(v23 + 48))
@@ -481,7 +481,7 @@ LABEL_66:
       snlp::ssu::selflogging::logUserRequestStarted(buf, v12);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -494,12 +494,12 @@ LABEL_66:
     v25[1] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:10 userInfo:v18];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:10 userInfo:v18];
   }
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -512,10 +512,10 @@ LABEL_66:
     v27[1] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:5 userInfo:v15];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:5 userInfo:v15];
   }
 
-  a4 = 0;
+  error = 0;
 LABEL_16:
   v19 = v23;
   v23 = 0;
@@ -528,13 +528,13 @@ LABEL_18:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)handleUserShortcutsDatabaseChanged:(id)a3 error:(id *)a4
+- (BOOL)handleUserShortcutsDatabaseChanged:(id)changed error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v28 = a3;
+  changedCopy = changed;
   objc_sync_enter(self->__systemEventLock);
   updated = snlp::ssu::selflogging::logBackgroundUpdateStarted(4);
   v48 = v4;
@@ -542,18 +542,18 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v28 count];
+    *(&buf + 4) = [changedCopy count];
     _os_log_impl(&dword_22284A000, v5, OS_LOG_TYPE_DEBUG, "Handling user shortcuts database changed event with %lu configured user shortcuts", &buf, 0xCu);
   }
 
   v35 = 0;
   v36 = 0uLL;
-  std::vector<snlp::ssu::cache::SSUCacheObjectParameter>::reserve(&v35, [v28 count]);
+  std::vector<snlp::ssu::cache::SSUCacheObjectParameter>::reserve(&v35, [changedCopy count]);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v28;
+  obj = changedCopy;
   v6 = [obj countByEnumeratingWithState:&v31 objects:v46 count:16];
   if (v6)
   {
@@ -568,12 +568,12 @@ LABEL_18:
         }
 
         v9 = *(*(&v31 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = v10;
-        std::string::basic_string[abi:ne200100]<0>(&buf, [v10 UTF8String]);
-        v12 = [v9 phrase];
-        v13 = v12;
-        std::string::basic_string[abi:ne200100]<0>(&__p, [v12 UTF8String]);
+        identifier = [v9 identifier];
+        v11 = identifier;
+        std::string::basic_string[abi:ne200100]<0>(&buf, [identifier UTF8String]);
+        phrase = [v9 phrase];
+        v13 = phrase;
+        std::string::basic_string[abi:ne200100]<0>(&__p, [phrase UTF8String]);
         v14 = v36;
         if (v36 >= *(&v36 + 1))
         {
@@ -671,10 +671,10 @@ LABEL_18:
   snlp::ssu::matcher::SSUMatcher::handleUserShortcutsDatabaseChanged(self->_cppMatcher.__ptr_, &v35);
 }
 
-- (BOOL)deregisterApp:(id)a3 error:(id *)a4
+- (BOOL)deregisterApp:(id)app error:(id *)error
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  appCopy = app;
   v7 = self->__systemEventLock;
   objc_sync_enter(v7);
   v30[0] = snlp::ssu::selflogging::logBackgroundUpdateStarted(2);
@@ -683,15 +683,15 @@ LABEL_18:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf.__r_.__value_.__l.__data_) = 138412290;
-    *(buf.__r_.__value_.__r.__words + 4) = v6;
+    *(buf.__r_.__value_.__r.__words + 4) = appCopy;
     _os_log_impl(&dword_22284A000, v9, OS_LOG_TYPE_DEBUG, "Attempting to deregister app with bundle ID: %@", &buf, 0xCu);
   }
 
   buf.__r_.__value_.__s.__data_[0] = 0;
   v29 = 0;
   ptr = self->_cppMatcher.__ptr_;
-  v11 = v6;
-  std::string::basic_string[abi:ne200100]<0>(&v18, [v6 UTF8String]);
+  v11 = appCopy;
+  std::string::basic_string[abi:ne200100]<0>(&v18, [appCopy UTF8String]);
   snlp::ssu::matcher::SSUMatcher::deregisterApp(ptr, &v18, &v21);
   std::__optional_storage_base<snlp::ssu::selflogging::SSUBackgroundUpdateAppInfo,false>::__assign_from[abi:ne200100]<std::__optional_move_assign_base<snlp::ssu::selflogging::SSUBackgroundUpdateAppInfo,false>>(&buf, &v21);
   if (v24 == 1)
@@ -744,30 +744,30 @@ LABEL_18:
   }
 
   snlp::ssu::selflogging::logBackgroundUpdateFailed(v30);
-  if (a4)
+  if (error)
   {
     v19[0] = *MEMORY[0x277CCA450];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not deregister app: %@.", v6];
+    appCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not deregister app: %@.", appCopy];
     v19[1] = *MEMORY[0x277CCA470];
-    v20[0] = v14;
+    v20[0] = appCopy;
     v20[1] = @"A failure was encountered during deregisteration.";
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:3 userInfo:v15];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:3 userInfo:v15];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
   objc_sync_exit(v7);
 
   v16 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (BOOL)registerApp:(id)a3 error:(id *)a4
+- (BOOL)registerApp:(id)app error:(id *)error
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  appCopy = app;
   v6 = self->__systemEventLock;
   objc_sync_enter(v6);
   v31[0] = snlp::ssu::selflogging::logBackgroundUpdateStarted(1);
@@ -776,17 +776,17 @@ LABEL_18:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf.__r_.__value_.__l.__data_) = 138412290;
-    *(buf.__r_.__value_.__r.__words + 4) = v5;
+    *(buf.__r_.__value_.__r.__words + 4) = appCopy;
     _os_log_impl(&dword_22284A000, v8, OS_LOG_TYPE_DEBUG, "Attempting to register app with info: %@", &buf, 0xCu);
   }
 
-  v9 = [v5 bundleIdentifier];
-  v10 = v9;
-  std::string::basic_string[abi:ne200100]<0>(v19, [v9 UTF8String]);
-  v11 = [v5 assetURL];
-  v12 = [v11 path];
-  v13 = v12;
-  buf.__r_.__value_.__r.__words[0] = [v12 UTF8String];
+  bundleIdentifier = [appCopy bundleIdentifier];
+  v10 = bundleIdentifier;
+  std::string::basic_string[abi:ne200100]<0>(v19, [bundleIdentifier UTF8String]);
+  assetURL = [appCopy assetURL];
+  path = [assetURL path];
+  v13 = path;
+  buf.__r_.__value_.__r.__words[0] = [path UTF8String];
   std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v21, &buf);
 
   buf.__r_.__value_.__s.__data_[0] = 0;
@@ -854,29 +854,29 @@ LABEL_18:
   return 0;
 }
 
-+ (id)matcherWithDirectories:(id)a3 initializeModelsPreemptively:(BOOL)a4 error:(id *)a5
++ (id)matcherWithDirectories:(id)directories initializeModelsPreemptively:(BOOL)preemptively error:(id *)error
 {
-  v5 = a4;
+  preemptivelyCopy = preemptively;
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 cacheDirectoryURL];
-  __p[0] = [v8 fileSystemRepresentation];
+  directoriesCopy = directories;
+  cacheDirectoryURL = [directoriesCopy cacheDirectoryURL];
+  __p[0] = [cacheDirectoryURL fileSystemRepresentation];
   std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v17, __p);
-  v9 = [v7 modelAssetsDirectoryURL];
-  v10 = v9;
-  v15[0] = [v9 fileSystemRepresentation];
+  modelAssetsDirectoryURL = [directoriesCopy modelAssetsDirectoryURL];
+  v10 = modelAssetsDirectoryURL;
+  v15[0] = [modelAssetsDirectoryURL fileSystemRepresentation];
   std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v18, v15);
-  v11 = [v7 datasetAssetsDirectoryURL];
-  v12 = v11;
-  v14[0] = [v11 fileSystemRepresentation];
+  datasetAssetsDirectoryURL = [directoriesCopy datasetAssetsDirectoryURL];
+  v12 = datasetAssetsDirectoryURL;
+  v14[0] = [datasetAssetsDirectoryURL fileSystemRepresentation];
   std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v19, v14);
 
   __p[5] = 0;
-  [a1 _loadAppShortcutAlwaysTriggeredAllowList];
+  [self _loadAppShortcutAlwaysTriggeredAllowList];
   [SNLPAssetVersionChecker loadUInt32ListFromConfigPListResourceName:@"SSUSupportedGenerationList"];
   v20 = xmmword_2229D29E0;
   std::unordered_set<unsigned int>::unordered_set(v14, &v20, 4);
-  if (v5)
+  if (preemptivelyCopy)
   {
     snlp::ssu::matcher::SSUMatcher::buildFromPathsWithImmediateInitialize(__p, v15, v14, &v17);
   }

@@ -1,11 +1,11 @@
 @interface WFAutomationListCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WFAutomationListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WFAutomationListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (WFAutomationListCellDelegate)delegate;
 - (void)prepareForReuse;
-- (void)setConfiguredTrigger:(id)a3 workflow:(id)a4 delegate:(id)a5;
-- (void)setHomeTrigger:(id)a3;
-- (void)setTitle:(id)a3 description:(id)a4 triggerIcon:(id)a5 triggerTintColor:(id)a6 triggerCornerRadius:(double)a7 actionIcons:(id)a8;
+- (void)setConfiguredTrigger:(id)trigger workflow:(id)workflow delegate:(id)delegate;
+- (void)setHomeTrigger:(id)trigger;
+- (void)setTitle:(id)title description:(id)description triggerIcon:(id)icon triggerTintColor:(id)color triggerCornerRadius:(double)radius actionIcons:(id)icons;
 - (void)updateUI;
 @end
 
@@ -30,69 +30,69 @@
 - (void)updateUI
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v3 = [(WFAutomationListCell *)self configuredTrigger];
+  configuredTrigger = [(WFAutomationListCell *)self configuredTrigger];
 
-  if (v3)
+  if (configuredTrigger)
   {
-    v4 = [MEMORY[0x277D75348] systemBlueColor];
-    [(WFAutomationListCell *)self setTintColor:v4];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(WFAutomationListCell *)self setTintColor:systemBlueColor];
 
-    v5 = [(WFAutomationListCell *)self configuredTrigger];
-    v6 = [v5 trigger];
+    configuredTrigger2 = [(WFAutomationListCell *)self configuredTrigger];
+    trigger = [configuredTrigger2 trigger];
 
-    v7 = [v6 localizedDescriptionWithConfigurationSummary];
-    v8 = [(WFAutomationListCell *)self titleLabel];
-    [v8 setText:v7];
+    localizedDescriptionWithConfigurationSummary = [trigger localizedDescriptionWithConfigurationSummary];
+    titleLabel = [(WFAutomationListCell *)self titleLabel];
+    [titleLabel setText:localizedDescriptionWithConfigurationSummary];
 
-    v9 = [(WFAutomationListCell *)self configuredTrigger];
-    LODWORD(v8) = [v9 isEnabled];
+    configuredTrigger3 = [(WFAutomationListCell *)self configuredTrigger];
+    LODWORD(titleLabel) = [configuredTrigger3 isEnabled];
 
-    if (v8)
+    if (titleLabel)
     {
-      v10 = [(WFAutomationListCell *)self workflow];
-      v11 = [v10 hiddenFromLibraryAndSync];
+      workflow = [(WFAutomationListCell *)self workflow];
+      hiddenFromLibraryAndSync = [workflow hiddenFromLibraryAndSync];
 
-      v12 = [(WFAutomationListCell *)self workflow];
-      v13 = v12;
-      if (v11)
+      workflow2 = [(WFAutomationListCell *)self workflow];
+      v13 = workflow2;
+      if (hiddenFromLibraryAndSync)
       {
-        [v12 actionsDescription];
+        [workflow2 actionsDescription];
       }
 
       else
       {
-        [v12 name];
+        [workflow2 name];
       }
-      v32 = ;
-      v33 = [(WFAutomationListCell *)self descriptionLabel];
-      [v33 setText:v32];
+      descriptionLabel2 = ;
+      descriptionLabel = [(WFAutomationListCell *)self descriptionLabel];
+      [descriptionLabel setText:descriptionLabel2];
     }
 
     else
     {
       v13 = WFLocalizedString(@"Disabled");
-      v32 = [(WFAutomationListCell *)self descriptionLabel];
-      [v32 setText:v13];
+      descriptionLabel2 = [(WFAutomationListCell *)self descriptionLabel];
+      [descriptionLabel2 setText:v13];
     }
 
-    v34 = [(WFAutomationListCell *)self summaryIconsView];
-    v35 = [v6 displayGlyph];
-    v36 = [v35 platformImage];
-    v37 = [v6 displayGlyphTintColor];
-    v38 = [v37 UIColor];
-    [v34 setTriggerIcon:v36 tintColor:v38 withTrigger:v6];
+    summaryIconsView = [(WFAutomationListCell *)self summaryIconsView];
+    displayGlyph = [trigger displayGlyph];
+    platformImage = [displayGlyph platformImage];
+    displayGlyphTintColor = [trigger displayGlyphTintColor];
+    uIColor = [displayGlyphTintColor UIColor];
+    [summaryIconsView setTriggerIcon:platformImage tintColor:uIColor withTrigger:trigger];
 
-    v39 = [(WFAutomationListCell *)self workflow];
-    LODWORD(v35) = [v39 hiddenFromLibraryAndSync];
+    workflow3 = [(WFAutomationListCell *)self workflow];
+    LODWORD(displayGlyph) = [workflow3 hiddenFromLibraryAndSync];
 
-    v40 = [(WFAutomationListCell *)self workflow];
-    v41 = v40;
-    if (v35)
+    workflow4 = [(WFAutomationListCell *)self workflow];
+    v41 = workflow4;
+    if (displayGlyph)
     {
-      v42 = [v40 actions];
-      v43 = [(WFAutomationListCell *)self workflow];
-      v44 = [v43 actions];
-      v45 = [v44 count];
+      actions = [workflow4 actions];
+      workflow5 = [(WFAutomationListCell *)self workflow];
+      actions2 = [workflow5 actions];
+      v45 = [actions2 count];
 
       if (v45 >= 6)
       {
@@ -104,150 +104,150 @@
         v46 = v45;
       }
 
-      v47 = [v42 subarrayWithRange:{0, v46}];
+      v49Icon = [actions subarrayWithRange:{0, v46}];
 
-      if (![v47 count])
+      if (![v49Icon count])
       {
         goto LABEL_19;
       }
 
-      v48 = [v47 if_compactMap:&__block_literal_global_1752];
+      v48 = [v49Icon if_compactMap:&__block_literal_global_1752];
     }
 
     else
     {
-      v49 = [v40 icon];
-      v47 = [v49 icon];
+      icon = [workflow4 icon];
+      v49Icon = [icon icon];
 
-      if (!v47)
+      if (!v49Icon)
       {
 LABEL_19:
 
         return;
       }
 
-      v56[0] = v47;
+      v56[0] = v49Icon;
       v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:1];
     }
 
     v50 = v48;
-    v51 = [(WFAutomationListCell *)self summaryIconsView];
-    [v51 setActionIcons:v50];
+    summaryIconsView2 = [(WFAutomationListCell *)self summaryIconsView];
+    [summaryIconsView2 setActionIcons:v50];
 
     goto LABEL_19;
   }
 
-  v14 = [(WFAutomationListCell *)self homeTrigger];
+  homeTrigger = [(WFAutomationListCell *)self homeTrigger];
 
-  if (v14)
+  if (homeTrigger)
   {
-    v15 = [MEMORY[0x277D75348] wf_homeTintColor];
-    [(WFAutomationListCell *)self setTintColor:v15];
+    wf_homeTintColor = [MEMORY[0x277D75348] wf_homeTintColor];
+    [(WFAutomationListCell *)self setTintColor:wf_homeTintColor];
 
     v16 = objc_alloc(getHFTriggerUISummaryClass());
-    v17 = [(WFAutomationListCell *)self homeTrigger];
-    v18 = [v17 trigger];
-    v19 = [(WFAutomationListCell *)self homeTrigger];
-    v20 = [v19 home];
-    v55 = [v16 initWithTrigger:v18 inHome:v20 forceDisabled:0];
+    homeTrigger2 = [(WFAutomationListCell *)self homeTrigger];
+    trigger2 = [homeTrigger2 trigger];
+    homeTrigger3 = [(WFAutomationListCell *)self homeTrigger];
+    home = [homeTrigger3 home];
+    summaryIconsView6 = [v16 initWithTrigger:trigger2 inHome:home forceDisabled:0];
 
-    v21 = [v55 triggerDisplayTitle];
-    v22 = [(WFAutomationListCell *)self titleLabel];
-    [v22 setText:v21];
+    triggerDisplayTitle = [summaryIconsView6 triggerDisplayTitle];
+    titleLabel2 = [(WFAutomationListCell *)self titleLabel];
+    [titleLabel2 setText:triggerDisplayTitle];
 
-    v23 = [v55 triggerDescription];
-    v24 = [(WFAutomationListCell *)self descriptionLabel];
-    [v24 setText:v23];
+    triggerDescription = [summaryIconsView6 triggerDescription];
+    descriptionLabel3 = [(WFAutomationListCell *)self descriptionLabel];
+    [descriptionLabel3 setText:triggerDescription];
 
     HFTriggerIconFactoryClass = getHFTriggerIconFactoryClass();
-    v26 = [(WFAutomationListCell *)self homeTrigger];
-    v27 = [v26 trigger];
-    v28 = [(objc_class *)HFTriggerIconFactoryClass iconDescriptorForTrigger:v27];
+    homeTrigger4 = [(WFAutomationListCell *)self homeTrigger];
+    trigger3 = [homeTrigger4 trigger];
+    v28 = [(objc_class *)HFTriggerIconFactoryClass iconDescriptorForTrigger:trigger3];
 
-    v29 = [(WFAutomationListCell *)self summaryIconsView];
-    [v29 setHomeTriggerIcon:v28];
+    summaryIconsView3 = [(WFAutomationListCell *)self summaryIconsView];
+    [summaryIconsView3 setHomeTriggerIcon:v28];
 
-    v30 = [v55 triggerSummaryIconDescriptors];
-    v31 = [(WFAutomationListCell *)self summaryIconsView];
-    [v31 setHomeActionIcons:v30];
+    triggerSummaryIconDescriptors = [summaryIconsView6 triggerSummaryIconDescriptors];
+    summaryIconsView4 = [(WFAutomationListCell *)self summaryIconsView];
+    [summaryIconsView4 setHomeActionIcons:triggerSummaryIconDescriptors];
   }
 
   else
   {
-    v52 = [(WFAutomationListCell *)self titleLabel];
-    [v52 setText:0];
+    titleLabel3 = [(WFAutomationListCell *)self titleLabel];
+    [titleLabel3 setText:0];
 
-    v53 = [(WFAutomationListCell *)self descriptionLabel];
-    [v53 setText:0];
+    descriptionLabel4 = [(WFAutomationListCell *)self descriptionLabel];
+    [descriptionLabel4 setText:0];
 
-    v54 = [(WFAutomationListCell *)self summaryIconsView];
-    [v54 setTriggerIcon:0 tintColor:0 withTrigger:0];
+    summaryIconsView5 = [(WFAutomationListCell *)self summaryIconsView];
+    [summaryIconsView5 setTriggerIcon:0 tintColor:0 withTrigger:0];
 
-    v55 = [(WFAutomationListCell *)self summaryIconsView];
-    [v55 setActionIcons:MEMORY[0x277CBEBF8]];
+    summaryIconsView6 = [(WFAutomationListCell *)self summaryIconsView];
+    [summaryIconsView6 setActionIcons:MEMORY[0x277CBEBF8]];
   }
 }
 
-- (void)setHomeTrigger:(id)a3
+- (void)setHomeTrigger:(id)trigger
 {
-  v5 = a3;
+  triggerCopy = trigger;
   homeTrigger = self->_homeTrigger;
-  if (homeTrigger != v5)
+  if (homeTrigger != triggerCopy)
   {
-    v8 = v5;
-    v7 = [(HFTriggerItem *)homeTrigger isEqual:v5];
-    v5 = v8;
+    v8 = triggerCopy;
+    v7 = [(HFTriggerItem *)homeTrigger isEqual:triggerCopy];
+    triggerCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_homeTrigger, a3);
+      objc_storeStrong(&self->_homeTrigger, trigger);
       [(WFAutomationListCell *)self setConfiguredTrigger:0];
       [(WFAutomationListCell *)self setWorkflow:0];
       [(WFAutomationListCell *)self updateUI];
-      v5 = v8;
+      triggerCopy = v8;
     }
   }
 }
 
-- (void)setConfiguredTrigger:(id)a3 workflow:(id)a4 delegate:(id)a5
+- (void)setConfiguredTrigger:(id)trigger workflow:(id)workflow delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  [(WFAutomationListCell *)self setConfiguredTrigger:a3];
-  [(WFAutomationListCell *)self setWorkflow:v9];
+  delegateCopy = delegate;
+  workflowCopy = workflow;
+  [(WFAutomationListCell *)self setConfiguredTrigger:trigger];
+  [(WFAutomationListCell *)self setWorkflow:workflowCopy];
 
-  [(WFAutomationListCell *)self setDelegate:v8];
+  [(WFAutomationListCell *)self setDelegate:delegateCopy];
 
   [(WFAutomationListCell *)self updateUI];
 }
 
-- (void)setTitle:(id)a3 description:(id)a4 triggerIcon:(id)a5 triggerTintColor:(id)a6 triggerCornerRadius:(double)a7 actionIcons:(id)a8
+- (void)setTitle:(id)title description:(id)description triggerIcon:(id)icon triggerTintColor:(id)color triggerCornerRadius:(double)radius actionIcons:(id)icons
 {
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(WFAutomationListCell *)self titleLabel];
-  [v19 setText:v18];
+  iconsCopy = icons;
+  colorCopy = color;
+  iconCopy = icon;
+  descriptionCopy = description;
+  titleCopy = title;
+  titleLabel = [(WFAutomationListCell *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  v20 = [(WFAutomationListCell *)self descriptionLabel];
-  [v20 setText:v17];
+  descriptionLabel = [(WFAutomationListCell *)self descriptionLabel];
+  [descriptionLabel setText:descriptionCopy];
 
-  v21 = [(WFAutomationListCell *)self summaryIconsView];
-  v22 = [v16 platformImage];
+  summaryIconsView = [(WFAutomationListCell *)self summaryIconsView];
+  platformImage = [iconCopy platformImage];
 
-  v23 = [v15 platformColor];
+  platformColor = [colorCopy platformColor];
 
-  [v21 setTriggerIcon:v22 tintColor:v23 withCornerRadius:a7];
-  v24 = [(WFAutomationListCell *)self summaryIconsView];
-  [v24 setActionIcons:v14];
+  [summaryIconsView setTriggerIcon:platformImage tintColor:platformColor withCornerRadius:radius];
+  summaryIconsView2 = [(WFAutomationListCell *)self summaryIconsView];
+  [summaryIconsView2 setActionIcons:iconsCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = *(MEMORY[0x277D76C78] + 8);
-  v5 = [(WFAutomationListCell *)self contentView:a3.width];
+  v5 = [(WFAutomationListCell *)self contentView:fits.width];
   LODWORD(v6) = 1148846080;
   LODWORD(v7) = 1112014848;
   [v5 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:v4 verticalFittingPriority:{v6, v7}];
@@ -261,24 +261,24 @@ LABEL_19:
   return result;
 }
 
-- (WFAutomationListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFAutomationListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v52[4] = *MEMORY[0x277D85DE8];
   v51.receiver = self;
   v51.super_class = WFAutomationListCell;
-  v4 = [(WFAutomationListCell *)&v51 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(WFAutomationListCell *)&v51 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(WFAutomationListCell *)v4 setSeparatorInset:0.0, 18.0, 0.0, 0.0];
     [(WFAutomationListCell *)v5 setAccessoryType:1];
     v50 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v6 = [MEMORY[0x277D75348] wf_tableCellDefaultSelectionTintColor];
-    [v50 setBackgroundColor:v6];
+    wf_tableCellDefaultSelectionTintColor = [MEMORY[0x277D75348] wf_tableCellDefaultSelectionTintColor];
+    [v50 setBackgroundColor:wf_tableCellDefaultSelectionTintColor];
 
     [(WFAutomationListCell *)v5 setSelectedBackgroundView:v50];
-    v7 = [(WFAutomationListCell *)v5 contentView];
-    [v7 setDirectionalLayoutMargins:{16.0, 18.0, 14.0, 8.0}];
+    contentView = [(WFAutomationListCell *)v5 contentView];
+    [contentView setDirectionalLayoutMargins:{16.0, 18.0, 14.0, 8.0}];
 
     v8 = objc_alloc_init(MEMORY[0x277D75A68]);
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -286,32 +286,32 @@ LABEL_19:
     [v8 setAlignment:0];
     [v8 setDistribution:0];
     [v8 setSpacing:4.0];
-    v9 = [(WFAutomationListCell *)v5 contentView];
-    [v9 addSubview:v8];
+    contentView2 = [(WFAutomationListCell *)v5 contentView];
+    [contentView2 addSubview:v8];
 
-    v48 = [v8 topAnchor];
-    v49 = [(WFAutomationListCell *)v5 contentView];
-    v47 = [v49 layoutMarginsGuide];
-    v46 = [v47 topAnchor];
-    v45 = [v48 constraintEqualToAnchor:v46];
+    topAnchor = [v8 topAnchor];
+    contentView3 = [(WFAutomationListCell *)v5 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[0] = v45;
-    v43 = [v8 bottomAnchor];
-    v44 = [(WFAutomationListCell *)v5 contentView];
-    v42 = [v44 layoutMarginsGuide];
-    v41 = [v42 bottomAnchor];
-    v40 = [v43 constraintEqualToAnchor:v41];
+    bottomAnchor = [v8 bottomAnchor];
+    contentView4 = [(WFAutomationListCell *)v5 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v52[1] = v40;
-    v37 = [v8 leadingAnchor];
-    v39 = [(WFAutomationListCell *)v5 contentView];
-    v10 = [v39 layoutMarginsGuide];
-    v11 = [v10 leadingAnchor];
-    v12 = [v37 constraintEqualToAnchor:v11];
+    leadingAnchor = [v8 leadingAnchor];
+    contentView5 = [(WFAutomationListCell *)v5 contentView];
+    layoutMarginsGuide3 = [contentView5 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[2] = v12;
-    v13 = [v8 trailingAnchor];
-    v14 = [(WFAutomationListCell *)v5 contentView];
-    v15 = [v14 layoutMarginsGuide];
-    v16 = [v15 trailingAnchor];
-    v17 = [v13 constraintEqualToAnchor:v16];
+    trailingAnchor = [v8 trailingAnchor];
+    contentView6 = [(WFAutomationListCell *)v5 contentView];
+    layoutMarginsGuide4 = [contentView6 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[3] = v17;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:4];
 
@@ -351,8 +351,8 @@ LABEL_19:
     v32 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
     [(UILabel *)v5->_descriptionLabel setFont:v32];
 
-    v33 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v5->_descriptionLabel setTextColor:v33];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v5->_descriptionLabel setTextColor:secondaryLabelColor];
 
     LODWORD(v34) = 1148846080;
     [(UILabel *)v5->_descriptionLabel setContentCompressionResistancePriority:1 forAxis:v34];

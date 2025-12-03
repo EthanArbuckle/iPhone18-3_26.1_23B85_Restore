@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_FixComputeSyncResourceFileExtension
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixComputeSyncResourceFileExtension
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v106[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
@@ -17,8 +17,8 @@
   v9 = [v7 fetchRequestWithEntityName:v8];
 
   v10 = MEMORY[0x1E696AB28];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"recipeID", 327689];
-  v106[0] = v11;
+  327689 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"recipeID", 327689];
+  v106[0] = 327689;
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 1];
   v106[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:2];
@@ -48,7 +48,7 @@
   v52[1] = 3221225472;
   v52[2] = __106__PLModelMigrationAction_FixComputeSyncResourceFileExtension_performActionWithManagedObjectContext_error___block_invoke;
   v52[3] = &unk_1E7575B30;
-  v19 = v6;
+  v19 = contextCopy;
   v53 = v19;
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -80,8 +80,8 @@
       goto LABEL_16;
     }
 
-    v24 = [(PLModelMigrationActionCore *)self logger];
-    v25 = v24 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v25 = logger == 0;
 
     if (!v25)
     {
@@ -118,9 +118,9 @@
       memset(buf, 0, sizeof(buf));
       v26 = PLMigrationGetLog();
       os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-      v27 = [v55[5] totalUnitCount];
+      totalUnitCount = [v55[5] totalUnitCount];
       v70 = 134217984;
-      v71 = v27;
+      v71 = totalUnitCount;
       LODWORD(v48) = 12;
       v28 = _os_log_send_and_compose_impl();
 
@@ -133,9 +133,9 @@
     v39 = PLMigrationGetLog();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [v55[5] totalUnitCount];
+      totalUnitCount2 = [v55[5] totalUnitCount];
       *buf = 134217984;
-      *&buf[4] = v40;
+      *&buf[4] = totalUnitCount2;
       _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_DEFAULT, "[CCSS] Fixed ComputeSync resource file extension for %lld assets", buf, 0xCu);
     }
 
@@ -153,8 +153,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v32 = [(PLModelMigrationActionCore *)self logger];
-  v33 = v32 == 0;
+  logger2 = [(PLModelMigrationActionCore *)self logger];
+  v33 = logger2 == 0;
 
   if (v33)
   {
@@ -229,10 +229,10 @@ LABEL_8:
 LABEL_16:
   v44 = v67[3];
   v45 = v61[5];
-  if (v44 != 1 && a4)
+  if (v44 != 1 && error)
   {
     v45 = v45;
-    *a4 = v45;
+    *error = v45;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

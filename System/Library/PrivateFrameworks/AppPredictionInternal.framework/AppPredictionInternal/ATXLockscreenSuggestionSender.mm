@@ -1,8 +1,8 @@
 @interface ATXLockscreenSuggestionSender
 - (ATXLockscreenSuggestionSender)init;
-- (ATXLockscreenSuggestionSender)initWithLockscreenBlacklist:(id)a3 actionNotificationServer:(id)a4 userDefaults:(id)a5;
-- (void)_updateCachedExecutableIdentifierWithSuggestion:(id)a3;
-- (void)blendingLayerDidUpdateLockscreenUICache:(id)a3;
+- (ATXLockscreenSuggestionSender)initWithLockscreenBlacklist:(id)blacklist actionNotificationServer:(id)server userDefaults:(id)defaults;
+- (void)_updateCachedExecutableIdentifierWithSuggestion:(id)suggestion;
+- (void)blendingLayerDidUpdateLockscreenUICache:(id)cache;
 @end
 
 @implementation ATXLockscreenSuggestionSender
@@ -18,29 +18,29 @@
   return v7;
 }
 
-- (ATXLockscreenSuggestionSender)initWithLockscreenBlacklist:(id)a3 actionNotificationServer:(id)a4 userDefaults:(id)a5
+- (ATXLockscreenSuggestionSender)initWithLockscreenBlacklist:(id)blacklist actionNotificationServer:(id)server userDefaults:(id)defaults
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  blacklistCopy = blacklist;
+  serverCopy = server;
+  defaultsCopy = defaults;
   v15.receiver = self;
   v15.super_class = ATXLockscreenSuggestionSender;
   v12 = [(ATXLockscreenSuggestionSender *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_lockscreenBlacklist, a3);
-    objc_storeStrong(&v13->_actionNotificationServer, a4);
-    objc_storeStrong(&v13->_userDefaults, a5);
+    objc_storeStrong(&v12->_lockscreenBlacklist, blacklist);
+    objc_storeStrong(&v13->_actionNotificationServer, server);
+    objc_storeStrong(&v13->_userDefaults, defaults);
   }
 
   return v13;
 }
 
-- (void)blendingLayerDidUpdateLockscreenUICache:(id)a3
+- (void)blendingLayerDidUpdateLockscreenUICache:(id)cache
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cacheCopy = cache;
   v5 = __atxlog_handle_blending();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,31 +49,31 @@
     v36 = 138412546;
     v37 = v7;
     v38 = 2112;
-    v39 = v4;
+    v39 = cacheCopy;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "%@ - received new ui cache: %@", &v36, 0x16u);
   }
 
-  v8 = [v4 allSuggestionsInLayout];
-  v9 = [v8 firstObject];
-  v10 = [v9 executableSpecification];
-  v11 = [v10 executableIdentifier];
+  allSuggestionsInLayout = [cacheCopy allSuggestionsInLayout];
+  firstObject = [allSuggestionsInLayout firstObject];
+  executableSpecification = [firstObject executableSpecification];
+  executableIdentifier = [executableSpecification executableIdentifier];
 
-  v12 = [(ATXLockscreenSuggestionSender *)self _cachedExecutableIdentifier];
-  [(ATXLockscreenSuggestionSender *)self _updateCachedExecutableIdentifierWithSuggestion:v9];
+  _cachedExecutableIdentifier = [(ATXLockscreenSuggestionSender *)self _cachedExecutableIdentifier];
+  [(ATXLockscreenSuggestionSender *)self _updateCachedExecutableIdentifierWithSuggestion:firstObject];
   if (![(ATXLockscreenBlacklist *)self->_lockscreenBlacklist isPredictionGloballyDisabled])
   {
     LOBYTE(v36) = 0;
     v16 = *MEMORY[0x277CEBD00];
     if (CFPreferencesGetAppBooleanValue(@"displayDonationsOnLockscreen", *MEMORY[0x277CEBD00], &v36) || (LOBYTE(v36) = 0, CFPreferencesGetAppBooleanValue(@"displayLastDonationOnCoverSheet", v16, &v36)))
     {
-      v17 = __atxlog_handle_blending();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      uuid = __atxlog_handle_blending();
+      if (os_log_type_enabled(uuid, OS_LOG_TYPE_DEFAULT))
       {
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         v36 = 138412290;
         v37 = v19;
-        _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_DEFAULT, "%@ - not forwarding predictions to lockscreen because demo or developer switch was on", &v36, 0xCu);
+        _os_log_impl(&dword_2263AA000, uuid, OS_LOG_TYPE_DEFAULT, "%@ - not forwarding predictions to lockscreen because demo or developer switch was on", &v36, 0xCu);
       }
 
 LABEL_11:
@@ -81,16 +81,16 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (v12)
+    if (_cachedExecutableIdentifier)
     {
-      v21 = v11;
+      v21 = executableIdentifier;
       if (v21)
       {
-        v22 = [v12 isEqualToString:v21];
+        v22 = [_cachedExecutableIdentifier isEqualToString:v21];
 
         if (v22)
         {
-          v23 = v12;
+          v23 = _cachedExecutableIdentifier;
           goto LABEL_20;
         }
       }
@@ -106,11 +106,11 @@ LABEL_11:
       }
 
       [(ATXActionNotificationServer *)self->_actionNotificationServer removeAllActionPredictionNotificationsAndTrackEvent:1 recordFeedback:1];
-      v27 = v12;
+      v27 = _cachedExecutableIdentifier;
       if (v21)
       {
 LABEL_20:
-        v28 = [v21 isEqualToString:v12];
+        v28 = [v21 isEqualToString:_cachedExecutableIdentifier];
 
         if (v28)
         {
@@ -134,7 +134,7 @@ LABEL_20:
       }
 
       [(ATXActionNotificationServer *)self->_actionNotificationServer removeAllActionPredictionNotificationsAndTrackEvent:0 recordFeedback:0];
-      if (v11)
+      if (executableIdentifier)
       {
 LABEL_25:
         v32 = __atxlog_handle_blending();
@@ -148,8 +148,8 @@ LABEL_25:
         }
 
         actionNotificationServer = self->_actionNotificationServer;
-        v17 = [v4 uuid];
-        [(ATXActionNotificationServer *)actionNotificationServer postNotificationForProactiveSuggestion:v9 blendingCacheUpdateUUID:v17];
+        uuid = [cacheCopy uuid];
+        [(ATXActionNotificationServer *)actionNotificationServer postNotificationForProactiveSuggestion:firstObject blendingCacheUpdateUUID:uuid];
         goto LABEL_11;
       }
     }
@@ -173,12 +173,12 @@ LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCachedExecutableIdentifierWithSuggestion:(id)a3
+- (void)_updateCachedExecutableIdentifierWithSuggestion:(id)suggestion
 {
   userDefaults = self->_userDefaults;
-  v5 = [a3 executableSpecification];
-  v4 = [v5 executableIdentifier];
-  [(NSUserDefaults *)userDefaults setObject:v4 forKey:@"lockscreen_prediction"];
+  executableSpecification = [suggestion executableSpecification];
+  executableIdentifier = [executableSpecification executableIdentifier];
+  [(NSUserDefaults *)userDefaults setObject:executableIdentifier forKey:@"lockscreen_prediction"];
 }
 
 @end

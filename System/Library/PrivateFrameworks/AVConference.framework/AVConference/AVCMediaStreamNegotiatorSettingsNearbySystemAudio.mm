@@ -1,16 +1,16 @@
 @interface AVCMediaStreamNegotiatorSettingsNearbySystemAudio
-- (AVCMediaStreamNegotiatorSettingsNearbySystemAudio)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsNearbySystemAudio)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsNearbySystemAudio
 
-- (AVCMediaStreamNegotiatorSettingsNearbySystemAudio)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsNearbySystemAudio)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
-  v6 = a4;
+  roleCopy = role;
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = AVCMediaStreamNegotiatorSettingsNearbySystemAudio;
-  v7 = [AVCMediaStreamNegotiatorSettings initWithOptions:sel_initWithOptions_deviceRole_defaultDirection_error_ deviceRole:a3 defaultDirection:? error:?];
+  v7 = [AVCMediaStreamNegotiatorSettings initWithOptions:sel_initWithOptions_deviceRole_defaultDirection_error_ deviceRole:options defaultDirection:? error:?];
   v8 = v7;
   if (!v7)
   {
@@ -32,7 +32,7 @@
     if (v11)
     {
       v8->super._shouldSetJitterBufferMode = 1;
-      [(AVCMediaStreamNegotiatorSettingsNearbySystemAudio *)v8 setAudioDeviceUIDForDeviceRole:v6];
+      [(AVCMediaStreamNegotiatorSettingsNearbySystemAudio *)v8 setAudioDeviceUIDForDeviceRole:roleCopy];
 LABEL_6:
 
       return v8;
@@ -46,9 +46,9 @@ LABEL_6:
     v13 = @"audioRules init failed";
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v13;
+    *error = v13;
   }
 
   return 0;

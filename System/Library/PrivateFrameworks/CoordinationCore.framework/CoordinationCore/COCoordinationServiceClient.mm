@@ -1,33 +1,33 @@
 @interface COCoordinationServiceClient
-- (BOOL)isEqual:(id)a3;
-- (COCoordinationServiceClient)initWithConnection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (COCoordinationServiceClient)initWithConnection:(id)connection;
 - (NSString)clientBundleIdentifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 @end
 
 @implementation COCoordinationServiceClient
 
-- (COCoordinationServiceClient)initWithConnection:(id)a3
+- (COCoordinationServiceClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = COCoordinationServiceClient;
   v6 = [(COCoordinationServiceClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -38,8 +38,8 @@
     if (objc_opt_isKindOfClass())
     {
       connection = self->_connection;
-      v6 = [(COCoordinationServiceClient *)v4 connection];
-      v7 = connection == v6;
+      connection = [(COCoordinationServiceClient *)equalCopy connection];
+      v7 = connection == connection;
     }
 
     else
@@ -53,8 +53,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(COCoordinationServiceClient *)self connection];
-  v3 = [v2 hash];
+  connection = [(COCoordinationServiceClient *)self connection];
+  v3 = [connection hash];
 
   return v3;
 }
@@ -64,25 +64,25 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COCoordinationServiceClient *)self connection];
-  v7 = [v3 stringWithFormat:@"<%@: %p, connection = %p>", v5, self, v6];
+  connection = [(COCoordinationServiceClient *)self connection];
+  v7 = [v3 stringWithFormat:@"<%@: %p, connection = %p>", v5, self, connection];
 
   return v7;
 }
 
 - (NSString)clientBundleIdentifier
 {
-  v2 = [(COCoordinationServiceClient *)self connection];
-  v3 = [v2 co_ClientBundleIdentifier];
+  connection = [(COCoordinationServiceClient *)self connection];
+  co_ClientBundleIdentifier = [connection co_ClientBundleIdentifier];
 
-  return v3;
+  return co_ClientBundleIdentifier;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

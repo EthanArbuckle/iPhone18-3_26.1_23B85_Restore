@@ -1,13 +1,13 @@
 @interface BSUIVibrancyEffectView
-- (BSUIVibrancyEffectView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BSUIVibrancyEffectView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateSubviews;
 - (void)_updateSubviewsIfNeeded;
 - (void)layoutSubviews;
-- (void)setBlurEnabled:(BOOL)a3;
-- (void)setCaptureOnly:(BOOL)a3;
-- (void)setContentType:(unint64_t)a3;
-- (void)setIsEnabled:(BOOL)a3;
+- (void)setBlurEnabled:(BOOL)enabled;
+- (void)setCaptureOnly:(BOOL)only;
+- (void)setContentType:(unint64_t)type;
+- (void)setIsEnabled:(BOOL)enabled;
 - (void)updateFilters;
 @end
 
@@ -33,24 +33,24 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BSUIVibrancyEffectView *)self contentView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  contentView = [(BSUIVibrancyEffectView *)self contentView];
+  [contentView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(BSUIVibrancyEffectView *)self materialBackdropView];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  materialBackdropView = [(BSUIVibrancyEffectView *)self materialBackdropView];
+  [materialBackdropView setFrame:{v4, v6, v8, v10}];
 
-  v13 = [(BSUIVibrancyEffectView *)self vibrancyView];
-  [v13 setFrame:{v4, v6, v8, v10}];
+  vibrancyView = [(BSUIVibrancyEffectView *)self vibrancyView];
+  [vibrancyView setFrame:{v4, v6, v8, v10}];
 
-  v14 = [(BSUIVibrancyEffectView *)self materialBackdropView];
-  [v14 bounds];
+  materialBackdropView2 = [(BSUIVibrancyEffectView *)self materialBackdropView];
+  [materialBackdropView2 bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(BSUIVibrancyEffectView *)self maskView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  maskView = [(BSUIVibrancyEffectView *)self maskView];
+  [maskView setFrame:{v16, v18, v20, v22}];
 }
 
 - (void)_updateSubviews
@@ -65,7 +65,7 @@
     v3 = 0;
   }
 
-  v25 = [(BSUIVibrancyView *)self configuration];
+  configuration = [(BSUIVibrancyView *)self configuration];
   [(UIView *)self->_contentView setAlpha:(v3 ^ 1u)];
   if (v3)
   {
@@ -81,18 +81,18 @@
       self->_materialBackdropView = v12;
 
       [(BSUIVibrancyBackdropView *)self->_materialBackdropView setUserInteractionEnabled:0];
-      v14 = [(BSUIVibrancyBackdropView *)self->_materialBackdropView backdropLayer];
-      [v14 setUsesGlobalGroupNamespace:1];
+      backdropLayer = [(BSUIVibrancyBackdropView *)self->_materialBackdropView backdropLayer];
+      [backdropLayer setUsesGlobalGroupNamespace:1];
 
       [(BSUIVibrancyEffectView *)self addSubview:self->_materialBackdropView];
     }
 
-    v15 = [(BSUIVibrancyEffectView *)self isCaptureOnly];
-    v16 = [v25 effectType];
+    isCaptureOnly = [(BSUIVibrancyEffectView *)self isCaptureOnly];
+    effectType = [configuration effectType];
     vibrancyView = [(BSUIVibrancyBackdropView *)self->_materialBackdropView backdropLayer];
-    [vibrancyView setCaptureOnly:v15];
+    [vibrancyView setCaptureOnly:isCaptureOnly];
     v18 = 0.1;
-    if (v16 == 3)
+    if (effectType == 3)
     {
       v18 = 1.0;
     }
@@ -106,7 +106,7 @@
       self->_maskView = v19;
     }
 
-    v21 = v16 == 3 || v15;
+    v21 = effectType == 3 || isCaptureOnly;
     if (v21)
     {
       v22 = 0;
@@ -142,21 +142,21 @@
 
 - (void)updateFilters
 {
-  v3 = [(BSUIVibrancyView *)self configuration];
-  v4 = [v3 effectValues];
+  configuration = [(BSUIVibrancyView *)self configuration];
+  effectValues = [configuration effectValues];
   values = self->_values;
-  self->_values = v4;
+  self->_values = effectValues;
 
-  v6 = [(BSUIVibrancyEffectView *)self isBlurEnabled];
-  v7 = [(BSUIVibrancyEffectView *)self contentType];
-  v8 = [v3 effectType];
+  isBlurEnabled = [(BSUIVibrancyEffectView *)self isBlurEnabled];
+  contentType = [(BSUIVibrancyEffectView *)self contentType];
+  effectType = [configuration effectType];
   v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v8 != 3)
+  if (effectType != 3)
   {
-    if (!v6)
+    if (!isBlurEnabled)
     {
-      v41 = 0;
+      groupName = 0;
       v25 = 1;
       v26 = 1050253722;
       v27 = *"333?";
@@ -191,12 +191,12 @@
     [v20 setValue:&unk_1F158AF78 forKey:*MEMORY[0x1E6979BA8]];
     [v20 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6979B78]];
     [v42 addObject:v20];
-    v41 = [(BSUIVibrancyEffectValues *)self->_values groupName];
+    groupName = [(BSUIVibrancyEffectValues *)self->_values groupName];
 
-    if (v7 == 1)
+    if (contentType == 1)
     {
       v21 = [MEMORY[0x1E6979378] filterWithType:v15];
-      v22 = v41;
+      v22 = groupName;
       [v21 setName:@"vibrantColor"];
       v23 = MEMORY[0x1E696B098];
       v24 = self->_values;
@@ -217,9 +217,9 @@
       [v21 setValue:v34 forKey:v19];
 
       [v42 insertObject:v21 atIndex:0];
-      [v41 stringByAppendingString:@"-withVibrancy"];
+      [groupName stringByAppendingString:@"-withVibrancy"];
       v25 = 0;
-      v41 = v30 = 1;
+      groupName = v30 = 1;
       goto LABEL_21;
     }
 
@@ -242,20 +242,20 @@ LABEL_13:
 
     [v21 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6979B98]];
     [v43 addObject:v21];
-    if (v8 == 3)
+    if (effectType == 3)
     {
       v30 = 0;
 LABEL_22:
 
-      v10 = v41;
-      v35 = [(BSUIVibrancyBackdropView *)self->_materialBackdropView backdropLayer];
-      [v35 setGroupName:v41];
+      v10 = groupName;
+      backdropLayer = [(BSUIVibrancyBackdropView *)self->_materialBackdropView backdropLayer];
+      [backdropLayer setGroupName:groupName];
 
       [(BSUIVibrancyBackdropView *)self->_materialBackdropView setHidden:v25];
       [(UIView *)self->_vibrancyView setHidden:v30];
-      v36 = [(UIView *)self->_vibrancyView layer];
-      v37 = v36;
-      if (v8 == 3)
+      layer = [(UIView *)self->_vibrancyView layer];
+      v37 = layer;
+      if (effectType == 3)
       {
         v38 = *MEMORY[0x1E69798E0];
       }
@@ -265,13 +265,13 @@ LABEL_22:
         v38 = 0;
       }
 
-      [v36 setCompositingFilter:v38];
+      [layer setCompositingFilter:v38];
 
-      v39 = [(BSUIVibrancyBackdropView *)self->_materialBackdropView layer];
-      _setLayerFilters(v39, v42);
+      layer2 = [(BSUIVibrancyBackdropView *)self->_materialBackdropView layer];
+      _setLayerFilters(layer2, v42);
 
-      v40 = [(UIView *)self->_vibrancyView layer];
-      _setLayerFilters(v40, v43);
+      layer3 = [(UIView *)self->_vibrancyView layer];
+      _setLayerFilters(layer3, v43);
 
       goto LABEL_26;
     }
@@ -303,23 +303,23 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v9 = [v3 alternativeVibrancyEffectLUT];
-  v10 = v9;
-  if (v9)
+  alternativeVibrancyEffectLUT = [configuration alternativeVibrancyEffectLUT];
+  v10 = alternativeVibrancyEffectLUT;
+  if (alternativeVibrancyEffectLUT)
   {
-    v11 = [v9 resolvedLUTFilter];
-    if (!v11)
+    resolvedLUTFilter = [alternativeVibrancyEffectLUT resolvedLUTFilter];
+    if (!resolvedLUTFilter)
     {
 LABEL_26:
 
       goto LABEL_27;
     }
 
-    [v42 addObject:v11];
+    [v42 addObject:resolvedLUTFilter];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v3 groupName];
-    v14 = [v10 groupName];
-    v41 = [v12 stringWithFormat:@"%@-%@", v13, v14];
+    groupName2 = [configuration groupName];
+    groupName3 = [v10 groupName];
+    groupName = [v12 stringWithFormat:@"%@-%@", groupName2, groupName3];
 
     goto LABEL_11;
   }
@@ -327,11 +327,11 @@ LABEL_26:
 LABEL_27:
 }
 
-- (BSUIVibrancyEffectView)initWithFrame:(CGRect)a3
+- (BSUIVibrancyEffectView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = BSUIVibrancyEffectView;
-  v3 = [(BSUIVibrancyView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIVibrancyView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -350,14 +350,14 @@ LABEL_27:
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = BSUIVibrancyEffectView;
-  v5 = [(BSUIVibrancyEffectView *)&v11 hitTest:a4 withEvent:a3.x, a3.y];
-  v6 = [(BSUIVibrancyEffectView *)self contentView];
-  v7 = [v6 subviews];
-  v8 = [v7 containsObject:v5];
+  v5 = [(BSUIVibrancyEffectView *)&v11 hitTest:event withEvent:test.x, test.y];
+  contentView = [(BSUIVibrancyEffectView *)self contentView];
+  subviews = [contentView subviews];
+  v8 = [subviews containsObject:v5];
 
   if (v8)
   {
@@ -372,40 +372,40 @@ LABEL_27:
   return v9;
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
-  if (self->_isEnabled != a3)
+  if (self->_isEnabled != enabled)
   {
-    self->_isEnabled = a3;
+    self->_isEnabled = enabled;
     [(BSUIVibrancyEffectView *)self invalidateSubviews];
 
     [(BSUIVibrancyView *)self _invalidateFilters];
   }
 }
 
-- (void)setBlurEnabled:(BOOL)a3
+- (void)setBlurEnabled:(BOOL)enabled
 {
-  if (self->_blurEnabled != a3)
+  if (self->_blurEnabled != enabled)
   {
-    self->_blurEnabled = a3;
+    self->_blurEnabled = enabled;
     [(BSUIVibrancyView *)self _invalidateFilters];
   }
 }
 
-- (void)setCaptureOnly:(BOOL)a3
+- (void)setCaptureOnly:(BOOL)only
 {
-  if (self->_captureOnly != a3)
+  if (self->_captureOnly != only)
   {
-    self->_captureOnly = a3;
+    self->_captureOnly = only;
     [(BSUIVibrancyEffectView *)self invalidateSubviews];
   }
 }
 
-- (void)setContentType:(unint64_t)a3
+- (void)setContentType:(unint64_t)type
 {
-  if (self->_contentType != a3)
+  if (self->_contentType != type)
   {
-    self->_contentType = a3;
+    self->_contentType = type;
     [(BSUIVibrancyView *)self _invalidateFilters];
   }
 }

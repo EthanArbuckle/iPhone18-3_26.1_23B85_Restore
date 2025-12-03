@@ -1,28 +1,28 @@
 @interface MTSThreadNetworkCredential
-- (BOOL)isEqual:(id)a3;
-- (MTSThreadNetworkCredential)initWithCoder:(id)a3;
-- (MTSThreadNetworkCredential)initWithDataset:(id)a3 borderAgentEUI:(id)a4 borderAgentID:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (MTSThreadNetworkCredential)initWithCoder:(id)coder;
+- (MTSThreadNetworkCredential)initWithDataset:(id)dataset borderAgentEUI:(id)i borderAgentID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSThreadNetworkCredential
 
 - (unint64_t)hash
 {
-  v2 = [(MTSThreadNetworkCredential *)self dataset];
-  v3 = [v2 hash];
+  dataset = [(MTSThreadNetworkCredential *)self dataset];
+  v3 = [dataset hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -33,12 +33,12 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSThreadNetworkCredential *)self dataset];
-    v8 = [v6 dataset];
-    if ([v7 isEqualToData:v8] && (-[MTSThreadNetworkCredential borderAgentEUI](self, "borderAgentEUI"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "borderAgentEUI"), v10 = objc_claimAutoreleasedReturnValue(), v11 = HMFEqualObjects(), v10, v9, v11))
+    dataset = [(MTSThreadNetworkCredential *)self dataset];
+    dataset2 = [v6 dataset];
+    if ([dataset isEqualToData:dataset2] && (-[MTSThreadNetworkCredential borderAgentEUI](self, "borderAgentEUI"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "borderAgentEUI"), v10 = objc_claimAutoreleasedReturnValue(), v11 = HMFEqualObjects(), v10, v9, v11))
     {
-      v12 = [(MTSThreadNetworkCredential *)self borderAgentID];
-      v13 = [v6 borderAgentID];
+      borderAgentID = [(MTSThreadNetworkCredential *)self borderAgentID];
+      borderAgentID2 = [v6 borderAgentID];
       v14 = HMFEqualObjects();
     }
 
@@ -56,27 +56,27 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSThreadNetworkCredential *)self dataset];
-  [v4 encodeObject:v5 forKey:@"ds"];
+  coderCopy = coder;
+  dataset = [(MTSThreadNetworkCredential *)self dataset];
+  [coderCopy encodeObject:dataset forKey:@"ds"];
 
-  v6 = [(MTSThreadNetworkCredential *)self borderAgentEUI];
-  [v4 encodeObject:v6 forKey:@"ba"];
+  borderAgentEUI = [(MTSThreadNetworkCredential *)self borderAgentEUI];
+  [coderCopy encodeObject:borderAgentEUI forKey:@"ba"];
 
-  v7 = [(MTSThreadNetworkCredential *)self borderAgentID];
-  [v4 encodeObject:v7 forKey:@"id"];
+  borderAgentID = [(MTSThreadNetworkCredential *)self borderAgentID];
+  [coderCopy encodeObject:borderAgentID forKey:@"id"];
 }
 
-- (MTSThreadNetworkCredential)initWithCoder:(id)a3
+- (MTSThreadNetworkCredential)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = MTSThreadNetworkCredential;
   v5 = [(MTSThreadNetworkCredential *)&v21 init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ds"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ds"];
   dataset = v5->_dataset;
   v5->_dataset = v6;
 
@@ -99,7 +99,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ba"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ba"];
   borderAgentEUI = v5->_borderAgentEUI;
   v5->_borderAgentEUI = v8;
 
@@ -120,7 +120,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
   borderAgentID = v5->_borderAgentID;
   v5->_borderAgentID = v11;
 
@@ -152,12 +152,12 @@ LABEL_15:
   return v14;
 }
 
-- (MTSThreadNetworkCredential)initWithDataset:(id)a3 borderAgentEUI:(id)a4 borderAgentID:(id)a5
+- (MTSThreadNetworkCredential)initWithDataset:(id)dataset borderAgentEUI:(id)i borderAgentID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  datasetCopy = dataset;
+  iCopy = i;
+  dCopy = d;
+  if (!datasetCopy)
   {
     _HMFPreconditionFailure();
 LABEL_8:
@@ -165,8 +165,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = v10;
-  if (v9 && [(NSData *)v9 length]!= 8)
+  v11 = dCopy;
+  if (iCopy && [(NSData *)iCopy length]!= 8)
   {
     goto LABEL_8;
   }
@@ -177,12 +177,12 @@ LABEL_8:
     v21.super_class = MTSThreadNetworkCredential;
     v12 = [(MTSThreadNetworkCredential *)&v21 init];
     dataset = v12->_dataset;
-    v12->_dataset = v8;
-    v14 = v8;
+    v12->_dataset = datasetCopy;
+    v14 = datasetCopy;
 
     borderAgentEUI = v12->_borderAgentEUI;
-    v12->_borderAgentEUI = v9;
-    v16 = v9;
+    v12->_borderAgentEUI = iCopy;
+    v16 = iCopy;
 
     borderAgentID = v12->_borderAgentID;
     v12->_borderAgentID = v11;

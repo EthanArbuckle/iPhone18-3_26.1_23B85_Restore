@@ -2,7 +2,7 @@
 - (IMMetricsTimerEvent)init;
 - (double)duration;
 - (id)shortDescription;
-- (void)setDuration:(double)a3;
+- (void)setDuration:(double)duration;
 @end
 
 @implementation IMMetricsTimerEvent
@@ -12,9 +12,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = IMMetricsTimerEvent;
-  v4 = [(AMSMetricsEvent *)&v8 shortDescription];
+  shortDescription = [(AMSMetricsEvent *)&v8 shortDescription];
   [(IMMetricsTimerEvent *)self duration];
-  v6 = [v3 stringWithFormat:@"%@, %f", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@, %f", shortDescription, v5];
 
   return v6;
 }
@@ -42,9 +42,9 @@
   return v3;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [(AMSMetricsEvent *)self im_setProperty:v4 forBodyKey:@"duration"];
 }
 

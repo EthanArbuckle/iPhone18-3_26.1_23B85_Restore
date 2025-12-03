@@ -1,46 +1,46 @@
 @interface _PHPickerCollectionConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_PHPickerCollectionConfiguration)init;
-- (_PHPickerCollectionConfiguration)initWithCoder:(id)a3;
-- (_PHPickerCollectionConfiguration)initWithIdentifiers:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_PHPickerCollectionConfiguration)initWithCoder:(id)coder;
+- (_PHPickerCollectionConfiguration)initWithIdentifiers:(id)identifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PHPickerCollectionConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifiers = self->__identifiers;
-  v5 = a3;
-  [v5 encodeObject:identifiers forKey:@"PHPickerCollectionConfigurationCoderIdentifiersKey"];
-  [v5 encodeObject:self->_suggestedIdentifiers forKey:@"PHPickerCollectionConfigurationCoderSuggestedIdentifiersKey"];
-  [v5 encodeObject:self->_assetsToAddIdentifiers forKey:@"PHPickerCollectionConfigurationCoderAssetsToAddIdentifiersKey"];
-  [v5 encodeObject:self->_disabledIdentifiers forKey:@"PHPickerCollectionConfigurationCoderDisabledIdentifiersKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifiers forKey:@"PHPickerCollectionConfigurationCoderIdentifiersKey"];
+  [coderCopy encodeObject:self->_suggestedIdentifiers forKey:@"PHPickerCollectionConfigurationCoderSuggestedIdentifiersKey"];
+  [coderCopy encodeObject:self->_assetsToAddIdentifiers forKey:@"PHPickerCollectionConfigurationCoderAssetsToAddIdentifiersKey"];
+  [coderCopy encodeObject:self->_disabledIdentifiers forKey:@"PHPickerCollectionConfigurationCoderDisabledIdentifiersKey"];
 }
 
-- (_PHPickerCollectionConfiguration)initWithCoder:(id)a3
+- (_PHPickerCollectionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _PHPickerCollectionConfiguration;
   v5 = [(_PHPickerCollectionConfiguration *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHPickerCollectionConfigurationCoderIdentifiersKey"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHPickerCollectionConfigurationCoderIdentifiersKey"];
     identifiers = v5->__identifiers;
     v5->__identifiers = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHPickerCollectionConfigurationCoderSuggestedIdentifiersKey"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHPickerCollectionConfigurationCoderSuggestedIdentifiersKey"];
     suggestedIdentifiers = v5->_suggestedIdentifiers;
     v5->_suggestedIdentifiers = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHPickerCollectionConfigurationCoderAssetsToAddIdentifiersKey"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHPickerCollectionConfigurationCoderAssetsToAddIdentifiersKey"];
     assetsToAddIdentifiers = v5->_assetsToAddIdentifiers;
     v5->_assetsToAddIdentifiers = v10;
 
-    v12 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHPickerCollectionConfigurationCoderDisabledIdentifiersKey"];
+    v12 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHPickerCollectionConfigurationCoderDisabledIdentifiersKey"];
     disabledIdentifiers = v5->_disabledIdentifiers;
     v5->_disabledIdentifiers = v12;
   }
@@ -48,7 +48,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->__identifiers)
   {
@@ -108,12 +108,12 @@
   return [(_PHPickerCollectionConfiguration *)v9 initWithIdentifiers:v10, v11];
 }
 
-- (_PHPickerCollectionConfiguration)initWithIdentifiers:(id)a3
+- (_PHPickerCollectionConfiguration)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if (v4)
+  identifiersCopy = identifiers;
+  if (identifiersCopy)
   {
-    v5 = v4;
+    v5 = identifiersCopy;
     v16.receiver = self;
     v16.super_class = _PHPickerCollectionConfiguration;
     v6 = [(_PHPickerCollectionConfiguration *)&v16 init];
@@ -161,10 +161,10 @@ LABEL_5:
   return [(NSArray *)self->_disabledIdentifiers hash]- v5 + 32 * v5 + 923521;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
 LABEL_13:
@@ -179,7 +179,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = objc_opt_class();
   if (v5)
   {

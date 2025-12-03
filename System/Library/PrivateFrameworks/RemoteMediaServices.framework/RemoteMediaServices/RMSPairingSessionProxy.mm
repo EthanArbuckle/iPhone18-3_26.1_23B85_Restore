@@ -1,14 +1,14 @@
 @interface RMSPairingSessionProxy
 - (RMSPairingSessionDelegate)delegate;
 - (RMSPairingSessionProxy)init;
-- (void)_handleDidPairWithServiceNotification:(id)a3;
-- (void)_handlePairingDidFailNotification:(id)a3;
-- (void)_handleSessionDidEndNotification:(id)a3;
+- (void)_handleDidPairWithServiceNotification:(id)notification;
+- (void)_handlePairingDidFailNotification:(id)notification;
+- (void)_handleSessionDidEndNotification:(id)notification;
 - (void)_notifyDelegatePairingFailed;
 - (void)beginPairing;
 - (void)dealloc;
 - (void)endPairing;
-- (void)unpairService:(id)a3 completionHandler:(id)a4;
+- (void)unpairService:(id)service completionHandler:(id)handler;
 @end
 
 @implementation RMSPairingSessionProxy
@@ -20,16 +20,16 @@
   v2 = [(RMSSessionProxy *)&v16 initWithTimeout:*&RMSPairingSessionTimeout];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleDidPairWithServiceNotification_ name:@"RMSIDSClientDidPairWithServiceNotification" object:0];
-    [v3 addObserver:v2 selector:sel__handlePairingDidFailNotification_ name:@"RMSIDSClientPairingDidFailNotification" object:0];
-    [v3 addObserver:v2 selector:sel__handleSessionDidEndNotification_ name:@"RMSIDSClientSessionDidEndNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleDidPairWithServiceNotification_ name:@"RMSIDSClientDidPairWithServiceNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__handlePairingDidFailNotification_ name:@"RMSIDSClientPairingDidFailNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleSessionDidEndNotification_ name:@"RMSIDSClientSessionDidEndNotification" object:0];
     v4 = generateRandomPasscode();
     passcode = v2->_passcode;
     v2->_passcode = v4;
 
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 objectForInfoDictionaryKey:@"CFBundleName"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle objectForInfoDictionaryKey:@"CFBundleName"];
     advertisedAppName = v2->_advertisedAppName;
     v2->_advertisedAppName = v7;
 
@@ -51,8 +51,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RMSPairingSessionProxy;
@@ -105,10 +105,10 @@ void __38__RMSPairingSessionProxy_beginPairing__block_invoke(uint64_t a1, uint64
 - (void)endPairing
 {
   [(RMSSessionProxy *)self endHeartbeat];
-  v3 = [(RMSSessionProxy *)self sessionIdentifier];
-  if (v3)
+  sessionIdentifier = [(RMSSessionProxy *)self sessionIdentifier];
+  if (sessionIdentifier)
   {
-    [(RMSIDSClient *)self->_idsClient endPairingSession:v3];
+    [(RMSIDSClient *)self->_idsClient endPairingSession:sessionIdentifier];
   }
 
   self->_pairing = 0;
@@ -116,12 +116,12 @@ void __38__RMSPairingSessionProxy_beginPairing__block_invoke(uint64_t a1, uint64
   [(RMSSessionProxy *)self setSessionIdentifier:0];
 }
 
-- (void)unpairService:(id)a3 completionHandler:(id)a4
+- (void)unpairService:(id)service completionHandler:(id)handler
 {
   idsClient = self->_idsClient;
-  v7 = a4;
-  v8 = a3;
-  [(RMSIDSClient *)idsClient unpairService:v8 sessionIdentifier:[(RMSSessionProxy *)self sessionIdentifier] completionHandler:v7];
+  handlerCopy = handler;
+  serviceCopy = service;
+  [(RMSIDSClient *)idsClient unpairService:serviceCopy sessionIdentifier:[(RMSSessionProxy *)self sessionIdentifier] completionHandler:handlerCopy];
 }
 
 - (void)_notifyDelegatePairingFailed
@@ -134,34 +134,34 @@ void __38__RMSPairingSessionProxy_beginPairing__block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)_handleDidPairWithServiceNotification:(id)a3
+- (void)_handleDidPairWithServiceNotification:(id)notification
 {
-  v9 = a3;
+  notificationCopy = notification;
   if ([(RMSSessionProxy *)self sessionMatchesNotification:?])
   {
-    v4 = [v9 userInfo];
-    v5 = [v4 objectForKeyedSubscript:@"RMSIDSClientServiceNetworkNameNotificationKey"];
+    userInfo = [notificationCopy userInfo];
+    v5 = [userInfo objectForKeyedSubscript:@"RMSIDSClientServiceNetworkNameNotificationKey"];
 
-    v6 = [v9 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"RMSIDSClientPairingGUIDNotificationKey"];
+    userInfo2 = [notificationCopy userInfo];
+    v7 = [userInfo2 objectForKeyedSubscript:@"RMSIDSClientPairingGUIDNotificationKey"];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained pairingSession:self didPairWithServiceNetworkName:v5 pairingGUID:v7];
   }
 }
 
-- (void)_handlePairingDidFailNotification:(id)a3
+- (void)_handlePairingDidFailNotification:(id)notification
 {
-  if ([(RMSSessionProxy *)self sessionMatchesNotification:a3])
+  if ([(RMSSessionProxy *)self sessionMatchesNotification:notification])
   {
 
     [(RMSPairingSessionProxy *)self _notifyDelegatePairingFailed];
   }
 }
 
-- (void)_handleSessionDidEndNotification:(id)a3
+- (void)_handleSessionDidEndNotification:(id)notification
 {
-  if ([(RMSSessionProxy *)self sessionMatchesNotification:a3])
+  if ([(RMSSessionProxy *)self sessionMatchesNotification:notification])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

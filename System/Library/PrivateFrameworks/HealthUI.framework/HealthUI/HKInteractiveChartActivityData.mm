@@ -9,15 +9,15 @@
 
 - (BOOL)hasActivityGoal
 {
-  v3 = [(HKInteractiveChartActivityData *)self activityValue];
+  activityValue = [(HKInteractiveChartActivityData *)self activityValue];
   v4 = 0;
-  if (v3 <= 3)
+  if (activityValue <= 3)
   {
-    if (v3 <= 1)
+    if (activityValue <= 1)
     {
-      if (v3)
+      if (activityValue)
       {
-        if (v3 != 1)
+        if (activityValue != 1)
         {
           return v4;
         }
@@ -28,7 +28,7 @@
       goto LABEL_14;
     }
 
-    if (v3 != 2)
+    if (activityValue != 2)
     {
       goto LABEL_15;
     }
@@ -36,38 +36,38 @@
     goto LABEL_13;
   }
 
-  if (v3 <= 5)
+  if (activityValue <= 5)
   {
-    if (v3 != 4)
+    if (activityValue != 4)
     {
 LABEL_8:
-      v5 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-      v6 = [v5 _hasAppleMoveMinutesGoal];
+      activitySummaryData = [(HKInteractiveChartActivityData *)self activitySummaryData];
+      _hasAppleMoveMinutesGoal = [activitySummaryData _hasAppleMoveMinutesGoal];
 LABEL_16:
-      v4 = v6;
+      v4 = _hasAppleMoveMinutesGoal;
 
       return v4;
     }
 
 LABEL_14:
-    v5 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-    v6 = [v5 _hasEnergyBurnedGoal];
+    activitySummaryData = [(HKInteractiveChartActivityData *)self activitySummaryData];
+    _hasAppleMoveMinutesGoal = [activitySummaryData _hasEnergyBurnedGoal];
     goto LABEL_16;
   }
 
-  if (v3 == 7)
+  if (activityValue == 7)
   {
 LABEL_15:
-    v5 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-    v6 = [v5 _hasStandHoursGoal];
+    activitySummaryData = [(HKInteractiveChartActivityData *)self activitySummaryData];
+    _hasAppleMoveMinutesGoal = [activitySummaryData _hasStandHoursGoal];
     goto LABEL_16;
   }
 
-  if (v3 == 6)
+  if (activityValue == 6)
   {
 LABEL_13:
-    v5 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-    v6 = [v5 _hasExerciseGoal];
+    activitySummaryData = [(HKInteractiveChartActivityData *)self activitySummaryData];
+    _hasAppleMoveMinutesGoal = [activitySummaryData _hasExerciseGoal];
     goto LABEL_16;
   }
 
@@ -76,35 +76,35 @@ LABEL_13:
 
 - (BOOL)activityValueGoalMet
 {
-  v4 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-  v5 = [v4 _useHourlyGoalComparison];
+  activitySummaryData = [(HKInteractiveChartActivityData *)self activitySummaryData];
+  _useHourlyGoalComparison = [activitySummaryData _useHourlyGoalComparison];
 
-  v6 = [(HKInteractiveChartActivityData *)self activityValue];
-  if (!v5)
+  activityValue = [(HKInteractiveChartActivityData *)self activityValue];
+  if (!_useHourlyGoalComparison)
   {
-    if (v6 > 3)
+    if (activityValue > 3)
     {
-      if (v6 <= 5)
+      if (activityValue <= 5)
       {
-        if (v6 != 4)
+        if (activityValue != 4)
         {
 LABEL_11:
-          v7 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-          [v7 _moveMinutesCompletionPercentage];
+          activitySummaryData2 = [(HKInteractiveChartActivityData *)self activitySummaryData];
+          [activitySummaryData2 _moveMinutesCompletionPercentage];
 LABEL_20:
           v2 = v11 >= 1.0;
           goto LABEL_21;
         }
 
 LABEL_18:
-        v7 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-        [v7 _activeEnergyCompletionPercentage];
+        activitySummaryData2 = [(HKInteractiveChartActivityData *)self activitySummaryData];
+        [activitySummaryData2 _activeEnergyCompletionPercentage];
         goto LABEL_20;
       }
 
-      if (v6 != 6)
+      if (activityValue != 6)
       {
-        if (v6 != 7)
+        if (activityValue != 7)
         {
           return v2;
         }
@@ -115,11 +115,11 @@ LABEL_18:
 
     else
     {
-      if (v6 <= 1)
+      if (activityValue <= 1)
       {
-        if (v6)
+        if (activityValue)
         {
-          if (v6 != 1)
+          if (activityValue != 1)
           {
             return v2;
           }
@@ -130,26 +130,26 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      if (v6 != 2)
+      if (activityValue != 2)
       {
 LABEL_17:
-        v7 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-        [v7 _standHoursCompletionPercentage];
+        activitySummaryData2 = [(HKInteractiveChartActivityData *)self activitySummaryData];
+        [activitySummaryData2 _standHoursCompletionPercentage];
         goto LABEL_20;
       }
     }
 
-    v7 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-    [v7 _exerciseTimeCompletionPercentage];
+    activitySummaryData2 = [(HKInteractiveChartActivityData *)self activitySummaryData];
+    [activitySummaryData2 _exerciseTimeCompletionPercentage];
     goto LABEL_20;
   }
 
-  if ((v6 | 4) == 7)
+  if ((activityValue | 4) == 7)
   {
-    v7 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-    v8 = [v7 appleStandHours];
-    v9 = [MEMORY[0x1E696C510] countUnit];
-    [v8 doubleValueForUnit:v9];
+    activitySummaryData2 = [(HKInteractiveChartActivityData *)self activitySummaryData];
+    appleStandHours = [activitySummaryData2 appleStandHours];
+    countUnit = [MEMORY[0x1E696C510] countUnit];
+    [appleStandHours doubleValueForUnit:countUnit];
     v2 = v10 > 0.0;
 
 LABEL_21:
@@ -161,16 +161,16 @@ LABEL_21:
 
 - (BOOL)activityPaused
 {
-  v2 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-  v3 = [v2 isPaused];
+  activitySummaryData = [(HKInteractiveChartActivityData *)self activitySummaryData];
+  isPaused = [activitySummaryData isPaused];
 
-  return v3;
+  return isPaused;
 }
 
 - (NSString)description
 {
-  v2 = [(HKInteractiveChartActivityData *)self activitySummaryData];
-  v3 = [v2 description];
+  activitySummaryData = [(HKInteractiveChartActivityData *)self activitySummaryData];
+  v3 = [activitySummaryData description];
 
   return v3;
 }

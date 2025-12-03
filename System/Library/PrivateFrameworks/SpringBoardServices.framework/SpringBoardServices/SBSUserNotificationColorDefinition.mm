@@ -1,36 +1,36 @@
 @interface SBSUserNotificationColorDefinition
-+ (SBSUserNotificationColorDefinition)definitionWithColor:(id)a3;
-+ (SBSUserNotificationColorDefinition)definitionWithColorName:(id)a3;
-- (id)_colorForString:(id)a3;
-- (id)_initWithColorName:(id)a3 color:(id)a4;
-- (id)_initWithDictionary:(id)a3;
-- (id)_stringForColor:(id)a3;
++ (SBSUserNotificationColorDefinition)definitionWithColor:(id)color;
++ (SBSUserNotificationColorDefinition)definitionWithColorName:(id)name;
+- (id)_colorForString:(id)string;
+- (id)_initWithColorName:(id)name color:(id)color;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)_stringForColor:(id)color;
 - (id)build;
 @end
 
 @implementation SBSUserNotificationColorDefinition
 
-+ (SBSUserNotificationColorDefinition)definitionWithColorName:(id)a3
++ (SBSUserNotificationColorDefinition)definitionWithColorName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithColorName:v4 color:0];
+  nameCopy = name;
+  v5 = [[self alloc] _initWithColorName:nameCopy color:0];
 
   return v5;
 }
 
-+ (SBSUserNotificationColorDefinition)definitionWithColor:(id)a3
++ (SBSUserNotificationColorDefinition)definitionWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithColorName:0 color:v4];
+  colorCopy = color;
+  v5 = [[self alloc] _initWithColorName:0 color:colorCopy];
 
   return v5;
 }
 
-- (id)_initWithColorName:(id)a3 color:(id)a4
+- (id)_initWithColorName:(id)name color:(id)color
 {
-  v8 = a3;
-  v9 = a4;
-  if (!(v8 | v9))
+  nameCopy = name;
+  colorCopy = color;
+  if (!(nameCopy | colorCopy))
   {
     [SBSUserNotificationColorDefinition _initWithColorName:a2 color:self];
   }
@@ -41,26 +41,26 @@
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_colorName, a3);
-    objc_storeStrong(p_isa + 1, a4);
+    objc_storeStrong(&v10->_colorName, name);
+    objc_storeStrong(p_isa + 1, color);
   }
 
   return p_isa;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SBSUserNotificationColorDefinition;
   v5 = [(SBSUserNotificationColorDefinition *)&v12 init];
   if (v5)
   {
-    v6 = [v4 bs_safeStringForKey:@"SBSCFUNColorName"];
+    v6 = [dictionaryCopy bs_safeStringForKey:@"SBSCFUNColorName"];
     colorName = v5->_colorName;
     v5->_colorName = v6;
 
-    v8 = [v4 bs_safeStringForKey:@"SBSCFUNColor"];
+    v8 = [dictionaryCopy bs_safeStringForKey:@"SBSCFUNColor"];
     v9 = [(SBSUserNotificationColorDefinition *)v5 _colorForString:v8];
     color = v5->_color;
     v5->_color = v9;
@@ -71,12 +71,12 @@
 
 - (id)build
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   colorName = self->_colorName;
   if (colorName)
   {
-    [v3 setObject:colorName forKey:@"SBSCFUNColorName"];
+    [dictionary setObject:colorName forKey:@"SBSCFUNColorName"];
   }
 
   if (self->_color)
@@ -90,29 +90,29 @@
   return v7;
 }
 
-- (id)_stringForColor:(id)a3
+- (id)_stringForColor:(id)color
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  [v4 red];
+  colorCopy = color;
+  [colorCopy red];
   v6 = v5;
-  [v4 green];
+  [colorCopy green];
   v8 = v7;
-  [v4 blue];
+  [colorCopy blue];
   v10 = v9;
-  [v4 alpha];
+  [colorCopy alpha];
   v12 = v11;
 
   return [v3 stringWithFormat:@"%f:%f:%f:%f", v6, v8, v10, v12];
 }
 
-- (id)_colorForString:(id)a3
+- (id)_colorForString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    v5 = [v3 componentsSeparatedByString:@":"];
+    v5 = [stringCopy componentsSeparatedByString:@":"];
     if ([v5 count] == 4)
     {
       v6 = MEMORY[0x1E698E650];

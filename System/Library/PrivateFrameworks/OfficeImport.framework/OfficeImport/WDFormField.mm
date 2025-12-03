@@ -1,15 +1,15 @@
 @interface WDFormField
-- (WDFormField)initWithParagraph:(id)a3;
+- (WDFormField)initWithParagraph:(id)paragraph;
 - (id)description;
 @end
 
 @implementation WDFormField
 
-- (WDFormField)initWithParagraph:(id)a3
+- (WDFormField)initWithParagraph:(id)paragraph
 {
   v4.receiver = self;
   v4.super_class = WDFormField;
-  return [(WDRun *)&v4 initWithParagraph:a3];
+  return [(WDRun *)&v4 initWithParagraph:paragraph];
 }
 
 - (id)description

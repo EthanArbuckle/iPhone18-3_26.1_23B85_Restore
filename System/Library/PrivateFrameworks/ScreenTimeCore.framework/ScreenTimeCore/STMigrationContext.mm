@@ -1,9 +1,9 @@
 @interface STMigrationContext
-- (BOOL)deleteLocalObjectWithUniqueIdentifier:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)initializeCachesWithManagedObjectContext:(id)a3 withCloudStore:(id)a4 andLocalStore:(id)a5 error:(id *)a6;
+- (BOOL)deleteLocalObjectWithUniqueIdentifier:(id)identifier managedObjectContext:(id)context error:(id *)error;
+- (BOOL)initializeCachesWithManagedObjectContext:(id)context withCloudStore:(id)store andLocalStore:(id)localStore error:(id *)error;
 - (STMigrationContext)init;
-- (id)deleteCloudObjectWithUniqueIdentifier:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (id)updateCloudObjectWithUniqueIdentifier:(id)a3 dictionary:(id)a4 managedObjectContext:(id)a5 error:(id *)a6;
+- (id)deleteCloudObjectWithUniqueIdentifier:(id)identifier managedObjectContext:(id)context error:(id *)error;
+- (id)updateCloudObjectWithUniqueIdentifier:(id)identifier dictionary:(id)dictionary managedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation STMigrationContext
@@ -35,11 +35,11 @@
   return v2;
 }
 
-- (BOOL)initializeCachesWithManagedObjectContext:(id)a3 withCloudStore:(id)a4 andLocalStore:(id)a5 error:(id *)a6
+- (BOOL)initializeCachesWithManagedObjectContext:(id)context withCloudStore:(id)store andLocalStore:(id)localStore error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  contextCopy = context;
+  storeCopy = store;
+  localStoreCopy = localStore;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -57,25 +57,25 @@
   v23[2] = __98__STMigrationContext_initializeCachesWithManagedObjectContext_withCloudStore_andLocalStore_error___block_invoke;
   v23[3] = &unk_1E7CE7A60;
   v29 = &v37;
-  v15 = v10;
+  v15 = contextCopy;
   v24 = v15;
   v30 = &v31;
-  v16 = v11;
+  v16 = storeCopy;
   v25 = v16;
   v17 = v13;
   v26 = v17;
-  v18 = v12;
+  v18 = localStoreCopy;
   v27 = v18;
   v19 = v14;
   v28 = v19;
   [v15 performBlockAndWait:v23];
   v20 = *(v38 + 24);
-  if (a6 && (v38[3] & 1) == 0)
+  if (error && (v38[3] & 1) == 0)
   {
     v21 = v32[5];
     if (v21)
     {
-      *a6 = v21;
+      *error = v21;
       v20 = *(v38 + 24);
     }
 
@@ -244,29 +244,29 @@ LABEL_27:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (id)updateCloudObjectWithUniqueIdentifier:(id)a3 dictionary:(id)a4 managedObjectContext:(id)a5 error:(id *)a6
+- (id)updateCloudObjectWithUniqueIdentifier:(id)identifier dictionary:(id)dictionary managedObjectContext:(id)context error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v30 = 0;
-  v13 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:200 options:0 error:&v30];
+  v13 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionaryCopy format:200 options:0 error:&v30];
   v14 = v30;
   if (v13)
   {
-    v28 = [v11 objectForKeyedSubscript:@"class"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"class"];
     v15 = +[STLog mirroring];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v32 = v28;
       v33 = 2114;
-      v34 = v10;
+      v34 = identifierCopy;
       _os_log_impl(&dword_1B831F000, v15, OS_LOG_TYPE_DEFAULT, "Looking up cloud object (%{public}@) matching ID: %{public}@", buf, 0x16u);
     }
 
-    v16 = [(NSMutableDictionary *)self->_uniqueIdentifierToCloudObjectID objectForKeyedSubscript:v10];
+    v16 = [(NSMutableDictionary *)self->_uniqueIdentifierToCloudObjectID objectForKeyedSubscript:identifierCopy];
     v17 = +[STLog mirroring];
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
     if (v16)
@@ -276,12 +276,12 @@ LABEL_27:
         *buf = 138543618;
         v32 = v28;
         v33 = 2114;
-        v34 = v10;
+        v34 = identifierCopy;
         _os_log_impl(&dword_1B831F000, v17, OS_LOG_TYPE_DEFAULT, "Corresponding cloud object (%{public}@) already exists: %{public}@", buf, 0x16u);
       }
 
       v29 = v14;
-      v19 = [v12 existingObjectWithID:v16 error:&v29];
+      v19 = [contextCopy existingObjectWithID:v16 error:&v29];
       v20 = v29;
 
       if (!v19)
@@ -292,11 +292,11 @@ LABEL_27:
           [STMigrationContext updateCloudObjectWithUniqueIdentifier:v20 dictionary:v21 managedObjectContext:? error:?];
         }
 
-        if (a6)
+        if (error)
         {
           v22 = v20;
           v19 = 0;
-          *a6 = v20;
+          *error = v20;
         }
 
         else
@@ -315,16 +315,16 @@ LABEL_27:
         *buf = 138543618;
         v32 = v28;
         v33 = 2114;
-        v34 = v10;
+        v34 = identifierCopy;
         _os_log_impl(&dword_1B831F000, v17, OS_LOG_TYPE_DEFAULT, "Corresponding cloud object (%{public}@) now being created: %{public}@", buf, 0x16u);
       }
 
-      v19 = [[STCloudActivation alloc] initWithContext:v12];
-      v25 = [(STCloudActivation *)v19 objectID];
-      [(NSMutableDictionary *)self->_uniqueIdentifierToCloudObjectID setObject:v25 forKeyedSubscript:v10];
+      v19 = [[STCloudActivation alloc] initWithContext:contextCopy];
+      objectID = [(STCloudActivation *)v19 objectID];
+      [(NSMutableDictionary *)self->_uniqueIdentifierToCloudObjectID setObject:objectID forKeyedSubscript:identifierCopy];
     }
 
-    [(STCloudActivation *)v19 setIdentifier:v10];
+    [(STCloudActivation *)v19 setIdentifier:identifierCopy];
     [(STCloudActivation *)v19 setActivationType:1];
     [(STCloudActivation *)v19 setActivationPlist:v13];
   }
@@ -337,11 +337,11 @@ LABEL_27:
       [STMigrationContext updateCloudObjectWithUniqueIdentifier:dictionary:managedObjectContext:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v24 = v14;
       v19 = 0;
-      *a6 = v14;
+      *error = v14;
     }
 
     else
@@ -355,26 +355,26 @@ LABEL_27:
   return v19;
 }
 
-- (BOOL)deleteLocalObjectWithUniqueIdentifier:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)deleteLocalObjectWithUniqueIdentifier:(id)identifier managedObjectContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [(NSMutableDictionary *)self->_uniqueIdentifierToLocalObjectID objectForKeyedSubscript:a3];
+  contextCopy = context;
+  v9 = [(NSMutableDictionary *)self->_uniqueIdentifierToLocalObjectID objectForKeyedSubscript:identifier];
   if (v9)
   {
     v16 = 0;
-    v10 = [v8 existingObjectWithID:v9 error:&v16];
+    v10 = [contextCopy existingObjectWithID:v9 error:&v16];
     v11 = v16;
     v12 = v11;
     v13 = v10 != 0;
     if (v10)
     {
-      [v8 deleteObject:v10];
+      [contextCopy deleteObject:v10];
     }
 
-    else if (a5 && v11)
+    else if (error && v11)
     {
       v14 = v11;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -386,30 +386,30 @@ LABEL_27:
   return v13;
 }
 
-- (id)deleteCloudObjectWithUniqueIdentifier:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (id)deleteCloudObjectWithUniqueIdentifier:(id)identifier managedObjectContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [(NSMutableDictionary *)self->_uniqueIdentifierToCloudObjectID objectForKeyedSubscript:a3];
+  contextCopy = context;
+  v9 = [(NSMutableDictionary *)self->_uniqueIdentifierToCloudObjectID objectForKeyedSubscript:identifier];
   if (v9)
   {
     v16 = 0;
-    v10 = [v8 existingObjectWithID:v9 error:&v16];
+    v10 = [contextCopy existingObjectWithID:v9 error:&v16];
     v11 = v16;
     v12 = v11;
     if (v10)
     {
-      [v8 deleteObject:v10];
+      [contextCopy deleteObject:v10];
       v13 = MEMORY[0x1E695E118];
     }
 
     else
     {
       v13 = 0;
-      if (a5 && v11)
+      if (error && v11)
       {
         v14 = v11;
         v13 = 0;
-        *a5 = v12;
+        *error = v12;
       }
     }
   }

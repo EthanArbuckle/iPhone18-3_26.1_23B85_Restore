@@ -1,26 +1,26 @@
 @interface LACDTOBiometryWatchdog
 + (id)nullInstance;
 - (BOOL)isBarking;
-- (BOOL)isEqual:(id)a3;
-- (LACDTOBiometryWatchdog)initWithCoder:(id)a3;
-- (LACDTOBiometryWatchdog)initWithIsRunning:(BOOL)a3 time:(double)a4 minThreshold:(double)a5 maxThreshold:(double)a6;
+- (BOOL)isEqual:(id)equal;
+- (LACDTOBiometryWatchdog)initWithCoder:(id)coder;
+- (LACDTOBiometryWatchdog)initWithIsRunning:(BOOL)running time:(double)time minThreshold:(double)threshold maxThreshold:(double)maxThreshold;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LACDTOBiometryWatchdog
 
-- (LACDTOBiometryWatchdog)initWithIsRunning:(BOOL)a3 time:(double)a4 minThreshold:(double)a5 maxThreshold:(double)a6
+- (LACDTOBiometryWatchdog)initWithIsRunning:(BOOL)running time:(double)time minThreshold:(double)threshold maxThreshold:(double)maxThreshold
 {
   v11.receiver = self;
   v11.super_class = LACDTOBiometryWatchdog;
   result = [(LACDTOBiometryWatchdog *)&v11 init];
   if (result)
   {
-    result->_isRunning = a3;
-    result->_time = a4;
-    result->_minThreshold = a5;
-    result->_maxThreshold = a6;
+    result->_isRunning = running;
+    result->_time = time;
+    result->_minThreshold = threshold;
+    result->_maxThreshold = maxThreshold;
   }
 
   return result;
@@ -35,8 +35,8 @@
 
 - (BOOL)isBarking
 {
-  v3 = [(LACDTOBiometryWatchdog *)self isRunning];
-  if (v3)
+  isRunning = [(LACDTOBiometryWatchdog *)self isRunning];
+  if (isRunning)
   {
     [(LACDTOBiometryWatchdog *)self time];
     v5 = v4;
@@ -46,57 +46,57 @@
       [(LACDTOBiometryWatchdog *)self time];
       v8 = v7;
       [(LACDTOBiometryWatchdog *)self maxThreshold];
-      LOBYTE(v3) = v8 <= v9;
+      LOBYTE(isRunning) = v8 <= v9;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isRunning) = 0;
     }
   }
 
-  return v3;
+  return isRunning;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LACDTOBiometryWatchdog *)self isRunning];
+  coderCopy = coder;
+  isRunning = [(LACDTOBiometryWatchdog *)self isRunning];
   v6 = NSStringFromSelector(sel_isRunning);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:isRunning forKey:v6];
 
   [(LACDTOBiometryWatchdog *)self time];
   v8 = v7;
   v9 = NSStringFromSelector(sel_time);
-  [v4 encodeDouble:v9 forKey:v8];
+  [coderCopy encodeDouble:v9 forKey:v8];
 
   [(LACDTOBiometryWatchdog *)self minThreshold];
   v11 = v10;
   v12 = NSStringFromSelector(sel_minThreshold);
-  [v4 encodeDouble:v12 forKey:v11];
+  [coderCopy encodeDouble:v12 forKey:v11];
 
   [(LACDTOBiometryWatchdog *)self maxThreshold];
   v14 = v13;
   v15 = NSStringFromSelector(sel_maxThreshold);
-  [v4 encodeDouble:v15 forKey:v14];
+  [coderCopy encodeDouble:v15 forKey:v14];
 }
 
-- (LACDTOBiometryWatchdog)initWithCoder:(id)a3
+- (LACDTOBiometryWatchdog)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_isRunning);
-  v6 = [v4 decodeBoolForKey:v5];
+  v6 = [coderCopy decodeBoolForKey:v5];
 
   v7 = NSStringFromSelector(sel_time);
-  [v4 decodeDoubleForKey:v7];
+  [coderCopy decodeDoubleForKey:v7];
   v9 = v8;
 
   v10 = NSStringFromSelector(sel_minThreshold);
-  [v4 decodeDoubleForKey:v10];
+  [coderCopy decodeDoubleForKey:v10];
   v12 = v11;
 
   v13 = NSStringFromSelector(sel_maxThreshold);
-  [v4 decodeDoubleForKey:v13];
+  [coderCopy decodeDoubleForKey:v13];
   v15 = v14;
 
   return [(LACDTOBiometryWatchdog *)self initWithIsRunning:v6 time:v9 minThreshold:v12 maxThreshold:v15];
@@ -108,9 +108,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(LACDTOBiometryWatchdog *)self isRunning];
+  isRunning = [(LACDTOBiometryWatchdog *)self isRunning];
   v7 = @"NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = @"YES";
   }
@@ -138,15 +138,15 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(LACDTOBiometryWatchdog *)self isRunning];
-    if (v6 == [v5 isRunning] && (-[LACDTOBiometryWatchdog time](self, "time"), v8 = v7, objc_msgSend(v5, "time"), v8 == v9) && (-[LACDTOBiometryWatchdog minThreshold](self, "minThreshold"), v11 = v10, objc_msgSend(v5, "minThreshold"), v11 == v12))
+    v5 = equalCopy;
+    isRunning = [(LACDTOBiometryWatchdog *)self isRunning];
+    if (isRunning == [v5 isRunning] && (-[LACDTOBiometryWatchdog time](self, "time"), v8 = v7, objc_msgSend(v5, "time"), v8 == v9) && (-[LACDTOBiometryWatchdog minThreshold](self, "minThreshold"), v11 = v10, objc_msgSend(v5, "minThreshold"), v11 == v12))
     {
       [(LACDTOBiometryWatchdog *)self maxThreshold];
       v16 = v15;

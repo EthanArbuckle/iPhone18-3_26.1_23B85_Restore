@@ -1,5 +1,5 @@
 @interface FloatingControlsViewController
-- (BOOL)shouldShow:(int64_t)a3 withControlOptions:(int64_t)a4;
+- (BOOL)shouldShow:(int64_t)show withControlOptions:(int64_t)options;
 - (CGRect)floatingButtonsFrame;
 - (CGRect)lookAroundButtonFrame;
 - (FloatingControlsViewControllerActionCoordination)actionCoordinator;
@@ -9,16 +9,16 @@
 - (double)compassDiameter;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
-- (void)_addSubview:(id)a3 withConstraints:(id)a4;
-- (void)_updateAlphaAnimated:(BOOL)a3 completion:(id)a4;
-- (void)hideControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4;
-- (void)setAutomaticallyUpdateCompassInsets:(BOOL)a3;
-- (void)setBlurGroupName:(id)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_addSubview:(id)subview withConstraints:(id)constraints;
+- (void)_updateAlphaAnimated:(BOOL)animated completion:(id)completion;
+- (void)hideControlsIfNeeded:(int64_t)needed animated:(BOOL)animated;
+- (void)setAutomaticallyUpdateCompassInsets:(BOOL)insets;
+- (void)setBlurGroupName:(id)name;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
 - (void)updateCompassInsets;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FloatingControlsViewController
@@ -28,15 +28,15 @@
   v6.receiver = self;
   v6.super_class = FloatingControlsViewController;
   [(FloatingControlsViewController *)&v6 viewDidLoad];
-  v3 = [(FloatingControlsViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setAllowsGroupOpacity:0];
+  view = [(FloatingControlsViewController *)self view];
+  layer = [view layer];
+  [layer setAllowsGroupOpacity:0];
 
   self->_visible = 1;
   self->_isConfigured = 0;
   self->_alpha = 1.0;
-  v5 = [(FloatingControlsViewController *)self view];
-  [v5 _setHostsLayoutEngine:1];
+  view2 = [(FloatingControlsViewController *)self view];
+  [view2 _setHostsLayoutEngine:1];
 
   [(FloatingControlsViewController *)self setVisibleControls:0];
 }
@@ -44,9 +44,9 @@
 - (MKMapView)mapView
 {
   WeakRetained = objc_loadWeakRetained(&self->_mapViewProviding);
-  v3 = [WeakRetained mapView];
+  mapView = [WeakRetained mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (FloatingControlsViewControllerActionCoordination)actionCoordinator
@@ -71,20 +71,20 @@
     return;
   }
 
-  v31 = [(FloatingControlsViewController *)self controlsStackViewIfLoaded];
-  if (!v31 || !self->_visible)
+  controlsStackViewIfLoaded = [(FloatingControlsViewController *)self controlsStackViewIfLoaded];
+  if (!controlsStackViewIfLoaded || !self->_visible)
   {
-    v15 = [(FloatingControlsViewController *)self view];
-    v17 = [v15 window];
-    [v17 safeAreaInsets];
+    view = [(FloatingControlsViewController *)self view];
+    window = [view window];
+    [window safeAreaInsets];
     v13 = v18;
 
     goto LABEL_8;
   }
 
-  v3 = [(FloatingControlsViewController *)self mapView];
-  [v31 bounds];
-  [v3 convertRect:v31 fromView:?];
+  mapView = [(FloatingControlsViewController *)self mapView];
+  [controlsStackViewIfLoaded bounds];
+  [mapView convertRect:controlsStackViewIfLoaded fromView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -99,25 +99,25 @@
   if (MaxY > 0.0)
   {
     v14 = sub_100019A44() + MaxY;
-    v15 = [(FloatingControlsViewController *)self mapView];
-    [v15 _edgeInsets];
+    view = [(FloatingControlsViewController *)self mapView];
+    [view _edgeInsets];
     v13 = v14 - v16;
 LABEL_8:
   }
 
-  v19 = [(FloatingControlsViewController *)self mapView];
-  [v19 _compassInsets];
+  mapView2 = [(FloatingControlsViewController *)self mapView];
+  [mapView2 _compassInsets];
   v21 = v20;
   v23 = v22;
 
-  v24 = [(FloatingControlsViewController *)self mapView];
-  [v24 _compassInsets];
+  mapView3 = [(FloatingControlsViewController *)self mapView];
+  [mapView3 _compassInsets];
   if (v21 != v28 || v13 != v25 || v23 != v27)
   {
 
 LABEL_15:
-    v30 = [(FloatingControlsViewController *)self mapView];
-    [v30 _setCompassInsets:{v13, v21, 0.0, v23}];
+    mapView4 = [(FloatingControlsViewController *)self mapView];
+    [mapView4 _setCompassInsets:{v13, v21, 0.0, v23}];
 
     goto LABEL_16;
   }
@@ -134,8 +134,8 @@ LABEL_16:
 
 - (double)compassDiameter
 {
-  v2 = [(FloatingControlsViewController *)self mapView];
-  [v2 _compassDiameter];
+  mapView = [(FloatingControlsViewController *)self mapView];
+  [mapView _compassDiameter];
   v4 = v3;
 
   return v4;
@@ -183,64 +183,64 @@ LABEL_16:
 
 - (int)currentMapViewTargetForAnalytics
 {
-  v3 = [(FloatingControlsViewController *)self actionCoordinator];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  v4 = [actionCoordinator conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(FloatingControlsViewController *)self actionCoordinator];
+  actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentMapViewTargetForAnalytics];
+    currentMapViewTargetForAnalytics = [actionCoordinator2 currentMapViewTargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentMapViewTargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentMapViewTargetForAnalytics;
 }
 
 - (int)currentUITargetForAnalytics
 {
-  v3 = [(FloatingControlsViewController *)self actionCoordinator];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  v4 = [actionCoordinator conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(FloatingControlsViewController *)self actionCoordinator];
+  actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [actionCoordinator2 currentUITargetForAnalytics];
   }
 
   else
   {
-    v6 = 0;
+    currentUITargetForAnalytics = 0;
   }
 
-  return v6;
+  return currentUITargetForAnalytics;
 }
 
-- (void)_updateAlphaAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateAlphaAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (animated)
   {
     if (self->_visible)
     {
-      v7 = [(FloatingControlsViewController *)self view];
-      [v7 setHidden:0];
+      view = [(FloatingControlsViewController *)self view];
+      [view setHidden:0];
 
-      v8 = [(FloatingControlsViewController *)self view];
-      [v8 setAlpha:0.0];
+      view2 = [(FloatingControlsViewController *)self view];
+      [view2 setAlpha:0.0];
     }
 
     v11[0] = _NSConcreteStackBlock;
@@ -248,7 +248,7 @@ LABEL_16:
     v11[2] = sub_1008E2CF8;
     v11[3] = &unk_101661B18;
     v11[4] = self;
-    [UIView _animateUsingDefaultTimingWithOptions:0 animations:v11 completion:v6];
+    [UIView _animateUsingDefaultTimingWithOptions:0 animations:v11 completion:completionCopy];
   }
 
   else
@@ -259,44 +259,44 @@ LABEL_16:
       alpha = self->_alpha;
     }
 
-    v10 = [(FloatingControlsViewController *)self view];
-    [v10 setAlpha:alpha];
+    view3 = [(FloatingControlsViewController *)self view];
+    [view3 setAlpha:alpha];
 
     [(FloatingControlsViewController *)self updateCompassInsets];
   }
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
-    [(FloatingControlsViewController *)self _updateAlphaAnimated:a4 completion:a5];
+    self->_visible = visible;
+    [(FloatingControlsViewController *)self _updateAlphaAnimated:animated completion:completion];
   }
 }
 
-- (void)_addSubview:(id)a3 withConstraints:(id)a4
+- (void)_addSubview:(id)subview withConstraints:(id)constraints
 {
-  v8 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(FloatingControlsViewController *)self view];
-  [v7 addSubview:v6];
+  constraintsCopy = constraints;
+  subviewCopy = subview;
+  [subviewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(FloatingControlsViewController *)self view];
+  [view addSubview:subviewCopy];
 
-  [NSLayoutConstraint activateConstraints:v8];
+  [NSLayoutConstraint activateConstraints:constraintsCopy];
 }
 
-- (void)hideControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4
+- (void)hideControlsIfNeeded:(int64_t)needed animated:(BOOL)animated
 {
-  v5 = [(FloatingControlsViewController *)self visibleControls:a3];
+  v5 = [(FloatingControlsViewController *)self visibleControls:needed];
 
   [(FloatingControlsViewController *)self setVisibleControls:v5];
 }
 
-- (BOOL)shouldShow:(int64_t)a3 withControlOptions:(int64_t)a4
+- (BOOL)shouldShow:(int64_t)show withControlOptions:(int64_t)options
 {
-  v7 = [(FloatingControlsViewController *)self visibleControls];
-  v8 = a4 & a3;
+  visibleControls = [(FloatingControlsViewController *)self visibleControls];
+  v8 = options & show;
   if (sub_10000FA08(self) == 5)
   {
     return v8 != 0;
@@ -304,53 +304,53 @@ LABEL_16:
 
   else
   {
-    return (v8 | v7 & a3) != 0;
+    return (v8 | visibleControls & show) != 0;
   }
 }
 
-- (void)setAutomaticallyUpdateCompassInsets:(BOOL)a3
+- (void)setAutomaticallyUpdateCompassInsets:(BOOL)insets
 {
-  if (self->_automaticallyUpdateCompassInsets != a3)
+  if (self->_automaticallyUpdateCompassInsets != insets)
   {
-    self->_automaticallyUpdateCompassInsets = a3;
+    self->_automaticallyUpdateCompassInsets = insets;
     [(FloatingControlsViewController *)self updateCompassInsets];
   }
 }
 
-- (void)setBlurGroupName:(id)a3
+- (void)setBlurGroupName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   blurGroupName = self->_blurGroupName;
   self->_blurGroupName = v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = FloatingControlsViewController;
-  [(FloatingControlsViewController *)&v13 viewWillAppear:a3];
+  [(FloatingControlsViewController *)&v13 viewWillAppear:appear];
   if (!self->_isConfigured)
   {
     self->_isConfigured = 1;
     [(MapsThemeViewController *)self updateTheme];
   }
 
-  v4 = [(FloatingControlsViewController *)self mapView];
-  v5 = [v4 mapType];
+  mapView = [(FloatingControlsViewController *)self mapView];
+  mapType = [mapView mapType];
   v6 = 0;
-  if ((v5 - 1) >= 4 && v5 != 107)
+  if ((mapType - 1) >= 4 && mapType != 107)
   {
-    v7 = [(FloatingControlsViewController *)self traitCollection];
-    v6 = [v7 userInterfaceStyle] != 2;
+    traitCollection = [(FloatingControlsViewController *)self traitCollection];
+    v6 = [traitCollection userInterfaceStyle] != 2;
   }
 
-  v8 = [(FloatingControlsViewController *)self mapView];
-  [v8 _setCompassViewSize:1 style:v6];
+  mapView2 = [(FloatingControlsViewController *)self mapView];
+  [mapView2 _setCompassViewSize:1 style:v6];
 
-  v9 = [(FloatingControlsViewController *)self view];
-  v10 = [v9 effectiveUserInterfaceLayoutDirection];
+  view = [(FloatingControlsViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  if (v10 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v11 = 8;
   }
@@ -360,8 +360,8 @@ LABEL_16:
     v11 = 4;
   }
 
-  v12 = [(FloatingControlsViewController *)self mapView];
-  [v12 setAttributionCorner:v11];
+  mapView3 = [(FloatingControlsViewController *)self mapView];
+  [mapView3 setAttributionCorner:v11];
 }
 
 @end

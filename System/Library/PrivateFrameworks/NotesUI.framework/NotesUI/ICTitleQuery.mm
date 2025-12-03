@@ -1,19 +1,19 @@
 @interface ICTitleQuery
 - (_TtC7NotesUIP33_F897AB263D3561CA5D296CCFF5C5FDF512ICTitleQuery)init;
-- (_TtC7NotesUIP33_F897AB263D3561CA5D296CCFF5C5FDF512ICTitleQuery)initWithDrawing:(id)a3;
+- (_TtC7NotesUIP33_F897AB263D3561CA5D296CCFF5C5FDF512ICTitleQuery)initWithDrawing:(id)drawing;
 - (void)start;
-- (void)titleQuery:(id)a3 didUpdateWithItem:(id)a4;
+- (void)titleQuery:(id)query didUpdateWithItem:(id)item;
 @end
 
 @implementation ICTitleQuery
 
-- (void)titleQuery:(id)a3 didUpdateWithItem:(id)a4
+- (void)titleQuery:(id)query didUpdateWithItem:(id)item
 {
-  v4 = self;
-  v5 = [(PKTitleQuery *)v4 transcribedTitle];
-  if (v5)
+  selfCopy = self;
+  transcribedTitle = [(PKTitleQuery *)selfCopy transcribedTitle];
+  if (transcribedTitle)
   {
-    v6 = v5;
+    v6 = transcribedTitle;
     v7 = sub_1D4419C54();
     v9 = v8;
   }
@@ -29,16 +29,16 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D431525C();
 }
 
-- (_TtC7NotesUIP33_F897AB263D3561CA5D296CCFF5C5FDF512ICTitleQuery)initWithDrawing:(id)a3
+- (_TtC7NotesUIP33_F897AB263D3561CA5D296CCFF5C5FDF512ICTitleQuery)initWithDrawing:(id)drawing
 {
   v4 = sub_1D4419B14();
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v9 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = a3;
+  drawingCopy = drawing;
   sub_1D4419B04();
 
   return sub_1D4315930(v6);

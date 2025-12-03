@@ -1,48 +1,48 @@
 @interface VCAggregatorAudioStream
-- (VCAggregatorAudioStream)initWithDelegate:(id)a3 withMode:(int)a4;
+- (VCAggregatorAudioStream)initWithDelegate:(id)delegate withMode:(int)mode;
 - (id)aggregatedCallReport;
 - (id)aggregatedCallReports;
 - (id)aggregatedSessionReport;
-- (id)composeSegmentReport:(int)a3;
+- (id)composeSegmentReport:(int)report;
 - (id)dispatchedAggregatedSessionReport;
 - (int)reportingClientType;
-- (void)aggregateAudioPlaybackRealtimeStats:(id)a3;
-- (void)aggregateChannelSequenceReport:(id)a3;
-- (void)aggregateJitterBufferMetricsToReportDictionary:(id)a3;
-- (void)aggregateMediCaptureRealtimeStats:(id)a3;
-- (void)aggregateRealtimeStats:(id)a3;
-- (void)aggregateSystemInfoReport:(id)a3;
+- (void)aggregateAudioPlaybackRealtimeStats:(id)stats;
+- (void)aggregateChannelSequenceReport:(id)report;
+- (void)aggregateJitterBufferMetricsToReportDictionary:(id)dictionary;
+- (void)aggregateMediCaptureRealtimeStats:(id)stats;
+- (void)aggregateRealtimeStats:(id)stats;
+- (void)aggregateSystemInfoReport:(id)report;
 - (void)aggregatedCallReport;
 - (void)dealloc;
-- (void)processAudioPlaybackRealtimeStats:(id)a3;
-- (void)processAudioStreamStart:(id)a3;
-- (void)processChannelSequenceStats:(id)a3;
-- (void)processEndpointChanged:(unsigned __int16)a3;
-- (void)processEventWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5;
-- (void)processMediaCaptureRealtimeStats:(id)a3;
-- (void)processMediaStreamEndState:(id)a3;
-- (void)processRealtimeStats:(id)a3;
-- (void)processSenderOnlyStats:(id)a3;
-- (void)processTransportInfo:(id)a3;
+- (void)processAudioPlaybackRealtimeStats:(id)stats;
+- (void)processAudioStreamStart:(id)start;
+- (void)processChannelSequenceStats:(id)stats;
+- (void)processEndpointChanged:(unsigned __int16)changed;
+- (void)processEventWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload;
+- (void)processMediaCaptureRealtimeStats:(id)stats;
+- (void)processMediaStreamEndState:(id)state;
+- (void)processRealtimeStats:(id)stats;
+- (void)processSenderOnlyStats:(id)stats;
+- (void)processTransportInfo:(id)info;
 - (void)reportSegment;
 - (void)reset;
 - (void)startNewSegment;
-- (void)telephonyCallingProcessAWDMetrics:(id)a3;
-- (void)telephonyCallingProcessRealtimeStatsTelephonyCalling:(id)a3;
-- (void)updateAudioStreamHostTimeJumpSizeStats:(id)a3;
+- (void)telephonyCallingProcessAWDMetrics:(id)metrics;
+- (void)telephonyCallingProcessRealtimeStatsTelephonyCalling:(id)calling;
+- (void)updateAudioStreamHostTimeJumpSizeStats:(id)stats;
 @end
 
 @implementation VCAggregatorAudioStream
 
-- (VCAggregatorAudioStream)initWithDelegate:(id)a3 withMode:(int)a4
+- (VCAggregatorAudioStream)initWithDelegate:(id)delegate withMode:(int)mode
 {
   v8.receiver = self;
   v8.super_class = VCAggregatorAudioStream;
-  v5 = [(VCAggregator *)&v8 initWithDelegate:a3 nwParentActivity:0];
+  v5 = [(VCAggregator *)&v8 initWithDelegate:delegate nwParentActivity:0];
   v6 = v5;
   if (v5)
   {
-    v5->_mode = a4;
+    v5->_mode = mode;
     v5->_countHostTimeJumped = 0;
     v5->_maxHostTimeJumpSize = 0.0;
     v5->_totalHostTimeJumpSize = 0.0;
@@ -120,19 +120,19 @@ uint64_t __47__VCAggregatorAudioStream_aggregatedCallReport__block_invoke(uint64
   return [objc_msgSend(*(a1 + 32) "mediaRecorderDataCollector")];
 }
 
-- (void)telephonyCallingProcessRealtimeStatsTelephonyCalling:(id)a3
+- (void)telephonyCallingProcessRealtimeStatsTelephonyCalling:(id)calling
 {
-  [(VCCaptionsDataCollector *)[(VCAggregator *)self captionsDataCollector] processCaptionsMetrics:a3];
-  v5 = [(VCAggregator *)self mediaAnalyzerDataCollector];
+  [(VCCaptionsDataCollector *)[(VCAggregator *)self captionsDataCollector] processCaptionsMetrics:calling];
+  mediaAnalyzerDataCollector = [(VCAggregator *)self mediaAnalyzerDataCollector];
 
-  [(VCMediaAnalyzerDataCollector *)v5 processMediaAnalyzerMetrics:a3];
+  [(VCMediaAnalyzerDataCollector *)mediaAnalyzerDataCollector processMediaAnalyzerMetrics:calling];
 }
 
 - (void)reportSegment
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = 136315650;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2080;
   v6 = "[VCAggregatorAudioStream reportSegment]";
   v7 = 1024;
@@ -193,20 +193,20 @@ uint64_t __47__VCAggregatorAudioStream_aggregatedCallReport__block_invoke(uint64
   [(VCAggregatorAudioStream *)self reset];
 }
 
-- (id)composeSegmentReport:(int)a3
+- (id)composeSegmentReport:(int)report
 {
   v27[4] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->super._stateQueue);
   if (self->_sessionTotalDuration == 0.0)
   {
-    v4 = 0;
+    dispatchedAggregatedReportCommon = 0;
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = VCAggregatorAudioStream;
-    v4 = [(VCReportingCommon *)&v15 dispatchedAggregatedReportCommon];
+    dispatchedAggregatedReportCommon = [(VCReportingCommon *)&v15 dispatchedAggregatedReportCommon];
     v26[0] = @"DRCT";
     v27[0] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:self->super._direction];
     v26[1] = @"DRTN";
@@ -215,7 +215,7 @@ uint64_t __47__VCAggregatorAudioStream_aggregatedCallReport__block_invoke(uint64
     v27[2] = [MEMORY[0x277CCABA8] numberWithInt:self->super._transportType];
     v26[3] = @"RTCPTOCNT";
     v27[3] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:self->_rtcpTimeoutCount];
-    [v4 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v27, v26, 4)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v27, v26, 4)}];
     countHostTimeJumped = self->_countHostTimeJumped;
     if (countHostTimeJumped)
     {
@@ -227,22 +227,22 @@ uint64_t __47__VCAggregatorAudioStream_aggregatedCallReport__block_invoke(uint64
       v6 = 0;
     }
 
-    [v4 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v6), @"AHTJS"}];
-    [v4 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxHostTimeJumpSize), @"MHTJS"}];
-    [v4 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_countHostTimeJumped), @"HTJC"}];
-    [v4 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->super._mediaStreamEndReason == 0), @"MSSuccess"}];
-    [v4 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->super._mediaStreamEndReason), @"MSEndReason"}];
-    [(VCAggregatorAudioStream *)self aggregateSystemInfoReport:v4];
-    [(VCAggregatorAudioStream *)self aggregateRealtimeStats:v4];
-    [(VCAggregator *)self addLowLatencyInterfaceStatisticsToPayload:v4];
-    [(VCAggregatorAudioStream *)self aggregateChannelSequenceReport:v4];
-    [(VCAggregatorAudioStream *)self aggregateJitterBufferMetricsToReportDictionary:v4];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v6), @"AHTJS"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxHostTimeJumpSize), @"MHTJS"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_countHostTimeJumped), @"HTJC"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->super._mediaStreamEndReason == 0), @"MSSuccess"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->super._mediaStreamEndReason), @"MSEndReason"}];
+    [(VCAggregatorAudioStream *)self aggregateSystemInfoReport:dispatchedAggregatedReportCommon];
+    [(VCAggregatorAudioStream *)self aggregateRealtimeStats:dispatchedAggregatedReportCommon];
+    [(VCAggregator *)self addLowLatencyInterfaceStatisticsToPayload:dispatchedAggregatedReportCommon];
+    [(VCAggregatorAudioStream *)self aggregateChannelSequenceReport:dispatchedAggregatedReportCommon];
+    [(VCAggregatorAudioStream *)self aggregateJitterBufferMetricsToReportDictionary:dispatchedAggregatedReportCommon];
   }
 
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
   {
     __str = 0;
-    v7 = v4 ? [objc_msgSend(v4 "description")] : "<nil>";
+    v7 = dispatchedAggregatedReportCommon ? [objc_msgSend(dispatchedAggregatedReportCommon "description")] : "<nil>";
     asprintf(&__str, "%s", v7);
     if (__str)
     {
@@ -279,7 +279,7 @@ uint64_t __47__VCAggregatorAudioStream_aggregatedCallReport__block_invoke(uint64
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v4;
+  return dispatchedAggregatedReportCommon;
 }
 
 uint64_t __51__VCAggregatorAudioStream_aggregatedSegmentReport___block_invoke(uint64_t a1)
@@ -294,7 +294,7 @@ uint64_t __51__VCAggregatorAudioStream_aggregatedSegmentReport___block_invoke(ui
   v10[4] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = VCAggregatorAudioStream;
-  v3 = [(VCAggregator *)&v8 dispatchedAggregatedSessionReport];
+  dispatchedAggregatedSessionReport = [(VCAggregator *)&v8 dispatchedAggregatedSessionReport];
   v9[0] = @"DRCT";
   v10[0] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:self->super._direction];
   v9[1] = @"DRTN";
@@ -303,7 +303,7 @@ uint64_t __51__VCAggregatorAudioStream_aggregatedSegmentReport___block_invoke(ui
   v10[2] = [MEMORY[0x277CCABA8] numberWithInt:self->super._transportType];
   v9[3] = @"RTCPTOCNT";
   v10[3] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:self->_rtcpTimeoutCount];
-  [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v10, v9, 4)}];
+  [dispatchedAggregatedSessionReport addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v10, v9, 4)}];
   countHostTimeJumped = self->_countHostTimeJumped;
   if (countHostTimeJumped)
   {
@@ -315,28 +315,28 @@ uint64_t __51__VCAggregatorAudioStream_aggregatedSegmentReport___block_invoke(ui
     v5 = 0;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v5), @"AHTJS"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxHostTimeJumpSize), @"MHTJS"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_countHostTimeJumped), @"HTJC"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->super._mediaStreamEndReason == 0), @"MSSuccess"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->super._mediaStreamEndReason), @"MSEndReason"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v5), @"AHTJS"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxHostTimeJumpSize), @"MHTJS"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_countHostTimeJumped), @"HTJC"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->super._mediaStreamEndReason == 0), @"MSSuccess"}];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->super._mediaStreamEndReason), @"MSEndReason"}];
   if (self->_maxNumberEndpoints)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:"), @"ENDPTC"}];
+    [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:"), @"ENDPTC"}];
   }
 
-  [(VCAggregatorAudioStream *)self aggregateSystemInfoReport:v3];
-  [(VCAggregatorAudioStream *)self aggregateRealtimeStats:v3];
-  [(VCAggregator *)self addLowLatencyInterfaceStatisticsToPayload:v3];
-  [(VCAggregatorAudioStream *)self aggregateChannelSequenceReport:v3];
+  [(VCAggregatorAudioStream *)self aggregateSystemInfoReport:dispatchedAggregatedSessionReport];
+  [(VCAggregatorAudioStream *)self aggregateRealtimeStats:dispatchedAggregatedSessionReport];
+  [(VCAggregator *)self addLowLatencyInterfaceStatisticsToPayload:dispatchedAggregatedSessionReport];
+  [(VCAggregatorAudioStream *)self aggregateChannelSequenceReport:dispatchedAggregatedSessionReport];
   if (self->_mode == 1)
   {
-    [(VCAggregator *)self addThermalMetricsToReportDictionary:v3];
-    [(VCAggregatorAudioStream *)self aggregateJitterBufferMetricsToReportDictionary:v3];
+    [(VCAggregator *)self addThermalMetricsToReportDictionary:dispatchedAggregatedSessionReport];
+    [(VCAggregatorAudioStream *)self aggregateJitterBufferMetricsToReportDictionary:dispatchedAggregatedSessionReport];
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dispatchedAggregatedSessionReport;
 }
 
 - (id)aggregatedSessionReport
@@ -412,11 +412,11 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
   return result;
 }
 
-- (void)updateAudioStreamHostTimeJumpSizeStats:(id)a3
+- (void)updateAudioStreamHostTimeJumpSizeStats:(id)stats
 {
-  if ([a3 objectForKeyedSubscript:@"VCASHostTimeJumpSize"])
+  if ([stats objectForKeyedSubscript:@"VCASHostTimeJumpSize"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VCASHostTimeJumpSize", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VCASHostTimeJumpSize", "doubleValue"}];
     ++self->_countHostTimeJumped;
     maxHostTimeJumpSize = self->_maxHostTimeJumpSize;
     if (v5 >= maxHostTimeJumpSize)
@@ -429,13 +429,13 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
   }
 }
 
-- (void)aggregateChannelSequenceReport:(id)a3
+- (void)aggregateChannelSequenceReport:(id)report
 {
   if ([(VCAggregatorAudioStream *)self previousChannelSequence])
   {
-    v5 = [(VCAggregatorAudioStream *)self previousChannelSequence];
+    previousChannelSequence = [(VCAggregatorAudioStream *)self previousChannelSequence];
     v6 = &OBJC_IVAR___VCAggregatorAudioStream__previousChannelSequenceStats;
-    if (!v5)
+    if (!previousChannelSequence)
     {
       return;
     }
@@ -443,53 +443,53 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
 
   else
   {
-    v5 = [(VCAggregatorAudioStream *)self channelSequence];
+    previousChannelSequence = [(VCAggregatorAudioStream *)self channelSequence];
     v6 = &OBJC_IVAR___VCAggregatorAudioStream__channelSequenceStats;
-    if (!v5)
+    if (!previousChannelSequence)
     {
       return;
     }
   }
 
   v7 = (self + *v6);
-  [a3 setObject:v5 forKeyedSubscript:@"CHSEQ"];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", v7[1]), @"5GCHCNT"}];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", *v7), @"24GCHCNT"}];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", v7[2]), @"DFSCHCNT"}];
+  [report setObject:previousChannelSequence forKeyedSubscript:@"CHSEQ"];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", v7[1]), @"5GCHCNT"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", *v7), @"24GCHCNT"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", v7[2]), @"DFSCHCNT"}];
   v8 = [MEMORY[0x277CCABA8] numberWithInt:v7[3]];
 
-  [a3 setObject:v8 forKeyedSubscript:@"INSLCNT"];
+  [report setObject:v8 forKeyedSubscript:@"INSLCNT"];
 }
 
-- (void)aggregateSystemInfoReport:(id)a3
+- (void)aggregateSystemInfoReport:(id)report
 {
   remoteOSBuildVersion = self->_remoteOSBuildVersion;
   if (remoteOSBuildVersion)
   {
-    [a3 setObject:remoteOSBuildVersion forKeyedSubscript:@"REMOSVER"];
+    [report setObject:remoteOSBuildVersion forKeyedSubscript:@"REMOSVER"];
   }
 
   remoteDeviceModel = self->_remoteDeviceModel;
   if (remoteDeviceModel)
   {
-    [a3 setObject:remoteDeviceModel forKeyedSubscript:@"REMMDL"];
+    [report setObject:remoteDeviceModel forKeyedSubscript:@"REMMDL"];
   }
 
   if (self->super._sessionID)
   {
 
-    [a3 setObject:? forKeyedSubscript:?];
+    [report setObject:? forKeyedSubscript:?];
   }
 }
 
-- (void)aggregateRealtimeStats:(id)a3
+- (void)aggregateRealtimeStats:(id)stats
 {
   [(VCAggregatorAudioStream *)self aggregateMediCaptureRealtimeStats:?];
 
-  [(VCAggregatorAudioStream *)self aggregateAudioPlaybackRealtimeStats:a3];
+  [(VCAggregatorAudioStream *)self aggregateAudioPlaybackRealtimeStats:stats];
 }
 
-- (void)aggregateMediCaptureRealtimeStats:(id)a3
+- (void)aggregateMediCaptureRealtimeStats:(id)stats
 {
   sessionTotalDuration = self->_sessionTotalDuration;
   LODWORD(v3) = self->_mediaCaptureBufferRateTotal;
@@ -499,7 +499,7 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
     sessionTotalDuration = 1.0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", (v7 / sessionTotalDuration)), @"AMCBR"}];
+  [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", (v7 / sessionTotalDuration)), @"AMCBR"}];
   v8 = self->_sessionTotalDuration;
   LODWORD(v9) = self->_mediaCaptureJitterTotal;
   v10 = v9;
@@ -508,7 +508,7 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
     v8 = 1.0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", (v10 / v8)), @"AMCJ"}];
+  [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", (v10 / v8)), @"AMCJ"}];
   averageAudioBitrateCount = self->_averageAudioBitrateCount;
   if (averageAudioBitrateCount)
   {
@@ -520,7 +520,7 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
     v12 = 0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v12), @"AANTBR"}];
+  [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v12), @"AANTBR"}];
   averageAudioMediaBitrateCount = self->_averageAudioMediaBitrateCount;
   if (averageAudioMediaBitrateCount)
   {
@@ -532,7 +532,7 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
     v14 = 0;
   }
 
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v14), @"AAMTBR"}];
+  [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v14), @"AAMTBR"}];
   averageTargetBitrateCount = self->_averageTargetBitrateCount;
   if (averageTargetBitrateCount)
   {
@@ -546,16 +546,16 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
 
   v17 = [MEMORY[0x277CCABA8] numberWithUnsignedInt:v16];
 
-  [a3 setObject:v17 forKeyedSubscript:@"ATXBR"];
+  [stats setObject:v17 forKeyedSubscript:@"ATXBR"];
 }
 
-- (void)aggregateAudioPlaybackRealtimeStats:(id)a3
+- (void)aggregateAudioPlaybackRealtimeStats:(id)stats
 {
   if ((self->super._direction & 0xFFFFFFFE) == 2)
   {
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_audioErasureCount), @"AERCNT"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", (self->_totalAudioErasureTime * 1000.0)), @"TAERT"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxAudioErasureCount), @"MAECT"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_audioErasureCount), @"AERCNT"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", (self->_totalAudioErasureTime * 1000.0)), @"TAERT"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxAudioErasureCount), @"MAECT"}];
     averageJitterBufferDelayCount = self->_averageJitterBufferDelayCount;
     if (averageJitterBufferDelayCount)
     {
@@ -567,10 +567,10 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
       v7 = 0;
     }
 
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v7), @"AAJBD"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxJBTargetSizeChanges), @"MAJBSC"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_channelCountRx), @"ARCC"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_channelCountTx), @"ATCC"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v7), @"AAJBD"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_maxJBTargetSizeChanges), @"MAJBSC"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_channelCountRx), @"ARCC"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_channelCountTx), @"ATCC"}];
     avgJBTargetSizeChangesCount = self->_avgJBTargetSizeChangesCount;
     if (avgJBTargetSizeChangesCount)
     {
@@ -582,7 +582,7 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
       v9 = 0;
     }
 
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v9), @"AAJBSC"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v9), @"AAJBSC"}];
     averageAudioBitrateCount = self->_averageAudioBitrateCount;
     if (averageAudioBitrateCount)
     {
@@ -594,7 +594,7 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
       v11 = 0;
     }
 
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v11), @"AANRBR"}];
+    [stats setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", v11), @"AANRBR"}];
     averageAudioMediaBitrateCount = self->_averageAudioMediaBitrateCount;
     if (averageAudioMediaBitrateCount)
     {
@@ -608,46 +608,46 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
 
     v14 = [MEMORY[0x277CCABA8] numberWithUnsignedInt:v13];
 
-    [a3 setObject:v14 forKeyedSubscript:@"AAMRBR"];
+    [stats setObject:v14 forKeyedSubscript:@"AAMRBR"];
   }
 }
 
-- (void)processMediaCaptureRealtimeStats:(id)a3
+- (void)processMediaCaptureRealtimeStats:(id)stats
 {
-  if ([a3 objectForKeyedSubscript:@"MediaCaptureJitter"])
+  if ([stats objectForKeyedSubscript:@"MediaCaptureJitter"])
   {
-    self->_mediaCaptureJitterTotal += [objc_msgSend(a3 objectForKeyedSubscript:{@"MediaCaptureJitter", "unsignedIntValue"}];
+    self->_mediaCaptureJitterTotal += [objc_msgSend(stats objectForKeyedSubscript:{@"MediaCaptureJitter", "unsignedIntValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"MediaCaptureBufferRate"])
+  if ([stats objectForKeyedSubscript:@"MediaCaptureBufferRate"])
   {
-    self->_mediaCaptureBufferRateTotal += [objc_msgSend(a3 objectForKeyedSubscript:{@"MediaCaptureBufferRate", "unsignedIntValue"}];
+    self->_mediaCaptureBufferRateTotal += [objc_msgSend(stats objectForKeyedSubscript:{@"MediaCaptureBufferRate", "unsignedIntValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"ATxR"])
+  if ([stats objectForKeyedSubscript:@"ATxR"])
   {
-    self->_averageAudioBitrate += [objc_msgSend(a3 objectForKeyedSubscript:{@"ATxR", "unsignedIntValue"}];
+    self->_averageAudioBitrate += [objc_msgSend(stats objectForKeyedSubscript:{@"ATxR", "unsignedIntValue"}];
     ++self->_averageAudioBitrateCount;
   }
 
-  if ([a3 objectForKeyedSubscript:@"ATxRPrimary"])
+  if ([stats objectForKeyedSubscript:@"ATxRPrimary"])
   {
-    self->_averageAudioMediaBitrate += [objc_msgSend(a3 objectForKeyedSubscript:{@"ATxRPrimary", "unsignedIntValue"}];
+    self->_averageAudioMediaBitrate += [objc_msgSend(stats objectForKeyedSubscript:{@"ATxRPrimary", "unsignedIntValue"}];
     ++self->_averageAudioMediaBitrateCount;
   }
 
-  if ([a3 objectForKeyedSubscript:@"TTxR"])
+  if ([stats objectForKeyedSubscript:@"TTxR"])
   {
-    self->_averageTargetBitrate += [objc_msgSend(a3 objectForKeyedSubscript:{@"TTxR", "integerValue"}];
+    self->_averageTargetBitrate += [objc_msgSend(stats objectForKeyedSubscript:{@"TTxR", "integerValue"}];
     ++self->_averageTargetBitrateCount;
   }
 }
 
-- (void)processAudioPlaybackRealtimeStats:(id)a3
+- (void)processAudioPlaybackRealtimeStats:(id)stats
 {
   if ((self->super._direction & 0xFFFFFFFE) == 2)
   {
-    v5 = [a3 objectForKeyedSubscript:@"FrameErasureRate"];
+    v5 = [stats objectForKeyedSubscript:@"FrameErasureRate"];
     if (v5)
     {
       [v5 doubleValue];
@@ -658,7 +658,7 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
       }
     }
 
-    v8 = [a3 objectForKeyedSubscript:@"FrameErasureCount"];
+    v8 = [stats objectForKeyedSubscript:@"FrameErasureCount"];
     if (v8)
     {
       v10 = v8;
@@ -667,13 +667,13 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
       self->_audioErasureCount += [v10 unsignedIntValue];
     }
 
-    v11 = [a3 objectForKeyedSubscript:@"ARCC"];
+    v11 = [stats objectForKeyedSubscript:@"ARCC"];
     if ([v11 unsignedIntValue])
     {
       self->_channelCountRx = [v11 unsignedIntValue];
     }
 
-    v12 = [a3 objectForKeyedSubscript:@"NJB"];
+    v12 = [stats objectForKeyedSubscript:@"NJB"];
     [v12 doubleValue];
     if (v13 != 0.0)
     {
@@ -682,7 +682,7 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
       ++self->_averageJitterBufferDelayCount;
     }
 
-    v15 = [a3 objectForKeyedSubscript:@"JitterBufferTargetChanges"];
+    v15 = [stats objectForKeyedSubscript:@"JitterBufferTargetChanges"];
     if (v15)
     {
       v16 = v15;
@@ -694,25 +694,25 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
       ++self->_avgJBTargetSizeChangesCount;
     }
 
-    if ([a3 objectForKeyedSubscript:@"ARxR"])
+    if ([stats objectForKeyedSubscript:@"ARxR"])
     {
-      self->_averageAudioBitrate += [objc_msgSend(a3 objectForKeyedSubscript:{@"ARxR", "unsignedIntValue"}];
+      self->_averageAudioBitrate += [objc_msgSend(stats objectForKeyedSubscript:{@"ARxR", "unsignedIntValue"}];
       ++self->_averageAudioBitrateCount;
     }
 
-    if ([a3 objectForKeyedSubscript:@"AMRR"])
+    if ([stats objectForKeyedSubscript:@"AMRR"])
     {
-      self->_averageAudioMediaBitrate += [objc_msgSend(a3 objectForKeyedSubscript:{@"ATxRPrimary", "unsignedIntValue"}];
+      self->_averageAudioMediaBitrate += [objc_msgSend(stats objectForKeyedSubscript:{@"ATxRPrimary", "unsignedIntValue"}];
       ++self->_averageAudioMediaBitrateCount;
     }
   }
 }
 
-- (void)processSenderOnlyStats:(id)a3
+- (void)processSenderOnlyStats:(id)stats
 {
   if ((self->super._direction | 2) == 3)
   {
-    v4 = [a3 objectForKeyedSubscript:@"ATCC"];
+    v4 = [stats objectForKeyedSubscript:@"ATCC"];
     if ([v4 unsignedIntValue])
     {
       self->_channelCountTx = [v4 unsignedIntValue];
@@ -720,81 +720,81 @@ uint64_t __50__VCAggregatorAudioStream_aggregatedSessionReport__block_invoke(uin
   }
 }
 
-- (void)processChannelSequenceStats:(id)a3
+- (void)processChannelSequenceStats:(id)stats
 {
-  if ([a3 objectForKeyedSubscript:@"ChannelSequence"])
+  if ([stats objectForKeyedSubscript:@"ChannelSequence"])
   {
     [(VCAggregatorAudioStream *)self setPreviousChannelSequence:[(VCAggregatorAudioStream *)self channelSequence]];
     self->_previousChannelSequenceStats = self->_channelSequenceStats;
-    -[VCAggregatorAudioStream setChannelSequence:](self, "setChannelSequence:", [a3 objectForKeyedSubscript:@"ChannelSequence"]);
-    self->_channelSequenceStats.fiveGhzChannelCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"Unique5GhzChannelCount", "intValue"}];
-    self->_channelSequenceStats.twoPtFourGhzChannelCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"Unique2pt4GhzChannelCount", "intValue"}];
-    self->_channelSequenceStats.dfsChannelCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"UniqueDFSChannelCount", "intValue"}];
-    self->_channelSequenceStats.inactiveSlotCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"InactiveSlotCount", "intValue"}];
+    -[VCAggregatorAudioStream setChannelSequence:](self, "setChannelSequence:", [stats objectForKeyedSubscript:@"ChannelSequence"]);
+    self->_channelSequenceStats.fiveGhzChannelCount = [objc_msgSend(stats objectForKeyedSubscript:{@"Unique5GhzChannelCount", "intValue"}];
+    self->_channelSequenceStats.twoPtFourGhzChannelCount = [objc_msgSend(stats objectForKeyedSubscript:{@"Unique2pt4GhzChannelCount", "intValue"}];
+    self->_channelSequenceStats.dfsChannelCount = [objc_msgSend(stats objectForKeyedSubscript:{@"UniqueDFSChannelCount", "intValue"}];
+    self->_channelSequenceStats.inactiveSlotCount = [objc_msgSend(stats objectForKeyedSubscript:{@"InactiveSlotCount", "intValue"}];
   }
 }
 
-- (void)processRealtimeStats:(id)a3
+- (void)processRealtimeStats:(id)stats
 {
   [(VCAggregatorAudioStream *)self processMediaCaptureRealtimeStats:?];
-  [(VCAggregatorAudioStream *)self processAudioPlaybackRealtimeStats:a3];
-  [(VCAggregatorAudioStream *)self processSenderOnlyStats:a3];
+  [(VCAggregatorAudioStream *)self processAudioPlaybackRealtimeStats:stats];
+  [(VCAggregatorAudioStream *)self processSenderOnlyStats:stats];
 
-  [(VCAggregatorAudioStream *)self processChannelSequenceStats:a3];
+  [(VCAggregatorAudioStream *)self processChannelSequenceStats:stats];
 }
 
-- (void)processAudioStreamStart:(id)a3
+- (void)processAudioStreamStart:(id)start
 {
   if ([(VCAggregatorAudioStream *)self supportsSegmentReporting])
   {
     [(VCAggregatorAudioStream *)self startNewSegment];
   }
 
-  if ([a3 objectForKeyedSubscript:@"RemoteEndpoints"])
+  if ([start objectForKeyedSubscript:@"RemoteEndpoints"])
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"RemoteEndpoints", "unsignedIntValue"}];
+    v5 = [objc_msgSend(start objectForKeyedSubscript:{@"RemoteEndpoints", "unsignedIntValue"}];
     self->_currentNumberEndpoints = v5;
     self->_maxNumberEndpoints = v5;
   }
 
-  -[VCAggregatorAudioStream setRemoteOSBuildVersion:](self, "setRemoteOSBuildVersion:", [a3 objectForKeyedSubscript:@"VCVSRemoteOSBuildVersion"]);
-  v6 = [a3 objectForKeyedSubscript:@"VCVSRemoteDeviceModel"];
+  -[VCAggregatorAudioStream setRemoteOSBuildVersion:](self, "setRemoteOSBuildVersion:", [start objectForKeyedSubscript:@"VCVSRemoteOSBuildVersion"]);
+  v6 = [start objectForKeyedSubscript:@"VCVSRemoteDeviceModel"];
 
   [(VCAggregatorAudioStream *)self setRemoteDeviceModel:v6];
 }
 
-- (void)processTransportInfo:(id)a3
+- (void)processTransportInfo:(id)info
 {
-  if ([a3 objectForKeyedSubscript:@"TransportType"])
+  if ([info objectForKeyedSubscript:@"TransportType"])
   {
-    self->super._transportType = [objc_msgSend(a3 objectForKeyedSubscript:{@"TransportType", "intValue"}];
+    self->super._transportType = [objc_msgSend(info objectForKeyedSubscript:{@"TransportType", "intValue"}];
 
     [(VCAggregator *)self initializeLowLatencyInterfaceStatistics];
   }
 }
 
-- (void)processMediaStreamEndState:(id)a3
+- (void)processMediaStreamEndState:(id)state
 {
-  if ([a3 objectForKeyedSubscript:@"VCMSEndReason"])
+  if ([state objectForKeyedSubscript:@"VCMSEndReason"])
   {
-    self->super._mediaStreamEndReason = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCMSEndReason", "unsignedIntValue"}];
+    self->super._mediaStreamEndReason = [objc_msgSend(state objectForKeyedSubscript:{@"VCMSEndReason", "unsignedIntValue"}];
   }
 }
 
-- (void)processEndpointChanged:(unsigned __int16)a3
+- (void)processEndpointChanged:(unsigned __int16)changed
 {
   currentNumberEndpoints = self->_currentNumberEndpoints;
-  if (a3 != 1)
+  if (changed != 1)
   {
-    if (a3 != 2)
+    if (changed != 2)
     {
       goto LABEL_5;
     }
 
-    *&a3 = -1;
+    *&changed = -1;
   }
 
-  currentNumberEndpoints += a3;
+  currentNumberEndpoints += changed;
   self->_currentNumberEndpoints = currentNumberEndpoints;
 LABEL_5:
   if (currentNumberEndpoints > self->_maxNumberEndpoints)
@@ -803,17 +803,17 @@ LABEL_5:
   }
 }
 
-- (void)processEventWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5
+- (void)processEventWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload
 {
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__VCAggregatorAudioStream_processEventWithCategory_type_payload___block_invoke;
   block[3] = &unk_278BD48B8;
-  v7 = a3;
-  v8 = a4;
+  categoryCopy = category;
+  typeCopy = type;
   block[4] = self;
-  block[5] = a5;
+  block[5] = payload;
   dispatch_sync(stateQueue, block);
 }
 
@@ -831,9 +831,9 @@ LABEL_5:
   return result;
 }
 
-- (void)telephonyCallingProcessAWDMetrics:(id)a3
+- (void)telephonyCallingProcessAWDMetrics:(id)metrics
 {
-  v4 = [a3 objectForKeyedSubscript:@"RATType"];
+  v4 = [metrics objectForKeyedSubscript:@"RATType"];
   if (v4)
   {
     v5 = v4;
@@ -844,7 +844,7 @@ LABEL_5:
   }
 }
 
-- (void)aggregateJitterBufferMetricsToReportDictionary:(id)a3
+- (void)aggregateJitterBufferMetricsToReportDictionary:(id)dictionary
 {
   if (self->_mode == 1)
   {
@@ -905,11 +905,11 @@ LABEL_5:
       }
     }
 
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedChar:"), @"RMUSE"}];
-    [a3 setObject:-[VCHistogram description](self->_jbUnclippedTarget forKeyedSubscript:{"description"), @"AUJBL"}];
-    [a3 setObject:-[VCHistogram description](self->_jbSpikeSizeDelta forKeyedSubscript:{"description"), @"JBSS"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", v10), @"JBJSR"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", v11), @"JBSSR"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedChar:"), @"RMUSE"}];
+    [dictionary setObject:-[VCHistogram description](self->_jbUnclippedTarget forKeyedSubscript:{"description"), @"AUJBL"}];
+    [dictionary setObject:-[VCHistogram description](self->_jbSpikeSizeDelta forKeyedSubscript:{"description"), @"JBSS"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", v10), @"JBJSR"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithDouble:", v11), @"JBSSR"}];
     if (v8)
     {
       LODWORD(v17) = self->_remoteMicPacketLossRateAccumulator;
@@ -923,7 +923,7 @@ LABEL_5:
 
     v19 = [MEMORY[0x277CCABA8] numberWithUnsignedInt:v18];
 
-    [a3 setObject:v19 forKeyedSubscript:@"SAAUDPLR"];
+    [dictionary setObject:v19 forKeyedSubscript:@"SAAUDPLR"];
   }
 }
 
@@ -935,7 +935,7 @@ LABEL_5:
   {
     v5 = *(*a2 + 40);
     v7 = 136315906;
-    v8 = a1;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[VCAggregatorAudioStream aggregatedCallReport]";
     v11 = 1024;

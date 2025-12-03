@@ -1,33 +1,33 @@
 @interface SYSyncBatch
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addChanges:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChanges:(id)changes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYSyncBatch
 
-- (void)addChanges:(id)a3
+- (void)addChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   changes = self->_changes;
-  v8 = v4;
+  v8 = changesCopy;
   if (!changes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_changes;
     self->_changes = v6;
 
-    v4 = v8;
+    changesCopy = v8;
     changes = self->_changes;
   }
 
-  [(NSMutableArray *)changes addObject:v4];
+  [(NSMutableArray *)changes addObject:changesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = SYSyncBatch;
   v4 = [(SYSyncBatch *)&v8 description];
-  v5 = [(SYSyncBatch *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYSyncBatch *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,22 +45,22 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(SYMessageHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(SYMessageHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   sessionID = self->_sessionID;
   if (sessionID)
   {
-    [v3 setObject:sessionID forKey:@"sessionID"];
+    [dictionary setObject:sessionID forKey:@"sessionID"];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_index];
-  [v3 setObject:v7 forKey:@"index"];
+  [dictionary setObject:v7 forKey:@"index"];
 
   if ([(NSMutableArray *)self->_changes count])
   {
@@ -84,8 +84,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -94,24 +94,24 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"changes"];
+    [dictionary setObject:v8 forKey:@"changes"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_header)
   {
     [SYSyncBatch writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   if (!self->_sessionID)
   {
@@ -156,37 +156,37 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setHeader:self->_header];
-  [v8 setSessionID:self->_sessionID];
-  v8[1] = self->_index;
+  toCopy = to;
+  [toCopy setHeader:self->_header];
+  [toCopy setSessionID:self->_sessionID];
+  toCopy[1] = self->_index;
   if ([(SYSyncBatch *)self changesCount])
   {
-    [v8 clearChanges];
-    v4 = [(SYSyncBatch *)self changesCount];
-    if (v4)
+    [toCopy clearChanges];
+    changesCount = [(SYSyncBatch *)self changesCount];
+    if (changesCount)
     {
-      v5 = v4;
+      v5 = changesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SYSyncBatch *)self changesAtIndex:i];
-        [v8 addChanges:v7];
+        [toCopy addChanges:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYMessageHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYMessageHeader *)self->_header copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionID copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
@@ -211,7 +211,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addChanges:v15];
 
         ++v14;
@@ -228,13 +228,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[3])) || -[SYMessageHeader isEqual:](header, "isEqual:")) && ((sessionID = self->_sessionID, !(sessionID | v4[4])) || -[NSString isEqual:](sessionID, "isEqual:")) && self->_index == v4[1])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[3])) || -[SYMessageHeader isEqual:](header, "isEqual:")) && ((sessionID = self->_sessionID, !(sessionID | equalCopy[4])) || -[NSString isEqual:](sessionID, "isEqual:")) && self->_index == equalCopy[1])
   {
     changes = self->_changes;
-    if (changes | v4[2])
+    if (changes | equalCopy[2])
     {
       v8 = [(NSMutableArray *)changes isEqual:?];
     }
@@ -261,12 +261,12 @@
   return v4 ^ [(NSMutableArray *)self->_changes hash]^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (header)
   {
     if (v6)
@@ -280,17 +280,17 @@
     [(SYSyncBatch *)self setHeader:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SYSyncBatch *)self setSessionID:?];
   }
 
-  self->_index = *(v4 + 1);
+  self->_index = *(fromCopy + 1);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

@@ -26,14 +26,14 @@
 
 - (void)registerForDayChangedNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_dayChangedNotificationReceived_ name:*MEMORY[0x1E695D810] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_dayChangedNotificationReceived_ name:*MEMORY[0x1E695D810] object:0];
 }
 
 - (void)registerForTimeZoneChangedNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_timeZoneChangedNotificationReceived_ name:*MEMORY[0x1E695DA68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_timeZoneChangedNotificationReceived_ name:*MEMORY[0x1E695DA68] object:0];
 }
 
 - (void)dealloc
@@ -47,9 +47,9 @@
 
 - (id)currentTime
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [MEMORY[0x1E695DF00] monotonicDate];
-  [(PLTimeReferenceDynamic *)self setLastQueryTime:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
+  [(PLTimeReferenceDynamic *)self setLastQueryTime:monotonicDate];
 
   if (+[PLDefaults debugEnabled])
   {
@@ -66,11 +66,11 @@
 
     if (currentTime_classDebugEnabled_1 == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLTimeReferenceSystem::currentTime=%@", v3];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLTimeReferenceSystem::currentTime=%@", date];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLTimeReferenceClasses/PLTimeReferenceSystem.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimeReferenceSystem currentTime]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:46];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:46];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -82,9 +82,9 @@
 
   v12.receiver = self;
   v12.super_class = PLTimeReferenceSystem;
-  [(PLTimeReferenceDynamic *)&v12 checkForTimeChangeWithCurrentTime:v3];
+  [(PLTimeReferenceDynamic *)&v12 checkForTimeChangeWithCurrentTime:date];
 
-  return v3;
+  return date;
 }
 
 BOOL __36__PLTimeReferenceSystem_currentTime__block_invoke(uint64_t a1)
@@ -98,12 +98,12 @@ BOOL __36__PLTimeReferenceSystem_currentTime__block_invoke(uint64_t a1)
 {
   v14.receiver = self;
   v14.super_class = PLTimeReferenceSystem;
-  v3 = [(PLTimeReferenceDynamic *)&v14 timeChangeBlocks];
-  objc_sync_enter(v3);
+  timeChangeBlocks = [(PLTimeReferenceDynamic *)&v14 timeChangeBlocks];
+  objc_sync_enter(timeChangeBlocks);
   v13.receiver = self;
   v13.super_class = PLTimeReferenceSystem;
-  v4 = [(PLTimeReferenceDynamic *)&v13 timeChangeBlocks];
-  v5 = [v4 objectForKeyedSubscript:@"PLCoreStorage"];
+  timeChangeBlocks2 = [(PLTimeReferenceDynamic *)&v13 timeChangeBlocks];
+  v5 = [timeChangeBlocks2 objectForKeyedSubscript:@"PLCoreStorage"];
 
   if (v5)
   {
@@ -127,9 +127,9 @@ BOOL __36__PLTimeReferenceSystem_currentTime__block_invoke(uint64_t a1)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLTimeReferenceSystem::timeChangedToMidnightLocalTime: No timeChangeBlock for PLCoreStorage"];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLTimeReferenceClasses/PLTimeReferenceSystem.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimeReferenceSystem timeChangedToMidnightLocalTime]"];
-      [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:55];
+      [PLCoreStorage logMessage:v7 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:55];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -139,7 +139,7 @@ BOOL __36__PLTimeReferenceSystem_currentTime__block_invoke(uint64_t a1)
     }
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(timeChangeBlocks);
 }
 
 BOOL __55__PLTimeReferenceSystem_timeChangedToMidnightLocalTime__block_invoke(uint64_t a1)

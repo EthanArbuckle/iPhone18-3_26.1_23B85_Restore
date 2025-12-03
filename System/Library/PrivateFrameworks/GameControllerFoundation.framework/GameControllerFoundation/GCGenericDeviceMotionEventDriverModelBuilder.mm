@@ -1,9 +1,9 @@
 @interface GCGenericDeviceMotionEventDriverModelBuilder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceMotionEventDriverModelBuilder)init;
 - (id)build;
 - (unint64_t)hash;
-- (void)initializeWithModel:(id)a3;
+- (void)initializeWithModel:(id)model;
 - (void)reset;
 @end
 
@@ -18,27 +18,27 @@
   return v2;
 }
 
-- (void)initializeWithModel:(id)a3
+- (void)initializeWithModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 accelerometerXExpression];
-  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setAccelerometerXExpression:v5];
+  modelCopy = model;
+  accelerometerXExpression = [modelCopy accelerometerXExpression];
+  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setAccelerometerXExpression:accelerometerXExpression];
 
-  v6 = [v4 accelerometerYExpression];
-  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setAccelerometerYExpression:v6];
+  accelerometerYExpression = [modelCopy accelerometerYExpression];
+  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setAccelerometerYExpression:accelerometerYExpression];
 
-  v7 = [v4 accelerometerZExpression];
-  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setAccelerometerZExpression:v7];
+  accelerometerZExpression = [modelCopy accelerometerZExpression];
+  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setAccelerometerZExpression:accelerometerZExpression];
 
-  v8 = [v4 gyroXExpression];
-  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setGyroXExpression:v8];
+  gyroXExpression = [modelCopy gyroXExpression];
+  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setGyroXExpression:gyroXExpression];
 
-  v9 = [v4 gyroYExpression];
-  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setGyroYExpression:v9];
+  gyroYExpression = [modelCopy gyroYExpression];
+  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setGyroYExpression:gyroYExpression];
 
-  v10 = [v4 gyroZExpression];
+  gyroZExpression = [modelCopy gyroZExpression];
 
-  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setGyroZExpression:v10];
+  [(GCGenericDeviceMotionEventDriverModelBuilder *)self setGyroZExpression:gyroZExpression];
 }
 
 - (void)reset
@@ -55,33 +55,33 @@
 - (id)build
 {
   v3 = objc_alloc([objc_opt_class() modelClass]);
-  v4 = [(GCGenericDeviceMotionEventDriverModelBuilder *)self accelerometerXExpression];
-  v5 = [v4 copy];
+  accelerometerXExpression = [(GCGenericDeviceMotionEventDriverModelBuilder *)self accelerometerXExpression];
+  v5 = [accelerometerXExpression copy];
   v6 = v3[1];
   v3[1] = v5;
 
-  v7 = [(GCGenericDeviceMotionEventDriverModelBuilder *)self accelerometerYExpression];
-  v8 = [v7 copy];
+  accelerometerYExpression = [(GCGenericDeviceMotionEventDriverModelBuilder *)self accelerometerYExpression];
+  v8 = [accelerometerYExpression copy];
   v9 = v3[2];
   v3[2] = v8;
 
-  v10 = [(GCGenericDeviceMotionEventDriverModelBuilder *)self accelerometerZExpression];
-  v11 = [v10 copy];
+  accelerometerZExpression = [(GCGenericDeviceMotionEventDriverModelBuilder *)self accelerometerZExpression];
+  v11 = [accelerometerZExpression copy];
   v12 = v3[3];
   v3[3] = v11;
 
-  v13 = [(GCGenericDeviceMotionEventDriverModelBuilder *)self gyroXExpression];
-  v14 = [v13 copy];
+  gyroXExpression = [(GCGenericDeviceMotionEventDriverModelBuilder *)self gyroXExpression];
+  v14 = [gyroXExpression copy];
   v15 = v3[4];
   v3[4] = v14;
 
-  v16 = [(GCGenericDeviceMotionEventDriverModelBuilder *)self gyroYExpression];
-  v17 = [v16 copy];
+  gyroYExpression = [(GCGenericDeviceMotionEventDriverModelBuilder *)self gyroYExpression];
+  v17 = [gyroYExpression copy];
   v18 = v3[5];
   v3[5] = v17;
 
-  v19 = [(GCGenericDeviceMotionEventDriverModelBuilder *)self gyroZExpression];
-  v20 = [v19 copy];
+  gyroZExpression = [(GCGenericDeviceMotionEventDriverModelBuilder *)self gyroZExpression];
+  v20 = [gyroZExpression copy];
   v21 = v3[6];
   v3[6] = v20;
 
@@ -90,25 +90,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [objc_opt_class() modelClass];
+  modelClass = [objc_opt_class() modelClass];
 
-  return [v2 hash];
+  return [modelClass hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqual:self];
+    v5 = [equalCopy isEqual:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = GCGenericDeviceMotionEventDriverModelBuilder;
-    v5 = [(GCGenericDeviceMotionEventDriverModelBuilder *)&v8 isEqual:v4];
+    v5 = [(GCGenericDeviceMotionEventDriverModelBuilder *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;

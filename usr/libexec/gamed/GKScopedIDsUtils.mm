@@ -1,13 +1,13 @@
 @interface GKScopedIDsUtils
-+ (id)batchRequestWithPlayerIDs:(id)a3 gameBundleIDs:(id)a4 desiredSize:(int64_t)a5;
-+ (id)filterUnsupportedGameBundleIDs:(id)a3;
-+ (id)incompletePlayerIDs:(id)a3 gameBundleIDs:(id)a4 scopedIDs:(id)a5;
-+ (id)mergeWithScopedIDs:(id)a3 with:(id)a4;
++ (id)batchRequestWithPlayerIDs:(id)ds gameBundleIDs:(id)iDs desiredSize:(int64_t)size;
++ (id)filterUnsupportedGameBundleIDs:(id)ds;
++ (id)incompletePlayerIDs:(id)ds gameBundleIDs:(id)iDs scopedIDs:(id)scopedIDs;
++ (id)mergeWithScopedIDs:(id)ds with:(id)with;
 @end
 
 @implementation GKScopedIDsUtils
 
-+ (id)filterUnsupportedGameBundleIDs:(id)a3
++ (id)filterUnsupportedGameBundleIDs:(id)ds
 {
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static ScopedIDsUtils.filterUnsupportedGameBundleIDs(_:)(v3);
@@ -17,11 +17,11 @@
   return v4.super.isa;
 }
 
-+ (id)batchRequestWithPlayerIDs:(id)a3 gameBundleIDs:(id)a4 desiredSize:(int64_t)a5
++ (id)batchRequestWithPlayerIDs:(id)ds gameBundleIDs:(id)iDs desiredSize:(int64_t)size
 {
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  static ScopedIDsUtils.batchRequest(playerIDs:gameBundleIDs:desiredSize:)(v6, v7, a5);
+  static ScopedIDsUtils.batchRequest(playerIDs:gameBundleIDs:desiredSize:)(v6, v7, size);
 
   type metadata accessor for ScopedIDsBatchRequest();
   v8.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -29,7 +29,7 @@
   return v8.super.isa;
 }
 
-+ (id)incompletePlayerIDs:(id)a3 gameBundleIDs:(id)a4 scopedIDs:(id)a5
++ (id)incompletePlayerIDs:(id)ds gameBundleIDs:(id)iDs scopedIDs:(id)scopedIDs
 {
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -42,7 +42,7 @@
   return v8.super.isa;
 }
 
-+ (id)mergeWithScopedIDs:(id)a3 with:(id)a4
++ (id)mergeWithScopedIDs:(id)ds with:(id)with
 {
   sub_1001EB630();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

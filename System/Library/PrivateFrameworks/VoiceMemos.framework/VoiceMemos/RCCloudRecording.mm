@@ -1,9 +1,9 @@
 @interface RCCloudRecording
-+ (BOOL)isRecordingExported:(id)a3;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (BOOL)isRecordingExported:(id)exported;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (AVAsset)avAsset;
 - (BOOL)_audioFutureIsCurrent;
-- (BOOL)_audioFutureIsOutdated:(id)a3;
+- (BOOL)_audioFutureIsOutdated:(id)outdated;
 - (BOOL)_audioFutureUUIDIsCurrent;
 - (BOOL)_composedURLIsCloneOfAudioFuture;
 - (BOOL)_copyCustomLabelToEncryptedTitleIfNeeded;
@@ -11,7 +11,7 @@
 - (BOOL)_isOlderThanMandatoryMigrationAge;
 - (BOOL)_isReadyToMigrate;
 - (BOOL)_localAssetIsReachable;
-- (BOOL)_migrateCustomLabelIfNeeded:(BOOL)a3;
+- (BOOL)_migrateCustomLabelIfNeeded:(BOOL)needed;
 - (BOOL)audioFutureVersionIsCompatible;
 - (BOOL)canUpdateWithMultiTrackAsset;
 - (BOOL)canUpdateWithSpatialAsset;
@@ -19,16 +19,16 @@
 - (BOOL)isSkipSilenceEnabled;
 - (BOOL)isSpeechIsolatorEnabled;
 - (BOOL)localAssetIsCurrent;
-- (BOOL)markRecordingAsExported:(id)a3 error:(id *)a4;
+- (BOOL)markRecordingAsExported:(id)exported error:(id *)error;
 - (BOOL)recreateAudioFutureIfNecessary;
-- (BOOL)synchronizeWithExistingAudioFuture:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)synchronizeWithExistingAudioFuture:(id *)future;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (NSNumber)purgeableAudioFileSize;
 - (NSString)userFolderUUID;
 - (NSURL)URIRepresentation;
 - (NSURL)url;
-- (RCCloudRecording)initWithContext:(id)a3 andCreationDate:(id)a4;
+- (RCCloudRecording)initWithContext:(id)context andCreationDate:(id)date;
 - (_NSFileBackedFuture)syncedAudioFuture;
 - (double)length;
 - (double)syncedDuration;
@@ -36,45 +36,45 @@
 - (float)playRate;
 - (float)speechIsolatorValue;
 - (id)_detailLabel;
-- (id)_labelAllowingEmptyString:(BOOL)a3;
+- (id)_labelAllowingEmptyString:(BOOL)string;
 - (id)_localTitleForWillSave;
 - (id)_migratedTitleDateString;
-- (id)_uniqueMigratedTitleWithTitleBase:(id)a3;
+- (id)_uniqueMigratedTitleWithTitleBase:(id)base;
 - (id)fileNameForSharing;
 - (id)filePathForSyncingFromExistingAudioFuture;
-- (id)purgeAudioFileWithModel:(id)a3 error:(id *)a4;
+- (id)purgeAudioFileWithModel:(id)model error:(id *)error;
 - (id)recordingsModel;
-- (id)subjectForActivityType:(id)a3;
+- (id)subjectForActivityType:(id)type;
 - (unint64_t)syncedSharedFlags;
-- (void)_enqueueAudioFutureUUID:(id)a3;
+- (void)_enqueueAudioFutureUUID:(id)d;
 - (void)_evictAudioFuture;
-- (void)_setFlag:(unint64_t)a3 value:(BOOL)a4;
-- (void)_updateAudioFuture:(id)a3 isRecovery:(BOOL)a4;
-- (void)_updateFlagsDerivedFromComposedAsset:(id)a3;
+- (void)_setFlag:(unint64_t)flag value:(BOOL)value;
+- (void)_updateAudioFuture:(id)future isRecovery:(BOOL)recovery;
+- (void)_updateFlagsDerivedFromComposedAsset:(id)asset;
 - (void)_updateLocalDurationWithAssetDuration;
-- (void)copySharedFlagsFromOriginalRecording:(id)a3;
+- (void)copySharedFlagsFromOriginalRecording:(id)recording;
 - (void)fileNameForSharing;
 - (void)migrateCustomLabelIfNeeded;
 - (void)migrateLocalProperties;
 - (void)migratePlaybackSettings;
 - (void)migrateSyncedUUIDs;
-- (void)setEnhanced:(BOOL)a3;
-- (void)setFavorite:(BOOL)a3;
-- (void)setLayerMix:(float)a3;
-- (void)setLength:(double)a3;
-- (void)setMusicMemo:(BOOL)a3;
-- (void)setPlayRate:(float)a3;
-- (void)setSpeechIsolatorValue:(float)a3;
-- (void)setSyncedAudioFuture:(id)a3 sourceFileURL:(id)a4 containsSpatialAudio:(BOOL)a5;
-- (void)setSyncedDuration:(double)a3;
-- (void)setSyncedSharedFlags:(unint64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)setWatchOS:(BOOL)a3;
+- (void)setEnhanced:(BOOL)enhanced;
+- (void)setFavorite:(BOOL)favorite;
+- (void)setLayerMix:(float)mix;
+- (void)setLength:(double)length;
+- (void)setMusicMemo:(BOOL)memo;
+- (void)setPlayRate:(float)rate;
+- (void)setSpeechIsolatorValue:(float)value;
+- (void)setSyncedAudioFuture:(id)future sourceFileURL:(id)l containsSpatialAudio:(BOOL)audio;
+- (void)setSyncedDuration:(double)duration;
+- (void)setSyncedSharedFlags:(unint64_t)flags;
+- (void)setTitle:(id)title;
+- (void)setWatchOS:(BOOL)s;
 - (void)synchronizeRecordingMetadata;
 - (void)updateAudioFutureWithLocalAsset;
-- (void)updateForLocalTitleChange:(BOOL)a3;
-- (void)updateForRemoteTitleChange:(BOOL)a3;
-- (void)updateNilTitleFields:(BOOL)a3;
+- (void)updateForLocalTitleChange:(BOOL)change;
+- (void)updateForRemoteTitleChange:(BOOL)change;
+- (void)updateNilTitleFields:(BOOL)fields;
 - (void)willSave;
 @end
 
@@ -82,11 +82,11 @@
 
 - (double)length
 {
-  v3 = [(RCCloudRecording *)self localDuration];
-  v4 = v3;
-  if (v3)
+  localDuration = [(RCCloudRecording *)self localDuration];
+  v4 = localDuration;
+  if (localDuration)
   {
-    [v3 doubleValue];
+    [localDuration doubleValue];
   }
 
   else
@@ -101,22 +101,22 @@
 
 - (unint64_t)syncedSharedFlags
 {
-  v2 = [(RCCloudRecording *)self sharedFlags];
-  v3 = [v2 longLongValue];
+  sharedFlags = [(RCCloudRecording *)self sharedFlags];
+  longLongValue = [sharedFlags longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (RCCloudRecording)initWithContext:(id)a3 andCreationDate:(id)a4
+- (RCCloudRecording)initWithContext:(id)context andCreationDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = RCCloudRecording;
-  v7 = [(RCCloudRecording *)&v10 initWithContext:a3];
+  v7 = [(RCCloudRecording *)&v10 initWithContext:context];
   v8 = v7;
   if (v7)
   {
-    [(RCCloudRecording *)v7 setValue:v6 forKey:@"date"];
+    [(RCCloudRecording *)v7 setValue:dateCopy forKey:@"date"];
   }
 
   return v8;
@@ -124,10 +124,10 @@
 
 - (void)migrateLocalProperties
 {
-  v3 = [(RCCloudRecording *)self encryptedTitle];
-  if (v3)
+  encryptedTitle = [(RCCloudRecording *)self encryptedTitle];
+  if (encryptedTitle)
   {
-    [(RCCloudRecording *)self setLocalTitle:v3];
+    [(RCCloudRecording *)self setLocalTitle:encryptedTitle];
   }
 
   else
@@ -169,7 +169,7 @@
 {
   if ([(RCCloudRecording *)self isInserted])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
@@ -181,16 +181,16 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v3 = [(RCCloudRecording *)self changedValues];
+    selfCopy = [(RCCloudRecording *)self changedValues];
   }
 
-  v4 = v3;
-  if (!v3)
+  v4 = selfCopy;
+  if (!selfCopy)
   {
     goto LABEL_12;
   }
 
-  v5 = [(RCCloudRecording *)v3 valueForKey:@"encryptedTitle"];
+  v5 = [(RCCloudRecording *)selfCopy valueForKey:@"encryptedTitle"];
   if ((isNotNullAndNotNSNull(v5) & 1) == 0)
   {
     v6 = [(RCCloudRecording *)v4 valueForKey:@"customLabel"];
@@ -211,7 +211,7 @@ LABEL_13:
 - (void)willSave
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = [a1 uuid];
+  uuid = [self uuid];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_2_0();
   _os_log_fault_impl(v2, v3, OS_LOG_TYPE_FAULT, v4, v5, 0x16u);
@@ -219,18 +219,18 @@ LABEL_13:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
-  v3 = [(RCCloudRecording *)self creationDate];
-  v4 = v3 != 0;
+  creationDate = [(RCCloudRecording *)self creationDate];
+  v4 = creationDate != 0;
 
   return v4;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
-  v3 = [(RCCloudRecording *)self creationDate];
-  v4 = v3 != 0;
+  creationDate = [(RCCloudRecording *)self creationDate];
+  v4 = creationDate != 0;
 
   return v4;
 }
@@ -242,26 +242,26 @@ LABEL_13:
   if ([v3 checkResourceIsReachableAndReturnError:0] && -[RCCloudRecording playable](self, "playable"))
   {
     v4 = [MEMORY[0x277CE6650] assetWithURL:v3];
-    v5 = [v4 rc_recordingMetadata];
-    v6 = [v5 mutableCopy];
+    rc_recordingMetadata = [v4 rc_recordingMetadata];
+    v6 = [rc_recordingMetadata mutableCopy];
 
-    v7 = [(RCCloudRecording *)self title];
-    [v6 setObject:v7 forKeyedSubscript:@"title"];
+    title = [(RCCloudRecording *)self title];
+    [v6 setObject:title forKeyedSubscript:@"title"];
 
     v14 = 0;
     v8 = [MEMORY[0x277CE63D8] rc_updateMetadataInFile:v3 withRecordingMetadata:v6 error:&v14];
     v9 = v14;
     if (v8)
     {
-      v10 = [v3 fileSystemRepresentation];
+      fileSystemRepresentation = [v3 fileSystemRepresentation];
       if (audioDigestAttribute_onceToken != -1)
       {
-        v13 = v10;
+        v13 = fileSystemRepresentation;
         [RCCloudRecording synchronizeRecordingMetadata];
-        v10 = v13;
+        fileSystemRepresentation = v13;
       }
 
-      removexattr(v10, audioDigestAttribute__audioDigestAttribute, 0);
+      removexattr(fileSystemRepresentation, audioDigestAttribute__audioDigestAttribute, 0);
       [(RCCloudRecording *)self _updateLocalDurationWithAssetDuration];
       [(RCCloudRecording *)self _updateAudioFuture:v3 isRecovery:0];
     }
@@ -283,12 +283,12 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAudioFuture:(id)a3 isRecovery:(BOOL)a4
+- (void)_updateAudioFuture:(id)future isRecovery:(BOOL)recovery
 {
-  v4 = a4;
+  recoveryCopy = recovery;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 checkResourceIsReachableAndReturnError:0])
+  futureCopy = future;
+  if ([futureCopy checkResourceIsReachableAndReturnError:0])
   {
     v7 = [(RCCloudRecording *)self url];
     v8 = computeAudioDigest(v7);
@@ -303,34 +303,34 @@ LABEL_13:
       }
     }
 
-    v11 = [(RCCloudRecording *)self audioDigest];
-    v12 = [(RCCloudRecording *)self syncedAudioFuture];
-    if (!v12 || !v11 || ![v11 isEqualToData:v8] || v4)
+    audioDigest = [(RCCloudRecording *)self audioDigest];
+    syncedAudioFuture = [(RCCloudRecording *)self syncedAudioFuture];
+    if (!syncedAudioFuture || !audioDigest || ![audioDigest isEqualToData:v8] || recoveryCopy)
     {
-      v13 = [MEMORY[0x277CBE440] createFutureForFileAtURL:v6];
+      v13 = [MEMORY[0x277CBE440] createFutureForFileAtURL:futureCopy];
       v14 = OSLogForCategory(@"Service");
       v15 = v14;
       if (v13)
       {
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(RCCloudRecording *)self uuid];
+          uuid = [(RCCloudRecording *)self uuid];
           *buf = 136315906;
           v20 = "[RCCloudRecording _updateAudioFuture:isRecovery:]";
           v21 = 2112;
-          v22 = v16;
+          v22 = uuid;
           v23 = 2112;
-          v24 = v11;
+          v24 = audioDigest;
           v25 = 2112;
           v26 = v8;
           _os_log_impl(&dword_272442000, v15, OS_LOG_TYPE_DEFAULT, "%s -- uniqueID = %@, oldDigest = %@, newDigest = %@", buf, 0x2Au);
         }
 
-        [(RCCloudRecording *)self _updateFlagsDerivedFromComposedAsset:v6];
-        [(RCCloudRecording *)self setSyncedAudioFuture:v13 sourceFileURL:v6 containsSpatialAudio:[(RCCloudRecording *)self composedAssetIsSpatialRecording]];
+        [(RCCloudRecording *)self _updateFlagsDerivedFromComposedAsset:futureCopy];
+        [(RCCloudRecording *)self setSyncedAudioFuture:v13 sourceFileURL:futureCopy containsSpatialAudio:[(RCCloudRecording *)self composedAssetIsSpatialRecording]];
         [(RCCloudRecording *)self setAudioDigest:v8];
-        v17 = [v13 UUID];
-        [(RCCloudRecording *)self _enqueueAudioFutureUUID:v17];
+        uUID = [v13 UUID];
+        [(RCCloudRecording *)self _enqueueAudioFutureUUID:uUID];
 
         [(RCCloudRecording *)self setFlags:[(RCCloudRecording *)self flags]& 0xFFFFFFFFFFFFFFF9 | 4];
       }
@@ -359,14 +359,14 @@ LABEL_13:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateFlagsDerivedFromComposedAsset:(id)a3
+- (void)_updateFlagsDerivedFromComposedAsset:(id)asset
 {
-  v4 = [MEMORY[0x277CE6650] assetWithURL:a3];
-  v5 = [v4 rc_transcriptionData];
-  if (v5)
+  v4 = [MEMORY[0x277CE6650] assetWithURL:asset];
+  rc_transcriptionData = [v4 rc_transcriptionData];
+  if (rc_transcriptionData)
   {
     v12 = 0;
-    v6 = [TranscriptionDecoder decodeTransciptionData:v5 error:&v12];
+    v6 = [TranscriptionDecoder decodeTransciptionData:rc_transcriptionData error:&v12];
     v7 = v12;
     v8 = v6 != 0;
     if (v6)
@@ -394,8 +394,8 @@ LABEL_13:
 
   [(RCCloudRecording *)self setHasBeenTranscribed:v8];
   [(RCCloudRecording *)self setTranscriptionContentExists:v9];
-  v11 = [v4 rc_audioTracks];
-  -[RCCloudRecording setComposedAssetHasMultipleTracks:](self, "setComposedAssetHasMultipleTracks:", [v11 count] > 1);
+  rc_audioTracks = [v4 rc_audioTracks];
+  -[RCCloudRecording setComposedAssetHasMultipleTracks:](self, "setComposedAssetHasMultipleTracks:", [rc_audioTracks count] > 1);
 
   -[RCCloudRecording setComposedAssetIsSpatialRecording:](self, "setComposedAssetIsSpatialRecording:", [v4 rc_hasSpatialTracks]);
 }
@@ -408,56 +408,56 @@ LABEL_13:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enqueueAudioFutureUUID:(id)a3
+- (void)_enqueueAudioFutureUUID:(id)d
 {
-  v11 = a3;
-  if (v11)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [(RCCloudRecording *)self audioFutureUUIDs];
-    v5 = [v4 containsObject:v11];
+    audioFutureUUIDs = [(RCCloudRecording *)self audioFutureUUIDs];
+    v5 = [audioFutureUUIDs containsObject:dCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(RCCloudRecording *)self audioFutureUUIDs];
-      v7 = v6;
+      audioFutureUUIDs2 = [(RCCloudRecording *)self audioFutureUUIDs];
+      v7 = audioFutureUUIDs2;
       v8 = MEMORY[0x277CBEBF8];
-      if (v6)
+      if (audioFutureUUIDs2)
       {
-        v8 = v6;
+        v8 = audioFutureUUIDs2;
       }
 
       v9 = v8;
 
-      v10 = [v9 arrayByAddingObject:v11];
+      v10 = [v9 arrayByAddingObject:dCopy];
 
       [(RCCloudRecording *)self setAudioFutureUUIDs:v10];
     }
   }
 }
 
-- (void)copySharedFlagsFromOriginalRecording:(id)a3
+- (void)copySharedFlagsFromOriginalRecording:(id)recording
 {
-  v4 = [a3 syncedSharedFlags];
+  syncedSharedFlags = [recording syncedSharedFlags];
 
-  [(RCCloudRecording *)self setSyncedSharedFlags:v4];
+  [(RCCloudRecording *)self setSyncedSharedFlags:syncedSharedFlags];
 }
 
 - (BOOL)recreateAudioFutureIfNecessary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(RCCloudRecording *)self syncedAudioFuture];
+  syncedAudioFuture = [(RCCloudRecording *)self syncedAudioFuture];
   v4 = [(RCCloudRecording *)self url];
   v5 = v4;
-  if (v4 && [v4 checkResourceIsReachableAndReturnError:0] && (!v3 || -[RCCloudRecording _audioFutureIsOutdated:](self, "_audioFutureIsOutdated:", v3)))
+  if (v4 && [v4 checkResourceIsReachableAndReturnError:0] && (!syncedAudioFuture || -[RCCloudRecording _audioFutureIsOutdated:](self, "_audioFutureIsOutdated:", syncedAudioFuture)))
   {
     v6 = OSLogForCategory(@"Service");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(RCCloudRecording *)self uuid];
+      uuid = [(RCCloudRecording *)self uuid];
       v11 = 136315394;
       v12 = "[RCCloudRecording recreateAudioFutureIfNecessary]";
       v13 = 2112;
-      v14 = v7;
+      v14 = uuid;
       _os_log_impl(&dword_272442000, v6, OS_LOG_TYPE_DEFAULT, "%s -- Recreating audio future - recording uuid = %@", &v11, 0x16u);
     }
 
@@ -480,17 +480,17 @@ LABEL_13:
   [(RCCloudRecording *)self _updateAudioFuture:v3 isRecovery:1];
 }
 
-- (BOOL)_audioFutureIsOutdated:(id)a3
+- (BOOL)_audioFutureIsOutdated:(id)outdated
 {
-  v4 = [a3 UUID];
-  if (v4)
+  uUID = [outdated UUID];
+  if (uUID)
   {
-    v5 = [(RCCloudRecording *)self audioFutureUUIDs];
-    if ([v5 containsObject:v4])
+    audioFutureUUIDs = [(RCCloudRecording *)self audioFutureUUIDs];
+    if ([audioFutureUUIDs containsObject:uUID])
     {
-      v6 = [(RCCloudRecording *)self audioFutureUUIDs];
-      v7 = [v6 lastObject];
-      v8 = [v4 isEqual:v7] ^ 1;
+      audioFutureUUIDs2 = [(RCCloudRecording *)self audioFutureUUIDs];
+      lastObject = [audioFutureUUIDs2 lastObject];
+      v8 = [uUID isEqual:lastObject] ^ 1;
     }
 
     else
@@ -526,11 +526,11 @@ LABEL_13:
 
 - (BOOL)_audioFutureUUIDIsCurrent
 {
-  v3 = [(RCCloudRecording *)self audioFutureUUIDs];
-  v4 = [v3 lastObject];
-  v5 = [(RCCloudRecording *)self syncedAudioFuture];
-  v6 = [v5 UUID];
-  v7 = [v4 isEqual:v6];
+  audioFutureUUIDs = [(RCCloudRecording *)self audioFutureUUIDs];
+  lastObject = [audioFutureUUIDs lastObject];
+  syncedAudioFuture = [(RCCloudRecording *)self syncedAudioFuture];
+  uUID = [syncedAudioFuture UUID];
+  v7 = [lastObject isEqual:uUID];
 
   return v7;
 }
@@ -547,15 +547,15 @@ LABEL_13:
 
 - (BOOL)_composedURLIsCloneOfAudioFuture
 {
-  v3 = [(RCCloudRecording *)self syncedAudioFuture];
-  v4 = [v3 fileURL];
+  syncedAudioFuture = [(RCCloudRecording *)self syncedAudioFuture];
+  fileURL = [syncedAudioFuture fileURL];
 
   v5 = [(RCCloudRecording *)self url];
   v6 = v5;
   v7 = 0;
-  if (v4 && v5)
+  if (fileURL && v5)
   {
-    v7 = identicalClones(v4, v5);
+    v7 = identicalClones(fileURL, v5);
   }
 
   return v7;
@@ -563,31 +563,31 @@ LABEL_13:
 
 - (BOOL)localAssetIsCurrent
 {
-  v3 = [(RCCloudRecording *)self _localAssetIsReachable];
-  if (v3)
+  _localAssetIsReachable = [(RCCloudRecording *)self _localAssetIsReachable];
+  if (_localAssetIsReachable)
   {
 
-    LOBYTE(v3) = [(RCCloudRecording *)self _audioFutureIsCurrent];
+    LOBYTE(_localAssetIsReachable) = [(RCCloudRecording *)self _audioFutureIsCurrent];
   }
 
-  return v3;
+  return _localAssetIsReachable;
 }
 
-- (BOOL)synchronizeWithExistingAudioFuture:(id *)a3
+- (BOOL)synchronizeWithExistingAudioFuture:(id *)future
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [(RCCloudRecording *)self syncedAudioFuture];
-  v6 = [v5 fileURL];
-  v7 = v6;
-  if (v6)
+  syncedAudioFuture = [(RCCloudRecording *)self syncedAudioFuture];
+  fileURL = [syncedAudioFuture fileURL];
+  v7 = fileURL;
+  if (fileURL)
   {
-    v8 = [v6 path];
+    path = [fileURL path];
     v9 = [(RCCloudRecording *)self url];
-    v10 = [v9 path];
+    path2 = [v9 path];
 
-    if (v10)
+    if (path2)
     {
-      v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10];
+      v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:path2];
       if (identicalClones(v11, v7))
       {
         goto LABEL_4;
@@ -595,7 +595,7 @@ LABEL_13:
 
       memset(&v32, 0, sizeof(v32));
       memset(&v31, 0, sizeof(v31));
-      if (!stat([v10 fileSystemRepresentation], &v32) && !stat(objc_msgSend(v8, "fileSystemRepresentation"), &v31) && !(v32.st_size | v31.st_size))
+      if (!stat([path2 fileSystemRepresentation], &v32) && !stat(objc_msgSend(path, "fileSystemRepresentation"), &v31) && !(v32.st_size | v31.st_size))
       {
         goto LABEL_4;
       }
@@ -603,8 +603,8 @@ LABEL_13:
 
     else
     {
-      v13 = [(RCCloudRecording *)self filePathForSyncingFromExistingAudioFuture];
-      if (!v13)
+      filePathForSyncingFromExistingAudioFuture = [(RCCloudRecording *)self filePathForSyncingFromExistingAudioFuture];
+      if (!filePathForSyncingFromExistingAudioFuture)
       {
         v14 = OSLogForCategory(@"Default");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -613,21 +613,21 @@ LABEL_13:
         }
 
         v11 = 0;
-        v10 = 0;
+        path2 = 0;
         goto LABEL_20;
       }
 
-      v10 = v13;
-      v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v13];
+      path2 = filePathForSyncingFromExistingAudioFuture;
+      v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:filePathForSyncingFromExistingAudioFuture];
     }
 
     [RCComposition deleteFromFilesystem:v11];
-    if (clonefile([v8 fileSystemRepresentation], objc_msgSend(v10, "fileSystemRepresentation"), 0) || chmod(objc_msgSend(v10, "fileSystemRepresentation"), 0x1A4u))
+    if (clonefile([path fileSystemRepresentation], objc_msgSend(path2, "fileSystemRepresentation"), 0) || chmod(objc_msgSend(path2, "fileSystemRepresentation"), 0x1A4u))
     {
-      if (a3)
+      if (future)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
-        *a3 = v12 = 0;
+        *future = v12 = 0;
         goto LABEL_21;
       }
 
@@ -654,8 +654,8 @@ LABEL_20:
 
     v29 = v18;
     [(RCCloudRecording *)self setAudioDigest:v17];
-    v20 = [v10 lastPathComponent];
-    [(RCCloudRecording *)self setFileName:v20];
+    lastPathComponent = [path2 lastPathComponent];
+    [(RCCloudRecording *)self setFileName:lastPathComponent];
 
     [(RCCloudRecording *)self setFlags:[(RCCloudRecording *)self flags]& 0xFFFFFFFFFFFFFFF9 | 4];
     v21 = OSLogForCategory(@"Service");
@@ -663,13 +663,13 @@ LABEL_20:
     {
       [(RCCloudRecording *)self uuid];
       v22 = v28 = v17;
-      v23 = [v10 lastPathComponent];
+      lastPathComponent2 = [path2 lastPathComponent];
       v32.st_dev = 136315650;
       *&v32.st_mode = "[RCCloudRecording synchronizeWithExistingAudioFuture:]";
       WORD2(v32.st_ino) = 2112;
       *(&v32.st_ino + 6) = v22;
       HIWORD(v32.st_gid) = 2112;
-      *&v32.st_rdev = v23;
+      *&v32.st_rdev = lastPathComponent2;
       _os_log_impl(&dword_272442000, v21, OS_LOG_TYPE_DEFAULT, "%s -- synchronized recording uuid = %@ audioFuture to %@", &v32, 0x20u);
 
       v17 = v28;
@@ -678,18 +678,18 @@ LABEL_20:
     v24 = OSLogForCategory(@"Service");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      [RCCloudRecording synchronizeWithExistingAudioFuture:v10];
+      [RCCloudRecording synchronizeWithExistingAudioFuture:path2];
     }
 
     [(RCCloudRecording *)self _updateLocalDurationWithAssetDuration];
-    v25 = [v5 UUID];
-    [(RCCloudRecording *)self _enqueueAudioFutureUUID:v25];
+    uUID = [syncedAudioFuture UUID];
+    [(RCCloudRecording *)self _enqueueAudioFutureUUID:uUID];
 
     [(RCCloudRecording *)self _updateFlagsDerivedFromComposedAsset:v11];
     v30[0] = 0;
-    LOBYTE(v25) = [(RCCloudRecording *)self markRecordingAsExported:v11 error:v30];
+    LOBYTE(uUID) = [(RCCloudRecording *)self markRecordingAsExported:v11 error:v30];
     v26 = v30[0];
-    if ((v25 & 1) == 0)
+    if ((uUID & 1) == 0)
     {
       v27 = OSLogForCategory(@"Service");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -705,10 +705,10 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3)
+  if (future)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:0];
-    *a3 = v12 = 0;
+    *future = v12 = 0;
   }
 
   else
@@ -722,20 +722,20 @@ LABEL_22:
   return v12;
 }
 
-+ (BOOL)isRecordingExported:(id)a3
++ (BOOL)isRecordingExported:(id)exported
 {
-  v3 = a3;
-  if (isAudioFilePurgeable(v3))
+  exportedCopy = exported;
+  if (isAudioFilePurgeable(exportedCopy))
   {
     v4 = *MEMORY[0x277CBECB0];
     v11 = 0;
     v12 = 0;
-    v5 = [v3 getResourceValue:&v12 forKey:v4 error:&v11];
+    v5 = [exportedCopy getResourceValue:&v12 forKey:v4 error:&v11];
     v6 = v12;
     v7 = v11;
     if (v5)
     {
-      v8 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
@@ -746,36 +746,36 @@ LABEL_22:
         +[RCCloudRecording isRecordingExported:];
       }
 
-      v8 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)markRecordingAsExported:(id)a3 error:(id *)a4
+- (BOOL)markRecordingAsExported:(id)exported error:(id *)error
 {
-  v6 = a3;
+  exportedCopy = exported;
   value = 1;
-  v7 = [v6 fileSystemRepresentation];
+  fileSystemRepresentation = [exportedCopy fileSystemRepresentation];
   if (audioFileFlagsAttribute_onceToken != -1)
   {
     isAudioFilePurgeable_cold_1();
   }
 
-  v8 = setxattr(v7, audioFileFlagsAttribute__audioFileFlagsAttribute, &value, 8uLL, 0, 0);
-  if (a4 && v8)
+  v8 = setxattr(fileSystemRepresentation, audioFileFlagsAttribute__audioFileFlagsAttribute, &value, 8uLL, 0, 0);
+  if (error && v8)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
-  else if (v8 || ![RCComposition excludeFromBackup:v6 error:a4])
+  else if (v8 || ![RCComposition excludeFromBackup:exportedCopy error:error])
   {
     v9 = 0;
   }
@@ -792,7 +792,7 @@ LABEL_22:
 - (void)_evictAudioFuture
 {
   v7 = *MEMORY[0x277D85DE8];
-  v6 = [a1 fileURL];
+  fileURL = [self fileURL];
   OUTLINED_FUNCTION_2_0();
   _os_log_error_impl(v1, v2, OS_LOG_TYPE_ERROR, v3, v4, 0x20u);
 
@@ -820,34 +820,34 @@ LABEL_5:
   return v5;
 }
 
-- (id)purgeAudioFileWithModel:(id)a3 error:(id *)a4
+- (id)purgeAudioFileWithModel:(id)model error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modelCopy = model;
   v7 = [(RCCloudRecording *)self url];
   if (isAudioFilePurgeable(v7))
   {
     v24 = 0;
-    v8 = [v7 getResourceValue:&v24 forKey:*MEMORY[0x277CBE838] error:a4];
+    v8 = [v7 getResourceValue:&v24 forKey:*MEMORY[0x277CBE838] error:error];
     v9 = v24;
     v10 = 0;
     if (v8)
     {
       [(RCCloudRecording *)self setFileName:0];
       [(RCCloudRecording *)self setPlayable:0];
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v23 = 0;
-      v12 = [v11 removeItemAtURL:v7 error:&v23];
+      v12 = [defaultManager removeItemAtURL:v7 error:&v23];
       v13 = v23;
 
       if (v12)
       {
-        v14 = [(RCCloudRecording *)self syncedAudioFuture];
-        if (v14)
+        syncedAudioFuture = [(RCCloudRecording *)self syncedAudioFuture];
+        if (syncedAudioFuture)
         {
-          v15 = [v6 context];
+          context = [modelCopy context];
           v22 = 0;
-          v16 = [v15 evictFuture:v14 withError:&v22];
+          v16 = [context evictFuture:syncedAudioFuture withError:&v22];
           v17 = v22;
           if ((v16 & 1) == 0)
           {
@@ -866,11 +866,11 @@ LABEL_5:
         v10 = v9;
       }
 
-      else if (a4)
+      else if (error)
       {
         v19 = v13;
         v10 = 0;
-        *a4 = v13;
+        *error = v13;
       }
 
       else
@@ -890,29 +890,29 @@ LABEL_5:
   return v10;
 }
 
-- (void)_setFlag:(unint64_t)a3 value:(BOOL)a4
+- (void)_setFlag:(unint64_t)flag value:(BOOL)value
 {
-  v4 = a4;
-  v7 = [(RCCloudRecording *)self flags];
-  if (v4)
+  valueCopy = value;
+  flags = [(RCCloudRecording *)self flags];
+  if (valueCopy)
   {
-    v8 = v7 | a3;
+    v8 = flags | flag;
   }
 
   else
   {
-    v8 = v7 & ~a3;
+    v8 = flags & ~flag;
   }
 
   [(RCCloudRecording *)self setFlags:v8];
 }
 
-- (void)setWatchOS:(BOOL)a3
+- (void)setWatchOS:(BOOL)s
 {
-  v3 = a3;
+  sCopy = s;
   v5 = [(RCCloudRecording *)self syncedSharedFlags]& 0xFFFFFFFFFFFFFFBFLL;
   v6 = 64;
-  if (!v3)
+  if (!sCopy)
   {
     v6 = 0;
   }
@@ -920,12 +920,12 @@ LABEL_5:
   [(RCCloudRecording *)self setSyncedSharedFlags:v5 | v6];
 }
 
-- (void)setMusicMemo:(BOOL)a3
+- (void)setMusicMemo:(BOOL)memo
 {
-  v3 = a3;
+  memoCopy = memo;
   v5 = [(RCCloudRecording *)self syncedSharedFlags]& 0xFFFFFFFFFFFFFFFBLL;
   v6 = 4;
-  if (!v3)
+  if (!memoCopy)
   {
     v6 = 0;
   }
@@ -933,19 +933,19 @@ LABEL_5:
   [(RCCloudRecording *)self setSyncedSharedFlags:v5 | v6];
 }
 
-- (void)setFavorite:(BOOL)a3
+- (void)setFavorite:(BOOL)favorite
 {
-  v4 = [(RCCloudRecording *)self syncedSharedFlags]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(RCCloudRecording *)self syncedSharedFlags]& 0xFFFFFFFFFFFFFFFELL | favorite;
 
   [(RCCloudRecording *)self setSyncedSharedFlags:v4];
 }
 
-- (void)setEnhanced:(BOOL)a3
+- (void)setEnhanced:(BOOL)enhanced
 {
-  v3 = a3;
+  enhancedCopy = enhanced;
   v5 = [(RCCloudRecording *)self syncedSharedFlags]& 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
-  if (!v3)
+  if (!enhancedCopy)
   {
     v6 = 0;
   }
@@ -953,14 +953,14 @@ LABEL_5:
   [(RCCloudRecording *)self setSyncedSharedFlags:v5 | v6];
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___RCCloudRecording;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v10, sel_keyPathsForValuesAffectingValueForKey_, v3);
-  v5 = [v3 isEqualToString:{@"enhanced", v10.receiver, v10.super_class}];
+  keyCopy = key;
+  v4 = objc_msgSendSuper2(&v10, sel_keyPathsForValuesAffectingValueForKey_, keyCopy);
+  v5 = [keyCopy isEqualToString:{@"enhanced", v10.receiver, v10.super_class}];
 
   if (v5)
   {
@@ -978,11 +978,11 @@ LABEL_5:
 
 - (NSURL)url
 {
-  v2 = [(RCCloudRecording *)self fileName];
-  if (v2)
+  fileName = [(RCCloudRecording *)self fileName];
+  if (fileName)
   {
     v3 = RCRecordingsDirectoryURL();
-    v4 = [v3 URLByAppendingPathComponent:v2];
+    v4 = [v3 URLByAppendingPathComponent:fileName];
   }
 
   else
@@ -995,17 +995,17 @@ LABEL_5:
 
 - (NSURL)URIRepresentation
 {
-  v2 = [(RCCloudRecording *)self objectID];
-  v3 = [v2 URIRepresentation];
+  objectID = [(RCCloudRecording *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
 
-  return v3;
+  return uRIRepresentation;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  [(RCCloudRecording *)self setLocalTitle:v4];
-  [(RCCloudRecording *)self setEncryptedTitle:v4];
+  titleCopy = title;
+  [(RCCloudRecording *)self setLocalTitle:titleCopy];
+  [(RCCloudRecording *)self setEncryptedTitle:titleCopy];
 }
 
 - (BOOL)isContentBeingModified
@@ -1016,16 +1016,16 @@ LABEL_5:
   return v3;
 }
 
-- (id)_labelAllowingEmptyString:(BOOL)a3
+- (id)_labelAllowingEmptyString:(BOOL)string
 {
-  v4 = [(RCCloudRecording *)self title];
-  v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  title = [(RCCloudRecording *)self title];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v6 = [title stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v7 = [v6 length];
 
   if (v7)
   {
-    if (v4)
+    if (title)
     {
       goto LABEL_3;
     }
@@ -1033,7 +1033,7 @@ LABEL_5:
 
   else
   {
-    if (a3)
+    if (string)
     {
       v8 = 0;
       goto LABEL_6;
@@ -1041,11 +1041,11 @@ LABEL_5:
 
     v9 = RCLocalizedFrameworkString(@"UNNAMED_RECORDING_LABEL");
 
-    v4 = v9;
+    title = v9;
     if (v9)
     {
 LABEL_3:
-      v8 = RCDisplayStringForString(v4);
+      v8 = RCDisplayStringForString(title);
 LABEL_6:
 
       goto LABEL_9;
@@ -1075,8 +1075,8 @@ LABEL_9:
       v4 = _detailLabel___timeFormatter;
     }
 
-    v7 = [(RCCloudRecording *)self creationDate];
-    v3 = [v4 stringFromDate:v7];
+    creationDate = [(RCCloudRecording *)self creationDate];
+    v3 = [v4 stringFromDate:creationDate];
   }
 
   return v3;
@@ -1086,10 +1086,10 @@ LABEL_9:
 {
   if (!self->_avAsset)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v4 = [(RCCloudRecording *)self url];
-    v5 = [v4 path];
-    v6 = [v3 fileExistsAtPath:v5];
+    path = [v4 path];
+    v6 = [defaultManager fileExistsAtPath:path];
 
     if (v6)
     {
@@ -1108,11 +1108,11 @@ LABEL_9:
 
 - (id)fileNameForSharing
 {
-  v3 = [(RCCloudRecording *)self title];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+  title = [(RCCloudRecording *)self title];
+  v4 = [title stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
 
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v6, "fileSystemRepresentation")}];
 
@@ -1122,15 +1122,15 @@ LABEL_9:
   }
 
   v8 = [(RCCloudRecording *)self url];
-  v9 = [v8 lastPathComponent];
-  v10 = [v9 stringByDeletingPathExtension];
+  lastPathComponent = [v8 lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  if ([v10 length])
+  if ([stringByDeletingPathExtension length])
   {
-    v7 = v10;
+    v7 = stringByDeletingPathExtension;
 LABEL_4:
-    v10 = v7;
-    v11 = v10;
+    stringByDeletingPathExtension = v7;
+    v11 = stringByDeletingPathExtension;
     goto LABEL_5;
   }
 
@@ -1146,15 +1146,15 @@ LABEL_5:
   return v11;
 }
 
-- (id)subjectForActivityType:(id)a3
+- (id)subjectForActivityType:(id)type
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  if ([a3 isEqualToString:@"com.apple.UIKit.activity.AirDrop"])
+  if ([type isEqualToString:@"com.apple.UIKit.activity.AirDrop"])
   {
     v12[0] = @"SFAirDropActivitySubjectMain";
-    v4 = [(RCCloudRecording *)self _detailLabel];
+    _detailLabel = [(RCCloudRecording *)self _detailLabel];
     v12[1] = @"SFAirDropActivitySubjectDuration";
-    v13[0] = v4;
+    v13[0] = _detailLabel;
     v5 = MEMORY[0x277CCABB0];
     [(RCCloudRecording *)self length];
     v6 = [v5 numberWithDouble:?];
@@ -1162,23 +1162,23 @@ LABEL_5:
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
     v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v7 options:0 error:0];
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+    _detailLabel2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
   }
 
   else
   {
-    v9 = [(RCCloudRecording *)self _detailLabel];
+    _detailLabel2 = [(RCCloudRecording *)self _detailLabel];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return _detailLabel2;
 }
 
-- (void)setLength:(double)a3
+- (void)setLength:(double)length
 {
   [(RCCloudRecording *)self setSyncedDuration:?];
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:length];
   [(RCCloudRecording *)self setLocalDuration:v5];
 
   avAsset = self->_avAsset;
@@ -1187,36 +1187,36 @@ LABEL_5:
 
 - (NSString)userFolderUUID
 {
-  v2 = [(RCCloudRecording *)self folder];
-  v3 = [v2 uuid];
+  folder = [(RCCloudRecording *)self folder];
+  uuid = [folder uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (_NSFileBackedFuture)syncedAudioFuture
 {
-  v3 = [(RCCloudRecording *)self audioFuture];
-  v4 = v3;
-  if (v3)
+  audioFuture = [(RCCloudRecording *)self audioFuture];
+  v4 = audioFuture;
+  if (audioFuture)
   {
-    v5 = v3;
+    v5 = audioFuture;
   }
 
   else
   {
-    v6 = [(RCCloudRecording *)self mtAudioFuture];
-    v7 = v6;
-    if (v6)
+    mtAudioFuture = [(RCCloudRecording *)self mtAudioFuture];
+    v7 = mtAudioFuture;
+    if (mtAudioFuture)
     {
-      v8 = v6;
+      versionedAudioFuture = mtAudioFuture;
     }
 
     else
     {
-      v8 = [(RCCloudRecording *)self versionedAudioFuture];
+      versionedAudioFuture = [(RCCloudRecording *)self versionedAudioFuture];
     }
 
-    v5 = v8;
+    v5 = versionedAudioFuture;
   }
 
   return v5;
@@ -1224,23 +1224,23 @@ LABEL_5:
 
 - (id)filePathForSyncingFromExistingAudioFuture
 {
-  v3 = [(RCCloudRecording *)self audioFuture];
+  audioFuture = [(RCCloudRecording *)self audioFuture];
 
-  if (v3)
+  if (audioFuture)
   {
     v4 = RCAudioFileExtensionM4A;
 LABEL_6:
     v7 = *v4;
-    v8 = [(RCCloudRecording *)self creationDate];
-    v9 = [(RCCloudRecording *)self uuid];
-    v10 = [RCSavedRecordingsModel standardPathForRecordingWithCreationDate:v8 uniqueID:v9 fileExtension:v7];
+    creationDate = [(RCCloudRecording *)self creationDate];
+    uuid = [(RCCloudRecording *)self uuid];
+    v10 = [RCSavedRecordingsModel standardPathForRecordingWithCreationDate:creationDate uniqueID:uuid fileExtension:v7];
 
     goto LABEL_7;
   }
 
-  v5 = [(RCCloudRecording *)self mtAudioFuture];
+  mtAudioFuture = [(RCCloudRecording *)self mtAudioFuture];
 
-  if (v5 || ([(RCCloudRecording *)self versionedAudioFuture], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (mtAudioFuture || ([(RCCloudRecording *)self versionedAudioFuture], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v4 = RCAudioFileExtensionQTA;
     goto LABEL_6;
@@ -1252,33 +1252,33 @@ LABEL_7:
   return v10;
 }
 
-- (void)setSyncedAudioFuture:(id)a3 sourceFileURL:(id)a4 containsSpatialAudio:(BOOL)a5
+- (void)setSyncedAudioFuture:(id)future sourceFileURL:(id)l containsSpatialAudio:(BOOL)audio
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [a4 pathExtension];
-  v10 = [v9 isEqualToString:@"qta"];
+  audioCopy = audio;
+  futureCopy = future;
+  pathExtension = [l pathExtension];
+  v10 = [pathExtension isEqualToString:@"qta"];
 
   if (v10)
   {
-    v11 = [(RCCloudRecording *)self versionedAudioFuture];
+    versionedAudioFuture = [(RCCloudRecording *)self versionedAudioFuture];
 
-    if (v11 || v5)
+    if (versionedAudioFuture || audioCopy)
     {
-      [(RCCloudRecording *)self setVersionedAudioFuture:v8];
-      v14 = [(RCCloudRecording *)self audioFutureFlags];
-      v15 = [v14 integerValue];
+      [(RCCloudRecording *)self setVersionedAudioFuture:futureCopy];
+      audioFutureFlags = [(RCCloudRecording *)self audioFutureFlags];
+      integerValue = [audioFutureFlags integerValue];
 
-      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:v15 | 1];
+      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:integerValue | 1];
       [(RCCloudRecording *)self setAudioFutureFlags:v16];
 
-      v12 = [(RCCloudRecording *)self mtAudioFuture];
-      if (!v12)
+      mtAudioFuture = [(RCCloudRecording *)self mtAudioFuture];
+      if (!mtAudioFuture)
       {
 LABEL_10:
-        v13 = [(RCCloudRecording *)self audioFuture];
+        audioFuture = [(RCCloudRecording *)self audioFuture];
 LABEL_11:
-        v17 = v13;
+        v17 = audioFuture;
 
         if (!v17)
         {
@@ -1291,9 +1291,9 @@ LABEL_11:
 
     else
     {
-      [(RCCloudRecording *)self setMtAudioFuture:v8];
-      v12 = [(RCCloudRecording *)self versionedAudioFuture];
-      if (!v12)
+      [(RCCloudRecording *)self setMtAudioFuture:futureCopy];
+      mtAudioFuture = [(RCCloudRecording *)self versionedAudioFuture];
+      if (!mtAudioFuture)
       {
         goto LABEL_10;
       }
@@ -1302,11 +1302,11 @@ LABEL_11:
 
   else
   {
-    [(RCCloudRecording *)self setAudioFuture:v8];
-    v12 = [(RCCloudRecording *)self versionedAudioFuture];
-    if (!v12)
+    [(RCCloudRecording *)self setAudioFuture:futureCopy];
+    mtAudioFuture = [(RCCloudRecording *)self versionedAudioFuture];
+    if (!mtAudioFuture)
     {
-      v13 = [(RCCloudRecording *)self mtAudioFuture];
+      audioFuture = [(RCCloudRecording *)self mtAudioFuture];
       goto LABEL_11;
     }
   }
@@ -1323,26 +1323,26 @@ LABEL_15:
 
 - (BOOL)audioFutureVersionIsCompatible
 {
-  v3 = [(RCCloudRecording *)self audioFuture];
-  if (v3)
+  audioFuture = [(RCCloudRecording *)self audioFuture];
+  if (audioFuture)
   {
 
     return 1;
   }
 
-  v4 = [(RCCloudRecording *)self mtAudioFuture];
+  mtAudioFuture = [(RCCloudRecording *)self mtAudioFuture];
 
-  if (v4)
+  if (mtAudioFuture)
   {
     return 1;
   }
 
-  v6 = [(RCCloudRecording *)self audioFutureFlags];
-  v7 = [v6 integerValue];
+  audioFutureFlags = [(RCCloudRecording *)self audioFutureFlags];
+  integerValue = [audioFutureFlags integerValue];
 
-  if (v7 && ([(RCCloudRecording *)self versionedAudioFuture], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if (integerValue && ([(RCCloudRecording *)self versionedAudioFuture], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    return v7 & 1;
+    return integerValue & 1;
   }
 
   else
@@ -1353,24 +1353,24 @@ LABEL_15:
 
 - (BOOL)canUpdateWithMultiTrackAsset
 {
-  v2 = [(RCCloudRecording *)self audioFuture];
-  v3 = v2 == 0;
+  audioFuture = [(RCCloudRecording *)self audioFuture];
+  v3 = audioFuture == 0;
 
   return v3;
 }
 
 - (BOOL)canUpdateWithSpatialAsset
 {
-  v3 = [(RCCloudRecording *)self audioFuture];
-  if (v3)
+  audioFuture = [(RCCloudRecording *)self audioFuture];
+  if (audioFuture)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(RCCloudRecording *)self mtAudioFuture];
-    v4 = v5 == 0;
+    mtAudioFuture = [(RCCloudRecording *)self mtAudioFuture];
+    v4 = mtAudioFuture == 0;
   }
 
   return v4;
@@ -1378,26 +1378,26 @@ LABEL_15:
 
 - (double)syncedDuration
 {
-  v2 = [(RCCloudRecording *)self duration];
-  [v2 doubleValue];
+  duration = [(RCCloudRecording *)self duration];
+  [duration doubleValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSyncedDuration:(double)a3
+- (void)setSyncedDuration:(double)duration
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   [(RCCloudRecording *)self setDuration:v4];
 }
 
-- (void)setSyncedSharedFlags:(unint64_t)a3
+- (void)setSyncedSharedFlags:(unint64_t)flags
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:flags];
   [(RCCloudRecording *)self setSharedFlags:v4];
 }
 
-- (void)setLayerMix:(float)a3
+- (void)setLayerMix:(float)mix
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   [(RCCloudRecording *)self setMtLayerMix:v4];
@@ -1405,8 +1405,8 @@ LABEL_15:
 
 - (float)layerMix
 {
-  v2 = [(RCCloudRecording *)self mtLayerMix];
-  [v2 floatValue];
+  mtLayerMix = [(RCCloudRecording *)self mtLayerMix];
+  [mtLayerMix floatValue];
   v4 = v3;
 
   return v4;
@@ -1414,13 +1414,13 @@ LABEL_15:
 
 - (BOOL)isSpeechIsolatorEnabled
 {
-  v2 = [(RCCloudRecording *)self studioMixEnabled];
-  v3 = [v2 BOOLValue];
+  studioMixEnabled = [(RCCloudRecording *)self studioMixEnabled];
+  bOOLValue = [studioMixEnabled BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSpeechIsolatorValue:(float)a3
+- (void)setSpeechIsolatorValue:(float)value
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   [(RCCloudRecording *)self setStudioMixLevel:v4];
@@ -1428,11 +1428,11 @@ LABEL_15:
 
 - (float)speechIsolatorValue
 {
-  v2 = [(RCCloudRecording *)self studioMixLevel];
-  v3 = v2;
-  if (v2)
+  studioMixLevel = [(RCCloudRecording *)self studioMixLevel];
+  v3 = studioMixLevel;
+  if (studioMixLevel)
   {
-    [v2 floatValue];
+    [studioMixLevel floatValue];
     v5 = v4;
   }
 
@@ -1444,7 +1444,7 @@ LABEL_15:
   return v5;
 }
 
-- (void)setPlayRate:(float)a3
+- (void)setPlayRate:(float)rate
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   [(RCCloudRecording *)self setPlaybackSpeed:v4];
@@ -1452,11 +1452,11 @@ LABEL_15:
 
 - (float)playRate
 {
-  v2 = [(RCCloudRecording *)self playbackSpeed];
-  v3 = v2;
-  if (v2)
+  playbackSpeed = [(RCCloudRecording *)self playbackSpeed];
+  v3 = playbackSpeed;
+  if (playbackSpeed)
   {
-    [v2 floatValue];
+    [playbackSpeed floatValue];
     v5 = v4;
   }
 
@@ -1470,30 +1470,30 @@ LABEL_15:
 
 - (BOOL)isSkipSilenceEnabled
 {
-  v2 = [(RCCloudRecording *)self skipSilenceEnabled];
-  v3 = [v2 BOOLValue];
+  skipSilenceEnabled = [(RCCloudRecording *)self skipSilenceEnabled];
+  bOOLValue = [skipSilenceEnabled BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)recordingsModel
 {
-  v2 = [(RCCloudRecording *)self managedObjectContext];
-  v3 = [v2 recordingsModel];
+  managedObjectContext = [(RCCloudRecording *)self managedObjectContext];
+  recordingsModel = [managedObjectContext recordingsModel];
 
-  return v3;
+  return recordingsModel;
 }
 
 - (BOOL)_copyCustomLabelToEncryptedTitleIfNeeded
 {
-  v3 = [(RCCloudRecording *)self customLabel];
-  if (v3 && (-[RCCloudRecording _migratedTitleDateString](self, "_migratedTitleDateString"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v3 isEqualToString:v4], v4, (v5 & 1) == 0))
+  customLabel = [(RCCloudRecording *)self customLabel];
+  if (customLabel && (-[RCCloudRecording _migratedTitleDateString](self, "_migratedTitleDateString"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [customLabel isEqualToString:v4], v4, (v5 & 1) == 0))
   {
-    v7 = [(RCCloudRecording *)self customLabel];
-    [(RCCloudRecording *)self setEncryptedTitle:v7];
+    customLabel2 = [(RCCloudRecording *)self customLabel];
+    [(RCCloudRecording *)self setEncryptedTitle:customLabel2];
 
-    v8 = [(RCCloudRecording *)self customLabel];
-    [(RCCloudRecording *)self setLocalTitle:v8];
+    customLabel3 = [(RCCloudRecording *)self customLabel];
+    [(RCCloudRecording *)self setLocalTitle:customLabel3];
 
     v6 = 1;
   }
@@ -1508,54 +1508,54 @@ LABEL_15:
 
 - (BOOL)_copyEncryptedTitleToCustomLabelIfNeeded
 {
-  v3 = [(RCCloudRecording *)self localTitle];
-  if (v3)
+  localTitle = [(RCCloudRecording *)self localTitle];
+  if (localTitle)
   {
   }
 
   else
   {
-    v4 = [(RCCloudRecording *)self encryptedTitle];
+    encryptedTitle = [(RCCloudRecording *)self encryptedTitle];
 
-    if (!v4)
+    if (!encryptedTitle)
     {
       return 0;
     }
   }
 
-  v5 = [(RCCloudRecording *)self encryptedTitle];
-  if (v5)
+  encryptedTitle2 = [(RCCloudRecording *)self encryptedTitle];
+  if (encryptedTitle2)
   {
-    [(RCCloudRecording *)self setCustomLabel:v5];
+    [(RCCloudRecording *)self setCustomLabel:encryptedTitle2];
   }
 
   else
   {
-    v6 = [(RCCloudRecording *)self localTitle];
-    [(RCCloudRecording *)self setCustomLabel:v6];
+    localTitle2 = [(RCCloudRecording *)self localTitle];
+    [(RCCloudRecording *)self setCustomLabel:localTitle2];
   }
 
   return 1;
 }
 
-- (void)updateForRemoteTitleChange:(BOOL)a3
+- (void)updateForRemoteTitleChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v13 = *MEMORY[0x277D85DE8];
   if ([(RCCloudRecording *)self _isReadyToMigrate])
   {
-    if (v3)
+    if (changeCopy)
     {
       if ([(RCCloudRecording *)self _migrateCustomLabelIfNeeded:1])
       {
         v5 = OSLogForCategory(@"Service");
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [(RCCloudRecording *)self uuid];
+          uuid = [(RCCloudRecording *)self uuid];
           v9 = 136315394;
           v10 = "[RCCloudRecording(SyncedProperties) updateForRemoteTitleChange:]";
           v11 = 2112;
-          v12 = v6;
+          v12 = uuid;
           v7 = "%s -- Migrated customLabel to encryptedTitle for recording %@";
 LABEL_9:
           _os_log_impl(&dword_272442000, v5, OS_LOG_TYPE_DEFAULT, v7, &v9, 0x16u);
@@ -1572,11 +1572,11 @@ LABEL_9:
       v5 = OSLogForCategory(@"Service");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(RCCloudRecording *)self uuid];
+        uuid = [(RCCloudRecording *)self uuid];
         v9 = 136315394;
         v10 = "[RCCloudRecording(SyncedProperties) updateForRemoteTitleChange:]";
         v11 = 2112;
-        v12 = v6;
+        v12 = uuid;
         v7 = "%s -- Copied customLabel to encryptedTitle for recording %@";
         goto LABEL_9;
       }
@@ -1588,21 +1588,21 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateForLocalTitleChange:(BOOL)a3
+- (void)updateForLocalTitleChange:(BOOL)change
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (change)
   {
     if ([(RCCloudRecording *)self _migrateCustomLabelIfNeeded:0])
     {
       v4 = OSLogForCategory(@"Service");
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [(RCCloudRecording *)self uuid];
+        uuid = [(RCCloudRecording *)self uuid];
         v8 = 136315394;
         v9 = "[RCCloudRecording(SyncedProperties) updateForLocalTitleChange:]";
         v10 = 2112;
-        v11 = v5;
+        v11 = uuid;
         v6 = "%s -- Migrated customLabel to encryptedTitle for recording %@";
 LABEL_8:
         _os_log_impl(&dword_272442000, v4, OS_LOG_TYPE_DEFAULT, v6, &v8, 0x16u);
@@ -1619,11 +1619,11 @@ LABEL_8:
     v4 = OSLogForCategory(@"Service");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(RCCloudRecording *)self uuid];
+      uuid = [(RCCloudRecording *)self uuid];
       v8 = 136315394;
       v9 = "[RCCloudRecording(SyncedProperties) updateForLocalTitleChange:]";
       v10 = 2112;
-      v11 = v5;
+      v11 = uuid;
       v6 = "%s -- Copied encryptedTitle to customLabel for recording %@";
       goto LABEL_8;
     }
@@ -1634,37 +1634,37 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateNilTitleFields:(BOOL)a3
+- (void)updateNilTitleFields:(BOOL)fields
 {
-  v3 = a3;
+  fieldsCopy = fields;
   v17 = *MEMORY[0x277D85DE8];
   if ([(RCCloudRecording *)self _isReadyToMigrate])
   {
-    v5 = [(RCCloudRecording *)self encryptedTitle];
+    encryptedTitle = [(RCCloudRecording *)self encryptedTitle];
 
-    if (!v5)
+    if (!encryptedTitle)
     {
-      v6 = [(RCCloudRecording *)self localTitle];
-      [(RCCloudRecording *)self setEncryptedTitle:v6];
+      localTitle = [(RCCloudRecording *)self localTitle];
+      [(RCCloudRecording *)self setEncryptedTitle:localTitle];
     }
 
-    v7 = [(RCCloudRecording *)self customLabel];
+    customLabel = [(RCCloudRecording *)self customLabel];
 
-    if (!v7)
+    if (!customLabel)
     {
-      if (v3)
+      if (fieldsCopy)
       {
-        v8 = [(RCCloudRecording *)self _migratedTitleDateString];
-        [(RCCloudRecording *)self setCustomLabel:v8];
+        _migratedTitleDateString = [(RCCloudRecording *)self _migratedTitleDateString];
+        [(RCCloudRecording *)self setCustomLabel:_migratedTitleDateString];
 
         v9 = OSLogForCategory(@"Service");
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [(RCCloudRecording *)self uuid];
+          uuid = [(RCCloudRecording *)self uuid];
           v13 = 136315394;
           v14 = "[RCCloudRecording(SyncedProperties) updateNilTitleFields:]";
           v15 = 2112;
-          v16 = v10;
+          v16 = uuid;
           v11 = "%s -- Updated nil customLabel to date string for recording %@";
 LABEL_11:
           _os_log_impl(&dword_272442000, v9, OS_LOG_TYPE_DEFAULT, v11, &v13, 0x16u);
@@ -1680,11 +1680,11 @@ LABEL_11:
         v9 = OSLogForCategory(@"Service");
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [(RCCloudRecording *)self uuid];
+          uuid = [(RCCloudRecording *)self uuid];
           v13 = 136315394;
           v14 = "[RCCloudRecording(SyncedProperties) updateNilTitleFields:]";
           v15 = 2112;
-          v16 = v10;
+          v16 = uuid;
           v11 = "%s -- Copied encryptedTitle to customLabel for recording %@";
           goto LABEL_11;
         }
@@ -1699,8 +1699,8 @@ LABEL_12:
 
 - (id)_migratedTitleDateString
 {
-  v3 = [(RCCloudRecording *)self managedObjectContext];
-  v4 = [v3 recordingsModel];
+  managedObjectContext = [(RCCloudRecording *)self managedObjectContext];
+  recordingsModel = [managedObjectContext recordingsModel];
 
   v12 = 0;
   v13 = &v12;
@@ -1713,9 +1713,9 @@ LABEL_12:
   v8[2] = __62__RCCloudRecording_SyncedProperties___migratedTitleDateString__block_invoke;
   v8[3] = &unk_279E43B48;
   v11 = &v12;
-  v5 = v4;
+  v5 = recordingsModel;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [v5 performBlockAndWait:v8];
   v6 = v13[5];
 
@@ -1742,11 +1742,11 @@ void __62__RCCloudRecording_SyncedProperties___migratedTitleDateString__block_in
     v3 = OSLogForCategory(@"Service");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(RCCloudRecording *)self uuid];
+      uuid = [(RCCloudRecording *)self uuid];
       v6 = 136315394;
       v7 = "[RCCloudRecording(SyncedProperties) migrateCustomLabelIfNeeded]";
       v8 = 2112;
-      v9 = v4;
+      v9 = uuid;
       _os_log_impl(&dword_272442000, v3, OS_LOG_TYPE_DEFAULT, "%s -- Migrated customLabel to encryptedTitle for recording %@", &v6, 0x16u);
     }
   }
@@ -1754,34 +1754,34 @@ void __62__RCCloudRecording_SyncedProperties___migratedTitleDateString__block_in
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_migrateCustomLabelIfNeeded:(BOOL)a3
+- (BOOL)_migrateCustomLabelIfNeeded:(BOOL)needed
 {
-  v5 = [(RCCloudRecording *)self _migratedTitleDateString];
-  v6 = v5;
+  _migratedTitleDateString = [(RCCloudRecording *)self _migratedTitleDateString];
+  v6 = _migratedTitleDateString;
   v7 = &stru_2881A6FB8;
-  if (v5)
+  if (_migratedTitleDateString)
   {
-    v7 = v5;
+    v7 = _migratedTitleDateString;
   }
 
   v8 = v7;
 
-  v9 = [(RCCloudRecording *)self customLabel];
-  if (v9 && ([(__CFString *)v8 isEqualToString:v9]& 1) == 0)
+  customLabel = [(RCCloudRecording *)self customLabel];
+  if (customLabel && ([(__CFString *)v8 isEqualToString:customLabel]& 1) == 0)
   {
-    v11 = [(RCCloudRecording *)self encryptedTitle];
-    v12 = [v11 isEqualToString:v9];
+    encryptedTitle = [(RCCloudRecording *)self encryptedTitle];
+    v12 = [encryptedTitle isEqualToString:customLabel];
 
     if ((v12 & 1) == 0)
     {
-      if (a3)
+      if (needed)
       {
-        v13 = [(RCCloudRecording *)self _uniqueMigratedTitleWithTitleBase:v9];
+        v13 = [(RCCloudRecording *)self _uniqueMigratedTitleWithTitleBase:customLabel];
       }
 
       else
       {
-        v13 = v9;
+        v13 = customLabel;
       }
 
       v14 = v13;
@@ -1796,58 +1796,58 @@ void __62__RCCloudRecording_SyncedProperties___migratedTitleDateString__block_in
     v10 = 0;
   }
 
-  v15 = [(RCCloudRecording *)self customLabel];
-  v16 = [v15 isEqualToString:v8];
+  customLabel2 = [(RCCloudRecording *)self customLabel];
+  v16 = [customLabel2 isEqualToString:v8];
 
   if ((v16 & 1) == 0)
   {
     [(RCCloudRecording *)self setCustomLabel:v8];
   }
 
-  v17 = [(RCCloudRecording *)self encryptedTitle];
-  if (v17)
+  encryptedTitle2 = [(RCCloudRecording *)self encryptedTitle];
+  if (encryptedTitle2)
   {
-    v18 = v17;
-    v19 = [(RCCloudRecording *)self localTitle];
-    v20 = [(RCCloudRecording *)self encryptedTitle];
-    v21 = [v19 isEqualToString:v20];
+    v18 = encryptedTitle2;
+    localTitle = [(RCCloudRecording *)self localTitle];
+    encryptedTitle3 = [(RCCloudRecording *)self encryptedTitle];
+    v21 = [localTitle isEqualToString:encryptedTitle3];
 
     if (v21)
     {
-      v22 = [(RCCloudRecording *)self encryptedTitle];
-      [(RCCloudRecording *)self setLocalTitle:v22];
+      encryptedTitle4 = [(RCCloudRecording *)self encryptedTitle];
+      [(RCCloudRecording *)self setLocalTitle:encryptedTitle4];
     }
   }
 
   return v10;
 }
 
-- (id)_uniqueMigratedTitleWithTitleBase:(id)a3
+- (id)_uniqueMigratedTitleWithTitleBase:(id)base
 {
-  v4 = a3;
-  v5 = [(RCCloudRecording *)self managedObjectContext];
-  v6 = [v5 recordingsModel];
+  baseCopy = base;
+  managedObjectContext = [(RCCloudRecording *)self managedObjectContext];
+  recordingsModel = [managedObjectContext recordingsModel];
 
-  v7 = [v6 recordingsWithTitle:v4];
+  v7 = [recordingsModel recordingsWithTitle:baseCopy];
   if ([v7 count] != 1)
   {
     goto LABEL_4;
   }
 
-  v8 = [v7 firstObject];
-  v9 = [v8 uuid];
-  v10 = [(RCCloudRecording *)self uuid];
-  v11 = [v9 isEqual:v10];
+  firstObject = [v7 firstObject];
+  uuid = [firstObject uuid];
+  uuid2 = [(RCCloudRecording *)self uuid];
+  v11 = [uuid isEqual:uuid2];
 
   if (v11)
   {
-    v12 = v4;
+    v12 = baseCopy;
   }
 
   else
   {
 LABEL_4:
-    v12 = [v6 nextRecordingDefaultLabelWithCustomTitleBase:v4];
+    v12 = [recordingsModel nextRecordingDefaultLabelWithCustomTitleBase:baseCopy];
   }
 
   v13 = v12;
@@ -1857,45 +1857,45 @@ LABEL_4:
 
 - (BOOL)_isReadyToMigrate
 {
-  v3 = [(RCCloudRecording *)self audioFuture];
-  if (v3)
+  audioFuture = [(RCCloudRecording *)self audioFuture];
+  if (audioFuture)
   {
-    v4 = 1;
+    _isOlderThanMandatoryMigrationAge = 1;
   }
 
   else
   {
-    v4 = [(RCCloudRecording *)self _isOlderThanMandatoryMigrationAge];
+    _isOlderThanMandatoryMigrationAge = [(RCCloudRecording *)self _isOlderThanMandatoryMigrationAge];
   }
 
-  return v4;
+  return _isOlderThanMandatoryMigrationAge;
 }
 
 - (BOOL)_isOlderThanMandatoryMigrationAge
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(RCCloudRecording *)self date];
-  [v3 timeIntervalSinceNow];
+  date = [(RCCloudRecording *)self date];
+  [date timeIntervalSinceNow];
   v5 = v4;
 
   v6 = 3600.0;
   if (RCIsInternalInstall())
   {
-    v7 = [MEMORY[0x277CBEBD0] sharedSettingsUserDefaults];
-    v8 = [v7 integerForKey:@"com.apple.VoiceMemos.mandatoryMigrationAgeOverride"];
+    mEMORY[0x277CBEBD0] = [MEMORY[0x277CBEBD0] sharedSettingsUserDefaults];
+    v8 = [mEMORY[0x277CBEBD0] integerForKey:@"com.apple.VoiceMemos.mandatoryMigrationAgeOverride"];
 
     if (v8 >= 1)
     {
       v9 = OSLogForCategory(@"Default");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(RCCloudRecording *)self uuid];
+        uuid = [(RCCloudRecording *)self uuid];
         v13 = 136315650;
         v14 = "[RCCloudRecording(SyncedProperties) _isOlderThanMandatoryMigrationAge]";
         v15 = 2048;
         v16 = v8;
         v17 = 2112;
-        v18 = v10;
+        v18 = uuid;
         _os_log_impl(&dword_272442000, v9, OS_LOG_TYPE_DEFAULT, "%s -- com.apple.VoiceMemos.mandatoryMigrationAgeOverride was used with value of %li for recording with uuid %@", &v13, 0x20u);
       }
 

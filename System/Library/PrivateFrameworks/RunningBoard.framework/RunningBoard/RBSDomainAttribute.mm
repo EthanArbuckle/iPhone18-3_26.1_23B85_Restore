@@ -1,9 +1,9 @@
 @interface RBSDomainAttribute
-- (uint64_t)_areAdditionalRestrictionsValidForContext:(void *)a3 withError:;
-- (uint64_t)_areOriginatorEntitlementsValidForContext:(void *)a3 withError:;
-- (uint64_t)_areTargetEntitlementsValidForContext:(void *)a3 withError:;
-- (uint64_t)_contextContainsRequiredEndowment:(BOOL *)a3 requiresEndowment:;
-- (uint64_t)_doesRestrictionAllowForContext:(uint64_t)a3 withError:;
+- (uint64_t)_areAdditionalRestrictionsValidForContext:(void *)context withError:;
+- (uint64_t)_areOriginatorEntitlementsValidForContext:(void *)context withError:;
+- (uint64_t)_areTargetEntitlementsValidForContext:(void *)context withError:;
+- (uint64_t)_contextContainsRequiredEndowment:(BOOL *)endowment requiresEndowment:;
+- (uint64_t)_doesRestrictionAllowForContext:(uint64_t)context withError:;
 @end
 
 @implementation RBSDomainAttribute
@@ -39,19 +39,19 @@ void __69__RBSDomainAttribute_RBProcessState__effectiveAttributesWithContext___b
   [v2 unionSet:v3];
 }
 
-- (uint64_t)_contextContainsRequiredEndowment:(BOOL *)a3 requiresEndowment:
+- (uint64_t)_contextContainsRequiredEndowment:(BOOL *)endowment requiresEndowment:
 {
   v29 = *MEMORY[0x277D85DE8];
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
     v17 = 0;
     goto LABEL_21;
   }
 
-  v9 = [v7 domainAttributeManager];
-  [a1 domain];
+  domainAttributeManager = [v7 domainAttributeManager];
+  [self domain];
   objc_claimAutoreleasedReturnValue();
   [OUTLINED_FUNCTION_5_5() name];
   objc_claimAutoreleasedReturnValue();
@@ -59,16 +59,16 @@ void __69__RBSDomainAttribute_RBProcessState__effectiveAttributesWithContext___b
 
   if (v10)
   {
-    v11 = [v8 availableInheritances];
-    v12 = [v11 allNamespaces];
-    v13 = [v12 containsObject:v10];
+    availableInheritances = [v8 availableInheritances];
+    allNamespaces = [availableInheritances allNamespaces];
+    v13 = [allNamespaces containsObject:v10];
 
     if (v13)
     {
       [v8 availableInheritances];
       objc_claimAutoreleasedReturnValue();
-      v14 = [OUTLINED_FUNCTION_5_5() sourceEnvironment];
-      v15 = [v12 inheritancesForEnvironment:v14];
+      sourceEnvironment = [OUTLINED_FUNCTION_5_5() sourceEnvironment];
+      v15 = [allNamespaces inheritancesForEnvironment:sourceEnvironment];
 
       v26 = 0u;
       v27 = 0u;
@@ -88,8 +88,8 @@ void __69__RBSDomainAttribute_RBProcessState__effectiveAttributesWithContext___b
               objc_enumerationMutation(v16);
             }
 
-            v20 = [*(*(&v24 + 1) + 8 * i) endowmentNamespace];
-            v21 = [v10 isEqual:v20];
+            endowmentNamespace = [*(*(&v24 + 1) + 8 * i) endowmentNamespace];
+            v21 = [v10 isEqual:endowmentNamespace];
 
             if (v21)
             {
@@ -116,7 +116,7 @@ LABEL_17:
       v17 = 0;
     }
 
-    if (!a3)
+    if (!endowment)
     {
       goto LABEL_20;
     }
@@ -125,13 +125,13 @@ LABEL_17:
   else
   {
     v17 = 1;
-    if (!a3)
+    if (!endowment)
     {
       goto LABEL_20;
     }
   }
 
-  *a3 = v10 != 0;
+  *endowment = v10 != 0;
 LABEL_20:
 
 LABEL_21:
@@ -139,32 +139,32 @@ LABEL_21:
   return v17;
 }
 
-- (uint64_t)_areOriginatorEntitlementsValidForContext:(void *)a3 withError:
+- (uint64_t)_areOriginatorEntitlementsValidForContext:(void *)context withError:
 {
   v43[3] = *MEMORY[0x277D85DE8];
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
     v31 = 0;
     goto LABEL_18;
   }
 
-  v9 = [v7 domainAttributeManager];
-  [a1 domain];
+  domainAttributeManager = [v7 domainAttributeManager];
+  [self domain];
   objc_claimAutoreleasedReturnValue();
   [OUTLINED_FUNCTION_5_5() name];
   objc_claimAutoreleasedReturnValue();
   v10 = [OUTLINED_FUNCTION_4_8() endowmentNamespaceForDomain:? andName:?];
 
-  v11 = [a1 sourceEnvironment];
-  v12 = v11;
+  sourceEnvironment = [self sourceEnvironment];
+  v12 = sourceEnvironment;
   if (v10)
   {
 
     if (!v12)
     {
-      if (a3)
+      if (context)
       {
         v13 = MEMORY[0x277CCA9B8];
         v14 = *MEMORY[0x277D47050];
@@ -173,11 +173,11 @@ LABEL_21:
         v16 = *MEMORY[0x277D47048];
         v42[0] = v15;
         v42[1] = v16;
-        v17 = [a1 description];
+        v17 = [self description];
         v43[1] = v17;
         v42[2] = *MEMORY[0x277D47058];
-        v18 = [a1 fullyQualifiedName];
-        v43[2] = v18;
+        fullyQualifiedName = [self fullyQualifiedName];
+        v43[2] = fullyQualifiedName;
         v19 = MEMORY[0x277CBEAC0];
         v20 = v43;
         v21 = v42;
@@ -198,7 +198,7 @@ LABEL_9:
 
     if (v12)
     {
-      if (a3)
+      if (context)
       {
         v13 = MEMORY[0x277CCA9B8];
         v14 = *MEMORY[0x277D47050];
@@ -207,11 +207,11 @@ LABEL_9:
         v23 = *MEMORY[0x277D47048];
         v40[0] = v22;
         v40[1] = v23;
-        v17 = [a1 description];
+        v17 = [self description];
         v41[1] = v17;
         v40[2] = *MEMORY[0x277D47058];
-        v18 = [a1 fullyQualifiedName];
-        v41[2] = v18;
+        fullyQualifiedName = [self fullyQualifiedName];
+        v41[2] = fullyQualifiedName;
         v19 = MEMORY[0x277CBEAC0];
         v20 = v41;
         v21 = v40;
@@ -226,9 +226,9 @@ LABEL_19:
 
   [v8 domainAttributeManager];
   objc_claimAutoreleasedReturnValue();
-  v28 = [OUTLINED_FUNCTION_5_5() domain];
-  v29 = [a1 name];
-  v17 = [v3 originatorEntitlementsForDomain:v28 andName:v29];
+  domain = [OUTLINED_FUNCTION_5_5() domain];
+  name = [self name];
+  v17 = [v3 originatorEntitlementsForDomain:domain andName:name];
 
   if (!v17)
   {
@@ -236,10 +236,10 @@ LABEL_19:
     goto LABEL_16;
   }
 
-  v30 = [v8 originatorEntitlements];
-  v31 = [v17 matchesEntitlements:v30];
+  originatorEntitlements = [v8 originatorEntitlements];
+  v31 = [v17 matchesEntitlements:originatorEntitlements];
 
-  if (!a3 || (v31 & 1) != 0)
+  if (!context || (v31 & 1) != 0)
   {
     goto LABEL_16;
   }
@@ -251,14 +251,14 @@ LABEL_19:
   v35 = *MEMORY[0x277D47048];
   v38[0] = v34;
   v38[1] = v35;
-  v18 = [a1 description];
-  v39[1] = v18;
+  fullyQualifiedName = [self description];
+  v39[1] = fullyQualifiedName;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v25 = v32;
   v26 = v33;
   v27 = 3;
 LABEL_14:
-  *a3 = [v25 errorWithDomain:v26 code:v27 userInfo:v24];
+  *context = [v25 errorWithDomain:v26 code:v27 userInfo:v24];
 
   v31 = 0;
 LABEL_16:
@@ -270,15 +270,15 @@ LABEL_18:
   return v31;
 }
 
-- (uint64_t)_areTargetEntitlementsValidForContext:(void *)a3 withError:
+- (uint64_t)_areTargetEntitlementsValidForContext:(void *)context withError:
 {
   v20[2] = *MEMORY[0x277D85DE8];
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
-    v9 = [v7 domainAttributeManager];
-    [a1 domain];
+    domainAttributeManager = [v7 domainAttributeManager];
+    [self domain];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_7_1() name];
     objc_claimAutoreleasedReturnValue();
@@ -286,10 +286,10 @@ LABEL_18:
 
     if (v10)
     {
-      v11 = [v8 targetEntitlements];
-      v12 = [v10 matchesEntitlements:v11];
+      targetEntitlements = [v8 targetEntitlements];
+      v12 = [v10 matchesEntitlements:targetEntitlements];
 
-      if (a3 && (v12 & 1) == 0)
+      if (context && (v12 & 1) == 0)
       {
         v13 = *MEMORY[0x277D47050];
         v14 = *MEMORY[0x277CCA470];
@@ -297,11 +297,11 @@ LABEL_18:
         v15 = *MEMORY[0x277D47048];
         v19[0] = v14;
         v19[1] = v15;
-        v16 = [a1 description];
+        v16 = [self description];
         v20[1] = v16;
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
         objc_claimAutoreleasedReturnValue();
-        *a3 = [OUTLINED_FUNCTION_1_22() errorWithDomain:? code:? userInfo:?];
+        *context = [OUTLINED_FUNCTION_1_22() errorWithDomain:? code:? userInfo:?];
 
         v12 = 0;
       }
@@ -322,17 +322,17 @@ LABEL_18:
   return v12;
 }
 
-- (uint64_t)_areAdditionalRestrictionsValidForContext:(void *)a3 withError:
+- (uint64_t)_areAdditionalRestrictionsValidForContext:(void *)context withError:
 {
   v54 = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    v7 = [v5 domainAttributeManager];
-    v8 = [a1 domain];
-    v9 = [a1 name];
-    v10 = [v7 additionalRestrictionsForDomain:v8 andName:v9];
+    domainAttributeManager = [v5 domainAttributeManager];
+    domain = [self domain];
+    name = [self name];
+    v10 = [domainAttributeManager additionalRestrictionsForDomain:domain andName:name];
 
     v47 = 0u;
     v48 = 0u;
@@ -343,8 +343,8 @@ LABEL_18:
     if (v12)
     {
       v13 = v12;
-      v43 = a1;
-      v44 = a3;
+      selfCopy = self;
+      contextCopy = context;
       v14 = *v46;
       while (2)
       {
@@ -356,17 +356,17 @@ LABEL_18:
           }
 
           v16 = *(*(&v45 + 1) + 8 * i);
-          if ([v16 isEqualToString:{@"TargetsSelf", v43}])
+          if ([v16 isEqualToString:{@"TargetsSelf", selfCopy}])
           {
-            v17 = [v6 targetIdentity];
-            v18 = [v6 originatorProcess];
-            v19 = [v18 identity];
-            v20 = [v17 isEqual:v19];
+            targetIdentity = [v6 targetIdentity];
+            originatorProcess = [v6 originatorProcess];
+            identity = [originatorProcess identity];
+            v20 = [targetIdentity isEqual:identity];
 
             if ((v20 & 1) == 0)
             {
-              v29 = v44;
-              if (v44)
+              v29 = contextCopy;
+              if (contextCopy)
               {
                 v25 = v11;
                 v30 = MEMORY[0x277CCA9B8];
@@ -376,7 +376,7 @@ LABEL_18:
                 v33 = *MEMORY[0x277D47048];
                 v51[0] = v32;
                 v51[1] = v33;
-                v34 = [v43 description];
+                v34 = [selfCopy description];
                 v52[1] = v34;
                 v35 = MEMORY[0x277CBEAC0];
                 v36 = v52;
@@ -398,19 +398,19 @@ LABEL_21:
 
           else if ([v16 isEqualToString:@"TargetsHosted"])
           {
-            v21 = [v6 targetIdentity];
-            v22 = [v21 hostIdentifier];
-            v23 = [v22 pid];
-            v24 = [v6 originatorProcess];
+            targetIdentity2 = [v6 targetIdentity];
+            hostIdentifier = [targetIdentity2 hostIdentifier];
+            v23 = [hostIdentifier pid];
+            originatorProcess2 = [v6 originatorProcess];
             v25 = v11;
-            v26 = [v24 rbs_pid];
+            rbs_pid = [originatorProcess2 rbs_pid];
 
-            v27 = v23 == v26;
+            v27 = v23 == rbs_pid;
             v11 = v25;
             if (!v27)
             {
-              v29 = v44;
-              if (v44)
+              v29 = contextCopy;
+              if (contextCopy)
               {
                 v30 = MEMORY[0x277CCA9B8];
                 v31 = *MEMORY[0x277D47050];
@@ -419,7 +419,7 @@ LABEL_21:
                 v39 = *MEMORY[0x277D47048];
                 v49[0] = v38;
                 v49[1] = v39;
-                v34 = [v43 description];
+                v34 = [selfCopy description];
                 v50[1] = v34;
                 v35 = MEMORY[0x277CBEAC0];
                 v36 = v50;
@@ -455,21 +455,21 @@ LABEL_22:
   return v28;
 }
 
-- (uint64_t)_doesRestrictionAllowForContext:(uint64_t)a3 withError:
+- (uint64_t)_doesRestrictionAllowForContext:(uint64_t)context withError:
 {
   v6 = a2;
   v7 = v6;
-  if (a1)
+  if (self)
   {
-    v8 = [v6 domainAttributeManager];
-    v9 = [a1 domain];
-    [a1 name];
+    domainAttributeManager = [v6 domainAttributeManager];
+    domain = [self domain];
+    [self name];
     objc_claimAutoreleasedReturnValue();
-    v10 = [OUTLINED_FUNCTION_7_1() restrictionsForDomain:v9 andName:v3];
+    v10 = [OUTLINED_FUNCTION_7_1() restrictionsForDomain:domain andName:v3];
 
     if (v10)
     {
-      v11 = [v10 allowsContext:v7 withError:a3];
+      v11 = [v10 allowsContext:v7 withError:context];
     }
 
     else

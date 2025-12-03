@@ -1,6 +1,6 @@
 @interface CSLPRFLiveActivitiesAppResolvedSettings
 - (BOOL)allowLiveActivitiesForApp;
-- (CSLPRFLiveActivitiesAppResolvedSettings)initWithSettings:(id)a3 globalSettings:(id)a4;
+- (CSLPRFLiveActivitiesAppResolvedSettings)initWithSettings:(id)settings globalSettings:(id)globalSettings;
 - (unint64_t)autoLaunchBehaviorForApp;
 @end
 
@@ -34,25 +34,25 @@
 
   if (v8)
   {
-    v9 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v10 isEqualToString:@"com.apple.SafetyMonitorApp"];
+    application = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
+    bundleIdentifier = [application bundleIdentifier];
+    v11 = [bundleIdentifier isEqualToString:@"com.apple.SafetyMonitorApp"];
 
     if (v11)
     {
-      v12 = cslprf_settings_log();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+      application3 = cslprf_settings_log();
+      if (os_log_type_enabled(application3, OS_LOG_TYPE_INFO))
       {
         v13 = NSStringFromSelector(a2);
-        v14 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
-        v15 = [v14 bundleIdentifier];
+        application2 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
+        bundleIdentifier2 = [application2 bundleIdentifier];
         v30 = 134218498;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2112;
         v33 = v13;
         v34 = 2112;
-        v35 = v15;
-        _os_log_impl(&dword_22CE92000, v12, OS_LOG_TYPE_INFO, "%p %@ -- this (%@) is a check-in activity, always allow it to launch to .smartstack.", &v30, 0x20u);
+        v35 = bundleIdentifier2;
+        _os_log_impl(&dword_22CE92000, application3, OS_LOG_TYPE_INFO, "%p %@ -- this (%@) is a check-in activity, always allow it to launch to .smartstack.", &v30, 0x20u);
       }
 
       goto LABEL_16;
@@ -61,15 +61,15 @@
 
   if ([(CSLPRFLiveActivitiesAppProperties *)self->_globalSettings globalAutoLaunchLiveActivities]&& ([(CSLPRFLiveActivitiesAppProperties *)self->_globalSettings globalAllowLiveActivities]& 1) != 0)
   {
-    v12 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
-    v16 = [v12 bundleIdentifier];
-    if (![v16 isEqual:@"com.apple.NanoAllMusicApps"])
+    application3 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
+    bundleIdentifier3 = [application3 bundleIdentifier];
+    if (![bundleIdentifier3 isEqual:@"com.apple.NanoAllMusicApps"])
     {
 LABEL_15:
 
 LABEL_16:
 LABEL_17:
-      v18 = [(CSLPRFLiveActivitiesAppProperties *)self->_settings autoLaunchBehaviorForApp];
+      autoLaunchBehaviorForApp = [(CSLPRFLiveActivitiesAppProperties *)self->_settings autoLaunchBehaviorForApp];
       goto LABEL_21;
     }
 
@@ -80,9 +80,9 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    v25 = [(CSLPRFLiveActivitiesAppProperties *)self->_settings autoLaunchBehaviorForApp];
+    autoLaunchBehaviorForApp2 = [(CSLPRFLiveActivitiesAppProperties *)self->_settings autoLaunchBehaviorForApp];
 
-    if (v25 != 1)
+    if (autoLaunchBehaviorForApp2 != 1)
     {
       goto LABEL_17;
     }
@@ -91,18 +91,18 @@ LABEL_17:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = NSStringFromSelector(a2);
-      v28 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
-      v29 = [v28 bundleIdentifier];
+      application4 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
+      bundleIdentifier4 = [application4 bundleIdentifier];
       v30 = 134218498;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 2112;
       v33 = v27;
       v34 = 2112;
-      v35 = v29;
+      v35 = bundleIdentifier4;
       _os_log_impl(&dword_22CE92000, v26, OS_LOG_TYPE_INFO, "%p %@ -- user uninstalled Now Playing but configured .smartstack for all audio apps, returning .app instead for (%@).", &v30, 0x20u);
     }
 
-    v18 = 2;
+    autoLaunchBehaviorForApp = 2;
   }
 
   else
@@ -111,24 +111,24 @@ LABEL_17:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = NSStringFromSelector(a2);
-      v21 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
-      v22 = [v21 bundleIdentifier];
+      application5 = [(CSLPRFLiveActivitiesAppProperties *)v8 application];
+      bundleIdentifier5 = [application5 bundleIdentifier];
       v30 = 134218498;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 2112;
       v33 = v20;
       v34 = 2112;
-      v35 = v22;
+      v35 = bundleIdentifier5;
       _os_log_impl(&dword_22CE92000, v19, OS_LOG_TYPE_INFO, "%p %@ -- overriding app setting for (%@) because global setting is off.", &v30, 0x20u);
     }
 
-    v18 = 0;
+    autoLaunchBehaviorForApp = 0;
   }
 
 LABEL_21:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v18;
+  return autoLaunchBehaviorForApp;
 }
 
 - (BOOL)allowLiveActivitiesForApp
@@ -158,29 +158,29 @@ LABEL_21:
 
   if (v7 && (-[CSLPRFLiveActivitiesAppProperties application](v7, "application"), v8 = objc_claimAutoreleasedReturnValue(), [v8 bundleIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"com.apple.SafetyMonitorApp"), v9, v8, (v10 & 1) != 0) || -[CSLPRFLiveActivitiesAppProperties globalAllowLiveActivities](self->_globalSettings, "globalAllowLiveActivities"))
   {
-    v11 = [(CSLPRFLiveActivitiesAppProperties *)self->_settings allowLiveActivitiesForApp];
+    allowLiveActivitiesForApp = [(CSLPRFLiveActivitiesAppProperties *)self->_settings allowLiveActivitiesForApp];
   }
 
   else
   {
-    v11 = 0;
+    allowLiveActivitiesForApp = 0;
   }
 
-  return v11;
+  return allowLiveActivitiesForApp;
 }
 
-- (CSLPRFLiveActivitiesAppResolvedSettings)initWithSettings:(id)a3 globalSettings:(id)a4
+- (CSLPRFLiveActivitiesAppResolvedSettings)initWithSettings:(id)settings globalSettings:(id)globalSettings
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  globalSettingsCopy = globalSettings;
   v12.receiver = self;
   v12.super_class = CSLPRFLiveActivitiesAppResolvedSettings;
   v9 = [(CSLPRFLiveActivitiesAppResolvedSettings *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_settings, a3);
-    objc_storeStrong(&v10->_globalSettings, a4);
+    objc_storeStrong(&v9->_settings, settings);
+    objc_storeStrong(&v10->_globalSettings, globalSettings);
   }
 
   return v10;

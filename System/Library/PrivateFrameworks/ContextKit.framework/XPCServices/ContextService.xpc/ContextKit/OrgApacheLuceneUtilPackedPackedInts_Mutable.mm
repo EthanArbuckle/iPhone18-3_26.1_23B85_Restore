@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneUtilPackedPackedInts_Mutable
 - (id)getFormat;
 - (void)clear;
-- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)a3;
+- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)output;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedInts_Mutable
@@ -13,9 +13,9 @@
   [(OrgApacheLuceneUtilPackedPackedInts_Mutable *)self fillWithInt:0 withInt:v3 withLong:0];
 }
 
-- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)a3
+- (void)saveWithOrgApacheLuceneStoreDataOutput:(id)output
 {
-  v4 = new_OrgApacheLuceneUtilPackedPackedWriter_initWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withOrgApacheLuceneStoreDataOutput_withInt_withInt_withInt_([(OrgApacheLuceneUtilPackedPackedInts_Mutable *)self getFormat], a3, [(OrgApacheLuceneUtilPackedPackedInts_Mutable *)self size], [(OrgApacheLuceneUtilPackedPackedInts_Mutable *)self getBitsPerValue], 1024);
+  v4 = new_OrgApacheLuceneUtilPackedPackedWriter_initWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum_withOrgApacheLuceneStoreDataOutput_withInt_withInt_withInt_([(OrgApacheLuceneUtilPackedPackedInts_Mutable *)self getFormat], output, [(OrgApacheLuceneUtilPackedPackedInts_Mutable *)self size], [(OrgApacheLuceneUtilPackedPackedInts_Mutable *)self getBitsPerValue], 1024);
   if (!v4)
   {
     JreThrowNullPointerException();

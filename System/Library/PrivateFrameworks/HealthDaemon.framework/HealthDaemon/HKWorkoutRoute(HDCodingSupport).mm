@@ -8,19 +8,19 @@
 
 - (HDCodableLocationSeries)codableRepresentationForSync
 {
-  v2 = [a1 _codableWorkoutRoute];
-  if (!v2)
+  _codableWorkoutRoute = [self _codableWorkoutRoute];
+  if (!_codableWorkoutRoute)
   {
-    v2 = objc_alloc_init(HDCodableLocationSeries);
-    v6.receiver = a1;
+    _codableWorkoutRoute = objc_alloc_init(HDCodableLocationSeries);
+    v6.receiver = self;
     v6.super_class = &off_283D43AE0;
     v3 = objc_msgSendSuper2(&v6, sel_codableRepresentationForSync);
-    [(HDCodableLocationSeries *)v2 setSample:v3];
+    [(HDCodableLocationSeries *)_codableWorkoutRoute setSample:v3];
 
-    -[HDCodableLocationSeries setFrozen:](v2, "setFrozen:", [a1 _isFrozen]);
+    -[HDCodableLocationSeries setFrozen:](_codableWorkoutRoute, "setFrozen:", [self _isFrozen]);
   }
 
-  v4 = v2;
+  v4 = _codableWorkoutRoute;
 
   return v4;
 }
@@ -28,13 +28,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addLocationSeries:v5];
+    [v4 addLocationSeries:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -44,11 +44,11 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6])
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init])
     {
       v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions();
-      v9 = [v6 _validateWithConfiguration:{v7, v8}];
+      v9 = [_init _validateWithConfiguration:{v7, v8}];
       if (v9)
       {
         v10 = 0;
@@ -56,7 +56,7 @@
 
       else
       {
-        v10 = v6;
+        v10 = _init;
       }
 
       v11 = v10;

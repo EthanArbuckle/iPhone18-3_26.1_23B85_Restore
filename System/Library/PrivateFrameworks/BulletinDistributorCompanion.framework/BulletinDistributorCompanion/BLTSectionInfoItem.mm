@@ -6,20 +6,20 @@
 
 - (NSString)displayName
 {
-  v3 = [(BLTSectionInfoItem *)self sectionInfo];
-  v4 = [v3 displayName];
+  sectionInfo = [(BLTSectionInfoItem *)self sectionInfo];
+  displayName = [sectionInfo displayName];
 
-  if (!v4)
+  if (!displayName)
   {
     v5 = MEMORY[0x277CC1E60];
-    v6 = [(BLTSectionInfoItem *)self sectionInfo];
-    v7 = [v6 sectionID];
-    v8 = [v5 applicationProxyForIdentifier:v7];
+    sectionInfo2 = [(BLTSectionInfoItem *)self sectionInfo];
+    sectionID = [sectionInfo2 sectionID];
+    v8 = [v5 applicationProxyForIdentifier:sectionID];
 
-    v4 = [v8 localizedName];
+    displayName = [v8 localizedName];
   }
 
-  return v4;
+  return displayName;
 }
 
 @end

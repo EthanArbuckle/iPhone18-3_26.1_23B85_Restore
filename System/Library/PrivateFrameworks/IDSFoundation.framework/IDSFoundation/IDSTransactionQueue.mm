@@ -1,13 +1,13 @@
 @interface IDSTransactionQueue
 - (IDSTransactionQueue)init;
-- (id)appendPendingItem:(id)a3;
-- (void)_appendTransaction:(id)a3;
-- (void)_prependTransaction:(id)a3;
-- (void)_readyTransaction:(id)a3;
-- (void)_removeTransaction:(id)a3;
-- (void)appendItem:(id)a3;
-- (void)executeReadyItemsWithBlock:(id)a3;
-- (void)prependItem:(id)a3;
+- (id)appendPendingItem:(id)item;
+- (void)_appendTransaction:(id)transaction;
+- (void)_prependTransaction:(id)transaction;
+- (void)_readyTransaction:(id)transaction;
+- (void)_removeTransaction:(id)transaction;
+- (void)appendItem:(id)item;
+- (void)executeReadyItemsWithBlock:(id)block;
+- (void)prependItem:(id)item;
 @end
 
 @implementation IDSTransactionQueue
@@ -29,26 +29,26 @@
   return v3;
 }
 
-- (void)prependItem:(id)a3
+- (void)prependItem:(id)item
 {
-  v4 = a3;
-  v5 = [[IDSTransactionQueueTransaction alloc] initWithItem:v4];
+  itemCopy = item;
+  v5 = [[IDSTransactionQueueTransaction alloc] initWithItem:itemCopy];
 
   [(IDSTransactionQueue *)self _prependTransaction:v5];
 }
 
-- (void)appendItem:(id)a3
+- (void)appendItem:(id)item
 {
-  v4 = a3;
-  v5 = [[IDSTransactionQueueTransaction alloc] initWithItem:v4];
+  itemCopy = item;
+  v5 = [[IDSTransactionQueueTransaction alloc] initWithItem:itemCopy];
 
   [(IDSTransactionQueue *)self _appendTransaction:v5];
 }
 
-- (id)appendPendingItem:(id)a3
+- (id)appendPendingItem:(id)item
 {
-  v4 = a3;
-  v5 = [[IDSTransactionQueueTransaction alloc] initWithItem:v4 readyToExecute:0];
+  itemCopy = item;
+  v5 = [[IDSTransactionQueueTransaction alloc] initWithItem:itemCopy readyToExecute:0];
 
   [(IDSTransactionQueue *)self _appendTransaction:v5];
   v9[0] = MEMORY[0x1E69E9820];
@@ -63,60 +63,60 @@
   return v7;
 }
 
-- (void)_prependTransaction:(id)a3
+- (void)_prependTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(IDSTransactionQueue *)self transactions];
+  transactions = [(IDSTransactionQueue *)self transactions];
 
-  if (!v5)
+  if (!transactions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(IDSTransactionQueue *)self setTransactions:v6];
   }
 
-  v7 = [(IDSTransactionQueue *)self transactions];
-  [v7 insertObject:v4 atIndex:0];
+  transactions2 = [(IDSTransactionQueue *)self transactions];
+  [transactions2 insertObject:transactionCopy atIndex:0];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_appendTransaction:(id)a3
+- (void)_appendTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(IDSTransactionQueue *)self transactions];
+  transactions = [(IDSTransactionQueue *)self transactions];
 
-  if (!v5)
+  if (!transactions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(IDSTransactionQueue *)self setTransactions:v6];
   }
 
-  v7 = [(IDSTransactionQueue *)self transactions];
-  [v7 addObject:v4];
+  transactions2 = [(IDSTransactionQueue *)self transactions];
+  [transactions2 addObject:transactionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_readyTransaction:(id)a3
+- (void)_readyTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_lock);
-  [v4 setReadyToExecute:1];
+  [transactionCopy setReadyToExecute:1];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_removeTransaction:(id)a3
+- (void)_removeTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(IDSTransactionQueue *)self transactions];
-  [v5 removeObject:v4];
+  transactions = [(IDSTransactionQueue *)self transactions];
+  [transactions removeObject:transactionCopy];
 
-  v6 = [(IDSTransactionQueue *)self transactions];
-  v7 = [v6 count];
+  transactions2 = [(IDSTransactionQueue *)self transactions];
+  v7 = [transactions2 count];
 
   if (!v7)
   {
@@ -126,37 +126,37 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)executeReadyItemsWithBlock:(id)a3
+- (void)executeReadyItemsWithBlock:(id)block
 {
-  v14 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(IDSTransactionQueue *)self transactions];
-  if ([v4 count])
+  transactions = [(IDSTransactionQueue *)self transactions];
+  if ([transactions count])
   {
     while (1)
     {
-      v5 = [(IDSTransactionQueue *)self transactions];
-      v6 = [v5 firstObject];
-      v7 = [v6 readyToExecute];
+      transactions2 = [(IDSTransactionQueue *)self transactions];
+      firstObject = [transactions2 firstObject];
+      readyToExecute = [firstObject readyToExecute];
 
-      if (!v7)
+      if (!readyToExecute)
       {
         break;
       }
 
-      v8 = [(IDSTransactionQueue *)self transactions];
-      v9 = [v8 firstObject];
+      transactions3 = [(IDSTransactionQueue *)self transactions];
+      firstObject2 = [transactions3 firstObject];
 
-      v10 = [(IDSTransactionQueue *)self transactions];
-      [v10 removeFirstObject];
+      transactions4 = [(IDSTransactionQueue *)self transactions];
+      [transactions4 removeFirstObject];
 
       os_unfair_lock_unlock(&self->_lock);
-      v11 = [v9 item];
-      v14[2](v14, v11);
+      item = [firstObject2 item];
+      blockCopy[2](blockCopy, item);
 
       os_unfair_lock_lock(&self->_lock);
-      v4 = [(IDSTransactionQueue *)self transactions];
-      if (![v4 count])
+      transactions = [(IDSTransactionQueue *)self transactions];
+      if (![transactions count])
       {
         goto LABEL_4;
       }
@@ -168,8 +168,8 @@
 LABEL_4:
   }
 
-  v12 = [(IDSTransactionQueue *)self transactions];
-  v13 = [v12 count];
+  transactions5 = [(IDSTransactionQueue *)self transactions];
+  v13 = [transactions5 count];
 
   if (!v13)
   {

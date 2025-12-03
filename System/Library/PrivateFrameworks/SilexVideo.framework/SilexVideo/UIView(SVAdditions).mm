@@ -9,7 +9,7 @@
   if (a4)
   {
 
-    [a1 setHidden:1];
+    [self setHidden:1];
   }
 
   else
@@ -19,7 +19,7 @@
     block[1] = 3221225472;
     block[2] = __47__UIView_SVAdditions__setHidden_withShowDelay___block_invoke;
     block[3] = &unk_279BC5D18;
-    block[4] = a1;
+    block[4] = self;
     dispatch_after(v5, MEMORY[0x277D85CD0], block);
   }
 }

@@ -1,26 +1,26 @@
 @interface CAMSchemaCAMClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (CAMSchemaCAMClientEventMetadata)initWithDictionary:(id)a3;
-- (CAMSchemaCAMClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAMSchemaCAMClientEventMetadata)initWithDictionary:(id)dictionary;
+- (CAMSchemaCAMClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAMSchemaCAMClientEventMetadata
 
-- (CAMSchemaCAMClientEventMetadata)initWithDictionary:(id)a3
+- (CAMSchemaCAMClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = CAMSchemaCAMClientEventMetadata;
   v5 = [(CAMSchemaCAMClientEventMetadata *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"camId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"camId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(CAMSchemaCAMClientEventMetadata *)v5 setCamId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(CAMSchemaCAMClientEventMetadata *)v5 setResultCandidateId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"feature"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"feature"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAMSchemaCAMClientEventMetadata setFeature:](v5, "setFeature:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"requestId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(CAMSchemaCAMClientEventMetadata *)v5 setRequestId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"trpId"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(CAMSchemaCAMClientEventMetadata *)v5 setTrpId:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (CAMSchemaCAMClientEventMetadata)initWithJSON:(id)a3
+- (CAMSchemaCAMClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAMSchemaCAMClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAMSchemaCAMClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAMSchemaCAMClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,20 +109,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_camId)
   {
-    v4 = [(CAMSchemaCAMClientEventMetadata *)self camId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    camId = [(CAMSchemaCAMClientEventMetadata *)self camId];
+    dictionaryRepresentation = [camId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"camId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"camId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"camId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"camId"];
     }
   }
 
@@ -139,67 +139,67 @@
       v8 = off_1E78D2330[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"feature"];
+    [dictionary setObject:v8 forKeyedSubscript:@"feature"];
   }
 
   if (self->_requestId)
   {
-    v9 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    requestId = [(CAMSchemaCAMClientEventMetadata *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v12 = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
+    v13 = [resultCandidateId copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"resultCandidateId"];
   }
 
   if (self->_subRequestId)
   {
-    v14 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    subRequestId = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
+    dictionaryRepresentation3 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"subRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_trpId)
   {
-    v17 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    trpId = [(CAMSchemaCAMClientEventMetadata *)self trpId];
+    dictionaryRepresentation4 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"trpId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"trpId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -221,28 +221,28 @@
   return v6 ^ v7 ^ [(SISchemaUUID *)self->_subRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(CAMSchemaCAMClientEventMetadata *)self camId];
-  v6 = [v4 camId];
-  if ((v5 != 0) == (v6 == 0))
+  camId = [(CAMSchemaCAMClientEventMetadata *)self camId];
+  camId2 = [equalCopy camId];
+  if ((camId != 0) == (camId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v7 = [(CAMSchemaCAMClientEventMetadata *)self camId];
-  if (v7)
+  camId3 = [(CAMSchemaCAMClientEventMetadata *)self camId];
+  if (camId3)
   {
-    v8 = v7;
-    v9 = [(CAMSchemaCAMClientEventMetadata *)self camId];
-    v10 = [v4 camId];
-    v11 = [v9 isEqual:v10];
+    v8 = camId3;
+    camId4 = [(CAMSchemaCAMClientEventMetadata *)self camId];
+    camId5 = [equalCopy camId];
+    v11 = [camId4 isEqual:camId5];
 
     if (!v11)
     {
@@ -254,20 +254,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  camId = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
+  camId2 = [equalCopy resultCandidateId];
+  if ((camId != 0) == (camId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v12 = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
-  if (v12)
+  resultCandidateId = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v13 = v12;
-    v14 = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v16)
     {
@@ -279,7 +279,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_30;
   }
@@ -287,26 +287,26 @@
   if (*&self->_has)
   {
     feature = self->_feature;
-    if (feature != [v4 feature])
+    if (feature != [equalCopy feature])
     {
       goto LABEL_30;
     }
   }
 
-  v5 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  camId = [(CAMSchemaCAMClientEventMetadata *)self requestId];
+  camId2 = [equalCopy requestId];
+  if ((camId != 0) == (camId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v18 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
-  if (v18)
+  requestId = [(CAMSchemaCAMClientEventMetadata *)self requestId];
+  if (requestId)
   {
-    v19 = v18;
-    v20 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
-    v21 = [v4 requestId];
-    v22 = [v20 isEqual:v21];
+    v19 = requestId;
+    requestId2 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v22 = [requestId2 isEqual:requestId3];
 
     if (!v22)
     {
@@ -318,20 +318,20 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
-  v6 = [v4 trpId];
-  if ((v5 != 0) == (v6 == 0))
+  camId = [(CAMSchemaCAMClientEventMetadata *)self trpId];
+  camId2 = [equalCopy trpId];
+  if ((camId != 0) == (camId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v23 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
-  if (v23)
+  trpId = [(CAMSchemaCAMClientEventMetadata *)self trpId];
+  if (trpId)
   {
-    v24 = v23;
-    v25 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
-    v26 = [v4 trpId];
-    v27 = [v25 isEqual:v26];
+    v24 = trpId;
+    trpId2 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
+    trpId3 = [equalCopy trpId];
+    v27 = [trpId2 isEqual:trpId3];
 
     if (!v27)
     {
@@ -343,12 +343,12 @@
   {
   }
 
-  v5 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
-  v6 = [v4 subRequestId];
-  if ((v5 != 0) != (v6 == 0))
+  camId = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
+  camId2 = [equalCopy subRequestId];
+  if ((camId != 0) != (camId2 == 0))
   {
-    v28 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
-    if (!v28)
+    subRequestId = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
+    if (!subRequestId)
     {
 
 LABEL_33:
@@ -356,10 +356,10 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    v29 = v28;
-    v30 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
-    v31 = [v4 subRequestId];
-    v32 = [v30 isEqual:v31];
+    v29 = subRequestId;
+    subRequestId2 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v32 = [subRequestId2 isEqual:subRequestId3];
 
     if (v32)
     {
@@ -379,20 +379,20 @@ LABEL_31:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(CAMSchemaCAMClientEventMetadata *)self camId];
+  toCopy = to;
+  camId = [(CAMSchemaCAMClientEventMetadata *)self camId];
 
-  if (v4)
+  if (camId)
   {
-    v5 = [(CAMSchemaCAMClientEventMetadata *)self camId];
+    camId2 = [(CAMSchemaCAMClientEventMetadata *)self camId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
+  resultCandidateId = [(CAMSchemaCAMClientEventMetadata *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
@@ -402,72 +402,72 @@ LABEL_31:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
+  requestId = [(CAMSchemaCAMClientEventMetadata *)self requestId];
 
-  if (v7)
+  if (requestId)
   {
-    v8 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
+    requestId2 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
+  trpId = [(CAMSchemaCAMClientEventMetadata *)self trpId];
 
-  if (v9)
+  if (trpId)
   {
-    v10 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
+    trpId2 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
+  subRequestId = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
 
-  v12 = v14;
-  if (v11)
+  v12 = toCopy;
+  if (subRequestId)
   {
-    v13 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
+    subRequestId2 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
     PBDataWriterWriteSubmessage();
 
-    v12 = v14;
+    v12 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = CAMSchemaCAMClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(CAMSchemaCAMClientEventMetadata *)self camId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  camId = [(CAMSchemaCAMClientEventMetadata *)self camId];
+  v7 = [camId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CAMSchemaCAMClientEventMetadata *)self deleteCamId];
   }
 
-  v9 = [(CAMSchemaCAMClientEventMetadata *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(CAMSchemaCAMClientEventMetadata *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CAMSchemaCAMClientEventMetadata *)self deleteRequestId];
   }
 
-  v12 = [(CAMSchemaCAMClientEventMetadata *)self trpId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  trpId = [(CAMSchemaCAMClientEventMetadata *)self trpId];
+  v13 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CAMSchemaCAMClientEventMetadata *)self deleteTrpId];
   }
 
-  v15 = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  subRequestId = [(CAMSchemaCAMClientEventMetadata *)self subRequestId];
+  v16 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(CAMSchemaCAMClientEventMetadata *)self deleteSubRequestId];
   }

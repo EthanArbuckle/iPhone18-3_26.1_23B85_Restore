@@ -1,19 +1,19 @@
 @interface PFTDispatchSource
-- (PFTDispatchSource)initWithSource:(id)a3;
+- (PFTDispatchSource)initWithSource:(id)source;
 @end
 
 @implementation PFTDispatchSource
 
-- (PFTDispatchSource)initWithSource:(id)a3
+- (PFTDispatchSource)initWithSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = PFTDispatchSource;
   v6 = [(PFTDispatchSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_source, a3);
+    objc_storeStrong(&v6->_source, source);
     v8 = v7;
   }
 

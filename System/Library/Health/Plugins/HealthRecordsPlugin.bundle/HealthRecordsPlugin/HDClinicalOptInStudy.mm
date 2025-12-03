@@ -1,15 +1,15 @@
 @interface HDClinicalOptInStudy
 + (void)initialize;
-- (BOOL)_createDirectory:(id)a3 error:(id *)a4;
-- (BOOL)_lock_loadCertificateWithError:(id *)a3;
-- (BOOL)_lock_loadHealthWrapConfigurationWithError:(id *)a3;
-- (BOOL)_removeDirectory:(id)a3 error:(id *)a4;
-- (BOOL)_submitAnalyticsData:(id)a3 error:(id *)a4;
-- (BOOL)_uploadSubmittedAnalyticsDataWithUploadDelegate:(id)a3 error:(id *)a4;
-- (BOOL)cleanWithError:(id *)a3;
-- (BOOL)submitJSONAnalyticsData:(id)a3 error:(id *)a4;
-- (BOOL)triggerOptInAnalyticsDataUploadToHealthCloudWithUploadDelegate:(id)a3 error:(id *)a4;
-- (HDClinicalOptInStudy)initWithProfile:(id)a3 environment:(int64_t)a4;
+- (BOOL)_createDirectory:(id)directory error:(id *)error;
+- (BOOL)_lock_loadCertificateWithError:(id *)error;
+- (BOOL)_lock_loadHealthWrapConfigurationWithError:(id *)error;
+- (BOOL)_removeDirectory:(id)directory error:(id *)error;
+- (BOOL)_submitAnalyticsData:(id)data error:(id *)error;
+- (BOOL)_uploadSubmittedAnalyticsDataWithUploadDelegate:(id)delegate error:(id *)error;
+- (BOOL)cleanWithError:(id *)error;
+- (BOOL)submitJSONAnalyticsData:(id)data error:(id *)error;
+- (BOOL)triggerOptInAnalyticsDataUploadToHealthCloudWithUploadDelegate:(id)delegate error:(id *)error;
+- (HDClinicalOptInStudy)initWithProfile:(id)profile environment:(int64_t)environment;
 - (HDClinicalOptInStudyDelegate)delegate;
 - (HDProfile)profile;
 - (NSURLSession)session;
@@ -19,12 +19,12 @@
 - (id)_subjectTokenKey;
 - (id)_uploadURL;
 - (id)currentSubjectID;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
 - (void)_lock_enableDataCollectionIfNecessary;
 - (void)_lock_registerDevice;
-- (void)_setSubjectID:(id)a3 subjectToken:(id)a4;
+- (void)_setSubjectID:(id)d subjectToken:(id)token;
 - (void)enableDataCollection;
 @end
 
@@ -43,25 +43,25 @@
   }
 }
 
-- (HDClinicalOptInStudy)initWithProfile:(id)a3 environment:(int64_t)a4
+- (HDClinicalOptInStudy)initWithProfile:(id)profile environment:(int64_t)environment
 {
-  v6 = a3;
+  profileCopy = profile;
   v31.receiver = self;
   v31.super_class = HDClinicalOptInStudy;
   v7 = [(HDClinicalOptInStudy *)&v31 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_profile, v6);
-    v8->_environment = a4;
-    if (a4 <= 2)
+    objc_storeWeak(&v7->_profile, profileCopy);
+    v8->_environment = environment;
+    if (environment <= 2)
     {
-      v9 = off_105A88[a4];
-      v10 = off_105AA0[a4];
-      v11 = off_105AB8[a4];
-      v12 = 0x1BB20FB01BBuLL >> (16 * a4);
-      v13 = off_105AD0[a4];
-      v14 = off_105AE8[a4];
+      v9 = off_105A88[environment];
+      v10 = off_105AA0[environment];
+      v11 = off_105AB8[environment];
+      v12 = 0x1BB20FB01BBuLL >> (16 * environment);
+      v13 = off_105AD0[environment];
+      v14 = off_105AE8[environment];
       authorizationKey = v8->_authorizationKey;
       v8->_authorizationKey = &v9->isa;
 
@@ -82,8 +82,8 @@
       v8->_certString = &v14->isa;
     }
 
-    v21 = [v6 directoryPath];
-    v22 = [v21 stringByAppendingPathComponent:@"HealthCloud"];
+    directoryPath = [profileCopy directoryPath];
+    v22 = [directoryPath stringByAppendingPathComponent:@"HealthCloud"];
     healthCloudDirectoryPath = v8->_healthCloudDirectoryPath;
     v8->_healthCloudDirectoryPath = v22;
 
@@ -106,21 +106,21 @@
 
 - (NSURLSession)session
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  session = v2->_session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  session = selfCopy->_session;
   if (!session)
   {
     v4 = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"com.apple.healthd.HealthRecordsPlugin.OptInStudy"];
-    v5 = [NSURLSession sessionWithConfiguration:v4 delegate:v2 delegateQueue:v2->_operationQueue];
-    v6 = v2->_session;
-    v2->_session = v5;
+    v5 = [NSURLSession sessionWithConfiguration:v4 delegate:selfCopy delegateQueue:selfCopy->_operationQueue];
+    v6 = selfCopy->_session;
+    selfCopy->_session = v5;
 
-    session = v2->_session;
+    session = selfCopy->_session;
   }
 
   v7 = session;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -134,14 +134,14 @@
   return v3;
 }
 
-- (void)_setSubjectID:(id)a3 subjectToken:(id)a4
+- (void)_setSubjectID:(id)d subjectToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
+  tokenCopy = token;
+  dCopy = d;
   os_unfair_lock_lock(&self->_ivarLock);
-  [(HDClinicalOptInStudy *)self setSubjectID:v7];
+  [(HDClinicalOptInStudy *)self setSubjectID:dCopy];
 
-  [(HDClinicalOptInStudy *)self setSubjectToken:v6];
+  [(HDClinicalOptInStudy *)self setSubjectToken:tokenCopy];
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -154,19 +154,19 @@
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (BOOL)submitJSONAnalyticsData:(id)a3 error:(id *)a4
+- (BOOL)submitJSONAnalyticsData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   [(HDClinicalOptInStudy *)self enableDataCollection];
-  LOBYTE(a4) = [(HDClinicalOptInStudy *)self _submitAnalyticsData:v6 error:a4];
+  LOBYTE(error) = [(HDClinicalOptInStudy *)self _submitAnalyticsData:dataCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)triggerOptInAnalyticsDataUploadToHealthCloudWithUploadDelegate:(id)a3 error:(id *)a4
+- (BOOL)triggerOptInAnalyticsDataUploadToHealthCloudWithUploadDelegate:(id)delegate error:(id *)error
 {
-  v6 = a3;
-  if ([v6 clinicalOptInStudyShouldAbortUpload:self])
+  delegateCopy = delegate;
+  if ([delegateCopy clinicalOptInStudyShouldAbortUpload:self])
   {
     v7 = @"Opt-in upload was asked to defer [before enabling collection]";
   }
@@ -174,27 +174,27 @@
   else
   {
     [(HDClinicalOptInStudy *)self enableDataCollection];
-    if (![v6 clinicalOptInStudyShouldAbortUpload:self])
+    if (![delegateCopy clinicalOptInStudyShouldAbortUpload:self])
     {
-      v8 = [(HDClinicalOptInStudy *)self _uploadSubmittedAnalyticsDataWithUploadDelegate:v6 error:a4];
+      v8 = [(HDClinicalOptInStudy *)self _uploadSubmittedAnalyticsDataWithUploadDelegate:delegateCopy error:error];
       goto LABEL_7;
     }
 
     v7 = @"Opt-in upload was asked to defer [before upload]";
   }
 
-  [NSError hk_assignError:a4 code:708 description:v7];
+  [NSError hk_assignError:error code:708 description:v7];
   v8 = 0;
 LABEL_7:
 
   return v8;
 }
 
-- (BOOL)cleanWithError:(id *)a3
+- (BOOL)cleanWithError:(id *)error
 {
-  v5 = [(HDClinicalOptInStudy *)self healthCloudDirectoryPath];
+  healthCloudDirectoryPath = [(HDClinicalOptInStudy *)self healthCloudDirectoryPath];
   v11 = 0;
-  v6 = [(HDClinicalOptInStudy *)self _removeDirectory:v5 error:&v11];
+  v6 = [(HDClinicalOptInStudy *)self _removeDirectory:healthCloudDirectoryPath error:&v11];
   v7 = v11;
 
   if (!v6)
@@ -202,10 +202,10 @@ LABEL_7:
     v8 = v7;
     if (v8)
     {
-      if (a3)
+      if (error)
       {
         v9 = v8;
-        *a3 = v8;
+        *error = v8;
       }
 
       else
@@ -232,15 +232,15 @@ LABEL_7:
     return;
   }
 
-  v3 = [(HDClinicalOptInStudy *)self subjectID];
-  if (![v3 length])
+  subjectID = [(HDClinicalOptInStudy *)self subjectID];
+  if (![subjectID length])
   {
 
     goto LABEL_8;
   }
 
-  v4 = [(HDClinicalOptInStudy *)self subjectToken];
-  v5 = [v4 length];
+  subjectToken = [(HDClinicalOptInStudy *)self subjectToken];
+  v5 = [subjectToken length];
 
   if (!v5)
   {
@@ -263,8 +263,8 @@ LABEL_8:
     if (v9)
     {
       self->_readyForAnalyticsSubmission = 1;
-      v11 = [(HDClinicalOptInStudy *)self delegate];
-      [v11 clinicalOptInStudyIsReadyForDataSubmission:self];
+      delegate = [(HDClinicalOptInStudy *)self delegate];
+      [delegate clinicalOptInStudyIsReadyForDataSubmission:self];
     }
 
     else
@@ -311,13 +311,13 @@ LABEL_8:
   }
 
   v4 = [NSMutableURLRequest alloc];
-  v5 = [(HDClinicalOptInStudy *)self _registrationURL];
-  v6 = [v4 initWithURL:v5];
+  _registrationURL = [(HDClinicalOptInStudy *)self _registrationURL];
+  v6 = [v4 initWithURL:_registrationURL];
 
   [v6 setAllowsCellularAccess:1];
   [v6 setHTTPMethod:@"POST"];
-  v7 = [(HDClinicalOptInStudy *)self authorizationKey];
-  [v6 setValue:v7 forHTTPHeaderField:@"Authorization"];
+  authorizationKey = [(HDClinicalOptInStudy *)self authorizationKey];
+  [v6 setValue:authorizationKey forHTTPHeaderField:@"Authorization"];
 
   [v6 setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
   [v6 setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -332,7 +332,7 @@ LABEL_8:
   [v9 resume];
 }
 
-- (BOOL)_lock_loadHealthWrapConfigurationWithError:(id *)a3
+- (BOOL)_lock_loadHealthWrapConfigurationWithError:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_ivarLock);
   if (!self->_certificate)
@@ -341,12 +341,12 @@ LABEL_8:
   }
 
   v5 = [NSUUID alloc];
-  v6 = [(HDClinicalOptInStudy *)self subjectID];
-  v7 = [v5 initWithUUIDString:v6];
+  subjectID = [(HDClinicalOptInStudy *)self subjectID];
+  v7 = [v5 initWithUUIDString:subjectID];
 
   v8 = [NSUUID alloc];
-  v9 = [(HDClinicalOptInStudy *)self studyID];
-  v10 = [v8 initWithUUIDString:v9];
+  studyID = [(HDClinicalOptInStudy *)self studyID];
+  v10 = [v8 initWithUUIDString:studyID];
 
   if (v7)
   {
@@ -361,14 +361,14 @@ LABEL_8:
   v12 = !v11;
   if (v11)
   {
-    [NSError hk_assignError:a3 code:100 format:@"Received mal-formatted subject ID or study ID"];
+    [NSError hk_assignError:error code:100 format:@"Received mal-formatted subject ID or study ID"];
   }
 
   else
   {
     v13 = [HKHealthWrapMessageConfiguration alloc];
-    v14 = [(HDClinicalOptInStudy *)self channel];
-    v15 = [v13 initWithSubjectUUID:v7 studyUUID:v10 channel:v14 payloadType:@"JSON" certificate:self->_certificate];
+    channel = [(HDClinicalOptInStudy *)self channel];
+    v15 = [v13 initWithSubjectUUID:v7 studyUUID:v10 channel:channel payloadType:@"JSON" certificate:self->_certificate];
 
     healthWrapConfiguration = self->_healthWrapConfiguration;
     self->_healthWrapConfiguration = v15;
@@ -377,7 +377,7 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)_lock_loadCertificateWithError:(id *)a3
+- (BOOL)_lock_loadCertificateWithError:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_ivarLock);
   certString = self->_certString;
@@ -386,7 +386,7 @@ LABEL_8:
   {
     v9 = @"Failed to decode base64 certificate data.";
 LABEL_6:
-    [NSError hk_assignError:a3 code:100 format:v9];
+    [NSError hk_assignError:error code:100 format:v9];
     v8 = 0;
     goto LABEL_7;
   }
@@ -405,9 +405,9 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_submitAnalyticsData:(id)a3 error:(id *)a4
+- (BOOL)_submitAnalyticsData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   _HKInitializeLogging();
   v7 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
@@ -424,13 +424,13 @@ LABEL_7:
     v14 = [NSError hk_error:0 description:@"Not ready for submission yet"];
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v17 = v14;
         v16 = 0;
-        *a4 = v14;
+        *error = v14;
 LABEL_12:
-        v11 = v14;
+        healthWrapConfiguration = v14;
         goto LABEL_13;
       }
 
@@ -441,20 +441,20 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v9 = [(HDClinicalOptInStudy *)self _healthCloudUploadDirectoryPath];
-  v10 = [(HDClinicalOptInStudy *)self _createDirectory:v9 error:a4];
+  _healthCloudUploadDirectoryPath = [(HDClinicalOptInStudy *)self _healthCloudUploadDirectoryPath];
+  v10 = [(HDClinicalOptInStudy *)self _createDirectory:_healthCloudUploadDirectoryPath error:error];
 
   if (v10)
   {
     os_unfair_lock_lock(&self->_ivarLock);
-    v11 = [(HDClinicalOptInStudy *)self healthWrapConfiguration];
+    healthWrapConfiguration = [(HDClinicalOptInStudy *)self healthWrapConfiguration];
     os_unfair_lock_unlock(&self->_ivarLock);
     v12 = [HDAnalyticsWriter alloc];
-    v13 = [(HDClinicalOptInStudy *)self profile];
-    v14 = [v12 initWithProfile:v13];
+    profile = [(HDClinicalOptInStudy *)self profile];
+    v14 = [v12 initWithProfile:profile];
 
-    v15 = [(HDClinicalOptInStudy *)self _healthCloudUploadDirectoryPath];
-    v16 = [v14 submitJSONAnalyticsData:v6 toDirectory:v15 withConfiguration:v11 error:a4];
+    _healthCloudUploadDirectoryPath2 = [(HDClinicalOptInStudy *)self _healthCloudUploadDirectoryPath];
+    v16 = [v14 submitJSONAnalyticsData:dataCopy toDirectory:_healthCloudUploadDirectoryPath2 withConfiguration:healthWrapConfiguration error:error];
 
 LABEL_13:
     goto LABEL_14;
@@ -466,9 +466,9 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)_uploadSubmittedAnalyticsDataWithUploadDelegate:(id)a3 error:(id *)a4
+- (BOOL)_uploadSubmittedAnalyticsDataWithUploadDelegate:(id)delegate error:(id *)error
 {
-  v6 = a3;
+  delegateCopy = delegate;
   _HKInitializeLogging();
   v7 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
@@ -482,16 +482,16 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_ivarLock);
   if (!readyForAnalyticsSubmission)
   {
-    v10 = [NSError hk_error:0 description:@"Not ready for submission yet"];
-    if (v10)
+    _healthCloudUploadDirectoryPath = [NSError hk_error:0 description:@"Not ready for submission yet"];
+    if (_healthCloudUploadDirectoryPath)
     {
-      if (a4)
+      if (error)
       {
-        v11 = v10;
+        v11 = _healthCloudUploadDirectoryPath;
         v12 = 0;
-        *a4 = v10;
+        *error = _healthCloudUploadDirectoryPath;
 LABEL_41:
-        v9 = v10;
+        _uploadURL = _healthCloudUploadDirectoryPath;
         goto LABEL_42;
       }
 
@@ -502,17 +502,17 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v9 = [(HDClinicalOptInStudy *)self _uploadURL];
-  v10 = [(HDClinicalOptInStudy *)self _healthCloudUploadDirectoryPath];
+  _uploadURL = [(HDClinicalOptInStudy *)self _uploadURL];
+  _healthCloudUploadDirectoryPath = [(HDClinicalOptInStudy *)self _healthCloudUploadDirectoryPath];
   +[NSFileManager defaultManager];
   v37 = v50 = 0;
-  v38 = [v37 contentsOfDirectoryAtPath:v10 error:&v50];
+  v38 = [v37 contentsOfDirectoryAtPath:_healthCloudUploadDirectoryPath error:&v50];
   v39 = v50;
   if (v39)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v39;
+      *error = v39;
     }
 
     else
@@ -527,9 +527,9 @@ LABEL_41:
     }
   }
 
-  if ([v6 clinicalOptInStudyShouldAbortUpload:self])
+  if ([delegateCopy clinicalOptInStudyShouldAbortUpload:self])
   {
-    [NSError hk_assignError:a4 code:708 description:@"Opt-in upload was asked to defer [before file loop]"];
+    [NSError hk_assignError:error code:708 description:@"Opt-in upload was asked to defer [before file loop]"];
 LABEL_37:
     v12 = 0;
   }
@@ -538,7 +538,7 @@ LABEL_37:
   {
     if ([v38 count])
     {
-      v36 = a4;
+      errorCopy = error;
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
@@ -564,7 +564,7 @@ LABEL_37:
             v17 = *(*(&v46 + 1) + 8 * v16);
             if ([v17 hasPrefix:@"HealthWrap"])
             {
-              v18 = [v6 clinicalOptInStudyShouldAbortUpload:self];
+              v18 = [delegateCopy clinicalOptInStudyShouldAbortUpload:self];
               _HKInitializeLogging();
               v19 = HKLogHealthRecords;
               v20 = os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_INFO);
@@ -576,7 +576,7 @@ LABEL_37:
                   _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "Aborting upload of analytics health wrap messages", buf, 2u);
                 }
 
-                [NSError hk_assignError:v36 code:708 description:@"Opt-in upload was asked to defer [during file loop]"];
+                [NSError hk_assignError:errorCopy code:708 description:@"Opt-in upload was asked to defer [during file loop]"];
 
                 goto LABEL_37;
               }
@@ -588,7 +588,7 @@ LABEL_37:
                 _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "Start upload analytics health wrap message: %@", buf, 0xCu);
               }
 
-              v21 = [v10 stringByAppendingPathComponent:v17];
+              v21 = [_healthCloudUploadDirectoryPath stringByAppendingPathComponent:v17];
               v22 = +[NSFileManager defaultManager];
               v45 = 0;
               v23 = [v22 attributesOfItemAtPath:v21 error:&v45];
@@ -599,32 +599,32 @@ LABEL_37:
                 v24 = [v23 objectForKeyedSubscript:NSFileSize];
                 v43 = [NSString stringWithFormat:@"%@", v24];
 
-                v25 = [NSMutableURLRequest requestWithURL:v9];
+                v25 = [NSMutableURLRequest requestWithURL:_uploadURL];
                 [v25 setAllowsCellularAccess:0];
                 [v25 setHTTPMethod:@"POST"];
                 [v25 setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
                 [v25 setValue:@"application/json" forHTTPHeaderField:@"Accept"];
                 [v25 setValue:v43 forHTTPHeaderField:@"Content-Length"];
-                v26 = [(HDClinicalOptInStudy *)self authorizationKey];
-                [v25 setValue:v26 forHTTPHeaderField:@"Authorization"];
+                authorizationKey = [(HDClinicalOptInStudy *)self authorizationKey];
+                [v25 setValue:authorizationKey forHTTPHeaderField:@"Authorization"];
 
-                v27 = [(HDClinicalOptInStudy *)self subjectToken];
-                [v25 setValue:v27 forHTTPHeaderField:@"X-HDS-Subject-Authorization"];
+                subjectToken = [(HDClinicalOptInStudy *)self subjectToken];
+                [v25 setValue:subjectToken forHTTPHeaderField:@"X-HDS-Subject-Authorization"];
 
-                v28 = [(HDClinicalOptInStudy *)self session];
-                [v28 uploadTaskWithStreamedRequest:v25];
-                v29 = self;
-                v30 = v9;
-                v31 = v10;
-                v33 = v32 = v6;
+                session = [(HDClinicalOptInStudy *)self session];
+                [session uploadTaskWithStreamedRequest:v25];
+                selfCopy = self;
+                v30 = _uploadURL;
+                v31 = _healthCloudUploadDirectoryPath;
+                v33 = v32 = delegateCopy;
 
                 [v33 setTaskDescription:v21];
                 [v33 resume];
 
-                v6 = v32;
-                v10 = v31;
-                v9 = v30;
-                self = v29;
+                delegateCopy = v32;
+                _healthCloudUploadDirectoryPath = v31;
+                _uploadURL = v30;
+                self = selfCopy;
 
                 v15 = v40;
               }
@@ -669,11 +669,11 @@ LABEL_42:
   return v12;
 }
 
-- (BOOL)_createDirectory:(id)a3 error:(id *)a4
+- (BOOL)_createDirectory:(id)directory error:(id *)error
 {
-  v5 = a3;
+  directoryCopy = directory;
   v6 = objc_alloc_init(NSFileManager);
-  if ([v6 fileExistsAtPath:v5 isDirectory:0])
+  if ([v6 fileExistsAtPath:directoryCopy isDirectory:0])
   {
     v7 = 1;
   }
@@ -681,18 +681,18 @@ LABEL_42:
   else
   {
     v13 = 0;
-    v7 = [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v13];
+    v7 = [v6 createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v13];
     v8 = v13;
     if ((v7 & 1) == 0)
     {
-      v9 = [NSString stringWithFormat:@"Error creating submission directory %@", v5];
-      v10 = [NSError hk_error:100 description:v9 underlyingError:v8];
+      directoryCopy = [NSString stringWithFormat:@"Error creating submission directory %@", directoryCopy];
+      v10 = [NSError hk_error:100 description:directoryCopy underlyingError:v8];
       if (v10)
       {
-        if (a4)
+        if (error)
         {
           v11 = v10;
-          *a4 = v10;
+          *error = v10;
         }
 
         else
@@ -706,13 +706,13 @@ LABEL_42:
   return v7;
 }
 
-- (BOOL)_removeDirectory:(id)a3 error:(id *)a4
+- (BOOL)_removeDirectory:(id)directory error:(id *)error
 {
-  v5 = a3;
+  directoryCopy = directory;
   v6 = objc_alloc_init(NSFileManager);
-  if ([v6 fileExistsAtPath:v5 isDirectory:0])
+  if ([v6 fileExistsAtPath:directoryCopy isDirectory:0])
   {
-    v7 = [v6 removeItemAtPath:v5 error:a4];
+    v7 = [v6 removeItemAtPath:directoryCopy error:error];
   }
 
   else
@@ -723,76 +723,76 @@ LABEL_42:
   return v7;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v13 = a4;
-  v7 = a5;
+  taskCopy = task;
+  dataCopy = data;
   os_unfair_lock_assert_not_owner(&self->_ivarLock);
   os_unfair_lock_lock(&self->_ivarLock);
-  v8 = [(HDClinicalOptInStudy *)self responses];
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 taskIdentifier]);
-  v10 = [v8 objectForKey:v9];
+  responses = [(HDClinicalOptInStudy *)self responses];
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
+  v10 = [responses objectForKey:v9];
 
   if (!v10)
   {
     v10 = objc_alloc_init(NSMutableData);
     responses = self->_responses;
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 taskIdentifier]);
+    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
     [(NSMutableDictionary *)responses setObject:v10 forKey:v12];
   }
 
   os_unfair_lock_unlock(&self->_ivarLock);
-  [v10 appendData:v7];
+  [v10 appendData:dataCopy];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
-  v14 = a4;
-  v7 = a5;
+  taskCopy = task;
+  streamCopy = stream;
   os_unfair_lock_assert_not_owner(&self->_ivarLock);
   os_unfair_lock_lock(&self->_ivarLock);
-  v8 = [(HDClinicalOptInStudy *)self inputStreams];
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v14 taskIdentifier]);
-  v10 = [v8 objectForKeyedSubscript:v9];
+  inputStreams = [(HDClinicalOptInStudy *)self inputStreams];
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
+  v10 = [inputStreams objectForKeyedSubscript:v9];
 
   if (!v10)
   {
-    v11 = [v14 taskDescription];
-    v10 = [NSInputStream inputStreamWithFileAtPath:v11];
+    taskDescription = [taskCopy taskDescription];
+    v10 = [NSInputStream inputStreamWithFileAtPath:taskDescription];
 
-    v12 = [(HDClinicalOptInStudy *)self inputStreams];
-    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v14 taskIdentifier]);
-    [v12 setObject:v10 forKeyedSubscript:v13];
+    inputStreams2 = [(HDClinicalOptInStudy *)self inputStreams];
+    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
+    [inputStreams2 setObject:v10 forKeyedSubscript:v13];
   }
 
   os_unfair_lock_unlock(&self->_ivarLock);
-  v7[2](v7, v10);
+  streamCopy[2](streamCopy, v10);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   os_unfair_lock_assert_not_owner(&self->_ivarLock);
-  v9 = [v7 taskDescription];
-  if ([v7 state] == &dword_0 + 3 && objc_msgSend(v9, "length"))
+  taskDescription = [taskCopy taskDescription];
+  if ([taskCopy state] == &dword_0 + 3 && objc_msgSend(taskDescription, "length"))
   {
     os_unfair_lock_lock(&self->_ivarLock);
-    v10 = [(HDClinicalOptInStudy *)self responses];
-    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 taskIdentifier]);
-    v12 = [v10 objectForKey:v11];
+    responses = [(HDClinicalOptInStudy *)self responses];
+    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
+    v12 = [responses objectForKey:v11];
 
     v13 = [[NSString alloc] initWithBytesNoCopy:objc_msgSend(v12 length:"bytes") encoding:objc_msgSend(v12 freeWhenDone:{"length"), 4, 0}];
-    v14 = [(HDClinicalOptInStudy *)self responses];
-    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 taskIdentifier]);
-    [v14 removeObjectForKey:v15];
+    responses2 = [(HDClinicalOptInStudy *)self responses];
+    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
+    [responses2 removeObjectForKey:v15];
 
     os_unfair_lock_unlock(&self->_ivarLock);
-    v16 = [v7 response];
-    v17 = [v16 statusCode];
-    if ((v17 - 200) >= 0x64)
+    response = [taskCopy response];
+    statusCode = [response statusCode];
+    if ((statusCode - 200) >= 0x64)
     {
-      v31 = v17;
+      v31 = statusCode;
       _HKInitializeLogging();
       v32 = HKLogHealthRecords;
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
@@ -802,7 +802,7 @@ LABEL_42:
         v38 = 2112;
         v39 = v13;
         v40 = 2112;
-        v41 = v8;
+        v41 = errorCopy;
         _os_log_error_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "Failed to upload analytics for opt-in study: received status code %ld, response: %@, error: %@", buf, 0x20u);
       }
     }
@@ -811,19 +811,19 @@ LABEL_42:
     {
       v33 = v13;
       os_unfair_lock_lock(&self->_ivarLock);
-      v18 = [(HDClinicalOptInStudy *)self inputStreams];
-      v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 taskIdentifier]);
-      v20 = [v18 objectForKeyedSubscript:v19];
+      inputStreams = [(HDClinicalOptInStudy *)self inputStreams];
+      v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
+      v20 = [inputStreams objectForKeyedSubscript:v19];
 
       [v20 close];
-      v21 = [(HDClinicalOptInStudy *)self inputStreams];
-      v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 taskIdentifier]);
-      [v21 removeObjectForKey:v22];
+      inputStreams2 = [(HDClinicalOptInStudy *)self inputStreams];
+      v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
+      [inputStreams2 removeObjectForKey:v22];
 
       os_unfair_lock_unlock(&self->_ivarLock);
       v23 = +[NSFileManager defaultManager];
       v35 = 0;
-      v24 = [v23 removeItemAtPath:v9 error:&v35];
+      v24 = [v23 removeItemAtPath:taskDescription error:&v35];
       v25 = v35;
 
       if (!v24 || v25)
@@ -840,15 +840,15 @@ LABEL_42:
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_INFO))
       {
         v27 = v26;
-        v28 = [v9 lastPathComponent];
+        lastPathComponent = [taskDescription lastPathComponent];
         *buf = 138412290;
-        v37 = v28;
+        v37 = lastPathComponent;
         _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "Successfully uploaded analytics health wrap message: %@", buf, 0xCu);
       }
 
-      v29 = [(HDClinicalOptInStudy *)self delegate];
-      v30 = [v9 lastPathComponent];
-      [v29 clinicalOptInStudy:self hasFinishedUploadingFile:v30];
+      delegate = [(HDClinicalOptInStudy *)self delegate];
+      lastPathComponent2 = [taskDescription lastPathComponent];
+      [delegate clinicalOptInStudy:self hasFinishedUploadingFile:lastPathComponent2];
 
       v13 = v34;
     }
@@ -857,13 +857,13 @@ LABEL_42:
 
 - (id)_keyValueDomain
 {
-  v4 = [(HDClinicalOptInStudy *)self profile];
-  if (!v4)
+  profile = [(HDClinicalOptInStudy *)self profile];
+  if (!profile)
   {
     sub_9C664(a2, self);
   }
 
-  v5 = [[HDKeyValueDomain alloc] initWithCategory:100 domainName:@"healthrecords-study" profile:v4];
+  v5 = [[HDKeyValueDomain alloc] initWithCategory:100 domainName:@"healthrecords-study" profile:profile];
 
   return v5;
 }
@@ -871,14 +871,14 @@ LABEL_42:
 - (id)_subjectIDKey
 {
   v3 = [NSString alloc];
-  v4 = [(HDClinicalOptInStudy *)self environment];
+  environment = [(HDClinicalOptInStudy *)self environment];
   v5 = @"staging";
-  if (v4 == 1)
+  if (environment == 1)
   {
     v5 = @"testing";
   }
 
-  if (v4 == 2)
+  if (environment == 2)
   {
     v5 = @"production";
   }
@@ -891,14 +891,14 @@ LABEL_42:
 - (id)_subjectTokenKey
 {
   v3 = [NSString alloc];
-  v4 = [(HDClinicalOptInStudy *)self environment];
+  environment = [(HDClinicalOptInStudy *)self environment];
   v5 = @"staging";
-  if (v4 == 1)
+  if (environment == 1)
   {
     v5 = @"testing";
   }
 
-  if (v4 == 2)
+  if (environment == 2)
   {
     v5 = @"production";
   }
@@ -911,15 +911,15 @@ LABEL_42:
 - (id)_registrationURL
 {
   v3 = objc_alloc_init(NSURLComponents);
-  v4 = [(HDClinicalOptInStudy *)self hostname];
-  [v3 setHost:v4];
+  hostname = [(HDClinicalOptInStudy *)self hostname];
+  [v3 setHost:hostname];
 
-  v5 = [(HDClinicalOptInStudy *)self studyID];
-  v6 = [@"/ingest/v2/register" stringByAppendingPathComponent:v5];
+  studyID = [(HDClinicalOptInStudy *)self studyID];
+  v6 = [@"/ingest/v2/register" stringByAppendingPathComponent:studyID];
   [v3 setPath:v6];
 
-  v7 = [(HDClinicalOptInStudy *)self scheme];
-  [v3 setScheme:v7];
+  scheme = [(HDClinicalOptInStudy *)self scheme];
+  [v3 setScheme:scheme];
 
   v8 = [NSNumber numberWithUnsignedShort:self->_port];
   [v3 setPort:v8];
@@ -932,12 +932,12 @@ LABEL_42:
 - (id)_uploadURL
 {
   v3 = objc_alloc_init(NSURLComponents);
-  v4 = [(HDClinicalOptInStudy *)self hostname];
-  [v3 setHost:v4];
+  hostname = [(HDClinicalOptInStudy *)self hostname];
+  [v3 setHost:hostname];
 
   [v3 setPath:@"/ingest/v2/submit"];
-  v5 = [(HDClinicalOptInStudy *)self scheme];
-  [v3 setScheme:v5];
+  scheme = [(HDClinicalOptInStudy *)self scheme];
+  [v3 setScheme:scheme];
 
   v6 = [NSNumber numberWithUnsignedShort:self->_port];
   [v3 setPort:v6];

@@ -1,17 +1,17 @@
 @interface WFGizmoFaceCollectionProvider
 - (OS_os_log)log;
-- (id)collectionForIdentifier:(id)a3;
-- (void)faceCollectionDidLoad:(id)a3;
-- (void)getFacesForCollection:(id)a3 completion:(id)a4;
-- (void)getWatchFaceObjectsForLibraryCollection:(id)a3;
-- (void)processCollectionAndFinish:(id)a3;
+- (id)collectionForIdentifier:(id)identifier;
+- (void)faceCollectionDidLoad:(id)load;
+- (void)getFacesForCollection:(id)collection completion:(id)completion;
+- (void)getWatchFaceObjectsForLibraryCollection:(id)collection;
+- (void)processCollectionAndFinish:(id)finish;
 @end
 
 @implementation WFGizmoFaceCollectionProvider
 
-- (void)getWatchFaceObjectsForLibraryCollection:(id)a3
+- (void)getWatchFaceObjectsForLibraryCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -31,13 +31,13 @@
     sub_100002D98();
   }
 
-  [(WFGizmoFaceCollectionProvider *)self getFacesForCollection:*v5 completion:v4];
+  [(WFGizmoFaceCollectionProvider *)self getFacesForCollection:*v5 completion:collectionCopy];
 }
 
-- (void)getFacesForCollection:(id)a3 completion:(id)a4
+- (void)getFacesForCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = objc_retainBlock(a4);
+  collectionCopy = collection;
+  v7 = objc_retainBlock(completion);
   completion = self->_completion;
   self->_completion = v7;
 
@@ -48,12 +48,12 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "getting a collection", buf, 2u);
   }
 
-  v10 = [(WFGizmoFaceCollectionProvider *)self collectionForIdentifier:v6];
+  v10 = [(WFGizmoFaceCollectionProvider *)self collectionForIdentifier:collectionCopy];
 
-  v11 = [v10 hasLoaded];
+  hasLoaded = [v10 hasLoaded];
   v12 = [(WFGizmoFaceCollectionProvider *)self log];
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-  if (v11)
+  if (hasLoaded)
   {
     if (v13)
     {
@@ -76,18 +76,18 @@
   }
 }
 
-- (id)collectionForIdentifier:(id)a3
+- (id)collectionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[CLKDevice currentDevice];
-  v6 = [v5 nrDevice];
-  v7 = [v6 pairingID];
+  nrDevice = [v5 nrDevice];
+  pairingID = [nrDevice pairingID];
 
-  v8 = [(NTKPersistentFaceCollection *)self->_collection deviceUUID];
-  v9 = [v8 isEqual:v7];
+  deviceUUID = [(NTKPersistentFaceCollection *)self->_collection deviceUUID];
+  v9 = [deviceUUID isEqual:pairingID];
 
-  v10 = [(NTKPersistentFaceCollection *)self->_collection collectionIdentifier];
-  v11 = [v10 isEqualToString:v4];
+  collectionIdentifier = [(NTKPersistentFaceCollection *)self->_collection collectionIdentifier];
+  v11 = [collectionIdentifier isEqualToString:identifierCopy];
 
   collection = self->_collection;
   if (!collection)
@@ -103,7 +103,7 @@
   v13 = self->_collection;
   if (v13)
   {
-    v14 = [(NTKPersistentFaceCollection *)v13 hasLoaded];
+    hasLoaded = [(NTKPersistentFaceCollection *)v13 hasLoaded];
     v15 = @"requesting a new collection type";
     if (v11)
     {
@@ -115,7 +115,7 @@
       v15 = @"uuid has changed";
     }
 
-    if (v14)
+    if (hasLoaded)
     {
       v16 = v15;
     }
@@ -159,7 +159,7 @@ LABEL_11:
   v19 = v18;
   _Block_object_dispose(&v27, 8);
   v20 = [v18 alloc];
-  v21 = [v20 initWithCollectionIdentifier:v4 deviceUUID:{v7, v27}];
+  v21 = [v20 initWithCollectionIdentifier:identifierCopy deviceUUID:{pairingID, v27}];
   v22 = self->_collection;
   self->_collection = v21;
 
@@ -177,9 +177,9 @@ LABEL_19:
   return v24;
 }
 
-- (void)processCollectionAndFinish:(id)a3
+- (void)processCollectionAndFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v5 = [(WFGizmoFaceCollectionProvider *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -187,20 +187,20 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "starting process", buf, 2u);
   }
 
-  v6 = [v4 numberOfFaces];
-  v7 = [[NSMutableArray alloc] initWithCapacity:v6];
-  if (v6 >= 1)
+  numberOfFaces = [finishCopy numberOfFaces];
+  v7 = [[NSMutableArray alloc] initWithCapacity:numberOfFaces];
+  if (numberOfFaces >= 1)
   {
-    for (i = 0; i != v6; ++i)
+    for (i = 0; i != numberOfFaces; ++i)
     {
-      v9 = [v4 faceAtIndex:i];
-      v10 = [v4 uuidForFace:v9];
-      v11 = [v10 UUIDString];
+      v9 = [finishCopy faceAtIndex:i];
+      v10 = [finishCopy uuidForFace:v9];
+      uUIDString = [v10 UUIDString];
 
-      v12 = [v9 name];
-      v13 = [[COSWatchFace alloc] initWithIdentifier:v11 displayString:v12];
-      v14 = [v4 selectedFace];
-      if (v14 == v9)
+      name = [v9 name];
+      v13 = [[COSWatchFace alloc] initWithIdentifier:uUIDString displayString:name];
+      selectedFace = [finishCopy selectedFace];
+      if (selectedFace == v9)
       {
         v15 = &__kCFBooleanTrue;
       }
@@ -223,13 +223,13 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "process finished, calling completion", v18, 2u);
   }
 
-  v17 = [(WFGizmoFaceCollectionProvider *)self completion];
-  (v17)[2](v17, v4, v7, 0);
+  completion = [(WFGizmoFaceCollectionProvider *)self completion];
+  (completion)[2](completion, finishCopy, v7, 0);
 }
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v5 = [(WFGizmoFaceCollectionProvider *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -237,7 +237,7 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "collection loaded, moving to process", v6, 2u);
   }
 
-  [(WFGizmoFaceCollectionProvider *)self processCollectionAndFinish:v4];
+  [(WFGizmoFaceCollectionProvider *)self processCollectionAndFinish:loadCopy];
 }
 
 - (OS_os_log)log

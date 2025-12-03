@@ -1,29 +1,29 @@
 @interface SearchUILeadingHomeScreenViewController
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (id)setupView;
-- (void)deleteIcon:(id)a3;
-- (void)setFeedbackDelegate:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)deleteIcon:(id)icon;
+- (void)setFeedbackDelegate:(id)delegate;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUILeadingHomeScreenViewController
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = a3;
-  if ([v3 isLocalApplicationResult])
+  modelCopy = model;
+  if ([modelCopy isLocalApplicationResult])
   {
-    v4 = [v3 useCompactVersionOfUI] ^ 1;
+    v4 = [modelCopy useCompactVersionOfUI] ^ 1;
   }
 
   else
   {
-    v5 = [v3 cardSection];
-    v6 = [v5 command];
+    cardSection = [modelCopy cardSection];
+    command = [cardSection command];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 useCompactVersionOfUI] ^ 1;
+      v4 = [modelCopy useCompactVersionOfUI] ^ 1;
     }
 
     else
@@ -39,40 +39,40 @@
 {
   v3 = objc_opt_new();
   [v3 setAllowsLabelArea:0];
-  v4 = [(SearchUILeadingViewController *)self feedbackDelegate];
-  [v3 setFeedbackDelegate:v4];
+  feedbackDelegate = [(SearchUILeadingViewController *)self feedbackDelegate];
+  [v3 setFeedbackDelegate:feedbackDelegate];
 
   [v3 setEngagementDelegate:self];
   [v3 setVariant:4];
   +[SearchUIAppIconImage sizeForVariant:](SearchUIAppIconImage, "sizeForVariant:", [v3 variant]);
   [v3 setMaximumLayoutSize:?];
   [SearchUIAutoLayout requireIntrinsicSizeForView:v3];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_deleteIcon_ name:*MEMORY[0x1E69D4170] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_deleteIcon_ name:*MEMORY[0x1E69D4170] object:0];
 
   return v3;
 }
 
-- (void)setFeedbackDelegate:(id)a3
+- (void)setFeedbackDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SearchUILeadingHomeScreenViewController;
-  v4 = a3;
-  [(SearchUILeadingViewController *)&v6 setFeedbackDelegate:v4];
+  delegateCopy = delegate;
+  [(SearchUILeadingViewController *)&v6 setFeedbackDelegate:delegateCopy];
   v5 = [(SearchUILeadingViewController *)self view:v6.receiver];
-  [v5 setFeedbackDelegate:v4];
+  [v5 setFeedbackDelegate:delegateCopy];
 }
 
-- (void)deleteIcon:(id)a3
+- (void)deleteIcon:(id)icon
 {
-  v4 = [a3 userInfo];
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D4178]];
+  userInfo = [icon userInfo];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69D4178]];
 
-  v5 = [(SearchUILeadingViewController *)self view];
-  v6 = [v5 icon];
-  if (v6 == v9)
+  view = [(SearchUILeadingViewController *)self view];
+  icon = [view icon];
+  if (icon == v9)
   {
-    v7 = [(SearchUILeadingViewController *)self feedbackDelegate];
+    feedbackDelegate = [(SearchUILeadingViewController *)self feedbackDelegate];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -80,22 +80,22 @@
       goto LABEL_5;
     }
 
-    v5 = [(SearchUILeadingViewController *)self feedbackDelegate];
-    v6 = [(SearchUILeadingViewController *)self rowModel];
-    [v5 removeRowModel:v6 completion:0];
+    view = [(SearchUILeadingViewController *)self feedbackDelegate];
+    icon = [(SearchUILeadingViewController *)self rowModel];
+    [view removeRowModel:icon completion:0];
   }
 
 LABEL_5:
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v6.receiver = self;
   v6.super_class = SearchUILeadingHomeScreenViewController;
-  v4 = a3;
-  [(SearchUILeadingViewController *)&v6 updateWithRowModel:v4];
+  modelCopy = model;
+  [(SearchUILeadingViewController *)&v6 updateWithRowModel:modelCopy];
   v5 = [(SearchUILeadingViewController *)self view:v6.receiver];
-  [v5 updateWithRowModel:v4];
+  [v5 updateWithRowModel:modelCopy];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface AWDCoreRoutineDeletionGroupStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecords:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addRecords:(id)records;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOldestRecordAgeInDays:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasOldestRecordAgeInDays:(BOOL)days;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineDeletionGroupStats
@@ -22,9 +22,9 @@
   [(AWDCoreRoutineDeletionGroupStats *)&v3 dealloc];
 }
 
-- (void)setHasOldestRecordAgeInDays:(BOOL)a3
+- (void)setHasOldestRecordAgeInDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 2;
   }
@@ -37,7 +37,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addRecords:(id)a3
+- (void)addRecords:(id)records
 {
   records = self->_records;
   if (!records)
@@ -46,7 +46,7 @@
     self->_records = records;
   }
 
-  [(NSMutableArray *)records addObject:a3];
+  [(NSMutableArray *)records addObject:records];
 }
 
 - (id)description
@@ -59,17 +59,17 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_itemType), @"itemType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_itemType), @"itemType"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_oldestRecordAgeInDays), @"oldestRecordAgeInDays"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_oldestRecordAgeInDays), @"oldestRecordAgeInDays"}];
   }
 
   if ([(NSMutableArray *)self->_records count])
@@ -103,14 +103,14 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"records"];
+    [dictionary setObject:v5 forKey:@"records"];
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -159,41 +159,41 @@
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_itemType;
-    *(a3 + 24) |= 1u;
+    *(to + 2) = self->_itemType;
+    *(to + 24) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 3) = self->_oldestRecordAgeInDays;
-    *(a3 + 24) |= 2u;
+    *(to + 3) = self->_oldestRecordAgeInDays;
+    *(to + 24) |= 2u;
   }
 
   if ([(AWDCoreRoutineDeletionGroupStats *)self recordsCount])
   {
-    [a3 clearRecords];
-    v6 = [(AWDCoreRoutineDeletionGroupStats *)self recordsCount];
-    if (v6)
+    [to clearRecords];
+    recordsCount = [(AWDCoreRoutineDeletionGroupStats *)self recordsCount];
+    if (recordsCount)
     {
-      v7 = v6;
+      v7 = recordsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addRecords:{-[AWDCoreRoutineDeletionGroupStats recordsAtIndex:](self, "recordsAtIndex:", i)}];
+        [to addRecords:{-[AWDCoreRoutineDeletionGroupStats recordsAtIndex:](self, "recordsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -228,7 +228,7 @@
           objc_enumerationMutation(records);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addRecords:v13];
       }
 
@@ -242,21 +242,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 24);
+    v6 = *(equal + 24);
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_itemType != *(a3 + 2))
+      if ((*(equal + 24) & 1) == 0 || self->_itemType != *(equal + 2))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
 LABEL_14:
       LOBYTE(v5) = 0;
@@ -265,19 +265,19 @@ LABEL_14:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 24) & 2) == 0 || self->_oldestRecordAgeInDays != *(a3 + 3))
+      if ((*(equal + 24) & 2) == 0 || self->_oldestRecordAgeInDays != *(equal + 3))
       {
         goto LABEL_14;
       }
     }
 
-    else if ((*(a3 + 24) & 2) != 0)
+    else if ((*(equal + 24) & 2) != 0)
     {
       goto LABEL_14;
     }
 
     records = self->_records;
-    if (records | *(a3 + 2))
+    if (records | *(equal + 2))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)records isEqual:?];
@@ -318,20 +318,20 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSMutableArray *)self->_records hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  v4 = *(a3 + 24);
+  v4 = *(from + 24);
   if (v4)
   {
-    self->_itemType = *(a3 + 2);
+    self->_itemType = *(from + 2);
     *&self->_has |= 1u;
-    v4 = *(a3 + 24);
+    v4 = *(from + 24);
   }
 
   if ((v4 & 2) != 0)
   {
-    self->_oldestRecordAgeInDays = *(a3 + 3);
+    self->_oldestRecordAgeInDays = *(from + 3);
     *&self->_has |= 2u;
   }
 
@@ -339,7 +339,7 @@ LABEL_3:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 2);
+  v5 = *(from + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

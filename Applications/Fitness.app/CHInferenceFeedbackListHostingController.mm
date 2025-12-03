@@ -1,16 +1,16 @@
 @interface CHInferenceFeedbackListHostingController
-+ (id)hostingControllerWithRecords:(id)a3 recordController:(id)a4;
++ (id)hostingControllerWithRecords:(id)records recordController:(id)controller;
 - (CHInferenceFeedbackListHostingController)init;
 @end
 
 @implementation CHInferenceFeedbackListHostingController
 
-+ (id)hostingControllerWithRecords:(id)a3 recordController:(id)a4
++ (id)hostingControllerWithRecords:(id)records recordController:(id)controller
 {
   type metadata accessor for InferenceRecordBridge(0);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
-  v7 = sub_1005E8FD4(v5, v6);
+  controllerCopy = controller;
+  v7 = sub_1005E8FD4(v5, controllerCopy);
 
   return v7;
 }

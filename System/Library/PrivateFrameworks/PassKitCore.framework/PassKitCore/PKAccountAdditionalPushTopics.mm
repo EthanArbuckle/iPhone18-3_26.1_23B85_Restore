@@ -1,83 +1,83 @@
 @interface PKAccountAdditionalPushTopics
-- (BOOL)isEqual:(id)a3;
-- (PKAccountAdditionalPushTopics)initWithCoder:(id)a3;
-- (PKAccountAdditionalPushTopics)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountAdditionalPushTopics)initWithCoder:(id)coder;
+- (PKAccountAdditionalPushTopics)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountAdditionalPushTopics
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_account];
-  [v3 safelyAddObject:self->_extendedAccount];
-  [v3 safelyAddObject:self->_payments];
-  [v3 safelyAddObject:self->_users];
-  [v3 safelyAddObject:self->_sharedAccountCloudStore];
-  [v3 safelyAddObject:self->_applications];
-  [v3 safelyAddObject:self->_physicalCards];
-  [v3 safelyAddObject:self->_virtualCards];
-  [v3 safelyAddObject:self->_servicingToken];
-  [v3 safelyAddObject:self->_fundingSources];
-  [v3 safelyAddObject:self->_creditRecoveryPaymentPlans];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_account];
+  [array safelyAddObject:self->_extendedAccount];
+  [array safelyAddObject:self->_payments];
+  [array safelyAddObject:self->_users];
+  [array safelyAddObject:self->_sharedAccountCloudStore];
+  [array safelyAddObject:self->_applications];
+  [array safelyAddObject:self->_physicalCards];
+  [array safelyAddObject:self->_virtualCards];
+  [array safelyAddObject:self->_servicingToken];
+  [array safelyAddObject:self->_fundingSources];
+  [array safelyAddObject:self->_creditRecoveryPaymentPlans];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (PKAccountAdditionalPushTopics)initWithDictionary:(id)a3
+- (PKAccountAdditionalPushTopics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PKAccountAdditionalPushTopics;
   v5 = [(PKAccountAdditionalPushTopics *)&v29 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"account"];
+    v6 = [dictionaryCopy PKStringForKey:@"account"];
     account = v5->_account;
     v5->_account = v6;
 
-    v8 = [v4 PKStringForKey:@"extendedAccount"];
+    v8 = [dictionaryCopy PKStringForKey:@"extendedAccount"];
     extendedAccount = v5->_extendedAccount;
     v5->_extendedAccount = v8;
 
-    v10 = [v4 PKStringForKey:@"payments"];
+    v10 = [dictionaryCopy PKStringForKey:@"payments"];
     payments = v5->_payments;
     v5->_payments = v10;
 
-    v12 = [v4 PKStringForKey:@"users"];
+    v12 = [dictionaryCopy PKStringForKey:@"users"];
     users = v5->_users;
     v5->_users = v12;
 
-    v14 = [v4 PKStringForKey:@"sharedAccountCloudStore"];
+    v14 = [dictionaryCopy PKStringForKey:@"sharedAccountCloudStore"];
     sharedAccountCloudStore = v5->_sharedAccountCloudStore;
     v5->_sharedAccountCloudStore = v14;
 
-    v16 = [v4 PKStringForKey:@"applications"];
+    v16 = [dictionaryCopy PKStringForKey:@"applications"];
     applications = v5->_applications;
     v5->_applications = v16;
 
-    v18 = [v4 PKStringForKey:@"physicalCards"];
+    v18 = [dictionaryCopy PKStringForKey:@"physicalCards"];
     physicalCards = v5->_physicalCards;
     v5->_physicalCards = v18;
 
-    v20 = [v4 PKStringForKey:@"virtualCards"];
+    v20 = [dictionaryCopy PKStringForKey:@"virtualCards"];
     virtualCards = v5->_virtualCards;
     v5->_virtualCards = v20;
 
-    v22 = [v4 PKStringForKey:@"servicingToken"];
+    v22 = [dictionaryCopy PKStringForKey:@"servicingToken"];
     servicingToken = v5->_servicingToken;
     v5->_servicingToken = v22;
 
-    v24 = [v4 PKStringForKey:@"fundingSources"];
+    v24 = [dictionaryCopy PKStringForKey:@"fundingSources"];
     fundingSources = v5->_fundingSources;
     v5->_fundingSources = v24;
 
-    v26 = [v4 PKStringForKey:@"recoveryPaymentPlans"];
+    v26 = [dictionaryCopy PKStringForKey:@"recoveryPaymentPlans"];
     creditRecoveryPaymentPlans = v5->_creditRecoveryPaymentPlans;
     v5->_creditRecoveryPaymentPlans = v26;
   }
@@ -85,9 +85,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -95,7 +95,7 @@
   }
 
   account = self->_account;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (account && v6)
   {
     if (([(NSString *)account isEqual:?]& 1) == 0)
@@ -110,7 +110,7 @@
   }
 
   extendedAccount = self->_extendedAccount;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (extendedAccount && v8)
   {
     if (([(NSString *)extendedAccount isEqual:?]& 1) == 0)
@@ -125,7 +125,7 @@
   }
 
   users = self->_users;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (users && v10)
   {
     if (([(NSString *)users isEqual:?]& 1) == 0)
@@ -140,7 +140,7 @@
   }
 
   payments = self->_payments;
-  v12 = v4[3];
+  v12 = equalCopy[3];
   if (payments && v12)
   {
     if (([(NSString *)payments isEqual:?]& 1) == 0)
@@ -155,7 +155,7 @@
   }
 
   sharedAccountCloudStore = self->_sharedAccountCloudStore;
-  v14 = v4[5];
+  v14 = equalCopy[5];
   if (sharedAccountCloudStore && v14)
   {
     if (([(NSString *)sharedAccountCloudStore isEqual:?]& 1) == 0)
@@ -170,7 +170,7 @@
   }
 
   applications = self->_applications;
-  v16 = v4[6];
+  v16 = equalCopy[6];
   if (applications && v16)
   {
     if (([(NSString *)applications isEqual:?]& 1) == 0)
@@ -185,7 +185,7 @@
   }
 
   physicalCards = self->_physicalCards;
-  v18 = v4[7];
+  v18 = equalCopy[7];
   if (physicalCards && v18)
   {
     if (([(NSString *)physicalCards isEqual:?]& 1) == 0)
@@ -200,7 +200,7 @@
   }
 
   virtualCards = self->_virtualCards;
-  v20 = v4[8];
+  v20 = equalCopy[8];
   if (virtualCards && v20)
   {
     if (([(NSString *)virtualCards isEqual:?]& 1) == 0)
@@ -215,7 +215,7 @@
   }
 
   servicingToken = self->_servicingToken;
-  v22 = v4[9];
+  v22 = equalCopy[9];
   if (servicingToken && v22)
   {
     if (([(NSString *)servicingToken isEqual:?]& 1) == 0)
@@ -230,7 +230,7 @@
   }
 
   fundingSources = self->_fundingSources;
-  v24 = v4[10];
+  v24 = equalCopy[10];
   if (!fundingSources || !v24)
   {
     if (fundingSources == v24)
@@ -250,7 +250,7 @@ LABEL_54:
 
 LABEL_50:
   creditRecoveryPaymentPlans = self->_creditRecoveryPaymentPlans;
-  v26 = v4[11];
+  v26 = equalCopy[11];
   if (creditRecoveryPaymentPlans && v26)
   {
     v27 = [(NSString *)creditRecoveryPaymentPlans isEqual:?];
@@ -285,105 +285,105 @@ LABEL_55:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAccountAdditionalPushTopics allocWithZone:](PKAccountAdditionalPushTopics init];
-  v6 = [(NSString *)self->_account copyWithZone:a3];
+  v6 = [(NSString *)self->_account copyWithZone:zone];
   account = v5->_account;
   v5->_account = v6;
 
-  v8 = [(NSString *)self->_extendedAccount copyWithZone:a3];
+  v8 = [(NSString *)self->_extendedAccount copyWithZone:zone];
   extendedAccount = v5->_extendedAccount;
   v5->_extendedAccount = v8;
 
-  v10 = [(NSString *)self->_payments copyWithZone:a3];
+  v10 = [(NSString *)self->_payments copyWithZone:zone];
   payments = v5->_payments;
   v5->_payments = v10;
 
-  v12 = [(NSString *)self->_users copyWithZone:a3];
+  v12 = [(NSString *)self->_users copyWithZone:zone];
   users = v5->_users;
   v5->_users = v12;
 
-  v14 = [(NSString *)self->_sharedAccountCloudStore copyWithZone:a3];
+  v14 = [(NSString *)self->_sharedAccountCloudStore copyWithZone:zone];
   sharedAccountCloudStore = v5->_sharedAccountCloudStore;
   v5->_sharedAccountCloudStore = v14;
 
-  v16 = [(NSString *)self->_applications copyWithZone:a3];
+  v16 = [(NSString *)self->_applications copyWithZone:zone];
   applications = v5->_applications;
   v5->_applications = v16;
 
-  v18 = [(NSString *)self->_physicalCards copyWithZone:a3];
+  v18 = [(NSString *)self->_physicalCards copyWithZone:zone];
   physicalCards = v5->_physicalCards;
   v5->_physicalCards = v18;
 
-  v20 = [(NSString *)self->_virtualCards copyWithZone:a3];
+  v20 = [(NSString *)self->_virtualCards copyWithZone:zone];
   virtualCards = v5->_virtualCards;
   v5->_virtualCards = v20;
 
-  v22 = [(NSString *)self->_servicingToken copyWithZone:a3];
+  v22 = [(NSString *)self->_servicingToken copyWithZone:zone];
   servicingToken = v5->_servicingToken;
   v5->_servicingToken = v22;
 
-  v24 = [(NSString *)self->_fundingSources copyWithZone:a3];
+  v24 = [(NSString *)self->_fundingSources copyWithZone:zone];
   fundingSources = v5->_fundingSources;
   v5->_fundingSources = v24;
 
-  v26 = [(NSString *)self->_creditRecoveryPaymentPlans copyWithZone:a3];
+  v26 = [(NSString *)self->_creditRecoveryPaymentPlans copyWithZone:zone];
   creditRecoveryPaymentPlans = v5->_creditRecoveryPaymentPlans;
   v5->_creditRecoveryPaymentPlans = v26;
 
   return v5;
 }
 
-- (PKAccountAdditionalPushTopics)initWithCoder:(id)a3
+- (PKAccountAdditionalPushTopics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PKAccountAdditionalPushTopics;
   v5 = [(PKAccountAdditionalPushTopics *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
     account = v5->_account;
     v5->_account = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extendedAccount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extendedAccount"];
     extendedAccount = v5->_extendedAccount;
     v5->_extendedAccount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payments"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payments"];
     payments = v5->_payments;
     v5->_payments = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"users"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"users"];
     users = v5->_users;
     v5->_users = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedAccountCloudStore"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedAccountCloudStore"];
     sharedAccountCloudStore = v5->_sharedAccountCloudStore;
     v5->_sharedAccountCloudStore = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applications"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applications"];
     applications = v5->_applications;
     v5->_applications = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"physicalCards"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"physicalCards"];
     physicalCards = v5->_physicalCards;
     v5->_physicalCards = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"virtualCards"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"virtualCards"];
     virtualCards = v5->_virtualCards;
     v5->_virtualCards = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"servicingToken"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"servicingToken"];
     servicingToken = v5->_servicingToken;
     v5->_servicingToken = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fundingSources"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fundingSources"];
     fundingSources = v5->_fundingSources;
     v5->_fundingSources = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recoveryPaymentPlans"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recoveryPaymentPlans"];
     creditRecoveryPaymentPlans = v5->_creditRecoveryPaymentPlans;
     v5->_creditRecoveryPaymentPlans = v26;
   }
@@ -391,21 +391,21 @@ LABEL_55:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   account = self->_account;
-  v5 = a3;
-  [v5 encodeObject:account forKey:@"account"];
-  [v5 encodeObject:self->_extendedAccount forKey:@"extendedAccount"];
-  [v5 encodeObject:self->_payments forKey:@"payments"];
-  [v5 encodeObject:self->_users forKey:@"users"];
-  [v5 encodeObject:self->_sharedAccountCloudStore forKey:@"sharedAccountCloudStore"];
-  [v5 encodeObject:self->_applications forKey:@"applications"];
-  [v5 encodeObject:self->_physicalCards forKey:@"physicalCards"];
-  [v5 encodeObject:self->_virtualCards forKey:@"virtualCards"];
-  [v5 encodeObject:self->_servicingToken forKey:@"servicingToken"];
-  [v5 encodeObject:self->_fundingSources forKey:@"fundingSources"];
-  [v5 encodeObject:self->_creditRecoveryPaymentPlans forKey:@"recoveryPaymentPlans"];
+  coderCopy = coder;
+  [coderCopy encodeObject:account forKey:@"account"];
+  [coderCopy encodeObject:self->_extendedAccount forKey:@"extendedAccount"];
+  [coderCopy encodeObject:self->_payments forKey:@"payments"];
+  [coderCopy encodeObject:self->_users forKey:@"users"];
+  [coderCopy encodeObject:self->_sharedAccountCloudStore forKey:@"sharedAccountCloudStore"];
+  [coderCopy encodeObject:self->_applications forKey:@"applications"];
+  [coderCopy encodeObject:self->_physicalCards forKey:@"physicalCards"];
+  [coderCopy encodeObject:self->_virtualCards forKey:@"virtualCards"];
+  [coderCopy encodeObject:self->_servicingToken forKey:@"servicingToken"];
+  [coderCopy encodeObject:self->_fundingSources forKey:@"fundingSources"];
+  [coderCopy encodeObject:self->_creditRecoveryPaymentPlans forKey:@"recoveryPaymentPlans"];
 }
 
 @end

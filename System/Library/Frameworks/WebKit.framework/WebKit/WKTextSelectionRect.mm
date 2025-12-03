@@ -1,8 +1,8 @@
 @interface WKTextSelectionRect
 - (CGRect)rect;
-- (FloatQuad)_convertQuadToSelectionContainer:(SEL)a3;
-- (WKTextSelectionRect)initWithCGRect:(CGRect)a3;
-- (WKTextSelectionRect)initWithSelectionGeometry:(const void *)a3 delegate:(id)a4;
+- (FloatQuad)_convertQuadToSelectionContainer:(SEL)container;
+- (WKTextSelectionRect)initWithCGRect:(CGRect)rect;
+- (WKTextSelectionRect)initWithSelectionGeometry:(const void *)geometry delegate:(id)delegate;
 - (id).cxx_construct;
 - (id)_customHandleInfo;
 - (id)_path;
@@ -10,9 +10,9 @@
 
 @implementation WKTextSelectionRect
 
-- (WKTextSelectionRect)initWithCGRect:(CGRect)a3
+- (WKTextSelectionRect)initWithCGRect:(CGRect)rect
 {
-  v13 = a3;
+  rectCopy = rect;
   v8 = 0;
   memset(v7, 0, sizeof(v7));
   memset(v10, 0, 13);
@@ -21,13 +21,13 @@
   v12 = 0;
   v11[0] = 0;
   *(v11 + 3) = 0;
-  v6.m_location = WebCore::enclosingIntRect(&v13, a2);
+  v6.m_location = WebCore::enclosingIntRect(&rectCopy, a2);
   v6.m_size = v4;
   WebCore::SelectionGeometry::setRect(v7, &v6);
   return [(WKTextSelectionRect *)self initWithSelectionGeometry:v7 delegate:0];
 }
 
-- (WKTextSelectionRect)initWithSelectionGeometry:(const void *)a3 delegate:(id)a4
+- (WKTextSelectionRect)initWithSelectionGeometry:(const void *)geometry delegate:(id)delegate
 {
   v13.receiver = self;
   v13.super_class = WKTextSelectionRect;
@@ -35,17 +35,17 @@
   v7 = v6;
   if (v6)
   {
-    v8 = *(a3 + 1);
-    *(v6 + 24) = *a3;
+    v8 = *(geometry + 1);
+    *(v6 + 24) = *geometry;
     *(v6 + 40) = v8;
-    v10 = *(a3 + 3);
-    v9 = *(a3 + 4);
-    v11 = *(a3 + 2);
-    *(v6 + 26) = *(a3 + 20);
+    v10 = *(geometry + 3);
+    v9 = *(geometry + 4);
+    v11 = *(geometry + 2);
+    *(v6 + 26) = *(geometry + 20);
     *(v6 + 72) = v10;
     *(v6 + 88) = v9;
     *(v6 + 56) = v11;
-    objc_storeWeak(v6 + 14, a4);
+    objc_storeWeak(v6 + 14, delegate);
   }
 
   return v7;
@@ -65,22 +65,22 @@
   }
 
   WebCore::SelectionGeometry::rect(p_selectionGeometry);
-  v4 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   WebCore::FloatPoint::operator CGPoint();
-  [v4 moveToPoint:?];
+  [bezierPath moveToPoint:?];
   WebCore::FloatPoint::operator CGPoint();
-  [v4 addLineToPoint:?];
+  [bezierPath addLineToPoint:?];
   WebCore::FloatPoint::operator CGPoint();
-  [v4 addLineToPoint:?];
+  [bezierPath addLineToPoint:?];
   WebCore::FloatPoint::operator CGPoint();
-  [v4 addLineToPoint:?];
+  [bezierPath addLineToPoint:?];
   WebCore::FloatPoint::operator CGPoint();
-  [v4 addLineToPoint:?];
-  [v4 closePath];
-  return v4;
+  [bezierPath addLineToPoint:?];
+  [bezierPath closePath];
+  return bezierPath;
 }
 
-- (FloatQuad)_convertQuadToSelectionContainer:(SEL)a3
+- (FloatQuad)_convertQuadToSelectionContainer:(SEL)container
 {
   result = objc_loadWeak(&self->_delegate);
   if (result)

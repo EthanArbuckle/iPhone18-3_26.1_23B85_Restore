@@ -1,5 +1,5 @@
 @interface PRWidgetIconViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetWidgetView;
 - (void)viewDidLayoutSubviews;
@@ -7,17 +7,17 @@
 
 @implementation PRWidgetIconViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRWidgetIconViewController" hasInstanceMethod:@"widgetHostViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRWidgetIconViewController" hasInstanceMethod:@"complicationDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRComplicationDescriptor" hasInstanceMethod:@"widgetDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRWidgetGridViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRWidgetGridViewController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRWidgetGridModel" hasInstanceMethod:@"removeComplicationDescriptor:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"PRComplicationContainerViewController" hasInstanceMethod:@"widgetGridViewController:didRequestConfigurationForComplicationDescriptor:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"PRWidgetIconViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRWidgetIconViewController" hasInstanceMethod:@"widgetHostViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRWidgetIconViewController" hasInstanceMethod:@"complicationDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRComplicationDescriptor" hasInstanceMethod:@"widgetDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRWidgetGridViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRWidgetGridViewController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRWidgetGridModel" hasInstanceMethod:@"removeComplicationDescriptor:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"PRComplicationContainerViewController" hasInstanceMethod:@"widgetGridViewController:didRequestConfigurationForComplicationDescriptor:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"PRWidgetIconViewController" hasInstanceMethod:@"viewDidLayoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)viewDidLayoutSubviews
@@ -43,9 +43,9 @@
   v3 = [(PRWidgetIconViewControllerAccessibility *)self safeValueForKey:@"widgetHostViewController"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 view];
-  v6 = [v4 delegate];
-  v7 = [v6 safeValueForKey:@"delegate"];
+  view = [v4 view];
+  delegate = [v4 delegate];
+  v7 = [delegate safeValueForKey:@"delegate"];
   v8 = [(PRWidgetIconViewControllerAccessibility *)self safeValueForKey:@"complicationDescriptor"];
   v9 = [v8 safeValueForKey:@"widget"];
   v23 = v7;
@@ -57,7 +57,7 @@
   v28[1] = 3221225472;
   v28[2] = __59__PRWidgetIconViewControllerAccessibility__axSetWidgetView__block_invoke;
   v28[3] = &unk_29F2EBE58;
-  v13 = v6;
+  v13 = delegate;
   v29 = v13;
   v14 = v8;
   v30 = v14;
@@ -87,16 +87,16 @@
   if ((AXProcessIsSpringBoard() & 1) == 0)
   {
     v19 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{2, v15, v18, v7}];
-    [v5 setAccessibilityCustomActions:v19];
+    [view setAccessibilityCustomActions:v19];
 
-    [v5 setIsAccessibilityElement:1];
+    [view setIsAccessibilityElement:1];
   }
 
-  v20 = [v5 accessibilityTraits];
-  [v5 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | v20];
+  accessibilityTraits = [view accessibilityTraits];
+  [view setAccessibilityTraits:*MEMORY[0x29EDC7F70] | accessibilityTraits];
   v21 = [v14 safeValueForKey:@"widgetDescriptor"];
   v22 = AXWidgetAndAppName(v21, 0);
-  [v5 setAccessibilityLabel:v22];
+  [view setAccessibilityLabel:v22];
 
   objc_destroyWeak(location);
 }

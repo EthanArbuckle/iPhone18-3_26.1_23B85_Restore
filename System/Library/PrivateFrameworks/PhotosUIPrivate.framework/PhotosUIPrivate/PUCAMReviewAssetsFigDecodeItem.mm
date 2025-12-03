@@ -1,5 +1,5 @@
 @interface PUCAMReviewAssetsFigDecodeItem
-- (PUCAMReviewAssetsFigDecodeItem)initWithImageURL:(id)a3 targetSize:(CGSize)a4;
+- (PUCAMReviewAssetsFigDecodeItem)initWithImageURL:(id)l targetSize:(CGSize)size;
 - (id)decodeSessionOptions;
 @end
 
@@ -9,29 +9,29 @@
 {
   v7.receiver = self;
   v7.super_class = PUCAMReviewAssetsFigDecodeItem;
-  v3 = [(PLFigPreheatItem *)&v7 initialDecodeSessionOptions];
+  initialDecodeSessionOptions = [(PLFigPreheatItem *)&v7 initialDecodeSessionOptions];
   v6.receiver = self;
   v6.super_class = PUCAMReviewAssetsFigDecodeItem;
-  v4 = [(PLFigPreheatItem *)&v6 decodeSessionOptions];
-  [v3 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6991AC0]];
-  if (v4)
+  decodeSessionOptions = [(PLFigPreheatItem *)&v6 decodeSessionOptions];
+  [initialDecodeSessionOptions setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6991AC0]];
+  if (decodeSessionOptions)
   {
-    [v3 addEntriesFromDictionary:v4];
+    [initialDecodeSessionOptions addEntriesFromDictionary:decodeSessionOptions];
   }
 
-  return v3;
+  return initialDecodeSessionOptions;
 }
 
-- (PUCAMReviewAssetsFigDecodeItem)initWithImageURL:(id)a3 targetSize:(CGSize)a4
+- (PUCAMReviewAssetsFigDecodeItem)initWithImageURL:(id)l targetSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [a3 path];
+  height = size.height;
+  width = size.width;
+  path = [l path];
   v10.receiver = self;
   v10.super_class = PUCAMReviewAssetsFigDecodeItem;
-  v8 = [(PLFigPreheatItem *)&v10 initWithImagePath:v7 format:10000 imageType:0 optimalSourcePixelSize:3 options:width, height];
+  height = [(PLFigPreheatItem *)&v10 initWithImagePath:path format:10000 imageType:0 optimalSourcePixelSize:3 options:width, height];
 
-  return v8;
+  return height;
 }
 
 @end

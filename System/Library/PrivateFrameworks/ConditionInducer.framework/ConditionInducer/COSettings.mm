@@ -3,20 +3,20 @@
 - (BOOL)readSettings;
 - (BOOL)startMonitoringForFileDeletion;
 - (BOOL)writeSettings;
-- (COSettings)initWithURL:(id)a3;
-- (id)objectForKey:(id)a3;
+- (COSettings)initWithURL:(id)l;
+- (id)objectForKey:(id)key;
 - (void)createSettingsFile;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)startMonitoringForChanges:(id)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)startMonitoringForChanges:(id)changes;
 - (void)stopMonitoringForFileDeletion;
 @end
 
 @implementation COSettings
 
-- (COSettings)initWithURL:(id)a3
+- (COSettings)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = COSettings;
   v5 = [(COSettings *)&v13 init];
@@ -25,9 +25,9 @@
     goto LABEL_6;
   }
 
-  if (v4)
+  if (lCopy)
   {
-    v6 = v4;
+    v6 = lCopy;
   }
 
   else
@@ -57,53 +57,53 @@ LABEL_6:
   return v11;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(COSettings *)self settings];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  settings = [(COSettings *)self settings];
+  v6 = [settings objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(COSettings *)self settings];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  objectCopy = object;
+  settings = [(COSettings *)self settings];
+  [settings setObject:objectCopy forKeyedSubscript:keyCopy];
 
   [(COSettings *)self writeSettings];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(COSettings *)self settings];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  settings = [(COSettings *)self settings];
+  [settings removeObjectForKey:keyCopy];
 
   [(COSettings *)self writeSettings];
 }
 
-- (void)startMonitoringForChanges:(id)a3
+- (void)startMonitoringForChanges:(id)changes
 {
-  [(COSettings *)self setClientCallback:a3];
+  [(COSettings *)self setClientCallback:changes];
 
   [(COSettings *)self startMonitoringForFileDeletion];
 }
 
 - (BOOL)createSettingsFile
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = [(COSettings *)self url];
-  v5 = [v4 path];
-  if ([v3 fileExistsAtPath:v5])
+  path = [v4 path];
+  if ([defaultManager fileExistsAtPath:path])
   {
-    v6 = [(COSettings *)self readSettings];
+    readSettings = [(COSettings *)self readSettings];
 
-    if (v6)
+    if (readSettings)
     {
-      v7 = 1;
+      writeSettings = 1;
       goto LABEL_10;
     }
   }
@@ -113,8 +113,8 @@ LABEL_6:
   }
 
   v8 = [(COSettings *)self url];
-  v9 = [v8 path];
-  v10 = [v3 fileExistsAtPath:v9];
+  path2 = [v8 path];
+  v10 = [defaultManager fileExistsAtPath:path2];
 
   if (v10)
   {
@@ -123,7 +123,7 @@ LABEL_6:
       [(COSettings *)self createSettingsFile];
     }
 
-    v7 = 0;
+    writeSettings = 0;
   }
 
   else
@@ -132,12 +132,12 @@ LABEL_6:
     v12 = [v11 initWithDictionary:MEMORY[0x277CBEC10]];
     [(COSettings *)self setSettings:v12];
 
-    v7 = [(COSettings *)self writeSettings];
+    writeSettings = [(COSettings *)self writeSettings];
   }
 
 LABEL_10:
 
-  return v7;
+  return writeSettings;
 }
 
 - (BOOL)writeSettings
@@ -219,8 +219,8 @@ void __27__COSettings_writeSettings__block_invoke(uint64_t a1)
   block[3] = &unk_278DF7E90;
   block[4] = self;
   dispatch_sync(v3, block);
-  v4 = [(COSettings *)self settings];
-  LOBYTE(self) = v4 != 0;
+  settings = [(COSettings *)self settings];
+  LOBYTE(self) = settings != 0;
 
   return self;
 }
@@ -365,8 +365,8 @@ void __44__COSettings_startMonitoringForFileDeletion__block_invoke_8(uint64_t a1
 - (void)createSettingsFile
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 url];
-  v8 = [v1 path];
+  v1 = [self url];
+  path = [v1 path];
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
 

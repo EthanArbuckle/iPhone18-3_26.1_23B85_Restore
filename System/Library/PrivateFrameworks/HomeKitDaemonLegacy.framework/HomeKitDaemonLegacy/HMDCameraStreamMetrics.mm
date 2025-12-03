@@ -1,27 +1,27 @@
 @interface HMDCameraStreamMetrics
 - (void)dealloc;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 @end
 
 @implementation HMDCameraStreamMetrics
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (!self->_error)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_error, a3);
-    v5 = v6;
+    v6 = errorCopy;
+    objc_storeStrong(&self->_error, error);
+    errorCopy = v6;
   }
 }
 
 - (void)dealloc
 {
   v3 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v4 = [(HMDCameraStreamMetrics *)self cameraStreamMetricsLogEvent];
-  v5 = [(HMDCameraStreamMetrics *)self error];
-  [v3 submitLogEvent:v4 error:v5];
+  cameraStreamMetricsLogEvent = [(HMDCameraStreamMetrics *)self cameraStreamMetricsLogEvent];
+  error = [(HMDCameraStreamMetrics *)self error];
+  [v3 submitLogEvent:cameraStreamMetricsLogEvent error:error];
 
   v6.receiver = self;
   v6.super_class = HMDCameraStreamMetrics;

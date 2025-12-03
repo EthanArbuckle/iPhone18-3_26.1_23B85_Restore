@@ -1,36 +1,36 @@
 @interface CRLiOSQuickSelectViewController
-- (BOOL)isInCompactViewModeForCompactFrame:(CGRect)a3 andRegularSizeFrame:(CGRect)a4;
+- (BOOL)isInCompactViewModeForCompactFrame:(CGRect)frame andRegularSizeFrame:(CGRect)sizeFrame;
 - (BOOL)p_isHUDHidden;
-- (BOOL)p_isInCompactViewModeForFrame:(CGRect)a3;
+- (BOOL)p_isInCompactViewModeForFrame:(CGRect)frame;
 - (BOOL)p_isPresented;
 - (CGRect)p_visibleCanvasRectInContainerView;
-- (CRLiOSQuickSelectViewController)initWithDelegate:(id)a3;
-- (id)p_constraintsForBackgroundView:(id)a3 inHudView:(id)a4;
-- (id)p_constraintsForIconView:(id)a3 verticallyCenteredToView:(id)a4 inHudView:(id)a5;
-- (id)p_constraintsForSelectAllButton:(id)a3 deselectAllButton:(id)a4 andDoneButton:(id)a5 withSeparator:(id)a6 andTextLabel:(id)a7 inHudView:(id)a8 forCompactLayout:(BOOL)a9;
-- (id)p_constraintsForTextLabel:(id)a3 inHudView:(id)a4 withIconView:(id)a5 andSelectAllButton:(id)a6 andDeselectAllButton:(id)a7 forCompactLayout:(BOOL)a8;
+- (CRLiOSQuickSelectViewController)initWithDelegate:(id)delegate;
+- (id)p_constraintsForBackgroundView:(id)view inHudView:(id)hudView;
+- (id)p_constraintsForIconView:(id)view verticallyCenteredToView:(id)toView inHudView:(id)hudView;
+- (id)p_constraintsForSelectAllButton:(id)button deselectAllButton:(id)allButton andDoneButton:(id)doneButton withSeparator:(id)separator andTextLabel:(id)label inHudView:(id)view forCompactLayout:(BOOL)layout;
+- (id)p_constraintsForTextLabel:(id)label inHudView:(id)view withIconView:(id)iconView andSelectAllButton:(id)button andDeselectAllButton:(id)allButton forCompactLayout:(BOOL)layout;
 - (id)p_createBackgroundView;
 - (id)p_createBaseHUDView;
 - (id)p_createSeparatorView;
 - (id)p_makeHUDView;
-- (id)p_setupHUDConstraintsInContainerViewForView:(id)a3 isCompact:(BOOL)a4;
+- (id)p_setupHUDConstraintsInContainerViewForView:(id)view isCompact:(BOOL)compact;
 - (id)traitCollection;
 - (void)dismiss;
 - (void)p_beginWatchingSelectionChanges;
-- (void)p_configureDoneButton:(id)a3;
-- (void)p_configureIconView:(id)a3;
-- (void)p_configureSelectAllButton:(id)a3 andDeselectAllButton:(id)a4;
-- (void)p_configureSelectButton:(id)a3;
-- (void)p_configureTextLabel:(id)a3;
-- (void)p_currentEditorDidChange:(id)a3;
-- (void)p_deselectAllAction:(id)a3;
+- (void)p_configureDoneButton:(id)button;
+- (void)p_configureIconView:(id)view;
+- (void)p_configureSelectAllButton:(id)button andDeselectAllButton:(id)allButton;
+- (void)p_configureSelectButton:(id)button;
+- (void)p_configureTextLabel:(id)label;
+- (void)p_currentEditorDidChange:(id)change;
+- (void)p_deselectAllAction:(id)action;
 - (void)p_dismissAndAlertDelegate;
 - (void)p_endWatchingSelectionChanges;
-- (void)p_hideHUDWithAnimation:(BOOL)a3;
-- (void)p_selectAllAction:(id)a3;
-- (void)p_selectionPathDidChange:(id)a3;
-- (void)p_temporarilyHideUIIfAppropriateForWindowRect:(CGRect)a3 hudRect:(CGRect)a4;
-- (void)p_unhideHUDWithAnimation:(BOOL)a3;
+- (void)p_hideHUDWithAnimation:(BOOL)animation;
+- (void)p_selectAllAction:(id)action;
+- (void)p_selectionPathDidChange:(id)change;
+- (void)p_temporarilyHideUIIfAppropriateForWindowRect:(CGRect)rect hudRect:(CGRect)hudRect;
+- (void)p_unhideHUDWithAnimation:(BOOL)animation;
 - (void)p_updateConstraintsForSizeClassChange;
 - (void)p_updateHUDAppearance;
 - (void)p_updateHUDContainerViewFrame;
@@ -38,24 +38,24 @@
 - (void)p_updateHUDState;
 - (void)p_updateHUDTitle;
 - (void)p_updateStateForSelectionButtons;
-- (void)presentOnCanvasViewController:(id)a3 parentView:(id)a4;
-- (void)temporarilyHideUIIfAppropriateForWindowRect:(CGRect)a3;
+- (void)presentOnCanvasViewController:(id)controller parentView:(id)view;
+- (void)temporarilyHideUIIfAppropriateForWindowRect:(CGRect)rect;
 - (void)unhideUIIfAppropriateAfterHidingForWindowRect;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation CRLiOSQuickSelectViewController
 
-- (CRLiOSQuickSelectViewController)initWithDelegate:(id)a3
+- (CRLiOSQuickSelectViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = CRLiOSQuickSelectViewController;
   v5 = [(CRLiOSQuickSelectViewController *)&v21 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [UIImageView alloc];
     v8 = [UIImageSymbolConfiguration configurationWithPointSize:17.0];
     v9 = [UIImage systemImageNamed:@"square.on.circle" withConfiguration:v8];
@@ -93,114 +93,114 @@
 
 - (id)p_makeHUDView
 {
-  v3 = [(CRLiOSQuickSelectViewController *)self p_createBaseHUDView];
-  v4 = [(CRLiOSQuickSelectViewController *)self p_createBackgroundView];
-  [(CRLiOSQuickSelectViewController *)self setBackgroundView:v4];
+  p_createBaseHUDView = [(CRLiOSQuickSelectViewController *)self p_createBaseHUDView];
+  p_createBackgroundView = [(CRLiOSQuickSelectViewController *)self p_createBackgroundView];
+  [(CRLiOSQuickSelectViewController *)self setBackgroundView:p_createBackgroundView];
 
-  v5 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-  [(CRLiOSQuickSelectViewController *)self p_configureIconView:v5];
+  iconImageView = [(CRLiOSQuickSelectViewController *)self iconImageView];
+  [(CRLiOSQuickSelectViewController *)self p_configureIconView:iconImageView];
 
-  v6 = [(CRLiOSQuickSelectViewController *)self textLabel];
-  [(CRLiOSQuickSelectViewController *)self p_configureTextLabel:v6];
+  textLabel = [(CRLiOSQuickSelectViewController *)self textLabel];
+  [(CRLiOSQuickSelectViewController *)self p_configureTextLabel:textLabel];
 
-  v7 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
-  v8 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
-  [(CRLiOSQuickSelectViewController *)self p_configureSelectAllButton:v7 andDeselectAllButton:v8];
+  selectAllButton = [(CRLiOSQuickSelectViewController *)self selectAllButton];
+  deselectAllButton = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
+  [(CRLiOSQuickSelectViewController *)self p_configureSelectAllButton:selectAllButton andDeselectAllButton:deselectAllButton];
 
   [(CRLiOSQuickSelectViewController *)self p_updateHUDState];
-  v9 = [(CRLiOSQuickSelectViewController *)self p_createSeparatorView];
-  [(CRLiOSQuickSelectViewController *)self setSeparatorView:v9];
+  p_createSeparatorView = [(CRLiOSQuickSelectViewController *)self p_createSeparatorView];
+  [(CRLiOSQuickSelectViewController *)self setSeparatorView:p_createSeparatorView];
 
-  v10 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-  v11 = [(CRLiOSQuickSelectViewController *)self separatorView];
-  [v10 addSubview:v11];
+  backgroundView = [(CRLiOSQuickSelectViewController *)self backgroundView];
+  separatorView = [(CRLiOSQuickSelectViewController *)self separatorView];
+  [backgroundView addSubview:separatorView];
 
-  v12 = [(CRLiOSQuickSelectViewController *)self doneButton];
-  [(CRLiOSQuickSelectViewController *)self p_configureDoneButton:v12];
+  doneButton = [(CRLiOSQuickSelectViewController *)self doneButton];
+  [(CRLiOSQuickSelectViewController *)self p_configureDoneButton:doneButton];
 
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
     v13 = objc_opt_class();
-    v14 = sub_100013F00(v13, v3);
-    v15 = [v14 contentView];
-    v16 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-    [v15 addSubview:v16];
+    doneButton3 = sub_100013F00(v13, p_createBaseHUDView);
+    contentView = [doneButton3 contentView];
+    backgroundView2 = [(CRLiOSQuickSelectViewController *)self backgroundView];
+    [contentView addSubview:backgroundView2];
 
-    v17 = [v14 contentView];
-    v18 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-    [v17 addSubview:v18];
+    contentView2 = [doneButton3 contentView];
+    iconImageView2 = [(CRLiOSQuickSelectViewController *)self iconImageView];
+    [contentView2 addSubview:iconImageView2];
 
-    v19 = [v14 contentView];
-    v20 = [(CRLiOSQuickSelectViewController *)self textLabel];
-    [v19 addSubview:v20];
+    contentView3 = [doneButton3 contentView];
+    textLabel2 = [(CRLiOSQuickSelectViewController *)self textLabel];
+    [contentView3 addSubview:textLabel2];
 
-    v21 = [v14 contentView];
-    v22 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
-    [v21 addSubview:v22];
+    contentView4 = [doneButton3 contentView];
+    selectAllButton2 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
+    [contentView4 addSubview:selectAllButton2];
 
-    v23 = [v14 contentView];
-    v24 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
-    [v23 addSubview:v24];
+    contentView5 = [doneButton3 contentView];
+    deselectAllButton2 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
+    [contentView5 addSubview:deselectAllButton2];
 
-    v25 = [v14 contentView];
-    v26 = [(CRLiOSQuickSelectViewController *)self doneButton];
-    [v25 addSubview:v26];
+    contentView6 = [doneButton3 contentView];
+    doneButton2 = [(CRLiOSQuickSelectViewController *)self doneButton];
+    [contentView6 addSubview:doneButton2];
   }
 
   else
   {
-    v27 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-    [v3 addSubview:v27];
+    backgroundView3 = [(CRLiOSQuickSelectViewController *)self backgroundView];
+    [p_createBaseHUDView addSubview:backgroundView3];
 
-    v28 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-    [v3 addSubview:v28];
+    iconImageView3 = [(CRLiOSQuickSelectViewController *)self iconImageView];
+    [p_createBaseHUDView addSubview:iconImageView3];
 
-    v29 = [(CRLiOSQuickSelectViewController *)self textLabel];
-    [v3 addSubview:v29];
+    textLabel3 = [(CRLiOSQuickSelectViewController *)self textLabel];
+    [p_createBaseHUDView addSubview:textLabel3];
 
-    v30 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
-    [v3 addSubview:v30];
+    selectAllButton3 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
+    [p_createBaseHUDView addSubview:selectAllButton3];
 
-    v31 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
-    [v3 addSubview:v31];
+    deselectAllButton3 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
+    [p_createBaseHUDView addSubview:deselectAllButton3];
 
-    v14 = [(CRLiOSQuickSelectViewController *)self doneButton];
-    [v3 addSubview:v14];
+    doneButton3 = [(CRLiOSQuickSelectViewController *)self doneButton];
+    [p_createBaseHUDView addSubview:doneButton3];
   }
 
   v32 = objc_alloc_init(NSMutableArray);
-  v33 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-  v34 = [(CRLiOSQuickSelectViewController *)self p_constraintsForBackgroundView:v33 inHudView:v3];
+  backgroundView4 = [(CRLiOSQuickSelectViewController *)self backgroundView];
+  v34 = [(CRLiOSQuickSelectViewController *)self p_constraintsForBackgroundView:backgroundView4 inHudView:p_createBaseHUDView];
   [v32 addObjectsFromArray:v34];
 
   [NSLayoutConstraint activateConstraints:v32];
   v35 = +[NSMutableArray array];
-  v36 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-  v37 = [(CRLiOSQuickSelectViewController *)self p_constraintsForIconView:v36 verticallyCenteredToView:v3 inHudView:v3];
+  iconImageView4 = [(CRLiOSQuickSelectViewController *)self iconImageView];
+  v37 = [(CRLiOSQuickSelectViewController *)self p_constraintsForIconView:iconImageView4 verticallyCenteredToView:p_createBaseHUDView inHudView:p_createBaseHUDView];
   [v35 addObjectsFromArray:v37];
 
-  v38 = [(CRLiOSQuickSelectViewController *)self textLabel];
-  v39 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-  v40 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
-  v41 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
-  v42 = [(CRLiOSQuickSelectViewController *)self p_constraintsForTextLabel:v38 inHudView:v3 withIconView:v39 andSelectAllButton:v40 andDeselectAllButton:v41 forCompactLayout:0];
+  textLabel4 = [(CRLiOSQuickSelectViewController *)self textLabel];
+  iconImageView5 = [(CRLiOSQuickSelectViewController *)self iconImageView];
+  selectAllButton4 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
+  deselectAllButton4 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
+  v42 = [(CRLiOSQuickSelectViewController *)self p_constraintsForTextLabel:textLabel4 inHudView:p_createBaseHUDView withIconView:iconImageView5 andSelectAllButton:selectAllButton4 andDeselectAllButton:deselectAllButton4 forCompactLayout:0];
   [v35 addObjectsFromArray:v42];
 
-  v43 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
-  v44 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
-  v45 = [(CRLiOSQuickSelectViewController *)self doneButton];
-  v46 = [(CRLiOSQuickSelectViewController *)self separatorView];
-  v47 = [(CRLiOSQuickSelectViewController *)self textLabel];
+  selectAllButton5 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
+  deselectAllButton5 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
+  doneButton4 = [(CRLiOSQuickSelectViewController *)self doneButton];
+  separatorView2 = [(CRLiOSQuickSelectViewController *)self separatorView];
+  textLabel5 = [(CRLiOSQuickSelectViewController *)self textLabel];
   LOBYTE(v71) = 0;
-  v48 = [(CRLiOSQuickSelectViewController *)self p_constraintsForSelectAllButton:v43 deselectAllButton:v44 andDoneButton:v45 withSeparator:v46 andTextLabel:v47 inHudView:v3 forCompactLayout:v71];
+  v48 = [(CRLiOSQuickSelectViewController *)self p_constraintsForSelectAllButton:selectAllButton5 deselectAllButton:deselectAllButton5 andDoneButton:doneButton4 withSeparator:separatorView2 andTextLabel:textLabel5 inHudView:p_createBaseHUDView forCompactLayout:v71];
   [v35 addObjectsFromArray:v48];
 
-  v49 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
+  regularSizeHUDConstraints = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
 
-  if (v49)
+  if (regularSizeHUDConstraints)
   {
-    v50 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
-    v51 = [v50 arrayByAddingObjectsFromArray:v35];
+    regularSizeHUDConstraints2 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
+    v51 = [regularSizeHUDConstraints2 arrayByAddingObjectsFromArray:v35];
     [(CRLiOSQuickSelectViewController *)self setRegularSizeHUDConstraints:v51];
   }
 
@@ -210,33 +210,33 @@
   }
 
   v52 = +[NSMutableArray array];
-  v53 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-  v54 = [(CRLiOSQuickSelectViewController *)self textLabel];
-  v55 = [(CRLiOSQuickSelectViewController *)self p_constraintsForIconView:v53 verticallyCenteredToView:v54 inHudView:v3];
+  iconImageView6 = [(CRLiOSQuickSelectViewController *)self iconImageView];
+  textLabel6 = [(CRLiOSQuickSelectViewController *)self textLabel];
+  v55 = [(CRLiOSQuickSelectViewController *)self p_constraintsForIconView:iconImageView6 verticallyCenteredToView:textLabel6 inHudView:p_createBaseHUDView];
   [v52 addObjectsFromArray:v55];
 
-  v56 = [(CRLiOSQuickSelectViewController *)self textLabel];
-  v57 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-  v58 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
-  v59 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
-  v60 = [(CRLiOSQuickSelectViewController *)self p_constraintsForTextLabel:v56 inHudView:v3 withIconView:v57 andSelectAllButton:v58 andDeselectAllButton:v59 forCompactLayout:1];
+  textLabel7 = [(CRLiOSQuickSelectViewController *)self textLabel];
+  iconImageView7 = [(CRLiOSQuickSelectViewController *)self iconImageView];
+  selectAllButton6 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
+  deselectAllButton6 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
+  v60 = [(CRLiOSQuickSelectViewController *)self p_constraintsForTextLabel:textLabel7 inHudView:p_createBaseHUDView withIconView:iconImageView7 andSelectAllButton:selectAllButton6 andDeselectAllButton:deselectAllButton6 forCompactLayout:1];
   [v52 addObjectsFromArray:v60];
 
-  v61 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
-  v62 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
-  v63 = [(CRLiOSQuickSelectViewController *)self doneButton];
-  v64 = [(CRLiOSQuickSelectViewController *)self separatorView];
-  v65 = [(CRLiOSQuickSelectViewController *)self textLabel];
+  selectAllButton7 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
+  deselectAllButton7 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
+  doneButton5 = [(CRLiOSQuickSelectViewController *)self doneButton];
+  separatorView3 = [(CRLiOSQuickSelectViewController *)self separatorView];
+  textLabel8 = [(CRLiOSQuickSelectViewController *)self textLabel];
   LOBYTE(v72) = 1;
-  v66 = [(CRLiOSQuickSelectViewController *)self p_constraintsForSelectAllButton:v61 deselectAllButton:v62 andDoneButton:v63 withSeparator:v64 andTextLabel:v65 inHudView:v3 forCompactLayout:v72];
+  v66 = [(CRLiOSQuickSelectViewController *)self p_constraintsForSelectAllButton:selectAllButton7 deselectAllButton:deselectAllButton7 andDoneButton:doneButton5 withSeparator:separatorView3 andTextLabel:textLabel8 inHudView:p_createBaseHUDView forCompactLayout:v72];
   [v52 addObjectsFromArray:v66];
 
-  v67 = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
+  compactHUDConstraints = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
 
-  if (v67)
+  if (compactHUDConstraints)
   {
-    v68 = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
-    v69 = [v68 arrayByAddingObjectsFromArray:v52];
+    compactHUDConstraints2 = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
+    v69 = [compactHUDConstraints2 arrayByAddingObjectsFromArray:v52];
     [(CRLiOSQuickSelectViewController *)self setCompactHUDConstraints:v69];
   }
 
@@ -247,19 +247,19 @@
 
   [(CRLiOSQuickSelectViewController *)self p_updateHUDAppearance];
 
-  return v3;
+  return p_createBaseHUDView;
 }
 
-- (void)temporarilyHideUIIfAppropriateForWindowRect:(CGRect)a3
+- (void)temporarilyHideUIIfAppropriateForWindowRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CRLiOSQuickSelectViewController *)self HUDView];
-  v9 = [(CRLiOSQuickSelectViewController *)self HUDView];
-  [v9 bounds];
-  [v8 convertRect:0 toView:?];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  hUDView = [(CRLiOSQuickSelectViewController *)self HUDView];
+  hUDView2 = [(CRLiOSQuickSelectViewController *)self HUDView];
+  [hUDView2 bounds];
+  [hUDView convertRect:0 toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -268,9 +268,9 @@
   [(CRLiOSQuickSelectViewController *)self p_temporarilyHideUIIfAppropriateForWindowRect:x hudRect:y, width, height, v11, v13, v15, v17];
 }
 
-- (void)p_temporarilyHideUIIfAppropriateForWindowRect:(CGRect)a3 hudRect:(CGRect)a4
+- (void)p_temporarilyHideUIIfAppropriateForWindowRect:(CGRect)rect hudRect:(CGRect)hudRect
 {
-  if (sub_10011FF38(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height) && !self->_hidingHUDForWindowRect)
+  if (sub_10011FF38(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, hudRect.origin.x, hudRect.origin.y, hudRect.size.width, hudRect.size.height) && !self->_hidingHUDForWindowRect)
   {
     self->_hidingHUDForWindowRect = 1;
 
@@ -291,36 +291,36 @@
 {
   v8.receiver = self;
   v8.super_class = CRLiOSQuickSelectViewController;
-  v2 = [(CRLiOSQuickSelectViewController *)&v8 traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  traitCollection = [(CRLiOSQuickSelectViewController *)&v8 traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    v9[0] = v2;
+    v9[0] = traitCollection;
     v4 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:UIContentSizeCategoryExtraExtraLarge];
     v9[1] = v4;
     v5 = [NSArray arrayWithObjects:v9 count:2];
     v6 = [UITraitCollection traitCollectionWithTraitsFromCollections:v5];
 
-    v2 = v6;
+    traitCollection = v6;
   }
 
-  return v2;
+  return traitCollection;
 }
 
-- (BOOL)isInCompactViewModeForCompactFrame:(CGRect)a3 andRegularSizeFrame:(CGRect)a4
+- (BOOL)isInCompactViewModeForCompactFrame:(CGRect)frame andRegularSizeFrame:(CGRect)sizeFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v13 = [(CRLiOSQuickSelectViewController *)self traitCollection];
-  v14 = [v13 horizontalSizeClass];
+  height = sizeFrame.size.height;
+  width = sizeFrame.size.width;
+  y = sizeFrame.origin.y;
+  x = sizeFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  traitCollection = [(CRLiOSQuickSelectViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v14 == 1)
+  if (horizontalSizeClass == 1)
   {
     v15 = v11;
   }
@@ -330,7 +330,7 @@
     v15 = x;
   }
 
-  if (v14 == 1)
+  if (horizontalSizeClass == 1)
   {
     v16 = v10;
   }
@@ -340,7 +340,7 @@
     v16 = y;
   }
 
-  if (v14 == 1)
+  if (horizontalSizeClass == 1)
   {
     v17 = v9;
   }
@@ -350,7 +350,7 @@
     v17 = width;
   }
 
-  if (v14 == 1)
+  if (horizontalSizeClass == 1)
   {
     v18 = v8;
   }
@@ -363,18 +363,18 @@
   return [(CRLiOSQuickSelectViewController *)self p_isInCompactViewModeForFrame:v15, v16, v17, v18];
 }
 
-- (BOOL)p_isInCompactViewModeForFrame:(CGRect)a3
+- (BOOL)p_isInCompactViewModeForFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  v4 = [(CRLiOSQuickSelectViewController *)self traitCollection:a3.origin.x];
-  v5 = [v4 horizontalSizeClass];
+  width = frame.size.width;
+  v4 = [(CRLiOSQuickSelectViewController *)self traitCollection:frame.origin.x];
+  horizontalSizeClass = [v4 horizontalSizeClass];
 
-  if (v5 == 1 && width >= 480.0)
+  if (horizontalSizeClass == 1 && width >= 480.0)
   {
     return 0;
   }
 
-  return width < 480.0 || v5 == 1;
+  return width < 480.0 || horizontalSizeClass == 1;
 }
 
 - (id)p_createBaseHUDView
@@ -383,31 +383,31 @@
   [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
-    v3 = objc_alloc_init(UIGlassEffect);
-    v4 = [[UIVisualEffectView alloc] initWithEffect:v3];
+    layer2 = objc_alloc_init(UIGlassEffect);
+    v4 = [[UIVisualEffectView alloc] initWithEffect:layer2];
 
-    v5 = [v4 layer];
-    [v5 setCornerRadius:22.0];
+    layer = [v4 layer];
+    [layer setCornerRadius:22.0];
 
     v2 = v4;
   }
 
   else
   {
-    v3 = [v2 layer];
-    [v3 setCornerRadius:8.0];
+    layer2 = [v2 layer];
+    [layer2 setCornerRadius:8.0];
   }
 
-  v6 = [v2 layer];
-  [v6 setCornerCurve:kCACornerCurveContinuous];
+  layer3 = [v2 layer];
+  [layer3 setCornerCurve:kCACornerCurveContinuous];
 
   v7 = [UIColor colorWithWhite:1.0 alpha:0.1];
-  v8 = [v7 CGColor];
-  v9 = [v2 layer];
-  [v9 setBorderColor:v8];
+  cGColor = [v7 CGColor];
+  layer4 = [v2 layer];
+  [layer4 setBorderColor:cGColor];
 
-  v10 = [v2 layer];
-  [v10 setBorderWidth:1.0];
+  layer5 = [v2 layer];
+  [layer5 setBorderWidth:1.0];
 
   LODWORD(v11) = 1144799232;
   [v2 setContentHuggingPriority:0 forAxis:v11];
@@ -433,139 +433,139 @@
   return v2;
 }
 
-- (void)p_configureIconView:(id)a3
+- (void)p_configureIconView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
-    [v8 setHidden:1];
+    [viewCopy setHidden:1];
   }
 
   else
   {
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
     v3 = +[UIColor labelColor];
-    [v8 setTintColor:v3];
+    [viewCopy setTintColor:v3];
 
     LODWORD(v4) = 1148846080;
-    [v8 setContentCompressionResistancePriority:0 forAxis:v4];
+    [viewCopy setContentCompressionResistancePriority:0 forAxis:v4];
     LODWORD(v5) = 1148846080;
-    [v8 setContentCompressionResistancePriority:1 forAxis:v5];
+    [viewCopy setContentCompressionResistancePriority:1 forAxis:v5];
     LODWORD(v6) = 1148846080;
-    [v8 setContentHuggingPriority:0 forAxis:v6];
+    [viewCopy setContentHuggingPriority:0 forAxis:v6];
     LODWORD(v7) = 1148846080;
-    [v8 setContentHuggingPriority:1 forAxis:v7];
+    [viewCopy setContentHuggingPriority:1 forAxis:v7];
   }
 }
 
-- (void)p_configureTextLabel:(id)a3
+- (void)p_configureTextLabel:(id)label
 {
-  v7 = a3;
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  labelCopy = label;
+  [labelCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   v3 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v7 setFont:v3];
+  [labelCopy setFont:v3];
 
   v4 = +[UIColor labelColor];
-  [v7 setTextColor:v4];
+  [labelCopy setTextColor:v4];
 
-  [v7 setNumberOfLines:0];
-  [v7 setAdjustsFontSizeToFitWidth:1];
-  [v7 setAllowsDefaultTighteningForTruncation:1];
-  [v7 setAdjustsFontForContentSizeCategory:1];
+  [labelCopy setNumberOfLines:0];
+  [labelCopy setAdjustsFontSizeToFitWidth:1];
+  [labelCopy setAllowsDefaultTighteningForTruncation:1];
+  [labelCopy setAdjustsFontForContentSizeCategory:1];
   LODWORD(v5) = 1144750080;
-  [v7 setContentCompressionResistancePriority:0 forAxis:v5];
+  [labelCopy setContentCompressionResistancePriority:0 forAxis:v5];
   LODWORD(v6) = 1132068864;
-  [v7 setContentHuggingPriority:0 forAxis:v6];
+  [labelCopy setContentHuggingPriority:0 forAxis:v6];
 }
 
-- (void)p_configureSelectAllButton:(id)a3 andDeselectAllButton:(id)a4
+- (void)p_configureSelectAllButton:(id)button andDeselectAllButton:(id)allButton
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [v15 configuration];
+  buttonCopy = button;
+  allButtonCopy = allButton;
+  configuration = [buttonCopy configuration];
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
     v8 = +[UIButtonConfiguration borderedButtonConfiguration];
 
     [v8 setCornerStyle:4];
-    v7 = v8;
+    configuration = v8;
   }
 
-  [(CRLiOSQuickSelectViewController *)self p_configureSelectButton:v15];
-  [v15 addTarget:self action:"p_selectAllAction:" forControlEvents:64];
+  [(CRLiOSQuickSelectViewController *)self p_configureSelectButton:buttonCopy];
+  [buttonCopy addTarget:self action:"p_selectAllAction:" forControlEvents:64];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"Select All" value:0 table:0];
-  [v15 setTitle:v10 forState:0];
+  [buttonCopy setTitle:v10 forState:0];
 
-  if (v7)
+  if (configuration)
   {
-    [v15 setConfiguration:v7];
+    [buttonCopy setConfiguration:configuration];
   }
 
   else
   {
-    v11 = [v15 configuration];
-    [v15 setConfiguration:v11];
+    configuration2 = [buttonCopy configuration];
+    [buttonCopy setConfiguration:configuration2];
   }
 
-  [(CRLiOSQuickSelectViewController *)self p_configureSelectButton:v6];
-  [v6 addTarget:self action:"p_deselectAllAction:" forControlEvents:64];
+  [(CRLiOSQuickSelectViewController *)self p_configureSelectButton:allButtonCopy];
+  [allButtonCopy addTarget:self action:"p_deselectAllAction:" forControlEvents:64];
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"Deselect All" value:0 table:0];
-  [v6 setTitle:v13 forState:0];
+  [allButtonCopy setTitle:v13 forState:0];
 
-  if (v7)
+  if (configuration)
   {
-    [v6 setConfiguration:v7];
+    [allButtonCopy setConfiguration:configuration];
   }
 
   else
   {
-    v14 = [v6 configuration];
-    [v6 setConfiguration:v14];
+    configuration3 = [allButtonCopy configuration];
+    [allButtonCopy setConfiguration:configuration3];
   }
 }
 
-- (void)p_configureSelectButton:(id)a3
+- (void)p_configureSelectButton:(id)button
 {
-  v3 = a3;
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonCopy = button;
+  [buttonCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v4) = 1148846080;
-  [v3 setContentCompressionResistancePriority:0 forAxis:v4];
-  v5 = [v3 titleLabel];
-  [v5 setAdjustsFontForContentSizeCategory:1];
+  [buttonCopy setContentCompressionResistancePriority:0 forAxis:v4];
+  titleLabel = [buttonCopy titleLabel];
+  [titleLabel setAdjustsFontForContentSizeCategory:1];
 
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-  v7 = [v3 titleLabel];
-  [v7 setFont:v6];
+  titleLabel2 = [buttonCopy titleLabel];
+  [titleLabel2 setFont:v6];
 
-  v8 = [v3 titleLabel];
-  [v8 setLineBreakMode:0];
+  titleLabel3 = [buttonCopy titleLabel];
+  [titleLabel3 setLineBreakMode:0];
 
-  v9 = [v3 titleLabel];
+  titleLabel4 = [buttonCopy titleLabel];
 
-  [v9 setNumberOfLines:0];
+  [titleLabel4 setNumberOfLines:0];
 }
 
-- (void)p_configureDoneButton:(id)a3
+- (void)p_configureDoneButton:(id)button
 {
-  v22 = a3;
-  [v22 addTarget:self action:"p_doneEditingAction:" forControlEvents:64];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonCopy = button;
+  [buttonCopy addTarget:self action:"p_doneEditingAction:" forControlEvents:64];
+  [buttonCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v4) = 1148846080;
-  [v22 setContentCompressionResistancePriority:0 forAxis:v4];
-  v5 = [v22 titleLabel];
-  [v5 setAdjustsFontForContentSizeCategory:1];
+  [buttonCopy setContentCompressionResistancePriority:0 forAxis:v4];
+  titleLabel = [buttonCopy titleLabel];
+  [titleLabel setAdjustsFontForContentSizeCategory:1];
 
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-  v7 = [v22 titleLabel];
-  [v7 setFont:v6];
+  titleLabel2 = [buttonCopy titleLabel];
+  [titleLabel2 setFont:v6];
 
-  v8 = [v22 titleLabel];
-  [v8 setLineBreakMode:0];
+  titleLabel3 = [buttonCopy titleLabel];
+  [titleLabel3 setLineBreakMode:0];
 
-  v9 = [v22 titleLabel];
-  [v9 setNumberOfLines:0];
+  titleLabel4 = [buttonCopy titleLabel];
+  [titleLabel4 setNumberOfLines:0];
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"Done" value:0 table:0];
@@ -580,10 +580,10 @@
     v16 = [v13 configurationByApplyingConfiguration:v15];
     [v12 setPreferredSymbolConfigurationForImage:v16];
 
-    v17 = [(CRLiOSQuickSelectViewController *)self traitCollection];
-    v18 = [v17 horizontalSizeClass];
+    traitCollection = [(CRLiOSQuickSelectViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v18 == 2)
+    if (horizontalSizeClass == 2)
     {
       v19 = [UIImage systemImageNamed:@"checkmark"];
       [v12 setImage:v19];
@@ -601,49 +601,49 @@
     [v20 setBackgroundColor:v21];
 
     [v12 setBackground:v20];
-    [v22 setConfiguration:v12];
+    [buttonCopy setConfiguration:v12];
   }
 
   else
   {
-    [v22 setTitle:v11 forState:0];
+    [buttonCopy setTitle:v11 forState:0];
   }
 
-  [v22 setAccessibilityLabel:v11];
+  [buttonCopy setAccessibilityLabel:v11];
 }
 
-- (id)p_constraintsForBackgroundView:(id)a3 inHudView:(id)a4
+- (id)p_constraintsForBackgroundView:(id)view inHudView:(id)hudView
 {
-  v5 = a4;
-  v6 = a3;
-  v20 = [v6 leadingAnchor];
-  v19 = [v5 leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  hudViewCopy = hudView;
+  viewCopy = view;
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [hudViewCopy leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v18;
-  v7 = [v6 trailingAnchor];
-  v8 = [v5 trailingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [hudViewCopy trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v9;
-  v10 = [v6 topAnchor];
-  v11 = [v5 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [hudViewCopy topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v12;
-  v13 = [v6 bottomAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
 
-  v14 = [v5 bottomAnchor];
+  bottomAnchor2 = [hudViewCopy bottomAnchor];
 
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v15;
   v16 = [NSArray arrayWithObjects:v21 count:4];
 
   return v16;
 }
 
-- (id)p_constraintsForIconView:(id)a3 verticallyCenteredToView:(id)a4 inHudView:(id)a5
+- (id)p_constraintsForIconView:(id)view verticallyCenteredToView:(id)toView inHudView:(id)hudView
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  toViewCopy = toView;
+  hudViewCopy = hudView;
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
     v10 = &__NSArray0__struct;
@@ -651,13 +651,13 @@
 
   else
   {
-    v11 = [v7 leadingAnchor];
-    v12 = [v9 leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:12.0];
+    leadingAnchor = [viewCopy leadingAnchor];
+    leadingAnchor2 = [hudViewCopy leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v18[0] = v13;
-    v14 = [v7 centerYAnchor];
-    v15 = [v8 centerYAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    centerYAnchor = [viewCopy centerYAnchor];
+    centerYAnchor2 = [toViewCopy centerYAnchor];
+    v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v18[1] = v16;
     v10 = [NSArray arrayWithObjects:v18 count:2];
   }
@@ -665,101 +665,101 @@
   return v10;
 }
 
-- (id)p_constraintsForTextLabel:(id)a3 inHudView:(id)a4 withIconView:(id)a5 andSelectAllButton:(id)a6 andDeselectAllButton:(id)a7 forCompactLayout:(BOOL)a8
+- (id)p_constraintsForTextLabel:(id)label inHudView:(id)view withIconView:(id)iconView andSelectAllButton:(id)button andDeselectAllButton:(id)allButton forCompactLayout:(BOOL)layout
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v46 = a7;
+  layoutCopy = layout;
+  labelCopy = label;
+  viewCopy = view;
+  iconViewCopy = iconView;
+  buttonCopy = button;
+  allButtonCopy = allButton;
   v17 = [[NSMutableArray alloc] initWithArray:&__NSArray0__struct];
-  LODWORD(a7) = +[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled];
-  v18 = [v13 leadingAnchor];
-  if (a7)
+  LODWORD(allButton) = +[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled];
+  leadingAnchor = [labelCopy leadingAnchor];
+  if (allButton)
   {
-    v19 = [v14 leadingAnchor];
+    leadingAnchor2 = [viewCopy leadingAnchor];
     v20 = 20.0;
   }
 
   else
   {
-    v19 = [v15 trailingAnchor];
+    leadingAnchor2 = [iconViewCopy trailingAnchor];
     v20 = 12.0;
   }
 
-  v21 = [v18 constraintEqualToAnchor:v19 constant:v20];
-  v47 = v15;
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v20];
+  v47 = iconViewCopy;
   [v17 addObject:v21];
 
-  if (v8)
+  if (layoutCopy)
   {
-    v22 = [v13 trailingAnchor];
-    v23 = [v14 trailingAnchor];
-    v45 = v22;
-    v24 = [v22 constraintEqualToAnchor:v23 constant:-12.0];
-    v49[0] = v24;
-    v25 = [v13 topAnchor];
-    v26 = [v14 topAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:12.0];
+    trailingAnchor = [labelCopy trailingAnchor];
+    trailingAnchor2 = [viewCopy trailingAnchor];
+    v45 = trailingAnchor;
+    heightAnchor = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
+    v49[0] = heightAnchor;
+    topAnchor = [labelCopy topAnchor];
+    topAnchor2 = [viewCopy topAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
     v49[1] = v27;
     v28 = [NSArray arrayWithObjects:v49 count:2];
     v29 = v17;
     [v17 addObjectsFromArray:v28];
 
-    v30 = v46;
+    v30 = allButtonCopy;
   }
 
   else
   {
-    v31 = [v13 widthAnchor];
-    v32 = [v16 widthAnchor];
-    v33 = [v31 constraintGreaterThanOrEqualToAnchor:v32 multiplier:2.0];
+    widthAnchor = [labelCopy widthAnchor];
+    widthAnchor2 = [buttonCopy widthAnchor];
+    v33 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2 multiplier:2.0];
 
-    v34 = [v13 widthAnchor];
-    v35 = [v46 widthAnchor];
-    v23 = [v34 constraintGreaterThanOrEqualToAnchor:v35 multiplier:2.0];
+    widthAnchor3 = [labelCopy widthAnchor];
+    widthAnchor4 = [allButtonCopy widthAnchor];
+    trailingAnchor2 = [widthAnchor3 constraintGreaterThanOrEqualToAnchor:widthAnchor4 multiplier:2.0];
 
     LODWORD(v36) = 1.0;
     [v33 setPriority:v36];
     LODWORD(v37) = 1.0;
-    [v23 setPriority:v37];
+    [trailingAnchor2 setPriority:v37];
     v45 = v33;
     v48[0] = v33;
-    v48[1] = v23;
-    v38 = [v13 centerYAnchor];
-    v39 = [v14 centerYAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    v48[1] = trailingAnchor2;
+    centerYAnchor = [labelCopy centerYAnchor];
+    centerYAnchor2 = [viewCopy centerYAnchor];
+    v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v48[2] = v40;
     v41 = [NSArray arrayWithObjects:v48 count:3];
     [v17 addObjectsFromArray:v41];
 
-    v30 = v46;
-    LODWORD(v38) = +[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled];
-    v24 = [v13 heightAnchor];
-    v25 = [v14 heightAnchor];
+    v30 = allButtonCopy;
+    LODWORD(centerYAnchor) = +[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled];
+    heightAnchor = [labelCopy heightAnchor];
+    topAnchor = [viewCopy heightAnchor];
     v42 = -20.0;
-    if (v38)
+    if (centerYAnchor)
     {
       v42 = -26.0;
     }
 
-    v26 = [v24 constraintEqualToAnchor:v25 constant:v42];
+    topAnchor2 = [heightAnchor constraintEqualToAnchor:topAnchor constant:v42];
     v29 = v17;
-    [v17 addObject:v26];
+    [v17 addObject:topAnchor2];
   }
 
   return v29;
 }
 
-- (id)p_constraintsForSelectAllButton:(id)a3 deselectAllButton:(id)a4 andDoneButton:(id)a5 withSeparator:(id)a6 andTextLabel:(id)a7 inHudView:(id)a8 forCompactLayout:(BOOL)a9
+- (id)p_constraintsForSelectAllButton:(id)button deselectAllButton:(id)allButton andDoneButton:(id)doneButton withSeparator:(id)separator andTextLabel:(id)label inHudView:(id)view forCompactLayout:(BOOL)layout
 {
-  v14 = a3;
-  v15 = a4;
-  v132 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a7;
+  buttonCopy = button;
+  allButtonCopy = allButton;
+  doneButtonCopy = doneButton;
+  separatorCopy = separator;
+  viewCopy = view;
+  labelCopy = label;
   v135 = objc_alloc_init(NSMutableArray);
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
@@ -771,109 +771,109 @@
     v19 = 12.0;
   }
 
-  v130 = v16;
-  v131 = v14;
-  v133 = v17;
-  v134 = v15;
-  if (!a9)
+  v130 = separatorCopy;
+  v131 = buttonCopy;
+  v133 = viewCopy;
+  v134 = allButtonCopy;
+  if (!layout)
   {
-    v127 = [v16 leadingAnchor];
-    v122 = [v14 trailingAnchor];
-    v117 = [v127 constraintEqualToAnchor:v122 constant:v19];
+    leadingAnchor = [separatorCopy leadingAnchor];
+    trailingAnchor = [buttonCopy trailingAnchor];
+    v117 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:v19];
     v141[0] = v117;
-    v112 = [v16 leadingAnchor];
-    v107 = [v15 trailingAnchor];
-    v103 = [v112 constraintEqualToAnchor:v107 constant:v19];
+    leadingAnchor2 = [separatorCopy leadingAnchor];
+    trailingAnchor2 = [allButtonCopy trailingAnchor];
+    v103 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor2 constant:v19];
     v141[1] = v103;
-    v98 = [v16 leadingAnchor];
-    v97 = [v14 trailingAnchor];
-    v96 = [v98 constraintGreaterThanOrEqualToAnchor:v97 constant:v19];
+    leadingAnchor3 = [separatorCopy leadingAnchor];
+    trailingAnchor3 = [buttonCopy trailingAnchor];
+    v96 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:v19];
     v141[2] = v96;
-    v33 = [v16 leadingAnchor];
-    v34 = [v15 trailingAnchor];
-    [v33 constraintGreaterThanOrEqualToAnchor:v34 constant:v19];
-    v35 = v100 = v18;
+    leadingAnchor4 = [separatorCopy leadingAnchor];
+    trailingAnchor4 = [allButtonCopy trailingAnchor];
+    [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:v19];
+    v35 = v100 = labelCopy;
     v141[3] = v35;
-    v36 = [v16 widthAnchor];
+    widthAnchor = [separatorCopy widthAnchor];
     v37 = +[UIScreen mainScreen];
     [v37 scale];
-    v39 = [v36 constraintEqualToConstant:1.0 / v38];
+    v39 = [widthAnchor constraintEqualToConstant:1.0 / v38];
     v141[4] = v39;
-    v40 = [v16 heightAnchor];
-    v41 = [v17 heightAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    heightAnchor = [separatorCopy heightAnchor];
+    heightAnchor2 = [viewCopy heightAnchor];
+    v42 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v141[5] = v42;
     v43 = [NSArray arrayWithObjects:v141 count:6];
     [v135 addObjectsFromArray:v43];
 
     v30 = v133;
-    v31 = [v100 trailingAnchor];
+    trailingAnchor5 = [v100 trailingAnchor];
 
-    v32 = [v133 topAnchor];
+    topAnchor = [v133 topAnchor];
   }
 
   else
   {
-    v126 = [v16 topAnchor];
-    v121 = [v18 bottomAnchor];
+    topAnchor2 = [separatorCopy topAnchor];
+    bottomAnchor = [labelCopy bottomAnchor];
 
-    v116 = [v126 constraintEqualToAnchor:v121 constant:v19];
+    v116 = [topAnchor2 constraintEqualToAnchor:bottomAnchor constant:v19];
     v142[0] = v116;
-    v111 = [v16 bottomAnchor];
-    v20 = [v14 topAnchor];
-    v21 = [v111 constraintEqualToAnchor:v20 constant:-12.0];
+    bottomAnchor2 = [separatorCopy bottomAnchor];
+    topAnchor3 = [buttonCopy topAnchor];
+    v21 = [bottomAnchor2 constraintEqualToAnchor:topAnchor3 constant:-12.0];
     v142[1] = v21;
-    v22 = [v16 widthAnchor];
-    v23 = [v17 widthAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    widthAnchor2 = [separatorCopy widthAnchor];
+    widthAnchor3 = [viewCopy widthAnchor];
+    v24 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
     v142[2] = v24;
-    v25 = [v16 heightAnchor];
+    heightAnchor3 = [separatorCopy heightAnchor];
     v26 = +[UIScreen mainScreen];
     [v26 scale];
-    v28 = [v25 constraintEqualToConstant:1.0 / v27];
+    v28 = [heightAnchor3 constraintEqualToConstant:1.0 / v27];
     v142[3] = v28;
     v29 = [NSArray arrayWithObjects:v142 count:4];
     [v135 addObjectsFromArray:v29];
 
     v30 = v133;
-    v31 = [v133 leadingAnchor];
-    v32 = [v16 bottomAnchor];
+    trailingAnchor5 = [v133 leadingAnchor];
+    topAnchor = [separatorCopy bottomAnchor];
   }
 
-  v128 = v32;
+  v128 = topAnchor;
   v44 = v131;
-  v45 = [v131 leadingAnchor];
-  v46 = [v45 constraintEqualToAnchor:v31 constant:12.0];
+  leadingAnchor5 = [v131 leadingAnchor];
+  v46 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor5 constant:12.0];
   v140[0] = v46;
   v47 = v134;
-  v48 = [v134 leadingAnchor];
-  v49 = [v48 constraintEqualToAnchor:v31 constant:12.0];
+  leadingAnchor6 = [v134 leadingAnchor];
+  v49 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor5 constant:12.0];
   v140[1] = v49;
   v50 = [NSArray arrayWithObjects:v140 count:2];
   [v135 addObjectsFromArray:v50];
 
-  if (!+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled]|| a9)
+  if (!+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled]|| layout)
   {
-    v123 = [v131 leadingAnchor];
-    v118 = [v123 constraintEqualToAnchor:v31 constant:12.0];
+    leadingAnchor7 = [v131 leadingAnchor];
+    v118 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor5 constant:12.0];
     v139[0] = v118;
-    v113 = [v131 topAnchor];
-    v108 = [v113 constraintEqualToAnchor:v128 constant:12.0];
+    topAnchor4 = [v131 topAnchor];
+    v108 = [topAnchor4 constraintEqualToAnchor:v128 constant:12.0];
     v139[1] = v108;
-    v104 = [v131 bottomAnchor];
-    v101 = [v30 bottomAnchor];
-    v99 = [v104 constraintEqualToAnchor:v101 constant:-12.0];
+    bottomAnchor3 = [v131 bottomAnchor];
+    bottomAnchor4 = [v30 bottomAnchor];
+    v99 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-12.0];
     v139[2] = v99;
     [v134 leadingAnchor];
-    v52 = v51 = v31;
+    v52 = v51 = trailingAnchor5;
     v53 = [v52 constraintEqualToAnchor:v51 constant:12.0];
     v139[3] = v53;
-    v54 = [v134 topAnchor];
-    v55 = [v54 constraintEqualToAnchor:v128 constant:12.0];
+    topAnchor5 = [v134 topAnchor];
+    v55 = [topAnchor5 constraintEqualToAnchor:v128 constant:12.0];
     v139[4] = v55;
-    v56 = [v134 bottomAnchor];
-    v57 = [v30 bottomAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57 constant:-12.0];
+    bottomAnchor5 = [v134 bottomAnchor];
+    bottomAnchor6 = [v30 bottomAnchor];
+    v58 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-12.0];
     v139[5] = v58;
     v59 = [NSArray arrayWithObjects:v139 count:6];
     [v135 addObjectsFromArray:v59];
@@ -882,35 +882,35 @@
     v44 = v131;
 
     v47 = v134;
-    v31 = v51;
+    trailingAnchor5 = v51;
   }
 
-  if (a9)
+  if (layout)
   {
-    v109 = [v44 widthAnchor];
-    v60 = v132;
-    v124 = [v132 widthAnchor];
-    v119 = [v109 constraintEqualToAnchor:?];
+    widthAnchor4 = [v44 widthAnchor];
+    v60 = doneButtonCopy;
+    widthAnchor5 = [doneButtonCopy widthAnchor];
+    v119 = [widthAnchor4 constraintEqualToAnchor:?];
     v137[0] = v119;
-    v105 = [v47 widthAnchor];
-    v114 = [v132 widthAnchor];
-    v61 = [v105 constraintEqualToAnchor:?];
+    widthAnchor6 = [v47 widthAnchor];
+    widthAnchor7 = [doneButtonCopy widthAnchor];
+    v61 = [widthAnchor6 constraintEqualToAnchor:?];
     v137[1] = v61;
-    v62 = [v44 bottomAnchor];
-    v102 = [v30 bottomAnchor];
-    v63 = [v62 constraintEqualToAnchor:v102 constant:-12.0];
+    bottomAnchor7 = [v44 bottomAnchor];
+    bottomAnchor8 = [v30 bottomAnchor];
+    v63 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-12.0];
     v137[2] = v63;
-    v64 = [v47 bottomAnchor];
-    v65 = [v30 bottomAnchor];
-    [v64 constraintEqualToAnchor:v65 constant:-12.0];
-    v67 = v66 = v31;
+    bottomAnchor9 = [v47 bottomAnchor];
+    bottomAnchor10 = [v30 bottomAnchor];
+    [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:-12.0];
+    v67 = v66 = trailingAnchor5;
     v137[3] = v67;
     v68 = [NSArray arrayWithObjects:v137 count:4];
     [v135 addObjectsFromArray:v68];
 
-    v69 = v105;
-    v31 = v66;
-    v70 = v109;
+    centerYAnchor2 = widthAnchor6;
+    trailingAnchor5 = v66;
+    centerYAnchor = widthAnchor4;
 
     v19 = 12.0;
     v71 = v44;
@@ -919,84 +919,84 @@
 
   else
   {
-    v70 = [v44 centerYAnchor];
-    v124 = [v30 centerYAnchor];
-    v119 = [v70 constraintEqualToAnchor:?];
+    centerYAnchor = [v44 centerYAnchor];
+    widthAnchor5 = [v30 centerYAnchor];
+    v119 = [centerYAnchor constraintEqualToAnchor:?];
     v138[0] = v119;
-    v69 = [v47 centerYAnchor];
-    v114 = [v30 centerYAnchor];
-    v61 = [v69 constraintEqualToAnchor:?];
+    centerYAnchor2 = [v47 centerYAnchor];
+    widthAnchor7 = [v30 centerYAnchor];
+    v61 = [centerYAnchor2 constraintEqualToAnchor:?];
     v138[1] = v61;
-    v62 = [NSArray arrayWithObjects:v138 count:2];
-    [v135 addObjectsFromArray:v62];
+    bottomAnchor7 = [NSArray arrayWithObjects:v138 count:2];
+    [v135 addObjectsFromArray:bottomAnchor7];
     v72 = v130;
     v71 = v130;
     v44 = v30;
-    v60 = v132;
+    v60 = doneButtonCopy;
   }
 
-  v73 = [v71 trailingAnchor];
-  v74 = [v72 trailingAnchor];
+  trailingAnchor6 = [v71 trailingAnchor];
+  trailingAnchor7 = [v72 trailingAnchor];
   v120 = v44;
-  v115 = [v60 leadingAnchor];
-  v110 = [v115 constraintEqualToAnchor:v73 constant:v19];
+  leadingAnchor8 = [v60 leadingAnchor];
+  v110 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor6 constant:v19];
   v136[0] = v110;
-  v106 = [v60 leadingAnchor];
-  v75 = [v106 constraintEqualToAnchor:v74 constant:v19];
+  leadingAnchor9 = [v60 leadingAnchor];
+  v75 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor7 constant:v19];
   v136[1] = v75;
-  v76 = [v60 leadingAnchor];
-  v129 = v73;
-  [v76 constraintGreaterThanOrEqualToAnchor:v73 constant:v19];
+  leadingAnchor10 = [v60 leadingAnchor];
+  v129 = trailingAnchor6;
+  [leadingAnchor10 constraintGreaterThanOrEqualToAnchor:trailingAnchor6 constant:v19];
   v78 = v77 = v60;
   v136[2] = v78;
-  v79 = [v77 leadingAnchor];
-  v125 = v74;
-  v80 = [v79 constraintGreaterThanOrEqualToAnchor:v74 constant:v19];
+  leadingAnchor11 = [v77 leadingAnchor];
+  v125 = trailingAnchor7;
+  v80 = [leadingAnchor11 constraintGreaterThanOrEqualToAnchor:trailingAnchor7 constant:v19];
   v136[3] = v80;
-  v81 = [v77 centerYAnchor];
-  v82 = [v120 centerYAnchor];
-  v83 = [v81 constraintEqualToAnchor:v82];
+  centerYAnchor3 = [v77 centerYAnchor];
+  centerYAnchor4 = [v120 centerYAnchor];
+  v83 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v136[4] = v83;
   v84 = [NSArray arrayWithObjects:v136 count:5];
   [v135 addObjectsFromArray:v84];
 
   LODWORD(v75) = +[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled];
-  v85 = [v132 trailingAnchor];
-  v86 = [v133 trailingAnchor];
+  trailingAnchor8 = [doneButtonCopy trailingAnchor];
+  trailingAnchor9 = [v133 trailingAnchor];
   v87 = -12.0;
-  if ((v75 & !a9) != 0)
+  if ((v75 & !layout) != 0)
   {
     v87 = -7.0;
   }
 
-  v88 = [v85 constraintEqualToAnchor:v86 constant:v87];
+  v88 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:v87];
   [v135 addObject:v88];
 
-  v89 = [v132 heightAnchor];
-  v90 = [v131 heightAnchor];
+  heightAnchor4 = [doneButtonCopy heightAnchor];
+  heightAnchor5 = [v131 heightAnchor];
 
-  v91 = [v89 constraintEqualToAnchor:v90];
+  v91 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   [v135 addObject:v91];
 
-  if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled]&& !a9)
+  if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled]&& !layout)
   {
-    v92 = [v132 widthAnchor];
-    v93 = [v132 heightAnchor];
-    v94 = [v92 constraintEqualToAnchor:v93];
+    widthAnchor8 = [doneButtonCopy widthAnchor];
+    heightAnchor6 = [doneButtonCopy heightAnchor];
+    v94 = [widthAnchor8 constraintEqualToAnchor:heightAnchor6];
     [v135 addObject:v94];
   }
 
   return v135;
 }
 
-- (void)presentOnCanvasViewController:(id)a3 parentView:(id)a4
+- (void)presentOnCanvasViewController:(id)controller parentView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-  v9 = [v8 superview];
+  controllerCopy = controller;
+  viewCopy = view;
+  hudContainerView = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+  superview = [hudContainerView superview];
 
-  if (v9)
+  if (superview)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1025,85 +1025,85 @@
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:540 isFatal:0 description:"expected nil value for '%{public}s'", "self.hudContainerView.superview"];
   }
 
-  v13 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-  v14 = [v13 superview];
+  hudContainerView2 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+  superview2 = [hudContainerView2 superview];
 
-  if (!v14)
+  if (!superview2)
   {
-    v65 = v6;
-    objc_storeWeak(&self->_canvasViewController, v6);
-    if (!v7)
+    v65 = controllerCopy;
+    objc_storeWeak(&self->_canvasViewController, controllerCopy);
+    if (!viewCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_canvasViewController);
-      v16 = [WeakRetained canvasView];
-      v17 = [v16 enclosingScrollView];
-      v7 = [v17 superview];
+      canvasView = [WeakRetained canvasView];
+      enclosingScrollView = [canvasView enclosingScrollView];
+      viewCopy = [enclosingScrollView superview];
 
-      if (!v7)
+      if (!viewCopy)
       {
         v18 = objc_loadWeakRetained(&self->_canvasViewController);
-        v7 = [v18 canvasView];
+        viewCopy = [v18 canvasView];
       }
     }
 
     v19 = [CRLiOSUnhittableView alloc];
-    [v7 frame];
+    [viewCopy frame];
     v20 = [(CRLiOSUnhittableView *)v19 initWithFrame:?];
     [(CRLiOSQuickSelectViewController *)self setHudContainerView:v20];
 
-    v21 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-    [v21 setAutoresizingMask:18];
+    hudContainerView3 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+    [hudContainerView3 setAutoresizingMask:18];
 
-    v22 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-    [v7 addSubview:v22];
+    hudContainerView4 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+    [viewCopy addSubview:hudContainerView4];
 
-    v63 = [v7 safeAreaLayoutGuide];
-    v61 = [v63 topAnchor];
-    v62 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-    v60 = [v62 topAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide topAnchor];
+    hudContainerView5 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+    topAnchor2 = [hudContainerView5 topAnchor];
+    v59 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v69[0] = v59;
-    v58 = [v7 safeAreaLayoutGuide];
-    v56 = [v58 leadingAnchor];
-    v57 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-    v55 = [v57 leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    safeAreaLayoutGuide2 = [viewCopy safeAreaLayoutGuide];
+    leadingAnchor = [safeAreaLayoutGuide2 leadingAnchor];
+    hudContainerView6 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+    leadingAnchor2 = [hudContainerView6 leadingAnchor];
+    v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v69[1] = v54;
-    v53 = [v7 safeAreaLayoutGuide];
-    v52 = [v53 trailingAnchor];
-    v23 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-    v24 = [v23 trailingAnchor];
-    v25 = [v52 constraintEqualToAnchor:v24];
+    safeAreaLayoutGuide3 = [viewCopy safeAreaLayoutGuide];
+    trailingAnchor = [safeAreaLayoutGuide3 trailingAnchor];
+    hudContainerView7 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+    trailingAnchor2 = [hudContainerView7 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v69[2] = v25;
-    v64 = v7;
-    v26 = [v7 safeAreaLayoutGuide];
-    v27 = [v26 bottomAnchor];
-    v28 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-    v29 = [v28 bottomAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    v64 = viewCopy;
+    safeAreaLayoutGuide4 = [viewCopy safeAreaLayoutGuide];
+    bottomAnchor = [safeAreaLayoutGuide4 bottomAnchor];
+    hudContainerView8 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+    bottomAnchor2 = [hudContainerView8 bottomAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v69[3] = v30;
     v31 = [NSArray arrayWithObjects:v69 count:4];
     [NSLayoutConstraint activateConstraints:v31];
 
-    v32 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-    [(CRLiOSQuickSelectViewController *)self setView:v32];
+    hudContainerView9 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+    [(CRLiOSQuickSelectViewController *)self setView:hudContainerView9];
 
-    v33 = [(CRLiOSQuickSelectViewController *)self p_makeHUDView];
-    [(CRLiOSQuickSelectViewController *)self setHUDView:v33];
+    p_makeHUDView = [(CRLiOSQuickSelectViewController *)self p_makeHUDView];
+    [(CRLiOSQuickSelectViewController *)self setHUDView:p_makeHUDView];
 
-    v34 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-    v35 = [(CRLiOSQuickSelectViewController *)self HUDView];
-    [v34 addSubview:v35];
+    hudContainerView10 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+    hUDView = [(CRLiOSQuickSelectViewController *)self HUDView];
+    [hudContainerView10 addSubview:hUDView];
 
-    v36 = [(CRLiOSQuickSelectViewController *)self HUDView];
-    v37 = [(CRLiOSQuickSelectViewController *)self p_setupHUDConstraintsInContainerViewForView:v36 isCompact:0];
+    hUDView2 = [(CRLiOSQuickSelectViewController *)self HUDView];
+    v37 = [(CRLiOSQuickSelectViewController *)self p_setupHUDConstraintsInContainerViewForView:hUDView2 isCompact:0];
 
-    v38 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
+    regularSizeHUDConstraints = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
 
-    if (v38)
+    if (regularSizeHUDConstraints)
     {
-      v39 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
-      v40 = [v39 arrayByAddingObjectsFromArray:v37];
+      regularSizeHUDConstraints2 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
+      v40 = [regularSizeHUDConstraints2 arrayByAddingObjectsFromArray:v37];
       [(CRLiOSQuickSelectViewController *)self setRegularSizeHUDConstraints:v40];
     }
 
@@ -1112,17 +1112,17 @@
       [(CRLiOSQuickSelectViewController *)self setRegularSizeHUDConstraints:v37];
     }
 
-    v41 = [(CRLiOSQuickSelectViewController *)self HUDView];
-    v42 = [(CRLiOSQuickSelectViewController *)self p_setupHUDConstraintsInContainerViewForView:v41 isCompact:1];
+    hUDView3 = [(CRLiOSQuickSelectViewController *)self HUDView];
+    v42 = [(CRLiOSQuickSelectViewController *)self p_setupHUDConstraintsInContainerViewForView:hUDView3 isCompact:1];
 
-    v43 = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
+    compactHUDConstraints = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
 
-    v7 = v64;
-    v6 = v65;
-    if (v43)
+    viewCopy = v64;
+    controllerCopy = v65;
+    if (compactHUDConstraints)
     {
-      v44 = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
-      v45 = [v44 arrayByAddingObjectsFromArray:v42];
+      compactHUDConstraints2 = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
+      v45 = [compactHUDConstraints2 arrayByAddingObjectsFromArray:v42];
       [(CRLiOSQuickSelectViewController *)self setCompactHUDConstraints:v45];
     }
 
@@ -1175,60 +1175,60 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  hudContainerView = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+  [hudContainerView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)p_updateConstraintsForSizeClassChange
 {
-  v3 = [(CRLiOSQuickSelectViewController *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [(CRLiOSQuickSelectViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v4 == 2)
+  if (horizontalSizeClass == 2)
   {
-    v5 = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
-    [NSLayoutConstraint deactivateConstraints:v5];
+    compactHUDConstraints = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
+    [NSLayoutConstraint deactivateConstraints:compactHUDConstraints];
 
-    v6 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
+    regularSizeHUDConstraints = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
   }
 
   else
   {
-    v7 = [(CRLiOSQuickSelectViewController *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
+    traitCollection2 = [(CRLiOSQuickSelectViewController *)self traitCollection];
+    horizontalSizeClass2 = [traitCollection2 horizontalSizeClass];
 
-    if (v8 != 1)
+    if (horizontalSizeClass2 != 1)
     {
       return;
     }
 
-    v9 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
-    [NSLayoutConstraint deactivateConstraints:v9];
+    regularSizeHUDConstraints2 = [(CRLiOSQuickSelectViewController *)self regularSizeHUDConstraints];
+    [NSLayoutConstraint deactivateConstraints:regularSizeHUDConstraints2];
 
-    v6 = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
+    regularSizeHUDConstraints = [(CRLiOSQuickSelectViewController *)self compactHUDConstraints];
   }
 
-  v10 = v6;
+  v10 = regularSizeHUDConstraints;
   [NSLayoutConstraint activateConstraints:?];
 }
 
 - (void)dismiss
 {
   [(CRLiOSQuickSelectViewController *)self p_endWatchingSelectionChanges];
-  v3 = [(CRLiOSQuickSelectViewController *)self HUDView];
-  [v3 removeFromSuperview];
+  hUDView = [(CRLiOSQuickSelectViewController *)self HUDView];
+  [hUDView removeFromSuperview];
 
-  v4 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-  [v4 removeFromSuperview];
+  hudContainerView = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+  [hudContainerView removeFromSuperview];
 }
 
-- (id)p_setupHUDConstraintsInContainerViewForView:(id)a3 isCompact:(BOOL)a4
+- (id)p_setupHUDConstraintsInContainerViewForView:(id)view isCompact:(BOOL)compact
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+  compactCopy = compact;
+  viewCopy = view;
+  hudContainerView = [(CRLiOSQuickSelectViewController *)self hudContainerView];
 
-  if (!v7)
+  if (!hudContainerView)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1257,8 +1257,8 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:645 isFatal:0 description:"invalid nil value for '%{public}s'", "self.hudContainerView"];
   }
 
-  v11 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-  if (!v6)
+  hudContainerView2 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+  if (!viewCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1287,44 +1287,44 @@
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:648 isFatal:0 description:"invalid nil value for '%{public}s'", "view"];
   }
 
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [v6 widthAnchor];
-  v16 = [v11 widthAnchor];
-  v17 = [v15 constraintLessThanOrEqualToAnchor:v16];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  widthAnchor = [viewCopy widthAnchor];
+  widthAnchor2 = [hudContainerView2 widthAnchor];
+  v17 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
 
   LODWORD(v18) = 1148829696;
   v50 = v17;
   [v17 setPriority:v18];
-  v19 = [v6 heightAnchor];
-  v20 = [v11 heightAnchor];
-  v21 = [v19 constraintLessThanOrEqualToAnchor:v20];
+  heightAnchor = [viewCopy heightAnchor];
+  heightAnchor2 = [hudContainerView2 heightAnchor];
+  v21 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
 
   LODWORD(v22) = 1.0;
   v49 = v21;
   [v21 setPriority:v22];
-  v23 = [v6 leadingAnchor];
-  v24 = [v11 safeAreaLayoutGuide];
-  v25 = [v24 leadingAnchor];
-  if (v4)
+  leadingAnchor = [viewCopy leadingAnchor];
+  safeAreaLayoutGuide = [hudContainerView2 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  if (compactCopy)
   {
-    v26 = [v23 constraintEqualToAnchor:v25 constant:16.0];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
 
-    v27 = [v6 trailingAnchor];
-    v28 = [v11 safeAreaLayoutGuide];
-    v29 = [v28 trailingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:-16.0];
+    trailingAnchor = [viewCopy trailingAnchor];
+    safeAreaLayoutGuide2 = [hudContainerView2 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
 
     v32 = 1148846080;
   }
 
   else
   {
-    v26 = [v23 constraintGreaterThanOrEqualToAnchor:v25 constant:16.0];
+    v26 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:16.0];
 
-    v33 = [v6 trailingAnchor];
-    v34 = [v11 safeAreaLayoutGuide];
-    v35 = [v34 trailingAnchor];
-    v30 = [v33 constraintLessThanOrEqualToAnchor:v35 constant:-16.0];
+    trailingAnchor3 = [viewCopy trailingAnchor];
+    safeAreaLayoutGuide3 = [hudContainerView2 safeAreaLayoutGuide];
+    trailingAnchor4 = [safeAreaLayoutGuide3 trailingAnchor];
+    v30 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-16.0];
 
     v32 = 1144782848;
   }
@@ -1337,14 +1337,14 @@
   v48 = v30;
   v51[0] = v26;
   v51[1] = v30;
-  v38 = [v6 centerXAnchor];
-  v39 = [v11 centerXAnchor];
-  [v38 constraintEqualToAnchor:v39];
-  v41 = v40 = v6;
+  centerXAnchor = [viewCopy centerXAnchor];
+  centerXAnchor2 = [hudContainerView2 centerXAnchor];
+  [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  v41 = v40 = viewCopy;
   v51[2] = v41;
-  v42 = [v40 bottomAnchor];
-  v43 = [v11 bottomAnchor];
-  [v42 constraintEqualToAnchor:v43 constant:-16.0];
+  bottomAnchor = [v40 bottomAnchor];
+  bottomAnchor2 = [hudContainerView2 bottomAnchor];
+  [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   v45 = v44 = v26;
   v51[3] = v45;
   v51[4] = v50;
@@ -1364,10 +1364,10 @@
   v11 = v10;
 
   v12 = objc_loadWeakRetained(&self->_canvasViewController);
-  v13 = [v12 canvasView];
-  v14 = [(CRLiOSQuickSelectViewController *)self hudContainerView];
-  v15 = [v14 superview];
-  [v13 convertRect:v15 toView:{v5, v7, v9, v11}];
+  canvasView = [v12 canvasView];
+  hudContainerView = [(CRLiOSQuickSelectViewController *)self hudContainerView];
+  superview = [hudContainerView superview];
+  [canvasView convertRect:superview toView:{v5, v7, v9, v11}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -1391,17 +1391,17 @@
   [WeakRetained didDismissQuickSelectViewController:self];
 }
 
-- (void)p_selectAllAction:(id)a3
+- (void)p_selectAllAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained editorController];
-  v9 = [v5 editorForEditAction:"selectAll:" withSender:self];
+  editorController = [WeakRetained editorController];
+  v9 = [editorController editorForEditAction:"selectAll:" withSender:self];
 
   if (v9)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v6 editorController];
-    v8 = [v7 editorForEditAction:"selectAllForQuickSelect:" withSender:self];
+    editorController2 = [v6 editorController];
+    v8 = [editorController2 editorForEditAction:"selectAllForQuickSelect:" withSender:self];
 
     if (v8 == v9)
     {
@@ -1419,23 +1419,23 @@
   [(CRLiOSQuickSelectViewController *)self p_updateHUDState];
 }
 
-- (void)p_deselectAllAction:(id)a3
+- (void)p_deselectAllAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_canvasViewController);
-  v5 = [WeakRetained interactiveCanvasController];
-  v8 = [v5 canvasEditor];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController canvasEditor];
 
-  v6 = [v8 editorController];
-  v7 = [v8 selectionPathWithInfos:0];
-  [v6 setSelectionPath:v7 withFlags:0x8000];
+  editorController = [canvasEditor editorController];
+  v7 = [canvasEditor selectionPathWithInfos:0];
+  [editorController setSelectionPath:v7 withFlags:0x8000];
 
   self->_areAllSelected = 0;
   [(CRLiOSQuickSelectViewController *)self p_updateHUDState];
 }
 
-- (void)p_hideHUDWithAnimation:(BOOL)a3
+- (void)p_hideHUDWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1467,7 +1467,7 @@
 
   if (![(CRLiOSQuickSelectViewController *)self p_isHUDHidden])
   {
-    if (v3)
+    if (animationCopy)
     {
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
@@ -1479,17 +1479,17 @@
 
     else
     {
-      v8 = [(CRLiOSQuickSelectViewController *)self HUDView];
-      [v8 setAlpha:0.0];
+      hUDView = [(CRLiOSQuickSelectViewController *)self HUDView];
+      [hUDView setAlpha:0.0];
     }
   }
 
   ++self->_hudHidingCount;
 }
 
-- (void)p_unhideHUDWithAnimation:(BOOL)a3
+- (void)p_unhideHUDWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1587,7 +1587,7 @@
   self->_hudHidingCount = v15;
   if (!v15 && [(CRLiOSQuickSelectViewController *)self p_isHUDHidden])
   {
-    if (v3)
+    if (animationCopy)
     {
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
@@ -1599,16 +1599,16 @@
 
     else
     {
-      v16 = [(CRLiOSQuickSelectViewController *)self HUDView];
-      [v16 setAlpha:1.0];
+      hUDView = [(CRLiOSQuickSelectViewController *)self HUDView];
+      [hUDView setAlpha:1.0];
     }
   }
 }
 
 - (BOOL)p_isHUDHidden
 {
-  v2 = [(CRLiOSQuickSelectViewController *)self HUDView];
-  [v2 alpha];
+  hUDView = [(CRLiOSQuickSelectViewController *)self HUDView];
+  [hUDView alpha];
   v4 = fabs(v3) < 0.00999999978 || v3 == 0.0;
 
   return v4;
@@ -1625,11 +1625,11 @@
 - (void)p_updateStateForSelectionButtons
 {
   areAllSelected = self->_areAllSelected;
-  v4 = [(CRLiOSQuickSelectViewController *)self selectAllButton];
-  [v4 setHidden:areAllSelected];
+  selectAllButton = [(CRLiOSQuickSelectViewController *)self selectAllButton];
+  [selectAllButton setHidden:areAllSelected];
 
-  v5 = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
-  [v5 setHidden:areAllSelected ^ 1];
+  deselectAllButton = [(CRLiOSQuickSelectViewController *)self deselectAllButton];
+  [deselectAllButton setHidden:areAllSelected ^ 1];
 }
 
 - (void)p_updateHUDTitle
@@ -1643,17 +1643,17 @@
   v14 = [v3 localizedStringForKey:@"To select or deselect an object value:tap it. To select multiple objects table:{drag across them.", 0, 0}];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained editorController];
+  editorController = [WeakRetained editorController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100155FC4;
   v8[3] = &unk_101840680;
   v8[4] = &v9;
-  [v5 enumerateEditorsOnStackUsingBlock:v8];
+  [editorController enumerateEditorsOnStackUsingBlock:v8];
 
   v6 = v10[5];
-  v7 = [(CRLiOSQuickSelectViewController *)self textLabel];
-  [v7 setText:v6];
+  textLabel = [(CRLiOSQuickSelectViewController *)self textLabel];
+  [textLabel setText:v6];
 
   _Block_object_dispose(&v9, 8);
 }
@@ -1667,19 +1667,19 @@
   v14 = sub_100155FBC;
   v15 = @"square.on.circle";
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained editorController];
+  editorController = [WeakRetained editorController];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001561D4;
   v9[3] = &unk_101840680;
   v9[4] = &v10;
-  [v4 enumerateEditorsOnStackUsingBlock:v9];
+  [editorController enumerateEditorsOnStackUsingBlock:v9];
 
   v5 = v11[5];
   v6 = [UIImageSymbolConfiguration configurationWithPointSize:17.0];
   v7 = [UIImage systemImageNamed:v5 withConfiguration:v6];
-  v8 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-  [v8 setImage:v7];
+  iconImageView = [(CRLiOSQuickSelectViewController *)self iconImageView];
+  [iconImageView setImage:v7];
 
   _Block_object_dispose(&v10, 8);
 }
@@ -1688,9 +1688,9 @@
 {
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
-    v3 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-    v4 = [v3 layer];
-    [v4 setCornerRadius:22.0];
+    backgroundView = [(CRLiOSQuickSelectViewController *)self backgroundView];
+    layer = [backgroundView layer];
+    [layer setCornerRadius:22.0];
 
     +[UIColor clearColor];
   }
@@ -1698,66 +1698,66 @@
   else
   {
     v5 = +[UIColor systemBackgroundColor];
-    v6 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-    [v6 setBackgroundColor:v5];
+    backgroundView2 = [(CRLiOSQuickSelectViewController *)self backgroundView];
+    [backgroundView2 setBackgroundColor:v5];
 
-    v7 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-    v8 = [v7 layer];
-    [v8 setCornerRadius:8.0];
+    backgroundView3 = [(CRLiOSQuickSelectViewController *)self backgroundView];
+    layer2 = [backgroundView3 layer];
+    [layer2 setCornerRadius:8.0];
 
-    v9 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-    v10 = [v9 layer];
-    [v10 crl_applyDefaultCanvasOverlayUIShadowSettings];
+    backgroundView4 = [(CRLiOSQuickSelectViewController *)self backgroundView];
+    layer3 = [backgroundView4 layer];
+    [layer3 crl_applyDefaultCanvasOverlayUIShadowSettings];
 
     +[UIColor separatorColor];
   }
   v11 = ;
-  v12 = [(CRLiOSQuickSelectViewController *)self separatorView];
-  [v12 setBackgroundColor:v11];
+  separatorView = [(CRLiOSQuickSelectViewController *)self separatorView];
+  [separatorView setBackgroundColor:v11];
 
-  v13 = [(CRLiOSQuickSelectViewController *)self backgroundView];
-  v14 = [v13 layer];
-  [v14 setCornerCurve:kCACornerCurveContinuous];
+  backgroundView5 = [(CRLiOSQuickSelectViewController *)self backgroundView];
+  layer4 = [backgroundView5 layer];
+  [layer4 setCornerCurve:kCACornerCurveContinuous];
 
   v15 = +[UIColor labelColor];
-  v16 = [(CRLiOSQuickSelectViewController *)self iconImageView];
-  [v16 setTintColor:v15];
+  iconImageView = [(CRLiOSQuickSelectViewController *)self iconImageView];
+  [iconImageView setTintColor:v15];
 
   v17 = +[UIColor labelColor];
-  v18 = [(CRLiOSQuickSelectViewController *)self textLabel];
-  [v18 setTextColor:v17];
+  textLabel = [(CRLiOSQuickSelectViewController *)self textLabel];
+  [textLabel setTextColor:v17];
 
-  v19 = [(CRLiOSQuickSelectViewController *)self doneButton];
-  [(CRLiOSQuickSelectViewController *)self p_configureDoneButton:v19];
+  doneButton = [(CRLiOSQuickSelectViewController *)self doneButton];
+  [(CRLiOSQuickSelectViewController *)self p_configureDoneButton:doneButton];
 }
 
 - (void)p_beginWatchingSelectionChanges
 {
   v3 = +[NSNotificationCenter defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained editorController];
-  [v3 addObserver:self selector:"p_selectionPathDidChange:" name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:v5];
+  editorController = [WeakRetained editorController];
+  [v3 addObserver:self selector:"p_selectionPathDidChange:" name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:editorController];
 
   v8 = +[NSNotificationCenter defaultCenter];
   v6 = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v6 editorController];
-  [v8 addObserver:self selector:"p_currentEditorDidChange:" name:@"CRLEditorControllerDidChangeCurrentEditors" object:v7];
+  editorController2 = [v6 editorController];
+  [v8 addObserver:self selector:"p_currentEditorDidChange:" name:@"CRLEditorControllerDidChangeCurrentEditors" object:editorController2];
 }
 
 - (void)p_endWatchingSelectionChanges
 {
   v3 = +[NSNotificationCenter defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained editorController];
-  [v3 removeObserver:self name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:v5];
+  editorController = [WeakRetained editorController];
+  [v3 removeObserver:self name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:editorController];
 
   v8 = +[NSNotificationCenter defaultCenter];
   v6 = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v6 editorController];
-  [v8 removeObserver:self name:@"CRLEditorControllerDidChangeCurrentEditors" object:v7];
+  editorController2 = [v6 editorController];
+  [v8 removeObserver:self name:@"CRLEditorControllerDidChangeCurrentEditors" object:editorController2];
 }
 
-- (void)p_selectionPathDidChange:(id)a3
+- (void)p_selectionPathDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained shouldExitQuickSelectModeForQuickSelectViewController:self];
@@ -1777,7 +1777,7 @@
   }
 }
 
-- (void)p_currentEditorDidChange:(id)a3
+- (void)p_currentEditorDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained shouldExitQuickSelectModeForQuickSelectViewController:self];
@@ -1791,9 +1791,9 @@
 
 - (BOOL)p_isPresented
 {
-  v2 = [(CRLiOSQuickSelectViewController *)self HUDView];
-  v3 = [v2 superview];
-  v4 = v3 != 0;
+  hUDView = [(CRLiOSQuickSelectViewController *)self HUDView];
+  superview = [hUDView superview];
+  v4 = superview != 0;
 
   return v4;
 }

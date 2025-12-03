@@ -13,44 +13,44 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 allKeys];
-  v9 = [v8 sortedArrayWithOptions:0 usingComparator:v7];
+  allKeys = [self allKeys];
+  v9 = [allKeys sortedArrayWithOptions:0 usingComparator:v7];
 
-  [(NSDictionary *)a1 _msv_enumerateKeysAndObjectsWithSortedKeys:v9 usingBlock:v6];
+  [(NSDictionary *)self _msv_enumerateKeysAndObjectsWithSortedKeys:v9 usingBlock:v6];
 }
 
 - (void)msv_enumerateKeysAndObjectsOrderedByKeySelector:()MSVAdditions usingBlock:
 {
   v6 = a4;
-  v7 = [a1 allKeys];
-  v8 = [v7 sortedArrayUsingSelector:a3];
+  allKeys = [self allKeys];
+  v8 = [allKeys sortedArrayUsingSelector:a3];
 
-  [(NSDictionary *)a1 _msv_enumerateKeysAndObjectsWithSortedKeys:v8 usingBlock:v6];
+  [(NSDictionary *)self _msv_enumerateKeysAndObjectsWithSortedKeys:v8 usingBlock:v6];
 }
 
 - (void)msv_enumerateKeysAndObjectsOrderedByKeyDescriptors:()MSVAdditions usingBlock:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 allKeys];
-  v9 = [v8 sortedArrayUsingDescriptors:v7];
+  allKeys = [self allKeys];
+  v9 = [allKeys sortedArrayUsingDescriptors:v7];
 
-  [(NSDictionary *)a1 _msv_enumerateKeysAndObjectsWithSortedKeys:v9 usingBlock:v6];
+  [(NSDictionary *)self _msv_enumerateKeysAndObjectsWithSortedKeys:v9 usingBlock:v6];
 }
 
 - (id)msv_compactDescription
 {
-  v2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __52__NSDictionary_MSVAdditions__msv_compactDescription__block_invoke;
   v11 = &unk_1E7982030;
   v12 = v2;
   v3 = v2;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v8];
+  [self enumerateKeysAndObjectsUsingBlock:&v8];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [v3 msv_compactDescription];
-  v6 = [v4 stringWithFormat:@"{ %@ }", v5, v8, v9, v10, v11];
+  msv_compactDescription = [v3 msv_compactDescription];
+  v6 = [v4 stringWithFormat:@"{ %@ }", msv_compactDescription, v8, v9, v10, v11];
 
   return v6;
 }
@@ -89,7 +89,7 @@
   v7 = a3;
   v8 = [[v6 alloc] initWithBase64EncodedString:v7 options:0];
 
-  v9 = [a1 msv_dictionaryWithContentsOfJSON:v8 error:a4];
+  v9 = [self msv_dictionaryWithContentsOfJSON:v8 error:a4];
 
   return v9;
 }

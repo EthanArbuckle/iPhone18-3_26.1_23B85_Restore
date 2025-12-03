@@ -1,11 +1,11 @@
 @interface FigCaptureDepthDataPipelineConfiguration
-- (__n128)setClientAuditToken:(uint64_t)a1;
+- (__n128)setClientAuditToken:(uint64_t)token;
 - (uint64_t)setDepthDataBaseRotationDegrees:(uint64_t)result;
 - (uint64_t)setPearlModuleType:(uint64_t)result;
 - (uint64_t)setVideoAndConvertedDepthDataOutputEnabled:(uint64_t)result;
 - (void)dealloc;
-- (void)setCameraInfoByPortType:(void *)a1;
-- (void)setRequiredFormat:(void *)a1;
+- (void)setCameraInfoByPortType:(void *)type;
+- (void)setRequiredFormat:(void *)format;
 @end
 
 @implementation FigCaptureDepthDataPipelineConfiguration
@@ -27,14 +27,14 @@
   return result;
 }
 
-- (__n128)setClientAuditToken:(uint64_t)a1
+- (__n128)setClientAuditToken:(uint64_t)token
 {
-  if (a1)
+  if (token)
   {
     result = *a2;
     v3 = *(a2 + 16);
-    *(a1 + 48) = *a2;
-    *(a1 + 64) = v3;
+    *(token + 48) = *a2;
+    *(token + 64) = v3;
   }
 
   return result;
@@ -50,19 +50,19 @@
   return result;
 }
 
-- (void)setCameraInfoByPortType:(void *)a1
+- (void)setCameraInfoByPortType:(void *)type
 {
-  if (a1)
+  if (type)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 88);
+    objc_setProperty_nonatomic(type, newValue, newValue, 88);
   }
 }
 
-- (void)setRequiredFormat:(void *)a1
+- (void)setRequiredFormat:(void *)format
 {
-  if (a1)
+  if (format)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 96);
+    objc_setProperty_nonatomic(format, newValue, newValue, 96);
   }
 }
 

@@ -1,27 +1,27 @@
 @interface QLExtensionHostContextThumbnailOperation
-- (QLExtensionHostContextThumbnailOperation)initWithAppex:(id)a3 request:(id)a4 completionHandler:(id)a5;
+- (QLExtensionHostContextThumbnailOperation)initWithAppex:(id)appex request:(id)request completionHandler:(id)handler;
 - (void)finish;
-- (void)finishWithReply:(id)a3 error:(id)a4;
+- (void)finishWithReply:(id)reply error:(id)error;
 - (void)generate;
 - (void)main;
 @end
 
 @implementation QLExtensionHostContextThumbnailOperation
 
-- (QLExtensionHostContextThumbnailOperation)initWithAppex:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (QLExtensionHostContextThumbnailOperation)initWithAppex:(id)appex request:(id)request completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  appexCopy = appex;
+  requestCopy = request;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = QLExtensionHostContextThumbnailOperation;
   v12 = [(QLExtensionHostContextThumbnailOperation *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 32, a3);
-    objc_storeStrong(&v13->_completionHandler, a4);
-    v14 = _Block_copy(v11);
+    objc_storeStrong(v12 + 32, appex);
+    objc_storeStrong(&v13->_completionHandler, request);
+    v14 = _Block_copy(handlerCopy);
     connection = v13->_connection;
     v13->_connection = v14;
 
@@ -56,18 +56,18 @@
 
   else
   {
-    v4 = [self->_completionHandler item];
-    [v4 startAccessingIfNeeded];
+    item = [self->_completionHandler item];
+    [item startAccessingIfNeeded];
 
-    v5 = [self->_completionHandler item];
-    v6 = [v5 urlWrapper];
+    item2 = [self->_completionHandler item];
+    urlWrapper = [item2 urlWrapper];
 
-    if (v6)
+    if (urlWrapper)
     {
       v7 = MEMORY[0x277CCA9E0];
-      v8 = [self->_completionHandler item];
-      v9 = [v8 fileURL];
-      v10 = [v7 readingIntentWithURL:v9 options:1];
+      item3 = [self->_completionHandler item];
+      fileURL = [item3 fileURL];
+      v10 = [v7 readingIntentWithURL:fileURL options:1];
 
       objc_initWeak(&location, self);
       block[0] = MEMORY[0x277D85DD0];
@@ -79,15 +79,15 @@
       [(QLExtensionHostContextThumbnailOperation *)self setTimeoutBlock:v11];
 
       v12 = dispatch_time(0, 20000000000);
-      v13 = [(QLExtensionHostContextThumbnailOperation *)self coordinationQueue];
-      v14 = [v13 underlyingQueue];
-      v15 = [(QLExtensionHostContextThumbnailOperation *)self timeoutBlock];
-      dispatch_after(v12, v14, v15);
+      coordinationQueue = [(QLExtensionHostContextThumbnailOperation *)self coordinationQueue];
+      underlyingQueue = [coordinationQueue underlyingQueue];
+      timeoutBlock = [(QLExtensionHostContextThumbnailOperation *)self timeoutBlock];
+      dispatch_after(v12, underlyingQueue, timeoutBlock);
 
-      v16 = [(QLExtensionHostContextThumbnailOperation *)self coordinator];
+      coordinator = [(QLExtensionHostContextThumbnailOperation *)self coordinator];
       v27[0] = v10;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-      v18 = [(QLExtensionHostContextThumbnailOperation *)self coordinationQueue];
+      coordinationQueue2 = [(QLExtensionHostContextThumbnailOperation *)self coordinationQueue];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __48__QLExtensionHostContextThumbnailOperation_main__block_invoke_7;
@@ -95,7 +95,7 @@
       v22[4] = self;
       v19 = v10;
       v23 = v19;
-      [v16 coordinateAccessWithIntents:v17 queue:v18 byAccessor:v22];
+      [coordinator coordinateAccessWithIntents:v17 queue:coordinationQueue2 byAccessor:v22];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(&location);
@@ -169,7 +169,7 @@ void __48__QLExtensionHostContextThumbnailOperation_main__block_invoke_7(uint64_
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2615D3000, a2, OS_LOG_TYPE_ERROR, "Failed to acquire assertion : %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -263,15 +263,15 @@ void __52__QLExtensionHostContextThumbnailOperation_generate__block_invoke_36(ui
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithReply:(id)a3 error:(id)a4
+- (void)finishWithReply:(id)reply error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
+  replyCopy = reply;
+  errorCopy = error;
   os_unfair_lock_lock((&self->super._executing + 3));
   connection = self->_connection;
   if (connection)
   {
-    (connection[2].super.isa)(connection, v8, v6);
+    (connection[2].super.isa)(connection, replyCopy, errorCopy);
   }
 
   [(QLExtensionHostContextThumbnailOperation *)self finish];
@@ -307,8 +307,8 @@ void __52__QLExtensionHostContextThumbnailOperation_generate__block_invoke_36(ui
   fileAccess = self->_fileAccess;
   self->_fileAccess = 0;
 
-  v8 = [self->_completionHandler item];
-  [v8 cleanup];
+  item = [self->_completionHandler item];
+  [item cleanup];
 
   v9 = self->_accessedURL;
   self->_accessedURL = 0;

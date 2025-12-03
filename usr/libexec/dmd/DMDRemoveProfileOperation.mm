@@ -1,8 +1,8 @@
 @interface DMDRemoveProfileOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5;
-- (void)runWithRequest:(id)a3;
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -22,21 +22,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  requestCopy = request;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___DMDRemoveProfileOperation;
-  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 profileIdentifier];
+  profileIdentifier = [requestCopy profileIdentifier];
 
-  if (!v7)
+  if (!profileIdentifier)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -44,38 +44,38 @@
     v11 = DMFInvalidParameterErrorKey;
     v12 = @"request.profileIdentifier";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_6:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = [a3 profileIdentifier];
+  profileIdentifier = [request profileIdentifier];
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [v5 installedProfileWithIdentifier:v4];
+  v6 = [v5 installedProfileWithIdentifier:profileIdentifier];
 
   if (v6)
   {
-    v7 = [(DMDTaskOperation *)self context];
-    if ([v7 runAsUser])
+    context = [(DMDTaskOperation *)self context];
+    if ([context runAsUser])
     {
     }
 
     else
     {
-      v10 = [(DMDRemoveProfileOperation *)self request];
-      v11 = [v10 type];
+      request = [(DMDRemoveProfileOperation *)self request];
+      type = [request type];
 
-      if (v11 != 1)
+      if (type != 1)
       {
         v12 = 1;
         goto LABEL_8;
@@ -89,12 +89,12 @@ LABEL_8:
     v13[2] = sub_10006AABC;
     v13[3] = &unk_1000CEE68;
     v13[4] = self;
-    [(DMDRemoveProfileOperation *)self removeProfileWithIdentifier:v4 installationType:v12 completion:v13];
+    [(DMDRemoveProfileOperation *)self removeProfileWithIdentifier:profileIdentifier installationType:v12 completion:v13];
     goto LABEL_9;
   }
 
   v14 = DMFProfileIdentifierErrorKey;
-  v15 = v4;
+  v15 = profileIdentifier;
   v8 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v9 = DMFErrorWithCodeAndUserInfo();
   [(DMDRemoveProfileOperation *)self endOperationWithError:v9];
@@ -102,12 +102,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v9 = +[MCProfileConnection sharedConnection];
-  [v9 removeProfileAsyncWithIdentifier:v8 installationType:a4 completion:v7];
+  [v9 removeProfileAsyncWithIdentifier:identifierCopy installationType:type completion:completionCopy];
 }
 
 @end

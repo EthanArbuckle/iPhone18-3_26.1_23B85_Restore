@@ -1,211 +1,211 @@
 @interface UITextRefinementAcceleratedTouchBehavior
-- (BOOL)loupeGestureRecognizerShouldBegin:(id)a3 forTextLoupeInteraction:(id)a4;
-- (CGPoint)startPointForLoupeGesture:(id)a3;
-- (CGPoint)translationInView:(id)a3 forLoupeGesture:(id)a4;
-- (CGPoint)velocityInView:(id)a3 forLoupeGesture:(id)a4;
-- (void)configureGestureExclusionRequirementsForTextLoupeInteraction:(id)a3;
-- (void)configureLoupeGestureRecognizer:(id)a3 forTextLoupeInteraction:(id)a4;
-- (void)textLoupeInteraction:(id)a3 gestureChangedWithState:(int64_t)a4 location:(id)a5 translation:(id)a6 velocity:(id)a7 modifierFlags:(int64_t)a8 shouldCancel:(BOOL *)a9;
+- (BOOL)loupeGestureRecognizerShouldBegin:(id)begin forTextLoupeInteraction:(id)interaction;
+- (CGPoint)startPointForLoupeGesture:(id)gesture;
+- (CGPoint)translationInView:(id)view forLoupeGesture:(id)gesture;
+- (CGPoint)velocityInView:(id)view forLoupeGesture:(id)gesture;
+- (void)configureGestureExclusionRequirementsForTextLoupeInteraction:(id)interaction;
+- (void)configureLoupeGestureRecognizer:(id)recognizer forTextLoupeInteraction:(id)interaction;
+- (void)textLoupeInteraction:(id)interaction gestureChangedWithState:(int64_t)state location:(id)location translation:(id)translation velocity:(id)velocity modifierFlags:(int64_t)flags shouldCancel:(BOOL *)cancel;
 @end
 
 @implementation UITextRefinementAcceleratedTouchBehavior
 
-- (void)configureGestureExclusionRequirementsForTextLoupeInteraction:(id)a3
+- (void)configureGestureExclusionRequirementsForTextLoupeInteraction:(id)interaction
 {
-  v3 = [a3 root];
-  v5 = [v3 recognizerForName:0x1EFBA75D0];
+  root = [interaction root];
+  v5 = [root recognizerForName:0x1EFBA75D0];
 
-  v4 = [v5 _pairedGestureIdentifiers];
-  [v4 addObject:0x1EFBA76D0];
+  _pairedGestureIdentifiers = [v5 _pairedGestureIdentifiers];
+  [_pairedGestureIdentifiers addObject:0x1EFBA76D0];
 }
 
-- (void)configureLoupeGestureRecognizer:(id)a3 forTextLoupeInteraction:(id)a4
+- (void)configureLoupeGestureRecognizer:(id)recognizer forTextLoupeInteraction:(id)interaction
 {
-  v6 = a3;
-  v5 = a4;
-  [v6 setMaximumNumberOfTouches:1];
-  [v6 setMinimumNumberOfTouches:1];
-  [v6 setAllowedTouchTypes:&unk_1EFE2DE70];
-  [v5 addGestureRecognizer:v6 withName:0x1EFBA76D0];
+  recognizerCopy = recognizer;
+  interactionCopy = interaction;
+  [recognizerCopy setMaximumNumberOfTouches:1];
+  [recognizerCopy setMinimumNumberOfTouches:1];
+  [recognizerCopy setAllowedTouchTypes:&unk_1EFE2DE70];
+  [interactionCopy addGestureRecognizer:recognizerCopy withName:0x1EFBA76D0];
 }
 
-- (BOOL)loupeGestureRecognizerShouldBegin:(id)a3 forTextLoupeInteraction:(id)a4
+- (BOOL)loupeGestureRecognizerShouldBegin:(id)begin forTextLoupeInteraction:(id)interaction
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 view];
-  [v6 locationInView:v7];
+  interactionCopy = interaction;
+  beginCopy = begin;
+  view = [beginCopy view];
+  [beginCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  LOBYTE(v6) = [v5 currentSelectionContainsPoint:{v9, v11}];
-  return v6 ^ 1;
+  LOBYTE(beginCopy) = [interactionCopy currentSelectionContainsPoint:{v9, v11}];
+  return beginCopy ^ 1;
 }
 
-- (CGPoint)startPointForLoupeGesture:(id)a3
+- (CGPoint)startPointForLoupeGesture:(id)gesture
 {
-  [a3 startPoint];
+  [gesture startPoint];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3 forLoupeGesture:(id)a4
+- (CGPoint)translationInView:(id)view forLoupeGesture:(id)gesture
 {
-  [a4 translationInView:a3];
+  [gesture translationInView:view];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3 forLoupeGesture:(id)a4
+- (CGPoint)velocityInView:(id)view forLoupeGesture:(id)gesture
 {
-  [a4 velocityInView:a3];
+  [gesture velocityInView:view];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (void)textLoupeInteraction:(id)a3 gestureChangedWithState:(int64_t)a4 location:(id)a5 translation:(id)a6 velocity:(id)a7 modifierFlags:(int64_t)a8 shouldCancel:(BOOL *)a9
+- (void)textLoupeInteraction:(id)interaction gestureChangedWithState:(int64_t)state location:(id)location translation:(id)translation velocity:(id)velocity modifierFlags:(int64_t)flags shouldCancel:(BOOL *)cancel
 {
-  v64 = a3;
-  v13 = a5;
-  v14 = a6;
-  [v64 cancelLinkInteractionSession];
-  v15 = [v64 _textInput];
-  v16 = [v64 assistantDelegate];
-  v17 = [v64 root];
-  v18 = [v17 _allowsSelectionCommands];
+  interactionCopy = interaction;
+  locationCopy = location;
+  translationCopy = translation;
+  [interactionCopy cancelLinkInteractionSession];
+  _textInput = [interactionCopy _textInput];
+  assistantDelegate = [interactionCopy assistantDelegate];
+  root = [interactionCopy root];
+  _allowsSelectionCommands = [root _allowsSelectionCommands];
 
-  if (a4 == 2)
+  if (state == 2)
   {
-    if ([v64 inGesture])
+    if ([interactionCopy inGesture])
     {
-      v25 = v13[2](v13);
+      v25 = locationCopy[2](locationCopy);
       v27 = v26;
-      v28 = v14[2](v14);
+      v28 = translationCopy[2](translationCopy);
       v30 = v29;
-      [v64 touchAlignedPointForPoint:v25 translation:{v27, v28, v29}];
+      [interactionCopy touchAlignedPointForPoint:v25 translation:{v27, v28, v29}];
       v32 = v31;
       v34 = v33;
-      v35 = [v15 selectedTextRange];
-      v36 = [v35 isEmpty];
+      selectedTextRange = [_textInput selectedTextRange];
+      isEmpty = [selectedTextRange isEmpty];
 
-      if (!v36)
+      if (!isEmpty)
       {
         [(_UIKeyboardTextSelectionController *)self->_activeSelectionController updateSelectionWithExtentPoint:1 withBoundary:0 executionContext:v32, v34];
       }
 
-      [v16 startAutoscroll:{v32, v34}];
-      [v64 updateOrCancelDelayedLoupeActionWithPoint:v32 translation:{v34, v28, v30}];
-      v37 = [v64 translationIsWithinAllowableMovement:{v28, v30}];
-      v38 = [v64 gestureTuning];
-      v39 = [v38 shouldUseLineThreshold];
+      [assistantDelegate startAutoscroll:{v32, v34}];
+      [interactionCopy updateOrCancelDelayedLoupeActionWithPoint:v32 translation:{v34, v28, v30}];
+      v37 = [interactionCopy translationIsWithinAllowableMovement:{v28, v30}];
+      gestureTuning = [interactionCopy gestureTuning];
+      shouldUseLineThreshold = [gestureTuning shouldUseLineThreshold];
 
-      if (v39 && (v37 & 1) == 0)
+      if (shouldUseLineThreshold && (v37 & 1) == 0)
       {
-        [v16 updateFloatingCursorAtPoint:1 animated:{v32, v34}];
+        [assistantDelegate updateFloatingCursorAtPoint:1 animated:{v32, v34}];
         loupeSession = self->_loupeSession;
-        v41 = [v16 activeSelection];
-        [v41 caretRect];
+        activeSelection = [assistantDelegate activeSelection];
+        [activeSelection caretRect];
         [(UITextLoupeSession *)loupeSession moveToPoint:1 withCaretRect:v25 trackingCaret:v27, v42, v43, v44, v45];
       }
     }
   }
 
-  else if (a4 == 1)
+  else if (state == 1)
   {
-    v19 = [v64 root];
-    [v19 _createFeedbackIfNecessary];
+    root2 = [interactionCopy root];
+    [root2 _createFeedbackIfNecessary];
 
-    v20 = [v64 root];
-    [v20 _prepareFeedbackForGesture];
+    root3 = [interactionCopy root];
+    [root3 _prepareFeedbackForGesture];
 
-    [v16 stashCurrentSelection];
-    [v16 setAutoscrolled:0];
-    [v64 setInGesture:1];
-    [v16 setGrabberSuppressionAssertion:0];
+    [assistantDelegate stashCurrentSelection];
+    [assistantDelegate setAutoscrolled:0];
+    [interactionCopy setInGesture:1];
+    [assistantDelegate setGrabberSuppressionAssertion:0];
     v21 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
     v22 = [v21 vendKeyboardSuppressionAssertionForReason:@"Loupe gesture"];
-    [v16 setKeyboardSuppressionAssertion:v22];
+    [assistantDelegate setKeyboardSuppressionAssertion:v22];
 
-    v23 = [v15 selectedTextRange];
+    selectedTextRange2 = [_textInput selectedTextRange];
     originalTextRange = self->_originalTextRange;
-    self->_originalTextRange = v23;
+    self->_originalTextRange = selectedTextRange2;
 
-    [v16 setLoupeGestureEndPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-    if (v18)
+    [assistantDelegate setLoupeGestureEndPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    if (_allowsSelectionCommands)
     {
-      [v16 setNeedsGestureUpdate:{objc_msgSend(v64, "_textInputIsInteractive") ^ 1}];
-      [v16 setFirstResponderIfNecessary];
+      [assistantDelegate setNeedsGestureUpdate:{objc_msgSend(interactionCopy, "_textInputIsInteractive") ^ 1}];
+      [assistantDelegate setFirstResponderIfNecessary];
     }
 
     else
     {
-      [v16 setNeedsGestureUpdate:1];
+      [assistantDelegate setNeedsGestureUpdate:1];
     }
 
-    v57 = [v16 activeSelectionController];
+    activeSelectionController = [assistantDelegate activeSelectionController];
     activeSelectionController = self->_activeSelectionController;
-    self->_activeSelectionController = v57;
+    self->_activeSelectionController = activeSelectionController;
 
-    if (v18 && ![v64 _textInputIsInteractive])
+    if (_allowsSelectionCommands && ![interactionCopy _textInputIsInteractive])
     {
-      if (a9)
+      if (cancel)
       {
-        *a9 = 1;
+        *cancel = 1;
       }
     }
 
     else
     {
-      [v64 disableClearsOnInsertion];
-      [v16 willBeginSelectionInteraction];
-      [v64 _beginSelectionChange];
-      v59 = v13[2](v13);
+      [interactionCopy disableClearsOnInsertion];
+      [assistantDelegate willBeginSelectionInteraction];
+      [interactionCopy _beginSelectionChange];
+      v59 = locationCopy[2](locationCopy);
       v61 = v60;
-      [v64 updateInitialPoint:?];
-      v62 = [v64 root];
-      [v62 _playFeedbackForCursorMovement];
+      [interactionCopy updateInitialPoint:?];
+      root4 = [interactionCopy root];
+      [root4 _playFeedbackForCursorMovement];
 
-      [v64 _cancelRecognizerWithName:0x1EFBA75D0];
-      [v64 setStrongerBiasAgainstUp:1];
+      [interactionCopy _cancelRecognizerWithName:0x1EFBA75D0];
+      [interactionCopy setStrongerBiasAgainstUp:1];
       [(_UIKeyboardTextSelectionController *)self->_activeSelectionController beginSelection];
       [(_UIKeyboardTextSelectionController *)self->_activeSelectionController selectTextWithGranularity:1 atPoint:0 executionContext:v59, v61];
       [(_UIKeyboardTextSelectionController *)self->_activeSelectionController restartSelection];
-      if (v18)
+      if (_allowsSelectionCommands)
       {
-        v63 = [v16 _editMenuAssistant];
-        [v63 hideSelectionCommands];
+        _editMenuAssistant = [assistantDelegate _editMenuAssistant];
+        [_editMenuAssistant hideSelectionCommands];
       }
 
-      [v16 resetWillHandoffLoupeMagnifier];
+      [assistantDelegate resetWillHandoffLoupeMagnifier];
     }
   }
 
-  else if ((a4 - 3) <= 1)
+  else if ((state - 3) <= 1)
   {
-    [v64 setInGesture:0];
-    v46 = [v64 root];
-    [v46 _cleanUpFeedbackForGesture];
+    [interactionCopy setInGesture:0];
+    root5 = [interactionCopy root];
+    [root5 _cleanUpFeedbackForGesture];
 
-    [v64 cancelDelayedLoupeActionIfNecessary];
+    [interactionCopy cancelDelayedLoupeActionIfNecessary];
     v47 = self->_loupeSession;
     self->_loupeSession = 0;
 
-    [v16 setKeyboardSuppressionAssertion:0];
-    if ([v64 _textInputIsInteractive])
+    [assistantDelegate setKeyboardSuppressionAssertion:0];
+    if ([interactionCopy _textInputIsInteractive])
     {
-      v48 = v13[2](v13);
+      v48 = locationCopy[2](locationCopy);
       v50 = v49;
-      v14[2](v14);
-      [v64 pointIfPlacedCarefully:{v48, v50}];
-      [v64 touchAlignedPointForPoint:? translation:?];
+      translationCopy[2](translationCopy);
+      [interactionCopy pointIfPlacedCarefully:{v48, v50}];
+      [interactionCopy touchAlignedPointForPoint:? translation:?];
       v52 = v51;
       v54 = v53;
-      if (([v16 autoscrolled] & 1) == 0)
+      if (([assistantDelegate autoscrolled] & 1) == 0)
       {
-        [v16 setLoupeGestureEndPoint:{v52, v54}];
+        [assistantDelegate setLoupeGestureEndPoint:{v52, v54}];
         [(_UIKeyboardTextSelectionController *)self->_activeSelectionController updateSelectionWithExtentPoint:0 executionContext:v52, v54];
       }
 
@@ -213,25 +213,25 @@
       v55 = self->_activeSelectionController;
       self->_activeSelectionController = 0;
 
-      [v64 _endSelectionChange];
-      [v16 didEndSelectionInteraction];
-      [v16 cancelAutoscroll];
-      if ([v16 needsGestureUpdate] && (objc_msgSend(v16, "willHandoffLoupeMagnifier") & 1) == 0)
+      [interactionCopy _endSelectionChange];
+      [assistantDelegate didEndSelectionInteraction];
+      [assistantDelegate cancelAutoscroll];
+      if ([assistantDelegate needsGestureUpdate] && (objc_msgSend(assistantDelegate, "willHandoffLoupeMagnifier") & 1) == 0)
       {
-        [v16 setGestureRecognizers];
+        [assistantDelegate setGestureRecognizers];
       }
 
-      if (v18)
+      if (_allowsSelectionCommands)
       {
-        v56 = [v16 _editMenuAssistant];
-        [v56 showSelectionCommands];
+        _editMenuAssistant2 = [assistantDelegate _editMenuAssistant];
+        [_editMenuAssistant2 showSelectionCommands];
       }
 
-      [v16 setNeedsSelectionDisplayUpdate];
+      [assistantDelegate setNeedsSelectionDisplayUpdate];
     }
 
-    [v16 endFloatingCursor];
-    [v16 clearStashedSelection];
+    [assistantDelegate endFloatingCursor];
+    [assistantDelegate clearStashedSelection];
   }
 }
 

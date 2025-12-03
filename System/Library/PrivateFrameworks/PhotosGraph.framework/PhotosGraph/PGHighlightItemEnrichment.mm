@@ -1,21 +1,21 @@
 @interface PGHighlightItemEnrichment
-- (PGHighlightItemEnrichment)initWithRule:(id)a3 modelWriter:(id)a4;
-- (void)contextualKeyAssetForYearHighlightItemLists:(id)a3 withManager:(id)a4 curationContext:(id)a5 options:(id)a6 progressBlock:(id)a7;
-- (void)enrichHighlightItemLists:(id)a3 progressBlock:(id)a4;
-- (void)updateVisibilityStateForHighlightItemLists:(id)a3 withManager:(id)a4 progressBlock:(id)a5;
+- (PGHighlightItemEnrichment)initWithRule:(id)rule modelWriter:(id)writer;
+- (void)contextualKeyAssetForYearHighlightItemLists:(id)lists withManager:(id)manager curationContext:(id)context options:(id)options progressBlock:(id)block;
+- (void)enrichHighlightItemLists:(id)lists progressBlock:(id)block;
+- (void)updateVisibilityStateForHighlightItemLists:(id)lists withManager:(id)manager progressBlock:(id)block;
 @end
 
 @implementation PGHighlightItemEnrichment
 
-- (void)enrichHighlightItemLists:(id)a3 progressBlock:(id)a4
+- (void)enrichHighlightItemLists:(id)lists progressBlock:(id)block
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  listsCopy = lists;
+  blockCopy = block;
+  if ([listsCopy count])
   {
     v8 = 0.0;
-    v38 = _Block_copy(v7);
+    v38 = _Block_copy(blockCopy);
     if (v38)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -43,12 +43,12 @@ LABEL_54:
       }
     }
 
-    v10 = [(PGHighlightItemEnrichmentRule *)self->_rule loggingConnection];
-    v11 = [(PGHighlightItemEnrichment *)self modelWriter];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    loggingConnection = [(PGHighlightItemEnrichmentRule *)self->_rule loggingConnection];
+    modelWriter = [(PGHighlightItemEnrichment *)self modelWriter];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v10;
-      v13 = [v6 count];
+      v12 = loggingConnection;
+      v13 = [listsCopy count];
       rule = self->_rule;
       *buf = 134218242;
       *v45 = v13;
@@ -57,13 +57,13 @@ LABEL_54:
       _os_log_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_DEFAULT, "Enriching %ld time unit list using rule %@", buf, 0x16u);
     }
 
-    v15 = [v6 count];
+    v15 = [listsCopy count];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v36 = v6;
-    obj = v6;
+    v36 = listsCopy;
+    obj = listsCopy;
     v16 = [obj countByEnumeratingWithState:&v39 objects:v50 count:16];
     if (v16)
     {
@@ -81,7 +81,7 @@ LABEL_54:
           }
 
           v22 = *(*(&v39 + 1) + 8 * i);
-          if ([v11 visibilityStateForHighlightItem:v22 sharingFilter:0])
+          if ([modelWriter visibilityStateForHighlightItem:v22 sharingFilter:0])
           {
             v23 = objc_autoreleasePoolPush();
             v24 = [(PGHighlightItemEnrichmentRule *)self->_rule keyAssetForHighlightItemList:v22 sharingFilter:0];
@@ -90,11 +90,11 @@ LABEL_54:
               [v22 setKeyAssetPrivate:v24];
             }
 
-            else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+            else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               *v45 = v22;
-              _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "Failed to enrich highlight %@: no private key asset found", buf, 0xCu);
+              _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to enrich highlight %@: no private key asset found", buf, 0xCu);
             }
 
             objc_autoreleasePoolPop(v23);
@@ -105,7 +105,7 @@ LABEL_54:
             v24 = 0;
           }
 
-          if ([v11 visibilityStateForHighlightItem:v22 sharingFilter:1])
+          if ([modelWriter visibilityStateForHighlightItem:v22 sharingFilter:1])
           {
             v25 = objc_autoreleasePoolPush();
             v26 = [(PGHighlightItemEnrichmentRule *)self->_rule keyAssetForHighlightItemList:v22 sharingFilter:1];
@@ -114,11 +114,11 @@ LABEL_54:
               [v22 setKeyAssetShared:v26];
             }
 
-            else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+            else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               *v45 = v22;
-              _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "Failed to enrich highlight %@: no shared key asset found", buf, 0xCu);
+              _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to enrich highlight %@: no shared key asset found", buf, 0xCu);
             }
 
             objc_autoreleasePoolPop(v25);
@@ -158,7 +158,7 @@ LABEL_54:
           v30 = v29;
           [v22 setPromotionScore:?];
           objc_autoreleasePoolPop(v28);
-          v31 = v10;
+          v31 = loggingConnection;
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
           {
             v33 = [0 count];
@@ -192,8 +192,8 @@ LABEL_54:
                   _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
                 }
 
-                v7 = v35;
-                v6 = v36;
+                blockCopy = v35;
+                listsCopy = v36;
                 goto LABEL_53;
               }
 
@@ -212,8 +212,8 @@ LABEL_54:
       }
     }
 
-    v7 = v35;
-    v6 = v36;
+    blockCopy = v35;
+    listsCopy = v36;
     if (v38)
     {
       if (CFAbsoluteTimeGetCurrent() - v8 >= 0.01)
@@ -309,17 +309,17 @@ LABEL_6:
   }
 }
 
-- (void)contextualKeyAssetForYearHighlightItemLists:(id)a3 withManager:(id)a4 curationContext:(id)a5 options:(id)a6 progressBlock:(id)a7
+- (void)contextualKeyAssetForYearHighlightItemLists:(id)lists withManager:(id)manager curationContext:(id)context options:(id)options progressBlock:(id)block
 {
   v50 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v12 count])
+  listsCopy = lists;
+  managerCopy = manager;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
+  if ([listsCopy count])
   {
-    v17 = _Block_copy(v16);
+    v17 = _Block_copy(blockCopy);
     v42 = 0;
     v43 = &v42;
     v44 = 0x2020000000;
@@ -342,23 +342,23 @@ LABEL_6:
 
     else
     {
-      v20 = [(PGHighlightItemEnrichmentRule *)self->_rule loggingConnection];
+      loggingConnection = [(PGHighlightItemEnrichmentRule *)self->_rule loggingConnection];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __123__PGHighlightItemEnrichment_contextualKeyAssetForYearHighlightItemLists_withManager_curationContext_options_progressBlock___block_invoke;
       v26[3] = &unk_278881458;
-      v27 = v13;
-      v28 = v15;
-      v21 = v20;
+      v27 = managerCopy;
+      v28 = optionsCopy;
+      v21 = loggingConnection;
       v29 = v21;
-      v30 = v12;
+      v30 = listsCopy;
       v22 = v17;
       v36 = 0x3F847AE147AE147BLL;
       v34 = &v38;
       v35 = &v42;
       v33 = v22;
-      v31 = self;
-      v32 = v14;
+      selfCopy = self;
+      v32 = contextCopy;
       [v27 performSynchronousConcurrentGraphReadUsingBlock:v26];
       if (v17)
       {
@@ -567,15 +567,15 @@ void __123__PGHighlightItemEnrichment_contextualKeyAssetForYearHighlightItemList
   }
 }
 
-- (void)updateVisibilityStateForHighlightItemLists:(id)a3 withManager:(id)a4 progressBlock:(id)a5
+- (void)updateVisibilityStateForHighlightItemLists:(id)lists withManager:(id)manager progressBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  listsCopy = lists;
+  managerCopy = manager;
+  blockCopy = block;
+  if ([listsCopy count])
   {
-    v11 = _Block_copy(v10);
+    v11 = _Block_copy(blockCopy);
     v26 = 0;
     v27 = &v26;
     v28 = 0x2020000000;
@@ -588,14 +588,14 @@ void __123__PGHighlightItemEnrichment_contextualKeyAssetForYearHighlightItemList
     v15[1] = 3221225472;
     v15[2] = __98__PGHighlightItemEnrichment_updateVisibilityStateForHighlightItemLists_withManager_progressBlock___block_invoke;
     v15[3] = &unk_278881430;
-    v16 = v8;
-    v17 = self;
+    v16 = listsCopy;
+    selfCopy = self;
     v12 = v11;
     v18 = v12;
     v19 = &v22;
     v20 = &v26;
     v21 = 0x3F847AE147AE147BLL;
-    [v9 performSynchronousConcurrentGraphReadUsingBlock:v15];
+    [managerCopy performSynchronousConcurrentGraphReadUsingBlock:v15];
     if (*(v27 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -772,18 +772,18 @@ uint64_t __98__PGHighlightItemEnrichment_updateVisibilityStateForHighlightItemLi
   return result;
 }
 
-- (PGHighlightItemEnrichment)initWithRule:(id)a3 modelWriter:(id)a4
+- (PGHighlightItemEnrichment)initWithRule:(id)rule modelWriter:(id)writer
 {
-  v7 = a3;
-  v8 = a4;
+  ruleCopy = rule;
+  writerCopy = writer;
   v14.receiver = self;
   v14.super_class = PGHighlightItemEnrichment;
   v9 = [(PGHighlightItemEnrichment *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rule, a3);
-    objc_storeStrong(&v10->_modelWriter, a4);
+    objc_storeStrong(&v9->_rule, rule);
+    objc_storeStrong(&v10->_modelWriter, writer);
     v11 = objc_alloc_init(PGNeighborScoreComputer);
     neighborScoreComputer = v10->_neighborScoreComputer;
     v10->_neighborScoreComputer = v11;

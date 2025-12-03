@@ -1,44 +1,44 @@
 @interface BCSNFCReader
-- (BCSNFCReader)initWithDelegate:(id)a3;
+- (BCSNFCReader)initWithDelegate:(id)delegate;
 - (BCSNotificationService)notificationService;
-- (BOOL)_readTag:(id)a3;
+- (BOOL)_readTag:(id)tag;
 - (BOOL)_startPolling;
 - (int64_t)state;
-- (void)_didDetectTags:(id)a3;
+- (void)_didDetectTags:(id)tags;
 - (void)_didFindLink;
 - (void)_disconnectTag;
 - (void)_disconnectTagAndBlockReadingUntilRemoved;
 - (void)_processNextURL;
-- (void)_requestAppClipForURLRecord:(id)a3;
-- (void)_requestNotificationForURLRecord:(id)a3;
+- (void)_requestAppClipForURLRecord:(id)record;
+- (void)_requestNotificationForURLRecord:(id)record;
 - (void)_restart;
 - (void)_restartPolling;
-- (void)_scheduleReactivationWithDelay:(double)a3;
+- (void)_scheduleReactivationWithDelay:(double)delay;
 - (void)_startPolling;
 - (void)_startProcessingURLs;
 - (void)_startReading;
 - (void)_stopPolling;
-- (void)_stopReadingAndTransitionToState:(int64_t)a3;
+- (void)_stopReadingAndTransitionToState:(int64_t)state;
 - (void)dealloc;
-- (void)readerSession:(id)a3 didDetectTags:(id)a4;
-- (void)readerSession:(id)a3 externalReaderFieldNotification:(id)a4;
-- (void)readerSessionDidEndUnexpectedly:(id)a3 reason:(id)a4;
+- (void)readerSession:(id)session didDetectTags:(id)tags;
+- (void)readerSession:(id)session externalReaderFieldNotification:(id)notification;
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly reason:(id)reason;
 - (void)startReading;
 - (void)stopReading;
 @end
 
 @implementation BCSNFCReader
 
-- (BCSNFCReader)initWithDelegate:(id)a3
+- (BCSNFCReader)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = BCSNFCReader;
   v6 = [(BCSNFCReader *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v7->_state = 0;
     v8 = dispatch_get_global_queue(2, 0);
     v9 = dispatch_queue_create_with_target_V2("com.apple.BarcodeSupport.BCSNFCReader", 0, v8);
@@ -50,13 +50,13 @@
     disconnectQueue = v7->_disconnectQueue;
     v7->_disconnectQueue = v12;
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     urlQueue = v7->_urlQueue;
-    v7->_urlQueue = v14;
+    v7->_urlQueue = array;
 
-    v16 = [getNFHardwareManagerClass() sharedHardwareManager];
+    sharedHardwareManager = [getNFHardwareManagerClass() sharedHardwareManager];
     v22 = 0;
-    v17 = [v16 queryHardwareSupport:&v22];
+    v17 = [sharedHardwareManager queryHardwareSupport:&v22];
     v18 = v22;
 
     if (v18)
@@ -135,14 +135,14 @@
     }
 
     objc_initWeak(buf, self);
-    v5 = [getNFHardwareManagerClass() sharedHardwareManager];
+    sharedHardwareManager = [getNFHardwareManagerClass() sharedHardwareManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __29__BCSNFCReader__startReading__block_invoke;
     v8[3] = &unk_278CFEA28;
     objc_copyWeak(&v9, buf);
     v8[4] = self;
-    v6 = [v5 startReaderSession:v8];
+    v6 = [sharedHardwareManager startReaderSession:v8];
     tentativeSession = self->_tentativeSession;
     self->_tentativeSession = v6;
 
@@ -259,7 +259,7 @@ uint64_t __27__BCSNFCReader_stopReading__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_stopReadingAndTransitionToState:(int64_t)a3
+- (void)_stopReadingAndTransitionToState:(int64_t)state
 {
   if (readerLog_onceToken != -1)
   {
@@ -287,14 +287,14 @@ uint64_t __27__BCSNFCReader_stopReading__block_invoke(uint64_t a1)
   reactivateTimer = self->_reactivateTimer;
   self->_reactivateTimer = 0;
 
-  if (a3 == 7)
+  if (state == 7)
   {
     [(NSMutableArray *)self->_urlQueue removeAllObjects];
     transaction = self->_transaction;
     self->_transaction = 0;
 
 LABEL_11:
-    [(BCSNFCReader *)self _setStateAndNotifyDelegate:a3];
+    [(BCSNFCReader *)self _setStateAndNotifyDelegate:state];
     return;
   }
 
@@ -302,18 +302,18 @@ LABEL_11:
   clipRequest = self->_clipRequest;
   self->_clipRequest = 0;
 
-  if (a3 == 5)
+  if (state == 5)
   {
     goto LABEL_11;
   }
 
   [(NSMutableArray *)self->_urlQueue removeAllObjects];
-  if (a3 == 6)
+  if (state == 6)
   {
     goto LABEL_11;
   }
 
-  if (a3 == 9)
+  if (state == 9)
   {
     goto LABEL_11;
   }
@@ -321,7 +321,7 @@ LABEL_11:
   v11 = self->_transaction;
   self->_transaction = 0;
 
-  if (a3 != 10)
+  if (state != 10)
   {
     goto LABEL_11;
   }
@@ -355,8 +355,8 @@ LABEL_11:
 - (void)_stopPolling
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_2() _bcs_privacyPreservingDescription];
+  selfCopy = self;
+  _bcs_privacyPreservingDescription = [OUTLINED_FUNCTION_2() _bcs_privacyPreservingDescription];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_1(&dword_241993000, v4, v5, "Failed to stop polling with error: %@", v6, v7, v8, v9, v11);
 
@@ -421,9 +421,9 @@ LABEL_11:
   [(BCSNFCReader *)&v4 dealloc];
 }
 
-- (void)readerSession:(id)a3 didDetectTags:(id)a4
+- (void)readerSession:(id)session didDetectTags:(id)tags
 {
-  v5 = a4;
+  tagsCopy = tags;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -431,8 +431,8 @@ LABEL_11:
   block[2] = __44__BCSNFCReader_readerSession_didDetectTags___block_invoke;
   block[3] = &unk_278CFEA50;
   objc_copyWeak(&v10, &location);
-  v9 = v5;
-  v7 = v5;
+  v9 = tagsCopy;
+  v7 = tagsCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v10);
@@ -445,10 +445,10 @@ void __44__BCSNFCReader_readerSession_didDetectTags___block_invoke(uint64_t a1)
   [WeakRetained _didDetectTags:*(a1 + 32)];
 }
 
-- (void)readerSessionDidEndUnexpectedly:(id)a3 reason:(id)a4
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  unexpectedlyCopy = unexpectedly;
+  reasonCopy = reason;
   if (readerLog_onceToken != -1)
   {
     [BCSNFCReader _startReading];
@@ -467,8 +467,8 @@ void __44__BCSNFCReader_readerSession_didDetectTags___block_invoke(uint64_t a1)
   block[2] = __55__BCSNFCReader_readerSessionDidEndUnexpectedly_reason___block_invoke;
   block[3] = &unk_278CFEA50;
   objc_copyWeak(&v13, &location);
-  v12 = v7;
-  v10 = v7;
+  v12 = reasonCopy;
+  v10 = reasonCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v13);
@@ -499,7 +499,7 @@ void __55__BCSNFCReader_readerSessionDidEndUnexpectedly_reason___block_invoke(ui
   }
 }
 
-- (void)readerSession:(id)a3 externalReaderFieldNotification:(id)a4
+- (void)readerSession:(id)session externalReaderFieldNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -527,10 +527,10 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
   return [*(a1 + 32) _stopReadingAndTransitionToState:4];
 }
 
-- (void)_didDetectTags:(id)a3
+- (void)_didDetectTags:(id)tags
 {
-  v4 = [a3 firstObject];
-  if (v4 && [(BCSNFCReader *)self _readTag:v4]&& [(NSMutableArray *)self->_urlQueue count])
+  firstObject = [tags firstObject];
+  if (firstObject && [(BCSNFCReader *)self _readTag:firstObject]&& [(NSMutableArray *)self->_urlQueue count])
   {
     [(BCSNFCReader *)self _startProcessingURLs];
   }
@@ -538,10 +538,10 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_readTag:(id)a3
+- (BOOL)_readTag:(id)tag
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tagCopy = tag;
   if (readerLog_onceToken != -1)
   {
     [BCSNFCReader _startReading];
@@ -551,13 +551,13 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
   if (os_log_type_enabled(readerLog_log, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v48 = v4;
+    v48 = tagCopy;
     _os_log_impl(&dword_241993000, v5, OS_LOG_TYPE_INFO, "Connecting to tag: %{private}@", buf, 0xCu);
   }
 
   session = self->_session;
   v45 = 0;
-  v7 = [(NFReaderSession *)session connectTag:v4 error:&v45];
+  v7 = [(NFReaderSession *)session connectTag:tagCopy error:&v45];
   v8 = v45;
   if (v7)
   {
@@ -568,8 +568,8 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
     v12 = v11 == 0;
     if (!v11)
     {
-      v17 = [v10 records];
-      if (![v17 count])
+      records = [v10 records];
+      if (![records count])
       {
         if (readerLog_onceToken != -1)
         {
@@ -586,14 +586,14 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
 
       v35 = 0;
       v38 = v10;
-      v39 = self;
+      selfCopy = self;
       v36 = v8;
-      v37 = v4;
+      v37 = tagCopy;
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v19 = v17;
+      v19 = records;
       v20 = [v19 countByEnumeratingWithState:&v40 objects:v46 count:16];
       if (v20)
       {
@@ -609,7 +609,7 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
               objc_enumerationMutation(v19);
             }
 
-            v24 = [*(*(&v40 + 1) + 8 * v23) decode];
+            decode = [*(*(&v40 + 1) + 8 * v23) decode];
             if (readerLog_onceToken != -1)
             {
               [BCSNFCReader initWithDelegate:];
@@ -619,16 +619,16 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
             if (os_log_type_enabled(readerLog_log, OS_LOG_TYPE_INFO))
             {
               *buf = 138477827;
-              v48 = v24;
+              v48 = decode;
               _os_log_impl(&dword_241993000, v25, OS_LOG_TYPE_INFO, "Reading record with payload: %{private}@", buf, 0xCu);
             }
 
-            v26 = [MEMORY[0x277CBEBC0] _lp_URLWithUserTypedString:v24 relativeToURL:0];
+            v26 = [MEMORY[0x277CBEBC0] _lp_URLWithUserTypedString:decode relativeToURL:0];
             if (v26)
             {
               v27 = v26;
-              v28 = [v26 scheme];
-              v29 = [v28 length] ? v27 : 0;
+              scheme = [v26 scheme];
+              v29 = [scheme length] ? v27 : 0;
 
               if (v29)
               {
@@ -645,7 +645,7 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
                   _os_log_impl(&dword_241993000, v30, OS_LOG_TYPE_INFO, "Parsed URL: %{private}@", buf, 0xCu);
                 }
 
-                urlQueue = v39->_urlQueue;
+                urlQueue = selfCopy->_urlQueue;
                 v32 = [[BCSNFCReaderURLRecord alloc] initWithURL:v29 message:v38];
                 [(NSMutableArray *)urlQueue addObject:v32];
               }
@@ -661,12 +661,12 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
         while (v21);
       }
 
-      v39->_sessionErrorCount = 0;
-      v39->_debouncedTagNotNDEFFormattedError = 0;
-      [(BCSNFCReader *)v39 _disconnectTagAndBlockReadingUntilRemoved];
+      selfCopy->_sessionErrorCount = 0;
+      selfCopy->_debouncedTagNotNDEFFormattedError = 0;
+      [(BCSNFCReader *)selfCopy _disconnectTagAndBlockReadingUntilRemoved];
 
       v8 = v36;
-      v4 = v37;
+      tagCopy = v37;
       v12 = v11 == 0;
       v10 = v38;
       v11 = v35;
@@ -684,9 +684,9 @@ uint64_t __62__BCSNFCReader_readerSession_externalReaderFieldNotification___bloc
       [BCSNFCReader _readTag:v13];
     }
 
-    v14 = [v11 code];
-    v15 = v14;
-    if (v14 == 37)
+    code = [v11 code];
+    v15 = code;
+    if (code == 37)
     {
       if (self->_debouncedTagNotNDEFFormattedError)
       {
@@ -698,7 +698,7 @@ LABEL_50:
       }
     }
 
-    else if (v14 == 49 || v14 == 28)
+    else if (code == 49 || code == 28)
     {
       [(BCSNFCReader *)self _disconnectTagAndBlockReadingUntilRemoved];
       goto LABEL_51;
@@ -771,8 +771,8 @@ void __31__BCSNFCReader__restartPolling__block_invoke(uint64_t a1)
 - (void)_disconnectTag
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_2() _bcs_privacyPreservingDescription];
+  selfCopy = self;
+  _bcs_privacyPreservingDescription = [OUTLINED_FUNCTION_2() _bcs_privacyPreservingDescription];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_1(&dword_241993000, v4, v5, "Failed to disconnect from tag with error: %@", v6, v7, v8, v9, v11);
 
@@ -876,9 +876,9 @@ void __57__BCSNFCReader__disconnectTagAndBlockReadingUntilRemoved__block_invoke_
 
 - (void)_processNextURL
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL __CPSClipsFeatureEnabled(void)"];
-  [v0 handleFailureInFunction:v1 file:@"BCSNFCReader.m" lineNumber:32 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"BCSNFCReader.m" lineNumber:32 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -952,9 +952,9 @@ void __31__BCSNFCReader__processNextURL__block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestAppClipForURLRecord:(id)a3
+- (void)_requestAppClipForURLRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if (readerLog_onceToken != -1)
   {
     [BCSNFCReader _startReading];
@@ -989,7 +989,7 @@ void __31__BCSNFCReader__processNextURL__block_invoke_2(uint64_t a1)
   v8 = v7;
   _Block_object_dispose(&v25, 8);
   v9 = [v7 alloc];
-  v10 = [v4 url];
+  v10 = [recordCopy url];
   v11 = [v9 initWithURL:v10];
   clipRequest = self->_clipRequest;
   self->_clipRequest = v11;
@@ -1012,10 +1012,10 @@ void __31__BCSNFCReader__processNextURL__block_invoke_2(uint64_t a1)
 
   v14 = v13;
   _Block_object_dispose(&v25, 8);
-  v15 = [v13 standardConfiguration];
-  [v15 setOriginIsControlCenter:1];
-  v16 = [(CPSClipRequest *)self->_clipRequest sessionProxy];
-  [v16 setConfiguration:v15];
+  standardConfiguration = [v13 standardConfiguration];
+  [standardConfiguration setOriginIsControlCenter:1];
+  sessionProxy = [(CPSClipRequest *)self->_clipRequest sessionProxy];
+  [sessionProxy setConfiguration:standardConfiguration];
 
   objc_initWeak(buf, self);
   v17 = self->_clipRequest;
@@ -1089,10 +1089,10 @@ void __44__BCSNFCReader__requestAppClipForURLRecord___block_invoke_2(uint64_t a1
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestNotificationForURLRecord:(id)a3
+- (void)_requestNotificationForURLRecord:(id)record
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   if (readerLog_onceToken != -1)
   {
     [BCSNFCReader _startReading];
@@ -1105,7 +1105,7 @@ void __44__BCSNFCReader__requestAppClipForURLRecord___block_invoke_2(uint64_t a1
     _os_log_impl(&dword_241993000, v5, OS_LOG_TYPE_INFO, "Attempting to post notification", &buf, 2u);
   }
 
-  v6 = [v4 url];
+  v6 = [recordCopy url];
   v7 = [BCSURLDataParser parseURL:v6];
   if (v7)
   {
@@ -1119,9 +1119,9 @@ void __44__BCSNFCReader__requestAppClipForURLRecord___block_invoke_2(uint64_t a1
     if (os_log_type_enabled(readerLog_log, OS_LOG_TYPE_INFO))
     {
       v10 = v9;
-      v11 = [v7 type];
+      type = [v7 type];
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = v11;
+      *(&buf + 4) = type;
       _os_log_impl(&dword_241993000, v10, OS_LOG_TYPE_INFO, "BCSNFCCodeParser: Detected NFC URL has type %ld", &buf, 0xCu);
     }
 
@@ -1144,9 +1144,9 @@ void __44__BCSNFCReader__requestAppClipForURLRecord___block_invoke_2(uint64_t a1
 
     v14 = v13;
     _Block_object_dispose(&v23, 8);
-    v15 = [v4 message];
-    v16 = [v15 asData];
-    v17 = [v13 ndefMessageWithData:v16];
+    message = [recordCopy message];
+    asData = [message asData];
+    v17 = [v13 ndefMessageWithData:asData];
     v18 = [(BCSNFCCodePayload *)v12 initWithNFCPayload:v17];
 
     objc_initWeak(&buf, self);
@@ -1261,10 +1261,10 @@ void __49__BCSNFCReader__requestNotificationForURLRecord___block_invoke_2(uint64
   [(BCSNFCReader *)self _stopReadingAndTransitionToState:6];
 }
 
-- (void)_scheduleReactivationWithDelay:(double)a3
+- (void)_scheduleReactivationWithDelay:(double)delay
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (delay <= 0.0)
   {
     v11 = *MEMORY[0x277D85DE8];
 
@@ -1282,7 +1282,7 @@ void __49__BCSNFCReader__requestNotificationForURLRecord___block_invoke_2(uint64
     if (os_log_type_enabled(readerLog_log, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v15 = a3;
+      delayCopy = delay;
       _os_log_impl(&dword_241993000, v5, OS_LOG_TYPE_INFO, "Scheduling reactivation after %f seconds", buf, 0xCu);
     }
 
@@ -1293,12 +1293,12 @@ void __49__BCSNFCReader__requestNotificationForURLRecord___block_invoke_2(uint64
     v12[2] = __47__BCSNFCReader__scheduleReactivationWithDelay___block_invoke;
     v12[3] = &unk_278CFEB90;
     objc_copyWeak(&v13, buf);
-    v7 = [v6 timerWithTimeInterval:0 repeats:v12 block:a3];
+    v7 = [v6 timerWithTimeInterval:0 repeats:v12 block:delay];
     reactivateTimer = self->_reactivateTimer;
     self->_reactivateTimer = v7;
 
-    v9 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v9 addTimer:self->_reactivateTimer forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop addTimer:self->_reactivateTimer forMode:*MEMORY[0x277CBE738]];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -1345,8 +1345,8 @@ void __29__BCSNFCReader__startReading__block_invoke_2_cold_2(uint64_t *a1, void 
 - (void)_startPolling
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_2() _bcs_privacyPreservingDescription];
+  selfCopy = self;
+  _bcs_privacyPreservingDescription = [OUTLINED_FUNCTION_2() _bcs_privacyPreservingDescription];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_1(&dword_241993000, v4, v5, "Failed to start polling with error: %@", v6, v7, v8, v9, v11);
 

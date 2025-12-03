@@ -1,20 +1,20 @@
 @interface CKDetailsNavigationController
 - (BOOL)isModalInPresentation;
-- (CKDetailsNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4 shouldHideNavigationBar:(BOOL)a5;
+- (CKDetailsNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass shouldHideNavigationBar:(BOOL)bar;
 @end
 
 @implementation CKDetailsNavigationController
 
-- (CKDetailsNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4 shouldHideNavigationBar:(BOOL)a5
+- (CKDetailsNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass shouldHideNavigationBar:(BOOL)bar
 {
-  v5 = a5;
+  barCopy = bar;
   v9.receiver = self;
   v9.super_class = CKDetailsNavigationController;
-  v6 = [(CKDetailsNavigationController *)&v9 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v6 = [(CKDetailsNavigationController *)&v9 initWithNavigationBarClass:class toolbarClass:toolbarClass];
   v7 = v6;
   if (v6)
   {
-    [(CKDetailsNavigationController *)v6 setNavigationBarHidden:v5];
+    [(CKDetailsNavigationController *)v6 setNavigationBarHidden:barCopy];
   }
 
   return v7;
@@ -22,8 +22,8 @@
 
 - (BOOL)isModalInPresentation
 {
-  v2 = [(CKDetailsNavigationController *)self viewControllers];
-  v3 = [v2 count] > 1;
+  viewControllers = [(CKDetailsNavigationController *)self viewControllers];
+  v3 = [viewControllers count] > 1;
 
   return v3;
 }

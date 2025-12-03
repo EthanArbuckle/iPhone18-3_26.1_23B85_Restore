@@ -1,26 +1,26 @@
 @interface TelephonyDelegateEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDelegate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDelegate:(id)delegate;
 @end
 
 @implementation TelephonyDelegateEntry
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v7 = 1;
     }
 
     else
     {
-      v5 = [(TelephonyDelegateEntry *)self delegate];
-      v6 = [(TelephonyDelegateEntry *)v4 delegate];
-      v7 = v5 == v6;
+      delegate = [(TelephonyDelegateEntry *)self delegate];
+      delegate2 = [(TelephonyDelegateEntry *)equalCopy delegate];
+      v7 = delegate == delegate2;
     }
   }
 
@@ -32,16 +32,16 @@
   return v7;
 }
 
-- (BOOL)matchesDelegate:(id)a3
+- (BOOL)matchesDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TelephonyDelegateEntry *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(TelephonyDelegateEntry *)self delegate];
 
   v6 = 0;
-  if (v4 && v5)
+  if (delegateCopy && delegate)
   {
-    v7 = [(TelephonyDelegateEntry *)self delegate];
-    v6 = v7 == v4;
+    delegate2 = [(TelephonyDelegateEntry *)self delegate];
+    v6 = delegate2 == delegateCopy;
   }
 
   return v6;

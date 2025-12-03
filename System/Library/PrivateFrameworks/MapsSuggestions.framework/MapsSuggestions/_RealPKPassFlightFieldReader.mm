@@ -6,29 +6,29 @@
 - (id)departureGate;
 - (id)departureTerminal;
 - (id)departureTime;
-- (void)loadPass:(id)a3;
+- (void)loadPass:(id)pass;
 @end
 
 @implementation _RealPKPassFlightFieldReader
 
-- (void)loadPass:(id)a3
+- (void)loadPass:(id)pass
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 allSemantics];
+  passCopy = pass;
+  allSemantics = [passCopy allSemantics];
   semantics = self->_semantics;
-  self->_semantics = v5;
+  self->_semantics = allSemantics;
 
-  v49 = v4;
+  v49 = passCopy;
   v48 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v47 = self;
-  v7 = [v49 primaryFields];
+  selfCopy = self;
+  primaryFields = [v49 primaryFields];
   v8 = v48;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v9 = v7;
+  v9 = primaryFields;
   v10 = [v9 countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (v10)
   {
@@ -44,11 +44,11 @@
 
         v13 = *(*(&v70 + 1) + 8 * i);
         v14 = [v13 key];
-        v15 = [v13 value];
-        v16 = v15;
+        value = [v13 value];
+        v16 = value;
         if (v14)
         {
-          v17 = v15 == 0;
+          v17 = value == 0;
         }
 
         else
@@ -58,7 +58,7 @@
 
         if (!v17)
         {
-          [(NSDictionary *)v8 setObject:v15 forKeyedSubscript:v14];
+          [(NSDictionary *)v8 setObject:value forKeyedSubscript:v14];
         }
       }
 
@@ -109,11 +109,11 @@
 
               v27 = *(*(&v66 + 1) + 8 * k);
               v28 = [v27 key];
-              v29 = [v27 value];
-              v30 = v29;
+              value2 = [v27 value];
+              v30 = value2;
               if (v28)
               {
-                v31 = v29 == 0;
+                v31 = value2 == 0;
               }
 
               else
@@ -123,7 +123,7 @@
 
               if (!v31)
               {
-                [(NSDictionary *)v21 setObject:v29 forKeyedSubscript:v28];
+                [(NSDictionary *)v21 setObject:value2 forKeyedSubscript:v28];
               }
             }
 
@@ -181,11 +181,11 @@
 
               v41 = *(*(&v62 + 1) + 8 * n);
               v42 = [v41 key];
-              v43 = [v41 value];
-              v44 = v43;
+              value3 = [v41 value];
+              v44 = value3;
               if (v42)
               {
-                v45 = v43 == 0;
+                v45 = value3 == 0;
               }
 
               else
@@ -195,7 +195,7 @@
 
               if (!v45)
               {
-                [(NSDictionary *)v35 setObject:v43 forKeyedSubscript:v42];
+                [(NSDictionary *)v35 setObject:value3 forKeyedSubscript:v42];
               }
             }
 
@@ -212,8 +212,8 @@
     while (v32);
   }
 
-  fields = v47->_fields;
-  v47->_fields = v8;
+  fields = selfCopy->_fields;
+  selfCopy->_fields = v8;
 }
 
 - (id)combinedFlightCode
@@ -286,7 +286,7 @@
     || ([v3 isEqualToString:*MEMORY[0x1E69BBE98]] & 1) != 0)
   {
     v5 = [(NSDictionary *)v4 objectForKey:v3];
-    v6 = [v5 stringValue];
+    stringValue = [v5 stringValue];
   }
 
   else
@@ -305,12 +305,12 @@
       _os_log_impl(&dword_1C5126000, v22, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic string!", buf, 0x26u);
     }
 
-    v6 = 0;
+    stringValue = 0;
   }
 
-  if ([v6 length])
+  if ([stringValue length])
   {
-    v7 = v6;
+    v7 = stringValue;
     goto LABEL_93;
   }
 
@@ -477,8 +477,8 @@
 
 LABEL_76:
   v16 = v14;
-  v17 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v7 = [v16 stringByTrimmingCharactersInSet:v17];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v7 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if (v13)
   {
@@ -587,7 +587,7 @@ LABEL_93:
     || ([v3 isEqualToString:*MEMORY[0x1E69BBE98]] & 1) != 0)
   {
     v5 = [(NSDictionary *)v4 objectForKey:v3];
-    v6 = [v5 stringValue];
+    stringValue = [v5 stringValue];
   }
 
   else
@@ -606,16 +606,16 @@ LABEL_93:
       _os_log_impl(&dword_1C5126000, v20, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic string!", &v21, 0x26u);
     }
 
-    v6 = 0;
+    stringValue = 0;
   }
 
-  if (!v6)
+  if (!stringValue)
   {
     v7 = [(NSDictionary *)self->_fields objectForKeyedSubscript:@"origin"];
     v8 = v7;
     if (v7)
     {
-      v6 = v7;
+      stringValue = v7;
     }
 
     else
@@ -624,7 +624,7 @@ LABEL_93:
       v10 = v9;
       if (v9)
       {
-        v6 = v9;
+        stringValue = v9;
       }
 
       else
@@ -633,7 +633,7 @@ LABEL_93:
         v12 = v11;
         if (v11)
         {
-          v6 = v11;
+          stringValue = v11;
         }
 
         else
@@ -650,15 +650,15 @@ LABEL_93:
             v15 = [(NSDictionary *)self->_fields objectForKeyedSubscript:@"departureAirport"];
           }
 
-          v6 = v15;
+          stringValue = v15;
         }
       }
     }
   }
 
-  v16 = v6;
-  v17 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v18 = [v16 stringByTrimmingCharactersInSet:v17];
+  v16 = stringValue;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v18 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v18;
 }
@@ -733,7 +733,7 @@ LABEL_93:
     || ([v3 isEqualToString:*MEMORY[0x1E69BBE98]] & 1) != 0)
   {
     v5 = [(NSDictionary *)v4 objectForKey:v3];
-    v6 = [v5 stringValue];
+    stringValue = [v5 stringValue];
   }
 
   else
@@ -752,16 +752,16 @@ LABEL_93:
       _os_log_impl(&dword_1C5126000, v20, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic string!", &v21, 0x26u);
     }
 
-    v6 = 0;
+    stringValue = 0;
   }
 
-  if (!v6)
+  if (!stringValue)
   {
     v7 = [(NSDictionary *)self->_fields objectForKeyedSubscript:@"origin"];
     v8 = v7;
     if (v7)
     {
-      v6 = v7;
+      stringValue = v7;
     }
 
     else
@@ -770,7 +770,7 @@ LABEL_93:
       v10 = v9;
       if (v9)
       {
-        v6 = v9;
+        stringValue = v9;
       }
 
       else
@@ -779,7 +779,7 @@ LABEL_93:
         v12 = v11;
         if (v11)
         {
-          v6 = v11;
+          stringValue = v11;
         }
 
         else
@@ -796,15 +796,15 @@ LABEL_93:
             v15 = [(NSDictionary *)self->_fields objectForKeyedSubscript:@"arrivalAirport"];
           }
 
-          v6 = v15;
+          stringValue = v15;
         }
       }
     }
   }
 
-  v16 = v6;
-  v17 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v18 = [v16 stringByTrimmingCharactersInSet:v17];
+  v16 = stringValue;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v18 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v18;
 }
@@ -879,7 +879,7 @@ LABEL_93:
     || ([v3 isEqualToString:*MEMORY[0x1E69BBE98]] & 1) != 0)
   {
     v5 = [(NSDictionary *)v4 objectForKey:v3];
-    v6 = [v5 stringValue];
+    stringValue = [v5 stringValue];
   }
 
   else
@@ -898,17 +898,17 @@ LABEL_93:
       _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic string!", &v12, 0x26u);
     }
 
-    v6 = 0;
+    stringValue = 0;
   }
 
-  if (!v6)
+  if (!stringValue)
   {
-    v6 = [(NSDictionary *)self->_fields objectForKeyedSubscript:@"terminal"];
+    stringValue = [(NSDictionary *)self->_fields objectForKeyedSubscript:@"terminal"];
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v9 = [v7 stringByTrimmingCharactersInSet:v8];
+  v7 = stringValue;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v9 = [v7 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v9;
 }
@@ -983,7 +983,7 @@ LABEL_93:
     || ([v3 isEqualToString:*MEMORY[0x1E69BBE98]] & 1) != 0)
   {
     v5 = [(NSDictionary *)v4 objectForKey:v3];
-    v6 = [v5 stringValue];
+    stringValue = [v5 stringValue];
   }
 
   else
@@ -1002,17 +1002,17 @@ LABEL_93:
       _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic string!", &v12, 0x26u);
     }
 
-    v6 = 0;
+    stringValue = 0;
   }
 
-  if (!v6)
+  if (!stringValue)
   {
-    v6 = [(NSDictionary *)self->_fields objectForKeyedSubscript:@"gate"];
+    stringValue = [(NSDictionary *)self->_fields objectForKeyedSubscript:@"gate"];
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v9 = [v7 stringByTrimmingCharactersInSet:v8];
+  v7 = stringValue;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v9 = [v7 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v9;
 }
@@ -1026,7 +1026,7 @@ LABEL_93:
   if ([v3 isEqualToString:*MEMORY[0x1E69BBC70]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC60]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC38]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC68]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC40]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC58]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC88]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC98]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBCA8]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC78]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC90]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBCA0]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC80]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC50]))
   {
     v6 = [(NSDictionary *)v4 objectForKey:v3];
-    v7 = [v6 dateValue];
+    dateValue = [v6 dateValue];
   }
 
   else
@@ -1045,16 +1045,16 @@ LABEL_93:
       _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic date!", &v12, 0x26u);
     }
 
-    v7 = 0;
+    dateValue = 0;
   }
 
-  if (!v7)
+  if (!dateValue)
   {
     v8 = self->_semantics;
     if ([v5 isEqualToString:v5] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC60]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC38]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC68]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC40]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC58]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC88]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC98]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBCA8]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC78]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC90]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBCA0]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC80]) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69BBC50]))
     {
       v9 = [(NSDictionary *)v8 objectForKey:v5];
-      v7 = [v9 dateValue];
+      dateValue = [v9 dateValue];
     }
 
     else
@@ -1073,11 +1073,11 @@ LABEL_93:
         _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic date!", &v12, 0x26u);
       }
 
-      v7 = 0;
+      dateValue = 0;
     }
   }
 
-  return v7;
+  return dateValue;
 }
 
 - (id)arrivalTime
@@ -1089,7 +1089,7 @@ LABEL_93:
   if ([v3 isEqualToString:*MEMORY[0x1E69BBC70]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC48]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC60]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC68]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC40]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC58]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC88]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC98]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBCA8]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC78]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC90]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBCA0]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC80]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69BBC50]))
   {
     v6 = [(NSDictionary *)v4 objectForKey:v3];
-    v7 = [v6 dateValue];
+    dateValue = [v6 dateValue];
   }
 
   else
@@ -1108,10 +1108,10 @@ LABEL_93:
       _os_log_impl(&dword_1C5126000, v13, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic date!", &v14, 0x26u);
     }
 
-    v7 = 0;
+    dateValue = 0;
   }
 
-  if (!v7)
+  if (!dateValue)
   {
     semantics = self->_semantics;
     v9 = *MEMORY[0x1E69BBC60];
@@ -1119,7 +1119,7 @@ LABEL_93:
     if ([v9 isEqualToString:v5] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC48]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", v9) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", v3) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC68]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC40]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC58]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC88]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC98]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBCA8]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC78]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC90]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBCA0]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC80]) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69BBC50]))
     {
       v11 = [(NSDictionary *)v10 objectForKey:v9];
-      v7 = [v11 dateValue];
+      dateValue = [v11 dateValue];
     }
 
     else
@@ -1138,11 +1138,11 @@ LABEL_93:
         _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a semantic date!", &v14, 0x26u);
       }
 
-      v7 = 0;
+      dateValue = 0;
     }
   }
 
-  return v7;
+  return dateValue;
 }
 
 @end

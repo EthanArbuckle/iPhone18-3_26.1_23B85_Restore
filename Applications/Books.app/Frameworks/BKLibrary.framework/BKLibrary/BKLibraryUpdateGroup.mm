@@ -1,15 +1,15 @@
 @interface BKLibraryUpdateGroup
-- (BKLibraryUpdateGroup)initWithName:(id)a3;
+- (BKLibraryUpdateGroup)initWithName:(id)name;
 - (id)holdOperationsAssetion;
-- (void)addOperationBlock:(id)a3;
-- (void)executeWithCompletion:(id)a3;
+- (void)addOperationBlock:(id)block;
+- (void)executeWithCompletion:(id)completion;
 @end
 
 @implementation BKLibraryUpdateGroup
 
-- (BKLibraryUpdateGroup)initWithName:(id)a3
+- (BKLibraryUpdateGroup)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = BKLibraryUpdateGroup;
   v5 = [(BKLibraryUpdateGroup *)&v14 init];
@@ -24,7 +24,7 @@
     v10 = *(v5 + 2);
     *(v5 + 2) = v9;
 
-    v11 = [v4 copy];
+    v11 = [nameCopy copy];
     v12 = *(v5 + 3);
     *(v5 + 3) = v11;
 
@@ -35,11 +35,11 @@
   return v5;
 }
 
-- (void)addOperationBlock:(id)a3
+- (void)addOperationBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    dispatch_async(self->_updateQueue, a3);
+    dispatch_async(self->_updateQueue, block);
   }
 }
 
@@ -59,11 +59,11 @@
   return v5;
 }
 
-- (void)executeWithCompletion:(id)a3
+- (void)executeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     updateQueue = self->_updateQueue;
     finishGroup = self->_finishGroup;
@@ -72,7 +72,7 @@
     v8[2] = sub_79C0;
     v8[3] = &unk_D5550;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_group_notify(finishGroup, updateQueue, v8);
   }
 

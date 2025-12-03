@@ -1,47 +1,47 @@
 @interface OutlineController
 - (BOOL)isAsynchronous;
-- (BOOL)isUUIDCollapsed:(id)a3;
-- (BOOL)isUUIDCollapsible:(id)a3;
-- (BOOL)isUUIDHidden:(id)a3;
-- (BOOL)toggleCollapsedAtRange:(_NSRange)a3;
+- (BOOL)isUUIDCollapsed:(id)collapsed;
+- (BOOL)isUUIDCollapsible:(id)collapsible;
+- (BOOL)isUUIDHidden:(id)hidden;
+- (BOOL)toggleCollapsedAtRange:(_NSRange)range;
 - (ICTTTextStorage)textStorage;
 - (NSSet)collapsedUUIDs;
 - (NSSet)interactedUUIDs;
 - (NSString)debugDescription;
 - (OutlineController)init;
-- (OutlineController)initWithTextStorage:(id)a3 collapsedUUIDs:(id)a4 asynchronous:(BOOL)a5;
-- (_NSRange)descendantRangeForUUID:(id)a3;
-- (_NSRange)rangeForUUID:(id)a3;
+- (OutlineController)initWithTextStorage:(id)storage collapsedUUIDs:(id)ds asynchronous:(BOOL)asynchronous;
+- (_NSRange)descendantRangeForUUID:(id)d;
+- (_NSRange)rangeForUUID:(id)d;
 - (_NSRange)visibleRange;
-- (id)closestVisibleAncestorForUUID:(id)a3;
+- (id)closestVisibleAncestorForUUID:(id)d;
 - (int64_t)collapsibleSectionAffordanceUsages;
 - (void)collapseAll;
 - (void)expandAll;
-- (void)expandAncestorsOfRange:(_NSRange)a3;
+- (void)expandAncestorsOfRange:(_NSRange)range;
 - (void)requestUpdate;
 - (void)resetCollapsibleSectionAffordanceUsages;
-- (void)setCollapsedUUIDs:(id)a3;
-- (void)setInteractedUUIDs:(id)a3;
-- (void)setIsAsynchronous:(BOOL)a3;
-- (void)textStorageDidProcessEndEditingWithNotification:(id)a3;
-- (void)toggleUUIDCollapsed:(id)a3;
+- (void)setCollapsedUUIDs:(id)ds;
+- (void)setInteractedUUIDs:(id)ds;
+- (void)setIsAsynchronous:(BOOL)asynchronous;
+- (void)textStorageDidProcessEndEditingWithNotification:(id)notification;
+- (void)toggleUUIDCollapsed:(id)collapsed;
 - (void)update;
 @end
 
 @implementation OutlineController
 
-- (OutlineController)initWithTextStorage:(id)a3 collapsedUUIDs:(id)a4 asynchronous:(BOOL)a5
+- (OutlineController)initWithTextStorage:(id)storage collapsedUUIDs:(id)ds asynchronous:(BOOL)asynchronous
 {
   sub_1D4417494();
   sub_1D417A7A4(&qword_1EDE33D40, MEMORY[0x1E69695A8]);
   v7 = sub_1D441A064();
-  return OutlineController.init(textStorage:collapsedUUIDs:asynchronous:)(a3, v7, a5);
+  return OutlineController.init(textStorage:collapsedUUIDs:asynchronous:)(storage, v7, asynchronous);
 }
 
 - (NSSet)collapsedUUIDs
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9948);
   sub_1D441A2E4();
@@ -53,25 +53,25 @@
   return v4;
 }
 
-- (void)textStorageDidProcessEndEditingWithNotification:(id)a3
+- (void)textStorageDidProcessEndEditingWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D417CD2C(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1D417CD2C(notificationCopy);
 }
 
-- (BOOL)isUUIDHidden:(id)a3
+- (BOOL)isUUIDHidden:(id)hidden
 {
   v4 = sub_1D4417494();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v12[-((v6 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_1D4417474();
-  v16 = self;
+  selfCopy = self;
   v17 = v7;
-  v13 = self;
+  selfCopy2 = self;
   v14 = v7;
-  v8 = self;
+  selfCopy3 = self;
 
   sub_1D4183210(v7, sub_1D42EDB44, v15, sub_1D42EDB48, v12);
   v10 = v9;
@@ -80,21 +80,21 @@
   return v10 & 1;
 }
 
-- (BOOL)isUUIDCollapsible:(id)a3
+- (BOOL)isUUIDCollapsible:(id)collapsible
 {
   v4 = sub_1D4417494();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D4417474();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1D419089C(v7);
 
   (*(v5 + 8))(v7, v4);
   return v9;
 }
 
-- (BOOL)isUUIDCollapsed:(id)a3
+- (BOOL)isUUIDCollapsed:(id)collapsed
 {
   v4 = sub_1D4417494();
   v5 = *(v4 - 8);
@@ -102,7 +102,7 @@
   v7 = v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D4417474();
   swift_beginAccess();
-  v8 = self;
+  selfCopy = self;
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9948);
   sub_1D441A2E4();
@@ -121,7 +121,7 @@
   return Strong;
 }
 
-- (void)setCollapsedUUIDs:(id)a3
+- (void)setCollapsedUUIDs:(id)ds
 {
   sub_1D4417494();
   sub_1D417A7A4(&qword_1EDE33D40, MEMORY[0x1E69695A8]);
@@ -129,14 +129,14 @@
   swift_beginAccess();
   v7 = v4;
   v6[2] = &v7;
-  v5 = self;
+  selfCopy = self;
 
   sub_1D417FB40(sub_1D42EDB90, v6);
 }
 
 - (NSSet)interactedUUIDs
 {
-  v2 = self;
+  selfCopy = self;
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9948);
   sub_1D441A2E4();
@@ -148,13 +148,13 @@
   return v3;
 }
 
-- (void)setInteractedUUIDs:(id)a3
+- (void)setInteractedUUIDs:(id)ds
 {
   sub_1D4417494();
   sub_1D417A7A4(&qword_1EDE33D40, MEMORY[0x1E69695A8]);
   v5[2] = &v6;
   v6 = sub_1D441A064();
-  v4 = self;
+  selfCopy = self;
 
   sub_1D417FB40(sub_1D42EDB90, v5);
 }
@@ -166,26 +166,26 @@
   return *(self + v3);
 }
 
-- (void)setIsAsynchronous:(BOOL)a3
+- (void)setIsAsynchronous:(BOOL)asynchronous
 {
-  v4 = self;
-  sub_1D42DCD7C(a3);
+  selfCopy = self;
+  sub_1D42DCD7C(asynchronous);
 }
 
 - (void)requestUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D42DD550();
 }
 
-- (void)toggleUUIDCollapsed:(id)a3
+- (void)toggleUUIDCollapsed:(id)collapsed
 {
   v4 = sub_1D4417494();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D4417474();
-  v8 = self;
+  selfCopy = self;
   sub_1D42DE624(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -193,27 +193,27 @@
 
 - (void)collapseAll
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D42DEB6C();
 }
 
-- (void)expandAncestorsOfRange:(_NSRange)a3
+- (void)expandAncestorsOfRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   sub_1D42DF2A8(location, length);
 }
 
 - (void)expandAll
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D42DF950();
 }
 
 - (int64_t)collapsibleSectionAffordanceUsages
 {
-  v2 = self;
+  selfCopy = self;
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9948);
   sub_1D441A2E4();
@@ -225,7 +225,7 @@
 
 - (_NSRange)visibleRange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D42DFEE0();
   v5 = v4;
 
@@ -236,11 +236,11 @@
   return result;
 }
 
-- (BOOL)toggleCollapsedAtRange:(_NSRange)a3
+- (BOOL)toggleCollapsedAtRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   LOBYTE(length) = sub_1D42E0210(location, length);
 
   return length & 1;
@@ -250,28 +250,28 @@
 {
   v3[2] = &v4;
   v4 = MEMORY[0x1E69E7CD0];
-  v2 = self;
+  selfCopy = self;
 
   sub_1D417FB40(sub_1D42EDB90, v3);
 }
 
-- (_NSRange)rangeForUUID:(id)a3
+- (_NSRange)rangeForUUID:(id)d
 {
-  v3 = sub_1D42E1A58(self, a2, a3, sub_1D42E09CC);
+  v3 = sub_1D42E1A58(self, a2, d, sub_1D42E09CC);
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)descendantRangeForUUID:(id)a3
+- (_NSRange)descendantRangeForUUID:(id)d
 {
-  v3 = sub_1D42E1A58(self, a2, a3, sub_1D42E1294);
+  v3 = sub_1D42E1A58(self, a2, d, sub_1D42E1294);
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (id)closestVisibleAncestorForUUID:(id)a3
+- (id)closestVisibleAncestorForUUID:(id)d
 {
   v4 = sub_1D4417494();
   v5 = *(v4 - 8);
@@ -281,9 +281,9 @@
   MEMORY[0x1EEE9AC00](v8 - 8);
   v10 = &v17[-v9];
   sub_1D4417474();
-  v18 = self;
+  selfCopy = self;
   v19 = v7;
-  v11 = self;
+  selfCopy2 = self;
 
   sub_1D42E1F20(v7, sub_1D42EDB94, v17, v10);
 
@@ -303,7 +303,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D42E2754();
 
   v3 = sub_1D4419C14();
@@ -313,7 +313,7 @@
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D417BF4C();
 }
 

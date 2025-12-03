@@ -1,17 +1,17 @@
 @interface KNImager
-- (BOOL)isInfoAKeynoteTemplateObject:(id)a3;
+- (BOOL)isInfoAKeynoteTemplateObject:(id)object;
 - (KNAbstractSlide)slide;
-- (KNImager)initWithDocumentRoot:(id)a3 renderForWideGamut:(BOOL)a4 renderHDRContent:(BOOL)a5;
-- (id)infoToConnectToForConnectionLineConnectedToInfo:(id)a3;
+- (KNImager)initWithDocumentRoot:(id)root renderForWideGamut:(BOOL)gamut renderHDRContent:(BOOL)content;
+- (id)infoToConnectToForConnectionLineConnectedToInfo:(id)info;
 @end
 
 @implementation KNImager
 
-- (KNImager)initWithDocumentRoot:(id)a3 renderForWideGamut:(BOOL)a4 renderHDRContent:(BOOL)a5
+- (KNImager)initWithDocumentRoot:(id)root renderForWideGamut:(BOOL)gamut renderHDRContent:(BOOL)content
 {
   v10.receiver = self;
   v10.super_class = KNImager;
-  v5 = [(TSDImager *)&v10 initWithDocumentRoot:a3 renderForWideGamut:a4 renderHDRContent:a5];
+  v5 = [(TSDImager *)&v10 initWithDocumentRoot:root renderForWideGamut:gamut renderHDRContent:content];
   v7 = v5;
   if (v5)
   {
@@ -23,20 +23,20 @@
   return v7;
 }
 
-- (BOOL)isInfoAKeynoteTemplateObject:(id)a3
+- (BOOL)isInfoAKeynoteTemplateObject:(id)object
 {
-  v3 = objc_msgSend_parentSlideForInfo_(KNAbstractSlide, a2, a3);
+  v3 = objc_msgSend_parentSlideForInfo_(KNAbstractSlide, a2, object);
   isTemplateSlide = objc_msgSend_isTemplateSlide(v3, v4, v5);
 
   return isTemplateSlide;
 }
 
-- (id)infoToConnectToForConnectionLineConnectedToInfo:(id)a3
+- (id)infoToConnectToForConnectionLineConnectedToInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   v5 = TSUDynamicCast();
-  v6 = v4;
+  v6 = infoCopy;
   v7 = v6;
   if (v5)
   {

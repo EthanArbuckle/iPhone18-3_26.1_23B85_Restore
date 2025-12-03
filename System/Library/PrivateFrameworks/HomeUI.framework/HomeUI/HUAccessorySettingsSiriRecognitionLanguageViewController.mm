@@ -1,38 +1,38 @@
 @interface HUAccessorySettingsSiriRecognitionLanguageViewController
 - (BOOL)_isAnyMediaAccessoryOnSupportedVoiceRecognitionLanguage;
-- (BOOL)_shouldPresentAlertRequestingToTurnOffVoiceRecognition:(id)a3;
-- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithAccessoryGroupItem:(id)a3;
-- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4;
-- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
+- (BOOL)_shouldPresentAlertRequestingToTurnOffVoiceRecognition:(id)recognition;
+- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithAccessoryGroupItem:(id)item;
+- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithAccessorySettingItem:(id)item module:(id)module;
+- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
 - (id)_allMediaAccessories;
-- (id)_siriLanguageOptionForMediaProfile:(id)a3;
-- (void)_attemptToFixVoiceRecognitionOnboardingFailures:(id)a3;
-- (void)_changeSiriLanguageOnlyForThisMediaAccessory:(id)a3 turnOffVoiceID:(BOOL)a4;
-- (void)_presentAlertConfirmingLanguageChangeAndTurnOffVoiceRecognition:(id)a3 indexPath:(id)a4;
-- (void)_presentAlertConfirmingLanguageChangeForAllHomeMembers:(id)a3 indexPath:(id)a4;
-- (void)_presentAlertConfirmingLanguageChangeForThisORAllMediaAccessories:(id)a3 indexPath:(id)a4;
-- (void)_turnOffVoiceIDAndChangeSiriLanguageForAllMediaAccessories:(id)a3;
-- (void)_turnOffVoiceIDForTargetLanguageOption:(id)a3;
-- (void)setSelectedLanguageIndex:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (id)_siriLanguageOptionForMediaProfile:(id)profile;
+- (void)_attemptToFixVoiceRecognitionOnboardingFailures:(id)failures;
+- (void)_changeSiriLanguageOnlyForThisMediaAccessory:(id)accessory turnOffVoiceID:(BOOL)d;
+- (void)_presentAlertConfirmingLanguageChangeAndTurnOffVoiceRecognition:(id)recognition indexPath:(id)path;
+- (void)_presentAlertConfirmingLanguageChangeForAllHomeMembers:(id)members indexPath:(id)path;
+- (void)_presentAlertConfirmingLanguageChangeForThisORAllMediaAccessories:(id)accessories indexPath:(id)path;
+- (void)_turnOffVoiceIDAndChangeSiriLanguageForAllMediaAccessories:(id)accessories;
+- (void)_turnOffVoiceIDForTargetLanguageOption:(id)option;
+- (void)setSelectedLanguageIndex:(int64_t)index;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUAccessorySettingsSiriRecognitionLanguageViewController
 
-- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithAccessoryGroupItem_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsSiriRecognitionLanguageViewController.m" lineNumber:44 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySettingsSiriRecognitionLanguageViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsSiriRecognitionLanguageViewController.m" lineNumber:44 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySettingsSiriRecognitionLanguageViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithAccessoryGroupItem:(id)a3
+- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithAccessoryGroupItem:(id)item
 {
-  v4 = a3;
-  v5 = [[HUAccessorySettingsSiriRecognitionLanguageItemManager alloc] initWithDelegate:self groupItem:v4];
+  itemCopy = item;
+  v5 = [[HUAccessorySettingsSiriRecognitionLanguageItemManager alloc] initWithDelegate:self groupItem:itemCopy];
 
   v9.receiver = self;
   v9.super_class = HUAccessorySettingsSiriRecognitionLanguageViewController;
@@ -46,14 +46,14 @@
   return v7;
 }
 
-- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4
+- (HUAccessorySettingsSiriRecognitionLanguageViewController)initWithAccessorySettingItem:(id)item module:(id)module
 {
-  v6 = a4;
-  v7 = a3;
+  moduleCopy = module;
+  itemCopy = item;
   v8 = [HUAccessorySettingsSiriRecognitionLanguageItemManager alloc];
-  v9 = [v6 sourceItem];
+  sourceItem = [moduleCopy sourceItem];
 
-  v10 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)v8 initWithDelegate:self accessorySettingItem:v7 accessoryItem:v9];
+  v10 = [(HUAccessorySettingsSiriRecognitionLanguageItemManager *)v8 initWithDelegate:self accessorySettingItem:itemCopy accessoryItem:sourceItem];
   v14.receiver = self;
   v14.super_class = HUAccessorySettingsSiriRecognitionLanguageViewController;
   v11 = [(HUItemTableViewController *)&v14 initWithItemManager:v10 tableViewStyle:1];
@@ -66,23 +66,23 @@
   return v12;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v21.receiver = self;
   v21.super_class = HUAccessorySettingsSiriRecognitionLanguageViewController;
-  v11 = a5;
-  v12 = a4;
-  [(HUItemTableViewController *)&v21 updateCell:v10 forItem:v12 indexPath:v11 animated:v6];
-  v13 = [v12 latestResults];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v15 = [v10 textLabel];
-  [v15 setText:v14];
+  pathCopy = path;
+  itemCopy = item;
+  [(HUItemTableViewController *)&v21 updateCell:cellCopy forItem:itemCopy indexPath:pathCopy animated:animatedCopy];
+  latestResults = [itemCopy latestResults];
+  v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:v14];
 
-  v16 = [v12 latestResults];
+  latestResults2 = [itemCopy latestResults];
 
-  v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  v17 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
   if ([v17 BOOLValue])
   {
     v18 = 3;
@@ -93,31 +93,31 @@
     v18 = 0;
   }
 
-  [v10 setAccessoryType:v18];
+  [cellCopy setAccessoryType:v18];
 
-  v19 = [v11 row];
+  v19 = [pathCopy row];
   if (v19 - 1 == [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self selectedLanguageIndex])
   {
     v20 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     [v20 startAnimating];
-    [v10 setAccessoryView:v20];
+    [cellCopy setAccessoryView:v20];
   }
 
   else
   {
-    [v10 setAccessoryView:0];
+    [cellCopy setAccessoryView:0];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = HUAccessorySettingsSiriRecognitionLanguageViewController;
-  [(HUItemTableViewController *)&v17 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v17 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   v10 = v9;
@@ -135,19 +135,19 @@
 
   if (v12)
   {
-    v13 = [v12 languageOption];
-    v14 = [v13 recognitionLanguage];
+    languageOption = [v12 languageOption];
+    recognitionLanguage = [languageOption recognitionLanguage];
 
-    -[HUAccessorySettingsSiriRecognitionLanguageViewController setSelectedLanguageIndex:](self, "setSelectedLanguageIndex:", [v7 row] - 1);
-    if ([(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _shouldPresentAlertRequestingToTurnOffVoiceRecognition:v14])
+    -[HUAccessorySettingsSiriRecognitionLanguageViewController setSelectedLanguageIndex:](self, "setSelectedLanguageIndex:", [pathCopy row] - 1);
+    if ([(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _shouldPresentAlertRequestingToTurnOffVoiceRecognition:recognitionLanguage])
     {
-      [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _presentAlertConfirmingLanguageChangeAndTurnOffVoiceRecognition:v10 indexPath:v7];
+      [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _presentAlertConfirmingLanguageChangeAndTurnOffVoiceRecognition:v10 indexPath:pathCopy];
     }
 
     else
     {
-      v15 = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories];
-      v16 = [v15 count];
+      _allMediaAccessories = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories];
+      v16 = [_allMediaAccessories count];
 
       if (v16 < 2)
       {
@@ -156,13 +156,13 @@
 
       else
       {
-        [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _presentAlertConfirmingLanguageChangeForThisORAllMediaAccessories:v10 indexPath:v7];
+        [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _presentAlertConfirmingLanguageChangeForThisORAllMediaAccessories:v10 indexPath:pathCopy];
       }
 
-      [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _attemptToFixVoiceRecognitionOnboardingFailures:v14];
+      [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _attemptToFixVoiceRecognitionOnboardingFailures:recognitionLanguage];
     }
 
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
   else
@@ -171,13 +171,13 @@
   }
 }
 
-- (void)setSelectedLanguageIndex:(int64_t)a3
+- (void)setSelectedLanguageIndex:(int64_t)index
 {
-  if (self->_selectedLanguageIndex != a3)
+  if (self->_selectedLanguageIndex != index)
   {
     v5 = objc_opt_new();
-    v6 = [(HUItemTableViewController *)self itemManager];
-    v7 = [v6 displayedItemsInSection:0];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    v7 = [itemManager displayedItemsInSection:0];
     v8 = [v7 count];
 
     selectedLanguageIndex = self->_selectedLanguageIndex;
@@ -187,22 +187,22 @@
       [v5 addObject:v11];
     }
 
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL && a3 + 1 < v8)
+    if (index != 0x7FFFFFFFFFFFFFFFLL && index + 1 < v8)
     {
       v12 = [MEMORY[0x277CCAA70] indexPathForRow:? inSection:?];
       [v5 addObject:v12];
     }
 
-    self->_selectedLanguageIndex = a3;
+    self->_selectedLanguageIndex = index;
     if ([v5 count])
     {
-      v13 = [(HUItemTableViewController *)self itemManager];
-      v14 = [v13 diffableDataSourceDisabled];
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      diffableDataSourceDisabled = [itemManager2 diffableDataSourceDisabled];
 
-      if (v14)
+      if (diffableDataSourceDisabled)
       {
-        v15 = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self tableView];
-        [v15 reloadRowsAtIndexPaths:v5 withRowAnimation:5];
+        tableView = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self tableView];
+        [tableView reloadRowsAtIndexPaths:v5 withRowAnimation:5];
       }
 
       else
@@ -213,8 +213,8 @@
         v18[3] = &unk_277DBBD18;
         v18[4] = self;
         v16 = [v5 na_map:v18];
-        v17 = [(HUItemTableViewController *)self itemManager];
-        [v17 reloadUIRepresentationForItems:v16 withAnimation:0];
+        itemManager3 = [(HUItemTableViewController *)self itemManager];
+        [itemManager3 reloadUIRepresentationForItems:v16 withAnimation:0];
       }
     }
   }
@@ -230,17 +230,17 @@ id __85__HUAccessorySettingsSiriRecognitionLanguageViewController_setSelectedLan
   return v5;
 }
 
-- (BOOL)_shouldPresentAlertRequestingToTurnOffVoiceRecognition:(id)a3
+- (BOOL)_shouldPresentAlertRequestingToTurnOffVoiceRecognition:(id)recognition
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recognitionCopy = recognition;
   v4 = objc_alloc(MEMORY[0x277D14C98]);
-  v5 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v6 = [v5 home];
-  v7 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v8 = [v7 home];
-  v9 = [v8 currentUser];
-  v10 = [v4 initWithHome:v6 user:v9 nameStyle:0];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+  home2 = [mEMORY[0x277D146E8]2 home];
+  currentUser = [home2 currentUser];
+  v10 = [v4 initWithHome:home user:currentUser nameStyle:0];
 
   if (![v10 isIdentifyVoiceEnabled])
   {
@@ -248,33 +248,33 @@ id __85__HUAccessorySettingsSiriRecognitionLanguageViewController_setSelectedLan
   }
 
   v11 = +[HUHomeFeatureOnboardingUtilities fetchSupportedVoiceRecognitionLanguages];
-  if (([v11 containsObject:v3]& 1) == 0)
+  if (([v11 containsObject:recognitionCopy]& 1) == 0)
   {
-    v13 = HFLogForCategory();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    languageCode = HFLogForCategory();
+    if (os_log_type_enabled(languageCode, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412546;
-      v18 = v3;
+      v18 = recognitionCopy;
       v19 = 2112;
       v20 = v11;
-      _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "Alerting the user that Voice Recognition will be disabled: the selected voice recognition language (%@), is not in the set of supported VR languages: %@", &v17, 0x16u);
+      _os_log_impl(&dword_20CEB6000, languageCode, OS_LOG_TYPE_DEFAULT, "Alerting the user that Voice Recognition will be disabled: the selected voice recognition language (%@), is not in the set of supported VR languages: %@", &v17, 0x16u);
     }
 
     goto LABEL_11;
   }
 
-  v12 = [MEMORY[0x277CEF368] sharedPreferences];
-  v13 = [v12 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  if (([v3 isEqualToString:v13] & 1) == 0)
+  if (([recognitionCopy isEqualToString:languageCode] & 1) == 0)
   {
     v15 = HFLogForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412546;
-      v18 = v3;
+      v18 = recognitionCopy;
       v19 = 2112;
-      v20 = v13;
+      v20 = languageCode;
       _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "Alerting the user that Voice Recognition will be disabled: the selected voice recognition language (%@), though supported, is not the Siri language of this phone: %@", &v17, 0x16u);
     }
 
@@ -290,17 +290,17 @@ LABEL_12:
   return v14;
 }
 
-- (void)_presentAlertConfirmingLanguageChangeAndTurnOffVoiceRecognition:(id)a3 indexPath:(id)a4
+- (void)_presentAlertConfirmingLanguageChangeAndTurnOffVoiceRecognition:(id)recognition indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  recognitionCopy = recognition;
+  pathCopy = path;
   v8 = HULocalizedModelString(@"HUSiriLanguageChange_TurnOff_VoiceID_Confirmation_Title");
   objc_opt_class();
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 groupItem];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  groupItem = [itemManager groupItem];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = groupItem;
   }
 
   else
@@ -312,20 +312,20 @@ LABEL_12:
 
   if (v12)
   {
-    v13 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v14 = [v13 home];
-    v15 = [v12 accessoryIdentifier];
-    v16 = [v14 hf_accessoryWithIdentifier:v15];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    home = [mEMORY[0x277D146E8] home];
+    accessoryIdentifier = [v12 accessoryIdentifier];
+    v16 = [home hf_accessoryWithIdentifier:accessoryIdentifier];
 
-    v17 = [v16 hf_categoryOrPrimaryServiceType];
-    v18 = HULocalizedCategoryOrPrimaryServiceTypeModelString(@"HUSiriLanguageChange_TurnOff_VoiceID_Confirmation_Title_Personal_Content", v17);
+    hf_categoryOrPrimaryServiceType = [v16 hf_categoryOrPrimaryServiceType];
+    v18 = HULocalizedCategoryOrPrimaryServiceTypeModelString(@"HUSiriLanguageChange_TurnOff_VoiceID_Confirmation_Title_Personal_Content", hf_categoryOrPrimaryServiceType);
 
     v8 = v18;
   }
 
-  v19 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v8 indexPath:v7];
-  v20 = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories];
-  v21 = [v20 count];
+  v19 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v8 indexPath:pathCopy];
+  _allMediaAccessories = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories];
+  v21 = [_allMediaAccessories count];
 
   v22 = MEMORY[0x277D750F8];
   v23 = _HULocalizedStringWithDefaultValue(@"HUSiriLanguageChange_TurnOff_VoiceID_Confirmation_Button_Title", @"HUSiriLanguageChange_TurnOff_VoiceID_Confirmation_Button_Title", 1);
@@ -334,11 +334,11 @@ LABEL_12:
   v31[2] = __134__HUAccessorySettingsSiriRecognitionLanguageViewController__presentAlertConfirmingLanguageChangeAndTurnOffVoiceRecognition_indexPath___block_invoke;
   v31[3] = &unk_277DBBD40;
   v31[4] = self;
-  v32 = v6;
-  v33 = v7;
+  v32 = recognitionCopy;
+  v33 = pathCopy;
   v34 = v21;
-  v24 = v6;
-  v25 = v7;
+  v24 = recognitionCopy;
+  v25 = pathCopy;
   v26 = [v22 actionWithTitle:v23 style:0 handler:v31];
   [v19 addAction:v26];
 
@@ -390,12 +390,12 @@ uint64_t __134__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
   }
 }
 
-- (void)_presentAlertConfirmingLanguageChangeForAllHomeMembers:(id)a3 indexPath:(id)a4
+- (void)_presentAlertConfirmingLanguageChangeForAllHomeMembers:(id)members indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  membersCopy = members;
+  pathCopy = path;
   v8 = _HULocalizedStringWithDefaultValue(@"HUSiriLanguageChange_OtherUsers_Confirmation_Title_Personal_Content", @"HUSiriLanguageChange_OtherUsers_Confirmation_Title_Personal_Content", 1);
-  v9 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v8 indexPath:v7];
+  v9 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v8 indexPath:pathCopy];
 
   v10 = MEMORY[0x277D750F8];
   v11 = _HULocalizedStringWithDefaultValue(@"HULanguageChangeLanguage_Button_Title", @"HULanguageChangeLanguage_Button_Title", 1);
@@ -404,10 +404,10 @@ uint64_t __134__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
   v19[2] = __125__HUAccessorySettingsSiriRecognitionLanguageViewController__presentAlertConfirmingLanguageChangeForAllHomeMembers_indexPath___block_invoke;
   v19[3] = &unk_277DBBD68;
   v19[4] = self;
-  v20 = v6;
-  v21 = v7;
-  v12 = v7;
-  v13 = v6;
+  v20 = membersCopy;
+  v21 = pathCopy;
+  v12 = pathCopy;
+  v13 = membersCopy;
   v14 = [v10 actionWithTitle:v11 style:0 handler:v19];
   [v9 addAction:v14];
 
@@ -445,15 +445,15 @@ uint64_t __125__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
   }
 }
 
-- (void)_presentAlertConfirmingLanguageChangeForThisORAllMediaAccessories:(id)a3 indexPath:(id)a4
+- (void)_presentAlertConfirmingLanguageChangeForThisORAllMediaAccessories:(id)accessories indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  accessoriesCopy = accessories;
+  pathCopy = path;
   v8 = _HULocalizedStringWithDefaultValue(@"HUSiriLanguageChange_AllHomePods_Confirmation_Title", @"HUSiriLanguageChange_AllHomePods_Confirmation_Title", 1);
-  v9 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v10 = [v9 home];
-  v11 = [v10 hf_siriEndPointAccessories];
-  v12 = [v11 count];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  hf_siriEndPointAccessories = [home hf_siriEndPointAccessories];
+  v12 = [hf_siriEndPointAccessories count];
 
   if (v12)
   {
@@ -463,8 +463,8 @@ uint64_t __125__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
   }
 
   v47 = v8;
-  v48 = v7;
-  v14 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v8 indexPath:v7];
+  v48 = pathCopy;
+  v14 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v8 indexPath:pathCopy];
   v15 = MEMORY[0x277D750F8];
   v16 = _HULocalizedStringWithDefaultValue(@"HUSiriLanguageChange_AllHomePods_Confirmation_Button_Title", @"HUSiriLanguageChange_AllHomePods_Confirmation_Button_Title", 1);
   v52[0] = MEMORY[0x277D85DD0];
@@ -472,17 +472,17 @@ uint64_t __125__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
   v52[2] = __136__HUAccessorySettingsSiriRecognitionLanguageViewController__presentAlertConfirmingLanguageChangeForThisORAllMediaAccessories_indexPath___block_invoke;
   v52[3] = &unk_277DBBD90;
   v52[4] = self;
-  v17 = v6;
+  v17 = accessoriesCopy;
   v53 = v17;
   v18 = [v15 actionWithTitle:v16 style:0 handler:v52];
   [v14 addAction:v18];
 
   objc_opt_class();
-  v19 = [(HUItemTableViewController *)self itemManager];
-  v20 = [v19 groupItem];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  groupItem = [itemManager groupItem];
   if (objc_opt_isKindOfClass())
   {
-    v21 = v20;
+    v21 = groupItem;
   }
 
   else
@@ -494,31 +494,31 @@ uint64_t __125__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
 
   if (v22)
   {
-    v23 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v24 = [v23 home];
-    v25 = [v22 accessoryIdentifier];
-    v26 = [v24 hf_accessoryWithIdentifier:v25];
+    mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+    home2 = [mEMORY[0x277D146E8]2 home];
+    accessoryIdentifier = [v22 accessoryIdentifier];
+    itemManager2 = [home2 hf_accessoryWithIdentifier:accessoryIdentifier];
 
-    v27 = [v26 mediaProfile];
-    v28 = [v27 hf_displayName];
-    v29 = 0;
+    mediaProfile = [itemManager2 mediaProfile];
+    hf_displayName = [mediaProfile hf_displayName];
+    homeKitSettingsVendor = 0;
   }
 
   else
   {
-    v26 = [(HUItemTableViewController *)self itemManager];
-    v27 = [v26 groupItem];
-    v29 = [v27 homeKitSettingsVendor];
-    v28 = 0;
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    mediaProfile = [itemManager2 groupItem];
+    homeKitSettingsVendor = [mediaProfile homeKitSettingsVendor];
+    hf_displayName = 0;
   }
 
-  v36 = [v29 homeKitObject];
-  if (!v28)
+  homeKitObject = [homeKitSettingsVendor homeKitObject];
+  if (!hf_displayName)
   {
     objc_opt_class();
     objc_opt_isKindOfClass();
     objc_opt_class();
-    v37 = v36;
+    v37 = homeKitObject;
     if (objc_opt_isKindOfClass())
     {
       v38 = v37;
@@ -531,10 +531,10 @@ uint64_t __125__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
 
     v39 = v38;
 
-    v28 = [v39 hf_displayName];
+    hf_displayName = [v39 hf_displayName];
   }
 
-  v40 = HULocalizedStringWithFormat(@"HUSiriLanguageChange_ThisHomePod_Confirmation_Button_Title", @"%@", v30, v31, v32, v33, v34, v35, v28);
+  v40 = HULocalizedStringWithFormat(@"HUSiriLanguageChange_ThisHomePod_Confirmation_Button_Title", @"%@", v30, v31, v32, v33, v34, v35, hf_displayName);
   v41 = MEMORY[0x277D750F8];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
@@ -559,32 +559,32 @@ uint64_t __125__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
   [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)_attemptToFixVoiceRecognitionOnboardingFailures:(id)a3
+- (void)_attemptToFixVoiceRecognitionOnboardingFailures:(id)failures
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CEF368] sharedPreferences];
-  v7 = [v6 languageCode];
+  failuresCopy = failures;
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
   v8 = objc_alloc(MEMORY[0x277D14C98]);
-  v9 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v10 = [v9 home];
-  v11 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v12 = [v11 home];
-  v13 = [v12 currentUser];
-  v14 = [v8 initWithHome:v10 user:v13 nameStyle:0];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+  home2 = [mEMORY[0x277D146E8]2 home];
+  currentUser = [home2 currentUser];
+  v14 = [v8 initWithHome:home user:currentUser nameStyle:0];
 
   if ([v14 hasDismissedIdentifyVoiceReminderBanner])
   {
     v15 = +[HUHomeFeatureOnboardingUtilities fetchSupportedVoiceRecognitionLanguages];
-    if ([v15 containsObject:v5] && objc_msgSend(v5, "isEqualToString:", v7) && (objc_msgSend(v14, "isIdentifyVoiceEnabled") & 1) == 0)
+    if ([v15 containsObject:failuresCopy] && objc_msgSend(failuresCopy, "isEqualToString:", languageCode) && (objc_msgSend(v14, "isIdentifyVoiceEnabled") & 1) == 0)
     {
       v21 = MEMORY[0x277D85DD0];
       v22 = 3221225472;
       v23 = __108__HUAccessorySettingsSiriRecognitionLanguageViewController__attemptToFixVoiceRecognitionOnboardingFailures___block_invoke;
       v24 = &unk_277DB9588;
-      v25 = self;
-      v26 = v7;
+      selfCopy = self;
+      v26 = languageCode;
       v16 = _Block_copy(&v21);
       v17 = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories:v21];
       if ([v17 na_all:v16])
@@ -594,7 +594,7 @@ uint64_t __125__HUAccessorySettingsSiriRecognitionLanguageViewController__presen
         {
           v19 = NSStringFromSelector(a2);
           *buf = 138412546;
-          v28 = self;
+          selfCopy2 = self;
           v29 = 2112;
           v30 = v19;
           _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "%@:%@: User may be trying to fix Voice Recognition, enabling Reminder Banner", buf, 0x16u);
@@ -616,15 +616,15 @@ uint64_t __108__HUAccessorySettingsSiriRecognitionLanguageViewController__attemp
   return v6;
 }
 
-- (void)_turnOffVoiceIDForTargetLanguageOption:(id)a3
+- (void)_turnOffVoiceIDForTargetLanguageOption:(id)option
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CEF368] sharedPreferences];
-  v7 = [v6 languageCode];
+  optionCopy = option;
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
   objc_opt_class();
-  v8 = v5;
+  v8 = optionCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -637,9 +637,9 @@ uint64_t __108__HUAccessorySettingsSiriRecognitionLanguageViewController__attemp
 
   v10 = v9;
 
-  v11 = [v10 languageOption];
-  v12 = [v11 recognitionLanguage];
-  v13 = [v7 isEqualToString:v12];
+  languageOption = [v10 languageOption];
+  recognitionLanguage = [languageOption recognitionLanguage];
+  v13 = [languageCode isEqualToString:recognitionLanguage];
 
   v14 = HFLogForCategory();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -648,16 +648,16 @@ uint64_t __108__HUAccessorySettingsSiriRecognitionLanguageViewController__attemp
     if (v15)
     {
       v16 = NSStringFromSelector(a2);
-      v17 = [v10 languageOption];
-      v18 = [v17 recognitionLanguage];
+      languageOption2 = [v10 languageOption];
+      recognitionLanguage2 = [languageOption2 recognitionLanguage];
       v29 = 138413058;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2112;
       v32 = v16;
       v33 = 2112;
-      v34 = v18;
+      v34 = recognitionLanguage2;
       v35 = 2112;
-      v36 = v7;
+      v36 = languageCode;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@: NOT Turning OFF Voice ID since Siri language changed to [%@] which is the same Siri language as this iOS Device [%@]", &v29, 0x2Au);
     }
   }
@@ -667,47 +667,47 @@ uint64_t __108__HUAccessorySettingsSiriRecognitionLanguageViewController__attemp
     if (v15)
     {
       v19 = NSStringFromSelector(a2);
-      v20 = [v10 languageOption];
-      v21 = [v20 recognitionLanguage];
+      languageOption3 = [v10 languageOption];
+      recognitionLanguage3 = [languageOption3 recognitionLanguage];
       v29 = 138413058;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2112;
       v32 = v19;
       v33 = 2112;
-      v34 = v21;
+      v34 = recognitionLanguage3;
       v35 = 2112;
-      v36 = v7;
+      v36 = languageCode;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@: Turning OFF Voice ID since Siri language changed to [%@] which is NOT the same Siri language as this iOS Device [%@]", &v29, 0x2Au);
     }
 
     v22 = objc_alloc(MEMORY[0x277D14C98]);
-    v23 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v24 = [v23 home];
-    v25 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v26 = [v25 home];
-    v27 = [v26 currentUser];
-    v14 = [v22 initWithHome:v24 user:v27 nameStyle:0];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    home = [mEMORY[0x277D146E8] home];
+    mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+    home2 = [mEMORY[0x277D146E8]2 home];
+    currentUser = [home2 currentUser];
+    v14 = [v22 initWithHome:home user:currentUser nameStyle:0];
 
     v28 = [v14 setEnableIdentifyVoice:0];
   }
 }
 
-- (void)_changeSiriLanguageOnlyForThisMediaAccessory:(id)a3 turnOffVoiceID:(BOOL)a4
+- (void)_changeSiriLanguageOnlyForThisMediaAccessory:(id)accessory turnOffVoiceID:(BOOL)d
 {
-  v7 = a3;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 updateSelectionWithOptionItem:v7];
+  accessoryCopy = accessory;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager updateSelectionWithOptionItem:accessoryCopy];
 
   v10 = [v9 addFailureBlock:&__block_literal_global_77];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __120__HUAccessorySettingsSiriRecognitionLanguageViewController__changeSiriLanguageOnlyForThisMediaAccessory_turnOffVoiceID___block_invoke_2;
   v13[3] = &unk_277DBBDB8;
-  v16 = a4;
-  v14 = v7;
+  dCopy = d;
+  v14 = accessoryCopy;
   v15 = a2;
   v13[4] = self;
-  v11 = v7;
+  v11 = accessoryCopy;
   v12 = [v9 addSuccessBlock:v13];
 }
 
@@ -762,10 +762,10 @@ uint64_t __120__HUAccessorySettingsSiriRecognitionLanguageViewController__change
 - (BOOL)_isAnyMediaAccessoryOnSupportedVoiceRecognitionLanguage
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories];
+  _allMediaAccessories = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories];
   v5 = +[HUHomeFeatureOnboardingUtilities fetchSupportedVoiceRecognitionLanguages];
-  v6 = [MEMORY[0x277CEF368] sharedPreferences];
-  v7 = [v6 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
   if (v5)
   {
@@ -774,10 +774,10 @@ uint64_t __120__HUAccessorySettingsSiriRecognitionLanguageViewController__change
     v16[2] = __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyMediaAccessoryOnSupportedVoiceRecognitionLanguage__block_invoke;
     v16[3] = &unk_277DBBDE0;
     v16[4] = self;
-    v8 = v7;
+    v8 = languageCode;
     v17 = v8;
     v18 = v5;
-    LODWORD(v9) = [v4 na_any:v16];
+    LODWORD(v9) = [_allMediaAccessories na_any:v16];
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -785,7 +785,7 @@ uint64_t __120__HUAccessorySettingsSiriRecognitionLanguageViewController__change
       v12 = v11;
       v13 = @"No Media Accessories";
       *buf = 138413058;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
       if (v9)
       {
@@ -808,7 +808,7 @@ uint64_t __120__HUAccessorySettingsSiriRecognitionLanguageViewController__change
     {
       v14 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
       v22 = v14;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@:  returning NO, because supported voice recognition languages could not be found ", buf, 0x16u);
@@ -843,15 +843,15 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
   return v9;
 }
 
-- (void)_turnOffVoiceIDAndChangeSiriLanguageForAllMediaAccessories:(id)a3
+- (void)_turnOffVoiceIDAndChangeSiriLanguageForAllMediaAccessories:(id)accessories
 {
   v92 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _turnOffVoiceIDForTargetLanguageOption:v4];
+  accessoriesCopy = accessories;
+  [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _turnOffVoiceIDForTargetLanguageOption:accessoriesCopy];
   val = self;
-  v5 = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories];
+  _allMediaAccessories = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)self _allMediaAccessories];
   objc_opt_class();
-  v6 = v4;
+  v6 = accessoriesCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -866,16 +866,16 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
   v66 = v6;
 
   v56 = v8;
-  v9 = [v8 languageOption];
-  v59 = [v9 recognitionLanguage];
+  languageOption = [v8 languageOption];
+  recognitionLanguage = [languageOption recognitionLanguage];
 
-  v58 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
-  v10 = [(HUItemTableViewController *)val itemManager];
-  v11 = [v10 mediaProfileContainer];
+  itemManager = [(HUItemTableViewController *)val itemManager];
+  mediaProfileContainer = [itemManager mediaProfileContainer];
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = mediaProfileContainer;
   }
 
   else
@@ -886,11 +886,11 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
   v68 = v12;
 
   objc_opt_class();
-  v13 = [(HUItemTableViewController *)val itemManager];
-  v14 = [v13 groupItem];
+  itemManager2 = [(HUItemTableViewController *)val itemManager];
+  groupItem = [itemManager2 groupItem];
   if (objc_opt_isKindOfClass())
   {
-    v15 = v14;
+    v15 = groupItem;
   }
 
   else
@@ -903,22 +903,22 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
   v57 = v16;
   if (v16)
   {
-    v17 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v18 = [v17 home];
-    v19 = [v57 accessoryIdentifier];
-    v20 = [v18 hf_accessoryWithIdentifier:v19];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    home = [mEMORY[0x277D146E8] home];
+    accessoryIdentifier = [v57 accessoryIdentifier];
+    itemManager3 = [home hf_accessoryWithIdentifier:accessoryIdentifier];
 
-    v63 = [v20 mediaProfile];
+    mediaProfile = [itemManager3 mediaProfile];
   }
 
   else
   {
     objc_opt_class();
-    v20 = [(HUItemTableViewController *)val itemManager];
-    v21 = [v20 mediaProfileContainer];
+    itemManager3 = [(HUItemTableViewController *)val itemManager];
+    mediaProfileContainer2 = [itemManager3 mediaProfileContainer];
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      v22 = mediaProfileContainer2;
     }
 
     else
@@ -926,14 +926,14 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
       v22 = 0;
     }
 
-    v63 = v22;
+    mediaProfile = v22;
   }
 
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v5;
+  obj = _allMediaAccessories;
   v67 = [obj countByEnumeratingWithState:&v79 objects:v91 count:16];
   if (v67)
   {
@@ -950,9 +950,9 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
         }
 
         v24 = *(*(&v79 + 1) + 8 * v23);
-        v25 = [v24 mediaProfile];
-        v26 = [v24 home];
-        v27 = [v26 hf_mediaSystemForAccessory:v24];
+        mediaProfile2 = [v24 mediaProfile];
+        home2 = [v24 home];
+        v27 = [home2 hf_mediaSystemForAccessory:v24];
 
         if (v27)
         {
@@ -961,7 +961,7 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
 
         else
         {
-          [v25 hf_settingsAdapterManager];
+          [mediaProfile2 hf_settingsAdapterManager];
         }
         v70 = ;
         v28 = [v70 adapterForIdentifier:v64];
@@ -995,13 +995,13 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
 
         if (v68)
         {
-          v34 = [v68 accessories];
+          accessories = [v68 accessories];
           v77[0] = MEMORY[0x277D85DD0];
           v77[1] = 3221225472;
           v77[2] = __119__HUAccessorySettingsSiriRecognitionLanguageViewController__turnOffVoiceIDAndChangeSiriLanguageForAllMediaAccessories___block_invoke;
           v77[3] = &unk_277DB8EC0;
-          v78 = v25;
-          v35 = [v34 na_any:v77];
+          v78 = mediaProfile2;
+          v35 = [accessories na_any:v77];
 
           if (v35)
           {
@@ -1009,7 +1009,7 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
           }
         }
 
-        else if (v63 && ([v63 isEqual:v25] & 1) != 0)
+        else if (mediaProfile && ([mediaProfile isEqual:mediaProfile2] & 1) != 0)
         {
           goto LABEL_44;
         }
@@ -1023,23 +1023,23 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
           v85 = 2112;
           v86 = v37;
           v87 = 2112;
-          v88 = v59;
+          v88 = recognitionLanguage;
           v89 = 2112;
-          v90 = v25;
+          v90 = mediaProfile2;
           _os_log_impl(&dword_20CEB6000, v36, OS_LOG_TYPE_DEFAULT, "%@:%@: Changing Siri language to [%@] for [%@]", buf, 0x2Au);
         }
 
-        v38 = [v33 languageOption];
-        if (v38 && [v25 hf_isReachable])
+        languageOption2 = [v33 languageOption];
+        if (languageOption2 && [mediaProfile2 hf_isReachable])
         {
-          v39 = [v24 mediaProfile];
-          v40 = [v39 hf_siriLanguageOptionsManager];
-          v41 = [v24 uniqueIdentifier];
-          v42 = [v40 updateSelectedLanguageOption:v38 accessoryIdentifier:v41];
+          mediaProfile3 = [v24 mediaProfile];
+          hf_siriLanguageOptionsManager = [mediaProfile3 hf_siriLanguageOptionsManager];
+          uniqueIdentifier = [v24 uniqueIdentifier];
+          v42 = [hf_siriLanguageOptionsManager updateSelectedLanguageOption:languageOption2 accessoryIdentifier:uniqueIdentifier];
 
           if (!v42)
           {
-            v42 = [v69 updateSelectedLanguageOption:v38];
+            v42 = [v69 updateSelectedLanguageOption:languageOption2];
           }
 
           v74[0] = MEMORY[0x277D85DD0];
@@ -1047,9 +1047,9 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
           v74[2] = __119__HUAccessorySettingsSiriRecognitionLanguageViewController__turnOffVoiceIDAndChangeSiriLanguageForAllMediaAccessories___block_invoke_76;
           v74[3] = &unk_277DB8E70;
           v76 = a2;
-          v75 = v25;
+          v75 = mediaProfile2;
           v43 = [v42 addFailureBlock:v74];
-          [v58 addObject:v42];
+          [array addObject:v42];
         }
 
         else
@@ -1058,7 +1058,7 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
           if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
           {
             v44 = NSStringFromSelector(a2);
-            if ([v25 hf_isReachable])
+            if ([mediaProfile2 hf_isReachable])
             {
               v45 = &stru_2823E0EE8;
             }
@@ -1068,13 +1068,13 @@ uint64_t __115__HUAccessorySettingsSiriRecognitionLanguageViewController__isAnyM
               v45 = @"un";
             }
 
-            v46 = [v25 hf_displayName];
+            hf_displayName = [mediaProfile2 hf_displayName];
             *buf = 138412802;
             v84 = v44;
             v85 = 2112;
             v86 = v45;
             v87 = 2112;
-            v88 = v46;
+            v88 = hf_displayName;
             _os_log_error_impl(&dword_20CEB6000, v42, OS_LOG_TYPE_ERROR, "%@ Controller is %@reachable. Language change failed for [%@]", buf, 0x20u);
           }
         }
@@ -1091,27 +1091,27 @@ LABEL_44:
     while (v47);
   }
 
-  v48 = [(HUItemTableViewController *)val itemManager];
-  v49 = [v48 updateSelectionWithOptionItem:v66];
+  itemManager4 = [(HUItemTableViewController *)val itemManager];
+  v49 = [itemManager4 updateSelectionWithOptionItem:v66];
 
   v50 = [v49 addFailureBlock:&__block_literal_global_85];
-  [v58 addObject:v49];
-  v51 = [MEMORY[0x277D2C900] chainFutures:v58];
+  [array addObject:v49];
+  v51 = [MEMORY[0x277D2C900] chainFutures:array];
   [(HUAccessorySettingsSiriRecognitionLanguageViewController *)val setChangeLanguageFuture:v51];
 
-  v52 = [v58 count];
+  v52 = [array count];
   objc_initWeak(buf, val);
-  v53 = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)val changeLanguageFuture];
+  changeLanguageFuture = [(HUAccessorySettingsSiriRecognitionLanguageViewController *)val changeLanguageFuture];
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
   v71[2] = __119__HUAccessorySettingsSiriRecognitionLanguageViewController__turnOffVoiceIDAndChangeSiriLanguageForAllMediaAccessories___block_invoke_2;
   v71[3] = &unk_277DBBE08;
   objc_copyWeak(v73, buf);
   v73[1] = a2;
-  v54 = v59;
+  v54 = recognitionLanguage;
   v72 = v54;
   v73[2] = v52;
-  v55 = [v53 addCompletionBlock:v71];
+  v55 = [changeLanguageFuture addCompletionBlock:v71];
 
   objc_destroyWeak(v73);
   objc_destroyWeak(buf);
@@ -1184,39 +1184,39 @@ void __119__HUAccessorySettingsSiriRecognitionLanguageViewController__turnOffVoi
 - (id)_allMediaAccessories
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v4 = [v3 home];
-  v5 = [v4 hf_homePods];
-  [v2 na_safeAddObjectsFromArray:v5];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  hf_homePods = [home hf_homePods];
+  [v2 na_safeAddObjectsFromArray:hf_homePods];
 
-  v6 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v7 = [v6 home];
-  v8 = [v7 hf_siriEndPointAccessories];
-  [v2 na_safeAddObjectsFromArray:v8];
+  mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+  home2 = [mEMORY[0x277D146E8]2 home];
+  hf_siriEndPointAccessories = [home2 hf_siriEndPointAccessories];
+  [v2 na_safeAddObjectsFromArray:hf_siriEndPointAccessories];
 
   v9 = [v2 copy];
 
   return v9;
 }
 
-- (id)_siriLanguageOptionForMediaProfile:(id)a3
+- (id)_siriLanguageOptionForMediaProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v5 = [v4 homeManager];
-  if ([v5 hasOptedToHH2])
+  profileCopy = profile;
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  if ([homeManager hasOptedToHH2])
   {
   }
 
   else
   {
-    v6 = [v3 accessory];
-    v7 = [v6 hf_isSiriEndpoint];
+    accessory = [profileCopy accessory];
+    hf_isSiriEndpoint = [accessory hf_isSiriEndpoint];
 
-    if (!v7)
+    if (!hf_isSiriEndpoint)
     {
-      v8 = [v3 hf_settingsAdapterManager];
-      v10 = [v8 adapterForIdentifier:*MEMORY[0x277D13338]];
+      hf_settingsAdapterManager = [profileCopy hf_settingsAdapterManager];
+      v10 = [hf_settingsAdapterManager adapterForIdentifier:*MEMORY[0x277D13338]];
       objc_opt_class();
       v11 = v10;
       if (objc_opt_isKindOfClass())
@@ -1231,17 +1231,17 @@ void __119__HUAccessorySettingsSiriRecognitionLanguageViewController__turnOffVoi
 
       v13 = v12;
 
-      v9 = [v13 selectedLanguageOption];
+      selectedLanguageOption = [v13 selectedLanguageOption];
 
       goto LABEL_9;
     }
   }
 
-  v8 = [v3 hf_siriLanguageOptionsManager];
-  v9 = [v8 selectedLanguageOption];
+  hf_settingsAdapterManager = [profileCopy hf_siriLanguageOptionsManager];
+  selectedLanguageOption = [hf_settingsAdapterManager selectedLanguageOption];
 LABEL_9:
 
-  return v9;
+  return selectedLanguageOption;
 }
 
 @end

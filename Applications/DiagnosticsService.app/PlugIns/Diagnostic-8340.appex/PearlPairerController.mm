@@ -1,41 +1,41 @@
 @interface PearlPairerController
-- (BOOL)isRetest:(id)a3;
-- (BOOL)parseSeaCookieServerError:(id)a3 errorCode:(id *)a4;
+- (BOOL)isRetest:(id)retest;
+- (BOOL)parseSeaCookieServerError:(id)error errorCode:(id *)code;
 - (id)_createFDROptions;
-- (id)getPatchDataWithDigest:(id)a3;
+- (id)getPatchDataWithDigest:(id)digest;
 - (int64_t)detectCamera;
 - (int64_t)verifyPSD2;
 - (void)cancel;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 @end
 
 @implementation PearlPairerController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  responderCopy = responder;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315650;
     v12 = "[PearlPairerController setupWithInputs:responder:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = inputsCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = responderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v11, 0x20u);
   }
 
-  [(PearlPairerController *)self setInputs:v6];
-  v9 = [(PearlPairerController *)self inputs];
+  [(PearlPairerController *)self setInputs:inputsCopy];
+  inputs = [(PearlPairerController *)self inputs];
 
-  if (!v9)
+  if (!inputs)
   {
-    v10 = [(PearlPairerController *)self result];
-    [v10 setStatusCode:&off_1000156C0];
+    result = [(PearlPairerController *)self result];
+    [result setStatusCode:&off_1000156C0];
 
     [(PearlPairerController *)self setFinished:1];
   }
@@ -141,8 +141,8 @@
   v5 = v4;
   if (!v4)
   {
-    v72 = [(PearlPairerController *)self result];
-    [v72 setStatusCode:&off_1000156D8];
+    result = [(PearlPairerController *)self result];
+    [result setStatusCode:&off_1000156D8];
 
     v73 = handleForCategory();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
@@ -153,9 +153,9 @@
     goto LABEL_97;
   }
 
-  v6 = [v4 convertToHexString];
+  convertToHexString = [v4 convertToHexString];
   savageSN = self->_savageSN;
-  self->_savageSN = v6;
+  self->_savageSN = convertToHexString;
 
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -169,8 +169,8 @@
   v85 = MGCopyAnswer();
   if (!v85)
   {
-    v74 = [(PearlPairerController *)self result];
-    [v74 setStatusCode:&off_1000156D8];
+    result2 = [(PearlPairerController *)self result];
+    [result2 setStatusCode:&off_1000156D8];
 
     v73 = handleForCategory();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
@@ -187,9 +187,9 @@ LABEL_97:
     goto LABEL_68;
   }
 
-  v10 = [v85 convertToHexString];
+  convertToHexString2 = [v85 convertToHexString];
   savageUID = self->_savageUID;
-  self->_savageUID = v10;
+  self->_savageUID = convertToHexString2;
 
   v12 = handleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -200,9 +200,9 @@ LABEL_97:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Savage UID: %@", v115, 0xCu);
   }
 
-  v14 = [(PearlPairerController *)self inputs];
-  v15 = [v14 SCPairURL];
-  v16 = CFURLCreateWithString(kCFAllocatorDefault, v15, 0);
+  inputs = [(PearlPairerController *)self inputs];
+  sCPairURL = [inputs SCPairURL];
+  v16 = CFURLCreateWithString(kCFAllocatorDefault, sCPairURL, 0);
 
   v17 = handleForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -212,23 +212,23 @@ LABEL_97:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Seacookie Pairing URL: %@", v115, 0xCu);
   }
 
-  v18 = [(PearlPairerController *)self inputs];
-  v19 = [v18 rikKeyBlob];
+  inputs2 = [(PearlPairerController *)self inputs];
+  rikKeyBlob = [inputs2 rikKeyBlob];
 
-  if (v19)
+  if (rikKeyBlob)
   {
     v20 = [NSData alloc];
-    v21 = [(PearlPairerController *)self inputs];
-    v22 = [v21 rikKeyBlob];
-    v23 = [v20 initWithBase64EncodedString:v22 options:0];
+    inputs3 = [(PearlPairerController *)self inputs];
+    rikKeyBlob2 = [inputs3 rikKeyBlob];
+    v23 = [v20 initWithBase64EncodedString:rikKeyBlob2 options:0];
 
     if (!v23)
     {
-      v75 = [(PearlPairerController *)self result];
-      [v75 setStatusCode:&off_1000156F0];
+      result3 = [(PearlPairerController *)self result];
+      [result3 setStatusCode:&off_1000156F0];
 
-      v50 = handleForCategory();
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+      result9 = handleForCategory();
+      if (os_log_type_enabled(result9, OS_LOG_TYPE_ERROR))
       {
         sub_10000B9D8();
       }
@@ -252,10 +252,10 @@ LABEL_97:
     v81 = 0;
   }
 
-  v25 = [(PearlPairerController *)self inputs];
-  v26 = [v25 skipScPairingTicket];
+  inputs4 = [(PearlPairerController *)self inputs];
+  skipScPairingTicket = [inputs4 skipScPairingTicket];
 
-  if (v26)
+  if (skipScPairingTicket)
   {
     v27 = 0;
     goto LABEL_33;
@@ -264,11 +264,11 @@ LABEL_97:
   v27 = +[CRPersonalizationManager getDefaultAMAuthInstallRef];
   if (!v27)
   {
-    v76 = [(PearlPairerController *)self result];
-    [v76 setStatusCode:&off_100015708];
+    result4 = [(PearlPairerController *)self result];
+    [result4 setStatusCode:&off_100015708];
 
-    v50 = handleForCategory();
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+    result9 = handleForCategory();
+    if (os_log_type_enabled(result9, OS_LOG_TYPE_ERROR))
     {
       sub_10000BC18();
     }
@@ -280,33 +280,33 @@ LABEL_103:
     goto LABEL_64;
   }
 
-  v28 = [(PearlPairerController *)self inputs];
-  v29 = [v28 tatsuURL];
+  inputs5 = [(PearlPairerController *)self inputs];
+  tatsuURL = [inputs5 tatsuURL];
 
-  if (v29)
+  if (tatsuURL)
   {
-    v30 = [(PearlPairerController *)self inputs];
-    v31 = [v30 tatsuURL];
-    [NSURL URLWithString:v31];
+    inputs6 = [(PearlPairerController *)self inputs];
+    tatsuURL2 = [inputs6 tatsuURL];
+    [NSURL URLWithString:tatsuURL2];
     v32 = AMAuthInstallSetSigningServerURL();
 
     v33 = handleForCategory();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [(PearlPairerController *)self inputs];
-      v35 = [v34 tatsuURL];
+      inputs7 = [(PearlPairerController *)self inputs];
+      tatsuURL3 = [inputs7 tatsuURL];
       *v115 = 138412290;
-      v116 = v35;
+      v116 = tatsuURL3;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Setting custom TATSU server URL: %@", v115, 0xCu);
     }
 
     if (v32)
     {
-      v80 = [(PearlPairerController *)self result];
-      [v80 setStatusCode:&off_100015708];
+      result5 = [(PearlPairerController *)self result];
+      [result5 setStatusCode:&off_100015708];
 
-      v50 = handleForCategory();
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+      result9 = handleForCategory();
+      if (os_log_type_enabled(result9, OS_LOG_TYPE_ERROR))
       {
         sub_10000BA14();
       }
@@ -315,8 +315,8 @@ LABEL_103:
     }
   }
 
-  v36 = [(PearlPairerController *)self inputs];
-  if ([v36 useAppleConnect])
+  inputs8 = [(PearlPairerController *)self inputs];
+  if ([inputs8 useAppleConnect])
   {
   }
 
@@ -332,11 +332,11 @@ LABEL_103:
 
   if ([CRPersonalizationManager enableSSO:v27])
   {
-    v79 = [(PearlPairerController *)self result];
-    [v79 setStatusCode:&off_100015720];
+    result6 = [(PearlPairerController *)self result];
+    [result6 setStatusCode:&off_100015720];
 
-    v50 = handleForCategory();
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+    result9 = handleForCategory();
+    if (os_log_type_enabled(result9, OS_LOG_TYPE_ERROR))
     {
       sub_10000BA84();
     }
@@ -347,12 +347,12 @@ LABEL_103:
 LABEL_26:
   if (HSCGetPearlNonce() != 1 || !cf)
   {
-    v77 = [(PearlPairerController *)self result];
-    [v77 setStatusCode:&off_100015738];
+    result7 = [(PearlPairerController *)self result];
+    [result7 setStatusCode:&off_100015738];
 
     v87 = v112;
-    v50 = handleForCategory();
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+    result9 = handleForCategory();
+    if (os_log_type_enabled(result9, OS_LOG_TYPE_ERROR))
     {
       sub_10000BBA4();
     }
@@ -362,11 +362,11 @@ LABEL_26:
 
   if (AMAuthInstallApImg4SetSepNonce())
   {
-    v78 = [(PearlPairerController *)self result];
-    [v78 setStatusCode:&off_100015738];
+    result8 = [(PearlPairerController *)self result];
+    [result8 setStatusCode:&off_100015738];
 
-    v50 = handleForCategory();
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+    result9 = handleForCategory();
+    if (os_log_type_enabled(result9, OS_LOG_TYPE_ERROR))
     {
       sub_10000BAC0();
     }
@@ -400,13 +400,13 @@ LABEL_116:
       sub_10000BB30();
     }
 
-    v43 = [(PearlPairerController *)self inputs];
-    v44 = [v43 rikKeyBlob];
+    inputs9 = [(PearlPairerController *)self inputs];
+    rikKeyBlob3 = [inputs9 rikKeyBlob];
 
-    if (!v44)
+    if (!rikKeyBlob3)
     {
-      v50 = [(PearlPairerController *)self result];
-      [v50 setStatusCode:&off_100015708];
+      result9 = [(PearlPairerController *)self result];
+      [result9 setStatusCode:&off_100015708];
       goto LABEL_63;
     }
 
@@ -446,26 +446,26 @@ LABEL_33:
 
     if ([(__CFError *)v87 code]== 8 || [(__CFError *)v87 code]== 4 || [(__CFError *)v87 code]== 5 || [(__CFError *)v87 code]== 9 || [(__CFError *)v87 code]== 16 || [(__CFError *)v87 code]== 15)
     {
-      v50 = [(PearlPairerController *)self result];
-      [v50 setStatusCode:&off_100015750];
+      result9 = [(PearlPairerController *)self result];
+      [result9 setStatusCode:&off_100015750];
     }
 
     else if ([(__CFError *)v87 code]== 12 || [(__CFError *)v87 code]== 13 || [(__CFError *)v87 code]== 14)
     {
-      v50 = [(PearlPairerController *)self result];
-      [v50 setStatusCode:&off_100015768];
+      result9 = [(PearlPairerController *)self result];
+      [result9 setStatusCode:&off_100015768];
     }
 
     else if ([(__CFError *)v87 code]== 3 || [(__CFError *)v87 code]== 7 || [(__CFError *)v87 code]== 10)
     {
-      v50 = [(PearlPairerController *)self result];
-      [v50 setStatusCode:&off_100015780];
+      result9 = [(PearlPairerController *)self result];
+      [result9 setStatusCode:&off_100015780];
     }
 
     else
     {
-      v50 = [(PearlPairerController *)self result];
-      [v50 setStatusCode:&off_100015798];
+      result9 = [(PearlPairerController *)self result];
+      [result9 setStatusCode:&off_100015798];
     }
 
     goto LABEL_63;
@@ -488,8 +488,8 @@ LABEL_41:
 
   if (![(PearlPairerController *)self isRetest:v87])
   {
-    v50 = [(PearlPairerController *)self result];
-    [v50 setStatusCode:&off_1000157B0];
+    result9 = [(PearlPairerController *)self result];
+    [result9 setStatusCode:&off_1000157B0];
 LABEL_63:
     v86 = 0;
     goto LABEL_64;
@@ -499,21 +499,21 @@ LABEL_46:
   v86 = [NSNumber numberWithInteger:[(PearlPairerController *)self verifyPSD2]];
   if ([v86 isEqual:&off_1000157C8])
   {
-    v51 = [(PearlPairerController *)self result];
-    [v51 setStatusCode:&off_1000157C8];
+    result10 = [(PearlPairerController *)self result];
+    [result10 setStatusCode:&off_1000157C8];
 
-    v52 = self;
-    v50 = self->_PearlPairingErrorDescription;
+    selfCopy3 = self;
+    result9 = self->_PearlPairingErrorDescription;
     v53 = @"Unprovisioned sensor";
   }
 
   else if ([v86 isEqual:&off_1000157E0])
   {
-    v54 = [(PearlPairerController *)self result];
-    [v54 setStatusCode:&off_1000157E0];
+    result11 = [(PearlPairerController *)self result];
+    [result11 setStatusCode:&off_1000157E0];
 
-    v52 = self;
-    v50 = self->_PearlPairingErrorDescription;
+    selfCopy3 = self;
+    result9 = self->_PearlPairingErrorDescription;
     v53 = @"Failed to request FDR permission";
   }
 
@@ -521,20 +521,20 @@ LABEL_46:
   {
     if (![v86 isEqual:&off_1000157F8])
     {
-      v50 = [(PearlPairerController *)self result];
-      [v50 setStatusCode:&off_100015810];
+      result9 = [(PearlPairerController *)self result];
+      [result9 setStatusCode:&off_100015810];
       goto LABEL_64;
     }
 
-    v55 = [(PearlPairerController *)self result];
-    [v55 setStatusCode:&off_1000157F8];
+    result12 = [(PearlPairerController *)self result];
+    [result12 setStatusCode:&off_1000157F8];
 
-    v52 = self;
-    v50 = self->_PearlPairingErrorDescription;
+    selfCopy3 = self;
+    result9 = self->_PearlPairingErrorDescription;
     v53 = @"Failed to create FDR permission string";
   }
 
-  v52->_PearlPairingErrorDescription = &v53->isa;
+  selfCopy3->_PearlPairingErrorDescription = &v53->isa;
 LABEL_64:
 
   if (v16)
@@ -554,41 +554,41 @@ LABEL_68:
   }
 
   v113[0] = @"pearlPairingErrorCode";
-  v61 = self;
+  selfCopy7 = self;
   v62 = self->_PearlPairingErrorCode;
   v63 = v62;
   if (!v62)
   {
     v63 = +[NSNull null];
-    v61 = self;
+    selfCopy7 = self;
   }
 
   v114[0] = v63;
   v113[1] = @"pearlPairingErrorDescription";
-  v64 = v61->_PearlPairingErrorDescription;
+  v64 = selfCopy7->_PearlPairingErrorDescription;
   v65 = v64;
   if (!v64)
   {
     v65 = +[NSNull null];
-    v61 = self;
+    selfCopy7 = self;
   }
 
   v114[1] = v65;
   v113[2] = @"pearlSavageSerialNumber";
-  v66 = v61->_savageSN;
+  v66 = selfCopy7->_savageSN;
   v67 = v66;
   if (!v66)
   {
     v67 = +[NSNull null];
-    v61 = self;
+    selfCopy7 = self;
   }
 
   v114[2] = v67;
   v113[3] = @"pearlSavageUID";
-  v68 = v61->_savageUID;
+  v68 = selfCopy7->_savageUID;
   if (v68)
   {
-    v69 = v61->_savageUID;
+    v69 = selfCopy7->_savageUID;
   }
 
   else
@@ -598,8 +598,8 @@ LABEL_68:
 
   v114[3] = v69;
   v70 = [NSDictionary dictionaryWithObjects:v114 forKeys:v113 count:4, v82];
-  v71 = [(PearlPairerController *)self result];
-  [v71 setData:v70];
+  result13 = [(PearlPairerController *)self result];
+  [result13 setData:v70];
 
   if (!v68)
   {
@@ -658,9 +658,9 @@ LABEL_68:
   }
 }
 
-- (BOOL)parseSeaCookieServerError:(id)a3 errorCode:(id *)a4
+- (BOOL)parseSeaCookieServerError:(id)error errorCode:(id *)code
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = handleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -670,23 +670,23 @@ LABEL_68:
   }
 
   v7 = 0;
-  if (v5 && a4)
+  if (errorCopy && code)
   {
-    if ([v5 code] == 6 && (objc_msgSend(v5, "localizedDescription"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if ([errorCopy code] == 6 && (objc_msgSend(errorCopy, "localizedDescription"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [v5 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       v10 = [[NSRegularExpression alloc] initWithPattern:@"errorCode: (-?\\d+)" options:0 error:0];
-      v11 = [v10 firstMatchInString:v9 options:0 range:{0, objc_msgSend(v9, "length")}];
+      v11 = [v10 firstMatchInString:localizedDescription options:0 range:{0, objc_msgSend(localizedDescription, "length")}];
       v7 = v11 != 0;
       if (v11)
       {
         v12 = v11;
         v13 = [v11 rangeAtIndex:1];
-        *a4 = [v9 substringWithRange:{v13, v14}];
+        *code = [localizedDescription substringWithRange:{v13, v14}];
         v15 = handleForCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = *a4;
+          v16 = *code;
           v18 = 138412290;
           v19 = v16;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "serverErrorCode: %@", &v18, 0xCu);
@@ -712,9 +712,9 @@ LABEL_68:
   return v7;
 }
 
-- (BOOL)isRetest:(id)a3
+- (BOOL)isRetest:(id)retest
 {
-  v4 = a3;
+  retestCopy = retest;
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -723,15 +723,15 @@ LABEL_68:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(PearlPairerController *)self inputs];
-  v7 = [v6 rikKeyBlob];
-  v8 = v7;
-  if (!v4 || !v7)
+  inputs = [(PearlPairerController *)self inputs];
+  rikKeyBlob = [inputs rikKeyBlob];
+  v8 = rikKeyBlob;
+  if (!retestCopy || !rikKeyBlob)
   {
 
 LABEL_10:
     v19 = 0;
-    v11 = [(PearlPairerController *)self parseSeaCookieServerError:v4 errorCode:&v19];
+    v11 = [(PearlPairerController *)self parseSeaCookieServerError:retestCopy errorCode:&v19];
     v10 = v19;
     if (!v11)
     {
@@ -744,11 +744,11 @@ LABEL_10:
       goto LABEL_22;
     }
 
-    v12 = [(PearlPairerController *)self inputs];
-    v13 = [v12 rikKeyBlob];
-    if (v13)
+    inputs2 = [(PearlPairerController *)self inputs];
+    rikKeyBlob2 = [inputs2 rikKeyBlob];
+    if (rikKeyBlob2)
     {
-      v14 = v13;
+      v14 = rikKeyBlob2;
       v15 = [v10 isEqual:@"5010"];
 
       if (v15)
@@ -790,9 +790,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v9 = [v4 code];
+  code = [retestCopy code];
 
-  if (v9 != 3194)
+  if (code != 3194)
   {
     goto LABEL_10;
   }
@@ -822,34 +822,34 @@ LABEL_23:
 
   v4 = objc_alloc_init(NSMutableDictionary);
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"VerifyData"];
-  v5 = [(PearlPairerController *)self inputs];
-  v6 = [v5 FDRCAURL];
+  inputs = [(PearlPairerController *)self inputs];
+  fDRCAURL = [inputs FDRCAURL];
 
-  if (v6)
+  if (fDRCAURL)
   {
-    v7 = [(PearlPairerController *)self inputs];
-    v8 = [v7 FDRCAURL];
-    [v4 setObject:v8 forKeyedSubscript:@"CAURL"];
+    inputs2 = [(PearlPairerController *)self inputs];
+    fDRCAURL2 = [inputs2 FDRCAURL];
+    [v4 setObject:fDRCAURL2 forKeyedSubscript:@"CAURL"];
   }
 
-  v9 = [(PearlPairerController *)self inputs];
-  v10 = [v9 FDRDSURL];
+  inputs3 = [(PearlPairerController *)self inputs];
+  fDRDSURL = [inputs3 FDRDSURL];
 
-  if (v10)
+  if (fDRDSURL)
   {
-    v11 = [(PearlPairerController *)self inputs];
-    v12 = [v11 FDRDSURL];
-    [v4 setObject:v12 forKeyedSubscript:@"DSURL"];
+    inputs4 = [(PearlPairerController *)self inputs];
+    fDRDSURL2 = [inputs4 FDRDSURL];
+    [v4 setObject:fDRDSURL2 forKeyedSubscript:@"DSURL"];
   }
 
-  v13 = [(PearlPairerController *)self inputs];
-  v14 = [v13 trustObjectURL];
+  inputs5 = [(PearlPairerController *)self inputs];
+  trustObjectURL = [inputs5 trustObjectURL];
 
-  if (v14)
+  if (trustObjectURL)
   {
-    v15 = [(PearlPairerController *)self inputs];
-    v16 = [v15 trustObjectURL];
-    [v4 setObject:v16 forKeyedSubscript:@"TrustObjectURL"];
+    inputs6 = [(PearlPairerController *)self inputs];
+    trustObjectURL2 = [inputs6 trustObjectURL];
+    [v4 setObject:trustObjectURL2 forKeyedSubscript:@"TrustObjectURL"];
   }
 
   v17 = handleForCategory();
@@ -903,7 +903,7 @@ LABEL_23:
   v21 = 0u;
   v22 = 0u;
   *buf = 0u;
-  v4 = [(PearlPairerController *)self _createFDROptions];
+  _createFDROptions = [(PearlPairerController *)self _createFDROptions];
   v5 = AMFDRSealingMapCopyInstanceForClass();
   if (!v5)
   {
@@ -1124,15 +1124,15 @@ LABEL_24:
   return v5;
 }
 
-- (id)getPatchDataWithDigest:(id)a3
+- (id)getPatchDataWithDigest:(id)digest
 {
-  v31 = a3;
+  digestCopy = digest;
   v3 = MGCopyAnswer();
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   v5 = objc_opt_new();
   v6 = v5;
-  if (v4 == 3)
+  if (intValue == 3)
   {
     v38 = 0;
     v7 = &v38;
@@ -1218,8 +1218,8 @@ LABEL_36:
           if (v22)
           {
             v23 = v22;
-            v24 = [v22 SHA256DigestData];
-            if (!v24)
+            sHA256DigestData = [v22 SHA256DigestData];
+            if (!sHA256DigestData)
             {
               v25 = handleForCategory();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1230,7 +1230,7 @@ LABEL_36:
               }
             }
 
-            if ([v24 isEqualToData:v31])
+            if ([sHA256DigestData isEqualToData:digestCopy])
             {
               v28 = handleForCategory();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))

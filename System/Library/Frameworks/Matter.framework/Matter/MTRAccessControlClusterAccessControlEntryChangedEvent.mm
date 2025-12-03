@@ -1,6 +1,6 @@
 @interface MTRAccessControlClusterAccessControlEntryChangedEvent
 - (MTRAccessControlClusterAccessControlEntryChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccessControlClusterAccessControlEntryChangedEvent);
-  v5 = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self adminNodeID];
-  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setAdminNodeID:v5];
+  adminNodeID = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self adminNodeID];
+  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setAdminNodeID:adminNodeID];
 
-  v6 = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self adminPasscodeID];
-  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setAdminPasscodeID:v6];
+  adminPasscodeID = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self adminPasscodeID];
+  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setAdminPasscodeID:adminPasscodeID];
 
-  v7 = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self changeType];
-  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setChangeType:v7];
+  changeType = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self changeType];
+  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setChangeType:changeType];
 
-  v8 = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self latestValue];
-  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setLatestValue:v8];
+  latestValue = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self latestValue];
+  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setLatestValue:latestValue];
 
-  v9 = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self fabricIndex];
-  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setFabricIndex:v9];
+  fabricIndex = [(MTRAccessControlClusterAccessControlEntryChangedEvent *)self fabricIndex];
+  [(MTRAccessControlClusterAccessControlEntryChangedEvent *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

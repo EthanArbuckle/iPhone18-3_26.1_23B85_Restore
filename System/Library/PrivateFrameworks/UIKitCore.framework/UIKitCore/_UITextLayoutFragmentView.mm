@@ -1,10 +1,10 @@
 @interface _UITextLayoutFragmentView
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _UITextLayoutFragmentView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
@@ -17,8 +17,8 @@
     v5 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  v6 = [(_UITextLayoutFragmentViewBase *)self layoutFragment];
-  [v6 layoutFragmentFrame];
+  layoutFragment = [(_UITextLayoutFragmentViewBase *)self layoutFragment];
+  [layoutFragment layoutFragmentFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;

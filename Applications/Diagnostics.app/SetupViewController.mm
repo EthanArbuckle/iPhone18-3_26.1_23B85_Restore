@@ -1,10 +1,10 @@
 @interface SetupViewController
-- (_TtC11Diagnostics19SetupViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11Diagnostics19SetupViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)applicationDidResume;
 - (void)applicationWillSuspend;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SetupViewController
@@ -20,16 +20,16 @@
   *&v2[OBJC_IVAR____TtC11Diagnostics19SetupViewController_currentViewController] = v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100031520(a3);
+  selfCopy = self;
+  sub_100031520(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100032040(a3);
+  selfCopy = self;
+  sub_100032040(disappear);
 }
 
 - (void)applicationWillSuspend
@@ -52,11 +52,11 @@
 
 - (void)applicationDidResume
 {
-  v2 = self;
+  selfCopy = self;
   sub_100039904();
 }
 
-- (_TtC11Diagnostics19SetupViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11Diagnostics19SetupViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

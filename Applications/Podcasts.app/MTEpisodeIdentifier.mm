@@ -1,104 +1,104 @@
 @interface MTEpisodeIdentifier
-+ (id)identifierWithEpisode:(id)a3;
-+ (id)identifierWithPlayerItem:(id)a3;
-- (BOOL)_hasFeedURL:(id)a3;
-- (MTEpisodeIdentifier)initWithEpisode:(id)a3;
-- (MTEpisodeIdentifier)initWithPlayerItem:(id)a3;
-- (void)_updateWithPodcast:(id)a3;
++ (id)identifierWithEpisode:(id)episode;
++ (id)identifierWithPlayerItem:(id)item;
+- (BOOL)_hasFeedURL:(id)l;
+- (MTEpisodeIdentifier)initWithEpisode:(id)episode;
+- (MTEpisodeIdentifier)initWithPlayerItem:(id)item;
+- (void)_updateWithPodcast:(id)podcast;
 @end
 
 @implementation MTEpisodeIdentifier
 
-+ (id)identifierWithEpisode:(id)a3
++ (id)identifierWithEpisode:(id)episode
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithEpisode:v3];
+  episodeCopy = episode;
+  v4 = [objc_alloc(objc_opt_class()) initWithEpisode:episodeCopy];
 
   return v4;
 }
 
-+ (id)identifierWithPlayerItem:(id)a3
++ (id)identifierWithPlayerItem:(id)item
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPlayerItem:v3];
+  itemCopy = item;
+  v4 = [objc_alloc(objc_opt_class()) initWithPlayerItem:itemCopy];
 
   return v4;
 }
 
-- (MTEpisodeIdentifier)initWithEpisode:(id)a3
+- (MTEpisodeIdentifier)initWithEpisode:(id)episode
 {
-  v4 = a3;
+  episodeCopy = episode;
   v13.receiver = self;
   v13.super_class = MTEpisodeIdentifier;
   v5 = [(MTEpisodeIdentifier *)&v13 init];
   if (v5)
   {
-    v6 = [v4 uuid];
-    [(MTEpisodeIdentifier *)v5 setEpisodeUUID:v6];
+    uuid = [episodeCopy uuid];
+    [(MTEpisodeIdentifier *)v5 setEpisodeUUID:uuid];
 
-    v7 = [v4 guid];
-    [(MTEpisodeIdentifier *)v5 setEpisodeGUID:v7];
+    guid = [episodeCopy guid];
+    [(MTEpisodeIdentifier *)v5 setEpisodeGUID:guid];
 
-    v8 = +[MTStoreIdentifier adamIdNumberFromStoreId:](MTStoreIdentifier, "adamIdNumberFromStoreId:", [v4 storeTrackId]);
+    v8 = +[MTStoreIdentifier adamIdNumberFromStoreId:](MTStoreIdentifier, "adamIdNumberFromStoreId:", [episodeCopy storeTrackId]);
     [(MTEpisodeIdentifier *)v5 setEpisodeAdamID:v8];
 
-    v9 = +[MTStoreIdentifier validatedIdNumberFromStoreId:](MTStoreIdentifier, "validatedIdNumberFromStoreId:", [v4 storeTrackId]);
+    v9 = +[MTStoreIdentifier validatedIdNumberFromStoreId:](MTStoreIdentifier, "validatedIdNumberFromStoreId:", [episodeCopy storeTrackId]);
     [(MTEpisodeIdentifier *)v5 setEpisodeSerpentID:v9];
 
-    v10 = [v4 podcast];
-    if (v10)
+    podcast = [episodeCopy podcast];
+    if (podcast)
     {
-      [(MTEpisodeIdentifier *)v5 _updateWithPodcast:v10];
+      [(MTEpisodeIdentifier *)v5 _updateWithPodcast:podcast];
     }
 
     else
     {
-      v11 = [v4 podcastUuid];
-      [(MTEpisodeIdentifier *)v5 setPodcastUUID:v11];
+      podcastUuid = [episodeCopy podcastUuid];
+      [(MTEpisodeIdentifier *)v5 setPodcastUUID:podcastUuid];
     }
   }
 
   return v5;
 }
 
-- (MTEpisodeIdentifier)initWithPlayerItem:(id)a3
+- (MTEpisodeIdentifier)initWithPlayerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = MTEpisodeIdentifier;
   v5 = [(MTEpisodeIdentifier *)&v16 init];
   if (v5)
   {
-    v6 = [v4 episodeUuid];
-    [(MTEpisodeIdentifier *)v5 setEpisodeUUID:v6];
+    episodeUuid = [itemCopy episodeUuid];
+    [(MTEpisodeIdentifier *)v5 setEpisodeUUID:episodeUuid];
 
-    v7 = [v4 episodeGuid];
-    [(MTEpisodeIdentifier *)v5 setEpisodeGUID:v7];
+    episodeGuid = [itemCopy episodeGuid];
+    [(MTEpisodeIdentifier *)v5 setEpisodeGUID:episodeGuid];
 
-    v8 = +[MTStoreIdentifier adamIdNumberFromStoreId:](MTStoreIdentifier, "adamIdNumberFromStoreId:", [v4 episodeStoreId]);
+    v8 = +[MTStoreIdentifier adamIdNumberFromStoreId:](MTStoreIdentifier, "adamIdNumberFromStoreId:", [itemCopy episodeStoreId]);
     [(MTEpisodeIdentifier *)v5 setEpisodeAdamID:v8];
 
-    v9 = +[MTStoreIdentifier validatedIdNumberFromStoreId:](MTStoreIdentifier, "validatedIdNumberFromStoreId:", [v4 episodeStoreId]);
+    v9 = +[MTStoreIdentifier validatedIdNumberFromStoreId:](MTStoreIdentifier, "validatedIdNumberFromStoreId:", [itemCopy episodeStoreId]);
     [(MTEpisodeIdentifier *)v5 setEpisodeSerpentID:v9];
 
-    v10 = [v4 episode];
-    v11 = [v10 podcast];
+    episode = [itemCopy episode];
+    podcast = [episode podcast];
 
-    if (v11)
+    if (podcast)
     {
-      [(MTEpisodeIdentifier *)v5 _updateWithPodcast:v11];
+      [(MTEpisodeIdentifier *)v5 _updateWithPodcast:podcast];
     }
 
     else
     {
-      v12 = [v4 podcastUuid];
-      [(MTEpisodeIdentifier *)v5 setPodcastUUID:v12];
+      podcastUuid = [itemCopy podcastUuid];
+      [(MTEpisodeIdentifier *)v5 setPodcastUUID:podcastUuid];
 
-      v13 = +[MTStoreIdentifier adamIdNumberFromStoreId:](MTStoreIdentifier, "adamIdNumberFromStoreId:", [v4 podcastStoreId]);
+      v13 = +[MTStoreIdentifier adamIdNumberFromStoreId:](MTStoreIdentifier, "adamIdNumberFromStoreId:", [itemCopy podcastStoreId]);
       [(MTEpisodeIdentifier *)v5 setPodcastAdamID:v13];
 
-      v14 = [v4 podcastFeedUrl];
-      [(MTEpisodeIdentifier *)v5 setCurrentPodcastFeedURL:v14];
+      podcastFeedUrl = [itemCopy podcastFeedUrl];
+      [(MTEpisodeIdentifier *)v5 setCurrentPodcastFeedURL:podcastFeedUrl];
 
       [(MTEpisodeIdentifier *)v5 setOriginalPodcastFeedURL:0];
     }
@@ -107,29 +107,29 @@
   return v5;
 }
 
-- (void)_updateWithPodcast:(id)a3
+- (void)_updateWithPodcast:(id)podcast
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  [(MTEpisodeIdentifier *)self setPodcastUUID:v5];
+  podcastCopy = podcast;
+  uuid = [podcastCopy uuid];
+  [(MTEpisodeIdentifier *)self setPodcastUUID:uuid];
 
-  v6 = +[MTStoreIdentifier adamIdNumberFromStoreId:](MTStoreIdentifier, "adamIdNumberFromStoreId:", [v4 storeCollectionId]);
+  v6 = +[MTStoreIdentifier adamIdNumberFromStoreId:](MTStoreIdentifier, "adamIdNumberFromStoreId:", [podcastCopy storeCollectionId]);
   [(MTEpisodeIdentifier *)self setPodcastAdamID:v6];
 
-  v7 = [v4 currentFeedURL];
-  v8 = [v7 absoluteString];
-  [(MTEpisodeIdentifier *)self setCurrentPodcastFeedURL:v8];
+  currentFeedURL = [podcastCopy currentFeedURL];
+  absoluteString = [currentFeedURL absoluteString];
+  [(MTEpisodeIdentifier *)self setCurrentPodcastFeedURL:absoluteString];
 
-  v9 = [v4 feedURL];
+  feedURL = [podcastCopy feedURL];
 
-  [(MTEpisodeIdentifier *)self setOriginalPodcastFeedURL:v9];
+  [(MTEpisodeIdentifier *)self setOriginalPodcastFeedURL:feedURL];
 }
 
-- (BOOL)_hasFeedURL:(id)a3
+- (BOOL)_hasFeedURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MTEpisodeIdentifier *)self currentPodcastFeedURL];
-  v6 = [v5 isEqualToString:v4];
+  lCopy = l;
+  currentPodcastFeedURL = [(MTEpisodeIdentifier *)self currentPodcastFeedURL];
+  v6 = [currentPodcastFeedURL isEqualToString:lCopy];
 
   if (v6)
   {
@@ -138,8 +138,8 @@
 
   else
   {
-    v8 = [(MTEpisodeIdentifier *)self originalPodcastFeedURL];
-    v7 = [v8 isEqualToString:v4];
+    originalPodcastFeedURL = [(MTEpisodeIdentifier *)self originalPodcastFeedURL];
+    v7 = [originalPodcastFeedURL isEqualToString:lCopy];
   }
 
   return v7;

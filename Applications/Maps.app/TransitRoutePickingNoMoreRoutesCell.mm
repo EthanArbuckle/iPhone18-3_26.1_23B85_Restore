@@ -1,25 +1,25 @@
 @interface TransitRoutePickingNoMoreRoutesCell
 - (TransitRoutePickingNoMoreRoutesCell)init;
 - (id)_autolayoutConstraints;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_createSubviews;
 - (void)_updateConstraintValues;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation TransitRoutePickingNoMoreRoutesCell
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = TransitRoutePickingNoMoreRoutesCell;
-  [(TransitRoutePickingNoMoreRoutesCell *)&v4 setHighlighted:0 animated:a4];
+  [(TransitRoutePickingNoMoreRoutesCell *)&v4 setHighlighted:0 animated:animated];
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = TransitRoutePickingNoMoreRoutesCell;
@@ -28,13 +28,13 @@
 
 - (void)_updateConstraintValues
 {
-  v3 = [(_MKUILabel *)self->_noMoreRoutesLabel font];
-  [v3 _scaledValueForValue:28.0];
+  font = [(_MKUILabel *)self->_noMoreRoutesLabel font];
+  [font _scaledValueForValue:28.0];
   UIRoundToViewScale();
   [(NSLayoutConstraint *)self->_labelToTopConstraint setConstant:?];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   v4 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleSubhead addingSymbolicTraits:0];
   [(_MKUILabel *)self->_noMoreRoutesLabel setFont:v4];
@@ -64,32 +64,32 @@
 {
   v19.receiver = self;
   v19.super_class = TransitRoutePickingNoMoreRoutesCell;
-  v3 = [(RoutePickingCell *)&v19 _autolayoutConstraints];
-  v4 = [(_MKUILabel *)self->_noMoreRoutesLabel leadingAnchor];
-  v5 = [(TransitRoutePickingNoMoreRoutesCell *)self contentView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
-  [v3 addObject:v7];
+  _autolayoutConstraints = [(RoutePickingCell *)&v19 _autolayoutConstraints];
+  leadingAnchor = [(_MKUILabel *)self->_noMoreRoutesLabel leadingAnchor];
+  contentView = [(TransitRoutePickingNoMoreRoutesCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [_autolayoutConstraints addObject:v7];
 
-  v8 = [(TransitRoutePickingNoMoreRoutesCell *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(_MKUILabel *)self->_noMoreRoutesLabel lastBaselineAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:8.0];
-  [v3 addObject:v11];
+  contentView2 = [(TransitRoutePickingNoMoreRoutesCell *)self contentView];
+  bottomAnchor = [contentView2 bottomAnchor];
+  lastBaselineAnchor = [(_MKUILabel *)self->_noMoreRoutesLabel lastBaselineAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:8.0];
+  [_autolayoutConstraints addObject:v11];
 
-  v12 = [(_MKUILabel *)self->_noMoreRoutesLabel firstBaselineAnchor];
-  v13 = [(TransitRoutePickingNoMoreRoutesCell *)self contentView];
-  v14 = [v13 topAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  firstBaselineAnchor = [(_MKUILabel *)self->_noMoreRoutesLabel firstBaselineAnchor];
+  contentView3 = [(TransitRoutePickingNoMoreRoutesCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  v15 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   labelToTopConstraint = self->_labelToTopConstraint;
   self->_labelToTopConstraint = v15;
 
-  [v3 addObject:self->_labelToTopConstraint];
+  [_autolayoutConstraints addObject:self->_labelToTopConstraint];
   [(TransitRoutePickingNoMoreRoutesCell *)self _updateConstraintValues];
   v17 = +[NSNotificationCenter defaultCenter];
   [v17 addObserver:self selector:"_contentSizeCategoryDidChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
-  return v3;
+  return _autolayoutConstraints;
 }
 
 - (void)_createSubviews
@@ -106,8 +106,8 @@
 
   [(_MKUILabel *)self->_noMoreRoutesLabel setText:v4];
   [(_MKUILabel *)self->_noMoreRoutesLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(TransitRoutePickingNoMoreRoutesCell *)self contentView];
-  [v7 addSubview:self->_noMoreRoutesLabel];
+  contentView = [(TransitRoutePickingNoMoreRoutesCell *)self contentView];
+  [contentView addSubview:self->_noMoreRoutesLabel];
 
   v8 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleSubhead addingSymbolicTraits:0];
   [(_MKUILabel *)self->_noMoreRoutesLabel setFont:v8];

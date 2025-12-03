@@ -1,18 +1,18 @@
 @interface ASDExternalManifestRequest
-- (void)startWithCompletionBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
 @end
 
 @implementation ASDExternalManifestRequest
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   newValue[0] = MEMORY[0x1E69E9820];
   newValue[1] = 3221225472;
   newValue[2] = __55__ASDExternalManifestRequest_startWithCompletionBlock___block_invoke;
   newValue[3] = &unk_1E7CDBB58;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(ASDEphemeralRequest *)self _startWithCompletionHandler:?];
 }
 

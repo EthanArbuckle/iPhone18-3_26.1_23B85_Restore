@@ -1,6 +1,6 @@
 @interface _EXAppExtensionBrowserConfiguration
 - (NSArray)extensionPointIdentifiers;
-- (void)setExtensionPointIdentifiers:(id)a3;
+- (void)setExtensionPointIdentifiers:(id)identifiers;
 @end
 
 @implementation _EXAppExtensionBrowserConfiguration
@@ -14,7 +14,7 @@
   return v3;
 }
 
-- (void)setExtensionPointIdentifiers:(id)a3
+- (void)setExtensionPointIdentifiers:(id)identifiers
 {
   v4 = sub_1D2A004A8();
   v5 = *(self + OBJC_IVAR____EXAppExtensionBrowserConfiguration_extensionPointIdentifiers);

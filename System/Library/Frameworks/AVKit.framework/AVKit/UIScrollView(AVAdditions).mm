@@ -9,7 +9,7 @@
 
 - (uint64_t)avkit_isBeingScrolledQuickly
 {
-  [a1 _horizontalVelocity];
+  [self _horizontalVelocity];
   if (v2 < 0.0)
   {
     v2 = -v2;
@@ -20,7 +20,7 @@
     return 1;
   }
 
-  [a1 _verticalVelocity];
+  [self _verticalVelocity];
   if (v3 < 0.0)
   {
     v3 = -v3;
@@ -31,49 +31,49 @@
     return 1;
   }
 
-  v5 = [a1 superview];
-  v6 = [v5 avkit_isBeingScrolledQuickly];
+  superview = [self superview];
+  avkit_isBeingScrolledQuickly = [superview avkit_isBeingScrolledQuickly];
 
-  return v6;
+  return avkit_isBeingScrolledQuickly;
 }
 
 - (uint64_t)avkit_isBeingScrolled
 {
-  if ([a1 isDecelerating] & 1) != 0 || (objc_msgSend(a1, "isDragging") & 1) != 0 || (objc_msgSend(a1, "isScrollAnimating") & 1) != 0 || (objc_msgSend(a1, "_isAnimatingScrollTest"))
+  if ([self isDecelerating] & 1) != 0 || (objc_msgSend(self, "isDragging") & 1) != 0 || (objc_msgSend(self, "isScrollAnimating") & 1) != 0 || (objc_msgSend(self, "_isAnimatingScrollTest"))
   {
     return 1;
   }
 
-  v3 = [a1 superview];
-  v4 = [v3 avkit_isBeingScrolled];
+  superview = [self superview];
+  avkit_isBeingScrolled = [superview avkit_isBeingScrolled];
 
-  return v4;
+  return avkit_isBeingScrolled;
 }
 
 - (uint64_t)avkit_isBeingScrollTested
 {
-  if ([a1 _isAnimatingScrollTest])
+  if ([self _isAnimatingScrollTest])
   {
     return 1;
   }
 
-  v3 = [a1 superview];
-  v4 = [v3 avkit_isBeingScrollTested];
+  superview = [self superview];
+  avkit_isBeingScrollTested = [superview avkit_isBeingScrollTested];
 
-  return v4;
+  return avkit_isBeingScrollTested;
 }
 
 - (uint64_t)avkit_isDescendantOfNonPagingScrollView
 {
-  if (![a1 isPagingEnabled])
+  if (![self isPagingEnabled])
   {
     return 1;
   }
 
-  v2 = [a1 superview];
-  v3 = [v2 avkit_isDescendantOfNonPagingScrollView];
+  superview = [self superview];
+  avkit_isDescendantOfNonPagingScrollView = [superview avkit_isDescendantOfNonPagingScrollView];
 
-  return v3;
+  return avkit_isDescendantOfNonPagingScrollView;
 }
 
 @end

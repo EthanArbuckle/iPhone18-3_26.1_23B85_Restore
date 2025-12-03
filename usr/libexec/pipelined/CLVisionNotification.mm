@@ -1,13 +1,13 @@
 @interface CLVisionNotification
 - (CLVisionNotification)init;
-- (CLVisionNotification)initWithARSessionState:(unint64_t)a3;
-- (CLVisionNotification)initWithCoder:(id)a3;
+- (CLVisionNotification)initWithARSessionState:(unint64_t)state;
+- (CLVisionNotification)initWithCoder:(id)coder;
 - (CLVisionNotification)initWithSerializedVIOEstimation:()basic_string<char;
 - (CLVisionNotification)initWithSerializedVLLocalizationResult:()basic_string<char;
 - (basic_string<char,)serializedVIOEstimation;
 - (basic_string<char,)serializedVLLocalizationResult;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLVisionNotification
@@ -19,7 +19,7 @@
   return 0;
 }
 
-- (CLVisionNotification)initWithARSessionState:(unint64_t)a3
+- (CLVisionNotification)initWithARSessionState:(unint64_t)state
 {
   v8.receiver = self;
   v8.super_class = CLVisionNotification;
@@ -27,7 +27,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_arSessionState = a3;
+    v4->_arSessionState = state;
     v4->_notificationType = 0;
     v6 = v4;
   }
@@ -67,18 +67,18 @@
   return v5;
 }
 
-- (CLVisionNotification)initWithCoder:(id)a3
+- (CLVisionNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CLVisionNotification;
   v5 = [(CLVisionNotification *)&v19 init];
   if (v5)
   {
-    v5->_arSessionState = [v4 decodeIntForKey:@"arSessionState"];
-    v5->_notificationType = [v4 decodeIntForKey:@"notificationType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vioEstimation"];
-    v7 = [v6 bytes];
+    v5->_arSessionState = [coderCopy decodeIntForKey:@"arSessionState"];
+    v5->_notificationType = [coderCopy decodeIntForKey:@"notificationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vioEstimation"];
+    bytes = [v6 bytes];
     v8 = [v6 length];
     v9 = v8;
     if (v8 > 0x7FFFFFFFFFFFFFF7)
@@ -94,7 +94,7 @@
     HIBYTE(v18) = v8;
     if (v8)
     {
-      memmove(&__dst, v7, v8);
+      memmove(&__dst, bytes, v8);
       *(&__dst + v9) = 0;
       if ((*(&v5->_serializedVIOEstimation.__rep_.__l + 23) & 0x80000000) == 0)
       {
@@ -115,10 +115,10 @@
 LABEL_6:
     *v5->_serializedVIOEstimation.__rep_.__s.__data_ = __dst;
     *(&v5->_serializedVIOEstimation.__rep_.__l + 2) = v18;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vlLocalizationResult"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vlLocalizationResult"];
 
     v11 = v10;
-    v12 = [v10 bytes];
+    bytes2 = [v10 bytes];
     v13 = [v10 length];
     v14 = v13;
     if (v13 > 0x7FFFFFFFFFFFFFF7)
@@ -134,7 +134,7 @@ LABEL_6:
     HIBYTE(v18) = v13;
     if (v13)
     {
-      memmove(&__dst, v12, v13);
+      memmove(&__dst, bytes2, v13);
       *(&__dst + v14) = 0;
       if ((*(&v5->_serializedVLLocalizationResult.__rep_.__l + 23) & 0x80000000) == 0)
       {
@@ -165,11 +165,11 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  [v10 encodeInt:LODWORD(self->_arSessionState) forKey:@"arSessionState"];
-  [v10 encodeInt:self->_notificationType forKey:@"notificationType"];
+  coderCopy = coder;
+  [coderCopy encodeInt:LODWORD(self->_arSessionState) forKey:@"arSessionState"];
+  [coderCopy encodeInt:self->_notificationType forKey:@"notificationType"];
   size = *(&self->_serializedVIOEstimation.__rep_.__l + 23);
   if ((size & 0x8000000000000000) != 0)
   {
@@ -183,7 +183,7 @@ LABEL_11:
   }
 
   v6 = [NSData dataWithBytes:data length:size];
-  [v10 encodeObject:v6 forKey:@"vioEstimation"];
+  [coderCopy encodeObject:v6 forKey:@"vioEstimation"];
 
   v7 = *(&self->_serializedVLLocalizationResult.__rep_.__l + 23);
   if ((v7 & 0x8000000000000000) != 0)
@@ -198,7 +198,7 @@ LABEL_11:
   }
 
   v9 = [NSData dataWithBytes:p_serializedVLLocalizationResult length:v7];
-  [v10 encodeObject:v9 forKey:@"vlLocalizationResult"];
+  [coderCopy encodeObject:v9 forKey:@"vlLocalizationResult"];
 }
 
 - (basic_string<char,)serializedVIOEstimation

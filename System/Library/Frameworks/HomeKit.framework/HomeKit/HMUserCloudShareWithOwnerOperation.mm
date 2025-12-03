@@ -1,23 +1,23 @@
 @interface HMUserCloudShareWithOwnerOperation
 + (id)logCategory;
-- (HMUserCloudShareWithOwnerOperation)initWithShare:(id)a3 container:(id)a4 ownerUser:(id)a5 allowWriteAccess:(BOOL)a6 currentUser:(id)a7 analyticsEventSender:(id)a8;
+- (HMUserCloudShareWithOwnerOperation)initWithShare:(id)share container:(id)container ownerUser:(id)user allowWriteAccess:(BOOL)access currentUser:(id)currentUser analyticsEventSender:(id)sender;
 - (id)logIdentifier;
-- (void)fetchParticipantForLookupInfo:(id)a3 completion:(id)a4;
+- (void)fetchParticipantForLookupInfo:(id)info completion:(id)completion;
 - (void)main;
-- (void)removeOwnerAsParticipant:(id)a3 completion:(id)a4;
-- (void)saveShareAndObtainSavedOwner:(id)a3 completion:(id)a4;
-- (void)sendShareToOwner:(id)a3 from:(id)a4 savedOwnerAsParticipant:(id)a5 share:(id)a6 completion:(id)a7;
+- (void)removeOwnerAsParticipant:(id)participant completion:(id)completion;
+- (void)saveShareAndObtainSavedOwner:(id)owner completion:(id)completion;
+- (void)sendShareToOwner:(id)owner from:(id)from savedOwnerAsParticipant:(id)participant share:(id)share completion:(id)completion;
 @end
 
 @implementation HMUserCloudShareWithOwnerOperation
 
 - (id)logIdentifier
 {
-  v2 = [(HMUserCloudShareWithOwnerOperation *)self currentUser];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  currentUser = [(HMUserCloudShareWithOwnerOperation *)self currentUser];
+  uuid = [currentUser uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (void)main
@@ -26,8 +26,8 @@
   v29.receiver = self;
   v29.super_class = HMUserCloudShareWithOwnerOperation;
   [(HMUserCloudShareWithOwnerOperation *)&v29 main];
-  v3 = [(HMUserCloudShareWithOwnerOperation *)self completion];
-  v4 = v3 == 0;
+  completion = [(HMUserCloudShareWithOwnerOperation *)self completion];
+  v4 = completion == 0;
 
   if (v4)
   {
@@ -35,23 +35,23 @@
     objc_exception_throw(v19);
   }
 
-  v5 = [(HMUserCloudShareWithOwnerOperation *)self completion];
+  completion2 = [(HMUserCloudShareWithOwnerOperation *)self completion];
   [(HMUserCloudShareWithOwnerOperation *)self setCompletion:0];
   logger = self->_logger;
   if (os_signpost_enabled(logger))
   {
     v7 = logger;
-    v8 = [(HMUserCloudShareWithOwnerOperation *)self operationID];
-    v9 = [(HMUserCloudShareWithOwnerOperation *)self currentUser];
-    v10 = [v9 uuid];
-    v11 = [(HMUserCloudShareWithOwnerOperation *)self ownerUser];
-    v12 = [v11 uuid];
+    operationID = [(HMUserCloudShareWithOwnerOperation *)self operationID];
+    currentUser = [(HMUserCloudShareWithOwnerOperation *)self currentUser];
+    uuid = [currentUser uuid];
+    ownerUser = [(HMUserCloudShareWithOwnerOperation *)self ownerUser];
+    uuid2 = [ownerUser uuid];
     *buf = 138412802;
-    *&buf[4] = v8;
+    *&buf[4] = operationID;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = uuid;
     *&buf[22] = 2112;
-    v31 = v12;
+    v31 = uuid2;
     _os_signpost_emit_with_name_impl(&dword_19BB39000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MultiUser.Share.Operation", "OperationID=%{signpost.description:attribute}@ User=%{signpost.description:attribute}@ Owner=%{signpost.description:attribute}@ ", buf, 0x20u);
   }
 
@@ -60,7 +60,7 @@
   *&buf[16] = 0x3032000000;
   v31 = __Block_byref_object_copy__40884;
   v32 = __Block_byref_object_dispose__40885;
-  v33 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -69,7 +69,7 @@
   objc_copyWeak(v27, &location);
   v26 = buf;
   v27[1] = 0xEEEEB0B5B2B2EEEELL;
-  v13 = v5;
+  v13 = completion2;
   v25 = v13;
   v14 = _Block_copy(aBlock);
   v15 = self->_logger;
@@ -80,7 +80,7 @@
   }
 
   [*(*&buf[8] + 40) setObject:&unk_1F0EFD148 forKeyedSubscript:@"stage"];
-  v16 = [(HMUserCloudShareWithOwnerOperation *)self ownerUser];
+  ownerUser2 = [(HMUserCloudShareWithOwnerOperation *)self ownerUser];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __42__HMUserCloudShareWithOwnerOperation_main__block_invoke_77;
@@ -89,7 +89,7 @@
   v20[4] = self;
   v21 = v17;
   v22 = buf;
-  [v16 fetchShareLookupInfo:v20];
+  [ownerUser2 fetchShareLookupInfo:v20];
 
   objc_destroyWeak(v27);
   objc_destroyWeak(&location);
@@ -490,22 +490,22 @@ void __42__HMUserCloudShareWithOwnerOperation_main__block_invoke_92(uint64_t a1,
   }
 }
 
-- (void)sendShareToOwner:(id)a3 from:(id)a4 savedOwnerAsParticipant:(id)a5 share:(id)a6 completion:(id)a7
+- (void)sendShareToOwner:(id)owner from:(id)from savedOwnerAsParticipant:(id)participant share:(id)share completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a6;
-  v17 = [v16 URL];
-  v18 = [v14 invitationToken];
-  v19 = [v16 containerID];
+  ownerCopy = owner;
+  fromCopy = from;
+  participantCopy = participant;
+  completionCopy = completion;
+  shareCopy = share;
+  v17 = [shareCopy URL];
+  invitationToken = [participantCopy invitationToken];
+  containerID = [shareCopy containerID];
 
-  v20 = [v19 containerIdentifier];
+  containerIdentifier = [containerID containerIdentifier];
 
   v37 = 0;
-  v21 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v18 requiringSecureCoding:1 error:&v37];
+  v21 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:invitationToken requiringSecureCoding:1 error:&v37];
   v22 = v37;
   if (!v21)
   {
@@ -524,7 +524,7 @@ void __42__HMUserCloudShareWithOwnerOperation_main__block_invoke_92(uint64_t a1,
     else if (v22)
     {
 LABEL_6:
-      v15[2](v15, 0, v22);
+      completionCopy[2](completionCopy, 0, v22);
       goto LABEL_7;
     }
 
@@ -537,22 +537,22 @@ LABEL_6:
   v32[2] = __101__HMUserCloudShareWithOwnerOperation_sendShareToOwner_from_savedOwnerAsParticipant_share_completion___block_invoke;
   v32[3] = &unk_1E754BAC8;
   v32[4] = self;
-  v33 = v12;
-  v23 = v13;
+  v33 = ownerCopy;
+  v23 = fromCopy;
   v31 = v22;
-  v24 = v18;
-  v25 = v13;
-  v26 = v12;
+  v24 = invitationToken;
+  v25 = fromCopy;
+  v26 = ownerCopy;
   v27 = v23;
   v34 = v23;
-  v35 = v14;
-  v36 = v15;
+  v35 = participantCopy;
+  v36 = completionCopy;
   v28 = v27;
-  v12 = v26;
-  v13 = v25;
-  v18 = v24;
+  ownerCopy = v26;
+  fromCopy = v25;
+  invitationToken = v24;
   v22 = v31;
-  [v33 sendClientShareURL:v17 shareToken:v21 containerID:v20 fromUser:v28 completion:v32];
+  [v33 sendClientShareURL:v17 shareToken:v21 containerID:containerIdentifier fromUser:v28 completion:v32];
 
 LABEL_7:
   v30 = *MEMORY[0x1E69E9840];
@@ -629,34 +629,34 @@ void __101__HMUserCloudShareWithOwnerOperation_sendShareToOwner_from_savedOwnerA
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeOwnerAsParticipant:(id)a3 completion:(id)a4
+- (void)removeOwnerAsParticipant:(id)participant completion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMUserCloudShareWithOwnerOperation *)self share];
-  [v8 removeParticipant:v7];
+  completionCopy = completion;
+  participantCopy = participant;
+  share = [(HMUserCloudShareWithOwnerOperation *)self share];
+  [share removeParticipant:participantCopy];
 
   v9 = objc_alloc(MEMORY[0x1E695B9B8]);
-  v10 = [(HMUserCloudShareWithOwnerOperation *)self share];
-  v24[0] = v10;
+  share2 = [(HMUserCloudShareWithOwnerOperation *)self share];
+  v24[0] = share2;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   v12 = [v9 initWithRecordsToSave:v11 recordIDsToDelete:0];
 
-  v13 = [v12 configuration];
-  [v13 setQualityOfService:17];
+  configuration = [v12 configuration];
+  [configuration setQualityOfService:17];
 
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __74__HMUserCloudShareWithOwnerOperation_removeOwnerAsParticipant_completion___block_invoke;
   v21 = &unk_1E754BAA0;
-  v22 = self;
-  v23 = v6;
-  v14 = v6;
+  selfCopy = self;
+  v23 = completionCopy;
+  v14 = completionCopy;
   [v12 setModifyRecordsCompletionBlock:&v18];
   v15 = [(HMUserCloudShareWithOwnerOperation *)self container:v18];
-  v16 = [v15 privateCloudDatabase];
-  [v16 addOperation:v12];
+  privateCloudDatabase = [v15 privateCloudDatabase];
+  [privateCloudDatabase addOperation:v12];
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -728,33 +728,33 @@ void __74__HMUserCloudShareWithOwnerOperation_removeOwnerAsParticipant_completio
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveShareAndObtainSavedOwner:(id)a3 completion:(id)a4
+- (void)saveShareAndObtainSavedOwner:(id)owner completion:(id)completion
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  ownerCopy = owner;
+  completionCopy = completion;
   v8 = objc_alloc(MEMORY[0x1E695B9B8]);
-  v9 = [(HMUserCloudShareWithOwnerOperation *)self share];
-  v21[0] = v9;
+  share = [(HMUserCloudShareWithOwnerOperation *)self share];
+  v21[0] = share;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v11 = [v8 initWithRecordsToSave:v10 recordIDsToDelete:0];
 
-  v12 = [v11 configuration];
-  [v12 setQualityOfService:17];
+  configuration = [v11 configuration];
+  [configuration setQualityOfService:17];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__HMUserCloudShareWithOwnerOperation_saveShareAndObtainSavedOwner_completion___block_invoke;
   v18[3] = &unk_1E754BA78;
-  v19 = v6;
-  v20 = v7;
+  v19 = ownerCopy;
+  v20 = completionCopy;
   v18[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = ownerCopy;
+  v14 = completionCopy;
   [v11 setModifyRecordsCompletionBlock:v18];
-  v15 = [(HMUserCloudShareWithOwnerOperation *)self container];
-  v16 = [v15 privateCloudDatabase];
-  [v16 addOperation:v11];
+  container = [(HMUserCloudShareWithOwnerOperation *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [privateCloudDatabase addOperation:v11];
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -922,26 +922,26 @@ LABEL_35:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchParticipantForLookupInfo:(id)a3 completion:(id)a4
+- (void)fetchParticipantForLookupInfo:(id)info completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v6;
+    v26 = infoCopy;
     _os_log_impl(&dword_19BB39000, logger, OS_LOG_TYPE_DEFAULT, "Fetching Share Participant for %@", buf, 0xCu);
   }
 
   v9 = objc_alloc(MEMORY[0x1E695B950]);
-  v24 = v6;
+  v24 = infoCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
   v11 = [v9 initWithUserIdentityLookupInfos:v10];
 
-  v12 = [v11 configuration];
-  [v12 setQualityOfService:17];
+  configuration = [v11 configuration];
+  [configuration setQualityOfService:17];
 
   v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
   v22[0] = MEMORY[0x1E69E9820];
@@ -956,13 +956,13 @@ LABEL_35:
   v19[2] = __79__HMUserCloudShareWithOwnerOperation_fetchParticipantForLookupInfo_completion___block_invoke_2;
   v19[3] = &unk_1E754D898;
   v20 = v14;
-  v21 = v7;
+  v21 = completionCopy;
   v19[4] = self;
   v15 = v14;
-  v16 = v7;
+  v16 = completionCopy;
   [v11 setFetchShareParticipantsCompletionBlock:v19];
-  v17 = [(HMUserCloudShareWithOwnerOperation *)self container];
-  [v17 addOperation:v11];
+  container = [(HMUserCloudShareWithOwnerOperation *)self container];
+  [container addOperation:v11];
 
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -1008,13 +1008,13 @@ void __79__HMUserCloudShareWithOwnerOperation_fetchParticipantForLookupInfo_comp
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (HMUserCloudShareWithOwnerOperation)initWithShare:(id)a3 container:(id)a4 ownerUser:(id)a5 allowWriteAccess:(BOOL)a6 currentUser:(id)a7 analyticsEventSender:(id)a8
+- (HMUserCloudShareWithOwnerOperation)initWithShare:(id)share container:(id)container ownerUser:(id)user allowWriteAccess:(BOOL)access currentUser:(id)currentUser analyticsEventSender:(id)sender
 {
-  v27 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  shareCopy = share;
+  containerCopy = container;
+  userCopy = user;
+  currentUserCopy = currentUser;
+  senderCopy = sender;
   v28.receiver = self;
   v28.super_class = HMUserCloudShareWithOwnerOperation;
   v18 = [(HMUserCloudShareWithOwnerOperation *)&v28 init];
@@ -1024,16 +1024,16 @@ void __79__HMUserCloudShareWithOwnerOperation_fetchParticipantForLookupInfo_comp
     logger = v18->_logger;
     v18->_logger = v19;
 
-    v21 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     operationID = v18->_operationID;
-    v18->_operationID = v21;
+    v18->_operationID = uUID;
 
-    objc_storeStrong(&v18->_share, a3);
-    objc_storeStrong(&v18->_container, a4);
-    objc_storeStrong(&v18->_ownerUser, a5);
-    objc_storeStrong(&v18->_currentUser, a7);
-    v18->_allowWriteAccess = a6;
-    v23 = _Block_copy(v17);
+    objc_storeStrong(&v18->_share, share);
+    objc_storeStrong(&v18->_container, container);
+    objc_storeStrong(&v18->_ownerUser, user);
+    objc_storeStrong(&v18->_currentUser, currentUser);
+    v18->_allowWriteAccess = access;
+    v23 = _Block_copy(senderCopy);
     analyticsEventSender = v18->_analyticsEventSender;
     v18->_analyticsEventSender = v23;
   }

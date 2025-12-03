@@ -1,22 +1,22 @@
 @interface DetailsTabBarView.TabSegmentView
 - (BOOL)isAccessibilityElement;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
-- (_TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView)initWithCoder:(id)a3;
-- (_TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView)initWithFrame:(CGRect)a3;
+- (_TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView)initWithCoder:(id)coder;
+- (_TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setIsAccessibilityElement:(BOOL)element;
 @end
 
 @implementation DetailsTabBarView.TabSegmentView
 
-- (_TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView)initWithFrame:(CGRect)a3
+- (_TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -30,7 +30,7 @@
   return v7;
 }
 
-- (_TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView)initWithCoder:(id)a3
+- (_TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -40,11 +40,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   specialized DetailsTabBarView.TabSegmentView.init(coder:)();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -54,7 +54,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = specialized DetailsTabBarView.TabSegmentView.sizeThatFits(_:)();
   v7 = v6;
 
@@ -77,13 +77,13 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for DetailsTabBarView.TabSegmentView();
-  v3 = self;
+  selfCopy = self;
   [(DetailsTabBarView.TabSegmentView *)&v6 layoutSubviews];
   v4 = OBJC_IVAR____TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView_label;
-  v5 = *(&v3->super.super.super.isa + OBJC_IVAR____TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView_label);
-  [(DetailsTabBarView.TabSegmentView *)v3 bounds:v6.receiver];
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView_label);
+  [(DetailsTabBarView.TabSegmentView *)selfCopy bounds:v6.receiver];
   [v5 setFrame_];
-  [*(&v3->super.super.super.isa + v4) setIsAccessibilityElement_];
+  [*(&selfCopy->super.super.super.isa + v4) setIsAccessibilityElement_];
 }
 
 - (BOOL)isAccessibilityElement
@@ -97,13 +97,13 @@
   }
 
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x80);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
 
   return (v5 & 1) == 0;
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -125,11 +125,11 @@
   }
 
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC20CommunicationDetails17DetailsTabBarView14TabSegmentView_label);
-  v4 = self;
-  v5 = [v3 text];
-  if (v5)
+  selfCopy = self;
+  text = [v3 text];
+  if (text)
   {
-    v6 = v5;
+    v6 = text;
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
 
@@ -145,7 +145,7 @@
   return v10;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

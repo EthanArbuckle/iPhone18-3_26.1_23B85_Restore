@@ -4,78 +4,78 @@
 + (unint64_t)dbCacheCostLimit;
 + (unint64_t)dbCacheCountLimit;
 + (unint64_t)defaultEndpointValidThroughTimeInterval;
-- (BOOL)hasPeerTokensForURI:(id)a3 fromURI:(id)a4 service:(id)a5 validThrough:(id)a6 outReason:(unint64_t *)a7;
-- (BOOL)hasPublicKeyForURI:(id)a3 pushToken:(id)a4 fromURI:(id)a5 service:(id)a6;
-- (BOOL)startQueryForURIs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 context:(id)a7 reason:(id)a8 completionBlock:(id)a9;
-- (BOOL)startQueryForURIs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 forSending:(BOOL)a7 forceToServer:(BOOL)a8 clientRequestedForceQuery:(BOOL)a9 reason:(id)a10 completionBlock:(id)a11;
+- (BOOL)hasPeerTokensForURI:(id)i fromURI:(id)rI service:(id)service validThrough:(id)through outReason:(unint64_t *)reason;
+- (BOOL)hasPublicKeyForURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service;
+- (BOOL)startQueryForURIs:(id)is fromIdentity:(id)identity fromURI:(id)i fromService:(id)service context:(id)context reason:(id)reason completionBlock:(id)block;
+- (BOOL)startQueryForURIs:(id)is fromIdentity:(id)identity fromURI:(id)i fromService:(id)service forSending:(BOOL)sending forceToServer:(BOOL)server clientRequestedForceQuery:(BOOL)query reason:(id)self0 completionBlock:(id)self1;
 - (IDSPeerIDManager)init;
-- (IDSPeerIDManager)initWithPushHandler:(id)a3 queryHandler:(id)a4 keyTransparencyVerifier:(id)a5 userDefaults:(id)a6;
-- (IDSPeerIDManager)initWithPushHandler:(id)a3 queryHandler:(id)a4 restrictedPersistenceManager:(id)a5 keyTransparencyVerifier:(id)a6 userDefaults:(id)a7 dbCache:(id)a8 standardIDStatusCache:(id)a9 restrictedIDStatusCache:(id)a10;
-- (double)timeToCacheURI:(id)a3 fromURI:(id)a4 service:(id)a5 forStatus:(unsigned int)a6;
-- (id)_disasterModeTokenForURI:(id)a3;
-- (id)_endpointsForService:(id)a3 fromURI:(id)a4 toURI:(id)a5 ignoreExpiration:(BOOL)a6 ignoreCache:(BOOL)a7 hitCache:(BOOL *)a8;
-- (id)_keyTransparencyVerifierResultForService:(id)a3 fromURI:(id)a4 toURI:(id)a5;
-- (id)_loadCachedPeerIDValueForKey:(id)a3 ignoreExpiration:(BOOL)a4;
-- (id)_peerIDKeysForService:(id)a3;
-- (id)_peerIDKeysForService:(id)a3 andFromURI:(id)a4;
-- (id)_queryCacheReasonString:(int64_t)a3;
-- (id)activeURIsFromURI:(id)a3 service:(id)a4;
-- (id)endpointForPushToken:(id)a3 URI:(id)a4 service:(id)a5 fromURI:(id)a6;
-- (id)endpointsForURIs:(id)a3 fromURI:(id)a4 service:(id)a5 fromIdentity:(id)a6 filterBehavior:(unint64_t)a7 allowRefresh:(BOOL)a8;
-- (id)endpointsForURIs:(id)a3 service:(id)a4 fromURI:(id)a5;
-- (id)endpointsForURIs:(id)a3 service:(id)a4 fromURI:(id)a5 ignoringTTL:(BOOL)a6;
-- (id)endpointsForURIs:(id)a3 service:(id)a4 fromURI:(id)a5 withCapabilities:(id)a6;
-- (id)finishedQueryWithInfo:(id)a3 forURIs:(id)a4 fromURI:(id)a5 service:(id)a6;
-- (id)idInfoResultForURIs:(id)a3 service:(id)a4 fromURI:(id)a5 infoType:(unint64_t)a6 infoOptions:(id)a7 idStatusUpdates:(id)a8;
-- (id)keyTransparencyContextForService:(id)a3 fromURI:(id)a4 toURI:(id)a5;
-- (id)lightDescriptionForVerifierResult:(id)a3;
-- (id)loadAllStatusesForService:(id)a3;
-- (id)loadStatusForService:(id)a3 URI:(id)a4;
-- (id)peerTokensForURI:(id)a3 fromURI:(id)a4 service:(id)a5;
-- (id)persistenceManagerForService:(id)a3;
+- (IDSPeerIDManager)initWithPushHandler:(id)handler queryHandler:(id)queryHandler keyTransparencyVerifier:(id)verifier userDefaults:(id)defaults;
+- (IDSPeerIDManager)initWithPushHandler:(id)handler queryHandler:(id)queryHandler restrictedPersistenceManager:(id)manager keyTransparencyVerifier:(id)verifier userDefaults:(id)defaults dbCache:(id)cache standardIDStatusCache:(id)statusCache restrictedIDStatusCache:(id)self0;
+- (double)timeToCacheURI:(id)i fromURI:(id)rI service:(id)service forStatus:(unsigned int)status;
+- (id)_disasterModeTokenForURI:(id)i;
+- (id)_endpointsForService:(id)service fromURI:(id)i toURI:(id)rI ignoreExpiration:(BOOL)expiration ignoreCache:(BOOL)cache hitCache:(BOOL *)hitCache;
+- (id)_keyTransparencyVerifierResultForService:(id)service fromURI:(id)i toURI:(id)rI;
+- (id)_loadCachedPeerIDValueForKey:(id)key ignoreExpiration:(BOOL)expiration;
+- (id)_peerIDKeysForService:(id)service;
+- (id)_peerIDKeysForService:(id)service andFromURI:(id)i;
+- (id)_queryCacheReasonString:(int64_t)string;
+- (id)activeURIsFromURI:(id)i service:(id)service;
+- (id)endpointForPushToken:(id)token URI:(id)i service:(id)service fromURI:(id)rI;
+- (id)endpointsForURIs:(id)is fromURI:(id)i service:(id)service fromIdentity:(id)identity filterBehavior:(unint64_t)behavior allowRefresh:(BOOL)refresh;
+- (id)endpointsForURIs:(id)is service:(id)service fromURI:(id)i;
+- (id)endpointsForURIs:(id)is service:(id)service fromURI:(id)i ignoringTTL:(BOOL)l;
+- (id)endpointsForURIs:(id)is service:(id)service fromURI:(id)i withCapabilities:(id)capabilities;
+- (id)finishedQueryWithInfo:(id)info forURIs:(id)is fromURI:(id)i service:(id)service;
+- (id)idInfoResultForURIs:(id)is service:(id)service fromURI:(id)i infoType:(unint64_t)type infoOptions:(id)options idStatusUpdates:(id)updates;
+- (id)keyTransparencyContextForService:(id)service fromURI:(id)i toURI:(id)rI;
+- (id)lightDescriptionForVerifierResult:(id)result;
+- (id)loadAllStatusesForService:(id)service;
+- (id)loadStatusForService:(id)service URI:(id)i;
+- (id)peerTokensForURI:(id)i fromURI:(id)rI service:(id)service;
+- (id)persistenceManagerForService:(id)service;
 - (id)persistenceManagers;
 - (id)pleaseDontCopyCacheDictionaryRepresentation;
-- (id)publicDeviceIdentityContainerForPushToken:(id)a3;
-- (id)publicKeyForURI:(id)a3 pushToken:(id)a4 fromURI:(id)a5 service:(id)a6;
-- (id)queryDateForService:(id)a3 fromURI:(id)a4 toURI:(id)a5;
-- (id)senderCorrelationIdentifierForURI:(id)a3 fromURI:(id)a4 service:(id)a5;
-- (id)senderCorrelationIdentifierForURI:(id)a3 pushToken:(id)a4 fromURI:(id)a5 service:(id)a6;
-- (id)sessionTokenForURI:(id)a3 pushToken:(id)a4 fromURI:(id)a5 service:(id)a6 expirationDate:(id *)a7 refreshDate:(id *)a8 fromIdentity:(id)a9 includeSelfDevice:(BOOL)a10;
-- (id)sessionTokensForURIs:(id)a3 fromURI:(id)a4 service:(id)a5 fromIdentity:(id)a6 includeSelfDevice:(BOOL)a7 fullyRemoveSelfDevice:(BOOL)a8 allowRefresh:(BOOL)a9;
-- (id)shortHandleForURI:(id)a3 fromURI:(id)a4;
-- (id)uriForShortHandle:(id)a3;
-- (id)urisMatchingPushToken:(id)a3 service:(id)a4;
-- (id)verifierResultsForURIs:(id)a3 service:(id)a4 fromURI:(id)a5;
-- (int64_t)_valueOfProperty:(id)a3 forURI:(id)a4 pushToken:(id)a5 fromURI:(id)a6 service:(id)a7;
-- (void)_setDisasterModeToken:(id)a3 forURI:(id)a4;
-- (void)_updateKTContext:(id)a3 forURI:(id)a4 manager:(id)a5;
-- (void)addClientDataUpdateBlock:(id)a3 forToken:(id)a4;
-- (void)addCompletionBlock:(id)a3 forToken:(id)a4;
-- (void)addEndpointQueryCompletionBlock:(id)a3 forToken:(id)a4 queue:(id)a5;
-- (void)addPurgeClientDataBlock:(id)a3 forToken:(id)a4;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
-- (void)clearCacheAndPersistImmediately:(BOOL)a3;
+- (id)publicDeviceIdentityContainerForPushToken:(id)token;
+- (id)publicKeyForURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service;
+- (id)queryDateForService:(id)service fromURI:(id)i toURI:(id)rI;
+- (id)senderCorrelationIdentifierForURI:(id)i fromURI:(id)rI service:(id)service;
+- (id)senderCorrelationIdentifierForURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service;
+- (id)sessionTokenForURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service expirationDate:(id *)date refreshDate:(id *)refreshDate fromIdentity:(id)identity includeSelfDevice:(BOOL)self0;
+- (id)sessionTokensForURIs:(id)is fromURI:(id)i service:(id)service fromIdentity:(id)identity includeSelfDevice:(BOOL)device fullyRemoveSelfDevice:(BOOL)selfDevice allowRefresh:(BOOL)refresh;
+- (id)shortHandleForURI:(id)i fromURI:(id)rI;
+- (id)uriForShortHandle:(id)handle;
+- (id)urisMatchingPushToken:(id)token service:(id)service;
+- (id)verifierResultsForURIs:(id)is service:(id)service fromURI:(id)i;
+- (int64_t)_valueOfProperty:(id)property forURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service;
+- (void)_setDisasterModeToken:(id)token forURI:(id)i;
+- (void)_updateKTContext:(id)context forURI:(id)i manager:(id)manager;
+- (void)addClientDataUpdateBlock:(id)block forToken:(id)token;
+- (void)addCompletionBlock:(id)block forToken:(id)token;
+- (void)addEndpointQueryCompletionBlock:(id)block forToken:(id)token queue:(id)queue;
+- (void)addPurgeClientDataBlock:(id)block forToken:(id)token;
+- (void)cache:(id)cache willEvictObject:(id)object;
+- (void)clearCacheAndPersistImmediately:(BOOL)immediately;
 - (void)dealloc;
-- (void)deleteAllStatusesForService:(id)a3;
-- (void)deleteStatus:(id)a3;
+- (void)deleteAllStatusesForService:(id)service;
+- (void)deleteStatus:(id)status;
 - (void)deleteStatusCache;
-- (void)deleteStatusForService:(id)a3 URI:(id)a4;
-- (void)deleteStatusesForServices:(id)a3 URIs:(id)a4;
-- (void)endpointsForURIs:(id)a3 serviceIdentifier:(id)a4 localURI:(id)a5 completion:(id)a6 queue:(id)a7;
-- (void)forgetPeerTokensForService:(id)a3 reason:(int64_t)a4;
-- (void)forgetPeerTokensForURI:(id)a3 fromURI:(id)a4 service:(id)a5 reason:(int64_t)a6;
-- (void)forgetPeerTokensForURI:(id)a3 fromURI:(id)a4 services:(id)a5 reason:(int64_t)a6;
-- (void)forgetPeerTokensForURI:(id)a3 service:(id)a4 reason:(int64_t)a5;
-- (void)forgetPeerTokensForURIs:(id)a3 services:(id)a4 reason:(int64_t)a5;
-- (void)notePeerToken:(id)a3 forURI:(id)a4 fromURI:(id)a5 service:(id)a6;
+- (void)deleteStatusForService:(id)service URI:(id)i;
+- (void)deleteStatusesForServices:(id)services URIs:(id)is;
+- (void)endpointsForURIs:(id)is serviceIdentifier:(id)identifier localURI:(id)i completion:(id)completion queue:(id)queue;
+- (void)forgetPeerTokensForService:(id)service reason:(int64_t)reason;
+- (void)forgetPeerTokensForURI:(id)i fromURI:(id)rI service:(id)service reason:(int64_t)reason;
+- (void)forgetPeerTokensForURI:(id)i fromURI:(id)rI services:(id)services reason:(int64_t)reason;
+- (void)forgetPeerTokensForURI:(id)i service:(id)service reason:(int64_t)reason;
+- (void)forgetPeerTokensForURIs:(id)is services:(id)services reason:(int64_t)reason;
+- (void)notePeerToken:(id)token forURI:(id)i fromURI:(id)rI service:(id)service;
 - (void)performCleanupTasks;
-- (void)removeClientDataUpdateBlockForToken:(id)a3;
-- (void)removeCompletionBlockForToken:(id)a3;
-- (void)removeEndpointQueryCompletionBlockForToken:(id)a3;
-- (void)removePurgeClientDataBlockForToken:(id)a3;
-- (void)saveStatus:(id)a3;
-- (void)setPersistenceManager:(id)a3;
-- (void)updateCachedVerifierResultsWithResults:(id)a3;
+- (void)removeClientDataUpdateBlockForToken:(id)token;
+- (void)removeCompletionBlockForToken:(id)token;
+- (void)removeEndpointQueryCompletionBlockForToken:(id)token;
+- (void)removePurgeClientDataBlockForToken:(id)token;
+- (void)saveStatus:(id)status;
+- (void)setPersistenceManager:(id)manager;
+- (void)updateCachedVerifierResultsWithResults:(id)results;
 @end
 
 @implementation IDSPeerIDManager
@@ -130,15 +130,15 @@
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 10000;
+    unsignedIntValue = 10000;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 + (unint64_t)dbCacheCountLimit
@@ -148,15 +148,15 @@
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 3000;
+    unsignedIntValue = 3000;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 + (unint64_t)defaultEndpointValidThroughTimeInterval
@@ -166,15 +166,15 @@
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 200;
+    unsignedIntValue = 200;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (IDSPeerIDManager)init
@@ -189,47 +189,47 @@
   return v8;
 }
 
-- (IDSPeerIDManager)initWithPushHandler:(id)a3 queryHandler:(id)a4 keyTransparencyVerifier:(id)a5 userDefaults:(id)a6
+- (IDSPeerIDManager)initWithPushHandler:(id)handler queryHandler:(id)queryHandler keyTransparencyVerifier:(id)verifier userDefaults:(id)defaults
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  defaultsCopy = defaults;
+  verifierCopy = verifier;
+  queryHandlerCopy = queryHandler;
+  handlerCopy = handler;
   v14 = objc_alloc_init(NSCache);
   [v14 setTotalCostLimit:{+[IDSPeerIDManager dbCacheCountLimit](IDSPeerIDManager, "dbCacheCountLimit")}];
   [v14 setCountLimit:{+[IDSPeerIDManager dbCacheCountLimit](IDSPeerIDManager, "dbCacheCountLimit")}];
   v15 = objc_alloc_init(NSCache);
-  v16 = [(IDSPeerIDManager *)self initWithPushHandler:v13 queryHandler:v12 restrictedPersistenceManager:0 keyTransparencyVerifier:v11 userDefaults:v10 dbCache:v14 standardIDStatusCache:v15 restrictedIDStatusCache:0];
+  v16 = [(IDSPeerIDManager *)self initWithPushHandler:handlerCopy queryHandler:queryHandlerCopy restrictedPersistenceManager:0 keyTransparencyVerifier:verifierCopy userDefaults:defaultsCopy dbCache:v14 standardIDStatusCache:v15 restrictedIDStatusCache:0];
 
   return v16;
 }
 
-- (IDSPeerIDManager)initWithPushHandler:(id)a3 queryHandler:(id)a4 restrictedPersistenceManager:(id)a5 keyTransparencyVerifier:(id)a6 userDefaults:(id)a7 dbCache:(id)a8 standardIDStatusCache:(id)a9 restrictedIDStatusCache:(id)a10
+- (IDSPeerIDManager)initWithPushHandler:(id)handler queryHandler:(id)queryHandler restrictedPersistenceManager:(id)manager keyTransparencyVerifier:(id)verifier userDefaults:(id)defaults dbCache:(id)cache standardIDStatusCache:(id)statusCache restrictedIDStatusCache:(id)self0
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a7;
-  v26 = a8;
-  v25 = a9;
-  v17 = a10;
+  handlerCopy = handler;
+  queryHandlerCopy = queryHandler;
+  managerCopy = manager;
+  verifierCopy = verifier;
+  defaultsCopy = defaults;
+  cacheCopy = cache;
+  statusCacheCopy = statusCache;
+  dStatusCacheCopy = dStatusCache;
   v39.receiver = self;
   v39.super_class = IDSPeerIDManager;
   v18 = [(IDSPeerIDManager *)&v39 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pushHandler, a3);
-    objc_storeStrong(&v19->_queryHandler, a4);
-    objc_storeStrong(&v19->_restrictedPersistenceManager, a5);
-    objc_storeStrong(&v19->_keyTransparencyVerifier, a6);
-    objc_storeStrong(&v19->_userDefaults, a7);
-    objc_storeStrong(&v19->_dbCache, a8);
+    objc_storeStrong(&v18->_pushHandler, handler);
+    objc_storeStrong(&v19->_queryHandler, queryHandler);
+    objc_storeStrong(&v19->_restrictedPersistenceManager, manager);
+    objc_storeStrong(&v19->_keyTransparencyVerifier, verifier);
+    objc_storeStrong(&v19->_userDefaults, defaults);
+    objc_storeStrong(&v19->_dbCache, cache);
     [(NSCache *)v19->_dbCache setDelegate:v19];
-    objc_storeStrong(&v19->_standardIDStatusCache, a9);
+    objc_storeStrong(&v19->_standardIDStatusCache, statusCache);
     [(NSCache *)v19->_standardIDStatusCache setDelegate:v19];
-    objc_storeStrong(&v19->_restrictedIDStatusCache, a10);
+    objc_storeStrong(&v19->_restrictedIDStatusCache, dStatusCache);
     [(NSCache *)v19->_restrictedIDStatusCache setDelegate:v19];
     objc_initWeak(&location, v19);
     if (_os_feature_enabled_impl())
@@ -278,10 +278,10 @@
   [(IDSPeerIDManager *)&v4 dealloc];
 }
 
-- (void)setPersistenceManager:(id)a3
+- (void)setPersistenceManager:(id)manager
 {
-  v4 = a3;
-  if (!v4)
+  managerCopy = manager;
+  if (!managerCopy)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -297,26 +297,26 @@
   }
 
   swiftDataManager = self->_swiftDataManager;
-  self->_swiftDataManager = v4;
+  self->_swiftDataManager = managerCopy;
 }
 
-- (id)_disasterModeTokenForURI:(id)a3
+- (id)_disasterModeTokenForURI:(id)i
 {
-  v4 = a3;
-  v5 = [v4 prefixedURI];
-  v6 = [v5 length];
+  iCopy = i;
+  prefixedURI = [iCopy prefixedURI];
+  v6 = [prefixedURI length];
 
   if (v6)
   {
     disasterModeTokens = self->_disasterModeTokens;
-    v8 = [v4 prefixedURI];
-    v9 = [(NSMutableDictionary *)disasterModeTokens objectForKey:v8];
+    prefixedURI2 = [iCopy prefixedURI];
+    v9 = [(NSMutableDictionary *)disasterModeTokens objectForKey:prefixedURI2];
 
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v13 = v4;
+      v13 = iCopy;
       v14 = 2112;
       v15 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "   Using disaster mode token for URI: %@   token: %@", buf, 0x16u);
@@ -336,16 +336,16 @@
   return v9;
 }
 
-- (void)_setDisasterModeToken:(id)a3 forURI:(id)a4
+- (void)_setDisasterModeToken:(id)token forURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_disasterModeTokens allKeys];
-  if ([v8 count] >= 5)
+  tokenCopy = token;
+  iCopy = i;
+  allKeys = [(NSMutableDictionary *)self->_disasterModeTokens allKeys];
+  if ([allKeys count] >= 5)
   {
     disasterModeTokens = self->_disasterModeTokens;
-    v10 = [v8 __imFirstObject];
-    [(NSMutableDictionary *)disasterModeTokens removeObjectForKey:v10];
+    __imFirstObject = [allKeys __imFirstObject];
+    [(NSMutableDictionary *)disasterModeTokens removeObjectForKey:__imFirstObject];
   }
 
   if (!self->_disasterModeTokens)
@@ -359,9 +359,9 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = v7;
+    v18 = iCopy;
     v19 = 2112;
-    v20 = v6;
+    v20 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "   Setting disaster mode token for URI: %@   token: %@", buf, 0x16u);
   }
 
@@ -370,23 +370,23 @@
     _IDSLogV();
   }
 
-  v14 = v6;
+  v14 = tokenCopy;
   if (v14)
   {
     v15 = self->_disasterModeTokens;
-    v16 = [v7 prefixedURI];
-    CFDictionarySetValue(v15, v16, v14);
+    prefixedURI = [iCopy prefixedURI];
+    CFDictionarySetValue(v15, prefixedURI, v14);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_100914E24(v7);
+    sub_100914E24(iCopy);
   }
 }
 
-- (id)persistenceManagerForService:(id)a3
+- (id)persistenceManagerForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   if (self->_restrictedPersistenceManager)
   {
     v5 = IDSShouldUseRestrictedLoggingForService();
@@ -408,21 +408,21 @@
   return v7;
 }
 
-- (id)finishedQueryWithInfo:(id)a3 forURIs:(id)a4 fromURI:(id)a5 service:(id)a6
+- (id)finishedQueryWithInfo:(id)info forURIs:(id)is fromURI:(id)i service:(id)service
 {
-  v170 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  infoCopy = info;
+  isCopy = is;
+  iCopy = i;
+  serviceCopy = service;
   v162 = +[NSDate now];
   v167 = objc_alloc_init(NSMutableDictionary);
   v174 = objc_alloc_init(NSMutableDictionary);
-  v157 = [(IDSPeerIDManager *)self persistenceManagerForService:v11];
+  v157 = [(IDSPeerIDManager *)self persistenceManagerForService:serviceCopy];
   v273 = 0u;
   v272 = 0u;
   v271 = 0u;
   v270 = 0u;
-  obj = v9;
+  obj = isCopy;
   v168 = [obj countByEnumeratingWithState:&v270 objects:v292 count:16];
   if (v168)
   {
@@ -451,8 +451,8 @@
 
         v169 = v12;
         v14 = *(*(&v270 + 1) + 8 * v12);
-        v15 = [v14 prefixedURI];
-        v172 = [v170 objectForKey:v15];
+        prefixedURI = [v14 prefixedURI];
+        v172 = [infoCopy objectForKey:prefixedURI];
 
         v171 = [v172 objectForKey:@"identities"];
         v202 = objc_alloc_init(IDSEndpointURIProperties);
@@ -464,7 +464,7 @@
 
         if (v172)
         {
-          v18 = v170 != 0;
+          v18 = infoCopy != 0;
         }
 
         else
@@ -472,25 +472,25 @@
           v18 = 0;
         }
 
-        if (v11 != 0 && v18 && [v171 count])
+        if (serviceCopy != 0 && v18 && [v171 count])
         {
           v179 = [v172 _stringForKey:@"anonymized-sender-id"];
           v19 = [v172 _numberForKey:@"biz-trusted"];
-          v178 = [v19 BOOLValue];
+          bOOLValue = [v19 BOOLValue];
 
           v159 = [v172 objectForKey:@"kt-blob"];
           v163 = [v172 objectForKey:@"kt-status"];
           v186 = [v172 objectForKey:@"kt-account-key"];
           v161 = [v172 objectForKey:@"kt-opt-in"];
           v164 = [v172 objectForKey:@"server-time"];
-          v20 = [v161 BOOLValue];
+          bOOLValue2 = [v161 BOOLValue];
           if (v163)
           {
             v21 = +[IDSFoundationLog KeyTransparency];
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138413314;
-              v283 = v11;
+              v283 = serviceCopy;
               v284 = 2112;
               v285 = v14;
               v286 = 2112;
@@ -516,9 +516,9 @@
           {
             if (!v186)
             {
-              v24 = [v14 prefixedURI];
-              v25 = [v24 _md5Hash];
-              v186 = [v25 dataUsingEncoding:4];
+              prefixedURI2 = [v14 prefixedURI];
+              _md5Hash = [prefixedURI2 _md5Hash];
+              v186 = [_md5Hash dataUsingEncoding:4];
 
               v26 = +[IDSFoundationLog KeyTransparency];
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -529,7 +529,7 @@
               }
             }
 
-            v160 = [[IDSKeyTransparencyIndex alloc] initWithServiceIdentifier:v11 accountKey:v186 URI:v14];
+            v160 = [[IDSKeyTransparencyIndex alloc] initWithServiceIdentifier:serviceCopy accountKey:v186 URI:v14];
           }
 
           else
@@ -545,13 +545,13 @@
           v266 = 0u;
           v183 = v171;
           v197 = [v183 countByEnumeratingWithState:&v266 objects:v281 count:16];
-          v158 = v20;
+          v158 = bOOLValue2;
           if (v197)
           {
             v209 = 0;
             v195 = *v267;
             v27 = @"NO";
-            if (v20)
+            if (bOOLValue2)
             {
               v27 = @"YES";
             }
@@ -571,7 +571,7 @@
 
                 v203 = v28;
                 v30 = *(*(&v266 + 1) + 8 * v28);
-                v225 = [v30 _dataForKey:{@"push-token", v150, v153, v154, v155}];
+                v225 = [v30 _dataForKey:{@"push-token", senderCorrelationIdentifier2, v153, v154, v155}];
                 v215 = [v30 _dataForKey:@"session-token"];
                 v31 = OSLogHandleForIDSCategory();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -597,10 +597,10 @@
                 v219 = [v30 _dataForKey:@"kt-loggable-data"];
                 v214 = [v227 _dataForKey:@"device-key-signature"];
                 v32 = [v30 _numberForKey:@"kt-mismatch-account-flag"];
-                v204 = [v32 BOOLValue];
+                bOOLValue3 = [v32 BOOLValue];
 
                 v33 = [v30 _numberForKey:@"ktbility"];
-                v208 = [v33 BOOLValue];
+                bOOLValue4 = [v33 BOOLValue];
 
                 v221 = [v227 _stringForKey:v194];
                 v218 = [v227 _numberForKey:v193];
@@ -650,13 +650,13 @@
                 if (v225)
                 {
                   v36 = [[IDSKeyTransparencyEntry alloc] initWithPushToken:v225 loggableData:v219 signedData:v214];
-                  [(IDSKeyTransparencyEntry *)v36 setKtCapable:v208];
+                  [(IDSKeyTransparencyEntry *)v36 setKtCapable:bOOLValue4];
                   [v184 addObject:v36];
                 }
 
                 v212 = [v227 _dataForKey:{v199, v151}];
                 v37 = [v227 _numberForKey:v191];
-                v38 = [v37 intValue];
+                intValue = [v37 intValue];
 
                 v39 = OSLogHandleForIDSCategory();
                 if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -671,7 +671,7 @@
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
                   v42 = IDSLoggableDescriptionForTokenOnService();
-                  v150 = [v42 debugDescription];
+                  senderCorrelationIdentifier2 = [v42 debugDescription];
                   _IDSLogV();
                 }
 
@@ -686,7 +686,7 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = [v215 debugDescription];
+                  senderCorrelationIdentifier2 = [v215 debugDescription];
                   _IDSLogV();
                 }
 
@@ -700,37 +700,37 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = v14;
+                  senderCorrelationIdentifier2 = v14;
                   _IDSLogV();
                 }
 
                 v46 = OSLogHandleForIDSCategory();
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                 {
-                  v47 = [v202 senderCorrelationIdentifier];
+                  senderCorrelationIdentifier = [v202 senderCorrelationIdentifier];
                   *buf = 138412290;
-                  v283 = v47;
+                  v283 = senderCorrelationIdentifier;
                   _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, " sender-correlation-identifier: %@", buf, 0xCu);
                 }
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = [v202 senderCorrelationIdentifier];
+                  senderCorrelationIdentifier2 = [v202 senderCorrelationIdentifier];
                   _IDSLogV();
                 }
 
                 v48 = OSLogHandleForIDSCategory();
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
                 {
-                  v49 = [v202 shortHandle];
+                  shortHandle = [v202 shortHandle];
                   *buf = 138412290;
-                  v283 = v49;
+                  v283 = shortHandle;
                   _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "                  short-handle: %@", buf, 0xCu);
                 }
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = [v202 shortHandle];
+                  senderCorrelationIdentifier2 = [v202 shortHandle];
                   _IDSLogV();
                 }
 
@@ -745,7 +745,7 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = [IDSLogFormatter descriptionForDictionary:v227 options:1];
+                  senderCorrelationIdentifier2 = [IDSLogFormatter descriptionForDictionary:v227 options:1];
                   _IDSLogV();
                 }
 
@@ -759,7 +759,7 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = v223;
+                  senderCorrelationIdentifier2 = v223;
                   _IDSLogV();
                 }
 
@@ -774,7 +774,7 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = [IDSLogFormatter descriptionForDictionary:v217 options:1];
+                  senderCorrelationIdentifier2 = [IDSLogFormatter descriptionForDictionary:v217 options:1];
                   _IDSLogV();
                 }
 
@@ -789,7 +789,7 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = [IDSLogFormatter descriptionForData:v219 options:1];
+                  senderCorrelationIdentifier2 = [IDSLogFormatter descriptionForData:v219 options:1];
                   _IDSLogV();
                 }
 
@@ -804,7 +804,7 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = [IDSLogFormatter descriptionForData:v186 options:1];
+                  senderCorrelationIdentifier2 = [IDSLogFormatter descriptionForData:v186 options:1];
                   _IDSLogV();
                 }
 
@@ -818,7 +818,7 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = v185;
+                  senderCorrelationIdentifier2 = v185;
                   _IDSLogV();
                 }
 
@@ -833,7 +833,7 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = [IDSLogFormatter descriptionForData:v214 options:1];
+                  senderCorrelationIdentifier2 = [IDSLogFormatter descriptionForData:v214 options:1];
                   _IDSLogV();
                 }
 
@@ -841,7 +841,7 @@
                 if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
                 {
                   v63 = @"NO";
-                  if (v204)
+                  if (bOOLValue3)
                   {
                     v63 = @"YES";
                   }
@@ -854,12 +854,12 @@
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
                   v64 = @"NO";
-                  if (v204)
+                  if (bOOLValue3)
                   {
                     v64 = @"YES";
                   }
 
-                  v150 = v64;
+                  senderCorrelationIdentifier2 = v64;
                   _IDSLogV();
                 }
 
@@ -867,7 +867,7 @@
                 if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
                 {
                   v66 = @"NO";
-                  if (v208)
+                  if (bOOLValue4)
                   {
                     v66 = @"YES";
                   }
@@ -880,12 +880,12 @@
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
                   v67 = @"NO";
-                  if (v208)
+                  if (bOOLValue4)
                   {
                     v67 = @"YES";
                   }
 
-                  v150 = v67;
+                  senderCorrelationIdentifier2 = v67;
                   _IDSLogV();
                 }
 
@@ -893,7 +893,7 @@
                 if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
                 {
                   v69 = @"NO";
-                  if (v38)
+                  if (intValue)
                   {
                     v69 = @"YES";
                   }
@@ -906,12 +906,12 @@
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
                   v70 = @"NO";
-                  if (v38)
+                  if (intValue)
                   {
                     v70 = @"YES";
                   }
 
-                  v150 = v70;
+                  senderCorrelationIdentifier2 = v70;
                   _IDSLogV();
                 }
 
@@ -930,11 +930,11 @@
 
                 if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                 {
-                  v150 = v225;
+                  senderCorrelationIdentifier2 = v225;
                   _IDSLogV();
                 }
 
-                if (![v11 isEqualToIgnoringCase:{@"com.apple.madrid", v150}])
+                if (![serviceCopy isEqualToIgnoringCase:{@"com.apple.madrid", senderCorrelationIdentifier2}])
                 {
 LABEL_155:
                   if (v225)
@@ -955,13 +955,13 @@ LABEL_155:
 
                       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                       {
-                        v150 = v73;
+                        senderCorrelationIdentifier2 = v73;
                         _IDSLogV();
                       }
 
-                      v76 = [NSNumber numberWithInteger:v73, v150];
+                      v150 = [NSNumber numberWithInteger:v73, senderCorrelationIdentifier2];
 
-                      v206 = v76;
+                      v206 = v150;
                     }
 
                     if (v74)
@@ -976,13 +976,13 @@ LABEL_155:
 
                       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
                       {
-                        v150 = v74;
+                        senderCorrelationIdentifier2 = v74;
                         _IDSLogV();
                       }
 
-                      v78 = [NSNumber numberWithInteger:v74, v150];
+                      v1502 = [NSNumber numberWithInteger:v74, senderCorrelationIdentifier2];
 
-                      v207 = v78;
+                      v207 = v1502;
                     }
 
                     [v206 doubleValue];
@@ -993,7 +993,7 @@ LABEL_155:
                     if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138413058;
-                      v283 = v11;
+                      v283 = serviceCopy;
                       v284 = 2112;
                       v285 = v14;
                       v286 = 2112;
@@ -1007,16 +1007,16 @@ LABEL_155:
                     {
                       v154 = v201;
                       v155 = v200;
-                      v150 = v11;
+                      senderCorrelationIdentifier2 = serviceCopy;
                       v153 = v14;
                       _IDSLogV();
                     }
 
                     if (v215 && v207 && v206)
                     {
-                      if ([v10 isEqualToURI:v14])
+                      if ([iCopy isEqualToURI:v14])
                       {
-                        [(IDSPeerIDManager *)self _setDisasterModeToken:v215 forURI:v10];
+                        [(IDSPeerIDManager *)self _setDisasterModeToken:v215 forURI:iCopy];
                       }
 
                       v80 = +[IDSEndpointCapabilities allowedCapabilities];
@@ -1069,7 +1069,7 @@ LABEL_155:
                       v189 = [v83 _dataForKey:v199];
                       v188 = [v83 _dataForKey:v182];
                       v93 = +[IDSDServiceController sharedInstance];
-                      v210 = [v93 serviceWithIdentifier:v11];
+                      v210 = [v93 serviceWithIdentifier:serviceCopy];
 
                       if (!v219)
                       {
@@ -1077,7 +1077,7 @@ LABEL_155:
                       }
 
                       v196 = [[IDSProtoKeyTransparencyLoggableData alloc] initWithData:v219];
-                      v187 = [(IDSProtoKeyTransparencyLoggableData *)v196 ngmPublicIdentity];
+                      ngmPublicIdentity = [(IDSProtoKeyTransparencyLoggableData *)v196 ngmPublicIdentity];
                       context = objc_autoreleasePoolPush();
                       if ([v210 applicationKeyIndex] && -[IDSProtoKeyTransparencyLoggableData applicationPublicIdentitysCount](v196, "applicationPublicIdentitysCount"))
                       {
@@ -1085,31 +1085,31 @@ LABEL_155:
                         v260 = 0u;
                         v259 = 0u;
                         v258 = 0u;
-                        v198 = [(IDSProtoKeyTransparencyLoggableData *)v196 applicationPublicIdentitys];
-                        v94 = [v198 countByEnumeratingWithState:&v258 objects:v278 count:16];
-                        if (v94)
+                        applicationPublicIdentitys = [(IDSProtoKeyTransparencyLoggableData *)v196 applicationPublicIdentitys];
+                        publicIdentity = [applicationPublicIdentitys countByEnumeratingWithState:&v258 objects:v278 count:16];
+                        if (publicIdentity)
                         {
                           v95 = *v259;
                           while (2)
                           {
-                            for (j = 0; j != v94; j = j + 1)
+                            for (j = 0; j != publicIdentity; j = j + 1)
                             {
                               if (*v259 != v95)
                               {
-                                objc_enumerationMutation(v198);
+                                objc_enumerationMutation(applicationPublicIdentitys);
                               }
 
                               v97 = *(*(&v258 + 1) + 8 * j);
-                              v98 = [v97 keyIndex];
-                              if (v98 == sub_1005F0F7C([v210 applicationKeyIndex]))
+                              keyIndex = [v97 keyIndex];
+                              if (keyIndex == sub_1005F0F7C([v210 applicationKeyIndex]))
                               {
-                                v94 = [v97 publicIdentity];
+                                publicIdentity = [v97 publicIdentity];
                                 goto LABEL_209;
                               }
                             }
 
-                            v94 = [v198 countByEnumeratingWithState:&v258 objects:v278 count:16];
-                            if (v94)
+                            publicIdentity = [applicationPublicIdentitys countByEnumeratingWithState:&v258 objects:v278 count:16];
+                            if (publicIdentity)
                             {
                               continue;
                             }
@@ -1123,13 +1123,13 @@ LABEL_209:
 
                       else
                       {
-                        v94 = 0;
+                        publicIdentity = 0;
                       }
 
                       objc_autoreleasePoolPop(context);
-                      LOBYTE(v156) = v178;
-                      LOBYTE(v152) = v208;
-                      v100 = [[IDSEndpoint alloc] initWithURI:v14 serviceIdentifier:v11 clientData:v83 KTLoggableData:v219 KTDeviceSignature:v214 mismatchedAccountFlag:v204 ktCapableFlag:v92 transparency:v152 pushToken:0 sessionToken:v225 expireDate:v215 refreshDate:v200 anonymizedSenderID:v201 verifiedBusiness:v179 serializedPublicMessageProtectionIdentity:v156 queryTimeInterval:v189 serializedNGMDeviceIdentity:v187 serializedNGMDevicePrekey:v188 serializedApplicationPublicKey:v94 endpointURIProperties:v202 familyEndpointData:v211 gameCenterData:v205];
+                      LOBYTE(v156) = bOOLValue;
+                      LOBYTE(v152) = bOOLValue4;
+                      v100 = [[IDSEndpoint alloc] initWithURI:v14 serviceIdentifier:serviceCopy clientData:v83 KTLoggableData:v219 KTDeviceSignature:v214 mismatchedAccountFlag:bOOLValue3 ktCapableFlag:v92 transparency:v152 pushToken:0 sessionToken:v225 expireDate:v215 refreshDate:v200 anonymizedSenderID:v201 verifiedBusiness:v179 serializedPublicMessageProtectionIdentity:v156 queryTimeInterval:v189 serializedNGMDeviceIdentity:ngmPublicIdentity serializedNGMDevicePrekey:v188 serializedApplicationPublicKey:publicIdentity endpointURIProperties:v202 familyEndpointData:v211 gameCenterData:v205];
                       [v190 addObject:v100];
 
                       v209 = 1;
@@ -1166,7 +1166,7 @@ LABEL_209:
                   {
                     _IDSWarnV();
                     _IDSLogV();
-                    v150 = v225;
+                    senderCorrelationIdentifier2 = v225;
                     _IDSLogTransport();
                   }
                 }
@@ -1187,22 +1187,22 @@ LABEL_209:
           }
 
           v101 = [KTVerifierResult alloc];
-          v102 = [IDSKeyTransparencyVerifier keyTransparencyURIPrefixForServiceIdentifier:v11];
-          v103 = [v14 prefixedURI];
-          v104 = [v102 stringByAppendingString:v103];
-          v105 = [IDSKeyTransparencyVerifier keyTransparencyApplicationForServiceIdentifier:v11];
+          v102 = [IDSKeyTransparencyVerifier keyTransparencyURIPrefixForServiceIdentifier:serviceCopy];
+          prefixedURI3 = [v14 prefixedURI];
+          v104 = [v102 stringByAppendingString:prefixedURI3];
+          v105 = [IDSKeyTransparencyVerifier keyTransparencyApplicationForServiceIdentifier:serviceCopy];
           v222 = [v101 initPendingForUri:v104 application:v105];
 
           v106 = [IDSQueryKeyTransparencyContext alloc];
-          v107 = [(IDSKeyTransparencyIndex *)v160 accountKey];
-          v220 = [v106 initWithVerifierResult:v222 ticket:0 accountKey:v107 queryResponseTime:v162 ktOptIn:v158];
+          accountKey = [(IDSKeyTransparencyIndex *)v160 accountKey];
+          v220 = [v106 initWithVerifierResult:v222 ticket:0 accountKey:accountKey queryResponseTime:v162 ktOptIn:v158];
 
           v108 = [v174 objectForKeyedSubscript:v14];
           LODWORD(v101) = v108 == 0;
 
           if (v101)
           {
-            v228 = [(IDSPeerIDManager *)self peerTokensForURI:v14 fromURI:v10 service:v11];
+            v228 = [(IDSPeerIDManager *)self peerTokensForURI:v14 fromURI:iCopy service:serviceCopy];
             v109 = +[NSMutableSet set];
             v257 = 0u;
             v256 = 0u;
@@ -1223,12 +1223,12 @@ LABEL_209:
                   }
 
                   v114 = *(*(&v254 + 1) + 8 * k);
-                  v115 = [v114 pushTokenObject];
+                  pushTokenObject = [v114 pushTokenObject];
 
-                  if (v115)
+                  if (pushTokenObject)
                   {
-                    v116 = [v114 pushTokenObject];
-                    [v109 addObject:v116];
+                    pushTokenObject2 = [v114 pushTokenObject];
+                    [v109 addObject:pushTokenObject2];
                   }
                 }
 
@@ -1248,9 +1248,9 @@ LABEL_209:
                 *buf = 138413058;
                 v283 = v14;
                 v284 = 2112;
-                v285 = v10;
+                v285 = iCopy;
                 v286 = 2112;
-                v287 = v11;
+                v287 = serviceCopy;
                 v288 = 2112;
                 v289 = v117;
                 _os_log_impl(&_mh_execute_header, v118, OS_LOG_TYPE_DEFAULT, "Detected devices set changed for uri: %@, fromURI: %@, service: %@ {new: %@}", buf, 0x2Au);
@@ -1258,24 +1258,24 @@ LABEL_209:
 
               if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
               {
-                v154 = v11;
+                v154 = serviceCopy;
                 v155 = v117;
-                v150 = v14;
-                v153 = v10;
+                senderCorrelationIdentifier2 = v14;
+                v153 = iCopy;
                 _IDSLogV();
               }
             }
 
             v119 = [v228 count];
             v120 = [v109 count];
-            if ([v11 isEqualToString:@"com.apple.madrid"] && (v119 == 0) == (v120 != 0))
+            if ([serviceCopy isEqualToString:@"com.apple.madrid"] && (v119 == 0) == (v120 != 0))
             {
               v121 = [v109 count] == 0;
               v250[0] = _NSConcreteStackBlock;
               v250[1] = 3221225472;
               v250[2] = sub_100314F04;
               v250[3] = &unk_100BD6F90;
-              v251 = v11;
+              v251 = serviceCopy;
               v252 = v14;
               v253 = v121;
               [v157 updateSenderKeyValidityFor:v14 markInvalid:v121 completion:v250];
@@ -1286,7 +1286,7 @@ LABEL_209:
             if (os_log_type_enabled(v123, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412802;
-              v283 = v11;
+              v283 = serviceCopy;
               v284 = 2112;
               v285 = v14;
               v286 = 2112;
@@ -1298,31 +1298,31 @@ LABEL_209:
             {
               v153 = v14;
               v154 = v122;
-              v150 = v11;
+              senderCorrelationIdentifier2 = serviceCopy;
               _IDSLogV();
             }
 
-            v124 = [[IDSPeerIDKey alloc] initWithService:v11 fromURI:v10 toURI:v14];
+            v124 = [[IDSPeerIDKey alloc] initWithService:serviceCopy fromURI:iCopy toURI:v14];
             v125 = [[IDSPeerIDValue alloc] initWithEndpoints:v110 keyTransparencyContext:v220];
             -[NSCache setObject:forKey:cost:](self->_dbCache, "setObject:forKey:cost:", v125, v124, [v110 count]);
             v246[0] = _NSConcreteStackBlock;
             v246[1] = 3221225472;
             v246[2] = sub_100315084;
             v246[3] = &unk_100BD6FB8;
-            v126 = v11;
+            v126 = serviceCopy;
             v247 = v126;
             v248 = v14;
             v127 = v122;
             v249 = v127;
-            [v157 saveEndpoints:v110 ktContext:v220 service:v126 fromURI:v10 toURI:v14 completion:v246];
+            [v157 saveEndpoints:v110 ktContext:v220 service:v126 fromURI:iCopy toURI:v14 completion:v246];
           }
 
           v244 = 0u;
           v245 = 0u;
           v242 = 0u;
           v243 = 0u;
-          v224 = [(NSMutableDictionary *)self->_clientDataUpdateBlocks allValues];
-          v229 = [v224 countByEnumeratingWithState:&v242 objects:v276 count:16];
+          allValues = [(NSMutableDictionary *)self->_clientDataUpdateBlocks allValues];
+          v229 = [allValues countByEnumeratingWithState:&v242 objects:v276 count:16];
           if (v229)
           {
             v226 = *v243;
@@ -1332,7 +1332,7 @@ LABEL_209:
               {
                 if (*v243 != v226)
                 {
-                  objc_enumerationMutation(v224);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v129 = *(*(&v242 + 1) + 8 * m);
@@ -1354,7 +1354,7 @@ LABEL_209:
                         objc_enumerationMutation(v130);
                       }
 
-                      (*(v129 + 16))(v129, v11, v14, v10, *(*(&v238 + 1) + 8 * n));
+                      (*(v129 + 16))(v129, serviceCopy, v14, iCopy, *(*(&v238 + 1) + 8 * n));
                     }
 
                     v131 = [v130 countByEnumeratingWithState:&v238 objects:v275 count:16];
@@ -1364,7 +1364,7 @@ LABEL_209:
                 }
               }
 
-              v229 = [v224 countByEnumeratingWithState:&v242 objects:v276 count:16];
+              v229 = [allValues countByEnumeratingWithState:&v242 objects:v276 count:16];
             }
 
             while (v229);
@@ -1372,7 +1372,7 @@ LABEL_209:
 
           if ((v209 & 1) == 0)
           {
-            [(IDSPeerIDManager *)self forgetPeerTokensForURI:v14 fromURI:v10 service:v11 reason:16];
+            [(IDSPeerIDManager *)self forgetPeerTokensForURI:v14 fromURI:iCopy service:serviceCopy reason:16];
           }
 
           v134 = [NSNumber numberWithBool:v209 & 1];
@@ -1384,7 +1384,7 @@ LABEL_209:
 
         else
         {
-          [(IDSPeerIDManager *)self forgetPeerTokensForURI:v14 fromURI:v10 service:v11 reason:16];
+          [(IDSPeerIDManager *)self forgetPeerTokensForURI:v14 fromURI:iCopy service:serviceCopy reason:16];
           [v167 setObject:&__kCFBooleanFalse forKeyedSubscript:v14];
           [v174 setObject:&__NSArray0__struct forKeyedSubscript:v14];
         }
@@ -1407,15 +1407,15 @@ LABEL_209:
     _os_log_impl(&_mh_execute_header, v137, OS_LOG_TYPE_DEFAULT, "Remote query finished - kicking KT peer verification", buf, 2u);
   }
 
-  v138 = [(IDSPeerIDManager *)self keyTransparencyVerifier];
-  [v138 kickPeerVerificationForURIs:obj service:v11 localURI:v10 fetchNow:0 withCompletion:&stru_100BD6FF8];
+  keyTransparencyVerifier = [(IDSPeerIDManager *)self keyTransparencyVerifier];
+  [keyTransparencyVerifier kickPeerVerificationForURIs:obj service:serviceCopy localURI:iCopy fetchNow:0 withCompletion:&stru_100BD6FF8];
 
   v236 = 0u;
   v237 = 0u;
   v234 = 0u;
   v235 = 0u;
-  v139 = [(NSMutableDictionary *)self->_endpointQueryListeners allValues];
-  v140 = [v139 countByEnumeratingWithState:&v234 objects:v274 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_endpointQueryListeners allValues];
+  v140 = [allValues2 countByEnumeratingWithState:&v234 objects:v274 count:16];
   if (v140)
   {
     v141 = *v235;
@@ -1425,33 +1425,33 @@ LABEL_209:
       {
         if (*v235 != v141)
         {
-          objc_enumerationMutation(v139);
+          objc_enumerationMutation(allValues2);
         }
 
         v143 = *(*(&v234 + 1) + 8 * ii);
-        v144 = [v143 queryCompletionBlock];
-        if (v144)
+        queryCompletionBlock = [v143 queryCompletionBlock];
+        if (queryCompletionBlock)
         {
-          v145 = [v143 queue];
-          v146 = v145 == 0;
+          queue = [v143 queue];
+          v146 = queue == 0;
 
           if (!v146)
           {
-            v147 = [v143 queue];
+            queue2 = [v143 queue];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = sub_100315368;
             block[3] = &unk_100BD7020;
             block[4] = v143;
-            v231 = v11;
-            v232 = v10;
+            v231 = serviceCopy;
+            v232 = iCopy;
             v233 = v174;
-            dispatch_async(v147, block);
+            dispatch_async(queue2, block);
           }
         }
       }
 
-      v140 = [v139 countByEnumeratingWithState:&v234 objects:v274 count:16];
+      v140 = [allValues2 countByEnumeratingWithState:&v234 objects:v274 count:16];
     }
 
     while (v140);
@@ -1462,22 +1462,22 @@ LABEL_209:
   return v148;
 }
 
-- (id)sessionTokensForURIs:(id)a3 fromURI:(id)a4 service:(id)a5 fromIdentity:(id)a6 includeSelfDevice:(BOOL)a7 fullyRemoveSelfDevice:(BOOL)a8 allowRefresh:(BOOL)a9
+- (id)sessionTokensForURIs:(id)is fromURI:(id)i service:(id)service fromIdentity:(id)identity includeSelfDevice:(BOOL)device fullyRemoveSelfDevice:(BOOL)selfDevice allowRefresh:(BOOL)refresh
 {
-  v9 = a8;
-  v10 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  selfDeviceCopy = selfDevice;
+  deviceCopy = device;
+  isCopy = is;
+  iCopy = i;
+  serviceCopy = service;
+  identityCopy = identity;
   v76 = objc_alloc_init(NSMutableDictionary);
   v19 = 1;
-  if (!v9)
+  if (!selfDeviceCopy)
   {
     v19 = 2;
   }
 
-  if (v10)
+  if (deviceCopy)
   {
     v20 = 0;
   }
@@ -1487,12 +1487,12 @@ LABEL_209:
     v20 = v19;
   }
 
-  v71 = self;
-  v72 = v16;
-  v68 = v15;
-  v69 = v17;
-  v70 = v18;
-  [(IDSPeerIDManager *)self endpointsForURIs:v15 fromURI:v16 service:v17 fromIdentity:v18 filterBehavior:v20 allowRefresh:a9];
+  selfCopy = self;
+  v72 = iCopy;
+  v68 = isCopy;
+  v69 = serviceCopy;
+  v70 = identityCopy;
+  [(IDSPeerIDManager *)self endpointsForURIs:isCopy fromURI:iCopy service:serviceCopy fromIdentity:identityCopy filterBehavior:v20 allowRefresh:refresh];
   v89 = 0u;
   v90 = 0u;
   v87 = 0u;
@@ -1514,7 +1514,7 @@ LABEL_209:
         v77 = [obj objectForKeyedSubscript:?];
         if (+[IDSPeerIDManager shouldUseSelfTokens])
         {
-          v21 = [(IDSPeerIDManager *)v71 _disasterModeTokenForURI:v72];
+          v21 = [(IDSPeerIDManager *)selfCopy _disasterModeTokenForURI:v72];
           v22 = v21 != 0;
           if (v21)
           {
@@ -1635,24 +1635,24 @@ LABEL_209:
                 }
 
                 v49 = *(*(&v83 + 1) + 8 * j);
-                v50 = [v49 refreshDate];
-                v51 = [v49 expireDate];
-                [v82 addObject:v51];
+                refreshDate = [v49 refreshDate];
+                expireDate = [v49 expireDate];
+                [v82 addObject:expireDate];
 
-                [v31 addObject:v50];
-                v52 = [v49 pushToken];
-                [v36 addObject:v52];
+                [v31 addObject:refreshDate];
+                pushToken = [v49 pushToken];
+                [v36 addObject:pushToken];
 
-                v53 = [v49 sessionToken];
-                [v41 addObject:v53];
+                sessionToken = [v49 sessionToken];
+                [v41 addObject:sessionToken];
 
-                v54 = [v49 anonymizedSenderID];
-                LOBYTE(v53) = v54 == 0;
+                anonymizedSenderID = [v49 anonymizedSenderID];
+                LOBYTE(sessionToken) = anonymizedSenderID == 0;
 
-                if ((v53 & 1) == 0)
+                if ((sessionToken & 1) == 0)
                 {
-                  v55 = [v49 anonymizedSenderID];
-                  [v81 addObject:v55];
+                  anonymizedSenderID2 = [v49 anonymizedSenderID];
+                  [v81 addObject:anonymizedSenderID2];
                 }
               }
 
@@ -1699,26 +1699,26 @@ LABEL_209:
   return v64;
 }
 
-- (id)endpointsForURIs:(id)a3 fromURI:(id)a4 service:(id)a5 fromIdentity:(id)a6 filterBehavior:(unint64_t)a7 allowRefresh:(BOOL)a8
+- (id)endpointsForURIs:(id)is fromURI:(id)i service:(id)service fromIdentity:(id)identity filterBehavior:(unint64_t)behavior allowRefresh:(BOOL)refresh
 {
-  v8 = a8;
-  v13 = a3;
-  v51 = a4;
-  v49 = a5;
-  v14 = a6;
+  refreshCopy = refresh;
+  isCopy = is;
+  iCopy = i;
+  serviceCopy = service;
+  identityCopy = identity;
   v48 = objc_alloc_init(NSMutableArray);
   v15 = objc_alloc_init(NSMutableDictionary);
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v16 = v13;
+  v16 = isCopy;
   v50 = [v16 countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v50)
   {
-    v43 = v8;
+    v43 = refreshCopy;
     v17 = 0;
-    v44 = v14;
+    v44 = identityCopy;
     v46 = *v64;
     v47 = v15;
     obj = v16;
@@ -1733,11 +1733,11 @@ LABEL_209:
 
         v19 = *(*(&v63 + 1) + 8 * i);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 tokenFreeURI];
-        v22 = [v19 pushToken];
+        tokenFreeURI = [v19 tokenFreeURI];
+        pushToken = [v19 pushToken];
         objc_autoreleasePoolPop(v20);
-        [v48 addObject:v21];
-        v23 = [v15 objectForKeyedSubscript:v21];
+        [v48 addObject:tokenFreeURI];
+        v23 = [v15 objectForKeyedSubscript:tokenFreeURI];
         v24 = [v23 mutableCopy];
         v25 = v24;
         if (v24)
@@ -1752,34 +1752,34 @@ LABEL_209:
 
         v53 = v26;
 
-        v27 = [(IDSPeerIDManager *)self _endpointsForService:v49 fromURI:v51 toURI:v21 ignoreExpiration:0];
-        if (a7 == 1 || a7 == 2 && [v21 isEqualToURI:v51])
+        v27 = [(IDSPeerIDManager *)self _endpointsForService:serviceCopy fromURI:iCopy toURI:tokenFreeURI ignoreExpiration:0];
+        if (behavior == 1 || behavior == 2 && [tokenFreeURI isEqualToURI:iCopy])
         {
-          v28 = [(IDSPeerIDPushHandler *)self->_pushHandler pushToken];
+          pushToken2 = [(IDSPeerIDPushHandler *)self->_pushHandler pushToken];
           v61[0] = _NSConcreteStackBlock;
           v61[1] = 3221225472;
           v61[2] = sub_100315FCC;
           v61[3] = &unk_100BD7048;
-          v62 = v28;
-          v29 = v28;
+          v62 = pushToken2;
+          v29 = pushToken2;
           v30 = [v27 __imArrayByFilteringWithBlock:v61];
 
           v27 = v30;
         }
 
-        if (v22)
+        if (pushToken)
         {
           v59[0] = _NSConcreteStackBlock;
           v59[1] = 3221225472;
           v59[2] = sub_100316014;
           v59[3] = &unk_100BD7048;
-          v60 = v22;
+          v60 = pushToken;
           v31 = [v27 __imArrayByFilteringWithBlock:v59];
 
           v27 = v31;
         }
 
-        v54 = v22;
+        v54 = pushToken;
         v57 = 0u;
         v58 = 0u;
         v55 = 0u;
@@ -1807,8 +1807,8 @@ LABEL_209:
 
               v37 = *(*(&v55 + 1) + 8 * j);
               v38 = objc_opt_class();
-              v39 = [v37 refreshDate];
-              v17 = [v38 _datePassed:v39];
+              refreshDate = [v37 refreshDate];
+              v17 = [v38 _datePassed:refreshDate];
             }
 
             v34 = [v32 countByEnumeratingWithState:&v55 objects:v67 count:16];
@@ -1825,7 +1825,7 @@ LABEL_25:
 
         [v53 addObjectsFromArray:v32];
         v15 = v47;
-        [v47 setObject:v53 forKeyedSubscript:v21];
+        [v47 setObject:v53 forKeyedSubscript:tokenFreeURI];
       }
 
       v16 = obj;
@@ -1834,7 +1834,7 @@ LABEL_25:
 
     while (v50);
 
-    v14 = v44;
+    identityCopy = v44;
     v40 = v43;
     if (!v44)
     {
@@ -1844,7 +1844,7 @@ LABEL_25:
     if ((v40 & v17) == 1)
     {
       LOBYTE(v42) = 0;
-      [(IDSPeerIDManager *)self startQueryForURIs:v48 fromIdentity:v44 fromURI:v51 fromService:v49 forSending:0 forceToServer:1 clientRequestedForceQuery:v42 reason:@"EndpointForURI" completionBlock:0];
+      [(IDSPeerIDManager *)self startQueryForURIs:v48 fromIdentity:v44 fromURI:iCopy fromService:serviceCopy forSending:0 forceToServer:1 clientRequestedForceQuery:v42 reason:@"EndpointForURI" completionBlock:0];
     }
   }
 
@@ -1855,51 +1855,51 @@ LABEL_25:
   return v15;
 }
 
-- (BOOL)hasPublicKeyForURI:(id)a3 pushToken:(id)a4 fromURI:(id)a5 service:(id)a6
+- (BOOL)hasPublicKeyForURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service
 {
-  v6 = [(IDSPeerIDManager *)self publicKeyForURI:a3 pushToken:a4 fromURI:a5 service:a6];
+  v6 = [(IDSPeerIDManager *)self publicKeyForURI:i pushToken:token fromURI:rI service:service];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (id)publicKeyForURI:(id)a3 pushToken:(id)a4 fromURI:(id)a5 service:(id)a6
+- (id)publicKeyForURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service
 {
-  v10 = a4;
-  v11 = [(IDSPeerIDManager *)self _endpointsForService:a6 fromURI:a5 toURI:a3 ignoreExpiration:1];
+  tokenCopy = token;
+  v11 = [(IDSPeerIDManager *)self _endpointsForService:service fromURI:rI toURI:i ignoreExpiration:1];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1003161D0;
   v17[3] = &unk_100BD7048;
-  v18 = v10;
-  v12 = v10;
+  v18 = tokenCopy;
+  v12 = tokenCopy;
   v13 = [v11 __imArrayByFilteringWithBlock:v17];
-  v14 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
-  v15 = [v14 serializedPublicLegacyIdentity];
+  serializedPublicLegacyIdentity = [firstObject serializedPublicLegacyIdentity];
 
-  return v15;
+  return serializedPublicLegacyIdentity;
 }
 
-- (id)publicDeviceIdentityContainerForPushToken:(id)a3
+- (id)publicDeviceIdentityContainerForPushToken:(id)token
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_dbCache mapTableRepresentation];
-  v6 = [v5 keyEnumerator];
-  v7 = [v6 allObjects];
+  tokenCopy = token;
+  mapTableRepresentation = [(NSCache *)self->_dbCache mapTableRepresentation];
+  keyEnumerator = [mapTableRepresentation keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = v7;
+  v8 = allObjects;
   v9 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v35;
     v26 = *v35;
-    v27 = self;
+    selfCopy = self;
     v29 = v8;
     do
     {
@@ -1920,9 +1920,9 @@ LABEL_25:
           v30 = 0u;
           v31 = 0u;
           v14 = [(NSCache *)self->_dbCache objectForKey:v13];
-          v15 = [v14 endpoints];
+          endpoints = [v14 endpoints];
 
-          v16 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          v16 = [endpoints countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v16)
           {
             v17 = v16;
@@ -1933,24 +1933,24 @@ LABEL_25:
               {
                 if (*v31 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(endpoints);
                 }
 
                 v20 = *(*(&v30 + 1) + 8 * i);
-                v21 = [v20 pushToken];
-                v22 = [v4 rawToken];
-                v23 = [v22 isEqualToData:v21];
+                pushToken = [v20 pushToken];
+                rawToken = [tokenCopy rawToken];
+                v23 = [rawToken isEqualToData:pushToken];
 
                 if (v23)
                 {
-                  v24 = [v20 publicDeviceIdentityContainer];
+                  publicDeviceIdentityContainer = [v20 publicDeviceIdentityContainer];
 
                   v8 = v29;
                   goto LABEL_21;
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+              v17 = [endpoints countByEnumeratingWithState:&v30 objects:v38 count:16];
               if (v17)
               {
                 continue;
@@ -1961,7 +1961,7 @@ LABEL_25:
           }
 
           v11 = v26;
-          self = v27;
+          self = selfCopy;
           v10 = v28;
           v8 = v29;
         }
@@ -1971,7 +1971,7 @@ LABEL_25:
 
       while (v12 != v10);
       v10 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
-      v24 = 0;
+      publicDeviceIdentityContainer = 0;
     }
 
     while (v10);
@@ -1979,55 +1979,55 @@ LABEL_25:
 
   else
   {
-    v24 = 0;
+    publicDeviceIdentityContainer = 0;
   }
 
 LABEL_21:
 
-  return v24;
+  return publicDeviceIdentityContainer;
 }
 
-- (id)senderCorrelationIdentifierForURI:(id)a3 fromURI:(id)a4 service:(id)a5
+- (id)senderCorrelationIdentifierForURI:(id)i fromURI:(id)rI service:(id)service
 {
-  v5 = [(IDSPeerIDManager *)self _endpointsForService:a5 fromURI:a4 toURI:a3 ignoreExpiration:1];
-  v6 = [v5 firstObject];
+  v5 = [(IDSPeerIDManager *)self _endpointsForService:service fromURI:rI toURI:i ignoreExpiration:1];
+  firstObject = [v5 firstObject];
 
-  v7 = [v6 senderCorrelationIdentifier];
+  senderCorrelationIdentifier = [firstObject senderCorrelationIdentifier];
 
-  return v7;
+  return senderCorrelationIdentifier;
 }
 
-- (id)senderCorrelationIdentifierForURI:(id)a3 pushToken:(id)a4 fromURI:(id)a5 service:(id)a6
+- (id)senderCorrelationIdentifierForURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service
 {
-  v10 = a4;
-  v11 = [(IDSPeerIDManager *)self _endpointsForService:a6 fromURI:a5 toURI:a3 ignoreExpiration:1];
+  tokenCopy = token;
+  v11 = [(IDSPeerIDManager *)self _endpointsForService:service fromURI:rI toURI:i ignoreExpiration:1];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100316610;
   v17[3] = &unk_100BD7048;
-  v18 = v10;
-  v12 = v10;
+  v18 = tokenCopy;
+  v12 = tokenCopy;
   v13 = [v11 __imArrayByFilteringWithBlock:v17];
-  v14 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
-  v15 = [v14 senderCorrelationIdentifier];
+  senderCorrelationIdentifier = [firstObject senderCorrelationIdentifier];
 
-  return v15;
+  return senderCorrelationIdentifier;
 }
 
-- (id)sessionTokenForURI:(id)a3 pushToken:(id)a4 fromURI:(id)a5 service:(id)a6 expirationDate:(id *)a7 refreshDate:(id *)a8 fromIdentity:(id)a9 includeSelfDevice:(BOOL)a10
+- (id)sessionTokenForURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service expirationDate:(id *)date refreshDate:(id *)refreshDate fromIdentity:(id)identity includeSelfDevice:(BOOL)self0
 {
-  v15 = a3;
-  v41 = v15;
-  v16 = a9;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
+  iCopy = i;
+  v41 = iCopy;
+  identityCopy = identity;
+  serviceCopy = service;
+  rICopy = rI;
+  tokenCopy = token;
   v20 = [NSArray arrayWithObjects:&v41 count:1];
-  v21 = [(IDSPeerIDManager *)self sessionTokensForURIs:v20 fromURI:v18 service:v17 fromIdentity:v16 includeSelfDevice:a10 fullyRemoveSelfDevice:0];
+  v21 = [(IDSPeerIDManager *)self sessionTokensForURIs:v20 fromURI:rICopy service:serviceCopy fromIdentity:identityCopy includeSelfDevice:device fullyRemoveSelfDevice:0];
 
   v22 = objc_opt_class();
-  v23 = v15;
+  v23 = iCopy;
   v40 = v21;
   v24 = [v21 objectForKey:v23];
   if (objc_opt_isKindOfClass())
@@ -2053,9 +2053,9 @@ LABEL_21:
   v28 = [v25 _arrayForKey:@"push-tokens"];
   v29 = [v25 _arrayForKey:@"dates-refresh"];
   v30 = [v25 _arrayForKey:@"dates-expire"];
-  v31 = [v19 rawToken];
+  rawToken = [tokenCopy rawToken];
 
-  v32 = [v28 indexOfObject:v31];
+  v32 = [v28 indexOfObject:rawToken];
   if (v32 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v33 = 0;
@@ -2065,38 +2065,38 @@ LABEL_21:
   {
     v34 = [v30 objectAtIndex:v32];
     v35 = [v29 objectAtIndex:v32];
-    if (a7)
+    if (date)
     {
       v36 = v34;
-      *a7 = v34;
+      *date = v34;
     }
 
-    if (a8)
+    if (refreshDate)
     {
       v37 = v35;
-      *a8 = v35;
+      *refreshDate = v35;
     }
 
-    v33 = [v27 objectAtIndex:{v32, a8}];
+    v33 = [v27 objectAtIndex:{v32, refreshDate}];
   }
 
   return v33;
 }
 
-- (double)timeToCacheURI:(id)a3 fromURI:(id)a4 service:(id)a5 forStatus:(unsigned int)a6
+- (double)timeToCacheURI:(id)i fromURI:(id)rI service:(id)service forStatus:(unsigned int)status
 {
-  v6 = *&a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
+  v6 = *&status;
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
+  v13 = serviceCopy;
   if (v6 == 1)
   {
     v14 = 0;
-    if (v10 && v11 && v12)
+    if (iCopy && rICopy && serviceCopy)
     {
-      v28 = v10;
-      v15 = [(IDSPeerIDManager *)self _endpointsForService:v12 fromURI:v11 toURI:v10 ignoreExpiration:1];
+      v28 = iCopy;
+      v15 = [(IDSPeerIDManager *)self _endpointsForService:serviceCopy fromURI:rICopy toURI:iCopy ignoreExpiration:1];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
@@ -2119,8 +2119,8 @@ LABEL_21:
             v20 = *(*(&v29 + 1) + 8 * i);
             if (v14)
             {
-              v21 = [*(*(&v29 + 1) + 8 * i) expireDate];
-              v22 = [v21 compare:v14];
+              expireDate = [*(*(&v29 + 1) + 8 * i) expireDate];
+              v22 = [expireDate compare:v14];
 
               if (v22 != -1)
               {
@@ -2128,9 +2128,9 @@ LABEL_21:
               }
             }
 
-            v23 = [v20 expireDate];
+            expireDate2 = [v20 expireDate];
 
-            v14 = v23;
+            v14 = expireDate2;
           }
 
           v17 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -2144,7 +2144,7 @@ LABEL_21:
         v14 = 0;
       }
 
-      v10 = v28;
+      iCopy = v28;
     }
 
     [v14 timeIntervalSinceNow];
@@ -2153,26 +2153,26 @@ LABEL_21:
 
   else
   {
-    [IDSBagUtilities timeToCacheResultsForIDStatus:v6 forService:v12];
+    [IDSBagUtilities timeToCacheResultsForIDStatus:v6 forService:serviceCopy];
     v25 = v24;
   }
 
   return v25;
 }
 
-- (int64_t)_valueOfProperty:(id)a3 forURI:(id)a4 pushToken:(id)a5 fromURI:(id)a6 service:(id)a7
+- (int64_t)_valueOfProperty:(id)property forURI:(id)i pushToken:(id)token fromURI:(id)rI service:(id)service
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v34 = v13;
-  v35 = v15;
-  if (v12)
+  propertyCopy = property;
+  iCopy = i;
+  tokenCopy = token;
+  rICopy = rI;
+  serviceCopy = service;
+  v34 = iCopy;
+  v35 = rICopy;
+  if (propertyCopy)
   {
-    v33 = v16;
-    [(IDSPeerIDManager *)self _endpointsForService:v16 fromURI:v15 toURI:v13 ignoreExpiration:0];
+    v33 = serviceCopy;
+    [(IDSPeerIDManager *)self _endpointsForService:serviceCopy fromURI:rICopy toURI:iCopy ignoreExpiration:0];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -2192,13 +2192,13 @@ LABEL_21:
           }
 
           v21 = *(*(&v37 + 1) + 8 * i);
-          v22 = [v21 pushTokenObject];
-          v23 = [v22 isEqualToPushToken:v14];
+          pushTokenObject = [v21 pushTokenObject];
+          v23 = [pushTokenObject isEqualToPushToken:tokenCopy];
 
           if (v23)
           {
-            v24 = [v21 capabilities];
-            v17 = [v24 valueForCapability:v12];
+            capabilities = [v21 capabilities];
+            v17 = [capabilities valueForCapability:propertyCopy];
 
             v25 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -2210,11 +2210,11 @@ LABEL_21:
                 v26 = @"NO";
               }
 
-              v42 = v12;
+              v42 = propertyCopy;
               v43 = 2112;
               v44 = v26;
               v45 = 2112;
-              v46 = v14;
+              v46 = tokenCopy;
               _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Found %@ value: %@  for peer token: %@", buf, 0x20u);
             }
 
@@ -2227,8 +2227,8 @@ LABEL_21:
               }
 
               v31 = v27;
-              v32 = v14;
-              v30 = v12;
+              v32 = tokenCopy;
+              v30 = propertyCopy;
               _IDSLogV();
             }
           }
@@ -2239,16 +2239,16 @@ LABEL_21:
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v42 = v12;
+              v42 = propertyCopy;
               v43 = 2112;
-              v44 = v14;
+              v44 = tokenCopy;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "** No %@ value found for peer token: %@", buf, 0x16u);
             }
 
             if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
             {
-              v30 = v12;
-              v31 = v14;
+              v30 = propertyCopy;
+              v31 = tokenCopy;
               _IDSLogV();
             }
           }
@@ -2260,7 +2260,7 @@ LABEL_21:
       while (v18);
     }
 
-    v16 = v33;
+    serviceCopy = v33;
   }
 
   else
@@ -2271,15 +2271,15 @@ LABEL_21:
   return v17;
 }
 
-- (id)endpointsForURIs:(id)a3 service:(id)a4 fromURI:(id)a5
+- (id)endpointsForURIs:(id)is service:(id)service fromURI:(id)i
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
-  if (v10 && v9 && v11)
+  isCopy = is;
+  serviceCopy = service;
+  iCopy = i;
+  v11 = [isCopy count];
+  if (iCopy && serviceCopy && v11)
   {
-    v12 = [(IDSPeerIDManager *)self endpointsForURIs:v8 service:v9 fromURI:v10 ignoringTTL:0];
+    v12 = [(IDSPeerIDManager *)self endpointsForURIs:isCopy service:serviceCopy fromURI:iCopy ignoringTTL:0];
   }
 
   else
@@ -2288,19 +2288,19 @@ LABEL_21:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v20 = v8;
+      v20 = isCopy;
       v21 = 2112;
-      v22 = v9;
+      v22 = serviceCopy;
       v23 = 2112;
-      v24 = v10;
+      v24 = iCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Missing required field(s) for endpointsForURIs -- returning nil {uris: %@, service: %@, fromURI: %@}", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v17 = v9;
-      v18 = v10;
-      v16 = v8;
+      v17 = serviceCopy;
+      v18 = iCopy;
+      v16 = isCopy;
       _IDSLogV();
     }
 
@@ -2312,26 +2312,26 @@ LABEL_21:
   return v14;
 }
 
-- (id)endpointForPushToken:(id)a3 URI:(id)a4 service:(id)a5 fromURI:(id)a6
+- (id)endpointForPushToken:(id)token URI:(id)i service:(id)service fromURI:(id)rI
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10 && v11 && v12 && v13)
+  tokenCopy = token;
+  iCopy = i;
+  serviceCopy = service;
+  rICopy = rI;
+  v14 = rICopy;
+  if (tokenCopy && iCopy && serviceCopy && rICopy)
   {
-    v24 = v11;
+    v24 = iCopy;
     v15 = [NSArray arrayWithObjects:&v24 count:1];
-    v16 = [(IDSPeerIDManager *)self endpointsForURIs:v15 service:v12 fromURI:v14];
-    v17 = [v16 objectForKey:v11];
+    v16 = [(IDSPeerIDManager *)self endpointsForURIs:v15 service:serviceCopy fromURI:v14];
+    v17 = [v16 objectForKey:iCopy];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100317324;
     v22[3] = &unk_100BD7048;
-    v23 = v10;
+    v23 = tokenCopy;
     v18 = [v17 __imArrayByFilteringWithBlock:v22];
-    v19 = [v18 firstObject];
+    firstObject = [v18 firstObject];
   }
 
   else
@@ -2340,11 +2340,11 @@ LABEL_21:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v26 = v10;
+      v26 = tokenCopy;
       v27 = 2112;
-      v28 = v11;
+      v28 = iCopy;
       v29 = 2112;
-      v30 = v12;
+      v30 = serviceCopy;
       v31 = 2112;
       v32 = v14;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Missing required field(s) for endpointForPushToken -- returning nil {pushToken: %@, URI: %@, service: %@, fromURI: %@}", buf, 0x2Au);
@@ -2355,24 +2355,24 @@ LABEL_21:
       _IDSLogV();
     }
 
-    v19 = 0;
+    firstObject = 0;
   }
 
-  return v19;
+  return firstObject;
 }
 
-- (id)endpointsForURIs:(id)a3 service:(id)a4 fromURI:(id)a5 ignoringTTL:(BOOL)a6
+- (id)endpointsForURIs:(id)is service:(id)service fromURI:(id)i ignoringTTL:(BOOL)l
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  isCopy = is;
+  serviceCopy = service;
+  iCopy = i;
   theDict = objc_alloc_init(NSMutableDictionary);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v10;
+  v13 = isCopy;
   v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
@@ -2388,7 +2388,7 @@ LABEL_21:
         }
 
         v18 = *(*(&v22 + 1) + 8 * i);
-        v19 = [(IDSPeerIDManager *)self _endpointsForService:v11 fromURI:v12 toURI:v18 ignoreExpiration:v6];
+        v19 = [(IDSPeerIDManager *)self _endpointsForService:serviceCopy fromURI:iCopy toURI:v18 ignoreExpiration:lCopy];
         if (v19)
         {
           CFDictionarySetValue(theDict, v18, v19);
@@ -2404,18 +2404,18 @@ LABEL_21:
   return theDict;
 }
 
-- (id)endpointsForURIs:(id)a3 service:(id)a4 fromURI:(id)a5 withCapabilities:(id)a6
+- (id)endpointsForURIs:(id)is service:(id)service fromURI:(id)i withCapabilities:(id)capabilities
 {
-  v10 = a3;
-  v23 = a4;
-  v11 = a5;
-  v12 = a6;
+  isCopy = is;
+  serviceCopy = service;
+  iCopy = i;
+  capabilitiesCopy = capabilities;
   theDict = +[NSMutableDictionary dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v10;
+  obj = isCopy;
   v13 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
@@ -2431,12 +2431,12 @@ LABEL_21:
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [(IDSPeerIDManager *)self _endpointsForService:v23 fromURI:v11 toURI:v17 ignoreExpiration:0];
+        v18 = [(IDSPeerIDManager *)self _endpointsForService:serviceCopy fromURI:iCopy toURI:v17 ignoreExpiration:0];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_100317700;
         v24[3] = &unk_100BD7048;
-        v25 = v12;
+        v25 = capabilitiesCopy;
         v19 = [v18 __imArrayByFilteringWithBlock:v24];
         if (v19)
         {
@@ -2453,24 +2453,24 @@ LABEL_21:
   return theDict;
 }
 
-- (id)idInfoResultForURIs:(id)a3 service:(id)a4 fromURI:(id)a5 infoType:(unint64_t)a6 infoOptions:(id)a7 idStatusUpdates:(id)a8
+- (id)idInfoResultForURIs:(id)is service:(id)service fromURI:(id)i infoType:(unint64_t)type infoOptions:(id)options idStatusUpdates:(id)updates
 {
-  v56 = a6;
-  v12 = a3;
-  v13 = a4;
-  v46 = a5;
-  v44 = a7;
-  v14 = a8;
-  v47 = v13;
+  typeCopy = type;
+  isCopy = is;
+  serviceCopy = service;
+  iCopy = i;
+  optionsCopy = options;
+  updatesCopy = updates;
+  v47 = serviceCopy;
   theDict = objc_alloc_init(NSMutableDictionary);
-  v45 = v14;
-  v51 = [v14 objectForKey:v13];
-  v54 = [(IDSPeerIDManager *)self endpointsForURIs:v12 service:v13 fromURI:v46 ignoringTTL:1];
+  v45 = updatesCopy;
+  v51 = [updatesCopy objectForKey:serviceCopy];
+  v54 = [(IDSPeerIDManager *)self endpointsForURIs:isCopy service:serviceCopy fromURI:iCopy ignoringTTL:1];
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v12;
+  obj = isCopy;
   v53 = [obj countByEnumeratingWithState:&v61 objects:v70 count:16];
   if (v53)
   {
@@ -2485,7 +2485,7 @@ LABEL_21:
         }
 
         v16 = *(*(&v61 + 1) + 8 * i);
-        if ((v56 & 1) == 0)
+        if ((typeCopy & 1) == 0)
         {
           goto LABEL_7;
         }
@@ -2515,9 +2515,9 @@ LABEL_7:
 
         v55 = [v54 objectForKey:v16];
 LABEL_10:
-        if ((v56 & 2) != 0)
+        if ((typeCopy & 2) != 0)
         {
-          v19 = [(IDSPeerIDManager *)self verifierResultsForURIs:obj service:v47 fromURI:v46];
+          v19 = [(IDSPeerIDManager *)self verifierResultsForURIs:obj service:v47 fromURI:iCopy];
           v20 = [v19 objectForKey:v16];
 
           if (v20)
@@ -2572,7 +2572,7 @@ LABEL_10:
           v18 = 0;
         }
 
-        if ((v56 & 4) != 0)
+        if ((typeCopy & 4) != 0)
         {
           v30 = [v54 objectForKey:v16];
           v59 = 0u;
@@ -2593,18 +2593,18 @@ LABEL_10:
                   objc_enumerationMutation(v30);
                 }
 
-                v34 = [*(*(&v57 + 1) + 8 * j) gameCenterData];
-                v35 = v34;
+                gameCenterData = [*(*(&v57 + 1) + 8 * j) gameCenterData];
+                v35 = gameCenterData;
                 if (v29)
                 {
-                  v36 = [v29 compareAgainstData:v34];
+                  v36 = [v29 compareAgainstData:gameCenterData];
 
                   v29 = v36;
                 }
 
                 else
                 {
-                  v29 = v34;
+                  v29 = gameCenterData;
                 }
               }
 
@@ -2621,9 +2621,9 @@ LABEL_10:
         }
 
         v37 = [IDSIDInfoResult alloc];
-        v38 = [v16 prefixedURI];
+        prefixedURI = [v16 prefixedURI];
         v39 = [v51 objectForKey:v16];
-        v40 = [v37 initWithURI:v38 status:objc_msgSend(v39 endpoints:"integerValue") ktData:v55 gameCenterData:{v18, v29}];
+        v40 = [v37 initWithURI:prefixedURI status:objc_msgSend(v39 endpoints:"integerValue") ktData:v55 gameCenterData:{v18, v29}];
 
         if (v40)
         {
@@ -2640,18 +2640,18 @@ LABEL_10:
   return theDict;
 }
 
-- (id)lightDescriptionForVerifierResult:(id)a3
+- (id)lightDescriptionForVerifierResult:(id)result
 {
-  if (a3)
+  if (result)
   {
-    v3 = a3;
+    resultCopy = result;
     v4 = objc_opt_class();
-    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 succeed]);
-    v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 uiStatus]);
-    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 staticAccountKeyStatus]);
-    v8 = [v3 publicID];
-    v9 = [v3 failure];
-    v10 = [NSString stringWithFormat:@"<%@: %p KTResult: %@, UIStatus: %@, StaticKeyResult: %@, AccountKey: %@, Error: %@>", v4, v3, v5, v6, v7, v8, v9];;
+    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resultCopy succeed]);
+    v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resultCopy uiStatus]);
+    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resultCopy staticAccountKeyStatus]);
+    publicID = [resultCopy publicID];
+    failure = [resultCopy failure];
+    v10 = [NSString stringWithFormat:@"<%@: %p KTResult: %@, UIStatus: %@, StaticKeyResult: %@, AccountKey: %@, Error: %@>", v4, resultCopy, v5, v6, v7, publicID, failure];;
   }
 
   else
@@ -2662,23 +2662,23 @@ LABEL_10:
   return v10;
 }
 
-- (id)_endpointsForService:(id)a3 fromURI:(id)a4 toURI:(id)a5 ignoreExpiration:(BOOL)a6 ignoreCache:(BOOL)a7 hitCache:(BOOL *)a8
+- (id)_endpointsForService:(id)service fromURI:(id)i toURI:(id)rI ignoreExpiration:(BOOL)expiration ignoreCache:(BOOL)cache hitCache:(BOOL *)hitCache
 {
-  v10 = a6;
-  v32 = a3;
-  v33 = a4;
-  v34 = a5;
-  v14 = [[IDSPeerIDKey alloc] initWithService:v32 fromURI:v33 toURI:v34];
-  if (a7)
+  expirationCopy = expiration;
+  serviceCopy = service;
+  iCopy = i;
+  rICopy = rI;
+  v14 = [[IDSPeerIDKey alloc] initWithService:serviceCopy fromURI:iCopy toURI:rICopy];
+  if (cache)
   {
 LABEL_21:
-    if (a8)
+    if (hitCache)
     {
-      *a8 = 0;
+      *hitCache = 0;
     }
 
-    v16 = [(IDSPeerIDManager *)self _loadCachedPeerIDValueForKey:v14 ignoreExpiration:v10];
-    v25 = [v16 endpoints];
+    v16 = [(IDSPeerIDManager *)self _loadCachedPeerIDValueForKey:v14 ignoreExpiration:expirationCopy];
+    endpoints = [v16 endpoints];
     goto LABEL_24;
   }
 
@@ -2690,30 +2690,30 @@ LABEL_21:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v40 = v32;
+      v40 = serviceCopy;
       v41 = 2112;
-      v42 = v33;
+      v42 = iCopy;
       v43 = 2112;
-      v44 = v34;
+      v44 = rICopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "DB Cache Miss { service: %@, fromURI: %@, toURI: %@ }", buf, 0x20u);
     }
 
     goto LABEL_21;
   }
 
-  if (a8)
+  if (hitCache)
   {
-    *a8 = 1;
+    *hitCache = 1;
   }
 
-  if (!v10)
+  if (!expirationCopy)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v17 = [v15 endpoints];
-    v18 = [v17 countByEnumeratingWithState:&v35 objects:v45 count:16];
+    endpoints2 = [v15 endpoints];
+    v18 = [endpoints2 countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (v18)
     {
       v19 = *v36;
@@ -2723,13 +2723,13 @@ LABEL_21:
         {
           if (*v36 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(endpoints2);
           }
 
           v21 = *(*(&v35 + 1) + 8 * i);
           v22 = objc_opt_class();
-          v23 = [v21 expireDate];
-          LODWORD(v22) = [v22 _datePassed:v23];
+          expireDate = [v21 expireDate];
+          LODWORD(v22) = [v22 _datePassed:expireDate];
 
           if (v22)
           {
@@ -2753,7 +2753,7 @@ LABEL_21:
           }
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v35 objects:v45 count:16];
+        v18 = [endpoints2 countByEnumeratingWithState:&v35 objects:v45 count:16];
         if (v18)
         {
           continue;
@@ -2768,71 +2768,71 @@ LABEL_21:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v40 = v32;
+    v40 = serviceCopy;
     v41 = 2112;
-    v42 = v33;
+    v42 = iCopy;
     v43 = 2112;
-    v44 = v34;
+    v44 = rICopy;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "DB Cache Hit { service: %@, fromURI: %@, toURI: %@ }", buf, 0x20u);
   }
 
-  v25 = [v16 endpoints];
+  endpoints = [v16 endpoints];
 LABEL_24:
-  v27 = v25;
+  v27 = endpoints;
 LABEL_25:
 
   return v27;
 }
 
-- (id)_peerIDKeysForService:(id)a3 andFromURI:(id)a4
+- (id)_peerIDKeysForService:(id)service andFromURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSCache *)self->_dbCache mapTableRepresentation];
-  v9 = [v8 keyEnumerator];
-  v10 = [v9 allObjects];
+  serviceCopy = service;
+  iCopy = i;
+  mapTableRepresentation = [(NSCache *)self->_dbCache mapTableRepresentation];
+  keyEnumerator = [mapTableRepresentation keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100318584;
   v15[3] = &unk_100BD7078;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 __imArrayByFilteringWithBlock:v15];
+  v16 = serviceCopy;
+  v17 = iCopy;
+  v11 = iCopy;
+  v12 = serviceCopy;
+  v13 = [allObjects __imArrayByFilteringWithBlock:v15];
 
   return v13;
 }
 
-- (id)_peerIDKeysForService:(id)a3
+- (id)_peerIDKeysForService:(id)service
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_dbCache mapTableRepresentation];
-  v6 = [v5 keyEnumerator];
-  v7 = [v6 allObjects];
+  serviceCopy = service;
+  mapTableRepresentation = [(NSCache *)self->_dbCache mapTableRepresentation];
+  keyEnumerator = [mapTableRepresentation keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1003186F0;
   v11[3] = &unk_100BD70A0;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 __imArrayByFilteringWithBlock:v11];
+  v12 = serviceCopy;
+  v8 = serviceCopy;
+  v9 = [allObjects __imArrayByFilteringWithBlock:v11];
 
   return v9;
 }
 
-- (id)verifierResultsForURIs:(id)a3 service:(id)a4 fromURI:(id)a5
+- (id)verifierResultsForURIs:(id)is service:(id)service fromURI:(id)i
 {
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
+  isCopy = is;
+  serviceCopy = service;
+  iCopy = i;
   theDict = objc_alloc_init(NSMutableDictionary);
-  v10 = [(IDSKeyTransparencyVerifier *)self->_keyTransparencyVerifier accountController];
-  v11 = [(IDSKeyTransparencyVerifier *)self->_keyTransparencyVerifier serviceController];
-  v12 = [v11 serviceWithIdentifier:v9];
-  v13 = [v10 accountsOnService:v12];
+  accountController = [(IDSKeyTransparencyVerifier *)self->_keyTransparencyVerifier accountController];
+  serviceController = [(IDSKeyTransparencyVerifier *)self->_keyTransparencyVerifier serviceController];
+  v12 = [serviceController serviceWithIdentifier:serviceCopy];
+  v13 = [accountController accountsOnService:v12];
 
   v40 = objc_alloc_init(NSMutableSet);
   v49 = 0u;
@@ -2854,9 +2854,9 @@ LABEL_25:
           objc_enumerationMutation(obj);
         }
 
-        v18 = [*(*(&v49 + 1) + 8 * i) registration];
-        v19 = [v18 uris];
-        v20 = [v19 __imArrayByApplyingBlock:&stru_100BD70E0];
+        registration = [*(*(&v49 + 1) + 8 * i) registration];
+        uris = [registration uris];
+        v20 = [uris __imArrayByApplyingBlock:&stru_100BD70E0];
 
         [v40 addObjectsFromArray:v20];
       }
@@ -2871,7 +2871,7 @@ LABEL_25:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v34 = v8;
+  v34 = isCopy;
   v38 = [v34 countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (v38)
   {
@@ -2888,7 +2888,7 @@ LABEL_25:
         v22 = *(*(&v45 + 1) + 8 * j);
         v23 = objc_autoreleasePoolPush();
         key = v22;
-        v24 = [v22 tokenFreeURI];
+        tokenFreeURI = [v22 tokenFreeURI];
         objc_autoreleasePoolPop(v23);
         v43 = 0u;
         v44 = 0u;
@@ -2909,8 +2909,8 @@ LABEL_25:
                 objc_enumerationMutation(v25);
               }
 
-              v30 = [*(*(&v41 + 1) + 8 * k) tokenFreeURI];
-              v31 = [(IDSPeerIDManager *)self _keyTransparencyVerifierResultForService:v9 fromURI:v30 toURI:v24];
+              tokenFreeURI2 = [*(*(&v41 + 1) + 8 * k) tokenFreeURI];
+              v31 = [(IDSPeerIDManager *)self _keyTransparencyVerifierResultForService:serviceCopy fromURI:tokenFreeURI2 toURI:tokenFreeURI];
 
               if (v31)
               {
@@ -2942,20 +2942,20 @@ LABEL_23:
   return theDict;
 }
 
-- (id)_keyTransparencyVerifierResultForService:(id)a3 fromURI:(id)a4 toURI:(id)a5
+- (id)_keyTransparencyVerifierResultForService:(id)service fromURI:(id)i toURI:(id)rI
 {
-  v5 = [(IDSPeerIDManager *)self keyTransparencyContextForService:a3 fromURI:a4 toURI:a5];
-  v6 = [v5 verifierResult];
+  v5 = [(IDSPeerIDManager *)self keyTransparencyContextForService:service fromURI:i toURI:rI];
+  verifierResult = [v5 verifierResult];
 
-  return v6;
+  return verifierResult;
 }
 
-- (id)keyTransparencyContextForService:(id)a3 fromURI:(id)a4 toURI:(id)a5
+- (id)keyTransparencyContextForService:(id)service fromURI:(id)i toURI:(id)rI
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[IDSPeerIDKey alloc] initWithService:v10 fromURI:v9 toURI:v8];
+  rICopy = rI;
+  iCopy = i;
+  serviceCopy = service;
+  v11 = [[IDSPeerIDKey alloc] initWithService:serviceCopy fromURI:iCopy toURI:rICopy];
 
   v12 = [(NSCache *)self->_dbCache objectForKey:v11];
   if (!v12)
@@ -2964,29 +2964,29 @@ LABEL_23:
   }
 
   v13 = v12;
-  v14 = [v12 keyTransparencyContext];
+  keyTransparencyContext = [v12 keyTransparencyContext];
 
-  return v14;
+  return keyTransparencyContext;
 }
 
-- (id)queryDateForService:(id)a3 fromURI:(id)a4 toURI:(id)a5
+- (id)queryDateForService:(id)service fromURI:(id)i toURI:(id)rI
 {
-  v5 = [(IDSPeerIDManager *)self keyTransparencyContextForService:a3 fromURI:a4 toURI:a5];
-  v6 = [v5 queryResponseTime];
+  v5 = [(IDSPeerIDManager *)self keyTransparencyContextForService:service fromURI:i toURI:rI];
+  queryResponseTime = [v5 queryResponseTime];
 
-  return v6;
+  return queryResponseTime;
 }
 
-- (void)updateCachedVerifierResultsWithResults:(id)a3
+- (void)updateCachedVerifierResultsWithResults:(id)results
 {
-  v4 = a3;
-  v52 = self;
+  resultsCopy = results;
+  selfCopy = self;
   v44 = [(IDSPeerIDManager *)self persistenceManagerForService:@"com.apple.madrid"];
   v5 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v69 = [v4 count];
+    v69 = [resultsCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating query cache with KT peer verification results { count: %lu }", buf, 0xCu);
   }
 
@@ -2995,8 +2995,8 @@ LABEL_23:
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v46 = v4;
-  obj = [v4 allKeys];
+  v46 = resultsCopy;
+  obj = [resultsCopy allKeys];
   v49 = [obj countByEnumeratingWithState:&v64 objects:v74 count:16];
   if (v49)
   {
@@ -3013,15 +3013,15 @@ LABEL_23:
 
         v50 = v6;
         v7 = *(*(&v64 + 1) + 8 * v6);
-        v8 = [(NSCache *)v52->_dbCache mapTableRepresentation];
-        v9 = [v8 keyEnumerator];
-        v10 = [v9 allObjects];
+        mapTableRepresentation = [(NSCache *)selfCopy->_dbCache mapTableRepresentation];
+        keyEnumerator = [mapTableRepresentation keyEnumerator];
+        allObjects = [keyEnumerator allObjects];
 
         v62 = 0u;
         v63 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v11 = v10;
+        v11 = allObjects;
         v12 = [v11 countByEnumeratingWithState:&v60 objects:v73 count:16];
         if (v12)
         {
@@ -3037,11 +3037,11 @@ LABEL_23:
               }
 
               v16 = *(*(&v60 + 1) + 8 * i);
-              v17 = [v16 service];
-              if ([v17 isEqualToString:@"com.apple.madrid"])
+              service = [v16 service];
+              if ([service isEqualToString:@"com.apple.madrid"])
               {
-                v18 = [v16 toURI];
-                v19 = [v7 isEqualToURI:v18];
+                toURI = [v16 toURI];
+                v19 = [v7 isEqualToURI:toURI];
 
                 if (v19)
                 {
@@ -3096,24 +3096,24 @@ LABEL_23:
           }
 
           v26 = *(*(&v56 + 1) + 8 * j);
-          v27 = [v26 toURI];
-          v28 = [(IDSPeerIDManager *)v52 queryHandler];
-          [v28 noteKTQueryFinishedForURI:v27 service:@"com.apple.madrid"];
+          toURI2 = [v26 toURI];
+          queryHandler = [(IDSPeerIDManager *)selfCopy queryHandler];
+          [queryHandler noteKTQueryFinishedForURI:toURI2 service:@"com.apple.madrid"];
 
           v29 = +[IDSFoundationLog KeyTransparency];
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v69 = v27;
+            v69 = toURI2;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Checking for updates result for %@.", buf, 0xCu);
           }
 
-          v30 = [(NSCache *)v52->_dbCache objectForKey:v26];
-          v31 = [v30 keyTransparencyContext];
+          v30 = [(NSCache *)selfCopy->_dbCache objectForKey:v26];
+          keyTransparencyContext = [v30 keyTransparencyContext];
 
-          v32 = [v31 verifierResult];
-          v33 = [v46 objectForKeyedSubscript:v27];
-          v34 = [v32 isEqual:v33];
+          verifierResult = [keyTransparencyContext verifierResult];
+          v33 = [v46 objectForKeyedSubscript:toURI2];
+          v34 = [verifierResult isEqual:v33];
           v35 = +[IDSFoundationLog KeyTransparency];
           v36 = v35;
           if (v34)
@@ -3129,7 +3129,7 @@ LABEL_23:
             if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v69 = v32;
+              v69 = verifierResult;
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "URI: stored: %@", buf, 0xCu);
             }
           }
@@ -3139,23 +3139,23 @@ LABEL_23:
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v43;
-              v69 = v27;
+              v69 = toURI2;
               v70 = 2112;
               v71 = v33;
               _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "URI: %@ has a new KTVerifierResult: %@", buf, 0x16u);
             }
 
             v38 = [IDSQueryKeyTransparencyContext alloc];
-            v39 = [v31 accountKey];
-            v40 = [v31 queryResponseTime];
-            v37 = [v38 initWithVerifierResult:v33 ticket:0 accountKey:v39 queryResponseTime:v40 ktOptIn:{objc_msgSend(v31, "ktOptIn")}];
+            accountKey = [keyTransparencyContext accountKey];
+            queryResponseTime = [keyTransparencyContext queryResponseTime];
+            v37 = [v38 initWithVerifierResult:v33 ticket:0 accountKey:accountKey queryResponseTime:queryResponseTime ktOptIn:{objc_msgSend(keyTransparencyContext, "ktOptIn")}];
 
-            [(IDSPeerIDManager *)v52 _updateKTContext:v37 forURI:v27 manager:v44];
+            [(IDSPeerIDManager *)selfCopy _updateKTContext:v37 forURI:toURI2 manager:v44];
             v54[0] = _NSConcreteStackBlock;
             v54[1] = 3221225472;
             v54[2] = sub_1003193FC;
             v54[3] = &unk_100BD7108;
-            v55 = v27;
+            v55 = toURI2;
             [v44 updateKeyTransparencyContext:v37 uri:v55 service:@"com.apple.madrid" completion:v54];
 
             v24 = 1;
@@ -3191,76 +3191,76 @@ LABEL_23:
   }
 }
 
-- (BOOL)startQueryForURIs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 forSending:(BOOL)a7 forceToServer:(BOOL)a8 clientRequestedForceQuery:(BOOL)a9 reason:(id)a10 completionBlock:(id)a11
+- (BOOL)startQueryForURIs:(id)is fromIdentity:(id)identity fromURI:(id)i fromService:(id)service forSending:(BOOL)sending forceToServer:(BOOL)server clientRequestedForceQuery:(BOOL)query reason:(id)self0 completionBlock:(id)self1
 {
-  v11 = a8;
-  v12 = a7;
-  v17 = a11;
-  v18 = a10;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [[IDSPeerIDQueryContext alloc] initWithSending:v12 forceToServer:v11 messaging:0 resultExpected:0 preventNewQuery:0 clientRequestedForceQuery:a9];
-  LOBYTE(v12) = [(IDSPeerIDManager *)self startQueryForURIs:v22 fromIdentity:v21 fromURI:v20 fromService:v19 context:v23 reason:v18 completionBlock:v17];
+  serverCopy = server;
+  sendingCopy = sending;
+  blockCopy = block;
+  reasonCopy = reason;
+  serviceCopy = service;
+  iCopy = i;
+  identityCopy = identity;
+  isCopy = is;
+  v23 = [[IDSPeerIDQueryContext alloc] initWithSending:sendingCopy forceToServer:serverCopy messaging:0 resultExpected:0 preventNewQuery:0 clientRequestedForceQuery:query];
+  LOBYTE(sendingCopy) = [(IDSPeerIDManager *)self startQueryForURIs:isCopy fromIdentity:identityCopy fromURI:iCopy fromService:serviceCopy context:v23 reason:reasonCopy completionBlock:blockCopy];
 
-  return v12;
+  return sendingCopy;
 }
 
-- (BOOL)startQueryForURIs:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 context:(id)a7 reason:(id)a8 completionBlock:(id)a9
+- (BOOL)startQueryForURIs:(id)is fromIdentity:(id)identity fromURI:(id)i fromService:(id)service context:(id)context reason:(id)reason completionBlock:(id)block
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
-  v33 = a8;
-  v32 = a7;
-  v31 = a4;
-  v18 = [NSMutableSet setWithArray:a3];
+  iCopy = i;
+  serviceCopy = service;
+  blockCopy = block;
+  reasonCopy = reason;
+  contextCopy = context;
+  identityCopy = identity;
+  v18 = [NSMutableSet setWithArray:is];
   v19 = [v18 __imSetByApplyingBlock:&stru_100BD7148];
-  v20 = [v19 allObjects];
-  v21 = [(IDSPeerIDManager *)self endpointsForURIs:v20 service:v16 fromURI:v15];
+  allObjects = [v19 allObjects];
+  v21 = [(IDSPeerIDManager *)self endpointsForURIs:allObjects service:serviceCopy fromURI:iCopy];
 
-  v22 = [(IDSPeerIDManager *)self queryHandler];
-  v23 = [v18 allObjects];
+  queryHandler = [(IDSPeerIDManager *)self queryHandler];
+  allObjects2 = [v18 allObjects];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_100319990;
   v34[3] = &unk_100BD7170;
   v34[4] = self;
   v35 = v19;
-  v36 = v16;
-  v37 = v15;
+  v36 = serviceCopy;
+  v37 = iCopy;
   v38 = v18;
   v39 = v21;
-  v40 = v17;
-  v30 = v17;
+  v40 = blockCopy;
+  v30 = blockCopy;
   v29 = v21;
   v24 = v18;
-  v25 = v15;
-  v26 = v16;
+  v25 = iCopy;
+  v26 = serviceCopy;
   v27 = v19;
-  LOBYTE(self) = [v22 startQueryForURIs:v23 fromIdentity:v31 fromURI:v25 fromService:v26 context:v32 reason:v33 completionBlock:v34];
+  LOBYTE(self) = [queryHandler startQueryForURIs:allObjects2 fromIdentity:identityCopy fromURI:v25 fromService:v26 context:contextCopy reason:reasonCopy completionBlock:v34];
 
   return self;
 }
 
-- (void)notePeerToken:(id)a3 forURI:(id)a4 fromURI:(id)a5 service:(id)a6
+- (void)notePeerToken:(id)token forURI:(id)i fromURI:(id)rI service:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 prefixedURI];
-  v14 = [v13 length];
+  tokenCopy = token;
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
+  prefixedURI = [iCopy prefixedURI];
+  v14 = [prefixedURI length];
 
   if (v14)
   {
-    v15 = [v9 rawToken];
-    v16 = [v15 length];
+    rawToken = [tokenCopy rawToken];
+    v16 = [rawToken length];
 
     if (v16)
     {
-      [(IDSPeerIDManager *)self _endpointsForService:v12 fromURI:v11 toURI:v10 ignoreExpiration:0];
+      [(IDSPeerIDManager *)self _endpointsForService:serviceCopy fromURI:rICopy toURI:iCopy ignoreExpiration:0];
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
@@ -3278,8 +3278,8 @@ LABEL_23:
               objc_enumerationMutation(v17);
             }
 
-            v21 = [*(*(&v41 + 1) + 8 * i) pushTokenObject];
-            v22 = [v21 isEqualToPushToken:v9];
+            pushTokenObject = [*(*(&v41 + 1) + 8 * i) pushTokenObject];
+            v22 = [pushTokenObject isEqualToPushToken:tokenCopy];
 
             if (v22)
             {
@@ -3305,9 +3305,9 @@ LABEL_13:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v47 = v9;
+        v47 = tokenCopy;
         v48 = 2112;
-        v49 = v10;
+        v49 = iCopy;
         v50 = 2112;
         v51 = v17;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Checking peer token: %@ for URI: %@   (Tokens: %@)", buf, 0x20u);
@@ -3315,9 +3315,9 @@ LABEL_13:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v34 = v10;
+        v34 = iCopy;
         v35 = v17;
-        v33 = v9;
+        v33 = tokenCopy;
         _IDSLogV();
       }
 
@@ -3356,8 +3356,8 @@ LABEL_13:
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v28 = [(NSMutableDictionary *)self->_purgeClientDataBlocks allValues];
-          v29 = [v28 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          allValues = [(NSMutableDictionary *)self->_purgeClientDataBlocks allValues];
+          v29 = [allValues countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v29)
           {
             v30 = *v38;
@@ -3367,23 +3367,23 @@ LABEL_13:
               {
                 if (*v38 != v30)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v32 = *(*(&v37 + 1) + 8 * j);
                 if (v32)
                 {
-                  (*(v32 + 16))(v32, v12);
+                  (*(v32 + 16))(v32, serviceCopy);
                 }
               }
 
-              v29 = [v28 countByEnumeratingWithState:&v37 objects:v45 count:16];
+              v29 = [allValues countByEnumeratingWithState:&v37 objects:v45 count:16];
             }
 
             while (v29);
           }
 
-          [(IDSPeerIDManager *)self forgetPeerTokensForURI:v10 fromURI:v11 service:v12 reason:15];
+          [(IDSPeerIDManager *)self forgetPeerTokensForURI:iCopy fromURI:rICopy service:serviceCopy reason:15];
           goto LABEL_45;
         }
 
@@ -3410,7 +3410,7 @@ LABEL_45:
 LABEL_46:
 }
 
-- (void)clearCacheAndPersistImmediately:(BOOL)a3
+- (void)clearCacheAndPersistImmediately:(BOOL)immediately
 {
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3429,8 +3429,8 @@ LABEL_46:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = [(IDSPeerIDManager *)self persistenceManagers];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  persistenceManagers = [(IDSPeerIDManager *)self persistenceManagers];
+  v6 = [persistenceManagers countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -3441,7 +3441,7 @@ LABEL_46:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(persistenceManagers);
         }
 
         [*(*(&v9 + 1) + 8 * v8) deleteAllWithCompletion:&stru_100BD71B0];
@@ -3449,7 +3449,7 @@ LABEL_46:
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [persistenceManagers countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
@@ -3458,22 +3458,22 @@ LABEL_46:
 
 - (id)pleaseDontCopyCacheDictionaryRepresentation
 {
-  v3 = [(IDSPeerIDManager *)self persistenceManagers];
-  if ([v3 count] == 1)
+  persistenceManagers = [(IDSPeerIDManager *)self persistenceManagers];
+  if ([persistenceManagers count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 peerMapRepresentation];
+    firstObject = [persistenceManagers firstObject];
+    peerMapRepresentation = [firstObject peerMapRepresentation];
   }
 
   else
   {
-    v4 = objc_alloc_init(NSMutableDictionary);
+    firstObject = objc_alloc_init(NSMutableDictionary);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(IDSPeerIDManager *)self persistenceManagers];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    persistenceManagers2 = [(IDSPeerIDManager *)self persistenceManagers];
+    v7 = [persistenceManagers2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -3484,31 +3484,31 @@ LABEL_46:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(persistenceManagers2);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) peerMapRepresentation];
-          [v4 addEntriesFromDictionary:v11];
+          peerMapRepresentation2 = [*(*(&v14 + 1) + 8 * i) peerMapRepresentation];
+          [firstObject addEntriesFromDictionary:peerMapRepresentation2];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [persistenceManagers2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
     }
 
-    v5 = [v4 copy];
+    peerMapRepresentation = [firstObject copy];
   }
 
-  v12 = v5;
+  v12 = peerMapRepresentation;
 
   return v12;
 }
 
-- (void)forgetPeerTokensForURIs:(id)a3 services:(id)a4 reason:(int64_t)a5
+- (void)forgetPeerTokensForURIs:(id)is services:(id)services reason:(int64_t)reason
 {
-  v33 = a3;
-  v34 = a4;
+  isCopy = is;
+  servicesCopy = services;
   if (+[IDSPeerIDManager shouldUseSelfTokens])
   {
     v6 = OSLogHandleForIDSCategory();
@@ -3530,16 +3530,16 @@ LABEL_46:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v54 = v33;
+      v54 = isCopy;
       v55 = 2112;
-      v56 = v34;
+      v56 = servicesCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Forgetting peer tokens for URIs: %@  services: %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v29 = v33;
-      v30 = v34;
+      v29 = isCopy;
+      v30 = servicesCopy;
       _IDSLogV();
     }
 
@@ -3548,8 +3548,8 @@ LABEL_46:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v8 = [(IDSPeerIDManager *)self persistenceManagers];
-    v9 = [v8 countByEnumeratingWithState:&v46 objects:v52 count:16];
+    persistenceManagers = [(IDSPeerIDManager *)self persistenceManagers];
+    v9 = [persistenceManagers countByEnumeratingWithState:&v46 objects:v52 count:16];
     if (v9)
     {
       v10 = *v47;
@@ -3560,7 +3560,7 @@ LABEL_46:
         {
           if (*v47 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(persistenceManagers);
           }
 
           v12 = *(*(&v46 + 1) + 8 * v11);
@@ -3568,16 +3568,16 @@ LABEL_46:
           v43[1] = 3221225472;
           v43[2] = sub_10031AC18;
           v43[3] = &unk_100BD71D8;
-          v13 = v33;
+          v13 = isCopy;
           v44 = v13;
-          v45 = v34;
+          v45 = servicesCopy;
           [v12 deleteEndpointsWithServices:v45 toURIs:v13 completion:v43];
 
           v11 = v11 + 1;
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v46 objects:v52 count:16];
+        v9 = [persistenceManagers countByEnumeratingWithState:&v46 objects:v52 count:16];
       }
 
       while (v9);
@@ -3588,7 +3588,7 @@ LABEL_46:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v15 = v33;
+    v15 = isCopy;
     v16 = [v15 countByEnumeratingWithState:&v39 objects:v51 count:16];
     if (v16)
     {
@@ -3603,8 +3603,8 @@ LABEL_46:
             objc_enumerationMutation(v15);
           }
 
-          v19 = [*(*(&v39 + 1) + 8 * v18) prefixedURI];
-          [v14 addObject:v19];
+          prefixedURI = [*(*(&v39 + 1) + 8 * v18) prefixedURI];
+          [v14 addObject:prefixedURI];
 
           v18 = v18 + 1;
         }
@@ -3616,12 +3616,12 @@ LABEL_46:
       while (v16);
     }
 
-    [(IDSPeerIDManager *)self deleteStatusesForServices:v34 URIs:v14];
+    [(IDSPeerIDManager *)self deleteStatusesForServices:servicesCopy URIs:v14];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v20 = v34;
+    v20 = servicesCopy;
     v21 = [v20 countByEnumeratingWithState:&v35 objects:v50 count:16];
     if (v21)
     {
@@ -3638,7 +3638,7 @@ LABEL_46:
 
           v24 = *(*(&v35 + 1) + 8 * v23);
           v25 = [IDSQueryCacheClearMetric alloc];
-          v26 = [(IDSPeerIDManager *)self _queryCacheReasonString:a5];
+          v26 = [(IDSPeerIDManager *)self _queryCacheReasonString:reason];
           v27 = [v25 initWithServiceIdentifier:v24 clearReason:v26 uriCount:{objc_msgSend(v14, "count")}];
 
           v28 = +[IDSCoreAnalyticsLogger defaultLogger];
@@ -3656,11 +3656,11 @@ LABEL_46:
   }
 }
 
-- (void)forgetPeerTokensForURI:(id)a3 fromURI:(id)a4 service:(id)a5 reason:(int64_t)a6
+- (void)forgetPeerTokensForURI:(id)i fromURI:(id)rI service:(id)service reason:(int64_t)reason
 {
-  v9 = a3;
-  v39 = a4;
-  v40 = a5;
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
   if (+[IDSPeerIDManager shouldUseSelfTokens])
   {
     v10 = OSLogHandleForIDSCategory();
@@ -3678,9 +3678,9 @@ LABEL_46:
 
   else
   {
-    v35 = a6;
-    v11 = [v9 prefixedURI];
-    v12 = [v11 length];
+    reasonCopy = reason;
+    prefixedURI = [iCopy prefixedURI];
+    v12 = [prefixedURI length];
 
     if (v12)
     {
@@ -3688,19 +3688,19 @@ LABEL_46:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v56 = v9;
+        v56 = iCopy;
         v57 = 2112;
-        v58 = v39;
+        v58 = rICopy;
         v59 = 2112;
-        v60 = v40;
+        v60 = serviceCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Forgetting peer tokens for URI: %@  from URI: %@  service: %@", buf, 0x20u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v33 = v39;
-        v34 = v40;
-        v32 = v9;
+        v33 = rICopy;
+        v34 = serviceCopy;
+        v32 = iCopy;
         _IDSLogV();
       }
 
@@ -3726,7 +3726,7 @@ LABEL_46:
             v18 = *(*(&v49 + 1) + 8 * v17);
             if (v18)
             {
-              (*(v18 + 16))(v18, v40);
+              (*(v18 + 16))(v18, serviceCopy);
             }
 
             v17 = v17 + 1;
@@ -3739,7 +3739,7 @@ LABEL_46:
         while (v15);
       }
 
-      v36 = [[IDSPeerIDKey alloc] initWithService:v40 fromURI:v39 toURI:v9];
+      v36 = [[IDSPeerIDKey alloc] initWithService:serviceCopy fromURI:rICopy toURI:iCopy];
       [(NSCache *)self->_dbCache removeObjectForKey:v36];
       v47 = 0u;
       v48 = 0u;
@@ -3765,14 +3765,14 @@ LABEL_46:
             v41[1] = 3221225472;
             v41[2] = sub_10031B258;
             v41[3] = &unk_100BD6FB8;
-            v23 = v9;
-            v24 = v9;
+            v23 = iCopy;
+            v24 = iCopy;
             v42 = v24;
-            v25 = v39;
+            v25 = rICopy;
             v43 = v25;
-            v44 = v40;
+            v44 = serviceCopy;
             v26 = v24;
-            v9 = v23;
+            iCopy = v23;
             [v22 deleteEndpointsWithService:v44 fromURI:v25 toURI:v26 completion:v41];
 
             v21 = v21 + 1;
@@ -3785,12 +3785,12 @@ LABEL_46:
         while (v19);
       }
 
-      v27 = [v9 prefixedURI];
-      [(IDSPeerIDManager *)self deleteStatusForService:v40 URI:v27];
+      prefixedURI2 = [iCopy prefixedURI];
+      [(IDSPeerIDManager *)self deleteStatusForService:serviceCopy URI:prefixedURI2];
 
       v28 = [IDSQueryCacheClearMetric alloc];
-      v29 = [(IDSPeerIDManager *)self _queryCacheReasonString:v35];
-      v30 = [v28 initWithServiceIdentifier:v40 clearReason:v29 uriCount:1];
+      v29 = [(IDSPeerIDManager *)self _queryCacheReasonString:reasonCopy];
+      v30 = [v28 initWithServiceIdentifier:serviceCopy clearReason:v29 uriCount:1];
 
       v31 = +[IDSCoreAnalyticsLogger defaultLogger];
       [v31 logMetric:v30];
@@ -3798,12 +3798,12 @@ LABEL_46:
   }
 }
 
-- (void)forgetPeerTokensForURI:(id)a3 fromURI:(id)a4 services:(id)a5 reason:(int64_t)a6
+- (void)forgetPeerTokensForURI:(id)i fromURI:(id)rI services:(id)services reason:(int64_t)reason
 {
-  v9 = a3;
-  v47 = a4;
-  v43 = a5;
-  v48 = v9;
+  iCopy = i;
+  rICopy = rI;
+  servicesCopy = services;
+  v48 = iCopy;
   if (+[IDSPeerIDManager shouldUseSelfTokens])
   {
     v10 = OSLogHandleForIDSCategory();
@@ -3821,10 +3821,10 @@ LABEL_46:
 
   else
   {
-    v11 = [v9 prefixedURI];
-    if ([v11 length])
+    prefixedURI = [iCopy prefixedURI];
+    if ([prefixedURI length])
     {
-      v12 = [v43 count];
+      v12 = [servicesCopy count];
 
       if (v12)
       {
@@ -3832,19 +3832,19 @@ LABEL_46:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v74 = v9;
+          v74 = iCopy;
           v75 = 2112;
-          v76 = v47;
+          v76 = rICopy;
           v77 = 2112;
-          v78 = v43;
+          v78 = servicesCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Forgetting peer tokens for URI: %@  from URI: %@  services: %@", buf, 0x20u);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v41 = v47;
-          v42 = v43;
-          v40 = v9;
+          v41 = rICopy;
+          v42 = servicesCopy;
+          v40 = iCopy;
           _IDSLogV();
         }
 
@@ -3852,7 +3852,7 @@ LABEL_46:
         v68 = 0u;
         v65 = 0u;
         v66 = 0u;
-        obj = v43;
+        obj = servicesCopy;
         v14 = [obj countByEnumeratingWithState:&v65 objects:v72 count:16];
         if (v14)
         {
@@ -3898,7 +3898,7 @@ LABEL_46:
                 while (v19);
               }
 
-              v23 = [[IDSPeerIDKey alloc] initWithService:v17 fromURI:v47 toURI:v48];
+              v23 = [[IDSPeerIDKey alloc] initWithService:v17 fromURI:rICopy toURI:v48];
               [(NSCache *)self->_dbCache removeObjectForKey:v23];
             }
 
@@ -3912,8 +3912,8 @@ LABEL_46:
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v44 = [(IDSPeerIDManager *)self persistenceManagers];
-        v24 = [v44 countByEnumeratingWithState:&v57 objects:v70 count:16];
+        persistenceManagers = [(IDSPeerIDManager *)self persistenceManagers];
+        v24 = [persistenceManagers countByEnumeratingWithState:&v57 objects:v70 count:16];
         if (v24)
         {
           v25 = *v58;
@@ -3923,7 +3923,7 @@ LABEL_46:
             {
               if (*v58 != v25)
               {
-                objc_enumerationMutation(v44);
+                objc_enumerationMutation(persistenceManagers);
               }
 
               v27 = *(*(&v57 + 1) + 8 * k);
@@ -3933,13 +3933,13 @@ LABEL_46:
               v53[3] = &unk_100BD6FB8;
               v28 = v48;
               v54 = v28;
-              v29 = v47;
+              v29 = rICopy;
               v55 = v29;
               v56 = obj;
               [v27 deleteEndpointsWithServices:v56 fromURI:v29 toURI:v28 completion:v53];
             }
 
-            v24 = [v44 countByEnumeratingWithState:&v57 objects:v70 count:16];
+            v24 = [persistenceManagers countByEnumeratingWithState:&v57 objects:v70 count:16];
           }
 
           while (v24);
@@ -3964,11 +3964,11 @@ LABEL_46:
               }
 
               v34 = *(*(&v49 + 1) + 8 * m);
-              v35 = [v48 prefixedURI];
-              [(IDSPeerIDManager *)self deleteStatusForService:v34 URI:v35];
+              prefixedURI2 = [v48 prefixedURI];
+              [(IDSPeerIDManager *)self deleteStatusForService:v34 URI:prefixedURI2];
 
               v36 = [IDSQueryCacheClearMetric alloc];
-              v37 = [(IDSPeerIDManager *)self _queryCacheReasonString:a6];
+              v37 = [(IDSPeerIDManager *)self _queryCacheReasonString:reason];
               v38 = [v36 initWithServiceIdentifier:v34 clearReason:v37 uriCount:1];
 
               v39 = +[IDSCoreAnalyticsLogger defaultLogger];
@@ -3989,11 +3989,11 @@ LABEL_46:
   }
 }
 
-- (void)forgetPeerTokensForURI:(id)a3 service:(id)a4 reason:(int64_t)a5
+- (void)forgetPeerTokensForURI:(id)i service:(id)service reason:(int64_t)reason
 {
-  v8 = a3;
-  v32 = a4;
-  v31 = v8;
+  iCopy = i;
+  serviceCopy = service;
+  v31 = iCopy;
   if (+[IDSPeerIDManager shouldUseSelfTokens])
   {
     v9 = OSLogHandleForIDSCategory();
@@ -4011,8 +4011,8 @@ LABEL_46:
 
   else
   {
-    v10 = [v8 prefixedURI];
-    v11 = [v10 length];
+    prefixedURI = [iCopy prefixedURI];
+    v11 = [prefixedURI length];
 
     if (v11)
     {
@@ -4020,22 +4020,22 @@ LABEL_46:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v44 = v8;
+        v44 = iCopy;
         v45 = 2112;
-        v46 = v32;
+        v46 = serviceCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Forgetting peer tokens for URI: %@ service: %@ for all registered URIs.", buf, 0x16u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v28 = v8;
-        v29 = v32;
+        v28 = iCopy;
+        v29 = serviceCopy;
         _IDSLogV();
       }
 
       v13 = [IDSDAccountController sharedInstance:v28];
       v14 = +[IDSDServiceController sharedInstance];
-      v15 = [v14 serviceWithIdentifier:v32];
+      v15 = [v14 serviceWithIdentifier:serviceCopy];
       v16 = [v13 accountsOnService:v15];
 
       v17 = objc_alloc_init(NSMutableSet);
@@ -4057,9 +4057,9 @@ LABEL_46:
               objc_enumerationMutation(obj);
             }
 
-            v21 = [*(*(&v37 + 1) + 8 * i) registration];
-            v22 = [v21 uris];
-            v23 = [v22 __imArrayByApplyingBlock:&stru_100BD71F8];
+            registration = [*(*(&v37 + 1) + 8 * i) registration];
+            uris = [registration uris];
+            v23 = [uris __imArrayByApplyingBlock:&stru_100BD71F8];
 
             [v17 addObjectsFromArray:v23];
           }
@@ -4088,7 +4088,7 @@ LABEL_46:
               objc_enumerationMutation(v24);
             }
 
-            [(IDSPeerIDManager *)self forgetPeerTokensForURI:v31 fromURI:*(*(&v33 + 1) + 8 * j) service:v32 reason:a5];
+            [(IDSPeerIDManager *)self forgetPeerTokensForURI:v31 fromURI:*(*(&v33 + 1) + 8 * j) service:serviceCopy reason:reason];
           }
 
           v25 = [v24 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -4100,20 +4100,20 @@ LABEL_46:
   }
 }
 
-- (void)forgetPeerTokensForService:(id)a3 reason:(int64_t)a4
+- (void)forgetPeerTokensForService:(id)service reason:(int64_t)reason
 {
-  v6 = a3;
+  serviceCopy = service;
   v7 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Forgetting peer tokens for service {service: %@}", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v18 = v6;
+    v18 = serviceCopy;
     _IDSLogV();
   }
 
@@ -4121,8 +4121,8 @@ LABEL_46:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(NSMutableDictionary *)self->_purgeClientDataBlocks allValues];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allValues = [(NSMutableDictionary *)self->_purgeClientDataBlocks allValues];
+  v9 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = *v22;
@@ -4133,60 +4133,60 @@ LABEL_46:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
         if (v12)
         {
-          (*(v12 + 16))(v12, v6);
+          (*(v12 + 16))(v12, serviceCopy);
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
   }
 
   [(NSCache *)self->_dbCache removeAllObjects];
-  v13 = [(IDSPeerIDManager *)self persistenceManagerForService:v6];
+  v13 = [(IDSPeerIDManager *)self persistenceManagerForService:serviceCopy];
   if (v13)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10031C278;
     v19[3] = &unk_100BD7108;
-    v20 = v6;
+    v20 = serviceCopy;
     [v13 deleteEndpointsWithService:v20 completion:v19];
   }
 
-  [(IDSPeerIDManager *)self deleteAllStatusesForService:v6];
+  [(IDSPeerIDManager *)self deleteAllStatusesForService:serviceCopy];
   v14 = [IDSQueryCacheClearMetric alloc];
-  v15 = [(IDSPeerIDManager *)self _queryCacheReasonString:a4];
-  v16 = [v14 initWithServiceIdentifier:v6 clearReason:v15 uriCount:-1];
+  v15 = [(IDSPeerIDManager *)self _queryCacheReasonString:reason];
+  v16 = [v14 initWithServiceIdentifier:serviceCopy clearReason:v15 uriCount:-1];
 
   v17 = +[IDSCoreAnalyticsLogger defaultLogger];
   [v17 logMetric:v16];
 }
 
-- (BOOL)hasPeerTokensForURI:(id)a3 fromURI:(id)a4 service:(id)a5 validThrough:(id)a6 outReason:(unint64_t *)a7
+- (BOOL)hasPeerTokensForURI:(id)i fromURI:(id)rI service:(id)service validThrough:(id)through outReason:(unint64_t *)reason
 {
-  v12 = a3;
-  v53 = a4;
-  v52 = a5;
-  v51 = a6;
-  v13 = [v12 prefixedURI];
-  v14 = [v13 length];
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
+  throughCopy = through;
+  prefixedURI = [iCopy prefixedURI];
+  v14 = [prefixedURI length];
 
   if (!v14)
   {
-    if (a7)
+    if (reason)
     {
-      *a7 = 0;
+      *reason = 0;
     }
 
     v16 = 1;
@@ -4195,30 +4195,30 @@ LABEL_46:
 
   if (+[IDSPeerIDManager shouldUseSelfTokens])
   {
-    v15 = [(IDSPeerIDManager *)self _disasterModeTokenForURI:v53];
+    v15 = [(IDSPeerIDManager *)self _disasterModeTokenForURI:rICopy];
 
     if (v15)
     {
       v16 = 0;
-      if (a7)
+      if (reason)
       {
-        *a7 = 1;
+        *reason = 1;
       }
 
       goto LABEL_66;
     }
   }
 
-  v17 = [v12 pushToken];
-  v49 = [v12 tokenFreeURI];
-  v18 = [(IDSPeerIDManager *)self _endpointsForService:v52 fromURI:v53 toURI:v49 ignoreExpiration:0];
+  pushToken = [iCopy pushToken];
+  tokenFreeURI = [iCopy tokenFreeURI];
+  v18 = [(IDSPeerIDManager *)self _endpointsForService:serviceCopy fromURI:rICopy toURI:tokenFreeURI ignoreExpiration:0];
   v50 = v18;
   if (!v18 || ![v18 count])
   {
     v16 = 0;
-    if (a7)
+    if (reason)
     {
-      *a7 = 2;
+      *reason = 2;
     }
 
     goto LABEL_65;
@@ -4228,17 +4228,17 @@ LABEL_46:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v65 = v51;
+    v65 = throughCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Client valid through date: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v46 = v51;
+    v46 = throughCopy;
     _IDSLogV();
   }
 
-  v20 = v51;
+  v20 = throughCopy;
   v21 = +[IDSPeerIDManager defaultEndpointValidThroughTimeInterval];
   [v20 timeIntervalSinceNow];
   if (v22 > v21)
@@ -4291,9 +4291,9 @@ LABEL_27:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v58 + 1) + 8 * i) expireDate];
-          v34 = v33;
-          if (!v30 || [v33 compare:v30] == -1)
+          expireDate = [*(*(&v58 + 1) + 8 * i) expireDate];
+          v34 = expireDate;
+          if (!v30 || [expireDate compare:v30] == -1)
           {
             v35 = v34;
 
@@ -4308,9 +4308,9 @@ LABEL_27:
 
       if (v30 && [v30 compare:v48] == -1)
       {
-        if (a7)
+        if (reason)
         {
-          *a7 = 3;
+          *reason = 3;
         }
 
         v16 = 0;
@@ -4338,11 +4338,11 @@ LABEL_27:
   }
 
 LABEL_44:
-  if (!v17)
+  if (!pushToken)
   {
-    if (a7)
+    if (reason)
     {
-      *a7 = 0;
+      *reason = 0;
     }
 
     v16 = 1;
@@ -4371,16 +4371,16 @@ LABEL_44:
       }
 
       v40 = *(*(&v54 + 1) + 8 * j);
-      v41 = [v40 pushTokenObject];
-      if (v41 && [v17 isEqualToPushToken:v41])
+      pushTokenObject = [v40 pushTokenObject];
+      if (pushTokenObject && [pushToken isEqualToPushToken:pushTokenObject])
       {
-        v42 = [v40 expireDate];
-        v43 = v42;
-        if (v27 && [v42 compare:v27] == -1)
+        expireDate2 = [v40 expireDate];
+        v43 = expireDate2;
+        if (v27 && [expireDate2 compare:v27] == -1)
         {
           v16 = 0;
           v44 = 4;
-          if (!a7)
+          if (!reason)
           {
             goto LABEL_63;
           }
@@ -4390,7 +4390,7 @@ LABEL_44:
         {
           v44 = 0;
           v16 = 1;
-          if (!a7)
+          if (!reason)
           {
 LABEL_63:
 
@@ -4398,7 +4398,7 @@ LABEL_63:
           }
         }
 
-        *a7 = v44;
+        *reason = v44;
         goto LABEL_63;
       }
     }
@@ -4415,9 +4415,9 @@ LABEL_63:
 LABEL_54:
 
   v16 = 0;
-  if (a7)
+  if (reason)
   {
-    *a7 = 5;
+    *reason = 5;
   }
 
 LABEL_64:
@@ -4428,34 +4428,34 @@ LABEL_66:
   return v16;
 }
 
-- (id)activeURIsFromURI:(id)a3 service:(id)a4
+- (id)activeURIsFromURI:(id)i service:(id)service
 {
-  v30 = a3;
-  v31 = a4;
-  v6 = [v30 prefixedURI];
-  if (![v6 length])
+  iCopy = i;
+  serviceCopy = service;
+  prefixedURI = [iCopy prefixedURI];
+  if (![prefixedURI length])
   {
 
-    v25 = 0;
+    allObjects = 0;
 LABEL_36:
-    v7 = v31;
+    v7 = serviceCopy;
     goto LABEL_38;
   }
 
-  v7 = v31;
-  v8 = [v31 length];
+  v7 = serviceCopy;
+  v8 = [serviceCopy length];
 
   if (v8)
   {
-    v9 = [(IDSPeerIDManager *)self _peerIDKeysForService:v31 andFromURI:v30];
+    v9 = [(IDSPeerIDManager *)self _peerIDKeysForService:serviceCopy andFromURI:iCopy];
     v36 = objc_alloc_init(NSMutableSet);
     v10 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v48 = v31;
+      v48 = serviceCopy;
       v49 = 2112;
-      v50 = v30;
+      v50 = iCopy;
       v51 = 2112;
       v52 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Active query for service: %@  from: %@  peers: %@", buf, 0x20u);
@@ -4463,9 +4463,9 @@ LABEL_36:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v28 = v30;
+      v28 = iCopy;
       v29 = v9;
-      v27 = v31;
+      v27 = serviceCopy;
       _IDSLogV();
     }
 
@@ -4497,9 +4497,9 @@ LABEL_36:
           v39 = 0u;
           v40 = 0u;
           v14 = [(NSCache *)self->_dbCache objectForKey:v13, v27, v28, v29];
-          v15 = [v14 endpoints];
+          endpoints = [v14 endpoints];
 
-          v16 = [v15 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          v16 = [endpoints countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v16)
           {
             v17 = *v38;
@@ -4509,13 +4509,13 @@ LABEL_36:
               {
                 if (*v38 != v17)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(endpoints);
                 }
 
                 v19 = *(*(&v37 + 1) + 8 * i);
                 v20 = objc_opt_class();
-                v21 = [v19 expireDate];
-                LOBYTE(v20) = [v20 _datePassed:v21];
+                expireDate = [v19 expireDate];
+                LOBYTE(v20) = [v20 _datePassed:expireDate];
 
                 if (v20)
                 {
@@ -4555,7 +4555,7 @@ LABEL_36:
                 }
               }
 
-              v16 = [v15 countByEnumeratingWithState:&v37 objects:v45 count:16];
+              v16 = [endpoints countByEnumeratingWithState:&v37 objects:v45 count:16];
             }
 
             while (v16);
@@ -4571,39 +4571,39 @@ LABEL_36:
       while (v34);
     }
 
-    v25 = [v36 allObjects];
+    allObjects = [v36 allObjects];
 
     goto LABEL_36;
   }
 
-  v25 = 0;
+  allObjects = 0;
 LABEL_38:
 
-  return v25;
+  return allObjects;
 }
 
-- (id)urisMatchingPushToken:(id)a3 service:(id)a4
+- (id)urisMatchingPushToken:(id)token service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  serviceCopy = service;
   v8 = +[NSMutableSet set];
-  v34 = self;
-  v9 = [(NSCache *)self->_dbCache mapTableRepresentation];
-  v10 = [v9 keyEnumerator];
-  v11 = [v10 allObjects];
+  selfCopy = self;
+  mapTableRepresentation = [(NSCache *)self->_dbCache mapTableRepresentation];
+  keyEnumerator = [mapTableRepresentation keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v11;
+  obj = allObjects;
   v12 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v44;
     v32 = *v44;
-    v33 = v7;
+    v33 = serviceCopy;
     do
     {
       v15 = 0;
@@ -4616,20 +4616,20 @@ LABEL_38:
         }
 
         v16 = *(*(&v43 + 1) + 8 * v15);
-        v17 = [v16 service];
-        v18 = [v17 isEqualToString:v7];
+        service = [v16 service];
+        v18 = [service isEqualToString:serviceCopy];
 
         if (v18)
         {
           v38 = v15;
-          v19 = [(NSCache *)v34->_dbCache objectForKey:v16];
+          v19 = [(NSCache *)selfCopy->_dbCache objectForKey:v16];
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
           v37 = v19;
-          v20 = [v19 endpoints];
-          v21 = [v20 countByEnumeratingWithState:&v39 objects:v47 count:16];
+          endpoints = [v19 endpoints];
+          v21 = [endpoints countByEnumeratingWithState:&v39 objects:v47 count:16];
           if (v21)
           {
             v22 = v21;
@@ -4640,13 +4640,13 @@ LABEL_38:
               {
                 if (*v40 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(endpoints);
                 }
 
                 v25 = *(*(&v39 + 1) + 8 * i);
-                v26 = [v25 pushToken];
-                v27 = [v6 rawToken];
-                v28 = [v26 isEqualToData:v27];
+                pushToken = [v25 pushToken];
+                rawToken = [tokenCopy rawToken];
+                v28 = [pushToken isEqualToData:rawToken];
 
                 if (v28)
                 {
@@ -4655,14 +4655,14 @@ LABEL_38:
                 }
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v39 objects:v47 count:16];
+              v22 = [endpoints countByEnumeratingWithState:&v39 objects:v47 count:16];
             }
 
             while (v22);
           }
 
           v14 = v32;
-          v7 = v33;
+          serviceCopy = v33;
           v13 = v35;
           v15 = v38;
         }
@@ -4677,18 +4677,18 @@ LABEL_38:
     while (v13);
   }
 
-  v30 = [v8 allObjects];
+  allObjects2 = [v8 allObjects];
 
-  return v30;
+  return allObjects2;
 }
 
-- (id)peerTokensForURI:(id)a3 fromURI:(id)a4 service:(id)a5
+- (id)peerTokensForURI:(id)i fromURI:(id)rI service:(id)service
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
   v11 = +[NSMutableSet set];
-  v12 = [(IDSPeerIDManager *)self _endpointsForService:v10 fromURI:v9 toURI:v8 ignoreExpiration:0];
+  v12 = [(IDSPeerIDManager *)self _endpointsForService:serviceCopy fromURI:rICopy toURI:iCopy ignoreExpiration:0];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -4707,10 +4707,10 @@ LABEL_38:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * i) pushTokenObject];
-        if (v17)
+        pushTokenObject = [*(*(&v19 + 1) + 8 * i) pushTokenObject];
+        if (pushTokenObject)
         {
-          [v11 addObject:v17];
+          [v11 addObject:pushTokenObject];
         }
       }
 
@@ -4723,10 +4723,10 @@ LABEL_38:
   return v11;
 }
 
-- (id)uriForShortHandle:(id)a3
+- (id)uriForShortHandle:(id)handle
 {
-  v4 = a3;
-  if ([v4 length])
+  handleCopy = handle;
+  if ([handleCopy length])
   {
     v5 = IDSServiceNameiMessage;
     [(IDSPeerIDManager *)self _peerIDKeysForService:IDSServiceNameiMessage];
@@ -4743,7 +4743,7 @@ LABEL_38:
     v21 = v5;
     v6 = 0;
     v23 = *v31;
-    v24 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v25; i = i + 1)
@@ -4754,13 +4754,13 @@ LABEL_38:
         }
 
         v8 = [(NSCache *)self->_dbCache objectForKey:*(*(&v30 + 1) + 8 * i)];
-        v9 = [v8 endpoints];
+        endpoints = [v8 endpoints];
 
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v10 = v9;
+        v10 = endpoints;
         v11 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v11)
         {
@@ -4776,8 +4776,8 @@ LABEL_38:
               }
 
               v15 = *(*(&v26 + 1) + 8 * j);
-              v16 = [v15 shortHandle];
-              v17 = [v16 isEqualToString:v4];
+              shortHandle = [v15 shortHandle];
+              v17 = [shortHandle isEqualToString:handleCopy];
 
               if (v17)
               {
@@ -4793,7 +4793,7 @@ LABEL_38:
           while (v12);
         }
 
-        self = v24;
+        self = selfCopy;
       }
 
       v25 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -4805,7 +4805,7 @@ LABEL_38:
     {
 LABEL_19:
       v19 = [(IDSPeerIDManager *)self persistenceManagerForService:v5];
-      v6 = [v19 uriForShortHandle:v4];
+      v6 = [v19 uriForShortHandle:handleCopy];
     }
   }
 
@@ -4817,23 +4817,23 @@ LABEL_19:
   return v6;
 }
 
-- (id)shortHandleForURI:(id)a3 fromURI:(id)a4
+- (id)shortHandleForURI:(id)i fromURI:(id)rI
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 prefixedURI];
-  v9 = [v8 length];
+  iCopy = i;
+  rICopy = rI;
+  prefixedURI = [iCopy prefixedURI];
+  v9 = [prefixedURI length];
 
   if (v9)
   {
     v10 = IDSServiceNameiMessage;
-    v11 = [(IDSPeerIDManager *)self _endpointsForService:IDSServiceNameiMessage fromURI:v7 toURI:v6 ignoreExpiration:1];
-    v12 = [v11 firstObject];
+    v11 = [(IDSPeerIDManager *)self _endpointsForService:IDSServiceNameiMessage fromURI:rICopy toURI:iCopy ignoreExpiration:1];
+    firstObject = [v11 firstObject];
 
-    if (!v12 || ([v12 shortHandle], (v13 = objc_claimAutoreleasedReturnValue()) == 0) || (v14 = v13, objc_msgSend(v12, "shortHandle"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, !v15) || (objc_msgSend(v12, "shortHandle"), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!firstObject || ([firstObject shortHandle], (v13 = objc_claimAutoreleasedReturnValue()) == 0) || (v14 = v13, objc_msgSend(firstObject, "shortHandle"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, !v15) || (objc_msgSend(firstObject, "shortHandle"), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v17 = [(IDSPeerIDManager *)self persistenceManagerForService:v10];
-      v16 = [v17 shortHandleForUri:v6];
+      v16 = [v17 shortHandleForUri:iCopy];
     }
   }
 
@@ -4845,38 +4845,38 @@ LABEL_19:
   return v16;
 }
 
-- (void)addCompletionBlock:(id)a3 forToken:(id)a4
+- (void)addCompletionBlock:(id)block forToken:(id)token
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10031D854;
     v11[3] = &unk_100BD7220;
-    v12 = v6;
-    v8 = a4;
+    v12 = blockCopy;
+    tokenCopy = token;
     v9 = objc_retainBlock(v11);
-    v10 = [(IDSPeerIDManager *)self queryHandler];
-    [v10 addCompletionBlock:v9 forToken:v8];
+    queryHandler = [(IDSPeerIDManager *)self queryHandler];
+    [queryHandler addCompletionBlock:v9 forToken:tokenCopy];
   }
 }
 
-- (void)removeCompletionBlockForToken:(id)a3
+- (void)removeCompletionBlockForToken:(id)token
 {
-  v4 = a3;
-  v5 = [(IDSPeerIDManager *)self queryHandler];
-  [v5 removeCompletionBlockForToken:v4];
+  tokenCopy = token;
+  queryHandler = [(IDSPeerIDManager *)self queryHandler];
+  [queryHandler removeCompletionBlockForToken:tokenCopy];
 }
 
-- (void)addClientDataUpdateBlock:(id)a3 forToken:(id)a4
+- (void)addClientDataUpdateBlock:(id)block forToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    if (v6)
+    if (blockCopy)
     {
       if (!self->_clientDataUpdateBlocks)
       {
@@ -4885,13 +4885,13 @@ LABEL_19:
         self->_clientDataUpdateBlocks = Mutable;
       }
 
-      v10 = [v6 copy];
+      v10 = [blockCopy copy];
       v11 = v10;
       if (v10)
       {
         v12 = self->_clientDataUpdateBlocks;
         v13 = objc_retainBlock(v10);
-        [(NSMutableDictionary *)v12 setObject:v13 forKey:v7];
+        [(NSMutableDictionary *)v12 setObject:v13 forKey:tokenCopy];
       }
 
       goto LABEL_18;
@@ -4901,7 +4901,7 @@ LABEL_19:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v7;
+      v17 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Empty client data update block for token: %@", buf, 0xCu);
     }
 
@@ -4930,12 +4930,12 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)removeClientDataUpdateBlockForToken:(id)a3
+- (void)removeClientDataUpdateBlockForToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    [(NSMutableDictionary *)self->_clientDataUpdateBlocks removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_clientDataUpdateBlocks removeObjectForKey:tokenCopy];
     if (![(NSMutableDictionary *)self->_clientDataUpdateBlocks count])
     {
       clientDataUpdateBlocks = self->_clientDataUpdateBlocks;
@@ -4959,13 +4959,13 @@ LABEL_18:
   }
 }
 
-- (void)addPurgeClientDataBlock:(id)a3 forToken:(id)a4
+- (void)addPurgeClientDataBlock:(id)block forToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    if (v6)
+    if (blockCopy)
     {
       if (!self->_purgeClientDataBlocks)
       {
@@ -4974,13 +4974,13 @@ LABEL_18:
         self->_purgeClientDataBlocks = Mutable;
       }
 
-      v10 = [v6 copy];
+      v10 = [blockCopy copy];
       v11 = v10;
       if (v10)
       {
         v12 = self->_purgeClientDataBlocks;
         v13 = objc_retainBlock(v10);
-        [(NSMutableDictionary *)v12 setObject:v13 forKey:v7];
+        [(NSMutableDictionary *)v12 setObject:v13 forKey:tokenCopy];
       }
 
       goto LABEL_18;
@@ -4990,7 +4990,7 @@ LABEL_18:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v7;
+      v17 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Empty purge client data block for token: %@", buf, 0xCu);
     }
 
@@ -5019,12 +5019,12 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)removePurgeClientDataBlockForToken:(id)a3
+- (void)removePurgeClientDataBlockForToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    [(NSMutableDictionary *)self->_purgeClientDataBlocks removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_purgeClientDataBlocks removeObjectForKey:tokenCopy];
     if (![(NSMutableDictionary *)self->_purgeClientDataBlocks count])
     {
       purgeClientDataBlocks = self->_purgeClientDataBlocks;
@@ -5048,13 +5048,13 @@ LABEL_18:
   }
 }
 
-- (void)addEndpointQueryCompletionBlock:(id)a3 forToken:(id)a4 queue:(id)a5
+- (void)addEndpointQueryCompletionBlock:(id)block forToken:(id)token queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  blockCopy = block;
+  tokenCopy = token;
+  queueCopy = queue;
+  v11 = queueCopy;
+  if (blockCopy && tokenCopy && queueCopy)
   {
     v12 = im_primary_queue();
     block[0] = _NSConcreteStackBlock;
@@ -5062,9 +5062,9 @@ LABEL_18:
     block[2] = sub_10031E190;
     block[3] = &unk_100BD7248;
     block[4] = self;
-    v19 = v8;
+    v19 = blockCopy;
     v17 = v11;
-    v18 = v9;
+    v18 = tokenCopy;
     dispatch_async(v12, block);
   }
 
@@ -5073,11 +5073,11 @@ LABEL_18:
     v13 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = objc_retainBlock(v8);
+      v14 = objc_retainBlock(blockCopy);
       *buf = 138412802;
       v21 = v14;
       v22 = 2112;
-      v23 = v9;
+      v23 = tokenCopy;
       v24 = 2112;
       v25 = v11;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Missing context for adding endpoint query completion block -- ignoring request {block: %@, token: %@, queue: %@}", buf, 0x20u);
@@ -5085,16 +5085,16 @@ LABEL_18:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v15 = objc_retainBlock(v8);
+      v15 = objc_retainBlock(blockCopy);
       _IDSLogV();
     }
   }
 }
 
-- (void)removeEndpointQueryCompletionBlockForToken:(id)a3
+- (void)removeEndpointQueryCompletionBlockForToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v5 = im_primary_queue();
     block[0] = _NSConcreteStackBlock;
@@ -5102,7 +5102,7 @@ LABEL_18:
     block[2] = sub_10031E3C8;
     block[3] = &unk_100BD6E40;
     block[4] = self;
-    v8 = v4;
+    v8 = tokenCopy;
     dispatch_async(v5, block);
   }
 
@@ -5123,26 +5123,26 @@ LABEL_18:
   }
 }
 
-- (void)endpointsForURIs:(id)a3 serviceIdentifier:(id)a4 localURI:(id)a5 completion:(id)a6 queue:(id)a7
+- (void)endpointsForURIs:(id)is serviceIdentifier:(id)identifier localURI:(id)i completion:(id)completion queue:(id)queue
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v12 || !v13 || !v14 || !v15 || !v16)
+  isCopy = is;
+  identifierCopy = identifier;
+  iCopy = i;
+  completionCopy = completion;
+  queueCopy = queue;
+  v17 = queueCopy;
+  if (!isCopy || !identifierCopy || !iCopy || !completionCopy || !queueCopy)
   {
     v18 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = objc_retainBlock(v15);
+      v19 = objc_retainBlock(completionCopy);
       *buf = 138413314;
-      v36 = v12;
+      v36 = isCopy;
       v37 = 2112;
-      v38 = v13;
+      v38 = identifierCopy;
       v39 = 2112;
-      v40 = v14;
+      v40 = iCopy;
       v41 = 2112;
       v42 = v19;
       v43 = 2112;
@@ -5152,7 +5152,7 @@ LABEL_18:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v26 = objc_retainBlock(v15);
+      v26 = objc_retainBlock(completionCopy);
       _IDSLogV();
     }
 
@@ -5160,7 +5160,7 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = sub_10031E718;
     block[3] = &unk_100BD7270;
-    v34 = v15;
+    v34 = completionCopy;
     dispatch_async(v17, block);
   }
 
@@ -5170,16 +5170,16 @@ LABEL_18:
   v27[2] = sub_10031E72C;
   v27[3] = &unk_100BD72C0;
   v27[4] = self;
-  v28 = v12;
-  v29 = v13;
-  v30 = v14;
+  v28 = isCopy;
+  v29 = identifierCopy;
+  v30 = iCopy;
   v31 = v17;
-  v32 = v15;
-  v21 = v15;
+  v32 = completionCopy;
+  v21 = completionCopy;
   v22 = v17;
-  v23 = v14;
-  v24 = v13;
-  v25 = v12;
+  v23 = iCopy;
+  v24 = identifierCopy;
+  v25 = isCopy;
   dispatch_async(v20, v27);
 }
 
@@ -5189,8 +5189,8 @@ LABEL_18:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(IDSPeerIDManager *)self persistenceManagers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  persistenceManagers = [(IDSPeerIDManager *)self persistenceManagers];
+  v4 = [persistenceManagers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5202,7 +5202,7 @@ LABEL_18:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(persistenceManagers);
         }
 
         [*(*(&v8 + 1) + 8 * v7) performDBCleanupTasksWithCompletion:0];
@@ -5210,7 +5210,7 @@ LABEL_18:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [persistenceManagers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -5221,24 +5221,24 @@ LABEL_18:
   [(NSCache *)self->_restrictedIDStatusCache removeAllObjects];
 }
 
-- (id)_loadCachedPeerIDValueForKey:(id)a3 ignoreExpiration:(BOOL)a4
+- (id)_loadCachedPeerIDValueForKey:(id)key ignoreExpiration:(BOOL)expiration
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  expirationCopy = expiration;
+  keyCopy = key;
+  v7 = keyCopy;
+  if (keyCopy)
   {
-    v8 = [v6 service];
-    if (v8)
+    service = [keyCopy service];
+    if (service)
     {
-      v9 = v8;
-      v10 = [v7 fromURI];
-      if (v10)
+      v9 = service;
+      fromURI = [v7 fromURI];
+      if (fromURI)
       {
-        v11 = v10;
-        v12 = [v7 toURI];
+        v11 = fromURI;
+        toURI = [v7 toURI];
 
-        if (v12)
+        if (toURI)
         {
           goto LABEL_10;
         }
@@ -5259,17 +5259,17 @@ LABEL_18:
   }
 
 LABEL_10:
-  v14 = [v7 service];
-  v15 = [(IDSPeerIDManager *)self persistenceManagerForService:v14];
+  service2 = [v7 service];
+  v15 = [(IDSPeerIDManager *)self persistenceManagerForService:service2];
 
-  v16 = [v7 service];
-  v17 = [v7 fromURI];
-  v18 = [v7 toURI];
-  v19 = [v15 fetchEndpointsWithService:v16 fromURI:v17 toURI:v18 ignoreExpiration:v4];
+  service3 = [v7 service];
+  fromURI2 = [v7 fromURI];
+  toURI2 = [v7 toURI];
+  v19 = [v15 fetchEndpointsWithService:service3 fromURI:fromURI2 toURI:toURI2 ignoreExpiration:expirationCopy];
 
-  v20 = [v7 toURI];
-  v21 = [v7 service];
-  v22 = [v15 fetchKeyTransparencyContextFor:v20 service:v21];
+  toURI3 = [v7 toURI];
+  service4 = [v7 service];
+  v22 = [v15 fetchKeyTransparencyContextFor:toURI3 service:service4];
 
   v23 = [[IDSPeerIDValue alloc] initWithEndpoints:v19 keyTransparencyContext:v22];
   v24 = +[IDSFoundationLog PeerLookup_DBCache];
@@ -5287,15 +5287,15 @@ LABEL_10:
   return v23;
 }
 
-- (void)_updateKTContext:(id)a3 forURI:(id)a4 manager:(id)a5
+- (void)_updateKTContext:(id)context forURI:(id)i manager:(id)manager
 {
-  v8 = a3;
-  v33 = a4;
-  v32 = a5;
-  v9 = [(IDSKeyTransparencyVerifier *)self->_keyTransparencyVerifier accountController];
-  v10 = [(IDSKeyTransparencyVerifier *)self->_keyTransparencyVerifier serviceController];
-  v11 = [v10 serviceWithIdentifier:@"com.apple.madrid"];
-  v12 = [v9 accountsOnService:v11];
+  contextCopy = context;
+  iCopy = i;
+  managerCopy = manager;
+  accountController = [(IDSKeyTransparencyVerifier *)self->_keyTransparencyVerifier accountController];
+  serviceController = [(IDSKeyTransparencyVerifier *)self->_keyTransparencyVerifier serviceController];
+  v11 = [serviceController serviceWithIdentifier:@"com.apple.madrid"];
+  v12 = [accountController accountsOnService:v11];
 
   v13 = objc_alloc_init(NSMutableSet);
   v38 = 0u;
@@ -5318,9 +5318,9 @@ LABEL_10:
           objc_enumerationMutation(obj);
         }
 
-        v18 = [*(*(&v38 + 1) + 8 * v17) registration];
-        v19 = [v18 uris];
-        v20 = [v19 __imArrayByApplyingBlock:&stru_100BD72E0];
+        registration = [*(*(&v38 + 1) + 8 * v17) registration];
+        uris = [registration uris];
+        v20 = [uris __imArrayByApplyingBlock:&stru_100BD72E0];
 
         [v13 addObjectsFromArray:v20];
         v17 = v17 + 1;
@@ -5353,15 +5353,15 @@ LABEL_10:
           objc_enumerationMutation(v30);
         }
 
-        v25 = [[IDSPeerIDKey alloc] initWithService:@"com.apple.madrid" fromURI:*(*(&v34 + 1) + 8 * v24) toURI:v33];
+        v25 = [[IDSPeerIDKey alloc] initWithService:@"com.apple.madrid" fromURI:*(*(&v34 + 1) + 8 * v24) toURI:iCopy];
         v26 = [(NSCache *)self->_dbCache objectForKey:v25];
         v27 = v26;
         if (v26)
         {
-          v28 = [v26 endpoints];
-          [v32 updateKeyTransparencyForEndpoints:v28 withKTContext:v8];
-          v29 = [[IDSPeerIDValue alloc] initWithEndpoints:v28 keyTransparencyContext:v8];
-          -[NSCache setObject:forKey:cost:](self->_dbCache, "setObject:forKey:cost:", v29, v25, [v28 count]);
+          endpoints = [v26 endpoints];
+          [managerCopy updateKeyTransparencyForEndpoints:endpoints withKTContext:contextCopy];
+          v29 = [[IDSPeerIDValue alloc] initWithEndpoints:endpoints keyTransparencyContext:contextCopy];
+          -[NSCache setObject:forKey:cost:](self->_dbCache, "setObject:forKey:cost:", v29, v25, [endpoints count]);
         }
 
         v24 = v24 + 1;
@@ -5375,41 +5375,41 @@ LABEL_10:
   }
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v4 = a4;
+  objectCopy = object;
   v5 = +[IDSFoundationLog PeerLookup_DBCache];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = objectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "DB Cache Eviction { peerIDValue: %@ }", &v6, 0xCu);
   }
 }
 
-- (id)loadStatusForService:(id)a3 URI:(id)a4
+- (id)loadStatusForService:(id)service URI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  iCopy = i;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v6;
+    v20 = serviceCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = iCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Loading status for service %@ uri %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v17 = v6;
-    v18 = v7;
+    v17 = serviceCopy;
+    v18 = iCopy;
     _IDSLogV();
   }
 
-  v9 = [(IDSPeerIDManager *)self idStatusCacheForService:v6, v17, v18];
-  v10 = [IDSIDStatusKey statusIDKeyWithService:v6 URI:v7];
+  v9 = [(IDSPeerIDManager *)self idStatusCacheForService:serviceCopy, v17, v18];
+  v10 = [IDSIDStatusKey statusIDKeyWithService:serviceCopy URI:iCopy];
   v11 = [v9 objectForKey:v10];
   if (v11)
   {
@@ -5431,8 +5431,8 @@ LABEL_10:
 
   else
   {
-    v14 = [(IDSPeerIDManager *)self persistenceManagerForService:v6];
-    v13 = [v14 loadStatusForService:v6 uri:v7];
+    v14 = [(IDSPeerIDManager *)self persistenceManagerForService:serviceCopy];
+    v13 = [v14 loadStatusForService:serviceCopy uri:iCopy];
     if (v13)
     {
       [v9 setObject:v13 forKey:v10];
@@ -5455,26 +5455,26 @@ LABEL_10:
   return v13;
 }
 
-- (id)loadAllStatusesForService:(id)a3
+- (id)loadAllStatusesForService:(id)service
 {
-  v18 = a3;
+  serviceCopy = service;
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v18;
+    v25 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Loading status for service %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v16 = v18;
+    v16 = serviceCopy;
     _IDSLogV();
   }
 
-  v5 = [(IDSPeerIDManager *)self idStatusCacheForService:v18, v16];
-  v17 = [(IDSPeerIDManager *)self persistenceManagerForService:v18];
-  [v17 loadAllStatusesForService:v18];
+  v5 = [(IDSPeerIDManager *)self idStatusCacheForService:serviceCopy, v16];
+  v17 = [(IDSPeerIDManager *)self persistenceManagerForService:serviceCopy];
+  [v17 loadAllStatusesForService:serviceCopy];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -5493,9 +5493,9 @@ LABEL_10:
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 service];
-        v12 = [v10 uriString];
-        v13 = [IDSIDStatusKey statusIDKeyWithService:v11 URI:v12];
+        service = [v10 service];
+        uriString = [v10 uriString];
+        v13 = [IDSIDStatusKey statusIDKeyWithService:service URI:uriString];
 
         [v5 setObject:v10 forKey:v13];
       }
@@ -5522,14 +5522,14 @@ LABEL_10:
   return v6;
 }
 
-- (void)saveStatus:(id)a3
+- (void)saveStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = statusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Saving status %@", buf, 0xCu);
   }
 
@@ -5538,100 +5538,100 @@ LABEL_10:
     _IDSLogV();
   }
 
-  if (v4)
+  if (statusCopy)
   {
-    v6 = [v4 service];
-    v7 = [(IDSPeerIDManager *)self persistenceManagerForService:v6];
+    service = [statusCopy service];
+    v7 = [(IDSPeerIDManager *)self persistenceManagerForService:service];
 
-    [v7 saveStatus:v4 completion:0];
-    v8 = [v4 service];
-    v9 = [(IDSPeerIDManager *)self idStatusCacheForService:v8];
+    [v7 saveStatus:statusCopy completion:0];
+    service2 = [statusCopy service];
+    v9 = [(IDSPeerIDManager *)self idStatusCacheForService:service2];
 
-    v10 = [v4 service];
-    v11 = [v4 uriString];
-    v12 = [IDSIDStatusKey statusIDKeyWithService:v10 URI:v11];
+    service3 = [statusCopy service];
+    uriString = [statusCopy uriString];
+    v12 = [IDSIDStatusKey statusIDKeyWithService:service3 URI:uriString];
 
-    [v9 setObject:v4 forKey:v12];
+    [v9 setObject:statusCopy forKey:v12];
   }
 }
 
-- (void)deleteStatus:(id)a3
+- (void)deleteStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = statusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deleting status %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v13 = v4;
+    v13 = statusCopy;
     _IDSLogV();
   }
 
-  v6 = [v4 service];
-  v7 = [(IDSPeerIDManager *)self persistenceManagerForService:v6];
+  service = [statusCopy service];
+  v7 = [(IDSPeerIDManager *)self persistenceManagerForService:service];
 
-  [v7 deleteStatus:v4 completion:0];
-  v8 = [v4 service];
-  v9 = [(IDSPeerIDManager *)self idStatusCacheForService:v8];
+  [v7 deleteStatus:statusCopy completion:0];
+  service2 = [statusCopy service];
+  v9 = [(IDSPeerIDManager *)self idStatusCacheForService:service2];
 
-  v10 = [v4 service];
-  v11 = [v4 uriString];
-  v12 = [IDSIDStatusKey statusIDKeyWithService:v10 URI:v11];
+  service3 = [statusCopy service];
+  uriString = [statusCopy uriString];
+  v12 = [IDSIDStatusKey statusIDKeyWithService:service3 URI:uriString];
 
   [v9 removeObjectForKey:v12];
 }
 
-- (void)deleteStatusForService:(id)a3 URI:(id)a4
+- (void)deleteStatusForService:(id)service URI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  iCopy = i;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = serviceCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = iCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Deleting status for service %@ uri %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v12 = v6;
-    v13 = v7;
+    v12 = serviceCopy;
+    v13 = iCopy;
     _IDSLogV();
   }
 
-  v9 = [(IDSPeerIDManager *)self persistenceManagerForService:v6, v12, v13];
-  [v9 deleteStatusForService:v6 URI:v7 completion:0];
-  v10 = [(IDSPeerIDManager *)self idStatusCacheForService:v6];
-  v11 = [IDSIDStatusKey statusIDKeyWithService:v6 URI:v7];
+  v9 = [(IDSPeerIDManager *)self persistenceManagerForService:serviceCopy, v12, v13];
+  [v9 deleteStatusForService:serviceCopy URI:iCopy completion:0];
+  v10 = [(IDSPeerIDManager *)self idStatusCacheForService:serviceCopy];
+  v11 = [IDSIDStatusKey statusIDKeyWithService:serviceCopy URI:iCopy];
   [v10 removeObjectForKey:v11];
 }
 
-- (void)deleteStatusesForServices:(id)a3 URIs:(id)a4
+- (void)deleteStatusesForServices:(id)services URIs:(id)is
 {
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  isCopy = is;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v6;
+    v21 = servicesCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = isCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Deleting all statuses for services %@ uris %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v13 = v6;
-    v14 = v7;
+    v13 = servicesCopy;
+    v14 = isCopy;
     _IDSLogV();
   }
 
@@ -5641,8 +5641,8 @@ LABEL_10:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(IDSPeerIDManager *)self persistenceManagers];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  persistenceManagers = [(IDSPeerIDManager *)self persistenceManagers];
+  v10 = [persistenceManagers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -5653,41 +5653,41 @@ LABEL_10:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(persistenceManagers);
         }
 
-        [*(*(&v15 + 1) + 8 * v12) deleteAllStatusesForServices:v6 toURIs:v7 completion:0];
+        [*(*(&v15 + 1) + 8 * v12) deleteAllStatusesForServices:servicesCopy toURIs:isCopy completion:0];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [persistenceManagers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)deleteAllStatusesForService:(id)a3
+- (void)deleteAllStatusesForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deleting all statuses for service %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v8 = v4;
+    v8 = serviceCopy;
     _IDSLogV();
   }
 
-  v6 = [(IDSPeerIDManager *)self persistenceManagerForService:v4, v8];
-  [v6 deleteAllStatusesForService:v4 completion:0];
-  v7 = [(IDSPeerIDManager *)self idStatusCacheForService:v4];
+  v6 = [(IDSPeerIDManager *)self persistenceManagerForService:serviceCopy, v8];
+  [v6 deleteAllStatusesForService:serviceCopy completion:0];
+  v7 = [(IDSPeerIDManager *)self idStatusCacheForService:serviceCopy];
   [v7 removeAllObjects];
 }
 
@@ -5709,8 +5709,8 @@ LABEL_10:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v4 = [(IDSPeerIDManager *)self persistenceManagers];
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  persistenceManagers = [(IDSPeerIDManager *)self persistenceManagers];
+  v5 = [persistenceManagers countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -5721,7 +5721,7 @@ LABEL_10:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(persistenceManagers);
         }
 
         [*(*(&v8 + 1) + 8 * v7) deleteAllStatusesWithCompletion:0];
@@ -5729,7 +5729,7 @@ LABEL_10:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [persistenceManagers countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -5739,16 +5739,16 @@ LABEL_10:
   [(NSCache *)self->_restrictedIDStatusCache removeAllObjects];
 }
 
-- (id)_queryCacheReasonString:(int64_t)a3
+- (id)_queryCacheReasonString:(int64_t)string
 {
-  if (a3 > 0x10)
+  if (string > 0x10)
   {
     return &stru_100C06028;
   }
 
   else
   {
-    return off_100BD7398[a3];
+    return off_100BD7398[string];
   }
 }
 

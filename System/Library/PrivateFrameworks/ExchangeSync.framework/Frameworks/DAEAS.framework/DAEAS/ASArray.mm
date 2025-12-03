@@ -4,10 +4,10 @@
 + (BOOL)notifyOfUnknownTokens;
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
-- (ASArray)initWithSubclassRuleSet:(id)a3;
+- (ASArray)initWithSubclassRuleSet:(id)set;
 - (id)commonValue;
 - (id)description;
-- (void)addItem:(id)a3;
+- (void)addItem:(id)item;
 @end
 
 @implementation ASArray
@@ -21,7 +21,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_16 = v2;
     acceptsTopLevelLeaves___haveChecked_16 = 1;
   }
@@ -38,7 +38,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_16 = v2;
     parsingLeafNode___haveChecked_16 = 1;
   }
@@ -55,7 +55,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_16 = v2;
     parsingWithSubItems___haveChecked_16 = 1;
   }
@@ -72,7 +72,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_16 = v2;
     frontingBasicTypes___haveChecked_16 = 1;
   }
@@ -89,7 +89,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_16 = v2;
     notifyOfUnknownTokens___haveChecked_16 = 1;
   }
@@ -97,16 +97,16 @@
   return v2 & 1;
 }
 
-- (ASArray)initWithSubclassRuleSet:(id)a3
+- (ASArray)initWithSubclassRuleSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = ASArray;
   v6 = [(ASItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subclassRuleSet, a3);
+    objc_storeStrong(&v6->_subclassRuleSet, set);
   }
 
   return v7;
@@ -122,20 +122,20 @@
   return v6;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
-  v7 = v4;
+  itemCopy = item;
+  v7 = itemCopy;
   if (!self->_items)
   {
     v5 = objc_opt_new();
     items = self->_items;
     self->_items = v5;
 
-    v4 = v7;
+    itemCopy = v7;
   }
 
-  if (v4)
+  if (itemCopy)
   {
     [(NSMutableArray *)self->_items addObject:v7];
   }

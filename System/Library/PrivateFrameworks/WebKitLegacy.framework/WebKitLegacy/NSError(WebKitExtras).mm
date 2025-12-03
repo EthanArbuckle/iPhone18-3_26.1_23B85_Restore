@@ -19,16 +19,16 @@
 
 + (id)_webkit_errorWithDomain:()WebKitExtras code:URL:
 {
-  v5 = [[a1 alloc] _webkit_initWithDomain:a3 code:a4 URL:a5];
+  v5 = [[self alloc] _webkit_initWithDomain:a3 code:a4 URL:a5];
 
   return v5;
 }
 
 + (uint64_t)_webKitErrorWithDomain:()WebKitExtras code:URL:
 {
-  [a1 _registerWebKitErrors];
+  [self _registerWebKitErrors];
 
-  return [a1 _webkit_errorWithDomain:a3 code:a4 URL:a5];
+  return [self _webkit_errorWithDomain:a3 code:a4 URL:a5];
 }
 
 + (uint64_t)_webKitErrorWithCode:()WebKitExtras failingURL:
@@ -36,7 +36,7 @@
   v6 = WebKitErrorDomain;
   v7 = [MEMORY[0x1E695DFF8] _webkit_URLWithUserTypedString:a4];
 
-  return [a1 _webKitErrorWithDomain:v6 code:a3 URL:v7];
+  return [self _webKitErrorWithDomain:v6 code:a3 URL:v7];
 }
 
 - (uint64_t)_initWithPluginErrorCode:()WebKitExtras contentURL:pluginPageURL:pluginName:MIMEType:
@@ -53,8 +53,8 @@
   if (a4)
   {
     [v13 setObject:a4 forKey:*MEMORY[0x1E696A980]];
-    v16 = [a4 _web_userVisibleString];
-    [v13 setObject:v16 forKey:*MEMORY[0x1E696A990]];
+    _web_userVisibleString = [a4 _web_userVisibleString];
+    [v13 setObject:_web_userVisibleString forKey:*MEMORY[0x1E696A990]];
   }
 
   if (a5)
@@ -82,7 +82,7 @@
     v17 = 0;
   }
 
-  v18 = [a1 initWithDomain:WebKitErrorDomain code:a3 userInfo:v17];
+  v18 = [self initWithDomain:WebKitErrorDomain code:a3 userInfo:v17];
   return v18;
 }
 

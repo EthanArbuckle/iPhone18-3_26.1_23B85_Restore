@@ -1,49 +1,49 @@
 @interface SHMatchedMediaItem
 - (NSTimeInterval)matchOffset;
 - (NSTimeInterval)predictedCurrentMatchOffset;
-- (SHMatchedMediaItem)initWithCoder:(id)a3;
-- (SHMatchedMediaItem)initWithMatchedMediaItemDictionary:(id)a3 syncedLyrics:(id)a4;
+- (SHMatchedMediaItem)initWithCoder:(id)coder;
+- (SHMatchedMediaItem)initWithMatchedMediaItemDictionary:(id)dictionary syncedLyrics:(id)lyrics;
 - (float)confidence;
 - (float)frequencySkew;
 - (float)speedSkew;
 - (id)creationDate;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)matchScore;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHMatchedMediaItem
 
-- (SHMatchedMediaItem)initWithMatchedMediaItemDictionary:(id)a3 syncedLyrics:(id)a4
+- (SHMatchedMediaItem)initWithMatchedMediaItemDictionary:(id)dictionary syncedLyrics:(id)lyrics
 {
-  v7 = a4;
+  lyricsCopy = lyrics;
   v11.receiver = self;
   v11.super_class = SHMatchedMediaItem;
-  v8 = [(SHMediaItem *)&v11 initWithProperties:a3];
+  v8 = [(SHMediaItem *)&v11 initWithProperties:dictionary];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_syncedLyrics, a4);
+    objc_storeStrong(&v8->_syncedLyrics, lyrics);
   }
 
   return v9;
 }
 
-- (SHMatchedMediaItem)initWithCoder:(id)a3
+- (SHMatchedMediaItem)initWithCoder:(id)coder
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v13[2] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3];
   v7 = [v4 setWithArray:v6];
 
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"SHMatchedMediaItemSyncedLyrics"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"SHMatchedMediaItemSyncedLyrics"];
   v12.receiver = self;
   v12.super_class = SHMatchedMediaItem;
-  v9 = [(SHMediaItem *)&v12 initWithCoder:v5];
+  v9 = [(SHMediaItem *)&v12 initWithCoder:coderCopy];
 
   if (v9)
   {
@@ -54,14 +54,14 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SHMatchedMediaItem;
-  v4 = a3;
-  [(SHMediaItem *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SHMediaItem *)&v6 encodeWithCoder:coderCopy];
   v5 = [(SHMatchedMediaItem *)self syncedLyrics:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"SHMatchedMediaItemSyncedLyrics"];
+  [coderCopy encodeObject:v5 forKey:@"SHMatchedMediaItemSyncedLyrics"];
 }
 
 - (NSTimeInterval)matchOffset
@@ -94,17 +94,17 @@
 - (int64_t)matchScore
 {
   v2 = [(SHMediaItem *)self validValueForProperty:@"sh_score"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSTimeInterval)predictedCurrentMatchOffset
 {
   [(SHMatchedMediaItem *)self matchOffset];
   v4 = v3;
-  v5 = [(SHMatchedMediaItem *)self audioStartDate];
-  [v5 timeIntervalSinceNow];
+  audioStartDate = [(SHMatchedMediaItem *)self audioStartDate];
+  [audioStartDate timeIntervalSinceNow];
   v7 = v4 - v6;
 
   return v7;
@@ -114,19 +114,19 @@
 {
   v8.receiver = self;
   v8.super_class = SHMatchedMediaItem;
-  v3 = [(SHMediaItem *)&v8 creationDate];
-  v4 = v3;
-  if (v3)
+  creationDate = [(SHMediaItem *)&v8 creationDate];
+  v4 = creationDate;
+  if (creationDate)
   {
-    v5 = v3;
+    audioStartDate = creationDate;
   }
 
   else
   {
-    v5 = [(SHMatchedMediaItem *)self audioStartDate];
+    audioStartDate = [(SHMatchedMediaItem *)self audioStartDate];
   }
 
-  v6 = v5;
+  v6 = audioStartDate;
 
   return v6;
 }
@@ -148,17 +148,17 @@
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(SHMediaItem *)self shazamID];
-  v6 = [v4 shazamID];
-  v7 = [v5 isEqualToString:v6];
+  compareCopy = compare;
+  shazamID = [(SHMediaItem *)self shazamID];
+  shazamID2 = [compareCopy shazamID];
+  v7 = [shazamID isEqualToString:shazamID2];
 
   if (v7)
   {
     v8 = sub_230F85BC0(self, "objectForKeyedSubscript:", @"sh_score");
-    v9 = [v4 objectForKeyedSubscript:@"sh_score"];
+    v9 = [compareCopy objectForKeyedSubscript:@"sh_score"];
     v10 = [v8 compare:v9];
   }
 

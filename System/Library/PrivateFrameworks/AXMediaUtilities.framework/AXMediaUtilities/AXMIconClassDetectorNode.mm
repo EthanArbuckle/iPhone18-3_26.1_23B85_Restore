@@ -1,12 +1,12 @@
 @interface AXMIconClassDetectorNode
-- (id)_localizedClassForClass:(id)a3;
-- (id)classLabelForIdx:(unint64_t)a3;
+- (id)_localizedClassForClass:(id)class;
+- (id)classLabelForIdx:(unint64_t)idx;
 - (id)mlModelClasses;
 - (id)mobileAssetType;
 - (unint64_t)maxSupportedFormatVersion;
 - (unint64_t)minSupportedFormatVersion;
 - (void)_initializeClassLabels;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMIconClassDetectorNode
@@ -39,31 +39,31 @@
 
 - (id)mobileAssetType
 {
-  v2 = [MEMORY[0x1E69881D0] policy];
-  v3 = [v2 assetType];
+  policy = [MEMORY[0x1E69881D0] policy];
+  assetType = [policy assetType];
 
-  return v3;
+  return assetType;
 }
 
 - (unint64_t)minSupportedFormatVersion
 {
-  v2 = [MEMORY[0x1E69881D0] policy];
-  v3 = [v2 minSupportedFormatVersion];
-  v4 = [v3 unsignedIntegerValue];
+  policy = [MEMORY[0x1E69881D0] policy];
+  minSupportedFormatVersion = [policy minSupportedFormatVersion];
+  unsignedIntegerValue = [minSupportedFormatVersion unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)maxSupportedFormatVersion
 {
-  v2 = [MEMORY[0x1E69881D0] policy];
-  v3 = [v2 maxSupportedFormatVersion];
-  v4 = [v3 unsignedIntegerValue];
+  policy = [MEMORY[0x1E69881D0] policy];
+  maxSupportedFormatVersion = [policy maxSupportedFormatVersion];
+  unsignedIntegerValue = [maxSupportedFormatVersion unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)classLabelForIdx:(unint64_t)a3
+- (id)classLabelForIdx:(unint64_t)idx
 {
   iconClassLabels = self->_iconClassLabels;
   if (iconClassLabels)
@@ -79,14 +79,14 @@
   v6 = [AXMIconClassDetectorNode classLabelForIdx:]::classLabels;
   [AXMIconClassDetectorNode classLabelForIdx:]::classLabels = v5;
 
-  if ([-[AXMIconClassDetectorNode classLabelForIdx:]::classLabels count] <= a3)
+  if ([-[AXMIconClassDetectorNode classLabelForIdx:]::classLabels count] <= idx)
   {
     v7 = @"unknown";
   }
 
   else
   {
-    v7 = [-[AXMIconClassDetectorNode classLabelForIdx:]::classLabels objectAtIndexedSubscript:a3];
+    v7 = [-[AXMIconClassDetectorNode classLabelForIdx:]::classLabels objectAtIndexedSubscript:idx];
   }
 
   return v7;
@@ -96,12 +96,12 @@
 {
   if (!self->_iconClassLabels)
   {
-    v3 = [(AXMMobileAssetEvaluationNode *)self mobileAssetBaseURL];
+    mobileAssetBaseURL = [(AXMMobileAssetEvaluationNode *)self mobileAssetBaseURL];
 
-    if (v3)
+    if (mobileAssetBaseURL)
     {
-      v4 = [(AXMMobileAssetEvaluationNode *)self mobileAssetBaseURL];
-      v9 = [v4 URLByAppendingPathComponent:@"iconTypes.plist"];
+      mobileAssetBaseURL2 = [(AXMMobileAssetEvaluationNode *)self mobileAssetBaseURL];
+      v9 = [mobileAssetBaseURL2 URLByAppendingPathComponent:@"iconTypes.plist"];
 
       if (v9)
       {
@@ -129,57 +129,57 @@
   }
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v65.receiver = self;
   v65.super_class = AXMIconClassDetectorNode;
-  [(AXMMobileAssetEvaluationNode *)&v65 evaluate:v6 metrics:v7];
+  [(AXMMobileAssetEvaluationNode *)&v65 evaluate:evaluateCopy metrics:metricsCopy];
   if (!self->_iconClassLabels)
   {
     [(AXMIconClassDetectorNode *)self _initializeClassLabels];
   }
 
-  v8 = [(AXMMobileAssetEvaluationNode *)self mlModels];
-  v9 = [v8 count];
-  v10 = [(AXMIconClassDetectorNode *)self mlModelClasses];
-  LOBYTE(v9) = v9 < [v10 count];
+  mlModels = [(AXMMobileAssetEvaluationNode *)self mlModels];
+  v9 = [mlModels count];
+  mlModelClasses = [(AXMIconClassDetectorNode *)self mlModelClasses];
+  LOBYTE(v9) = v9 < [mlModelClasses count];
 
   if ((v9 & 1) == 0)
   {
-    v11 = [v6 generateImageRepresentation];
-    [v11 extent];
+    generateImageRepresentation = [evaluateCopy generateImageRepresentation];
+    [generateImageRepresentation extent];
     v13 = v12;
-    [v11 extent];
+    [generateImageRepresentation extent];
     v15 = v14;
-    [v11 extent];
+    [generateImageRepresentation extent];
     v17 = v16;
-    [v11 extent];
+    [generateImageRepresentation extent];
     if (v17 <= v18)
     {
-      [v11 extent];
+      [generateImageRepresentation extent];
       v20 = v21;
     }
 
     else
     {
-      [v11 extent];
+      [generateImageRepresentation extent];
       v20 = v19;
     }
 
     v22 = [MEMORY[0x1E695F648] filterWithName:@"CILanczosScaleTransform"];
-    [v22 setValue:v11 forKey:@"inputImage"];
+    [v22 setValue:generateImageRepresentation forKey:@"inputImage"];
     v23 = [MEMORY[0x1E696AD98] numberWithDouble:256.0 / v20];
     [v22 setValue:v23 forKey:@"inputScale"];
 
     v24 = [MEMORY[0x1E696AD98] numberWithDouble:1.0 / (v13 / v15)];
     [v22 setValue:v24 forKey:@"inputAspectRatio"];
 
-    v25 = [v22 outputImage];
+    outputImage = [v22 outputImage];
 
-    v26 = v25;
+    v26 = outputImage;
     pixelBufferOut = 0;
     v27 = CVPixelBufferCreate(0, 0x100uLL, 0x100uLL, 0x42475241u, 0, &pixelBufferOut);
     if (v27 || !pixelBufferOut)
@@ -201,13 +201,13 @@
     else
     {
       v62 = [MEMORY[0x1E695F620] contextWithOptions:0];
-      [v62 render:v25 toCVPixelBuffer:pixelBufferOut];
+      [v62 render:outputImage toCVPixelBuffer:pixelBufferOut];
       v28 = [iconclassificationInput alloc];
       v60 = [(iconclassificationInput *)v28 initWithImage_Placeholder:pixelBufferOut];
-      v29 = [(AXMMobileAssetEvaluationNode *)self mlModels];
-      v30 = [v29 firstObject];
+      mlModels2 = [(AXMMobileAssetEvaluationNode *)self mlModels];
+      firstObject = [mlModels2 firstObject];
       v63 = 0;
-      v31 = [v30 predictionFromFeatures:v60 error:&v63];
+      v31 = [firstObject predictionFromFeatures:v60 error:&v63];
       v61 = v63;
 
       if (v61)
@@ -224,16 +224,16 @@
       v41 = 0.0;
       while (1)
       {
-        v42 = [v31 leaf_leaf_predictions_probabilities];
-        v43 = v40 < [v42 count];
+        leaf_leaf_predictions_probabilities = [v31 leaf_leaf_predictions_probabilities];
+        v43 = v40 < [leaf_leaf_predictions_probabilities count];
 
         if (!v43)
         {
           break;
         }
 
-        v44 = [v31 leaf_leaf_predictions_probabilities];
-        v45 = [v44 objectAtIndexedSubscript:v40];
+        leaf_leaf_predictions_probabilities2 = [v31 leaf_leaf_predictions_probabilities];
+        v45 = [leaf_leaf_predictions_probabilities2 objectAtIndexedSubscript:v40];
         [v45 doubleValue];
         v47 = v46;
 
@@ -263,7 +263,7 @@
         v58 = [(AXMIconClassDetectorNode *)self _localizedClassForClass:v55];
 
         v59 = [AXMVisionFeature featureWithIconClass:v58 confidence:v41];
-        [v6 appendFeature:v59];
+        [evaluateCopy appendFeature:v59];
 
         v55 = v58;
       }
@@ -277,11 +277,11 @@
   }
 }
 
-- (id)_localizedClassForClass:(id)a3
+- (id)_localizedClassForClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
-  v5 = [@"icon.type." stringByAppendingString:v3];
+  v5 = [@"icon.type." stringByAppendingString:classCopy];
   v6 = [v4 localizedStringForKey:v5 value:&stru_1F23EA908 table:@"Accessibility"];
 
   return v6;

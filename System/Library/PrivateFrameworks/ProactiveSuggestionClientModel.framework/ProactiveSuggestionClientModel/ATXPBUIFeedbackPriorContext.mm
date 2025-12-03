@@ -1,71 +1,71 @@
 @interface ATXPBUIFeedbackPriorContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBlendingModelCacheUpdates:(id)a3;
-- (void)addCacheUpdateOrdering:(id)a3;
-- (void)addClientModelCacheUpdates:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBlendingModelCacheUpdates:(id)updates;
+- (void)addCacheUpdateOrdering:(id)ordering;
+- (void)addClientModelCacheUpdates:(id)updates;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUIFeedbackPriorContext
 
-- (void)addCacheUpdateOrdering:(id)a3
+- (void)addCacheUpdateOrdering:(id)ordering
 {
-  v4 = a3;
+  orderingCopy = ordering;
   cacheUpdateOrderings = self->_cacheUpdateOrderings;
-  v8 = v4;
+  v8 = orderingCopy;
   if (!cacheUpdateOrderings)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_cacheUpdateOrderings;
     self->_cacheUpdateOrderings = v6;
 
-    v4 = v8;
+    orderingCopy = v8;
     cacheUpdateOrderings = self->_cacheUpdateOrderings;
   }
 
-  [(NSMutableArray *)cacheUpdateOrderings addObject:v4];
+  [(NSMutableArray *)cacheUpdateOrderings addObject:orderingCopy];
 }
 
-- (void)addBlendingModelCacheUpdates:(id)a3
+- (void)addBlendingModelCacheUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   blendingModelCacheUpdates = self->_blendingModelCacheUpdates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!blendingModelCacheUpdates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_blendingModelCacheUpdates;
     self->_blendingModelCacheUpdates = v6;
 
-    v4 = v8;
+    updatesCopy = v8;
     blendingModelCacheUpdates = self->_blendingModelCacheUpdates;
   }
 
-  [(NSMutableArray *)blendingModelCacheUpdates addObject:v4];
+  [(NSMutableArray *)blendingModelCacheUpdates addObject:updatesCopy];
 }
 
-- (void)addClientModelCacheUpdates:(id)a3
+- (void)addClientModelCacheUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   clientModelCacheUpdates = self->_clientModelCacheUpdates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!clientModelCacheUpdates)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_clientModelCacheUpdates;
     self->_clientModelCacheUpdates = v6;
 
-    v4 = v8;
+    updatesCopy = v8;
     clientModelCacheUpdates = self->_clientModelCacheUpdates;
   }
 
-  [(NSMutableArray *)clientModelCacheUpdates addObject:v4];
+  [(NSMutableArray *)clientModelCacheUpdates addObject:updatesCopy];
 }
 
 - (id)description
@@ -74,8 +74,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBUIFeedbackPriorContext;
   v4 = [(ATXPBUIFeedbackPriorContext *)&v8 description];
-  v5 = [(ATXPBUIFeedbackPriorContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUIFeedbackPriorContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -83,12 +83,12 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   cacheUpdateOrderings = self->_cacheUpdateOrderings;
   if (cacheUpdateOrderings)
   {
-    [v3 setObject:cacheUpdateOrderings forKey:@"cacheUpdateOrdering"];
+    [dictionary setObject:cacheUpdateOrderings forKey:@"cacheUpdateOrdering"];
   }
 
   if ([(NSMutableArray *)self->_blendingModelCacheUpdates count])
@@ -113,8 +113,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -148,8 +148,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -184,10 +184,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -302,77 +302,77 @@
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   if ([(ATXPBUIFeedbackPriorContext *)self cacheUpdateOrderingsCount])
   {
-    [v17 clearCacheUpdateOrderings];
-    v4 = [(ATXPBUIFeedbackPriorContext *)self cacheUpdateOrderingsCount];
-    if (v4)
+    [toCopy clearCacheUpdateOrderings];
+    cacheUpdateOrderingsCount = [(ATXPBUIFeedbackPriorContext *)self cacheUpdateOrderingsCount];
+    if (cacheUpdateOrderingsCount)
     {
-      v5 = v4;
+      v5 = cacheUpdateOrderingsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBUIFeedbackPriorContext *)self cacheUpdateOrderingAtIndex:i];
-        [v17 addCacheUpdateOrdering:v7];
+        [toCopy addCacheUpdateOrdering:v7];
       }
     }
   }
 
   if ([(ATXPBUIFeedbackPriorContext *)self blendingModelCacheUpdatesCount])
   {
-    [v17 clearBlendingModelCacheUpdates];
-    v8 = [(ATXPBUIFeedbackPriorContext *)self blendingModelCacheUpdatesCount];
-    if (v8)
+    [toCopy clearBlendingModelCacheUpdates];
+    blendingModelCacheUpdatesCount = [(ATXPBUIFeedbackPriorContext *)self blendingModelCacheUpdatesCount];
+    if (blendingModelCacheUpdatesCount)
     {
-      v9 = v8;
+      v9 = blendingModelCacheUpdatesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ATXPBUIFeedbackPriorContext *)self blendingModelCacheUpdatesAtIndex:j];
-        [v17 addBlendingModelCacheUpdates:v11];
+        [toCopy addBlendingModelCacheUpdates:v11];
       }
     }
   }
 
   if ([(ATXPBUIFeedbackPriorContext *)self clientModelCacheUpdatesCount])
   {
-    [v17 clearClientModelCacheUpdates];
-    v12 = [(ATXPBUIFeedbackPriorContext *)self clientModelCacheUpdatesCount];
-    if (v12)
+    [toCopy clearClientModelCacheUpdates];
+    clientModelCacheUpdatesCount = [(ATXPBUIFeedbackPriorContext *)self clientModelCacheUpdatesCount];
+    if (clientModelCacheUpdatesCount)
     {
-      v13 = v12;
+      v13 = clientModelCacheUpdatesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(ATXPBUIFeedbackPriorContext *)self clientModelCacheUpdatesAtIndex:k];
-        [v17 addClientModelCacheUpdates:v15];
+        [toCopy addClientModelCacheUpdates:v15];
       }
     }
   }
 
   if (self->_context)
   {
-    [v17 setContext:?];
+    [toCopy setContext:?];
   }
 
-  v16 = v17;
+  v16 = toCopy;
   if (self->_contextClassString)
   {
-    [v17 setContextClassString:?];
-    v16 = v17;
+    [toCopy setContextClassString:?];
+    v16 = toCopy;
   }
 
   if (self->_pinnedBlendingModelUICacheUpdateUUID)
   {
-    [v17 setPinnedBlendingModelUICacheUpdateUUID:?];
-    v16 = v17;
+    [toCopy setPinnedBlendingModelUICacheUpdateUUID:?];
+    v16 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -393,7 +393,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v40 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v40 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addCacheUpdateOrdering:v11];
 
         ++v10;
@@ -426,7 +426,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v36 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v36 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addBlendingModelCacheUpdates:v17];
 
         ++v16;
@@ -459,7 +459,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v32 + 1) + 8 * v22) copyWithZone:{a3, v32}];
+        v23 = [*(*(&v32 + 1) + 8 * v22) copyWithZone:{zone, v32}];
         [v5 addClientModelCacheUpdates:v23];
 
         ++v22;
@@ -472,15 +472,15 @@
     while (v20);
   }
 
-  v24 = [(NSData *)self->_context copyWithZone:a3];
+  v24 = [(NSData *)self->_context copyWithZone:zone];
   v25 = v5[4];
   v5[4] = v24;
 
-  v26 = [(NSString *)self->_contextClassString copyWithZone:a3];
+  v26 = [(NSString *)self->_contextClassString copyWithZone:zone];
   v27 = v5[5];
   v5[5] = v26;
 
-  v28 = [(NSString *)self->_pinnedBlendingModelUICacheUpdateUUID copyWithZone:a3];
+  v28 = [(NSString *)self->_pinnedBlendingModelUICacheUpdateUUID copyWithZone:zone];
   v29 = v5[6];
   v5[6] = v28;
 
@@ -488,13 +488,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((cacheUpdateOrderings = self->_cacheUpdateOrderings, !(cacheUpdateOrderings | v4[2])) || -[NSMutableArray isEqual:](cacheUpdateOrderings, "isEqual:")) && ((blendingModelCacheUpdates = self->_blendingModelCacheUpdates, !(blendingModelCacheUpdates | v4[1])) || -[NSMutableArray isEqual:](blendingModelCacheUpdates, "isEqual:")) && ((clientModelCacheUpdates = self->_clientModelCacheUpdates, !(clientModelCacheUpdates | v4[3])) || -[NSMutableArray isEqual:](clientModelCacheUpdates, "isEqual:")) && ((context = self->_context, !(context | v4[4])) || -[NSData isEqual:](context, "isEqual:")) && ((contextClassString = self->_contextClassString, !(contextClassString | v4[5])) || -[NSString isEqual:](contextClassString, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((cacheUpdateOrderings = self->_cacheUpdateOrderings, !(cacheUpdateOrderings | equalCopy[2])) || -[NSMutableArray isEqual:](cacheUpdateOrderings, "isEqual:")) && ((blendingModelCacheUpdates = self->_blendingModelCacheUpdates, !(blendingModelCacheUpdates | equalCopy[1])) || -[NSMutableArray isEqual:](blendingModelCacheUpdates, "isEqual:")) && ((clientModelCacheUpdates = self->_clientModelCacheUpdates, !(clientModelCacheUpdates | equalCopy[3])) || -[NSMutableArray isEqual:](clientModelCacheUpdates, "isEqual:")) && ((context = self->_context, !(context | equalCopy[4])) || -[NSData isEqual:](context, "isEqual:")) && ((contextClassString = self->_contextClassString, !(contextClassString | equalCopy[5])) || -[NSString isEqual:](contextClassString, "isEqual:")))
   {
     pinnedBlendingModelUICacheUpdateUUID = self->_pinnedBlendingModelUICacheUpdateUUID;
-    if (pinnedBlendingModelUICacheUpdateUUID | v4[6])
+    if (pinnedBlendingModelUICacheUpdateUUID | equalCopy[6])
     {
       v11 = [(NSString *)pinnedBlendingModelUICacheUpdateUUID isEqual:?];
     }
@@ -523,15 +523,15 @@
   return v6 ^ v7 ^ [(NSString *)self->_pinnedBlendingModelUICacheUpdateUUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -559,7 +559,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
@@ -587,7 +587,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = v4[3];
+  v15 = fromCopy[3];
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {
@@ -611,17 +611,17 @@
     while (v17);
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(ATXPBUIFeedbackPriorContext *)self setContext:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(ATXPBUIFeedbackPriorContext *)self setContextClassString:?];
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(ATXPBUIFeedbackPriorContext *)self setPinnedBlendingModelUICacheUpdateUUID:?];
   }

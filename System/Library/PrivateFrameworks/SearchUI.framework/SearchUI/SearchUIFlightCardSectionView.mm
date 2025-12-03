@@ -1,42 +1,42 @@
 @interface SearchUIFlightCardSectionView
-+ (id)calendarEventCardSectionForFlight:(id)a3 leg:(id)a4;
-+ (int)defaultSeparatorStyleForRowModel:(id)a3;
-+ (void)getAdditionalCardSectionsForFlightCardSection:(id)a3 completionHandler:(id)a4;
-- (SearchUIFlightCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
++ (id)calendarEventCardSectionForFlight:(id)flight leg:(id)leg;
++ (int)defaultSeparatorStyleForRowModel:(id)model;
++ (void)getAdditionalCardSectionsForFlightCardSection:(id)section completionHandler:(id)handler;
+- (SearchUIFlightCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (id)setupContentView;
-- (void)flightController:(id)a3 didSelectLeg:(int64_t)a4 ofFlight:(int64_t)a5;
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4;
+- (void)flightController:(id)controller didSelectLeg:(int64_t)leg ofFlight:(int64_t)flight;
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron;
 @end
 
 @implementation SearchUIFlightCardSectionView
 
-- (SearchUIFlightCardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUIFlightCardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 cardSection];
+  delegateCopy = delegate;
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
   v19.receiver = self;
   v19.super_class = SearchUIFlightCardSectionView;
-  v9 = [(SearchUICardSectionView *)&v19 initWithRowModel:v7 feedbackDelegate:v6];
+  v9 = [(SearchUICardSectionView *)&v19 initWithRowModel:modelCopy feedbackDelegate:delegateCopy];
 
   if (v9)
   {
-    v10 = [(SearchUICardSectionView *)v9 contentView];
-    [v10 setDelegate:v9];
+    contentView = [(SearchUICardSectionView *)v9 contentView];
+    [contentView setDelegate:v9];
 
-    -[SearchUIFlightCardSectionView setLastSelectedLegIndex:](v9, "setLastSelectedLegIndex:", [v8 selectedLegIndex]);
+    -[SearchUIFlightCardSectionView setLastSelectedLegIndex:](v9, "setLastSelectedLegIndex:", [cardSection selectedLegIndex]);
     v11 = objc_alloc(objc_opt_class());
-    v12 = [v8 flight];
-    v13 = [v11 initWithSFFlight:v12 leg:objc_msgSend(v8 style:"selectedLegIndex") delegate:{3, v9}];
+    flight = [cardSection flight];
+    v13 = [v11 initWithSFFlight:flight leg:objc_msgSend(cardSection style:"selectedLegIndex") delegate:{3, v9}];
     [(SearchUIFlightCardSectionView *)v9 setFlightViewController:v13];
 
-    v14 = [(SearchUIFlightCardSectionView *)v9 flightViewController];
-    [v14 setNoBackground];
+    flightViewController = [(SearchUIFlightCardSectionView *)v9 flightViewController];
+    [flightViewController setNoBackground];
 
-    v15 = [(SearchUICardSectionView *)v9 contentView];
-    v16 = [(SearchUIFlightCardSectionView *)v9 flightViewController];
-    v17 = [v16 view];
-    [v15 addArrangedSubview:v17];
+    contentView2 = [(SearchUICardSectionView *)v9 contentView];
+    flightViewController2 = [(SearchUIFlightCardSectionView *)v9 flightViewController];
+    view = [flightViewController2 view];
+    [contentView2 addArrangedSubview:view];
   }
 
   return v9;
@@ -49,31 +49,31 @@
   return v2;
 }
 
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron
 {
   v4.receiver = self;
   v4.super_class = SearchUIFlightCardSectionView;
   [(SearchUICardSectionView *)&v4 updateChevronVisible:0 leaveSpaceForChevron:0];
 }
 
-- (void)flightController:(id)a3 didSelectLeg:(int64_t)a4 ofFlight:(int64_t)a5
+- (void)flightController:(id)controller didSelectLeg:(int64_t)leg ofFlight:(int64_t)flight
 {
-  v17 = [(SearchUICardSectionView *)self feedbackDelegate:a3];
+  v17 = [(SearchUICardSectionView *)self feedbackDelegate:controller];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SearchUICardSectionView *)self section];
-    v8 = [v7 flight];
-    v9 = [v8 legs];
-    v10 = [v9 objectAtIndexedSubscript:a4];
-    v11 = [v10 title];
-    [v17 updateViewControllerTitle:v11];
+    section = [(SearchUICardSectionView *)self section];
+    flight = [section flight];
+    legs = [flight legs];
+    v10 = [legs objectAtIndexedSubscript:leg];
+    title = [v10 title];
+    [v17 updateViewControllerTitle:title];
   }
 
-  if ([(SearchUIFlightCardSectionView *)self lastSelectedLegIndex]!= a4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([(SearchUIFlightCardSectionView *)self lastSelectedLegIndex]!= leg && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v12 = objc_alloc(MEMORY[0x1E69C9F10]);
-    v13 = [(SearchUICardSectionView *)self section];
-    if ([(SearchUIFlightCardSectionView *)self lastSelectedLegIndex]< a4)
+    section2 = [(SearchUICardSectionView *)self section];
+    if ([(SearchUIFlightCardSectionView *)self lastSelectedLegIndex]< leg)
     {
       v14 = 15;
     }
@@ -83,48 +83,48 @@
       v14 = 16;
     }
 
-    v15 = [v12 initWithCardSection:v13 destination:0 triggerEvent:v14 actionCardType:1];
+    v15 = [v12 initWithCardSection:section2 destination:0 triggerEvent:v14 actionCardType:1];
 
-    v16 = [(SearchUICardSectionView *)self rowModel];
-    [v15 setQueryId:{objc_msgSend(v16, "queryId")}];
+    rowModel = [(SearchUICardSectionView *)self rowModel];
+    [v15 setQueryId:{objc_msgSend(rowModel, "queryId")}];
 
     [v17 didEngageCardSection:v15];
   }
 
-  [(SearchUIFlightCardSectionView *)self setLastSelectedLegIndex:a4];
+  [(SearchUIFlightCardSectionView *)self setLastSelectedLegIndex:leg];
 }
 
-+ (int)defaultSeparatorStyleForRowModel:(id)a3
++ (int)defaultSeparatorStyleForRowModel:(id)model
 {
-  v3 = [a3 cardSection];
-  v4 = [v3 flight];
-  v5 = [v4 legs];
-  v6 = [v5 count] > 1;
+  cardSection = [model cardSection];
+  flight = [cardSection flight];
+  legs = [flight legs];
+  v6 = [legs count] > 1;
 
   return v6;
 }
 
-+ (void)getAdditionalCardSectionsForFlightCardSection:(id)a3 completionHandler:(id)a4
++ (void)getAdditionalCardSectionsForFlightCardSection:(id)section completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [a3 flight];
-  v7 = [v6 legs];
-  v8 = [v7 count];
+  handlerCopy = handler;
+  flight = [section flight];
+  legs = [flight legs];
+  v8 = [legs count];
 
   if (v8 == 1)
   {
-    v9 = [v6 legs];
-    v10 = [v9 lastObject];
+    legs2 = [flight legs];
+    lastObject = [legs2 lastObject];
 
-    v12 = v6;
-    v13 = v5;
-    v11 = v10;
+    v12 = flight;
+    v13 = handlerCopy;
+    v11 = lastObject;
     GEOFetchOfflineMapsDownloadURLForSFFlightLeg();
   }
 
   else
   {
-    (*(v5 + 2))(v5, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -167,74 +167,74 @@ void __97__SearchUIFlightCardSectionView_getAdditionalCardSectionsForFlightCardS
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)calendarEventCardSectionForFlight:(id)a3 leg:(id)a4
++ (id)calendarEventCardSectionForFlight:(id)flight leg:(id)leg
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 departureAirport];
-  v8 = [v6 arrivalAirport];
+  flightCopy = flight;
+  legCopy = leg;
+  departureAirport = [legCopy departureAirport];
+  arrivalAirport = [legCopy arrivalAirport];
   v9 = objc_opt_new();
   v10 = MEMORY[0x1E696AEC0];
   v11 = [SearchUIUtilities localizedStringForKey:@"FLIGHT_EVENT_TITLE_FORMAT"];
-  v12 = [v5 carrierCode];
-  v72 = v5;
-  v13 = [v5 flightNumber];
-  v14 = [v7 code];
-  v15 = [v8 code];
-  v16 = [v10 stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@ %@ %@ %@" error:0, v12, v13, v14, v15];
+  carrierCode = [flightCopy carrierCode];
+  v72 = flightCopy;
+  flightNumber = [flightCopy flightNumber];
+  code = [departureAirport code];
+  code2 = [arrivalAirport code];
+  v16 = [v10 stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@ %@ %@ %@" error:0, carrierCode, flightNumber, code, code2];
   [v9 setTitle:v16];
 
-  v17 = [v6 departureActualTime];
-  [v9 setStartDate:v17];
+  departureActualTime = [legCopy departureActualTime];
+  [v9 setStartDate:departureActualTime];
 
-  v18 = [v7 timezone];
-  [v9 setStartTimeZone:v18];
+  timezone = [departureAirport timezone];
+  [v9 setStartTimeZone:timezone];
 
-  v19 = [v6 arrivalActualTime];
+  arrivalActualTime = [legCopy arrivalActualTime];
 
-  [v9 setEndDate:v19];
-  v20 = [v8 timezone];
-  [v9 setEndTimeZone:v20];
+  [v9 setEndDate:arrivalActualTime];
+  timezone2 = [arrivalAirport timezone];
+  [v9 setEndTimeZone:timezone2];
 
   v21 = objc_opt_new();
   [v9 setLocation:v21];
 
-  v22 = [v7 name];
-  v23 = [v9 location];
-  [v23 setTitle:v22];
+  name = [departureAirport name];
+  location = [v9 location];
+  [location setTitle:name];
 
-  v24 = [v7 location];
-  v25 = [v9 location];
-  [v25 setGeoLocation:v24];
+  location2 = [departureAirport location];
+  location3 = [v9 location];
+  [location3 setGeoLocation:location2];
 
   v26 = objc_opt_new();
   [v9 setEndLocation:v26];
 
-  v27 = [v8 name];
-  v28 = [v9 endLocation];
-  [v28 setTitle:v27];
+  name2 = [arrivalAirport name];
+  endLocation = [v9 endLocation];
+  [endLocation setTitle:name2];
 
-  v29 = [v8 location];
-  v30 = [v9 endLocation];
-  [v30 setGeoLocation:v29];
+  location4 = [arrivalAirport location];
+  endLocation2 = [v9 endLocation];
+  [endLocation2 setGeoLocation:location4];
 
   v31 = objc_opt_new();
   [v31 setUnitsStyle:2];
   v32 = objc_opt_new();
   v33 = MEMORY[0x1E696AEC0];
   v34 = [SearchUIUtilities localizedStringForKey:@"FLIGHT_DURATION_FORMAT"];
-  v35 = [v9 startDate];
-  v36 = [v9 endDate];
-  v37 = [v31 stringFromDate:v35 toDate:v36];
+  startDate = [v9 startDate];
+  endDate = [v9 endDate];
+  v37 = [v31 stringFromDate:startDate toDate:endDate];
   v38 = [v33 stringWithValidatedFormat:v34 validFormatSpecifiers:@"%@" error:0, v37];
   [v32 appendString:v38];
 
-  v39 = [v8 timezone];
-  v40 = [v39 secondsFromGMT];
-  v41 = [v7 timezone];
-  v42 = [v41 secondsFromGMT];
+  timezone3 = [arrivalAirport timezone];
+  secondsFromGMT = [timezone3 secondsFromGMT];
+  timezone4 = [departureAirport timezone];
+  secondsFromGMT2 = [timezone4 secondsFromGMT];
 
-  v43 = v40 - v42;
+  v43 = secondsFromGMT - secondsFromGMT2;
   if (v43)
   {
     [v32 appendString:@"\n"];
@@ -258,20 +258,20 @@ void __97__SearchUIFlightCardSectionView_getAdditionalCardSectionsForFlightCardS
     [v32 appendString:v50];
   }
 
-  v51 = [v72 carrierName];
-  if (v51)
+  carrierName = [v72 carrierName];
+  if (carrierName)
   {
-    v52 = v51;
-    v53 = [v72 carrierPhoneNumber];
+    v52 = carrierName;
+    carrierPhoneNumber = [v72 carrierPhoneNumber];
 
-    if (v53)
+    if (carrierPhoneNumber)
     {
       [v32 appendString:@"\n\n"];
       v54 = MEMORY[0x1E696AEC0];
       v55 = [SearchUIUtilities localizedStringForKey:@"AIRLINE_PHONE_NUMBER_FORMAT"];
-      v56 = [v72 carrierName];
-      v57 = [v72 carrierPhoneNumber];
-      v58 = [v54 stringWithValidatedFormat:v55 validFormatSpecifiers:@"%@ %@" error:0, v56, v57];
+      carrierName2 = [v72 carrierName];
+      carrierPhoneNumber2 = [v72 carrierPhoneNumber];
+      v58 = [v54 stringWithValidatedFormat:v55 validFormatSpecifiers:@"%@ %@" error:0, carrierName2, carrierPhoneNumber2];
       [v32 appendString:v58];
     }
   }
@@ -279,12 +279,12 @@ void __97__SearchUIFlightCardSectionView_getAdditionalCardSectionsForFlightCardS
   v59 = [v32 copy];
   [v9 setNotes:v59];
 
-  v60 = [v72 carrierWebsite];
-  if (v60)
+  carrierWebsite = [v72 carrierWebsite];
+  if (carrierWebsite)
   {
     v61 = MEMORY[0x1E695DFF8];
-    v62 = [v72 carrierWebsite];
-    v63 = [v61 URLWithString:v62];
+    carrierWebsite2 = [v72 carrierWebsite];
+    v63 = [v61 URLWithString:carrierWebsite2];
     [v9 setUrl:v63];
   }
 

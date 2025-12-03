@@ -6,8 +6,8 @@
 - (void)activate;
 - (void)invalidate;
 - (void)main;
-- (void)xpcConnectionAccept:(id)a3;
-- (void)xpcListenerEvent:(id)a3;
+- (void)xpcConnectionAccept:(id)accept;
+- (void)xpcListenerEvent:(id)event;
 @end
 
 @implementation ENXPCServiceListener
@@ -40,9 +40,9 @@ void __45__ENXPCServiceListener_sharedServiceListener__block_invoke()
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     dispatchQueue = v2->_dispatchQueue;
     v2->_dispatchQueue = v7;
   }
@@ -52,11 +52,11 @@ void __45__ENXPCServiceListener_sharedServiceListener__block_invoke()
 
 - (id)initAnonymousListener
 {
-  v2 = [(ENXPCServiceListener *)self _init];
-  v3 = v2;
-  if (v2)
+  _init = [(ENXPCServiceListener *)self _init];
+  v3 = _init;
+  if (_init)
   {
-    v4 = xpc_connection_create(0, v2[3]);
+    v4 = xpc_connection_create(0, _init[3]);
     v5 = v3[2];
     v3[2] = v4;
   }
@@ -81,8 +81,8 @@ void __45__ENXPCServiceListener_sharedServiceListener__block_invoke()
 
   else
   {
-    v5 = [ENXPCServiceListener activate];
-    __32__ENXPCServiceListener_activate__block_invoke(v5, v6);
+    activate = [ENXPCServiceListener activate];
+    __32__ENXPCServiceListener_activate__block_invoke(activate, v6);
   }
 }
 
@@ -96,16 +96,16 @@ void __45__ENXPCServiceListener_sharedServiceListener__block_invoke()
   xpc_main(SharedServiceConnectionHandler);
 }
 
-- (void)xpcConnectionAccept:(id)a3
+- (void)xpcConnectionAccept:(id)accept
 {
-  v8 = a3;
-  xpc_connection_get_pid(v8);
+  acceptCopy = accept;
+  xpc_connection_get_pid(acceptCopy);
   if (gLogCategory_ENXPCServiceConnection <= 20 && (gLogCategory_ENXPCServiceConnection != -1 || _LogCategory_Initialize()))
   {
     [ENXPCServiceListener xpcConnectionAccept:];
   }
 
-  v4 = [ENXPCServiceConnection connectionWithXPCConnection:v8 serviceListener:self dispatchQueue:self->_dispatchQueue];
+  v4 = [ENXPCServiceConnection connectionWithXPCConnection:acceptCopy serviceListener:self dispatchQueue:self->_dispatchQueue];
   connections = self->_connections;
   if (!connections)
   {
@@ -132,21 +132,21 @@ void __45__ENXPCServiceListener_sharedServiceListener__block_invoke()
   return xpcListener;
 }
 
-- (void)xpcListenerEvent:(id)a3
+- (void)xpcListenerEvent:(id)event
 {
-  v7 = a3;
+  eventCopy = event;
   if (MEMORY[0x24C214BB0]() == MEMORY[0x277D86450])
   {
-    [(ENXPCServiceListener *)self xpcConnectionAccept:v7];
+    [(ENXPCServiceListener *)self xpcConnectionAccept:eventCopy];
     goto LABEL_8;
   }
 
-  v4 = v7;
-  if (v7 == MEMORY[0x277D863F8])
+  v4 = eventCopy;
+  if (eventCopy == MEMORY[0x277D863F8])
   {
     if (gLogCategory_ENXPCServiceConnection <= 30)
     {
-      if (gLogCategory_ENXPCServiceConnection != -1 || (v6 = _LogCategory_Initialize(), v4 = v7, v6))
+      if (gLogCategory_ENXPCServiceConnection != -1 || (v6 = _LogCategory_Initialize(), v4 = eventCopy, v6))
       {
         [ENXPCServiceListener xpcListenerEvent:];
         goto LABEL_8;
@@ -156,11 +156,11 @@ void __45__ENXPCServiceListener_sharedServiceListener__block_invoke()
 
   else if (gLogCategory__ENXPCServiceConnection <= 90)
   {
-    if (gLogCategory__ENXPCServiceConnection != -1 || (v5 = _LogCategory_Initialize(), v4 = v7, v5))
+    if (gLogCategory__ENXPCServiceConnection != -1 || (v5 = _LogCategory_Initialize(), v4 = eventCopy, v5))
     {
       [ENXPCServiceListener xpcListenerEvent:];
 LABEL_8:
-      v4 = v7;
+      v4 = eventCopy;
     }
   }
 }

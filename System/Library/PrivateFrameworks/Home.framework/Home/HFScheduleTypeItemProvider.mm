@@ -1,28 +1,28 @@
 @interface HFScheduleTypeItemProvider
 - (HFScheduleTypeItemProvider)init;
-- (HFScheduleTypeItemProvider)initWithScheduleBuilder:(id)a3;
+- (HFScheduleTypeItemProvider)initWithScheduleBuilder:(id)builder;
 - (id)reloadItems;
-- (void)updateSelectedType:(unint64_t)a3;
+- (void)updateSelectedType:(unint64_t)type;
 @end
 
 @implementation HFScheduleTypeItemProvider
 
-- (HFScheduleTypeItemProvider)initWithScheduleBuilder:(id)a3
+- (HFScheduleTypeItemProvider)initWithScheduleBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = HFScheduleTypeItemProvider;
   v6 = [(HFItemProvider *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scheduleBuilder, a3);
+    objc_storeStrong(&v6->_scheduleBuilder, builder);
     v8 = objc_opt_new();
     items = v7->_items;
     v7->_items = v8;
 
-    v10 = [(HFScheduleTypeItemProvider *)v7 scheduleBuilder];
-    v7->_selectedType = [v10 estimatedScheduleType];
+    scheduleBuilder = [(HFScheduleTypeItemProvider *)v7 scheduleBuilder];
+    v7->_selectedType = [scheduleBuilder estimatedScheduleType];
   }
 
   return v7;
@@ -30,9 +30,9 @@
 
 - (HFScheduleTypeItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithUser_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFScheduleTypeItemProvider.m" lineNumber:81 description:{@"%s is unavailable; use %@ instead", "-[HFScheduleTypeItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleTypeItemProvider.m" lineNumber:81 description:{@"%s is unavailable; use %@ instead", "-[HFScheduleTypeItemProvider init]", v5}];
 
   return 0;
 }
@@ -40,13 +40,13 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HFScheduleTypeItemProvider *)self scheduleTypes];
+  scheduleTypes = [(HFScheduleTypeItemProvider *)self scheduleTypes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__HFScheduleTypeItemProvider_reloadItems__block_invoke_3;
   v9[3] = &unk_277E017D0;
   objc_copyWeak(&v10, &location);
-  v4 = [(HFItemProvider *)self reloadItemsWithObjects:v3 keyAdaptor:&__block_literal_global_222 itemAdaptor:&__block_literal_global_51_3 filter:0 itemMap:v9];
+  v4 = [(HFItemProvider *)self reloadItemsWithObjects:scheduleTypes keyAdaptor:&__block_literal_global_222 itemAdaptor:&__block_literal_global_51_3 filter:0 itemMap:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__HFScheduleTypeItemProvider_reloadItems__block_invoke_5;
@@ -141,17 +141,17 @@ id __41__HFScheduleTypeItemProvider_reloadItems__block_invoke_5(uint64_t a1, voi
   return v9;
 }
 
-- (void)updateSelectedType:(unint64_t)a3
+- (void)updateSelectedType:(unint64_t)type
 {
   [(HFScheduleTypeItemProvider *)self setSelectedType:?];
-  v5 = [(HFScheduleTypeItemProvider *)self items];
-  v6 = [v5 allObjects];
+  items = [(HFScheduleTypeItemProvider *)self items];
+  allObjects = [items allObjects];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__HFScheduleTypeItemProvider_updateSelectedType___block_invoke;
   v7[3] = &__block_descriptor_40_e16_v16__0__HFItem_8l;
-  v7[4] = a3;
-  [v6 na_each:v7];
+  v7[4] = type;
+  [allObjects na_each:v7];
 }
 
 void __49__HFScheduleTypeItemProvider_updateSelectedType___block_invoke(uint64_t a1, void *a2)

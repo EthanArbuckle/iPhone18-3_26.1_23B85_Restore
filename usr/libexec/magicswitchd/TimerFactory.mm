@@ -1,21 +1,21 @@
 @interface TimerFactory
-+ (id)timerWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 waking:(BOOL)a6 handlerBlock:(id)a7;
++ (id)timerWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period waking:(BOOL)waking handlerBlock:(id)block;
 @end
 
 @implementation TimerFactory
 
-+ (id)timerWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 waking:(BOOL)a6 handlerBlock:(id)a7
++ (id)timerWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period waking:(BOOL)waking handlerBlock:(id)block
 {
   v10 = &off_100018308;
-  if (!a6)
+  if (!waking)
   {
     v10 = off_100018300;
   }
 
   v11 = *v10;
-  v12 = a7;
-  v13 = a3;
-  v14 = [[v11 alloc] initWithIdentifier:v13 delay:v12 gracePeriod:a4 handlerBlock:a5];
+  blockCopy = block;
+  identifierCopy = identifier;
+  v14 = [[v11 alloc] initWithIdentifier:identifierCopy delay:blockCopy gracePeriod:delay handlerBlock:period];
 
   return v14;
 }

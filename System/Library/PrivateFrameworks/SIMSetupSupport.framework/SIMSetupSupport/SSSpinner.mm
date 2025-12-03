@@ -1,14 +1,14 @@
 @interface SSSpinner
-- (SSSpinner)initWithText:(id)a3;
+- (SSSpinner)initWithText:(id)text;
 - (void)startAnimating;
 - (void)stopAnimating;
 @end
 
 @implementation SSSpinner
 
-- (SSSpinner)initWithText:(id)a3
+- (SSSpinner)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v14.receiver = self;
   v14.super_class = SSSpinner;
   v5 = [(SSSpinner *)&v14 init];
@@ -22,9 +22,9 @@
     label = v5->_label;
     v5->_label = v8;
 
-    [(UILabel *)v5->_label setText:v4];
-    v10 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v5->_label setTextColor:v10];
+    [(UILabel *)v5->_label setText:textCopy];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v5->_label setTextColor:secondaryLabelColor];
 
     [(UILabel *)v5->_label setHidden:1];
     v11 = v5->_label;

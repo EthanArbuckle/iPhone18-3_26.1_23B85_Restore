@@ -1,27 +1,27 @@
 @interface AESceneGroupedTilingLayout
 - (AEBrowserLayoutDelegate)delegate;
-- (AESceneGroupedTilingLayout)initWithDataSource:(id)a3 layoutStyle:(int64_t)a4 gradientTileInfo:(id)a5 orientation:(int64_t)a6;
-- (AESceneGroupedTilingLayout)initWithDataSource:(id)a3 layoutStyle:(int64_t)a4 orientation:(int64_t)a5;
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
+- (AESceneGroupedTilingLayout)initWithDataSource:(id)source layoutStyle:(int64_t)style gradientTileInfo:(id)info orientation:(int64_t)orientation;
+- (AESceneGroupedTilingLayout)initWithDataSource:(id)source layoutStyle:(int64_t)style orientation:(int64_t)orientation;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (CGPoint)_boundedVisibleOrigin;
-- (CGRect)_frameForGridTile:(int64_t)a3 inSection:(int64_t)a4;
+- (CGRect)_frameForGridTile:(int64_t)tile inSection:(int64_t)section;
 - (CGRect)_gradientShadowFrameForItemFrame:(CGRect)result;
-- (CGRect)_progressFrameForGridTileFrame:(CGRect)a3;
+- (CGRect)_progressFrameForGridTileFrame:(CGRect)frame;
 - (CGRect)contentBounds;
 - (CGSize)_safeReferenceSize;
-- (PXTileGeometry)_geometryWithFrame:(SEL)a3 alpha:(CGRect)a4 zPosition:(double)a5;
-- (double)_zPositionForDecorativeTileSubitem:(unint64_t)a3;
+- (PXTileGeometry)_geometryWithFrame:(SEL)frame alpha:(CGRect)alpha zPosition:(double)position;
+- (double)_zPositionForDecorativeTileSubitem:(unint64_t)subitem;
 - (int64_t)_thumbnailRowsForCurrentLayoutStyle;
 - (void)_invalidateBadgeDecorations;
 - (void)dealloc;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
 - (void)prepareLayout;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setPortraitOrientation:(BOOL)a3;
-- (void)setProgressSnapshot:(id)a3;
-- (void)setReferenceSize:(CGSize)a3;
-- (void)setSelectedIndexPaths:(id)a3;
-- (void)setVisibleOrigin:(CGPoint)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setPortraitOrientation:(BOOL)orientation;
+- (void)setProgressSnapshot:(id)snapshot;
+- (void)setReferenceSize:(CGSize)size;
+- (void)setSelectedIndexPaths:(id)paths;
+- (void)setVisibleOrigin:(CGPoint)origin;
 @end
 
 @implementation AESceneGroupedTilingLayout
@@ -33,13 +33,13 @@
   return WeakRetained;
 }
 
-- (CGRect)_progressFrameForGridTileFrame:(CGRect)a3
+- (CGRect)_progressFrameForGridTileFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGRectGetMaxX(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  CGRectGetMaxX(frame);
   UIRoundToViewScale();
   v8 = v7;
   v14.origin.x = x;
@@ -59,9 +59,9 @@
   return result;
 }
 
-- (CGRect)_frameForGridTile:(int64_t)a3 inSection:(int64_t)a4
+- (CGRect)_frameForGridTile:(int64_t)tile inSection:(int64_t)section
 {
-  [(AESceneGroupedTilingLayout *)self _thumbnailRowsForCurrentLayoutStyle:a3];
+  [(AESceneGroupedTilingLayout *)self _thumbnailRowsForCurrentLayoutStyle:tile];
   [(AESceneGroupedTilingLayout *)self _safeReferenceSize];
   [(AESceneGroupedTilingLayout *)self layoutStyle];
   v5 = *MEMORY[0x277CBF348];
@@ -91,15 +91,15 @@
   return result;
 }
 
-- (double)_zPositionForDecorativeTileSubitem:(unint64_t)a3
+- (double)_zPositionForDecorativeTileSubitem:(unint64_t)subitem
 {
-  if (a3 == 5)
+  if (subitem == 5)
   {
     return 1.0;
   }
 
   result = 0.0;
-  if (a3 == 6)
+  if (subitem == 6)
   {
     abort();
   }
@@ -107,18 +107,18 @@
   return result;
 }
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  v11 = a6->var1[0];
-  if (a6->var0 == 5 && v11 == *MEMORY[0x277D3CC58])
+  v11 = identifier->var1[0];
+  if (identifier->var0 == 5 && v11 == *MEMORY[0x277D3CC58])
   {
-    v13 = a6->var1[1];
-    v14 = [(PXAssetsTilingLayout *)self dataSource];
-    v15 = [v14 identifier];
+    v13 = identifier->var1[1];
+    dataSource = [(PXAssetsTilingLayout *)self dataSource];
+    identifier = [dataSource identifier];
 
-    if (v13 == v15)
+    if (v13 == identifier)
     {
-      [(AESceneGroupedTilingLayout *)self _frameForGridTile:a6->var1[3] inSection:a6->var1[2]];
+      [(AESceneGroupedTilingLayout *)self _frameForGridTile:identifier->var1[3] inSection:identifier->var1[2]];
       v17 = v16;
       v19 = v18;
       v21 = v20;
@@ -126,7 +126,7 @@
       v24 = 0;
       v25 = 0.0;
       v26 = 66059;
-      if (!a3)
+      if (!geometry)
       {
         goto LABEL_15;
       }
@@ -134,38 +134,38 @@
       goto LABEL_14;
     }
 
-    v11 = a6->var1[0];
+    v11 = identifier->var1[0];
   }
 
   if (v11 == 795209731)
   {
-    v65 = a4;
-    v67 = a5;
-    v41 = a6->var1[3];
-    v42 = a6->var1[4];
-    v43 = a6->var1[2];
+    groupCopy = group;
+    dataCopy = data;
+    v41 = identifier->var1[3];
+    v42 = identifier->var1[4];
+    v43 = identifier->var1[2];
     [(AESceneGroupedTilingLayout *)self _frameForGridTile:v41 inSection:v43];
     v45 = v44;
     v47 = v46;
     v49 = v48;
     v51 = v50;
-    v52 = a6->var1[1];
-    v27 = [(AESceneGroupedTilingLayout *)self delegate];
+    v52 = identifier->var1[1];
+    delegate = [(AESceneGroupedTilingLayout *)self delegate];
     *&v69.x = v52;
     *&v69.y = v43;
     *&v70.width = v41;
     v70.height = NAN;
-    v63 = [v27 layout:self shouldShowVideoDecorationAtIndexPath:&v69];
+    v63 = [delegate layout:self shouldShowVideoDecorationAtIndexPath:&v69];
     *&v69.x = v52;
     *&v69.y = v43;
     *&v70.width = v41;
     v70.height = NAN;
-    v53 = [v27 layout:self shouldShowCloudDecorationAtIndexPath:&v69];
+    v53 = [delegate layout:self shouldShowCloudDecorationAtIndexPath:&v69];
     *&v69.x = v52;
     *&v69.y = v43;
     *&v70.width = v41;
     v70.height = NAN;
-    v54 = [v27 layout:self shouldShowLoopDecorationAtIndexPath:&v69];
+    v54 = [delegate layout:self shouldShowLoopDecorationAtIndexPath:&v69];
     [(AESceneGroupedTilingLayout *)self _zPositionForDecorativeTileSubitem:v42];
     if (v42 == 5 && ((v53 | v63) & 1) != 0)
     {
@@ -178,9 +178,9 @@
       v24 = [[AEGridOverlayConfiguration alloc] initWithShowCloudDecoration:v53 showVideoDecoration:v63 & 1 showLoopDecoration:v54];
 
       v26 = 136507;
-      a5 = v67;
-      a4 = v65;
-      if (!a3)
+      data = dataCopy;
+      group = groupCopy;
+      if (!geometry)
       {
         goto LABEL_15;
       }
@@ -188,8 +188,8 @@
       goto LABEL_14;
     }
 
-    a5 = v67;
-    a4 = v65;
+    data = dataCopy;
+    group = groupCopy;
     goto LABEL_25;
   }
 
@@ -198,25 +198,25 @@
 LABEL_26:
     v68.receiver = self;
     v68.super_class = AESceneGroupedTilingLayout;
-    v60 = *&a6->var1[5];
-    v71 = *&a6->var1[3];
+    v60 = *&identifier->var1[5];
+    v71 = *&identifier->var1[3];
     v72 = v60;
-    v73 = *&a6->var1[7];
-    *&v74 = a6->var1[9];
-    v61 = *&a6->var1[1];
-    v69 = *&a6->var0;
+    v73 = *&identifier->var1[7];
+    *&v74 = identifier->var1[9];
+    v61 = *&identifier->var1[1];
+    v69 = *&identifier->var0;
     v70 = v61;
-    v40 = [(PXAssetsTilingLayout *)&v68 getGeometry:a3 group:a4 userData:a5 forTileWithIdentifier:&v69];
+    v40 = [(PXAssetsTilingLayout *)&v68 getGeometry:geometry group:group userData:data forTileWithIdentifier:&v69];
     v24 = 0;
     goto LABEL_27;
   }
 
-  v64 = *&a6->var1[3];
-  v66 = *&a6->var1[1];
-  v27 = [(AESceneGroupedTilingLayout *)self progressSnapshot];
+  v64 = *&identifier->var1[3];
+  v66 = *&identifier->var1[1];
+  delegate = [(AESceneGroupedTilingLayout *)self progressSnapshot];
   v69 = v66;
   v70 = v64;
-  if (![v27 hasProgressForIndexPath:&v69])
+  if (![delegate hasProgressForIndexPath:&v69])
   {
 LABEL_25:
 
@@ -234,40 +234,40 @@ LABEL_25:
 
   v24 = 0;
   v26 = 855060;
-  if (a3)
+  if (geometry)
   {
 LABEL_14:
     [(AESceneGroupedTilingLayout *)self _geometryWithFrame:v17 alpha:v19 zPosition:v21, v23, 1.0, v25];
     v33 = v78;
-    *&a3->var6 = v77;
-    *&a3->var7.height = v33;
+    *&geometry->var6 = v77;
+    *&geometry->var7.height = v33;
     v34 = v80;
-    *&a3->var8.origin.y = v79;
-    *&a3->var8.size.height = v34;
+    *&geometry->var8.origin.y = v79;
+    *&geometry->var8.size.height = v34;
     v35 = v74;
-    *&a3->var3.a = v73;
-    *&a3->var3.c = v35;
+    *&geometry->var3.a = v73;
+    *&geometry->var3.c = v35;
     v36 = v76;
-    *&a3->var3.tx = v75;
-    *&a3->var4 = v36;
+    *&geometry->var3.tx = v75;
+    *&geometry->var4 = v36;
     v37 = v70;
-    a3->var0.origin = v69;
-    a3->var0.size = v37;
+    geometry->var0.origin = v69;
+    geometry->var0.size = v37;
     v38 = v72;
-    a3->var1 = v71;
-    a3->var2 = v38;
+    geometry->var1 = v71;
+    geometry->var2 = v38;
   }
 
 LABEL_15:
-  if (a4)
+  if (group)
   {
-    *a4 = v26;
+    *group = v26;
   }
 
-  if (a5)
+  if (data)
   {
     v39 = v24;
-    *a5 = v24;
+    *data = v24;
   }
 
   v40 = 1;
@@ -276,29 +276,29 @@ LABEL_27:
   return v40;
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v78 = a5;
-  v12 = [(PXAssetsTilingLayout *)self dataSource];
-  v13 = [v12 identifier];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  blockCopy = block;
+  dataSource = [(PXAssetsTilingLayout *)self dataSource];
+  identifier = [dataSource identifier];
 
-  v77 = [(PXTilingLayout *)self coordinateSpaceIdentifier];
+  coordinateSpaceIdentifier = [(PXTilingLayout *)self coordinateSpaceIdentifier];
   v106[0] = 0;
-  v71 = v11;
-  v14 = [v11 tileGroups];
+  v71 = optionsCopy;
+  tileGroups = [optionsCopy tileGroups];
   v108.origin.x = x;
   v108.origin.y = y;
   v108.size.width = width;
   v108.size.height = height;
   if (CGRectIntersectsRect(*self->_sectionBounds, v108))
   {
-    v15 = [(PXAssetsTilingLayout *)self dataSource];
-    v16 = [v15 numberOfItemsInSection:0];
+    dataSource2 = [(PXAssetsTilingLayout *)self dataSource];
+    v16 = [dataSource2 numberOfItemsInSection:0];
 
     if (v16 >= 1)
     {
@@ -352,13 +352,13 @@ LABEL_27:
           *(&v105[1] + 8) = *MEMORY[0x277D3CFC0];
           v72 = v24;
           *(&v105[2] + 8) = v24;
-          *(&v105[3] + 1) = v77;
-          if (!v14 || [v14 containsIndex:66059])
+          *(&v105[3] + 1) = coordinateSpaceIdentifier;
+          if (!tileGroups || [tileGroups containsIndex:66059])
           {
-            v25 = v78[2];
+            v25 = blockCopy[2];
             *&v89 = 5;
             *(&v89 + 1) = v65;
-            v90 = v13;
+            v90 = identifier;
             v91 = 0;
             v92 = v17 - 1;
             v93 = 0x7FFFFFFFFFFFFFFFLL;
@@ -377,21 +377,21 @@ LABEL_27:
             v80 = v98;
             v81 = v99;
             v82 = v100;
-            v25(v78, &v89, &v79, 66059, 0, v106);
-            if (!v14)
+            v25(blockCopy, &v89, &v79, 66059, 0, v106);
+            if (!tileGroups)
             {
               goto LABEL_9;
             }
           }
 
-          if ([v14 containsIndex:855060])
+          if ([tileGroups containsIndex:855060])
           {
 LABEL_9:
-            v26 = [(AESceneGroupedTilingLayout *)self progressSnapshot];
-            v79 = v13;
+            progressSnapshot = [(AESceneGroupedTilingLayout *)self progressSnapshot];
+            v79 = identifier;
             *&v80 = v17 - 1;
             *(&v80 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-            v27 = [v26 hasProgressForIndexPath:&v79];
+            v27 = [progressSnapshot hasProgressForIndexPath:&v79];
 
             if (v27)
             {
@@ -404,9 +404,9 @@ LABEL_9:
               v63 = v37;
               v64 = v36;
               [(AESceneGroupedTilingLayout *)self _zPositionForDecorativeTileSubitem:5];
-              v38 = v78[2];
+              v38 = blockCopy[2];
               v89 = v62;
-              v90 = v13;
+              v90 = identifier;
               v91 = 0;
               v92 = v17 - 1;
               v93 = 0x7FFFFFFFFFFFFFFFLL;
@@ -435,29 +435,29 @@ LABEL_9:
               y = v67;
               *&v88[24] = v72;
               *&v88[8] = v74;
-              *&v88[40] = v77;
-              v38(v78, &v89, &v79, 855060, 0, v106);
+              *&v88[40] = coordinateSpaceIdentifier;
+              v38(blockCopy, &v89, &v79, 855060, 0, v106);
             }
           }
 
-          v40 = v14;
-          v79 = v13;
+          v40 = tileGroups;
+          v79 = identifier;
           *&v80 = v17 - 1;
           *(&v80 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-          [(PXAssetsTilingLayout *)self enumerateAccessoryTilesForContentTileWithIndexPath:&v79 geometry:&v97 withOptions:v71 usingBlock:v78];
-          v41 = [(AESceneGroupedTilingLayout *)self delegate];
-          v79 = v13;
+          [(PXAssetsTilingLayout *)self enumerateAccessoryTilesForContentTileWithIndexPath:&v79 geometry:&v97 withOptions:v71 usingBlock:blockCopy];
+          delegate = [(AESceneGroupedTilingLayout *)self delegate];
+          v79 = identifier;
           *&v80 = v17 - 1;
           *(&v80 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-          v42 = [v41 layout:self shouldShowVideoDecorationAtIndexPath:&v79];
-          v79 = v13;
+          v42 = [delegate layout:self shouldShowVideoDecorationAtIndexPath:&v79];
+          v79 = identifier;
           *&v80 = v17 - 1;
           *(&v80 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-          v43 = [v41 layout:self shouldShowCloudDecorationAtIndexPath:&v79];
-          v79 = v13;
+          v43 = [delegate layout:self shouldShowCloudDecorationAtIndexPath:&v79];
+          v79 = identifier;
           *&v80 = v17 - 1;
           *(&v80 + 1) = 0x7FFFFFFFFFFFFFFFLL;
-          v44 = [v41 layout:self shouldShowLoopDecorationAtIndexPath:&v79];
+          v44 = [delegate layout:self shouldShowLoopDecorationAtIndexPath:&v79];
           v45 = v44;
           if ((v43 & 1) != 0 || (v42 & 1) != 0 || v44)
           {
@@ -472,9 +472,9 @@ LABEL_9:
             [(AESceneGroupedTilingLayout *)self _zPositionForDecorativeTileSubitem:5];
             v59 = v58;
             v60 = [[AEGridOverlayConfiguration alloc] initWithShowCloudDecoration:v43 showVideoDecoration:v42 showLoopDecoration:v45];
-            v61 = v78[2];
+            v61 = blockCopy[2];
             v89 = xmmword_241200010;
-            v90 = v13;
+            v90 = identifier;
             v91 = 0;
             v92 = v17 - 1;
             v93 = 5;
@@ -503,11 +503,11 @@ LABEL_9:
             y = v67;
             *&v88[24] = v72;
             *&v88[8] = v74;
-            *&v88[40] = v77;
-            v61(v78, &v89, &v79, 136507, v60, v106);
+            *&v88[40] = coordinateSpaceIdentifier;
+            v61(blockCopy, &v89, &v79, 136507, v60, v106);
           }
 
-          v14 = v40;
+          tileGroups = v40;
           v16 = v70;
         }
 
@@ -542,13 +542,13 @@ LABEL_9:
   return result;
 }
 
-- (PXTileGeometry)_geometryWithFrame:(SEL)a3 alpha:(CGRect)a4 zPosition:(double)a5
+- (PXTileGeometry)_geometryWithFrame:(SEL)frame alpha:(CGRect)alpha zPosition:(double)position
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = [(PXTilingLayout *)self coordinateSpaceIdentifier];
+  height = alpha.size.height;
+  width = alpha.size.width;
+  y = alpha.origin.y;
+  x = alpha.origin.x;
+  coordinateSpaceIdentifier = [(PXTilingLayout *)self coordinateSpaceIdentifier];
   *&retstr->var6 = 0;
   retstr->var0.origin.x = x;
   retstr->var0.origin.y = y;
@@ -569,8 +569,8 @@ LABEL_9:
   v19 = *(MEMORY[0x277D3CFC0] + 16);
   retstr->var8.origin = *MEMORY[0x277D3CFC0];
   retstr->var8.size = v19;
-  retstr->var9 = v13;
-  retstr->var4 = a5;
+  retstr->var9 = coordinateSpaceIdentifier;
+  retstr->var4 = position;
   retstr->var5 = a6;
   return result;
 }
@@ -588,7 +588,7 @@ LABEL_9:
   [(PXTilingLayout *)self referenceSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(PXTilingLayout *)self contentInset];
+  contentInset = [(PXTilingLayout *)self contentInset];
   v14.n128_u64[0] = v10.n128_u64[0];
   v15.n128_u64[0] = v11.n128_u64[0];
   v8 = v12.n128_u64[0];
@@ -600,42 +600,42 @@ LABEL_9:
   v14.n128_u64[0] = v8;
   v15.n128_u64[0] = v9;
 
-  MEMORY[0x28219D070](v7, v10, v11, v12, v13, v14, v15);
+  MEMORY[0x28219D070](contentInset, v10, v11, v12, v13, v14, v15);
   result.height = v17;
   result.width = v16;
   return result;
 }
 
-- (void)setSelectedIndexPaths:(id)a3
+- (void)setSelectedIndexPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   [(AESceneGroupedTilingLayout *)self _invalidateBadgeDecorations];
   v5.receiver = self;
   v5.super_class = AESceneGroupedTilingLayout;
-  [(PXAssetsTilingLayout *)&v5 setSelectedIndexPaths:v4];
+  [(PXAssetsTilingLayout *)&v5 setSelectedIndexPaths:pathsCopy];
 }
 
-- (void)setProgressSnapshot:(id)a3
+- (void)setProgressSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (self->_progressSnapshot != v5)
+  snapshotCopy = snapshot;
+  if (self->_progressSnapshot != snapshotCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_progressSnapshot, a3);
+    v7 = snapshotCopy;
+    objc_storeStrong(&self->_progressSnapshot, snapshot);
     v6 = objc_alloc_init(MEMORY[0x277D3CC38]);
     [v6 invalidateAllTiles];
     [(PXTilingLayout *)self invalidateLayoutWithContext:v6];
 
-    v5 = v7;
+    snapshotCopy = v7;
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(PXTilingLayout *)self contentInset];
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -648,29 +648,29 @@ LABEL_9:
   }
 }
 
-- (void)setVisibleOrigin:(CGPoint)a3
+- (void)setVisibleOrigin:(CGPoint)origin
 {
   v5.receiver = self;
   v5.super_class = AESceneGroupedTilingLayout;
-  [(PXTilingLayout *)&v5 setVisibleOrigin:a3.x, a3.y];
+  [(PXTilingLayout *)&v5 setVisibleOrigin:origin.x, origin.y];
   v4 = objc_alloc_init(MEMORY[0x277D3CC38]);
   [v4 invalidateTilesInGroup:1111633208];
   [(PXTilingLayout *)self invalidateLayoutWithContext:v4];
 }
 
-- (void)setPortraitOrientation:(BOOL)a3
+- (void)setPortraitOrientation:(BOOL)orientation
 {
-  if (self->_portraitOrientation != a3)
+  if (self->_portraitOrientation != orientation)
   {
-    self->_portraitOrientation = a3;
+    self->_portraitOrientation = orientation;
     [(PXTilingLayout *)self invalidateLayout];
   }
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXTilingLayout *)self referenceSize];
   if (v7 != width || v6 != height)
   {
@@ -688,22 +688,22 @@ LABEL_9:
   [(AEGridEnvironment *)v3 setCompactExtensionHeight:v4];
   [(AEGridEnvironment *)v3 setMinimumTileHeight:dbl_241200020[([(AESceneGroupedTilingLayout *)self layoutStyle]- 1) < 2]];
   v5 = [AEGridConfiguration configurationForEnvironment:v3];
-  v6 = [v5 rowCount];
+  rowCount = [v5 rowCount];
 
-  return v6;
+  return rowCount;
 }
 
 - (void)prepareLayout
 {
-  v12 = [(AESceneGroupedTilingLayout *)self _gradientTileLayoutInfo];
-  v3 = [(PXAssetsTilingLayout *)self dataSource];
-  v4 = ceil([v3 numberOfItemsInSection:0] / -[AESceneGroupedTilingLayout _thumbnailRowsForCurrentLayoutStyle](self, "_thumbnailRowsForCurrentLayoutStyle"));
+  _gradientTileLayoutInfo = [(AESceneGroupedTilingLayout *)self _gradientTileLayoutInfo];
+  dataSource = [(PXAssetsTilingLayout *)self dataSource];
+  v4 = ceil([dataSource numberOfItemsInSection:0] / -[AESceneGroupedTilingLayout _thumbnailRowsForCurrentLayoutStyle](self, "_thumbnailRowsForCurrentLayoutStyle"));
   [(AESceneGroupedTilingLayout *)self _safeReferenceSize];
   v6 = v5;
   [(AESceneGroupedTilingLayout *)self layoutStyle];
   UIRoundToViewScale();
   v8 = v7;
-  [v12 tileSystemLayoutSizeFittingSize:?];
+  [_gradientTileLayoutInfo tileSystemLayoutSizeFittingSize:?];
   self->_cachedGradientOverlaySize.width = v9;
   self->_cachedGradientOverlaySize.height = v10;
   sectionBounds = self->_sectionBounds;
@@ -736,29 +736,29 @@ LABEL_9:
   [(AESceneGroupedTilingLayout *)&v3 dealloc];
 }
 
-- (AESceneGroupedTilingLayout)initWithDataSource:(id)a3 layoutStyle:(int64_t)a4 gradientTileInfo:(id)a5 orientation:(int64_t)a6
+- (AESceneGroupedTilingLayout)initWithDataSource:(id)source layoutStyle:(int64_t)style gradientTileInfo:(id)info orientation:(int64_t)orientation
 {
-  v11 = a5;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = AESceneGroupedTilingLayout;
-  v12 = [(PXAssetsTilingLayout *)&v14 initWithDataSource:a3];
+  v12 = [(PXAssetsTilingLayout *)&v14 initWithDataSource:source];
   if (v12)
   {
     v12->_sectionBounds = malloc_type_malloc(0x20uLL, 0x1000040E0EAB150uLL);
-    v12->_layoutStyle = a4;
-    v12->_portraitOrientation = (a6 - 1) < 2;
-    objc_storeStrong(&v12->__gradientTileLayoutInfo, a5);
+    v12->_layoutStyle = style;
+    v12->_portraitOrientation = (orientation - 1) < 2;
+    objc_storeStrong(&v12->__gradientTileLayoutInfo, info);
     [(PXAssetsTilingLayout *)v12 setSelectionBadgeOptions:1];
   }
 
   return v12;
 }
 
-- (AESceneGroupedTilingLayout)initWithDataSource:(id)a3 layoutStyle:(int64_t)a4 orientation:(int64_t)a5
+- (AESceneGroupedTilingLayout)initWithDataSource:(id)source layoutStyle:(int64_t)style orientation:(int64_t)orientation
 {
-  v8 = a3;
+  sourceCopy = source;
   v9 = +[AEGridOverlayView gridOverlayLayoutInfo];
-  v10 = [(AESceneGroupedTilingLayout *)self initWithDataSource:v8 layoutStyle:a4 gradientTileInfo:v9 orientation:a5];
+  v10 = [(AESceneGroupedTilingLayout *)self initWithDataSource:sourceCopy layoutStyle:style gradientTileInfo:v9 orientation:orientation];
 
   return v10;
 }

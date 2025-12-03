@@ -1,19 +1,19 @@
 @interface CSLUIPointAnimator
-+ (id)animateFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 withApplier:(id)a5 completion:(id)a6;
++ (id)animateFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint withApplier:(id)applier completion:(id)completion;
 - (void)_cleanupAfterAnimation;
-- (void)_displayLinkFired:(id)a3;
+- (void)_displayLinkFired:(id)fired;
 @end
 
 @implementation CSLUIPointAnimator
 
-+ (id)animateFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 withApplier:(id)a5 completion:(id)a6
++ (id)animateFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint withApplier:(id)applier completion:(id)completion
 {
-  x = a4.x;
-  y = a4.y;
-  v22 = a3.x;
-  v23 = a3.y;
-  v7 = a5;
-  v8 = a6;
+  x = toPoint.x;
+  y = toPoint.y;
+  v22 = point.x;
+  v23 = point.y;
+  applierCopy = applier;
+  completionCopy = completion;
   v9 = objc_opt_new();
   v10.f64[0] = v22;
   v10.f64[1] = v23;
@@ -31,11 +31,11 @@
   v14 = v13;
   [v12 setDuration:?];
   *(v9 + 48) = v14;
-  v15 = [v7 copy];
+  v15 = [applierCopy copy];
   v16 = *(v9 + 56);
   *(v9 + 56) = v15;
 
-  v17 = [v8 copy];
+  v17 = [completionCopy copy];
   v18 = *(v9 + 64);
   *(v9 + 64) = v17;
 
@@ -47,9 +47,9 @@
   return v9;
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  v13 = a3;
+  firedCopy = fired;
   if (self->_applier)
   {
     v4 = CACurrentMediaTime() - self->_startTime;
@@ -85,18 +85,18 @@
   displayLink = self->_displayLink;
   self->_displayLink = 0;
 
-  v7 = self;
-  completion = v7->_completion;
+  selfCopy = self;
+  completion = selfCopy->_completion;
   if (completion)
   {
     completion[2]();
   }
 
-  applier = v7->_applier;
-  v7->_applier = 0;
+  applier = selfCopy->_applier;
+  selfCopy->_applier = 0;
 
-  v6 = v7->_completion;
-  v7->_completion = 0;
+  v6 = selfCopy->_completion;
+  selfCopy->_completion = 0;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface HMDMessageHandlerQueuedMessage
 + (id)logCategory;
-- (HMDMessageHandlerQueuedMessage)initWithMessage:(id)a3 timeInterval:(double)a4;
+- (HMDMessageHandlerQueuedMessage)initWithMessage:(id)message timeInterval:(double)interval;
 - (HMDMessageHandlerQueuedMessageDelegate)delegate;
 - (NSString)name;
 - (NSUUID)identifier;
@@ -8,7 +8,7 @@
 - (id)logIdentifier;
 - (void)resumeTimer;
 - (void)suspendTimer;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDMessageHandlerQueuedMessage
@@ -22,23 +22,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMessageHandlerQueuedMessage *)self message];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  message = [(HMDMessageHandlerQueuedMessage *)self message];
+  identifier = [message identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (id)attributeDescriptions
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDMessageHandlerQueuedMessage *)self identifier];
-  v5 = [v3 initWithName:@"identifier" value:v4];
+  identifier = [(HMDMessageHandlerQueuedMessage *)self identifier];
+  v5 = [v3 initWithName:@"identifier" value:identifier];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDMessageHandlerQueuedMessage *)self name];
-  v8 = [v6 initWithName:@"name" value:v7];
+  name = [(HMDMessageHandlerQueuedMessage *)self name];
+  v8 = [v6 initWithName:@"name" value:name];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -47,13 +47,13 @@
   return v9;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMessageHandlerQueuedMessage *)self delegate];
+  fireCopy = fire;
+  delegate = [(HMDMessageHandlerQueuedMessage *)self delegate];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -61,55 +61,55 @@
     v11 = 138543618;
     v12 = v9;
     v13 = 2112;
-    v14 = v5;
+    v14 = delegate;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Notifying client of did trigger message handler queued message with delegate: %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  [v5 didTriggerMessageHandlerQueuedMessage:v7];
+  [delegate didTriggerMessageHandlerQueuedMessage:selfCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (NSString)name
 {
-  v2 = [(HMDMessageHandlerQueuedMessage *)self message];
-  v3 = [v2 name];
+  message = [(HMDMessageHandlerQueuedMessage *)self message];
+  name = [message name];
 
-  return v3;
+  return name;
 }
 
 - (NSUUID)identifier
 {
-  v2 = [(HMDMessageHandlerQueuedMessage *)self message];
-  v3 = [v2 identifier];
+  message = [(HMDMessageHandlerQueuedMessage *)self message];
+  identifier = [message identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (void)suspendTimer
 {
-  v2 = [(HMDMessageHandlerQueuedMessage *)self timer];
-  [v2 suspend];
+  timer = [(HMDMessageHandlerQueuedMessage *)self timer];
+  [timer suspend];
 }
 
 - (void)resumeTimer
 {
-  v2 = [(HMDMessageHandlerQueuedMessage *)self timer];
-  [v2 resume];
+  timer = [(HMDMessageHandlerQueuedMessage *)self timer];
+  [timer resume];
 }
 
-- (HMDMessageHandlerQueuedMessage)initWithMessage:(id)a3 timeInterval:(double)a4
+- (HMDMessageHandlerQueuedMessage)initWithMessage:(id)message timeInterval:(double)interval
 {
-  v7 = a3;
-  v8 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:2 options:a4];
+  messageCopy = message;
+  v8 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:2 options:interval];
   v12.receiver = self;
   v12.super_class = HMDMessageHandlerQueuedMessage;
   v9 = [(HMDMessageHandlerQueuedMessage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_message, a3);
+    objc_storeStrong(&v9->_message, message);
     objc_storeStrong(&v10->_timer, v8);
     [(HMFTimer *)v10->_timer setDelegate:v10];
   }

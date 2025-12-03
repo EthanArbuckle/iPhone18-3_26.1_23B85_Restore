@@ -1,16 +1,16 @@
 @interface PLFilesystemIterator
-- (PLFilesystemIterator)initWithFilePath:(id)a3;
-- (void)visitURLsLoadingPropertiesForKeys:(id)a3 withBlock:(id)a4;
+- (PLFilesystemIterator)initWithFilePath:(id)path;
+- (void)visitURLsLoadingPropertiesForKeys:(id)keys withBlock:(id)block;
 @end
 
 @implementation PLFilesystemIterator
 
-- (void)visitURLsLoadingPropertiesForKeys:(id)a3 withBlock:(id)a4
+- (void)visitURLsLoadingPropertiesForKeys:(id)keys withBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLFilesystemIterator *)self continueAfterError];
+  keysCopy = keys;
+  blockCopy = block;
+  continueAfterError = [(PLFilesystemIterator *)self continueAfterError];
   v33 = 0;
   if ([(NSFileManager *)self->_fileManager fileExistsAtPath:self->_path isDirectory:&v33])
   {
@@ -25,8 +25,8 @@
       v31[2] = __68__PLFilesystemIterator_visitURLsLoadingPropertiesForKeys_withBlock___block_invoke;
       v31[3] = &unk_1E792FC60;
       v31[4] = self;
-      v32 = v8;
-      v13 = [(NSFileManager *)fileManager enumeratorAtURL:v12 includingPropertiesForKeys:v6 options:0 errorHandler:v31];
+      v32 = continueAfterError;
+      v13 = [(NSFileManager *)fileManager enumeratorAtURL:v12 includingPropertiesForKeys:keysCopy options:0 errorHandler:v31];
 
       v29 = 0u;
       v30 = 0u;
@@ -49,7 +49,7 @@ LABEL_5:
 
           v19 = *(*(&v27 + 1) + 8 * v18);
           v20 = objc_autoreleasePoolPush();
-          LODWORD(v19) = v7[2](v7, v19);
+          LODWORD(v19) = blockCopy[2](blockCopy, v19);
           objc_autoreleasePoolPop(v20);
           if (!v19)
           {
@@ -73,7 +73,7 @@ LABEL_5:
     else
     {
       v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
-      (v7)[2](v7, v14);
+      (blockCopy)[2](blockCopy, v14);
     }
 
     objc_autoreleasePoolPop(v9);
@@ -93,13 +93,13 @@ LABEL_5:
   }
 }
 
-- (PLFilesystemIterator)initWithFilePath:(id)a3
+- (PLFilesystemIterator)initWithFilePath:(id)path
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLFilesystemIterator.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFilesystemIterator.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v13.receiver = self;
@@ -108,7 +108,7 @@ LABEL_5:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_path, a3);
+    objc_storeStrong(&v7->_path, path);
     v9 = objc_alloc_init(MEMORY[0x1E696AC08]);
     fileManager = v8->_fileManager;
     v8->_fileManager = v9;

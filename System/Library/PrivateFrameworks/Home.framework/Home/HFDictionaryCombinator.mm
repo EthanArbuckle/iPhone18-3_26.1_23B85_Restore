@@ -1,16 +1,16 @@
 @interface HFDictionaryCombinator
-+ (BOOL)_isKindOfContainerClass:(id)a3;
-- (id)_mergeVal1:(id)a3 withVal2:(id)a4;
-- (id)combineResultDictionary:(id)a3 withResultDictionary:(id)a4 reconcilationHandler:(id)a5;
-- (void)_reconcileKey:(id)a3 fromDictionary:(id)a4 andDictionary:(id)a5 intoResultDictionary:(id)a6 withReconcilationHandler:(id)a7;
++ (BOOL)_isKindOfContainerClass:(id)class;
+- (id)_mergeVal1:(id)val1 withVal2:(id)val2;
+- (id)combineResultDictionary:(id)dictionary withResultDictionary:(id)resultDictionary reconcilationHandler:(id)handler;
+- (void)_reconcileKey:(id)key fromDictionary:(id)dictionary andDictionary:(id)andDictionary intoResultDictionary:(id)resultDictionary withReconcilationHandler:(id)handler;
 @end
 
 @implementation HFDictionaryCombinator
 
-+ (BOOL)_isKindOfContainerClass:(id)a3
++ (BOOL)_isKindOfContainerClass:(id)class
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  classCopy = class;
   if (_MergedGlobals_305 != -1)
   {
     dispatch_once(&_MergedGlobals_305, &__block_literal_global_3_31);
@@ -68,15 +68,15 @@ void __50__HFDictionaryCombinator__isKindOfContainerClass___block_invoke_2()
   qword_280E03AE0 = v3;
 }
 
-- (id)combineResultDictionary:(id)a3 withResultDictionary:(id)a4 reconcilationHandler:(id)a5
+- (id)combineResultDictionary:(id)dictionary withResultDictionary:(id)resultDictionary reconcilationHandler:(id)handler
 {
   v79 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v62 = a5;
-  if (v62)
+  dictionaryCopy = dictionary;
+  resultDictionaryCopy = resultDictionary;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (dictionaryCopy)
     {
       goto LABEL_3;
     }
@@ -84,15 +84,15 @@ void __50__HFDictionaryCombinator__isKindOfContainerClass___block_invoke_2()
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HFDictionaryCombinator.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"reconcilationHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFDictionaryCombinator.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"reconcilationHandler"}];
 
-    if (v9)
+    if (dictionaryCopy)
     {
 LABEL_3:
-      if (!v10)
+      if (!resultDictionaryCopy)
       {
-        v11 = v9;
+        v11 = dictionaryCopy;
 LABEL_9:
         v13 = v11;
         goto LABEL_10;
@@ -100,13 +100,13 @@ LABEL_9:
     }
   }
 
-  if (!v9 && v10)
+  if (!dictionaryCopy && resultDictionaryCopy)
   {
-    v11 = v10;
+    v11 = resultDictionaryCopy;
     goto LABEL_9;
   }
 
-  if (!(v9 | v10))
+  if (!(dictionaryCopy | resultDictionaryCopy))
   {
     v13 = MEMORY[0x277CBEC10];
     goto LABEL_10;
@@ -114,14 +114,14 @@ LABEL_9:
 
   v13 = objc_opt_new();
   v16 = MEMORY[0x277CBEB98];
-  v63 = v9;
-  v17 = [v9 allKeys];
-  v18 = [v16 setWithArray:v17];
+  v63 = dictionaryCopy;
+  allKeys = [dictionaryCopy allKeys];
+  v18 = [v16 setWithArray:allKeys];
 
   v19 = MEMORY[0x277CBEB98];
-  v20 = v10;
-  v21 = [v10 allKeys];
-  v22 = [v19 setWithArray:v21];
+  v20 = resultDictionaryCopy;
+  allKeys2 = [resultDictionaryCopy allKeys];
+  v22 = [v19 setWithArray:allKeys2];
 
   v59 = v22;
   v60 = v18;
@@ -149,17 +149,17 @@ LABEL_9:
       }
 
       v28 = *(*(&v72 + 1) + 8 * i);
-      v29 = [(HFDictionaryCombinator *)self keysToSkip];
-      v30 = [v29 containsObject:v28];
+      keysToSkip = [(HFDictionaryCombinator *)self keysToSkip];
+      v30 = [keysToSkip containsObject:v28];
 
       if ((v30 & 1) == 0)
       {
-        v31 = [(HFDictionaryCombinator *)self keysToReconcile];
-        v32 = [v31 containsObject:v28];
+        keysToReconcile = [(HFDictionaryCombinator *)self keysToReconcile];
+        v32 = [keysToReconcile containsObject:v28];
 
         if (v32)
         {
-          [(HFDictionaryCombinator *)self _reconcileKey:v28 fromDictionary:v63 andDictionary:v20 intoResultDictionary:v13 withReconcilationHandler:v62];
+          [(HFDictionaryCombinator *)self _reconcileKey:v28 fromDictionary:v63 andDictionary:v20 intoResultDictionary:v13 withReconcilationHandler:handlerCopy];
           continue;
         }
 
@@ -197,7 +197,7 @@ LABEL_9:
           v23 = v61;
           if (v33 || !v35)
           {
-            [(HFDictionaryCombinator *)self _reconcileKey:v28 fromDictionary:v63 andDictionary:v20 intoResultDictionary:v13 withReconcilationHandler:v62];
+            [(HFDictionaryCombinator *)self _reconcileKey:v28 fromDictionary:v63 andDictionary:v20 intoResultDictionary:v13 withReconcilationHandler:handlerCopy];
           }
 
           else
@@ -245,8 +245,8 @@ LABEL_43:
         }
 
         v46 = *(*(&v68 + 1) + 8 * j);
-        v47 = [(HFDictionaryCombinator *)self keysToSkip];
-        v48 = [v47 containsObject:v46];
+        keysToSkip2 = [(HFDictionaryCombinator *)self keysToSkip];
+        v48 = [keysToSkip2 containsObject:v46];
 
         if ((v48 & 1) == 0)
         {
@@ -281,8 +281,8 @@ LABEL_43:
         }
 
         v55 = *(*(&v64 + 1) + 8 * k);
-        v56 = [(HFDictionaryCombinator *)self keysToSkip];
-        v57 = [v56 containsObject:v55];
+        keysToSkip3 = [(HFDictionaryCombinator *)self keysToSkip];
+        v57 = [keysToSkip3 containsObject:v55];
 
         if ((v57 & 1) == 0)
         {
@@ -297,8 +297,8 @@ LABEL_43:
     while (v52);
   }
 
-  v9 = v63;
-  v10 = v20;
+  dictionaryCopy = v63;
+  resultDictionaryCopy = v20;
 LABEL_10:
 
   v14 = *MEMORY[0x277D85DE8];
@@ -306,14 +306,14 @@ LABEL_10:
   return v13;
 }
 
-- (id)_mergeVal1:(id)a3 withVal2:(id)a4
+- (id)_mergeVal1:(id)val1 withVal2:(id)val2
 {
-  v7 = a3;
-  v8 = a4;
+  val1Copy = val1;
+  val2Copy = val2;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 arrayByAddingObjectsFromArray:v8];
+    v9 = [val1Copy arrayByAddingObjectsFromArray:val2Copy];
 LABEL_5:
     v10 = v9;
     goto LABEL_6;
@@ -322,21 +322,21 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 setByAddingObjectsFromSet:v8];
+    v9 = [val1Copy setByAddingObjectsFromSet:val2Copy];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 mutableCopy];
-    [v10 addEntriesFromDictionary:v8];
+    v10 = [val1Copy mutableCopy];
+    [v10 addEntriesFromDictionary:val2Copy];
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HFDictionaryCombinator.m" lineNumber:126 description:{@"Error; should not have called merge if it isn't mergable. (%@ && %@)", v7, v8}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFDictionaryCombinator.m" lineNumber:126 description:{@"Error; should not have called merge if it isn't mergable. (%@ && %@)", val1Copy, val2Copy}];
 
     v10 = 0;
   }
@@ -346,14 +346,14 @@ LABEL_6:
   return v10;
 }
 
-- (void)_reconcileKey:(id)a3 fromDictionary:(id)a4 andDictionary:(id)a5 intoResultDictionary:(id)a6 withReconcilationHandler:(id)a7
+- (void)_reconcileKey:(id)key fromDictionary:(id)dictionary andDictionary:(id)andDictionary intoResultDictionary:(id)resultDictionary withReconcilationHandler:(id)handler
 {
-  v13 = a3;
-  v11 = a6;
-  v12 = (*(a7 + 2))(a7, a4, a5, v13);
+  keyCopy = key;
+  resultDictionaryCopy = resultDictionary;
+  v12 = (*(handler + 2))(handler, dictionary, andDictionary, keyCopy);
   if (v12)
   {
-    [v11 setObject:v12 forKeyedSubscript:v13];
+    [resultDictionaryCopy setObject:v12 forKeyedSubscript:keyCopy];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface AR3DSkeletonRegistrationData
 - (AR3DSkeletonRegistrationData)init;
-- (BOOL)isEqual:(id)a3;
-- (__n128)setVisionTransform:(__n128)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__n128)setVisionTransform:(__n128)transform;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AR3DSkeletonRegistrationData
@@ -27,9 +27,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = LODWORD(self->_estimatedScaleFactor);
   v5 = *&self[1].super.isa;
   v6 = *&self[1]._timestamp;
@@ -42,12 +42,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (vabdd_f64(*(v5 + 2), self->_timestamp) >= 0.00000011920929 || vabds_f32(*(v5 + 2), self->_estimatedScaleFactor) >= 0.00000011921)
     {
@@ -68,10 +68,10 @@
   return v7;
 }
 
-- (__n128)setVisionTransform:(__n128)a3
+- (__n128)setVisionTransform:(__n128)transform
 {
   result[2] = a2;
-  result[3] = a3;
+  result[3] = transform;
   result[4] = a4;
   result[5] = a5;
   return result;

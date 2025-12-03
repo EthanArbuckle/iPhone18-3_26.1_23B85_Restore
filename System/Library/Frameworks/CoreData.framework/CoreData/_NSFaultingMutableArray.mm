@@ -1,46 +1,46 @@
 @interface _NSFaultingMutableArray
-- (_NSFaultingMutableArray)initWithSource:(id)a3 forRelationship:(id)a4 asFault:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NSFaultingMutableArray)initWithSource:(id)source forRelationship:(id)relationship asFault:(BOOL)fault;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionWithLocale:(id)a3;
-- (id)descriptionWithLocale:(id)a3 indent:(unint64_t)a4;
-- (id)indexesOfObjectsAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5;
-- (id)indexesOfObjectsWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)descriptionWithLocale:(id)locale;
+- (id)descriptionWithLocale:(id)locale indent:(unint64_t)indent;
+- (id)indexesOfObjectsAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test;
+- (id)indexesOfObjectsWithOptions:(unint64_t)options passingTest:(id)test;
+- (id)objectAtIndex:(unint64_t)index;
 - (id)objectEnumerator;
-- (id)valueForKey:(id)a3;
-- (id)valueForKeyPath:(id)a3;
+- (id)valueForKey:(id)key;
+- (id)valueForKeyPath:(id)path;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexOfObjectAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5;
-- (unint64_t)indexOfObjectWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (void)addObject:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexOfObjectAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test;
+- (unint64_t)indexOfObjectWithOptions:(unint64_t)options passingTest:(id)test;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)enumerateObjectsAtIndexes:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (void)enumerateObjectsAtIndexes:(id)indexes options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
+- (void)setValue:(id)value forKey:(id)key;
 - (void)willRead;
 @end
 
 @implementation _NSFaultingMutableArray
 
-- (_NSFaultingMutableArray)initWithSource:(id)a3 forRelationship:(id)a4 asFault:(BOOL)a5
+- (_NSFaultingMutableArray)initWithSource:(id)source forRelationship:(id)relationship asFault:(BOOL)fault
 {
-  v5 = a5;
+  faultCopy = fault;
   v12.receiver = self;
   v12.super_class = _NSFaultingMutableArray;
   v8 = [(_NSFaultingMutableArray *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_source = a3;
-    v8->_relationship = a4;
-    if (v5)
+    v8->_source = source;
+    v8->_relationship = relationship;
+    if (faultCopy)
     {
       v10 = 0;
       v9->_flags = 1;
@@ -76,7 +76,7 @@
 
   if (*&self->_flags)
   {
-    v3 = [(NSManagedObject *)self->_source managedObjectContext];
+    managedObjectContext = [(NSManagedObject *)self->_source managedObjectContext];
     source = self->_source;
     if (source)
     {
@@ -88,7 +88,7 @@
       v5 = 0;
     }
 
-    v6 = [(NSFaultHandler *)v5 retainedFulfillAggregateFaultForObject:self->_relationship andRelationship:v3 withContext:?];
+    v6 = [(NSFaultHandler *)v5 retainedFulfillAggregateFaultForObject:self->_relationship andRelationship:managedObjectContext withContext:?];
     self->_realArray = v6;
     if (!v6)
     {
@@ -99,7 +99,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   flags = self->_flags;
   v5 = [_NSFaultingMutableArray alloc];
@@ -140,7 +140,7 @@
   return v6;
 }
 
-- (id)descriptionWithLocale:(id)a3
+- (id)descriptionWithLocale:(id)locale
 {
   v5 = objc_autoreleasePoolPush();
   source = self->_source;
@@ -151,7 +151,7 @@
 
   else
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relationship objects for %@ on %p: %@", self->_relationship, source, -[NSMutableArray descriptionWithLocale:](self->_realArray, "descriptionWithLocale:", a3)];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relationship objects for %@ on %p: %@", self->_relationship, source, -[NSMutableArray descriptionWithLocale:](self->_realArray, "descriptionWithLocale:", locale)];
   }
 
   v8 = v7;
@@ -161,7 +161,7 @@
   return v8;
 }
 
-- (id)descriptionWithLocale:(id)a3 indent:(unint64_t)a4
+- (id)descriptionWithLocale:(id)locale indent:(unint64_t)indent
 {
   v7 = objc_autoreleasePoolPush();
   source = self->_source;
@@ -172,7 +172,7 @@
 
   else
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relationship objects for %@ on %p: %@", self->_relationship, source, -[NSMutableArray descriptionWithLocale:indent:](self->_realArray, "descriptionWithLocale:indent:", a3, a4)];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relationship objects for %@ on %p: %@", self->_relationship, source, -[NSMutableArray descriptionWithLocale:indent:](self->_realArray, "descriptionWithLocale:indent:", locale, indent)];
   }
 
   v10 = v9;
@@ -190,76 +190,76 @@
   return [(NSMutableArray *)realArray count];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  return [(NSMutableArray *)realArray objectAtIndex:a3];
+  return [(NSMutableArray *)realArray objectAtIndex:index];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  [(NSMutableArray *)realArray addObject:a3];
+  [(NSMutableArray *)realArray addObject:object];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  return [(NSMutableArray *)realArray countByEnumeratingWithState:a3 objects:a4 count:a5];
+  return [(NSMutableArray *)realArray countByEnumeratingWithState:state objects:objects count:count];
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  [(NSMutableArray *)realArray enumerateObjectsWithOptions:a3 usingBlock:a4];
+  [(NSMutableArray *)realArray enumerateObjectsWithOptions:options usingBlock:block];
 }
 
-- (void)enumerateObjectsAtIndexes:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateObjectsAtIndexes:(id)indexes options:(unint64_t)options usingBlock:(id)block
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  [(NSMutableArray *)realArray enumerateObjectsAtIndexes:a3 options:a4 usingBlock:a5];
+  [(NSMutableArray *)realArray enumerateObjectsAtIndexes:indexes options:options usingBlock:block];
 }
 
-- (unint64_t)indexOfObjectWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (unint64_t)indexOfObjectWithOptions:(unint64_t)options passingTest:(id)test
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  return [(NSMutableArray *)realArray indexOfObjectWithOptions:a3 passingTest:a4];
+  return [(NSMutableArray *)realArray indexOfObjectWithOptions:options passingTest:test];
 }
 
-- (unint64_t)indexOfObjectAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (unint64_t)indexOfObjectAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  return [(NSMutableArray *)realArray indexOfObjectAtIndexes:a3 options:a4 passingTest:a5];
+  return [(NSMutableArray *)realArray indexOfObjectAtIndexes:indexes options:options passingTest:test];
 }
 
-- (id)indexesOfObjectsWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (id)indexesOfObjectsWithOptions:(unint64_t)options passingTest:(id)test
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  return [(NSMutableArray *)realArray indexesOfObjectsWithOptions:a3 passingTest:a4];
+  return [(NSMutableArray *)realArray indexesOfObjectsWithOptions:options passingTest:test];
 }
 
-- (id)indexesOfObjectsAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (id)indexesOfObjectsAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  return [(NSMutableArray *)realArray indexesOfObjectsAtIndexes:a3 options:a4 passingTest:a5];
+  return [(NSMutableArray *)realArray indexesOfObjectsAtIndexes:indexes options:options passingTest:test];
 }
 
 - (id)objectEnumerator
@@ -270,12 +270,12 @@
   return [(NSMutableArray *)realArray objectEnumerator];
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  [(NSMutableArray *)realArray insertObject:a3 atIndex:a4];
+  [(NSMutableArray *)realArray insertObject:object atIndex:index];
 }
 
 - (void)removeLastObject
@@ -286,52 +286,52 @@
   [(NSMutableArray *)realArray removeLastObject];
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  [(NSMutableArray *)realArray removeObjectAtIndex:a3];
+  [(NSMutableArray *)realArray removeObjectAtIndex:index];
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  [(NSMutableArray *)realArray replaceObjectAtIndex:a3 withObject:a4];
+  [(NSMutableArray *)realArray replaceObjectAtIndex:index withObject:object];
 }
 
-- (void)getObjects:(id *)a3
+- (void)getObjects:(id *)objects
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  [(NSMutableArray *)realArray getObjects:a3];
+  [(NSMutableArray *)realArray getObjects:objects];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  [(NSMutableArray *)realArray setValue:a3 forKey:a4];
+  [(NSMutableArray *)realArray setValue:value forKey:key];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  return [(NSMutableArray *)realArray valueForKey:a3];
+  return [(NSMutableArray *)realArray valueForKey:key];
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
   [(_NSFaultingMutableArray *)self willRead];
   realArray = self->_realArray;
 
-  return [(NSMutableArray *)realArray valueForKeyPath:a3];
+  return [(NSMutableArray *)realArray valueForKeyPath:path];
 }
 
 @end

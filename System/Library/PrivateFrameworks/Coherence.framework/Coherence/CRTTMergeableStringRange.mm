@@ -1,30 +1,30 @@
 @interface CRTTMergeableStringRange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TopoIDRange)range;
-- (_TtC9Coherence24CRTTMergeableStringRange)initWithTopoIDRange:(TopoIDRange *)a3 renameGeneration:(int64_t)a4 maxCounter:(int64_t)a5;
+- (_TtC9Coherence24CRTTMergeableStringRange)initWithTopoIDRange:(TopoIDRange *)range renameGeneration:(int64_t)generation maxCounter:(int64_t)counter;
 - (id).cxx_construct;
 - (id)_objCRenameSequence;
 - (id)description;
-- (id)subrangeFrom:(_NSRange)a3;
+- (id)subrangeFrom:(_NSRange)from;
 - (void)dealloc;
 @end
 
 @implementation CRTTMergeableStringRange
 
-- (_TtC9Coherence24CRTTMergeableStringRange)initWithTopoIDRange:(TopoIDRange *)a3 renameGeneration:(int64_t)a4 maxCounter:(int64_t)a5
+- (_TtC9Coherence24CRTTMergeableStringRange)initWithTopoIDRange:(TopoIDRange *)range renameGeneration:(int64_t)generation maxCounter:(int64_t)counter
 {
   v12.receiver = self;
   v12.super_class = _TtC9Coherence24CRTTMergeableStringRange;
   v8 = [(CRTTMergeableStringRange *)&v12 init];
-  v9 = *&a3->charID.replica.uuid[12];
-  *(v8 + 24) = *a3->charID.replica.uuid;
+  v9 = *&range->charID.replica.uuid[12];
+  *(v8 + 24) = *range->charID.replica.uuid;
   *(v8 + 36) = v9;
-  *(v8 + 1) = a4;
-  *(v8 + 2) = a5;
-  v10 = [v8 _objCRenameSequence];
-  if (v10)
+  *(v8 + 1) = generation;
+  *(v8 + 2) = counter;
+  _objCRenameSequence = [v8 _objCRenameSequence];
+  if (_objCRenameSequence)
   {
-    [_TtC9Coherence19CRGlobalContextObjC retainObjCSequence:v10];
+    [_TtC9Coherence19CRGlobalContextObjC retainObjCSequence:_objCRenameSequence];
   }
 
   return v8;
@@ -32,10 +32,10 @@
 
 - (void)dealloc
 {
-  v3 = [(CRTTMergeableStringRange *)self _objCRenameSequence];
-  if (v3)
+  _objCRenameSequence = [(CRTTMergeableStringRange *)self _objCRenameSequence];
+  if (_objCRenameSequence)
   {
-    [_TtC9Coherence19CRGlobalContextObjC releaseObjCSequence:v3];
+    [_TtC9Coherence19CRGlobalContextObjC releaseObjCSequence:_objCRenameSequence];
   }
 
   v4.receiver = self;
@@ -64,10 +64,10 @@
   return v3;
 }
 
-- (id)subrangeFrom:(_NSRange)a3
+- (id)subrangeFrom:(_NSRange)from
 {
-  length = a3.length;
-  location = a3.location;
+  length = from.length;
+  location = from.location;
   v15 = *MEMORY[0x1E69E9840];
   v6 = [_TtC9Coherence24CRTTMergeableStringRange alloc];
   v11 = *self->_range.charID.replica.uuid;
@@ -81,14 +81,14 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(CRTTMergeableStringRange *)self range];
     if (v5)
     {

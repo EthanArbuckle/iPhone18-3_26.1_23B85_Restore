@@ -15,10 +15,10 @@
 
 - (BOOL)isTrue
 {
-  v2 = [MEMORY[0x1E69B3748] sharedUpdater];
-  v3 = [v2 isNavigatingOrPredictingDestination];
+  mEMORY[0x1E69B3748] = [MEMORY[0x1E69B3748] sharedUpdater];
+  isNavigatingOrPredictingDestination = [mEMORY[0x1E69B3748] isNavigatingOrPredictingDestination];
 
-  return v3;
+  return isNavigatingOrPredictingDestination;
 }
 
 - (void)didNavigationStateChange

@@ -1,31 +1,31 @@
 @interface OAVFormula
-+ (OADFormulaArg)readArgument:(id)a3;
-+ (id)readFormula:(_xmlNode *)a3;
-+ (void)readFormulasFromManager:(id)a3 toGeometry:(id)a4;
++ (OADFormulaArg)readArgument:(id)argument;
++ (id)readFormula:(_xmlNode *)formula;
++ (void)readFormulasFromManager:(id)manager toGeometry:(id)geometry;
 @end
 
 @implementation OAVFormula
 
-+ (void)readFormulasFromManager:(id)a3 toGeometry:(id)a4
++ (void)readFormulasFromManager:(id)manager toGeometry:(id)geometry
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 shape];
-  v8 = OCXFindChild(v7, OAVOfficeMainNamespace, "formulas");
+  managerCopy = manager;
+  geometryCopy = geometry;
+  shape = [managerCopy shape];
+  v8 = OCXFindChild(shape, OAVOfficeMainNamespace, "formulas");
   if (v8)
   {
     for (i = OCXFindChild(v8, OAVOfficeMainNamespace, "f"); i; i = OCXFindNextChild(i, OAVOfficeMainNamespace, "f"))
     {
-      v10 = [a1 readFormula:i];
-      [v6 addFormula:v10];
+      v10 = [self readFormula:i];
+      [geometryCopy addFormula:v10];
     }
   }
 }
 
-+ (id)readFormula:(_xmlNode *)a3
++ (id)readFormula:(_xmlNode *)formula
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = CXRequiredStringAttribute(a3, CXNoNamespace, "eqn");
+  v4 = CXRequiredStringAttribute(formula, CXNoNamespace, "eqn");
   if (!+[OAVFormula(Private) readFormula:]::typeMap)
   {
     v5 = MEMORY[0x277CBEAC0];
@@ -60,7 +60,7 @@
   v13 = [v11 objectAtIndex:0];
   v14 = [v12 objectForKey:v13];
 
-  v15 = [v14 intValue];
+  intValue = [v14 intValue];
   v16 = 0;
   do
   {
@@ -71,25 +71,25 @@
     }
 
     v18 = [v11 objectAtIndex:v16 + 1];
-    *(&v37 + v16) = [a1 readArgument:v18];
+    *(&v37 + v16) = [self readArgument:v18];
 
     ++v16;
   }
 
   while (v17 != 3);
   v19 = [OADFormula alloc];
-  v20 = [(OADFormula *)v19 initWithType:v15 arg0:v37 arg1:v38 arg2:v39];
+  v20 = [(OADFormula *)v19 initWithType:intValue arg0:v37 arg1:v38 arg2:v39];
 
   return v20;
 }
 
-+ (OADFormulaArg)readArgument:(id)a3
++ (OADFormulaArg)readArgument:(id)argument
 {
-  v3 = a3;
+  argumentCopy = argument;
   if (!+[OAVFormula(Private) readArgument:]::keywordMap)
   {
     v4 = MEMORY[0x277CBEAC0];
-    v27 = v3;
+    v27 = argumentCopy;
     v26 = [MEMORY[0x277CCABB0] numberWithInt:320];
     v5 = [MEMORY[0x277CCABB0] numberWithInt:321];
     v6 = [MEMORY[0x277CCABB0] numberWithInt:322];
@@ -109,13 +109,13 @@
     v16 = +[OAVFormula(Private) readArgument:]::keywordMap;
     +[OAVFormula(Private) readArgument:]::keywordMap = v15;
 
-    v3 = v27;
+    argumentCopy = v27;
   }
 
-  v17 = [v3 characterAtIndex:0];
+  v17 = [argumentCopy characterAtIndex:0];
   if (v17 <= 0xFF && ((*(MEMORY[0x277D85DE0] + 4 * v17 + 60) >> 10) & 1) != 0 || v17 == 45)
   {
-    v19 = [v3 intValue];
+    intValue = [argumentCopy intValue];
     v20 = 1;
   }
 
@@ -123,27 +123,27 @@
   {
     if (v17 == 64)
     {
-      v18 = [v3 substringFromIndex:1];
-      v19 = [v18 intValue];
+      v18 = [argumentCopy substringFromIndex:1];
+      intValue = [v18 intValue];
       v20 = 3;
     }
 
     else if (v17 == 35)
     {
-      v18 = [v3 substringFromIndex:1];
-      v19 = [v18 intValue];
+      v18 = [argumentCopy substringFromIndex:1];
+      intValue = [v18 intValue];
       v20 = 2;
     }
 
     else
     {
-      v18 = [+[OAVFormula(Private) readArgument:]::keywordMap objectForKey:v3];
-      v19 = [v18 intValue];
+      v18 = [+[OAVFormula(Private) readArgument:]::keywordMap objectForKey:argumentCopy];
+      intValue = [v18 intValue];
       v20 = 4;
     }
   }
 
-  return (v20 | (v19 << 32));
+  return (v20 | (intValue << 32));
 }
 
 @end

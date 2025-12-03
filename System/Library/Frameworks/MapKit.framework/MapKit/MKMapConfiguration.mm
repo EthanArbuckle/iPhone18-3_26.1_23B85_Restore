@@ -1,56 +1,56 @@
 @interface MKMapConfiguration
-+ ($F9C4767691F2EDF2F3162F5FE7B1523A)_cartographicConfigurationForMapConfiguration:(SEL)a3;
-+ (id)_mapConfigurationWithCartographicConfiguration:(id *)a3;
-+ (id)_potentiallyLossy_mapConfigurationWithCartographicConfiguration:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (MKMapConfiguration)initWithCoder:(id)a3;
-- (MKMapConfiguration)initWithElevationStyle:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addObserver:(id)a3 options:(unint64_t)a4 context:(void *)a5;
-- (void)_removeObserver:(id)a3 context:(void *)a4;
-- (void)_setInternalStateFromMapConfiguration:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ ($F9C4767691F2EDF2F3162F5FE7B1523A)_cartographicConfigurationForMapConfiguration:(SEL)configuration;
++ (id)_mapConfigurationWithCartographicConfiguration:(id *)configuration;
++ (id)_potentiallyLossy_mapConfigurationWithCartographicConfiguration:(id *)configuration;
+- (BOOL)isEqual:(id)equal;
+- (MKMapConfiguration)initWithCoder:(id)coder;
+- (MKMapConfiguration)initWithElevationStyle:(int64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addObserver:(id)observer options:(unint64_t)options context:(void *)context;
+- (void)_removeObserver:(id)observer context:(void *)context;
+- (void)_setInternalStateFromMapConfiguration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKMapConfiguration
 
-- (void)_setInternalStateFromMapConfiguration:(id)a3
+- (void)_setInternalStateFromMapConfiguration:(id)configuration
 {
-  v4 = a3;
-  -[MKMapConfiguration set_showsTraffic:](self, "set_showsTraffic:", [v4 _showsTraffic]);
-  -[MKMapConfiguration set_showsHiking:](self, "set_showsHiking:", [v4 _showsHiking]);
-  -[MKMapConfiguration set_showsTopographicFeatures:](self, "set_showsTopographicFeatures:", [v4 _showsTopographicFeatures]);
-  v5 = [v4 _pointOfInterestFilter];
+  configurationCopy = configuration;
+  -[MKMapConfiguration set_showsTraffic:](self, "set_showsTraffic:", [configurationCopy _showsTraffic]);
+  -[MKMapConfiguration set_showsHiking:](self, "set_showsHiking:", [configurationCopy _showsHiking]);
+  -[MKMapConfiguration set_showsTopographicFeatures:](self, "set_showsTopographicFeatures:", [configurationCopy _showsTopographicFeatures]);
+  _pointOfInterestFilter = [configurationCopy _pointOfInterestFilter];
 
-  [(MKMapConfiguration *)self set_pointOfInterestFilter:v5];
+  [(MKMapConfiguration *)self set_pointOfInterestFilter:_pointOfInterestFilter];
 }
 
-- (void)_removeObserver:(id)a3 context:(void *)a4
+- (void)_removeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
-  [(MKMapConfiguration *)self removeObserver:v6 forKeyPath:@"elevationStyle" context:a4];
-  [(MKMapConfiguration *)self removeObserver:v6 forKeyPath:@"_showsTraffic" context:a4];
-  [(MKMapConfiguration *)self removeObserver:v6 forKeyPath:@"_pointOfInterestFilter" context:a4];
-  [(MKMapConfiguration *)self removeObserver:v6 forKeyPath:@"_showsHiking" context:a4];
-  [(MKMapConfiguration *)self removeObserver:v6 forKeyPath:@"_showsTopographicFeatures" context:a4];
+  observerCopy = observer;
+  [(MKMapConfiguration *)self removeObserver:observerCopy forKeyPath:@"elevationStyle" context:context];
+  [(MKMapConfiguration *)self removeObserver:observerCopy forKeyPath:@"_showsTraffic" context:context];
+  [(MKMapConfiguration *)self removeObserver:observerCopy forKeyPath:@"_pointOfInterestFilter" context:context];
+  [(MKMapConfiguration *)self removeObserver:observerCopy forKeyPath:@"_showsHiking" context:context];
+  [(MKMapConfiguration *)self removeObserver:observerCopy forKeyPath:@"_showsTopographicFeatures" context:context];
 }
 
-- (void)_addObserver:(id)a3 options:(unint64_t)a4 context:(void *)a5
+- (void)_addObserver:(id)observer options:(unint64_t)options context:(void *)context
 {
-  v8 = a3;
-  [(MKMapConfiguration *)self addObserver:v8 forKeyPath:@"elevationStyle" options:a4 context:a5];
-  [(MKMapConfiguration *)self addObserver:v8 forKeyPath:@"_showsTraffic" options:a4 context:a5];
-  [(MKMapConfiguration *)self addObserver:v8 forKeyPath:@"_pointOfInterestFilter" options:a4 context:a5];
-  [(MKMapConfiguration *)self addObserver:v8 forKeyPath:@"_showsHiking" options:a4 context:a5];
-  [(MKMapConfiguration *)self addObserver:v8 forKeyPath:@"_showsTopographicFeatures" options:a4 context:a5];
+  observerCopy = observer;
+  [(MKMapConfiguration *)self addObserver:observerCopy forKeyPath:@"elevationStyle" options:options context:context];
+  [(MKMapConfiguration *)self addObserver:observerCopy forKeyPath:@"_showsTraffic" options:options context:context];
+  [(MKMapConfiguration *)self addObserver:observerCopy forKeyPath:@"_pointOfInterestFilter" options:options context:context];
+  [(MKMapConfiguration *)self addObserver:observerCopy forKeyPath:@"_showsHiking" options:options context:context];
+  [(MKMapConfiguration *)self addObserver:observerCopy forKeyPath:@"_showsTopographicFeatures" options:options context:context];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     elevationStyle = self->_elevationStyle;
     if (elevationStyle == [v5 elevationStyle] && (showsHiking = self->_showsHiking, showsHiking == objc_msgSend(v5, "_showsHiking")))
     {
@@ -72,100 +72,100 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_elevationStyle;
   *(v5 + 8) = self->_showsTraffic;
   *(v5 + 9) = self->_showsHiking;
   *(v5 + 10) = self->_showsTopographicFeatures;
-  v6 = [(MKPointOfInterestFilter *)self->_pointOfInterestFilter copyWithZone:a3];
+  v6 = [(MKPointOfInterestFilter *)self->_pointOfInterestFilter copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   return v5;
 }
 
-- (MKMapConfiguration)initWithCoder:(id)a3
+- (MKMapConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_elevationStyle = [v4 decodeIntegerForKey:@"MKMapConfigurationElevationStyle"];
+  coderCopy = coder;
+  self->_elevationStyle = [coderCopy decodeIntegerForKey:@"MKMapConfigurationElevationStyle"];
   v5 = @"MKMapConfigurationShowsTraffic";
-  if ([v4 containsValueForKey:@"MKMapConfigurationShowsTraffic"] & 1) != 0 || (v5 = @"MKHybridMapConfigurationShowsTraffic", (objc_msgSend(v4, "containsValueForKey:", @"MKHybridMapConfigurationShowsTraffic")) || (v5 = @"MKStandardMapConfigurationShowsTraffic", objc_msgSend(v4, "containsValueForKey:", @"MKStandardMapConfigurationShowsTraffic")))
+  if ([coderCopy containsValueForKey:@"MKMapConfigurationShowsTraffic"] & 1) != 0 || (v5 = @"MKHybridMapConfigurationShowsTraffic", (objc_msgSend(coderCopy, "containsValueForKey:", @"MKHybridMapConfigurationShowsTraffic")) || (v5 = @"MKStandardMapConfigurationShowsTraffic", objc_msgSend(coderCopy, "containsValueForKey:", @"MKStandardMapConfigurationShowsTraffic")))
   {
-    self->_showsTraffic = [v4 decodeBoolForKey:v5];
+    self->_showsTraffic = [coderCopy decodeBoolForKey:v5];
   }
 
   v6 = @"MKMapConfigurationPointOfInterestFilter";
-  if ([v4 containsValueForKey:@"MKMapConfigurationPointOfInterestFilter"] & 1) != 0 || (v6 = @"MKHybridMapConfigurationPointOfInterestFilter", (objc_msgSend(v4, "containsValueForKey:", @"MKHybridMapConfigurationPointOfInterestFilter")) || (v6 = @"MKStandardMapConfigurationPointOfInterestFilter", objc_msgSend(v4, "containsValueForKey:", @"MKStandardMapConfigurationPointOfInterestFilter")))
+  if ([coderCopy containsValueForKey:@"MKMapConfigurationPointOfInterestFilter"] & 1) != 0 || (v6 = @"MKHybridMapConfigurationPointOfInterestFilter", (objc_msgSend(coderCopy, "containsValueForKey:", @"MKHybridMapConfigurationPointOfInterestFilter")) || (v6 = @"MKStandardMapConfigurationPointOfInterestFilter", objc_msgSend(coderCopy, "containsValueForKey:", @"MKStandardMapConfigurationPointOfInterestFilter")))
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v6];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v6];
     pointOfInterestFilter = self->_pointOfInterestFilter;
     self->_pointOfInterestFilter = v7;
   }
 
-  self->_showsHiking = [v4 decodeBoolForKey:@"MKMapConfigurationShowsHiking"];
-  self->_showsTopographicFeatures = [v4 decodeBoolForKey:@"MKMapConfigurationShowsTopographicFeatures"];
+  self->_showsHiking = [coderCopy decodeBoolForKey:@"MKMapConfigurationShowsHiking"];
+  self->_showsTopographicFeatures = [coderCopy decodeBoolForKey:@"MKMapConfigurationShowsTopographicFeatures"];
   v9 = [(MKMapConfiguration *)self initWithElevationStyle:self->_elevationStyle];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   elevationStyle = self->_elevationStyle;
-  v5 = a3;
-  [v5 encodeInteger:elevationStyle forKey:@"MKMapConfigurationElevationStyle"];
-  [v5 encodeBool:self->_showsTraffic forKey:@"MKMapConfigurationShowsTraffic"];
-  [v5 encodeBool:self->_showsHiking forKey:@"MKMapConfigurationShowsHiking"];
-  [v5 encodeBool:self->_showsTopographicFeatures forKey:@"MKMapConfigurationShowsTopographicFeatures"];
-  [v5 encodeObject:self->_pointOfInterestFilter forKey:@"MKMapConfigurationPointOfInterestFilter"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:elevationStyle forKey:@"MKMapConfigurationElevationStyle"];
+  [coderCopy encodeBool:self->_showsTraffic forKey:@"MKMapConfigurationShowsTraffic"];
+  [coderCopy encodeBool:self->_showsHiking forKey:@"MKMapConfigurationShowsHiking"];
+  [coderCopy encodeBool:self->_showsTopographicFeatures forKey:@"MKMapConfigurationShowsTopographicFeatures"];
+  [coderCopy encodeObject:self->_pointOfInterestFilter forKey:@"MKMapConfigurationPointOfInterestFilter"];
 }
 
-- (MKMapConfiguration)initWithElevationStyle:(int64_t)a3
+- (MKMapConfiguration)initWithElevationStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = MKMapConfiguration;
   result = [(MKMapConfiguration *)&v5 init];
   if (result)
   {
-    result->_elevationStyle = a3;
+    result->_elevationStyle = style;
   }
 
   return result;
 }
 
-+ ($F9C4767691F2EDF2F3162F5FE7B1523A)_cartographicConfigurationForMapConfiguration:(SEL)a3
++ ($F9C4767691F2EDF2F3162F5FE7B1523A)_cartographicConfigurationForMapConfiguration:(SEL)configuration
 {
   v10 = a4;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = v10;
-    v6 = [v5 emphasisStyle];
-    if (!v6)
+    emphasisStyle = [v5 emphasisStyle];
+    if (!emphasisStyle)
     {
 LABEL_21:
-      _MKCartographicConfigurationForMapType(v6, retstr);
+      _MKCartographicConfigurationForMapType(emphasisStyle, retstr);
 
       goto LABEL_22;
     }
 
     if ([v5 emphasisStyle] == 1)
     {
-      v6 = 5;
+      emphasisStyle = 5;
       goto LABEL_21;
     }
 
     if ([v5 emphasisStyle] == 101)
     {
-      v6 = 109;
+      emphasisStyle = 109;
       goto LABEL_21;
     }
 
     if ([v5 emphasisStyle] == 102)
     {
-      v6 = 110;
+      emphasisStyle = 110;
       goto LABEL_21;
     }
 
@@ -236,10 +236,10 @@ LABEL_23:
   return result;
 }
 
-+ (id)_potentiallyLossy_mapConfigurationWithCartographicConfiguration:(id *)a3
++ (id)_potentiallyLossy_mapConfigurationWithCartographicConfiguration:(id *)configuration
 {
-  v4 = a3->var3 - 1;
-  v5 = _MKMapTypeForCartographicConfiguration(&a3->var0);
+  v4 = configuration->var3 - 1;
+  v5 = _MKMapTypeForCartographicConfiguration(&configuration->var0);
   if (v5 > 103)
   {
     if ((v5 - 104) < 5)
@@ -324,11 +324,11 @@ LABEL_23:
     {
 LABEL_7:
       v7 = [_MKCartographicMapConfiguration alloc];
-      v8 = *&a3->var2;
-      v17[0] = *&a3->var0;
+      v8 = *&configuration->var2;
+      v17[0] = *&configuration->var0;
       v17[1] = v8;
-      v17[2] = *&a3->var4;
-      v18 = *&a3->var6;
+      v17[2] = *&configuration->var4;
+      v18 = *&configuration->var6;
       v9 = [(_MKCartographicMapConfiguration *)v7 initWithCartographicConfiguration:v17];
       goto LABEL_26;
     }
@@ -344,16 +344,16 @@ LABEL_26:
   return v9;
 }
 
-+ (id)_mapConfigurationWithCartographicConfiguration:(id *)a3
++ (id)_mapConfigurationWithCartographicConfiguration:(id *)configuration
 {
-  v5 = *&a3->var2;
-  v14 = *&a3->var0;
+  v5 = *&configuration->var2;
+  v14 = *&configuration->var0;
   v15 = v5;
-  v16 = *&a3->var4;
-  v17 = *&a3->var6;
-  v6 = [a1 _potentiallyLossy_mapConfigurationWithCartographicConfiguration:&v14];
+  v16 = *&configuration->var4;
+  v17 = *&configuration->var6;
+  v6 = [self _potentiallyLossy_mapConfigurationWithCartographicConfiguration:&v14];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (v17 = 0, v15 = 0u, v16 = 0u, v14 = 0u, [a1 _cartographicConfigurationForMapConfiguration:v6], _MKCartographicConfigurationEquals(&v14, a3)))
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (v17 = 0, v15 = 0u, v16 = 0u, v14 = 0u, [self _cartographicConfigurationForMapConfiguration:v6], _MKCartographicConfigurationEquals(&v14, configuration)))
   {
     v7 = v6;
   }
@@ -361,11 +361,11 @@ LABEL_26:
   else
   {
     v8 = [_MKCartographicMapConfiguration alloc];
-    v9 = *&a3->var2;
-    v12[0] = *&a3->var0;
+    v9 = *&configuration->var2;
+    v12[0] = *&configuration->var0;
     v12[1] = v9;
-    v12[2] = *&a3->var4;
-    v13 = *&a3->var6;
+    v12[2] = *&configuration->var4;
+    v13 = *&configuration->var6;
     v7 = [(_MKCartographicMapConfiguration *)v8 initWithCartographicConfiguration:v12];
   }
 

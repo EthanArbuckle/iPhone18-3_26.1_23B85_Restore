@@ -13,9 +13,9 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [a1 instanceURL];
-  v6 = [v4 enumeratorAtURL:v5 includingPropertiesForKeys:0 options:8 errorHandler:&__block_literal_global_104];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  instanceURL = [self instanceURL];
+  v6 = [defaultManager enumeratorAtURL:instanceURL includingPropertiesForKeys:0 options:8 errorHandler:&__block_literal_global_104];
 
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v7)
@@ -34,8 +34,8 @@
         v11 = *(*(&v32 + 1) + 8 * i);
         if (([v11 hasDirectoryPath] & 1) == 0 && (objc_msgSend(v11, "pbf_isWithinScratchDirectory") & 1) == 0 && (objc_msgSend(v11, "pbf_isLegacyPosterSnapshot") & 1) == 0)
         {
-          v12 = [v11 path];
-          v13 = [v12 containsString:@".com.apple.posterkit.provider.contents.configurableOptions.plist"];
+          path = [v11 path];
+          v13 = [path containsString:@".com.apple.posterkit.provider.contents.configurableOptions.plist"];
 
           if ((v13 & 1) == 0)
           {
@@ -52,8 +52,8 @@
 
   if ([v3 count])
   {
-    v14 = [v3 allObjects];
-    v15 = [v14 sortedArrayUsingComparator:&__block_literal_global_110];
+    allObjects = [v3 allObjects];
+    v15 = [allObjects sortedArrayUsingComparator:&__block_literal_global_110];
 
     memset(&c, 0, sizeof(c));
     CC_SHA256_Init(&c);
@@ -77,9 +77,9 @@
           }
 
           v21 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:*(*(&v27 + 1) + 8 * j) options:8 error:0];
-          v22 = [v21 pbf_sha256Hash];
+          pbf_sha256Hash = [v21 pbf_sha256Hash];
 
-          CC_SHA256_Update(&c, [v22 UTF8String], objc_msgSend(v22, "length"));
+          CC_SHA256_Update(&c, [pbf_sha256Hash UTF8String], objc_msgSend(pbf_sha256Hash, "length"));
         }
 
         v18 = [v16 countByEnumeratingWithState:&v27 objects:v37 count:16];

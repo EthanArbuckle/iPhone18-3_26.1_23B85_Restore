@@ -1,6 +1,6 @@
 @interface VideoLooperView
-- (_TtC10FitnessApp15VideoLooperView)initWithCoder:(id)a3;
-- (_TtC10FitnessApp15VideoLooperView)initWithFrame:(CGRect)a3;
+- (_TtC10FitnessApp15VideoLooperView)initWithCoder:(id)coder;
+- (_TtC10FitnessApp15VideoLooperView)initWithFrame:(CGRect)frame;
 - (void)configurePlayer;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -33,7 +33,7 @@
   sub_1006551C8();
 }
 
-- (_TtC10FitnessApp15VideoLooperView)initWithCoder:(id)a3
+- (_TtC10FitnessApp15VideoLooperView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp15VideoLooperView_player) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp15VideoLooperView_playerLayer) = 0;
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (_TtC10FitnessApp15VideoLooperView)initWithFrame:(CGRect)a3
+- (_TtC10FitnessApp15VideoLooperView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -52,13 +52,13 @@
 
 - (void)configurePlayer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006554B4();
 }
 
 - (void)teardownPlayer
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065578C();
 }
 

@@ -1,14 +1,14 @@
 @interface ADArgumentParserOptionalArgument
-+ (id)BOOLOption:(SEL)a3 shortName:(char)a4 description:(id)a5;
-+ (id)enumOption:(SEL)a3 shortName:(char)a4 defaultValue:(unint64_t)a5 description:(id)a6 conversionDictionary:(id)a7;
-+ (id)floatArrayOption:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6;
-+ (id)floatOption:(SEL)a3 shortName:(char)a4 defaultValue:(float)a5 description:(id)a6;
-+ (id)integerArrayOption:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6;
-+ (id)integerOption:(SEL)a3 shortName:(char)a4 defaultValue:(int64_t)a5 description:(id)a6;
-+ (id)stringArrayOption:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6;
-+ (id)stringOption:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6;
-- (ADArgumentParserOptionalArgument)initWithName:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6 type:(unint64_t)a7 conversionDictionary:(id)a8;
-- (BOOL)setPropertyFromMap:()map<std:()docopt:()std:(std:(docopt:(id)a4 :value>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :value :string toCommand:;
++ (id)BOOLOption:(SEL)option shortName:(char)name description:(id)description;
++ (id)enumOption:(SEL)option shortName:(char)name defaultValue:(unint64_t)value description:(id)description conversionDictionary:(id)dictionary;
++ (id)floatArrayOption:(SEL)option shortName:(char)name defaultValue:(id)value description:(id)description;
++ (id)floatOption:(SEL)option shortName:(char)name defaultValue:(float)value description:(id)description;
++ (id)integerArrayOption:(SEL)option shortName:(char)name defaultValue:(id)value description:(id)description;
++ (id)integerOption:(SEL)option shortName:(char)name defaultValue:(int64_t)value description:(id)description;
++ (id)stringArrayOption:(SEL)option shortName:(char)name defaultValue:(id)value description:(id)description;
++ (id)stringOption:(SEL)option shortName:(char)name defaultValue:(id)value description:(id)description;
+- (ADArgumentParserOptionalArgument)initWithName:(SEL)name shortName:(char)shortName defaultValue:(id)value description:(id)description type:(unint64_t)type conversionDictionary:(id)dictionary;
+- (BOOL)setPropertyFromMap:()map<std:()docopt:()std:(std:(docopt:(id)std :value>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :value :string toCommand:;
 - (id)defaultValueString;
 - (id)fullUsage;
 - (id)legalValuesString;
@@ -17,9 +17,9 @@
 
 @implementation ADArgumentParserOptionalArgument
 
-- (BOOL)setPropertyFromMap:()map<std:()docopt:()std:(std:(docopt:(id)a4 :value>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :value :string toCommand:
+- (BOOL)setPropertyFromMap:()map<std:()docopt:()std:(std:(docopt:(id)std :value>>> *)a3 :allocator<std::pair<const)std::string :less<std::string> :value :string toCommand:
 {
-  v6 = a4;
+  stdCopy = std;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"--%@", self->_name];
   std::map<std::string,docopt::value>::map[abi:ne200100](v14, a3);
   getDocoptValueFromMap(v7, v14, &v15);
@@ -60,7 +60,7 @@
     __p.__r_.__value_.__r.__words[0] = v16.__r_.__value_.__r.__words[0];
   }
 
-  v10 = setProperty(v6, name, type, &v12, self->_conversionDictionary);
+  v10 = setProperty(stdCopy, name, type, &v12, self->_conversionDictionary);
   if (v12 == 4)
   {
     p_p = &__p;
@@ -88,51 +88,51 @@
 
 - (id)fullUsage
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if ([(ADArgumentParserOptionalArgument *)self shortName])
   {
-    v4 = [(ADArgumentParserOptionalArgument *)self type];
-    if (v4 <= 7)
+    type = [(ADArgumentParserOptionalArgument *)self type];
+    if (type <= 7)
     {
-      if (((1 << v4) & 0x24) != 0)
+      if (((1 << type) & 0x24) != 0)
       {
-        v5 = [(ADArgumentParserOptionalArgument *)self shortName];
+        shortName = [(ADArgumentParserOptionalArgument *)self shortName];
         v6 = @"-%c <int>, ";
         goto LABEL_13;
       }
 
-      if (((1 << v4) & 0x48) != 0)
+      if (((1 << type) & 0x48) != 0)
       {
-        v5 = [(ADArgumentParserOptionalArgument *)self shortName];
+        shortName = [(ADArgumentParserOptionalArgument *)self shortName];
         v6 = @"-%c <float>, ";
         goto LABEL_13;
       }
 
-      if (((1 << v4) & 0x90) != 0)
+      if (((1 << type) & 0x90) != 0)
       {
-        v5 = [(ADArgumentParserOptionalArgument *)self shortName];
+        shortName = [(ADArgumentParserOptionalArgument *)self shortName];
         v6 = @"-%c <string>, ";
 LABEL_13:
-        [v3 appendFormat:v6, v5];
+        [string appendFormat:v6, shortName];
         goto LABEL_14;
       }
     }
 
-    if (v4)
+    if (type)
     {
-      if (v4 != 1)
+      if (type != 1)
       {
         v15 = 154;
         goto LABEL_34;
       }
 
-      v5 = [(ADArgumentParserOptionalArgument *)self shortName];
+      shortName = [(ADArgumentParserOptionalArgument *)self shortName];
       v6 = @"-%c, ";
     }
 
     else
     {
-      v5 = [(ADArgumentParserOptionalArgument *)self shortName];
+      shortName = [(ADArgumentParserOptionalArgument *)self shortName];
       v6 = @"-%c <enum>, ";
     }
 
@@ -140,37 +140,37 @@ LABEL_13:
   }
 
 LABEL_14:
-  v7 = [(ADArgumentParserOptionalArgument *)self type];
-  if (v7 <= 7)
+  type2 = [(ADArgumentParserOptionalArgument *)self type];
+  if (type2 <= 7)
   {
-    if (((1 << v7) & 0x24) != 0)
+    if (((1 << type2) & 0x24) != 0)
     {
-      v8 = [(ADArgumentParserOptionalArgument *)self name];
-      [v3 appendFormat:@"--%@ <int>", v8];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      [string appendFormat:@"--%@ <int>", name];
       goto LABEL_25;
     }
 
-    if (((1 << v7) & 0x48) != 0)
+    if (((1 << type2) & 0x48) != 0)
     {
-      v8 = [(ADArgumentParserOptionalArgument *)self name];
-      [v3 appendFormat:@"--%@ <float>", v8];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      [string appendFormat:@"--%@ <float>", name];
       goto LABEL_25;
     }
 
-    if (((1 << v7) & 0x90) != 0)
+    if (((1 << type2) & 0x90) != 0)
     {
-      v8 = [(ADArgumentParserOptionalArgument *)self name];
-      [v3 appendFormat:@"--%@ <string>", v8];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      [string appendFormat:@"--%@ <string>", name];
       goto LABEL_25;
     }
   }
 
-  if (v7 != 1)
+  if (type2 != 1)
   {
-    if (!v7)
+    if (!type2)
     {
-      v8 = [(ADArgumentParserOptionalArgument *)self name];
-      [v3 appendFormat:@"--%@ <enum>", v8];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      [string appendFormat:@"--%@ <enum>", name];
       goto LABEL_25;
     }
 
@@ -179,104 +179,104 @@ LABEL_34:
     __assert_rtn("[ADArgumentParserOptionalArgument fullUsage]", "ADArgumentParserOptionalArgument.mm", v15, "0");
   }
 
-  v8 = [(ADArgumentParserOptionalArgument *)self name];
-  [v3 appendFormat:@"--%@", v8];
+  name = [(ADArgumentParserOptionalArgument *)self name];
+  [string appendFormat:@"--%@", name];
 LABEL_25:
 
-  [v3 rightPaddToLength:45];
-  v9 = [(ADArgumentParserOptionalArgument *)self descriptionString];
-  [v3 appendString:v9];
+  [string rightPaddToLength:45];
+  descriptionString = [(ADArgumentParserOptionalArgument *)self descriptionString];
+  [string appendString:descriptionString];
 
-  v10 = [(ADArgumentParserOptionalArgument *)self legalValuesString];
+  legalValuesString = [(ADArgumentParserOptionalArgument *)self legalValuesString];
 
-  if (v10)
+  if (legalValuesString)
   {
-    v11 = [(ADArgumentParserOptionalArgument *)self legalValuesString];
-    [v3 appendString:v11];
+    legalValuesString2 = [(ADArgumentParserOptionalArgument *)self legalValuesString];
+    [string appendString:legalValuesString2];
   }
 
-  v12 = [(ADArgumentParserOptionalArgument *)self defaultValueString];
+  defaultValueString = [(ADArgumentParserOptionalArgument *)self defaultValueString];
 
-  if (v12)
+  if (defaultValueString)
   {
-    v13 = [(ADArgumentParserOptionalArgument *)self defaultValueString];
-    [v3 appendFormat:@" [default: %@]", v13];
+    defaultValueString2 = [(ADArgumentParserOptionalArgument *)self defaultValueString];
+    [string appendFormat:@" [default: %@]", defaultValueString2];
   }
 
-  return v3;
+  return string;
 }
 
 - (id)shortUsage
 {
-  v3 = [(ADArgumentParserOptionalArgument *)self type];
-  if (v3 > 3)
+  type = [(ADArgumentParserOptionalArgument *)self type];
+  if (type > 3)
   {
-    if (v3 > 5)
+    if (type > 5)
     {
-      if (v3 == 6)
+      if (type == 6)
       {
         v11 = MEMORY[0x277CCACA8];
-        v5 = [(ADArgumentParserOptionalArgument *)self name];
-        v6 = [v11 stringWithFormat:@"[--%@ <float>]...", v5];
+        name = [(ADArgumentParserOptionalArgument *)self name];
+        v6 = [v11 stringWithFormat:@"[--%@ <float>]...", name];
       }
 
       else
       {
-        if (v3 != 7)
+        if (type != 7)
         {
           goto LABEL_22;
         }
 
         v9 = MEMORY[0x277CCACA8];
-        v5 = [(ADArgumentParserOptionalArgument *)self name];
-        v6 = [v9 stringWithFormat:@"[--%@ <string>]...", v5];
+        name = [(ADArgumentParserOptionalArgument *)self name];
+        v6 = [v9 stringWithFormat:@"[--%@ <string>]...", name];
       }
 
       goto LABEL_19;
     }
 
     v7 = MEMORY[0x277CCACA8];
-    if (v3 == 4)
+    if (type == 4)
     {
-      v5 = [(ADArgumentParserOptionalArgument *)self name];
-      [v7 stringWithFormat:@"[--%@ <string>]", v5];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      [v7 stringWithFormat:@"[--%@ <string>]", name];
     }
 
     else
     {
-      v5 = [(ADArgumentParserOptionalArgument *)self name];
-      [v7 stringWithFormat:@"[--%@ <int>]...", v5];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      [v7 stringWithFormat:@"[--%@ <int>]...", name];
     }
 
     v6 = LABEL_9:;
     goto LABEL_19;
   }
 
-  if (v3 > 1)
+  if (type > 1)
   {
     v8 = MEMORY[0x277CCACA8];
-    if (v3 == 2)
+    if (type == 2)
     {
-      v5 = [(ADArgumentParserOptionalArgument *)self name];
-      [v8 stringWithFormat:@"[--%@ <int>]", v5];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      [v8 stringWithFormat:@"[--%@ <int>]", name];
     }
 
     else
     {
-      v5 = [(ADArgumentParserOptionalArgument *)self name];
-      [v8 stringWithFormat:@"[--%@ <float>]", v5];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      [v8 stringWithFormat:@"[--%@ <float>]", name];
     }
 
     goto LABEL_9;
   }
 
-  if (v3)
+  if (type)
   {
-    if (v3 == 1)
+    if (type == 1)
     {
       v4 = MEMORY[0x277CCACA8];
-      v5 = [(ADArgumentParserOptionalArgument *)self name];
-      v6 = [v4 stringWithFormat:@"[--%@]", v5];
+      name = [(ADArgumentParserOptionalArgument *)self name];
+      v6 = [v4 stringWithFormat:@"[--%@]", name];
       goto LABEL_19;
     }
 
@@ -285,8 +285,8 @@ LABEL_22:
   }
 
   v10 = MEMORY[0x277CCACA8];
-  v5 = [(ADArgumentParserOptionalArgument *)self name];
-  v6 = [v10 stringWithFormat:@"[--%@ <enum>]", v5];
+  name = [(ADArgumentParserOptionalArgument *)self name];
+  v6 = [v10 stringWithFormat:@"[--%@ <enum>]", name];
 LABEL_19:
   v12 = v6;
 
@@ -301,8 +301,8 @@ LABEL_19:
     if ([(ADArgumentParserOptionalArgument *)self type])
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [(ADArgumentParserOptionalArgument *)self value];
-      v9 = [v10 stringWithFormat:@"%@", v11];
+      value = [(ADArgumentParserOptionalArgument *)self value];
+      v9 = [v10 stringWithFormat:@"%@", value];
     }
 
     else
@@ -311,10 +311,10 @@ LABEL_19:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v12 = [(ADArgumentParserOptionalArgument *)self conversionDictionary];
-      v13 = [v12 allKeys];
+      conversionDictionary = [(ADArgumentParserOptionalArgument *)self conversionDictionary];
+      allKeys = [conversionDictionary allKeys];
 
-      v14 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v14)
       {
         v15 = *v26;
@@ -324,14 +324,14 @@ LABEL_19:
           {
             if (*v26 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allKeys);
             }
 
             v17 = *(*(&v25 + 1) + 8 * i);
-            v18 = [(ADArgumentParserOptionalArgument *)self conversionDictionary];
-            v19 = [v18 objectForKeyedSubscript:v17];
-            v20 = [(ADArgumentParserOptionalArgument *)self value];
-            v21 = [v19 isEqual:v20];
+            conversionDictionary2 = [(ADArgumentParserOptionalArgument *)self conversionDictionary];
+            v19 = [conversionDictionary2 objectForKeyedSubscript:v17];
+            value2 = [(ADArgumentParserOptionalArgument *)self value];
+            v21 = [v19 isEqual:value2];
 
             if (v21)
             {
@@ -341,7 +341,7 @@ LABEL_19:
             }
           }
 
-          v14 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          v14 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v14)
           {
             continue;
@@ -352,22 +352,22 @@ LABEL_19:
       }
 
       v22 = MEMORY[0x277CCACA8];
-      v23 = [(ADArgumentParserOptionalArgument *)self value];
-      v9 = [v22 stringWithFormat:@"%@", v23];
+      value3 = [(ADArgumentParserOptionalArgument *)self value];
+      v9 = [v22 stringWithFormat:@"%@", value3];
     }
   }
 
   else
   {
-    v3 = [(ADArgumentParserOptionalArgument *)self value];
-    if ([v3 count])
+    value4 = [(ADArgumentParserOptionalArgument *)self value];
+    if ([value4 count])
     {
-      v4 = [MEMORY[0x277CCAB68] string];
+      string = [MEMORY[0x277CCAB68] string];
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v5 = v3;
+      v5 = value4;
       v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v6)
       {
@@ -381,7 +381,7 @@ LABEL_19:
               objc_enumerationMutation(v5);
             }
 
-            [v4 appendFormat:@"%@ ", *(*(&v29 + 1) + 8 * j)];
+            [string appendFormat:@"%@ ", *(*(&v29 + 1) + 8 * j)];
           }
 
           v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -390,7 +390,7 @@ LABEL_19:
         while (v6);
       }
 
-      v9 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 1}];
+      v9 = [string substringToIndex:{objc_msgSend(string, "length") - 1}];
     }
 
     else
@@ -407,19 +407,19 @@ LABEL_24:
 - (id)legalValuesString
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(ADArgumentParserOptionalArgument *)self conversionDictionary];
-  if (v4 && (-[ADArgumentParserOptionalArgument conversionDictionary](self, "conversionDictionary"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  string = [MEMORY[0x277CCAB68] string];
+  conversionDictionary = [(ADArgumentParserOptionalArgument *)self conversionDictionary];
+  if (conversionDictionary && (-[ADArgumentParserOptionalArgument conversionDictionary](self, "conversionDictionary"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, conversionDictionary, v6))
   {
-    objc_msgSend(v3, "appendString:", @" (");
+    objc_msgSend(string, "appendString:", @" (");
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(ADArgumentParserOptionalArgument *)self conversionDictionary];
-    v8 = [v7 allKeys];
+    conversionDictionary2 = [(ADArgumentParserOptionalArgument *)self conversionDictionary];
+    allKeys = [conversionDictionary2 allKeys];
 
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = *v15;
@@ -429,21 +429,21 @@ LABEL_24:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
-          [v3 appendFormat:@"%@|", *(*(&v14 + 1) + 8 * i)];
+          [string appendFormat:@"%@|", *(*(&v14 + 1) + 8 * i)];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
     }
 
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 1, 1}];
-    [v3 appendString:@""]);
-    v12 = v3;
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 1, 1}];
+    [string appendString:@""]);
+    v12 = string;
   }
 
   else
@@ -454,110 +454,110 @@ LABEL_24:
   return v12;
 }
 
-- (ADArgumentParserOptionalArgument)initWithName:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6 type:(unint64_t)a7 conversionDictionary:(id)a8
+- (ADArgumentParserOptionalArgument)initWithName:(SEL)name shortName:(char)shortName defaultValue:(id)value description:(id)description type:(unint64_t)type conversionDictionary:(id)dictionary
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  valueCopy = value;
+  descriptionCopy = description;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = ADArgumentParserOptionalArgument;
   v17 = [(ADArgumentParserOptionalArgument *)&v22 init];
   if (v17)
   {
-    v18 = NSStringFromSelector(a3);
+    v18 = NSStringFromSelector(name);
     name = v17->_name;
     v17->_name = v18;
 
-    v17->_shortName = a4;
-    objc_storeStrong(&v17->_value, a5);
-    objc_storeStrong(&v17->_descriptionString, a6);
-    v17->_type = a7;
-    objc_storeStrong(&v17->_conversionDictionary, a8);
+    v17->_shortName = shortName;
+    objc_storeStrong(&v17->_value, value);
+    objc_storeStrong(&v17->_descriptionString, description);
+    v17->_type = type;
+    objc_storeStrong(&v17->_conversionDictionary, dictionary);
   }
 
   return v17;
 }
 
-+ (id)floatArrayOption:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6
++ (id)floatArrayOption:(SEL)option shortName:(char)name defaultValue:(id)value description:(id)description
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [[ADArgumentParserOptionalArgument alloc] initWithName:a3 shortName:v7 defaultValue:v9 description:v10 type:6 conversionDictionary:0];
+  nameCopy = name;
+  valueCopy = value;
+  descriptionCopy = description;
+  v11 = [[ADArgumentParserOptionalArgument alloc] initWithName:option shortName:nameCopy defaultValue:valueCopy description:descriptionCopy type:6 conversionDictionary:0];
 
   return v11;
 }
 
-+ (id)integerArrayOption:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6
++ (id)integerArrayOption:(SEL)option shortName:(char)name defaultValue:(id)value description:(id)description
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [[ADArgumentParserOptionalArgument alloc] initWithName:a3 shortName:v7 defaultValue:v9 description:v10 type:5 conversionDictionary:0];
+  nameCopy = name;
+  valueCopy = value;
+  descriptionCopy = description;
+  v11 = [[ADArgumentParserOptionalArgument alloc] initWithName:option shortName:nameCopy defaultValue:valueCopy description:descriptionCopy type:5 conversionDictionary:0];
 
   return v11;
 }
 
-+ (id)stringArrayOption:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6
++ (id)stringArrayOption:(SEL)option shortName:(char)name defaultValue:(id)value description:(id)description
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [[ADArgumentParserOptionalArgument alloc] initWithName:a3 shortName:v7 defaultValue:v9 description:v10 type:7 conversionDictionary:0];
+  nameCopy = name;
+  valueCopy = value;
+  descriptionCopy = description;
+  v11 = [[ADArgumentParserOptionalArgument alloc] initWithName:option shortName:nameCopy defaultValue:valueCopy description:descriptionCopy type:7 conversionDictionary:0];
 
   return v11;
 }
 
-+ (id)floatOption:(SEL)a3 shortName:(char)a4 defaultValue:(float)a5 description:(id)a6
++ (id)floatOption:(SEL)option shortName:(char)name defaultValue:(float)value description:(id)description
 {
-  v7 = a4;
-  v9 = a6;
+  nameCopy = name;
+  descriptionCopy = description;
   v10 = [ADArgumentParserOptionalArgument alloc];
-  *&v11 = a5;
+  *&v11 = value;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-  v13 = [(ADArgumentParserOptionalArgument *)v10 initWithName:a3 shortName:v7 defaultValue:v12 description:v9 type:3 conversionDictionary:0];
+  v13 = [(ADArgumentParserOptionalArgument *)v10 initWithName:option shortName:nameCopy defaultValue:v12 description:descriptionCopy type:3 conversionDictionary:0];
 
   return v13;
 }
 
-+ (id)integerOption:(SEL)a3 shortName:(char)a4 defaultValue:(int64_t)a5 description:(id)a6
++ (id)integerOption:(SEL)option shortName:(char)name defaultValue:(int64_t)value description:(id)description
 {
-  v7 = a4;
-  v9 = a6;
+  nameCopy = name;
+  descriptionCopy = description;
   v10 = [ADArgumentParserOptionalArgument alloc];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  v12 = [(ADArgumentParserOptionalArgument *)v10 initWithName:a3 shortName:v7 defaultValue:v11 description:v9 type:2 conversionDictionary:0];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:value];
+  v12 = [(ADArgumentParserOptionalArgument *)v10 initWithName:option shortName:nameCopy defaultValue:v11 description:descriptionCopy type:2 conversionDictionary:0];
 
   return v12;
 }
 
-+ (id)stringOption:(SEL)a3 shortName:(char)a4 defaultValue:(id)a5 description:(id)a6
++ (id)stringOption:(SEL)option shortName:(char)name defaultValue:(id)value description:(id)description
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [[ADArgumentParserOptionalArgument alloc] initWithName:a3 shortName:v7 defaultValue:v9 description:v10 type:4 conversionDictionary:0];
+  nameCopy = name;
+  valueCopy = value;
+  descriptionCopy = description;
+  v11 = [[ADArgumentParserOptionalArgument alloc] initWithName:option shortName:nameCopy defaultValue:valueCopy description:descriptionCopy type:4 conversionDictionary:0];
 
   return v11;
 }
 
-+ (id)BOOLOption:(SEL)a3 shortName:(char)a4 description:(id)a5
++ (id)BOOLOption:(SEL)option shortName:(char)name description:(id)description
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [[ADArgumentParserOptionalArgument alloc] initWithName:a3 shortName:v5 defaultValue:@"false" description:v7 type:1 conversionDictionary:0];
+  nameCopy = name;
+  descriptionCopy = description;
+  v8 = [[ADArgumentParserOptionalArgument alloc] initWithName:option shortName:nameCopy defaultValue:@"false" description:descriptionCopy type:1 conversionDictionary:0];
 
   return v8;
 }
 
-+ (id)enumOption:(SEL)a3 shortName:(char)a4 defaultValue:(unint64_t)a5 description:(id)a6 conversionDictionary:(id)a7
++ (id)enumOption:(SEL)option shortName:(char)name defaultValue:(unint64_t)value description:(id)description conversionDictionary:(id)dictionary
 {
-  v9 = a4;
-  v11 = a6;
-  v12 = a7;
+  nameCopy = name;
+  descriptionCopy = description;
+  dictionaryCopy = dictionary;
   v13 = [ADArgumentParserOptionalArgument alloc];
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  v15 = [(ADArgumentParserOptionalArgument *)v13 initWithName:a3 shortName:v9 defaultValue:v14 description:v11 type:0 conversionDictionary:v12];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
+  v15 = [(ADArgumentParserOptionalArgument *)v13 initWithName:option shortName:nameCopy defaultValue:v14 description:descriptionCopy type:0 conversionDictionary:dictionaryCopy];
 
   return v15;
 }

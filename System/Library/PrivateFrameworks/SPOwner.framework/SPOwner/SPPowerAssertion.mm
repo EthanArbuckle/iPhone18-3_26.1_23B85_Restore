@@ -1,5 +1,5 @@
 @interface SPPowerAssertion
-- (SPPowerAssertion)initWithReason:(id)a3 type:(unint64_t)a4 timeout:(double)a5;
+- (SPPowerAssertion)initWithReason:(id)reason type:(unint64_t)type timeout:(double)timeout;
 - (id)assertionName;
 - (id)assertionType;
 - (id)powerAssertionOption;
@@ -11,24 +11,24 @@
 
 @implementation SPPowerAssertion
 
-- (SPPowerAssertion)initWithReason:(id)a3 type:(unint64_t)a4 timeout:(double)a5
+- (SPPowerAssertion)initWithReason:(id)reason type:(unint64_t)type timeout:(double)timeout
 {
-  v9 = a3;
+  reasonCopy = reason;
   v19.receiver = self;
   v19.super_class = SPPowerAssertion;
   v10 = [(SPPowerAssertion *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_reason, a3);
-    v11->_type = a4;
-    v11->_timeout = a5;
+    objc_storeStrong(&v10->_reason, reason);
+    v11->_type = type;
+    v11->_timeout = timeout;
     v11->_powerAssertionId = 0;
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
     queue = v11->_queue;
     v11->_queue = v16;
   }
@@ -89,7 +89,7 @@ void __24__SPPowerAssertion_hold__block_invoke(uint64_t a1)
 
 - (id)powerAssertionOption
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self->_timeout >= 1.0)
   {
     timeout = self->_timeout;
@@ -100,27 +100,27 @@ void __24__SPPowerAssertion_hold__block_invoke(uint64_t a1)
     timeout = 1.0;
   }
 
-  v5 = [(SPPowerAssertion *)self assertionType];
-  [v3 setObject:v5 forKeyedSubscript:@"AssertType"];
+  assertionType = [(SPPowerAssertion *)self assertionType];
+  [dictionary setObject:assertionType forKeyedSubscript:@"AssertType"];
 
-  v6 = [(SPPowerAssertion *)self assertionName];
-  [v3 setObject:v6 forKeyedSubscript:@"AssertName"];
+  assertionName = [(SPPowerAssertion *)self assertionName];
+  [dictionary setObject:assertionName forKeyedSubscript:@"AssertName"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
-  [v3 setObject:v7 forKeyedSubscript:@"TimeoutSeconds"];
+  [dictionary setObject:v7 forKeyedSubscript:@"TimeoutSeconds"];
 
-  [v3 setObject:@"TimeoutActionTurnOff" forKeyedSubscript:@"TimeoutAction"];
-  [v3 setObject:&unk_2875F2B98 forKeyedSubscript:@"AssertLevel"];
+  [dictionary setObject:@"TimeoutActionTurnOff" forKeyedSubscript:@"TimeoutAction"];
+  [dictionary setObject:&unk_2875F2B98 forKeyedSubscript:@"AssertLevel"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)assertionName
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v3 stringWithFormat:@"%@-%@-%@", v5, @"SPOwner", self->_reason];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [v3 stringWithFormat:@"%@-%@-%@", bundleIdentifier, @"SPOwner", self->_reason];
 
   return v6;
 }

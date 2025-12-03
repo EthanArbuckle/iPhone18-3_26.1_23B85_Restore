@@ -12,13 +12,13 @@
 
 + (BOOL)isRunningInTVExtension
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v5 = [a1 tvExtensionBundleIDs];
-  LOBYTE(v3) = [v5 containsObject:v4];
+  tvExtensionBundleIDs = [self tvExtensionBundleIDs];
+  LOBYTE(mainBundle) = [tvExtensionBundleIDs containsObject:bundleIdentifier];
 
-  return v3;
+  return mainBundle;
 }
 
 + (id)sharedInstance
@@ -42,29 +42,29 @@ void __32__VUITVExtension_sharedInstance__block_invoke()
 
 + (BOOL)isRunningInTVAppExtension
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqual:@"com.apple.VideosUI.TVAppExtension"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqual:@"com.apple.VideosUI.TVAppExtension"];
+  return mainBundle;
 }
 
 + (BOOL)isRunningInTVProductPageExtension
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqual:@"com.apple.VideosUI.TVProductPageExtension"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqual:@"com.apple.VideosUI.TVProductPageExtension"];
+  return mainBundle;
 }
 
 + (BOOL)isRunningInCompanionApp
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqual:@"com.apple.visionproapp"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqual:@"com.apple.visionproapp"];
+  return mainBundle;
 }
 
 - (UINavigationController)currentNavigationController

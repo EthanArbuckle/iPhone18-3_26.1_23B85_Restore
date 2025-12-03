@@ -1,45 +1,45 @@
 @interface DeleteFromLibraryResponseParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
 - (DeleteFromLibraryResponseParserDelegate)init;
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5;
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length;
 @end
 
 @implementation DeleteFromLibraryResponseParserDelegate
 
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code
 {
-  v6 = a3;
-  if (a4 == 1835821428 && self->_deleteStatus == 200 && self->_currentCloudID)
+  parserCopy = parser;
+  if (code == 1835821428 && self->_deleteStatus == 200 && self->_currentCloudID)
   {
     deletedItems = self->_deletedItems;
-    v9 = v6;
+    v9 = parserCopy;
     v8 = [NSNumber numberWithUnsignedLongLong:?];
     [(NSMutableArray *)deletedItems addObject:v8];
 
-    v6 = v9;
+    parserCopy = v9;
   }
 }
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  switch(a4)
+  switch(code)
   {
     case 0x6D696964u:
-      if (a6 == 8)
+      if (length == 8)
       {
-        v6 = ((*a5 << 56) | (a5[1] << 48) | (a5[2] << 40) | (a5[3] << 32) | (a5[4] << 24) | (a5[5] << 16) | (a5[6] << 8)) + a5[7];
+        v6 = ((*bytes << 56) | (bytes[1] << 48) | (bytes[2] << 40) | (bytes[3] << 32) | (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8)) + bytes[7];
       }
 
       else
       {
-        if (a6 != 4)
+        if (length != 4)
         {
           return;
         }
 
-        v6 = bswap32(*a5);
+        v6 = bswap32(*bytes);
       }
 
       self->_currentCloudID = v6;
@@ -47,42 +47,42 @@
     case 0x6D737474u:
       if (self->_processingItemListing)
       {
-        self->_deleteStatus = bswap32(*a5);
+        self->_deleteStatus = bswap32(*bytes);
       }
 
       break;
     case 0x6D757072u:
-      self->_updateRequired = *a5 != 0;
+      self->_updateRequired = *bytes != 0;
       break;
   }
 }
 
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length
 {
-  if (a4 == 1835821428)
+  if (code == 1835821428)
   {
     self->_currentCloudID = 0;
     self->_processingItemListing = 1;
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 > 1835821427)
+  if (code > 1835821427)
   {
-    if (a4 != 1835821428 && a4 != 1836282996)
+    if (code != 1835821428 && code != 1836282996)
     {
       v5 = 1836413042;
 LABEL_8:
-      if (a4 != v5)
+      if (code != v5)
       {
         return 0;
       }
     }
   }
 
-  else if (a4 != 1835360880 && a4 != 1835624804)
+  else if (code != 1835360880 && code != 1835624804)
   {
     v5 = 1835819884;
     goto LABEL_8;

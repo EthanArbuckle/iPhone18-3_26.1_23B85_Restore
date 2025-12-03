@@ -1,20 +1,20 @@
 @interface MKPlaceHoursViewHelper
-+ (void)determineExtraRulesForPlaceHoursViews:(id)a3 withBusinessHours:(id)a4;
++ (void)determineExtraRulesForPlaceHoursViews:(id)views withBusinessHours:(id)hours;
 @end
 
 @implementation MKPlaceHoursViewHelper
 
-+ (void)determineExtraRulesForPlaceHoursViews:(id)a3 withBusinessHours:(id)a4
++ (void)determineExtraRulesForPlaceHoursViews:(id)views withBusinessHours:(id)hours
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count] == 1)
+  viewsCopy = views;
+  hoursCopy = hours;
+  if ([hoursCopy count] == 1)
   {
-    v7 = [v6 objectAtIndex:0];
-    if ([v7 hoursType] == 1 && objc_msgSend(v5, "count") == 1)
+    v7 = [hoursCopy objectAtIndex:0];
+    if ([v7 hoursType] == 1 && objc_msgSend(viewsCopy, "count") == 1)
     {
-      v8 = [v5 objectAtIndex:0];
+      v8 = [viewsCopy objectAtIndex:0];
       [v8 setPlaceHoursViewOptions:{objc_msgSend(v8, "placeHoursViewOptions") | 0x10}];
 
       goto LABEL_15;
@@ -25,7 +25,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = viewsCopy;
   v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {

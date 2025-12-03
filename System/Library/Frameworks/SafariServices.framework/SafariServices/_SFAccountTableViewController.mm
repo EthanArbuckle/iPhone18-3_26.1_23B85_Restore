@@ -1,61 +1,61 @@
 @interface _SFAccountTableViewController
 - (BOOL)_hasMarkedText;
-- (BOOL)_shouldShowDeleteContextMenuItemForSavedAccount:(id)a3;
+- (BOOL)_shouldShowDeleteContextMenuItemForSavedAccount:(id)account;
 - (NSString)searchQuery;
-- (_SFAccountTableViewController)initWithSiteMetadataManager:(id)a3 configuration:(id)a4;
-- (id)_allSharedCredentialGroupsMenuForSavedAccount:(id)a3;
-- (id)_contextMenuForSavedAccountAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (void)_sceneDidEnterBackground:(id)a3;
-- (void)_shareSavedAccount:(id)a3 authenticationContext:(id)a4 modalPresentationSourceView:(id)a5;
-- (void)_shareSavedAccount:(id)a3 modalPresentationSourceView:(id)a4;
-- (void)_updateIconForDomain:(id)a3 forCell:(id)a4;
+- (_SFAccountTableViewController)initWithSiteMetadataManager:(id)manager configuration:(id)configuration;
+- (id)_allSharedCredentialGroupsMenuForSavedAccount:(id)account;
+- (id)_contextMenuForSavedAccountAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (void)_sceneDidEnterBackground:(id)background;
+- (void)_shareSavedAccount:(id)account authenticationContext:(id)context modalPresentationSourceView:(id)view;
+- (void)_shareSavedAccount:(id)account modalPresentationSourceView:(id)view;
+- (void)_updateIconForDomain:(id)domain forCell:(id)cell;
 - (void)dealloc;
-- (void)iconDidUpdateForDomain:(id)a3 iconController:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSearchQuery:(id)a3;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)iconDidUpdateForDomain:(id)domain iconController:(id)controller;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setSearchQuery:(id)query;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation _SFAccountTableViewController
 
-- (_SFAccountTableViewController)initWithSiteMetadataManager:(id)a3 configuration:(id)a4
+- (_SFAccountTableViewController)initWithSiteMetadataManager:(id)manager configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = _SFAccountTableViewController;
   v8 = [(_SFAccountTableViewController *)&v18 initWithStyle:+[_SFAccountManagerAppearanceValues preferencesTableViewStyle]];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeStrong(&v8->_configuration, configuration);
     v10 = [MEMORY[0x1E696AB50] set];
     visibleDomains = v9->_visibleDomains;
     v9->_visibleDomains = v10;
 
-    v12 = [objc_alloc(MEMORY[0x1E695A9A8]) initWithMetadataManager:v6 allowNetworkFetchingBlock:&__block_literal_global_0];
+    v12 = [objc_alloc(MEMORY[0x1E695A9A8]) initWithMetadataManager:managerCopy allowNetworkFetchingBlock:&__block_literal_global_0];
     iconController = v9->_iconController;
     v9->_iconController = v12;
 
     [(_ASPasswordManagerIconController *)v9->_iconController setDelegate:v9];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v9 selector:sel__applicationWillTerminate name:*MEMORY[0x1E69DDBD0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__applicationWillTerminate name:*MEMORY[0x1E69DDBD0] object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v9 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 
     v16 = v9;
   }
@@ -66,10 +66,10 @@
 - (void)dealloc
 {
   [(_ASPasswordManagerIconController *)self->_iconController prepareForApplicationTermination];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBD0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBD0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
 
   v4.receiver = self;
   v4.super_class = _SFAccountTableViewController;
@@ -81,8 +81,8 @@
   v14.receiver = self;
   v14.super_class = _SFAccountTableViewController;
   [(_SFAccountTableViewController *)&v14 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
 
   if ([(_SFAccountTableConfiguration *)self->_configuration shouldShowSearchBar])
   {
@@ -94,165 +94,165 @@
     [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
     [(UISearchController *)self->_searchController setDelegate:self];
     v6 = self->_searchController;
-    v7 = [(_SFAccountTableViewController *)self navigationItem];
-    [v7 setSearchController:v6];
+    navigationItem = [(_SFAccountTableViewController *)self navigationItem];
+    [navigationItem setSearchController:v6];
 
-    v8 = [(_SFAccountTableViewController *)self navigationItem];
-    [v8 setHidesSearchBarWhenScrolling:0];
+    navigationItem2 = [(_SFAccountTableViewController *)self navigationItem];
+    [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
-    v9 = [(UISearchController *)self->_searchController searchBar];
-    [v9 setDelegate:self];
-    [v9 setAutocapitalizationType:0];
-    [v9 setAutocorrectionType:1];
-    [v9 setAccessibilityIdentifier:@"Passwords List Search Bar"];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [searchBar setDelegate:self];
+    [searchBar setAutocapitalizationType:0];
+    [searchBar setAutocorrectionType:1];
+    [searchBar setAccessibilityIdentifier:@"Passwords List Search Bar"];
   }
 
-  v10 = [(_SFAccountTableViewController *)self navigationItem];
-  [v10 setPreferredSearchBarPlacement:2];
+  navigationItem3 = [(_SFAccountTableViewController *)self navigationItem];
+  [navigationItem3 setPreferredSearchBarPlacement:2];
 
-  v11 = [(_SFAccountTableViewController *)self navigationItem];
-  [v11 setStyle:0];
+  navigationItem4 = [(_SFAccountTableViewController *)self navigationItem];
+  [navigationItem4 setStyle:0];
 
-  v12 = [(_SFAccountTableConfiguration *)self->_configuration shouldConfigureMultipleSelectionDuringEditing];
-  v13 = [(_SFAccountTableViewController *)self tableView];
-  [v13 setAllowsMultipleSelectionDuringEditing:v12];
+  shouldConfigureMultipleSelectionDuringEditing = [(_SFAccountTableConfiguration *)self->_configuration shouldConfigureMultipleSelectionDuringEditing];
+  tableView = [(_SFAccountTableViewController *)self tableView];
+  [tableView setAllowsMultipleSelectionDuringEditing:shouldConfigureMultipleSelectionDuringEditing];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _SFAccountTableViewController;
-  [(_SFAccountTableViewController *)&v4 viewDidAppear:a3];
+  [(_SFAccountTableViewController *)&v4 viewDidAppear:appear];
   [(_ASPasswordManagerIconController *)self->_iconController performMaintenanceWork];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = _SFAccountTableViewController;
-  [(_SFAccountTableViewController *)&v4 viewDidDisappear:a3];
+  [(_SFAccountTableViewController *)&v4 viewDidDisappear:disappear];
   [(_ASPasswordManagerIconController *)self->_iconController clearIconFetchingState];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = _SFAccountTableViewController;
-  [(_SFAccountTableViewController *)&v5 viewWillAppear:a3];
+  [(_SFAccountTableViewController *)&v5 viewWillAppear:appear];
   if ([(UISearchController *)self->_searchController isActive])
   {
     if ([(_SFAccountTableViewController *)self _shouldShowToolbarWhenSearching])
     {
-      v4 = [(_SFAccountTableViewController *)self navigationController];
-      [v4 setToolbarHidden:0 animated:0];
+      navigationController = [(_SFAccountTableViewController *)self navigationController];
+      [navigationController setToolbarHidden:0 animated:0];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = _SFAccountTableViewController;
   [(_SFAccountTableViewController *)&v6 viewWillDisappear:?];
-  v5 = [(_SFAccountTableViewController *)self navigationController];
-  [v5 setToolbarHidden:1 animated:v3];
+  navigationController = [(_SFAccountTableViewController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:disappearCopy];
 
   [(_ASPasswordManagerIconController *)self->_iconController performMaintenanceWork];
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v4 = [a3 object];
-  v5 = [(_SFAccountTableViewController *)self viewIfLoaded];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
+  object = [background object];
+  viewIfLoaded = [(_SFAccountTableViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  if (v4 == v7)
+  if (object == windowScene)
   {
-    v8 = [(_SFAccountTableViewController *)self navigationController];
-    v10 = [v8 visibleViewController];
+    navigationController = [(_SFAccountTableViewController *)self navigationController];
+    visibleViewController = [navigationController visibleViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v10 presentingViewController];
-      [v9 dismissViewControllerAnimated:0 completion:0];
+      presentingViewController = [visibleViewController presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:0 completion:0];
     }
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = _SFAccountTableViewController;
   [_SFAccountTableViewController setEditing:sel_setEditing_animated_ animated:?];
   if (![(_SFAccountTableConfiguration *)self->_configuration shouldConfigureMultipleSelectionDuringEditing])
   {
-    v7 = [(UISearchController *)self->_searchController searchBar];
-    [v7 _setEnabled:!v5 animated:v4];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [searchBar _setEnabled:!editingCopy animated:animatedCopy];
   }
 }
 
 - (NSString)searchQuery
 {
-  v2 = [(UISearchController *)self->_searchController searchBar];
-  v3 = [v2 text];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  text = [searchBar text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
   searchController = self->_searchController;
-  v4 = a3;
-  v5 = [(UISearchController *)searchController searchBar];
-  [v5 setText:v4];
+  queryCopy = query;
+  searchBar = [(UISearchController *)searchController searchBar];
+  [searchBar setText:queryCopy];
 }
 
 - (BOOL)_hasMarkedText
 {
-  v2 = [(UISearchController *)self->_searchController searchBar];
-  v3 = [v2 searchField];
-  v4 = [v3 markedTextRange];
-  v5 = v4 != 0;
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  searchField = [searchBar searchField];
+  markedTextRange = [searchField markedTextRange];
+  v5 = markedTextRange != 0;
 
   return v5;
 }
 
-- (void)_shareSavedAccount:(id)a3 modalPresentationSourceView:(id)a4
+- (void)_shareSavedAccount:(id)account modalPresentationSourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[_SFAirDropAccountSharingAuthenticationContext alloc] initWithSavedAccount:v6];
+  accountCopy = account;
+  viewCopy = view;
+  v8 = [[_SFAirDropAccountSharingAuthenticationContext alloc] initWithSavedAccount:accountCopy];
   self->_isOneTimeSharingAccount = 1;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80___SFAccountTableViewController__shareSavedAccount_modalPresentationSourceView___block_invoke;
   v12[3] = &unk_1E848F3E0;
   v12[4] = self;
-  v13 = v6;
+  v13 = accountCopy;
   v14 = v8;
-  v15 = v7;
-  v9 = v7;
+  v15 = viewCopy;
+  v9 = viewCopy;
   v10 = v8;
-  v11 = v6;
+  v11 = accountCopy;
   [_SFSettingsAuthentication authenticateForSettings:v10 allowAuthenticationReuse:0 completionHandler:v12];
 }
 
-- (void)_shareSavedAccount:(id)a3 authenticationContext:(id)a4 modalPresentationSourceView:(id)a5
+- (void)_shareSavedAccount:(id)account authenticationContext:(id)context modalPresentationSourceView:(id)view
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if ([a4 hasBeenAuthenticated])
+  accountCopy = account;
+  viewCopy = view;
+  if ([context hasBeenAuthenticated])
   {
-    v10 = [objc_alloc(MEMORY[0x1E69C8E20]) initWithSavedPassword:v8];
+    v10 = [objc_alloc(MEMORY[0x1E69C8E20]) initWithSavedPassword:accountCopy];
     v11 = objc_alloc(MEMORY[0x1E69CD9F8]);
-    v12 = [v10 urlRepresentationForAirDrop];
-    v21[0] = v12;
+    urlRepresentationForAirDrop = [v10 urlRepresentationForAirDrop];
+    v21[0] = urlRepresentationForAirDrop;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     v14 = [v11 initWithActivityItems:v13 applicationActivities:0];
 
@@ -266,25 +266,25 @@
     v17[1] = 3221225472;
     v17[2] = __102___SFAccountTableViewController__shareSavedAccount_authenticationContext_modalPresentationSourceView___block_invoke;
     v17[3] = &unk_1E848F408;
-    v18 = v8;
-    v19 = self;
+    v18 = accountCopy;
+    selfCopy = self;
     [v14 setCompletionWithItemsHandler:v17];
-    v16 = [v14 popoverPresentationController];
-    [v16 setPermittedArrowDirections:1];
-    [v9 bounds];
-    [v16 setSourceRect:?];
-    [v16 setSourceView:v9];
+    popoverPresentationController = [v14 popoverPresentationController];
+    [popoverPresentationController setPermittedArrowDirections:1];
+    [viewCopy bounds];
+    [popoverPresentationController setSourceRect:?];
+    [popoverPresentationController setSourceView:viewCopy];
     [(_SFAccountTableViewController *)self presentViewController:v14 animated:1 completion:0];
   }
 }
 
-- (id)_allSharedCredentialGroupsMenuForSavedAccount:(id)a3
+- (id)_allSharedCredentialGroupsMenuForSavedAccount:(id)account
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v32 = [MEMORY[0x1E695DF70] array];
+  accountCopy = account;
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
-  v5 = [v4 isSavedInPersonalKeychain];
+  isSavedInPersonalKeychain = [accountCopy isSavedInPersonalKeychain];
   v28 = _WBSLocalizedString();
   v6 = MEMORY[0x1E69DC628];
   v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person"];
@@ -293,26 +293,26 @@
   v42[2] = __79___SFAccountTableViewController__allSharedCredentialGroupsMenuForSavedAccount___block_invoke;
   v42[3] = &unk_1E848F430;
   objc_copyWeak(&v44, &location);
-  v45 = v5;
-  v8 = v4;
+  v45 = isSavedInPersonalKeychain;
+  v8 = accountCopy;
   v43 = v8;
   v29 = [v6 actionWithTitle:v28 image:v7 identifier:0 handler:v42];
 
-  [v29 setState:v5];
-  if ((v5 & 1) != 0 || ([MEMORY[0x1E69C8A38] sharedStore], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "_canMoveSavedAccount:toGroupWithID:", v8, *MEMORY[0x1E69C8C68]), v9, (v10 & 1) == 0))
+  [v29 setState:isSavedInPersonalKeychain];
+  if ((isSavedInPersonalKeychain & 1) != 0 || ([MEMORY[0x1E69C8A38] sharedStore], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "_canMoveSavedAccount:toGroupWithID:", v8, *MEMORY[0x1E69C8C68]), v9, (v10 & 1) == 0))
   {
     [v29 setAttributes:1];
   }
 
-  [v32 addObject:v29];
-  v11 = [MEMORY[0x1E69C88E8] sharedProvider];
-  v12 = [v11 cachedGroups];
+  [array addObject:v29];
+  mEMORY[0x1E69C88E8] = [MEMORY[0x1E69C88E8] sharedProvider];
+  cachedGroups = [mEMORY[0x1E69C88E8] cachedGroups];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v12;
+  obj = cachedGroups;
   v13 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v13)
   {
@@ -327,12 +327,12 @@
         }
 
         v15 = *(*(&v38 + 1) + 8 * i);
-        v16 = [v8 sharedGroupID];
-        v17 = [v15 groupID];
-        v18 = [v16 isEqualToString:v17];
+        sharedGroupID = [v8 sharedGroupID];
+        groupID = [v15 groupID];
+        v18 = [sharedGroupID isEqualToString:groupID];
 
         v19 = MEMORY[0x1E69DC628];
-        v20 = [v15 displayName];
+        displayName = [v15 displayName];
         v21 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.2"];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
@@ -343,7 +343,7 @@
         v22 = v8;
         v34 = v22;
         v35 = v15;
-        v23 = [v19 actionWithTitle:v20 image:v21 identifier:0 handler:v33];
+        v23 = [v19 actionWithTitle:displayName image:v21 identifier:0 handler:v33];
 
         [v23 setState:v18];
         if ((v18 & 1) != 0 || ([MEMORY[0x1E69C8A38] sharedStore], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "groupID"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v24, "_canMoveSavedAccount:toGroupWithID:", v22, v25), v25, v24, (v26 & 1) == 0))
@@ -351,7 +351,7 @@
           [v23 setAttributes:1];
         }
 
-        [v32 addObject:v23];
+        [array addObject:v23];
 
         objc_destroyWeak(&v36);
       }
@@ -365,22 +365,22 @@
   objc_destroyWeak(&v44);
   objc_destroyWeak(&location);
 
-  return v32;
+  return array;
 }
 
-- (id)_contextMenuForSavedAccountAtIndexPath:(id)a3
+- (id)_contextMenuForSavedAccountAtIndexPath:(id)path
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFAccountTableViewController *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v4];
+  pathCopy = path;
+  tableView = [(_SFAccountTableViewController *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_initWeak(&location, self);
-    v55 = [v6 savedAccount];
-    v7 = [MEMORY[0x1E695DF70] array];
+    savedAccount = [v6 savedAccount];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = MEMORY[0x1E69DC628];
     v9 = _WBSLocalizedString();
     v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"doc.on.doc"];
@@ -391,9 +391,9 @@
     v11 = v6;
     v76 = v11;
     v12 = [v8 actionWithTitle:v9 image:v10 identifier:0 handler:v75];
-    [v7 addObject:v12];
+    [array addObject:v12];
 
-    if ([v55 credentialTypes])
+    if ([savedAccount credentialTypes])
     {
       v13 = MEMORY[0x1E69DC628];
       v14 = _WBSLocalizedString();
@@ -404,7 +404,7 @@
       v73[3] = &unk_1E848F480;
       v74 = v11;
       v16 = [v13 actionWithTitle:v14 image:v15 identifier:0 handler:v73];
-      [v7 addObject:v16];
+      [array addObject:v16];
     }
 
     if ([v11 safari_hasOneTimeCodeGenerator])
@@ -418,7 +418,7 @@
       v71[3] = &unk_1E848F480;
       v72 = v11;
       v20 = [v17 actionWithTitle:v18 image:v19 identifier:0 handler:v71];
-      [v7 addObject:v20];
+      [array addObject:v20];
     }
 
     if ([v11 safari_hasWebsite])
@@ -432,23 +432,23 @@
       v69[3] = &unk_1E848F480;
       v70 = v11;
       v24 = [v21 actionWithTitle:v22 image:v23 identifier:0 handler:v69];
-      [v7 addObject:v24];
+      [array addObject:v24];
     }
 
-    v25 = [MEMORY[0x1E695DF70] array];
-    if ([MEMORY[0x1E69C8880] isOngoingCredentialSharingEnabled] && -[_SFAccountTableConfiguration supportsOngoingCredentialSharing](self->_configuration, "supportsOngoingCredentialSharing") && objc_msgSend(v55, "canUserEditSavedAccount") && objc_msgSend(v55, "isCurrentUserOriginalContributor"))
+    array2 = [MEMORY[0x1E695DF70] array];
+    if ([MEMORY[0x1E69C8880] isOngoingCredentialSharingEnabled] && -[_SFAccountTableConfiguration supportsOngoingCredentialSharing](self->_configuration, "supportsOngoingCredentialSharing") && objc_msgSend(savedAccount, "canUserEditSavedAccount") && objc_msgSend(savedAccount, "isCurrentUserOriginalContributor"))
     {
-      v54 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
       v26 = MEMORY[0x1E69DC928];
       v66[0] = MEMORY[0x1E69E9820];
       v66[1] = 3221225472;
       v66[2] = __72___SFAccountTableViewController__contextMenuForSavedAccountAtIndexPath___block_invoke_5;
       v66[3] = &unk_1E848F4A8;
       objc_copyWeak(&v68, &location);
-      v27 = v55;
+      v27 = savedAccount;
       v67 = v27;
       v28 = [v26 elementWithUncachedProvider:v66];
-      [v54 addObject:v28];
+      [array3 addObject:v28];
 
       v49 = MEMORY[0x1E69DCC60];
       v29 = MEMORY[0x1E69DC628];
@@ -464,19 +464,19 @@
       v79[0] = v50;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:1];
       v31 = [v49 menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:v30];
-      [v54 addObject:v31];
+      [array3 addObject:v31];
 
       v32 = MEMORY[0x1E69DCC60];
       v53 = _WBSLocalizedString();
       v33 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.2"];
-      v34 = [v32 menuWithTitle:v53 image:v33 identifier:0 options:0 children:v54];
-      [v25 addObject:v34];
+      v34 = [v32 menuWithTitle:v53 image:v33 identifier:0 options:0 children:array3];
+      [array2 addObject:v34];
 
       objc_destroyWeak(&v65);
       objc_destroyWeak(&v68);
     }
 
-    if (-[_SFAccountTableConfiguration supportsShare](self->_configuration, "supportsShare", v49) && [v55 isOneTimeSharable])
+    if (-[_SFAccountTableConfiguration supportsShare](self->_configuration, "supportsShare", v49) && [savedAccount isOneTimeSharable])
     {
       v35 = MEMORY[0x1E69DC628];
       v36 = _WBSLocalizedString();
@@ -486,21 +486,21 @@
       v59[2] = __72___SFAccountTableViewController__contextMenuForSavedAccountAtIndexPath___block_invoke_7;
       v59[3] = &unk_1E848F4F8;
       objc_copyWeak(&v62, &location);
-      v60 = v55;
+      v60 = savedAccount;
       v61 = v11;
       v38 = [v35 actionWithTitle:v36 image:v37 identifier:0 handler:v59];
-      [v25 addObject:v38];
+      [array2 addObject:v38];
 
       objc_destroyWeak(&v62);
     }
 
-    if ([v25 count])
+    if ([array2 count])
     {
-      v39 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:v25];
-      [v7 addObject:v39];
+      v39 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:array2];
+      [array addObject:v39];
     }
 
-    if ([(_SFAccountTableViewController *)self _shouldShowDeleteContextMenuItemForSavedAccount:v55])
+    if ([(_SFAccountTableViewController *)self _shouldShowDeleteContextMenuItemForSavedAccount:savedAccount])
     {
       v40 = MEMORY[0x1E69DC628];
       v41 = _WBSLocalizedString();
@@ -510,7 +510,7 @@
       v56[2] = __72___SFAccountTableViewController__contextMenuForSavedAccountAtIndexPath___block_invoke_8;
       v56[3] = &unk_1E848F4D0;
       objc_copyWeak(&v58, &location);
-      v57 = v4;
+      v57 = pathCopy;
       v43 = [v40 actionWithTitle:v41 image:v42 identifier:0 handler:v56];
 
       [v43 setAttributes:2];
@@ -518,12 +518,12 @@
       v78 = v43;
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v78 count:1];
       v46 = [v44 menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:v45];
-      [v7 addObject:v46];
+      [array addObject:v46];
 
       objc_destroyWeak(&v58);
     }
 
-    v47 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 children:v7];
+    v47 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 children:array];
 
     objc_destroyWeak(&location);
   }
@@ -536,74 +536,74 @@
   return v47;
 }
 
-- (BOOL)_shouldShowDeleteContextMenuItemForSavedAccount:(id)a3
+- (BOOL)_shouldShowDeleteContextMenuItemForSavedAccount:(id)account
 {
-  v4 = a3;
-  if (!-[_SFAccountTableConfiguration supportsDelete](self->_configuration, "supportsDelete") || -[_SFAccountTableConfiguration isForFillingIndividualAccountFields](self->_configuration, "isForFillingIndividualAccountFields") || [v4 isRecentlyDeleted] && !objc_msgSend(v4, "isCurrentUserOriginalContributor"))
+  accountCopy = account;
+  if (!-[_SFAccountTableConfiguration supportsDelete](self->_configuration, "supportsDelete") || -[_SFAccountTableConfiguration isForFillingIndividualAccountFields](self->_configuration, "isForFillingIndividualAccountFields") || [accountCopy isRecentlyDeleted] && !objc_msgSend(accountCopy, "isCurrentUserOriginalContributor"))
   {
-    v5 = 0;
+    canUserEditSavedAccount = 0;
   }
 
   else
   {
-    v5 = [v4 canUserEditSavedAccount];
+    canUserEditSavedAccount = [accountCopy canUserEditSavedAccount];
   }
 
-  return v5;
+  return canUserEditSavedAccount;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v6 = [v11 conformsToProtocol:&unk_1F50920F8];
-  v7 = v11;
+  cellCopy = cell;
+  v6 = [cellCopy conformsToProtocol:&unk_1F50920F8];
+  v7 = cellCopy;
   if (v6)
   {
-    v8 = v11;
-    v9 = [v8 savedAccount];
-    v10 = [v9 highLevelDomain];
+    v8 = cellCopy;
+    savedAccount = [v8 savedAccount];
+    highLevelDomain = [savedAccount highLevelDomain];
 
-    if (v10)
+    if (highLevelDomain)
     {
-      [(_SFAccountTableViewController *)self _updateIconForDomain:v10 forCell:v8];
-      [(NSCountedSet *)self->_visibleDomains addObject:v10];
+      [(_SFAccountTableViewController *)self _updateIconForDomain:highLevelDomain forCell:v8];
+      [(NSCountedSet *)self->_visibleDomains addObject:highLevelDomain];
     }
 
-    v7 = v11;
+    v7 = cellCopy;
   }
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a4;
+  cellCopy = cell;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v10;
+  v7 = cellCopy;
   if (isKindOfClass)
   {
-    v8 = [v10 savedAccount];
-    v9 = [v8 highLevelDomain];
+    savedAccount = [cellCopy savedAccount];
+    highLevelDomain = [savedAccount highLevelDomain];
 
-    if (v9)
+    if (highLevelDomain)
     {
-      [(NSCountedSet *)self->_visibleDomains removeObject:v9];
+      [(NSCountedSet *)self->_visibleDomains removeObject:highLevelDomain];
     }
 
-    v7 = v10;
+    v7 = cellCopy;
   }
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 cellForRowAtIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 isEditing];
+    isEditing = [viewCopy isEditing];
 
-    if ((v10 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
       objc_initWeak(&location, self);
       v11 = MEMORY[0x1E69DC8D8];
@@ -612,7 +612,7 @@
       v14[2] = __91___SFAccountTableViewController_tableView_contextMenuConfigurationForRowAtIndexPath_point___block_invoke;
       v14[3] = &unk_1E848F520;
       objc_copyWeak(&v16, &location);
-      v15 = v8;
+      v15 = pathCopy;
       v12 = [v11 configurationWithIdentifier:v15 previewProvider:0 actionProvider:v14];
 
       objc_destroyWeak(&v16);
@@ -631,39 +631,39 @@ LABEL_6:
   return v12;
 }
 
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = [a4 identifier];
-  [(_SFAccountTableViewController *)self tableView:v7 didSelectRowAtIndexPath:v8];
+  viewCopy = view;
+  identifier = [configuration identifier];
+  [(_SFAccountTableViewController *)self tableView:viewCopy didSelectRowAtIndexPath:identifier];
 }
 
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path
 {
-  if (![(_SFAccountTableViewController *)self _hasMarkedText:a3])
+  if (![(_SFAccountTableViewController *)self _hasMarkedText:view])
   {
-    v5 = [(UISearchController *)self->_searchController searchBar];
-    [v5 _setEnabled:0 animated:1];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [searchBar _setEnabled:0 animated:1];
   }
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
-  v4 = [(UISearchController *)self->_searchController searchBar:a3];
+  v4 = [(UISearchController *)self->_searchController searchBar:view];
   [v4 _setEnabled:1 animated:0];
 }
 
-- (void)iconDidUpdateForDomain:(id)a3 iconController:(id)a4
+- (void)iconDidUpdateForDomain:(id)domain iconController:(id)controller
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  domainCopy = domain;
   v6 = WBS_LOG_CHANNEL_PREFIXPasswordsIcons();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558275;
     v11 = 1752392040;
     v12 = 2117;
-    v13 = v5;
+    v13 = domainCopy;
     _os_log_impl(&dword_1D4644000, v6, OS_LOG_TYPE_DEFAULT, "Icon did update; domain=%{sensitive, mask.hash}@", buf, 0x16u);
   }
 
@@ -672,57 +672,57 @@ LABEL_6:
   v8[2] = __71___SFAccountTableViewController_iconDidUpdateForDomain_iconController___block_invoke;
   v8[3] = &unk_1E848F548;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = domainCopy;
+  v7 = domainCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
-- (void)_updateIconForDomain:(id)a3 forCell:(id)a4
+- (void)_updateIconForDomain:(id)domain forCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_ASPasswordManagerIconController *)self->_iconController backgroundColorForDomain:v6];
-  [v7 showPlaceholderImageForDomain:v6 backgroundColor:v8];
+  domainCopy = domain;
+  cellCopy = cell;
+  v8 = [(_ASPasswordManagerIconController *)self->_iconController backgroundColorForDomain:domainCopy];
+  [cellCopy showPlaceholderImageForDomain:domainCopy backgroundColor:v8];
 
   iconController = self->_iconController;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62___SFAccountTableViewController__updateIconForDomain_forCell___block_invoke;
   v12[3] = &unk_1E848F598;
-  v13 = v7;
-  v14 = v6;
-  v15 = self;
-  v10 = v6;
-  v11 = v7;
+  v13 = cellCopy;
+  v14 = domainCopy;
+  selfCopy = self;
+  v10 = domainCopy;
+  v11 = cellCopy;
   [(_ASPasswordManagerIconController *)iconController iconForDomain:v10 responseHandler:v12];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   if ([(_SFAccountTableViewController *)self _shouldShowToolbarWhenSearching])
   {
-    v4 = [(_SFAccountTableViewController *)self navigationController];
-    [v4 setToolbarHidden:0 animated:1];
+    navigationController = [(_SFAccountTableViewController *)self navigationController];
+    [navigationController setToolbarHidden:0 animated:1];
   }
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v3 = [(_SFAccountTableViewController *)self navigationController];
-  [v3 setToolbarHidden:1 animated:1];
+  navigationController = [(_SFAccountTableViewController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:1];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v11 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  v5 = v11;
+  v5 = text;
   searchPattern = self->_searchPattern;
   if (!searchPattern)
   {
-    v7 = [(NSString *)v11 length];
-    v5 = v11;
+    v7 = [(NSString *)text length];
+    v5 = text;
     if (!v7)
     {
       goto LABEL_7;
@@ -734,15 +734,15 @@ LABEL_6:
   if (v5 != searchPattern)
   {
     v8 = [(NSString *)v5 isEqualToString:?];
-    v5 = v11;
+    v5 = text;
     if (!v8)
     {
-      v9 = [(NSString *)v11 copy];
+      v9 = [(NSString *)text copy];
       v10 = self->_searchPattern;
       self->_searchPattern = v9;
 
       [(_SFAccountTableViewController *)self searchPatternDidUpdate];
-      v5 = v11;
+      v5 = text;
     }
   }
 

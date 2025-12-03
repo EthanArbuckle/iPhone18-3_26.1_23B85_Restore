@@ -6,8 +6,8 @@
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)performBlock:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)performBlock:(id)block;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CURunLoopThread
@@ -33,27 +33,27 @@
 
   LogPrintF(ucat, "[CURunLoopThread _threadMain]", 0x1Eu, "RunLoop thread starting\n", v2, v3, v4, v5, v37);
 LABEL_5:
-  v8 = self;
-  objc_sync_enter(v8);
-  v8->_runLoop = CFRunLoopGetCurrent();
-  v8->_runLoopValid = 1;
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_runLoop = CFRunLoopGetCurrent();
+  selfCopy->_runLoopValid = 1;
+  objc_sync_exit(selfCopy);
 
   memset(&context, 0, sizeof(context));
   v9 = CFRunLoopSourceCreate(0, 0, &context);
   if (v9)
   {
-    CFRunLoopAddSource(v8->_runLoop, v9, *MEMORY[0x1E695E8D0]);
+    CFRunLoopAddSource(selfCopy->_runLoop, v9, *MEMORY[0x1E695E8D0]);
   }
 
   v38 = objc_autoreleasePoolPush();
-  threadInitializeHandler = v8->_threadInitializeHandler;
+  threadInitializeHandler = selfCopy->_threadInitializeHandler;
   if (threadInitializeHandler)
   {
     threadInitializeHandler[2]();
   }
 
-  v11 = v8;
+  v11 = selfCopy;
   objc_sync_enter(v11);
   v12 = [(NSMutableArray *)v11->_startBlocks copy];
   [(NSMutableArray *)v11->_startBlocks removeAllObjects];
@@ -157,13 +157,13 @@ LABEL_26:
 
   if (v9)
   {
-    CFRunLoopRemoveSource(v8->_runLoop, v9, *MEMORY[0x1E695E8D0]);
+    CFRunLoopRemoveSource(selfCopy->_runLoop, v9, *MEMORY[0x1E695E8D0]);
     CFRelease(v9);
   }
 
   v35 = v11;
   objc_sync_enter(v35);
-  v8->_runLoop = 0;
+  selfCopy->_runLoop = 0;
   objc_sync_exit(v35);
 
   v36 = v11->_dispatchQueue;
@@ -240,13 +240,13 @@ LABEL_5:
 
 - (BOOL)_scheduleStopThread
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  runLoopValid = v2->_runLoopValid;
-  v2->_runLoopValid = 0;
-  if (v2->_runLoop && runLoopValid)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  runLoopValid = selfCopy->_runLoopValid;
+  selfCopy->_runLoopValid = 0;
+  if (selfCopy->_runLoop && runLoopValid)
   {
-    ucat = v2->_ucat;
+    ucat = selfCopy->_ucat;
     if (ucat->var0 <= 30)
     {
       if (ucat->var0 == -1)
@@ -256,29 +256,29 @@ LABEL_5:
           goto LABEL_8;
         }
 
-        ucat = v2->_ucat;
+        ucat = selfCopy->_ucat;
       }
 
       LogPrintF(ucat, "[CURunLoopThread _scheduleStopThread]", 0x1Eu, "Scheduling stop of RunLoop thread\n", v3, v4, v5, v6, v13);
     }
 
 LABEL_8:
-    runLoop = v2->_runLoop;
+    runLoop = selfCopy->_runLoop;
     v11 = *MEMORY[0x1E695E8E0];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__CURunLoopThread__scheduleStopThread__block_invoke;
     block[3] = &unk_1E73A4F68;
-    block[4] = v2;
+    block[4] = selfCopy;
     CFRunLoopPerformBlock(runLoop, v11, block);
-    CFRunLoopWakeUp(v2->_runLoop);
+    CFRunLoopWakeUp(selfCopy->_runLoop);
     v9 = 1;
     goto LABEL_9;
   }
 
   v9 = 0;
 LABEL_9:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -318,17 +318,17 @@ LABEL_5:
   objc_sync_exit(obj);
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__CURunLoopThread_performBlock___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -572,13 +572,13 @@ void __27__CURunLoopThread_activate__block_invoke_2(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA328;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

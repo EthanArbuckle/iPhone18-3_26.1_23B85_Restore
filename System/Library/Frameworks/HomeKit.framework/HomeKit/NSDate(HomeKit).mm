@@ -22,11 +22,11 @@
 {
   v0 = objc_alloc(MEMORY[0x1E695DEE8]);
   v1 = [v0 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [v1 components:512 fromDate:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [v1 components:512 fromDate:date];
 
-  LOBYTE(v2) = [v3 weekday];
-  return v2;
+  LOBYTE(date) = [v3 weekday];
+  return date;
 }
 
 @end

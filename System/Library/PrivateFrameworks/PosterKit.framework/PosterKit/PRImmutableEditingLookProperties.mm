@@ -1,23 +1,23 @@
 @interface PRImmutableEditingLookProperties
-- (PRImmutableEditingLookProperties)initWithTimeFontConfiguration:(id)a3 titlePosterColor:(id)a4;
+- (PRImmutableEditingLookProperties)initWithTimeFontConfiguration:(id)configuration titlePosterColor:(id)color;
 @end
 
 @implementation PRImmutableEditingLookProperties
 
-- (PRImmutableEditingLookProperties)initWithTimeFontConfiguration:(id)a3 titlePosterColor:(id)a4
+- (PRImmutableEditingLookProperties)initWithTimeFontConfiguration:(id)configuration titlePosterColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = PRImmutableEditingLookProperties;
-  v8 = [(PREditingLookProperties *)&v14 initWithTimeFontConfiguration:v6 titlePosterColor:v7];
+  v8 = [(PREditingLookProperties *)&v14 initWithTimeFontConfiguration:configurationCopy titlePosterColor:colorCopy];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configurationCopy copy];
     timeFontConfiguration = v8->_timeFontConfiguration;
     v8->_timeFontConfiguration = v9;
 
-    v11 = [v7 copy];
+    v11 = [colorCopy copy];
     titlePosterColor = v8->_titlePosterColor;
     v8->_titlePosterColor = v11;
   }

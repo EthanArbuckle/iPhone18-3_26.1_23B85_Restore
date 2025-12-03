@@ -1,12 +1,12 @@
 @interface WFPageRenderer
 - (CGSize)inputSize;
-- (CGSize)sizeForPageAtIndex:(int64_t)a3;
+- (CGSize)sizeForPageAtIndex:(int64_t)index;
 - (UIPrintPageRenderer)renderer;
 - (double)margin;
 - (id)renderToImage;
-- (void)_renderToPDF:(id)a3 startingAtPage:(int64_t)a4 endingAtPage:(int64_t)a5 completionHandler:(id)a6;
-- (void)renderPDFPageIndex:(int64_t)a3 pages:(int64_t)a4 measuredIndicesByFormatter:(id)a5 drawnIndicesByFormatter:(id)a6 linkMetricsByWebView:(id)a7 y:(double)a8 paperSize:(CGSize)a9 shouldDrawPageAtIndexHandler:(id)a10 completionHandler:(id)a11;
-- (void)renderToPDF:(id)a3 startingAtPage:(int64_t)a4 endingAtPage:(int64_t)a5 completionHandler:(id)a6;
+- (void)_renderToPDF:(id)f startingAtPage:(int64_t)page endingAtPage:(int64_t)atPage completionHandler:(id)handler;
+- (void)renderPDFPageIndex:(int64_t)index pages:(int64_t)pages measuredIndicesByFormatter:(id)formatter drawnIndicesByFormatter:(id)byFormatter linkMetricsByWebView:(id)view y:(double)y paperSize:(CGSize)size shouldDrawPageAtIndexHandler:(id)self0 completionHandler:(id)self1;
+- (void)renderToPDF:(id)f startingAtPage:(int64_t)page endingAtPage:(int64_t)atPage completionHandler:(id)handler;
 - (void)updateRendererSize;
 @end
 
@@ -23,9 +23,9 @@
 
 - (double)margin
 {
-  v2 = [(WFPageRenderer *)self includeMargin];
+  includeMargin = [(WFPageRenderer *)self includeMargin];
   result = 0.0;
-  if (v2)
+  if (includeMargin)
   {
     return 18.0;
   }
@@ -93,23 +93,23 @@
 - (id)renderToImage
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(WFPageRenderer *)self renderer];
-  v4 = [v3 numberOfPages];
+  renderer = [(WFPageRenderer *)self renderer];
+  numberOfPages = [renderer numberOfPages];
 
-  v5 = [(WFPageRenderer *)self renderer];
-  [v5 printableRect];
+  renderer2 = [(WFPageRenderer *)self renderer];
+  [renderer2 printableRect];
   v7 = v6;
   v9 = v8;
 
   v10 = 0.0;
-  softLinkUIGraphicsBeginImageContextWithOptions(0, v7, v9 * v4, 0.0);
-  v27 = self;
-  v11 = [(WFPageRenderer *)self renderer];
-  [v11 prepareForDrawingPages:{0, v4}];
+  softLinkUIGraphicsBeginImageContextWithOptions(0, v7, v9 * numberOfPages, 0.0);
+  selfCopy = self;
+  renderer3 = [(WFPageRenderer *)self renderer];
+  [renderer3 prepareForDrawingPages:{0, numberOfPages}];
 
-  v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  v26 = v4;
-  if (v4 >= 1)
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  v26 = numberOfPages;
+  if (numberOfPages >= 1)
   {
     v13 = 0;
     do
@@ -118,8 +118,8 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v14 = [(WFPageRenderer *)v27 renderer];
-      v15 = [v14 printFormattersForPageAtIndex:v13];
+      renderer4 = [(WFPageRenderer *)selfCopy renderer];
+      v15 = [renderer4 printFormattersForPageAtIndex:v13];
 
       v16 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v16)
@@ -136,12 +136,12 @@
             }
 
             v20 = *(*(&v28 + 1) + 8 * i);
-            v21 = [v12 objectForKey:v20];
-            v22 = [v21 integerValue];
+            v21 = [strongToStrongObjectsMapTable objectForKey:v20];
+            integerValue = [v21 integerValue];
 
-            [v20 drawInRect:v22 forPageAtIndex:{0.0, v10, v7, v9}];
-            v23 = [MEMORY[0x277CCABB0] numberWithInteger:v22 + 1];
-            [v12 setObject:v23 forKey:v20];
+            [v20 drawInRect:integerValue forPageAtIndex:{0.0, v10, v7, v9}];
+            v23 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
+            [strongToStrongObjectsMapTable setObject:v23 forKey:v20];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -163,34 +163,34 @@
   return v24;
 }
 
-- (void)renderPDFPageIndex:(int64_t)a3 pages:(int64_t)a4 measuredIndicesByFormatter:(id)a5 drawnIndicesByFormatter:(id)a6 linkMetricsByWebView:(id)a7 y:(double)a8 paperSize:(CGSize)a9 shouldDrawPageAtIndexHandler:(id)a10 completionHandler:(id)a11
+- (void)renderPDFPageIndex:(int64_t)index pages:(int64_t)pages measuredIndicesByFormatter:(id)formatter drawnIndicesByFormatter:(id)byFormatter linkMetricsByWebView:(id)view y:(double)y paperSize:(CGSize)size shouldDrawPageAtIndexHandler:(id)self0 completionHandler:(id)self1
 {
-  width = a9.width;
-  height = a9.height;
+  width = size.width;
+  height = size.height;
   v102 = *MEMORY[0x277D85DE8];
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  v22 = a11;
-  v23 = [(WFPageRenderer *)self matchInputSize];
+  formatterCopy = formatter;
+  byFormatterCopy = byFormatter;
+  viewCopy = view;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  matchInputSize = [(WFPageRenderer *)self matchInputSize];
   *v24.i64 = width;
   *&v24.i64[1] = height;
-  v65 = v20;
-  v66 = v22;
+  v65 = viewCopy;
+  v66 = completionHandlerCopy;
   rect = v24;
-  v64 = v19;
-  if (v23)
+  v64 = byFormatterCopy;
+  if (matchInputSize)
   {
-    v62 = v21;
+    v62 = handlerCopy;
     v71 = *MEMORY[0x277CBF3A8];
     v99 = 0u;
     v100 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v25 = [(WFPageRenderer *)self renderer];
-    v63 = a3;
-    v26 = [v25 printFormattersForPageAtIndex:a3];
+    renderer = [(WFPageRenderer *)self renderer];
+    indexCopy = index;
+    v26 = [renderer printFormattersForPageAtIndex:index];
 
     v27 = [v26 countByEnumeratingWithState:&v97 objects:v101 count:16];
     if (v27)
@@ -207,18 +207,18 @@
           }
 
           v31 = *(*(&v97 + 1) + 8 * i);
-          v32 = [v18 objectForKey:v31];
-          v33 = [v32 integerValue];
+          v32 = [formatterCopy objectForKey:v31];
+          integerValue = [v32 integerValue];
 
-          [v31 rectForPageAtIndex:v33];
+          [v31 rectForPageAtIndex:integerValue];
           v70 = v34;
-          [v31 rectForPageAtIndex:v33];
+          [v31 rectForPageAtIndex:integerValue];
           v35.f64[0] = v70;
           v35.f64[1] = v36;
           v37 = vbslq_s8(vceqzq_f64(v35), rect, v35);
           v71 = vbslq_s8(vcgtq_f64(v71, v37), v71, v37);
-          v38 = [MEMORY[0x277CCABB0] numberWithInteger:v33 + 1];
-          [v18 setObject:v38 forKey:v31];
+          v38 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
+          [formatterCopy setObject:v38 forKey:v31];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v97 objects:v101 count:16];
@@ -228,18 +228,18 @@
     }
 
     rect = v71;
-    v39 = v63;
-    v21 = v62;
+    indexCopy2 = indexCopy;
+    handlerCopy = v62;
   }
 
   else
   {
-    v39 = a3;
+    indexCopy2 = index;
   }
 
-  v40 = [(WFPageRenderer *)self includeMargin];
+  includeMargin = [(WFPageRenderer *)self includeMargin];
   v41 = 0;
-  if (v40)
+  if (includeMargin)
   {
     v42 = 18.0;
   }
@@ -257,8 +257,8 @@
   y = v103.origin.y;
   v48 = v103.size.width;
   v49 = v103.size.height;
-  v50 = [(WFPageRenderer *)self renderer];
-  v51 = [v50 printFormattersForPageAtIndex:v39];
+  renderer2 = [(WFPageRenderer *)self renderer];
+  v51 = [renderer2 printFormattersForPageAtIndex:indexCopy2];
   v52 = v51;
   v53 = MEMORY[0x277CBEBF8];
   if (v51)
@@ -268,7 +268,7 @@
 
   v54 = v53;
 
-  v55 = v21[2](v21, v39);
+  v55 = handlerCopy[2](handlerCopy, indexCopy2);
   v56 = v55;
   if (v55)
   {
@@ -282,10 +282,10 @@
   v85 = v64;
   v96 = v56;
   v87 = x;
-  v88 = y;
+  yCopy = y;
   v89 = v48;
   v90 = v49;
-  v91 = a8;
+  yCopy2 = y;
   v92 = 0;
   v93 = 0;
   v95 = rect;
@@ -295,23 +295,23 @@
   v72[1] = 3221225472;
   v72[2] = __174__WFPageRenderer_renderPDFPageIndex_pages_measuredIndicesByFormatter_drawnIndicesByFormatter_linkMetricsByWebView_y_paperSize_shouldDrawPageAtIndexHandler_completionHandler___block_invoke_4;
   v72[3] = &unk_2783473E8;
-  v78 = v39;
-  v79 = a4;
+  v78 = indexCopy2;
+  pagesCopy = pages;
   v72[4] = self;
-  v73 = v18;
+  v73 = formatterCopy;
   v74 = v85;
   v75 = v86;
-  v80 = a8;
+  yCopy3 = y;
   v81 = rect;
   v82 = width;
   v83 = height;
-  v76 = v21;
+  v76 = handlerCopy;
   v77 = v66;
   v57 = v66;
-  v58 = v21;
+  v58 = handlerCopy;
   v59 = v86;
   v60 = v85;
-  v61 = v18;
+  v61 = formatterCopy;
   [v54 if_enumerateAsynchronouslyInSequence:v84 completionHandler:v72];
 }
 
@@ -513,25 +513,25 @@ void __174__WFPageRenderer_renderPDFPageIndex_pages_measuredIndicesByFormatter_d
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_renderToPDF:(id)a3 startingAtPage:(int64_t)a4 endingAtPage:(int64_t)a5 completionHandler:(id)a6
+- (void)_renderToPDF:(id)f startingAtPage:(int64_t)page endingAtPage:(int64_t)atPage completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [a3 path];
-  v12 = [(WFPageRenderer *)self renderer];
-  [v12 paperRect];
-  softLinkUIGraphicsBeginPDFContextToFile(v11, 0, v13, v14, v15, v16);
+  handlerCopy = handler;
+  path = [f path];
+  renderer = [(WFPageRenderer *)self renderer];
+  [renderer paperRect];
+  softLinkUIGraphicsBeginPDFContextToFile(path, 0, v13, v14, v15, v16);
 
-  v17 = [(WFPageRenderer *)self renderer];
-  v18 = [v17 numberOfPages];
+  renderer2 = [(WFPageRenderer *)self renderer];
+  numberOfPages = [renderer2 numberOfPages];
 
-  v19 = [(WFPageRenderer *)self renderer];
-  [v19 prepareForDrawingPages:{0, v18}];
+  renderer3 = [(WFPageRenderer *)self renderer];
+  [renderer3 prepareForDrawingPages:{0, numberOfPages}];
 
-  v20 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  v21 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  v22 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-  v23 = [(WFPageRenderer *)self renderer];
-  [v23 paperRect];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  renderer4 = [(WFPageRenderer *)self renderer];
+  [renderer4 paperRect];
   v25 = v24;
   v27 = v26;
 
@@ -539,15 +539,15 @@ void __174__WFPageRenderer_renderPDFPageIndex_pages_measuredIndicesByFormatter_d
   v31[1] = 3221225472;
   v31[2] = __77__WFPageRenderer__renderToPDF_startingAtPage_endingAtPage_completionHandler___block_invoke;
   v31[3] = &__block_descriptor_48_e8_B16__0q8l;
-  v31[4] = a4;
-  v31[5] = a5;
+  v31[4] = page;
+  v31[5] = atPage;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __77__WFPageRenderer__renderToPDF_startingAtPage_endingAtPage_completionHandler___block_invoke_2;
   v29[3] = &unk_27834A5A8;
-  v30 = v10;
-  v28 = v10;
-  [(WFPageRenderer *)self renderPDFPageIndex:0 pages:v18 measuredIndicesByFormatter:v20 drawnIndicesByFormatter:v21 linkMetricsByWebView:v22 y:v31 paperSize:0.0 shouldDrawPageAtIndexHandler:v25 completionHandler:v27, v29];
+  v30 = handlerCopy;
+  v28 = handlerCopy;
+  [(WFPageRenderer *)self renderPDFPageIndex:0 pages:numberOfPages measuredIndicesByFormatter:strongToStrongObjectsMapTable drawnIndicesByFormatter:strongToStrongObjectsMapTable2 linkMetricsByWebView:strongToStrongObjectsMapTable3 y:v31 paperSize:0.0 shouldDrawPageAtIndexHandler:v25 completionHandler:v27, v29];
 }
 
 uint64_t __77__WFPageRenderer__renderToPDF_startingAtPage_endingAtPage_completionHandler___block_invoke_2(uint64_t a1)
@@ -558,10 +558,10 @@ uint64_t __77__WFPageRenderer__renderToPDF_startingAtPage_endingAtPage_completio
   return v2();
 }
 
-- (void)renderToPDF:(id)a3 startingAtPage:(int64_t)a4 endingAtPage:(int64_t)a5 completionHandler:(id)a6
+- (void)renderToPDF:(id)f startingAtPage:(int64_t)page endingAtPage:(int64_t)atPage completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  fCopy = f;
+  handlerCopy = handler;
   if (renderToPDF_startingAtPage_endingAtPage_completionHandler__onceToken != -1)
   {
     dispatch_once(&renderToPDF_startingAtPage_endingAtPage_completionHandler__onceToken, &__block_literal_global_12005);
@@ -573,12 +573,12 @@ uint64_t __77__WFPageRenderer__renderToPDF_startingAtPage_endingAtPage_completio
   block[2] = __76__WFPageRenderer_renderToPDF_startingAtPage_endingAtPage_completionHandler___block_invoke_2;
   block[3] = &unk_278347328;
   block[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = fCopy;
+  pageCopy = page;
+  atPageCopy = atPage;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = fCopy;
   dispatch_async(v12, block);
 }
 
@@ -612,23 +612,23 @@ uint64_t __76__WFPageRenderer_renderToPDF_startingAtPage_endingAtPage_completion
   return MEMORY[0x2821F96F8]();
 }
 
-- (CGSize)sizeForPageAtIndex:(int64_t)a3
+- (CGSize)sizeForPageAtIndex:(int64_t)index
 {
   v34 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
-  v7 = [(WFPageRenderer *)self renderer];
-  [v7 paperRect];
+  renderer = [(WFPageRenderer *)self renderer];
+  [renderer paperRect];
   v9 = v8;
   v11 = v10;
 
-  v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v13 = [(WFPageRenderer *)self renderer];
-  v14 = [v13 printFormattersForPageAtIndex:a3];
+  renderer2 = [(WFPageRenderer *)self renderer];
+  v14 = [renderer2 printFormattersForPageAtIndex:index];
 
   v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v15)
@@ -645,10 +645,10 @@ uint64_t __76__WFPageRenderer_renderToPDF_startingAtPage_endingAtPage_completion
         }
 
         v19 = *(*(&v29 + 1) + 8 * i);
-        v20 = [v12 objectForKey:v19];
-        v21 = [v20 integerValue];
+        v20 = [strongToStrongObjectsMapTable objectForKey:v19];
+        integerValue = [v20 integerValue];
 
-        [v19 rectForPageAtIndex:v21];
+        [v19 rectForPageAtIndex:integerValue];
         if (v22 == 0.0)
         {
           v23 = v9;
@@ -664,7 +664,7 @@ uint64_t __76__WFPageRenderer_renderToPDF_startingAtPage_endingAtPage_completion
           v6 = v23;
         }
 
-        [v19 rectForPageAtIndex:v21];
+        [v19 rectForPageAtIndex:integerValue];
         if (v24 == 0.0)
         {
           v25 = v11;
@@ -680,8 +680,8 @@ uint64_t __76__WFPageRenderer_renderToPDF_startingAtPage_endingAtPage_completion
           v5 = v25;
         }
 
-        v26 = [MEMORY[0x277CCABB0] numberWithInteger:v21 + 1];
-        [v12 setObject:v26 forKey:v19];
+        v26 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
+        [strongToStrongObjectsMapTable setObject:v26 forKey:v19];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];

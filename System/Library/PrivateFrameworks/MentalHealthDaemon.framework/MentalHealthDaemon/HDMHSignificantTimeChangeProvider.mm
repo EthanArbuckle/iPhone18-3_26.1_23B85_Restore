@@ -2,7 +2,7 @@
 - (HDMHSignificantTimeChangeProvider)init;
 - (void)dealloc;
 - (void)invalidate;
-- (void)registerForSignificantTimeChangesWithQueue:(id)a3 completion:(id)a4;
+- (void)registerForSignificantTimeChangesWithQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation HDMHSignificantTimeChangeProvider
@@ -14,19 +14,19 @@
   return [(HDMHSignificantTimeChangeProvider *)&v3 init];
 }
 
-- (void)registerForSignificantTimeChangesWithQueue:(id)a3 completion:(id)a4
+- (void)registerForSignificantTimeChangesWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   [(HDMHSignificantTimeChangeProvider *)self invalidate];
-  v8 = [@"SignificantTimeChangeNotification" UTF8String];
+  uTF8String = [@"SignificantTimeChangeNotification" UTF8String];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __91__HDMHSignificantTimeChangeProvider_registerForSignificantTimeChangesWithQueue_completion___block_invoke;
   handler[3] = &unk_2798AAC88;
-  v11 = v6;
-  v9 = v6;
-  notify_register_dispatch(v8, &self->_notifyToken, v7, handler);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  notify_register_dispatch(uTF8String, &self->_notifyToken, queueCopy, handler);
 }
 
 uint64_t __91__HDMHSignificantTimeChangeProvider_registerForSignificantTimeChangesWithQueue_completion___block_invoke(uint64_t a1)
@@ -51,7 +51,7 @@ uint64_t __91__HDMHSignificantTimeChangeProvider_registerForSignificantTimeChang
     v8 = 138543618;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v5 = v9;
     _os_log_impl(&dword_258977000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Invalidating significant time change provider %p", &v8, 0x16u);
   }

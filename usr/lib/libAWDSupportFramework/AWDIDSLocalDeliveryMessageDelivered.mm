@@ -1,19 +1,19 @@
 @interface AWDIDSLocalDeliveryMessageDelivered
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsToDefaultPairedDevice:(BOOL)a3;
-- (void)setHasLinkType:(BOOL)a3;
-- (void)setHasMessageSize:(BOOL)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasRTT:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsToDefaultPairedDevice:(BOOL)device;
+- (void)setHasLinkType:(BOOL)type;
+- (void)setHasMessageSize:(BOOL)size;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasRTT:(BOOL)t;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSLocalDeliveryMessageDelivered
@@ -26,9 +26,9 @@
   [(AWDIDSLocalDeliveryMessageDelivered *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 64;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsToDefaultPairedDevice:(BOOL)a3
+- (void)setHasIsToDefaultPairedDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 2;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMessageSize:(BOOL)a3
+- (void)setHasMessageSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 8;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRTT:(BOOL)a3
+- (void)setHasRTT:(BOOL)t
 {
-  if (a3)
+  if (t)
   {
     v3 = 32;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasLinkType:(BOOL)a3
+- (void)setHasLinkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 16;
   }
@@ -125,22 +125,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 0x40) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   service = self->_service;
   if (service)
   {
-    [v3 setObject:service forKey:@"service"];
+    [dictionary setObject:service forKey:@"service"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_isToDefaultPairedDevice), @"isToDefaultPairedDevice"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_isToDefaultPairedDevice), @"isToDefaultPairedDevice"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -159,7 +159,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_messageSize), @"messageSize"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_messageSize), @"messageSize"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -173,7 +173,7 @@ LABEL_8:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_deliveryError), @"deliveryError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_deliveryError), @"deliveryError"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -184,17 +184,17 @@ LABEL_9:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_linkType), @"linkType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_linkType), @"linkType"}];
     if ((*&self->_has & 0x10) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_11;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rTT), @"RTT"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rTT), @"RTT"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -205,13 +205,13 @@ LABEL_10:
   if ((has & 0x10) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_priority), @"priority"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_priority), @"priority"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 0x40) != 0)
   {
@@ -305,24 +305,24 @@ LABEL_17:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 0x40) != 0)
   {
-    *(a3 + 7) = self->_timestamp;
-    *(a3 + 72) |= 0x40u;
+    *(to + 7) = self->_timestamp;
+    *(to + 72) |= 0x40u;
   }
 
   if (self->_service)
   {
-    [a3 setService:?];
+    [to setService:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_isToDefaultPairedDevice;
-    *(a3 + 72) |= 2u;
+    *(to + 2) = self->_isToDefaultPairedDevice;
+    *(to + 72) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -341,8 +341,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 4) = self->_messageSize;
-  *(a3 + 72) |= 8u;
+  *(to + 4) = self->_messageSize;
+  *(to + 72) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -356,8 +356,8 @@ LABEL_8:
   }
 
 LABEL_15:
-  *(a3 + 1) = self->_deliveryError;
-  *(a3 + 72) |= 1u;
+  *(to + 1) = self->_deliveryError;
+  *(to + 72) |= 1u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -371,8 +371,8 @@ LABEL_9:
   }
 
 LABEL_16:
-  *(a3 + 6) = self->_rTT;
-  *(a3 + 72) |= 0x20u;
+  *(to + 6) = self->_rTT;
+  *(to + 72) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -386,21 +386,21 @@ LABEL_10:
   }
 
 LABEL_17:
-  *(a3 + 3) = self->_linkType;
-  *(a3 + 72) |= 4u;
+  *(to + 3) = self->_linkType;
+  *(to + 72) |= 4u;
   if ((*&self->_has & 0x10) == 0)
   {
     return;
   }
 
 LABEL_11:
-  *(a3 + 5) = self->_priority;
-  *(a3 + 72) |= 0x10u;
+  *(to + 5) = self->_priority;
+  *(to + 72) |= 0x10u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x40) != 0)
   {
@@ -408,7 +408,7 @@ LABEL_11:
     *(v5 + 72) |= 0x40u;
   }
 
-  *(v6 + 64) = [(NSString *)self->_service copyWithZone:a3];
+  *(v6 + 64) = [(NSString *)self->_service copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -489,22 +489,22 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 72);
+    v7 = *(equal + 72);
     if ((has & 0x40) != 0)
     {
-      if ((*(a3 + 72) & 0x40) == 0 || self->_timestamp != *(a3 + 7))
+      if ((*(equal + 72) & 0x40) == 0 || self->_timestamp != *(equal + 7))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 72) & 0x40) != 0)
+    else if ((*(equal + 72) & 0x40) != 0)
     {
 LABEL_39:
       LOBYTE(v5) = 0;
@@ -512,7 +512,7 @@ LABEL_39:
     }
 
     service = self->_service;
-    if (service | *(a3 + 8))
+    if (service | *(equal + 8))
     {
       v5 = [(NSString *)service isEqual:?];
       if (!v5)
@@ -525,73 +525,73 @@ LABEL_39:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 72) & 2) == 0 || self->_isToDefaultPairedDevice != *(a3 + 2))
+      if ((*(equal + 72) & 2) == 0 || self->_isToDefaultPairedDevice != *(equal + 2))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 72) & 2) != 0)
+    else if ((*(equal + 72) & 2) != 0)
     {
       goto LABEL_39;
     }
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 72) & 8) == 0 || self->_messageSize != *(a3 + 4))
+      if ((*(equal + 72) & 8) == 0 || self->_messageSize != *(equal + 4))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 72) & 8) != 0)
+    else if ((*(equal + 72) & 8) != 0)
     {
       goto LABEL_39;
     }
 
     if (has)
     {
-      if ((*(a3 + 72) & 1) == 0 || self->_deliveryError != *(a3 + 1))
+      if ((*(equal + 72) & 1) == 0 || self->_deliveryError != *(equal + 1))
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(a3 + 72))
+    else if (*(equal + 72))
     {
       goto LABEL_39;
     }
 
     if ((has & 0x20) != 0)
     {
-      if ((*(a3 + 72) & 0x20) == 0 || self->_rTT != *(a3 + 6))
+      if ((*(equal + 72) & 0x20) == 0 || self->_rTT != *(equal + 6))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 72) & 0x20) != 0)
+    else if ((*(equal + 72) & 0x20) != 0)
     {
       goto LABEL_39;
     }
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 72) & 4) == 0 || self->_linkType != *(a3 + 3))
+      if ((*(equal + 72) & 4) == 0 || self->_linkType != *(equal + 3))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 72) & 4) != 0)
+    else if ((*(equal + 72) & 4) != 0)
     {
       goto LABEL_39;
     }
 
-    LOBYTE(v5) = (*(a3 + 72) & 0x10) == 0;
+    LOBYTE(v5) = (*(equal + 72) & 0x10) == 0;
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 72) & 0x10) == 0 || self->_priority != *(a3 + 5))
+      if ((*(equal + 72) & 0x10) == 0 || self->_priority != *(equal + 5))
       {
         goto LABEL_39;
       }
@@ -696,25 +696,25 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 72) & 0x40) != 0)
+  if ((*(from + 72) & 0x40) != 0)
   {
-    self->_timestamp = *(a3 + 7);
+    self->_timestamp = *(from + 7);
     *&self->_has |= 0x40u;
   }
 
-  if (*(a3 + 8))
+  if (*(from + 8))
   {
     [(AWDIDSLocalDeliveryMessageDelivered *)self setService:?];
   }
 
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 2) != 0)
   {
-    self->_isToDefaultPairedDevice = *(a3 + 2);
+    self->_isToDefaultPairedDevice = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 72);
+    v5 = *(from + 72);
     if ((v5 & 8) == 0)
     {
 LABEL_7:
@@ -727,14 +727,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 72) & 8) == 0)
+  else if ((*(from + 72) & 8) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_messageSize = *(a3 + 4);
+  self->_messageSize = *(from + 4);
   *&self->_has |= 8u;
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 1) == 0)
   {
 LABEL_8:
@@ -747,9 +747,9 @@ LABEL_8:
   }
 
 LABEL_15:
-  self->_deliveryError = *(a3 + 1);
+  self->_deliveryError = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -762,9 +762,9 @@ LABEL_9:
   }
 
 LABEL_16:
-  self->_rTT = *(a3 + 6);
+  self->_rTT = *(from + 6);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 4) == 0)
   {
 LABEL_10:
@@ -777,15 +777,15 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_linkType = *(a3 + 3);
+  self->_linkType = *(from + 3);
   *&self->_has |= 4u;
-  if ((*(a3 + 72) & 0x10) == 0)
+  if ((*(from + 72) & 0x10) == 0)
   {
     return;
   }
 
 LABEL_11:
-  self->_priority = *(a3 + 5);
+  self->_priority = *(from + 5);
   *&self->_has |= 0x10u;
 }
 

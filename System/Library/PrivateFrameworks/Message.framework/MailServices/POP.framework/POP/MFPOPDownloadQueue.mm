@@ -1,6 +1,6 @@
 @interface MFPOPDownloadQueue
-- (BOOL)addItem:(id)a3;
-- (BOOL)handleItems:(id)a3;
+- (BOOL)addItem:(id)item;
+- (BOOL)handleItems:(id)items;
 - (MFPOPDownloadQueue)init;
 @end
 
@@ -13,14 +13,14 @@
   return [(MFBufferedQueue *)&v3 initWithMaximumSize:0x20000 latency:5.0];
 }
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
+  itemCopy = item;
+  v5 = itemCopy;
   if (self->startDate)
   {
-    v6 = [v4 dateReceived];
-    if ([v6 compare:self->startDate] == -1)
+    dateReceived = [itemCopy dateReceived];
+    if ([dateReceived compare:self->startDate] == -1)
     {
       [(MFBufferedQueue *)self flush];
 
@@ -29,14 +29,14 @@
     }
   }
 
-  v7 = [(MFMailboxUid *)self->_mailbox store];
-  [v5 setMessageStore:v7];
+  store = [(MFMailboxUid *)self->_mailbox store];
+  [v5 setMessageStore:store];
 
   uidStore = self->_uidStore;
   if (uidStore)
   {
-    v9 = [v5 messageID];
-    v10 = [(MFSqliteMessageIDStore *)uidStore flagsForUID:v9];
+    messageID = [v5 messageID];
+    v10 = [(MFSqliteMessageIDStore *)uidStore flagsForUID:messageID];
 
     if (v10)
     {
@@ -53,41 +53,41 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)handleItems:(id)a3
+- (BOOL)handleItems:(id)items
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277D070E8]);
-  v6 = [(MFMailMessageLibrary *)self->_library persistence];
-  v7 = [v6 hookRegistry];
+  persistence = [(MFMailMessageLibrary *)self->_library persistence];
+  hookRegistry = [persistence hookRegistry];
 
-  [v7 persistenceWillBeginUpdates];
-  v8 = [(MFMailMessageLibrary *)self->_library addMessages:v4 withMailbox:self->_mailbox newMessagesByOldMessage:0 remoteIDs:0 setFlags:0 addPOPUIDs:1 dataSectionsByMessage:0 generationWindow:v5];
+  [hookRegistry persistenceWillBeginUpdates];
+  v8 = [(MFMailMessageLibrary *)self->_library addMessages:itemsCopy withMailbox:self->_mailbox newMessagesByOldMessage:0 remoteIDs:0 setFlags:0 addPOPUIDs:1 dataSectionsByMessage:0 generationWindow:v5];
   if ([v8 count])
   {
-    [v7 persistenceDidAddMessages:v8 generationWindow:v5];
-    v9 = [(MFMailMessageLibrary *)self->_library persistence];
-    v10 = [v9 messageChangeManager];
-    [v10 didReflectNewMessages:v8];
+    [hookRegistry persistenceDidAddMessages:v8 generationWindow:v5];
+    persistence2 = [(MFMailMessageLibrary *)self->_library persistence];
+    messageChangeManager = [persistence2 messageChangeManager];
+    [messageChangeManager didReflectNewMessages:v8];
   }
 
-  [v7 persistenceDidFinishUpdates];
-  v11 = [MEMORY[0x277D281F0] currentMonitor];
-  if ([v11 gotNewMessagesState])
+  [hookRegistry persistenceDidFinishUpdates];
+  currentMonitor = [MEMORY[0x277D281F0] currentMonitor];
+  if ([currentMonitor gotNewMessagesState])
   {
-    v27 = v7;
+    v27 = hookRegistry;
     v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-259200.0];
     [v12 timeIntervalSince1970];
     v14 = v13;
 
-    v15 = [v11 gotNewMessagesState];
+    gotNewMessagesState = [currentMonitor gotNewMessagesState];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
     v16 = v8;
     v28 = v5;
-    v29 = v4;
+    v29 = itemsCopy;
     v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v17)
     {
@@ -102,31 +102,31 @@ LABEL_9:
           }
 
           v20 = *(*(&v30 + 1) + 8 * i);
-          v21 = [v20 messageFlags];
-          if ((v21 & 1) == 0)
+          messageFlags = [v20 messageFlags];
+          if ((messageFlags & 1) == 0)
           {
             [v20 dateReceivedAsTimeIntervalSince1970];
             if (v22 > v14)
             {
               if ([v20 conversationFlags])
               {
-                v15 = 3;
+                gotNewMessagesState = 3;
                 goto LABEL_21;
               }
 
-              if (v15 <= 2)
+              if (gotNewMessagesState <= 2)
               {
                 v23 = 2;
               }
 
               else
               {
-                v23 = v15;
+                v23 = gotNewMessagesState;
               }
 
-              if ((v21 & 0x1000000) != 0)
+              if ((messageFlags & 0x1000000) != 0)
               {
-                v15 = v23;
+                gotNewMessagesState = v23;
               }
             }
           }
@@ -145,12 +145,12 @@ LABEL_9:
 LABEL_21:
 
     v5 = v28;
-    v4 = v29;
-    v7 = v27;
-    [v11 setGotNewMessagesState:v15];
+    itemsCopy = v29;
+    hookRegistry = v27;
+    [currentMonitor setGotNewMessagesState:gotNewMessagesState];
   }
 
-  v24 = [v4 count];
+  v24 = [itemsCopy count];
   LOBYTE(v24) = v24 == [v8 count];
 
   v25 = *MEMORY[0x277D85DE8];

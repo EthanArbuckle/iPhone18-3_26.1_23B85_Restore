@@ -1,30 +1,30 @@
 @interface AKURLRequestProviderImpl
-- (AKURLRequestProviderImpl)initWithContext:(id)a3;
-- (AKURLRequestProviderImpl)initWithContext:(id)a3 url:(id)a4;
-- (AKURLRequestProviderImpl)initWithContext:(id)a3 urlBagKey:(id)a4;
-- (AKURLRequestProviderImpl)initWithContext:(id)a3 urlBagKey:(id)a4 shouldCacheResource:(BOOL)a5;
-- (AKURLRequestProviderImpl)initWithContext:(id)a3 urlBagKey:(id)a4 shouldCacheResource:(BOOL)a5 accountManager:(id)a6;
-- (AKURLRequestProviderImpl)initWithUrlBagKey:(id)a3;
-- (BOOL)_validateDataExists:(id)a3;
-- (BOOL)_validateErrorCode:(id)a3 withKey:(id)a4;
-- (BOOL)_validateJSONResponseData:(id)a3 error:(id *)a4;
+- (AKURLRequestProviderImpl)initWithContext:(id)context;
+- (AKURLRequestProviderImpl)initWithContext:(id)context url:(id)url;
+- (AKURLRequestProviderImpl)initWithContext:(id)context urlBagKey:(id)key;
+- (AKURLRequestProviderImpl)initWithContext:(id)context urlBagKey:(id)key shouldCacheResource:(BOOL)resource;
+- (AKURLRequestProviderImpl)initWithContext:(id)context urlBagKey:(id)key shouldCacheResource:(BOOL)resource accountManager:(id)manager;
+- (AKURLRequestProviderImpl)initWithUrlBagKey:(id)key;
+- (BOOL)_validateDataExists:(id)exists;
+- (BOOL)_validateErrorCode:(id)code withKey:(id)key;
+- (BOOL)_validateJSONResponseData:(id)data error:(id *)error;
 - (BOOL)_validateResponseBodyFormat;
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4;
+- (BOOL)signRequest:(id)request error:(id *)error;
+- (BOOL)validateResponseData:(id)data error:(id *)error;
 - (NSDictionary)serverCompatibleRequestBody;
-- (id)_errorFromResponseDictionary:(id)a3;
-- (id)appendRequestUrl:(id)a3 queryParameterNamed:(id)a4 value:(id)a5;
-- (id)responseDictionaryWithData:(id)a3 error:(id *)a4;
-- (id)serverCompatibleRequestBodyWithPayload:(id)a3;
-- (void)buildRequestWithCompletion:(id)a3;
-- (void)requestURLWithCompletion:(id)a3;
+- (id)_errorFromResponseDictionary:(id)dictionary;
+- (id)appendRequestUrl:(id)url queryParameterNamed:(id)named value:(id)value;
+- (id)responseDictionaryWithData:(id)data error:(id *)error;
+- (id)serverCompatibleRequestBodyWithPayload:(id)payload;
+- (void)buildRequestWithCompletion:(id)completion;
+- (void)requestURLWithCompletion:(id)completion;
 @end
 
 @implementation AKURLRequestProviderImpl
 
 - (BOOL)_validateResponseBodyFormat
 {
-  v4 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (![(AKURLRequestProviderImpl *)self expectedResponseType])
   {
@@ -34,7 +34,7 @@
   oslog[0] = _AKLogSystem();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_ERROR))
   {
-    sub_100036FE8(v6, [(AKURLRequestProviderImpl *)v4 expectedResponseType]);
+    sub_100036FE8(v6, [(AKURLRequestProviderImpl *)selfCopy expectedResponseType]);
     _os_log_error_impl(&_mh_execute_header, oslog[0], OS_LOG_TYPE_ERROR, "Can't validate response for type: %lu", v6, 0xCu);
   }
 
@@ -42,215 +42,215 @@
   return 0;
 }
 
-- (AKURLRequestProviderImpl)initWithUrlBagKey:(id)a3
+- (AKURLRequestProviderImpl)initWithUrlBagKey:(id)key
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, key);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKURLRequestProviderImpl;
   v6 = [(AKURLRequestProviderImpl *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_urlBagKey, location[0]);
+    objc_storeStrong(&selfCopy->_urlBagKey, location[0]);
   }
 
-  v5 = _objc_retain(v9);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKURLRequestProviderImpl)initWithContext:(id)a3
+- (AKURLRequestProviderImpl)initWithContext:(id)context
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, context);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = AKURLRequestProviderImpl;
   v9 = [(AKURLRequestProviderImpl *)&v10 init];
-  v12 = v9;
-  objc_storeStrong(&v12, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
-    objc_storeStrong(&v12->_context, location[0]);
+    objc_storeStrong(&selfCopy->_context, location[0]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v12->_concreteAuthenticationContext, location[0]);
+      objc_storeStrong(&selfCopy->_concreteAuthenticationContext, location[0]);
     }
 
     else
     {
       v4 = [AKAppleIDAuthenticationContext alloc];
       v5 = [v4 initWithAuthenticatedServerRequestContext:location[0]];
-      concreteAuthenticationContext = v12->_concreteAuthenticationContext;
-      v12->_concreteAuthenticationContext = v5;
+      concreteAuthenticationContext = selfCopy->_concreteAuthenticationContext;
+      selfCopy->_concreteAuthenticationContext = v5;
       _objc_release(concreteAuthenticationContext);
     }
   }
 
-  v8 = _objc_retain(v12);
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (AKURLRequestProviderImpl)initWithContext:(id)a3 url:(id)a4
+- (AKURLRequestProviderImpl)initWithContext:(id)context url:(id)url
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(&v9, url);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8 = [(AKURLRequestProviderImpl *)v4 initWithContext:location[0]];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v11->_requestURLOverride, v9);
+    objc_storeStrong(&selfCopy->_requestURLOverride, v9);
   }
 
-  v6 = _objc_retain(v11);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (AKURLRequestProviderImpl)initWithContext:(id)a3 urlBagKey:(id)a4
+- (AKURLRequestProviderImpl)initWithContext:(id)context urlBagKey:(id)key
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v4 = v10;
-  v10 = 0;
-  v10 = [(AKURLRequestProviderImpl *)v4 initWithContext:location[0] urlBagKey:v8 shouldCacheResource:0];
-  v7 = _objc_retain(v10);
+  objc_storeStrong(&v8, key);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKURLRequestProviderImpl *)v4 initWithContext:location[0] urlBagKey:v8 shouldCacheResource:0];
+  v7 = _objc_retain(selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKURLRequestProviderImpl)initWithContext:(id)a3 urlBagKey:(id)a4 shouldCacheResource:(BOOL)a5
+- (AKURLRequestProviderImpl)initWithContext:(id)context urlBagKey:(id)key shouldCacheResource:(BOOL)resource
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v10 = v15;
+  objc_storeStrong(&v13, key);
+  v10 = selfCopy;
   v8 = location[0];
   v9 = v13;
   v11 = +[AKAccountManager sharedInstance];
-  v15 = 0;
-  v15 = [(AKURLRequestProviderImpl *)v10 initWithContext:v8 urlBagKey:v9 shouldCacheResource:a5 accountManager:?];
-  v12 = _objc_retain(v15);
+  selfCopy = 0;
+  selfCopy = [(AKURLRequestProviderImpl *)v10 initWithContext:v8 urlBagKey:v9 shouldCacheResource:resource accountManager:?];
+  v12 = _objc_retain(selfCopy);
   _objc_release(v11);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
-- (AKURLRequestProviderImpl)initWithContext:(id)a3 urlBagKey:(id)a4 shouldCacheResource:(BOOL)a5 accountManager:(id)a6
+- (AKURLRequestProviderImpl)initWithContext:(id)context urlBagKey:(id)key shouldCacheResource:(BOOL)resource accountManager:(id)manager
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v16 = a5;
+  objc_storeStrong(&v17, key);
+  resourceCopy = resource;
   v15 = 0;
-  objc_storeStrong(&v15, a6);
-  v6 = v19;
-  v19 = 0;
+  objc_storeStrong(&v15, manager);
+  v6 = selfCopy;
+  selfCopy = 0;
   v14 = [(AKURLRequestProviderImpl *)v6 initWithContext:location[0]];
-  v19 = v14;
-  objc_storeStrong(&v19, v14);
+  selfCopy = v14;
+  objc_storeStrong(&selfCopy, v14);
   if (v14)
   {
     v7 = [v17 copy];
-    urlBagKey = v19->_urlBagKey;
-    v19->_urlBagKey = v7;
+    urlBagKey = selfCopy->_urlBagKey;
+    selfCopy->_urlBagKey = v7;
     _objc_release(urlBagKey);
-    v19->_shouldCacheResource = v16;
-    objc_storeStrong(&v19->_accountManager, v15);
-    objc_storeStrong(&v19->_urlBagKey, v17);
+    selfCopy->_shouldCacheResource = resourceCopy;
+    objc_storeStrong(&selfCopy->_accountManager, v15);
+    objc_storeStrong(&selfCopy->_urlBagKey, v17);
   }
 
-  v10 = _objc_retain(v19);
+  v10 = _objc_retain(selfCopy);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (void)requestURLWithCompletion:(id)a3
+- (void)requestURLWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(AKURLRequestProviderImpl *)v11 requestURLOverride];
-  _objc_release(v8);
-  if (v8)
+  objc_storeStrong(location, completion);
+  requestURLOverride = [(AKURLRequestProviderImpl *)selfCopy requestURLOverride];
+  _objc_release(requestURLOverride);
+  if (requestURLOverride)
   {
     if (location[0])
     {
       v6 = location[0];
-      v7 = [(AKURLRequestProviderImpl *)v11 requestURLOverride];
+      requestURLOverride2 = [(AKURLRequestProviderImpl *)selfCopy requestURLOverride];
       v6[2]();
-      _objc_release(v7);
+      _objc_release(requestURLOverride2);
     }
   }
 
   else
   {
-    v3 = [(AKAuthenticatedServerRequest *)v11->_context altDSID];
+    altDSID = [(AKAuthenticatedServerRequest *)selfCopy->_context altDSID];
     v9 = [AKURLBag bagForAltDSID:?];
-    _objc_release(v3);
+    _objc_release(altDSID);
     v4 = v9;
-    v5 = [(AKURLRequestProviderImpl *)v11 urlBagKey];
+    urlBagKey = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
     [v4 urlForKey:? completion:?];
-    _objc_release(v5);
+    _objc_release(urlBagKey);
     objc_storeStrong(&v9, 0);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)buildRequestWithCompletion:(id)a3
+- (void)buildRequestWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, completion);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000DA850;
   v8 = &unk_100322D70;
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   v10 = _objc_retain(location[0]);
   [(AKURLRequestProviderImpl *)v3 requestURLWithCompletion:?];
   objc_storeStrong(&v10, 0);
@@ -258,20 +258,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)responseDictionaryWithData:(id)a3 error:(id *)a4
+- (id)responseDictionaryWithData:(id)data error:(id *)error
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
-  if ([(AKURLRequestProviderImpl *)v22 _validateDataExists:location[0]])
+  objc_storeStrong(location, data);
+  errorCopy = error;
+  if ([(AKURLRequestProviderImpl *)selfCopy _validateDataExists:location[0]])
   {
     v16 = 0;
-    v11 = [(AKURLRequestProviderImpl *)v22 expectedResponseType];
-    if (v11)
+    expectedResponseType = [(AKURLRequestProviderImpl *)selfCopy expectedResponseType];
+    if (expectedResponseType)
     {
-      if (v11 == 1)
+      if (expectedResponseType == 1)
       {
         v6 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/json"];
         v7 = v16;
@@ -279,13 +279,13 @@
         _objc_release(v7);
       }
 
-      else if (v11 == 2)
+      else if (expectedResponseType == 2)
       {
         oslog = _AKLogSystem();
         v14 = OS_LOG_TYPE_DEBUG;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
         {
-          sub_1000194D4(v24, v22);
+          sub_1000194D4(v24, selfCopy);
           _os_log_debug_impl(&_mh_execute_header, oslog, v14, "%@: Cannot generate response dictionary for expected response type of UTF8String", v24, 0xCu);
         }
 
@@ -301,11 +301,11 @@
       _objc_release(v5);
     }
 
-    v13 = [(AKURLRequestProviderImpl *)v22 _errorFromResponseDictionary:v16];
-    if (v20)
+    v13 = [(AKURLRequestProviderImpl *)selfCopy _errorFromResponseDictionary:v16];
+    if (errorCopy)
     {
       v8 = v13;
-      *v20 = v13;
+      *errorCopy = v13;
     }
 
     v23 = _objc_retain(v16);
@@ -320,7 +320,7 @@
     v18 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000194D4(v25, v22);
+      sub_1000194D4(v25, selfCopy);
       _os_log_impl(&_mh_execute_header, v19, v18, "%@: Server returned no response, treating as success", v25, 0xCu);
     }
 
@@ -335,12 +335,12 @@
   return v9;
 }
 
-- (id)_errorFromResponseDictionary:(id)a3
+- (id)_errorFromResponseDictionary:(id)dictionary
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v20 = [location[0] objectForKeyedSubscript:AKErrorStatusCodeKey];
   v3 = objc_opt_class();
   v19 = sub_1000DB9E8(v3, v20);
@@ -357,7 +357,7 @@
       v12 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        sub_10004DCC8(v24, v22, v19, v14);
+        sub_10004DCC8(v24, selfCopy, v19, v14);
         _os_log_error_impl(&_mh_execute_header, oslog, v12, "%@: Server request failed with code (%@) and message (%@)", v24, 0x20u);
       }
 
@@ -395,7 +395,7 @@
     v17 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_10004DCC8(v25, v22, v20, AKErrorStatusCodeKey);
+      sub_10004DCC8(v25, selfCopy, v20, AKErrorStatusCodeKey);
       _os_log_error_impl(&_mh_execute_header, v18, v17, "%@: Unexpected error code value (%@) for key (%@)", v25, 0x20u);
     }
 
@@ -412,23 +412,23 @@
   return v4;
 }
 
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4
+- (BOOL)validateResponseData:(id)data error:(id *)error
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v44 = a4;
-  if ([(AKURLRequestProviderImpl *)v46 _validateDataExists:location[0]])
+  objc_storeStrong(location, data);
+  errorCopy = error;
+  if ([(AKURLRequestProviderImpl *)selfCopy _validateDataExists:location[0]])
   {
-    if ([(AKURLRequestProviderImpl *)v46 _validateResponseBodyFormat])
+    if ([(AKURLRequestProviderImpl *)selfCopy _validateResponseBodyFormat])
     {
       v39 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/x-plist"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v35 = [v39 objectForKeyedSubscript:AKErrorStatusCodeKey];
-        if ([(AKURLRequestProviderImpl *)v46 _validateErrorCode:v35 withKey:AKErrorStatusCodeKey])
+        if ([(AKURLRequestProviderImpl *)selfCopy _validateErrorCode:v35 withKey:AKErrorStatusCodeKey])
         {
           if ([v35 integerValue])
           {
@@ -456,7 +456,7 @@
 
             v30 = 0;
             v29 = [v39 objectForKeyedSubscript:AKSubErrorStatusCodeKey];
-            if (v29 && [(AKURLRequestProviderImpl *)v46 _validateErrorCode:v29 withKey:AKSubErrorStatusCodeKey])
+            if (v29 && [(AKURLRequestProviderImpl *)selfCopy _validateErrorCode:v29 withKey:AKSubErrorStatusCodeKey])
             {
               v28 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", AKAppleIDAuthenticationServerErrorDomain, [v29 integerValue]);
               v6 = +[NSMutableDictionary dictionary];
@@ -469,12 +469,12 @@
             }
 
             v13 = AKAppleIDAuthenticationServerErrorDomain;
-            v8 = [v35 integerValue];
-            v27 = [NSError errorWithDomain:v13 code:v8 userInfo:v30];
+            integerValue = [v35 integerValue];
+            v27 = [NSError errorWithDomain:v13 code:integerValue userInfo:v30];
             [v34 setObject:v27 forKeyedSubscript:NSUnderlyingErrorKey];
             v14 = [NSError ak_errorWithCode:-7010 userInfo:v34];
             v9 = v14;
-            *v44 = v14;
+            *errorCopy = v14;
             v47 = 0;
             v40 = 1;
             objc_storeStrong(&v27, 0);
@@ -494,7 +494,7 @@
         {
           v17 = [NSError ak_errorWithCode:-7010];
           v5 = v17;
-          *v44 = v17;
+          *errorCopy = v17;
           v47 = 0;
           v40 = 1;
         }
@@ -517,7 +517,7 @@
         objc_storeStrong(&v38, 0);
         v18 = [NSError ak_errorWithCode:-7010];
         v4 = v18;
-        *v44 = v18;
+        *errorCopy = v18;
         v47 = 0;
         v40 = 1;
       }
@@ -543,7 +543,7 @@
       }
 
       objc_storeStrong(&v26, 0);
-      v47 = [(AKURLRequestProviderImpl *)v46 _validateJSONResponseData:location[0] error:v44];
+      v47 = [(AKURLRequestProviderImpl *)selfCopy _validateJSONResponseData:location[0] error:errorCopy];
       v40 = 1;
     }
   }
@@ -569,13 +569,13 @@
   return v47 & 1;
 }
 
-- (BOOL)_validateJSONResponseData:(id)a3 error:(id *)a4
+- (BOOL)_validateJSONResponseData:(id)data error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
+  objc_storeStrong(location, data);
+  errorCopy = error;
   v15 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/json"];
   if (!v15)
   {
@@ -601,11 +601,11 @@
     v7 = [v15 objectForKeyedSubscript:AKErrorMessageKey];
     [v10 setObject:? forKeyedSubscript:?];
     _objc_release(v7);
-    if (v16)
+    if (errorCopy)
     {
       v6 = [NSError ak_errorWithCode:-7010 userInfo:v10];
       v4 = v6;
-      *v16 = v6;
+      *errorCopy = v6;
     }
 
     v18 = 0;
@@ -631,12 +631,12 @@ LABEL_11:
   return v18 & 1;
 }
 
-- (BOOL)_validateDataExists:(id)a3
+- (BOOL)_validateDataExists:(id)exists
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, exists);
   if (location[0])
   {
     v3 = [NSString alloc];
@@ -664,14 +664,14 @@ LABEL_11:
   return v9 & 1;
 }
 
-- (BOOL)_validateErrorCode:(id)a3 withKey:(id)a4
+- (BOOL)_validateErrorCode:(id)code withKey:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, key);
   if (!location[0] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = 1;
@@ -697,19 +697,19 @@ LABEL_11:
 
 - (NSDictionary)serverCompatibleRequestBody
 {
-  v4 = [(AKURLRequestProviderImpl *)self authKitBody];
+  authKitBody = [(AKURLRequestProviderImpl *)self authKitBody];
   v5 = [(AKURLRequestProviderImpl *)self serverCompatibleRequestBodyWithPayload:?];
-  _objc_release(v4);
+  _objc_release(authKitBody);
 
   return v5;
 }
 
-- (id)serverCompatibleRequestBodyWithPayload:(id)a3
+- (id)serverCompatibleRequestBodyWithPayload:(id)payload
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v6 = [&__NSDictionary0__struct mutableCopy];
   [v6 setObject:&__NSDictionary0__struct forKeyedSubscript:AKRequestHeadersKey];
   v5 = [&__NSDictionary0__struct mutableCopy];
@@ -727,42 +727,42 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, request);
+  if (error)
   {
     v6 = [NSError ak_errorWithCode:-7027];
     v4 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (id)appendRequestUrl:(id)a3 queryParameterNamed:(id)a4 value:(id)a5
+- (id)appendRequestUrl:(id)url queryParameterNamed:(id)named value:(id)value
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, url);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, named);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, value);
   v10 = [NSURLComponents alloc];
-  v11 = [location[0] absoluteString];
+  absoluteString = [location[0] absoluteString];
   v16 = [v10 initWithString:?];
-  _objc_release(v11);
+  _objc_release(absoluteString);
   if (v16)
   {
-    v7 = [v16 queryItems];
-    v15 = [v7 mutableCopy];
-    _objc_release(v7);
+    queryItems = [v16 queryItems];
+    v15 = [queryItems mutableCopy];
+    _objc_release(queryItems);
     if (!v15)
     {
       v15 = objc_alloc_init(NSMutableArray);

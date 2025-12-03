@@ -1,18 +1,18 @@
 @interface SBTraitsZOrderDefaultResolver
-- (void)resolveStagePreferencesWithContext:(id)a3 preferencesTree:(id)a4;
+- (void)resolveStagePreferencesWithContext:(id)context preferencesTree:(id)tree;
 @end
 
 @implementation SBTraitsZOrderDefaultResolver
 
-- (void)resolveStagePreferencesWithContext:(id)a3 preferencesTree:(id)a4
+- (void)resolveStagePreferencesWithContext:(id)context preferencesTree:(id)tree
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a3 acquiredParticipants];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  acquiredParticipants = [context acquiredParticipants];
+  v5 = [acquiredParticipants countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -23,18 +23,18 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(acquiredParticipants);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 zOrderLevelPreferences];
-        [v10 preferredZOrderLevel];
+        zOrderLevelPreferences = [v9 zOrderLevelPreferences];
+        [zOrderLevelPreferences preferredZOrderLevel];
         v12 = v11;
 
-        v13 = [v9 zOrderLevelPreferences];
-        if (v13)
+        zOrderLevelPreferences2 = [v9 zOrderLevelPreferences];
+        if (zOrderLevelPreferences2)
         {
-          v14 = v13;
+          v14 = zOrderLevelPreferences2;
           [v9 currentZOrderLevel];
           v16 = v15;
 
@@ -50,7 +50,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [acquiredParticipants countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);

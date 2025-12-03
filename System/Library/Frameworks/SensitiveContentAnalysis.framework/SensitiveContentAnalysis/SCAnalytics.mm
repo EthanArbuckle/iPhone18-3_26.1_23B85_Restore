@@ -1,25 +1,25 @@
 @interface SCAnalytics
 - (SCAnalytics)init;
-- (void)collectImageEventWith:(id)a3 error:(id)a4;
-- (void)collectVideoEventWith:(id)a3 error:(id)a4;
+- (void)collectImageEventWith:(id)with error:(id)error;
+- (void)collectVideoEventWith:(id)with error:(id)error;
 @end
 
 @implementation SCAnalytics
 
-- (void)collectImageEventWith:(id)a3 error:(id)a4
+- (void)collectImageEventWith:(id)with error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_1AEABADFC(a3, a4);
+  withCopy = with;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1AEABADFC(with, error);
 }
 
-- (void)collectVideoEventWith:(id)a3 error:(id)a4
+- (void)collectVideoEventWith:(id)with error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_1AEABB164(a3, a4);
+  withCopy = with;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1AEABB164(with, error);
 }
 
 - (SCAnalytics)init

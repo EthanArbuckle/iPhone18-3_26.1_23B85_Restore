@@ -14,9 +14,9 @@
 - (UIGlomojiAnalyticsDispatcher)init
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     v5 = UIGlomojiLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -25,7 +25,7 @@
       _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "[UIGlomojiAnalyticsDispatcher] Disabled", buf, 2u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -50,10 +50,10 @@
     }
 
     self = v8;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)didKBMenuAction
@@ -82,37 +82,37 @@
   v17 = *MEMORY[0x1E69E9840];
   [(UIGlomojiAnalyticsDispatcher *)self setGlomojiType:[(UIGlomojiAnalyticsDispatcher *)self getGlomojiButtonTypeEnumValue]];
   v3 = +[UIKBAnalyticsDispatcher sharedInstance];
-  v4 = [v3 updatedInputMode];
-  [(UIGlomojiAnalyticsDispatcher *)self setUpdatedInputMode:v4];
+  updatedInputMode = [v3 updatedInputMode];
+  [(UIGlomojiAnalyticsDispatcher *)self setUpdatedInputMode:updatedInputMode];
 
   v5 = UIGlomojiLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
-    v12 = [(UIGlomojiAnalyticsDispatcher *)self updatedInputMode];
+    originalInputMode = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
+    updatedInputMode2 = [(UIGlomojiAnalyticsDispatcher *)self updatedInputMode];
     v13 = 138412546;
-    v14 = v11;
+    v14 = originalInputMode;
     v15 = 2112;
-    v16 = v12;
+    v16 = updatedInputMode2;
     _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "[UIGlomojiAnalyticsDispatcher] Glomoji Tap. old: %@, new: %@", &v13, 0x16u);
   }
 
   v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v7 = [v6 _textInputSessionAnalytics];
-  v8 = [(UIGlomojiAnalyticsDispatcher *)self glomojiType];
-  v9 = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
-  v10 = [(UIGlomojiAnalyticsDispatcher *)self updatedInputMode];
-  [v7 didGlomojiTap:v8 originalInputMode:v9 newInputMode:v10];
+  _textInputSessionAnalytics = [v6 _textInputSessionAnalytics];
+  glomojiType = [(UIGlomojiAnalyticsDispatcher *)self glomojiType];
+  originalInputMode2 = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
+  updatedInputMode3 = [(UIGlomojiAnalyticsDispatcher *)self updatedInputMode];
+  [_textInputSessionAnalytics didGlomojiTap:glomojiType originalInputMode:originalInputMode2 newInputMode:updatedInputMode3];
 }
 
 - (void)didKBMenuAppear
 {
   [(UIGlomojiAnalyticsDispatcher *)self setGlomojiType:[(UIGlomojiAnalyticsDispatcher *)self getGlomojiButtonTypeEnumValue]];
   v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v6 _textInputSessionAnalytics];
-  v4 = [(UIGlomojiAnalyticsDispatcher *)self glomojiType];
-  v5 = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
-  [v3 didKBMenuAppear:v4 originalInputMode:v5];
+  _textInputSessionAnalytics = [v6 _textInputSessionAnalytics];
+  glomojiType = [(UIGlomojiAnalyticsDispatcher *)self glomojiType];
+  originalInputMode = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
+  [_textInputSessionAnalytics didKBMenuAppear:glomojiType originalInputMode:originalInputMode];
 }
 
 - (void)didKBMenuInteraction
@@ -121,31 +121,31 @@
   v3 = UIGlomojiLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(UIGlomojiAnalyticsDispatcher *)self KBMenuInteractionSource];
-    v12 = [(UIGlomojiAnalyticsDispatcher *)self KBMenuSelectedAction];
-    v13 = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
-    v14 = [(UIGlomojiAnalyticsDispatcher *)self updatedInputMode];
+    kBMenuInteractionSource = [(UIGlomojiAnalyticsDispatcher *)self KBMenuInteractionSource];
+    kBMenuSelectedAction = [(UIGlomojiAnalyticsDispatcher *)self KBMenuSelectedAction];
+    originalInputMode = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
+    updatedInputMode = [(UIGlomojiAnalyticsDispatcher *)self updatedInputMode];
     v15 = 134218754;
-    v16 = v11;
+    v16 = kBMenuInteractionSource;
     v17 = 2048;
-    v18 = v12;
+    v18 = kBMenuSelectedAction;
     v19 = 2112;
-    v20 = v13;
+    v20 = originalInputMode;
     v21 = 2112;
-    v22 = v14;
+    v22 = updatedInputMode;
     _os_log_debug_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEBUG, "[UIGlomojiAnalyticsDispatcher] Menu Interaction. source: %lu. action: %lu. old: %@, new: %@", &v15, 0x2Au);
   }
 
   v4 = +[UIKBAnalyticsDispatcher sharedInstance];
-  v5 = [v4 updatedInputMode];
-  [(UIGlomojiAnalyticsDispatcher *)self setUpdatedInputMode:v5];
+  updatedInputMode2 = [v4 updatedInputMode];
+  [(UIGlomojiAnalyticsDispatcher *)self setUpdatedInputMode:updatedInputMode2];
 
   v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v7 = [v6 _textInputSessionAnalytics];
-  v8 = [(UIGlomojiAnalyticsDispatcher *)self KBMenuInteractionSource];
-  v9 = [(UIGlomojiAnalyticsDispatcher *)self KBMenuSelectedAction];
-  v10 = [(UIGlomojiAnalyticsDispatcher *)self updatedInputMode];
-  [v7 didKBMenuInteraction:v8 selectedAction:v9 newInputMode:v10];
+  _textInputSessionAnalytics = [v6 _textInputSessionAnalytics];
+  kBMenuInteractionSource2 = [(UIGlomojiAnalyticsDispatcher *)self KBMenuInteractionSource];
+  kBMenuSelectedAction2 = [(UIGlomojiAnalyticsDispatcher *)self KBMenuSelectedAction];
+  updatedInputMode3 = [(UIGlomojiAnalyticsDispatcher *)self updatedInputMode];
+  [_textInputSessionAnalytics didKBMenuInteraction:kBMenuInteractionSource2 selectedAction:kBMenuSelectedAction2 newInputMode:updatedInputMode3];
 }
 
 - (void)didKBMenuDismiss
@@ -154,31 +154,31 @@
   v3 = UIGlomojiLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(UIGlomojiAnalyticsDispatcher *)self KBMenuDismissSource];
-    v7 = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
+    kBMenuDismissSource = [(UIGlomojiAnalyticsDispatcher *)self KBMenuDismissSource];
+    originalInputMode = [(UIGlomojiAnalyticsDispatcher *)self originalInputMode];
     v8 = 134218242;
-    v9 = v6;
+    v9 = kBMenuDismissSource;
     v10 = 2112;
-    v11 = v7;
+    v11 = originalInputMode;
     _os_log_debug_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEBUG, "[UIGlomojiAnalyticsDispatcher] Menu Dismiss. source: %lu. old: %@", &v8, 0x16u);
   }
 
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 _textInputSessionAnalytics];
-  [v5 didKBMenuDismiss:{-[UIGlomojiAnalyticsDispatcher KBMenuDismissSource](self, "KBMenuDismissSource")}];
+  _textInputSessionAnalytics = [v4 _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didKBMenuDismiss:{-[UIGlomojiAnalyticsDispatcher KBMenuDismissSource](self, "KBMenuDismissSource")}];
 }
 
 - (unint64_t)getGlomojiButtonTypeEnumValue
 {
   v2 = +[UIKBAnalyticsDispatcher sharedInstance];
-  v3 = [v2 glomojiTitle];
+  glomojiTitle = [v2 glomojiTitle];
 
-  if ([v3 isEqualToString:@"globe"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"globe.badge.chevron.backward"))
+  if ([glomojiTitle isEqualToString:@"globe"] & 1) != 0 || (objc_msgSend(glomojiTitle, "isEqualToString:", @"globe.badge.chevron.backward"))
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"emoji.face.grinning"])
+  else if ([glomojiTitle isEqualToString:@"emoji.face.grinning"])
   {
     v4 = 2;
   }
@@ -194,10 +194,10 @@
 - (id)getInputMode
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 currentInputMode];
-  v4 = [v3 identifierWithLayouts];
+  currentInputMode = [v2 currentInputMode];
+  identifierWithLayouts = [currentInputMode identifierWithLayouts];
 
-  return v4;
+  return identifierWithLayouts;
 }
 
 @end

@@ -1,65 +1,65 @@
 @interface THFlowPageController
 - (BOOL)allowsDescendersToClip;
-- (BOOL)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 originalContentOffset:(CGPoint)a5 targetContentOffset:(CGPoint *)a6;
-- (CGPoint)originOfCharacterIndex:(unint64_t)a3 forRelativePageIndex:(unint64_t)a4;
-- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)a3 pageFrame:(CGRect)a4;
-- (CGRect)i_rectForBodyIndex:(unint64_t)a3;
+- (BOOL)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity originalContentOffset:(CGPoint)offset targetContentOffset:(CGPoint *)contentOffset;
+- (CGPoint)originOfCharacterIndex:(unint64_t)index forRelativePageIndex:(unint64_t)pageIndex;
+- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)index pageFrame:(CGRect)frame;
+- (CGRect)i_rectForBodyIndex:(unint64_t)index;
 - (CGRect)i_rectForPageLayout;
 - (CGRect)i_rectForSectionLayout;
 - (CGRect)p_overriddenBodyFrame;
 - (CGRect)rectForAnchor;
-- (CGSize)desiredPageSizeForRelativePageIndex:(unint64_t)a3;
-- (CGSize)widgetStackMaxContainerSizeForSize:(CGSize)a3;
-- (THFlowPageController)initWithDelegate:(id)a3 layoutObserver:(id)a4 contentNode:(id)a5 presentationType:(id)a6;
+- (CGSize)desiredPageSizeForRelativePageIndex:(unint64_t)index;
+- (CGSize)widgetStackMaxContainerSizeForSize:(CGSize)size;
+- (THFlowPageController)initWithDelegate:(id)delegate layoutObserver:(id)observer contentNode:(id)node presentationType:(id)type;
 - (THModelBodyTextInfo)bodyInfo;
 - (THModelFlowPageInfo)pageInfo;
-- (_NSRange)firstLineInRect:(CGRect)a3 fromCharIndex:(unint64_t)a4;
-- (_NSRange)i_textRangeForBodyIndex:(unint64_t)a3;
-- (double)bodyTopAtIndex:(unint64_t)a3;
+- (_NSRange)firstLineInRect:(CGRect)rect fromCharIndex:(unint64_t)index;
+- (_NSRange)i_textRangeForBodyIndex:(unint64_t)index;
+- (double)bodyTopAtIndex:(unint64_t)index;
 - (id).cxx_construct;
-- (id)bodyAnchorForRect:(CGRect)a3 onMissReturnClosestBody:(BOOL)a4;
-- (id)bodyInfoForCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4;
-- (id)i_infoForBodyIndex:(unint64_t)a3;
-- (id)pageInfoForRelativePageIndex:(unint64_t)a3;
-- (unint64_t)bodyIndexClosestToPoint:(CGPoint)a3;
-- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)a3 forRelativePageIndex:(unint64_t)a4 onMissReturnClosestBody:(BOOL)a5;
+- (id)bodyAnchorForRect:(CGRect)rect onMissReturnClosestBody:(BOOL)body;
+- (id)bodyInfoForCharIndex:(unint64_t)index forceLayout:(BOOL)layout;
+- (id)i_infoForBodyIndex:(unint64_t)index;
+- (id)pageInfoForRelativePageIndex:(unint64_t)index;
+- (unint64_t)bodyIndexClosestToPoint:(CGPoint)point;
+- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)rect forRelativePageIndex:(unint64_t)index onMissReturnClosestBody:(BOOL)body;
 - (unint64_t)i_bodyCount;
 - (void)dealloc;
-- (void)i_inflateColumnsInBodyLayout:(id)a3;
-- (void)i_registerPageLayout:(id)a3;
-- (void)i_setGutterOverhang:(double)a3;
-- (void)i_setHeight:(double)a3 forBodyIndex:(unint64_t)a4;
-- (void)i_setPageHintSize:(CGSize)a3 forRelativePageIndex:(unint64_t)a4;
-- (void)i_trimPageAtIndex:(unint64_t)a3 toCharIndex:(unint64_t)a4 inTarget:(id)a5 removeAutoNumberFootnoteCount:(unint64_t)a6;
-- (void)i_unregisterPageLayout:(id)a3;
-- (void)layoutContentAtLayoutAnchor:(id)a3 padAbove:(double *)a4 padBelow:(double *)a5;
-- (void)layoutContentFromBottom:(double *)a3;
-- (void)layoutContentFromTop:(double *)a3;
+- (void)i_inflateColumnsInBodyLayout:(id)layout;
+- (void)i_registerPageLayout:(id)layout;
+- (void)i_setGutterOverhang:(double)overhang;
+- (void)i_setHeight:(double)height forBodyIndex:(unint64_t)index;
+- (void)i_setPageHintSize:(CGSize)size forRelativePageIndex:(unint64_t)index;
+- (void)i_trimPageAtIndex:(unint64_t)index toCharIndex:(unint64_t)charIndex inTarget:(id)target removeAutoNumberFootnoteCount:(unint64_t)count;
+- (void)i_unregisterPageLayout:(id)layout;
+- (void)layoutContentAtLayoutAnchor:(id)anchor padAbove:(double *)above padBelow:(double *)below;
+- (void)layoutContentFromBottom:(double *)bottom;
+- (void)layoutContentFromTop:(double *)top;
 - (void)p_ensureLoaded;
-- (void)p_withPageLayoutPerformBlock:(id)a3;
+- (void)p_withPageLayoutPerformBlock:(id)block;
 - (void)prepareForLayout;
 - (void)teardown;
-- (void)withRootSearchTargetAtIndex:(unint64_t)a3 executeBlock:(id)a4;
+- (void)withRootSearchTargetAtIndex:(unint64_t)index executeBlock:(id)block;
 @end
 
 @implementation THFlowPageController
 
-- (THFlowPageController)initWithDelegate:(id)a3 layoutObserver:(id)a4 contentNode:(id)a5 presentationType:(id)a6
+- (THFlowPageController)initWithDelegate:(id)delegate layoutObserver:(id)observer contentNode:(id)node presentationType:(id)type
 {
   v14.receiver = self;
   v14.super_class = THFlowPageController;
   v10 = [(THFlowPageController *)&v14 init];
   if (v10)
   {
-    if ([a5 pageCountForPresentationType:a6] != &dword_0 + 1)
+    if ([node pageCountForPresentationType:type] != &dword_0 + 1)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v10->_delegate = a3;
-    v10->_layoutObserver = a4;
-    v10->_contentNode = a5;
-    v10->_presentationType = a6;
+    v10->_delegate = delegate;
+    v10->_layoutObserver = observer;
+    v10->_contentNode = node;
+    v10->_presentationType = type;
     v10->_drawablesLayoutController = [[THOffscreenLayoutController alloc] initWithCanvas:0];
     [(THOffscreenLayoutController *)v10->_drawablesLayoutController setLayoutIsCompactWidth:[(THPresentationType *)[(THFlowPageController *)v10 presentationType] isCompactWidth]];
     [(THOffscreenLayoutController *)v10->_drawablesLayoutController setLayoutIsCompactHeight:[(THPresentationType *)[(THFlowPageController *)v10 presentationType] isCompactHeight]];
@@ -88,10 +88,10 @@
   [(THFlowPageController *)&v3 dealloc];
 }
 
-- (CGSize)widgetStackMaxContainerSizeForSize:(CGSize)a3
+- (CGSize)widgetStackMaxContainerSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THPresentationType *)[(THFlowPageController *)self presentationType] pageSize];
   v6 = fmin(height, v5 + 10.0 * -2.0);
   v7 = width;
@@ -108,51 +108,51 @@
   objc_sync_exit(self);
 }
 
-- (void)layoutContentAtLayoutAnchor:(id)a3 padAbove:(double *)a4 padBelow:(double *)a5
+- (void)layoutContentAtLayoutAnchor:(id)anchor padAbove:(double *)above padBelow:(double *)below
 {
   objc_sync_enter(self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_115AC8;
   v9[3] = &unk_45DAC0;
-  v9[4] = a3;
-  v9[5] = a4;
-  v9[6] = a5;
+  v9[4] = anchor;
+  v9[5] = above;
+  v9[6] = below;
   [(THFlowPageController *)self p_withPageLayoutPerformBlock:v9];
   objc_sync_exit(self);
 }
 
-- (void)layoutContentFromBottom:(double *)a3
+- (void)layoutContentFromBottom:(double *)bottom
 {
   objc_sync_enter(self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_115C30;
   v5[3] = &unk_45DAE0;
-  v5[4] = a3;
+  v5[4] = bottom;
   [(THFlowPageController *)self p_withPageLayoutPerformBlock:v5];
   objc_sync_exit(self);
 }
 
-- (void)layoutContentFromTop:(double *)a3
+- (void)layoutContentFromTop:(double *)top
 {
   objc_sync_enter(self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_115CDC;
   v5[3] = &unk_45DAE0;
-  v5[4] = a3;
+  v5[4] = top;
   [(THFlowPageController *)self p_withPageLayoutPerformBlock:v5];
   objc_sync_exit(self);
 }
 
-- (id)bodyAnchorForRect:(CGRect)a3 onMissReturnClosestBody:(BOOL)a4
+- (id)bodyAnchorForRect:(CGRect)rect onMissReturnClosestBody:(BOOL)body
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  bodyCopy = body;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_sync_enter(self);
   [(THFlowPageController *)self rectForAnchor];
   v16.origin.x = x;
@@ -161,23 +161,23 @@
   v16.size.height = height;
   if (!CGRectEqualToRect(v15, v16) || ![(THFlowPageController *)self cachedAnchorForRect])
   {
-    v10 = [(THFlowPageController *)self firstBodyCharacterIndexOverlappingPageRect:0 forRelativePageIndex:v4 onMissReturnClosestBody:x, y, width, height];
+    height = [(THFlowPageController *)self firstBodyCharacterIndexOverlappingPageRect:0 forRelativePageIndex:bodyCopy onMissReturnClosestBody:x, y, width, height];
     v11 = [(THModelContentNode *)self->_contentNode nodeUniqueIDForInfo:[(THModelBodyTextInfo *)[(THFlowPageController *)self bodyInfo] bodyStorage] forPresentationType:self->_presentationType];
 
     self->_cachedAnchorForRect = 0;
-    self->_cachedAnchorForRect = [[THModelStorageAnchor alloc] initWithContentNode:self->_contentNode storageUID:v11 range:v10, 1];
+    self->_cachedAnchorForRect = [[THModelStorageAnchor alloc] initWithContentNode:self->_contentNode storageUID:v11 range:height, 1];
     [(THFlowPageController *)self setRectForAnchor:x, y, width, height];
   }
 
   objc_sync_exit(self);
-  v12 = [(THFlowPageController *)self cachedAnchorForRect];
+  cachedAnchorForRect = [(THFlowPageController *)self cachedAnchorForRect];
 
-  return v12;
+  return cachedAnchorForRect;
 }
 
-- (unint64_t)bodyIndexClosestToPoint:(CGPoint)a3
+- (unint64_t)bodyIndexClosestToPoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   [(THFlowPageController *)self bodyOffset];
   v6 = v5;
   objc_sync_enter(self);
@@ -229,7 +229,7 @@
   return v11;
 }
 
-- (double)bodyTopAtIndex:(unint64_t)a3
+- (double)bodyTopAtIndex:(unint64_t)index
 {
   objc_sync_enter(self);
   v5 = 0.0;
@@ -237,16 +237,16 @@
   {
     begin = self->_bodyHints.__begin_;
     v7 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
-    if (v7 <= a3)
+    if (v7 <= index)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       begin = self->_bodyHints.__begin_;
       v7 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
     }
 
-    if (v7 > a3)
+    if (v7 > index)
     {
-      v5 = *(begin + 5 * a3);
+      v5 = *(begin + 5 * index);
     }
   }
 
@@ -255,12 +255,12 @@
   return v5 + v8;
 }
 
-- (_NSRange)firstLineInRect:(CGRect)a3 fromCharIndex:(unint64_t)a4
+- (_NSRange)firstLineInRect:(CGRect)rect fromCharIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = 0;
   v16 = &v15;
   v17 = 0x4012000000;
@@ -278,7 +278,7 @@
   *&v14[6] = y;
   *&v14[7] = width;
   *&v14[8] = height;
-  v14[9] = a4;
+  v14[9] = index;
   [(THFlowPageController *)self p_withPageLayoutPerformBlock:v14];
   objc_sync_exit(self);
   v10 = v16[6];
@@ -291,15 +291,15 @@
   return result;
 }
 
-- (BOOL)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 originalContentOffset:(CGPoint)a5 targetContentOffset:(CGPoint *)a6
+- (BOOL)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity originalContentOffset:(CGPoint)offset targetContentOffset:(CGPoint *)contentOffset
 {
-  y = a4.y;
-  if (fabs(a4.y) <= 0.2)
+  y = velocity.y;
+  if (fabs(velocity.y) <= 0.2)
   {
     return 0;
   }
 
-  v8 = a5.y;
+  v8 = offset.y;
   [(THPageControllerDelegate *)self->_delegate canvasOriginForPageController:self];
   if (self->_bodyHints.__end_ == self->_bodyHints.__begin_)
   {
@@ -307,8 +307,8 @@
   }
 
   v12 = v11;
-  x = a6->x;
-  v14 = a6->y;
+  x = contentOffset->x;
+  v14 = contentOffset->y;
   v15 = 1;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
   while (1)
@@ -366,7 +366,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (v17 >= 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - self->_bodyHints.__begin_) >> 3) - 1 || (-[THFlowPageController i_rectForBodyIndex:](self, "i_rectForBodyIndex:", v15), v27 = v12 + v26, [a3 frame], v27 >= v8 + v28))
+  if (v17 >= 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - self->_bodyHints.__begin_) >> 3) - 1 || (-[THFlowPageController i_rectForBodyIndex:](self, "i_rectForBodyIndex:", v15), v27 = v12 + v26, [dragging frame], v27 >= v8 + v28))
   {
 LABEL_25:
     v17 = v16;
@@ -379,8 +379,8 @@ LABEL_25:
   }
 
 LABEL_28:
-  a6->x = x;
-  a6->y = v27;
+  contentOffset->x = x;
+  contentOffset->y = v27;
   return 1;
 }
 
@@ -410,9 +410,9 @@ LABEL_28:
   objc_sync_exit(self);
 }
 
-- (id)pageInfoForRelativePageIndex:(unint64_t)a3
+- (id)pageInfoForRelativePageIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -420,7 +420,7 @@ LABEL_28:
   return [(THFlowPageController *)self pageInfo];
 }
 
-- (id)bodyInfoForCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4
+- (id)bodyInfoForCharIndex:(unint64_t)index forceLayout:(BOOL)layout
 {
   objc_sync_enter(self);
   begin = self->_bodyHints.__begin_;
@@ -438,7 +438,7 @@ LABEL_28:
     v11 = *(v10 + 3) + *(v10 + 2);
     v12 = (v10 + 40);
     v8 += ~(v8 >> 1);
-    if (v11 <= a3)
+    if (v11 <= index)
     {
       begin = v12;
     }
@@ -459,8 +459,8 @@ LABEL_15:
   else
   {
     v13 = *(begin + 2);
-    v15 = a3 >= v13;
-    v14 = a3 - v13;
+    v15 = index >= v13;
+    v14 = index - v13;
     v15 = !v15 || v14 >= *(begin + 3);
     if (v15)
     {
@@ -475,13 +475,13 @@ LABEL_15:
   return v16;
 }
 
-- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)a3 forRelativePageIndex:(unint64_t)a4 onMissReturnClosestBody:(BOOL)a5
+- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)rect forRelativePageIndex:(unint64_t)index onMissReturnClosestBody:(BOOL)body
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  bodyCopy = body;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -499,7 +499,7 @@ LABEL_15:
   [(THFlowPageController *)self p_withPageLayoutPerformBlock:v17];
   v11 = v19;
   v12 = v19[3];
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL && v5)
+  if (v12 == 0x7FFFFFFFFFFFFFFFLL && bodyCopy)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -526,7 +526,7 @@ LABEL_15:
   return v14;
 }
 
-- (CGPoint)originOfCharacterIndex:(unint64_t)a3 forRelativePageIndex:(unint64_t)a4
+- (CGPoint)originOfCharacterIndex:(unint64_t)index forRelativePageIndex:(unint64_t)pageIndex
 {
   v11 = 0;
   v12 = &v11;
@@ -541,7 +541,7 @@ LABEL_15:
   v10[2] = sub_116B6C;
   v10[3] = &unk_45DB58;
   v10[4] = &v11;
-  v10[5] = a3;
+  v10[5] = index;
   [(THFlowPageController *)self p_withPageLayoutPerformBlock:v10];
   objc_sync_exit(self);
   v6 = v12[6];
@@ -554,9 +554,9 @@ LABEL_15:
   return result;
 }
 
-- (CGSize)desiredPageSizeForRelativePageIndex:(unint64_t)a3
+- (CGSize)desiredPageSizeForRelativePageIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -592,19 +592,19 @@ LABEL_15:
   return result;
 }
 
-- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)a3 pageFrame:(CGRect)a4
+- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)index pageFrame:(CGRect)frame
 {
-  v5 = [(THFlowPageController *)self pagePositionController:a4.origin.x];
+  v5 = [(THFlowPageController *)self pagePositionController:frame.origin.x];
 
-  [(THPagePositionController *)v5 pageOriginForRelativePageIndex:a3];
+  [(THPagePositionController *)v5 pageOriginForRelativePageIndex:index];
   result.y = v7;
   result.x = v6;
   return result;
 }
 
-- (void)withRootSearchTargetAtIndex:(unint64_t)a3 executeBlock:(id)a4
+- (void)withRootSearchTargetAtIndex:(unint64_t)index executeBlock:(id)block
 {
-  v4 = [TSUAssertionHandler currentHandler:a3];
+  v4 = [TSUAssertionHandler currentHandler:index];
   v5 = [NSString stringWithUTF8String:"[THFlowPageController withRootSearchTargetAtIndex:executeBlock:]"];
   v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THFlowPageController.mm"];
 
@@ -624,7 +624,7 @@ LABEL_15:
   return v3;
 }
 
-- (CGRect)i_rectForBodyIndex:(unint64_t)a3
+- (CGRect)i_rectForBodyIndex:(unint64_t)index
 {
   [(THFlowPageController *)self p_overriddenBodyFrame];
   v6 = v5;
@@ -634,17 +634,17 @@ LABEL_15:
   objc_sync_enter(self);
   begin = self->_bodyHints.__begin_;
   v14 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
-  if (v14 <= a3)
+  if (v14 <= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     begin = self->_bodyHints.__begin_;
     v14 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
   }
 
-  if (v14 > a3)
+  if (v14 > index)
   {
     [(THFlowPageController *)self bodyOffset];
-    v15 = (begin + 40 * a3);
+    v15 = (begin + 40 * index);
     v12 = v15[1];
     v8 = v16 + *v15;
   }
@@ -661,27 +661,27 @@ LABEL_15:
   return result;
 }
 
-- (void)i_setHeight:(double)a3 forBodyIndex:(unint64_t)a4
+- (void)i_setHeight:(double)height forBodyIndex:(unint64_t)index
 {
   objc_sync_enter(self);
   begin = self->_bodyHints.__begin_;
   v8 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
-  if (v8 <= a4)
+  if (v8 <= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     begin = self->_bodyHints.__begin_;
     v8 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
   }
 
-  if (v8 > a4)
+  if (v8 > index)
   {
-    v9 = a3 - *(begin + 5 * a4 + 1);
+    v9 = height - *(begin + 5 * index + 1);
     if (v9 != 0.0)
     {
       [(THFlowLayoutObserver *)self->_layoutObserver flowPageControllerWillChangeContentHeight:self];
       end = self->_bodyHints.__end_;
-      v11 = (self->_bodyHints.__begin_ + 40 * a4);
-      v11[1] = a3;
+      v11 = (self->_bodyHints.__begin_ + 40 * index);
+      v11[1] = height;
       for (i = v11 + 5; i != end; i += 5)
       {
         *i = v9 + *i;
@@ -692,19 +692,19 @@ LABEL_15:
   objc_sync_exit(self);
 }
 
-- (_NSRange)i_textRangeForBodyIndex:(unint64_t)a3
+- (_NSRange)i_textRangeForBodyIndex:(unint64_t)index
 {
   objc_sync_enter(self);
   begin = self->_bodyHints.__begin_;
   v6 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     begin = self->_bodyHints.__begin_;
     v6 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
   }
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
     v9 = 0;
@@ -712,7 +712,7 @@ LABEL_15:
 
   else
   {
-    v7 = begin + 40 * a3;
+    v7 = begin + 40 * index;
     v9 = *(v7 + 2);
     v8 = *(v7 + 3);
   }
@@ -725,36 +725,36 @@ LABEL_15:
   return result;
 }
 
-- (id)i_infoForBodyIndex:(unint64_t)a3
+- (id)i_infoForBodyIndex:(unint64_t)index
 {
   objc_sync_enter(self);
   begin = self->_bodyHints.__begin_;
   v6 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     begin = self->_bodyHints.__begin_;
     v6 = 0xCCCCCCCCCCCCCCCDLL * ((self->_bodyHints.__end_ - begin) >> 3);
   }
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = *(begin + 5 * a3 + 4);
+    v7 = *(begin + 5 * index + 4);
   }
 
   objc_sync_exit(self);
   return v7;
 }
 
-- (void)i_setGutterOverhang:(double)a3
+- (void)i_setGutterOverhang:(double)overhang
 {
   objc_sync_enter(self);
-  self->_gutterOverhang = a3;
+  self->_gutterOverhang = overhang;
 
   objc_sync_exit(self);
 }
@@ -771,25 +771,25 @@ LABEL_15:
   return result;
 }
 
-- (void)i_setPageHintSize:(CGSize)a3 forRelativePageIndex:(unint64_t)a4
+- (void)i_setPageHintSize:(CGSize)size forRelativePageIndex:(unint64_t)index
 {
-  v4 = [TSUAssertionHandler currentHandler:a4];
+  v4 = [TSUAssertionHandler currentHandler:index];
   v5 = [NSString stringWithUTF8String:"[THFlowPageController i_setPageHintSize:forRelativePageIndex:]"];
   v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THFlowPageController.mm"];
 
   [v4 handleFailureInFunction:v5 file:v6 lineNumber:652 description:@"flow page controller doesn't want to be told the page size"];
 }
 
-- (void)i_trimPageAtIndex:(unint64_t)a3 toCharIndex:(unint64_t)a4 inTarget:(id)a5 removeAutoNumberFootnoteCount:(unint64_t)a6
+- (void)i_trimPageAtIndex:(unint64_t)index toCharIndex:(unint64_t)charIndex inTarget:(id)target removeAutoNumberFootnoteCount:(unint64_t)count
 {
-  v6 = [TSUAssertionHandler currentHandler:a3];
+  v6 = [TSUAssertionHandler currentHandler:index];
   v7 = [NSString stringWithUTF8String:"[THFlowPageController i_trimPageAtIndex:toCharIndex:inTarget:removeAutoNumberFootnoteCount:]"];
   v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THFlowPageController.mm"];
 
   [v6 handleFailureInFunction:v7 file:v8 lineNumber:657 description:@"flow page controller doesn't support trimming"];
 }
 
-- (void)i_inflateColumnsInBodyLayout:(id)a3
+- (void)i_inflateColumnsInBodyLayout:(id)layout
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THFlowPageController i_inflateColumnsInBodyLayout:]"];
@@ -798,11 +798,11 @@ LABEL_15:
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:680 description:@"flow page controller doesn't support inflation"];
 }
 
-- (void)i_registerPageLayout:(id)a3
+- (void)i_registerPageLayout:(id)layout
 {
   objc_sync_enter(self);
-  v5 = [a3 info];
-  if (v5 != [(THFlowPageController *)self pageInfo])
+  info = [layout info];
+  if (info != [(THFlowPageController *)self pageInfo])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -819,22 +819,22 @@ LABEL_15:
     [(THOffscreenLayoutController *)self->_drawablesLayoutController validateLayouts];
   }
 
-  self->_cachedPageLayout = a3;
+  self->_cachedPageLayout = layout;
   [(THFlowPageController *)self setCachedPageLayoutValidated:0];
 
   objc_sync_exit(self);
 }
 
-- (void)i_unregisterPageLayout:(id)a3
+- (void)i_unregisterPageLayout:(id)layout
 {
   objc_sync_enter(self);
-  v5 = [a3 info];
-  if (v5 != [(THFlowPageController *)self pageInfo])
+  info = [layout info];
+  if (info != [(THFlowPageController *)self pageInfo])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (self->_cachedPageLayout != a3)
+  if (self->_cachedPageLayout != layout)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -872,9 +872,9 @@ LABEL_15:
 
 - (BOOL)allowsDescendersToClip
 {
-  v3 = [(THFlowPageController *)self delegate];
+  delegate = [(THFlowPageController *)self delegate];
 
-  return [(THPageControllerDelegate *)v3 allowsDescendersToClipForPageController:self];
+  return [(THPageControllerDelegate *)delegate allowsDescendersToClipForPageController:self];
 }
 
 - (THModelFlowPageInfo)pageInfo
@@ -903,14 +903,14 @@ LABEL_15:
   result = self->_bodyInfo;
   if (!result)
   {
-    v4 = [(THModelPageInfo *)[(THFlowPageController *)self pageInfo] modelBodyInfos];
-    if ([(NSArray *)v4 count]!= &dword_0 + 1)
+    modelBodyInfos = [(THModelPageInfo *)[(THFlowPageController *)self pageInfo] modelBodyInfos];
+    if ([(NSArray *)modelBodyInfos count]!= &dword_0 + 1)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
     objc_opt_class();
-    [(NSArray *)v4 lastObject];
+    [(NSArray *)modelBodyInfos lastObject];
     v5 = TSUDynamicCast();
     self->_bodyInfo = v5;
     v6 = v5;
@@ -942,11 +942,11 @@ LABEL_15:
 {
   if (!self->_isLoaded)
   {
-    v3 = [(THModelBodyTextInfo *)[(THFlowPageController *)self bodyInfo] bodyStorage];
-    v4 = [(THWPStorage *)v3 paragraphCount];
-    if (v4)
+    bodyStorage = [(THModelBodyTextInfo *)[(THFlowPageController *)self bodyInfo] bodyStorage];
+    paragraphCount = [(THWPStorage *)bodyStorage paragraphCount];
+    if (paragraphCount)
     {
-      v5 = v4;
+      v5 = paragraphCount;
       v6 = 0;
       v7 = 0.0;
       do
@@ -971,7 +971,7 @@ LABEL_15:
           v9 = v8;
         }
 
-        v10 = [(THWPStorage *)v3 textRangeForParagraphsInRange:v6, v9];
+        v10 = [(THWPStorage *)bodyStorage textRangeForParagraphsInRange:v6, v9];
         v12 = v11;
         v13 = [[THFlowBodyChunkInfo alloc] initWithBodyInfo:[(THFlowPageController *)self bodyInfo]];
         end = self->_bodyHints.__end_;
@@ -1050,7 +1050,7 @@ LABEL_15:
   }
 }
 
-- (void)p_withPageLayoutPerformBlock:(id)a3
+- (void)p_withPageLayoutPerformBlock:(id)block
 {
   [(THFlowPageController *)self p_ensureLoaded];
   cachedPageLayout = self->_cachedPageLayout;
@@ -1088,9 +1088,9 @@ LABEL_15:
     }
   }
 
-  v7 = *(a3 + 2);
+  v7 = *(block + 2);
 
-  v7(a3, cachedPageLayout);
+  v7(block, cachedPageLayout);
 }
 
 - (CGRect)rectForAnchor

@@ -1,7 +1,7 @@
 @interface NSSQLBatchUpdateRequestContext
-- (BOOL)executeRequestCore:(id *)a3;
+- (BOOL)executeRequestCore:(id *)core;
 - (NSBatchUpdateRequest)request;
-- (NSSQLBatchUpdateRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5;
+- (NSSQLBatchUpdateRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core;
 - (id)createFetchRequestContextForObjectsToUpdate;
 - (void)clearSQLiteStatements;
 - (void)dealloc;
@@ -15,10 +15,10 @@
   if (self)
   {
     v3 = [[NSSQLGenerator alloc] initWithPersistentStore:self->super.super._sqlCore];
-    v4 = [(NSSQLBatchUpdateRequestContext *)self request];
+    request = [(NSSQLBatchUpdateRequestContext *)self request];
     if (v3)
     {
-      v5 = [(NSSQLGenerator *)v3 newSQLStatementForRequest:v4 ignoreInheritance:0 countOnly:0 nestingLevel:0 nestIsWhereScoped:0 requestContext:0];
+      v5 = [(NSSQLGenerator *)v3 newSQLStatementForRequest:request ignoreInheritance:0 countOnly:0 nestingLevel:0 nestIsWhereScoped:0 requestContext:0];
     }
 
     else
@@ -57,14 +57,14 @@
   [(NSSQLiteStatement *)self clearCaches:?];
 }
 
-- (NSSQLBatchUpdateRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5
+- (NSSQLBatchUpdateRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core
 {
   v9.receiver = self;
   v9.super_class = NSSQLBatchUpdateRequestContext;
-  v7 = [(NSSQLStoreRequestContext *)&v9 initWithRequest:a3 context:a4 sqlCore:a5];
+  v7 = [(NSSQLStoreRequestContext *)&v9 initWithRequest:request context:context sqlCore:core];
   if (v7)
   {
-    [a3 _resolveEntityWithContext:a4];
+    [request _resolveEntityWithContext:context];
   }
 
   return v7;
@@ -104,17 +104,17 @@
   return [(NSSQLFetchRequestContext *)v5 initWithRequest:fetchRequest context:context sqlCore:sqlCore];
 }
 
-- (BOOL)executeRequestCore:(id *)a3
+- (BOOL)executeRequestCore:(id *)core
 {
-  [(NSSQLStoreRequestContext *)self setResult:_executeBatchUpdateRequest(self, a3)];
-  if (a3 && *a3)
+  [(NSSQLStoreRequestContext *)self setResult:_executeBatchUpdateRequest(self, core)];
+  if (core && *core)
   {
     if (!self)
     {
       return [(NSSQLStoreRequestContext *)self result]!= 0;
     }
 
-    objc_setProperty_nonatomic(self, v5, *a3, 40);
+    objc_setProperty_nonatomic(self, v5, *core, 40);
   }
 
   else if (!self)

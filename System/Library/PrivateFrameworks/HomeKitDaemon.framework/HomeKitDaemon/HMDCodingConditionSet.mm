@@ -1,21 +1,21 @@
 @interface HMDCodingConditionSet
-+ (void)resolve:(void *)a3 fromSet:;
-- (BOOL)isEqual:(id)a3;
-- (HMDCodingConditionSet)initWithModel:(id)a3;
-- (HMDCodingConditionSet)initWithModel:(id)a3 conditions:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (void)resolve:(void *)resolve fromSet:;
+- (BOOL)isEqual:(id)equal;
+- (HMDCodingConditionSet)initWithModel:(id)model;
+- (HMDCodingConditionSet)initWithModel:(id)model conditions:(id)conditions;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)resolve:(uint64_t)a1;
+- (void)resolve:(uint64_t)resolve;
 @end
 
 @implementation HMDCodingConditionSet
 
-+ (void)resolve:(void *)a3 fromSet:
++ (void)resolve:(void *)resolve fromSet:
 {
   objc_opt_self();
-  if (a3)
+  if (resolve)
   {
-    v5 = [a3 indexOfObject:a2];
+    v5 = [resolve indexOfObject:a2];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = v5;
@@ -29,22 +29,22 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithModel:self->_model];
   *(result + 2) = self->_bitmask;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  return (objc_opt_isKindOfClass() & 1) != 0 && *(a3 + 1) == self->_model && *(a3 + 2) == self->_bitmask;
+  return (objc_opt_isKindOfClass() & 1) != 0 && *(equal + 1) == self->_model && *(equal + 2) == self->_bitmask;
 }
 
 - (id)description
@@ -106,12 +106,12 @@ void __55__HMDCodingConditionSet_descriptionForBitmask_withSet___block_invoke(ui
   }
 }
 
-- (void)resolve:(uint64_t)a1
+- (void)resolve:(uint64_t)resolve
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (resolve)
   {
-    v3 = *(a1 + 8);
+    v3 = *(resolve + 8);
     v4 = v3 ? *(v3 + 40) : 0;
     [HMDCodingConditionSet resolve:a2 fromSet:v4];
     if (!v5)
@@ -135,18 +135,18 @@ void __55__HMDCodingConditionSet_descriptionForBitmask_withSet___block_invoke(ui
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCodingConditionSet)initWithModel:(id)a3 conditions:(id)a4
+- (HMDCodingConditionSet)initWithModel:(id)model conditions:(id)conditions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDCodingConditionSet *)self initWithModel:a3];
+  v5 = [(HMDCodingConditionSet *)self initWithModel:model];
   if (v5)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = a4;
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    conditionsCopy = conditions;
+    v7 = [conditionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -158,14 +158,14 @@ void __55__HMDCodingConditionSet_descriptionForBitmask_withSet___block_invoke(ui
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(conditionsCopy);
           }
 
           [(HMDCodingConditionSet *)v5 addCondition:*(*(&v13 + 1) + 8 * v10++), v13];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [conditionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -176,7 +176,7 @@ void __55__HMDCodingConditionSet_descriptionForBitmask_withSet___block_invoke(ui
   return v5;
 }
 
-- (HMDCodingConditionSet)initWithModel:(id)a3
+- (HMDCodingConditionSet)initWithModel:(id)model
 {
   v7.receiver = self;
   v7.super_class = HMDCodingConditionSet;
@@ -184,7 +184,7 @@ void __55__HMDCodingConditionSet_descriptionForBitmask_withSet___block_invoke(ui
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_model, a3);
+    objc_storeStrong(&v4->_model, model);
   }
 
   return v5;

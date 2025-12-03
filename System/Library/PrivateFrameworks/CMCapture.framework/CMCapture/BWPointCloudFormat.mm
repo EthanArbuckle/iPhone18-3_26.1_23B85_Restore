@@ -1,18 +1,18 @@
 @interface BWPointCloudFormat
-+ (BWPointCloudFormatRequirements)_formatRequirementsByResolvingFormatRequirements:(void *)a3 withFormatRequirements:;
-+ (id)formatByResolvingRequirements:(id)a3 printErrors:(BOOL)a4;
++ (BWPointCloudFormatRequirements)_formatRequirementsByResolvingFormatRequirements:(void *)requirements withFormatRequirements:;
++ (id)formatByResolvingRequirements:(id)requirements printErrors:(BOOL)errors;
 - (NSString)debugDescription;
 - (NSString)description;
 - (opaqueCMFormatDescription)formatDescription;
-- (void)_initWithResolvedFormatRequirements:(void *)a1;
+- (void)_initWithResolvedFormatRequirements:(void *)requirements;
 - (void)dealloc;
 @end
 
 @implementation BWPointCloudFormat
 
-+ (id)formatByResolvingRequirements:(id)a3 printErrors:(BOOL)a4
++ (id)formatByResolvingRequirements:(id)requirements printErrors:(BOOL)errors
 {
-  v5 = [a3 count];
+  v5 = [requirements count];
   if (!v5)
   {
     v15 = MEMORY[0x1E695DF30];
@@ -27,7 +27,7 @@ LABEL_20:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v19 objects:v18 count:16];
+  v7 = [requirements countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (!v7)
   {
     goto LABEL_10;
@@ -42,7 +42,7 @@ LABEL_20:
     {
       if (*v20 != v9)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(requirements);
       }
 
       objc_opt_class();
@@ -58,14 +58,14 @@ LABEL_20:
     }
 
     while (v8 != v10);
-    v8 = [a3 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    v8 = [requirements countByEnumeratingWithState:&v19 objects:v18 count:16];
   }
 
   while (v8);
 LABEL_10:
   if (v6 == 1)
   {
-    v11 = +[BWPointCloudFormat _formatRequirementsByResolvingFormatRequirements:withFormatRequirements:](BWPointCloudFormat, [a3 firstObject], 0);
+    v11 = +[BWPointCloudFormat _formatRequirementsByResolvingFormatRequirements:withFormatRequirements:](BWPointCloudFormat, [requirements firstObject], 0);
   }
 
   else
@@ -73,10 +73,10 @@ LABEL_10:
     v11 = 0;
     for (i = 1; v6 != i; ++i)
     {
-      v13 = [a3 objectAtIndex:i];
+      v13 = [requirements objectAtIndex:i];
       if (!v11)
       {
-        v11 = [a3 objectAtIndex:i - 1];
+        v11 = [requirements objectAtIndex:i - 1];
       }
 
       result = [BWPointCloudFormat _formatRequirementsByResolvingFormatRequirements:v11 withFormatRequirements:v13];
@@ -100,9 +100,9 @@ LABEL_10:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"%@, %ld points (%ld bytes)", BWStringFromCVPixelFormatType(self->_dataFormat), self->_maxPoints, self->_dataBufferSize];
-  return v3;
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"%@, %ld points (%ld bytes)", BWStringFromCVPixelFormatType(self->_dataFormat), self->_maxPoints, self->_dataBufferSize];
+  return string;
 }
 
 - (NSString)debugDescription
@@ -131,15 +131,15 @@ LABEL_10:
   return result;
 }
 
-+ (BWPointCloudFormatRequirements)_formatRequirementsByResolvingFormatRequirements:(void *)a3 withFormatRequirements:
++ (BWPointCloudFormatRequirements)_formatRequirementsByResolvingFormatRequirements:(void *)requirements withFormatRequirements:
 {
   objc_opt_self();
-  v5 = [a2 supportedDataFormats];
-  v6 = [a3 supportedDataFormats];
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  supportedDataFormats = [a2 supportedDataFormats];
+  supportedDataFormats2 = [requirements supportedDataFormats];
+  if ([supportedDataFormats count] && objc_msgSend(supportedDataFormats2, "count"))
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v15 = OUTLINED_FUNCTION_4_2(v7, v8, v9, v10, v11, v12, v13, v14, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, v66, v68, 0);
+    array = [MEMORY[0x1E695DF70] array];
+    v15 = OUTLINED_FUNCTION_4_2(array, v8, v9, v10, v11, v12, v13, v14, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, v66, v68, 0);
     if (v15)
     {
       v16 = v15;
@@ -150,14 +150,14 @@ LABEL_10:
         {
           if (MEMORY[0] != v17)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(supportedDataFormats);
           }
 
           v19 = *(8 * i);
-          v20 = [v6 containsObject:v19];
+          v20 = [supportedDataFormats2 containsObject:v19];
           if (v20)
           {
-            v20 = [v7 addObject:v19];
+            v20 = [array addObject:v19];
           }
         }
 
@@ -168,40 +168,40 @@ LABEL_10:
     }
   }
 
-  else if ([v5 count])
+  else if ([supportedDataFormats count])
   {
-    v7 = v5;
+    array = supportedDataFormats;
   }
 
   else
   {
-    v7 = v6;
+    array = supportedDataFormats2;
   }
 
-  v28 = [a2 maxPoints];
-  v29 = [a3 maxPoints];
-  v30 = v29;
-  if (v28 && v29 && v28 != v29)
+  maxPoints = [a2 maxPoints];
+  maxPoints2 = [requirements maxPoints];
+  v30 = maxPoints2;
+  if (maxPoints && maxPoints2 && maxPoints != maxPoints2)
   {
     return 0;
   }
 
-  v31 = [a2 dataBufferSize];
-  v32 = [a3 dataBufferSize];
-  v33 = v32;
-  if (v31)
+  dataBufferSize = [a2 dataBufferSize];
+  dataBufferSize2 = [requirements dataBufferSize];
+  v33 = dataBufferSize2;
+  if (dataBufferSize)
   {
-    if (v32 && v31 != v32)
+    if (dataBufferSize2 && dataBufferSize != dataBufferSize2)
     {
       return 0;
     }
   }
 
   v34 = objc_alloc_init(BWPointCloudFormatRequirements);
-  [(BWPointCloudFormatRequirements *)v34 setSupportedDataFormats:v7];
-  if (v28)
+  [(BWPointCloudFormatRequirements *)v34 setSupportedDataFormats:array];
+  if (maxPoints)
   {
-    v35 = v28;
+    v35 = maxPoints;
   }
 
   else
@@ -210,9 +210,9 @@ LABEL_10:
   }
 
   [(BWPointCloudFormatRequirements *)v34 setMaxPoints:v35];
-  if (v31)
+  if (dataBufferSize)
   {
-    v36 = v31;
+    v36 = dataBufferSize;
   }
 
   else
@@ -224,14 +224,14 @@ LABEL_10:
   return v34;
 }
 
-- (void)_initWithResolvedFormatRequirements:(void *)a1
+- (void)_initWithResolvedFormatRequirements:(void *)requirements
 {
-  if (!a1)
+  if (!requirements)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = requirements;
   v5.super_class = BWPointCloudFormat;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)

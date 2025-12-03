@@ -1,17 +1,17 @@
 @interface SiriHintView
-+ (CGSize)sizeThatFitsString:(id)a3 forWidth:(double)a4;
-- (SiriHintView)initWithFrame:(CGRect)a3;
++ (CGSize)sizeThatFitsString:(id)string forWidth:(double)width;
+- (SiriHintView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation SiriHintView
 
-- (SiriHintView)initWithFrame:(CGRect)a3
+- (SiriHintView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SiriHintView;
-  v3 = [(SiriHintView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriHintView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor siriui_snippetBackgroundColor];
@@ -32,9 +32,9 @@
   return v3;
 }
 
-+ (CGSize)sizeThatFitsString:(id)a3 forWidth:(double)a4
++ (CGSize)sizeThatFitsString:(id)string forWidth:(double)width
 {
-  [a3 boundingRectWithSize:1 options:0 context:{a4 + -15.0 + -15.0, 1.79769313e308}];
+  [string boundingRectWithSize:1 options:0 context:{width + -15.0 + -15.0, 1.79769313e308}];
   v5 = v4;
   v7 = v6 + 11.0;
   v8 = +[UIScreen mainScreen];
@@ -60,9 +60,9 @@
   return result;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   attributedText = self->_attributedText;
   self->_attributedText = v4;
 

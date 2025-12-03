@@ -1,38 +1,38 @@
 @interface SUUIIndexBarEntry
-+ (id)entryWithAttributedString:(id)a3;
-+ (id)entryWithImage:(id)a3;
-+ (id)placeholderEntryWithSize:(CGSize)a3;
++ (id)entryWithAttributedString:(id)string;
++ (id)entryWithImage:(id)image;
++ (id)placeholderEntryWithSize:(CGSize)size;
 + (id)systemCombinedEntry;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)_calculatedContentSize;
 - (CGSize)contentSize;
 - (CGSize)size;
 - (UIColor)tintColor;
 - (UIEdgeInsets)contentEdgeInsets;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation SUUIIndexBarEntry
 
-+ (id)entryWithAttributedString:(id)a3
++ (id)entryWithAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = [[SUUIAttributedStringIndexBarEntry alloc] initWithAttributedString:v3];
+  stringCopy = string;
+  v4 = [[SUUIAttributedStringIndexBarEntry alloc] initWithAttributedString:stringCopy];
 
   return v4;
 }
 
-+ (id)entryWithImage:(id)a3
++ (id)entryWithImage:(id)image
 {
-  v3 = a3;
-  v4 = [[SUUIImageIndexBarEntry alloc] initWithImage:v3];
+  imageCopy = image;
+  v4 = [[SUUIImageIndexBarEntry alloc] initWithImage:imageCopy];
 
   return v4;
 }
 
-+ (id)placeholderEntryWithSize:(CGSize)a3
++ (id)placeholderEntryWithSize:(CGSize)size
 {
-  v3 = [[SUUIPlaceholderIndexBarEntry alloc] initWithPlaceholderSize:a3.width, a3.height];
+  v3 = [[SUUIPlaceholderIndexBarEntry alloc] initWithPlaceholderSize:size.width, size.height];
 
   return v3;
 }
@@ -44,10 +44,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -55,7 +55,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4->_visibilityPriority == self->_visibilityPriority && v4->_entryType == self->_entryType;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_visibilityPriority == self->_visibilityPriority && equalCopy->_entryType == self->_entryType;
   }
 
   return v5;
@@ -82,24 +82,24 @@
   return result;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   tintColor = self->_tintColor;
-  if (tintColor != v5)
+  if (tintColor != colorCopy)
   {
-    v7 = v5;
-    tintColor = [tintColor isEqual:v5];
-    v5 = v7;
+    v7 = colorCopy;
+    tintColor = [tintColor isEqual:colorCopy];
+    colorCopy = v7;
     if ((tintColor & 1) == 0)
     {
-      objc_storeStrong(&self->_tintColor, a3);
+      objc_storeStrong(&self->_tintColor, color);
       tintColor = [(SUUIIndexBarEntry *)self _tintColorDidChange];
-      v5 = v7;
+      colorCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](tintColor, v5);
+  MEMORY[0x2821F96F8](tintColor, colorCopy);
 }
 
 - (CGSize)size
@@ -117,15 +117,15 @@
   tintColor = self->_tintColor;
   if (tintColor)
   {
-    v3 = tintColor;
+    blackColor = tintColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  return v3;
+  return blackColor;
 }
 
 - (CGSize)_calculatedContentSize

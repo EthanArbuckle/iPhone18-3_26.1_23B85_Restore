@@ -1,29 +1,29 @@
 @interface CPSStyledTextButton
-+ (id)buttonWithTextButton:(id)a3;
++ (id)buttonWithTextButton:(id)button;
 - (id)_buttonFont;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setWantsGlass:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setWantsGlass:(BOOL)glass;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConfiguration;
 @end
 
 @implementation CPSStyledTextButton
 
-+ (id)buttonWithTextButton:(id)a3
++ (id)buttonWithTextButton:(id)button
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   v6 = [objc_opt_class() buttonWithType:0];
   if (v6)
   {
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v6 setTextButton:location[0]];
     [v6 setEnabled:{objc_msgSend(location[0], "isEnabled")}];
-    v5 = [location[0] identifier];
+    identifier = [location[0] identifier];
     [v6 setIdentifier:?];
     [v6 updateConfiguration];
   }
@@ -37,154 +37,154 @@
 
 - (id)_buttonFont
 {
-  v4 = [(CPSStyledTextButton *)self fontOverride];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v4)
+  fontOverride = [(CPSStyledTextButton *)self fontOverride];
+  *&v2 = MEMORY[0x277D82BD8](fontOverride).n128_u64[0];
+  if (fontOverride)
   {
-    v6 = [(CPSStyledTextButton *)self fontOverride];
+    fontOverride2 = [(CPSStyledTextButton *)self fontOverride];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] weight:*MEMORY[0x277D743F8]];
+    fontOverride2 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] weight:*MEMORY[0x277D743F8]];
   }
 
-  return v6;
+  return fontOverride2;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v6 = [location[0] nextFocusedItem];
+  objc_storeStrong(&v10, coordinator);
+  nextFocusedItem = [location[0] nextFocusedItem];
   v8 = 0;
   v7 = 1;
-  if (v6 != v12)
+  if (nextFocusedItem != selfCopy)
   {
-    v9 = [location[0] previouslyFocusedItem];
+    previouslyFocusedItem = [location[0] previouslyFocusedItem];
     v8 = 1;
-    v7 = v9 == v12;
+    v7 = previouslyFocusedItem == selfCopy;
   }
 
   if (v8)
   {
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](previouslyFocusedItem);
   }
 
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](nextFocusedItem).n128_u64[0];
   if (v7)
   {
-    [(CPSStyledTextButton *)v12 setNeedsUpdateConfiguration];
+    [(CPSStyledTextButton *)selfCopy setNeedsUpdateConfiguration];
   }
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = CPSStyledTextButton;
   [(CPUIButton *)&v3 traitCollectionDidChange:location[0]];
-  [(CPSStyledTextButton *)v5 setNeedsUpdateConfiguration];
+  [(CPSStyledTextButton *)selfCopy setNeedsUpdateConfiguration];
   objc_storeStrong(location, 0);
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  selectedCopy = selected;
   v3.receiver = self;
   v3.super_class = CPSStyledTextButton;
-  [(CPSStyledTextButton *)&v3 setSelected:a3];
-  [(CPSStyledTextButton *)v6 setNeedsUpdateConfiguration];
+  [(CPSStyledTextButton *)&v3 setSelected:selected];
+  [(CPSStyledTextButton *)selfCopy setNeedsUpdateConfiguration];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  highlightedCopy = highlighted;
   v3.receiver = self;
   v3.super_class = CPSStyledTextButton;
-  [(CPSStyledTextButton *)&v3 setHighlighted:a3];
-  [(CPSStyledTextButton *)v6 setNeedsUpdateConfiguration];
+  [(CPSStyledTextButton *)&v3 setHighlighted:highlighted];
+  [(CPSStyledTextButton *)selfCopy setNeedsUpdateConfiguration];
 }
 
-- (void)setWantsGlass:(BOOL)a3
+- (void)setWantsGlass:(BOOL)glass
 {
-  if (self->_wantsGlass != a3)
+  if (self->_wantsGlass != glass)
   {
-    self->_wantsGlass = a3;
+    self->_wantsGlass = glass;
     [(CPSStyledTextButton *)self setNeedsUpdateConfiguration];
   }
 }
 
 - (void)updateConfiguration
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v22[0] = 0;
-  v12 = 1;
+  isSelected = 1;
   if (([(CPSStyledTextButton *)self isFocused]& 1) == 0)
   {
-    v12 = 1;
-    if (([(CPSStyledTextButton *)v23 isHighlighted]& 1) == 0)
+    isSelected = 1;
+    if (([(CPSStyledTextButton *)selfCopy isHighlighted]& 1) == 0)
     {
-      v12 = [(CPSStyledTextButton *)v23 isSelected];
+      isSelected = [(CPSStyledTextButton *)selfCopy isSelected];
     }
   }
 
-  v21 = v12 & 1;
-  if ((_UISolariumEnabled() & 1) != 0 && [(CPSStyledTextButton *)v23 wantsGlass])
+  v21 = isSelected & 1;
+  if ((_UISolariumEnabled() & 1) != 0 && [(CPSStyledTextButton *)selfCopy wantsGlass])
   {
     if (v21)
     {
-      v2 = [MEMORY[0x277D75230] _tintedGlassButtonConfiguration];
+      _tintedGlassButtonConfiguration = [MEMORY[0x277D75230] _tintedGlassButtonConfiguration];
     }
 
     else
     {
-      v2 = [MEMORY[0x277D75230] _glassButtonConfiguration];
+      _tintedGlassButtonConfiguration = [MEMORY[0x277D75230] _glassButtonConfiguration];
     }
 
     v3 = v22[0];
-    v22[0] = v2;
+    v22[0] = _tintedGlassButtonConfiguration;
     v4 = MEMORY[0x277D82BD8](v3).n128_u64[0];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75230] tintedButtonConfiguration];
+    tintedButtonConfiguration = [MEMORY[0x277D75230] tintedButtonConfiguration];
     v6 = v22[0];
-    v22[0] = v5;
+    v22[0] = tintedButtonConfiguration;
     v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
   }
 
-  v11 = [(CPSStyledTextButton *)v23 textButton];
-  v10 = [(CPTextButton *)v11 title];
+  textButton = [(CPSStyledTextButton *)selfCopy textButton];
+  title = [(CPTextButton *)textButton title];
   [v22[0] setTitle:?];
-  MEMORY[0x277D82BD8](v10);
-  *&v7 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+  MEMORY[0x277D82BD8](title);
+  *&v7 = MEMORY[0x277D82BD8](textButton).n128_u64[0];
   [v22[0] setTitleLineBreakMode:{4, v7}];
   v14 = MEMORY[0x277D85DD0];
   v15 = -1073741824;
   v16 = 0;
   v17 = __42__CPSStyledTextButton_updateConfiguration__block_invoke;
   v18 = &unk_278D929E0;
-  v19 = MEMORY[0x277D82BE0](v23);
+  v19 = MEMORY[0x277D82BE0](selfCopy);
   v20 = v21 & 1;
   [v22[0] setTitleTextAttributesTransformer:&v14];
-  v13 = [MEMORY[0x277D751C0] clearConfiguration];
+  clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
   v8 = _UISolariumEnabled();
   v9 = 18.0;
   if ((v8 & 1) == 0)
@@ -192,11 +192,11 @@
     v9 = 6.0;
   }
 
-  [v13 setCornerRadius:v9];
-  [v13 setBackgroundColorTransformer:?];
-  [v22[0] setBackground:v13];
-  [(CPSStyledTextButton *)v23 setConfiguration:v22[0]];
-  objc_storeStrong(&v13, 0);
+  [clearConfiguration setCornerRadius:v9];
+  [clearConfiguration setBackgroundColorTransformer:?];
+  [v22[0] setBackground:clearConfiguration];
+  [(CPSStyledTextButton *)selfCopy setConfiguration:v22[0]];
+  objc_storeStrong(&clearConfiguration, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(v22, 0);
 }

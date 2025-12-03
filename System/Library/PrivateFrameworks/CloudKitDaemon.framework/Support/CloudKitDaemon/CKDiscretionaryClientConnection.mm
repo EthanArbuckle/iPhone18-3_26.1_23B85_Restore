@@ -1,34 +1,34 @@
 @interface CKDiscretionaryClientConnection
-- (CKDiscretionaryClientConnection)initWithDaemon:(id)a3 connection:(id)a4;
-- (CKDiscretionaryClientConnection)initWithDaemon:(id)a3 group:(id)a4 bundleID:(id)a5 isSpringBoardApp:(BOOL)a6 requiresPastBuddy:(BOOL)a7 scheduleSendBarrierBlock:(id)a8;
+- (CKDiscretionaryClientConnection)initWithDaemon:(id)daemon connection:(id)connection;
+- (CKDiscretionaryClientConnection)initWithDaemon:(id)daemon group:(id)group bundleID:(id)d isSpringBoardApp:(BOOL)app requiresPastBuddy:(BOOL)buddy scheduleSendBarrierBlock:(id)block;
 - (CKDiscretionaryDaemon)daemon;
 - (void)cleanup;
-- (void)finishOperationID:(id)a3;
-- (void)handleCompletedTask:(id)a3 operationID:(id)a4;
-- (void)queueOperationID:(id)a3 options:(id)a4 clientOperationCallbackProxyEndpoint:(id)a5 withBlock:(id)a6;
+- (void)finishOperationID:(id)d;
+- (void)handleCompletedTask:(id)task operationID:(id)d;
+- (void)queueOperationID:(id)d options:(id)options clientOperationCallbackProxyEndpoint:(id)endpoint withBlock:(id)block;
 @end
 
 @implementation CKDiscretionaryClientConnection
 
-- (CKDiscretionaryClientConnection)initWithDaemon:(id)a3 group:(id)a4 bundleID:(id)a5 isSpringBoardApp:(BOOL)a6 requiresPastBuddy:(BOOL)a7 scheduleSendBarrierBlock:(id)a8
+- (CKDiscretionaryClientConnection)initWithDaemon:(id)daemon group:(id)group bundleID:(id)d isSpringBoardApp:(BOOL)app requiresPastBuddy:(BOOL)buddy scheduleSendBarrierBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  daemonCopy = daemon;
+  groupCopy = group;
+  dCopy = d;
+  blockCopy = block;
   v33.receiver = self;
   v33.super_class = CKDiscretionaryClientConnection;
   v18 = [(CKDiscretionaryClientConnection *)&v33 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_daemon, v14);
+    objc_storeWeak(&v18->_daemon, daemonCopy);
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    [v14 serialQueue];
-    obj = a4;
-    v21 = v16;
-    v22 = v15;
-    v24 = v23 = a7;
+    [daemonCopy serialQueue];
+    obj = group;
+    v21 = dCopy;
+    v22 = groupCopy;
+    v24 = v23 = buddy;
     v25 = dispatch_queue_create_with_target_V2("com.apple.ckdiscretionaryd.connection", v20, v24);
     serialQueue = v19->_serialQueue;
     v19->_serialQueue = v25;
@@ -37,12 +37,12 @@
     tasksByOperationID = v19->_tasksByOperationID;
     v19->_tasksByOperationID = v27;
 
-    objc_storeStrong(&v19->_bundleID, a5);
-    v19->_isSpringBoardApp = a6;
+    objc_storeStrong(&v19->_bundleID, d);
+    v19->_isSpringBoardApp = app;
     v19->_requiresPastBuddy = v23;
-    v15 = v22;
-    v16 = v21;
-    v29 = objc_retainBlock(v17);
+    groupCopy = v22;
+    dCopy = v21;
+    v29 = objc_retainBlock(blockCopy);
     scheduleSendBarrierBlock = v19->_scheduleSendBarrierBlock;
     v19->_scheduleSendBarrierBlock = v29;
 
@@ -52,11 +52,11 @@
   return v19;
 }
 
-- (CKDiscretionaryClientConnection)initWithDaemon:(id)a3 connection:(id)a4
+- (CKDiscretionaryClientConnection)initWithDaemon:(id)daemon connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 _xpcConnection];
+  daemonCopy = daemon;
+  connectionCopy = connection;
+  _xpcConnection = [connectionCopy _xpcConnection];
   v9 = xpc_connection_copy_bundle_id();
 
   if (v9)
@@ -70,8 +70,8 @@
     v10 = 0;
   }
 
-  v11 = [v7 _xpcConnection];
-  v12 = v10;
+  _xpcConnection2 = [connectionCopy _xpcConnection];
+  bundleIdentifier = v10;
   if ((xpc_connection_is_extension() & (v10 != 0)) != 1)
   {
     goto LABEL_21;
@@ -102,7 +102,7 @@
     }
 
     v17 = ck_log_facility_ck;
-    v12 = v13;
+    bundleIdentifier = v13;
     if (!os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_18;
@@ -113,16 +113,16 @@
     *&buf[12] = 2112;
     *&buf[14] = v16;
     _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to initialize LSApplicationExtensionRecord with bundle id %@: %@", buf, 0x16u);
-    v12 = v13;
+    bundleIdentifier = v13;
   }
 
   else
   {
-    v12 = v13;
+    bundleIdentifier = v13;
     if (v15)
     {
-      v18 = [v15 containingBundleRecord];
-      v12 = [v18 bundleIdentifier];
+      containingBundleRecord = [v15 containingBundleRecord];
+      bundleIdentifier = [containingBundleRecord bundleIdentifier];
     }
   }
 
@@ -136,16 +136,16 @@ LABEL_18:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    *&buf[4] = v12;
+    *&buf[4] = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Containing app for PlugIn is %{public}@", buf, 0xCu);
   }
 
 LABEL_21:
-  v20 = [v7 valueForEntitlement:kCKAllowAccessDuringBuddyEntitlementKey];
+  v20 = [connectionCopy valueForEntitlement:kCKAllowAccessDuringBuddyEntitlementKey];
   if (v20 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v21 = [v20 BOOLValue] ^ 1;
-    if (v12)
+    if (bundleIdentifier)
     {
       goto LABEL_29;
     }
@@ -154,44 +154,44 @@ LABEL_21:
   else
   {
     v21 = 1;
-    if (v12)
+    if (bundleIdentifier)
     {
       goto LABEL_29;
     }
   }
 
   memset(buf, 0, 32);
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   v28 = 0;
   v26 = *buf;
   v27 = *&buf[16];
   CPCopyBundleIdentifierAndTeamFromAuditToken();
-  v12 = 0;
+  bundleIdentifier = 0;
 LABEL_29:
-  objc_initWeak(buf, v7);
+  objc_initWeak(buf, connectionCopy);
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100003D94;
   v24[3] = &unk_100010688;
   objc_copyWeak(&v25, buf);
-  v22 = [(CKDiscretionaryClientConnection *)self initWithDaemon:v6 group:@"com.apple.ckdiscretionaryd" bundleID:v12 isSpringBoardApp:v10 != 0 requiresPastBuddy:v21 scheduleSendBarrierBlock:v24];
+  v22 = [(CKDiscretionaryClientConnection *)self initWithDaemon:daemonCopy group:@"com.apple.ckdiscretionaryd" bundleID:bundleIdentifier isSpringBoardApp:v10 != 0 requiresPastBuddy:v21 scheduleSendBarrierBlock:v24];
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
 
   return v22;
 }
 
-- (void)queueOperationID:(id)a3 options:(id)a4 clientOperationCallbackProxyEndpoint:(id)a5 withBlock:(id)a6
+- (void)queueOperationID:(id)d options:(id)options clientOperationCallbackProxyEndpoint:(id)endpoint withBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [[CKDOperationCallbackProxy alloc] initWithEndpoint:v13];
+  dCopy = d;
+  optionsCopy = options;
+  blockCopy = block;
+  endpointCopy = endpoint;
+  v14 = [[CKDOperationCallbackProxy alloc] initWithEndpoint:endpointCopy];
 
   [v14 activate];
   v33[0] = _NSConcreteStackBlock;
@@ -200,7 +200,7 @@ LABEL_29:
   v33[3] = &unk_1000106B0;
   v15 = v14;
   v34 = v15;
-  v16 = v12;
+  v16 = blockCopy;
   v35 = v16;
   v17 = objc_retainBlock(v33);
   if (ck_log_initialization_predicate != -1)
@@ -212,13 +212,13 @@ LABEL_29:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     v19 = v18;
-    v20 = [(CKDiscretionaryClientConnection *)self bundleID];
+    bundleID = [(CKDiscretionaryClientConnection *)self bundleID];
     *buf = 138543874;
-    v37 = v10;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v20;
+    v39 = bundleID;
     v40 = 2048;
-    v41 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%{public}@ queued for %@ on connection %p", buf, 0x20u);
   }
 
@@ -231,12 +231,12 @@ LABEL_29:
   objc_copyWeak(&v32, buf);
   v30 = v15;
   v31 = v17;
-  v27 = v10;
-  v28 = self;
-  v29 = v11;
+  v27 = dCopy;
+  selfCopy2 = self;
+  v29 = optionsCopy;
   v22 = v15;
-  v23 = v11;
-  v24 = v10;
+  v23 = optionsCopy;
+  v24 = dCopy;
   v25 = v17;
   dispatch_async(serialQueue, v26);
 
@@ -244,9 +244,9 @@ LABEL_29:
   objc_destroyWeak(buf);
 }
 
-- (void)finishOperationID:(id)a3
+- (void)finishOperationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -256,7 +256,7 @@ LABEL_29:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@ finishing", buf, 0xCu);
   }
 
@@ -267,9 +267,9 @@ LABEL_29:
   block[2] = sub_100004A70;
   block[3] = &unk_100010750;
   objc_copyWeak(&v11, buf);
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v11);
@@ -287,11 +287,11 @@ LABEL_29:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(CKDiscretionaryClientConnection *)self bundleID];
+    bundleID = [(CKDiscretionaryClientConnection *)self bundleID];
     *buf = 138543618;
-    v10 = v5;
+    v10 = bundleID;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "cleanup for %{public}@ on connection %p", buf, 0x16u);
   }
 
@@ -308,13 +308,13 @@ LABEL_29:
   objc_destroyWeak(buf);
 }
 
-- (void)handleCompletedTask:(id)a3 operationID:(id)a4
+- (void)handleCompletedTask:(id)task operationID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dCopy = d;
   v8 = dispatch_group_create();
-  v9 = [v6 callbackProxy];
-  if (v9)
+  callbackProxy = [taskCopy callbackProxy];
+  if (callbackProxy)
   {
     dispatch_group_enter(v8);
     v20[0] = _NSConcreteStackBlock;
@@ -322,7 +322,7 @@ LABEL_29:
     v20[2] = sub_100005150;
     v20[3] = &unk_1000107A0;
     v21 = v8;
-    [v9 addBarrierBlock:v20];
+    [callbackProxy addBarrierBlock:v20];
   }
 
   objc_initWeak(&location, self);
@@ -331,13 +331,13 @@ LABEL_29:
   v14[1] = 3221225472;
   v14[2] = sub_100005158;
   v14[3] = &unk_1000107C8;
-  v15 = v6;
-  v16 = v9;
-  v11 = v9;
-  v12 = v6;
+  v15 = taskCopy;
+  v16 = callbackProxy;
+  v11 = callbackProxy;
+  v12 = taskCopy;
   objc_copyWeak(&v18, &location);
-  v17 = v7;
-  v13 = v7;
+  v17 = dCopy;
+  v13 = dCopy;
   dispatch_group_notify(v8, serialQueue, v14);
 
   objc_destroyWeak(&v18);

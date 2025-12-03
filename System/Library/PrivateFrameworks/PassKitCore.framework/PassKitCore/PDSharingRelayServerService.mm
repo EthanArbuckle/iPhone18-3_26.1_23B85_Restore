@@ -1,38 +1,38 @@
 @interface PDSharingRelayServerService
-- (PDSharingRelayServerService)initWithWebServiceCoordinator:(id)a3 domainService:(id)a4 pushNotificationManager:(id)a5 delegate:(id)a6;
-- (id)relayEndpointForMailboxAddress:(id)a3;
+- (PDSharingRelayServerService)initWithWebServiceCoordinator:(id)coordinator domainService:(id)service pushNotificationManager:(id)manager delegate:(id)delegate;
+- (id)relayEndpointForMailboxAddress:(id)address;
 - (void)_updatePassbookAssosiatedDomainsForSharing;
-- (void)checkOutstandingMessagesOn:(id)a3 completion:(id)a4;
+- (void)checkOutstandingMessagesOn:(id)on completion:(id)completion;
 - (void)dealloc;
-- (void)pingEndpoint:(id)a3 completion:(id)a4;
-- (void)prewarmEndpointCreationOfType:(unint64_t)a3 count:(unint64_t)a4 completion:(id)a5;
-- (void)relinquishEndpoint:(id)a3 completion:(id)a4;
-- (void)sendMessageTo:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)universalShareURLForEndpoint:(id)a3 urlDecoration:(id)a4 completion:(id)a5;
+- (void)pingEndpoint:(id)endpoint completion:(id)completion;
+- (void)prewarmEndpointCreationOfType:(unint64_t)type count:(unint64_t)count completion:(id)completion;
+- (void)relinquishEndpoint:(id)endpoint completion:(id)completion;
+- (void)sendMessageTo:(id)to message:(id)message completion:(id)completion;
+- (void)universalShareURLForEndpoint:(id)endpoint urlDecoration:(id)decoration completion:(id)completion;
 @end
 
 @implementation PDSharingRelayServerService
 
-- (PDSharingRelayServerService)initWithWebServiceCoordinator:(id)a3 domainService:(id)a4 pushNotificationManager:(id)a5 delegate:(id)a6
+- (PDSharingRelayServerService)initWithWebServiceCoordinator:(id)coordinator domainService:(id)service pushNotificationManager:(id)manager delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  coordinatorCopy = coordinator;
+  serviceCopy = service;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = PDSharingRelayServerService;
   v15 = [(PDSharingRelayServerService *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_webServiceCoordinator, a3);
-    objc_storeStrong(&v16->_domainService, a4);
-    objc_storeStrong(&v16->_delegate, a6);
+    objc_storeStrong(&v15->_webServiceCoordinator, coordinator);
+    objc_storeStrong(&v16->_domainService, service);
+    objc_storeStrong(&v16->_delegate, delegate);
     v17 = objc_alloc_init(PDAppAttestService);
     appAttestService = v16->_appAttestService;
     v16->_appAttestService = v17;
 
-    objc_storeStrong(&v16->_pushNotificationManager, a5);
+    objc_storeStrong(&v16->_pushNotificationManager, manager);
     v16->_lock._os_unfair_lock_opaque = 0;
     v19 = objc_alloc_init(NSMutableDictionary);
     availablePushNotificationTokens = v16->_availablePushNotificationTokens;
@@ -53,21 +53,21 @@
   [(PDSharingRelayServerService *)&v3 dealloc];
 }
 
-- (id)relayEndpointForMailboxAddress:(id)a3
+- (id)relayEndpointForMailboxAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = [[PDSharingRelayServerEndpoint alloc] initWithProvisioningType:0];
-  sub_1005C8864(self, v5, v4);
+  sub_1005C8864(self, v5, addressCopy);
   [(PDSharingRelayServerEndpoint *)v5 setMailboxStatus:0];
-  v6 = [(PDPaymentWebServiceCoordinator *)self->_webServiceCoordinator sharedWebServiceContext];
-  v7 = [v6 configuration];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self->_webServiceCoordinator sharedWebServiceContext];
+  configuration = [sharedWebServiceContext configuration];
   v8 = PKCurrentRegion();
-  v9 = [v7 allowedRelayServerHostsForRegion:v8];
+  v9 = [configuration allowedRelayServerHostsForRegion:v8];
 
-  v10 = [(PDSharingRelayServerEndpoint *)v5 relayServerHost];
-  v11 = [v10 host];
+  relayServerHost = [(PDSharingRelayServerEndpoint *)v5 relayServerHost];
+  host = [relayServerHost host];
 
-  v12 = [v9 containsObject:v11];
+  v12 = [v9 containsObject:host];
   v13 = PKLogFacilityTypeGetObject();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
   if (v12)
@@ -90,7 +90,7 @@
     if (v14)
     {
       v18 = 138543362;
-      v19 = v11;
+      v19 = host;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "RelayServer: Evaluated %{public}@, but host not allowed.", &v18, 0xCu);
     }
 
@@ -100,14 +100,14 @@
   return v16;
 }
 
-- (void)pingEndpoint:(id)a3 completion:(id)a4
+- (void)pingEndpoint:(id)endpoint completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 transportIdentifier];
+    transportIdentifier = [endpointCopy transportIdentifier];
     v10 = PKSharingLoggableMailboxAddress();
     *buf = 138543362;
     v22 = v10;
@@ -115,66 +115,66 @@
   }
 
   v11 = [PDSharingRelayServerPingMailboxRequest alloc];
-  v12 = [v6 transportIdentifier];
-  v13 = [v6 relayServerHost];
-  v14 = [(PDSharingRelayServerRequest *)v11 initWithMailboxIdentifier:v12 relayServerHost:v13];
+  transportIdentifier2 = [endpointCopy transportIdentifier];
+  relayServerHost = [endpointCopy relayServerHost];
+  v14 = [(PDSharingRelayServerRequest *)v11 initWithMailboxIdentifier:transportIdentifier2 relayServerHost:relayServerHost];
 
   v15 = objc_opt_class();
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1001AE3C0;
   v18[3] = &unk_10084BF48;
-  v19 = v6;
-  v20 = v7;
-  v16 = v7;
-  v17 = v6;
+  v19 = endpointCopy;
+  v20 = completionCopy;
+  v16 = completionCopy;
+  v17 = endpointCopy;
   sub_1005C8C24(self, v14, v15, v18);
 }
 
-- (void)sendMessageTo:(id)a3 message:(id)a4 completion:(id)a5
+- (void)sendMessageTo:(id)to message:(id)message completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v10 doesRemoteMailboxExist])
+  completionCopy = completion;
+  messageCopy = message;
+  toCopy = to;
+  if ([toCopy doesRemoteMailboxExist])
   {
-    sub_1005C8CD0(self, v10, v9, v8);
+    sub_1005C8CD0(self, toCopy, messageCopy, completionCopy);
   }
 
   else
   {
-    sub_1001AE574(self, v10, v9, 0, v8);
+    sub_1001AE574(self, toCopy, messageCopy, 0, completionCopy);
   }
 }
 
-- (void)checkOutstandingMessagesOn:(id)a3 completion:(id)a4
+- (void)checkOutstandingMessagesOn:(id)on completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 mailboxStatus] == 4)
+  onCopy = on;
+  completionCopy = completion;
+  if ([onCopy mailboxStatus] == 4)
   {
     v8 = PDBasicError();
-    v7[2](v7, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 
   else
   {
-    sub_1005CA660(v6, self, &v9, v7);
+    sub_1005CA660(onCopy, self, &v9, completionCopy);
   }
 }
 
-- (void)relinquishEndpoint:(id)a3 completion:(id)a4
+- (void)relinquishEndpoint:(id)endpoint completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  IsActive = PDSharingRelayServerEndpointStatusIsActive([v6 mailboxStatus]);
+  endpointCopy = endpoint;
+  completionCopy = completion;
+  IsActive = PDSharingRelayServerEndpointStatusIsActive([endpointCopy mailboxStatus]);
   v9 = PKLogFacilityTypeGetObject();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (IsActive)
   {
     if (v10)
     {
-      v14 = [v6 transportIdentifier];
+      transportIdentifier = [endpointCopy transportIdentifier];
       v15 = PKSharingLoggableMailboxAddress();
       *buf = 138412290;
       v26 = v15;
@@ -182,21 +182,21 @@
     }
 
     v16 = [PDSharingRelayServerRelinquishMailboxRequest alloc];
-    v17 = [v6 transportIdentifier];
-    v18 = [v6 relayServerHost];
-    v13 = [(PDSharingRelayServerRequest *)v16 initWithMailboxIdentifier:v17 relayServerHost:v18];
+    transportIdentifier2 = [endpointCopy transportIdentifier];
+    relayServerHost = [endpointCopy relayServerHost];
+    v13 = [(PDSharingRelayServerRequest *)v16 initWithMailboxIdentifier:transportIdentifier2 relayServerHost:relayServerHost];
 
-    v19 = [v6 deviceClaim];
-    [(PDSharingRelayServerRequest *)v13 setDeviceClaim:v19];
+    deviceClaim = [endpointCopy deviceClaim];
+    [(PDSharingRelayServerRequest *)v13 setDeviceClaim:deviceClaim];
 
     v20 = objc_opt_class();
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1005C9FEC;
     v21[3] = &unk_10084C088;
-    v22 = v6;
-    v23 = self;
-    v24 = v7;
+    v22 = endpointCopy;
+    selfCopy = self;
+    v24 = completionCopy;
     sub_1005C8C24(self, v13, v20, v21);
   }
 
@@ -204,7 +204,7 @@
   {
     if (v10)
     {
-      v11 = [v6 transportIdentifier];
+      transportIdentifier3 = [endpointCopy transportIdentifier];
       v12 = PKSharingLoggableMailboxAddress();
       *buf = 138543362;
       v26 = v12;
@@ -212,36 +212,36 @@
     }
 
     v13 = PDBasicError();
-    (*(v7 + 2))(v7, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
-- (void)universalShareURLForEndpoint:(id)a3 urlDecoration:(id)a4 completion:(id)a5
+- (void)universalShareURLForEndpoint:(id)endpoint urlDecoration:(id)decoration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 doesRemoteMailboxExist])
+  endpointCopy = endpoint;
+  decorationCopy = decoration;
+  completionCopy = completion;
+  if ([endpointCopy doesRemoteMailboxExist])
   {
-    v10 = [v7 relayServerHost];
-    if (v10)
+    relayServerHost = [endpointCopy relayServerHost];
+    if (relayServerHost)
     {
-      v11 = [[NSURLComponents alloc] initWithURL:v10 resolvingAgainstBaseURL:0];
+      v11 = [[NSURLComponents alloc] initWithURL:relayServerHost resolvingAgainstBaseURL:0];
       [v11 setScheme:@"https"];
       v12 = PKSharingRelayServerRequestVersion;
       v13 = PKSharingRelayServerMailboxURI;
-      v14 = [v7 transportIdentifier];
-      v15 = [NSString stringWithFormat:@"/v%@/%@/%@", v12, v13, v14];
+      transportIdentifier = [endpointCopy transportIdentifier];
+      v15 = [NSString stringWithFormat:@"/v%@/%@/%@", v12, v13, transportIdentifier];
       [v11 setPath:v15];
 
-      v16 = [v7 payloadEncryptionPassword];
-      v17 = [v16 base64EncodedStringWithOptions:0];
+      payloadEncryptionPassword = [endpointCopy payloadEncryptionPassword];
+      v17 = [payloadEncryptionPassword base64EncodedStringWithOptions:0];
       [v11 setFragment:v17];
 
       v18 = objc_alloc_init(NSMutableArray);
-      if (v8)
+      if (decorationCopy)
       {
-        v19 = [v8 vertical] - 1;
+        v19 = [decorationCopy vertical] - 1;
         if (v19 <= 2)
         {
           v20 = **(&off_10084C190 + v19);
@@ -259,13 +259,13 @@
       v24 = [v11 URL];
       if (v24)
       {
-        v9[2](v9, v24, 0);
+        completionCopy[2](completionCopy, v24, 0);
       }
 
       else
       {
         v31 = PDBasicError();
-        (v9)[2](v9, 0, v31);
+        (completionCopy)[2](completionCopy, 0, v31);
       }
     }
 
@@ -274,7 +274,7 @@
       v28 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v7 transportIdentifier];
+        transportIdentifier2 = [endpointCopy transportIdentifier];
         v30 = PKSharingLoggableMailboxAddress();
         *buf = 138543362;
         v33 = v30;
@@ -282,7 +282,7 @@
       }
 
       v11 = [NSError pkSharingError:1];
-      (v9)[2](v9, 0, v11);
+      (completionCopy)[2](completionCopy, 0, v11);
     }
   }
 
@@ -291,23 +291,23 @@
     v25 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v7 transportIdentifier];
+      transportIdentifier3 = [endpointCopy transportIdentifier];
       v27 = PKSharingLoggableMailboxAddress();
       *buf = 138543362;
       v33 = v27;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "RelayServer: Unable to generate share url for mailbox %{public}@ because it doesn't exist on server", buf, 0xCu);
     }
 
-    v10 = [NSError pkSharingError:1];
-    (v9)[2](v9, 0, v10);
+    relayServerHost = [NSError pkSharingError:1];
+    (completionCopy)[2](completionCopy, 0, relayServerHost);
   }
 }
 
-- (void)prewarmEndpointCreationOfType:(unint64_t)a3 count:(unint64_t)a4 completion:(id)a5
+- (void)prewarmEndpointCreationOfType:(unint64_t)type count:(unint64_t)count completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 2)
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (type == 2)
   {
     v10 = sub_1005CA118(self, 0);
     os_unfair_lock_lock(&self->_lock);
@@ -315,8 +315,8 @@
     v12 = [v11 count];
 
     os_unfair_lock_unlock(&self->_lock);
-    v13 = a4 - v12;
-    if (a4 <= v12)
+    v13 = count - v12;
+    if (count <= v12)
     {
       v9[2](v9, 1);
     }
@@ -358,16 +358,16 @@
 
   else
   {
-    (*(v8 + 2))(v8, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
 - (void)_updatePassbookAssosiatedDomainsForSharing
 {
-  v20 = [(PDPaymentWebServiceCoordinator *)self->_webServiceCoordinator sharedWebServiceContext];
-  v2 = [v20 configuration];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self->_webServiceCoordinator sharedWebServiceContext];
+  configuration = [sharedWebServiceContext configuration];
   v3 = PKCurrentRegion();
-  v4 = [v2 relayServerHostsToHandleUniversalLinksForRegion:v3];
+  v4 = [configuration relayServerHostsToHandleUniversalLinksForRegion:v3];
 
   v5 = objc_alloc_init(PDDynamicAssociatedDomainPattern);
 @end

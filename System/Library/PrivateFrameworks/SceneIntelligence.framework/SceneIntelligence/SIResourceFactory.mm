@@ -1,37 +1,37 @@
 @interface SIResourceFactory
 - (MTLLibrary)library;
-- (SIResourceFactory)initWithDevice:(id)a3;
+- (SIResourceFactory)initWithDevice:(id)device;
 - (id)binaryArchive;
 - (id)commandBufferOnCustomQueueWithoutComputePreemption;
-- (id)dictionaryFromTexture:(id)a3;
-- (id)newComputePipelineStateWithName:(id)a3 constantValues:(id)a4 error:(id *)a5;
-- (id)newCubemapWithFormat:(SIImageFormat_struct *)a3;
-- (id)newFunctionWithName:(id)a3;
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 error:(id *)a5;
-- (id)newIOSurfaceBackedTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5;
-- (id)newTextureFromIOSurface:(__IOSurface *)a3;
-- (id)newTextureFromPixelBuffer:(__CVBuffer *)a3;
-- (id)newTextureWithFormat:(SIImageFormat_struct *)a3;
-- (id)newTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 mtlPixelFormat:(unint64_t)a5;
-- (id)newTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5;
-- (id)newTexturesFromBiPlanarPixelBuffer:(__CVBuffer *)a3;
+- (id)dictionaryFromTexture:(id)texture;
+- (id)newComputePipelineStateWithName:(id)name constantValues:(id)values error:(id *)error;
+- (id)newCubemapWithFormat:(SIImageFormat_struct *)format;
+- (id)newFunctionWithName:(id)name;
+- (id)newFunctionWithName:(id)name constantValues:(id)values error:(id *)error;
+- (id)newIOSurfaceBackedTextureWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format;
+- (id)newTextureFromIOSurface:(__IOSurface *)surface;
+- (id)newTextureFromPixelBuffer:(__CVBuffer *)buffer;
+- (id)newTextureWithFormat:(SIImageFormat_struct *)format;
+- (id)newTextureWithWidth:(unint64_t)width height:(unint64_t)height mtlPixelFormat:(unint64_t)format;
+- (id)newTextureWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format;
+- (id)newTexturesFromBiPlanarPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation SIResourceFactory
 
-- (SIResourceFactory)initWithDevice:(id)a3
+- (SIResourceFactory)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = SIResourceFactory;
   v6 = [(SIResourceFactory *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [(MTLDevice *)v7->_device newCommandQueue];
+    objc_storeStrong(&v6->_device, device);
+    newCommandQueue = [(MTLDevice *)v7->_device newCommandQueue];
     commandQueue = v7->_commandQueue;
-    v7->_commandQueue = v8;
+    v7->_commandQueue = newCommandQueue;
 
     v10 = objc_opt_new();
     [v10 setCommitSynchronously:1];
@@ -40,9 +40,9 @@
     commandQueueSPI = v7->_commandQueueSPI;
     v7->_commandQueueSPI = v11;
 
-    v13 = [(MTLDevice *)v7->_device newSharedEvent];
+    newSharedEvent = [(MTLDevice *)v7->_device newSharedEvent];
     sharedEvent = v7->_sharedEvent;
-    v7->_sharedEvent = v13;
+    v7->_sharedEvent = newSharedEvent;
 
     v15 = v7;
   }
@@ -158,12 +158,12 @@ LABEL_13:
   return v14;
 }
 
-- (id)newFunctionWithName:(id)a3
+- (id)newFunctionWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SIResourceFactory *)self library];
-  v6 = [v5 newFunctionWithName:v4];
+  nameCopy = name;
+  library = [(SIResourceFactory *)self library];
+  v6 = [library newFunctionWithName:nameCopy];
 
   if (v6)
   {
@@ -180,7 +180,7 @@ LABEL_13:
       v13 = 1025;
       v14 = 145;
       v15 = 2113;
-      v16 = v4;
+      v16 = nameCopy;
       _os_log_impl(&dword_21DE0D000, v8, OS_LOG_TYPE_DEFAULT, " %{private}s:%{private}d *** newFunctionWithName failed: %{private}@ ***", &v11, 0x1Cu);
     }
   }
@@ -189,20 +189,20 @@ LABEL_13:
   return v6;
 }
 
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 error:(id *)a5
+- (id)newFunctionWithName:(id)name constantValues:(id)values error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SIResourceFactory *)self library];
-  v11 = [v10 newFunctionWithName:v9 constantValues:v8 error:a5];
+  valuesCopy = values;
+  nameCopy = name;
+  library = [(SIResourceFactory *)self library];
+  v11 = [library newFunctionWithName:nameCopy constantValues:valuesCopy error:error];
 
-  if (*a5)
+  if (*error)
   {
     v12 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = *a5;
+      v13 = *error;
       v17 = 136381187;
       v18 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIResourceFactory.m";
       v19 = 1025;
@@ -224,21 +224,21 @@ LABEL_13:
   return v14;
 }
 
-- (id)newComputePipelineStateWithName:(id)a3 constantValues:(id)a4 error:(id *)a5
+- (id)newComputePipelineStateWithName:(id)name constantValues:(id)values error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SIResourceFactory *)self library];
-  v11 = v10;
-  if (v9)
+  nameCopy = name;
+  valuesCopy = values;
+  library = [(SIResourceFactory *)self library];
+  v11 = library;
+  if (valuesCopy)
   {
-    v12 = [v10 newFunctionWithName:v8 constantValues:v9 error:a5];
+    v12 = [library newFunctionWithName:nameCopy constantValues:valuesCopy error:error];
   }
 
   else
   {
-    v12 = [v10 newFunctionWithName:v8];
+    v12 = [library newFunctionWithName:nameCopy];
   }
 
   v13 = v12;
@@ -248,26 +248,26 @@ LABEL_13:
     v14 = objc_opt_new();
     [v14 setComputeFunction:v13];
     [v14 setThreadGroupSizeIsMultipleOfThreadExecutionWidth:0];
-    v15 = [(SIResourceFactory *)self binaryArchive];
+    binaryArchive = [(SIResourceFactory *)self binaryArchive];
 
-    if (v15)
+    if (binaryArchive)
     {
-      v16 = [(SIResourceFactory *)self binaryArchive];
-      v26 = v16;
+      binaryArchive2 = [(SIResourceFactory *)self binaryArchive];
+      v26 = binaryArchive2;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
       [v14 setBinaryArchives:v17];
     }
 
-    v18 = [(MTLDevice *)self->_device newComputePipelineStateWithDescriptor:v14 options:0 reflection:0 error:a5];
+    v18 = [(MTLDevice *)self->_device newComputePipelineStateWithDescriptor:v14 options:0 reflection:0 error:error];
     v19 = v18;
-    if (a5 || !v18)
+    if (error || !v18)
     {
       v22 = __SceneIntelligenceLogSharedInstance();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        if (a5)
+        if (error)
         {
-          v23 = *a5;
+          v23 = *error;
         }
 
         else
@@ -298,9 +298,9 @@ LABEL_13:
     v14 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      if (a5)
+      if (error)
       {
-        v21 = *a5;
+        v21 = *error;
       }
 
       else
@@ -313,7 +313,7 @@ LABEL_13:
       v29 = 1025;
       v30 = 170;
       v31 = 2113;
-      v32 = v8;
+      v32 = nameCopy;
       v33 = 2113;
       v34 = v21;
       _os_log_impl(&dword_21DE0D000, v14, OS_LOG_TYPE_DEFAULT, " %{private}s:%{private}d *** newFunctionWithName %{private}@ failed %{private}@ ***", buf, 0x26u);
@@ -326,38 +326,38 @@ LABEL_13:
   return v20;
 }
 
-- (id)newCubemapWithFormat:(SIImageFormat_struct *)a3
+- (id)newCubemapWithFormat:(SIImageFormat_struct *)format
 {
-  v4 = [MEMORY[0x277CD7058] textureCubeDescriptorWithPixelFormat:a3->var3 size:a3->var0 mipmapped:1];
+  v4 = [MEMORY[0x277CD7058] textureCubeDescriptorWithPixelFormat:format->var3 size:format->var0 mipmapped:1];
   [v4 setUsage:23];
   v5 = [(MTLDevice *)self->_device newTextureWithDescriptor:v4];
 
   return v5;
 }
 
-- (id)newTextureWithFormat:(SIImageFormat_struct *)a3
+- (id)newTextureWithFormat:(SIImageFormat_struct *)format
 {
-  var2 = a3->var2;
+  var2 = format->var2;
   if (!var2)
   {
-    var2 = SIOSTypeFromMTLPixelFormat(a3->var3);
+    var2 = SIOSTypeFromMTLPixelFormat(format->var3);
   }
 
-  var0 = a3->var0;
-  var1 = a3->var1;
+  var0 = format->var0;
+  var1 = format->var1;
 
   return [(SIResourceFactory *)self newTextureWithWidth:var0 height:var1 pixelFormat:var2];
 }
 
-- (id)newTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5
+- (id)newTextureWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = SIMTLPixelFormatFromOSType(a5);
+  v9 = SIMTLPixelFormatFromOSType(format);
   if (v9)
   {
     v10 = *MEMORY[0x277D85DE8];
 
-    return [(SIResourceFactory *)self newTextureWithWidth:a3 height:a4 mtlPixelFormat:v9];
+    return [(SIResourceFactory *)self newTextureWithWidth:width height:height mtlPixelFormat:v9];
   }
 
   else
@@ -365,7 +365,7 @@ LABEL_13:
     v12 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = SIPixelFormatToStr(a5);
+      v13 = SIPixelFormatToStr(format);
       v15 = 136381187;
       v16 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIResourceFactory.m";
       v17 = 1025;
@@ -380,14 +380,14 @@ LABEL_13:
   }
 }
 
-- (id)newTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 mtlPixelFormat:(unint64_t)a5
+- (id)newTextureWithWidth:(unint64_t)width height:(unint64_t)height mtlPixelFormat:(unint64_t)format
 {
   v20 = *MEMORY[0x277D85DE8];
   v9 = objc_opt_new();
   [v9 setTextureType:2];
-  [v9 setWidth:a3];
-  [v9 setHeight:a4];
-  [v9 setPixelFormat:a5];
+  [v9 setWidth:width];
+  [v9 setHeight:height];
+  [v9 setPixelFormat:format];
   [v9 setUsage:23];
   v10 = [(MTLDevice *)self->_device newTextureWithDescriptor:v9];
   v11 = v10;
@@ -413,18 +413,18 @@ LABEL_13:
   return v11;
 }
 
-- (id)newIOSurfaceBackedTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5
+- (id)newIOSurfaceBackedTextureWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format
 {
-  v6 = SICreateCVPixelBuffer(a3, a4, a5, 1);
+  v6 = SICreateCVPixelBuffer(width, height, format, 1);
   v7 = [(SIResourceFactory *)self newTextureFromPixelBuffer:v6];
   CVPixelBufferRelease(v6);
   return v7;
 }
 
-- (id)newTextureFromPixelBuffer:(__CVBuffer *)a3
+- (id)newTextureFromPixelBuffer:(__CVBuffer *)buffer
 {
   v13 = *MEMORY[0x277D85DE8];
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   if (IOSurface)
   {
     v5 = *MEMORY[0x277D85DE8];
@@ -449,19 +449,19 @@ LABEL_13:
   }
 }
 
-- (id)newTextureFromIOSurface:(__IOSurface *)a3
+- (id)newTextureFromIOSurface:(__IOSurface *)surface
 {
   v24 = *MEMORY[0x277D85DE8];
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
   v6 = SIMTLPixelFormatFromOSType(PixelFormat);
   if (v6)
   {
     v7 = v6;
     v8 = MEMORY[0x277CD7058];
-    Width = IOSurfaceGetWidth(a3);
-    v10 = [v8 texture2DDescriptorWithPixelFormat:v7 width:Width height:IOSurfaceGetHeight(a3) mipmapped:0];
+    Width = IOSurfaceGetWidth(surface);
+    v10 = [v8 texture2DDescriptorWithPixelFormat:v7 width:Width height:IOSurfaceGetHeight(surface) mipmapped:0];
     [v10 setUsage:7];
-    v11 = [(MTLDevice *)self->_device newTextureWithDescriptor:v10 iosurface:a3 plane:0];
+    v11 = [(MTLDevice *)self->_device newTextureWithDescriptor:v10 iosurface:surface plane:0];
     v12 = v11;
     if (v11)
     {
@@ -504,10 +504,10 @@ LABEL_13:
   return v12;
 }
 
-- (id)newTexturesFromBiPlanarPixelBuffer:(__CVBuffer *)a3
+- (id)newTexturesFromBiPlanarPixelBuffer:(__CVBuffer *)buffer
 {
   v27 = *MEMORY[0x277D85DE8];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (!SIIsBiPlanarUint8Format(PixelFormatType))
   {
     v10 = __SceneIntelligenceLogSharedInstance();
@@ -526,7 +526,7 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   if (!IOSurface)
   {
     v10 = __SceneIntelligenceLogSharedInstance();
@@ -546,13 +546,13 @@ LABEL_8:
 
   v7 = IOSurface;
   v8 = MEMORY[0x277CD7058];
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  v10 = [v8 texture2DDescriptorWithPixelFormat:10 width:WidthOfPlane height:CVPixelBufferGetHeightOfPlane(a3 mipmapped:0), 0];
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  v10 = [v8 texture2DDescriptorWithPixelFormat:10 width:WidthOfPlane height:CVPixelBufferGetHeightOfPlane(buffer mipmapped:0), 0];
   [v10 setUsage:3];
   v11 = [(MTLDevice *)self->_device newTextureWithDescriptor:v10 iosurface:v7 plane:0];
   v12 = MEMORY[0x277CD7058];
-  v13 = CVPixelBufferGetWidthOfPlane(a3, 1uLL);
-  v14 = [v12 texture2DDescriptorWithPixelFormat:30 width:v13 height:CVPixelBufferGetHeightOfPlane(a3 mipmapped:1uLL), 0];
+  v13 = CVPixelBufferGetWidthOfPlane(buffer, 1uLL);
+  v14 = [v12 texture2DDescriptorWithPixelFormat:30 width:v13 height:CVPixelBufferGetHeightOfPlane(buffer mipmapped:1uLL), 0];
   [v14 setUsage:3];
   v15 = [(MTLDevice *)self->_device newTextureWithDescriptor:v14 iosurface:v7 plane:1];
   v20[0] = v11;
@@ -564,17 +564,17 @@ LABEL_9:
   return v16;
 }
 
-- (id)dictionaryFromTexture:(id)a3
+- (id)dictionaryFromTexture:(id)texture
 {
-  v3 = a3;
-  v4 = [v3 width];
-  v5 = [v3 height];
+  textureCopy = texture;
+  width = [textureCopy width];
+  height = [textureCopy height];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:width];
   [v6 setObject:v7 forKey:@"width"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:height];
   [v6 setObject:v8 forKey:@"height"];
 
   return v6;

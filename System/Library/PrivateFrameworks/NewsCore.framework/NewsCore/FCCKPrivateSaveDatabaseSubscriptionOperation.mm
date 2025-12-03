@@ -1,6 +1,6 @@
 @interface FCCKPrivateSaveDatabaseSubscriptionOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,10 +11,10 @@
   v17 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = FCCKPrivateSaveDatabaseSubscriptionOperation;
-  v3 = [(FCCKPrivateDatabaseOperation *)&v8 validateOperation];
-  v4 = [(FCCKPrivateSaveDatabaseSubscriptionOperation *)self subscriptionID];
+  validateOperation = [(FCCKPrivateDatabaseOperation *)&v8 validateOperation];
+  subscriptionID = [(FCCKPrivateSaveDatabaseSubscriptionOperation *)self subscriptionID];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!subscriptionID && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"can't save database subscriptions without a subscription ID"];
     *buf = 136315906;
@@ -28,9 +28,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (v4)
+  if (subscriptionID)
   {
-    result = v3;
+    result = validateOperation;
   }
 
   else
@@ -45,24 +45,24 @@
 - (void)performOperation
 {
   v3 = objc_alloc_init(FCCKPrivateDatabaseCKOperationResults);
-  v4 = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
-  v5 = [(FCCKPrivateDatabaseOperation *)self database];
+  skipPreflight = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__FCCKPrivateSaveDatabaseSubscriptionOperation_performOperation__block_invoke;
   v9[3] = &unk_1E7C37838;
   v10 = v3;
-  v11 = self;
+  selfCopy = self;
   v6 = v3;
-  [(FCCKPrivateDatabase *)v5 enumerateActiveDestinationsWithOptions:v4 handler:v9];
+  [(FCCKPrivateDatabase *)database enumerateActiveDestinationsWithOptions:skipPreflight handler:v9];
 
-  v7 = [(FCCKPrivateSaveDatabaseSubscriptionOperation *)self qualityOfService];
+  qualityOfService = [(FCCKPrivateSaveDatabaseSubscriptionOperation *)self qualityOfService];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__FCCKPrivateSaveDatabaseSubscriptionOperation_performOperation__block_invoke_4;
   v8[3] = &unk_1E7C37750;
   v8[4] = self;
-  [(FCCKPrivateDatabaseCKOperationResults *)v6 notifyWhenFinishWithQoS:v7 completionHandler:v8];
+  [(FCCKPrivateDatabaseCKOperationResults *)v6 notifyWhenFinishWithQoS:qualityOfService completionHandler:v8];
 }
 
 void __64__FCCKPrivateSaveDatabaseSubscriptionOperation_performOperation__block_invoke(uint64_t a1, uint64_t a2)
@@ -163,15 +163,15 @@ void __64__FCCKPrivateSaveDatabaseSubscriptionOperation_performOperation__block_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(FCCKPrivateSaveDatabaseSubscriptionOperation *)self saveDatabaseSubscriptionCompletionBlock];
+  errorCopy = error;
+  saveDatabaseSubscriptionCompletionBlock = [(FCCKPrivateSaveDatabaseSubscriptionOperation *)self saveDatabaseSubscriptionCompletionBlock];
 
-  if (v4)
+  if (saveDatabaseSubscriptionCompletionBlock)
   {
-    v5 = [(FCCKPrivateSaveDatabaseSubscriptionOperation *)self saveDatabaseSubscriptionCompletionBlock];
-    (v5)[2](v5, v6);
+    saveDatabaseSubscriptionCompletionBlock2 = [(FCCKPrivateSaveDatabaseSubscriptionOperation *)self saveDatabaseSubscriptionCompletionBlock];
+    (saveDatabaseSubscriptionCompletionBlock2)[2](saveDatabaseSubscriptionCompletionBlock2, errorCopy);
   }
 }
 

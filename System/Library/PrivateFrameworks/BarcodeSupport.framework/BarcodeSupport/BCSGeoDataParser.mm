@@ -1,29 +1,29 @@
 @interface BCSGeoDataParser
-+ (id)_validateLatitudeAndLongitudeInString:(id)a3 range:(_NSRange)a4;
-+ (id)parseString:(id)a3;
++ (id)_validateLatitudeAndLongitudeInString:(id)string range:(_NSRange)range;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSGeoDataParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v5)
   {
     [(BCSGeoDataParser *)v5 parseString:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = [v4 length];
+  v13 = [stringCopy length];
   if (v13 > 3)
   {
     v23 = v13;
-    v24 = [v4 substringToIndex:4];
-    v25 = [v24 lowercaseString];
+    v24 = [stringCopy substringToIndex:4];
+    lowercaseString = [v24 lowercaseString];
 
-    if ([v25 isEqualToString:@"geo:"])
+    if ([lowercaseString isEqualToString:@"geo:"])
     {
-      v26 = [a1 _validateLatitudeAndLongitudeInString:v4 range:{4, v23 - 4}];
+      v26 = [self _validateLatitudeAndLongitudeInString:stringCopy range:{4, v23 - 4}];
       if ([v26 length])
       {
         v27 = MEMORY[0x277CBEBC0];
@@ -41,7 +41,7 @@
 
       else
       {
-        v22 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:6 invalidContents:v4];
+        v22 = [[BCSInvalidParsedData alloc] initWithInvalidDataType:6 invalidContents:stringCopy];
       }
     }
 
@@ -71,17 +71,17 @@
   return v22;
 }
 
-+ (id)_validateLatitudeAndLongitudeInString:(id)a3 range:(_NSRange)a4
++ (id)_validateLatitudeAndLongitudeInString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   if (_validateLatitudeAndLongitudeInString_range__once != -1)
   {
     +[BCSGeoDataParser _validateLatitudeAndLongitudeInString:range:];
   }
 
-  v7 = [_validateLatitudeAndLongitudeInString_range__geoLatLongPattern firstMatchInString:v6 options:0 range:{location, length}];
+  v7 = [_validateLatitudeAndLongitudeInString_range__geoLatLongPattern firstMatchInString:stringCopy options:0 range:{location, length}];
   v8 = v7;
   if (!v7)
   {
@@ -95,7 +95,7 @@
   }
 
   v9 = [v7 rangeAtIndex:1];
-  v11 = [v6 substringWithRange:{v9, v10}];
+  v11 = [stringCopy substringWithRange:{v9, v10}];
   [v11 doubleValue];
   v13 = v12;
 
@@ -113,7 +113,7 @@ LABEL_12:
   }
 
   v30 = [v8 rangeAtIndex:2];
-  v32 = [v6 substringWithRange:{v30, v31}];
+  v32 = [stringCopy substringWithRange:{v30, v31}];
   [v32 doubleValue];
   v34 = v33;
 
@@ -128,8 +128,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v45 = [v8 range];
-  v43 = [v6 substringWithRange:{v45, v46}];
+  range = [v8 range];
+  v43 = [stringCopy substringWithRange:{range, v46}];
 LABEL_13:
 
   return v43;

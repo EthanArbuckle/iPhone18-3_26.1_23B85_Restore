@@ -1,21 +1,21 @@
 @interface HKActivityRingView
-- (HKActivityRingView)initWithCoder:(id)a3;
-- (HKActivityRingView)initWithFrame:(CGRect)a3;
-- (HKActivityRingView)initWithFrame:(CGRect)a3 renderer:(id)a4;
+- (HKActivityRingView)initWithCoder:(id)coder;
+- (HKActivityRingView)initWithFrame:(CGRect)frame;
+- (HKActivityRingView)initWithFrame:(CGRect)frame renderer:(id)renderer;
 - (double)_ringDiameter;
-- (void)_displayIconsForWheelchairUser:(BOOL)a3;
-- (void)_setActivityRingViewBackgroundTransparent:(BOOL)a3;
-- (void)_setEmptyRingAlpha:(double)a3;
-- (void)_setRingDiameter:(double)a3 ringInterspacing:(double)a4 ringThickness:(double)a5;
+- (void)_displayIconsForWheelchairUser:(BOOL)user;
+- (void)_setActivityRingViewBackgroundTransparent:(BOOL)transparent;
+- (void)_setEmptyRingAlpha:(double)alpha;
+- (void)_setRingDiameter:(double)diameter ringInterspacing:(double)interspacing ringThickness:(double)thickness;
 - (void)_setUpAfterInit;
 - (void)_setUpRingsView;
-- (void)_updateAndInterpolateRingsViewDiameterForWidth:(double)a3 lowerDirective:(id)a4 higherDirective:(id)a5;
+- (void)_updateAndInterpolateRingsViewDiameterForWidth:(double)width lowerDirective:(id)directive higherDirective:(id)higherDirective;
 - (void)_updateMaskPath;
 - (void)_updateRingsViewDiameter;
 - (void)_updateRingsViewDiameterLegacy;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation HKActivityRingView
@@ -44,8 +44,8 @@
   self->_ringInsetPercentage = 0.15;
   self->_emptyRingAlpha = 0.15;
   [(HKActivityRingView *)self setOpaque:0];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [(HKActivityRingView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(HKActivityRingView *)self setBackgroundColor:clearColor];
 
   [(HKActivityRingView *)self _setUpRingsView];
   [(HKActivityRingView *)self setActivitySummary:0 animated:0];
@@ -56,42 +56,42 @@
 - (void)_setUpRingsView
 {
   v38[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CE8E80] energyColors];
-  v4 = [MEMORY[0x277CE8E80] briskColors];
-  v5 = [MEMORY[0x277CE8E80] sedentaryColors];
-  v6 = [v3 gradientDarkColor];
-  v38[0] = v6;
-  v7 = [v4 gradientDarkColor];
-  v38[1] = v7;
-  v8 = [v5 gradientDarkColor];
-  v38[2] = v8;
+  energyColors = [MEMORY[0x277CE8E80] energyColors];
+  briskColors = [MEMORY[0x277CE8E80] briskColors];
+  sedentaryColors = [MEMORY[0x277CE8E80] sedentaryColors];
+  gradientDarkColor = [energyColors gradientDarkColor];
+  v38[0] = gradientDarkColor;
+  gradientDarkColor2 = [briskColors gradientDarkColor];
+  v38[1] = gradientDarkColor2;
+  gradientDarkColor3 = [sedentaryColors gradientDarkColor];
+  v38[2] = gradientDarkColor3;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
 
-  v36 = v3;
-  v10 = [v3 gradientLightColor];
-  v37[0] = v10;
-  v11 = [v4 gradientLightColor];
-  v37[1] = v11;
-  v12 = [v5 gradientLightColor];
-  v37[2] = v12;
+  v36 = energyColors;
+  gradientLightColor = [energyColors gradientLightColor];
+  v37[0] = gradientLightColor;
+  gradientLightColor2 = [briskColors gradientLightColor];
+  v37[1] = gradientLightColor2;
+  gradientLightColor3 = [sedentaryColors gradientLightColor];
+  v37[2] = gradientLightColor3;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:3];
 
-  v14 = [MEMORY[0x277CE8E90] activityRingGroup];
+  activityRingGroup = [MEMORY[0x277CE8E90] activityRingGroup];
   LODWORD(v15) = 1132134400;
-  [v14 setGroupDiameter:v15];
+  [activityRingGroup setGroupDiameter:v15];
   LODWORD(v16) = 2.0;
-  [v14 setInterspacing:v16];
+  [activityRingGroup setInterspacing:v16];
   LODWORD(v17) = 27.0;
-  [v14 setThickness:v17];
+  [activityRingGroup setThickness:v17];
   v18 = 0;
   v19 = -1;
   do
   {
     v20 = [v9 count];
-    [v14 setPercentage:v18 ofRingAtIndex:0 animated:0.0];
+    [activityRingGroup setPercentage:v18 ofRingAtIndex:0 animated:0.0];
     v21 = [v9 objectAtIndexedSubscript:v20 + v19];
     v22 = [v13 objectAtIndexedSubscript:v20 + v19];
-    [v14 setTopColor:v21 bottomColor:v22 ofRingAtIndex:v18];
+    [activityRingGroup setTopColor:v21 bottomColor:v22 ofRingAtIndex:v18];
 
     ++v18;
     --v19;
@@ -102,12 +102,12 @@
   v24 = objc_alloc(MEMORY[0x277CE8EA8]);
   if (renderer)
   {
-    v25 = [v24 initWithRingGroup:v14 renderer:self->_renderer];
+    v25 = [v24 initWithRingGroup:activityRingGroup renderer:self->_renderer];
   }
 
   else
   {
-    v25 = [v24 initWithRingGroup:v14];
+    v25 = [v24 initWithRingGroup:activityRingGroup];
   }
 
   ringsView = self->_ringsView;
@@ -115,14 +115,14 @@
 
   [(HKActivityRingView *)self _emptyRingAlpha];
   v28 = v27;
-  v29 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  ringGroup = [(ARUIRingsView *)self->_ringsView ringGroup];
   *&v30 = v28;
-  [v29 setEmptyOpacity:v30];
+  [ringGroup setEmptyOpacity:v30];
 
   [(ARUIRingsView *)self->_ringsView setPaused:1];
   v31 = self->_ringsView;
-  v32 = [MEMORY[0x277D75348] blackColor];
-  [(ARUIRingsView *)v31 setBackgroundColor:v32];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(ARUIRingsView *)v31 setBackgroundColor:blackColor];
 
   [(ARUIRingsView *)self->_ringsView setOpaque:1];
   [(HKActivityRingView *)self addSubview:self->_ringsView];
@@ -198,7 +198,7 @@
   }
 
   v5 = +[_HKActivityRingViewSizingDirective sortedRingRatioDirectives];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -230,11 +230,11 @@
 
         v10 = v13;
 
-        v6 = v10;
+        firstObject = v10;
       }
 
       v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
-      v6 = v10;
+      firstObject = v10;
       if (v9)
       {
         continue;
@@ -251,30 +251,30 @@
 
 LABEL_14:
 
-  [v6 width];
+  [firstObject width];
   if (HKUIEqualDoubles(floor(Width), v15))
   {
-    [v6 outerRingOffset];
+    [firstObject outerRingOffset];
     v17 = Width - v16;
-    [v6 ringInterspacing];
+    [firstObject ringInterspacing];
     v19 = v18;
-    [v6 ringThickness];
+    [firstObject ringThickness];
     [(HKActivityRingView *)self _setRingDiameter:v17 ringInterspacing:v19 ringThickness:v20];
   }
 
   else
   {
-    [(HKActivityRingView *)self _updateAndInterpolateRingsViewDiameterForWidth:v6 lowerDirective:v10 higherDirective:Width];
+    [(HKActivityRingView *)self _updateAndInterpolateRingsViewDiameterForWidth:firstObject lowerDirective:v10 higherDirective:Width];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (HKActivityRingView)initWithFrame:(CGRect)a3
+- (HKActivityRingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HKActivityRingView;
-  v3 = [(HKActivityRingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKActivityRingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -284,31 +284,31 @@ LABEL_14:
   return v4;
 }
 
-- (HKActivityRingView)initWithFrame:(CGRect)a3 renderer:(id)a4
+- (HKActivityRingView)initWithFrame:(CGRect)frame renderer:(id)renderer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  rendererCopy = renderer;
   v14.receiver = self;
   v14.super_class = HKActivityRingView;
-  v11 = [(HKActivityRingView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(HKActivityRingView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_renderer, a4);
+    objc_storeStrong(&height->_renderer, renderer);
     [(HKActivityRingView *)v12 _setUpAfterInit];
   }
 
   return v12;
 }
 
-- (HKActivityRingView)initWithCoder:(id)a3
+- (HKActivityRingView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HKActivityRingView;
-  v3 = [(HKActivityRingView *)&v6 initWithCoder:a3];
+  v3 = [(HKActivityRingView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -318,9 +318,9 @@ LABEL_14:
   return v4;
 }
 
-- (void)_setEmptyRingAlpha:(double)a3
+- (void)_setEmptyRingAlpha:(double)alpha
 {
-  v3 = fmin(a3, 1.0);
+  v3 = fmin(alpha, 1.0);
   if (v3 < 0.0)
   {
     v3 = 0.0;
@@ -328,16 +328,16 @@ LABEL_14:
 
   self->_emptyRingAlpha = v3;
   v4 = v3;
-  v6 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  ringGroup = [(ARUIRingsView *)self->_ringsView ringGroup];
   *&v5 = v4;
-  [v6 setEmptyOpacity:v5];
+  [ringGroup setEmptyOpacity:v5];
 }
 
-- (void)_setActivityRingViewBackgroundTransparent:(BOOL)a3
+- (void)_setActivityRingViewBackgroundTransparent:(BOOL)transparent
 {
   self->_backgroundTransparencyOrColorSPIUsed = 1;
-  v4 = !a3;
-  [(ARUIRingsView *)self->_ringsView setOpaque:!a3];
+  v4 = !transparent;
+  [(ARUIRingsView *)self->_ringsView setOpaque:!transparent];
   ringsView = self->_ringsView;
   if (v4)
   {
@@ -352,10 +352,10 @@ LABEL_14:
   [(ARUIRingsView *)ringsView setMaskView:maskView];
 }
 
-- (void)_displayIconsForWheelchairUser:(BOOL)a3
+- (void)_displayIconsForWheelchairUser:(BOOL)user
 {
-  v5 = [(ARUIRingsView *)self->_ringsView ringGroup];
-  if (a3)
+  ringGroup = [(ARUIRingsView *)self->_ringsView ringGroup];
+  if (user)
   {
     [MEMORY[0x277CE8EB0] wheelchairSpriteSheet];
   }
@@ -365,10 +365,10 @@ LABEL_14:
     [MEMORY[0x277CE8EB0] defaultSpriteSheet];
   }
   v6 = ;
-  [v5 setSpriteSheet:v6];
+  [ringGroup setSpriteSheet:v6];
 
-  v7 = [(ARUIRingsView *)self->_ringsView ringGroup];
-  [v7 playSpriteAnimation];
+  ringGroup2 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  [ringGroup2 playSpriteAnimation];
 }
 
 - (double)_ringDiameter
@@ -394,44 +394,44 @@ LABEL_14:
   return HKUIFloorToScreenScale(v9);
 }
 
-- (void)_updateAndInterpolateRingsViewDiameterForWidth:(double)a3 lowerDirective:(id)a4 higherDirective:(id)a5
+- (void)_updateAndInterpolateRingsViewDiameterForWidth:(double)width lowerDirective:(id)directive higherDirective:(id)higherDirective
 {
-  v8 = a5;
-  v9 = a4;
-  [v8 width];
+  higherDirectiveCopy = higherDirective;
+  directiveCopy = directive;
+  [higherDirectiveCopy width];
   v11 = v10;
-  [v9 width];
+  [directiveCopy width];
   v13 = v11 - v12;
-  [v9 width];
-  v15 = (a3 - v14) / v13;
-  [v9 ringThickness];
+  [directiveCopy width];
+  v15 = (width - v14) / v13;
+  [directiveCopy ringThickness];
   v17 = v16;
-  [v8 ringThickness];
+  [higherDirectiveCopy ringThickness];
   v19 = v17 + (v18 - v17) * v15;
-  [v9 ringInterspacing];
+  [directiveCopy ringInterspacing];
   v21 = v20;
-  [v8 ringInterspacing];
+  [higherDirectiveCopy ringInterspacing];
   v23 = v22;
 
   v24 = v21 + (v23 - v21) * v15;
-  [v9 outerRingOffset];
+  [directiveCopy outerRingOffset];
   v26 = v25;
 
-  [(HKActivityRingView *)self _setRingDiameter:a3 - v26 ringInterspacing:v24 ringThickness:v19];
+  [(HKActivityRingView *)self _setRingDiameter:width - v26 ringInterspacing:v24 ringThickness:v19];
 }
 
-- (void)_setRingDiameter:(double)a3 ringInterspacing:(double)a4 ringThickness:(double)a5
+- (void)_setRingDiameter:(double)diameter ringInterspacing:(double)interspacing ringThickness:(double)thickness
 {
-  v9 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  ringGroup = [(ARUIRingsView *)self->_ringsView ringGroup];
   UIRoundToViewScale();
   *&v6 = v6;
-  [v9 setGroupDiameter:v6];
+  [ringGroup setGroupDiameter:v6];
   UIRoundToViewScale();
   *&v7 = v7;
-  [v9 setInterspacing:v7];
+  [ringGroup setInterspacing:v7];
   UIRoundToViewScale();
   *&v8 = v8;
-  [v9 setThickness:v8];
+  [ringGroup setThickness:v8];
   [(HKActivityRingView *)self setActivitySummary:self->_activitySummary animated:1];
 }
 
@@ -477,19 +477,19 @@ LABEL_14:
   [(HKActivityRingView *)self _setRingDiameter:v3 ringInterspacing:v7 ringThickness:v6];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = HKActivityRingView;
-  [(HKActivityRingView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(HKActivityRingView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(HKActivityRingView *)self _updateMaskPath];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = HKActivityRingView;
-  [(HKActivityRingView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(HKActivityRingView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(HKActivityRingView *)self _updateMaskPath];
 }
 

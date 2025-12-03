@@ -1,21 +1,21 @@
 @interface ipp_t
-- (BOOL)isEqual:(id)a3;
-- (id)_findAttribute0:(id)a3 valueTag:(int)a4;
-- (id)_initWithAttrs:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_findAttribute0:(id)attribute0 valueTag:(int)tag;
+- (id)_initWithAttrs:(id)attrs;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
 - (id)debugDescription;
 - (id)description;
 - (id)userCodableDictionary;
 - (ipp_t)init;
-- (ipp_t)initWithCoder:(id)a3;
-- (ipp_t)initWithData:(id)a3;
+- (ipp_t)initWithCoder:(id)coder;
+- (ipp_t)initWithData:(id)data;
 - (unint64_t)hash;
-- (void)_addAttrToAppropriateGroup:(id)a3;
-- (void)_deleteAttribute:(id)a3;
-- (void)_withGroupingBehavior:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAttributes:(id)a3;
+- (void)_addAttrToAppropriateGroup:(id)group;
+- (void)_deleteAttribute:(id)attribute;
+- (void)_withGroupingBehavior:(id)behavior;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAttributes:(id)attributes;
 @end
 
 @implementation ipp_t
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (id)_initWithAttrs:(id)a3
+- (id)_initWithAttrs:(id)attrs
 {
-  v4 = a3;
+  attrsCopy = attrs;
   v5 = [(ipp_t *)self init];
   if (v5)
   {
@@ -45,7 +45,7 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = attrsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -78,17 +78,17 @@
   return v5;
 }
 
-- (void)_addAttrToAppropriateGroup:(id)a3
+- (void)_addAttrToAppropriateGroup:(id)group
 {
-  v10 = a3;
+  groupCopy = group;
   v4 = [(NSMutableArray *)self->_attrs count];
-  v5 = [v10 group_tag];
+  group_tag = [groupCopy group_tag];
   if (!v4)
   {
     goto LABEL_13;
   }
 
-  v6 = v5;
+  v6 = group_tag;
   v7 = 0;
   v8 = -1;
   while (1)
@@ -117,39 +117,39 @@ LABEL_7:
 LABEL_10:
   if (v8 != -1 && v8 < v4)
   {
-    [(NSMutableArray *)self->_attrs insertObject:v10 atIndex:v8];
+    [(NSMutableArray *)self->_attrs insertObject:groupCopy atIndex:v8];
     goto LABEL_14;
   }
 
 LABEL_13:
-  [(NSMutableArray *)self->_attrs addObject:v10];
+  [(NSMutableArray *)self->_attrs addObject:groupCopy];
 LABEL_14:
 }
 
-- (void)_withGroupingBehavior:(id)a3
+- (void)_withGroupingBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   addAttributesInAppropriateGroups = self->_addAttributesInAppropriateGroups;
   self->_addAttributesInAppropriateGroups = 1;
-  v6 = v4;
-  (*(v4 + 2))(v4, self);
+  v6 = behaviorCopy;
+  (*(behaviorCopy + 2))(behaviorCopy, self);
   self->_addAttributesInAppropriateGroups = addAttributesInAppropriateGroups;
 }
 
-- (ipp_t)initWithCoder:(id)a3
+- (ipp_t)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dataRepresentation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dataRepresentation"];
   v6 = [(ipp_t *)self initWithData:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ipp_t *)self dataRepresentation];
-  [v5 encodeObject:v4 forKey:@"_dataRepresentation"];
+  coderCopy = coder;
+  dataRepresentation = [(ipp_t *)self dataRepresentation];
+  [coderCopy encodeObject:dataRepresentation forKey:@"_dataRepresentation"];
 }
 
 - (id)description
@@ -164,12 +164,12 @@ LABEL_14:
 
 - (id)debugDescription
 {
-  v2 = [(ipp_t *)self userCodableDictionary];
-  v3 = [v2 allKeys];
-  v4 = [v3 firstObject];
+  userCodableDictionary = [(ipp_t *)self userCodableDictionary];
+  allKeys = [userCodableDictionary allKeys];
+  firstObject = [allKeys firstObject];
 
-  v5 = [v2 objectForKeyedSubscript:v4];
-  v6 = [NSString stringWithFormat:@"%@ { %@ }", v4, v5];
+  v5 = [userCodableDictionary objectForKeyedSubscript:firstObject];
+  v6 = [NSString stringWithFormat:@"%@ { %@ }", firstObject, v5];
 
   return v6;
 }
@@ -188,8 +188,8 @@ LABEL_14:
   v11.receiver = self;
   v11.super_class = ipp_t;
   v6 = [(ipp_t *)&v11 description];
-  v7 = [(ipp_t *)self _descriptionLeader];
-  v8 = [NSString stringWithFormat:@"%@ %@", v6, v7];
+  _descriptionLeader = [(ipp_t *)self _descriptionLeader];
+  v8 = [NSString stringWithFormat:@"%@ %@", v6, _descriptionLeader];
 
   v14 = v8;
   v15 = v5;
@@ -198,27 +198,27 @@ LABEL_14:
   return v9;
 }
 
-- (void)enumerateAttributes:(id)a3
+- (void)enumerateAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   attrs = self->_attrs;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003B3C8;
   v7[3] = &unk_1000A2CF8;
-  v8 = v4;
-  v6 = v4;
+  v8 = attributesCopy;
+  v6 = attributesCopy;
   [(NSMutableArray *)attrs enumerateObjectsUsingBlock:v7];
 }
 
-- (ipp_t)initWithData:(id)a3
+- (ipp_t)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(ipp_t *)self init];
   if (v5)
   {
     v17 = 0;
-    v6 = v4;
+    v6 = dataCopy;
     v18 = v6;
     [(ipp_t *)v5 setState:0];
     v7 = objc_autoreleasePoolPush();
@@ -277,35 +277,35 @@ LABEL_16:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(ipp_t *)self dataRepresentation];
-  v6 = [v4 dataRepresentation];
-  v7 = [v5 isEqual:v6];
+  equalCopy = equal;
+  dataRepresentation = [(ipp_t *)self dataRepresentation];
+  dataRepresentation2 = [equalCopy dataRepresentation];
+  v7 = [dataRepresentation isEqual:dataRepresentation2];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ipp_t *)self dataRepresentation];
-  v3 = [v2 hash];
+  dataRepresentation = [(ipp_t *)self dataRepresentation];
+  v3 = [dataRepresentation hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(ipp_t *)self dataRepresentation];
-  v4 = [objc_alloc(objc_opt_class()) initWithData:v3];
+  dataRepresentation = [(ipp_t *)self dataRepresentation];
+  v4 = [objc_alloc(objc_opt_class()) initWithData:dataRepresentation];
 
   return v4;
 }
 
-- (void)_deleteAttribute:(id)a3
+- (void)_deleteAttribute:(id)attribute
 {
-  v5 = a3;
+  attributeCopy = attribute;
   v4 = [(NSMutableArray *)self->_attrs indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -313,11 +313,11 @@ LABEL_16:
   }
 }
 
-- (id)_findAttribute0:(id)a3 valueTag:(int)a4
+- (id)_findAttribute0:(id)attribute0 valueTag:(int)tag
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  attribute0Copy = attribute0;
+  v7 = attribute0Copy;
+  if (attribute0Copy)
   {
     v15 = 0;
     v16 = &v15;
@@ -325,13 +325,13 @@ LABEL_16:
     v18 = sub_10003D134;
     v19 = sub_10003D144;
     v20 = 0;
-    [v6 lowercaseString];
+    [attribute0Copy lowercaseString];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10003D14C;
     v12 = v11[3] = &unk_1000A2F98;
     v13 = &v15;
-    v14 = a4;
+    tagCopy = tag;
     v8 = v12;
     [(ipp_t *)self enumerateAttributes:v11];
     v9 = v16[5];

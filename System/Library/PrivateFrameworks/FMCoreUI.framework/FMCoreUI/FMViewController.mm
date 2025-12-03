@@ -1,38 +1,38 @@
 @interface FMViewController
 - (FMViewController)init;
-- (FMViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (FMViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSString)controllerNibName;
-- (id)actualNibNameForName:(id)a3;
-- (void)addKVOObservationToken:(id)a3 forObject:(id)a4;
-- (void)addNotificationToken:(id)a3;
+- (id)actualNibNameForName:(id)name;
+- (void)addKVOObservationToken:(id)token forObject:(id)object;
+- (void)addNotificationToken:(id)token;
 - (void)awakeFromNib;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)performSegueWithIdentifier:(id)a3 sender:(id)a4;
+- (void)performSegueWithIdentifier:(id)identifier sender:(id)sender;
 - (void)removeKVOObservationTokens;
 - (void)removeNotificationTokens;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation FMViewController
 
-- (FMViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FMViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = FMViewController;
-  return [(FMViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(FMViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (FMViewController)init
 {
-  v3 = [(FMViewController *)self controllerNibName];
-  v4 = [(FMViewController *)self actualNibNameForName:v3];
+  controllerNibName = [(FMViewController *)self controllerNibName];
+  v4 = [(FMViewController *)self actualNibNameForName:controllerNibName];
 
   if (v4)
   {
@@ -54,14 +54,14 @@
 - (void)dealloc
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(FMViewController *)self allKVOObservers];
-  if ([v3 count])
+  allKVOObservers = [(FMViewController *)self allKVOObservers];
+  if ([allKVOObservers count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = allKVOObservers;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
     if (v5)
     {
@@ -103,30 +103,30 @@
   [(FMViewController *)&v11 dealloc];
 }
 
-- (void)addKVOObservationToken:(id)a3 forObject:(id)a4
+- (void)addKVOObservationToken:(id)token forObject:(id)object
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  tokenCopy = token;
+  objectCopy = object;
+  v8 = objectCopy;
+  if (tokenCopy && objectCopy)
   {
-    v9 = [(FMViewController *)self kvoObservationTokens];
+    kvoObservationTokens = [(FMViewController *)self kvoObservationTokens];
 
-    if (!v9)
+    if (!kvoObservationTokens)
     {
-      v10 = [MEMORY[0x277CBEB38] dictionary];
-      [(FMViewController *)self setKvoObservationTokens:v10];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(FMViewController *)self setKvoObservationTokens:dictionary];
     }
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [(FMViewController *)self kvoObservationTokens];
-    v12 = [v11 allKeys];
+    kvoObservationTokens2 = [(FMViewController *)self kvoObservationTokens];
+    allKeys = [kvoObservationTokens2 allKeys];
 
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v13 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -137,20 +137,20 @@ LABEL_7:
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v23 + 1) + 8 * v16);
-        v18 = [v17 object];
+        object = [v17 object];
 
-        if (v18 == v8)
+        if (object == v8)
         {
           break;
         }
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v14 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v14)
           {
             goto LABEL_7;
@@ -175,17 +175,17 @@ LABEL_13:
 
     v20 = [objc_alloc(MEMORY[0x277D07B50]) initWithObject:v8];
 LABEL_18:
-    v21 = [(FMViewController *)self kvoObservationTokens];
-    v19 = [v21 objectForKeyedSubscript:v20];
+    kvoObservationTokens3 = [(FMViewController *)self kvoObservationTokens];
+    v19 = [kvoObservationTokens3 objectForKeyedSubscript:v20];
 
     if (!v19)
     {
       v19 = [MEMORY[0x277CBEB58] set];
-      v22 = [(FMViewController *)self kvoObservationTokens];
-      [v22 setObject:v19 forKeyedSubscript:v20];
+      kvoObservationTokens4 = [(FMViewController *)self kvoObservationTokens];
+      [kvoObservationTokens4 setObject:v19 forKeyedSubscript:v20];
     }
 
-    [v19 addObject:v6];
+    [v19 addObject:tokenCopy];
   }
 
   else
@@ -223,11 +223,11 @@ LABEL_18:
         }
 
         v8 = *(*(&v24 + 1) + 8 * i);
-        v9 = [(FMViewController *)self kvoObservationTokens];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        kvoObservationTokens = [(FMViewController *)self kvoObservationTokens];
+        v10 = [kvoObservationTokens objectForKeyedSubscript:v8];
 
-        v11 = [v8 object];
-        if (v11)
+        object = [v8 object];
+        if (object)
         {
           v22 = 0u;
           v23 = 0u;
@@ -248,7 +248,7 @@ LABEL_18:
                   objc_enumerationMutation(v12);
                 }
 
-                [v11 removeKVOBlockForToken:*(*(&v20 + 1) + 8 * j)];
+                [object removeKVOBlockForToken:*(*(&v20 + 1) + 8 * j)];
               }
 
               v14 = [v12 countByEnumeratingWithState:&v20 objects:v30 count:16];
@@ -276,41 +276,41 @@ LABEL_18:
     while (v5);
   }
 
-  v17 = [(FMViewController *)self kvoObservationTokens];
-  [v17 removeAllObjects];
+  kvoObservationTokens2 = [(FMViewController *)self kvoObservationTokens];
+  [kvoObservationTokens2 removeAllObjects];
 }
 
-- (void)addNotificationToken:(id)a3
+- (void)addNotificationToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   objc_opt_class();
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     [(FMViewController *)a2 addNotificationToken:?];
   }
 
-  v6 = [(FMViewController *)self notificationTokens];
+  notificationTokens = [(FMViewController *)self notificationTokens];
 
-  if (!v6)
+  if (!notificationTokens)
   {
     v7 = [MEMORY[0x277CBEB58] set];
     [(FMViewController *)self setNotificationTokens:v7];
   }
 
-  v8 = [(FMViewController *)self notificationTokens];
-  [v8 addObject:v5];
+  notificationTokens2 = [(FMViewController *)self notificationTokens];
+  [notificationTokens2 addObject:tokenCopy];
 }
 
 - (void)removeNotificationTokens
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(FMViewController *)self notificationTokens];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  notificationTokens = [(FMViewController *)self notificationTokens];
+  v5 = [notificationTokens countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -322,21 +322,21 @@ LABEL_18:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(notificationTokens);
         }
 
-        [v3 removeObserver:*(*(&v10 + 1) + 8 * v8++)];
+        [defaultCenter removeObserver:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [notificationTokens countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(FMViewController *)self notificationTokens];
-  [v9 removeAllObjects];
+  notificationTokens2 = [(FMViewController *)self notificationTokens];
+  [notificationTokens2 removeAllObjects];
 }
 
 - (void)viewDidLoad
@@ -353,34 +353,34 @@ LABEL_18:
   [(FMViewController *)&v2 awakeFromNib];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = FMViewController;
-  [(FMViewController *)&v3 viewWillAppear:a3];
+  [(FMViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = FMViewController;
-  [(FMViewController *)&v3 viewDidAppear:a3];
+  [(FMViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = FMViewController;
-  [(FMViewController *)&v4 viewWillDisappear:a3];
+  [(FMViewController *)&v4 viewWillDisappear:disappear];
   [(FMViewController *)self removeKVOObservationTokens];
   [(FMViewController *)self removeNotificationTokens];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = FMViewController;
-  [(FMViewController *)&v4 viewDidDisappear:a3];
+  [(FMViewController *)&v4 viewDidDisappear:disappear];
   [(FMViewController *)self removeKVOObservationTokens];
   [(FMViewController *)self removeNotificationTokens];
 }
@@ -392,25 +392,25 @@ LABEL_18:
   [(FMViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = FMViewController;
-  [(FMViewController *)&v3 willMoveToParentViewController:a3];
+  [(FMViewController *)&v3 willMoveToParentViewController:controller];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = FMViewController;
-  [(FMViewController *)&v3 didMoveToParentViewController:a3];
+  [(FMViewController *)&v3 didMoveToParentViewController:controller];
 }
 
-- (void)performSegueWithIdentifier:(id)a3 sender:(id)a4
+- (void)performSegueWithIdentifier:(id)identifier sender:(id)sender
 {
   v4.receiver = self;
   v4.super_class = FMViewController;
-  [(FMViewController *)&v4 performSegueWithIdentifier:a3 sender:a4];
+  [(FMViewController *)&v4 performSegueWithIdentifier:identifier sender:sender];
 }
 
 - (NSString)controllerNibName
@@ -436,37 +436,37 @@ LABEL_18:
   return v5;
 }
 
-- (id)actualNibNameForName:(id)a3
+- (id)actualNibNameForName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  nameCopy = name;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v7 = @"_iPad";
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v9)
+    if (userInterfaceIdiom2)
     {
       v10 = 0;
       v11 = 0;
-      v12 = v3;
+      v12 = nameCopy;
       goto LABEL_11;
     }
 
     v7 = @"_iPhone";
   }
 
-  v13 = [v3 stringByAppendingString:v7];
+  v13 = [nameCopy stringByAppendingString:v7];
 
-  v14 = [v4 pathForResource:v13 ofType:@"nib" inDirectory:0];
+  v14 = [mainBundle pathForResource:v13 ofType:@"nib" inDirectory:0];
   if (v14)
   {
     v10 = v14;
@@ -475,16 +475,16 @@ LABEL_18:
 
   else
   {
-    v12 = v3;
+    v12 = nameCopy;
 
-    v10 = [v4 pathForResource:v12 ofType:@"nib" inDirectory:0];
+    v10 = [mainBundle pathForResource:v12 ofType:@"nib" inDirectory:0];
     if (!v10)
     {
       v11 = 0;
       goto LABEL_11;
     }
 
-    v13 = v3;
+    v13 = nameCopy;
     v15 = v13;
   }
 

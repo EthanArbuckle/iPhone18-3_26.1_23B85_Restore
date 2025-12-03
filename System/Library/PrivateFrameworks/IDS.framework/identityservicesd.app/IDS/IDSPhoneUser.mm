@@ -1,181 +1,181 @@
 @interface IDSPhoneUser
-- (BOOL)differsFromPhoneNumber:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPhoneUser:(id)a3;
-- (BOOL)isIdenticalToUser:(id)a3;
-- (BOOL)shouldReplace:(id)a3;
-- (IDSPhoneUser)initWithCoder:(id)a3;
-- (IDSPhoneUser)initWithLabelID:(id)a3;
-- (IDSPhoneUser)initWithLabelID:(id)a3 phoneBookNumber:(id)a4;
-- (IDSPhoneUser)initWithLabelID:(id)a3 phoneBookNumber:(id)a4 isDefaultUser:(BOOL)a5 countryCode:(id)a6 networkCode:(id)a7;
-- (IDSPhoneUser)phoneUserWithUpdatedDefaultUser:(BOOL)a3 countryCode:(id)a4 networkCode:(id)a5;
-- (IDSPhoneUser)phoneUserWithUpdatedPhoneNumber:(id)a3;
-- (IDSPhoneUser)phoneUserWithUpdatedPhoneNumber:(id)a3 phoneBookNumber:(id)a4;
+- (BOOL)differsFromPhoneNumber:(id)number;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPhoneUser:(id)user;
+- (BOOL)isIdenticalToUser:(id)user;
+- (BOOL)shouldReplace:(id)replace;
+- (IDSPhoneUser)initWithCoder:(id)coder;
+- (IDSPhoneUser)initWithLabelID:(id)d;
+- (IDSPhoneUser)initWithLabelID:(id)d phoneBookNumber:(id)number;
+- (IDSPhoneUser)initWithLabelID:(id)d phoneBookNumber:(id)number isDefaultUser:(BOOL)user countryCode:(id)code networkCode:(id)networkCode;
+- (IDSPhoneUser)phoneUserWithUpdatedDefaultUser:(BOOL)user countryCode:(id)code networkCode:(id)networkCode;
+- (IDSPhoneUser)phoneUserWithUpdatedPhoneNumber:(id)number;
+- (IDSPhoneUser)phoneUserWithUpdatedPhoneNumber:(id)number phoneBookNumber:(id)bookNumber;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)realmPrefixedIdentifier;
 - (id)unprefixedIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPhoneUser
 
 - (id)realmPrefixedIdentifier
 {
-  v3 = [(IDSPhoneUser *)self unprefixedIdentifier];
+  unprefixedIdentifier = [(IDSPhoneUser *)self unprefixedIdentifier];
 
-  if (v3)
+  if (unprefixedIdentifier)
   {
-    v4 = [(IDSPhoneUser *)self unprefixedIdentifier];
+    unprefixedIdentifier2 = [(IDSPhoneUser *)self unprefixedIdentifier];
     v5 = IMFormatPhoneNumber();
     v6 = v5;
     if (v5)
     {
-      v7 = v5;
+      unprefixedIdentifier3 = v5;
     }
 
     else
     {
-      v7 = [(IDSPhoneUser *)self unprefixedIdentifier];
+      unprefixedIdentifier3 = [(IDSPhoneUser *)self unprefixedIdentifier];
     }
 
-    v8 = v7;
+    v8 = unprefixedIdentifier3;
 
-    v3 = [NSString stringWithFormat:@"%@%@", @"P:", v8];
+    unprefixedIdentifier = [NSString stringWithFormat:@"%@%@", @"P:", v8];
   }
 
-  return v3;
+  return unprefixedIdentifier;
 }
 
 - (id)unprefixedIdentifier
 {
-  v3 = [(IDSPhoneUser *)self phoneNumber];
-  v4 = v3;
-  if (v3)
+  phoneNumber = [(IDSPhoneUser *)self phoneNumber];
+  v4 = phoneNumber;
+  if (phoneNumber)
   {
-    v5 = v3;
+    phoneBookNumber = phoneNumber;
   }
 
   else
   {
-    v5 = [(IDSPhoneUser *)self phoneBookNumber];
+    phoneBookNumber = [(IDSPhoneUser *)self phoneBookNumber];
   }
 
-  v6 = v5;
+  v6 = phoneBookNumber;
 
   return v6;
 }
 
-- (IDSPhoneUser)initWithLabelID:(id)a3
+- (IDSPhoneUser)initWithLabelID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = IDSPhoneUser;
   v6 = [(IDSPhoneUser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_labelID, a3);
+    objc_storeStrong(&v6->_labelID, d);
   }
 
   return v7;
 }
 
-- (IDSPhoneUser)initWithLabelID:(id)a3 phoneBookNumber:(id)a4
+- (IDSPhoneUser)initWithLabelID:(id)d phoneBookNumber:(id)number
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  numberCopy = number;
   v12.receiver = self;
   v12.super_class = IDSPhoneUser;
   v9 = [(IDSPhoneUser *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_labelID, a3);
-    objc_storeStrong(&v10->_phoneBookNumber, a4);
+    objc_storeStrong(&v9->_labelID, d);
+    objc_storeStrong(&v10->_phoneBookNumber, number);
   }
 
   return v10;
 }
 
-- (IDSPhoneUser)initWithLabelID:(id)a3 phoneBookNumber:(id)a4 isDefaultUser:(BOOL)a5 countryCode:(id)a6 networkCode:(id)a7
+- (IDSPhoneUser)initWithLabelID:(id)d phoneBookNumber:(id)number isDefaultUser:(BOOL)user countryCode:(id)code networkCode:(id)networkCode
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  numberCopy = number;
+  codeCopy = code;
+  networkCodeCopy = networkCode;
   v20.receiver = self;
   v20.super_class = IDSPhoneUser;
   v17 = [(IDSPhoneUser *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_labelID, a3);
-    objc_storeStrong(&v18->_phoneBookNumber, a4);
-    v18->_isDefaultUser = a5;
-    objc_storeStrong(&v18->_countryCode, a6);
-    objc_storeStrong(&v18->_networkCode, a7);
+    objc_storeStrong(&v17->_labelID, d);
+    objc_storeStrong(&v18->_phoneBookNumber, number);
+    v18->_isDefaultUser = user;
+    objc_storeStrong(&v18->_countryCode, code);
+    objc_storeStrong(&v18->_networkCode, networkCode);
   }
 
   return v18;
 }
 
-- (IDSPhoneUser)phoneUserWithUpdatedPhoneNumber:(id)a3 phoneBookNumber:(id)a4
+- (IDSPhoneUser)phoneUserWithUpdatedPhoneNumber:(id)number phoneBookNumber:(id)bookNumber
 {
-  v6 = a4;
-  v7 = a3;
+  bookNumberCopy = bookNumber;
+  numberCopy = number;
   v8 = [(IDSPhoneUser *)self copy];
-  [v8 setPhoneNumber:v7];
+  [v8 setPhoneNumber:numberCopy];
 
-  [v8 setPhoneBookNumber:v6];
+  [v8 setPhoneBookNumber:bookNumberCopy];
 
   return v8;
 }
 
-- (IDSPhoneUser)phoneUserWithUpdatedPhoneNumber:(id)a3
+- (IDSPhoneUser)phoneUserWithUpdatedPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = [(IDSPhoneUser *)self copy];
-  [v5 setPhoneNumber:v4];
+  [v5 setPhoneNumber:numberCopy];
 
   return v5;
 }
 
-- (IDSPhoneUser)phoneUserWithUpdatedDefaultUser:(BOOL)a3 countryCode:(id)a4 networkCode:(id)a5
+- (IDSPhoneUser)phoneUserWithUpdatedDefaultUser:(BOOL)user countryCode:(id)code networkCode:(id)networkCode
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
+  userCopy = user;
+  networkCodeCopy = networkCode;
+  codeCopy = code;
   v10 = [(IDSPhoneUser *)self copy];
-  [v10 setIsDefaultUser:v6];
-  [v10 setCountryCode:v9];
+  [v10 setIsDefaultUser:userCopy];
+  [v10 setCountryCode:codeCopy];
 
-  [v10 setNetworkCode:v8];
+  [v10 setNetworkCode:networkCodeCopy];
 
   return v10;
 }
 
-- (BOOL)shouldReplace:(id)a3
+- (BOOL)shouldReplace:(id)replace
 {
-  v4 = a3;
-  if ([v4 realm] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  replaceCopy = replace;
+  if ([replaceCopy realm] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [v4 phoneNumber];
-    if (v5)
+    phoneNumber = [replaceCopy phoneNumber];
+    if (phoneNumber)
     {
       v6 = 0;
     }
 
     else
     {
-      v8 = [(IDSPhoneUser *)self phoneNumber];
-      v6 = v8 != 0;
+      phoneNumber2 = [(IDSPhoneUser *)self phoneNumber];
+      v6 = phoneNumber2 != 0;
     }
   }
 
@@ -184,19 +184,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(IDSPhoneUser *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(IDSPhoneUser *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IDSPhoneUser *)self isEqualToPhoneUser:v4];
+    v5 = [(IDSPhoneUser *)self isEqualToPhoneUser:equalCopy];
   }
 
   else
@@ -207,15 +207,15 @@
   return v5;
 }
 
-- (BOOL)isEqualToPhoneUser:(id)a3
+- (BOOL)isEqualToPhoneUser:(id)user
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  userCopy = user;
+  v5 = userCopy;
+  if (self != userCopy)
   {
-    v6 = [(IDSPhoneUser *)v4 uniqueIdentifier];
-    v7 = [(IDSPhoneUser *)self uniqueIdentifier];
-    if (![v6 isEqualToString:v7])
+    uniqueIdentifier = [(IDSPhoneUser *)userCopy uniqueIdentifier];
+    uniqueIdentifier2 = [(IDSPhoneUser *)self uniqueIdentifier];
+    if (![uniqueIdentifier isEqualToString:uniqueIdentifier2])
     {
       v12 = 0;
 LABEL_16:
@@ -223,18 +223,18 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v8 = [(IDSPhoneUser *)v5 phoneNumber];
-    v9 = [(IDSPhoneUser *)self phoneNumber];
-    if (v8 == v9)
+    phoneNumber = [(IDSPhoneUser *)v5 phoneNumber];
+    phoneNumber2 = [(IDSPhoneUser *)self phoneNumber];
+    if (phoneNumber == phoneNumber2)
     {
       [(IDSPhoneUser *)v5 phoneBookNumber:v19];
     }
 
     else
     {
-      v10 = [(IDSPhoneUser *)v5 phoneNumber];
-      v11 = [(IDSPhoneUser *)self phoneNumber];
-      if (![v10 isEqualToString:v11])
+      phoneNumber3 = [(IDSPhoneUser *)v5 phoneNumber];
+      phoneNumber4 = [(IDSPhoneUser *)self phoneNumber];
+      if (![phoneNumber3 isEqualToString:phoneNumber4])
       {
         v12 = 0;
 LABEL_14:
@@ -243,12 +243,12 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      [(IDSPhoneUser *)v5 phoneBookNumber:v11];
+      [(IDSPhoneUser *)v5 phoneBookNumber:phoneNumber4];
     }
     v13 = ;
-    v14 = [(IDSPhoneUser *)self phoneBookNumber];
-    v15 = v14;
-    if (v13 == v14)
+    phoneBookNumber = [(IDSPhoneUser *)self phoneBookNumber];
+    v15 = phoneBookNumber;
+    if (v13 == phoneBookNumber)
     {
 
       v12 = 1;
@@ -256,14 +256,14 @@ LABEL_15:
 
     else
     {
-      v16 = [(IDSPhoneUser *)v5 phoneBookNumber];
-      v17 = [(IDSPhoneUser *)self phoneBookNumber];
-      v12 = [v16 isEqualToString:v17];
+      phoneBookNumber2 = [(IDSPhoneUser *)v5 phoneBookNumber];
+      phoneBookNumber3 = [(IDSPhoneUser *)self phoneBookNumber];
+      v12 = [phoneBookNumber2 isEqualToString:phoneBookNumber3];
     }
 
-    v11 = v20;
-    v10 = v22;
-    if (v8 == v9)
+    phoneNumber4 = v20;
+    phoneNumber3 = v22;
+    if (phoneNumber == phoneNumber2)
     {
       goto LABEL_15;
     }
@@ -277,22 +277,22 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)isIdenticalToUser:(id)a3
+- (BOOL)isIdenticalToUser:(id)user
 {
-  v4 = a3;
-  if ([(IDSPhoneUser *)self isEqualToUser:v4])
+  userCopy = user;
+  if ([(IDSPhoneUser *)self isEqualToUser:userCopy])
   {
-    v5 = v4;
-    v6 = [v5 isDefaultUser];
-    if (v6 == [(IDSPhoneUser *)self isDefaultUser])
+    v5 = userCopy;
+    isDefaultUser = [v5 isDefaultUser];
+    if (isDefaultUser == [(IDSPhoneUser *)self isDefaultUser])
     {
-      v8 = [v5 countryCode];
-      v9 = [(IDSPhoneUser *)self countryCode];
-      if ([v8 isEqualToString:v9])
+      countryCode = [v5 countryCode];
+      countryCode2 = [(IDSPhoneUser *)self countryCode];
+      if ([countryCode isEqualToString:countryCode2])
       {
-        v10 = [v5 networkCode];
-        v11 = [(IDSPhoneUser *)self networkCode];
-        v7 = [v10 isEqualToString:v11];
+        networkCode = [v5 networkCode];
+        networkCode2 = [(IDSPhoneUser *)self networkCode];
+        v7 = [networkCode isEqualToString:networkCode2];
       }
 
       else
@@ -315,21 +315,21 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)differsFromPhoneNumber:(id)a3
+- (BOOL)differsFromPhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = v4;
-  if ([v4 hasPrefix:@"+"])
+  numberCopy = number;
+  v5 = numberCopy;
+  if ([numberCopy hasPrefix:@"+"])
   {
     v6 = [NSCharacterSet characterSetWithCharactersInString:@"+"];
-    v5 = [v4 stringByRemovingCharactersFromSet:v6];
+    v5 = [numberCopy stringByRemovingCharactersFromSet:v6];
   }
 
-  v7 = [(IDSPhoneUser *)self phoneNumber];
-  if (v7)
+  phoneNumber = [(IDSPhoneUser *)self phoneNumber];
+  if (phoneNumber)
   {
-    v8 = [(IDSPhoneUser *)self phoneNumber];
-    v9 = [IDSCTAdapter isPhoneNumber:v8 equivalentToExistingPhoneNumber:v5]^ 1;
+    phoneNumber2 = [(IDSPhoneUser *)self phoneNumber];
+    v9 = [IDSCTAdapter isPhoneNumber:phoneNumber2 equivalentToExistingPhoneNumber:v5]^ 1;
   }
 
   else
@@ -337,11 +337,11 @@ LABEL_17:
     LOBYTE(v9) = 1;
   }
 
-  v10 = [(IDSPhoneUser *)self phoneBookNumber];
-  if (v10)
+  phoneBookNumber = [(IDSPhoneUser *)self phoneBookNumber];
+  if (phoneBookNumber)
   {
-    v11 = [(IDSPhoneUser *)self phoneBookNumber];
-    v12 = [IDSCTAdapter isPhoneNumber:v11 equivalentToExistingPhoneNumber:v5]^ 1;
+    phoneBookNumber2 = [(IDSPhoneUser *)self phoneBookNumber];
+    v12 = [IDSCTAdapter isPhoneNumber:phoneBookNumber2 equivalentToExistingPhoneNumber:v5]^ 1;
   }
 
   else
@@ -352,17 +352,17 @@ LABEL_17:
   return v9 & v12;
 }
 
-- (IDSPhoneUser)initWithCoder:(id)a3
+- (IDSPhoneUser)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"labelID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"labelID"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneBookNumber"];
-    v8 = [v4 decodeBoolForKey:@"defaultUser"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"networkCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneBookNumber"];
+    v8 = [coderCopy decodeBoolForKey:@"defaultUser"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"networkCode"];
     v11 = [(IDSPhoneUser *)self initWithLabelID:v5];
     [(IDSPhoneUser *)v11 setPhoneNumber:v6];
     [(IDSPhoneUser *)v11 setPhoneBookNumber:v7];
@@ -381,19 +381,19 @@ LABEL_17:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   labelID = self->_labelID;
-  v5 = a3;
-  [v5 encodeObject:labelID forKey:@"labelID"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_phoneBookNumber forKey:@"phoneBookNumber"];
-  [v5 encodeBool:self->_isDefaultUser forKey:@"defaultUser"];
-  [v5 encodeObject:self->_countryCode forKey:@"countryCode"];
-  [v5 encodeObject:self->_networkCode forKey:@"networkCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:labelID forKey:@"labelID"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_phoneBookNumber forKey:@"phoneBookNumber"];
+  [coderCopy encodeBool:self->_isDefaultUser forKey:@"defaultUser"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_networkCode forKey:@"networkCode"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithLabelID:self->_labelID phoneBookNumber:self->_phoneBookNumber];
   [v4 setPhoneNumber:self->_phoneNumber];
@@ -406,17 +406,17 @@ LABEL_17:
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSPhoneUser *)self uniqueIdentifier];
-  v5 = [(IDSPhoneUser *)self phoneNumber];
-  v6 = [(IDSPhoneUser *)self phoneBookNumber];
-  v7 = [(IDSPhoneUser *)self isDefaultUser];
+  uniqueIdentifier = [(IDSPhoneUser *)self uniqueIdentifier];
+  phoneNumber = [(IDSPhoneUser *)self phoneNumber];
+  phoneBookNumber = [(IDSPhoneUser *)self phoneBookNumber];
+  isDefaultUser = [(IDSPhoneUser *)self isDefaultUser];
   v8 = @"NO";
-  if (v7)
+  if (isDefaultUser)
   {
     v8 = @"YES";
   }
 
-  v9 = [NSString stringWithFormat:@"<%@:%p> uid: %@ pn: %@, pbn: %@, def: %@", v3, self, v4, v5, v6, v8];
+  v9 = [NSString stringWithFormat:@"<%@:%p> uid: %@ pn: %@, pbn: %@, def: %@", v3, self, uniqueIdentifier, phoneNumber, phoneBookNumber, v8];
 
   return v9;
 }

@@ -1,9 +1,9 @@
 @interface DMDActivityTransactionOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
 - (void)cancel;
 - (void)endOperationIfNeeded;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -16,21 +16,21 @@
   [(DMDActivityTransactionOperation *)&v2 waitUntilFinished];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  requestCopy = request;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___DMDActivityTransactionOperation;
-  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 name];
+  name = [requestCopy name];
 
-  if (!v7)
+  if (!name)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -38,17 +38,17 @@
     v11 = DMFInvalidParameterErrorKey;
     v12 = @"request.name";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_6:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
 + (id)whitelistedClassesForRequest
@@ -75,11 +75,11 @@ LABEL_7:
   }
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v6 = [a3 name];
-  v4 = v6;
-  [v6 UTF8String];
+  name = [request name];
+  v4 = name;
+  [name UTF8String];
   v5 = os_transaction_create();
   [(DMDActivityTransactionOperation *)self setTransaction:v5];
 }

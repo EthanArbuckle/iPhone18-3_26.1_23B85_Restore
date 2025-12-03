@@ -1,28 +1,28 @@
 @interface PSESchemaPSEAppIntentInteractionEngagement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSEAppIntentInteractionEngagement)initWithDictionary:(id)a3;
-- (PSESchemaPSEAppIntentInteractionEngagement)initWithJSON:(id)a3;
+- (PSESchemaPSEAppIntentInteractionEngagement)initWithDictionary:(id)dictionary;
+- (PSESchemaPSEAppIntentInteractionEngagement)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFollowUpEntityComparison:(BOOL)a3;
-- (void)setHasIsFirstPartyApp:(BOOL)a3;
-- (void)setHasIsSiriResultUseful:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFollowUpEntityComparison:(BOOL)comparison;
+- (void)setHasIsFirstPartyApp:(BOOL)app;
+- (void)setHasIsSiriResultUseful:(BOOL)useful;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSEAppIntentInteractionEngagement
 
-- (PSESchemaPSEAppIntentInteractionEngagement)initWithDictionary:(id)a3
+- (PSESchemaPSEAppIntentInteractionEngagement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PSESchemaPSEAppIntentInteractionEngagement;
   v5 = [(PSESchemaPSEAppIntentInteractionEngagement *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appIntentName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appIntentName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,28 +30,28 @@
       [(PSESchemaPSEAppIntentInteractionEngagement *)v5 setAppIntentName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"followUpActionType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"followUpActionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEAppIntentInteractionEngagement setFollowUpActionType:](v5, "setFollowUpActionType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"followUpEntityComparison"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"followUpEntityComparison"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEAppIntentInteractionEngagement setFollowUpEntityComparison:](v5, "setFollowUpEntityComparison:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isSiriResultUseful"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isSiriResultUseful"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEAppIntentInteractionEngagement setIsSiriResultUseful:](v5, "setIsSiriResultUseful:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isFirstPartyApp"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isFirstPartyApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (PSESchemaPSEAppIntentInteractionEngagement)initWithJSON:(id)a3
+- (PSESchemaPSEAppIntentInteractionEngagement)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSEAppIntentInteractionEngagement *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSEAppIntentInteractionEngagement *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSEAppIntentInteractionEngagement *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appIntentName)
   {
-    v4 = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appIntentName"];
+    appIntentName = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
+    v5 = [appIntentName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appIntentName"];
   }
 
   v6 = *(&self->_isFirstPartyApp + 1);
@@ -122,7 +122,7 @@
       v8 = off_1E78E1188[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"followUpActionType"];
+    [dictionary setObject:v8 forKeyedSubscript:@"followUpActionType"];
     v6 = *(&self->_isFirstPartyApp + 1);
   }
 
@@ -139,14 +139,14 @@
       v10 = off_1E78E1298[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"followUpEntityComparison"];
+    [dictionary setObject:v10 forKeyedSubscript:@"followUpEntityComparison"];
     v6 = *(&self->_isFirstPartyApp + 1);
   }
 
   if ((v6 & 8) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSEAppIntentInteractionEngagement isFirstPartyApp](self, "isFirstPartyApp")}];
-    [v3 setObject:v11 forKeyedSubscript:@"isFirstPartyApp"];
+    [dictionary setObject:v11 forKeyedSubscript:@"isFirstPartyApp"];
 
     v6 = *(&self->_isFirstPartyApp + 1);
   }
@@ -154,12 +154,12 @@
   if ((v6 & 4) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSEAppIntentInteractionEngagement isSiriResultUseful](self, "isSiriResultUseful")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isSiriResultUseful"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isSiriResultUseful"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -217,30 +217,30 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
-  v6 = [v4 appIntentName];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  appIntentName = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
+  appIntentName2 = [equalCopy appIntentName];
+  v7 = appIntentName2;
+  if ((appIntentName != 0) == (appIntentName2 == 0))
   {
 
     goto LABEL_24;
   }
 
-  v8 = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
-  if (v8)
+  appIntentName3 = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
+  if (appIntentName3)
   {
-    v9 = v8;
-    v10 = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
-    v11 = [v4 appIntentName];
-    v12 = [v10 isEqual:v11];
+    v9 = appIntentName3;
+    appIntentName4 = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
+    appIntentName5 = [equalCopy appIntentName];
+    v12 = [appIntentName4 isEqual:appIntentName5];
 
     if (!v12)
     {
@@ -253,7 +253,7 @@ LABEL_5:
   }
 
   v13 = *(&self->_isFirstPartyApp + 1);
-  v14 = v4[26];
+  v14 = equalCopy[26];
   if ((v13 & 1) != (v14 & 1))
   {
 LABEL_24:
@@ -264,13 +264,13 @@ LABEL_24:
   if (v13)
   {
     followUpActionType = self->_followUpActionType;
-    if (followUpActionType != [v4 followUpActionType])
+    if (followUpActionType != [equalCopy followUpActionType])
     {
       goto LABEL_24;
     }
 
     v13 = *(&self->_isFirstPartyApp + 1);
-    v14 = v4[26];
+    v14 = equalCopy[26];
   }
 
   v16 = (v13 >> 1) & 1;
@@ -282,13 +282,13 @@ LABEL_24:
   if (v16)
   {
     followUpEntityComparison = self->_followUpEntityComparison;
-    if (followUpEntityComparison != [v4 followUpEntityComparison])
+    if (followUpEntityComparison != [equalCopy followUpEntityComparison])
     {
       goto LABEL_24;
     }
 
     v13 = *(&self->_isFirstPartyApp + 1);
-    v14 = v4[26];
+    v14 = equalCopy[26];
   }
 
   v18 = (v13 >> 2) & 1;
@@ -300,10 +300,10 @@ LABEL_24:
   if (v18)
   {
     isSiriResultUseful = self->_isSiriResultUseful;
-    if (isSiriResultUseful == [v4 isSiriResultUseful])
+    if (isSiriResultUseful == [equalCopy isSiriResultUseful])
     {
       v13 = *(&self->_isFirstPartyApp + 1);
-      v14 = v4[26];
+      v14 = equalCopy[26];
       goto LABEL_20;
     }
 
@@ -320,7 +320,7 @@ LABEL_20:
   if (v20)
   {
     isFirstPartyApp = self->_isFirstPartyApp;
-    if (isFirstPartyApp != [v4 isFirstPartyApp])
+    if (isFirstPartyApp != [equalCopy isFirstPartyApp])
     {
       goto LABEL_24;
     }
@@ -332,12 +332,12 @@ LABEL_25:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
+  toCopy = to;
+  appIntentName = [(PSESchemaPSEAppIntentInteractionEngagement *)self appIntentName];
 
-  if (v4)
+  if (appIntentName)
   {
     PBDataWriterWriteStringField();
   }
@@ -349,11 +349,11 @@ LABEL_25:
     v5 = *(&self->_isFirstPartyApp + 1);
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((v5 & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
     v5 = *(&self->_isFirstPartyApp + 1);
     if ((v5 & 4) == 0)
     {
@@ -373,20 +373,20 @@ LABEL_7:
   }
 
   PBDataWriterWriteBOOLField();
-  v6 = v7;
+  v6 = toCopy;
   if ((*(&self->_isFirstPartyApp + 1) & 8) != 0)
   {
 LABEL_8:
     PBDataWriterWriteBOOLField();
-    v6 = v7;
+    v6 = toCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setHasIsFirstPartyApp:(BOOL)a3
+- (void)setHasIsFirstPartyApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 8;
   }
@@ -399,9 +399,9 @@ LABEL_9:
   *(&self->_isFirstPartyApp + 1) = *(&self->_isFirstPartyApp + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsSiriResultUseful:(BOOL)a3
+- (void)setHasIsSiriResultUseful:(BOOL)useful
 {
-  if (a3)
+  if (useful)
   {
     v3 = 4;
   }
@@ -414,9 +414,9 @@ LABEL_9:
   *(&self->_isFirstPartyApp + 1) = *(&self->_isFirstPartyApp + 1) & 0xFB | v3;
 }
 
-- (void)setHasFollowUpEntityComparison:(BOOL)a3
+- (void)setHasFollowUpEntityComparison:(BOOL)comparison
 {
-  if (a3)
+  if (comparison)
   {
     v3 = 2;
   }

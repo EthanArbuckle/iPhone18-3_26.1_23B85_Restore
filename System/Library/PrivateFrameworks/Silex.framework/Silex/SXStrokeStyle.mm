@@ -1,23 +1,23 @@
 @interface SXStrokeStyle
-- (SXStrokeStyle)styleWithValue:(id)a3 withType:(int)a4;
+- (SXStrokeStyle)styleWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXStrokeStyle
 
-- (SXStrokeStyle)styleWithValue:(id)a3 withType:(int)a4
+- (SXStrokeStyle)styleWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"solid"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"solid"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"dashed"])
+  else if ([valueCopy isEqualToString:@"dashed"])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"dotted"])
+  else if ([valueCopy isEqualToString:@"dotted"])
   {
     v5 = 3;
   }

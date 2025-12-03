@@ -1,30 +1,30 @@
 @interface SAVoice
-- (SAVoice)initWithSiriVoice:(id)a3;
+- (SAVoice)initWithSiriVoice:(id)voice;
 @end
 
 @implementation SAVoice
 
-- (SAVoice)initWithSiriVoice:(id)a3
+- (SAVoice)initWithSiriVoice:(id)voice
 {
-  v4 = a3;
+  voiceCopy = voice;
   v5 = [(SAVoice *)self init];
-  v6 = [v4 language];
-  [(SAVoice *)v5 setLanguageString:v6];
+  language = [voiceCopy language];
+  [(SAVoice *)v5 setLanguageString:language];
 
-  v7 = [v4 name];
-  [(SAVoice *)v5 setName:v7];
+  name = [voiceCopy name];
+  [(SAVoice *)v5 setName:name];
 
-  v8 = [v4 SAVoiceGender];
-  [(SAVoice *)v5 setGender:v8];
+  sAVoiceGender = [voiceCopy SAVoiceGender];
+  [(SAVoice *)v5 setGender:sAVoiceGender];
 
-  v9 = [v4 SAVoiceQuality];
-  [(SAVoice *)v5 setQuality:v9];
+  sAVoiceQuality = [voiceCopy SAVoiceQuality];
+  [(SAVoice *)v5 setQuality:sAVoiceQuality];
 
-  v10 = [v4 SAVoiceType];
-  [(SAVoice *)v5 setVoiceType:v10];
+  sAVoiceType = [voiceCopy SAVoiceType];
+  [(SAVoice *)v5 setVoiceType:sAVoiceType];
 
-  v11 = [v4 version];
-  [(SAVoice *)v5 setVoiceContentVersion:v11];
+  version = [voiceCopy version];
+  [(SAVoice *)v5 setVoiceContentVersion:version];
   return v5;
 }
 

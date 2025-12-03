@@ -1,33 +1,33 @@
 @interface BKUIPeriocularEnableSplashViewController
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_createCellForIndexPath:(id)a3;
-- (id)initInBuddy:(BOOL)a3 bkDevice:(id)a4 upsell:(BOOL)a5 withEndEnrollmentActionPrimary:(id)a6 enrollmentActionSecondary:(id)a7;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_createCellForIndexPath:(id)path;
+- (id)initInBuddy:(BOOL)buddy bkDevice:(id)device upsell:(BOOL)upsell withEndEnrollmentActionPrimary:(id)primary enrollmentActionSecondary:(id)secondary;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (int64_t)preferredStatusBarStyle;
-- (void)_continuePressed:(id)a3;
-- (void)_enrollSkipped:(id)a3;
+- (void)_continuePressed:(id)pressed;
+- (void)_enrollSkipped:(id)skipped;
 - (void)_showPrivacyLink;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation BKUIPeriocularEnableSplashViewController
 
-- (id)initInBuddy:(BOOL)a3 bkDevice:(id)a4 upsell:(BOOL)a5 withEndEnrollmentActionPrimary:(id)a6 enrollmentActionSecondary:(id)a7
+- (id)initInBuddy:(BOOL)buddy bkDevice:(id)device upsell:(BOOL)upsell withEndEnrollmentActionPrimary:(id)primary enrollmentActionSecondary:(id)secondary
 {
-  LODWORD(v9) = a5;
-  v10 = a4;
+  LODWORD(v9) = upsell;
+  deviceCopy = device;
   v59 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v52 = a6;
-  v51 = a7;
+  deviceCopy2 = device;
+  primaryCopy = primary;
+  secondaryCopy = secondary;
   if (v9)
   {
     v56 = 0;
-    v13 = [v12 identitiesForUser:getuid() error:&v56];
+    v13 = [deviceCopy2 identitiesForUser:getuid() error:&v56];
     v14 = v56;
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_6];
     v16 = [v13 filteredArrayUsingPredicate:v15];
@@ -46,7 +46,7 @@
     }
 
     v55 = v14;
-    v17 = [v12 systemProtectedConfigurationWithError:&v55];
+    v17 = [deviceCopy2 systemProtectedConfigurationWithError:&v55];
     v18 = v55;
 
     if (v18)
@@ -59,7 +59,7 @@
     }
 
     v54 = v18;
-    v20 = [v12 protectedConfigurationForUser:getuid() error:&v54];
+    v20 = [deviceCopy2 protectedConfigurationForUser:getuid() error:&v54];
     v21 = v54;
 
     if (v21)
@@ -71,28 +71,28 @@
       }
     }
 
-    v23 = [v17 periocularFaceIDMatchEnabled];
-    if ([v23 BOOLValue])
+    periocularFaceIDMatchEnabled = [v17 periocularFaceIDMatchEnabled];
+    if ([periocularFaceIDMatchEnabled BOOLValue])
     {
       [v20 periocularFaceIDMatchEnabled];
       v49 = v9;
-      v9 = v10;
+      v9 = deviceCopy;
       v24 = v21;
-      v25 = v12;
+      v25 = deviceCopy2;
       v26 = v20;
       v27 = v16;
       v29 = v28 = v17;
-      v30 = [v29 BOOLValue];
+      bOOLValue = [v29 BOOLValue];
 
       v17 = v28;
       v16 = v27;
       v20 = v26;
-      v12 = v25;
+      deviceCopy2 = v25;
       v21 = v24;
-      v10 = v9;
+      deviceCopy = v9;
       LOBYTE(v9) = v49;
 
-      if (v30)
+      if (bOOLValue)
       {
         v31 = _BKUILoggingFacility();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -102,9 +102,9 @@
         }
 
 LABEL_19:
-        v33 = 0;
-        v35 = v51;
-        v34 = v52;
+        selfCopy = 0;
+        v35 = secondaryCopy;
+        v34 = primaryCopy;
         goto LABEL_25;
       }
     }
@@ -122,33 +122,33 @@ LABEL_19:
   v53.super_class = BKUIPeriocularEnableSplashViewController;
   v40 = [(OBTableWelcomeController *)&v53 initWithTitle:v37 detailText:v39 icon:0 adoptTableViewScrollView:1];
 
-  v35 = v51;
-  v34 = v52;
+  v35 = secondaryCopy;
+  v34 = primaryCopy;
   if (v40)
   {
     v40->_upsell = v9;
-    v40->_inBuddy = a3;
-    v41 = _Block_copy(v52);
+    v40->_inBuddy = buddy;
+    v41 = _Block_copy(primaryCopy);
     endEnrollActionPrimary = v40->_endEnrollActionPrimary;
     v40->_endEnrollActionPrimary = v41;
 
-    v43 = _Block_copy(v51);
+    v43 = _Block_copy(secondaryCopy);
     endEnrollActionSecondary = v40->_endEnrollActionSecondary;
     v40->_endEnrollActionSecondary = v43;
 
-    objc_storeStrong(&v40->_device, v10);
+    objc_storeStrong(&v40->_device, deviceCopy);
     v40->_maxCellHeight = -1.0;
-    v45 = [(BKUIPeriocularEnableSplashViewController *)v40 headerView];
-    v46 = [MEMORY[0x277D75348] systemBlueColor];
-    [v45 setTintColor:v46];
+    headerView = [(BKUIPeriocularEnableSplashViewController *)v40 headerView];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [headerView setTintColor:systemBlueColor];
   }
 
   self = v40;
-  v33 = self;
+  selfCopy = self;
 LABEL_25:
 
   v47 = *MEMORY[0x277D85DE8];
-  return v33;
+  return selfCopy;
 }
 
 - (void)viewDidLoad
@@ -166,10 +166,10 @@ LABEL_25:
   v6 = objc_alloc(MEMORY[0x277D37600]);
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 URLForResource:@"FaceMaskID" withExtension:@"ca"];
-  v9 = [(BKUIPeriocularEnableSplashViewController *)self headerView];
-  v10 = [v9 animationView];
+  headerView = [(BKUIPeriocularEnableSplashViewController *)self headerView];
+  animationView = [headerView animationView];
   v11 = [v5 objectAtIndexedSubscript:0];
-  v12 = [v6 initWithUrlToPackage:v8 animationView:v10 animatedStates:v5 startAtFirstState:v11];
+  v12 = [v6 initWithUrlToPackage:v8 animationView:animationView animatedStates:v5 startAtFirstState:v11];
   [(BKUIPeriocularEnableSplashViewController *)self setAnimationController:v12];
 
   v13 = +[BKUIDevice sharedInstance];
@@ -193,51 +193,51 @@ LABEL_25:
   v18 = [(BKUIPeriocularEnableSplashViewController *)self _createCellForIndexPath:v17];
   [(BKUIPeriocularEnableSplashViewController *)self setCellBottom:v18];
 
-  v19 = [(BKUIPeriocularEnableSplashViewController *)self headerView];
-  v20 = [v19 animationView];
-  [v20 defaultScale];
+  headerView2 = [(BKUIPeriocularEnableSplashViewController *)self headerView];
+  animationView2 = [headerView2 animationView];
+  [animationView2 defaultScale];
   v22 = v21;
-  v23 = [(BKUIPeriocularEnableSplashViewController *)self headerView];
-  v24 = [v23 animationView];
-  [v24 setScale:v14 + v22];
+  headerView3 = [(BKUIPeriocularEnableSplashViewController *)self headerView];
+  animationView3 = [headerView3 animationView];
+  [animationView3 setScale:v14 + v22];
 
   v25 = objc_alloc(MEMORY[0x277D75B40]);
   v26 = [v25 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v26];
 
-  v27 = [(OBTableWelcomeController *)self tableView];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v28 = [(OBTableWelcomeController *)self tableView];
-  [v28 setDelegate:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v29 = [(OBTableWelcomeController *)self tableView];
-  [v29 setDataSource:self];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDataSource:self];
 
-  v30 = [(OBTableWelcomeController *)self tableView];
-  [v30 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v31 = [(OBTableWelcomeController *)self tableView];
-  [v31 setEstimatedRowHeight:0.0];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setEstimatedRowHeight:0.0];
 
-  v32 = [MEMORY[0x277D75348] clearColor];
-  v33 = [(OBTableWelcomeController *)self tableView];
-  [v33 setBackgroundColor:v32];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setBackgroundColor:clearColor];
 
-  v34 = [(OBTableWelcomeController *)self tableView];
-  [v34 reloadData];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 reloadData];
 
-  v35 = [(OBBaseWelcomeController *)self navigationItem];
-  [v35 setHidesBackButton:1];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v36 = [MEMORY[0x277D37650] linkButton];
-  [(BKUIPeriocularEnableSplashViewController *)self setSkipButton:v36];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [(BKUIPeriocularEnableSplashViewController *)self setSkipButton:linkButton];
 
-  v37 = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
-  [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
+  skipButton = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
+  [skipButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v38 = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
-  [v38 addTarget:self action:sel__enrollSkipped_ forControlEvents:64];
+  skipButton2 = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
+  [skipButton2 addTarget:self action:sel__enrollSkipped_ forControlEvents:64];
 
   v39 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v40 = [v39 localizedStringForKey:@"SET_UP_LATER" value:&stru_2853BB280 table:@"Pearl-periocular"];
@@ -250,41 +250,41 @@ LABEL_25:
     v40 = v42;
   }
 
-  v43 = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
-  [v43 setTitle:v40 forState:0];
+  skipButton3 = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
+  [skipButton3 setTitle:v40 forState:0];
 
-  v44 = [(BKUIPeriocularEnableSplashViewController *)self buttonTray];
-  v45 = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
-  [v44 addButton:v45];
+  buttonTray = [(BKUIPeriocularEnableSplashViewController *)self buttonTray];
+  skipButton4 = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
+  [buttonTray addButton:skipButton4];
 
-  v46 = [MEMORY[0x277D37638] accessoryButton];
+  accessoryButton = [MEMORY[0x277D37638] accessoryButton];
   v47 = MEMORY[0x277D37668];
   v48 = [MEMORY[0x277D37630] bundleWithIdentifier:@"com.apple.onboarding.faceid"];
   v49 = [v47 flowWithBundle:v48];
 
-  v50 = [v49 localizedButtonTitle];
-  [v46 setTitle:v50 forState:0];
+  localizedButtonTitle = [v49 localizedButtonTitle];
+  [accessoryButton setTitle:localizedButtonTitle forState:0];
 
-  [v46 addTarget:self action:sel__showPrivacyLink forControlEvents:64];
-  v51 = [(BKUIPeriocularEnableSplashViewController *)self headerView];
-  [v51 addAccessoryButton:v46];
+  [accessoryButton addTarget:self action:sel__showPrivacyLink forControlEvents:64];
+  headerView4 = [(BKUIPeriocularEnableSplashViewController *)self headerView];
+  [headerView4 addAccessoryButton:accessoryButton];
 
-  v52 = [(BKUIPeriocularEnableSplashViewController *)self buttonTray];
-  [v52 setNeedsLayout];
+  buttonTray2 = [(BKUIPeriocularEnableSplashViewController *)self buttonTray];
+  [buttonTray2 setNeedsLayout];
 
-  v53 = [(BKUIPeriocularEnableSplashViewController *)self buttonTray];
-  [v53 layoutIfNeeded];
+  buttonTray3 = [(BKUIPeriocularEnableSplashViewController *)self buttonTray];
+  [buttonTray3 layoutIfNeeded];
 
-  v54 = [(BKUIPeriocularEnableSplashViewController *)self cellTop];
-  v55 = [(BKUIPeriocularEnableSplashViewController *)self cellTop];
-  [v55 bounds];
-  [v54 systemLayoutSizeFittingSize:{v56, 0.0}];
+  cellTop = [(BKUIPeriocularEnableSplashViewController *)self cellTop];
+  cellTop2 = [(BKUIPeriocularEnableSplashViewController *)self cellTop];
+  [cellTop2 bounds];
+  [cellTop systemLayoutSizeFittingSize:{v56, 0.0}];
   v58 = v57;
 
-  v59 = [(BKUIPeriocularEnableSplashViewController *)self cellBottom];
-  v60 = [(BKUIPeriocularEnableSplashViewController *)self cellTop];
-  [v60 bounds];
-  [v59 systemLayoutSizeFittingSize:{v61, 0.0}];
+  cellBottom = [(BKUIPeriocularEnableSplashViewController *)self cellBottom];
+  cellTop3 = [(BKUIPeriocularEnableSplashViewController *)self cellTop];
+  [cellTop3 bounds];
+  [cellBottom systemLayoutSizeFittingSize:{v61, 0.0}];
   v63 = v62;
 
   if (v63 >= v58)
@@ -360,41 +360,41 @@ void __55__BKUIPeriocularEnableSplashViewController_viewDidLoad__block_invoke(ui
   [v3 present];
 }
 
-- (void)_continuePressed:(id)a3
+- (void)_continuePressed:(id)pressed
 {
-  v4 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionPrimary];
+  endEnrollActionPrimary = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionPrimary];
 
-  if (v4)
+  if (endEnrollActionPrimary)
   {
-    v5 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionPrimary];
-    v5[2]();
+    endEnrollActionPrimary2 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionPrimary];
+    endEnrollActionPrimary2[2]();
   }
 }
 
-- (void)_enrollSkipped:(id)a3
+- (void)_enrollSkipped:(id)skipped
 {
-  v4 = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
-  [v4 setUserInteractionEnabled:0];
+  skipButton = [(BKUIPeriocularEnableSplashViewController *)self skipButton];
+  [skipButton setUserInteractionEnabled:0];
 
   if ([(BKUIPeriocularEnableSplashViewController *)self inBuddy]&& ([(BKUIPeriocularEnableSplashViewController *)self userSkippedAction], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(BKUIPeriocularEnableSplashViewController *)self userSkippedAction];
+    userSkippedAction = [(BKUIPeriocularEnableSplashViewController *)self userSkippedAction];
   }
 
   else
   {
-    v7 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionSecondary];
+    endEnrollActionSecondary = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionSecondary];
 
-    if (!v7)
+    if (!endEnrollActionSecondary)
     {
       return;
     }
 
-    v6 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionSecondary];
+    userSkippedAction = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionSecondary];
   }
 
-  v8 = v6;
-  (*(v6 + 16))();
+  v8 = userSkippedAction;
+  (*(userSkippedAction + 16))();
 }
 
 void __151__BKUIPeriocularEnableSplashViewController_setPeriocularFaceIDMatchEnabledForUserConfigurationWithDevice_credentialSet_authContext_enabled_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -458,10 +458,10 @@ uint64_t __151__BKUIPeriocularEnableSplashViewController_setPeriocularFaceIDMatc
   return (*(*(a1 + 32) + 16))();
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   result = 0.0;
-  if (!a4)
+  if (!section)
   {
     return 10.0;
   }
@@ -469,48 +469,48 @@ uint64_t __151__BKUIPeriocularEnableSplashViewController_setPeriocularFaceIDMatc
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  [v6 setAllowsSelection:0];
-  v8 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  [viewCopy setAllowsSelection:0];
+  section = [pathCopy section];
 
-  if (v8 == 1)
+  if (section == 1)
   {
-    v9 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionPrimary];
+    endEnrollActionPrimary = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionPrimary];
 
-    if (v9)
+    if (endEnrollActionPrimary)
     {
-      v10 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionSecondary];
+      endEnrollActionSecondary = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionSecondary];
 LABEL_6:
-      v12 = v10;
-      (*(v10 + 16))();
+      v12 = endEnrollActionSecondary;
+      (*(endEnrollActionSecondary + 16))();
     }
   }
 
   else
   {
-    v11 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionSecondary];
+    endEnrollActionSecondary2 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionSecondary];
 
-    if (v11)
+    if (endEnrollActionSecondary2)
     {
-      v10 = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionPrimary];
+      endEnrollActionSecondary = [(BKUIPeriocularEnableSplashViewController *)self endEnrollActionPrimary];
       goto LABEL_6;
     }
   }
@@ -520,14 +520,14 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __78__BKUIPeriocularEnableSplashViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   block[3] = &unk_278D09978;
-  v16 = v6;
-  v14 = v6;
+  v16 = viewCopy;
+  v14 = viewCopy;
   dispatch_after(v13, MEMORY[0x277D85CD0], block);
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  [(BKUIPeriocularEnableSplashViewController *)self maxCellHeight:a3];
+  [(BKUIPeriocularEnableSplashViewController *)self maxCellHeight:view];
   if (v5 < 0.0)
   {
     return *MEMORY[0x277D76F30];
@@ -537,9 +537,9 @@ LABEL_6:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  if ([a4 section] == 1)
+  if ([path section] == 1)
   {
     [(BKUIPeriocularEnableSplashViewController *)self cellBottom];
   }
@@ -553,53 +553,53 @@ LABEL_6:
   return v5;
 }
 
-- (id)_createCellForIndexPath:(id)a3
+- (id)_createCellForIndexPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [[BKUIPeriocularSelectionCell alloc] initWithStyle:3 reuseIdentifier:&stru_2853BB280];
-  v5 = [v3 section];
+  section = [pathCopy section];
 
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (v5 == 1)
+  if (section == 1)
   {
     v8 = [v6 localizedStringForKey:@"FACE_MASK_ID_DONT_USE" value:&stru_2853BB280 table:@"Pearl-periocular"];
-    v9 = [(BKUIPeriocularSelectionCell *)v4 titleLabel];
-    [v9 setText:v8];
+    titleLabel = [(BKUIPeriocularSelectionCell *)v4 titleLabel];
+    [titleLabel setText:v8];
 
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"FACE_MASK_ID_DONT_USE_DETAIL_TEXT" value:&stru_2853BB280 table:@"Pearl-periocular"];
-    v12 = [(BKUIPeriocularSelectionCell *)v4 subtitleLabel];
-    [v12 setText:v11];
+    subtitleLabel = [(BKUIPeriocularSelectionCell *)v4 subtitleLabel];
+    [subtitleLabel setText:v11];
 
     v13 = [MEMORY[0x277D755B8] systemImageNamed:@"faceid"];
-    v14 = [(BKUIPeriocularSelectionCell *)v4 iconView];
-    [v14 setImage:v13];
+    iconView = [(BKUIPeriocularSelectionCell *)v4 iconView];
+    [iconView setImage:v13];
 LABEL_7:
 
     goto LABEL_8;
   }
 
   v15 = [v6 localizedStringForKey:@"FACE_MASK_ID_USE" value:&stru_2853BB280 table:@"Pearl-periocular"];
-  v16 = [(BKUIPeriocularSelectionCell *)v4 titleLabel];
-  [v16 setText:v15];
+  titleLabel2 = [(BKUIPeriocularSelectionCell *)v4 titleLabel];
+  [titleLabel2 setText:v15];
 
   v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v14 = [v17 localizedStringForKey:@"FACE_MASK_ID_USE_DETAIL_TEXT" value:&stru_2853BB280 table:@"Pearl-periocular"];
-  v18 = [(BKUIPeriocularSelectionCell *)v4 subtitleLabel];
-  [v18 setText:v14];
+  iconView = [v17 localizedStringForKey:@"FACE_MASK_ID_USE_DETAIL_TEXT" value:&stru_2853BB280 table:@"Pearl-periocular"];
+  subtitleLabel2 = [(BKUIPeriocularSelectionCell *)v4 subtitleLabel];
+  [subtitleLabel2 setText:iconView];
 
   v13 = [MEMORY[0x277D755B8] systemImageNamed:@"faceid.and.mask"];
   v19 = v13;
   if (!v13)
   {
     v20 = MEMORY[0x277D755B8];
-    v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v19 = [v20 imageNamed:@"local.faceid.and.mask" inBundle:v14 withConfiguration:0];
+    iconView = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v19 = [v20 imageNamed:@"local.faceid.and.mask" inBundle:iconView withConfiguration:0];
   }
 
-  v21 = [(BKUIPeriocularSelectionCell *)v4 iconView];
-  [v21 setImage:v19];
+  iconView2 = [(BKUIPeriocularSelectionCell *)v4 iconView];
+  [iconView2 setImage:v19];
 
   if (!v13)
   {
@@ -616,10 +616,10 @@ LABEL_8:
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(BKUIPeriocularEnableSplashViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(BKUIPeriocularEnableSplashViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 1)
+  if (userInterfaceStyle == 1)
   {
     return 3;
   }

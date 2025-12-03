@@ -8,9 +8,9 @@
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 objects];
-  v11 = [v10 allObjects];
-  v12 = [v11 arrayByAddingObject:a1];
+  objects = [self objects];
+  allObjects = [objects allObjects];
+  v12 = [allObjects arrayByAddingObject:self];
 
   [v9 _deleteObjects:v12 options:a4 completion:v8];
 }

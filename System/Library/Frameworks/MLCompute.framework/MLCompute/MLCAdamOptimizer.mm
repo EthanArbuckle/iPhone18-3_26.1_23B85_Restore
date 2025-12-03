@@ -1,10 +1,10 @@
 @interface MLCAdamOptimizer
 + (MLCAdamOptimizer)optimizerWithDescriptor:(MLCOptimizerDescriptor *)optimizerDescriptor;
 + (MLCAdamOptimizer)optimizerWithDescriptor:(MLCOptimizerDescriptor *)optimizerDescriptor beta1:(float)beta1 beta2:(float)beta2 epsilon:(float)epsilon timeStep:(NSUInteger)timeStep;
-- (BOOL)compileForDevice:(id)a3;
-- (MLCAdamOptimizer)initWithDescriptor:(id)a3 beta1:(float)a4 beta2:(float)a5 epsilon:(float)a6 usesAMSGrad:(BOOL)a7 timeStep:(unint64_t)a8;
+- (BOOL)compileForDevice:(id)device;
+- (MLCAdamOptimizer)initWithDescriptor:(id)descriptor beta1:(float)beta1 beta2:(float)beta2 epsilon:(float)epsilon usesAMSGrad:(BOOL)grad timeStep:(unint64_t)step;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MLCAdamOptimizer
@@ -12,7 +12,7 @@
 + (MLCAdamOptimizer)optimizerWithDescriptor:(MLCOptimizerDescriptor *)optimizerDescriptor
 {
   v4 = optimizerDescriptor;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   LODWORD(v6) = 1063675494;
   LODWORD(v7) = 1065336439;
   LODWORD(v8) = 841731191;
@@ -24,7 +24,7 @@
 + (MLCAdamOptimizer)optimizerWithDescriptor:(MLCOptimizerDescriptor *)optimizerDescriptor beta1:(float)beta1 beta2:(float)beta2 epsilon:(float)epsilon timeStep:(NSUInteger)timeStep
 {
   v12 = optimizerDescriptor;
-  v13 = [a1 alloc];
+  v13 = [self alloc];
   *&v14 = beta1;
   *&v15 = beta2;
   *&v16 = epsilon;
@@ -33,23 +33,23 @@
   return v17;
 }
 
-- (MLCAdamOptimizer)initWithDescriptor:(id)a3 beta1:(float)a4 beta2:(float)a5 epsilon:(float)a6 usesAMSGrad:(BOOL)a7 timeStep:(unint64_t)a8
+- (MLCAdamOptimizer)initWithDescriptor:(id)descriptor beta1:(float)beta1 beta2:(float)beta2 epsilon:(float)epsilon usesAMSGrad:(BOOL)grad timeStep:(unint64_t)step
 {
-  v9 = a7;
-  v15 = a3;
+  gradCopy = grad;
+  descriptorCopy = descriptor;
   v21.receiver = self;
   v21.super_class = MLCAdamOptimizer;
-  v16 = [(MLCOptimizer *)&v21 initWithDescriptor:v15];
+  v16 = [(MLCOptimizer *)&v21 initWithDescriptor:descriptorCopy];
   v17 = v16;
   if (v16)
   {
-    v16->_beta1 = a4;
-    v16->_beta2 = a5;
-    v16->_epsilon = a6;
-    v16->_usesAMSGrad = v9;
-    v16->_timeStep = a8;
-    objc_storeStrong(&v16->_optimizerDescriptor, a3);
-    if (v9)
+    v16->_beta1 = beta1;
+    v16->_beta2 = beta2;
+    v16->_epsilon = epsilon;
+    v16->_usesAMSGrad = gradCopy;
+    v16->_timeStep = step;
+    objc_storeStrong(&v16->_optimizerDescriptor, descriptor);
+    if (gradCopy)
     {
       v18 = 3;
     }
@@ -67,33 +67,33 @@
   return v17;
 }
 
-- (BOOL)compileForDevice:(id)a3
+- (BOOL)compileForDevice:(id)device
 {
-  v5 = a3;
-  v6 = [v5 computeEngine];
-  v7 = [(MLCAdamOptimizer *)self optimizerDescriptor];
+  deviceCopy = device;
+  computeEngine = [deviceCopy computeEngine];
+  optimizerDescriptor = [(MLCAdamOptimizer *)self optimizerDescriptor];
   [(MLCAdamOptimizer *)self beta1];
   v9 = v8;
   [(MLCAdamOptimizer *)self beta2];
   v11 = v10;
   [(MLCAdamOptimizer *)self epsilon];
   v13 = v12;
-  v14 = [(MLCAdamOptimizer *)self usesAMSGrad];
-  v15 = [(MLCAdamOptimizer *)self timeStep];
+  usesAMSGrad = [(MLCAdamOptimizer *)self usesAMSGrad];
+  timeStep = [(MLCAdamOptimizer *)self timeStep];
   LODWORD(v16) = v9;
   LODWORD(v17) = v11;
   LODWORD(v18) = v13;
-  v19 = [v6 optimizerAdamWithDescriptor:v7 beta1:v14 beta2:v15 epsilon:0 amsgrad:v16 timeStep:v17 isAdamW:v18];
+  v19 = [computeEngine optimizerAdamWithDescriptor:optimizerDescriptor beta1:usesAMSGrad beta2:timeStep epsilon:0 amsgrad:v16 timeStep:v17 isAdamW:v18];
 
   if (v19 && [v19 count])
   {
-    v20 = [v5 computeEngine];
+    computeEngine2 = [deviceCopy computeEngine];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [v5 computeEngine];
-      v23 = [v22 compileOptimizerDeviceOps:v19];
+      computeEngine3 = [deviceCopy computeEngine];
+      v23 = [computeEngine3 compileOptimizerDeviceOps:v19];
     }
 
     else
@@ -103,7 +103,7 @@
 
     v26.receiver = self;
     v26.super_class = MLCAdamOptimizer;
-    [(MLCOptimizer *)&v26 bindDevice:v5 deviceOps:v19];
+    [(MLCOptimizer *)&v26 bindDevice:deviceCopy deviceOps:v19];
   }
 
   else
@@ -131,30 +131,30 @@
   v9 = v8;
   [(MLCAdamOptimizer *)self epsilon];
   v11 = v10;
-  v12 = [(MLCAdamOptimizer *)self usesAMSGrad];
-  v13 = [(MLCAdamOptimizer *)self timeStep];
-  v14 = [(MLCAdamOptimizer *)self optimizerDescriptor];
-  v15 = [v3 stringWithFormat:@"%@: { beta1=%f : beta2=%f : epsilon=%f : usesAMSGrad=%d : timeStep=%lu : optimizerDescriptor=%@ }", v5, *&v7, *&v9, *&v11, v12, v13, v14];
+  usesAMSGrad = [(MLCAdamOptimizer *)self usesAMSGrad];
+  timeStep = [(MLCAdamOptimizer *)self timeStep];
+  optimizerDescriptor = [(MLCAdamOptimizer *)self optimizerDescriptor];
+  v15 = [v3 stringWithFormat:@"%@: { beta1=%f : beta2=%f : epsilon=%f : usesAMSGrad=%d : timeStep=%lu : optimizerDescriptor=%@ }", v5, *&v7, *&v9, *&v11, usesAMSGrad, timeStep, optimizerDescriptor];
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MLCAdamOptimizer *)self optimizerDescriptor];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  optimizerDescriptor = [(MLCAdamOptimizer *)self optimizerDescriptor];
   [(MLCAdamOptimizer *)self beta1];
   v7 = v6;
   [(MLCAdamOptimizer *)self beta2];
   v9 = v8;
   [(MLCAdamOptimizer *)self epsilon];
   v11 = v10;
-  v12 = [(MLCAdamOptimizer *)self usesAMSGrad];
-  v13 = [(MLCAdamOptimizer *)self timeStep];
+  usesAMSGrad = [(MLCAdamOptimizer *)self usesAMSGrad];
+  timeStep = [(MLCAdamOptimizer *)self timeStep];
   LODWORD(v14) = v7;
   LODWORD(v15) = v9;
   LODWORD(v16) = v11;
-  v17 = [v4 initWithDescriptor:v5 beta1:v12 beta2:v13 epsilon:v14 usesAMSGrad:v15 timeStep:v16];
+  v17 = [v4 initWithDescriptor:optimizerDescriptor beta1:usesAMSGrad beta2:timeStep epsilon:v14 usesAMSGrad:v15 timeStep:v16];
 
   return v17;
 }

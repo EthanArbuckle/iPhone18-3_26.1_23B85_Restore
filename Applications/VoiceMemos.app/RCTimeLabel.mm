@@ -1,6 +1,6 @@
 @interface RCTimeLabel
 - (CGSize)intrinsicContentSize;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation RCTimeLabel
@@ -25,12 +25,12 @@
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(RCTimeLabel *)self labelYOffset];
   v9.receiver = self;
   v9.super_class = RCTimeLabel;

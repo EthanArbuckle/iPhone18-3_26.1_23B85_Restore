@@ -7,7 +7,7 @@
 
 - (NSArray)rankedAllSubscribedTagIDs
 {
-  v2 = self;
+  selfCopy = self;
   DropboxSubscriptionList.rankedAllSubscribedTagIDs.getter();
 
   v3 = sub_1B67D97AC();

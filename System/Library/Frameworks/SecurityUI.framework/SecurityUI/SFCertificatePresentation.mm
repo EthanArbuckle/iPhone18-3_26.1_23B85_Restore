@@ -1,29 +1,29 @@
 @interface SFCertificatePresentation
-- (SFCertificatePresentation)initWithTrust:(__SecTrust *)a3;
-- (void)_presentSheetWithPresentationAnchor:(id)a3 dismissHandler:(id)a4;
-- (void)certificatePresentationControllerDidDismiss:(id)a3;
+- (SFCertificatePresentation)initWithTrust:(__SecTrust *)trust;
+- (void)_presentSheetWithPresentationAnchor:(id)anchor dismissHandler:(id)handler;
+- (void)certificatePresentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation SFCertificatePresentation
 
-- (SFCertificatePresentation)initWithTrust:(__SecTrust *)a3
+- (SFCertificatePresentation)initWithTrust:(__SecTrust *)trust
 {
   v5.receiver = self;
   v5.super_class = SFCertificatePresentation;
   result = [(SFCertificatePresentation *)&v5 init];
   if (result)
   {
-    result->_trust = a3;
+    result->_trust = trust;
   }
 
   return result;
 }
 
-- (void)_presentSheetWithPresentationAnchor:(id)a3 dismissHandler:(id)a4
+- (void)_presentSheetWithPresentationAnchor:(id)anchor dismissHandler:(id)handler
 {
-  objc_storeStrong(&self->_presentationAnchor, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_presentationAnchor, anchor);
+  anchorCopy = anchor;
+  handlerCopy = handler;
   v9 = MEMORY[0x23EE93EB0]();
 
   dismissHandler = self->_dismissHandler;
@@ -41,7 +41,7 @@
   [(SFCertificatePresentationController *)self->_controller presentWithCompletion:&__block_literal_global_3];
 }
 
-- (void)certificatePresentationControllerDidDismiss:(id)a3
+- (void)certificatePresentationControllerDidDismiss:(id)dismiss
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];

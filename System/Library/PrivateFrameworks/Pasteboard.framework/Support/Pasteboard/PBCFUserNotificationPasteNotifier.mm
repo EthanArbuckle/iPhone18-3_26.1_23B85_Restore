@@ -1,8 +1,8 @@
 @interface PBCFUserNotificationPasteNotifier
 - (PBCFUserNotificationPasteNotifier)init;
-- (void)_notificationDismissed:(__CFUserNotification *)a3;
-- (void)_notifyWithAnnouncement:(id)a3;
-- (void)_withNotifications:(id)a3;
+- (void)_notificationDismissed:(__CFUserNotification *)dismissed;
+- (void)_notifyWithAnnouncement:(id)announcement;
+- (void)_withNotifications:(id)notifications;
 @end
 
 @implementation PBCFUserNotificationPasteNotifier
@@ -24,57 +24,57 @@
   return v3;
 }
 
-- (void)_withNotifications:(id)a3
+- (void)_withNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock(&self->_notificationLock);
-  v4[2](v4, self->_notifications);
+  notificationsCopy[2](notificationsCopy, self->_notifications);
 
   os_unfair_lock_unlock(&self->_notificationLock);
 }
 
-- (void)_notificationDismissed:(__CFUserNotification *)a3
+- (void)_notificationDismissed:(__CFUserNotification *)dismissed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100017CC4;
   v3[3] = &unk_100031C68;
-  v3[4] = a3;
+  v3[4] = dismissed;
   [(PBCFUserNotificationPasteNotifier *)self _withNotifications:v3];
 }
 
-- (void)_notifyWithAnnouncement:(id)a3
+- (void)_notifyWithAnnouncement:(id)announcement
 {
-  if (a3)
+  if (announcement)
   {
-    v3 = [a3 localizedAnnouncementText];
+    localizedAnnouncementText = [announcement localizedAnnouncementText];
     v4 = &stru_100032D58;
   }
 
   else
   {
     v5 = +[PBEnterpriseInfo sharedInstance];
-    v6 = [v5 orgName];
+    orgName = [v5 orgName];
 
     v7 = sub_100017E1C();
     v4 = [v7 localizedStringForKey:@"PASTE_ANNOUNCEMENT_NOT_ALLOWED" value:@"Pasting this content is restricted" table:@"Localizable"];
 
-    if (v6)
+    if (orgName)
     {
       v8 = sub_100017E1C();
       v9 = [v8 localizedStringForKey:@"PASTE_ANNOUNCEMENT_MANAGED_BY" value:@"Managed by ”%@”" table:@"Localizable"];
 
       v10 = 0;
-      v3 = [NSString stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:&v10, v6];
+      localizedAnnouncementText = [NSString stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:&v10, orgName];
     }
 
     else
     {
-      v3 = &stru_100032D58;
+      localizedAnnouncementText = &stru_100032D58;
     }
   }
 
-  CFUserNotificationDisplayNotice(PBAuthorizationTimeoutInterval, 3uLL, 0, 0, 0, v4, v3, 0);
+  CFUserNotificationDisplayNotice(PBAuthorizationTimeoutInterval, 3uLL, 0, 0, 0, v4, localizedAnnouncementText, 0);
 }
 
 @end

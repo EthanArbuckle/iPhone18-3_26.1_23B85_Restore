@@ -1,74 +1,74 @@
 @interface SKStateTransitionEntry
-+ (id)entryWithState:(id)a3 event:(id)a4;
-+ (id)entryWithState:(id)a3 event:(id)a4 action:(id)a5;
-+ (id)entryWithState:(id)a3 event:(id)a4 action:(id)a5 nextState:(id)a6;
-+ (id)entryWithState:(id)a3 event:(id)a4 selector:(SEL)a5;
-+ (id)entryWithState:(id)a3 event:(id)a4 selector:(SEL)a5 nextState:(id)a6;
++ (id)entryWithState:(id)state event:(id)event;
++ (id)entryWithState:(id)state event:(id)event action:(id)action;
++ (id)entryWithState:(id)state event:(id)event action:(id)action nextState:(id)nextState;
++ (id)entryWithState:(id)state event:(id)event selector:(SEL)selector;
++ (id)entryWithState:(id)state event:(id)event selector:(SEL)selector nextState:(id)nextState;
 - (SEL)selector;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation SKStateTransitionEntry
 
-+ (id)entryWithState:(id)a3 event:(id)a4 action:(id)a5 nextState:(id)a6
++ (id)entryWithState:(id)state event:(id)event action:(id)action nextState:(id)nextState
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  nextStateCopy = nextState;
+  actionCopy = action;
+  eventCopy = event;
+  stateCopy = state;
   v13 = objc_alloc_init(objc_opt_class());
-  [v13 setState:v12];
+  [v13 setState:stateCopy];
 
-  [v13 setEvent:v11];
-  [v13 setAction:v10];
+  [v13 setEvent:eventCopy];
+  [v13 setAction:actionCopy];
 
-  [v13 setNextState:v9];
+  [v13 setNextState:nextStateCopy];
   [v13 setSelector:0];
 
   return v13;
 }
 
-+ (id)entryWithState:(id)a3 event:(id)a4 action:(id)a5
++ (id)entryWithState:(id)state event:(id)event action:(id)action
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() entryWithState:v9 event:v8 action:v7 nextState:0];
+  actionCopy = action;
+  eventCopy = event;
+  stateCopy = state;
+  v10 = [objc_opt_class() entryWithState:stateCopy event:eventCopy action:actionCopy nextState:0];
 
   return v10;
 }
 
-+ (id)entryWithState:(id)a3 event:(id)a4 selector:(SEL)a5 nextState:(id)a6
++ (id)entryWithState:(id)state event:(id)event selector:(SEL)selector nextState:(id)nextState
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  nextStateCopy = nextState;
+  eventCopy = event;
+  stateCopy = state;
   v12 = objc_alloc_init(objc_opt_class());
-  [v12 setState:v11];
+  [v12 setState:stateCopy];
 
-  [v12 setEvent:v10];
+  [v12 setEvent:eventCopy];
   [v12 setAction:0];
-  [v12 setNextState:v9];
+  [v12 setNextState:nextStateCopy];
 
-  [v12 setSelector:a5];
+  [v12 setSelector:selector];
 
   return v12;
 }
 
-+ (id)entryWithState:(id)a3 event:(id)a4 selector:(SEL)a5
++ (id)entryWithState:(id)state event:(id)event selector:(SEL)selector
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_opt_class() entryWithState:v8 event:v7 selector:a5 nextState:0];
+  eventCopy = event;
+  stateCopy = state;
+  v9 = [objc_opt_class() entryWithState:stateCopy event:eventCopy selector:selector nextState:0];
 
   return v9;
 }
 
-+ (id)entryWithState:(id)a3 event:(id)a4
++ (id)entryWithState:(id)state event:(id)event
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() entryWithState:v6 event:v5 action:0];
+  eventCopy = event;
+  stateCopy = state;
+  v7 = [objc_opt_class() entryWithState:stateCopy event:eventCopy action:0];
 
   return v7;
 }
@@ -86,19 +86,19 @@
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

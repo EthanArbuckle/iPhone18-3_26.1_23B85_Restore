@@ -1,26 +1,26 @@
 @interface BGTask
 - (BGTaskRequest)taskRequest;
-- (id)_initWithIdentifier:(id)a3 activity:(id)a4;
-- (id)_unsafe_setTaskCompletedWithSuccess:(BOOL)a3 afterDelay:(double)a4;
-- (void)_callExpirationHandlerWithReason:(int64_t)a3;
+- (id)_initWithIdentifier:(id)identifier activity:(id)activity;
+- (id)_unsafe_setTaskCompletedWithSuccess:(BOOL)success afterDelay:(double)delay;
+- (void)_callExpirationHandlerWithReason:(int64_t)reason;
 - (void)dealloc;
 @end
 
 @implementation BGTask
 
-- (id)_initWithIdentifier:(id)a3 activity:(id)a4
+- (id)_initWithIdentifier:(id)identifier activity:(id)activity
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  activityCopy = activity;
   v12.receiver = self;
   v12.super_class = BGTask;
   v9 = [(BGTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
+    objc_storeStrong(&v9->_identifier, identifier);
     v10->__lock = 0;
-    objc_storeStrong(&v10->__activity, a4);
+    objc_storeStrong(&v10->__activity, activity);
   }
 
   return v10;
@@ -28,10 +28,10 @@
 
 - (BGTaskRequest)taskRequest
 {
-  v2 = [(BGTask *)self _activity];
-  if (v2)
+  _activity = [(BGTask *)self _activity];
+  if (_activity)
   {
-    v3 = [BGTaskRequest _requestFromActivity:v2];
+    v3 = [BGTaskRequest _requestFromActivity:_activity];
   }
 
   else
@@ -42,24 +42,24 @@
   return v3;
 }
 
-- (id)_unsafe_setTaskCompletedWithSuccess:(BOOL)a3 afterDelay:(double)a4
+- (id)_unsafe_setTaskCompletedWithSuccess:(BOOL)success afterDelay:(double)delay
 {
   self->__completed = 1;
   [(BGTask *)self setExpirationHandler:0];
-  v7 = [(BGTask *)self _completionHandler];
+  _completionHandler = [(BGTask *)self _completionHandler];
   [(BGTask *)self _setCompletionHandler:0];
-  v8 = [(BGTask *)self _handlerQueue];
-  v9 = v8;
-  if (v7)
+  _handlerQueue = [(BGTask *)self _handlerQueue];
+  v9 = _handlerQueue;
+  if (_completionHandler)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__BGTask__unsafe_setTaskCompletedWithSuccess_afterDelay___block_invoke;
     v12[3] = &unk_1E7980588;
-    v15 = a4;
-    v13 = v8;
-    v14 = v7;
-    v16 = a3;
+    delayCopy = delay;
+    v13 = _handlerQueue;
+    v14 = _completionHandler;
+    successCopy = success;
     v10 = MEMORY[0x1B26EAFA0](v12);
   }
 
@@ -101,20 +101,20 @@ void __57__BGTask__unsafe_setTaskCompletedWithSuccess_afterDelay___block_invoke(
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1AC80E000, a2, OS_LOG_TYPE_ERROR, "Task %{public}@ dealloc'd without completing. This is a programmer error.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callExpirationHandlerWithReason:(int64_t)a3
+- (void)_callExpirationHandlerWithReason:(int64_t)reason
 {
   os_unfair_recursive_lock_lock_with_options();
-  v4 = [(BGTask *)self expirationHandler];
+  expirationHandler = [(BGTask *)self expirationHandler];
   [(BGTask *)self setExpirationHandler:0];
   os_unfair_recursive_lock_unlock();
-  if (v4)
+  if (expirationHandler)
   {
-    v4[2](v4);
+    expirationHandler[2](expirationHandler);
   }
 
   else

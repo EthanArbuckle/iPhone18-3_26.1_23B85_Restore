@@ -12,54 +12,54 @@
 - (void)controllerWasPopped;
 - (void)dealloc;
 - (void)deleteIdentity;
-- (void)didBecomeActive:(id)a3;
-- (void)didResignActive:(id)a3;
+- (void)didBecomeActive:(id)active;
+- (void)didResignActive:(id)active;
 - (void)endEnrollment;
-- (void)enrollResult:(int)a3 bkIdentity:(id)a4;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
+- (void)enrollResult:(int)result bkIdentity:(id)identity;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
 - (void)generateAuthToken;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)resetAuthContext;
 - (void)resetLeftNavigationItem;
 - (void)restartEnrollment;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyMesaEnrollmentController
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   [(BiometricKitUIEnrollViewController *)self->_enrollController setDelegate:0];
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyMesaEnrollmentController;
   [(BuddyMesaEnrollmentController *)&v3 dealloc];
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddyMesaEnrollmentController *)self managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 effectiveBoolValueForSetting:MCFeatureFingerprintModificationAllowed];
+  managedConfiguration = [(BuddyMesaEnrollmentController *)self managedConfiguration];
+  v3 = [(MCProfileConnection *)managedConfiguration effectiveBoolValueForSetting:MCFeatureFingerprintModificationAllowed];
 
   if (v3 == 2)
   {
     return 0;
   }
 
-  v4 = [(BuddyMesaEnrollmentController *)self capabilities];
+  capabilities = [(BuddyMesaEnrollmentController *)self capabilities];
   v13 = 0;
   v5 = 0;
-  if (([(BYCapabilities *)v4 supportsTouchID]& 1) != 0)
+  if (([(BYCapabilities *)capabilities supportsTouchID]& 1) != 0)
   {
-    v14 = [(BuddyMesaEnrollmentController *)self capabilities];
+    capabilities2 = [(BuddyMesaEnrollmentController *)self capabilities];
     v13 = 1;
-    v5 = [(BYCapabilities *)v14 isTouchIDEnrolled]^ 1;
+    v5 = [(BYCapabilities *)capabilities2 isTouchIDEnrolled]^ 1;
   }
 
   if (v13)
@@ -67,9 +67,9 @@
   }
 
   v15 = v5 & 1;
-  v6 = [(BuddyMesaEnrollmentController *)self buddyPreferences];
+  buddyPreferences = [(BuddyMesaEnrollmentController *)self buddyPreferences];
   v7 = 0;
-  if (([(BYPreferencesController *)v6 BOOLForKey:@"Payment2Presented"]& 1) == 0)
+  if (([(BYPreferencesController *)buddyPreferences BOOLForKey:@"Payment2Presented"]& 1) == 0)
   {
     v7 = MGGetBoolAnswer() & 1;
   }
@@ -88,25 +88,25 @@
   return v17;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMesaEnrollmentController *)v16 managedConfiguration];
-  v4 = [(MCProfileConnection *)v3 isPasscodeSet];
+  objc_storeStrong(location, completion);
+  managedConfiguration = [(BuddyMesaEnrollmentController *)selfCopy managedConfiguration];
+  isPasscodeSet = [(MCProfileConnection *)managedConfiguration isPasscodeSet];
 
-  if ((v4 & 1) == 0)
+  if ((isPasscodeSet & 1) == 0)
   {
     (*(location[0] + 2))(location[0], 1);
     goto LABEL_6;
   }
 
-  v5 = [(BuddyMesaEnrollmentController *)v16 passcodeCacheManager];
-  v6 = [(BYPasscodeCacheManager *)v5 cachedPasscode];
+  passcodeCacheManager = [(BuddyMesaEnrollmentController *)selfCopy passcodeCacheManager];
+  cachedPasscode = [(BYPasscodeCacheManager *)passcodeCacheManager cachedPasscode];
 
-  if (!v6)
+  if (!cachedPasscode)
   {
     v7 = dispatch_get_global_queue(25, 0);
     block = _NSConcreteStackBlock;
@@ -161,18 +161,18 @@ LABEL_7:
 
 - (BOOL)isEphemeral
 {
-  v2 = [(BuddyMesaEnrollmentController *)self capabilities];
-  v3 = [(BYCapabilities *)v2 supportsTouchID];
+  capabilities = [(BuddyMesaEnrollmentController *)self capabilities];
+  supportsTouchID = [(BYCapabilities *)capabilities supportsTouchID];
   v6 = 0;
-  v4 = 0;
-  if (v3)
+  isTouchIDEnrolled = 0;
+  if (supportsTouchID)
   {
-    v7 = [(BuddyMesaEnrollmentController *)self capabilities];
+    capabilities2 = [(BuddyMesaEnrollmentController *)self capabilities];
     v6 = 1;
-    v4 = [(BYCapabilities *)v7 isTouchIDEnrolled];
+    isTouchIDEnrolled = [(BYCapabilities *)capabilities2 isTouchIDEnrolled];
   }
 
-  v9 = v4 & 1;
+  v9 = isTouchIDEnrolled & 1;
   if (v6)
   {
   }
@@ -186,12 +186,12 @@ LABEL_7:
   [(BYPreferencesController *)v2 removeObjectForKey:@"Mesa2Presented"];
 }
 
-- (void)didBecomeActive:(id)a3
+- (void)didBecomeActive:(id)active
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, active);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -203,13 +203,13 @@ LABEL_7:
   v6 = 0;
   v4 = 0;
   v3 = 0;
-  if (!v10->_enrollController)
+  if (!selfCopy->_enrollController)
   {
-    v7 = [(BuddyMesaEnrollmentController *)v10 navigationController];
+    navigationController = [(BuddyMesaEnrollmentController *)selfCopy navigationController];
     v6 = 1;
-    v5 = [v7 topViewController];
+    topViewController = [navigationController topViewController];
     v4 = 1;
-    v3 = v5 == v10;
+    v3 = topViewController == selfCopy;
   }
 
   if (v4)
@@ -222,18 +222,18 @@ LABEL_7:
 
   if (v3)
   {
-    [(BuddyMesaEnrollmentController *)v10 beginEnrollment];
+    [(BuddyMesaEnrollmentController *)selfCopy beginEnrollment];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)didResignActive:(id)a3
+- (void)didResignActive:(id)active
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, active);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -245,13 +245,13 @@ LABEL_7:
   v6 = 0;
   v4 = 0;
   v3 = 0;
-  if (!v10->_enrollComplete)
+  if (!selfCopy->_enrollComplete)
   {
-    v7 = [(BuddyMesaEnrollmentController *)v10 navigationController];
+    navigationController = [(BuddyMesaEnrollmentController *)selfCopy navigationController];
     v6 = 1;
-    v5 = [v7 topViewController];
+    topViewController = [navigationController topViewController];
     v4 = 1;
-    v3 = v5 == v10;
+    v3 = topViewController == selfCopy;
   }
 
   if (v4)
@@ -264,42 +264,42 @@ LABEL_7:
 
   if (v3)
   {
-    [(BuddyMesaEnrollmentController *)v10 deleteIdentity];
+    [(BuddyMesaEnrollmentController *)selfCopy deleteIdentity];
   }
 
-  [(BuddyMesaEnrollmentController *)v10 endEnrollment];
+  [(BuddyMesaEnrollmentController *)selfCopy endEnrollment];
   objc_storeStrong(location, 0);
 }
 
 - (void)viewDidLoad
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = BuddyMesaEnrollmentController;
   [(BuddyMesaEnrollmentController *)&v6 viewDidLoad];
   v2 = [NSBundle bundleForClass:objc_opt_class()];
   v3 = [(NSBundle *)v2 localizedStringForKey:@"TOUCH_ID" value:&stru_10032F900 table:@"Localizable"];
-  v4 = [(BuddyMesaEnrollmentController *)v8 navigationItem];
-  [v4 setBackButtonTitle:v3];
+  navigationItem = [(BuddyMesaEnrollmentController *)selfCopy navigationItem];
+  [navigationItem setBackButtonTitle:v3];
 
-  v5 = [(BuddyMesaEnrollmentController *)v8 navigationItem];
-  [v5 setLeftItemsSupplementBackButton:0];
+  navigationItem2 = [(BuddyMesaEnrollmentController *)selfCopy navigationItem];
+  [navigationItem2 setLeftItemsSupplementBackButton:0];
 }
 
 - (BOOL)prefersStatusBarHidden
 {
   v2 = [(BuddyMesaEnrollmentController *)self enrollController:a2];
-  v3 = [(BiometricKitUIEnrollViewController *)v2 prefersStatusBarHidden];
+  prefersStatusBarHidden = [(BiometricKitUIEnrollViewController *)v2 prefersStatusBarHidden];
 
-  return v3 & 1;
+  return prefersStatusBarHidden & 1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  appearCopy = appear;
   oslog = _BYLoggingFacility();
   v9 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -309,37 +309,37 @@ LABEL_7:
   }
 
   objc_storeStrong(&oslog, 0);
-  v8.receiver = v13;
+  v8.receiver = selfCopy;
   v8.super_class = BuddyMesaEnrollmentController;
-  [(BuddyMesaEnrollmentController *)&v8 viewWillAppear:v11];
-  v3 = [(BuddyMesaEnrollmentController *)v13 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v3 clearActionForFeature:12];
+  [(BuddyMesaEnrollmentController *)&v8 viewWillAppear:appearCopy];
+  paneFeatureAnalyticsManager = [(BuddyMesaEnrollmentController *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:12];
 
-  v4 = [(BuddyMesaEnrollmentController *)v13 view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 activationState];
+  view = [(BuddyMesaEnrollmentController *)selfCopy view];
+  window = [view window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
-  if (!v7)
+  if (!activationState)
   {
-    [(BuddyMesaEnrollmentController *)v13 beginEnrollment];
+    [(BuddyMesaEnrollmentController *)selfCopy beginEnrollment];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  disappearCopy = disappear;
   v3.receiver = self;
   v3.super_class = BuddyMesaEnrollmentController;
-  [(BuddyMesaEnrollmentController *)&v3 viewDidDisappear:a3];
-  [(BuddyMesaEnrollmentController *)v6 endEnrollment];
+  [(BuddyMesaEnrollmentController *)&v3 viewDidDisappear:disappear];
+  [(BuddyMesaEnrollmentController *)selfCopy endEnrollment];
 }
 
 - (void)beginEnrollment
 {
-  v19 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v17 = OS_LOG_TYPE_DEFAULT;
@@ -352,91 +352,91 @@ LABEL_7:
   }
 
   objc_storeStrong(oslog, 0);
-  v15 = [sub_1000C38B8() sharedInstance];
-  v14 = [v15 getEnrollUIViewController:1 bundleName:0];
+  sharedInstance = [sub_1000C38B8() sharedInstance];
+  v14 = [sharedInstance getEnrollUIViewController:1 bundleName:0];
   if (v14)
   {
-    [(BuddyMesaEnrollmentController *)v19 resetAuthContext];
-    v4 = [(BuddyMesaEnrollmentController *)v19 authContext];
-    location = [(LAContext *)v4 externalizedContext];
+    [(BuddyMesaEnrollmentController *)selfCopy resetAuthContext];
+    authContext = [(BuddyMesaEnrollmentController *)selfCopy authContext];
+    location = [(LAContext *)authContext externalizedContext];
 
     if (location)
     {
       [v14 setProperty:location forKey:@"credset"];
     }
 
-    v5 = [(BuddyMesaEnrollmentController *)v19 menuButtonPressedBlock];
-    v6 = objc_retainBlock(v5);
+    menuButtonPressedBlock = [(BuddyMesaEnrollmentController *)selfCopy menuButtonPressedBlock];
+    v6 = objc_retainBlock(menuButtonPressedBlock);
     [v14 setProperty:v6 forKey:@"MENU_ACTION"];
 
     [v14 setProperty:&__kCFBooleanTrue forKey:@"IN_BUDDY"];
-    v7 = [sub_1000C39CC() manager];
-    [v14 setBiometricKit:v7];
+    manager = [sub_1000C39CC() manager];
+    [v14 setBiometricKit:manager];
 
-    [v14 setDelegate:v19];
-    [(BuddyMesaEnrollmentController *)v19 addChildViewController:v14];
-    v8 = [v14 view];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v14 setDelegate:selfCopy];
+    [(BuddyMesaEnrollmentController *)selfCopy addChildViewController:v14];
+    view = [v14 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v9 = [(BuddyMesaEnrollmentController *)v19 view];
-    v10 = [v14 view];
-    [v9 addSubview:v10];
+    view2 = [(BuddyMesaEnrollmentController *)selfCopy view];
+    view3 = [v14 view];
+    [view2 addSubview:view3];
 
-    v11 = [v14 view];
-    v12 = [(BuddyMesaEnrollmentController *)v19 view];
-    [v11 pinToEdges:v12];
+    view4 = [v14 view];
+    view5 = [(BuddyMesaEnrollmentController *)selfCopy view];
+    [view4 pinToEdges:view5];
 
-    [v14 didMoveToParentViewController:v19];
-    [(BuddyMesaEnrollmentController *)v19 setEnrollController:v14];
+    [v14 didMoveToParentViewController:selfCopy];
+    [(BuddyMesaEnrollmentController *)selfCopy setEnrollController:v14];
     objc_storeStrong(&location, 0);
   }
 
   objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&sharedInstance, 0);
 }
 
 - (void)endEnrollment
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(BuddyMesaEnrollmentController *)self enrollController];
   [location[0] beginAppearanceTransition:0 animated:1];
   [location[0] willMoveToParentViewController:0];
-  v2 = [location[0] view];
-  [v2 removeFromSuperview];
+  view = [location[0] view];
+  [view removeFromSuperview];
 
   [location[0] removeFromParentViewController];
   [location[0] endAppearanceTransition];
   [location[0] setDelegate:0];
-  [(BuddyMesaEnrollmentController *)v4 setEnrollController:0];
+  [(BuddyMesaEnrollmentController *)selfCopy setEnrollController:0];
   objc_storeStrong(location, 0);
 }
 
 - (void)restartEnrollment
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   [(BuddyMesaEnrollmentController *)self deleteIdentity];
-  [(BuddyMesaEnrollmentController *)v6 resetAuthContext];
-  v2 = [(BuddyMesaEnrollmentController *)v6 authContext];
-  location[0] = [(LAContext *)v2 externalizedContext];
+  [(BuddyMesaEnrollmentController *)selfCopy resetAuthContext];
+  authContext = [(BuddyMesaEnrollmentController *)selfCopy authContext];
+  location[0] = [(LAContext *)authContext externalizedContext];
 
   if (location[0])
   {
-    v3 = [(BuddyMesaEnrollmentController *)v6 enrollController];
-    [(BiometricKitUIEnrollViewController *)v3 setProperty:location[0] forKey:@"credset"];
+    enrollController = [(BuddyMesaEnrollmentController *)selfCopy enrollController];
+    [(BiometricKitUIEnrollViewController *)enrollController setProperty:location[0] forKey:@"credset"];
   }
 
-  v4 = [(BuddyMesaEnrollmentController *)v6 enrollController];
-  [(BiometricKitUIEnrollViewController *)v4 restartEnroll];
+  enrollController2 = [(BuddyMesaEnrollmentController *)selfCopy enrollController];
+  [(BiometricKitUIEnrollViewController *)enrollController2 restartEnroll];
 
-  [(BuddyMesaEnrollmentController *)v6 resetLeftNavigationItem];
+  [(BuddyMesaEnrollmentController *)selfCopy resetLeftNavigationItem];
   objc_storeStrong(location, 0);
 }
 
 - (void)deleteIdentity
 {
-  v6 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
@@ -446,15 +446,15 @@ LABEL_7:
   }
 
   objc_storeStrong(oslog, 0);
-  v2 = [(BuddyMesaEnrollmentController *)v6 identity];
+  identity = [(BuddyMesaEnrollmentController *)selfCopy identity];
 
-  if (v2)
+  if (identity)
   {
     v3 = +[PKBiometrics sharedInstance];
-    v4 = [(BuddyMesaEnrollmentController *)v6 identity];
-    [(PKBiometrics *)v3 removeIdentity:v4];
+    identity2 = [(BuddyMesaEnrollmentController *)selfCopy identity];
+    [(PKBiometrics *)v3 removeIdentity:identity2];
 
-    [(BuddyMesaEnrollmentController *)v6 setIdentity:0];
+    [(BuddyMesaEnrollmentController *)selfCopy setIdentity:0];
   }
 }
 
@@ -474,86 +474,86 @@ LABEL_7:
 
 - (void)resetLeftNavigationItem
 {
-  v2 = [(BuddyMesaEnrollmentController *)self navigationItem];
-  v3 = [v2 leftBarButtonItem];
-  v4 = [(BuddyMesaEnrollmentController *)self cancelLeftNavigationItem];
-  v5 = [v3 isEqual:v4];
+  navigationItem = [(BuddyMesaEnrollmentController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  cancelLeftNavigationItem = [(BuddyMesaEnrollmentController *)self cancelLeftNavigationItem];
+  v5 = [leftBarButtonItem isEqual:cancelLeftNavigationItem];
 
   if (v5)
   {
-    v6 = [(BuddyMesaEnrollmentController *)self navigationItem];
-    [v6 performSelector:"setLeftBarButtonItem:animated:" withObject:0 withObject:&__kCFBooleanTrue];
+    navigationItem2 = [(BuddyMesaEnrollmentController *)self navigationItem];
+    [navigationItem2 performSelector:"setLeftBarButtonItem:animated:" withObject:0 withObject:&__kCFBooleanTrue];
 
-    v7 = [(BuddyMesaEnrollmentController *)self navigationItem];
-    [v7 setHidesBackButton:0];
+    navigationItem3 = [(BuddyMesaEnrollmentController *)self navigationItem];
+    [navigationItem3 setHidesBackButton:0];
   }
 }
 
 - (void)completeMesaController
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   self->_enrollComplete = 1;
-  v2 = [(BuddyMesaEnrollmentController *)v14 buddyPreferences];
-  [(BYPreferencesController *)v2 setObject:&__kCFBooleanTrue forKey:@"Mesa2Presented"];
+  buddyPreferences = [(BuddyMesaEnrollmentController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"Mesa2Presented"];
 
-  v3 = [(BuddyMesaEnrollmentController *)v14 capabilities];
-  v4 = [(BYCapabilities *)v3 isTouchIDEnrolled];
+  capabilities = [(BuddyMesaEnrollmentController *)selfCopy capabilities];
+  isTouchIDEnrolled = [(BYCapabilities *)capabilities isTouchIDEnrolled];
 
-  v12 = v4 & 1;
-  if (v4)
+  v12 = isTouchIDEnrolled & 1;
+  if (isTouchIDEnrolled)
   {
-    v5 = [(BuddyMesaEnrollmentController *)v14 flowSkipController];
-    [(BYFlowSkipController *)v5 didCompleteFlow:BYFlowSkipIdentifierTouchID];
+    flowSkipController = [(BuddyMesaEnrollmentController *)selfCopy flowSkipController];
+    [(BYFlowSkipController *)flowSkipController didCompleteFlow:BYFlowSkipIdentifierTouchID];
 
-    v6 = [(BuddyMesaEnrollmentController *)v14 passcodeCacheManager];
-    v11 = [(BYPasscodeCacheManager *)v6 cachedPasscode];
+    passcodeCacheManager = [(BuddyMesaEnrollmentController *)selfCopy passcodeCacheManager];
+    cachedPasscode = [(BYPasscodeCacheManager *)passcodeCacheManager cachedPasscode];
 
-    v7 = [(BuddyMesaEnrollmentController *)v14 managedConfiguration];
-    [(MCProfileConnection *)v7 setFingerprintUnlockAllowed:1 passcode:v11 completion:0];
+    managedConfiguration = [(BuddyMesaEnrollmentController *)selfCopy managedConfiguration];
+    [(MCProfileConnection *)managedConfiguration setFingerprintUnlockAllowed:1 passcode:cachedPasscode completion:0];
 
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&cachedPasscode, 0);
   }
 
-  v8 = [(BuddyMesaEnrollmentController *)v14 paneFeatureAnalyticsManager];
+  paneFeatureAnalyticsManager = [(BuddyMesaEnrollmentController *)selfCopy paneFeatureAnalyticsManager];
   v9 = [NSNumber numberWithBool:v12 & 1];
-  [(BYPaneFeatureAnalyticsManager *)v8 recordActionWithValue:v9 forFeature:12];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:v9 forFeature:12];
 
-  v10 = [(BuddyMesaEnrollmentController *)v14 delegate];
-  [(BFFFlowItemDelegate *)v10 flowItemDone:v14];
+  delegate = [(BuddyMesaEnrollmentController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 }
 
-- (void)enrollResult:(int)a3 bkIdentity:(id)a4
+- (void)enrollResult:(int)result bkIdentity:(id)identity
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  resultCopy = result;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, identity);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100082D54(buf, v15);
+    sub_100082D54(buf, resultCopy);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "BuddyMesaController: Enroll result: %d", buf, 8u);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v15)
+  if (resultCopy)
   {
-    if (v15 == 1)
+    if (resultCopy == 1)
     {
       if (location)
       {
-        [(BuddyMesaEnrollmentController *)v17 setIdentity:location];
+        [(BuddyMesaEnrollmentController *)selfCopy setIdentity:location];
         sub_1000C449C();
         v4 = objc_opt_new();
         [v4 enrollmentCompletedForIdentity:location];
       }
     }
 
-    else if (v15 != 2)
+    else if (resultCopy != 2)
     {
-      switch(v15)
+      switch(resultCopy)
       {
         case 3:
           if (location)
@@ -561,16 +561,16 @@ LABEL_7:
             v5 = +[PKBiometrics sharedInstance];
             [(PKBiometrics *)v5 removeIdentity:location];
 
-            [(BuddyMesaEnrollmentController *)v17 setIdentity:0];
+            [(BuddyMesaEnrollmentController *)selfCopy setIdentity:0];
           }
 
-          v6 = [(BuddyMesaEnrollmentController *)v17 flowSkipController];
-          [(BYFlowSkipController *)v6 didSkipFlow:BYFlowSkipIdentifierTouchID];
+          flowSkipController = [(BuddyMesaEnrollmentController *)selfCopy flowSkipController];
+          [(BYFlowSkipController *)flowSkipController didSkipFlow:BYFlowSkipIdentifierTouchID];
 
-          [(BuddyMesaEnrollmentController *)v17 completeMesaController];
+          [(BuddyMesaEnrollmentController *)selfCopy completeMesaController];
           break;
         case 4:
-          [(BuddyMesaEnrollmentController *)v17 completeMesaController];
+          [(BuddyMesaEnrollmentController *)selfCopy completeMesaController];
           break;
         case 9:
           if (location)
@@ -578,24 +578,24 @@ LABEL_7:
             v7 = +[PKBiometrics sharedInstance];
             [(PKBiometrics *)v7 removeIdentity:location];
 
-            [(BuddyMesaEnrollmentController *)v17 setIdentity:0];
+            [(BuddyMesaEnrollmentController *)selfCopy setIdentity:0];
           }
 
-          v8 = [(BuddyMesaEnrollmentController *)v17 enrollController];
-          [(BiometricKitUIEnrollViewController *)v8 restartEnroll];
+          enrollController = [(BuddyMesaEnrollmentController *)selfCopy enrollController];
+          [(BiometricKitUIEnrollViewController *)enrollController restartEnroll];
 
           break;
         case 10:
-          [(BuddyMesaEnrollmentController *)v17 setIdentity:0];
-          v9 = [(BuddyMesaEnrollmentController *)v17 navigationItem];
-          [NSObject cancelPreviousPerformRequestsWithTarget:v9 selector:"setLeftBarButtonItem:" object:0];
+          [(BuddyMesaEnrollmentController *)selfCopy setIdentity:0];
+          navigationItem = [(BuddyMesaEnrollmentController *)selfCopy navigationItem];
+          [NSObject cancelPreviousPerformRequestsWithTarget:navigationItem selector:"setLeftBarButtonItem:" object:0];
 
-          v10 = [(BuddyMesaEnrollmentController *)v17 navigationItem];
-          [v10 setHidesBackButton:1];
+          navigationItem2 = [(BuddyMesaEnrollmentController *)selfCopy navigationItem];
+          [navigationItem2 setHidesBackButton:1];
 
-          v11 = [(BuddyMesaEnrollmentController *)v17 navigationItem];
-          v12 = [(BuddyMesaEnrollmentController *)v17 cancelLeftNavigationItem];
-          [v11 setLeftBarButtonItem:v12 animated:1];
+          navigationItem3 = [(BuddyMesaEnrollmentController *)selfCopy navigationItem];
+          cancelLeftNavigationItem = [(BuddyMesaEnrollmentController *)selfCopy cancelLeftNavigationItem];
+          [navigationItem3 setLeftBarButtonItem:cancelLeftNavigationItem animated:1];
 
           break;
       }
@@ -604,8 +604,8 @@ LABEL_7:
 
   else
   {
-    v17->_enrollComplete = 0;
-    [(BuddyMesaEnrollmentController *)v17 resetLeftNavigationItem];
+    selfCopy->_enrollComplete = 0;
+    [(BuddyMesaEnrollmentController *)selfCopy resetLeftNavigationItem];
   }
 
   objc_storeStrong(&location, 0);
@@ -613,16 +613,16 @@ LABEL_7:
 
 - (void)generateAuthToken
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   [(BuddyMesaEnrollmentController *)self resetAuthContext];
-  v2 = [(BuddyMesaEnrollmentController *)v5 authContext];
-  location[0] = [(LAContext *)v2 externalizedContext];
+  authContext = [(BuddyMesaEnrollmentController *)selfCopy authContext];
+  location[0] = [(LAContext *)authContext externalizedContext];
 
   if (location[0])
   {
-    v3 = [(BuddyMesaEnrollmentController *)v5 enrollController];
-    [(BiometricKitUIEnrollViewController *)v3 setProperty:location[0] forKey:@"credset"];
+    enrollController = [(BuddyMesaEnrollmentController *)selfCopy enrollController];
+    [(BiometricKitUIEnrollViewController *)enrollController setProperty:location[0] forKey:@"credset"];
   }
 
   objc_storeStrong(location, 0);
@@ -630,26 +630,26 @@ LABEL_7:
 
 - (void)resetAuthContext
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   [(BuddyMesaEnrollmentController *)self setAuthContext:0];
-  v2 = [(BuddyMesaEnrollmentController *)v12 managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 isPasscodeSet]^ 1;
+  managedConfiguration = [(BuddyMesaEnrollmentController *)selfCopy managedConfiguration];
+  v3 = [(MCProfileConnection *)managedConfiguration isPasscodeSet]^ 1;
 
   if ((v3 & 1) == 0)
   {
-    v4 = [(BuddyMesaEnrollmentController *)v12 passcodeCacheManager];
-    v5 = [(BYPasscodeCacheManager *)v4 cachedPasscode];
-    v6 = v5 == 0;
+    passcodeCacheManager = [(BuddyMesaEnrollmentController *)selfCopy passcodeCacheManager];
+    cachedPasscode = [(BYPasscodeCacheManager *)passcodeCacheManager cachedPasscode];
+    v6 = cachedPasscode == 0;
 
     if (v6)
     {
       location[0] = objc_alloc_init(BYBuddyDaemonGeneralClient);
-      v7 = [location[0] fetchAuthenticationContextForBiometric];
-      [(BuddyMesaEnrollmentController *)v12 setAuthContext:v7];
+      fetchAuthenticationContextForBiometric = [location[0] fetchAuthenticationContextForBiometric];
+      [(BuddyMesaEnrollmentController *)selfCopy setAuthContext:fetchAuthenticationContextForBiometric];
 
-      v8 = [(BuddyMesaEnrollmentController *)v12 authContext];
-      [(LAContext *)v8 setUiDelegate:v12];
+      authContext = [(BuddyMesaEnrollmentController *)selfCopy authContext];
+      [(LAContext *)authContext setUiDelegate:selfCopy];
 
       objc_storeStrong(location, 0);
     }
@@ -657,32 +657,32 @@ LABEL_7:
     else
     {
       v9 = objc_alloc_init(LAContext);
-      [(BuddyMesaEnrollmentController *)v12 setAuthContext:v9];
+      [(BuddyMesaEnrollmentController *)selfCopy setAuthContext:v9];
 
-      v10 = [(BuddyMesaEnrollmentController *)v12 authContext];
-      [(LAContext *)v10 setUiDelegate:v12];
+      authContext2 = [(BuddyMesaEnrollmentController *)selfCopy authContext];
+      [(LAContext *)authContext2 setUiDelegate:selfCopy];
 
-      [(BuddyMesaEnrollmentController *)v12 contextEvaluatePolicy];
+      [(BuddyMesaEnrollmentController *)selfCopy contextEvaluatePolicy];
     }
   }
 }
 
 - (void)contextEvaluatePolicy
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyMesaEnrollmentController *)self authContext];
-  v3 = v2 == 0;
+  authContext = [(BuddyMesaEnrollmentController *)self authContext];
+  v3 = authContext == 0;
 
   if (!v3)
   {
     location[0] = 0;
-    v4 = [(BuddyMesaEnrollmentController *)v15 authContext];
+    authContext2 = [(BuddyMesaEnrollmentController *)selfCopy authContext];
     v17 = &off_10033D088;
     v18 = &off_10033D0A0;
     v5 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     obj = 0;
-    v6 = [(LAContext *)v4 evaluatePolicy:1007 options:v5 error:&obj];
+    v6 = [(LAContext *)authContext2 evaluatePolicy:1007 options:v5 error:&obj];
     objc_storeStrong(location, obj);
 
     if (location[0])
@@ -699,9 +699,9 @@ LABEL_7:
 
         else if (location[0])
         {
-          v11 = [location[0] domain];
+          domain = [location[0] domain];
           v10 = 1;
-          v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v11, [location[0] code]);
+          v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
           v9 = v7;
           v8 = 1;
         }
@@ -729,39 +729,39 @@ LABEL_7:
   }
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  eventCopy = event;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, params);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
-  if (v23 == 2)
+  objc_storeStrong(&v21, reply);
+  if (eventCopy == 2)
   {
     v6 = [location objectForKey:&off_10033D0B8];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
-      v8 = [(BuddyMesaEnrollmentController *)v25 passcodeCacheManager];
-      v9 = [(BYPasscodeCacheManager *)v8 cachedPasscode];
+      passcodeCacheManager = [(BuddyMesaEnrollmentController *)selfCopy passcodeCacheManager];
+      cachedPasscode = [(BYPasscodeCacheManager *)passcodeCacheManager cachedPasscode];
 
-      if (v9)
+      if (cachedPasscode)
       {
-        v10 = [(BuddyMesaEnrollmentController *)v25 authContext];
-        v11 = [(BuddyMesaEnrollmentController *)v25 passcodeCacheManager];
-        v12 = [(BYPasscodeCacheManager *)v11 cachedPasscode];
-        v13 = [v12 dataUsingEncoding:4];
-        v14 = v23;
+        authContext = [(BuddyMesaEnrollmentController *)selfCopy authContext];
+        passcodeCacheManager2 = [(BuddyMesaEnrollmentController *)selfCopy passcodeCacheManager];
+        cachedPasscode2 = [(BYPasscodeCacheManager *)passcodeCacheManager2 cachedPasscode];
+        v13 = [cachedPasscode2 dataUsingEncoding:4];
+        v14 = eventCopy;
         v15 = _NSConcreteStackBlock;
         v16 = -1073741824;
         v17 = 0;
         v18 = sub_1000C4C5C;
         v19 = &unk_10032AEC8;
         v20 = v21;
-        [(LAContext *)v10 setCredential:v13 forProcessedEvent:v14 credentialType:-1 reply:&v15];
+        [(LAContext *)authContext setCredential:v13 forProcessedEvent:v14 credentialType:-1 reply:&v15];
 
         objc_storeStrong(&v20, 0);
       }

@@ -1,22 +1,22 @@
 @interface NMRMediaRemoteUpdater
-- (NMRMediaRemoteUpdater)initWithQueue:(id)a3 updateBlock:(id)a4;
+- (NMRMediaRemoteUpdater)initWithQueue:(id)queue updateBlock:(id)block;
 - (void)executeUpdateBlock;
 @end
 
 @implementation NMRMediaRemoteUpdater
 
-- (NMRMediaRemoteUpdater)initWithQueue:(id)a3 updateBlock:(id)a4
+- (NMRMediaRemoteUpdater)initWithQueue:(id)queue updateBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = NMRMediaRemoteUpdater;
   v9 = [(NMRMediaRemoteUpdater *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = objc_retainBlock(blockCopy);
     updateBlock = v10->_updateBlock;
     v10->_updateBlock = v11;
   }

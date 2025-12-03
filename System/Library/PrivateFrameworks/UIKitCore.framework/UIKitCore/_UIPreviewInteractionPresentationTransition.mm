@@ -1,21 +1,21 @@
 @interface _UIPreviewInteractionPresentationTransition
 - (_UIPreviewInteractionPresentationTransition)init;
-- (double)transitionDuration:(id)a3;
+- (double)transitionDuration:(id)duration;
 - (id)_newPushDecayAnimator;
 - (id)_newReducedMotionTimingCurveProviderForPreviewTransition;
 - (id)_newTimingCurveProviderForPreviewTransition;
 - (id)_preparedPresentationAnimator;
-- (id)_previewPresentationControllerForTransitionContext:(id)a3;
-- (id)_previewPresentationControllerForViewController:(id)a3;
-- (void)_applyPushDecayEffectTransformToView:(id)a3;
+- (id)_previewPresentationControllerForTransitionContext:(id)context;
+- (id)_previewPresentationControllerForViewController:(id)controller;
+- (void)_applyPushDecayEffectTransformToView:(id)view;
 - (void)_performCancelTransition;
 - (void)_performFinishTransition;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 - (void)cancelTransition;
 - (void)finishTransition;
-- (void)startInteractiveTransition:(id)a3;
-- (void)updateInteractiveTransition:(double)a3;
+- (void)startInteractiveTransition:(id)transition;
+- (void)updateInteractiveTransition:(double)transition;
 @end
 
 @implementation _UIPreviewInteractionPresentationTransition
@@ -36,15 +36,15 @@
   return v3;
 }
 
-- (void)updateInteractiveTransition:(double)a3
+- (void)updateInteractiveTransition:(double)transition
 {
   if (!self->_didScheduleFinishTransition && !self->_didScheduleCancelTransition && [(UIViewControllerContextTransitioning *)self->_transitionContext isInteractive])
   {
-    v5 = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
-    if (([v5 isRunning] & 1) == 0)
+    _preparedPresentationAnimator = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
+    if (([_preparedPresentationAnimator isRunning] & 1) == 0)
     {
-      [v5 setFractionComplete:self->_interactiveTransitionFraction * a3];
-      [(UIViewControllerContextTransitioning *)self->_transitionContext updateInteractiveTransition:a3];
+      [_preparedPresentationAnimator setFractionComplete:self->_interactiveTransitionFraction * transition];
+      [(UIViewControllerContextTransitioning *)self->_transitionContext updateInteractiveTransition:transition];
     }
   }
 }
@@ -81,49 +81,49 @@
   }
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
-  [v3 duration];
+  _preparedPresentationAnimator = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
+  [_preparedPresentationAnimator duration];
   v5 = v4;
 
   return v5;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
-  [v5 addAnimations:&__block_literal_global_462];
+  transitionCopy = transition;
+  _preparedPresentationAnimator = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
+  [_preparedPresentationAnimator addAnimations:&__block_literal_global_462];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65___UIPreviewInteractionPresentationTransition_animateTransition___block_invoke_2;
   v7[3] = &unk_1E70F5DB8;
-  v8 = v4;
-  v6 = v4;
-  [v5 addCompletion:v7];
+  v8 = transitionCopy;
+  v6 = transitionCopy;
+  [_preparedPresentationAnimator addCompletion:v7];
   if (self->_shouldPerformAsDismissTransition)
   {
-    [v5 startAnimation];
+    [_preparedPresentationAnimator startAnimation];
   }
 
   else
   {
-    [v5 pauseAnimation];
+    [_preparedPresentationAnimator pauseAnimation];
   }
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
   presentationAnimator = self->_presentationAnimator;
   self->_presentationAnimator = 0;
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
-  v5 = a3;
-  objc_storeStrong(&self->_transitionContext, a3);
-  [(_UIPreviewInteractionPresentationTransition *)self animateTransition:v5];
+  transitionCopy = transition;
+  objc_storeStrong(&self->_transitionContext, transition);
+  [(_UIPreviewInteractionPresentationTransition *)self animateTransition:transitionCopy];
   if (self->_didScheduleFinishTransition || self->_didScheduleCancelTransition)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -137,19 +137,19 @@
 
 - (void)_performFinishTransition
 {
-  v5 = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
+  _preparedPresentationAnimator = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
   if ([(_UIPreviewInteractionPresentationTransition *)self _shouldReduceMotion])
   {
-    v3 = [(_UIPreviewInteractionPresentationTransition *)self _newReducedMotionTimingCurveProviderForPreviewTransition];
-    [v5 continueAnimationWithTimingParameters:v3 durationFactor:1.0 - self->_interactiveTransitionFraction];
+    _newReducedMotionTimingCurveProviderForPreviewTransition = [(_UIPreviewInteractionPresentationTransition *)self _newReducedMotionTimingCurveProviderForPreviewTransition];
+    [_preparedPresentationAnimator continueAnimationWithTimingParameters:_newReducedMotionTimingCurveProviderForPreviewTransition durationFactor:1.0 - self->_interactiveTransitionFraction];
   }
 
   else
   {
-    v3 = [(_UIPreviewInteractionPresentationTransition *)self _newTimingCurveProviderForPreviewTransition];
-    [v5 continueAnimationWithTimingParameters:v3 durationFactor:1.0 - self->_interactiveTransitionFraction];
-    v4 = [(_UIPreviewInteractionPresentationTransition *)self _newPushDecayAnimator];
-    [v4 startAnimation];
+    _newReducedMotionTimingCurveProviderForPreviewTransition = [(_UIPreviewInteractionPresentationTransition *)self _newTimingCurveProviderForPreviewTransition];
+    [_preparedPresentationAnimator continueAnimationWithTimingParameters:_newReducedMotionTimingCurveProviderForPreviewTransition durationFactor:1.0 - self->_interactiveTransitionFraction];
+    _newPushDecayAnimator = [(_UIPreviewInteractionPresentationTransition *)self _newPushDecayAnimator];
+    [_newPushDecayAnimator startAnimation];
   }
 
   [(UIViewControllerContextTransitioning *)self->_transitionContext finishInteractiveTransition];
@@ -157,23 +157,23 @@
 
 - (void)_performCancelTransition
 {
-  v3 = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
-  [v3 setReversed:1];
-  [v3 startAnimation];
+  _preparedPresentationAnimator = [(_UIPreviewInteractionPresentationTransition *)self _preparedPresentationAnimator];
+  [_preparedPresentationAnimator setReversed:1];
+  [_preparedPresentationAnimator startAnimation];
   [(UIViewControllerContextTransitioning *)self->_transitionContext cancelInteractiveTransition];
 }
 
-- (id)_previewPresentationControllerForTransitionContext:(id)a3
+- (id)_previewPresentationControllerForTransitionContext:(id)context
 {
-  v4 = [a3 viewControllerForKey:@"UITransitionContextToViewController"];
+  v4 = [context viewControllerForKey:@"UITransitionContextToViewController"];
   v5 = [(_UIPreviewInteractionPresentationTransition *)self _previewPresentationControllerForViewController:v4];
 
   return v5;
 }
 
-- (id)_previewPresentationControllerForViewController:(id)a3
+- (id)_previewPresentationControllerForViewController:(id)controller
 {
-  v3 = [a3 _existingPresentationControllerImmediate:1 effective:1];
+  v3 = [controller _existingPresentationControllerImmediate:1 effective:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -236,19 +236,19 @@
   return v4;
 }
 
-- (void)_applyPushDecayEffectTransformToView:(id)a3
+- (void)_applyPushDecayEffectTransformToView:(id)view
 {
-  if (a3)
+  if (view)
   {
     memset(&v6, 0, sizeof(v6));
-    v3 = a3;
-    [v3 transform];
+    viewCopy = view;
+    [viewCopy transform];
     v4 = v6;
     CGAffineTransformScale(&v5, &v4, 1.26, 1.26);
     v4 = v5;
-    [v3 setTransform:&v4];
+    [viewCopy setTransform:&v4];
     v4 = v6;
-    [v3 setTransform:&v4];
+    [viewCopy setTransform:&v4];
   }
 }
 

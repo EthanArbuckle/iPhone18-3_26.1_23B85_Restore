@@ -1,34 +1,34 @@
 @interface MRUNowPlayingVolumeControlsView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (MRUNowPlayingVolumeControlsView)initWithFrame:(CGRect)a3;
+- (MRUNowPlayingVolumeControlsView)initWithFrame:(CGRect)frame;
 - (MRUNowPlayingVolumeControlsViewDelegate)delegate;
 - (NSString)volumeAudioCategory;
 - (UIWindowScene)windowSceneForVolumeDisplay;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setContentScale:(double)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setVolumeController:(id)a3;
-- (void)sliderLongPressActionDidFinish:(id)a3;
-- (void)sliderValueChanged:(id)a3;
+- (void)setContentScale:(double)scale;
+- (void)setLayout:(int64_t)layout;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setStylingProvider:(id)provider;
+- (void)setVolumeController:(id)controller;
+- (void)sliderLongPressActionDidFinish:(id)finish;
+- (void)sliderValueChanged:(id)changed;
 - (void)updateVisibility;
 - (void)updateVisualStyling;
-- (void)updateVolumeAnimated:(BOOL)a3;
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeControlCapabilitiesDidChange:(unsigned int)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)updateVolumeAnimated:(BOOL)animated;
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeControlCapabilitiesDidChange:(unsigned int)change;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation MRUNowPlayingVolumeControlsView
 
-- (MRUNowPlayingVolumeControlsView)initWithFrame:(CGRect)a3
+- (MRUNowPlayingVolumeControlsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v28[2] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = MRUNowPlayingVolumeControlsView;
@@ -63,9 +63,9 @@
 
     [(MRUGroupSlider *)v8->_slider addTarget:v8 action:sel_sliderValueChanged_ forControlEvents:4096];
     [(MRUNowPlayingVolumeControlsView *)v8 addSubview:v8->_slider];
-    v16 = [[MRUStepper alloc] initWithFrame:x, y, width, height];
+    height = [[MRUStepper alloc] initWithFrame:x, y, width, height];
     stepper = v8->_stepper;
-    v8->_stepper = v16;
+    v8->_stepper = height;
 
     [(MRUStepper *)v8->_stepper setDelegate:v8];
     v18 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:14.0];
@@ -100,8 +100,8 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6970A38] sharedInstance];
-  [v3 removeVolumeDisplay:self];
+  mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+  [mEMORY[0x1E6970A38] removeVolumeDisplay:self];
 
   v4.receiver = self;
   v4.super_class = MRUNowPlayingVolumeControlsView;
@@ -150,8 +150,8 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
   v30.size.width = width;
   v30.size.height = height;
   CGRectGetWidth(v30);
-  v11 = [(MRUNowPlayingVolumeControlsView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MRUNowPlayingVolumeControlsView *)self traitCollection];
+  [traitCollection displayScale];
   v23 = v12;
   UIRectCenteredYInRectScale();
   v14 = v13;
@@ -191,13 +191,13 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
   return result;
 }
 
-- (void)setVolumeController:(id)a3
+- (void)setVolumeController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(MRUVolumeController *)self->_volumeController setDelegate:0];
   volumeController = self->_volumeController;
-  self->_volumeController = v4;
-  v6 = v4;
+  self->_volumeController = controllerCopy;
+  v6 = controllerCopy;
 
   [(MRUVolumeController *)self->_volumeController setDelegate:self];
   self->_ignoreAnimationForVolumeEvents = 1;
@@ -206,108 +206,108 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
   [(MRUNowPlayingVolumeControlsView *)self updateVisibility];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUNowPlayingVolumeControlsView *)self updateVisualStyling];
     [(MRUSlider *)self->_slider setStylingProvider:v6];
     [(MRUStepper *)self->_stepper setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    v4 = a3;
-    self->_onScreen = a3;
-    v6 = [MEMORY[0x1E6970A38] sharedInstance];
-    v7 = v6;
-    if (v4)
+    screenCopy = screen;
+    self->_onScreen = screen;
+    mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+    v7 = mEMORY[0x1E6970A38];
+    if (screenCopy)
     {
-      [v6 addVolumeDisplay:self];
+      [mEMORY[0x1E6970A38] addVolumeDisplay:self];
     }
 
     else
     {
-      [v6 removeVolumeDisplay:self];
+      [mEMORY[0x1E6970A38] removeVolumeDisplay:self];
     }
 
     [(MRUNowPlayingVolumeControlsView *)self updateVolumeAnimated:0];
   }
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(MRUNowPlayingVolumeControlsView *)self updateVisibility];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (vabdd_f64(self->_contentScale, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_contentScale, scale) > 2.22044605e-16)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(MRUNowPlayingVolumeControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
   volumeController = self->_volumeController;
-  [a3 value];
+  [changed value];
 
   [MPVolumeController setVolume:"setVolume:withNotificationDelay:" withNotificationDelay:?];
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
   if (([(MRUGroupSlider *)self->_slider isTracking]& 1) == 0)
   {
     [(MRUNowPlayingVolumeControlsView *)self updateVolumeAnimated:[(MRUNowPlayingVolumeControlsView *)self isOnScreen]];
-    v6 = [(MRUNowPlayingVolumeControlsView *)self delegate];
+    delegate = [(MRUNowPlayingVolumeControlsView *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v9 = [(MRUNowPlayingVolumeControlsView *)self delegate];
-      *&v8 = a4;
-      [v9 volumeControlsView:self volumeValueDidChange:v8];
+      delegate2 = [(MRUNowPlayingVolumeControlsView *)self delegate];
+      *&v8 = change;
+      [delegate2 volumeControlsView:self volumeValueDidChange:v8];
     }
   }
 }
 
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change
 {
-  v5 = [(MRUNowPlayingVolumeControlsView *)self isOnScreen:a3];
+  v5 = [(MRUNowPlayingVolumeControlsView *)self isOnScreen:controller];
 
   [(MRUNowPlayingVolumeControlsView *)self updateVolumeAnimated:v5];
 }
 
-- (void)volumeController:(id)a3 volumeControlCapabilitiesDidChange:(unsigned int)a4
+- (void)volumeController:(id)controller volumeControlCapabilitiesDidChange:(unsigned int)change
 {
-  v4 = *&a4;
-  v6 = [(MRUNowPlayingVolumeControlsView *)self delegate];
+  v4 = *&change;
+  delegate = [(MRUNowPlayingVolumeControlsView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MRUNowPlayingVolumeControlsView *)self delegate];
-    [v8 volumeControlsView:self volumeCapabiltiesDidChange:v4];
+    delegate2 = [(MRUNowPlayingVolumeControlsView *)self delegate];
+    [delegate2 volumeControlsView:self volumeCapabiltiesDidChange:v4];
   }
 
   [(MRUNowPlayingVolumeControlsView *)self updateVisibility];
 }
 
-- (void)sliderLongPressActionDidFinish:(id)a3
+- (void)sliderLongPressActionDidFinish:(id)finish
 {
   [(MRUVolumeGroupCoordinator *)self->_volumeGroupCoordinator equalizeVolumes];
   volumeGroupCoordinator = self->_volumeGroupCoordinator;
@@ -317,19 +317,19 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
 
 - (UIWindowScene)windowSceneForVolumeDisplay
 {
-  v2 = [(MRUNowPlayingVolumeControlsView *)self window];
-  v3 = [v2 windowScene];
+  window = [(MRUNowPlayingVolumeControlsView *)self window];
+  windowScene = [window windowScene];
 
-  return v3;
+  return windowScene;
 }
 
 - (NSString)volumeAudioCategory
 {
-  v2 = [(MPVolumeController *)self->_volumeController volumeAudioCategory];
-  v3 = v2;
-  if (v2)
+  volumeAudioCategory = [(MPVolumeController *)self->_volumeController volumeAudioCategory];
+  v3 = volumeAudioCategory;
+  if (volumeAudioCategory)
   {
-    v4 = v2;
+    v4 = volumeAudioCategory;
   }
 
   else
@@ -342,10 +342,10 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
   return &v4->isa;
 }
 
-- (void)updateVolumeAnimated:(BOOL)a3
+- (void)updateVolumeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MPVolumeController *)self->_volumeController isVolumeControlAvailable];
+  animatedCopy = animated;
+  isVolumeControlAvailable = [(MPVolumeController *)self->_volumeController isVolumeControlAvailable];
   [(MRUVolumeController *)self->_volumeController volumeValue];
   v7 = fminf(fmaxf(v6, 0.0), 1.0);
   [(MRUGroupSlider *)self->_slider value];
@@ -356,7 +356,7 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
   }
 
   v9 = !self->_ignoreAnimationForVolumeEvents;
-  v10 = v9 & v3;
+  v10 = v9 & animatedCopy;
   if (!v9 && *&v8 > 0.00000011921)
   {
     v10 = 0;
@@ -370,19 +370,19 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
   }
 
   slider = self->_slider;
-  v12 = self->_onScreen && v5;
+  v12 = self->_onScreen && isVolumeControlAvailable;
 
   [(MRUGroupSlider *)slider setEnabled:v12];
 }
 
 - (void)updateVisibility
 {
-  v3 = [(MPVolumeController *)self->_volumeController volumeCapabilities];
-  v4 = (v3 & 5) == 0;
-  [(MRUGroupSlider *)self->_slider setHidden:(v3 & 5) != 0];
+  volumeCapabilities = [(MPVolumeController *)self->_volumeController volumeCapabilities];
+  v4 = (volumeCapabilities & 5) == 0;
+  [(MRUGroupSlider *)self->_slider setHidden:(volumeCapabilities & 5) != 0];
   [(MRUStepper *)self->_stepper setHidden:v4];
-  v5 = [MEMORY[0x1E6970A38] sharedInstance];
-  [v5 setNeedsUpdate];
+  mEMORY[0x1E6970A38] = [MEMORY[0x1E6970A38] sharedInstance];
+  [mEMORY[0x1E6970A38] setNeedsUpdate];
 }
 
 - (void)updateVisualStyling
@@ -395,11 +395,11 @@ void __49__MRUNowPlayingVolumeControlsView_initWithFrame___block_invoke(uint64_t
 
   else
   {
-    v5 = [(MRUNowPlayingVolumeControlsView *)self traitCollection];
-    v6 = [v5 mr_shouldDim];
+    traitCollection = [(MRUNowPlayingVolumeControlsView *)self traitCollection];
+    mr_shouldDim = [traitCollection mr_shouldDim];
 
     stylingProvider = self->_stylingProvider;
-    if (v6)
+    if (mr_shouldDim)
     {
       v4 = 3;
     }

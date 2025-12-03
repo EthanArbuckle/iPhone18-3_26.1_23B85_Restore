@@ -1,25 +1,25 @@
 @interface HKInsulinDataSource
-- (id)_chartPointsWithBasalInsulinValues:(id)a3 withTotalInsulinValues:(id)a4 filterInterval:(id)a5 sourceTimeZone:(id)a6;
-- (id)_dailyAverageInsulinValuesFromStatistics:(id)a3 queryStartDate:(id)a4 statisticsInterval:(id)a5;
-- (id)_insulinDataSourceQueryDataFromBasalStatisticsCollection:(id)a3 totalStatisticsCollection:(id)a4 queryStartDate:(id)a5 statisticsInterval:(id)a6;
-- (id)_insulinValuesFromStatistics:(id)a3;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (id)_chartPointsWithBasalInsulinValues:(id)values withTotalInsulinValues:(id)insulinValues filterInterval:(id)interval sourceTimeZone:(id)zone;
+- (id)_dailyAverageInsulinValuesFromStatistics:(id)statistics queryStartDate:(id)date statisticsInterval:(id)interval;
+- (id)_insulinDataSourceQueryDataFromBasalStatisticsCollection:(id)collection totalStatisticsCollection:(id)statisticsCollection queryStartDate:(id)date statisticsInterval:(id)interval;
+- (id)_insulinValuesFromStatistics:(id)statistics;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation HKInsulinDataSource
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v60[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v35 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E696C660];
-  v8 = [v6 statisticsInterval];
-  v9 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v10 = [v9 sampleType];
-  LOBYTE(v7) = [v7 shouldUseDailyAverageWithDateComponents:v8 sampleType:v10];
+  statisticsInterval = [requestCopy statisticsInterval];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  sampleType = [displayType sampleType];
+  LOBYTE(v7) = [v7 shouldUseDailyAverageWithDateComponents:statisticsInterval sampleType:sampleType];
 
   if (v7)
   {
@@ -28,13 +28,13 @@
 
   else
   {
-    [v6 statisticsInterval];
+    [requestCopy statisticsInterval];
   }
   v38 = ;
   v11 = MEMORY[0x1E696C378];
-  v12 = [v6 startDate];
-  v13 = [v6 endDate];
-  v14 = [v11 predicateForSamplesWithStartDate:v12 endDate:v13 options:0];
+  startDate = [requestCopy startDate];
+  endDate = [requestCopy endDate];
+  v14 = [v11 predicateForSamplesWithStartDate:startDate endDate:endDate options:0];
 
   v15 = [MEMORY[0x1E696C378] predicateForObjectsWithMetadataKey:*MEMORY[0x1E696BB08] allowedValues:&unk_1F4381918];
   v60[0] = v15;
@@ -64,8 +64,8 @@
   v17 = dispatch_group_create();
   dispatch_group_enter(v17);
   v18 = objc_alloc(MEMORY[0x1E696C4D8]);
-  v19 = [v6 startDate];
-  v20 = [v18 initWithQuantityType:v16 quantitySamplePredicate:v36 options:16 anchorDate:v19 intervalComponents:v38];
+  startDate2 = [requestCopy startDate];
+  v20 = [v18 initWithQuantityType:v16 quantitySamplePredicate:v36 options:16 anchorDate:startDate2 intervalComponents:v38];
 
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
@@ -76,15 +76,15 @@
   v21 = v17;
   v50 = v21;
   [v20 setInitialResultsHandler:v49];
-  v22 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v23 = [v22 behavior];
-  [v20 setMergeStrategy:{objc_msgSend(v23, "statisticsMergeStrategy")}];
+  displayType2 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  behavior = [displayType2 behavior];
+  [v20 setMergeStrategy:{objc_msgSend(behavior, "statisticsMergeStrategy")}];
 
   [v20 setDebugIdentifier:@"charting (insulin basal)"];
   dispatch_group_enter(v21);
   v24 = objc_alloc(MEMORY[0x1E696C4D8]);
-  v25 = [v6 startDate];
-  v26 = [v24 initWithQuantityType:v16 quantitySamplePredicate:v14 options:16 anchorDate:v25 intervalComponents:v38];
+  startDate3 = [requestCopy startDate];
+  v26 = [v24 initWithQuantityType:v16 quantitySamplePredicate:v14 options:16 anchorDate:startDate3 intervalComponents:v38];
 
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
@@ -95,9 +95,9 @@
   v27 = v21;
   v46 = v27;
   [v26 setInitialResultsHandler:v45];
-  v28 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v29 = [v28 behavior];
-  [v26 setMergeStrategy:{objc_msgSend(v29, "statisticsMergeStrategy")}];
+  displayType3 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  behavior2 = [displayType3 behavior];
+  [v26 setMergeStrategy:{objc_msgSend(behavior2, "statisticsMergeStrategy")}];
 
   [v26 setDebugIdentifier:@"charting (insulin total)"];
   v30 = dispatch_get_global_queue(0, 0);
@@ -108,9 +108,9 @@
   v43 = v55;
   v42 = v57;
   block[4] = self;
-  v31 = v6;
+  v31 = requestCopy;
   v40 = v31;
-  v32 = v35;
+  v32 = handlerCopy;
   v41 = v32;
   v44 = v53;
   dispatch_group_notify(v27, v30, block);
@@ -185,38 +185,38 @@ void __59__HKInsulinDataSource_queriesForRequest_completionHandler___block_invok
   }
 }
 
-- (id)_insulinDataSourceQueryDataFromBasalStatisticsCollection:(id)a3 totalStatisticsCollection:(id)a4 queryStartDate:(id)a5 statisticsInterval:(id)a6
+- (id)_insulinDataSourceQueryDataFromBasalStatisticsCollection:(id)collection totalStatisticsCollection:(id)statisticsCollection queryStartDate:(id)date statisticsInterval:(id)interval
 {
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  intervalCopy = interval;
   v12 = MEMORY[0x1E696C660];
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v16 = [v15 sampleType];
-  LODWORD(v12) = [v12 shouldUseDailyAverageWithDateComponents:v11 sampleType:v16];
+  statisticsCollectionCopy = statisticsCollection;
+  collectionCopy = collection;
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  sampleType = [displayType sampleType];
+  LODWORD(v12) = [v12 shouldUseDailyAverageWithDateComponents:intervalCopy sampleType:sampleType];
 
   v17 = objc_alloc_init(HKCodableChartInsulinDataSourceQueryData);
-  v18 = [v14 statistics];
+  statistics = [collectionCopy statistics];
 
   if (v12)
   {
-    v19 = [(HKInsulinDataSource *)self _dailyAverageInsulinValuesFromStatistics:v18 queryStartDate:v10 statisticsInterval:v11];
+    v19 = [(HKInsulinDataSource *)self _dailyAverageInsulinValuesFromStatistics:statistics queryStartDate:dateCopy statisticsInterval:intervalCopy];
     [(HKCodableChartInsulinDataSourceQueryData *)v17 setBasalInsulinValues:v19];
 
-    v20 = [v13 statistics];
+    statistics2 = [statisticsCollectionCopy statistics];
 
-    [(HKInsulinDataSource *)self _dailyAverageInsulinValuesFromStatistics:v20 queryStartDate:v10 statisticsInterval:v11];
+    [(HKInsulinDataSource *)self _dailyAverageInsulinValuesFromStatistics:statistics2 queryStartDate:dateCopy statisticsInterval:intervalCopy];
   }
 
   else
   {
-    v21 = [(HKInsulinDataSource *)self _insulinValuesFromStatistics:v18];
+    v21 = [(HKInsulinDataSource *)self _insulinValuesFromStatistics:statistics];
     [(HKCodableChartInsulinDataSourceQueryData *)v17 setBasalInsulinValues:v21];
 
-    v20 = [v13 statistics];
+    statistics2 = [statisticsCollectionCopy statistics];
 
-    [(HKInsulinDataSource *)self _insulinValuesFromStatistics:v20];
+    [(HKInsulinDataSource *)self _insulinValuesFromStatistics:statistics2];
   }
   v22 = ;
   [(HKCodableChartInsulinDataSourceQueryData *)v17 setTotalInsulinValues:v22];
@@ -224,16 +224,16 @@ void __59__HKInsulinDataSource_queriesForRequest_completionHandler___block_invok
   return v17;
 }
 
-- (id)_insulinValuesFromStatistics:(id)a3
+- (id)_insulinValuesFromStatistics:(id)statistics
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  statisticsCopy = statistics;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = statisticsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -250,17 +250,17 @@ void __59__HKInsulinDataSource_queriesForRequest_completionHandler___block_invok
 
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = objc_alloc_init(HKCodableChartInsulinValue);
-        v12 = [v10 startDate];
-        [v12 timeIntervalSinceReferenceDate];
+        startDate = [v10 startDate];
+        [startDate timeIntervalSinceReferenceDate];
         [(HKCodableChartInsulinValue *)v11 setStartDate:?];
 
-        v13 = [v10 endDate];
-        [v13 timeIntervalSinceReferenceDate];
+        endDate = [v10 endDate];
+        [endDate timeIntervalSinceReferenceDate];
         [(HKCodableChartInsulinValue *)v11 setEndDate:?];
 
-        v14 = [v10 sumQuantity];
-        v15 = [v14 codableRepresentation];
-        [(HKCodableChartInsulinValue *)v11 setInsulinQuantity:v15];
+        sumQuantity = [v10 sumQuantity];
+        codableRepresentation = [sumQuantity codableRepresentation];
+        [(HKCodableChartInsulinValue *)v11 setInsulinQuantity:codableRepresentation];
 
         [v4 addObject:v11];
       }
@@ -274,35 +274,35 @@ void __59__HKInsulinDataSource_queriesForRequest_completionHandler___block_invok
   return v4;
 }
 
-- (id)_dailyAverageInsulinValuesFromStatistics:(id)a3 queryStartDate:(id)a4 statisticsInterval:(id)a5
+- (id)_dailyAverageInsulinValuesFromStatistics:(id)statistics queryStartDate:(id)date statisticsInterval:(id)interval
 {
   v8 = MEMORY[0x1E696C510];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 internationalUnit];
-  v13 = [(HKHealthQueryChartCacheDataSource *)self calendarOverride];
-  v14 = v13;
-  if (v13)
+  intervalCopy = interval;
+  dateCopy = date;
+  statisticsCopy = statistics;
+  internationalUnit = [v8 internationalUnit];
+  calendarOverride = [(HKHealthQueryChartCacheDataSource *)self calendarOverride];
+  v14 = calendarOverride;
+  if (calendarOverride)
   {
-    v15 = v13;
+    currentCalendar = calendarOverride;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   }
 
-  v16 = v15;
+  v16 = currentCalendar;
 
   v17 = MEMORY[0x1E696C660];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __98__HKInsulinDataSource__dailyAverageInsulinValuesFromStatistics_queryStartDate_statisticsInterval___block_invoke;
   v22[3] = &unk_1E81B9C18;
-  v23 = v12;
-  v18 = v12;
-  v19 = [v17 arrayByCoalescingObjects:v11 startDate:v10 intervalComponents:v9 calendar:v16 combiningBlock:v22];
+  v23 = internationalUnit;
+  v18 = internationalUnit;
+  v19 = [v17 arrayByCoalescingObjects:statisticsCopy startDate:dateCopy intervalComponents:intervalCopy calendar:v16 combiningBlock:v22];
 
   v20 = [MEMORY[0x1E695DF70] arrayWithArray:v19];
 
@@ -373,31 +373,31 @@ LABEL_12:
   return v20;
 }
 
-- (id)_chartPointsWithBasalInsulinValues:(id)a3 withTotalInsulinValues:(id)a4 filterInterval:(id)a5 sourceTimeZone:(id)a6
+- (id)_chartPointsWithBasalInsulinValues:(id)values withTotalInsulinValues:(id)insulinValues filterInterval:(id)interval sourceTimeZone:(id)zone
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v54 = a6;
-  v58 = [MEMORY[0x1E695DF70] array];
-  v59 = [MEMORY[0x1E696C510] internationalUnit];
-  v12 = [v9 count];
-  v13 = [v10 count];
+  valuesCopy = values;
+  insulinValuesCopy = insulinValues;
+  intervalCopy = interval;
+  zoneCopy = zone;
+  array = [MEMORY[0x1E695DF70] array];
+  internationalUnit = [MEMORY[0x1E696C510] internationalUnit];
+  v12 = [valuesCopy count];
+  v13 = [insulinValuesCopy count];
   v14 = v12 != 0;
   v15 = v13 != 0;
   if (v12 | v13)
   {
     v16 = 0;
     v17 = 0;
-    v56 = v10;
-    v57 = v9;
-    v55 = v11;
+    v56 = insulinValuesCopy;
+    v57 = valuesCopy;
+    v55 = intervalCopy;
     do
     {
       if (v14)
       {
         v18 = MEMORY[0x1E695DF00];
-        v19 = [v9 objectAtIndexedSubscript:v16];
+        v19 = [valuesCopy objectAtIndexedSubscript:v16];
         [v19 startDate];
         v20 = [v18 dateWithTimeIntervalSinceReferenceDate:?];
       }
@@ -411,20 +411,20 @@ LABEL_12:
       if (v15)
       {
         v21 = MEMORY[0x1E695DF00];
-        v22 = [v10 objectAtIndexedSubscript:v17];
+        v22 = [insulinValuesCopy objectAtIndexedSubscript:v17];
         [v22 startDate];
         v23 = [v21 dateWithTimeIntervalSinceReferenceDate:?];
 
         v60 = v23;
         if (!v14 || [v20 compare:v23] == 1)
         {
-          v24 = [v10 objectAtIndexedSubscript:v17];
+          v24 = [insulinValuesCopy objectAtIndexedSubscript:v17];
           v25 = MEMORY[0x1E696C348];
-          v26 = [v24 insulinQuantity];
-          v27 = [v25 createWithCodableQuantity:v26];
+          insulinQuantity = [v24 insulinQuantity];
+          v27 = [v25 createWithCodableQuantity:insulinQuantity];
 
           v28 = MEMORY[0x1E696AD98];
-          [v27 doubleValueForUnit:v59];
+          [v27 doubleValueForUnit:internationalUnit];
           v29 = [v28 numberWithDouble:?];
           v30 = v17;
           v31 = 0;
@@ -441,13 +441,13 @@ LABEL_12:
         v60 = 0;
       }
 
-      v24 = [v9 objectAtIndexedSubscript:v16];
+      v24 = [valuesCopy objectAtIndexedSubscript:v16];
       v32 = MEMORY[0x1E696C348];
-      v33 = [v24 insulinQuantity];
-      v27 = [v32 createWithCodableQuantity:v33];
+      insulinQuantity2 = [v24 insulinQuantity];
+      v27 = [v32 createWithCodableQuantity:insulinQuantity2];
 
       v34 = MEMORY[0x1E696AD98];
-      [v27 doubleValueForUnit:v59];
+      [v27 doubleValueForUnit:internationalUnit];
       v31 = [v34 numberWithDouble:?];
       v29 = 0;
       ++v16;
@@ -459,18 +459,18 @@ LABEL_12:
       v37 = MEMORY[0x1E695DF00];
       [v24 endDate];
       v38 = [v37 dateWithTimeIntervalSinceReferenceDate:?];
-      if ([v11 containsDate:v36] && objc_msgSend(v11, "containsDate:", v38))
+      if ([intervalCopy containsDate:v36] && objc_msgSend(intervalCopy, "containsDate:", v38))
       {
-        v39 = [v58 lastObject];
-        v40 = v39;
-        if (!v39 || ([v39 startDate], v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v41, "compare:", v36), v41, v42 == -1))
+        lastObject = [array lastObject];
+        v40 = lastObject;
+        if (!lastObject || ([lastObject startDate], v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v41, "compare:", v36), v41, v42 == -1))
         {
           v43 = [HKInsulinChartPoint alloc];
-          v44 = [v36 hk_dateFromSourceTimeZone:v54];
-          v45 = [v38 hk_dateFromSourceTimeZone:v54];
+          v44 = [v36 hk_dateFromSourceTimeZone:zoneCopy];
+          v45 = [v38 hk_dateFromSourceTimeZone:zoneCopy];
           v46 = [(HKInsulinChartPoint *)v43 initWithStartDate:v44 endDate:v45];
 
-          [v58 addObject:v46];
+          [array addObject:v46];
           v40 = v46;
         }
 
@@ -484,13 +484,13 @@ LABEL_12:
           [v40 setTotalSum:v29];
         }
 
-        v10 = v56;
-        v9 = v57;
-        v11 = v55;
+        insulinValuesCopy = v56;
+        valuesCopy = v57;
+        intervalCopy = v55;
       }
 
-      v47 = [v9 count];
-      v48 = [v10 count];
+      v47 = [valuesCopy count];
+      v48 = [insulinValuesCopy count];
       v17 = v62;
       v15 = v62 < v48;
       v14 = v16 < v47;
@@ -499,20 +499,20 @@ LABEL_12:
     while (v16 < v47 || v62 < v48);
   }
 
-  v49 = [(HKInsulinDataSource *)self userInfoCreationBlock];
-  v50 = v49;
-  if (v49)
+  userInfoCreationBlock = [(HKInsulinDataSource *)self userInfoCreationBlock];
+  v50 = userInfoCreationBlock;
+  if (userInfoCreationBlock)
   {
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = __111__HKInsulinDataSource__chartPointsWithBasalInsulinValues_withTotalInsulinValues_filterInterval_sourceTimeZone___block_invoke;
     v63[3] = &unk_1E81B9E60;
-    v64 = v49;
-    [v58 enumerateObjectsUsingBlock:v63];
+    v64 = userInfoCreationBlock;
+    [array enumerateObjectsUsingBlock:v63];
   }
 
   v51 = objc_alloc_init(HKGraphSeriesDataBlock);
-  [(HKGraphSeriesDataBlock *)v51 setChartPoints:v58];
+  [(HKGraphSeriesDataBlock *)v51 setChartPoints:array];
 
   return v51;
 }
@@ -527,26 +527,26 @@ void __111__HKInsulinDataSource__chartPointsWithBasalInsulinValues_withTotalInsu
   [v3 setUserInfo:v5];
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __89__HKInsulinDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v25[3] = &unk_1E81B9E88;
-  v27 = self;
-  v28 = v10;
-  v26 = v8;
-  v11 = v10;
-  v12 = v8;
+  selfCopy = self;
+  v28 = handlerCopy;
+  v26 = requestCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   v13 = [(HKInsulinDataSource *)self queriesForRequest:v12 completionHandler:v25];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __89__HKInsulinDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_415;
   v23[3] = &unk_1E81B6D60;
-  v14 = v9;
+  v14 = storeCopy;
   v24 = v14;
   [v13 enumerateObjectsUsingBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
@@ -630,14 +630,14 @@ void __89__HKInsulinDataSource_generateSharableQueryDataForRequest_healthStore_c
   [v1 enumerateObjectsUsingBlock:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v5 = a3;
-  if ([v5 hasTimeZoneName])
+  dataCopy = data;
+  if ([dataCopy hasTimeZoneName])
   {
     v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v7 = [v5 timeZoneName];
-    v8 = [v6 initWithName:v7];
+    timeZoneName = [dataCopy timeZoneName];
+    v8 = [v6 initWithName:timeZoneName];
   }
 
   else
@@ -646,19 +646,19 @@ void __89__HKInsulinDataSource_generateSharableQueryDataForRequest_healthStore_c
   }
 
   v9 = [HKCodableChartInsulinDataSourceQueryData alloc];
-  v10 = [v5 queryDataObject];
-  v11 = [(HKCodableChartInsulinDataSourceQueryData *)v9 initWithData:v10];
+  queryDataObject = [dataCopy queryDataObject];
+  v11 = [(HKCodableChartInsulinDataSourceQueryData *)v9 initWithData:queryDataObject];
 
   v12 = MEMORY[0x1E695DF00];
-  [v5 startDate];
+  [dataCopy startDate];
   v13 = [v12 dateWithTimeIntervalSinceReferenceDate:?];
   v14 = MEMORY[0x1E695DF00];
-  [v5 endDate];
+  [dataCopy endDate];
   v15 = [v14 dateWithTimeIntervalSinceReferenceDate:?];
   v16 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v13 endDate:v15];
-  v17 = [(HKCodableChartInsulinDataSourceQueryData *)v11 basalInsulinValues];
-  v18 = [(HKCodableChartInsulinDataSourceQueryData *)v11 totalInsulinValues];
-  v19 = [(HKInsulinDataSource *)self _chartPointsWithBasalInsulinValues:v17 withTotalInsulinValues:v18 filterInterval:v16 sourceTimeZone:v8];
+  basalInsulinValues = [(HKCodableChartInsulinDataSourceQueryData *)v11 basalInsulinValues];
+  totalInsulinValues = [(HKCodableChartInsulinDataSourceQueryData *)v11 totalInsulinValues];
+  v19 = [(HKInsulinDataSource *)self _chartPointsWithBasalInsulinValues:basalInsulinValues withTotalInsulinValues:totalInsulinValues filterInterval:v16 sourceTimeZone:v8];
 
   return v19;
 }

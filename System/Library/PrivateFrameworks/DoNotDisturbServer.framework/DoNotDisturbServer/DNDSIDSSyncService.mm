@@ -1,20 +1,20 @@
 @interface DNDSIDSSyncService
-- (BOOL)_queue_sendMessage:(id)a3 withVersionNumber:(unint64_t)a4 messageType:(id)a5 toDestinations:(id)a6 requestIdentifier:(id *)a7 error:(id *)a8;
-- (DNDSIDSSyncService)initWithIDSService:(id)a3;
+- (BOOL)_queue_sendMessage:(id)message withVersionNumber:(unint64_t)number messageType:(id)type toDestinations:(id)destinations requestIdentifier:(id *)identifier error:(id *)error;
+- (DNDSIDSSyncService)initWithIDSService:(id)service;
 - (DNDSSyncServiceDelegate)delegate;
-- (void)_queue_handleIncomingMessage:(id)a3 deviceIdentifier:(id)a4;
+- (void)_queue_handleIncomingMessage:(id)message deviceIdentifier:(id)identifier;
 - (void)_queue_resume;
 - (void)resume;
-- (void)sendMessage:(id)a3 withVersionNumber:(unint64_t)a4 messageType:(id)a5 toDestinations:(id)a6 completionHandler:(id)a7;
-- (void)sendMessage:(id)a3 withVersionNumber:(unint64_t)a4 messageType:(id)a5 toDestinations:(id)a6 identifyingCompletionHandler:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)sendMessage:(id)message withVersionNumber:(unint64_t)number messageType:(id)type toDestinations:(id)destinations completionHandler:(id)handler;
+- (void)sendMessage:(id)message withVersionNumber:(unint64_t)number messageType:(id)type toDestinations:(id)destinations identifyingCompletionHandler:(id)handler;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation DNDSIDSSyncService
 
-- (DNDSIDSSyncService)initWithIDSService:(id)a3
+- (DNDSIDSSyncService)initWithIDSService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = DNDSIDSSyncService;
   v6 = [(DNDSIDSSyncService *)&v11 init];
@@ -25,7 +25,7 @@
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_syncService, a3);
+    objc_storeStrong(&v6->_syncService, service);
   }
 
   return v6;
@@ -42,39 +42,39 @@
   dispatch_async(queue, block);
 }
 
-- (void)sendMessage:(id)a3 withVersionNumber:(unint64_t)a4 messageType:(id)a5 toDestinations:(id)a6 completionHandler:(id)a7
+- (void)sendMessage:(id)message withVersionNumber:(unint64_t)number messageType:(id)type toDestinations:(id)destinations completionHandler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __97__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDestinations_completionHandler___block_invoke;
   v14[3] = &unk_278F8B630;
-  v15 = v12;
-  v13 = v12;
-  [(DNDSIDSSyncService *)self sendMessage:a3 withVersionNumber:a4 messageType:a5 toDestinations:a6 identifyingCompletionHandler:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [(DNDSIDSSyncService *)self sendMessage:message withVersionNumber:number messageType:type toDestinations:destinations identifyingCompletionHandler:v14];
 }
 
-- (void)sendMessage:(id)a3 withVersionNumber:(unint64_t)a4 messageType:(id)a5 toDestinations:(id)a6 identifyingCompletionHandler:(id)a7
+- (void)sendMessage:(id)message withVersionNumber:(unint64_t)number messageType:(id)type toDestinations:(id)destinations identifyingCompletionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  messageCopy = message;
+  typeCopy = type;
+  destinationsCopy = destinations;
+  handlerCopy = handler;
   queue = self->_queue;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDestinations_identifyingCompletionHandler___block_invoke;
   v21[3] = &unk_278F8B658;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a4;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = messageCopy;
+  v23 = typeCopy;
+  v24 = destinationsCopy;
+  v25 = handlerCopy;
+  numberCopy = number;
+  v17 = handlerCopy;
+  v18 = destinationsCopy;
+  v19 = typeCopy;
+  v20 = messageCopy;
   dispatch_async(queue, v21);
 }
 
@@ -97,27 +97,27 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v54 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v35 = _os_activity_create(&dword_24912E000, "com.apple.donotdisturb.DNDSIDSSyncService.incomingMessage", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v35, &state);
-  v16 = v14;
-  v17 = v13;
+  v16 = dCopy;
+  v17 = messageCopy;
   v18 = v16;
-  v19 = [v11 deviceForFromID:v16];
+  v19 = [serviceCopy deviceForFromID:v16];
   v20 = v19;
   if (v19)
   {
-    v21 = [v19 uniqueIDOverride];
-    v22 = v18;
+    uniqueIDOverride = [v19 uniqueIDOverride];
+    devices = v18;
   }
 
   else
@@ -131,12 +131,12 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v22 = [v11 devices];
-    v23 = [v22 countByEnumeratingWithState:&v36 objects:v53 count:16];
+    devices = [serviceCopy devices];
+    v23 = [devices countByEnumeratingWithState:&v36 objects:v53 count:16];
     if (v23)
     {
-      v32 = v12;
-      v33 = v11;
+      v32 = accountCopy;
+      v33 = serviceCopy;
       v24 = *v37;
       do
       {
@@ -144,7 +144,7 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
         {
           if (*v37 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(devices);
           }
 
           v26 = DNDSLogIDSTransport;
@@ -157,47 +157,47 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
           }
         }
 
-        v23 = [v22 countByEnumeratingWithState:&v36 objects:v53 count:16];
+        v23 = [devices countByEnumeratingWithState:&v36 objects:v53 count:16];
       }
 
       while (v23);
-      v21 = v18;
-      v12 = v32;
-      v11 = v33;
-      v17 = v13;
+      uniqueIDOverride = v18;
+      accountCopy = v32;
+      serviceCopy = v33;
+      v17 = messageCopy;
     }
 
     else
     {
-      v21 = v18;
+      uniqueIDOverride = v18;
     }
   }
 
   v28 = DNDSLogIDSTransport;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    [v15 outgoingResponseIdentifier];
-    v31 = v30 = v15;
+    [contextCopy outgoingResponseIdentifier];
+    v31 = v30 = contextCopy;
     *buf = 138544642;
-    v42 = v11;
+    v42 = serviceCopy;
     v43 = 2114;
-    v44 = v12;
+    v44 = accountCopy;
     v45 = 2114;
     v46 = v31;
     v47 = 2114;
     v48 = v17;
     v49 = 2112;
-    v50 = v21;
+    v50 = uniqueIDOverride;
     v51 = 2114;
     v52 = v30;
     _os_log_debug_impl(&dword_24912E000, v28, OS_LOG_TYPE_DEBUG, "Received sync data: service=%{public}@, account=%{public}@, identifier=%{public}@, message=%{public}@, deviceIdentifier=%@, context=%{public}@", buf, 0x3Eu);
 
-    v15 = v30;
+    contextCopy = v30;
   }
 
-  if (v21)
+  if (uniqueIDOverride)
   {
-    [(DNDSIDSSyncService *)self _queue_handleIncomingMessage:v17 deviceIdentifier:v21];
+    [(DNDSIDSSyncService *)self _queue_handleIncomingMessage:v17 deviceIdentifier:uniqueIDOverride];
   }
 
   else if (os_log_type_enabled(DNDSLogIDSTransport, OS_LOG_TYPE_ERROR))
@@ -218,38 +218,38 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
   [(IDSService *)syncService addDelegate:self queue:queue];
 }
 
-- (BOOL)_queue_sendMessage:(id)a3 withVersionNumber:(unint64_t)a4 messageType:(id)a5 toDestinations:(id)a6 requestIdentifier:(id *)a7 error:(id *)a8
+- (BOOL)_queue_sendMessage:(id)message withVersionNumber:(unint64_t)number messageType:(id)type toDestinations:(id)destinations requestIdentifier:(id *)identifier error:(id *)error
 {
   v50[2] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  destinationsCopy = destinations;
   dispatch_assert_queue_V2(self->_queue);
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  [v16 setObject:&unk_285C53580 forKeyedSubscript:@"v"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_285C53580 forKeyedSubscript:@"v"];
   v17 = MEMORY[0x277CCABB0];
-  v18 = [MEMORY[0x277CBEAA8] date];
-  [v18 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v19 = [v17 numberWithDouble:?];
-  [v16 setObject:v19 forKeyedSubscript:@"t"];
+  [dictionary setObject:v19 forKeyedSubscript:@"t"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v16 setObject:v20 forKeyedSubscript:@"r"];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:number];
+  [dictionary setObject:v20 forKeyedSubscript:@"r"];
 
-  if (v14)
+  if (typeCopy)
   {
-    [v16 setObject:v14 forKeyedSubscript:@"y"];
+    [dictionary setObject:typeCopy forKeyedSubscript:@"y"];
   }
 
-  if (v13)
+  if (messageCopy)
   {
-    v35 = a8;
+    errorCopy = error;
     v49[0] = @"h";
     v49[1] = @"d";
-    v50[0] = v16;
-    v50[1] = v13;
+    v50[0] = dictionary;
+    v50[1] = messageCopy;
     v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
-    if (v14)
+    if (typeCopy)
     {
       v21 = 0;
     }
@@ -262,14 +262,14 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
     }
 
     v23 = MEMORY[0x277CBEB98];
-    v24 = [(IDSService *)self->_syncService devices];
+    devices = [(IDSService *)self->_syncService devices];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __110__DNDSIDSSyncService__queue_sendMessage_withVersionNumber_messageType_toDestinations_requestIdentifier_error___block_invoke;
     v41[3] = &unk_278F8B680;
-    v36 = v15;
-    v42 = v15;
-    v25 = [v24 bs_compactMap:v41];
+    v36 = destinationsCopy;
+    v42 = destinationsCopy;
+    v25 = [devices bs_compactMap:v41];
     v26 = [v23 setWithArray:v25];
 
     if ([v26 count])
@@ -280,10 +280,10 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
       v22 = [(IDSService *)syncService sendMessage:v38 toDestinations:v26 priority:300 options:v21 identifier:&v40 error:&v39];
       v28 = v40;
       v29 = v39;
-      if (a7)
+      if (identifier)
       {
         v30 = v28;
-        *a7 = v28;
+        *identifier = v28;
       }
 
       v31 = DNDSLogIDSTransport;
@@ -306,10 +306,10 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
           [DNDSIDSSyncService _queue_sendMessage:withVersionNumber:messageType:toDestinations:requestIdentifier:error:];
         }
 
-        if (v35)
+        if (errorCopy)
         {
           v32 = v29;
-          *v35 = v29;
+          *errorCopy = v29;
         }
       }
     }
@@ -324,7 +324,7 @@ void __108__DNDSIDSSyncService_sendMessage_withVersionNumber_messageType_toDesti
       LOBYTE(v22) = 0;
     }
 
-    v15 = v36;
+    destinationsCopy = v36;
   }
 
   else
@@ -361,25 +361,25 @@ id __110__DNDSIDSSyncService__queue_sendMessage_withVersionNumber_messageType_to
   return v6;
 }
 
-- (void)_queue_handleIncomingMessage:(id)a3 deviceIdentifier:(id)a4
+- (void)_queue_handleIncomingMessage:(id)message deviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v6 bs_safeDictionaryForKey:@"h"];
+  v8 = [messageCopy bs_safeDictionaryForKey:@"h"];
   v9 = [v8 bs_safeNumberForKey:@"v"];
   if ([v9 unsignedIntegerValue] == 1)
   {
     v10 = [v8 bs_safeNumberForKey:@"r"];
     if (v10)
     {
-      v11 = [v6 bs_safeDictionaryForKey:@"d"];
+      v11 = [messageCopy bs_safeDictionaryForKey:@"d"];
       if (v11)
       {
-        v12 = [(DNDSIDSSyncService *)self delegate];
-        v13 = [v10 unsignedIntegerValue];
+        delegate = [(DNDSIDSSyncService *)self delegate];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
         v14 = [v8 bs_safeStringForKey:@"y"];
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ![v12 syncService:self shouldAcceptIncomingMessage:v11 withVersionNumber:v13 messageType:v14 fromDeviceIdentifier:v7])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate syncService:self shouldAcceptIncomingMessage:v11 withVersionNumber:unsignedIntegerValue messageType:v14 fromDeviceIdentifier:identifierCopy])
         {
           v15 = DNDSLogIDSTransport;
           if (os_log_type_enabled(DNDSLogIDSTransport, OS_LOG_TYPE_DEFAULT))
@@ -391,7 +391,7 @@ id __110__DNDSIDSSyncService__queue_sendMessage_withVersionNumber_messageType_to
 
         else
         {
-          [v12 syncService:self didReceiveMessage:v11 withVersionNumber:v13 messageType:v14 fromDeviceIdentifier:v7];
+          [delegate syncService:self didReceiveMessage:v11 withVersionNumber:unsignedIntegerValue messageType:v14 fromDeviceIdentifier:identifierCopy];
         }
       }
 

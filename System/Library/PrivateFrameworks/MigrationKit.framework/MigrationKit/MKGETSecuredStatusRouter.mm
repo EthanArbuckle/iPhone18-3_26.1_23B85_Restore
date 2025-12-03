@@ -1,7 +1,7 @@
 @interface MKGETSecuredStatusRouter
 - (MKGETSecuredStatusRouter)init;
 - (MKGETStatusRouter)getStatusRouter;
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5;
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response;
 @end
 
 @implementation MKGETSecuredStatusRouter
@@ -13,16 +13,16 @@
   v2 = [(MKGETSecuredStatusRouter *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 objectForKey:@"uuid"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults objectForKey:@"uuid"];
     if (![v4 length])
     {
-      v5 = [MEMORY[0x277CCAD78] UUID];
-      v6 = [v5 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      [v3 setObject:v6 forKey:@"uuid"];
-      [v3 synchronize];
-      v4 = v6;
+      [standardUserDefaults setObject:uUIDString forKey:@"uuid"];
+      [standardUserDefaults synchronize];
+      v4 = uUIDString;
     }
 
     [(MKGETSecuredStatusRouter *)v2 setUuid:v4];
@@ -33,10 +33,10 @@
   return v2;
 }
 
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response
 {
   v117 = *MEMORY[0x277D85DE8];
-  v85 = a5;
+  responseCopy = response;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = MEMORY[0x277CCABB0];
   WeakRetained = objc_loadWeakRetained(&self->_getStatusRouter);
@@ -49,7 +49,7 @@
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v90 = self;
+  selfCopy = self;
   v11 = self->_supportedContentTypes;
   v12 = [(NSArray *)v11 countByEnumeratingWithState:&v108 objects:v116 count:16];
   if (v12)
@@ -82,7 +82,7 @@
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v19 = v90->_supportedTransferEncodings;
+  v19 = selfCopy->_supportedTransferEncodings;
   v20 = [(NSArray *)v19 countByEnumeratingWithState:&v104 objects:v115 count:16];
   if (v20)
   {
@@ -117,7 +117,7 @@
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = v90->_signatures;
+  obj = selfCopy->_signatures;
   v26 = [(NSDictionary *)obj countByEnumeratingWithState:&v100 objects:v114 count:16];
   if (v26)
   {
@@ -134,7 +134,7 @@
         }
 
         v31 = *(*(&v100 + 1) + 8 * k);
-        v32 = [(NSDictionary *)v90->_signatures objectForKeyedSubscript:v31];
+        v32 = [(NSDictionary *)selfCopy->_signatures objectForKeyedSubscript:v31];
         v33 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v96 = 0u;
         v97 = 0u;
@@ -175,35 +175,35 @@
 
   [v86 setObject:v89 forKey:@"signatures"];
   v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v40 = [MEMORY[0x277CBEAF8] currentLocale];
-  v41 = [v40 localeIdentifier];
-  v42 = [v40 languageCode];
-  v43 = [v40 countryCode];
-  v44 = [v40 scriptCode];
-  v82 = v40;
-  v45 = [v40 variantCode];
-  v81 = v41;
-  [v39 setObject:v41 forKey:@"identifier"];
-  v80 = v42;
-  [v39 setObject:v42 forKey:@"language_code"];
-  if (v43)
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  languageCode = [currentLocale languageCode];
+  countryCode = [currentLocale countryCode];
+  scriptCode = [currentLocale scriptCode];
+  v82 = currentLocale;
+  variantCode = [currentLocale variantCode];
+  v81 = localeIdentifier;
+  [v39 setObject:localeIdentifier forKey:@"identifier"];
+  v80 = languageCode;
+  [v39 setObject:languageCode forKey:@"language_code"];
+  if (countryCode)
   {
-    [v39 setObject:v43 forKey:@"country_code"];
+    [v39 setObject:countryCode forKey:@"country_code"];
   }
 
-  if (v44)
+  if (scriptCode)
   {
-    [v39 setObject:v44 forKey:@"script_code"];
+    [v39 setObject:scriptCode forKey:@"script_code"];
   }
 
-  v78 = v44;
-  v79 = v43;
-  if (v45)
+  v78 = scriptCode;
+  v79 = countryCode;
+  if (variantCode)
   {
-    [v39 setObject:v45 forKey:@"variant_code"];
+    [v39 setObject:variantCode forKey:@"variant_code"];
   }
 
-  v77 = v45;
+  v77 = variantCode;
   obja = v39;
   [v86 setObject:v39 forKey:@"locale"];
   v46 = objc_alloc_init(MKDevice);
@@ -212,46 +212,46 @@
   v49 = [v47 numberWithFloat:v48];
   [v86 setObject:v49 forKey:@"icon_size"];
 
-  v50 = [(MKDevice *)v46 systemName];
-  [v86 setObject:v50 forKey:@"system_name"];
+  systemName = [(MKDevice *)v46 systemName];
+  [v86 setObject:systemName forKey:@"system_name"];
 
-  v51 = [(MKDevice *)v46 systemVersion];
-  [v86 setObject:v51 forKey:@"system_version"];
+  systemVersion = [(MKDevice *)v46 systemVersion];
+  [v86 setObject:systemVersion forKey:@"system_version"];
 
-  v52 = [(MKDevice *)v46 deviceFamily];
-  [v86 setObject:v52 forKey:@"device_family"];
+  deviceFamily = [(MKDevice *)v46 deviceFamily];
+  [v86 setObject:deviceFamily forKey:@"device_family"];
 
-  v53 = [(MKDevice *)v46 deviceName];
-  [v86 setObject:v53 forKey:@"device_name"];
+  deviceName = [(MKDevice *)v46 deviceName];
+  [v86 setObject:deviceName forKey:@"device_name"];
 
-  v54 = [(MKDevice *)v46 deviceModel];
-  [v86 setObject:v54 forKey:@"device_model"];
+  deviceModel = [(MKDevice *)v46 deviceModel];
+  [v86 setObject:deviceModel forKey:@"device_model"];
 
-  v55 = [(MKGETSecuredStatusRouter *)v90 uuid];
-  [v86 setObject:v55 forKey:@"id"];
+  uuid = [(MKGETSecuredStatusRouter *)selfCopy uuid];
+  [v86 setObject:uuid forKey:@"id"];
 
   v56 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[MKStorage availableSpaceInBytes](v90->_storage, "availableSpaceInBytes")}];
+  v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[MKStorage availableSpaceInBytes](selfCopy->_storage, "availableSpaceInBytes")}];
   [v56 setObject:v57 forKey:@"available_space_in_bytes"];
 
-  v58 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[MKStorage availableSpaceInMegabytes](v90->_storage, "availableSpaceInMegabytes")}];
+  v58 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[MKStorage availableSpaceInMegabytes](selfCopy->_storage, "availableSpaceInMegabytes")}];
   [v56 setObject:v58 forKey:@"available_space_in_megabytes"];
 
-  v59 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[MKStorage availableSpaceInGigabytes](v90->_storage, "availableSpaceInGigabytes")}];
+  v59 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[MKStorage availableSpaceInGigabytes](selfCopy->_storage, "availableSpaceInGigabytes")}];
   [v56 setObject:v59 forKey:@"available_space_in_gigabytes"];
 
-  v60 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[MKStorage availableSpaceInTerabytes](v90->_storage, "availableSpaceInTerabytes")}];
+  v60 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[MKStorage availableSpaceInTerabytes](selfCopy->_storage, "availableSpaceInTerabytes")}];
   [v56 setObject:v60 forKey:@"available_space_in_terabytes"];
 
   [v86 setObject:v56 forKey:@"storage"];
   v76 = objc_alloc_init(MKWiFiDevice);
-  v61 = [(MKWiFiDevice *)v76 currentNetwork];
+  currentNetwork = [(MKWiFiDevice *)v76 currentNetwork];
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v62 = [v61 allKeys];
-  v63 = [v62 countByEnumeratingWithState:&v92 objects:v112 count:16];
+  allKeys = [currentNetwork allKeys];
+  v63 = [allKeys countByEnumeratingWithState:&v92 objects:v112 count:16];
   if (v63)
   {
     v64 = v63;
@@ -262,22 +262,22 @@
       {
         if (*v93 != v65)
         {
-          objc_enumerationMutation(v62);
+          objc_enumerationMutation(allKeys);
         }
 
         v67 = *(*(&v92 + 1) + 8 * n);
-        v68 = [v61 objectForKeyedSubscript:v67];
+        v68 = [currentNetwork objectForKeyedSubscript:v67];
         [v86 setObject:v68 forKey:v67];
       }
 
-      v64 = [v62 countByEnumeratingWithState:&v92 objects:v112 count:16];
+      v64 = [allKeys countByEnumeratingWithState:&v92 objects:v112 count:16];
     }
 
     while (v64);
   }
 
   v69 = MEMORY[0x277CCABB0];
-  v70 = objc_loadWeakRetained(&v90->_getStatusRouter);
+  v70 = objc_loadWeakRetained(&selfCopy->_getStatusRouter);
   v71 = [v69 numberWithInteger:{objc_msgSend(v70, "preferredChannel")}];
   [v86 setObject:v71 forKey:@"ap1"];
 
@@ -293,7 +293,7 @@
     }
   }
 
-  [v85 setBody:v72];
+  [responseCopy setBody:v72];
 
   v75 = *MEMORY[0x277D85DE8];
 }

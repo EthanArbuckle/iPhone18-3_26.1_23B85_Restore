@@ -1,27 +1,27 @@
 @interface ReferenceLinkContextMenuInteractionDelegate
 - (_TtC8ShelfKit43ReferenceLinkContextMenuInteractionDelegate)init;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation ReferenceLinkContextMenuInteractionDelegate
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_2E702C(v5);
+  interactionCopy = interaction;
+  selfCopy = self;
+  v7 = sub_2E702C(interactionCopy);
 
   return v7;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = sub_2E735C(v7);
+  selfCopy = self;
+  v10 = sub_2E735C(interactionCopy);
 
   swift_unknownObjectRelease();
 

@@ -1,12 +1,12 @@
 @interface BadgeView
-- (_TtC16MusicApplication9BadgeView)initWithCoder:(id)a3;
-- (_TtC16MusicApplication9BadgeView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC16MusicApplication9BadgeView)initWithCoder:(id)coder;
+- (_TtC16MusicApplication9BadgeView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation BadgeView
 
-- (_TtC16MusicApplication9BadgeView)initWithCoder:(id)a3
+- (_TtC16MusicApplication9BadgeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication9BadgeView_badgeSet) = &_swiftEmptySetSingleton;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication9BadgeView_textStyle) = UIFontTextStyleBody;
@@ -15,14 +15,14 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_4CB864(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_4CB864(change);
 }
 
-- (_TtC16MusicApplication9BadgeView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication9BadgeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

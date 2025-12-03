@@ -1,23 +1,23 @@
 @interface _UISearchBarNavigationItem
-- (void)setTitleView:(id)a3;
+- (void)setTitleView:(id)view;
 @end
 
 @implementation _UISearchBarNavigationItem
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v5 = a3;
-  v6 = [(UINavigationItem *)self titleView];
+  viewCopy = view;
+  titleView = [(UINavigationItem *)self titleView];
 
-  if (v6)
+  if (titleView)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISearchBar.m" lineNumber:3300 description:@"Search bar navigation items do not allow setting titleView"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISearchBar.m" lineNumber:3300 description:@"Search bar navigation items do not allow setting titleView"];
   }
 
   v8.receiver = self;
   v8.super_class = _UISearchBarNavigationItem;
-  [(UINavigationItem *)&v8 setTitleView:v5];
+  [(UINavigationItem *)&v8 setTitleView:viewCopy];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface ICURLResponseAuthenticationProvider
 + (id)defaultProvider;
-- (BOOL)isEqual:(id)a3;
-- (ICURLResponseAuthenticationProvider)initWithCoder:(id)a3;
-- (ICURLResponseAuthenticationProvider)initWithUserInteractionLevel:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICURLResponseAuthenticationProvider)initWithCoder:(id)coder;
+- (ICURLResponseAuthenticationProvider)initWithUserInteractionLevel:(int64_t)level;
 - (unint64_t)hash;
 @end
 
@@ -15,31 +15,31 @@
   return v2;
 }
 
-- (ICURLResponseAuthenticationProvider)initWithCoder:(id)a3
+- (ICURLResponseAuthenticationProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ICURLResponseAuthenticationProvider;
   v5 = [(ICURLResponseAuthenticationProvider *)&v7 init];
   if (v5)
   {
-    v5->_interactionLevel = [v4 decodeIntegerForKey:@"interactionLevel"];
+    v5->_interactionLevel = [coderCopy decodeIntegerForKey:@"interactionLevel"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(ICURLResponseAuthenticationProvider *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(ICURLResponseAuthenticationProvider *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = self->_interactionLevel == v4->_interactionLevel;
+    v5 = self->_interactionLevel == equalCopy->_interactionLevel;
   }
 
   else
@@ -111,12 +111,12 @@
   return (v49 + v50) ^ __ROR8__(v49, 47) ^ v52 ^ __ROR8__(v49 + v50, 32) ^ v52 ^ __ROR8__(v50 ^ v51, 43);
 }
 
-- (ICURLResponseAuthenticationProvider)initWithUserInteractionLevel:(int64_t)a3
+- (ICURLResponseAuthenticationProvider)initWithUserInteractionLevel:(int64_t)level
 {
   result = [(ICURLResponseAuthenticationProvider *)self init];
   if (result)
   {
-    result->_interactionLevel = a3;
+    result->_interactionLevel = level;
   }
 
   return result;

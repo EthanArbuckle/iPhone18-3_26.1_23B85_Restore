@@ -1,5 +1,5 @@
 @interface SectionHeaderView
-- (_TtC10CallsAppUI17SectionHeaderView)initWithCoder:(id)a3;
+- (_TtC10CallsAppUI17SectionHeaderView)initWithCoder:(id)coder;
 - (void)prepareForReuse;
 @end
 
@@ -17,7 +17,7 @@
   *&v2[v3] = 0;
 }
 
-- (_TtC10CallsAppUI17SectionHeaderView)initWithCoder:(id)a3
+- (_TtC10CallsAppUI17SectionHeaderView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC10CallsAppUI17SectionHeaderView_configuration) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC10CallsAppUI17SectionHeaderView_headerView) = 0;

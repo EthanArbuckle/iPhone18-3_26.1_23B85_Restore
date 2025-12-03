@@ -1,7 +1,7 @@
 @interface Interpolator
 - (Interpolator)init;
 - (void)dealloc;
-- (void)interpolateData:(float *)a3 atTimes:(id *)a4 andLength:(unsigned int)a5 toRate:(float)a6;
+- (void)interpolateData:(float *)data atTimes:(id *)times andLength:(unsigned int)length toRate:(float)rate;
 @end
 
 @implementation Interpolator
@@ -40,13 +40,13 @@
   [(Interpolator *)&v5 dealloc];
 }
 
-- (void)interpolateData:(float *)a3 atTimes:(id *)a4 andLength:(unsigned int)a5 toRate:(float)a6
+- (void)interpolateData:(float *)data atTimes:(id *)times andLength:(unsigned int)length toRate:(float)rate
 {
-  v23 = *a4;
-  lhs = a4[a5 - 1];
-  rhs = *a4;
+  v23 = *times;
+  lhs = times[length - 1];
+  rhs = *times;
   CMTimeSubtract(&time, &lhs, &rhs);
-  interpolatedLength = (CMTimeGetSeconds(&time) * a6 + 0.5) + 1;
+  interpolatedLength = (CMTimeGetSeconds(&time) * rate + 0.5) + 1;
   interpolatedTimes = self->_interpolatedTimes;
   if (!interpolatedTimes || self->_interpolatedLength != interpolatedLength)
   {
@@ -64,7 +64,7 @@
     do
     {
       memset(&time, 0, sizeof(time));
-      CMTimeMake(&time, v14 & 0xFFFFFFFE, (a6 * 10.0));
+      CMTimeMake(&time, v14 & 0xFFFFFFFE, (rate * 10.0));
       v16 = &self->_interpolatedTimes[v13];
       rhs = v23;
       v19 = time;
@@ -86,7 +86,7 @@
     LODWORD(v18) = 0;
   }
 
-  sub_100008D14(a4, a3, a5, self->_interpolatedTimes, v18, self->_interpolatedValues);
+  sub_100008D14(times, data, length, self->_interpolatedTimes, v18, self->_interpolatedValues);
 }
 
 @end

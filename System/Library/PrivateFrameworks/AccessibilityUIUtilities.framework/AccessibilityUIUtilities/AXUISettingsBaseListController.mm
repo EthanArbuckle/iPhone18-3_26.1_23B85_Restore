@@ -1,62 +1,62 @@
 @interface AXUISettingsBaseListController
-- (id)cellForSpecifier:(id)a3;
-- (id)cellForSpecifierID:(id)a3;
-- (id)specifierForIndexPath:(id)a3;
-- (id)specifierForKey:(id)a3;
-- (id)specifiersByRemovingDetailItemsFromOriginalSpecifiers:(id)a3 ifHidden:(BOOL)a4;
-- (void)setDetailItemsHidden:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)showController:(id)a3 withSpecifier:(id)a4;
-- (void)updateTableCheckedSelection:(id)a3;
-- (void)updateVisibleCellsWithCheckedSelection:(id)a3;
+- (id)cellForSpecifier:(id)specifier;
+- (id)cellForSpecifierID:(id)d;
+- (id)specifierForIndexPath:(id)path;
+- (id)specifierForKey:(id)key;
+- (id)specifiersByRemovingDetailItemsFromOriginalSpecifiers:(id)specifiers ifHidden:(BOOL)hidden;
+- (void)setDetailItemsHidden:(BOOL)hidden;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)showController:(id)controller withSpecifier:(id)specifier;
+- (void)updateTableCheckedSelection:(id)selection;
+- (void)updateVisibleCellsWithCheckedSelection:(id)selection;
 @end
 
 @implementation AXUISettingsBaseListController
 
-- (void)setDetailItemsHidden:(BOOL)a3
+- (void)setDetailItemsHidden:(BOOL)hidden
 {
-  if (*(&self->super._inSetup + 2) != a3)
+  if (*(&self->super._inSetup + 2) != hidden)
   {
-    v4 = a3;
-    *(&self->super._inSetup + 2) = a3;
-    v6 = [(AXUISettingsBaseListController *)self detailItems];
-    if (v4)
+    hiddenCopy = hidden;
+    *(&self->super._inSetup + 2) = hidden;
+    detailItems = [(AXUISettingsBaseListController *)self detailItems];
+    if (hiddenCopy)
     {
-      [(AXUISettingsBaseListController *)self removeContiguousSpecifiers:v6 animated:1];
+      [(AXUISettingsBaseListController *)self removeContiguousSpecifiers:detailItems animated:1];
     }
 
     else
     {
-      [(AXUISettingsBaseListController *)self addSpecifiersFromArray:v6 animated:1];
+      [(AXUISettingsBaseListController *)self addSpecifiersFromArray:detailItems animated:1];
     }
   }
 }
 
-- (id)specifiersByRemovingDetailItemsFromOriginalSpecifiers:(id)a3 ifHidden:(BOOL)a4
+- (id)specifiersByRemovingDetailItemsFromOriginalSpecifiers:(id)specifiers ifHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  *(&self->super._inSetup + 2) = v4;
-  if (v4)
+  hiddenCopy = hidden;
+  specifiersCopy = specifiers;
+  v7 = specifiersCopy;
+  *(&self->super._inSetup + 2) = hiddenCopy;
+  if (hiddenCopy)
   {
-    v8 = [v6 mutableCopy];
-    v9 = [(AXUISettingsBaseListController *)self detailItems];
-    [v8 removeObjectsInArray:v9];
+    v8 = [specifiersCopy mutableCopy];
+    detailItems = [(AXUISettingsBaseListController *)self detailItems];
+    [v8 removeObjectsInArray:detailItems];
   }
 
   else
   {
-    v8 = v6;
+    v8 = specifiersCopy;
   }
 
   return v8;
 }
 
-- (id)specifierForKey:(id)a3
+- (id)specifierForKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   [(AXUISettingsBaseListController *)self specifiers];
   v16 = 0u;
   v17 = 0u;
@@ -79,7 +79,7 @@
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 propertyForKey:{v9, v16}];
-        v13 = [v12 isEqualToString:v4];
+        v13 = [v12 isEqualToString:keyCopy];
 
         if (v13)
         {
@@ -104,22 +104,22 @@ LABEL_11:
   return v14;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = AXUISettingsBaseListController;
   [AXUISettingsBaseListController setEditing:sel_setEditing_animated_ animated:?];
-  [*(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x1E69C57C0]) setEditing:v5 animated:v4];
+  [*(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x1E69C57C0]) setEditing:editingCopy animated:animatedCopy];
 }
 
-- (void)updateTableCheckedSelection:(id)a3
+- (void)updateTableCheckedSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v5 = *MEMORY[0x1E69C57C0];
-  v11 = v4;
-  v6 = [*(&self->super.super.super.super.super.super.super.isa + v5) numberOfRowsInSection:{objc_msgSend(v4, "section")}];
+  v11 = selectionCopy;
+  v6 = [*(&self->super.super.super.super.super.super.super.isa + v5) numberOfRowsInSection:{objc_msgSend(selectionCopy, "section")}];
   if (v6 >= 1)
   {
     v7 = v6;
@@ -132,17 +132,17 @@ LABEL_11:
   }
 }
 
-- (void)updateVisibleCellsWithCheckedSelection:(id)a3
+- (void)updateVisibleCellsWithCheckedSelection:(id)selection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  selectionCopy = selection;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v5 = *MEMORY[0x1E69C57C0];
-  v6 = [*(&self->super.super.super.super.super.super.super.isa + v5) indexPathsForVisibleRows];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  indexPathsForVisibleRows = [*(&self->super.super.super.super.super.super.super.isa + v5) indexPathsForVisibleRows];
+  v7 = [indexPathsForVisibleRows countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -153,55 +153,55 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
         v12 = [*(&self->super.super.super.super.super.super.super.isa + v5) cellForRowAtIndexPath:v11];
-        [v12 setChecked:{objc_msgSend(v4, "isEqual:", v11)}];
+        [v12 setChecked:{objc_msgSend(selectionCopy, "isEqual:", v11)}];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [indexPathsForVisibleRows countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)cellForSpecifierID:(id)a3
+- (id)cellForSpecifierID:(id)d
 {
-  v4 = [(AXUISettingsBaseListController *)self specifierForID:a3];
+  v4 = [(AXUISettingsBaseListController *)self specifierForID:d];
   v5 = [(AXUISettingsBaseListController *)self cellForSpecifier:v4];
 
   return v5;
 }
 
-- (id)specifierForIndexPath:(id)a3
+- (id)specifierForIndexPath:(id)path
 {
-  v4 = [(AXUISettingsBaseListController *)self indexForIndexPath:a3];
+  v4 = [(AXUISettingsBaseListController *)self indexForIndexPath:path];
 
   return [(AXUISettingsBaseListController *)self specifierAtIndex:v4];
 }
 
-- (id)cellForSpecifier:(id)a3
+- (id)cellForSpecifier:(id)specifier
 {
   v3 = *(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x1E69C57C0]);
-  v4 = [(AXUISettingsBaseListController *)self indexPathForSpecifier:a3];
+  v4 = [(AXUISettingsBaseListController *)self indexPathForSpecifier:specifier];
   v5 = [v3 cellForRowAtIndexPath:v4];
 
   return v5;
 }
 
-- (void)showController:(id)a3 withSpecifier:(id)a4
+- (void)showController:(id)controller withSpecifier:(id)specifier
 {
-  v6 = a4;
-  v8 = a3;
-  [v8 setParentController:self];
-  v7 = [(AXUISettingsBaseListController *)self rootController];
-  [v8 setRootController:v7];
+  specifierCopy = specifier;
+  controllerCopy = controller;
+  [controllerCopy setParentController:self];
+  rootController = [(AXUISettingsBaseListController *)self rootController];
+  [controllerCopy setRootController:rootController];
 
-  [v8 setSpecifier:v6];
-  [(AXUISettingsSetupCapableListController *)self showController:v8 animate:1];
+  [controllerCopy setSpecifier:specifierCopy];
+  [(AXUISettingsSetupCapableListController *)self showController:controllerCopy animate:1];
 }
 
 @end

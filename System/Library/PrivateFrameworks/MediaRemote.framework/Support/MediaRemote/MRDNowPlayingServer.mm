@@ -1,12 +1,12 @@
 @interface MRDNowPlayingServer
-- (BOOL)_hasForwarderForOrigin:(id)a3;
+- (BOOL)_hasForwarderForOrigin:(id)origin;
 - (BOOL)activePlayerIsPlaying;
 - (BOOL)hasElectedPlayer;
 - (BOOL)hasProactiveRecommendedPlayer;
 - (BOOL)localActivePlayerIsPlaying;
 - (BOOL)lockScreenPlatterActive;
 - (BOOL)lockScreenRecommendationActive;
-- (BOOL)nowPlayingLauncher:(id)a3 shouldRelaunch:(id)a4;
+- (BOOL)nowPlayingLauncher:(id)launcher shouldRelaunch:(id)relaunch;
 - (MRDNowPlayingClient)activeNowPlayingClient;
 - (MRDNowPlayingClient)localActiveNowPlayingClient;
 - (MRDNowPlayingOriginClient)activeOriginClient;
@@ -24,163 +24,163 @@
 - (NSString)localActiveClientBundleIdentifier;
 - (id)_onQueue_activeOriginClient;
 - (id)_onQueue_allNowPlayingInfoClients;
-- (id)_onQueue_allNowPlayingInfoClientsForOrigin:(id)a3;
+- (id)_onQueue_allNowPlayingInfoClientsForOrigin:(id)origin;
 - (id)_onQueue_companionOriginClient;
-- (id)_onQueue_originClientForDeviceUID:(id)a3;
-- (id)_onQueue_originClientForGroupLeaderOfDeviceUID:(id)a3;
-- (id)_onQueue_originClientForOrigin:(id)a3;
-- (id)_onQueue_queryExistingPlayerPath:(id)a3;
+- (id)_onQueue_originClientForDeviceUID:(id)d;
+- (id)_onQueue_originClientForGroupLeaderOfDeviceUID:(id)d;
+- (id)_onQueue_originClientForOrigin:(id)origin;
+- (id)_onQueue_queryExistingPlayerPath:(id)path;
 - (id)_onQueue_restoredActiveOrigin;
-- (id)augmentedUserInfoForPlayerPath:(id)a3;
-- (id)localPlayersForXpcClient:(id)a3;
-- (id)onQueue_resolveExistingPlayerPath:(id)a3;
-- (id)originClientForDeviceUID:(id)a3;
-- (id)originClientForGroupLeaderOfDeviceUID:(id)a3;
-- (id)originClientForOrigin:(id)a3;
+- (id)augmentedUserInfoForPlayerPath:(id)path;
+- (id)localPlayersForXpcClient:(id)client;
+- (id)onQueue_resolveExistingPlayerPath:(id)path;
+- (id)originClientForDeviceUID:(id)d;
+- (id)originClientForGroupLeaderOfDeviceUID:(id)d;
+- (id)originClientForOrigin:(id)origin;
 - (id)overrideClient;
-- (id)queryExistingPlayerPath:(id)a3;
-- (id)queryExistingPlayerPathForXPCMessage:(id)a3 forClient:(id)a4;
-- (id)queryPlayerPath:(id)a3 forClient:(id)a4;
-- (id)queryPlayerPathForXPCMessage:(id)a3 fromClient:(id)a4;
-- (id)resolveExistingPlayerPath:(id)a3;
-- (id)resolvePlayerPath:(id)a3 fromClient:(id)a4 useDefaultPlayerIfNoneSpecified:(BOOL)a5;
-- (id)xpcClientForPlayerPath:(id)a3;
+- (id)queryExistingPlayerPath:(id)path;
+- (id)queryExistingPlayerPathForXPCMessage:(id)message forClient:(id)client;
+- (id)queryPlayerPath:(id)path forClient:(id)client;
+- (id)queryPlayerPathForXPCMessage:(id)message fromClient:(id)client;
+- (id)resolveExistingPlayerPath:(id)path;
+- (id)resolvePlayerPath:(id)path fromClient:(id)client useDefaultPlayerIfNoneSpecified:(BOOL)specified;
+- (id)xpcClientForPlayerPath:(id)path;
 - (int)activeClientPID;
 - (int)localActiveClientPID;
 - (unsigned)activePlayerPlaybackState;
 - (unsigned)localActivePlayerPlaybackState;
-- (void)_addOrigin:(id)a3 withDeviceInfo:(id)a4 emitNotification:(BOOL)a5;
-- (void)_handleBeginApplicationActivityMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleBeginMusicHandoffSessionMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleContentItemArtworkChangedMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleContentItemChangedMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleEndApplicationActivityMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleFetchPlaybackQueueParticipantsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetActiveOriginMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetActivePlayerPathsForLocalOriginMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetAnyAppIsPlayingMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetApplicationActivityMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetAudioFormatContentInfoForOriginMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetAvailableOriginsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetClientPropertiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetDeviceInfo:(id)a3 fromClient:(id)a4;
-- (void)_handleGetElectedPlayerPathMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetImageDimensionsForArtworkDataMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetLastPlayingDateMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetMediaSuggestionDeviceUIDMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetNowPlayingClientMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetNowPlayingClientsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetNowPlayingPlayerMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetNowPlayingPlayersMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetPlaybackStateMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetPlayerPictureInPictureEnabledMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetPlayerPropertiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetProactiveRecommendedPlayerMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetSupportedCommandsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePlaybackSessionRequest:(id)a3 fromClient:(id)a4;
-- (void)_handleRegisterForWakingNowPlayingNotifications:(id)a3 fromClient:(id)a4;
-- (void)_handleRemoveNowPlayingClientMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRemoveNowPlayingPlayerMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRequestAudioAmplitudeSamplesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRequestPlaybackQueueCapabilities:(id)a3 fromClient:(id)a4;
-- (void)_handleRequestVideoThumbnailsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleResetPlaybackQueueRequests:(id)a3 fromClient:(id)a4;
-- (void)_handleResolvePlayerPath:(id)a3 fromClient:(id)a4;
-- (void)_handleSendLyricsEvent:(id)a3 fromClient:(id)a4;
-- (void)_handleSendMusicHandoffEventMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetActiveOriginMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetCanBeNowPlayingAppMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetCanBeNowPlayingPlayerMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetClientPropertiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetDefaultSupportedCommandsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetHardwareRemoteBehaviorMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetNowPlayingAppOverrideMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetNowPlayingClientMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetNowPlayingPlayerMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetOriginClientPropertiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetOverriddenNowPlayingAppMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetPlaybackQueue:(id)a3 fromClient:(id)a4;
-- (void)_handleSetPlaybackQueueCapabilities:(id)a3 fromClient:(id)a4;
-- (void)_handleSetPlaybackStateMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetPlayerClientPropertiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetPlayerPictureInPictureEnabledMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetPlayerPropertiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetSupportedCommandsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleUpdateClientPropertiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleUpdatePlayerPropertiesMessage:(id)a3 fromClient:(id)a4;
-- (void)_onQueue_savePersistentActiveOrigin:(id)a3;
-- (void)_onQueue_setActiveOrigin:(id)a3 saveState:(BOOL)a4;
-- (void)_removeNowPlayingClient:(id)a3 forOrigin:(id)a4;
-- (void)_removeOrigin:(id)a3;
-- (void)_validateResult:(id)a3 forClient:(id)a4;
-- (void)beginMusicHandoffSessionWithSource:(id)a3 destination:(id)a4 completion:(id)a5;
-- (void)clearNowPlayingClientForXPCClient:(id)a3;
-- (void)collectDiagnostic:(id)a3;
+- (void)_addOrigin:(id)origin withDeviceInfo:(id)info emitNotification:(BOOL)notification;
+- (void)_handleBeginApplicationActivityMessage:(id)message fromClient:(id)client;
+- (void)_handleBeginMusicHandoffSessionMessage:(id)message fromClient:(id)client;
+- (void)_handleContentItemArtworkChangedMessage:(id)message fromClient:(id)client;
+- (void)_handleContentItemChangedMessage:(id)message fromClient:(id)client;
+- (void)_handleEndApplicationActivityMessage:(id)message fromClient:(id)client;
+- (void)_handleFetchPlaybackQueueParticipantsMessage:(id)message fromClient:(id)client;
+- (void)_handleGetActiveOriginMessage:(id)message fromClient:(id)client;
+- (void)_handleGetActivePlayerPathsForLocalOriginMessage:(id)message fromClient:(id)client;
+- (void)_handleGetAnyAppIsPlayingMessage:(id)message fromClient:(id)client;
+- (void)_handleGetApplicationActivityMessage:(id)message fromClient:(id)client;
+- (void)_handleGetAudioFormatContentInfoForOriginMessage:(id)message fromClient:(id)client;
+- (void)_handleGetAvailableOriginsMessage:(id)message fromClient:(id)client;
+- (void)_handleGetClientPropertiesMessage:(id)message fromClient:(id)client;
+- (void)_handleGetDeviceInfo:(id)info fromClient:(id)client;
+- (void)_handleGetElectedPlayerPathMessage:(id)message fromClient:(id)client;
+- (void)_handleGetImageDimensionsForArtworkDataMessage:(id)message fromClient:(id)client;
+- (void)_handleGetLastPlayingDateMessage:(id)message fromClient:(id)client;
+- (void)_handleGetMediaSuggestionDeviceUIDMessage:(id)message fromClient:(id)client;
+- (void)_handleGetNowPlayingClientMessage:(id)message fromClient:(id)client;
+- (void)_handleGetNowPlayingClientsMessage:(id)message fromClient:(id)client;
+- (void)_handleGetNowPlayingPlayerMessage:(id)message fromClient:(id)client;
+- (void)_handleGetNowPlayingPlayersMessage:(id)message fromClient:(id)client;
+- (void)_handleGetPlaybackStateMessage:(id)message fromClient:(id)client;
+- (void)_handleGetPlayerPictureInPictureEnabledMessage:(id)message fromClient:(id)client;
+- (void)_handleGetPlayerPropertiesMessage:(id)message fromClient:(id)client;
+- (void)_handleGetProactiveRecommendedPlayerMessage:(id)message fromClient:(id)client;
+- (void)_handleGetSupportedCommandsMessage:(id)message fromClient:(id)client;
+- (void)_handlePlaybackSessionRequest:(id)request fromClient:(id)client;
+- (void)_handleRegisterForWakingNowPlayingNotifications:(id)notifications fromClient:(id)client;
+- (void)_handleRemoveNowPlayingClientMessage:(id)message fromClient:(id)client;
+- (void)_handleRemoveNowPlayingPlayerMessage:(id)message fromClient:(id)client;
+- (void)_handleRequestAudioAmplitudeSamplesMessage:(id)message fromClient:(id)client;
+- (void)_handleRequestPlaybackQueueCapabilities:(id)capabilities fromClient:(id)client;
+- (void)_handleRequestVideoThumbnailsMessage:(id)message fromClient:(id)client;
+- (void)_handleResetPlaybackQueueRequests:(id)requests fromClient:(id)client;
+- (void)_handleResolvePlayerPath:(id)path fromClient:(id)client;
+- (void)_handleSendLyricsEvent:(id)event fromClient:(id)client;
+- (void)_handleSendMusicHandoffEventMessage:(id)message fromClient:(id)client;
+- (void)_handleSetActiveOriginMessage:(id)message fromClient:(id)client;
+- (void)_handleSetCanBeNowPlayingAppMessage:(id)message fromClient:(id)client;
+- (void)_handleSetCanBeNowPlayingPlayerMessage:(id)message fromClient:(id)client;
+- (void)_handleSetClientPropertiesMessage:(id)message fromClient:(id)client;
+- (void)_handleSetDefaultSupportedCommandsMessage:(id)message fromClient:(id)client;
+- (void)_handleSetHardwareRemoteBehaviorMessage:(id)message fromClient:(id)client;
+- (void)_handleSetNowPlayingAppOverrideMessage:(id)message fromClient:(id)client;
+- (void)_handleSetNowPlayingClientMessage:(id)message fromClient:(id)client;
+- (void)_handleSetNowPlayingPlayerMessage:(id)message fromClient:(id)client;
+- (void)_handleSetOriginClientPropertiesMessage:(id)message fromClient:(id)client;
+- (void)_handleSetOverriddenNowPlayingAppMessage:(id)message fromClient:(id)client;
+- (void)_handleSetPlaybackQueue:(id)queue fromClient:(id)client;
+- (void)_handleSetPlaybackQueueCapabilities:(id)capabilities fromClient:(id)client;
+- (void)_handleSetPlaybackStateMessage:(id)message fromClient:(id)client;
+- (void)_handleSetPlayerClientPropertiesMessage:(id)message fromClient:(id)client;
+- (void)_handleSetPlayerPictureInPictureEnabledMessage:(id)message fromClient:(id)client;
+- (void)_handleSetPlayerPropertiesMessage:(id)message fromClient:(id)client;
+- (void)_handleSetSupportedCommandsMessage:(id)message fromClient:(id)client;
+- (void)_handleUpdateClientPropertiesMessage:(id)message fromClient:(id)client;
+- (void)_handleUpdatePlayerPropertiesMessage:(id)message fromClient:(id)client;
+- (void)_onQueue_savePersistentActiveOrigin:(id)origin;
+- (void)_onQueue_setActiveOrigin:(id)origin saveState:(BOOL)state;
+- (void)_removeNowPlayingClient:(id)client forOrigin:(id)origin;
+- (void)_removeOrigin:(id)origin;
+- (void)_validateResult:(id)result forClient:(id)client;
+- (void)beginMusicHandoffSessionWithSource:(id)source destination:(id)destination completion:(id)completion;
+- (void)clearNowPlayingClientForXPCClient:(id)client;
+- (void)collectDiagnostic:(id)diagnostic;
 - (void)dealloc;
-- (void)handleNowPlayingOriginClient:(id)a3 deviceInfoDidChange:(id)a4 previousDeviceInfo:(id)a5;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
+- (void)handleNowPlayingOriginClient:(id)client deviceInfoDidChange:(id)change previousDeviceInfo:(id)info;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
 - (void)maybePostDistributedNotifications;
-- (void)nowPlayingClient:(id)a3 activePlayerDidChangeFromPlayerClient:(id)a4 toPlayerClient:(id)a5;
-- (void)nowPlayingClient:(id)a3 clientStateDidChange:(id)a4;
-- (void)nowPlayingClient:(id)a3 playerDidRegister:(id)a4;
-- (void)nowPlayingClient:(id)a3 playerDidUnregister:(id)a4;
-- (void)nowPlayingOriginClient:(id)a3 activePlayerClientsDidChange:(id)a4;
-- (void)nowPlayingOriginClient:(id)a3 applicationActivityDidBegin:(id)a4;
-- (void)nowPlayingOriginClient:(id)a3 applicationActivityDidEnd:(id)a4;
-- (void)nowPlayingOriginClient:(id)a3 applicationActivityStatusDidChange:(id)a4;
-- (void)nowPlayingOriginClient:(id)a3 clientDidRegister:(id)a4;
-- (void)nowPlayingOriginClient:(id)a3 clientDidUnregister:(id)a4;
-- (void)nowPlayingOriginClient:(id)a3 currentRouteVolumeDidChange:(float)a4;
-- (void)nowPlayingOriginClientDidChangeAudioFormatContentInfo:(id)a3;
-- (void)nowPlayingOriginClientPlaybackDidTimeout:(id)a3;
-- (void)nowPlayingPlayerClient:(id)a3 clientCanBeNowPlayingDidChange:(BOOL)a4;
-- (void)nowPlayingPlayerClient:(id)a3 playbackQueueArtworkContentItemsDidChange:(id)a4;
-- (void)nowPlayingPlayerClient:(id)a3 playbackQueueCapabilitiesDidChange:(unint64_t)a4;
-- (void)nowPlayingPlayerClient:(id)a3 playbackQueueContentItemsDidChange:(id)a4;
-- (void)nowPlayingPlayerClient:(id)a3 playbackQueueParticipantsDidChange:(id)a4;
-- (void)nowPlayingPlayerClient:(id)a3 playerCanBeNowPlayingDidChange:(BOOL)a4;
-- (void)nowPlayingPlayerClient:(id)a3 playerStateDidChange:(id)a4;
-- (void)nowPlayingPlayerClient:(id)a3 supportedCommandsDidChange:(id)a4;
-- (void)nowPlayingServer:(id)a3 activeOriginDidChangeFromOriginClient:(id)a4 toOriginClient:(id)a5;
-- (void)postActivePlayerPathsDidChangeForOrigin:(id)a3 handler:(id)a4;
-- (void)postAudioFormatContentInfoDidChangeForOrigin:(id)a3 handler:(id)a4;
-- (void)postClientDidRegisterCanBeNowPlayingForPlayerPath:(id)a3 handler:(id)a4;
-- (void)postClientDidRegisterForPlayerPath:(id)a3 handler:(id)a4;
-- (void)postClientDidUnregisterCanBeNowPlayingForPlayerPath:(id)a3 handler:(id)a4;
-- (void)postClientDidUnregisterForPlayerPath:(id)a3 hasDefaultSupportedCommands:(BOOL)a4 canBeNowPlaying:(BOOL)a5 handler:(id)a6;
-- (void)postClientNowPlayingNotificationNamed:(id)a3 userInfo:(id)a4 predicate:(id)a5;
-- (void)postDeviceInfoDidChange:(id)a3 previousDeviceInfo:(id)a4 forOrigin:(id)a5 handler:(id)a6;
-- (void)postElectedPlayerDidChange:(id)a3 change:(int64_t)a4 event:(int64_t)a5 reason:(id)a6 handler:(id)a7;
-- (void)postLockScreenActiveDidChange:(BOOL)a3 handler:(id)a4;
+- (void)nowPlayingClient:(id)client activePlayerDidChangeFromPlayerClient:(id)playerClient toPlayerClient:(id)toPlayerClient;
+- (void)nowPlayingClient:(id)client clientStateDidChange:(id)change;
+- (void)nowPlayingClient:(id)client playerDidRegister:(id)register;
+- (void)nowPlayingClient:(id)client playerDidUnregister:(id)unregister;
+- (void)nowPlayingOriginClient:(id)client activePlayerClientsDidChange:(id)change;
+- (void)nowPlayingOriginClient:(id)client applicationActivityDidBegin:(id)begin;
+- (void)nowPlayingOriginClient:(id)client applicationActivityDidEnd:(id)end;
+- (void)nowPlayingOriginClient:(id)client applicationActivityStatusDidChange:(id)change;
+- (void)nowPlayingOriginClient:(id)client clientDidRegister:(id)register;
+- (void)nowPlayingOriginClient:(id)client clientDidUnregister:(id)unregister;
+- (void)nowPlayingOriginClient:(id)client currentRouteVolumeDidChange:(float)change;
+- (void)nowPlayingOriginClientDidChangeAudioFormatContentInfo:(id)info;
+- (void)nowPlayingOriginClientPlaybackDidTimeout:(id)timeout;
+- (void)nowPlayingPlayerClient:(id)client clientCanBeNowPlayingDidChange:(BOOL)change;
+- (void)nowPlayingPlayerClient:(id)client playbackQueueArtworkContentItemsDidChange:(id)change;
+- (void)nowPlayingPlayerClient:(id)client playbackQueueCapabilitiesDidChange:(unint64_t)change;
+- (void)nowPlayingPlayerClient:(id)client playbackQueueContentItemsDidChange:(id)change;
+- (void)nowPlayingPlayerClient:(id)client playbackQueueParticipantsDidChange:(id)change;
+- (void)nowPlayingPlayerClient:(id)client playerCanBeNowPlayingDidChange:(BOOL)change;
+- (void)nowPlayingPlayerClient:(id)client playerStateDidChange:(id)change;
+- (void)nowPlayingPlayerClient:(id)client supportedCommandsDidChange:(id)change;
+- (void)nowPlayingServer:(id)server activeOriginDidChangeFromOriginClient:(id)client toOriginClient:(id)originClient;
+- (void)postActivePlayerPathsDidChangeForOrigin:(id)origin handler:(id)handler;
+- (void)postAudioFormatContentInfoDidChangeForOrigin:(id)origin handler:(id)handler;
+- (void)postClientDidRegisterCanBeNowPlayingForPlayerPath:(id)path handler:(id)handler;
+- (void)postClientDidRegisterForPlayerPath:(id)path handler:(id)handler;
+- (void)postClientDidUnregisterCanBeNowPlayingForPlayerPath:(id)path handler:(id)handler;
+- (void)postClientDidUnregisterForPlayerPath:(id)path hasDefaultSupportedCommands:(BOOL)commands canBeNowPlaying:(BOOL)playing handler:(id)handler;
+- (void)postClientNowPlayingNotificationNamed:(id)named userInfo:(id)info predicate:(id)predicate;
+- (void)postDeviceInfoDidChange:(id)change previousDeviceInfo:(id)info forOrigin:(id)origin handler:(id)handler;
+- (void)postElectedPlayerDidChange:(id)change change:(int64_t)a4 event:(int64_t)event reason:(id)reason handler:(id)handler;
+- (void)postLockScreenActiveDidChange:(BOOL)change handler:(id)handler;
 - (void)postLockScreenControlsDidChangeDistributedNotification;
-- (void)postLockScreenPlayerPathDidChange:(id)a3 handler:(id)a4;
-- (void)postLockScreenVisibleDidChange:(BOOL)a3 handler:(id)a4;
-- (void)postNowPlayingClientStateDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5;
-- (void)postNowPlayingPlayerStateDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5;
-- (void)postOriginDidRegister:(id)a3 handler:(id)a4;
-- (void)postOriginDidUnRegister:(id)a3 deviceInfo:(id)a4 handler:(id)a5;
-- (void)postPlaybackQueueCapabilitiesDidChange:(unint64_t)a3 forPlayerPath:(id)a4 handler:(id)a5;
-- (void)postPlaybackQueueContentItemsArtworkDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5;
-- (void)postPlaybackQueueContentItemsDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5;
-- (void)postPlaybackQueueDidChange:(id)a3 nowPlayingItemDidChange:(BOOL)a4 forPlayerPath:(id)a5 handler:(id)a6;
-- (void)postPlaybackQueueParticipantsDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5;
-- (void)postPlayerDidRegisterCanBeNowPlayingForPlayerPath:(id)a3 handler:(id)a4;
-- (void)postPlayerDidRegisterForPlayerPath:(id)a3 handler:(id)a4;
-- (void)postPlayerDidUnregisterCanBeNowPlayingForPlayerPath:(id)a3 handler:(id)a4;
-- (void)postProactiveRecommendedPlayerDidChange:(id)a3 change:(int64_t)a4 event:(int64_t)a5 reason:(id)a6 handler:(id)a7;
-- (void)postSupportedCommandsDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5;
-- (void)postVolumeDidChange:(id)a3 volume:(float)a4 handler:(id)a5;
-- (void)registerOriginForwarder:(id)a3;
-- (void)reregisterOrigin:(id)a3 deviceInfo:(id)a4;
-- (void)restoreClientState:(id)a3 handler:(id)a4;
-- (void)restoreDeviceInfoToClient:(id)a3 handler:(id)a4;
-- (void)setActiveOrigin:(id)a3;
-- (void)setOverrideClient:(id)a3;
-- (void)startObservingNowPlayingInfoForNowPlayingPlayerClient:(id)a3;
+- (void)postLockScreenPlayerPathDidChange:(id)change handler:(id)handler;
+- (void)postLockScreenVisibleDidChange:(BOOL)change handler:(id)handler;
+- (void)postNowPlayingClientStateDidChange:(id)change forPlayerPath:(id)path handler:(id)handler;
+- (void)postNowPlayingPlayerStateDidChange:(id)change forPlayerPath:(id)path handler:(id)handler;
+- (void)postOriginDidRegister:(id)register handler:(id)handler;
+- (void)postOriginDidUnRegister:(id)register deviceInfo:(id)info handler:(id)handler;
+- (void)postPlaybackQueueCapabilitiesDidChange:(unint64_t)change forPlayerPath:(id)path handler:(id)handler;
+- (void)postPlaybackQueueContentItemsArtworkDidChange:(id)change forPlayerPath:(id)path handler:(id)handler;
+- (void)postPlaybackQueueContentItemsDidChange:(id)change forPlayerPath:(id)path handler:(id)handler;
+- (void)postPlaybackQueueDidChange:(id)change nowPlayingItemDidChange:(BOOL)didChange forPlayerPath:(id)path handler:(id)handler;
+- (void)postPlaybackQueueParticipantsDidChange:(id)change forPlayerPath:(id)path handler:(id)handler;
+- (void)postPlayerDidRegisterCanBeNowPlayingForPlayerPath:(id)path handler:(id)handler;
+- (void)postPlayerDidRegisterForPlayerPath:(id)path handler:(id)handler;
+- (void)postPlayerDidUnregisterCanBeNowPlayingForPlayerPath:(id)path handler:(id)handler;
+- (void)postProactiveRecommendedPlayerDidChange:(id)change change:(int64_t)a4 event:(int64_t)event reason:(id)reason handler:(id)handler;
+- (void)postSupportedCommandsDidChange:(id)change forPlayerPath:(id)path handler:(id)handler;
+- (void)postVolumeDidChange:(id)change volume:(float)volume handler:(id)handler;
+- (void)registerOriginForwarder:(id)forwarder;
+- (void)reregisterOrigin:(id)origin deviceInfo:(id)info;
+- (void)restoreClientState:(id)state handler:(id)handler;
+- (void)restoreDeviceInfoToClient:(id)client handler:(id)handler;
+- (void)setActiveOrigin:(id)origin;
+- (void)setOverrideClient:(id)client;
+- (void)startObservingNowPlayingInfoForNowPlayingPlayerClient:(id)client;
 - (void)stopObservingNowPlayingInfo;
-- (void)unregisterOriginForwarder:(id)a3;
-- (void)updateDeviceInfo:(id)a3 origin:(id)a4;
-- (void)wakeDeviceIfNecessaryForNowPlayingPlayerClient:(id)a3;
+- (void)unregisterOriginForwarder:(id)forwarder;
+- (void)updateDeviceInfo:(id)info origin:(id)origin;
+- (void)wakeDeviceIfNecessaryForNowPlayingPlayerClient:(id)client;
 @end
 
 @implementation MRDNowPlayingServer
@@ -197,10 +197,10 @@
 
 - (MRPlayerPath)activePlayerPath
 {
-  v2 = [(MRDNowPlayingServer *)self activeOriginClient];
-  v3 = [v2 activePlayerPath];
+  activeOriginClient = [(MRDNowPlayingServer *)self activeOriginClient];
+  activePlayerPath = [activeOriginClient activePlayerPath];
 
-  return v3;
+  return activePlayerPath;
 }
 
 - (id)_onQueue_activeOriginClient
@@ -233,11 +233,11 @@
 
 - (MRDNowPlayingPlayerClient)activePlayerClient
 {
-  v2 = [(MRDNowPlayingServer *)self activeOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 activePlayerClient];
+  activeOriginClient = [(MRDNowPlayingServer *)self activeOriginClient];
+  activeNowPlayingClient = [activeOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
 
-  return v4;
+  return activePlayerClient;
 }
 
 - (MRDNowPlayingOriginClient)localOriginClient
@@ -258,11 +258,11 @@
 
 - (MRDNowPlayingPlayerClient)localActivePlayerClient
 {
-  v2 = [(MRDNowPlayingServer *)self localOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 activePlayerClient];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
 
-  return v4;
+  return activePlayerClient;
 }
 
 - (NSArray)originClients
@@ -290,9 +290,9 @@
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v7;
 
@@ -306,17 +306,17 @@
     v2->_deviceInfoDataSource = v12;
 
     v14 = +[MROrigin localOrigin];
-    v15 = [(MRDDeviceInfoDataSource *)v2->_deviceInfoDataSource deviceInfo];
-    [(MRDNowPlayingServer *)v2 _addOrigin:v14 withDeviceInfo:v15 emitNotification:0];
+    deviceInfo = [(MRDDeviceInfoDataSource *)v2->_deviceInfoDataSource deviceInfo];
+    [(MRDNowPlayingServer *)v2 _addOrigin:v14 withDeviceInfo:deviceInfo emitNotification:0];
 
     v16 = objc_alloc_init(MRDNowPlayingPlaybackQueueServer);
     playbackQueueServer = v2->_playbackQueueServer;
     v2->_playbackQueueServer = v16;
 
     v18 = +[MRUserSettings currentSettings];
-    LODWORD(v15) = [v18 takelockScreenAssertion];
+    LODWORD(deviceInfo) = [v18 takelockScreenAssertion];
 
-    if (v15)
+    if (deviceInfo)
     {
       v19 = objc_alloc_init(MRDLockScreenController);
       lockScreenController = v2->_lockScreenController;
@@ -331,9 +331,9 @@
     }
 
     v23 = +[MRUserSettings currentSettings];
-    v24 = [v23 supportElectedPlayer];
+    supportElectedPlayer = [v23 supportElectedPlayer];
 
-    if (v24)
+    if (supportElectedPlayer)
     {
       v25 = [[MRDElectedPlayerController alloc] initWithOriginClient:v2->_localOriginClient];
       electedPlayerController = v2->_electedPlayerController;
@@ -343,9 +343,9 @@
     }
 
     v27 = +[MRUserSettings currentSettings];
-    v28 = [v27 supportProactiveRecommendedPlayer];
+    supportProactiveRecommendedPlayer = [v27 supportProactiveRecommendedPlayer];
 
-    if (v28)
+    if (supportProactiveRecommendedPlayer)
     {
       v29 = [[MRDProactiveRecommendedPlayerController alloc] initWithOriginClient:v2->_localOriginClient];
       proactiveRecommendedPlayerController = v2->_proactiveRecommendedPlayerController;
@@ -377,201 +377,201 @@
   [(MRDNowPlayingServer *)&v4 dealloc];
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  uint64 = xpc_dictionary_get_uint64(v6, "MRXPC_MESSAGE_ID_KEY");
+  messageCopy = message;
+  clientCopy = client;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "MRXPC_MESSAGE_ID_KEY");
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v11 = 134218498;
     v12 = uint64;
     v13 = 2112;
-    v14 = v7;
+    v14 = clientCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = messageCopy;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Received Now Playing message %llu from client %@ : %@", &v11, 0x20u);
   }
 
   switch(uint64)
   {
     case 0x200000000000001uLL:
-      [(MRDNowPlayingServer *)self _handleSetNowPlayingAppOverrideMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetNowPlayingAppOverrideMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000002uLL:
-      [(MRDNowPlayingServer *)self _handleSetOverriddenNowPlayingAppMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetOverriddenNowPlayingAppMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000003uLL:
-      [(MRDNowPlayingServer *)self _handleBeginApplicationActivityMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleBeginApplicationActivityMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000004uLL:
-      [(MRDNowPlayingServer *)self _handleGetApplicationActivityMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetApplicationActivityMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000005uLL:
-      [(MRDNowPlayingServer *)self _handleEndApplicationActivityMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleEndApplicationActivityMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000006uLL:
-      [(MRDNowPlayingServer *)self _handleSetCanBeNowPlayingAppMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetCanBeNowPlayingAppMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000007uLL:
-      [(MRDNowPlayingPlaybackQueueServer *)self->_playbackQueueServer handlePlaybackQueueRequest:v6 fromClient:v7];
+      [(MRDNowPlayingPlaybackQueueServer *)self->_playbackQueueServer handlePlaybackQueueRequest:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000008uLL:
-      [(MRDNowPlayingServer *)self _handleSetPlaybackQueue:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetPlaybackQueue:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000009uLL:
-      [(MRDNowPlayingServer *)self _handleRequestPlaybackQueueCapabilities:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleRequestPlaybackQueueCapabilities:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000000AuLL:
-      [(MRDNowPlayingServer *)self _handleSetPlaybackQueueCapabilities:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetPlaybackQueueCapabilities:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000000BuLL:
-      [(MRDNowPlayingServer *)self _handleResetPlaybackQueueRequests:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleResetPlaybackQueueRequests:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000000CuLL:
-      [(MRDNowPlayingServer *)self _handleGetClientPropertiesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetClientPropertiesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000000DuLL:
-      [(MRDNowPlayingServer *)self _handleSetClientPropertiesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetClientPropertiesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000000EuLL:
-      [(MRDNowPlayingServer *)self _handleUpdateClientPropertiesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleUpdateClientPropertiesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000000FuLL:
-      [(MRDNowPlayingServer *)self _handleGetPlayerPropertiesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetPlayerPropertiesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000010uLL:
-      [(MRDNowPlayingServer *)self _handleSetPlayerPropertiesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetPlayerPropertiesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000011uLL:
-      [(MRDNowPlayingServer *)self _handleUpdatePlayerPropertiesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleUpdatePlayerPropertiesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000012uLL:
-      [(MRDNowPlayingServer *)self _handleGetPlaybackStateMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetPlaybackStateMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000013uLL:
-      [(MRDNowPlayingServer *)self _handleSetPlaybackStateMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetPlaybackStateMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000014uLL:
-      [(MRDNowPlayingServer *)self _handleGetAnyAppIsPlayingMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetAnyAppIsPlayingMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000015uLL:
-      [(MRDNowPlayingServer *)self _handleRequestVideoThumbnailsMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleRequestVideoThumbnailsMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000016uLL:
-      [(MRDNowPlayingServer *)self _handleRequestAudioAmplitudeSamplesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleRequestAudioAmplitudeSamplesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000017uLL:
-      [(MRDNowPlayingServer *)self _handleSendLyricsEvent:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSendLyricsEvent:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000018uLL:
-      [(MRDNowPlayingServer *)self _handleResolvePlayerPath:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleResolvePlayerPath:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000019uLL:
-      [(MRDNowPlayingServer *)self _handleGetAvailableOriginsMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetAvailableOriginsMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000001AuLL:
-      [(MRDNowPlayingServer *)self _handleSetActiveOriginMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetActiveOriginMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000001BuLL:
-      [(MRDNowPlayingServer *)self _handleGetActiveOriginMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetActiveOriginMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000001FuLL:
-      [(MRDNowPlayingServer *)self _handleGetNowPlayingClientsMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetNowPlayingClientsMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000020uLL:
-      [(MRDNowPlayingServer *)self _handleSetNowPlayingClientMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetNowPlayingClientMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000021uLL:
-      [(MRDNowPlayingServer *)self _handleGetNowPlayingClientMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetNowPlayingClientMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000022uLL:
-      [(MRDNowPlayingServer *)self _handleRemoveNowPlayingClientMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleRemoveNowPlayingClientMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000023uLL:
-      [(MRDNowPlayingServer *)self _handleGetNowPlayingPlayersMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetNowPlayingPlayersMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000024uLL:
-      [(MRDNowPlayingServer *)self _handleSetNowPlayingPlayerMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetNowPlayingPlayerMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000025uLL:
-      [(MRDNowPlayingServer *)self _handleGetNowPlayingPlayerMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetNowPlayingPlayerMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000026uLL:
-      [(MRDNowPlayingServer *)self _handleRemoveNowPlayingPlayerMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleRemoveNowPlayingPlayerMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000027uLL:
-      [(MRDNowPlayingServer *)self _handleGetActivePlayerPathsForLocalOriginMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetActivePlayerPathsForLocalOriginMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000029uLL:
-      [(MRDNowPlayingServer *)self _handleSetHardwareRemoteBehaviorMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetHardwareRemoteBehaviorMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000002AuLL:
-      [(MRDNowPlayingServer *)self _handleContentItemArtworkChangedMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleContentItemArtworkChangedMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000002BuLL:
-      [(MRDNowPlayingServer *)self _handleContentItemChangedMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleContentItemChangedMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000002CuLL:
-      [(MRDNowPlayingServer *)self _handleGetDeviceInfo:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetDeviceInfo:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000002EuLL:
-      [(MRDNowPlayingServer *)self _handleGetElectedPlayerPathMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetElectedPlayerPathMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000002FuLL:
-      [(MRDNowPlayingServer *)self _handleGetProactiveRecommendedPlayerMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetProactiveRecommendedPlayerMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000030uLL:
-      [(MRDNowPlayingServer *)self _handlePlaybackSessionRequest:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handlePlaybackSessionRequest:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000031uLL:
-      [(MRDNowPlayingServer *)self _handleGetSupportedCommandsMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetSupportedCommandsMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000032uLL:
-      [(MRDNowPlayingServer *)self _handleSetSupportedCommandsMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetSupportedCommandsMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000033uLL:
-      [(MRDNowPlayingServer *)self _handleSetDefaultSupportedCommandsMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetDefaultSupportedCommandsMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000034uLL:
-      [(MRDNowPlayingServer *)self _handleGetPlayerPictureInPictureEnabledMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetPlayerPictureInPictureEnabledMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000035uLL:
-      [(MRDNowPlayingServer *)self _handleSetPlayerPictureInPictureEnabledMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetPlayerPictureInPictureEnabledMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000036uLL:
-      [(MRDNowPlayingServer *)self _handleGetLastPlayingDateMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetLastPlayingDateMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000037uLL:
-      [(MRDNowPlayingServer *)self _handleSetOriginClientPropertiesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetOriginClientPropertiesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000038uLL:
-      [(MRDNowPlayingServer *)self _handleSetPlayerClientPropertiesMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetPlayerClientPropertiesMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000039uLL:
-      [(MRDNowPlayingServer *)self _handleSetCanBeNowPlayingPlayerMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSetCanBeNowPlayingPlayerMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000003AuLL:
-      [(MRDNowPlayingServer *)self _handleRegisterForWakingNowPlayingNotifications:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleRegisterForWakingNowPlayingNotifications:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000003BuLL:
-      [(MRDNowPlayingServer *)self _handleGetAudioFormatContentInfoForOriginMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetAudioFormatContentInfoForOriginMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000003CuLL:
-      [(MRDNowPlayingServer *)self _handleGetImageDimensionsForArtworkDataMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetImageDimensionsForArtworkDataMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000003DuLL:
-      [(MRDNowPlayingServer *)self _handleFetchPlaybackQueueParticipantsMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleFetchPlaybackQueueParticipantsMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000003EuLL:
-      [(MRDNowPlayingServer *)self _handleBeginMusicHandoffSessionMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleBeginMusicHandoffSessionMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x20000000000003FuLL:
-      [(MRDNowPlayingServer *)self _handleSendMusicHandoffEventMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleSendMusicHandoffEventMessage:messageCopy fromClient:clientCopy];
       break;
     case 0x200000000000040uLL:
-      [(MRDNowPlayingServer *)self _handleGetMediaSuggestionDeviceUIDMessage:v6 fromClient:v7];
+      [(MRDNowPlayingServer *)self _handleGetMediaSuggestionDeviceUIDMessage:messageCopy fromClient:clientCopy];
       break;
     default:
       v10 = _MRLogForCategory();
@@ -588,98 +588,98 @@
 
 - (int)activeClientPID
 {
-  v2 = [(MRDNowPlayingServer *)self activeOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 client];
-  v5 = [v4 processIdentifier];
+  activeOriginClient = [(MRDNowPlayingServer *)self activeOriginClient];
+  activeNowPlayingClient = [activeOriginClient activeNowPlayingClient];
+  client = [activeNowPlayingClient client];
+  processIdentifier = [client processIdentifier];
 
-  return v5;
+  return processIdentifier;
 }
 
 - (int)localActiveClientPID
 {
-  v2 = [(MRDNowPlayingServer *)self localOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 client];
-  v5 = [v4 processIdentifier];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+  client = [activeNowPlayingClient client];
+  processIdentifier = [client processIdentifier];
 
-  return v5;
+  return processIdentifier;
 }
 
 - (NSString)activeClientBundleIdentifier
 {
-  v2 = [(MRDNowPlayingServer *)self activeOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 client];
-  v5 = [v4 bundleIdentifier];
+  activeOriginClient = [(MRDNowPlayingServer *)self activeOriginClient];
+  activeNowPlayingClient = [activeOriginClient activeNowPlayingClient];
+  client = [activeNowPlayingClient client];
+  bundleIdentifier = [client bundleIdentifier];
 
-  return v5;
+  return bundleIdentifier;
 }
 
 - (NSString)localActiveClientBundleIdentifier
 {
-  v2 = [(MRDNowPlayingServer *)self localOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 client];
-  v5 = [v4 bundleIdentifier];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+  client = [activeNowPlayingClient client];
+  bundleIdentifier = [client bundleIdentifier];
 
-  return v5;
+  return bundleIdentifier;
 }
 
 - (BOOL)activePlayerIsPlaying
 {
-  v2 = [(MRDNowPlayingServer *)self activeOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 activePlayerClient];
-  v5 = [v4 isPlaying];
+  activeOriginClient = [(MRDNowPlayingServer *)self activeOriginClient];
+  activeNowPlayingClient = [activeOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
+  isPlaying = [activePlayerClient isPlaying];
 
-  return v5;
+  return isPlaying;
 }
 
 - (BOOL)localActivePlayerIsPlaying
 {
-  v2 = [(MRDNowPlayingServer *)self localOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 activePlayerClient];
-  v5 = [v4 isPlaying];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
+  isPlaying = [activePlayerClient isPlaying];
 
-  return v5;
+  return isPlaying;
 }
 
 - (unsigned)activePlayerPlaybackState
 {
-  v2 = [(MRDNowPlayingServer *)self activeOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 activePlayerClient];
-  v5 = [v4 playbackState];
+  activeOriginClient = [(MRDNowPlayingServer *)self activeOriginClient];
+  activeNowPlayingClient = [activeOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
+  playbackState = [activePlayerClient playbackState];
 
-  return v5;
+  return playbackState;
 }
 
 - (unsigned)localActivePlayerPlaybackState
 {
-  v2 = [(MRDNowPlayingServer *)self localOriginClient];
-  v3 = [v2 activeNowPlayingClient];
-  v4 = [v3 activePlayerClient];
-  v5 = [v4 playbackState];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
+  playbackState = [activePlayerClient playbackState];
 
-  return v5;
+  return playbackState;
 }
 
 - (MRDNowPlayingClient)activeNowPlayingClient
 {
-  v2 = [(MRDNowPlayingServer *)self activeOriginClient];
-  v3 = [v2 activeNowPlayingClient];
+  activeOriginClient = [(MRDNowPlayingServer *)self activeOriginClient];
+  activeNowPlayingClient = [activeOriginClient activeNowPlayingClient];
 
-  return v3;
+  return activeNowPlayingClient;
 }
 
 - (MRDNowPlayingClient)localActiveNowPlayingClient
 {
-  v2 = [(MRDNowPlayingServer *)self localOriginClient];
-  v3 = [v2 activeNowPlayingClient];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
 
-  return v3;
+  return activeNowPlayingClient;
 }
 
 - (MRDNowPlayingOriginClient)companionOriginClient
@@ -720,10 +720,10 @@
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
-        v8 = [v7 origin];
-        v9 = [v8 identifier];
+        origin = [v7 origin];
+        identifier = [origin identifier];
 
-        if (v9 == 1129140302)
+        if (identifier == 1129140302)
         {
           v4 = v7;
           goto LABEL_11;
@@ -747,10 +747,10 @@ LABEL_11:
 
 - (MRPlayerPath)localActivePlayerPath
 {
-  v2 = [(MRDNowPlayingServer *)self localOriginClient];
-  v3 = [v2 activePlayerPath];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activePlayerPath = [localOriginClient activePlayerPath];
 
-  return v3;
+  return activePlayerPath;
 }
 
 - (NSSet)allNowPlayingInfoClients
@@ -792,12 +792,12 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v20 + 1) + 8 * i) nowPlayingClients];
+        nowPlayingClients = [*(*(&v20 + 1) + 8 * i) nowPlayingClients];
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v10 = [nowPlayingClients countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v10)
         {
           v11 = v10;
@@ -808,7 +808,7 @@ LABEL_11:
             {
               if (*v17 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(nowPlayingClients);
               }
 
               v14 = *(*(&v16 + 1) + 8 * j);
@@ -818,7 +818,7 @@ LABEL_11:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v11 = [nowPlayingClients countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v11);
@@ -850,104 +850,104 @@ LABEL_11:
   return v3;
 }
 
-- (id)_onQueue_allNowPlayingInfoClientsForOrigin:(id)a3
+- (id)_onQueue_allNowPlayingInfoClientsForOrigin:(id)origin
 {
   serialQueue = self->_serialQueue;
-  v5 = a3;
+  originCopy = origin;
   dispatch_assert_queue_V2(serialQueue);
   v6 = objc_alloc_init(NSMutableSet);
-  v7 = [(MRDNowPlayingServer *)self _onQueue_originClientForOrigin:v5];
+  v7 = [(MRDNowPlayingServer *)self _onQueue_originClientForOrigin:originCopy];
 
-  v8 = [v7 nowPlayingClients];
-  [v6 addObjectsFromArray:v8];
+  nowPlayingClients = [v7 nowPlayingClients];
+  [v6 addObjectsFromArray:nowPlayingClients];
 
   return v6;
 }
 
-- (id)queryPlayerPathForXPCMessage:(id)a3 fromClient:(id)a4
+- (id)queryPlayerPathForXPCMessage:(id)message fromClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = MRCreatePlayerPathFromXPCMessage();
-  v7 = [(MRDNowPlayingServer *)self queryPlayerPath:v6 forClient:v5];
+  v7 = [(MRDNowPlayingServer *)self queryPlayerPath:v6 forClient:clientCopy];
 
   return v7;
 }
 
-- (id)queryPlayerPath:(id)a3 forClient:(id)a4
+- (id)queryPlayerPath:(id)path forClient:(id)client
 {
-  v6 = a4;
-  v7 = [(MRDNowPlayingServer *)self resolvePlayerPath:a3 fromClient:v6];
+  clientCopy = client;
+  v7 = [(MRDNowPlayingServer *)self resolvePlayerPath:path fromClient:clientCopy];
   v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v7];
-  [(MRDNowPlayingServer *)self _validateResult:v8 forClient:v6];
+  [(MRDNowPlayingServer *)self _validateResult:v8 forClient:clientCopy];
 
   return v8;
 }
 
-- (id)queryExistingPlayerPathForXPCMessage:(id)a3 forClient:(id)a4
+- (id)queryExistingPlayerPathForXPCMessage:(id)message forClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = MRCreatePlayerPathFromXPCMessage();
   v7 = [(MRDNowPlayingServer *)self resolveExistingPlayerPath:v6];
   v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v7];
-  [(MRDNowPlayingServer *)self _validateResult:v8 forClient:v5];
+  [(MRDNowPlayingServer *)self _validateResult:v8 forClient:clientCopy];
 
   return v8;
 }
 
-- (void)_validateResult:(id)a3 forClient:(id)a4
+- (void)_validateResult:(id)result forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 playerPath];
-  v9 = [v7 isAllowedAccessToDataFromPlayerPath:v8];
+  resultCopy = result;
+  clientCopy = client;
+  playerPath = [resultCopy playerPath];
+  v9 = [clientCopy isAllowedAccessToDataFromPlayerPath:playerPath];
 
   if ((v9 & 1) == 0)
   {
-    if (![v6 error])
+    if (![resultCopy error])
     {
-      [v6 setError:3];
+      [resultCopy setError:3];
     }
 
-    [v6 setNowPlayingClient:0];
-    [v6 setPlayerClient:0];
-    v10 = [v6 originClient];
-    v11 = [v10 playerPath];
-    [v6 setPlayerPath:v11];
+    [resultCopy setNowPlayingClient:0];
+    [resultCopy setPlayerClient:0];
+    originClient = [resultCopy originClient];
+    playerPath2 = [originClient playerPath];
+    [resultCopy setPlayerPath:playerPath2];
 
-    [v6 setXpcClient:0];
+    [resultCopy setXpcClient:0];
   }
 
-  if (MSVDeviceOSIsInternalInstall() && ([v7 isEntitledFor:512] & 1) == 0)
+  if (MSVDeviceOSIsInternalInstall() && ([clientCopy isEntitledFor:512] & 1) == 0)
   {
-    v12 = [v7 bundleIdentifier];
+    bundleIdentifier = [clientCopy bundleIdentifier];
     if (qword_100529460 != -1)
     {
       sub_1003A9894();
     }
 
-    v13 = self;
-    objc_sync_enter(v13);
-    if (v12 && ([qword_100529458 containsObject:v12] & 1) == 0)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (bundleIdentifier && ([qword_100529458 containsObject:bundleIdentifier] & 1) == 0)
     {
       v14 = _MRLogForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_1003A98A8(v7, v14);
+        sub_1003A98A8(clientCopy, v14);
       }
 
-      v15 = v12;
+      v15 = bundleIdentifier;
       MRAnalyticsSendEvent();
       [qword_100529458 addObject:v15];
     }
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)resolvePlayerPath:(id)a3 fromClient:(id)a4 useDefaultPlayerIfNoneSpecified:(BOOL)a5
+- (id)resolvePlayerPath:(id)path fromClient:(id)client useDefaultPlayerIfNoneSpecified:(BOOL)specified
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  clientCopy = client;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -955,8 +955,8 @@ LABEL_11:
   v18 = sub_100035A54;
   v19 = 0;
   serialQueue = self->_serialQueue;
-  v12 = v7;
-  v13 = v8;
+  v12 = pathCopy;
+  v13 = clientCopy;
   msv_dispatch_sync_on_queue();
   v10 = v15[5];
 
@@ -965,9 +965,9 @@ LABEL_11:
   return v10;
 }
 
-- (id)resolveExistingPlayerPath:(id)a3
+- (id)resolveExistingPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -975,7 +975,7 @@ LABEL_11:
   v13 = sub_100035A54;
   v14 = 0;
   serialQueue = self->_serialQueue;
-  v8 = v4;
+  v8 = pathCopy;
   msv_dispatch_sync_on_queue();
   v6 = v10[5];
 
@@ -984,66 +984,66 @@ LABEL_11:
   return v6;
 }
 
-- (id)onQueue_resolveExistingPlayerPath:(id)a3
+- (id)onQueue_resolveExistingPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [v4 origin];
-  if (!v5)
+  origin = [pathCopy origin];
+  if (!origin)
   {
-    v6 = [(MRDNowPlayingServer *)self _onQueue_activeOriginClient];
-    v5 = [v6 origin];
+    _onQueue_activeOriginClient = [(MRDNowPlayingServer *)self _onQueue_activeOriginClient];
+    origin = [_onQueue_activeOriginClient origin];
   }
 
-  v7 = [(MRDNowPlayingServer *)self _onQueue_originClientForOrigin:v5];
-  v24 = v4;
+  v7 = [(MRDNowPlayingServer *)self _onQueue_originClientForOrigin:origin];
+  v24 = pathCopy;
   if (!v7)
   {
 
-    v5 = 0;
-    v10 = 0;
-    v11 = 0;
+    origin = 0;
+    client2 = 0;
+    player = 0;
     v12 = 0;
-    v13 = 0;
+    origin2 = 0;
     goto LABEL_15;
   }
 
-  v8 = [v4 client];
-  v9 = v8;
-  if (v8)
+  client = [pathCopy client];
+  v9 = client;
+  if (client)
   {
-    v10 = v8;
+    client2 = client;
   }
 
   else
   {
-    v14 = [v7 activeNowPlayingClient];
-    v10 = [v14 client];
+    activeNowPlayingClient = [v7 activeNowPlayingClient];
+    client2 = [activeNowPlayingClient client];
   }
 
-  v15 = [v7 deviceInfo];
-  [v10 resolvePlaceholdersForDeviceInfo:v15];
+  deviceInfo = [v7 deviceInfo];
+  [client2 resolvePlaceholdersForDeviceInfo:deviceInfo];
 
-  v16 = [v7 existingNowPlayingClientForClient:v10];
+  v16 = [v7 existingNowPlayingClientForClient:client2];
   if (!v16)
   {
-    [v10 setProcessIdentifier:0];
+    [client2 setProcessIdentifier:0];
   }
 
-  v11 = [v4 player];
-  if (!v11)
+  player = [pathCopy player];
+  if (!player)
   {
-    v17 = [v16 activePlayerClient];
-    v11 = [v17 player];
+    activePlayerClient = [v16 activePlayerClient];
+    player = [activePlayerClient player];
   }
 
-  v12 = [v16 existingPlayerClientForPlayer:v11];
-  v13 = [v7 origin];
+  v12 = [v16 existingPlayerClientForPlayer:player];
+  origin2 = [v7 origin];
   if (!v16)
   {
 LABEL_15:
-    v18 = v10;
-    v10 = v18;
+    client3 = client2;
+    client2 = client3;
     if (!v12)
     {
       goto LABEL_14;
@@ -1052,20 +1052,20 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v18 = [v16 client];
+  client3 = [v16 client];
 
   if (!v12)
   {
 LABEL_14:
-    v19 = v11;
+    player2 = player;
     goto LABEL_17;
   }
 
 LABEL_16:
-  v19 = [v12 player];
+  player2 = [v12 player];
 LABEL_17:
-  v20 = v19;
-  v21 = [[MRPlayerPath alloc] initWithOrigin:v13 client:v18 player:v19];
+  v20 = player2;
+  v21 = [[MRPlayerPath alloc] initWithOrigin:origin2 client:client3 player:player2];
   v22 = _MRLogForCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
@@ -1075,9 +1075,9 @@ LABEL_17:
   return v21;
 }
 
-- (id)queryExistingPlayerPath:(id)a3
+- (id)queryExistingPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -1085,7 +1085,7 @@ LABEL_17:
   v13 = sub_100035A54;
   v14 = 0;
   serialQueue = self->_serialQueue;
-  v8 = v4;
+  v8 = pathCopy;
   msv_dispatch_sync_on_queue();
   v6 = v10[5];
 
@@ -1094,20 +1094,20 @@ LABEL_17:
   return v6;
 }
 
-- (id)_onQueue_queryExistingPlayerPath:(id)a3
+- (id)_onQueue_queryExistingPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v5 = [[MRDNowPlayingServerResult alloc] initWithUnresolvedPlayerPath:v4];
+  v5 = [[MRDNowPlayingServerResult alloc] initWithUnresolvedPlayerPath:pathCopy];
   v6 = objc_alloc_init(MRPlayerPath);
-  v7 = [v4 origin];
-  v8 = [(MRDNowPlayingServer *)self _onQueue_originClientForOrigin:v7];
+  origin = [pathCopy origin];
+  v8 = [(MRDNowPlayingServer *)self _onQueue_originClientForOrigin:origin];
   [(MRDNowPlayingServerResult *)v5 setOriginClient:v8];
 
-  v9 = [(MRDNowPlayingServerResult *)v5 originClient];
+  originClient = [(MRDNowPlayingServerResult *)v5 originClient];
 
   v10 = v5;
-  if (!v9)
+  if (!originClient)
   {
     v23 = 5;
 LABEL_7:
@@ -1115,39 +1115,39 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v11 = [(MRDNowPlayingServerResult *)v5 originClient];
-  v12 = [v11 origin];
-  [v6 setOrigin:v12];
+  originClient2 = [(MRDNowPlayingServerResult *)v5 originClient];
+  origin2 = [originClient2 origin];
+  [v6 setOrigin:origin2];
 
-  v13 = [(MRDNowPlayingServerResult *)v5 originClient];
-  v14 = [v13 existingNowPlayingClientForPlayerPath:v4];
+  originClient3 = [(MRDNowPlayingServerResult *)v5 originClient];
+  v14 = [originClient3 existingNowPlayingClientForPlayerPath:pathCopy];
   [(MRDNowPlayingServerResult *)v5 setNowPlayingClient:v14];
 
-  v15 = [(MRDNowPlayingServerResult *)v5 nowPlayingClient];
+  nowPlayingClient = [(MRDNowPlayingServerResult *)v5 nowPlayingClient];
 
   v10 = v5;
-  if (!v15)
+  if (!nowPlayingClient)
   {
     v23 = 35;
     goto LABEL_7;
   }
 
-  v16 = [(MRDNowPlayingServerResult *)v5 nowPlayingClient];
-  v17 = [v16 client];
+  nowPlayingClient2 = [(MRDNowPlayingServerResult *)v5 nowPlayingClient];
+  client = [nowPlayingClient2 client];
 
-  [v6 setClient:v17];
-  v18 = [(MRDNowPlayingServerResult *)v5 nowPlayingClient];
-  v19 = [v18 existingPlayerClientForPlayerPath:v4];
+  [v6 setClient:client];
+  nowPlayingClient3 = [(MRDNowPlayingServerResult *)v5 nowPlayingClient];
+  v19 = [nowPlayingClient3 existingPlayerClientForPlayerPath:pathCopy];
   [(MRDNowPlayingServerResult *)v5 setPlayerClient:v19];
 
-  v20 = [(MRDNowPlayingServerResult *)v5 playerClient];
+  playerClient = [(MRDNowPlayingServerResult *)v5 playerClient];
 
-  if (v20)
+  if (playerClient)
   {
-    v21 = [(MRDNowPlayingServerResult *)v5 playerClient];
-    v22 = [v21 player];
+    playerClient2 = [(MRDNowPlayingServerResult *)v5 playerClient];
+    player = [playerClient2 player];
 
-    [v6 setPlayer:v22];
+    [v6 setPlayer:player];
   }
 
   else
@@ -1156,12 +1156,12 @@ LABEL_7:
   }
 
 LABEL_10:
-  v24 = [(MRDNowPlayingServer *)self xpcClientForPlayerPath:v4];
+  v24 = [(MRDNowPlayingServer *)self xpcClientForPlayerPath:pathCopy];
   [(MRDNowPlayingServerResult *)v5 setXpcClient:v24];
 
-  v25 = [(MRDNowPlayingServerResult *)v5 xpcClient];
+  xpcClient = [(MRDNowPlayingServerResult *)v5 xpcClient];
 
-  if (!v25 && ![(MRDNowPlayingServerResult *)v5 error])
+  if (!xpcClient && ![(MRDNowPlayingServerResult *)v5 error])
   {
     [(MRDNowPlayingServerResult *)v5 setError:4];
   }
@@ -1171,87 +1171,87 @@ LABEL_10:
   return v5;
 }
 
-- (id)xpcClientForPlayerPath:(id)a3
+- (id)xpcClientForPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 origin];
-  v6 = [v5 isLocal];
+  pathCopy = path;
+  origin = [pathCopy origin];
+  isLocal = [origin isLocal];
 
-  if (v6)
+  if (isLocal)
   {
-    v7 = [v4 origin];
-    v8 = [(MRDNowPlayingServer *)self _hasForwarderForOrigin:v7];
+    origin2 = [pathCopy origin];
+    v8 = [(MRDNowPlayingServer *)self _hasForwarderForOrigin:origin2];
 
     if (v8)
     {
       v9 = +[MRDMediaRemoteServer server];
-      v10 = [v9 daemonClient];
+      daemonClient = [v9 daemonClient];
       goto LABEL_13;
     }
 
-    v12 = [v4 client];
-    v9 = v12;
-    if (!v12)
+    client = [pathCopy client];
+    v9 = client;
+    if (!client)
     {
-      v10 = 0;
+      daemonClient = 0;
       goto LABEL_13;
     }
 
-    v13 = [v12 processIdentifier];
-    v14 = [v9 bundleIdentifier];
-    v11 = v14;
-    if (v13 < 1)
+    processIdentifier = [client processIdentifier];
+    bundleIdentifier = [v9 bundleIdentifier];
+    origin3 = bundleIdentifier;
+    if (processIdentifier < 1)
     {
-      if (!v14)
+      if (!bundleIdentifier)
       {
-        v10 = 0;
+        daemonClient = 0;
         goto LABEL_12;
       }
 
       v15 = +[MRDMediaRemoteServer server];
-      v16 = [v15 clientForBundleIdentifier:v11];
+      v16 = [v15 clientForBundleIdentifier:origin3];
     }
 
     else
     {
       v15 = +[MRDMediaRemoteServer server];
-      v16 = [v15 clientForPID:v13];
+      v16 = [v15 clientForPID:processIdentifier];
     }
 
-    v10 = v16;
+    daemonClient = v16;
   }
 
   else
   {
     v9 = +[MRDMediaRemoteServer server];
-    v11 = [v4 origin];
-    v10 = [v9 clientWithRegisteredCustomOrigin:v11];
+    origin3 = [pathCopy origin];
+    daemonClient = [v9 clientWithRegisteredCustomOrigin:origin3];
   }
 
 LABEL_12:
 
 LABEL_13:
 
-  return v10;
+  return daemonClient;
 }
 
-- (id)localPlayersForXpcClient:(id)a3
+- (id)localPlayersForXpcClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MRDNowPlayingServer *)self localOriginClient];
+  clientCopy = client;
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
   v6 = objc_alloc_init(MRClient);
-  v7 = [v4 pid];
+  v7 = [clientCopy pid];
 
   [v6 setProcessIdentifier:v7];
-  v8 = [v5 existingNowPlayingClientForClient:v6];
-  v9 = [v8 playerClients];
+  v8 = [localOriginClient existingNowPlayingClientForClient:v6];
+  playerClients = [v8 playerClients];
 
-  return v9;
+  return playerClients;
 }
 
-- (id)originClientForOrigin:(id)a3
+- (id)originClientForOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -1259,7 +1259,7 @@ LABEL_13:
   v13 = sub_100035A54;
   v14 = 0;
   serialQueue = self->_serialQueue;
-  v8 = v4;
+  v8 = originCopy;
   msv_dispatch_sync_on_queue();
   v6 = v10[5];
 
@@ -1268,9 +1268,9 @@ LABEL_13:
   return v6;
 }
 
-- (id)originClientForDeviceUID:(id)a3
+- (id)originClientForDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1282,10 +1282,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_10011F81C;
   block[3] = &unk_1004B7798;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -1294,9 +1294,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)originClientForGroupLeaderOfDeviceUID:(id)a3
+- (id)originClientForGroupLeaderOfDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1308,10 +1308,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_10011F97C;
   block[3] = &unk_1004B7798;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -1320,27 +1320,27 @@ LABEL_13:
   return v7;
 }
 
-- (void)clearNowPlayingClientForXPCClient:(id)a3
+- (void)clearNowPlayingClientForXPCClient:(id)client
 {
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10011FBC0;
   v22[3] = &unk_1004BD9C8;
-  v4 = a3;
-  v23 = v4;
-  v24 = self;
-  [v4 flushPendingPlaybackSessionMigrateEvents:v22];
+  clientCopy = client;
+  v23 = clientCopy;
+  selfCopy = self;
+  [clientCopy flushPendingPlaybackSessionMigrateEvents:v22];
   v5 = [MRClient alloc];
-  v6 = [v4 pid];
-  v7 = [v4 bundleIdentifier];
-  v8 = [v5 initWithProcessIdentifier:v6 bundleIdentifier:v7];
+  v6 = [clientCopy pid];
+  bundleIdentifier = [clientCopy bundleIdentifier];
+  v8 = [v5 initWithProcessIdentifier:v6 bundleIdentifier:bundleIdentifier];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(MRDNowPlayingServer *)self originClients];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v25 count:16];
+  originClients = [(MRDNowPlayingServer *)self originClients];
+  v10 = [originClients countByEnumeratingWithState:&v18 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1351,38 +1351,38 @@ LABEL_13:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(originClients);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 origin];
-        v16 = [v15 isLocallyHosted];
+        origin = [v14 origin];
+        isLocallyHosted = [origin isLocallyHosted];
 
-        if (v16)
+        if (isLocallyHosted)
         {
-          v17 = [v14 origin];
-          [(MRDNowPlayingServer *)self _removeNowPlayingClient:v8 forOrigin:v17];
+          origin2 = [v14 origin];
+          [(MRDNowPlayingServer *)self _removeNowPlayingClient:v8 forOrigin:origin2];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v25 count:16];
+      v11 = [originClients countByEnumeratingWithState:&v18 objects:v25 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)restoreDeviceInfoToClient:(id)a3 handler:(id)a4
+- (void)restoreDeviceInfoToClient:(id)client handler:(id)handler
 {
-  v6 = a4;
-  if ([a3 isEntitledFor:0x2000])
+  handlerCopy = handler;
+  if ([client isEntitledFor:0x2000])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(MRDNowPlayingServer *)self originClients];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    originClients = [(MRDNowPlayingServer *)self originClients];
+    v8 = [originClients countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1393,16 +1393,16 @@ LABEL_13:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(originClients);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 deviceInfo];
-          v14 = [v12 origin];
-          [(MRDNowPlayingServer *)self postDeviceInfoDidChange:v13 previousDeviceInfo:0 forOrigin:v14 handler:v6];
+          deviceInfo = [v12 deviceInfo];
+          origin = [v12 origin];
+          [(MRDNowPlayingServer *)self postDeviceInfoDidChange:deviceInfo previousDeviceInfo:0 forOrigin:origin handler:handlerCopy];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [originClients countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -1410,16 +1410,16 @@ LABEL_13:
   }
 }
 
-- (void)restoreClientState:(id)a3 handler:(id)a4
+- (void)restoreClientState:(id)state handler:(id)handler
 {
-  v96 = a3;
-  v6 = a4;
+  stateCopy = state;
+  handlerCopy = handler;
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v7 = [(MRDNowPlayingServer *)self originClients];
-  v8 = [v7 countByEnumeratingWithState:&v139 objects:v148 count:16];
+  originClients = [(MRDNowPlayingServer *)self originClients];
+  v8 = [originClients countByEnumeratingWithState:&v139 objects:v148 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1430,22 +1430,22 @@ LABEL_13:
       {
         if (*v140 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(originClients);
         }
 
-        v12 = [*(*(&v139 + 1) + 8 * i) origin];
-        [(MRDNowPlayingServer *)self postOriginDidRegister:v12 handler:v6];
+        origin = [*(*(&v139 + 1) + 8 * i) origin];
+        [(MRDNowPlayingServer *)self postOriginDidRegister:origin handler:handlerCopy];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v139 objects:v148 count:16];
+      v9 = [originClients countByEnumeratingWithState:&v139 objects:v148 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(MRDNowPlayingServer *)self activePlayerPath];
-  v14 = [(MRDNowPlayingServer *)self activePlayerClient];
-  -[MRDNowPlayingServer postActiveOriginDidChange:withPlaybackState:handler:](self, "postActiveOriginDidChange:withPlaybackState:handler:", v13, [v14 playbackState], v6);
+  activePlayerPath = [(MRDNowPlayingServer *)self activePlayerPath];
+  activePlayerClient = [(MRDNowPlayingServer *)self activePlayerClient];
+  -[MRDNowPlayingServer postActiveOriginDidChange:withPlaybackState:handler:](self, "postActiveOriginDidChange:withPlaybackState:handler:", activePlayerPath, [activePlayerClient playbackState], handlerCopy);
 
   v137 = 0u;
   v138 = 0u;
@@ -1456,7 +1456,7 @@ LABEL_13:
   if (v86)
   {
     v85 = *v136;
-    v94 = v6;
+    v94 = handlerCopy;
     do
     {
       v15 = 0;
@@ -1469,33 +1469,33 @@ LABEL_13:
 
         v87 = v15;
         v16 = *(*(&v135 + 1) + 8 * v15);
-        if ([v96 isEntitledFor:0x2000])
+        if ([stateCopy isEntitledFor:0x2000])
         {
-          v17 = [v16 deviceInfo];
-          v18 = [v16 origin];
-          [(MRDNowPlayingServer *)self postDeviceInfoDidChange:v17 previousDeviceInfo:0 forOrigin:v18 handler:v6];
+          deviceInfo = [v16 deviceInfo];
+          origin2 = [v16 origin];
+          [(MRDNowPlayingServer *)self postDeviceInfoDidChange:deviceInfo previousDeviceInfo:0 forOrigin:origin2 handler:handlerCopy];
         }
 
         [v16 volume];
         v20 = v19;
-        v21 = [v16 playerPath];
+        playerPath = [v16 playerPath];
         LODWORD(v22) = v20;
-        [(MRDNowPlayingServer *)self postVolumeDidChange:v21 volume:v6 handler:v22];
+        [(MRDNowPlayingServer *)self postVolumeDidChange:playerPath volume:handlerCopy handler:v22];
 
-        v23 = [v16 isMuted];
-        v24 = [v16 playerPath];
-        [(MRDNowPlayingServer *)self postIsMutedDidChange:v24 isMuted:v23 handler:v6];
+        isMuted = [v16 isMuted];
+        playerPath2 = [v16 playerPath];
+        [(MRDNowPlayingServer *)self postIsMutedDidChange:playerPath2 isMuted:isMuted handler:handlerCopy];
 
-        v25 = [v16 volumeControlCapabilities];
-        v26 = [v16 playerPath];
-        [(MRDNowPlayingServer *)self postVolumeCapabilitiesDidChange:v26 capabilities:v25 handler:v6];
+        volumeControlCapabilities = [v16 volumeControlCapabilities];
+        playerPath3 = [v16 playerPath];
+        [(MRDNowPlayingServer *)self postVolumeCapabilitiesDidChange:playerPath3 capabilities:volumeControlCapabilities handler:handlerCopy];
 
         v133 = 0u;
         v134 = 0u;
         v131 = 0u;
         v132 = 0u;
-        v27 = [v16 nowPlayingClients];
-        v28 = [v27 countByEnumeratingWithState:&v131 objects:v146 count:16];
+        nowPlayingClients = [v16 nowPlayingClients];
+        v28 = [nowPlayingClients countByEnumeratingWithState:&v131 objects:v146 count:16];
         if (v28)
         {
           v29 = v28;
@@ -1506,30 +1506,30 @@ LABEL_13:
             {
               if (*v132 != v30)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(nowPlayingClients);
               }
 
-              v32 = [*(*(&v131 + 1) + 8 * j) playerPath];
-              [(MRDNowPlayingServer *)self postClientDidRegisterForPlayerPath:v32 handler:v6];
+              playerPath4 = [*(*(&v131 + 1) + 8 * j) playerPath];
+              [(MRDNowPlayingServer *)self postClientDidRegisterForPlayerPath:playerPath4 handler:handlerCopy];
             }
 
-            v29 = [v27 countByEnumeratingWithState:&v131 objects:v146 count:16];
+            v29 = [nowPlayingClients countByEnumeratingWithState:&v131 objects:v146 count:16];
           }
 
           while (v29);
         }
 
-        v33 = [v16 activePlayerPath];
-        v34 = [v16 activeNowPlayingClient];
-        v35 = [v34 activePlayerClient];
-        -[MRDNowPlayingServer postNowPlayingApplicationDidChangeForPlayerPath:withPlaybackState:handler:](self, "postNowPlayingApplicationDidChangeForPlayerPath:withPlaybackState:handler:", v33, [v35 playbackState], v6);
+        activePlayerPath2 = [v16 activePlayerPath];
+        activeNowPlayingClient = [v16 activeNowPlayingClient];
+        activePlayerClient2 = [activeNowPlayingClient activePlayerClient];
+        -[MRDNowPlayingServer postNowPlayingApplicationDidChangeForPlayerPath:withPlaybackState:handler:](self, "postNowPlayingApplicationDidChangeForPlayerPath:withPlaybackState:handler:", activePlayerPath2, [activePlayerClient2 playbackState], handlerCopy);
 
         v129 = 0u;
         v130 = 0u;
         v127 = 0u;
         v128 = 0u;
-        v88 = [v16 nowPlayingClients];
-        v90 = [v88 countByEnumeratingWithState:&v127 objects:v145 count:16];
+        nowPlayingClients2 = [v16 nowPlayingClients];
+        v90 = [nowPlayingClients2 countByEnumeratingWithState:&v127 objects:v145 count:16];
         if (v90)
         {
           v89 = *v128;
@@ -1541,22 +1541,22 @@ LABEL_13:
             {
               if (*v128 != v89)
               {
-                objc_enumerationMutation(v88);
+                objc_enumerationMutation(nowPlayingClients2);
               }
 
               v91 = v36;
               v37 = *(*(&v127 + 1) + 8 * v36);
-              v38 = [v37 client];
-              v39 = [v37 playerPath];
-              [(MRDNowPlayingServer *)self postNowPlayingClientStateDidChange:v38 forPlayerPath:v39 handler:v6];
+              client = [v37 client];
+              playerPath5 = [v37 playerPath];
+              [(MRDNowPlayingServer *)self postNowPlayingClientStateDidChange:client forPlayerPath:playerPath5 handler:handlerCopy];
 
               v125 = 0u;
               v126 = 0u;
               v123 = 0u;
               v124 = 0u;
               v92 = v37;
-              v40 = [v37 playerClients];
-              v41 = [v40 countByEnumeratingWithState:&v123 objects:v144 count:16];
+              playerClients = [v37 playerClients];
+              v41 = [playerClients countByEnumeratingWithState:&v123 objects:v144 count:16];
               if (v41)
               {
                 v42 = v41;
@@ -1567,30 +1567,30 @@ LABEL_13:
                   {
                     if (*v124 != v43)
                     {
-                      objc_enumerationMutation(v40);
+                      objc_enumerationMutation(playerClients);
                     }
 
-                    v45 = [*(*(&v123 + 1) + 8 * k) playerPath];
-                    [(MRDNowPlayingServer *)self postPlayerDidRegisterForPlayerPath:v45 handler:v6];
+                    playerPath6 = [*(*(&v123 + 1) + 8 * k) playerPath];
+                    [(MRDNowPlayingServer *)self postPlayerDidRegisterForPlayerPath:playerPath6 handler:handlerCopy];
                   }
 
-                  v42 = [v40 countByEnumeratingWithState:&v123 objects:v144 count:16];
+                  v42 = [playerClients countByEnumeratingWithState:&v123 objects:v144 count:16];
                 }
 
                 while (v42);
               }
 
-              v46 = [v92 activePlayerClient];
-              v47 = [v46 playerPath];
-              v48 = [v92 activePlayerClient];
-              -[MRDNowPlayingServer postActivePlayerDidChangeForPlayerPath:withPlaybackState:handler:](self, "postActivePlayerDidChangeForPlayerPath:withPlaybackState:handler:", v47, [v48 playbackState], v6);
+              activePlayerClient3 = [v92 activePlayerClient];
+              playerPath7 = [activePlayerClient3 playerPath];
+              activePlayerClient4 = [v92 activePlayerClient];
+              -[MRDNowPlayingServer postActivePlayerDidChangeForPlayerPath:withPlaybackState:handler:](self, "postActivePlayerDidChangeForPlayerPath:withPlaybackState:handler:", playerPath7, [activePlayerClient4 playbackState], handlerCopy);
 
               v121 = 0u;
               v122 = 0u;
               v119 = 0u;
               v120 = 0u;
-              v93 = [v92 playerClients];
-              v98 = [v93 countByEnumeratingWithState:&v119 objects:v143 count:16];
+              playerClients2 = [v92 playerClients];
+              v98 = [playerClients2 countByEnumeratingWithState:&v119 objects:v143 count:16];
               if (v98)
               {
                 v97 = *v120;
@@ -1601,62 +1601,62 @@ LABEL_13:
                   {
                     if (*v120 != v97)
                     {
-                      objc_enumerationMutation(v93);
+                      objc_enumerationMutation(playerClients2);
                     }
 
                     v99 = v49;
                     v50 = *(*(&v119 + 1) + 8 * v49);
-                    v51 = [v50 player];
-                    v52 = [v50 playerPath];
-                    [(MRDNowPlayingServer *)self postNowPlayingPlayerStateDidChange:v51 forPlayerPath:v52 handler:v6];
+                    player = [v50 player];
+                    playerPath8 = [v50 playerPath];
+                    [(MRDNowPlayingServer *)self postNowPlayingPlayerStateDidChange:player forPlayerPath:playerPath8 handler:handlerCopy];
 
                     [v16 timeSincePlaying];
                     v53 = [NSDate dateWithTimeIntervalSinceNow:?];
                     [v53 timeIntervalSinceReferenceDate];
                     v55 = v54;
 
-                    v56 = [v50 isPlaying];
-                    v57 = [v50 playerPath];
-                    [(MRDNowPlayingServer *)self postIsPlayingDidChange:v56 lastPlayingTimestamp:v57 forPlayerPath:v6 handler:v55];
+                    isPlaying = [v50 isPlaying];
+                    playerPath9 = [v50 playerPath];
+                    [(MRDNowPlayingServer *)self postIsPlayingDidChange:isPlaying lastPlayingTimestamp:playerPath9 forPlayerPath:handlerCopy handler:v55];
 
-                    v58 = [v50 playbackState];
-                    v59 = [v50 playerPath];
-                    [(MRDNowPlayingServer *)self postPlaybackStateDidChange:v58 forPlayerPath:v59 handler:v6];
+                    playbackState = [v50 playbackState];
+                    playerPath10 = [v50 playerPath];
+                    [(MRDNowPlayingServer *)self postPlaybackStateDidChange:playbackState forPlayerPath:playerPath10 handler:handlerCopy];
 
-                    v60 = [v50 supportedRemoteControlCommandsData];
-                    v61 = [v50 playerPath];
+                    supportedRemoteControlCommandsData = [v50 supportedRemoteControlCommandsData];
+                    playerPath11 = [v50 playerPath];
                     v115[0] = _NSConcreteStackBlock;
                     v115[1] = 3221225472;
                     v115[2] = sub_100120978;
                     v115[3] = &unk_1004BD9F0;
-                    v62 = v96;
+                    v62 = stateCopy;
                     v116 = v62;
                     v117 = v50;
-                    v63 = v6;
+                    v63 = handlerCopy;
                     v118 = v63;
-                    [(MRDNowPlayingServer *)self postSupportedCommandsDidChange:v60 forPlayerPath:v61 handler:v115];
+                    [(MRDNowPlayingServer *)self postSupportedCommandsDidChange:supportedRemoteControlCommandsData forPlayerPath:playerPath11 handler:v115];
 
-                    v64 = [v50 playbackQueueCapabilities];
-                    v65 = [v50 playerPath];
-                    [(MRDNowPlayingServer *)self postPlaybackQueueCapabilitiesDidChange:v64 forPlayerPath:v65 handler:v63];
+                    playbackQueueCapabilities = [v50 playbackQueueCapabilities];
+                    playerPath12 = [v50 playerPath];
+                    [(MRDNowPlayingServer *)self postPlaybackQueueCapabilitiesDidChange:playbackQueueCapabilities forPlayerPath:playerPath12 handler:v63];
 
-                    v66 = [v50 playbackQueue];
-                    v67 = [v50 playerPath];
+                    playbackQueue = [v50 playbackQueue];
+                    playerPath13 = [v50 playerPath];
                     v110[0] = _NSConcreteStackBlock;
                     v110[1] = 3221225472;
                     v110[2] = sub_100120A24;
                     v110[3] = &unk_1004BDA18;
                     v68 = v62;
                     v111 = v68;
-                    v69 = v66;
+                    v69 = playbackQueue;
                     v112 = v69;
                     v113 = v50;
                     v70 = v63;
                     v114 = v70;
-                    [(MRDNowPlayingServer *)self postPlaybackQueueDidChange:v69 nowPlayingItemDidChange:1 forPlayerPath:v67 handler:v110];
+                    [(MRDNowPlayingServer *)self postPlaybackQueueDidChange:v69 nowPlayingItemDidChange:1 forPlayerPath:playerPath13 handler:v110];
 
-                    v71 = [v69 contentItems];
-                    v72 = [v50 playerPath];
+                    contentItems = [v69 contentItems];
+                    playerPath14 = [v50 playerPath];
                     v105[0] = _NSConcreteStackBlock;
                     v105[1] = 3221225472;
                     v105[2] = sub_100120C24;
@@ -1668,10 +1668,10 @@ LABEL_13:
                     v108 = v74;
                     v75 = v70;
                     v109 = v75;
-                    [(MRDNowPlayingServer *)self postPlaybackQueueContentItemsDidChange:v71 forPlayerPath:v72 handler:v105];
+                    [(MRDNowPlayingServer *)self postPlaybackQueueContentItemsDidChange:contentItems forPlayerPath:playerPath14 handler:v105];
 
-                    v76 = [v74 contentItems];
-                    v77 = [v50 playerPath];
+                    contentItems2 = [v74 contentItems];
+                    playerPath15 = [v50 playerPath];
                     v100[0] = _NSConcreteStackBlock;
                     v100[1] = 3221225472;
                     v100[2] = sub_100120D1C;
@@ -1682,25 +1682,25 @@ LABEL_13:
                     v103 = v78;
                     v79 = v75;
                     v104 = v79;
-                    [(MRDNowPlayingServer *)self postPlaybackQueueContentItemsArtworkDidChange:v76 forPlayerPath:v77 handler:v100];
+                    [(MRDNowPlayingServer *)self postPlaybackQueueContentItemsArtworkDidChange:contentItems2 forPlayerPath:playerPath15 handler:v100];
 
-                    v80 = [v50 participants];
-                    v81 = [v50 playerPath];
-                    [(MRDNowPlayingServer *)self postPlaybackQueueParticipantsDidChange:v80 forPlayerPath:v81 handler:v79];
+                    participants = [v50 participants];
+                    playerPath16 = [v50 playerPath];
+                    [(MRDNowPlayingServer *)self postPlaybackQueueParticipantsDidChange:participants forPlayerPath:playerPath16 handler:v79];
 
                     if ([v50 canBeNowPlayingPlayer])
                     {
-                      v82 = [v50 playerPath];
-                      [(MRDNowPlayingServer *)self postPlayerDidRegisterCanBeNowPlayingForPlayerPath:v82 handler:v79];
+                      playerPath17 = [v50 playerPath];
+                      [(MRDNowPlayingServer *)self postPlayerDidRegisterCanBeNowPlayingForPlayerPath:playerPath17 handler:v79];
                     }
 
                     v49 = v99 + 1;
-                    v6 = v94;
+                    handlerCopy = v94;
                     v16 = v95;
                   }
 
                   while (v98 != (v99 + 1));
-                  v98 = [v93 countByEnumeratingWithState:&v119 objects:v143 count:16];
+                  v98 = [playerClients2 countByEnumeratingWithState:&v119 objects:v143 count:16];
                 }
 
                 while (v98);
@@ -1708,15 +1708,15 @@ LABEL_13:
 
               if ([v92 canBeNowPlaying])
               {
-                v83 = [v92 activePlayerPath];
-                [(MRDNowPlayingServer *)self postClientDidRegisterCanBeNowPlayingForPlayerPath:v83 handler:v6];
+                activePlayerPath3 = [v92 activePlayerPath];
+                [(MRDNowPlayingServer *)self postClientDidRegisterCanBeNowPlayingForPlayerPath:activePlayerPath3 handler:handlerCopy];
               }
 
               v36 = v91 + 1;
             }
 
             while ((v91 + 1) != v90);
-            v90 = [v88 countByEnumeratingWithState:&v127 objects:v145 count:16];
+            v90 = [nowPlayingClients2 countByEnumeratingWithState:&v127 objects:v145 count:16];
           }
 
           while (v90);
@@ -1733,36 +1733,36 @@ LABEL_13:
   }
 }
 
-- (void)beginMusicHandoffSessionWithSource:(id)a3 destination:(id)a4 completion:(id)a5
+- (void)beginMusicHandoffSessionWithSource:(id)source destination:(id)destination completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  destinationCopy = destination;
+  completionCopy = completion;
   v11 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100121078;
   v15[3] = &unk_1004BC458;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = sourceCopy;
+  v17 = destinationCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = destinationCopy;
+  v13 = sourceCopy;
+  v14 = completionCopy;
   sub_10019F130(v11, 0, v15, 7.0);
 }
 
-- (void)_handleGetAvailableOriginsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetAvailableOriginsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = [(MRDNowPlayingServer *)self originClients];
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  messageCopy = message;
+  originClients = [(MRDNowPlayingServer *)self originClients];
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(originClients, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = originClients;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -1778,8 +1778,8 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) origin];
-        [v7 addObject:v13];
+        origin = [*(*(&v17 + 1) + 8 * v12) origin];
+        [v7 addObject:origin];
 
         v12 = v12 + 1;
       }
@@ -1797,18 +1797,18 @@ LABEL_13:
   v15[3] = &unk_1004B6E08;
   v16 = v7;
   v14 = v7;
-  sub_100008278(v5, v15);
+  sub_100008278(messageCopy, v15);
 }
 
-- (void)_handleSetActiveOriginMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetActiveOriginMessage:(id)message fromClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = MRCreateOriginFromXPCMessage();
   v7 = _MRLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v5;
+    v9 = clientCopy;
     v10 = 2114;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Client %{public}@ requesting to set active origin to %{public}@", &v8, 0x16u);
@@ -1817,55 +1817,55 @@ LABEL_13:
   [(MRDNowPlayingServer *)self setActiveOrigin:v6];
 }
 
-- (void)_handleGetActiveOriginMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetActiveOriginMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = [(MRDNowPlayingServer *)self activeOriginClient];
-  v7 = [v6 origin];
+  messageCopy = message;
+  activeOriginClient = [(MRDNowPlayingServer *)self activeOriginClient];
+  origin = [activeOriginClient origin];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10012185C;
   v9[3] = &unk_1004B6E08;
-  v10 = v7;
-  v8 = v7;
-  sub_100008278(v5, v9);
+  v10 = origin;
+  v8 = origin;
+  sub_100008278(messageCopy, v9);
 }
 
-- (void)reregisterOrigin:(id)a3 deviceInfo:(id)a4
+- (void)reregisterOrigin:(id)origin deviceInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  originCopy = origin;
+  infoCopy = info;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = v6;
+    v30 = originCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Re-registering origin %{public}@", buf, 0xCu);
   }
 
   v9 = +[MRNowPlayingOriginClientManager sharedManager];
-  [v9 removeOrigin:v6];
+  [v9 removeOrigin:originCopy];
 
   v10 = +[MRNowPlayingOriginClientManager sharedManager];
-  v11 = [v7 routingContextID];
-  v12 = [v10 createCustomOriginClientForOrigin:v6 routingContextID:v11];
+  routingContextID = [infoCopy routingContextID];
+  v12 = [v10 createCustomOriginClientForOrigin:originCopy routingContextID:routingContextID];
 
   v13 = +[MRNowPlayingOriginClientManager sharedManager];
-  [v13 removeOriginRequests:v6];
+  [v13 removeOriginRequests:originCopy];
 
   v14 = +[MRNowPlayingOriginClientManager sharedManager];
-  v15 = [v6 playerPath];
-  v16 = [v14 originClientRequestsForPlayerPath:v15];
+  playerPath = [originCopy playerPath];
+  v16 = [v14 originClientRequestsForPlayerPath:playerPath];
 
-  [v16 setDeviceInfo:v7];
-  v17 = [(MRDNowPlayingServer *)self originClientForOrigin:v6];
+  [v16 setDeviceInfo:infoCopy];
+  v17 = [(MRDNowPlayingServer *)self originClientForOrigin:originCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = [v17 nowPlayingClients];
-  v19 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  nowPlayingClients = [v17 nowPlayingClients];
+  v19 = [nowPlayingClients countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1877,17 +1877,17 @@ LABEL_13:
       {
         if (*v25 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(nowPlayingClients);
         }
 
-        v23 = [*(*(&v24 + 1) + 8 * v22) client];
-        [v17 removeNowPlayingClientForClient:v23];
+        client = [*(*(&v24 + 1) + 8 * v22) client];
+        [v17 removeNowPlayingClientForClient:client];
 
         v22 = v22 + 1;
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v20 = [nowPlayingClients countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v20);
@@ -1896,21 +1896,21 @@ LABEL_13:
   [v17 setVolumeControlCapabilities:0];
   [v17 setVolume:0.0];
   [v17 clearDefaultSupportedCommandsData];
-  [v17 setDeviceInfo:v7];
+  [v17 setDeviceInfo:infoCopy];
 }
 
-- (void)updateDeviceInfo:(id)a3 origin:(id)a4
+- (void)updateDeviceInfo:(id)info origin:(id)origin
 {
-  v6 = a3;
-  v7 = [(MRDNowPlayingServer *)self originClientForOrigin:a4];
-  [v7 setDeviceInfo:v6];
+  infoCopy = info;
+  v7 = [(MRDNowPlayingServer *)self originClientForOrigin:origin];
+  [v7 setDeviceInfo:infoCopy];
 }
 
-- (void)_handleSetNowPlayingAppOverrideMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetNowPlayingAppOverrideMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = xpc_dictionary_get_BOOL(v6, "MRXPC_NOWPLAYING_APP_OVERRIDE_ENABLED_KEY");
+  messageCopy = message;
+  clientCopy = client;
+  v8 = xpc_dictionary_get_BOOL(messageCopy, "MRXPC_NOWPLAYING_APP_OVERRIDE_ENABLED_KEY");
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1921,20 +1921,20 @@ LABEL_13:
     }
 
     v25 = 138543618;
-    v26 = v7;
+    v26 = clientCopy;
     v27 = 2114;
     v28 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Client %{public}@ requesting to %{public}@ itself as now playing app override", &v25, 0x16u);
   }
 
-  v11 = [(MRDNowPlayingServer *)self overrideClient];
+  overrideClient = [(MRDNowPlayingServer *)self overrideClient];
   v12 = +[MRDMediaRemoteServer server];
-  v13 = [v12 nowPlayingServer];
+  nowPlayingServer = [v12 nowPlayingServer];
 
   v14 = +[MROrigin localOrigin];
-  v15 = [v13 originClientForOrigin:v14];
+  v15 = [nowPlayingServer originClientForOrigin:v14];
 
-  v16 = [v15 existingNowPlayingClientForPid:{objc_msgSend(v11, "pid")}];
+  v16 = [v15 existingNowPlayingClientForPid:{objc_msgSend(overrideClient, "pid")}];
   if (v8)
   {
     v17 = +[MRPlayer defaultPlayer];
@@ -1946,13 +1946,13 @@ LABEL_13:
     v21 = [v16 playerClientForPlayer:v20];
     [v21 setCanBeNowPlayingPlayerTimestamp:v19];
 
-    v22 = v7;
+    v22 = clientCopy;
   }
 
   else
   {
-    v23 = [v11 pid];
-    if (v23 != [v7 pid])
+    v23 = [overrideClient pid];
+    if (v23 != [clientCopy pid])
     {
       v24 = 3;
       goto LABEL_11;
@@ -1967,14 +1967,14 @@ LABEL_13:
   [(MRDNowPlayingServer *)self setOverrideClient:v22];
   v24 = 0;
 LABEL_11:
-  sub_10000F9E4(v6, v24);
+  sub_10000F9E4(messageCopy, v24);
 }
 
-- (void)_handleSetOverriddenNowPlayingAppMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetOverriddenNowPlayingAppMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
-  string = xpc_dictionary_get_string(v7, "MRXPC_NOWPLAYING_DISPLAYID_KEY");
+  clientCopy = client;
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "MRXPC_NOWPLAYING_DISPLAYID_KEY");
   if (string)
   {
     string = [[NSString alloc] initWithUTF8String:string];
@@ -1985,7 +1985,7 @@ LABEL_11:
   {
     v10 = @"enable";
     *buf = 138543874;
-    v28 = v6;
+    v28 = clientCopy;
     v29 = 2114;
     if (!string)
     {
@@ -2007,10 +2007,10 @@ LABEL_11:
     {
       +[MRDMediaRemoteServer server];
       v13 = v26 = self;
-      v14 = [v13 nowPlayingServer];
+      nowPlayingServer = [v13 nowPlayingServer];
 
       v15 = +[MROrigin localOrigin];
-      v16 = [v14 originClientForOrigin:v15];
+      v16 = [nowPlayingServer originClientForOrigin:v15];
 
       v17 = [v16 existingNowPlayingClientForPid:{objc_msgSend(v12, "pid")}];
       v18 = +[MRPlayer defaultPlayer];
@@ -2028,8 +2028,8 @@ LABEL_11:
 
     else
     {
-      v14 = _MRLogForCategory();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      nowPlayingServer = _MRLogForCategory();
+      if (os_log_type_enabled(nowPlayingServer, OS_LOG_TYPE_DEFAULT))
       {
         v24 = [string length];
         v25 = @"<unknown>";
@@ -2040,7 +2040,7 @@ LABEL_11:
 
         *buf = 138543362;
         v28 = v25;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Could not set override client. Client %{public}@ not found.", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, nowPlayingServer, OS_LOG_TYPE_DEFAULT, "Could not set override client. Client %{public}@ not found.", buf, 0xCu);
       }
 
       v23 = 4;
@@ -2053,87 +2053,87 @@ LABEL_11:
     v23 = 0;
   }
 
-  sub_10000F9E4(v7, v23);
+  sub_10000F9E4(messageCopy, v23);
 }
 
-- (void)_handleSetCanBeNowPlayingAppMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetCanBeNowPlayingAppMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:v6 fromClient:a4];
-  v8 = [v7 nowPlayingClient];
+  messageCopy = message;
+  v7 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:messageCopy fromClient:client];
+  nowPlayingClient = [v7 nowPlayingClient];
 
-  if (v8)
+  if (nowPlayingClient)
   {
-    v9 = xpc_dictionary_get_BOOL(v6, "MRXPC_NOWPLAYING_APP_ENABLED_KEY");
-    v10 = [v7 nowPlayingClient];
-    [v10 setCanBeNowPlaying:v9];
-    if (v9 && xpc_dictionary_get_double(v6, "MRXPC_TIMESTAMP") > 2.22044605e-16)
+    v9 = xpc_dictionary_get_BOOL(messageCopy, "MRXPC_NOWPLAYING_APP_ENABLED_KEY");
+    nowPlayingClient2 = [v7 nowPlayingClient];
+    [nowPlayingClient2 setCanBeNowPlaying:v9];
+    if (v9 && xpc_dictionary_get_double(messageCopy, "MRXPC_TIMESTAMP") > 2.22044605e-16)
     {
-      v11 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-      [v10 setCanBeNowPlayingTimestamp:v11];
+      playerPath = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
+      [nowPlayingClient2 setCanBeNowPlayingTimestamp:playerPath];
 LABEL_7:
     }
   }
 
   else
   {
-    v10 = _MRLogForCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    nowPlayingClient2 = _MRLogForCategory();
+    if (os_log_type_enabled(nowPlayingClient2, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 playerPath];
+      playerPath = [v7 playerPath];
       v12 = 138412290;
-      v13 = v11;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Unable to set can be now playing app. No now playing client found for %@", &v12, 0xCu);
+      v13 = playerPath;
+      _os_log_impl(&_mh_execute_header, nowPlayingClient2, OS_LOG_TYPE_DEFAULT, "Unable to set can be now playing app. No now playing client found for %@", &v12, 0xCu);
       goto LABEL_7;
     }
   }
 }
 
-- (void)_handleSetCanBeNowPlayingPlayerMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetCanBeNowPlayingPlayerMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:v6 fromClient:a4];
-  v8 = [v7 playerClient];
+  messageCopy = message;
+  v7 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:messageCopy fromClient:client];
+  playerClient = [v7 playerClient];
 
-  if (v8)
+  if (playerClient)
   {
-    v9 = xpc_dictionary_get_BOOL(v6, "MRXPC_NOWPLAYING_APP_ENABLED_KEY");
-    v10 = [v7 playerClient];
-    [v10 setCanBeNowPlayingPlayer:v9];
-    v11 = [v7 nowPlayingClient];
-    [v11 setPerPlayerCanBeNowPlaying:1];
-    if (v9 && xpc_dictionary_get_double(v6, "MRXPC_TIMESTAMP") > 2.22044605e-16)
+    v9 = xpc_dictionary_get_BOOL(messageCopy, "MRXPC_NOWPLAYING_APP_ENABLED_KEY");
+    playerClient2 = [v7 playerClient];
+    [playerClient2 setCanBeNowPlayingPlayer:v9];
+    nowPlayingClient = [v7 nowPlayingClient];
+    [nowPlayingClient setPerPlayerCanBeNowPlaying:1];
+    if (v9 && xpc_dictionary_get_double(messageCopy, "MRXPC_TIMESTAMP") > 2.22044605e-16)
     {
       v12 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-      [v10 setCanBeNowPlayingPlayerTimestamp:v12];
+      [playerClient2 setCanBeNowPlayingPlayerTimestamp:v12];
     }
 
     goto LABEL_7;
   }
 
-  v10 = _MRLogForCategory();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  playerClient2 = _MRLogForCategory();
+  if (os_log_type_enabled(playerClient2, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 playerPath];
+    nowPlayingClient = [v7 playerPath];
     v13 = 138412290;
-    v14 = v11;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Unable to set can be now playing player. No player client found for %@", &v13, 0xCu);
+    v14 = nowPlayingClient;
+    _os_log_impl(&_mh_execute_header, playerClient2, OS_LOG_TYPE_DEFAULT, "Unable to set can be now playing player. No player client found for %@", &v13, 0xCu);
 LABEL_7:
   }
 }
 
-- (void)_handleBeginApplicationActivityMessage:(id)a3 fromClient:(id)a4
+- (void)_handleBeginApplicationActivityMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreateAppActivityFromXPCMessage();
   MSVDeviceOSIsInternalInstall();
-  v7 = [(MRDNowPlayingServer *)self localOriginClient];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
   MSVDeviceOSIsInternalInstall();
-  if (v7)
+  if (localOriginClient)
   {
     v8 = [v6 mutableCopy];
     MSVDeviceOSIsInternalInstall();
-    [v7 setActivity:v8];
+    [localOriginClient setActivity:v8];
 
     v9 = 0;
   }
@@ -2148,32 +2148,32 @@ LABEL_7:
   v10[2] = sub_100122534;
   v10[3] = &unk_1004BDA88;
   v11 = v9;
-  sub_100008278(v5, v10);
+  sub_100008278(messageCopy, v10);
 }
 
-- (void)_handleGetApplicationActivityMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetApplicationActivityMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = [(MRDNowPlayingServer *)self localOriginClient];
-  v7 = [v6 activity];
+  messageCopy = message;
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activity = [localOriginClient activity];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100122608;
   v9[3] = &unk_1004B6E08;
-  v10 = v7;
-  v8 = v7;
-  sub_100008278(v5, v9);
+  v10 = activity;
+  v8 = activity;
+  sub_100008278(messageCopy, v9);
 }
 
-- (void)_handleEndApplicationActivityMessage:(id)a3 fromClient:(id)a4
+- (void)_handleEndApplicationActivityMessage:(id)message fromClient:(id)client
 {
-  v7 = a3;
-  v5 = [(MRDNowPlayingServer *)self localOriginClient];
+  messageCopy = message;
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
   MSVDeviceOSIsInternalInstall();
-  if (v5)
+  if (localOriginClient)
   {
-    [v5 setActivity:0];
+    [localOriginClient setActivity:0];
     v6 = 0;
   }
 
@@ -2182,69 +2182,69 @@ LABEL_7:
     v6 = 5;
   }
 
-  sub_10000F9E4(v7, v6);
+  sub_10000F9E4(messageCopy, v6);
 }
 
-- (void)_handleSetPlaybackQueue:(id)a3 fromClient:(id)a4
+- (void)_handleSetPlaybackQueue:(id)queue fromClient:(id)client
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:v22 fromClient:v6];
+  queueCopy = queue;
+  clientCopy = client;
+  v7 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:queueCopy fromClient:clientCopy];
   v8 = MRCreatePlaybackQueueFromXPCMessage();
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 range];
-    v12 = [MRPlaybackQueueRequest defaultPlaybackQueueRequestWithRange:v10, v11];
-    v13 = [v6 playbackQueueRequests];
-    v14 = [v7 playerPath];
-    v15 = [v13 subscriptionControllerForPlayerPath:v14];
+    range = [v8 range];
+    v12 = [MRPlaybackQueueRequest defaultPlaybackQueueRequestWithRange:range, v11];
+    playbackQueueRequests = [clientCopy playbackQueueRequests];
+    playerPath = [v7 playerPath];
+    v15 = [playbackQueueRequests subscriptionControllerForPlayerPath:playerPath];
 
     [v15 subscribeToPlaybackQueue:v9 forRequest:v12];
     v16 = +[MRDMediaRemoteServer server];
-    v17 = [v16 daemonClient];
+    daemonClient = [v16 daemonClient];
 
-    v18 = [v17 playbackQueueRequests];
-    v19 = [v7 playerPath];
-    v20 = [v18 subscriptionControllerForPlayerPath:v19];
+    playbackQueueRequests2 = [daemonClient playbackQueueRequests];
+    playerPath2 = [v7 playerPath];
+    v20 = [playbackQueueRequests2 subscriptionControllerForPlayerPath:playerPath2];
 
     [v20 subscribeToPlaybackQueue:v9 forRequest:v12];
   }
 
-  v21 = [v7 playerClient];
-  [v21 setPlaybackQueue:v9];
+  playerClient = [v7 playerClient];
+  [playerClient setPlaybackQueue:v9];
 
-  sub_10000F9E4(v22, [v7 error]);
+  sub_10000F9E4(queueCopy, [v7 error]);
 }
 
-- (void)_handleRequestPlaybackQueueCapabilities:(id)a3 fromClient:(id)a4
+- (void)_handleRequestPlaybackQueueCapabilities:(id)capabilities fromClient:(id)client
 {
-  v6 = a3;
-  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
+  capabilitiesCopy = capabilities;
+  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:capabilitiesCopy forClient:client];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100122914;
   v9 = v8[3] = &unk_1004B6E08;
   v7 = v9;
-  sub_100008278(v6, v8);
+  sub_100008278(capabilitiesCopy, v8);
 }
 
-- (void)_handleSetPlaybackQueueCapabilities:(id)a3 fromClient:(id)a4
+- (void)_handleSetPlaybackQueueCapabilities:(id)capabilities fromClient:(id)client
 {
-  v6 = a3;
-  v9 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:v6 fromClient:a4];
+  capabilitiesCopy = capabilities;
+  v9 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:capabilitiesCopy fromClient:client];
   v7 = MRCreatePlaybackQueueCapabilitiesFromXPCMessage();
-  v8 = [v9 playerClient];
-  [v8 setPlaybackQueueCapabilities:v7];
+  playerClient = [v9 playerClient];
+  [playerClient setPlaybackQueueCapabilities:v7];
 
-  sub_10000F9E4(v6, [v9 error]);
+  sub_10000F9E4(capabilitiesCopy, [v9 error]);
 }
 
-- (void)_handleSetHardwareRemoteBehaviorMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetHardwareRemoteBehaviorMessage:(id)message fromClient:(id)client
 {
-  v5 = a4;
-  v6 = a3;
-  uint64 = xpc_dictionary_get_uint64(v6, "MRXPC_HARDWARE_REMOTE_BEHAVIOR_KEY");
+  clientCopy = client;
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "MRXPC_HARDWARE_REMOTE_BEHAVIOR_KEY");
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2252,22 +2252,22 @@ LABEL_7:
     v10 = 138543618;
     v11 = v9;
     v12 = 2114;
-    v13 = v5;
+    v13 = clientCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting hardware remote behavior to %{public}@ for client %{public}@", &v10, 0x16u);
   }
 
-  [v5 setHardwareRemoteBehavior:uint64];
-  sub_10000F9E4(v6, 0);
+  [clientCopy setHardwareRemoteBehavior:uint64];
+  sub_10000F9E4(messageCopy, 0);
 }
 
-- (void)_handleResetPlaybackQueueRequests:(id)a3 fromClient:(id)a4
+- (void)_handleResetPlaybackQueueRequests:(id)requests fromClient:(id)client
 {
-  v5 = a4;
-  v6 = a3;
+  clientCopy = client;
+  requestsCopy = requests;
   v11 = MRCreatePlayerPathFromXPCMessage();
-  v7 = [v5 playbackQueueRequests];
+  playbackQueueRequests = [clientCopy playbackQueueRequests];
 
-  v8 = [v7 subscriptionControllerForPlayerPath:v11];
+  v8 = [playbackQueueRequests subscriptionControllerForPlayerPath:v11];
 
   v9 = MRCreateDataFromXPCMessage();
   v10 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:0];
@@ -2277,29 +2277,29 @@ LABEL_7:
   }
 }
 
-- (void)_handleGetClientPropertiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetClientPropertiesMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
+  messageCopy = message;
+  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100122CFC;
   v9 = v8[3] = &unk_1004B6E08;
   v7 = v9;
-  sub_100008278(v6, v8);
+  sub_100008278(messageCopy, v8);
 }
 
-- (void)_handleSetClientPropertiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetClientPropertiesMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  messageCopy = message;
   v8 = MRCreatePlayerPathFromXPCMessage();
-  v9 = [(MRDNowPlayingServer *)self resolvePlayerPath:v8 fromClient:v6 useDefaultPlayerIfNoneSpecified:0];
+  v9 = [(MRDNowPlayingServer *)self resolvePlayerPath:v8 fromClient:clientCopy useDefaultPlayerIfNoneSpecified:0];
 
   v10 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v9];
-  v11 = [v8 client];
-  v12 = [v10 nowPlayingClient];
-  [v12 setClient:v11];
+  client = [v8 client];
+  nowPlayingClient = [v10 nowPlayingClient];
+  [nowPlayingClient setClient:client];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -2307,20 +2307,20 @@ LABEL_7:
   v14[3] = &unk_1004B6E08;
   v15 = v10;
   v13 = v10;
-  sub_100008278(v7, v14);
+  sub_100008278(messageCopy, v14);
 }
 
-- (void)_handleUpdateClientPropertiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleUpdateClientPropertiesMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  messageCopy = message;
   v8 = MRCreatePlayerPathFromXPCMessage();
-  v9 = [(MRDNowPlayingServer *)self resolvePlayerPath:v8 fromClient:v6 useDefaultPlayerIfNoneSpecified:0];
+  v9 = [(MRDNowPlayingServer *)self resolvePlayerPath:v8 fromClient:clientCopy useDefaultPlayerIfNoneSpecified:0];
 
   v10 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v9];
-  v11 = [v10 nowPlayingClient];
-  v12 = [v8 client];
-  [v11 updateClient:v12];
+  nowPlayingClient = [v10 nowPlayingClient];
+  client = [v8 client];
+  [nowPlayingClient updateClient:client];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -2328,31 +2328,31 @@ LABEL_7:
   v14[3] = &unk_1004B6E08;
   v15 = v10;
   v13 = v10;
-  sub_100008278(v7, v14);
+  sub_100008278(messageCopy, v14);
 }
 
-- (void)_handleGetPlayerPropertiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetPlayerPropertiesMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
+  messageCopy = message;
+  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100123174;
   v9 = v8[3] = &unk_1004B6E08;
   v7 = v9;
-  sub_100008278(v6, v8);
+  sub_100008278(messageCopy, v8);
 }
 
-- (void)_handleSetPlayerPropertiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetPlayerPropertiesMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  messageCopy = message;
   v8 = MRCreatePlayerPathFromXPCMessage();
-  v9 = [(MRDNowPlayingServer *)self resolvePlayerPath:v8 fromClient:v6];
+  v9 = [(MRDNowPlayingServer *)self resolvePlayerPath:v8 fromClient:clientCopy];
 
   v10 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v9];
-  v11 = [v10 playerClient];
-  [v11 setPlayerPath:v8];
+  playerClient = [v10 playerClient];
+  [playerClient setPlayerPath:v8];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -2360,20 +2360,20 @@ LABEL_7:
   v13[3] = &unk_1004B6E08;
   v14 = v10;
   v12 = v10;
-  sub_100008278(v7, v13);
+  sub_100008278(messageCopy, v13);
 }
 
-- (void)_handleUpdatePlayerPropertiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleUpdatePlayerPropertiesMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  messageCopy = message;
   v8 = MRCreatePlayerPathFromXPCMessage();
-  v9 = [(MRDNowPlayingServer *)self resolvePlayerPath:v8 fromClient:v6];
+  v9 = [(MRDNowPlayingServer *)self resolvePlayerPath:v8 fromClient:clientCopy];
 
   v10 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v9];
-  v11 = [v10 playerClient];
-  v12 = [v8 player];
-  [v11 updatePlayer:v12];
+  playerClient = [v10 playerClient];
+  player = [v8 player];
+  [playerClient updatePlayer:player];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -2381,36 +2381,36 @@ LABEL_7:
   v14[3] = &unk_1004B6E08;
   v15 = v10;
   v13 = v10;
-  sub_100008278(v7, v14);
+  sub_100008278(messageCopy, v14);
 }
 
-- (void)_handleGetPlaybackStateMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetPlaybackStateMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
+  messageCopy = message;
+  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001235B4;
   v9 = v8[3] = &unk_1004B6E08;
   v7 = v9;
-  sub_100008278(v6, v8);
+  sub_100008278(messageCopy, v8);
 }
 
-- (void)_handleSetPlaybackStateMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetPlaybackStateMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:v6 fromClient:a4];
-  v8 = [v7 nowPlayingClient];
+  messageCopy = message;
+  v7 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:messageCopy fromClient:client];
+  nowPlayingClient = [v7 nowPlayingClient];
 
-  if (v8)
+  if (nowPlayingClient)
   {
-    uint64 = xpc_dictionary_get_uint64(v6, "MRXPC_PLAYBACK_STATE_KEY");
-    v10 = xpc_dictionary_get_double(v6, "MRXPC_TIMESTAMP");
-    v11 = [v7 playerClient];
-    v12 = v11;
+    uint64 = xpc_dictionary_get_uint64(messageCopy, "MRXPC_PLAYBACK_STATE_KEY");
+    v10 = xpc_dictionary_get_double(messageCopy, "MRXPC_TIMESTAMP");
+    playerClient = [v7 playerClient];
+    v12 = playerClient;
     if (v10 <= 0.0)
     {
-      [v11 updatePlaybackState:uint64 date:0];
+      [playerClient updatePlaybackState:uint64 date:0];
     }
 
     else
@@ -2425,61 +2425,61 @@ LABEL_7:
     v12 = _MRLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v7 playerPath];
+      playerPath = [v7 playerPath];
       v15 = 138412290;
-      v16 = v14;
+      v16 = playerPath;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Unable to set playback state. No now playing client found for %@", &v15, 0xCu);
     }
   }
 
-  sub_10000F9E4(v6, [v7 error]);
+  sub_10000F9E4(messageCopy, [v7 error]);
 }
 
-- (void)_handleGetAnyAppIsPlayingMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetAnyAppIsPlayingMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
-  v7 = [v8 originClient];
-  LODWORD(self) = [v7 isPlaying];
+  messageCopy = message;
+  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
+  originClient = [v8 originClient];
+  LODWORD(self) = [originClient isPlaying];
 
-  sub_10000BEE0(v6, "MRXPC_APP_IS_PLAYING_KEY", 2, self, 0);
+  sub_10000BEE0(messageCopy, "MRXPC_APP_IS_PLAYING_KEY", 2, self, 0);
 }
 
-- (void)_handleRequestVideoThumbnailsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRequestVideoThumbnailsMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:v7];
+  messageCopy = message;
+  clientCopy = client;
+  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:clientCopy];
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 xpcClient];
+    xpcClient = [v8 xpcClient];
     v17 = 138543618;
-    v18 = v7;
+    v18 = clientCopy;
     v19 = 2114;
-    v20 = v10;
+    v20 = xpcClient;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received video thumbnails request from %{public}@ for %{public}@", &v17, 0x16u);
   }
 
-  v11 = [v8 xpcClient];
+  xpcClient2 = [v8 xpcClient];
 
   v12 = _MRLogForCategory();
   v13 = v12;
-  if (v11)
+  if (xpcClient2)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 xpcClient];
+      xpcClient3 = [v8 xpcClient];
       v17 = 138543362;
-      v18 = v14;
+      v18 = xpcClient3;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Relaying video thumbnails request to %{public}@", &v17, 0xCu);
     }
 
-    xpc_dictionary_set_uint64(v6, "MRXPC_MESSAGE_ID_KEY", 0x700000000000004uLL);
-    v15 = [v8 playerPath];
+    xpc_dictionary_set_uint64(messageCopy, "MRXPC_MESSAGE_ID_KEY", 0x700000000000004uLL);
+    playerPath = [v8 playerPath];
     MRAddPlayerPathToXPCMessage();
-    v16 = [v8 xpcClient];
-    [v16 relayXPCMessage:v6 andReply:1];
+    xpcClient4 = [v8 xpcClient];
+    [xpcClient4 relayXPCMessage:messageCopy andReply:1];
   }
 
   else
@@ -2489,45 +2489,45 @@ LABEL_7:
       sub_1003A9A5C();
     }
 
-    sub_10000F9E4(v6, [v8 error]);
+    sub_10000F9E4(messageCopy, [v8 error]);
   }
 }
 
-- (void)_handleRequestAudioAmplitudeSamplesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRequestAudioAmplitudeSamplesMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:v7];
+  messageCopy = message;
+  clientCopy = client;
+  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:clientCopy];
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 xpcClient];
+    xpcClient = [v8 xpcClient];
     v17 = 138543618;
-    v18 = v7;
+    v18 = clientCopy;
     v19 = 2114;
-    v20 = v10;
+    v20 = xpcClient;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received audio amplitude samples request from %{public}@ for %{public}@", &v17, 0x16u);
   }
 
-  v11 = [v8 xpcClient];
+  xpcClient2 = [v8 xpcClient];
 
   v12 = _MRLogForCategory();
   v13 = v12;
-  if (v11)
+  if (xpcClient2)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 xpcClient];
+      xpcClient3 = [v8 xpcClient];
       v17 = 138543362;
-      v18 = v14;
+      v18 = xpcClient3;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Relaying audio amplitude samples request to %{public}@", &v17, 0xCu);
     }
 
-    xpc_dictionary_set_uint64(v6, "MRXPC_MESSAGE_ID_KEY", 0x700000000000005uLL);
-    v15 = [v8 playerPath];
+    xpc_dictionary_set_uint64(messageCopy, "MRXPC_MESSAGE_ID_KEY", 0x700000000000005uLL);
+    playerPath = [v8 playerPath];
     MRAddPlayerPathToXPCMessage();
-    v16 = [v8 xpcClient];
-    [v16 relayXPCMessage:v6 andReply:1];
+    xpcClient4 = [v8 xpcClient];
+    [xpcClient4 relayXPCMessage:messageCopy andReply:1];
   }
 
   else
@@ -2537,45 +2537,45 @@ LABEL_7:
       sub_1003A9A90();
     }
 
-    sub_10000F9E4(v6, [v8 error]);
+    sub_10000F9E4(messageCopy, [v8 error]);
   }
 }
 
-- (void)_handleSendLyricsEvent:(id)a3 fromClient:(id)a4
+- (void)_handleSendLyricsEvent:(id)event fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:v7];
+  eventCopy = event;
+  clientCopy = client;
+  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:eventCopy forClient:clientCopy];
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 xpcClient];
+    xpcClient = [v8 xpcClient];
     v17 = 138543618;
-    v18 = v7;
+    v18 = clientCopy;
     v19 = 2114;
-    v20 = v10;
+    v20 = xpcClient;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received lyrics event from client %{public}@ and sending to %{public}@", &v17, 0x16u);
   }
 
-  v11 = [v8 xpcClient];
+  xpcClient2 = [v8 xpcClient];
 
   v12 = _MRLogForCategory();
   v13 = v12;
-  if (v11)
+  if (xpcClient2)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 xpcClient];
+      xpcClient3 = [v8 xpcClient];
       v17 = 138543362;
-      v18 = v14;
+      v18 = xpcClient3;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Relaying lyrics event to %{public}@", &v17, 0xCu);
     }
 
-    xpc_dictionary_set_uint64(v6, "MRXPC_MESSAGE_ID_KEY", 0x700000000000006uLL);
-    v15 = [v8 playerPath];
+    xpc_dictionary_set_uint64(eventCopy, "MRXPC_MESSAGE_ID_KEY", 0x700000000000006uLL);
+    playerPath = [v8 playerPath];
     MRAddPlayerPathToXPCMessage();
-    v16 = [v8 xpcClient];
-    [v16 relayXPCMessage:v6 andReply:0];
+    xpcClient4 = [v8 xpcClient];
+    [xpcClient4 relayXPCMessage:eventCopy andReply:0];
   }
 
   else
@@ -2585,22 +2585,22 @@ LABEL_7:
       sub_1003A9AC4();
     }
 
-    sub_10000F9E4(v6, [v8 error]);
+    sub_10000F9E4(eventCopy, [v8 error]);
   }
 }
 
-- (void)_handleResolvePlayerPath:(id)a3 fromClient:(id)a4
+- (void)_handleResolvePlayerPath:(id)path fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
+  clientCopy = client;
+  pathCopy = path;
   v8 = MRCreatePlayerPathFromXPCMessage();
   v9 = [(MRDNowPlayingServer *)self resolveExistingPlayerPath:v8];
   v10 = _MRLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v6 displayName];
+    displayName = [clientCopy displayName];
     *buf = 138543874;
-    v16 = v12;
+    v16 = displayName;
     v17 = 2114;
     v18 = v8;
     v19 = 2114;
@@ -2614,24 +2614,24 @@ LABEL_7:
   v13[3] = &unk_1004B6E08;
   v14 = v9;
   v11 = v9;
-  sub_100008278(v7, v13);
+  sub_100008278(pathCopy, v13);
 }
 
-- (void)_handleGetNowPlayingClientsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetNowPlayingClientsMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v20 = v6;
-  v19 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:v7];
-  v8 = [v19 originClient];
-  v9 = [v8 nowPlayingClients];
+  messageCopy = message;
+  clientCopy = client;
+  v20 = messageCopy;
+  v19 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:clientCopy];
+  originClient = [v19 originClient];
+  nowPlayingClients = [originClient nowPlayingClients];
 
-  v21 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  v21 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(nowPlayingClients, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = v9;
+  v10 = nowPlayingClients;
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
@@ -2652,7 +2652,7 @@ LABEL_7:
         v22[1] = 3221225472;
         v22[2] = sub_10012437C;
         v22[3] = &unk_1004B7978;
-        v23 = v7;
+        v23 = clientCopy;
         v24 = v15;
         v16 = objc_retainBlock(v22);
         if ((v16[2])())
@@ -2676,72 +2676,72 @@ LABEL_7:
   sub_10001673C(v20, "MRXPC_NOWPLAYING_CLIENT_ARRAY_DATA_KEY", v18, 0);
 }
 
-- (void)_handleSetNowPlayingClientMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetNowPlayingClientMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
   v8 = MRCreatePlayerPathFromXPCMessage();
-  v9 = [v8 origin];
+  origin = [v8 origin];
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100124674;
   block[3] = &unk_1004BC9F8;
   block[4] = self;
-  v11 = v9;
+  v11 = origin;
   v15 = v11;
-  v12 = v7;
+  v12 = clientCopy;
   v16 = v12;
   v13 = v8;
   v17 = v13;
   v18 = &v19;
   dispatch_sync(serialQueue, block);
-  sub_10000F9E4(v6, *(v20 + 6));
+  sub_10000F9E4(messageCopy, *(v20 + 6));
 
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)_handleGetNowPlayingClientMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetNowPlayingClientMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
+  messageCopy = message;
+  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10012483C;
   v9 = v8[3] = &unk_1004B6E08;
   v7 = v9;
-  sub_100008278(v6, v8);
+  sub_100008278(messageCopy, v8);
 }
 
-- (void)_handleRemoveNowPlayingClientMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRemoveNowPlayingClientMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v10 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
-  v7 = [v10 originClient];
-  v8 = [v10 nowPlayingClient];
-  v9 = [v8 client];
-  [v7 removeNowPlayingClientForClient:v9];
+  messageCopy = message;
+  v10 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
+  originClient = [v10 originClient];
+  nowPlayingClient = [v10 nowPlayingClient];
+  client = [nowPlayingClient client];
+  [originClient removeNowPlayingClientForClient:client];
 
-  sub_10000F9E4(v6, [v10 error]);
+  sub_10000F9E4(messageCopy, [v10 error]);
 }
 
-- (void)_handleGetNowPlayingPlayersMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetNowPlayingPlayersMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
-  v8 = [v7 nowPlayingClient];
-  v9 = [v8 playerClients];
+  messageCopy = message;
+  v7 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
+  nowPlayingClient = [v7 nowPlayingClient];
+  playerClients = [nowPlayingClient playerClients];
 
-  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(playerClients, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v9;
+  v11 = playerClients;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -2758,14 +2758,14 @@ LABEL_7:
         }
 
         v16 = *(*(&v22 + 1) + 8 * v15);
-        v17 = [v7 nowPlayingClient];
-        v18 = [v17 canBeNowPlayingForPlayerClient:v16];
+        nowPlayingClient2 = [v7 nowPlayingClient];
+        v18 = [nowPlayingClient2 canBeNowPlayingForPlayerClient:v16];
 
         if (v18)
         {
-          v19 = [v16 player];
-          v20 = [v19 data];
-          [v10 addObject:v20];
+          player = [v16 player];
+          data = [player data];
+          [v10 addObject:data];
         }
 
         v15 = v15 + 1;
@@ -2779,120 +2779,120 @@ LABEL_7:
   }
 
   v21 = [NSPropertyListSerialization dataWithPropertyList:v10 format:200 options:0 error:0];
-  sub_10001673C(v6, "MRXPC_NOWPLAYING_PLAYER_ARRAY_DATA_KEY", v21, 0);
+  sub_10001673C(messageCopy, "MRXPC_NOWPLAYING_PLAYER_ARRAY_DATA_KEY", v21, 0);
 }
 
-- (void)_handleSetNowPlayingPlayerMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetNowPlayingPlayerMessage:(id)message fromClient:(id)client
 {
-  v17 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v7 = MRCreatePlayerPathFromXPCMessage();
-  v8 = [(MRDNowPlayingServer *)self resolvePlayerPath:v7 fromClient:v6 useDefaultPlayerIfNoneSpecified:0];
+  v8 = [(MRDNowPlayingServer *)self resolvePlayerPath:v7 fromClient:clientCopy useDefaultPlayerIfNoneSpecified:0];
 
   v9 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v8];
-  v10 = [v9 playerClient];
-  v11 = [v9 nowPlayingClient];
-  [v11 setActivePlayerClient:v10];
+  playerClient = [v9 playerClient];
+  nowPlayingClient = [v9 nowPlayingClient];
+  [nowPlayingClient setActivePlayerClient:playerClient];
 
-  v12 = [v7 player];
-  if (v12)
+  player = [v7 player];
+  if (player)
   {
-    v13 = v12;
-    v14 = [v9 playerClient];
+    v13 = player;
+    playerClient2 = [v9 playerClient];
 
-    if (!v14)
+    if (!playerClient2)
     {
       goto LABEL_5;
     }
   }
 
-  v15 = [v9 nowPlayingClient];
+  nowPlayingClient2 = [v9 nowPlayingClient];
 
-  if (v15)
+  if (nowPlayingClient2)
   {
-    v16 = 0;
+    error = 0;
   }
 
   else
   {
 LABEL_5:
-    v16 = [v9 error];
+    error = [v9 error];
   }
 
-  sub_10000F9E4(v17, v16);
+  sub_10000F9E4(messageCopy, error);
 }
 
-- (void)_handleGetNowPlayingPlayerMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetNowPlayingPlayerMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
+  messageCopy = message;
+  [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100124D70;
   v9 = v8[3] = &unk_1004B6E08;
   v7 = v9;
-  sub_100008278(v6, v8);
+  sub_100008278(messageCopy, v8);
 }
 
-- (void)_handleRemoveNowPlayingPlayerMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRemoveNowPlayingPlayerMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v10 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
-  v7 = [v10 playerClient];
-  v8 = [v7 player];
+  messageCopy = message;
+  v10 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
+  playerClient = [v10 playerClient];
+  player = [playerClient player];
 
-  v9 = [v10 nowPlayingClient];
-  [v9 removePlayerClientForPlayer:v8];
+  nowPlayingClient = [v10 nowPlayingClient];
+  [nowPlayingClient removePlayerClientForPlayer:player];
 
-  sub_10000F9E4(v6, [v10 error]);
+  sub_10000F9E4(messageCopy, [v10 error]);
 }
 
-- (void)_handleGetActivePlayerPathsForLocalOriginMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetActivePlayerPathsForLocalOriginMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = [(MRDNowPlayingServer *)self localOriginClient];
-  v7 = [v6 activePlayerClients];
-  v9 = [v7 mr_map:&stru_1004BDB48];
+  messageCopy = message;
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  activePlayerClients = [localOriginClient activePlayerClients];
+  v9 = [activePlayerClients mr_map:&stru_1004BDB48];
 
   v8 = [NSPropertyListSerialization dataWithPropertyList:v9 format:200 options:0 error:0];
-  sub_10001673C(v5, "MRXPC_NOWPLAYING_PLAYER_PATH_ARRAY_DATA_KEY", v8, 0);
+  sub_10001673C(messageCopy, "MRXPC_NOWPLAYING_PLAYER_PATH_ARRAY_DATA_KEY", v8, 0);
 }
 
-- (void)_handleGetPlayerPictureInPictureEnabledMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetPlayerPictureInPictureEnabledMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
-  v8 = [v7 playerClient];
-  v9 = [v8 isPictureInPictureEnabled];
+  messageCopy = message;
+  v7 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
+  playerClient = [v7 playerClient];
+  isPictureInPictureEnabled = [playerClient isPictureInPictureEnabled];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100125094;
   v11[3] = &unk_1004BDB70;
   v12 = v7;
-  v13 = v9;
+  v13 = isPictureInPictureEnabled;
   v10 = v7;
-  sub_100008278(v6, v11);
+  sub_100008278(messageCopy, v11);
 }
 
-- (void)_handleSetPlayerPictureInPictureEnabledMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetPlayerPictureInPictureEnabledMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v9 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:v6 fromClient:a4];
-  v7 = xpc_dictionary_get_BOOL(v6, "MRXPC_PICTURE_IN_PICTURE_ENABLED_KEY");
-  v8 = [v9 playerClient];
-  [v8 setPictureInPictureEnabled:v7];
+  messageCopy = message;
+  v9 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:messageCopy fromClient:client];
+  v7 = xpc_dictionary_get_BOOL(messageCopy, "MRXPC_PICTURE_IN_PICTURE_ENABLED_KEY");
+  playerClient = [v9 playerClient];
+  [playerClient setPictureInPictureEnabled:v7];
 
-  sub_10000F9E4(v6, [v9 error]);
+  sub_10000F9E4(messageCopy, [v9 error]);
 }
 
-- (void)_handleContentItemChangedMessage:(id)a3 fromClient:(id)a4
+- (void)_handleContentItemChangedMessage:(id)message fromClient:(id)client
 {
-  v10 = a3;
+  messageCopy = message;
   v5 = [MRDNowPlayingServer queryExistingPlayerPathForXPCMessage:"queryExistingPlayerPathForXPCMessage:forClient:" forClient:?];
-  v6 = [v5 playerClient];
+  playerClient = [v5 playerClient];
 
-  if (v6)
+  if (playerClient)
   {
     v7 = MRCreateContentItemsFromXPCMessage();
     if (v7)
@@ -2900,87 +2900,87 @@ LABEL_5:
       v8 = [[MRPlaybackQueue alloc] initWithContentItems:v7];
       if (v8)
       {
-        v9 = [v5 playerClient];
-        [v9 updatePlaybackQueue:v8 fromRequest:0];
+        playerClient2 = [v5 playerClient];
+        [playerClient2 updatePlaybackQueue:v8 fromRequest:0];
       }
     }
   }
 
-  sub_10000F9E4(v10, [v5 error]);
+  sub_10000F9E4(messageCopy, [v5 error]);
 }
 
-- (void)_handleContentItemArtworkChangedMessage:(id)a3 fromClient:(id)a4
+- (void)_handleContentItemArtworkChangedMessage:(id)message fromClient:(id)client
 {
-  v9 = a3;
+  messageCopy = message;
   v5 = [MRDNowPlayingServer queryExistingPlayerPathForXPCMessage:"queryExistingPlayerPathForXPCMessage:forClient:" forClient:?];
-  v6 = [v5 playerClient];
+  playerClient = [v5 playerClient];
 
-  if (v6)
+  if (playerClient)
   {
     v7 = MRCreateContentItemsFromXPCMessage();
-    v8 = [v5 playerClient];
-    [v8 notifyArtworkChangedForContentItems:v7];
+    playerClient2 = [v5 playerClient];
+    [playerClient2 notifyArtworkChangedForContentItems:v7];
   }
 
-  sub_10000F9E4(v9, [v5 error]);
+  sub_10000F9E4(messageCopy, [v5 error]);
 }
 
-- (void)_handleGetDeviceInfo:(id)a3 fromClient:(id)a4
+- (void)_handleGetDeviceInfo:(id)info fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:v7];
-  v9 = [v8 error];
-  v10 = [v7 isEntitledFor:0x2000];
+  infoCopy = info;
+  clientCopy = client;
+  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:infoCopy forClient:clientCopy];
+  error = [v8 error];
+  v10 = [clientCopy isEntitledFor:0x2000];
 
   if (v10)
   {
-    v11 = [v8 originClient];
-    v12 = [v11 deviceInfo];
+    originClient = [v8 originClient];
+    deviceInfo = [originClient deviceInfo];
   }
 
   else
   {
-    v12 = 0;
-    v9 = 3;
+    deviceInfo = 0;
+    error = 3;
   }
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100125480;
   v14[3] = &unk_1004BDB98;
-  v16 = v9;
-  v15 = v12;
-  v13 = v12;
-  sub_100008278(v6, v14);
+  v16 = error;
+  v15 = deviceInfo;
+  v13 = deviceInfo;
+  sub_100008278(infoCopy, v14);
 }
 
-- (void)_handleGetElectedPlayerPathMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetElectedPlayerPathMessage:(id)message fromClient:(id)client
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10012554C;
   v4[3] = &unk_1004B6E08;
   v4[4] = self;
-  sub_100008278(a3, v4);
+  sub_100008278(message, v4);
 }
 
-- (void)_handleGetProactiveRecommendedPlayerMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetProactiveRecommendedPlayerMessage:(id)message fromClient:(id)client
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100125624;
   v4[3] = &unk_1004B6E08;
   v4[4] = self;
-  sub_100008278(a3, v4);
+  sub_100008278(message, v4);
 }
 
-- (void)_handlePlaybackSessionRequest:(id)a3 fromClient:(id)a4
+- (void)_handlePlaybackSessionRequest:(id)request fromClient:(id)client
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = MRCreateProtobufFromXPCMessage();
-  v7 = [v6 playerPath];
-  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v7];
+  playerPath = [v6 playerPath];
+  v8 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:playerPath];
 
   if ([v8 error])
   {
@@ -2989,21 +2989,21 @@ LABEL_5:
     v10[2] = sub_1001257CC;
     v10[3] = &unk_1004B6E08;
     v11 = v8;
-    sub_100008278(v5, v10);
+    sub_100008278(requestCopy, v10);
   }
 
   else
   {
-    v9 = [v8 xpcClient];
-    [v9 relayXPCMessage:v5 andReply:1 resultCallback:0];
+    xpcClient = [v8 xpcClient];
+    [xpcClient relayXPCMessage:requestCopy andReply:1 resultCallback:0];
   }
 }
 
-- (void)_handleGetSupportedCommandsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetSupportedCommandsMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 setHasRequestedSupportedCommands:1];
+  messageCopy = message;
+  clientCopy = client;
+  [clientCopy setHasRequestedSupportedCommands:1];
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
@@ -3015,9 +3015,9 @@ LABEL_5:
   v18[2] = sub_100125A60;
   v18[3] = &unk_1004BDBC0;
   v18[4] = self;
-  v8 = v6;
+  v8 = messageCopy;
   v19 = v8;
-  v9 = v7;
+  v9 = clientCopy;
   v20 = v9;
   v21 = v22;
   v10 = objc_retainBlock(v18);
@@ -3036,21 +3036,21 @@ LABEL_5:
   _Block_object_dispose(v22, 8);
 }
 
-- (void)_handleSetSupportedCommandsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetSupportedCommandsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v7 = +[MRDMediaRemoteServer server];
-  v8 = [v7 nowPlayingServer];
-  v9 = [v8 queryPlayerPathForXPCMessage:v5 fromClient:v6];
+  nowPlayingServer = [v7 nowPlayingServer];
+  v9 = [nowPlayingServer queryPlayerPathForXPCMessage:messageCopy fromClient:clientCopy];
 
-  v10 = [v9 nowPlayingClient];
+  nowPlayingClient = [v9 nowPlayingClient];
 
-  if (v10)
+  if (nowPlayingClient)
   {
     v11 = MRCreateSupportedCommandsDataFromXPCMessage();
-    v12 = [v9 playerClient];
-    [v12 setSupportedRemoteControlCommandsData:v11];
+    playerClient = [v9 playerClient];
+    [playerClient setSupportedRemoteControlCommandsData:v11];
   }
 
   else
@@ -3063,30 +3063,30 @@ LABEL_5:
     }
   }
 
-  sub_10000F9E4(v5, [v9 error]);
+  sub_10000F9E4(messageCopy, [v9 error]);
 }
 
-- (void)_handleSetDefaultSupportedCommandsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetDefaultSupportedCommandsMessage:(id)message fromClient:(id)client
 {
-  v30 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v7 = MRCreateSupportedCommandsDataFromXPCMessage();
   v8 = +[MRDMediaRemoteServer server];
-  v9 = [v8 nowPlayingServer];
-  v10 = [v9 queryExistingPlayerPathForXPCMessage:v30 forClient:v6];
+  nowPlayingServer = [v8 nowPlayingServer];
+  v10 = [nowPlayingServer queryExistingPlayerPathForXPCMessage:messageCopy forClient:clientCopy];
 
-  v11 = [v10 unresolvedPlayerPath];
-  v12 = [v11 client];
-  v13 = [v12 bundleIdentifier];
+  unresolvedPlayerPath = [v10 unresolvedPlayerPath];
+  client = [unresolvedPlayerPath client];
+  bundleIdentifier = [client bundleIdentifier];
 
-  v14 = [v6 bundleIdentifier];
-  if ([v13 isEqualToString:v14])
+  bundleIdentifier2 = [clientCopy bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:bundleIdentifier2])
   {
   }
 
   else
   {
-    v15 = [v6 isEntitledFor:256];
+    v15 = [clientCopy isEntitledFor:256];
 
     if ((v15 & 1) == 0)
     {
@@ -3095,32 +3095,32 @@ LABEL_5:
     }
   }
 
-  v16 = [v10 originClient];
-  [v16 updateDefaultSupportedCommandsData:v7 forClient:v13];
+  originClient = [v10 originClient];
+  [originClient updateDefaultSupportedCommandsData:v7 forClient:bundleIdentifier];
 
-  v17 = [v10 nowPlayingClient];
+  nowPlayingClient = [v10 nowPlayingClient];
 
-  if (!v17)
+  if (!nowPlayingClient)
   {
     v18 = objc_alloc_init(MRPlayerPath);
-    v19 = [v10 originClient];
-    v20 = [v19 origin];
-    [v18 setOrigin:v20];
+    originClient2 = [v10 originClient];
+    origin = [originClient2 origin];
+    [v18 setOrigin:origin];
 
     v21 = objc_alloc_init(MRClient);
     [v18 setClient:v21];
 
-    v22 = [v10 unresolvedPlayerPath];
-    v23 = [v22 client];
-    v24 = [v23 bundleIdentifier];
-    v25 = [v18 client];
-    [v25 setBundleIdentifier:v24];
+    unresolvedPlayerPath2 = [v10 unresolvedPlayerPath];
+    client2 = [unresolvedPlayerPath2 client];
+    bundleIdentifier3 = [client2 bundleIdentifier];
+    client3 = [v18 client];
+    [client3 setBundleIdentifier:bundleIdentifier3];
 
     [(MRDNowPlayingServer *)self postSupportedCommandsDidChange:v7 forPlayerPath:v18 handler:0];
   }
 
   v26 = objc_alloc_init(NSMutableDictionary);
-  v27 = [v10 unresolvedPlayerPath];
+  unresolvedPlayerPath3 = [v10 unresolvedPlayerPath];
   MRAddPlayerPathToUserInfo();
 
   v28 = +[MRDMediaRemoteServer server];
@@ -3128,12 +3128,12 @@ LABEL_5:
 
   v29 = 0;
 LABEL_8:
-  sub_10000F9E4(v30, v29);
+  sub_10000F9E4(messageCopy, v29);
 }
 
-- (void)_handleGetLastPlayingDateMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetLastPlayingDateMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreatePlayerPathFromXPCMessage();
   v7 = [(MRDNowPlayingServer *)self resolveExistingPlayerPath:v6];
   [(MRDNowPlayingServer *)self queryExistingPlayerPath:v7];
@@ -3144,54 +3144,54 @@ LABEL_8:
   v12 = v11 = v6;
   v8 = v12;
   v9 = v6;
-  sub_100008278(v5, v10);
+  sub_100008278(messageCopy, v10);
 }
 
-- (void)_handleSetPlayerClientPropertiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetPlayerClientPropertiesMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = MRCreateProtobufFromXPCMessage();
-  v9 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:v6 fromClient:v7];
+  v9 = [(MRDNowPlayingServer *)self queryPlayerPathForXPCMessage:messageCopy fromClient:clientCopy];
 
-  v10 = [v9 playerClient];
+  playerClient = [v9 playerClient];
 
-  if (v10)
+  if (playerClient)
   {
-    v11 = [v9 playerClient];
-    v12 = [v8 lastPlayingDate];
-    [v11 updateLastPlayingDate:v12];
+    playerClient2 = [v9 playerClient];
+    lastPlayingDate = [v8 lastPlayingDate];
+    [playerClient2 updateLastPlayingDate:lastPlayingDate];
   }
 
   else
   {
-    v11 = _MRLogForCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    playerClient2 = _MRLogForCategory();
+    if (os_log_type_enabled(playerClient2, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
       v14 = v8;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Unable to set properties from message %@. No player client found.", &v13, 0xCu);
+      _os_log_impl(&_mh_execute_header, playerClient2, OS_LOG_TYPE_DEFAULT, "Unable to set properties from message %@. No player client found.", &v13, 0xCu);
     }
   }
 
-  sub_10000F9E4(v6, [v9 error]);
+  sub_10000F9E4(messageCopy, [v9 error]);
 }
 
-- (void)_handleSetOriginClientPropertiesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetOriginClientPropertiesMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreateProtobufFromXPCMessage();
   v7 = MRCreateOriginFromXPCMessage();
   v8 = [(MRDNowPlayingServer *)self originClientForOrigin:v7];
   if (v8)
   {
-    v9 = [v6 lastPlayingDate];
-    [v8 updateLastPlayingDate:v9];
+    lastPlayingDate = [v6 lastPlayingDate];
+    [v8 updateLastPlayingDate:lastPlayingDate];
 
-    v10 = [v6 devicePlaybackSessionID];
-    [v8 setDevicePlaybackSessionID:v10];
+    devicePlaybackSessionID = [v6 devicePlaybackSessionID];
+    [v8 setDevicePlaybackSessionID:devicePlaybackSessionID];
 
-    v11 = v5;
+    v11 = messageCopy;
     v12 = 0;
   }
 
@@ -3207,21 +3207,21 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Unable to set properties from message %@. No origin client found for %@", &v14, 0x16u);
     }
 
-    v11 = v5;
+    v11 = messageCopy;
     v12 = 5;
   }
 
   sub_10000F9E4(v11, v12);
 }
 
-- (void)_handleRegisterForWakingNowPlayingNotifications:(id)a3 fromClient:(id)a4
+- (void)_handleRegisterForWakingNowPlayingNotifications:(id)notifications fromClient:(id)client
 {
-  v5 = a4;
-  v6 = a3;
+  clientCopy = client;
+  notificationsCopy = notifications;
   v7 = MRCreatePlayerPathArrayFromXPCMessage();
-  if ([v5 isEntitledFor:128])
+  if ([clientCopy isEntitledFor:128])
   {
-    [v5 setWantsAssertionsForNotificationsWithPlayerPath:v7];
+    [clientCopy setWantsAssertionsForNotificationsWithPlayerPath:v7];
     v8 = 0;
   }
 
@@ -3236,24 +3236,24 @@ LABEL_8:
   v10[3] = &unk_1004B6E08;
   v11 = v8;
   v9 = v8;
-  sub_100008278(v6, v10);
+  sub_100008278(notificationsCopy, v10);
 }
 
-- (void)_handleGetAudioFormatContentInfoForOriginMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetAudioFormatContentInfoForOriginMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreateOriginFromXPCMessage();
   v7 = [(MRDNowPlayingServer *)self originClientForOrigin:v6];
-  v8 = [v7 nowPlayingAudioFormatContentInfos];
-  v9 = v8;
-  if (v8)
+  nowPlayingAudioFormatContentInfos = [v7 nowPlayingAudioFormatContentInfos];
+  v9 = nowPlayingAudioFormatContentInfos;
+  if (nowPlayingAudioFormatContentInfos)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100126F80;
     v11[3] = &unk_1004B6E08;
-    v12 = v8;
-    sub_100008278(v5, v11);
+    v12 = nowPlayingAudioFormatContentInfos;
+    sub_100008278(messageCopy, v11);
   }
 
   else
@@ -3270,13 +3270,13 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Unable to get audio format content info for origin: %{public}@ | client %{public}@", buf, 0x20u);
     }
 
-    sub_10000F9E4(v5, 5u);
+    sub_10000F9E4(messageCopy, 5u);
   }
 }
 
-- (void)_handleGetImageDimensionsForArtworkDataMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetImageDimensionsForArtworkDataMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MRCreateDataFromXPCMessage();
   [MRImageUtilities imageDimensionsForImageData:v5 error:0];
   v8[0] = _NSConcreteStackBlock;
@@ -3285,16 +3285,16 @@ LABEL_8:
   v8[3] = &unk_1004BDD10;
   v8[4] = v6;
   v8[5] = v7;
-  sub_100008278(v4, v8);
+  sub_100008278(messageCopy, v8);
 }
 
-- (void)_handleFetchPlaybackQueueParticipantsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleFetchPlaybackQueueParticipantsMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:v6 forClient:a4];
-  v8 = [v7 playerClient];
-  v9 = [v8 participants];
-  v10 = [v9 msv_compactMap:&stru_1004BDD50];
+  messageCopy = message;
+  v7 = [(MRDNowPlayingServer *)self queryExistingPlayerPathForXPCMessage:messageCopy forClient:client];
+  playerClient = [v7 playerClient];
+  participants = [playerClient participants];
+  v10 = [participants msv_compactMap:&stru_1004BDD50];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -3304,35 +3304,35 @@ LABEL_8:
   v15 = v7;
   v11 = v7;
   v12 = v10;
-  sub_100008278(v6, v13);
+  sub_100008278(messageCopy, v13);
 }
 
-- (void)_handleBeginMusicHandoffSessionMessage:(id)a3 fromClient:(id)a4
+- (void)_handleBeginMusicHandoffSessionMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreateDataFromXPCMessage();
   v7 = [[MRMusicHandoffSession alloc] initWithProtobufData:v6];
-  v8 = [v7 sourcePlayerPath];
-  v9 = [v7 destinationPlayerPath];
+  sourcePlayerPath = [v7 sourcePlayerPath];
+  destinationPlayerPath = [v7 destinationPlayerPath];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10012737C;
   v11[3] = &unk_1004BDDA0;
-  v12 = v5;
-  v10 = v5;
-  [(MRDNowPlayingServer *)self beginMusicHandoffSessionWithSource:v8 destination:v9 completion:v11];
+  v12 = messageCopy;
+  v10 = messageCopy;
+  [(MRDNowPlayingServer *)self beginMusicHandoffSessionWithSource:sourcePlayerPath destination:destinationPlayerPath completion:v11];
 }
 
-- (void)_handleSendMusicHandoffEventMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSendMusicHandoffEventMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = MRCreateDataFromXPCMessage();
   v9 = [[MRMusicHandoffEvent alloc] initWithProtobufData:v8];
   v10 = [MRPlayerPath alloc];
-  v11 = [v7 createNowPlayingClient];
+  createNowPlayingClient = [clientCopy createNowPlayingClient];
 
-  v12 = [v10 initWithOrigin:0 client:v11 player:0];
+  v12 = [v10 initWithOrigin:0 client:createNowPlayingClient player:0];
   v13 = [(MRDNowPlayingServer *)self resolveExistingPlayerPath:v12];
   v14 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v13];
 
@@ -3343,8 +3343,8 @@ LABEL_8:
 
   else
   {
-    v16 = [v14 playerClient];
-    v15 = [v16 handleHandoffEvent:v9];
+    playerClient = [v14 playerClient];
+    v15 = [playerClient handleHandoffEvent:v9];
   }
 
   v19[0] = _NSConcreteStackBlock;
@@ -3352,15 +3352,15 @@ LABEL_8:
   v19[2] = sub_100127848;
   v19[3] = &unk_1004B6E30;
   v20 = v15;
-  v21 = v6;
-  v17 = v6;
+  v21 = messageCopy;
+  v17 = messageCopy;
   v18 = v15;
   sub_100008278(v17, v19);
 }
 
-- (void)_handleGetMediaSuggestionDeviceUIDMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetMediaSuggestionDeviceUIDMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10012794C;
@@ -3368,72 +3368,72 @@ LABEL_8:
   v7 = [[NSError alloc] initWithMRError:6];
   v8 = 0;
   v5 = v7;
-  sub_100008278(v4, v6);
+  sub_100008278(messageCopy, v6);
 }
 
-- (void)nowPlayingPlayerClient:(id)a3 playerStateDidChange:(id)a4
+- (void)nowPlayingPlayerClient:(id)client playerStateDidChange:(id)change
 {
-  v6 = a4;
-  v7 = [a3 playerPath];
-  [(MRDNowPlayingServer *)self postNowPlayingPlayerStateDidChange:v6 forPlayerPath:v7 handler:0];
+  changeCopy = change;
+  playerPath = [client playerPath];
+  [(MRDNowPlayingServer *)self postNowPlayingPlayerStateDidChange:changeCopy forPlayerPath:playerPath handler:0];
 }
 
-- (void)nowPlayingPlayerClient:(id)a3 supportedCommandsDidChange:(id)a4
+- (void)nowPlayingPlayerClient:(id)client supportedCommandsDidChange:(id)change
 {
-  v6 = a4;
-  v7 = [a3 playerPath];
-  [(MRDNowPlayingServer *)self postSupportedCommandsDidChange:v6 forPlayerPath:v7 handler:0];
+  changeCopy = change;
+  playerPath = [client playerPath];
+  [(MRDNowPlayingServer *)self postSupportedCommandsDidChange:changeCopy forPlayerPath:playerPath handler:0];
 }
 
-- (void)nowPlayingPlayerClient:(id)a3 playbackQueueCapabilitiesDidChange:(unint64_t)a4
+- (void)nowPlayingPlayerClient:(id)client playbackQueueCapabilitiesDidChange:(unint64_t)change
 {
-  v6 = [a3 playerPath];
-  [(MRDNowPlayingServer *)self postPlaybackQueueCapabilitiesDidChange:a4 forPlayerPath:v6 handler:0];
+  playerPath = [client playerPath];
+  [(MRDNowPlayingServer *)self postPlaybackQueueCapabilitiesDidChange:change forPlayerPath:playerPath handler:0];
 }
 
-- (void)nowPlayingPlayerClient:(id)a3 playbackQueueContentItemsDidChange:(id)a4
+- (void)nowPlayingPlayerClient:(id)client playbackQueueContentItemsDidChange:(id)change
 {
-  v6 = a4;
-  v7 = [a3 playerPath];
-  [(MRDNowPlayingServer *)self postPlaybackQueueContentItemsDidChange:v6 forPlayerPath:v7 handler:0];
+  changeCopy = change;
+  playerPath = [client playerPath];
+  [(MRDNowPlayingServer *)self postPlaybackQueueContentItemsDidChange:changeCopy forPlayerPath:playerPath handler:0];
 }
 
-- (void)nowPlayingPlayerClient:(id)a3 playbackQueueArtworkContentItemsDidChange:(id)a4
+- (void)nowPlayingPlayerClient:(id)client playbackQueueArtworkContentItemsDidChange:(id)change
 {
-  v6 = a4;
-  v7 = [a3 playerPath];
-  [(MRDNowPlayingServer *)self postPlaybackQueueContentItemsArtworkDidChange:v6 forPlayerPath:v7 handler:0];
+  changeCopy = change;
+  playerPath = [client playerPath];
+  [(MRDNowPlayingServer *)self postPlaybackQueueContentItemsArtworkDidChange:changeCopy forPlayerPath:playerPath handler:0];
 }
 
-- (void)nowPlayingPlayerClient:(id)a3 playerCanBeNowPlayingDidChange:(BOOL)a4
+- (void)nowPlayingPlayerClient:(id)client playerCanBeNowPlayingDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = [a3 playerPath];
-  if (v4)
+  changeCopy = change;
+  playerPath = [client playerPath];
+  if (changeCopy)
   {
-    [(MRDNowPlayingServer *)self postPlayerDidRegisterCanBeNowPlayingForPlayerPath:v6 handler:0];
+    [(MRDNowPlayingServer *)self postPlayerDidRegisterCanBeNowPlayingForPlayerPath:playerPath handler:0];
   }
 
   else
   {
-    [(MRDNowPlayingServer *)self postPlayerDidUnregisterCanBeNowPlayingForPlayerPath:v6 handler:0];
+    [(MRDNowPlayingServer *)self postPlayerDidUnregisterCanBeNowPlayingForPlayerPath:playerPath handler:0];
   }
 }
 
-- (void)nowPlayingPlayerClient:(id)a3 playbackQueueParticipantsDidChange:(id)a4
+- (void)nowPlayingPlayerClient:(id)client playbackQueueParticipantsDidChange:(id)change
 {
-  v6 = a4;
-  v7 = [a3 playerPath];
-  [(MRDNowPlayingServer *)self postPlaybackQueueParticipantsDidChange:v6 forPlayerPath:v7 handler:0];
+  changeCopy = change;
+  playerPath = [client playerPath];
+  [(MRDNowPlayingServer *)self postPlaybackQueueParticipantsDidChange:changeCopy forPlayerPath:playerPath handler:0];
 }
 
-- (void)startObservingNowPlayingInfoForNowPlayingPlayerClient:(id)a3
+- (void)startObservingNowPlayingInfoForNowPlayingPlayerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_nowPlayingInfoObserverQueue);
-  v5 = [v4 playerPath];
+  playerPath = [clientCopy playerPath];
   objc_initWeak(location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, clientCopy);
   v6 = +[NSNotificationCenter defaultCenter];
   v7 = kMRMediaRemotePlayerNowPlayingInfoDidChangeNotification;
   v25[0] = _NSConcreteStackBlock;
@@ -3441,7 +3441,7 @@ LABEL_8:
   v25[2] = sub_1001282B0;
   v25[3] = &unk_1004BDDC8;
   objc_copyWeak(&v27, location);
-  v8 = v5;
+  v8 = playerPath;
   v26 = v8;
   objc_copyWeak(&v28, &from);
   v9 = [v6 addObserverForName:v7 object:0 queue:0 usingBlock:v25];
@@ -3459,13 +3459,13 @@ LABEL_8:
   wakeDeviceTimer = self->_wakeDeviceTimer;
   self->_wakeDeviceTimer = v12;
 
-  v14 = [v4 playbackQueue];
-  v15 = [v14 contentItems];
-  v16 = [v15 firstObject];
-  v17 = [v16 metadata];
-  v18 = [v17 mediaType];
+  playbackQueue = [clientCopy playbackQueue];
+  contentItems = [playbackQueue contentItems];
+  firstObject = [contentItems firstObject];
+  metadata = [firstObject metadata];
+  mediaType = [metadata mediaType];
 
-  if (v18)
+  if (mediaType)
   {
     v19 = self->_nowPlayingInfoObserverQueue;
     v20[0] = _NSConcreteStackBlock;
@@ -3473,7 +3473,7 @@ LABEL_8:
     v20[2] = sub_1001284CC;
     v20[3] = &unk_1004B68F0;
     v20[4] = self;
-    v21 = v4;
+    v21 = clientCopy;
     dispatch_async(v19, v20);
   }
 
@@ -3497,82 +3497,82 @@ LABEL_8:
   [(MSVTimer *)wakeDeviceTimer invalidate];
 }
 
-- (void)wakeDeviceIfNecessaryForNowPlayingPlayerClient:(id)a3
+- (void)wakeDeviceIfNecessaryForNowPlayingPlayerClient:(id)client
 {
-  v14 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_nowPlayingInfoObserverQueue);
   [(MRDNowPlayingServer *)self stopObservingNowPlayingInfo];
-  v4 = [v14 playerPath];
-  v5 = [v14 playbackQueue];
-  v6 = [v5 contentItems];
-  v7 = [v6 firstObject];
-  v8 = [v7 metadata];
-  v9 = [v8 mediaType];
+  playerPath = [clientCopy playerPath];
+  playbackQueue = [clientCopy playbackQueue];
+  contentItems = [playbackQueue contentItems];
+  firstObject = [contentItems firstObject];
+  metadata = [firstObject metadata];
+  mediaType = [metadata mediaType];
 
-  if (v9 == 1)
+  if (mediaType == 1)
   {
-    v10 = 0;
+    isPlaying = 0;
   }
 
   else
   {
-    v10 = [v14 isPlaying];
+    isPlaying = [clientCopy isPlaying];
   }
 
-  v11 = [(MRDNowPlayingServer *)self localOriginClient];
-  v12 = [v11 deviceInfo];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  deviceInfo = [localOriginClient deviceInfo];
 
-  if (v10 && ([v12 isAirPlayActive] & 1) == 0 && (objc_msgSend(v12, "isProxyGroupPlayer") & 1) == 0)
+  if (isPlaying && ([deviceInfo isAirPlayActive] & 1) == 0 && (objc_msgSend(deviceInfo, "isProxyGroupPlayer") & 1) == 0)
   {
-    v13 = [[NSString alloc] initWithFormat:@"Playback started of type %ld for %@", v9, v4];
+    v13 = [[NSString alloc] initWithFormat:@"Playback started of type %ld for %@", mediaType, playerPath];
     sub_1001A02A4(1);
   }
 }
 
-- (void)nowPlayingClient:(id)a3 activePlayerDidChangeFromPlayerClient:(id)a4 toPlayerClient:(id)a5
+- (void)nowPlayingClient:(id)client activePlayerDidChangeFromPlayerClient:(id)playerClient toPlayerClient:(id)toPlayerClient
 {
-  v9 = a3;
-  v7 = a5;
-  v8 = [v7 playerPath];
-  if (!v8)
+  clientCopy = client;
+  toPlayerClientCopy = toPlayerClient;
+  playerPath = [toPlayerClientCopy playerPath];
+  if (!playerPath)
   {
-    v8 = [v9 playerPath];
+    playerPath = [clientCopy playerPath];
   }
 
-  -[MRDNowPlayingServer postActivePlayerDidChangeForPlayerPath:withPlaybackState:handler:](self, "postActivePlayerDidChangeForPlayerPath:withPlaybackState:handler:", v8, [v7 playbackState], 0);
+  -[MRDNowPlayingServer postActivePlayerDidChangeForPlayerPath:withPlaybackState:handler:](self, "postActivePlayerDidChangeForPlayerPath:withPlaybackState:handler:", playerPath, [toPlayerClientCopy playbackState], 0);
   [(MRDNowPlayingServer *)self maybePostDistributedNotifications];
 }
 
-- (void)nowPlayingClient:(id)a3 clientStateDidChange:(id)a4
+- (void)nowPlayingClient:(id)client clientStateDidChange:(id)change
 {
-  v6 = a4;
-  v7 = [a3 playerPath];
-  [(MRDNowPlayingServer *)self postNowPlayingClientStateDidChange:v6 forPlayerPath:v7 handler:0];
+  changeCopy = change;
+  playerPath = [client playerPath];
+  [(MRDNowPlayingServer *)self postNowPlayingClientStateDidChange:changeCopy forPlayerPath:playerPath handler:0];
 }
 
-- (void)nowPlayingClient:(id)a3 playerDidRegister:(id)a4
+- (void)nowPlayingClient:(id)client playerDidRegister:(id)register
 {
-  v5 = [a4 playerPath];
-  [(MRDNowPlayingServer *)self postPlayerDidRegisterForPlayerPath:v5 handler:0];
+  playerPath = [register playerPath];
+  [(MRDNowPlayingServer *)self postPlayerDidRegisterForPlayerPath:playerPath handler:0];
 }
 
-- (void)nowPlayingClient:(id)a3 playerDidUnregister:(id)a4
+- (void)nowPlayingClient:(id)client playerDidUnregister:(id)unregister
 {
-  v5 = a4;
-  v6 = [v5 playbackState];
-  v7 = [v5 canBeNowPlayingPlayer];
-  v8 = [v5 playerPath];
-  [(MRDNowPlayingServer *)self postPlayerDidUnregisterWithPlaybackState:v6 canBeNowPlaying:v7 forPlayerPath:v8 handler:0];
+  unregisterCopy = unregister;
+  playbackState = [unregisterCopy playbackState];
+  canBeNowPlayingPlayer = [unregisterCopy canBeNowPlayingPlayer];
+  playerPath = [unregisterCopy playerPath];
+  [(MRDNowPlayingServer *)self postPlayerDidUnregisterWithPlaybackState:playbackState canBeNowPlaying:canBeNowPlayingPlayer forPlayerPath:playerPath handler:0];
 
-  v9 = [v5 handoffSessions];
-  v10 = [v9 objectEnumerator];
-  v11 = [v10 allObjects];
+  handoffSessions = [unregisterCopy handoffSessions];
+  objectEnumerator = [handoffSessions objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v11;
+  v12 = allObjects;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v13)
   {
@@ -3600,119 +3600,119 @@ LABEL_8:
   }
 }
 
-- (void)nowPlayingPlayerClient:(id)a3 clientCanBeNowPlayingDidChange:(BOOL)a4
+- (void)nowPlayingPlayerClient:(id)client clientCanBeNowPlayingDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = [a3 playerPath];
-  if (v4)
+  changeCopy = change;
+  playerPath = [client playerPath];
+  if (changeCopy)
   {
-    [(MRDNowPlayingServer *)self postClientDidRegisterCanBeNowPlayingForPlayerPath:v6 handler:0];
+    [(MRDNowPlayingServer *)self postClientDidRegisterCanBeNowPlayingForPlayerPath:playerPath handler:0];
   }
 
   else
   {
-    [(MRDNowPlayingServer *)self postClientDidUnregisterCanBeNowPlayingForPlayerPath:v6 handler:0];
+    [(MRDNowPlayingServer *)self postClientDidUnregisterCanBeNowPlayingForPlayerPath:playerPath handler:0];
   }
 }
 
-- (void)nowPlayingOriginClient:(id)a3 applicationActivityDidBegin:(id)a4
+- (void)nowPlayingOriginClient:(id)client applicationActivityDidBegin:(id)begin
 {
   v5 = kMRApplicationActivityHasBegunNotification;
   v8 = kMRApplicationActivityUserInfoKey;
-  v9 = a4;
-  v6 = a4;
-  v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
+  beginCopy = begin;
+  beginCopy2 = begin;
+  v7 = [NSDictionary dictionaryWithObjects:&beginCopy forKeys:&v8 count:1];
 
   [(MRDNowPlayingServer *)self postClientNowPlayingNotificationNamed:v5 userInfo:v7];
 }
 
-- (void)nowPlayingOriginClient:(id)a3 applicationActivityDidEnd:(id)a4
+- (void)nowPlayingOriginClient:(id)client applicationActivityDidEnd:(id)end
 {
   v5 = kMRApplicationActivityHasEndedNotification;
   v8 = kMRApplicationActivityUserInfoKey;
-  v9 = a4;
-  v6 = a4;
-  v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
+  endCopy = end;
+  endCopy2 = end;
+  v7 = [NSDictionary dictionaryWithObjects:&endCopy forKeys:&v8 count:1];
 
   [(MRDNowPlayingServer *)self postClientNowPlayingNotificationNamed:v5 userInfo:v7];
 }
 
-- (void)nowPlayingOriginClient:(id)a3 applicationActivityStatusDidChange:(id)a4
+- (void)nowPlayingOriginClient:(id)client applicationActivityStatusDidChange:(id)change
 {
   v5 = kMRApplicationActivityStatusDidChangeNotification;
   v8 = kMRApplicationActivityUserInfoKey;
-  v9 = a4;
-  v6 = a4;
-  v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
+  changeCopy = change;
+  changeCopy2 = change;
+  v7 = [NSDictionary dictionaryWithObjects:&changeCopy forKeys:&v8 count:1];
 
   [(MRDNowPlayingServer *)self postClientNowPlayingNotificationNamed:v5 userInfo:v7];
 }
 
-- (void)handleNowPlayingOriginClient:(id)a3 deviceInfoDidChange:(id)a4 previousDeviceInfo:(id)a5
+- (void)handleNowPlayingOriginClient:(id)client deviceInfoDidChange:(id)change previousDeviceInfo:(id)info
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  infoCopy = info;
+  changeCopy = change;
+  clientCopy = client;
   v11 = +[MRNowPlayingOriginClientManager sharedManager];
-  v12 = [v10 playerPath];
-  v14 = [v11 existingOriginClientRequestsForPlayerPath:v12];
+  playerPath = [clientCopy playerPath];
+  v14 = [v11 existingOriginClientRequestsForPlayerPath:playerPath];
 
-  [v14 setDeviceInfo:v9];
-  v13 = [v10 origin];
+  [v14 setDeviceInfo:changeCopy];
+  origin = [clientCopy origin];
 
-  [(MRDNowPlayingServer *)self postDeviceInfoDidChange:v9 previousDeviceInfo:v8 forOrigin:v13 handler:0];
+  [(MRDNowPlayingServer *)self postDeviceInfoDidChange:changeCopy previousDeviceInfo:infoCopy forOrigin:origin handler:0];
 }
 
-- (void)nowPlayingOriginClient:(id)a3 clientDidRegister:(id)a4
+- (void)nowPlayingOriginClient:(id)client clientDidRegister:(id)register
 {
-  v5 = [a4 playerPath];
-  [(MRDNowPlayingServer *)self postClientDidRegisterForPlayerPath:v5 handler:0];
+  playerPath = [register playerPath];
+  [(MRDNowPlayingServer *)self postClientDidRegisterForPlayerPath:playerPath handler:0];
 }
 
-- (void)nowPlayingOriginClient:(id)a3 clientDidUnregister:(id)a4
+- (void)nowPlayingOriginClient:(id)client clientDidUnregister:(id)unregister
 {
-  v6 = a4;
-  v17 = a3;
-  v7 = [(MRDNowPlayingOriginClient *)v17 origin];
-  v8 = [v7 isHosted];
-  localOriginClient = v17;
-  if (v8)
+  unregisterCopy = unregister;
+  clientCopy = client;
+  origin = [(MRDNowPlayingOriginClient *)clientCopy origin];
+  isHosted = [origin isHosted];
+  localOriginClient = clientCopy;
+  if (isHosted)
   {
     localOriginClient = self->_localOriginClient;
   }
 
   v10 = localOriginClient;
 
-  v11 = [v6 playerPath];
-  v12 = [v11 client];
-  v13 = [v12 bundleIdentifier];
-  v14 = [(MRDNowPlayingOriginClient *)v10 defaultSupportedCommandsDataForClient:v13];
+  playerPath = [unregisterCopy playerPath];
+  client = [playerPath client];
+  bundleIdentifier = [client bundleIdentifier];
+  v14 = [(MRDNowPlayingOriginClient *)v10 defaultSupportedCommandsDataForClient:bundleIdentifier];
 
-  v15 = [v6 playerPath];
-  v16 = [v6 canBeNowPlaying];
+  playerPath2 = [unregisterCopy playerPath];
+  canBeNowPlaying = [unregisterCopy canBeNowPlaying];
 
-  [(MRDNowPlayingServer *)self postClientDidUnregisterForPlayerPath:v15 hasDefaultSupportedCommands:v14 != 0 canBeNowPlaying:v16 handler:0];
+  [(MRDNowPlayingServer *)self postClientDidUnregisterForPlayerPath:playerPath2 hasDefaultSupportedCommands:v14 != 0 canBeNowPlaying:canBeNowPlaying handler:0];
 }
 
-- (void)nowPlayingOriginClient:(id)a3 currentRouteVolumeDidChange:(float)a4
+- (void)nowPlayingOriginClient:(id)client currentRouteVolumeDidChange:(float)change
 {
-  v7 = [a3 playerPath];
-  *&v6 = a4;
-  [(MRDNowPlayingServer *)self postVolumeDidChange:v7 volume:0 handler:v6];
+  playerPath = [client playerPath];
+  *&v6 = change;
+  [(MRDNowPlayingServer *)self postVolumeDidChange:playerPath volume:0 handler:v6];
 }
 
-- (void)nowPlayingOriginClient:(id)a3 activePlayerClientsDidChange:(id)a4
+- (void)nowPlayingOriginClient:(id)client activePlayerClientsDidChange:(id)change
 {
-  v5 = [a3 origin];
-  [(MRDNowPlayingServer *)self postActivePlayerPathsDidChangeForOrigin:v5 handler:0];
+  origin = [client origin];
+  [(MRDNowPlayingServer *)self postActivePlayerPathsDidChangeForOrigin:origin handler:0];
 }
 
-- (void)nowPlayingOriginClientPlaybackDidTimeout:(id)a3
+- (void)nowPlayingOriginClientPlaybackDidTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = getpid();
   v6 = objc_alloc_init(NSMutableDictionary);
-  v7 = [v4 playerPath];
+  playerPath = [timeoutCopy playerPath];
 
   MRAddPlayerPathToUserInfo();
   v8[0] = _NSConcreteStackBlock;
@@ -3723,33 +3723,33 @@ LABEL_8:
   [(MRDNowPlayingServer *)self postClientNowPlayingNotificationNamed:_MRMediaRemotePlaybackDidTimeoutNotification userInfo:v6 predicate:v8];
 }
 
-- (void)nowPlayingOriginClientDidChangeAudioFormatContentInfo:(id)a3
+- (void)nowPlayingOriginClientDidChangeAudioFormatContentInfo:(id)info
 {
-  v4 = [a3 origin];
-  [(MRDNowPlayingServer *)self postAudioFormatContentInfoDidChangeForOrigin:v4 handler:0];
+  origin = [info origin];
+  [(MRDNowPlayingServer *)self postAudioFormatContentInfoDidChangeForOrigin:origin handler:0];
 }
 
-- (void)nowPlayingServer:(id)a3 activeOriginDidChangeFromOriginClient:(id)a4 toOriginClient:(id)a5
+- (void)nowPlayingServer:(id)server activeOriginDidChangeFromOriginClient:(id)client toOriginClient:(id)originClient
 {
-  v6 = a5;
-  v7 = [v6 activePlayerPath];
-  v8 = [v6 activeNowPlayingClient];
+  originClientCopy = originClient;
+  activePlayerPath = [originClientCopy activePlayerPath];
+  activeNowPlayingClient = [originClientCopy activeNowPlayingClient];
 
-  v9 = [v8 activePlayerClient];
-  -[MRDNowPlayingServer postActiveOriginDidChange:withPlaybackState:handler:](self, "postActiveOriginDidChange:withPlaybackState:handler:", v7, [v9 playbackState], 0);
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
+  -[MRDNowPlayingServer postActiveOriginDidChange:withPlaybackState:handler:](self, "postActiveOriginDidChange:withPlaybackState:handler:", activePlayerPath, [activePlayerClient playbackState], 0);
 
   [(MRDNowPlayingServer *)self maybePostDistributedNotifications];
 }
 
-- (BOOL)nowPlayingLauncher:(id)a3 shouldRelaunch:(id)a4
+- (BOOL)nowPlayingLauncher:(id)launcher shouldRelaunch:(id)relaunch
 {
   result = 0;
   if (MSVDeviceIsAudioAccessory())
   {
     v5 = +[MRUserSettings currentSettings];
-    v6 = [v5 homepodDemoMode];
+    homepodDemoMode = [v5 homepodDemoMode];
 
-    if ((v6 & 1) == 0 && [(MRDNowPlayingServer *)self localActivePlayerIsPlaying])
+    if ((homepodDemoMode & 1) == 0 && [(MRDNowPlayingServer *)self localActivePlayerIsPlaying])
     {
       return 1;
     }
@@ -3760,80 +3760,80 @@ LABEL_8:
 
 - (BOOL)lockScreenPlatterActive
 {
-  v2 = [(MRDNowPlayingServer *)self lockScreenController];
-  v3 = [v2 isLockScreenWidgetActive];
+  lockScreenController = [(MRDNowPlayingServer *)self lockScreenController];
+  isLockScreenWidgetActive = [lockScreenController isLockScreenWidgetActive];
 
-  return v3;
+  return isLockScreenWidgetActive;
 }
 
 - (BOOL)lockScreenRecommendationActive
 {
-  v2 = [(MRDNowPlayingServer *)self lockScreenController];
-  v3 = [v2 isLockScreenRecommendationActive];
+  lockScreenController = [(MRDNowPlayingServer *)self lockScreenController];
+  isLockScreenRecommendationActive = [lockScreenController isLockScreenRecommendationActive];
 
-  return v3;
+  return isLockScreenRecommendationActive;
 }
 
 - (BOOL)hasElectedPlayer
 {
-  v2 = [(MRDNowPlayingServer *)self electedPlayerController];
-  v3 = [v2 electedPlayerPath];
-  v4 = v3 != 0;
+  electedPlayerController = [(MRDNowPlayingServer *)self electedPlayerController];
+  electedPlayerPath = [electedPlayerController electedPlayerPath];
+  v4 = electedPlayerPath != 0;
 
   return v4;
 }
 
 - (BOOL)hasProactiveRecommendedPlayer
 {
-  v2 = [(MRDNowPlayingServer *)self proactiveRecommendedPlayerController];
-  v3 = [v2 proactiveRecommendedPlayerPath];
-  v4 = v3 != 0;
+  proactiveRecommendedPlayerController = [(MRDNowPlayingServer *)self proactiveRecommendedPlayerController];
+  proactiveRecommendedPlayerPath = [proactiveRecommendedPlayerController proactiveRecommendedPlayerPath];
+  v4 = proactiveRecommendedPlayerPath != 0;
 
   return v4;
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v4 = a3;
+  diagnosticCopy = diagnostic;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100129610;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = diagnosticCopy;
+  selfCopy = self;
+  v6 = diagnosticCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)postClientNowPlayingNotificationNamed:(id)a3 userInfo:(id)a4 predicate:(id)a5
+- (void)postClientNowPlayingNotificationNamed:(id)named userInfo:(id)info predicate:(id)predicate
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  infoCopy = info;
+  predicateCopy = predicate;
+  namedCopy = named;
   v10 = +[MRDMediaRemoteServer server];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001299F4;
   v13[3] = &unk_1004BDE78;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  [v10 postClientNotificationNamed:v9 userInfo:v12 predicate:v13];
+  v14 = infoCopy;
+  v15 = predicateCopy;
+  v11 = predicateCopy;
+  v12 = infoCopy;
+  [v10 postClientNotificationNamed:namedCopy userInfo:v12 predicate:v13];
 }
 
-- (void)postOriginDidRegister:(id)a3 handler:(id)a4
+- (void)postOriginDidRegister:(id)register handler:(id)handler
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [[MRPlayerPath alloc] initWithOrigin:v6 client:0 player:0];
+  handlerCopy = handler;
+  registerCopy = register;
+  v7 = [[MRPlayerPath alloc] initWithOrigin:registerCopy client:0 player:0];
 
   v8 = [[NSMutableDictionary alloc] initWithCapacity:1];
   MRAddPlayerPathToUserInfo();
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -3842,21 +3842,21 @@ LABEL_8:
   }
 }
 
-- (void)postOriginDidUnRegister:(id)a3 deviceInfo:(id)a4 handler:(id)a5
+- (void)postOriginDidUnRegister:(id)register deviceInfo:(id)info handler:(id)handler
 {
-  v12 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  infoCopy = info;
+  registerCopy = register;
   v10 = objc_alloc_init(MRPlayerPath);
-  [v10 setOrigin:v9];
+  [v10 setOrigin:registerCopy];
 
   v11 = [[NSMutableDictionary alloc] initWithCapacity:2];
   MRAddPlayerPathToUserInfo();
   MRAddDeviceInfoToUserInfo();
 
-  if (v12)
+  if (handlerCopy)
   {
-    v12[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -3865,23 +3865,23 @@ LABEL_8:
   }
 }
 
-- (void)postDeviceInfoDidChange:(id)a3 previousDeviceInfo:(id)a4 forOrigin:(id)a5 handler:(id)a6
+- (void)postDeviceInfoDidChange:(id)change previousDeviceInfo:(id)info forOrigin:(id)origin handler:(id)handler
 {
-  v16 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[MRPlayerPath alloc] initWithOrigin:v9 client:0 player:0];
+  handlerCopy = handler;
+  originCopy = origin;
+  infoCopy = info;
+  changeCopy = change;
+  v12 = [[MRPlayerPath alloc] initWithOrigin:originCopy client:0 player:0];
 
   v13 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
   MRAddDeviceInfoToUserInfo();
 
-  [v13 setObject:v10 forKeyedSubscript:kMRPreviousPairedDeviceUserInfoKey];
+  [v13 setObject:infoCopy forKeyedSubscript:kMRPreviousPairedDeviceUserInfoKey];
   v14 = _MRDeviceInfoDidChangeNotification;
-  if (v16)
+  if (handlerCopy)
   {
-    v16[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -3891,21 +3891,21 @@ LABEL_8:
   }
 }
 
-- (void)postVolumeDidChange:(id)a3 volume:(float)a4 handler:(id)a5
+- (void)postVolumeDidChange:(id)change volume:(float)volume handler:(id)handler
 {
-  v13 = a5;
-  v7 = a3;
+  handlerCopy = handler;
+  changeCopy = change;
   v8 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  *&v9 = a4;
+  *&v9 = volume;
   v10 = [NSNumber numberWithFloat:v9];
   [v8 setObject:v10 forKeyedSubscript:kMRMediaRemotePickedRouteVolumeUserInfoKey];
 
   v11 = _MRMediaRemotePickedRouteVolumeDidChangeNotification;
-  if (v13)
+  if (handlerCopy)
   {
-    v13[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -3915,16 +3915,16 @@ LABEL_8:
   }
 }
 
-- (void)postClientDidRegisterCanBeNowPlayingForPlayerPath:(id)a3 handler:(id)a4
+- (void)postClientDidRegisterCanBeNowPlayingForPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
   v7 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -3937,16 +3937,16 @@ LABEL_8:
   }
 }
 
-- (void)postClientDidUnregisterCanBeNowPlayingForPlayerPath:(id)a3 handler:(id)a4
+- (void)postClientDidUnregisterCanBeNowPlayingForPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
   v7 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -3955,16 +3955,16 @@ LABEL_8:
   }
 }
 
-- (void)postPlayerDidRegisterCanBeNowPlayingForPlayerPath:(id)a3 handler:(id)a4
+- (void)postPlayerDidRegisterCanBeNowPlayingForPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
   v7 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -3973,16 +3973,16 @@ LABEL_8:
   }
 }
 
-- (void)postPlayerDidUnregisterCanBeNowPlayingForPlayerPath:(id)a3 handler:(id)a4
+- (void)postPlayerDidUnregisterCanBeNowPlayingForPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
   v7 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -3991,16 +3991,16 @@ LABEL_8:
   }
 }
 
-- (void)postClientDidRegisterForPlayerPath:(id)a3 handler:(id)a4
+- (void)postClientDidRegisterForPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
   v7 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -4009,26 +4009,26 @@ LABEL_8:
   }
 }
 
-- (void)postClientDidUnregisterForPlayerPath:(id)a3 hasDefaultSupportedCommands:(BOOL)a4 canBeNowPlaying:(BOOL)a5 handler:(id)a6
+- (void)postClientDidUnregisterForPlayerPath:(id)path hasDefaultSupportedCommands:(BOOL)commands canBeNowPlaying:(BOOL)playing handler:(id)handler
 {
-  v8 = a4;
-  v14 = a3;
-  v10 = a6;
-  if (a5 || ([v14 origin], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isLocallyHosted"), v11, (v12 & 1) == 0))
+  commandsCopy = commands;
+  pathCopy = path;
+  handlerCopy = handler;
+  if (playing || ([pathCopy origin], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isLocallyHosted"), v11, (v12 & 1) == 0))
   {
-    [(MRDNowPlayingServer *)self postClientDidUnregisterCanBeNowPlayingForPlayerPath:v14 handler:v10];
+    [(MRDNowPlayingServer *)self postClientDidUnregisterCanBeNowPlayingForPlayerPath:pathCopy handler:handlerCopy];
   }
 
   v13 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
-  if (v8)
+  if (commandsCopy)
   {
     [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:_MRMediaRemoteApplicationHasDefaultSupportedCommandsUserInfoKey];
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10, _MRMediaRemoteNowPlayingApplicationDidUnregister, v13);
+    handlerCopy[2](handlerCopy, _MRMediaRemoteNowPlayingApplicationDidUnregister, v13);
   }
 
   else
@@ -4037,16 +4037,16 @@ LABEL_8:
   }
 }
 
-- (void)postNowPlayingClientStateDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5
+- (void)postNowPlayingClientStateDidChange:(id)change forPlayerPath:(id)path handler:(id)handler
 {
-  v9 = a5;
-  v7 = a4;
+  handlerCopy = handler;
+  pathCopy = path;
   v8 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -4055,18 +4055,18 @@ LABEL_8:
   }
 }
 
-- (void)postActivePlayerPathsDidChangeForOrigin:(id)a3 handler:(id)a4
+- (void)postActivePlayerPathsDidChangeForOrigin:(id)origin handler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 isLocal])
+  originCopy = origin;
+  handlerCopy = handler;
+  if ([originCopy isLocal])
   {
     v7 = objc_alloc_init(NSMutableDictionary);
-    v8 = [[MRPlayerPath alloc] initWithOrigin:v9 client:0 player:0];
+    v8 = [[MRPlayerPath alloc] initWithOrigin:originCopy client:0 player:0];
     MRAddPlayerPathToUserInfo();
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, kMRMediaRemoteActivePlayerPathsDidChange, v7);
+      handlerCopy[2](handlerCopy, kMRMediaRemoteActivePlayerPathsDidChange, v7);
     }
 
     else
@@ -4076,18 +4076,18 @@ LABEL_8:
   }
 }
 
-- (void)postAudioFormatContentInfoDidChangeForOrigin:(id)a3 handler:(id)a4
+- (void)postAudioFormatContentInfoDidChangeForOrigin:(id)origin handler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 isLocal])
+  originCopy = origin;
+  handlerCopy = handler;
+  if ([originCopy isLocal])
   {
     v7 = objc_alloc_init(NSMutableDictionary);
-    v8 = [[MRPlayerPath alloc] initWithOrigin:v9 client:0 player:0];
+    v8 = [[MRPlayerPath alloc] initWithOrigin:originCopy client:0 player:0];
     MRAddPlayerPathToUserInfo();
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, kMRMediaRemoteAudioFormatContentInfoDidChange, v7);
+      handlerCopy[2](handlerCopy, kMRMediaRemoteAudioFormatContentInfoDidChange, v7);
     }
 
     else
@@ -4097,16 +4097,16 @@ LABEL_8:
   }
 }
 
-- (void)postNowPlayingPlayerStateDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5
+- (void)postNowPlayingPlayerStateDidChange:(id)change forPlayerPath:(id)path handler:(id)handler
 {
-  v9 = a5;
-  v7 = a4;
+  handlerCopy = handler;
+  pathCopy = path;
   v8 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -4115,21 +4115,21 @@ LABEL_8:
   }
 }
 
-- (void)postSupportedCommandsDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5
+- (void)postSupportedCommandsDidChange:(id)change forPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
+  changeCopy = change;
   v11 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
   v12 = objc_alloc_init(NSMutableDictionary);
-  [v12 setObject:v10 forKeyedSubscript:kMRSupportedCommandsDataUserInfoKey];
+  [v12 setObject:changeCopy forKeyedSubscript:kMRSupportedCommandsDataUserInfoKey];
 
   v13 = _MRMediaRemotePlayerSupportedCommandsDidChangeNotification;
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, _MRMediaRemotePlayerSupportedCommandsDidChangeNotification, v11);
+    handlerCopy[2](handlerCopy, _MRMediaRemotePlayerSupportedCommandsDidChangeNotification, v11);
   }
 
   else
@@ -4143,19 +4143,19 @@ LABEL_8:
   }
 }
 
-- (void)postPlaybackQueueDidChange:(id)a3 nowPlayingItemDidChange:(BOOL)a4 forPlayerPath:(id)a5 handler:(id)a6
+- (void)postPlaybackQueueDidChange:(id)change nowPlayingItemDidChange:(BOOL)didChange forPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a4;
-  v29 = self;
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  didChangeCopy = didChange;
+  selfCopy = self;
+  changeCopy = change;
+  pathCopy = path;
+  handlerCopy = handler;
   v12 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
   v13 = [[NSMutableDictionary alloc] initWithCapacity:1];
-  v30 = v10;
+  v30 = pathCopy;
   MRAddPlayerPathToUserInfo();
-  v14 = [v9 contentItemWithOffset:0];
+  v14 = [changeCopy contentItemWithOffset:0];
   if (v14)
   {
     v15 = [MRPlaybackQueueRequest defaultPlaybackQueueRequestWithRange:0, 1];
@@ -4163,8 +4163,8 @@ LABEL_8:
     v17 = [MRPlaybackQueue alloc];
     v34 = v16;
     v18 = [NSArray arrayWithObjects:&v34 count:1];
-    v19 = v9;
-    v20 = v8;
+    v19 = changeCopy;
+    v20 = didChangeCopy;
     v21 = v18;
     v22 = v19;
     v23 = [v17 initWithContentItems:v18 location:0 withPropertiesFromPlaybackQueue:?];
@@ -4178,24 +4178,24 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  v22 = v9;
-  v28 = [[MRPlaybackQueue alloc] initWithContentItems:&__NSArray0__struct location:0 withPropertiesFromPlaybackQueue:v9];
+  v22 = changeCopy;
+  v28 = [[MRPlaybackQueue alloc] initWithContentItems:&__NSArray0__struct location:0 withPropertiesFromPlaybackQueue:changeCopy];
   MRPlaybackQueueToUserInfo();
 
   v16 = 0;
-  if (v8)
+  if (didChangeCopy)
   {
 LABEL_3:
-    v24 = [NSNumber numberWithBool:1, v29];
-    [v12 setObject:v24 forKeyedSubscript:_MRPlayerPlaybackQueueNowPlayingItemDidChangeUserInfoKey];
+    selfCopy = [NSNumber numberWithBool:1, selfCopy];
+    [v12 setObject:selfCopy forKeyedSubscript:_MRPlayerPlaybackQueueNowPlayingItemDidChangeUserInfoKey];
   }
 
 LABEL_4:
   v25 = _MRNowPlayingPlaybackQueueChangedNotification;
   v26 = v22;
-  if (v11)
+  if (handlerCopy)
   {
-    v11[2](v11, _MRNowPlayingPlaybackQueueChangedNotification, v12);
+    handlerCopy[2](handlerCopy, _MRNowPlayingPlaybackQueueChangedNotification, v12);
     v27 = v30;
   }
 
@@ -4208,23 +4208,23 @@ LABEL_4:
     v32 = v16;
     v27 = v30;
     v33 = v30;
-    [(MRDNowPlayingServer *)v29 postClientNowPlayingNotificationNamed:v25 userInfo:v13 predicate:v31];
-    [(MRDNowPlayingServer *)v29 postClientNowPlayingNotificationNamed:v25 userInfo:v12 predicate:&stru_1004BDEE0];
+    [(MRDNowPlayingServer *)selfCopy postClientNowPlayingNotificationNamed:v25 userInfo:v13 predicate:v31];
+    [(MRDNowPlayingServer *)selfCopy postClientNowPlayingNotificationNamed:v25 userInfo:v12 predicate:&stru_1004BDEE0];
   }
 }
 
-- (void)postPlaybackQueueContentItemsDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5
+- (void)postPlaybackQueueContentItemsDidChange:(id)change forPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changeCopy = change;
+  pathCopy = path;
+  handlerCopy = handler;
   v11 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v8;
+  v12 = changeCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -4257,9 +4257,9 @@ LABEL_4:
   }
 
   v18 = _MRPlayerPlaybackQueueContentItemsChangedNotification;
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10, _MRPlayerPlaybackQueueContentItemsChangedNotification, v11);
+    handlerCopy[2](handlerCopy, _MRPlayerPlaybackQueueContentItemsChangedNotification, v11);
   }
 
   else
@@ -4268,25 +4268,25 @@ LABEL_4:
     v19[1] = 3221225472;
     v19[2] = sub_10012B704;
     v19[3] = &unk_1004BDEC0;
-    v20 = v9;
+    v20 = pathCopy;
     v21 = v12;
     [(MRDNowPlayingServer *)self postClientNowPlayingNotificationNamed:v18 userInfo:v11 predicate:v19];
   }
 }
 
-- (void)postPlaybackQueueContentItemsArtworkDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5
+- (void)postPlaybackQueueContentItemsArtworkDidChange:(id)change forPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 count])
+  changeCopy = change;
+  pathCopy = path;
+  handlerCopy = handler;
+  if (changeCopy && [changeCopy count])
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     MRAddPlayerPathToUserInfo();
     v12 = _MRPlayerPlaybackQueueContentItemArtworkChangedNotification;
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10, _MRPlayerPlaybackQueueContentItemArtworkChangedNotification, v11);
+      handlerCopy[2](handlerCopy, _MRPlayerPlaybackQueueContentItemArtworkChangedNotification, v11);
     }
 
     else
@@ -4295,26 +4295,26 @@ LABEL_4:
       v13[1] = 3221225472;
       v13[2] = sub_10012B9CC;
       v13[3] = &unk_1004BDEC0;
-      v14 = v9;
-      v15 = v8;
+      v14 = pathCopy;
+      v15 = changeCopy;
       [(MRDNowPlayingServer *)self postClientNowPlayingNotificationNamed:v12 userInfo:v11 predicate:v13];
     }
   }
 }
 
-- (void)postPlaybackQueueCapabilitiesDidChange:(unint64_t)a3 forPlayerPath:(id)a4 handler:(id)a5
+- (void)postPlaybackQueueCapabilitiesDidChange:(unint64_t)change forPlayerPath:(id)path handler:(id)handler
 {
-  v11 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  pathCopy = path;
   v9 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  v10 = [NSNumber numberWithUnsignedLong:a3];
+  v10 = [NSNumber numberWithUnsignedLong:change];
   [v9 setObject:v10 forKeyedSubscript:kMRPlaybackQueueCapabilitiesUserInfoKey];
 
-  if (v11)
+  if (handlerCopy)
   {
-    v11[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -4323,20 +4323,20 @@ LABEL_4:
   }
 }
 
-- (void)postPlaybackQueueParticipantsDidChange:(id)a3 forPlayerPath:(id)a4 handler:(id)a5
+- (void)postPlaybackQueueParticipantsDidChange:(id)change forPlayerPath:(id)path handler:(id)handler
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [v11 client];
-  v9 = [v8 isSystemMediaApplication];
+  pathCopy = path;
+  handlerCopy = handler;
+  client = [pathCopy client];
+  isSystemMediaApplication = [client isSystemMediaApplication];
 
-  if (v9)
+  if (isSystemMediaApplication)
   {
     v10 = objc_alloc_init(NSMutableDictionary);
     MRAddPlayerPathToUserInfo();
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, MRPlaybackQueueParticipantsDidChangeForPlayerNotification, v10);
+      handlerCopy[2](handlerCopy, MRPlaybackQueueParticipantsDidChangeForPlayerNotification, v10);
     }
 
     else
@@ -4346,16 +4346,16 @@ LABEL_4:
   }
 }
 
-- (void)postPlayerDidRegisterForPlayerPath:(id)a3 handler:(id)a4
+- (void)postPlayerDidRegisterForPlayerPath:(id)path handler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  pathCopy = path;
   v7 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2]();
+    handlerCopy[2]();
   }
 
   else
@@ -4364,29 +4364,29 @@ LABEL_4:
   }
 }
 
-- (void)postElectedPlayerDidChange:(id)a3 change:(int64_t)a4 event:(int64_t)a5 reason:(id)a6 handler:(id)a7
+- (void)postElectedPlayerDidChange:(id)change change:(int64_t)a4 event:(int64_t)event reason:(id)reason handler:(id)handler
 {
-  v18 = a6;
-  v11 = a7;
-  v12 = a3;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  changeCopy = change;
   v13 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v18)
+  if (reasonCopy)
   {
-    [v13 setObject:v18 forKeyedSubscript:kMRMediaRemoteElectedPlayerReasonUserInfoKey];
+    [v13 setObject:reasonCopy forKeyedSubscript:kMRMediaRemoteElectedPlayerReasonUserInfoKey];
   }
 
   v14 = [NSNumber numberWithInteger:a4];
   [v13 setObject:v14 forKeyedSubscript:kMRMediaRemoteActiveEndpointChangeTypeUserInfoKey];
 
-  v15 = [NSNumber numberWithInteger:a5];
+  v15 = [NSNumber numberWithInteger:event];
   [v13 setObject:v15 forKeyedSubscript:@"MRDElectedPlayerControllerEventUserInfoKey"];
 
   v16 = kMRMediaRemoteElectedPlayerDidChangeNotification;
-  if (v11)
+  if (handlerCopy)
   {
-    v11[2](v11, kMRMediaRemoteElectedPlayerDidChangeNotification, v13);
+    handlerCopy[2](handlerCopy, kMRMediaRemoteElectedPlayerDidChangeNotification, v13);
   }
 
   else
@@ -4398,29 +4398,29 @@ LABEL_4:
   }
 }
 
-- (void)postProactiveRecommendedPlayerDidChange:(id)a3 change:(int64_t)a4 event:(int64_t)a5 reason:(id)a6 handler:(id)a7
+- (void)postProactiveRecommendedPlayerDidChange:(id)change change:(int64_t)a4 event:(int64_t)event reason:(id)reason handler:(id)handler
 {
-  v18 = a6;
-  v11 = a7;
-  v12 = a3;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  changeCopy = change;
   v13 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
-  if (v18)
+  if (reasonCopy)
   {
-    [v13 setObject:v18 forKeyedSubscript:MRMediaRemoteProactiveRecommendedPlayerReasonUserInfoKey];
+    [v13 setObject:reasonCopy forKeyedSubscript:MRMediaRemoteProactiveRecommendedPlayerReasonUserInfoKey];
   }
 
   v14 = [NSNumber numberWithInteger:a4];
   [v13 setObject:v14 forKeyedSubscript:kMRMediaRemoteActiveEndpointChangeTypeUserInfoKey];
 
-  v15 = [NSNumber numberWithInteger:a5];
+  v15 = [NSNumber numberWithInteger:event];
   [v13 setObject:v15 forKeyedSubscript:@"MRDProactiveRecommendedPlayerControllerEventUserInfoKey"];
 
   v16 = MRMediaRemoteProactiveRecommendedPlayerDidChangeNotification;
-  if (v11)
+  if (handlerCopy)
   {
-    v11[2](v11, MRMediaRemoteProactiveRecommendedPlayerDidChangeNotification, v13);
+    handlerCopy[2](handlerCopy, MRMediaRemoteProactiveRecommendedPlayerDidChangeNotification, v13);
   }
 
   else
@@ -4432,20 +4432,20 @@ LABEL_4:
   }
 }
 
-- (void)postLockScreenVisibleDidChange:(BOOL)a3 handler:(id)a4
+- (void)postLockScreenVisibleDidChange:(BOOL)change handler:(id)handler
 {
   v4 = &kMRMediaRemoteLockScreenControlsDidAppearNotification;
-  if (!a3)
+  if (!change)
   {
     v4 = &kMRMediaRemoteLockScreenControlsDidDisappearNotification;
   }
 
   v5 = *v4;
-  if (a4)
+  if (handler)
   {
-    v7 = *(a4 + 2);
+    v7 = *(handler + 2);
     v9 = v5;
-    v7(a4);
+    v7(handler);
   }
 
   else
@@ -4456,20 +4456,20 @@ LABEL_4:
   }
 }
 
-- (void)postLockScreenActiveDidChange:(BOOL)a3 handler:(id)a4
+- (void)postLockScreenActiveDidChange:(BOOL)change handler:(id)handler
 {
   v4 = &kMRMediaRemoteLockScreenControlsDidActivateNotification;
-  if (!a3)
+  if (!change)
   {
     v4 = &kMRMediaRemoteLockScreenControlsDidDeactivateNotification;
   }
 
   v5 = *v4;
-  if (a4)
+  if (handler)
   {
-    v7 = *(a4 + 2);
+    v7 = *(handler + 2);
     v9 = v5;
-    v7(a4);
+    v7(handler);
   }
 
   else
@@ -4480,17 +4480,17 @@ LABEL_4:
   }
 }
 
-- (void)postLockScreenPlayerPathDidChange:(id)a3 handler:(id)a4
+- (void)postLockScreenPlayerPathDidChange:(id)change handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  changeCopy = change;
   v8 = objc_alloc_init(NSMutableDictionary);
   MRAddPlayerPathToUserInfo();
 
   v9 = kMRMediaRemoteLockScreenControlsPlayerPathDidChangeNotification;
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, v9, v8);
+    handlerCopy[2](handlerCopy, v9, v8);
   }
 
   else
@@ -4527,74 +4527,74 @@ LABEL_4:
   notify_post([v4 UTF8String]);
 }
 
-- (id)augmentedUserInfoForPlayerPath:(id)a3
+- (id)augmentedUserInfoForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [(MRDNowPlayingServer *)self activePlayerPath];
-  if (v6)
+  activePlayerPath = [(MRDNowPlayingServer *)self activePlayerPath];
+  if (activePlayerPath)
   {
-    [v5 setObject:v6 forKey:kMRActiveNowPlayingPlayerPathUserInfoKey];
+    [v5 setObject:activePlayerPath forKey:kMRActiveNowPlayingPlayerPathUserInfoKey];
   }
 
-  if (v4)
+  if (pathCopy)
   {
-    v7 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:v4];
-    v8 = [v7 originClient];
-    v9 = [v8 activeNowPlayingClient];
-    v10 = [v9 activePlayerClient];
-    v11 = [v10 playerPath];
+    v7 = [(MRDNowPlayingServer *)self queryExistingPlayerPath:pathCopy];
+    originClient = [v7 originClient];
+    activeNowPlayingClient = [originClient activeNowPlayingClient];
+    activePlayerClient = [activeNowPlayingClient activePlayerClient];
+    playerPath = [activePlayerClient playerPath];
 
-    if (v11)
+    if (playerPath)
     {
       goto LABEL_7;
     }
 
-    v12 = [v7 originClient];
-    v13 = [v12 activeNowPlayingClient];
-    v11 = [v13 playerPath];
+    originClient2 = [v7 originClient];
+    activeNowPlayingClient2 = [originClient2 activeNowPlayingClient];
+    playerPath = [activeNowPlayingClient2 playerPath];
 
-    if (v11 || ([v7 originClient], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "playerPath"), v11 = objc_claimAutoreleasedReturnValue(), v14, v11))
+    if (playerPath || ([v7 originClient], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "playerPath"), playerPath = objc_claimAutoreleasedReturnValue(), v14, playerPath))
     {
 LABEL_7:
-      [v5 setValue:v11 forKey:kMROriginActiveNowPlayingPlayerPathUserInfoKey];
+      [v5 setValue:playerPath forKey:kMROriginActiveNowPlayingPlayerPathUserInfoKey];
     }
   }
 
   return v5;
 }
 
-- (void)registerOriginForwarder:(id)a3
+- (void)registerOriginForwarder:(id)forwarder
 {
-  v4 = a3;
+  forwarderCopy = forwarder;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012CCDC;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = forwarderCopy;
+  v6 = forwarderCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)unregisterOriginForwarder:(id)a3
+- (void)unregisterOriginForwarder:(id)forwarder
 {
-  v4 = a3;
+  forwarderCopy = forwarder;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012CDDC;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = forwarderCopy;
+  v6 = forwarderCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (BOOL)_hasForwarderForOrigin:(id)a3
+- (BOOL)_hasForwarderForOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -4613,8 +4613,8 @@ LABEL_7:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) destinationOrigin];
-        v10 = [v9 isEqual:v4];
+        destinationOrigin = [*(*(&v12 + 1) + 8 * i) destinationOrigin];
+        v10 = [destinationOrigin isEqual:originCopy];
 
         if (v10)
         {
@@ -4638,87 +4638,87 @@ LABEL_11:
   return v6;
 }
 
-- (void)_addOrigin:(id)a3 withDeviceInfo:(id)a4 emitNotification:(BOOL)a5
+- (void)_addOrigin:(id)origin withDeviceInfo:(id)info emitNotification:(BOOL)notification
 {
-  v7 = a3;
-  v8 = a4;
+  originCopy = origin;
+  infoCopy = info;
   v9 = +[MRNowPlayingOriginClientManager sharedManager];
-  v10 = [v8 routingContextID];
-  v11 = [v9 createCustomOriginClientForOrigin:v7 routingContextID:v10];
+  routingContextID = [infoCopy routingContextID];
+  v11 = [v9 createCustomOriginClientForOrigin:originCopy routingContextID:routingContextID];
 
   v12 = +[MRNowPlayingOriginClientManager sharedManager];
-  v13 = [v7 playerPath];
-  v14 = [v12 originClientRequestsForPlayerPath:v13];
+  playerPath = [originCopy playerPath];
+  v14 = [v12 originClientRequestsForPlayerPath:playerPath];
 
-  [v14 setDeviceInfo:v8];
+  [v14 setDeviceInfo:infoCopy];
   serialQueue = self->_serialQueue;
-  v18 = v7;
-  v16 = v8;
-  v17 = v7;
+  v18 = originCopy;
+  v16 = infoCopy;
+  v17 = originCopy;
   msv_dispatch_sync_on_queue();
 }
 
-- (void)_removeOrigin:(id)a3
+- (void)_removeOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   serialQueue = self->_serialQueue;
-  v8 = self;
-  v9 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v9 = originCopy;
+  v6 = originCopy;
   msv_dispatch_sync_on_queue();
   v7 = [MRNowPlayingOriginClientManager sharedManager:_NSConcreteStackBlock];
   [v7 removeOrigin:v6];
 }
 
-- (void)_removeNowPlayingClient:(id)a3 forOrigin:(id)a4
+- (void)_removeNowPlayingClient:(id)client forOrigin:(id)origin
 {
-  v6 = a3;
-  v7 = [(MRDNowPlayingServer *)self originClientForOrigin:a4];
-  [v7 removeNowPlayingClientForClient:v6];
+  clientCopy = client;
+  v7 = [(MRDNowPlayingServer *)self originClientForOrigin:origin];
+  [v7 removeNowPlayingClientForClient:clientCopy];
 }
 
-- (void)setOverrideClient:(id)a3
+- (void)setOverrideClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MRDNowPlayingServer *)self localOriginClient];
-  [v5 setOverrideClient:v4];
+  clientCopy = client;
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  [localOriginClient setOverrideClient:clientCopy];
 }
 
 - (id)overrideClient
 {
-  v2 = [(MRDNowPlayingServer *)self localOriginClient];
-  v3 = [v2 overrideClient];
+  localOriginClient = [(MRDNowPlayingServer *)self localOriginClient];
+  overrideClient = [localOriginClient overrideClient];
 
-  return v3;
+  return overrideClient;
 }
 
-- (void)setActiveOrigin:(id)a3
+- (void)setActiveOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   serialQueue = self->_serialQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = originCopy;
+  v6 = originCopy;
   msv_dispatch_sync_on_queue();
 }
 
-- (void)_onQueue_setActiveOrigin:(id)a3 saveState:(BOOL)a4
+- (void)_onQueue_setActiveOrigin:(id)origin saveState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
+  stateCopy = state;
+  originCopy = origin;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v7 = [(MRDNowPlayingServer *)self _onQueue_originClientForOrigin:v6];
+  v7 = [(MRDNowPlayingServer *)self _onQueue_originClientForOrigin:originCopy];
   v8 = self->_activeOriginClient;
   if (v7 != v8)
   {
     v9 = _MRLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(MRDNowPlayingOriginClient *)v8 origin];
-      v11 = [(MRDNowPlayingOriginClient *)v7 origin];
+      origin = [(MRDNowPlayingOriginClient *)v8 origin];
+      origin2 = [(MRDNowPlayingOriginClient *)v7 origin];
       v12 = 138412546;
-      v13 = v10;
+      v13 = origin;
       v14 = 2112;
-      v15 = v11;
+      v15 = origin2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Setting active origin from %@ to %@", &v12, 0x16u);
     }
 
@@ -4726,30 +4726,30 @@ LABEL_11:
     [(MRDNowPlayingServer *)self nowPlayingServer:self activeOriginDidChangeFromOriginClient:self->_activeOriginClient toOriginClient:v7];
   }
 
-  if (v4)
+  if (stateCopy)
   {
-    [(MRDNowPlayingServer *)self _onQueue_savePersistentActiveOrigin:v6];
+    [(MRDNowPlayingServer *)self _onQueue_savePersistentActiveOrigin:originCopy];
   }
 }
 
-- (void)_onQueue_savePersistentActiveOrigin:(id)a3
+- (void)_onQueue_savePersistentActiveOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   dispatch_assert_queue_V2(self->_serialQueue);
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = originCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Persisting active origin %@", &v9, 0xCu);
   }
 
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = v6;
-  if (v4)
+  if (originCopy)
   {
-    v8 = [v4 data];
-    [v7 setObject:v8 forKey:@"_MRDActiveOriginDataDefaultsKey"];
+    data = [originCopy data];
+    [v7 setObject:data forKey:@"_MRDActiveOriginDataDefaultsKey"];
   }
 
   else
@@ -4776,9 +4776,9 @@ LABEL_11:
   return v4;
 }
 
-- (id)_onQueue_originClientForOrigin:(id)a3
+- (id)_onQueue_originClientForOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   dispatch_assert_queue_V2(self->_serialQueue);
   v18 = 0u;
   v19 = 0u;
@@ -4801,8 +4801,8 @@ LABEL_11:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 origin];
-        v13 = [v12 isEqual:v4];
+        origin = [v11 origin];
+        v13 = [origin isEqual:originCopy];
 
         if (v13)
         {
@@ -4826,11 +4826,11 @@ LABEL_11:
   return v8;
 }
 
-- (id)_onQueue_originClientForDeviceUID:(id)a3
+- (id)_onQueue_originClientForDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (v4)
+  if (dCopy)
   {
     v22 = 0u;
     v23 = 0u;
@@ -4853,9 +4853,9 @@ LABEL_11:
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [v11 deviceInfo];
-          v13 = [v12 deviceUID];
-          v14 = [v13 isEqualToString:v4];
+          deviceInfo = [v11 deviceInfo];
+          deviceUID = [deviceInfo deviceUID];
+          v14 = [deviceUID isEqualToString:dCopy];
 
           if (v14)
           {
@@ -4888,11 +4888,11 @@ LABEL_11:
   return v8;
 }
 
-- (id)_onQueue_originClientForGroupLeaderOfDeviceUID:(id)a3
+- (id)_onQueue_originClientForGroupLeaderOfDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (!v4)
+  if (!dCopy)
   {
     v18 = self->_localOriginClient;
 LABEL_23:
@@ -4910,11 +4910,11 @@ LABEL_23:
   {
 
 LABEL_22:
-    v18 = [(MRDNowPlayingServer *)self _onQueue_originClientForDeviceUID:v4];
+    v18 = [(MRDNowPlayingServer *)self _onQueue_originClientForDeviceUID:dCopy];
     goto LABEL_23;
   }
 
-  v20 = self;
+  selfCopy = self;
   obj = v5;
   v6 = 0;
   v22 = *v29;
@@ -4932,10 +4932,10 @@ LABEL_22:
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v9 = [v8 deviceInfo];
-      v10 = [v9 groupedDevices];
+      deviceInfo = [v8 deviceInfo];
+      groupedDevices = [deviceInfo groupedDevices];
 
-      v11 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v11 = [groupedDevices countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v11)
       {
         v12 = v11;
@@ -4946,11 +4946,11 @@ LABEL_22:
           {
             if (*v25 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(groupedDevices);
             }
 
-            v15 = [*(*(&v24 + 1) + 8 * j) deviceUID];
-            v16 = [v15 isEqualToString:v4];
+            deviceUID = [*(*(&v24 + 1) + 8 * j) deviceUID];
+            v16 = [deviceUID isEqualToString:dCopy];
 
             if (v16)
             {
@@ -4960,7 +4960,7 @@ LABEL_22:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v12 = [groupedDevices countByEnumeratingWithState:&v24 objects:v32 count:16];
         }
 
         while (v12);
@@ -4972,7 +4972,7 @@ LABEL_22:
 
   while (v23);
 
-  self = v20;
+  self = selfCopy;
   if (!v6)
   {
     goto LABEL_22;

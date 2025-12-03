@@ -1,38 +1,38 @@
 @interface _SFPBSubscribeForUpdatesCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSubscribeForUpdatesCommand)initWithDictionary:(id)a3;
-- (_SFPBSubscribeForUpdatesCommand)initWithFacade:(id)a3;
-- (_SFPBSubscribeForUpdatesCommand)initWithJSON:(id)a3;
+- (_SFPBSubscribeForUpdatesCommand)initWithDictionary:(id)dictionary;
+- (_SFPBSubscribeForUpdatesCommand)initWithFacade:(id)facade;
+- (_SFPBSubscribeForUpdatesCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSubscribeForUpdatesCommand
 
-- (_SFPBSubscribeForUpdatesCommand)initWithFacade:(id)a3
+- (_SFPBSubscribeForUpdatesCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSubscribeForUpdatesCommand *)self init];
   if (v5)
   {
-    v6 = [v4 cloudChannelsRequestItem];
+    cloudChannelsRequestItem = [facadeCopy cloudChannelsRequestItem];
 
-    if (v6)
+    if (cloudChannelsRequestItem)
     {
       v7 = [_SFPBCloudChannelsRequestItem alloc];
-      v8 = [v4 cloudChannelsRequestItem];
-      v9 = [(_SFPBCloudChannelsRequestItem *)v7 initWithFacade:v8];
+      cloudChannelsRequestItem2 = [facadeCopy cloudChannelsRequestItem];
+      v9 = [(_SFPBCloudChannelsRequestItem *)v7 initWithFacade:cloudChannelsRequestItem2];
       [(_SFPBSubscribeForUpdatesCommand *)v5 setCloudChannelsRequestItem:v9];
     }
 
-    v10 = [v4 domainSubscriptionRequestItem];
+    domainSubscriptionRequestItem = [facadeCopy domainSubscriptionRequestItem];
 
-    if (v10)
+    if (domainSubscriptionRequestItem)
     {
       v11 = [_SFPBDomainSubscriptionRequestItem alloc];
-      v12 = [v4 domainSubscriptionRequestItem];
-      v13 = [(_SFPBDomainSubscriptionRequestItem *)v11 initWithFacade:v12];
+      domainSubscriptionRequestItem2 = [facadeCopy domainSubscriptionRequestItem];
+      v13 = [(_SFPBDomainSubscriptionRequestItem *)v11 initWithFacade:domainSubscriptionRequestItem2];
       [(_SFPBSubscribeForUpdatesCommand *)v5 setDomainSubscriptionRequestItem:v13];
     }
 
@@ -42,15 +42,15 @@
   return v5;
 }
 
-- (_SFPBSubscribeForUpdatesCommand)initWithDictionary:(id)a3
+- (_SFPBSubscribeForUpdatesCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBSubscribeForUpdatesCommand;
   v5 = [(_SFPBSubscribeForUpdatesCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cloudChannelsRequestItem"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"cloudChannelsRequestItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(_SFPBSubscribeForUpdatesCommand *)v5 setCloudChannelsRequestItem:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"domainSubscriptionRequestItem"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"domainSubscriptionRequestItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (_SFPBSubscribeForUpdatesCommand)initWithJSON:(id)a3
+- (_SFPBSubscribeForUpdatesCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSubscribeForUpdatesCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSubscribeForUpdatesCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSubscribeForUpdatesCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,64 +108,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cloudChannelsRequestItem)
   {
-    v4 = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cloudChannelsRequestItem = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
+    dictionaryRepresentation = [cloudChannelsRequestItem dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cloudChannelsRequestItem"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cloudChannelsRequestItem"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cloudChannelsRequestItem"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cloudChannelsRequestItem"];
     }
   }
 
   if (self->_domainSubscriptionRequestItem)
   {
-    v7 = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    domainSubscriptionRequestItem = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
+    dictionaryRepresentation2 = [domainSubscriptionRequestItem dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"domainSubscriptionRequestItem"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"domainSubscriptionRequestItem"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"domainSubscriptionRequestItem"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"domainSubscriptionRequestItem"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
-  v6 = [v4 cloudChannelsRequestItem];
-  if ((v5 != 0) == (v6 == 0))
+  cloudChannelsRequestItem = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
+  cloudChannelsRequestItem2 = [equalCopy cloudChannelsRequestItem];
+  if ((cloudChannelsRequestItem != 0) == (cloudChannelsRequestItem2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
-  if (v7)
+  cloudChannelsRequestItem3 = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
+  if (cloudChannelsRequestItem3)
   {
-    v8 = v7;
-    v9 = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
-    v10 = [v4 cloudChannelsRequestItem];
-    v11 = [v9 isEqual:v10];
+    v8 = cloudChannelsRequestItem3;
+    cloudChannelsRequestItem4 = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
+    cloudChannelsRequestItem5 = [equalCopy cloudChannelsRequestItem];
+    v11 = [cloudChannelsRequestItem4 isEqual:cloudChannelsRequestItem5];
 
     if (!v11)
     {
@@ -177,12 +177,12 @@
   {
   }
 
-  v5 = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
-  v6 = [v4 domainSubscriptionRequestItem];
-  if ((v5 != 0) != (v6 == 0))
+  cloudChannelsRequestItem = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
+  cloudChannelsRequestItem2 = [equalCopy domainSubscriptionRequestItem];
+  if ((cloudChannelsRequestItem != 0) != (cloudChannelsRequestItem2 == 0))
   {
-    v12 = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
-    if (!v12)
+    domainSubscriptionRequestItem = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
+    if (!domainSubscriptionRequestItem)
     {
 
 LABEL_15:
@@ -190,10 +190,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
-    v15 = [v4 domainSubscriptionRequestItem];
-    v16 = [v14 isEqual:v15];
+    v13 = domainSubscriptionRequestItem;
+    domainSubscriptionRequestItem2 = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
+    domainSubscriptionRequestItem3 = [equalCopy domainSubscriptionRequestItem];
+    v16 = [domainSubscriptionRequestItem2 isEqual:domainSubscriptionRequestItem3];
 
     if (v16)
     {
@@ -213,17 +213,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
-  if (v4)
+  toCopy = to;
+  cloudChannelsRequestItem = [(_SFPBSubscribeForUpdatesCommand *)self cloudChannelsRequestItem];
+  if (cloudChannelsRequestItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
-  if (v5)
+  domainSubscriptionRequestItem = [(_SFPBSubscribeForUpdatesCommand *)self domainSubscriptionRequestItem];
+  if (domainSubscriptionRequestItem)
   {
     PBDataWriterWriteSubmessage();
   }

@@ -1,23 +1,23 @@
 @interface MOSuggestionAssetImageURLPair
-- (BOOL)setURLsWithAppendix:(id)a3;
-- (BOOL)writeImageToURLs:(id)a3;
-- (MOSuggestionAssetImageURLPair)initWithCoder:(id)a3;
+- (BOOL)setURLsWithAppendix:(id)appendix;
+- (BOOL)writeImageToURLs:(id)ls;
+- (MOSuggestionAssetImageURLPair)initWithCoder:(id)coder;
 - (id)constructedImage;
-- (id)init:(id)a3 urlAppendix:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)init:(id)init urlAppendix:(id)appendix;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionAssetImageURLPair
 
-- (id)init:(id)a3 urlAppendix:(id)a4
+- (id)init:(id)init urlAppendix:(id)appendix
 {
-  v6 = a3;
-  v7 = a4;
+  initCopy = init;
+  appendixCopy = appendix;
   v12.receiver = self;
   v12.super_class = MOSuggestionAssetImageURLPair;
   v8 = [(MOSuggestionAssetImageURLPair *)&v12 init];
   v9 = v8;
-  if (v8 && [(MOSuggestionAssetImageURLPair *)v8 setURLsWithAppendix:v7]&& [(MOSuggestionAssetImageURLPair *)v9 writeImageToURLs:v6])
+  if (v8 && [(MOSuggestionAssetImageURLPair *)v8 setURLsWithAppendix:appendixCopy]&& [(MOSuggestionAssetImageURLPair *)v9 writeImageToURLs:initCopy])
   {
     v10 = v9;
   }
@@ -30,16 +30,16 @@
   return v10;
 }
 
-- (BOOL)setURLsWithAppendix:(id)a3
+- (BOOL)setURLsWithAppendix:(id)appendix
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = a3;
+  appendixCopy = appendix;
   v6 = [v4 alloc];
   v7 = NSTemporaryDirectory();
   v8 = [v6 initFileURLWithPath:v7];
 
-  v9 = [v5 stringByAppendingString:@"_light.png"];
-  v10 = [v5 stringByAppendingString:@"_dark.png"];
+  v9 = [appendixCopy stringByAppendingString:@"_light.png"];
+  v10 = [appendixCopy stringByAppendingString:@"_dark.png"];
 
   v11 = [v8 URLByAppendingPathComponent:v9];
   lightURL = self->_lightURL;
@@ -80,17 +80,17 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)writeImageToURLs:(id)a3
+- (BOOL)writeImageToURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [v4 imageAsset];
+  lsCopy = ls;
+  imageAsset = [lsCopy imageAsset];
   v6 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
-  v7 = [v5 imageWithTraitCollection:v6];
+  v7 = [imageAsset imageWithTraitCollection:v6];
 
-  v8 = [v4 imageAsset];
+  imageAsset2 = [lsCopy imageAsset];
 
   v9 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-  v10 = [v8 imageWithTraitCollection:v9];
+  v10 = [imageAsset2 imageWithTraitCollection:v9];
 
   if (v7)
   {
@@ -165,13 +165,13 @@ LABEL_16:
       if (v6)
       {
         v8 = v5;
-        v9 = [v8 imageAsset];
+        imageAsset = [v8 imageAsset];
         v10 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
-        [v9 registerImage:v8 withTraitCollection:v10];
+        [imageAsset registerImage:v8 withTraitCollection:v10];
 
-        v11 = [v8 imageAsset];
+        imageAsset2 = [v8 imageAsset];
         v12 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-        [v11 registerImage:v7 withTraitCollection:v12];
+        [imageAsset2 registerImage:v7 withTraitCollection:v12];
 
 LABEL_13:
         goto LABEL_14;
@@ -209,27 +209,27 @@ LABEL_14:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lightURL = self->_lightURL;
-  v5 = a3;
-  [v5 encodeObject:lightURL forKey:@"kCoderKeyLightURL"];
-  [v5 encodeObject:self->_darkURL forKey:@"kCoderKeyDarkURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lightURL forKey:@"kCoderKeyLightURL"];
+  [coderCopy encodeObject:self->_darkURL forKey:@"kCoderKeyDarkURL"];
 }
 
-- (MOSuggestionAssetImageURLPair)initWithCoder:(id)a3
+- (MOSuggestionAssetImageURLPair)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MOSuggestionAssetImageURLPair;
   v5 = [(MOSuggestionAssetImageURLPair *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCoderKeyLightURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCoderKeyLightURL"];
     lightURL = v5->_lightURL;
     v5->_lightURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCoderKeyDarkURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCoderKeyDarkURL"];
     darkURL = v5->_darkURL;
     v5->_darkURL = v8;
   }

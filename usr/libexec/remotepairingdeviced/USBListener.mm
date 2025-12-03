@@ -1,6 +1,6 @@
 @interface USBListener
-- (BOOL)addDisconnectHandler:(id)a3;
-- (BOOL)startOnQueue:(id)a3;
+- (BOOL)addDisconnectHandler:(id)handler;
+- (BOOL)startOnQueue:(id)queue;
 - (USBListener)init;
 - (void)dealloc;
 - (void)dispatchDisconnectListeners;
@@ -47,11 +47,11 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)startOnQueue:(id)a3
+- (BOOL)startOnQueue:(id)queue
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  queueCopy = queue;
+  v5 = queueCopy;
+  if (!queueCopy)
   {
     v9 = [(USBListener *)self log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -62,13 +62,13 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v11 = v4;
+  v11 = queueCopy;
   started = remote_device_start_browsing();
   [(USBListener *)self setBrowser:started, _NSConcreteStackBlock, 3221225472, sub_100011420, &unk_10008E9D0, self];
 
-  v7 = [(USBListener *)self browser];
+  browser = [(USBListener *)self browser];
 
-  if (!v7)
+  if (!browser)
   {
     v9 = [(USBListener *)self log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -89,43 +89,43 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)addDisconnectHandler:(id)a3
+- (BOOL)addDisconnectHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(USBListener *)self disconnectHandlers];
-    objc_sync_enter(v5);
-    v6 = [(USBListener *)self disconnectHandlers];
-    v7 = [v4 copy];
+    disconnectHandlers = [(USBListener *)self disconnectHandlers];
+    objc_sync_enter(disconnectHandlers);
+    disconnectHandlers2 = [(USBListener *)self disconnectHandlers];
+    v7 = [handlerCopy copy];
     v8 = objc_retainBlock(v7);
-    [v6 addObject:v8];
+    [disconnectHandlers2 addObject:v8];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(disconnectHandlers);
   }
 
   else
   {
-    v5 = [(USBListener *)self log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    disconnectHandlers = [(USBListener *)self log];
+    if (os_log_type_enabled(disconnectHandlers, OS_LOG_TYPE_ERROR))
     {
       sub_1000734F8();
     }
   }
 
-  return v4 != 0;
+  return handlerCopy != 0;
 }
 
 - (void)dispatchDisconnectListeners
 {
-  v3 = [(USBListener *)self disconnectHandlers];
-  objc_sync_enter(v3);
+  disconnectHandlers = [(USBListener *)self disconnectHandlers];
+  objc_sync_enter(disconnectHandlers);
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(USBListener *)self disconnectHandlers];
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  disconnectHandlers2 = [(USBListener *)self disconnectHandlers];
+  v5 = [disconnectHandlers2 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -136,7 +136,7 @@ LABEL_9:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(disconnectHandlers2);
         }
 
         (*(*(*(&v8 + 1) + 8 * v7) + 16))();
@@ -144,13 +144,13 @@ LABEL_9:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [disconnectHandlers2 countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(disconnectHandlers);
 }
 
 - (void)dealloc

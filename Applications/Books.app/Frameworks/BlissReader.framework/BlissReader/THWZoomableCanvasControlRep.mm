@@ -1,25 +1,25 @@
 @interface THWZoomableCanvasControlRep
-- (THWZoomableCanvasControlRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)viewControllerForView:(id)a3;
-- (void)addAlternateLayersForChildViewsToArray:(id)a3;
-- (void)addChildViewsToArray:(id)a3;
+- (THWZoomableCanvasControlRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)viewControllerForView:(id)view;
+- (void)addAlternateLayersForChildViewsToArray:(id)array;
+- (void)addChildViewsToArray:(id)array;
 - (void)dealloc;
-- (void)didAddChildView:(id)a3;
+- (void)didAddChildView:(id)view;
 - (void)updateFromLayout;
 - (void)willBeRemoved;
-- (void)willRemoveChildView:(id)a3;
+- (void)willRemoveChildView:(id)view;
 @end
 
 @implementation THWZoomableCanvasControlRep
 
-- (THWZoomableCanvasControlRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWZoomableCanvasControlRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v17.receiver = self;
   v17.super_class = THWZoomableCanvasControlRep;
-  v5 = [(THWZoomableCanvasControlRep *)&v17 initWithLayout:a3 canvas:?];
+  v5 = [(THWZoomableCanvasControlRep *)&v17 initWithLayout:layout canvas:?];
   if (v5)
   {
-    v6 = -[THWZoomableCanvasController initWithDocumentRoot:]([THWZoomableCanvasController alloc], "initWithDocumentRoot:", [a4 documentRoot]);
+    v6 = -[THWZoomableCanvasController initWithDocumentRoot:]([THWZoomableCanvasController alloc], "initWithDocumentRoot:", [canvas documentRoot]);
     v5->_zoomableCanvasController = v6;
     [-[THWZoomableCanvasControlRep layout](v5 "layout")];
     v8 = v7;
@@ -55,17 +55,17 @@
   [(THWZoomableCanvasController *)zoomableCanvasController setUnscaledFrame:v4 viewScale:v6, v8, v10, v12];
 }
 
-- (void)addAlternateLayersForChildViewsToArray:(id)a3
+- (void)addAlternateLayersForChildViewsToArray:(id)array
 {
-  v4 = [(THWClippingLayerHost *)[(THWZoomableCanvasController *)self->_zoomableCanvasController clippingLayerHost] layer];
-  if (v4)
+  layer = [(THWClippingLayerHost *)[(THWZoomableCanvasController *)self->_zoomableCanvasController clippingLayerHost] layer];
+  if (layer)
   {
 
-    [a3 addObject:v4];
+    [array addObject:layer];
   }
 }
 
-- (void)addChildViewsToArray:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
   if (!+[NSThread isMainThread])
   {
@@ -80,24 +80,24 @@
   zoomableCanvasController = self->_zoomableCanvasController;
   [-[THWZoomableCanvasControlRep interactiveCanvasController](self "interactiveCanvasController")];
   [(THWZoomableCanvasController *)zoomableCanvasController createViewIfNeededWithUnscaledFrame:v6 viewScale:v8, v10, v12, v14];
-  v15 = [(THWZoomableCanvasController *)self->_zoomableCanvasController scrollView];
-  if (v15)
+  scrollView = [(THWZoomableCanvasController *)self->_zoomableCanvasController scrollView];
+  if (scrollView)
   {
 
-    [a3 addObject:v15];
+    [array addObject:scrollView];
   }
 }
 
-- (id)viewControllerForView:(id)a3
+- (id)viewControllerForView:(id)view
 {
-  if ([(THWZoomableCanvasController *)self->_zoomableCanvasController scrollView]!= a3)
+  if ([(THWZoomableCanvasController *)self->_zoomableCanvasController scrollView]!= view)
   {
     return 0;
   }
 
-  v5 = [(THWZoomableCanvasController *)self->_zoomableCanvasController layerHost];
+  layerHost = [(THWZoomableCanvasController *)self->_zoomableCanvasController layerHost];
 
-  return [(TSDCanvasLayerHosting *)v5 viewController];
+  return [(TSDCanvasLayerHosting *)layerHost viewController];
 }
 
 - (void)willBeRemoved
@@ -109,19 +109,19 @@
   [(THWZoomableCanvasController *)self->_zoomableCanvasController setDelegate:0];
 }
 
-- (void)willRemoveChildView:(id)a3
+- (void)willRemoveChildView:(id)view
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3)
+  if (view)
   {
     zoomableCanvasController = self->_zoomableCanvasController;
     if (zoomableCanvasController)
     {
-      if ([(THWZoomableCanvasController *)zoomableCanvasController scrollView]== a3)
+      if ([(THWZoomableCanvasController *)zoomableCanvasController scrollView]== view)
       {
         v6 = self->_zoomableCanvasController;
 
@@ -131,14 +131,14 @@
   }
 }
 
-- (void)didAddChildView:(id)a3
+- (void)didAddChildView:(id)view
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3)
+  if (view)
   {
     zoomableCanvasController = self->_zoomableCanvasController;
 

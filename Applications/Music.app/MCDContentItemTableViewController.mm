@@ -1,37 +1,37 @@
 @interface MCDContentItemTableViewController
-- (MCDContentItemTableViewController)initWithSectionItem:(id)a3 showRankedList:(BOOL)a4 queueListForPlayback:(BOOL)a5 radioDomain:(BOOL)a6 musicKit:(BOOL)a7;
+- (MCDContentItemTableViewController)initWithSectionItem:(id)item showRankedList:(BOOL)list queueListForPlayback:(BOOL)playback radioDomain:(BOOL)domain musicKit:(BOOL)kit;
 - (id)_contentManager;
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5;
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDContentItemTableViewController
 
-- (MCDContentItemTableViewController)initWithSectionItem:(id)a3 showRankedList:(BOOL)a4 queueListForPlayback:(BOOL)a5 radioDomain:(BOOL)a6 musicKit:(BOOL)a7
+- (MCDContentItemTableViewController)initWithSectionItem:(id)item showRankedList:(BOOL)list queueListForPlayback:(BOOL)playback radioDomain:(BOOL)domain musicKit:(BOOL)kit
 {
-  v13 = a3;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = MCDContentItemTableViewController;
   v14 = [(MCDFuseTableViewController *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_parentSection, a3);
-    v15->_displayRankings = a4;
-    v15->_customListForPlayback = a5;
-    v15->_useRadioDomain = a6;
-    v15->_useMusicKit = a7;
+    objc_storeStrong(&v14->_parentSection, item);
+    v15->_displayRankings = list;
+    v15->_customListForPlayback = playback;
+    v15->_useRadioDomain = domain;
+    v15->_useMusicKit = kit;
     [(MCDContentItemTableViewController *)v15 setPlayActivityFeatureName:@"grouping"];
-    v16 = [v13 title];
-    if (v16)
+    title = [itemCopy title];
+    if (title)
     {
-      [(MCDContentItemTableViewController *)v15 setTitle:v16];
+      [(MCDContentItemTableViewController *)v15 setTitle:title];
     }
 
     else
     {
-      v17 = [(MCDContentItemTableViewController *)v15 title];
-      [(MCDContentItemTableViewController *)v15 setTitle:v17];
+      title2 = [(MCDContentItemTableViewController *)v15 title];
+      [(MCDContentItemTableViewController *)v15 setTitle:title2];
     }
   }
 
@@ -40,23 +40,23 @@
 
 - (id)_contentManager
 {
-  v3 = [(MCDContentItemTableViewController *)self useRadioDomain];
+  useRadioDomain = [(MCDContentItemTableViewController *)self useRadioDomain];
   v4 = off_10108B708;
-  if (!v3)
+  if (!useRadioDomain)
   {
     v4 = off_10108B700;
   }
 
   v5 = objc_alloc(*v4);
-  v6 = [(MCDContentItemTableViewController *)self parentSection];
-  v7 = [v5 initWithParentSection:v6];
+  parentSection = [(MCDContentItemTableViewController *)self parentSection];
+  v7 = [v5 initWithParentSection:parentSection];
 
   v8 = [MCDBrowseItemsContentManager alloc];
-  v9 = [(MCDFuseTableViewController *)self playbackManager];
-  v10 = [(MCDContentItemTableViewController *)self traitCollection];
-  v11 = [v10 shouldLimitMusicLists];
-  v12 = [(MCDContentItemTableViewController *)self contentResults];
-  v13 = [(MCDFuseContentManager *)v8 initWithDataSource:v7 delegate:self viewController:self playbackManager:v9 limitedUI:v11 contentResults:v12];
+  playbackManager = [(MCDFuseTableViewController *)self playbackManager];
+  traitCollection = [(MCDContentItemTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
+  contentResults = [(MCDContentItemTableViewController *)self contentResults];
+  v13 = [(MCDFuseContentManager *)v8 initWithDataSource:v7 delegate:self viewController:self playbackManager:playbackManager limitedUI:shouldLimitMusicLists contentResults:contentResults];
 
   return v13;
 }
@@ -75,36 +75,36 @@
   objc_destroyWeak(&location);
 }
 
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 identifiers];
-  v7 = [v6 personalizedStore];
-  v8 = [v7 recommendationID];
-  v9 = [v8 dataUsingEncoding:4];
+  itemCopy = item;
+  identifiers = [itemCopy identifiers];
+  personalizedStore = [identifiers personalizedStore];
+  recommendationID = [personalizedStore recommendationID];
+  v9 = [recommendationID dataUsingEncoding:4];
 
-  v10 = [v5 itemType];
-  if (v10 == 4)
+  itemType = [itemCopy itemType];
+  if (itemType == 4)
   {
     v15 = [_TtC5Music27MCDItemDetailViewController alloc];
-    v12 = [v5 playlist];
-    v13 = [(MCDItemDetailViewController *)v15 initWithPlaylist:v12 onlyDownloaded:0 preferCatalog:1];
+    playlist = [itemCopy playlist];
+    v13 = [(MCDItemDetailViewController *)v15 initWithPlaylist:playlist onlyDownloaded:0 preferCatalog:1];
     goto LABEL_7;
   }
 
-  if (v10 == 3)
+  if (itemType == 3)
   {
     v14 = [MCDCuratedPlaylistsTableViewController alloc];
-    v12 = [v5 curator];
-    v13 = [(MCDCuratedPlaylistsTableViewController *)v14 initWithCurator:v12];
+    playlist = [itemCopy curator];
+    v13 = [(MCDCuratedPlaylistsTableViewController *)v14 initWithCurator:playlist];
     goto LABEL_7;
   }
 
-  if (v10 == 1)
+  if (itemType == 1)
   {
     v11 = [_TtC5Music27MCDItemDetailViewController alloc];
-    v12 = [v5 album];
-    v13 = [(MCDItemDetailViewController *)v11 initWithAlbum:v12 onlyDownloaded:0 preferCatalog:1];
+    playlist = [itemCopy album];
+    v13 = [(MCDItemDetailViewController *)v11 initWithAlbum:playlist onlyDownloaded:0 preferCatalog:1];
 LABEL_7:
     v16 = v13;
 
@@ -113,10 +113,10 @@ LABEL_7:
 
   v16 = 0;
 LABEL_9:
-  v17 = [v5 identifiers];
-  v18 = [v17 personalizedStore];
-  v19 = [v18 recommendationID];
-  v20 = [v19 dataUsingEncoding:4];
+  identifiers2 = [itemCopy identifiers];
+  personalizedStore2 = [identifiers2 personalizedStore];
+  recommendationID2 = [personalizedStore2 recommendationID];
+  v20 = [recommendationID2 dataUsingEncoding:4];
   [(MCDItemDetailViewController *)v16 setPlayActivityForwardedRecommendationData:v20];
 
   return v16;

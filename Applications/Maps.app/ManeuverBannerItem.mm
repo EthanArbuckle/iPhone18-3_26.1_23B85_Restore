@@ -1,6 +1,6 @@
 @interface ManeuverBannerItem
-- (BOOL)isEqual:(id)a3;
-- (ManeuverBannerItem)initWithGuidanceState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ManeuverBannerItem)initWithGuidanceState:(id)state;
 - (NavSignLaneGuidanceInfo)laneGuidanceInfo;
 - (NavSignManeuverGuidanceInfo)maneuverGuidanceInfo;
 - (id)copy;
@@ -10,34 +10,34 @@
 
 - (NavSignManeuverGuidanceInfo)maneuverGuidanceInfo
 {
-  v2 = [(BannerItem *)self guidanceState];
-  v3 = [v2 maneuverGuidanceInfo];
+  guidanceState = [(BannerItem *)self guidanceState];
+  maneuverGuidanceInfo = [guidanceState maneuverGuidanceInfo];
 
-  return v3;
+  return maneuverGuidanceInfo;
 }
 
 - (NavSignLaneGuidanceInfo)laneGuidanceInfo
 {
-  v2 = [(BannerItem *)self guidanceState];
-  v3 = [v2 laneGuidanceInfo];
-  v4 = [v3 laneGuidanceInfo];
+  guidanceState = [(BannerItem *)self guidanceState];
+  laneGuidanceInfo = [guidanceState laneGuidanceInfo];
+  v3LaneGuidanceInfo = [laneGuidanceInfo laneGuidanceInfo];
 
-  return v4;
+  return v3LaneGuidanceInfo;
 }
 
 - (id)copy
 {
   v3 = [ManeuverBannerItem alloc];
-  v4 = [(BannerItem *)self guidanceState];
-  v5 = [(ManeuverBannerItem *)v3 initWithGuidanceState:v4];
+  guidanceState = [(BannerItem *)self guidanceState];
+  v5 = [(ManeuverBannerItem *)v3 initWithGuidanceState:guidanceState];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -47,11 +47,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       uniqueId = self->super._uniqueId;
-      v7 = [(BannerItem *)v5 uniqueId];
+      uniqueId = [(BannerItem *)v5 uniqueId];
       v8 = uniqueId;
-      v9 = v7;
+      v9 = uniqueId;
       if (v8 | v9 && (v10 = [v8 isEqual:v9], v9, v8, !v10))
       {
         v13 = 0;
@@ -59,11 +59,11 @@
 
       else
       {
-        v11 = [(BannerItem *)self guidanceState];
-        v12 = [(BannerItem *)v5 guidanceState];
-        if (v11 | v12)
+        guidanceState = [(BannerItem *)self guidanceState];
+        guidanceState2 = [(BannerItem *)v5 guidanceState];
+        if (guidanceState | guidanceState2)
         {
-          v13 = [v11 isEqual:v12];
+          v13 = [guidanceState isEqual:guidanceState2];
         }
 
         else
@@ -82,15 +82,15 @@
   return v13;
 }
 
-- (ManeuverBannerItem)initWithGuidanceState:(id)a3
+- (ManeuverBannerItem)initWithGuidanceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = ManeuverBannerItem;
-  v5 = [(BannerItem *)&v9 initWithGuidanceState:v4];
+  v5 = [(BannerItem *)&v9 initWithGuidanceState:stateCopy];
   if (v5)
   {
-    v6 = [v4 uniqueIdForBannerType:0];
+    v6 = [stateCopy uniqueIdForBannerType:0];
     uniqueId = v5->super._uniqueId;
     v5->super._uniqueId = v6;
   }

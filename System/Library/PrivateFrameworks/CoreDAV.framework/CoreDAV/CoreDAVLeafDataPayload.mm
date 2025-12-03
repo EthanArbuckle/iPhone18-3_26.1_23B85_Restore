@@ -1,23 +1,23 @@
 @interface CoreDAVLeafDataPayload
-- (CoreDAVLeafDataPayload)initWithURL:(id)a3 eTag:(id)a4 dataPayload:(id)a5 inContainerWithURL:(id)a6 withAccountInfoProvider:(id)a7;
+- (CoreDAVLeafDataPayload)initWithURL:(id)l eTag:(id)tag dataPayload:(id)payload inContainerWithURL:(id)rL withAccountInfoProvider:(id)provider;
 @end
 
 @implementation CoreDAVLeafDataPayload
 
-- (CoreDAVLeafDataPayload)initWithURL:(id)a3 eTag:(id)a4 dataPayload:(id)a5 inContainerWithURL:(id)a6 withAccountInfoProvider:(id)a7
+- (CoreDAVLeafDataPayload)initWithURL:(id)l eTag:(id)tag dataPayload:(id)payload inContainerWithURL:(id)rL withAccountInfoProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  tagCopy = tag;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = CoreDAVLeafDataPayload;
   v14 = [(CoreDAVLeafDataPayload *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_dataPayload, a5);
-    objc_storeStrong(&v15->_serverID, a3);
-    objc_storeStrong(&v15->_syncKey, a4);
+    objc_storeStrong(&v14->_dataPayload, payload);
+    objc_storeStrong(&v15->_serverID, l);
+    objc_storeStrong(&v15->_syncKey, tag);
   }
 
   return v15;

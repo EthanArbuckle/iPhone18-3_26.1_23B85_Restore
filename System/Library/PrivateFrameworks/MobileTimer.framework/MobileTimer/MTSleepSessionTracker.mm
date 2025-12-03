@@ -1,22 +1,22 @@
 @interface MTSleepSessionTracker
 - (BOOL)trackingEnabled;
 - (MTAlarm)cachedAlarm;
-- (MTSleepSessionTracker)initWithAlarmStorage:(id)a3;
+- (MTSleepSessionTracker)initWithAlarmStorage:(id)storage;
 - (MTSleepSessionTrackerDelegate)sleepSessionTrackerDelegate;
-- (void)_withLock:(id)a3;
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5;
+- (void)_withLock:(id)lock;
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion;
 - (void)prepare;
-- (void)setCachedAlarm:(id)a3;
-- (void)sleepCoordinator:(id)a3 bedtimeReminderWasConfirmed:(id)a4 sleepAlarm:(id)a5;
-- (void)sleepCoordinator:(id)a3 wakeUpAlarmWasDismissed:(id)a4 dismissAction:(unint64_t)a5 sleepAlarm:(id)a6;
+- (void)setCachedAlarm:(id)alarm;
+- (void)sleepCoordinator:(id)coordinator bedtimeReminderWasConfirmed:(id)confirmed sleepAlarm:(id)alarm;
+- (void)sleepCoordinator:(id)coordinator wakeUpAlarmWasDismissed:(id)dismissed dismissAction:(unint64_t)action sleepAlarm:(id)alarm;
 @end
 
 @implementation MTSleepSessionTracker
 
-- (MTSleepSessionTracker)initWithAlarmStorage:(id)a3
+- (MTSleepSessionTracker)initWithAlarmStorage:(id)storage
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storageCopy = storage;
   v12.receiver = self;
   v12.super_class = MTSleepSessionTracker;
   v6 = [(MTSleepSessionTracker *)&v12 init];
@@ -30,10 +30,10 @@
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "Initializing %{public}@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_alarmStorage, a3);
-    v8 = [(MTAlarmStorage *)v6->_alarmStorage sleepAlarm];
+    objc_storeStrong(&v6->_alarmStorage, storage);
+    sleepAlarm = [(MTAlarmStorage *)v6->_alarmStorage sleepAlarm];
     cachedAlarm = v6->_cachedAlarm;
-    v6->_cachedAlarm = v8;
+    v6->_cachedAlarm = sleepAlarm;
 
     v6->_alarmLock._os_unfair_lock_opaque = 0;
   }
@@ -42,11 +42,11 @@
   return v6;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_alarmLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_alarmLock);
 }
@@ -152,32 +152,32 @@ LABEL_9:
   return v2;
 }
 
-- (void)setCachedAlarm:(id)a3
+- (void)setCachedAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__MTSleepSessionTracker_setCachedAlarm___block_invoke;
   v6[3] = &unk_1E7B0C928;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = alarmCopy;
+  v5 = alarmCopy;
   [(MTSleepSessionTracker *)self _withLock:v6];
 }
 
-- (void)sleepCoordinator:(id)a3 bedtimeReminderWasConfirmed:(id)a4 sleepAlarm:(id)a5
+- (void)sleepCoordinator:(id)coordinator bedtimeReminderWasConfirmed:(id)confirmed sleepAlarm:(id)alarm
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  confirmedCopy = confirmed;
   if ([(MTSleepSessionTracker *)self trackingEnabled])
   {
     v7 = MTLogForCategory(7);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v6;
+      v12 = confirmedCopy;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ user confirmed bedtime reminder (%{public}@).  Starting session.", &v9, 0x16u);
     }
 
@@ -187,36 +187,36 @@ LABEL_9:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sleepCoordinator:(id)a3 wakeUpAlarmWasDismissed:(id)a4 dismissAction:(unint64_t)a5 sleepAlarm:(id)a6
+- (void)sleepCoordinator:(id)coordinator wakeUpAlarmWasDismissed:(id)dismissed dismissAction:(unint64_t)action sleepAlarm:(id)alarm
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  dismissedCopy = dismissed;
   if ([(MTSleepSessionTracker *)self trackingEnabled])
   {
     v9 = MTLogForCategory(7);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = MTDismissAlarmActionDescription(a5);
+      v10 = MTDismissAlarmActionDescription(action);
       v12 = 138543874;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v8;
+      v15 = dismissedCopy;
       v16 = 2114;
       v17 = v10;
       _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ user woke up at %@ (%{public}@)", &v12, 0x20u);
     }
 
-    [(MTSleepSessionTracker *)self endSessionWithDate:v8 reason:0];
+    [(MTSleepSessionTracker *)self endSessionWithDate:dismissedCopy reason:0];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 

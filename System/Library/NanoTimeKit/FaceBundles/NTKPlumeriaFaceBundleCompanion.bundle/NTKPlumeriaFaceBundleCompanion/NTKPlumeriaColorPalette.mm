@@ -1,31 +1,31 @@
 @interface NTKPlumeriaColorPalette
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 @end
 
 @implementation NTKPlumeriaColorPalette
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (qword_17588 != -1)
   {
     sub_6EB8();
   }
 
-  v6 = [(NTKPlumeriaColorPalette *)self configuration];
-  v7 = [v6 uniqueId];
+  configuration = [(NTKPlumeriaColorPalette *)self configuration];
+  uniqueId = [configuration uniqueId];
   v19.width = width;
   v19.height = height;
   v8 = NSStringFromCGSize(v19);
-  v9 = [NSString stringWithFormat:@"%@-%@", v7, v8];
+  v9 = [NSString stringWithFormat:@"%@-%@", uniqueId, v8];
 
   v10 = [qword_17580 objectForKey:v9];
   if (!v10)
   {
-    v11 = [(NTKPlumeriaColorPalette *)self configuration];
-    v12 = [v11 colorOption];
-    v13 = NTKPlumeriaSettingIndexFromColorwayName(v12);
+    configuration2 = [(NTKPlumeriaColorPalette *)self configuration];
+    colorOption = [configuration2 colorOption];
+    v13 = NTKPlumeriaSettingIndexFromColorwayName(colorOption);
 
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     if (!v14)

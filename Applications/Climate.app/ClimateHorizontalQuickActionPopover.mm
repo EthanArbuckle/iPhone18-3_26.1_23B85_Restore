@@ -1,5 +1,5 @@
 @interface ClimateHorizontalQuickActionPopover
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)didUpdateSettings;
 - (void)viewDidLayoutSubviews;
 @end
@@ -8,21 +8,21 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100099290();
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10009B2DC(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_10009B2DC(contextCopy, coordinatorCopy);
 }
 
 - (void)didUpdateSettings
 {
-  v2 = self;
+  selfCopy = self;
   static os_log_type_t.debug.getter();
   if (qword_100113F00 != -1)
   {
@@ -33,7 +33,7 @@
   v6 = _swiftEmptyArrayStorage;
   sub_100028DB0();
   v4 = v3;
-  v5 = v2;
+  v5 = selfCopy;
   sub_10009BA7C(v4, v5, &v6);
 
   sub_1000994AC(v6);

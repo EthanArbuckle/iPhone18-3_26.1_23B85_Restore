@@ -2,17 +2,17 @@
 - (BOOL)mapIOBuffer;
 - (BOOL)open;
 - (id).cxx_construct;
-- (id)initForIOObject:(unsigned int)a3 andIDValue:(id)a4;
+- (id)initForIOObject:(unsigned int)object andIDValue:(id)value;
 - (void)close;
 - (void)open;
 @end
 
 @implementation ASDTIOPAudioIOBufferDevice
 
-- (id)initForIOObject:(unsigned int)a3 andIDValue:(id)a4
+- (id)initForIOObject:(unsigned int)object andIDValue:(id)value
 {
   v5 = *MEMORY[0x277D85DE8];
-  [a4 clientType];
+  [value clientType];
   operator new();
 }
 
@@ -31,8 +31,8 @@
     v5 = ASDTIOPLogType();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(ASDTIOService *)self idValue];
-      [(ASDTIOPAudioIOBufferDevice *)v6 open];
+      idValue = [(ASDTIOService *)self idValue];
+      [(ASDTIOPAudioIOBufferDevice *)idValue open];
     }
   }
 
@@ -84,7 +84,7 @@
 - (void)open
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_2416E9000, log, OS_LOG_TYPE_ERROR, "%@: Failed to open connection to IOBuffer user client", buf, 0xCu);
 }
 

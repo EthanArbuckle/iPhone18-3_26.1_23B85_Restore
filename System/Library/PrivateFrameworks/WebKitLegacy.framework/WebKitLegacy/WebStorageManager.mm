@@ -3,9 +3,9 @@
 + (id)sharedWebStorageManager;
 - (WebStorageManager)init;
 - (id)origins;
-- (unint64_t)diskUsageForOrigin:(id)a3;
+- (unint64_t)diskUsageForOrigin:(id)origin;
 - (void)deleteAllOrigins;
-- (void)deleteOrigin:(id)a3;
+- (void)deleteOrigin:(id)origin;
 - (void)syncFileSystemAndTrackerDatabase;
 @end
 
@@ -144,28 +144,28 @@ LABEL_10:
 {
   WebKit::StorageTracker::tracker(self, a2);
   WebKit::StorageTracker::deleteAllOrigins(v2);
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = +[WebStorageManager _storageDirectoryPath];
 
-  [v3 removeItemAtPath:v4 error:0];
+  [defaultManager removeItemAtPath:v4 error:0];
 }
 
-- (void)deleteOrigin:(id)a3
+- (void)deleteOrigin:(id)origin
 {
   v4 = WebKit::StorageTracker::tracker(self, a2);
   v6 = v5;
-  v7 = ([a3 _core] + 8);
+  v7 = ([origin _core] + 8);
 
   WebKit::StorageTracker::deleteOrigin(v6, v7);
 }
 
-- (unint64_t)diskUsageForOrigin:(id)a3
+- (unint64_t)diskUsageForOrigin:(id)origin
 {
   v4 = WebKit::StorageTracker::tracker(self, a2);
   v6 = v5;
-  v7 = [a3 _core];
+  _core = [origin _core];
 
-  return WebKit::StorageTracker::diskUsageForOrigin(v6, v7);
+  return WebKit::StorageTracker::diskUsageForOrigin(v6, _core);
 }
 
 - (void)syncFileSystemAndTrackerDatabase

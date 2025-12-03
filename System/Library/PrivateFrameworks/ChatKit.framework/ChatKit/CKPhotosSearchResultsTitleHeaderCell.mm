@@ -1,19 +1,19 @@
 @interface CKPhotosSearchResultsTitleHeaderCell
-- (CKPhotosSearchResultsTitleHeaderCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (CKPhotosSearchResultsTitleHeaderCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
-- (void)updateSegmentedControlToFitWidth:(double)a3;
+- (void)setTitle:(id)title;
+- (void)updateSegmentedControlToFitWidth:(double)width;
 @end
 
 @implementation CKPhotosSearchResultsTitleHeaderCell
 
-- (CKPhotosSearchResultsTitleHeaderCell)initWithFrame:(CGRect)a3
+- (CKPhotosSearchResultsTitleHeaderCell)initWithFrame:(CGRect)frame
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = CKPhotosSearchResultsTitleHeaderCell;
-  v3 = [(CKSearchResultsTitleHeaderCell *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKSearchResultsTitleHeaderCell *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCF38]);
@@ -50,10 +50,10 @@
 
     [(CKPhotosSearchResultsTitleHeaderCell *)v3 setControlTopPadding:v14];
     [(CKPhotosSearchResultsTitleHeaderCell *)v3 setControlBottomPadding:v15];
-    v16 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v17 = [v16 isSearchRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isSearchRefreshEnabled = [mEMORY[0x1E69A8070] isSearchRefreshEnabled];
 
-    if (v17)
+    if (isSearchRefreshEnabled)
     {
       [(CKPhotosSearchResultsTitleHeaderCell *)v3 setBackgroundColor:0];
     }
@@ -71,8 +71,8 @@
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
-  [v9 frame];
+  control = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
+  [control frame];
   v11 = v10;
 
   [(CKSearchResultsTitleHeaderCell *)self marginInsets];
@@ -102,28 +102,28 @@
   }
 
   v25 = floor((v20 + (v22 - v14) * 0.5) * v24) / v24;
-  v26 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
-  [v26 setFrame:{v25, v23, v14, v11}];
+  control2 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
+  [control2 setFrame:{v25, v23, v14, v11}];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v23.receiver = self;
   v23.super_class = CKPhotosSearchResultsTitleHeaderCell;
-  v4 = [(CKSearchResultsTitleHeaderCell *)&v23 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(CKSearchResultsTitleHeaderCell *)&v23 preferredLayoutAttributesFittingAttributes:attributes];
   [v4 frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
-  [v13 alpha];
+  control = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
+  [control alpha];
   v15 = v14;
 
   if (v15 > 0.0)
   {
-    v16 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
-    [v16 sizeThatFits:{v10, v12}];
+    control2 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
+    [control2 sizeThatFits:{v10, v12}];
     v18 = v17;
 
     [(CKPhotosSearchResultsTitleHeaderCell *)self controlTopPadding];
@@ -137,21 +137,21 @@
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v3.receiver = self;
   v3.super_class = CKPhotosSearchResultsTitleHeaderCell;
-  [(CKSearchResultsTitleHeaderCell *)&v3 setTitle:a3];
+  [(CKSearchResultsTitleHeaderCell *)&v3 setTitle:title];
 }
 
-- (void)updateSegmentedControlToFitWidth:(double)a3
+- (void)updateSegmentedControlToFitWidth:(double)width
 {
-  v5 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
-  [v5 intrinsicContentSize];
-  v7 = v6 >= a3;
+  control = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
+  [control intrinsicContentSize];
+  v7 = v6 >= width;
 
-  v8 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
-  [v8 setApportionsSegmentWidthsByContent:v7];
+  control2 = [(CKPhotosSearchResultsTitleHeaderCell *)self control];
+  [control2 setApportionsSegmentWidthsByContent:v7];
 }
 
 @end

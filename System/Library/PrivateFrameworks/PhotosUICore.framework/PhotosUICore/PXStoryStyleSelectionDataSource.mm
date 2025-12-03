@@ -1,44 +1,44 @@
 @interface PXStoryStyleSelectionDataSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXStoryStyleDescriptor)styleInfoForCurrentStyle;
 - (PXStoryStyleSelectionDataSource)init;
-- (PXStoryStyleSelectionDataSource)initWithStyleInfos:(id)a3 indexOfCurrentStyle:(int64_t)a4 indexOfCustomStyle:(int64_t)a5;
-- (id)songForStyleAtIndex:(int64_t)a3;
+- (PXStoryStyleSelectionDataSource)initWithStyleInfos:(id)infos indexOfCurrentStyle:(int64_t)style indexOfCustomStyle:(int64_t)customStyle;
+- (id)songForStyleAtIndex:(int64_t)index;
 @end
 
 @implementation PXStoryStyleSelectionDataSource
 
 - (PXStoryStyleDescriptor)styleInfoForCurrentStyle
 {
-  v3 = [(PXStoryStyleSelectionDataSource *)self indexOfCurrentStyle];
+  indexOfCurrentStyle = [(PXStoryStyleSelectionDataSource *)self indexOfCurrentStyle];
 
-  return [(PXStoryStyleSelectionDataSource *)self styleInfoAtIndex:v3];
+  return [(PXStoryStyleSelectionDataSource *)self styleInfoAtIndex:indexOfCurrentStyle];
 }
 
-- (id)songForStyleAtIndex:(int64_t)a3
+- (id)songForStyleAtIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_styleInfos objectAtIndexedSubscript:a3];
-  v4 = [v3 songResource];
-  v5 = [v4 px_storyResourceSongAsset];
+  v3 = [(NSArray *)self->_styleInfos objectAtIndexedSubscript:index];
+  songResource = [v3 songResource];
+  px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
 
-  return v5;
+  return px_storyResourceSongAsset;
 }
 
 - (PXStoryStyleSelectionDataSource)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSelectionDataSource.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXStoryStyleSelectionDataSource init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSelectionDataSource.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXStoryStyleSelectionDataSource init]"}];
 
   abort();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
@@ -47,19 +47,19 @@
         goto LABEL_4;
       }
 
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = objc_opt_class();
       v15 = NSStringFromClass(v16);
-      v17 = [v6 px_descriptionForAssertionMessage];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSelectionDataSource.m" lineNumber:33 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"object", v15, v17}];
+      px_descriptionForAssertionMessage = [v6 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSelectionDataSource.m" lineNumber:33 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"object", v15, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      [v13 handleFailureInMethod:a2 object:self file:@"PXStoryStyleSelectionDataSource.m" lineNumber:33 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"object", v15}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleSelectionDataSource.m" lineNumber:33 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"object", v15}];
     }
 
 LABEL_4:
@@ -99,18 +99,18 @@ LABEL_13:
   return v11;
 }
 
-- (PXStoryStyleSelectionDataSource)initWithStyleInfos:(id)a3 indexOfCurrentStyle:(int64_t)a4 indexOfCustomStyle:(int64_t)a5
+- (PXStoryStyleSelectionDataSource)initWithStyleInfos:(id)infos indexOfCurrentStyle:(int64_t)style indexOfCustomStyle:(int64_t)customStyle
 {
-  v8 = a3;
+  infosCopy = infos;
   v15.receiver = self;
   v15.super_class = PXStoryStyleSelectionDataSource;
   v9 = [(PXStoryStyleSelectionDataSource *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    v9->_indexOfCurrentStyle = a4;
-    v9->_indexOfCustomStyle = a5;
-    v11 = [v8 copy];
+    v9->_indexOfCurrentStyle = style;
+    v9->_indexOfCustomStyle = customStyle;
+    v11 = [infosCopy copy];
     v12 = v11;
     if (v11)
     {

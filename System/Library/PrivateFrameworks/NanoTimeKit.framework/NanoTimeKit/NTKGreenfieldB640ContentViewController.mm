@@ -1,38 +1,38 @@
 @interface NTKGreenfieldB640ContentViewController
 - (CGSize)cellSize;
 - (NTKGreenfieldB640ContentViewControllerDelegate)greenfieldB640delegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (id)_defaultBandNameForCurrentPairedDevice;
-- (id)_subtitleForError:(id)a3;
-- (id)_titleForError:(id)a3;
+- (id)_subtitleForError:(id)error;
+- (id)_titleForError:(id)error;
 - (id)alternateButtonTitle;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)detailString;
-- (id)initForAddWatchFacesStateWithGreenfieldB640Model:(id)a3;
-- (id)initForErrorStateWithGreenfieldB640Model:(id)a3;
+- (id)initForAddWatchFacesStateWithGreenfieldB640Model:(id)model;
+- (id)initForErrorStateWithGreenfieldB640Model:(id)model;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_didTapShowInternalErrorButton;
-- (void)_notifyDelegateOfActionEventWatchFaceSelected:(id)a3;
+- (void)_notifyDelegateOfActionEventWatchFaceSelected:(id)selected;
 - (void)_presentErrorAlert;
-- (void)_setupContentForAddWathFaceWithBandImagePath:(id)a3 bundle:(id)a4;
+- (void)_setupContentForAddWathFaceWithBandImagePath:(id)path bundle:(id)bundle;
 - (void)_setupViews;
-- (void)_updateSelectedState:(BOOL)a3 forCellAtIndexPath:(id)a4;
-- (void)alternateButtonPressed:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)handleWatchFaceSelectedAtIndex:(int64_t)a3;
-- (void)handleWatchFaceSelectedWithError:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)_updateSelectedState:(BOOL)state forCellAtIndexPath:(id)path;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)handleWatchFaceSelectedAtIndex:(int64_t)index;
+- (void)handleWatchFaceSelectedWithError:(id)error;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKGreenfieldB640ContentViewController
 
-- (id)initForAddWatchFacesStateWithGreenfieldB640Model:(id)a3
+- (id)initForAddWatchFacesStateWithGreenfieldB640Model:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = NTKGreenfieldB640ContentViewController;
   v6 = [(NTKGreenfieldB640ContentViewController *)&v11 initWithTitle:&stru_284110E98 detailText:0 icon:0 contentLayout:3];
@@ -41,7 +41,7 @@
   {
     v6->_state = 0;
     [(BPSWelcomeOptinViewController *)v6 setStyle:10];
-    objc_storeStrong(&v7->_greenfieldB640Model, a3);
+    objc_storeStrong(&v7->_greenfieldB640Model, model);
     v8 = dispatch_queue_create("com.apple.NanoTimeKit.NTKGreenfieldB640ContentViewControllerDecodeBandImage.queue", 0);
     workQueue = v7->_workQueue;
     v7->_workQueue = v8;
@@ -50,17 +50,17 @@
   return v7;
 }
 
-- (id)initForErrorStateWithGreenfieldB640Model:(id)a3
+- (id)initForErrorStateWithGreenfieldB640Model:(id)model
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  modelCopy = model;
   v29.receiver = self;
   v29.super_class = NTKGreenfieldB640ContentViewController;
   v6 = [(NTKGreenfieldB640ContentViewController *)&v29 initWithTitle:&stru_284110E98 detailText:0 icon:0 contentLayout:3];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_greenfieldB640Model, a3);
+    objc_storeStrong(&v6->_greenfieldB640Model, model);
     v8 = dispatch_queue_create("com.apple.NanoTimeKit.NTKGreenfieldB640ContentViewControllerDecodeBandImage.queue", 0);
     workQueue = v7->_workQueue;
     v7->_workQueue = v8;
@@ -69,8 +69,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [(NTKGreenfieldB640Model *)v7->_greenfieldB640Model watchFaceModels];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    watchFaceModels = [(NTKGreenfieldB640Model *)v7->_greenfieldB640Model watchFaceModels];
+    v11 = [watchFaceModels countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v11)
     {
       v12 = v11;
@@ -82,13 +82,13 @@
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(watchFaceModels);
           }
 
-          v15 = [*(*(&v25 + 1) + 8 * v14) decodedRecipe];
-          v16 = [v15 watchFace];
+          decodedRecipe = [*(*(&v25 + 1) + 8 * v14) decodedRecipe];
+          watchFace = [decodedRecipe watchFace];
 
-          if (!v16)
+          if (!watchFace)
           {
             v17 = 1;
             goto LABEL_12;
@@ -98,7 +98,7 @@
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v12 = [watchFaceModels countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v12)
         {
           continue;
@@ -111,8 +111,8 @@
     v17 = 0;
 LABEL_12:
 
-    v18 = [(NTKGreenfieldB640Model *)v7->_greenfieldB640Model watchFaceModels];
-    v19 = [v18 count];
+    watchFaceModels2 = [(NTKGreenfieldB640Model *)v7->_greenfieldB640Model watchFaceModels];
+    v19 = [watchFaceModels2 count];
 
     if ((v17 & 1) != 0 || !v19)
     {
@@ -146,13 +146,13 @@ LABEL_12:
   {
     v3 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
     [(NTKGreenfieldB640ContentViewController *)self _notifyDelegateOfActionEventWatchFaceSelected:v3];
-    v4 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model bandImagePath];
-    v5 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model bandImageBundle];
-    [(NTKGreenfieldB640ContentViewController *)self _setupContentForAddWathFaceWithBandImagePath:v4 bundle:v5];
+    bandImagePath = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model bandImagePath];
+    bandImageBundle = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model bandImageBundle];
+    [(NTKGreenfieldB640ContentViewController *)self _setupContentForAddWathFaceWithBandImagePath:bandImagePath bundle:bandImageBundle];
 
-    v6 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
     v7 = BPSSetupTintColor();
-    [v6 setTitleColor:v7 forState:0];
+    [alternateChoiceButton setTitleColor:v7 forState:0];
   }
 }
 
@@ -162,8 +162,8 @@ LABEL_12:
   v36.super_class = NTKGreenfieldB640ContentViewController;
   [(OBBaseWelcomeController *)&v36 viewDidLayoutSubviews];
   [(UICollectionView *)self->_facesCollectionView frame];
-  v3 = [(NTKGreenfieldB640ContentViewController *)self view];
-  [v3 bounds];
+  view = [(NTKGreenfieldB640ContentViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   [(NTKGreenfieldB640ContentViewController *)self cellSize];
@@ -183,27 +183,27 @@ LABEL_12:
   [(UICollectionView *)self->_facesCollectionView setFrame:0.0, v8, v5, v7, v31, v32, *&v33, *&v34, *&v35];
   [(NTKGreenfieldB640ContentViewController *)self cellSize];
   [(UICollectionViewFlowLayout *)self->_collectionViewFlowLayout setItemSize:?];
-  v10 = [(NTKGreenfieldB640ContentViewController *)self view];
-  [v10 bounds];
+  view2 = [(NTKGreenfieldB640ContentViewController *)self view];
+  [view2 bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(NTKGreenfieldB640ContentViewController *)self scrollView];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  scrollView = [(NTKGreenfieldB640ContentViewController *)self scrollView];
+  [scrollView setFrame:{v12, v14, v16, v18}];
 
-  v20 = [(NTKGreenfieldB640ContentViewController *)self scrollView];
-  [v20 verticalScrollIndicatorInsets];
+  scrollView2 = [(NTKGreenfieldB640ContentViewController *)self scrollView];
+  [scrollView2 verticalScrollIndicatorInsets];
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  v27 = [(NTKGreenfieldB640ContentViewController *)self view];
-  [v27 safeAreaInsets];
+  view3 = [(NTKGreenfieldB640ContentViewController *)self view];
+  [view3 safeAreaInsets];
   v29 = v28;
 
-  v30 = [(NTKGreenfieldB640ContentViewController *)self scrollView];
-  [v30 setVerticalScrollIndicatorInsets:{v29, v22, v24, v26}];
+  scrollView3 = [(NTKGreenfieldB640ContentViewController *)self scrollView];
+  [scrollView3 setVerticalScrollIndicatorInsets:{v29, v22, v24, v26}];
 }
 
 - (id)titleString
@@ -211,8 +211,8 @@ LABEL_12:
   state = self->_state;
   if (state == 1)
   {
-    v13 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
-    v12 = [(NTKGreenfieldB640ContentViewController *)self _titleForError:v13];
+    error = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
+    v12 = [(NTKGreenfieldB640ContentViewController *)self _titleForError:error];
   }
 
   else if (state)
@@ -222,20 +222,20 @@ LABEL_12:
 
   else
   {
-    v4 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v5 = [v4 count];
+    watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    v5 = [watchFaceModels count];
 
     if (v5 == 1)
     {
-      v6 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-      v7 = [v6 firstObject];
+      watchFaceModels2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+      firstObject = [watchFaceModels2 firstObject];
 
-      v8 = [v7 decodedRecipe];
-      v9 = [v8 watchFace];
-      v10 = [v9 faceSharingName];
+      decodedRecipe = [firstObject decodedRecipe];
+      watchFace = [decodedRecipe watchFace];
+      faceSharingName = [watchFace faceSharingName];
 
       v11 = NTKClockFaceLocalizedString(@"GREENFIELD_B640_TITLE_WATCH_FACE_MAIN_SCREEN", @"Add %@ Watch Face");
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:v11, v10];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:v11, faceSharingName];
     }
 
     else
@@ -251,8 +251,8 @@ LABEL_12:
 {
   if (self->_state == 1)
   {
-    v3 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
-    v4 = [(NTKGreenfieldB640ContentViewController *)self _subtitleForError:v3];
+    error = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
+    v4 = [(NTKGreenfieldB640ContentViewController *)self _subtitleForError:error];
   }
 
   else
@@ -307,15 +307,15 @@ LABEL_12:
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = v4;
+  pressedCopy = pressed;
+  v5 = pressedCopy;
   state = self->_state;
   if (state == 1)
   {
-    v9 = v4;
-    v8 = NTKInternalBuild(v4, v4);
+    v9 = pressedCopy;
+    v8 = NTKInternalBuild(pressedCopy, pressedCopy);
     v5 = v9;
     if (!v8)
     {
@@ -332,7 +332,7 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    v9 = v4;
+    v9 = pressedCopy;
     WeakRetained = objc_loadWeakRetained(&self->_greenfieldB640delegate);
     [WeakRetained greenfieldB640ContentViewController:self handleButtonActionEvent:0];
   }
@@ -341,32 +341,32 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_greenfieldB640delegate);
   [WeakRetained greenfieldB640ContentViewController:self handleButtonActionEvent:1];
 }
 
-- (void)handleWatchFaceSelectedAtIndex:(int64_t)a3
+- (void)handleWatchFaceSelectedAtIndex:(int64_t)index
 {
-  v5 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-  v6 = [v5 count];
+  watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+  v6 = [watchFaceModels count];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v9 = [v7 objectAtIndex:a3];
+    watchFaceModels2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    v9 = [watchFaceModels2 objectAtIndex:index];
 
-    v8 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:0];
+    v8 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:0];
     -[NTKGreenfieldB640ContentViewController _updateSelectedState:forCellAtIndexPath:](self, "_updateSelectedState:forCellAtIndexPath:", [v9 isSelected], v8);
   }
 }
 
-- (void)handleWatchFaceSelectedWithError:(id)a3
+- (void)handleWatchFaceSelectedWithError:(id)error
 {
-  v4 = a3;
-  v10 = [(NTKGreenfieldB640ContentViewController *)self _titleForError:v4];
-  v5 = [(NTKGreenfieldB640ContentViewController *)self _subtitleForError:v4];
+  errorCopy = error;
+  v10 = [(NTKGreenfieldB640ContentViewController *)self _titleForError:errorCopy];
+  v5 = [(NTKGreenfieldB640ContentViewController *)self _subtitleForError:errorCopy];
 
   v6 = [MEMORY[0x277D75110] alertControllerWithTitle:v10 message:v5 preferredStyle:1];
   v7 = MEMORY[0x277D750F8];
@@ -377,7 +377,7 @@ LABEL_7:
   [(NTKGreenfieldB640ContentViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)_setupContentForAddWathFaceWithBandImagePath:(id)a3 bundle:(id)a4
+- (void)_setupContentForAddWathFaceWithBandImagePath:(id)path bundle:(id)bundle
 {
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -410,16 +410,16 @@ uint64_t __94__NTKGreenfieldB640ContentViewController__setupContentForAddWathFac
 
 - (id)_defaultBandNameForCurrentPairedDevice
 {
-  v2 = [MEMORY[0x277CBBAE8] currentDevice];
-  v3 = [v2 deviceCategory];
-  if ((v3 - 3) > 3)
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  deviceCategory = [currentDevice deviceCategory];
+  if ((deviceCategory - 3) > 3)
   {
     v4 = @"default_band_asset";
   }
 
   else
   {
-    v4 = off_27877E548[v3 - 3];
+    v4 = off_27877E548[deviceCategory - 3];
   }
 
   return v4;
@@ -451,29 +451,29 @@ uint64_t __94__NTKGreenfieldB640ContentViewController__setupContentForAddWathFac
   [(UICollectionView *)self->_facesCollectionView setDataSource:self];
   [(UICollectionView *)self->_facesCollectionView setShowsHorizontalScrollIndicator:0];
   [(UICollectionView *)self->_facesCollectionView setAlwaysBounceHorizontal:0];
-  v12 = [(NTKGreenfieldB640ContentViewController *)self contentView];
-  [v12 addSubview:self->_facesCollectionView];
+  contentView = [(NTKGreenfieldB640ContentViewController *)self contentView];
+  [contentView addSubview:self->_facesCollectionView];
 
   v23 = MEMORY[0x277CCAAD0];
-  v30 = [(NTKGreenfieldB640ContentViewController *)self contentView];
-  v29 = [v30 topAnchor];
-  v28 = [(UICollectionView *)self->_facesCollectionView topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  contentView2 = [(NTKGreenfieldB640ContentViewController *)self contentView];
+  topAnchor = [contentView2 topAnchor];
+  topAnchor2 = [(UICollectionView *)self->_facesCollectionView topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v31[0] = v27;
-  v26 = [(NTKGreenfieldB640ContentViewController *)self contentView];
-  v25 = [v26 leadingAnchor];
-  v24 = [(UICollectionView *)self->_facesCollectionView leadingAnchor];
-  v13 = [v25 constraintEqualToAnchor:v24];
+  contentView3 = [(NTKGreenfieldB640ContentViewController *)self contentView];
+  leadingAnchor = [contentView3 leadingAnchor];
+  leadingAnchor2 = [(UICollectionView *)self->_facesCollectionView leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[1] = v13;
-  v14 = [(NTKGreenfieldB640ContentViewController *)self contentView];
-  v15 = [v14 trailingAnchor];
-  v16 = [(UICollectionView *)self->_facesCollectionView trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  contentView4 = [(NTKGreenfieldB640ContentViewController *)self contentView];
+  trailingAnchor = [contentView4 trailingAnchor];
+  trailingAnchor2 = [(UICollectionView *)self->_facesCollectionView trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v31[2] = v17;
-  v18 = [(NTKGreenfieldB640ContentViewController *)self contentView];
-  v19 = [v18 bottomAnchor];
-  v20 = [(UICollectionView *)self->_facesCollectionView bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  contentView5 = [(NTKGreenfieldB640ContentViewController *)self contentView];
+  bottomAnchor = [contentView5 bottomAnchor];
+  bottomAnchor2 = [(UICollectionView *)self->_facesCollectionView bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v31[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
   [v23 activateConstraints:v22];
@@ -481,17 +481,17 @@ uint64_t __94__NTKGreenfieldB640ContentViewController__setupContentForAddWathFac
 
 - (void)_presentErrorAlert
 {
-  v3 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
-  v4 = [(NTKGreenfieldB640ContentViewController *)self _titleForError:v3];
+  error = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
+  v4 = [(NTKGreenfieldB640ContentViewController *)self _titleForError:error];
 
-  v5 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
-  v6 = [(NTKGreenfieldB640ContentViewController *)self _subtitleForError:v5];
+  error2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
+  v6 = [(NTKGreenfieldB640ContentViewController *)self _subtitleForError:error2];
 
   if (NTKInternalBuild(v7, v8))
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
-    v11 = [v9 stringWithFormat:@"\n \n [INTERNAL ONLY] \n Please file a radar and include a sysdiagnose. Error: reason: %@", v10];
+    error3 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
+    v11 = [v9 stringWithFormat:@"\n \n [INTERNAL ONLY] \n Please file a radar and include a sysdiagnose. Error: reason: %@", error3];
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v6, v11];
 
@@ -518,15 +518,15 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
   [WeakRetained greenfieldB640ContentViewController:*(a1 + 32) handleButtonActionEvent:2];
 }
 
-- (void)_notifyDelegateOfActionEventWatchFaceSelected:(id)a3
+- (void)_notifyDelegateOfActionEventWatchFaceSelected:(id)selected
 {
-  v7 = a3;
-  v4 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-  v5 = [v7 row];
-  if (v5 < [v4 count] && (objc_msgSend(v7, "row") & 0x8000000000000000) == 0)
+  selectedCopy = selected;
+  watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+  v5 = [selectedCopy row];
+  if (v5 < [watchFaceModels count] && (objc_msgSend(selectedCopy, "row") & 0x8000000000000000) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_greenfieldB640delegate);
-    [WeakRetained greenfieldB640ContentViewController:self handleWatchFaceSelectedEventAtIndex:{objc_msgSend(v7, "row")}];
+    [WeakRetained greenfieldB640ContentViewController:self handleWatchFaceSelectedEventAtIndex:{objc_msgSend(selectedCopy, "row")}];
   }
 }
 
@@ -537,12 +537,12 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
   height = self->_cellSize.height;
   if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v5 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v6 = [watchFaceModels countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -554,23 +554,23 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(watchFaceModels);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) decodedRecipe];
-          v12 = [v11 watchFace];
-          v13 = [v12 faceSharingName];
+          decodedRecipe = [*(*(&v16 + 1) + 8 * i) decodedRecipe];
+          watchFace = [decodedRecipe watchFace];
+          faceSharingName = [watchFace faceSharingName];
 
-          v14 = [v13 length];
+          v14 = [faceSharingName length];
           if (v14 > [(__CFString *)v9 length])
           {
-            v15 = v13;
+            v15 = faceSharingName;
 
             v9 = v15;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [watchFaceModels countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
@@ -584,12 +584,12 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   facesCollectionView = self->_facesCollectionView;
   v7 = +[NTKGreenfieldB640CollectionViewCell reuseIdentifier];
-  v8 = [(UICollectionView *)facesCollectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v5];
+  v8 = [(UICollectionView *)facesCollectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
   state = self->_state;
   if (state)
@@ -599,20 +599,20 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
 
   else
   {
-    v11 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v10 = [v11 count] > 1;
+    watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    v10 = [watchFaceModels count] > 1;
 
     state = self->_state;
   }
 
-  v12 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-  v13 = [v12 objectAtIndex:{objc_msgSend(v5, "row")}];
+  watchFaceModels2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+  v13 = [watchFaceModels2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v14 = [v13 isSelected];
-  v15 = [v13 decodedRecipe];
+  isSelected = [v13 isSelected];
+  decodedRecipe = [v13 decodedRecipe];
   if (self->_state <= 1)
   {
-    [v8 prepareCellWithDecodedRecipe:v15 bandImage:self->_watchBandImage shouldPresentFaceName:(state == 1) | v10 shouldPresentCheckmark:v10 isSelected:v14];
+    [v8 prepareCellWithDecodedRecipe:decodedRecipe bandImage:self->_watchBandImage shouldPresentFaceName:(state == 1) | v10 shouldPresentCheckmark:v10 isSelected:isSelected];
   }
 
   v16 = BPSBackgroundColor();
@@ -621,35 +621,35 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   if (!self->_state)
   {
-    [(NTKGreenfieldB640ContentViewController *)self _notifyDelegateOfActionEventWatchFaceSelected:a4];
+    [(NTKGreenfieldB640ContentViewController *)self _notifyDelegateOfActionEventWatchFaceSelected:path];
   }
 }
 
-- (void)_updateSelectedState:(BOOL)a3 forCellAtIndexPath:(id)a4
+- (void)_updateSelectedState:(BOOL)state forCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UICollectionView *)self->_facesCollectionView cellForItemAtIndexPath:a4];
-  [v5 updateSeletedState:v4];
+  stateCopy = state;
+  v5 = [(UICollectionView *)self->_facesCollectionView cellForItemAtIndexPath:path];
+  [v5 updateSeletedState:stateCopy];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels:a3];
+  v4 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [(NTKGreenfieldB640ContentViewController *)self cellSize:a3];
+  [(NTKGreenfieldB640ContentViewController *)self cellSize:view];
   v7 = v6;
-  v8 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-  v9 = [v8 count];
+  watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+  v9 = [watchFaceModels count];
 
   if (v9)
   {
@@ -657,8 +657,8 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
     v11 = 0.0;
     do
     {
-      v12 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-      v13 = [v12 count] - 1;
+      watchFaceModels2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+      v13 = [watchFaceModels2 count] - 1;
 
       if (v10 == v13)
       {
@@ -672,8 +672,8 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
 
       v11 = v11 + v14;
       ++v10;
-      v15 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-      v16 = [v15 count];
+      watchFaceModels3 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+      v16 = [watchFaceModels3 count];
     }
 
     while (v10 < v16);
@@ -702,23 +702,23 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
   return result;
 }
 
-- (id)_subtitleForError:(id)a3
+- (id)_subtitleForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
 
   if (v6)
   {
-    switch([v4 code])
+    switch([errorCopy code])
     {
       case 0:
         goto LABEL_5;
       case 1:
       case 8:
       case 11:
-        v7 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-        v8 = [v7 count];
+        watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+        v8 = [watchFaceModels count];
 
         if (v8 < 2)
         {
@@ -739,8 +739,8 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
         v10 = @"Try again later.";
         goto LABEL_8;
       case 3:
-        v22 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-        v23 = [v22 count];
+        watchFaceModels2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+        v23 = [watchFaceModels2 count];
 
         if (v23 < 2)
         {
@@ -756,8 +756,8 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
 
         goto LABEL_8;
       case 5:
-        v16 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-        v17 = [v16 count];
+        watchFaceModels3 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+        v17 = [watchFaceModels3 count];
 
         v18 = MEMORY[0x277CCACA8];
         if (v17 < 2)
@@ -771,12 +771,12 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
         }
 
         v28 = NTKClockFaceLocalizedString(v19, @"too many faces");
-        v36 = [MEMORY[0x277CBBAE8] currentDevice];
-        [v18 localizedStringWithFormat:v28, NTKFaceLibraryMaxFaceCountForDevice(v36)];
+        currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+        [v18 localizedStringWithFormat:v28, NTKFaceLibraryMaxFaceCountForDevice(currentDevice)];
         goto LABEL_38;
       case 6:
-        v20 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-        v21 = [v20 count];
+        watchFaceModels4 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+        v21 = [watchFaceModels4 count];
 
         if (v21 < 2)
         {
@@ -792,8 +792,8 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
 
         goto LABEL_8;
       case 7:
-        v24 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-        v25 = [v24 count];
+        watchFaceModels5 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+        v25 = [watchFaceModels5 count];
 
         if (v25 < 2)
         {
@@ -809,8 +809,8 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
 
         goto LABEL_8;
       case 9:
-        v34 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-        v35 = [v34 count];
+        watchFaceModels6 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+        v35 = [watchFaceModels6 count];
 
         if (v35 < 2)
         {
@@ -834,12 +834,12 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
         v10 = @"Watch face sharing is not available with your current version of watchOS.";
         goto LABEL_8;
       case 13:
-        v26 = [MEMORY[0x277CBBAE8] currentDevice];
-        v27 = [v26 pdrDevice];
-        v28 = [v27 valueForProperty:*MEMORY[0x277D37BD8]];
+        currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+        pdrDevice = [currentDevice2 pdrDevice];
+        v28 = [pdrDevice valueForProperty:*MEMORY[0x277D37BD8]];
 
-        v29 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-        v30 = [v29 count];
+        watchFaceModels7 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+        v30 = [watchFaceModels7 count];
 
         v31 = MEMORY[0x277CCACA8];
         if (v30 < 2)
@@ -854,16 +854,16 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
           v33 = @"These faces can be added on Apple Watch. Message them to %@ to get started.";
         }
 
-        v36 = NTKClockFaceLocalizedString(v32, v33);
-        [v31 localizedStringWithFormat:v36, v28];
+        currentDevice = NTKClockFaceLocalizedString(v32, v33);
+        [v31 localizedStringWithFormat:currentDevice, v28];
         self = LABEL_38:;
 
         break;
       case 14:
       case 15:
       case 16:
-        v14 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-        v15 = [v14 count];
+        watchFaceModels8 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+        v15 = [watchFaceModels8 count];
 
         if (v15 < 2)
         {
@@ -886,8 +886,8 @@ void __60__NTKGreenfieldB640ContentViewController__presentErrorAlert__block_invo
   else
   {
 LABEL_5:
-    v11 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v12 = [v11 count];
+    watchFaceModels9 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    v12 = [watchFaceModels9 count];
 
     if (v12 < 2)
     {
@@ -908,25 +908,25 @@ LABEL_8:
   return self;
 }
 
-- (id)_titleForError:(id)a3
+- (id)_titleForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
 
   if (!v6)
   {
     goto LABEL_11;
   }
 
-  v7 = [v4 code];
-  if (v7 <= 4)
+  code = [errorCopy code];
+  if (code <= 4)
   {
-    if (v7 >= 2)
+    if (code >= 2)
     {
-      if ((v7 - 2) >= 2)
+      if ((code - 2) >= 2)
       {
-        if (v7 != 4)
+        if (code != 4)
         {
           goto LABEL_13;
         }
@@ -952,20 +952,20 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v7 > 0x10)
+  if (code > 0x10)
   {
     goto LABEL_22;
   }
 
-  if (((1 << v7) & 0x3D80) != 0)
+  if (((1 << code) & 0x3D80) != 0)
   {
     goto LABEL_11;
   }
 
-  if (((1 << v7) & 0x1C200) != 0)
+  if (((1 << code) & 0x1C200) != 0)
   {
-    v8 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v9 = [v8 count];
+    watchFaceModels = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    v9 = [watchFaceModels count];
 
     if (v9 < 2)
     {
@@ -982,10 +982,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v7 == 6)
+  if (code == 6)
   {
-    v13 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
-    v14 = [v13 count];
+    watchFaceModels2 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model watchFaceModels];
+    v14 = [watchFaceModels2 count];
 
     if (v14 < 2)
     {
@@ -1003,7 +1003,7 @@ LABEL_11:
   }
 
 LABEL_22:
-  if (v7 == 5)
+  if (code == 5)
   {
     v10 = @"GREENFIELD_B640_WATCH_FACE_LIBRARY_FULL_ERROR_ALERT_TITLE";
     v11 = @"Limit Reached";
@@ -1018,8 +1018,8 @@ LABEL_13:
 - (void)_didTapShowInternalErrorButton
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
-  v7 = [v3 stringWithFormat:@"Please file a radar to Watch Faces if you think this is an error.\n %@", v4];
+  error = [(NTKGreenfieldB640Model *)self->_greenfieldB640Model error];
+  v7 = [v3 stringWithFormat:@"Please file a radar to Watch Faces if you think this is an error.\n %@", error];
 
   v5 = [MEMORY[0x277D75110] alertControllerWithTitle:@"[Internal Only]" message:v7 preferredStyle:1];
   v6 = [MEMORY[0x277D750F8] actionWithTitle:@"Ok" style:1 handler:0];

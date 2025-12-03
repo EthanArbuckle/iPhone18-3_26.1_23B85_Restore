@@ -1,18 +1,18 @@
 @interface CAMFocusLockGestureRecognizer
 - (CAMFocusLockGestureRecognizer)init;
-- (CAMFocusLockGestureRecognizer)initWithGestureBegan:(id)a3 gestureEnded:(id)a4;
-- (void)contactBeganWithAction:(id)a3;
-- (void)contactEndedWithAction:(id)a3;
-- (void)contactUpdatedWithAction:(id)a3;
+- (CAMFocusLockGestureRecognizer)initWithGestureBegan:(id)began gestureEnded:(id)ended;
+- (void)contactBeganWithAction:(id)action;
+- (void)contactEndedWithAction:(id)action;
+- (void)contactUpdatedWithAction:(id)action;
 @end
 
 @implementation CAMFocusLockGestureRecognizer
 
-- (CAMFocusLockGestureRecognizer)initWithGestureBegan:(id)a3 gestureEnded:(id)a4
+- (CAMFocusLockGestureRecognizer)initWithGestureBegan:(id)began gestureEnded:(id)ended
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a3);
-  v9 = _Block_copy(a4);
+  v8 = _Block_copy(began);
+  v9 = _Block_copy(ended);
   v10 = swift_allocObject();
   *(v10 + 16) = v8;
   v11 = swift_allocObject();
@@ -31,11 +31,11 @@
   return [(CAMFocusLockGestureRecognizer *)&v15 init];
 }
 
-- (void)contactBeganWithAction:(id)a3
+- (void)contactBeganWithAction:(id)action
 {
   v4 = OBJC_IVAR___CAMFocusLockGestureRecognizer_lockWindowTimer;
   v5 = *(&self->super.isa + OBJC_IVAR___CAMFocusLockGestureRecognizer_lockWindowTimer);
-  v6 = self;
+  selfCopy = self;
   if (v5)
   {
     [v5 invalidate];
@@ -50,17 +50,17 @@
   *(&self->super.isa + v4) = 0;
 }
 
-- (void)contactUpdatedWithAction:(id)a3
+- (void)contactUpdatedWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_100020194(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_100020194(actionCopy);
 }
 
-- (void)contactEndedWithAction:(id)a3
+- (void)contactEndedWithAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_1000207F0();
 }
 

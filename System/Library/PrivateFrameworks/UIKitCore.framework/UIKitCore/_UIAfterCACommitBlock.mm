@@ -1,7 +1,7 @@
 @interface _UIAfterCACommitBlock
-+ (id)blockWithBlock:(id)a3;
++ (id)blockWithBlock:(id)block;
 - (BOOL)run;
-- (unsigned)_initWithBlock:(unsigned __int8 *)a1;
+- (unsigned)_initWithBlock:(unsigned __int8 *)block;
 @end
 
 @implementation _UIAfterCACommitBlock
@@ -10,8 +10,8 @@
 {
   if (pthread_main_np() != 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIAfterCACommitQueue.m" lineNumber:127 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAfterCACommitQueue.m" lineNumber:127 description:@"Call must be made on main thread"];
   }
 
   block = self->_block;
@@ -28,37 +28,37 @@
   return block != 0;
 }
 
-+ (id)blockWithBlock:(id)a3
++ (id)blockWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[_UIAfterCACommitBlock alloc] _initWithBlock:v3];
+  blockCopy = block;
+  v4 = [[_UIAfterCACommitBlock alloc] _initWithBlock:blockCopy];
 
   return v4;
 }
 
-- (unsigned)_initWithBlock:(unsigned __int8 *)a1
+- (unsigned)_initWithBlock:(unsigned __int8 *)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v9.receiver = a1;
+    v9.receiver = block;
     v9.super_class = _UIAfterCACommitBlock;
     v4 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v4;
+    block = v4;
     if (v4)
     {
       v5 = *(v4 + 1);
       *(v4 + 1) = 0;
 
       v6 = [v3 copy];
-      v7 = *(a1 + 2);
-      *(a1 + 2) = v6;
+      v7 = *(block + 2);
+      *(block + 2) = v6;
 
-      atomic_store(0, a1 + 24);
+      atomic_store(0, block + 24);
     }
   }
 
-  return a1;
+  return block;
 }
 
 @end

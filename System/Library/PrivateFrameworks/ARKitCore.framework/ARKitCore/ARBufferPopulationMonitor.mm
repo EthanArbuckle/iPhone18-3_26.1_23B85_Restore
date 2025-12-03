@@ -1,23 +1,23 @@
 @interface ARBufferPopulationMonitor
-- (ARBufferPopulationMonitor)initWithDelegate:(id)a3;
+- (ARBufferPopulationMonitor)initWithDelegate:(id)delegate;
 - (ARBufferPopulationMonitorDelegate)delegate;
 - (id)description;
 - (unint64_t)count;
-- (unint64_t)countWithLabel:(id)a3;
+- (unint64_t)countWithLabel:(id)label;
 - (void)dealloc;
-- (void)emitEndSignpost:(int)a3 surfaceID:(unint64_t)a4 count:(unint64_t)a5 timestamp:(double)a6;
-- (void)emitStartSignpost:(int)a3 surfaceID:(unint64_t)a4 count:(unint64_t)a5 timestamp:(double)a6;
-- (void)trackDataBuffer:(__CVBuffer *)a3 withLabel:(id)a4 timestamp:(double)a5 signpostType:(int)a6;
-- (void)trackPixelBuffer:(__CVBuffer *)a3 withLabel:(id)a4 timestamp:(double)a5 signpostType:(int)a6;
-- (void)trackSurface:(__IOSurface *)a3 withLabel:(id)a4 timestamp:(double)a5 signpostType:(int)a6;
-- (void)updateBufferPopulationRegistryWithReleasedSurfaceID:(unsigned int)a3;
+- (void)emitEndSignpost:(int)signpost surfaceID:(unint64_t)d count:(unint64_t)count timestamp:(double)timestamp;
+- (void)emitStartSignpost:(int)signpost surfaceID:(unint64_t)d count:(unint64_t)count timestamp:(double)timestamp;
+- (void)trackDataBuffer:(__CVBuffer *)buffer withLabel:(id)label timestamp:(double)timestamp signpostType:(int)type;
+- (void)trackPixelBuffer:(__CVBuffer *)buffer withLabel:(id)label timestamp:(double)timestamp signpostType:(int)type;
+- (void)trackSurface:(__IOSurface *)surface withLabel:(id)label timestamp:(double)timestamp signpostType:(int)type;
+- (void)updateBufferPopulationRegistryWithReleasedSurfaceID:(unsigned int)d;
 @end
 
 @implementation ARBufferPopulationMonitor
 
-- (ARBufferPopulationMonitor)initWithDelegate:(id)a3
+- (ARBufferPopulationMonitor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.bufferPopulationMonitor"])
   {
     v15.receiver = self;
@@ -26,7 +26,7 @@
     v6 = v5;
     if (v5)
     {
-      objc_storeWeak(&v5->_delegate, v4);
+      objc_storeWeak(&v5->_delegate, delegateCopy);
       v7 = ARCreateNonFixedPriorityDispatchQueue("com.apple.arkit.bufferPopulationMonitor.delegateQueue");
       delegateQueue = v6->_delegateQueue;
       v6->_delegateQueue = v7;
@@ -46,15 +46,15 @@
     }
 
     self = v6;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -105,11 +105,11 @@ void __36__ARBufferPopulationMonitor_dealloc__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (unint64_t)countWithLabel:(id)a3
+- (unint64_t)countWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   os_unfair_lock_lock(&self->_bufferPopulationRegistryLock);
-  v5 = [(ARBufferPopulationRegistry *)self->_bufferPopulationRegistry countWithLabel:v4];
+  v5 = [(ARBufferPopulationRegistry *)self->_bufferPopulationRegistry countWithLabel:labelCopy];
   os_unfair_lock_unlock(&self->_bufferPopulationRegistryLock);
 
   return v5;
@@ -124,61 +124,61 @@ void __36__ARBufferPopulationMonitor_dealloc__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)trackDataBuffer:(__CVBuffer *)a3 withLabel:(id)a4 timestamp:(double)a5 signpostType:(int)a6
+- (void)trackDataBuffer:(__CVBuffer *)buffer withLabel:(id)label timestamp:(double)timestamp signpostType:(int)type
 {
-  v6 = *&a6;
-  v9 = a4;
-  [(ARBufferPopulationMonitor *)self trackSurface:CVDataBufferGetIOSurface() withLabel:v9 timestamp:v6 signpostType:a5];
+  v6 = *&type;
+  labelCopy = label;
+  [(ARBufferPopulationMonitor *)self trackSurface:CVDataBufferGetIOSurface() withLabel:labelCopy timestamp:v6 signpostType:timestamp];
 }
 
-- (void)trackPixelBuffer:(__CVBuffer *)a3 withLabel:(id)a4 timestamp:(double)a5 signpostType:(int)a6
+- (void)trackPixelBuffer:(__CVBuffer *)buffer withLabel:(id)label timestamp:(double)timestamp signpostType:(int)type
 {
-  v6 = *&a6;
-  v10 = a4;
-  [(ARBufferPopulationMonitor *)self trackSurface:CVPixelBufferGetIOSurface(a3) withLabel:v10 timestamp:v6 signpostType:a5];
+  v6 = *&type;
+  labelCopy = label;
+  [(ARBufferPopulationMonitor *)self trackSurface:CVPixelBufferGetIOSurface(buffer) withLabel:labelCopy timestamp:v6 signpostType:timestamp];
 }
 
-- (void)emitStartSignpost:(int)a3 surfaceID:(unint64_t)a4 count:(unint64_t)a5 timestamp:(double)a6
+- (void)emitStartSignpost:(int)signpost surfaceID:(unint64_t)d count:(unint64_t)count timestamp:(double)timestamp
 {
-  if (a3 <= 4)
+  if (signpost <= 4)
   {
     kdebug_trace();
   }
 }
 
-- (void)emitEndSignpost:(int)a3 surfaceID:(unint64_t)a4 count:(unint64_t)a5 timestamp:(double)a6
+- (void)emitEndSignpost:(int)signpost surfaceID:(unint64_t)d count:(unint64_t)count timestamp:(double)timestamp
 {
-  if (a3 <= 4)
+  if (signpost <= 4)
   {
     kdebug_trace();
   }
 }
 
-- (void)trackSurface:(__IOSurface *)a3 withLabel:(id)a4 timestamp:(double)a5 signpostType:(int)a6
+- (void)trackSurface:(__IOSurface *)surface withLabel:(id)label timestamp:(double)timestamp signpostType:(int)type
 {
-  v6 = *&a6;
-  v10 = a4;
-  ID = IOSurfaceGetID(a3);
+  v6 = *&type;
+  labelCopy = label;
+  ID = IOSurfaceGetID(surface);
   os_unfair_lock_lock(&self->_bufferPopulationRegistryLock);
   bufferPopulationRegistry = self->_bufferPopulationRegistry;
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:ID];
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
-  [(ARBufferPopulationRegistry *)bufferPopulationRegistry registerBufferWithSurfaceID:v13 label:v10 signpostType:v14 timestamp:a5];
+  [(ARBufferPopulationRegistry *)bufferPopulationRegistry registerBufferWithSurfaceID:v13 label:labelCopy signpostType:v14 timestamp:timestamp];
 
-  v15 = [(ARBufferPopulationRegistry *)self->_bufferPopulationRegistry surfaceIDsForBuffersWithLabel:v10];
+  v15 = [(ARBufferPopulationRegistry *)self->_bufferPopulationRegistry surfaceIDsForBuffersWithLabel:labelCopy];
   v16 = [v15 count];
 
-  [(ARBufferPopulationMonitor *)self emitStartSignpost:v6 surfaceID:ID count:v16 timestamp:a5];
+  [(ARBufferPopulationMonitor *)self emitStartSignpost:v6 surfaceID:ID count:v16 timestamp:timestamp];
   os_unfair_lock_unlock(&self->_bufferPopulationRegistryLock);
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__ARBufferPopulationMonitor_trackSurface_withLabel_timestamp_signpostType___block_invoke;
   block[3] = &unk_1E817C240;
-  v20 = v10;
+  v20 = labelCopy;
   v21 = v16;
   block[4] = self;
-  v18 = v10;
+  v18 = labelCopy;
   dispatch_async(delegateQueue, block);
 }
 
@@ -188,7 +188,7 @@ void __75__ARBufferPopulationMonitor_trackSurface_withLabel_timestamp_signpostTy
   [v2 bufferPopulationMonitor:*(a1 + 32) didIncrementCount:*(a1 + 48) withLabel:*(a1 + 40)];
 }
 
-- (void)updateBufferPopulationRegistryWithReleasedSurfaceID:(unsigned int)a3
+- (void)updateBufferPopulationRegistryWithReleasedSurfaceID:(unsigned int)d
 {
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   os_unfair_lock_lock(&self->_bufferPopulationRegistryLock);
@@ -198,7 +198,7 @@ void __75__ARBufferPopulationMonitor_trackSurface_withLabel_timestamp_signpostTy
   v9 = v8;
   [(ARBufferPopulationRegistry *)self->_bufferPopulationRegistry unregisterBufferWithSurfaceID:v5];
   v10 = [(ARBufferPopulationRegistry *)self->_bufferPopulationRegistry countWithLabel:v6];
-  [(ARBufferPopulationMonitor *)self emitEndSignpost:v7 surfaceID:a3 count:v10 timestamp:v9];
+  [(ARBufferPopulationMonitor *)self emitEndSignpost:v7 surfaceID:d count:v10 timestamp:v9];
   os_unfair_lock_unlock(&self->_bufferPopulationRegistryLock);
   if (v6)
   {

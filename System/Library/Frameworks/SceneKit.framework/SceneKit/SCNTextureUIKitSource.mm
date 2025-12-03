@@ -1,10 +1,10 @@
 @interface SCNTextureUIKitSource
 - (CGSize)layerSizeInPixels;
 - (SCNTextureUIKitSource)init;
-- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5;
+- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time;
 - (double)layerContentsScaleFactor;
 - (void)_layerTreeDidUpdate;
-- (void)cleanup:(__C3DRendererContext *)a3;
+- (void)cleanup:(__C3DRendererContext *)cleanup;
 - (void)dealloc;
 - (void)setup;
 @end
@@ -53,24 +53,24 @@ void __32__SCNTextureUIKitSource_dealloc__block_invoke(uint64_t a1)
 
 - (void)setup
 {
-  v3 = [(CALayer *)self->_uiWindowLayer superlayer];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  superlayer = [(CALayer *)self->_uiWindowLayer superlayer];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v4 addObserver:self selector:sel__layerTreeDidUpdate name:@"SCNLayerTreeDidChange" object:v3];
+  [defaultCenter addObserver:self selector:sel__layerTreeDidUpdate name:@"SCNLayerTreeDidChange" object:superlayer];
 }
 
-- (void)cleanup:(__C3DRendererContext *)a3
+- (void)cleanup:(__C3DRendererContext *)cleanup
 {
   v3.receiver = self;
   v3.super_class = SCNTextureUIKitSource;
-  [(SCNTextureCoreAnimationSource *)&v3 cleanup:a3];
+  [(SCNTextureCoreAnimationSource *)&v3 cleanup:cleanup];
 }
 
 - (double)layerContentsScaleFactor
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
 
-  [v2 scale];
+  [mainScreen scale];
   return result;
 }
 
@@ -97,20 +97,20 @@ void __32__SCNTextureUIKitSource_dealloc__block_invoke(uint64_t a1)
   return result;
 }
 
-- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5
+- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time
 {
   [MEMORY[0x277CD9FF0] flush];
   v10.receiver = self;
   v10.super_class = SCNTextureUIKitSource;
-  return [(SCNTextureCoreAnimationSource *)&v10 textureWithEngineContext:a3 textureSampler:a4 nextFrameTime:a5];
+  return [(SCNTextureCoreAnimationSource *)&v10 textureWithEngineContext:context textureSampler:sampler nextFrameTime:time];
 }
 
 - (void)_layerTreeDidUpdate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   source = self->_source;
 
-  [v3 postNotificationName:@"SCNUITreeDidChange" object:source];
+  [defaultCenter postNotificationName:@"SCNUITreeDidChange" object:source];
 }
 
 @end

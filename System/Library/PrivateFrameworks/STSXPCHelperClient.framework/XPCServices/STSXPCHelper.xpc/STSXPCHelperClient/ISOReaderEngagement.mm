@@ -1,23 +1,23 @@
 @interface ISOReaderEngagement
-- (ISOReaderEngagement)initWithCoder:(id)a3;
-- (ISOReaderEngagement)initWithData:(id)a3 type:(int64_t)a4;
-- (ISOReaderEngagement)initWithType:(int64_t)a3;
+- (ISOReaderEngagement)initWithCoder:(id)coder;
+- (ISOReaderEngagement)initWithData:(id)data type:(int64_t)type;
+- (ISOReaderEngagement)initWithType:(int64_t)type;
 - (id)encode;
 @end
 
 @implementation ISOReaderEngagement
 
-- (ISOReaderEngagement)initWithData:(id)a3 type:(int64_t)a4
+- (ISOReaderEngagement)initWithData:(id)data type:(int64_t)type
 {
-  v6 = a3;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = ISOReaderEngagement;
   v7 = [(ISOReaderEngagement *)&v20 init];
   p_isa = &v7->super.isa;
   if (v7)
   {
-    v7->_type = a4;
-    v9 = [CBOR decodeFromData:v6];
+    v7->_type = type;
+    v9 = [CBOR decodeFromData:dataCopy];
     v10 = p_isa[3];
     p_isa[3] = v9;
 
@@ -29,13 +29,13 @@
       goto LABEL_7;
     }
 
-    v14 = [p_isa[3] dictionary];
+    dictionary = [p_isa[3] dictionary];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10001A898;
     v18[3] = &unk_100058EA8;
     v19 = p_isa;
-    [v14 enumerateKeysAndObjectsUsingBlock:v18];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v18];
   }
 
   v15 = p_isa;
@@ -44,14 +44,14 @@ LABEL_7:
   return v15;
 }
 
-- (ISOReaderEngagement)initWithType:(int64_t)a3
+- (ISOReaderEngagement)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ISOReaderEngagement;
   result = [(ISOReaderEngagement *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -59,11 +59,11 @@ LABEL_7:
 
 - (id)encode
 {
-  v3 = [(ISOReaderEngagement *)self cborObj];
+  cborObj = [(ISOReaderEngagement *)self cborObj];
 
-  if (v3)
+  if (cborObj)
   {
-    v4 = [(ISOReaderEngagement *)self cborObj];
+    cborObj2 = [(ISOReaderEngagement *)self cborObj];
   }
 
   else
@@ -79,13 +79,13 @@ LABEL_7:
     v10 = [CBOR cborWithDictionary:v6 keyOrderList:v9];
     [(ISOReaderEngagement *)self setCborObj:v10];
 
-    v4 = [(ISOReaderEngagement *)self cborObj];
+    cborObj2 = [(ISOReaderEngagement *)self cborObj];
   }
 
-  return v4;
+  return cborObj2;
 }
 
-- (ISOReaderEngagement)initWithCoder:(id)a3
+- (ISOReaderEngagement)initWithCoder:(id)coder
 {
   v4 = objc_opt_new();
 

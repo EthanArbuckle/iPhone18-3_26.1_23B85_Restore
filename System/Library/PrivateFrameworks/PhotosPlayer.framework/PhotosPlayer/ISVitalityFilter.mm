@@ -1,159 +1,159 @@
 @interface ISVitalityFilter
-- (ISVitalityFilter)initWithSettings:(id)a3;
-- (void)performInputChanges:(id)a3;
-- (void)performOutputChanges:(id)a3;
-- (void)setDecelerating:(BOOL)a3;
-- (void)setEstimatedScrollEndDate:(id)a3;
-- (void)setHasTargetVisibilityOffset:(BOOL)a3;
-- (void)setPlayRate:(double)a3;
-- (void)setScrolling:(BOOL)a3;
-- (void)setScrubOffset:(double)a3;
-- (void)setScrubbing:(BOOL)a3;
-- (void)setTargetVisibilityOffset:(double)a3;
-- (void)setVisibilityOffset:(double)a3;
-- (void)setVisible:(BOOL)a3;
+- (ISVitalityFilter)initWithSettings:(id)settings;
+- (void)performInputChanges:(id)changes;
+- (void)performOutputChanges:(id)changes;
+- (void)setDecelerating:(BOOL)decelerating;
+- (void)setEstimatedScrollEndDate:(id)date;
+- (void)setHasTargetVisibilityOffset:(BOOL)offset;
+- (void)setPlayRate:(double)rate;
+- (void)setScrolling:(BOOL)scrolling;
+- (void)setScrubOffset:(double)offset;
+- (void)setScrubbing:(BOOL)scrubbing;
+- (void)setTargetVisibilityOffset:(double)offset;
+- (void)setVisibilityOffset:(double)offset;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation ISVitalityFilter
 
-- (void)setPlayRate:(double)a3
+- (void)setPlayRate:(double)rate
 {
-  if (self->_playRate != a3)
+  if (self->_playRate != rate)
   {
-    self->_playRate = a3;
+    self->_playRate = rate;
     [(ISVitalityFilter *)self _invalidateOutput];
   }
 }
 
-- (void)setScrubOffset:(double)a3
+- (void)setScrubOffset:(double)offset
 {
-  if (self->_scrubOffset != a3)
+  if (self->_scrubOffset != offset)
   {
-    self->_scrubOffset = a3;
+    self->_scrubOffset = offset;
     [(ISVitalityFilter *)self _invalidateOutput];
   }
 }
 
-- (void)setScrubbing:(BOOL)a3
+- (void)setScrubbing:(BOOL)scrubbing
 {
-  if (self->_scrubbing != a3)
+  if (self->_scrubbing != scrubbing)
   {
-    self->_scrubbing = a3;
+    self->_scrubbing = scrubbing;
     [(ISVitalityFilter *)self _invalidateOutput];
   }
 }
 
-- (void)setDecelerating:(BOOL)a3
+- (void)setDecelerating:(BOOL)decelerating
 {
-  if (self->_isDecelerating != a3)
+  if (self->_isDecelerating != decelerating)
   {
-    self->_isDecelerating = a3;
+    self->_isDecelerating = decelerating;
   }
 }
 
-- (void)setScrolling:(BOOL)a3
+- (void)setScrolling:(BOOL)scrolling
 {
-  if (self->_isScrolling != a3)
+  if (self->_isScrolling != scrolling)
   {
-    self->_isScrolling = a3;
+    self->_isScrolling = scrolling;
   }
 }
 
-- (void)setEstimatedScrollEndDate:(id)a3
+- (void)setEstimatedScrollEndDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   estimatedScrollEndDate = self->_estimatedScrollEndDate;
   p_estimatedScrollEndDate = &self->_estimatedScrollEndDate;
-  if (estimatedScrollEndDate != v5)
+  if (estimatedScrollEndDate != dateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_estimatedScrollEndDate, a3);
-    v5 = v8;
+    v8 = dateCopy;
+    objc_storeStrong(p_estimatedScrollEndDate, date);
+    dateCopy = v8;
   }
 }
 
-- (void)setTargetVisibilityOffset:(double)a3
+- (void)setTargetVisibilityOffset:(double)offset
 {
-  if (self->_targetVisibilityOffset != a3)
+  if (self->_targetVisibilityOffset != offset)
   {
-    self->_targetVisibilityOffset = a3;
+    self->_targetVisibilityOffset = offset;
   }
 }
 
-- (void)setHasTargetVisibilityOffset:(BOOL)a3
+- (void)setHasTargetVisibilityOffset:(BOOL)offset
 {
-  if (self->_hasTargetVisibilityOffset != a3)
+  if (self->_hasTargetVisibilityOffset != offset)
   {
-    self->_hasTargetVisibilityOffset = a3;
+    self->_hasTargetVisibilityOffset = offset;
   }
 }
 
-- (void)setVisibilityOffset:(double)a3
+- (void)setVisibilityOffset:(double)offset
 {
-  if (self->_visibilityOffset != a3)
+  if (self->_visibilityOffset != offset)
   {
-    self->_visibilityOffset = a3;
+    self->_visibilityOffset = offset;
   }
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
+    self->_isVisible = visible;
   }
 }
 
-- (void)performOutputChanges:(id)a3
+- (void)performOutputChanges:(id)changes
 {
-  v7 = a3;
-  v4 = [(ISVitalityFilter *)self _isPerformingOutputChanges];
+  changesCopy = changes;
+  _isPerformingOutputChanges = [(ISVitalityFilter *)self _isPerformingOutputChanges];
   [(ISVitalityFilter *)self _setPerformingOutputChanges:1];
-  if (v7)
+  if (changesCopy)
   {
-    v7[2](v7);
+    changesCopy[2](changesCopy);
   }
 
-  [(ISVitalityFilter *)self _setPerformingOutputChanges:v4];
-  if (!v4 && [(ISVitalityFilter *)self _outputDidChange])
+  [(ISVitalityFilter *)self _setPerformingOutputChanges:_isPerformingOutputChanges];
+  if (!_isPerformingOutputChanges && [(ISVitalityFilter *)self _outputDidChange])
   {
     [(ISVitalityFilter *)self _setOutputDidChange:0];
-    v5 = [(ISVitalityFilter *)self outputChangeHandler];
-    v6 = v5;
-    if (v5)
+    outputChangeHandler = [(ISVitalityFilter *)self outputChangeHandler];
+    v6 = outputChangeHandler;
+    if (outputChangeHandler)
     {
-      (*(v5 + 16))(v5, self);
+      (*(outputChangeHandler + 16))(outputChangeHandler, self);
     }
   }
 }
 
-- (void)performInputChanges:(id)a3
+- (void)performInputChanges:(id)changes
 {
-  v5 = a3;
-  v4 = [(ISVitalityFilter *)self _isPerformingInputChanges];
+  changesCopy = changes;
+  _isPerformingInputChanges = [(ISVitalityFilter *)self _isPerformingInputChanges];
   [(ISVitalityFilter *)self _setPerformingInputChanges:1];
-  if (v5)
+  if (changesCopy)
   {
-    v5[2](v5);
+    changesCopy[2](changesCopy);
   }
 
-  [(ISVitalityFilter *)self _setPerformingInputChanges:v4];
-  if (!v4)
+  [(ISVitalityFilter *)self _setPerformingInputChanges:_isPerformingInputChanges];
+  if (!_isPerformingInputChanges)
   {
     [(ISVitalityFilter *)self inputDidChange];
   }
 }
 
-- (ISVitalityFilter)initWithSettings:(id)a3
+- (ISVitalityFilter)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = ISVitalityFilter;
   v6 = [(ISVitalityFilter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   return v7;

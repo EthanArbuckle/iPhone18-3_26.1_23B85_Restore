@@ -1,50 +1,50 @@
 @interface TSCECellValue
-+ (TSCECellValue)cellValueWithArchive:(const void *)a3 locale:(id)a4;
-+ (id)newCellValueFromTSCEValue:(id)a3 withLocale:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCellValue:(id)a3;
-- (TSCECellValue)initWithLocale:(id)a3;
++ (TSCECellValue)cellValueWithArchive:(const void *)archive locale:(id)locale;
++ (id)newCellValueFromTSCEValue:(id)value withLocale:(id)locale;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCellValue:(id)value;
+- (TSCECellValue)initWithLocale:(id)locale;
 - (id)canonicalKeyString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)displayString;
 - (id)format;
 - (id)tsceValue;
-- (int64_t)compareToCellValue:(id)a3;
+- (int64_t)compareToCellValue:(id)value;
 - (unint64_t)hash;
-- (void)encodeCellValueToArchive:(void *)a3;
-- (void)updateWithCustomFormatList:(id)a3;
+- (void)encodeCellValueToArchive:(void *)archive;
+- (void)updateWithCustomFormatList:(id)list;
 @end
 
 @implementation TSCECellValue
 
-- (TSCECellValue)initWithLocale:(id)a3
+- (TSCECellValue)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = TSCECellValue;
   v6 = [(TSCECellValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
   }
 
   return v7;
 }
 
-+ (id)newCellValueFromTSCEValue:(id)a3 withLocale:(id)a4
++ (id)newCellValueFromTSCEValue:(id)value withLocale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v15 = objc_msgSend_nativeType(v5, v7, v8, v9, v10);
+  valueCopy = value;
+  localeCopy = locale;
+  v15 = objc_msgSend_nativeType(valueCopy, v7, v8, v9, v10);
   if (v15 <= 4)
   {
     if (v15 == 2)
     {
-      v46 = objc_msgSend_BOOLean(v5, v11, v12, v13, v14);
-      if (v5)
+      v46 = objc_msgSend_BOOLean(valueCopy, v11, v12, v13, v14);
+      if (valueCopy)
       {
-        objc_msgSend_format(v5, v42, v43, v44, v45);
+        objc_msgSend_format(valueCopy, v42, v43, v44, v45);
       }
 
       else
@@ -55,16 +55,16 @@
 
       v16 = objc_msgSend_BOOLValue_format_(TSCEBooleanValue, v42, v46, &v71, v45);
       v55 = [TSCEBooleanCellValue alloc];
-      v20 = objc_msgSend_initWithBooleanValue_locale_(v55, v56, v16, v6, v57);
+      v20 = objc_msgSend_initWithBooleanValue_locale_(v55, v56, v16, localeCopy, v57);
       goto LABEL_22;
     }
 
     if (v15 == 3)
     {
-      v25 = objc_msgSend_date(v5, v11, v12, v13, v14);
-      if (v5)
+      v25 = objc_msgSend_date(valueCopy, v11, v12, v13, v14);
+      if (valueCopy)
       {
-        objc_msgSend_format(v5, v21, v22, v23, v24);
+        objc_msgSend_format(valueCopy, v21, v22, v23, v24);
       }
 
       else
@@ -76,7 +76,7 @@
       v62 = objc_msgSend_dateValue_format_(TSCEDateValue, v21, v25, &v71, v24);
 
       v63 = [TSCEDateCellValue alloc];
-      v51 = objc_msgSend_initWithDateValue_locale_(v63, v64, v62, v6, v65);
+      v51 = objc_msgSend_initWithDateValue_locale_(v63, v64, v62, localeCopy, v65);
 
       if (!v51)
       {
@@ -91,27 +91,27 @@
 
   if (v15 == 5)
   {
-    v16 = objc_msgSend_asNumberValue(v5, v11, v12, v13, v14);
+    v16 = objc_msgSend_asNumberValue(valueCopy, v11, v12, v13, v14);
     v26 = [TSCENumberCellValue alloc];
-    v20 = objc_msgSend_initWithNumberValue_locale_(v26, v27, v16, v6, v28);
+    v20 = objc_msgSend_initWithNumberValue_locale_(v26, v27, v16, localeCopy, v28);
     goto LABEL_22;
   }
 
   if (v15 == 7)
   {
-    if (!objc_msgSend_isRichTextValue(v5, v11, v12, v13, v14))
+    if (!objc_msgSend_isRichTextValue(valueCopy, v11, v12, v13, v14))
     {
-      v16 = objc_msgSend_asStringValue(v5, v29, v30, v31, v32);
+      v16 = objc_msgSend_asStringValue(valueCopy, v29, v30, v31, v32);
       v52 = [TSCEStringCellValue alloc];
-      v20 = objc_msgSend_initWithStringValue_locale_(v52, v53, v16, v6, v54);
+      v20 = objc_msgSend_initWithStringValue_locale_(v52, v53, v16, localeCopy, v54);
       goto LABEL_22;
     }
 
-    v16 = objc_msgSend_asRichTextValue(v5, v29, v30, v31, v32);
+    v16 = objc_msgSend_asRichTextValue(valueCopy, v29, v30, v31, v32);
     v41 = objc_msgSend_asRawString(v16, v33, v34, v35, v36);
-    if (v5)
+    if (valueCopy)
     {
-      objc_msgSend_format(v5, v37, v38, v39, v40);
+      objc_msgSend_format(valueCopy, v37, v38, v39, v40);
     }
 
     else
@@ -123,7 +123,7 @@
     v67 = objc_msgSend_stringValue_format_(TSCEStringValue, v37, v41, &v71, v40);
 
     v68 = [TSCEStringCellValue alloc];
-    v51 = objc_msgSend_initWithStringValue_locale_(v68, v69, v67, v6, v70);
+    v51 = objc_msgSend_initWithStringValue_locale_(v68, v69, v67, localeCopy, v70);
 
     goto LABEL_23;
   }
@@ -132,7 +132,7 @@
   {
 LABEL_17:
     v47 = [TSCENilCellValue alloc];
-    v51 = objc_msgSend_initWithLocale_(v47, v48, v6, v49, v50);
+    v51 = objc_msgSend_initWithLocale_(v47, v48, localeCopy, v49, v50);
     if (!v51)
     {
       goto LABEL_24;
@@ -141,11 +141,11 @@ LABEL_17:
     goto LABEL_28;
   }
 
-  v16 = objc_msgSend_asErrorValue(v5, v11, v12, v13, v14);
+  v16 = objc_msgSend_asErrorValue(valueCopy, v11, v12, v13, v14);
   if (v16)
   {
     v17 = [TSCEErrorCellValue alloc];
-    v20 = objc_msgSend_initWithErrorValue_locale_(v17, v18, v16, v6, v19);
+    v20 = objc_msgSend_initWithErrorValue_locale_(v17, v18, v16, localeCopy, v19);
 LABEL_22:
     v51 = v20;
     goto LABEL_23;
@@ -158,7 +158,7 @@ LABEL_23:
   {
 LABEL_24:
     v58 = [TSCENilCellValue alloc];
-    v51 = objc_msgSend_initWithLocale_(v58, v59, v6, v60, v61);
+    v51 = objc_msgSend_initWithLocale_(v58, v59, localeCopy, v60, v61);
   }
 
 LABEL_28:
@@ -187,7 +187,7 @@ LABEL_28:
   objc_exception_throw(v26);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECellValue copyWithZone:]", v3, v4);
@@ -251,7 +251,7 @@ LABEL_28:
   return 0;
 }
 
-- (BOOL)isEqualToCellValue:(id)a3
+- (BOOL)isEqualToCellValue:(id)value
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCECellValue isEqualToCellValue:]", v3, v4);
@@ -284,13 +284,13 @@ LABEL_28:
   objc_exception_throw(v26);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToCellValue = objc_msgSend_isEqualToCellValue_(self, v5, v4, v6, v7);
+    isEqualToCellValue = objc_msgSend_isEqualToCellValue_(self, v5, equalCopy, v6, v7);
   }
 
   else
@@ -301,9 +301,9 @@ LABEL_28:
   return isEqualToCellValue;
 }
 
-- (int64_t)compareToCellValue:(id)a3
+- (int64_t)compareToCellValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSCECellValue compareToCellValue:]", v6, v7);
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCECellValue.mm", v10, v11);
@@ -323,36 +323,36 @@ LABEL_28:
   objc_exception_throw(v29);
 }
 
-+ (TSCECellValue)cellValueWithArchive:(const void *)a3 locale:(id)a4
++ (TSCECellValue)cellValueWithArchive:(const void *)archive locale:(id)locale
 {
-  v5 = a4;
+  localeCopy = locale;
   v6 = 0;
-  v7 = *(a3 + 16);
+  v7 = *(archive + 16);
   if (v7 > 2)
   {
     switch(v7)
     {
       case 3:
         v8 = [TSCEDateCellValue alloc];
-        v11 = (a3 + 32);
+        v11 = (archive + 32);
         v12 = &TSCE::_DateCellValueArchive_default_instance_;
         break;
       case 4:
         v17 = [TSCENumberCellValue alloc];
-        if (*(a3 + 5))
+        if (*(archive + 5))
         {
-          v16 = objc_msgSend_initWithArchive_locale_(v17, v18, *(a3 + 5), v5, v19);
+          v16 = objc_msgSend_initWithArchive_locale_(v17, v18, *(archive + 5), localeCopy, v19);
         }
 
         else
         {
-          v16 = objc_msgSend_initWithArchive_locale_(v17, v18, &TSCE::_NumberCellValueArchive_default_instance_, v5, v19);
+          v16 = objc_msgSend_initWithArchive_locale_(v17, v18, &TSCE::_NumberCellValueArchive_default_instance_, localeCopy, v19);
         }
 
         goto LABEL_23;
       case 5:
         v8 = [TSCEStringCellValue alloc];
-        v11 = (a3 + 48);
+        v11 = (archive + 48);
         v12 = &TSCE::_StringCellValueArchive_default_instance_;
         break;
       default:
@@ -364,28 +364,28 @@ LABEL_28:
 
   if (v7 == 1)
   {
-    if ((*(a3 + 16) & 0x10) != 0)
+    if ((*(archive + 16) & 0x10) != 0)
     {
       v8 = [TSCEErrorCellValue alloc];
-      v11 = (a3 + 56);
+      v11 = (archive + 56);
       v12 = &TSCE::_ErrorCellValueArchive_default_instance_;
 LABEL_20:
       v24 = *v11;
       if (v24)
       {
-        v16 = objc_msgSend_initWithArchive_locale_(v8, v9, v24, v5, v10);
+        v16 = objc_msgSend_initWithArchive_locale_(v8, v9, v24, localeCopy, v10);
       }
 
       else
       {
-        v16 = objc_msgSend_initWithArchive_locale_(v8, v9, v12, v5, v10);
+        v16 = objc_msgSend_initWithArchive_locale_(v8, v9, v12, localeCopy, v10);
       }
 
       goto LABEL_23;
     }
 
     v20 = [TSCENilCellValue alloc];
-    v16 = objc_msgSend_initWithLocale_(v20, v21, v5, v22, v23);
+    v16 = objc_msgSend_initWithLocale_(v20, v21, localeCopy, v22, v23);
   }
 
   else
@@ -396,14 +396,14 @@ LABEL_20:
     }
 
     v13 = [TSCEBooleanCellValue alloc];
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      v16 = objc_msgSend_initWithArchive_locale_(v13, v14, *(a3 + 3), v5, v15);
+      v16 = objc_msgSend_initWithArchive_locale_(v13, v14, *(archive + 3), localeCopy, v15);
     }
 
     else
     {
-      v16 = objc_msgSend_initWithArchive_locale_(v13, v14, &TSCE::_BooleanCellValueArchive_default_instance_, v5, v15);
+      v16 = objc_msgSend_initWithArchive_locale_(v13, v14, &TSCE::_BooleanCellValueArchive_default_instance_, localeCopy, v15);
     }
   }
 
@@ -414,9 +414,9 @@ LABEL_24:
   return v6;
 }
 
-- (void)updateWithCustomFormatList:(id)a3
+- (void)updateWithCustomFormatList:(id)list
 {
-  v8 = a3;
+  listCopy = list;
   valueType = self->_valueType;
   v10 = valueType > 7;
   v11 = (1 << valueType) & 0xA8;
@@ -433,7 +433,7 @@ LABEL_24:
 
     if ((v68 - 270) <= 4 && v68 != 273)
     {
-      if (!v8)
+      if (!listCopy)
       {
         v23 = MEMORY[0x277D81150];
         v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[TSCECellValue updateWithCustomFormatList:]", v21, v22);
@@ -446,7 +446,7 @@ LABEL_24:
       v34 = objc_msgSend_format(self, v19, v20, v21, v22);
       v18 = objc_msgSend_asCustomFormatWrapper(v34, v35, v36, v37, v38);
 
-      if (!v8 || !v18)
+      if (!listCopy || !v18)
       {
         goto LABEL_22;
       }
@@ -455,7 +455,7 @@ LABEL_24:
       v51 = objc_msgSend_customFormat(v18, v44, v45, v46, v47);
       if (v43)
       {
-        v52 = objc_msgSend_customFormatForKey_(v8, v48, v43, v49, v50);
+        v52 = objc_msgSend_customFormatForKey_(listCopy, v48, v43, v49, v50);
         if (v52)
         {
           v53 = v43;
@@ -471,7 +471,7 @@ LABEL_22:
         }
       }
 
-      v53 = objc_msgSend_keyForCustomFormat_(v8, v48, v51, v49, v50);
+      v53 = objc_msgSend_keyForCustomFormat_(listCopy, v48, v51, v49, v50);
       if (v53)
       {
         v52 = v51;
@@ -495,7 +495,7 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)encodeCellValueToArchive:(void *)a3
+- (void)encodeCellValueToArchive:(void *)archive
 {
   valueType = self->_valueType;
   if (valueType > 4)
@@ -503,56 +503,56 @@ LABEL_23:
     switch(valueType)
     {
       case 5u:
-        v13 = *(a3 + 4);
-        *(a3 + 16) = 4;
-        *(a3 + 4) = v13 | 0x24;
-        v9 = *(a3 + 5);
+        v13 = *(archive + 4);
+        *(archive + 16) = 4;
+        *(archive + 4) = v13 | 0x24;
+        v9 = *(archive + 5);
         if (!v9)
         {
-          v14 = *(a3 + 1);
+          v14 = *(archive + 1);
           if (v14)
           {
             v14 = *(v14 & 0xFFFFFFFFFFFFFFFELL);
           }
 
           v9 = google::protobuf::Arena::CreateMaybeMessage<TSCE::NumberCellValueArchive>(v14);
-          *(a3 + 5) = v9;
+          *(archive + 5) = v9;
         }
 
         goto LABEL_32;
       case 7u:
-        v29 = *(a3 + 4);
-        *(a3 + 16) = 5;
-        *(a3 + 4) = v29 | 0x28;
-        v9 = *(a3 + 6);
+        v29 = *(archive + 4);
+        *(archive + 16) = 5;
+        *(archive + 4) = v29 | 0x28;
+        v9 = *(archive + 6);
         if (!v9)
         {
-          v30 = *(a3 + 1);
+          v30 = *(archive + 1);
           if (v30)
           {
             v30 = *(v30 & 0xFFFFFFFFFFFFFFFELL);
           }
 
           v9 = google::protobuf::Arena::CreateMaybeMessage<TSCE::StringCellValueArchive>(v30);
-          *(a3 + 6) = v9;
+          *(archive + 6) = v9;
         }
 
         goto LABEL_32;
       case 9u:
-        v11 = *(a3 + 4);
-        *(a3 + 16) = 1;
-        *(a3 + 4) = v11 | 0x30;
-        v9 = *(a3 + 7);
+        v11 = *(archive + 4);
+        *(archive + 16) = 1;
+        *(archive + 4) = v11 | 0x30;
+        v9 = *(archive + 7);
         if (!v9)
         {
-          v12 = *(a3 + 1);
+          v12 = *(archive + 1);
           if (v12)
           {
             v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
           }
 
           v9 = google::protobuf::Arena::CreateMaybeMessage<TSCE::ErrorCellValueArchive>(v12);
-          *(a3 + 7) = v9;
+          *(archive + 7) = v9;
         }
 
         goto LABEL_32;
@@ -563,27 +563,27 @@ LABEL_23:
   {
     if (!self->_valueType)
     {
-      *(a3 + 4) |= 0x20u;
-      *(a3 + 16) = 1;
+      *(archive + 4) |= 0x20u;
+      *(archive + 16) = 1;
       return;
     }
 
     if (valueType == 2)
     {
-      v27 = *(a3 + 4);
-      *(a3 + 16) = 2;
-      *(a3 + 4) = v27 | 0x21;
-      v9 = *(a3 + 3);
+      v27 = *(archive + 4);
+      *(archive + 16) = 2;
+      *(archive + 4) = v27 | 0x21;
+      v9 = *(archive + 3);
       if (!v9)
       {
-        v28 = *(a3 + 1);
+        v28 = *(archive + 1);
         if (v28)
         {
           v28 = *(v28 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v9 = google::protobuf::Arena::CreateMaybeMessage<TSCE::BooleanCellValueArchive>(v28);
-        *(a3 + 3) = v9;
+        *(archive + 3) = v9;
       }
 
       goto LABEL_32;
@@ -591,20 +591,20 @@ LABEL_23:
 
     if (valueType == 3)
     {
-      v8 = *(a3 + 4);
-      *(a3 + 16) = 3;
-      *(a3 + 4) = v8 | 0x22;
-      v9 = *(a3 + 4);
+      v8 = *(archive + 4);
+      *(archive + 16) = 3;
+      *(archive + 4) = v8 | 0x22;
+      v9 = *(archive + 4);
       if (!v9)
       {
-        v10 = *(a3 + 1);
+        v10 = *(archive + 1);
         if (v10)
         {
           v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v9 = google::protobuf::Arena::CreateMaybeMessage<TSCE::DateCellValueArchive>(v10);
-        *(a3 + 4) = v9;
+        *(archive + 4) = v9;
       }
 
 LABEL_32:

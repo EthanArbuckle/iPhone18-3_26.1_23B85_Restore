@@ -1,6 +1,6 @@
 @interface TSgPTPPortStatistics
 - (TSgPTPPortStatistics)init;
-- (TSgPTPPortStatistics)initWithDC:(id)a3;
+- (TSgPTPPortStatistics)initWithDC:(id)c;
 @end
 
 @implementation TSgPTPPortStatistics
@@ -15,56 +15,56 @@
   return 0;
 }
 
-- (TSgPTPPortStatistics)initWithDC:(id)a3
+- (TSgPTPPortStatistics)initWithDC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v9.receiver = self;
   v9.super_class = TSgPTPPortStatistics;
   v5 = [(TSgPTPPortStatistics *)&v9 init];
   if (v5)
   {
-    v5->_portType = [v4 portType];
-    v6 = [v4 portIdentifier];
+    v5->_portType = [cCopy portType];
+    portIdentifier = [cCopy portIdentifier];
     portIdentifier = v5->_portIdentifier;
-    v5->_portIdentifier = v6;
+    v5->_portIdentifier = portIdentifier;
 
-    v5->_portRole = [v4 portRole];
-    v5->_receivedSyncCounter = [v4 receivedSyncCounter];
-    v5->_receivedFollowUpCounter = [v4 receivedFollowUpCounter];
-    v5->_receivedAnnounceCounter = [v4 receivedAnnounceCounter];
-    v5->_receivedSignalCounter = [v4 receivedSignalCounter];
-    v5->_receivedPacketDiscardCounter = [v4 receivedPacketDiscardCounter];
-    v5->_syncReceiptTimeoutCounter = [v4 syncReceiptTimeoutCounter];
-    v5->_announceReceiptTimeoutCounter = [v4 announceReceiptTimeoutCounter];
-    v5->_allowedLostResponsesExceededCounter = [v4 allowedLostResponsesExceededCounter];
-    v5->_transmittedSyncCounter = [v4 transmittedSyncCounter];
-    v5->_transmittedFollowUpCounter = [v4 transmittedFollowUpCounter];
-    v5->_transmittedAnnounceCounter = [v4 transmittedAnnounceCounter];
-    v5->_transmittedSignalCounter = [v4 transmittedSignalCounter];
-    v5->_transmittedPacketDiscardCounter = [v4 transmittedPacketDiscardCounter];
-    v5->_attemptedSyncCounter = [v4 attemptedSyncCounter];
-    v5->_attemptedFollowUpCounter = [v4 attemptedFollowUpCounter];
-    v5->_attemptedAnnounceCounter = [v4 attemptedAnnounceCounter];
-    v5->_attemptedSignalCounter = [v4 attemptedSignalCounter];
-    v5->_rawDelayExceededCounter = [v4 rawDelayExceededCounter];
-    v5->_rawDelayMeasurementCounter = [v4 rawDelayMeasurementCounter];
-    v5->_receivedPDelayRequestCounter = [v4 receivedPDelayRequestCounter];
-    v5->_transmittedPDelayResponseCounter = [v4 transmittedPDelayResponseCounter];
-    v5->_transmittedPDelayResponseFollowUpCounter = [v4 transmittedPDelayResponseFollowUpCounter];
-    v5->_attemptedPDelayResponseCounter = [v4 attemptedPDelayResponseCounter];
-    v5->_attemptedPDelayResponseFollowUpCounter = [v4 attemptedPDelayResponseFollowUpCounter];
-    v5->_transmittedPDelayRequestCounter = [v4 transmittedPDelayRequestCounter];
-    v5->_attemptedPDelayRequestCounter = [v4 attemptedPDelayRequestCounter];
-    v5->_receivedPDelayResponseCounter = [v4 receivedPDelayResponseCounter];
-    v5->_receivedPDelayResponseFollowUpCounter = [v4 receivedPDelayResponseFollowUpCounter];
-    v5->_receivedDelayRequestCounter = [v4 receivedDelayRequestCounter];
-    v5->_transmittedDelayResponseCounter = [v4 transmittedDelayResponseCounter];
-    v5->_attemptedDelayResponseCounter = [v4 attemptedDelayResponseCounter];
-    v5->_transmittedDelayRequestCounter = [v4 transmittedDelayRequestCounter];
-    v5->_attemptedDelayRequestCounter = [v4 attemptedDelayRequestCounter];
-    v5->_receivedDelayResponseCounter = [v4 receivedDelayResponseCounter];
-    v5->_supersededSyncCounter = [v4 supersededSyncCounter];
-    v5->_supersededDelayCounter = [v4 supersededDelayCounter];
+    v5->_portRole = [cCopy portRole];
+    v5->_receivedSyncCounter = [cCopy receivedSyncCounter];
+    v5->_receivedFollowUpCounter = [cCopy receivedFollowUpCounter];
+    v5->_receivedAnnounceCounter = [cCopy receivedAnnounceCounter];
+    v5->_receivedSignalCounter = [cCopy receivedSignalCounter];
+    v5->_receivedPacketDiscardCounter = [cCopy receivedPacketDiscardCounter];
+    v5->_syncReceiptTimeoutCounter = [cCopy syncReceiptTimeoutCounter];
+    v5->_announceReceiptTimeoutCounter = [cCopy announceReceiptTimeoutCounter];
+    v5->_allowedLostResponsesExceededCounter = [cCopy allowedLostResponsesExceededCounter];
+    v5->_transmittedSyncCounter = [cCopy transmittedSyncCounter];
+    v5->_transmittedFollowUpCounter = [cCopy transmittedFollowUpCounter];
+    v5->_transmittedAnnounceCounter = [cCopy transmittedAnnounceCounter];
+    v5->_transmittedSignalCounter = [cCopy transmittedSignalCounter];
+    v5->_transmittedPacketDiscardCounter = [cCopy transmittedPacketDiscardCounter];
+    v5->_attemptedSyncCounter = [cCopy attemptedSyncCounter];
+    v5->_attemptedFollowUpCounter = [cCopy attemptedFollowUpCounter];
+    v5->_attemptedAnnounceCounter = [cCopy attemptedAnnounceCounter];
+    v5->_attemptedSignalCounter = [cCopy attemptedSignalCounter];
+    v5->_rawDelayExceededCounter = [cCopy rawDelayExceededCounter];
+    v5->_rawDelayMeasurementCounter = [cCopy rawDelayMeasurementCounter];
+    v5->_receivedPDelayRequestCounter = [cCopy receivedPDelayRequestCounter];
+    v5->_transmittedPDelayResponseCounter = [cCopy transmittedPDelayResponseCounter];
+    v5->_transmittedPDelayResponseFollowUpCounter = [cCopy transmittedPDelayResponseFollowUpCounter];
+    v5->_attemptedPDelayResponseCounter = [cCopy attemptedPDelayResponseCounter];
+    v5->_attemptedPDelayResponseFollowUpCounter = [cCopy attemptedPDelayResponseFollowUpCounter];
+    v5->_transmittedPDelayRequestCounter = [cCopy transmittedPDelayRequestCounter];
+    v5->_attemptedPDelayRequestCounter = [cCopy attemptedPDelayRequestCounter];
+    v5->_receivedPDelayResponseCounter = [cCopy receivedPDelayResponseCounter];
+    v5->_receivedPDelayResponseFollowUpCounter = [cCopy receivedPDelayResponseFollowUpCounter];
+    v5->_receivedDelayRequestCounter = [cCopy receivedDelayRequestCounter];
+    v5->_transmittedDelayResponseCounter = [cCopy transmittedDelayResponseCounter];
+    v5->_attemptedDelayResponseCounter = [cCopy attemptedDelayResponseCounter];
+    v5->_transmittedDelayRequestCounter = [cCopy transmittedDelayRequestCounter];
+    v5->_attemptedDelayRequestCounter = [cCopy attemptedDelayRequestCounter];
+    v5->_receivedDelayResponseCounter = [cCopy receivedDelayResponseCounter];
+    v5->_supersededSyncCounter = [cCopy supersededSyncCounter];
+    v5->_supersededDelayCounter = [cCopy supersededDelayCounter];
   }
 
   return v5;

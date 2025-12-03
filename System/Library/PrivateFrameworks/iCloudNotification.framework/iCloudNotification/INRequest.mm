@@ -1,6 +1,6 @@
 @interface INRequest
 - (AADeviceInfo)deviceInfoProvider;
-- (INRequest)initWithAccount:(id)a3 pushToken:(id)a4;
+- (INRequest)initWithAccount:(id)account pushToken:(id)token;
 - (NSDictionary)parameters;
 - (id)_basicBodyParameters;
 - (id)urlRequest;
@@ -8,12 +8,12 @@
 
 @implementation INRequest
 
-- (INRequest)initWithAccount:(id)a3 pushToken:(id)a4
+- (INRequest)initWithAccount:(id)account pushToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  tokenCopy = token;
   v17 = 0;
-  v9 = [v7 aa_authTokenWithError:&v17];
+  v9 = [accountCopy aa_authTokenWithError:&v17];
   v10 = v17;
   if (v9)
   {
@@ -23,12 +23,12 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_account, a3);
-      objc_storeStrong(v12 + 2, a4);
+      objc_storeStrong(&v11->_account, account);
+      objc_storeStrong(v12 + 2, token);
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -39,10 +39,10 @@
       sub_100038D38();
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)_basicBodyParameters
@@ -63,23 +63,23 @@
   pushToken = self->_pushToken;
   if (pushToken)
   {
-    v7 = [(NSData *)pushToken aaf_toHexString];
-    [v5 setObject:v7 forKeyedSubscript:@"pushToken"];
+    aaf_toHexString = [(NSData *)pushToken aaf_toHexString];
+    [v5 setObject:aaf_toHexString forKeyedSubscript:@"pushToken"];
   }
 
   else
   {
-    v7 = _INLogSystem();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    aaf_toHexString = _INLogSystem();
+    if (os_log_type_enabled(aaf_toHexString, OS_LOG_TYPE_ERROR))
     {
-      sub_100038DBC(v7);
+      sub_100038DBC(aaf_toHexString);
     }
   }
 
-  v8 = [(ACAccount *)self->_account aa_personID];
-  if (v8)
+  aa_personID = [(ACAccount *)self->_account aa_personID];
+  if (aa_personID)
   {
-    [v5 setObject:v8 forKeyedSubscript:@"dsid"];
+    [v5 setObject:aa_personID forKeyedSubscript:@"dsid"];
   }
 
   else
@@ -91,39 +91,39 @@
     }
   }
 
-  v10 = [(ACAccount *)self->_account username];
-  if (v10)
+  username = [(ACAccount *)self->_account username];
+  if (username)
   {
-    [v5 setObject:v10 forKeyedSubscript:@"appleId"];
+    [v5 setObject:username forKeyedSubscript:@"appleId"];
   }
 
-  v11 = [(INRequest *)self deviceInfoProvider];
-  v12 = [v11 udid];
+  deviceInfoProvider = [(INRequest *)self deviceInfoProvider];
+  udid = [deviceInfoProvider udid];
 
-  if (v12)
+  if (udid)
   {
-    [v5 setObject:v12 forKeyedSubscript:@"udid"];
+    [v5 setObject:udid forKeyedSubscript:@"udid"];
   }
 
-  v13 = [(INRequest *)self deviceInfoProvider];
-  v14 = [v13 serialNumber];
+  deviceInfoProvider2 = [(INRequest *)self deviceInfoProvider];
+  serialNumber = [deviceInfoProvider2 serialNumber];
 
-  if (v14)
+  if (serialNumber)
   {
-    [v5 setObject:v14 forKeyedSubscript:@"serialNumber"];
+    [v5 setObject:serialNumber forKeyedSubscript:@"serialNumber"];
   }
 
   v15 = [[MBManager alloc] initWithDelegate:0];
-  v16 = [v15 backupDeviceUUID];
+  backupDeviceUUID = [v15 backupDeviceUUID];
   v17 = _INLogSystem();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     sub_100038E44();
   }
 
-  if (v16)
+  if (backupDeviceUUID)
   {
-    [v5 setObject:v16 forKeyedSubscript:@"backupDeviceUUID"];
+    [v5 setObject:backupDeviceUUID forKeyedSubscript:@"backupDeviceUUID"];
   }
 
   [v3 setObject:v5 forKeyedSubscript:@"deviceInfo"];
@@ -151,8 +151,8 @@
   parameters = self->_parameters;
   if (!parameters)
   {
-    v4 = [(INRequest *)self _basicBodyParameters];
-    v5 = [(INRequest *)self addBodyParameters:v4];
+    _basicBodyParameters = [(INRequest *)self _basicBodyParameters];
+    v5 = [(INRequest *)self addBodyParameters:_basicBodyParameters];
     v6 = self->_parameters;
     self->_parameters = v5;
 
@@ -164,13 +164,13 @@
 
 - (id)urlRequest
 {
-  v3 = [(INRequest *)self parameters];
-  if (v3 && self->_account)
+  parameters = [(INRequest *)self parameters];
+  if (parameters && self->_account)
   {
     v23.receiver = self;
     v23.super_class = INRequest;
-    v4 = [(INRequest *)&v23 urlRequest];
-    v5 = [v4 mutableCopy];
+    urlRequest = [(INRequest *)&v23 urlRequest];
+    v5 = [urlRequest mutableCopy];
 
     v6 = _INLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -180,7 +180,7 @@
 
     [v5 setHTTPMethod:@"POST"];
     v22 = 0;
-    v7 = [NSPropertyListSerialization dataWithPropertyList:v3 format:100 options:0 error:&v22];
+    v7 = [NSPropertyListSerialization dataWithPropertyList:parameters format:100 options:0 error:&v22];
     v8 = v22;
     if (v7)
     {

@@ -1,26 +1,26 @@
 @interface BTVCLinkScanner
-- (BTVCLinkScanner)initWithType:(int64_t)a3;
+- (BTVCLinkScanner)initWithType:(int64_t)type;
 - (NSString)description;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
-- (void)_invokeBlockActivateSafe:(id)a3;
-- (void)_restartIfNeeded:(BOOL)a3;
-- (void)_scanEnable:(BOOL)a3;
+- (void)_invokeBlockActivateSafe:(id)safe;
+- (void)_restartIfNeeded:(BOOL)needed;
+- (void)_scanEnable:(BOOL)enable;
 - (void)_startTimeoutIfNeeded;
 - (void)_timeoutTimerFired;
-- (void)activateWithCompletion:(id)a3;
-- (void)btvcBonjourLink:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6 peerInfo:(id)a7;
-- (void)btvcBonjourLink:(id)a3 didFailToStartScanningForType:(int64_t)a4 WithError:(id)a5;
-- (void)btvcBonjourLink:(id)a3 didLosePeer:(id)a4 type:(int64_t)a5;
-- (void)btvcBonjourLink:(id)a3 didStartScanningForType:(int64_t)a4;
-- (void)btvcBonjourLinkDidUpdateState:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)btvcBonjourLink:(id)link didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer peerInfo:(id)info;
+- (void)btvcBonjourLink:(id)link didFailToStartScanningForType:(int64_t)type WithError:(id)error;
+- (void)btvcBonjourLink:(id)link didLosePeer:(id)peer type:(int64_t)type;
+- (void)btvcBonjourLink:(id)link didStartScanningForType:(int64_t)type;
+- (void)btvcBonjourLinkDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)invalidate;
-- (void)performUpdate:(id)a3;
-- (void)scanEnable:(BOOL)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setPayloadFilterData:(id)a3 mask:(id)a4;
-- (void)setTimeout:(double)a3;
+- (void)performUpdate:(id)update;
+- (void)scanEnable:(BOOL)enable;
+- (void)setDispatchQueue:(id)queue;
+- (void)setPayloadFilterData:(id)data mask:(id)mask;
+- (void)setTimeout:(double)timeout;
 @end
 
 @implementation BTVCLinkScanner
@@ -117,9 +117,9 @@
   return v3;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -131,27 +131,27 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
 }
 
-- (void)setPayloadFilterData:(id)a3 mask:(id)a4
+- (void)setPayloadFilterData:(id)data mask:(id)mask
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  maskCopy = mask;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEBUG))
   {
-    sub_100850BFC(v6, v7, v8);
+    sub_100850BFC(dataCopy, maskCopy, v8);
   }
 
-  v9 = [v6 length];
-  if (v9 == [v7 length])
+  v9 = [dataCopy length];
+  if (v9 == [maskCopy length])
   {
-    v10 = [v6 copy];
-    v11 = [v7 copy];
+    v10 = [dataCopy copy];
+    v11 = [maskCopy copy];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10060018C;
@@ -166,46 +166,46 @@
 
   else
   {
-    [v6 length];
-    [v7 length];
+    [dataCopy length];
+    [maskCopy length];
     FatalErrorF();
     __break(1u);
   }
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100600248;
   v3[3] = &unk_100AE1200;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = timeout;
   [(BTVCLinkScanner *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100600364;
   v8[3] = &unk_100AE23F8;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -219,17 +219,17 @@
   {
     v13 = -6724;
 LABEL_13:
-    if (sub_100850D2C(v13, v4))
+    if (sub_100850D2C(v13, completionCopy))
     {
       goto LABEL_19;
     }
 
-    v14 = [NSString stringWithUTF8String:DebugGetErrorString(), NSLocalizedDescriptionKey];
-    self = v14;
+    nSLocalizedDescriptionKey = [NSString stringWithUTF8String:DebugGetErrorString(), NSLocalizedDescriptionKey];
+    self = nSLocalizedDescriptionKey;
     v15 = @"?";
-    if (v14)
+    if (nSLocalizedDescriptionKey)
     {
-      v15 = v14;
+      v15 = nSLocalizedDescriptionKey;
     }
 
     v17 = v15;
@@ -275,7 +275,7 @@ LABEL_13:
     }
   }
 
-  if (!v4)
+  if (!completionCopy)
   {
     goto LABEL_19;
   }
@@ -283,7 +283,7 @@ LABEL_13:
   v10 = 0;
   v11 = 1;
 LABEL_17:
-  v4[2](v4, v10);
+  completionCopy[2](completionCopy, v10);
   if ((v11 & 1) == 0)
   {
   }
@@ -291,24 +291,24 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)scanEnable:(BOOL)a3
+- (void)scanEnable:(BOOL)enable
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  dispatchQueue = v4->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dispatchQueue = selfCopy->_dispatchQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1006006C4;
   v6[3] = &unk_100AE1750;
-  v6[4] = v4;
-  v7 = a3;
+  v6[4] = selfCopy;
+  enableCopy = enable;
   dispatch_async(dispatchQueue, v6);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_scanEnable:(BOOL)a3
+- (void)_scanEnable:(BOOL)enable
 {
-  v3 = a3;
+  enableCopy = enable;
   objc_initWeak(&location, self);
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -316,13 +316,13 @@ LABEL_19:
     *buf = 136315394;
     v19 = "[BTVCLinkScanner _scanEnable:]";
     v20 = 1024;
-    v21 = v3;
+    v21 = enableCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s scanEnable: %d\n", buf, 0x12u);
   }
 
   dispatch_assert_queue_V2(self->_dispatchQueue);
   startRetrier = self->_startRetrier;
-  if (v3)
+  if (enableCopy)
   {
     if (!startRetrier)
     {
@@ -478,9 +478,9 @@ LABEL_13:
   }
 }
 
-- (void)performUpdate:(id)a3
+- (void)performUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -488,7 +488,7 @@ LABEL_13:
   block[3] = &unk_100ADF820;
   block[4] = self;
   dispatch_async(dispatchQueue, block);
-  v4[2](v4);
+  updateCopy[2](updateCopy);
   v6 = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -498,29 +498,29 @@ LABEL_13:
   dispatch_async(v6, v7);
 }
 
-- (void)_invokeBlockActivateSafe:(id)a3
+- (void)_invokeBlockActivateSafe:(id)safe
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activateCalled)
+  safeCopy = safe;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100600E44;
     v7[3] = &unk_100AE2500;
-    v7[4] = v5;
-    v8 = v4;
+    v7[4] = selfCopy;
+    v8 = safeCopy;
     dispatch_async(dispatchQueue, v7);
   }
 
   else
   {
-    v4[2](v4);
+    safeCopy[2](safeCopy);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_startTimeoutIfNeeded
@@ -595,14 +595,14 @@ LABEL_13:
   self->_timeoutHandler = 0;
 }
 
-- (void)btvcBonjourLinkDidUpdateState:(id)a3
+- (void)btvcBonjourLinkDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    v6 = btvcBonjourLink == v4;
+    v6 = btvcBonjourLink == stateCopy;
   }
 
   else
@@ -612,23 +612,23 @@ LABEL_13:
 
   if (v6)
   {
-    v7 = [(BTVCBonjourLink *)v4 state];
+    state = [(BTVCBonjourLink *)stateCopy state];
     v8 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_INFO))
     {
-      sub_100850F18(v7, v8);
+      sub_100850F18(state, v8);
     }
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didStartScanningForType:(int64_t)a4
+- (void)btvcBonjourLink:(id)link didStartScanningForType:(int64_t)type
 {
-  v6 = a3;
+  linkCopy = link;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    v8 = btvcBonjourLink == v6;
+    v8 = btvcBonjourLink == linkCopy;
   }
 
   else
@@ -636,7 +636,7 @@ LABEL_13:
     v8 = 0;
   }
 
-  if (v8 && self->_btvcBonjourLinkType == a4)
+  if (v8 && self->_btvcBonjourLinkType == type)
   {
     v9 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -654,15 +654,15 @@ LABEL_13:
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didFailToStartScanningForType:(int64_t)a4 WithError:(id)a5
+- (void)btvcBonjourLink:(id)link didFailToStartScanningForType:(int64_t)type WithError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  linkCopy = link;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    v11 = btvcBonjourLink == v8;
+    v11 = btvcBonjourLink == linkCopy;
   }
 
   else
@@ -670,13 +670,13 @@ LABEL_13:
     v11 = 0;
   }
 
-  if (v11 && self->_btvcBonjourLinkType == a4)
+  if (v11 && self->_btvcBonjourLinkType == type)
   {
     v12 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v9;
+      v14 = errorCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Warning: [BTVCLinkScanner] ### Bluetooth scan failed: %@\n", &v13, 0xCu);
     }
 
@@ -685,38 +685,38 @@ LABEL_13:
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6 peerInfo:(id)a7
+- (void)btvcBonjourLink:(id)link didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer peerInfo:(id)info
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  linkCopy = link;
+  dataCopy = data;
+  peerCopy = peer;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
-  if (btvcBonjourLink && btvcBonjourLink == v12 && self->_btvcBonjourLinkType == a4)
+  if (btvcBonjourLink && btvcBonjourLink == linkCopy && self->_btvcBonjourLinkType == type)
   {
     v17 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       v23[0] = 67109890;
-      v23[1] = a4;
+      v23[1] = type;
       v24 = 2112;
-      v25 = v13;
+      v25 = dataCopy;
       v26 = 2112;
-      v27 = v14;
+      v27 = peerCopy;
       v28 = 2112;
-      v29 = v15;
+      v29 = infoCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[BTVCLinkScanner] DiscoverType %d, data:%@ peer:%@ peerInfo:%@\n", v23, 0x26u);
     }
 
-    v18 = [(BTVCLinkScanner *)self advReportReceiveHandler];
-    v19 = v18 == 0;
+    advReportReceiveHandler = [(BTVCLinkScanner *)self advReportReceiveHandler];
+    v19 = advReportReceiveHandler == 0;
 
     if (!v19)
     {
-      v20 = [(BTVCLinkScanner *)self advReportReceiveHandler];
-      v21 = v20;
-      if (a4 == 1)
+      advReportReceiveHandler2 = [(BTVCLinkScanner *)self advReportReceiveHandler];
+      v21 = advReportReceiveHandler2;
+      if (type == 1)
       {
         v22 = 2;
       }
@@ -726,29 +726,29 @@ LABEL_13:
         v22 = 1;
       }
 
-      (*(v20 + 16))(v20, v22, v13, v14, v15);
+      (*(advReportReceiveHandler2 + 16))(advReportReceiveHandler2, v22, dataCopy, peerCopy, infoCopy);
     }
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didLosePeer:(id)a4 type:(int64_t)a5
+- (void)btvcBonjourLink:(id)link didLosePeer:(id)peer type:(int64_t)type
 {
-  v5 = a5;
-  v7 = a4;
+  typeCopy = type;
+  peerCopy = peer;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v7;
+    v10 = peerCopy;
     v11 = 1024;
-    v12 = v5;
+    v12 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[BTVCLinkScanner] Lose peer device:%@, link type:%d\n", &v9, 0x12u);
   }
 
   [(BTVCLinkScanner *)self _restartIfNeeded:1];
 }
 
-- (BTVCLinkScanner)initWithType:(int64_t)a3
+- (BTVCLinkScanner)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = BTVCLinkScanner;
@@ -757,23 +757,23 @@ LABEL_13:
   if (v4)
   {
     objc_storeStrong(&v4->_dispatchQueue, &_dispatch_main_q);
-    v5->_linktType = a3;
+    v5->_linktType = type;
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)_restartIfNeeded:(BOOL)a3
+- (void)_restartIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v47 = "[BTVCLinkScanner _restartIfNeeded:]";
     v48 = 1024;
-    LODWORD(v49) = v3;
+    LODWORD(v49) = neededCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s inForce: %d\n", buf, 0x12u);
   }
 
@@ -833,11 +833,11 @@ LABEL_26:
 
     else
     {
-      v7 = [(BTVCBonjourLink *)btvcBonjourLink state];
-      if (v7 == 3)
+      state = [(BTVCBonjourLink *)btvcBonjourLink state];
+      if (state == 3)
       {
         scanStarted = self->_scanStarted;
-        if (!v3 && scanStarted)
+        if (!neededCopy && scanStarted)
         {
           v9 = sub_10003F704();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -850,7 +850,7 @@ LABEL_26:
           goto LABEL_21;
         }
 
-        v17 = scanStarted && v3;
+        v17 = scanStarted && neededCopy;
         v18 = sub_10003F704();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
@@ -898,7 +898,7 @@ LABEL_21:
 
       if (sub_1000E0B48())
       {
-        v44 = sub_100600EAC(v7);
+        v44 = sub_100600EAC(state);
         *buf = 136315138;
         v47 = v44;
         sub_10006E010();

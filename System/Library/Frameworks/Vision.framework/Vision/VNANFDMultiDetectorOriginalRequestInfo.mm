@@ -1,8 +1,8 @@
 @interface VNANFDMultiDetectorOriginalRequestInfo
 + (id)originatingRequestSpecifierToDetectorClassMap;
-+ (id)requestClassNameFromRequestKey:(id)a3;
-+ (id)requestKeyFromRequest:(id)a3;
-+ (id)requestPropertiesFromRequestKey:(id)a3;
++ (id)requestClassNameFromRequestKey:(id)key;
++ (id)requestKeyFromRequest:(id)request;
++ (id)requestPropertiesFromRequestKey:(id)key;
 @end
 
 @implementation VNANFDMultiDetectorOriginalRequestInfo
@@ -144,30 +144,30 @@ void __87__VNANFDMultiDetectorOriginalRequestInfo_originatingRequestSpecifierToD
   +[VNANFDMultiDetectorOriginalRequestInfo originatingRequestSpecifierToDetectorClassMap]::requestClassToMultiDetectorClassPerRequestRevision = v8;
 }
 
-+ (id)requestPropertiesFromRequestKey:(id)a3
++ (id)requestPropertiesFromRequestKey:(id)key
 {
-  v3 = [a3 componentsSeparatedByString:@"_"];
+  v3 = [key componentsSeparatedByString:@"_"];
   v4 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
 
   return v4;
 }
 
-+ (id)requestClassNameFromRequestKey:(id)a3
++ (id)requestClassNameFromRequestKey:(id)key
 {
-  v3 = [a3 componentsSeparatedByString:@"_"];
-  v4 = [v3 firstObject];
+  v3 = [key componentsSeparatedByString:@"_"];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)requestKeyFromRequest:(id)a3
++ (id)requestKeyFromRequest:(id)request
 {
-  v4 = a3;
-  v5 = NSStringFromClass([v4 frameworkClass]);
+  requestCopy = request;
+  v5 = NSStringFromClass([requestCopy frameworkClass]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = requestCopy;
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "upperBodyOnly")}];
     v9 = [v7 initWithFormat:@"%@%@%@", v5, @"_", v8];
@@ -178,9 +178,9 @@ void __87__VNANFDMultiDetectorOriginalRequestInfo_originatingRequestSpecifierToD
 
   else
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___VNANFDMultiDetectorOriginalRequestInfo;
-    v10 = objc_msgSendSuper2(&v12, sel_requestKeyFromRequest_, v4);
+    v10 = objc_msgSendSuper2(&v12, sel_requestKeyFromRequest_, requestCopy);
   }
 
   return v10;

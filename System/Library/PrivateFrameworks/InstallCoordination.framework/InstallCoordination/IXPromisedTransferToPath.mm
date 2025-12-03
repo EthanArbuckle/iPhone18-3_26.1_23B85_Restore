@@ -1,36 +1,36 @@
 @interface IXPromisedTransferToPath
-- (BOOL)_doInitWithError:(id *)a3;
+- (BOOL)_doInitWithError:(id *)error;
 - (BOOL)shouldCopy;
 - (BOOL)tryDeltaCopy;
-- (IXPromisedTransferToPath)initWithCoder:(id)a3;
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5;
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5 location:(id)a6;
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 transferPath:(id)a5 diskSpaceNeeded:(unint64_t)a6;
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 transferPath:(id)a5 diskSpaceNeeded:(unint64_t)a6 location:(id)a7;
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 transferPath:(id)a5 diskSpaceNeeded:(unint64_t)a6 location:(id)a7 error:(id *)a8;
-- (IXPromisedTransferToPath)initWithSeed:(id)a3;
+- (IXPromisedTransferToPath)initWithCoder:(id)coder;
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed;
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed location:(id)location;
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client transferPath:(id)path diskSpaceNeeded:(unint64_t)needed;
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client transferPath:(id)path diskSpaceNeeded:(unint64_t)needed location:(id)location;
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client transferPath:(id)path diskSpaceNeeded:(unint64_t)needed location:(id)location error:(id *)error;
+- (IXPromisedTransferToPath)initWithSeed:(id)seed;
 - (NSURL)transferPath;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTransferPath:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTransferPath:(id)path;
 @end
 
 @implementation IXPromisedTransferToPath
 
-- (IXPromisedTransferToPath)initWithCoder:(id)a3
+- (IXPromisedTransferToPath)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = IXPromisedTransferToPath;
-  return [(IXOwnedDataPromise *)&v4 initWithCoder:a3];
+  return [(IXOwnedDataPromise *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = IXPromisedTransferToPath;
-  [(IXDataPromise *)&v3 encodeWithCoder:a3];
+  [(IXDataPromise *)&v3 encodeWithCoder:coder];
 }
 
-- (BOOL)_doInitWithError:(id *)a3
+- (BOOL)_doInitWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -52,7 +52,7 @@
 
   if (v6)
   {
-    v7 = [(IXDataPromise *)self seed];
+    seed = [(IXDataPromise *)self seed];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __45__IXPromisedTransferToPath__doInitWithError___block_invoke_3;
@@ -60,13 +60,13 @@
     v10[4] = self;
     v10[5] = &v12;
     v10[6] = &v18;
-    [v6 _remote_createTransferToPathDataPromiseWithSeed:v7 completion:v10];
+    [v6 _remote_createTransferToPathDataPromiseWithSeed:seed completion:v10];
   }
 
   v8 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v8 = *(v19 + 24);
   }
 
@@ -124,14 +124,14 @@ void __45__IXPromisedTransferToPath__doInitWithError___block_invoke_3(uint64_t a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 transferPath:(id)a5 diskSpaceNeeded:(unint64_t)a6 location:(id)a7 error:(id *)a8
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client transferPath:(id)path diskSpaceNeeded:(unint64_t)needed location:(id)location error:(id *)error
 {
-  v14 = a5;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = IXPromisedTransferToPath;
-  v15 = [(IXOwnedDataPromise *)&v20 initWithName:a3 client:a4 diskSpaceNeeded:a6 location:a7];
+  v15 = [(IXOwnedDataPromise *)&v20 initWithName:name client:client diskSpaceNeeded:needed location:location];
   v16 = v15;
-  if (v15 && (-[IXDataPromise seed](v15, "seed"), v17 = objc_claimAutoreleasedReturnValue(), [v17 setTransferPath:v14], v17, !-[IXPromisedTransferToPath _doInitWithError:](v16, "_doInitWithError:", a8)))
+  if (v15 && (-[IXDataPromise seed](v15, "seed"), v17 = objc_claimAutoreleasedReturnValue(), [v17 setTransferPath:pathCopy], v17, !-[IXPromisedTransferToPath _doInitWithError:](v16, "_doInitWithError:", error)))
   {
     v18 = 0;
   }
@@ -144,14 +144,14 @@ void __45__IXPromisedTransferToPath__doInitWithError___block_invoke_3(uint64_t a
   return v18;
 }
 
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 transferPath:(id)a5 diskSpaceNeeded:(unint64_t)a6
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client transferPath:(id)path diskSpaceNeeded:(unint64_t)needed
 {
-  v10 = a5;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = IXPromisedTransferToPath;
-  v11 = [(IXOwnedDataPromise *)&v16 initWithName:a3 client:a4 diskSpaceNeeded:a6];
+  v11 = [(IXOwnedDataPromise *)&v16 initWithName:name client:client diskSpaceNeeded:needed];
   v12 = v11;
-  if (!v11 || (-[IXDataPromise seed](v11, "seed"), v13 = objc_claimAutoreleasedReturnValue(), [v13 setTransferPath:v10], v13, v14 = 0, -[IXPromisedTransferToPath _doInitWithError:](v12, "_doInitWithError:", 0)))
+  if (!v11 || (-[IXDataPromise seed](v11, "seed"), v13 = objc_claimAutoreleasedReturnValue(), [v13 setTransferPath:pathCopy], v13, v14 = 0, -[IXPromisedTransferToPath _doInitWithError:](v12, "_doInitWithError:", 0)))
   {
     v14 = v12;
   }
@@ -159,14 +159,14 @@ void __45__IXPromisedTransferToPath__doInitWithError___block_invoke_3(uint64_t a
   return v14;
 }
 
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 transferPath:(id)a5 diskSpaceNeeded:(unint64_t)a6 location:(id)a7
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client transferPath:(id)path diskSpaceNeeded:(unint64_t)needed location:(id)location
 {
-  v12 = a5;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = IXPromisedTransferToPath;
-  v13 = [(IXOwnedDataPromise *)&v18 initWithName:a3 client:a4 diskSpaceNeeded:a6 location:a7];
+  v13 = [(IXOwnedDataPromise *)&v18 initWithName:name client:client diskSpaceNeeded:needed location:location];
   v14 = v13;
-  if (!v13 || (-[IXDataPromise seed](v13, "seed"), v15 = objc_claimAutoreleasedReturnValue(), [v15 setTransferPath:v12], v15, v16 = 0, -[IXPromisedTransferToPath _doInitWithError:](v14, "_doInitWithError:", 0)))
+  if (!v13 || (-[IXDataPromise seed](v13, "seed"), v15 = objc_claimAutoreleasedReturnValue(), [v15 setTransferPath:pathCopy], v15, v16 = 0, -[IXPromisedTransferToPath _doInitWithError:](v14, "_doInitWithError:", 0)))
   {
     v16 = v14;
   }
@@ -174,11 +174,11 @@ void __45__IXPromisedTransferToPath__doInitWithError___block_invoke_3(uint64_t a
   return v16;
 }
 
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5 location:(id)a6
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed location:(id)location
 {
   v10.receiver = self;
   v10.super_class = IXPromisedTransferToPath;
-  v6 = [(IXOwnedDataPromise *)&v10 initWithName:a3 client:a4 diskSpaceNeeded:a5 location:a6];
+  v6 = [(IXOwnedDataPromise *)&v10 initWithName:name client:client diskSpaceNeeded:needed location:location];
   v7 = v6;
   if (!v6 || (v8 = 0, [(IXPromisedTransferToPath *)v6 _doInitWithError:0]))
   {
@@ -188,11 +188,11 @@ void __45__IXPromisedTransferToPath__doInitWithError___block_invoke_3(uint64_t a
   return v8;
 }
 
-- (IXPromisedTransferToPath)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5
+- (IXPromisedTransferToPath)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed
 {
   v9.receiver = self;
   v9.super_class = IXPromisedTransferToPath;
-  v5 = [(IXOwnedDataPromise *)&v9 initWithName:a3 client:a4 diskSpaceNeeded:a5];
+  v5 = [(IXOwnedDataPromise *)&v9 initWithName:name client:client diskSpaceNeeded:needed];
   v6 = v5;
   if (!v5 || (v7 = 0, [(IXPromisedTransferToPath *)v5 _doInitWithError:0]))
   {
@@ -204,22 +204,22 @@ void __45__IXPromisedTransferToPath__doInitWithError___block_invoke_3(uint64_t a
 
 - (NSURL)transferPath
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 transferPath];
+  seed = [(IXDataPromise *)self seed];
+  transferPath = [seed transferPath];
 
-  return v3;
+  return transferPath;
 }
 
-- (void)setTransferPath:(id)a3
+- (void)setTransferPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[IXServerConnection sharedConnection];
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
-  [v6 _remote_IXSPromisedTransferToPath:v7 setTransferPath:v4];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  [v6 _remote_IXSPromisedTransferToPath:uniqueIdentifier setTransferPath:pathCopy];
 
-  v8 = [(IXDataPromise *)self seed];
-  [v8 setTransferPath:v4];
+  seed = [(IXDataPromise *)self seed];
+  [seed setTransferPath:pathCopy];
 }
 
 void __44__IXPromisedTransferToPath_setTransferPath___block_invoke(uint64_t a1, void *a2)
@@ -241,10 +241,10 @@ void __44__IXPromisedTransferToPath_setTransferPath___block_invoke(uint64_t a1, 
 
 - (BOOL)shouldCopy
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 shouldCopy];
+  seed = [(IXDataPromise *)self seed];
+  shouldCopy = [seed shouldCopy];
 
-  return v3;
+  return shouldCopy;
 }
 
 void __42__IXPromisedTransferToPath_setShouldCopy___block_invoke(uint64_t a1, void *a2)
@@ -266,10 +266,10 @@ void __42__IXPromisedTransferToPath_setShouldCopy___block_invoke(uint64_t a1, vo
 
 - (BOOL)tryDeltaCopy
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 tryDeltaCopy];
+  seed = [(IXDataPromise *)self seed];
+  tryDeltaCopy = [seed tryDeltaCopy];
 
-  return v3;
+  return tryDeltaCopy;
 }
 
 void __44__IXPromisedTransferToPath_setTryDeltaCopy___block_invoke(uint64_t a1, void *a2)
@@ -289,11 +289,11 @@ void __44__IXPromisedTransferToPath_setTryDeltaCopy___block_invoke(uint64_t a1, 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (IXPromisedTransferToPath)initWithSeed:(id)a3
+- (IXPromisedTransferToPath)initWithSeed:(id)seed
 {
   v4.receiver = self;
   v4.super_class = IXPromisedTransferToPath;
-  return [(IXOwnedDataPromise *)&v4 initWithSeed:a3];
+  return [(IXOwnedDataPromise *)&v4 initWithSeed:seed];
 }
 
 - (void)setComplete:(os_log_t)log .cold.1(os_log_t log)

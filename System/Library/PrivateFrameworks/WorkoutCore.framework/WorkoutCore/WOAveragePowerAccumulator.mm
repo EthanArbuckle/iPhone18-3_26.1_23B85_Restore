@@ -2,8 +2,8 @@
 - (HKQuantity)averagePower;
 - (NSDate)startDate;
 - (WOAveragePowerAccumulator)init;
-- (void)processWithSamples:(id)a3;
-- (void)resetWith:(id)a3;
+- (void)processWithSamples:(id)samples;
+- (void)resetWith:(id)with;
 @end
 
 @implementation WOAveragePowerAccumulator
@@ -14,7 +14,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   AveragePowerAccumulator.startDate.getter(v6);
 
   v8 = type metadata accessor for Date();
@@ -33,19 +33,19 @@
 
 - (HKQuantity)averagePower
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AveragePowerAccumulator.averagePower.getter();
 
   return v3;
 }
 
-- (void)resetWith:(id)a3
+- (void)resetWith:(id)with
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (with)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for Date();
@@ -58,17 +58,17 @@
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   AveragePowerAccumulator.reset(with:)(v8);
 
   _s10Foundation4DateVSgWOhTm_11(v8, &_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
 }
 
-- (void)processWithSamples:(id)a3
+- (void)processWithSamples:(id)samples
 {
   type metadata accessor for HKWorkoutBuilderQuantity();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   AveragePowerAccumulator.process(samples:)(v4);
 }
 

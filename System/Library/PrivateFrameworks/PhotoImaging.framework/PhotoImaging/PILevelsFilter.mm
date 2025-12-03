@@ -1,9 +1,9 @@
 @interface PILevelsFilter
 + (id)P3Kernel;
-+ (id)_customAttributesForKey:(id)a3;
++ (id)_customAttributesForKey:(id)key;
 + (id)customAttributes;
-+ (id)defaultValueForKey:(id)a3;
-- (double)floatValueForKey:(id)a3 defaultValue:(double)a4 clearIfNotDefault:(BOOL *)a5;
++ (id)defaultValueForKey:(id)key;
+- (double)floatValueForKey:(id)key defaultValue:(double)value clearIfNotDefault:(BOOL *)default;
 - (id)_LUTImage;
 - (id)outputImage;
 - (void)setDefaults;
@@ -14,75 +14,75 @@
 + (id)customAttributes
 {
   v20 = MEMORY[0x1E695DF20];
-  v45 = [a1 _customAttributesForKey:@"inputBlackSrcRGB"];
-  v44 = [a1 _customAttributesForKey:@"inputBlackDstRGB"];
-  v43 = [a1 _customAttributesForKey:@"inputShadowSrcRGB"];
-  v42 = [a1 _customAttributesForKey:@"inputShadowDstRGB"];
-  v41 = [a1 _customAttributesForKey:@"inputMidSrcRGB"];
-  v40 = [a1 _customAttributesForKey:@"inputMidDstRGB"];
-  v39 = [a1 _customAttributesForKey:@"inputHilightSrcRGB"];
-  v38 = [a1 _customAttributesForKey:@"inputHilightDstRGB"];
-  v37 = [a1 _customAttributesForKey:@"inputWhiteSrcRGB"];
-  v36 = [a1 _customAttributesForKey:@"inputWhiteDstRGB"];
-  v35 = [a1 _customAttributesForKey:@"inputBlackSrcRed"];
-  v34 = [a1 _customAttributesForKey:@"inputBlackDstRed"];
-  v33 = [a1 _customAttributesForKey:@"inputShadowSrcRed"];
-  v32 = [a1 _customAttributesForKey:@"inputShadowDstRed"];
-  v31 = [a1 _customAttributesForKey:@"inputMidSrcRed"];
-  v30 = [a1 _customAttributesForKey:@"inputMidDstRed"];
-  v29 = [a1 _customAttributesForKey:@"inputHilightSrcRed"];
-  v28 = [a1 _customAttributesForKey:@"inputHilightDstRed"];
-  v27 = [a1 _customAttributesForKey:@"inputWhiteSrcRed"];
-  v25 = [a1 _customAttributesForKey:@"inputWhiteDstRed"];
-  v19 = [a1 _customAttributesForKey:@"inputBlackSrcGreen"];
-  v18 = [a1 _customAttributesForKey:@"inputBlackDstGreen"];
-  v17 = [a1 _customAttributesForKey:@"inputShadowSrcGreen"];
-  v16 = [a1 _customAttributesForKey:@"inputShadowDstGreen"];
-  v15 = [a1 _customAttributesForKey:@"inputMidSrcGreen"];
-  v26 = [a1 _customAttributesForKey:@"inputMidDstGreen"];
-  v14 = [a1 _customAttributesForKey:@"inputHilightSrcGreen"];
-  v13 = [a1 _customAttributesForKey:@"inputHilightDstGreen"];
-  v24 = [a1 _customAttributesForKey:@"inputWhiteSrcGreen"];
-  v12 = [a1 _customAttributesForKey:@"inputWhiteDstGreen"];
-  v23 = [a1 _customAttributesForKey:@"inputBlackSrcBlue"];
-  v22 = [a1 _customAttributesForKey:@"inputBlackDstBlue"];
-  v11 = [a1 _customAttributesForKey:@"inputShadowSrcBlue"];
-  v7 = [a1 _customAttributesForKey:@"inputShadowDstBlue"];
-  v10 = [a1 _customAttributesForKey:@"inputMidSrcBlue"];
-  v9 = [a1 _customAttributesForKey:@"inputMidDstBlue"];
-  v8 = [a1 _customAttributesForKey:@"inputHilightSrcBlue"];
-  v6 = [a1 _customAttributesForKey:@"inputHilightDstBlue"];
-  v5 = [a1 _customAttributesForKey:@"inputWhiteSrcBlue"];
-  v4 = [a1 _customAttributesForKey:@"inputWhiteDstBlue"];
+  v45 = [self _customAttributesForKey:@"inputBlackSrcRGB"];
+  v44 = [self _customAttributesForKey:@"inputBlackDstRGB"];
+  v43 = [self _customAttributesForKey:@"inputShadowSrcRGB"];
+  v42 = [self _customAttributesForKey:@"inputShadowDstRGB"];
+  v41 = [self _customAttributesForKey:@"inputMidSrcRGB"];
+  v40 = [self _customAttributesForKey:@"inputMidDstRGB"];
+  v39 = [self _customAttributesForKey:@"inputHilightSrcRGB"];
+  v38 = [self _customAttributesForKey:@"inputHilightDstRGB"];
+  v37 = [self _customAttributesForKey:@"inputWhiteSrcRGB"];
+  v36 = [self _customAttributesForKey:@"inputWhiteDstRGB"];
+  v35 = [self _customAttributesForKey:@"inputBlackSrcRed"];
+  v34 = [self _customAttributesForKey:@"inputBlackDstRed"];
+  v33 = [self _customAttributesForKey:@"inputShadowSrcRed"];
+  v32 = [self _customAttributesForKey:@"inputShadowDstRed"];
+  v31 = [self _customAttributesForKey:@"inputMidSrcRed"];
+  v30 = [self _customAttributesForKey:@"inputMidDstRed"];
+  v29 = [self _customAttributesForKey:@"inputHilightSrcRed"];
+  v28 = [self _customAttributesForKey:@"inputHilightDstRed"];
+  v27 = [self _customAttributesForKey:@"inputWhiteSrcRed"];
+  v25 = [self _customAttributesForKey:@"inputWhiteDstRed"];
+  v19 = [self _customAttributesForKey:@"inputBlackSrcGreen"];
+  v18 = [self _customAttributesForKey:@"inputBlackDstGreen"];
+  v17 = [self _customAttributesForKey:@"inputShadowSrcGreen"];
+  v16 = [self _customAttributesForKey:@"inputShadowDstGreen"];
+  v15 = [self _customAttributesForKey:@"inputMidSrcGreen"];
+  v26 = [self _customAttributesForKey:@"inputMidDstGreen"];
+  v14 = [self _customAttributesForKey:@"inputHilightSrcGreen"];
+  v13 = [self _customAttributesForKey:@"inputHilightDstGreen"];
+  v24 = [self _customAttributesForKey:@"inputWhiteSrcGreen"];
+  v12 = [self _customAttributesForKey:@"inputWhiteDstGreen"];
+  v23 = [self _customAttributesForKey:@"inputBlackSrcBlue"];
+  v22 = [self _customAttributesForKey:@"inputBlackDstBlue"];
+  v11 = [self _customAttributesForKey:@"inputShadowSrcBlue"];
+  v7 = [self _customAttributesForKey:@"inputShadowDstBlue"];
+  v10 = [self _customAttributesForKey:@"inputMidSrcBlue"];
+  v9 = [self _customAttributesForKey:@"inputMidDstBlue"];
+  v8 = [self _customAttributesForKey:@"inputHilightSrcBlue"];
+  v6 = [self _customAttributesForKey:@"inputHilightDstBlue"];
+  v5 = [self _customAttributesForKey:@"inputWhiteSrcBlue"];
+  v4 = [self _customAttributesForKey:@"inputWhiteDstBlue"];
   v21 = [v20 dictionaryWithObjectsAndKeys:{v45, @"inputBlackSrcRGB", v44, @"inputBlackDstRGB", v43, @"inputShadowSrcRGB", v42, @"inputShadowDstRGB", v41, @"inputMidSrcRGB", v40, @"inputMidDstRGB", v39, @"inputHilightSrcRGB", v38, @"inputHilightDstRGB", v37, @"inputWhiteSrcRGB", v36, @"inputWhiteDstRGB", v35, @"inputBlackSrcRed", v34, @"inputBlackDstRed", v33, @"inputShadowSrcRed", v32, @"inputShadowDstRed", v31, @"inputMidSrcRed", v30, @"inputMidDstRed", v29, @"inputHilightSrcRed", v28, @"inputHilightDstRed", v27, @"inputWhiteSrcRed", v25, @"inputWhiteDstRed", v19, @"inputBlackSrcGreen", v18, @"inputBlackDstGreen", v17, @"inputShadowSrcGreen", v16, @"inputShadowDstGreen", v15, @"inputMidSrcGreen", v26, @"inputMidDstGreen", v14, @"inputHilightSrcGreen", v13, @"inputHilightDstGreen", v24, @"inputWhiteSrcGreen", v12, @"inputWhiteDstGreen", v23}];
 
   return v21;
 }
 
-+ (id)_customAttributesForKey:(id)a3
++ (id)_customAttributesForKey:(id)key
 {
-  v3 = [a1 defaultValueForKey:a3];
+  v3 = [self defaultValueForKey:key];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{*MEMORY[0x1E695F6D8], &unk_1F471FA00, *MEMORY[0x1E695F6D0], &unk_1F471F9F0, *MEMORY[0x1E695F6E8], &unk_1F471FA00, *MEMORY[0x1E695F6E0], v3, *MEMORY[0x1E695F6A0], v3, *MEMORY[0x1E695F6C8], *MEMORY[0x1E695F758], *MEMORY[0x1E695F6F0], 0}];
 
   return v4;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = 0.0;
-  if (([v3 containsString:@"inputBlackSrc"] & 1) == 0 && (objc_msgSend(v3, "containsString:", @"inputBlackDst") & 1) == 0)
+  if (([keyCopy containsString:@"inputBlackSrc"] & 1) == 0 && (objc_msgSend(keyCopy, "containsString:", @"inputBlackDst") & 1) == 0)
   {
     v4 = 0.25;
-    if (([v3 containsString:@"inputShadowSrc"] & 1) == 0 && (objc_msgSend(v3, "containsString:", @"inputShadowDst") & 1) == 0)
+    if (([keyCopy containsString:@"inputShadowSrc"] & 1) == 0 && (objc_msgSend(keyCopy, "containsString:", @"inputShadowDst") & 1) == 0)
     {
       v4 = 0.5;
-      if (([v3 containsString:@"inputMidSrc"] & 1) == 0 && (objc_msgSend(v3, "containsString:", @"inputMidDst") & 1) == 0)
+      if (([keyCopy containsString:@"inputMidSrc"] & 1) == 0 && (objc_msgSend(keyCopy, "containsString:", @"inputMidDst") & 1) == 0)
       {
         v4 = 0.75;
-        if (([v3 containsString:@"inputHilightSrc"] & 1) == 0 && (objc_msgSend(v3, "containsString:", @"inputHilightDst") & 1) == 0)
+        if (([keyCopy containsString:@"inputHilightSrc"] & 1) == 0 && (objc_msgSend(keyCopy, "containsString:", @"inputHilightDst") & 1) == 0)
         {
-          if (([v3 containsString:@"inputWhiteSrc"] & 1) != 0 || (v4 = 0.0, objc_msgSend(v3, "containsString:", @"inputWhiteDst")))
+          if (([keyCopy containsString:@"inputWhiteSrc"] & 1) != 0 || (v4 = 0.0, objc_msgSend(keyCopy, "containsString:", @"inputWhiteDst")))
           {
             v4 = 1.0;
           }
@@ -120,20 +120,20 @@ uint64_t __26__PILevelsFilter_P3Kernel__block_invoke()
 - (id)outputImage
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PILevelsFilter *)self _LUTImage];
-  if (v3)
+  _LUTImage = [(PILevelsFilter *)self _LUTImage];
+  if (_LUTImage)
   {
-    v4 = [MEMORY[0x1E695F680] samplerWithImage:v3 keysAndValues:{*MEMORY[0x1E695FB80], *MEMORY[0x1E695FB78], 0}];
-    v5 = [objc_opt_class() P3Kernel];
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    v4 = [MEMORY[0x1E695F680] samplerWithImage:_LUTImage keysAndValues:{*MEMORY[0x1E695FB80], *MEMORY[0x1E695FB78], 0}];
+    p3Kernel = [objc_opt_class() P3Kernel];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F0F0]);
     v8 = [(CIImage *)self->_inputImage imageByColorMatchingWorkingSpaceToColorSpace:v7];
     v9 = MEMORY[0x1E695F680];
-    v10 = [v8 imageByUnpremultiplyingAlpha];
-    v11 = [v9 samplerWithImage:v10];
+    imageByUnpremultiplyingAlpha = [v8 imageByUnpremultiplyingAlpha];
+    v11 = [v9 samplerWithImage:imageByUnpremultiplyingAlpha];
 
-    v12 = [v11 definition];
-    [v12 extent];
+    definition = [v11 definition];
+    [definition extent];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -141,20 +141,20 @@ uint64_t __26__PILevelsFilter_P3Kernel__block_invoke()
     v26[0] = v11;
     v26[1] = v4;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-    v22 = [v5 applyWithExtent:&__block_literal_global_182_24174 roiCallback:v21 arguments:v6 options:{v14, v16, v18, v20}];
+    v22 = [p3Kernel applyWithExtent:&__block_literal_global_182_24174 roiCallback:v21 arguments:dictionary options:{v14, v16, v18, v20}];
 
     v23 = [v22 imageByColorMatchingColorSpaceToWorkingSpace:v7];
 
     CGColorSpaceRelease(v7);
-    v24 = [v23 imageByPremultiplyingAlpha];
+    imageByPremultiplyingAlpha = [v23 imageByPremultiplyingAlpha];
   }
 
   else
   {
-    v24 = self->_inputImage;
+    imageByPremultiplyingAlpha = self->_inputImage;
   }
 
-  return v24;
+  return imageByPremultiplyingAlpha;
 }
 
 double __29__PILevelsFilter_outputImage__block_invoke(uint64_t a1, int a2)
@@ -461,9 +461,9 @@ LABEL_38:
   v116 = NUAssertLogger_24177();
   if (os_log_type_enabled(v116, OS_LOG_TYPE_ERROR))
   {
-    v117 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed converting data to RGBAh: %ld", v115];
+    v115 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed converting data to RGBAh: %ld", v115];
     *buf = 138543362;
-    v175 = v117;
+    v175 = v115;
     _os_log_error_impl(&dword_1C7694000, v116, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
   }
 
@@ -478,8 +478,8 @@ LABEL_38:
       v124 = dispatch_get_specific(*v118);
       v125 = MEMORY[0x1E696AF00];
       v126 = v124;
-      v127 = [v125 callStackSymbols];
-      v128 = [v127 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v125 callStackSymbols];
+      v128 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v175 = v124;
       v176 = 2114;
@@ -490,8 +490,8 @@ LABEL_38:
 
   else if (v121)
   {
-    v122 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v123 = [v122 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v123 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     v175 = v123;
     _os_log_error_impl(&dword_1C7694000, v120, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -501,23 +501,23 @@ LABEL_38:
   return NUAssertLogger_24177();
 }
 
-- (double)floatValueForKey:(id)a3 defaultValue:(double)a4 clearIfNotDefault:(BOOL *)a5
+- (double)floatValueForKey:(id)key defaultValue:(double)value clearIfNotDefault:(BOOL *)default
 {
-  v7 = [(PILevelsFilter *)self valueForKey:a3];
+  v7 = [(PILevelsFilter *)self valueForKey:key];
   v8 = v7;
-  v9 = a4;
+  valueCopy = value;
   if (v7)
   {
     [v7 floatValue];
-    v9 = v10;
+    valueCopy = v10;
   }
 
-  if (v9 != a4)
+  if (valueCopy != value)
   {
-    *a5 = 0;
+    *default = 0;
   }
 
-  return v9;
+  return valueCopy;
 }
 
 - (void)setDefaults

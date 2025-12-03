@@ -1,18 +1,18 @@
 @interface SizeDimensionRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SizeDimensionRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_267533C74();
     swift_unknownObjectRelease();
@@ -21,7 +21,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_26750A970(v8);
@@ -32,7 +32,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_26750ABEC();
 
   v3 = sub_2675339C4();
@@ -40,9 +40,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_26750AD24(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -51,18 +51,18 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_26750AE14(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_26750AE14(coderCopy);
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_26750B210(a3);
+  selfCopy = self;
+  sub_26750B210(dictionary);
   swift_unknownObjectRelease();
 }
 

@@ -1,16 +1,16 @@
 @interface PXWidgetBarLayout
 + (PXTileIdentifier)tileIdentifier;
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (CGRect)contentBounds;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
 - (void)prepareLayout;
-- (void)setHeight:(double)a3;
-- (void)setReferenceSize:(CGSize)a3;
+- (void)setHeight:(double)height;
+- (void)setReferenceSize:(CGSize)size;
 @end
 
 @implementation PXWidgetBarLayout
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
   v10 = *(off_1E7722248 + 5);
   v44 = *(off_1E7722248 + 4);
@@ -35,13 +35,13 @@
     memset(v39, 0, sizeof(v39));
   }
 
-  v14 = *&a6->index[5];
-  v37[2] = *&a6->index[3];
+  v14 = *&identifier->index[5];
+  v37[2] = *&identifier->index[3];
   v37[3] = v14;
-  v37[4] = *&a6->index[7];
-  v38 = a6->index[9];
-  v15 = *&a6->index[1];
-  v37[0] = *&a6->length;
+  v37[4] = *&identifier->index[7];
+  v38 = identifier->index[9];
+  v15 = *&identifier->index[1];
+  v37[0] = *&identifier->length;
   v37[1] = v15;
   v16 = *&v37[0] == v13;
   if (*&v37[0] && *&v37[0] == v13)
@@ -85,50 +85,50 @@
   v29 = *(off_1E7722248 + 15);
   v31 = *(off_1E7722248 + 17);
   v32 = *(off_1E7722248 + 18);
-  if (a3)
+  if (geometry)
   {
-    a3->frame.origin.x = *off_1E7722248;
-    a3->frame.origin.y = v22;
-    a3->frame.size.width = v23;
-    a3->frame.size.height = v24;
-    a3->center.x = v25;
-    a3->center.y = v26;
-    a3->size.width = v27;
-    a3->size.height = v28;
+    geometry->frame.origin.x = *off_1E7722248;
+    geometry->frame.origin.y = v22;
+    geometry->frame.size.width = v23;
+    geometry->frame.size.height = v24;
+    geometry->center.x = v25;
+    geometry->center.y = v26;
+    geometry->size.width = v27;
+    geometry->size.height = v28;
     v33 = v45;
-    *&a3->transform.a = v44;
-    *&a3->transform.c = v33;
-    *&a3->transform.tx = v46;
-    a3->alpha = v30;
-    a3->zPosition = v29;
-    a3->hidden = v20;
+    *&geometry->transform.a = v44;
+    *&geometry->transform.c = v33;
+    *&geometry->transform.tx = v46;
+    geometry->alpha = v30;
+    geometry->zPosition = v29;
+    geometry->hidden = v20;
     v34 = v43[0];
-    *(&a3->hidden + 1) = *(v43 + 3);
-    *(&a3->hidden + 1) = v34;
-    a3->contentSize.width = v31;
-    a3->contentSize.height = v32;
+    *(&geometry->hidden + 1) = *(v43 + 3);
+    *(&geometry->hidden + 1) = v34;
+    geometry->contentSize.width = v31;
+    geometry->contentSize.height = v32;
     v35 = v41;
-    a3->contentsRect.size = v42;
-    a3->contentsRect.origin = v35;
-    a3->coordinateSpaceIdentifier = v21;
+    geometry->contentsRect.size = v42;
+    geometry->contentsRect.origin = v35;
+    geometry->coordinateSpaceIdentifier = v21;
   }
 
-  if (a5)
+  if (data)
   {
-    *a5 = 0;
+    *data = 0;
   }
 
   return 0;
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  blockCopy = block;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
@@ -143,7 +143,7 @@
   v22 = y;
   v23 = width;
   v24 = height;
-  v13 = v12;
+  v13 = blockCopy;
   v19 = v13;
   v14 = _Block_copy(aBlock);
   v15 = objc_opt_class();
@@ -257,10 +257,10 @@ void __65__PXWidgetBarLayout_enumerateTilesInRect_withOptions_usingBlock___block
   self->_contentBounds.size.height = v5;
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXTilingLayout *)self referenceSize];
   v7 = v6;
   v9 = v8;
@@ -277,11 +277,11 @@ void __65__PXWidgetBarLayout_enumerateTilesInRect_withOptions_usingBlock___block
   }
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
-  if (self->_height != a3)
+  if (self->_height != height)
   {
-    self->_height = a3;
+    self->_height = height;
     v5 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     [(PXTilingLayoutInvalidationContext *)v5 invalidateAllTiles];
     [(PXTilingLayoutInvalidationContext *)v5 invalidateContentBounds];

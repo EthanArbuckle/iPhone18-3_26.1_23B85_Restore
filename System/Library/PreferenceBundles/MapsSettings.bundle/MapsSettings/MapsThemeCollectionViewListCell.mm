@@ -1,31 +1,31 @@
 @interface MapsThemeCollectionViewListCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)didMoveToWindow;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MapsThemeCollectionViewListCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeCollectionViewListCell;
-  [(MapsThemeCollectionViewListCell *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeCollectionViewListCell traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeCollectionViewListCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeCollectionViewListCell traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeCollectionViewListCell *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeCollectionViewListCell *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeCollectionViewListCell *)self updateTheme];
     }
@@ -37,20 +37,20 @@
   v4.receiver = self;
   v4.super_class = MapsThemeCollectionViewListCell;
   [(MapsThemeCollectionViewListCell *)&v4 didMoveToWindow];
-  v3 = [(MapsThemeCollectionViewListCell *)self window];
+  window = [(MapsThemeCollectionViewListCell *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MapsThemeCollectionViewListCell *)self updateTheme];
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if ([objc_opt_class() _maps_overridePreferredLayoutAttributesWithCompressedSize])
   {
-    v5 = [v4 copy];
+    v5 = [attributesCopy copy];
     [v5 frame];
     x = v12.origin.x;
     y = v12.origin.y;
@@ -61,7 +61,7 @@
 
   else
   {
-    v5 = v4;
+    v5 = attributesCopy;
   }
 
   return v5;

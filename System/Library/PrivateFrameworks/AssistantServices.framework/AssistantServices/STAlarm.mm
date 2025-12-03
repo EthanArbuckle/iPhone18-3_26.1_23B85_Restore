@@ -1,50 +1,50 @@
 @interface STAlarm
-- (void)_ad_updateWithModification:(id)a3;
+- (void)_ad_updateWithModification:(id)modification;
 @end
 
 @implementation STAlarm
 
-- (void)_ad_updateWithModification:(id)a3
+- (void)_ad_updateWithModification:(id)modification
 {
-  v14 = a3;
-  v4 = self;
-  v5 = [v14 enabled];
-  v6 = v5;
-  if (v5)
+  modificationCopy = modification;
+  selfCopy = self;
+  enabled = [modificationCopy enabled];
+  v6 = enabled;
+  if (enabled)
   {
-    -[STAlarm setEnabled:](v4, "setEnabled:", [v5 BOOLValue]);
+    -[STAlarm setEnabled:](selfCopy, "setEnabled:", [enabled BOOLValue]);
   }
 
-  v7 = [v14 hour];
-  v8 = v7;
-  if (v7)
+  hour = [modificationCopy hour];
+  v8 = hour;
+  if (hour)
   {
-    -[STAlarm setHourOfDay:](v4, "setHourOfDay:", [v7 integerValue]);
+    -[STAlarm setHourOfDay:](selfCopy, "setHourOfDay:", [hour integerValue]);
   }
 
-  v9 = [v14 minute];
-  v10 = v9;
-  if (v9)
+  minute = [modificationCopy minute];
+  v10 = minute;
+  if (minute)
   {
-    -[STAlarm setMinuteOfHour:](v4, "setMinuteOfHour:", [v9 integerValue]);
+    -[STAlarm setMinuteOfHour:](selfCopy, "setMinuteOfHour:", [minute integerValue]);
   }
 
-  v11 = [v14 label];
-  if (v11)
+  label = [modificationCopy label];
+  if (label)
   {
-    [(STAlarm *)v4 setLabel:v11];
+    [(STAlarm *)selfCopy setLabel:label];
   }
 
-  v12 = [v14 addedFrequency];
-  if ([v12 count])
+  addedFrequency = [modificationCopy addedFrequency];
+  if ([addedFrequency count])
   {
-    [(STAlarm *)v4 setDaysOfWeek:[(STAlarm *)v4 daysOfWeek]& sub_10024AB14(v12)];
+    [(STAlarm *)selfCopy setDaysOfWeek:[(STAlarm *)selfCopy daysOfWeek]& sub_10024AB14(addedFrequency)];
   }
 
-  v13 = [v14 removedFrequency];
-  if ([v13 count])
+  removedFrequency = [modificationCopy removedFrequency];
+  if ([removedFrequency count])
   {
-    [(STAlarm *)v4 setDaysOfWeek:[(STAlarm *)v4 daysOfWeek]& ~sub_10024AB14(v13)];
+    [(STAlarm *)selfCopy setDaysOfWeek:[(STAlarm *)selfCopy daysOfWeek]& ~sub_10024AB14(removedFrequency)];
   }
 }
 

@@ -1,17 +1,17 @@
 @interface ML3ExportItem
-+ (unsigned)allExportPropertyKeysForEntityClass:(Class)a3 returnedCount:(unsigned int *)a4;
-- (BOOL)hasValueForProperty:(unsigned int)a3;
-- (ML3ExportItem)initWithPersistentId:(int64_t)a3 entityClass:(Class)a4 propertyKeysToExport:(unsigned int *)a5 numKeys:(unsigned int)a6 library:(id)a7;
-- (ML3ExportItem)initWithPersistentId:(int64_t)a3 entityClass:(id)a4 properties:(id)a5 library:(id)a6;
-- (char)charValueForProperty:(unsigned int)a3;
++ (unsigned)allExportPropertyKeysForEntityClass:(Class)class returnedCount:(unsigned int *)count;
+- (BOOL)hasValueForProperty:(unsigned int)property;
+- (ML3ExportItem)initWithPersistentId:(int64_t)id entityClass:(Class)class propertyKeysToExport:(unsigned int *)export numKeys:(unsigned int)keys library:(id)library;
+- (ML3ExportItem)initWithPersistentId:(int64_t)id entityClass:(id)class properties:(id)properties library:(id)library;
+- (char)charValueForProperty:(unsigned int)property;
 - (id)_allExportPropertyNames;
-- (id)_propertyNameForKey:(unsigned int)a3;
-- (id)_propertyNamesFromKeys:(unsigned int *)a3 numKeys:(unsigned int)a4;
-- (id)stringValueForProperty:(unsigned int)a3;
-- (id)valueForProperty:(unsigned int)a3;
-- (int)longValueForProperty:(unsigned int)a3;
-- (int64_t)longlongValueForProperty:(unsigned int)a3;
-- (signed)shortValueForProperty:(unsigned int)a3;
+- (id)_propertyNameForKey:(unsigned int)key;
+- (id)_propertyNamesFromKeys:(unsigned int *)keys numKeys:(unsigned int)numKeys;
+- (id)stringValueForProperty:(unsigned int)property;
+- (id)valueForProperty:(unsigned int)property;
+- (int)longValueForProperty:(unsigned int)property;
+- (int64_t)longlongValueForProperty:(unsigned int)property;
+- (signed)shortValueForProperty:(unsigned int)property;
 @end
 
 @implementation ML3ExportItem
@@ -61,28 +61,28 @@ void __40__ML3ExportItem__allExportPropertyNames__block_invoke(uint64_t a1)
   [v13 setObject:v12 forKey:v15];
 }
 
-- (id)_propertyNamesFromKeys:(unsigned int *)a3 numKeys:(unsigned int)a4
+- (id)_propertyNamesFromKeys:(unsigned int *)keys numKeys:(unsigned int)numKeys
 {
-  if (a3)
+  if (keys)
   {
-    v6 = a3;
-    v7 = a4;
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
-    if (a4)
+    keysCopy = keys;
+    numKeysCopy = numKeys;
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:numKeys];
+    if (numKeys)
     {
       do
       {
-        v9 = *v6++;
+        v9 = *keysCopy++;
         v10 = [(ML3ExportItem *)self _propertyNameForKey:v9];
         if (v10)
         {
           [v8 addObject:v10];
         }
 
-        --v7;
+        --numKeysCopy;
       }
 
-      while (v7);
+      while (numKeysCopy);
     }
   }
 
@@ -94,15 +94,15 @@ void __40__ML3ExportItem__allExportPropertyNames__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)_propertyNameForKey:(unsigned int)a3
+- (id)_propertyNameForKey:(unsigned int)key
 {
-  if (a3 > 184549378)
+  if (key > 184549378)
   {
-    if (a3 > 184549407)
+    if (key > 184549407)
     {
-      if (a3 <= 184549409)
+      if (key <= 184549409)
       {
-        if (a3 == 184549408)
+        if (key == 184549408)
         {
           v3 = @"store_cloud_id";
         }
@@ -115,28 +115,28 @@ void __40__ML3ExportItem__allExportPropertyNames__block_invoke(uint64_t a1)
         goto LABEL_35;
       }
 
-      if (a3 == 184549410)
+      if (key == 184549410)
       {
         v3 = @"is_reversed";
         goto LABEL_35;
       }
 
-      if (a3 == 184549432)
+      if (key == 184549432)
       {
         v3 = 0;
         goto LABEL_36;
       }
     }
 
-    else if (a3 > 184549396)
+    else if (key > 184549396)
     {
-      if (a3 == 184549397)
+      if (key == 184549397)
       {
         v3 = @"smart_is_folder";
         goto LABEL_35;
       }
 
-      if (a3 == 184549400)
+      if (key == 184549400)
       {
         v3 = @"smart_is_genius";
         goto LABEL_35;
@@ -145,13 +145,13 @@ void __40__ML3ExportItem__allExportPropertyNames__block_invoke(uint64_t a1)
 
     else
     {
-      if (a3 == 184549379)
+      if (key == 184549379)
       {
         v3 = @"distinguished_kind";
         goto LABEL_35;
       }
 
-      if (a3 == 184549384)
+      if (key == 184549384)
       {
         v3 = @"name";
         goto LABEL_35;
@@ -159,21 +159,21 @@ void __40__ML3ExportItem__allExportPropertyNames__block_invoke(uint64_t a1)
     }
   }
 
-  else if (a3 > 167772178)
+  else if (key > 167772178)
   {
-    if (a3 > 184549376)
+    if (key > 184549376)
     {
       v3 = @"container_pid";
       goto LABEL_35;
     }
 
-    if (a3 == 167772179)
+    if (key == 167772179)
     {
       v3 = @"genre_id";
       goto LABEL_35;
     }
 
-    if (a3 == 167772185)
+    if (key == 167772185)
     {
       v3 = @"album.user_rating";
       goto LABEL_35;
@@ -182,9 +182,9 @@ void __40__ML3ExportItem__allExportPropertyNames__block_invoke(uint64_t a1)
 
   else
   {
-    if (a3 > 167772176)
+    if (key > 167772176)
     {
-      if (a3 == 167772177)
+      if (key == 167772177)
       {
         v3 = @"album_artist_pid";
       }
@@ -197,13 +197,13 @@ void __40__ML3ExportItem__allExportPropertyNames__block_invoke(uint64_t a1)
       goto LABEL_35;
     }
 
-    if (a3 == 167772175)
+    if (key == 167772175)
     {
       v3 = @"album_pid";
       goto LABEL_35;
     }
 
-    if (a3 == 167772176)
+    if (key == 167772176)
     {
       v3 = @"item_artist_pid";
 LABEL_35:
@@ -212,115 +212,115 @@ LABEL_35:
     }
   }
 
-  v3 = ML3TrackRulesGetPropertyNameForKey(HIBYTE(a3), *&a3);
+  v3 = ML3TrackRulesGetPropertyNameForKey(HIBYTE(key), *&key);
 LABEL_36:
 
   return v3;
 }
 
-- (BOOL)hasValueForProperty:(unsigned int)a3
+- (BOOL)hasValueForProperty:(unsigned int)property
 {
-  v3 = [(ML3ExportItem *)self valueForProperty:*&a3];
+  v3 = [(ML3ExportItem *)self valueForProperty:*&property];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)stringValueForProperty:(unsigned int)a3
+- (id)stringValueForProperty:(unsigned int)property
 {
-  v3 = [(ML3ExportItem *)self valueForProperty:*&a3];
+  v3 = [(ML3ExportItem *)self valueForProperty:*&property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    stringValue = v3;
   }
 
   else
   {
-    v4 = [v3 stringValue];
+    stringValue = [v3 stringValue];
   }
 
-  v5 = v4;
+  v5 = stringValue;
 
   return v5;
 }
 
-- (int64_t)longlongValueForProperty:(unsigned int)a3
+- (int64_t)longlongValueForProperty:(unsigned int)property
 {
-  v3 = [(ML3ExportItem *)self valueForProperty:*&a3];
-  v4 = [v3 longLongValue];
+  v3 = [(ML3ExportItem *)self valueForProperty:*&property];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (int)longValueForProperty:(unsigned int)a3
+- (int)longValueForProperty:(unsigned int)property
 {
-  v3 = [(ML3ExportItem *)self valueForProperty:*&a3];
-  v4 = [v3 intValue];
+  v3 = [(ML3ExportItem *)self valueForProperty:*&property];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (signed)shortValueForProperty:(unsigned int)a3
+- (signed)shortValueForProperty:(unsigned int)property
 {
-  v3 = [(ML3ExportItem *)self valueForProperty:*&a3];
-  v4 = [v3 shortValue];
+  v3 = [(ML3ExportItem *)self valueForProperty:*&property];
+  shortValue = [v3 shortValue];
 
-  return v4;
+  return shortValue;
 }
 
-- (char)charValueForProperty:(unsigned int)a3
+- (char)charValueForProperty:(unsigned int)property
 {
-  v3 = [(ML3ExportItem *)self valueForProperty:*&a3];
-  v4 = [v3 charValue];
+  v3 = [(ML3ExportItem *)self valueForProperty:*&property];
+  charValue = [v3 charValue];
 
-  return v4;
+  return charValue;
 }
 
-- (id)valueForProperty:(unsigned int)a3
+- (id)valueForProperty:(unsigned int)property
 {
   properties = self->_properties;
-  v4 = [(ML3ExportItem *)self _propertyNameForKey:*&a3];
+  v4 = [(ML3ExportItem *)self _propertyNameForKey:*&property];
   v5 = [(NSDictionary *)properties valueForKey:v4];
 
   return v5;
 }
 
-- (ML3ExportItem)initWithPersistentId:(int64_t)a3 entityClass:(id)a4 properties:(id)a5 library:(id)a6
+- (ML3ExportItem)initWithPersistentId:(int64_t)id entityClass:(id)class properties:(id)properties library:(id)library
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  classCopy = class;
+  propertiesCopy = properties;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = ML3ExportItem;
   v14 = [(ML3ExportItem *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_entityClass, a4);
-    v15->_persistentId = a3;
-    objc_storeStrong(&v15->_properties, a5);
-    objc_storeStrong(&v15->_library, a6);
+    objc_storeStrong(&v14->_entityClass, class);
+    v15->_persistentId = id;
+    objc_storeStrong(&v15->_properties, properties);
+    objc_storeStrong(&v15->_library, library);
   }
 
   return v15;
 }
 
-- (ML3ExportItem)initWithPersistentId:(int64_t)a3 entityClass:(Class)a4 propertyKeysToExport:(unsigned int *)a5 numKeys:(unsigned int)a6 library:(id)a7
+- (ML3ExportItem)initWithPersistentId:(int64_t)id entityClass:(Class)class propertyKeysToExport:(unsigned int *)export numKeys:(unsigned int)keys library:(id)library
 {
-  v8 = *&a6;
-  v13 = a7;
-  objc_storeStrong(&self->_entityClass, a4);
-  objc_storeStrong(&self->_library, a7);
-  v14 = [(ML3ExportItem *)self _propertyNamesFromKeys:a5 numKeys:v8];
+  v8 = *&keys;
+  libraryCopy = library;
+  objc_storeStrong(&self->_entityClass, class);
+  objc_storeStrong(&self->_library, library);
+  v14 = [(ML3ExportItem *)self _propertyNamesFromKeys:export numKeys:v8];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__7770;
   v30 = __Block_byref_object_dispose__7771;
   v31 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v14, "count")}];
-  v15 = [ML3ComparisonPredicate predicateWithProperty:@"ROWID" equalToInt64:a3];
-  v16 = [(objc_class *)a4 queryWithLibrary:v13 predicate:v15];
+  v15 = [ML3ComparisonPredicate predicateWithProperty:@"ROWID" equalToInt64:id];
+  v16 = [(objc_class *)class queryWithLibrary:libraryCopy predicate:v15];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __87__ML3ExportItem_initWithPersistentId_entityClass_propertyKeysToExport_numKeys_library___block_invoke;
@@ -330,7 +330,7 @@ LABEL_36:
   v24 = v17;
   [v16 enumeratePersistentIDsAndProperties:v17 usingBlock:&v20];
 
-  v18 = [(ML3ExportItem *)self initWithPersistentId:a3 entityClass:a4 properties:v27[5] library:v13, v20, v21, v22, v23];
+  v18 = [(ML3ExportItem *)self initWithPersistentId:id entityClass:class properties:v27[5] library:libraryCopy, v20, v21, v22, v23];
   _Block_object_dispose(&v26, 8);
 
   return v18;
@@ -362,10 +362,10 @@ unint64_t __87__ML3ExportItem_initWithPersistentId_entityClass_propertyKeysToExp
   return result;
 }
 
-+ (unsigned)allExportPropertyKeysForEntityClass:(Class)a3 returnedCount:(unsigned int *)a4
++ (unsigned)allExportPropertyKeysForEntityClass:(Class)class returnedCount:(unsigned int *)count
 {
-  *a4 = 0;
-  if (objc_opt_class() == a3)
+  *count = 0;
+  if (objc_opt_class() == class)
   {
     result = &ML3ExportItemAllTrackPropertyKeys;
     v7 = 136;
@@ -373,7 +373,7 @@ unint64_t __87__ML3ExportItem_initWithPersistentId_entityClass_propertyKeysToExp
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       return 0;
     }
@@ -382,7 +382,7 @@ unint64_t __87__ML3ExportItem_initWithPersistentId_entityClass_propertyKeysToExp
     v7 = 7;
   }
 
-  *a4 = v7;
+  *count = v7;
   return result;
 }
 

@@ -1,5 +1,5 @@
 @interface ICSearchProfiler
-+ (void)logProfilingWithMessage:(id)a3 searchQueryOperation:(id)a4;
++ (void)logProfilingWithMessage:(id)message searchQueryOperation:(id)operation;
 + (void)resetProfileTimer;
 @end
 
@@ -7,19 +7,19 @@
 
 + (void)resetProfileTimer
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v3 = profilingTimer;
-  profilingTimer = v2;
+  profilingTimer = date;
 }
 
-+ (void)logProfilingWithMessage:(id)a3 searchQueryOperation:(id)a4
++ (void)logProfilingWithMessage:(id)message searchQueryOperation:(id)operation
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  operationCopy = operation;
   v7 = os_log_create("com.apple.notes", "SearchProfiling");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ICSearchProfiler *)v6 logProfilingWithMessage:v5 searchQueryOperation:v7];
+    [(ICSearchProfiler *)operationCopy logProfilingWithMessage:messageCopy searchQueryOperation:v7];
   }
 }
 

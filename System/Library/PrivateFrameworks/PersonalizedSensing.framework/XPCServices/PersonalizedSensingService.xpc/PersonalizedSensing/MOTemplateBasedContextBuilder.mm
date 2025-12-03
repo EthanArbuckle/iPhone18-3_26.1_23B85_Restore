@@ -1,38 +1,38 @@
 @interface MOTemplateBasedContextBuilder
-- (MOTemplateBasedContextBuilder)initWithTemplateStore:(id)a3 ConfigurationManager:(id)a4;
-- (double)_computeTemplateScore:(id)a3 withBundleContent:(id)a4;
+- (MOTemplateBasedContextBuilder)initWithTemplateStore:(id)store ConfigurationManager:(id)manager;
+- (double)_computeTemplateScore:(id)score withBundleContent:(id)content;
 - (double)_getMostRecentTemplateVersion;
-- (id)_createContextStringFromTemplate:(id)a3 withBundleContent:(id)a4;
-- (id)_filterTemplates:(id)a3;
-- (id)_readTemplatesToRemovePlistFile:(id)a3;
-- (id)musicMetaDataWithArtistSongForBundleContent:(id)a3;
-- (id)musicMetaDataWithMoodForBundleContent:(id)a3;
-- (void)_findTemplatesForBundleContent:(id)a3 withHandler:(id)a4;
-- (void)_generateContextStringsBasedOnNewTemplateFromBundleContents:(id)a3 WithHandler:(id)a4;
-- (void)_generateContextStringsFromBundleContents:(id)a3 WithHandler:(id)a4;
-- (void)_generateContextStringsFromTemplateWithBundleContent:(id)a3 withHandler:(id)a4;
-- (void)generateContextStringsFromBundleContents:(id)a3 WithHandler:(id)a4;
+- (id)_createContextStringFromTemplate:(id)template withBundleContent:(id)content;
+- (id)_filterTemplates:(id)templates;
+- (id)_readTemplatesToRemovePlistFile:(id)file;
+- (id)musicMetaDataWithArtistSongForBundleContent:(id)content;
+- (id)musicMetaDataWithMoodForBundleContent:(id)content;
+- (void)_findTemplatesForBundleContent:(id)content withHandler:(id)handler;
+- (void)_generateContextStringsBasedOnNewTemplateFromBundleContents:(id)contents WithHandler:(id)handler;
+- (void)_generateContextStringsFromBundleContents:(id)contents WithHandler:(id)handler;
+- (void)_generateContextStringsFromTemplateWithBundleContent:(id)content withHandler:(id)handler;
+- (void)generateContextStringsFromBundleContents:(id)contents WithHandler:(id)handler;
 @end
 
 @implementation MOTemplateBasedContextBuilder
 
-- (MOTemplateBasedContextBuilder)initWithTemplateStore:(id)a3 ConfigurationManager:(id)a4
+- (MOTemplateBasedContextBuilder)initWithTemplateStore:(id)store ConfigurationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = MOTemplateBasedContextBuilder;
   v9 = [(MOTemplateBasedContextBuilder *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_templateStore, a3);
+    objc_storeStrong(&v9->_templateStore, store);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("MOTemplateBasedContextBuilder", v11);
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_configurationManager, a4);
+    objc_storeStrong(&v10->_configurationManager, manager);
     v14 = [NSArray arrayWithObjects:@", with dreamy music", @", with a dreamy song", @", with sentimental music", @", with a sentimental song", @", with chill music", @", with a chill song", @", with happy music", @", with a happy song", 0];
     musicMoodsForRelaxingEvents = v10->_musicMoodsForRelaxingEvents;
     v10->_musicMoodsForRelaxingEvents = v14;
@@ -53,21 +53,21 @@
   return v10;
 }
 
-- (void)_generateContextStringsFromTemplateWithBundleContent:(id)a3 withHandler:(id)a4
+- (void)_generateContextStringsFromTemplateWithBundleContent:(id)content withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  handlerCopy = handler;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __98__MOTemplateBasedContextBuilder__generateContextStringsFromTemplateWithBundleContent_withHandler___block_invoke;
   v11[3] = &unk_1000B5330;
-  v12 = v6;
-  v13 = self;
+  v12 = contentCopy;
+  selfCopy = self;
   v14 = objc_opt_new();
-  v15 = v7;
+  v15 = handlerCopy;
   v8 = v14;
-  v9 = v7;
-  v10 = v6;
+  v9 = handlerCopy;
+  v10 = contentCopy;
   [(MOTemplateBasedContextBuilder *)self _findTemplatesForBundleContent:v10 withHandler:v11];
 }
 
@@ -308,50 +308,50 @@ void __98__MOTemplateBasedContextBuilder__generateContextStringsFromTemplateWith
   }
 }
 
-- (void)_findTemplatesForBundleContent:(id)a3 withHandler:(id)a4
+- (void)_findTemplatesForBundleContent:(id)content withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MOTemplateBasedContextBuilder *)self templateStore];
+  handlerCopy = handler;
+  contentCopy = content;
+  templateStore = [(MOTemplateBasedContextBuilder *)self templateStore];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __76__MOTemplateBasedContextBuilder__findTemplatesForBundleContent_withHandler___block_invoke;
   v10[3] = &unk_1000B5358;
-  v11 = v6;
-  v9 = v6;
-  [v8 fetchTemplatesWithBundleContent:v7 handler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [templateStore fetchTemplatesWithBundleContent:contentCopy handler:v10];
 }
 
-- (id)_createContextStringFromTemplate:(id)a3 withBundleContent:(id)a4
+- (id)_createContextStringFromTemplate:(id)template withBundleContent:(id)content
 {
-  v5 = a3;
-  v6 = a4;
+  templateCopy = template;
+  contentCopy = content;
   v7 = [MOContextString alloc];
   v8 = +[NSUUID UUID];
-  v9 = [v5 templateString];
-  v10 = [(MOContextString *)v7 initWithIdentifier:v8 string:v9];
+  templateString = [templateCopy templateString];
+  v10 = [(MOContextString *)v7 initWithIdentifier:v8 string:templateString];
 
   [(MOContextString *)v10 setSource:2];
-  [v5 accuracy];
+  [templateCopy accuracy];
   [(MOContextString *)v10 setAccuracy:?];
-  [v5 satisfaction];
+  [templateCopy satisfaction];
   [(MOContextString *)v10 setSatisfaction:?];
-  -[MOContextString setPromptIndex:](v10, "setPromptIndex:", [v5 promptIndex]);
-  [v5 totalScore];
+  -[MOContextString setPromptIndex:](v10, "setPromptIndex:", [templateCopy promptIndex]);
+  [templateCopy totalScore];
   [(MOContextString *)v10 setTotalScore:?];
   v11 = objc_opt_new();
-  v12 = [v5 globalTraits];
-  v13 = [v12 count];
+  globalTraits = [templateCopy globalTraits];
+  v13 = [globalTraits count];
 
   if (v13)
   {
-    v25 = v5;
+    v25 = templateCopy;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v14 = [v5 globalTraits];
-    v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    globalTraits2 = [templateCopy globalTraits];
+    v15 = [globalTraits2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v15)
     {
       v16 = v15;
@@ -362,16 +362,16 @@ void __98__MOTemplateBasedContextBuilder__generateContextStringsFromTemplateWith
         {
           if (*v27 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(globalTraits2);
           }
 
           v19 = *(*(&v26 + 1) + 8 * i);
           v20 = [MOContextDimension alloc];
-          v21 = [v19 title];
-          v22 = [(MOContextDimension *)v20 initWithName:v21];
+          title = [v19 title];
+          v22 = [(MOContextDimension *)v20 initWithName:title];
 
-          v23 = [v19 queries];
-          [(MOContextDimension *)v22 setQueries:v23];
+          queries = [v19 queries];
+          [(MOContextDimension *)v22 setQueries:queries];
 
           if (v22)
           {
@@ -379,13 +379,13 @@ void __98__MOTemplateBasedContextBuilder__generateContextStringsFromTemplateWith
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v16 = [globalTraits2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v16);
     }
 
-    v5 = v25;
+    templateCopy = v25;
   }
 
   if ([v11 count])
@@ -393,56 +393,56 @@ void __98__MOTemplateBasedContextBuilder__generateContextStringsFromTemplateWith
     [(MOContextString *)v10 setContextDimensions:v11];
   }
 
-  if ([v5 photoTrait])
+  if ([templateCopy photoTrait])
   {
     [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 0x100];
   }
 
-  if ([v5 hasPersonName])
+  if ([templateCopy hasPersonName])
   {
     [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 1];
   }
 
-  if ([v5 peopleClassification])
+  if ([templateCopy peopleClassification])
   {
     [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 2];
-    if ([v5 peopleClassification] == 1)
+    if ([templateCopy peopleClassification] == 1)
     {
       [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 0x200];
     }
 
-    if ([v5 peopleClassification] == 2)
+    if ([templateCopy peopleClassification] == 2)
     {
       [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 0x400];
     }
 
-    if ([v5 peopleClassification] == 3)
+    if ([templateCopy peopleClassification] == 3)
     {
       [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 0x800];
     }
 
-    if ([v5 peopleClassification] == 4)
+    if ([templateCopy peopleClassification] == 4)
     {
       [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 0x1000];
     }
 
-    if ([v5 peopleClassification] == 5)
+    if ([templateCopy peopleClassification] == 5)
     {
       [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 0x2000];
     }
   }
 
-  if ([v5 hasPlaceName])
+  if ([templateCopy hasPlaceName])
   {
     [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 4];
   }
 
-  if ([v5 hasCityName])
+  if ([templateCopy hasCityName])
   {
     [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 8];
   }
 
-  if ([v6 hasTimeReference])
+  if ([contentCopy hasTimeReference])
   {
     [(MOContextString *)v10 setContentType:[(MOContextString *)v10 contentType]| 0x4000];
   }
@@ -450,9 +450,9 @@ void __98__MOTemplateBasedContextBuilder__generateContextStringsFromTemplateWith
   return v10;
 }
 
-- (id)_filterTemplates:(id)a3
+- (id)_filterTemplates:(id)templates
 {
-  v4 = a3;
+  templatesCopy = templates;
   v5 = [(MOContextConfigurationManager *)self->_configurationManager getFilePathSettingForKey:@"Templates_To_Remove" withFallback:@"fallback"];
   v46 = v5;
   if (v5 && (v6 = v5, ([v5 isEqualToString:@"fallback"] & 1) == 0))
@@ -504,7 +504,7 @@ LABEL_6:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v4;
+  obj = templatesCopy;
   v25 = [obj countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (!v25)
   {
@@ -564,13 +564,13 @@ LABEL_6:
         }
       }
 
-      v39 = [v8 allValues];
-      if ([v39 count])
+      allValues = [v8 allValues];
+      if ([allValues count])
       {
-        v40 = [v8 allValues];
+        allValues2 = [v8 allValues];
         v41 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v29 promptIndex]);
-        v42 = [v41 stringValue];
-        v43 = [v40 containsObject:v42];
+        stringValue = [v41 stringValue];
+        v43 = [allValues2 containsObject:stringValue];
 
         if (!v43)
         {
@@ -578,12 +578,12 @@ LABEL_6:
         }
 
         [v47 addObject:v29];
-        v39 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
-        if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+        allValues = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
+        if (os_log_type_enabled(allValues, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
           v54 = v29;
-          _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Template is filtered because of plist, %@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, allValues, OS_LOG_TYPE_INFO, "Template is filtered because of plist, %@", buf, 0xCu);
         }
       }
     }
@@ -597,13 +597,13 @@ LABEL_29:
   return v47;
 }
 
-- (double)_computeTemplateScore:(id)a3 withBundleContent:(id)a4
+- (double)_computeTemplateScore:(id)score withBundleContent:(id)content
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 accuracy];
+  scoreCopy = score;
+  contentCopy = content;
+  [scoreCopy accuracy];
   v9 = v8 + 0.0;
-  [v6 satisfaction];
+  [scoreCopy satisfaction];
   v11 = v10;
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -613,106 +613,106 @@ LABEL_29:
 
   v13 = v9 + v11;
 
-  if ([v6 bundleType])
+  if ([scoreCopy bundleType])
   {
     v14 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v6 templateString];
+      templateString = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 10;
       v41 = 2112;
-      v42 = *&v15;
+      v42 = *&templateString;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#score, kMOContextStringBundleTypeScore (%lu) score added for %@,", &v39, 0x16u);
     }
 
     v13 = v13 + 10.0;
   }
 
-  if ([v6 hasPersonName])
+  if ([scoreCopy hasPersonName])
   {
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v6 templateString];
+      templateString2 = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 30;
       v41 = 2112;
-      v42 = *&v17;
+      v42 = *&templateString2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#score, kMOContextStringPersonNameScore (%lu) score added for %@,", &v39, 0x16u);
     }
 
     v13 = v13 + 30.0;
   }
 
-  if ([v6 hasPlaceName])
+  if ([scoreCopy hasPlaceName])
   {
     v18 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v6 templateString];
+      templateString3 = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 30;
       v41 = 2112;
-      v42 = *&v19;
+      v42 = *&templateString3;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#score, kMOContextStringPlaceNameScore score (%lu) added for %@,", &v39, 0x16u);
     }
 
     v13 = v13 + 30.0;
   }
 
-  if ([v6 hasCityName])
+  if ([scoreCopy hasCityName])
   {
     v20 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v6 templateString];
+      templateString4 = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 10;
       v41 = 2112;
-      v42 = *&v21;
+      v42 = *&templateString4;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "#score, kMOContextStringCityNameScore (%lu) score added for %@,", &v39, 0x16u);
     }
 
     v13 = v13 + 10.0;
   }
 
-  if ([v6 peopleClassification])
+  if ([scoreCopy peopleClassification])
   {
     v22 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v6 templateString];
+      templateString5 = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 30;
       v41 = 2112;
-      v42 = *&v23;
+      v42 = *&templateString5;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "kMOContextStringPeopleClassificationScore (%lu) score added for %@,", &v39, 0x16u);
     }
 
     v13 = v13 + 30.0;
   }
 
-  if ([v6 photoTrait])
+  if ([scoreCopy photoTrait])
   {
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v6 templateString];
+      templateString6 = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 40;
       v41 = 2112;
-      v42 = *&v25;
+      v42 = *&templateString6;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "kMOContextStringTraitScore (%lu) score added for %@,", &v39, 0x16u);
     }
 
     v13 = v13 + 40.0;
   }
 
-  if ([v6 placeType])
+  if ([scoreCopy placeType])
   {
     insignificantPlaceTypes = self->_insignificantPlaceTypes;
-    v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 placeType]);
+    v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [scoreCopy placeType]);
     LOBYTE(insignificantPlaceTypes) = [(NSArray *)insignificantPlaceTypes containsObject:v27];
 
     if ((insignificantPlaceTypes & 1) == 0)
@@ -720,11 +720,11 @@ LABEL_29:
       v28 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v6 templateString];
+        templateString7 = [scoreCopy templateString];
         v39 = 134218242;
         v40 = 30;
         v41 = 2112;
-        v42 = *&v29;
+        v42 = *&templateString7;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "kMOContextStringPlaceTypeScore (%lu) score added for %@", &v39, 0x16u);
       }
 
@@ -732,48 +732,48 @@ LABEL_29:
     }
   }
 
-  if ([v6 activityType])
+  if ([scoreCopy activityType])
   {
     v30 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v6 templateString];
+      templateString8 = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 10;
       v41 = 2112;
-      v42 = *&v31;
+      v42 = *&templateString8;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "kMOContextStringActivityTypeScore (%lu) score added for %@,", &v39, 0x16u);
     }
 
     v13 = v13 + 10.0;
   }
 
-  if ([v6 patternType])
+  if ([scoreCopy patternType])
   {
     v32 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v6 templateString];
+      templateString9 = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 30;
       v41 = 2112;
-      v42 = *&v33;
+      v42 = *&templateString9;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "kMOContextStringPatternTypeScore (%lu) score added for %@,", &v39, 0x16u);
     }
 
     v13 = v13 + 30.0;
   }
 
-  if ([v6 hasTimeReference])
+  if ([scoreCopy hasTimeReference])
   {
     v34 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [v6 templateString];
+      templateString10 = [scoreCopy templateString];
       v39 = 134218242;
       v40 = 10;
       v41 = 2112;
-      v42 = *&v35;
+      v42 = *&templateString10;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "#score, kMOContextStringTimeReferenceScore (%lu) score added for %@,", &v39, 0x16u);
     }
 
@@ -783,9 +783,9 @@ LABEL_29:
   v36 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
-    v37 = [v6 templateString];
+    templateString11 = [scoreCopy templateString];
     v39 = 138412546;
-    v40 = v37;
+    v40 = templateString11;
     v41 = 2048;
     v42 = v13;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "#score, string, %@, score, %f", &v39, 0x16u);
@@ -794,10 +794,10 @@ LABEL_29:
   return v13;
 }
 
-- (id)_readTemplatesToRemovePlistFile:(id)a3
+- (id)_readTemplatesToRemovePlistFile:(id)file
 {
-  v3 = a3;
-  if (v3)
+  fileCopy = file;
+  if (fileCopy)
   {
     v4 = +[NSFileManager defaultManager];
     v5 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
@@ -806,9 +806,9 @@ LABEL_29:
       [MOTemplateBasedContextBuilder _readTemplatesToRemovePlistFile:];
     }
 
-    v6 = [v3 URLByAppendingPathComponent:@"templates_to_remove.plist"];
-    v7 = [v6 path];
-    v8 = [v4 fileExistsAtPath:v7];
+    v6 = [fileCopy URLByAppendingPathComponent:@"templates_to_remove.plist"];
+    path = [v6 path];
+    v8 = [v4 fileExistsAtPath:path];
 
     v9 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -865,10 +865,10 @@ LABEL_29:
   return v14;
 }
 
-- (void)_generateContextStringsFromBundleContents:(id)a3 WithHandler:(id)a4
+- (void)_generateContextStringsFromBundleContents:(id)contents WithHandler:(id)handler
 {
-  v6 = a3;
-  v16 = a4;
+  contentsCopy = contents;
+  handlerCopy = handler;
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
@@ -889,7 +889,7 @@ LABEL_29:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v6;
+  obj = contentsCopy;
   v10 = [obj countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v10)
   {
@@ -934,8 +934,8 @@ LABEL_29:
   block[3] = &unk_1000B53D0;
   v20 = v34;
   v21 = v32;
-  v19 = v16;
-  v15 = v16;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
   dispatch_group_notify(v7, queue, block);
 
   _Block_object_dispose(v32, 8);
@@ -1042,16 +1042,16 @@ LABEL_11:
 - (double)_getMostRecentTemplateVersion
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 bundlePath];
-  if (!v4)
+  bundlePath = [v3 bundlePath];
+  if (!bundlePath)
   {
     goto LABEL_12;
   }
 
   v5 = 1;
-  v6 = [NSURL fileURLWithPath:v4 isDirectory:1];
-  v7 = [v6 path];
-  v8 = [v7 stringByAppendingPathComponent:@"templateVersion.json"];
+  v6 = [NSURL fileURLWithPath:bundlePath isDirectory:1];
+  path = [v6 path];
+  v8 = [path stringByAppendingPathComponent:@"templateVersion.json"];
 
   v18 = 0;
   v9 = [NSData dataWithContentsOfFile:v8 options:0 error:&v18];
@@ -1098,10 +1098,10 @@ LABEL_12:
   return v2;
 }
 
-- (void)_generateContextStringsBasedOnNewTemplateFromBundleContents:(id)a3 WithHandler:(id)a4
+- (void)_generateContextStringsBasedOnNewTemplateFromBundleContents:(id)contents WithHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contentsCopy = contents;
+  handlerCopy = handler;
   [(MOTemplateBasedContextBuilder *)self _getMostRecentTemplateVersion];
   v9 = v8;
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
@@ -1122,7 +1122,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "local template version: %f", buf, 0xCu);
   }
 
-  v14 = [(MOTemplateBasedContextBuilder *)self templateStore];
+  templateStore = [(MOTemplateBasedContextBuilder *)self templateStore];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = __105__MOTemplateBasedContextBuilder__generateContextStringsBasedOnNewTemplateFromBundleContents_WithHandler___block_invoke;
@@ -1130,11 +1130,11 @@ LABEL_12:
   v20 = v12;
   v21 = v9;
   v17[4] = self;
-  v18 = v6;
-  v19 = v7;
-  v15 = v7;
-  v16 = v6;
-  [v14 checkTemplateStoreIsEmptyWithHandler:v17];
+  v18 = contentsCopy;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = contentsCopy;
+  [templateStore checkTemplateStoreIsEmptyWithHandler:v17];
 }
 
 void __105__MOTemplateBasedContextBuilder__generateContextStringsBasedOnNewTemplateFromBundleContents_WithHandler___block_invoke(uint64_t a1, char a2)
@@ -1211,20 +1211,20 @@ void __105__MOTemplateBasedContextBuilder__generateContextStringsBasedOnNewTempl
   }
 }
 
-- (void)generateContextStringsFromBundleContents:(id)a3 WithHandler:(id)a4
+- (void)generateContextStringsFromBundleContents:(id)contents WithHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contentsCopy = contents;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContents_WithHandler___block_invoke;
   block[3] = &unk_1000B5470;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contentsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contentsCopy;
   dispatch_async(queue, block);
 }
 
@@ -1240,15 +1240,15 @@ void __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContent
   [v1 _generateContextStringsBasedOnNewTemplateFromBundleContents:v2 WithHandler:v3];
 }
 
-- (id)musicMetaDataWithArtistSongForBundleContent:(id)a3
+- (id)musicMetaDataWithArtistSongForBundleContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_opt_new();
-  v5 = [v3 musicSuggestionArtistName];
-  if (v5)
+  musicSuggestionArtistName = [contentCopy musicSuggestionArtistName];
+  if (musicSuggestionArtistName)
   {
-    v6 = [v3 musicSuggestionArtistName];
-    v7 = [v6 length] < 0x1F5;
+    musicSuggestionArtistName2 = [contentCopy musicSuggestionArtistName];
+    v7 = [musicSuggestionArtistName2 length] < 0x1F5;
   }
 
   else
@@ -1256,11 +1256,11 @@ void __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContent
     v7 = 0;
   }
 
-  v8 = [v3 musicSuggestionSongTitle];
-  if (v8)
+  musicSuggestionSongTitle = [contentCopy musicSuggestionSongTitle];
+  if (musicSuggestionSongTitle)
   {
-    v9 = [v3 musicSuggestionSongTitle];
-    v10 = [v9 length] < 0x1F5;
+    musicSuggestionSongTitle2 = [contentCopy musicSuggestionSongTitle];
+    v10 = [musicSuggestionSongTitle2 length] < 0x1F5;
   }
 
   else
@@ -1268,8 +1268,8 @@ void __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContent
     v10 = 0;
   }
 
-  v11 = [v3 musicSuggestionContentRating];
-  v12 = [v11 isEqualToString:@"not explicit"];
+  musicSuggestionContentRating = [contentCopy musicSuggestionContentRating];
+  v12 = [musicSuggestionContentRating isEqualToString:@"not explicit"];
 
   if (v12)
   {
@@ -1283,12 +1283,12 @@ void __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContent
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Appending music strings for case of artist name present and song title present", buf, 2u);
       }
 
-      v15 = [v3 musicSuggestionArtistName];
-      v16 = [NSString stringWithFormat:@", with music by %@", v15];
+      musicSuggestionArtistName3 = [contentCopy musicSuggestionArtistName];
+      v16 = [NSString stringWithFormat:@", with music by %@", musicSuggestionArtistName3];
 
       v17 = [[MOContextMusicMetaData alloc] initWithMusicString:v16];
-      v18 = [v3 musicSuggestionArtistName];
-      [(MOContextMusicMetaData *)v17 setArtist:v18];
+      musicSuggestionArtistName4 = [contentCopy musicSuggestionArtistName];
+      [(MOContextMusicMetaData *)v17 setArtist:musicSuggestionArtistName4];
 
       v19 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -1299,16 +1299,16 @@ void __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContent
       }
 
       [v4 addObject:v17];
-      v20 = [v3 musicSuggestionSongTitle];
-      v21 = [v3 musicSuggestionArtistName];
-      v22 = [NSString stringWithFormat:@", with the song %@ by %@", v20, v21];
+      musicSuggestionSongTitle3 = [contentCopy musicSuggestionSongTitle];
+      musicSuggestionArtistName5 = [contentCopy musicSuggestionArtistName];
+      v22 = [NSString stringWithFormat:@", with the song %@ by %@", musicSuggestionSongTitle3, musicSuggestionArtistName5];
 
       v23 = [[MOContextMusicMetaData alloc] initWithMusicString:v22];
-      v24 = [v3 musicSuggestionArtistName];
-      [(MOContextMusicMetaData *)v23 setArtist:v24];
+      musicSuggestionArtistName6 = [contentCopy musicSuggestionArtistName];
+      [(MOContextMusicMetaData *)v23 setArtist:musicSuggestionArtistName6];
 
-      v25 = [v3 musicSuggestionSongTitle];
-      [(MOContextMusicMetaData *)v23 setTitle:v25];
+      musicSuggestionSongTitle4 = [contentCopy musicSuggestionSongTitle];
+      [(MOContextMusicMetaData *)v23 setTitle:musicSuggestionSongTitle4];
 
       v26 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -1329,8 +1329,8 @@ void __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContent
         goto LABEL_30;
       }
 
-      v27 = [v3 musicSuggestionSongTitle];
-      v16 = [NSString stringWithFormat:@", with the song %@", v27];
+      musicSuggestionSongTitle5 = [contentCopy musicSuggestionSongTitle];
+      v16 = [NSString stringWithFormat:@", with the song %@", musicSuggestionSongTitle5];
 
       v28 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -1340,8 +1340,8 @@ void __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContent
       }
 
       v17 = [[MOContextMusicMetaData alloc] initWithMusicString:v16];
-      v29 = [v3 musicSuggestionSongTitle];
-      [(MOContextMusicMetaData *)v17 setTitle:v29];
+      musicSuggestionSongTitle6 = [contentCopy musicSuggestionSongTitle];
+      [(MOContextMusicMetaData *)v17 setTitle:musicSuggestionSongTitle6];
 
       v30 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (!os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
@@ -1363,12 +1363,12 @@ void __86__MOTemplateBasedContextBuilder_generateContextStringsFromBundleContent
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "Appending music strings for case of artist name present and song title not present", buf, 2u);
       }
 
-      v33 = [v3 musicSuggestionArtistName];
-      v16 = [NSString stringWithFormat:@", with music by %@", v33];
+      musicSuggestionArtistName7 = [contentCopy musicSuggestionArtistName];
+      v16 = [NSString stringWithFormat:@", with music by %@", musicSuggestionArtistName7];
 
       v17 = [[MOContextMusicMetaData alloc] initWithMusicString:v16];
-      v34 = [v3 musicSuggestionArtistName];
-      [(MOContextMusicMetaData *)v17 setArtist:v34];
+      musicSuggestionArtistName8 = [contentCopy musicSuggestionArtistName];
+      [(MOContextMusicMetaData *)v17 setArtist:musicSuggestionArtistName8];
 
       v30 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (!os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
@@ -1393,29 +1393,29 @@ LABEL_30:
   return v4;
 }
 
-- (id)musicMetaDataWithMoodForBundleContent:(id)a3
+- (id)musicMetaDataWithMoodForBundleContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = objc_opt_new();
   v17 = objc_opt_new();
-  v16 = v4;
-  if ([v4 activityType] || objc_msgSend(v4, "placeType") == 5 || objc_msgSend(v4, "placeType") == 8 || objc_msgSend(v4, "placeType") == 11 || objc_msgSend(v4, "placeType") == 15 || objc_msgSend(v4, "placeType") == 21 || objc_msgSend(v4, "placeType") == 25 || objc_msgSend(v4, "placeType") == 27 || objc_msgSend(v4, "placeType") == 31 || objc_msgSend(v4, "placeType") == 32 || objc_msgSend(v4, "placeType") == 33 || objc_msgSend(v4, "bundleType") == 2 || objc_msgSend(v4, "photoTrait") == 9 || objc_msgSend(v4, "photoTrait") == 10 || objc_msgSend(v4, "photoTrait") == 11 || objc_msgSend(v4, "photoTrait") == 14 || objc_msgSend(v4, "photoTrait") == 15 || objc_msgSend(v4, "photoTrait") == 17 || objc_msgSend(v4, "photoTrait") == 25 || objc_msgSend(v4, "photoTrait") == 26 || objc_msgSend(v4, "photoTrait") == 27 || objc_msgSend(v4, "photoTrait") == 28 || objc_msgSend(v4, "photoTrait") == 29 || objc_msgSend(v4, "photoTrait") == 30 || objc_msgSend(v4, "photoTrait") == 31 || objc_msgSend(v4, "photoTrait") == 32 || objc_msgSend(v4, "photoTrait") == 33 || objc_msgSend(v4, "photoTrait") == 34 || objc_msgSend(v4, "photoTrait") == 35 || objc_msgSend(v4, "photoTrait") == 36 || objc_msgSend(v4, "photoTrait") == 37 || objc_msgSend(v4, "photoTrait") == 38 || objc_msgSend(v4, "photoTrait") == 42 || objc_msgSend(v4, "photoTrait") == 43 || objc_msgSend(v4, "photoTrait") == 44 || objc_msgSend(v4, "photoTrait") == 45 || objc_msgSend(v4, "photoTrait") == 46 || objc_msgSend(v4, "photoTrait") == 47 || objc_msgSend(v4, "photoTrait") == 48 || objc_msgSend(v4, "photoTrait") == 49 || objc_msgSend(v4, "photoTrait") == 50 || objc_msgSend(v4, "photoTrait") == 51 || objc_msgSend(v4, "photoTrait") == 54 || objc_msgSend(v4, "photoTrait") == 55 || objc_msgSend(v4, "photoTrait") == 56 || objc_msgSend(v4, "photoTrait") == 57 || objc_msgSend(v4, "photoTrait") == 58 || objc_msgSend(v4, "photoTrait") == 60 || objc_msgSend(v4, "photoTrait") == 61 || objc_msgSend(v4, "photoTrait") == 65 || objc_msgSend(v4, "photoTrait") == 66 || objc_msgSend(v4, "photoTrait") == 70 || objc_msgSend(v4, "photoTrait") == 72 || objc_msgSend(v4, "photoTrait") == 73 || objc_msgSend(v4, "photoTrait") == 74 || objc_msgSend(v4, "photoTrait") == 75 || objc_msgSend(v4, "photoTrait") == 77 || objc_msgSend(v4, "photoTrait") == 78 || objc_msgSend(v4, "photoTrait") == 79 || objc_msgSend(v4, "photoTrait") == 82 || objc_msgSend(v4, "photoTrait") == 83 || objc_msgSend(v4, "photoTrait") == 2 || objc_msgSend(v4, "placeType") == 35 || objc_msgSend(v4, "placeType") == 36)
+  v16 = contentCopy;
+  if ([contentCopy activityType] || objc_msgSend(contentCopy, "placeType") == 5 || objc_msgSend(contentCopy, "placeType") == 8 || objc_msgSend(contentCopy, "placeType") == 11 || objc_msgSend(contentCopy, "placeType") == 15 || objc_msgSend(contentCopy, "placeType") == 21 || objc_msgSend(contentCopy, "placeType") == 25 || objc_msgSend(contentCopy, "placeType") == 27 || objc_msgSend(contentCopy, "placeType") == 31 || objc_msgSend(contentCopy, "placeType") == 32 || objc_msgSend(contentCopy, "placeType") == 33 || objc_msgSend(contentCopy, "bundleType") == 2 || objc_msgSend(contentCopy, "photoTrait") == 9 || objc_msgSend(contentCopy, "photoTrait") == 10 || objc_msgSend(contentCopy, "photoTrait") == 11 || objc_msgSend(contentCopy, "photoTrait") == 14 || objc_msgSend(contentCopy, "photoTrait") == 15 || objc_msgSend(contentCopy, "photoTrait") == 17 || objc_msgSend(contentCopy, "photoTrait") == 25 || objc_msgSend(contentCopy, "photoTrait") == 26 || objc_msgSend(contentCopy, "photoTrait") == 27 || objc_msgSend(contentCopy, "photoTrait") == 28 || objc_msgSend(contentCopy, "photoTrait") == 29 || objc_msgSend(contentCopy, "photoTrait") == 30 || objc_msgSend(contentCopy, "photoTrait") == 31 || objc_msgSend(contentCopy, "photoTrait") == 32 || objc_msgSend(contentCopy, "photoTrait") == 33 || objc_msgSend(contentCopy, "photoTrait") == 34 || objc_msgSend(contentCopy, "photoTrait") == 35 || objc_msgSend(contentCopy, "photoTrait") == 36 || objc_msgSend(contentCopy, "photoTrait") == 37 || objc_msgSend(contentCopy, "photoTrait") == 38 || objc_msgSend(contentCopy, "photoTrait") == 42 || objc_msgSend(contentCopy, "photoTrait") == 43 || objc_msgSend(contentCopy, "photoTrait") == 44 || objc_msgSend(contentCopy, "photoTrait") == 45 || objc_msgSend(contentCopy, "photoTrait") == 46 || objc_msgSend(contentCopy, "photoTrait") == 47 || objc_msgSend(contentCopy, "photoTrait") == 48 || objc_msgSend(contentCopy, "photoTrait") == 49 || objc_msgSend(contentCopy, "photoTrait") == 50 || objc_msgSend(contentCopy, "photoTrait") == 51 || objc_msgSend(contentCopy, "photoTrait") == 54 || objc_msgSend(contentCopy, "photoTrait") == 55 || objc_msgSend(contentCopy, "photoTrait") == 56 || objc_msgSend(contentCopy, "photoTrait") == 57 || objc_msgSend(contentCopy, "photoTrait") == 58 || objc_msgSend(contentCopy, "photoTrait") == 60 || objc_msgSend(contentCopy, "photoTrait") == 61 || objc_msgSend(contentCopy, "photoTrait") == 65 || objc_msgSend(contentCopy, "photoTrait") == 66 || objc_msgSend(contentCopy, "photoTrait") == 70 || objc_msgSend(contentCopy, "photoTrait") == 72 || objc_msgSend(contentCopy, "photoTrait") == 73 || objc_msgSend(contentCopy, "photoTrait") == 74 || objc_msgSend(contentCopy, "photoTrait") == 75 || objc_msgSend(contentCopy, "photoTrait") == 77 || objc_msgSend(contentCopy, "photoTrait") == 78 || objc_msgSend(contentCopy, "photoTrait") == 79 || objc_msgSend(contentCopy, "photoTrait") == 82 || objc_msgSend(contentCopy, "photoTrait") == 83 || objc_msgSend(contentCopy, "photoTrait") == 2 || objc_msgSend(contentCopy, "placeType") == 35 || objc_msgSend(contentCopy, "placeType") == 36)
   {
-    v6 = [(MOTemplateBasedContextBuilder *)self musicMoodsForUpbeatEvents];
+    musicMoodsForUpbeatEvents = [(MOTemplateBasedContextBuilder *)self musicMoodsForUpbeatEvents];
   }
 
-  else if ([v4 bundleType] == 5 || objc_msgSend(v4, "placeType") == 16)
+  else if ([contentCopy bundleType] == 5 || objc_msgSend(contentCopy, "placeType") == 16)
   {
-    v6 = [(MOTemplateBasedContextBuilder *)self musicMoodsForRelaxingEvents];
+    musicMoodsForUpbeatEvents = [(MOTemplateBasedContextBuilder *)self musicMoodsForRelaxingEvents];
   }
 
   else
   {
-    v6 = [(MOTemplateBasedContextBuilder *)self musicMoodsForGeneralEvents];
+    musicMoodsForUpbeatEvents = [(MOTemplateBasedContextBuilder *)self musicMoodsForGeneralEvents];
   }
 
-  v7 = v6;
-  [v5 addObjectsFromArray:v6];
+  v7 = musicMoodsForUpbeatEvents;
+  [v5 addObjectsFromArray:musicMoodsForUpbeatEvents];
 
   v20 = 0u;
   v21 = 0u;

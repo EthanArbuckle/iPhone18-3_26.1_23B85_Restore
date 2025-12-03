@@ -1,5 +1,5 @@
 @interface LogoImageView
-- (_TtC13InCallService13LogoImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC13InCallService13LogoImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (void)layoutSubviews;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100232018();
 }
 
-- (_TtC13InCallService13LogoImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC13InCallService13LogoImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
-  v5 = a3;
-  v6 = a4;
+  imageCopy = image;
+  highlightedImageCopy = highlightedImage;
   sub_100232170();
 }
 

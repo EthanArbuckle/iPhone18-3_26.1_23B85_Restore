@@ -1,19 +1,19 @@
 @interface MNLocationTracker
 - (MNLocationTracker)init;
-- (MNLocationTracker)initWithNavigationSession:(id)a3;
+- (MNLocationTracker)initWithNavigationSession:(id)session;
 - (MNLocationTrackerDelegate)delegate;
 - (MNNavigationSession)navigationSession;
-- (id)matchedLocationForLocation:(id)a3;
+- (id)matchedLocationForLocation:(id)location;
 - (int)transportType;
-- (void)_roadFeaturesForFeature:(id)a3 outRoadName:(id *)a4 outShieldText:(id *)a5 outShieldType:(int64_t *)a6;
-- (void)_setTargetLegIndex:(unint64_t)a3;
-- (void)_updateArrivalInfo:(id)a3 previousState:(int64_t)a4;
+- (void)_roadFeaturesForFeature:(id)feature outRoadName:(id *)name outShieldText:(id *)text outShieldType:(int64_t *)type;
+- (void)_setTargetLegIndex:(unint64_t)index;
+- (void)_updateArrivalInfo:(id)info previousState:(int64_t)state;
 - (void)dealloc;
-- (void)insertWaypoint:(id)a3 completionHandler:(id)a4;
-- (void)removeWaypointAtIndex:(unint64_t)a3 completionHandler:(id)a4;
-- (void)rerouteWithWaypoints:(id)a3 completionHandler:(id)a4;
-- (void)startTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4;
-- (void)updateDestination:(id)a3 completionHandler:(id)a4;
+- (void)insertWaypoint:(id)waypoint completionHandler:(id)handler;
+- (void)removeWaypointAtIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)rerouteWithWaypoints:(id)waypoints completionHandler:(id)handler;
+- (void)startTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index;
+- (void)updateDestination:(id)destination completionHandler:(id)handler;
 @end
 
 @implementation MNLocationTracker
@@ -32,17 +32,17 @@
   return WeakRetained;
 }
 
-- (void)_roadFeaturesForFeature:(id)a3 outRoadName:(id *)a4 outShieldText:(id *)a5 outShieldType:(int64_t *)a6
+- (void)_roadFeaturesForFeature:(id)feature outRoadName:(id *)name outShieldText:(id *)text outShieldType:(int64_t *)type
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (v10)
+  featureCopy = feature;
+  v11 = featureCopy;
+  if (featureCopy)
   {
-    v12 = [v10 feature];
-    if (v12)
+    feature = [featureCopy feature];
+    if (feature)
     {
-      v13 = v12;
+      v13 = feature;
       if (self->_localizeRoadNames)
       {
         GEOFeatureGetLocalizedLabel();
@@ -54,30 +54,30 @@
       }
 
       GEOFeatureGetLocalizedShield();
-      v14 = [v13 attributes];
-      v15 = [v14 isRamp];
+      attributes = [v13 attributes];
+      isRamp = [attributes isRamp];
 
-      if (v15)
+      if (isRamp)
       {
-        v16 = [v13 attributes];
-        v17 = [v16 rampType];
+        attributes2 = [v13 attributes];
+        rampType = [attributes2 rampType];
 
-        switch(v17)
+        switch(rampType)
         {
           case 2:
-            v23 = [v13 attributes];
-            v24 = [v23 rampDirection];
+            attributes3 = [v13 attributes];
+            rampDirection = [attributes3 rampDirection];
 
             v21 = 0;
-            if (v24 > 1)
+            if (rampDirection > 1)
             {
-              if (v24 == 2)
+              if (rampDirection == 2)
               {
                 v22 = @"Freeway Off Ramp";
                 goto LABEL_44;
               }
 
-              if (v24 != 3)
+              if (rampDirection != 3)
               {
                 goto LABEL_45;
               }
@@ -85,30 +85,30 @@
 
             else
             {
-              if (v24)
+              if (rampDirection)
               {
-                if (v24 == 1)
+                if (rampDirection == 1)
                 {
                   v22 = @"Freeway On Ramp";
                   goto LABEL_44;
                 }
 
 LABEL_45:
-                if (a4)
+                if (name)
                 {
                   v27 = v21;
-                  *a4 = v21;
+                  *name = v21;
                 }
 
-                if (a5)
+                if (text)
                 {
                   v28 = 0;
-                  *a5 = 0;
+                  *text = 0;
                 }
 
-                if (a6)
+                if (type)
                 {
-                  *a6 = 0;
+                  *type = 0;
                 }
 
                 goto LABEL_52;
@@ -131,19 +131,19 @@ LABEL_45:
             goto LABEL_44;
           case 1:
 LABEL_19:
-            v19 = [v13 attributes];
-            v20 = [v19 rampDirection];
+            attributes4 = [v13 attributes];
+            rampDirection2 = [attributes4 rampDirection];
 
             v21 = 0;
-            if (v20 > 1)
+            if (rampDirection2 > 1)
             {
-              if (v20 == 2)
+              if (rampDirection2 == 2)
               {
                 v22 = @"Off Ramp";
                 goto LABEL_44;
               }
 
-              if (v20 != 3)
+              if (rampDirection2 != 3)
               {
                 goto LABEL_45;
               }
@@ -151,9 +151,9 @@ LABEL_19:
 
             else
             {
-              if (v20)
+              if (rampDirection2)
               {
-                if (v20 == 1)
+                if (rampDirection2 == 1)
                 {
                   v22 = @"On Ramp";
 LABEL_44:
@@ -201,19 +201,19 @@ LABEL_44:
     }
   }
 
-  if (a4)
+  if (name)
   {
-    *a4 = 0;
+    *name = 0;
   }
 
-  if (a5)
+  if (text)
   {
-    *a5 = 0;
+    *text = 0;
   }
 
-  if (a6)
+  if (type)
   {
-    *a6 = 0;
+    *type = 0;
   }
 
 LABEL_52:
@@ -221,30 +221,30 @@ LABEL_52:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateArrivalInfo:(id)a3 previousState:(int64_t)a4
+- (void)_updateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v7 = a3;
+  infoCopy = info;
   p_arrivalInfo = &self->_arrivalInfo;
-  if (self->_arrivalInfo != v7)
+  if (self->_arrivalInfo != infoCopy)
   {
-    v10 = v7;
-    objc_storeStrong(p_arrivalInfo, a3);
+    v10 = infoCopy;
+    objc_storeStrong(p_arrivalInfo, info);
     if ([(MNArrivalInfo *)v10 isInArrivalState])
     {
       self->_hasVisitedFirstStop = 1;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained locationTracker:self didUpdateArrivalInfo:v10 previousState:a4];
+    [WeakRetained locationTracker:self didUpdateArrivalInfo:v10 previousState:state];
   }
 
   MEMORY[0x1EEE66BE0](p_arrivalInfo);
 }
 
-- (void)_setTargetLegIndex:(unint64_t)a3
+- (void)_setTargetLegIndex:(unint64_t)index
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_targetLegIndex != a3)
+  if (self->_targetLegIndex != index)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -253,28 +253,28 @@ LABEL_52:
       v9[0] = 67109376;
       v9[1] = targetLegIndex;
       v10 = 1024;
-      v11 = a3;
+      indexCopy = index;
       _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "Changing target leg index from %d to %d.", v9, 0xEu);
     }
 
-    self->_targetLegIndex = a3;
+    self->_targetLegIndex = index;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained locationTracker:self didUpdateTargetLegIndex:a3];
+    [WeakRetained locationTracker:self didUpdateTargetLegIndex:index];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)matchedLocationForLocation:(id)a3
+- (id)matchedLocationForLocation:(id)location
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v5 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uuid];
+    uuid = [locationCopy uuid];
     v19 = 138412290;
-    v20 = v6;
+    v20 = uuid;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in MNLocationTracker::matchedLocationForLocation:", &v19, 0xCu);
   }
 
@@ -288,15 +288,15 @@ LABEL_52:
     _os_signpost_emit_with_name_impl(&dword_1D311E000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "MatchedLocationForLocation", "", &v19, 2u);
   }
 
-  v11 = [(MNLocationTracker *)self _matchedLocationForLocation:v4];
+  v11 = [(MNLocationTracker *)self _matchedLocationForLocation:locationCopy];
   if (v11)
   {
     v12 = MNGetPuckTrackingLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v11 uuid];
+      uuid2 = [v11 uuid];
       v19 = 138412290;
-      v20 = v13;
+      v20 = uuid2;
       _os_log_impl(&dword_1D311E000, v12, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - calling didUpdateMatchedLocation:", &v19, 0xCu);
     }
 
@@ -317,49 +317,49 @@ LABEL_52:
   return v11;
 }
 
-- (void)updateDestination:(id)a3 completionHandler:(id)a4
+- (void)updateDestination:(id)destination completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)removeWaypointAtIndex:(unint64_t)a3 completionHandler:(id)a4
+- (void)removeWaypointAtIndex:(unint64_t)index completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)insertWaypoint:(id)a3 completionHandler:(id)a4
+- (void)insertWaypoint:(id)waypoint completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)rerouteWithWaypoints:(id)a3 completionHandler:(id)a4
+- (void)rerouteWithWaypoints:(id)waypoints completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)startTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4
+- (void)startTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index
 {
-  v5 = [(MNNavigationSessionState *)self->_navigationSessionState currentRouteInfo:a3];
-  v10 = [v5 route];
+  v5 = [(MNNavigationSessionState *)self->_navigationSessionState currentRouteInfo:location];
+  route = [v5 route];
 
-  v6 = [v10 routeInitializerData];
-  v7 = [v6 directionsRequest];
-  v8 = [v7 tripInfo];
-  v9 = [v8 hasVisitedFirstStop];
+  routeInitializerData = [route routeInitializerData];
+  directionsRequest = [routeInitializerData directionsRequest];
+  tripInfo = [directionsRequest tripInfo];
+  hasVisitedFirstStop = [tripInfo hasVisitedFirstStop];
 
-  if (v9)
+  if (hasVisitedFirstStop)
   {
     self->_hasVisitedFirstStop = 1;
   }
@@ -392,27 +392,27 @@ LABEL_52:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E696AA70] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA70] object:0];
 
   v4.receiver = self;
   v4.super_class = MNLocationTracker;
   [(MNLocationTracker *)&v4 dealloc];
 }
 
-- (MNLocationTracker)initWithNavigationSession:(id)a3
+- (MNLocationTracker)initWithNavigationSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(MNLocationTracker *)self init];
   v6 = v5;
   if (v5)
   {
     v5->_state = 0;
-    objc_storeWeak(&v5->_navigationSession, v4);
+    objc_storeWeak(&v5->_navigationSession, sessionCopy);
     v6->_targetLegIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = [v4 auditToken];
+    auditToken = [sessionCopy auditToken];
     auditToken = v6->_auditToken;
-    v6->_auditToken = v7;
+    v6->_auditToken = auditToken;
 
     v9 = v6;
   }
@@ -429,8 +429,8 @@ LABEL_52:
   if (v2)
   {
     [(MNLocationTracker *)v2 _updateShouldLocalizeRoadNames];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__defaultsDidChange name:*MEMORY[0x1E696AA70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__defaultsDidChange name:*MEMORY[0x1E696AA70] object:0];
   }
 
   return v3;

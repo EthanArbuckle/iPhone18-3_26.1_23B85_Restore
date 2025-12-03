@@ -1,33 +1,33 @@
 @interface ATXPBClientModelCacheUpdate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSuggestions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestions:(id)suggestions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBClientModelCacheUpdate
 
-- (void)addSuggestions:(id)a3
+- (void)addSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   suggestions = self->_suggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!suggestions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_suggestions;
     self->_suggestions = v6;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     suggestions = self->_suggestions;
   }
 
-  [(NSMutableArray *)suggestions addObject:v4];
+  [(NSMutableArray *)suggestions addObject:suggestionsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBClientModelCacheUpdate;
   v4 = [(ATXPBClientModelCacheUpdate *)&v8 description];
-  v5 = [(ATXPBClientModelCacheUpdate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBClientModelCacheUpdate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uuidString = self->_uuidString;
   if (uuidString)
   {
-    [v3 setObject:uuidString forKey:@"uuidString"];
+    [dictionary setObject:uuidString forKey:@"uuidString"];
   }
 
   if ([(NSMutableArray *)self->_suggestions count])
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -109,8 +109,8 @@
   responseForRequestForSuggestions = self->_responseForRequestForSuggestions;
   if (responseForRequestForSuggestions)
   {
-    v17 = [(ATXPBResponseForRequestForSuggestions *)responseForRequestForSuggestions dictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"responseForRequestForSuggestions"];
+    dictionaryRepresentation2 = [(ATXPBResponseForRequestForSuggestions *)responseForRequestForSuggestions dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"responseForRequestForSuggestions"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -118,10 +118,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
     PBDataWriterWriteStringField();
@@ -183,39 +183,39 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
-    [v9 setUuidString:?];
+    [toCopy setUuidString:?];
   }
 
   if ([(ATXPBClientModelCacheUpdate *)self suggestionsCount])
   {
-    [v9 clearSuggestions];
-    v4 = [(ATXPBClientModelCacheUpdate *)self suggestionsCount];
-    if (v4)
+    [toCopy clearSuggestions];
+    suggestionsCount = [(ATXPBClientModelCacheUpdate *)self suggestionsCount];
+    if (suggestionsCount)
     {
-      v5 = v4;
+      v5 = suggestionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBClientModelCacheUpdate *)self suggestionsAtIndex:i];
-        [v9 addSuggestions:v7];
+        [toCopy addSuggestions:v7];
       }
     }
   }
 
   if (self->_feedbackMetadata)
   {
-    [v9 setFeedbackMetadata:?];
+    [toCopy setFeedbackMetadata:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_clientModelId)
   {
-    [v9 setClientModelId:?];
-    v8 = v9;
+    [toCopy setClientModelId:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -226,16 +226,16 @@
 
   if (self->_responseForRequestForSuggestions)
   {
-    [v9 setResponseForRequestForSuggestions:?];
-    v8 = v9;
+    [toCopy setResponseForRequestForSuggestions:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuidString copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -259,7 +259,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v22 + 1) + 8 * v12) copyWithZone:{a3, v22}];
+        v13 = [*(*(&v22 + 1) + 8 * v12) copyWithZone:{zone, v22}];
         [v5 addSuggestions:v13];
 
         ++v12;
@@ -272,11 +272,11 @@
     while (v10);
   }
 
-  v14 = [(NSData *)self->_feedbackMetadata copyWithZone:a3];
+  v14 = [(NSData *)self->_feedbackMetadata copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
-  v16 = [(NSString *)self->_clientModelId copyWithZone:a3];
+  v16 = [(NSString *)self->_clientModelId copyWithZone:zone];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
@@ -286,7 +286,7 @@
     *(v5 + 56) |= 1u;
   }
 
-  v18 = [(ATXPBResponseForRequestForSuggestions *)self->_responseForRequestForSuggestions copyWithZone:a3, v22];
+  v18 = [(ATXPBResponseForRequestForSuggestions *)self->_responseForRequestForSuggestions copyWithZone:zone, v22];
   v19 = *(v5 + 32);
   *(v5 + 32) = v18;
 
@@ -294,16 +294,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   uuidString = self->_uuidString;
-  if (uuidString | *(v4 + 6))
+  if (uuidString | *(equalCopy + 6))
   {
     if (![(NSString *)uuidString isEqual:?])
     {
@@ -312,7 +312,7 @@
   }
 
   suggestions = self->_suggestions;
-  if (suggestions | *(v4 + 5))
+  if (suggestions | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)suggestions isEqual:?])
     {
@@ -321,7 +321,7 @@
   }
 
   feedbackMetadata = self->_feedbackMetadata;
-  if (feedbackMetadata | *(v4 + 3))
+  if (feedbackMetadata | *(equalCopy + 3))
   {
     if (![(NSData *)feedbackMetadata isEqual:?])
     {
@@ -330,7 +330,7 @@
   }
 
   clientModelId = self->_clientModelId;
-  if (clientModelId | *(v4 + 2))
+  if (clientModelId | *(equalCopy + 2))
   {
     if (![(NSString *)clientModelId isEqual:?])
     {
@@ -338,16 +338,16 @@
     }
   }
 
-  v9 = *(v4 + 56);
+  v9 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_cacheCreationDate != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_cacheCreationDate != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_17:
     v11 = 0;
@@ -355,7 +355,7 @@ LABEL_17:
   }
 
   responseForRequestForSuggestions = self->_responseForRequestForSuggestions;
-  if (responseForRequestForSuggestions | *(v4 + 4))
+  if (responseForRequestForSuggestions | *(equalCopy + 4))
   {
     v11 = [(ATXPBResponseForRequestForSuggestions *)responseForRequestForSuggestions isEqual:?];
   }
@@ -412,11 +412,11 @@ LABEL_18:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ [(ATXPBResponseForRequestForSuggestions *)self->_responseForRequestForSuggestions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(ATXPBClientModelCacheUpdate *)self setUuidString:?];
   }
@@ -425,7 +425,7 @@ LABEL_18:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -449,24 +449,24 @@ LABEL_18:
     while (v7);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXPBClientModelCacheUpdate *)self setFeedbackMetadata:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXPBClientModelCacheUpdate *)self setClientModelId:?];
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_cacheCreationDate = *(v4 + 1);
+    self->_cacheCreationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   responseForRequestForSuggestions = self->_responseForRequestForSuggestions;
-  v11 = *(v4 + 4);
+  v11 = *(fromCopy + 4);
   if (responseForRequestForSuggestions)
   {
     if (v11)

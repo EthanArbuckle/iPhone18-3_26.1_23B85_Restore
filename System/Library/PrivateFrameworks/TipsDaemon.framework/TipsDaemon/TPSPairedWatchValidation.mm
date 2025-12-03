@@ -1,55 +1,55 @@
 @interface TPSPairedWatchValidation
-- (TPSPairedWatchValidation)initWithCapability:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (TPSPairedWatchValidation)initWithCapability:(id)capability;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSPairedWatchValidation
 
-- (TPSPairedWatchValidation)initWithCapability:(id)a3
+- (TPSPairedWatchValidation)initWithCapability:(id)capability
 {
-  v5 = a3;
+  capabilityCopy = capability;
   v9.receiver = self;
   v9.super_class = TPSPairedWatchValidation;
   v6 = [(TPSPairedWatchValidation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_capability, a3);
+    objc_storeStrong(&v6->_capability, capability);
   }
 
   return v7;
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277D2BCF8];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 getActivePairedDevice];
+  completionCopy = completion;
+  sharedInstance = [v4 sharedInstance];
+  getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-  if (v7)
+  if (getActivePairedDevice)
   {
-    v8 = [(TPSPairedWatchValidation *)self capability];
+    capability = [(TPSPairedWatchValidation *)self capability];
 
-    if (v8)
+    if (capability)
     {
-      v9 = [(TPSPairedWatchValidation *)self capability];
-      v8 = [v7 supportsCapability:v9];
+      capability2 = [(TPSPairedWatchValidation *)self capability];
+      capability = [getActivePairedDevice supportsCapability:capability2];
     }
   }
 
   else
   {
-    v8 = 0;
+    capability = 0;
   }
 
-  v10 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSPairedWatchValidation *)self validateWithCompletion:v8, v10];
+    [(TPSPairedWatchValidation *)self validateWithCompletion:capability, targeting];
   }
 
-  v5[2](v5, v8, 0);
+  completionCopy[2](completionCopy, capability, 0);
 }
 
 - (void)validateWithCompletion:(NSObject *)a3 .cold.1(void *a1, char a2, NSObject *a3)

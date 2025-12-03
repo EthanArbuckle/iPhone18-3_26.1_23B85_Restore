@@ -2,13 +2,13 @@
 + (id)serviceConnection;
 - (_KSTextReplacementServerConnection)init;
 - (id)textReplacementEntries;
-- (void)addEntries:(id)a3 removeEntries:(id)a4 withReply:(id)a5;
-- (void)cancelPendingUpdatesWithReply:(id)a3;
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries withReply:(id)reply;
+- (void)cancelPendingUpdatesWithReply:(id)reply;
 - (void)dealloc;
-- (void)queryTextReplacementEntriesWithReply:(id)a3;
-- (void)queryTextReplacementsWithPredicate:(id)a3 reply:(id)a4;
+- (void)queryTextReplacementEntriesWithReply:(id)reply;
+- (void)queryTextReplacementsWithPredicate:(id)predicate reply:(id)reply;
 - (void)removeAllEntries;
-- (void)requestSyncWithReply:(id)a3;
+- (void)requestSyncWithReply:(id)reply;
 @end
 
 @implementation _KSTextReplacementServerConnection
@@ -50,80 +50,80 @@
   return v2;
 }
 
-- (void)addEntries:(id)a3 removeEntries:(id)a4 withReply:(id)a5
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries withReply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   serviceConnection = self->_serviceConnection;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(NSXPCConnection *)serviceConnection remoteObjectProxy];
+  removeEntriesCopy = removeEntries;
+  entriesCopy = entries;
+  remoteObjectProxy = [(NSXPCConnection *)serviceConnection remoteObjectProxy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73___KSTextReplacementServerConnection_addEntries_removeEntries_withReply___block_invoke;
   v14[3] = &unk_2797F6FC0;
-  v15 = v8;
-  v13 = v8;
-  [v12 addEntries:v11 removeEntries:v10 withReply:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [remoteObjectProxy addEntries:entriesCopy removeEntries:removeEntriesCopy withReply:v14];
 }
 
 - (void)removeAllEntries
 {
-  v2 = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
-  [v2 removeAllEntries];
+  remoteObjectProxy = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
+  [remoteObjectProxy removeAllEntries];
 }
 
-- (void)requestSyncWithReply:(id)a3
+- (void)requestSyncWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
+  replyCopy = reply;
+  remoteObjectProxy = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59___KSTextReplacementServerConnection_requestSyncWithReply___block_invoke;
   v7[3] = &unk_2797F6FE8;
-  v8 = v4;
-  v6 = v4;
-  [v5 requestSyncWithReply:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [remoteObjectProxy requestSyncWithReply:v7];
 }
 
-- (void)cancelPendingUpdatesWithReply:(id)a3
+- (void)cancelPendingUpdatesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
+  replyCopy = reply;
+  remoteObjectProxy = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68___KSTextReplacementServerConnection_cancelPendingUpdatesWithReply___block_invoke;
   v7[3] = &unk_2797F6FC0;
-  v8 = v4;
-  v6 = v4;
-  [v5 cancelPendingUpdatesWithReply:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [remoteObjectProxy cancelPendingUpdatesWithReply:v7];
 }
 
-- (void)queryTextReplacementEntriesWithReply:(id)a3
+- (void)queryTextReplacementEntriesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
+  replyCopy = reply;
+  remoteObjectProxy = [(NSXPCConnection *)self->_serviceConnection remoteObjectProxy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75___KSTextReplacementServerConnection_queryTextReplacementEntriesWithReply___block_invoke;
   v7[3] = &unk_2797F7058;
-  v8 = v4;
-  v6 = v4;
-  [v5 queryTextReplacementEntriesWithReply:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [remoteObjectProxy queryTextReplacementEntriesWithReply:v7];
 }
 
-- (void)queryTextReplacementsWithPredicate:(id)a3 reply:(id)a4
+- (void)queryTextReplacementsWithPredicate:(id)predicate reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   serviceConnection = self->_serviceConnection;
-  v8 = a3;
-  v9 = [(NSXPCConnection *)serviceConnection remoteObjectProxy];
+  predicateCopy = predicate;
+  remoteObjectProxy = [(NSXPCConnection *)serviceConnection remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79___KSTextReplacementServerConnection_queryTextReplacementsWithPredicate_reply___block_invoke;
   v11[3] = &unk_2797F7058;
-  v12 = v6;
-  v10 = v6;
-  [v9 queryTextReplacementsWithPredicate:v8 reply:v11];
+  v12 = replyCopy;
+  v10 = replyCopy;
+  [remoteObjectProxy queryTextReplacementsWithPredicate:predicateCopy reply:v11];
 }
 
 - (id)textReplacementEntries
@@ -139,7 +139,7 @@
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   serviceConnection = self->_serviceConnection;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;

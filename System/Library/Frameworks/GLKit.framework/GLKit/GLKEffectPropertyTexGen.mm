@@ -2,20 +2,20 @@
 - (void)bind;
 - (void)dealloc;
 - (void)initializeMasks;
-- (void)setMode:(int)a3;
-- (void)setModeNameString:(char *)a3;
-- (void)setPlane:(float *)a3;
-- (void)setPlaneNameString:(char *)a3;
+- (void)setMode:(int)mode;
+- (void)setModeNameString:(char *)string;
+- (void)setPlane:(float *)plane;
+- (void)setPlaneNameString:(char *)string;
 - (void)setShaderBindings;
 @end
 
 @implementation GLKEffectPropertyTexGen
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
-  if (self->_mode != a3 || ![(GLKEffectProperty *)self masksInitialized])
+  if (self->_mode != mode || ![(GLKEffectProperty *)self masksInitialized])
   {
-    self->_mode = a3;
+    self->_mode = mode;
     _normalizedNormalsMask(*(self->super._prv + 4));
     _vNormalEyeMask(*(self->super._prv + 4));
     _vPositionEyeMask(*(self->super._prv + 4));
@@ -26,19 +26,19 @@
   }
 }
 
-- (void)setPlane:(float *)a3
+- (void)setPlane:(float *)plane
 {
   plane = self->_plane;
-  if (*a3 != *plane || a3[1] != plane[1] || a3[2] != plane[2] || a3[3] != plane[3])
+  if (*plane != *plane || plane[1] != plane[1] || plane[2] != plane[2] || plane[3] != plane[3])
   {
-    *plane = *a3;
+    *plane = *plane;
     v5 = [(GLKEffectProperty *)self dirtyUniforms]| 0x800000;
 
     [(GLKEffectProperty *)self setDirtyUniforms:v5];
   }
 }
 
-- (void)setModeNameString:(char *)a3
+- (void)setModeNameString:(char *)string
 {
   modeNameString = self->_modeNameString;
   if (modeNameString)
@@ -46,10 +46,10 @@
     free(modeNameString);
   }
 
-  self->_modeNameString = strdup(a3);
+  self->_modeNameString = strdup(string);
 }
 
-- (void)setPlaneNameString:(char *)a3
+- (void)setPlaneNameString:(char *)string
 {
   planeNameString = self->_planeNameString;
   if (planeNameString)
@@ -57,7 +57,7 @@
     free(planeNameString);
   }
 
-  self->_planeNameString = strdup(a3);
+  self->_planeNameString = strdup(string);
 }
 
 - (void)setShaderBindings

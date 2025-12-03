@@ -1,11 +1,11 @@
 @interface CWFEAP8021X
 - (BOOL)isMonitoringEvents;
 - (CWFEAP8021X)init;
-- (CWFEAP8021X)initWithInterfaceName:(id)a3;
-- (id)clientStatus:(id *)a3;
-- (id)controlMode:(id *)a3;
-- (id)controlState:(id *)a3;
-- (id)supplicantState:(id *)a3;
+- (CWFEAP8021X)initWithInterfaceName:(id)name;
+- (id)clientStatus:(id *)status;
+- (id)controlMode:(id *)mode;
+- (id)controlState:(id *)state;
+- (id)supplicantState:(id *)state;
 - (void)__startEventMonitoring;
 - (void)dealloc;
 - (void)startEventMonitoring;
@@ -14,14 +14,14 @@
 
 @implementation CWFEAP8021X
 
-- (CWFEAP8021X)initWithInterfaceName:(id)a3
+- (CWFEAP8021X)initWithInterfaceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = CWFEAP8021X;
   v5 = [(CWFEAP8021X *)&v18 init];
   v6 = v5;
-  if (!v4)
+  if (!nameCopy)
   {
     goto LABEL_6;
   }
@@ -31,7 +31,7 @@
     goto LABEL_6;
   }
 
-  v7 = [v4 copy];
+  v7 = [nameCopy copy];
   interfaceName = v6->_interfaceName;
   v6->_interfaceName = v7;
 
@@ -84,7 +84,7 @@ LABEL_6:
   v16[1] = *MEMORY[0x1E69E9840];
   if (sub_1E0D2BEEC())
   {
-    v3 = [(NSString *)self->_interfaceName UTF8String];
+    uTF8String = [(NSString *)self->_interfaceName UTF8String];
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
@@ -101,14 +101,14 @@ LABEL_6:
     _Block_object_dispose(&v12, 8);
     if (!v4)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef soft_EAPOLControlKeyCreate(const char *)"];
-      [v10 handleFailureInFunction:v11 file:@"CWFEAP8021X.m" lineNumber:33 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v11 file:@"CWFEAP8021X.m" lineNumber:33 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
-    v6 = v4(v3);
+    v6 = v4(uTF8String);
     v7 = v6;
     if (v6)
     {
@@ -167,7 +167,7 @@ LABEL_6:
   return v3;
 }
 
-- (id)controlState:(id *)a3
+- (id)controlState:(id *)state
 {
   v11 = 0;
   cf = 0;
@@ -176,20 +176,20 @@ LABEL_6:
     sub_1E0D2BA28([(NSString *)self->_interfaceName UTF8String], &v11, &cf);
     if (v5)
     {
-      if (a3)
+      if (state)
       {
         v7 = *MEMORY[0x1E696A768];
         v8 = v5;
         v9 = CWFErrorDescription(*MEMORY[0x1E696A768], v5);
-        *a3 = CWFErrorWithDescription(v7, v8, v9);
+        *state = CWFErrorWithDescription(v7, v8, v9);
 
-        a3 = 0;
+        state = 0;
       }
     }
 
     else
     {
-      a3 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11];
+      state = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11];
     }
 
     if (cf)
@@ -200,13 +200,13 @@ LABEL_6:
 
   else
   {
-    a3 = 0;
+    state = 0;
   }
 
-  return a3;
+  return state;
 }
 
-- (id)supplicantState:(id *)a3
+- (id)supplicantState:(id *)state
 {
   v11 = 0;
   cf = 0;
@@ -215,20 +215,20 @@ LABEL_6:
     sub_1E0D2BA28([(NSString *)self->_interfaceName UTF8String], &v11, &cf);
     if (v5)
     {
-      if (a3)
+      if (state)
       {
         v7 = *MEMORY[0x1E696A768];
         v8 = v5;
         v9 = CWFErrorDescription(*MEMORY[0x1E696A768], v5);
-        *a3 = CWFErrorWithDescription(v7, v8, v9);
+        *state = CWFErrorWithDescription(v7, v8, v9);
 
-        a3 = 0;
+        state = 0;
       }
     }
 
     else
     {
-      a3 = [cf objectForKeyedSubscript:@"SupplicantState"];
+      state = [cf objectForKeyedSubscript:@"SupplicantState"];
     }
 
     if (cf)
@@ -239,13 +239,13 @@ LABEL_6:
 
   else
   {
-    a3 = 0;
+    state = 0;
   }
 
-  return a3;
+  return state;
 }
 
-- (id)controlMode:(id *)a3
+- (id)controlMode:(id *)mode
 {
   v11 = 0;
   cf = 0;
@@ -254,20 +254,20 @@ LABEL_6:
     sub_1E0D2BA28([(NSString *)self->_interfaceName UTF8String], &v11, &cf);
     if (v5)
     {
-      if (a3)
+      if (mode)
       {
         v7 = *MEMORY[0x1E696A768];
         v8 = v5;
         v9 = CWFErrorDescription(*MEMORY[0x1E696A768], v5);
-        *a3 = CWFErrorWithDescription(v7, v8, v9);
+        *mode = CWFErrorWithDescription(v7, v8, v9);
 
-        a3 = 0;
+        mode = 0;
       }
     }
 
     else
     {
-      a3 = [cf objectForKeyedSubscript:@"Mode"];
+      mode = [cf objectForKeyedSubscript:@"Mode"];
     }
 
     if (cf)
@@ -278,13 +278,13 @@ LABEL_6:
 
   else
   {
-    a3 = 0;
+    mode = 0;
   }
 
-  return a3;
+  return mode;
 }
 
-- (id)clientStatus:(id *)a3
+- (id)clientStatus:(id *)status
 {
   v11 = 0;
   cf = 0;
@@ -293,20 +293,20 @@ LABEL_6:
     sub_1E0D2BA28([(NSString *)self->_interfaceName UTF8String], &v11, &cf);
     if (v5)
     {
-      if (a3)
+      if (status)
       {
         v7 = *MEMORY[0x1E696A768];
         v8 = v5;
         v9 = CWFErrorDescription(*MEMORY[0x1E696A768], v5);
-        *a3 = CWFErrorWithDescription(v7, v8, v9);
+        *status = CWFErrorWithDescription(v7, v8, v9);
 
-        a3 = 0;
+        status = 0;
       }
     }
 
     else
     {
-      a3 = [cf objectForKeyedSubscript:@"ClientStatus"];
+      status = [cf objectForKeyedSubscript:@"ClientStatus"];
     }
 
     if (cf)
@@ -317,10 +317,10 @@ LABEL_6:
 
   else
   {
-    a3 = 0;
+    status = 0;
   }
 
-  return a3;
+  return status;
 }
 
 @end

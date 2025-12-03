@@ -1,11 +1,11 @@
 @interface _UIDiffableDataSourceUpdate
 + (id)updateDeleteAll;
-- (_UIDiffableDataSourceUpdate)initWithIdentifiers:(id)a3 sectionIdentifiers:(id)a4 action:(int64_t)a5 desinationIdentifier:(id)a6 relativePosition:(int64_t)a7 destinationIsSection:(BOOL)a8;
-- (_UIDiffableDataSourceUpdate)initWithItemIdentifiers:(id)a3 appendingToDestinationSectionIdentifier:(id)a4;
-- (_UIDiffableDataSourceUpdate)initWithReconfiguredItemIdentifiers:(id)a3;
-- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)a3 action:(int64_t)a4;
-- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)a3 action:(int64_t)a4 destinationIdentifier:(id)a5 relativePosition:(int64_t)a6;
-- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)a3 appendingToDestinationSectionIdentifier:(id)a4;
+- (_UIDiffableDataSourceUpdate)initWithIdentifiers:(id)identifiers sectionIdentifiers:(id)sectionIdentifiers action:(int64_t)action desinationIdentifier:(id)identifier relativePosition:(int64_t)position destinationIsSection:(BOOL)section;
+- (_UIDiffableDataSourceUpdate)initWithItemIdentifiers:(id)identifiers appendingToDestinationSectionIdentifier:(id)identifier;
+- (_UIDiffableDataSourceUpdate)initWithReconfiguredItemIdentifiers:(id)identifiers;
+- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)identifiers action:(int64_t)action;
+- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)identifiers action:(int64_t)action destinationIdentifier:(id)identifier relativePosition:(int64_t)position;
+- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)identifiers appendingToDestinationSectionIdentifier:(id)identifier;
 - (id)description;
 - (void)_throwIfInvalid;
 @end
@@ -26,8 +26,8 @@
         return;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:174 description:{@"Invalid update: destination for section move is the same as the source [%@] for update: %@.", self->_destinationIdentifier, self}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:174 description:{@"Invalid update: destination for section move is the same as the source [%@] for update: %@.", self->_destinationIdentifier, self}];
     }
 
     else
@@ -37,8 +37,8 @@
         return;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:176 description:{@"Invalid update: destination for item move is the same as the source [%@] for update: %@.", self->_destinationIdentifier, self}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:176 description:{@"Invalid update: destination for item move is the same as the source [%@] for update: %@.", self->_destinationIdentifier, self}];
     }
   }
 
@@ -57,8 +57,8 @@
         return;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:165 description:{@"Invalid update: destination for section operation [%@] is in the inserted section list for update: %@", self->_destinationIdentifier, self}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:165 description:{@"Invalid update: destination for section operation [%@] is in the inserted section list for update: %@", self->_destinationIdentifier, self}];
     }
 
     else
@@ -68,33 +68,33 @@
         return;
       }
 
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:169 description:{@"Invalid update: destination for insertion operation [%@] is in the insertion identifier list for update: %@.", self->_destinationIdentifier, self}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:169 description:{@"Invalid update: destination for insertion operation [%@] is in the insertion identifier list for update: %@.", self->_destinationIdentifier, self}];
     }
   }
 }
 
 + (id)updateDeleteAll
 {
-  v2 = [[a1 alloc] initWithIdentifiers:0 sectionIdentifiers:0 action:1 desinationIdentifier:0 relativePosition:2 destinationIsSection:1];
+  v2 = [[self alloc] initWithIdentifiers:0 sectionIdentifiers:0 action:1 desinationIdentifier:0 relativePosition:2 destinationIsSection:1];
   v2[11] = 1;
 
   return v2;
 }
 
-- (_UIDiffableDataSourceUpdate)initWithIdentifiers:(id)a3 sectionIdentifiers:(id)a4 action:(int64_t)a5 desinationIdentifier:(id)a6 relativePosition:(int64_t)a7 destinationIsSection:(BOOL)a8
+- (_UIDiffableDataSourceUpdate)initWithIdentifiers:(id)identifiers sectionIdentifiers:(id)sectionIdentifiers action:(int64_t)action desinationIdentifier:(id)identifier relativePosition:(int64_t)position destinationIsSection:(BOOL)section
 {
   v52 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  if (v15 && v16)
+  identifiersCopy = identifiers;
+  sectionIdentifiersCopy = sectionIdentifiers;
+  identifierCopy = identifier;
+  if (identifiersCopy && sectionIdentifiersCopy)
   {
     [MEMORY[0x277CCA890] currentHandler];
-    v38 = v37 = v17;
+    v38 = v37 = identifierCopy;
     [v38 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"!(itemIdentifiers && sectionIdentifiers)"}];
 
-    v17 = v37;
+    identifierCopy = v37;
   }
 
   v50.receiver = self;
@@ -103,14 +103,14 @@
   if (v18)
   {
     v45 = a2;
-    if (v15)
+    if (identifiersCopy)
     {
-      v19 = v15;
+      v19 = identifiersCopy;
     }
 
     else
     {
-      v19 = v16;
+      v19 = sectionIdentifiersCopy;
     }
 
     v20 = v19;
@@ -121,12 +121,12 @@
     v23 = [(NSOrderedSet *)v18->_identifiers count];
     if (v23 != [v20 count])
     {
-      v39 = v17;
-      v40 = a5;
-      v41 = a6;
-      v42 = v16;
-      v43 = a7;
-      v44 = a8;
+      v39 = identifierCopy;
+      actionCopy = action;
+      identifierCopy2 = identifier;
+      v42 = sectionIdentifiersCopy;
+      positionCopy = position;
+      sectionCopy = section;
       v24 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v25 = objc_alloc_init(MEMORY[0x277CBEB40]);
       v46 = 0u;
@@ -168,38 +168,38 @@
         while (v28);
       }
 
-      v33 = [MEMORY[0x277CCA890] currentHandler];
-      v34 = v33;
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      v34 = currentHandler;
       v35 = @"section";
-      if (v15)
+      if (identifiersCopy)
       {
         v35 = @"item";
       }
 
-      [v33 handleFailureInMethod:v45 object:v18 file:@"_UIDiffableDataSourceUpdate.m" lineNumber:81 description:{@"Fatal: supplied %@ identifiers are not unique. Duplicate identifiers: %@", v35, v25}];
+      [currentHandler handleFailureInMethod:v45 object:v18 file:@"_UIDiffableDataSourceUpdate.m" lineNumber:81 description:{@"Fatal: supplied %@ identifiers are not unique. Duplicate identifiers: %@", v35, v25}];
 
-      a8 = v44;
-      v16 = v42;
-      a7 = v43;
-      a5 = v40;
-      a6 = v41;
-      v17 = v39;
+      section = sectionCopy;
+      sectionIdentifiersCopy = v42;
+      position = positionCopy;
+      action = actionCopy;
+      identifier = identifierCopy2;
+      identifierCopy = v39;
     }
 
-    v18->_action = a5;
-    v18->_isSectionOperation = v16 != 0;
-    objc_storeStrong(&v18->_destinationIdentifier, a6);
-    v18->_relativePosition = a7;
-    v18->_destinationIdentifierIsSectionIdentifier = a8;
+    v18->_action = action;
+    v18->_isSectionOperation = sectionIdentifiersCopy != 0;
+    objc_storeStrong(&v18->_destinationIdentifier, identifier);
+    v18->_relativePosition = position;
+    v18->_destinationIdentifierIsSectionIdentifier = section;
     [(_UIDiffableDataSourceUpdate *)v18 _throwIfInvalid];
   }
 
   return v18;
 }
 
-- (_UIDiffableDataSourceUpdate)initWithReconfiguredItemIdentifiers:(id)a3
+- (_UIDiffableDataSourceUpdate)initWithReconfiguredItemIdentifiers:(id)identifiers
 {
-  v3 = [(_UIDiffableDataSourceUpdate *)self initWithItemIdentifiers:a3 action:2];
+  v3 = [(_UIDiffableDataSourceUpdate *)self initWithItemIdentifiers:identifiers action:2];
   v4 = v3;
   if (v3)
   {
@@ -209,61 +209,61 @@
   return v4;
 }
 
-- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)a3 action:(int64_t)a4
+- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)identifiers action:(int64_t)action
 {
-  v7 = a3;
-  if (!v7)
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifiers"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifiers"}];
   }
 
-  v8 = [(_UIDiffableDataSourceUpdate *)self initWithIdentifiers:0 sectionIdentifiers:v7 action:a4 desinationIdentifier:0 relativePosition:2 destinationIsSection:0];
+  v8 = [(_UIDiffableDataSourceUpdate *)self initWithIdentifiers:0 sectionIdentifiers:identifiersCopy action:action desinationIdentifier:0 relativePosition:2 destinationIsSection:0];
 
   return v8;
 }
 
-- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)a3 action:(int64_t)a4 destinationIdentifier:(id)a5 relativePosition:(int64_t)a6
+- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)identifiers action:(int64_t)action destinationIdentifier:(id)identifier relativePosition:(int64_t)position
 {
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  if (!identifiersCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifiers"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifiers"}];
   }
 
-  v13 = [(_UIDiffableDataSourceUpdate *)self initWithIdentifiers:0 sectionIdentifiers:v11 action:a4 desinationIdentifier:v12 relativePosition:a6 destinationIsSection:0];
+  v13 = [(_UIDiffableDataSourceUpdate *)self initWithIdentifiers:0 sectionIdentifiers:identifiersCopy action:action desinationIdentifier:identifierCopy relativePosition:position destinationIsSection:0];
 
   return v13;
 }
 
-- (_UIDiffableDataSourceUpdate)initWithItemIdentifiers:(id)a3 appendingToDestinationSectionIdentifier:(id)a4
+- (_UIDiffableDataSourceUpdate)initWithItemIdentifiers:(id)identifiers appendingToDestinationSectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  if (!identifiersCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"itemIdentifiers"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"itemIdentifiers"}];
   }
 
-  v9 = [(_UIDiffableDataSourceUpdate *)self initWithIdentifiers:v7 sectionIdentifiers:0 action:0 desinationIdentifier:v8 relativePosition:1 destinationIsSection:1];
+  v9 = [(_UIDiffableDataSourceUpdate *)self initWithIdentifiers:identifiersCopy sectionIdentifiers:0 action:0 desinationIdentifier:identifierCopy relativePosition:1 destinationIsSection:1];
 
   return v9;
 }
 
-- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)a3 appendingToDestinationSectionIdentifier:(id)a4
+- (_UIDiffableDataSourceUpdate)initWithSectionIdentifiers:(id)identifiers appendingToDestinationSectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  if (!identifiersCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifiers"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableDataSourceUpdate.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"sectionIdentifiers"}];
   }
 
-  v9 = [(_UIDiffableDataSourceUpdate *)self initWithIdentifiers:0 sectionIdentifiers:v7 action:0 desinationIdentifier:v8 relativePosition:1 destinationIsSection:1];
+  v9 = [(_UIDiffableDataSourceUpdate *)self initWithIdentifiers:0 sectionIdentifiers:identifiersCopy action:0 desinationIdentifier:identifierCopy relativePosition:1 destinationIsSection:1];
 
   return v9;
 }
@@ -321,8 +321,8 @@
   }
 
 LABEL_12:
-  v8 = [(NSOrderedSet *)self->_identifiers array];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  array = [(NSOrderedSet *)self->_identifiers array];
+  v9 = [array componentsJoinedByString:{@", "}];
 
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();

@@ -11,9 +11,9 @@
   v3 = [(MKAttributionLabelAccessibility *)self safeValueForKey:@"_innerText"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 string];
+  string = [v4 string];
 
-  return v5;
+  return string;
 }
 
 - (unint64_t)accessibilityTraits

@@ -1,36 +1,36 @@
 @interface HKInspectableValueCollection
-+ (BOOL)hasNoValue:(id)a3;
-+ (id)_unitStringForValue:(id)a3;
-+ (id)_unitStringForValueCollection:(id)a3;
-+ (id)indexableKeyPathsWithPrefix:(id)a3;
-+ (id)inspectableValueCollectionListWithValues:(id)a3;
-+ (id)inspectableValueCollectionRangeWithMax:(id)a3;
-+ (id)inspectableValueCollectionRangeWithMin:(id)a3;
-+ (id)inspectableValueCollectionRangeWithMin:(id)a3 max:(id)a4;
-+ (id)inspectableValueCollectionSingleWithValue:(id)a3;
-+ (id)inspectableValueCollectionTaggedListWithValues:(id)a3 tags:(id)a4;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)hasNoValue:(id)value;
++ (id)_unitStringForValue:(id)value;
++ (id)_unitStringForValueCollection:(id)collection;
++ (id)indexableKeyPathsWithPrefix:(id)prefix;
++ (id)inspectableValueCollectionListWithValues:(id)values;
++ (id)inspectableValueCollectionRangeWithMax:(id)max;
++ (id)inspectableValueCollectionRangeWithMin:(id)min;
++ (id)inspectableValueCollectionRangeWithMin:(id)min max:(id)max;
++ (id)inspectableValueCollectionSingleWithValue:(id)value;
++ (id)inspectableValueCollectionTaggedListWithValues:(id)values tags:(id)tags;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKInspectableValue)inspectableValue;
 - (HKInspectableValue)max;
 - (HKInspectableValue)min;
 - (HKInspectableValueCollection)init;
-- (HKInspectableValueCollection)initWithCoder:(id)a3;
+- (HKInspectableValueCollection)initWithCoder:(id)coder;
 - (NSArray)inspectableValues;
 - (NSString)unitString;
-- (id)_initWithCollectionType:(int64_t)a3 collection:(id)a4 tags:(id)a5;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
-- (id)valueInRangeWithReferenceRanges:(id)a3 includeUnitString:(BOOL)a4 allowsNullRange:(BOOL)a5;
-- (id)valuesWithTag:(id)a3;
-- (int64_t)referenceRangeStatusWithRanges:(id)a3;
+- (id)_initWithCollectionType:(int64_t)type collection:(id)collection tags:(id)tags;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
+- (id)valueInRangeWithReferenceRanges:(id)ranges includeUnitString:(BOOL)string allowsNullRange:(BOOL)range;
+- (id)valuesWithTag:(id)tag;
+- (int64_t)referenceRangeStatusWithRanges:(id)ranges;
 - (unint64_t)hash;
 - (void)_assertCollectionType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKInspectableValueCollection
 
-+ (id)indexableKeyPathsWithPrefix:(id)a3
++ (id)indexableKeyPathsWithPrefix:(id)prefix
 {
   v11[4] = *MEMORY[0x1E69E9840];
   v11[0] = @"inspectableValue";
@@ -38,12 +38,12 @@
   v11[2] = @"max";
   v11[3] = @"inspectableValues";
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [v3 arrayWithObjects:v11 count:4];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = [v5 hk_foldRightFrom:v6 with:&__block_literal_global_111];
 
-  v8 = [HKConceptIndexUtilities keyPaths:v7 prefix:v4];
+  v8 = [HKConceptIndexUtilities keyPaths:v7 prefix:prefixCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 
@@ -79,12 +79,12 @@ id __60__HKInspectableValueCollection_indexableKeyPathsWithPrefix___block_invoke
   return 0;
 }
 
-+ (id)inspectableValueCollectionSingleWithValue:(id)a3
++ (id)inspectableValueCollectionSingleWithValue:(id)value
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10[0] = v4;
+  valueCopy = value;
+  v5 = [self alloc];
+  v10[0] = valueCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
   v7 = [v5 _initWithCollectionType:0 collection:v6];
@@ -93,14 +93,14 @@ id __60__HKInspectableValueCollection_indexableKeyPathsWithPrefix___block_invoke
   return v7;
 }
 
-+ (id)inspectableValueCollectionRangeWithMin:(id)a3 max:(id)a4
++ (id)inspectableValueCollectionRangeWithMin:(id)min max:(id)max
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v13[0] = v7;
-  v13[1] = v6;
+  maxCopy = max;
+  minCopy = min;
+  v8 = [self alloc];
+  v13[0] = minCopy;
+  v13[1] = maxCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
 
   v10 = [v8 _initWithCollectionType:1 collection:v9];
@@ -109,12 +109,12 @@ id __60__HKInspectableValueCollection_indexableKeyPathsWithPrefix___block_invoke
   return v10;
 }
 
-+ (id)inspectableValueCollectionRangeWithMin:(id)a3
++ (id)inspectableValueCollectionRangeWithMin:(id)min
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 alloc];
-  v11[0] = v4;
+  minCopy = min;
+  v5 = [self alloc];
+  v11[0] = minCopy;
   v6 = +[HKInspectableValue inspectableValueWithNull];
   v11[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
@@ -125,14 +125,14 @@ id __60__HKInspectableValueCollection_indexableKeyPathsWithPrefix___block_invoke
   return v8;
 }
 
-+ (id)inspectableValueCollectionRangeWithMax:(id)a3
++ (id)inspectableValueCollectionRangeWithMax:(id)max
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 alloc];
+  maxCopy = max;
+  v5 = [self alloc];
   v6 = +[HKInspectableValue inspectableValueWithNull];
   v11[0] = v6;
-  v11[1] = v4;
+  v11[1] = maxCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
 
   v8 = [v5 _initWithCollectionType:1 collection:v7];
@@ -141,38 +141,38 @@ id __60__HKInspectableValueCollection_indexableKeyPathsWithPrefix___block_invoke
   return v8;
 }
 
-+ (id)inspectableValueCollectionListWithValues:(id)a3
++ (id)inspectableValueCollectionListWithValues:(id)values
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithCollectionType:2 collection:v4];
+  valuesCopy = values;
+  v5 = [[self alloc] _initWithCollectionType:2 collection:valuesCopy];
 
   return v5;
 }
 
-+ (id)inspectableValueCollectionTaggedListWithValues:(id)a3 tags:(id)a4
++ (id)inspectableValueCollectionTaggedListWithValues:(id)values tags:(id)tags
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithCollectionType:3 collection:v7 tags:v6];
+  tagsCopy = tags;
+  valuesCopy = values;
+  v8 = [[self alloc] _initWithCollectionType:3 collection:valuesCopy tags:tagsCopy];
 
   return v8;
 }
 
-+ (BOOL)hasNoValue:(id)a3
++ (BOOL)hasNoValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    if ([v3 collectionType])
+    if ([valueCopy collectionType])
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [v4 inspectableValue];
-      v5 = [v6 valueType] == 5;
+      inspectableValue = [v4 inspectableValue];
+      v5 = [inspectableValue valueType] == 5;
     }
   }
 
@@ -184,19 +184,19 @@ id __60__HKInspectableValueCollection_indexableKeyPathsWithPrefix___block_invoke
   return v5;
 }
 
-- (id)_initWithCollectionType:(int64_t)a3 collection:(id)a4 tags:(id)a5
+- (id)_initWithCollectionType:(int64_t)type collection:(id)collection tags:(id)tags
 {
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  tagsCopy = tags;
   v14.receiver = self;
   v14.super_class = HKInspectableValueCollection;
   v11 = [(HKInspectableValueCollection *)&v14 init];
   p_isa = &v11->super.isa;
   if (v11)
   {
-    v11->_collectionType = a3;
-    objc_storeStrong(&v11->_collection, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    v11->_collectionType = type;
+    objc_storeStrong(&v11->_collection, collection);
+    objc_storeStrong(p_isa + 3, tags);
     [p_isa _assertCollectionType];
   }
 
@@ -263,23 +263,23 @@ id __60__HKInspectableValueCollection_indexableKeyPathsWithPrefix___block_invoke
   return v3;
 }
 
-- (id)valueInRangeWithReferenceRanges:(id)a3 includeUnitString:(BOOL)a4 allowsNullRange:(BOOL)a5
+- (id)valueInRangeWithReferenceRanges:(id)ranges includeUnitString:(BOOL)string allowsNullRange:(BOOL)range
 {
-  v6 = a4;
-  v8 = a3;
+  stringCopy = string;
+  rangesCopy = ranges;
   if ([(HKInspectableValueCollection *)self collectionType])
   {
     goto LABEL_2;
   }
 
-  v14 = [(HKInspectableValueCollection *)self inspectableValue];
-  v15 = [v14 valueType];
+  inspectableValue = [(HKInspectableValueCollection *)self inspectableValue];
+  valueType = [inspectableValue valueType];
 
   v9 = 0;
   v10 = 0;
-  if (v8 && v15)
+  if (rangesCopy && valueType)
   {
-    if ([v8 count] != 1)
+    if ([rangesCopy count] != 1)
     {
 LABEL_2:
       v9 = 0;
@@ -287,18 +287,18 @@ LABEL_2:
       goto LABEL_3;
     }
 
-    v16 = [v8 firstObject];
-    v17 = [v16 valueRange];
-    v18 = v17;
-    if (v17 && [v17 collectionType] == 1)
+    firstObject = [rangesCopy firstObject];
+    valueRange = [firstObject valueRange];
+    v18 = valueRange;
+    if (valueRange && [valueRange collectionType] == 1)
     {
       v10 = [v18 min];
       if (v10)
       {
         v19 = [v18 min];
-        v20 = [v19 valueType];
+        valueType2 = [v19 valueType];
 
-        if (v20)
+        if (valueType2)
         {
           v10 = [v18 min];
         }
@@ -313,9 +313,9 @@ LABEL_2:
       if (v9)
       {
         v21 = [v18 max];
-        v22 = [v21 valueType];
+        valueType3 = [v21 valueType];
 
-        if (v22)
+        if (valueType3)
         {
           v9 = [v18 max];
         }
@@ -335,10 +335,10 @@ LABEL_2:
   }
 
 LABEL_3:
-  if (v6)
+  if (stringCopy)
   {
     v11 = [objc_opt_class() _unitStringForValueCollection:self];
-    if (a5)
+    if (range)
     {
       goto LABEL_10;
     }
@@ -347,7 +347,7 @@ LABEL_3:
   else
   {
     v11 = 0;
-    if (a5)
+    if (range)
     {
       goto LABEL_10;
     }
@@ -366,9 +366,9 @@ LABEL_11:
   return v12;
 }
 
-- (int64_t)referenceRangeStatusWithRanges:(id)a3
+- (int64_t)referenceRangeStatusWithRanges:(id)ranges
 {
-  v3 = [(HKInspectableValueCollection *)self valueInRangeWithReferenceRanges:a3 includeUnitString:0];
+  v3 = [(HKInspectableValueCollection *)self valueInRangeWithReferenceRanges:ranges includeUnitString:0];
   v4 = v3;
   if (v3 && (v5 = [v3 currentValueRelation], v5 <= 2))
   {
@@ -390,60 +390,60 @@ LABEL_11:
   {
     if (!collectionType)
     {
-      v6 = [(HKInspectableValueCollection *)self inspectableValue];
-      v8 = [v6 unitString];
+      inspectableValue = [(HKInspectableValueCollection *)self inspectableValue];
+      unitString = [inspectableValue unitString];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v4 = [(HKInspectableValueCollection *)self inspectableValues];
-    v5 = [v4 count];
+    inspectableValues = [(HKInspectableValueCollection *)self inspectableValues];
+    v5 = [inspectableValues count];
 
     if (v5)
     {
-      v6 = [(HKInspectableValueCollection *)self inspectableValues];
-      v7 = [v6 firstObject];
-      v8 = [v7 unitString];
+      inspectableValue = [(HKInspectableValueCollection *)self inspectableValues];
+      firstObject = [inspectableValue firstObject];
+      unitString = [firstObject unitString];
 
 LABEL_6:
       goto LABEL_8;
     }
   }
 
-  v8 = &stru_1F05FF230;
+  unitString = &stru_1F05FF230;
 LABEL_8:
 
-  return v8;
+  return unitString;
 }
 
-+ (id)_unitStringForValueCollection:(id)a3
++ (id)_unitStringForValueCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 collectionType];
-  if ((v4 - 2) >= 2)
+  collectionCopy = collection;
+  collectionType = [collectionCopy collectionType];
+  if ((collectionType - 2) >= 2)
   {
-    if (!v4)
+    if (!collectionType)
     {
       v11 = objc_opt_class();
-      v8 = [v3 inspectableValue];
-      v10 = [v11 _unitStringForValue:v8];
+      inspectableValue = [collectionCopy inspectableValue];
+      v10 = [v11 _unitStringForValue:inspectableValue];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v5 = [v3 inspectableValues];
-    v6 = [v5 count];
+    inspectableValues = [collectionCopy inspectableValues];
+    v6 = [inspectableValues count];
 
     if (v6)
     {
       v7 = objc_opt_class();
-      v8 = [v3 inspectableValues];
-      v9 = [v8 firstObject];
-      v10 = [v7 _unitStringForValue:v9];
+      inspectableValue = [collectionCopy inspectableValues];
+      firstObject = [inspectableValue firstObject];
+      v10 = [v7 _unitStringForValue:firstObject];
 
 LABEL_6:
       goto LABEL_8;
@@ -456,68 +456,68 @@ LABEL_8:
   return v10;
 }
 
-+ (id)_unitStringForValue:(id)a3
++ (id)_unitStringForValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 valueType];
-  if (v4 == 8 || v4 == 6)
+  valueCopy = value;
+  valueType = [valueCopy valueType];
+  if (valueType == 8 || valueType == 6)
   {
-    v6 = [v3 unitString];
+    unitString = [valueCopy unitString];
   }
 
-  else if (v4 == 1)
+  else if (valueType == 1)
   {
-    v7 = [v3 ratioValue];
-    v8 = [v7 numerator];
-    v9 = [v8 unitCoding];
+    ratioValue = [valueCopy ratioValue];
+    numerator = [ratioValue numerator];
+    unitCoding = [numerator unitCoding];
 
-    v10 = [v9 code];
-    v11 = v10;
-    if (v10)
+    code = [unitCoding code];
+    v11 = code;
+    if (code)
     {
-      v12 = v10;
+      displayString = code;
     }
 
     else
     {
-      v12 = [v9 displayString];
+      displayString = [unitCoding displayString];
     }
 
-    v6 = v12;
+    unitString = displayString;
   }
 
   else
   {
-    v6 = &stru_1F05FF230;
+    unitString = &stru_1F05FF230;
   }
 
-  if ([(__CFString *)v6 length])
+  if ([(__CFString *)unitString length])
   {
     v13 = +[HKUCUMUnitDisplayConverter sharedConverter];
-    v14 = [v13 synonymForUCUMUnitString:v6];
+    v14 = [v13 synonymForUCUMUnitString:unitString];
 
-    v6 = v14;
+    unitString = v14;
   }
 
-  return v6;
+  return unitString;
 }
 
-- (id)valuesWithTag:(id)a3
+- (id)valuesWithTag:(id)tag
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  tagCopy = tag;
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSArray *)self->_elementTags count])
   {
     v6 = 0;
     do
     {
       v7 = [(NSArray *)self->_elementTags objectAtIndexedSubscript:v6];
-      v8 = [v7 isEqual:v4];
+      v8 = [v7 isEqual:tagCopy];
 
       if (v8)
       {
         v9 = [(NSArray *)self->_collection objectAtIndexedSubscript:v6];
-        [v5 addObject:v9];
+        [array addObject:v9];
       }
 
       ++v6;
@@ -526,7 +526,7 @@ LABEL_8:
     while (v6 < [(NSArray *)self->_elementTags count]);
   }
 
-  v10 = [v5 copy];
+  v10 = [array copy];
 
   return v10;
 }
@@ -557,10 +557,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -570,13 +570,13 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       collectionType = self->_collectionType;
       if (collectionType == [(HKInspectableValueCollection *)v5 collectionType])
       {
         collection = self->_collection;
-        v8 = [(HKInspectableValueCollection *)v5 collection];
-        v9 = [(NSArray *)collection isEqualToArray:v8];
+        collection = [(HKInspectableValueCollection *)v5 collection];
+        v9 = [(NSArray *)collection isEqualToArray:collection];
       }
 
       else
@@ -596,17 +596,17 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v3 = [(HKInspectableValueCollection *)self collectionType];
-  v4 = [(HKInspectableValueCollection *)self collection];
-  v5 = [v4 hash];
+  collectionType = [(HKInspectableValueCollection *)self collectionType];
+  collection = [(HKInspectableValueCollection *)self collection];
+  v5 = [collection hash];
 
-  return v5 ^ v3;
+  return v5 ^ collectionType;
 }
 
-- (HKInspectableValueCollection)initWithCoder:(id)a3
+- (HKInspectableValueCollection)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HKInspectableValueCollection;
   v5 = [(HKInspectableValueCollection *)&v18 init];
@@ -617,17 +617,17 @@ LABEL_8:
     v20[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"CollectionKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CollectionKey"];
     collection = v5->_collection;
     v5->_collection = v9;
 
-    v5->_collectionType = [v4 decodeIntegerForKey:@"CollectionTypeKey"];
+    v5->_collectionType = [coderCopy decodeIntegerForKey:@"CollectionTypeKey"];
     v11 = MEMORY[0x1E695DFD8];
     v19[0] = objc_opt_class();
     v19[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"ElementTagsKey"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ElementTagsKey"];
     elementTags = v5->_elementTags;
     v5->_elementTags = v14;
 
@@ -638,64 +638,64 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   collection = self->_collection;
-  v5 = a3;
-  [v5 encodeObject:collection forKey:@"CollectionKey"];
-  [v5 encodeInteger:self->_collectionType forKey:@"CollectionTypeKey"];
-  [v5 encodeObject:self->_elementTags forKey:@"ElementTagsKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:collection forKey:@"CollectionKey"];
+  [coderCopy encodeInteger:self->_collectionType forKey:@"CollectionTypeKey"];
+  [coderCopy encodeObject:self->_elementTags forKey:@"ElementTagsKey"];
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [HKConceptIndexKeyPath conceptIndexKeyPathWithFullKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexKeyPath conceptIndexKeyPathWithFullKeyPath:pathCopy error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 head];
-    v10 = [v9 isEqualToString:@"inspectableValue"];
+    head = [v7 head];
+    v10 = [head isEqualToString:@"inspectableValue"];
 
     if (v10)
     {
-      v11 = [(HKInspectableValueCollection *)self inspectableValue];
+      inspectableValue = [(HKInspectableValueCollection *)self inspectableValue];
 LABEL_10:
-      v18 = v11;
-      v19 = [v8 tail];
-      v20 = [HKConceptIndexUtilities medicalCodingCollectionForIndexableObject:v18 keyPath:v19 error:a4];
+      v18 = inspectableValue;
+      tail = [v8 tail];
+      v20 = [HKConceptIndexUtilities medicalCodingCollectionForIndexableObject:v18 keyPath:tail error:error];
 
       goto LABEL_13;
     }
 
-    v12 = [v8 head];
-    v13 = [v12 isEqualToString:@"min"];
+    head2 = [v8 head];
+    v13 = [head2 isEqualToString:@"min"];
 
     if (v13)
     {
-      v11 = [(HKInspectableValueCollection *)self min];
+      inspectableValue = [(HKInspectableValueCollection *)self min];
       goto LABEL_10;
     }
 
-    v14 = [v8 head];
-    v15 = [v14 isEqualToString:@"max"];
+    head3 = [v8 head];
+    v15 = [head3 isEqualToString:@"max"];
 
     if (v15)
     {
-      v11 = [(HKInspectableValueCollection *)self max];
+      inspectableValue = [(HKInspectableValueCollection *)self max];
       goto LABEL_10;
     }
 
-    v16 = [v8 head];
-    v17 = [v16 isEqualToString:@"inspectableValues"];
+    head4 = [v8 head];
+    v17 = [head4 isEqualToString:@"inspectableValues"];
 
     if (v17)
     {
-      v11 = [(HKInspectableValueCollection *)self inspectableValues];
+      inspectableValue = [(HKInspectableValueCollection *)self inspectableValues];
       goto LABEL_10;
     }
 
-    [HKConceptIndexUtilities assignError:a4 forInvalidKeyPath:v6 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
   }
 
   v20 = 0;
@@ -704,60 +704,60 @@ LABEL_13:
   return v20;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexKeyPath conceptIndexKeyPathWithFullKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexKeyPath conceptIndexKeyPathWithFullKeyPath:pathCopy error:error];
   v11 = v10;
   if (!v10)
   {
     goto LABEL_12;
   }
 
-  v12 = [v10 head];
-  v13 = [v12 isEqualToString:@"inspectableValue"];
+  head = [v10 head];
+  v13 = [head isEqualToString:@"inspectableValue"];
 
   if (!v13)
   {
-    v15 = [v11 head];
-    v16 = [v15 isEqualToString:@"min"];
+    head2 = [v11 head];
+    v16 = [head2 isEqualToString:@"min"];
 
     if (v16)
     {
-      v14 = [(HKInspectableValueCollection *)self min];
+      inspectableValues = [(HKInspectableValueCollection *)self min];
       goto LABEL_10;
     }
 
-    v17 = [v11 head];
-    v18 = [v17 isEqualToString:@"max"];
+    head3 = [v11 head];
+    v18 = [head3 isEqualToString:@"max"];
 
     if (v18)
     {
-      v14 = [(HKInspectableValueCollection *)self max];
+      inspectableValues = [(HKInspectableValueCollection *)self max];
       goto LABEL_10;
     }
 
-    v19 = [v11 head];
-    v20 = [v19 isEqualToString:@"inspectableValues"];
+    head4 = [v11 head];
+    v20 = [head4 isEqualToString:@"inspectableValues"];
 
     if (v20)
     {
-      v14 = [(HKInspectableValueCollection *)self inspectableValues];
+      inspectableValues = [(HKInspectableValueCollection *)self inspectableValues];
       goto LABEL_10;
     }
 
-    [HKConceptIndexUtilities assignError:a5 forInvalidKeyPath:v9 inClass:objc_opt_class()];
+    [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
 LABEL_12:
     v23 = 0;
     goto LABEL_13;
   }
 
-  v14 = [(HKInspectableValueCollection *)self inspectableValue];
+  inspectableValues = [(HKInspectableValueCollection *)self inspectableValue];
 LABEL_10:
-  v21 = v14;
-  v22 = [v11 tail];
-  v23 = [HKConceptIndexUtilities applyConcepts:v8 toIndexableObject:v21 keyPath:v22 error:a5];
+  v21 = inspectableValues;
+  tail = [v11 tail];
+  v23 = [HKConceptIndexUtilities applyConcepts:conceptsCopy toIndexableObject:v21 keyPath:tail error:error];
 
 LABEL_13:
   return v23;

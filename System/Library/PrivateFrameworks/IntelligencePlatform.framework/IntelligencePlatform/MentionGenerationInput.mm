@@ -1,6 +1,6 @@
 @interface MentionGenerationInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation MentionGenerationInput
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_1ABF23C04();
   v5 = v4;

@@ -1,20 +1,20 @@
 @interface BMPBSocialHighlightContact
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsSignificant:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsSignificant:(BOOL)significant;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSocialHighlightContact
 
-- (void)setHasIsSignificant:(BOOL)a3
+- (void)setHasIsSignificant:(BOOL)significant
 {
-  if (a3)
+  if (significant)
   {
     v3 = 2;
   }
@@ -33,87 +33,87 @@
   v8.receiver = self;
   v8.super_class = BMPBSocialHighlightContact;
   v4 = [(BMPBSocialHighlightContact *)&v8 description];
-  v5 = [(BMPBSocialHighlightContact *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSocialHighlightContact *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSignificant];
-    [v3 setObject:v4 forKey:@"isSignificant"];
+    [dictionary setObject:v4 forKey:@"isSignificant"];
   }
 
   handle = self->_handle;
   if (handle)
   {
-    [v3 setObject:handle forKey:@"handle"];
+    [dictionary setObject:handle forKey:@"handle"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_isMe];
-    [v3 setObject:v6 forKey:@"isMe"];
+    [dictionary setObject:v6 forKey:@"isMe"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     isSignificant = self->_isSignificant;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_handle)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     isMe = self->_isMe;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[17] = self->_isSignificant;
-    v4[20] |= 2u;
+    toCopy[17] = self->_isSignificant;
+    toCopy[20] |= 2u;
   }
 
   if (self->_handle)
   {
-    v5 = v4;
-    [v4 setHandle:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setHandle:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[16] = self->_isMe;
-    v4[20] |= 1u;
+    toCopy[16] = self->_isMe;
+    toCopy[20] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -121,7 +121,7 @@
     *(v5 + 20) |= 2u;
   }
 
-  v7 = [(NSString *)self->_handle copyWithZone:a3];
+  v7 = [(NSString *)self->_handle copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -134,45 +134,45 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = *(v4 + 20);
+  v6 = *(equalCopy + 20);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0)
+    if ((*(equalCopy + 20) & 2) == 0)
     {
       goto LABEL_13;
     }
 
-    v10 = *(v4 + 17);
+    v10 = *(equalCopy + 17);
     if (self->_isSignificant)
     {
-      if ((*(v4 + 17) & 1) == 0)
+      if ((*(equalCopy + 17) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 17))
+    else if (*(equalCopy + 17))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_13;
   }
 
   handle = self->_handle;
-  if (!(handle | *(v4 + 1)))
+  if (!(handle | *(equalCopy + 1)))
   {
     goto LABEL_7;
   }
@@ -186,20 +186,20 @@ LABEL_13:
 
   has = self->_has;
 LABEL_7:
-  v8 = (*(v4 + 20) & 1) == 0;
+  v8 = (*(equalCopy + 20) & 1) == 0;
   if (has)
   {
-    if (*(v4 + 20))
+    if (*(equalCopy + 20))
     {
       if (self->_isMe)
       {
-        if (*(v4 + 16))
+        if (*(equalCopy + 16))
         {
           goto LABEL_21;
         }
       }
 
-      else if (!*(v4 + 16))
+      else if (!*(equalCopy + 16))
       {
 LABEL_21:
         v8 = 1;
@@ -241,25 +241,25 @@ LABEL_14:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[20] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[20] & 2) != 0)
   {
-    self->_isSignificant = v4[17];
+    self->_isSignificant = fromCopy[17];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(BMPBSocialHighlightContact *)self setHandle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[20])
+  if (fromCopy[20])
   {
-    self->_isMe = v4[16];
+    self->_isMe = fromCopy[16];
     *&self->_has |= 1u;
   }
 }

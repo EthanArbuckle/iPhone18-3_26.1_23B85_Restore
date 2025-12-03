@@ -1,38 +1,38 @@
 @interface _SFPBSafariTableOfContentsCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSafariTableOfContentsCardSection)initWithDictionary:(id)a3;
-- (_SFPBSafariTableOfContentsCardSection)initWithFacade:(id)a3;
-- (_SFPBSafariTableOfContentsCardSection)initWithJSON:(id)a3;
+- (_SFPBSafariTableOfContentsCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBSafariTableOfContentsCardSection)initWithFacade:(id)facade;
+- (_SFPBSafariTableOfContentsCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTableOfContentsItems:(id)a3;
-- (void)setAlgorithmVersion:(id)a3;
-- (void)setTableOfContentsItems:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTableOfContentsItems:(id)items;
+- (void)setAlgorithmVersion:(id)version;
+- (void)setTableOfContentsItems:(id)items;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSafariTableOfContentsCardSection
 
-- (_SFPBSafariTableOfContentsCardSection)initWithFacade:(id)a3
+- (_SFPBSafariTableOfContentsCardSection)initWithFacade:(id)facade
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSafariTableOfContentsCardSection *)self init];
   if (v5)
   {
-    if ([v4 hasTableOfContentsType])
+    if ([facadeCopy hasTableOfContentsType])
     {
-      -[_SFPBSafariTableOfContentsCardSection setTableOfContentsType:](v5, "setTableOfContentsType:", [v4 tableOfContentsType]);
+      -[_SFPBSafariTableOfContentsCardSection setTableOfContentsType:](v5, "setTableOfContentsType:", [facadeCopy tableOfContentsType]);
     }
 
-    if ([v4 hasTableOfContentsSource])
+    if ([facadeCopy hasTableOfContentsSource])
     {
-      -[_SFPBSafariTableOfContentsCardSection setTableOfContentsSource:](v5, "setTableOfContentsSource:", [v4 tableOfContentsSource]);
+      -[_SFPBSafariTableOfContentsCardSection setTableOfContentsSource:](v5, "setTableOfContentsSource:", [facadeCopy tableOfContentsSource]);
     }
 
-    v6 = [v4 tableOfContentsItems];
-    if (v6)
+    tableOfContentsItems = [facadeCopy tableOfContentsItems];
+    if (tableOfContentsItems)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -46,8 +46,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v4 tableOfContentsItems];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    tableOfContentsItems2 = [facadeCopy tableOfContentsItems];
+    v9 = [tableOfContentsItems2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -58,7 +58,7 @@
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tableOfContentsItems2);
           }
 
           v13 = [[_SFPBSafariTableOfContentsItem alloc] initWithFacade:*(*(&v19 + 1) + 8 * i)];
@@ -68,19 +68,19 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [tableOfContentsItems2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBSafariTableOfContentsCardSection *)v5 setTableOfContentsItems:v7];
-    v14 = [v4 algorithmVersion];
+    algorithmVersion = [facadeCopy algorithmVersion];
 
-    if (v14)
+    if (algorithmVersion)
     {
-      v15 = [v4 algorithmVersion];
-      [(_SFPBSafariTableOfContentsCardSection *)v5 setAlgorithmVersion:v15];
+      algorithmVersion2 = [facadeCopy algorithmVersion];
+      [(_SFPBSafariTableOfContentsCardSection *)v5 setAlgorithmVersion:algorithmVersion2];
     }
 
     v16 = v5;
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (_SFPBSafariTableOfContentsCardSection)initWithDictionary:(id)a3
+- (_SFPBSafariTableOfContentsCardSection)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = _SFPBSafariTableOfContentsCardSection;
   v5 = [(_SFPBSafariTableOfContentsCardSection *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tableOfContentsType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tableOfContentsType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSafariTableOfContentsCardSection setTableOfContentsType:](v5, "setTableOfContentsType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"tableOfContentsSource"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"tableOfContentsSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSafariTableOfContentsCardSection setTableOfContentsSource:](v5, "setTableOfContentsSource:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"tableOfContentsItems"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tableOfContentsItems"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -161,7 +161,7 @@
       v6 = v22;
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"algorithmVersion", v21, v22, v23}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"algorithmVersion", v21, v22, v23}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -176,30 +176,30 @@
   return v5;
 }
 
-- (_SFPBSafariTableOfContentsCardSection)initWithJSON:(id)a3
+- (_SFPBSafariTableOfContentsCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSafariTableOfContentsCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSafariTableOfContentsCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSafariTableOfContentsCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -213,17 +213,17 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_algorithmVersion)
   {
-    v4 = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"algorithmVersion"];
+    algorithmVersion = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
+    v5 = [algorithmVersion copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"algorithmVersion"];
   }
 
   if ([(NSArray *)self->_tableOfContentsItems count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -243,16 +243,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -262,44 +262,44 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"tableOfContentsItems"];
+    [dictionary setObject:array forKeyedSubscript:@"tableOfContentsItems"];
   }
 
   if (self->_tableOfContentsSource)
   {
-    v14 = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsSource];
-    if (v14 >= 3)
+    tableOfContentsSource = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsSource];
+    if (tableOfContentsSource >= 3)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", tableOfContentsSource];
     }
 
     else
     {
-      v15 = off_1E7ACE548[v14];
+      v15 = off_1E7ACE548[tableOfContentsSource];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"tableOfContentsSource"];
+    [dictionary setObject:v15 forKeyedSubscript:@"tableOfContentsSource"];
   }
 
   if (self->_tableOfContentsType)
   {
-    v16 = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsType];
-    if (v16 >= 3)
+    tableOfContentsType = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsType];
+    if (tableOfContentsType >= 3)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", tableOfContentsType];
     }
 
     else
     {
-      v17 = off_1E7ACE548[v16];
+      v17 = off_1E7ACE548[tableOfContentsType];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"tableOfContentsType"];
+    [dictionary setObject:v17 forKeyedSubscript:@"tableOfContentsType"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -309,40 +309,40 @@
   return v3 ^ v4 ^ [(NSString *)self->_algorithmVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   tableOfContentsType = self->_tableOfContentsType;
-  if (tableOfContentsType != [v4 tableOfContentsType])
+  if (tableOfContentsType != [equalCopy tableOfContentsType])
   {
     goto LABEL_14;
   }
 
   tableOfContentsSource = self->_tableOfContentsSource;
-  if (tableOfContentsSource != [v4 tableOfContentsSource])
+  if (tableOfContentsSource != [equalCopy tableOfContentsSource])
   {
     goto LABEL_14;
   }
 
-  v7 = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsItems];
-  v8 = [v4 tableOfContentsItems];
-  if ((v7 != 0) == (v8 == 0))
+  tableOfContentsItems = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsItems];
+  tableOfContentsItems2 = [equalCopy tableOfContentsItems];
+  if ((tableOfContentsItems != 0) == (tableOfContentsItems2 == 0))
   {
     goto LABEL_13;
   }
 
-  v9 = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsItems];
-  if (v9)
+  tableOfContentsItems3 = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsItems];
+  if (tableOfContentsItems3)
   {
-    v10 = v9;
-    v11 = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsItems];
-    v12 = [v4 tableOfContentsItems];
-    v13 = [v11 isEqual:v12];
+    v10 = tableOfContentsItems3;
+    tableOfContentsItems4 = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsItems];
+    tableOfContentsItems5 = [equalCopy tableOfContentsItems];
+    v13 = [tableOfContentsItems4 isEqual:tableOfContentsItems5];
 
     if (!v13)
     {
@@ -354,12 +354,12 @@
   {
   }
 
-  v7 = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
-  v8 = [v4 algorithmVersion];
-  if ((v7 != 0) != (v8 == 0))
+  tableOfContentsItems = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
+  tableOfContentsItems2 = [equalCopy algorithmVersion];
+  if ((tableOfContentsItems != 0) != (tableOfContentsItems2 == 0))
   {
-    v14 = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
-    if (!v14)
+    algorithmVersion = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
+    if (!algorithmVersion)
     {
 
 LABEL_17:
@@ -367,10 +367,10 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    v15 = v14;
-    v16 = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
-    v17 = [v4 algorithmVersion];
-    v18 = [v16 isEqual:v17];
+    v15 = algorithmVersion;
+    algorithmVersion2 = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
+    algorithmVersion3 = [equalCopy algorithmVersion];
+    v18 = [algorithmVersion2 isEqual:algorithmVersion3];
 
     if (v18)
     {
@@ -390,10 +390,10 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsType])
   {
     PBDataWriterWriteInt32Field();
@@ -404,12 +404,12 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsItems];
+  tableOfContentsItems = [(_SFPBSafariTableOfContentsCardSection *)self tableOfContentsItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [tableOfContentsItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -421,7 +421,7 @@ LABEL_15:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tableOfContentsItems);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -430,14 +430,14 @@ LABEL_15:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [tableOfContentsItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
-  if (v11)
+  algorithmVersion = [(_SFPBSafariTableOfContentsCardSection *)self algorithmVersion];
+  if (algorithmVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -445,36 +445,36 @@ LABEL_15:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAlgorithmVersion:(id)a3
+- (void)setAlgorithmVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   algorithmVersion = self->_algorithmVersion;
   self->_algorithmVersion = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addTableOfContentsItems:(id)a3
+- (void)addTableOfContentsItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   tableOfContentsItems = self->_tableOfContentsItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!tableOfContentsItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tableOfContentsItems;
-    self->_tableOfContentsItems = v6;
+    self->_tableOfContentsItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     tableOfContentsItems = self->_tableOfContentsItems;
   }
 
-  [(NSArray *)tableOfContentsItems addObject:v4];
+  [(NSArray *)tableOfContentsItems addObject:itemsCopy];
 }
 
-- (void)setTableOfContentsItems:(id)a3
+- (void)setTableOfContentsItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   tableOfContentsItems = self->_tableOfContentsItems;
   self->_tableOfContentsItems = v4;
 

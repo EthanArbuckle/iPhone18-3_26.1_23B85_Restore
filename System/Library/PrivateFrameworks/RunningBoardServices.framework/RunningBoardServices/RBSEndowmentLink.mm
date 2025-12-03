@@ -1,27 +1,27 @@
 @interface RBSEndowmentLink
-+ (id)endowmentLinkForNamespace:(id)a3 sourceEnvironment:(id)a4 sourcePid:(int)a5 targetEnvironment:(id)a6 targetPid:(int)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)endowmentLinkForNamespace:(id)namespace sourceEnvironment:(id)environment sourcePid:(int)pid targetEnvironment:(id)targetEnvironment targetPid:(int)targetPid;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSEndowmentLink)initWithRBSXPCCoder:(id)a3;
-- (id)_initWithNamespace:(void *)a3 sourceEnvironment:(int)a4 sourcePid:(void *)a5 targetEnvironment:(int)a6 targetPid:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RBSEndowmentLink)initWithRBSXPCCoder:(id)coder;
+- (id)_initWithNamespace:(void *)namespace sourceEnvironment:(int)environment sourcePid:(void *)pid targetEnvironment:(int)targetEnvironment targetPid:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSEndowmentLink
 
-+ (id)endowmentLinkForNamespace:(id)a3 sourceEnvironment:(id)a4 sourcePid:(int)a5 targetEnvironment:(id)a6 targetPid:(int)a7
++ (id)endowmentLinkForNamespace:(id)namespace sourceEnvironment:(id)environment sourcePid:(int)pid targetEnvironment:(id)targetEnvironment targetPid:(int)targetPid
 {
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[RBSEndowmentLink alloc] _initWithNamespace:v13 sourceEnvironment:v12 sourcePid:a5 targetEnvironment:v11 targetPid:a7];
+  targetEnvironmentCopy = targetEnvironment;
+  environmentCopy = environment;
+  namespaceCopy = namespace;
+  v14 = [[RBSEndowmentLink alloc] _initWithNamespace:namespaceCopy sourceEnvironment:environmentCopy sourcePid:pid targetEnvironment:targetEnvironmentCopy targetPid:targetPid];
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RBSEndowmentLink);
   objc_storeStrong(&v4->_endowmentNamespace, self->_endowmentNamespace);
@@ -32,10 +32,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_5;
@@ -48,7 +48,7 @@
   }
 
   endowmentNamespace = self->_endowmentNamespace;
-  v9 = v4->_endowmentNamespace;
+  v9 = equalCopy->_endowmentNamespace;
   if (endowmentNamespace != v9)
   {
     v6 = 0;
@@ -64,7 +64,7 @@
   }
 
   sourceEnvironment = self->_sourceEnvironment;
-  v11 = v4->_sourceEnvironment;
+  v11 = equalCopy->_sourceEnvironment;
   if (sourceEnvironment != v11)
   {
     v6 = 0;
@@ -79,17 +79,17 @@
     }
   }
 
-  if (self->_sourcePid != v4->_sourcePid)
+  if (self->_sourcePid != equalCopy->_sourcePid)
   {
     goto LABEL_3;
   }
 
   targetEnvironment = self->_targetEnvironment;
-  v13 = v4->_targetEnvironment;
+  v13 = equalCopy->_targetEnvironment;
   if (targetEnvironment == v13)
   {
 LABEL_19:
-    v6 = self->_targetPid == v4->_targetPid;
+    v6 = self->_targetPid == equalCopy->_targetPid;
     goto LABEL_5;
   }
 
@@ -127,66 +127,66 @@ LABEL_5:
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   endowmentNamespace = self->_endowmentNamespace;
-  v5 = a3;
-  [v5 encodeObject:endowmentNamespace forKey:@"_endowmentNamespace"];
-  [v5 encodeObject:self->_sourceEnvironment forKey:@"_sourceEnvironment"];
-  [v5 encodeInt64:self->_sourcePid forKey:@"_sourcePid"];
-  [v5 encodeObject:self->_targetEnvironment forKey:@"_targetEnvironment"];
-  [v5 encodeInt64:self->_targetPid forKey:@"_targetPid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:endowmentNamespace forKey:@"_endowmentNamespace"];
+  [coderCopy encodeObject:self->_sourceEnvironment forKey:@"_sourceEnvironment"];
+  [coderCopy encodeInt64:self->_sourcePid forKey:@"_sourcePid"];
+  [coderCopy encodeObject:self->_targetEnvironment forKey:@"_targetEnvironment"];
+  [coderCopy encodeInt64:self->_targetPid forKey:@"_targetPid"];
 }
 
-- (RBSEndowmentLink)initWithRBSXPCCoder:(id)a3
+- (RBSEndowmentLink)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RBSEndowmentLink;
   v5 = [(RBSEndowmentLink *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_endowmentNamespace"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_endowmentNamespace"];
     endowmentNamespace = v5->_endowmentNamespace;
     v5->_endowmentNamespace = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sourceEnvironment"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sourceEnvironment"];
     sourceEnvironment = v5->_sourceEnvironment;
     v5->_sourceEnvironment = v8;
 
-    v5->_sourcePid = [v4 decodeInt64ForKey:@"_sourcePid"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_targetEnvironment"];
+    v5->_sourcePid = [coderCopy decodeInt64ForKey:@"_sourcePid"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_targetEnvironment"];
     targetEnvironment = v5->_targetEnvironment;
     v5->_targetEnvironment = v10;
 
-    v5->_targetPid = [v4 decodeInt64ForKey:@"_targetPid"];
+    v5->_targetPid = [coderCopy decodeInt64ForKey:@"_targetPid"];
   }
 
   return v5;
 }
 
-- (id)_initWithNamespace:(void *)a3 sourceEnvironment:(int)a4 sourcePid:(void *)a5 targetEnvironment:(int)a6 targetPid:
+- (id)_initWithNamespace:(void *)namespace sourceEnvironment:(int)environment sourcePid:(void *)pid targetEnvironment:(int)targetEnvironment targetPid:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a5;
-  if (a1)
+  namespaceCopy = namespace;
+  pidCopy = pid;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = RBSEndowmentLink;
     v15 = objc_msgSendSuper2(&v17, sel_init);
-    a1 = v15;
+    self = v15;
     if (v15)
     {
       objc_storeStrong(v15 + 2, a2);
-      objc_storeStrong(a1 + 3, a3);
-      *(a1 + 2) = a4;
-      objc_storeStrong(a1 + 4, a5);
-      *(a1 + 3) = a6;
+      objc_storeStrong(self + 3, namespace);
+      *(self + 2) = environment;
+      objc_storeStrong(self + 4, pid);
+      *(self + 3) = targetEnvironment;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

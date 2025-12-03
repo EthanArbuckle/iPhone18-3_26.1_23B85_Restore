@@ -1,6 +1,6 @@
 @interface ICSKeychainSyncViewController
-- (ICSKeychainSyncViewController)initWithAccountManager:(id)a3;
-- (id)_isKeychainSyncEnabledForSpecifier:(id)a3;
+- (ICSKeychainSyncViewController)initWithAccountManager:(id)manager;
+- (id)_isKeychainSyncEnabledForSpecifier:(id)specifier;
 - (id)_specifierForKeychainSwitchCell;
 - (id)_tobleroneKeychainSpecifiers;
 - (id)specifiers;
@@ -8,7 +8,7 @@
 - (void)_keychainSyncStatusDidChange;
 - (void)_registerForKeychainSyncStatusChangeNotification;
 - (void)_reloadParentSpecifier;
-- (void)_setKeychainSyncEnabled:(id)a3 withSpecifier:(id)a4;
+- (void)_setKeychainSyncEnabled:(id)enabled withSpecifier:(id)specifier;
 - (void)_stopListeningForKeychainSyncStatusChangeNotification;
 - (void)dealloc;
 - (void)viewDidLoad;
@@ -16,17 +16,17 @@
 
 @implementation ICSKeychainSyncViewController
 
-- (ICSKeychainSyncViewController)initWithAccountManager:(id)a3
+- (ICSKeychainSyncViewController)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = ICSKeychainSyncViewController;
   v5 = [(ICSKeychainSyncViewController *)&v12 init];
   if (v5)
   {
     v6 = [_TtC14iCloudSettings22ICSAnalyticsController alloc];
-    v7 = [v4 accounts];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+    accounts = [managerCopy accounts];
+    v8 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
     v9 = [(ICSAnalyticsController *)v6 initWithAccount:v8];
     analyticsController = v5->_analyticsController;
     v5->_analyticsController = v9;
@@ -65,9 +65,9 @@ void __47__ICSKeychainSyncViewController_viewDidAppear___block_invoke(uint64_t a
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(ICSKeychainSyncViewController *)self _tobleroneKeychainSpecifiers];
+    _tobleroneKeychainSpecifiers = [(ICSKeychainSyncViewController *)self _tobleroneKeychainSpecifiers];
     v6 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = _tobleroneKeychainSpecifiers;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -86,8 +86,8 @@ void __47__ICSKeychainSyncViewController_viewDidAppear___block_invoke(uint64_t a
   v8 = [v7 localizedStringForKey:@"KEYCHAIN_DATACLASS_TITLE" value:&stru_288487370 table:@"Localizable-AppleID"];
   v9 = [v5 preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:-1 edit:0];
 
-  v10 = [(ICSKeychainSyncViewController *)self traitCollection];
-  LODWORD(v8) = [v10 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [(ICSKeychainSyncViewController *)self traitCollection];
+  LODWORD(v8) = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
   [v9 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
   [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -148,8 +148,8 @@ void __47__ICSKeychainSyncViewController_viewDidAppear___block_invoke(uint64_t a
 
   v37 = *MEMORY[0x277D3FF38];
   [(PSSpecifier *)self->_switchCellSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
-  v38 = [MEMORY[0x277D262A0] sharedConnection];
-  v39 = [v38 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25E40]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v39 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25E40]];
 
   if (v39)
   {
@@ -182,7 +182,7 @@ void __47__ICSKeychainSyncViewController_viewDidAppear___block_invoke(uint64_t a
   return v6;
 }
 
-- (id)_isKeychainSyncEnabledForSpecifier:(id)a3
+- (id)_isKeychainSyncEnabledForSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = +[ICSKeychainSyncController isKeychainSyncEnabled];
@@ -190,11 +190,11 @@ void __47__ICSKeychainSyncViewController_viewDidAppear___block_invoke(uint64_t a
   return [v3 numberWithBool:v4];
 }
 
-- (void)_setKeychainSyncEnabled:(id)a3 withSpecifier:(id)a4
+- (void)_setKeychainSyncEnabled:(id)enabled withSpecifier:(id)specifier
 {
-  v6 = a3;
-  [(ICSKeychainSyncViewController *)self _startSpinnerInSpecifier:a4];
-  -[ICSKeychainSyncViewController _sendToggleInitiated:](self, "_sendToggleInitiated:", [v6 BOOLValue]);
+  enabledCopy = enabled;
+  [(ICSKeychainSyncViewController *)self _startSpinnerInSpecifier:specifier];
+  -[ICSKeychainSyncViewController _sendToggleInitiated:](self, "_sendToggleInitiated:", [enabledCopy BOOLValue]);
   if ([MEMORY[0x277D75128] isRunningInStoreDemoMode])
   {
     v7 = MEMORY[0x277CEC870];
@@ -205,17 +205,17 @@ void __47__ICSKeychainSyncViewController_viewDidAppear___block_invoke(uint64_t a
     [v7 showUserNotificationWithTitle:v9 message:0 cancelButtonTitle:v11 otherButtonTitle:0 withCompletionBlock:&__block_literal_global_6];
 
     [(ICSKeychainSyncViewController *)self _keychainSyncStatusDidChange];
-    -[ICSKeychainSyncViewController _sendToggleCompleted:](self, "_sendToggleCompleted:", [v6 BOOLValue]);
+    -[ICSKeychainSyncViewController _sendToggleCompleted:](self, "_sendToggleCompleted:", [enabledCopy BOOLValue]);
   }
 
   else
   {
     self->_isTogglingKeychainSync = 1;
-    if ([v6 BOOLValue])
+    if ([enabledCopy BOOLValue])
     {
       v12 = objc_alloc(MEMORY[0x277CFD548]);
-      v13 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
-      v14 = [v12 initWithContext:v13];
+      contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+      v14 = [v12 initWithContext:contextForPrimaryAccount];
 
       v19 = 0;
       v15 = [v14 isManateeAvailable:&v19];
@@ -288,9 +288,9 @@ uint64_t __71__ICSKeychainSyncViewController__setKeychainSyncEnabled_withSpecifi
   v3 = [objc_alloc(MEMORY[0x277CECAF8]) initWithNibName:0 bundle:0];
   v4 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v3];
   v5 = objc_alloc(MEMORY[0x277CFDAE8]);
-  v6 = [MEMORY[0x277CFD480] sharedInstance];
-  v7 = [v6 primaryAccountAltDSID];
-  v8 = [v5 initWithAltDSID:v7];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAccountAltDSID = [mEMORY[0x277CFD480] primaryAccountAltDSID];
+  v8 = [v5 initWithAltDSID:primaryAccountAltDSID];
 
   [v8 setDeviceToDeviceEncryptionUpgradeUIStyle:0];
   [v8 setDeviceToDeviceEncryptionUpgradeType:0];
@@ -305,7 +305,7 @@ uint64_t __71__ICSKeychainSyncViewController__setKeychainSyncEnabled_withSpecifi
   v13[2] = __70__ICSKeychainSyncViewController__beginManateeUpgradeAndEnableKeychain__block_invoke;
   v13[3] = &unk_27A666D78;
   v14 = v4;
-  v15 = self;
+  selfCopy = self;
   v12 = v4;
   [v11 performDeviceToDeviceEncryptionStateRepairWithCompletion:v13];
 }
@@ -344,9 +344,9 @@ uint64_t __70__ICSKeychainSyncViewController__beginManateeUpgradeAndEnableKeycha
 
 - (void)_reloadParentSpecifier
 {
-  v4 = [(ICSKeychainSyncViewController *)self parentController];
-  v3 = [(ICSKeychainSyncViewController *)self specifier];
-  [v4 reloadSpecifier:v3];
+  parentController = [(ICSKeychainSyncViewController *)self parentController];
+  specifier = [(ICSKeychainSyncViewController *)self specifier];
+  [parentController reloadSpecifier:specifier];
 }
 
 - (void)_keychainSyncStatusDidChange

@@ -1,13 +1,13 @@
 @interface PMLDataChunkRaw
-+ (id)chunkWithData:(id)a3;
++ (id)chunkWithData:(id)data;
 @end
 
 @implementation PMLDataChunkRaw
 
-+ (id)chunkWithData:(id)a3
++ (id)chunkWithData:(id)data
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithData:v3];
+  dataCopy = data;
+  v4 = [objc_alloc(objc_opt_class()) initWithData:dataCopy];
 
   return v4;
 }

@@ -1,39 +1,39 @@
 @interface BMSiriOnDeviceDigestExperimentMetrics
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriOnDeviceDigestExperimentMetrics)initWithEventMetadata:(id)a3 digestType:(id)a4 experimentId:(id)a5 treatmentIdUUID:(id)a6 deploymentId:(id)a7 deviceType:(id)a8 programCode:(id)a9 digests:(id)a10;
-- (BMSiriOnDeviceDigestExperimentMetrics)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriOnDeviceDigestExperimentMetrics)initWithEventMetadata:(id)metadata digestType:(id)type experimentId:(id)id treatmentIdUUID:(id)d deploymentId:(id)deploymentId deviceType:(id)deviceType programCode:(id)code digests:(id)self0;
+- (BMSiriOnDeviceDigestExperimentMetrics)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_digestsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriOnDeviceDigestExperimentMetrics
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriOnDeviceDigestExperimentMetrics *)self eventMetadata];
-    v7 = [v5 eventMetadata];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    eventMetadata = [(BMSiriOnDeviceDigestExperimentMetrics *)self eventMetadata];
+    eventMetadata2 = [v5 eventMetadata];
+    v8 = eventMetadata2;
+    if (eventMetadata == eventMetadata2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriOnDeviceDigestExperimentMetrics *)self eventMetadata];
-      v10 = [v5 eventMetadata];
-      v11 = [v9 isEqual:v10];
+      eventMetadata3 = [(BMSiriOnDeviceDigestExperimentMetrics *)self eventMetadata];
+      eventMetadata4 = [v5 eventMetadata];
+      v11 = [eventMetadata3 isEqual:eventMetadata4];
 
       if (!v11)
       {
@@ -53,25 +53,25 @@
         goto LABEL_36;
       }
 
-      v13 = [(BMSiriOnDeviceDigestExperimentMetrics *)self digestType];
-      if (v13 != [v5 digestType])
+      digestType = [(BMSiriOnDeviceDigestExperimentMetrics *)self digestType];
+      if (digestType != [v5 digestType])
       {
         goto LABEL_36;
       }
     }
 
-    v14 = [(BMSiriOnDeviceDigestExperimentMetrics *)self experimentId];
-    v15 = [v5 experimentId];
-    v16 = v15;
-    if (v14 == v15)
+    experimentId = [(BMSiriOnDeviceDigestExperimentMetrics *)self experimentId];
+    experimentId2 = [v5 experimentId];
+    v16 = experimentId2;
+    if (experimentId == experimentId2)
     {
     }
 
     else
     {
-      v17 = [(BMSiriOnDeviceDigestExperimentMetrics *)self experimentId];
-      v18 = [v5 experimentId];
-      v19 = [v17 isEqual:v18];
+      experimentId3 = [(BMSiriOnDeviceDigestExperimentMetrics *)self experimentId];
+      experimentId4 = [v5 experimentId];
+      v19 = [experimentId3 isEqual:experimentId4];
 
       if (!v19)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v20 = [(BMSiriOnDeviceDigestExperimentMetrics *)self treatmentIdUUID];
-    v21 = [v5 treatmentIdUUID];
-    v22 = v21;
-    if (v20 == v21)
+    treatmentIdUUID = [(BMSiriOnDeviceDigestExperimentMetrics *)self treatmentIdUUID];
+    treatmentIdUUID2 = [v5 treatmentIdUUID];
+    v22 = treatmentIdUUID2;
+    if (treatmentIdUUID == treatmentIdUUID2)
     {
     }
 
     else
     {
-      v23 = [(BMSiriOnDeviceDigestExperimentMetrics *)self treatmentIdUUID];
-      v24 = [v5 treatmentIdUUID];
-      v25 = [v23 isEqual:v24];
+      treatmentIdUUID3 = [(BMSiriOnDeviceDigestExperimentMetrics *)self treatmentIdUUID];
+      treatmentIdUUID4 = [v5 treatmentIdUUID];
+      v25 = [treatmentIdUUID3 isEqual:treatmentIdUUID4];
 
       if (!v25)
       {
@@ -110,25 +110,25 @@
         goto LABEL_36;
       }
 
-      v26 = [(BMSiriOnDeviceDigestExperimentMetrics *)self deploymentId];
-      if (v26 != [v5 deploymentId])
+      deploymentId = [(BMSiriOnDeviceDigestExperimentMetrics *)self deploymentId];
+      if (deploymentId != [v5 deploymentId])
       {
         goto LABEL_36;
       }
     }
 
-    v27 = [(BMSiriOnDeviceDigestExperimentMetrics *)self deviceType];
-    v28 = [v5 deviceType];
-    v29 = v28;
-    if (v27 == v28)
+    deviceType = [(BMSiriOnDeviceDigestExperimentMetrics *)self deviceType];
+    deviceType2 = [v5 deviceType];
+    v29 = deviceType2;
+    if (deviceType == deviceType2)
     {
     }
 
     else
     {
-      v30 = [(BMSiriOnDeviceDigestExperimentMetrics *)self deviceType];
-      v31 = [v5 deviceType];
-      v32 = [v30 isEqual:v31];
+      deviceType3 = [(BMSiriOnDeviceDigestExperimentMetrics *)self deviceType];
+      deviceType4 = [v5 deviceType];
+      v32 = [deviceType3 isEqual:deviceType4];
 
       if (!v32)
       {
@@ -138,18 +138,18 @@
 
     if (!-[BMSiriOnDeviceDigestExperimentMetrics hasProgramCode](self, "hasProgramCode") && ![v5 hasProgramCode] || -[BMSiriOnDeviceDigestExperimentMetrics hasProgramCode](self, "hasProgramCode") && objc_msgSend(v5, "hasProgramCode") && (v33 = -[BMSiriOnDeviceDigestExperimentMetrics programCode](self, "programCode"), v33 == objc_msgSend(v5, "programCode")))
     {
-      v34 = [(BMSiriOnDeviceDigestExperimentMetrics *)self digests];
-      v35 = [v5 digests];
-      if (v34 == v35)
+      digests = [(BMSiriOnDeviceDigestExperimentMetrics *)self digests];
+      digests2 = [v5 digests];
+      if (digests == digests2)
       {
         v12 = 1;
       }
 
       else
       {
-        v36 = [(BMSiriOnDeviceDigestExperimentMetrics *)self digests];
-        v37 = [v5 digests];
-        v12 = [v36 isEqual:v37];
+        digests3 = [(BMSiriOnDeviceDigestExperimentMetrics *)self digests];
+        digests4 = [v5 digests];
+        v12 = [digests3 isEqual:digests4];
       }
 
       goto LABEL_37;
@@ -171,8 +171,8 @@ LABEL_38:
 - (id)jsonDictionary
 {
   v31[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriOnDeviceDigestExperimentMetrics *)self eventMetadata];
-  v4 = [v3 jsonDictionary];
+  eventMetadata = [(BMSiriOnDeviceDigestExperimentMetrics *)self eventMetadata];
+  jsonDictionary = [eventMetadata jsonDictionary];
 
   if ([(BMSiriOnDeviceDigestExperimentMetrics *)self hasDigestType])
   {
@@ -184,8 +184,8 @@ LABEL_38:
     v5 = 0;
   }
 
-  v6 = [(BMSiriOnDeviceDigestExperimentMetrics *)self experimentId];
-  v7 = [(BMSiriOnDeviceDigestExperimentMetrics *)self treatmentIdUUID];
+  experimentId = [(BMSiriOnDeviceDigestExperimentMetrics *)self experimentId];
+  treatmentIdUUID = [(BMSiriOnDeviceDigestExperimentMetrics *)self treatmentIdUUID];
   if ([(BMSiriOnDeviceDigestExperimentMetrics *)self hasDeploymentId])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[BMSiriOnDeviceDigestExperimentMetrics deploymentId](self, "deploymentId")}];
@@ -196,7 +196,7 @@ LABEL_38:
     v8 = 0;
   }
 
-  v9 = [(BMSiriOnDeviceDigestExperimentMetrics *)self deviceType];
+  deviceType = [(BMSiriOnDeviceDigestExperimentMetrics *)self deviceType];
   if ([(BMSiriOnDeviceDigestExperimentMetrics *)self hasProgramCode])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMSiriOnDeviceDigestExperimentMetrics programCode](self, "programCode")}];
@@ -207,80 +207,80 @@ LABEL_38:
     v10 = 0;
   }
 
-  v11 = [(BMSiriOnDeviceDigestExperimentMetrics *)self _digestsJSONArray];
+  _digestsJSONArray = [(BMSiriOnDeviceDigestExperimentMetrics *)self _digestsJSONArray];
   v30[0] = @"eventMetadata";
-  v12 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v12;
-  v31[0] = v12;
+  v25 = null;
+  v31[0] = null;
   v30[1] = @"digestType";
-  v13 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v4;
-  v24 = v13;
-  v31[1] = v13;
+  v29 = jsonDictionary;
+  v24 = null2;
+  v31[1] = null2;
   v30[2] = @"experimentId";
-  v14 = v6;
-  if (!v6)
+  null3 = experimentId;
+  if (!experimentId)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v28 = v5;
-  v23 = v14;
-  v31[2] = v14;
+  v23 = null3;
+  v31[2] = null3;
   v30[3] = @"treatmentIdUUID";
-  v15 = v7;
-  if (!v7)
+  null4 = treatmentIdUUID;
+  if (!treatmentIdUUID)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v6;
-  v31[3] = v15;
+  v27 = experimentId;
+  v31[3] = null4;
   v30[4] = @"deploymentId";
-  v16 = v8;
+  null5 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v7;
-  v31[4] = v16;
+  v26 = treatmentIdUUID;
+  v31[4] = null5;
   v30[5] = @"deviceType";
-  v17 = v9;
-  if (!v9)
+  null6 = deviceType;
+  if (!deviceType)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[5] = v17;
+  v31[5] = null6;
   v30[6] = @"programCode";
-  v18 = v10;
+  null7 = v10;
   if (!v10)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[6] = v18;
+  v31[6] = null7;
   v30[7] = @"digests";
-  v19 = v11;
-  if (!v11)
+  null8 = _digestsJSONArray;
+  if (!_digestsJSONArray)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[7] = v19;
+  v31[7] = null8;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:8];
-  if (v11)
+  if (_digestsJSONArray)
   {
     if (v10)
     {
@@ -298,7 +298,7 @@ LABEL_38:
   }
 
 LABEL_28:
-  if (!v9)
+  if (!deviceType)
   {
   }
 
@@ -345,8 +345,8 @@ LABEL_38:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSiriOnDeviceDigestExperimentMetrics *)self digests];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  digests = [(BMSiriOnDeviceDigestExperimentMetrics *)self digests];
+  v5 = [digests countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -357,14 +357,14 @@ LABEL_38:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(digests);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [digests countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -375,34 +375,34 @@ LABEL_38:
   return v3;
 }
 
-- (BMSiriOnDeviceDigestExperimentMetrics)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriOnDeviceDigestExperimentMetrics)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v151[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"eventMetadata"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v24 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v25 = self;
+        selfCopy = self;
         v26 = *MEMORY[0x1E698F240];
         v150 = *MEMORY[0x1E696A578];
         v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"eventMetadata"];
         v151[0] = v7;
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v151 forKeys:&v150 count:1];
         v27 = v26;
-        self = v25;
+        self = selfCopy;
         v28 = [v24 initWithDomain:v27 code:2 userInfo:v21];
-        v23 = 0;
-        *a4 = v28;
+        selfCopy3 = 0;
+        *error = v28;
         goto LABEL_91;
       }
 
-      v23 = 0;
+      selfCopy3 = 0;
       goto LABEL_92;
     }
 
@@ -412,13 +412,13 @@ LABEL_38:
     v22 = v130;
     if (v22)
     {
-      if (a4)
+      if (error)
       {
         v22 = v22;
-        *a4 = v22;
+        *error = v22;
       }
 
-      v23 = 0;
+      selfCopy3 = 0;
       goto LABEL_91;
     }
   }
@@ -428,13 +428,13 @@ LABEL_38:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"digestType"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"digestType"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v41 = objc_alloc(MEMORY[0x1E696ABC0]);
         v42 = v8;
@@ -448,13 +448,13 @@ LABEL_38:
         v122 = v44;
         v46 = [v41 initWithDomain:v45 code:2 userInfo:?];
         v21 = 0;
-        v23 = 0;
-        *a4 = v46;
+        selfCopy3 = 0;
+        *error = v46;
         goto LABEL_89;
       }
 
       v21 = 0;
-      v23 = 0;
+      selfCopy3 = 0;
       goto LABEL_90;
     }
 
@@ -466,14 +466,14 @@ LABEL_38:
     v121 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"experimentId"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"experimentId"];
   v122 = v9;
   if (v9 && (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v47 = objc_alloc(MEMORY[0x1E696ABC0]);
         v48 = v8;
@@ -493,14 +493,14 @@ LABEL_38:
         v120 = v54;
         v56 = [v47 initWithDomain:v55 code:2 userInfo:?];
         v39 = 0;
-        v23 = 0;
-        *a4 = v56;
+        selfCopy3 = 0;
+        *error = v56;
         v21 = v121;
         goto LABEL_88;
       }
 
       v39 = 0;
-      v23 = 0;
+      selfCopy3 = 0;
       v21 = v121;
       goto LABEL_89;
     }
@@ -513,14 +513,14 @@ LABEL_38:
     v118 = 0;
   }
 
-  v11 = [v5 objectForKeyedSubscript:@"treatmentIdUUID"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"treatmentIdUUID"];
   v120 = v11;
   if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v57 = objc_alloc(MEMORY[0x1E696ABC0]);
         v58 = v8;
@@ -538,8 +538,8 @@ LABEL_38:
         v8 = v58;
         v65 = [v57 initWithDomain:v64 code:2 userInfo:v63];
         v40 = 0;
-        v23 = 0;
-        *a4 = v65;
+        selfCopy3 = 0;
+        *error = v65;
         v13 = v63;
         v21 = v121;
         v39 = v118;
@@ -547,7 +547,7 @@ LABEL_38:
       }
 
       v40 = 0;
-      v23 = 0;
+      selfCopy3 = 0;
       v21 = v121;
       v39 = v118;
       goto LABEL_88;
@@ -561,15 +561,15 @@ LABEL_38:
     v115 = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"deploymentId"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"deploymentId"];
   v124 = v13;
-  v117 = self;
+  selfCopy2 = self;
   if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v66 = objc_alloc(MEMORY[0x1E696ABC0]);
         v67 = v8;
@@ -588,8 +588,8 @@ LABEL_38:
         v114 = v72;
         v74 = [v66 initWithDomain:v73 code:2 userInfo:?];
         v119 = 0;
-        v23 = 0;
-        *a4 = v74;
+        selfCopy3 = 0;
+        *error = v74;
         v21 = v121;
         v39 = v118;
         v40 = v115;
@@ -597,7 +597,7 @@ LABEL_38:
       }
 
       v119 = 0;
-      v23 = 0;
+      selfCopy3 = 0;
       v21 = v121;
       v39 = v118;
       v40 = v115;
@@ -612,14 +612,14 @@ LABEL_38:
     v119 = 0;
   }
 
-  v14 = [v5 objectForKeyedSubscript:@"deviceType"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
   v114 = v14;
   if (v14 && (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v75 = objc_alloc(MEMORY[0x1E696ABC0]);
         v76 = v8;
@@ -638,19 +638,19 @@ LABEL_38:
         v112 = v81;
         v83 = [v75 initWithDomain:v82 code:2 userInfo:?];
         v116 = 0;
-        v23 = 0;
-        *a4 = v83;
+        selfCopy3 = 0;
+        *error = v83;
         v21 = v121;
-        self = v117;
+        self = selfCopy2;
         v39 = v118;
         v40 = v115;
         goto LABEL_85;
       }
 
       v116 = 0;
-      v23 = 0;
+      selfCopy3 = 0;
       v21 = v121;
-      self = v117;
+      self = selfCopy2;
       v39 = v118;
       v40 = v115;
       goto LABEL_86;
@@ -664,7 +664,7 @@ LABEL_38:
     v116 = 0;
   }
 
-  v16 = [v5 objectForKeyedSubscript:@"programCode"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"programCode"];
   v110 = v8;
   v111 = v7;
   v112 = v16;
@@ -673,12 +673,12 @@ LABEL_38:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v113 = 0;
-        v23 = 0;
+        selfCopy3 = 0;
         v21 = v121;
-        self = v117;
+        self = selfCopy2;
         v39 = v118;
         v40 = v115;
         goto LABEL_85;
@@ -694,10 +694,10 @@ LABEL_38:
       v87 = v86;
       v6 = v85;
       v113 = 0;
-      v23 = 0;
-      *a4 = [v84 initWithDomain:v87 code:2 userInfo:v29];
+      selfCopy3 = 0;
+      *error = [v84 initWithDomain:v87 code:2 userInfo:v29];
       v21 = v121;
-      self = v117;
+      self = selfCopy2;
       v39 = v118;
       goto LABEL_82;
     }
@@ -710,23 +710,23 @@ LABEL_38:
     v113 = 0;
   }
 
-  v18 = [v5 objectForKeyedSubscript:@"digests"];
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v20 = [v18 isEqual:v19];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"digests"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v20 = [v18 isEqual:null];
 
-  self = v117;
+  self = selfCopy2;
   if (!v20)
   {
     if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v108 = v6;
-      v109 = v5;
+      v109 = dictionaryCopy;
       goto LABEL_42;
     }
 
-    if (!a4)
+    if (!error)
     {
-      v23 = 0;
+      selfCopy3 = 0;
       v21 = v121;
       v39 = v118;
       v40 = v115;
@@ -740,11 +740,11 @@ LABEL_38:
     v137 = v29;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:&v137 forKeys:&v136 count:1];
     v103 = v102 = v6;
-    *a4 = [v100 initWithDomain:v101 code:2 userInfo:v103];
+    *error = [v100 initWithDomain:v101 code:2 userInfo:v103];
 
     v6 = v102;
 LABEL_81:
-    v23 = 0;
+    selfCopy3 = 0;
     v21 = v121;
     v39 = v118;
 LABEL_82:
@@ -753,7 +753,7 @@ LABEL_82:
   }
 
   v108 = v6;
-  v109 = v5;
+  v109 = dictionaryCopy;
 
   v18 = 0;
 LABEL_42:
@@ -785,10 +785,10 @@ LABEL_42:
       if (objc_opt_isKindOfClass())
       {
         v6 = v108;
-        v5 = v109;
-        self = v117;
-        v88 = a4;
-        if (a4)
+        dictionaryCopy = v109;
+        self = selfCopy2;
+        errorCopy2 = error;
+        if (error)
         {
           v89 = v108;
           v90 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -803,7 +803,7 @@ LABEL_75:
           v95 = [v92 dictionaryWithObjects:v93 forKeys:v94 count:1];
           v96 = v90;
           v6 = v89;
-          *v88 = [v96 initWithDomain:v91 code:2 userInfo:v95];
+          *errorCopy2 = [v96 initWithDomain:v91 code:2 userInfo:v95];
 LABEL_79:
 
           v13 = v124;
@@ -818,10 +818,10 @@ LABEL_80:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v6 = v108;
-        v5 = v109;
-        self = v117;
-        v88 = a4;
-        if (a4)
+        dictionaryCopy = v109;
+        self = selfCopy2;
+        errorCopy2 = error;
+        if (error)
         {
           v89 = v108;
           v90 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -846,15 +846,15 @@ LABEL_80:
       if (v38)
       {
         v95 = v38;
-        if (a4)
+        if (error)
         {
           v97 = v38;
-          *a4 = v95;
+          *error = v95;
         }
 
         v6 = v108;
-        v5 = v109;
-        self = v117;
+        dictionaryCopy = v109;
+        self = selfCopy2;
         goto LABEL_79;
       }
 
@@ -864,7 +864,7 @@ LABEL_80:
     }
 
     v31 = [v18 countByEnumeratingWithState:&v126 objects:v135 count:16];
-    self = v117;
+    self = selfCopy2;
     if (v31)
     {
       continue;
@@ -879,9 +879,9 @@ LABEL_52:
   v39 = v118;
   v40 = v115;
   self = [(BMSiriOnDeviceDigestExperimentMetrics *)self initWithEventMetadata:v111 digestType:v121 experimentId:v118 treatmentIdUUID:v115 deploymentId:v119 deviceType:v116 programCode:v113 digests:v29];
-  v23 = self;
+  selfCopy3 = self;
   v6 = v108;
-  v5 = v109;
+  dictionaryCopy = v109;
 LABEL_83:
 
   v7 = v111;
@@ -901,27 +901,27 @@ LABEL_91:
 
 LABEL_92:
   v98 = *MEMORY[0x1E69E9840];
-  return v23;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriOnDeviceDigestExperimentMetrics *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_eventMetadata)
   {
     v19 = 0;
     PBDataWriterPlaceMark();
-    [(BMSiriOnDeviceDigestExperimentMetricsEventMetadata *)self->_eventMetadata writeTo:v4];
+    [(BMSiriOnDeviceDigestExperimentMetricsEventMetadata *)self->_eventMetadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -981,7 +981,7 @@ LABEL_92:
         v13 = *(*(&v15 + 1) + 8 * v12);
         v19 = 0;
         PBDataWriterPlaceMark();
-        [v13 writeTo:{v4, v15}];
+        [v13 writeTo:{toCopy, v15}];
         PBDataWriterRecallMark();
         ++v12;
       }
@@ -996,9 +996,9 @@ LABEL_92:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v51.receiver = self;
   v51.super_class = BMSiriOnDeviceDigestExperimentMetrics;
   v5 = [(BMEventBase *)&v51 init];
@@ -1008,12 +1008,12 @@ LABEL_92:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1024,18 +1024,18 @@ LABEL_92:
       while (1)
       {
         LOBYTE(v52) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v52 & 0x7F) << v8;
@@ -1053,9 +1053,9 @@ LABEL_92:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -1074,18 +1074,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v52) = 0;
-              v33 = [v4 position] + 1;
-              if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+              v33 = [fromCopy position] + 1;
+              if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
               {
-                v35 = [v4 data];
-                [v35 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v32 |= (v52 & 0x7F) << v30;
@@ -1103,7 +1103,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v36 = 0;
             }
@@ -1141,18 +1141,18 @@ LABEL_56:
           while (1)
           {
             LOBYTE(v52) = 0;
-            v41 = [v4 position] + 1;
-            if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+            v41 = [fromCopy position] + 1;
+            if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
             {
-              v43 = [v4 data];
-              [v43 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v40 |= (v52 & 0x7F) << v38;
@@ -1170,7 +1170,7 @@ LABEL_56:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v23 = 0;
           }
@@ -1192,7 +1192,7 @@ LABEL_75:
 
         v52 = 0;
         v53 = 0;
-        if (!PBReaderPlaceMark() || (v26 = [[BMSiriOnDeviceDigestExperimentMetricsExperimentDigest alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v26 = [[BMSiriOnDeviceDigestExperimentMetricsExperimentDigest alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_86:
 
@@ -1236,18 +1236,18 @@ LABEL_86:
             while (1)
             {
               LOBYTE(v52) = 0;
-              v20 = [v4 position] + 1;
-              if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+              v20 = [fromCopy position] + 1;
+              if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
               {
-                v22 = [v4 data];
-                [v22 getBytes:&v52 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v52 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v19 |= (v52 & 0x7F) << v17;
@@ -1265,7 +1265,7 @@ LABEL_86:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v23 = 0;
             }
@@ -1298,7 +1298,7 @@ LABEL_66:
           goto LABEL_86;
         }
 
-        v28 = [[BMSiriOnDeviceDigestExperimentMetricsEventMetadata alloc] initByReadFrom:v4];
+        v28 = [[BMSiriOnDeviceDigestExperimentMetricsEventMetadata alloc] initByReadFrom:fromCopy];
         if (!v28)
         {
           goto LABEL_86;
@@ -1311,18 +1311,18 @@ LABEL_66:
       }
 
 LABEL_81:
-      v45 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v45 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v46 = [v6 copy];
   digests = v5->_digests;
   v5->_digests = v46;
 
-  v48 = [v4 hasError];
-  if (v48)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_83:
     v49 = 0;
@@ -1340,79 +1340,79 @@ LABEL_84:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriOnDeviceDigestExperimentMetrics *)self eventMetadata];
+  eventMetadata = [(BMSiriOnDeviceDigestExperimentMetrics *)self eventMetadata];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMSiriOnDeviceDigestExperimentMetrics digestType](self, "digestType")}];
-  v6 = [(BMSiriOnDeviceDigestExperimentMetrics *)self experimentId];
-  v7 = [(BMSiriOnDeviceDigestExperimentMetrics *)self treatmentIdUUID];
+  experimentId = [(BMSiriOnDeviceDigestExperimentMetrics *)self experimentId];
+  treatmentIdUUID = [(BMSiriOnDeviceDigestExperimentMetrics *)self treatmentIdUUID];
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[BMSiriOnDeviceDigestExperimentMetrics deploymentId](self, "deploymentId")}];
-  v9 = [(BMSiriOnDeviceDigestExperimentMetrics *)self deviceType];
+  deviceType = [(BMSiriOnDeviceDigestExperimentMetrics *)self deviceType];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMSiriOnDeviceDigestExperimentMetrics programCode](self, "programCode")}];
-  v11 = [(BMSiriOnDeviceDigestExperimentMetrics *)self digests];
-  v12 = [v3 initWithFormat:@"BMSiriOnDeviceDigestExperimentMetrics with eventMetadata: %@, digestType: %@, experimentId: %@, treatmentIdUUID: %@, deploymentId: %@, deviceType: %@, programCode: %@, digests: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  digests = [(BMSiriOnDeviceDigestExperimentMetrics *)self digests];
+  v12 = [v3 initWithFormat:@"BMSiriOnDeviceDigestExperimentMetrics with eventMetadata: %@, digestType: %@, experimentId: %@, treatmentIdUUID: %@, deploymentId: %@, deviceType: %@, programCode: %@, digests: %@", eventMetadata, v5, experimentId, treatmentIdUUID, v8, deviceType, v10, digests];
 
   return v12;
 }
 
-- (BMSiriOnDeviceDigestExperimentMetrics)initWithEventMetadata:(id)a3 digestType:(id)a4 experimentId:(id)a5 treatmentIdUUID:(id)a6 deploymentId:(id)a7 deviceType:(id)a8 programCode:(id)a9 digests:(id)a10
+- (BMSiriOnDeviceDigestExperimentMetrics)initWithEventMetadata:(id)metadata digestType:(id)type experimentId:(id)id treatmentIdUUID:(id)d deploymentId:(id)deploymentId deviceType:(id)deviceType programCode:(id)code digests:(id)self0
 {
-  v29 = a3;
-  v17 = a4;
-  v28 = a5;
-  v27 = a6;
-  v18 = a7;
-  v26 = a8;
-  v19 = a9;
-  v20 = a10;
+  metadataCopy = metadata;
+  typeCopy = type;
+  idCopy = id;
+  dCopy = d;
+  deploymentIdCopy = deploymentId;
+  deviceTypeCopy = deviceType;
+  codeCopy = code;
+  digestsCopy = digests;
   v30.receiver = self;
   v30.super_class = BMSiriOnDeviceDigestExperimentMetrics;
   v21 = [(BMEventBase *)&v30 init];
   if (v21)
   {
     v21->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v21->_eventMetadata, a3);
-    if (v17)
+    objc_storeStrong(&v21->_eventMetadata, metadata);
+    if (typeCopy)
     {
       v21->_hasDigestType = 1;
-      v22 = [v17 unsignedIntValue];
+      unsignedIntValue = [typeCopy unsignedIntValue];
     }
 
     else
     {
-      v22 = 0;
+      unsignedIntValue = 0;
       v21->_hasDigestType = 0;
     }
 
-    v21->_digestType = v22;
-    objc_storeStrong(&v21->_experimentId, a5);
-    objc_storeStrong(&v21->_treatmentIdUUID, a6);
-    if (v18)
+    v21->_digestType = unsignedIntValue;
+    objc_storeStrong(&v21->_experimentId, id);
+    objc_storeStrong(&v21->_treatmentIdUUID, d);
+    if (deploymentIdCopy)
     {
       v21->_hasDeploymentId = 1;
-      v23 = [v18 longLongValue];
+      longLongValue = [deploymentIdCopy longLongValue];
     }
 
     else
     {
       v21->_hasDeploymentId = 0;
-      v23 = -1;
+      longLongValue = -1;
     }
 
-    v21->_deploymentId = v23;
-    objc_storeStrong(&v21->_deviceType, a8);
-    if (v19)
+    v21->_deploymentId = longLongValue;
+    objc_storeStrong(&v21->_deviceType, deviceType);
+    if (codeCopy)
     {
       v21->_hasProgramCode = 1;
-      v24 = [v19 unsignedIntValue];
+      unsignedIntValue2 = [codeCopy unsignedIntValue];
     }
 
     else
     {
-      v24 = 0;
+      unsignedIntValue2 = 0;
       v21->_hasProgramCode = 0;
     }
 
-    v21->_programCode = v24;
-    objc_storeStrong(&v21->_digests, a10);
+    v21->_programCode = unsignedIntValue2;
+    objc_storeStrong(&v21->_digests, digests);
   }
 
   return v21;
@@ -1489,9 +1489,9 @@ id __48__BMSiriOnDeviceDigestExperimentMetrics_columns__block_invoke(uint64_t a1
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1499,8 +1499,8 @@ id __48__BMSiriOnDeviceDigestExperimentMetrics_columns__block_invoke(uint64_t a1
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriOnDeviceDigestExperimentMetrics alloc] initByReadFrom:v7];
     v4 = v8;

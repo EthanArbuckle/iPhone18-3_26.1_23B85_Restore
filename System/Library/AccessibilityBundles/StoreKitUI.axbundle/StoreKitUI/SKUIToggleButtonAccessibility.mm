@@ -1,5 +1,5 @@
 @interface SKUIToggleButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)_accessibilityFindAttributedStringView;
 - (id)accessibilityLabel;
@@ -9,40 +9,40 @@
 
 @implementation SKUIToggleButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIAttributedStringView"];
-  [v3 validateClass:@"SKUIToggleStateCenter"];
-  [v3 validateClass:@"SKUIToggleStateItem"];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceMethod:@"element" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceMethod:@"toggledTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceMethod:@"nonToggledTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceMethod:@"isToggled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceVariable:@"_titleToggleString" withType:"NSString"];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceVariable:@"_toggled" withType:"B"];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceVariable:@"_autoIncrement" withType:"B"];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceMethod:@"toggleItemIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIToggleButton" hasInstanceVariable:@"_autoIncrementCount" withType:"q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIAttributedStringView"];
+  [validationsCopy validateClass:@"SKUIToggleStateCenter"];
+  [validationsCopy validateClass:@"SKUIToggleStateItem"];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceMethod:@"element" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceMethod:@"toggledTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceMethod:@"nonToggledTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceMethod:@"isToggled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceVariable:@"_titleToggleString" withType:"NSString"];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceVariable:@"_toggled" withType:"B"];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceVariable:@"_autoIncrement" withType:"B"];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceMethod:@"toggleItemIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIToggleButton" hasInstanceVariable:@"_autoIncrementCount" withType:"q"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(SKUIToggleButtonAccessibility *)self safeValueForKey:@"element"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if ([v4 length] || (-[SKUIToggleButtonAccessibility _accessibilityFindAttributedStringView](self, "_accessibilityFindAttributedStringView"), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ([accessibilityLabel length] || (-[SKUIToggleButtonAccessibility _accessibilityFindAttributedStringView](self, "_accessibilityFindAttributedStringView"), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = v4;
+    accessibilityLabel2 = accessibilityLabel;
   }
 
   else
   {
     v7 = v6;
-    v5 = [v6 accessibilityLabel];
+    accessibilityLabel2 = [v6 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel2;
 }
 
 - (id)_accessibilityFindAttributedStringView
@@ -96,7 +96,7 @@ LABEL_11:
 
 - (id)accessibilityValue
 {
-  v3 = [MEMORY[0x29EDBA0F8] string];
+  string = [MEMORY[0x29EDBA0F8] string];
   if ([(SKUIToggleButtonAccessibility *)self safeBoolForKey:@"isToggled"])
   {
     v4 = @"toggledTitle";
@@ -112,10 +112,10 @@ LABEL_11:
   {
     v5 = v5;
 
-    v3 = v5;
+    string = v5;
   }
 
-  if ([v3 length])
+  if ([string length])
   {
     goto LABEL_7;
   }
@@ -125,24 +125,24 @@ LABEL_11:
   v7 = [(SKUIToggleButtonAccessibility *)self safeValueForKey:@"_titleToggleString"];
   v8 = __UIAccessibilityCastAsClass();
 
-  v9 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v10 = [v8 stringByTrimmingCharactersInSet:v9];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v10 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v6 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v10];
-  [v6 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD9E0]];
-  if (![v6 length])
+  accessibilityValue = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v10];
+  [accessibilityValue setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD9E0]];
+  if (![accessibilityValue length])
   {
 
 LABEL_7:
     v12.receiver = self;
     v12.super_class = SKUIToggleButtonAccessibility;
-    v6 = [(SKUIToggleButtonAccessibility *)&v12 accessibilityValue];
+    accessibilityValue = [(SKUIToggleButtonAccessibility *)&v12 accessibilityValue];
     goto LABEL_10;
   }
 
 LABEL_10:
 
-  return v6;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
@@ -164,11 +164,11 @@ LABEL_10:
 {
   v5.receiver = self;
   v5.super_class = SKUIToggleButtonAccessibility;
-  v3 = [(SKUIToggleButtonAccessibility *)&v5 accessibilityActivate];
+  accessibilityActivate = [(SKUIToggleButtonAccessibility *)&v5 accessibilityActivate];
   [(SKUIToggleButtonAccessibility *)self safeBoolForKey:@"_toggled"];
   [(SKUIToggleButtonAccessibility *)self safeBoolForKey:@"_autoIncrement"];
   AXPerformSafeBlock();
-  return v3;
+  return accessibilityActivate;
 }
 
 void __54__SKUIToggleButtonAccessibility_accessibilityActivate__block_invoke(uint64_t a1)

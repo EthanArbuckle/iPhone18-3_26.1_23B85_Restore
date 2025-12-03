@@ -1,6 +1,6 @@
 @interface AVOutputDeviceAuthorizationRequest
 - (AVOutputDevice)outputDevice;
-- (AVOutputDeviceAuthorizationRequest)initWithOutputDeviceAuthorizationRequestImpl:(id)a3;
+- (AVOutputDeviceAuthorizationRequest)initWithOutputDeviceAuthorizationRequestImpl:(id)impl;
 - (NSError)error;
 - (NSString)ID;
 - (NSString)authorizationTokenType;
@@ -8,7 +8,7 @@
 - (int64_t)status;
 - (void)cancel;
 - (void)dealloc;
-- (void)respondWithAuthorizationToken:(id)a3 completionHandler:(id)a4;
+- (void)respondWithAuthorizationToken:(id)token completionHandler:(id)handler;
 @end
 
 @implementation AVOutputDeviceAuthorizationRequest
@@ -89,26 +89,26 @@ uint64_t __43__AVOutputDeviceAuthorizationRequest_error__block_invoke(uint64_t a
 
 - (NSString)ID
 {
-  v2 = [(AVOutputDeviceAuthorizationRequest *)self impl];
+  impl = [(AVOutputDeviceAuthorizationRequest *)self impl];
 
-  return [v2 ID];
+  return [impl ID];
 }
 
 - (AVOutputDevice)outputDevice
 {
-  v2 = [(AVOutputDeviceAuthorizationRequest *)self impl];
+  impl = [(AVOutputDeviceAuthorizationRequest *)self impl];
 
-  return [v2 outputDevice];
+  return [impl outputDevice];
 }
 
 - (NSString)authorizationTokenType
 {
-  v2 = [(AVOutputDeviceAuthorizationRequest *)self impl];
+  impl = [(AVOutputDeviceAuthorizationRequest *)self impl];
 
-  return [v2 authorizationTokenType];
+  return [impl authorizationTokenType];
 }
 
-- (void)respondWithAuthorizationToken:(id)a3 completionHandler:(id)a4
+- (void)respondWithAuthorizationToken:(id)token completionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   if (dword_1EB46D568)
@@ -126,8 +126,8 @@ uint64_t __43__AVOutputDeviceAuthorizationRequest_error__block_invoke(uint64_t a
   v12[2] = __86__AVOutputDeviceAuthorizationRequest_respondWithAuthorizationToken_completionHandler___block_invoke;
   v12[3] = &unk_1E794EEB8;
   v12[4] = self;
-  v12[5] = a4;
-  [v8 respondWithAuthorizationToken:a3 completionHandler:v12];
+  v12[5] = handler;
+  [v8 respondWithAuthorizationToken:token completionHandler:v12];
   v9 = *MEMORY[0x1E69E9840];
 }
 
@@ -178,12 +178,12 @@ uint64_t __86__AVOutputDeviceAuthorizationRequest_respondWithAuthorizationToken_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (AVOutputDeviceAuthorizationRequest)initWithOutputDeviceAuthorizationRequestImpl:(id)a3
+- (AVOutputDeviceAuthorizationRequest)initWithOutputDeviceAuthorizationRequestImpl:(id)impl
 {
   v8.receiver = self;
   v8.super_class = AVOutputDeviceAuthorizationRequest;
   v4 = [(AVOutputDeviceAuthorizationRequest *)&v8 init];
-  if (v4 && (v5 = objc_alloc_init(AVOutputDeviceAuthorizationRequestInternal), (v4->_ivars = v5) != 0) && (v4->_ivars->impl = a3) != 0)
+  if (v4 && (v5 = objc_alloc_init(AVOutputDeviceAuthorizationRequestInternal), (v4->_ivars = v5) != 0) && (v4->_ivars->impl = impl) != 0)
   {
     v4->_ivars->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.output-device-auth-session.ivars");
     v4->_ivars->status = 0;

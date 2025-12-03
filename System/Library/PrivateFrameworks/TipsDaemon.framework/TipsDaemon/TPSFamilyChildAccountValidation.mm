@@ -1,20 +1,20 @@
 @interface TPSFamilyChildAccountValidation
-- (void)getCurrentStateWithCompletion:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (void)getCurrentStateWithCompletion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSFamilyChildAccountValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__TPSFamilyChildAccountValidation_validateWithCompletion___block_invoke;
   v6[3] = &unk_2789AF8C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(TPSFamilyChildAccountValidation *)self getCurrentStateWithCompletion:v6];
 }
 
@@ -44,9 +44,9 @@ void __58__TPSFamilyChildAccountValidation_validateWithCompletion___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCurrentStateWithCompletion:(id)a3
+- (void)getCurrentStateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -59,7 +59,7 @@ void __58__TPSFamilyChildAccountValidation_validateWithCompletion___block_invoke
   v6[1] = 3221225472;
   v6[2] = __65__TPSFamilyChildAccountValidation_getCurrentStateWithCompletion___block_invoke;
   v6[3] = &unk_2789AFA70;
-  v5 = v3;
+  v5 = completionCopy;
   v7 = v5;
   v8 = &v9;
   [v4 startRequestWithCompletionHandler:v6];

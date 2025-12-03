@@ -1,38 +1,38 @@
 @interface BDSBookWidgetReadingHistoryManager
 - (BDSBookWidgetReadingHistoryData)lastState;
-- (BDSBookWidgetReadingHistoryManager)initWithBookWidgetDataUpdater:(id)a3 transactionProvider:(id)a4;
+- (BDSBookWidgetReadingHistoryManager)initWithBookWidgetDataUpdater:(id)updater transactionProvider:(id)provider;
 - (BDSReadingHistoryStateInfo)currentViewStateInfo;
-- (void)_processViewStateChange:(id)a3;
+- (void)_processViewStateChange:(id)change;
 @end
 
 @implementation BDSBookWidgetReadingHistoryManager
 
-- (BDSBookWidgetReadingHistoryManager)initWithBookWidgetDataUpdater:(id)a3 transactionProvider:(id)a4
+- (BDSBookWidgetReadingHistoryManager)initWithBookWidgetDataUpdater:(id)updater transactionProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  updaterCopy = updater;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = BDSBookWidgetReadingHistoryManager;
   v8 = [(BDSBookWidgetReadingHistoryManager *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    [(BDSBookWidgetReadingHistoryManager *)v8 setBookWidgetDataUpdater:v6];
+    [(BDSBookWidgetReadingHistoryManager *)v8 setBookWidgetDataUpdater:updaterCopy];
     v9->_accessLock._os_unfair_lock_opaque = 0;
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.iBooks.BDSBookWidgetReadingHistoryManager.saveQueue", v10);
     saveQueue = v9->_saveQueue;
     v9->_saveQueue = v11;
 
-    objc_storeStrong(&v9->_transactionProvider, a4);
+    objc_storeStrong(&v9->_transactionProvider, provider);
     v13 = +[BDSBookWidgetReadingHistoryDataFile sharedInstance];
     dataFile = v9->_dataFile;
     v9->_dataFile = v13;
 
-    v15 = [(BDSBookWidgetReadingHistoryManager *)v9 dataFile];
-    v16 = [v15 load];
+    dataFile = [(BDSBookWidgetReadingHistoryManager *)v9 dataFile];
+    load = [dataFile load];
     lastState = v9->_lastState;
-    v9->_lastState = v16;
+    v9->_lastState = load;
   }
 
   return v9;
@@ -40,18 +40,18 @@
 
 - (BDSReadingHistoryStateInfo)currentViewStateInfo
 {
-  v2 = [(BDSBookWidgetReadingHistoryManager *)self lastState];
+  lastState = [(BDSBookWidgetReadingHistoryManager *)self lastState];
   v3 = sub_10000DE28();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v2;
+    v7 = lastState;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "BDSBookWidgetReadingHistoryManager - current: %@", &v6, 0xCu);
   }
 
-  v4 = [v2 stateInfo];
+  stateInfo = [lastState stateInfo];
 
-  return v4;
+  return stateInfo;
 }
 
 - (BDSBookWidgetReadingHistoryData)lastState
@@ -63,22 +63,22 @@
   return v3;
 }
 
-- (void)_processViewStateChange:(id)a3
+- (void)_processViewStateChange:(id)change
 {
-  v4 = a3;
-  v5 = [(BDSBookWidgetReadingHistoryManager *)self transactionProvider];
-  v6 = [v5 createTransactionWithName:"BDSBookWidgetReadingHistoryManager._processViewStateChange"];
+  changeCopy = change;
+  transactionProvider = [(BDSBookWidgetReadingHistoryManager *)self transactionProvider];
+  v6 = [transactionProvider createTransactionWithName:"BDSBookWidgetReadingHistoryManager._processViewStateChange"];
 
   v7 = +[BUAppGroup books];
-  v8 = [v7 userDefaults];
-  v9 = [v8 BOOLForKey:@"BKReadingGoalsUserDefaultsKey"];
+  userDefaults = [v7 userDefaults];
+  v9 = [userDefaults BOOLForKey:@"BKReadingGoalsUserDefaultsKey"];
 
-  v10 = [(BDSBookWidgetReadingHistoryManager *)self lastState];
-  if (v4)
+  lastState = [(BDSBookWidgetReadingHistoryManager *)self lastState];
+  if (changeCopy)
   {
-    v11 = [[BDSBookWidgetReadingHistoryData alloc] initWithStateInfo:v4 readingGoalsEnabled:v9];
+    v11 = [[BDSBookWidgetReadingHistoryData alloc] initWithStateInfo:changeCopy readingGoalsEnabled:v9];
     v12 = v11;
-    if (!v10 && v11)
+    if (!lastState && v11)
     {
 LABEL_9:
       v14 = sub_10000DE28();
@@ -92,7 +92,7 @@ LABEL_9:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v28 = v10;
+        v28 = lastState;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "    old = %@", buf, 0xCu);
       }
 
@@ -112,7 +112,7 @@ LABEL_9:
       block[2] = sub_10000D410;
       block[3] = &unk_10023F720;
       v24 = v6;
-      v25 = self;
+      selfCopy = self;
       v12 = v12;
       v26 = v12;
       dispatch_async(saveQueue, block);
@@ -123,23 +123,23 @@ LABEL_9:
       }
 
       v18 = v12;
-      v19 = [(BDSBookWidgetReadingHistoryData *)v10 stateInfo];
-      v20 = [(BDSBookWidgetReadingHistoryData *)v18 stateInfo];
+      stateInfo = [(BDSBookWidgetReadingHistoryData *)lastState stateInfo];
+      stateInfo2 = [(BDSBookWidgetReadingHistoryData *)v18 stateInfo];
 
-      if (!v19 && ([v20 isEmptyState] & 1) != 0)
+      if (!stateInfo && ([stateInfo2 isEmptyState] & 1) != 0)
       {
         goto LABEL_22;
       }
 
-      v21 = [v19 isEmptyState] ^ 1;
-      if (!v19)
+      v21 = [stateInfo isEmptyState] ^ 1;
+      if (!stateInfo)
       {
         LOBYTE(v21) = 0;
       }
 
-      if ((v21 & 1) != 0 || v20)
+      if ((v21 & 1) != 0 || stateInfo2)
       {
-        v22 = [v19 isEqual:v20];
+        v22 = [stateInfo isEqual:stateInfo2];
 
         if (v22)
         {
@@ -149,8 +149,8 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v19 = [(BDSBookWidgetReadingHistoryManager *)self bookWidgetDataUpdater];
-        [v19 reloadWidgetTimelines];
+        stateInfo = [(BDSBookWidgetReadingHistoryManager *)self bookWidgetDataUpdater];
+        [stateInfo reloadWidgetTimelines];
       }
 
       else
@@ -167,7 +167,7 @@ LABEL_22:
     v12 = 0;
   }
 
-  if (![(BDSBookWidgetReadingHistoryData *)v10 isEqual:v12])
+  if (![(BDSBookWidgetReadingHistoryData *)lastState isEqual:v12])
   {
     goto LABEL_9;
   }

@@ -1,67 +1,67 @@
 @interface CDPUIAuthenticationHelper
-+ (id)_authContextForContext:(id)a3;
-+ (void)_authWithContext:(id)a3 completion:(id)a4;
-+ (void)proxAuthenticationForContext:(id)a3 viewController:(id)a4 withCompletion:(id)a5;
++ (id)_authContextForContext:(id)context;
++ (void)_authWithContext:(id)context completion:(id)completion;
++ (void)proxAuthenticationForContext:(id)context viewController:(id)controller withCompletion:(id)completion;
 @end
 
 @implementation CDPUIAuthenticationHelper
 
-+ (void)_authWithContext:(id)a3 completion:(id)a4
++ (void)_authWithContext:(id)context completion:(id)completion
 {
   v5 = MEMORY[0x277CF0178];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = objc_alloc_init(v5);
-  [v8 authenticateWithContext:v7 completion:v6];
+  [v8 authenticateWithContext:contextCopy completion:completionCopy];
 }
 
-+ (id)_authContextForContext:(id)a3
++ (id)_authContextForContext:(id)context
 {
   v3 = MEMORY[0x277CF0170];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 dsid];
-  v7 = [v6 stringValue];
-  [v5 setDSID:v7];
+  dsid = [contextCopy dsid];
+  stringValue = [dsid stringValue];
+  [v5 setDSID:stringValue];
 
-  v8 = [v4 altDSID];
-  [v5 setAltDSID:v8];
+  altDSID = [contextCopy altDSID];
+  [v5 setAltDSID:altDSID];
 
-  v9 = [v4 appleID];
-  [v5 setUsername:v9];
+  appleID = [contextCopy appleID];
+  [v5 setUsername:appleID];
 
-  v10 = [v4 password];
+  password = [contextCopy password];
 
-  [v5 _setPassword:v10];
+  [v5 _setPassword:password];
 
   return v5;
 }
 
-+ (void)proxAuthenticationForContext:(id)a3 viewController:(id)a4 withCompletion:(id)a5
++ (void)proxAuthenticationForContext:(id)context viewController:(id)controller withCompletion:(id)completion
 {
-  v13 = a3;
-  v8 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   v9 = MEMORY[0x277CFD560];
-  v10 = a5;
+  completionCopy = completion;
   if ([v9 isCDPRepairWithProximityBasedPiggybackingEnabled])
   {
-    v11 = [a1 _authContextForContext:v13];
+    v11 = [self _authContextForContext:contextCopy];
     v12 = [objc_alloc(MEMORY[0x277CF0380]) initWithContext:v11];
     [v12 setAuthenticationType:0];
     [v12 setIsUsernameEditable:0];
     [v12 setServiceType:1];
     [v12 setSupportsPiggybacking:1];
     [v12 setPiggybackingForTrustedDevice:1];
-    [v12 setPresentingViewController:v8];
-    [a1 _authWithContext:v12 completion:v10];
+    [v12 setPresentingViewController:controllerCopy];
+    [self _authWithContext:v12 completion:completionCopy];
 
-    v10 = v12;
+    completionCopy = v12;
   }
 
   else
   {
     v11 = _CDPStateError();
-    (*(v10 + 2))(v10, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 

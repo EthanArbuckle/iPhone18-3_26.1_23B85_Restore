@@ -1,6 +1,6 @@
 @interface AccountRecoveryRowViewModel
 - (_TtC9CoreCDPUI27AccountRecoveryRowViewModel)init;
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
 @end
 
 @implementation AccountRecoveryRowViewModel
@@ -12,21 +12,21 @@
   return result;
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE0F268);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_24525DE30;
   v5 = *MEMORY[0x277CED1A0];
   *(inited + 32) = *MEMORY[0x277CED1A0];
-  v6 = a3;
+  managerCopy = manager;
   v7 = v5;
-  v8 = [v6 accountStore];
-  v9 = [v8 aa_primaryAppleAccount];
+  accountStore = [managerCopy accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  if (v9)
+  if (aa_primaryAppleAccount)
   {
-    *(inited + 40) = v9;
+    *(inited + 40) = aa_primaryAppleAccount;
     sub_24524F778(inited);
     swift_setDeallocating();
     sub_24524F870(inited + 32);

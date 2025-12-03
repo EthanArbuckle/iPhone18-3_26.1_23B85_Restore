@@ -1,21 +1,21 @@
 @interface TSWPColumnStyle
-+ (float)defaultFloatValueForProperty:(int)a3;
-+ (id)defaultStyleWithContext:(id)a3;
-+ (id)defaultValueForProperty:(int)a3;
++ (float)defaultFloatValueForProperty:(int)property;
++ (id)defaultStyleWithContext:(id)context;
++ (id)defaultValueForProperty:(int)property;
 + (id)properties;
-+ (int)defaultIntValueForProperty:(int)a3;
++ (int)defaultIntValueForProperty:(int)property;
 - (BOOL)equalWidth;
 - (TSWPPadding)layoutMargins;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
-- (double)gapForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
-- (id)layoutMarginsForTarget:(id)a3;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
+- (double)gapForColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (id)layoutMarginsForTarget:(id)target;
 - (unint64_t)columnCount;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPColumnStyle
@@ -32,9 +32,9 @@
   return v3;
 }
 
-+ (int)defaultIntValueForProperty:(int)a3
++ (int)defaultIntValueForProperty:(int)property
 {
-  if (a3 == 151)
+  if (property == 151)
   {
     v3 = 1;
   }
@@ -44,17 +44,17 @@
     v3 = 0x80000000;
   }
 
-  if (a3 == 152)
+  if (property == 152)
   {
     v3 = 0;
   }
 
-  if (a3 == 153)
+  if (property == 153)
   {
     v3 = 0;
   }
 
-  if (a3 == 149)
+  if (property == 149)
   {
     v4 = 0;
   }
@@ -64,12 +64,12 @@
     v4 = 0x80000000;
   }
 
-  if (a3 == 44)
+  if (property == 44)
   {
     v4 = -1;
   }
 
-  if (a3 <= 150)
+  if (property <= 150)
   {
     return v4;
   }
@@ -80,10 +80,10 @@
   }
 }
 
-+ (float)defaultFloatValueForProperty:(int)a3
++ (float)defaultFloatValueForProperty:(int)property
 {
   result = INFINITY;
-  if (a3 == 147)
+  if (property == 147)
   {
     return 0.0;
   }
@@ -91,21 +91,21 @@
   return result;
 }
 
-+ (id)defaultValueForProperty:(int)a3
++ (id)defaultValueForProperty:(int)property
 {
-  if (a3 == 145 || a3 == 146)
+  if (property == 145 || property == 146)
   {
-    v3 = objc_msgSend_padding(TSWPPadding, a2, *&a3);
+    v3 = objc_msgSend_padding(TSWPPadding, a2, *&property);
   }
 
-  else if (a3 == 148)
+  else if (property == 148)
   {
-    v3 = objc_msgSend_columns(TSWPColumns, a2, *&a3);
+    v3 = objc_msgSend_columns(TSWPColumns, a2, *&property);
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___TSWPColumnStyle;
     v3 = objc_msgSendSuper2(&v5, sel_defaultValueForProperty_);
   }
@@ -113,9 +113,9 @@
   return v3;
 }
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (qword_280A580A0 != -1)
   {
     sub_276F4F080();
@@ -125,12 +125,12 @@
   v5 = qword_280A58098;
   v6 = objc_opt_class();
   v9 = objc_msgSend_defaultPropertyMap(v6, v7, v8);
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v10, v3, v5, v9, 0);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v10, contextCopy, v5, v9, 0);
 
   return isVariation;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   objc_opt_class();
   v5 = objc_msgSend_valueForProperty_(self, v4, 146);
@@ -182,11 +182,11 @@
   return v5;
 }
 
-- (id)layoutMarginsForTarget:(id)a3
+- (id)layoutMarginsForTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v7 = objc_msgSend_layoutMargins(self, v5, v6);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend_marginsAreMirrored(v4, v8, v9))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend_marginsAreMirrored(targetCopy, v8, v9))
   {
     v12 = objc_msgSend_paddingByMirroringHorizontal(v7, v10, v11);
 
@@ -230,39 +230,39 @@
   return v6;
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
   v6 = objc_msgSend_valueForProperty_(self, a2, 148);
-  objc_msgSend_widthForColumnIndex_bodyWidth_(v6, v7, a3, a4);
+  objc_msgSend_widthForColumnIndex_bodyWidth_(v6, v7, index, width);
   v9 = v8;
 
   return v9;
 }
 
-- (double)gapForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)gapForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
   v6 = objc_msgSend_valueForProperty_(self, a2, 148);
-  objc_msgSend_gapForColumnIndex_bodyWidth_(v6, v7, a3, a4);
+  objc_msgSend_gapForColumnIndex_bodyWidth_(v6, v7, index, width);
   v9 = v8;
 
   return v9;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  v11 = objc_msgSend_valueForProperty_(self, a2, 148, a5);
-  objc_msgSend_positionForColumnIndex_bodyWidth_outWidth_outGap_(v11, v12, a3, a6, a7, a4);
+  v11 = objc_msgSend_valueForProperty_(self, a2, 148, target);
+  objc_msgSend_positionForColumnIndex_bodyWidth_outWidth_outGap_(v11, v12, index, outWidth, gap, width);
   v14 = v13;
 
   return v14;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -272,8 +272,8 @@
 
   v82.receiver = self;
   v82.super_class = TSWPColumnStyle;
-  [(TSWPColumnStyle *)&v82 loadFromArchive:v7 unarchiver:v6];
-  v10 = *(a3 + 10);
+  [(TSWPColumnStyle *)&v82 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  v10 = *(archive + 10);
   if (!v10)
   {
     goto LABEL_69;
@@ -281,9 +281,9 @@
 
   v11 = objc_alloc(MEMORY[0x277D80AB8]);
   v13 = objc_msgSend_initWithCapacity_(v11, v12, v10);
-  if (*(a3 + 4))
+  if (*(archive + 4))
   {
-    v14 = *(a3 + 4);
+    v14 = *(archive + 4);
   }
 
   else
@@ -295,9 +295,9 @@
   v18 = *(v14 + 4);
   if (v18)
   {
-    if (v6)
+    if (unarchiverCopy)
     {
-      v20 = objc_msgSend_instanceWithArchive_unarchiver_(TSWPColumns, v15, *(v14 + 3), v6);
+      v20 = objc_msgSend_instanceWithArchive_unarchiver_(TSWPColumns, v15, *(v14 + 3), unarchiverCopy);
       v19 = 1;
       goto LABEL_16;
     }
@@ -313,7 +313,7 @@ LABEL_19:
 
   else
   {
-    v19 = v6 != 0;
+    v19 = unarchiverCopy != 0;
     if ((v18 & 0x40) == 0)
     {
       goto LABEL_19;
@@ -379,7 +379,7 @@ LABEL_21:
 
   else
   {
-    v32 = objc_msgSend_instanceWithArchive_unarchiver_(TSWPPadding, v28, *(v14 + 4), v6);
+    v32 = objc_msgSend_instanceWithArchive_unarchiver_(TSWPPadding, v28, *(v14 + 4), unarchiverCopy);
   }
 
   v33 = v32;
@@ -435,7 +435,7 @@ LABEL_37:
 
   else
   {
-    v45 = objc_msgSend_instanceWithArchive_unarchiver_(TSWPPadding, v40, *(v14 + 5), v6);
+    v45 = objc_msgSend_instanceWithArchive_unarchiver_(TSWPPadding, v40, *(v14 + 5), unarchiverCopy);
   }
 
   v46 = v45;
@@ -531,35 +531,35 @@ LABEL_69:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[60]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[60]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = MEMORY[0x277CA3260](v8);
-    *(a3 + 3) = v7;
+    *(archive + 3) = v7;
   }
 
   v83.receiver = self;
   v83.super_class = TSWPColumnStyle;
-  [(TSWPColumnStyle *)&v83 saveToArchive:v7 archiver:v6];
+  [(TSWPColumnStyle *)&v83 saveToArchive:v7 archiver:archiverCopy];
   v11 = objc_msgSend_overrideCount(self, v9, v10);
   if (v11)
   {
@@ -574,20 +574,20 @@ LABEL_69:
       LODWORD(v11) = -1;
     }
 
-    v13 = *(a3 + 4);
-    *(a3 + 10) = v11;
-    *(a3 + 4) = v13 | 6;
-    v14 = *(a3 + 4);
+    v13 = *(archive + 4);
+    *(archive + 10) = v11;
+    *(archive + 4) = v13 | 6;
+    v14 = *(archive + 4);
     if (!v14)
     {
-      v15 = *(a3 + 1);
+      v15 = *(archive + 1);
       if (v15)
       {
         v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v14 = google::protobuf::Arena::CreateMaybeMessage<TSWP::ColumnStylePropertiesArchive>(v15);
-      *(a3 + 4) = v14;
+      *(archive + 4) = v14;
     }
 
     v16 = objc_opt_class();
@@ -627,7 +627,7 @@ LABEL_69:
             *(v14 + 24) = v28;
           }
 
-          objc_msgSend_saveToArchive_archiver_(v24, v26, v28, v6);
+          objc_msgSend_saveToArchive_archiver_(v24, v26, v28, archiverCopy);
         }
       }
     }
@@ -678,7 +678,7 @@ LABEL_69:
             *(v14 + 32) = v42;
           }
 
-          objc_msgSend_saveToArchive_archiver_(v38, v40, v42, v6);
+          objc_msgSend_saveToArchive_archiver_(v38, v40, v42, archiverCopy);
         }
       }
     }
@@ -730,7 +730,7 @@ LABEL_69:
             *(v14 + 40) = v57;
           }
 
-          objc_msgSend_saveToArchive_archiver_(v53, v55, v57, v6, v79);
+          objc_msgSend_saveToArchive_archiver_(v53, v55, v57, archiverCopy, v79);
         }
       }
     }
@@ -789,13 +789,13 @@ LABEL_69:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276D442FC, off_2812DC408[60]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276D442FC, off_2812DC408[60]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

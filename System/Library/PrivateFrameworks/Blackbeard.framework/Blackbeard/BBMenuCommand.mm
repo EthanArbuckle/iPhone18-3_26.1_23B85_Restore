@@ -1,10 +1,10 @@
 @interface BBMenuCommand
-- (BBMenuCommand)initWithSelector:(SEL)a3 requireEnabled:(id)a4 handler:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (BBMenuCommand)initWithSelector:(SEL)selector requireEnabled:(id)enabled handler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (unint64_t)hash;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)invokeHandler;
 @end
 
@@ -18,22 +18,22 @@
   return v3;
 }
 
-- (BBMenuCommand)initWithSelector:(SEL)a3 requireEnabled:(id)a4 handler:(id)a5
+- (BBMenuCommand)initWithSelector:(SEL)selector requireEnabled:(id)enabled handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  enabledCopy = enabled;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = BBMenuCommand;
   v10 = [(BBMenuCommand *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_selector = a3;
-    v12 = [v8 copy];
+    v10->_selector = selector;
+    v12 = [enabledCopy copy];
     requireEnabled = v11->_requireEnabled;
     v11->_requireEnabled = v12;
 
-    v14 = [v9 copy];
+    v14 = [handlerCopy copy];
     handler = v11->_handler;
     v11->_handler = v14;
   }
@@ -41,51 +41,51 @@
   return v11;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v3 = objc_opt_class();
 
   return [v3 instanceMethodSignatureForSelector:sel_invokeHandler];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = a3;
-  v4 = [v5 selector];
-  if (v4 != [(BBMenuCommand *)self selector])
+  invocationCopy = invocation;
+  selector = [invocationCopy selector];
+  if (selector != [(BBMenuCommand *)self selector])
   {
-    -[BBMenuCommand doesNotRecognizeSelector:](self, "doesNotRecognizeSelector:", [v5 selector]);
+    -[BBMenuCommand doesNotRecognizeSelector:](self, "doesNotRecognizeSelector:", [invocationCopy selector]);
   }
 
   [(BBMenuCommand *)self invokeHandler];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if ([(BBMenuCommand *)self selector]== a3)
+  if ([(BBMenuCommand *)self selector]== selector)
   {
     return 0;
   }
 
-  v4 = [(BBMenuCommand *)self requireEnabled];
-  v5 = v4[2]();
+  requireEnabled = [(BBMenuCommand *)self requireEnabled];
+  v5 = requireEnabled[2]();
 
   return v5;
 }
 
 - (void)invokeHandler
 {
-  v2 = [(BBMenuCommand *)self handler];
-  v2[2]();
+  handler = [(BBMenuCommand *)self handler];
+  handler[2]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 hash];
+    v5 = [equalCopy hash];
     v6 = v5 == [(BBMenuCommand *)self hash];
   }
 

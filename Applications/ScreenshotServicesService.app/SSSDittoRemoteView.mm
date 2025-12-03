@@ -1,16 +1,16 @@
 @interface SSSDittoRemoteView
-- (SSSDittoRemoteView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (SSSDittoRemoteView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
 @implementation SSSDittoRemoteView
 
-- (SSSDittoRemoteView)initWithFrame:(CGRect)a3
+- (SSSDittoRemoteView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SSSDittoRemoteView;
-  v3 = [(SSSDittoRemoteView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSDittoRemoteView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (_SSIsScreenshotManagerDebuggingEnabled())
   {
     v4 = objc_alloc_init(SSSDebugScreenshotMangerView);
@@ -37,16 +37,16 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(SSSDittoRemoteView *)self acceptsTouches])
   {
     v10.receiver = self;
     v10.super_class = SSSDittoRemoteView;
-    v8 = [(SSSDittoRemoteView *)&v10 hitTest:v7 withEvent:x, y];
+    v8 = [(SSSDittoRemoteView *)&v10 hitTest:eventCopy withEvent:x, y];
   }
 
   else

@@ -1,23 +1,23 @@
 @interface AXAuditSize
-+ (id)createWithSize:(CGSize)a3;
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)createWithSize:(CGSize)size;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AXAuditSize
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v5 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditSize_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportPropertyEntry *)v4 setTransportKey:@"SizeValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v4 setLocalValueToTransportValue:&__block_literal_global_7];
   [(AXAuditObjectTransportPropertyEntry *)v4 setPopulateLocalObjectWithTransportValue:&__block_literal_global_10_2];
   [(AXAuditObjectTransportInfoPropertyBased *)v5 addPropertyEntry:v4];
-  [v3 registerTransportInfoPropertyBased:v5];
+  [managerCopy registerTransportInfoPropertyBased:v5];
 }
 
 uint64_t __54__AXAuditSize_registerTransportableObjectWithManager___block_invoke(uint64_t a1, void *a2)
@@ -40,20 +40,20 @@ void __54__AXAuditSize_registerTransportableObjectWithManager___block_invoke_2(u
   }
 }
 
-+ (id)createWithSize:(CGSize)a3
++ (id)createWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(AXAuditSize);
   [(AXAuditSize *)v5 setSize:width, height];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -66,7 +66,7 @@ void __54__AXAuditSize_registerTransportableObjectWithManager___block_invoke_2(u
       [(AXAuditSize *)self size];
       v6 = v5;
       v8 = v7;
-      [(AXAuditSize *)v4 size];
+      [(AXAuditSize *)equalCopy size];
       v14.width = v9;
       v14.height = v10;
       v13.width = v6;
@@ -83,9 +83,9 @@ void __54__AXAuditSize_registerTransportableObjectWithManager___block_invoke_2(u
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(AXAuditSize *)self size];
   [v4 setSize:?];
   return v4;

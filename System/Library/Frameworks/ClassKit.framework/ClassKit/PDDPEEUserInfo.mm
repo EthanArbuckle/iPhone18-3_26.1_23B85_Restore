@@ -1,79 +1,79 @@
 @interface PDDPEEUserInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLocations:(id)a3;
-- (void)addPrivileges:(id)a3;
-- (void)addRoles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsEduUser:(BOOL)a3;
-- (void)setHasOrganizationFacetimeMessagesEnabled:(BOOL)a3;
-- (void)setHasOrganizationProgressTrackingAllowed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLocations:(id)locations;
+- (void)addPrivileges:(id)privileges;
+- (void)addRoles:(id)roles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsEduUser:(BOOL)user;
+- (void)setHasOrganizationFacetimeMessagesEnabled:(BOOL)enabled;
+- (void)setHasOrganizationProgressTrackingAllowed:(BOOL)allowed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPEEUserInfo
 
-- (void)addPrivileges:(id)a3
+- (void)addPrivileges:(id)privileges
 {
-  v4 = a3;
+  privilegesCopy = privileges;
   privileges = self->_privileges;
-  v8 = v4;
+  v8 = privilegesCopy;
   if (!privileges)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_privileges;
     self->_privileges = v6;
 
-    v4 = v8;
+    privilegesCopy = v8;
     privileges = self->_privileges;
   }
 
-  [(NSMutableArray *)privileges addObject:v4];
+  [(NSMutableArray *)privileges addObject:privilegesCopy];
 }
 
-- (void)addRoles:(id)a3
+- (void)addRoles:(id)roles
 {
-  v4 = a3;
+  rolesCopy = roles;
   roles = self->_roles;
-  v8 = v4;
+  v8 = rolesCopy;
   if (!roles)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_roles;
     self->_roles = v6;
 
-    v4 = v8;
+    rolesCopy = v8;
     roles = self->_roles;
   }
 
-  [(NSMutableArray *)roles addObject:v4];
+  [(NSMutableArray *)roles addObject:rolesCopy];
 }
 
-- (void)addLocations:(id)a3
+- (void)addLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   locations = self->_locations;
-  v8 = v4;
+  v8 = locationsCopy;
   if (!locations)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_locations;
     self->_locations = v6;
 
-    v4 = v8;
+    locationsCopy = v8;
     locations = self->_locations;
   }
 
-  [(NSMutableArray *)locations addObject:v4];
+  [(NSMutableArray *)locations addObject:locationsCopy];
 }
 
-- (void)setHasIsEduUser:(BOOL)a3
+- (void)setHasIsEduUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 2;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasOrganizationProgressTrackingAllowed:(BOOL)a3
+- (void)setHasOrganizationProgressTrackingAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 8;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasOrganizationFacetimeMessagesEnabled:(BOOL)a3
+- (void)setHasOrganizationFacetimeMessagesEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -121,8 +121,8 @@
   v7.receiver = self;
   v7.super_class = PDDPEEUserInfo;
   v3 = [(PDDPEEUserInfo *)&v7 description];
-  v4 = [(PDDPEEUserInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPEEUserInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -133,8 +133,8 @@
   userInfo = self->_userInfo;
   if (userInfo)
   {
-    v5 = [(PDDPUserInfo *)userInfo dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"user_info"];
+    dictionaryRepresentation = [(PDDPUserInfo *)userInfo dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"user_info"];
   }
 
   if ([(NSMutableArray *)self->_privileges count])
@@ -159,8 +159,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -194,8 +194,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v39 objects:v48 count:16];
@@ -229,8 +229,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v35 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation4 = [*(*(&v35 + 1) + 8 * k) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation4];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v35 objects:v47 count:16];
@@ -299,9 +299,9 @@ LABEL_40:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_userInfo)
   {
     PBDataWriterWriteSubmessage();
@@ -448,76 +448,76 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   if (self->_userInfo)
   {
-    [v18 setUserInfo:?];
+    [toCopy setUserInfo:?];
   }
 
   if ([(PDDPEEUserInfo *)self privilegesCount])
   {
-    [v18 clearPrivileges];
-    v4 = [(PDDPEEUserInfo *)self privilegesCount];
-    if (v4)
+    [toCopy clearPrivileges];
+    privilegesCount = [(PDDPEEUserInfo *)self privilegesCount];
+    if (privilegesCount)
     {
-      v5 = v4;
+      v5 = privilegesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPEEUserInfo *)self privilegesAtIndex:i];
-        [v18 addPrivileges:v7];
+        [toCopy addPrivileges:v7];
       }
     }
   }
 
   if ([(PDDPEEUserInfo *)self rolesCount])
   {
-    [v18 clearRoles];
-    v8 = [(PDDPEEUserInfo *)self rolesCount];
-    if (v8)
+    [toCopy clearRoles];
+    rolesCount = [(PDDPEEUserInfo *)self rolesCount];
+    if (rolesCount)
     {
-      v9 = v8;
+      v9 = rolesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PDDPEEUserInfo *)self rolesAtIndex:j];
-        [v18 addRoles:v11];
+        [toCopy addRoles:v11];
       }
     }
   }
 
   if ([(PDDPEEUserInfo *)self locationsCount])
   {
-    [v18 clearLocations];
-    v12 = [(PDDPEEUserInfo *)self locationsCount];
-    if (v12)
+    [toCopy clearLocations];
+    locationsCount = [(PDDPEEUserInfo *)self locationsCount];
+    if (locationsCount)
     {
-      v13 = v12;
+      v13 = locationsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(PDDPEEUserInfo *)self locationsAtIndex:k];
-        [v18 addLocations:v15];
+        [toCopy addLocations:v15];
       }
     }
   }
 
-  v16 = v18;
+  v16 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
-    v18[57] = self->_isEduUser;
-    v18[60] |= 2u;
+    toCopy[57] = self->_isEduUser;
+    toCopy[60] |= 2u;
   }
 
   if (self->_organizationId)
   {
-    [v18 setOrganizationId:?];
-    v16 = v18;
+    [toCopy setOrganizationId:?];
+    v16 = toCopy;
   }
 
   if (self->_organizationName)
   {
-    [v18 setOrganizationName:?];
-    v16 = v18;
+    [toCopy setOrganizationName:?];
+    v16 = toCopy;
   }
 
   has = self->_has;
@@ -555,10 +555,10 @@ LABEL_24:
 LABEL_25:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDDPUserInfo *)self->_userInfo copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDDPUserInfo *)self->_userInfo copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
@@ -581,7 +581,7 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v40 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v40 + 1) + 8 * i) copyWithZone:zone];
         [v5 addPrivileges:v13];
       }
 
@@ -610,7 +610,7 @@ LABEL_25:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v36 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v36 + 1) + 8 * j) copyWithZone:zone];
         [v5 addRoles:v19];
       }
 
@@ -639,7 +639,7 @@ LABEL_25:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v32 + 1) + 8 * k) copyWithZone:{a3, v32}];
+        v25 = [*(*(&v32 + 1) + 8 * k) copyWithZone:{zone, v32}];
         [v5 addLocations:v25];
       }
 
@@ -655,11 +655,11 @@ LABEL_25:
     *(v5 + 60) |= 2u;
   }
 
-  v26 = [(NSString *)self->_organizationId copyWithZone:a3, v32];
+  v26 = [(NSString *)self->_organizationId copyWithZone:zone, v32];
   v27 = v5[2];
   v5[2] = v26;
 
-  v28 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v28 = [(NSString *)self->_organizationName copyWithZone:zone];
   v29 = v5[3];
   v5[3] = v28;
 
@@ -701,16 +701,16 @@ LABEL_27:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   userInfo = self->_userInfo;
-  if (userInfo | *(v4 + 6))
+  if (userInfo | *(equalCopy + 6))
   {
     if (![(PDDPUserInfo *)userInfo isEqual:?])
     {
@@ -719,7 +719,7 @@ LABEL_27:
   }
 
   privileges = self->_privileges;
-  if (privileges | *(v4 + 4))
+  if (privileges | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)privileges isEqual:?])
     {
@@ -728,7 +728,7 @@ LABEL_27:
   }
 
   roles = self->_roles;
-  if (roles | *(v4 + 5))
+  if (roles | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)roles isEqual:?])
     {
@@ -737,7 +737,7 @@ LABEL_27:
   }
 
   locations = self->_locations;
-  if (locations | *(v4 + 1))
+  if (locations | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)locations isEqual:?])
     {
@@ -745,42 +745,42 @@ LABEL_27:
     }
   }
 
-  v9 = *(v4 + 60);
+  v9 = *(equalCopy + 60);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0)
+    if ((*(equalCopy + 60) & 2) == 0)
     {
       goto LABEL_26;
     }
 
-    v14 = *(v4 + 57);
+    v14 = *(equalCopy + 57);
     if (self->_isEduUser)
     {
-      if ((*(v4 + 57) & 1) == 0)
+      if ((*(equalCopy + 57) & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(v4 + 57))
+    else if (*(equalCopy + 57))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   organizationId = self->_organizationId;
-  if (organizationId | *(v4 + 2) && ![(NSString *)organizationId isEqual:?])
+  if (organizationId | *(equalCopy + 2) && ![(NSString *)organizationId isEqual:?])
   {
     goto LABEL_26;
   }
 
   organizationName = self->_organizationName;
-  if (organizationName | *(v4 + 3))
+  if (organizationName | *(equalCopy + 3))
   {
     if (![(NSString *)organizationName isEqual:?])
     {
@@ -790,34 +790,34 @@ LABEL_27:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0)
+    if ((*(equalCopy + 60) & 8) == 0)
     {
       goto LABEL_26;
     }
 
-    v15 = *(v4 + 59);
+    v15 = *(equalCopy + 59);
     if (self->_organizationProgressTrackingAllowed)
     {
-      if ((*(v4 + 59) & 1) == 0)
+      if ((*(equalCopy + 59) & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(v4 + 59))
+    else if (*(equalCopy + 59))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(equalCopy + 60) & 4) == 0)
     {
       goto LABEL_20;
     }
@@ -827,40 +827,40 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 60) & 4) == 0)
+  if ((*(equalCopy + 60) & 4) == 0)
   {
     goto LABEL_26;
   }
 
-  v16 = *(v4 + 58);
+  v16 = *(equalCopy + 58);
   if (self->_organizationFacetimeMessagesEnabled)
   {
-    if ((*(v4 + 58) & 1) == 0)
+    if ((*(equalCopy + 58) & 1) == 0)
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 58))
+  else if (*(equalCopy + 58))
   {
     goto LABEL_26;
   }
 
 LABEL_20:
-  v12 = (*(v4 + 60) & 1) == 0;
+  v12 = (*(equalCopy + 60) & 1) == 0;
   if (*&self->_has)
   {
-    if (*(v4 + 60))
+    if (*(equalCopy + 60))
     {
       if (self->_analyticsOptedIn)
       {
-        if (*(v4 + 56))
+        if (*(equalCopy + 56))
         {
           goto LABEL_46;
         }
       }
 
-      else if (!*(v4 + 56))
+      else if (!*(equalCopy + 56))
       {
 LABEL_46:
         v12 = 1;
@@ -932,11 +932,11 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   userInfo = self->_userInfo;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   if (userInfo)
   {
     if (v6)
@@ -954,7 +954,7 @@ LABEL_7:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v8)
   {
@@ -982,7 +982,7 @@ LABEL_7:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v13)
   {
@@ -1010,7 +1010,7 @@ LABEL_7:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = *(v4 + 1);
+  v17 = *(fromCopy + 1);
   v18 = [v17 countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v18)
   {
@@ -1034,34 +1034,34 @@ LABEL_7:
     while (v19);
   }
 
-  if ((*(v4 + 60) & 2) != 0)
+  if ((*(fromCopy + 60) & 2) != 0)
   {
-    self->_isEduUser = *(v4 + 57);
+    self->_isEduUser = *(fromCopy + 57);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PDDPEEUserInfo *)self setOrganizationId:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDDPEEUserInfo *)self setOrganizationName:?];
   }
 
-  v22 = *(v4 + 60);
+  v22 = *(fromCopy + 60);
   if ((v22 & 8) == 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(fromCopy + 60) & 4) == 0)
     {
       goto LABEL_35;
     }
 
 LABEL_39:
-    self->_organizationFacetimeMessagesEnabled = *(v4 + 58);
+    self->_organizationFacetimeMessagesEnabled = *(fromCopy + 58);
     *&self->_has |= 4u;
-    if ((*(v4 + 60) & 1) == 0)
+    if ((*(fromCopy + 60) & 1) == 0)
     {
       goto LABEL_37;
     }
@@ -1069,9 +1069,9 @@ LABEL_39:
     goto LABEL_36;
   }
 
-  self->_organizationProgressTrackingAllowed = *(v4 + 59);
+  self->_organizationProgressTrackingAllowed = *(fromCopy + 59);
   *&self->_has |= 8u;
-  v22 = *(v4 + 60);
+  v22 = *(fromCopy + 60);
   if ((v22 & 4) != 0)
   {
     goto LABEL_39;
@@ -1081,7 +1081,7 @@ LABEL_35:
   if (v22)
   {
 LABEL_36:
-    self->_analyticsOptedIn = *(v4 + 56);
+    self->_analyticsOptedIn = *(fromCopy + 56);
     *&self->_has |= 1u;
   }
 

@@ -1,13 +1,13 @@
 @interface HPSSpatialProfileManager
 + (BOOL)isProfileExisting;
-+ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)a3;
++ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)device;
 + (BOOL)isProxCardShowed;
 + (BOOL)isSettingsEnrollmentSupported;
 + (id)profileEnrollmentViewController;
 + (id)profileManagementSpecifier;
 + (id)spatialProfileStatus;
-+ (void)setProxCardShowed:(BOOL)a3;
-+ (void)setProxCardShowed:(BOOL)a3 forDevice:(id)a4;
++ (void)setProxCardShowed:(BOOL)showed;
++ (void)setProxCardShowed:(BOOL)showed forDevice:(id)device;
 @end
 
 @implementation HPSSpatialProfileManager
@@ -18,11 +18,11 @@
   if (_os_feature_enabled_impl())
   {
     v2 = MGCopyAnswer();
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     v4 = MGGetStringAnswer();
     v5 = [v4 isEqualToString:@"iPhone"];
     v6 = MGGetBoolAnswer();
-    v7 = v3 & v5;
+    v7 = bOOLValue & v5;
     v8 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -37,7 +37,7 @@
         v10 = "No";
       }
 
-      if (v3)
+      if (bOOLValue)
       {
         v11 = "Yes";
       }
@@ -83,11 +83,11 @@
   return v7;
 }
 
-+ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)a3
++ (BOOL)isProxCardEnrollmentSupportedForDevice:(id)device
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v16 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -103,17 +103,17 @@ LABEL_50:
 
   if (_os_feature_enabled_impl())
   {
-    v35 = a1;
-    v36 = [a1 isSettingsEnrollmentSupported];
+    selfCopy = self;
+    isSettingsEnrollmentSupported = [self isSettingsEnrollmentSupported];
     v37 = +[HPSSpatialProfileManager isProxCardShowed];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v5 = [MEMORY[0x277CF3248] sharedInstance];
-    v6 = [v5 pairedDevices];
+    mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+    pairedDevices = [mEMORY[0x277CF3248] pairedDevices];
 
-    v7 = [v6 countByEnumeratingWithState:&v41 objects:v53 count:16];
+    v7 = [pairedDevices countByEnumeratingWithState:&v41 objects:v53 count:16];
     if (v7)
     {
       v8 = *v42;
@@ -123,14 +123,14 @@ LABEL_5:
       {
         if (*v42 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pairedDevices);
         }
 
         v10 = *(*(&v41 + 1) + 8 * v9);
-        v11 = [v10 address];
-        v12 = [v11 uppercaseString];
-        v13 = [v4 uppercaseString];
-        v14 = [v12 isEqualToString:v13];
+        address = [v10 address];
+        uppercaseString = [address uppercaseString];
+        uppercaseString2 = [deviceCopy uppercaseString];
+        v14 = [uppercaseString isEqualToString:uppercaseString2];
 
         if (v14)
         {
@@ -139,7 +139,7 @@ LABEL_5:
 
         if (v7 == ++v9)
         {
-          v7 = [v6 countByEnumeratingWithState:&v41 objects:v53 count:16];
+          v7 = [pairedDevices countByEnumeratingWithState:&v41 objects:v53 count:16];
           if (v7)
           {
             goto LABEL_5;
@@ -149,27 +149,27 @@ LABEL_5:
         }
       }
 
-      v18 = [v10 getSpatialAudioPlatformSupport];
-      v15 = v18 == 1;
+      getSpatialAudioPlatformSupport = [v10 getSpatialAudioPlatformSupport];
+      v15 = getSpatialAudioPlatformSupport == 1;
       v19 = sharedBluetoothSettingsLogComponent();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = "NO";
-        if (v18 == 1)
+        if (getSpatialAudioPlatformSupport == 1)
         {
           v20 = "YES";
         }
 
         *buf = 138412546;
-        *&buf[4] = v4;
+        *&buf[4] = deviceCopy;
         *&buf[12] = 2080;
         *&buf[14] = v20;
         _os_log_impl(&dword_251143000, v19, OS_LOG_TYPE_DEFAULT, "Spatial Profile: %@, Remote Support: %s", buf, 0x16u);
       }
 
-      if ((v36 & (v18 == 1)) == 1)
+      if ((isSettingsEnrollmentSupported & (getSpatialAudioPlatformSupport == 1)) == 1)
       {
-        v17 = ([v35 isProfileExisting] | v37) ^ 1;
+        v17 = ([selfCopy isProfileExisting] | v37) ^ 1;
         v15 = 1;
         goto LABEL_23;
       }
@@ -243,7 +243,7 @@ LABEL_23:
         v28 = "No";
       }
 
-      if (v36)
+      if (isSettingsEnrollmentSupported)
       {
         v29 = "Yes";
       }
@@ -263,7 +263,7 @@ LABEL_23:
         v30 = "No";
       }
 
-      if ([v35 isProfileExisting])
+      if ([selfCopy isProfileExisting])
       {
         v31 = "Yes";
       }
@@ -335,15 +335,15 @@ void __67__HPSSpatialProfileManager_isProxCardEnrollmentSupportedForDevice___blo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setProxCardShowed:(BOOL)a3 forDevice:(id)a4
++ (void)setProxCardShowed:(BOOL)showed forDevice:(id)device
 {
-  v4 = a3;
+  showedCopy = showed;
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v6 = MEMORY[0x277CBED28];
-    if (!v4)
+    if (!showedCopy)
     {
       v6 = MEMORY[0x277CBED10];
     }
@@ -354,7 +354,7 @@ void __67__HPSSpatialProfileManager_isProxCardEnrollmentSupportedForDevice___blo
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "NO";
-      if (v4)
+      if (showedCopy)
       {
         v8 = "YES";
       }
@@ -362,7 +362,7 @@ void __67__HPSSpatialProfileManager_isProxCardEnrollmentSupportedForDevice___blo
       v10 = 136315394;
       v11 = v8;
       v12 = 2112;
-      v13 = v5;
+      v13 = deviceCopy;
       _os_log_impl(&dword_251143000, v7, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Set Prox Card Showd to %s for Device: %@", &v10, 0x16u);
     }
   }
@@ -379,12 +379,12 @@ void __67__HPSSpatialProfileManager_isProxCardEnrollmentSupportedForDevice___blo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setProxCardShowed:(BOOL)a3
++ (void)setProxCardShowed:(BOOL)showed
 {
-  v3 = a3;
+  showedCopy = showed;
   v10 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBED10];
-  if (a3)
+  if (showed)
   {
     v4 = MEMORY[0x277CBED28];
   }
@@ -395,7 +395,7 @@ void __67__HPSSpatialProfileManager_isProxCardEnrollmentSupportedForDevice___blo
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "NO";
-    if (v3)
+    if (showedCopy)
     {
       v6 = "YES";
     }
@@ -502,14 +502,14 @@ LABEL_8:
   v3 = MEMORY[0x277D3FAD8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"SPATIAL_AUDIO_PROFILE_TITLE" value:&stru_286339F58 table:@"SpatialAudioProfile"];
-  v6 = [v3 preferenceSpecifierNamed:v5 target:a1 set:0 get:sel_spatialProfileStatus detail:objc_opt_class() cell:2 edit:0];
+  v6 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:sel_spatialProfileStatus detail:objc_opt_class() cell:2 edit:0];
 
   return v6;
 }
 
 + (id)spatialProfileStatus
 {
-  if ([a1 isProfileExisting])
+  if ([self isProfileExisting])
   {
     v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v3 = [v2 localizedStringForKey:@"ON" value:&stru_286339F58 table:@"SpatialAudioProfile"];

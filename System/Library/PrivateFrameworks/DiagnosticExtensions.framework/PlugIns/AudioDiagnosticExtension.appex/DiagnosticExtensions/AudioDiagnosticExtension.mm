@@ -1,17 +1,17 @@
 @interface AudioDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation AudioDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     sub_1000019E8();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1000016E8();
 
   if (v5)

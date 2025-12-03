@@ -1,14 +1,14 @@
 @interface BYODChooseYouOrFamilyViewController
 + (id)log;
-- (BYODChooseYouOrFamilyViewController)initWithACAccount:(id)a3 domainPurchase:(BOOL)a4 domainName:(id)a5;
+- (BYODChooseYouOrFamilyViewController)initWithACAccount:(id)account domainPurchase:(BOOL)purchase domainName:(id)name;
 - (id)_createOnlyForYouView;
 - (id)_createYouAndFamilyView;
-- (void)_addDataCardsView:(id)a3;
-- (void)_createOnlyForYouWasTapped:(id)a3;
-- (void)_forYouAndOthersWasTapped:(id)a3;
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4;
+- (void)_addDataCardsView:(id)view;
+- (void)_createOnlyForYouWasTapped:(id)tapped;
+- (void)_forYouAndOthersWasTapped:(id)tapped;
+- (void)_showAlertWithTitle:(id)title message:(id)message;
 - (void)_showErrorAlert;
-- (void)_updateDomainShareStatus:(BOOL)a3;
+- (void)_updateDomainShareStatus:(BOOL)status;
 - (void)viewDidLoad;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_2A3D4;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D64A0 != -1)
   {
     dispatch_once(&qword_D64A0, block);
@@ -31,17 +31,17 @@
   return v2;
 }
 
-- (BYODChooseYouOrFamilyViewController)initWithACAccount:(id)a3 domainPurchase:(BOOL)a4 domainName:(id)a5
+- (BYODChooseYouOrFamilyViewController)initWithACAccount:(id)account domainPurchase:(BOOL)purchase domainName:(id)name
 {
-  v9 = a5;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = BYODChooseYouOrFamilyViewController;
-  v10 = [(BYODBaseViewController *)&v13 initWithACAccount:a3];
+  v10 = [(BYODBaseViewController *)&v13 initWithACAccount:account];
   v11 = v10;
   if (v10)
   {
-    v10->_domainPurchase = a4;
-    objc_storeStrong(&v10->_domainName, a5);
+    v10->_domainPurchase = purchase;
+    objc_storeStrong(&v10->_domainName, name);
   }
 
   return v11;
@@ -63,50 +63,50 @@
   if (!self->_domainPurchase)
   {
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"didTapCancelButton:"];
-    v9 = [(BYODChooseYouOrFamilyViewController *)self navigationItem];
-    [v9 setLeftBarButtonItem:v8];
+    navigationItem = [(BYODChooseYouOrFamilyViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v8];
   }
 }
 
-- (void)_addDataCardsView:(id)a3
+- (void)_addDataCardsView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 setAxis:1];
   [v5 setSpacing:10.0];
-  v6 = [(BYODChooseYouOrFamilyViewController *)self _createOnlyForYouView];
-  [v5 addArrangedSubview:v6];
+  _createOnlyForYouView = [(BYODChooseYouOrFamilyViewController *)self _createOnlyForYouView];
+  [v5 addArrangedSubview:_createOnlyForYouView];
 
-  v7 = [(BYODChooseYouOrFamilyViewController *)self _createYouAndFamilyView];
-  [v5 addArrangedSubview:v7];
+  _createYouAndFamilyView = [(BYODChooseYouOrFamilyViewController *)self _createYouAndFamilyView];
+  [v5 addArrangedSubview:_createYouAndFamilyView];
 
-  v8 = [v4 contentView];
-  [v8 addSubview:v5];
+  contentView = [viewCopy contentView];
+  [contentView addSubview:v5];
 
-  v24 = [v4 contentView];
-  v23 = [v4 contentView];
-  v26 = [v23 topAnchor];
-  v22 = [v5 topAnchor];
-  v21 = [v26 constraintEqualToAnchor:?];
+  contentView2 = [viewCopy contentView];
+  contentView3 = [viewCopy contentView];
+  topAnchor = [contentView3 topAnchor];
+  topAnchor2 = [v5 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:?];
   v27[0] = v21;
-  v20 = [v4 contentView];
-  v25 = [v20 leadingAnchor];
-  v19 = [v5 leadingAnchor];
-  v18 = [v25 constraintEqualToAnchor:?];
+  contentView4 = [viewCopy contentView];
+  leadingAnchor = [contentView4 leadingAnchor];
+  leadingAnchor2 = [v5 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:?];
   v27[1] = v18;
-  v17 = [v4 contentView];
-  v9 = [v17 trailingAnchor];
-  v10 = [v5 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  contentView5 = [viewCopy contentView];
+  trailingAnchor = [contentView5 trailingAnchor];
+  trailingAnchor2 = [v5 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[2] = v11;
-  v12 = [v4 contentView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v5 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  contentView6 = [viewCopy contentView];
+  bottomAnchor = [contentView6 bottomAnchor];
+  bottomAnchor2 = [v5 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[3] = v15;
   v16 = [NSArray arrayWithObjects:v27 count:4];
-  [v24 addConstraints:v16];
+  [contentView2 addConstraints:v16];
 }
 
 - (id)_createOnlyForYouView
@@ -159,9 +159,9 @@
   return v10;
 }
 
-- (void)_createOnlyForYouWasTapped:(id)a3
+- (void)_createOnlyForYouWasTapped:(id)tapped
 {
-  v11 = a3;
+  tappedCopy = tapped;
   if (self->_domainPurchase)
   {
     spinner = self->_spinner;
@@ -181,17 +181,17 @@
   else
   {
     v7 = [BYODChooseEmailAddressViewController alloc];
-    v8 = [(BYODBaseViewController *)self userAccount];
-    v9 = [(BYODChooseEmailAddressViewController *)v7 initWithACAccount:v8 familyFlow:0];
+    userAccount = [(BYODBaseViewController *)self userAccount];
+    v9 = [(BYODChooseEmailAddressViewController *)v7 initWithACAccount:userAccount familyFlow:0];
 
-    v10 = [(BYODChooseYouOrFamilyViewController *)self navigationController];
-    [v10 pushViewController:v9 animated:1];
+    navigationController = [(BYODChooseYouOrFamilyViewController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
   }
 }
 
-- (void)_forYouAndOthersWasTapped:(id)a3
+- (void)_forYouAndOthersWasTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   spinner = self->_spinner;
   if (!spinner)
   {
@@ -220,14 +220,14 @@
   }
 }
 
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4
+- (void)_showAlertWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 length];
+  titleCopy = title;
+  messageCopy = message;
+  v8 = [messageCopy length];
   if (v8)
   {
-    v9 = v6;
+    v9 = titleCopy;
   }
 
   else
@@ -237,12 +237,12 @@
 
   if (v8)
   {
-    v10 = v7;
+    v10 = messageCopy;
   }
 
   else
   {
-    v10 = v6;
+    v10 = titleCopy;
   }
 
   v11 = [UIAlertController alertControllerWithTitle:v9 message:v10 preferredStyle:1];
@@ -251,21 +251,21 @@
   v14 = [UIAlertAction actionWithTitle:v13 style:1 handler:0];
 
   [v11 addAction:v14];
-  v18 = self;
+  selfCopy = self;
   v15 = v11;
   v19 = v15;
   v16 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v16 performBlock:&v17];
 }
 
-- (void)_updateDomainShareStatus:(BOOL)a3
+- (void)_updateDomainShareStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v5 = [BYODUpdateDomainShareStatusRequest alloc];
-  v6 = [(BYODBaseViewController *)self userAccount];
-  v7 = [(BYODBaseViewController *)self userAccount];
-  v8 = [v7 accountStore];
-  v9 = [(BYODUpdateDomainShareStatusRequest *)v5 initWithAccount:v6 accountStore:v8 domain:self->_domainName domainShared:v3];
+  userAccount = [(BYODBaseViewController *)self userAccount];
+  userAccount2 = [(BYODBaseViewController *)self userAccount];
+  accountStore = [userAccount2 accountStore];
+  v9 = [(BYODUpdateDomainShareStatusRequest *)v5 initWithAccount:userAccount accountStore:accountStore domain:self->_domainName domainShared:statusCopy];
 
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -289,7 +289,7 @@
   v8 = [UIAlertAction actionWithTitle:v7 style:1 handler:0];
 
   [v5 addAction:v8];
-  v12 = self;
+  selfCopy = self;
   v9 = v5;
   v13 = v9;
   v10 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];

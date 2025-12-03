@@ -1,39 +1,39 @@
 @interface VLFContaineeViewController
 - (VLFContaineeViewController)init;
-- (VLFContaineeViewController)initWithCoder:(id)a3;
-- (VLFContaineeViewController)initWithEntryPoint:(int64_t)a3;
-- (VLFContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)heightForLayout:(unint64_t)a3;
-- (unint64_t)defaultLayoutForContainerStyle:(unint64_t)a3 traitCollection:(id)a4;
-- (void)VLFSessionLocalizationFailedWithError:(id)a3;
+- (VLFContaineeViewController)initWithCoder:(id)coder;
+- (VLFContaineeViewController)initWithEntryPoint:(int64_t)point;
+- (VLFContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)heightForLayout:(unint64_t)layout;
+- (unint64_t)defaultLayoutForContainerStyle:(unint64_t)style traitCollection:(id)collection;
+- (void)VLFSessionLocalizationFailedWithError:(id)error;
 - (void)VLFSessionLocalizationSucceeded;
-- (void)_hideFailureWithCompletion:(id)a3;
-- (void)_presentInternalErrorAlert:(id)a3 onViewController:(id)a4;
+- (void)_hideFailureWithCompletion:(id)completion;
+- (void)_presentInternalErrorAlert:(id)alert onViewController:(id)controller;
 - (void)_retryVLFSession;
 - (void)_showFailure;
 - (void)_startVLFSession;
 - (void)_updateBackgroundColor;
 - (void)_updateForCurrentState;
-- (void)_updateForLayout:(unint64_t)a3;
+- (void)_updateForLayout:(unint64_t)layout;
 - (void)dealloc;
-- (void)didChangeLayout:(unint64_t)a3;
-- (void)failureViewDismissButtonTapped:(id)a3;
-- (void)failureViewRetryButtonTapped:(id)a3;
-- (void)handleDismissAction:(id)a3;
+- (void)didChangeLayout:(unint64_t)layout;
+- (void)failureViewDismissButtonTapped:(id)tapped;
+- (void)failureViewRetryButtonTapped:(id)tapped;
+- (void)handleDismissAction:(id)action;
 - (void)handleVLFPuckTapped;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)scanningStateManager:(id)a3 didChangeState:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)scanningStateManager:(id)manager didChangeState:(int64_t)state;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
-- (void)willResignCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
+- (void)willResignCurrent:(BOOL)current;
 @end
 
 @implementation VLFContaineeViewController
 
-- (void)failureViewRetryButtonTapped:(id)a3
+- (void)failureViewRetryButtonTapped:(id)tapped
 {
   v4 = sub_100F8DCEC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -45,7 +45,7 @@
   [(VLFContaineeViewController *)self _retryVLFSession];
 }
 
-- (void)failureViewDismissButtonTapped:(id)a3
+- (void)failureViewDismissButtonTapped:(id)tapped
 {
   v4 = sub_100F8DCEC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -57,19 +57,19 @@
   [(VLFContaineeViewController *)self handleDismissAction:0];
 }
 
-- (void)scanningStateManager:(id)a3 didChangeState:(int64_t)a4
+- (void)scanningStateManager:(id)manager didChangeState:(int64_t)state
 {
   v6 = sub_100F8DCEC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if ((a4 - 2) > 3)
+    if ((state - 2) > 3)
     {
       v7 = @"VLFScanningStateInitializing";
     }
 
     else
     {
-      v7 = off_10165F478[a4 - 2];
+      v7 = off_10165F478[state - 2];
     }
 
     v8 = 138412290;
@@ -80,26 +80,26 @@
   [(VLFContaineeViewController *)self _updateForCurrentState];
 }
 
-- (void)VLFSessionLocalizationFailedWithError:(id)a3
+- (void)VLFSessionLocalizationFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_100F8DCEC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Localization failed with error %@", &v16, 0xCu);
   }
 
-  v6 = [v4 domain];
-  v7 = [v6 isEqualToString:@"com.apple.Maps.VLFSession"];
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:@"com.apple.Maps.VLFSession"];
 
   if (!v7)
   {
     v11 = +[GEOPlatform sharedPlatform];
-    v12 = [v11 isInternalInstall];
+    isInternalInstall = [v11 isInternalInstall];
 
-    if (v12)
+    if (isInternalInstall)
     {
       v13 = sub_100F8DCEC();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -108,17 +108,17 @@
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Showing internal-only failure alert which displays more info about what went wrong", &v16, 2u);
       }
 
-      [(VLFContaineeViewController *)self _presentInternalErrorAlert:v4 onViewController:self];
+      [(VLFContaineeViewController *)self _presentInternalErrorAlert:errorCopy onViewController:self];
     }
 
     v14 = 130;
     goto LABEL_16;
   }
 
-  v8 = [v4 code];
+  code = [errorCopy code];
   v9 = sub_100F8DCEC();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v8 != 2)
+  if (code != 2)
   {
     if (v10)
     {
@@ -162,22 +162,22 @@ LABEL_17:
   [(VLFContaineeViewController *)self handleDismissAction:0];
 }
 
-- (unint64_t)defaultLayoutForContainerStyle:(unint64_t)a3 traitCollection:(id)a4
+- (unint64_t)defaultLayoutForContainerStyle:(unint64_t)style traitCollection:(id)collection
 {
-  if (a3 > 7)
+  if (style > 7)
   {
     return 4;
   }
 
   else
   {
-    return qword_101216160[a3];
+    return qword_101216160[style];
   }
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v5 = a3;
+  tappedCopy = tapped;
   v6 = sub_100F8DCEC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -185,15 +185,15 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Header button tapped; dismissing ourselves", v7, 2u);
   }
 
-  [(VLFContaineeViewController *)self handleDismissAction:v5];
+  [(VLFContaineeViewController *)self handleDismissAction:tappedCopy];
 }
 
-- (void)_presentInternalErrorAlert:(id)a3 onViewController:(id)a4
+- (void)_presentInternalErrorAlert:(id)alert onViewController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 domain];
-  v8 = [v7 isEqualToString:ARErrorDomain];
+  controllerCopy = controller;
+  alertCopy = alert;
+  domain = [alertCopy domain];
+  v8 = [domain isEqualToString:ARErrorDomain];
 
   if (v8)
   {
@@ -205,18 +205,18 @@ LABEL_17:
     v9 = @"VLF+ localization failed due to an unknown error: %@";
   }
 
-  v12 = [NSString stringWithFormat:v9, v6];
+  alertCopy = [NSString stringWithFormat:v9, alertCopy];
 
-  v10 = [UIAlertController alertControllerWithTitle:@"Localization failed [Internal Only]" message:v12 preferredStyle:1];
+  v10 = [UIAlertController alertControllerWithTitle:@"Localization failed [Internal Only]" message:alertCopy preferredStyle:1];
   v11 = [UIAlertAction actionWithTitle:@"OK" style:0 handler:0];
   [v10 addAction:v11];
 
-  [v5 presentViewController:v10 animated:1 completion:0];
+  [controllerCopy presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)_hideFailureWithCompletion:(id)a3
+- (void)_hideFailureWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100F8DCEC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -247,8 +247,8 @@ LABEL_17:
   v10[1] = 3221225472;
   v10[2] = sub_100F8E674;
   v10[3] = &unk_10165F438;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [UIView animateKeyframesWithDuration:4 delay:v12 options:v10 animations:v8 completion:0.0];
 }
 
@@ -279,52 +279,52 @@ LABEL_17:
   [UIView animateKeyframesWithDuration:4 delay:v7 options:0 animations:v6 completion:0.0];
 }
 
-- (void)_updateForLayout:(unint64_t)a3
+- (void)_updateForLayout:(unint64_t)layout
 {
-  if (a3 == 4)
+  if (layout == 4)
   {
-    v17 = [(VLFContaineeViewController *)self instructionViewLeadingConstraint];
-    [v17 setConstant:24.0];
+    instructionViewLeadingConstraint = [(VLFContaineeViewController *)self instructionViewLeadingConstraint];
+    [instructionViewLeadingConstraint setConstant:24.0];
 
-    v18 = [(VLFContaineeViewController *)self instructionViewTrailingConstraint];
-    [v18 setConstant:-48.0];
+    instructionViewTrailingConstraint = [(VLFContaineeViewController *)self instructionViewTrailingConstraint];
+    [instructionViewTrailingConstraint setConstant:-48.0];
 
-    v19 = [(VLFContaineeViewController *)self scanningAnimationViewFlexibleTopConstraintPortrait];
-    [v19 setActive:0];
+    scanningAnimationViewFlexibleTopConstraintPortrait = [(VLFContaineeViewController *)self scanningAnimationViewFlexibleTopConstraintPortrait];
+    [scanningAnimationViewFlexibleTopConstraintPortrait setActive:0];
 
-    v20 = [(VLFContaineeViewController *)self scanningAnimationViewTopConstraintPortrait];
-    [v20 setActive:0];
+    scanningAnimationViewTopConstraintPortrait = [(VLFContaineeViewController *)self scanningAnimationViewTopConstraintPortrait];
+    [scanningAnimationViewTopConstraintPortrait setActive:0];
 
-    v21 = [(ContaineeViewController *)self cardPresentationController];
-    v22 = [v21 containerStyle];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController containerStyle];
 
-    if (v22 == 6)
+    if (containerStyle == 6)
     {
-      v23 = [(VLFContaineeViewController *)self view];
-      v24 = [v23 window];
-      [v24 frame];
+      view = [(VLFContaineeViewController *)self view];
+      window = [view window];
+      [window frame];
       v26 = v25 * -0.08;
-      v27 = [(VLFContaineeViewController *)self scanningAnimationViewBottomConstraint];
-      [v27 setConstant:v26];
+      scanningAnimationViewBottomConstraint = [(VLFContaineeViewController *)self scanningAnimationViewBottomConstraint];
+      [scanningAnimationViewBottomConstraint setConstant:v26];
 
-      v28 = [(VLFContaineeViewController *)self view];
-      v29 = [(VLFContaineeViewController *)self view];
-      [v29 bounds];
+      view2 = [(VLFContaineeViewController *)self view];
+      view3 = [(VLFContaineeViewController *)self view];
+      [view3 bounds];
       v31 = v30;
       v33 = v32;
       v35 = v34;
       v37 = v36;
-      v38 = [(VLFContaineeViewController *)self view];
-      v39 = [v38 window];
-      [v28 convertRect:v39 toView:{v31, v33, v35, v37}];
+      view4 = [(VLFContaineeViewController *)self view];
+      window2 = [view4 window];
+      [view2 convertRect:window2 toView:{v31, v33, v35, v37}];
       v41 = v40;
       v43 = v42;
       v45 = v44;
       v47 = v46;
 
-      v48 = [(VLFContaineeViewController *)self view];
-      v49 = [v48 window];
-      [v49 frame];
+      view5 = [(VLFContaineeViewController *)self view];
+      window3 = [view5 window];
+      [window3 frame];
       v51 = v50;
       v92.origin.x = v41;
       v92.origin.y = v43;
@@ -332,111 +332,111 @@ LABEL_17:
       v92.size.height = v47;
       MaxY = CGRectGetMaxY(v92);
 
-      v53 = [(VLFContaineeViewController *)self view];
-      v54 = [v53 window];
-      [v54 frame];
+      view6 = [(VLFContaineeViewController *)self view];
+      window4 = [view6 window];
+      [window4 frame];
       v56 = v51 - MaxY + v55 * -0.07;
     }
 
     else
     {
-      v73 = [(ContaineeViewController *)self cardPresentationController];
-      [v73 bottomSafeOffset];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 bottomSafeOffset];
       v75 = v74;
-      v76 = [(VLFContaineeViewController *)self view];
-      v77 = [v76 window];
-      [v77 frame];
+      view7 = [(VLFContaineeViewController *)self view];
+      window5 = [view7 window];
+      [window5 frame];
       v79 = -(v75 + v78 * 0.08);
-      v80 = [(VLFContaineeViewController *)self scanningAnimationViewBottomConstraint];
-      [v80 setConstant:v79];
+      scanningAnimationViewBottomConstraint2 = [(VLFContaineeViewController *)self scanningAnimationViewBottomConstraint];
+      [scanningAnimationViewBottomConstraint2 setConstant:v79];
 
-      v53 = [(VLFContaineeViewController *)self view];
-      v54 = [v53 window];
-      [v54 frame];
+      view6 = [(VLFContaineeViewController *)self view];
+      window4 = [view6 window];
+      [window4 frame];
       v56 = v81 * -0.07;
     }
 
-    v82 = [(VLFContaineeViewController *)self failureViewBottomConstraint];
-    [v82 setConstant:v56];
+    failureViewBottomConstraint = [(VLFContaineeViewController *)self failureViewBottomConstraint];
+    [failureViewBottomConstraint setConstant:v56];
 
-    v83 = [(VLFContaineeViewController *)self instructionViewFirstBaselineConstraint];
-    [v83 setActive:0];
+    instructionViewFirstBaselineConstraint = [(VLFContaineeViewController *)self instructionViewFirstBaselineConstraint];
+    [instructionViewFirstBaselineConstraint setActive:0];
 
-    v68 = [(VLFContaineeViewController *)self instructionViewTopConstraint];
-    v69 = v68;
+    instructionViewTopConstraint = [(VLFContaineeViewController *)self instructionViewTopConstraint];
+    v69 = instructionViewTopConstraint;
     v70 = 22.0;
     goto LABEL_18;
   }
 
-  if (a3 == 2)
+  if (layout == 2)
   {
-    v5 = [(VLFContaineeViewController *)self instructionViewLeadingConstraint];
-    [v5 setConstant:28.0];
+    instructionViewLeadingConstraint2 = [(VLFContaineeViewController *)self instructionViewLeadingConstraint];
+    [instructionViewLeadingConstraint2 setConstant:28.0];
 
-    v6 = [(VLFContaineeViewController *)self instructionViewTrailingConstraint];
-    [v6 setConstant:-52.0];
+    instructionViewTrailingConstraint2 = [(VLFContaineeViewController *)self instructionViewTrailingConstraint];
+    [instructionViewTrailingConstraint2 setConstant:-52.0];
 
-    LODWORD(v6) = [(VLFContaineeViewController *)self isFailureVisible];
-    v7 = [(VLFContaineeViewController *)self scanningAnimationViewTopConstraintPortrait];
-    [v7 setActive:v6 ^ 1];
+    LODWORD(instructionViewTrailingConstraint2) = [(VLFContaineeViewController *)self isFailureVisible];
+    scanningAnimationViewTopConstraintPortrait2 = [(VLFContaineeViewController *)self scanningAnimationViewTopConstraintPortrait];
+    [scanningAnimationViewTopConstraintPortrait2 setActive:instructionViewTrailingConstraint2 ^ 1];
 
-    v8 = [(VLFContaineeViewController *)self isFailureVisible];
-    v9 = [(VLFContaineeViewController *)self scanningAnimationViewFlexibleTopConstraintPortrait];
-    [v9 setActive:v8];
+    isFailureVisible = [(VLFContaineeViewController *)self isFailureVisible];
+    scanningAnimationViewFlexibleTopConstraintPortrait2 = [(VLFContaineeViewController *)self scanningAnimationViewFlexibleTopConstraintPortrait];
+    [scanningAnimationViewFlexibleTopConstraintPortrait2 setActive:isFailureVisible];
 
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 bottomSafeOffset];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController3 bottomSafeOffset];
     v12 = v11;
 
     if (v12 <= 0.0)
     {
-      v13 = [(VLFContaineeViewController *)self scanningAnimationViewBottomConstraint];
-      [v13 setConstant:-10.0];
+      scanningAnimationViewBottomConstraint3 = [(VLFContaineeViewController *)self scanningAnimationViewBottomConstraint];
+      [scanningAnimationViewBottomConstraint3 setConstant:-10.0];
     }
 
     else
     {
-      v13 = [(ContaineeViewController *)self cardPresentationController];
-      [v13 bottomSafeOffset];
+      scanningAnimationViewBottomConstraint3 = [(ContaineeViewController *)self cardPresentationController];
+      [scanningAnimationViewBottomConstraint3 bottomSafeOffset];
       v15 = -v14;
-      v16 = [(VLFContaineeViewController *)self scanningAnimationViewBottomConstraint];
-      [v16 setConstant:v15];
+      scanningAnimationViewBottomConstraint4 = [(VLFContaineeViewController *)self scanningAnimationViewBottomConstraint];
+      [scanningAnimationViewBottomConstraint4 setConstant:v15];
     }
 
-    v60 = [(ContaineeViewController *)self cardPresentationController];
-    [v60 bottomSafeOffset];
+    cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController4 bottomSafeOffset];
     v62 = -10.0 - v61;
-    v63 = [(VLFContaineeViewController *)self failureViewBottomConstraint];
-    [v63 setConstant:v62];
+    failureViewBottomConstraint2 = [(VLFContaineeViewController *)self failureViewBottomConstraint];
+    [failureViewBottomConstraint2 setConstant:v62];
 
-    v64 = [(VLFContaineeViewController *)self traitCollection];
-    v65 = [v64 preferredContentSizeCategory];
-    v66 = UIContentSizeCategoryCompareToCategory(v65, UIContentSizeCategoryLarge);
+    traitCollection = [(VLFContaineeViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v66 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryLarge);
 
     if (v66 != NSOrderedDescending)
     {
-      v71 = [(VLFContaineeViewController *)self instructionViewTopConstraint];
-      [v71 setActive:0];
+      instructionViewTopConstraint2 = [(VLFContaineeViewController *)self instructionViewTopConstraint];
+      [instructionViewTopConstraint2 setActive:0];
 
-      v72 = [(VLFContaineeViewController *)self instructionViewFirstBaselineConstraint];
+      instructionViewFirstBaselineConstraint2 = [(VLFContaineeViewController *)self instructionViewFirstBaselineConstraint];
 LABEL_19:
-      v58 = v72;
-      [v72 setActive:1];
+      v58 = instructionViewFirstBaselineConstraint2;
+      [instructionViewFirstBaselineConstraint2 setActive:1];
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    v67 = [(VLFContaineeViewController *)self instructionViewFirstBaselineConstraint];
-    [v67 setActive:0];
+    instructionViewFirstBaselineConstraint3 = [(VLFContaineeViewController *)self instructionViewFirstBaselineConstraint];
+    [instructionViewFirstBaselineConstraint3 setActive:0];
 
-    v68 = [(VLFContaineeViewController *)self instructionViewTopConstraint];
-    v69 = v68;
+    instructionViewTopConstraint = [(VLFContaineeViewController *)self instructionViewTopConstraint];
+    v69 = instructionViewTopConstraint;
     v70 = 21.0;
 LABEL_18:
-    [v68 setConstant:v70];
+    [instructionViewTopConstraint setConstant:v70];
 
-    v72 = [(VLFContaineeViewController *)self instructionViewTopConstraint];
+    instructionViewFirstBaselineConstraint2 = [(VLFContaineeViewController *)self instructionViewTopConstraint];
     goto LABEL_19;
   }
 
@@ -467,11 +467,11 @@ LABEL_18:
   }
 
 LABEL_21:
-  v84 = [(VLFContaineeViewController *)self instructionView];
-  [v84 setCurrentLayout:a3];
+  instructionView = [(VLFContaineeViewController *)self instructionView];
+  [instructionView setCurrentLayout:layout];
 
-  v85 = [(VLFContaineeViewController *)self failureView];
-  [v85 setCurrentLayout:a3];
+  failureView = [(VLFContaineeViewController *)self failureView];
+  [failureView setCurrentLayout:layout];
 }
 
 - (void)_updateForCurrentState
@@ -479,16 +479,16 @@ LABEL_21:
   v3 = sub_100F8DCEC();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(VLFContaineeViewController *)self stateManager];
-    v5 = [v4 currentState];
-    if ((v5 - 2) > 3)
+    stateManager = [(VLFContaineeViewController *)self stateManager];
+    currentState = [stateManager currentState];
+    if ((currentState - 2) > 3)
     {
       v6 = @"VLFScanningStateInitializing";
     }
 
     else
     {
-      v6 = off_10165F478[(v5 - 2)];
+      v6 = off_10165F478[(currentState - 2)];
     }
 
     v13 = 138412290;
@@ -496,24 +496,24 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Updating for current state: %@", &v13, 0xCu);
   }
 
-  v7 = [(VLFContaineeViewController *)self stateManager];
-  v8 = [v7 currentState];
-  v9 = [(VLFContaineeViewController *)self instructionView];
-  [v9 setCurrentScanningState:v8];
+  stateManager2 = [(VLFContaineeViewController *)self stateManager];
+  currentState2 = [stateManager2 currentState];
+  instructionView = [(VLFContaineeViewController *)self instructionView];
+  [instructionView setCurrentScanningState:currentState2];
 
-  v10 = [(VLFContaineeViewController *)self stateManager];
-  v11 = [v10 currentState];
-  v12 = [(VLFContaineeViewController *)self scanningAnimationView];
-  [v12 setCurrentScanningState:v11];
+  stateManager3 = [(VLFContaineeViewController *)self stateManager];
+  currentState3 = [stateManager3 currentState];
+  scanningAnimationView = [(VLFContaineeViewController *)self scanningAnimationView];
+  [scanningAnimationView setCurrentScanningState:currentState3];
 }
 
 - (void)_retryVLFSession
 {
-  v3 = [(VLFContaineeViewController *)self instructionView];
-  [v3 setCurrentScanningState:1];
+  instructionView = [(VLFContaineeViewController *)self instructionView];
+  [instructionView setCurrentScanningState:1];
 
-  v4 = [(VLFContaineeViewController *)self scanningAnimationView];
-  [v4 setCurrentScanningState:1];
+  scanningAnimationView = [(VLFContaineeViewController *)self scanningAnimationView];
+  [scanningAnimationView setCurrentScanningState:1];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 postNotificationName:@"VLFContaineeViewControllerWillHideFailureViewNotification" object:self];
@@ -535,22 +535,22 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Starting VLF session", v9, 2u);
   }
 
-  v4 = [(VLFContaineeViewController *)self vlfSession];
-  [v4 start];
+  vlfSession = [(VLFContaineeViewController *)self vlfSession];
+  [vlfSession start];
 
   v5 = [VLFScanningStateManager alloc];
-  v6 = [(VLFContaineeViewController *)self vlfSession];
-  v7 = [v6 session];
-  v8 = [(VLFScanningStateManager *)v5 initWithSession:v7 delegate:self];
+  vlfSession2 = [(VLFContaineeViewController *)self vlfSession];
+  session = [vlfSession2 session];
+  v8 = [(VLFScanningStateManager *)v5 initWithSession:session delegate:self];
   [(VLFContaineeViewController *)self setStateManager:v8];
 }
 
 - (void)_updateBackgroundColor
 {
-  v3 = [(VLFContaineeViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(VLFContaineeViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     +[UIColor secondarySystemBackgroundColor];
   }
@@ -560,16 +560,16 @@ LABEL_21:
     +[UIColor systemWhiteColor];
   }
   v6 = ;
-  v5 = [(VLFContaineeViewController *)self view];
-  [v5 setBackgroundColor:v6];
+  view = [(VLFContaineeViewController *)self view];
+  [view setBackgroundColor:v6];
 }
 
 - (void)handleVLFPuckTapped
 {
-  v3 = [(VLFContaineeViewController *)self vlfSession];
-  v4 = [v3 isRunning];
+  vlfSession = [(VLFContaineeViewController *)self vlfSession];
+  isRunning = [vlfSession isRunning];
 
-  if (v4)
+  if (isRunning)
   {
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -598,12 +598,12 @@ LABEL_21:
     }
   }
 
-  v5 = [(VLFContaineeViewController *)self vlfSession];
-  v6 = [v5 isRunning];
+  vlfSession2 = [(VLFContaineeViewController *)self vlfSession];
+  isRunning2 = [vlfSession2 isRunning];
 
   v7 = sub_100F8DCEC();
   v8 = v7;
-  if (v6)
+  if (isRunning2)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -624,18 +624,18 @@ LABEL_21:
   }
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 postNotificationName:@"VLFContaineeViewControllerWillCancelNotification" object:self];
 
   v6.receiver = self;
   v6.super_class = VLFContaineeViewController;
-  [(ContaineeViewController *)&v6 handleDismissAction:v4];
+  [(ContaineeViewController *)&v6 handleDismissAction:actionCopy];
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v6.receiver = self;
   v6.super_class = VLFContaineeViewController;
@@ -644,45 +644,45 @@ LABEL_21:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v8 = a3;
+    layoutCopy = layout;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Did change layout to: %lu", buf, 0xCu);
   }
 
-  [(VLFContaineeViewController *)self _updateForLayout:a3];
+  [(VLFContaineeViewController *)self _updateForLayout:layout];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v5 = -1.0;
-  if (a3 == 4 || a3 == 2)
+  if (layout == 4 || layout == 2)
   {
-    [(VLFContaineeViewController *)self _updateForLayout:a3];
-    if (a3 == 2)
+    [(VLFContaineeViewController *)self _updateForLayout:layout];
+    if (layout == 2)
     {
-      v8 = [(VLFContaineeViewController *)self isFailureVisible];
+      isFailureVisible = [(VLFContaineeViewController *)self isFailureVisible];
       v9 = &UILayoutFittingCompressedSize;
-      if (!v8)
+      if (!isFailureVisible)
       {
         v9 = &UILayoutFittingExpandedSize;
       }
 
       height = v9->height;
-      v6 = [(VLFContaineeViewController *)self view];
-      v11 = [(VLFContaineeViewController *)self view];
-      [v11 frame];
+      view = [(VLFContaineeViewController *)self view];
+      view2 = [(VLFContaineeViewController *)self view];
+      [view2 frame];
       v13 = v12;
       LODWORD(v12) = 1148846080;
       LODWORD(v14) = 1112014848;
-      [v6 systemLayoutSizeFittingSize:v13 withHorizontalFittingPriority:height verticalFittingPriority:{v12, v14}];
+      [view systemLayoutSizeFittingSize:v13 withHorizontalFittingPriority:height verticalFittingPriority:{v12, v14}];
       v5 = v15;
 
       goto LABEL_9;
     }
 
-    if (a3 == 4)
+    if (layout == 4)
     {
-      v6 = [(ContaineeViewController *)self cardPresentationController];
-      [v6 availableHeight];
+      view = [(ContaineeViewController *)self cardPresentationController];
+      [view availableHeight];
       v5 = v7;
 LABEL_9:
     }
@@ -691,36 +691,36 @@ LABEL_9:
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v14.receiver = self;
   v14.super_class = VLFContaineeViewController;
-  [(MapsThemeViewController *)&v14 traitCollectionDidChange:v4];
+  [(MapsThemeViewController *)&v14 traitCollectionDidChange:changeCopy];
   [(VLFContaineeViewController *)self _updateBackgroundColor];
-  if (v4)
+  if (changeCopy)
   {
-    v5 = [(VLFContaineeViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = UIContentSizeCategoryCompareToCategory(v6, v7);
+    traitCollection = [(VLFContaineeViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
 
     if (v8)
     {
-      v9 = [(ContaineeViewController *)self cardPresentationController];
-      v10 = [v9 containeeLayout];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      containeeLayout = [cardPresentationController containeeLayout];
 
-      if (v10)
+      if (containeeLayout)
       {
-        v11 = [(ContaineeViewController *)self cardPresentationController];
-        -[VLFContaineeViewController _updateForLayout:](self, "_updateForLayout:", [v11 containeeLayout]);
+        cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+        -[VLFContaineeViewController _updateForLayout:](self, "_updateForLayout:", [cardPresentationController2 containeeLayout]);
       }
 
-      v12 = [(VLFContaineeViewController *)self view];
-      [v12 layoutIfNeeded];
+      view = [(VLFContaineeViewController *)self view];
+      [view layoutIfNeeded];
 
-      v13 = [(ContaineeViewController *)self cardPresentationController];
-      [v13 updateHeightForCurrentLayout];
+      cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController3 updateHeightForCurrentLayout];
     }
   }
 }
@@ -730,37 +730,37 @@ LABEL_9:
   v6.receiver = self;
   v6.super_class = VLFContaineeViewController;
   [(ContaineeViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v4)
+  if (containeeLayout)
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    -[VLFContaineeViewController _updateForLayout:](self, "_updateForLayout:", [v5 containeeLayout]);
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    -[VLFContaineeViewController _updateForLayout:](self, "_updateForLayout:", [cardPresentationController2 containeeLayout]);
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = VLFContaineeViewController;
-  [(VLFContaineeViewController *)&v8 viewDidDisappear:a3];
-  v4 = [(VLFContaineeViewController *)self instructionView];
-  v5 = [v4 layer];
-  [v5 removeAllAnimations];
+  [(VLFContaineeViewController *)&v8 viewDidDisappear:disappear];
+  instructionView = [(VLFContaineeViewController *)self instructionView];
+  layer = [instructionView layer];
+  [layer removeAllAnimations];
 
-  v6 = [(VLFContaineeViewController *)self scanningAnimationView];
-  v7 = [v6 layer];
-  [v7 removeAllAnimations];
+  scanningAnimationView = [(VLFContaineeViewController *)self scanningAnimationView];
+  layer2 = [scanningAnimationView layer];
+  [layer2 removeAllAnimations];
 
   [(VLFContaineeViewController *)self _hideFailureWithCompletion:0];
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v7.receiver = self;
   v7.super_class = VLFContaineeViewController;
-  [(ContaineeViewController *)&v7 willBecomeCurrent:a3];
+  [(ContaineeViewController *)&v7 willBecomeCurrent:current];
   v4 = sub_100F8DCEC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -774,11 +774,11 @@ LABEL_9:
   [v5 postNotificationName:@"VLFContaineeViewControllerDidAppearNotification" object:self];
 }
 
-- (void)willResignCurrent:(BOOL)a3
+- (void)willResignCurrent:(BOOL)current
 {
   v8.receiver = self;
   v8.super_class = VLFContaineeViewController;
-  [(ContaineeViewController *)&v8 willResignCurrent:a3];
+  [(ContaineeViewController *)&v8 willResignCurrent:current];
   v4 = sub_100F8DCEC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -787,8 +787,8 @@ LABEL_9:
   }
 
   [(VLFContaineeViewController *)self setStateManager:0];
-  v5 = [(VLFContaineeViewController *)self vlfSession];
-  [v5 stop];
+  vlfSession = [(VLFContaineeViewController *)self vlfSession];
+  [vlfSession stop];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 postNotificationName:@"VLFContaineeViewControllerDidDisappearNotification" object:self];
@@ -800,84 +800,84 @@ LABEL_9:
   v103.super_class = VLFContaineeViewController;
   [(ContaineeViewController *)&v103 viewDidLoad];
   [(VLFContaineeViewController *)self _updateBackgroundColor];
-  v3 = [(VLFContaineeViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setMaskedCorners:3];
+  view = [(VLFContaineeViewController *)self view];
+  layer = [view layer];
+  [layer setMaskedCorners:3];
 
-  v5 = [(VLFContaineeViewController *)self view];
-  v6 = [v5 layer];
-  [v6 setMasksToBounds:1];
+  view2 = [(VLFContaineeViewController *)self view];
+  layer2 = [view2 layer];
+  [layer2 setMasksToBounds:1];
 
   v102 = +[NSMutableArray array];
-  v7 = [(VLFContaineeViewController *)self view];
-  [v7 addSubview:self->_titleHeaderView];
+  view3 = [(VLFContaineeViewController *)self view];
+  [view3 addSubview:self->_titleHeaderView];
 
-  v96 = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
-  v100 = [(VLFContaineeViewController *)self view];
-  v93 = [v100 leadingAnchor];
-  v90 = [v96 constraintEqualToAnchor:v93];
+  leadingAnchor = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
+  view4 = [(VLFContaineeViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v90 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v108[0] = v90;
-  v8 = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
-  v9 = [(VLFContaineeViewController *)self view];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
+  view5 = [(VLFContaineeViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v108[1] = v11;
-  v12 = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
-  v13 = [(VLFContaineeViewController *)self view];
-  v14 = [v13 topAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  topAnchor = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
+  view6 = [(VLFContaineeViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v108[2] = v15;
   v16 = [NSArray arrayWithObjects:v108 count:3];
   [v102 addObjectsFromArray:v16];
 
-  v17 = [(VLFContaineeViewController *)self view];
-  [v17 addSubview:self->_scanningContainerView];
+  view7 = [(VLFContaineeViewController *)self view];
+  [view7 addSubview:self->_scanningContainerView];
 
-  v97 = [(UIView *)self->_scanningContainerView leadingAnchor];
-  v101 = [(VLFContaineeViewController *)self view];
-  v94 = [v101 leadingAnchor];
-  v91 = [v97 constraintEqualToAnchor:v94];
+  leadingAnchor3 = [(UIView *)self->_scanningContainerView leadingAnchor];
+  view8 = [(VLFContaineeViewController *)self view];
+  leadingAnchor4 = [view8 leadingAnchor];
+  v91 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v107[0] = v91;
-  v86 = [(UIView *)self->_scanningContainerView trailingAnchor];
-  v88 = [(VLFContaineeViewController *)self view];
-  v84 = [v88 trailingAnchor];
-  v83 = [v86 constraintEqualToAnchor:v84];
+  trailingAnchor3 = [(UIView *)self->_scanningContainerView trailingAnchor];
+  view9 = [(VLFContaineeViewController *)self view];
+  trailingAnchor4 = [view9 trailingAnchor];
+  v83 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v107[1] = v83;
-  v82 = [(UIView *)self->_scanningContainerView topAnchor];
-  v18 = [(VLFContaineeViewController *)self view];
-  v19 = [v18 topAnchor];
-  v20 = [v82 constraintEqualToAnchor:v19];
+  topAnchor3 = [(UIView *)self->_scanningContainerView topAnchor];
+  view10 = [(VLFContaineeViewController *)self view];
+  topAnchor4 = [view10 topAnchor];
+  v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v107[2] = v20;
-  v21 = [(UIView *)self->_scanningContainerView bottomAnchor];
-  v22 = [(VLFContaineeViewController *)self view];
-  v23 = [v22 bottomAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  bottomAnchor = [(UIView *)self->_scanningContainerView bottomAnchor];
+  view11 = [(VLFContaineeViewController *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v107[3] = v24;
   v25 = [NSArray arrayWithObjects:v107 count:4];
   [v102 addObjectsFromArray:v25];
 
   [(UIView *)self->_scanningContainerView addSubview:self->_instructionView];
-  v26 = [(VLFScanningInstructionView *)self->_instructionView leadingAnchor];
-  v27 = [(UIView *)self->_scanningContainerView leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:28.0];
+  leadingAnchor5 = [(VLFScanningInstructionView *)self->_instructionView leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_scanningContainerView leadingAnchor];
+  v28 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:28.0];
   instructionViewLeadingConstraint = self->_instructionViewLeadingConstraint;
   self->_instructionViewLeadingConstraint = v28;
 
-  v30 = [(VLFScanningInstructionView *)self->_instructionView trailingAnchor];
-  v31 = [(UIView *)self->_scanningContainerView trailingAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31 constant:-52.0];
+  trailingAnchor5 = [(VLFScanningInstructionView *)self->_instructionView trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_scanningContainerView trailingAnchor];
+  v32 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-52.0];
   instructionViewTrailingConstraint = self->_instructionViewTrailingConstraint;
   self->_instructionViewTrailingConstraint = v32;
 
-  v34 = [(VLFScanningInstructionView *)self->_instructionView firstBaselineAnchor];
-  v35 = [(UIView *)self->_scanningContainerView topAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35 constant:48.0];
+  firstBaselineAnchor = [(VLFScanningInstructionView *)self->_instructionView firstBaselineAnchor];
+  topAnchor5 = [(UIView *)self->_scanningContainerView topAnchor];
+  v36 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor5 constant:48.0];
   instructionViewFirstBaselineConstraint = self->_instructionViewFirstBaselineConstraint;
   self->_instructionViewFirstBaselineConstraint = v36;
 
-  v38 = [(VLFScanningInstructionView *)self->_instructionView topAnchor];
-  v39 = [(UIView *)self->_scanningContainerView topAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39 constant:21.0];
+  topAnchor6 = [(VLFScanningInstructionView *)self->_instructionView topAnchor];
+  topAnchor7 = [(UIView *)self->_scanningContainerView topAnchor];
+  v40 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:21.0];
   instructionViewTopConstraint = self->_instructionViewTopConstraint;
   self->_instructionViewTopConstraint = v40;
 
@@ -889,66 +889,66 @@ LABEL_9:
   [v102 addObjectsFromArray:v43];
 
   [(UIView *)self->_scanningContainerView addSubview:self->_scanningAnimationView];
-  v44 = [(VLFScanningAnimationView *)self->_scanningAnimationView topAnchor];
-  v45 = [(VLFScanningInstructionView *)self->_instructionView lastBaselineAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
+  topAnchor8 = [(VLFScanningAnimationView *)self->_scanningAnimationView topAnchor];
+  lastBaselineAnchor = [(VLFScanningInstructionView *)self->_instructionView lastBaselineAnchor];
+  v46 = [topAnchor8 constraintEqualToAnchor:lastBaselineAnchor];
   scanningAnimationViewTopConstraintPortrait = self->_scanningAnimationViewTopConstraintPortrait;
   self->_scanningAnimationViewTopConstraintPortrait = v46;
 
-  v48 = [(VLFScanningAnimationView *)self->_scanningAnimationView topAnchor];
-  v49 = [(VLFScanningInstructionView *)self->_instructionView lastBaselineAnchor];
-  v50 = [v48 constraintGreaterThanOrEqualToAnchor:v49];
+  topAnchor9 = [(VLFScanningAnimationView *)self->_scanningAnimationView topAnchor];
+  lastBaselineAnchor2 = [(VLFScanningInstructionView *)self->_instructionView lastBaselineAnchor];
+  v50 = [topAnchor9 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2];
   scanningAnimationViewFlexibleTopConstraintPortrait = self->_scanningAnimationViewFlexibleTopConstraintPortrait;
   self->_scanningAnimationViewFlexibleTopConstraintPortrait = v50;
 
-  v52 = [(VLFScanningAnimationView *)self->_scanningAnimationView bottomAnchor];
-  v53 = [(UIView *)self->_scanningContainerView bottomAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
+  bottomAnchor3 = [(VLFScanningAnimationView *)self->_scanningAnimationView bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_scanningContainerView bottomAnchor];
+  v54 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   scanningAnimationViewBottomConstraint = self->_scanningAnimationViewBottomConstraint;
   self->_scanningAnimationViewBottomConstraint = v54;
 
-  v98 = [(VLFScanningAnimationView *)self->_scanningAnimationView leadingAnchor];
-  v56 = [(UIView *)self->_scanningContainerView leadingAnchor];
-  v57 = [v98 constraintEqualToAnchor:v56];
+  leadingAnchor7 = [(VLFScanningAnimationView *)self->_scanningAnimationView leadingAnchor];
+  leadingAnchor8 = [(UIView *)self->_scanningContainerView leadingAnchor];
+  v57 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v105[0] = v57;
-  v58 = [(VLFScanningAnimationView *)self->_scanningAnimationView trailingAnchor];
-  v59 = [(UIView *)self->_scanningContainerView trailingAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59];
+  trailingAnchor7 = [(VLFScanningAnimationView *)self->_scanningAnimationView trailingAnchor];
+  trailingAnchor8 = [(UIView *)self->_scanningContainerView trailingAnchor];
+  v60 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v61 = self->_scanningAnimationViewTopConstraintPortrait;
   v105[1] = v60;
   v105[2] = v61;
   v105[3] = self->_scanningAnimationViewBottomConstraint;
-  v62 = [(VLFScanningAnimationView *)self->_scanningAnimationView heightAnchor];
-  v63 = [(VLFScanningAnimationView *)self->_scanningAnimationView widthAnchor];
-  v64 = [v62 constraintEqualToAnchor:v63 multiplier:0.565333307 constant:0.0];
+  heightAnchor = [(VLFScanningAnimationView *)self->_scanningAnimationView heightAnchor];
+  widthAnchor = [(VLFScanningAnimationView *)self->_scanningAnimationView widthAnchor];
+  v64 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:0.565333307 constant:0.0];
   v105[4] = v64;
   v65 = [NSArray arrayWithObjects:v105 count:5];
   [v102 addObjectsFromArray:v65];
 
-  v66 = [(VLFContaineeViewController *)self view];
-  [v66 addSubview:self->_failureView];
+  view12 = [(VLFContaineeViewController *)self view];
+  [view12 addSubview:self->_failureView];
 
-  v67 = [(VLFFailureView *)self->_failureView bottomAnchor];
-  v68 = [(VLFContaineeViewController *)self view];
-  v69 = [v68 bottomAnchor];
-  v70 = [v67 constraintEqualToAnchor:v69];
+  bottomAnchor5 = [(VLFFailureView *)self->_failureView bottomAnchor];
+  view13 = [(VLFContaineeViewController *)self view];
+  bottomAnchor6 = [view13 bottomAnchor];
+  v70 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   failureViewBottomConstraint = self->_failureViewBottomConstraint;
   self->_failureViewBottomConstraint = v70;
 
-  v95 = [(VLFFailureView *)self->_failureView leadingAnchor];
-  v99 = [(VLFContaineeViewController *)self view];
-  v92 = [v99 leadingAnchor];
-  v89 = [v95 constraintEqualToAnchor:v92];
+  leadingAnchor9 = [(VLFFailureView *)self->_failureView leadingAnchor];
+  view14 = [(VLFContaineeViewController *)self view];
+  leadingAnchor10 = [view14 leadingAnchor];
+  v89 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v104[0] = v89;
-  v85 = [(VLFFailureView *)self->_failureView trailingAnchor];
-  v87 = [(VLFContaineeViewController *)self view];
-  v72 = [v87 trailingAnchor];
-  v73 = [v85 constraintEqualToAnchor:v72];
+  trailingAnchor9 = [(VLFFailureView *)self->_failureView trailingAnchor];
+  view15 = [(VLFContaineeViewController *)self view];
+  trailingAnchor10 = [view15 trailingAnchor];
+  v73 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v104[1] = v73;
-  v74 = [(VLFFailureView *)self->_failureView topAnchor];
-  v75 = [(VLFContaineeViewController *)self view];
-  v76 = [v75 topAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76];
+  topAnchor10 = [(VLFFailureView *)self->_failureView topAnchor];
+  view16 = [(VLFContaineeViewController *)self view];
+  topAnchor11 = [view16 topAnchor];
+  v77 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
   v78 = self->_failureViewBottomConstraint;
   v104[2] = v77;
   v104[3] = v78;
@@ -956,17 +956,17 @@ LABEL_9:
   [v102 addObjectsFromArray:v79];
 
   [NSLayoutConstraint activateConstraints:v102];
-  v80 = [(VLFScanningInstructionView *)self->_instructionView fontProvider];
-  [v80 addFontObserver:self->_failureView];
+  fontProvider = [(VLFScanningInstructionView *)self->_instructionView fontProvider];
+  [fontProvider addFontObserver:self->_failureView];
 
-  v81 = [(VLFContaineeViewController *)self view];
-  [v81 layoutIfNeeded];
+  view17 = [(VLFContaineeViewController *)self view];
+  [view17 layoutIfNeeded];
 }
 
 - (void)dealloc
 {
-  v3 = [(VLFContaineeViewController *)self vlfSession];
-  [v3 stop];
+  vlfSession = [(VLFContaineeViewController *)self vlfSession];
+  [vlfSession stop];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"VLFContaineeViewControllerDidDisappearNotification" object:self];
@@ -976,7 +976,7 @@ LABEL_9:
   [(VLFContaineeViewController *)&v5 dealloc];
 }
 
-- (VLFContaineeViewController)initWithEntryPoint:(int64_t)a3
+- (VLFContaineeViewController)initWithEntryPoint:(int64_t)point
 {
   v24.receiver = self;
   v24.super_class = VLFContaineeViewController;
@@ -1007,47 +1007,47 @@ LABEL_9:
     v4->_instructionView = v13;
 
     [(VLFScanningInstructionView *)v4->_instructionView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [[VLFScanningAnimationView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[VLFScanningAnimationView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     scanningAnimationView = v4->_scanningAnimationView;
-    v4->_scanningAnimationView = v15;
+    v4->_scanningAnimationView = height;
 
     [(VLFScanningAnimationView *)v4->_scanningAnimationView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [[VLFFailureView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[VLFFailureView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     failureView = v4->_failureView;
-    v4->_failureView = v17;
+    v4->_failureView = height2;
 
     [(VLFFailureView *)v4->_failureView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(VLFFailureView *)v4->_failureView setAlpha:0.0];
     [(VLFFailureView *)v4->_failureView setDelegate:v4];
-    v19 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v19 setHideGrabber:1];
+    cardPresentationController = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController setHideGrabber:1];
 
-    v20 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v20 setAllowsSwipeToDismiss:0];
+    cardPresentationController2 = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController2 setAllowsSwipeToDismiss:0];
 
     v21 = [[VLFSession alloc] initWithMode:1];
     vlfSession = v4->_vlfSession;
     v4->_vlfSession = v21;
 
-    [(VLFSession *)v4->_vlfSession setEntryPoint:a3];
+    [(VLFSession *)v4->_vlfSession setEntryPoint:point];
     [(VLFSession *)v4->_vlfSession setDelegate:v4];
   }
 
   return v4;
 }
 
-- (VLFContaineeViewController)initWithCoder:(id)a3
+- (VLFContaineeViewController)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   result = [NSException raise:@"MethodNotAvailableException" format:@"This method is unavailable."];
   __break(1u);
   return result;
 }
 
-- (VLFContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VLFContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   result = [NSException raise:@"MethodNotAvailableException" format:@"This method is unavailable."];
   __break(1u);
   return result;

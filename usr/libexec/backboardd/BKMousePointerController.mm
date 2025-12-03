@@ -1,35 +1,35 @@
 @interface BKMousePointerController
 + (id)standardConfiguration;
 - (BKMousePointerController)init;
-- (BKMousePointerController)initWithConfiguration:(id)a3;
+- (BKMousePointerController)initWithConfiguration:(id)configuration;
 - (BKSMousePointerDevicePreferences)globalDevicePreferences;
-- (BOOL)destinationPIDMatchesHapticFeedbackRequestPID:(int)a3;
+- (BOOL)destinationPIDMatchesHapticFeedbackRequestPID:(int)d;
 - (CGPoint)globalPointerPosition;
 - (CGPoint)normalizedGlobalPointerPosition;
 - (NSArray)availableDevices;
-- (id)suppressPointerModelUpdatesAssertionForDisplay:(id)a3 reason:(id)a4;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (void)_displayLinkFired:(id)a3;
-- (void)addGlobalDevicePreferencesObserver:(id)a3;
-- (void)addLifecycleObserver:(id)a3;
+- (id)suppressPointerModelUpdatesAssertionForDisplay:(id)display reason:(id)reason;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (void)_displayLinkFired:(id)fired;
+- (void)addGlobalDevicePreferencesObserver:(id)observer;
+- (void)addLifecycleObserver:(id)observer;
 - (void)dealloc;
-- (void)display:(id)a3 didBecomeBlank:(BOOL)a4;
-- (void)getHitTestContextsAtPoint:(id)a3 withAdditionalContexts:(id)a4 onDisplay:(id)a5 withCompletion:(id)a6;
-- (void)globalKeyboardModifiersDidChange:(int64_t)a3;
-- (void)hitTestRegionsDidChange:(id)a3 forDisplayUUID:(id)a4;
+- (void)display:(id)display didBecomeBlank:(BOOL)blank;
+- (void)getHitTestContextsAtPoint:(id)point withAdditionalContexts:(id)contexts onDisplay:(id)display withCompletion:(id)completion;
+- (void)globalKeyboardModifiersDidChange:(int64_t)change;
+- (void)hitTestRegionsDidChange:(id)change forDisplayUUID:(id)d;
 - (void)invalidate;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
-- (void)monitor:(id)a3 activeDisplaysDidChange:(id)a4;
-- (void)orientationManager:(id)a3 deviceOrientationMayHaveChanged:(int64_t)a4 changeSource:(int64_t)a5 isDeviceOrientationLocked:(BOOL)a6;
-- (void)removeGlobalDevicePreferencesObserver:(id)a3;
-- (void)removeLifecycleObserver:(id)a3;
-- (void)serviceDidDisappear:(id)a3;
-- (void)setDisplayArrangement:(id)a3;
-- (void)setGlobalDevicePreferences:(id)a3;
-- (void)setGlobalPointerEventRoutes:(id)a3 forPID:(int)a4 displayUUID:(id)a5;
-- (void)setGlobalPointerPosition:(CGPoint)a3 synthesizeEvents:(BOOL)a4 process:(id)a5;
-- (void)smartCoverStateDidChange:(int)a3;
-- (void)stopRoutingGlobalEventsForPID:(int)a3;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
+- (void)monitor:(id)monitor activeDisplaysDidChange:(id)change;
+- (void)orientationManager:(id)manager deviceOrientationMayHaveChanged:(int64_t)changed changeSource:(int64_t)source isDeviceOrientationLocked:(BOOL)locked;
+- (void)removeGlobalDevicePreferencesObserver:(id)observer;
+- (void)removeLifecycleObserver:(id)observer;
+- (void)serviceDidDisappear:(id)disappear;
+- (void)setDisplayArrangement:(id)arrangement;
+- (void)setGlobalDevicePreferences:(id)preferences;
+- (void)setGlobalPointerEventRoutes:(id)routes forPID:(int)d displayUUID:(id)iD;
+- (void)setGlobalPointerPosition:(CGPoint)position synthesizeEvents:(BOOL)events process:(id)process;
+- (void)smartCoverStateDidChange:(int)change;
+- (void)stopRoutingGlobalEventsForPID:(int)d;
 @end
 
 @implementation BKMousePointerController
@@ -38,13 +38,13 @@
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_pointerHIDServiceByServiceID allValues];
+  allValues = [(NSMutableDictionary *)self->_pointerHIDServiceByServiceID allValues];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = mach_absolute_time();
@@ -94,7 +94,7 @@
           objc_enumerationMutation(v12);
         }
 
-        [*(*(&v17 + 1) + 8 * v16) displayLinkFired:{a3, v17}];
+        [*(*(&v17 + 1) + 8 * v16) displayLinkFired:{fired, v17}];
         v16 = v16 + 1;
       }
 
@@ -106,13 +106,13 @@
   }
 }
 
-- (void)globalKeyboardModifiersDidChange:(int64_t)a3
+- (void)globalKeyboardModifiersDidChange:(int64_t)change
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (self->_activeKeyboardModifiers != a3)
+  if (self->_activeKeyboardModifiers != change)
   {
-    self->_activeKeyboardModifiers = a3;
+    self->_activeKeyboardModifiers = change;
     if ([(NSSet *)self->_lastEventContexts count])
     {
       v5 = mach_absolute_time();
@@ -123,25 +123,25 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)smartCoverStateDidChange:(int)a3
+- (void)smartCoverStateDidChange:(int)change
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = +[BKDisplayController sharedInstance];
   v6 = [v5 displayIsBlanked:0];
 
-  if ((v6 & 1) != 0 || a3 != 3)
+  if ((v6 & 1) != 0 || change != 3)
   {
-    v7 = sub_10005F6CC(self, v6 ^ 1, a3 == 3, self->_rawDeviceOrientation);
+    v7 = sub_10005F6CC(self, v6 ^ 1, change == 3, self->_rawDeviceOrientation);
     sub_10005F7E8(self, v7);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)monitor:(id)a3 activeDisplaysDidChange:(id)a4
+- (void)monitor:(id)monitor activeDisplaysDidChange:(id)change
 {
   os_unfair_lock_lock(&self->_lock);
-  v6 = [a4 copy];
+  v6 = [change copy];
   availableDisplaysByUUID = self->_availableDisplaysByUUID;
   self->_availableDisplaysByUUID = v6;
 
@@ -150,44 +150,44 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)display:(id)a3 didBecomeBlank:(BOOL)a4
+- (void)display:(id)display didBecomeBlank:(BOOL)blank
 {
-  v4 = a4;
+  blankCopy = blank;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v6 = sub_10005F6CC(self, !v4, [(BKSmartCoverHIDEventProcessor *)self->_smartCoverEventProcessor isSmartCoverClosed], self->_rawDeviceOrientation);
+  v6 = sub_10005F6CC(self, !blankCopy, [(BKSmartCoverHIDEventProcessor *)self->_smartCoverEventProcessor isSmartCoverClosed], self->_rawDeviceOrientation);
   sub_10005F7E8(self, v6);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
   v5 = BKLogMousePointer();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = a3;
+    disappearCopy = disappear;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "device removed: %{public}@", buf, 0xCu);
   }
 
-  v18 = a3;
-  v6 = [NSArray arrayWithObjects:&v18 count:1];
+  disappearCopy2 = disappear;
+  v6 = [NSArray arrayWithObjects:&disappearCopy2 count:1];
   v7 = sub_100061114(self, v6, @"service removed");
 
-  v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [a3 senderID]);
+  v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [disappear senderID]);
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_pointerHIDServiceByServiceID removeObjectForKey:v8];
-  [(BKMouseEventAccumulator *)self->_eventAccumulator deviceServiceDidTerminate:a3];
+  [(BKMouseEventAccumulator *)self->_eventAccumulator deviceServiceDidTerminate:disappear];
   displayLink = self->_displayLink;
   sub_10005FA48(self, v7);
   if (!displayLink)
   {
-    v10 = [a3 displayUUID];
-    v11 = [v10 length];
+    displayUUID = [disappear displayUUID];
+    v11 = [displayUUID length];
     v12 = BKSDisplayUUIDMainKey;
     if (v11)
     {
-      v12 = v10;
+      v12 = displayUUID;
     }
 
     v13 = v12;
@@ -196,7 +196,7 @@
   }
 
   [(NSMutableDictionary *)self->_senderPropertiesBySenderID removeObjectForKey:v8];
-  v14 = [(NSMutableDictionary *)self->_pointerHIDServiceByServiceID allValues];
+  allValues = [(NSMutableDictionary *)self->_pointerHIDServiceByServiceID allValues];
   [(BKMousePointerAnalyticsReporter *)self->_analyticsReporter availableDevicesDidChange];
   sub_1000611BC(self);
   os_unfair_lock_unlock(&self->_lock);
@@ -204,25 +204,25 @@
   v16[1] = 3221225472;
   v16[2] = sub_1000612D0;
   v16[3] = &unk_1000FBCF0;
-  v17 = v14;
-  v15 = v14;
+  v17 = allValues;
+  v15 = allValues;
   os_unfair_lock_assert_not_owner(&self->_lock);
   sub_1000612D0(v16, self->_ipcServer_do_not_access_directly);
 }
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
   v6 = BKLogMousePointer();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *v111 = a4;
+    *v111 = match;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "devices added: %{public}@", buf, 0xCu);
   }
 
-  sub_100061114(self, a4, @"services added");
-  v76 = v74 = a4;
-  v80 = self;
+  sub_100061114(self, match, @"services added");
+  v76 = v74 = match;
+  selfCopy = self;
   if (self)
   {
     v79 = objc_alloc_init(NSMutableDictionary);
@@ -230,8 +230,8 @@
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
-    obj = a4;
-    v81 = [obj countByEnumeratingWithState:&v101 objects:buf count:{16, a4, v76}];
+    obj = match;
+    v81 = [obj countByEnumeratingWithState:&v101 objects:buf count:{16, match, v76}];
     if (v81)
     {
       v78 = *v102;
@@ -344,8 +344,8 @@
 
               v34 = v33;
 
-              v35 = [v34 BOOLValue];
-              BYTE1(v10->_lock._os_unfair_lock_opaque) = v35;
+              bOOLValue = [v34 BOOLValue];
+              BYTE1(v10->_lock._os_unfair_lock_opaque) = bOOLValue;
               v36 = [v8 propertyOfClass:objc_opt_class() forKey:@"ignoresNaturalScrollingPreference"];
               BYTE2(v10->_lock._os_unfair_lock_opaque) = [v36 BOOLValue];
             }
@@ -379,8 +379,8 @@
   v39 = +[BKDisplayController sharedInstance];
   v40 = [v39 displayIsBlanked:0];
 
-  v82 = sub_10005F6CC(v80, v40 ^ 1, [(BKSmartCoverHIDEventProcessor *)v80->_smartCoverEventProcessor isSmartCoverClosed], v80->_rawDeviceOrientation);
-  os_unfair_lock_lock(&v80->_lock);
+  v82 = sub_10005F6CC(selfCopy, v40 ^ 1, [(BKSmartCoverHIDEventProcessor *)selfCopy->_smartCoverEventProcessor isSmartCoverClosed], selfCopy->_rawDeviceOrientation);
+  os_unfair_lock_lock(&selfCopy->_lock);
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
@@ -401,7 +401,7 @@
         }
 
         v46 = *(*(&v97 + 1) + 8 * i);
-        pointerHIDServiceByServiceID = v80->_pointerHIDServiceByServiceID;
+        pointerHIDServiceByServiceID = selfCopy->_pointerHIDServiceByServiceID;
         v48 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v46 senderID]);
         [(NSMutableDictionary *)pointerHIDServiceByServiceID setObject:v46 forKey:v48];
       }
@@ -412,9 +412,9 @@
     while (v43);
   }
 
-  sub_1000611BC(v80);
-  os_unfair_lock_lock(&v80->_preferencesLock);
-  v49 = sub_100061C90(v80);
+  sub_1000611BC(selfCopy);
+  os_unfair_lock_lock(&selfCopy->_preferencesLock);
+  v49 = sub_100061C90(selfCopy);
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
@@ -434,7 +434,7 @@
           objc_enumerationMutation(v50);
         }
 
-        sub_100061E40(v80, v49, *(*(&v93 + 1) + 8 * j));
+        sub_100061E40(selfCopy, v49, *(*(&v93 + 1) + 8 * j));
       }
 
       v52 = [v50 countByEnumeratingWithState:&v93 objects:v108 count:16];
@@ -443,18 +443,18 @@
     while (v52);
   }
 
-  os_unfair_lock_unlock(&v80->_preferencesLock);
-  sub_10005FA48(v80, v76);
-  if (v80)
+  os_unfair_lock_unlock(&selfCopy->_preferencesLock);
+  sub_10005FA48(selfCopy, v76);
+  if (selfCopy)
   {
-    senderPropertiesBySenderID = v80->_senderPropertiesBySenderID;
+    senderPropertiesBySenderID = selfCopy->_senderPropertiesBySenderID;
     if (!senderPropertiesBySenderID)
     {
       v56 = objc_alloc_init(NSMutableDictionary);
-      v57 = v80->_senderPropertiesBySenderID;
-      v80->_senderPropertiesBySenderID = v56;
+      v57 = selfCopy->_senderPropertiesBySenderID;
+      selfCopy->_senderPropertiesBySenderID = v56;
 
-      senderPropertiesBySenderID = v80->_senderPropertiesBySenderID;
+      senderPropertiesBySenderID = selfCopy->_senderPropertiesBySenderID;
     }
 
     [(NSMutableDictionary *)senderPropertiesBySenderID addEntriesFromDictionary:v79];
@@ -480,12 +480,12 @@
         }
 
         v63 = *(*(&v89 + 1) + 8 * k);
-        [(BKMouseEventAccumulator *)v80->_eventAccumulator deviceServiceDidAppear:v63];
-        sub_10005F884(v80, v63, v82);
+        [(BKMouseEventAccumulator *)selfCopy->_eventAccumulator deviceServiceDidAppear:v63];
+        sub_10005F884(selfCopy, v63, v82);
         v64 = BKLogMousePointer();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
         {
-          readyToReceiveEvents = v80->_readyToReceiveEvents;
+          readyToReceiveEvents = selfCopy->_readyToReceiveEvents;
           *buf = 67109378;
           *v111 = readyToReceiveEvents;
           *&v111[4] = 2114;
@@ -493,7 +493,7 @@
           _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "set _readyToReceiveEvents:%{BOOL}u on %{public}@", buf, 0x12u);
         }
 
-        v66 = [NSNumber numberWithBool:v80->_readyToReceiveEvents];
+        v66 = [NSNumber numberWithBool:selfCopy->_readyToReceiveEvents];
         [v63 asyncSetProperty:v66 forKey:@"BKReadyToReceivePointerEvents"];
       }
 
@@ -503,9 +503,9 @@
     while (v60);
   }
 
-  v67 = [(NSMutableDictionary *)v80->_pointerHIDServiceByServiceID allValues];
-  [(BKMousePointerAnalyticsReporter *)v80->_analyticsReporter availableDevicesDidChange];
-  os_unfair_lock_unlock(&v80->_lock);
+  allValues = [(NSMutableDictionary *)selfCopy->_pointerHIDServiceByServiceID allValues];
+  [(BKMousePointerAnalyticsReporter *)selfCopy->_analyticsReporter availableDevicesDidChange];
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
@@ -525,7 +525,7 @@
           objc_enumerationMutation(v68);
         }
 
-        [*(*(&v85 + 1) + 8 * m) addDisappearanceObserver:v80 queue:v80->_serviceTerminationQueue];
+        [*(*(&v85 + 1) + 8 * m) addDisappearanceObserver:selfCopy queue:selfCopy->_serviceTerminationQueue];
       }
 
       v70 = [v68 countByEnumeratingWithState:&v85 objects:v106 count:16];
@@ -538,23 +538,23 @@
   v83[1] = 3221225472;
   v83[2] = sub_100062204;
   v83[3] = &unk_1000FBCF0;
-  v84 = v67;
-  v73 = v67;
-  os_unfair_lock_assert_not_owner(&v80->_lock);
-  sub_100062204(v83, v80->_ipcServer_do_not_access_directly);
+  v84 = allValues;
+  v73 = allValues;
+  os_unfair_lock_assert_not_owner(&selfCopy->_lock);
+  sub_100062204(v83, selfCopy->_ipcServer_do_not_access_directly);
 }
 
-- (void)orientationManager:(id)a3 deviceOrientationMayHaveChanged:(int64_t)a4 changeSource:(int64_t)a5 isDeviceOrientationLocked:(BOOL)a6
+- (void)orientationManager:(id)manager deviceOrientationMayHaveChanged:(int64_t)changed changeSource:(int64_t)source isDeviceOrientationLocked:(BOOL)locked
 {
   os_unfair_lock_lock(&self->_lock);
-  v8 = sub_100005168(a3);
+  v8 = sub_100005168(manager);
   if (self->_mainDisplayInterfaceOrientation != v8)
   {
     self->_mainDisplayInterfaceOrientation = v8;
     sub_10005FD40(self);
   }
 
-  v9 = sub_100091A9C(a3);
+  v9 = sub_100091A9C(manager);
   if (self->_rawDeviceOrientation != v9)
   {
     self->_rawDeviceOrientation = v9;
@@ -568,36 +568,36 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = *a3;
-  if ([a4 eventSource] - 11 <= 1)
+  v8 = *event;
+  if ([sender eventSource] - 11 <= 1)
   {
     os_unfair_lock_lock(&self->_lock);
-    v9 = [a4 displayUUID];
-    v10 = [v9 length];
+    displayUUID = [sender displayUUID];
+    v10 = [displayUUID length];
     v11 = BKSDisplayUUIDMainKey;
     if (v10)
     {
-      v11 = v9;
+      v11 = displayUUID;
     }
 
     v12 = v11;
 
-    v13 = [(BKMousePointerRegion *)self->_pointerRegion displayUUID];
-    v14 = [v12 isEqual:v13];
+    displayUUID2 = [(BKMousePointerRegion *)self->_pointerRegion displayUUID];
+    v14 = [v12 isEqual:displayUUID2];
 
     if ((v14 & 1) == 0)
     {
       v15 = BKLogMousePointer();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [a4 displayUUID];
-        v17 = [(BKMousePointerRegion *)self->_pointerRegion displayUUID];
+        displayUUID3 = [sender displayUUID];
+        displayUUID4 = [(BKMousePointerRegion *)self->_pointerRegion displayUUID];
         *buf = 138543618;
-        v53 = v16;
+        v53 = displayUUID3;
         v54 = 2114;
-        v55 = v17;
+        v55 = displayUUID4;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "processEvent senderDisplayUUID %{public}@ pointerdisplayUUID %{public}@", buf, 0x16u);
       }
 
@@ -629,9 +629,9 @@
     }
 
     sub_100062998(self);
-    v24 = [a4 eventSource];
+    eventSource = [sender eventSource];
     Type = IOHIDEventGetType();
-    if (v24 == 12)
+    if (eventSource == 12)
     {
       v23 = 1;
       if ((Type - 6) < 2 || Type == 11)
@@ -657,7 +657,7 @@
               v54 = 2114;
               v55 = v44;
               v56 = 2048;
-              v57 = self;
+              selfCopy = self;
               v58 = 2114;
               v59 = @"BKMousePointerController.m";
               v60 = 1024;
@@ -673,12 +673,12 @@
             JUMPOUT(0x100062990);
           }
 
-          [(BKMouseEventAccumulator *)self->_eventAccumulator addTopLevelEvent:v8 fromSender:a4];
+          [(BKMouseEventAccumulator *)self->_eventAccumulator addTopLevelEvent:v8 fromSender:sender];
           [(BKMousePointerAnnotationController *)self->_annotationController didReceiveEventFromDevice];
-          v26 = [(BKMouseEventAccumulator *)self->_eventAccumulator digitizerEvents];
-          if ([v26 count])
+          digitizerEvents = [(BKMouseEventAccumulator *)self->_eventAccumulator digitizerEvents];
+          if ([digitizerEvents count])
           {
-            v27 = [(BKMousePointerRegion *)self->_pointerRegion displayUUID];
+            displayUUID5 = [(BKMousePointerRegion *)self->_pointerRegion displayUUID];
             mainDisplayUUID = self->_mainDisplayUUID;
             if (BSEqualObjects())
             {
@@ -687,18 +687,18 @@
 
             else
             {
-              [BKSHIDEventDisplay displayWithHardwareIdentifier:v27];
+              [BKSHIDEventDisplay displayWithHardwareIdentifier:displayUUID5];
             }
             v30 = ;
             if (self->_touchPadManager)
             {
-              v45 = v27;
-              v46 = v26;
+              v45 = displayUUID5;
+              v46 = digitizerEvents;
               v50 = 0u;
               v51 = 0u;
               v48 = 0u;
               v49 = 0u;
-              v31 = v26;
+              v31 = digitizerEvents;
               v32 = [v31 countByEnumeratingWithState:&v48 objects:buf count:16];
               if (v32)
               {
@@ -714,7 +714,7 @@
                     }
 
                     *v47 = *(*(&v48 + 1) + 8 * i);
-                    [(BKTouchPadManager *)self->_touchPadManager processEvent:v47 sender:a4 display:v30 dispatcher:a5, v45, v46];
+                    [(BKTouchPadManager *)self->_touchPadManager processEvent:v47 sender:sender display:v30 dispatcher:dispatcher, v45, v46];
                   }
 
                   v33 = [v31 countByEnumeratingWithState:&v48 objects:buf count:16];
@@ -723,8 +723,8 @@
                 while (v33);
               }
 
-              v27 = v45;
-              v26 = v46;
+              displayUUID5 = v45;
+              digitizerEvents = v46;
             }
           }
 
@@ -737,8 +737,8 @@
 
             if ([(BKMouseEventAccumulator *)self->_eventAccumulator touchingPathIndexesDidChange])
             {
-              v36 = [(BKMouseEventAccumulator *)self->_eventAccumulator touchingPathIndexes];
-              v37 = [v36 count];
+              touchingPathIndexes = [(BKMouseEventAccumulator *)self->_eventAccumulator touchingPathIndexes];
+              v37 = [touchingPathIndexes count];
 
               if (v37)
               {
@@ -768,11 +768,11 @@
         else
         {
           os_unfair_lock_unlock(&self->_lock);
-          v26 = BKLogMousePointer();
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+          digitizerEvents = BKLogMousePointer();
+          if (os_log_type_enabled(digitizerEvents, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
-            _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "ignoring trackpad event; display layout hasn't been initialized", buf, 2u);
+            _os_log_error_impl(&_mh_execute_header, digitizerEvents, OS_LOG_TYPE_ERROR, "ignoring trackpad event; display layout hasn't been initialized", buf, 2u);
           }
 
           v23 = 0;
@@ -788,17 +788,17 @@
     {
       case 6:
         os_unfair_lock_lock(&self->_lock);
-        [(BKMouseEventAccumulator *)self->_eventAccumulator addTopLevelScrollEvent:v8 fromSender:a4];
+        [(BKMouseEventAccumulator *)self->_eventAccumulator addTopLevelScrollEvent:v8 fromSender:sender];
         sub_100062B00(self);
         break;
       case 7:
         os_unfair_lock_lock(&self->_lock);
-        [(BKMouseEventAccumulator *)self->_eventAccumulator addTopLevelScaleEvent:v8 fromSender:a4];
+        [(BKMouseEventAccumulator *)self->_eventAccumulator addTopLevelScaleEvent:v8 fromSender:sender];
         break;
       case 17:
         os_unfair_lock_assert_not_owner(&self->_lock);
         os_unfair_lock_lock(&self->_lock);
-        [(BKMouseEventAccumulator *)self->_eventAccumulator addTopLevelEvent:v8 fromSender:a4];
+        [(BKMouseEventAccumulator *)self->_eventAccumulator addTopLevelEvent:v8 fromSender:sender];
         sub_100062B00(self);
         [(BKMousePointerAnnotationController *)self->_annotationController didReceiveEventFromDevice];
         break;
@@ -820,7 +820,7 @@ LABEL_58:
   return 0;
 }
 
-- (BOOL)destinationPIDMatchesHapticFeedbackRequestPID:(int)a3
+- (BOOL)destinationPIDMatchesHapticFeedbackRequestPID:(int)d
 {
   os_unfair_lock_lock(&self->_lock);
   v14 = 0u;
@@ -842,7 +842,7 @@ LABEL_58:
           objc_enumerationMutation(v5);
         }
 
-        if (sub_10001B448(*(*(&v12 + 1) + 8 * i), self->_HIDConnectionManager) == a3)
+        if (sub_10001B448(*(*(&v12 + 1) + 8 * i), self->_HIDConnectionManager) == d)
         {
           v10 = 1;
           goto LABEL_11;
@@ -866,28 +866,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)setDisplayArrangement:(id)a3
+- (void)setDisplayArrangement:(id)arrangement
 {
   v5 = BKLogMousePointer();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a3;
+    arrangementCopy = arrangement;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Display arrangement update: %{public}@", &v6, 0xCu);
   }
 
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_displayArrangement, a3);
+  objc_storeStrong(&self->_displayArrangement, arrangement);
   sub_10005FA48(self, @"display arrangement changed");
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeGlobalDevicePreferencesObserver:(id)a3
+- (void)removeGlobalDevicePreferencesObserver:(id)observer
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_globalDevicePreferencesObservers removeObject:a3];
+  [(NSHashTable *)self->_globalDevicePreferencesObservers removeObject:observer];
   if (![(NSHashTable *)self->_globalDevicePreferencesObservers count])
   {
     globalDevicePreferencesObservers = self->_globalDevicePreferencesObservers;
@@ -897,7 +897,7 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addGlobalDevicePreferencesObserver:(id)a3
+- (void)addGlobalDevicePreferencesObserver:(id)observer
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
@@ -911,38 +911,38 @@ LABEL_11:
     globalDevicePreferencesObservers = self->_globalDevicePreferencesObservers;
   }
 
-  [(NSHashTable *)globalDevicePreferencesObservers addObject:a3];
+  [(NSHashTable *)globalDevicePreferencesObservers addObject:observer];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeLifecycleObserver:(id)a3
+- (void)removeLifecycleObserver:(id)observer
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  sub_1000639C0(self, a3);
+  sub_1000639C0(self, observer);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addLifecycleObserver:(id)a3
+- (void)addLifecycleObserver:(id)observer
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  sub_100063A80(self, a3);
+  sub_100063A80(self, observer);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setGlobalDevicePreferences:(id)a3
+- (void)setGlobalDevicePreferences:(id)preferences
 {
   os_unfair_lock_assert_not_owner(&self->_preferencesLock);
   os_unfair_lock_lock(&self->_preferencesLock);
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSHashTable *)self->_globalDevicePreferencesObservers allObjects];
+  allObjects = [(NSHashTable *)self->_globalDevicePreferencesObservers allObjects];
   os_unfair_lock_unlock(&self->_lock);
-  if ([v5 count])
+  if ([allObjects count])
   {
     v6 = sub_100061C90(self);
     v7 = BSEqualObjects() ^ 1;
@@ -956,7 +956,7 @@ LABEL_11:
   os_unfair_lock_assert_owner(&self->_preferencesLock);
   v8 = +[BKSDefaults localDefaults];
   v31 = 0;
-  v9 = [BSProtobufSerialization encodeObject:a3 error:&v31];
+  v9 = [BSProtobufSerialization encodeObject:preferences error:&v31];
   v10 = v31;
   if (v9)
   {
@@ -976,13 +976,13 @@ LABEL_11:
 
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(NSMutableDictionary *)self->_pointerHIDServiceByServiceID allValues];
+  allValues = [(NSMutableDictionary *)self->_pointerHIDServiceByServiceID allValues];
   os_unfair_lock_unlock(&self->_lock);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = v12;
+  v13 = allValues;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v14)
   {
@@ -998,7 +998,7 @@ LABEL_11:
           objc_enumerationMutation(v13);
         }
 
-        sub_100061E40(self, a3, *(*(&v27 + 1) + 8 * v17));
+        sub_100061E40(self, preferences, *(*(&v27 + 1) + 8 * v17));
         v17 = v17 + 1;
       }
 
@@ -1019,7 +1019,7 @@ LABEL_11:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v18 = v5;
+    v18 = allObjects;
     v19 = [v18 countByEnumeratingWithState:&v23 objects:v32 count:16];
     if (v19)
     {
@@ -1035,7 +1035,7 @@ LABEL_11:
             objc_enumerationMutation(v18);
           }
 
-          [*(*(&v23 + 1) + 8 * v22) mousePointerGlobalDevicePreferencesDidChange:{a3, v23}];
+          [*(*(&v23 + 1) + 8 * v22) mousePointerGlobalDevicePreferencesDidChange:{preferences, v23}];
           v22 = v22 + 1;
         }
 
@@ -1058,24 +1058,24 @@ LABEL_11:
   return v3;
 }
 
-- (void)hitTestRegionsDidChange:(id)a3 forDisplayUUID:(id)a4
+- (void)hitTestRegionsDidChange:(id)change forDisplayUUID:(id)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if ([(NSSet *)self->_lastEventContexts count])
   {
-    v6 = [(BKMousePointerRegion *)self->_pointerRegion displayUUID];
-    v7 = a4;
-    v8 = [v7 length];
+    displayUUID = [(BKMousePointerRegion *)self->_pointerRegion displayUUID];
+    dCopy = d;
+    v8 = [dCopy length];
     v9 = BKSDisplayUUIDMainKey;
     if (v8)
     {
-      v9 = v7;
+      v9 = dCopy;
     }
 
     v10 = v9;
 
-    v11 = [v6 isEqual:v10];
+    v11 = [displayUUID isEqual:v10];
     if (v11)
     {
       v12 = mach_absolute_time();
@@ -1086,7 +1086,7 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)stopRoutingGlobalEventsForPID:(int)a3
+- (void)stopRoutingGlobalEventsForPID:(int)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
@@ -1096,15 +1096,15 @@ LABEL_11:
   v6[2] = sub_100063FDC;
   v6[3] = &unk_1000FBC48;
   v6[4] = self;
-  v7 = a3;
+  dCopy = d;
   [v5 enumerateKeysAndObjectsUsingBlock:v6];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setGlobalPointerEventRoutes:(id)a3 forPID:(int)a4 displayUUID:(id)a5
+- (void)setGlobalPointerEventRoutes:(id)routes forPID:(int)d displayUUID:(id)iD
 {
-  if (a4 <= 0)
+  if (d <= 0)
   {
     v10 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"pid > 0"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1117,7 +1117,7 @@ LABEL_11:
       v20 = 2114;
       v21 = v13;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = @"BKMousePointerController.m";
       v26 = 1024;
@@ -1133,7 +1133,7 @@ LABEL_11:
     JUMPOUT(0x100064A90);
   }
 
-  if (!a5)
+  if (!iD)
   {
     v14 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"displayUUID != ((void *)0)"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1146,7 +1146,7 @@ LABEL_11:
       v20 = 2114;
       v21 = v17;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = @"BKMousePointerController.m";
       v26 = 1024;
@@ -1164,28 +1164,28 @@ LABEL_11:
 
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  sub_100063FF4(self, a3, a4, a5);
+  sub_100063FF4(self, routes, d, iD);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)getHitTestContextsAtPoint:(id)a3 withAdditionalContexts:(id)a4 onDisplay:(id)a5 withCompletion:(id)a6
+- (void)getHitTestContextsAtPoint:(id)point withAdditionalContexts:(id)contexts onDisplay:(id)display withCompletion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    v6 = a6;
+    completionCopy = completion;
     os_unfair_lock_lock(&self->_lock);
     v11 = +[NSMutableArray array];
     v12 = +[NSMutableArray array];
-    v13 = sub_10005DD24(self, a5);
+    v13 = sub_10005DD24(self, display);
     if (v13)
     {
-      v35 = a4;
-      v37 = v6;
-      v14 = sub_10005DDD4(self, a5);
-      sub_10005F144(self, a3, v13);
+      contextsCopy = contexts;
+      v37 = completionCopy;
+      v14 = sub_10005DDD4(self, display);
+      sub_10005F144(self, point, v13);
       sub_10005DE60(v13, v14, self->_displayController);
-      sub_100007C3C(a5);
+      sub_100007C3C(display);
       v16 = v15;
       v18 = v17;
       v36 = v13;
@@ -1214,10 +1214,10 @@ LABEL_11:
               v24 = *(v23 + 8);
               v25 = sub_10001B448(v23, self->_HIDConnectionManager);
               v26 = objc_alloc_init(BKSHIDEventHitTestClientContext);
-              [v26 setContextID:{v24, v35}];
+              [v26 setContextID:{v24, contextsCopy}];
               [v26 setPid:v25];
               [v11 addObject:v26];
-              [(BKDisplayController *)self->_displayController convertCAScreenLocation:v24 toContextID:a5 displayUUID:v16, v18];
+              [(BKDisplayController *)self->_displayController convertCAScreenLocation:v24 toContextID:display displayUUID:v16, v18];
               v27 = [NSValue bs_valueWithCGPoint:?];
               [v12 addObject:v27];
             }
@@ -1233,7 +1233,7 @@ LABEL_11:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v28 = v35;
+      v28 = contextsCopy;
       v29 = [v28 countByEnumeratingWithState:&v39 objects:v47 count:16];
       if (v29)
       {
@@ -1249,8 +1249,8 @@ LABEL_11:
             }
 
             v33 = *(*(&v39 + 1) + 8 * j);
-            [v11 addObject:{v33, v35}];
-            -[BKDisplayController convertCAScreenLocation:toContextID:displayUUID:](self->_displayController, "convertCAScreenLocation:toContextID:displayUUID:", [v33 contextID], a5, v16, v18);
+            [v11 addObject:{v33, contextsCopy}];
+            -[BKDisplayController convertCAScreenLocation:toContextID:displayUUID:](self->_displayController, "convertCAScreenLocation:toContextID:displayUUID:", [v33 contextID], display, v16, v18);
             v34 = [NSValue bs_valueWithCGPoint:?];
             [v12 addObject:v34];
           }
@@ -1262,17 +1262,17 @@ LABEL_11:
       }
 
       v13 = v36;
-      v6 = v37;
+      completionCopy = v37;
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v6[2](v6, v11, v12, 0);
+    completionCopy[2](completionCopy, v11, v12, 0);
   }
 }
 
-- (void)setGlobalPointerPosition:(CGPoint)a3 synthesizeEvents:(BOOL)a4 process:(id)a5
+- (void)setGlobalPointerPosition:(CGPoint)position synthesizeEvents:(BOOL)events process:(id)process
 {
-  v6 = a4;
+  eventsCopy = events;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v8 = +[CADisplay mainDisplay];
@@ -1280,10 +1280,10 @@ LABEL_11:
   v10 = v9;
   v12 = v11;
 
-  v13 = [NSString stringWithFormat:@"setGlobalPointerPosition (%@)", a5];
-  sub_10005E2D4(self, 0, v13, v10, v12);
+  process = [NSString stringWithFormat:@"setGlobalPointerPosition (%@)", process];
+  sub_10005E2D4(self, 0, process, v10, v12);
 
-  if (v6)
+  if (eventsCopy)
   {
     v14 = mach_absolute_time();
     sub_10005F5B4(self, v14, 1);
@@ -1340,36 +1340,36 @@ LABEL_11:
   return result;
 }
 
-- (id)suppressPointerModelUpdatesAssertionForDisplay:(id)a3 reason:(id)a4
+- (id)suppressPointerModelUpdatesAssertionForDisplay:(id)display reason:(id)reason
 {
   v7 = BKLogMousePointer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = a3;
+    displayCopy = display;
     v15 = 2114;
-    v16 = a4;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "suppress pointer updates: display:%{public}@ because %{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_modelUpdateSuppressionAssertionsByDisplayID objectForKeyedSubscript:a3];
+  v8 = [(NSMutableDictionary *)self->_modelUpdateSuppressionAssertionsByDisplayID objectForKeyedSubscript:display];
   if (!v8)
   {
-    v9 = [@"modelUpdate-" stringByAppendingString:a3];
+    v9 = [@"modelUpdate-" stringByAppendingString:display];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100066794;
     v12[3] = &unk_1000FBB60;
-    v12[4] = a3;
+    v12[4] = display;
     v8 = [BSCompoundAssertion assertionWithIdentifier:v9 stateDidChangeHandler:v12];
 
-    [(NSMutableDictionary *)self->_modelUpdateSuppressionAssertionsByDisplayID setObject:v8 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)self->_modelUpdateSuppressionAssertionsByDisplayID setObject:v8 forKeyedSubscript:display];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v10 = [v8 acquireForReason:a4];
+  v10 = [v8 acquireForReason:reason];
 
   return v10;
 }
@@ -1400,8 +1400,8 @@ LABEL_11:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [(NSMutableDictionary *)self->_modelUpdateSuppressionAssertionsByDisplayID allValues];
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    allValues = [(NSMutableDictionary *)self->_modelUpdateSuppressionAssertionsByDisplayID allValues];
+    v8 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1413,7 +1413,7 @@ LABEL_11:
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v23 + 1) + 8 * v11) invalidate];
@@ -1421,7 +1421,7 @@ LABEL_11:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v9);
@@ -1480,7 +1480,7 @@ LABEL_11:
   [(BKMousePointerController *)&v3 dealloc];
 }
 
-- (BKMousePointerController)initWithConfiguration:(id)a3
+- (BKMousePointerController)initWithConfiguration:(id)configuration
 {
   v75.receiver = self;
   v75.super_class = BKMousePointerController;
@@ -1490,11 +1490,11 @@ LABEL_11:
     objc_initWeak(&location, v4);
     v4->_lock._os_unfair_lock_opaque = 0;
     v4->_preferencesLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v4->_configuration, a3);
-    v66 = [a3 displayProvider];
+    objc_storeStrong(&v4->_configuration, configuration);
+    displayProvider = [configuration displayProvider];
     v5 = [BKCADisplayMonitor alloc];
     v6 = BKLogMousePointer();
-    v7 = [(BKCADisplayMonitor *)v5 initWithDisplayProvider:v66 log:v6 filterPredicate:0];
+    v7 = [(BKCADisplayMonitor *)v5 initWithDisplayProvider:displayProvider log:v6 filterPredicate:0];
     displayMonitor = v4->_displayMonitor;
     v4->_displayMonitor = v7;
 
@@ -1502,33 +1502,33 @@ LABEL_11:
     displayMonitorObservingAssertion = v4->_displayMonitorObservingAssertion;
     v4->_displayMonitorObservingAssertion = v9;
 
-    v11 = [a3 localDefaults];
+    localDefaults = [configuration localDefaults];
     localDefaults = v4->_localDefaults;
-    v4->_localDefaults = v11;
+    v4->_localDefaults = localDefaults;
 
-    v13 = [a3 clientConnectionManager];
+    clientConnectionManager = [configuration clientConnectionManager];
     HIDConnectionManager = v4->_HIDConnectionManager;
-    v4->_HIDConnectionManager = v13;
+    v4->_HIDConnectionManager = clientConnectionManager;
 
-    v15 = [a3 touchPadManager];
+    touchPadManager = [configuration touchPadManager];
     touchPadManager = v4->_touchPadManager;
-    v4->_touchPadManager = v15;
+    v4->_touchPadManager = touchPadManager;
 
-    v17 = [a3 keyboardEventProcessor];
+    keyboardEventProcessor = [configuration keyboardEventProcessor];
     keyboardEventProcessor = v4->_keyboardEventProcessor;
-    v4->_keyboardEventProcessor = v17;
+    v4->_keyboardEventProcessor = keyboardEventProcessor;
 
-    v19 = [a3 smartCoverEventProcessor];
+    smartCoverEventProcessor = [configuration smartCoverEventProcessor];
     smartCoverEventProcessor = v4->_smartCoverEventProcessor;
-    v4->_smartCoverEventProcessor = v19;
+    v4->_smartCoverEventProcessor = smartCoverEventProcessor;
 
     v21 = [(BKSmartCoverHIDEventProcessor *)v4->_smartCoverEventProcessor addSmartCoverObserver:v4];
     smartCoverObservationAssertion = v4->_smartCoverObservationAssertion;
     v4->_smartCoverObservationAssertion = v21;
 
-    v23 = [a3 displayController];
+    displayController = [configuration displayController];
     displayController = v4->_displayController;
-    v4->_displayController = v23;
+    v4->_displayController = displayController;
 
     v25 = [(BKDisplayController *)v4->_displayController addDisplayBlankingObserver:v4];
     displayBlankingObservationAssertion = v4->_displayBlankingObservationAssertion;
@@ -1571,11 +1571,11 @@ LABEL_11:
     v39 = [(BKSLocalDefaults *)v37 observeDefault:v38 onQueue:&_dispatch_main_q withBlock:v67];
 
     sub_100067290(v35);
-    [a3 mainDisplayCornerRadius];
+    [configuration mainDisplayCornerRadius];
     v35->_mainDisplayCornerRadius = v40;
-    v41 = [a3 orientationManager];
+    orientationManager = [configuration orientationManager];
     orientationManager = v35->_orientationManager;
-    v35->_orientationManager = v41;
+    v35->_orientationManager = orientationManager;
 
     v43 = sub_1000924EC(&v35->_orientationManager->super.isa, v35);
     orientationManagerObservationAssertion = v35->_orientationManagerObservationAssertion;
@@ -1616,9 +1616,9 @@ LABEL_11:
     serviceTerminationQueue = v35->_serviceTerminationQueue;
     v35->_serviceTerminationQueue = v57;
 
-    v59 = [a3 analyticsReporter];
+    analyticsReporter = [configuration analyticsReporter];
     analyticsReporter = v35->_analyticsReporter;
-    v35->_analyticsReporter = v59;
+    v35->_analyticsReporter = analyticsReporter;
 
     [(BKMousePointerAnalyticsReporter *)v35->_analyticsReporter setMousePointerController:v35];
     [(BKCADisplayMonitor *)v4->_displayMonitor reevaluateActiveDisplaysWithReason:@"init"];
@@ -1630,9 +1630,9 @@ LABEL_11:
     statisticsLogger = v35->_statisticsLogger;
     v35->_statisticsLogger = v61;
 
-    v63 = [a3 serviceServer];
+    serviceServer = [configuration serviceServer];
     ipcServer_do_not_access_directly = v35->_ipcServer_do_not_access_directly;
-    v35->_ipcServer_do_not_access_directly = v63;
+    v35->_ipcServer_do_not_access_directly = serviceServer;
 
     objc_destroyWeak(&v68);
     objc_destroyWeak(&v71);
@@ -1646,8 +1646,8 @@ LABEL_11:
 
 - (BKMousePointerController)init
 {
-  v3 = [objc_opt_class() standardConfiguration];
-  v4 = [(BKMousePointerController *)self initWithConfiguration:v3];
+  standardConfiguration = [objc_opt_class() standardConfiguration];
+  v4 = [(BKMousePointerController *)self initWithConfiguration:standardConfiguration];
 
   return v4;
 }

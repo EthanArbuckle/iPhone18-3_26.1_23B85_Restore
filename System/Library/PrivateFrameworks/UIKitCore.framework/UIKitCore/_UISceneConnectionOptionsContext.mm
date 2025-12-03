@@ -1,16 +1,16 @@
 @interface _UISceneConnectionOptionsContext
 - (uint64_t)connectionValues;
-- (void)_addCleanupBlock:(uint64_t)a1;
+- (void)_addCleanupBlock:(uint64_t)block;
 @end
 
 @implementation _UISceneConnectionOptionsContext
 
-- (void)_addCleanupBlock:(uint64_t)a1
+- (void)_addCleanupBlock:(uint64_t)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v4 = *(a1 + 32);
+    v4 = *(block + 32);
     v9 = v3;
     if (v4)
     {
@@ -25,8 +25,8 @@
       [v7 setWithObject:v5];
     }
     v6 = ;
-    v8 = *(a1 + 32);
-    *(a1 + 32) = v6;
+    v8 = *(block + 32);
+    *(block + 32) = v6;
 
     v3 = v9;
   }

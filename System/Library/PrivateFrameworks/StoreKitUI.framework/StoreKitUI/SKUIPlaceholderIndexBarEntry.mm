@@ -1,18 +1,18 @@
 @interface SKUIPlaceholderIndexBarEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)_calculatedContentSize;
 - (CGSize)placeholderSize;
-- (SKUIPlaceholderIndexBarEntry)initWithPlaceholderSize:(CGSize)a3;
+- (SKUIPlaceholderIndexBarEntry)initWithPlaceholderSize:(CGSize)size;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SKUIPlaceholderIndexBarEntry
 
-- (SKUIPlaceholderIndexBarEntry)initWithPlaceholderSize:(CGSize)a3
+- (SKUIPlaceholderIndexBarEntry)initWithPlaceholderSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -57,10 +57,10 @@
   return [(SKUIIndexBarEntry *)&v3 hash]^ (self->_placeholderSize.width * 1000.0) ^ (self->_placeholderSize.height * 10000.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -68,7 +68,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = SKUIPlaceholderIndexBarEntry, [(SKUIIndexBarEntry *)&v7 isEqual:v4]) && v4->_placeholderSize.height == self->_placeholderSize.height && v4->_placeholderSize.width == self->_placeholderSize.width;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = SKUIPlaceholderIndexBarEntry, [(SKUIIndexBarEntry *)&v7 isEqual:equalCopy]) && equalCopy->_placeholderSize.height == self->_placeholderSize.height && equalCopy->_placeholderSize.width == self->_placeholderSize.width;
   }
 
   return v5;

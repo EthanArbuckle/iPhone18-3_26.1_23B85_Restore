@@ -1,5 +1,5 @@
 @interface __NSObserver
-+ (void)observerWithCenter:(uint64_t)a1;
++ (void)observerWithCenter:(uint64_t)center;
 - (void)dealloc;
 @end
 
@@ -25,7 +25,7 @@
   [(__NSObserver *)&v5 dealloc];
 }
 
-+ (void)observerWithCenter:(uint64_t)a1
++ (void)observerWithCenter:(uint64_t)center
 {
   objc_opt_self();
   v3 = objc_opt_new();

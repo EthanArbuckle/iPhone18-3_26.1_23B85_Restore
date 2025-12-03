@@ -3,19 +3,19 @@
 - (BOOL)isDeviceMotionAvailable;
 - (CMHeadphoneMotionManager)init;
 - (id)delegateQueuePrivate;
-- (void)applyInitialReferencePrivate:(id)a3;
+- (void)applyInitialReferencePrivate:(id)private;
 - (void)dealloc;
 - (void)notifyDeviceConnectedEventToClientPrivate;
 - (void)notifyDeviceDisconnectedEventToClientPrivate;
-- (void)onDeviceMotionPrivate:(id)a3;
-- (void)onStatusEventPrivate:(id)a3;
+- (void)onDeviceMotionPrivate:(id)private;
+- (void)onStatusEventPrivate:(id)private;
 - (void)pauseDeviceMotionStreamingPrivate;
 - (void)pauseStatusStreamingPrivate;
 - (void)resumeDeviceMotionStreamingPrivate;
 - (void)resumeStatusStreamingPrivate;
 - (void)startConnectionStatusUpdates;
 - (void)startDeviceMotionUpdates;
-- (void)startDeviceMotionUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
+- (void)startDeviceMotionUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
 - (void)startDeviceMotionUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMHeadphoneDeviceMotionHandler)handler;
 - (void)startStatusUpdatesPrivate;
 - (void)stopConnectionStatusUpdates;
@@ -147,15 +147,15 @@
   return result;
 }
 
-- (void)startDeviceMotionUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startDeviceMotionUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   dispatch_assert_queue_V2(self->_internal->_dispatchQueue);
   if (objc_msgSend_isDeviceMotionAvailable(self, v7, v8))
   {
     if (!self->_internal->_deviceMotionActive)
     {
-      self->_internal->_callbackQueue = a3;
-      self->_internal->_callbackHandler = objc_msgSend_copy(a4, v9, v10);
+      self->_internal->_callbackQueue = queue;
+      self->_internal->_callbackHandler = objc_msgSend_copy(handler, v9, v10);
       objc_msgSend_resumeDeviceMotionStreamingPrivate(self, v11, v12);
       self->_internal->_deviceMotionActive = 1;
     }
@@ -232,14 +232,14 @@
   }
 }
 
-- (void)onDeviceMotionPrivate:(id)a3
+- (void)onDeviceMotionPrivate:(id)private
 {
   dispatch_assert_queue_V2(self->_internal->_dispatchQueue);
-  if (objc_msgSend_isInitialized(a3, v5, v6))
+  if (objc_msgSend_isInitialized(private, v5, v6))
   {
-    objc_msgSend_applyInitialReferencePrivate_(self, v7, a3);
-    objc_msgSend_setDeviceMotion_(self->_internal, v8, a3);
-    if (a3)
+    objc_msgSend_applyInitialReferencePrivate_(self, v7, private);
+    objc_msgSend_setDeviceMotion_(self->_internal, v8, private);
+    if (private)
     {
       internal = self->_internal;
       callbackHandler = internal->_callbackHandler;
@@ -250,7 +250,7 @@
         v13[1] = 3221225472;
         v13[2] = sub_19B73EFBC;
         v13[3] = &unk_1E7532B68;
-        v13[4] = a3;
+        v13[4] = private;
         v13[5] = callbackHandler;
         objc_msgSend_addOperationWithBlock_(callbackQueue, v9, v13);
       }
@@ -258,22 +258,22 @@
   }
 }
 
-- (void)applyInitialReferencePrivate:(id)a3
+- (void)applyInitialReferencePrivate:(id)private
 {
   v53 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_internal->_dispatchQueue);
   if (!objc_msgSend_initialReferenceAttitude(self->_internal, v5, v6))
   {
-    v9 = objc_msgSend_attitude(a3, v7, v8);
+    v9 = objc_msgSend_attitude(private, v7, v8);
     objc_msgSend_quaternion(v9, v10, v11);
     v48[0] = v12;
-    v15 = objc_msgSend_attitude(a3, v13, v14);
+    v15 = objc_msgSend_attitude(private, v13, v14);
     objc_msgSend_quaternion(v15, v16, v17);
     v48[1] = v18;
-    v21 = objc_msgSend_attitude(a3, v19, v20);
+    v21 = objc_msgSend_attitude(private, v19, v20);
     objc_msgSend_quaternion(v21, v22, v23);
     v48[2] = v24;
-    v27 = objc_msgSend_attitude(a3, v25, v26);
+    v27 = objc_msgSend_attitude(private, v25, v26);
     objc_msgSend_quaternion(v27, v28, v29);
     v48[3] = v30;
     sub_19B43F0AC(v47, v48);
@@ -316,7 +316,7 @@
     }
   }
 
-  v41 = objc_msgSend_attitude(a3, v7, v8);
+  v41 = objc_msgSend_attitude(private, v7, v8);
   v44 = objc_msgSend_initialReferenceAttitude(self->_internal, v42, v43);
   objc_msgSend_multiplyByInverseOfAttitude_(v41, v45, v44);
   v46 = *MEMORY[0x1E69E9840];
@@ -399,10 +399,10 @@
   }
 }
 
-- (void)onStatusEventPrivate:(id)a3
+- (void)onStatusEventPrivate:(id)private
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"EventType");
+  v4 = objc_msgSend_objectForKeyedSubscript_(private, a2, @"EventType");
   if (objc_msgSend_isEqualToString_(v4, v5, @"Connect"))
   {
     objc_msgSend_setInitialReferenceAttitude_(self->_internal, v6, 0);

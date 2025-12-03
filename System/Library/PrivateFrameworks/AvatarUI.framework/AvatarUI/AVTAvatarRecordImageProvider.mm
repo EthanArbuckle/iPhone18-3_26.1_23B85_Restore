@@ -1,8 +1,8 @@
 @interface AVTAvatarRecordImageProvider
 - (AVTAvatarRecordImageProvider)init;
-- (AVTAvatarRecordImageProvider)initWithBackingProvider:(id)a3;
-- (id)imageForRecord:(id)a3 scope:(id)a4 usingService:(BOOL)a5;
-- (void)imageForRecord:(id)a3 scope:(id)a4 handler:(id)a5;
+- (AVTAvatarRecordImageProvider)initWithBackingProvider:(id)provider;
+- (id)imageForRecord:(id)record scope:(id)scope usingService:(BOOL)service;
+- (void)imageForRecord:(id)record scope:(id)scope handler:(id)handler;
 @end
 
 @implementation AVTAvatarRecordImageProvider
@@ -344,28 +344,28 @@ id __92___AVTAvatarRecordImageProvider__providerForAvatar_forRecord_scope_usingC
   return v5;
 }
 
-- (AVTAvatarRecordImageProvider)initWithBackingProvider:(id)a3
+- (AVTAvatarRecordImageProvider)initWithBackingProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = AVTAvatarRecordImageProvider;
   v6 = [(AVTAvatarRecordImageProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingProvider, a3);
+    objc_storeStrong(&v6->_backingProvider, provider);
   }
 
   return v7;
 }
 
-- (id)imageForRecord:(id)a3 scope:(id)a4 usingService:(BOOL)a5
+- (id)imageForRecord:(id)record scope:(id)scope usingService:(BOOL)service
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AVTAvatarRecordImageProvider *)self backingProvider];
-  v11 = [v10 providerForRecord:v8 scope:v9 usingService:v5];
+  serviceCopy = service;
+  recordCopy = record;
+  scopeCopy = scope;
+  backingProvider = [(AVTAvatarRecordImageProvider *)self backingProvider];
+  v11 = [backingProvider providerForRecord:recordCopy scope:scopeCopy usingService:serviceCopy];
 
   v16 = 0;
   v17 = &v16;
@@ -385,15 +385,15 @@ id __92___AVTAvatarRecordImageProvider__providerForAvatar_forRecord_scope_usingC
   return v13;
 }
 
-- (void)imageForRecord:(id)a3 scope:(id)a4 handler:(id)a5
+- (void)imageForRecord:(id)record scope:(id)scope handler:(id)handler
 {
-  v13 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(AVTAvatarRecordImageProvider *)self backingProvider];
-  v11 = [v10 providerForRecord:v9 scope:v8];
+  handlerCopy = handler;
+  scopeCopy = scope;
+  recordCopy = record;
+  backingProvider = [(AVTAvatarRecordImageProvider *)self backingProvider];
+  v11 = [backingProvider providerForRecord:recordCopy scope:scopeCopy];
 
-  v12 = (v11)[2](v11, v13, 0);
+  v12 = (v11)[2](v11, handlerCopy, 0);
 }
 
 @end

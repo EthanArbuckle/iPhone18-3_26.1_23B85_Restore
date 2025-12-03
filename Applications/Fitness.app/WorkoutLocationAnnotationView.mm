@@ -1,14 +1,14 @@
 @interface WorkoutLocationAnnotationView
-- (_TtC10FitnessApp29WorkoutLocationAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC10FitnessApp29WorkoutLocationAnnotationView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC10FitnessApp29WorkoutLocationAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC10FitnessApp29WorkoutLocationAnnotationView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation WorkoutLocationAnnotationView
 
-- (_TtC10FitnessApp29WorkoutLocationAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp29WorkoutLocationAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -24,20 +24,20 @@
   return sub_1001B0E24(v7, v4, v6);
 }
 
-- (_TtC10FitnessApp29WorkoutLocationAnnotationView)initWithCoder:(id)a3
+- (_TtC10FitnessApp29WorkoutLocationAnnotationView)initWithCoder:(id)coder
 {
   type metadata accessor for WorkoutLocationAnnotationView();
   swift_deallocPartialClassInstance();
   return 0;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_1001B10C4(x, y, width, height);
 }
 

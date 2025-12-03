@@ -1,8 +1,8 @@
 @interface TIWordSearchOperationGetCandidates
 - (SEL)action;
-- (TIWordSearchOperationGetCandidates)initWithWordSearch:(id)a3 inputString:(id)a4 keyboardInput:(id)a5 segmentBreakIndex:(unint64_t)a6 predictionEnabled:(BOOL)a7 reanalysisMode:(BOOL)a8 autocapitalizationType:(unint64_t)a9 target:(id)a10 action:(SEL)a11 geometryModelData:(id)a12 hardwareKeyboardMode:(BOOL)a13 logger:(id)a14;
+- (TIWordSearchOperationGetCandidates)initWithWordSearch:(id)search inputString:(id)string keyboardInput:(id)input segmentBreakIndex:(unint64_t)index predictionEnabled:(BOOL)enabled reanalysisMode:(BOOL)mode autocapitalizationType:(unint64_t)type target:(id)self0 action:(SEL)self1 geometryModelData:(id)self2 hardwareKeyboardMode:(BOOL)self3 logger:(id)self4;
 - (void)checkForCachedResults;
-- (void)completeSearchOnMainThreadWithResults:(id)a3;
+- (void)completeSearchOnMainThreadWithResults:(id)results;
 - (void)dealloc;
 - (void)perform;
 @end
@@ -22,65 +22,65 @@
   }
 }
 
-- (void)completeSearchOnMainThreadWithResults:(id)a3
+- (void)completeSearchOnMainThreadWithResults:(id)results
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  resultsCopy = results;
+  v5 = resultsCopy;
+  if (resultsCopy)
   {
-    v7 = v4;
-    v4 = [(TIWordSearchOperationGetCandidates *)self isCancelled];
+    v7 = resultsCopy;
+    resultsCopy = [(TIWordSearchOperationGetCandidates *)self isCancelled];
     v5 = v7;
-    if ((v4 & 1) == 0)
+    if ((resultsCopy & 1) == 0)
     {
-      v6 = [(TIWordSearchOperationGetCandidates *)self target];
-      [v6 -[TIWordSearchOperationGetCandidates action](self];
+      target = [(TIWordSearchOperationGetCandidates *)self target];
+      [target -[TIWordSearchOperationGetCandidates action](self];
 
       v5 = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](resultsCopy, v5);
 }
 
 - (void)perform
 {
   if (([(TIWordSearchOperationGetCandidates *)self isCancelled]& 1) == 0)
   {
-    v3 = [(TIWordSearchOperationGetCandidates *)self results];
+    results = [(TIWordSearchOperationGetCandidates *)self results];
 
-    if (!v3)
+    if (!results)
     {
-      v9 = [(TIWordSearchOperationGetCandidates *)self wordSearch];
-      v10 = [v9 candidatesForOperation:self];
+      wordSearch = [(TIWordSearchOperationGetCandidates *)self wordSearch];
+      v10 = [wordSearch candidatesForOperation:self];
       [(TIWordSearchOperationGetCandidates *)self setResults:v10];
 
-      v11 = [(TIWordSearchOperationGetCandidates *)self lastAcceptCandidateInput];
-      if (v11)
+      lastAcceptCandidateInput = [(TIWordSearchOperationGetCandidates *)self lastAcceptCandidateInput];
+      if (lastAcceptCandidateInput)
       {
-        v12 = v11;
-        v13 = [(TIWordSearchOperationGetCandidates *)self keyboardInput];
-        v14 = [v13 composingInput];
+        v12 = lastAcceptCandidateInput;
+        keyboardInput = [(TIWordSearchOperationGetCandidates *)self keyboardInput];
+        composingInput = [keyboardInput composingInput];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v16 = [(TIWordSearchOperationGetCandidates *)self keyboardInput];
-          v17 = [v16 composingInput];
-          v18 = [v17 remainingMecabraInputs];
-          v19 = [(TIWordSearchOperationGetCandidates *)self lastAcceptCandidateInput];
-          [v19 setRemainingMecabraInputs:v18];
+          keyboardInput2 = [(TIWordSearchOperationGetCandidates *)self keyboardInput];
+          composingInput2 = [keyboardInput2 composingInput];
+          remainingMecabraInputs = [composingInput2 remainingMecabraInputs];
+          lastAcceptCandidateInput2 = [(TIWordSearchOperationGetCandidates *)self lastAcceptCandidateInput];
+          [lastAcceptCandidateInput2 setRemainingMecabraInputs:remainingMecabraInputs];
 
-          v20 = [(TIWordSearchOperationGetCandidates *)self results];
-          v21 = [v20 candidates];
-          v22 = [v21 firstObject];
+          results2 = [(TIWordSearchOperationGetCandidates *)self results];
+          candidates = [results2 candidates];
+          firstObject = [candidates firstObject];
 
-          if (v22)
+          if (firstObject)
           {
-            v23 = [v22 input];
-            v24 = [(TIWordSearchOperationGetCandidates *)self lastAcceptCandidateInput];
-            [v24 setRemainingInputString:v23];
+            input = [firstObject input];
+            lastAcceptCandidateInput3 = [(TIWordSearchOperationGetCandidates *)self lastAcceptCandidateInput];
+            [lastAcceptCandidateInput3 setRemainingInputString:input];
           }
         }
       }
@@ -89,26 +89,26 @@
 
   if (([(TIWordSearchOperationGetCandidates *)self isCancelled]& 1) == 0)
   {
-    v4 = [(TIWordSearchOperationGetCandidates *)self results];
-    if (v4)
+    results3 = [(TIWordSearchOperationGetCandidates *)self results];
+    if (results3)
     {
-      v25 = v4;
-      v5 = [(TIWordSearchOperationGetCandidates *)self target];
-      if (v5)
+      results4 = results3;
+      target = [(TIWordSearchOperationGetCandidates *)self target];
+      if (target)
       {
-        v6 = v5;
-        v7 = [(TIWordSearchOperationGetCandidates *)self action];
+        v6 = target;
+        action = [(TIWordSearchOperationGetCandidates *)self action];
 
-        if (!v7)
+        if (!action)
         {
           return;
         }
 
-        v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-        [v8 cancelPerformSelectorsWithTarget:self];
+        mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+        [mainRunLoop cancelPerformSelectorsWithTarget:self];
 
-        v25 = [(TIWordSearchOperationGetCandidates *)self results];
-        [(TIWordSearchOperationGetCandidates *)self performSelectorOnMainThread:sel_completeSearchOnMainThreadWithResults_ withObject:v25 waitUntilDone:0];
+        results4 = [(TIWordSearchOperationGetCandidates *)self results];
+        [(TIWordSearchOperationGetCandidates *)self performSelectorOnMainThread:sel_completeSearchOnMainThreadWithResults_ withObject:results4 waitUntilDone:0];
       }
     }
   }
@@ -116,8 +116,8 @@
 
 - (void)checkForCachedResults
 {
-  v4 = [(TIWordSearchOperationGetCandidates *)self wordSearch];
-  v3 = [v4 cachedCandidatesForOperation:self];
+  wordSearch = [(TIWordSearchOperationGetCandidates *)self wordSearch];
+  v3 = [wordSearch cachedCandidatesForOperation:self];
   [(TIWordSearchOperationGetCandidates *)self setResults:v3];
 }
 
@@ -140,13 +140,13 @@
     v4 = self->_target;
     self->_target = 0;
 
-    v5 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __45__TIWordSearchOperationGetCandidates_dealloc__block_invoke;
     v7[3] = &unk_278733760;
     v7[4] = v8;
-    [v5 addOperationWithBlock:v7];
+    [mainQueue addOperationWithBlock:v7];
 
     _Block_object_dispose(v8, 8);
   }
@@ -163,63 +163,63 @@ void __45__TIWordSearchOperationGetCandidates_dealloc__block_invoke(uint64_t a1)
   *(v1 + 40) = 0;
 }
 
-- (TIWordSearchOperationGetCandidates)initWithWordSearch:(id)a3 inputString:(id)a4 keyboardInput:(id)a5 segmentBreakIndex:(unint64_t)a6 predictionEnabled:(BOOL)a7 reanalysisMode:(BOOL)a8 autocapitalizationType:(unint64_t)a9 target:(id)a10 action:(SEL)a11 geometryModelData:(id)a12 hardwareKeyboardMode:(BOOL)a13 logger:(id)a14
+- (TIWordSearchOperationGetCandidates)initWithWordSearch:(id)search inputString:(id)string keyboardInput:(id)input segmentBreakIndex:(unint64_t)index predictionEnabled:(BOOL)enabled reanalysisMode:(BOOL)mode autocapitalizationType:(unint64_t)type target:(id)self0 action:(SEL)self1 geometryModelData:(id)self2 hardwareKeyboardMode:(BOOL)self3 logger:(id)self4
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a10;
-  v39 = a12;
-  v38 = a14;
+  searchCopy = search;
+  stringCopy = string;
+  inputCopy = input;
+  targetCopy = target;
+  dataCopy = data;
+  loggerCopy = logger;
   v40.receiver = self;
   v40.super_class = TIWordSearchOperationGetCandidates;
   v22 = [(TIWordSearchOperationGetCandidates *)&v40 init];
   if (v22)
   {
-    v34 = v18;
-    v33 = v19;
-    v23 = [v19 copy];
+    v34 = searchCopy;
+    v33 = stringCopy;
+    v23 = [stringCopy copy];
     inputString = v22->_inputString;
     v22->_inputString = v23;
 
-    v25 = [v20 composingInput];
+    composingInput = [inputCopy composingInput];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v27 = [v20 composingInput];
+      composingInput2 = [inputCopy composingInput];
       lastAcceptCandidateInput = v22->_lastAcceptCandidateInput;
-      v22->_lastAcceptCandidateInput = v27;
+      v22->_lastAcceptCandidateInput = composingInput2;
     }
 
-    v29 = [v20 copy];
+    v29 = [inputCopy copy];
     keyboardInput = v22->_keyboardInput;
     v22->_keyboardInput = v29;
 
-    v22->_segmentBreakIndex = a6;
-    v22->_predictionEnabled = a7;
-    v22->_reanalysisMode = a8;
-    v22->_autocapitalizationType = a9;
-    objc_storeStrong(&v22->_target, a10);
-    if (a11)
+    v22->_segmentBreakIndex = index;
+    v22->_predictionEnabled = enabled;
+    v22->_reanalysisMode = mode;
+    v22->_autocapitalizationType = type;
+    objc_storeStrong(&v22->_target, target);
+    if (action)
     {
-      v31 = a11;
+      actionCopy = action;
     }
 
     else
     {
-      v31 = 0;
+      actionCopy = 0;
     }
 
-    v19 = v33;
-    v22->_action = v31;
-    objc_storeStrong(&v22->_geometryModelData, a12);
-    v22->_hardwareKeyboardMode = a13;
-    objc_storeStrong(&v22->_logger, a14);
-    objc_storeStrong(&v22->_wordSearch, a3);
+    stringCopy = v33;
+    v22->_action = actionCopy;
+    objc_storeStrong(&v22->_geometryModelData, data);
+    v22->_hardwareKeyboardMode = keyboardMode;
+    objc_storeStrong(&v22->_logger, logger);
+    objc_storeStrong(&v22->_wordSearch, search);
     [(TIWordSearchOperationGetCandidates *)v22 checkForCachedResults];
-    v18 = v34;
+    searchCopy = v34;
   }
 
   return v22;

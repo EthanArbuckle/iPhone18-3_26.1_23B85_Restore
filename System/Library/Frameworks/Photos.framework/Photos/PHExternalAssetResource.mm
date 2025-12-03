@@ -1,14 +1,14 @@
 @interface PHExternalAssetResource
-+ (id)assetResourceForDuplicatingAssetResource:(id)a3 asData:(BOOL)a4 error:(id *)a5;
-+ (id)assetResourceForDuplicatingAssetResource:(id)a3 newResourceType:(int64_t)a4 asData:(BOOL)a5 error:(id *)a6;
-+ (unint64_t)probableCPLResourceTypeFromAssetResourceType:(int64_t)a3;
++ (id)assetResourceForDuplicatingAssetResource:(id)resource asData:(BOOL)data error:(id *)error;
++ (id)assetResourceForDuplicatingAssetResource:(id)resource newResourceType:(int64_t)type asData:(BOOL)data error:(id *)error;
++ (unint64_t)probableCPLResourceTypeFromAssetResourceType:(int64_t)type;
 - (PHExternalAssetResource)init;
-- (PHExternalAssetResource)initWithPropertyListRepresentation:(id)a3;
-- (PHExternalAssetResource)initWithResourceType:(int64_t)a3;
+- (PHExternalAssetResource)initWithPropertyListRepresentation:(id)representation;
+- (PHExternalAssetResource)initWithResourceType:(int64_t)type;
 - (id)_issueSandboxExtension;
 - (id)description;
 - (id)propertyListRepresentation;
-- (void)_consumeSandboxExtension:(id)a3;
+- (void)_consumeSandboxExtension:(id)extension;
 - (void)_releaseSandboxExtension;
 - (void)dealloc;
 @end
@@ -18,19 +18,19 @@
 - (id)propertyListRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PHExternalAssetResource *)self fileURL];
-  v5 = [v4 path];
-  [v3 setObject:v5 forKeyedSubscript:@"fileURL"];
+  fileURL = [(PHExternalAssetResource *)self fileURL];
+  path = [fileURL path];
+  [v3 setObject:path forKeyedSubscript:@"fileURL"];
 
-  v6 = [(PHExternalAssetResource *)self _issueSandboxExtension];
-  [v3 setObject:v6 forKeyedSubscript:@"sandboxExtensionToken"];
+  _issueSandboxExtension = [(PHExternalAssetResource *)self _issueSandboxExtension];
+  [v3 setObject:_issueSandboxExtension forKeyedSubscript:@"sandboxExtensionToken"];
 
   [v3 setObject:self->_data forKeyedSubscript:@"data"];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_resourceType];
   [v3 setObject:v7 forKeyedSubscript:@"type"];
 
-  v8 = [(PHAssetResourceCreationOptions *)self->_creationOptions propertyListRepresentation];
-  [v3 setObject:v8 forKeyedSubscript:@"creationOptions"];
+  propertyListRepresentation = [(PHAssetResourceCreationOptions *)self->_creationOptions propertyListRepresentation];
+  [v3 setObject:propertyListRepresentation forKeyedSubscript:@"creationOptions"];
 
   return v3;
 }
@@ -44,18 +44,18 @@
   }
 }
 
-- (void)_consumeSandboxExtension:(id)a3
+- (void)_consumeSandboxExtension:(id)extension
 {
-  v5 = a3;
-  if ([v5 length])
+  extensionCopy = extension;
+  if ([extensionCopy length])
   {
     if (self->_sandboxExtensionHandle != -1)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PHExternalAssetResource.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"_sandboxExtensionHandle == -1"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHExternalAssetResource.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"_sandboxExtensionHandle == -1"}];
     }
 
-    if (![v5 UTF8String])
+    if (![extensionCopy UTF8String])
     {
       v7 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -96,8 +96,8 @@ LABEL_12:
 - (id)_issueSandboxExtension
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(NSURL *)self->_fileURL path];
-  if ([v2 length])
+  path = [(NSURL *)self->_fileURL path];
+  if ([path length])
   {
     v3 = PLGetSandboxExtensionTokenIfPossible();
     if (v3)
@@ -108,7 +108,7 @@ LABEL_12:
     v4 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [MEMORY[0x1E69BF220] descriptionWithPath:v2];
+      v5 = [MEMORY[0x1E69BF220] descriptionWithPath:path];
       v10 = 138412290;
       v11 = v5;
       _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_INFO, "PHExternalAssetResource: fallback to readonly sandbox extension for %@", &v10, 0xCu);
@@ -125,7 +125,7 @@ LABEL_6:
     v7 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [MEMORY[0x1E69BF220] descriptionWithPath:v2];
+      v8 = [MEMORY[0x1E69BF220] descriptionWithPath:path];
       v10 = 138412290;
       v11 = v8;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "PHExternalAssetResource: Unable to issue sandbox extension for %@", &v10, 0xCu);
@@ -143,9 +143,9 @@ LABEL_11:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PHExternalAssetResource *)self originalFilename];
-  v7 = [(PHExternalAssetResource *)self uniformTypeIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@: %p> filename: %@ uti: %@", v5, self, v6, v7];
+  originalFilename = [(PHExternalAssetResource *)self originalFilename];
+  uniformTypeIdentifier = [(PHExternalAssetResource *)self uniformTypeIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@: %p> filename: %@ uti: %@", v5, self, originalFilename, uniformTypeIdentifier];
 
   return v8;
 }
@@ -160,23 +160,23 @@ LABEL_11:
 
 - (PHExternalAssetResource)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PHExternalAssetResource.m" lineNumber:148 description:@"Calling init on PHExternalAssetResource without additional arguments is invalid"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHExternalAssetResource.m" lineNumber:148 description:@"Calling init on PHExternalAssetResource without additional arguments is invalid"];
 
   return [(PHExternalAssetResource *)self initWithResourceType:1];
 }
 
-- (PHExternalAssetResource)initWithPropertyListRepresentation:(id)a3
+- (PHExternalAssetResource)initWithPropertyListRepresentation:(id)representation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
-  v6 = [v5 integerValue];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"type"];
+  integerValue = [v5 integerValue];
 
-  v7 = [(PHExternalAssetResource *)self initWithResourceType:v6];
+  v7 = [(PHExternalAssetResource *)self initWithResourceType:integerValue];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"fileURL"];
+    v8 = [representationCopy objectForKeyedSubscript:@"fileURL"];
     if (v8)
     {
       v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0];
@@ -187,11 +187,11 @@ LABEL_11:
       v9 = 0;
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"sandboxExtensionToken"];
+    v10 = [representationCopy objectForKeyedSubscript:@"sandboxExtensionToken"];
     [(PHExternalAssetResource *)v7 _consumeSandboxExtension:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"data"];
-    v12 = [v4 objectForKeyedSubscript:@"creationOptions"];
+    v11 = [representationCopy objectForKeyedSubscript:@"data"];
+    v12 = [representationCopy objectForKeyedSubscript:@"creationOptions"];
     v13 = [[PHAssetResourceCreationOptions alloc] initWithPropertyListRepresentation:v12];
     [(PHExternalAssetResource *)v7 setFileURL:v9];
     [(PHExternalAssetResource *)v7 setData:v11];
@@ -219,12 +219,12 @@ LABEL_11:
   return v7;
 }
 
-- (PHExternalAssetResource)initWithResourceType:(int64_t)a3
+- (PHExternalAssetResource)initWithResourceType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PHExternalAssetResource.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHExternalAssetResource.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"type"}];
   }
 
   v10.receiver = self;
@@ -234,31 +234,31 @@ LABEL_11:
   if (v5)
   {
     v5->_sandboxExtensionHandle = -1;
-    v5->_resourceType = a3;
-    v5->_cplResourceType = [PHExternalAssetResource probableCPLResourceTypeFromAssetResourceType:a3];
+    v5->_resourceType = type;
+    v5->_cplResourceType = [PHExternalAssetResource probableCPLResourceTypeFromAssetResourceType:type];
   }
 
   return v6;
 }
 
-+ (id)assetResourceForDuplicatingAssetResource:(id)a3 newResourceType:(int64_t)a4 asData:(BOOL)a5 error:(id *)a6
++ (id)assetResourceForDuplicatingAssetResource:(id)resource newResourceType:(int64_t)type asData:(BOOL)data error:(id *)error
 {
-  v7 = a5;
-  v11 = a3;
+  dataCopy = data;
+  resourceCopy = resource;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PHExternalAssetResource.m" lineNumber:216 description:@"External resources invalid for duplication"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHExternalAssetResource.m" lineNumber:216 description:@"External resources invalid for duplication"];
   }
 
-  v12 = [[a1 alloc] initWithResourceType:a4];
-  v13 = [v11 privateFileURL];
-  v14 = v13;
-  if (!v7)
+  v12 = [[self alloc] initWithResourceType:type];
+  privateFileURL = [resourceCopy privateFileURL];
+  v14 = privateFileURL;
+  if (!dataCopy)
   {
-    v17 = [v13 path];
-    if (v17 && ([MEMORY[0x1E696AC08] defaultManager], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "fileExistsAtPath:isDirectory:", v17, 0), v18, v19))
+    path = [privateFileURL path];
+    if (path && ([MEMORY[0x1E696AC08] defaultManager], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "fileExistsAtPath:isDirectory:", path, 0), v18, v19))
     {
       [v12 setFileURL:v14];
     }
@@ -266,10 +266,10 @@ LABEL_11:
     else
     {
 
-      if (a6)
+      if (error)
       {
-        [MEMORY[0x1E696ABC0] ph_errorWithCode:3303 localizedDescription:{@"Missing required asset resource file '%@'", v17}];
-        *a6 = v12 = 0;
+        [MEMORY[0x1E696ABC0] ph_errorWithCode:3303 localizedDescription:{@"Missing required asset resource file '%@'", path}];
+        *error = v12 = 0;
       }
 
       else
@@ -287,7 +287,7 @@ LABEL_11:
   }
 
   v28 = 0;
-  v15 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v13 options:1 error:&v28];
+  v15 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:privateFileURL options:1 error:&v28];
   v16 = v28;
   if (v15)
   {
@@ -297,12 +297,12 @@ LABEL_11:
   else
   {
 
-    if (a6)
+    if (error)
     {
       v20 = MEMORY[0x1E696ABC0];
-      v21 = [v14 path];
+      path2 = [v14 path];
       v22 = [v16 description];
-      *a6 = [v20 ph_errorWithCode:3302 localizedDescription:{@"Failed to read asset resource file '%@' %@", v21, v22}];
+      *error = [v20 ph_errorWithCode:3302 localizedDescription:{@"Failed to read asset resource file '%@' %@", path2, v22}];
     }
 
     v12 = 0;
@@ -312,13 +312,13 @@ LABEL_11:
   {
 LABEL_18:
     [v12 _setDuplicateAllowsReadAccess:1];
-    v23 = [v11 originalFilename];
-    v24 = [v11 uniformTypeIdentifier];
-    if (v23 | v24)
+    originalFilename = [resourceCopy originalFilename];
+    uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+    if (originalFilename | uniformTypeIdentifier)
     {
       v25 = objc_alloc_init(PHAssetResourceCreationOptions);
-      [(PHAssetResourceCreationOptions *)v25 setOriginalFilename:v23];
-      [(PHAssetResourceCreationOptions *)v25 setUniformTypeIdentifier:v24];
+      [(PHAssetResourceCreationOptions *)v25 setOriginalFilename:originalFilename];
+      [(PHAssetResourceCreationOptions *)v25 setUniformTypeIdentifier:uniformTypeIdentifier];
       [v12 setCreationOptions:v25];
     }
   }
@@ -328,19 +328,19 @@ LABEL_21:
   return v12;
 }
 
-+ (id)assetResourceForDuplicatingAssetResource:(id)a3 asData:(BOOL)a4 error:(id *)a5
++ (id)assetResourceForDuplicatingAssetResource:(id)resource asData:(BOOL)data error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [a1 assetResourceForDuplicatingAssetResource:v8 newResourceType:objc_msgSend(v8 asData:"type") error:{v6, a5}];
+  dataCopy = data;
+  resourceCopy = resource;
+  v9 = [self assetResourceForDuplicatingAssetResource:resourceCopy newResourceType:objc_msgSend(resourceCopy asData:"type") error:{dataCopy, error}];
 
   return v9;
 }
 
-+ (unint64_t)probableCPLResourceTypeFromAssetResourceType:(int64_t)a3
++ (unint64_t)probableCPLResourceTypeFromAssetResourceType:(int64_t)type
 {
   result = 0;
-  switch(a3)
+  switch(type)
   {
     case 1:
     case 2:
@@ -388,12 +388,12 @@ LABEL_21:
       break;
     default:
       v4 = 14;
-      if (a3 != 110)
+      if (type != 110)
       {
         v4 = 0;
       }
 
-      if (a3 == 108)
+      if (type == 108)
       {
         result = 13;
       }

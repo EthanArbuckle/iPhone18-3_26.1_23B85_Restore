@@ -1,16 +1,16 @@
 @interface HKSleepDaySummaryCacheSettings
-- (HKSleepDaySummaryCacheSettings)initWithCoder:(id)a3;
-- (HKSleepDaySummaryCacheSettings)initWithIdentifier:(id)a3 mode:(int64_t)a4;
+- (HKSleepDaySummaryCacheSettings)initWithCoder:(id)coder;
+- (HKSleepDaySummaryCacheSettings)initWithIdentifier:(id)identifier mode:(int64_t)mode;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSleepDaySummaryCacheSettings
 
-- (HKSleepDaySummaryCacheSettings)initWithIdentifier:(id)a3 mode:(int64_t)a4
+- (HKSleepDaySummaryCacheSettings)initWithIdentifier:(id)identifier mode:(int64_t)mode
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [HKSleepDaySummaryCacheSettings initWithIdentifier:a2 mode:self];
   }
@@ -20,32 +20,32 @@
   v8 = [(HKSleepDaySummaryCacheSettings *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v8->_mode = a4;
+    v8->_mode = mode;
   }
 
   return v8;
 }
 
-- (HKSleepDaySummaryCacheSettings)initWithCoder:(id)a3
+- (HKSleepDaySummaryCacheSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeIntegerForKey:@"mode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"mode"];
 
   v7 = [(HKSleepDaySummaryCacheSettings *)self initWithIdentifier:v5 mode:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_mode forKey:@"mode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
 }
 
 - (id)description

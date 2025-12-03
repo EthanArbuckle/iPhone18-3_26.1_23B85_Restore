@@ -1,13 +1,13 @@
 @interface SPTagUserStats
-- (SPTagUserStats)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPTagUserStats)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPTagUserStats
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setOverflowFlag:{-[SPTagUserStats overflowFlag](self, "overflowFlag")}];
@@ -23,35 +23,35 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   overflowFlag = self->_overflowFlag;
-  v5 = a3;
-  [v5 encodeInteger:overflowFlag forKey:@"overflowFlag"];
-  [v5 encodeInteger:self->_crashCount forKey:@"crashCount"];
-  [v5 encodeInt64:self->_multiTime forKey:@"multiTime"];
-  [v5 encodeInt64:self->_nearOwnerTime forKey:@"nearOwnerTime"];
-  [v5 encodeInt64:self->_wildTime forKey:@"wildTime"];
-  [v5 encodeInteger:self->_ownerPlaySoundCount forKey:@"ownerPlaySoundCount"];
-  [v5 encodeInteger:self->_ownerPlaySoundTime forKey:@"ownerPlaySoundTime"];
-  [v5 encodeInteger:self->_rangingCount forKey:@"rangingCount"];
-  [v5 encodeInteger:self->_rangingTime forKey:@"rangingTime"];
-  [v5 encodeInteger:self->_version forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:overflowFlag forKey:@"overflowFlag"];
+  [coderCopy encodeInteger:self->_crashCount forKey:@"crashCount"];
+  [coderCopy encodeInt64:self->_multiTime forKey:@"multiTime"];
+  [coderCopy encodeInt64:self->_nearOwnerTime forKey:@"nearOwnerTime"];
+  [coderCopy encodeInt64:self->_wildTime forKey:@"wildTime"];
+  [coderCopy encodeInteger:self->_ownerPlaySoundCount forKey:@"ownerPlaySoundCount"];
+  [coderCopy encodeInteger:self->_ownerPlaySoundTime forKey:@"ownerPlaySoundTime"];
+  [coderCopy encodeInteger:self->_rangingCount forKey:@"rangingCount"];
+  [coderCopy encodeInteger:self->_rangingTime forKey:@"rangingTime"];
+  [coderCopy encodeInteger:self->_version forKey:@"version"];
 }
 
-- (SPTagUserStats)initWithCoder:(id)a3
+- (SPTagUserStats)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_overflowFlag = [v4 decodeIntegerForKey:@"overflowFlag"];
-  self->_crashCount = [v4 decodeIntegerForKey:@"crashCount"];
-  self->_multiTime = [v4 decodeIntegerForKey:@"multiTime"];
-  self->_nearOwnerTime = [v4 decodeIntegerForKey:@"nearOwnerTime"];
-  self->_wildTime = [v4 decodeIntegerForKey:@"wildTime"];
-  self->_ownerPlaySoundCount = [v4 decodeIntegerForKey:@"ownerPlaySoundCount"];
-  self->_ownerPlaySoundTime = [v4 decodeIntegerForKey:@"ownerPlaySoundTime"];
-  self->_rangingCount = [v4 decodeIntegerForKey:@"rangingCount"];
-  self->_rangingTime = [v4 decodeIntegerForKey:@"rangingTime"];
-  v5 = [v4 decodeIntegerForKey:@"version"];
+  coderCopy = coder;
+  self->_overflowFlag = [coderCopy decodeIntegerForKey:@"overflowFlag"];
+  self->_crashCount = [coderCopy decodeIntegerForKey:@"crashCount"];
+  self->_multiTime = [coderCopy decodeIntegerForKey:@"multiTime"];
+  self->_nearOwnerTime = [coderCopy decodeIntegerForKey:@"nearOwnerTime"];
+  self->_wildTime = [coderCopy decodeIntegerForKey:@"wildTime"];
+  self->_ownerPlaySoundCount = [coderCopy decodeIntegerForKey:@"ownerPlaySoundCount"];
+  self->_ownerPlaySoundTime = [coderCopy decodeIntegerForKey:@"ownerPlaySoundTime"];
+  self->_rangingCount = [coderCopy decodeIntegerForKey:@"rangingCount"];
+  self->_rangingTime = [coderCopy decodeIntegerForKey:@"rangingTime"];
+  v5 = [coderCopy decodeIntegerForKey:@"version"];
 
   self->_version = v5;
   return self;

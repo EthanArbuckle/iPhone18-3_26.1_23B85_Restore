@@ -1,17 +1,17 @@
 @interface MedicalRecordTimelineChartItemCell
-- (_TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell)initWithCoder:(id)a3;
-- (_TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell)initWithFrame:(CGRect)a3;
+- (_TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell)initWithCoder:(id)coder;
+- (_TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 @end
 
 @implementation MedicalRecordTimelineChartItemCell
 
-- (_TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell)initWithFrame:(CGRect)a3
+- (_TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell_item;
   v9 = type metadata accessor for MedicalRecordTimelineChartItemCell();
   *v8 = 0u;
@@ -19,13 +19,13 @@
   *(v8 + 4) = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(MedicalRecordTimelineChartItemCell *)&v12 initWithFrame:x, y, width, height];
+  height = [(MedicalRecordTimelineChartItemCell *)&v12 initWithFrame:x, y, width, height];
   sub_1D137491C();
 
-  return v10;
+  return height;
 }
 
-- (_TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC15HealthRecordsUI34MedicalRecordTimelineChartItemCell_item;
   *v4 = 0u;
@@ -33,8 +33,8 @@
   *(v4 + 4) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for MedicalRecordTimelineChartItemCell();
-  v5 = a3;
-  v6 = [(MedicalRecordTimelineChartItemCell *)&v10 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(MedicalRecordTimelineChartItemCell *)&v10 initWithCoder:coderCopy];
   v7 = v6;
   if (v6)
   {

@@ -1,35 +1,35 @@
 @interface VCPProtoLivePhotoHumanActionClassificationResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)addClassification:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassification:(id)classification;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoLivePhotoHumanActionClassificationResult
 
-- (void)addClassification:(id)a3
+- (void)addClassification:(id)classification
 {
-  v4 = a3;
+  classificationCopy = classification;
   classifications = self->_classifications;
-  v8 = v4;
+  v8 = classificationCopy;
   if (!classifications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_classifications;
     self->_classifications = v6;
 
-    v4 = v8;
+    classificationCopy = v8;
     classifications = self->_classifications;
   }
 
-  [(NSMutableArray *)classifications addObject:v4];
+  [(NSMutableArray *)classifications addObject:classificationCopy];
 }
 
 - (id)description
@@ -38,8 +38,8 @@
   v8.receiver = self;
   v8.super_class = VCPProtoLivePhotoHumanActionClassificationResult;
   v4 = [(VCPProtoLivePhotoHumanActionClassificationResult *)&v8 description];
-  v5 = [(VCPProtoLivePhotoHumanActionClassificationResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoLivePhotoHumanActionClassificationResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -47,12 +47,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   if ([(NSMutableArray *)self->_classifications count])
@@ -77,8 +77,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -87,29 +87,29 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"classification"];
+    [dictionary setObject:v6 forKey:@"classification"];
   }
 
   bounds = self->_bounds;
   if (bounds)
   {
-    v14 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"bounds"];
+    dictionaryRepresentation3 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"bounds"];
   }
 
   faceId = self->_faceId;
   if (faceId)
   {
-    [v3 setObject:faceId forKey:@"faceId"];
+    [dictionary setObject:faceId forKey:@"faceId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   v12 = 0u;
   v13 = 0u;
@@ -149,37 +149,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setTimeRange:self->_timeRange];
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
   if ([(VCPProtoLivePhotoHumanActionClassificationResult *)self classificationsCount])
   {
-    [v8 clearClassifications];
-    v4 = [(VCPProtoLivePhotoHumanActionClassificationResult *)self classificationsCount];
-    if (v4)
+    [toCopy clearClassifications];
+    classificationsCount = [(VCPProtoLivePhotoHumanActionClassificationResult *)self classificationsCount];
+    if (classificationsCount)
     {
-      v5 = v4;
+      v5 = classificationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VCPProtoLivePhotoHumanActionClassificationResult *)self classificationAtIndex:i];
-        [v8 addClassification:v7];
+        [toCopy addClassification:v7];
       }
     }
   }
 
-  [v8 setBounds:self->_bounds];
+  [toCopy setBounds:self->_bounds];
   if (self->_faceId)
   {
-    [v8 setFaceId:?];
+    [toCopy setFaceId:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -203,7 +203,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * v12) copyWithZone:{a3, v19}];
+        v13 = [*(*(&v19 + 1) + 8 * v12) copyWithZone:{zone, v19}];
         [v5 addClassification:v13];
 
         ++v12;
@@ -216,24 +216,24 @@
     while (v10);
   }
 
-  v14 = [(VCPProtoBounds *)self->_bounds copyWithZone:a3];
+  v14 = [(VCPProtoBounds *)self->_bounds copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
-  v16 = [(NSString *)self->_faceId copyWithZone:a3];
+  v16 = [(NSString *)self->_faceId copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | v4[4])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && ((classifications = self->_classifications, !(classifications | v4[2])) || -[NSMutableArray isEqual:](classifications, "isEqual:")) && ((bounds = self->_bounds, !(bounds | v4[1])) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | equalCopy[4])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && ((classifications = self->_classifications, !(classifications | equalCopy[2])) || -[NSMutableArray isEqual:](classifications, "isEqual:")) && ((bounds = self->_bounds, !(bounds | equalCopy[1])) || -[VCPProtoBounds isEqual:](bounds, "isEqual:")))
   {
     faceId = self->_faceId;
-    if (faceId | v4[3])
+    if (faceId | equalCopy[3])
     {
       v9 = [(NSString *)faceId isEqual:?];
     }
@@ -260,12 +260,12 @@
   return v4 ^ v5 ^ [(NSString *)self->_faceId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (timeRange)
   {
     if (v6)
@@ -283,7 +283,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -308,7 +308,7 @@
   }
 
   bounds = self->_bounds;
-  v13 = *(v4 + 1);
+  v13 = *(fromCopy + 1);
   if (bounds)
   {
     if (v13)
@@ -322,18 +322,18 @@
     [(VCPProtoLivePhotoHumanActionClassificationResult *)self setBounds:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(VCPProtoLivePhotoHumanActionClassificationResult *)self setFaceId:?];
   }
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v16, 0, sizeof(v16));
-  CMTimeRangeMakeFromDictionary(&v16, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v16, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = [v4 objectForKeyedSubscript:@"humanBounds"];
   v6 = [v4 objectForKeyedSubscript:@"humanActions"];
   v7 = [v4 objectForKeyedSubscript:@"faceIdentifier"];
@@ -393,7 +393,7 @@ void __97__VCPProtoLivePhotoHumanActionClassificationResult_LegacyConversion__re
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[VCPProtoLivePhotoHumanActionClassificationResult classificationsCount](self, "classificationsCount")}];
   for (i = 0; i < [(VCPProtoLivePhotoHumanActionClassificationResult *)self classificationsCount]; ++i)
   {
@@ -402,27 +402,27 @@ void __97__VCPProtoLivePhotoHumanActionClassificationResult_LegacyConversion__re
     [v6 confidence];
     v8 = [v7 numberWithFloat:?];
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v6, "identifier")}];
-    v10 = [v9 stringValue];
-    [v4 setObject:v8 forKey:v10];
+    stringValue = [v9 stringValue];
+    [v4 setObject:v8 forKey:stringValue];
   }
 
-  [v3 setObject:v4 forKeyedSubscript:@"humanActions"];
-  v11 = [(VCPProtoLivePhotoHumanActionClassificationResult *)self bounds];
-  [v11 rectValue];
+  [dictionary setObject:v4 forKeyedSubscript:@"humanActions"];
+  bounds = [(VCPProtoLivePhotoHumanActionClassificationResult *)self bounds];
+  [bounds rectValue];
   v12 = NSStringFromRect(v22);
-  [v3 setObject:v12 forKeyedSubscript:@"humanBounds"];
+  [dictionary setObject:v12 forKeyedSubscript:@"humanBounds"];
 
   if ([(VCPProtoLivePhotoHumanActionClassificationResult *)self hasFaceId])
   {
-    v13 = [(VCPProtoLivePhotoHumanActionClassificationResult *)self faceId];
-    [v3 setObject:v13 forKeyedSubscript:@"faceIdentifier"];
+    faceId = [(VCPProtoLivePhotoHumanActionClassificationResult *)self faceId];
+    [dictionary setObject:faceId forKeyedSubscript:@"faceIdentifier"];
   }
 
-  v14 = [(VCPProtoLivePhotoHumanActionClassificationResult *)self timeRange];
-  v15 = v14;
-  if (v14)
+  timeRange = [(VCPProtoLivePhotoHumanActionClassificationResult *)self timeRange];
+  v15 = timeRange;
+  if (timeRange)
   {
-    [v14 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -434,7 +434,7 @@ void __97__VCPProtoLivePhotoHumanActionClassificationResult_LegacyConversion__re
   v16 = CMTimeRangeCopyAsDictionary(&range, 0);
   v17 = [(__CFDictionary *)v16 mutableCopy];
 
-  [v17 setObject:v3 forKeyedSubscript:@"attributes"];
+  [v17 setObject:dictionary forKeyedSubscript:@"attributes"];
 
   return v17;
 }

@@ -6,8 +6,8 @@
 
 + (void)accessibilityInitializeBundle
 {
-  v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-  [v2 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_312 postValidationHandler:&__block_literal_global_318 safeCategoryInstallationHandler:&__block_literal_global_321];
+  mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+  [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_312 postValidationHandler:&__block_literal_global_318 safeCategoryInstallationHandler:&__block_literal_global_321];
 }
 
 uint64_t __47__AXHealthUIGlue_accessibilityInitializeBundle__block_invoke_2(uint64_t a1, void *a2)

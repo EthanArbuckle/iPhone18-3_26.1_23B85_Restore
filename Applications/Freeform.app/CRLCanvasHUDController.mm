@@ -1,22 +1,22 @@
 @interface CRLCanvasHUDController
 + (CRLCanvasHUDController)sharedHUDController;
-- (CGFloat)p_HUDFrame:(CGFloat)a3 offset:(CGFloat)a4 fromTouchRect:(CGFloat)a5 insideRect:(double)a6 overlap:(double)a7 shift:(double)a8;
-- (CGRect)p_frameForHUDWithSize:(CGSize)a3 anchoredAtPoint:(CGPoint)a4 insideRect:(CGRect)a5;
-- (CGRect)p_touchRectForHUDWithFrame:(CGRect)a3;
+- (CGFloat)p_HUDFrame:(CGFloat)frame offset:(CGFloat)offset fromTouchRect:(CGFloat)rect insideRect:(double)insideRect overlap:(double)overlap shift:(double)shift;
+- (CGRect)p_frameForHUDWithSize:(CGSize)size anchoredAtPoint:(CGPoint)point insideRect:(CGRect)rect;
+- (CGRect)p_touchRectForHUDWithFrame:(CGRect)frame;
 - (CRLCanvasHUDController)init;
 - (id)hudView;
 - (void)dealloc;
-- (void)hideHUDForKey:(id)a3;
+- (void)hideHUDForKey:(id)key;
 - (void)loadView;
 - (void)p_commonInit;
-- (void)p_displayText:(id)a3;
+- (void)p_displayText:(id)text;
 - (void)p_hideHUD;
 - (void)p_labelTextTimerFired;
-- (void)p_layoutUpdatingOffset:(BOOL)a3;
-- (void)p_setHidden:(BOOL)a3;
-- (void)p_showHUDAtPoint:(CGPoint)a3 inCanvasView:(id)a4 withNudge:(CGSize)a5 size:(unint64_t)a6 anchorPoint:(CGPoint)a7;
-- (void)setLabelText:(id)a3;
-- (void)showHUDForKey:(id)a3 forTouchPoint:(CGPoint)a4 inCanvasView:(id)a5 withNudge:(CGSize)a6 size:(unint64_t)a7 anchorPoint:(CGPoint)a8;
+- (void)p_layoutUpdatingOffset:(BOOL)offset;
+- (void)p_setHidden:(BOOL)hidden;
+- (void)p_showHUDAtPoint:(CGPoint)point inCanvasView:(id)view withNudge:(CGSize)nudge size:(unint64_t)size anchorPoint:(CGPoint)anchorPoint;
+- (void)setLabelText:(id)text;
+- (void)showHUDForKey:(id)key forTouchPoint:(CGPoint)point inCanvasView:(id)view withNudge:(CGSize)nudge size:(unint64_t)size anchorPoint:(CGPoint)anchorPoint;
 @end
 
 @implementation CRLCanvasHUDController
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = sub_10032DF64;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A34CB8 != -1)
   {
     dispatch_once(&qword_101A34CB8, block);
@@ -53,18 +53,18 @@
   return v2;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  v12 = a3;
+  textCopy = text;
   +[NSDate timeIntervalSinceReferenceDate];
   if (v5 - self->_lastTimeUpdated >= 0.05)
   {
     +[NSDate timeIntervalSinceReferenceDate];
     self->_lastTimeUpdated = v10;
-    if ([v12 length])
+    if ([textCopy length])
     {
-      objc_storeStrong(&self->_lastStringSet, a3);
-      [(CRLCanvasHUDController *)self p_displayText:v12];
+      objc_storeStrong(&self->_lastStringSet, text);
+      [(CRLCanvasHUDController *)self p_displayText:textCopy];
     }
   }
 
@@ -82,7 +82,7 @@
     v9 = self->_stringTimer;
     self->_stringTimer = v8;
 
-    objc_storeStrong(&self->_lastStringSet, a3);
+    objc_storeStrong(&self->_lastStringSet, text);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_canvasView);
@@ -93,26 +93,26 @@
   }
 }
 
-- (void)showHUDForKey:(id)a3 forTouchPoint:(CGPoint)a4 inCanvasView:(id)a5 withNudge:(CGSize)a6 size:(unint64_t)a7 anchorPoint:(CGPoint)a8
+- (void)showHUDForKey:(id)key forTouchPoint:(CGPoint)point inCanvasView:(id)view withNudge:(CGSize)nudge size:(unint64_t)size anchorPoint:(CGPoint)anchorPoint
 {
-  y = a8.y;
-  x = a8.x;
-  height = a6.height;
-  width = a6.width;
-  v13 = a4.y;
-  v14 = a4.x;
+  y = anchorPoint.y;
+  x = anchorPoint.x;
+  height = nudge.height;
+  width = nudge.width;
+  v13 = point.y;
+  v14 = point.x;
   objectsShowingHUD = self->_objectsShowingHUD;
-  v18 = a5;
-  [(NSMutableSet *)objectsShowingHUD addObject:a3];
-  [(CRLCanvasHUDController *)self p_showHUDAtPoint:v18 inCanvasView:a7 withNudge:v14 size:v13 anchorPoint:width, height, x, y];
+  viewCopy = view;
+  [(NSMutableSet *)objectsShowingHUD addObject:key];
+  [(CRLCanvasHUDController *)self p_showHUDAtPoint:viewCopy inCanvasView:size withNudge:v14 size:v13 anchorPoint:width, height, x, y];
 }
 
-- (void)hideHUDForKey:(id)a3
+- (void)hideHUDForKey:(id)key
 {
-  v7 = a3;
+  keyCopy = key;
   if ([(NSMutableSet *)self->_objectsShowingHUD containsObject:?])
   {
-    [(NSMutableSet *)self->_objectsShowingHUD removeObject:v7];
+    [(NSMutableSet *)self->_objectsShowingHUD removeObject:keyCopy];
     if (![(NSMutableSet *)self->_objectsShowingHUD count])
     {
       [(CRLCanvasHUDController *)self p_hideHUD];
@@ -164,8 +164,8 @@
 - (id)hudView
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasHUDController *)self view];
-  v5 = sub_100014370(v3, v4);
+  view = [(CRLCanvasHUDController *)self view];
+  v5 = sub_100014370(v3, view);
 
   return v5;
 }
@@ -176,48 +176,48 @@
   [(CRLCanvasHUDController *)self setView:v3];
 }
 
-- (void)p_showHUDAtPoint:(CGPoint)a3 inCanvasView:(id)a4 withNudge:(CGSize)a5 size:(unint64_t)a6 anchorPoint:(CGPoint)a7
+- (void)p_showHUDAtPoint:(CGPoint)point inCanvasView:(id)view withNudge:(CGSize)nudge size:(unint64_t)size anchorPoint:(CGPoint)anchorPoint
 {
-  y = a7.y;
-  x = a7.x;
-  height = a5.height;
-  width = a5.width;
-  v12 = a3.y;
-  v13 = a3.x;
-  v15 = a4;
-  v16 = [(CRLCanvasHUDController *)self hudView];
-  [v16 updateViewToHUDViewSize:a6];
+  y = anchorPoint.y;
+  x = anchorPoint.x;
+  height = nudge.height;
+  width = nudge.width;
+  v12 = point.y;
+  v13 = point.x;
+  viewCopy = view;
+  hudView = [(CRLCanvasHUDController *)self hudView];
+  [hudView updateViewToHUDViewSize:size];
 
-  v17 = [v15 enclosingScrollView];
-  v18 = [v17 superview];
+  enclosingScrollView = [viewCopy enclosingScrollView];
+  superview = [enclosingScrollView superview];
 
-  if (!v18)
+  if (!superview)
   {
-    v18 = v15;
+    superview = viewCopy;
   }
 
-  v19 = [(CRLCanvasHUDController *)self view];
-  v20 = [v19 superview];
+  view = [(CRLCanvasHUDController *)self view];
+  superview2 = [view superview];
 
-  if (v20 != v18)
+  if (superview2 != superview)
   {
-    v21 = [(CRLCanvasHUDController *)self view];
-    [v21 removeFromSuperview];
+    view2 = [(CRLCanvasHUDController *)self view];
+    [view2 removeFromSuperview];
 
-    v22 = [(CRLCanvasHUDController *)self view];
-    [v18 addSubview:v22];
+    view3 = [(CRLCanvasHUDController *)self view];
+    [superview addSubview:view3];
   }
 
-  v23 = [(CRLCanvasHUDController *)self view];
-  v24 = [v23 isHidden];
+  view4 = [(CRLCanvasHUDController *)self view];
+  isHidden = [view4 isHidden];
 
-  if (v24)
+  if (isHidden)
   {
-    v25 = [(CRLCanvasHUDController *)self view];
-    [v25 setHidden:0];
+    view5 = [(CRLCanvasHUDController *)self view];
+    [view5 setHidden:0];
   }
 
-  [v15 convertPoint:v18 toView:{v13, v12}];
+  [viewCopy convertPoint:superview toView:{v13, v12}];
   v27 = v26;
   v29 = v28;
   v31 = sub_1001203B8(x, y, 0.0, 0.0, 1.0, 1.0);
@@ -267,7 +267,7 @@
     v41 = WeakRetained;
     v42 = objc_loadWeakRetained(&self->_canvasView);
 
-    if (v42 != v15)
+    if (v42 != viewCopy)
     {
       v43 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -298,36 +298,36 @@
     }
   }
 
-  objc_storeWeak(&self->_canvasView, v15);
+  objc_storeWeak(&self->_canvasView, viewCopy);
   [(CRLCanvasHUDController *)self p_layoutUpdatingOffset:1];
-  v48 = [(CRLCanvasHUDController *)self view];
-  [v48 alpha];
+  view6 = [(CRLCanvasHUDController *)self view];
+  [view6 alpha];
   v50 = v49;
 
   if (v50 != 1.0)
   {
-    v51 = [(CRLCanvasHUDController *)self view];
-    [v51 setAlpha:1.0];
+    view7 = [(CRLCanvasHUDController *)self view];
+    [view7 setAlpha:1.0];
   }
 }
 
 - (void)p_hideHUD
 {
-  v2 = [(CRLCanvasHUDController *)self view];
-  [v2 setHidden:1];
+  view = [(CRLCanvasHUDController *)self view];
+  [view setHidden:1];
 }
 
-- (void)p_displayText:(id)a3
+- (void)p_displayText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = +[UIApplication sharedApplication];
   v6 = [v5 userInterfaceLayoutDirection] == 1;
 
   v7 = objc_alloc_init(NSMutableParagraphStyle);
   [v7 setAlignment:1];
   [v7 setBaseWritingDirection:v6];
-  v8 = [(CRLCanvasHUDController *)self hudView];
-  +[CRLiOSCanvasHUDView fontSizeForHUDViewSize:](CRLiOSCanvasHUDView, "fontSizeForHUDViewSize:", [v8 hudSize]);
+  hudView = [(CRLCanvasHUDController *)self hudView];
+  +[CRLiOSCanvasHUDView fontSizeForHUDViewSize:](CRLiOSCanvasHUDView, "fontSizeForHUDViewSize:", [hudView hudSize]);
   v10 = v9;
 
   objc_opt_class();
@@ -346,38 +346,38 @@
   v17[0] = v7;
   v17[1] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
-  v13 = [[NSAttributedString alloc] initWithString:v4 attributes:v12];
+  v13 = [[NSAttributedString alloc] initWithString:textCopy attributes:v12];
 
-  v14 = [(CRLCanvasHUDController *)self hudView];
-  v15 = [v14 label];
-  [v15 setAttributedText:v13];
+  hudView2 = [(CRLCanvasHUDController *)self hudView];
+  label = [hudView2 label];
+  [label setAttributedText:v13];
 }
 
-- (void)p_layoutUpdatingOffset:(BOOL)a3
+- (void)p_layoutUpdatingOffset:(BOOL)offset
 {
-  v5 = [(CRLCanvasHUDController *)self hudView];
-  v6 = [v5 label];
+  hudView = [(CRLCanvasHUDController *)self hudView];
+  label = [hudView label];
 
-  [v6 bounds];
-  [v6 sizeThatFits:{v7, v8}];
+  [label bounds];
+  [label sizeThatFits:{v7, v8}];
   v10 = v9 + 18.0;
-  v11 = [(CRLCanvasHUDController *)self hudView];
-  +[CRLiOSCanvasHUDView viewHeightForHUDViewSize:](CRLiOSCanvasHUDView, "viewHeightForHUDViewSize:", [v11 hudSize]);
+  hudView2 = [(CRLCanvasHUDController *)self hudView];
+  +[CRLiOSCanvasHUDView viewHeightForHUDViewSize:](CRLiOSCanvasHUDView, "viewHeightForHUDViewSize:", [hudView2 hudSize]);
   v13 = v12;
 
-  v14 = [(CRLCanvasHUDController *)self view];
-  v15 = [v14 superview];
+  view = [(CRLCanvasHUDController *)self view];
+  superview = [view superview];
 
   WeakRetained = objc_loadWeakRetained(&self->_canvasView);
-  v17 = [WeakRetained controller];
-  [v17 visibleScaledRectForCanvasUI];
+  controller = [WeakRetained controller];
+  [controller visibleScaledRectForCanvasUI];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
   v26 = objc_loadWeakRetained(&self->_canvasView);
-  [v26 convertRect:v15 toView:{v19, v21, v23, v25}];
+  [v26 convertRect:superview toView:{v19, v21, v23, v25}];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -408,7 +408,7 @@
 
   else
   {
-    v73 = a3;
+    offsetCopy = offset;
     v88.origin.x = x;
     v88.origin.y = y;
     v88.size.width = width;
@@ -482,7 +482,7 @@
 
     v71 = &v85[4 * v70 + 1];
     v44 = 0.0;
-    if (v73)
+    if (offsetCopy)
     {
       v72 = HUDOffset == v70 || HUDOffset == 0;
       v44 = 0.15;
@@ -508,37 +508,37 @@
   [UIView animateWithDuration:v81 animations:v44];
 }
 
-- (CGFloat)p_HUDFrame:(CGFloat)a3 offset:(CGFloat)a4 fromTouchRect:(CGFloat)a5 insideRect:(double)a6 overlap:(double)a7 shift:(double)a8
+- (CGFloat)p_HUDFrame:(CGFloat)frame offset:(CGFloat)offset fromTouchRect:(CGFloat)rect insideRect:(double)insideRect overlap:(double)overlap shift:(double)shift
 {
   if (a11 != 1)
   {
-    v46 = a6;
-    v47 = a7;
-    v48 = a8;
+    insideRectCopy = insideRect;
+    overlapCopy = overlap;
+    shiftCopy = shift;
     v49 = a9;
-    [a1 p_touchRectForHUDWithFrame:{a2, a3, a4, a5}];
-    v33 = a4 * 0.5 + v32 * 1.5 + 1.0;
+    [self p_touchRectForHUDWithFrame:{a2, frame, offset, rect}];
+    v33 = offset * 0.5 + v32 * 1.5 + 1.0;
     if (a11 == 3)
     {
-      v34 = v33 + a1[6];
+      v34 = v33 + self[6];
     }
 
     else
     {
       if (a11 != 2)
       {
-        v35 = a1 + 8;
-        v34 = a1[8];
+        v35 = self + 8;
+        v34 = self[8];
 LABEL_10:
-        [a1 p_frameForHUDWithSize:a4 anchoredAtPoint:a5 insideRect:{v34, v35[1], a14, a15, a16, a17}];
+        [self p_frameForHUDWithSize:offset anchoredAtPoint:rect insideRect:{v34, v35[1], a14, a15, a16, a17}];
         v29 = v36;
-        v28 = v37;
-        v27 = v38;
-        v26 = v39;
-        a8 = v48;
+        frameCopy = v37;
+        offsetCopy = v38;
+        rectCopy = v39;
+        shift = shiftCopy;
         a9 = v49;
-        a6 = v46;
-        a7 = v47;
+        insideRect = insideRectCopy;
+        overlap = overlapCopy;
         if (!a12)
         {
           goto LABEL_12;
@@ -547,49 +547,49 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v34 = a1[6] - v33;
+      v34 = self[6] - v33;
     }
 
-    v35 = a1 + 8;
+    v35 = self + 8;
     goto LABEL_10;
   }
 
-  v26 = a5;
-  v27 = a4;
-  v28 = a3;
+  rectCopy = rect;
+  offsetCopy = offset;
+  frameCopy = frame;
   v29 = a2;
   if (a12)
   {
 LABEL_11:
     v50.origin.x = v29;
-    v50.origin.y = v28;
-    v50.size.width = v27;
-    v50.size.height = v26;
-    v51 = CGRectIntersection(v50, *&a6);
+    v50.origin.y = frameCopy;
+    v50.size.width = offsetCopy;
+    v50.size.height = rectCopy;
+    v51 = CGRectIntersection(v50, *&insideRect);
     *a12 = v51.size.width * v51.size.height;
   }
 
 LABEL_12:
   if (a13)
   {
-    v40 = sub_100120414(a2, a3, a4, a5);
+    v40 = sub_100120414(a2, frame, offset, rect);
     v42 = v41;
-    v43 = sub_100120414(v29, v28, v27, v26);
+    v43 = sub_100120414(v29, frameCopy, offsetCopy, rectCopy);
     *a13 = sub_100120090(v40, v42, v43, v44);
   }
 
   return v29;
 }
 
-- (CGRect)p_frameForHUDWithSize:(CGSize)a3 anchoredAtPoint:(CGPoint)a4 insideRect:(CGRect)a5
+- (CGRect)p_frameForHUDWithSize:(CGSize)size anchoredAtPoint:(CGPoint)point insideRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v12 = sub_10011FFCC(self->_anchorPoint.x, self->_anchorPoint.y, a3.width);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  v12 = sub_10011FFCC(self->_anchorPoint.x, self->_anchorPoint.y, size.width);
   sub_10011F31C(v10, v9, v12);
   SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v13, v14);
   v19 = sub_100120B08(v15, v16, v17, v18, x, y, width, height);
@@ -597,9 +597,9 @@ LABEL_12:
   v23 = v22;
   v25 = v24;
   WeakRetained = objc_loadWeakRetained(&self->_canvasView);
-  v27 = [WeakRetained controller];
-  v28 = [v27 canvas];
-  [v28 contentsScale];
+  controller = [WeakRetained controller];
+  canvas = [controller canvas];
+  [canvas contentsScale];
   v30 = sub_1001221E8(v19, v21, v23, v25, v29);
   v32 = v31;
   v34 = v33;
@@ -616,7 +616,7 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)p_touchRectForHUDWithFrame:(CGRect)a3
+- (CGRect)p_touchRectForHUDWithFrame:(CGRect)frame
 {
   v3 = sub_10011EC70(self->_touchPoint.x, self->_touchPoint.y, 30.0);
   result.size.height = v6;
@@ -626,11 +626,11 @@ LABEL_12:
   return result;
 }
 
-- (void)p_setHidden:(BOOL)a3
+- (void)p_setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(CRLCanvasHUDController *)self hudView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  hudView = [(CRLCanvasHUDController *)self hudView];
+  [hudView setHidden:hiddenCopy];
 }
 
 @end

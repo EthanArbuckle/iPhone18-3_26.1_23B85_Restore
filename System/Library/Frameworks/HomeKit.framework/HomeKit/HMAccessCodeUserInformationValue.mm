@@ -1,12 +1,12 @@
 @interface HMAccessCodeUserInformationValue
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessCodeUserInformationValue)initWithCoder:(id)a3;
-- (HMAccessCodeUserInformationValue)initWithSimpleLabel:(id)a3 labelIdentifier:(id)a4 userUUID:(id)a5 removedUserInfo:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessCodeUserInformationValue)initWithCoder:(id)coder;
+- (HMAccessCodeUserInformationValue)initWithSimpleLabel:(id)label labelIdentifier:(id)identifier userUUID:(id)d removedUserInfo:(id)info;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessCodeUserInformationValue
@@ -15,21 +15,21 @@
 {
   v19[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessCodeUserInformationValue *)self simpleLabel];
-  v5 = [MEMORY[0x1E69A2A48] defaultFormatter];
-  v6 = [v3 initWithName:@"simpleLabel" value:v4 options:2 formatter:v5];
+  simpleLabel = [(HMAccessCodeUserInformationValue *)self simpleLabel];
+  defaultFormatter = [MEMORY[0x1E69A2A48] defaultFormatter];
+  v6 = [v3 initWithName:@"simpleLabel" value:simpleLabel options:2 formatter:defaultFormatter];
   v19[0] = v6;
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMAccessCodeUserInformationValue *)self labelIdentifier];
-  v9 = [v7 initWithName:@"labelIdentifier" value:v8];
+  labelIdentifier = [(HMAccessCodeUserInformationValue *)self labelIdentifier];
+  v9 = [v7 initWithName:@"labelIdentifier" value:labelIdentifier];
   v19[1] = v9;
   v10 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v11 = [(HMAccessCodeUserInformationValue *)self userUUID];
-  v12 = [v10 initWithName:@"userUUID" value:v11];
+  userUUID = [(HMAccessCodeUserInformationValue *)self userUUID];
+  v12 = [v10 initWithName:@"userUUID" value:userUUID];
   v19[2] = v12;
   v13 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v14 = [(HMAccessCodeUserInformationValue *)self removedUserInfo];
-  v15 = [v13 initWithName:@"removedUserInfo" value:v14];
+  removedUserInfo = [(HMAccessCodeUserInformationValue *)self removedUserInfo];
+  v15 = [v13 initWithName:@"removedUserInfo" value:removedUserInfo];
   v19[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
 
@@ -45,55 +45,55 @@
   return [v2 shortDescription];
 }
 
-- (HMAccessCodeUserInformationValue)initWithCoder:(id)a3
+- (HMAccessCodeUserInformationValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeUserInformationValueCodingKeySimpleLabel"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeUserInformationValueCodingKeyLabelUUID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeUserInformationValueCodingKeyUserUUID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeUserInformationValueCodingKeyRemovedUserInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeUserInformationValueCodingKeySimpleLabel"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeUserInformationValueCodingKeyLabelUUID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeUserInformationValueCodingKeyUserUUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeUserInformationValueCodingKeyRemovedUserInfo"];
 
   v9 = [(HMAccessCodeUserInformationValue *)self initWithSimpleLabel:v5 labelIdentifier:v6 userUUID:v7 removedUserInfo:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessCodeUserInformationValue *)self simpleLabel];
-  [v4 encodeObject:v5 forKey:@"HMAccessCodeUserInformationValueCodingKeySimpleLabel"];
+  coderCopy = coder;
+  simpleLabel = [(HMAccessCodeUserInformationValue *)self simpleLabel];
+  [coderCopy encodeObject:simpleLabel forKey:@"HMAccessCodeUserInformationValueCodingKeySimpleLabel"];
 
-  v6 = [(HMAccessCodeUserInformationValue *)self labelIdentifier];
-  [v4 encodeObject:v6 forKey:@"HMAccessCodeUserInformationValueCodingKeyLabelUUID"];
+  labelIdentifier = [(HMAccessCodeUserInformationValue *)self labelIdentifier];
+  [coderCopy encodeObject:labelIdentifier forKey:@"HMAccessCodeUserInformationValueCodingKeyLabelUUID"];
 
-  v7 = [(HMAccessCodeUserInformationValue *)self userUUID];
-  [v4 encodeObject:v7 forKey:@"HMAccessCodeUserInformationValueCodingKeyUserUUID"];
+  userUUID = [(HMAccessCodeUserInformationValue *)self userUUID];
+  [coderCopy encodeObject:userUUID forKey:@"HMAccessCodeUserInformationValueCodingKeyUserUUID"];
 
-  v8 = [(HMAccessCodeUserInformationValue *)self removedUserInfo];
-  [v4 encodeObject:v8 forKey:@"HMAccessCodeUserInformationValueCodingKeyRemovedUserInfo"];
+  removedUserInfo = [(HMAccessCodeUserInformationValue *)self removedUserInfo];
+  [coderCopy encodeObject:removedUserInfo forKey:@"HMAccessCodeUserInformationValueCodingKeyRemovedUserInfo"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessCodeUserInformationValue *)self simpleLabel];
-  v4 = [v3 hash];
-  v5 = [(HMAccessCodeUserInformationValue *)self labelIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMAccessCodeUserInformationValue *)self userUUID];
-  v8 = [v7 hash];
-  v9 = [(HMAccessCodeUserInformationValue *)self removedUserInfo];
-  v10 = v8 ^ [v9 hash];
+  simpleLabel = [(HMAccessCodeUserInformationValue *)self simpleLabel];
+  v4 = [simpleLabel hash];
+  labelIdentifier = [(HMAccessCodeUserInformationValue *)self labelIdentifier];
+  v6 = [labelIdentifier hash] ^ v4;
+  userUUID = [(HMAccessCodeUserInformationValue *)self userUUID];
+  v8 = [userUUID hash];
+  removedUserInfo = [(HMAccessCodeUserInformationValue *)self removedUserInfo];
+  v10 = v8 ^ [removedUserInfo hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -107,8 +107,8 @@
     goto LABEL_9;
   }
 
-  v7 = [(HMAccessCodeUserInformationValue *)self simpleLabel];
-  v8 = [v6 simpleLabel];
+  simpleLabel = [(HMAccessCodeUserInformationValue *)self simpleLabel];
+  simpleLabel2 = [v6 simpleLabel];
   v9 = HMFEqualObjects();
 
   if (!v9)
@@ -116,8 +116,8 @@
     goto LABEL_9;
   }
 
-  v10 = [(HMAccessCodeUserInformationValue *)self labelIdentifier];
-  v11 = [v6 labelIdentifier];
+  labelIdentifier = [(HMAccessCodeUserInformationValue *)self labelIdentifier];
+  labelIdentifier2 = [v6 labelIdentifier];
   v12 = HMFEqualObjects();
 
   if (!v12)
@@ -125,14 +125,14 @@
     goto LABEL_9;
   }
 
-  v13 = [(HMAccessCodeUserInformationValue *)self userUUID];
-  v14 = [v6 userUUID];
+  userUUID = [(HMAccessCodeUserInformationValue *)self userUUID];
+  userUUID2 = [v6 userUUID];
   v15 = HMFEqualObjects();
 
   if (v15)
   {
-    v16 = [(HMAccessCodeUserInformationValue *)self removedUserInfo];
-    v17 = [v6 removedUserInfo];
+    removedUserInfo = [(HMAccessCodeUserInformationValue *)self removedUserInfo];
+    removedUserInfo2 = [v6 removedUserInfo];
     v18 = HMFEqualObjects();
   }
 
@@ -145,30 +145,30 @@ LABEL_9:
   return v18;
 }
 
-- (HMAccessCodeUserInformationValue)initWithSimpleLabel:(id)a3 labelIdentifier:(id)a4 userUUID:(id)a5 removedUserInfo:(id)a6
+- (HMAccessCodeUserInformationValue)initWithSimpleLabel:(id)label labelIdentifier:(id)identifier userUUID:(id)d removedUserInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  labelCopy = label;
+  identifierCopy = identifier;
+  dCopy = d;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = HMAccessCodeUserInformationValue;
   v14 = [(HMAccessCodeUserInformationValue *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [labelCopy copy];
     simpleLabel = v14->_simpleLabel;
     v14->_simpleLabel = v15;
 
-    v17 = [v11 copy];
+    v17 = [identifierCopy copy];
     labelIdentifier = v14->_labelIdentifier;
     v14->_labelIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [dCopy copy];
     userUUID = v14->_userUUID;
     v14->_userUUID = v19;
 
-    objc_storeStrong(&v14->_removedUserInfo, a6);
+    objc_storeStrong(&v14->_removedUserInfo, info);
   }
 
   return v14;

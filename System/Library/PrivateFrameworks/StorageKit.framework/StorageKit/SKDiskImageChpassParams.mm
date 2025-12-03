@@ -1,7 +1,7 @@
 @interface SKDiskImageChpassParams
 - (SKDiskImageChpassParams)init;
-- (id)diChpassParamsWithURL:(id)a3 error:(id *)a4;
-- (void)setupDIChpassParams:(id)a3;
+- (id)diChpassParamsWithURL:(id)l error:(id *)error;
+- (void)setupDIChpassParams:(id)params;
 @end
 
 @implementation SKDiskImageChpassParams
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (id)diChpassParamsWithURL:(id)a3 error:(id *)a4
+- (id)diChpassParamsWithURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x277D05590];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithURL:v7 error:a4];
+  lCopy = l;
+  v8 = [[v6 alloc] initWithURL:lCopy error:error];
 
   if (v8)
   {
@@ -33,22 +33,22 @@
   return v8;
 }
 
-- (void)setupDIChpassParams:(id)a3
+- (void)setupDIChpassParams:(id)params
 {
-  v6 = a3;
+  paramsCopy = params;
   LODWORD(self) = [(SKDiskImageChpassParams *)self stdinPassPhrase];
-  v4 = [v6 readPassphraseFlags];
+  readPassphraseFlags = [paramsCopy readPassphraseFlags];
   if (self)
   {
-    v5 = v4 | 8;
+    v5 = readPassphraseFlags | 8;
   }
 
   else
   {
-    v5 = v4;
+    v5 = readPassphraseFlags;
   }
 
-  [v6 setReadPassphraseFlags:v5];
+  [paramsCopy setReadPassphraseFlags:v5];
 }
 
 @end

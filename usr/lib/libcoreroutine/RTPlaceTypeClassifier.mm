@@ -1,70 +1,70 @@
 @interface RTPlaceTypeClassifier
-- (BOOL)_logExpertClassifications:(id)a3 sourceNames:(id)a4;
-- (BOOL)classifyWithError:(id *)a3;
-- (BOOL)isRottedMeCard:(id)a3 inferredPlace:(id)a4;
-- (BOOL)processExpertClassifications:(id)a3 error:(id *)a4;
-- (BOOL)updatePlaces:(id)a3 error:(id *)a4;
-- (RTPlaceTypeClassifier)initWithBiomeManager:(id)a3 contactsManager:(id)a4 defaultsManager:(id)a5 distanceCalculator:(id)a6 learnedLocationStore:(id)a7 locationManager:(id)a8 mapServiceManager:(id)a9 mapsSupportManager:(id)a10 placeTypeClassifierMetricsCalculator:(id)a11 platform:(id)a12 queue:(id)a13 visitManager:(id)a14;
-- (id)_convertToIdToLearnedPlace:(id)a3;
-- (id)_getClosestLearnedPlacesAtDestination:(id)a3 source:(id)a4 threshold:(double)a5 error:(id *)a6;
-- (id)coalescePlacesFromExperts:(id)a3;
-- (id)coalescePlacesFromSourcesOfTruth:(id)a3 sourceOfTruthNames:(id)a4;
-- (id)getClassificationsFromExperts:(id)a3 error:(id *)a4;
+- (BOOL)_logExpertClassifications:(id)classifications sourceNames:(id)names;
+- (BOOL)classifyWithError:(id *)error;
+- (BOOL)isRottedMeCard:(id)card inferredPlace:(id)place;
+- (BOOL)processExpertClassifications:(id)classifications error:(id *)error;
+- (BOOL)updatePlaces:(id)places error:(id *)error;
+- (RTPlaceTypeClassifier)initWithBiomeManager:(id)manager contactsManager:(id)contactsManager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator learnedLocationStore:(id)store locationManager:(id)locationManager mapServiceManager:(id)serviceManager mapsSupportManager:(id)self0 placeTypeClassifierMetricsCalculator:(id)self1 platform:(id)self2 queue:(id)self3 visitManager:(id)self4;
+- (id)_convertToIdToLearnedPlace:(id)place;
+- (id)_getClosestLearnedPlacesAtDestination:(id)destination source:(id)source threshold:(double)threshold error:(id *)error;
+- (id)coalescePlacesFromExperts:(id)experts;
+- (id)coalescePlacesFromSourcesOfTruth:(id)truth sourceOfTruthNames:(id)names;
+- (id)getClassificationsFromExperts:(id)experts error:(id *)error;
 - (id)getExperts;
-- (id)getStoredPlacesWithError:(id *)a3;
-- (id)mergeExistingPlaces:(id)a3 intoUpdatedPlace:(id)a4 typesInMeCard:(id)a5;
-- (id)replaceBusinessMapItemWithReverseGeocodedMapItem:(id)a3;
-- (void)donateInferredPlaces:(id)a3;
-- (void)storeTruthMetricsWithExpertClassifications:(id)a3 rottedPlaces:(id)a4;
+- (id)getStoredPlacesWithError:(id *)error;
+- (id)mergeExistingPlaces:(id)places intoUpdatedPlace:(id)place typesInMeCard:(id)card;
+- (id)replaceBusinessMapItemWithReverseGeocodedMapItem:(id)item;
+- (void)donateInferredPlaces:(id)places;
+- (void)storeTruthMetricsWithExpertClassifications:(id)classifications rottedPlaces:(id)places;
 @end
 
 @implementation RTPlaceTypeClassifier
 
-- (RTPlaceTypeClassifier)initWithBiomeManager:(id)a3 contactsManager:(id)a4 defaultsManager:(id)a5 distanceCalculator:(id)a6 learnedLocationStore:(id)a7 locationManager:(id)a8 mapServiceManager:(id)a9 mapsSupportManager:(id)a10 placeTypeClassifierMetricsCalculator:(id)a11 platform:(id)a12 queue:(id)a13 visitManager:(id)a14
+- (RTPlaceTypeClassifier)initWithBiomeManager:(id)manager contactsManager:(id)contactsManager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator learnedLocationStore:(id)store locationManager:(id)locationManager mapServiceManager:(id)serviceManager mapsSupportManager:(id)self0 placeTypeClassifierMetricsCalculator:(id)self1 platform:(id)self2 queue:(id)self3 visitManager:(id)self4
 {
-  v49 = a3;
-  v37 = a4;
-  v19 = a4;
-  v39 = a5;
-  v43 = a5;
-  v40 = a6;
-  v42 = a6;
-  v41 = a7;
-  v38 = a8;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v48 = a11;
-  v45 = a12;
-  v47 = a13;
-  v23 = a14;
-  v44 = v23;
-  if (v49)
+  managerCopy = manager;
+  contactsManagerCopy = contactsManager;
+  contactsManagerCopy2 = contactsManager;
+  defaultsManagerCopy = defaultsManager;
+  defaultsManagerCopy2 = defaultsManager;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  storeCopy = store;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  serviceManagerCopy = serviceManager;
+  supportManagerCopy = supportManager;
+  metricsCalculatorCopy = metricsCalculator;
+  platformCopy = platform;
+  queueCopy = queue;
+  visitManagerCopy = visitManager;
+  v44 = visitManagerCopy;
+  if (managerCopy)
   {
-    v24 = v19;
-    if (v19)
+    v24 = contactsManagerCopy2;
+    if (contactsManagerCopy2)
     {
-      v25 = v42;
-      v26 = v43;
-      v27 = v41;
-      v28 = self;
-      if (v43)
+      v25 = calculatorCopy2;
+      v26 = defaultsManagerCopy2;
+      v27 = storeCopy;
+      selfCopy3 = self;
+      if (defaultsManagerCopy2)
       {
-        if (v42)
+        if (calculatorCopy2)
         {
-          if (v41)
+          if (storeCopy)
           {
-            if (v20)
+            if (locationManagerCopy2)
             {
-              if (v21)
+              if (serviceManagerCopy)
               {
-                if (v22)
+                if (supportManagerCopy)
                 {
-                  if (v48)
+                  if (metricsCalculatorCopy)
                   {
-                    if (v47)
+                    if (queueCopy)
                     {
-                      if (v23)
+                      if (visitManagerCopy)
                       {
                         v50.receiver = self;
                         v50.super_class = RTPlaceTypeClassifier;
@@ -72,22 +72,22 @@
                         p_isa = &v29->super.isa;
                         if (v29)
                         {
-                          objc_storeStrong(&v29->_biomeManager, a3);
-                          objc_storeStrong(p_isa + 2, v37);
-                          objc_storeStrong(p_isa + 5, a7);
-                          objc_storeStrong(p_isa + 6, v38);
-                          objc_storeStrong(p_isa + 7, a9);
-                          objc_storeStrong(p_isa + 8, a10);
-                          objc_storeStrong(p_isa + 9, a11);
-                          objc_storeStrong(p_isa + 10, a12);
-                          objc_storeStrong(p_isa + 3, v39);
-                          objc_storeStrong(p_isa + 4, v40);
-                          objc_storeStrong(p_isa + 12, a13);
-                          objc_storeStrong(p_isa + 11, a14);
+                          objc_storeStrong(&v29->_biomeManager, manager);
+                          objc_storeStrong(p_isa + 2, contactsManagerCopy);
+                          objc_storeStrong(p_isa + 5, store);
+                          objc_storeStrong(p_isa + 6, locationManagerCopy);
+                          objc_storeStrong(p_isa + 7, serviceManager);
+                          objc_storeStrong(p_isa + 8, supportManager);
+                          objc_storeStrong(p_isa + 9, metricsCalculator);
+                          objc_storeStrong(p_isa + 10, platform);
+                          objc_storeStrong(p_isa + 3, defaultsManagerCopy);
+                          objc_storeStrong(p_isa + 4, calculatorCopy);
+                          objc_storeStrong(p_isa + 12, queue);
+                          objc_storeStrong(p_isa + 11, visitManager);
                         }
 
-                        v28 = p_isa;
-                        v31 = v28;
+                        selfCopy3 = p_isa;
+                        v31 = selfCopy3;
                         goto LABEL_40;
                       }
 
@@ -209,10 +209,10 @@ LABEL_39:
     else
     {
       v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v25 = v42;
-      v26 = v43;
-      v27 = v41;
-      v28 = self;
+      v25 = calculatorCopy2;
+      v26 = defaultsManagerCopy2;
+      v27 = storeCopy;
+      selfCopy3 = self;
       if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_39;
@@ -235,33 +235,33 @@ LABEL_38:
   }
 
   v31 = 0;
-  v24 = v19;
-  v25 = v42;
-  v26 = v43;
-  v27 = v41;
-  v28 = self;
+  v24 = contactsManagerCopy2;
+  v25 = calculatorCopy2;
+  v26 = defaultsManagerCopy2;
+  v27 = storeCopy;
+  selfCopy3 = self;
 LABEL_40:
 
   return v31;
 }
 
-- (BOOL)isRottedMeCard:(id)a3 inferredPlace:(id)a4
+- (BOOL)isRottedMeCard:(id)card inferredPlace:(id)place
 {
   v82[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v53 = a4;
+  cardCopy = card;
+  placeCopy = place;
   v52 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-3024000.0];
-  v7 = [(RTPlaceTypeClassifier *)self distanceCalculator];
-  v8 = [v53 mapItem];
-  v9 = [v8 location];
-  v14 = [v6 mapItem];
-  v10 = [v14 location];
+  distanceCalculator = [(RTPlaceTypeClassifier *)self distanceCalculator];
+  mapItem = [placeCopy mapItem];
+  location = [mapItem location];
+  mapItem2 = [cardCopy mapItem];
+  location2 = [mapItem2 location];
   v70 = 0;
-  [v7 distanceFromLocation:v9 toLocation:v10 error:&v70];
+  [distanceCalculator distanceFromLocation:location toLocation:location2 error:&v70];
   v12 = v11;
   v13 = v70;
 
-  LOBYTE(v14) = 0;
+  LOBYTE(mapItem2) = 0;
   if (v13 || v12 < 1000.0)
   {
     goto LABEL_26;
@@ -280,8 +280,8 @@ LABEL_40:
   v62 = __Block_byref_object_dispose__123;
   v63 = 0;
   v15 = dispatch_semaphore_create(0);
-  v16 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-  v17 = [v6 mapItem];
+  learnedLocationStore = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  mapItem3 = [cardCopy mapItem];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __54__RTPlaceTypeClassifier_isRottedMeCard_inferredPlace___block_invoke;
@@ -290,7 +290,7 @@ LABEL_40:
   v57 = &v58;
   v18 = v15;
   v55 = v18;
-  [v16 fetchLocationOfInterestWithMapItem:v17 handler:v54];
+  [learnedLocationStore fetchLocationOfInterestWithMapItem:mapItem3 handler:v54];
 
   v19 = v18;
   v20 = [MEMORY[0x277CBEAA8] now];
@@ -308,11 +308,11 @@ LABEL_9:
   v24 = v23;
   v25 = objc_opt_new();
   v26 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-  v27 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v28 = [v27 filteredArrayUsingPredicate:v26];
-  v29 = [v28 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v28 = [callStackSymbols filteredArrayUsingPredicate:v26];
+  firstObject = [v28 firstObject];
 
-  [v25 submitToCoreAnalytics:v29 type:1 duration:v24];
+  [v25 submitToCoreAnalytics:firstObject type:1 duration:v24];
   v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
   {
@@ -342,29 +342,29 @@ LABEL_10:
     objc_storeStrong(v59 + 5, v33);
   }
 
-  v37 = [v65[5] lastObject];
-  v38 = [v37 entryDate];
-  v39 = v38;
-  if (v38)
+  lastObject = [v65[5] lastObject];
+  entryDate = [lastObject entryDate];
+  v39 = entryDate;
+  if (entryDate)
   {
-    v40 = v38;
+    distantPast = entryDate;
   }
 
   else
   {
-    v40 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v41 = v40;
+  v41 = distantPast;
 
   if (v59[5])
   {
-    LODWORD(v14) = 0;
+    LODWORD(mapItem2) = 0;
   }
 
   else
   {
-    LODWORD(v14) = [v41 compare:v52] == -1;
+    LODWORD(mapItem2) = [v41 compare:v52] == -1;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -374,7 +374,7 @@ LABEL_10:
     {
       v49 = v36;
       v43 = NSStringFromSelector(a2);
-      if (v14)
+      if (mapItem2)
       {
         v44 = @"YES";
       }
@@ -385,7 +385,7 @@ LABEL_10:
       }
 
       v45 = [v65[5] count];
-      v46 = [v65[5] lastObject];
+      lastObject2 = [v65[5] lastObject];
       v47 = v59[5];
       *buf = 138413571;
       *&buf[4] = v43;
@@ -394,9 +394,9 @@ LABEL_10:
       v74 = 2048;
       v75 = v45;
       v76 = 2117;
-      v77 = v46;
+      v77 = lastObject2;
       v78 = 2117;
-      v79 = v6;
+      v79 = cardCopy;
       v80 = 2112;
       v81 = v47;
       _os_log_impl(&dword_2304B3000, v42, OS_LOG_TYPE_INFO, "%@, isRotten, %@, fetched %lu visits, most recent visit, %{sensitive}@, for place, %{sensitive}@, error, %@", buf, 0x3Eu);
@@ -409,7 +409,7 @@ LABEL_10:
   _Block_object_dispose(&v64, 8);
 
 LABEL_26:
-  return v14;
+  return mapItem2;
 }
 
 void __54__RTPlaceTypeClassifier_isRottedMeCard_inferredPlace___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -428,10 +428,10 @@ void __54__RTPlaceTypeClassifier_isRottedMeCard_inferredPlace___block_invoke(uin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)getStoredPlacesWithError:(id *)a3
+- (id)getStoredPlacesWithError:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
@@ -458,15 +458,15 @@ LABEL_3:
       v58 = 0x3032000000;
       v59 = __Block_byref_object_copy__123;
       v60 = __Block_byref_object_dispose__123;
-      v61 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v47 = 0;
       v48 = &v47;
       v49 = 0x3032000000;
       v50 = __Block_byref_object_copy__123;
       v51 = __Block_byref_object_dispose__123;
       v52 = 0;
-      v6 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-      v7 = [v4 unsignedIntegerValue];
+      learnedLocationStore = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+      unsignedIntegerValue = [v4 unsignedIntegerValue];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __50__RTPlaceTypeClassifier_getStoredPlacesWithError___block_invoke;
@@ -478,7 +478,7 @@ LABEL_3:
       v44 = &v57;
       v8 = v5;
       v43 = v8;
-      [v6 fetchLocationsOfInterestWithPlaceType:v7 handler:v42];
+      [learnedLocationStore fetchLocationsOfInterestWithPlaceType:unsignedIntegerValue handler:v42];
 
       v9 = v8;
       v10 = [MEMORY[0x277CBEAA8] now];
@@ -493,11 +493,11 @@ LABEL_3:
       v14 = v13;
       v15 = objc_opt_new();
       v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-      v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v18 = [v17 filteredArrayUsingPredicate:v16];
-      v19 = [v18 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+      firstObject = [v18 firstObject];
 
-      [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+      [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
       v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
@@ -530,16 +530,16 @@ LABEL_13:
       v27 = v48[5];
       if (v27)
       {
-        if (a3)
+        if (error)
         {
           v28 = v27;
-          *a3 = v27;
+          *error = v27;
         }
       }
 
       else if (*(*(&v57 + 1) + 40))
       {
-        [v34 addObjectsFromArray:?];
+        [array addObjectsFromArray:?];
       }
 
       _Block_object_dispose(&v47, 8);
@@ -548,7 +548,7 @@ LABEL_13:
       if (v27)
       {
         v32 = 0;
-        v31 = v34;
+        v31 = array;
         goto LABEL_27;
       }
 
@@ -574,15 +574,15 @@ LABEL_23:
   v29 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v34 count];
+    v30 = [array count];
     LODWORD(v57) = 134217984;
     *(&v57 + 4) = v30;
     _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_DEFAULT, "%lu existing places with known type", &v57, 0xCu);
   }
 
-  [v34 enumerateObjectsUsingBlock:&__block_literal_global_101];
-  v31 = v34;
-  v32 = v34;
+  [array enumerateObjectsUsingBlock:&__block_literal_global_101];
+  v31 = array;
+  v32 = array;
 LABEL_27:
 
   return v32;
@@ -677,15 +677,15 @@ void __50__RTPlaceTypeClassifier_getStoredPlacesWithError___block_invoke_17(uint
   }
 }
 
-- (void)donateInferredPlaces:(id)a3
+- (void)donateInferredPlaces:(id)places
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placesCopy = places;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [placesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -696,7 +696,7 @@ void __50__RTPlaceTypeClassifier_getStoredPlacesWithError___block_invoke_17(uint
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(placesCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -722,18 +722,18 @@ void __50__RTPlaceTypeClassifier_getStoredPlacesWithError___block_invoke_17(uint
             v10 = 0;
           }
 
-          v11 = [(RTPlaceTypeClassifier *)self contactsManager];
-          v12 = [v9 mapItem];
+          contactsManager = [(RTPlaceTypeClassifier *)self contactsManager];
+          mapItem = [v9 mapItem];
           v13[0] = MEMORY[0x277D85DD0];
           v13[1] = 3221225472;
           v13[2] = __46__RTPlaceTypeClassifier_donateInferredPlaces___block_invoke;
           v13[3] = &unk_2788CEA60;
           v13[4] = v9;
-          [v11 donateAddressFromMapItem:v12 addressLabelType:v10 handler:v13];
+          [contactsManager donateAddressFromMapItem:mapItem addressLabelType:v10 handler:v13];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [placesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -781,16 +781,16 @@ void __46__RTPlaceTypeClassifier_donateInferredPlaces___block_invoke(uint64_t a1
 LABEL_5:
 }
 
-- (id)replaceBusinessMapItemWithReverseGeocodedMapItem:(id)a3
+- (id)replaceBusinessMapItemWithReverseGeocodedMapItem:(id)item
 {
   v144[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mapItem];
-  v5 = [v4 validMUID];
+  itemCopy = item;
+  mapItem = [itemCopy mapItem];
+  validMUID = [mapItem validMUID];
 
-  if ((v5 & 1) == 0)
+  if ((validMUID & 1) == 0)
   {
-    v27 = v3;
+    v27 = itemCopy;
     goto LABEL_52;
   }
 
@@ -808,7 +808,7 @@ LABEL_5:
   v112 = 0;
   v6 = dispatch_semaphore_create(0);
   learnedLocationStore = self->_learnedLocationStore;
-  v8 = [v3 identifier];
+  identifier = [itemCopy identifier];
   v103[0] = MEMORY[0x277D85DD0];
   v103[1] = 3221225472;
   v103[2] = __74__RTPlaceTypeClassifier_replaceBusinessMapItemWithReverseGeocodedMapItem___block_invoke;
@@ -817,7 +817,7 @@ LABEL_5:
   v106 = &v107;
   v9 = v6;
   v104 = v9;
-  [(RTLearnedLocationStore *)learnedLocationStore fetchLastVisitToPlaceWithIdentifier:v8 handler:v103];
+  [(RTLearnedLocationStore *)learnedLocationStore fetchLastVisitToPlaceWithIdentifier:identifier handler:v103];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -835,11 +835,11 @@ LABEL_9:
   v15 = v14;
   v16 = objc_opt_new();
   v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-  v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v19 = [v18 filteredArrayUsingPredicate:v17];
-  v20 = [v19 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+  firstObject = [v19 firstObject];
 
-  [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+  [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
   v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
   {
@@ -876,19 +876,19 @@ LABEL_10:
     {
       v75 = v108[5];
       *v140 = 138740227;
-      *&v140[4] = v3;
+      *&v140[4] = itemCopy;
       *&v140[12] = 2112;
       *&v140[14] = v75;
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Failed to look up last visit for place, %{sensitive}@, error, %@", v140, 0x16u);
     }
 
-    v27 = v3;
+    v27 = itemCopy;
   }
 
   else
   {
-    v30 = [v114[5] location];
-    v91 = [v30 location];
+    location = [v114[5] location];
+    v30Location = [location location];
 
     *v140 = 0;
     *&v140[8] = v140;
@@ -911,7 +911,7 @@ LABEL_10:
     v102 = &v134;
     v32 = v10;
     v100 = v32;
-    [(RTLearnedLocationStore *)v31 fetchPlacesWithinDistance:v91 location:v99 handler:250.0];
+    [(RTLearnedLocationStore *)v31 fetchPlacesWithinDistance:v30Location location:v99 handler:250.0];
     v33 = v32;
     v34 = [MEMORY[0x277CBEAA8] now];
     v35 = dispatch_time(0, 3600000000000);
@@ -925,11 +925,11 @@ LABEL_10:
     v37 = v36;
     v38 = objc_opt_new();
     v39 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-    v40 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v41 = [v40 filteredArrayUsingPredicate:v39];
-    v42 = [v41 firstObject];
+    callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v41 = [callStackSymbols2 filteredArrayUsingPredicate:v39];
+    firstObject2 = [v41 firstObject];
 
-    [v38 submitToCoreAnalytics:v42 type:1 duration:v37];
+    [v38 submitToCoreAnalytics:firstObject2 type:1 duration:v37];
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_FAULT))
     {
@@ -970,13 +970,13 @@ LABEL_21:
       {
         v78 = v135[5];
         *buf = 138412546;
-        *&buf[4] = v91;
+        *&buf[4] = v30Location;
         *&buf[12] = 2112;
         *&buf[14] = v78;
         _os_log_error_impl(&dword_2304B3000, v50, OS_LOG_TYPE_ERROR, "Failed to look up for places nearby, %@, error, %@", buf, 0x16u);
       }
 
-      v27 = v3;
+      v27 = itemCopy;
     }
 
     else
@@ -1013,7 +1013,7 @@ LABEL_21:
         v98 = &v124;
         v59 = v33;
         v96 = v59;
-        [(RTMapServiceManager *)mapServiceManager fetchMapItemsFromLocation:v91 options:v90 handler:v95];
+        [(RTMapServiceManager *)mapServiceManager fetchMapItemsFromLocation:v30Location options:v90 handler:v95];
         v60 = v59;
         v93 = [MEMORY[0x277CBEAA8] now];
         v61 = dispatch_time(0, 3600000000000);
@@ -1027,11 +1027,11 @@ LABEL_21:
         v63 = v62;
         v64 = objc_opt_new();
         v65 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-        v66 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v67 = [v66 filteredArrayUsingPredicate:v65];
-        v68 = [v67 firstObject];
+        callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v67 = [callStackSymbols3 filteredArrayUsingPredicate:v65];
+        firstObject3 = [v67 firstObject];
 
-        [v64 submitToCoreAnalytics:v68 type:1 duration:v63];
+        [v64 submitToCoreAnalytics:firstObject3 type:1 duration:v63];
         v69 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v69, OS_LOG_TYPE_FAULT))
         {
@@ -1068,14 +1068,14 @@ LABEL_39:
         if (*(*&buf[8] + 40) && !v125[5])
         {
           v88 = [RTLearnedPlace alloc];
-          v94 = [v3 identifier];
-          v79 = [v3 type];
-          v80 = [v3 typeSource];
+          identifier2 = [itemCopy identifier];
+          type = [itemCopy type];
+          typeSource = [itemCopy typeSource];
           v81 = *(*&buf[8] + 40);
-          v82 = [v3 customLabel];
-          v83 = [v3 creationDate];
-          v84 = [v3 expirationDate];
-          v27 = [(RTLearnedPlace *)v88 initWithIdentifier:v94 type:v79 typeSource:v80 mapItem:v81 customLabel:v82 creationDate:v83 expirationDate:v84];
+          customLabel = [itemCopy customLabel];
+          creationDate = [itemCopy creationDate];
+          expirationDate = [itemCopy expirationDate];
+          v27 = [(RTLearnedPlace *)v88 initWithIdentifier:identifier2 type:type typeSource:typeSource mapItem:v81 customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
         }
 
         else
@@ -1085,15 +1085,15 @@ LABEL_39:
           {
             v86 = v108[5];
             *v119 = 138740483;
-            *&v119[4] = v91;
+            *&v119[4] = v30Location;
             v120 = 2117;
-            v121 = v3;
+            v121 = itemCopy;
             v122 = 2112;
             v123 = v86;
             _os_log_error_impl(&dword_2304B3000, v77, OS_LOG_TYPE_ERROR, "Failed to reverse geocode last visit location, %{sensitive}@, for place, %{sensitive}@, error, %@", v119, 0x20u);
           }
 
-          v27 = v3;
+          v27 = itemCopy;
         }
 
         _Block_object_dispose(&v124, 8);
@@ -1110,12 +1110,12 @@ LABEL_39:
           if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
           {
             *buf = 138739971;
-            *&buf[4] = v91;
+            *&buf[4] = v30Location;
             _os_log_impl(&dword_2304B3000, v54, OS_LOG_TYPE_INFO, "There exists another reverseGeocode LearnedPlace nearby this location %{sensitive}@", buf, 0xCu);
           }
         }
 
-        v27 = v3;
+        v27 = itemCopy;
       }
     }
 
@@ -1191,11 +1191,11 @@ void __74__RTPlaceTypeClassifier_replaceBusinessMapItemWithReverseGeocodedMapIte
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_convertToIdToLearnedPlace:(id)a3
+- (id)_convertToIdToLearnedPlace:(id)place
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  placeCopy = place;
+  if (!placeCopy)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1213,7 +1213,7 @@ void __74__RTPlaceTypeClassifier_replaceBusinessMapItemWithReverseGeocodedMapIte
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v3;
+  v6 = placeCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1230,8 +1230,8 @@ void __74__RTPlaceTypeClassifier_replaceBusinessMapItemWithReverseGeocodedMapIte
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 identifier];
-        [v5 setObject:v11 forKeyedSubscript:v13];
+        identifier = [v11 identifier];
+        [v5 setObject:v11 forKeyedSubscript:identifier];
 
         objc_autoreleasePoolPop(v12);
       }
@@ -1245,15 +1245,15 @@ void __74__RTPlaceTypeClassifier_replaceBusinessMapItemWithReverseGeocodedMapIte
   return v5;
 }
 
-- (id)coalescePlacesFromSourcesOfTruth:(id)a3 sourceOfTruthNames:(id)a4
+- (id)coalescePlacesFromSourcesOfTruth:(id)truth sourceOfTruthNames:(id)names
 {
   v189 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  truthCopy = truth;
+  namesCopy = names;
+  v8 = namesCopy;
+  if (truthCopy)
   {
-    if (v7)
+    if (namesCopy)
     {
       goto LABEL_10;
     }
@@ -1293,7 +1293,7 @@ LABEL_10:
   v155 = 0u;
   v156 = 0u;
   obj = v8;
-  v119 = self;
+  selfCopy = self;
   v137 = [obj countByEnumeratingWithState:&v153 objects:v188 count:16];
   if (v137)
   {
@@ -1310,16 +1310,16 @@ LABEL_10:
 
         v14 = *(*(&v153 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v6 objectForKey:v14];
+        v16 = [truthCopy objectForKey:v14];
         if (v16)
         {
-          v17 = [(RTPlaceTypeClassifier *)v119 _convertToIdToLearnedPlace:v16];
+          v17 = [(RTPlaceTypeClassifier *)selfCopy _convertToIdToLearnedPlace:v16];
         }
 
         else
         {
-          v18 = [MEMORY[0x277CBEA60] array];
-          v17 = [(RTPlaceTypeClassifier *)v119 _convertToIdToLearnedPlace:v18];
+          array = [MEMORY[0x277CBEA60] array];
+          v17 = [(RTPlaceTypeClassifier *)selfCopy _convertToIdToLearnedPlace:array];
         }
 
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -1330,9 +1330,9 @@ LABEL_10:
             v20 = objc_opt_class();
             v21 = NSStringFromClass(v20);
             v22 = NSStringFromSelector(a2);
-            [v6 objectForKeyedSubscript:v14];
+            [truthCopy objectForKeyedSubscript:v14];
             v23 = v11;
-            v25 = v24 = v6;
+            v25 = v24 = truthCopy;
             v26 = [v25 count];
             *buf = 138413058;
             v159 = v21;
@@ -1344,7 +1344,7 @@ LABEL_10:
             v165 = v26;
             _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "%@, %@, sourceOfTruthName, %@, count %lu,", buf, 0x2Au);
 
-            v6 = v24;
+            truthCopy = v24;
             v11 = v23;
             v12 = MEMORY[0x277D86220];
           }
@@ -1356,7 +1356,7 @@ LABEL_10:
         }
 
         objc_autoreleasePoolPop(v15);
-        self = v119;
+        self = selfCopy;
       }
 
       v137 = [obj countByEnumeratingWithState:&v153 objects:v188 count:16];
@@ -1385,7 +1385,7 @@ LABEL_10:
     }
   }
 
-  v104 = v6;
+  v104 = truthCopy;
   if ([v115 count])
   {
     v33 = 0;
@@ -1400,8 +1400,8 @@ LABEL_10:
       v151 = 0u;
       v152 = 0u;
       v105 = v35;
-      v107 = [v35 allValues];
-      v112 = [v107 countByEnumeratingWithState:&v149 objects:v187 count:16];
+      allValues = [v35 allValues];
+      v112 = [allValues countByEnumeratingWithState:&v149 objects:v187 count:16];
       if (v112)
       {
         break;
@@ -1430,13 +1430,13 @@ LABEL_78:
       {
         if (*v150 != v109)
         {
-          objc_enumerationMutation(v107);
+          objc_enumerationMutation(allValues);
         }
 
         v114 = v37;
         v38 = *(*(&v149 + 1) + 8 * v37);
         v113 = objc_autoreleasePoolPush();
-        v131 = [v38 typeSource];
+        typeSource = [v38 typeSource];
         v39 = v111;
         if ([v27 count] > v36)
         {
@@ -1450,8 +1450,8 @@ LABEL_78:
             v147 = 0u;
             v148 = 0u;
             v120 = v40;
-            v132 = [v40 allValues];
-            v135 = [v132 countByEnumeratingWithState:&v145 objects:v186 count:16];
+            allValues2 = [v40 allValues];
+            v135 = [allValues2 countByEnumeratingWithState:&v145 objects:v186 count:16];
             if (!v135)
             {
               goto LABEL_70;
@@ -1466,27 +1466,27 @@ LABEL_78:
                 v42 = v34;
                 if (*v146 != v134)
                 {
-                  objc_enumerationMutation(v132);
+                  objc_enumerationMutation(allValues2);
                 }
 
                 v43 = *(*(&v145 + 1) + 8 * v41);
                 context = objc_autoreleasePoolPush();
-                v44 = self;
-                v45 = [(RTPlaceTypeClassifier *)self distanceCalculator];
-                v46 = [v38 mapItem];
-                v47 = [v46 location];
-                v48 = [(__CFString *)v43 mapItem];
-                [v48 location];
+                selfCopy2 = self;
+                distanceCalculator = [(RTPlaceTypeClassifier *)self distanceCalculator];
+                mapItem = [v38 mapItem];
+                location = [mapItem location];
+                mapItem2 = [(__CFString *)v43 mapItem];
+                [mapItem2 location];
                 v50 = v49 = v38;
                 v144 = v42;
-                [v45 distanceFromLocation:v47 toLocation:v50 error:&v144];
+                [distanceCalculator distanceFromLocation:location toLocation:v50 error:&v144];
                 v52 = v51;
                 v138 = v144;
 
                 v38 = v49;
-                v53 = [v49 identifier];
-                v54 = [(__CFString *)v43 identifier];
-                v55 = [v53 isEqual:v54];
+                identifier = [v49 identifier];
+                identifier2 = [(__CFString *)v43 identifier];
+                v55 = [identifier isEqual:identifier2];
                 if (v52 < 100.0)
                 {
                   v56 = 1;
@@ -1506,9 +1506,9 @@ LABEL_78:
                     v133 = NSStringFromClass(v58);
                     v59 = NSStringFromSelector(a2);
                     v127 = v59;
-                    v130 = [v49 identifier];
-                    v129 = [(__CFString *)v43 identifier];
-                    if ([v130 isEqual:v129])
+                    identifier3 = [v49 identifier];
+                    identifier4 = [(__CFString *)v43 identifier];
+                    if ([identifier3 isEqual:identifier4])
                     {
                       v60 = @"YES";
                     }
@@ -1519,8 +1519,8 @@ LABEL_78:
                     }
 
                     v125 = v60;
-                    v61 = [v49 type];
-                    if (v61 == [(__CFString *)v43 type])
+                    type = [v49 type];
+                    if (type == [(__CFString *)v43 type])
                     {
                       v62 = @"YES";
                     }
@@ -1542,10 +1542,10 @@ LABEL_78:
 
                     v123 = v63;
                     v124 = v62;
-                    v128 = [v49 mapItem];
-                    v64 = [v128 name];
-                    v126 = [(__CFString *)v43 mapItem];
-                    v65 = [v126 name];
+                    mapItem3 = [v49 mapItem];
+                    name = [mapItem3 name];
+                    mapItem4 = [(__CFString *)v43 mapItem];
+                    name2 = [mapItem4 name];
                     v66 = [obj objectAtIndexedSubscript:v117];
                     v67 = [obj objectAtIndexedSubscript:v121];
                     *buf = 138415619;
@@ -1559,10 +1559,10 @@ LABEL_78:
                     v166 = 2112;
                     v167 = v123;
                     v168 = 2117;
-                    v169 = v64;
-                    v68 = v64;
+                    v169 = name;
+                    v68 = name;
                     v170 = 2117;
-                    v171 = v65;
+                    v171 = name2;
                     v172 = 2048;
                     v173 = v52;
                     v174 = 2048;
@@ -1579,20 +1579,20 @@ LABEL_78:
                     v185 = v138;
                     _os_log_impl(&dword_2304B3000, v57, OS_LOG_TYPE_INFO, "%@, %@, learnedPlaces have same UUID, %@, type matched, %@, shallBeFolded, %@, mapItem name of source1, %{sensitive}@, mapItem name of source 2, %{sensitive}@, distance between learnedPlaces, %.3f, threshold, %.3f, source1, %@, source2, %@, learnedPlaceFromSource1, %{sensitive}@, learnedPlaceFromSource2, %{sensitive}@, error, %@", buf, 0x8Eu);
 
-                    v44 = v119;
+                    selfCopy2 = selfCopy;
                     v38 = v49;
                   }
                 }
 
                 if (v56)
                 {
-                  v69 = [v38 type];
-                  self = v44;
-                  if (v69 == [(__CFString *)v43 type])
+                  type2 = [v38 type];
+                  self = selfCopy2;
+                  if (type2 == [(__CFString *)v43 type])
                   {
-                    v131 |= [(__CFString *)v43 typeSource];
-                    v70 = [(__CFString *)v43 identifier];
-                    [v120 removeObjectForKey:v70];
+                    typeSource |= [(__CFString *)v43 typeSource];
+                    identifier5 = [(__CFString *)v43 identifier];
+                    [v120 removeObjectForKey:identifier5];
                     v34 = v138;
 LABEL_62:
 
@@ -1602,24 +1602,24 @@ LABEL_62:
                   v34 = v138;
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                   {
-                    v70 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
-                    if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
+                    identifier5 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
+                    if (os_log_type_enabled(identifier5, OS_LOG_TYPE_INFO))
                     {
                       v71 = objc_opt_class();
                       v72 = NSStringFromClass(v71);
                       v73 = NSStringFromSelector(a2);
-                      v74 = [v38 identifier];
+                      identifier6 = [v38 identifier];
                       *buf = 138413315;
                       v159 = v72;
                       v160 = 2112;
                       v161 = v73;
                       v162 = 2112;
-                      v163 = v74;
+                      v163 = identifier6;
                       v164 = 2117;
                       v165 = v38;
                       v166 = 2117;
                       v167 = v43;
-                      _os_log_impl(&dword_2304B3000, v70, OS_LOG_TYPE_INFO, "%@, %@, learnedplaces have same UUID, %@, but mismatched type, learnedPlaceFromSource1, %{sensitive}@, learnedPlaceFromSource2, %{sensitive}@", buf, 0x34u);
+                      _os_log_impl(&dword_2304B3000, identifier5, OS_LOG_TYPE_INFO, "%@, %@, learnedplaces have same UUID, %@, but mismatched type, learnedPlaceFromSource1, %{sensitive}@, learnedPlaceFromSource2, %{sensitive}@", buf, 0x34u);
                     }
 
                     goto LABEL_62;
@@ -1628,7 +1628,7 @@ LABEL_62:
 
                 else
                 {
-                  self = v44;
+                  self = selfCopy2;
                   v34 = v138;
                 }
 
@@ -1638,7 +1638,7 @@ LABEL_64:
               }
 
               while (v135 != v41);
-              v75 = [v132 countByEnumeratingWithState:&v145 objects:v186 count:16];
+              v75 = [allValues2 countByEnumeratingWithState:&v145 objects:v186 count:16];
               v135 = v75;
             }
 
@@ -1653,7 +1653,7 @@ LABEL_70:
           while ([v115 count] > (v121 + 1));
         }
 
-        if ([v38 typeSource] == v131)
+        if ([v38 typeSource] == typeSource)
         {
           [v108 addObject:v38];
         }
@@ -1661,17 +1661,17 @@ LABEL_70:
         else
         {
           v76 = [RTLearnedPlace alloc];
-          v77 = [v38 identifier];
-          v78 = [v38 type];
-          v79 = [v38 mapItem];
+          identifier7 = [v38 identifier];
+          type3 = [v38 type];
+          mapItem5 = [v38 mapItem];
           [v38 customLabel];
           v81 = v80 = v38;
-          v82 = [v80 creationDate];
-          v83 = [v80 expirationDate];
-          v84 = [(RTLearnedPlace *)v76 initWithIdentifier:v77 type:v78 typeSource:v131 mapItem:v79 customLabel:v81 creationDate:v82 expirationDate:v83, v104];
+          creationDate = [v80 creationDate];
+          expirationDate = [v80 expirationDate];
+          v104 = [(RTLearnedPlace *)v76 initWithIdentifier:identifier7 type:type3 typeSource:typeSource mapItem:mapItem5 customLabel:v81 creationDate:creationDate expirationDate:expirationDate, v104];
 
           v27 = v115;
-          [v108 addObject:v84];
+          [v108 addObject:v104];
         }
 
         objc_autoreleasePoolPop(v113);
@@ -1680,7 +1680,7 @@ LABEL_70:
       }
 
       while (v114 + 1 != v112);
-      v112 = [v107 countByEnumeratingWithState:&v149 objects:v187 count:16];
+      v112 = [allValues countByEnumeratingWithState:&v149 objects:v187 count:16];
       if (!v112)
       {
         goto LABEL_78;
@@ -1765,16 +1765,16 @@ LABEL_81:
   return v90;
 }
 
-- (BOOL)_logExpertClassifications:(id)a3 sourceNames:(id)a4
+- (BOOL)_logExpertClassifications:(id)classifications sourceNames:(id)names
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v35 = v5;
-  if (v5)
+  classificationsCopy = classifications;
+  namesCopy = names;
+  v7 = namesCopy;
+  v35 = classificationsCopy;
+  if (classificationsCopy)
   {
-    if (v6)
+    if (namesCopy)
     {
       goto LABEL_10;
     }
@@ -1918,12 +1918,12 @@ LABEL_10:
   return 1;
 }
 
-- (id)coalescePlacesFromExperts:(id)a3
+- (id)coalescePlacesFromExperts:(id)experts
 {
   v266[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v210 = self;
-  if (!v4)
+  expertsCopy = experts;
+  selfCopy = self;
+  if (!expertsCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1949,7 +1949,7 @@ LABEL_10:
   v13 = NSStringFromClass(v12);
   v266[3] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v266 count:4];
-  [(RTPlaceTypeClassifier *)self _logExpertClassifications:v4 sourceNames:v14];
+  [(RTPlaceTypeClassifier *)self _logExpertClassifications:expertsCopy sourceNames:v14];
 
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
@@ -1958,41 +1958,41 @@ LABEL_10:
   v18 = NSStringFromClass(v17);
   v265[1] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v265 count:2];
-  v196 = [(RTPlaceTypeClassifier *)self coalescePlacesFromSourcesOfTruth:v4 sourceOfTruthNames:v19];
+  v196 = [(RTPlaceTypeClassifier *)self coalescePlacesFromSourcesOfTruth:expertsCopy sourceOfTruthNames:v19];
 
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
-  v22 = [v4 objectForKey:v21];
+  v22 = [expertsCopy objectForKey:v21];
   v23 = v22;
-  v24 = self;
+  selfCopy2 = self;
   if (v22)
   {
-    v25 = v22;
+    array = v22;
   }
 
   else
   {
-    v25 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
   v26 = objc_opt_class();
   v27 = NSStringFromClass(v26);
-  v28 = [v4 objectForKey:v27];
+  v28 = [expertsCopy objectForKey:v27];
   v29 = v28;
   if (v28)
   {
-    v195 = v28;
+    array2 = v28;
   }
 
   else
   {
-    v195 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
   }
 
   v194 = objc_opt_new();
   v243 = 0;
-  v206 = v25;
-  v201 = [(RTPlaceTypeClassifier *)v24 _getClosestLearnedPlacesAtDestination:v196 source:v25 threshold:&v243 error:250.0];
+  v206 = array;
+  v201 = [(RTPlaceTypeClassifier *)selfCopy2 _getClosestLearnedPlacesAtDestination:v196 source:array threshold:&v243 error:250.0];
   v30 = v243;
   v31 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -2013,9 +2013,9 @@ LABEL_10:
   }
 
   v192 = v30;
-  v193 = v4;
+  v193 = expertsCopy;
 
-  v36 = [(RTPlaceTypeClassifier *)v24 _convertToIdToLearnedPlace:v196];
+  v36 = [(RTPlaceTypeClassifier *)selfCopy2 _convertToIdToLearnedPlace:v196];
   v37 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
@@ -2037,8 +2037,8 @@ LABEL_10:
   v239 = 0u;
   v240 = 0u;
   v205 = v36;
-  v42 = [v36 allValues];
-  v43 = [v42 countByEnumeratingWithState:&v239 objects:v264 count:16];
+  allValues = [v36 allValues];
+  v43 = [allValues countByEnumeratingWithState:&v239 objects:v264 count:16];
   if (v43)
   {
     v44 = v43;
@@ -2050,7 +2050,7 @@ LABEL_10:
       {
         if (*v240 != v45)
         {
-          objc_enumerationMutation(v42);
+          objc_enumerationMutation(allValues);
         }
 
         v48 = *(*(&v239 + 1) + 8 * i);
@@ -2076,7 +2076,7 @@ LABEL_10:
         objc_autoreleasePoolPop(v49);
       }
 
-      v44 = [v42 countByEnumeratingWithState:&v239 objects:v264 count:16];
+      v44 = [allValues countByEnumeratingWithState:&v239 objects:v264 count:16];
     }
 
     while (v44);
@@ -2087,7 +2087,7 @@ LABEL_10:
   v235 = 0u;
   v236 = 0u;
   obj = v206;
-  v54 = v210;
+  v54 = selfCopy;
   v202 = [obj countByEnumeratingWithState:&v235 objects:v263 count:16];
   if (v202)
   {
@@ -2103,13 +2103,13 @@ LABEL_10:
 
         v56 = *(*(&v235 + 1) + 8 * j);
         v57 = objc_autoreleasePoolPush();
-        v58 = [(__CFString *)v56 identifier];
-        v59 = [v201 objectForKeyedSubscript:v58];
-        v60 = [v59 firstObject];
+        identifier = [(__CFString *)v56 identifier];
+        v59 = [v201 objectForKeyedSubscript:identifier];
+        firstObject = [v59 firstObject];
 
-        v61 = [(__CFString *)v56 identifier];
-        v62 = [v201 objectForKeyedSubscript:v61];
-        v63 = [v62 secondObject];
+        identifier2 = [(__CFString *)v56 identifier];
+        v62 = [v201 objectForKeyedSubscript:identifier2];
+        secondObject = [v62 secondObject];
 
         v64 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
@@ -2117,10 +2117,10 @@ LABEL_10:
           v65 = objc_opt_class();
           v66 = NSStringFromClass(v65);
           v67 = NSStringFromSelector(a2);
-          if (v63)
+          if (secondObject)
           {
             v68 = MEMORY[0x277CCACA8];
-            [v63 floatValue];
+            [secondObject floatValue];
             v199 = [v68 stringWithFormat:@"%.3f", v69];
             v70 = v199;
           }
@@ -2137,17 +2137,17 @@ LABEL_10:
           v253 = 2117;
           v254 = v56;
           v255 = 2117;
-          v256 = v60;
+          v256 = firstObject;
           v257 = 2112;
           v258 = v70;
           _os_log_impl(&dword_2304B3000, v64, OS_LOG_TYPE_DEFAULT, "%@, %@, inferred place, %{sensitive}@, closestSourceOfTruthLearnedPlace, %{sensitive}@, distance, %@", buf, 0x34u);
-          if (v63)
+          if (secondObject)
           {
           }
         }
 
-        v211 = v63;
-        if (!v60)
+        v211 = secondObject;
+        if (!firstObject)
         {
           v207 = v57;
           v203 = j;
@@ -2172,8 +2172,8 @@ LABEL_10:
 
                 v95 = *(*(&v231 + 1) + 8 * k);
                 v96 = objc_autoreleasePoolPush();
-                v97 = [v95 type];
-                if (v97 == [(__CFString *)v56 type]&& ![(RTPlaceTypeClassifier *)v54 isRottedMeCard:v95 inferredPlace:v56])
+                type = [v95 type];
+                if (type == [(__CFString *)v56 type]&& ![(RTPlaceTypeClassifier *)v54 isRottedMeCard:v95 inferredPlace:v56])
                 {
                   objc_autoreleasePoolPop(v96);
 
@@ -2214,8 +2214,8 @@ LABEL_10:
             }
           }
 
-          v98 = [(__CFString *)v56 identifier];
-          [v205 setObject:v56 forKeyedSubscript:v98];
+          identifier3 = [(__CFString *)v56 identifier];
+          [v205 setObject:v56 forKeyedSubscript:identifier3];
 
           v81 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
           if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
@@ -2247,28 +2247,28 @@ LABEL_59:
           goto LABEL_60;
         }
 
-        v71 = [v60 type];
-        if (v71 == [(__CFString *)v56 type])
+        type2 = [firstObject type];
+        if (type2 == [(__CFString *)v56 type])
         {
           v207 = v57;
           v203 = j;
           v198 = [RTLearnedPlace alloc];
-          v72 = [v60 identifier];
-          v73 = [v60 type];
-          v74 = [v60 typeSource];
-          v75 = [(__CFString *)v56 typeSource];
-          v76 = [v60 mapItem];
-          v77 = [v60 customLabel];
-          [v60 creationDate];
-          v79 = v78 = v60;
-          v80 = [v78 expirationDate];
-          v81 = [(RTLearnedPlace *)v198 initWithIdentifier:v72 type:v73 typeSource:v75 | v74 mapItem:v76 customLabel:v77 creationDate:v79 expirationDate:v80];
+          identifier4 = [firstObject identifier];
+          type3 = [firstObject type];
+          typeSource = [firstObject typeSource];
+          typeSource2 = [(__CFString *)v56 typeSource];
+          mapItem = [firstObject mapItem];
+          customLabel = [firstObject customLabel];
+          [firstObject creationDate];
+          v79 = v78 = firstObject;
+          expirationDate = [v78 expirationDate];
+          v81 = [(RTLearnedPlace *)v198 initWithIdentifier:identifier4 type:type3 typeSource:typeSource2 | typeSource mapItem:mapItem customLabel:customLabel creationDate:v79 expirationDate:expirationDate];
 
-          v60 = v78;
-          v54 = v210;
+          firstObject = v78;
+          v54 = selfCopy;
 
-          v82 = [v81 identifier];
-          [v205 setObject:v81 forKeyedSubscript:v82];
+          identifier5 = [v81 identifier];
+          [v205 setObject:v81 forKeyedSubscript:identifier5];
 
           v83 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
           if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
@@ -2290,7 +2290,7 @@ LABEL_59:
             v257 = 2048;
             v258 = v89;
             v259 = 2117;
-            v260 = v60;
+            v260 = firstObject;
             v261 = 2117;
             v262 = v56;
             _os_log_impl(&dword_2304B3000, v83, OS_LOG_TYPE_DEFAULT, "%@, %@, case 1.1, snapping inferred %@ to source of truth %@ which are %f meters distance apart, source of truth place, %{sensitive}@, inferred place, %{sensitive}@", buf, 0x48u);
@@ -2307,7 +2307,7 @@ LABEL_59:
           v101 = objc_opt_class();
           v102 = NSStringFromClass(v101);
           v103 = NSStringFromSelector(a2);
-          +[RTLearnedPlace placeTypeToString:](RTLearnedPlace, "placeTypeToString:", [v60 type]);
+          +[RTLearnedPlace placeTypeToString:](RTLearnedPlace, "placeTypeToString:", [firstObject type]);
           v104 = v208 = v57;
           v105 = [RTLearnedPlace placeTypeToString:[(__CFString *)v56 type]];
           [v211 doubleValue];
@@ -2322,7 +2322,7 @@ LABEL_59:
           v257 = 2048;
           v258 = v106;
           v259 = 2117;
-          v260 = v60;
+          v260 = firstObject;
           v261 = 2117;
           v262 = v56;
           _os_log_impl(&dword_2304B3000, v81, OS_LOG_TYPE_DEFAULT, "%@, %@, case 1.2, skip snapping inferred %@ to source of truth %@ which are at %f meters distance apart due to placeType mismatch, source of truth place, %{sensitive}@, inferred place, %{sensitive}@", buf, 0x48u);
@@ -2345,8 +2345,8 @@ LABEL_60:
   v230 = 0u;
   v227 = 0u;
   v228 = 0u;
-  v112 = [v205 allValues];
-  v113 = [v112 countByEnumeratingWithState:&v227 objects:v247 count:16];
+  allValues2 = [v205 allValues];
+  v113 = [allValues2 countByEnumeratingWithState:&v227 objects:v247 count:16];
   if (v113)
   {
     v114 = v113;
@@ -2360,14 +2360,14 @@ LABEL_60:
       {
         if (*v228 != v115)
         {
-          objc_enumerationMutation(v112);
+          objc_enumerationMutation(allValues2);
         }
 
         v118 = *(*(&v227 + 1) + 8 * v117);
         v119 = objc_autoreleasePoolPush();
         if ([v118 type] == 1 || objc_msgSend(v118, "type") == 2)
         {
-          v120 = [(RTPlaceTypeClassifier *)v210 replaceBusinessMapItemWithReverseGeocodedMapItem:v118];
+          v120 = [(RTPlaceTypeClassifier *)selfCopy replaceBusinessMapItemWithReverseGeocodedMapItem:v118];
           if (os_log_type_enabled(v116, OS_LOG_TYPE_INFO))
           {
             v121 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2378,7 +2378,7 @@ LABEL_60:
               v124 = NSStringFromSelector(a2);
               [v118 identifier];
               v125 = v115;
-              v127 = v126 = v112;
+              v127 = v126 = allValues2;
               *buf = 138413315;
               v250 = v123;
               v251 = 2112;
@@ -2391,7 +2391,7 @@ LABEL_60:
               v258 = v120;
               _os_log_impl(&dword_2304B3000, v121, OS_LOG_TYPE_INFO, "%@, %@, Replacing business map item with reverse geocoded map item, identifier, %@, original place, %{sensitive}@, updated place, %{sensitive}@,", buf, 0x34u);
 
-              v112 = v126;
+              allValues2 = v126;
               v115 = v125;
               v116 = MEMORY[0x277D86220];
             }
@@ -2399,8 +2399,8 @@ LABEL_60:
             v114 = v212;
           }
 
-          v128 = [(__CFString *)v120 identifier];
-          [v205 setObject:v120 forKeyedSubscript:v128];
+          identifier6 = [(__CFString *)v120 identifier];
+          [v205 setObject:v120 forKeyedSubscript:identifier6];
         }
 
         objc_autoreleasePoolPop(v119);
@@ -2408,7 +2408,7 @@ LABEL_60:
       }
 
       while (v114 != v117);
-      v114 = [v112 countByEnumeratingWithState:&v227 objects:v247 count:16];
+      v114 = [allValues2 countByEnumeratingWithState:&v227 objects:v247 count:16];
     }
 
     while (v114);
@@ -2418,34 +2418,34 @@ LABEL_60:
   v226 = 0u;
   v223 = 0u;
   v224 = 0u;
-  v129 = [v205 allValues];
-  v130 = [v129 countByEnumeratingWithState:&v223 objects:v246 count:16];
+  allValues3 = [v205 allValues];
+  v130 = [allValues3 countByEnumeratingWithState:&v223 objects:v246 count:16];
   if (v130)
   {
     v131 = v130;
     v132 = *v224;
-    v133 = v210;
+    v133 = selfCopy;
     while (2)
     {
       for (m = 0; m != v131; ++m)
       {
         if (*v224 != v132)
         {
-          objc_enumerationMutation(v129);
+          objc_enumerationMutation(allValues3);
         }
 
         v135 = *(*(&v223 + 1) + 8 * m);
         v136 = objc_autoreleasePoolPush();
-        v137 = [v135 type];
+        type4 = [v135 type];
         objc_autoreleasePoolPop(v136);
-        if (v137 == 1)
+        if (type4 == 1)
         {
           v138 = 1;
           goto LABEL_87;
         }
       }
 
-      v131 = [v129 countByEnumeratingWithState:&v223 objects:v246 count:16];
+      v131 = [allValues3 countByEnumeratingWithState:&v223 objects:v246 count:16];
       if (v131)
       {
         continue;
@@ -2460,7 +2460,7 @@ LABEL_60:
   else
   {
     v138 = 0;
-    v133 = v210;
+    v133 = selfCopy;
   }
 
 LABEL_87:
@@ -2510,9 +2510,9 @@ LABEL_87:
       }
     }
 
-    v149 = [v205 allValues];
+    allValues4 = [v205 allValues];
     v222 = v192;
-    v150 = [(RTPlaceTypeClassifier *)v133 _getClosestLearnedPlacesAtDestination:v149 source:v195 threshold:&v222 error:250.0];
+    v150 = [(RTPlaceTypeClassifier *)v133 _getClosestLearnedPlacesAtDestination:allValues4 source:array2 threshold:&v222 error:250.0];
     v151 = v222;
 
     if (v151)
@@ -2546,7 +2546,7 @@ LABEL_87:
     v221 = 0u;
     v218 = 0u;
     v219 = 0u;
-    v153 = v195;
+    v153 = array2;
     v213 = [v153 countByEnumeratingWithState:&v218 objects:v245 count:16];
     if (v213)
     {
@@ -2565,8 +2565,8 @@ LABEL_87:
           v158 = objc_autoreleasePoolPush();
           if (!v150 || ([v157 identifier], v159 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v150, "objectForKeyedSubscript:", v159), v160 = objc_claimAutoreleasedReturnValue(), v160, v159, !v160))
           {
-            v161 = [v157 identifier];
-            [v205 setObject:v157 forKeyedSubscript:v161];
+            identifier7 = [v157 identifier];
+            [v205 setObject:v157 forKeyedSubscript:identifier7];
 
             if (os_log_type_enabled(v155, OS_LOG_TYPE_INFO))
             {
@@ -2626,8 +2626,8 @@ LABEL_87:
   v217 = 0u;
   v214 = 0u;
   v215 = 0u;
-  v175 = [v205 allValues];
-  v176 = [v175 countByEnumeratingWithState:&v214 objects:v244 count:16];
+  allValues5 = [v205 allValues];
+  v176 = [allValues5 countByEnumeratingWithState:&v214 objects:v244 count:16];
   if (v176)
   {
     v177 = v176;
@@ -2638,7 +2638,7 @@ LABEL_87:
       {
         if (*v215 != v178)
         {
-          objc_enumerationMutation(v175);
+          objc_enumerationMutation(allValues5);
         }
 
         v180 = *(*(&v214 + 1) + 8 * ii);
@@ -2661,7 +2661,7 @@ LABEL_87:
         objc_autoreleasePoolPop(v181);
       }
 
-      v177 = [v175 countByEnumeratingWithState:&v214 objects:v244 count:16];
+      v177 = [allValues5 countByEnumeratingWithState:&v214 objects:v244 count:16];
     }
 
     while (v177);
@@ -2671,14 +2671,14 @@ LABEL_87:
   return v205;
 }
 
-- (id)_getClosestLearnedPlacesAtDestination:(id)a3 source:(id)a4 threshold:(double)a5 error:(id *)a6
+- (id)_getClosestLearnedPlacesAtDestination:(id)destination source:(id)source threshold:(double)threshold error:(id *)error
 {
   v123 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v86 = v8;
-  v78 = v9;
-  if (!v8)
+  destinationCopy = destination;
+  sourceCopy = source;
+  v86 = destinationCopy;
+  v78 = sourceCopy;
+  if (!destinationCopy)
   {
     v70 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -2687,8 +2687,8 @@ LABEL_87:
       _os_log_error_impl(&dword_2304B3000, v70, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: destinationLearnedPlaces", buf, 2u);
     }
 
-    v71 = a6;
-    if (!a6)
+    errorCopy2 = error;
+    if (!error)
     {
       goto LABEL_59;
     }
@@ -2697,7 +2697,7 @@ LABEL_87:
     goto LABEL_58;
   }
 
-  if (!v9)
+  if (!sourceCopy)
   {
     v73 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
@@ -2706,24 +2706,24 @@ LABEL_87:
       _os_log_error_impl(&dword_2304B3000, v73, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sourceLearnedPlaces", buf, 2u);
     }
 
-    v71 = a6;
-    if (!a6)
+    errorCopy2 = error;
+    if (!error)
     {
       goto LABEL_59;
     }
 
     v72 = @"sourceLearnedPlaces";
 LABEL_58:
-    v74 = v71;
+    v74 = errorCopy2;
     *v74 = _RTErrorInvalidParameterCreate(v72);
 LABEL_59:
-    v11 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     goto LABEL_64;
   }
 
-  v10 = v9;
-  v11 = objc_opt_new();
-  v12 = [MEMORY[0x277CBEB18] array];
+  v10 = sourceCopy;
+  dictionary = objc_opt_new();
+  array = [MEMORY[0x277CBEB18] array];
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
@@ -2738,8 +2738,8 @@ LABEL_59:
 
   v96 = 0;
   v84 = *v108;
-  v91 = v11;
-  v85 = v12;
+  v91 = dictionary;
+  v85 = array;
   do
   {
     for (i = 0; i != v87; i = v68 + 1)
@@ -2779,9 +2779,9 @@ LABEL_59:
 
           v17 = *(*(&v103 + 1) + 8 * v16);
           v18 = objc_autoreleasePoolPush();
-          v19 = [v14 identifier];
-          v20 = [v17 identifier];
-          v21 = [v19 isEqual:v20];
+          identifier = [v14 identifier];
+          identifier2 = [v17 identifier];
+          v21 = [identifier isEqual:identifier2];
 
           if (v21)
           {
@@ -2792,13 +2792,13 @@ LABEL_59:
           {
             v95 = v18;
             v23 = MEMORY[0x277CCABB0];
-            v24 = [(RTPlaceTypeClassifier *)self distanceCalculator];
-            v25 = [v14 mapItem];
-            v26 = [v25 location];
-            v27 = [v17 mapItem];
-            v28 = [v27 location];
+            distanceCalculator = [(RTPlaceTypeClassifier *)self distanceCalculator];
+            mapItem = [v14 mapItem];
+            location = [mapItem location];
+            mapItem2 = [v17 mapItem];
+            location2 = [mapItem2 location];
             v102 = v96;
-            [v24 distanceFromLocation:v26 toLocation:v28 error:&v102];
+            [distanceCalculator distanceFromLocation:location toLocation:location2 error:&v102];
             v30 = v29;
             v31 = v102;
 
@@ -2806,7 +2806,7 @@ LABEL_59:
 
             if (v31)
             {
-              v11 = v91;
+              dictionary = v91;
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
                 v32 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -2831,7 +2831,7 @@ LABEL_59:
             else
             {
               v96 = 0;
-              v11 = v91;
+              dictionary = v91;
             }
 
             v14 = v93;
@@ -2839,20 +2839,20 @@ LABEL_59:
           }
 
           [v22 doubleValue];
-          if (v36 <= a5)
+          if (v36 <= threshold)
           {
-            v37 = [v14 identifier];
-            v38 = [v11 objectForKeyedSubscript:v37];
-            if (!v38 || ([v15 doubleValue], v40 = v39, objc_msgSend(v22, "doubleValue"), v40 > v41))
+            identifier3 = [v14 identifier];
+            identifier4 = [dictionary objectForKeyedSubscript:identifier3];
+            if (!identifier4 || ([v15 doubleValue], v40 = v39, objc_msgSend(v22, "doubleValue"), v40 > v41))
             {
               v42 = v18;
 
 LABEL_27:
               v43 = v22;
 
-              v37 = [objc_alloc(MEMORY[0x277D011C0]) initWithFirstObject:v17 secondObject:v43];
-              v38 = [v14 identifier];
-              [v11 setObject:v37 forKeyedSubscript:v38];
+              identifier3 = [objc_alloc(MEMORY[0x277D011C0]) initWithFirstObject:v17 secondObject:v43];
+              identifier4 = [v14 identifier];
+              [dictionary setObject:identifier3 forKeyedSubscript:identifier4];
               v15 = v43;
               v18 = v42;
 LABEL_29:
@@ -2866,10 +2866,10 @@ LABEL_29:
             }
 
             v42 = v18;
-            v44 = [v17 type];
-            v45 = [v14 type];
+            type = [v17 type];
+            type2 = [v14 type];
 
-            v46 = v44 == v45;
+            v46 = type == type2;
             v14 = v93;
             if (v46)
             {
@@ -2902,11 +2902,11 @@ LABEL_37:
           v49 = objc_opt_class();
           v50 = NSStringFromClass(v49);
           v51 = NSStringFromSelector(a2);
-          v52 = [v14 identifier];
-          v53 = [v11 objectForKeyedSubscript:v52];
-          v101 = [v53 firstObject];
+          identifier5 = [v14 identifier];
+          v53 = [dictionary objectForKeyedSubscript:identifier5];
+          firstObject = [v53 firstObject];
           [v14 identifier];
-          v55 = v54 = v11;
+          v55 = v54 = dictionary;
           v56 = [v54 objectForKeyedSubscript:v55];
           [v56 secondObject];
           v58 = v57 = v14;
@@ -2917,14 +2917,14 @@ LABEL_37:
             v60 = v55;
             v61 = v50;
             v62 = v53;
-            v63 = v52;
+            v63 = identifier5;
             v64 = MEMORY[0x277CCACA8];
-            v82 = [v57 identifier];
+            identifier6 = [v57 identifier];
             v81 = [v54 objectForKeyedSubscript:?];
-            v80 = [v81 secondObject];
-            [v80 floatValue];
+            secondObject = [v81 secondObject];
+            [secondObject floatValue];
             v66 = v64;
-            v52 = v63;
+            identifier5 = v63;
             v53 = v62;
             v50 = v61;
             v55 = v60;
@@ -2946,7 +2946,7 @@ LABEL_37:
           v115 = 2117;
           v116 = v57;
           v117 = 2117;
-          v118 = v101;
+          v118 = firstObject;
           v119 = 2112;
           v120 = v67;
           _os_log_impl(&dword_2304B3000, v48, OS_LOG_TYPE_INFO, "%@, %@, source learnedPlace, %{sensitive}@, closest learned place, %{sensitive}@, distance, %@", buf, 0x34u);
@@ -2954,10 +2954,10 @@ LABEL_37:
           {
           }
 
-          v11 = v91;
+          dictionary = v91;
         }
 
-        v12 = v85;
+        array = v85;
         v69 = v88;
         v68 = v89;
 
@@ -2966,7 +2966,7 @@ LABEL_37:
 
       else
       {
-        v12 = v85;
+        array = v85;
         v69 = v88;
         v68 = v89;
       }
@@ -2980,34 +2980,34 @@ LABEL_37:
   while (v87);
 LABEL_61:
 
-  if (a6)
+  if (error)
   {
     v75 = _RTSafeArray();
-    *a6 = _RTMultiErrorCreate();
+    *error = _RTMultiErrorCreate();
   }
 
 LABEL_64:
 
-  return v11;
+  return dictionary;
 }
 
-- (id)mergeExistingPlaces:(id)a3 intoUpdatedPlace:(id)a4 typesInMeCard:(id)a5
+- (id)mergeExistingPlaces:(id)places intoUpdatedPlace:(id)place typesInMeCard:(id)card
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  placesCopy = places;
+  placeCopy = place;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v49 objects:v55 count:16];
+  obj = placesCopy;
+  v8 = [placesCopy countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v50;
     v46 = *v50;
-    v43 = v7;
+    v43 = placeCopy;
     do
     {
       v11 = 0;
@@ -3020,42 +3020,42 @@ LABEL_64:
         }
 
         v12 = *(*(&v49 + 1) + 8 * v11);
-        v13 = [v12 identifier];
-        v14 = [v7 objectForKey:v13];
+        identifier = [v12 identifier];
+        v14 = [placeCopy objectForKey:identifier];
 
         if (!v14)
         {
-          v17 = [v12 mapItem];
-          if (([v17 source] & 4) != 0)
+          mapItem = [v12 mapItem];
+          if (([mapItem source] & 4) != 0)
           {
-            [v17 setExtendedAttributes:0];
-            v26 = [v12 mapItem];
-            [v17 setSource:{objc_msgSend(v26, "source") & 0xFFFFFFFFFFFFFFFBLL}];
+            [mapItem setExtendedAttributes:0];
+            mapItem2 = [v12 mapItem];
+            [mapItem setSource:{objc_msgSend(mapItem2, "source") & 0xFFFFFFFFFFFFFFFBLL}];
           }
 
-          if (([v17 source] & 8) != 0)
+          if (([mapItem source] & 8) != 0)
           {
-            v27 = [v12 mapItem];
-            [v17 setSource:{objc_msgSend(v27, "source") & 0xFFFFFFFFFFFFFFF7}];
+            mapItem3 = [v12 mapItem];
+            [mapItem setSource:{objc_msgSend(mapItem3, "source") & 0xFFFFFFFFFFFFFFF7}];
           }
 
-          if (([v17 source] & 0x20000) != 0)
+          if (([mapItem source] & 0x20000) != 0)
           {
-            v28 = [v12 mapItem];
-            [v17 setSource:{objc_msgSend(v28, "source") & 0xFFFFFFFFFFFDFFFFLL}];
+            mapItem4 = [v12 mapItem];
+            [mapItem setSource:{objc_msgSend(mapItem4, "source") & 0xFFFFFFFFFFFDFFFFLL}];
           }
 
           v29 = [RTLearnedPlace alloc];
-          v30 = [v12 identifier];
-          v31 = [v12 customLabel];
-          v32 = [v12 creationDate];
-          v33 = [v12 expirationDate];
-          v14 = [(RTLearnedPlace *)v29 initWithIdentifier:v30 type:0 typeSource:0 mapItem:v17 customLabel:v31 creationDate:v32 expirationDate:v33];
+          identifier2 = [v12 identifier];
+          customLabel = [v12 customLabel];
+          creationDate = [v12 creationDate];
+          expirationDate = [v12 expirationDate];
+          v14 = [(RTLearnedPlace *)v29 initWithIdentifier:identifier2 type:0 typeSource:0 mapItem:mapItem customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
           if (v14)
           {
-            v34 = [(RTLearnedPlace *)v14 identifier];
-            [v7 setObject:v14 forKey:v34];
+            identifier3 = [(RTLearnedPlace *)v14 identifier];
+            [placeCopy setObject:v14 forKey:identifier3];
           }
 
 LABEL_21:
@@ -3066,48 +3066,48 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v15 = [(RTLearnedPlace *)v14 type];
-        if (v15 == [v12 type])
+        type = [(RTLearnedPlace *)v14 type];
+        if (type == [v12 type])
         {
-          v16 = [(RTLearnedPlace *)v14 typeSource];
-          if (v16 == [v12 typeSource])
+          typeSource = [(RTLearnedPlace *)v14 typeSource];
+          if (typeSource == [v12 typeSource])
           {
-            v17 = [(RTLearnedPlace *)v14 mapItem];
-            v18 = [v17 muid];
-            v19 = [v12 mapItem];
-            if (v18 != [v19 muid])
+            mapItem = [(RTLearnedPlace *)v14 mapItem];
+            muid = [mapItem muid];
+            mapItem5 = [v12 mapItem];
+            if (muid != [mapItem5 muid])
             {
 
               goto LABEL_22;
             }
 
-            v45 = [(RTLearnedPlace *)v14 mapItem];
-            v20 = [v45 address];
-            v21 = [v12 mapItem];
-            v22 = [v21 address];
-            v44 = v20;
-            if (![v20 isEqualToAddress:v22])
+            mapItem6 = [(RTLearnedPlace *)v14 mapItem];
+            address = [mapItem6 address];
+            mapItem7 = [v12 mapItem];
+            address2 = [mapItem7 address];
+            v44 = address;
+            if (![address isEqualToAddress:address2])
             {
 
-              v7 = v43;
+              placeCopy = v43;
               goto LABEL_22;
             }
 
-            v41 = [(RTLearnedPlace *)v14 mapItem];
-            v23 = [v41 location];
-            v24 = [v12 mapItem];
-            v25 = [v24 location];
-            v42 = [v23 isEqualToLocation:v25];
+            mapItem8 = [(RTLearnedPlace *)v14 mapItem];
+            location = [mapItem8 location];
+            mapItem9 = [v12 mapItem];
+            location2 = [mapItem9 location];
+            v42 = [location isEqualToLocation:location2];
 
             if (v42)
             {
-              v17 = [v12 identifier];
-              v7 = v43;
-              [v43 removeObjectForKey:v17];
+              mapItem = [v12 identifier];
+              placeCopy = v43;
+              [v43 removeObjectForKey:mapItem];
               goto LABEL_21;
             }
 
-            v7 = v43;
+            placeCopy = v43;
             v10 = v46;
             v9 = v47;
           }
@@ -3131,19 +3131,19 @@ LABEL_23:
     v36 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
-      v37 = [v7 count];
+      v37 = [placeCopy count];
       *buf = 134217984;
       v54 = v37;
       _os_log_impl(&dword_2304B3000, v36, OS_LOG_TYPE_INFO, "Finalized %lu places to be updated from merging the existing and coalesced places (from experts)", buf, 0xCu);
     }
   }
 
-  v38 = [v7 allValues];
-  [v38 enumerateObjectsUsingBlock:&__block_literal_global_55];
+  allValues = [placeCopy allValues];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_55];
 
-  v39 = [v7 allValues];
+  allValues2 = [placeCopy allValues];
 
-  return v39;
+  return allValues2;
 }
 
 void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeCard___block_invoke(uint64_t a1, void *a2)
@@ -3164,68 +3164,68 @@ void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeC
 
 - (id)getExperts
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [RTPlaceTypeClassifierExpertContacts alloc];
-  v5 = [(RTPlaceTypeClassifier *)self contactsManager];
-  v6 = [(RTPlaceTypeClassifier *)self distanceCalculator];
-  v7 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-  v8 = [(RTPlaceTypeClassifier *)self mapServiceManager];
-  v9 = [(RTPlaceTypeClassifier *)self mapsSupportManager];
-  v10 = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
-  v33 = [(RTPlaceTypeClassifierExpertContacts *)v4 initWithContactsManager:v5 distanceCalculator:v6 learnedLocationStore:v7 mapServiceManager:v8 mapsSupportManager:v9 placeTypeClassifierMetricsCalculator:v10];
+  contactsManager = [(RTPlaceTypeClassifier *)self contactsManager];
+  distanceCalculator = [(RTPlaceTypeClassifier *)self distanceCalculator];
+  learnedLocationStore = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  mapServiceManager = [(RTPlaceTypeClassifier *)self mapServiceManager];
+  mapsSupportManager = [(RTPlaceTypeClassifier *)self mapsSupportManager];
+  placeTypeClassifierMetricsCalculator = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
+  v33 = [(RTPlaceTypeClassifierExpertContacts *)v4 initWithContactsManager:contactsManager distanceCalculator:distanceCalculator learnedLocationStore:learnedLocationStore mapServiceManager:mapServiceManager mapsSupportManager:mapsSupportManager placeTypeClassifierMetricsCalculator:placeTypeClassifierMetricsCalculator];
 
-  [v3 addObject:v33];
+  [array addObject:v33];
   v11 = [RTPlaceTypeClassifierExpertMaps alloc];
-  v12 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-  v13 = [(RTPlaceTypeClassifier *)self mapsSupportManager];
-  v14 = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
-  v15 = [(RTPlaceTypeClassifierExpertMaps *)v11 initWithLearnedLocationStore:v12 mapsSupportManager:v13 placeTypeClassifierMetricsCalculator:v14];
+  learnedLocationStore2 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  mapsSupportManager2 = [(RTPlaceTypeClassifier *)self mapsSupportManager];
+  placeTypeClassifierMetricsCalculator2 = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
+  v15 = [(RTPlaceTypeClassifierExpertMaps *)v11 initWithLearnedLocationStore:learnedLocationStore2 mapsSupportManager:mapsSupportManager2 placeTypeClassifierMetricsCalculator:placeTypeClassifierMetricsCalculator2];
 
-  [v3 addObject:v15];
+  [array addObject:v15];
   v16 = [RTPlaceTypeClassifierExpertInferred alloc];
-  v17 = [(RTPlaceTypeClassifier *)self biomeManager];
-  v18 = [(RTPlaceTypeClassifier *)self defaultsManager];
-  v19 = [(RTPlaceTypeClassifier *)self distanceCalculator];
-  v20 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-  v21 = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
-  v22 = [(RTPlaceTypeClassifier *)self platform];
-  v23 = [(RTPlaceTypeClassifierExpertInferred *)v16 initWithBiomeManager:v17 defaultsManager:v18 distanceCalculator:v19 learnedLocationStore:v20 placeTypeClassifierMetricsCalculator:v21 platform:v22];
+  biomeManager = [(RTPlaceTypeClassifier *)self biomeManager];
+  defaultsManager = [(RTPlaceTypeClassifier *)self defaultsManager];
+  distanceCalculator2 = [(RTPlaceTypeClassifier *)self distanceCalculator];
+  learnedLocationStore3 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  placeTypeClassifierMetricsCalculator3 = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
+  platform = [(RTPlaceTypeClassifier *)self platform];
+  v23 = [(RTPlaceTypeClassifierExpertInferred *)v16 initWithBiomeManager:biomeManager defaultsManager:defaultsManager distanceCalculator:distanceCalculator2 learnedLocationStore:learnedLocationStore3 placeTypeClassifierMetricsCalculator:placeTypeClassifierMetricsCalculator3 platform:platform];
 
-  [v3 addObject:v23];
+  [array addObject:v23];
   v24 = [RTPlaceTypeClassifierExpertFallback alloc];
-  v25 = [(RTPlaceTypeClassifier *)self distanceCalculator];
-  v26 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-  v27 = [(RTPlaceTypeClassifier *)self locationManager];
-  v28 = [(RTPlaceTypeClassifier *)self mapServiceManager];
-  v29 = [(RTPlaceTypeClassifier *)self visitManager];
-  v30 = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
-  v31 = [(RTPlaceTypeClassifierExpertFallback *)v24 initWithDistanceCalculator:v25 learnedLocationStore:v26 locationManager:v27 mapServiceManager:v28 visitManager:v29 placeTypeClassifierMetricsCalculator:v30];
+  distanceCalculator3 = [(RTPlaceTypeClassifier *)self distanceCalculator];
+  learnedLocationStore4 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  locationManager = [(RTPlaceTypeClassifier *)self locationManager];
+  mapServiceManager2 = [(RTPlaceTypeClassifier *)self mapServiceManager];
+  visitManager = [(RTPlaceTypeClassifier *)self visitManager];
+  placeTypeClassifierMetricsCalculator4 = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
+  v31 = [(RTPlaceTypeClassifierExpertFallback *)v24 initWithDistanceCalculator:distanceCalculator3 learnedLocationStore:learnedLocationStore4 locationManager:locationManager mapServiceManager:mapServiceManager2 visitManager:visitManager placeTypeClassifierMetricsCalculator:placeTypeClassifierMetricsCalculator4];
 
-  [v3 addObject:v31];
+  [array addObject:v31];
 
-  return v3;
+  return array;
 }
 
-- (BOOL)updatePlaces:(id)a3 error:(id *)a4
+- (BOOL)updatePlaces:(id)places error:(id *)error
 {
   v432[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v363 = [MEMORY[0x277CBEB18] array];
-  v264 = [MEMORY[0x277CBEB18] array];
-  v357 = [MEMORY[0x277CBEB18] array];
-  v263 = [MEMORY[0x277CBEB18] array];
-  v265 = [MEMORY[0x277CBEB18] array];
-  v5 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-  v362 = [v5 predicateForObjectsFromCurrentDevice];
+  placesCopy = places;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  learnedLocationStore = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  predicateForObjectsFromCurrentDevice = [learnedLocationStore predicateForObjectsFromCurrentDevice];
 
-  v6 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-  v361 = [v6 predicateForObjectsNotFromCurrentDevice];
+  learnedLocationStore2 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  predicateForObjectsNotFromCurrentDevice = [learnedLocationStore2 predicateForObjectsNotFromCurrentDevice];
 
   v414 = 0u;
   v415 = 0u;
   v412 = 0u;
   v413 = 0u;
-  obj = v4;
+  obj = placesCopy;
   v364 = [obj countByEnumeratingWithState:&v412 objects:v431 count:16];
   if (v364)
   {
@@ -3254,19 +3254,19 @@ void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeC
         v410 = __Block_byref_object_dispose__123;
         v411 = 0;
         v10 = dispatch_semaphore_create(0);
-        v11 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-        v12 = [v9 mapItem];
+        learnedLocationStore3 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+        mapItem = [v9 mapItem];
         v401[0] = MEMORY[0x277D85DD0];
         v401[1] = 3221225472;
         v401[2] = __44__RTPlaceTypeClassifier_updatePlaces_error___block_invoke;
         v401[3] = &unk_2788CEA88;
-        v13 = v363;
+        v13 = array;
         v405 = &v406;
         v402 = v13;
         v403 = v9;
         v14 = v10;
         v404 = v14;
-        [v11 fetchPlaceWithMapItem:v12 predicate:v362 handler:v401];
+        [learnedLocationStore3 fetchPlaceWithMapItem:mapItem predicate:predicateForObjectsFromCurrentDevice handler:v401];
 
         v15 = v14;
         v16 = [MEMORY[0x277CBEAA8] now];
@@ -3278,11 +3278,11 @@ void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeC
           v20 = v19;
           v21 = objc_opt_new();
           v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-          v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v24 = [v23 filteredArrayUsingPredicate:v22];
-          v25 = [v24 firstObject];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+          v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+          firstObject = [v24 firstObject];
 
-          [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+          [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
           v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
           {
@@ -3316,8 +3316,8 @@ void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeC
         v430 = 0;
         v32 = dispatch_semaphore_create(0);
 
-        v33 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-        v34 = [v9 mapItem];
+        learnedLocationStore4 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+        mapItem2 = [v9 mapItem];
         v396[0] = MEMORY[0x277D85DD0];
         v396[1] = 3221225472;
         v396[2] = __44__RTPlaceTypeClassifier_updatePlaces_error___block_invoke_57;
@@ -3329,7 +3329,7 @@ void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeC
         v398 = v9;
         v36 = v32;
         v399 = v36;
-        [v33 fetchPlacesWithMapItem:v34 predicate:v361 handler:v396];
+        [learnedLocationStore4 fetchPlacesWithMapItem:mapItem2 predicate:predicateForObjectsNotFromCurrentDevice handler:v396];
 
         dsema = v36;
         v37 = [MEMORY[0x277CBEAA8] now];
@@ -3342,11 +3342,11 @@ void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeC
           v42 = v41;
           v43 = objc_opt_new();
           v44 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-          v45 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v46 = [v45 filteredArrayUsingPredicate:v44];
-          v47 = [v46 firstObject];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v46 = [callStackSymbols2 filteredArrayUsingPredicate:v44];
+          firstObject2 = [v46 firstObject];
 
-          [v43 submitToCoreAnalytics:v47 type:1 duration:v42];
+          [v43 submitToCoreAnalytics:firstObject2 type:1 duration:v42];
           v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
           {
@@ -3375,14 +3375,14 @@ void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeC
           if ([v9 typeSource] == 8)
           {
             v53 = [RTLearnedPlace alloc];
-            v54 = [v9 identifier];
-            v55 = [v9 mapItem];
-            v56 = [v9 customLabel];
-            v57 = [v9 creationDate];
-            v58 = [v9 expirationDate];
-            v373 = [(RTLearnedPlace *)v53 initWithIdentifier:v54 type:0 typeSource:0 mapItem:v55 customLabel:v56 creationDate:v57 expirationDate:v58];
+            identifier = [v9 identifier];
+            mapItem3 = [v9 mapItem];
+            customLabel = [v9 customLabel];
+            creationDate = [v9 creationDate];
+            expirationDate = [v9 expirationDate];
+            date = [(RTLearnedPlace *)v53 initWithIdentifier:identifier type:0 typeSource:0 mapItem:mapItem3 customLabel:customLabel creationDate:creationDate expirationDate:expirationDate];
 
-            [v357 addObject:v373];
+            [array3 addObject:date];
             v59 = v407;
             v60 = v9;
             v61 = v59[5];
@@ -3390,93 +3390,93 @@ void __76__RTPlaceTypeClassifier_mergeExistingPlaces_intoUpdatedPlace_typesInMeC
             goto LABEL_34;
           }
 
-          v84 = [v9 mapItem];
-          v85 = [v84 address];
-          v86 = [v407[5] mapItem];
-          v87 = [v86 address];
-          if ([v85 isEqualToAddress:v87])
+          mapItem4 = [v9 mapItem];
+          address = [mapItem4 address];
+          mapItem5 = [v407[5] mapItem];
+          address2 = [mapItem5 address];
+          if ([address isEqualToAddress:address2])
           {
-            v88 = [v9 mapItem];
-            v89 = [v88 location];
-            v90 = [v407[5] mapItem];
-            v91 = [v90 location];
-            v92 = [v89 isEqualToLocation:v91];
+            mapItem6 = [v9 mapItem];
+            location = [mapItem6 location];
+            mapItem7 = [v407[5] mapItem];
+            location2 = [mapItem7 location];
+            v92 = [location isEqualToLocation:location2];
 
             if (v92)
             {
-              v373 = 0;
+              date = 0;
 LABEL_28:
-              if ([v407[5] type] || objc_msgSend(v407[5], "typeSource") || (v104 = v373) != 0)
+              if ([v407[5] type] || objc_msgSend(v407[5], "typeSource") || (v104 = date) != 0)
               {
                 v98 = [RTLearnedPlace alloc];
-                v99 = [v407[5] identifier];
-                v100 = v373;
-                if (!v373)
+                identifier2 = [v407[5] identifier];
+                v100 = date;
+                if (!date)
                 {
-                  v266 = [v407[5] mapItem];
-                  v100 = v266;
+                  mapItem8 = [v407[5] mapItem];
+                  v100 = mapItem8;
                 }
 
-                v101 = [v407[5] customLabel];
-                v102 = [v407[5] creationDate];
-                v103 = [v407[5] expirationDate];
-                v61 = [(RTLearnedPlace *)v98 initWithIdentifier:v99 type:0 typeSource:0 mapItem:v100 customLabel:v101 creationDate:v102 expirationDate:v103];
+                customLabel2 = [v407[5] customLabel];
+                creationDate2 = [v407[5] creationDate];
+                expirationDate2 = [v407[5] expirationDate];
+                v61 = [(RTLearnedPlace *)v98 initWithIdentifier:identifier2 type:0 typeSource:0 mapItem:v100 customLabel:customLabel2 creationDate:creationDate2 expirationDate:expirationDate2];
 
-                if (!v373)
+                if (!date)
                 {
                 }
 
-                [v357 addObject:v61];
+                [array3 addObject:v61];
                 objc_storeStrong(v407 + 5, v61);
 LABEL_34:
 
-                v104 = v373;
+                v104 = date;
               }
 
               goto LABEL_36;
             }
 
             v374 = objc_alloc(MEMORY[0x277D011A0]);
-            v84 = [v407[5] mapItem];
-            v85 = [v84 identifier];
-            v86 = [v407[5] mapItem];
-            v87 = [v86 name];
-            v359 = [v407[5] mapItem];
-            v322 = [v359 category];
-            v355 = [v407[5] mapItem];
-            v319 = [v355 categoryMUID];
-            v352 = [v407[5] mapItem];
-            v316 = [v352 address];
-            v349 = [v9 mapItem];
-            v313 = [v349 location];
-            v346 = [v407[5] mapItem];
-            v299 = [v346 source];
-            v343 = [v407[5] mapItem];
-            v297 = [v343 mapItemPlaceType];
-            v340 = [v407[5] mapItem];
-            v295 = [v340 muid];
-            v337 = [v407[5] mapItem];
-            v293 = [v337 resultProviderID];
-            v334 = [v407[5] mapItem];
-            v310 = [v334 geoMapItemHandle];
-            v331 = [v407[5] mapItem];
-            v307 = [v331 geoMapItemIdentifier];
-            v328 = [v407[5] mapItem];
-            v304 = [v328 creationDate];
-            v325 = [v407[5] mapItem];
-            v301 = [v325 expirationDate];
-            v93 = [v407[5] mapItem];
-            v94 = [v93 extendedAttributes];
-            v95 = [v407[5] mapItem];
-            v96 = [v95 displayLanguage];
-            v97 = [v407[5] mapItem];
-            LOBYTE(v260) = [v97 disputed];
-            v373 = [v374 initWithIdentifier:v85 name:v87 category:v322 categoryMUID:v319 address:v316 location:v313 source:v299 mapItemPlaceType:v297 muid:v295 resultProviderID:v293 geoMapItemHandle:v310 geoMapItemIdentifier:v307 creationDate:v304 expirationDate:v301 extendedAttributes:v94 displayLanguage:v96 disputed:v260];
+            mapItem4 = [v407[5] mapItem];
+            address = [mapItem4 identifier];
+            mapItem5 = [v407[5] mapItem];
+            address2 = [mapItem5 name];
+            mapItem9 = [v407[5] mapItem];
+            category = [mapItem9 category];
+            mapItem10 = [v407[5] mapItem];
+            categoryMUID = [mapItem10 categoryMUID];
+            mapItem11 = [v407[5] mapItem];
+            address3 = [mapItem11 address];
+            mapItem12 = [v9 mapItem];
+            location3 = [mapItem12 location];
+            mapItem13 = [v407[5] mapItem];
+            source = [mapItem13 source];
+            mapItem14 = [v407[5] mapItem];
+            mapItemPlaceType = [mapItem14 mapItemPlaceType];
+            mapItem15 = [v407[5] mapItem];
+            muid = [mapItem15 muid];
+            mapItem16 = [v407[5] mapItem];
+            resultProviderID = [mapItem16 resultProviderID];
+            mapItem17 = [v407[5] mapItem];
+            geoMapItemHandle = [mapItem17 geoMapItemHandle];
+            mapItem18 = [v407[5] mapItem];
+            geoMapItemIdentifier = [mapItem18 geoMapItemIdentifier];
+            mapItem19 = [v407[5] mapItem];
+            creationDate3 = [mapItem19 creationDate];
+            mapItem20 = [v407[5] mapItem];
+            expirationDate3 = [mapItem20 expirationDate];
+            mapItem21 = [v407[5] mapItem];
+            extendedAttributes = [mapItem21 extendedAttributes];
+            mapItem22 = [v407[5] mapItem];
+            displayLanguage = [mapItem22 displayLanguage];
+            mapItem23 = [v407[5] mapItem];
+            LOBYTE(v260) = [mapItem23 disputed];
+            date = [v374 initWithIdentifier:address name:address2 category:category categoryMUID:categoryMUID address:address3 location:location3 source:source mapItemPlaceType:mapItemPlaceType muid:muid resultProviderID:resultProviderID geoMapItemHandle:geoMapItemHandle geoMapItemIdentifier:geoMapItemIdentifier creationDate:creationDate3 expirationDate:expirationDate3 extendedAttributes:extendedAttributes displayLanguage:displayLanguage disputed:v260];
           }
 
           else
           {
-            v373 = 0;
+            date = 0;
           }
 
           goto LABEL_28;
@@ -3484,102 +3484,102 @@ LABEL_34:
 
         if (![*(*&v427[8] + 40) count])
         {
-          v373 = [MEMORY[0x277CBEAA8] date];
-          v358 = [v373 dateByAddingTimeInterval:4838400.0];
+          date = [MEMORY[0x277CBEAA8] date];
+          v358 = [date dateByAddingTimeInterval:4838400.0];
           v267 = objc_alloc(MEMORY[0x277D01060]);
-          v269 = [MEMORY[0x277CCAD78] UUID];
-          v353 = [v9 mapItem];
-          v350 = [v353 address];
-          v284 = [v350 geoAddressData];
-          v347 = [v9 mapItem];
-          v344 = [v347 address];
-          v283 = [v344 subPremises];
-          v341 = [v9 mapItem];
-          v338 = [v341 address];
-          v274 = [v338 subThoroughfare];
-          v335 = [v9 mapItem];
-          v332 = [v335 address];
-          v282 = [v332 thoroughfare];
-          v329 = [v9 mapItem];
-          v326 = [v329 address];
-          v273 = [v326 subLocality];
-          v323 = [v9 mapItem];
-          v320 = [v323 address];
-          v281 = [v320 locality];
-          v317 = [v9 mapItem];
-          v314 = [v317 address];
-          v280 = [v314 subAdministrativeArea];
-          v311 = [v9 mapItem];
-          v308 = [v311 address];
-          v279 = [v308 administrativeArea];
-          v305 = [v9 mapItem];
-          v302 = [v305 address];
-          v278 = [v302 administrativeAreaCode];
-          v300 = [v9 mapItem];
-          v298 = [v300 address];
-          v272 = [v298 postalCode];
-          v296 = [v9 mapItem];
-          v294 = [v296 address];
-          v277 = [v294 country];
-          v292 = [v9 mapItem];
-          v291 = [v292 address];
-          v276 = [v291 countryCode];
-          v290 = [v9 mapItem];
-          v289 = [v290 address];
-          v275 = [v289 inlandWater];
-          v288 = [v9 mapItem];
-          v287 = [v288 address];
-          v271 = [v287 ocean];
-          v286 = [v9 mapItem];
-          v285 = [v286 address];
-          v270 = [v285 areasOfInterest];
-          v62 = [v9 mapItem];
-          v63 = [v62 address];
-          v64 = [v63 isIsland];
-          v65 = [v9 mapItem];
-          v66 = [v65 address];
-          v67 = [v66 iso3166CountryCode];
-          v68 = [v9 mapItem];
-          v69 = [v68 address];
-          v70 = [v69 iso3166SubdivisionCode];
-          LOBYTE(v260) = v64;
-          v268 = [v267 initWithIdentifier:v269 geoAddressData:v284 subPremises:v283 subThoroughfare:v274 thoroughfare:v282 subLocality:v273 locality:v281 subAdministrativeArea:v280 administrativeArea:v279 administrativeAreaCode:v278 postalCode:v272 country:v277 countryCode:v276 inlandWater:v275 ocean:v271 areasOfInterest:v270 isIsland:v260 creationDate:v373 expirationDate:v358 iso3166CountryCode:v67 iso3166SubdivisionCode:v70];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          mapItem24 = [v9 mapItem];
+          address4 = [mapItem24 address];
+          geoAddressData = [address4 geoAddressData];
+          mapItem25 = [v9 mapItem];
+          address5 = [mapItem25 address];
+          subPremises = [address5 subPremises];
+          mapItem26 = [v9 mapItem];
+          address6 = [mapItem26 address];
+          subThoroughfare = [address6 subThoroughfare];
+          mapItem27 = [v9 mapItem];
+          address7 = [mapItem27 address];
+          thoroughfare = [address7 thoroughfare];
+          mapItem28 = [v9 mapItem];
+          address8 = [mapItem28 address];
+          subLocality = [address8 subLocality];
+          mapItem29 = [v9 mapItem];
+          address9 = [mapItem29 address];
+          locality = [address9 locality];
+          mapItem30 = [v9 mapItem];
+          address10 = [mapItem30 address];
+          subAdministrativeArea = [address10 subAdministrativeArea];
+          mapItem31 = [v9 mapItem];
+          address11 = [mapItem31 address];
+          administrativeArea = [address11 administrativeArea];
+          mapItem32 = [v9 mapItem];
+          address12 = [mapItem32 address];
+          administrativeAreaCode = [address12 administrativeAreaCode];
+          mapItem33 = [v9 mapItem];
+          address13 = [mapItem33 address];
+          postalCode = [address13 postalCode];
+          mapItem34 = [v9 mapItem];
+          address14 = [mapItem34 address];
+          country = [address14 country];
+          mapItem35 = [v9 mapItem];
+          address15 = [mapItem35 address];
+          countryCode = [address15 countryCode];
+          mapItem36 = [v9 mapItem];
+          address16 = [mapItem36 address];
+          inlandWater = [address16 inlandWater];
+          mapItem37 = [v9 mapItem];
+          address17 = [mapItem37 address];
+          ocean = [address17 ocean];
+          mapItem38 = [v9 mapItem];
+          address18 = [mapItem38 address];
+          areasOfInterest = [address18 areasOfInterest];
+          mapItem39 = [v9 mapItem];
+          address19 = [mapItem39 address];
+          isIsland = [address19 isIsland];
+          mapItem40 = [v9 mapItem];
+          address20 = [mapItem40 address];
+          iso3166CountryCode = [address20 iso3166CountryCode];
+          mapItem41 = [v9 mapItem];
+          address21 = [mapItem41 address];
+          iso3166SubdivisionCode = [address21 iso3166SubdivisionCode];
+          LOBYTE(v260) = isIsland;
+          v268 = [v267 initWithIdentifier:uUID geoAddressData:geoAddressData subPremises:subPremises subThoroughfare:subThoroughfare thoroughfare:thoroughfare subLocality:subLocality locality:locality subAdministrativeArea:subAdministrativeArea administrativeArea:administrativeArea administrativeAreaCode:administrativeAreaCode postalCode:postalCode country:country countryCode:countryCode inlandWater:inlandWater ocean:ocean areasOfInterest:areasOfInterest isIsland:v260 creationDate:date expirationDate:v358 iso3166CountryCode:iso3166CountryCode iso3166SubdivisionCode:iso3166SubdivisionCode];
 
           v312 = objc_alloc(MEMORY[0x277D011A0]);
-          v324 = [MEMORY[0x277CCAD78] UUID];
-          v354 = [v9 mapItem];
-          v321 = [v354 name];
-          v351 = [v9 mapItem];
-          v318 = [v351 category];
-          v348 = [v9 mapItem];
-          v315 = [v348 categoryMUID];
-          v345 = [v9 mapItem];
-          v327 = [v345 location];
-          v342 = [v9 mapItem];
-          v309 = [v342 source];
-          v339 = [v9 mapItem];
-          v306 = [v339 mapItemPlaceType];
-          v336 = [v9 mapItem];
-          v303 = [v336 muid];
-          v333 = [v9 mapItem];
-          v71 = [v333 resultProviderID];
-          v330 = [v9 mapItem];
-          v72 = [v330 geoMapItemHandle];
-          v73 = [v9 mapItem];
-          v74 = [v73 geoMapItemIdentifier];
-          v75 = [v9 mapItem];
-          v76 = [v75 extendedAttributes];
-          v77 = [v9 mapItem];
-          v78 = [v77 displayLanguage];
-          v79 = [v9 mapItem];
-          LOBYTE(v261) = [v79 disputed];
-          v80 = [v312 initWithIdentifier:v324 name:v321 category:v318 categoryMUID:v315 address:v268 location:v327 source:v309 mapItemPlaceType:v306 muid:v303 resultProviderID:v71 geoMapItemHandle:v72 geoMapItemIdentifier:v74 creationDate:v373 expirationDate:v358 extendedAttributes:v76 displayLanguage:v78 disputed:v261];
+          uUID2 = [MEMORY[0x277CCAD78] UUID];
+          mapItem42 = [v9 mapItem];
+          name = [mapItem42 name];
+          mapItem43 = [v9 mapItem];
+          category2 = [mapItem43 category];
+          mapItem44 = [v9 mapItem];
+          categoryMUID2 = [mapItem44 categoryMUID];
+          mapItem45 = [v9 mapItem];
+          location4 = [mapItem45 location];
+          mapItem46 = [v9 mapItem];
+          source2 = [mapItem46 source];
+          mapItem47 = [v9 mapItem];
+          mapItemPlaceType2 = [mapItem47 mapItemPlaceType];
+          mapItem48 = [v9 mapItem];
+          muid2 = [mapItem48 muid];
+          mapItem49 = [v9 mapItem];
+          resultProviderID2 = [mapItem49 resultProviderID];
+          mapItem50 = [v9 mapItem];
+          geoMapItemHandle2 = [mapItem50 geoMapItemHandle];
+          mapItem51 = [v9 mapItem];
+          geoMapItemIdentifier2 = [mapItem51 geoMapItemIdentifier];
+          mapItem52 = [v9 mapItem];
+          extendedAttributes2 = [mapItem52 extendedAttributes];
+          mapItem53 = [v9 mapItem];
+          displayLanguage2 = [mapItem53 displayLanguage];
+          mapItem54 = [v9 mapItem];
+          LOBYTE(v261) = [mapItem54 disputed];
+          v80 = [v312 initWithIdentifier:uUID2 name:name category:category2 categoryMUID:categoryMUID2 address:v268 location:location4 source:source2 mapItemPlaceType:mapItemPlaceType2 muid:muid2 resultProviderID:resultProviderID2 geoMapItemHandle:geoMapItemHandle2 geoMapItemIdentifier:geoMapItemIdentifier2 creationDate:date expirationDate:v358 extendedAttributes:extendedAttributes2 displayLanguage:displayLanguage2 disputed:v261];
 
           v81 = [RTLearnedPlace alloc];
-          v82 = [MEMORY[0x277CCAD78] UUID];
-          v83 = [(RTLearnedPlace *)v81 initWithIdentifier:v82 type:0 typeSource:0 mapItem:v80 customLabel:0 creationDate:v373 expirationDate:v358];
+          uUID3 = [MEMORY[0x277CCAD78] UUID];
+          v83 = [(RTLearnedPlace *)v81 initWithIdentifier:uUID3 type:0 typeSource:0 mapItem:v80 customLabel:0 creationDate:date expirationDate:v358];
 
-          [v264 addObject:v83];
+          [array2 addObject:v83];
           objc_storeStrong(v407 + 5, v83);
 
           v61 = v358;
@@ -3590,12 +3590,12 @@ LABEL_36:
         v105 = v407[5];
         if (v105)
         {
-          v375 = v105;
+          firstObject3 = v105;
         }
 
         else
         {
-          v375 = [*(*&v427[8] + 40) firstObject];
+          firstObject3 = [*(*&v427[8] + 40) firstObject];
         }
 
         *v423 = 0;
@@ -3611,8 +3611,8 @@ LABEL_36:
         v421 = __Block_byref_object_dispose__123;
         v422 = 0;
         v106 = dispatch_semaphore_create(0);
-        v107 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
-        v108 = [v9 identifier];
+        learnedLocationStore5 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+        identifier3 = [v9 identifier];
         v392[0] = MEMORY[0x277D85DD0];
         v392[1] = 3221225472;
         v392[2] = __44__RTPlaceTypeClassifier_updatePlaces_error___block_invoke_61;
@@ -3621,7 +3621,7 @@ LABEL_36:
         v395 = v423;
         v109 = v106;
         v393 = v109;
-        [v107 fetchLocationOfInterestWithIdentifier:v108 handler:v392];
+        [learnedLocationStore5 fetchLocationOfInterestWithIdentifier:identifier3 handler:v392];
 
         v110 = v109;
         v111 = [MEMORY[0x277CBEAA8] now];
@@ -3636,11 +3636,11 @@ LABEL_36:
         v115 = v114;
         v116 = objc_opt_new();
         v117 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-        v118 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v119 = [v118 filteredArrayUsingPredicate:v117];
-        v120 = [v119 firstObject];
+        callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v119 = [callStackSymbols3 filteredArrayUsingPredicate:v117];
+        firstObject4 = [v119 firstObject];
 
-        [v116 submitToCoreAnalytics:v120 type:1 duration:v115];
+        [v116 submitToCoreAnalytics:firstObject4 type:1 duration:v115];
         v121 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v121, OS_LOG_TYPE_FAULT))
         {
@@ -3701,27 +3701,27 @@ LABEL_44:
           if (*(*&v419[8] + 40))
           {
             v131 = [RTLearnedPlace alloc];
-            v132 = [v9 identifier];
-            v133 = [v9 type];
-            v134 = [v9 typeSource];
-            v135 = [v375 mapItem];
-            v136 = [v9 customLabel];
-            v137 = [v9 creationDate];
-            v138 = [v9 expirationDate];
-            v139 = [(RTLearnedPlace *)v131 initWithIdentifier:v132 type:v133 typeSource:v134 mapItem:v135 customLabel:v136 creationDate:v137 expirationDate:v138];
+            identifier4 = [v9 identifier];
+            type = [v9 type];
+            typeSource = [v9 typeSource];
+            mapItem55 = [firstObject3 mapItem];
+            customLabel3 = [v9 customLabel];
+            creationDate4 = [v9 creationDate];
+            expirationDate4 = [v9 expirationDate];
+            location6 = [(RTLearnedPlace *)v131 initWithIdentifier:identifier4 type:type typeSource:typeSource mapItem:mapItem55 customLabel:customLabel3 creationDate:creationDate4 expirationDate:expirationDate4];
 
             v140 = [RTLearnedLocationOfInterest alloc];
-            v141 = [*(*&v419[8] + 40) identifier];
-            v142 = [*(*&v419[8] + 40) location];
-            v143 = [*(*&v419[8] + 40) visits];
-            v144 = [*(*&v419[8] + 40) transitions];
-            v145 = [(RTLearnedLocationOfInterest *)v140 initWithIdentifier:v141 location:v142 place:v139 visits:v143 transitions:v144];
+            identifier5 = [*(*&v419[8] + 40) identifier];
+            location5 = [*(*&v419[8] + 40) location];
+            visits = [*(*&v419[8] + 40) visits];
+            transitions = [*(*&v419[8] + 40) transitions];
+            v145 = [(RTLearnedLocationOfInterest *)v140 initWithIdentifier:identifier5 location:location5 place:location6 visits:visits transitions:transitions];
             v146 = *(*&v419[8] + 40);
             *(*&v419[8] + 40) = v145;
 
             if (*(*&v419[8] + 40))
             {
-              [v265 addObject:?];
+              [array5 addObject:?];
             }
           }
 
@@ -3738,30 +3738,30 @@ LABEL_44:
               [v9 mapItem];
             }
             v148 = ;
-            v139 = [v148 location];
+            location6 = [v148 location];
 
-            v372 = [[RTLearnedLocation alloc] initWithLocation:v139 dataPointCount:0 confidence:0.0];
+            v372 = [[RTLearnedLocation alloc] initWithLocation:location6 dataPointCount:0 confidence:0.0];
             if (v372)
             {
               v149 = [RTLearnedPlace alloc];
-              v366 = [v375 identifier];
-              v150 = [v9 type];
-              v151 = [v9 typeSource];
-              v152 = [v375 mapItem];
-              v153 = [v375 customLabel];
-              v154 = [v375 creationDate];
-              v155 = [v375 expirationDate];
-              v156 = [(RTLearnedPlace *)v149 initWithIdentifier:v366 type:v150 typeSource:v151 mapItem:v152 customLabel:v153 creationDate:v154 expirationDate:v155];
+              identifier6 = [firstObject3 identifier];
+              type2 = [v9 type];
+              typeSource2 = [v9 typeSource];
+              mapItem56 = [firstObject3 mapItem];
+              customLabel4 = [firstObject3 customLabel];
+              creationDate5 = [firstObject3 creationDate];
+              expirationDate5 = [firstObject3 expirationDate];
+              v156 = [(RTLearnedPlace *)v149 initWithIdentifier:identifier6 type:type2 typeSource:typeSource2 mapItem:mapItem56 customLabel:customLabel4 creationDate:creationDate5 expirationDate:expirationDate5];
 
               v157 = [RTLearnedLocationOfInterest alloc];
-              v158 = [v156 identifier];
-              v159 = [(RTLearnedLocationOfInterest *)v157 initWithIdentifier:v158 location:v372 place:v156 visits:0 transitions:0];
+              identifier7 = [v156 identifier];
+              v159 = [(RTLearnedLocationOfInterest *)v157 initWithIdentifier:identifier7 location:v372 place:v156 visits:0 transitions:0];
               v160 = *(*&v419[8] + 40);
               *(*&v419[8] + 40) = v159;
 
               if (*(*&v419[8] + 40))
               {
-                [v263 addObject:?];
+                [array4 addObject:?];
               }
             }
 
@@ -3797,12 +3797,12 @@ LABEL_44:
     while (v364);
   }
 
-  if ([v363 count])
+  if ([array count])
   {
-    if (a4)
+    if (error)
     {
       v161 = _RTSafeArray();
-      *a4 = _RTMultiErrorCreate();
+      *error = _RTMultiErrorCreate();
     }
 
     v162 = 0;
@@ -3816,7 +3816,7 @@ LABEL_44:
   v410 = __Block_byref_object_dispose__123;
   v411 = 0;
   v163 = dispatch_semaphore_create(0);
-  v164 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  learnedLocationStore6 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
   v389[0] = MEMORY[0x277D85DD0];
   v389[1] = 3221225472;
   v389[2] = __44__RTPlaceTypeClassifier_updatePlaces_error___block_invoke_64;
@@ -3824,7 +3824,7 @@ LABEL_44:
   v391 = &v406;
   v165 = v163;
   v390 = v165;
-  [v164 storePlaces:v264 handler:v389];
+  [learnedLocationStore6 storePlaces:array2 handler:v389];
 
   dsemaa = v165;
   v166 = [MEMORY[0x277CBEAA8] now];
@@ -3842,11 +3842,11 @@ LABEL_81:
   v170 = v169;
   v171 = objc_opt_new();
   v172 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-  v173 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v174 = [v173 filteredArrayUsingPredicate:v172];
-  v175 = [v174 firstObject];
+  callStackSymbols4 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v174 = [callStackSymbols4 filteredArrayUsingPredicate:v172];
+  firstObject5 = [v174 firstObject];
 
-  [v171 submitToCoreAnalytics:v175 type:1 duration:v170];
+  [v171 submitToCoreAnalytics:firstObject5 type:1 duration:v170];
   v176 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v176, OS_LOG_TYPE_FAULT))
   {
@@ -3878,7 +3878,7 @@ LABEL_82:
 
   if (v407[5])
   {
-    [v363 addObject:?];
+    [array addObject:?];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3886,7 +3886,7 @@ LABEL_82:
     v183 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v183, OS_LOG_TYPE_INFO))
     {
-      v184 = [v264 count];
+      v184 = [array2 count];
       v185 = v407[5];
       *v427 = 134218242;
       *&v427[4] = v184;
@@ -3896,7 +3896,7 @@ LABEL_82:
     }
   }
 
-  [v264 enumerateObjectsUsingBlock:&__block_literal_global_68_0];
+  [array2 enumerateObjectsUsingBlock:&__block_literal_global_68_0];
   *v427 = 0;
   *&v427[8] = v427;
   *&v427[16] = 0x3032000000;
@@ -3904,7 +3904,7 @@ LABEL_82:
   v429 = __Block_byref_object_dispose__123;
   v430 = 0;
   v186 = dispatch_semaphore_create(0);
-  v187 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  learnedLocationStore7 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
   v386[0] = MEMORY[0x277D85DD0];
   v386[1] = 3221225472;
   v386[2] = __44__RTPlaceTypeClassifier_updatePlaces_error___block_invoke_69;
@@ -3912,7 +3912,7 @@ LABEL_82:
   v388 = v427;
   v188 = v186;
   v387 = v188;
-  [v187 updatePlaces:v357 handler:v386];
+  [learnedLocationStore7 updatePlaces:array3 handler:v386];
 
   v376 = v188;
   v189 = [MEMORY[0x277CBEAA8] now];
@@ -3927,11 +3927,11 @@ LABEL_82:
   v193 = v192;
   v194 = objc_opt_new();
   v195 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-  v196 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v197 = [v196 filteredArrayUsingPredicate:v195];
-  v198 = [v197 firstObject];
+  callStackSymbols5 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v197 = [callStackSymbols5 filteredArrayUsingPredicate:v195];
+  firstObject6 = [v197 firstObject];
 
-  [v194 submitToCoreAnalytics:v198 type:1 duration:v193];
+  [v194 submitToCoreAnalytics:firstObject6 type:1 duration:v193];
   v199 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v199, OS_LOG_TYPE_FAULT))
   {
@@ -3967,7 +3967,7 @@ LABEL_95:
 
   if (*(*&v427[8] + 40))
   {
-    [v363 addObject:?];
+    [array addObject:?];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3975,7 +3975,7 @@ LABEL_95:
     v206 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v206, OS_LOG_TYPE_INFO))
     {
-      v207 = [v357 count];
+      v207 = [array3 count];
       v208 = *(*&v427[8] + 40);
       *v423 = 134218242;
       *&v423[4] = v207;
@@ -3985,7 +3985,7 @@ LABEL_95:
     }
   }
 
-  [v357 enumerateObjectsUsingBlock:&__block_literal_global_72];
+  [array3 enumerateObjectsUsingBlock:&__block_literal_global_72];
   *v423 = 0;
   *&v423[8] = v423;
   *&v423[16] = 0x3032000000;
@@ -3993,7 +3993,7 @@ LABEL_95:
   v425 = __Block_byref_object_dispose__123;
   v426 = 0;
   v209 = dispatch_semaphore_create(0);
-  v210 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  learnedLocationStore8 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
   v383[0] = MEMORY[0x277D85DD0];
   v383[1] = 3221225472;
   v383[2] = __44__RTPlaceTypeClassifier_updatePlaces_error___block_invoke_73;
@@ -4001,7 +4001,7 @@ LABEL_95:
   v385 = v423;
   v211 = v209;
   v384 = v211;
-  [v210 storeLocationsOfInterest:v263 handler:v383];
+  [learnedLocationStore8 storeLocationsOfInterest:array4 handler:v383];
 
   v212 = v211;
   v213 = [MEMORY[0x277CBEAA8] now];
@@ -4016,11 +4016,11 @@ LABEL_95:
   v217 = v216;
   v218 = objc_opt_new();
   v219 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-  v220 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v221 = [v220 filteredArrayUsingPredicate:v219];
-  v222 = [v221 firstObject];
+  callStackSymbols6 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v221 = [callStackSymbols6 filteredArrayUsingPredicate:v219];
+  firstObject7 = [v221 firstObject];
 
-  [v218 submitToCoreAnalytics:v222 type:1 duration:v217];
+  [v218 submitToCoreAnalytics:firstObject7 type:1 duration:v217];
   v223 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v223, OS_LOG_TYPE_FAULT))
   {
@@ -4056,7 +4056,7 @@ LABEL_109:
 
   if (*(*&v423[8] + 40))
   {
-    [v363 addObject:?];
+    [array addObject:?];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4064,7 +4064,7 @@ LABEL_109:
     v230 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v230, OS_LOG_TYPE_INFO))
     {
-      v231 = [v263 count];
+      v231 = [array4 count];
       v232 = *(*&v423[8] + 40);
       *v419 = 134218242;
       *&v419[4] = v231;
@@ -4074,7 +4074,7 @@ LABEL_109:
     }
   }
 
-  [v263 enumerateObjectsUsingBlock:&__block_literal_global_76];
+  [array4 enumerateObjectsUsingBlock:&__block_literal_global_76];
   *v419 = 0;
   *&v419[8] = v419;
   *&v419[16] = 0x3032000000;
@@ -4082,7 +4082,7 @@ LABEL_109:
   v421 = __Block_byref_object_dispose__123;
   v422 = 0;
   v233 = dispatch_semaphore_create(0);
-  v234 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
+  learnedLocationStore9 = [(RTPlaceTypeClassifier *)self learnedLocationStore];
   v380[0] = MEMORY[0x277D85DD0];
   v380[1] = 3221225472;
   v380[2] = __44__RTPlaceTypeClassifier_updatePlaces_error___block_invoke_77;
@@ -4090,7 +4090,7 @@ LABEL_109:
   v382 = v419;
   v235 = v233;
   v381 = v235;
-  [v234 updateLocationsOfInterest:v265 handler:v380];
+  [learnedLocationStore9 updateLocationsOfInterest:array5 handler:v380];
 
   v236 = v235;
   v237 = [MEMORY[0x277CBEAA8] now];
@@ -4105,11 +4105,11 @@ LABEL_109:
   v241 = v240;
   v242 = objc_opt_new();
   v243 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_195];
-  v244 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v245 = [v244 filteredArrayUsingPredicate:v243];
-  v246 = [v245 firstObject];
+  callStackSymbols7 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v245 = [callStackSymbols7 filteredArrayUsingPredicate:v243];
+  firstObject8 = [v245 firstObject];
 
-  [v242 submitToCoreAnalytics:v246 type:1 duration:v241];
+  [v242 submitToCoreAnalytics:firstObject8 type:1 duration:v241];
   v247 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v247, OS_LOG_TYPE_FAULT))
   {
@@ -4145,7 +4145,7 @@ LABEL_123:
 
   if (*(*&v419[8] + 40))
   {
-    [v363 addObject:?];
+    [array addObject:?];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4153,7 +4153,7 @@ LABEL_123:
     v254 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v254, OS_LOG_TYPE_INFO))
     {
-      v255 = [v265 count];
+      v255 = [array5 count];
       v256 = *(*&v419[8] + 40);
       *buf = 134218242;
       *&buf[4] = v255;
@@ -4163,13 +4163,13 @@ LABEL_123:
     }
   }
 
-  [v265 enumerateObjectsUsingBlock:&__block_literal_global_80];
-  v257 = [v363 count];
+  [array5 enumerateObjectsUsingBlock:&__block_literal_global_80];
+  v257 = [array count];
   v162 = v257 == 0;
-  if (a4 && v257)
+  if (error && v257)
   {
     v258 = _RTSafeArray();
-    *a4 = _RTMultiErrorCreate();
+    *error = _RTMultiErrorCreate();
   }
 
   _Block_object_dispose(v419, 8);
@@ -4360,23 +4360,23 @@ void __44__RTPlaceTypeClassifier_updatePlaces_error___block_invoke_78(uint64_t a
   }
 }
 
-- (id)getClassificationsFromExperts:(id)a3 error:(id *)a4
+- (id)getClassificationsFromExperts:(id)experts error:(id *)error
 {
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  expertsCopy = experts;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v7 = v5;
+  v7 = expertsCopy;
   v42 = [v7 countByEnumeratingWithState:&v54 objects:v66 count:16];
   if (v42)
   {
     v41 = *v55;
     v37 = v7;
-    v38 = v6;
-    v40 = self;
+    v38 = dictionary;
+    selfCopy = self;
 LABEL_3:
     v8 = 0;
     while (1)
@@ -4396,7 +4396,7 @@ LABEL_3:
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v13 = v6;
+        v13 = dictionary;
         v24 = [v13 countByEnumeratingWithState:&v50 objects:v65 count:16];
         if (v24)
         {
@@ -4435,8 +4435,8 @@ LABEL_3:
                     if ([*(*(&v46 + 1) + 8 * j) type] == 1)
                     {
                       v7 = v37;
-                      v6 = v38;
-                      self = v40;
+                      dictionary = v38;
+                      self = selfCopy;
                       goto LABEL_37;
                     }
                   }
@@ -4452,12 +4452,12 @@ LABEL_3:
               }
 
               v26 = v39;
-              self = v40;
+              self = selfCopy;
             }
 
             v25 = [v13 countByEnumeratingWithState:&v50 objects:v65 count:16];
             v7 = v37;
-            v6 = v38;
+            dictionary = v38;
           }
 
           while (v25);
@@ -4492,10 +4492,10 @@ LABEL_3:
       [v13 enumerateObjectsUsingBlock:v43];
       if (v14)
       {
-        if (a4)
+        if (error)
         {
           v34 = v14;
-          *a4 = v14;
+          *error = v14;
         }
 
         v33 = 0;
@@ -4508,19 +4508,19 @@ LABEL_3:
         goto LABEL_17;
       }
 
-      v19 = [(RTPlaceTypeClassifier *)self platform];
-      if ([v19 watchPlatform])
+      platform = [(RTPlaceTypeClassifier *)self platform];
+      if ([platform watchPlatform])
       {
-        v20 = [(RTPlaceTypeClassifier *)self platform];
-        v21 = [v20 isTinkerPaired];
+        platform2 = [(RTPlaceTypeClassifier *)self platform];
+        isTinkerPaired = [platform2 isTinkerPaired];
 
-        if (!v21)
+        if (!isTinkerPaired)
         {
           goto LABEL_17;
         }
 
-        v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_83];
-        v22 = [v13 filteredArrayUsingPredicate:v19];
+        platform = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_83];
+        v22 = [v13 filteredArrayUsingPredicate:platform];
 
         v13 = v22;
       }
@@ -4528,7 +4528,7 @@ LABEL_3:
 LABEL_17:
       if ([v13 count])
       {
-        [v6 setObject:v13 forKey:v17];
+        [dictionary setObject:v13 forKey:v17];
       }
 
       v23 = v44;
@@ -4547,7 +4547,7 @@ LABEL_37:
     }
   }
 
-  v33 = v6;
+  v33 = dictionary;
 LABEL_43:
 
   return v33;
@@ -4574,11 +4574,11 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
   }
 }
 
-- (BOOL)processExpertClassifications:(id)a3 error:(id *)a4
+- (BOOL)processExpertClassifications:(id)classifications error:(id *)error
 {
   v104 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v80 = [MEMORY[0x277CBEB38] dictionary];
+  classificationsCopy = classifications;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -4598,11 +4598,11 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
   v14 = v13;
   if (v13)
   {
-    if (a4)
+    if (error)
     {
       v15 = v13;
       v16 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else
@@ -4614,17 +4614,17 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
   else
   {
     aSelector = a2;
-    v76 = a4;
-    v17 = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
+    errorCopy = error;
+    placeTypeClassifierMetricsCalculator = [(RTPlaceTypeClassifier *)self placeTypeClassifierMetricsCalculator];
     v78 = v12;
-    [v17 storeMetricsData:v12 source:3];
+    [placeTypeClassifierMetricsCalculator storeMetricsData:v12 source:3];
 
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v79 = v7;
-    v20 = [v7 objectForKey:v19];
+    v79 = classificationsCopy;
+    v20 = [classificationsCopy objectForKey:v19];
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
@@ -4646,7 +4646,7 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
 
           v27 = *(*(&v92 + 1) + 8 * i);
           v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v27, "type")}];
-          [v21 setObject:v27 forKeyedSubscript:v28];
+          [dictionary2 setObject:v27 forKeyedSubscript:v28];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v92 objects:v99 count:16];
@@ -4655,7 +4655,7 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
       while (v24);
     }
 
-    v81 = self;
+    selfCopy = self;
     v75 = v22;
 
     v90 = 0u;
@@ -4687,7 +4687,7 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
           if (v38)
           {
             v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v36, "type")}];
-            [v80 setObject:&unk_28459F060 forKey:v39];
+            [dictionary setObject:&unk_28459F060 forKey:v39];
           }
         }
 
@@ -4701,7 +4701,7 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
     v41 = NSStringFromClass(v40);
     v42 = [v79 objectForKey:v41];
 
-    v43 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
@@ -4723,11 +4723,11 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
 
           v49 = *(*(&v84 + 1) + 8 * k);
           v50 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v49, "type")}];
-          v51 = [v21 objectForKey:v50];
+          v51 = [dictionary2 objectForKey:v50];
 
-          if (v51 && [(RTPlaceTypeClassifier *)v81 isRottedMeCard:v49 inferredPlace:v51])
+          if (v51 && [(RTPlaceTypeClassifier *)selfCopy isRottedMeCard:v49 inferredPlace:v51])
           {
-            [v43 addObject:v49];
+            [array addObject:v49];
           }
         }
 
@@ -4737,26 +4737,26 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
       while (v46);
     }
 
-    v52 = [(RTPlaceTypeClassifier *)v81 placeTypeClassifierMetricsCalculator];
-    [v52 storeMetricsData:v43 source:10];
+    placeTypeClassifierMetricsCalculator2 = [(RTPlaceTypeClassifier *)selfCopy placeTypeClassifierMetricsCalculator];
+    [placeTypeClassifierMetricsCalculator2 storeMetricsData:array source:10];
 
-    v7 = v79;
-    v53 = [(RTPlaceTypeClassifier *)v81 coalescePlacesFromExperts:v79];
-    [(RTPlaceTypeClassifier *)v81 storeTruthMetricsWithExpertClassifications:v79 rottedPlaces:v43];
-    v54 = [v53 allValues];
-    [(RTPlaceTypeClassifier *)v81 donateInferredPlaces:v54];
+    classificationsCopy = v79;
+    v53 = [(RTPlaceTypeClassifier *)selfCopy coalescePlacesFromExperts:v79];
+    [(RTPlaceTypeClassifier *)selfCopy storeTruthMetricsWithExpertClassifications:v79 rottedPlaces:array];
+    allValues = [v53 allValues];
+    [(RTPlaceTypeClassifier *)selfCopy donateInferredPlaces:allValues];
 
-    v55 = [(RTPlaceTypeClassifier *)v81 placeTypeClassifierMetricsCalculator];
-    v56 = [v53 allValues];
-    [v55 storeMetricsData:v56 source:1];
+    placeTypeClassifierMetricsCalculator3 = [(RTPlaceTypeClassifier *)selfCopy placeTypeClassifierMetricsCalculator];
+    allValues2 = [v53 allValues];
+    [placeTypeClassifierMetricsCalculator3 storeMetricsData:allValues2 source:1];
 
     v12 = v78;
-    v57 = [(RTPlaceTypeClassifier *)v81 mergeExistingPlaces:v78 intoUpdatedPlace:v53 typesInMeCard:v80];
+    v57 = [(RTPlaceTypeClassifier *)selfCopy mergeExistingPlaces:v78 intoUpdatedPlace:v53 typesInMeCard:dictionary];
     v83 = 0;
-    LOBYTE(v55) = [(RTPlaceTypeClassifier *)v81 updatePlaces:v57 error:&v83];
+    LOBYTE(placeTypeClassifierMetricsCalculator3) = [(RTPlaceTypeClassifier *)selfCopy updatePlaces:v57 error:&v83];
     v58 = v83;
     v59 = v58;
-    if (v55)
+    if (placeTypeClassifierMetricsCalculator3)
     {
       v73 = v58;
       v60 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -4776,28 +4776,28 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
       }
 
       v82 = 0;
-      v65 = [(RTPlaceTypeClassifier *)v81 getStoredPlacesWithError:&v82];
+      v65 = [(RTPlaceTypeClassifier *)selfCopy getStoredPlacesWithError:&v82];
       v66 = v82;
       v67 = v66;
       v16 = v66 == 0;
       if (v66)
       {
         v59 = v73;
-        if (v76)
+        if (errorCopy)
         {
           v68 = v66;
-          *v76 = v67;
+          *errorCopy = v67;
         }
       }
 
       else
       {
-        [(RTPlaceTypeClassifier *)v81 placeTypeClassifierMetricsCalculator];
+        [(RTPlaceTypeClassifier *)selfCopy placeTypeClassifierMetricsCalculator];
         v70 = v77 = v57;
         [v70 storeMetricsData:v65 source:14];
 
-        v71 = [(RTPlaceTypeClassifier *)v81 placeTypeClassifierMetricsCalculator];
-        [v71 submitMetrics];
+        placeTypeClassifierMetricsCalculator4 = [(RTPlaceTypeClassifier *)selfCopy placeTypeClassifierMetricsCalculator];
+        [placeTypeClassifierMetricsCalculator4 submitMetrics];
 
         v57 = v77;
         v59 = v73;
@@ -4806,11 +4806,11 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
       v12 = v78;
     }
 
-    else if (v76)
+    else if (errorCopy)
     {
       v69 = v58;
       v16 = 0;
-      *v76 = v59;
+      *errorCopy = v59;
     }
 
     else
@@ -4824,16 +4824,16 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
   return v16;
 }
 
-- (BOOL)classifyWithError:(id *)a3
+- (BOOL)classifyWithError:(id *)error
 {
-  v5 = [(RTPlaceTypeClassifier *)self getExperts];
+  getExperts = [(RTPlaceTypeClassifier *)self getExperts];
   v12 = 0;
-  v6 = [(RTPlaceTypeClassifier *)self getClassificationsFromExperts:v5 error:&v12];
+  v6 = [(RTPlaceTypeClassifier *)self getClassificationsFromExperts:getExperts error:&v12];
   v7 = v12;
 
   if (v7)
   {
-    if (!a3)
+    if (!error)
     {
       v9 = 0;
       goto LABEL_8;
@@ -4846,11 +4846,11 @@ void __61__RTPlaceTypeClassifier_getClassificationsFromExperts_error___block_inv
   v11 = 0;
   [(RTPlaceTypeClassifier *)self processExpertClassifications:v6 error:&v11];
   v9 = v11 == 0;
-  if (a3 && v11)
+  if (error && v11)
   {
 LABEL_6:
     v9 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_8:
@@ -4858,12 +4858,12 @@ LABEL_8:
   return v9;
 }
 
-- (void)storeTruthMetricsWithExpertClassifications:(id)a3 rottedPlaces:(id)a4
+- (void)storeTruthMetricsWithExpertClassifications:(id)classifications rottedPlaces:(id)places
 {
   v33 = a2;
   v57[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v38 = a4;
+  classificationsCopy = classifications;
+  placesCopy = places;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v57[0] = v8;
@@ -4871,11 +4871,11 @@ LABEL_8:
   v10 = NSStringFromClass(v9);
   v57[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:2];
-  v42 = self;
-  v34 = v6;
-  v12 = [(RTPlaceTypeClassifier *)self coalescePlacesFromSourcesOfTruth:v6 sourceOfTruthNames:v11];
+  selfCopy = self;
+  v34 = classificationsCopy;
+  v12 = [(RTPlaceTypeClassifier *)self coalescePlacesFromSourcesOfTruth:classificationsCopy sourceOfTruthNames:v11];
 
-  v35 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -4899,7 +4899,7 @@ LABEL_8:
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v41 = v38;
+        v41 = placesCopy;
         v15 = [v41 countByEnumeratingWithState:&v47 objects:v55 count:16];
         if (v15)
         {
@@ -4916,19 +4916,19 @@ LABEL_8:
               }
 
               v19 = *(*(&v47 + 1) + 8 * j);
-              v20 = [v14 identifier];
-              v21 = [v19 identifier];
-              v22 = [v20 isEqual:v21];
+              identifier = [v14 identifier];
+              identifier2 = [v19 identifier];
+              v22 = [identifier isEqual:identifier2];
 
               if ((v22 & 1) == 0)
               {
-                v23 = [(RTPlaceTypeClassifier *)v42 distanceCalculator];
-                v24 = [v14 mapItem];
-                v25 = [v24 location];
-                v26 = [v19 mapItem];
-                v27 = [v26 location];
+                distanceCalculator = [(RTPlaceTypeClassifier *)selfCopy distanceCalculator];
+                mapItem = [v14 mapItem];
+                location = [mapItem location];
+                mapItem2 = [v19 mapItem];
+                location2 = [mapItem2 location];
                 v46 = 0;
-                [v23 distanceFromLocation:v25 toLocation:v27 error:&v46];
+                [distanceCalculator distanceFromLocation:location toLocation:location2 error:&v46];
                 v29 = v28;
                 v30 = v46;
 
@@ -4953,7 +4953,7 @@ LABEL_8:
           }
         }
 
-        [v35 addObject:v14];
+        [array addObject:v14];
 LABEL_18:
         ;
       }
@@ -4968,13 +4968,13 @@ LABEL_18:
   v43[1] = 3221225472;
   v43[2] = __81__RTPlaceTypeClassifier_storeTruthMetricsWithExpertClassifications_rottedPlaces___block_invoke;
   v43[3] = &unk_2788C6918;
-  v43[4] = v42;
-  v44 = v35;
+  v43[4] = selfCopy;
+  v44 = array;
   v45 = v33;
-  v31 = v35;
+  v31 = array;
   [v31 enumerateObjectsUsingBlock:v43];
-  v32 = [(RTPlaceTypeClassifier *)v42 placeTypeClassifierMetricsCalculator];
-  [v32 storeMetricsData:v31 source:19];
+  placeTypeClassifierMetricsCalculator = [(RTPlaceTypeClassifier *)selfCopy placeTypeClassifierMetricsCalculator];
+  [placeTypeClassifierMetricsCalculator storeMetricsData:v31 source:19];
 }
 
 void __81__RTPlaceTypeClassifier_storeTruthMetricsWithExpertClassifications_rottedPlaces___block_invoke(uint64_t a1, void *a2, uint64_t a3)

@@ -1,12 +1,12 @@
 @interface PBFGenericPosterPreview
-+ (id)posterPreviewForConfiguration:(id)a3;
-+ (id)posterPreviewForDescriptor:(id)a3;
-+ (id)posterPreviewForPath:(id)a3;
-+ (id)posterPreviewWithUniqueIdentifier:(id)a3 displayNameLocalizationKey:(id)a4 galleryLocalizedTitle:(id)a5 galleryLocalizedDescription:(id)a6 posterDescriptorLookupInfo:(id)a7 titleStyleConfiguration:(id)a8 focusConfiguration:(id)a9 subtitleComplication:(id)a10 suggestedComplications:(id)a11 suggestedLandscapeComplications:(id)a12 complicationLayoutType:(id)a13 complicationsUseBottomLayout:(BOOL)a14 renderingConfiguration:(id)a15 homeScreenConfiguration:(id)a16 previewType:(id)a17 galleryOptions:(id)a18;
-+ (id)testPosterPreviewWithLocalizedTitle:(id)a3 description:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)posterPreviewForConfiguration:(id)configuration;
++ (id)posterPreviewForDescriptor:(id)descriptor;
++ (id)posterPreviewForPath:(id)path;
++ (id)posterPreviewWithUniqueIdentifier:(id)identifier displayNameLocalizationKey:(id)key galleryLocalizedTitle:(id)title galleryLocalizedDescription:(id)description posterDescriptorLookupInfo:(id)info titleStyleConfiguration:(id)configuration focusConfiguration:(id)focusConfiguration subtitleComplication:(id)self0 suggestedComplications:(id)self1 suggestedLandscapeComplications:(id)self2 complicationLayoutType:(id)self3 complicationsUseBottomLayout:(BOOL)self4 renderingConfiguration:(id)self5 homeScreenConfiguration:(id)self6 previewType:(id)self7 galleryOptions:(id)self8;
++ (id)testPosterPreviewWithLocalizedTitle:(id)title description:(id)description;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)galleryDisplayStyle;
 - (unint64_t)hash;
 - (unint64_t)presentationStyle;
@@ -15,26 +15,26 @@
 
 @implementation PBFGenericPosterPreview
 
-+ (id)posterPreviewWithUniqueIdentifier:(id)a3 displayNameLocalizationKey:(id)a4 galleryLocalizedTitle:(id)a5 galleryLocalizedDescription:(id)a6 posterDescriptorLookupInfo:(id)a7 titleStyleConfiguration:(id)a8 focusConfiguration:(id)a9 subtitleComplication:(id)a10 suggestedComplications:(id)a11 suggestedLandscapeComplications:(id)a12 complicationLayoutType:(id)a13 complicationsUseBottomLayout:(BOOL)a14 renderingConfiguration:(id)a15 homeScreenConfiguration:(id)a16 previewType:(id)a17 galleryOptions:(id)a18
++ (id)posterPreviewWithUniqueIdentifier:(id)identifier displayNameLocalizationKey:(id)key galleryLocalizedTitle:(id)title galleryLocalizedDescription:(id)description posterDescriptorLookupInfo:(id)info titleStyleConfiguration:(id)configuration focusConfiguration:(id)focusConfiguration subtitleComplication:(id)self0 suggestedComplications:(id)self1 suggestedLandscapeComplications:(id)self2 complicationLayoutType:(id)self3 complicationsUseBottomLayout:(BOOL)self4 renderingConfiguration:(id)self5 homeScreenConfiguration:(id)self6 previewType:(id)self7 galleryOptions:(id)self8
 {
-  v23 = a3;
-  v70 = a4;
-  v69 = a5;
-  v68 = a6;
-  v24 = a7;
-  v67 = a8;
-  v66 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
-  v65 = a15;
-  v29 = a16;
-  v64 = a17;
-  v63 = a18;
-  if (v23)
+  identifierCopy = identifier;
+  keyCopy = key;
+  titleCopy = title;
+  descriptionCopy = description;
+  infoCopy = info;
+  configurationCopy = configuration;
+  focusConfigurationCopy = focusConfiguration;
+  complicationCopy = complication;
+  complicationsCopy = complications;
+  landscapeComplicationsCopy = landscapeComplications;
+  typeCopy = type;
+  renderingConfigurationCopy = renderingConfiguration;
+  screenConfigurationCopy = screenConfiguration;
+  previewTypeCopy = previewType;
+  optionsCopy = options;
+  if (identifierCopy)
   {
-    if (v24)
+    if (infoCopy)
     {
       goto LABEL_3;
     }
@@ -43,7 +43,7 @@
   else
   {
     +[PBFGenericPosterPreview posterPreviewWithUniqueIdentifier:displayNameLocalizationKey:galleryLocalizedTitle:galleryLocalizedDescription:posterDescriptorLookupInfo:titleStyleConfiguration:focusConfiguration:subtitleComplication:suggestedComplications:suggestedLandscapeComplications:complicationLayoutType:complicationsUseBottomLayout:renderingConfiguration:homeScreenConfiguration:previewType:galleryOptions:];
-    if (v24)
+    if (infoCopy)
     {
       goto LABEL_3;
     }
@@ -53,59 +53,59 @@
 LABEL_3:
   v30 = objc_alloc_init(PBFGenericPosterPreview);
   previewUniqueIdentifier = v30->_previewUniqueIdentifier;
-  v30->_previewUniqueIdentifier = v23;
-  v62 = v23;
+  v30->_previewUniqueIdentifier = identifierCopy;
+  v62 = identifierCopy;
 
-  v32 = [v70 copy];
+  v32 = [keyCopy copy];
   displayNameLocalizationKey = v30->_displayNameLocalizationKey;
   v30->_displayNameLocalizationKey = v32;
 
-  v34 = [v69 copy];
+  v34 = [titleCopy copy];
   galleryLocalizedTitle = v30->_galleryLocalizedTitle;
   v30->_galleryLocalizedTitle = v34;
 
-  v36 = [v68 copy];
+  v36 = [descriptionCopy copy];
   galleryLocalizedDescription = v30->_galleryLocalizedDescription;
   v30->_galleryLocalizedDescription = v36;
 
   posterDescriptorLookupInfo = v30->_posterDescriptorLookupInfo;
-  v30->_posterDescriptorLookupInfo = v24;
-  v61 = v24;
+  v30->_posterDescriptorLookupInfo = infoCopy;
+  v61 = infoCopy;
 
-  v39 = [v67 copy];
+  v39 = [configurationCopy copy];
   titleStyleConfiguration = v30->_titleStyleConfiguration;
   v30->_titleStyleConfiguration = v39;
 
-  v41 = [v66 copy];
+  v41 = [focusConfigurationCopy copy];
   focusConfiguration = v30->_focusConfiguration;
   v30->_focusConfiguration = v41;
 
   subtitleComplication = v30->_subtitleComplication;
-  v30->_subtitleComplication = v25;
-  v60 = v25;
+  v30->_subtitleComplication = complicationCopy;
+  v60 = complicationCopy;
 
   suggestedComplications = v30->_suggestedComplications;
-  v30->_suggestedComplications = v26;
-  v45 = v26;
+  v30->_suggestedComplications = complicationsCopy;
+  v45 = complicationsCopy;
 
   suggestedLandscapeComplications = v30->_suggestedLandscapeComplications;
-  v30->_suggestedLandscapeComplications = v27;
-  v47 = v27;
+  v30->_suggestedLandscapeComplications = landscapeComplicationsCopy;
+  v47 = landscapeComplicationsCopy;
 
   complicationLayoutType = v30->_complicationLayoutType;
-  v30->_complicationLayoutType = v28;
-  v49 = v28;
+  v30->_complicationLayoutType = typeCopy;
+  v49 = typeCopy;
 
-  v30->_complicationsUseBottomLayout = a14;
-  v50 = [v65 copy];
+  v30->_complicationsUseBottomLayout = layout;
+  v50 = [renderingConfigurationCopy copy];
   renderingConfiguration = v30->_renderingConfiguration;
   v30->_renderingConfiguration = v50;
 
   homeScreenConfiguration = v30->_homeScreenConfiguration;
-  v30->_homeScreenConfiguration = v29;
-  v53 = v29;
+  v30->_homeScreenConfiguration = screenConfigurationCopy;
+  v53 = screenConfigurationCopy;
 
-  v54 = [v64 copy];
+  v54 = [previewTypeCopy copy];
   v55 = v54;
   if (v54)
   {
@@ -120,7 +120,7 @@ LABEL_3:
   objc_storeStrong(&v30->_type, v56);
 
   galleryOptions = v30->_galleryOptions;
-  v30->_galleryOptions = v63;
+  v30->_galleryOptions = optionsCopy;
 
   v58.f64[0] = NAN;
   v58.f64[1] = NAN;
@@ -129,70 +129,70 @@ LABEL_3:
   return v30;
 }
 
-+ (id)testPosterPreviewWithLocalizedTitle:(id)a3 description:(id)a4
++ (id)testPosterPreviewWithLocalizedTitle:(id)title description:(id)description
 {
-  v5 = a4;
-  v6 = a3;
+  descriptionCopy = description;
+  titleCopy = title;
   v7 = objc_opt_class();
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v10 = +[PBFGenericPosterDescriptorLookupInfo nullPosterDescriptorLookupInfo];
   LOBYTE(v13) = 0;
-  v11 = [v7 posterPreviewWithUniqueIdentifier:v9 displayNameLocalizationKey:0 galleryLocalizedTitle:v6 galleryLocalizedDescription:v5 posterDescriptorLookupInfo:v10 titleStyleConfiguration:0 focusConfiguration:0 subtitleComplication:0 suggestedComplications:0 suggestedLandscapeComplications:0 complicationLayoutType:PBFComplicationLayoutTypeEmpty complicationsUseBottomLayout:v13 renderingConfiguration:0 homeScreenConfiguration:0 previewType:PBFPreviewTypeDefault galleryOptions:0];
+  v11 = [v7 posterPreviewWithUniqueIdentifier:uUIDString displayNameLocalizationKey:0 galleryLocalizedTitle:titleCopy galleryLocalizedDescription:descriptionCopy posterDescriptorLookupInfo:v10 titleStyleConfiguration:0 focusConfiguration:0 subtitleComplication:0 suggestedComplications:0 suggestedLandscapeComplications:0 complicationLayoutType:PBFComplicationLayoutTypeEmpty complicationsUseBottomLayout:v13 renderingConfiguration:0 homeScreenConfiguration:0 previewType:PBFPreviewTypeDefault galleryOptions:0];
 
   return v11;
 }
 
-+ (id)posterPreviewForDescriptor:(id)a3
++ (id)posterPreviewForDescriptor:(id)descriptor
 {
-  v4 = [a3 _path];
-  v5 = [a1 posterPreviewForPath:v4];
+  _path = [descriptor _path];
+  v5 = [self posterPreviewForPath:_path];
 
   return v5;
 }
 
-+ (id)posterPreviewForConfiguration:(id)a3
++ (id)posterPreviewForConfiguration:(id)configuration
 {
-  v4 = [a3 _path];
-  v5 = [a1 posterPreviewForPath:v4];
+  _path = [configuration _path];
+  v5 = [self posterPreviewForPath:_path];
 
   return v5;
 }
 
-+ (id)posterPreviewForPath:(id)a3
++ (id)posterPreviewForPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v3 = MEMORY[0x277D3EDE0];
-    v4 = a3;
-    v5 = [v3 modelObjectCacheForPath:v4];
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v37 = [v6 UUIDString];
+    pathCopy = path;
+    v5 = [v3 modelObjectCacheForPath:pathCopy];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v7 = [v5 otherMetadata];
-    v36 = [v7 displayNameLocalizationKey];
+    otherMetadata = [v5 otherMetadata];
+    displayNameLocalizationKey = [otherMetadata displayNameLocalizationKey];
 
     v8 = [PBFGenericPosterDescriptorLookupInfo alloc];
     v9 = MEMORY[0x277D3EB80];
-    v10 = [v4 serverIdentity];
-    v11 = [v10 provider];
-    v12 = [v9 extensionWithBundleIdentifier:v11];
-    v34 = [(PBFGenericPosterDescriptorLookupInfo *)v8 _initWithPath:v4 extension:v12];
+    serverIdentity = [pathCopy serverIdentity];
+    provider = [serverIdentity provider];
+    v12 = [v9 extensionWithBundleIdentifier:provider];
+    v34 = [(PBFGenericPosterDescriptorLookupInfo *)v8 _initWithPath:pathCopy extension:v12];
 
     v13 = PBFComplicationLayoutTypeEmpty;
     v14 = v5;
-    v15 = [v5 complicationLayout];
-    LODWORD(v10) = [v15 hasComplications];
+    complicationLayout = [v5 complicationLayout];
+    LODWORD(serverIdentity) = [complicationLayout hasComplications];
 
-    if (v10)
+    if (serverIdentity)
     {
-      v16 = [v5 complicationLayout];
-      v17 = [v16 inlineComplication];
-      if (v17)
+      complicationLayout2 = [v5 complicationLayout];
+      inlineComplication = [complicationLayout2 inlineComplication];
+      if (inlineComplication)
       {
         v18 = objc_alloc(MEMORY[0x277D3EC78]);
-        v19 = [v16 inlineComplication];
-        v20 = [v18 initWithPRSWidget:v19];
+        inlineComplication2 = [complicationLayout2 inlineComplication];
+        v20 = [v18 initWithPRSWidget:inlineComplication2];
       }
 
       else
@@ -200,30 +200,30 @@ LABEL_3:
         v20 = 0;
       }
 
-      v25 = [v16 complications];
-      v24 = [v25 bs_mapNoNulls:&__block_literal_global_159];
+      complications = [complicationLayout2 complications];
+      v24 = [complications bs_mapNoNulls:&__block_literal_global_159];
 
-      v26 = [v16 sidebarComplications];
-      v23 = [v26 bs_mapNoNulls:&__block_literal_global_161];
+      sidebarComplications = [complicationLayout2 sidebarComplications];
+      v23 = [sidebarComplications bs_mapNoNulls:&__block_literal_global_161];
 
-      v22 = [v16 complicationsUseBottomLayout];
+      complicationsUseBottomLayout = [complicationLayout2 complicationsUseBottomLayout];
     }
 
     else
     {
-      v22 = 0;
+      complicationsUseBottomLayout = 0;
       v23 = 0;
       v24 = 0;
       v20 = 0;
     }
 
     v33 = v5;
-    v27 = [v5 focusConfiguration];
-    v28 = [v5 titleStyleConfiguration];
-    v29 = [v14 renderingConfiguration];
-    v30 = [v14 homeScreenConfiguration];
-    LOBYTE(v32) = v22;
-    v21 = [a1 posterPreviewWithUniqueIdentifier:v37 displayNameLocalizationKey:v36 galleryLocalizedTitle:0 galleryLocalizedDescription:0 posterDescriptorLookupInfo:v34 titleStyleConfiguration:v28 focusConfiguration:v27 subtitleComplication:v20 suggestedComplications:v24 suggestedLandscapeComplications:v23 complicationLayoutType:v13 complicationsUseBottomLayout:v32 renderingConfiguration:v29 homeScreenConfiguration:v30 previewType:PBFPreviewTypeDefault galleryOptions:0];
+    focusConfiguration = [v5 focusConfiguration];
+    titleStyleConfiguration = [v5 titleStyleConfiguration];
+    renderingConfiguration = [v14 renderingConfiguration];
+    homeScreenConfiguration = [v14 homeScreenConfiguration];
+    LOBYTE(v32) = complicationsUseBottomLayout;
+    v21 = [self posterPreviewWithUniqueIdentifier:uUIDString displayNameLocalizationKey:displayNameLocalizationKey galleryLocalizedTitle:0 galleryLocalizedDescription:0 posterDescriptorLookupInfo:v34 titleStyleConfiguration:titleStyleConfiguration focusConfiguration:focusConfiguration subtitleComplication:v20 suggestedComplications:v24 suggestedLandscapeComplications:v23 complicationLayoutType:v13 complicationsUseBottomLayout:v32 renderingConfiguration:renderingConfiguration homeScreenConfiguration:homeScreenConfiguration previewType:PBFPreviewTypeDefault galleryOptions:0];
   }
 
   else
@@ -252,7 +252,7 @@ id __48__PBFGenericPosterPreview_posterPreviewForPath___block_invoke_2(uint64_t 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
   LOBYTE(v6) = self->_complicationsUseBottomLayout;
@@ -266,33 +266,33 @@ id __48__PBFGenericPosterPreview_posterPreviewForPath___block_invoke_2(uint64_t 
   hash = self->_hash;
   if (!hash)
   {
-    v4 = [MEMORY[0x277CF0C40] builder];
-    v5 = [v4 appendString:self->_previewUniqueIdentifier];
-    v6 = [v4 appendString:self->_displayNameLocalizationKey];
-    v7 = [v4 appendString:self->_galleryLocalizedTitle];
-    v8 = [v4 appendString:self->_galleryLocalizedDescription];
-    v9 = [v4 appendObject:self->_posterDescriptorLookupInfo];
-    v10 = [v4 appendObject:self->_titleStyleConfiguration];
-    v11 = [v4 appendObject:self->_subtitleComplication];
-    v12 = [v4 appendObject:self->_focusConfiguration];
-    v13 = [v4 appendObject:self->_suggestedComplications];
-    v14 = [v4 appendObject:self->_suggestedLandscapeComplications];
-    v15 = [v4 appendObject:self->_complicationLayoutType];
-    v16 = [v4 appendBool:self->_complicationsUseBottomLayout];
-    v17 = [v4 appendObject:self->_renderingConfiguration];
-    v18 = [v4 appendObject:self->_homeScreenConfiguration];
-    hash = [v4 hash];
+    builder = [MEMORY[0x277CF0C40] builder];
+    v5 = [builder appendString:self->_previewUniqueIdentifier];
+    v6 = [builder appendString:self->_displayNameLocalizationKey];
+    v7 = [builder appendString:self->_galleryLocalizedTitle];
+    v8 = [builder appendString:self->_galleryLocalizedDescription];
+    v9 = [builder appendObject:self->_posterDescriptorLookupInfo];
+    v10 = [builder appendObject:self->_titleStyleConfiguration];
+    v11 = [builder appendObject:self->_subtitleComplication];
+    v12 = [builder appendObject:self->_focusConfiguration];
+    v13 = [builder appendObject:self->_suggestedComplications];
+    v14 = [builder appendObject:self->_suggestedLandscapeComplications];
+    v15 = [builder appendObject:self->_complicationLayoutType];
+    v16 = [builder appendBool:self->_complicationsUseBottomLayout];
+    v17 = [builder appendObject:self->_renderingConfiguration];
+    v18 = [builder appendObject:self->_homeScreenConfiguration];
+    hash = [builder hash];
     self->_hash = hash;
   }
 
   return hash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self || (v6 = [(PBFGenericPosterPreview *)v4 hash], v6 == [(PBFGenericPosterPreview *)self hash]))
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self || (v6 = [(PBFGenericPosterPreview *)equalCopy hash], v6 == [(PBFGenericPosterPreview *)self hash]))
   {
     v7 = 1;
   }
@@ -317,19 +317,19 @@ id __48__PBFGenericPosterPreview_posterPreviewForPath___block_invoke_2(uint64_t 
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(PBFGenericPosterPreview *)self posterDescriptorLookupInfo];
-  v5 = [v4 posterDescriptorPath];
-  v6 = [v3 appendObject:v5 withName:@"posterDescriptorPath"];
+  posterDescriptorLookupInfo = [(PBFGenericPosterPreview *)self posterDescriptorLookupInfo];
+  posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
+  v6 = [v3 appendObject:posterDescriptorPath withName:@"posterDescriptorPath"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (unint64_t)presentationStyle
 {
-  v3 = [(PBFGenericPosterPreview *)self type];
-  v4 = [v3 isEqualToString:PBFPreviewTypeHero];
+  type = [(PBFGenericPosterPreview *)self type];
+  v4 = [type isEqualToString:PBFPreviewTypeHero];
 
   if (v4)
   {
@@ -358,56 +358,56 @@ id __48__PBFGenericPosterPreview_posterPreviewForPath___block_invoke_2(uint64_t 
 
 - (void)_hydrateGalleryOptions
 {
-  v3 = [(PBFGenericPosterPreview *)self posterDescriptorLookupInfo];
-  v15 = [v3 posterDescriptorPath];
+  posterDescriptorLookupInfo = [(PBFGenericPosterPreview *)self posterDescriptorLookupInfo];
+  posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
 
-  v4 = [MEMORY[0x277D3EDE0] modelObjectCacheForPath:v15];
-  v5 = [v4 galleryOptions];
-  v6 = v5;
-  if (v5)
+  v4 = [MEMORY[0x277D3EDE0] modelObjectCacheForPath:posterDescriptorPath];
+  galleryOptions = [v4 galleryOptions];
+  v6 = galleryOptions;
+  if (galleryOptions)
   {
-    v7 = v5;
+    v7 = galleryOptions;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D3EDE8] loadPosterDescriptorGalleryOptionsForPath:v15 error:0];
+    v7 = [MEMORY[0x277D3EDE8] loadPosterDescriptorGalleryOptionsForPath:posterDescriptorPath error:0];
   }
 
   v8 = v7;
 
-  v9 = [(PBFGenericPosterPreview *)self type];
-  v10 = [v9 isEqualToString:PBFPreviewTypeHero];
+  type = [(PBFGenericPosterPreview *)self type];
+  v10 = [type isEqualToString:PBFPreviewTypeHero];
 
   if (v8 || (v10 & 1) == 0)
   {
-    v11 = [v8 presentationStyle];
-    v12 = [v8 displayStyle];
+    presentationStyle = [v8 presentationStyle];
+    displayStyle = [v8 displayStyle];
   }
 
   else
   {
-    v11 = 0;
-    v12 = 0;
+    presentationStyle = 0;
+    displayStyle = 0;
   }
 
   v13 = PUIFeatureEnabled();
-  if ((v12 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((displayStyle & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v14 = 1;
   }
 
   else
   {
-    v14 = v12;
+    v14 = displayStyle;
   }
 
   if (v13)
   {
-    v14 = v12;
+    v14 = displayStyle;
   }
 
-  self->_cachedGalleryPresentationStyle = v11;
+  self->_cachedGalleryPresentationStyle = presentationStyle;
   self->_cachedDisplayStyle = v14;
 }
 

@@ -1,16 +1,16 @@
 @interface APSKServerSession
 - (APSKServerSession)init;
-- (int)sendAudioDataFromXPCParams:(id)a3;
-- (int)sendFrameFromXPCParams:(id)a3;
-- (int)setAuthStringFromXPCParams:(id)a3;
-- (int)startWithXPCParams:(id)a3;
+- (int)sendAudioDataFromXPCParams:(id)params;
+- (int)sendFrameFromXPCParams:(id)params;
+- (int)setAuthStringFromXPCParams:(id)params;
+- (int)startWithXPCParams:(id)params;
 - (void)dealloc;
-- (void)handleAuthRequired:(int)a3;
-- (void)handleFailure:(int)a3;
-- (void)handleStartCompletion:(int)a3;
-- (void)handleUpdatedDisplayWidth:(int)a3 height:(int)a4 refreshRate:(int)a5;
-- (void)handleVideoStreamErrorNotification:(int)a3;
-- (void)setObjectID:(unint64_t)a3 andConnection:(id)a4;
+- (void)handleAuthRequired:(int)required;
+- (void)handleFailure:(int)failure;
+- (void)handleStartCompletion:(int)completion;
+- (void)handleUpdatedDisplayWidth:(int)width height:(int)height refreshRate:(int)rate;
+- (void)handleVideoStreamErrorNotification:(int)notification;
+- (void)setObjectID:(unint64_t)d andConnection:(id)connection;
 - (void)stop;
 @end
 
@@ -88,15 +88,15 @@
   FigSimpleMutexUnlock();
 }
 
-- (int)startWithXPCParams:(id)a3
+- (int)startWithXPCParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   v40 = 0;
-  uint64 = xpc_dictionary_get_uint64(v4, off_1000142D0);
-  string = xpc_dictionary_get_string(v4, off_1000142E0);
+  uint64 = xpc_dictionary_get_uint64(paramsCopy, off_1000142D0);
+  string = xpc_dictionary_get_string(paramsCopy, off_1000142E0);
   v39 = 0;
-  v7 = xpc_dictionary_get_uint64(v4, off_1000142C8);
-  v8 = xpc_dictionary_get_uint64(v4, off_1000142D8);
+  v7 = xpc_dictionary_get_uint64(paramsCopy, off_1000142C8);
+  v8 = xpc_dictionary_get_uint64(paramsCopy, off_1000142D8);
   objc_initWeak(&location, self);
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
@@ -161,7 +161,7 @@
   {
     if (dword_100014248 != -1 || (v14 = _LogCategory_Initialize(), sender = self->_sender, v14))
     {
-      v23 = self;
+      selfCopy = self;
       v24 = sender;
       LogPrintF();
       sender = self->_sender;
@@ -199,7 +199,7 @@ LABEL_36:
   }
 
   length = 0;
-  data = xpc_dictionary_get_data(v4, off_100014308, &length);
+  data = xpc_dictionary_get_data(paramsCopy, off_100014308, &length);
   if (!data || length != 40)
   {
     v12 = -6705;
@@ -208,7 +208,7 @@ LABEL_36:
   }
 
   v16 = self->_sender;
-  v17 = xpc_dictionary_get_BOOL(v4, off_100014300);
+  v17 = xpc_dictionary_get_BOOL(paramsCopy, off_100014300);
   v12 = sub_1000043DC(v16, data, v17);
   if (!v12)
   {
@@ -228,9 +228,9 @@ LABEL_26:
       if (!v12)
       {
         v12 = sub_100003FE4(self->_sender, v26);
-        if (!v12 && (!xpc_dictionary_get_BOOL(v4, off_1000142F0) || (v12 = sub_100004100(self->_sender)) == 0))
+        if (!v12 && (!xpc_dictionary_get_BOOL(paramsCopy, off_1000142F0) || (v12 = sub_100004100(self->_sender)) == 0))
         {
-          v18 = [NSNotificationCenter defaultCenter:v23];
+          v18 = [NSNotificationCenter defaultCenter:selfCopy];
           v19 = [v18 addObserverForName:@"APMediaSender_VideoStreamFailed" object:self->_sender queue:0 usingBlock:v25];
           senderNotifObserver = self->_senderNotifObserver;
           self->_senderNotifObserver = v19;
@@ -278,9 +278,9 @@ LABEL_27:
   return v12;
 }
 
-- (int)setAuthStringFromXPCParams:(id)a3
+- (int)setAuthStringFromXPCParams:(id)params
 {
-  string = xpc_dictionary_get_string(a3, off_1000142E0);
+  string = xpc_dictionary_get_string(params, off_1000142E0);
   sender = self->_sender;
   if (sender)
   {
@@ -310,15 +310,15 @@ LABEL_27:
   return v7;
 }
 
-- (int)sendFrameFromXPCParams:(id)a3
+- (int)sendFrameFromXPCParams:(id)params
 {
-  v4 = a3;
-  v5 = v4;
+  paramsCopy = params;
+  v5 = paramsCopy;
   v11 = 0;
   cf = 0;
   if (self->_sender)
   {
-    v6 = xpc_dictionary_get_value(v4, off_1000142E8);
+    v6 = xpc_dictionary_get_value(paramsCopy, off_1000142E8);
     v7 = v6;
     if (v6)
     {
@@ -361,10 +361,10 @@ LABEL_27:
   return v9;
 }
 
-- (int)sendAudioDataFromXPCParams:(id)a3
+- (int)sendAudioDataFromXPCParams:(id)params
 {
-  v4 = a3;
-  v5 = v4;
+  paramsCopy = params;
+  v5 = paramsCopy;
   v19 = *&kCMTimeInvalid.value;
   epoch = kCMTimeInvalid.epoch;
   length = 0;
@@ -375,7 +375,7 @@ LABEL_27:
     goto LABEL_11;
   }
 
-  data = xpc_dictionary_get_data(v4, off_100014310, &length);
+  data = xpc_dictionary_get_data(paramsCopy, off_100014310, &length);
   if (data)
   {
     v7 = CFDataCreate(kCFAllocatorDefault, data, length);
@@ -426,21 +426,21 @@ LABEL_11:
   return v14;
 }
 
-- (void)setObjectID:(unint64_t)a3 andConnection:(id)a4
+- (void)setObjectID:(unint64_t)d andConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   lock = self->_lock;
   FigSimpleMutexLock();
   connection = self->_connection;
-  self->_connection = v6;
-  self->_objectID = a3;
-  v10 = v6;
+  self->_connection = connectionCopy;
+  self->_objectID = d;
+  v10 = connectionCopy;
 
   v9 = self->_lock;
   FigSimpleMutexUnlock();
 }
 
-- (void)handleAuthRequired:(int)a3
+- (void)handleAuthRequired:(int)required
 {
   lock = self->_lock;
   FigSimpleMutexLock();
@@ -456,7 +456,7 @@ LABEL_11:
 
     else
     {
-      xpc_dictionary_set_uint64(v7, off_100014338, a3);
+      xpc_dictionary_set_uint64(v7, off_100014338, required);
       xpc_connection_send_message(self->_connection, v8);
     }
   }
@@ -471,9 +471,9 @@ LABEL_11:
   FigXPCRelease();
 }
 
-- (void)handleStartCompletion:(int)a3
+- (void)handleStartCompletion:(int)completion
 {
-  if (a3)
+  if (completion)
   {
     if (dword_100014248 <= 90 && (dword_100014248 != -1 || _LogCategory_Initialize()))
     {
@@ -502,7 +502,7 @@ LABEL_8:
 
     else
     {
-      xpc_dictionary_set_uint64(v7, off_100014330, a3);
+      xpc_dictionary_set_uint64(v7, off_100014330, completion);
       xpc_connection_send_message(self->_connection, v8);
     }
   }
@@ -517,7 +517,7 @@ LABEL_8:
   FigXPCRelease();
 }
 
-- (void)handleFailure:(int)a3
+- (void)handleFailure:(int)failure
 {
   if (dword_100014248 <= 100 && (dword_100014248 != -1 || _LogCategory_Initialize()))
   {
@@ -538,7 +538,7 @@ LABEL_8:
 
     else
     {
-      xpc_dictionary_set_uint64(v7, off_100014330, a3);
+      xpc_dictionary_set_uint64(v7, off_100014330, failure);
       xpc_connection_send_message(self->_connection, v8);
     }
   }
@@ -553,7 +553,7 @@ LABEL_8:
   FigXPCRelease();
 }
 
-- (void)handleUpdatedDisplayWidth:(int)a3 height:(int)a4 refreshRate:(int)a5
+- (void)handleUpdatedDisplayWidth:(int)width height:(int)height refreshRate:(int)rate
 {
   if (dword_100014248 <= 50 && (dword_100014248 != -1 || _LogCategory_Initialize()))
   {
@@ -575,9 +575,9 @@ LABEL_8:
 
     else
     {
-      xpc_dictionary_set_uint64(v11, off_100014340, a3);
-      xpc_dictionary_set_uint64(v12, off_100014348, a4);
-      xpc_dictionary_set_uint64(v12, off_100014350, a5);
+      xpc_dictionary_set_uint64(v11, off_100014340, width);
+      xpc_dictionary_set_uint64(v12, off_100014348, height);
+      xpc_dictionary_set_uint64(v12, off_100014350, rate);
       xpc_connection_send_message(self->_connection, v12);
     }
   }
@@ -592,7 +592,7 @@ LABEL_8:
   FigXPCRelease();
 }
 
-- (void)handleVideoStreamErrorNotification:(int)a3
+- (void)handleVideoStreamErrorNotification:(int)notification
 {
   if (dword_100014248 <= 90 && (dword_100014248 != -1 || _LogCategory_Initialize()))
   {
@@ -613,7 +613,7 @@ LABEL_8:
 
     else
     {
-      xpc_dictionary_set_uint64(v7, off_100014330, a3);
+      xpc_dictionary_set_uint64(v7, off_100014330, notification);
       xpc_connection_send_message(self->_connection, v8);
     }
   }

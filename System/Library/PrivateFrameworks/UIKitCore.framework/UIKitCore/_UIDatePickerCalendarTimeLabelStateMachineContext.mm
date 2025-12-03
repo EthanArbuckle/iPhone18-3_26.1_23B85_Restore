@@ -1,18 +1,18 @@
 @interface _UIDatePickerCalendarTimeLabelStateMachineContext
-- (BOOL)currentSateCanTransitionWithEvents:(id)a3;
-- (_UIDatePickerCalendarTimeLabelStateMachineContext)initWithUpdateHandler:(id)a3;
-- (void)_updateFromState:(unint64_t)a3;
+- (BOOL)currentSateCanTransitionWithEvents:(id)events;
+- (_UIDatePickerCalendarTimeLabelStateMachineContext)initWithUpdateHandler:(id)handler;
+- (void)_updateFromState:(unint64_t)state;
 @end
 
 @implementation _UIDatePickerCalendarTimeLabelStateMachineContext
 
-- (_UIDatePickerCalendarTimeLabelStateMachineContext)initWithUpdateHandler:(id)a3
+- (_UIDatePickerCalendarTimeLabelStateMachineContext)initWithUpdateHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarTimeLabelStateMachine.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"updateHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarTimeLabelStateMachine.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"updateHandler"}];
   }
 
   v12.receiver = self;
@@ -22,7 +22,7 @@
   if (v6)
   {
     v6->_currentState = 1;
-    v8 = _Block_copy(v5);
+    v8 = _Block_copy(handlerCopy);
     updateHandler = v7->_updateHandler;
     v7->_updateHandler = v8;
   }
@@ -30,20 +30,20 @@
   return v7;
 }
 
-- (void)_updateFromState:(unint64_t)a3
+- (void)_updateFromState:(unint64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
-    self->_lastDistinctState = a3;
+    self->_lastDistinctState = state;
   }
 
-  self->_previousState = a3;
+  self->_previousState = state;
   (*(self->_updateHandler + 2))();
 }
 
-- (BOOL)currentSateCanTransitionWithEvents:(id)a3
+- (BOOL)currentSateCanTransitionWithEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -55,7 +55,7 @@
   v7[3] = &unk_1E71015B8;
   v7[4] = &v8;
   v7[5] = currentState;
-  [v4 enumerateIndexesUsingBlock:v7];
+  [eventsCopy enumerateIndexesUsingBlock:v7];
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 

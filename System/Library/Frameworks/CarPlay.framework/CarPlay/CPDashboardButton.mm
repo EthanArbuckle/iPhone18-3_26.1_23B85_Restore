@@ -1,11 +1,11 @@
 @interface CPDashboardButton
 - (CPControlDelegate)delegate;
-- (CPDashboardButton)initWithCoder:(id)a3;
+- (CPDashboardButton)initWithCoder:(id)coder;
 - (CPDashboardButton)initWithTitleVariants:(NSArray *)titleVariants subtitleVariants:(NSArray *)subtitleVariants image:(UIImage *)image handler:(void *)handler;
 - (NSString)description;
 - (UIImage)image;
 - (id)_init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handlePrimaryAction;
 @end
 
@@ -22,9 +22,9 @@
   v14 = [(CPDashboardButton *)&v27 init];
   if (v14)
   {
-    v15 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v14->_identifier;
-    v14->_identifier = v15;
+    v14->_identifier = uUID;
 
     v17 = [(NSArray *)v10 copy];
     v18 = v14->_titleVariants;
@@ -70,52 +70,52 @@ id __74__CPDashboardButton_initWithTitleVariants_subtitleVariants_image_handler_
   return [(CPDashboardButton *)&v3 init];
 }
 
-- (CPDashboardButton)initWithCoder:(id)a3
+- (CPDashboardButton)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPDashboardButton *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(CPDashboardButton *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPDashboardButtonIdentifierKey"];
-    identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPDashboardButtonIdentifierKey"];
+    identifier = _init->_identifier;
+    _init->_identifier = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"kCPDashboardButtonTitlesKey"];
-    titleVariants = v5->_titleVariants;
-    v5->_titleVariants = v11;
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"kCPDashboardButtonTitlesKey"];
+    titleVariants = _init->_titleVariants;
+    _init->_titleVariants = v11;
 
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"kCPDashboardButtonSubtitlesKey"];
-    subtitleVariants = v5->_subtitleVariants;
-    v5->_subtitleVariants = v16;
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"kCPDashboardButtonSubtitlesKey"];
+    subtitleVariants = _init->_subtitleVariants;
+    _init->_subtitleVariants = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPDashboardButtonImageSetKey"];
-    imageSet = v5->_imageSet;
-    v5->_imageSet = v18;
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPDashboardButtonImageSetKey"];
+    imageSet = _init->_imageSet;
+    _init->_imageSet = v18;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPDashboardButton *)self identifier];
-  [v4 encodeObject:v5 forKey:@"kCPDashboardButtonIdentifierKey"];
+  coderCopy = coder;
+  identifier = [(CPDashboardButton *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPDashboardButtonIdentifierKey"];
 
-  v6 = [(CPDashboardButton *)self titleVariants];
-  [v4 encodeObject:v6 forKey:@"kCPDashboardButtonTitlesKey"];
+  titleVariants = [(CPDashboardButton *)self titleVariants];
+  [coderCopy encodeObject:titleVariants forKey:@"kCPDashboardButtonTitlesKey"];
 
-  v7 = [(CPDashboardButton *)self subtitleVariants];
-  [v4 encodeObject:v7 forKey:@"kCPDashboardButtonSubtitlesKey"];
+  subtitleVariants = [(CPDashboardButton *)self subtitleVariants];
+  [coderCopy encodeObject:subtitleVariants forKey:@"kCPDashboardButtonSubtitlesKey"];
 
-  v8 = [(CPDashboardButton *)self imageSet];
-  [v4 encodeObject:v8 forKey:@"kCPDashboardButtonImageSetKey"];
+  imageSet = [(CPDashboardButton *)self imageSet];
+  [coderCopy encodeObject:imageSet forKey:@"kCPDashboardButtonImageSetKey"];
 }
 
 - (NSString)description
@@ -124,8 +124,8 @@ id __74__CPDashboardButton_initWithTitleVariants_subtitleVariants_image_handler_
   v8.receiver = self;
   v8.super_class = CPDashboardButton;
   v4 = [(CPDashboardButton *)&v8 description];
-  v5 = [(CPDashboardButton *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ {UUID: %@}", v4, v5];
+  identifier = [(CPDashboardButton *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ {UUID: %@}", v4, identifier];
 
   return v6;
 }
@@ -133,21 +133,21 @@ id __74__CPDashboardButton_initWithTitleVariants_subtitleVariants_image_handler_
 - (void)handlePrimaryAction
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(CPDashboardButton *)self handler];
+  handler = [(CPDashboardButton *)self handler];
 
   v4 = CarPlayFrameworkGeneralLogging();
-  v5 = v4;
-  if (v3)
+  handler2 = v4;
+  if (handler)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = self;
-      _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_INFO, "%@ will call action handler", &v7, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_236ED4000, handler2, OS_LOG_TYPE_INFO, "%@ will call action handler", &v7, 0xCu);
     }
 
-    v5 = [(CPDashboardButton *)self handler];
-    (*(v5 + 16))(v5, self);
+    handler2 = [(CPDashboardButton *)self handler];
+    (*(handler2 + 16))(handler2, self);
   }
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -160,10 +160,10 @@ id __74__CPDashboardButton_initWithTitleVariants_subtitleVariants_image_handler_
 
 - (UIImage)image
 {
-  v2 = [(CPDashboardButton *)self imageSet];
-  v3 = [v2 image];
+  imageSet = [(CPDashboardButton *)self imageSet];
+  image = [imageSet image];
 
-  return v3;
+  return image;
 }
 
 - (CPControlDelegate)delegate

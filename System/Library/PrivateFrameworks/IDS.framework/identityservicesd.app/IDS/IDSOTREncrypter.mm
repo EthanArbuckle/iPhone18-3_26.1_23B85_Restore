@@ -1,34 +1,34 @@
 @interface IDSOTREncrypter
-- (IDSOTREncrypter)initWithOTRController:(id)a3 OTRToken:(id)a4;
-- (id)decryptData:(id)a3 onQueue:(id)a4 error:(int64_t *)a5;
-- (id)encryptData:(id)a3 onQueue:(id)a4 error:(int64_t *)a5;
+- (IDSOTREncrypter)initWithOTRController:(id)controller OTRToken:(id)token;
+- (id)decryptData:(id)data onQueue:(id)queue error:(int64_t *)error;
+- (id)encryptData:(id)data onQueue:(id)queue error:(int64_t *)error;
 @end
 
 @implementation IDSOTREncrypter
 
-- (IDSOTREncrypter)initWithOTRController:(id)a3 OTRToken:(id)a4
+- (IDSOTREncrypter)initWithOTRController:(id)controller OTRToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = IDSOTREncrypter;
   v9 = [(IDSOTREncrypter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_OTRController, a3);
-    objc_storeStrong(&v10->_OTRToken, a4);
+    objc_storeStrong(&v9->_OTRController, controller);
+    objc_storeStrong(&v10->_OTRToken, token);
   }
 
   return v10;
 }
 
-- (id)encryptData:(id)a3 onQueue:(id)a4 error:(int64_t *)a5
+- (id)encryptData:(id)data onQueue:(id)queue error:(int64_t *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 length];
-  if (v9 && v10 && self->_OTRToken)
+  dataCopy = data;
+  queueCopy = queue;
+  v10 = [dataCopy length];
+  if (queueCopy && v10 && self->_OTRToken)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -46,13 +46,13 @@
     v24[3] = &unk_100BE11B8;
     v24[4] = self;
     v26 = buf;
-    v25 = v8;
+    v25 = dataCopy;
     v27 = &v28;
-    [v9 performSyncBlock:v24];
+    [queueCopy performSyncBlock:v24];
     v11 = *(v29 + 24);
-    if (a5 || (v11 & 1) != 0)
+    if (error || (v11 & 1) != 0)
     {
-      if (!a5)
+      if (!error)
       {
         v11 = 1;
       }
@@ -64,7 +64,7 @@
         v13 = 0;
       }
 
-      *a5 = v13;
+      *error = v13;
     }
 
     v14 = *(*&buf[8] + 40);
@@ -78,48 +78,48 @@
     v15 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v8 length];
-      v17 = [(IDSOTREncrypter *)self OTRToken];
+      v16 = [dataCopy length];
+      oTRToken = [(IDSOTREncrypter *)self OTRToken];
       *buf = 134218498;
       *&buf[4] = v16;
       *&buf[12] = 2112;
-      *&buf[14] = v9;
+      *&buf[14] = queueCopy;
       *&buf[22] = 2112;
-      v33 = v17;
+      v33 = oTRToken;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Invalid OTR Encrypt parameters -- failing {inputDataLength: %llu, queue: %@, OTRToken: %@}", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v18 = [v8 length];
-      v21 = [(IDSOTREncrypter *)self OTRToken];
+      v18 = [dataCopy length];
+      oTRToken2 = [(IDSOTREncrypter *)self OTRToken];
       _IDSWarnV();
 
-      v19 = [v8 length];
-      v22 = [(IDSOTREncrypter *)self OTRToken];
+      v19 = [dataCopy length];
+      oTRToken3 = [(IDSOTREncrypter *)self OTRToken];
       _IDSLogV();
 
-      [v8 length];
-      v23 = [(IDSOTREncrypter *)self OTRToken];
+      [dataCopy length];
+      oTRToken4 = [(IDSOTREncrypter *)self OTRToken];
       _IDSLogTransport();
     }
 
     v14 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = 101;
+      *error = 101;
     }
   }
 
   return v14;
 }
 
-- (id)decryptData:(id)a3 onQueue:(id)a4 error:(int64_t *)a5
+- (id)decryptData:(id)data onQueue:(id)queue error:(int64_t *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 length];
-  if (v9 && v10 && self->_OTRToken)
+  dataCopy = data;
+  queueCopy = queue;
+  v10 = [dataCopy length];
+  if (queueCopy && v10 && self->_OTRToken)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -137,13 +137,13 @@
     v24[3] = &unk_100BE11B8;
     v24[4] = self;
     v26 = buf;
-    v25 = v8;
+    v25 = dataCopy;
     v27 = &v28;
-    [v9 performSyncBlock:v24];
+    [queueCopy performSyncBlock:v24];
     v11 = *(v29 + 24);
-    if (a5 || (v11 & 1) != 0)
+    if (error || (v11 & 1) != 0)
     {
-      if (!a5)
+      if (!error)
       {
         v11 = 1;
       }
@@ -155,7 +155,7 @@
         v13 = 0;
       }
 
-      *a5 = v13;
+      *error = v13;
     }
 
     v14 = *(*&buf[8] + 40);
@@ -169,36 +169,36 @@
     v15 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v8 length];
-      v17 = [(IDSOTREncrypter *)self OTRToken];
+      v16 = [dataCopy length];
+      oTRToken = [(IDSOTREncrypter *)self OTRToken];
       *buf = 134218498;
       *&buf[4] = v16;
       *&buf[12] = 2112;
-      *&buf[14] = v9;
+      *&buf[14] = queueCopy;
       *&buf[22] = 2112;
-      v33 = v17;
+      v33 = oTRToken;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Invalid OTR Encrypt parameters -- failing {inputDataLength: %llu, queue: %@, OTRToken: %@}", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v18 = [v8 length];
-      v21 = [(IDSOTREncrypter *)self OTRToken];
+      v18 = [dataCopy length];
+      oTRToken2 = [(IDSOTREncrypter *)self OTRToken];
       _IDSWarnV();
 
-      v19 = [v8 length];
-      v22 = [(IDSOTREncrypter *)self OTRToken];
+      v19 = [dataCopy length];
+      oTRToken3 = [(IDSOTREncrypter *)self OTRToken];
       _IDSLogV();
 
-      [v8 length];
-      v23 = [(IDSOTREncrypter *)self OTRToken];
+      [dataCopy length];
+      oTRToken4 = [(IDSOTREncrypter *)self OTRToken];
       _IDSLogTransport();
     }
 
     v14 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = 100;
+      *error = 100;
     }
   }
 

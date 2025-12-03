@@ -1,7 +1,7 @@
 @interface FMFWildcardGestureRecognizer
 - (FMFWildcardGestureRecognizer)init;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation FMFWildcardGestureRecognizer
@@ -20,21 +20,21 @@
   return v3;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   touchesBeganCallback = self->_touchesBeganCallback;
   if (touchesBeganCallback)
   {
-    touchesBeganCallback[2](touchesBeganCallback, a3, a4);
+    touchesBeganCallback[2](touchesBeganCallback, began, event);
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   touchesEndedCallback = self->_touchesEndedCallback;
   if (touchesEndedCallback)
   {
-    touchesEndedCallback[2](touchesEndedCallback, a3, a4);
+    touchesEndedCallback[2](touchesEndedCallback, ended, event);
   }
 }
 

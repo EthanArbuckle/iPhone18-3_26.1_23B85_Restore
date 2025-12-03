@@ -8,71 +8,71 @@
 - (HDCodableUserDomainConceptProperty)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableUserDomainConceptProperty);
-  -[HDCodableUserDomainConceptProperty setType:](v2, "setType:", [a1 type]);
-  -[HDCodableUserDomainConceptProperty setVersion:](v2, "setVersion:", [a1 version]);
-  [a1 timestamp];
+  -[HDCodableUserDomainConceptProperty setType:](v2, "setType:", [self type]);
+  -[HDCodableUserDomainConceptProperty setVersion:](v2, "setVersion:", [self version]);
+  [self timestamp];
   [(HDCodableUserDomainConceptProperty *)v2 setTimestamp:?];
-  -[HDCodableUserDomainConceptProperty setValueType:](v2, "setValueType:", [a1 valueType]);
-  v3 = [a1 valueType];
-  if (v3 <= 3)
+  -[HDCodableUserDomainConceptProperty setValueType:](v2, "setValueType:", [self valueType]);
+  valueType = [self valueType];
+  if (valueType <= 3)
   {
-    if (v3 != 1)
+    if (valueType != 1)
     {
-      if (v3 != 2)
+      if (valueType != 2)
       {
-        if (v3 != 3)
+        if (valueType != 3)
         {
           goto LABEL_18;
         }
 
-        v4 = [a1 numberValue];
-        -[HDCodableUserDomainConceptProperty setIntegerValue:](v2, "setIntegerValue:", [v4 integerValue]);
+        numberValue = [self numberValue];
+        -[HDCodableUserDomainConceptProperty setIntegerValue:](v2, "setIntegerValue:", [numberValue integerValue]);
         goto LABEL_17;
       }
 
-      v4 = [a1 numberValue];
-      [v4 doubleValue];
+      numberValue = [self numberValue];
+      [numberValue doubleValue];
       goto LABEL_16;
     }
 
-    v4 = [a1 stringValue];
-    [(HDCodableUserDomainConceptProperty *)v2 setStringValue:v4];
+    numberValue = [self stringValue];
+    [(HDCodableUserDomainConceptProperty *)v2 setStringValue:numberValue];
   }
 
-  else if (v3 > 5)
+  else if (valueType > 5)
   {
-    if (v3 == 6)
+    if (valueType == 6)
     {
-      v4 = [a1 UUIDValue];
-      v5 = [v4 hk_dataForUUIDBytes];
-      [(HDCodableUserDomainConceptProperty *)v2 setDataValue:v5];
+      numberValue = [self UUIDValue];
+      hk_dataForUUIDBytes = [numberValue hk_dataForUUIDBytes];
+      [(HDCodableUserDomainConceptProperty *)v2 setDataValue:hk_dataForUUIDBytes];
     }
 
     else
     {
-      if (v3 != 7)
+      if (valueType != 7)
       {
         goto LABEL_18;
       }
 
-      v4 = [a1 dataValue];
-      [(HDCodableUserDomainConceptProperty *)v2 setDataValue:v4];
+      numberValue = [self dataValue];
+      [(HDCodableUserDomainConceptProperty *)v2 setDataValue:numberValue];
     }
   }
 
   else
   {
-    if (v3 != 4)
+    if (valueType != 4)
     {
-      v4 = [a1 dateValue];
-      [v4 timeIntervalSinceReferenceDate];
+      numberValue = [self dateValue];
+      [numberValue timeIntervalSinceReferenceDate];
 LABEL_16:
       [(HDCodableUserDomainConceptProperty *)v2 setDoubleValue:?];
       goto LABEL_17;
     }
 
-    v4 = [a1 numberValue];
-    -[HDCodableUserDomainConceptProperty setBoolValue:](v2, "setBoolValue:", [v4 BOOLValue]);
+    numberValue = [self numberValue];
+    -[HDCodableUserDomainConceptProperty setBoolValue:](v2, "setBoolValue:", [numberValue BOOLValue]);
   }
 
 LABEL_17:
@@ -92,35 +92,35 @@ LABEL_18:
     goto LABEL_30;
   }
 
-  v4 = [v3 type];
-  v5 = [v3 version];
+  type = [v3 type];
+  version = [v3 version];
   [v3 timestamp];
   v7 = v6;
-  v8 = [v3 valueType];
-  v9 = v8;
+  valueType = [v3 valueType];
+  v9 = valueType;
   v10 = 0;
-  if (v8 <= 3)
+  if (valueType <= 3)
   {
-    if (v8 <= 1)
+    if (valueType <= 1)
     {
-      if (v8)
+      if (valueType)
       {
-        if (v8 != 1)
+        if (valueType != 1)
         {
           goto LABEL_24;
         }
 
-        v11 = [v3 stringValue];
+        stringValue = [v3 stringValue];
       }
 
       else
       {
-        v11 = [MEMORY[0x277CBEB68] null];
+        stringValue = [MEMORY[0x277CBEB68] null];
       }
 
 LABEL_20:
-      v10 = v11;
-      if (v11)
+      v10 = stringValue;
+      if (stringValue)
       {
         goto LABEL_21;
       }
@@ -152,7 +152,7 @@ LABEL_24:
       goto LABEL_29;
     }
 
-    if (v8 == 2)
+    if (valueType == 2)
     {
       v14 = MEMORY[0x277CCABB0];
       [v3 doubleValue];
@@ -164,13 +164,13 @@ LABEL_24:
       [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v3, "integerValue")}];
     }
 
-    v11 = LABEL_11:;
+    stringValue = LABEL_11:;
     goto LABEL_20;
   }
 
-  if (v8 <= 5)
+  if (valueType <= 5)
   {
-    if (v8 == 4)
+    if (valueType == 4)
     {
       [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "BOOLValue")}];
     }
@@ -185,20 +185,20 @@ LABEL_24:
     goto LABEL_11;
   }
 
-  if (v8 != 6)
+  if (valueType != 6)
   {
-    if (v8 != 7)
+    if (valueType != 7)
     {
       goto LABEL_24;
     }
 
-    v11 = [v3 dataValue];
+    stringValue = [v3 dataValue];
     goto LABEL_20;
   }
 
   v15 = MEMORY[0x277CCAD78];
-  v16 = [v3 dataValue];
-  v10 = [v15 hk_UUIDWithData:v16];
+  dataValue = [v3 dataValue];
+  v10 = [v15 hk_UUIDWithData:dataValue];
 
   if (!v10)
   {
@@ -211,7 +211,7 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v12 = [objc_alloc(MEMORY[0x277CCDAF8]) initWithType:v4 version:v5 timestamp:v9 valueType:v10 value:v7];
+  v12 = [objc_alloc(MEMORY[0x277CCDAF8]) initWithType:type version:version timestamp:v9 valueType:v10 value:v7];
 LABEL_29:
 
 LABEL_30:

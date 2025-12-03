@@ -1,29 +1,29 @@
 @interface _UIBatteryViewAXHUDImageCacheInfo
-- (BOOL)cacheMatchesCapacity:(double)a3 fillColor:(id)a4 tintColor:(id)a5 showingBolt:(BOOL)a6 boltInactive:(BOOL)a7 reverseLayout:(BOOL)a8 scale:(double)a9 showsPercentage:(BOOL)a10 contentSizeCategory:(id)a11;
+- (BOOL)cacheMatchesCapacity:(double)capacity fillColor:(id)color tintColor:(id)tintColor showingBolt:(BOOL)bolt boltInactive:(BOOL)inactive reverseLayout:(BOOL)layout scale:(double)scale showsPercentage:(BOOL)self0 contentSizeCategory:(id)self1;
 @end
 
 @implementation _UIBatteryViewAXHUDImageCacheInfo
 
-- (BOOL)cacheMatchesCapacity:(double)a3 fillColor:(id)a4 tintColor:(id)a5 showingBolt:(BOOL)a6 boltInactive:(BOOL)a7 reverseLayout:(BOOL)a8 scale:(double)a9 showsPercentage:(BOOL)a10 contentSizeCategory:(id)a11
+- (BOOL)cacheMatchesCapacity:(double)capacity fillColor:(id)color tintColor:(id)tintColor showingBolt:(BOOL)bolt boltInactive:(BOOL)inactive reverseLayout:(BOOL)layout scale:(double)scale showsPercentage:(BOOL)self0 contentSizeCategory:(id)self1
 {
-  v11 = a10;
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v19 = a4;
-  v20 = a5;
-  v21 = a11;
+  percentageCopy = percentage;
+  layoutCopy = layout;
+  inactiveCopy = inactive;
+  boltCopy = bolt;
+  colorCopy = color;
+  tintColorCopy = tintColor;
+  categoryCopy = category;
   [(_UIBatteryViewAXHUDImageCacheInfo *)self capacity];
-  if (v22 == a3)
+  if (v22 == capacity)
   {
-    v23 = [(_UIBatteryViewAXHUDImageCacheInfo *)self fillColor];
-    if ([v23 isEqual:v19])
+    fillColor = [(_UIBatteryViewAXHUDImageCacheInfo *)self fillColor];
+    if ([fillColor isEqual:colorCopy])
     {
-      v24 = [(_UIBatteryViewAXHUDImageCacheInfo *)self tintColor];
-      if ([v24 isEqual:v20] && -[_UIBatteryViewAXHUDImageCacheInfo showBolt](self, "showBolt") == v15 && -[_UIBatteryViewAXHUDImageCacheInfo boltInactive](self, "boltInactive") == v14 && -[_UIBatteryViewAXHUDImageCacheInfo reverseLayoutDirection](self, "reverseLayoutDirection") == v13 && (-[_UIBatteryViewAXHUDImageCacheInfo scale](self, "scale"), v25 == a9) && -[_UIBatteryViewAXHUDImageCacheInfo showsPercentage](self, "showsPercentage") == v11)
+      tintColor = [(_UIBatteryViewAXHUDImageCacheInfo *)self tintColor];
+      if ([tintColor isEqual:tintColorCopy] && -[_UIBatteryViewAXHUDImageCacheInfo showBolt](self, "showBolt") == boltCopy && -[_UIBatteryViewAXHUDImageCacheInfo boltInactive](self, "boltInactive") == inactiveCopy && -[_UIBatteryViewAXHUDImageCacheInfo reverseLayoutDirection](self, "reverseLayoutDirection") == layoutCopy && (-[_UIBatteryViewAXHUDImageCacheInfo scale](self, "scale"), v25 == scale) && -[_UIBatteryViewAXHUDImageCacheInfo showsPercentage](self, "showsPercentage") == percentageCopy)
       {
-        v28 = [(_UIBatteryViewAXHUDImageCacheInfo *)self contentSizeCategory];
-        v26 = [v28 isEqualToString:v21];
+        contentSizeCategory = [(_UIBatteryViewAXHUDImageCacheInfo *)self contentSizeCategory];
+        v26 = [contentSizeCategory isEqualToString:categoryCopy];
       }
 
       else

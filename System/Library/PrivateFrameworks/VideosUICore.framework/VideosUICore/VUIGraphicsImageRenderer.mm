@@ -1,40 +1,40 @@
 @interface VUIGraphicsImageRenderer
-+ (id)_imageWithSize:(CGSize)a3 format:(id)a4 actions:(id)a5;
-+ (id)decodedImage:(id)a3 opaque:(BOOL)a4;
-+ (id)formatWithCGImage:(CGImage *)a3;
-+ (id)formatWithCGImage:(CGImage *)a3 preferredFormat:(id)a4;
-+ (id)formatWithUIImage:(id)a3;
-+ (id)formatWithUIImage:(id)a3 preferredFormat:(id)a4;
-+ (id)imageWithSize:(CGSize)a3 format:(id)a4 actions:(id)a5;
-+ (id)imageWithSize:(CGSize)a3 format:(id)a4 cgContextActions:(id)a5;
++ (id)_imageWithSize:(CGSize)size format:(id)format actions:(id)actions;
++ (id)decodedImage:(id)image opaque:(BOOL)opaque;
++ (id)formatWithCGImage:(CGImage *)image;
++ (id)formatWithCGImage:(CGImage *)image preferredFormat:(id)format;
++ (id)formatWithUIImage:(id)image;
++ (id)formatWithUIImage:(id)image preferredFormat:(id)format;
++ (id)imageWithSize:(CGSize)size format:(id)format actions:(id)actions;
++ (id)imageWithSize:(CGSize)size format:(id)format cgContextActions:(id)actions;
 + (id)preferredFormat;
-+ (void)SVGImagesWithDataDescriptors:(id)a3 format:(id)a4 completion:(id)a5;
++ (void)SVGImagesWithDataDescriptors:(id)descriptors format:(id)format completion:(id)completion;
 @end
 
 @implementation VUIGraphicsImageRenderer
 
 + (id)preferredFormat
 {
-  v2 = [MEMORY[0x277D759A0] vui_main];
-  v3 = [v2 vuiTraitCollection];
+  vui_main = [MEMORY[0x277D759A0] vui_main];
+  vuiTraitCollection = [vui_main vuiTraitCollection];
 
-  v4 = [MEMORY[0x277D75568] formatForTraitCollection:v3];
+  v4 = [MEMORY[0x277D75568] formatForTraitCollection:vuiTraitCollection];
 
   return v4;
 }
 
-+ (id)imageWithSize:(CGSize)a3 format:(id)a4 cgContextActions:(id)a5
++ (id)imageWithSize:(CGSize)size format:(id)format cgContextActions:(id)actions
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  actionsCopy = actions;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__VUIGraphicsImageRenderer_imageWithSize_format_cgContextActions___block_invoke;
   v13[3] = &unk_279E219A8;
-  v14 = v9;
-  v10 = v9;
-  v11 = [a1 _imageWithSize:a4 format:v13 actions:{width, height}];
+  v14 = actionsCopy;
+  v10 = actionsCopy;
+  v11 = [self _imageWithSize:format format:v13 actions:{width, height}];
 
   return v11;
 }
@@ -47,21 +47,21 @@ uint64_t __66__VUIGraphicsImageRenderer_imageWithSize_format_cgContextActions___
   return v3();
 }
 
-+ (id)imageWithSize:(CGSize)a3 format:(id)a4 actions:(id)a5
++ (id)imageWithSize:(CGSize)size format:(id)format actions:(id)actions
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
+  height = size.height;
+  width = size.width;
+  actionsCopy = actions;
   v9 = MEMORY[0x277D75560];
-  v10 = a4;
-  v11 = [[v9 alloc] initWithSize:v10 format:{width, height}];
+  formatCopy = format;
+  v11 = [[v9 alloc] initWithSize:formatCopy format:{width, height}];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__VUIGraphicsImageRenderer_imageWithSize_format_actions___block_invoke;
   v15[3] = &unk_279E219A8;
-  v16 = v8;
-  v12 = v8;
+  v16 = actionsCopy;
+  v12 = actionsCopy;
   v13 = [v11 imageWithActions:v15];
 
   return v13;
@@ -74,20 +74,20 @@ void __57__VUIGraphicsImageRenderer_imageWithSize_format_actions___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)_imageWithSize:(CGSize)a3 format:(id)a4 actions:(id)a5
++ (id)_imageWithSize:(CGSize)size format:(id)format actions:(id)actions
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  actionsCopy = actions;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__VUIGraphicsImageRenderer__imageWithSize_format_actions___block_invoke;
   v13[3] = &unk_279E219D0;
   v15 = width;
   v16 = height;
-  v14 = v9;
-  v10 = v9;
-  v11 = [a1 imageWithSize:a4 format:v13 actions:{width, height}];
+  v14 = actionsCopy;
+  v10 = actionsCopy;
+  v11 = [self imageWithSize:format format:v13 actions:{width, height}];
 
   return v11;
 }
@@ -101,53 +101,53 @@ void __58__VUIGraphicsImageRenderer__imageWithSize_format_actions___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)formatWithCGImage:(CGImage *)a3 preferredFormat:(id)a4
++ (id)formatWithCGImage:(CGImage *)image preferredFormat:(id)format
 {
-  v5 = a4;
+  formatCopy = format;
   v6 = objc_opt_class();
-  v7 = [MEMORY[0x277D755B8] vuiImageWithCGImage:a3];
-  v8 = [v6 formatWithUIImage:v7 preferredFormat:v5];
+  v7 = [MEMORY[0x277D755B8] vuiImageWithCGImage:image];
+  v8 = [v6 formatWithUIImage:v7 preferredFormat:formatCopy];
 
   return v8;
 }
 
-+ (id)formatWithCGImage:(CGImage *)a3
++ (id)formatWithCGImage:(CGImage *)image
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277D755B8] vuiImageWithCGImage:a3];
+  v5 = [MEMORY[0x277D755B8] vuiImageWithCGImage:image];
   v6 = [v4 formatWithUIImage:v5 preferredFormat:0];
 
   return v6;
 }
 
-+ (id)formatWithUIImage:(id)a3
++ (id)formatWithUIImage:(id)image
 {
-  v3 = a3;
-  v4 = [objc_opt_class() formatWithUIImage:v3 preferredFormat:0];
+  imageCopy = image;
+  v4 = [objc_opt_class() formatWithUIImage:imageCopy preferredFormat:0];
 
   return v4;
 }
 
-+ (id)formatWithUIImage:(id)a3 preferredFormat:(id)a4
++ (id)formatWithUIImage:(id)image preferredFormat:(id)format
 {
-  v5 = a3;
-  v6 = a4;
+  imageCopy = image;
+  formatCopy = format;
   if (formatWithUIImage_preferredFormat__onceToken != -1)
   {
     +[VUIGraphicsImageRenderer formatWithUIImage:preferredFormat:];
   }
 
-  v7 = [MEMORY[0x277D759A0] vui_main];
-  [v7 vui_scale];
+  vui_main = [MEMORY[0x277D759A0] vui_main];
+  [vui_main vui_scale];
   v9 = v8;
 
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 _supportsDeepColor];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _supportsDeepColor = [currentDevice _supportsDeepColor];
 
-  if (!v11)
+  if (!_supportsDeepColor)
   {
-    v12 = 0;
-    if (v6)
+    imageRendererFormat = 0;
+    if (formatCopy)
     {
       goto LABEL_8;
     }
@@ -155,18 +155,18 @@ void __58__VUIGraphicsImageRenderer__imageWithSize_format_actions___block_invoke
     goto LABEL_10;
   }
 
-  v12 = [v5 imageRendererFormat];
-  [v12 setScale:v9];
-  if (!v12 || formatWithUIImage_preferredFormat__sOverrideDefault && formatWithUIImage_preferredFormat__sPrefersExtendedRange)
+  imageRendererFormat = [imageCopy imageRendererFormat];
+  [imageRendererFormat setScale:v9];
+  if (!imageRendererFormat || formatWithUIImage_preferredFormat__sOverrideDefault && formatWithUIImage_preferredFormat__sPrefersExtendedRange)
   {
-    if (v6)
+    if (formatCopy)
     {
 LABEL_8:
-      v13 = v6;
+      v13 = formatCopy;
 LABEL_11:
       v14 = v13;
 
-      v12 = v14;
+      imageRendererFormat = v14;
       goto LABEL_12;
     }
 
@@ -177,7 +177,7 @@ LABEL_10:
 
 LABEL_12:
 
-  return v12;
+  return imageRendererFormat;
 }
 
 void __62__VUIGraphicsImageRenderer_formatWithUIImage_preferredFormat___block_invoke()
@@ -186,23 +186,23 @@ void __62__VUIGraphicsImageRenderer_formatWithUIImage_preferredFormat___block_in
   formatWithUIImage_preferredFormat__sPrefersExtendedRange = CFPreferencesGetAppBooleanValue(@"PrefersExtendedRange", [v0 bundleIdentifier], &formatWithUIImage_preferredFormat__sOverrideDefault);
 }
 
-+ (id)decodedImage:(id)a3 opaque:(BOOL)a4
++ (id)decodedImage:(id)image opaque:(BOOL)opaque
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  opaqueCopy = opaque;
+  imageCopy = image;
+  if (imageCopy)
   {
-    v6 = [VUIGraphicsImageRenderer formatWithUIImage:v5];
+    v6 = [VUIGraphicsImageRenderer formatWithUIImage:imageCopy];
     [v6 setScale:1.0];
-    [v6 setOpaque:v4];
-    [v5 size];
+    [v6 setOpaque:opaqueCopy];
+    [imageCopy size];
     v8 = v7;
     v10 = v9;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __48__VUIGraphicsImageRenderer_decodedImage_opaque___block_invoke;
     v13[3] = &unk_279E219F8;
-    v14 = v5;
+    v14 = imageCopy;
     v11 = [VUIGraphicsImageRenderer imageWithSize:v6 format:v13 actions:v8, v10];
   }
 
@@ -224,22 +224,22 @@ uint64_t __48__VUIGraphicsImageRenderer_decodedImage_opaque___block_invoke(uint6
   return [v1 drawInRect:{v2, v3, v4, v5}];
 }
 
-+ (void)SVGImagesWithDataDescriptors:(id)a3 format:(id)a4 completion:(id)a5
++ (void)SVGImagesWithDataDescriptors:(id)descriptors format:(id)format completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  descriptorsCopy = descriptors;
+  formatCopy = format;
+  completionCopy = completion;
+  if ([descriptorsCopy count])
   {
     v11 = dispatch_get_global_queue(2, 0);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __75__VUIGraphicsImageRenderer_SVGImagesWithDataDescriptors_format_completion___block_invoke;
     v12[3] = &unk_279E21B00;
-    v13 = v8;
-    v15 = v10;
-    v16 = a1;
-    v14 = v9;
+    v13 = descriptorsCopy;
+    v15 = completionCopy;
+    selfCopy = self;
+    v14 = formatCopy;
     dispatch_async(v11, v12);
   }
 }

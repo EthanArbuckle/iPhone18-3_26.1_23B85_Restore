@@ -11,11 +11,11 @@
   v3 = a3;
   if ([v3 isFileURL])
   {
-    v4 = [v3 lastPathComponent];
-    v5 = [v4 dataUsingEncoding:4];
-    v6 = [v5 tsu_encodeToHexidecimalString];
+    lastPathComponent = [v3 lastPathComponent];
+    v5 = [lastPathComponent dataUsingEncoding:4];
+    tsu_encodeToHexidecimalString = [v5 tsu_encodeToHexidecimalString];
     v10[0] = @"fog";
-    v10[1] = v6;
+    v10[1] = tsu_encodeToHexidecimalString;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
     v8 = [v7 componentsJoinedByString:@":"];
   }
@@ -33,8 +33,8 @@
   if (a3)
   {
     v3 = [a3 componentsSeparatedByString:@":"];
-    v4 = [v3 firstObject];
-    if ([v4 isEqualToString:@"fog"] && objc_msgSend(v3, "count") == 2)
+    firstObject = [v3 firstObject];
+    if ([firstObject isEqualToString:@"fog"] && objc_msgSend(v3, "count") == 2)
     {
       v5 = [v3 objectAtIndexedSubscript:1];
       v6 = [MEMORY[0x277CBEA90] tsu_decodeFromHexidecimalString:v5];

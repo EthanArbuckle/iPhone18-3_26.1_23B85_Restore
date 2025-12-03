@@ -1,15 +1,15 @@
 @interface ModelViewOverflowViewController
-- (_TtC23ShelfKitCollectionViews31ModelViewOverflowViewController)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews31ModelViewOverflowViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC23ShelfKitCollectionViews31ModelViewOverflowViewController)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews31ModelViewOverflowViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ModelViewOverflowViewController
 
-- (_TtC23ShelfKitCollectionViews31ModelViewOverflowViewController)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews31ModelViewOverflowViewController)initWithCoder:(id)coder
 {
   result = sub_30D648();
   __break(1u);
@@ -18,34 +18,34 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_282F74();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_28363C();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for ModelViewOverflowViewController();
   v4 = v5.receiver;
-  [(ModelViewOverflowViewController *)&v5 viewWillDisappear:v3];
+  [(ModelViewOverflowViewController *)&v5 viewWillDisappear:disappearCopy];
   [*&v4[OBJC_IVAR____TtC23ShelfKitCollectionViews31ModelViewOverflowViewController_scrollView] setContentOffset:0 animated:{0.0, 0.0, v5.receiver, v5.super_class}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2839C4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2839C4(change);
 }
 
-- (_TtC23ShelfKitCollectionViews31ModelViewOverflowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews31ModelViewOverflowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,48 +1,48 @@
 @interface SLDHighlightPillDrawing
 - (CGSize)drawingSize;
-- (SLDHighlightPillDrawing)initWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (SLDHighlightPillDrawing)initWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 - (void)drawingSize;
 @end
 
 @implementation SLDHighlightPillDrawing
 
-- (SLDHighlightPillDrawing)initWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5
+- (SLDHighlightPillDrawing)initWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote
 {
-  v9 = a3;
-  v10 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v14.receiver = self;
   v14.super_class = SLDHighlightPillDrawing;
   v11 = [(SLDHighlightPillDrawing *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_slotStyle, a3);
-    if ([v10 isMemberOfClass:objc_opt_class()])
+    objc_storeStrong(&v11->_slotStyle, style);
+    if ([tagCopy isMemberOfClass:objc_opt_class()])
     {
-      objc_storeStrong(&v12->_tag, a4);
+      objc_storeStrong(&v12->_tag, tag);
     }
 
-    v12->_forRemote = a5;
-    v12->_isRTL = [v9 layoutDirection] == 1;
+    v12->_forRemote = remote;
+    v12->_isRTL = [styleCopy layoutDirection] == 1;
   }
 
   return v12;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  if ([(SLDHighlightPillDrawing *)self forRemote:a4.x])
+  if ([(SLDHighlightPillDrawing *)self forRemote:point.x])
   {
     v6 = [SLDHighlightPillRenderer alloc];
-    v7 = [(SLDHighlightPillDrawing *)self slotStyle];
+    slotStyle = [(SLDHighlightPillDrawing *)self slotStyle];
     v8 = [(SLDHighlightPillDrawing *)self tag];
-    v10 = [(SLDHighlightPillRenderer *)v6 initWithStyle:v7 tag:v8];
+    v10 = [(SLDHighlightPillRenderer *)v6 initWithStyle:slotStyle tag:v8];
 
     v9 = v10;
     if (v10)
     {
-      [(SLDHighlightPillRenderer *)v10 renderInContext:a3];
+      [(SLDHighlightPillRenderer *)v10 renderInContext:context];
       v9 = v10;
     }
   }
@@ -51,9 +51,9 @@
 - (CGSize)drawingSize
 {
   v3 = [SLHighlightPillMetrics alloc];
-  v4 = [(SLDHighlightPillDrawing *)self slotStyle];
+  slotStyle = [(SLDHighlightPillDrawing *)self slotStyle];
   v5 = [(SLDHighlightPillDrawing *)self tag];
-  v6 = [(SLHighlightPillMetrics *)v3 initWithSlotStyle:v4 tag:v5];
+  v6 = [(SLHighlightPillMetrics *)v3 initWithSlotStyle:slotStyle tag:v5];
 
   [(SLHighlightPillMetrics *)v6 pillSize];
   v8 = v7;
@@ -85,10 +85,10 @@
 - (void)drawingSize
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = [a1 tag];
+  v6 = [self tag];
   [v6 maxWidth];
   v9 = 134218496;
-  v10 = a1;
+  selfCopy = self;
   v11 = 2048;
   v12 = v7;
   v13 = 2048;

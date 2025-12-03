@@ -1,52 +1,52 @@
 @interface FCHeldRecords
-+ (id)heldRecordsByMerging:(id)a3 with:(id)a4;
-- (FCHeldRecords)initWithRecordsByID:(id)a3 interestTokensByID:(id)a4;
++ (id)heldRecordsByMerging:(id)merging with:(id)with;
+- (FCHeldRecords)initWithRecordsByID:(id)d interestTokensByID:(id)iD;
 - (FCInterestToken)onlyInterestToken;
 - (NSArray)allRecordIDs;
 - (NSArray)allRecords;
 - (NSString)onlyRecordID;
-- (id)heldRecordsForIDs:(id)a3;
-- (id)heldRecordsPassingTest:(id)a3;
-- (id)interestTokenForID:(id)a3;
+- (id)heldRecordsForIDs:(id)ds;
+- (id)heldRecordsPassingTest:(id)test;
+- (id)interestTokenForID:(id)d;
 - (id)onlyRecord;
-- (id)recordWithID:(id)a3;
-- (id)transformRecordsByIDWithBlock:(id)a3;
-- (id)transformRecordsInOrder:(id)a3 withBlock:(id)a4;
-- (id)transformRecordsWithBlock:(id)a3;
+- (id)recordWithID:(id)d;
+- (id)transformRecordsByIDWithBlock:(id)block;
+- (id)transformRecordsInOrder:(id)order withBlock:(id)block;
+- (id)transformRecordsWithBlock:(id)block;
 - (unint64_t)count;
-- (void)enumerateRecordsAndInterestTokensInOrder:(id)a3 withBlock:(id)a4;
-- (void)enumerateRecordsAndInterestTokensWithBlock:(id)a3;
+- (void)enumerateRecordsAndInterestTokensInOrder:(id)order withBlock:(id)block;
+- (void)enumerateRecordsAndInterestTokensWithBlock:(id)block;
 @end
 
 @implementation FCHeldRecords
 
 - (NSArray)allRecords
 {
-  v2 = [(FCHeldRecords *)self recordsByID];
-  v3 = [v2 allValues];
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  allValues = [recordsByID allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (NSArray)allRecordIDs
 {
-  v2 = [(FCHeldRecords *)self recordsByID];
-  v3 = [v2 allKeys];
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  allKeys = [recordsByID allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-+ (id)heldRecordsByMerging:(id)a3 with:(id)a4
++ (id)heldRecordsByMerging:(id)merging with:(id)with
 {
   v5 = MEMORY[0x1E695DF20];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 recordsByID];
-  v9 = v8;
+  withCopy = with;
+  mergingCopy = merging;
+  recordsByID = [mergingCopy recordsByID];
+  v9 = recordsByID;
   v10 = MEMORY[0x1E695E0F8];
-  if (v8)
+  if (recordsByID)
   {
-    v11 = v8;
+    v11 = recordsByID;
   }
 
   else
@@ -54,11 +54,11 @@
     v11 = MEMORY[0x1E695E0F8];
   }
 
-  v12 = [v6 recordsByID];
-  v13 = v12;
-  if (v12)
+  recordsByID2 = [withCopy recordsByID];
+  v13 = recordsByID2;
+  if (recordsByID2)
   {
-    v14 = v12;
+    v14 = recordsByID2;
   }
 
   else
@@ -69,11 +69,11 @@
   v15 = [v5 fc_dictionaryByAddingEntriesFromDictionary:v11 toDictionary:v14];
 
   v16 = MEMORY[0x1E695DF20];
-  v17 = [v7 interestTokensByID];
+  interestTokensByID = [mergingCopy interestTokensByID];
 
-  if (v17)
+  if (interestTokensByID)
   {
-    v18 = v17;
+    v18 = interestTokensByID;
   }
 
   else
@@ -81,11 +81,11 @@
     v18 = v10;
   }
 
-  v19 = [v6 interestTokensByID];
+  interestTokensByID2 = [withCopy interestTokensByID];
 
-  if (v19)
+  if (interestTokensByID2)
   {
-    v20 = v19;
+    v20 = interestTokensByID2;
   }
 
   else
@@ -100,18 +100,18 @@
   return v22;
 }
 
-- (FCHeldRecords)initWithRecordsByID:(id)a3 interestTokensByID:(id)a4
+- (FCHeldRecords)initWithRecordsByID:(id)d interestTokensByID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = FCHeldRecords;
   v9 = [(FCHeldRecords *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recordsByID, a3);
-    objc_storeStrong(&v10->_interestTokensByID, a4);
+    objc_storeStrong(&v9->_recordsByID, d);
+    objc_storeStrong(&v10->_interestTokensByID, iD);
   }
 
   return v10;
@@ -119,59 +119,59 @@
 
 - (unint64_t)count
 {
-  v2 = [(FCHeldRecords *)self recordsByID];
-  v3 = [v2 count];
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  v3 = [recordsByID count];
 
   return v3;
 }
 
 - (id)onlyRecord
 {
-  v2 = [(FCHeldRecords *)self recordsByID];
-  v3 = [v2 allValues];
-  v4 = [v3 fc_onlyObject];
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  allValues = [recordsByID allValues];
+  fc_onlyObject = [allValues fc_onlyObject];
 
-  return v4;
+  return fc_onlyObject;
 }
 
 - (NSString)onlyRecordID
 {
-  v2 = [(FCHeldRecords *)self recordsByID];
-  v3 = [v2 allKeys];
-  v4 = [v3 fc_onlyObject];
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  allKeys = [recordsByID allKeys];
+  fc_onlyObject = [allKeys fc_onlyObject];
 
-  return v4;
+  return fc_onlyObject;
 }
 
 - (FCInterestToken)onlyInterestToken
 {
-  v2 = [(FCHeldRecords *)self interestTokensByID];
-  v3 = [v2 allValues];
-  v4 = [v3 fc_onlyObject];
+  interestTokensByID = [(FCHeldRecords *)self interestTokensByID];
+  allValues = [interestTokensByID allValues];
+  fc_onlyObject = [allValues fc_onlyObject];
 
-  return v4;
+  return fc_onlyObject;
 }
 
-- (void)enumerateRecordsAndInterestTokensWithBlock:(id)a3
+- (void)enumerateRecordsAndInterestTokensWithBlock:(id)block
 {
-  v4 = a3;
-  v6 = [(FCHeldRecords *)self recordsByID];
-  v5 = [v6 allKeys];
-  [(FCHeldRecords *)self enumerateRecordsAndInterestTokensInOrder:v5 withBlock:v4];
+  blockCopy = block;
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  allKeys = [recordsByID allKeys];
+  [(FCHeldRecords *)self enumerateRecordsAndInterestTokensInOrder:allKeys withBlock:blockCopy];
 }
 
-- (void)enumerateRecordsAndInterestTokensInOrder:(id)a3 withBlock:(id)a4
+- (void)enumerateRecordsAndInterestTokensInOrder:(id)order withBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  orderCopy = order;
+  blockCopy = block;
+  if (blockCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v8 = [orderCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -183,15 +183,15 @@
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(orderCopy);
           }
 
           v12 = *(*(&v19 + 1) + 8 * v11);
-          v13 = [(FCHeldRecords *)self recordsByID];
-          v14 = [v13 objectForKey:v12];
+          recordsByID = [(FCHeldRecords *)self recordsByID];
+          v14 = [recordsByID objectForKey:v12];
 
-          v15 = [(FCHeldRecords *)self interestTokensByID];
-          v16 = [v15 objectForKey:v12];
+          interestTokensByID = [(FCHeldRecords *)self interestTokensByID];
+          v16 = [interestTokensByID objectForKey:v12];
 
           if (v14)
           {
@@ -205,14 +205,14 @@
 
           if (!v17)
           {
-            v7[2](v7, v14, v16);
+            blockCopy[2](blockCopy, v14, v16);
           }
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [orderCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
@@ -222,33 +222,33 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)transformRecordsWithBlock:(id)a3
+- (id)transformRecordsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FCHeldRecords *)self recordsByID];
-  v6 = [v5 allKeys];
-  v7 = [(FCHeldRecords *)self transformRecordsInOrder:v6 withBlock:v4];
+  blockCopy = block;
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  allKeys = [recordsByID allKeys];
+  v7 = [(FCHeldRecords *)self transformRecordsInOrder:allKeys withBlock:blockCopy];
 
   return v7;
 }
 
-- (id)transformRecordsInOrder:(id)a3 withBlock:(id)a4
+- (id)transformRecordsInOrder:(id)order withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  if (v7)
+  orderCopy = order;
+  blockCopy = block;
+  array = [MEMORY[0x1E695DF70] array];
+  if (blockCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __51__FCHeldRecords_transformRecordsInOrder_withBlock___block_invoke;
     v10[3] = &unk_1E7C410C8;
-    v12 = v7;
-    v11 = v8;
-    [(FCHeldRecords *)self enumerateRecordsAndInterestTokensInOrder:v6 withBlock:v10];
+    v12 = blockCopy;
+    v11 = array;
+    [(FCHeldRecords *)self enumerateRecordsAndInterestTokensInOrder:orderCopy withBlock:v10];
   }
 
-  return v8;
+  return array;
 }
 
 uint64_t __51__FCHeldRecords_transformRecordsInOrder_withBlock___block_invoke(uint64_t a1)
@@ -265,24 +265,24 @@ uint64_t __51__FCHeldRecords_transformRecordsInOrder_withBlock___block_invoke(ui
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (id)transformRecordsByIDWithBlock:(id)a3
+- (id)transformRecordsByIDWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  if (v4)
+  blockCopy = block;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (blockCopy)
   {
-    v6 = [(FCHeldRecords *)self recordsByID];
+    recordsByID = [(FCHeldRecords *)self recordsByID];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__FCHeldRecords_transformRecordsByIDWithBlock___block_invoke;
     v8[3] = &unk_1E7C410F0;
     v8[4] = self;
-    v10 = v4;
-    v9 = v5;
-    [v6 enumerateKeysAndObjectsUsingBlock:v8];
+    v10 = blockCopy;
+    v9 = dictionary;
+    [recordsByID enumerateKeysAndObjectsUsingBlock:v8];
   }
 
-  return v5;
+  return dictionary;
 }
 
 void __47__FCHeldRecords_transformRecordsByIDWithBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -301,29 +301,29 @@ void __47__FCHeldRecords_transformRecordsByIDWithBlock___block_invoke(uint64_t a
   }
 }
 
-- (id)recordWithID:(id)a3
+- (id)recordWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCHeldRecords *)self recordsByID];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  v6 = [recordsByID objectForKey:dCopy];
 
   return v6;
 }
 
-- (id)interestTokenForID:(id)a3
+- (id)interestTokenForID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCHeldRecords *)self interestTokensByID];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  interestTokensByID = [(FCHeldRecords *)self interestTokensByID];
+  v6 = [interestTokensByID objectForKey:dCopy];
 
   return v6;
 }
 
-- (id)heldRecordsPassingTest:(id)a3
+- (id)heldRecordsPassingTest:(id)test
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  testCopy = test;
+  if (!testCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "test"];
     *buf = 136315906;
@@ -338,16 +338,16 @@ void __47__FCHeldRecords_transformRecordsByIDWithBlock___block_invoke(uint64_t a
   }
 
   v5 = objc_opt_new();
-  v6 = [(FCHeldRecords *)self recordsByID];
+  recordsByID = [(FCHeldRecords *)self recordsByID];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __40__FCHeldRecords_heldRecordsPassingTest___block_invoke;
   v13[3] = &unk_1E7C41118;
   v14 = v5;
-  v15 = v4;
+  v15 = testCopy;
   v7 = v5;
-  v8 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v13];
+  v8 = testCopy;
+  [recordsByID enumerateKeysAndObjectsUsingBlock:v13];
 
   v9 = [(FCHeldRecords *)self heldRecordsForIDs:v7];
 
@@ -365,11 +365,11 @@ void __40__FCHeldRecords_heldRecordsPassingTest___block_invoke(uint64_t a1, void
   }
 }
 
-- (id)heldRecordsForIDs:(id)a3
+- (id)heldRecordsForIDs:(id)ds
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "recordIDs"];
     *buf = 136315906;
@@ -384,10 +384,10 @@ void __40__FCHeldRecords_heldRecordsPassingTest___block_invoke(uint64_t a1, void
   }
 
   v5 = [FCHeldRecords alloc];
-  v6 = [(FCHeldRecords *)self recordsByID];
-  v7 = [v6 fc_subdictionaryForKeys:v4];
-  v8 = [(FCHeldRecords *)self interestTokensByID];
-  v9 = [v8 fc_subdictionaryForKeys:v4];
+  recordsByID = [(FCHeldRecords *)self recordsByID];
+  v7 = [recordsByID fc_subdictionaryForKeys:dsCopy];
+  interestTokensByID = [(FCHeldRecords *)self interestTokensByID];
+  v9 = [interestTokensByID fc_subdictionaryForKeys:dsCopy];
   v10 = [(FCHeldRecords *)v5 initWithRecordsByID:v7 interestTokensByID:v9];
 
   v11 = *MEMORY[0x1E69E9840];

@@ -17,7 +17,7 @@
 {
   v3 = *(v2 + 16);
   v4 = *(v2 + 24);
-  return v3(*a1, *a2);
+  return v3(*self, *a2);
 }
 
 - (uint64_t)AudioResource
@@ -58,14 +58,14 @@
 - (uint64_t)AnimationResource
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sSDySS10RealityKit17AnimationResourceCGSgMd, &_sSDySS10RealityKit17AnimationResourceCGSgMR);
-  (*(*(v4 - 8) + 16))(a2, a1, v4);
+  (*(*(v4 - 8) + 16))(a2, self, v4);
   return a2;
 }
 
 - (Class)NSObject
 {
-  v1 = *(a1 + 32);
-  v2 = *(a1 + 40);
+  v1 = *(self + 32);
+  v2 = *(self + 40);
 
   v4 = v1(v3);
 
@@ -98,11 +98,7 @@
 
 - (uint64_t)Any
 {
-  return sub_1C1372490(a1);
-}
-
-{
-  return sub_1C13724C0(a1);
+  return sub_1C1372490(self);
 }
 
 - (id)String
@@ -115,8 +111,8 @@
   v9 = *(v8 + 64);
   MEMORY[0x1EEE9AC00](v7);
   v11 = &v25 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = *(a1 + 32);
-  v13 = *(a1 + 40);
+  v12 = *(self + 32);
+  v13 = *(self + 40);
   v25 = v12;
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();

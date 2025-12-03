@@ -1,21 +1,21 @@
 @interface SDShareSheetProxySection
-- (SDShareSheetProxySection)initWithType:(int64_t)a3 proxies:(id)a4;
+- (SDShareSheetProxySection)initWithType:(int64_t)type proxies:(id)proxies;
 - (id)description;
 @end
 
 @implementation SDShareSheetProxySection
 
-- (SDShareSheetProxySection)initWithType:(int64_t)a3 proxies:(id)a4
+- (SDShareSheetProxySection)initWithType:(int64_t)type proxies:(id)proxies
 {
-  v6 = a4;
+  proxiesCopy = proxies;
   v12.receiver = self;
   v12.super_class = SDShareSheetProxySection;
   v7 = [(SDShareSheetProxySection *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [proxiesCopy copy];
     proxies = v8->_proxies;
     v8->_proxies = v9;
   }

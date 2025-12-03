@@ -1,20 +1,20 @@
 @interface CellFallbackTrialExperimentHandler
-- (CellFallbackTrialExperimentHandler)initWithQueue:(id)a3;
-- (void)trialExperimentWithProjectIDHasBegun:(int)a3 namespaceName:(id)a4 factorName:(id)a5 treatmentID:(id)a6 trialConfiguration:(id)a7;
-- (void)trialExperimentWithProjectIDHasEnded:(int)a3 namespaceName:(id)a4 factorName:(id)a5;
+- (CellFallbackTrialExperimentHandler)initWithQueue:(id)queue;
+- (void)trialExperimentWithProjectIDHasBegun:(int)begun namespaceName:(id)name factorName:(id)factorName treatmentID:(id)d trialConfiguration:(id)configuration;
+- (void)trialExperimentWithProjectIDHasEnded:(int)ended namespaceName:(id)name factorName:(id)factorName;
 @end
 
 @implementation CellFallbackTrialExperimentHandler
 
-- (CellFallbackTrialExperimentHandler)initWithQueue:(id)a3
+- (CellFallbackTrialExperimentHandler)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = CellFallbackTrialExperimentHandler;
   v5 = [(CellFallbackTrialExperimentHandler *)&v9 init];
   if (v5)
   {
-    v6 = [[SymptomsTrialManager alloc] initWithTrialProjectID:862 namespaceName:@"WIRELESS_DATA_ANALYTICS_CELLULAR_PRODUCT_EXPERIMENTATION_INTERNAL" factorName:@"SWDefinedParamPlist" queue:v4];
+    v6 = [[SymptomsTrialManager alloc] initWithTrialProjectID:862 namespaceName:@"WIRELESS_DATA_ANALYTICS_CELLULAR_PRODUCT_EXPERIMENTATION_INTERNAL" factorName:@"SWDefinedParamPlist" queue:queueCopy];
     trialManager = v5->_trialManager;
     v5->_trialManager = v6;
   }
@@ -22,24 +22,24 @@
   return v5;
 }
 
-- (void)trialExperimentWithProjectIDHasBegun:(int)a3 namespaceName:(id)a4 factorName:(id)a5 treatmentID:(id)a6 trialConfiguration:(id)a7
+- (void)trialExperimentWithProjectIDHasBegun:(int)begun namespaceName:(id)name factorName:(id)factorName treatmentID:(id)d trialConfiguration:(id)configuration
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  factorNameCopy = factorName;
+  dCopy = d;
+  configurationCopy = configuration;
   v16 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 67109890;
-    *v23 = a3;
+    *v23 = begun;
     *&v23[4] = 2112;
-    *&v23[6] = v12;
+    *&v23[6] = nameCopy;
     v24 = 2112;
-    v25 = v13;
+    v25 = factorNameCopy;
     v26 = 2112;
-    v27 = v14;
+    v27 = dCopy;
     _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEFAULT, "CFSM: trialExperimentWithProjectIDHasBegun for %d/%@/%@/%@", &v22, 0x26u);
   }
 
@@ -47,14 +47,14 @@
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412290;
-    *v23 = v15;
+    *v23 = configurationCopy;
     _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEFAULT, "CFSM: Trial configuration: %@", &v22, 0xCu);
   }
 
-  v18 = [v14 copy];
+  v18 = [dCopy copy];
   [(CellFallbackTrialExperimentHandler *)self setTreatmentID:v18];
 
-  v19 = [v15 objectForKeyedSubscript:@"ForceTurboRNF"];
+  v19 = [configurationCopy objectForKeyedSubscript:@"ForceTurboRNF"];
   if (v19)
   {
     v20 = rnfLogHandle;
@@ -71,20 +71,20 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trialExperimentWithProjectIDHasEnded:(int)a3 namespaceName:(id)a4 factorName:(id)a5
+- (void)trialExperimentWithProjectIDHasEnded:(int)ended namespaceName:(id)name factorName:(id)factorName
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  factorNameCopy = factorName;
   v10 = rnfLogHandle;
   if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109634;
-    v12[1] = a3;
+    v12[1] = ended;
     v13 = 2112;
-    v14 = v8;
+    v14 = nameCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = factorNameCopy;
     _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "CFSM: trialExperimentWithProjectIDHasEnded for %d/%@/%@", v12, 0x1Cu);
   }
 

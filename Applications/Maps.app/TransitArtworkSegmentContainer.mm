@@ -1,7 +1,7 @@
 @interface TransitArtworkSegmentContainer
 - (UIEdgeInsets)alignmentRectInsets;
 - (void)layoutSubviews;
-- (void)setShowBackground:(BOOL)a3;
+- (void)setShowBackground:(BOOL)background;
 @end
 
 @implementation TransitArtworkSegmentContainer
@@ -36,26 +36,26 @@
   v6.receiver = self;
   v6.super_class = TransitArtworkSegmentContainer;
   [(TransitArtworkSegmentContainer *)&v6 layoutSubviews];
-  v3 = [(UIView *)self->_backgroundView superview];
+  superview = [(UIView *)self->_backgroundView superview];
 
-  if (v3 == self)
+  if (superview == self)
   {
     [(TransitArtworkSegmentContainer *)self sendSubviewToBack:self->_backgroundView];
     [(TransitArtworkSegmentContainer *)self bounds];
     [(UIView *)self->_backgroundView setFrame:?];
     [(TransitArtworkSegmentContainer *)self bounds];
     v4 = CGRectGetHeight(v7) * 0.5;
-    v5 = [(UIView *)self->_backgroundView layer];
-    [v5 setCornerRadius:v4];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setCornerRadius:v4];
   }
 }
 
-- (void)setShowBackground:(BOOL)a3
+- (void)setShowBackground:(BOOL)background
 {
-  if (self->_showBackground != a3)
+  if (self->_showBackground != background)
   {
-    self->_showBackground = a3;
-    if (a3)
+    self->_showBackground = background;
+    if (background)
     {
       v4 = [UIView alloc];
       [(TransitArtworkSegmentContainer *)self bounds];

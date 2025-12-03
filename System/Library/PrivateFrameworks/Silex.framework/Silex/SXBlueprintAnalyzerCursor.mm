@@ -16,9 +16,9 @@
   v2 = [(SXBlueprintAnalyzerCursor *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     mutablePath = v2->_mutablePath;
-    v2->_mutablePath = v3;
+    v2->_mutablePath = array;
   }
 
   return v2;
@@ -46,20 +46,20 @@
 
 - (id)path
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[3] copy];
+    self = [self[3] copy];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)highestMaxY
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else

@@ -2,11 +2,11 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)size;
 - (CGImageMetadata)auxiliaryDataInfoMetadata;
 - (NUCMPhotoAuxiliaryImageProperties)init;
-- (NUCMPhotoAuxiliaryImageProperties)initWithProperties:(id)a3 decompressionContainer:(CMPhotoDecompressionContainer *)a4;
-- (id)auxiliaryCoreGraphicsInfoDictionary:(id *)a3;
-- (id)auxiliaryImage:(id *)a3;
-- (id)auxiliaryImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUCMPhotoAuxiliaryImageProperties)initWithProperties:(id)properties decompressionContainer:(CMPhotoDecompressionContainer *)container;
+- (id)auxiliaryCoreGraphicsInfoDictionary:(id *)dictionary;
+- (id)auxiliaryImage:(id *)image;
+- (id)auxiliaryImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NUCMPhotoAuxiliaryImageProperties
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (id)auxiliaryImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5
+- (id)auxiliaryImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a4)
+  optionsCopy = options;
+  if (!factor)
   {
     v18 = NUAssertLogger_2583();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -45,8 +45,8 @@
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         buf[0] = 138543618;
         *&buf[1] = v39;
         v68 = 2114;
@@ -57,8 +57,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       buf[0] = 138543362;
       *&buf[1] = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -67,7 +67,7 @@
     _NUAssertFailHandler("[NUCMPhotoAuxiliaryImageProperties auxiliaryImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+CGImage.m", 1098, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "subsampleFactor != NULL");
   }
 
-  if (!a5)
+  if (!error)
   {
     v25 = NUAssertLogger_2583();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -88,8 +88,8 @@
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v49 callStackSymbols];
+        v52 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         buf[0] = 138543618;
         *&buf[1] = v48;
         v68 = 2114;
@@ -100,8 +100,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       buf[0] = 138543362;
       *&buf[1] = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -110,7 +110,7 @@
     _NUAssertFailHandler("[NUCMPhotoAuxiliaryImageProperties auxiliaryImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+CGImage.m", 1099, @"Invalid parameter not satisfying: %s", v53, v54, v55, v56, "error != NULL");
   }
 
-  v9 = v8;
+  v9 = optionsCopy;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   if (!WeakRetained)
   {
@@ -133,8 +133,8 @@
         v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v58 = MEMORY[0x1E696AF00];
         v59 = v57;
-        v60 = [v58 callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v58 callStackSymbols];
+        v61 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         buf[0] = 138543618;
         *&buf[1] = v57;
         v68 = 2114;
@@ -145,8 +145,8 @@
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       buf[0] = 138543362;
       *&buf[1] = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -160,7 +160,7 @@
   if (AuxiliaryImageCountForIndexWithOptions)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithInt:AuxiliaryImageCountForIndexWithOptions];
-    *a5 = [NUError failureError:@"Failed to get number of auxiliary images" object:v13];
+    *error = [NUError failureError:@"Failed to get number of auxiliary images" object:v13];
   }
 
   else
@@ -177,16 +177,16 @@
     }
 
     v17 = v16;
-    *a5 = [NUError failureError:@"Missing auxiliary image" object:v17];
+    *error = [NUError failureError:@"Missing auxiliary image" object:v17];
   }
 
   return 0;
 }
 
-- (id)auxiliaryImage:(id *)a3
+- (id)auxiliaryImage:(id *)image
 {
   v5 = 1;
-  v3 = [(NUCMPhotoAuxiliaryImageProperties *)self auxiliaryImageWithSourceOptions:MEMORY[0x1E695E0F8] subsampleFactor:&v5 error:a3];
+  v3 = [(NUCMPhotoAuxiliaryImageProperties *)self auxiliaryImageWithSourceOptions:MEMORY[0x1E695E0F8] subsampleFactor:&v5 error:image];
 
   return v3;
 }
@@ -208,10 +208,10 @@
   return 0;
 }
 
-- (id)auxiliaryCoreGraphicsInfoDictionary:(id *)a3
+- (id)auxiliaryCoreGraphicsInfoDictionary:(id *)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!dictionary)
   {
     v5 = NUAssertLogger_2583();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -232,8 +232,8 @@
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v12;
         v23 = 2114;
@@ -244,8 +244,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -254,13 +254,13 @@
     _NUAssertFailHandler("[NUCMPhotoAuxiliaryImageProperties auxiliaryCoreGraphicsInfoDictionary:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+CGImage.m", 1073, @"Invalid parameter not satisfying: %s", v17, v18, v19, v20, "error != NULL");
   }
 
-  *a3 = [NUError unsupportedError:@"Dictionary representation for this auxiliary image is not supported" object:self];
+  *dictionary = [NUError unsupportedError:@"Dictionary representation for this auxiliary image is not supported" object:self];
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NUCMPhotoAuxiliaryImageProperties allocWithZone:a3];
+  v4 = [NUCMPhotoAuxiliaryImageProperties allocWithZone:zone];
   v4->_type = self->_type;
   v4->_size = self->_size;
   objc_storeStrong(&v4->_pixelFormat, self->_pixelFormat);
@@ -272,11 +272,11 @@
   return v4;
 }
 
-- (NUCMPhotoAuxiliaryImageProperties)initWithProperties:(id)a3 decompressionContainer:(CMPhotoDecompressionContainer *)a4
+- (NUCMPhotoAuxiliaryImageProperties)initWithProperties:(id)properties decompressionContainer:(CMPhotoDecompressionContainer *)container
 {
   v79 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
     v23 = NUAssertLogger_2583();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -297,8 +297,8 @@
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v39;
         v77 = 2114;
@@ -309,8 +309,8 @@
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -319,7 +319,7 @@
     _NUAssertFailHandler("[NUCMPhotoAuxiliaryImageProperties initWithProperties:decompressionContainer:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+CGImage.m", 1015, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "properties");
   }
 
-  if (!a4)
+  if (!container)
   {
     v30 = NUAssertLogger_2583();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -340,8 +340,8 @@
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v49 callStackSymbols];
+        v52 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v48;
         v77 = 2114;
@@ -352,8 +352,8 @@
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -362,7 +362,7 @@
     _NUAssertFailHandler("[NUCMPhotoAuxiliaryImageProperties initWithProperties:decompressionContainer:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+CGImage.m", 1016, @"Invalid parameter not satisfying: %s", v53, v54, v55, v56, "decompressionContainer");
   }
 
-  v7 = v6;
+  v7 = propertiesCopy;
   v75.receiver = self;
   v75.super_class = NUCMPhotoAuxiliaryImageProperties;
   v8 = [(NUCMPhotoAuxiliaryImageProperties *)&v75 init];
@@ -371,31 +371,31 @@
   v8->_auxiliaryImageTypeCGIdentifier = v9;
 
   v11 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696DFB8]];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
   v13 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696DD58]];
-  v14 = [v13 integerValue];
+  integerValue2 = [v13 integerValue];
 
-  if ((v14 | v12) < 0)
+  if ((integerValue2 | integerValue) < 0)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
-    [v37 handleFailureInFunction:v38 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
+    [currentHandler handleFailureInFunction:v38 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
   }
 
-  v8->_size.width = v12;
-  v8->_size.height = v14;
+  v8->_size.width = integerValue;
+  v8->_size.height = integerValue2;
   v15 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696DEC0]];
-  v16 = [v15 unsignedIntValue];
+  unsignedIntValue = [v15 unsignedIntValue];
 
-  if (v16)
+  if (unsignedIntValue)
   {
-    v17 = [NUPixelFormat pixelFormatForCVPixelFormat:v16];
+    v17 = [NUPixelFormat pixelFormatForCVPixelFormat:unsignedIntValue];
     pixelFormat = v8->_pixelFormat;
     v8->_pixelFormat = v17;
   }
 
-  objc_storeWeak(&v8->_container, a4);
+  objc_storeWeak(&v8->_container, container);
   if ([(NSString *)v8->_auxiliaryImageTypeCGIdentifier isEqualToString:@"tag:apple.com, 2023:photo:aux:linearthumbnail"])
   {
     v8->_type = 10;
@@ -412,9 +412,9 @@
       v19 = *buf;
       if ((*buf & 0x8000000000000000) != 0)
       {
-        v57 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
-        [v57 handleFailureInFunction:v58 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
+        [currentHandler2 handleFailureInFunction:v58 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
       }
 
       v8->_size.width = v19;
@@ -461,8 +461,8 @@
             v66 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
             v67 = MEMORY[0x1E696AF00];
             v68 = v66;
-            v69 = [v67 callStackSymbols];
-            v70 = [v69 componentsJoinedByString:@"\n"];
+            callStackSymbols5 = [v67 callStackSymbols];
+            v70 = [callStackSymbols5 componentsJoinedByString:@"\n"];
             *buf = 138543618;
             *&buf[4] = v66;
             v77 = 2114;
@@ -473,8 +473,8 @@
 
         else if (v63)
         {
-          v64 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v65 = [v64 componentsJoinedByString:@"\n"];
+          callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v65 = [callStackSymbols6 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           *&buf[4] = v65;
           _os_log_error_impl(&dword_1C0184000, v62, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -540,8 +540,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -557,8 +557,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

@@ -23,25 +23,25 @@
 - (uint64_t)_QLNeedsCoordination
 {
   v5 = 0;
-  v1 = [a1 getPromisedItemResourceValue:&v5 forKey:*MEMORY[0x1E695DBD8] error:0];
+  bOOLValue = [self getPromisedItemResourceValue:&v5 forKey:*MEMORY[0x1E695DBD8] error:0];
   v2 = v5;
   v3 = v2;
-  if (v1)
+  if (bOOLValue)
   {
-    v1 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
-  return v1;
+  return bOOLValue;
 }
 
 - (uint64_t)_QLIsDataLess
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [a1 startAccessingSecurityScopedResource];
-  v3 = lstat([a1 fileSystemRepresentation], &v9);
-  if (v2)
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
+  v3 = lstat([self fileSystemRepresentation], &v9);
+  if (startAccessingSecurityScopedResource)
   {
-    [a1 stopAccessingSecurityScopedResource];
+    [self stopAccessingSecurityScopedResource];
   }
 
   if (v3)
@@ -52,7 +52,7 @@
     {
       v6 = *__error();
       *buf = 138412546;
-      v11 = a1;
+      selfCopy = self;
       v12 = 1024;
       v13 = v6;
       v5 = 1;
@@ -78,12 +78,12 @@
 {
   v26[1] = *MEMORY[0x1E69E9840];
   memset(&v20, 0, sizeof(v20));
-  v5 = [a1 startAccessingSecurityScopedResource];
-  v6 = lstat([a1 fileSystemRepresentation], &v20);
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
+  v6 = lstat([self fileSystemRepresentation], &v20);
   v7 = v6 != 0;
-  if (v5)
+  if (startAccessingSecurityScopedResource)
   {
-    [a1 stopAccessingSecurityScopedResource];
+    [self stopAccessingSecurityScopedResource];
   }
 
   if (v6)
@@ -93,7 +93,7 @@
     {
       v9 = *__error();
       *buf = 138412546;
-      v22 = a1;
+      selfCopy = self;
       v23 = 1024;
       v24 = v9;
       _os_log_impl(&dword_1CA1E7000, v8, OS_LOG_TYPE_INFO, "stat for %@ failed with errno %{darwin.errno}d; returning YES for _QLIsThumbnailable", buf, 0x12u);
@@ -131,7 +131,7 @@ LABEL_21:
       [NSURL(_QLUtilities) _QLIsThumbnailableWithError:];
     }
 
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot thumbnail %@ which is not a regular file", a1];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot thumbnail %@ which is not a regular file", self];
     v16 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A278];
     v26[0] = v8;
@@ -149,12 +149,12 @@ LABEL_22:
 - (uint64_t)_QLNeedsDownload
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [a1 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [self startAccessingSecurityScopedResource];
   memset(&v9, 0, sizeof(v9));
-  v3 = lstat([a1 fileSystemRepresentation], &v9);
-  if (v2)
+  v3 = lstat([self fileSystemRepresentation], &v9);
+  if (startAccessingSecurityScopedResource)
   {
-    [a1 stopAccessingSecurityScopedResource];
+    [self stopAccessingSecurityScopedResource];
   }
 
   if (v3)
@@ -165,7 +165,7 @@ LABEL_22:
     {
       v6 = *__error();
       *buf = 138412546;
-      v11 = a1;
+      selfCopy = self;
       v12 = 1024;
       v13 = v6;
       v5 = 1;
@@ -192,7 +192,7 @@ LABEL_22:
   v8 = 0;
   v1 = *MEMORY[0x1E695DB50];
   v7 = 0;
-  v2 = [a1 getPromisedItemResourceValue:&v8 forKey:v1 error:&v7];
+  v2 = [self getPromisedItemResourceValue:&v8 forKey:v1 error:&v7];
   v3 = v8;
   v4 = v7;
   if ((v2 & 1) == 0)
@@ -209,9 +209,9 @@ LABEL_22:
 
 - (id)_QLUrlFileSize
 {
-  v1 = a1;
+  selfCopy = self;
   v44[2] = *MEMORY[0x1E69E9840];
-  if ([a1 _QLNeedsDownload])
+  if ([self _QLNeedsDownload])
   {
     goto LABEL_25;
   }
@@ -220,7 +220,7 @@ LABEL_22:
   v2 = *MEMORY[0x1E695DB78];
   v37 = 0;
   v29 = v2;
-  v3 = [v1 getResourceValue:&v38 forKey:? error:?];
+  v3 = [selfCopy getResourceValue:&v38 forKey:? error:?];
   v4 = v38;
   v5 = 0;
   if ((v3 & 1) == 0)
@@ -239,17 +239,17 @@ LABEL_22:
 LABEL_24:
 
 LABEL_25:
-    v25 = [v1 _QLFileSize];
+    _QLFileSize = [selfCopy _QLFileSize];
     goto LABEL_26;
   }
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = *MEMORY[0x1E695DB50];
   v44[0] = v29;
   v44[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
-  v28 = v1;
-  v9 = [v6 enumeratorAtURL:v1 includingPropertiesForKeys:v8 options:0 errorHandler:&__block_literal_global_12];
+  v28 = selfCopy;
+  v9 = [defaultManager enumeratorAtURL:selfCopy includingPropertiesForKeys:v8 options:0 errorHandler:&__block_literal_global_12];
 
   v35 = 0u;
   v36 = 0u;
@@ -294,12 +294,12 @@ LABEL_25:
           }
         }
 
-        v20 = [v17 _QLFileSize];
-        v21 = [v20 unsignedLongLongValue];
-        v22 = [v4 BOOLValue];
-        if (v20)
+        _QLFileSize2 = [v17 _QLFileSize];
+        unsignedLongLongValue = [_QLFileSize2 unsignedLongLongValue];
+        bOOLValue = [v4 BOOLValue];
+        if (_QLFileSize2)
         {
-          v23 = v22 == 0;
+          v23 = bOOLValue == 0;
         }
 
         else
@@ -312,7 +312,7 @@ LABEL_25:
           [obj skipDescendants];
         }
 
-        v12 += v21;
+        v12 += unsignedLongLongValue;
 
         ++v14;
         v15 = v5;
@@ -331,10 +331,10 @@ LABEL_25:
     v12 = 0;
   }
 
-  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v12];
+  _QLFileSize = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v12];
 
-  v1 = v28;
-  if (!v25)
+  selfCopy = v28;
+  if (!_QLFileSize)
   {
     goto LABEL_25;
   }
@@ -342,12 +342,12 @@ LABEL_25:
 LABEL_26:
   v26 = *MEMORY[0x1E69E9840];
 
-  return v25;
+  return _QLFileSize;
 }
 
 - (id)_QLIssueFileExtensionWithSandboxType:()_QLUtilities
 {
-  [a1 fileSystemRepresentation];
+  [self fileSystemRepresentation];
   v1 = sandbox_extension_issue_file();
   if (v1)
   {
@@ -439,9 +439,9 @@ LABEL_6:
 {
   v7 = a3;
   v8 = a4;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
-  v10 = [v9 URLForDirectory:99 inDomain:1 appropriateForURL:v7 create:1 error:&v20];
+  v10 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:v7 create:1 error:&v20];
   v11 = v20;
 
   if (!v10)
@@ -504,47 +504,47 @@ LABEL_14:
   v6 = xmmword_1CA21FED8;
   v7 = 0;
   memset(v8, 0, 512);
-  if (getattrlist([a1 fileSystemRepresentation], &v6, v8, 0x410uLL, 0x20u) < 0)
+  if (getattrlist([self fileSystemRepresentation], &v6, v8, 0x410uLL, 0x20u) < 0)
   {
     v3 = _log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(_QLUtilities) *)a1 _qlFastRealpathURL];
+      [(NSURL(_QLUtilities) *)self _qlFastRealpathURL];
     }
 
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v8 + SDWORD2(v8[0]) + 8 isDirectory:DWORD1(v8[0]) == 2 relativeToURL:0];
+    selfCopy = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v8 + SDWORD2(v8[0]) + 8 isDirectory:DWORD1(v8[0]) == 2 relativeToURL:0];
   }
 
   v4 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)ql_realpathURL
 {
   if (_CFURLIsItemPromiseAtURL())
   {
-    v2 = [a1 _qlFastRealpathURL];
+    selfCopy = [self _qlFastRealpathURL];
   }
 
   else
   {
     v3 = _CFURLPromiseCopyPhysicalURL();
     v4 = v3;
-    if (!v3 || v3 == a1)
+    if (!v3 || v3 == self)
     {
-      v2 = [a1 _qlFastRealpathURL];
+      selfCopy = [self _qlFastRealpathURL];
     }
 
     else
     {
-      v5 = [v3 _qlFastRealpathURL];
-      if (v5)
+      _qlFastRealpathURL = [v3 _qlFastRealpathURL];
+      if (_qlFastRealpathURL)
       {
         cf = 0;
         v6 = _CFURLCopyLogicalURLOfPromiseAtURL();
@@ -554,18 +554,18 @@ LABEL_14:
           v8 = _log();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
-            [(NSURL(_QLUtilities) *)v5 ql_realpathURL];
+            [(NSURL(_QLUtilities) *)_qlFastRealpathURL ql_realpathURL];
           }
 
-          v7 = v5;
+          v7 = _qlFastRealpathURL;
           if (cf)
           {
             CFRelease(cf);
-            v7 = v5;
+            v7 = _qlFastRealpathURL;
           }
         }
 
-        v2 = v7;
+        selfCopy = v7;
       }
 
       else
@@ -576,12 +576,12 @@ LABEL_14:
           [NSURL(_QLUtilities) ql_realpathURL];
         }
 
-        v2 = a1;
+        selfCopy = self;
       }
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_QLIsDataLess
@@ -675,7 +675,7 @@ LABEL_14:
   v5 = __error();
   v6 = strerror(*v5);
   v8 = 138412802;
-  v9 = a1;
+  selfCopy = self;
   v10 = 1024;
   v11 = v4;
   v12 = 2080;

@@ -1,51 +1,51 @@
 @interface APVisibilityCheckFlag
-+ (int)_getThrottlePercentage:(id)a3;
-- (APVisibilityCheckFlag)initWithConfig:(id)a3;
-- (BOOL)enabledForUUIDString:(id)a3;
++ (int)_getThrottlePercentage:(id)percentage;
+- (APVisibilityCheckFlag)initWithConfig:(id)config;
+- (BOOL)enabledForUUIDString:(id)string;
 @end
 
 @implementation APVisibilityCheckFlag
 
-- (APVisibilityCheckFlag)initWithConfig:(id)a3
+- (APVisibilityCheckFlag)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v7.receiver = self;
   v7.super_class = APVisibilityCheckFlag;
   v5 = [(APVisibilityCheckFlag *)&v7 init];
   if (v5)
   {
-    v5->_throttlePercentage = [APVisibilityCheckFlag _getThrottlePercentage:v4];
+    v5->_throttlePercentage = [APVisibilityCheckFlag _getThrottlePercentage:configCopy];
   }
 
   return v5;
 }
 
-+ (int)_getThrottlePercentage:(id)a3
++ (int)_getThrottlePercentage:(id)percentage
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  percentageCopy = percentage;
+  v4 = percentageCopy;
+  if (percentageCopy)
   {
-    v5 = [v3 throttlePercentage];
+    throttlePercentage = [percentageCopy throttlePercentage];
 
-    if (v5)
+    if (throttlePercentage)
     {
-      v6 = [v4 throttlePercentage];
-      LODWORD(v5) = [v6 intValue];
+      throttlePercentage2 = [v4 throttlePercentage];
+      LODWORD(throttlePercentage) = [throttlePercentage2 intValue];
     }
   }
 
   else
   {
-    LODWORD(v5) = 0;
+    LODWORD(throttlePercentage) = 0;
   }
 
-  return v5;
+  return throttlePercentage;
 }
 
-- (BOOL)enabledForUUIDString:(id)a3
+- (BOOL)enabledForUUIDString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(APVisibilityCheckFlag *)self throttlePercentage]< 1)
   {
     v6 = 0;
@@ -53,9 +53,9 @@
 
   else
   {
-    v5 = [(APVisibilityCheckFlag *)self throttlePercentage];
+    throttlePercentage = [(APVisibilityCheckFlag *)self throttlePercentage];
     v6 = 0;
-    if (v4 && v5 <= 100)
+    if (stringCopy && throttlePercentage <= 100)
     {
       if ([(APVisibilityCheckFlag *)self throttlePercentage]== 100)
       {
@@ -64,7 +64,7 @@
 
       else
       {
-        v7 = [v4 crc32] % 0x64;
+        v7 = [stringCopy crc32] % 0x64;
         v6 = v7 < [(APVisibilityCheckFlag *)self throttlePercentage];
       }
     }

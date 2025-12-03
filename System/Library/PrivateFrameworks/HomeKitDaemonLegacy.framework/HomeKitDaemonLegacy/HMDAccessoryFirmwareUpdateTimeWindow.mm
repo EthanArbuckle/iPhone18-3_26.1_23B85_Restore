@@ -1,14 +1,14 @@
 @interface HMDAccessoryFirmwareUpdateTimeWindow
 + (id)logCategory;
-- (HMDAccessoryFirmwareUpdateTimeWindow)initWithStartTime:(id)a3 endTime:(id)a4;
+- (HMDAccessoryFirmwareUpdateTimeWindow)initWithStartTime:(id)time endTime:(id)endTime;
 @end
 
 @implementation HMDAccessoryFirmwareUpdateTimeWindow
 
-- (HMDAccessoryFirmwareUpdateTimeWindow)initWithStartTime:(id)a3 endTime:(id)a4
+- (HMDAccessoryFirmwareUpdateTimeWindow)initWithStartTime:(id)time endTime:(id)endTime
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v22.receiver = self;
   v22.super_class = HMDAccessoryFirmwareUpdateTimeWindow;
   v8 = [(HMDAccessoryFirmwareUpdateTimeWindow *)&v22 init];
@@ -16,8 +16,8 @@
   {
     v9 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v9 setDateFormat:@"HH:mm:ss"];
-    v10 = [v9 dateFromString:v6];
-    v11 = [v9 dateFromString:v7];
+    v10 = [v9 dateFromString:timeCopy];
+    v11 = [v9 dateFromString:endTimeCopy];
     v12 = v11;
     if (v10)
     {
@@ -34,13 +34,13 @@
       goto LABEL_10;
     }
 
-    v14 = [MEMORY[0x277CBEA80] currentCalendar];
-    v15 = [v14 components:224 fromDate:v10];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v15 = [currentCalendar components:224 fromDate:v10];
     startTimeComponents = v8->_startTimeComponents;
     v8->_startTimeComponents = v15;
 
-    v17 = [MEMORY[0x277CBEA80] currentCalendar];
-    v18 = [v17 components:224 fromDate:v12];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    v18 = [currentCalendar2 components:224 fromDate:v12];
     endTimeComponents = v8->_endTimeComponents;
     v8->_endTimeComponents = v18;
 

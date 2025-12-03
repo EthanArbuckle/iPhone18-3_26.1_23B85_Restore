@@ -1,56 +1,56 @@
 @interface MonthScrollViewController
-- (BOOL)_isLastVisibleWeek:(id)a3;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)_isLastVisibleWeek:(id)week;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (FitMonthWeekViewDatasource)monthWeekDatasource;
-- (MonthScrollViewController)initWithDateCache:(id)a3 workoutsDataProvider:(id)a4 pauseRingsCoordinator:(id)a5;
+- (MonthScrollViewController)initWithDateCache:(id)cache workoutsDataProvider:(id)provider pauseRingsCoordinator:(id)coordinator;
 - (MonthScrollViewDelegate)monthScrollDelegate;
-- (double)_centerXForRingAt:(int64_t)a3 percent:(double)a4;
-- (double)_heightOffsetForWeekRow:(int64_t)a3;
+- (double)_centerXForRingAt:(int64_t)at percent:(double)percent;
+- (double)_heightOffsetForWeekRow:(int64_t)row;
 - (id)_calculateLastVisibleDate;
-- (id)earliestDateToTileForMonth:(id)a3;
-- (id)weekWithStartDate:(id)a3;
-- (void)_activitySummaryCacheChanged:(id)a3;
+- (id)earliestDateToTileForMonth:(id)month;
+- (id)weekWithStartDate:(id)date;
+- (void)_activitySummaryCacheChanged:(id)changed;
 - (void)_addAndRearrangeWeekviewsAndGroups;
-- (void)_animateRingOnTouch:(BOOL)a3 completion:(id)a4;
+- (void)_animateRingOnTouch:(BOOL)touch completion:(id)completion;
 - (void)_buildFreshViews;
 - (void)_createRingsView;
-- (void)_didBecomeActive:(id)a3;
+- (void)_didBecomeActive:(id)active;
 - (void)_findCenteredWeekAndUpdateTitleIfNecessary;
-- (void)_loadActivitySummariesForWeek:(id)a3 ringGroupIndex:(unint64_t)a4;
-- (void)_loadWorkoutsForWeek:(id)a3;
-- (void)_readjustFrom:(unint64_t)a3 to:(unint64_t)a4 fromGroupRange:(_NSRange)a5 toGroupRange:(_NSRange)a6 down:(BOOL)a7;
+- (void)_loadActivitySummariesForWeek:(id)week ringGroupIndex:(unint64_t)index;
+- (void)_loadWorkoutsForWeek:(id)week;
+- (void)_readjustFrom:(unint64_t)from to:(unint64_t)to fromGroupRange:(_NSRange)range toGroupRange:(_NSRange)groupRange down:(BOOL)down;
 - (void)_readjustRings;
-- (void)_readjustScrollViewToOffset:(double)a3 weekOffset:(double)a4;
+- (void)_readjustScrollViewToOffset:(double)offset weekOffset:(double)weekOffset;
 - (void)_relayoutRingGroups;
 - (void)_reloadAllActivitySummariesFromCache;
 - (void)_reloadAllWorkoutsFromCache;
-- (void)_timeZoneChanged:(id)a3;
-- (void)_workoutsCacheChanged:(id)a3;
+- (void)_timeZoneChanged:(id)changed;
+- (void)_workoutsCacheChanged:(id)changed;
 - (void)dealloc;
-- (void)scrollToDate:(id)a3 windowHeight:(double)a4;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollToDate:(id)date windowHeight:(double)height;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)todayChanged;
 - (void)viewDidLoad;
-- (void)week:(id)a3 cellSelected:(id)a4;
-- (void)week:(id)a3 pressedOnDay:(int64_t)a4 down:(BOOL)a5;
+- (void)week:(id)week cellSelected:(id)selected;
+- (void)week:(id)week pressedOnDay:(int64_t)day down:(BOOL)down;
 @end
 
 @implementation MonthScrollViewController
 
-- (MonthScrollViewController)initWithDateCache:(id)a3 workoutsDataProvider:(id)a4 pauseRingsCoordinator:(id)a5
+- (MonthScrollViewController)initWithDateCache:(id)cache workoutsDataProvider:(id)provider pauseRingsCoordinator:(id)coordinator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  cacheCopy = cache;
+  providerCopy = provider;
+  coordinatorCopy = coordinator;
   v23.receiver = self;
   v23.super_class = MonthScrollViewController;
   v12 = [(MonthScrollViewController *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dateCache, a3);
-    objc_storeStrong(&v13->_workoutsDataProvider, a4);
-    objc_storeStrong(&v13->_pauseRingsCoordinator, a5);
+    objc_storeStrong(&v12->_dateCache, cache);
+    objc_storeStrong(&v13->_workoutsDataProvider, provider);
+    objc_storeStrong(&v13->_pauseRingsCoordinator, coordinator);
     v14 = +[NSNotificationCenter defaultCenter];
     [v14 addObserver:v13 selector:"_timeZoneChanged:" name:NSSystemTimeZoneDidChangeNotification object:0];
     [v14 addObserver:v13 selector:"_activitySummaryCacheChanged:" name:@"ActivitySummaryCacheChangedNotification" object:0];
@@ -89,13 +89,13 @@
   [(MonthScrollViewController *)&v4 dealloc];
 }
 
-- (void)_didBecomeActive:(id)a3
+- (void)_didBecomeActive:(id)active
 {
   v3 = +[ActivitySummaryCache sharedInstance];
   [v3 loadDataIfNeeded];
 }
 
-- (void)_workoutsCacheChanged:(id)a3
+- (void)_workoutsCacheChanged:(id)changed
 {
   _HKInitializeLogging();
   v4 = HKLogActivity;
@@ -108,21 +108,21 @@
   [(MonthScrollViewController *)self _reloadAllWorkoutsFromCache];
 }
 
-- (void)_activitySummaryCacheChanged:(id)a3
+- (void)_activitySummaryCacheChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"range"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"range"];
 
-  v6 = [(NSMutableArray *)self->_weekViews firstObject];
-  v7 = [v6 summaryIndexes];
-  v8 = [v7 firstObject];
-  [v8 doubleValue];
+  firstObject = [(NSMutableArray *)self->_weekViews firstObject];
+  summaryIndexes = [firstObject summaryIndexes];
+  firstObject2 = [summaryIndexes firstObject];
+  [firstObject2 doubleValue];
   v10 = v9;
 
-  v11 = [(NSMutableArray *)self->_weekViews lastObject];
-  v12 = [v11 summaryIndexes];
-  v13 = [v12 lastObject];
-  [v13 doubleValue];
+  lastObject = [(NSMutableArray *)self->_weekViews lastObject];
+  summaryIndexes2 = [lastObject summaryIndexes];
+  lastObject2 = [summaryIndexes2 lastObject];
+  [lastObject2 doubleValue];
   v15 = v14;
 
   if (sub_1000EA830(v5, v10, v15, @"MSVC") || !v5)
@@ -139,7 +139,7 @@
   }
 }
 
-- (void)_timeZoneChanged:(id)a3
+- (void)_timeZoneChanged:(id)changed
 {
   _HKInitializeLogging();
   v4 = HKLogActivity;
@@ -158,8 +158,8 @@
 
 - (void)_buildFreshViews
 {
-  v3 = [(MonthScrollViewController *)self view];
-  [v3 bounds];
+  view = [(MonthScrollViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -168,9 +168,9 @@
   v12 = +[NSDate date];
   v13 = [(MonthScrollViewController *)self earliestDateToTileForMonth:v12];
 
-  v14 = [(MonthScrollViewController *)self _calculateLastVisibleDate];
+  _calculateLastVisibleDate = [(MonthScrollViewController *)self _calculateLastVisibleDate];
   lastVisibleWeekDate = self->_lastVisibleWeekDate;
-  self->_lastVisibleWeekDate = v14;
+  self->_lastVisibleWeekDate = _calculateLastVisibleDate;
 
   weekViews = self->_weekViews;
   v18[0] = _NSConcreteStackBlock;
@@ -182,7 +182,7 @@
   v23 = v9;
   v24 = v11;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   v17 = v13;
   [(NSMutableArray *)weekViews enumerateObjectsUsingBlock:v18];
   self->_incrementAmount = 0.0;
@@ -219,9 +219,9 @@
   }
 
   v8 = self->_lastVisibleWeekDate;
-  v9 = [(MonthScrollViewController *)self _calculateLastVisibleDate];
+  _calculateLastVisibleDate = [(MonthScrollViewController *)self _calculateLastVisibleDate];
   lastVisibleWeekDate = self->_lastVisibleWeekDate;
-  self->_lastVisibleWeekDate = v9;
+  self->_lastVisibleWeekDate = _calculateLastVisibleDate;
 
   [(NSDate *)self->_lastVisibleWeekDate timeIntervalSinceReferenceDate];
   v12 = v11;
@@ -240,8 +240,8 @@
   {
     self->_scrollViewAdjustedToBottom = 0;
     v14 = +[NSDate date];
-    v15 = [(MonthScrollViewController *)self view];
-    [v15 bounds];
+    view = [(MonthScrollViewController *)self view];
+    [view bounds];
     [(MonthScrollViewController *)self scrollToDate:v14 windowHeight:v16];
   }
 
@@ -255,8 +255,8 @@
   v19.receiver = self;
   v19.super_class = MonthScrollViewController;
   [(MonthScrollViewController *)&v19 viewDidLoad];
-  v3 = [(MonthScrollViewController *)self view];
-  [v3 bounds];
+  view = [(MonthScrollViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -270,8 +270,8 @@
   do
   {
     v15 = [MonthWeekView alloc];
-    v16 = [(ActivityDateCache *)self->_dateCache dateCache];
-    v17 = [(MonthWeekView *)v15 initWithDateCache:v16];
+    dateCache = [(ActivityDateCache *)self->_dateCache dateCache];
+    v17 = [(MonthWeekView *)v15 initWithDateCache:dateCache];
 
     [(MonthWeekView *)v17 setDelegate:self];
     [(UIScrollView *)self->_scrollView addSubview:v17];
@@ -286,8 +286,8 @@
   [(UIScrollView *)self->_scrollView setShowsHorizontalScrollIndicator:0];
   [(UIScrollView *)self->_scrollView setShowsVerticalScrollIndicator:0];
   [(UIScrollView *)self->_scrollView setFrame:v5, v7, v9, v11];
-  v18 = [(MonthScrollViewController *)self view];
-  [v18 addSubview:self->_scrollView];
+  view2 = [(MonthScrollViewController *)self view];
+  [view2 addSubview:self->_scrollView];
 
   [(MonthScrollViewController *)self _createRingsView];
   [(MonthScrollViewController *)self _relayoutRingGroups];
@@ -296,33 +296,33 @@
 
 - (id)_calculateLastVisibleDate
 {
-  v3 = [(ActivityDateCache *)self->_dateCache calendar];
+  calendar = [(ActivityDateCache *)self->_dateCache calendar];
   v4 = +[NSDate date];
-  v5 = [v3 components:14 fromDate:v4];
+  v5 = [calendar components:14 fromDate:v4];
 
   [v5 setMonth:{objc_msgSend(v5, "month") + 1}];
   [v5 setDay:0];
-  v6 = [(ActivityDateCache *)self->_dateCache calendar];
-  v7 = [v6 dateFromComponents:v5];
+  calendar2 = [(ActivityDateCache *)self->_dateCache calendar];
+  v7 = [calendar2 dateFromComponents:v5];
 
-  v8 = [(ActivityDateCache *)self->_dateCache calendar];
-  v9 = [v8 hk_startOfFitnessWeekBeforeDate:v7];
+  calendar3 = [(ActivityDateCache *)self->_dateCache calendar];
+  v9 = [calendar3 hk_startOfFitnessWeekBeforeDate:v7];
 
   return v9;
 }
 
-- (BOOL)_isLastVisibleWeek:(id)a3
+- (BOOL)_isLastVisibleWeek:(id)week
 {
-  v4 = a3;
+  weekCopy = week;
   if (!self->_lastVisibleWeekDate)
   {
-    v5 = [(MonthScrollViewController *)self _calculateLastVisibleDate];
+    _calculateLastVisibleDate = [(MonthScrollViewController *)self _calculateLastVisibleDate];
     lastVisibleWeekDate = self->_lastVisibleWeekDate;
-    self->_lastVisibleWeekDate = v5;
+    self->_lastVisibleWeekDate = _calculateLastVisibleDate;
   }
 
-  v7 = [v4 currentWeekStartDate];
-  v8 = [v7 isEqualToDate:self->_lastVisibleWeekDate];
+  currentWeekStartDate = [weekCopy currentWeekStartDate];
+  v8 = [currentWeekStartDate isEqualToDate:self->_lastVisibleWeekDate];
 
   return v8;
 }
@@ -354,8 +354,8 @@
       v10 = floor(v9 * 0.1);
       *&v10 = v10;
       [v6 setThickness:v10];
-      v11 = [v6 rings];
-      v12 = [v11 count];
+      rings = [v6 rings];
+      v12 = [rings count];
 
       if (v12)
       {
@@ -364,8 +364,8 @@
         {
           LODWORD(v13) = ARUIRingPercentageValueNoRing;
           [v6 setPercentage:v14++ ofRingAtIndex:0 animated:v13];
-          v15 = [v6 rings];
-          v16 = [v15 count];
+          rings2 = [v6 rings];
+          v16 = [rings2 count];
         }
 
         while (v14 < v16);
@@ -373,13 +373,13 @@
 
       v17 = objc_alloc_init(UIImageView);
       [v17 setFrame:{0.0, 0.0, 40.0, 40.0}];
-      v18 = [(MonthScrollViewController *)self view];
-      [v18 center];
+      view = [(MonthScrollViewController *)self view];
+      [view center];
       [v17 setCenter:?];
 
       [v6 setRingImageView:v17];
-      v19 = [(MonthScrollViewController *)self view];
-      [v19 addSubview:v17];
+      view2 = [(MonthScrollViewController *)self view];
+      [view2 addSubview:v17];
 
       [(NSMutableArray *)v3 addObject:v6];
       [v6 setBackingOriginOffset:0.0];
@@ -404,48 +404,48 @@
   self->_ringGroups = v3;
 }
 
-- (id)earliestDateToTileForMonth:(id)a3
+- (id)earliestDateToTileForMonth:(id)month
 {
   dateCache = self->_dateCache;
-  v4 = a3;
-  v5 = [(ActivityDateCache *)dateCache calendar];
-  v6 = [v5 components:14 fromDate:v4];
+  monthCopy = month;
+  calendar = [(ActivityDateCache *)dateCache calendar];
+  v6 = [calendar components:14 fromDate:monthCopy];
 
   [v6 setDay:1];
-  v7 = [v5 dateFromComponents:v6];
-  v8 = [v5 hk_startOfFitnessWeekBeforeDate:v7];
-  v9 = [v5 dateByAddingUnit:0x2000 value:-1 toDate:v8 options:0];
+  v7 = [calendar dateFromComponents:v6];
+  v8 = [calendar hk_startOfFitnessWeekBeforeDate:v7];
+  v9 = [calendar dateByAddingUnit:0x2000 value:-1 toDate:v8 options:0];
 
   return v9;
 }
 
-- (void)scrollToDate:(id)a3 windowHeight:(double)a4
+- (void)scrollToDate:(id)date windowHeight:(double)height
 {
-  v25 = a3;
-  v6 = [(ActivityDateCache *)self->_dateCache calendar];
-  v7 = [v6 components:14 fromDate:v25];
+  dateCopy = date;
+  calendar = [(ActivityDateCache *)self->_dateCache calendar];
+  v7 = [calendar components:14 fromDate:dateCopy];
   [v7 setDay:1];
-  v8 = [v6 dateFromComponents:v7];
-  v9 = [v6 hk_startOfFitnessWeekBeforeDate:v8];
+  v8 = [calendar dateFromComponents:v7];
+  v9 = [calendar hk_startOfFitnessWeekBeforeDate:v8];
 
   v10 = [(MonthScrollViewController *)self weekWithStartDate:v9];
-  v11 = [(MonthScrollViewController *)self view];
-  [v11 frame];
+  view = [(MonthScrollViewController *)self view];
+  [view frame];
   v13 = v12;
 
-  v14 = [v6 hk_startOfFitnessWeekBeforeDate:v25];
-  v15 = [v6 components:0x2000 fromDate:v9 toDate:v14 options:0];
+  v14 = [calendar hk_startOfFitnessWeekBeforeDate:dateCopy];
+  v15 = [calendar components:0x2000 fromDate:v9 toDate:v14 options:0];
   v16 = ([v15 weekOfYear] + 1) * 65.0 + 50.0;
   if (v10)
   {
-    v17 = [(MonthScrollViewController *)self view];
-    [v17 scaledValueForSmallWidth:10.0 bigWidth:30.0];
+    view2 = [(MonthScrollViewController *)self view];
+    [view2 scaledValueForSmallWidth:10.0 bigWidth:30.0];
     v19 = v18;
 
     [v10 frame];
     v21 = v20 - v19;
     v22 = v13 * 0.5 - v19 + v20 - v19;
-    if (v16 <= a4)
+    if (v16 <= height)
     {
       v22 = v21;
     }
@@ -459,7 +459,7 @@
     [(MonthScrollViewController *)self _relayoutRingGroups];
     [(MonthScrollViewController *)self _reloadAllActivitySummariesFromCache];
     [(MonthScrollViewController *)self _reloadAllWorkoutsFromCache];
-    if (v16 > a4)
+    if (v16 > height)
     {
       [(UIScrollView *)self->_scrollView contentOffset];
       [(UIScrollView *)self->_scrollView setContentOffset:?];
@@ -467,8 +467,8 @@
       self->_panAmount.y = v23;
     }
 
-    v24 = [(MonthScrollViewController *)self monthScrollDelegate];
-    [v24 scrolledPastMonthWithDate:v25];
+    monthScrollDelegate = [(MonthScrollViewController *)self monthScrollDelegate];
+    [monthScrollDelegate scrolledPastMonthWithDate:dateCopy];
   }
 }
 
@@ -492,8 +492,8 @@
       v11 = v9 + v10;
       [(MonthScrollViewController *)self _centerXForRingAt:v3 % 7 percent:0.0];
       v13 = v12;
-      v14 = [v4 ringImageView];
-      [v14 setCenter:{v13, v11}];
+      ringImageView = [v4 ringImageView];
+      [ringImageView setCenter:{v13, v11}];
 
       ++v3;
     }
@@ -513,9 +513,9 @@
   [(NSMutableArray *)ringGroups enumerateObjectsUsingBlock:v3];
 }
 
-- (void)_readjustScrollViewToOffset:(double)a3 weekOffset:(double)a4
+- (void)_readjustScrollViewToOffset:(double)offset weekOffset:(double)weekOffset
 {
-  [(UIScrollView *)self->_scrollView setContentOffset:0.0, a3];
+  [(UIScrollView *)self->_scrollView setContentOffset:0.0, offset];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -546,21 +546,21 @@
     while (v8);
   }
 
-  self->_incrementAmount = self->_incrementAmount + a4;
+  self->_incrementAmount = self->_incrementAmount + weekOffset;
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
   self->_scrollViewAdjustedToBottom = 0;
   v4 = +[NSDate date];
-  v5 = [(MonthScrollViewController *)self view];
-  [v5 bounds];
+  view = [(MonthScrollViewController *)self view];
+  [view bounds];
   [(MonthScrollViewController *)self scrollToDate:v4 windowHeight:v6];
 
   return 0;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   p_panAmount = &self->_panAmount;
   [(UIScrollView *)self->_scrollView contentOffset];
@@ -568,13 +568,13 @@
   p_panAmount->y = v6;
   [(UIScrollView *)self->_scrollView contentOffset];
   v8 = v7;
-  v9 = [(MonthScrollViewController *)self view];
-  [v9 bounds];
+  view = [(MonthScrollViewController *)self view];
+  [view bounds];
   v11 = v10;
 
-  v12 = [(MonthScrollViewController *)self view];
-  v13 = [v12 safeAreaLayoutGuide];
-  [v13 layoutFrame];
+  view2 = [(MonthScrollViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   MaxY = CGRectGetMaxY(v36);
 
   v15 = v11 - MaxY;
@@ -652,12 +652,12 @@
 
 - (void)_findCenteredWeekAndUpdateTitleIfNecessary
 {
-  v3 = [(MonthScrollViewController *)self monthScrollDelegate];
+  monthScrollDelegate = [(MonthScrollViewController *)self monthScrollDelegate];
 
-  if (v3)
+  if (monthScrollDelegate)
   {
-    v4 = [(MonthScrollViewController *)self view];
-    [v4 frame];
+    view = [(MonthScrollViewController *)self view];
+    [view frame];
     v6 = v5;
 
     v36 = 0u;
@@ -687,8 +687,8 @@
           v18 = v17;
           v20 = v19;
           v22 = v21;
-          v23 = [(MonthScrollViewController *)self view];
-          [(UIScrollView *)scrollView convertRect:v23 toView:v16, v18, v20, v22];
+          view2 = [(MonthScrollViewController *)self view];
+          [(UIScrollView *)scrollView convertRect:view2 toView:v16, v18, v20, v22];
           v25 = v24;
           v27 = v26;
           v29 = v28;
@@ -706,9 +706,9 @@
             v40.size.height = v31;
             if (CGRectGetMaxY(v40) > v10)
             {
-              v32 = [(MonthScrollViewController *)self monthScrollDelegate];
-              v33 = [v13 currentWeekStartDate];
-              [v32 scrolledPastMonthWithDate:v33];
+              monthScrollDelegate2 = [(MonthScrollViewController *)self monthScrollDelegate];
+              currentWeekStartDate = [v13 currentWeekStartDate];
+              [monthScrollDelegate2 scrolledPastMonthWithDate:currentWeekStartDate];
             }
           }
         }
@@ -721,7 +721,7 @@
   }
 }
 
-- (double)_heightOffsetForWeekRow:(int64_t)a3
+- (double)_heightOffsetForWeekRow:(int64_t)row
 {
   v14 = 0u;
   v15 = 0u;
@@ -737,14 +737,14 @@
     v9 = 0.0;
 LABEL_3:
     v10 = 0;
-    if (v7 <= a3)
+    if (v7 <= row)
     {
-      v11 = a3;
+      rowCopy = row;
     }
 
     else
     {
-      v11 = v7;
+      rowCopy = v7;
     }
 
     while (1)
@@ -754,7 +754,7 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      if (v11 == v7)
+      if (rowCopy == v7)
       {
         break;
       }
@@ -785,20 +785,20 @@ LABEL_3:
 
 - (void)_addAndRearrangeWeekviewsAndGroups
 {
-  v22 = [(NSMutableArray *)self->_weekViews firstObject];
-  v3 = [(NSMutableArray *)self->_weekViews lastObject];
+  firstObject = [(NSMutableArray *)self->_weekViews firstObject];
+  lastObject = [(NSMutableArray *)self->_weekViews lastObject];
   v4 = [(NSMutableArray *)self->_ringGroups count];
   v5 = HKDaysInAWeek;
   v6 = &v4[-HKDaysInAWeek];
-  [v22 frame];
+  [firstObject frame];
   if (v7 <= 0.0)
   {
-    [v3 frame];
+    [lastObject frame];
     v15 = v14;
-    v16 = [(MonthScrollViewController *)self view];
-    [v16 frame];
+    view = [(MonthScrollViewController *)self view];
+    [view frame];
     v18 = v17;
-    [v3 frame];
+    [lastObject frame];
     v20 = v18 + v19;
 
     if (v15 >= v20)
@@ -808,7 +808,7 @@ LABEL_3:
 
     v10 = [(NSMutableArray *)self->_weekViews count]- 1;
     LOBYTE(v21) = 1;
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0;
     v11 = 0;
     v12 = v5;
@@ -819,34 +819,34 @@ LABEL_3:
   {
     v8 = [(NSMutableArray *)self->_weekViews count]- 1;
     LOBYTE(v21) = 0;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
     v11 = v6;
     v12 = v5;
     v13 = 0;
   }
 
-  [(MonthScrollViewController *)v9 _readjustFrom:v10 to:v8 fromGroupRange:v11 toGroupRange:v12 down:v13, v5, v21];
+  [(MonthScrollViewController *)selfCopy2 _readjustFrom:v10 to:v8 fromGroupRange:v11 toGroupRange:v12 down:v13, v5, v21];
 LABEL_6:
 }
 
-- (void)_readjustFrom:(unint64_t)a3 to:(unint64_t)a4 fromGroupRange:(_NSRange)a5 toGroupRange:(_NSRange)a6 down:(BOOL)a7
+- (void)_readjustFrom:(unint64_t)from to:(unint64_t)to fromGroupRange:(_NSRange)range toGroupRange:(_NSRange)groupRange down:(BOOL)down
 {
-  length = a5.length;
-  location = a5.location;
-  v42 = [(NSMutableArray *)self->_weekViews lastObject];
-  v11 = [(NSMutableArray *)self->_weekViews objectAtIndexedSubscript:a3];
-  v12 = [(NSMutableArray *)self->_weekViews objectAtIndexedSubscript:a4];
+  length = range.length;
+  location = range.location;
+  lastObject = [(NSMutableArray *)self->_weekViews lastObject];
+  v11 = [(NSMutableArray *)self->_weekViews objectAtIndexedSubscript:from];
+  v12 = [(NSMutableArray *)self->_weekViews objectAtIndexedSubscript:to];
   ringGroups = self->_ringGroups;
-  if (a7)
+  if (down)
   {
-    v14 = [(NSMutableArray *)ringGroups lastObject];
-    [v14 backingOriginOffset];
+    lastObject2 = [(NSMutableArray *)ringGroups lastObject];
+    [lastObject2 backingOriginOffset];
     v16 = v15;
 
-    [(NSMutableArray *)self->_weekViews removeObjectAtIndex:a4];
-    v17 = [v11 nextWeekStartDate];
-    [(MonthWeekView *)v12 setMonthWeekStart:v17];
+    [(NSMutableArray *)self->_weekViews removeObjectAtIndex:to];
+    nextWeekStartDate = [v11 nextWeekStartDate];
+    [(MonthWeekView *)v12 setMonthWeekStart:nextWeekStartDate];
     if (self->_lastVisibleWeek || ![(MonthScrollViewController *)self _isLastVisibleWeek:v12])
     {
       goto LABEL_8;
@@ -859,13 +859,13 @@ LABEL_6:
 
   else
   {
-    v20 = [(NSMutableArray *)ringGroups firstObject];
-    [v20 backingOriginOffset];
+    firstObject = [(NSMutableArray *)ringGroups firstObject];
+    [firstObject backingOriginOffset];
     v16 = v21;
 
-    [(NSMutableArray *)self->_weekViews removeObjectAtIndex:a4];
-    v17 = [v11 previousWeekStartDate];
-    [(MonthWeekView *)v12 setMonthWeekStart:v17];
+    [(NSMutableArray *)self->_weekViews removeObjectAtIndex:to];
+    nextWeekStartDate = [v11 previousWeekStartDate];
+    [(MonthWeekView *)v12 setMonthWeekStart:nextWeekStartDate];
     lastVisibleWeek = self->_lastVisibleWeek;
     if (v12 != lastVisibleWeek)
     {
@@ -882,7 +882,7 @@ LABEL_8:
   v27 = v26;
   [(MonthWeekView *)v12 preferredHeight];
   v29 = v28;
-  if (a7)
+  if (down)
   {
     [v11 frame];
   }
@@ -894,35 +894,35 @@ LABEL_8:
   }
 
   [(MonthWeekView *)v12 setFrame:v23, v25 + v30, v27, v29];
-  [(NSMutableArray *)self->_weekViews insertObject:v12 atIndex:a3];
-  if (a7)
+  [(NSMutableArray *)self->_weekViews insertObject:v12 atIndex:from];
+  if (down)
   {
-    [v42 frame];
+    [lastObject frame];
   }
 
   else
   {
-    [v42 preferredHeight];
+    [lastObject preferredHeight];
     v32 = -v33;
   }
 
   v34 = v16 + v32;
   v35 = [(NSMutableArray *)self->_ringGroups subarrayWithRange:location, length];
   [(NSMutableArray *)self->_ringGroups removeObjectsInRange:location, length];
-  v36 = [NSIndexSet indexSetWithIndexesInRange:a6.location, a6.length];
+  v36 = [NSIndexSet indexSetWithIndexesInRange:groupRange.location, groupRange.length];
   [(NSMutableArray *)self->_ringGroups insertObjects:v35 atIndexes:v36];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_1000ECD2C;
   v43[3] = &unk_10083BE48;
-  v46 = a7;
+  downCopy = down;
   v43[4] = self;
   v45 = v34;
   v37 = v12;
   v44 = v37;
   [v35 enumerateObjectsUsingBlock:v43];
   [(MonthScrollViewController *)self _loadWorkoutsForWeek:v37];
-  if (a7)
+  if (down)
   {
     v38 = HKDaysInAWeek;
     v39 = ([(NSMutableArray *)self->_weekViews count]- 1) * v38;
@@ -936,9 +936,9 @@ LABEL_8:
   [(MonthScrollViewController *)self _loadActivitySummariesForWeek:v37 ringGroupIndex:v39];
 }
 
-- (id)weekWithStartDate:(id)a3
+- (id)weekWithStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -958,8 +958,8 @@ LABEL_8:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 currentWeekStartDate];
-        v11 = [v10 isEqualToDate:v4];
+        currentWeekStartDate = [v9 currentWeekStartDate];
+        v11 = [currentWeekStartDate isEqualToDate:dateCopy];
 
         if (v11)
         {
@@ -983,63 +983,63 @@ LABEL_11:
   return v6;
 }
 
-- (double)_centerXForRingAt:(int64_t)a3 percent:(double)a4
+- (double)_centerXForRingAt:(int64_t)at percent:(double)percent
 {
-  v6 = [(MonthScrollViewController *)self view];
-  [v6 centerXForElementAt:a3 % 7 width:40.0 percent:a4];
+  view = [(MonthScrollViewController *)self view];
+  [view centerXForElementAt:at % 7 width:40.0 percent:percent];
   v8 = v7;
 
-  return 40.0 * 0.5 + v8 + 40.0 * -0.5 * a4;
+  return 40.0 * 0.5 + v8 + 40.0 * -0.5 * percent;
 }
 
-- (void)week:(id)a3 pressedOnDay:(int64_t)a4 down:(BOOL)a5
+- (void)week:(id)week pressedOnDay:(int64_t)day down:(BOOL)down
 {
-  v5 = a5;
-  v8 = [(NSMutableArray *)self->_weekViews indexOfObject:a3];
-  v9 = a4 + HKDaysInAWeek * v8;
+  downCopy = down;
+  v8 = [(NSMutableArray *)self->_weekViews indexOfObject:week];
+  v9 = day + HKDaysInAWeek * v8;
   if ((v9 & 0x8000000000000000) == 0 && v9 < [(NSMutableArray *)self->_ringGroups count])
   {
     v10 = [(NSMutableArray *)self->_ringGroups objectAtIndexedSubscript:v9];
     pressedRingGroup = self->_pressedRingGroup;
     self->_pressedRingGroup = v10;
 
-    [(MonthScrollViewController *)self _animateRingOnTouch:v5 completion:0];
+    [(MonthScrollViewController *)self _animateRingOnTouch:downCopy completion:0];
   }
 }
 
-- (void)_animateRingOnTouch:(BOOL)a3 completion:(id)a4
+- (void)_animateRingOnTouch:(BOOL)touch completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  touchCopy = touch;
+  completionCopy = completion;
   v7 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
   LODWORD(v8) = 1064178811;
-  if (!v4)
+  if (!touchCopy)
   {
     *&v8 = 1.0;
   }
 
-  v9 = [ARUIFloatPropertyAnimation animationWithEndingFloatValue:v7 duration:v6 timingFunction:v8 completion:0.2];
+  v9 = [ARUIFloatPropertyAnimation animationWithEndingFloatValue:v7 duration:completionCopy timingFunction:v8 completion:0.2];
 
-  v10 = [v9 _endValue];
-  [v10 floatValue];
+  _endValue = [v9 _endValue];
+  [_endValue floatValue];
   v12 = v11;
 
   [v9 duration];
   v14 = v13;
   LODWORD(v17) = v12;
-  v15 = [v9 completionHandler];
-  [ARUIRingGroup animateWithDuration:&v16 animations:0 curve:v15 completion:v14];
+  completionHandler = [v9 completionHandler];
+  [ARUIRingGroup animateWithDuration:&v16 animations:0 curve:completionHandler completion:v14];
 }
 
-- (void)week:(id)a3 cellSelected:(id)a4
+- (void)week:(id)week cellSelected:(id)selected
 {
-  v5 = [a4 date];
+  date = [selected date];
   _HKInitializeLogging();
   v6 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = date;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MSVC] Cell selected: %@", buf, 0xCu);
   }
 
@@ -1048,8 +1048,8 @@ LABEL_11:
   v8[2] = sub_1000ED3C8;
   v8[3] = &unk_10083A970;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = date;
+  v7 = date;
   [(MonthScrollViewController *)self _animateRingOnTouch:0 completion:v8];
 }
 
@@ -1098,30 +1098,30 @@ LABEL_11:
   [(NSMutableArray *)weekViews enumerateObjectsUsingBlock:v3];
 }
 
-- (void)_loadActivitySummariesForWeek:(id)a3 ringGroupIndex:(unint64_t)a4
+- (void)_loadActivitySummariesForWeek:(id)week ringGroupIndex:(unint64_t)index
 {
-  v6 = [a3 summaryIndexes];
+  summaryIndexes = [week summaryIndexes];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000ED670;
   v7[3] = &unk_10083BEC0;
   v7[4] = self;
-  v7[5] = a4;
-  [v6 enumerateObjectsUsingBlock:v7];
+  v7[5] = index;
+  [summaryIndexes enumerateObjectsUsingBlock:v7];
 }
 
-- (void)_loadWorkoutsForWeek:(id)a3
+- (void)_loadWorkoutsForWeek:(id)week
 {
-  v4 = a3;
-  v5 = [v4 summaryIndexes];
+  weekCopy = week;
+  summaryIndexes = [weekCopy summaryIndexes];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000ED9C0;
   v7[3] = &unk_10083BEE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = weekCopy;
+  v6 = weekCopy;
+  [summaryIndexes enumerateObjectsUsingBlock:v7];
 }
 
 - (FitMonthWeekViewDatasource)monthWeekDatasource

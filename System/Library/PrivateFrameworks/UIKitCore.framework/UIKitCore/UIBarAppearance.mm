@@ -1,33 +1,33 @@
 @interface UIBarAppearance
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIBarAppearance)copy;
 - (UIBarAppearance)init;
 - (UIBarAppearance)initWithBarAppearance:(UIBarAppearance *)barAppearance;
 - (UIBarAppearance)initWithCoder:(NSCoder *)coder;
 - (UIBarAppearance)initWithIdiom:(UIUserInterfaceIdiom)idiom;
 - (UIColor)shadowColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_copyFromAppearance:(id)a3;
-- (void)_decodeFromCoder:(id)a3;
-- (void)_describeInto:(id)a3;
-- (void)_setOverrideUserInterfaceStyle:(int64_t)a3;
-- (void)_setSelectedItemVibrancyEffect:(id)a3;
+- (void)_copyFromAppearance:(id)appearance;
+- (void)_decodeFromCoder:(id)coder;
+- (void)_describeInto:(id)into;
+- (void)_setOverrideUserInterfaceStyle:(int64_t)style;
+- (void)_setSelectedItemVibrancyEffect:(id)effect;
 - (void)_setupDefaults;
-- (void)_signalCategoryChanges:(uint64_t)a1;
+- (void)_signalCategoryChanges:(uint64_t)changes;
 - (void)configureWithDefaultBackground;
 - (void)configureWithDefaultShadow;
 - (void)configureWithOpaqueBackground;
 - (void)configureWithTransparentBackground;
 - (void)configureWithoutShadow;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
 - (void)setBackgroundEffect:(UIBlurEffect *)backgroundEffect;
-- (void)setBackgroundEffects:(id)a3;
+- (void)setBackgroundEffects:(id)effects;
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
 - (void)setBackgroundImageContentMode:(UIViewContentMode)backgroundImageContentMode;
 - (void)setShadowColor:(UIColor *)shadowColor;
-- (void)setShadowEffect:(id)a3;
+- (void)setShadowEffect:(id)effect;
 - (void)setShadowImage:(UIImage *)shadowImage;
 @end
 
@@ -45,31 +45,31 @@
 {
   if (!self->_backgroundData)
   {
-    v4 = [(UIBarAppearance *)self _defaultBackgroundData];
+    _defaultBackgroundData = [(UIBarAppearance *)self _defaultBackgroundData];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v4;
+    self->_backgroundData = _defaultBackgroundData;
   }
 }
 
 - (UIColor)shadowColor
 {
-  v3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowColor];
-  if (!v3)
+  shadowColor = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowColor];
+  if (!shadowColor)
   {
-    v4 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowEffect];
+    shadowEffect = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowEffect];
 
-    if (v4)
+    if (shadowEffect)
     {
-      v3 = +[UIColor clearColor];
+      shadowColor = +[UIColor clearColor];
     }
 
     else
     {
-      v3 = 0;
+      shadowColor = 0;
     }
   }
 
-  return v3;
+  return shadowColor;
 }
 
 - (UIBarAppearance)copy
@@ -81,9 +81,9 @@
 
 - (void)configureWithDefaultBackground
 {
-  v3 = [(UIBarAppearance *)self _defaultBackgroundData];
+  _defaultBackgroundData = [(UIBarAppearance *)self _defaultBackgroundData];
   backgroundData = self->_backgroundData;
-  self->_backgroundData = v3;
+  self->_backgroundData = _defaultBackgroundData;
 
   [(UIBarAppearance *)self _signalCategoryChanges:?];
 }
@@ -137,8 +137,8 @@
   v5 = barAppearance;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIBarAppearance.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"barAppearance != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIBarAppearance.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"barAppearance != nil"}];
   }
 
   v10.receiver = self;
@@ -156,18 +156,18 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && [(UIBarAppearance *)v4 isMemberOfClass:objc_opt_class()]&& [(UIBarAppearance *)self _checkEqualTo:v5];
+    v6 = equalCopy && [(UIBarAppearance *)equalCopy isMemberOfClass:objc_opt_class()]&& [(UIBarAppearance *)self _checkEqualTo:v5];
   }
 
   return v6;
@@ -185,7 +185,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
@@ -209,73 +209,73 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   idiom = self->_idiom;
-  v5 = a3;
-  [v5 encodeInteger:idiom forKey:@"Idiom"];
-  [v5 encodeInteger:self->_overrideUserInterfaceStyle forKey:@"OverrideUIStyle"];
-  [(_UIBarBackgroundAppearanceData *)self->_backgroundData encodeToCoder:v5 prefix:@"Background"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:idiom forKey:@"Idiom"];
+  [coderCopy encodeInteger:self->_overrideUserInterfaceStyle forKey:@"OverrideUIStyle"];
+  [(_UIBarBackgroundAppearanceData *)self->_backgroundData encodeToCoder:coderCopy prefix:@"Background"];
 }
 
-- (void)_copyFromAppearance:(id)a3
+- (void)_copyFromAppearance:(id)appearance
 {
-  self->_overrideUserInterfaceStyle = *(a3 + 6);
-  v4 = a3;
-  v7 = [v4 _backgroundData];
-  v5 = [v7 copy];
+  self->_overrideUserInterfaceStyle = *(appearance + 6);
+  appearanceCopy = appearance;
+  _backgroundData = [appearanceCopy _backgroundData];
+  v5 = [_backgroundData copy];
   backgroundData = self->_backgroundData;
   self->_backgroundData = v5;
 }
 
-- (void)_decodeFromCoder:(id)a3
+- (void)_decodeFromCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [_UIBarBackgroundAppearanceData decodeFromCoder:v4 prefix:@"Background"];
+  coderCopy = coder;
+  v5 = [_UIBarBackgroundAppearanceData decodeFromCoder:coderCopy prefix:@"Background"];
   backgroundData = self->_backgroundData;
   self->_backgroundData = v5;
 
-  v7 = [v4 decodeIntegerForKey:@"OverrideUIStyle"];
+  v7 = [coderCopy decodeIntegerForKey:@"OverrideUIStyle"];
   self->_overrideUserInterfaceStyle = v7;
 }
 
-- (void)_describeInto:(id)a3
+- (void)_describeInto:(id)into
 {
-  v6 = a3;
+  intoCopy = into;
   overrideUserInterfaceStyle = self->_overrideUserInterfaceStyle;
   if (overrideUserInterfaceStyle)
   {
     v5 = _NSStringFromUIUserInterfaceStyle(overrideUserInterfaceStyle);
-    [v6 appendFormat:@"\n\tOverride User Interface Style: %@", v5];
+    [intoCopy appendFormat:@"\n\tOverride User Interface Style: %@", v5];
   }
 
-  [v6 appendFormat:@"\n\tBackground(%p):", self->_backgroundData];
-  [(_UIBarBackgroundAppearanceData *)self->_backgroundData describeInto:v6];
+  [intoCopy appendFormat:@"\n\tBackground(%p):", self->_backgroundData];
+  [(_UIBarBackgroundAppearanceData *)self->_backgroundData describeInto:intoCopy];
 }
 
-- (void)_signalCategoryChanges:(uint64_t)a1
+- (void)_signalCategoryChanges:(uint64_t)changes
 {
-  if (a1)
+  if (changes)
   {
-    if (*(a1 + 40) == 1)
+    if (*(changes + 40) == 1)
     {
-      *(a1 + 32) |= a2;
+      *(changes + 32) |= a2;
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      [WeakRetained appearance:a1 categoriesChanged:a2];
+      WeakRetained = objc_loadWeakRetained((changes + 8));
+      [WeakRetained appearance:changes categoriesChanged:a2];
     }
   }
 }
 
-- (void)_setSelectedItemVibrancyEffect:(id)a3
+- (void)_setSelectedItemVibrancyEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData overrideTabBarVibrancyEffect];
-  v10 = v4;
-  v6 = v5;
+  effectCopy = effect;
+  overrideTabBarVibrancyEffect = [(_UIBarBackgroundAppearanceData *)self->_backgroundData overrideTabBarVibrancyEffect];
+  v10 = effectCopy;
+  v6 = overrideTabBarVibrancyEffect;
   if (v6 == v10)
   {
 
@@ -293,11 +293,11 @@
   if ((v7 & 1) == 0)
   {
 LABEL_8:
-    v8 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v8;
+    self->_backgroundData = writableInstance;
 
-    [(_UIBarBackgroundAppearanceData *)v8 setOverrideTabBarVibrancyEffect:v10];
+    [(_UIBarBackgroundAppearanceData *)writableInstance setOverrideTabBarVibrancyEffect:v10];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
@@ -307,71 +307,71 @@ LABEL_9:
 - (void)setBackgroundEffect:(UIBlurEffect *)backgroundEffect
 {
   v4 = backgroundEffect;
-  v5 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundEffect];
+  backgroundEffect = [(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundEffect];
   v6 = v4;
   v10 = v6;
-  if (v5 == v6)
+  if (backgroundEffect == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !backgroundEffect)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(UIBlurEffect *)v5 isEqual:v6];
+  v7 = [(UIBlurEffect *)backgroundEffect isEqual:v6];
 
   if (!v7)
   {
 LABEL_8:
-    v8 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v8;
+    self->_backgroundData = writableInstance;
 
-    [(_UIBarBackgroundAppearanceData *)v8 setBackgroundEffect:v10];
+    [(_UIBarBackgroundAppearanceData *)writableInstance setBackgroundEffect:v10];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
 LABEL_9:
 }
 
-- (void)setBackgroundEffects:(id)a3
+- (void)setBackgroundEffects:(id)effects
 {
-  v4 = MEMORY[0x1E695E0F0];
-  if (a3)
+  effectsCopy = MEMORY[0x1E695E0F0];
+  if (effects)
   {
-    v4 = a3;
+    effectsCopy = effects;
   }
 
-  v5 = v4;
-  v6 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundEffects];
+  v5 = effectsCopy;
+  backgroundEffects = [(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundEffects];
   v7 = v5;
   v11 = v7;
-  if (v6 == v7)
+  if (backgroundEffects == v7)
   {
 
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!backgroundEffects)
   {
 
     goto LABEL_9;
   }
 
-  v8 = [v6 isEqual:v7];
+  v8 = [backgroundEffects isEqual:v7];
 
   if ((v8 & 1) == 0)
   {
 LABEL_9:
-    v9 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v9;
+    self->_backgroundData = writableInstance;
 
-    [(_UIBarBackgroundAppearanceData *)v9 setBackgroundEffects:v11];
+    [(_UIBarBackgroundAppearanceData *)writableInstance setBackgroundEffects:v11];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
@@ -391,31 +391,31 @@ LABEL_10:
     v7 = 0;
   }
 
-  v8 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundColor];
+  backgroundColor = [(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundColor];
   v9 = v7;
   v13 = v9;
-  if (v8 == v9)
+  if (backgroundColor == v9)
   {
 
     goto LABEL_13;
   }
 
-  if (!v9 || !v8)
+  if (!v9 || !backgroundColor)
   {
 
     goto LABEL_12;
   }
 
-  v10 = [(UIColor *)v8 isEqual:v9];
+  v10 = [(UIColor *)backgroundColor isEqual:v9];
 
   if (!v10)
   {
 LABEL_12:
-    v11 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v11;
+    self->_backgroundData = writableInstance;
 
-    [(_UIBarBackgroundAppearanceData *)v11 setBackgroundColor:v13];
+    [(_UIBarBackgroundAppearanceData *)writableInstance setBackgroundColor:v13];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
@@ -441,31 +441,31 @@ LABEL_13:
     v7 = 0;
   }
 
-  v9 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundImage];
+  backgroundImage = [(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundImage];
   v10 = v7;
   v14 = v10;
-  if (v9 == v10)
+  if (backgroundImage == v10)
   {
 
     goto LABEL_14;
   }
 
-  if (!v10 || !v9)
+  if (!v10 || !backgroundImage)
   {
 
     goto LABEL_13;
   }
 
-  v11 = [(UIImage *)v9 isEqual:v10];
+  v11 = [(UIImage *)backgroundImage isEqual:v10];
 
   if (!v11)
   {
 LABEL_13:
-    v12 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v12;
+    self->_backgroundData = writableInstance;
 
-    [(_UIBarBackgroundAppearanceData *)v12 setBackgroundImage:v14];
+    [(_UIBarBackgroundAppearanceData *)writableInstance setBackgroundImage:v14];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
@@ -486,11 +486,11 @@ LABEL_14:
 
   if ([(_UIBarBackgroundAppearanceData *)self->_backgroundData backgroundImageContentMode]!= v4)
   {
-    v5 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v5;
+    self->_backgroundData = writableInstance;
 
-    [(_UIBarBackgroundAppearanceData *)v5 setBackgroundImageContentMode:v4];
+    [(_UIBarBackgroundAppearanceData *)writableInstance setBackgroundImageContentMode:v4];
 
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
@@ -498,9 +498,9 @@ LABEL_14:
 
 - (void)configureWithDefaultShadow
 {
-  v3 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+  writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
   backgroundData = self->_backgroundData;
-  self->_backgroundData = v3;
+  self->_backgroundData = writableInstance;
 
   [(_UIBarBackgroundAppearanceData *)self->_backgroundData configureWithDefaultShadow];
 
@@ -509,9 +509,9 @@ LABEL_14:
 
 - (void)configureWithoutShadow
 {
-  v3 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+  writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
   backgroundData = self->_backgroundData;
-  self->_backgroundData = v3;
+  self->_backgroundData = writableInstance;
 
   [(_UIBarBackgroundAppearanceData *)self->_backgroundData configureWithoutShadow];
 
@@ -537,31 +537,31 @@ LABEL_14:
     v7 = 0;
   }
 
-  v9 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowImage];
+  shadowImage = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowImage];
   v10 = v7;
   v14 = v10;
-  if (v9 == v10)
+  if (shadowImage == v10)
   {
 
     goto LABEL_14;
   }
 
-  if (!v10 || !v9)
+  if (!v10 || !shadowImage)
   {
 
     goto LABEL_13;
   }
 
-  v11 = [(UIImage *)v9 isEqual:v10];
+  v11 = [(UIImage *)shadowImage isEqual:v10];
 
   if (!v11)
   {
 LABEL_13:
-    v12 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v12;
+    self->_backgroundData = writableInstance;
 
-    [(_UIBarBackgroundAppearanceData *)v12 setShadowImage:v14];
+    [(_UIBarBackgroundAppearanceData *)writableInstance setShadowImage:v14];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
@@ -583,18 +583,18 @@ LABEL_14:
     }
   }
 
-  v7 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowColor];
+  shadowColor = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowColor];
   v8 = v4;
   v17 = v8;
-  if (v7 == v8)
+  if (shadowColor == v8)
   {
 
     goto LABEL_10;
   }
 
-  if (v8 && v7)
+  if (v8 && shadowColor)
   {
-    v9 = [(UIColor *)v7 isEqual:v8];
+    v9 = [(UIColor *)shadowColor isEqual:v8];
 
     if (!v9)
     {
@@ -607,23 +607,23 @@ LABEL_10:
   }
 
 LABEL_12:
-  v11 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+  writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
   backgroundData = self->_backgroundData;
-  self->_backgroundData = v11;
+  self->_backgroundData = writableInstance;
 
-  [(_UIBarBackgroundAppearanceData *)v11 setShadowColor:v17];
+  [(_UIBarBackgroundAppearanceData *)writableInstance setShadowColor:v17];
   v10 = 1;
 LABEL_13:
-  v13 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowEffect];
-  v14 = v13;
-  if (v13)
+  shadowEffect = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowEffect];
+  v14 = shadowEffect;
+  if (shadowEffect)
   {
 
-    v15 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance2 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     v16 = self->_backgroundData;
-    self->_backgroundData = v15;
+    self->_backgroundData = writableInstance2;
 
-    [(_UIBarBackgroundAppearanceData *)v15 setShadowEffect:0];
+    [(_UIBarBackgroundAppearanceData *)writableInstance2 setShadowEffect:0];
   }
 
   else if (!v10)
@@ -635,45 +635,45 @@ LABEL_13:
 LABEL_17:
 }
 
-- (void)setShadowEffect:(id)a3
+- (void)setShadowEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowEffect];
-  v6 = v4;
+  effectCopy = effect;
+  shadowEffect = [(_UIBarBackgroundAppearanceData *)self->_backgroundData shadowEffect];
+  v6 = effectCopy;
   v10 = v6;
-  if (v5 == v6)
+  if (shadowEffect == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !shadowEffect)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqual:v6];
+  v7 = [shadowEffect isEqual:v6];
 
   if ((v7 & 1) == 0)
   {
 LABEL_8:
-    v8 = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_backgroundData writableInstance];
     backgroundData = self->_backgroundData;
-    self->_backgroundData = v8;
+    self->_backgroundData = writableInstance;
 
-    [(_UIBarBackgroundAppearanceData *)v8 setShadowEffect:v10];
+    [(_UIBarBackgroundAppearanceData *)writableInstance setShadowEffect:v10];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
 LABEL_9:
 }
 
-- (void)_setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)_setOverrideUserInterfaceStyle:(int64_t)style
 {
-  if (self->_overrideUserInterfaceStyle != a3)
+  if (self->_overrideUserInterfaceStyle != style)
   {
-    self->_overrideUserInterfaceStyle = a3;
+    self->_overrideUserInterfaceStyle = style;
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 }

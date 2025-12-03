@@ -1,20 +1,20 @@
 @interface ICASCollabNotificationData
-- (ICASCollabNotificationData)initWithCollabNotificationAction:(id)a3;
+- (ICASCollabNotificationData)initWithCollabNotificationAction:(id)action;
 - (id)toDict;
 @end
 
 @implementation ICASCollabNotificationData
 
-- (ICASCollabNotificationData)initWithCollabNotificationAction:(id)a3
+- (ICASCollabNotificationData)initWithCollabNotificationAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = ICASCollabNotificationData;
   v6 = [(ICASCollabNotificationData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collabNotificationAction, a3);
+    objc_storeStrong(&v6->_collabNotificationAction, action);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"collabNotificationAction";
-  v3 = [(ICASCollabNotificationData *)self collabNotificationAction];
-  if (v3)
+  collabNotificationAction = [(ICASCollabNotificationData *)self collabNotificationAction];
+  if (collabNotificationAction)
   {
-    v4 = [(ICASCollabNotificationData *)self collabNotificationAction];
+    collabNotificationAction2 = [(ICASCollabNotificationData *)self collabNotificationAction];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    collabNotificationAction2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = collabNotificationAction2;
+  v10[0] = collabNotificationAction2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

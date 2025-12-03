@@ -1,13 +1,13 @@
 @interface EDDropMessagesReadIndexUpgradeStep
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDDropMessagesReadIndexUpgradeStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sqlite3_exec([v3 sqlDB], "DROP INDEX IF EXISTS messages_read_index;", 0, 0, 0);
+  connectionCopy = connection;
+  v4 = sqlite3_exec([connectionCopy sqlDB], "DROP INDEX IF EXISTS messages_read_index;", 0, 0, 0);
 
   return v4;
 }

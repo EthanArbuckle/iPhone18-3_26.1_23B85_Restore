@@ -18,10 +18,10 @@
   v6 = a3;
   v7 = a4;
   v8 = [[PXProgrammaticNavigationDestination alloc] initWithURL:v6];
-  v9 = [a1 px_firstKeyWindow];
-  v10 = [v9 rootViewController];
+  px_firstKeyWindow = [self px_firstKeyWindow];
+  rootViewController = [px_firstKeyWindow rootViewController];
 
-  if ([v10 routingOptionsForDestination:v8])
+  if ([rootViewController routingOptionsForDestination:v8])
   {
     v11 = [PXProgrammaticNavigationRequest alloc];
     v22[0] = MEMORY[0x1E69E9820];
@@ -35,7 +35,7 @@
     v14 = v7;
     v15 = v6;
     v16 = [(PXProgrammaticNavigationRequest *)v11 initWithDestination:v8 options:0 completionHandler:v22];
-    PXProgrammaticNavigationRequestExecute(v16, v10);
+    PXProgrammaticNavigationRequestExecute(v16, rootViewController);
   }
 
   else
@@ -59,7 +59,7 @@
 {
   v8 = a5;
   v9 = [a3 px_navigationURLWithSelectedObject:a4];
-  [a1 px_navigateToPhotosURL:v9 completionHandler:v8];
+  [self px_navigateToPhotosURL:v9 completionHandler:v8];
 }
 
 - (void)px_navigateToOneUpShowingAsset:()PhotosUICore completionHandler:
@@ -67,18 +67,18 @@
   v19 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 uuid];
-  if ([v8 length])
+  uuid = [v6 uuid];
+  if ([uuid length])
   {
     v9 = [MEMORY[0x1E696AF20] componentsWithString:@"photos://asset"];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"uuid" value:v8];
+    v11 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"uuid" value:uuid];
     [v10 addObject:v11];
     v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"albumname" value:@"camera-roll"];
     [v10 addObject:v12];
     [v9 setQueryItems:v10];
     v13 = [v9 URL];
-    [a1 px_navigateToPhotosURL:v13 completionHandler:v7];
+    [self px_navigateToPhotosURL:v13 completionHandler:v7];
   }
 
   else
@@ -112,17 +112,17 @@
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"name" value:@"camera-roll"];
   [v9 addObject:v10];
-  v11 = [v8 uuid];
+  uuid = [v8 uuid];
 
-  if ([v11 length])
+  if ([uuid length])
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"assetuuid" value:v11];
+    v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"assetuuid" value:uuid];
     [v9 addObject:v12];
   }
 
   [v14 setQueryItems:v9];
   v13 = [v14 URL];
-  [a1 px_navigateToPhotosURL:v13 completionHandler:v7];
+  [self px_navigateToPhotosURL:v13 completionHandler:v7];
 }
 
 - (void)px_navigateToCollectionSubtype:()PhotosUICore completionHandler:
@@ -135,7 +135,7 @@
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"photos://album?name=%@", v8];
     v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
-    [a1 px_navigateToPhotosURL:v10 completionHandler:v7];
+    [self px_navigateToPhotosURL:v10 completionHandler:v7];
   }
 
   else
@@ -174,7 +174,7 @@ LABEL_3:
 
 LABEL_4:
   v11 = [MEMORY[0x1E695DFF8] URLWithString:v9];
-  [a1 px_navigateToPhotosURL:v11 completionHandler:v8];
+  [self px_navigateToPhotosURL:v11 completionHandler:v8];
 }
 
 - (void)px_navigateToForYouRevealingSharedLibrarySharingSuggestionsWithCompletionHandler:()PhotosUICore
@@ -182,7 +182,7 @@ LABEL_4:
   v4 = MEMORY[0x1E695DFF8];
   v5 = a3;
   v6 = [v4 URLWithString:@"photos://forYou?type=sharedLibrarySuggestions"];
-  [a1 px_navigateToPhotosURL:v6 completionHandler:v5];
+  [self px_navigateToPhotosURL:v6 completionHandler:v5];
 }
 
 - (void)px_navigateToMomentsViewRevealingDisplayAsset:()PhotosUICore openOneUp:completionHandler:
@@ -194,25 +194,25 @@ LABEL_4:
   if (objc_opt_isKindOfClass())
   {
     v10 = v14;
-    v11 = [v10 photoLibrary];
-    v12 = [v11 wellKnownPhotoLibraryIdentifier];
+    photoLibrary = [v10 photoLibrary];
+    wellKnownPhotoLibraryIdentifier = [photoLibrary wellKnownPhotoLibraryIdentifier];
 
     v9 = v10;
-    if (v12 == 3)
+    if (wellKnownPhotoLibraryIdentifier == 3)
     {
       v9 = PXAssetToRevealForSyndicationLibraryAsset(v10);
     }
   }
 
-  v13 = [v9 uuid];
-  [a1 px_navigateToMomentsViewRevealingAssetWithUUID:v13 openOneUp:a4 completionHandler:v8];
+  uuid = [v9 uuid];
+  [self px_navigateToMomentsViewRevealingAssetWithUUID:uuid openOneUp:a4 completionHandler:v8];
 }
 
 - (void)px_navigateToMomentsViewRevealingAsset:()PhotosUICore completionHandler:
 {
   v6 = a4;
-  v7 = [a3 uuid];
-  [a1 px_navigateToMomentsViewRevealingAssetWithUUID:v7 openOneUp:0 completionHandler:v6];
+  uuid = [a3 uuid];
+  [self px_navigateToMomentsViewRevealingAssetWithUUID:uuid openOneUp:0 completionHandler:v6];
 }
 
 - (void)px_navigateToWelcomeCloudViewWithCompletionHandler:()PhotosUICore
@@ -220,7 +220,7 @@ LABEL_4:
   v4 = MEMORY[0x1E695DFF8];
   v5 = a3;
   v6 = [v4 URLWithString:@"photos://show-welcome-cpl"];
-  [a1 px_navigateToPhotosURL:v6 completionHandler:v5];
+  [self px_navigateToPhotosURL:v6 completionHandler:v5];
 }
 
 @end

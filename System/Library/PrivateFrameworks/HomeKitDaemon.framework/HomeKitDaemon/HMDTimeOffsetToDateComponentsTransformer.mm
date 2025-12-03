@@ -1,14 +1,14 @@
 @interface HMDTimeOffsetToDateComponentsTransformer
-+ (id)transformedValue:(id)a3 error:(id *)a4;
-- (id)reverseTransformedValue:(id)a3 error:(id *)a4;
++ (id)transformedValue:(id)value error:(id *)error;
+- (id)reverseTransformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDTimeOffsetToDateComponentsTransformer
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
   v9 = 0;
-  v4 = HMDTimeOffsetToDateComponents([a3 integerValue], &v9);
+  v4 = HMDTimeOffsetToDateComponents([value integerValue], &v9);
   v5 = v4;
   if (v9 == 1)
   {
@@ -33,10 +33,10 @@
   return v7;
 }
 
-- (id)reverseTransformedValue:(id)a3 error:(id *)a4
+- (id)reverseTransformedValue:(id)value error:(id *)error
 {
   v7 = 0;
-  v4 = HMDTimeOffsetFromDateComponents(a3, &v7);
+  v4 = HMDTimeOffsetFromDateComponents(value, &v7);
   if (v7)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:v4];

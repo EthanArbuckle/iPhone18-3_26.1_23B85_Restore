@@ -1,12 +1,12 @@
 @interface _BSOpaqueWrapper
 - (_BSOpaqueWrapper)init;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (id)wrappedThing;
 @end
 
 @implementation _BSOpaqueWrapper
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   swift_unknownObjectRetain();
   sub_2155DAA1C();

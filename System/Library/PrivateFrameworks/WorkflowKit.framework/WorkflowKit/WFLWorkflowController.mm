@@ -1,24 +1,24 @@
 @interface WFLWorkflowController
 - (BOOL)isRunning;
-- (BOOL)openInteractionInApp:(id)a3 completionHandler:(id)a4;
-- (BOOL)openUserActivity:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (BOOL)workflowController:(id)a3 handleUnsupportedEnvironmentForAction:(id)a4 currentState:(id)a5 completionHandler:(id)a6;
+- (BOOL)openInteractionInApp:(id)app completionHandler:(id)handler;
+- (BOOL)openUserActivity:(id)activity bundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (BOOL)workflowController:(id)controller handleUnsupportedEnvironmentForAction:(id)action currentState:(id)state completionHandler:(id)handler;
 - (NSProgress)progress;
-- (WFLWorkflowController)initWithWorkflow:(id)a3;
+- (WFLWorkflowController)initWithWorkflow:(id)workflow;
 - (WFLWorkflowControllerDelegate)delegate;
 - (WFWorkflow)workflow;
 - (id)runSource;
-- (void)action:(id)a3 provideInputForParameters:(id)a4 withDefaultStates:(id)a5 prompts:(id)a6 completionHandler:(id)a7;
-- (void)configureIntent:(id)a3;
-- (void)launchAppWithCompletionHandler:(id)a3;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
-- (void)runWithInput:(id)a3;
-- (void)showHandleInteraction:(id)a3 prompt:(id)a4 completionHandler:(id)a5;
+- (void)action:(id)action provideInputForParameters:(id)parameters withDefaultStates:(id)states prompts:(id)prompts completionHandler:(id)handler;
+- (void)configureIntent:(id)intent;
+- (void)launchAppWithCompletionHandler:(id)handler;
+- (void)openURL:(id)l completionHandler:(id)handler;
+- (void)runWithInput:(id)input;
+- (void)showHandleInteraction:(id)interaction prompt:(id)prompt completionHandler:(id)handler;
 - (void)stop;
-- (void)workflowController:(id)a3 didFinishRunningWithError:(id)a4 cancelled:(BOOL)a5;
-- (void)workflowController:(id)a3 didRunAction:(id)a4 error:(id)a5;
-- (void)workflowController:(id)a3 prepareToRunAction:(id)a4 withInput:(id)a5 completionHandler:(id)a6;
-- (void)workflowControllerWillRun:(id)a3;
+- (void)workflowController:(id)controller didFinishRunningWithError:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowController:(id)controller didRunAction:(id)action error:(id)error;
+- (void)workflowController:(id)controller prepareToRunAction:(id)action withInput:(id)input completionHandler:(id)handler;
+- (void)workflowControllerWillRun:(id)run;
 @end
 
 @implementation WFLWorkflowController
@@ -30,10 +30,10 @@
   return WeakRetained;
 }
 
-- (void)action:(id)a3 provideInputForParameters:(id)a4 withDefaultStates:(id)a5 prompts:(id)a6 completionHandler:(id)a7
+- (void)action:(id)action provideInputForParameters:(id)parameters withDefaultStates:(id)states prompts:(id)prompts completionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v7 = a7;
+  handlerCopy = handler;
   v8 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
   {
@@ -42,47 +42,47 @@
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_FAULT, "%s provideInputForParameters should not be called", &v10, 0xCu);
   }
 
-  (*(v7 + 2))(v7, 0, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureIntent:(id)a3
+- (void)configureIntent:(id)intent
 {
-  v4 = a3;
-  [v4 _setExecutionContext:{-[WFLWorkflowController executionContext](self, "executionContext")}];
+  intentCopy = intent;
+  [intentCopy _setExecutionContext:{-[WFLWorkflowController executionContext](self, "executionContext")}];
 }
 
-- (BOOL)openUserActivity:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5
+- (BOOL)openUserActivity:(id)activity bundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
     v6 = MEMORY[0x1E696ABC0];
-    v7 = a5;
-    v8 = [v6 userCancelledError];
-    (*(a5 + 2))(v7, 0, v8);
+    handlerCopy = handler;
+    userCancelledError = [v6 userCancelledError];
+    (*(handler + 2))(handlerCopy, 0, userCancelledError);
   }
 
   return 1;
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (BOOL)openInteractionInApp:(id)a3 completionHandler:(id)a4
+- (BOOL)openInteractionInApp:(id)app completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(WFLWorkflowController *)self delegate];
-  v7 = [(WFLWorkflowController *)self controller];
-  v8 = [v7 currentAction];
+  handlerCopy = handler;
+  delegate = [(WFLWorkflowController *)self delegate];
+  controller = [(WFLWorkflowController *)self controller];
+  currentAction = [controller currentAction];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v6 workflowController:self userInterfaceForRunningAction:v8];
+    v9 = [delegate workflowController:self userInterfaceForRunningAction:currentAction];
   }
 
   else
@@ -94,9 +94,9 @@
   v15 = 3221225472;
   v16 = __64__WFLWorkflowController_openInteractionInApp_completionHandler___block_invoke;
   v17 = &unk_1E837D770;
-  v10 = v5;
+  v10 = handlerCopy;
   v19 = v10;
-  v11 = v8;
+  v11 = currentAction;
   v18 = v11;
   v12 = _Block_copy(&v14);
   if (objc_opt_respondsToSelector())
@@ -133,57 +133,57 @@ void __64__WFLWorkflowController_openInteractionInApp_completionHandler___block_
   }
 }
 
-- (void)showHandleInteraction:(id)a3 prompt:(id)a4 completionHandler:(id)a5
+- (void)showHandleInteraction:(id)interaction prompt:(id)prompt completionHandler:(id)handler
 {
-  v7 = a5;
-  [(WFLWorkflowController *)self setLastInteraction:a3];
-  v7[2](v7, 0);
+  handlerCopy = handler;
+  [(WFLWorkflowController *)self setLastInteraction:interaction];
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (BOOL)workflowController:(id)a3 handleUnsupportedEnvironmentForAction:(id)a4 currentState:(id)a5 completionHandler:(id)a6
+- (BOOL)workflowController:(id)controller handleUnsupportedEnvironmentForAction:(id)action currentState:(id)state completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 runSource];
-  LOBYTE(self) = WFRemoteExecuteActionIfApplicable(v12, v11, self, self, v13, v10);
+  handlerCopy = handler;
+  stateCopy = state;
+  actionCopy = action;
+  runSource = [controller runSource];
+  LOBYTE(self) = WFRemoteExecuteActionIfApplicable(actionCopy, stateCopy, self, self, runSource, handlerCopy);
 
   return self;
 }
 
-- (void)workflowController:(id)a3 didRunAction:(id)a4 error:(id)a5
+- (void)workflowController:(id)controller didRunAction:(id)action error:(id)error
 {
-  v7 = a4;
-  v6 = [(WFLWorkflowController *)self delegate];
+  actionCopy = action;
+  delegate = [(WFLWorkflowController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 workflowController:self didRunAction:v7];
+    [delegate workflowController:self didRunAction:actionCopy];
   }
 }
 
-- (void)workflowController:(id)a3 prepareToRunAction:(id)a4 withInput:(id)a5 completionHandler:(id)a6
+- (void)workflowController:(id)controller prepareToRunAction:(id)action withInput:(id)input completionHandler:(id)handler
 {
-  v10 = a4;
-  v8 = a6;
-  v9 = [(WFLWorkflowController *)self delegate];
+  actionCopy = action;
+  handlerCopy = handler;
+  delegate = [(WFLWorkflowController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 workflowController:self willRunAction:v10 withInput:0 proceedHandler:v8];
+    [delegate workflowController:self willRunAction:actionCopy withInput:0 proceedHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)workflowController:(id)a3 didFinishRunningWithError:(id)a4 cancelled:(BOOL)a5
+- (void)workflowController:(id)controller didFinishRunningWithError:(id)error cancelled:(BOOL)cancelled
 {
-  v5 = a5;
+  cancelledCopy = cancelled;
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(WFLWorkflowController *)self delegate];
-  if (v7)
+  errorCopy = error;
+  delegate = [(WFLWorkflowController *)self delegate];
+  if (errorCopy)
   {
     v9 = 2;
   }
@@ -193,135 +193,135 @@ void __64__WFLWorkflowController_openInteractionInApp_completionHandler___block_
     v9 = 1;
   }
 
-  v10 = [(WFLWorkflowController *)self workflow];
-  v11 = [v10 database];
-  v12 = [(WFLWorkflowController *)self runEvent];
-  [v11 setOutcome:v9 forRunEvent:v12];
+  workflow = [(WFLWorkflowController *)self workflow];
+  database = [workflow database];
+  runEvent = [(WFLWorkflowController *)self runEvent];
+  [database setOutcome:v9 forRunEvent:runEvent];
 
   [(WFLWorkflowController *)self setRunEvent:0];
-  if (v5)
+  if (cancelledCopy)
   {
-    v13 = [MEMORY[0x1E696ABC0] userCancelledError];
+    userCancelledError = [MEMORY[0x1E696ABC0] userCancelledError];
 
-    v7 = v13;
+    errorCopy = userCancelledError;
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    v14 = [v7 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"WFIntentExecutorIntentResponseErrorKey"];
+    userInfo = [errorCopy userInfo];
+    v15 = [userInfo objectForKeyedSubscript:@"WFIntentExecutorIntentResponseErrorKey"];
 
     if (v15)
     {
-      v16 = [v7 userInfo];
-      v17 = [v16 mutableCopy];
+      userInfo2 = [errorCopy userInfo];
+      v17 = [userInfo2 mutableCopy];
 
       [v17 setObject:v15 forKey:@"WFLUnderlyingIntentResponse"];
       [v17 removeObjectForKey:@"WFIntentExecutorIntentResponseErrorKey"];
       v18 = MEMORY[0x1E696ABC0];
-      v19 = [v7 domain];
-      v20 = [v18 errorWithDomain:v19 code:objc_msgSend(v7 userInfo:{"code"), v17}];
+      domain = [errorCopy domain];
+      v20 = [v18 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v17}];
 
-      v7 = v20;
+      errorCopy = v20;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v8 workflowControllerDidStop:self withError:v7];
+      [delegate workflowControllerDidStop:self withError:errorCopy];
     }
   }
 
   else
   {
-    v21 = [(WFLWorkflowController *)self lastInteraction];
-    v22 = [v21 intentResponse];
-    if (v22)
+    lastInteraction = [(WFLWorkflowController *)self lastInteraction];
+    intentResponse = [lastInteraction intentResponse];
+    if (intentResponse)
     {
-      v23 = [(WFLWorkflowController *)self lastInteraction];
-      v24 = [v23 intentResponse];
-      v26[0] = v24;
-      v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
+      lastInteraction2 = [(WFLWorkflowController *)self lastInteraction];
+      intentResponse2 = [lastInteraction2 intentResponse];
+      v26[0] = intentResponse2;
+      errorCopy = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     }
 
     else
     {
-      v7 = 0;
+      errorCopy = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v8 workflowControllerDidFinishRunning:self withOutput:v7];
+      [delegate workflowControllerDidFinishRunning:self withOutput:errorCopy];
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)workflowControllerWillRun:(id)a3
+- (void)workflowControllerWillRun:(id)run
 {
-  v4 = [(WFLWorkflowController *)self delegate];
+  delegate = [(WFLWorkflowController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 workflowControllerWillRun:self];
+    [delegate workflowControllerWillRun:self];
   }
 }
 
-- (void)launchAppWithCompletionHandler:(id)a3
+- (void)launchAppWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFLWorkflowController *)self controller];
-  v6 = [v5 isRunning];
+  handlerCopy = handler;
+  controller = [(WFLWorkflowController *)self controller];
+  isRunning = [controller isRunning];
 
-  if (v6)
+  if (isRunning)
   {
-    v7 = [(WFLWorkflowController *)self controller];
-    v8 = [v7 currentAction];
+    controller2 = [(WFLWorkflowController *)self controller];
+    currentAction = [controller2 currentAction];
   }
 
   else
   {
-    v7 = [(WFLWorkflowController *)self workflow];
-    v9 = [v7 actions];
-    v8 = [v9 lastObject];
+    controller2 = [(WFLWorkflowController *)self workflow];
+    actions = [controller2 actions];
+    currentAction = [actions lastObject];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v6)
+    if (isRunning)
     {
-      v10 = [v8 connection];
-      v11 = [v10 appProxy];
+      connection = [currentAction connection];
+      appProxy = [connection appProxy];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __56__WFLWorkflowController_launchAppWithCompletionHandler___block_invoke;
       v24[3] = &unk_1E837EE10;
       v24[4] = self;
-      v25 = v4;
-      [v11 launchAppInBackground:0 completionHandler:v24];
+      v25 = handlerCopy;
+      [appProxy launchAppInBackground:0 completionHandler:v24];
 
       v12 = v25;
     }
 
     else
     {
-      v13 = [(WFLWorkflowController *)self lastInteraction];
-      v14 = [v13 intentResponse];
-      v15 = [v14 userActivity];
+      lastInteraction = [(WFLWorkflowController *)self lastInteraction];
+      intentResponse = [lastInteraction intentResponse];
+      userActivity = [intentResponse userActivity];
       v16 = INUserActivitySerializeToData();
       v17 = INUserActivityDeserializeFromData();
 
       v18 = objc_alloc(MEMORY[0x1E6996CA0]);
-      v19 = [(WFLWorkflowController *)self lastInteraction];
+      lastInteraction2 = [(WFLWorkflowController *)self lastInteraction];
       v23 = 0;
-      v20 = [v18 initWithInteraction:v19 userActivity:v17 inBackground:0 error:&v23];
+      v20 = [v18 initWithInteraction:lastInteraction2 userActivity:v17 inBackground:0 error:&v23];
       v12 = v23;
 
       if (v12)
       {
-        if (v4)
+        if (handlerCopy)
         {
-          (*(v4 + 2))(v4, 0, v12);
+          (*(handlerCopy + 2))(handlerCopy, 0, v12);
         }
       }
 
@@ -331,15 +331,15 @@ void __64__WFLWorkflowController_openInteractionInApp_completionHandler___block_
         v21[1] = 3221225472;
         v21[2] = __56__WFLWorkflowController_launchAppWithCompletionHandler___block_invoke_2;
         v21[3] = &unk_1E837F0F0;
-        v22 = v4;
+        v22 = handlerCopy;
         [v20 performWithCompletionHandler:v21];
       }
     }
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -369,21 +369,21 @@ uint64_t __56__WFLWorkflowController_launchAppWithCompletionHandler___block_invo
 
 - (void)stop
 {
-  v2 = [(WFLWorkflowController *)self controller];
-  [v2 stop];
+  controller = [(WFLWorkflowController *)self controller];
+  [controller stop];
 }
 
 - (id)runSource
 {
-  v2 = [(WFLWorkflowController *)self executionContext];
-  if ((v2 - 1) > 9)
+  executionContext = [(WFLWorkflowController *)self executionContext];
+  if ((executionContext - 1) > 9)
   {
     v3 = MEMORY[0x1E69E1428];
   }
 
   else
   {
-    v3 = qword_1E8374598[v2 - 1];
+    v3 = qword_1E8374598[executionContext - 1];
   }
 
   v4 = *v3;
@@ -391,54 +391,54 @@ uint64_t __56__WFLWorkflowController_launchAppWithCompletionHandler___block_invo
   return v4;
 }
 
-- (void)runWithInput:(id)a3
+- (void)runWithInput:(id)input
 {
-  v4 = [MEMORY[0x1E6996D40] collectionWithItems:a3];
-  v5 = [(WFLWorkflowController *)self controller];
-  [v5 setInput:v4];
+  v4 = [MEMORY[0x1E6996D40] collectionWithItems:input];
+  controller = [(WFLWorkflowController *)self controller];
+  [controller setInput:v4];
 
-  v13 = [(WFLWorkflowController *)self runSource];
-  v6 = [(WFLWorkflowController *)self controller];
-  [v6 setRunSource:v13];
+  runSource = [(WFLWorkflowController *)self runSource];
+  controller2 = [(WFLWorkflowController *)self controller];
+  [controller2 setRunSource:runSource];
 
-  v7 = [(WFLWorkflowController *)self workflow];
-  v8 = [v7 database];
-  v9 = [(WFLWorkflowController *)self workflow];
-  v10 = [v9 reference];
-  v11 = [v8 logRunOfWorkflow:v10 withSource:v13 triggerID:0];
+  workflow = [(WFLWorkflowController *)self workflow];
+  database = [workflow database];
+  workflow2 = [(WFLWorkflowController *)self workflow];
+  reference = [workflow2 reference];
+  v11 = [database logRunOfWorkflow:reference withSource:runSource triggerID:0];
   [(WFLWorkflowController *)self setRunEvent:v11];
 
-  v12 = [(WFLWorkflowController *)self controller];
-  [v12 run];
+  controller3 = [(WFLWorkflowController *)self controller];
+  [controller3 run];
 }
 
 - (WFWorkflow)workflow
 {
-  v2 = [(WFLWorkflowController *)self controller];
-  v3 = [v2 workflow];
+  controller = [(WFLWorkflowController *)self controller];
+  workflow = [controller workflow];
 
-  return v3;
+  return workflow;
 }
 
 - (NSProgress)progress
 {
-  v2 = [(WFLWorkflowController *)self controller];
-  v3 = [v2 progress];
+  controller = [(WFLWorkflowController *)self controller];
+  progress = [controller progress];
 
-  return v3;
+  return progress;
 }
 
 - (BOOL)isRunning
 {
-  v2 = [(WFLWorkflowController *)self controller];
-  v3 = [v2 isRunning];
+  controller = [(WFLWorkflowController *)self controller];
+  isRunning = [controller isRunning];
 
-  return v3;
+  return isRunning;
 }
 
-- (WFLWorkflowController)initWithWorkflow:(id)a3
+- (WFLWorkflowController)initWithWorkflow:(id)workflow
 {
-  v4 = a3;
+  workflowCopy = workflow;
   v10.receiver = self;
   v10.super_class = WFLWorkflowController;
   v5 = [(WFLWorkflowController *)&v10 init];
@@ -448,7 +448,7 @@ uint64_t __56__WFLWorkflowController_launchAppWithCompletionHandler___block_invo
     controller = v5->_controller;
     v5->_controller = v6;
 
-    [(WFWorkflowController *)v5->_controller setWorkflow:v4];
+    [(WFWorkflowController *)v5->_controller setWorkflow:workflowCopy];
     [(WFWorkflowController *)v5->_controller setDelegate:v5];
     v8 = v5;
   }

@@ -1,7 +1,7 @@
 @interface JavaUtilConcurrentConcurrentHashMap_Node
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilConcurrentConcurrentHashMap_Node)initWithInt:(int)a3 withId:(id)a4 withId:(id)a5 withJavaUtilConcurrentConcurrentHashMap_Node:(id)a6;
-- (id)findWithInt:(int)a3 withId:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilConcurrentConcurrentHashMap_Node)initWithInt:(int)int withId:(id)id withId:(id)withId withJavaUtilConcurrentConcurrentHashMap_Node:(id)node;
+- (id)findWithInt:(int)int withId:(id)id;
 - (unint64_t)hash;
 - (void)__javaClone;
 - (void)dealloc;
@@ -9,12 +9,12 @@
 
 @implementation JavaUtilConcurrentConcurrentHashMap_Node
 
-- (JavaUtilConcurrentConcurrentHashMap_Node)initWithInt:(int)a3 withId:(id)a4 withId:(id)a5 withJavaUtilConcurrentConcurrentHashMap_Node:(id)a6
+- (JavaUtilConcurrentConcurrentHashMap_Node)initWithInt:(int)int withId:(id)id withId:(id)withId withJavaUtilConcurrentConcurrentHashMap_Node:(id)node
 {
-  self->hash__ = a3;
-  JreStrongAssign(&self->key_, a4);
-  JreVolatileStrongAssign(&self->val_, a5);
-  JreStrongAssign(&self->next_, a6);
+  self->hash__ = int;
+  JreStrongAssign(&self->key_, id);
+  JreVolatileStrongAssign(&self->val_, withId);
+  JreStrongAssign(&self->next_, node);
   return self;
 }
 
@@ -29,39 +29,39 @@
   return ([v5 hash] ^ v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  LODWORD(v5) = [JavaUtilMap_Entry_class_() isInstance:a3];
-  if (v5)
+  LODWORD(getKey) = [JavaUtilMap_Entry_class_() isInstance:equal];
+  if (getKey)
   {
     v6 = JavaUtilMap_Entry_class_();
-    if (a3)
+    if (equal)
     {
-      if (([v6 isInstance:a3] & 1) == 0)
+      if (([v6 isInstance:equal] & 1) == 0)
       {
         JreThrowClassCastException();
       }
 
-      v5 = [a3 getKey];
-      if (v5)
+      getKey = [equal getKey];
+      if (getKey)
       {
-        v7 = v5;
-        v5 = [a3 getValue];
-        if (v5)
+        v7 = getKey;
+        getKey = [equal getValue];
+        if (getKey)
         {
-          v8 = v5;
-          if (v7 == self->key_ || (LODWORD(v5) = [v7 isEqual:?], v5))
+          v8 = getKey;
+          if (v7 == self->key_ || (LODWORD(getKey) = [v7 isEqual:?], getKey))
           {
             v9 = atomic_load(&self->val_);
             if (v8 == v9)
             {
-              LOBYTE(v5) = 1;
+              LOBYTE(getKey) = 1;
             }
 
             else
             {
 
-              LOBYTE(v5) = [v8 isEqual:?];
+              LOBYTE(getKey) = [v8 isEqual:?];
             }
           }
         }
@@ -70,30 +70,30 @@
 
     else
     {
-      v5 = [0 getKey];
-      if (v5)
+      getKey = [0 getKey];
+      if (getKey)
       {
         JreThrowNullPointerException();
       }
     }
   }
 
-  return v5;
+  return getKey;
 }
 
-- (id)findWithInt:(int)a3 withId:(id)a4
+- (id)findWithInt:(int)int withId:(id)id
 {
-  if (!a4)
+  if (!id)
   {
     return 0;
   }
 
   do
   {
-    if (self->hash__ == a3)
+    if (self->hash__ == int)
     {
       key = self->key_;
-      if (key == a4 || key && ([a4 isEqual:?] & 1) != 0)
+      if (key == id || key && ([id isEqual:?] & 1) != 0)
       {
         break;
       }

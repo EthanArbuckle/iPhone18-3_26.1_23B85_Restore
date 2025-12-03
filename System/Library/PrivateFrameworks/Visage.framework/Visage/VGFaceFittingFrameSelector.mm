@@ -1,19 +1,19 @@
 @interface VGFaceFittingFrameSelector
-+ (void)getFaceKitTrackedLandmarks:(void *)a1@<X2>;
-- (BOOL)startFaceExpressionCapture:(unint64_t)a3;
-- (CGRect)getValidDataFrameBounds:(id)a3;
-- (FrameRejectionState)checkMotionBlurFilter:(SEL)a3 frameTimestampMS:(id)a4;
-- (VGFaceFittingFrameSelector)initWithOptions:(id)a3 faceKitSemantics:(__CFDictionary *)a4;
++ (void)getFaceKitTrackedLandmarks:(void *)landmarks@<X2>;
+- (BOOL)startFaceExpressionCapture:(unint64_t)capture;
+- (CGRect)getValidDataFrameBounds:(id)bounds;
+- (FrameRejectionState)checkMotionBlurFilter:(SEL)filter frameTimestampMS:(id)s;
+- (VGFaceFittingFrameSelector)initWithOptions:(id)options faceKitSemantics:(__CFDictionary *)semantics;
 - (id)_currentState;
-- (id)addPoseWithCaptureData:(id)a3 tracking:(id)a4 externalTracking:(BOOL)a5 metricsData:(void *)a6;
+- (id)addPoseWithCaptureData:(id)data tracking:(id)tracking externalTracking:(BOOL)externalTracking metricsData:(void *)metricsData;
 - (id)allPoseSelectors;
 - (id)enrolledPoses;
 - (id)expressionSelectors;
 - (id)finish;
 - (id)neutralSelectors;
-- (id)posesFromSelectors:(id)a3;
+- (id)posesFromSelectors:(id)selectors;
 - (void)addPoseWithCaptureData:tracking:externalTracking:metricsData:;
-- (void)checkDistanceFilter:(float32x4_t)a3@<Q3> frameTimestampMS:;
+- (void)checkDistanceFilter:(float32x4_t)filter@<Q3> frameTimestampMS:;
 @end
 
 @implementation VGFaceFittingFrameSelector
@@ -21,11 +21,11 @@
 - (id)allPoseSelectors
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(VGFaceFittingFrameSelector *)self neutralSelectors];
-  [v3 addObjectsFromArray:v4];
+  neutralSelectors = [(VGFaceFittingFrameSelector *)self neutralSelectors];
+  [v3 addObjectsFromArray:neutralSelectors];
 
-  v5 = [(VGFaceFittingFrameSelector *)self expressionSelectors];
-  [v3 addObjectsFromArray:v5];
+  expressionSelectors = [(VGFaceFittingFrameSelector *)self expressionSelectors];
+  [v3 addObjectsFromArray:expressionSelectors];
 
   return v3;
 }
@@ -79,9 +79,9 @@
   return v3;
 }
 
-+ (void)getFaceKitTrackedLandmarks:(void *)a1@<X2>
++ (void)getFaceKitTrackedLandmarks:(void *)landmarks@<X2>
 {
-  v3 = a1;
+  landmarksCopy = landmarks;
   v4 = VGLogVGFaceFittingFrameSelector();
   if (os_signpost_enabled(v4))
   {
@@ -89,18 +89,18 @@
     _os_signpost_emit_with_name_impl(&dword_270F06000, v4, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GetFaceKitTrackedLandmarks", &unk_270FBF062, v11, 2u);
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"smooth_data"];
+  v5 = [landmarksCopy objectForKeyedSubscript:@"smooth_data"];
   v6 = [v5 objectForKeyedSubscript:@"geometry"];
   v7 = [v6 objectForKeyedSubscript:@"landmarks"];
   v8 = [v7 length];
-  v9 = [v7 bytes];
+  bytes = [v7 bytes];
   _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(a2, v8 >> 3);
   if (v8 >= 8)
   {
     v10 = 0;
     do
     {
-      *(*a2 + 8 * v10) = *(v9 + 8 * v10);
+      *(*a2 + 8 * v10) = *(bytes + 8 * v10);
       ++v10;
     }
 
@@ -120,7 +120,7 @@ void __57__VGFaceFittingFrameSelector_getFaceKitTrackedLandmarks___block_invoke(
   }
 }
 
-- (void)checkDistanceFilter:(float32x4_t)a3@<Q3> frameTimestampMS:
+- (void)checkDistanceFilter:(float32x4_t)filter@<Q3> frameTimestampMS:
 {
   v5 = VGLogVGFaceFittingFrameSelector();
   if (os_signpost_enabled(v5))
@@ -129,21 +129,21 @@ void __57__VGFaceFittingFrameSelector_getFaceKitTrackedLandmarks___block_invoke(
     _os_signpost_emit_with_name_impl(&dword_270F06000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "CheckDistanceFilter", &unk_270FBF062, buf, 2u);
   }
 
-  if ([*(a1 + 48) useSimpleSelector])
+  if ([*(self + 48) useSimpleSelector])
   {
     goto LABEL_4;
   }
 
-  [*(a1 + 48) distanceFilterCloseThreshold];
-  v6 = vmuls_lane_f32(0.1, a3, 2);
-  v7 = *(a1 + 48);
+  [*(self + 48) distanceFilterCloseThreshold];
+  v6 = vmuls_lane_f32(0.1, filter, 2);
+  v7 = *(self + 48);
   if (v6 < v8)
   {
     [v7 distanceFilterCloseThreshold];
     v10 = v9;
     *a2 = 26;
     v11 = MEMORY[0x277CCACA8];
-    [*(a1 + 48) distanceFilterCloseThreshold];
+    [*(self + 48) distanceFilterCloseThreshold];
     v13 = [v11 stringWithFormat:@"face too close: %g cm < %g cm", v6, v12];
 LABEL_9:
     *(a2 + 8) = v13;
@@ -156,11 +156,11 @@ LABEL_9:
   [v7 distanceFilterFarThreshold];
   if (v6 > v14)
   {
-    [*(a1 + 48) distanceFilterFarThreshold];
+    [*(self + 48) distanceFilterFarThreshold];
     v10 = v15;
     *a2 = 27;
     v16 = MEMORY[0x277CCACA8];
-    [*(a1 + 48) distanceFilterFarThreshold];
+    [*(self + 48) distanceFilterFarThreshold];
     v13 = [v16 stringWithFormat:@"face too far: %g cm > %g cm", v6, v17];
     goto LABEL_9;
   }
@@ -184,9 +184,9 @@ void __67__VGFaceFittingFrameSelector_checkDistanceFilter_frameTimestampMS___blo
   }
 }
 
-- (FrameRejectionState)checkMotionBlurFilter:(SEL)a3 frameTimestampMS:(id)a4
+- (FrameRejectionState)checkMotionBlurFilter:(SEL)filter frameTimestampMS:(id)s
 {
-  v8 = a4;
+  sCopy = s;
   v9 = VGLogVGFaceFittingFrameSelector();
   if (os_signpost_enabled(v9))
   {
@@ -197,7 +197,7 @@ void __67__VGFaceFittingFrameSelector_checkDistanceFilter_frameTimestampMS___blo
   v10 = objc_opt_class();
   if (v10)
   {
-    [v10 getFaceKitTrackedLandmarks:v8];
+    [v10 getFaceKitTrackedLandmarks:sCopy];
     v11 = v21;
     v12 = v22;
   }
@@ -267,9 +267,9 @@ void __69__VGFaceFittingFrameSelector_checkMotionBlurFilter_frameTimestampMS___b
   }
 }
 
-- (CGRect)getValidDataFrameBounds:(id)a3
+- (CGRect)getValidDataFrameBounds:(id)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   v4 = VGLogVGFaceFittingFrameSelector();
   if (os_signpost_enabled(v4))
   {
@@ -277,9 +277,9 @@ void __69__VGFaceFittingFrameSelector_checkMotionBlurFilter_frameTimestampMS___b
     _os_signpost_emit_with_name_impl(&dword_270F06000, v4, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "GetValidDataFrameBounds", &unk_270FBF062, buf, 2u);
   }
 
-  Width = CVPixelBufferGetWidth([v3 depth]);
-  Height = CVPixelBufferGetHeight([v3 depth]);
-  v16 = getImageBBoxAboveThreshold([v3 depth], 0.015).n128_u64[0];
+  Width = CVPixelBufferGetWidth([boundsCopy depth]);
+  Height = CVPixelBufferGetHeight([boundsCopy depth]);
+  v16 = getImageBBoxAboveThreshold([boundsCopy depth], 0.015).n128_u64[0];
   v8 = v7;
   __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke();
   v9 = vsub_s32(v8, v16);
@@ -307,51 +307,51 @@ void __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke()
   }
 }
 
-- (VGFaceFittingFrameSelector)initWithOptions:(id)a3 faceKitSemantics:(__CFDictionary *)a4
+- (VGFaceFittingFrameSelector)initWithOptions:(id)options faceKitSemantics:(__CFDictionary *)semantics
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v40.receiver = self;
   v40.super_class = VGFaceFittingFrameSelector;
   v7 = [(VGFaceFittingFrameSelector *)&v40 init];
   if (v7)
   {
-    if (a4)
+    if (semantics)
     {
-      CFRetain(a4);
+      CFRetain(semantics);
       facekitSemantics = v7->_facekitSemantics;
-      v7->_facekitSemantics = a4;
+      v7->_facekitSemantics = semantics;
     }
 
-    v39 = [VGFrameSelectorOptions optionsWithCaptureOptions:v6, a3];
-    v9 = [[VGFrameSelector alloc] initWithOptions:v39];
+    options = [VGFrameSelectorOptions optionsWithCaptureOptions:optionsCopy, options];
+    v9 = [[VGFrameSelector alloc] initWithOptions:options];
     poseSelector = v7->_poseSelector;
     v7->_poseSelector = v9;
 
     v11 = MEMORY[0x277CBEB38];
-    v12 = [v6 requiredExpressions];
-    v13 = [v11 dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+    requiredExpressions = [optionsCopy requiredExpressions];
+    v13 = [v11 dictionaryWithCapacity:{objc_msgSend(requiredExpressions, "count")}];
     expressionsSelector = v7->_expressionsSelector;
     v7->_expressionsSelector = v13;
 
     for (i = 0; ; ++i)
     {
-      v16 = [v6 requiredExpressions];
-      v17 = i < [v16 count];
+      requiredExpressions2 = [optionsCopy requiredExpressions];
+      v17 = i < [requiredExpressions2 count];
 
       if (!v17)
       {
         break;
       }
 
-      v18 = [v6 requiredExpressions];
-      v19 = [v18 objectAtIndex:i];
-      v20 = [v19 intValue];
+      requiredExpressions3 = [optionsCopy requiredExpressions];
+      v19 = [requiredExpressions3 objectAtIndex:i];
+      intValue = [v19 intValue];
 
       v21 = off_279E285E0;
-      if (v20 < 4)
+      if (intValue < 4)
       {
-        v21 = off_279E28F50[v20];
+        v21 = off_279E28F50[intValue];
       }
 
       v22 = *v21;
@@ -366,7 +366,7 @@ void __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke()
 
       v27 = [[VGFrameSelector alloc] initWithOptions:v24];
       v28 = v7->_expressionsSelector;
-      v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
+      v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intValue];
       [(NSMutableDictionary *)v28 setObject:v27 forKeyedSubscript:v29];
     }
 
@@ -379,8 +379,8 @@ void __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke()
     {
       *buf = 1106247680;
       [(VGFaceCaptureOptions *)v7->_options motionBlurThreshold];
-      LODWORD(v42) = v31;
-      BYTE4(v42) = 0;
+      LODWORD(optionsCopy2) = v31;
+      BYTE4(optionsCopy2) = 0;
       vg::frame_selection::VGBlurDetector::create();
     }
 
@@ -389,7 +389,7 @@ void __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke()
     {
       options = v7->_options;
       *buf = 138412290;
-      v42 = options;
+      optionsCopy2 = options;
       _os_log_impl(&dword_270F06000, v32, OS_LOG_TYPE_DEBUG, " Initialized FaceFittingSelector with face capture options:\n%@ ", buf, 0xCu);
     }
 
@@ -405,17 +405,17 @@ void __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke()
   return v34;
 }
 
-- (BOOL)startFaceExpressionCapture:(unint64_t)a3
+- (BOOL)startFaceExpressionCapture:(unint64_t)capture
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if (a3 > 3)
+  if (capture > 3)
   {
     v5 = off_279E285E0;
   }
 
   else
   {
-    v5 = off_279E28F50[a3];
+    v5 = off_279E28F50[capture];
   }
 
   v6 = *v5;
@@ -430,7 +430,7 @@ void __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke()
 
   v11 = [[VGFrameSelector alloc] initWithOptions:v8];
   expressionsSelector = self->_expressionsSelector;
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:capture];
   [(NSMutableDictionary *)expressionsSelector setObject:v11 forKeyedSubscript:v13];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -482,14 +482,14 @@ void __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke()
       [(VGSelectionState *)obja setProgress:v8];
     }
 
-    v9 = [(VGFrameSelector *)self->_poseSelector yawResults];
-    [(VGFaceSelectionState *)obja setYawAngleCapturedPoses:v9];
+    yawResults = [(VGFrameSelector *)self->_poseSelector yawResults];
+    [(VGFaceSelectionState *)obja setYawAngleCapturedPoses:yawResults];
 
-    v10 = [(VGFrameSelector *)self->_poseSelector pitchResults];
-    [(VGFaceSelectionState *)obja setPitchAngleCapturedPoses:v10];
+    pitchResults = [(VGFrameSelector *)self->_poseSelector pitchResults];
+    [(VGFaceSelectionState *)obja setPitchAngleCapturedPoses:pitchResults];
 
-    v11 = [(VGFrameSelector *)self->_poseSelector yawResults];
-    [(VGFaceSelectionState *)obja setPosesForHairCapturedPoses:v11];
+    yawResults2 = [(VGFrameSelector *)self->_poseSelector yawResults];
+    [(VGFaceSelectionState *)obja setPosesForHairCapturedPoses:yawResults2];
 
     v53 = 0u;
     v54 = 0u;
@@ -532,7 +532,7 @@ void __54__VGFaceFittingFrameSelector_getValidDataFrameBounds___block_invoke()
 
 LABEL_21:
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
@@ -554,13 +554,13 @@ LABEL_21:
 
           v21 = *(*(&v47 + 1) + 8 * k);
           v22 = [(NSMutableDictionary *)self->_expressionsSelector objectForKey:v21];
-          v23 = [v22 results];
+          results = [v22 results];
 
           v45 = 0u;
           v46 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v24 = v23;
+          v24 = results;
           v25 = [v24 countByEnumeratingWithState:&v43 objects:v65 count:16];
           if (v25)
           {
@@ -575,7 +575,7 @@ LABEL_21:
                 }
 
                 v28 = [v24 objectForKey:*(*(&v43 + 1) + 8 * m)];
-                [v18 setObject:v28 forKeyedSubscript:v21];
+                [dictionary setObject:v28 forKeyedSubscript:v21];
               }
 
               v25 = [v24 countByEnumeratingWithState:&v43 objects:v65 count:16];
@@ -591,10 +591,10 @@ LABEL_21:
       while (v19);
     }
 
-    [(VGFaceSelectionState *)obja setExpressionCapturedPoses:v18];
+    [(VGFaceSelectionState *)obja setExpressionCapturedPoses:dictionary];
     [(VGFaceSelectionState *)obja setCompletionScore:0.0];
-    v29 = [(VGFaceSelectionState *)obja capturedFrontPose];
-    v30 = v29 == 0;
+    capturedFrontPose = [(VGFaceSelectionState *)obja capturedFrontPose];
+    v30 = capturedFrontPose == 0;
 
     if (!v30)
     {
@@ -626,11 +626,11 @@ LABEL_21:
   return obja;
 }
 
-- (id)addPoseWithCaptureData:(id)a3 tracking:(id)a4 externalTracking:(BOOL)a5 metricsData:(void *)a6
+- (id)addPoseWithCaptureData:(id)data tracking:(id)tracking externalTracking:(BOOL)externalTracking metricsData:(void *)metricsData
 {
   v168 = *MEMORY[0x277D85DE8];
-  v106 = a3;
-  v105 = a4;
+  dataCopy = data;
+  trackingCopy = tracking;
   v10 = VGLogVGFaceFittingFrameSelector();
   if (os_signpost_enabled(v10))
   {
@@ -639,9 +639,9 @@ LABEL_21:
   }
 
   ++self->_frameCount;
-  if (v106)
+  if (dataCopy)
   {
-    [v106 timestamp];
+    [dataCopy timestamp];
   }
 
   else
@@ -650,27 +650,27 @@ LABEL_21:
   }
 
   Seconds = CMTimeGetSeconds(&buf);
-  v12 = [(VGFaceFittingFrameSelector *)self _currentState];
+  _currentState = [(VGFaceFittingFrameSelector *)self _currentState];
   v13 = (Seconds * 1000.0);
-  v158[0] = a6;
+  v158[0] = metricsData;
   v158[1] = v13;
-  v14 = self;
-  if ([v12 failed])
+  selfCopy = self;
+  if ([_currentState failed])
   {
     v154 = 1;
     v157 = 0;
     v155 = @"enrollment failed";
     v156 = 0;
-    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v154);
-    if ([(VGFaceCaptureOptions *)v14->_options useMotionBlurFilter])
+    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v154);
+    if ([(VGFaceCaptureOptions *)selfCopy->_options useMotionBlurFilter])
     {
-      vg::frame_selection::VGBlurDetector::resetPreviousState(v14->_blurDetector.__ptr_);
+      vg::frame_selection::VGBlurDetector::resetPreviousState(selfCopy->_blurDetector.__ptr_);
     }
 
     goto LABEL_27;
   }
 
-  if (!a5)
+  if (!externalTracking)
   {
     frameCount = self->_frameCount;
     if (frameCount <= 0x32)
@@ -679,42 +679,42 @@ LABEL_21:
       [MEMORY[0x277CCACA8] stringWithFormat:@"not ready [%lu / %lu]", frameCount, 50];
       v151 = v153 = 0;
       v152 = 0;
-      [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v150);
+      [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v150);
 LABEL_27:
-      v25 = v12;
+      v25 = _currentState;
       goto LABEL_113;
     }
   }
 
-  if (!v105)
+  if (!trackingCopy)
   {
     v146 = 2;
     v149 = 0;
     v147 = @"no tracking data";
     v148 = 0;
-    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v146);
-    if ([(VGFaceCaptureOptions *)v14->_options useMotionBlurFilter])
+    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v146);
+    if ([(VGFaceCaptureOptions *)selfCopy->_options useMotionBlurFilter])
     {
-      vg::frame_selection::VGBlurDetector::resetPreviousState(v14->_blurDetector.__ptr_);
+      vg::frame_selection::VGBlurDetector::resetPreviousState(selfCopy->_blurDetector.__ptr_);
     }
 
     goto LABEL_27;
   }
 
-  v101 = [v105 objectForKeyedSubscript:@"tracked_faces"];
+  v101 = [trackingCopy objectForKeyedSubscript:@"tracked_faces"];
   if (!v101 || ![v101 count])
   {
     v142 = 3;
     v145 = 0;
     v143 = @"no tracked face";
     v144 = 0;
-    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v142);
-    if ([(VGFaceCaptureOptions *)v14->_options useMotionBlurFilter])
+    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v142);
+    if ([(VGFaceCaptureOptions *)selfCopy->_options useMotionBlurFilter])
     {
-      vg::frame_selection::VGBlurDetector::resetPreviousState(v14->_blurDetector.__ptr_);
+      vg::frame_selection::VGBlurDetector::resetPreviousState(selfCopy->_blurDetector.__ptr_);
     }
 
-    v25 = v12;
+    v25 = _currentState;
     goto LABEL_112;
   }
 
@@ -725,17 +725,17 @@ LABEL_27:
     v141 = 0;
     v139 = @"null tracked face";
     v140 = 0;
-    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v138);
-    if ([(VGFaceCaptureOptions *)v14->_options useMotionBlurFilter])
+    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v138);
+    if ([(VGFaceCaptureOptions *)selfCopy->_options useMotionBlurFilter])
     {
-      vg::frame_selection::VGBlurDetector::resetPreviousState(v14->_blurDetector.__ptr_);
+      vg::frame_selection::VGBlurDetector::resetPreviousState(selfCopy->_blurDetector.__ptr_);
     }
 
-    v25 = v12;
+    v25 = _currentState;
     goto LABEL_111;
   }
 
-  if ([(VGFaceCaptureOptions *)v14->_options useAmbientLightFilter])
+  if ([(VGFaceCaptureOptions *)selfCopy->_options useAmbientLightFilter])
   {
     v16 = [v99 objectForKeyedSubscript:@"vg_ambient_light"];
     v17 = v16;
@@ -743,51 +743,51 @@ LABEL_27:
     {
       [v16 floatValue];
       v19 = v18;
-      [(VGFaceCaptureOptions *)v14->_options ambientLightFilterLowThreshold];
+      [(VGFaceCaptureOptions *)selfCopy->_options ambientLightFilterLowThreshold];
       if (v19 < v20)
       {
         v134 = 5;
         v21 = MEMORY[0x277CCACA8];
         [v17 floatValue];
         v23 = v22;
-        [(VGFaceCaptureOptions *)v14->_options ambientLightFilterLowThreshold];
+        [(VGFaceCaptureOptions *)selfCopy->_options ambientLightFilterLowThreshold];
         [v21 stringWithFormat:@"low ambient light [%g < %g]", v23, v24];
         v136 = 0;
         v135 = v137 = 0;
-        [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v134);
-        if ([(VGFaceCaptureOptions *)v14->_options useMotionBlurFilter])
+        [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v134);
+        if ([(VGFaceCaptureOptions *)selfCopy->_options useMotionBlurFilter])
         {
-          vg::frame_selection::VGBlurDetector::resetPreviousState(v14->_blurDetector.__ptr_);
+          vg::frame_selection::VGBlurDetector::resetPreviousState(selfCopy->_blurDetector.__ptr_);
         }
 
-        v25 = v12;
+        v25 = _currentState;
 
         goto LABEL_111;
       }
     }
   }
 
-  if ([(VGFaceCaptureOptions *)v14->_options useTrackedFaceIdentifierFilter])
+  if ([(VGFaceCaptureOptions *)selfCopy->_options useTrackedFaceIdentifierFilter])
   {
     v26 = [v99 objectForKeyedSubscript:@"identifier"];
     v27 = v26;
     if (v26)
     {
-      if (v14->_trackedFaceIdentifier)
+      if (selfCopy->_trackedFaceIdentifier)
       {
         if (([v26 isEqualToString:?] & 1) == 0)
         {
           v130 = 4;
-          [MEMORY[0x277CCACA8] stringWithFormat:@"tracked face changed [%@ != %@]", v27, v14->_trackedFaceIdentifier];
+          [MEMORY[0x277CCACA8] stringWithFormat:@"tracked face changed [%@ != %@]", v27, selfCopy->_trackedFaceIdentifier];
           v132 = 0;
           v131 = v133 = 0;
-          [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v130);
-          if ([(VGFaceCaptureOptions *)v14->_options useMotionBlurFilter])
+          [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v130);
+          if ([(VGFaceCaptureOptions *)selfCopy->_options useMotionBlurFilter])
           {
-            vg::frame_selection::VGBlurDetector::resetPreviousState(v14->_blurDetector.__ptr_);
+            vg::frame_selection::VGBlurDetector::resetPreviousState(selfCopy->_blurDetector.__ptr_);
           }
 
-          v25 = v12;
+          v25 = _currentState;
 
           goto LABEL_111;
         }
@@ -795,7 +795,7 @@ LABEL_27:
 
       else
       {
-        objc_storeStrong(&v14->_trackedFaceIdentifier, v26);
+        objc_storeStrong(&selfCopy->_trackedFaceIdentifier, v26);
       }
     }
   }
@@ -810,18 +810,18 @@ LABEL_27:
     [v30 stringWithFormat:@"low confidence [%g < %g]", v31, 0x3FEE666660000000];
     v128 = 0;
     v127 = v129 = 0;
-    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v126);
-    if ([(VGFaceCaptureOptions *)v14->_options useMotionBlurFilter])
+    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v126);
+    if ([(VGFaceCaptureOptions *)selfCopy->_options useMotionBlurFilter])
     {
-      vg::frame_selection::VGBlurDetector::resetPreviousState(v14->_blurDetector.__ptr_);
+      vg::frame_selection::VGBlurDetector::resetPreviousState(selfCopy->_blurDetector.__ptr_);
     }
 
-    v25 = v12;
+    v25 = _currentState;
     goto LABEL_110;
   }
 
   v97 = v28;
-  if (![(VGFaceCaptureOptions *)v14->_options useMotionBlurFilter])
+  if (![(VGFaceCaptureOptions *)selfCopy->_options useMotionBlurFilter])
   {
 LABEL_49:
     v32 = *(MEMORY[0x277D860B8] + 16);
@@ -888,9 +888,9 @@ LABEL_49:
     v94 = *&v162;
     LOBYTE(buf.value) = 0;
     LOBYTE(v161) = 0;
-    if ([(VGFaceCaptureOptions *)v14->_options useDepthFovFilter])
+    if ([(VGFaceCaptureOptions *)selfCopy->_options useDepthFovFilter])
     {
-      [(VGFaceFittingFrameSelector *)v14 getValidDataFrameBounds:v106];
+      [(VGFaceFittingFrameSelector *)selfCopy getValidDataFrameBounds:dataCopy];
       buf.value = v49;
       *&buf.timescale = v50;
       buf.epoch = v51;
@@ -901,51 +901,51 @@ LABEL_49:
       }
     }
 
-    if ([(VGFaceCaptureOptions *)v14->_options useDistanceFilter])
+    if ([(VGFaceCaptureOptions *)selfCopy->_options useDistanceFilter])
     {
-      [(VGFaceFittingFrameSelector *)v14 checkDistanceFilter:v13 frameTimestampMS:v103, v96, v95, v94];
+      [(VGFaceFittingFrameSelector *)selfCopy checkDistanceFilter:v13 frameTimestampMS:v103, v96, v95, v94];
       if (*v165)
       {
         v114 = *v165;
         v115 = *&v165[8];
         v116 = *&v165[16];
         v117 = *&v165[24];
-        [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &v114);
-        v25 = v12;
+        [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &v114);
+        v25 = _currentState;
 
 LABEL_108:
         goto LABEL_109;
       }
     }
 
-    v53 = [(VGFrameSelector *)v14->_poseSelector processCaptureData:v106 trackingData:v105 framePose:&buf validDataFrameBounds:v103, v96, v95, v94];
+    v53 = [(VGFrameSelector *)selfCopy->_poseSelector processCaptureData:dataCopy trackingData:trackingCopy framePose:&buf validDataFrameBounds:v103, v96, v95, v94];
     v104 = v53;
     if ([v53 isSuccessful])
     {
-      if (a6)
+      if (metricsData)
       {
-        v54 = [v53 motionType];
-        v55 = a6 + 24 * v54;
-        v113 = [v53 targetAngleId];
-        *v165 = &v113;
-        v56 = std::__tree<std::__value_type<unsigned long,unsigned long>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,unsigned long>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,unsigned long>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long &&>,std::tuple<>>((v55 + 352), &v113);
+        motionType = [v53 motionType];
+        v55 = metricsData + 24 * motionType;
+        targetAngleId = [v53 targetAngleId];
+        *v165 = &targetAngleId;
+        v56 = std::__tree<std::__value_type<unsigned long,unsigned long>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,unsigned long>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,unsigned long>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long &&>,std::tuple<>>((v55 + 352), &targetAngleId);
         if (!*(v56 + 5))
         {
           v57 = vg::shared::Time(v56);
-          v113 = [v53 targetAngleId];
-          *v165 = &v113;
-          std::__tree<std::__value_type<unsigned long,unsigned long>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,unsigned long>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,unsigned long>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long &&>,std::tuple<>>(a6 + 24 * v54 + 440, &v113)[5] = v57;
+          targetAngleId = [v53 targetAngleId];
+          *v165 = &targetAngleId;
+          std::__tree<std::__value_type<unsigned long,unsigned long>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,unsigned long>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,unsigned long>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long &&>,std::tuple<>>(metricsData + 24 * motionType + 440, &targetAngleId)[5] = v57;
         }
 
-        v113 = [v53 targetAngleId];
-        *v165 = &v113;
-        v58 = std::__tree<std::__value_type<unsigned long,unsigned long>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,unsigned long>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,unsigned long>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long &&>,std::tuple<>>((v55 + 352), &v113);
+        targetAngleId = [v53 targetAngleId];
+        *v165 = &targetAngleId;
+        v58 = std::__tree<std::__value_type<unsigned long,unsigned long>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,unsigned long>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,unsigned long>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long &&>,std::tuple<>>((v55 + 352), &targetAngleId);
         ++v58[5];
       }
 
-      v59 = [(VGFaceFittingFrameSelector *)v14 _currentState];
+      _currentState2 = [(VGFaceFittingFrameSelector *)selfCopy _currentState];
 
-      v12 = v59;
+      _currentState = _currentState2;
     }
 
     if (v53)
@@ -958,14 +958,14 @@ LABEL_108:
       memset(v112, 0, sizeof(v112));
     }
 
-    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, v112);
-    [v12 setPoseIndex:{objc_msgSend(v53, "poseIndex")}];
+    [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, v112);
+    [_currentState setPoseIndex:{objc_msgSend(v53, "poseIndex")}];
     [v53 yawInDegrees];
-    [v12 setYawAngle:?];
+    [_currentState setYawAngle:?];
     [v53 pitchInDegrees];
-    [v12 setPitchAngle:?];
-    v60 = [v53 motionType];
-    if (v60)
+    [_currentState setPitchAngle:?];
+    motionType2 = [v53 motionType];
+    if (motionType2)
     {
       v61 = 0;
     }
@@ -977,13 +977,13 @@ LABEL_108:
       v61 = [v62 numberWithFloat:?];
     }
 
-    [v12 setYawTargetAngle:v61];
-    if (!v60)
+    [_currentState setYawTargetAngle:v61];
+    if (!motionType2)
     {
     }
 
-    v63 = [v53 motionType];
-    if (v63 == 1)
+    motionType3 = [v53 motionType];
+    if (motionType3 == 1)
     {
       v64 = MEMORY[0x277CCABB0];
       [v53 angleInDegrees];
@@ -995,23 +995,23 @@ LABEL_108:
       v65 = 0;
     }
 
-    [v12 setPitchTargetAngle:v65];
-    if (v63 == 1)
+    [_currentState setPitchTargetAngle:v65];
+    if (motionType3 == 1)
     {
     }
 
-    v66 = [v53 debugData];
-    [v12 setDebugData:v66];
+    debugData = [v53 debugData];
+    [_currentState setDebugData:debugData];
 
-    v67 = [v53 bodyPoseFrameState];
-    [v12 setBodyPoseFrameState:v67];
+    bodyPoseFrameState = [v53 bodyPoseFrameState];
+    [_currentState setBodyPoseFrameState:bodyPoseFrameState];
 
-    v68 = [v12 yawTargetAngle];
-    if (v68)
+    yawTargetAngle = [_currentState yawTargetAngle];
+    if (yawTargetAngle)
     {
-      v69 = [v12 yawAngleCapturedPoses];
-      v70 = [v12 yawTargetAngle];
-      v71 = [v69 objectForKey:v70];
+      yawAngleCapturedPoses = [_currentState yawAngleCapturedPoses];
+      yawTargetAngle2 = [_currentState yawTargetAngle];
+      v71 = [yawAngleCapturedPoses objectForKey:yawTargetAngle2];
       v72 = v71 == 0;
 
       if (v72)
@@ -1019,22 +1019,22 @@ LABEL_108:
         v73 = __VGLogSharedInstance();
         if (os_log_type_enabled(v73, OS_LOG_TYPE_DEBUG))
         {
-          v74 = [v12 yawTargetAngle];
+          yawTargetAngle3 = [_currentState yawTargetAngle];
           *v165 = 134218242;
           *&v165[4] = v13;
           *&v165[12] = 2112;
-          *&v165[14] = v74;
+          *&v165[14] = yawTargetAngle3;
           _os_log_impl(&dword_270F06000, v73, OS_LOG_TYPE_DEBUG, " Frame#%zu reported target angle %@ (yaw) through selection state is not present in keys of yaw captured poses dictionary ", v165, 0x16u);
         }
       }
     }
 
-    v75 = [v12 pitchTargetAngle];
-    if (v75)
+    pitchTargetAngle = [_currentState pitchTargetAngle];
+    if (pitchTargetAngle)
     {
-      v76 = [v12 pitchAngleCapturedPoses];
-      v77 = [v12 pitchTargetAngle];
-      v78 = [v76 objectForKey:v77];
+      pitchAngleCapturedPoses = [_currentState pitchAngleCapturedPoses];
+      pitchTargetAngle2 = [_currentState pitchTargetAngle];
+      v78 = [pitchAngleCapturedPoses objectForKey:pitchTargetAngle2];
       v79 = v78 == 0;
 
       if (v79)
@@ -1042,27 +1042,27 @@ LABEL_108:
         v80 = __VGLogSharedInstance();
         if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
         {
-          v81 = [v12 pitchTargetAngle];
+          pitchTargetAngle3 = [_currentState pitchTargetAngle];
           *v165 = 134218242;
           *&v165[4] = v13;
           *&v165[12] = 2112;
-          *&v165[14] = v81;
+          *&v165[14] = pitchTargetAngle3;
           _os_log_impl(&dword_270F06000, v80, OS_LOG_TYPE_DEBUG, " Frame#%zu reported target angle %@ (pitch) through selection state is not present in keys of pitch captured poses dictionary ", v165, 0x16u);
         }
       }
     }
 
-    v82 = [(VGFaceFittingFrameSelector *)v14 allPoseSelectors];
-    v83 = [(VGFaceFittingFrameSelector *)v14 posesFromSelectors:v82];
-    [v12 setTronPoses:v83];
+    allPoseSelectors = [(VGFaceFittingFrameSelector *)selfCopy allPoseSelectors];
+    v83 = [(VGFaceFittingFrameSelector *)selfCopy posesFromSelectors:allPoseSelectors];
+    [_currentState setTronPoses:v83];
 
     v110 = 0u;
     v111 = 0u;
     v108 = 0u;
     v109 = 0u;
-    poseSelector = v14->_poseSelector;
+    poseSelector = selfCopy->_poseSelector;
     v84 = [MEMORY[0x277CBEA60] arrayWithObjects:&poseSelector count:1];
-    v85 = [(VGFaceFittingFrameSelector *)v14 posesFromSelectors:v84];
+    v85 = [(VGFaceFittingFrameSelector *)selfCopy posesFromSelectors:v84];
 
     v86 = [v85 countByEnumeratingWithState:&v108 objects:v164 count:16];
     if (v86)
@@ -1080,9 +1080,9 @@ LABEL_108:
           v89 = *(*(&v108 + 1) + 8 * k);
           if ([v89 frontPose])
           {
-            [v12 setCapturedFrontPose:v89];
+            [_currentState setCapturedFrontPose:v89];
             v90 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v89, 0}];
-            [v12 setHairPoses:v90];
+            [_currentState setHairPoses:v90];
 
             goto LABEL_105;
           }
@@ -1100,17 +1100,17 @@ LABEL_108:
 
 LABEL_105:
 
-    if ([v12 completed])
+    if ([_currentState completed])
     {
-      v14->_selectionCompleted = 1;
+      selfCopy->_selectionCompleted = 1;
     }
 
-    v25 = v12;
+    v25 = _currentState;
 
     goto LABEL_108;
   }
 
-  [(VGFaceFittingFrameSelector *)v14 checkMotionBlurFilter:v99 frameTimestampMS:v13];
+  [(VGFaceFittingFrameSelector *)selfCopy checkMotionBlurFilter:v99 frameTimestampMS:v13];
   if (!LODWORD(buf.value))
   {
 
@@ -1121,8 +1121,8 @@ LABEL_105:
   v123 = *&buf.timescale;
   epoch = buf.epoch;
   v125 = v160;
-  [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, v12, &value);
-  v25 = v12;
+  [VGFaceFittingFrameSelector addPoseWithCaptureData:tracking:externalTracking:metricsData:]::$_0::operator()(v158, _currentState, &value);
+  v25 = _currentState;
 
 LABEL_109:
   v28 = v97;
@@ -1153,9 +1153,9 @@ void __91__VGFaceFittingFrameSelector_addPoseWithCaptureData_tracking_externalTr
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (*a1)
+  if (*self)
   {
-    v6 = *a1 + 8 * *a3;
+    v6 = *self + 8 * *a3;
     ++*(v6 + 16);
   }
 
@@ -1182,7 +1182,7 @@ void __91__VGFaceFittingFrameSelector_addPoseWithCaptureData_tracking_externalTr
   v12 = __VGLogSharedInstance();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v13 = a1[1];
+    v13 = self[1];
     vg::frame_selection::frameRejectionReasonToString(*a3, &__p);
     if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
@@ -1211,16 +1211,16 @@ void __91__VGFaceFittingFrameSelector_addPoseWithCaptureData_tracking_externalTr
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)posesFromSelectors:(id)a3
+- (id)posesFromSelectors:(id)selectors
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  selectorsCopy = selectors;
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = selectorsCopy;
   v5 = [obj countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v5)
   {
@@ -1236,10 +1236,10 @@ void __91__VGFaceFittingFrameSelector_addPoseWithCaptureData_tracking_externalTr
         }
 
         v7 = *(*(&v35 + 1) + 8 * i);
-        v8 = [v7 yawResults];
-        v9 = [v7 pitchResults];
-        v26 = [v8 keysSortedByValueUsingComparator:&__block_literal_global_311];
-        v25 = [v9 keysSortedByValueUsingComparator:&__block_literal_global_313];
+        yawResults = [v7 yawResults];
+        pitchResults = [v7 pitchResults];
+        v26 = [yawResults keysSortedByValueUsingComparator:&__block_literal_global_311];
+        v25 = [pitchResults keysSortedByValueUsingComparator:&__block_literal_global_313];
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
@@ -1258,8 +1258,8 @@ void __91__VGFaceFittingFrameSelector_addPoseWithCaptureData_tracking_externalTr
                 objc_enumerationMutation(v10);
               }
 
-              v14 = [v8 objectForKey:*(*(&v31 + 1) + 8 * j)];
-              [v4 addObject:v14];
+              v14 = [yawResults objectForKey:*(*(&v31 + 1) + 8 * j)];
+              [array addObject:v14];
             }
 
             v11 = [v10 countByEnumeratingWithState:&v31 objects:v40 count:16];
@@ -1286,8 +1286,8 @@ void __91__VGFaceFittingFrameSelector_addPoseWithCaptureData_tracking_externalTr
                 objc_enumerationMutation(v15);
               }
 
-              v19 = [v9 objectForKey:*(*(&v27 + 1) + 8 * k)];
-              [v4 addObject:v19];
+              v19 = [pitchResults objectForKey:*(*(&v27 + 1) + 8 * k)];
+              [array addObject:v19];
             }
 
             v16 = [v15 countByEnumeratingWithState:&v27 objects:v39 count:16];
@@ -1305,7 +1305,7 @@ void __91__VGFaceFittingFrameSelector_addPoseWithCaptureData_tracking_externalTr
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 uint64_t __49__VGFaceFittingFrameSelector_posesFromSelectors___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1341,12 +1341,12 @@ uint64_t __49__VGFaceFittingFrameSelector_posesFromSelectors___block_invoke_2(ui
 - (id)enrolledPoses
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(VGFrameSelector *)self->_poseSelector completedYaw])
   {
-    v4 = [(VGFrameSelector *)self->_poseSelector selectedYawValidPoses];
-    v5 = [v4 allValues];
-    [v3 addObjectsFromArray:v5];
+    selectedYawValidPoses = [(VGFrameSelector *)self->_poseSelector selectedYawValidPoses];
+    allValues = [selectedYawValidPoses allValues];
+    [array addObjectsFromArray:allValues];
   }
 
   else
@@ -1355,10 +1355,10 @@ uint64_t __49__VGFaceFittingFrameSelector_posesFromSelectors___block_invoke_2(ui
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [(VGFrameSelector *)self->_poseSelector selectedYawValidPoses];
-    v7 = [v6 allValues];
+    selectedYawValidPoses2 = [(VGFrameSelector *)self->_poseSelector selectedYawValidPoses];
+    allValues2 = [selectedYawValidPoses2 allValues];
 
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v8 = [allValues2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
       v9 = *v25;
@@ -1368,17 +1368,17 @@ uint64_t __49__VGFaceFittingFrameSelector_posesFromSelectors___block_invoke_2(ui
         {
           if (*v25 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues2);
           }
 
           v11 = *(*(&v24 + 1) + 8 * i);
           if ([v11 frontPose])
           {
-            [v3 addObject:v11];
+            [array addObject:v11];
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v8 = [allValues2 countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v8);
@@ -1387,16 +1387,16 @@ uint64_t __49__VGFaceFittingFrameSelector_posesFromSelectors___block_invoke_2(ui
 
   if ([(VGFrameSelector *)self->_poseSelector completedPitch])
   {
-    v12 = [(VGFrameSelector *)self->_poseSelector selectedPitchValidPoses];
-    v13 = [v12 allValues];
-    [v3 addObjectsFromArray:v13];
+    selectedPitchValidPoses = [(VGFrameSelector *)self->_poseSelector selectedPitchValidPoses];
+    allValues3 = [selectedPitchValidPoses allValues];
+    [array addObjectsFromArray:allValues3];
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = v3;
+  v14 = array;
   v15 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v15)
   {
@@ -1429,15 +1429,15 @@ uint64_t __49__VGFaceFittingFrameSelector_posesFromSelectors___block_invoke_2(ui
   v16 = *MEMORY[0x277D85DE8];
   if (self->_selectionCompleted)
   {
-    v3 = [(VGFaceFittingFrameSelector *)self neutralSelectors];
-    v4 = [(VGFaceFittingFrameSelector *)self posesFromSelectors:v3];
+    neutralSelectors = [(VGFaceFittingFrameSelector *)self neutralSelectors];
+    v4 = [(VGFaceFittingFrameSelector *)self posesFromSelectors:neutralSelectors];
 
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v4;
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    enrolledPoses = v4;
+    v6 = [enrolledPoses countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = *v12;
@@ -1447,13 +1447,13 @@ uint64_t __49__VGFaceFittingFrameSelector_posesFromSelectors___block_invoke_2(ui
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(enrolledPoses);
           }
 
           [*(*(&v11 + 1) + 8 * i) setTrackingData:{self->_facekitSemantics, v11}];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [enrolledPoses countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -1462,12 +1462,12 @@ uint64_t __49__VGFaceFittingFrameSelector_posesFromSelectors___block_invoke_2(ui
 
   else
   {
-    v5 = [(VGFaceFittingFrameSelector *)self enrolledPoses];
+    enrolledPoses = [(VGFaceFittingFrameSelector *)self enrolledPoses];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return enrolledPoses;
 }
 
 - (void)addPoseWithCaptureData:tracking:externalTracking:metricsData:.cold.1()

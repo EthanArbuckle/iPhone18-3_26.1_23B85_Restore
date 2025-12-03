@@ -2,14 +2,14 @@
 + (id)sharedInstance;
 - (BOOL)addRouteToSystemMusicForSpeaker;
 - (BOOL)removeRouteToSystemMusicForSpeaker;
-- (BOOL)setVolumeTo:(float)a3 forCategory:(unint64_t)a4;
-- (float)getVolumeForCategory:(unint64_t)a3;
-- (id)_NSStringFromVolumeCategory:(unint64_t)a3;
-- (id)_findRouteDescriptorWithRouteUID:(id)a3 usingRouteDiscoverer:(OpaqueFigRouteDiscoverer *)a4;
-- (id)_findRouteDescriptorWithUID:(id)a3;
-- (void)_handleAVSystemControllerDiedNotification:(id)a3;
+- (BOOL)setVolumeTo:(float)to forCategory:(unint64_t)category;
+- (float)getVolumeForCategory:(unint64_t)category;
+- (id)_NSStringFromVolumeCategory:(unint64_t)category;
+- (id)_findRouteDescriptorWithRouteUID:(id)d usingRouteDiscoverer:(OpaqueFigRouteDiscoverer *)discoverer;
+- (id)_findRouteDescriptorWithUID:(id)d;
+- (void)_handleAVSystemControllerDiedNotification:(id)notification;
 - (void)_initializeAVSystemControllerIfNeeded;
-- (void)_monitorRouteConfigUpdateForUUID:(id)a3 withCallback:(id)a4;
+- (void)_monitorRouteConfigUpdateForUUID:(id)d withCallback:(id)callback;
 @end
 
 @implementation MSDAudioController
@@ -26,17 +26,17 @@
   return v3;
 }
 
-- (BOOL)setVolumeTo:(float)a3 forCategory:(unint64_t)a4
+- (BOOL)setVolumeTo:(float)to forCategory:(unint64_t)category
 {
-  v6 = [(MSDAudioController *)self _NSStringFromVolumeCategory:a4];
+  v6 = [(MSDAudioController *)self _NSStringFromVolumeCategory:category];
   if (v6)
   {
-    v7 = [(MSDAudioController *)self avSystemController];
-    objc_sync_enter(v7);
+    avSystemController = [(MSDAudioController *)self avSystemController];
+    objc_sync_enter(avSystemController);
     [(MSDAudioController *)self _initializeAVSystemControllerIfNeeded];
-    v8 = [(MSDAudioController *)self avSystemController];
-    *&v9 = a3;
-    v10 = [v8 setVolumeTo:v6 forCategory:0 mode:v9];
+    avSystemController2 = [(MSDAudioController *)self avSystemController];
+    *&v9 = to;
+    v10 = [avSystemController2 setVolumeTo:v6 forCategory:0 mode:v9];
 
     if ((v10 & 1) == 0)
     {
@@ -47,7 +47,7 @@
       }
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(avSystemController);
   }
 
   else
@@ -58,17 +58,17 @@
   return v10;
 }
 
-- (float)getVolumeForCategory:(unint64_t)a3
+- (float)getVolumeForCategory:(unint64_t)category
 {
   v11 = 0.0;
-  v4 = [(MSDAudioController *)self _NSStringFromVolumeCategory:a3];
+  v4 = [(MSDAudioController *)self _NSStringFromVolumeCategory:category];
   if (v4)
   {
-    v5 = [(MSDAudioController *)self avSystemController];
-    objc_sync_enter(v5);
+    avSystemController = [(MSDAudioController *)self avSystemController];
+    objc_sync_enter(avSystemController);
     [(MSDAudioController *)self _initializeAVSystemControllerIfNeeded];
-    v6 = [(MSDAudioController *)self avSystemController];
-    v7 = [v6 getVolume:&v11 forCategory:v4 mode:0];
+    avSystemController2 = [(MSDAudioController *)self avSystemController];
+    v7 = [avSystemController2 getVolume:&v11 forCategory:v4 mode:0];
 
     if ((v7 & 1) == 0)
     {
@@ -79,7 +79,7 @@
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(avSystemController);
 
     if (v7)
     {
@@ -111,10 +111,10 @@
 
   v4 = dispatch_semaphore_create(0);
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
   v18 = kFigRoutingContextSelectRouteOptionKey_ClientRouteRequestID;
-  v19 = v6;
+  v19 = uUIDString;
   v7 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   cf = 0;
   v8 = sub_100063A54();
@@ -130,7 +130,7 @@
   v14[3] = &unk_100169CC0;
   v9 = v4;
   v15 = v9;
-  [(MSDAudioController *)self _monitorRouteConfigUpdateForUUID:v6 withCallback:v14];
+  [(MSDAudioController *)self _monitorRouteConfigUpdateForUUID:uUIDString withCallback:v14];
   if (FigRoutingContextRemoteCopySystemMusicContext())
   {
     sub_1000C5374();
@@ -170,10 +170,10 @@ LABEL_12:
 
   v4 = dispatch_semaphore_create(0);
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
   v18 = kFigRoutingContextSelectRouteOptionKey_ClientRouteRequestID;
-  v19 = v6;
+  v19 = uUIDString;
   v7 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   cf = 0;
   v8 = sub_100063A54();
@@ -189,7 +189,7 @@ LABEL_12:
   v14[3] = &unk_100169CC0;
   v9 = v4;
   v15 = v9;
-  [(MSDAudioController *)self _monitorRouteConfigUpdateForUUID:v6 withCallback:v14];
+  [(MSDAudioController *)self _monitorRouteConfigUpdateForUUID:uUIDString withCallback:v14];
   if (FigRoutingContextRemoteCopySystemMusicContext())
   {
     sub_1000C5374();
@@ -220,9 +220,9 @@ LABEL_12:
 
 - (void)_initializeAVSystemControllerIfNeeded
 {
-  v3 = [(MSDAudioController *)self avSystemController];
+  avSystemController = [(MSDAudioController *)self avSystemController];
 
-  if (!v3)
+  if (!avSystemController)
   {
     v4 = sub_100063A54();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -234,15 +234,15 @@ LABEL_12:
     v5 = +[AVSystemController sharedAVSystemController];
     [(MSDAudioController *)self setAvSystemController:v5];
 
-    v6 = [(MSDAudioController *)self avSystemController];
+    avSystemController2 = [(MSDAudioController *)self avSystemController];
 
-    if (v6)
+    if (avSystemController2)
     {
-      v7 = [(MSDAudioController *)self avSystemController];
+      avSystemController3 = [(MSDAudioController *)self avSystemController];
       v14 = AVSystemController_ServerConnectionDiedNotification;
       v8 = [NSArray arrayWithObjects:&v14 count:1];
       v12 = 0;
-      v9 = [v7 setAttribute:v8 forKey:AVSystemController_SubscribeToNotificationsAttribute error:&v12];
+      v9 = [avSystemController3 setAttribute:v8 forKey:AVSystemController_SubscribeToNotificationsAttribute error:&v12];
       v10 = v12;
 
       if (v9)
@@ -268,15 +268,15 @@ LABEL_12:
   }
 }
 
-- (id)_NSStringFromVolumeCategory:(unint64_t)a3
+- (id)_NSStringFromVolumeCategory:(unint64_t)category
 {
   v3 = @"PhoneCall";
-  if (a3 != 2)
+  if (category != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 3)
+  if (category == 3)
   {
     return @"Audio/Video";
   }
@@ -287,15 +287,15 @@ LABEL_12:
   }
 }
 
-- (id)_findRouteDescriptorWithUID:(id)a3
+- (id)_findRouteDescriptorWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   cf = 0;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v35 = v4;
+    v35 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MSDAudioController: Searching for route with UID: %{public}@", buf, 0xCu);
   }
 
@@ -349,7 +349,7 @@ LABEL_24:
   [v10 lock];
   while (1)
   {
-    v16 = [(MSDAudioController *)self _findRouteDescriptorWithRouteUID:v4 usingRouteDiscoverer:cf];
+    v16 = [(MSDAudioController *)self _findRouteDescriptorWithRouteUID:dCopy usingRouteDiscoverer:cf];
     if (v16)
     {
       break;
@@ -415,12 +415,12 @@ LABEL_25:
   return v16;
 }
 
-- (id)_findRouteDescriptorWithRouteUID:(id)a3 usingRouteDiscoverer:(OpaqueFigRouteDiscoverer *)a4
+- (id)_findRouteDescriptorWithRouteUID:(id)d usingRouteDiscoverer:(OpaqueFigRouteDiscoverer *)discoverer
 {
-  v5 = a3;
+  dCopy = d;
   v22 = 0;
   v6 = *(*(CMBaseObjectGetVTable() + 8) + 48);
-  if (!v6 || v6(a4, kFigRouteDiscovererProperty_AvailableRouteDescriptors, kCFAllocatorDefault, &v22))
+  if (!v6 || v6(discoverer, kFigRouteDiscovererProperty_AvailableRouteDescriptors, kCFAllocatorDefault, &v22))
   {
     v7 = sub_100063A54();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -454,7 +454,7 @@ LABEL_25:
           v13 = *(*(&v18 + 1) + 8 * i);
           v14 = [v13 objectForKeyedSubscript:{v11, v18}];
           v15 = v14;
-          if (v14 && [v14 isEqualToString:v5])
+          if (v14 && [v14 isEqualToString:dCopy])
           {
             v16 = v13;
 
@@ -479,11 +479,11 @@ LABEL_17:
   return v16;
 }
 
-- (void)_monitorRouteConfigUpdateForUUID:(id)a3 withCallback:(id)a4
+- (void)_monitorRouteConfigUpdateForUUID:(id)d withCallback:(id)callback
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  callbackCopy = callback;
+  if (callbackCopy)
   {
     v7 = +[NSNotificationCenter defaultCenter];
     v8 = kFigRoutingContextNotification_RouteConfigUpdated;
@@ -491,18 +491,18 @@ LABEL_17:
     v10[1] = 3221225472;
     v10[2] = sub_10000813C;
     v10[3] = &unk_100169D10;
-    v11 = v5;
+    v11 = dCopy;
     v12 = 0;
-    v13 = v6;
+    v13 = callbackCopy;
     v9 = [v7 addObserverForName:v8 object:0 queue:0 usingBlock:v10];
   }
 }
 
-- (void)_handleAVSystemControllerDiedNotification:(id)a3
+- (void)_handleAVSystemControllerDiedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MSDAudioController *)self avSystemController];
-  objc_sync_enter(v5);
+  notificationCopy = notification;
+  avSystemController = [(MSDAudioController *)self avSystemController];
+  objc_sync_enter(avSystemController);
   v6 = sub_100063A54();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -514,7 +514,7 @@ LABEL_17:
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 removeObserver:self name:AVSystemController_ServerConnectionDiedNotification object:0];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(avSystemController);
 }
 
 @end

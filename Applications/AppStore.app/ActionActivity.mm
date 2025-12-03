@@ -11,7 +11,7 @@
 
 - (NSString)activityType
 {
-  v2 = self;
+  selfCopy = self;
   ShareSheetAction.Activity.activityType.getter();
   v3 = String._bridgeToObjectiveC()();
 
@@ -20,7 +20,7 @@
 
 - (NSString)activityTitle
 {
-  v2 = self;
+  selfCopy = self;
   ShareSheetAction.Activity.action.getter();
   Action.title.getter();
 
@@ -31,7 +31,7 @@
 
 - (UIImage)activityImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005A5CCC();
 
   return v3;
@@ -39,7 +39,7 @@
 
 - (id)_systemImageName
 {
-  v2 = self;
+  selfCopy = self;
   ShareSheetAction.Activity.action.getter();
   v3 = Action.artwork.getter();
 
@@ -76,7 +76,7 @@ LABEL_8:
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005A5E60();
 }
 

@@ -1,31 +1,31 @@
 @interface GKDetailViewController
-- (void)reportProblemAboutPlayer:(id)a3;
-- (void)shareAchievement:(id)a3 sendingView:(id)a4;
-- (void)shareScore:(id)a3 fromLeaderboard:(id)a4 sendingView:(id)a5;
+- (void)reportProblemAboutPlayer:(id)player;
+- (void)shareAchievement:(id)achievement sendingView:(id)view;
+- (void)shareScore:(id)score fromLeaderboard:(id)leaderboard sendingView:(id)view;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GKDetailViewController
 
-- (void)reportProblemAboutPlayer:(id)a3
+- (void)reportProblemAboutPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D0C138] localPlayer];
-  v6 = [v5 alertUserInStoreDemoModeEnabled];
+  playerCopy = player;
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  alertUserInStoreDemoModeEnabled = [localPlayer alertUserInStoreDemoModeEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((alertUserInStoreDemoModeEnabled & 1) == 0)
   {
-    v7 = [(GKDetailViewController *)self view];
-    [v7 setUserInteractionEnabled:0];
+    view = [(GKDetailViewController *)self view];
+    [view setUserInteractionEnabled:0];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__GKDetailViewController_RequestReport__reportProblemAboutPlayer___block_invoke;
     v9[3] = &unk_27966A788;
     v9[4] = self;
-    v8 = [GKReportProblemRemoteUIController controllerForProblemPlayer:v4 completionHandler:v9];
+    v8 = [GKReportProblemRemoteUIController controllerForProblemPlayer:playerCopy completionHandler:v9];
   }
 }
 
@@ -105,33 +105,33 @@ uint64_t __66__GKDetailViewController_RequestReport__reportProblemAboutPlayer___
   [(GKDashboardCollectionViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = GKDetailViewController;
-  [(GKDashboardCollectionViewController *)&v3 viewWillAppear:a3];
+  [(GKDashboardCollectionViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = GKDetailViewController;
-  [(GKDetailViewController *)&v3 viewWillDisappear:a3];
+  [(GKDetailViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)shareAchievement:(id)a3 sendingView:(id)a4
+- (void)shareAchievement:(id)achievement sendingView:(id)view
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D0C1D8] shared];
-  v9 = [v8 shouldAllowGameProgressSharing];
+  achievementCopy = achievement;
+  viewCopy = view;
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  shouldAllowGameProgressSharing = [mEMORY[0x277D0C1D8] shouldAllowGameProgressSharing];
 
-  if (v9)
+  if (shouldAllowGameProgressSharing)
   {
-    v18[0] = v6;
+    v18[0] = achievementCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-    v11 = [(GKDetailViewController *)self _gkPresentActivityViewControllerForActivityItems:v10 fromView:v7 withCompletionHandler:0];
+    v11 = [(GKDetailViewController *)self _gkPresentActivityViewControllerForActivityItems:v10 fromView:viewCopy withCompletionHandler:0];
   }
 
   else
@@ -146,19 +146,19 @@ uint64_t __66__GKDetailViewController_RequestReport__reportProblemAboutPlayer___
   }
 }
 
-- (void)shareScore:(id)a3 fromLeaderboard:(id)a4 sendingView:(id)a5
+- (void)shareScore:(id)score fromLeaderboard:(id)leaderboard sendingView:(id)view
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277D0C1D8] shared];
-  v10 = [v9 shouldAllowGameProgressSharing];
+  scoreCopy = score;
+  viewCopy = view;
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  shouldAllowGameProgressSharing = [mEMORY[0x277D0C1D8] shouldAllowGameProgressSharing];
 
-  if (v10)
+  if (shouldAllowGameProgressSharing)
   {
-    v19[0] = v7;
+    v19[0] = scoreCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v12 = [(GKDetailViewController *)self _gkPresentActivityViewControllerForActivityItems:v11 fromView:v8 withCompletionHandler:0];
+    v12 = [(GKDetailViewController *)self _gkPresentActivityViewControllerForActivityItems:v11 fromView:viewCopy withCompletionHandler:0];
   }
 
   else

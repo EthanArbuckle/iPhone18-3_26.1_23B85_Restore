@@ -1,6 +1,6 @@
 @interface SBCameraActivationManager
-- (id)initWithWorkspace:(void *)a3 lockScreenManager:;
-- (uint64_t)activateCaptureApplicationWithBundleID:(void *)a3 URL:(uint64_t)a4 launchType:(unint64_t)a5 fromSource:(void *)a6 withPreludeAnimationToken:(void *)a7 completion:;
+- (id)initWithWorkspace:(void *)workspace lockScreenManager:;
+- (uint64_t)activateCaptureApplicationWithBundleID:(void *)d URL:(uint64_t)l launchType:(unint64_t)type fromSource:(void *)source withPreludeAnimationToken:(void *)token completion:;
 - (uint64_t)workspace;
 @end
 
@@ -16,66 +16,66 @@
   return result;
 }
 
-- (id)initWithWorkspace:(void *)a3 lockScreenManager:
+- (id)initWithWorkspace:(void *)workspace lockScreenManager:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  workspaceCopy = workspace;
+  if (self)
   {
     if (!v6)
     {
       [SBCameraActivationManager initWithWorkspace:? lockScreenManager:?];
     }
 
-    if (!v7)
+    if (!workspaceCopy)
     {
       [SBCameraActivationManager initWithWorkspace:? lockScreenManager:?];
     }
 
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = SBCameraActivationManager;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, workspace);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)activateCaptureApplicationWithBundleID:(void *)a3 URL:(uint64_t)a4 launchType:(unint64_t)a5 fromSource:(void *)a6 withPreludeAnimationToken:(void *)a7 completion:
+- (uint64_t)activateCaptureApplicationWithBundleID:(void *)d URL:(uint64_t)l launchType:(unint64_t)type fromSource:(void *)source withPreludeAnimationToken:(void *)token completion:
 {
   v50 = *MEMORY[0x277D85DE8];
   v13 = a2;
-  v14 = a3;
-  v15 = a6;
-  v30 = a7;
-  if (a1)
+  dCopy = d;
+  sourceCopy = source;
+  tokenCopy = token;
+  if (self)
   {
-    if (!(v13 | v14))
+    if (!(v13 | dCopy))
     {
-      v14 = [MEMORY[0x277CBEBC0] URLWithString:@"camera://"];
+      dCopy = [MEMORY[0x277CBEBC0] URLWithString:@"camera://"];
     }
 
-    v29 = a4;
+    lCopy = l;
     v16 = SBLogCameraActivation();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = SBMainWorkspaceTransitionSourceDescription(a5);
+      v17 = SBMainWorkspaceTransitionSourceDescription(type);
       *buf = 138543874;
       v45 = v13;
       v46 = 2114;
-      v47 = v14;
+      v47 = dCopy;
       v48 = 2114;
       v49 = v17;
       _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "(Activating capture application %{public}@ (with url: %{public}@) from source: %{public}@", buf, 0x20u);
     }
 
-    v18 = *(a1 + 8);
-    v19 = *(a1 + 16);
+    v18 = *(self + 8);
+    v19 = *(self + 16);
     if (v13)
     {
       v20 = +[SBApplicationController sharedInstance];
@@ -87,7 +87,7 @@
     else
     {
       v42 = 0;
-      v21 = SBWorkspaceApplicationForURLWithError(v14, 0, &v42);
+      v21 = SBWorkspaceApplicationForURLWithError(dCopy, 0, &v42);
       v22 = v42;
     }
 
@@ -96,16 +96,16 @@
     v31[1] = 3221225472;
     v31[2] = __131__SBCameraActivationManager_activateCaptureApplicationWithBundleID_URL_launchType_fromSource_withPreludeAnimationToken_completion___block_invoke;
     v31[3] = &unk_2783AD930;
-    v41 = (a5 - 32 < 0x27) & (0x4800000001uLL >> (a5 - 32));
-    v39 = a5;
+    v41 = (type - 32 < 0x27) & (0x4800000001uLL >> (type - 32));
+    typeCopy = type;
     v32 = v23;
-    v33 = v15;
+    v33 = sourceCopy;
     v34 = v22;
-    v40 = v29;
+    v40 = lCopy;
     v35 = v13;
-    v24 = v30;
-    v37 = a1;
-    v38 = v30;
+    v24 = tokenCopy;
+    selfCopy = self;
+    v38 = tokenCopy;
     v36 = v19;
     v25 = v19;
     v26 = v22;
@@ -116,7 +116,7 @@
   else
   {
     v43 = 0;
-    v24 = v30;
+    v24 = tokenCopy;
   }
 
   return v43;

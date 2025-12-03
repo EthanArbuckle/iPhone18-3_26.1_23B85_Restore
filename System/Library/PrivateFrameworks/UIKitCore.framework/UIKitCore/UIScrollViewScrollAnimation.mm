@@ -1,55 +1,55 @@
 @interface UIScrollViewScrollAnimation
-- (float)progressForFraction:(float)a3;
-- (void)adjustForContentOffsetDelta:(CGPoint)a3;
+- (float)progressForFraction:(float)fraction;
+- (void)adjustForContentOffsetDelta:(CGPoint)delta;
 - (void)dealloc;
-- (void)setProgress:(float)a3;
+- (void)setProgress:(float)progress;
 @end
 
 @implementation UIScrollViewScrollAnimation
 
 - (void)dealloc
 {
-  v3 = [(UIAnimation *)self target];
-  [v3 _clearContentOffsetAnimation:self];
+  target = [(UIAnimation *)self target];
+  [target _clearContentOffsetAnimation:self];
 
   v4.receiver = self;
   v4.super_class = UIScrollViewScrollAnimation;
   [(UIScrollViewScrollAnimation *)&v4 dealloc];
 }
 
-- (void)adjustForContentOffsetDelta:(CGPoint)a3
+- (void)adjustForContentOffsetDelta:(CGPoint)delta
 {
   if (self->_adjustsForContentOffsetDelta)
   {
-    y = a3.y;
-    self->_originalOffset = vaddq_f64(a3, self->_originalOffset);
-    self->_targetOffset = vaddq_f64(a3, self->_targetOffset);
+    y = delta.y;
+    self->_originalOffset = vaddq_f64(delta, self->_originalOffset);
+    self->_targetOffset = vaddq_f64(delta, self->_targetOffset);
   }
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  v5 = [(UIAnimation *)self target];
+  target = [(UIAnimation *)self target];
   x = self->_targetOffset.x;
   y = self->_targetOffset.y;
-  v18 = v5;
+  v18 = target;
   if (self->_targetOffsetValidAtStart)
   {
-    if ([v5 _isAutomaticContentOffsetAdjustmentEnabled])
+    if ([target _isAutomaticContentOffsetAdjustmentEnabled])
     {
       [v18 _adjustedContentOffsetForContentOffset:{x, y}];
       x = v8;
       y = v9;
     }
 
-    v5 = v18;
+    target = v18;
   }
 
   v10 = *&self->_accuracy;
   v11 = self->_originalOffset.x;
   v12 = self->_originalOffset.y;
-  v13.f64[0] = (x - v11) * a3;
-  v13.f64[1] = (y - v12) * a3;
+  v13.f64[0] = (x - v11) * progress;
+  v13.f64[1] = (y - v12) * progress;
   if (*&v10 == 1.0)
   {
     v15 = vrndaq_f64(v13);
@@ -63,40 +63,40 @@
 
   v16 = v11 + v15.f64[0];
   v17 = v12 + v15.f64[1];
-  [v5 _skipNextStartOffsetAdjustment];
+  [target _skipNextStartOffsetAdjustment];
   [v18 setContentOffset:{v16, v17}];
 }
 
-- (float)progressForFraction:(float)a3
+- (float)progressForFraction:(float)fraction
 {
   result = 1.0;
-  if (a3 != 1.0)
+  if (fraction != 1.0)
   {
     customAnimation = self->_customAnimation;
     if (customAnimation)
     {
-      v7 = [(CABasicAnimation *)customAnimation timingFunction];
+      timingFunction = [(CABasicAnimation *)customAnimation timingFunction];
 
-      if (v7)
+      if (timingFunction)
       {
-        v8 = [(CABasicAnimation *)self->_customAnimation timingFunction];
-        *&v9 = a3;
-        [v8 _solveForInput:v9];
-        a3 = v10;
+        timingFunction2 = [(CABasicAnimation *)self->_customAnimation timingFunction];
+        *&v9 = fraction;
+        [timingFunction2 _solveForInput:v9];
+        fraction = v10;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v12 = self->_customAnimation;
-        *&v11 = a3;
+        *&v11 = fraction;
 
         [(CABasicAnimation *)v12 _solveForInput:v11];
       }
 
       else
       {
-        return a3;
+        return fraction;
       }
     }
 
@@ -104,7 +104,7 @@
     {
       v14.receiver = self;
       v14.super_class = UIScrollViewScrollAnimation;
-      *&v13 = a3;
+      *&v13 = fraction;
       [(UIAnimation *)&v14 progressForFraction:v13];
     }
   }

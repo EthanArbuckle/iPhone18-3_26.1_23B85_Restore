@@ -1,9 +1,9 @@
 @interface PerformanceDebugController
 - (PerformanceDebugController)init;
 - (id)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PerformanceDebugController
@@ -15,21 +15,21 @@
   return WeakRetained;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [NSBundle bundleWithIdentifier:@"com.apple.Maps", a4];
-  v5 = [v4 pathForResource:@"testDefinitions" ofType:@"plist"];
+  section = [NSBundle bundleWithIdentifier:@"com.apple.Maps", section];
+  v5 = [section pathForResource:@"testDefinitions" ofType:@"plist"];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   [(PerformanceDebugController *)self dismissViewControllerAnimated:1 completion:0];
   tests = self->_tests;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v12 = [(NSMutableArray *)tests objectAtIndexedSubscript:v8];
   v9 = +[UIApplication sharedMapsDelegate];
@@ -38,26 +38,26 @@
   [v9 application:v10 runTest:v11 options:v12];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PerformanceCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PerformanceCell"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"PerformanceCell"];
   }
 
   [v7 setAccessoryView:0];
-  v8 = [v7 detailTextLabel];
-  [v8 setText:0];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:0];
 
   tests = self->_tests;
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   v11 = [(NSMutableArray *)tests objectAtIndexedSubscript:v10];
   v12 = [v11 objectForKeyedSubscript:@"testName"];
-  v13 = [v7 textLabel];
-  [v13 setText:v12];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v12];
 
   return v7;
 }

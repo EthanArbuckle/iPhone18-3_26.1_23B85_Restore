@@ -25,7 +25,7 @@
 
 + (GKRTree)treeWithMaxNumberOfChildren:(NSUInteger)maxNumberOfChildren
 {
-  v3 = [[a1 alloc] initWithMaxNumberOfChildren:maxNumberOfChildren];
+  v3 = [[self alloc] initWithMaxNumberOfChildren:maxNumberOfChildren];
 
   return v3;
 }
@@ -58,10 +58,10 @@
   __p = 0;
   v22 = 0;
   v23 = 0;
-  v7 = [(GKRTree *)self queryReserve];
-  if (v7)
+  queryReserve = [(GKRTree *)self queryReserve];
+  if (queryReserve)
   {
-    if (!(v7 >> 61))
+    if (!(queryReserve >> 61))
     {
       operator new();
     }

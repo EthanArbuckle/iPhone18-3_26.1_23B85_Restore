@@ -1,7 +1,7 @@
 @interface MOSuggestionCutoutView
 - (_TtC16MomentsUIService22MOSuggestionCutoutView)init;
-- (_TtC16MomentsUIService22MOSuggestionCutoutView)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService22MOSuggestionCutoutView)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService22MOSuggestionCutoutView)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService22MOSuggestionCutoutView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -14,13 +14,13 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for MOSuggestionCutoutView();
   v4 = [(MOSuggestionCutoutView *)&v7 initWithFrame:0.0, 0.0, 0.0, 0.0];
-  v5 = [(MOSuggestionCutoutView *)v4 layer];
-  [v5 addSublayer:*(&v4->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService22MOSuggestionCutoutView_fillLayer)];
+  layer = [(MOSuggestionCutoutView *)v4 layer];
+  [layer addSublayer:*(&v4->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService22MOSuggestionCutoutView_fillLayer)];
 
   return v4;
 }
 
-- (_TtC16MomentsUIService22MOSuggestionCutoutView)initWithCoder:(id)a3
+- (_TtC16MomentsUIService22MOSuggestionCutoutView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC16MomentsUIService22MOSuggestionCutoutView_fillLayer;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(CAShapeLayer) init];
@@ -31,11 +31,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionCutoutView.layoutSubviews()();
 }
 
-- (_TtC16MomentsUIService22MOSuggestionCutoutView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService22MOSuggestionCutoutView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

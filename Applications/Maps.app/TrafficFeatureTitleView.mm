@@ -2,11 +2,11 @@
 - (CGSize)intrinsicContentSize;
 - (NSString)subtitle;
 - (NSString)title;
-- (TrafficFeatureTitleView)initWithFrame:(CGRect)a3;
+- (TrafficFeatureTitleView)initWithFrame:(CGRect)frame;
 - (UIImage)image;
-- (void)setImage:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TrafficFeatureTitleView
@@ -20,56 +20,56 @@
   return result;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(TrafficFeatureTitleView *)self subtitleLabel];
-  [v5 setText:v4];
+  subtitleCopy = subtitle;
+  subtitleLabel = [(TrafficFeatureTitleView *)self subtitleLabel];
+  [subtitleLabel setText:subtitleCopy];
 }
 
 - (NSString)subtitle
 {
-  v2 = [(TrafficFeatureTitleView *)self subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(TrafficFeatureTitleView *)self subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(TrafficFeatureTitleView *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(TrafficFeatureTitleView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(TrafficFeatureTitleView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(TrafficFeatureTitleView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(TrafficFeatureTitleView *)self imageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageView = [(TrafficFeatureTitleView *)self imageView];
+  [imageView setImage:imageCopy];
 }
 
 - (UIImage)image
 {
-  v2 = [(TrafficFeatureTitleView *)self imageView];
-  v3 = [v2 image];
+  imageView = [(TrafficFeatureTitleView *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
-- (TrafficFeatureTitleView)initWithFrame:(CGRect)a3
+- (TrafficFeatureTitleView)initWithFrame:(CGRect)frame
 {
   v94.receiver = self;
   v94.super_class = TrafficFeatureTitleView;
-  v3 = [(TrafficFeatureTitleView *)&v94 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TrafficFeatureTitleView *)&v94 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -113,9 +113,9 @@
     [(UILabel *)v3->_titleLabel setTextColor:v17];
 
     [(TrafficFeatureTitleView *)v3 addSubview:v3->_titleLabel];
-    v18 = [[MapsThemeLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[MapsThemeLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     subtitleLabel = v3->_subtitleLabel;
-    v3->_subtitleLabel = &v18->super;
+    v3->_subtitleLabel = &height->super;
 
     [(UILabel *)v3->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v20 = +[UIFont system15];
@@ -127,8 +127,8 @@
     [(TrafficFeatureTitleView *)v3 addSubview:v3->_subtitleLabel];
     v22 = objc_alloc_init(UILayoutGuide);
     [(TrafficFeatureTitleView *)v3 addLayoutGuide:v22];
-    v23 = [(TrafficFeatureTitleView *)v3 traitCollection];
-    if ([v23 userInterfaceIdiom] == 5)
+    traitCollection = [(TrafficFeatureTitleView *)v3 traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 5)
     {
       v24 = 20.0;
     }
@@ -138,8 +138,8 @@
       v24 = 40.0;
     }
 
-    v25 = [(TrafficFeatureTitleView *)v3 traitCollection];
-    if ([v25 userInterfaceIdiom] == 5)
+    traitCollection2 = [(TrafficFeatureTitleView *)v3 traitCollection];
+    if ([traitCollection2 userInterfaceIdiom] == 5)
     {
       v26 = 5.0;
     }
@@ -149,77 +149,77 @@
       v26 = 10.0;
     }
 
-    v93 = [(TrafficFeatureTitleView *)v3 imageView];
-    v92 = [v93 leadingAnchor];
-    v91 = [(TrafficFeatureTitleView *)v3 leadingAnchor];
-    v90 = [v92 constraintEqualToAnchor:v91 constant:15.0];
+    imageView = [(TrafficFeatureTitleView *)v3 imageView];
+    leadingAnchor = [imageView leadingAnchor];
+    leadingAnchor2 = [(TrafficFeatureTitleView *)v3 leadingAnchor];
+    v90 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
     v96[0] = v90;
-    v89 = [(TrafficFeatureTitleView *)v3 imageView];
-    v88 = [v89 widthAnchor];
-    v87 = [v88 constraintEqualToConstant:v24];
+    imageView2 = [(TrafficFeatureTitleView *)v3 imageView];
+    widthAnchor = [imageView2 widthAnchor];
+    v87 = [widthAnchor constraintEqualToConstant:v24];
     v96[1] = v87;
-    v86 = [(TrafficFeatureTitleView *)v3 imageView];
-    v85 = [v86 heightAnchor];
-    v84 = [v85 constraintEqualToConstant:v24];
+    imageView3 = [(TrafficFeatureTitleView *)v3 imageView];
+    heightAnchor = [imageView3 heightAnchor];
+    v84 = [heightAnchor constraintEqualToConstant:v24];
     v96[2] = v84;
-    v83 = [(TrafficFeatureTitleView *)v3 imageView];
-    v82 = [v83 centerYAnchor];
-    v81 = [(TrafficFeatureTitleView *)v3 centerYAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    imageView4 = [(TrafficFeatureTitleView *)v3 imageView];
+    centerYAnchor = [imageView4 centerYAnchor];
+    centerYAnchor2 = [(TrafficFeatureTitleView *)v3 centerYAnchor];
+    v80 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v96[3] = v80;
-    v79 = [(TrafficFeatureTitleView *)v3 imageView];
-    v78 = [v79 topAnchor];
-    v77 = [(TrafficFeatureTitleView *)v3 topAnchor];
-    v76 = [v78 constraintGreaterThanOrEqualToAnchor:v77];
+    imageView5 = [(TrafficFeatureTitleView *)v3 imageView];
+    topAnchor = [imageView5 topAnchor];
+    topAnchor2 = [(TrafficFeatureTitleView *)v3 topAnchor];
+    v76 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v96[4] = v76;
-    v75 = [(TrafficFeatureTitleView *)v3 titleLabel];
-    v74 = [v75 leadingAnchor];
-    v73 = [v22 leadingAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    titleLabel = [(TrafficFeatureTitleView *)v3 titleLabel];
+    leadingAnchor3 = [titleLabel leadingAnchor];
+    leadingAnchor4 = [v22 leadingAnchor];
+    v72 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v96[5] = v72;
-    v71 = [(TrafficFeatureTitleView *)v3 titleLabel];
-    v70 = [v71 trailingAnchor];
-    v69 = [v22 trailingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    titleLabel2 = [(TrafficFeatureTitleView *)v3 titleLabel];
+    trailingAnchor = [titleLabel2 trailingAnchor];
+    trailingAnchor2 = [v22 trailingAnchor];
+    v68 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v96[6] = v68;
-    v67 = [(TrafficFeatureTitleView *)v3 titleLabel];
-    v66 = [v67 topAnchor];
-    v65 = [v22 topAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    titleLabel3 = [(TrafficFeatureTitleView *)v3 titleLabel];
+    topAnchor3 = [titleLabel3 topAnchor];
+    topAnchor4 = [v22 topAnchor];
+    v64 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v96[7] = v64;
-    v63 = [(TrafficFeatureTitleView *)v3 subtitleLabel];
-    v62 = [v63 leadingAnchor];
-    v61 = [v22 leadingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    subtitleLabel = [(TrafficFeatureTitleView *)v3 subtitleLabel];
+    leadingAnchor5 = [subtitleLabel leadingAnchor];
+    leadingAnchor6 = [v22 leadingAnchor];
+    v60 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v96[8] = v60;
-    v59 = [(TrafficFeatureTitleView *)v3 subtitleLabel];
-    v58 = [v59 trailingAnchor];
-    v57 = [v22 trailingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    subtitleLabel2 = [(TrafficFeatureTitleView *)v3 subtitleLabel];
+    trailingAnchor3 = [subtitleLabel2 trailingAnchor];
+    trailingAnchor4 = [v22 trailingAnchor];
+    v56 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v96[9] = v56;
-    v55 = [(TrafficFeatureTitleView *)v3 subtitleLabel];
-    v53 = [v55 topAnchor];
-    v54 = [(TrafficFeatureTitleView *)v3 titleLabel];
-    v52 = [v54 bottomAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    subtitleLabel3 = [(TrafficFeatureTitleView *)v3 subtitleLabel];
+    topAnchor5 = [subtitleLabel3 topAnchor];
+    titleLabel4 = [(TrafficFeatureTitleView *)v3 titleLabel];
+    bottomAnchor = [titleLabel4 bottomAnchor];
+    v51 = [topAnchor5 constraintEqualToAnchor:bottomAnchor];
     v96[10] = v51;
-    v50 = [(TrafficFeatureTitleView *)v3 subtitleLabel];
-    v49 = [v50 bottomAnchor];
-    v48 = [v22 bottomAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    subtitleLabel4 = [(TrafficFeatureTitleView *)v3 subtitleLabel];
+    bottomAnchor2 = [subtitleLabel4 bottomAnchor];
+    bottomAnchor3 = [v22 bottomAnchor];
+    v47 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v96[11] = v47;
-    v45 = [v22 leadingAnchor];
-    v46 = [(TrafficFeatureTitleView *)v3 imageView];
-    v44 = [v46 trailingAnchor];
-    v27 = [v45 constraintEqualToAnchor:v44 constant:v26];
+    leadingAnchor7 = [v22 leadingAnchor];
+    imageView6 = [(TrafficFeatureTitleView *)v3 imageView];
+    trailingAnchor5 = [imageView6 trailingAnchor];
+    v27 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor5 constant:v26];
     v96[12] = v27;
-    v28 = [v22 trailingAnchor];
-    v29 = [(TrafficFeatureTitleView *)v3 trailingAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:-15.0];
+    trailingAnchor6 = [v22 trailingAnchor];
+    trailingAnchor7 = [(TrafficFeatureTitleView *)v3 trailingAnchor];
+    v30 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-15.0];
     v96[13] = v30;
-    v31 = [v22 centerYAnchor];
-    v32 = [(TrafficFeatureTitleView *)v3 centerYAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    centerYAnchor3 = [v22 centerYAnchor];
+    centerYAnchor4 = [(TrafficFeatureTitleView *)v3 centerYAnchor];
+    v33 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v96[14] = v33;
     v34 = [NSArray arrayWithObjects:v96 count:15];
     [NSLayoutConstraint activateConstraints:v34];
@@ -227,13 +227,13 @@
     v35 = v22;
     if (sub_10000FA08(v3) == 5)
     {
-      v36 = [v22 topAnchor];
-      v37 = [(TrafficFeatureTitleView *)v3 topAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      topAnchor6 = [v22 topAnchor];
+      topAnchor7 = [(TrafficFeatureTitleView *)v3 topAnchor];
+      v38 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
       v95[0] = v38;
-      v39 = [v35 bottomAnchor];
-      v40 = [(TrafficFeatureTitleView *)v3 bottomAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      bottomAnchor4 = [v35 bottomAnchor];
+      bottomAnchor5 = [(TrafficFeatureTitleView *)v3 bottomAnchor];
+      v41 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
       v95[1] = v41;
       v42 = [NSArray arrayWithObjects:v95 count:2];
       [NSLayoutConstraint activateConstraints:v42];

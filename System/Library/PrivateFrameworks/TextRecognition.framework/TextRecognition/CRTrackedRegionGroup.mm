@@ -1,78 +1,78 @@
 @interface CRTrackedRegionGroup
-+ (id)groupsFromOutputRegions:(id)a3;
-- (BOOL)addGroupRegionIfValid:(id)a3 context:(id)a4;
-- (BOOL)addInlineGroupIfValid:(id)a3;
-- (CRTrackedRegionGroup)initWithRegion:(id)a3;
++ (id)groupsFromOutputRegions:(id)regions;
+- (BOOL)addGroupRegionIfValid:(id)valid context:(id)context;
+- (BOOL)addInlineGroupIfValid:(id)valid;
+- (CRTrackedRegionGroup)initWithRegion:(id)region;
 - (NSString)description;
 - (id)estimatedPerspectiveQuad;
-- (void)_commitRegionToGroup:(void *)a3 unionQuad:(void *)a4 totalLineHeight:;
-- (void)applyHomographyTransform:(float32x4_t)a3 downscaleRate:(float32x4_t)a4 shouldApply:(float)a5;
-- (void)setBoundingQuadHomography:(__n128)a3;
-- (void)setOriginalBoundingQuad:(id)a3;
+- (void)_commitRegionToGroup:(void *)group unionQuad:(void *)quad totalLineHeight:;
+- (void)applyHomographyTransform:(float32x4_t)transform downscaleRate:(float32x4_t)rate shouldApply:(float)apply;
+- (void)setBoundingQuadHomography:(__n128)homography;
+- (void)setOriginalBoundingQuad:(id)quad;
 - (void)updateBoundingQuadAfterOCR;
 - (void)updatePreviousAssociationQuad;
 @end
 
 @implementation CRTrackedRegionGroup
 
-- (CRTrackedRegionGroup)initWithRegion:(id)a3
+- (CRTrackedRegionGroup)initWithRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v29.receiver = self;
   v29.super_class = CRTrackedRegionGroup;
   v5 = [(CRTrackedRegionGroup *)&v29 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DF70]);
-    v7 = [v4 trackingID];
-    v8 = [v6 initWithObjects:{v7, 0}];
+    trackingID = [regionCopy trackingID];
+    v8 = [v6 initWithObjects:{trackingID, 0}];
     objc_setProperty_atomic(v5, v9, v8, 56);
 
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v4, 0}];
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{regionCopy, 0}];
     objc_setProperty_atomic(v5, v11, v10, 64);
 
-    v5->_numberOfLines = [v4 numberOfLines];
+    v5->_numberOfLines = [regionCopy numberOfLines];
     v5->_isInlineGroup = 0;
     objc_setProperty_atomic(v5, v12, 0, 128);
-    v13 = [v4 boundingQuad];
-    [(CRTrackedRegionGroup *)v5 setBoundingQuad:v13];
+    boundingQuad = [regionCopy boundingQuad];
+    [(CRTrackedRegionGroup *)v5 setBoundingQuad:boundingQuad];
 
-    v14 = [v4 boundingQuad];
-    [(CRTrackedRegionGroup *)v5 setOriginalBoundingQuad:v14];
+    boundingQuad2 = [regionCopy boundingQuad];
+    [(CRTrackedRegionGroup *)v5 setOriginalBoundingQuad:boundingQuad2];
 
     [(CRTrackedRegionGroup *)v5 setBoundingQuadHomography:*MEMORY[0x1E69E9B10], *(MEMORY[0x1E69E9B10] + 16), *(MEMORY[0x1E69E9B10] + 32)];
     [(CRTrackedRegionGroup *)v5 setHomographyGroupID:0];
     [(CRTrackedRegionGroup *)v5 setInitialOrthogonalityScore:1.0];
     [(CRTrackedRegionGroup *)v5 setTrackNeedsReplacement:0];
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    objc_setProperty_atomic(v5, v16, v15, 136);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    objc_setProperty_atomic(v5, v16, uUID, 136);
 
     v17 = [CRVCQuad alloc];
-    v18 = [v4 boundingQuad];
-    v19 = [v18 denormalizedQuad];
-    v21 = [(CRVCQuad *)v17 initWithImageSpaceQuad:v19 uuid:objc_getProperty(v5, v20, 136, 1)];
+    boundingQuad3 = [regionCopy boundingQuad];
+    denormalizedQuad = [boundingQuad3 denormalizedQuad];
+    v21 = [(CRVCQuad *)v17 initWithImageSpaceQuad:denormalizedQuad uuid:objc_getProperty(v5, v20, 136, 1)];
     objc_setProperty_atomic(v5, v22, v21, 80);
 
-    -[CRTrackedRegionGroup setTextAlignment:](v5, "setTextAlignment:", [v4 textAlignment]);
+    -[CRTrackedRegionGroup setTextAlignment:](v5, "setTextAlignment:", [regionCopy textAlignment]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [v4 geometryInfo];
-      if ([v4 numberOfLines] < 2)
+      geometryInfo = [regionCopy geometryInfo];
+      if ([regionCopy numberOfLines] < 2)
       {
-        v24 = 1;
+        isRightJustified = 1;
         v5->_isTextLeftJustified = 1;
       }
 
       else
       {
-        v5->_isTextLeftJustified = [v23 isLeftJustified];
-        v24 = [v23 isRightJustified];
+        v5->_isTextLeftJustified = [geometryInfo isLeftJustified];
+        isRightJustified = [geometryInfo isRightJustified];
       }
 
-      v5->_isTextRightJustified = v24;
+      v5->_isTextRightJustified = isRightJustified;
       v25 = MEMORY[0x1E696AD98];
-      [v23 estimatedLineHeight];
+      [geometryInfo estimatedLineHeight];
       v26 = [v25 numberWithDouble:?];
       objc_setProperty_atomic(v5, v27, v26, 128);
     }
@@ -83,24 +83,24 @@
     }
 
     v5->_groupChildrenAlignment = 0;
-    v5->_layoutDirection = [v4 layoutDirection];
+    v5->_layoutDirection = [regionCopy layoutDirection];
   }
 
   return v5;
 }
 
-- (BOOL)addGroupRegionIfValid:(id)a3 context:(id)a4
+- (BOOL)addGroupRegionIfValid:(id)valid context:(id)context
 {
   v190 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 layoutDirection];
-  if (v8 == [(CRTrackedRegionGroup *)self layoutDirection])
+  validCopy = valid;
+  contextCopy = context;
+  layoutDirection = [validCopy layoutDirection];
+  if (layoutDirection == [(CRTrackedRegionGroup *)self layoutDirection])
   {
-    v9 = [(NSMutableArray *)self->_children lastObject];
-    [v9 baselineAngle];
+    lastObject = [(NSMutableArray *)self->_children lastObject];
+    [lastObject baselineAngle];
     v11 = v10;
-    [v6 baselineAngle];
+    [validCopy baselineAngle];
     v13 = v11 - v12;
     if (v13 <= 3.14159265)
     {
@@ -127,21 +127,21 @@ LABEL_74:
       goto LABEL_75;
     }
 
-    v16 = [v9 geometryInfo];
-    v17 = [v6 geometryInfo];
-    [v6 baselineAngle];
+    geometryInfo = [lastObject geometryInfo];
+    geometryInfo2 = [validCopy geometryInfo];
+    [validCopy baselineAngle];
     v19 = v18;
-    v20 = [(CRTrackedRegionGroup *)self boundingQuad];
-    [v20 baselineAngle];
+    boundingQuad = [(CRTrackedRegionGroup *)self boundingQuad];
+    [boundingQuad baselineAngle];
     v22 = v21;
-    v23 = [(CRTrackedRegionGroup *)self children];
-    v24 = [v23 count];
+    children = [(CRTrackedRegionGroup *)self children];
+    v24 = [children count];
     v25 = __sincos_stret(v19);
     v26 = __sincos_stret(v22);
     v27 = atan2(v25.__sinval + v26.__sinval * v24, v25.__cosval + v26.__cosval * v24);
 
-    v28 = [(CRTrackedRegionGroup *)self boundingQuad];
-    v29 = [v6 boundingQuad];
+    boundingQuad2 = [(CRTrackedRegionGroup *)self boundingQuad];
+    boundingQuad3 = [validCopy boundingQuad];
     if (v27 <= 3.14159265)
     {
       HIDWORD(v30) = -1073143301;
@@ -161,29 +161,29 @@ LABEL_74:
     v27 = v27 + v30;
 LABEL_15:
     *&v30 = v27;
-    v31 = [v28 unionWithNormalizedQuad:v29 baselineAngle:v30];
+    v31 = [boundingQuad2 unionWithNormalizedQuad:boundingQuad3 baselineAngle:v30];
 
     objc_opt_class();
     v184 = v31;
     if (objc_opt_isKindOfClass())
     {
-      v32 = -[CRRegionGeometryInfo initFromRegion:layoutDirection:]([CRRegionGeometryInfo alloc], "initFromRegion:layoutDirection:", v9, [v9 layoutDirection]);
-      v33 = -[CRRegionGeometryInfo initFromRegion:layoutDirection:]([CRRegionGeometryInfo alloc], "initFromRegion:layoutDirection:", v6, [v6 layoutDirection]);
+      v32 = -[CRRegionGeometryInfo initFromRegion:layoutDirection:]([CRRegionGeometryInfo alloc], "initFromRegion:layoutDirection:", lastObject, [lastObject layoutDirection]);
+      v33 = -[CRRegionGeometryInfo initFromRegion:layoutDirection:]([CRRegionGeometryInfo alloc], "initFromRegion:layoutDirection:", validCopy, [validCopy layoutDirection]);
       v179 = v32;
       v34 = v32;
       v35 = v33;
       v36 = [v34 mutualGeometryInfoWith:?];
-      v37 = [v9 geometryInfo];
-      v38 = [v6 geometryInfo];
-      [v37 estimatedLineHeight];
+      geometryInfo3 = [lastObject geometryInfo];
+      geometryInfo4 = [validCopy geometryInfo];
+      [geometryInfo3 estimatedLineHeight];
       v40 = v39;
-      v175 = v38;
-      [v38 estimatedLineHeight];
+      v175 = geometryInfo4;
+      [geometryInfo4 estimatedLineHeight];
       v177 = v41;
-      v178 = v37;
-      if ([v36 isCenterJustified] && (objc_msgSend(v37, "isLeftJustified") & 1) == 0)
+      v178 = geometryInfo3;
+      if ([v36 isCenterJustified] && (objc_msgSend(geometryInfo3, "isLeftJustified") & 1) == 0)
       {
-        v42 = [v37 isRightJustified] ^ 1;
+        v42 = [geometryInfo3 isRightJustified] ^ 1;
       }
 
       else
@@ -198,27 +198,27 @@ LABEL_15:
       v171 = v60;
       [v36 leftOffsetAlongBaseline];
       v173 = v61;
-      [v16 size];
+      [geometryInfo size];
       v169 = v62;
-      [v17 size];
+      [geometryInfo2 size];
       v167 = v63;
       [v36 rightOffsetAlongBaseline];
       v165 = v64;
-      [v16 size];
+      [geometryInfo size];
       v66 = v65;
-      [v17 size];
+      [geometryInfo2 size];
       v68 = v67;
       [v36 leftOffsetAlongBaseline];
       v70 = v69;
-      [v16 size];
+      [geometryInfo size];
       v72 = v71;
-      [v17 size];
+      [geometryInfo2 size];
       v74 = v70 / fmin(v72, v73);
       [v36 rightOffsetAlongBaseline];
       v76 = v75;
-      [v16 size];
+      [geometryInfo size];
       v78 = v77;
-      [v17 size];
+      [geometryInfo2 size];
       v80 = v79;
       [v36 leftOffsetAlongBaseline];
       v82 = v81;
@@ -260,19 +260,19 @@ LABEL_15:
       if (v85 && v86 && v87 && fabs((v82 - v84) / v40) <= 1.0)
       {
         v161 = v40;
-        v170 = v17;
-        v172 = v16;
-        v174 = v9;
+        v170 = geometryInfo2;
+        v172 = geometryInfo;
+        v174 = lastObject;
         [(CRTrackedRegionGroup *)self boundingQuad];
         v93 = v92 = v58;
-        v94 = [v93 denormalizedQuad];
-        [v94 bottomLeft];
+        denormalizedQuad = [v93 denormalizedQuad];
+        [denormalizedQuad bottomLeft];
         v96 = v95;
         v98 = v97;
 
-        v99 = [(CRTrackedRegionGroup *)self boundingQuad];
-        v100 = [v99 denormalizedQuad];
-        [v100 bottomRight];
+        boundingQuad4 = [(CRTrackedRegionGroup *)self boundingQuad];
+        denormalizedQuad2 = [boundingQuad4 denormalizedQuad];
+        [denormalizedQuad2 bottomRight];
         v102 = v101;
         v182 = v101;
         v104 = v103;
@@ -307,14 +307,14 @@ LABEL_15:
         v125 = rotatedPointAroundPoint(v96, v124, v96, v98, -v112);
         v163 = v126;
         v127 = rotatedPointAroundPoint(v164, v124, v96, v98, -v112);
-        v129 = [[CRImageSpaceQuad alloc] initWithTopLeft:v96 topRight:v98 bottomRight:v182 bottomLeft:v166, v127, v128, v125, v163];
+        v163 = [[CRImageSpaceQuad alloc] initWithTopLeft:v96 topRight:v98 bottomRight:v182 bottomLeft:v166, v127, v128, v125, v163];
         v185 = 0u;
         v186 = 0u;
         v187 = 0u;
         v188 = 0u;
-        v183 = v7;
-        v130 = v7;
-        v131 = [v130 countByEnumeratingWithState:&v185 objects:v189 count:16];
+        v183 = contextCopy;
+        averageLineHeight2 = contextCopy;
+        v131 = [averageLineHeight2 countByEnumeratingWithState:&v185 objects:v189 count:16];
         if (v131)
         {
           v132 = v131;
@@ -325,37 +325,37 @@ LABEL_15:
             {
               if (*v186 != v133)
               {
-                objc_enumerationMutation(v130);
+                objc_enumerationMutation(averageLineHeight2);
               }
 
               v135 = *(*(&v185 + 1) + 8 * i);
-              v136 = [v135 boundingQuad];
-              v137 = [v136 denormalizedQuad];
-              [v137 bottomLeft];
+              boundingQuad5 = [v135 boundingQuad];
+              denormalizedQuad3 = [boundingQuad5 denormalizedQuad];
+              [denormalizedQuad3 bottomLeft];
               v140 = rotatedPointAroundPoint(v138, v139, v96, v98, v112);
 
-              v141 = [v135 boundingQuad];
-              v142 = [v141 denormalizedQuad];
-              [v142 bottomRight];
+              boundingQuad6 = [v135 boundingQuad];
+              denormalizedQuad4 = [boundingQuad6 denormalizedQuad];
+              [denormalizedQuad4 bottomRight];
               v145 = rotatedPointAroundPoint(v143, v144, v96, v98, v112);
 
               if ((v140 <= v115 || v140 >= v121) && (v145 <= v115 || v145 >= v121) && (v140 >= v115 || v145 <= v121))
               {
-                v149 = [v135 boundingQuad];
-                v150 = [v149 denormalizedQuad];
-                v151 = [v150 intersectsQuad:v129];
+                boundingQuad7 = [v135 boundingQuad];
+                denormalizedQuad5 = [boundingQuad7 denormalizedQuad];
+                v151 = [denormalizedQuad5 intersectsQuad:v163];
 
                 if (v151)
                 {
                   v91 = 0;
                   v56 = 0;
-                  v7 = v183;
+                  contextCopy = v183;
                   goto LABEL_69;
                 }
               }
             }
 
-            v132 = [v130 countByEnumeratingWithState:&v185 objects:v189 count:16];
+            v132 = [averageLineHeight2 countByEnumeratingWithState:&v185 objects:v189 count:16];
             if (v132)
             {
               continue;
@@ -365,9 +365,9 @@ LABEL_15:
           }
         }
 
-        v152 = [(CRTrackedRegionGroup *)self averageLineHeight];
-        v7 = v183;
-        if (!v152 || (v153 = v152, -[CRTrackedRegionGroup children](self, "children"), v154 = objc_claimAutoreleasedReturnValue(), v155 = [v154 count], v154, v153, v155 == 1))
+        averageLineHeight = [(CRTrackedRegionGroup *)self averageLineHeight];
+        contextCopy = v183;
+        if (!averageLineHeight || (v153 = averageLineHeight, -[CRTrackedRegionGroup children](self, "children"), v154 = objc_claimAutoreleasedReturnValue(), v155 = [v154 count], v154, v153, v155 == 1))
         {
           v157 = [MEMORY[0x1E696AD98] numberWithDouble:v161];
           if (self)
@@ -377,15 +377,15 @@ LABEL_15:
         }
 
         v158 = MEMORY[0x1E696AD98];
-        v130 = [(CRTrackedRegionGroup *)self averageLineHeight];
-        [v130 doubleValue];
-        v56 = [v158 numberWithDouble:{v177 * objc_msgSend(v6, "numberOfLines") + v159 * -[CRTrackedRegionGroup numberOfLines](self, "numberOfLines")}];
+        averageLineHeight2 = [(CRTrackedRegionGroup *)self averageLineHeight];
+        [averageLineHeight2 doubleValue];
+        v56 = [v158 numberWithDouble:{v177 * objc_msgSend(validCopy, "numberOfLines") + v159 * -[CRTrackedRegionGroup numberOfLines](self, "numberOfLines")}];
         v91 = 1;
 LABEL_69:
-        v9 = v174;
+        lastObject = v174;
 
-        v17 = v170;
-        v16 = v172;
+        geometryInfo2 = v170;
+        geometryInfo = v172;
         v83 = v179;
         v58 = v168;
       }
@@ -400,42 +400,42 @@ LABEL_69:
 
     else
     {
-      v180 = v7;
-      v43 = v17;
-      v44 = v16;
-      v45 = [v31 denormalizedQuad];
-      [v45 area];
+      v180 = contextCopy;
+      v43 = geometryInfo2;
+      v44 = geometryInfo;
+      denormalizedQuad6 = [v31 denormalizedQuad];
+      [denormalizedQuad6 area];
       v47 = v46;
 
-      v48 = [(CRTrackedRegionGroup *)self boundingQuad];
-      v49 = [v48 denormalizedQuad];
-      [v49 area];
+      boundingQuad8 = [(CRTrackedRegionGroup *)self boundingQuad];
+      denormalizedQuad7 = [boundingQuad8 denormalizedQuad];
+      [denormalizedQuad7 area];
       v51 = v50;
-      v52 = [v6 boundingQuad];
-      v53 = [v52 denormalizedQuad];
-      [v53 area];
+      boundingQuad9 = [validCopy boundingQuad];
+      denormalizedQuad8 = [boundingQuad9 denormalizedQuad];
+      [denormalizedQuad8 area];
       v55 = v51 + v54;
 
       v56 = 0;
       if (v47 > v55 * 1.5)
       {
         v15 = 0;
-        v16 = v44;
-        v17 = v43;
-        v7 = v180;
+        geometryInfo = v44;
+        geometryInfo2 = v43;
+        contextCopy = v180;
         v57 = v184;
 LABEL_73:
 
         goto LABEL_74;
       }
 
-      v16 = v44;
-      v17 = v43;
-      v7 = v180;
+      geometryInfo = v44;
+      geometryInfo2 = v43;
+      contextCopy = v180;
     }
 
     v57 = v184;
-    [(CRTrackedRegionGroup *)self _commitRegionToGroup:v6 unionQuad:v184 totalLineHeight:v56];
+    [(CRTrackedRegionGroup *)self _commitRegionToGroup:validCopy unionQuad:v184 totalLineHeight:v56];
     v15 = 1;
     goto LABEL_73;
   }
@@ -446,43 +446,43 @@ LABEL_75:
   return v15;
 }
 
-- (void)_commitRegionToGroup:(void *)a3 unionQuad:(void *)a4 totalLineHeight:
+- (void)_commitRegionToGroup:(void *)group unionQuad:(void *)quad totalLineHeight:
 {
   v93 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a4;
-  if (!a1)
+  quadCopy = quad;
+  if (!self)
   {
     goto LABEL_88;
   }
 
-  v9 = a3;
-  [a1 setBoundingQuad:v9];
-  [a1 setOriginalBoundingQuad:v9];
-  [a1 setBoundingQuadHomography:{*MEMORY[0x1E69E9B10], *(MEMORY[0x1E69E9B10] + 16), *(MEMORY[0x1E69E9B10] + 32)}];
-  v10 = [a1 vcQuad];
-  v11 = [v9 denormalizedQuad];
+  groupCopy = group;
+  [self setBoundingQuad:groupCopy];
+  [self setOriginalBoundingQuad:groupCopy];
+  [self setBoundingQuadHomography:{*MEMORY[0x1E69E9B10], *(MEMORY[0x1E69E9B10] + 16), *(MEMORY[0x1E69E9B10] + 32)}];
+  vcQuad = [self vcQuad];
+  denormalizedQuad = [groupCopy denormalizedQuad];
 
-  [v10 updateWithQuad:v11];
-  v12 = [a1 regionTrackingIDs];
-  v13 = [v7 trackingID];
-  [v12 addObject:v13];
+  [vcQuad updateWithQuad:denormalizedQuad];
+  regionTrackingIDs = [self regionTrackingIDs];
+  trackingID = [v7 trackingID];
+  [regionTrackingIDs addObject:trackingID];
 
-  v14 = [a1 children];
-  [v14 addObject:v7];
+  children = [self children];
+  [children addObject:v7];
 
-  if (([a1 isInlineGroup] & 1) == 0)
+  if (([self isInlineGroup] & 1) == 0)
   {
-    v15 = [v7 numberOfLines];
-    *(a1 + 72) = [a1 numberOfLines] + v15;
+    numberOfLines = [v7 numberOfLines];
+    *(self + 72) = [self numberOfLines] + numberOfLines;
   }
 
-  if (v8)
+  if (quadCopy)
   {
     v16 = MEMORY[0x1E696AD98];
-    [v8 doubleValue];
-    v18 = [v16 numberWithDouble:{v17 / objc_msgSend(a1, "numberOfLines")}];
-    objc_setProperty_atomic(a1, v19, v18, 128);
+    [quadCopy doubleValue];
+    v18 = [v16 numberWithDouble:{v17 / objc_msgSend(self, "numberOfLines")}];
+    objc_setProperty_atomic(self, v19, v18, 128);
   }
 
   v20 = CROSLogForCategory(4);
@@ -490,10 +490,10 @@ LABEL_75:
   v22 = @"L";
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [a1 numberOfLines];
-    v24 = [a1 children];
-    v25 = [v24 count];
-    if (*(a1 + 10))
+    numberOfLines2 = [self numberOfLines];
+    children2 = [self children];
+    v25 = [children2 count];
+    if (*(self + 10))
     {
       v26 = @"L";
     }
@@ -503,7 +503,7 @@ LABEL_75:
       v26 = @"-";
     }
 
-    if (*(a1 + 11))
+    if (*(self + 11))
     {
       v27 = @"R";
     }
@@ -514,7 +514,7 @@ LABEL_75:
     }
 
     *v84 = 134218754;
-    *&v84[4] = v23;
+    *&v84[4] = numberOfLines2;
     v85 = 2048;
     v86 = v25;
     v87 = 2112;
@@ -529,20 +529,20 @@ LABEL_75:
   {
     if ([v7 numberOfLines] < 2)
     {
-      v34 = 0;
+      isRightJustified = 0;
     }
 
     else
     {
-      v28 = [v7 geometryInfo];
-      v29 = [v28 isCenterJustified];
+      geometryInfo = [v7 geometryInfo];
+      isCenterJustified = [geometryInfo isCenterJustified];
       v30 = CROSLogForCategory(4);
       v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG);
-      if (v29)
+      if (isCenterJustified)
       {
         if (v31)
         {
-          if (*(a1 + 10))
+          if (*(self + 10))
           {
             v32 = @"L";
           }
@@ -552,7 +552,7 @@ LABEL_75:
             v32 = @"-";
           }
 
-          if (*(a1 + 11))
+          if (*(self + 11))
           {
             v33 = @"R";
           }
@@ -569,19 +569,19 @@ LABEL_75:
           _os_log_impl(&dword_1B40D2000, v30, OS_LOG_TYPE_DEBUG, "  ALIGNMENT: multiline: C before: %@-%@", v84, 0x16u);
         }
 
-        if (*(a1 + 10) & 1) != 0 && (*(a1 + 11))
+        if (*(self + 10) & 1) != 0 && (*(self + 11))
         {
-          [a1 setTextAlignment:1];
+          [self setTextAlignment:1];
         }
 
-        v34 = 0;
+        isRightJustified = 0;
       }
 
       else
       {
         if (v31)
         {
-          if ([v28 isLeftJustified])
+          if ([geometryInfo isLeftJustified])
           {
             v35 = @"L";
           }
@@ -591,7 +591,7 @@ LABEL_75:
             v35 = @"-";
           }
 
-          if ([v28 isRightJustified])
+          if ([geometryInfo isRightJustified])
           {
             v36 = @"R";
           }
@@ -601,8 +601,8 @@ LABEL_75:
             v36 = @"-";
           }
 
-          v37 = *(a1 + 11);
-          if (*(a1 + 10))
+          v37 = *(self + 11);
+          if (*(self + 10))
           {
             v38 = @"L";
           }
@@ -633,55 +633,55 @@ LABEL_75:
           _os_log_impl(&dword_1B40D2000, v30, OS_LOG_TYPE_DEBUG, "  ALIGNMENT: multiline: %@-%@ before: %@-%@", v84, 0x2Au);
         }
 
-        if ([v28 isLeftJustified])
+        if ([geometryInfo isLeftJustified])
         {
-          v34 = [v28 isRightJustified];
+          isRightJustified = [geometryInfo isRightJustified];
         }
 
         else
         {
-          v34 = 0;
+          isRightJustified = 0;
         }
 
-        if (*(a1 + 10))
+        if (*(self + 10))
         {
-          v40 = [v28 isLeftJustified];
+          isLeftJustified = [geometryInfo isLeftJustified];
         }
 
         else
         {
-          v40 = 0;
+          isLeftJustified = 0;
         }
 
-        *(a1 + 10) = v40;
-        if (*(a1 + 11))
+        *(self + 10) = isLeftJustified;
+        if (*(self + 11))
         {
-          v41 = [v28 isRightJustified];
+          isRightJustified2 = [geometryInfo isRightJustified];
         }
 
         else
         {
-          v41 = 0;
+          isRightJustified2 = 0;
         }
 
-        *(a1 + 11) = v41;
+        *(self + 11) = isRightJustified2;
       }
     }
 
-    if (*(a1 + 10) & 1) != 0 || (*(a1 + 11))
+    if (*(self + 10) & 1) != 0 || (*(self + 11))
     {
-      v42 = [a1 children];
-      v43 = [a1 boundingQuad];
-      [v43 baselineAngle];
-      v44 = [CRParagraphOutputRegion paragraphWithLines:v42 confidence:2 baselineAngle:?];
+      children3 = [self children];
+      boundingQuad = [self boundingQuad];
+      [boundingQuad baselineAngle];
+      v44 = [CRParagraphOutputRegion paragraphWithLines:children3 confidence:2 baselineAngle:?];
 
-      v45 = [v44 geometryInfo];
-      *(a1 + 144) = [v44 textAlignment];
+      geometryInfo2 = [v44 geometryInfo];
+      *(self + 144) = [v44 textAlignment];
       v46 = CROSLogForCategory(4);
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
       {
-        v47 = *(a1 + 144);
-        if (*(a1 + 10))
+        v47 = *(self + 144);
+        if (*(self + 10))
         {
           v48 = @"L";
         }
@@ -691,7 +691,7 @@ LABEL_75:
           v48 = @"-";
         }
 
-        if (*(a1 + 11))
+        if (*(self + 11))
         {
           v49 = @"R";
         }
@@ -710,49 +710,49 @@ LABEL_75:
         _os_log_impl(&dword_1B40D2000, v46, OS_LOG_TYPE_DEBUG, "  ALIGNMENT: SETGROUP %ld   %@-%@", v84, 0x20u);
       }
 
-      if (*(a1 + 10))
+      if (*(self + 10))
       {
-        v50 = [v45 isLeftJustified];
+        isLeftJustified2 = [geometryInfo2 isLeftJustified];
       }
 
       else
       {
-        v50 = 0;
+        isLeftJustified2 = 0;
       }
 
-      *(a1 + 10) = v50;
-      if (*(a1 + 11))
+      *(self + 10) = isLeftJustified2;
+      if (*(self + 11))
       {
-        v51 = [v45 isRightJustified];
+        isRightJustified3 = [geometryInfo2 isRightJustified];
       }
 
       else
       {
-        v51 = 0;
+        isRightJustified3 = 0;
       }
 
-      *(a1 + 11) = v51;
+      *(self + 11) = isRightJustified3;
     }
   }
 
   else
   {
-    v34 = 0;
+    isRightJustified = 0;
   }
 
-  v52 = [a1 numberOfLines];
-  v53 = [a1 children];
-  v54 = [v53 count];
+  numberOfLines3 = [self numberOfLines];
+  children4 = [self children];
+  v54 = [children4 count];
 
-  if (v52 == v54)
+  if (numberOfLines3 == v54)
   {
     v55 = CROSLogForCategory(4);
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
     {
-      v56 = [a1 textAlignment];
-      v57 = *(a1 + 144);
+      textAlignment = [self textAlignment];
+      v57 = *(self + 144);
       *v84 = 134218240;
-      *&v84[4] = v56;
+      *&v84[4] = textAlignment;
       v85 = 2048;
       v86 = v57;
       _os_log_impl(&dword_1B40D2000, v55, OS_LOG_TYPE_DEBUG, "ALIGNMENT: inherit group children alignment %ld->%ld", v84, 0x16u);
@@ -761,17 +761,17 @@ LABEL_75:
     goto LABEL_77;
   }
 
-  v68 = [a1 numberOfLines];
-  v69 = v68 - [v7 numberOfLines];
-  v70 = [a1 children];
-  v71 = [v70 count] - 1;
+  numberOfLines4 = [self numberOfLines];
+  v69 = numberOfLines4 - [v7 numberOfLines];
+  children5 = [self children];
+  v71 = [children5 count] - 1;
 
   if (v69 != v71)
   {
-    v80 = [a1 textAlignment];
-    if (v80 != [v7 textAlignment] && !((objc_msgSend(v7, "numberOfLines") < 2) | v34 & 1))
+    textAlignment2 = [self textAlignment];
+    if (textAlignment2 != [v7 textAlignment] && !((objc_msgSend(v7, "numberOfLines") < 2) | isRightJustified & 1))
     {
-      [a1 setTextAlignment:0];
+      [self setTextAlignment:0];
       v81 = CROSLogForCategory(4);
       if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
       {
@@ -783,82 +783,82 @@ LABEL_75:
     goto LABEL_79;
   }
 
-  v72 = *(a1 + 144);
+  v72 = *(self + 144);
   if (v72 == [v7 textAlignment])
   {
     v73 = CROSLogForCategory(4);
     if (os_log_type_enabled(v73, OS_LOG_TYPE_DEBUG))
     {
-      v74 = [a1 textAlignment];
-      v75 = [v7 textAlignment];
+      textAlignment3 = [self textAlignment];
+      textAlignment4 = [v7 textAlignment];
       *v84 = 134218240;
-      *&v84[4] = v74;
+      *&v84[4] = textAlignment3;
       v85 = 2048;
-      v86 = v75;
+      v86 = textAlignment4;
       _os_log_impl(&dword_1B40D2000, v73, OS_LOG_TYPE_DEBUG, "ALIGNMENT: inherit new region's alignment (same children+text alignment) %ld->%ld", v84, 0x16u);
     }
 
-    [a1 setTextAlignment:{objc_msgSend(v7, "textAlignment")}];
+    [self setTextAlignment:{objc_msgSend(v7, "textAlignment")}];
   }
 
-  if (((*(a1 + 11) ^ *(a1 + 10)) & 1) != 0 && ![a1 textAlignment])
+  if (((*(self + 11) ^ *(self + 10)) & 1) != 0 && ![self textAlignment])
   {
     v76 = CROSLogForCategory(4);
     v77 = os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG);
-    if (!v34)
+    if (!isRightJustified)
     {
       if (v77)
       {
-        v82 = [a1 textAlignment];
-        v83 = [v7 textAlignment];
+        textAlignment5 = [self textAlignment];
+        textAlignment6 = [v7 textAlignment];
         *v84 = 134218240;
-        *&v84[4] = v82;
+        *&v84[4] = textAlignment5;
         v85 = 2048;
-        v86 = v83;
+        v86 = textAlignment6;
         _os_log_impl(&dword_1B40D2000, v76, OS_LOG_TYPE_DEBUG, "ALIGNMENT: inherit new region's alignment (text L^R and unknown) %ld->%ld", v84, 0x16u);
       }
 
-      v58 = [v7 textAlignment];
+      textAlignment7 = [v7 textAlignment];
       goto LABEL_78;
     }
 
     if (v77)
     {
-      v78 = [a1 textAlignment];
-      v79 = *(a1 + 144);
+      textAlignment8 = [self textAlignment];
+      v79 = *(self + 144);
       *v84 = 134218240;
-      *&v84[4] = v78;
+      *&v84[4] = textAlignment8;
       v85 = 2048;
       v86 = v79;
       _os_log_impl(&dword_1B40D2000, v76, OS_LOG_TYPE_DEBUG, "ALIGNMENT: inherit group children alignment %ld->%ld", v84, 0x16u);
     }
 
 LABEL_77:
-    v58 = *(a1 + 144);
+    textAlignment7 = *(self + 144);
 LABEL_78:
-    [a1 setTextAlignment:v58];
+    [self setTextAlignment:textAlignment7];
   }
 
 LABEL_79:
   v59 = CROSLogForCategory(4);
   if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
   {
-    v60 = [a1 numberOfLines];
-    v61 = [a1 children];
-    v62 = [v61 count];
-    if ((*(a1 + 10) & 1) == 0)
+    numberOfLines5 = [self numberOfLines];
+    children6 = [self children];
+    v62 = [children6 count];
+    if ((*(self + 10) & 1) == 0)
     {
       v22 = @"-";
     }
 
-    if (*(a1 + 11))
+    if (*(self + 11))
     {
       v21 = @"R";
     }
 
-    v63 = [a1 textAlignment];
+    textAlignment9 = [self textAlignment];
     *v84 = 134219010;
-    *&v84[4] = v60;
+    *&v84[4] = numberOfLines5;
     v85 = 2048;
     v86 = v62;
     v87 = 2112;
@@ -866,37 +866,37 @@ LABEL_79:
     v89 = 2112;
     v90 = v21;
     v91 = 2048;
-    v92 = v63;
+    v92 = textAlignment9;
     _os_log_impl(&dword_1B40D2000, v59, OS_LOG_TYPE_DEBUG, "ALIGNMENT: DONE %ld line(s) %ld child(ren)\t%@-%@\t%ld", v84, 0x34u);
   }
 
   v64 = CROSLogForCategory(4);
   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
   {
-    v65 = [a1 children];
-    v66 = [v65 lastObject];
-    v67 = [v66 text];
+    children7 = [self children];
+    lastObject = [children7 lastObject];
+    text = [lastObject text];
     *v84 = 138412290;
-    *&v84[4] = v67;
+    *&v84[4] = text;
     _os_log_impl(&dword_1B40D2000, v64, OS_LOG_TYPE_DEBUG, "*  ALIGNMENT: DONE %@", v84, 0xCu);
   }
 
 LABEL_88:
 }
 
-- (BOOL)addInlineGroupIfValid:(id)a3
+- (BOOL)addInlineGroupIfValid:(id)valid
 {
-  v4 = a3;
-  v5 = [v4 layoutDirection];
-  if (v5 == [(CRTrackedRegionGroup *)self layoutDirection])
+  validCopy = valid;
+  layoutDirection = [validCopy layoutDirection];
+  if (layoutDirection == [(CRTrackedRegionGroup *)self layoutDirection])
   {
-    v6 = [v4 children];
-    v7 = [v6 lastObject];
+    children = [validCopy children];
+    lastObject = [children lastObject];
 
-    v8 = [(NSMutableArray *)self->_children lastObject];
-    [v8 baselineAngle];
+    lastObject2 = [(NSMutableArray *)self->_children lastObject];
+    [lastObject2 baselineAngle];
     v10 = v9;
-    [v7 baselineAngle];
+    [lastObject baselineAngle];
     v12 = v10 - v11;
     if (v12 <= 3.14159265)
     {
@@ -923,8 +923,8 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v15 = -[CRRegionGeometryInfo initFromRegion:layoutDirection:]([CRRegionGeometryInfo alloc], "initFromRegion:layoutDirection:", v8, [v8 layoutDirection]);
-    v16 = -[CRRegionGeometryInfo initFromRegion:layoutDirection:]([CRRegionGeometryInfo alloc], "initFromRegion:layoutDirection:", v7, [v7 layoutDirection]);
+    v15 = -[CRRegionGeometryInfo initFromRegion:layoutDirection:]([CRRegionGeometryInfo alloc], "initFromRegion:layoutDirection:", lastObject2, [lastObject2 layoutDirection]);
+    v16 = -[CRRegionGeometryInfo initFromRegion:layoutDirection:]([CRRegionGeometryInfo alloc], "initFromRegion:layoutDirection:", lastObject, [lastObject layoutDirection]);
     v17 = [v15 mutualGeometryInfoWith:v16];
     [v15 estimatedLineHeight];
     v19 = v18;
@@ -964,19 +964,19 @@ LABEL_24:
     }
 
     v48 = v15;
-    [v7 baselineAngle];
+    [lastObject baselineAngle];
     v29 = v28;
-    v30 = [(CRTrackedRegionGroup *)self boundingQuad];
-    [v30 baselineAngle];
+    boundingQuad = [(CRTrackedRegionGroup *)self boundingQuad];
+    [boundingQuad baselineAngle];
     v32 = v31;
-    v33 = [(CRTrackedRegionGroup *)self children];
-    v34 = [v33 count];
+    children2 = [(CRTrackedRegionGroup *)self children];
+    v34 = [children2 count];
     v35 = __sincos_stret(v29);
     v36 = __sincos_stret(v32);
     v37 = atan2(v35.__sinval + v36.__sinval * v34, v35.__cosval + v36.__cosval * v34);
 
-    v38 = [(CRTrackedRegionGroup *)self boundingQuad];
-    v39 = [v7 boundingQuad];
+    boundingQuad2 = [(CRTrackedRegionGroup *)self boundingQuad];
+    boundingQuad3 = [lastObject boundingQuad];
     if (v37 <= 3.14159265)
     {
       HIDWORD(v40) = -1073143301;
@@ -984,7 +984,7 @@ LABEL_24:
       {
 LABEL_23:
         *&v40 = v37;
-        v41 = [v38 unionWithNormalizedQuad:v39 baselineAngle:v40];
+        v41 = [boundingQuad2 unionWithNormalizedQuad:boundingQuad3 baselineAngle:v40];
 
         v42 = MEMORY[0x1E696AD98];
         v15 = v48;
@@ -992,7 +992,7 @@ LABEL_23:
         v44 = v43;
         [v16 estimatedLineHeight];
         v46 = [v42 numberWithDouble:v44 + v45];
-        [(CRTrackedRegionGroup *)self _commitRegionToGroup:v7 unionQuad:v41 totalLineHeight:v46];
+        [(CRTrackedRegionGroup *)self _commitRegionToGroup:lastObject unionQuad:v41 totalLineHeight:v46];
 
         goto LABEL_24;
       }
@@ -1023,8 +1023,8 @@ LABEL_26:
     goto LABEL_22;
   }
 
-  v3 = [(CRTrackedRegionGroup *)self children];
-  v4 = [v3 firstObject];
+  children = [(CRTrackedRegionGroup *)self children];
+  firstObject = [children firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1033,20 +1033,20 @@ LABEL_26:
     goto LABEL_22;
   }
 
-  v6 = [(CRTrackedRegionGroup *)self numberOfLines];
+  numberOfLines = [(CRTrackedRegionGroup *)self numberOfLines];
   v7 = 0;
-  if (self && v6 >= 2)
+  if (self && numberOfLines >= 2)
   {
     if (self->_isTextLeftJustified || self->_isTextRightJustified)
     {
-      v225 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v230 = 0u;
       v231 = 0u;
       v232 = 0u;
       v233 = 0u;
-      v8 = self;
-      v9 = [(CRTrackedRegionGroup *)self children];
-      v10 = [v9 countByEnumeratingWithState:&v230 objects:v235 count:16];
+      selfCopy = self;
+      children2 = [(CRTrackedRegionGroup *)self children];
+      v10 = [children2 countByEnumeratingWithState:&v230 objects:v235 count:16];
       if (v10)
       {
         v11 = v10;
@@ -1066,12 +1066,12 @@ LABEL_26:
           {
             if (*v231 != v15)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(children2);
             }
 
             v21 = *(*(&v230 + 1) + 8 * v20);
-            v22 = [v21 children];
-            [v225 addObjectsFromArray:v22];
+            children3 = [v21 children];
+            [array addObjectsFromArray:children3];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -1087,8 +1087,8 @@ LABEL_26:
             [v23 topLeft];
             v25 = v24;
             v27 = v26;
-            v28 = [(CRTrackedRegionGroup *)v8 boundingQuad];
-            [v28 baselineAngle];
+            boundingQuad = [(CRTrackedRegionGroup *)selfCopy boundingQuad];
+            [boundingQuad baselineAngle];
             rotatedPointAroundPoint(v25, v27, v16, v17, v29);
             v31 = v30;
 
@@ -1111,7 +1111,7 @@ LABEL_26:
 
           while (v11 != v20);
           v12 = v11 + v222;
-          v11 = [v9 countByEnumeratingWithState:&v230 objects:v235 count:16];
+          v11 = [children2 countByEnumeratingWithState:&v230 objects:v235 count:16];
         }
 
         while (v11);
@@ -1123,9 +1123,9 @@ LABEL_26:
         v13 = 0;
       }
 
-      v33 = v8;
-      isTextLeftJustified = v8->_isTextLeftJustified;
-      isTextRightJustified = v8->_isTextRightJustified;
+      v33 = selfCopy;
+      isTextLeftJustified = selfCopy->_isTextLeftJustified;
+      isTextRightJustified = selfCopy->_isTextRightJustified;
       if (!isTextLeftJustified && !isTextRightJustified)
       {
         v7 = 0;
@@ -1134,83 +1134,83 @@ LABEL_65:
         goto LABEL_23;
       }
 
-      v36 = [(CRTrackedRegionGroup *)v33 children];
-      v37 = [v36 objectAtIndexedSubscript:v14];
-      v38 = [v37 boundingQuad];
-      v39 = [v38 denormalizedQuad];
-      [v39 topLeft];
+      children4 = [(CRTrackedRegionGroup *)v33 children];
+      v37 = [children4 objectAtIndexedSubscript:v14];
+      boundingQuad2 = [v37 boundingQuad];
+      denormalizedQuad = [boundingQuad2 denormalizedQuad];
+      [denormalizedQuad topLeft];
       v41 = v40;
       v43 = v42;
 
-      v44 = [(CRTrackedRegionGroup *)v33 children];
-      v45 = [v44 objectAtIndexedSubscript:v14];
-      v46 = [v45 boundingQuad];
-      v47 = [v46 denormalizedQuad];
-      [v47 topRight];
+      children5 = [(CRTrackedRegionGroup *)v33 children];
+      v45 = [children5 objectAtIndexedSubscript:v14];
+      boundingQuad3 = [v45 boundingQuad];
+      denormalizedQuad2 = [boundingQuad3 denormalizedQuad];
+      [denormalizedQuad2 topRight];
       v217 = v48;
       v215 = v49;
 
-      v50 = [(CRTrackedRegionGroup *)v33 children];
-      v51 = [v50 objectAtIndexedSubscript:v13];
-      v52 = [v51 boundingQuad];
-      v53 = [v52 denormalizedQuad];
-      [v53 bottomLeft];
+      children6 = [(CRTrackedRegionGroup *)v33 children];
+      v51 = [children6 objectAtIndexedSubscript:v13];
+      boundingQuad4 = [v51 boundingQuad];
+      denormalizedQuad3 = [boundingQuad4 denormalizedQuad];
+      [denormalizedQuad3 bottomLeft];
       v55 = v54;
       v57 = v56;
 
-      v58 = [(CRTrackedRegionGroup *)v33 children];
-      v59 = [v58 objectAtIndexedSubscript:v13];
-      v60 = [v59 boundingQuad];
-      v61 = [v60 denormalizedQuad];
-      [v61 bottomRight];
+      children7 = [(CRTrackedRegionGroup *)v33 children];
+      v59 = [children7 objectAtIndexedSubscript:v13];
+      boundingQuad5 = [v59 boundingQuad];
+      denormalizedQuad4 = [boundingQuad5 denormalizedQuad];
+      [denormalizedQuad4 bottomRight];
       v63 = v62;
       v65 = v64;
 
-      v66 = [(CRTrackedRegionGroup *)v33 children];
-      v67 = [v66 objectAtIndexedSubscript:v14];
+      children8 = [(CRTrackedRegionGroup *)v33 children];
+      v67 = [children8 objectAtIndexedSubscript:v14];
       objc_opt_class();
-      LOBYTE(v60) = objc_opt_isKindOfClass();
+      LOBYTE(boundingQuad5) = objc_opt_isKindOfClass();
 
-      if (v60)
+      if (boundingQuad5)
       {
-        v68 = [(CRTrackedRegionGroup *)v33 children];
-        v69 = [v68 objectAtIndexedSubscript:v14];
-        v70 = [v69 topBottomEdgesQuad];
-        v71 = [v70 denormalizedQuad];
-        [v71 topLeft];
+        children9 = [(CRTrackedRegionGroup *)v33 children];
+        v69 = [children9 objectAtIndexedSubscript:v14];
+        topBottomEdgesQuad = [v69 topBottomEdgesQuad];
+        denormalizedQuad5 = [topBottomEdgesQuad denormalizedQuad];
+        [denormalizedQuad5 topLeft];
         v41 = v72;
         v43 = v73;
 
-        v74 = [(CRTrackedRegionGroup *)v33 children];
-        v75 = [v74 objectAtIndexedSubscript:v14];
-        v76 = [v75 topBottomEdgesQuad];
-        v77 = [v76 denormalizedQuad];
-        [v77 topRight];
+        children10 = [(CRTrackedRegionGroup *)v33 children];
+        v75 = [children10 objectAtIndexedSubscript:v14];
+        topBottomEdgesQuad2 = [v75 topBottomEdgesQuad];
+        denormalizedQuad6 = [topBottomEdgesQuad2 denormalizedQuad];
+        [denormalizedQuad6 topRight];
         v217 = v78;
         v215 = v79;
       }
 
-      v80 = [(CRTrackedRegionGroup *)v33 children];
-      v81 = [v80 objectAtIndexedSubscript:v13];
+      children11 = [(CRTrackedRegionGroup *)v33 children];
+      v81 = [children11 objectAtIndexedSubscript:v13];
       objc_opt_class();
       v82 = objc_opt_isKindOfClass();
 
       v219 = v43;
       if (v82)
       {
-        v83 = [(CRTrackedRegionGroup *)v33 children];
-        v84 = [v83 objectAtIndexedSubscript:v13];
-        v85 = [v84 topBottomEdgesQuad];
-        v86 = [v85 denormalizedQuad];
-        [v86 bottomLeft];
+        children12 = [(CRTrackedRegionGroup *)v33 children];
+        v84 = [children12 objectAtIndexedSubscript:v13];
+        topBottomEdgesQuad3 = [v84 topBottomEdgesQuad];
+        denormalizedQuad7 = [topBottomEdgesQuad3 denormalizedQuad];
+        [denormalizedQuad7 bottomLeft];
         v55 = v87;
         v57 = v88;
 
-        v89 = [(CRTrackedRegionGroup *)v33 children];
-        v90 = [v89 objectAtIndexedSubscript:v13];
-        v91 = [v90 topBottomEdgesQuad];
-        v92 = [v91 denormalizedQuad];
-        [v92 bottomRight];
+        children13 = [(CRTrackedRegionGroup *)v33 children];
+        v90 = [children13 objectAtIndexedSubscript:v13];
+        topBottomEdgesQuad4 = [v90 topBottomEdgesQuad];
+        denormalizedQuad8 = [topBottomEdgesQuad4 denormalizedQuad];
+        [denormalizedQuad8 bottomRight];
         v94 = v93;
         v213 = v95;
       }
@@ -1222,13 +1222,13 @@ LABEL_65:
       }
 
       v96 = MEMORY[0x1E695EFF8];
-      v97 = [(CRTrackedRegionGroup *)v33 children];
-      v98 = [v97 objectAtIndexedSubscript:v14];
+      children14 = [(CRTrackedRegionGroup *)v33 children];
+      v98 = [children14 objectAtIndexedSubscript:v14];
       [v98 baselineAngle];
       v100 = v99;
 
-      v101 = [(CRTrackedRegionGroup *)v33 children];
-      v102 = [v101 objectAtIndexedSubscript:v13];
+      children15 = [(CRTrackedRegionGroup *)v33 children];
+      v102 = [children15 objectAtIndexedSubscript:v13];
       [v102 baselineAngle];
       v104 = v103;
 
@@ -1266,8 +1266,8 @@ LABEL_47:
           v229 = 0u;
           v226 = 0u;
           v227 = 0u;
-          v133 = [(CRTrackedRegionGroup *)v33 children];
-          v134 = [v133 countByEnumeratingWithState:&v226 objects:v234 count:16];
+          children16 = [(CRTrackedRegionGroup *)v33 children];
+          v134 = [children16 countByEnumeratingWithState:&v226 objects:v234 count:16];
           if (v134)
           {
             v135 = v134;
@@ -1289,21 +1289,21 @@ LABEL_47:
               {
                 if (*v227 != v136)
                 {
-                  objc_enumerationMutation(v133);
+                  objc_enumerationMutation(children16);
                 }
 
-                v145 = [*(*(&v226 + 1) + 8 * i) boundingQuad];
-                v146 = [v145 denormalizedQuad];
+                boundingQuad6 = [*(*(&v226 + 1) + 8 * i) boundingQuad];
+                denormalizedQuad9 = [boundingQuad6 denormalizedQuad];
                 *&v147 = v140;
-                v148 = [v146 rotatedAroundPoint:v223 angle:{v109, v147}];
+                v148 = [denormalizedQuad9 rotatedAroundPoint:v223 angle:{v109, v147}];
 
                 [v148 topLeft];
                 if (v149 < v137)
                 {
                   [v148 topLeft];
                   v137 = v150;
-                  v151 = [v145 denormalizedQuad];
-                  [v151 topLeft];
+                  denormalizedQuad10 = [boundingQuad6 denormalizedQuad];
+                  [denormalizedQuad10 topLeft];
                   v143 = v152;
                   v119 = v153;
                 }
@@ -1313,8 +1313,8 @@ LABEL_47:
                 {
                   [v148 bottomLeft];
                   v137 = v155;
-                  v156 = [v145 denormalizedQuad];
-                  [v156 bottomLeft];
+                  denormalizedQuad11 = [boundingQuad6 denormalizedQuad];
+                  [denormalizedQuad11 bottomLeft];
                   v143 = v157;
                   v119 = v158;
                 }
@@ -1324,8 +1324,8 @@ LABEL_47:
                 {
                   [v148 topRight];
                   v139 = v160;
-                  v161 = [v145 denormalizedQuad];
-                  [v161 topRight];
+                  denormalizedQuad12 = [boundingQuad6 denormalizedQuad];
+                  [denormalizedQuad12 topRight];
                   v142 = v162;
                   v141 = v163;
                 }
@@ -1335,14 +1335,14 @@ LABEL_47:
                 {
                   [v148 bottomRight];
                   v139 = v165;
-                  v166 = [v145 denormalizedQuad];
-                  [v166 bottomRight];
+                  denormalizedQuad13 = [boundingQuad6 denormalizedQuad];
+                  [denormalizedQuad13 bottomRight];
                   v142 = v167;
                   v141 = v168;
                 }
               }
 
-              v135 = [v133 countByEnumeratingWithState:&v226 objects:v234 count:16];
+              v135 = [children16 countByEnumeratingWithState:&v226 objects:v234 count:16];
             }
 
             while (v135);
@@ -1359,16 +1359,16 @@ LABEL_47:
             v143 = v123;
           }
 
-          v169 = [[CRImageSpaceQuad alloc] initWithTopLeft:v126 topRight:v128 bottomRight:v217 bottomLeft:v215, v205, v213, v129, v130];
+          v130 = [[CRImageSpaceQuad alloc] initWithTopLeft:v126 topRight:v128 bottomRight:v217 bottomLeft:v215, v205, v213, v129, v130];
           v170 = [[CRImageSpaceQuad alloc] initWithBoundingBox:0.0, 0.0, 1.0, 1.0];
-          [(CRImageSpaceQuad *)v169 homographyFromSelfToQuad:v170];
+          [(CRImageSpaceQuad *)v130 homographyFromSelfToQuad:v170];
           v171.i32[3] = 0;
           v172.i32[3] = 0;
           v214 = v172;
           v216 = v171;
           v173.i32[3] = 0;
           v212 = v173;
-          [(CRImageSpaceQuad *)v170 homographyFromSelfToQuad:v169];
+          [(CRImageSpaceQuad *)v170 homographyFromSelfToQuad:v130];
           v174.i32[3] = 0;
           v175.i32[3] = 0;
           v221 = v175;
@@ -1389,10 +1389,10 @@ LABEL_47:
           v194 = v193;
           [(CRImageSpaceQuad *)v179 bottomRight];
           v197 = applyHomographyMatrix(v224, v221, v218, v195, v196);
-          v199 = [[CRImageSpaceQuad alloc] initWithTopLeft:v182 topRight:v184 bottomRight:v187 bottomLeft:v189, v197, v198, v192, v194];
-          v200 = [(CRTrackedRegionGroup *)v33 boundingQuad];
-          [v200 normalizationSize];
-          v7 = [(CRImageSpaceQuad *)v199 normalizedQuadForImageSize:?];
+          v194 = [[CRImageSpaceQuad alloc] initWithTopLeft:v182 topRight:v184 bottomRight:v187 bottomLeft:v189, v197, v198, v192, v194];
+          boundingQuad7 = [(CRTrackedRegionGroup *)v33 boundingQuad];
+          [boundingQuad7 normalizationSize];
+          v7 = [(CRImageSpaceQuad *)v194 normalizedQuadForImageSize:?];
 
           goto LABEL_65;
         }
@@ -1450,24 +1450,24 @@ LABEL_23:
   return v7;
 }
 
-- (void)setOriginalBoundingQuad:(id)a3
+- (void)setOriginalBoundingQuad:(id)quad
 {
-  v5 = a3;
-  if (self->_originalBoundingQuad != v5)
+  quadCopy = quad;
+  if (self->_originalBoundingQuad != quadCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_originalBoundingQuad, a3);
+    v7 = quadCopy;
+    objc_storeStrong(&self->_originalBoundingQuad, quad);
     Current = CFAbsoluteTimeGetCurrent();
-    v5 = v7;
+    quadCopy = v7;
     self->_lastOriginalBoundingQuadUpdateTime = Current;
   }
 }
 
 - (void)updatePreviousAssociationQuad
 {
-  v3 = [(CRTrackedRegionGroup *)self boundingQuad];
+  boundingQuad = [(CRTrackedRegionGroup *)self boundingQuad];
   boundingQuadAtOCRDispatch = self->_boundingQuadAtOCRDispatch;
-  self->_boundingQuadAtOCRDispatch = v3;
+  self->_boundingQuadAtOCRDispatch = boundingQuad;
 
   v5 = MEMORY[0x1E69E9B10];
   v6 = *(MEMORY[0x1E69E9B10] + 16);
@@ -1478,43 +1478,43 @@ LABEL_23:
 
 - (void)updateBoundingQuadAfterOCR
 {
-  v5 = [(CRTrackedRegionGroup *)self boundingQuad];
-  v3 = [v5 denormalizedQuad];
+  boundingQuad = [(CRTrackedRegionGroup *)self boundingQuad];
+  denormalizedQuad = [boundingQuad denormalizedQuad];
   boundingQuadAfterOCR = self->_boundingQuadAfterOCR;
-  self->_boundingQuadAfterOCR = v3;
+  self->_boundingQuadAfterOCR = denormalizedQuad;
 }
 
-- (void)applyHomographyTransform:(float32x4_t)a3 downscaleRate:(float32x4_t)a4 shouldApply:(float)a5
+- (void)applyHomographyTransform:(float32x4_t)transform downscaleRate:(float32x4_t)rate shouldApply:(float)apply
 {
-  v45 = a3;
+  transformCopy = transform;
   v44 = a2;
   v58 = *MEMORY[0x1E69E9840];
   v9 = a7;
-  v10 = [a1 boundingQuad];
-  v11 = [v10 denormalizedQuad];
-  *&v12 = a5;
-  v13 = [v11 applyHomographyTransform:*v44.i64 downscaleRate:{*v45.i64, *a4.i64, v12}];
+  boundingQuad = [self boundingQuad];
+  denormalizedQuad = [boundingQuad denormalizedQuad];
+  *&v12 = apply;
+  v13 = [denormalizedQuad applyHomographyTransform:*v44.i64 downscaleRate:{*transformCopy.i64, *rate.i64, v12}];
 
-  [v10 normalizationSize];
+  [boundingQuad normalizationSize];
   if (v9[2](v9, v13))
   {
-    [v10 normalizationSize];
+    [boundingQuad normalizationSize];
     v14 = [v13 normalizedQuadForImageSize:?];
-    [a1 setBoundingQuad:v14];
+    [self setBoundingQuad:v14];
 
-    v15 = [a1 vcQuad];
-    [v15 updateWithQuad:v13];
+    vcQuad = [self vcQuad];
+    [vcQuad updateWithQuad:v13];
 
-    v16 = [a1 originalBoundingQuad];
+    originalBoundingQuad = [self originalBoundingQuad];
 
-    if (v16)
+    if (originalBoundingQuad)
     {
-      if (a4.f32[2] != 0.0)
+      if (rate.f32[2] != 0.0)
       {
         v17 = 0;
-        v18 = *(a1 + 176);
-        v19 = *(a1 + 192);
-        v51 = *(a1 + 160);
+        v18 = *(self + 176);
+        v19 = *(self + 192);
+        v51 = *(self + 160);
         v52 = v18;
         v53 = v19;
         v54 = 0u;
@@ -1522,7 +1522,7 @@ LABEL_23:
         v56 = 0u;
         do
         {
-          *(&v54 + v17) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v44, COERCE_FLOAT(*(&v51 + v17))), v45, *(&v51 + v17), 1), a4, *(&v51 + v17), 2);
+          *(&v54 + v17) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v44, COERCE_FLOAT(*(&v51 + v17))), transformCopy, *(&v51 + v17), 1), rate, *(&v51 + v17), 2);
           v17 += 16;
         }
 
@@ -1531,26 +1531,26 @@ LABEL_23:
         v21 = v54;
         v22 = v55;
         v23 = v56;
-        *(a1 + 168) = DWORD2(v54);
-        *(a1 + 160) = v21;
-        *(a1 + 184) = DWORD2(v22);
-        *(a1 + 176) = v22;
+        *(self + 168) = DWORD2(v54);
+        *(self + 160) = v21;
+        *(self + 184) = DWORD2(v22);
+        *(self + 176) = v22;
         *&v21 = 1.0 / *(&v23 + 2);
-        v24 = *(a1 + 176);
-        v25 = vmulq_n_f32(*(a1 + 160), 1.0 / *(&v23 + 2));
-        *(a1 + 168) = v25.i32[2];
-        *(a1 + 200) = DWORD2(v23);
-        *(a1 + 192) = v23;
-        *(a1 + 160) = v25.i64[0];
+        v24 = *(self + 176);
+        v25 = vmulq_n_f32(*(self + 160), 1.0 / *(&v23 + 2));
+        *(self + 168) = v25.i32[2];
+        *(self + 200) = DWORD2(v23);
+        *(self + 192) = v23;
+        *(self + 160) = v25.i64[0];
         v26 = vmulq_n_f32(v24, 1.0 / *(&v23 + 2));
-        *(a1 + 184) = v26.i32[2];
-        *(a1 + 176) = v26.i64[0];
-        v27 = *(a1 + 208);
-        v28 = vmulq_n_f32(*(a1 + 192), *&v21);
-        *(a1 + 200) = v28.i32[2];
-        *(a1 + 192) = v28.i64[0];
-        v29 = *(a1 + 224);
-        v30 = *(a1 + 240);
+        *(self + 184) = v26.i32[2];
+        *(self + 176) = v26.i64[0];
+        v27 = *(self + 208);
+        v28 = vmulq_n_f32(*(self + 192), *&v21);
+        *(self + 200) = v28.i32[2];
+        *(self + 192) = v28.i64[0];
+        v29 = *(self + 224);
+        v30 = *(self + 240);
         v51 = v27;
         v52 = v29;
         v53 = v30;
@@ -1559,7 +1559,7 @@ LABEL_23:
         v56 = 0u;
         do
         {
-          *(&v54 + v20) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v44, COERCE_FLOAT(*(&v51 + v20))), v45, *(&v51 + v20), 1), a4, *(&v51 + v20), 2);
+          *(&v54 + v20) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v44, COERCE_FLOAT(*(&v51 + v20))), transformCopy, *(&v51 + v20), 1), rate, *(&v51 + v20), 2);
           v20 += 16;
         }
 
@@ -1567,39 +1567,39 @@ LABEL_23:
         v31 = v54;
         v32 = v55;
         v33 = v56;
-        *(a1 + 216) = DWORD2(v54);
-        *(a1 + 232) = DWORD2(v32);
-        *(a1 + 208) = v31;
-        *(a1 + 224) = v32;
-        *(a1 + 248) = DWORD2(v33);
-        *(a1 + 240) = v33;
+        *(self + 216) = DWORD2(v54);
+        *(self + 232) = DWORD2(v32);
+        *(self + 208) = v31;
+        *(self + 224) = v32;
+        *(self + 248) = DWORD2(v33);
+        *(self + 240) = v33;
         *&v31 = 1.0 / *(&v33 + 2);
-        v34 = *(a1 + 240);
-        v35 = vmulq_n_f32(*(a1 + 208), 1.0 / *(&v33 + 2));
-        v36 = vmulq_n_f32(*(a1 + 224), 1.0 / *(&v33 + 2));
-        *(a1 + 216) = v35.i32[2];
-        *(a1 + 232) = v36.i32[2];
-        *(a1 + 208) = v35.i64[0];
-        *(a1 + 224) = v36.i64[0];
+        v34 = *(self + 240);
+        v35 = vmulq_n_f32(*(self + 208), 1.0 / *(&v33 + 2));
+        v36 = vmulq_n_f32(*(self + 224), 1.0 / *(&v33 + 2));
+        *(self + 216) = v35.i32[2];
+        *(self + 232) = v36.i32[2];
+        *(self + 208) = v35.i64[0];
+        *(self + 224) = v36.i64[0];
         v37 = vmulq_n_f32(v34, *&v31);
-        *(a1 + 248) = v37.i32[2];
-        *(a1 + 240) = v37.i64[0];
+        *(self + 248) = v37.i32[2];
+        *(self + 240) = v37.i64[0];
       }
     }
 
     else
     {
-      objc_storeStrong((a1 + 32), v10);
-      *(a1 + 208) = v44;
-      *(a1 + 224) = v45;
-      *(a1 + 240) = a4;
+      objc_storeStrong((self + 32), boundingQuad);
+      *(self + 208) = v44;
+      *(self + 224) = transformCopy;
+      *(self + 240) = rate;
     }
 
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v38 = *(a1 + 64);
+    v38 = *(self + 64);
     v39 = [v38 countByEnumeratingWithState:&v47 objects:v57 count:16];
     if (v39)
     {
@@ -1614,8 +1614,8 @@ LABEL_23:
             objc_enumerationMutation(v38);
           }
 
-          *&v40 = a5;
-          [*(*(&v47 + 1) + 8 * i) applyHomographyTransform:&__block_literal_global_14 downscaleRate:*v44.i64 shouldApply:{*v45.i64, *a4.i64, v40, *&v44, *&v45}];
+          *&v40 = apply;
+          [*(*(&v47 + 1) + 8 * i) applyHomographyTransform:&__block_literal_global_14 downscaleRate:*v44.i64 shouldApply:{*transformCopy.i64, *rate.i64, v40, *&v44, *&transformCopy}];
         }
 
         v41 = [v38 countByEnumeratingWithState:&v47 objects:v57 count:16];
@@ -1626,18 +1626,18 @@ LABEL_23:
   }
 }
 
-+ (id)groupsFromOutputRegions:(id)a3
++ (id)groupsFromOutputRegions:(id)regions
 {
   v98 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  regionsCopy = regions;
   v58 = objc_opt_new();
   v4 = objc_opt_new();
-  v61 = [v3 mutableCopy];
+  v61 = [regionsCopy mutableCopy];
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v3;
+  obj = regionsCopy;
   v5 = [obj countByEnumeratingWithState:&v88 objects:v97 count:16];
   if (v5)
   {
@@ -1656,8 +1656,8 @@ LABEL_23:
         }
 
         v9 = *(*(&v88 + 1) + 8 * v8);
-        v10 = [v9 trackingID];
-        v11 = [v4 objectForKey:v10];
+        trackingID = [v9 trackingID];
+        v11 = [v4 objectForKey:trackingID];
 
         if (!v11)
         {
@@ -1689,8 +1689,8 @@ LABEL_23:
                 [v18 removeObject:v17];
                 if ([v17 addGroupRegionIfValid:v9 context:v18])
                 {
-                  v22 = [v9 trackingID];
-                  [v4 setObject:v17 forKeyedSubscript:v22];
+                  trackingID2 = [v9 trackingID];
+                  [v4 setObject:v17 forKeyedSubscript:trackingID2];
 
                   [v61 removeObject:v9];
                   goto LABEL_17;
@@ -1710,9 +1710,9 @@ LABEL_23:
           v19 = [[CRTrackedRegionGroup alloc] initWithRegion:v9];
           [v12 addObject:v19];
 
-          v20 = [v12 lastObject];
-          v21 = [v9 trackingID];
-          [v4 setObject:v20 forKeyedSubscript:v21];
+          lastObject = [v12 lastObject];
+          trackingID3 = [v9 trackingID];
+          [v4 setObject:lastObject forKeyedSubscript:trackingID3];
 
           [v61 removeObject:v9];
 LABEL_17:
@@ -1757,8 +1757,8 @@ LABEL_17:
       v28 = *(*(&v80 + 1) + 8 * j);
       if ([v28 numberOfLines] <= 1)
       {
-        v29 = [v28 children];
-        if ([v29 count] <= 1)
+        children = [v28 children];
+        if ([children count] <= 1)
         {
 
           if (!v28)
@@ -1771,11 +1771,11 @@ LABEL_33:
           continue;
         }
 
-        v30 = [v28 isInlineGroup];
+        isInlineGroup = [v28 isInlineGroup];
 
         if (v28)
         {
-          v31 = v30 == 0;
+          v31 = isInlineGroup == 0;
         }
 
         else
@@ -1822,8 +1822,8 @@ LABEL_36:
         v37 = *(*(&v76 + 1) + 8 * v36);
         if ([v37 isInlineGroup])
         {
-          v38 = [v37 children];
-          v39 = [v38 count];
+          children2 = [v37 children];
+          v39 = [children2 count];
 
           if (v39 <= 1)
           {
@@ -1850,8 +1850,8 @@ LABEL_36:
                   }
 
                   v45 = *(*(&v72 + 1) + 8 * k);
-                  v46 = [v45 isInlineGroup];
-                  v47 = v37 == v45 || v46 == 0;
+                  isInlineGroup2 = [v45 isInlineGroup];
+                  v47 = v37 == v45 || isInlineGroup2 == 0;
                   if (!v47 && [v45 addInlineGroupIfValid:v37])
                   {
                     [v63 addObject:v37];
@@ -1859,8 +1859,8 @@ LABEL_36:
                     v71 = 0u;
                     v68 = 0u;
                     v69 = 0u;
-                    v48 = [v37 children];
-                    v49 = [v48 countByEnumeratingWithState:&v68 objects:v92 count:16];
+                    children3 = [v37 children];
+                    v49 = [children3 countByEnumeratingWithState:&v68 objects:v92 count:16];
                     if (v49)
                     {
                       v50 = v49;
@@ -1871,14 +1871,14 @@ LABEL_36:
                         {
                           if (*v69 != v51)
                           {
-                            objc_enumerationMutation(v48);
+                            objc_enumerationMutation(children3);
                           }
 
-                          v53 = [*(*(&v68 + 1) + 8 * m) trackingID];
-                          [v4 setObject:v45 forKeyedSubscript:v53];
+                          trackingID4 = [*(*(&v68 + 1) + 8 * m) trackingID];
+                          [v4 setObject:v45 forKeyedSubscript:trackingID4];
                         }
 
-                        v50 = [v48 countByEnumeratingWithState:&v68 objects:v92 count:16];
+                        v50 = [children3 countByEnumeratingWithState:&v68 objects:v92 count:16];
                       }
 
                       while (v50);
@@ -1925,8 +1925,8 @@ LABEL_36:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CRTrackedRegionGroup *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  children = [(CRTrackedRegionGroup *)self children];
+  v5 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1937,14 +1937,14 @@ LABEL_36:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) text];
-        [v3 appendFormat:@"  %@\n", v9];
+        text = [*(*(&v12 + 1) + 8 * i) text];
+        [v3 appendFormat:@"  %@\n", text];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1956,12 +1956,12 @@ LABEL_36:
   return v10;
 }
 
-- (void)setBoundingQuadHomography:(__n128)a3
+- (void)setBoundingQuadHomography:(__n128)homography
 {
   v4[0] = a2;
-  v4[1] = a3;
+  v4[1] = homography;
   v4[2] = a4;
-  objc_copyStruct((a1 + 208), v4, 48, 1, 0);
+  objc_copyStruct((self + 208), v4, 48, 1, 0);
 }
 
 @end

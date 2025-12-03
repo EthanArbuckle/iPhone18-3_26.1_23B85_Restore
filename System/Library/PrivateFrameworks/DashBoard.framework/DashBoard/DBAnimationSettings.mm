@@ -7,7 +7,7 @@
 - (UIView)toView;
 - (_TtC9DashBoard19DBAnimationSettings)init;
 - (double)dbCornerRadius;
-- (void)setDbCornerRadius:(double)a3;
+- (void)setDbCornerRadius:(double)radius;
 @end
 
 @implementation DBAnimationSettings
@@ -61,11 +61,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDbCornerRadius:(double)a3
+- (void)setDbCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC9DashBoard19DBAnimationSettings_dbCornerRadius;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = radius;
 }
 
 - (_TtC9DashBoard19DBAnimationSettings)init

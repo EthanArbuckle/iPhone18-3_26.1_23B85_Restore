@@ -9,15 +9,15 @@
   v5.receiver = self;
   v5.super_class = PXFeedSubscriptionSectionInfo;
   [(PXFeedAssetsSectionInfo *)&v5 updateFromCloudFeedEntry];
-  v3 = [(PXFeedSectionInfo *)self sharedAlbum];
+  sharedAlbum = [(PXFeedSectionInfo *)self sharedAlbum];
 
-  if (!v3)
+  if (!sharedAlbum)
   {
-    v4 = [(PXFeedSectionInfo *)self cloudFeedEntry];
-    NSLog(&cfstr_NoSharedAlbumF_0.isa, self, v4);
+    cloudFeedEntry = [(PXFeedSectionInfo *)self cloudFeedEntry];
+    NSLog(&cfstr_NoSharedAlbumF_0.isa, self, cloudFeedEntry);
   }
 
-  [(PXFeedSectionInfo *)self setShouldBeVisibleWhenEmpty:v3 != 0];
+  [(PXFeedSectionInfo *)self setShouldBeVisibleWhenEmpty:sharedAlbum != 0];
 }
 
 @end

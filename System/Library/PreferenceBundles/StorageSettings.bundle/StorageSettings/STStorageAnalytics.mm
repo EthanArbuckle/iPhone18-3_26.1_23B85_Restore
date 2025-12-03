@@ -1,8 +1,8 @@
 @interface STStorageAnalytics
 + (id)sharedInstance;
-- (void)sendAnalyticsEventActionWithType:(int64_t)a3 andActionSize:(id)a4;
-- (void)sendAnalyticsEventExitWithOtherSize:(int64_t)a3;
-- (void)sendAnalyticsEventLaunchWithBarData:(id)a3 otherSize:(int64_t)a4 andAppsCount:(int64_t)a5;
+- (void)sendAnalyticsEventActionWithType:(int64_t)type andActionSize:(id)size;
+- (void)sendAnalyticsEventExitWithOtherSize:(int64_t)size;
+- (void)sendAnalyticsEventLaunchWithBarData:(id)data otherSize:(int64_t)size andAppsCount:(int64_t)count;
 - (void)trackDisplayCalculating;
 - (void)trackDisplayEnd;
 - (void)trackDisplayStart;
@@ -24,62 +24,62 @@
 
 - (void)trackDisplayStart
 {
-  v3 = [(STStorageAnalytics *)self dateDisplayStart];
+  dateDisplayStart = [(STStorageAnalytics *)self dateDisplayStart];
 
-  if (!v3)
+  if (!dateDisplayStart)
   {
     v4 = +[NSDate date];
     [(STStorageAnalytics *)self setDateDisplayStart:v4];
 
-    v5 = [(STStorageAnalytics *)self dateDisplayStart];
+    dateDisplayStart2 = [(STStorageAnalytics *)self dateDisplayStart];
     STLog();
   }
 }
 
 - (void)trackDisplayCalculating
 {
-  v3 = [(STStorageAnalytics *)self dateDisplayCalculating];
+  dateDisplayCalculating = [(STStorageAnalytics *)self dateDisplayCalculating];
 
-  if (!v3)
+  if (!dateDisplayCalculating)
   {
     v4 = +[NSDate date];
     [(STStorageAnalytics *)self setDateDisplayCalculating:v4];
 
-    v5 = [(STStorageAnalytics *)self dateDisplayCalculating];
+    dateDisplayCalculating2 = [(STStorageAnalytics *)self dateDisplayCalculating];
     STLog();
   }
 }
 
 - (void)trackDisplayEnd
 {
-  v3 = [(STStorageAnalytics *)self dateDisplayEnd];
+  dateDisplayEnd = [(STStorageAnalytics *)self dateDisplayEnd];
 
-  if (!v3)
+  if (!dateDisplayEnd)
   {
     v4 = +[NSDate date];
     [(STStorageAnalytics *)self setDateDisplayEnd:v4];
 
-    v5 = [(STStorageAnalytics *)self dateDisplayEnd];
+    dateDisplayEnd2 = [(STStorageAnalytics *)self dateDisplayEnd];
     STLog();
   }
 }
 
-- (void)sendAnalyticsEventLaunchWithBarData:(id)a3 otherSize:(int64_t)a4 andAppsCount:(int64_t)a5
+- (void)sendAnalyticsEventLaunchWithBarData:(id)data otherSize:(int64_t)size andAppsCount:(int64_t)count
 {
-  v7 = a3;
+  dataCopy = data;
   if (![(STStorageAnalytics *)self lauchEventDidSend])
   {
     [(STStorageAnalytics *)self setLauchEventDidSend:1];
     v8 = +[STStorageDiskMonitor sharedMonitor];
-    v94 = [v8 storageSpace];
-    v72 = v7;
-    v9 = [v7 categories];
+    storageSpace = [v8 storageSpace];
+    v72 = dataCopy;
+    categories = [dataCopy categories];
     v10 = objc_opt_new();
     v110 = 0u;
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v11 = v9;
+    v11 = categories;
     v12 = [v11 countByEnumeratingWithState:&v110 objects:v114 count:16];
     if (v12)
     {
@@ -95,12 +95,12 @@
           }
 
           v16 = *(*(&v110 + 1) + 8 * i);
-          v17 = [v16 identifier];
+          identifier = [v16 identifier];
 
-          if (v17)
+          if (identifier)
           {
-            v18 = [v16 identifier];
-            [v10 setObject:v16 forKeyedSubscript:v18];
+            identifier2 = [v16 identifier];
+            [v10 setObject:v16 forKeyedSubscript:identifier2];
           }
         }
 
@@ -111,7 +111,7 @@
     }
 
     v19 = +[STStorageMediaMonitor sharedMonitor];
-    v20 = [v19 atcDictionary];
+    atcDictionary = [v19 atcDictionary];
 
     [(NSDate *)self->_dateDisplayCalculating timeIntervalSinceDate:self->_dateDisplayStart];
     v93 = [NSNumber numberWithDouble:?];
@@ -119,11 +119,11 @@
     v92 = [NSNumber numberWithDouble:?];
     +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v8 deviceSize]);
     v21 = v71 = v8;
-    v91 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v94 usedBytes]);
+    v91 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [storageSpace usedBytes]);
     v90 = STStorageComputePercentage();
-    v89 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v94 purgeableBytes]);
+    v89 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [storageSpace purgeableBytes]);
     v88 = STStorageComputePercentage();
-    v87 = [NSNumber numberWithLongLong:a4];
+    v87 = [NSNumber numberWithLongLong:size];
     v85 = STStorageComputePercentage();
     v22 = [v10 objectForKeyedSubscript:STCategoryMediaKey];
     v83 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v22 bytes]);
@@ -147,7 +147,7 @@
     v27 = v21;
     v56 = v21;
     v63 = STStorageComputePercentage();
-    v28 = [v20 objectForKeyedSubscript:@"Photo"];
+    v28 = [atcDictionary objectForKeyedSubscript:@"Photo"];
     v29 = [v28 objectForKeyedSubscript:@"CameraRoll"];
     v30 = [v29 objectForKeyedSubscript:@"_Count"];
     v31 = v30;
@@ -163,9 +163,9 @@
 
     v67 = v32;
 
-    v33 = v20;
-    v69 = v20;
-    v34 = [v20 objectForKeyedSubscript:@"Media"];
+    v33 = atcDictionary;
+    v69 = atcDictionary;
+    v34 = [atcDictionary objectForKeyedSubscript:@"Media"];
     v35 = [v34 objectForKeyedSubscript:@"Podcast"];
     v36 = [v35 objectForKeyedSubscript:@"_Count"];
     v37 = v36;
@@ -240,33 +240,33 @@
     v54 = v93;
     AnalyticsSendEventLazy();
 
-    v7 = v72;
+    dataCopy = v72;
   }
 }
 
-- (void)sendAnalyticsEventActionWithType:(int64_t)a3 andActionSize:(id)a4
+- (void)sendAnalyticsEventActionWithType:(int64_t)type andActionSize:(id)size
 {
-  v4 = a4;
+  sizeCopy = size;
   v8 = +[STStorageDiskMonitor sharedMonitor];
-  v7 = v4;
+  v7 = sizeCopy;
   v5 = v8;
-  v6 = v4;
+  v6 = sizeCopy;
   AnalyticsSendEventLazy();
   STLog();
 }
 
-- (void)sendAnalyticsEventExitWithOtherSize:(int64_t)a3
+- (void)sendAnalyticsEventExitWithOtherSize:(int64_t)size
 {
   v5 = +[STStorageDiskMonitor sharedMonitor];
   v30 = v5;
-  v6 = [v5 storageSpace];
+  storageSpace = [v5 storageSpace];
   v31 = +[NSDate date];
   [v31 timeIntervalSinceDate:self->_dateDisplayStart];
   v28 = [NSNumber numberWithDouble:?];
   v7 = +[STStorageMediaMonitor sharedMonitor];
-  v8 = [v7 isAsynchronouslyLoaded];
+  isAsynchronouslyLoaded = [v7 isAsynchronouslyLoaded];
 
-  if (v8)
+  if (isAsynchronouslyLoaded)
   {
     v9 = &off_2FEC8;
   }
@@ -277,12 +277,12 @@
   }
 
   v10 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v5 deviceSize]);
-  v29 = v6;
-  v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 usedBytes]);
+  v29 = storageSpace;
+  v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [storageSpace usedBytes]);
   v12 = STStorageComputePercentage();
-  v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 purgeableBytes]);
+  v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [storageSpace purgeableBytes]);
   v14 = STStorageComputePercentage();
-  v15 = [NSNumber numberWithLongLong:a3];
+  v15 = [NSNumber numberWithLongLong:size];
   v16 = STStorageComputePercentage();
   v17 = +[CacheDeleteVolume rootVolume];
   v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v17 state]);

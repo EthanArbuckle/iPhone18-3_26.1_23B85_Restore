@@ -1,75 +1,75 @@
 @interface InternalBiomeXPC.Server
-- (void)viewClearAllDataWithViewQuery:(GDViewQuery *)a3 completion:(id)a4;
-- (void)viewDumpStateWithCompletion:(id)a3;
-- (void)viewRunUpdateWithViewQuery:(GDViewQuery *)a3 forceRebuild:(BOOL)a4 priorityOverride:(NSNumber *)a5 completion:(id)a6;
-- (void)viewSetEnabledWithName:(NSString *)a3 enabled:(BOOL)a4 completion:(id)a5;
-- (void)viewValidateWithViewQuery:(GDViewQuery *)a3 applyFixes:(BOOL)a4 verbose:(int64_t)a5 completion:(id)a6;
+- (void)viewClearAllDataWithViewQuery:(GDViewQuery *)query completion:(id)completion;
+- (void)viewDumpStateWithCompletion:(id)completion;
+- (void)viewRunUpdateWithViewQuery:(GDViewQuery *)query forceRebuild:(BOOL)rebuild priorityOverride:(NSNumber *)override completion:(id)completion;
+- (void)viewSetEnabledWithName:(NSString *)name enabled:(BOOL)enabled completion:(id)completion;
+- (void)viewValidateWithViewQuery:(GDViewQuery *)query applyFixes:(BOOL)fixes verbose:(int64_t)verbose completion:(id)completion;
 @end
 
 @implementation InternalBiomeXPC.Server
 
-- (void)viewRunUpdateWithViewQuery:(GDViewQuery *)a3 forceRebuild:(BOOL)a4 priorityOverride:(NSNumber *)a5 completion:(id)a6
+- (void)viewRunUpdateWithViewQuery:(GDViewQuery *)query forceRebuild:(BOOL)rebuild priorityOverride:(NSNumber *)override completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
-  *(v11 + 24) = a4;
-  *(v11 + 32) = a5;
+  *(v11 + 16) = query;
+  *(v11 + 24) = rebuild;
+  *(v11 + 32) = override;
   *(v11 + 40) = v10;
   *(v11 + 48) = self;
-  v12 = a3;
-  v13 = a5;
-  v14 = self;
+  queryCopy = query;
+  overrideCopy = override;
+  selfCopy = self;
 
   sub_1C446D134(&unk_1C4F3D700, v11);
 }
 
-- (void)viewClearAllDataWithViewQuery:(GDViewQuery *)a3 completion:(id)a4
+- (void)viewClearAllDataWithViewQuery:(GDViewQuery *)query completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = query;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  queryCopy = query;
+  selfCopy = self;
 
   sub_1C446D134(&unk_1C4F3D6F0, v7);
 }
 
-- (void)viewValidateWithViewQuery:(GDViewQuery *)a3 applyFixes:(BOOL)a4 verbose:(int64_t)a5 completion:(id)a6
+- (void)viewValidateWithViewQuery:(GDViewQuery *)query applyFixes:(BOOL)fixes verbose:(int64_t)verbose completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
-  *(v11 + 24) = a4;
-  *(v11 + 32) = a5;
+  *(v11 + 16) = query;
+  *(v11 + 24) = fixes;
+  *(v11 + 32) = verbose;
   *(v11 + 40) = v10;
   *(v11 + 48) = self;
-  v12 = a3;
-  v13 = self;
+  queryCopy = query;
+  selfCopy = self;
 
   sub_1C446D134(&unk_1C4F3D6E0, v11);
 }
 
-- (void)viewDumpStateWithCompletion:(id)a3
+- (void)viewDumpStateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   InternalBiomeXPC.Server.viewDumpState(completion:)(sub_1C47880C0);
 }
 
-- (void)viewSetEnabledWithName:(NSString *)a3 enabled:(BOOL)a4 completion:(id)a5
+- (void)viewSetEnabledWithName:(NSString *)name enabled:(BOOL)enabled completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
-  *(v9 + 16) = a3;
-  *(v9 + 24) = a4;
+  *(v9 + 16) = name;
+  *(v9 + 24) = enabled;
   *(v9 + 32) = v8;
   *(v9 + 40) = self;
-  v10 = a3;
-  v11 = self;
+  nameCopy = name;
+  selfCopy = self;
 
   sub_1C446D134(&unk_1C4F3D6C0, v9);
 }

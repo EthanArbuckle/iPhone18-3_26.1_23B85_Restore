@@ -1,21 +1,21 @@
 @interface CHTransliterateUnmatchedConfusablesStep
-- (BOOL)doesTransliterateAtIndexResolveUnmatchingCase:(id)a3 atIndex:(int64_t)a4 withString:(id)a5 unmatchingCase:(int)a6 shouldForceLocaleFormatNumber:(BOOL)a7;
-- (BOOL)updateUnmatchingSymbol:(id)a3 unmatchingType:(int)a4 mode:(id)a5 shouldForceLocaleFormatNumber:(BOOL)a6 outUpdatedPathTokens:(id)a7;
-- (CHTransliterateUnmatchedConfusablesStep)initWithCodemap:(id)a3;
-- (id)process:(id)a3 options:(id)a4;
+- (BOOL)doesTransliterateAtIndexResolveUnmatchingCase:(id)case atIndex:(int64_t)index withString:(id)string unmatchingCase:(int)unmatchingCase shouldForceLocaleFormatNumber:(BOOL)number;
+- (BOOL)updateUnmatchingSymbol:(id)symbol unmatchingType:(int)type mode:(id)mode shouldForceLocaleFormatNumber:(BOOL)number outUpdatedPathTokens:(id)tokens;
+- (CHTransliterateUnmatchedConfusablesStep)initWithCodemap:(id)codemap;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHTransliterateUnmatchedConfusablesStep
 
-- (CHTransliterateUnmatchedConfusablesStep)initWithCodemap:(id)a3
+- (CHTransliterateUnmatchedConfusablesStep)initWithCodemap:(id)codemap
 {
-  v4 = a3;
+  codemapCopy = codemap;
   v16.receiver = self;
   v16.super_class = CHTransliterateUnmatchedConfusablesStep;
   v9 = [(CHTransliterateUnmatchedConfusablesStep *)&v16 init];
   if (v9)
   {
-    objc_msgSend_createLatexHelperFromMathCodemap_(CHMathPostProcessingManager, v5, v4, v6, v7, v8);
+    objc_msgSend_createLatexHelperFromMathCodemap_(CHMathPostProcessingManager, v5, codemapCopy, v6, v7, v8);
     ptr = v9->latexHelper.__ptr_;
     v9->latexHelper.__ptr_ = v15;
     if (ptr)
@@ -34,16 +34,16 @@
   return v9;
 }
 
-- (BOOL)doesTransliterateAtIndexResolveUnmatchingCase:(id)a3 atIndex:(int64_t)a4 withString:(id)a5 unmatchingCase:(int)a6 shouldForceLocaleFormatNumber:(BOOL)a7
+- (BOOL)doesTransliterateAtIndexResolveUnmatchingCase:(id)case atIndex:(int64_t)index withString:(id)string unmatchingCase:(int)unmatchingCase shouldForceLocaleFormatNumber:(BOOL)number
 {
-  v50 = a7;
-  v11 = a3;
-  v51 = a5;
-  v17 = objc_msgSend_mutableCopy(v11, v12, v13, v14, v15, v16);
-  v22 = objc_msgSend_objectAtIndexedSubscript_(v11, v18, a4, v19, v20, v21);
-  v26 = objc_msgSend_updatedToken_withString_(CHTokenizedMathResultToken, v23, v22, v51, v24, v25);
+  numberCopy = number;
+  caseCopy = case;
+  stringCopy = string;
+  v17 = objc_msgSend_mutableCopy(caseCopy, v12, v13, v14, v15, v16);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(caseCopy, v18, index, v19, v20, v21);
+  v26 = objc_msgSend_updatedToken_withString_(CHTokenizedMathResultToken, v23, v22, stringCopy, v24, v25);
 
-  objc_msgSend_setObject_atIndexedSubscript_(v17, v27, v26, a4, v28, v29);
+  objc_msgSend_setObject_atIndexedSubscript_(v17, v27, v26, index, v28, v29);
   v33 = objc_msgSend_concatenateTokensIntoTranscription_tokenSeparator_(CHMathPostProcessingManager, v30, v17, @" ", v31, v32);
   ptr = self->latexHelper.__ptr_;
   v35 = v33;
@@ -91,23 +91,23 @@
   v47 = v45;
   do
   {
-    if (*(v47 + 8) >= a6)
+    if (*(v47 + 8) >= unmatchingCase)
     {
       v46 = v47;
     }
 
-    v47 = *&v47[8 * (*(v47 + 8) < a6)];
+    v47 = *&v47[8 * (*(v47 + 8) < unmatchingCase)];
   }
 
   while (v47);
-  if (v46 != v55 && *(v46 + 8) <= a6)
+  if (v46 != v55 && *(v46 + 8) <= unmatchingCase)
   {
     isTranscriptionValidExpression_limitToCurrentLocale_declaredVariables = 0;
     goto LABEL_18;
   }
 
 LABEL_17:
-  isTranscriptionValidExpression_limitToCurrentLocale_declaredVariables = objc_msgSend_isTranscriptionValidExpression_limitToCurrentLocale_declaredVariables_(CHTokenizedMathResult, v45, v17, v50, 0, v44);
+  isTranscriptionValidExpression_limitToCurrentLocale_declaredVariables = objc_msgSend_isTranscriptionValidExpression_limitToCurrentLocale_declaredVariables_(CHTokenizedMathResult, v45, v17, numberCopy, 0, v44);
   v45 = v55[0];
 LABEL_18:
   sub_18368A374(&v54, v45);
@@ -115,14 +115,14 @@ LABEL_18:
   return isTranscriptionValidExpression_limitToCurrentLocale_declaredVariables;
 }
 
-- (BOOL)updateUnmatchingSymbol:(id)a3 unmatchingType:(int)a4 mode:(id)a5 shouldForceLocaleFormatNumber:(BOOL)a6 outUpdatedPathTokens:(id)a7
+- (BOOL)updateUnmatchingSymbol:(id)symbol unmatchingType:(int)type mode:(id)mode shouldForceLocaleFormatNumber:(BOOL)number outUpdatedPathTokens:(id)tokens
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v32 = a5;
-  v31 = a7;
-  v34 = v10;
-  v14 = objc_msgSend_concatenateTokensIntoTranscription_tokenSeparator_(CHMathPostProcessingManager, v11, v10, @" ", v12, v13);
+  symbolCopy = symbol;
+  modeCopy = mode;
+  tokensCopy = tokens;
+  v34 = symbolCopy;
+  v14 = objc_msgSend_concatenateTokensIntoTranscription_tokenSeparator_(CHMathPostProcessingManager, v11, symbolCopy, @" ", v12, v13);
   ptr = self->latexHelper.__ptr_;
   v30 = v14;
   v21 = objc_msgSend_UTF8String(v30, v16, v17, v18, v19, v20);
@@ -169,16 +169,16 @@ LABEL_18:
   v26 = v24;
   do
   {
-    if (*(v26 + 8) >= a4)
+    if (*(v26 + 8) >= type)
     {
       v25 = v26;
     }
 
-    v26 = v26[*(v26 + 8) < a4];
+    v26 = v26[*(v26 + 8) < type];
   }
 
   while (v26);
-  if (v25 != v36 && *(v25 + 8) <= a4)
+  if (v25 != v36 && *(v25 + 8) <= type)
   {
     v28 = v25[5];
     v27 = v25[6];
@@ -199,10 +199,10 @@ LABEL_20:
   return 0;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v6 = a3;
-  v86 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -215,10 +215,10 @@ LABEL_20:
     _os_log_impl(&dword_18366B000, v7, OS_LOG_TYPE_DEBUG, "CHTransliterateUnmatchedConfusablesStep is running", buf, 2u);
   }
 
-  v16 = objc_msgSend_objectForKeyedSubscript_(v86, v8, qword_1EA84BB58, v9, v10, v11);
+  v16 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v8, qword_1EA84BB58, v9, v10, v11);
   if (v16)
   {
-    v17 = objc_msgSend_objectForKeyedSubscript_(v86, v12, qword_1EA84BB58, v13, v14, v15);
+    v17 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v12, qword_1EA84BB58, v13, v14, v15);
     v23 = objc_msgSend_BOOLValue(v17, v18, v19, v20, v21, v22);
   }
 
@@ -232,7 +232,7 @@ LABEL_20:
   v35 = 0;
   while (1)
   {
-    v36 = objc_msgSend_result(v6, v29, v30, v31, v32, v33, v86);
+    v36 = objc_msgSend_result(processCopy, v29, v30, v31, v32, v33, optionsCopy);
     v42 = objc_msgSend_transcriptionPaths(v36, v37, v38, v39, v40, v41);
     v48 = objc_msgSend_count(v42, v43, v44, v45, v46, v47);
 
@@ -241,7 +241,7 @@ LABEL_20:
       break;
     }
 
-    v52 = objc_msgSend_retrievePathTokens_atPathIndex_(self, v49, v6, v34, v50, v51);
+    v52 = objc_msgSend_retrievePathTokens_atPathIndex_(self, v49, processCopy, v34, v50, v51);
     v58 = objc_msgSend_mutableCopy(v52, v53, v54, v55, v56, v57);
     v64 = objc_msgSend_mutableCopy(v52, v59, v60, v61, v62, v63);
     shouldForceLocaleFormatNumber_outUpdatedPathTokens = objc_msgSend_updateUnmatchingSymbol_unmatchingType_mode_shouldForceLocaleFormatNumber_outUpdatedPathTokens_(self, v65, v52, 4, @"opening", v23, v58);
@@ -276,10 +276,10 @@ LABEL_20:
   {
     v75 = [CHTokenizedMathResult alloc];
     v80 = objc_msgSend_initWithBestPathTokens_(v75, v76, v87, v77, v78, v79);
-    objc_msgSend_setResult_(v6, v81, v80, v82, v83, v84);
+    objc_msgSend_setResult_(processCopy, v81, v80, v82, v83, v84);
   }
 
-  return v6;
+  return processCopy;
 }
 
 @end

@@ -7,7 +7,7 @@
 + (void)readLearnedFromTheAppStatusTable
 {
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "Could not read to the LFTA plist file, error: %@", &v2, 0xCu);
 }
 

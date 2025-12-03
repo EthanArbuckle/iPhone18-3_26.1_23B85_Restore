@@ -1,76 +1,76 @@
 @interface CNAvatarView
-+ (id)descriptionForDisplayedImageState:(int64_t)a3;
-+ (id)descriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)a3;
-+ (id)descriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)a3 shouldUseCachingRenderer:(BOOL)a4 description:(id)a5;
-+ (id)makeDescriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)a3 shouldUseCachingRenderer:(BOOL)a4;
-- (BOOL)avatarCardController:(id)a3 shouldShowContact:(id)a4;
++ (id)descriptionForDisplayedImageState:(int64_t)state;
++ (id)descriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)enabled;
++ (id)descriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)enabled shouldUseCachingRenderer:(BOOL)renderer description:(id)description;
++ (id)makeDescriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)enabled shouldUseCachingRenderer:(BOOL)renderer;
+- (BOOL)avatarCardController:(id)controller shouldShowContact:(id)contact;
 - (BOOL)bypassActionValidation;
 - (BOOL)isUpdatingGroupViewConfiguration;
-- (BOOL)shouldUpdateWithContacts:(id)a3;
+- (BOOL)shouldUpdateWithContacts:(id)contacts;
 - (CALayer)sourceAvatarLayer;
-- (CGRect)frameForAvatarAtIndex:(unint64_t)a3 inView:(id)a4;
+- (CGRect)frameForAvatarAtIndex:(unint64_t)index inView:(id)view;
 - (CGRect)transitioningFrame;
 - (CGRect)transitioningImageFrame;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (CNAvatarView)init;
-- (CNAvatarView)initWithContact:(id)a3;
-- (CNAvatarView)initWithFrame:(CGRect)a3;
-- (CNAvatarView)initWithImageRenderer:(id)a3 threeDTouchEnabled:(BOOL)a4 contactStore:(id)a5;
-- (CNAvatarView)initWithImageRenderer:(id)a3 threeDTouchEnabled:(BOOL)a4 contactStore:(id)a5 style:(unint64_t)a6 schedulerProvider:(id)a7 backgroundStyle:(unint64_t)a8 personaId:(id)a9;
-- (CNAvatarView)initWithSettings:(id)a3;
+- (CNAvatarView)initWithContact:(id)contact;
+- (CNAvatarView)initWithFrame:(CGRect)frame;
+- (CNAvatarView)initWithImageRenderer:(id)renderer threeDTouchEnabled:(BOOL)enabled contactStore:(id)store;
+- (CNAvatarView)initWithImageRenderer:(id)renderer threeDTouchEnabled:(BOOL)enabled contactStore:(id)store style:(unint64_t)style schedulerProvider:(id)provider backgroundStyle:(unint64_t)backgroundStyle personaId:(id)id;
+- (CNAvatarView)initWithSettings:(id)settings;
 - (CNAvatarViewDelegate)delegate;
 - (CNContact)contact;
 - (NSArray)actionCategories;
 - (UIImage)contentImage;
 - (UIView)forcePressView;
 - (double)_diameter;
-- (id)avatarCardController:(id)a3 orderedPropertiesForProperties:(id)a4 category:(id)a5;
+- (id)avatarCardController:(id)controller orderedPropertiesForProperties:(id)properties category:(id)category;
 - (id)currentLikenessScope;
 - (id)descriptorForRequiredKeys;
-- (id)presentingViewControllerForAvatarCardController:(id)a3;
-- (id)updateViewWithGroupIdentity:(id)a3;
-- (id)updateViewWithGroupIdentity:(id)a3 maskingContacts:(id)a4;
-- (int64_t)avatarCardController:(id)a3 presentationResultForLocation:(CGPoint)a4;
+- (id)presentingViewControllerForAvatarCardController:(id)controller;
+- (id)updateViewWithGroupIdentity:(id)identity;
+- (id)updateViewWithGroupIdentity:(id)identity maskingContacts:(id)contacts;
+- (int64_t)avatarCardController:(id)controller presentationResultForLocation:(CGPoint)location;
 - (void)_renderContactsImage;
-- (void)_setContacts:(id)a3;
+- (void)_setContacts:(id)contacts;
 - (void)_updateCardActions;
 - (void)_updateRegistration;
-- (void)avatarCacheDidUpdateForIdentifiers:(id)a3;
-- (void)avatarCardControllerDidDismiss:(id)a3;
-- (void)avatarCardControllerWillBeginPreviewInteraction:(id)a3;
-- (void)avatarCardControllerWillDismiss:(id)a3;
+- (void)avatarCacheDidUpdateForIdentifiers:(id)identifiers;
+- (void)avatarCardControllerDidDismiss:(id)dismiss;
+- (void)avatarCardControllerWillBeginPreviewInteraction:(id)interaction;
+- (void)avatarCardControllerWillDismiss:(id)dismiss;
 - (void)avatarViewDidFinishRendering;
 - (void)contactDidChange;
-- (void)contactDidChange:(id)a3;
+- (void)contactDidChange:(id)change;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)dismissContactViewController:(id)a3;
+- (void)dismissContactViewController:(id)controller;
 - (void)layoutSubviews;
-- (void)notifyDelegateOfGroupConfigurationUpdateWithError:(id)a3;
-- (void)performTransitionAnimationWithStartHandler:(id)a3 completion:(id)a4;
+- (void)notifyDelegateOfGroupConfigurationUpdateWithError:(id)error;
+- (void)performTransitionAnimationWithStartHandler:(id)handler completion:(id)completion;
 - (void)resetGroupUpdateTokenIfNeeded;
-- (void)setActionCategories:(id)a3;
-- (void)setAutoUpdateContact:(BOOL)a3;
-- (void)setBackgroundStyle:(unint64_t)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setBypassActionValidation:(BOOL)a3;
-- (void)setContact:(id)a3;
-- (void)setContacts:(id)a3;
-- (void)setContacts:(id)a3 forToken:(id)a4;
-- (void)setContextToken:(id)a3;
-- (void)setDisableCornerRadiusForAvatar:(BOOL)a3;
-- (void)setForcePressView:(id)a3;
-- (void)setImage:(id)a3 state:(int64_t)a4;
-- (void)setShouldFetchSharedMeContactPhoto:(BOOL)a3;
-- (void)setShowsActionsOnForcePress:(BOOL)a3;
-- (void)setShowsActionsOnTap:(BOOL)a3;
-- (void)setShowsContactOnTap:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setThreeDTouchEnabled:(BOOL)a3;
+- (void)setActionCategories:(id)categories;
+- (void)setAutoUpdateContact:(BOOL)contact;
+- (void)setBackgroundStyle:(unint64_t)style;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
+- (void)setBypassActionValidation:(BOOL)validation;
+- (void)setContact:(id)contact;
+- (void)setContacts:(id)contacts;
+- (void)setContacts:(id)contacts forToken:(id)token;
+- (void)setContextToken:(id)token;
+- (void)setDisableCornerRadiusForAvatar:(BOOL)avatar;
+- (void)setForcePressView:(id)view;
+- (void)setImage:(id)image state:(int64_t)state;
+- (void)setShouldFetchSharedMeContactPhoto:(BOOL)photo;
+- (void)setShowsActionsOnForcePress:(BOOL)press;
+- (void)setShowsActionsOnTap:(BOOL)tap;
+- (void)setShowsContactOnTap:(BOOL)tap;
+- (void)setStyle:(unint64_t)style;
+- (void)setThreeDTouchEnabled:(BOOL)enabled;
 - (void)setupAvatarCardControllerIfNeeded;
-- (void)showContact:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)showContact:(id)contact;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CNAvatarView
@@ -80,9 +80,9 @@
   v28.receiver = self;
   v28.super_class = CNAvatarView;
   [(CNAvatarView *)&v28 layoutSubviews];
-  v3 = [(CNAvatarView *)self window];
+  window = [(CNAvatarView *)self window];
 
-  if (v3)
+  if (window)
   {
     v4 = *MEMORY[0x1E695F058];
     v5 = *(MEMORY[0x1E695F058] + 8);
@@ -90,25 +90,25 @@
     [(CNAvatarView *)self sizeThatFits:v6, v7];
     v9 = v8;
     v11 = v10;
-    v12 = [(CNAvatarView *)self imageView];
-    [v12 frame];
+    imageView = [(CNAvatarView *)self imageView];
+    [imageView frame];
     v15 = v11 == v14 && v9 == v13;
 
     if (!v15)
     {
-      v16 = [(CNAvatarView *)self imageView];
-      [v16 setFrame:{v4, v5, v9, v11}];
+      imageView2 = [(CNAvatarView *)self imageView];
+      [imageView2 setFrame:{v4, v5, v9, v11}];
 
-      v17 = [(CNAvatarView *)self alternativeImageView];
-      [v17 setFrame:{v4, v5, v9, v11}];
+      alternativeImageView = [(CNAvatarView *)self alternativeImageView];
+      [alternativeImageView setFrame:{v4, v5, v9, v11}];
 
-      v18 = [(CNAvatarView *)self alternativeImageView];
-      v19 = [v18 layer];
-      [v19 frame];
+      alternativeImageView2 = [(CNAvatarView *)self alternativeImageView];
+      layer = [alternativeImageView2 layer];
+      [layer frame];
       v21 = v20 * 0.5;
-      v22 = [(CNAvatarView *)self alternativeImageView];
-      v23 = [v22 layer];
-      [v23 setCornerRadius:v21];
+      alternativeImageView3 = [(CNAvatarView *)self alternativeImageView];
+      layer2 = [alternativeImageView3 layer];
+      [layer2 setCornerRadius:v21];
 
       if ([(CNAvatarView *)self displayedImageState]== 1)
       {
@@ -116,73 +116,73 @@
       }
     }
 
-    v24 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v25 = [v24 featureFlags];
-    v26 = [v25 isFeatureEnabled:6];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v26 = [featureFlags isFeatureEnabled:6];
 
     if ((v26 & 1) == 0 && (!v15 || ![(CNAvatarView *)self displayedImageState]))
     {
       [(CNAvatarView *)self _renderContactsImage];
     }
 
-    v27 = [(CNAvatarView *)self avatarView];
-    [v27 setFrame:{v4, v5, v9, v11}];
+    avatarView = [(CNAvatarView *)self avatarView];
+    [avatarView setFrame:{v4, v5, v9, v11}];
   }
 }
 
 - (void)_renderContactsImage
 {
   v59[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  if ([v4 isFeatureEnabled:6])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:6])
   {
-    v5 = [(CNAvatarView *)self contacts];
+    contacts = [(CNAvatarView *)self contacts];
 
-    if (v5)
+    if (contacts)
     {
-      v6 = [(CNAvatarView *)self contacts];
+      contacts2 = [(CNAvatarView *)self contacts];
       if (self->_style)
       {
-        v7 = [(CNAvatarView *)self contacts];
+        contacts3 = [(CNAvatarView *)self contacts];
         v55[0] = MEMORY[0x1E69E9820];
         v55[1] = 3221225472;
         v55[2] = __36__CNAvatarView__renderContactsImage__block_invoke;
         v55[3] = &unk_1E74E1D08;
         v55[4] = self;
-        v8 = [v7 _cn_map:v55];
+        v8 = [contacts3 _cn_map:v55];
 
-        v6 = v8;
+        contacts2 = v8;
       }
 
-      v9 = [(CNAvatarView *)self avatarView];
-      v10 = v9 == 0;
+      avatarView = [(CNAvatarView *)self avatarView];
+      v10 = avatarView == 0;
 
       if (v10)
       {
-        v11 = [[_TtC10ContactsUI25CNAvatarView_SwiftWrapper alloc] initWithContacts:v6 listener:self];
-        [(CNAvatarView_SwiftWrapper *)v11 setBackgroundStyle:[(CNAvatarView *)self backgroundStyle]];
-        v27 = [(CNAvatarView *)self borderColor];
-        [(CNAvatarView_SwiftWrapper *)v11 setBorderColor:v27];
+        avatarView2 = [[_TtC10ContactsUI25CNAvatarView_SwiftWrapper alloc] initWithContacts:contacts2 listener:self];
+        [(CNAvatarView_SwiftWrapper *)avatarView2 setBackgroundStyle:[(CNAvatarView *)self backgroundStyle]];
+        borderColor = [(CNAvatarView *)self borderColor];
+        [(CNAvatarView_SwiftWrapper *)avatarView2 setBorderColor:borderColor];
 
         [(CNAvatarView *)self borderWidth];
-        [(CNAvatarView_SwiftWrapper *)v11 setBorderWidth:?];
-        [(CNAvatarView *)self addSubview:v11];
-        [(CNAvatarView *)self setAvatarView:v11];
+        [(CNAvatarView_SwiftWrapper *)avatarView2 setBorderWidth:?];
+        [(CNAvatarView *)self addSubview:avatarView2];
+        [(CNAvatarView *)self setAvatarView:avatarView2];
       }
 
       else
       {
-        v11 = [(CNAvatarView *)self avatarView];
-        [(CNAvatarView_SwiftWrapper *)v11 setContacts:v6];
+        avatarView2 = [(CNAvatarView *)self avatarView];
+        [(CNAvatarView_SwiftWrapper *)avatarView2 setContacts:contacts2];
       }
 
       [(CNAvatarView *)self bounds];
       [(CNAvatarView *)self sizeThatFits:v28, v29];
       v31 = v30;
       v33 = v32;
-      v14 = [(CNAvatarView *)self avatarView];
-      [v14 setFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), v31, v33}];
+      avatarView3 = [(CNAvatarView *)self avatarView];
+      [avatarView3 setFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), v31, v33}];
 LABEL_24:
 
       goto LABEL_25;
@@ -195,38 +195,38 @@ LABEL_24:
 
   kdebug_trace();
   [(CNAvatarView *)self _updateRegistration];
-  v12 = [(CNAvatarView *)self rendererToken];
-  [v12 cancel];
+  rendererToken = [(CNAvatarView *)self rendererToken];
+  [rendererToken cancel];
 
   [(CNAvatarView *)self setRendererToken:0];
-  v6 = [(CNAvatarView *)self currentLikenessScope];
-  if (v6)
+  contacts2 = [(CNAvatarView *)self currentLikenessScope];
+  if (contacts2)
   {
     if ([(CNAvatarView *)self displayedImageState])
     {
       v13 = 0;
-      v14 = 0;
+      avatarView3 = 0;
     }
 
     else
     {
-      v15 = [(CNAvatarView *)self imageRenderer];
-      v16 = [(CNAvatarView *)self contacts];
-      v17 = [v15 loadingPlaceholderForContactCount:objc_msgSend(v16 scope:{"count"), v6}];
+      imageRenderer = [(CNAvatarView *)self imageRenderer];
+      contacts4 = [(CNAvatarView *)self contacts];
+      v17 = [imageRenderer loadingPlaceholderForContactCount:objc_msgSend(contacts4 scope:{"count"), contacts2}];
 
       [(CNAvatarView *)self setImage:v17 state:1];
-      v18 = [(CNAvatarView *)self imageView];
-      v19 = [v18 image];
-      v20 = [v17 isEqual:v19];
+      imageView = [(CNAvatarView *)self imageView];
+      image = [imageView image];
+      v20 = [v17 isEqual:image];
 
       if (v20)
       {
         v21 = MEMORY[0x1E6996B80];
-        v22 = [(CNAvatarView *)self contacts];
-        v14 = [v21 publicFingerprintForContacts:v22 scope:v6];
+        contacts5 = [(CNAvatarView *)self contacts];
+        avatarView3 = [v21 publicFingerprintForContacts:contacts5 scope:contacts2];
 
-        v23 = [(CNAvatarView *)self contacts];
-        v24 = [v23 count];
+        contacts6 = [(CNAvatarView *)self contacts];
+        v24 = [contacts6 count];
         v13 = v24 > 1;
 
         v25 = CNUILogAvatarView();
@@ -238,7 +238,7 @@ LABEL_24:
             *buf = 134218242;
             *&buf[4] = self;
             *&buf[12] = 2114;
-            *&buf[14] = v14;
+            *&buf[14] = avatarView3;
             _os_log_impl(&dword_199A75000, v26, OS_LOG_TYPE_INFO, "[CNAvatarView][LikenessRenderer] (%p) showing placeholder, requesting image for contact %{public}@", buf, 0x16u);
           }
         }
@@ -248,7 +248,7 @@ LABEL_24:
           *buf = 134218242;
           *&buf[4] = self;
           *&buf[12] = 2114;
-          *&buf[14] = v14;
+          *&buf[14] = avatarView3;
           _os_log_debug_impl(&dword_199A75000, v26, OS_LOG_TYPE_DEBUG, "[CNAvatarView][LikenessRenderer] (%p) showing placeholder, requesting image for group %{public}@", buf, 0x16u);
         }
       }
@@ -256,20 +256,20 @@ LABEL_24:
       else
       {
         v13 = 0;
-        v14 = 0;
+        avatarView3 = 0;
       }
     }
 
-    v34 = [(CNAvatarView *)self contacts];
-    v35 = [v34 count] == 0;
+    contacts7 = [(CNAvatarView *)self contacts];
+    v35 = [contacts7 count] == 0;
 
     if (!v35)
     {
-      v36 = [(CNAvatarView *)self imageRenderer];
-      v37 = [(CNAvatarView *)self contacts];
-      v38 = [(CNAvatarView *)self schedulerProvider];
-      v39 = [v38 backgroundScheduler];
-      v40 = [v36 renderedLikenessesForContacts:v37 scope:v6 workScheduler:v39];
+      imageRenderer2 = [(CNAvatarView *)self imageRenderer];
+      contacts8 = [(CNAvatarView *)self contacts];
+      schedulerProvider = [(CNAvatarView *)self schedulerProvider];
+      backgroundScheduler = [schedulerProvider backgroundScheduler];
+      v40 = [imageRenderer2 renderedLikenessesForContacts:contacts8 scope:contacts2 workScheduler:backgroundScheduler];
 
       *buf = 0;
       *&buf[8] = buf;
@@ -278,8 +278,8 @@ LABEL_24:
       v58 = __Block_byref_object_dispose__2847;
       v59[0] = 0;
       objc_initWeak(&location, self);
-      v41 = [(CNAvatarView *)self schedulerProvider];
-      v42 = [v41 mainThreadScheduler];
+      schedulerProvider2 = [(CNAvatarView *)self schedulerProvider];
+      mainThreadScheduler = [schedulerProvider2 mainThreadScheduler];
 
       v43 = MEMORY[0x1E69967A0];
       v48[0] = MEMORY[0x1E69E9820];
@@ -288,17 +288,17 @@ LABEL_24:
       v48[3] = &unk_1E74E1D58;
       objc_copyWeak(&v52, &location);
       v53 = v13;
-      v14 = v14;
-      v49 = v14;
-      v44 = v42;
+      avatarView3 = avatarView3;
+      v49 = avatarView3;
+      v44 = mainThreadScheduler;
       v50 = v44;
       v51 = buf;
       v45 = [v43 observerWithResultBlock:v48];
       v46 = [v40 subscribe:v45];
       [(CNAvatarView *)self setRendererToken:v46];
 
-      v47 = [(CNAvatarView *)self rendererToken];
-      objc_storeWeak((*&buf[8] + 40), v47);
+      rendererToken2 = [(CNAvatarView *)self rendererToken];
+      objc_storeWeak((*&buf[8] + 40), rendererToken2);
 
       objc_destroyWeak(&v52);
       objc_destroyWeak(&location);
@@ -314,21 +314,21 @@ LABEL_25:
 
 - (BOOL)isUpdatingGroupViewConfiguration
 {
-  v2 = [(CNAvatarView *)self groupViewConfigurationUpdateToken];
-  v3 = v2 != 0;
+  groupViewConfigurationUpdateToken = [(CNAvatarView *)self groupViewConfigurationUpdateToken];
+  v3 = groupViewConfigurationUpdateToken != 0;
 
   return v3;
 }
 
 - (void)setupAvatarCardControllerIfNeeded
 {
-  v3 = [(CNAvatarView *)self cardController];
-  if (!v3)
+  cardController = [(CNAvatarView *)self cardController];
+  if (!cardController)
   {
     if ([(CNAvatarView *)self isThreeDTouchEnabled])
     {
-      v4 = [(CNAvatarView *)self traitCollection];
-      v5 = [CNAvatarCardController avatarCardEnabledForTraitCollection:v4];
+      traitCollection = [(CNAvatarView *)self traitCollection];
+      v5 = [CNAvatarCardController avatarCardEnabledForTraitCollection:traitCollection];
 
       if (!v5)
       {
@@ -339,12 +339,12 @@ LABEL_25:
       [(CNAvatarCardController *)v6 setAvatarView:self];
       [(CNAvatarCardController *)v6 setDelegate:self];
       [(CNAvatarView *)self setCardController:v6];
-      v3 = v6;
+      cardController = v6;
     }
 
     else
     {
-      v3 = 0;
+      cardController = 0;
     }
   }
 }
@@ -352,15 +352,15 @@ LABEL_25:
 - (void)_updateRegistration
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNAvatarView *)self autoUpdateContact];
-  if (self->_registeredInNotifier != v3)
+  autoUpdateContact = [(CNAvatarView *)self autoUpdateContact];
+  if (self->_registeredInNotifier != autoUpdateContact)
   {
-    v4 = v3;
-    if (v3)
+    v4 = autoUpdateContact;
+    if (autoUpdateContact)
     {
-      v22 = v3;
-      v5 = [(CNAvatarView *)self descriptorForRequiredKeys];
-      v33[0] = v5;
+      v22 = autoUpdateContact;
+      descriptorForRequiredKeys = [(CNAvatarView *)self descriptorForRequiredKeys];
+      v33[0] = descriptorForRequiredKeys;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
 
       v29 = 0u;
@@ -384,8 +384,8 @@ LABEL_25:
 
             v12 = *(*(&v27 + 1) + 8 * i);
             v13 = +[CNUIContactsEnvironment currentEnvironment];
-            v14 = [v13 contactChangesNotifier];
-            [v14 registerObserver:self forContact:v12 keysToFetch:v6];
+            contactChangesNotifier = [v13 contactChangesNotifier];
+            [contactChangesNotifier registerObserver:self forContact:v12 keysToFetch:v6];
           }
 
           v9 = [(NSArray *)v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -420,8 +420,8 @@ LABEL_25:
 
             v19 = *(*(&v23 + 1) + 8 * j);
             v20 = +[CNUIContactsEnvironment currentEnvironment];
-            v21 = [v20 contactChangesNotifier];
-            [v21 unregisterObserver:self forContact:v19];
+            contactChangesNotifier2 = [v20 contactChangesNotifier];
+            [contactChangesNotifier2 unregisterObserver:self forContact:v19];
           }
 
           v16 = [(NSArray *)v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -438,9 +438,9 @@ LABEL_25:
 - (id)descriptorForRequiredKeys
 {
   v3 = objc_opt_class();
-  v4 = [(CNAvatarView *)self isThreeDTouchEnabled];
+  isThreeDTouchEnabled = [(CNAvatarView *)self isThreeDTouchEnabled];
 
-  return [v3 descriptorForRequiredKeysWithThreeDTouchEnabled:v4];
+  return [v3 descriptorForRequiredKeysWithThreeDTouchEnabled:isThreeDTouchEnabled];
 }
 
 - (void)didMoveToWindow
@@ -457,17 +457,17 @@ LABEL_25:
 {
   if ([(CNAvatarView *)self isThreeDTouchEnabled])
   {
-    v3 = [(CNAvatarView *)self traitCollection];
-    if ([CNAvatarCardController avatarCardEnabledForTraitCollection:v3]&& ([(CNAvatarView *)self window], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    traitCollection = [(CNAvatarView *)self traitCollection];
+    if ([CNAvatarCardController avatarCardEnabledForTraitCollection:traitCollection]&& ([(CNAvatarView *)self window], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v5 = v4;
-      v6 = [(CNAvatarView *)self delegate];
+      delegate = [(CNAvatarView *)self delegate];
 
-      if (v6)
+      if (delegate)
       {
-        v8 = [(CNAvatarView *)self forcePressView];
-        v7 = [(CNAvatarView *)self cardController];
-        [v7 setSourceView:v8];
+        forcePressView = [(CNAvatarView *)self forcePressView];
+        cardController = [(CNAvatarView *)self cardController];
+        [cardController setSourceView:forcePressView];
 
         goto LABEL_8;
       }
@@ -478,8 +478,8 @@ LABEL_25:
     }
   }
 
-  v8 = [(CNAvatarView *)self cardController];
-  [v8 setSourceView:0];
+  forcePressView = [(CNAvatarView *)self cardController];
+  [forcePressView setSourceView:0];
 LABEL_8:
 }
 
@@ -496,15 +496,15 @@ LABEL_8:
   v3 = CNUILogAvatarView();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CNAvatarView *)self delegate];
+    delegate = [(CNAvatarView *)self delegate];
     *buf = 134218242;
-    v30 = self;
+    selfCopy6 = self;
     v31 = 2112;
-    v32 = v4;
+    v32 = delegate;
     _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_INFO, "[CNAvatarView %p] avatarViewDidFinishRendering called with delegate %@", buf, 0x16u);
   }
 
-  v5 = [(CNAvatarView *)self delegate];
+  delegate2 = [(CNAvatarView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -512,21 +512,21 @@ LABEL_8:
     v19 = CNUILogAvatarView();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(CNAvatarView *)self delegate];
+      delegate3 = [(CNAvatarView *)self delegate];
       *buf = 134218242;
-      v30 = self;
+      selfCopy6 = self;
       v31 = 2114;
-      v32 = v22;
+      v32 = delegate3;
       _os_log_debug_impl(&dword_199A75000, v19, OS_LOG_TYPE_DEBUG, "[CNAvatarView %p] Delegate %{public}@ does not respond to didUpdateContentForAvatarView: - update will not occur", buf, 0x16u);
     }
 
     v20 = CNUILogAvatarView();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 134218242;
-      v30 = self;
+      selfCopy6 = self;
       v31 = 2114;
       v32 = v24;
       _os_log_debug_impl(&dword_199A75000, v20, OS_LOG_TYPE_DEBUG, "[CNAvatarView %p] Call stack:\n%{public}@", buf, 0x16u);
@@ -543,18 +543,18 @@ LABEL_8:
     if (v9)
     {
       *buf = 134217984;
-      v30 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_199A75000, v8, OS_LOG_TYPE_INFO, "[CNAvatarView %p] Using standard path for content image, notifying delegate directly", buf, 0xCu);
     }
 
-    v21 = [(CNAvatarView *)self delegate];
-    [v21 didUpdateContentForAvatarView:self];
+    delegate4 = [(CNAvatarView *)self delegate];
+    [delegate4 didUpdateContentForAvatarView:self];
 
     v20 = CNUILogAvatarView();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v30 = self;
+      selfCopy6 = self;
       _os_log_impl(&dword_199A75000, v20, OS_LOG_TYPE_INFO, "[CNAvatarView %p] Successfully notified delegate", buf, 0xCu);
     }
 
@@ -566,16 +566,16 @@ LABEL_17:
   if (v9)
   {
     *buf = 134217984;
-    v30 = self;
+    selfCopy6 = self;
     _os_log_impl(&dword_199A75000, v8, OS_LOG_TYPE_INFO, "oz: [CNAvatarView %p] Using Messages app path for content image", buf, 0xCu);
   }
 
-  v10 = [(CNAvatarView *)self imageRenderer];
-  v11 = [(CNAvatarView *)self contacts];
-  v12 = [(CNAvatarView *)self currentLikenessScope];
-  v13 = [(CNAvatarView *)self schedulerProvider];
-  v14 = [v13 backgroundScheduler];
-  v15 = [v10 renderedLikenessesForContacts:v11 scope:v12 workScheduler:v14];
+  imageRenderer = [(CNAvatarView *)self imageRenderer];
+  contacts = [(CNAvatarView *)self contacts];
+  currentLikenessScope = [(CNAvatarView *)self currentLikenessScope];
+  schedulerProvider = [(CNAvatarView *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
+  v15 = [imageRenderer renderedLikenessesForContacts:contacts scope:currentLikenessScope workScheduler:backgroundScheduler];
 
   objc_initWeak(buf, self);
   v16 = MEMORY[0x1E69967A0];
@@ -603,10 +603,10 @@ LABEL_17:
 
 - (CNContact)contact
 {
-  v2 = [(CNAvatarView *)self contacts];
-  v3 = [v2 firstObject];
+  contacts = [(CNAvatarView *)self contacts];
+  firstObject = [contacts firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (void)resetGroupUpdateTokenIfNeeded
@@ -632,16 +632,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = self;
-  v6 = v5;
-  if (!v5)
+  selfCopy = self;
+  v6 = selfCopy;
+  if (!selfCopy)
   {
 LABEL_7:
     v4 = v6;
     goto LABEL_8;
   }
 
-  v7 = v5;
+  v7 = selfCopy;
   while (1)
   {
     objc_opt_class();
@@ -650,10 +650,10 @@ LABEL_7:
       break;
     }
 
-    v8 = [v7 superview];
+    superview = [v7 superview];
 
-    v7 = v8;
-    if (!v8)
+    v7 = superview;
+    if (!superview)
     {
       goto LABEL_7;
     }
@@ -667,22 +667,22 @@ LABEL_9:
 - (CNAvatarView)init
 {
   v3 = +[CNUIContactsEnvironment currentEnvironment];
-  v4 = [v3 cachingLikenessRenderer];
-  v5 = [objc_opt_class() defaultThreeDTouchSupport];
-  v6 = [v3 contactStore];
-  v7 = [(CNAvatarView *)self initWithImageRenderer:v4 threeDTouchEnabled:v5 contactStore:v6];
+  cachingLikenessRenderer = [v3 cachingLikenessRenderer];
+  defaultThreeDTouchSupport = [objc_opt_class() defaultThreeDTouchSupport];
+  contactStore = [v3 contactStore];
+  v7 = [(CNAvatarView *)self initWithImageRenderer:cachingLikenessRenderer threeDTouchEnabled:defaultThreeDTouchSupport contactStore:contactStore];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [(CNAvatarView *)self rendererToken];
-  [v3 cancel];
+  rendererToken = [(CNAvatarView *)self rendererToken];
+  [rendererToken cancel];
 
   v4 = +[CNUIContactsEnvironment currentEnvironment];
-  v5 = [v4 contactChangesNotifier];
-  [v5 removeEntriesWithoutObservers];
+  contactChangesNotifier = [v4 contactChangesNotifier];
+  [contactChangesNotifier removeEntriesWithoutObservers];
 
   if ([(CNAvatarView *)self stateCaptureHandle])
   {
@@ -697,51 +697,51 @@ LABEL_9:
 
 - (id)currentLikenessScope
 {
-  v3 = [(CNAvatarView *)self window];
+  window = [(CNAvatarView *)self window];
 
-  if (!v3 || ((-[CNAvatarView imageView](self, "imageView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 bounds], v6 = v5, v8 = v7, v9 = *MEMORY[0x1E695F060], v10 = *(MEMORY[0x1E695F060] + 8), v4, v6 == v9) ? (v11 = v8 == v10) : (v11 = 0), v11))
+  if (!window || ((-[CNAvatarView imageView](self, "imageView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 bounds], v6 = v5, v8 = v7, v9 = *MEMORY[0x1E695F060], v10 = *(MEMORY[0x1E695F060] + 8), v4, v6 == v9) ? (v11 = v8 == v10) : (v11 = 0), v11))
   {
-    v24 = 0;
+    likenessRenderingScope = 0;
   }
 
   else
   {
-    v12 = [(CNAvatarView *)self imageView];
-    [v12 bounds];
+    imageView = [(CNAvatarView *)self imageView];
+    [imageView bounds];
     v14 = v13;
     v16 = v15;
 
-    v17 = [(CNAvatarView *)self window];
-    v18 = [v17 screen];
-    [v18 scale];
+    window2 = [(CNAvatarView *)self window];
+    screen = [window2 screen];
+    [screen scale];
     v20 = v19;
 
-    v21 = [(CNAvatarView *)self window];
-    v22 = [v21 effectiveUserInterfaceLayoutDirection];
+    window3 = [(CNAvatarView *)self window];
+    effectiveUserInterfaceLayoutDirection = [window3 effectiveUserInterfaceLayoutDirection];
 
-    v23 = [(CNAvatarView *)self backgroundStyle];
-    if (!v23)
+    backgroundStyle = [(CNAvatarView *)self backgroundStyle];
+    if (!backgroundStyle)
     {
       if ([(CNAvatarView *)self style])
       {
-        v23 = 0;
+        backgroundStyle = 0;
       }
 
       else
       {
-        v25 = [(CNAvatarView *)self traitCollection];
-        v23 = [v25 userInterfaceStyle] == 2;
+        traitCollection = [(CNAvatarView *)self traitCollection];
+        backgroundStyle = [traitCollection userInterfaceStyle] == 2;
       }
     }
 
-    v26 = [(CNAvatarView *)self style];
-    v27 = [(CNAvatarView *)self maskedAvatarIndices];
-    v28 = [CNAvatarImageRenderingScope scopeWithPointSize:0 scale:v22 == 1 strokeWidth:v26 strokeColor:v23 rightToLeft:0 style:v27 backgroundStyle:v14 color:v16 maskedAvatarIndices:v20, 0.0];
+    style = [(CNAvatarView *)self style];
+    maskedAvatarIndices = [(CNAvatarView *)self maskedAvatarIndices];
+    v28 = [CNAvatarImageRenderingScope scopeWithPointSize:0 scale:effectiveUserInterfaceLayoutDirection == 1 strokeWidth:style strokeColor:backgroundStyle rightToLeft:0 style:maskedAvatarIndices backgroundStyle:v14 color:v16 maskedAvatarIndices:v20, 0.0];
 
-    v24 = [v28 likenessRenderingScope];
+    likenessRenderingScope = [v28 likenessRenderingScope];
   }
 
-  return v24;
+  return likenessRenderingScope;
 }
 
 id __36__CNAvatarView__renderContactsImage__block_invoke(uint64_t a1, void *a2)
@@ -772,13 +772,13 @@ void __44__CNAvatarView_avatarViewDidFinishRendering__block_invoke_3(uint64_t a1
   [v2 didUpdateContentForAvatarView:*(a1 + 32)];
 }
 
-- (void)performTransitionAnimationWithStartHandler:(id)a3 completion:(id)a4
+- (void)performTransitionAnimationWithStartHandler:(id)handler completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAvatarView *)self sharedProfileStateOracle];
+  handlerCopy = handler;
+  completionCopy = completion;
+  sharedProfileStateOracle = [(CNAvatarView *)self sharedProfileStateOracle];
 
-  if (!v8)
+  if (!sharedProfileStateOracle)
   {
     v9 = CNUILogAvatarView();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -793,15 +793,15 @@ void __44__CNAvatarView_avatarViewDidFinishRendering__block_invoke_3(uint64_t a1
   if (![(CNAvatarView *)self isPerformingTransition])
   {
     v10 = objc_alloc_init(CNSharedProfileAnimationGenerator);
-    v11 = [(CNAvatarView *)self sharedProfileStateOracle];
-    v12 = [v11 avatarViewAnimationTypeForEffectiveState];
+    sharedProfileStateOracle2 = [(CNAvatarView *)self sharedProfileStateOracle];
+    avatarViewAnimationTypeForEffectiveState = [sharedProfileStateOracle2 avatarViewAnimationTypeForEffectiveState];
 
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, v12);
+      handlerCopy[2](handlerCopy, avatarViewAnimationTypeForEffectiveState);
     }
 
-    if (v12 == 2)
+    if (avatarViewAnimationTypeForEffectiveState == 2)
     {
       v24 = CNUILogAvatarView();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -810,15 +810,15 @@ void __44__CNAvatarView_avatarViewDidFinishRendering__block_invoke_3(uint64_t a1
         _os_log_impl(&dword_199A75000, v24, OS_LOG_TYPE_DEFAULT, "No transition animation to perform", buf, 2u);
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 2);
+        completionCopy[2](completionCopy, 2);
       }
 
       goto LABEL_25;
     }
 
-    if (v12 == 1)
+    if (avatarViewAnimationTypeForEffectiveState == 1)
     {
       [(CNAvatarView *)self setIsPerformingTransition:1];
       v19 = CNUILogAvatarView();
@@ -828,24 +828,24 @@ void __44__CNAvatarView_avatarViewDidFinishRendering__block_invoke_3(uint64_t a1
         _os_log_impl(&dword_199A75000, v19, OS_LOG_TYPE_DEFAULT, "Performing transition animation (peek-a-boo)", buf, 2u);
       }
 
-      v20 = [(CNAvatarView *)self sharedProfileStateOracle];
-      v21 = [v20 pendingNickname];
-      v22 = [(CNAvatarView *)self sharedProfileStateOracle];
-      v23 = [v22 contact];
+      sharedProfileStateOracle3 = [(CNAvatarView *)self sharedProfileStateOracle];
+      pendingNickname = [sharedProfileStateOracle3 pendingNickname];
+      sharedProfileStateOracle4 = [(CNAvatarView *)self sharedProfileStateOracle];
+      contact = [sharedProfileStateOracle4 contact];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __70__CNAvatarView_performTransitionAnimationWithStartHandler_completion___block_invoke_103;
       v25[3] = &unk_1E74E6DD0;
       v25[4] = self;
-      v26 = v7;
-      [(CNSharedProfileAnimationGenerator *)v10 performPeekABooAnimationForAnimatingAvatarView:self pendingNickname:v21 contact:v23 completionHandler:v25];
+      v26 = completionCopy;
+      [(CNSharedProfileAnimationGenerator *)v10 performPeekABooAnimationForAnimatingAvatarView:self pendingNickname:pendingNickname contact:contact completionHandler:v25];
 
       v18 = v26;
     }
 
     else
     {
-      if (v12)
+      if (avatarViewAnimationTypeForEffectiveState)
       {
 LABEL_25:
 
@@ -860,17 +860,17 @@ LABEL_25:
         _os_log_impl(&dword_199A75000, v13, OS_LOG_TYPE_DEFAULT, "Performing transition animation (coin flip)", buf, 2u);
       }
 
-      v14 = [(CNAvatarView *)self sharedProfileStateOracle];
-      v15 = [v14 pendingNickname];
-      v16 = [(CNAvatarView *)self sharedProfileStateOracle];
-      v17 = [v16 contact];
+      sharedProfileStateOracle5 = [(CNAvatarView *)self sharedProfileStateOracle];
+      pendingNickname2 = [sharedProfileStateOracle5 pendingNickname];
+      sharedProfileStateOracle6 = [(CNAvatarView *)self sharedProfileStateOracle];
+      contact2 = [sharedProfileStateOracle6 contact];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __70__CNAvatarView_performTransitionAnimationWithStartHandler_completion___block_invoke;
       v27[3] = &unk_1E74E6DD0;
       v27[4] = self;
-      v28 = v7;
-      [(CNSharedProfileAnimationGenerator *)v10 performCoinFlipAnimationForAnimatingAvatarView:self pendingNickname:v15 contact:v17 completionHandler:v27];
+      v28 = completionCopy;
+      [(CNSharedProfileAnimationGenerator *)v10 performCoinFlipAnimationForAnimatingAvatarView:self pendingNickname:pendingNickname2 contact:contact2 completionHandler:v27];
 
       v18 = v28;
     }
@@ -887,9 +887,9 @@ LABEL_25:
 
 LABEL_7:
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 2);
+    completionCopy[2](completionCopy, 2);
   }
 
 LABEL_26:
@@ -925,9 +925,9 @@ uint64_t __70__CNAvatarView_performTransitionAnimationWithStartHandler_completio
 
 - (CALayer)sourceAvatarLayer
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:6];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:6];
 
   if (v5)
   {
@@ -939,39 +939,39 @@ uint64_t __70__CNAvatarView_performTransitionAnimationWithStartHandler_completio
     [(CNAvatarView *)self imageView];
   }
   v6 = ;
-  v7 = [v6 layer];
+  layer = [v6 layer];
 
-  return v7;
+  return layer;
 }
 
-- (void)avatarCacheDidUpdateForIdentifiers:(id)a3
+- (void)avatarCacheDidUpdateForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:6];
+  identifiersCopy = identifiers;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v7 = [featureFlags isFeatureEnabled:6];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(CNAvatarView *)self contacts];
+    contacts = [(CNAvatarView *)self contacts];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __51__CNAvatarView_avatarCacheDidUpdateForIdentifiers___block_invoke;
     v14[3] = &unk_1E74E7880;
-    v15 = v4;
-    v9 = [v8 _cn_any:v14];
+    v15 = identifiersCopy;
+    v9 = [contacts _cn_any:v14];
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-      v11 = [v10 schedulerProvider];
-      v12 = [v11 mainThreadScheduler];
+      currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+      schedulerProvider = [currentEnvironment2 schedulerProvider];
+      mainThreadScheduler = [schedulerProvider mainThreadScheduler];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __51__CNAvatarView_avatarCacheDidUpdateForIdentifiers___block_invoke_2;
       v13[3] = &unk_1E74E6A88;
       v13[4] = self;
-      [v12 performBlock:v13];
+      [mainThreadScheduler performBlock:v13];
     }
   }
 }
@@ -987,9 +987,9 @@ uint64_t __51__CNAvatarView_avatarCacheDidUpdateForIdentifiers___block_invoke(ui
 
 - (CGRect)transitioningImageFrame
 {
-  v3 = [(CNAvatarView *)self forcePressView];
+  forcePressView = [(CNAvatarView *)self forcePressView];
   [(CNAvatarView *)self contentImageFrame];
-  [v3 convertRect:self fromView:?];
+  [forcePressView convertRect:self fromView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1008,8 +1008,8 @@ uint64_t __51__CNAvatarView_avatarCacheDidUpdateForIdentifiers___block_invoke(ui
 
 - (CGRect)transitioningFrame
 {
-  v2 = [(CNAvatarView *)self forcePressView];
-  [v2 bounds];
+  forcePressView = [(CNAvatarView *)self forcePressView];
+  [forcePressView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1026,13 +1026,13 @@ uint64_t __51__CNAvatarView_avatarCacheDidUpdateForIdentifiers___block_invoke(ui
   return result;
 }
 
-- (void)contactDidChange:(id)a3
+- (void)contactDidChange:(id)change
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if ([(NSArray *)self->_contacts count]== 1)
   {
-    v17[0] = v4;
+    v17[0] = changeCopy;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     contacts = self->_contacts;
     self->_contacts = v5;
@@ -1041,18 +1041,18 @@ uint64_t __51__CNAvatarView_avatarCacheDidUpdateForIdentifiers___block_invoke(ui
   else
   {
     v7 = [(NSArray *)self->_contacts mutableCopy];
-    v8 = [v4 identifier];
+    identifier = [changeCopy identifier];
     v9 = self->_contacts;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __33__CNAvatarView_contactDidChange___block_invoke;
     v15[3] = &unk_1E74E38A8;
-    v16 = v8;
-    contacts = v8;
+    v16 = identifier;
+    contacts = identifier;
     v10 = [(NSArray *)v9 indexOfObjectPassingTest:v15];
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSArray *)v7 replaceObjectAtIndex:v10 withObject:v4];
+      [(NSArray *)v7 replaceObjectAtIndex:v10 withObject:changeCopy];
     }
 
     v11 = self->_contacts;
@@ -1060,12 +1060,12 @@ uint64_t __51__CNAvatarView_avatarCacheDidUpdateForIdentifiers___block_invoke(ui
     v12 = v7;
   }
 
-  v13 = [(CNAvatarView *)self cardController];
+  cardController = [(CNAvatarView *)self cardController];
 
-  if (v13)
+  if (cardController)
   {
-    v14 = [(CNAvatarView *)self cardController];
-    [v14 prepareWithContacts:0 store:0];
+    cardController2 = [(CNAvatarView *)self cardController];
+    [cardController2 prepareWithContacts:0 store:0];
   }
 
   [(CNAvatarView *)self contactDidChange];
@@ -1080,19 +1080,19 @@ uint64_t __33__CNAvatarView_contactDidChange___block_invoke(uint64_t a1, void *a
   return v4;
 }
 
-- (void)setForcePressView:(id)a3
+- (void)setForcePressView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_forcePressView);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_forcePressView, obj);
-    v6 = [(CNAvatarView *)self window];
+    window = [(CNAvatarView *)self window];
 
     v5 = obj;
-    if (v6)
+    if (window)
     {
       [(CNAvatarView *)self _updateCardActions];
       v5 = obj;
@@ -1100,49 +1100,49 @@ uint64_t __33__CNAvatarView_contactDidChange___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)avatarCardControllerDidDismiss:(id)a3
+- (void)avatarCardControllerDidDismiss:(id)dismiss
 {
-  v9 = a3;
-  v4 = [(CNAvatarView *)self delegate];
+  dismissCopy = dismiss;
+  delegate = [(CNAvatarView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAvatarView *)self delegate];
-    [v6 didDismissActionsForAvatarView:self];
+    delegate2 = [(CNAvatarView *)self delegate];
+    [delegate2 didDismissActionsForAvatarView:self];
   }
 
-  v7 = [(CNAvatarView *)self contacts];
-  v8 = [v9 contacts];
+  contacts = [(CNAvatarView *)self contacts];
+  contacts2 = [dismissCopy contacts];
 
-  if (v7 != v8)
+  if (contacts != contacts2)
   {
-    [v9 cleanupAfterDisplay];
+    [dismissCopy cleanupAfterDisplay];
   }
 }
 
-- (void)avatarCardControllerWillDismiss:(id)a3
+- (void)avatarCardControllerWillDismiss:(id)dismiss
 {
-  v4 = [(CNAvatarView *)self delegate];
+  delegate = [(CNAvatarView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAvatarView *)self delegate];
-    [v6 willDismissActionsForAvatarView:self];
+    delegate2 = [(CNAvatarView *)self delegate];
+    [delegate2 willDismissActionsForAvatarView:self];
   }
 }
 
-- (BOOL)avatarCardController:(id)a3 shouldShowContact:(id)a4
+- (BOOL)avatarCardController:(id)controller shouldShowContact:(id)contact
 {
-  v5 = a4;
-  v6 = [(CNAvatarView *)self delegate];
+  contactCopy = contact;
+  delegate = [(CNAvatarView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNAvatarView *)self delegate];
-    v9 = [v8 avatarView:self shouldShowContact:v5];
+    delegate2 = [(CNAvatarView *)self delegate];
+    v9 = [delegate2 avatarView:self shouldShowContact:contactCopy];
   }
 
   else
@@ -1153,17 +1153,17 @@ uint64_t __33__CNAvatarView_contactDidChange___block_invoke(uint64_t a1, void *a
   return v9;
 }
 
-- (id)avatarCardController:(id)a3 orderedPropertiesForProperties:(id)a4 category:(id)a5
+- (id)avatarCardController:(id)controller orderedPropertiesForProperties:(id)properties category:(id)category
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CNAvatarView *)self delegate];
+  propertiesCopy = properties;
+  categoryCopy = category;
+  delegate = [(CNAvatarView *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CNAvatarView *)self delegate];
-    v12 = [v11 avatarView:self orderedPropertiesForProperties:v7 category:v8];
+    delegate2 = [(CNAvatarView *)self delegate];
+    v12 = [delegate2 avatarView:self orderedPropertiesForProperties:propertiesCopy category:categoryCopy];
   }
 
   else
@@ -1174,77 +1174,77 @@ uint64_t __33__CNAvatarView_contactDidChange___block_invoke(uint64_t a1, void *a
   return v12;
 }
 
-- (void)avatarCardControllerWillBeginPreviewInteraction:(id)a3
+- (void)avatarCardControllerWillBeginPreviewInteraction:(id)interaction
 {
-  v4 = [(CNAvatarView *)self delegate];
+  delegate = [(CNAvatarView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAvatarView *)self delegate];
-    [v6 willBeginPreviewInteractionForAvatarView:self];
+    delegate2 = [(CNAvatarView *)self delegate];
+    [delegate2 willBeginPreviewInteractionForAvatarView:self];
   }
 }
 
-- (int64_t)avatarCardController:(id)a3 presentationResultForLocation:(CGPoint)a4
+- (int64_t)avatarCardController:(id)controller presentationResultForLocation:(CGPoint)location
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(CNAvatarView *)self delegate];
+  controllerCopy = controller;
+  delegate = [(CNAvatarView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNAvatarView *)self delegate];
+    delegate2 = [(CNAvatarView *)self delegate];
     v9 = +[CNAvatarCardController descriptorForRequiredKeys];
     v26[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    v11 = [v8 contactsForPreviewInteractionForAvatarView:self suggestedKeysToFetch:v10];
+    contacts = [delegate2 contactsForPreviewInteractionForAvatarView:self suggestedKeysToFetch:v10];
   }
 
   else
   {
-    v11 = [(CNAvatarView *)self contacts];
+    contacts = [(CNAvatarView *)self contacts];
   }
 
-  if (![v11 count])
+  if (![contacts count])
   {
     goto LABEL_12;
   }
 
-  v12 = [(CNAvatarView *)self contactStore];
-  [v5 prepareWithContacts:v11 store:v12];
+  contactStore = [(CNAvatarView *)self contactStore];
+  [controllerCopy prepareWithContacts:contacts store:contactStore];
 
-  v13 = [v5 hasActions];
-  v14 = [(CNAvatarView *)self delegate];
+  hasActions = [controllerCopy hasActions];
+  delegate3 = [(CNAvatarView *)self delegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(CNAvatarView *)self delegate];
-    v17 = [v16 overrideImageDataForPreviewInteractionForAvatarView:self];
+    delegate4 = [(CNAvatarView *)self delegate];
+    v17 = [delegate4 overrideImageDataForPreviewInteractionForAvatarView:self];
 
-    [v5 prepareWithOverrideImageData:v17];
-    if ((v13 & 1) == 0)
+    [controllerCopy prepareWithOverrideImageData:v17];
+    if ((hasActions & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  else if (!v13)
+  else if (!hasActions)
   {
 LABEL_12:
     v24 = 2;
     goto LABEL_13;
   }
 
-  v18 = [(CNAvatarView *)self delegate];
+  delegate5 = [(CNAvatarView *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(CNAvatarView *)self delegate];
-    v21 = [v20 shouldShowActionsForAvatarView:self];
+    delegate6 = [(CNAvatarView *)self delegate];
+    v21 = [delegate6 shouldShowActionsForAvatarView:self];
 
     if (!v21)
     {
@@ -1252,12 +1252,12 @@ LABEL_12:
     }
   }
 
-  [v5 prepareForDisplay];
-  v22 = [(CNAvatarView *)self name];
-  [v5 setName:v22];
+  [controllerCopy prepareForDisplay];
+  name = [(CNAvatarView *)self name];
+  [controllerCopy setName:name];
 
-  v23 = [(CNAvatarView *)self message];
-  [v5 setMessage:v23];
+  message = [(CNAvatarView *)self message];
+  [controllerCopy setMessage:message];
 
   v24 = 0;
 LABEL_13:
@@ -1265,15 +1265,15 @@ LABEL_13:
   return v24;
 }
 
-- (id)presentingViewControllerForAvatarCardController:(id)a3
+- (id)presentingViewControllerForAvatarCardController:(id)controller
 {
-  v4 = [(CNAvatarView *)self delegate];
+  delegate = [(CNAvatarView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAvatarView *)self delegate];
-    v7 = [v6 presentingViewControllerForAvatarView:self];
+    delegate2 = [(CNAvatarView *)self delegate];
+    v7 = [delegate2 presentingViewControllerForAvatarView:self];
 
     [v7 set_cardViewControllerTransitioning:self];
   }
@@ -1288,56 +1288,56 @@ LABEL_13:
 
 - (BOOL)bypassActionValidation
 {
-  v2 = [(CNAvatarView *)self cardController];
-  v3 = [v2 bypassActionValidation];
+  cardController = [(CNAvatarView *)self cardController];
+  bypassActionValidation = [cardController bypassActionValidation];
 
-  return v3;
+  return bypassActionValidation;
 }
 
-- (void)setBypassActionValidation:(BOOL)a3
+- (void)setBypassActionValidation:(BOOL)validation
 {
-  v3 = a3;
-  v4 = [(CNAvatarView *)self cardController];
-  [v4 setBypassActionValidation:v3];
+  validationCopy = validation;
+  cardController = [(CNAvatarView *)self cardController];
+  [cardController setBypassActionValidation:validationCopy];
 }
 
 - (NSArray)actionCategories
 {
-  v2 = [(CNAvatarView *)self cardController];
-  v3 = [v2 actionCategories];
+  cardController = [(CNAvatarView *)self cardController];
+  actionCategories = [cardController actionCategories];
 
-  return v3;
+  return actionCategories;
 }
 
-- (void)setActionCategories:(id)a3
+- (void)setActionCategories:(id)categories
 {
-  v4 = a3;
-  v5 = [(CNAvatarView *)self cardController];
-  [v5 setActionCategories:v4];
+  categoriesCopy = categories;
+  cardController = [(CNAvatarView *)self cardController];
+  [cardController setActionCategories:categoriesCopy];
 }
 
-- (void)setShowsContactOnTap:(BOOL)a3
+- (void)setShowsContactOnTap:(BOOL)tap
 {
-  if (self->_showsContactOnTap != a3)
+  if (self->_showsContactOnTap != tap)
   {
-    self->_showsContactOnTap = a3;
+    self->_showsContactOnTap = tap;
   }
 }
 
-- (void)setAutoUpdateContact:(BOOL)a3
+- (void)setAutoUpdateContact:(BOOL)contact
 {
-  if (self->_autoUpdateContact != a3)
+  if (self->_autoUpdateContact != contact)
   {
-    self->_autoUpdateContact = a3;
+    self->_autoUpdateContact = contact;
     [(CNAvatarView *)self _updateRegistration];
   }
 }
 
 - (void)contactDidChange
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:6];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:6];
 
   if ((v5 & 1) == 0)
   {
@@ -1347,30 +1347,30 @@ LABEL_13:
   }
 }
 
-- (void)dismissContactViewController:(id)a3
+- (void)dismissContactViewController:(id)controller
 {
-  v4 = [(CNAvatarView *)self contactViewNavigationController];
+  contactViewNavigationController = [(CNAvatarView *)self contactViewNavigationController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__CNAvatarView_dismissContactViewController___block_invoke;
   v5[3] = &unk_1E74E6A88;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [contactViewNavigationController dismissViewControllerAnimated:1 completion:v5];
 }
 
-- (void)showContact:(id)a3
+- (void)showContact:(id)contact
 {
-  v9 = [(CNAvatarView *)self contact];
-  v3 = [v9 identifier];
-  if ([v9 hasBeenPersisted])
+  contact = [(CNAvatarView *)self contact];
+  identifier = [contact identifier];
+  if ([contact hasBeenPersisted])
   {
     v4 = MEMORY[0x1E695DFF8];
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"contact://show?id=%@", v3];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"contact://show?id=%@", identifier];
     v6 = [v4 URLWithString:v5];
 
     v7 = +[CNUIContactsEnvironment currentEnvironment];
-    v8 = [v7 applicationWorkspace];
-    [v8 openSensitiveURLInBackground:v6 withOptions:0];
+    applicationWorkspace = [v7 applicationWorkspace];
+    [applicationWorkspace openSensitiveURLInBackground:v6 withOptions:0];
   }
 }
 
@@ -1390,39 +1390,39 @@ LABEL_13:
 
 - (UIImage)contentImage
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:6];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:6];
 
   if (v5)
   {
-    v6 = self->_contentImage;
+    image = self->_contentImage;
   }
 
   else
   {
-    v7 = [(CNAvatarView *)self imageView];
-    v6 = [v7 image];
+    imageView = [(CNAvatarView *)self imageView];
+    image = [imageView image];
   }
 
-  return v6;
+  return image;
 }
 
-- (void)setDisableCornerRadiusForAvatar:(BOOL)a3
+- (void)setDisableCornerRadiusForAvatar:(BOOL)avatar
 {
-  if (self->_disableCornerRadiusForAvatar != a3)
+  if (self->_disableCornerRadiusForAvatar != avatar)
   {
-    self->_disableCornerRadiusForAvatar = a3;
+    self->_disableCornerRadiusForAvatar = avatar;
     [(CNAvatarView *)self setNeedsLayout];
   }
 }
 
-- (void)setThreeDTouchEnabled:(BOOL)a3
+- (void)setThreeDTouchEnabled:(BOOL)enabled
 {
-  if (self->_threeDTouchEnabled != a3)
+  if (self->_threeDTouchEnabled != enabled)
   {
-    self->_threeDTouchEnabled = a3;
-    if (a3)
+    self->_threeDTouchEnabled = enabled;
+    if (enabled)
     {
       [(CNAvatarView *)self setupAvatarCardControllerIfNeeded];
     }
@@ -1431,18 +1431,18 @@ LABEL_13:
   }
 }
 
-- (void)setImage:(id)a3 state:(int64_t)a4
+- (void)setImage:(id)image state:(int64_t)state
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CNAvatarView *)self imageView];
-  v8 = [v7 image];
-  v9 = [v6 isEqual:v8];
+  imageCopy = image;
+  imageView = [(CNAvatarView *)self imageView];
+  image = [imageView image];
+  v9 = [imageCopy isEqual:image];
 
   if (v9)
   {
-    [(CNAvatarView *)self setDisplayedImageState:a4];
-    if (a4 != 2)
+    [(CNAvatarView *)self setDisplayedImageState:state];
+    if (state != 2)
     {
       goto LABEL_19;
     }
@@ -1452,14 +1452,14 @@ LABEL_13:
 
   if ([(CNAvatarView *)self allowStaleRendering])
   {
-    v10 = [(CNAvatarView *)self allowStaleRenderingWithMatchingContextToken];
-    if (a4 == 1)
+    allowStaleRenderingWithMatchingContextToken = [(CNAvatarView *)self allowStaleRenderingWithMatchingContextToken];
+    if (state == 1)
     {
       [(CNAvatarView *)self setAllowStaleRenderingWithMatchingContextToken:1];
     }
 
-    v11 = !v10;
-    if (a4 == 2)
+    v11 = !allowStaleRenderingWithMatchingContextToken;
+    if (state == 2)
     {
       v11 = 1;
     }
@@ -1471,15 +1471,15 @@ LABEL_13:
       {
 LABEL_15:
 
-        [(CNAvatarView *)self setDisplayedImageState:a4];
+        [(CNAvatarView *)self setDisplayedImageState:state];
         goto LABEL_19;
       }
 
-      v13 = [objc_opt_class() descriptionForDisplayedImageState:a4];
+      contacts = [objc_opt_class() descriptionForDisplayedImageState:state];
       v18 = 134218242;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
-      v21 = v13;
+      v21 = contacts;
       _os_log_impl(&dword_199A75000, v12, OS_LOG_TYPE_INFO, "[CNAvatarView] %p ignoring setting image for state (%{public}@), showing stale image instead", &v18, 0x16u);
 LABEL_12:
 
@@ -1487,10 +1487,10 @@ LABEL_12:
     }
   }
 
-  v14 = [(CNAvatarView *)self imageView];
-  [v14 setImage:v6];
+  imageView2 = [(CNAvatarView *)self imageView];
+  [imageView2 setImage:imageCopy];
 
-  if (a4 != 2)
+  if (state != 2)
   {
     v12 = CNUILogAvatarView();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1498,22 +1498,22 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    v13 = [(CNAvatarView *)self contacts];
+    contacts = [(CNAvatarView *)self contacts];
     v18 = 138412290;
-    v19 = v13;
+    selfCopy = contacts;
     _os_log_debug_impl(&dword_199A75000, v12, OS_LOG_TYPE_DEBUG, "[CNAvatarView] Setting placeholder image for %@", &v18, 0xCu);
     goto LABEL_12;
   }
 
   [(CNAvatarView *)self setDisplayedImageState:2];
 LABEL_17:
-  v15 = [(CNAvatarView *)self delegate];
+  delegate = [(CNAvatarView *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(CNAvatarView *)self delegate];
-    [v17 didUpdateContentForAvatarView:self];
+    delegate2 = [(CNAvatarView *)self delegate];
+    [delegate2 didUpdateContentForAvatarView:self];
   }
 
 LABEL_19:
@@ -1624,32 +1624,32 @@ void __36__CNAvatarView__renderContactsImage__block_invoke_72(uint64_t a1)
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = CNAvatarView;
-  v4 = a3;
-  [(CNAvatarView *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(CNAvatarView *)&v9 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(CNAvatarView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(CNAvatarView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  v8 = [(CNAvatarView *)self style];
-  if (v5 != v7 && !v8)
+  style = [(CNAvatarView *)self style];
+  if (userInterfaceStyle != userInterfaceStyle2 && !style)
   {
     [(CNAvatarView *)self _renderContactsImage];
   }
 }
 
-- (CGRect)frameForAvatarAtIndex:(unint64_t)a3 inView:(id)a4
+- (CGRect)frameForAvatarAtIndex:(unint64_t)index inView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   v7 = MEMORY[0x1E6996AB0];
-  v8 = [(CNAvatarView *)self contacts];
-  v9 = [v7 layoutConfigurationsForType:2 withItemCount:{objc_msgSend(v8, "count")}];
+  contacts = [(CNAvatarView *)self contacts];
+  v9 = [v7 layoutConfigurationsForType:2 withItemCount:{objc_msgSend(contacts, "count")}];
 
-  if ([v9 count] <= a3)
+  if ([v9 count] <= index)
   {
     v22 = *MEMORY[0x1E695F058];
     v24 = *(MEMORY[0x1E695F058] + 8);
@@ -1659,17 +1659,17 @@ void __36__CNAvatarView__renderContactsImage__block_invoke_72(uint64_t a1)
 
   else
   {
-    v10 = [v9 objectAtIndex:a3];
+    v10 = [v9 objectAtIndex:index];
     v11 = [(CNAvatarView *)self effectiveUserInterfaceLayoutDirection]== 1;
-    v12 = [(CNAvatarView *)self imageView];
-    [v12 bounds];
+    imageView = [(CNAvatarView *)self imageView];
+    [imageView bounds];
     [v10 itemFrameInContainingBounds:v11 isRTL:?];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    [(CNAvatarView *)self convertRect:v6 toView:v14, v16, v18, v20];
+    [(CNAvatarView *)self convertRect:viewCopy toView:v14, v16, v18, v20];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -1687,18 +1687,18 @@ void __36__CNAvatarView__renderContactsImage__block_invoke_72(uint64_t a1)
   return result;
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
-  self->_backgroundStyle = a3;
-  v4 = [(CNAvatarView *)self avatarView];
-  [v4 setBackgroundStyle:a3];
+  self->_backgroundStyle = style;
+  avatarView = [(CNAvatarView *)self avatarView];
+  [avatarView setBackgroundStyle:style];
 }
 
-- (void)notifyDelegateOfGroupConfigurationUpdateWithError:(id)a3
+- (void)notifyDelegateOfGroupConfigurationUpdateWithError:(id)error
 {
-  v9 = a3;
-  v4 = [(CNAvatarView *)self delegate];
-  if (v9)
+  errorCopy = error;
+  delegate = [(CNAvatarView *)self delegate];
+  if (errorCopy)
   {
     v5 = objc_opt_respondsToSelector();
 
@@ -1707,9 +1707,9 @@ void __36__CNAvatarView__renderContactsImage__block_invoke_72(uint64_t a1)
       goto LABEL_7;
     }
 
-    v6 = [(CNAvatarView *)self delegate];
-    v7 = [(CNAvatarView *)self groupViewConfigurationUpdateToken];
-    [v6 avatarView:self didFailToUpdateViewForGroupConfiguration:v7 withError:v9];
+    delegate2 = [(CNAvatarView *)self delegate];
+    groupViewConfigurationUpdateToken = [(CNAvatarView *)self groupViewConfigurationUpdateToken];
+    [delegate2 avatarView:self didFailToUpdateViewForGroupConfiguration:groupViewConfigurationUpdateToken withError:errorCopy];
   }
 
   else
@@ -1721,64 +1721,64 @@ void __36__CNAvatarView__renderContactsImage__block_invoke_72(uint64_t a1)
       goto LABEL_7;
     }
 
-    v6 = [(CNAvatarView *)self delegate];
-    v7 = [(CNAvatarView *)self groupViewConfigurationUpdateToken];
-    [v6 avatarView:self didUpdateViewForGroupConfiguration:v7];
+    delegate2 = [(CNAvatarView *)self delegate];
+    groupViewConfigurationUpdateToken = [(CNAvatarView *)self groupViewConfigurationUpdateToken];
+    [delegate2 avatarView:self didUpdateViewForGroupConfiguration:groupViewConfigurationUpdateToken];
   }
 
 LABEL_7:
 }
 
-- (id)updateViewWithGroupIdentity:(id)a3 maskingContacts:(id)a4
+- (id)updateViewWithGroupIdentity:(id)identity maskingContacts:(id)contacts
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 groupPhoto];
+  contactsCopy = contacts;
+  identityCopy = identity;
+  groupPhoto = [identityCopy groupPhoto];
 
-  if (v8)
+  if (groupPhoto)
   {
     [(CNAvatarView *)self setShouldUpdateMaskedAvatars:0];
-    v9 = [MEMORY[0x1E696AC90] indexSet];
-    [(CNAvatarView *)self setMaskedAvatarIndices:v9];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
+    [(CNAvatarView *)self setMaskedAvatarIndices:indexSet];
   }
 
   else
   {
-    v10 = [v7 contacts];
+    contacts = [identityCopy contacts];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60__CNAvatarView_updateViewWithGroupIdentity_maskingContacts___block_invoke;
     v15[3] = &unk_1E74E38A8;
-    v16 = v6;
-    v11 = [v10 indexesOfObjectsPassingTest:v15];
+    v16 = contactsCopy;
+    v11 = [contacts indexesOfObjectsPassingTest:v15];
 
-    v12 = [(CNAvatarView *)self maskedAvatarIndices];
-    -[CNAvatarView setShouldUpdateMaskedAvatars:](self, "setShouldUpdateMaskedAvatars:", [v12 isEqualToIndexSet:v11] ^ 1);
+    maskedAvatarIndices = [(CNAvatarView *)self maskedAvatarIndices];
+    -[CNAvatarView setShouldUpdateMaskedAvatars:](self, "setShouldUpdateMaskedAvatars:", [maskedAvatarIndices isEqualToIndexSet:v11] ^ 1);
 
     [(CNAvatarView *)self setMaskedAvatarIndices:v11];
   }
 
-  v13 = [(CNAvatarView *)self updateViewWithGroupIdentity:v7];
+  v13 = [(CNAvatarView *)self updateViewWithGroupIdentity:identityCopy];
 
   return v13;
 }
 
-- (id)updateViewWithGroupIdentity:(id)a3
+- (id)updateViewWithGroupIdentity:(id)identity
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v4 groupPhoto];
-  if (v6)
+  identityCopy = identity;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  groupPhoto = [identityCopy groupPhoto];
+  if (groupPhoto)
   {
-    v7 = [(CNAvatarView *)self contact];
-    v8 = [v7 isKeyAvailable:*MEMORY[0x1E695C400]];
+    contact = [(CNAvatarView *)self contact];
+    v8 = [contact isKeyAvailable:*MEMORY[0x1E695C400]];
 
     if (v8)
     {
-      v9 = [(CNAvatarView *)self contact];
-      v10 = [v9 thumbnailImageData];
-      v11 = [v6 isEqualToData:v10];
+      contact2 = [(CNAvatarView *)self contact];
+      thumbnailImageData = [contact2 thumbnailImageData];
+      v11 = [groupPhoto isEqualToData:thumbnailImageData];
 
       if (v11)
       {
@@ -1786,26 +1786,26 @@ LABEL_7:
       }
     }
 
-    v12 = [MEMORY[0x1E695CF18] contactWithDisplayName:0 emailOrPhoneNumber:0];
-    [v12 setImageData:v6];
-    [v12 setThumbnailImageData:v6];
-    v18[0] = v12;
+    contacts2 = [MEMORY[0x1E695CF18] contactWithDisplayName:0 emailOrPhoneNumber:0];
+    [contacts2 setImageData:groupPhoto];
+    [contacts2 setThumbnailImageData:groupPhoto];
+    v18[0] = contacts2;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    [(CNAvatarView *)self setContacts:v13 forToken:v5];
+    [(CNAvatarView *)self setContacts:v13 forToken:uUID];
 
 LABEL_7:
 LABEL_8:
-    v16 = v5;
+    v16 = uUID;
     goto LABEL_9;
   }
 
-  v14 = [v4 contacts];
-  v15 = [(CNAvatarView *)self shouldUpdateWithContacts:v14];
+  contacts = [identityCopy contacts];
+  v15 = [(CNAvatarView *)self shouldUpdateWithContacts:contacts];
 
   if (v15)
   {
-    v12 = [v4 contacts];
-    [(CNAvatarView *)self setContacts:v12 forToken:v5];
+    contacts2 = [identityCopy contacts];
+    [(CNAvatarView *)self setContacts:contacts2 forToken:uUID];
     goto LABEL_7;
   }
 
@@ -1815,9 +1815,9 @@ LABEL_9:
   return v16;
 }
 
-- (BOOL)shouldUpdateWithContacts:(id)a3
+- (BOOL)shouldUpdateWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   if (-[CNAvatarView shouldUpdateMaskedAvatars](self, "shouldUpdateMaskedAvatars") || ([MEMORY[0x1E69966E8] currentEnvironment], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "featureFlags"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isFeatureEnabled:", 6), v6, v5, (v7 & 1) != 0))
   {
     LOBYTE(v8) = 1;
@@ -1826,9 +1826,9 @@ LABEL_9:
   else
   {
     contacts = self->_contacts;
-    if (v4 | contacts)
+    if (contactsCopy | contacts)
     {
-      v8 = [(NSArray *)contacts _cn_isIdenticalToArray:v4]^ 1;
+      v8 = [(NSArray *)contacts _cn_isIdenticalToArray:contactsCopy]^ 1;
     }
 
     else
@@ -1840,17 +1840,17 @@ LABEL_9:
   return v8;
 }
 
-- (void)_setContacts:(id)a3
+- (void)_setContacts:(id)contacts
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 isInternalBuild];
+  contactsCopy = contacts;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  isInternalBuild = [currentEnvironment isInternalBuild];
 
-  if (v7)
+  if (isInternalBuild)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v5 _cn_map:&__block_literal_global_2857];
+    v9 = [contactsCopy _cn_map:&__block_literal_global_2857];
     v10 = v9;
     v11 = @"nil";
     if (v9)
@@ -1859,21 +1859,21 @@ LABEL_9:
     }
 
     v12 = [v8 stringWithFormat:@"CNAvatarView (%p) - %@", self, v11];
-    v13 = [(CNAvatarView *)self layer];
-    [v13 setName:v12];
+    layer = [(CNAvatarView *)self layer];
+    [layer setName:v12];
   }
 
   v14 = CNUILogAvatarView();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218242;
-    v29 = self;
+    selfCopy = self;
     v30 = 2114;
-    v31 = v5;
+    v31 = contactsCopy;
     _os_log_debug_impl(&dword_199A75000, v14, OS_LOG_TYPE_DEBUG, "[CNAvatarView] (%p) setContacts: %{public}@", buf, 0x16u);
   }
 
-  if ([(CNAvatarView *)self shouldUpdateWithContacts:v5])
+  if ([(CNAvatarView *)self shouldUpdateWithContacts:contactsCopy])
   {
     self->_registeredInNotifier = 0;
     v23 = 0u;
@@ -1897,8 +1897,8 @@ LABEL_9:
 
           v20 = *(*(&v23 + 1) + 8 * i);
           v21 = +[CNUIContactsEnvironment currentEnvironment];
-          v22 = [v21 contactChangesNotifier];
-          [v22 unregisterObserver:self forContact:v20];
+          contactChangesNotifier = [v21 contactChangesNotifier];
+          [contactChangesNotifier unregisterObserver:self forContact:v20];
         }
 
         v17 = [(NSArray *)v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -1907,82 +1907,82 @@ LABEL_9:
       while (v17);
     }
 
-    objc_storeStrong(&self->_contacts, a3);
+    objc_storeStrong(&self->_contacts, contacts);
     [(CNAvatarView *)self setShouldUpdateMaskedAvatars:0];
     [(CNAvatarView *)self clearImage];
     [(CNAvatarView *)self _renderContactsImage];
   }
 }
 
-- (void)setContacts:(id)a3 forToken:(id)a4
+- (void)setContacts:(id)contacts forToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
+  tokenCopy = token;
+  contactsCopy = contacts;
   [(CNAvatarView *)self resetGroupUpdateTokenIfNeeded];
-  [(CNAvatarView *)self setGroupViewConfigurationUpdateToken:v6];
+  [(CNAvatarView *)self setGroupViewConfigurationUpdateToken:tokenCopy];
 
-  [(CNAvatarView *)self _setContacts:v7];
+  [(CNAvatarView *)self _setContacts:contactsCopy];
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v8 = a3;
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 featureFlags];
-  v6 = [v5 isFeatureEnabled:6];
+  contactsCopy = contacts;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v6 = [featureFlags isFeatureEnabled:6];
 
   contacts = self->_contacts;
   if (v6)
   {
-    if ((v8 || !contacts) && [(NSArray *)contacts isEqualToArray:?])
+    if ((contactsCopy || !contacts) && [(NSArray *)contacts isEqualToArray:?])
     {
       goto LABEL_12;
     }
   }
 
-  else if ((v8 || !contacts) && [(NSArray *)contacts isEqualToArray:?])
+  else if ((contactsCopy || !contacts) && [(NSArray *)contacts isEqualToArray:?])
   {
     goto LABEL_13;
   }
 
   [(CNAvatarView *)self resetGroupUpdateTokenIfNeeded];
 LABEL_12:
-  [(CNAvatarView *)self _setContacts:v8];
+  [(CNAvatarView *)self _setContacts:contactsCopy];
 LABEL_13:
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  if (self->_borderWidth != a3)
+  if (self->_borderWidth != width)
   {
-    self->_borderWidth = a3;
-    v4 = [(CNAvatarView *)self avatarView];
-    [v4 setBorderWidth:a3];
+    self->_borderWidth = width;
+    avatarView = [(CNAvatarView *)self avatarView];
+    [avatarView setBorderWidth:width];
   }
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v5 = a3;
-  if (self->_borderColor != v5)
+  colorCopy = color;
+  if (self->_borderColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_borderColor, a3);
-    v6 = [(CNAvatarView *)self avatarView];
-    [v6 setBorderColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_borderColor, color);
+    avatarView = [(CNAvatarView *)self avatarView];
+    [avatarView setBorderColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    v4 = [(CNAvatarView *)self contacts];
+    self->_style = style;
+    contacts = [(CNAvatarView *)self contacts];
 
-    if (v4)
+    if (contacts)
     {
 
       [(CNAvatarView *)self _renderContactsImage];
@@ -1990,11 +1990,11 @@ LABEL_13:
   }
 }
 
-- (void)setContextToken:(id)a3
+- (void)setContextToken:(id)token
 {
-  if (self->_contextToken != a3)
+  if (self->_contextToken != token)
   {
-    objc_storeStrong(&self->_contextToken, a3);
+    objc_storeStrong(&self->_contextToken, token);
     if ([(CNAvatarView *)self allowStaleRendering])
     {
       [(CNAvatarView *)self setAllowStaleRenderingWithMatchingContextToken:0];
@@ -2004,15 +2004,15 @@ LABEL_13:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setShouldFetchSharedMeContactPhoto:(BOOL)a3
+- (void)setShouldFetchSharedMeContactPhoto:(BOOL)photo
 {
-  if (self->_shouldFetchSharedMeContactPhoto != a3)
+  if (self->_shouldFetchSharedMeContactPhoto != photo)
   {
-    v4 = a3;
-    self->_shouldFetchSharedMeContactPhoto = a3;
-    v5 = [(CNAvatarView *)self imageRenderer];
-    v7 = v5;
-    if (v4)
+    photoCopy = photo;
+    self->_shouldFetchSharedMeContactPhoto = photo;
+    imageRenderer = [(CNAvatarView *)self imageRenderer];
+    v7 = imageRenderer;
+    if (photoCopy)
     {
       v6 = 2;
     }
@@ -2022,7 +2022,7 @@ LABEL_13:
       v6 = 0;
     }
 
-    [v5 setLookupOptions:v6];
+    [imageRenderer setLookupOptions:v6];
   }
 }
 
@@ -2038,12 +2038,12 @@ LABEL_13:
   return result;
 }
 
-- (CNAvatarView)initWithFrame:(CGRect)a3
+- (CNAvatarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(CNAvatarView *)self init];
   v8 = v7;
   if (v7)
@@ -2054,24 +2054,24 @@ LABEL_13:
   return v8;
 }
 
-- (CNAvatarView)initWithImageRenderer:(id)a3 threeDTouchEnabled:(BOOL)a4 contactStore:(id)a5 style:(unint64_t)a6 schedulerProvider:(id)a7 backgroundStyle:(unint64_t)a8 personaId:(id)a9
+- (CNAvatarView)initWithImageRenderer:(id)renderer threeDTouchEnabled:(BOOL)enabled contactStore:(id)store style:(unint64_t)style schedulerProvider:(id)provider backgroundStyle:(unint64_t)backgroundStyle personaId:(id)id
 {
-  v31 = a3;
-  v30 = a5;
-  v16 = a7;
-  v17 = a9;
+  rendererCopy = renderer;
+  storeCopy = store;
+  providerCopy = provider;
+  idCopy = id;
   v18 = *MEMORY[0x1E695F058];
   v19 = *(MEMORY[0x1E695F058] + 8);
   v34.receiver = self;
   v34.super_class = CNAvatarView;
-  v20 = [(CNAvatarView *)&v34 initWithFrame:v18, v19, *&CNAvatarViewDefaultSize, unk_1EAF768C8];
-  v21 = v20;
-  if (v20)
+  unk_1EAF768C8 = [(CNAvatarView *)&v34 initWithFrame:v18, v19, *&CNAvatarViewDefaultSize, unk_1EAF768C8];
+  v21 = unk_1EAF768C8;
+  if (unk_1EAF768C8)
   {
-    v20->_threeDTouchEnabled = a4;
-    objc_storeStrong(&v20->_contactStore, a5);
-    objc_storeStrong(&v21->_imageRenderer, a3);
-    v21->_style = a6;
+    unk_1EAF768C8->_threeDTouchEnabled = enabled;
+    objc_storeStrong(&unk_1EAF768C8->_contactStore, store);
+    objc_storeStrong(&v21->_imageRenderer, renderer);
+    v21->_style = style;
     v22 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v21->_imageView;
     v21->_imageView = v22;
@@ -2080,15 +2080,15 @@ LABEL_13:
     alternativeImageView = v21->_alternativeImageView;
     v21->_alternativeImageView = v24;
 
-    [(UIImageView *)v21->_alternativeImageView setContentMode:2, v30, v31];
+    [(UIImageView *)v21->_alternativeImageView setContentMode:2, storeCopy, rendererCopy];
     [(UIImageView *)v21->_alternativeImageView setClipsToBounds:1];
-    objc_storeStrong(&v21->_schedulerProvider, a7);
-    v21->_backgroundStyle = a8;
-    objc_storeStrong(&v21->_personaId, a9);
-    v26 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v27 = [v26 isInternalBuild];
+    objc_storeStrong(&v21->_schedulerProvider, provider);
+    v21->_backgroundStyle = backgroundStyle;
+    objc_storeStrong(&v21->_personaId, id);
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    isInternalBuild = [currentEnvironment isInternalBuild];
 
-    if (v27)
+    if (isInternalBuild)
     {
       objc_initWeak(&location, v21);
       v28 = MEMORY[0x1E69E96A0];
@@ -2159,25 +2159,25 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
   return v25;
 }
 
-- (CNAvatarView)initWithImageRenderer:(id)a3 threeDTouchEnabled:(BOOL)a4 contactStore:(id)a5
+- (CNAvatarView)initWithImageRenderer:(id)renderer threeDTouchEnabled:(BOOL)enabled contactStore:(id)store
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  enabledCopy = enabled;
+  storeCopy = store;
+  rendererCopy = renderer;
   v10 = +[CNUIContactsEnvironment currentEnvironment];
-  v11 = [v10 defaultSchedulerProvider];
+  defaultSchedulerProvider = [v10 defaultSchedulerProvider];
 
-  v12 = [(CNAvatarView *)self initWithImageRenderer:v9 threeDTouchEnabled:v5 contactStore:v8 style:0 schedulerProvider:v11 backgroundStyle:0 personaId:0];
+  v12 = [(CNAvatarView *)self initWithImageRenderer:rendererCopy threeDTouchEnabled:enabledCopy contactStore:storeCopy style:0 schedulerProvider:defaultSchedulerProvider backgroundStyle:0 personaId:0];
   return v12;
 }
 
-- (CNAvatarView)initWithSettings:(id)a3
+- (CNAvatarView)initWithSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 likenessRenderer];
-  if ([v5 conformsToProtocol:&unk_1F0E28E18])
+  settingsCopy = settings;
+  likenessRenderer = [settingsCopy likenessRenderer];
+  if ([likenessRenderer conformsToProtocol:&unk_1F0E28E18])
   {
-    v6 = v5;
+    v6 = likenessRenderer;
   }
 
   else
@@ -2192,21 +2192,21 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
     [v7 addDelegate:self];
   }
 
-  v9 = [v4 threeDTouchEnabled];
-  v10 = [v4 contactStore];
-  v11 = [v4 style];
-  v12 = [v4 schedulerProvider];
-  v13 = [v4 backgroundStyle];
-  v14 = [v4 personaId];
+  threeDTouchEnabled = [settingsCopy threeDTouchEnabled];
+  contactStore = [settingsCopy contactStore];
+  style = [settingsCopy style];
+  schedulerProvider = [settingsCopy schedulerProvider];
+  backgroundStyle = [settingsCopy backgroundStyle];
+  personaId = [settingsCopy personaId];
 
-  v15 = [(CNAvatarView *)self initWithImageRenderer:v5 threeDTouchEnabled:v9 contactStore:v10 style:v11 schedulerProvider:v12 backgroundStyle:v13 personaId:v14];
+  v15 = [(CNAvatarView *)self initWithImageRenderer:likenessRenderer threeDTouchEnabled:threeDTouchEnabled contactStore:contactStore style:style schedulerProvider:schedulerProvider backgroundStyle:backgroundStyle personaId:personaId];
   return v15;
 }
 
-+ (id)makeDescriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)a3 shouldUseCachingRenderer:(BOOL)a4
++ (id)makeDescriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)enabled shouldUseCachingRenderer:(BOOL)renderer
 {
-  v4 = a4;
-  v5 = a3;
+  rendererCopy = renderer;
+  enabledCopy = enabled;
   v14[2] = *MEMORY[0x1E69E9840];
   v6 = [CNMonogrammer descriptorForRequiredKeysIncludingImage:1];
   v7 = *MEMORY[0x1E695C1C8];
@@ -2214,7 +2214,7 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
   v14[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
 
-  if (v4)
+  if (rendererCopy)
   {
     [MEMORY[0x1E6996B90] descriptorForRequiredKeysForCaching];
   }
@@ -2226,7 +2226,7 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
   v9 = ;
   v10 = [v8 arrayByAddingObject:v9];
 
-  if (v5)
+  if (enabledCopy)
   {
     v11 = [CNAvatarCardController descriptorForRequiredKeysIncludingAvatarViewDescriptors:0];
     v12 = [v10 arrayByAddingObject:v11];
@@ -2242,28 +2242,28 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
   return v12;
 }
 
-+ (id)descriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)a3 shouldUseCachingRenderer:(BOOL)a4 description:(id)a5
++ (id)descriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)enabled shouldUseCachingRenderer:(BOOL)renderer description:(id)description
 {
-  v5 = a4;
-  v8 = a5;
-  if (a3)
+  rendererCopy = renderer;
+  descriptionCopy = description;
+  if (enabled)
   {
-    v9 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
-    v10 = [CNAvatarCardController avatarCardEnabledForTraitCollection:v9];
+    _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+    v10 = [CNAvatarCardController avatarCardEnabledForTraitCollection:_currentTraitCollection];
 
     v11 = !v10;
-    v12 = !v5;
-    if (v5 && (v11 & 1) == 0)
+    v12 = !rendererCopy;
+    if (rendererCopy && (v11 & 1) == 0)
     {
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __101__CNAvatarView_descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description___block_invoke;
       v31[3] = &unk_1E74E1CB8;
-      v32[1] = a1;
+      v32[1] = self;
       v33 = v10;
-      v34 = v5;
+      v34 = rendererCopy;
       v13 = v32;
-      v32[0] = v8;
+      v32[0] = descriptionCopy;
       if (descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_token_1 != -1)
       {
         dispatch_once(&descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_token_1, v31);
@@ -2277,15 +2277,15 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
   else
   {
     v10 = 0;
-    v12 = !v5;
+    v12 = !rendererCopy;
     v11 = 1;
   }
 
   if (v12 || v10)
   {
-    if ((v11 | v5))
+    if ((v11 | rendererCopy))
     {
-      if (v10 || v5)
+      if (v10 || rendererCopy)
       {
         v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Can't be reached" userInfo:0];
         objc_exception_throw(v18);
@@ -2295,11 +2295,11 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
       v19[1] = 3221225472;
       v19[2] = __101__CNAvatarView_descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description___block_invoke_4;
       v19[3] = &unk_1E74E1CB8;
-      v20[1] = a1;
+      v20[1] = self;
       v21 = v10;
-      v22 = v5;
+      v22 = rendererCopy;
       v13 = v20;
-      v20[0] = v8;
+      v20[0] = descriptionCopy;
       if (descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_token_4 != -1)
       {
         dispatch_once(&descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_token_4, v19);
@@ -2314,11 +2314,11 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
       v23[1] = 3221225472;
       v23[2] = __101__CNAvatarView_descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description___block_invoke_3;
       v23[3] = &unk_1E74E1CB8;
-      v24[1] = a1;
+      v24[1] = self;
       v25 = v10;
-      v26 = v5;
+      v26 = rendererCopy;
       v13 = v24;
-      v24[0] = v8;
+      v24[0] = descriptionCopy;
       if (descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_token_3 != -1)
       {
         dispatch_once(&descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_token_3, v23);
@@ -2334,11 +2334,11 @@ _DWORD *__120__CNAvatarView_initWithImageRenderer_threeDTouchEnabled_contactStor
     block[1] = 3221225472;
     block[2] = __101__CNAvatarView_descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description___block_invoke_2;
     block[3] = &unk_1E74E1CB8;
-    v28[1] = a1;
+    v28[1] = self;
     v29 = v10;
-    v30 = v5;
+    v30 = rendererCopy;
     v13 = v28;
-    v28[0] = v8;
+    v28[0] = descriptionCopy;
     if (descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_token_2 != -1)
     {
       dispatch_once(&descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_token_2, block);
@@ -2390,54 +2390,54 @@ void __101__CNAvatarView_descriptorForRequiredKeysWithThreeDTouchEnabled_shouldU
   descriptorForRequiredKeysWithThreeDTouchEnabled_shouldUseCachingRenderer_description__cn_once_object_4 = v3;
 }
 
-+ (id)descriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)a3
++ (id)descriptorForRequiredKeysWithThreeDTouchEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNAvatarView descriptorForRequiredKeysWithThreeDTouchEnabled:]"];
-  v6 = [a1 descriptorForRequiredKeysWithThreeDTouchEnabled:v3 shouldUseCachingRenderer:1 description:v5];
+  v6 = [self descriptorForRequiredKeysWithThreeDTouchEnabled:enabledCopy shouldUseCachingRenderer:1 description:v5];
 
   return v6;
 }
 
-+ (id)descriptionForDisplayedImageState:(int64_t)a3
++ (id)descriptionForDisplayedImageState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return @"Unexpected Image State";
   }
 
   else
   {
-    return off_1E74E1D78[a3];
+    return off_1E74E1D78[state];
   }
 }
 
-- (void)setShowsActionsOnForcePress:(BOOL)a3
+- (void)setShowsActionsOnForcePress:(BOOL)press
 {
-  if (self->_showsActionsOnForcePress != a3)
+  if (self->_showsActionsOnForcePress != press)
   {
-    self->_showsActionsOnForcePress = a3;
+    self->_showsActionsOnForcePress = press;
     [(CNAvatarView *)self _updateCardActions];
   }
 }
 
-- (void)setShowsActionsOnTap:(BOOL)a3
+- (void)setShowsActionsOnTap:(BOOL)tap
 {
-  if (self->_showsActionsOnTap != a3)
+  if (self->_showsActionsOnTap != tap)
   {
-    self->_showsActionsOnTap = a3;
+    self->_showsActionsOnTap = tap;
     [(CNAvatarView *)self _updateCardActions];
   }
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contactCopy = contact;
+  v5 = contactCopy;
+  if (contactCopy)
   {
-    v7[0] = v4;
+    v7[0] = contactCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
     [(CNAvatarView *)self setContacts:v6];
   }
@@ -2448,16 +2448,16 @@ void __101__CNAvatarView_descriptorForRequiredKeysWithThreeDTouchEnabled_shouldU
   }
 }
 
-- (CNAvatarView)initWithContact:(id)a3
+- (CNAvatarView)initWithContact:(id)contact
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   v5 = [(CNAvatarView *)self init];
   if (v5)
   {
-    if (v4)
+    if (contactCopy)
     {
-      v8[0] = v4;
+      v8[0] = contactCopy;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     }
 

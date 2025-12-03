@@ -1,126 +1,126 @@
 @interface HMMTRSyncClusterDoorLock
-+ (id)dataOfReadValue:(id)a3;
-+ (id)deriveHomePinFromUUID:(id)a3 withNumberOfDigits:(int64_t)a4 flow:(id)a5;
-+ (id)doorLockFeatureMapSupportsAliroBLEUWB:(id)a3;
-+ (id)doorLockFeatureMapSupportsAliroProvisioning:(id)a3;
-+ (id)doorLockFeatureMapSupportsPinCodes:(id)a3;
-+ (id)doorLockFeatureMapSupportsWeekDaySchedule:(id)a3;
-+ (id)doorLockFeatureMapSupportsYearDaySchedule:(id)a3;
++ (id)dataOfReadValue:(id)value;
++ (id)deriveHomePinFromUUID:(id)d withNumberOfDigits:(int64_t)digits flow:(id)flow;
++ (id)doorLockFeatureMapSupportsAliroBLEUWB:(id)b;
++ (id)doorLockFeatureMapSupportsAliroProvisioning:(id)provisioning;
++ (id)doorLockFeatureMapSupportsPinCodes:(id)codes;
++ (id)doorLockFeatureMapSupportsWeekDaySchedule:(id)schedule;
++ (id)doorLockFeatureMapSupportsYearDaySchedule:(id)schedule;
 + (id)logCategory;
-+ (id)numberFromAttributeDictionary:(id)a3;
-+ (id)numberFromAttributeResponse:(id)a3;
-+ (id)validateFutureResults:(id)a3 ofClass:(Class)a4 areNullable:(BOOL)a5 flow:(id)a6;
-+ (id)valueFromAttributeResponse:(id)a3;
-+ (id)valueFromDictionaryWithData:(id)a3;
-- (BOOL)isUserSlotAvailableForUserResponse:(id)a3;
++ (id)numberFromAttributeDictionary:(id)dictionary;
++ (id)numberFromAttributeResponse:(id)response;
++ (id)validateFutureResults:(id)results ofClass:(Class)class areNullable:(BOOL)nullable flow:(id)flow;
++ (id)valueFromAttributeResponse:(id)response;
++ (id)valueFromDictionaryWithData:(id)data;
+- (BOOL)isUserSlotAvailableForUserResponse:(id)response;
 - (HMMTRAccessoryServer)accessoryServer;
-- (HMMTRSyncClusterDoorLock)lockWithPin:(id)a3 flow:(id)a4;
-- (id)__getUserAtIndex:(int64_t)a3 includeAliroCredentials:(BOOL)a4 temporaryCachedAliroCredentials:(id)a5 flow:(id)a6;
-- (id)_addIssuerKeyData:(id)a3 forUserIndex:(int64_t)a4 credentialType:(id)a5 flow:(id)a6;
-- (id)_addOrUpdateIssuerKeyData:(id)a3 forUser:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6;
-- (id)_addOrUpdateIssuerKeyData:(id)a3 forUserIndex:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6;
-- (id)_addOrUpdateIssuerKeyData:(id)a3 forUserUniqueID:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6;
-- (id)_findSchedulesToBeAdded:(id)a3 dict:(id)a4;
-- (id)_findUserOrAvailableSlotWithUserUniqueID:(id)a3 flow:(id)a4;
-- (id)_readReaderConfigWithFlow:(id)a3;
-- (id)_removeUserWithUniqueID:(id)a3 flow:(id)a4;
-- (id)accessoryHasCOTAEnabledWithFlow:(id)a3;
-- (id)addCredentialData:(id)a3 forCredentialType:(id)a4 atIndex:(int64_t)a5 forUserAtUserIndex:(id)a6 flow:(id)a7;
-- (id)addDeviceCredentialKeyData:(id)a3 ofType:(int64_t)a4 forUserIndex:(int64_t)a5 flow:(id)a6;
-- (id)addIssuerKeyData:(id)a3 forUserIndex:(int64_t)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6;
-- (id)addIssuerKeyData:(id)a3 forUserIndex:(int64_t)a4 isUnifiedAccess:(BOOL)a5 withFlow:(id)a6;
-- (id)addNewUsersWithUserUniqueIDs:(id)a3 withCorrespondingIssuerKeys:(id)a4 flow:(id)a5;
-- (id)addOrUpdateIssuerKeyData:(id)a3 forUserIndex:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6;
-- (id)addOrUpdateIssuerKeyData:(id)a3 forUserUniqueID:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6;
-- (id)addOrUpdatePinCodeWithValue:(id)a3 forUserIndex:(int64_t)a4 flow:(id)a5;
-- (id)addOrUpdateReaderKeyData:(id)a3 flow:(id)a4;
-- (id)addPinCodeWithValue:(id)a3 forUserIndex:(int64_t)a4 flow:(id)a5;
-- (id)addPinCredentialAtIndex:(int64_t)a3 withValue:(id)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6;
-- (id)addReaderKeyData:(id)a3 toUserIndex:(int64_t)a4 flow:(id)a5;
-- (id)addUserAtUserIndex:(int64_t)a3 withUserUniqueID:(int64_t)a4 userType:(id)a5 flow:(id)a6;
-- (id)clearAllUsersWithDeletedCreatorFabricIndexWithFlow:(id)a3;
-- (id)clearCredentialAtIndex:(int64_t)a3 withCredentialType:(id)a4 flow:(id)a5;
-- (id)clearScheduleOfScheduleType:(int64_t)a3 atScheduleIndex:(int64_t)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6;
-- (id)clearUserAtIndex:(int64_t)a3 flow:(id)a4;
-- (id)deriveHomePinFromUUID:(id)a3 flow:(id)a4;
-- (id)ensureAccessoryConnected:(id)a3 flow:(id)a4;
-- (id)fetchAccessoryColor_flow:(id)a3;
-- (id)fetchAccessorySupportsAliroBLEUWBWithFlow:(id)a3;
-- (id)fetchAccessorySupportsAliroProvisioningWithFlow:(id)a3;
-- (id)fetchAccessorySupportsPinCodesWithFlow:(id)a3;
+- (HMMTRSyncClusterDoorLock)lockWithPin:(id)pin flow:(id)flow;
+- (id)__getUserAtIndex:(int64_t)index includeAliroCredentials:(BOOL)credentials temporaryCachedAliroCredentials:(id)aliroCredentials flow:(id)flow;
+- (id)_addIssuerKeyData:(id)data forUserIndex:(int64_t)index credentialType:(id)type flow:(id)flow;
+- (id)_addOrUpdateIssuerKeyData:(id)data forUser:(id)user isUnifiedAccess:(BOOL)access flow:(id)flow;
+- (id)_addOrUpdateIssuerKeyData:(id)data forUserIndex:(id)index isUnifiedAccess:(BOOL)access flow:(id)flow;
+- (id)_addOrUpdateIssuerKeyData:(id)data forUserUniqueID:(id)d isUnifiedAccess:(BOOL)access flow:(id)flow;
+- (id)_findSchedulesToBeAdded:(id)added dict:(id)dict;
+- (id)_findUserOrAvailableSlotWithUserUniqueID:(id)d flow:(id)flow;
+- (id)_readReaderConfigWithFlow:(id)flow;
+- (id)_removeUserWithUniqueID:(id)d flow:(id)flow;
+- (id)accessoryHasCOTAEnabledWithFlow:(id)flow;
+- (id)addCredentialData:(id)data forCredentialType:(id)type atIndex:(int64_t)index forUserAtUserIndex:(id)userIndex flow:(id)flow;
+- (id)addDeviceCredentialKeyData:(id)data ofType:(int64_t)type forUserIndex:(int64_t)index flow:(id)flow;
+- (id)addIssuerKeyData:(id)data forUserIndex:(int64_t)index isUnifiedAccess:(BOOL)access flow:(id)flow;
+- (id)addIssuerKeyData:(id)data forUserIndex:(int64_t)index isUnifiedAccess:(BOOL)access withFlow:(id)flow;
+- (id)addNewUsersWithUserUniqueIDs:(id)ds withCorrespondingIssuerKeys:(id)keys flow:(id)flow;
+- (id)addOrUpdateIssuerKeyData:(id)data forUserIndex:(id)index isUnifiedAccess:(BOOL)access flow:(id)flow;
+- (id)addOrUpdateIssuerKeyData:(id)data forUserUniqueID:(id)d isUnifiedAccess:(BOOL)access flow:(id)flow;
+- (id)addOrUpdatePinCodeWithValue:(id)value forUserIndex:(int64_t)index flow:(id)flow;
+- (id)addOrUpdateReaderKeyData:(id)data flow:(id)flow;
+- (id)addPinCodeWithValue:(id)value forUserIndex:(int64_t)index flow:(id)flow;
+- (id)addPinCredentialAtIndex:(int64_t)index withValue:(id)value forUserAtUserIndex:(int64_t)userIndex flow:(id)flow;
+- (id)addReaderKeyData:(id)data toUserIndex:(int64_t)index flow:(id)flow;
+- (id)addUserAtUserIndex:(int64_t)index withUserUniqueID:(int64_t)d userType:(id)type flow:(id)flow;
+- (id)clearAllUsersWithDeletedCreatorFabricIndexWithFlow:(id)flow;
+- (id)clearCredentialAtIndex:(int64_t)index withCredentialType:(id)type flow:(id)flow;
+- (id)clearScheduleOfScheduleType:(int64_t)type atScheduleIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex flow:(id)flow;
+- (id)clearUserAtIndex:(int64_t)index flow:(id)flow;
+- (id)deriveHomePinFromUUID:(id)d flow:(id)flow;
+- (id)ensureAccessoryConnected:(id)connected flow:(id)flow;
+- (id)fetchAccessoryColor_flow:(id)color_flow;
+- (id)fetchAccessorySupportsAliroBLEUWBWithFlow:(id)flow;
+- (id)fetchAccessorySupportsAliroProvisioningWithFlow:(id)flow;
+- (id)fetchAccessorySupportsPinCodesWithFlow:(id)flow;
 - (id)fetchAccessorySupportsTapToUnlock;
-- (id)fetchAvailableCredentialSlotsWithLimit:(int64_t)a3 forCredentialType:(int64_t)a4 flow:(id)a5;
-- (id)fetchAvailableUserSlotsWithLimit:(int64_t)a3 flow:(id)a4;
+- (id)fetchAvailableCredentialSlotsWithLimit:(int64_t)limit forCredentialType:(int64_t)type flow:(id)flow;
+- (id)fetchAvailableUserSlotsWithLimit:(int64_t)limit flow:(id)flow;
 - (id)fetchCurrentFabricIndex;
-- (id)fetchCurrentFabricIndex_flow:(id)a3;
-- (id)fetchFeatureMapForSupportingWeekAndYearDayScheduleWithFlow:(id)a3;
-- (id)fetchFeatureMapWithFlow:(id)a3;
+- (id)fetchCurrentFabricIndex_flow:(id)index_flow;
+- (id)fetchFeatureMapForSupportingWeekAndYearDayScheduleWithFlow:(id)flow;
+- (id)fetchFeatureMapWithFlow:(id)flow;
 - (id)fetchReaderGroupSubIdentifier;
-- (id)findAllOccupiedCredentialSlotsForCredentialType:(int64_t)a3 startingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 occupiedSlots:(id)a6 flow:(id)a7;
-- (id)findAllUsersWithCreatorFabricIndex:(id)a3 indexStartingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 users:(id)a6 flow:(id)a7;
-- (id)findAllUsersWithCreatorFabricIndex:(id)a3 indexStartingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 users:(id)a6 temporaryCachedAliroCredentials:(id)a7 flow:(id)a8;
-- (id)findAvailableCredentialIndexStartingAtSlot:(int64_t)a3 forCredentialType:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 flow:(id)a6;
-- (id)findHomeUserWithUniqueID:(id)a3 indexStartingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 availableSlots:(id)a6 currentFabricIndex:(id)a7 flow:(id)a8;
-- (id)findHomeUserWithUniqueID:(id)a3 indexStartingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 availableSlots:(id)a6 currentFabricIndex:(id)a7 temporaryCachedAliroCredentials:(id)a8 flow:(id)a9;
-- (id)findOperationOrderForModifyingWeekDaySchedules:(id)a3 andYearDaySchedules:(id)a4 forUserIndex:(int64_t)a5 flow:(id)a6;
-- (id)findOrAddUserWithUniqueID:(id)a3 flow:(id)a4;
-- (id)findOrAddUserWithUniqueID:(id)a3 userType:(id)a4 flow:(id)a5;
-- (id)findOrAddUserWithUniqueID:(id)a3 withFlow:(id)a4;
-- (id)findOrAddUserWithUniqueID:(id)a3 withWeekDaySchedules:(id)a4 andYearDaySchedules:(id)a5 requireFullScheduleAudit:(BOOL)a6 flow:(id)a7;
-- (id)findScheduleSlotsToAddAndClearForScheduleType:(int64_t)a3 withRequestedSchedules:(id)a4 forUserAtUserIndex:(int64_t)a5 numberOfSchedulesSupported:(int64_t)a6 flow:(id)a7;
-- (id)findUserOrAvailableSlotWithUserUniqueID:(id)a3 flow:(id)a4;
-- (id)firstAvailableCredentialSlotForCredentialType:(int64_t)a3 flow:(id)a4;
-- (id)getAllCredentialsIndexStartingAtSlot:(int64_t)a3 forCredentialType:(int64_t)a4 credentials:(id)a5 flow:(id)a6;
-- (id)getAllPinCodesWithFlow:(id)a3;
+- (id)findAllOccupiedCredentialSlotsForCredentialType:(int64_t)type startingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots occupiedSlots:(id)occupiedSlots flow:(id)flow;
+- (id)findAllUsersWithCreatorFabricIndex:(id)index indexStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots users:(id)users flow:(id)flow;
+- (id)findAllUsersWithCreatorFabricIndex:(id)index indexStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots users:(id)users temporaryCachedAliroCredentials:(id)credentials flow:(id)flow;
+- (id)findAvailableCredentialIndexStartingAtSlot:(int64_t)slot forCredentialType:(int64_t)type assumingTotalNumberOfSlots:(int64_t)slots flow:(id)flow;
+- (id)findHomeUserWithUniqueID:(id)d indexStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots availableSlots:(id)availableSlots currentFabricIndex:(id)index flow:(id)flow;
+- (id)findHomeUserWithUniqueID:(id)d indexStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots availableSlots:(id)availableSlots currentFabricIndex:(id)index temporaryCachedAliroCredentials:(id)credentials flow:(id)flow;
+- (id)findOperationOrderForModifyingWeekDaySchedules:(id)schedules andYearDaySchedules:(id)daySchedules forUserIndex:(int64_t)index flow:(id)flow;
+- (id)findOrAddUserWithUniqueID:(id)d flow:(id)flow;
+- (id)findOrAddUserWithUniqueID:(id)d userType:(id)type flow:(id)flow;
+- (id)findOrAddUserWithUniqueID:(id)d withFlow:(id)flow;
+- (id)findOrAddUserWithUniqueID:(id)d withWeekDaySchedules:(id)schedules andYearDaySchedules:(id)daySchedules requireFullScheduleAudit:(BOOL)audit flow:(id)flow;
+- (id)findScheduleSlotsToAddAndClearForScheduleType:(int64_t)type withRequestedSchedules:(id)schedules forUserAtUserIndex:(int64_t)index numberOfSchedulesSupported:(int64_t)supported flow:(id)flow;
+- (id)findUserOrAvailableSlotWithUserUniqueID:(id)d flow:(id)flow;
+- (id)firstAvailableCredentialSlotForCredentialType:(int64_t)type flow:(id)flow;
+- (id)getAllCredentialsIndexStartingAtSlot:(int64_t)slot forCredentialType:(int64_t)type credentials:(id)credentials flow:(id)flow;
+- (id)getAllPinCodesWithFlow:(id)flow;
 - (id)getAllUsers;
-- (id)getAllUsersStartingAtSlot:(int64_t)a3 assumingTotalNumberOfSlots:(int64_t)a4 users:(id)a5 flow:(id)a6;
-- (id)getAllUsersStartingAtSlot:(int64_t)a3 assumingTotalNumberOfSlots:(int64_t)a4 users:(id)a5 temporaryCachedAliroCredentials:(id)a6 flow:(id)a7;
-- (id)getCredentialAtIndex:(int64_t)a3 forCredentialType:(int64_t)a4 flow:(id)a5;
-- (id)getMaxPINCodeLengthWithFlow:(id)a3;
-- (id)getMinPINCodeLengthWithFlow:(id)a3;
-- (id)getScheduleOfScheduleType:(int64_t)a3 atScheduleIndex:(int64_t)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6;
-- (id)getUserAtIndex:(int64_t)a3 flow:(id)a4;
-- (id)getUsersWithUniqueIDs:(id)a3 flow:(id)a4;
-- (id)issuerCredentialForUser:(id)a3 flow:(id)a4;
-- (id)lock_flow:(id)a3;
-- (id)numberOfCredentialsSupportedPerUserWithFlow:(id)a3;
-- (id)numberOfWeekDaySchedulesSupportedWithFlow:(id)a3;
-- (id)numberOfYearDaySchedulesSupportedWithFlow:(id)a3;
-- (id)pinCredentialForUser:(id)a3 flow:(id)a4;
-- (id)provisionHomePin:(id)a3 flow:(id)a4;
-- (id)readAliroSupportedVersionWithFlow:(id)a3;
-- (id)readReaderConfigWithFlow:(id)a3;
-- (id)readScheduleForScheduleType:(int64_t)a3 forUserIndex:(int64_t)a4 flow:(id)a5;
-- (id)readSchedulesForUserIndex:(int64_t)a3 flow:(id)a4;
-- (id)readSchedulesForWritingForScheduleType:(int64_t)a3 forUserIndex:(int64_t)a4 startingAtSlot:(int64_t)a5 assumingTotalNumberOfSlots:(int64_t)a6 schedulesToSlots:(id)a7 availableSlots:(id)a8 flow:(id)a9;
+- (id)getAllUsersStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots users:(id)users flow:(id)flow;
+- (id)getAllUsersStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots users:(id)users temporaryCachedAliroCredentials:(id)credentials flow:(id)flow;
+- (id)getCredentialAtIndex:(int64_t)index forCredentialType:(int64_t)type flow:(id)flow;
+- (id)getMaxPINCodeLengthWithFlow:(id)flow;
+- (id)getMinPINCodeLengthWithFlow:(id)flow;
+- (id)getScheduleOfScheduleType:(int64_t)type atScheduleIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex flow:(id)flow;
+- (id)getUserAtIndex:(int64_t)index flow:(id)flow;
+- (id)getUsersWithUniqueIDs:(id)ds flow:(id)flow;
+- (id)issuerCredentialForUser:(id)user flow:(id)flow;
+- (id)lock_flow:(id)lock_flow;
+- (id)numberOfCredentialsSupportedPerUserWithFlow:(id)flow;
+- (id)numberOfWeekDaySchedulesSupportedWithFlow:(id)flow;
+- (id)numberOfYearDaySchedulesSupportedWithFlow:(id)flow;
+- (id)pinCredentialForUser:(id)user flow:(id)flow;
+- (id)provisionHomePin:(id)pin flow:(id)flow;
+- (id)readAliroSupportedVersionWithFlow:(id)flow;
+- (id)readReaderConfigWithFlow:(id)flow;
+- (id)readScheduleForScheduleType:(int64_t)type forUserIndex:(int64_t)index flow:(id)flow;
+- (id)readSchedulesForUserIndex:(int64_t)index flow:(id)flow;
+- (id)readSchedulesForWritingForScheduleType:(int64_t)type forUserIndex:(int64_t)index startingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots schedulesToSlots:(id)toSlots availableSlots:(id)availableSlots flow:(id)flow;
 - (id)removeAllUsers;
-- (id)removePinCodeForUserIndex:(int64_t)a3 flow:(id)a4;
-- (id)removeUserWithUniqueID:(id)a3;
-- (id)removeUsersCreatedByOurFabricWithFlow:(id)a3 notInUserUniqueIDs:(id)a4;
-- (id)rfidCredentialForUser:(id)a3 flow:(id)a4;
-- (id)serialize:(id)a3;
-- (id)setOrReadReaderConfig:(id)a3 flow:(id)a4;
-- (id)setScheduleOfScheduleType:(int64_t)a3 withSchedule:(id)a4 atScheduleIndex:(int64_t)a5 forUserAtUserIndex:(int64_t)a6 flow:(id)a7;
-- (id)totalNumberOfAliroDeviceKeyCredentialsSupportedWithFlow:(id)a3;
-- (id)totalNumberOfAliroIssuerKeyCredentialsSupportedWithFlow:(id)a3;
-- (id)totalNumberOfCredentialSlotsSupportedForCredentialType:(int64_t)a3 flow:(id)a4;
-- (id)totalNumberOfPINCredentialsSupported_flow:(id)a3;
-- (id)totalNumberOfRFIDCredentialsSupported_flow:(id)a3;
-- (id)totalNumberOfUsersSupported_flow:(id)a3;
-- (id)unlockWithPin:(id)a3 flow:(id)a4;
-- (id)unlock_flow:(id)a3;
-- (id)updateCredentialData:(id)a3 forCredentialType:(id)a4 atIndex:(int64_t)a5 forUserAtUserIndex:(int64_t)a6 flow:(id)a7;
-- (id)updatePinCredentialAtIndex:(int64_t)a3 withValue:(id)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6;
-- (id)updateSchedulesForUserIndex:(int64_t)a3 withWeekDaySchedules:(id)a4 andYearDaySchedules:(id)a5 flow:(id)a6;
-- (id)updateSchedulesOfScheduleType:(int64_t)a3 withRequestedSchedules:(id)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6;
-- (id)updateUserTypeForUserIndex:(int64_t)a3 userType:(id)a4 flow:(id)a5;
-- (id)updateUserUniqueIDForUserIndex:(int64_t)a3 userUniqueID:(id)a4 flow:(id)a5;
-- (int64_t)totalNumberOfSchedulesSupportedOfScheduleType:(int64_t)a3 withDefaultCapacity:(int64_t)a4 flow:(id)a5;
-- (void)cacheUserResponse:(id)a3;
+- (id)removePinCodeForUserIndex:(int64_t)index flow:(id)flow;
+- (id)removeUserWithUniqueID:(id)d;
+- (id)removeUsersCreatedByOurFabricWithFlow:(id)flow notInUserUniqueIDs:(id)ds;
+- (id)rfidCredentialForUser:(id)user flow:(id)flow;
+- (id)serialize:(id)serialize;
+- (id)setOrReadReaderConfig:(id)config flow:(id)flow;
+- (id)setScheduleOfScheduleType:(int64_t)type withSchedule:(id)schedule atScheduleIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex flow:(id)flow;
+- (id)totalNumberOfAliroDeviceKeyCredentialsSupportedWithFlow:(id)flow;
+- (id)totalNumberOfAliroIssuerKeyCredentialsSupportedWithFlow:(id)flow;
+- (id)totalNumberOfCredentialSlotsSupportedForCredentialType:(int64_t)type flow:(id)flow;
+- (id)totalNumberOfPINCredentialsSupported_flow:(id)supported_flow;
+- (id)totalNumberOfRFIDCredentialsSupported_flow:(id)supported_flow;
+- (id)totalNumberOfUsersSupported_flow:(id)supported_flow;
+- (id)unlockWithPin:(id)pin flow:(id)flow;
+- (id)unlock_flow:(id)unlock_flow;
+- (id)updateCredentialData:(id)data forCredentialType:(id)type atIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex flow:(id)flow;
+- (id)updatePinCredentialAtIndex:(int64_t)index withValue:(id)value forUserAtUserIndex:(int64_t)userIndex flow:(id)flow;
+- (id)updateSchedulesForUserIndex:(int64_t)index withWeekDaySchedules:(id)schedules andYearDaySchedules:(id)daySchedules flow:(id)flow;
+- (id)updateSchedulesOfScheduleType:(int64_t)type withRequestedSchedules:(id)schedules forUserAtUserIndex:(int64_t)index flow:(id)flow;
+- (id)updateUserTypeForUserIndex:(int64_t)index userType:(id)type flow:(id)flow;
+- (id)updateUserUniqueIDForUserIndex:(int64_t)index userUniqueID:(id)d flow:(id)flow;
+- (int64_t)totalNumberOfSchedulesSupportedOfScheduleType:(int64_t)type withDefaultCapacity:(int64_t)capacity flow:(id)flow;
+- (void)cacheUserResponse:(id)response;
 - (void)dealloc;
-- (void)lockDoorWithAccessoryUUID:(id)a3 completionHandler:(id)a4;
-- (void)readAttributeCurrentFabricIndexWithCompletionHandler:(id)a3;
-- (void)unlockDoorWithAccessoryUUID:(id)a3 completionHandler:(id)a4;
+- (void)lockDoorWithAccessoryUUID:(id)d completionHandler:(id)handler;
+- (void)readAttributeCurrentFabricIndexWithCompletionHandler:(id)handler;
+- (void)unlockDoorWithAccessoryUUID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation HMMTRSyncClusterDoorLock
@@ -136,7 +136,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -147,20 +147,20 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = HMMTRSyncClusterDoorLock;
   [(HMMTRSyncClusterDoorLock *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accessoryHasCOTAEnabledWithFlow:(id)a3
+- (id)accessoryHasCOTAEnabledWithFlow:(id)flow
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__HMMTRSyncClusterDoorLock_accessoryHasCOTAEnabledWithFlow___block_invoke;
   v5[3] = &unk_2786ECB28;
   v5[4] = self;
-  v3 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v5 flow:a3];
+  v3 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v5 flow:flow];
 
   return v3;
 }
@@ -175,46 +175,46 @@ id __60__HMMTRSyncClusterDoorLock_accessoryHasCOTAEnabledWithFlow___block_invoke
   return v4;
 }
 
-- (void)cacheUserResponse:(id)a3
+- (void)cacheUserResponse:(id)response
 {
-  v7 = a3;
-  v4 = [v7 userUniqueID];
+  responseCopy = response;
+  userUniqueID = [responseCopy userUniqueID];
 
-  if (v4)
+  if (userUniqueID)
   {
-    v5 = [(HMMTRSyncClusterDoorLock *)self userUniqueIdentifierToUser];
-    v6 = [v7 userUniqueID];
-    [v5 setObject:v7 forKey:v6];
+    userUniqueIdentifierToUser = [(HMMTRSyncClusterDoorLock *)self userUniqueIdentifierToUser];
+    userUniqueID2 = [responseCopy userUniqueID];
+    [userUniqueIdentifierToUser setObject:responseCopy forKey:userUniqueID2];
   }
 }
 
-- (id)readScheduleForScheduleType:(int64_t)a3 forUserIndex:(int64_t)a4 flow:(id)a5
+- (id)readScheduleForScheduleType:(int64_t)type forUserIndex:(int64_t)index flow:(id)flow
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  flowCopy = flow;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v22 = v12;
     v23 = 2112;
-    v24 = v13;
+    v24 = uUID;
     v25 = 2048;
-    v26 = a3;
+    typeCopy = type;
     v27 = 2048;
-    v28 = a4;
+    indexCopy = index;
     _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] readScheduleForScheduleType: %ld, forUserIndex: %ld", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [(HMMTRSyncClusterDoorLock *)v10 totalNumberOfSchedulesSupportedOfScheduleType:a3 withDefaultCapacity:1 flow:v8];
+  v14 = [(HMMTRSyncClusterDoorLock *)selfCopy totalNumberOfSchedulesSupportedOfScheduleType:type withDefaultCapacity:1 flow:flowCopy];
   v15 = [MEMORY[0x277CBEC10] mutableCopy];
   v16 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v17 = [(HMMTRSyncClusterDoorLock *)v10 readSchedulesForWritingForScheduleType:a3 forUserIndex:a4 startingAtSlot:1 assumingTotalNumberOfSlots:v14 schedulesToSlots:v15 availableSlots:v16 flow:v8];
+  v17 = [(HMMTRSyncClusterDoorLock *)selfCopy readSchedulesForWritingForScheduleType:type forUserIndex:index startingAtSlot:1 assumingTotalNumberOfSlots:v14 schedulesToSlots:v15 availableSlots:v16 flow:flowCopy];
   v18 = [v17 then:&__block_literal_global_363];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -247,80 +247,80 @@ id __74__HMMTRSyncClusterDoorLock_readScheduleForScheduleType_forUserIndex_flow_
   return v8;
 }
 
-- (id)getScheduleOfScheduleType:(int64_t)a3 atScheduleIndex:(int64_t)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6
+- (id)getScheduleOfScheduleType:(int64_t)type atScheduleIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex flow:(id)flow
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  flowCopy = flow;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     *&buf[4] = v14;
     v43 = 2112;
-    v44 = v15;
+    v44 = uUID;
     v45 = 2048;
-    v46 = a3;
+    indexCopy4 = type;
     v47 = 2048;
-    v48 = a4;
+    userIndexCopy4 = index;
     v49 = 2048;
-    v50 = a5;
+    typeCopy2 = userIndex;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] getScheduleOfScheduleType: %ld, atScheduleIndex: %ld, and forUserAtUserIndex: %ld", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v11);
-  if (a3 == 1)
+  if (type == 1)
   {
     v16 = objc_alloc_init(MEMORY[0x277CD53B8]);
-    v23 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v23 = [MEMORY[0x277CCABB0] numberWithInteger:userIndex];
     [v16 setUserIndex:v23];
 
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [v16 setYearDayIndex:v24];
 
     *buf = 0;
     v19 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-    v25 = [*buf resolverBlock];
-    [(MTRClusterDoorLock *)v12 getYearDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:v25];
+    resolverBlock = [*buf resolverBlock];
+    [(MTRClusterDoorLock *)selfCopy getYearDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:resolverBlock];
 
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __94__HMMTRSyncClusterDoorLock_getScheduleOfScheduleType_atScheduleIndex_forUserAtUserIndex_flow___block_invoke_2_361;
     v34[3] = &unk_2786ED768;
-    v34[4] = v12;
-    v35 = v10;
-    v36 = a4;
-    v37 = a5;
+    v34[4] = selfCopy;
+    v35 = flowCopy;
+    indexCopy2 = index;
+    userIndexCopy2 = userIndex;
     v21 = [v19 then:&__block_literal_global_359 orRecover:v34];
     v22 = v35;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!type)
   {
     v16 = objc_alloc_init(MEMORY[0x277CD53B0]);
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:userIndex];
     [v16 setUserIndex:v17];
 
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [v16 setWeekDayIndex:v18];
 
     *buf = 0;
     v19 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-    v20 = [*buf resolverBlock];
-    [(MTRClusterDoorLock *)v12 getWeekDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:v20];
+    resolverBlock2 = [*buf resolverBlock];
+    [(MTRClusterDoorLock *)selfCopy getWeekDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:resolverBlock2];
 
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __94__HMMTRSyncClusterDoorLock_getScheduleOfScheduleType_atScheduleIndex_forUserAtUserIndex_flow___block_invoke_2;
     v38[3] = &unk_2786ED768;
-    v38[4] = v12;
-    v39 = v10;
-    v40 = a4;
-    v41 = a5;
+    v38[4] = selfCopy;
+    v39 = flowCopy;
+    indexCopy3 = index;
+    userIndexCopy3 = userIndex;
     v21 = [v19 then:&__block_literal_global_353 orRecover:v38];
     v22 = v39;
 LABEL_7:
@@ -329,22 +329,22 @@ LABEL_7:
   }
 
   v26 = objc_autoreleasePoolPush();
-  v27 = v12;
+  v27 = selfCopy;
   v28 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     v29 = HMFGetLogIdentifier();
-    v30 = [v10 UUID];
+    uUID2 = [flowCopy UUID];
     *buf = 138544386;
     *&buf[4] = v29;
     v43 = 2112;
-    v44 = v30;
+    v44 = uUID2;
     v45 = 2048;
-    v46 = a4;
+    indexCopy4 = index;
     v47 = 2048;
-    v48 = a5;
+    userIndexCopy4 = userIndex;
     v49 = 2048;
-    v50 = a3;
+    typeCopy2 = type;
     _os_log_impl(&dword_22AEAE000, v28, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Failed to get schedule at scheduleIndex: %ld and userIndex: %ld since scheduleType was of unknown type: %ld.", buf, 0x34u);
   }
 
@@ -465,48 +465,48 @@ uint64_t __94__HMMTRSyncClusterDoorLock_getScheduleOfScheduleType_atScheduleInde
   return 1;
 }
 
-- (id)updateUserTypeForUserIndex:(int64_t)a3 userType:(id)a4 flow:(id)a5
+- (id)updateUserTypeForUserIndex:(int64_t)index userType:(id)type flow:(id)flow
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  flowCopy = flow;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     *&buf[4] = v13;
     v26 = 2112;
-    v27 = v14;
+    v27 = uUID;
     v28 = 2048;
-    v29 = a3;
+    indexCopy = index;
     v30 = 2112;
-    v31 = v8;
+    v31 = typeCopy;
     _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] updateUserTypeForUserIndex: %ld, userType: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v10);
   v15 = objc_alloc_init(MEMORY[0x277CD53E8]);
   [v15 setOperationType:&unk_283EE79F8];
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   [v15 setUserIndex:v16];
 
-  [v15 setUserType:v8];
+  [v15 setUserType:typeCopy];
   *buf = 0;
   v17 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-  v18 = [*buf errorOnlyResolverBlock];
-  [(MTRClusterDoorLock *)v11 setUserWithParams:v15 expectedValues:0 expectedValueInterval:0 completion:v18];
+  errorOnlyResolverBlock = [*buf errorOnlyResolverBlock];
+  [(MTRClusterDoorLock *)selfCopy setUserWithParams:v15 expectedValues:0 expectedValueInterval:0 completion:errorOnlyResolverBlock];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __69__HMMTRSyncClusterDoorLock_updateUserTypeForUserIndex_userType_flow___block_invoke;
   v23[3] = &unk_2786EE848;
-  v23[4] = v11;
-  v24 = v9;
-  v19 = v9;
+  v23[4] = selfCopy;
+  v24 = flowCopy;
+  v19 = flowCopy;
   v20 = [v17 recover:v23];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -552,26 +552,26 @@ uint64_t __69__HMMTRSyncClusterDoorLock_updateUserTypeForUserIndex_userType_flow
   return 2;
 }
 
-- (id)updateUserUniqueIDForUserIndex:(int64_t)a3 userUniqueID:(id)a4 flow:(id)a5
+- (id)updateUserUniqueIDForUserIndex:(int64_t)index userUniqueID:(id)d flow:(id)flow
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  flowCopy = flow;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v26 = v13;
     v27 = 2112;
-    v28 = v14;
+    v28 = uUID;
     v29 = 2048;
-    v30 = a3;
+    indexCopy = index;
     v31 = 2112;
-    v32 = v8;
+    v32 = dCopy;
     _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] updateUserUniqueIDForUserIndex: %ld, userUniqueID: %@", buf, 0x2Au);
   }
 
@@ -580,13 +580,13 @@ uint64_t __69__HMMTRSyncClusterDoorLock_updateUserTypeForUserIndex_userType_flow
   v20[1] = 3221225472;
   v20[2] = __77__HMMTRSyncClusterDoorLock_updateUserUniqueIDForUserIndex_userUniqueID_flow___block_invoke;
   v20[3] = &unk_2786ECEA8;
-  v21 = v8;
-  v22 = v11;
-  v23 = v9;
-  v24 = a3;
-  v15 = v9;
-  v16 = v8;
-  v17 = [(HMMTRSyncClusterDoorLock *)v11 ensureAccessoryConnected:v20 flow:v15];
+  v21 = dCopy;
+  v22 = selfCopy;
+  v23 = flowCopy;
+  indexCopy2 = index;
+  v15 = flowCopy;
+  v16 = dCopy;
+  v17 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v20 flow:v15];
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -656,44 +656,44 @@ uint64_t __77__HMMTRSyncClusterDoorLock_updateUserUniqueIDForUserIndex_userUniqu
   return 2;
 }
 
-- (id)setScheduleOfScheduleType:(int64_t)a3 withSchedule:(id)a4 atScheduleIndex:(int64_t)a5 forUserAtUserIndex:(int64_t)a6 flow:(id)a7
+- (id)setScheduleOfScheduleType:(int64_t)type withSchedule:(id)schedule atScheduleIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex flow:(id)flow
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a7;
-  if (a3 == 1)
+  scheduleCopy = schedule;
+  flowCopy = flow;
+  if (type == 1)
   {
     *buf = 0;
     v14 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-    v19 = [*buf errorOnlyResolverBlock];
-    v20 = [v12 convertToMTRScheduleAtScheduleIndex:a5 forUserAtUserIndex:a6];
-    [(MTRClusterDoorLock *)self setYearDayScheduleWithParams:v20 expectedValues:0 expectedValueInterval:0 completion:v19];
+    errorOnlyResolverBlock = [*buf errorOnlyResolverBlock];
+    v20 = [scheduleCopy convertToMTRScheduleAtScheduleIndex:index forUserAtUserIndex:userIndex];
+    [(MTRClusterDoorLock *)self setYearDayScheduleWithParams:v20 expectedValues:0 expectedValueInterval:0 completion:errorOnlyResolverBlock];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __107__HMMTRSyncClusterDoorLock_setScheduleOfScheduleType_withSchedule_atScheduleIndex_forUserAtUserIndex_flow___block_invoke_349;
     v29[3] = &unk_2786EE848;
     v29[4] = self;
-    v30 = v13;
+    v30 = flowCopy;
     v17 = [v14 recover:v29];
     v18 = v30;
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     *buf = 0;
     v14 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-    v15 = [*buf errorOnlyResolverBlock];
-    v16 = [v12 convertToMTRScheduleAtScheduleIndex:a5 forUserAtUserIndex:a6];
-    [(MTRClusterDoorLock *)self setWeekDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:v15];
+    errorOnlyResolverBlock2 = [*buf errorOnlyResolverBlock];
+    v16 = [scheduleCopy convertToMTRScheduleAtScheduleIndex:index forUserAtUserIndex:userIndex];
+    [(MTRClusterDoorLock *)self setWeekDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:errorOnlyResolverBlock2];
 
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __107__HMMTRSyncClusterDoorLock_setScheduleOfScheduleType_withSchedule_atScheduleIndex_forUserAtUserIndex_flow___block_invoke;
     v31[3] = &unk_2786EE848;
     v31[4] = self;
-    v32 = v13;
+    v32 = flowCopy;
     v17 = [v14 recover:v31];
     v18 = v32;
 LABEL_5:
@@ -702,18 +702,18 @@ LABEL_5:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     v24 = HMFGetLogIdentifier();
-    v25 = [v13 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     *&buf[4] = v24;
     v34 = 2112;
-    v35 = v25;
+    v35 = uUID;
     v36 = 2048;
-    v37 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_22AEAE000, v23, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to set schedule with error of unknown HMMTRScheduleType: %ld", buf, 0x20u);
   }
 
@@ -804,76 +804,76 @@ uint64_t __107__HMMTRSyncClusterDoorLock_setScheduleOfScheduleType_withSchedule_
   return 2;
 }
 
-- (id)clearScheduleOfScheduleType:(int64_t)a3 atScheduleIndex:(int64_t)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6
+- (id)clearScheduleOfScheduleType:(int64_t)type atScheduleIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex flow:(id)flow
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  flowCopy = flow;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     *&buf[4] = v14;
     v39 = 2112;
-    v40 = v15;
+    v40 = uUID;
     v41 = 2048;
-    v42 = a3;
+    typeCopy2 = type;
     v43 = 2048;
-    v44 = a4;
+    indexCopy = index;
     v45 = 2048;
-    v46 = a5;
+    userIndexCopy = userIndex;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] clearScheduleOfScheduleType: %ld, atScheduleIndex: %ld, for userIndex: %ld", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v11);
-  if (a3 == 1)
+  if (type == 1)
   {
     v16 = objc_alloc_init(MEMORY[0x277CD5388]);
-    v23 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v23 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [v16 setYearDayIndex:v23];
 
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:userIndex];
     [v16 setUserIndex:v24];
 
     *buf = 0;
     v19 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-    v25 = [*buf errorOnlyResolverBlock];
-    [(MTRClusterDoorLock *)v12 clearYearDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:v25];
+    errorOnlyResolverBlock = [*buf errorOnlyResolverBlock];
+    [(MTRClusterDoorLock *)selfCopy clearYearDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:errorOnlyResolverBlock];
 
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __96__HMMTRSyncClusterDoorLock_clearScheduleOfScheduleType_atScheduleIndex_forUserAtUserIndex_flow___block_invoke_348;
     v34[3] = &unk_2786EE848;
-    v34[4] = v12;
-    v35 = v10;
+    v34[4] = selfCopy;
+    v35 = flowCopy;
     v21 = [v19 recover:v34];
     v22 = v35;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!type)
   {
     v16 = objc_alloc_init(MEMORY[0x277CD5380]);
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [v16 setWeekDayIndex:v17];
 
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:userIndex];
     [v16 setUserIndex:v18];
 
     *buf = 0;
     v19 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-    v20 = [*buf errorOnlyResolverBlock];
-    [(MTRClusterDoorLock *)v12 clearWeekDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:v20];
+    errorOnlyResolverBlock2 = [*buf errorOnlyResolverBlock];
+    [(MTRClusterDoorLock *)selfCopy clearWeekDayScheduleWithParams:v16 expectedValues:0 expectedValueInterval:0 completion:errorOnlyResolverBlock2];
 
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __96__HMMTRSyncClusterDoorLock_clearScheduleOfScheduleType_atScheduleIndex_forUserAtUserIndex_flow___block_invoke;
     v36[3] = &unk_2786EE848;
-    v36[4] = v12;
-    v37 = v10;
+    v36[4] = selfCopy;
+    v37 = flowCopy;
     v21 = [v19 recover:v36];
     v22 = v37;
 LABEL_7:
@@ -882,18 +882,18 @@ LABEL_7:
   }
 
   v26 = objc_autoreleasePoolPush();
-  v27 = v12;
+  v27 = selfCopy;
   v28 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
     v29 = HMFGetLogIdentifier();
-    v30 = [v10 UUID];
+    uUID2 = [flowCopy UUID];
     *buf = 138543874;
     *&buf[4] = v29;
     v39 = 2112;
-    v40 = v30;
+    v40 = uUID2;
     v41 = 2048;
-    v42 = a3;
+    typeCopy2 = type;
     _os_log_impl(&dword_22AEAE000, v28, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to clear schedule with error of unknown HMMTRScheduleType: %ld", buf, 0x20u);
   }
 
@@ -984,27 +984,27 @@ uint64_t __96__HMMTRSyncClusterDoorLock_clearScheduleOfScheduleType_atScheduleIn
   return 2;
 }
 
-- (int64_t)totalNumberOfSchedulesSupportedOfScheduleType:(int64_t)a3 withDefaultCapacity:(int64_t)a4 flow:(id)a5
+- (int64_t)totalNumberOfSchedulesSupportedOfScheduleType:(int64_t)type withDefaultCapacity:(int64_t)capacity flow:(id)flow
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (a3 == 1)
+  flowCopy = flow;
+  if (type == 1)
   {
     v9 = [(MTRClusterDoorLock *)self readAttributeNumberOfYearDaySchedulesSupportedPerUserWithParams:0];
     v10 = [v9 objectForKey:*MEMORY[0x277CD51A0]];
     if (!v10)
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v8 UUID];
+        uUID = [flowCopy UUID];
         v30 = 138543618;
         v31 = v28;
         v32 = 2112;
-        v33 = v29;
+        v33 = uUID;
         _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Could not determine total number of yearday schedule slots, assuming 1 by default", &v30, 0x16u);
       }
 
@@ -1017,73 +1017,73 @@ LABEL_8:
     v16 = v10;
 LABEL_9:
 
-    v17 = [v16 integerValue];
+    integerValue = [v16 integerValue];
     goto LABEL_13;
   }
 
-  if (!a3)
+  if (!type)
   {
     v9 = [(MTRClusterDoorLock *)self readAttributeNumberOfWeekDaySchedulesSupportedPerUserWithParams:0];
     v10 = [v9 objectForKey:*MEMORY[0x277CD51A0]];
     if (!v10)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = HMFGetLogIdentifier();
-        v15 = [v8 UUID];
+        uUID2 = [flowCopy UUID];
         v30 = 138543874;
         v31 = v14;
         v32 = 2112;
-        v33 = v15;
+        v33 = uUID2;
         v34 = 2048;
-        v35 = a4;
+        typeCopy = capacity;
         _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Could not determine total number of weekday schedule slots, assuming %ld by default", &v30, 0x20u);
       }
 
       objc_autoreleasePoolPop(v11);
-      v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v10 = [MEMORY[0x277CCABB0] numberWithInteger:capacity];
     }
 
     goto LABEL_8;
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy3 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [v8 UUID];
+    uUID3 = [flowCopy UUID];
     v30 = 138543874;
     v31 = v21;
     v32 = 2112;
-    v33 = v22;
+    v33 = uUID3;
     v34 = 2048;
-    v35 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] ScheduleType unknown of type: %ld", &v30, 0x20u);
   }
 
   objc_autoreleasePoolPop(v18);
-  v17 = 0;
+  integerValue = 0;
 LABEL_13:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v17;
+  return integerValue;
 }
 
-- (id)numberOfYearDaySchedulesSupportedWithFlow:(id)a3
+- (id)numberOfYearDaySchedulesSupportedWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__HMMTRSyncClusterDoorLock_numberOfYearDaySchedulesSupportedWithFlow___block_invoke;
   v8[3] = &unk_2786ECB50;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = flowCopy;
+  v5 = flowCopy;
   v6 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v8 flow:v5];
 
   return v6;
@@ -1098,16 +1098,16 @@ id __70__HMMTRSyncClusterDoorLock_numberOfYearDaySchedulesSupportedWithFlow___bl
   return v3;
 }
 
-- (id)numberOfWeekDaySchedulesSupportedWithFlow:(id)a3
+- (id)numberOfWeekDaySchedulesSupportedWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__HMMTRSyncClusterDoorLock_numberOfWeekDaySchedulesSupportedWithFlow___block_invoke;
   v8[3] = &unk_2786ECB50;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = flowCopy;
+  v5 = flowCopy;
   v6 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v8 flow:v5];
 
   return v6;
@@ -1122,16 +1122,16 @@ id __70__HMMTRSyncClusterDoorLock_numberOfWeekDaySchedulesSupportedWithFlow___bl
   return v3;
 }
 
-- (id)numberOfCredentialsSupportedPerUserWithFlow:(id)a3
+- (id)numberOfCredentialsSupportedPerUserWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__HMMTRSyncClusterDoorLock_numberOfCredentialsSupportedPerUserWithFlow___block_invoke;
   v8[3] = &unk_2786ECB50;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = flowCopy;
+  v5 = flowCopy;
   v6 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v8 flow:v5];
 
   return v6;
@@ -1171,16 +1171,16 @@ id __72__HMMTRSyncClusterDoorLock_numberOfCredentialsSupportedPerUserWithFlow___
   return v9;
 }
 
-- (id)totalNumberOfAliroDeviceKeyCredentialsSupportedWithFlow:(id)a3
+- (id)totalNumberOfAliroDeviceKeyCredentialsSupportedWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__HMMTRSyncClusterDoorLock_totalNumberOfAliroDeviceKeyCredentialsSupportedWithFlow___block_invoke;
   v8[3] = &unk_2786ECB50;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = flowCopy;
+  v5 = flowCopy;
   v6 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v8 flow:v5];
 
   return v6;
@@ -1197,16 +1197,16 @@ id __84__HMMTRSyncClusterDoorLock_totalNumberOfAliroDeviceKeyCredentialsSupporte
   return v2;
 }
 
-- (id)totalNumberOfAliroIssuerKeyCredentialsSupportedWithFlow:(id)a3
+- (id)totalNumberOfAliroIssuerKeyCredentialsSupportedWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__HMMTRSyncClusterDoorLock_totalNumberOfAliroIssuerKeyCredentialsSupportedWithFlow___block_invoke;
   v8[3] = &unk_2786ECB50;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = flowCopy;
+  v5 = flowCopy;
   v6 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v8 flow:v5];
 
   return v6;
@@ -1223,36 +1223,36 @@ id __84__HMMTRSyncClusterDoorLock_totalNumberOfAliroIssuerKeyCredentialsSupporte
   return v2;
 }
 
-- (id)totalNumberOfRFIDCredentialsSupported_flow:(id)a3
+- (id)totalNumberOfRFIDCredentialsSupported_flow:(id)supported_flow
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
+  supported_flowCopy = supported_flow;
+  device = [(MTRGenericCluster *)self device];
 
-  if (v5)
+  if (device)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __71__HMMTRSyncClusterDoorLock_totalNumberOfRFIDCredentialsSupported_flow___block_invoke;
     v14[3] = &unk_2786ECB50;
     v14[4] = self;
-    v15 = v4;
+    v15 = supported_flowCopy;
     v6 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v14 flow:v15];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 UUID];
+      uUID = [supported_flowCopy UUID];
       *buf = 138543618;
       v17 = v10;
       v18 = 2112;
-      v19 = v11;
+      v19 = uUID;
       _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] No MTRDevice, assuming 50 slots", buf, 0x16u);
     }
 
@@ -1297,36 +1297,36 @@ id __71__HMMTRSyncClusterDoorLock_totalNumberOfRFIDCredentialsSupported_flow___b
   return v9;
 }
 
-- (id)totalNumberOfPINCredentialsSupported_flow:(id)a3
+- (id)totalNumberOfPINCredentialsSupported_flow:(id)supported_flow
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
+  supported_flowCopy = supported_flow;
+  device = [(MTRGenericCluster *)self device];
 
-  if (v5)
+  if (device)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __70__HMMTRSyncClusterDoorLock_totalNumberOfPINCredentialsSupported_flow___block_invoke;
     v14[3] = &unk_2786ECB50;
     v14[4] = self;
-    v15 = v4;
+    v15 = supported_flowCopy;
     v6 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v14 flow:v15];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 UUID];
+      uUID = [supported_flowCopy UUID];
       *buf = 138543618;
       v17 = v10;
       v18 = 2112;
-      v19 = v11;
+      v19 = uUID;
       _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] No MTRDevice, assuming 50 slots", buf, 0x16u);
     }
 
@@ -1371,36 +1371,36 @@ id __70__HMMTRSyncClusterDoorLock_totalNumberOfPINCredentialsSupported_flow___bl
   return v9;
 }
 
-- (id)totalNumberOfUsersSupported_flow:(id)a3
+- (id)totalNumberOfUsersSupported_flow:(id)supported_flow
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
+  supported_flowCopy = supported_flow;
+  device = [(MTRGenericCluster *)self device];
 
-  if (v5)
+  if (device)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __61__HMMTRSyncClusterDoorLock_totalNumberOfUsersSupported_flow___block_invoke;
     v14[3] = &unk_2786ECB50;
     v14[4] = self;
-    v15 = v4;
+    v15 = supported_flowCopy;
     v6 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v14 flow:v15];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 UUID];
+      uUID = [supported_flowCopy UUID];
       *buf = 138543618;
       v17 = v10;
       v18 = 2112;
-      v19 = v11;
+      v19 = uUID;
       _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] No MTRDevice, assuming 50 slots", buf, 0x16u);
     }
 
@@ -1445,33 +1445,33 @@ id __61__HMMTRSyncClusterDoorLock_totalNumberOfUsersSupported_flow___block_invok
   return v9;
 }
 
-- (id)fetchCurrentFabricIndex_flow:(id)a3
+- (id)fetchCurrentFabricIndex_flow:(id)index_flow
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
+  index_flowCopy = index_flow;
+  device = [(MTRGenericCluster *)self device];
 
-  if (v5)
+  if (device)
   {
     v17 = MEMORY[0x277D85DD0];
-    v18 = v4;
-    v6 = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
-    v7 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:&v17 flow:v6];
+    v18 = index_flowCopy;
+    untrackedPlaceholderFlow = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
+    v7 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:&v17 flow:untrackedPlaceholderFlow];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 UUID];
+      uUID = [index_flowCopy UUID];
       *buf = 138543618;
       v20 = v11;
       v21 = 2112;
-      v22 = v12;
+      v22 = uUID;
       _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] THIS IS A BUG: device is nil, this should not happen.", buf, 0x16u);
     }
 
@@ -1543,12 +1543,12 @@ uint64_t __57__HMMTRSyncClusterDoorLock_fetchCurrentFabricIndex_flow___block_inv
   return 2;
 }
 
-- (void)readAttributeCurrentFabricIndexWithCompletionHandler:(id)a3
+- (void)readAttributeCurrentFabricIndexWithCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1556,15 +1556,15 @@ uint64_t __57__HMMTRSyncClusterDoorLock_fetchCurrentFabricIndex_flow___block_inv
     v23 = 138543618;
     v24 = v8;
     v25 = 2112;
-    v26 = v6;
+    v26 = selfCopy;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@Getting current fabric index: %@", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v9 = objc_alloc(MEMORY[0x277CD5280]);
-  v10 = [(MTRGenericCluster *)v6 device];
-  v11 = [(HMMTRSyncClusterDoorLock *)v6 queue];
-  v12 = [v9 initWithDevice:v10 endpointID:&unk_283EE7A40 queue:v11];
+  device = [(MTRGenericCluster *)selfCopy device];
+  queue = [(HMMTRSyncClusterDoorLock *)selfCopy queue];
+  v12 = [v9 initWithDevice:device endpointID:&unk_283EE7A40 queue:queue];
 
   v13 = objc_alloc_init(MEMORY[0x277CD54D8]);
   [v13 setFilterByFabric:0];
@@ -1576,7 +1576,7 @@ uint64_t __57__HMMTRSyncClusterDoorLock_fetchCurrentFabricIndex_flow___block_inv
     if (v16)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = v6;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -1589,20 +1589,20 @@ uint64_t __57__HMMTRSyncClusterDoorLock_fetchCurrentFabricIndex_flow___block_inv
       }
 
       objc_autoreleasePoolPop(v17);
-      v4[2](v4, v16, 0);
+      handlerCopy[2](handlerCopy, v16, 0);
     }
 
     else
     {
       v21 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-      (v4)[2](v4, 0, v21);
+      (handlerCopy)[2](handlerCopy, 0, v21);
     }
   }
 
   else
   {
     v16 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    (v4)[2](v4, 0, v16);
+    (handlerCopy)[2](handlerCopy, 0, v16);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -1610,43 +1610,43 @@ uint64_t __57__HMMTRSyncClusterDoorLock_fetchCurrentFabricIndex_flow___block_inv
 
 - (id)fetchCurrentFabricIndex
 {
-  v3 = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
-  v4 = [(HMMTRSyncClusterDoorLock *)self fetchCurrentFabricIndex_flow:v3];
+  untrackedPlaceholderFlow = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
+  v4 = [(HMMTRSyncClusterDoorLock *)self fetchCurrentFabricIndex_flow:untrackedPlaceholderFlow];
 
   return v4;
 }
 
-- (id)getCredentialAtIndex:(int64_t)a3 forCredentialType:(int64_t)a4 flow:(id)a5
+- (id)getCredentialAtIndex:(int64_t)index forCredentialType:(int64_t)type flow:(id)flow
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  flowCopy = flow;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v25 = v12;
     v26 = 2112;
-    v27 = v13;
+    v27 = uUID;
     v28 = 2048;
-    v29 = a3;
+    indexCopy = index;
     v30 = 2048;
-    v31 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] getCredentialAtIndex: %ld forCredentialType: %ld", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v9);
   v20 = MEMORY[0x277D85DD0];
-  v22 = a4;
-  v23 = a3;
-  v21 = v8;
+  typeCopy2 = type;
+  indexCopy2 = index;
+  v21 = flowCopy;
   v14 = MEMORY[0x277D0F7B8];
-  v15 = v8;
-  v16 = [v14 untrackedPlaceholderFlow];
-  v17 = [(HMMTRSyncClusterDoorLock *)v10 ensureAccessoryConnected:&v20 flow:v16];
+  v15 = flowCopy;
+  untrackedPlaceholderFlow = [v14 untrackedPlaceholderFlow];
+  v17 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:&v20 flow:untrackedPlaceholderFlow];
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -1720,48 +1720,48 @@ uint64_t __72__HMMTRSyncClusterDoorLock_getCredentialAtIndex_forCredentialType_f
   return 2;
 }
 
-- (id)updateCredentialData:(id)a3 forCredentialType:(id)a4 atIndex:(int64_t)a5 forUserAtUserIndex:(int64_t)a6 flow:(id)a7
+- (id)updateCredentialData:(id)data forCredentialType:(id)type atIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex flow:(id)flow
 {
   v47 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  dataCopy = data;
+  typeCopy = type;
+  flowCopy = flow;
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v14 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544642;
     v36 = v18;
     v37 = 2112;
-    v38 = v19;
+    v38 = uUID;
     v39 = 2112;
-    v40 = v12;
+    v40 = dataCopy;
     v41 = 2112;
-    v42 = v13;
+    v42 = typeCopy;
     v43 = 2048;
-    v44 = a5;
+    indexCopy = index;
     v45 = 2048;
-    v46 = a6;
+    userIndexCopy = userIndex;
     _os_log_impl(&dword_22AEAE000, v17, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] updateCredentialData: %@ forCredentialType: %@, atIndex: %ld forUserAtUserIndex: %ld", buf, 0x3Eu);
   }
 
   objc_autoreleasePoolPop(v15);
   v28 = MEMORY[0x277D85DD0];
-  v33 = a5;
-  v34 = a6;
-  v29 = v13;
-  v30 = v12;
-  v31 = v16;
-  v32 = v14;
+  indexCopy2 = index;
+  userIndexCopy2 = userIndex;
+  v29 = typeCopy;
+  v30 = dataCopy;
+  v31 = selfCopy;
+  v32 = flowCopy;
   v20 = MEMORY[0x277D0F7B8];
-  v21 = v14;
-  v22 = v12;
-  v23 = v13;
-  v24 = [v20 untrackedPlaceholderFlow];
-  v25 = [(HMMTRSyncClusterDoorLock *)v16 ensureAccessoryConnected:&v28 flow:v24];
+  v21 = flowCopy;
+  v22 = dataCopy;
+  v23 = typeCopy;
+  untrackedPlaceholderFlow = [v20 untrackedPlaceholderFlow];
+  v25 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:&v28 flow:untrackedPlaceholderFlow];
 
   v26 = *MEMORY[0x277D85DE8];
 
@@ -1959,50 +1959,50 @@ uint64_t __99__HMMTRSyncClusterDoorLock_updateCredentialData_forCredentialType_a
   return 2;
 }
 
-- (id)addCredentialData:(id)a3 forCredentialType:(id)a4 atIndex:(int64_t)a5 forUserAtUserIndex:(id)a6 flow:(id)a7
+- (id)addCredentialData:(id)data forCredentialType:(id)type atIndex:(int64_t)index forUserAtUserIndex:(id)userIndex flow:(id)flow
 {
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  typeCopy = type;
+  userIndexCopy = userIndex;
+  flowCopy = flow;
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [v15 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544642;
     v38 = v19;
     v39 = 2112;
-    v40 = v20;
+    v40 = uUID;
     v41 = 2112;
-    v42 = v12;
+    v42 = dataCopy;
     v43 = 2112;
-    v44 = v13;
+    v44 = typeCopy;
     v45 = 2048;
-    v46 = a5;
+    indexCopy = index;
     v47 = 2112;
-    v48 = v14;
+    v48 = userIndexCopy;
     _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] addCredentialData: %@ forCredentialType: %@, atIndex: %ld forUserAtUserIndex: %@", buf, 0x3Eu);
   }
 
   objc_autoreleasePoolPop(v16);
   v30 = MEMORY[0x277D85DD0];
-  v31 = v13;
-  v32 = v14;
-  v33 = v12;
-  v34 = v17;
-  v35 = v15;
-  v36 = a5;
+  v31 = typeCopy;
+  v32 = userIndexCopy;
+  v33 = dataCopy;
+  v34 = selfCopy;
+  v35 = flowCopy;
+  indexCopy2 = index;
   v21 = MEMORY[0x277D0F7B8];
-  v22 = v15;
-  v23 = v12;
-  v24 = v14;
-  v25 = v13;
-  v26 = [v21 untrackedPlaceholderFlow];
-  v27 = [(HMMTRSyncClusterDoorLock *)v17 ensureAccessoryConnected:&v30 flow:v26];
+  v22 = flowCopy;
+  v23 = dataCopy;
+  v24 = userIndexCopy;
+  v25 = typeCopy;
+  untrackedPlaceholderFlow = [v21 untrackedPlaceholderFlow];
+  v27 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:&v30 flow:untrackedPlaceholderFlow];
 
   v28 = *MEMORY[0x277D85DE8];
 
@@ -2214,28 +2214,28 @@ uint64_t __96__HMMTRSyncClusterDoorLock_addCredentialData_forCredentialType_atIn
   return 2;
 }
 
-- (id)updatePinCredentialAtIndex:(int64_t)a3 withValue:(id)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6
+- (id)updatePinCredentialAtIndex:(int64_t)index withValue:(id)value forUserAtUserIndex:(int64_t)userIndex flow:(id)flow
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  valueCopy = value;
+  flowCopy = flow;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     v31 = v15;
     v32 = 2112;
-    v33 = v16;
+    v33 = uUID;
     v34 = 2048;
-    v35 = a3;
+    indexCopy = index;
     v36 = 2112;
-    v37 = v10;
+    v37 = valueCopy;
     v38 = 2048;
-    v39 = a5;
+    userIndexCopy = userIndex;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] updatePinCredentialAtIndex: %ld, withValue: %@ forUserAtUserIndex: %ld", buf, 0x34u);
   }
 
@@ -2244,16 +2244,16 @@ uint64_t __96__HMMTRSyncClusterDoorLock_addCredentialData_forCredentialType_atIn
   v24[1] = 3221225472;
   v24[2] = __89__HMMTRSyncClusterDoorLock_updatePinCredentialAtIndex_withValue_forUserAtUserIndex_flow___block_invoke;
   v24[3] = &unk_2786ED630;
-  v28 = a3;
-  v29 = a5;
-  v25 = v10;
-  v26 = v13;
-  v27 = v11;
+  indexCopy2 = index;
+  userIndexCopy2 = userIndex;
+  v25 = valueCopy;
+  v26 = selfCopy;
+  v27 = flowCopy;
   v17 = MEMORY[0x277D0F7B8];
-  v18 = v11;
-  v19 = v10;
-  v20 = [v17 untrackedPlaceholderFlow];
-  v21 = [(HMMTRSyncClusterDoorLock *)v13 ensureAccessoryConnected:v24 flow:v20];
+  v18 = flowCopy;
+  v19 = valueCopy;
+  untrackedPlaceholderFlow = [v17 untrackedPlaceholderFlow];
+  v21 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v24 flow:untrackedPlaceholderFlow];
 
   v22 = *MEMORY[0x277D85DE8];
 
@@ -2404,28 +2404,28 @@ uint64_t __89__HMMTRSyncClusterDoorLock_updatePinCredentialAtIndex_withValue_for
   return 2;
 }
 
-- (id)addPinCredentialAtIndex:(int64_t)a3 withValue:(id)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6
+- (id)addPinCredentialAtIndex:(int64_t)index withValue:(id)value forUserAtUserIndex:(int64_t)userIndex flow:(id)flow
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  valueCopy = value;
+  flowCopy = flow;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     v31 = v15;
     v32 = 2112;
-    v33 = v16;
+    v33 = uUID;
     v34 = 2048;
-    v35 = a3;
+    indexCopy = index;
     v36 = 2112;
-    v37 = v10;
+    v37 = valueCopy;
     v38 = 2048;
-    v39 = a5;
+    userIndexCopy = userIndex;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] addPinCredentialAtIndex: %ld, withValue: %@ forUserAtUserIndex: %ld", buf, 0x34u);
   }
 
@@ -2434,16 +2434,16 @@ uint64_t __89__HMMTRSyncClusterDoorLock_updatePinCredentialAtIndex_withValue_for
   v24[1] = 3221225472;
   v24[2] = __86__HMMTRSyncClusterDoorLock_addPinCredentialAtIndex_withValue_forUserAtUserIndex_flow___block_invoke;
   v24[3] = &unk_2786ED630;
-  v28 = a3;
-  v29 = a5;
-  v25 = v10;
-  v26 = v13;
-  v27 = v11;
+  indexCopy2 = index;
+  userIndexCopy2 = userIndex;
+  v25 = valueCopy;
+  v26 = selfCopy;
+  v27 = flowCopy;
   v17 = MEMORY[0x277D0F7B8];
-  v18 = v11;
-  v19 = v10;
-  v20 = [v17 untrackedPlaceholderFlow];
-  v21 = [(HMMTRSyncClusterDoorLock *)v13 ensureAccessoryConnected:v24 flow:v20];
+  v18 = flowCopy;
+  v19 = valueCopy;
+  untrackedPlaceholderFlow = [v17 untrackedPlaceholderFlow];
+  v21 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v24 flow:untrackedPlaceholderFlow];
 
   v22 = *MEMORY[0x277D85DE8];
 
@@ -2607,28 +2607,28 @@ uint64_t __86__HMMTRSyncClusterDoorLock_addPinCredentialAtIndex_withValue_forUse
   return 2;
 }
 
-- (id)addUserAtUserIndex:(int64_t)a3 withUserUniqueID:(int64_t)a4 userType:(id)a5 flow:(id)a6
+- (id)addUserAtUserIndex:(int64_t)index withUserUniqueID:(int64_t)d userType:(id)type flow:(id)flow
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  typeCopy = type;
+  flowCopy = flow;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     v31 = v15;
     v32 = 2112;
-    v33 = v16;
+    v33 = uUID;
     v34 = 2048;
-    v35 = a3;
+    indexCopy = index;
     v36 = 2048;
-    v37 = a4;
+    dCopy = d;
     v38 = 2112;
-    v39 = v10;
+    v39 = typeCopy;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] addUserAtUserIndex: %ld, withUserUniqueID: %ld, userType: %@", buf, 0x34u);
   }
 
@@ -2637,16 +2637,16 @@ uint64_t __86__HMMTRSyncClusterDoorLock_addPinCredentialAtIndex_withValue_forUse
   v24[1] = 3221225472;
   v24[2] = __78__HMMTRSyncClusterDoorLock_addUserAtUserIndex_withUserUniqueID_userType_flow___block_invoke;
   v24[3] = &unk_2786ED630;
-  v28 = a3;
-  v29 = a4;
-  v25 = v10;
-  v26 = v13;
-  v27 = v11;
+  indexCopy2 = index;
+  dCopy2 = d;
+  v25 = typeCopy;
+  v26 = selfCopy;
+  v27 = flowCopy;
   v17 = MEMORY[0x277D0F7B8];
-  v18 = v11;
-  v19 = v10;
-  v20 = [v17 untrackedPlaceholderFlow];
-  v21 = [(HMMTRSyncClusterDoorLock *)v13 ensureAccessoryConnected:v24 flow:v20];
+  v18 = flowCopy;
+  v19 = typeCopy;
+  untrackedPlaceholderFlow = [v17 untrackedPlaceholderFlow];
+  v21 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v24 flow:untrackedPlaceholderFlow];
 
   v22 = *MEMORY[0x277D85DE8];
 
@@ -2719,31 +2719,31 @@ uint64_t __78__HMMTRSyncClusterDoorLock_addUserAtUserIndex_withUserUniqueID_user
   return 2;
 }
 
-- (id)unlock_flow:(id)a3
+- (id)unlock_flow:(id)unlock_flow
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unlock_flowCopy = unlock_flow;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
+    uUID = [unlock_flowCopy UUID];
     *buf = 138543618;
     v19 = v8;
     v20 = 2112;
-    v21 = v9;
+    v21 = uUID;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Unlocking", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v16 = MEMORY[0x277D85DD0];
-  v17 = v4;
+  v17 = unlock_flowCopy;
   v10 = MEMORY[0x277D0F7B8];
-  v11 = v4;
-  v12 = [v10 untrackedPlaceholderFlow];
-  v13 = [(HMMTRSyncClusterDoorLock *)v6 ensureAccessoryConnected:&v16 flow:v12];
+  v11 = unlock_flowCopy;
+  untrackedPlaceholderFlow = [v10 untrackedPlaceholderFlow];
+  v13 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:&v16 flow:untrackedPlaceholderFlow];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -2805,24 +2805,24 @@ uint64_t __40__HMMTRSyncClusterDoorLock_unlock_flow___block_invoke_2(uint64_t a1
   return 2;
 }
 
-- (id)unlockWithPin:(id)a3 flow:(id)a4
+- (id)unlockWithPin:(id)pin flow:(id)flow
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pinCopy = pin;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v25 = v11;
     v26 = 2112;
-    v27 = v12;
+    v27 = uUID;
     v28 = 2112;
-    v29 = v6;
+    v29 = pinCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Unlocking with pin: %@", buf, 0x20u);
   }
 
@@ -2831,14 +2831,14 @@ uint64_t __40__HMMTRSyncClusterDoorLock_unlock_flow___block_invoke_2(uint64_t a1
   v20[1] = 3221225472;
   v20[2] = __47__HMMTRSyncClusterDoorLock_unlockWithPin_flow___block_invoke;
   v20[3] = &unk_2786EC948;
-  v21 = v6;
-  v22 = v9;
-  v23 = v7;
+  v21 = pinCopy;
+  v22 = selfCopy;
+  v23 = flowCopy;
   v13 = MEMORY[0x277D0F7B8];
-  v14 = v7;
-  v15 = v6;
-  v16 = [v13 untrackedPlaceholderFlow];
-  v17 = [(HMMTRSyncClusterDoorLock *)v9 ensureAccessoryConnected:v20 flow:v16];
+  v14 = flowCopy;
+  v15 = pinCopy;
+  untrackedPlaceholderFlow = [v13 untrackedPlaceholderFlow];
+  v17 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v20 flow:untrackedPlaceholderFlow];
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -2904,31 +2904,31 @@ uint64_t __47__HMMTRSyncClusterDoorLock_unlockWithPin_flow___block_invoke_2(uint
   return 2;
 }
 
-- (id)lock_flow:(id)a3
+- (id)lock_flow:(id)lock_flow
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lock_flowCopy = lock_flow;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
+    uUID = [lock_flowCopy UUID];
     *buf = 138543618;
     v19 = v8;
     v20 = 2112;
-    v21 = v9;
+    v21 = uUID;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Locking", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v16 = MEMORY[0x277D85DD0];
-  v17 = v4;
+  v17 = lock_flowCopy;
   v10 = MEMORY[0x277D0F7B8];
-  v11 = v4;
-  v12 = [v10 untrackedPlaceholderFlow];
-  v13 = [(HMMTRSyncClusterDoorLock *)v6 ensureAccessoryConnected:&v16 flow:v12];
+  v11 = lock_flowCopy;
+  untrackedPlaceholderFlow = [v10 untrackedPlaceholderFlow];
+  v13 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:&v16 flow:untrackedPlaceholderFlow];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -2990,24 +2990,24 @@ uint64_t __38__HMMTRSyncClusterDoorLock_lock_flow___block_invoke_2(uint64_t a1, 
   return 2;
 }
 
-- (HMMTRSyncClusterDoorLock)lockWithPin:(id)a3 flow:(id)a4
+- (HMMTRSyncClusterDoorLock)lockWithPin:(id)pin flow:(id)flow
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pinCopy = pin;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v25 = v11;
     v26 = 2112;
-    v27 = v12;
+    v27 = uUID;
     v28 = 2112;
-    v29 = v6;
+    v29 = pinCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Locking with pin: %@", buf, 0x20u);
   }
 
@@ -3016,14 +3016,14 @@ uint64_t __38__HMMTRSyncClusterDoorLock_lock_flow___block_invoke_2(uint64_t a1, 
   v20[1] = 3221225472;
   v20[2] = __45__HMMTRSyncClusterDoorLock_lockWithPin_flow___block_invoke;
   v20[3] = &unk_2786EC948;
-  v21 = v6;
-  v22 = v9;
-  v23 = v7;
+  v21 = pinCopy;
+  v22 = selfCopy;
+  v23 = flowCopy;
   v13 = MEMORY[0x277D0F7B8];
-  v14 = v7;
-  v15 = v6;
-  v16 = [v13 untrackedPlaceholderFlow];
-  v17 = [(HMMTRSyncClusterDoorLock *)v9 ensureAccessoryConnected:v20 flow:v16];
+  v14 = flowCopy;
+  v15 = pinCopy;
+  untrackedPlaceholderFlow = [v13 untrackedPlaceholderFlow];
+  v17 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v20 flow:untrackedPlaceholderFlow];
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -3089,41 +3089,41 @@ uint64_t __45__HMMTRSyncClusterDoorLock_lockWithPin_flow___block_invoke_2(uint64
   return 2;
 }
 
-- (id)addReaderKeyData:(id)a3 toUserIndex:(int64_t)a4 flow:(id)a5
+- (id)addReaderKeyData:(id)data toUserIndex:(int64_t)index flow:(id)flow
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  flowCopy = flow;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v26 = v13;
     v27 = 2112;
-    v28 = v14;
+    v28 = uUID;
     v29 = 2112;
-    v30 = v8;
+    v30 = dataCopy;
     v31 = 2048;
-    v32 = a4;
+    indexCopy = index;
     _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] addReaderKeyData: %@ to UserIndex %ld", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = -[HMMTRSyncClusterDoorLock firstAvailableCredentialSlotForCredentialType:flow:](v11, "firstAvailableCredentialSlotForCredentialType:flow:", [&unk_283EE79F8 integerValue], v9);
+  v15 = -[HMMTRSyncClusterDoorLock firstAvailableCredentialSlotForCredentialType:flow:](selfCopy, "firstAvailableCredentialSlotForCredentialType:flow:", [&unk_283EE79F8 integerValue], flowCopy);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __62__HMMTRSyncClusterDoorLock_addReaderKeyData_toUserIndex_flow___block_invoke;
   v21[3] = &unk_2786ED608;
-  v21[4] = v11;
-  v22 = v8;
-  v23 = v9;
-  v24 = a4;
-  v16 = v9;
-  v17 = v8;
+  v21[4] = selfCopy;
+  v22 = dataCopy;
+  v23 = flowCopy;
+  indexCopy2 = index;
+  v16 = flowCopy;
+  v17 = dataCopy;
   v18 = [v15 then:v21];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3153,41 +3153,41 @@ uint64_t __62__HMMTRSyncClusterDoorLock_addReaderKeyData_toUserIndex_flow___bloc
   }
 }
 
-- (id)addPinCodeWithValue:(id)a3 forUserIndex:(int64_t)a4 flow:(id)a5
+- (id)addPinCodeWithValue:(id)value forUserIndex:(int64_t)index flow:(id)flow
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  valueCopy = value;
+  flowCopy = flow;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v26 = v13;
     v27 = 2112;
-    v28 = v14;
+    v28 = uUID;
     v29 = 2112;
-    v30 = v8;
+    v30 = valueCopy;
     v31 = 2048;
-    v32 = a4;
+    indexCopy = index;
     _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] addPinCodeWithValue: %@, forUserIndex: %ld", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = -[HMMTRSyncClusterDoorLock firstAvailableCredentialSlotForCredentialType:flow:](v11, "firstAvailableCredentialSlotForCredentialType:flow:", [&unk_283EE79E0 integerValue], v9);
+  v15 = -[HMMTRSyncClusterDoorLock firstAvailableCredentialSlotForCredentialType:flow:](selfCopy, "firstAvailableCredentialSlotForCredentialType:flow:", [&unk_283EE79E0 integerValue], flowCopy);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __66__HMMTRSyncClusterDoorLock_addPinCodeWithValue_forUserIndex_flow___block_invoke;
   v21[3] = &unk_2786ED608;
-  v21[4] = v11;
-  v22 = v8;
-  v23 = v9;
-  v24 = a4;
-  v16 = v9;
-  v17 = v8;
+  v21[4] = selfCopy;
+  v22 = valueCopy;
+  v23 = flowCopy;
+  indexCopy2 = index;
+  v16 = flowCopy;
+  v17 = valueCopy;
   v18 = [v15 then:v21];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3213,55 +3213,55 @@ uint64_t __66__HMMTRSyncClusterDoorLock_addPinCodeWithValue_forUserIndex_flow___
   }
 }
 
-- (id)findAllUsersWithCreatorFabricIndex:(id)a3 indexStartingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 users:(id)a6 temporaryCachedAliroCredentials:(id)a7 flow:(id)a8
+- (id)findAllUsersWithCreatorFabricIndex:(id)index indexStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots users:(id)users temporaryCachedAliroCredentials:(id)credentials flow:(id)flow
 {
   v50 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  indexCopy = index;
+  usersCopy = users;
+  credentialsCopy = credentials;
+  flowCopy = flow;
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = HMFGetLogIdentifier();
-    [v17 UUID];
-    v32 = v15;
-    v23 = v22 = a5;
+    [flowCopy UUID];
+    v32 = usersCopy;
+    v23 = v22 = slots;
     *buf = 138544386;
     v41 = v21;
     v42 = 2112;
     v43 = v23;
     v44 = 2112;
-    v45 = v14;
+    v45 = indexCopy;
     v46 = 2048;
-    v47 = a4;
+    slotCopy = slot;
     v48 = 2048;
     v49 = v22;
     _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] findAllUsersWithCreatorFabricIndex: %@ indexStartingAtSlot: %ld assumingTotalNumberOfSlots: %ld", buf, 0x34u);
 
-    a5 = v22;
-    v15 = v32;
+    slots = v22;
+    usersCopy = v32;
   }
 
   objc_autoreleasePoolPop(v18);
-  v24 = [(HMMTRSyncClusterDoorLock *)v19 __getUserAtIndex:a4 includeAliroCredentials:1 temporaryCachedAliroCredentials:v16 flow:v17];
+  v24 = [(HMMTRSyncClusterDoorLock *)selfCopy __getUserAtIndex:slot includeAliroCredentials:1 temporaryCachedAliroCredentials:credentialsCopy flow:flowCopy];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __153__HMMTRSyncClusterDoorLock_findAllUsersWithCreatorFabricIndex_indexStartingAtSlot_assumingTotalNumberOfSlots_users_temporaryCachedAliroCredentials_flow___block_invoke;
   v33[3] = &unk_2786ED5E0;
-  v33[4] = v19;
-  v34 = v14;
-  v38 = a4;
-  v39 = a5;
-  v35 = v15;
-  v36 = v16;
-  v37 = v17;
-  v25 = v17;
-  v26 = v16;
-  v27 = v15;
-  v28 = v14;
+  v33[4] = selfCopy;
+  v34 = indexCopy;
+  slotCopy2 = slot;
+  slotsCopy = slots;
+  v35 = usersCopy;
+  v36 = credentialsCopy;
+  v37 = flowCopy;
+  v25 = flowCopy;
+  v26 = credentialsCopy;
+  v27 = usersCopy;
+  v28 = indexCopy;
   v29 = [v24 then:v33];
 
   v30 = *MEMORY[0x277D85DE8];
@@ -3309,29 +3309,29 @@ LABEL_11:
   return [(HMMTRSyncClusterDoorLock *)v15 findAllUsersWithCreatorFabricIndex:v16 indexStartingAtSlot:v17 assumingTotalNumberOfSlots:v18 users:v19 flow:v20, v21];
 }
 
-- (id)findAllUsersWithCreatorFabricIndex:(id)a3 indexStartingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 users:(id)a6 flow:(id)a7
+- (id)findAllUsersWithCreatorFabricIndex:(id)index indexStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots users:(id)users flow:(id)flow
 {
   v12 = MEMORY[0x277CBEB38];
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [v12 dictionary];
-  v17 = [(HMMTRSyncClusterDoorLock *)self findAllUsersWithCreatorFabricIndex:v15 indexStartingAtSlot:a4 assumingTotalNumberOfSlots:a5 users:v14 temporaryCachedAliroCredentials:v16 flow:v13];
+  flowCopy = flow;
+  usersCopy = users;
+  indexCopy = index;
+  dictionary = [v12 dictionary];
+  v17 = [(HMMTRSyncClusterDoorLock *)self findAllUsersWithCreatorFabricIndex:indexCopy indexStartingAtSlot:slot assumingTotalNumberOfSlots:slots users:usersCopy temporaryCachedAliroCredentials:dictionary flow:flowCopy];
 
   return v17;
 }
 
-- (id)_findSchedulesToBeAdded:(id)a3 dict:(id)a4
+- (id)_findSchedulesToBeAdded:(id)added dict:(id)dict
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  addedCopy = added;
+  dictCopy = dict;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = addedCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -3347,26 +3347,26 @@ LABEL_11:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v6 objectForKeyedSubscript:{v13, v19}];
+        v14 = [dictCopy objectForKeyedSubscript:{v13, v19}];
 
         if (v14)
         {
-          v15 = [v6 objectForKeyedSubscript:v13];
+          v15 = [dictCopy objectForKeyedSubscript:v13];
           if ([v15 count] == 1)
           {
-            [v6 removeObjectForKey:v13];
+            [dictCopy removeObjectForKey:v13];
           }
 
           else
           {
-            v16 = [v15 anyObject];
-            [v15 removeObject:v16];
+            anyObject = [v15 anyObject];
+            [v15 removeObject:anyObject];
           }
         }
 
         else
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -3378,59 +3378,59 @@ LABEL_11:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
-- (id)readSchedulesForWritingForScheduleType:(int64_t)a3 forUserIndex:(int64_t)a4 startingAtSlot:(int64_t)a5 assumingTotalNumberOfSlots:(int64_t)a6 schedulesToSlots:(id)a7 availableSlots:(id)a8 flow:(id)a9
+- (id)readSchedulesForWritingForScheduleType:(int64_t)type forUserIndex:(int64_t)index startingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots schedulesToSlots:(id)toSlots availableSlots:(id)availableSlots flow:(id)flow
 {
   v53 = *MEMORY[0x277D85DE8];
-  v31 = a7;
-  v15 = a8;
-  v16 = a9;
+  toSlotsCopy = toSlots;
+  availableSlotsCopy = availableSlots;
+  flowCopy = flow;
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
     v20 = v29 = v17;
-    [v16 UUID];
-    v21 = v30 = v15;
+    [flowCopy UUID];
+    v21 = v30 = availableSlotsCopy;
     *buf = 138544642;
     v42 = v20;
     v43 = 2112;
     v44 = v21;
     v45 = 2048;
-    v46 = a3;
+    typeCopy = type;
     v47 = 2048;
-    v48 = a4;
+    indexCopy = index;
     v49 = 2048;
-    v50 = a5;
+    slotCopy = slot;
     v51 = 2048;
-    v52 = a6;
+    slotsCopy = slots;
     _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] readSchedulesForWritingForScheduleType: %ld, forUserIndex: %ld, atSlot:%ld assumingTotalNumberOfSlots: %ld", buf, 0x3Eu);
 
-    v15 = v30;
+    availableSlotsCopy = v30;
     v17 = v29;
   }
 
   objc_autoreleasePoolPop(v17);
-  v22 = [(HMMTRSyncClusterDoorLock *)v18 getScheduleOfScheduleType:a3 atScheduleIndex:a5 forUserAtUserIndex:a4 flow:v16];
+  v22 = [(HMMTRSyncClusterDoorLock *)selfCopy getScheduleOfScheduleType:type atScheduleIndex:slot forUserAtUserIndex:index flow:flowCopy];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __159__HMMTRSyncClusterDoorLock_readSchedulesForWritingForScheduleType_forUserIndex_startingAtSlot_assumingTotalNumberOfSlots_schedulesToSlots_availableSlots_flow___block_invoke;
   v32[3] = &unk_2786ED5B8;
-  v33 = v15;
-  v34 = v18;
-  v35 = v16;
-  v36 = v31;
-  v37 = a5;
-  v38 = a6;
-  v39 = a3;
-  v40 = a4;
-  v23 = v31;
-  v24 = v16;
-  v25 = v15;
+  v33 = availableSlotsCopy;
+  v34 = selfCopy;
+  v35 = flowCopy;
+  v36 = toSlotsCopy;
+  slotCopy2 = slot;
+  slotsCopy2 = slots;
+  typeCopy2 = type;
+  indexCopy2 = index;
+  v23 = toSlotsCopy;
+  v24 = flowCopy;
+  v25 = availableSlotsCopy;
   v26 = [v22 then:v32];
 
   v27 = *MEMORY[0x277D85DE8];
@@ -3543,22 +3543,22 @@ LABEL_17:
   return v27;
 }
 
-- (id)findScheduleSlotsToAddAndClearForScheduleType:(int64_t)a3 withRequestedSchedules:(id)a4 forUserAtUserIndex:(int64_t)a5 numberOfSchedulesSupported:(int64_t)a6 flow:(id)a7
+- (id)findScheduleSlotsToAddAndClearForScheduleType:(int64_t)type withRequestedSchedules:(id)schedules forUserAtUserIndex:(int64_t)index numberOfSchedulesSupported:(int64_t)supported flow:(id)flow
 {
-  v12 = a4;
-  v13 = a7;
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:a6];
-  v16 = [(HMMTRSyncClusterDoorLock *)self readSchedulesForWritingForScheduleType:a3 forUserIndex:a5 startingAtSlot:1 assumingTotalNumberOfSlots:a6 schedulesToSlots:v14 availableSlots:v15 flow:v13];
+  schedulesCopy = schedules;
+  flowCopy = flow;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:supported];
+  v16 = [(HMMTRSyncClusterDoorLock *)self readSchedulesForWritingForScheduleType:type forUserIndex:index startingAtSlot:1 assumingTotalNumberOfSlots:supported schedulesToSlots:dictionary availableSlots:v15 flow:flowCopy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __148__HMMTRSyncClusterDoorLock_findScheduleSlotsToAddAndClearForScheduleType_withRequestedSchedules_forUserAtUserIndex_numberOfSchedulesSupported_flow___block_invoke;
   v21[3] = &unk_2786ED590;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v17 = v13;
-  v18 = v12;
+  v22 = schedulesCopy;
+  v23 = flowCopy;
+  v17 = flowCopy;
+  v18 = schedulesCopy;
   v19 = [v16 then:v21];
 
   return v19;
@@ -3697,62 +3697,62 @@ LABEL_23:
   return v26;
 }
 
-- (id)updateSchedulesOfScheduleType:(int64_t)a3 withRequestedSchedules:(id)a4 forUserAtUserIndex:(int64_t)a5 flow:(id)a6
+- (id)updateSchedulesOfScheduleType:(int64_t)type withRequestedSchedules:(id)schedules forUserAtUserIndex:(int64_t)index flow:(id)flow
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  schedulesCopy = schedules;
+  flowCopy = flow;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     v34 = v15;
     v35 = 2112;
-    v36 = v16;
+    v36 = uUID;
     v37 = 2048;
-    v38 = a3;
+    typeCopy = type;
     v39 = 2112;
-    v40 = v10;
+    v40 = schedulesCopy;
     v41 = 2048;
-    v42 = a5;
+    indexCopy = index;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] updateSchedulesOfScheduleType: %ld, withRequestedSchedules: %@ forUserIndex: %ld", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v12);
-  if ([v10 count])
+  if ([schedulesCopy count])
   {
-    v17 = [(HMMTRSyncClusterDoorLock *)v13 totalNumberOfSchedulesSupportedOfScheduleType:a3 withDefaultCapacity:1 flow:v11];
-    if ([v10 count] <= v17)
+    v17 = [(HMMTRSyncClusterDoorLock *)selfCopy totalNumberOfSchedulesSupportedOfScheduleType:type withDefaultCapacity:1 flow:flowCopy];
+    if ([schedulesCopy count] <= v17)
     {
-      v26 = [(HMMTRSyncClusterDoorLock *)v13 findScheduleSlotsToAddAndClearForScheduleType:a3 withRequestedSchedules:v10 forUserAtUserIndex:a5 numberOfSchedulesSupported:v17 flow:v11];
+      v26 = [(HMMTRSyncClusterDoorLock *)selfCopy findScheduleSlotsToAddAndClearForScheduleType:type withRequestedSchedules:schedulesCopy forUserAtUserIndex:index numberOfSchedulesSupported:v17 flow:flowCopy];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __105__HMMTRSyncClusterDoorLock_updateSchedulesOfScheduleType_withRequestedSchedules_forUserAtUserIndex_flow___block_invoke;
       v29[3] = &unk_2786ED548;
-      v29[4] = v13;
-      v31 = a3;
-      v32 = a5;
-      v30 = v11;
+      v29[4] = selfCopy;
+      typeCopy2 = type;
+      indexCopy2 = index;
+      v30 = flowCopy;
       v25 = [v26 then:v29];
     }
 
     else
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = v13;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [v11 UUID];
+        uUID2 = [flowCopy UUID];
         *buf = 138543618;
         v34 = v21;
         v35 = 2112;
-        v36 = v22;
+        v36 = uUID2;
         _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to updateSchedulesOfScheduleType since requested schedules is more than accessory supports", buf, 0x16u);
       }
 
@@ -3765,7 +3765,7 @@ LABEL_23:
 
   else
   {
-    v25 = [(HMMTRSyncClusterDoorLock *)v13 clearScheduleOfScheduleType:a3 atScheduleIndex:254 forUserAtUserIndex:a5 flow:v11];
+    v25 = [(HMMTRSyncClusterDoorLock *)selfCopy clearScheduleOfScheduleType:type atScheduleIndex:254 forUserAtUserIndex:index flow:flowCopy];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -3837,39 +3837,39 @@ uint64_t __105__HMMTRSyncClusterDoorLock_updateSchedulesOfScheduleType_withReque
   return [v3 clearScheduleOfScheduleType:v4 atScheduleIndex:v5 forUserAtUserIndex:v6 flow:v7];
 }
 
-- (id)findOperationOrderForModifyingWeekDaySchedules:(id)a3 andYearDaySchedules:(id)a4 forUserIndex:(int64_t)a5 flow:(id)a6
+- (id)findOperationOrderForModifyingWeekDaySchedules:(id)schedules andYearDaySchedules:(id)daySchedules forUserIndex:(int64_t)index flow:(id)flow
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  schedulesCopy = schedules;
+  daySchedulesCopy = daySchedules;
+  flowCopy = flow;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v12 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     v40 = v16;
     v41 = 2112;
-    v42 = v17;
+    v42 = uUID;
     v43 = 2112;
-    v44 = v10;
+    v44 = schedulesCopy;
     v45 = 2112;
-    v46 = v11;
+    v46 = daySchedulesCopy;
     v47 = 2048;
-    v48 = a5;
+    indexCopy = index;
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] findOperationOrderForModifyingWeekDaySchedules: %@ andYearDaySchedules: %@ forUserIndex: %ld", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v13);
-  if ([v10 hmf_isEmpty] && objc_msgSend(v11, "hmf_isEmpty"))
+  if ([schedulesCopy hmf_isEmpty] && objc_msgSend(daySchedulesCopy, "hmf_isEmpty"))
   {
     v18 = MEMORY[0x277D0F7C0];
-    v19 = [(HMMTRSyncClusterDoorLock *)v14 clearScheduleOfScheduleType:0 atScheduleIndex:254 forUserAtUserIndex:a5 flow:v12];
+    v19 = [(HMMTRSyncClusterDoorLock *)selfCopy clearScheduleOfScheduleType:0 atScheduleIndex:254 forUserAtUserIndex:index flow:flowCopy];
     v38[0] = v19;
-    v20 = [(HMMTRSyncClusterDoorLock *)v14 clearScheduleOfScheduleType:1 atScheduleIndex:254 forUserAtUserIndex:a5 flow:v12];
+    v20 = [(HMMTRSyncClusterDoorLock *)selfCopy clearScheduleOfScheduleType:1 atScheduleIndex:254 forUserAtUserIndex:index flow:flowCopy];
     v38[1] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
     v22 = [v18 all:v21];
@@ -3877,16 +3877,16 @@ uint64_t __105__HMMTRSyncClusterDoorLock_updateSchedulesOfScheduleType_withReque
     goto LABEL_14;
   }
 
-  if ([v11 hmf_isEmpty])
+  if ([daySchedulesCopy hmf_isEmpty])
   {
-    v19 = [(HMMTRSyncClusterDoorLock *)v14 updateSchedulesOfScheduleType:0 withRequestedSchedules:v10 forUserAtUserIndex:a5 flow:v12];
+    v19 = [(HMMTRSyncClusterDoorLock *)selfCopy updateSchedulesOfScheduleType:0 withRequestedSchedules:schedulesCopy forUserAtUserIndex:index flow:flowCopy];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __113__HMMTRSyncClusterDoorLock_findOperationOrderForModifyingWeekDaySchedules_andYearDaySchedules_forUserIndex_flow___block_invoke;
     v35[3] = &unk_2786ED4D0;
-    v35[4] = v14;
-    v37 = a5;
-    v36 = v12;
+    v35[4] = selfCopy;
+    indexCopy2 = index;
+    v36 = flowCopy;
     v22 = [v19 then:v35];
     v23 = v36;
 LABEL_10:
@@ -3894,32 +3894,32 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if ([v10 hmf_isEmpty])
+  if ([schedulesCopy hmf_isEmpty])
   {
-    v19 = [(HMMTRSyncClusterDoorLock *)v14 updateSchedulesOfScheduleType:1 withRequestedSchedules:v11 forUserAtUserIndex:a5 flow:v12];
+    v19 = [(HMMTRSyncClusterDoorLock *)selfCopy updateSchedulesOfScheduleType:1 withRequestedSchedules:daySchedulesCopy forUserAtUserIndex:index flow:flowCopy];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __113__HMMTRSyncClusterDoorLock_findOperationOrderForModifyingWeekDaySchedules_andYearDaySchedules_forUserIndex_flow___block_invoke_2;
     v32[3] = &unk_2786ED4D0;
-    v32[4] = v14;
-    v34 = a5;
-    v33 = v12;
+    v32[4] = selfCopy;
+    indexCopy3 = index;
+    v33 = flowCopy;
     v22 = [v19 then:v32];
     v23 = v33;
     goto LABEL_10;
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = v14;
+  v25 = selfCopy;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
     v27 = HMFGetLogIdentifier();
-    v28 = [v12 UUID];
+    uUID2 = [flowCopy UUID];
     *buf = 138543618;
     v40 = v27;
     v41 = 2112;
-    v42 = v28;
+    v42 = uUID2;
     _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to set schedule since both year day and week day schedule types are set at the same time.", buf, 0x16u);
   }
 
@@ -3970,43 +3970,43 @@ uint64_t __113__HMMTRSyncClusterDoorLock_findOperationOrderForModifyingWeekDaySc
   }
 }
 
-- (id)getAllUsersStartingAtSlot:(int64_t)a3 assumingTotalNumberOfSlots:(int64_t)a4 users:(id)a5 temporaryCachedAliroCredentials:(id)a6 flow:(id)a7
+- (id)getAllUsersStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots users:(id)users temporaryCachedAliroCredentials:(id)credentials flow:(id)flow
 {
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  usersCopy = users;
+  credentialsCopy = credentials;
+  flowCopy = flow;
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v14 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v32 = v18;
     v33 = 2112;
-    v34 = v19;
+    v34 = uUID;
     v35 = 2048;
-    v36 = a3;
+    slotCopy = slot;
     v37 = 2048;
-    v38 = a4;
+    slotsCopy = slots;
     _os_log_impl(&dword_22AEAE000, v17, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] getAllUsersStartingAtSlot: %ld assumingTotalNumberOfSlots: %ld", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v15);
-  v20 = [(HMMTRSyncClusterDoorLock *)v16 __getUserAtIndex:a3 includeAliroCredentials:1 temporaryCachedAliroCredentials:v13 flow:v14];
+  v20 = [(HMMTRSyncClusterDoorLock *)selfCopy __getUserAtIndex:slot includeAliroCredentials:1 temporaryCachedAliroCredentials:credentialsCopy flow:flowCopy];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __124__HMMTRSyncClusterDoorLock_getAllUsersStartingAtSlot_assumingTotalNumberOfSlots_users_temporaryCachedAliroCredentials_flow___block_invoke;
   v26[3] = &unk_2786ED4A8;
-  v26[4] = v16;
-  v27 = v12;
-  v29 = a3;
-  v30 = a4;
-  v28 = v14;
-  v21 = v14;
-  v22 = v12;
+  v26[4] = selfCopy;
+  v27 = usersCopy;
+  slotCopy2 = slot;
+  slotsCopy2 = slots;
+  v28 = flowCopy;
+  v21 = flowCopy;
+  v22 = usersCopy;
   v23 = [v20 then:v26];
 
   v24 = *MEMORY[0x277D85DE8];
@@ -4067,56 +4067,56 @@ uint64_t __124__HMMTRSyncClusterDoorLock_getAllUsersStartingAtSlot_assumingTotal
   return v9;
 }
 
-- (id)getAllUsersStartingAtSlot:(int64_t)a3 assumingTotalNumberOfSlots:(int64_t)a4 users:(id)a5 flow:(id)a6
+- (id)getAllUsersStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots users:(id)users flow:(id)flow
 {
   v10 = MEMORY[0x277CBEB38];
-  v11 = a6;
-  v12 = a5;
-  v13 = [v10 dictionary];
-  v14 = [(HMMTRSyncClusterDoorLock *)self getAllUsersStartingAtSlot:a3 assumingTotalNumberOfSlots:a4 users:v12 temporaryCachedAliroCredentials:v13 flow:v11];
+  flowCopy = flow;
+  usersCopy = users;
+  dictionary = [v10 dictionary];
+  v14 = [(HMMTRSyncClusterDoorLock *)self getAllUsersStartingAtSlot:slot assumingTotalNumberOfSlots:slots users:usersCopy temporaryCachedAliroCredentials:dictionary flow:flowCopy];
 
   return v14;
 }
 
-- (id)findAllOccupiedCredentialSlotsForCredentialType:(int64_t)a3 startingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 occupiedSlots:(id)a6 flow:(id)a7
+- (id)findAllOccupiedCredentialSlotsForCredentialType:(int64_t)type startingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots occupiedSlots:(id)occupiedSlots flow:(id)flow
 {
   v41 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
+  occupiedSlotsCopy = occupiedSlots;
+  flowCopy = flow;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [v13 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     v32 = v17;
     v33 = 2112;
-    v34 = v18;
+    v34 = uUID;
     v35 = 2048;
-    v36 = a3;
+    typeCopy = type;
     v37 = 2048;
-    v38 = a4;
+    slotCopy = slot;
     v39 = 2048;
-    v40 = a5;
+    slotsCopy = slots;
     _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] findAllOccupiedCredentialSlotsForCredentialType: %ld startingAtSlot: %ld assumingTotalNumberOfSlots: %ld", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v19 = [(HMMTRSyncClusterDoorLock *)v15 getCredentialAtIndex:a4 forCredentialType:a3 flow:v13];
+  v19 = [(HMMTRSyncClusterDoorLock *)selfCopy getCredentialAtIndex:slot forCredentialType:type flow:flowCopy];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __137__HMMTRSyncClusterDoorLock_findAllOccupiedCredentialSlotsForCredentialType_startingAtSlot_assumingTotalNumberOfSlots_occupiedSlots_flow___block_invoke;
   v25[3] = &unk_2786ED480;
-  v25[4] = v15;
-  v26 = v13;
-  v27 = v12;
-  v28 = a4;
-  v29 = a3;
-  v30 = a5;
-  v20 = v12;
-  v21 = v13;
+  v25[4] = selfCopy;
+  v26 = flowCopy;
+  v27 = occupiedSlotsCopy;
+  slotCopy2 = slot;
+  typeCopy2 = type;
+  slotsCopy2 = slots;
+  v20 = occupiedSlotsCopy;
+  v21 = flowCopy;
   v22 = [v19 then:v25];
 
   v23 = *MEMORY[0x277D85DE8];
@@ -4203,62 +4203,62 @@ uint64_t __137__HMMTRSyncClusterDoorLock_findAllOccupiedCredentialSlotsForCreden
   return v21;
 }
 
-- (id)findHomeUserWithUniqueID:(id)a3 indexStartingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 availableSlots:(id)a6 currentFabricIndex:(id)a7 temporaryCachedAliroCredentials:(id)a8 flow:(id)a9
+- (id)findHomeUserWithUniqueID:(id)d indexStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots availableSlots:(id)availableSlots currentFabricIndex:(id)index temporaryCachedAliroCredentials:(id)credentials flow:(id)flow
 {
   v58 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  dCopy = d;
+  availableSlotsCopy = availableSlots;
+  indexCopy = index;
+  credentialsCopy = credentials;
+  flowCopy = flow;
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v22 = v16;
-    v24 = v23 = a5;
-    [v18 UUID];
+    v22 = indexCopy;
+    v24 = v23 = slots;
+    [flowCopy UUID];
     v25 = v35 = v19;
     *buf = 138544642;
     v47 = v24;
     v48 = 2112;
     v49 = v25;
     v50 = 2048;
-    v51 = a4;
+    slotCopy = slot;
     v52 = 2048;
     v53 = v23;
     v54 = 2112;
-    v55 = v15;
+    v55 = availableSlotsCopy;
     v56 = 2112;
     v57 = v22;
     _os_log_impl(&dword_22AEAE000, v21, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] findHomeUserIndexStartingAtSlot: %ld assumingTotalNumberOfSlots: %ld availableSlots: %@ currentFabricIndex: %@", buf, 0x3Eu);
 
     v19 = v35;
-    a5 = v23;
-    v16 = v22;
+    slots = v23;
+    indexCopy = v22;
   }
 
   objc_autoreleasePoolPop(v19);
-  v26 = [(HMMTRSyncClusterDoorLock *)v20 __getUserAtIndex:a4 includeAliroCredentials:1 temporaryCachedAliroCredentials:v17 flow:v18];
+  v26 = [(HMMTRSyncClusterDoorLock *)selfCopy __getUserAtIndex:slot includeAliroCredentials:1 temporaryCachedAliroCredentials:credentialsCopy flow:flowCopy];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __171__HMMTRSyncClusterDoorLock_findHomeUserWithUniqueID_indexStartingAtSlot_assumingTotalNumberOfSlots_availableSlots_currentFabricIndex_temporaryCachedAliroCredentials_flow___block_invoke;
   v37[3] = &unk_2786ED458;
-  v38 = v16;
-  v39 = v20;
-  v40 = v36;
-  v41 = v15;
-  v44 = a4;
-  v45 = a5;
-  v42 = v17;
-  v43 = v18;
-  v27 = v18;
-  v28 = v17;
-  v29 = v15;
-  v30 = v36;
-  v31 = v16;
+  v38 = indexCopy;
+  v39 = selfCopy;
+  v40 = dCopy;
+  v41 = availableSlotsCopy;
+  slotCopy2 = slot;
+  slotsCopy = slots;
+  v42 = credentialsCopy;
+  v43 = flowCopy;
+  v27 = flowCopy;
+  v28 = credentialsCopy;
+  v29 = availableSlotsCopy;
+  v30 = dCopy;
+  v31 = indexCopy;
   v32 = [v26 then:v37];
 
   v33 = *MEMORY[0x277D85DE8];
@@ -4334,54 +4334,54 @@ LABEL_15:
   return [(HMMTRSyncClusterDoorLock *)v24 findHomeUserWithUniqueID:v25 indexStartingAtSlot:v26 assumingTotalNumberOfSlots:v27 availableSlots:v28 currentFabricIndex:v29 flow:v30, v31];
 }
 
-- (id)findHomeUserWithUniqueID:(id)a3 indexStartingAtSlot:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 availableSlots:(id)a6 currentFabricIndex:(id)a7 flow:(id)a8
+- (id)findHomeUserWithUniqueID:(id)d indexStartingAtSlot:(int64_t)slot assumingTotalNumberOfSlots:(int64_t)slots availableSlots:(id)availableSlots currentFabricIndex:(id)index flow:(id)flow
 {
   v14 = MEMORY[0x277CBEB38];
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a3;
-  v19 = [v14 dictionary];
-  v20 = [(HMMTRSyncClusterDoorLock *)self findHomeUserWithUniqueID:v18 indexStartingAtSlot:a4 assumingTotalNumberOfSlots:a5 availableSlots:v17 currentFabricIndex:v16 temporaryCachedAliroCredentials:v19 flow:v15];
+  flowCopy = flow;
+  indexCopy = index;
+  availableSlotsCopy = availableSlots;
+  dCopy = d;
+  dictionary = [v14 dictionary];
+  v20 = [(HMMTRSyncClusterDoorLock *)self findHomeUserWithUniqueID:dCopy indexStartingAtSlot:slot assumingTotalNumberOfSlots:slots availableSlots:availableSlotsCopy currentFabricIndex:indexCopy temporaryCachedAliroCredentials:dictionary flow:flowCopy];
 
   return v20;
 }
 
-- (id)getAllCredentialsIndexStartingAtSlot:(int64_t)a3 forCredentialType:(int64_t)a4 credentials:(id)a5 flow:(id)a6
+- (id)getAllCredentialsIndexStartingAtSlot:(int64_t)slot forCredentialType:(int64_t)type credentials:(id)credentials flow:(id)flow
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  credentialsCopy = credentials;
+  flowCopy = flow;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v29 = v15;
     v30 = 2112;
-    v31 = v16;
+    v31 = uUID;
     v32 = 2048;
-    v33 = a3;
+    slotCopy = slot;
     v34 = 2048;
-    v35 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] getAllCredentialsIndexStartingAtSlot: %ld forCredentialType: %ld", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  v17 = [(HMMTRSyncClusterDoorLock *)v13 getCredentialAtIndex:a3 forCredentialType:a4 flow:v11];
+  v17 = [(HMMTRSyncClusterDoorLock *)selfCopy getCredentialAtIndex:slot forCredentialType:type flow:flowCopy];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __100__HMMTRSyncClusterDoorLock_getAllCredentialsIndexStartingAtSlot_forCredentialType_credentials_flow___block_invoke;
   v23[3] = &unk_2786ED430;
-  v24 = v10;
-  v25 = v13;
-  v26 = v11;
-  v27 = a4;
-  v18 = v11;
-  v19 = v10;
+  v24 = credentialsCopy;
+  v25 = selfCopy;
+  v26 = flowCopy;
+  typeCopy2 = type;
+  v18 = flowCopy;
+  v19 = credentialsCopy;
   v20 = [v17 then:v23];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -4426,19 +4426,19 @@ LABEL_7:
   return [(HMMTRSyncClusterDoorLock *)v13 fetchAvailableUserSlotsWithLimit:v14 flow:v15, v16];
 }
 
-- (id)fetchAvailableUserSlotsWithLimit:(int64_t)a3 flow:(id)a4
+- (id)fetchAvailableUserSlotsWithLimit:(int64_t)limit flow:(id)flow
 {
-  v6 = a4;
-  if (a3)
+  flowCopy = flow;
+  if (limit)
   {
-    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfUsersSupported_flow:v6];
+    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfUsersSupported_flow:flowCopy];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __66__HMMTRSyncClusterDoorLock_fetchAvailableUserSlotsWithLimit_flow___block_invoke;
     v10[3] = &unk_2786ED340;
-    v12 = a3;
+    limitCopy = limit;
     v10[4] = self;
-    v11 = v6;
+    v11 = flowCopy;
     v8 = [v7 then:v10];
   }
 
@@ -4609,20 +4609,20 @@ void __66__HMMTRSyncClusterDoorLock_fetchAvailableUserSlotsWithLimit_flow___bloc
   [v2 na_safeAddObject:v3];
 }
 
-- (id)fetchAvailableCredentialSlotsWithLimit:(int64_t)a3 forCredentialType:(int64_t)a4 flow:(id)a5
+- (id)fetchAvailableCredentialSlotsWithLimit:(int64_t)limit forCredentialType:(int64_t)type flow:(id)flow
 {
-  v8 = a5;
-  if (a3)
+  flowCopy = flow;
+  if (limit)
   {
-    v9 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfCredentialSlotsSupportedForCredentialType:a4 flow:v8];
+    v9 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfCredentialSlotsSupportedForCredentialType:type flow:flowCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __90__HMMTRSyncClusterDoorLock_fetchAvailableCredentialSlotsWithLimit_forCredentialType_flow___block_invoke;
     v12[3] = &unk_2786ED3B8;
-    v14 = a3;
+    limitCopy = limit;
     v12[4] = self;
-    v13 = v8;
-    v15 = a4;
+    v13 = flowCopy;
+    typeCopy = type;
     v10 = [v9 then:v12];
   }
 
@@ -4778,59 +4778,59 @@ LABEL_13:
   return 3;
 }
 
-- (id)findAvailableCredentialIndexStartingAtSlot:(int64_t)a3 forCredentialType:(int64_t)a4 assumingTotalNumberOfSlots:(int64_t)a5 flow:(id)a6
+- (id)findAvailableCredentialIndexStartingAtSlot:(int64_t)slot forCredentialType:(int64_t)type assumingTotalNumberOfSlots:(int64_t)slots flow:(id)flow
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  flowCopy = flow;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     v32 = v14;
     v33 = 2112;
-    v34 = v15;
+    v34 = uUID;
     v35 = 2048;
-    v36 = a3;
+    slotCopy = slot;
     v37 = 2048;
-    v38 = a4;
+    typeCopy = type;
     v39 = 2048;
-    v40 = a5;
+    slotsCopy = slots;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] findAvailableCredentialIndexStartingAtSlot: %ld forCredentialType: %ld assumingTotalNumberOfSlots: %ld", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v11);
-  if (a3 <= a5)
+  if (slot <= slots)
   {
-    v22 = [(HMMTRSyncClusterDoorLock *)v12 getCredentialAtIndex:a3 forCredentialType:a4 flow:v10];
+    v22 = [(HMMTRSyncClusterDoorLock *)selfCopy getCredentialAtIndex:slot forCredentialType:type flow:flowCopy];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __121__HMMTRSyncClusterDoorLock_findAvailableCredentialIndexStartingAtSlot_forCredentialType_assumingTotalNumberOfSlots_flow___block_invoke;
     v26[3] = &unk_2786ED368;
-    v28 = a3;
-    v29 = a5;
-    v26[4] = v12;
-    v30 = a4;
-    v27 = v10;
+    slotCopy2 = slot;
+    slotsCopy2 = slots;
+    v26[4] = selfCopy;
+    typeCopy2 = type;
+    v27 = flowCopy;
     v23 = [v22 then:v26];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v12;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v10 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138543618;
       v32 = v19;
       v33 = 2112;
-      v34 = v20;
+      v34 = uUID2;
       _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] No more available slots", buf, 0x16u);
     }
 
@@ -4904,36 +4904,36 @@ LABEL_14:
   return [(HMMTRSyncClusterDoorLock *)v19 firstAvailableCredentialSlotForCredentialType:v20 flow:v21, v22];
 }
 
-- (id)firstAvailableCredentialSlotForCredentialType:(int64_t)a3 flow:(id)a4
+- (id)firstAvailableCredentialSlotForCredentialType:(int64_t)type flow:(id)flow
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  flowCopy = flow;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v21 = v10;
     v22 = 2112;
-    v23 = v11;
+    v23 = uUID;
     v24 = 2048;
-    v25 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] firstAvailableCredentialSlotForCredentialType: %ld", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMMTRSyncClusterDoorLock *)v8 totalNumberOfCredentialSlotsSupportedForCredentialType:a3 flow:v6];
+  v12 = [(HMMTRSyncClusterDoorLock *)selfCopy totalNumberOfCredentialSlotsSupportedForCredentialType:type flow:flowCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__HMMTRSyncClusterDoorLock_firstAvailableCredentialSlotForCredentialType_flow___block_invoke;
   v17[3] = &unk_2786ED340;
-  v18 = v6;
-  v19 = a3;
-  v17[4] = v8;
-  v13 = v6;
+  v18 = flowCopy;
+  typeCopy2 = type;
+  v17[4] = selfCopy;
+  v13 = flowCopy;
   v14 = [v12 then:v17];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -4959,49 +4959,49 @@ uint64_t __79__HMMTRSyncClusterDoorLock_firstAvailableCredentialSlotForCredentia
   }
 }
 
-- (id)totalNumberOfCredentialSlotsSupportedForCredentialType:(int64_t)a3 flow:(id)a4
+- (id)totalNumberOfCredentialSlotsSupportedForCredentialType:(int64_t)type flow:(id)flow
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([&unk_283EE79E0 integerValue] == a3)
+  flowCopy = flow;
+  if ([&unk_283EE79E0 integerValue] == type)
   {
-    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfPINCredentialsSupported_flow:v6];
+    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfPINCredentialsSupported_flow:flowCopy];
 LABEL_9:
     v8 = v7;
     goto LABEL_10;
   }
 
-  if ([&unk_283EE79F8 integerValue] == a3)
+  if ([&unk_283EE79F8 integerValue] == type)
   {
-    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfRFIDCredentialsSupported_flow:v6];
+    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfRFIDCredentialsSupported_flow:flowCopy];
     goto LABEL_9;
   }
 
-  if ([&unk_283EE7A10 integerValue] == a3)
+  if ([&unk_283EE7A10 integerValue] == type)
   {
-    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfAliroIssuerKeyCredentialsSupportedWithFlow:v6];
+    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfAliroIssuerKeyCredentialsSupportedWithFlow:flowCopy];
     goto LABEL_9;
   }
 
-  if ([&unk_283EE7A28 integerValue] == a3)
+  if ([&unk_283EE7A28 integerValue] == type)
   {
-    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfAliroDeviceKeyCredentialsSupportedWithFlow:v6];
+    v7 = [(HMMTRSyncClusterDoorLock *)self totalNumberOfAliroDeviceKeyCredentialsSupportedWithFlow:flowCopy];
     goto LABEL_9;
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v6 UUID];
+    uUID = [flowCopy UUID];
     v18 = 138543874;
     v19 = v14;
     v20 = 2112;
-    v21 = v15;
+    v21 = uUID;
     v22 = 2048;
-    v23 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Unsupported credential type: %ld", &v18, 0x20u);
   }
 
@@ -5016,69 +5016,69 @@ LABEL_10:
   return v8;
 }
 
-- (id)findOrAddUserWithUniqueID:(id)a3 userType:(id)a4 flow:(id)a5
+- (id)findOrAddUserWithUniqueID:(id)d userType:(id)type flow:(id)flow
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  typeCopy = type;
+  flowCopy = flow;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v44 = v14;
     v45 = 2112;
-    v46 = v15;
+    v46 = uUID;
     v47 = 2112;
-    v48 = v8;
+    v48 = dCopy;
     v49 = 2112;
-    v50 = v9;
+    v50 = typeCopy;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] findOrAddUserWithUniqueID: %@, userType: %@ if creating new user", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [(HMMTRSyncClusterDoorLock *)v12 _findUserOrAvailableSlotWithUserUniqueID:v8 flow:v10];
+  v16 = [(HMMTRSyncClusterDoorLock *)selfCopy _findUserOrAvailableSlotWithUserUniqueID:dCopy flow:flowCopy];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __68__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_userType_flow___block_invoke;
   v39[3] = &unk_2786ED2F0;
-  v39[4] = v12;
-  v17 = v10;
+  v39[4] = selfCopy;
+  v17 = flowCopy;
   v40 = v17;
-  v18 = v8;
+  v18 = dCopy;
   v41 = v18;
-  v19 = v9;
+  v19 = typeCopy;
   v42 = v19;
   v20 = [v16 then:v39];
 
-  v21 = [(HMMTRSyncClusterDoorLock *)v12 userUniqueIdentifierToUser];
-  v22 = [v21 objectForKey:v18];
+  userUniqueIdentifierToUser = [(HMMTRSyncClusterDoorLock *)selfCopy userUniqueIdentifierToUser];
+  v22 = [userUniqueIdentifierToUser objectForKey:v18];
 
   if (v22)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = v12;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v17 UUID];
+      uUID2 = [v17 UUID];
       *buf = 138543874;
       v44 = v26;
       v45 = 2112;
-      v46 = v27;
+      v46 = uUID2;
       v47 = 2112;
       v48 = v18;
       _os_log_impl(&dword_22AEAE000, v25, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Found user on index verify userUniqueID %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v23);
-    v28 = [v22 userIndex];
-    v29 = -[HMMTRSyncClusterDoorLock __getUserAtIndex:includeAliroCredentials:temporaryCachedAliroCredentials:flow:](v24, "__getUserAtIndex:includeAliroCredentials:temporaryCachedAliroCredentials:flow:", [v28 integerValue], 1, 0, v17);
+    userIndex = [v22 userIndex];
+    v29 = -[HMMTRSyncClusterDoorLock __getUserAtIndex:includeAliroCredentials:temporaryCachedAliroCredentials:flow:](v24, "__getUserAtIndex:includeAliroCredentials:temporaryCachedAliroCredentials:flow:", [userIndex integerValue], 1, 0, v17);
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __68__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_userType_flow___block_invoke_313;
@@ -5262,14 +5262,14 @@ uint64_t __68__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_userType_flow_
   return v20;
 }
 
-- (BOOL)isUserSlotAvailableForUserResponse:(id)a3
+- (BOOL)isUserSlotAvailableForUserResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 userStatus];
-  if (v4)
+  responseCopy = response;
+  userStatus = [responseCopy userStatus];
+  if (userStatus)
   {
-    v5 = [v3 userStatus];
-    v6 = [v5 isEqualToNumber:&unk_283EE7B00];
+    userStatus2 = [responseCopy userStatus];
+    v6 = [userStatus2 isEqualToNumber:&unk_283EE7B00];
   }
 
   else
@@ -5280,36 +5280,36 @@ uint64_t __68__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_userType_flow_
   return v6;
 }
 
-- (id)issuerCredentialForUser:(id)a3 flow:(id)a4
+- (id)issuerCredentialForUser:(id)user flow:(id)flow
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     v18 = 138543874;
     v19 = v11;
     v20 = 2112;
-    v21 = v12;
+    v21 = uUID;
     v22 = 2112;
-    v23 = v6;
+    v23 = userCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] issuerCredentialForUser: %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [v6 credentials];
-  v14 = [v13 hmf_objectPassingTest:&__block_literal_global_306];
+  credentials = [userCopy credentials];
+  v14 = [credentials hmf_objectPassingTest:&__block_literal_global_306];
 
-  v15 = [v14 credentialIndex];
+  credentialIndex = [v14 credentialIndex];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return credentialIndex;
 }
 
 uint64_t __57__HMMTRSyncClusterDoorLock_issuerCredentialForUser_flow___block_invoke(uint64_t a1, void *a2)
@@ -5320,36 +5320,36 @@ uint64_t __57__HMMTRSyncClusterDoorLock_issuerCredentialForUser_flow___block_inv
   return v3;
 }
 
-- (id)rfidCredentialForUser:(id)a3 flow:(id)a4
+- (id)rfidCredentialForUser:(id)user flow:(id)flow
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     v18 = 138543874;
     v19 = v11;
     v20 = 2112;
-    v21 = v12;
+    v21 = uUID;
     v22 = 2112;
-    v23 = v6;
+    v23 = userCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] pinCredentialForUser: %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [v6 credentials];
-  v14 = [v13 hmf_objectPassingTest:&__block_literal_global_304];
+  credentials = [userCopy credentials];
+  v14 = [credentials hmf_objectPassingTest:&__block_literal_global_304];
 
-  v15 = [v14 credentialIndex];
+  credentialIndex = [v14 credentialIndex];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return credentialIndex;
 }
 
 uint64_t __55__HMMTRSyncClusterDoorLock_rfidCredentialForUser_flow___block_invoke(uint64_t a1, void *a2)
@@ -5360,36 +5360,36 @@ uint64_t __55__HMMTRSyncClusterDoorLock_rfidCredentialForUser_flow___block_invok
   return v3;
 }
 
-- (id)pinCredentialForUser:(id)a3 flow:(id)a4
+- (id)pinCredentialForUser:(id)user flow:(id)flow
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     v18 = 138543874;
     v19 = v11;
     v20 = 2112;
-    v21 = v12;
+    v21 = uUID;
     v22 = 2112;
-    v23 = v6;
+    v23 = userCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] pinCredentialForUser: %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [v6 credentials];
-  v14 = [v13 hmf_objectPassingTest:&__block_literal_global_302];
+  credentials = [userCopy credentials];
+  v14 = [credentials hmf_objectPassingTest:&__block_literal_global_302];
 
-  v15 = [v14 credentialIndex];
+  credentialIndex = [v14 credentialIndex];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return credentialIndex;
 }
 
 uint64_t __54__HMMTRSyncClusterDoorLock_pinCredentialForUser_flow___block_invoke(uint64_t a1, void *a2)
@@ -5400,20 +5400,20 @@ uint64_t __54__HMMTRSyncClusterDoorLock_pinCredentialForUser_flow___block_invoke
   return v3;
 }
 
-- (id)provisionHomePin:(id)a3 flow:(id)a4
+- (id)provisionHomePin:(id)pin flow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRSyncClusterDoorLock *)self findOrAddUserWithUniqueID:&unk_283EE7A40 userType:&unk_283EE7A88 flow:v7];
+  pinCopy = pin;
+  flowCopy = flow;
+  v8 = [(HMMTRSyncClusterDoorLock *)self findOrAddUserWithUniqueID:&unk_283EE7A40 userType:&unk_283EE7A88 flow:flowCopy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__HMMTRSyncClusterDoorLock_provisionHomePin_flow___block_invoke;
   v13[3] = &unk_2786ECF18;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = pinCopy;
+  v15 = flowCopy;
+  v9 = flowCopy;
+  v10 = pinCopy;
   v11 = [v8 then:v13];
 
   return v11;
@@ -5465,19 +5465,19 @@ LABEL_10:
   return [(HMMTRSyncClusterDoorLock *)v13 deriveHomePinFromUUID:v14 flow:v15, v16];
 }
 
-- (id)deriveHomePinFromUUID:(id)a3 flow:(id)a4
+- (id)deriveHomePinFromUUID:(id)d flow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  flowCopy = flow;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__HMMTRSyncClusterDoorLock_deriveHomePinFromUUID_flow___block_invoke;
   v12[3] = &unk_2786EC948;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v8 = v6;
-  v9 = v7;
+  v13 = flowCopy;
+  v14 = dCopy;
+  v8 = dCopy;
+  v9 = flowCopy;
   v10 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v12 flow:v9];
 
   return v10;
@@ -5549,21 +5549,21 @@ LABEL_11:
   return v14;
 }
 
-- (id)readAliroSupportedVersionWithFlow:(id)a3
+- (id)readAliroSupportedVersionWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v12 = 0;
   v5 = [MEMORY[0x277D0F7C0] futureWithPromise:&v12];
-  v6 = [(HMMTRSyncClusterDoorLock *)self apiRouter];
+  apiRouter = [(HMMTRSyncClusterDoorLock *)self apiRouter];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__HMMTRSyncClusterDoorLock_readAliroSupportedVersionWithFlow___block_invoke;
   v9[3] = &unk_2786EF350;
   v9[4] = self;
-  v10 = v4;
+  v10 = flowCopy;
   v11 = v12;
-  v7 = v4;
-  [v6 readAttributeAliroExpeditedTransactionSupportedProtocolVersionsWithFlow:v7 completion:v9];
+  v7 = flowCopy;
+  [apiRouter readAttributeAliroExpeditedTransactionSupportedProtocolVersionsWithFlow:v7 completion:v9];
 
   return v5;
 }
@@ -5712,17 +5712,17 @@ void __62__HMMTRSyncClusterDoorLock_readAliroSupportedVersionWithFlow___block_in
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readSchedulesForUserIndex:(int64_t)a3 flow:(id)a4
+- (id)readSchedulesForUserIndex:(int64_t)index flow:(id)flow
 {
-  v6 = a4;
+  flowCopy = flow;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__HMMTRSyncClusterDoorLock_readSchedulesForUserIndex_flow___block_invoke;
   v10[3] = &unk_2786ECA38;
   v10[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v7 = v6;
+  v11 = flowCopy;
+  indexCopy = index;
+  v7 = flowCopy;
   v8 = [(HMMTRSyncClusterDoorLock *)self serialize:v10];
 
   return v8;
@@ -5773,23 +5773,23 @@ uint64_t __59__HMMTRSyncClusterDoorLock_readSchedulesForUserIndex_flow___block_i
   return 1;
 }
 
-- (id)updateSchedulesForUserIndex:(int64_t)a3 withWeekDaySchedules:(id)a4 andYearDaySchedules:(id)a5 flow:(id)a6
+- (id)updateSchedulesForUserIndex:(int64_t)index withWeekDaySchedules:(id)schedules andYearDaySchedules:(id)daySchedules flow:(id)flow
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  schedulesCopy = schedules;
+  daySchedulesCopy = daySchedules;
+  flowCopy = flow;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __102__HMMTRSyncClusterDoorLock_updateSchedulesForUserIndex_withWeekDaySchedules_andYearDaySchedules_flow___block_invoke;
   v18[3] = &unk_2786ECF90;
   v18[4] = self;
-  v19 = v12;
-  v21 = v11;
-  v22 = a3;
-  v20 = v10;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
+  v19 = flowCopy;
+  v21 = daySchedulesCopy;
+  indexCopy = index;
+  v20 = schedulesCopy;
+  v13 = daySchedulesCopy;
+  v14 = schedulesCopy;
+  v15 = flowCopy;
   v16 = [(HMMTRSyncClusterDoorLock *)self serialize:v18];
 
   return v16;
@@ -5911,26 +5911,26 @@ uint64_t __102__HMMTRSyncClusterDoorLock_updateSchedulesForUserIndex_withWeekDay
   return 2;
 }
 
-- (id)findOrAddUserWithUniqueID:(id)a3 withWeekDaySchedules:(id)a4 andYearDaySchedules:(id)a5 requireFullScheduleAudit:(BOOL)a6 flow:(id)a7
+- (id)findOrAddUserWithUniqueID:(id)d withWeekDaySchedules:(id)schedules andYearDaySchedules:(id)daySchedules requireFullScheduleAudit:(BOOL)audit flow:(id)flow
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dCopy = d;
+  schedulesCopy = schedules;
+  daySchedulesCopy = daySchedules;
+  flowCopy = flow;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __125__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_withWeekDaySchedules_andYearDaySchedules_requireFullScheduleAudit_flow___block_invoke;
   v22[3] = &unk_2786ED1D8;
   v22[4] = self;
-  v23 = v15;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = a6;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
+  v23 = flowCopy;
+  v24 = dCopy;
+  v25 = schedulesCopy;
+  v26 = daySchedulesCopy;
+  auditCopy = audit;
+  v16 = daySchedulesCopy;
+  v17 = schedulesCopy;
+  v18 = dCopy;
+  v19 = flowCopy;
   v20 = [(HMMTRSyncClusterDoorLock *)self serialize:v22];
 
   return v20;
@@ -6204,40 +6204,40 @@ uint64_t __125__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_withWeekDaySc
   return 2;
 }
 
-- (id)clearCredentialAtIndex:(int64_t)a3 withCredentialType:(id)a4 flow:(id)a5
+- (id)clearCredentialAtIndex:(int64_t)index withCredentialType:(id)type flow:(id)flow
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  flowCopy = flow;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v28 = v13;
     v29 = 2112;
-    v30 = v14;
+    v30 = uUID;
     v31 = 2048;
-    v32 = a3;
+    indexCopy = index;
     v33 = 2112;
-    v34 = v8;
+    v34 = typeCopy;
     _os_log_impl(&dword_22AEAE000, v12, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] clearCredentialAtIndex: %ld, withCredentialType: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v10);
   v22 = MEMORY[0x277D85DD0];
-  v23 = v8;
-  v24 = v11;
-  v25 = v9;
-  v26 = a3;
+  v23 = typeCopy;
+  v24 = selfCopy;
+  v25 = flowCopy;
+  indexCopy2 = index;
   v15 = MEMORY[0x277D0F7B8];
-  v16 = v9;
-  v17 = v8;
-  v18 = [v15 untrackedPlaceholderFlow];
-  v19 = [(HMMTRSyncClusterDoorLock *)v11 ensureAccessoryConnected:&v22 flow:v18];
+  v16 = flowCopy;
+  v17 = typeCopy;
+  untrackedPlaceholderFlow = [v15 untrackedPlaceholderFlow];
+  v19 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:&v22 flow:untrackedPlaceholderFlow];
 
   v20 = *MEMORY[0x277D85DE8];
 
@@ -6309,23 +6309,23 @@ uint64_t __75__HMMTRSyncClusterDoorLock_clearCredentialAtIndex_withCredentialTyp
   return 2;
 }
 
-- (id)clearUserAtIndex:(int64_t)a3 flow:(id)a4
+- (id)clearUserAtIndex:(int64_t)index flow:(id)flow
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  flowCopy = flow;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v22 = v10;
     v23 = 2112;
-    v24 = v11;
+    v24 = uUID;
     v25 = 2048;
-    v26 = a3;
+    indexCopy = index;
     _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Clearing user at index: %ld", buf, 0x20u);
   }
 
@@ -6334,13 +6334,13 @@ uint64_t __75__HMMTRSyncClusterDoorLock_clearCredentialAtIndex_withCredentialTyp
   v18[1] = 3221225472;
   v18[2] = __50__HMMTRSyncClusterDoorLock_clearUserAtIndex_flow___block_invoke;
   v18[3] = &unk_2786ECA38;
-  v19 = v6;
-  v20 = a3;
-  v18[4] = v8;
+  v19 = flowCopy;
+  indexCopy2 = index;
+  v18[4] = selfCopy;
   v12 = MEMORY[0x277D0F7B8];
-  v13 = v6;
-  v14 = [v12 untrackedPlaceholderFlow];
-  v15 = [(HMMTRSyncClusterDoorLock *)v8 ensureAccessoryConnected:v18 flow:v14];
+  v13 = flowCopy;
+  untrackedPlaceholderFlow = [v12 untrackedPlaceholderFlow];
+  v15 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v18 flow:untrackedPlaceholderFlow];
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -6481,23 +6481,23 @@ uint64_t __39__HMMTRSyncClusterDoorLock_getAllUsers__block_invoke_266(uint64_t a
   }
 }
 
-- (id)addOrUpdateIssuerKeyData:(id)a3 forUserUniqueID:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6
+- (id)addOrUpdateIssuerKeyData:(id)data forUserUniqueID:(id)d isUnifiedAccess:(BOOL)access flow:(id)flow
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  dCopy = d;
+  flowCopy = flow;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __90__HMMTRSyncClusterDoorLock_addOrUpdateIssuerKeyData_forUserUniqueID_isUnifiedAccess_flow___block_invoke;
   v18[3] = &unk_2786ED0E8;
   v18[4] = self;
-  v19 = v12;
-  v20 = v10;
-  v21 = v11;
-  v22 = a5;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
+  v19 = flowCopy;
+  v20 = dataCopy;
+  v21 = dCopy;
+  accessCopy = access;
+  v13 = dCopy;
+  v14 = dataCopy;
+  v15 = flowCopy;
   v16 = [(HMMTRSyncClusterDoorLock *)self serialize:v18];
 
   return v16;
@@ -6939,23 +6939,23 @@ uint64_t __90__HMMTRSyncClusterDoorLock_addOrUpdateIssuerKeyData_forUserUniqueID
   }
 }
 
-- (id)addOrUpdateIssuerKeyData:(id)a3 forUserIndex:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6
+- (id)addOrUpdateIssuerKeyData:(id)data forUserIndex:(id)index isUnifiedAccess:(BOOL)access flow:(id)flow
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  indexCopy = index;
+  flowCopy = flow;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __87__HMMTRSyncClusterDoorLock_addOrUpdateIssuerKeyData_forUserIndex_isUnifiedAccess_flow___block_invoke;
   v18[3] = &unk_2786ED0E8;
   v18[4] = self;
-  v19 = v12;
-  v20 = v10;
-  v21 = v11;
-  v22 = a5;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
+  v19 = flowCopy;
+  v20 = dataCopy;
+  v21 = indexCopy;
+  accessCopy = access;
+  v13 = indexCopy;
+  v14 = dataCopy;
+  v15 = flowCopy;
   v16 = [(HMMTRSyncClusterDoorLock *)self serialize:v18];
 
   return v16;
@@ -6995,51 +6995,51 @@ id __87__HMMTRSyncClusterDoorLock_addOrUpdateIssuerKeyData_forUserIndex_isUnifie
   return v11;
 }
 
-- (id)_addOrUpdateIssuerKeyData:(id)a3 forUserIndex:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6
+- (id)_addOrUpdateIssuerKeyData:(id)data forUserIndex:(id)index isUnifiedAccess:(BOOL)access flow:(id)flow
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  indexCopy = index;
+  flowCopy = flow;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v12 UUID];
-    v18 = [v11 integerValue];
+    uUID = [flowCopy UUID];
+    integerValue = [indexCopy integerValue];
     HMFBooleanToString();
-    v19 = v27 = a5;
+    v19 = v27 = access;
     *buf = 138544386;
     v34 = v16;
     v35 = 2112;
-    v36 = v17;
+    v36 = uUID;
     v37 = 2112;
-    v38 = v10;
+    v38 = dataCopy;
     v39 = 2048;
-    v40 = v18;
+    v40 = integerValue;
     v41 = 2112;
     v42 = v19;
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] _addOrUpdateIssuerKeyData: %@ forUserIndex: %ld isUnifiedAccess: %@", buf, 0x34u);
 
-    a5 = v27;
+    access = v27;
   }
 
   objc_autoreleasePoolPop(v13);
-  v20 = -[HMMTRSyncClusterDoorLock __getUserAtIndex:includeAliroCredentials:temporaryCachedAliroCredentials:flow:](v14, "__getUserAtIndex:includeAliroCredentials:temporaryCachedAliroCredentials:flow:", [v11 integerValue], 1, 0, v12);
+  v20 = -[HMMTRSyncClusterDoorLock __getUserAtIndex:includeAliroCredentials:temporaryCachedAliroCredentials:flow:](selfCopy, "__getUserAtIndex:includeAliroCredentials:temporaryCachedAliroCredentials:flow:", [indexCopy integerValue], 1, 0, flowCopy);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __88__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUserIndex_isUnifiedAccess_flow___block_invoke;
   v28[3] = &unk_2786ED0C0;
-  v28[4] = v14;
-  v29 = v12;
-  v30 = v11;
-  v31 = v10;
-  v32 = a5;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
+  v28[4] = selfCopy;
+  v29 = flowCopy;
+  v30 = indexCopy;
+  v31 = dataCopy;
+  accessCopy = access;
+  v21 = dataCopy;
+  v22 = indexCopy;
+  v23 = flowCopy;
   v24 = [v20 then:v28];
 
   v25 = *MEMORY[0x277D85DE8];
@@ -7104,47 +7104,47 @@ uint64_t __88__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUserIndex_i
   return v15;
 }
 
-- (id)_addOrUpdateIssuerKeyData:(id)a3 forUserUniqueID:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6
+- (id)_addOrUpdateIssuerKeyData:(id)data forUserUniqueID:(id)d isUnifiedAccess:(BOOL)access flow:(id)flow
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  dCopy = d;
+  flowCopy = flow;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v12 UUID];
+    uUID = [flowCopy UUID];
     v18 = HMFBooleanToString();
     *buf = 138544386;
     v32 = v16;
     v33 = 2112;
-    v34 = v17;
+    v34 = uUID;
     v35 = 2112;
-    v36 = v10;
+    v36 = dataCopy;
     v37 = 2048;
-    v38 = v11;
+    v38 = dCopy;
     v39 = 2112;
     v40 = v18;
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] _addOrUpdateIssuerKeyData: %@ forUserUniqueID: %ld isUnifiedAccess: %@", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v19 = [(HMMTRSyncClusterDoorLock *)v14 _findUserOrAvailableSlotWithUserUniqueID:v11 flow:v12];
+  v19 = [(HMMTRSyncClusterDoorLock *)selfCopy _findUserOrAvailableSlotWithUserUniqueID:dCopy flow:flowCopy];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __91__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUserUniqueID_isUnifiedAccess_flow___block_invoke;
   v26[3] = &unk_2786ED098;
-  v26[4] = v14;
-  v27 = v12;
-  v28 = v11;
-  v29 = v10;
-  v30 = a5;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
+  v26[4] = selfCopy;
+  v27 = flowCopy;
+  v28 = dCopy;
+  v29 = dataCopy;
+  accessCopy = access;
+  v20 = dataCopy;
+  v21 = dCopy;
+  v22 = flowCopy;
   v23 = [v19 then:v26];
 
   v24 = *MEMORY[0x277D85DE8];
@@ -7210,29 +7210,29 @@ uint64_t __91__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUserUniqueI
   return v7;
 }
 
-- (id)_addOrUpdateIssuerKeyData:(id)a3 forUser:(id)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6
+- (id)_addOrUpdateIssuerKeyData:(id)data forUser:(id)user isUnifiedAccess:(BOOL)access flow:(id)flow
 {
-  v7 = a5;
+  accessCopy = access;
   v73 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  userCopy = user;
+  flowCopy = flow;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v12 UUID];
+    uUID = [flowCopy UUID];
     v18 = HMFBooleanToString();
     *buf = 138544386;
     v64 = v16;
     v65 = 2112;
-    v66 = v17;
+    v66 = uUID;
     v67 = 2112;
-    v68 = v10;
+    v68 = dataCopy;
     v69 = 2112;
-    v70 = v11;
+    v70 = userCopy;
     v71 = 2112;
     v72 = v18;
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] _addOrUpdateIssuerKeyData: %@ forUser: %@, isUnifiedAccess: %@", buf, 0x34u);
@@ -7240,64 +7240,64 @@ uint64_t __91__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUserUniqueI
 
   objc_autoreleasePoolPop(v13);
   v19 = &unk_283EE7A10;
-  if (v7)
+  if (accessCopy)
   {
     v19 = &unk_283EE79F8;
   }
 
   v20 = v19;
-  v48 = v11;
-  v21 = [v11 credentials];
+  v48 = userCopy;
+  credentials = [userCopy credentials];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __83__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUser_isUnifiedAccess_flow___block_invoke;
   v61[3] = &unk_2786ED008;
   v22 = v20;
   v62 = v22;
-  v23 = [v21 hmf_objectPassingTest:v61];
+  v23 = [credentials hmf_objectPassingTest:v61];
 
   v47 = v23;
-  v24 = [v23 credentialIndex];
+  credentialIndex = [v23 credentialIndex];
   v25 = objc_autoreleasePoolPush();
-  v26 = v14;
+  v26 = selfCopy;
   v27 = HMFGetOSLogHandle();
   v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
-  if (v24)
+  if (credentialIndex)
   {
-    v29 = v10;
+    v29 = dataCopy;
     if (v28)
     {
       v30 = HMFGetLogIdentifier();
-      v31 = [v12 UUID];
-      v32 = [v24 integerValue];
+      uUID2 = [flowCopy UUID];
+      integerValue = [credentialIndex integerValue];
       *buf = 138544130;
       v64 = v30;
       v65 = 2112;
-      v66 = v31;
+      v66 = uUID2;
       v67 = 2048;
-      v68 = v32;
+      v68 = integerValue;
       v69 = 2112;
       v70 = v22;
       _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Existing issuer key credential index: %ld of type: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v25);
-    v33 = -[HMMTRSyncClusterDoorLock getCredentialAtIndex:forCredentialType:flow:](v26, "getCredentialAtIndex:forCredentialType:flow:", [v24 integerValue], objc_msgSend(v22, "integerValue"), v12);
+    v33 = -[HMMTRSyncClusterDoorLock getCredentialAtIndex:forCredentialType:flow:](v26, "getCredentialAtIndex:forCredentialType:flow:", [credentialIndex integerValue], objc_msgSend(v22, "integerValue"), flowCopy);
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __83__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUser_isUnifiedAccess_flow___block_invoke_248;
     v54[3] = &unk_2786ED050;
-    v60 = v7;
+    v60 = accessCopy;
     v46 = v55;
     v55[0] = v29;
     v55[1] = v26;
     v34 = &v56;
-    v56 = v12;
+    v56 = flowCopy;
     v35 = &v57;
     v57 = v22;
     v36 = &v58;
-    v58 = v24;
-    v37 = v12;
+    v58 = credentialIndex;
+    v37 = flowCopy;
     v38 = v48;
     v59 = v48;
     v39 = [v33 then:v54];
@@ -7305,30 +7305,30 @@ uint64_t __91__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUserUniqueI
 
   else
   {
-    v29 = v10;
+    v29 = dataCopy;
     if (v28)
     {
       v40 = HMFGetLogIdentifier();
-      v41 = [v12 UUID];
-      v42 = [v48 userIndex];
-      v43 = [v42 integerValue];
+      uUID3 = [flowCopy UUID];
+      userIndex = [v48 userIndex];
+      integerValue2 = [userIndex integerValue];
       *buf = 138543874;
       v64 = v40;
       v65 = 2112;
-      v66 = v41;
+      v66 = uUID3;
       v67 = 2048;
-      v68 = v43;
+      v68 = integerValue2;
       _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Did not find existing issuer key credential on user index: %ld", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v25);
-    v33 = [(HMMTRSyncClusterDoorLock *)v26 numberOfCredentialsSupportedPerUserWithFlow:v12];
+    v33 = [(HMMTRSyncClusterDoorLock *)v26 numberOfCredentialsSupportedPerUserWithFlow:flowCopy];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __83__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUser_isUnifiedAccess_flow___block_invoke_252;
     v49[3] = &unk_2786EC970;
     v46 = v50;
-    v37 = v12;
+    v37 = flowCopy;
     v38 = v48;
     v50[0] = v48;
     v50[1] = v26;
@@ -7339,7 +7339,7 @@ uint64_t __91__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUserUniqueI
     v36 = &v53;
     v53 = v22;
     v39 = [v33 then:v49];
-    v24 = 0;
+    credentialIndex = 0;
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -7637,14 +7637,14 @@ uint64_t __83__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUser_isUnif
   }
 }
 
-- (id)addDeviceCredentialKeyData:(id)a3 ofType:(int64_t)a4 forUserIndex:(int64_t)a5 flow:(id)a6
+- (id)addDeviceCredentialKeyData:(id)data ofType:(int64_t)type forUserIndex:(int64_t)index flow:(id)flow
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [&unk_283EE79F8 integerValue];
-  if (a4 == 1)
+  dataCopy = data;
+  flowCopy = flow;
+  integerValue = [&unk_283EE79F8 integerValue];
+  if (type == 1)
   {
-    v12 = [&unk_283EE7A28 integerValue];
+    integerValue = [&unk_283EE7A28 integerValue];
   }
 
   v17[0] = MEMORY[0x277D85DD0];
@@ -7652,13 +7652,13 @@ uint64_t __83__HMMTRSyncClusterDoorLock__addOrUpdateIssuerKeyData_forUser_isUnif
   v17[2] = __80__HMMTRSyncClusterDoorLock_addDeviceCredentialKeyData_ofType_forUserIndex_flow___block_invoke;
   v17[3] = &unk_2786ECFE0;
   v17[4] = self;
-  v18 = v11;
-  v19 = v10;
-  v20 = v12;
-  v21 = a4;
-  v22 = a5;
-  v13 = v10;
-  v14 = v11;
+  v18 = flowCopy;
+  v19 = dataCopy;
+  v20 = integerValue;
+  typeCopy = type;
+  indexCopy = index;
+  v13 = dataCopy;
+  v14 = flowCopy;
   v15 = [(HMMTRSyncClusterDoorLock *)self serialize:v17];
 
   return v15;
@@ -7737,73 +7737,73 @@ uint64_t __80__HMMTRSyncClusterDoorLock_addDeviceCredentialKeyData_ofType_forUse
   }
 }
 
-- (id)addIssuerKeyData:(id)a3 forUserIndex:(int64_t)a4 isUnifiedAccess:(BOOL)a5 flow:(id)a6
+- (id)addIssuerKeyData:(id)data forUserIndex:(int64_t)index isUnifiedAccess:(BOOL)access flow:(id)flow
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
+  accessCopy = access;
+  dataCopy = data;
+  flowCopy = flow;
   v12 = &unk_283EE7A10;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__HMMTRSyncClusterDoorLock_addIssuerKeyData_forUserIndex_isUnifiedAccess_flow___block_invoke;
   v17[3] = &unk_2786ECF90;
   v17[4] = self;
-  v18 = v10;
-  v20 = v11;
-  v21 = a4;
-  if (v7)
+  v18 = dataCopy;
+  v20 = flowCopy;
+  indexCopy = index;
+  if (accessCopy)
   {
     v12 = &unk_283EE79F8;
   }
 
   v19 = v12;
-  v13 = v11;
-  v14 = v10;
+  v13 = flowCopy;
+  v14 = dataCopy;
   v15 = [(HMMTRSyncClusterDoorLock *)self serialize:v17];
 
   return v15;
 }
 
-- (id)_addIssuerKeyData:(id)a3 forUserIndex:(int64_t)a4 credentialType:(id)a5 flow:(id)a6
+- (id)_addIssuerKeyData:(id)data forUserIndex:(int64_t)index credentialType:(id)type flow:(id)flow
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  typeCopy = type;
+  flowCopy = flow;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v12 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544386;
     v31 = v16;
     v32 = 2112;
-    v33 = v17;
+    v33 = uUID;
     v34 = 2112;
-    v35 = v10;
+    v35 = dataCopy;
     v36 = 2112;
-    v37 = v11;
+    v37 = typeCopy;
     v38 = 2048;
-    v39 = a4;
+    indexCopy = index;
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] _addIssuerKeyData: %@, credentialType: %@, forUserIndex: %ld", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v18 = -[HMMTRSyncClusterDoorLock firstAvailableCredentialSlotForCredentialType:flow:](v14, "firstAvailableCredentialSlotForCredentialType:flow:", [v11 integerValue], v12);
+  v18 = -[HMMTRSyncClusterDoorLock firstAvailableCredentialSlotForCredentialType:flow:](selfCopy, "firstAvailableCredentialSlotForCredentialType:flow:", [typeCopy integerValue], flowCopy);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __79__HMMTRSyncClusterDoorLock__addIssuerKeyData_forUserIndex_credentialType_flow___block_invoke;
   v25[3] = &unk_2786ECE58;
-  v25[4] = v14;
-  v26 = v10;
-  v28 = v12;
-  v29 = a4;
-  v27 = v11;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
+  v25[4] = selfCopy;
+  v26 = dataCopy;
+  v28 = flowCopy;
+  indexCopy2 = index;
+  v27 = typeCopy;
+  v19 = flowCopy;
+  v20 = typeCopy;
+  v21 = dataCopy;
   v22 = [v18 then:v25];
 
   v23 = *MEMORY[0x277D85DE8];
@@ -7834,26 +7834,26 @@ uint64_t __79__HMMTRSyncClusterDoorLock__addIssuerKeyData_forUserIndex_credentia
   }
 }
 
-- (id)addIssuerKeyData:(id)a3 forUserIndex:(int64_t)a4 isUnifiedAccess:(BOOL)a5 withFlow:(id)a6
+- (id)addIssuerKeyData:(id)data forUserIndex:(int64_t)index isUnifiedAccess:(BOOL)access withFlow:(id)flow
 {
-  v10 = a3;
-  v11 = a6;
+  dataCopy = data;
+  flowCopy = flow;
   v12 = objc_opt_new();
-  v13 = [(HMMTRSyncClusterDoorLock *)self queue];
+  queue = [(HMMTRSyncClusterDoorLock *)self queue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __83__HMMTRSyncClusterDoorLock_addIssuerKeyData_forUserIndex_isUnifiedAccess_withFlow___block_invoke;
   v20[3] = &unk_2786ECF68;
   v20[4] = self;
-  v21 = v10;
-  v25 = a5;
-  v24 = a4;
-  v22 = v11;
+  v21 = dataCopy;
+  accessCopy = access;
+  indexCopy = index;
+  v22 = flowCopy;
   v14 = v12;
   v23 = v14;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v20);
+  v15 = flowCopy;
+  v16 = dataCopy;
+  dispatch_async(queue, v20);
 
   v17 = v23;
   v18 = v14;
@@ -7877,19 +7877,19 @@ void __83__HMMTRSyncClusterDoorLock_addIssuerKeyData_forUserIndex_isUnifiedAcces
   v3 = [v2 then:v6 orRecover:v4];
 }
 
-- (id)addOrUpdateReaderKeyData:(id)a3 flow:(id)a4
+- (id)addOrUpdateReaderKeyData:(id)data flow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  flowCopy = flow;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__HMMTRSyncClusterDoorLock_addOrUpdateReaderKeyData_flow___block_invoke;
   v12[3] = &unk_2786EC948;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v8 = v6;
-  v9 = v7;
+  v13 = flowCopy;
+  v14 = dataCopy;
+  v8 = dataCopy;
+  v9 = flowCopy;
   v10 = [(HMMTRSyncClusterDoorLock *)self serialize:v12];
 
   return v10;
@@ -7971,21 +7971,21 @@ LABEL_8:
   return [(HMMTRSyncClusterDoorLock *)v14 clearAllUsersWithDeletedCreatorFabricIndexWithFlow:v15, v16];
 }
 
-- (id)clearAllUsersWithDeletedCreatorFabricIndexWithFlow:(id)a3
+- (id)clearAllUsersWithDeletedCreatorFabricIndexWithFlow:(id)flow
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  flowCopy = flow;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v17 = v8;
     v18 = 2112;
-    v19 = v9;
+    v19 = uUID;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] clearAllUsersWithDeletedCreatorFabricIndexWithFlow", buf, 0x16u);
   }
 
@@ -7994,10 +7994,10 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = __79__HMMTRSyncClusterDoorLock_clearAllUsersWithDeletedCreatorFabricIndexWithFlow___block_invoke;
   v14[3] = &unk_2786ECB50;
-  v14[4] = v6;
-  v15 = v4;
-  v10 = v4;
-  v11 = [(HMMTRSyncClusterDoorLock *)v6 serialize:v14];
+  v14[4] = selfCopy;
+  v15 = flowCopy;
+  v10 = flowCopy;
+  v11 = [(HMMTRSyncClusterDoorLock *)selfCopy serialize:v14];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -8184,44 +8184,44 @@ uint64_t __79__HMMTRSyncClusterDoorLock_clearAllUsersWithDeletedCreatorFabricInd
   return isKindOfClass & (v2 != 0);
 }
 
-- (id)_readReaderConfigWithFlow:(id)a3
+- (id)_readReaderConfigWithFlow:(id)flow
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  flowCopy = flow;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     *&buf[4] = v8;
     v30 = 2112;
-    v31 = v9;
+    v31 = uUID;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] readReaderConfig", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   *buf = 0;
   v10 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-  v11 = [*buf resolverBlock];
-  v12 = [(HMMTRSyncClusterDoorLock *)v6 apiRouter];
-  [v12 readAttributeAliroReaderVerificationKeyWithFlow:v4 completion:v11];
+  resolverBlock = [*buf resolverBlock];
+  apiRouter = [(HMMTRSyncClusterDoorLock *)selfCopy apiRouter];
+  [apiRouter readAttributeAliroReaderVerificationKeyWithFlow:flowCopy completion:resolverBlock];
 
   v28[0] = v10;
   *buf = 0;
   v13 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-  v14 = [*buf resolverBlock];
-  v15 = [(HMMTRSyncClusterDoorLock *)v6 apiRouter];
-  [v15 readAttributeAliroReaderGroupIdentifierWithFlow:v4 completion:v14];
+  resolverBlock2 = [*buf resolverBlock];
+  apiRouter2 = [(HMMTRSyncClusterDoorLock *)selfCopy apiRouter];
+  [apiRouter2 readAttributeAliroReaderGroupIdentifierWithFlow:flowCopy completion:resolverBlock2];
 
   v28[1] = v13;
   *buf = 0;
   v16 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
-  v17 = [*buf resolverBlock];
-  v18 = [(HMMTRSyncClusterDoorLock *)v6 apiRouter];
-  [v18 readAttributeAliroGroupResolvingKeyWithFlow:v4 completion:v17];
+  resolverBlock3 = [*buf resolverBlock];
+  apiRouter3 = [(HMMTRSyncClusterDoorLock *)selfCopy apiRouter];
+  [apiRouter3 readAttributeAliroGroupResolvingKeyWithFlow:flowCopy completion:resolverBlock3];
 
   v19 = [v16 recover:&__block_literal_global_237];
   v28[2] = v19;
@@ -8232,9 +8232,9 @@ uint64_t __79__HMMTRSyncClusterDoorLock_clearAllUsersWithDeletedCreatorFabricInd
   v26[1] = 3221225472;
   v26[2] = __54__HMMTRSyncClusterDoorLock__readReaderConfigWithFlow___block_invoke_2;
   v26[3] = &unk_2786ECAD8;
-  v26[4] = v6;
-  v27 = v4;
-  v22 = v4;
+  v26[4] = selfCopy;
+  v27 = flowCopy;
+  v22 = flowCopy;
   v23 = [v21 then:v26];
 
   v24 = *MEMORY[0x277D85DE8];
@@ -8444,16 +8444,16 @@ LABEL_9:
   return v6;
 }
 
-- (id)readReaderConfigWithFlow:(id)a3
+- (id)readReaderConfigWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__HMMTRSyncClusterDoorLock_readReaderConfigWithFlow___block_invoke;
   v8[3] = &unk_2786ECB50;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = flowCopy;
+  v5 = flowCopy;
   v6 = [(HMMTRSyncClusterDoorLock *)self serialize:v8];
 
   return v6;
@@ -8473,24 +8473,24 @@ id __53__HMMTRSyncClusterDoorLock_readReaderConfigWithFlow___block_invoke(uint64
   return v3;
 }
 
-- (id)setOrReadReaderConfig:(id)a3 flow:(id)a4
+- (id)setOrReadReaderConfig:(id)config flow:(id)flow
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v22 = v11;
     v23 = 2112;
-    v24 = v12;
+    v24 = uUID;
     v25 = 2112;
-    v26 = v6;
+    v26 = configCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] setOrReadReaderConfig: %@", buf, 0x20u);
   }
 
@@ -8499,12 +8499,12 @@ id __53__HMMTRSyncClusterDoorLock_readReaderConfigWithFlow___block_invoke(uint64
   v18[1] = 3221225472;
   v18[2] = __55__HMMTRSyncClusterDoorLock_setOrReadReaderConfig_flow___block_invoke;
   v18[3] = &unk_2786EC948;
-  v18[4] = v9;
-  v19 = v6;
-  v20 = v7;
-  v13 = v7;
-  v14 = v6;
-  v15 = [(HMMTRSyncClusterDoorLock *)v9 serialize:v18];
+  v18[4] = selfCopy;
+  v19 = configCopy;
+  v20 = flowCopy;
+  v13 = flowCopy;
+  v14 = configCopy;
+  v15 = [(HMMTRSyncClusterDoorLock *)selfCopy serialize:v18];
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -8611,17 +8611,17 @@ LABEL_12:
   return v9;
 }
 
-- (id)removePinCodeForUserIndex:(int64_t)a3 flow:(id)a4
+- (id)removePinCodeForUserIndex:(int64_t)index flow:(id)flow
 {
-  v6 = a4;
+  flowCopy = flow;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__HMMTRSyncClusterDoorLock_removePinCodeForUserIndex_flow___block_invoke;
   v10[3] = &unk_2786ECA38;
   v10[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v7 = v6;
+  v11 = flowCopy;
+  indexCopy = index;
+  v7 = flowCopy;
   v8 = [(HMMTRSyncClusterDoorLock *)self serialize:v10];
 
   return v8;
@@ -8688,20 +8688,20 @@ LABEL_5:
   return [(HMMTRSyncClusterDoorLock *)v10 addOrUpdatePinCodeWithValue:v11 forUserIndex:v12 flow:v13, v14];
 }
 
-- (id)addOrUpdatePinCodeWithValue:(id)a3 forUserIndex:(int64_t)a4 flow:(id)a5
+- (id)addOrUpdatePinCodeWithValue:(id)value forUserIndex:(int64_t)index flow:(id)flow
 {
-  v8 = a3;
-  v9 = a5;
+  valueCopy = value;
+  flowCopy = flow;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__HMMTRSyncClusterDoorLock_addOrUpdatePinCodeWithValue_forUserIndex_flow___block_invoke;
   v14[3] = &unk_2786ECEA8;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = a4;
-  v10 = v8;
-  v11 = v9;
+  v15 = flowCopy;
+  v16 = valueCopy;
+  indexCopy = index;
+  v10 = valueCopy;
+  v11 = flowCopy;
   v12 = [(HMMTRSyncClusterDoorLock *)self serialize:v14];
 
   return v12;
@@ -8897,21 +8897,21 @@ BOOL __74__HMMTRSyncClusterDoorLock_addOrUpdatePinCodeWithValue_forUserIndex_flo
   return v3;
 }
 
-- (id)getMinPINCodeLengthWithFlow:(id)a3
+- (id)getMinPINCodeLengthWithFlow:(id)flow
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  flowCopy = flow;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v17 = v8;
     v18 = 2112;
-    v19 = v9;
+    v19 = uUID;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] getMinPINCodeLength", buf, 0x16u);
   }
 
@@ -8920,10 +8920,10 @@ BOOL __74__HMMTRSyncClusterDoorLock_addOrUpdatePinCodeWithValue_forUserIndex_flo
   v14[1] = 3221225472;
   v14[2] = __56__HMMTRSyncClusterDoorLock_getMinPINCodeLengthWithFlow___block_invoke;
   v14[3] = &unk_2786ECB50;
-  v14[4] = v6;
-  v15 = v4;
-  v10 = v4;
-  v11 = [(HMMTRSyncClusterDoorLock *)v6 ensureAccessoryConnected:v14 flow:v10];
+  v14[4] = selfCopy;
+  v15 = flowCopy;
+  v10 = flowCopy;
+  v11 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v14 flow:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -8967,21 +8967,21 @@ id __56__HMMTRSyncClusterDoorLock_getMinPINCodeLengthWithFlow___block_invoke(uin
   return v4;
 }
 
-- (id)getMaxPINCodeLengthWithFlow:(id)a3
+- (id)getMaxPINCodeLengthWithFlow:(id)flow
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  flowCopy = flow;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v17 = v8;
     v18 = 2112;
-    v19 = v9;
+    v19 = uUID;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] getMaxPINCodeLength", buf, 0x16u);
   }
 
@@ -8990,10 +8990,10 @@ id __56__HMMTRSyncClusterDoorLock_getMinPINCodeLengthWithFlow___block_invoke(uin
   v14[1] = 3221225472;
   v14[2] = __56__HMMTRSyncClusterDoorLock_getMaxPINCodeLengthWithFlow___block_invoke;
   v14[3] = &unk_2786ECB50;
-  v14[4] = v6;
-  v15 = v4;
-  v10 = v4;
-  v11 = [(HMMTRSyncClusterDoorLock *)v6 ensureAccessoryConnected:v14 flow:v10];
+  v14[4] = selfCopy;
+  v15 = flowCopy;
+  v10 = flowCopy;
+  v11 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v14 flow:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -9037,16 +9037,16 @@ id __56__HMMTRSyncClusterDoorLock_getMaxPINCodeLengthWithFlow___block_invoke(uin
   return v4;
 }
 
-- (id)getAllPinCodesWithFlow:(id)a3
+- (id)getAllPinCodesWithFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HMMTRSyncClusterDoorLock_getAllPinCodesWithFlow___block_invoke;
   v8[3] = &unk_2786ECB50;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = flowCopy;
+  v5 = flowCopy;
   v6 = [(HMMTRSyncClusterDoorLock *)self serialize:v8];
 
   return v6;
@@ -9329,15 +9329,15 @@ uint64_t __51__HMMTRSyncClusterDoorLock_getAllPinCodesWithFlow___block_invoke_22
   return 2;
 }
 
-- (id)fetchFeatureMapWithFlow:(id)a3
+- (id)fetchFeatureMapWithFlow:(id)flow
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HMMTRSyncClusterDoorLock_fetchFeatureMapWithFlow___block_invoke;
   v7[3] = &unk_2786ECB28;
   v7[4] = self;
-  v4 = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
-  v5 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v7 flow:v4];
+  untrackedPlaceholderFlow = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
+  v5 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v7 flow:untrackedPlaceholderFlow];
 
   return v5;
 }
@@ -9413,15 +9413,15 @@ id __52__HMMTRSyncClusterDoorLock_fetchFeatureMapWithFlow___block_invoke(uint64_
   return v7;
 }
 
-- (id)fetchAccessoryColor_flow:(id)a3
+- (id)fetchAccessoryColor_flow:(id)color_flow
 {
-  v4 = a3;
+  color_flowCopy = color_flow;
   v10 = MEMORY[0x277D85DD0];
-  v11 = v4;
+  v11 = color_flowCopy;
   v5 = MEMORY[0x277D0F7B8];
-  v6 = v4;
-  v7 = [v5 untrackedPlaceholderFlow];
-  v8 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:&v10 flow:v7];
+  v6 = color_flowCopy;
+  untrackedPlaceholderFlow = [v5 untrackedPlaceholderFlow];
+  v8 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:&v10 flow:untrackedPlaceholderFlow];
 
   return v8;
 }
@@ -9680,9 +9680,9 @@ LABEL_58:
   return v40;
 }
 
-- (id)fetchFeatureMapForSupportingWeekAndYearDayScheduleWithFlow:(id)a3
+- (id)fetchFeatureMapForSupportingWeekAndYearDayScheduleWithFlow:(id)flow
 {
-  v3 = [(HMMTRSyncClusterDoorLock *)self fetchFeatureMapWithFlow:a3];
+  v3 = [(HMMTRSyncClusterDoorLock *)self fetchFeatureMapWithFlow:flow];
   v4 = [v3 then:&__block_literal_global_248];
 
   return v4;
@@ -9707,8 +9707,8 @@ uint64_t __87__HMMTRSyncClusterDoorLock_fetchFeatureMapForSupportingWeekAndYearD
   v6[2] = __57__HMMTRSyncClusterDoorLock_fetchReaderGroupSubIdentifier__block_invoke;
   v6[3] = &unk_2786ECB28;
   v6[4] = self;
-  v3 = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
-  v4 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v6 flow:v3];
+  untrackedPlaceholderFlow = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
+  v4 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v6 flow:untrackedPlaceholderFlow];
 
   return v4;
 }
@@ -9740,17 +9740,17 @@ id __57__HMMTRSyncClusterDoorLock_fetchReaderGroupSubIdentifier__block_invoke(ui
   return v9;
 }
 
-- (id)fetchAccessorySupportsAliroBLEUWBWithFlow:(id)a3
+- (id)fetchAccessorySupportsAliroBLEUWBWithFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(HMMTRSyncClusterDoorLock *)self fetchFeatureMapWithFlow:v4];
+  flowCopy = flow;
+  v5 = [(HMMTRSyncClusterDoorLock *)self fetchFeatureMapWithFlow:flowCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__HMMTRSyncClusterDoorLock_fetchAccessorySupportsAliroBLEUWBWithFlow___block_invoke;
   v9[3] = &unk_2786ECB00;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = flowCopy;
+  v6 = flowCopy;
   v7 = [v5 then:v9];
 
   return v7;
@@ -9823,17 +9823,17 @@ void __70__HMMTRSyncClusterDoorLock_fetchAccessorySupportsAliroBLEUWBWithFlow___
   }
 }
 
-- (id)fetchAccessorySupportsAliroProvisioningWithFlow:(id)a3
+- (id)fetchAccessorySupportsAliroProvisioningWithFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(HMMTRSyncClusterDoorLock *)self fetchFeatureMapWithFlow:v4];
+  flowCopy = flow;
+  v5 = [(HMMTRSyncClusterDoorLock *)self fetchFeatureMapWithFlow:flowCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__HMMTRSyncClusterDoorLock_fetchAccessorySupportsAliroProvisioningWithFlow___block_invoke;
   v9[3] = &unk_2786ECB00;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = flowCopy;
+  v6 = flowCopy;
   v7 = [v5 then:v9];
 
   return v7;
@@ -9906,93 +9906,93 @@ void __76__HMMTRSyncClusterDoorLock_fetchAccessorySupportsAliroProvisioningWithF
   }
 }
 
-- (id)addNewUsersWithUserUniqueIDs:(id)a3 withCorrespondingIssuerKeys:(id)a4 flow:(id)a5
+- (id)addNewUsersWithUserUniqueIDs:(id)ds withCorrespondingIssuerKeys:(id)keys flow:(id)flow
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  keysCopy = keys;
+  flowCopy = flow;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v37 = v14;
     v38 = 2112;
-    v39 = v15;
+    v39 = uUID;
     v40 = 2112;
-    v41 = v8;
+    v41 = dsCopy;
     v42 = 2112;
-    v43 = v9;
+    v43 = keysCopy;
     _os_log_impl(&dword_22AEAE000, v13, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] addNewUsersWithUserUniqueIDs: userUniqueIDs: %@ withCorrespondingIssuerKeys: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [v8 count];
-  if (v16 == [v9 count])
+  v16 = [dsCopy count];
+  if (v16 == [keysCopy count])
   {
-    if ([v8 count])
+    if ([dsCopy count])
     {
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __90__HMMTRSyncClusterDoorLock_addNewUsersWithUserUniqueIDs_withCorrespondingIssuerKeys_flow___block_invoke;
       v32[3] = &unk_2786ECD08;
-      v32[4] = v12;
-      v33 = v8;
-      v34 = v10;
-      v35 = v9;
-      v17 = [(HMMTRSyncClusterDoorLock *)v12 serialize:v32];
+      v32[4] = selfCopy;
+      v33 = dsCopy;
+      v34 = flowCopy;
+      v35 = keysCopy;
+      futureWithNoValue = [(HMMTRSyncClusterDoorLock *)selfCopy serialize:v32];
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v12;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v10 UUID];
+        uUID2 = [flowCopy UUID];
         *buf = 138543618;
         v37 = v28;
         v38 = 2112;
-        v39 = v29;
+        v39 = uUID2;
         _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] No user uniqueIDS and corresponding issuer keys to add", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v25);
-      v17 = [MEMORY[0x277D0F7C0] futureWithNoValue];
+      futureWithNoValue = [MEMORY[0x277D0F7C0] futureWithNoValue];
     }
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v12;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v10 UUID];
+      uUID3 = [flowCopy UUID];
       *buf = 138543618;
       v37 = v21;
       v38 = 2112;
-      v39 = v22;
+      v39 = uUID3;
       _os_log_impl(&dword_22AEAE000, v20, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Unexpected that userUniqueID and issuerKey arrays are not the same length", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v18);
     v23 = MEMORY[0x277D0F7C0];
     v24 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HMMTROperationErrorDomain" code:3 userInfo:0];
-    v17 = [v23 futureWithError:v24];
+    futureWithNoValue = [v23 futureWithError:v24];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return futureWithNoValue;
 }
 
 id __90__HMMTRSyncClusterDoorLock_addNewUsersWithUserUniqueIDs_withCorrespondingIssuerKeys_flow___block_invoke(id *a1)
@@ -10191,8 +10191,8 @@ uint64_t __90__HMMTRSyncClusterDoorLock_addNewUsersWithUserUniqueIDs_withCorresp
   v6[2] = __61__HMMTRSyncClusterDoorLock_fetchAccessorySupportsTapToUnlock__block_invoke;
   v6[3] = &unk_2786ECB28;
   v6[4] = self;
-  v3 = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
-  v4 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v6 flow:v3];
+  untrackedPlaceholderFlow = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
+  v4 = [(HMMTRSyncClusterDoorLock *)self ensureAccessoryConnected:v6 flow:untrackedPlaceholderFlow];
 
   return v4;
 }
@@ -10247,9 +10247,9 @@ id __61__HMMTRSyncClusterDoorLock_fetchAccessorySupportsTapToUnlock__block_invok
   return v13;
 }
 
-- (id)fetchAccessorySupportsPinCodesWithFlow:(id)a3
+- (id)fetchAccessorySupportsPinCodesWithFlow:(id)flow
 {
-  v4 = [(HMMTRSyncClusterDoorLock *)self fetchFeatureMapWithFlow:a3];
+  v4 = [(HMMTRSyncClusterDoorLock *)self fetchFeatureMapWithFlow:flow];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HMMTRSyncClusterDoorLock_fetchAccessorySupportsPinCodesWithFlow___block_invoke;
@@ -10270,44 +10270,44 @@ uint64_t __67__HMMTRSyncClusterDoorLock_fetchAccessorySupportsPinCodesWithFlow__
   return 1;
 }
 
-- (id)_removeUserWithUniqueID:(id)a3 flow:(id)a4
+- (id)_removeUserWithUniqueID:(id)d flow:(id)flow
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v29 = v11;
     v30 = 2112;
-    v31 = v12;
+    v31 = uUID;
     v32 = 2112;
-    v33 = v6;
+    v33 = dCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Removing user with userUniqueID: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMMTRSyncClusterDoorLock *)v9 _findUserOrAvailableSlotWithUserUniqueID:v6 flow:v7];
+  v13 = [(HMMTRSyncClusterDoorLock *)selfCopy _findUserOrAvailableSlotWithUserUniqueID:dCopy flow:flowCopy];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __57__HMMTRSyncClusterDoorLock__removeUserWithUniqueID_flow___block_invoke;
   v25[3] = &unk_2786ECBF0;
-  v25[4] = v9;
-  v14 = v7;
+  v25[4] = selfCopy;
+  v14 = flowCopy;
   v26 = v14;
-  v15 = v6;
+  v15 = dCopy;
   v27 = v15;
   v16 = [v13 then:v25];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __57__HMMTRSyncClusterDoorLock__removeUserWithUniqueID_flow___block_invoke_200;
   v22[3] = &unk_2786F0300;
-  v22[4] = v9;
+  v22[4] = selfCopy;
   v23 = v14;
   v24 = v15;
   v17 = v15;
@@ -10408,19 +10408,19 @@ uint64_t __57__HMMTRSyncClusterDoorLock__removeUserWithUniqueID_flow___block_inv
   return 2;
 }
 
-- (id)removeUsersCreatedByOurFabricWithFlow:(id)a3 notInUserUniqueIDs:(id)a4
+- (id)removeUsersCreatedByOurFabricWithFlow:(id)flow notInUserUniqueIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  dsCopy = ds;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__HMMTRSyncClusterDoorLock_removeUsersCreatedByOurFabricWithFlow_notInUserUniqueIDs___block_invoke;
   v12[3] = &unk_2786ECBC8;
-  v13 = v6;
-  v14 = v7;
+  v13 = flowCopy;
+  v14 = dsCopy;
   v12[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = dsCopy;
   v10 = [(HMMTRSyncClusterDoorLock *)self serialize:v12];
 
   return v10;
@@ -10716,16 +10716,16 @@ uint64_t __85__HMMTRSyncClusterDoorLock_removeUsersCreatedByOurFabricWithFlow_no
   return 2;
 }
 
-- (id)removeUserWithUniqueID:(id)a3
+- (id)removeUserWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HMMTRSyncClusterDoorLock_removeUserWithUniqueID___block_invoke;
   v8[3] = &unk_2786ECB50;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = dCopy;
+  v5 = dCopy;
   v6 = [(HMMTRSyncClusterDoorLock *)self serialize:v8];
 
   return v6;
@@ -10934,24 +10934,24 @@ id __42__HMMTRSyncClusterDoorLock_removeAllUsers__block_invoke_3(uint64_t a1, vo
   return v5;
 }
 
-- (id)__getUserAtIndex:(int64_t)a3 includeAliroCredentials:(BOOL)a4 temporaryCachedAliroCredentials:(id)a5 flow:(id)a6
+- (id)__getUserAtIndex:(int64_t)index includeAliroCredentials:(BOOL)credentials temporaryCachedAliroCredentials:(id)aliroCredentials flow:(id)flow
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  aliroCredentialsCopy = aliroCredentials;
+  flowCopy = flow;
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v28 = v15;
     v29 = 2112;
-    v30 = v16;
+    v30 = uUID;
     v31 = 2048;
-    v32 = a3;
+    indexCopy = index;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] getUserAtIndex: %ld", buf, 0x20u);
   }
 
@@ -10960,14 +10960,14 @@ id __42__HMMTRSyncClusterDoorLock_removeAllUsers__block_invoke_3(uint64_t a1, vo
   v22[1] = 3221225472;
   v22[2] = __106__HMMTRSyncClusterDoorLock___getUserAtIndex_includeAliroCredentials_temporaryCachedAliroCredentials_flow___block_invoke;
   v22[3] = &unk_2786ECA88;
-  v26 = a4;
-  v22[4] = v13;
-  v23 = v10;
-  v24 = v11;
-  v25 = a3;
-  v17 = v11;
-  v18 = v10;
-  v19 = [(HMMTRSyncClusterDoorLock *)v13 ensureAccessoryConnected:v22 flow:v17];
+  credentialsCopy = credentials;
+  v22[4] = selfCopy;
+  v23 = aliroCredentialsCopy;
+  v24 = flowCopy;
+  indexCopy2 = index;
+  v17 = flowCopy;
+  v18 = aliroCredentialsCopy;
+  v19 = [(HMMTRSyncClusterDoorLock *)selfCopy ensureAccessoryConnected:v22 flow:v17];
 
   v20 = *MEMORY[0x277D85DE8];
 
@@ -11041,35 +11041,35 @@ uint64_t __106__HMMTRSyncClusterDoorLock___getUserAtIndex_includeAliroCredential
   return 2;
 }
 
-- (id)getUserAtIndex:(int64_t)a3 flow:(id)a4
+- (id)getUserAtIndex:(int64_t)index flow:(id)flow
 {
-  v6 = a4;
+  flowCopy = flow;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__HMMTRSyncClusterDoorLock_getUserAtIndex_flow___block_invoke;
   v10[3] = &unk_2786ECA38;
-  v11 = v6;
-  v12 = a3;
+  v11 = flowCopy;
+  indexCopy = index;
   v10[4] = self;
-  v7 = v6;
+  v7 = flowCopy;
   v8 = [(HMMTRSyncClusterDoorLock *)self serialize:v10];
 
   return v8;
 }
 
-- (id)getUsersWithUniqueIDs:(id)a3 flow:(id)a4
+- (id)getUsersWithUniqueIDs:(id)ds flow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  flowCopy = flow;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__HMMTRSyncClusterDoorLock_getUsersWithUniqueIDs_flow___block_invoke;
   v12[3] = &unk_2786EC948;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v8 = v6;
-  v9 = v7;
+  v13 = flowCopy;
+  v14 = dsCopy;
+  v8 = dsCopy;
+  v9 = flowCopy;
   v10 = [(HMMTRSyncClusterDoorLock *)self serialize:v12];
 
   return v10;
@@ -11180,39 +11180,39 @@ id __55__HMMTRSyncClusterDoorLock_getUsersWithUniqueIDs_flow___block_invoke_5(ui
   return v6;
 }
 
-- (id)_findUserOrAvailableSlotWithUserUniqueID:(id)a3 flow:(id)a4
+- (id)_findUserOrAvailableSlotWithUserUniqueID:(id)d flow:(id)flow
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v26 = v11;
     v27 = 2112;
-    v28 = v12;
+    v28 = uUID;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] findHomeUserOrAvailableSlot", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [(HMMTRSyncClusterDoorLock *)v9 fetchCurrentFabricIndex_flow:v7];
+  array = [MEMORY[0x277CBEB18] array];
+  v14 = [(HMMTRSyncClusterDoorLock *)selfCopy fetchCurrentFabricIndex_flow:flowCopy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __74__HMMTRSyncClusterDoorLock__findUserOrAvailableSlotWithUserUniqueID_flow___block_invoke;
   v21[3] = &unk_2786EC998;
-  v21[4] = v9;
-  v22 = v7;
-  v23 = v6;
-  v24 = v13;
-  v15 = v13;
-  v16 = v6;
-  v17 = v7;
+  v21[4] = selfCopy;
+  v22 = flowCopy;
+  v23 = dCopy;
+  v24 = array;
+  v15 = array;
+  v16 = dCopy;
+  v17 = flowCopy;
   v18 = [v14 then:v21];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -11267,42 +11267,42 @@ uint64_t __74__HMMTRSyncClusterDoorLock__findUserOrAvailableSlotWithUserUniqueID
   }
 }
 
-- (id)findUserOrAvailableSlotWithUserUniqueID:(id)a3 flow:(id)a4
+- (id)findUserOrAvailableSlotWithUserUniqueID:(id)d flow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  flowCopy = flow;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__HMMTRSyncClusterDoorLock_findUserOrAvailableSlotWithUserUniqueID_flow___block_invoke;
   v12[3] = &unk_2786EC948;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = dCopy;
+  v14 = flowCopy;
+  v8 = flowCopy;
+  v9 = dCopy;
   v10 = [(HMMTRSyncClusterDoorLock *)self serialize:v12];
 
   return v10;
 }
 
-- (id)findOrAddUserWithUniqueID:(id)a3 flow:(id)a4
+- (id)findOrAddUserWithUniqueID:(id)d flow:(id)flow
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  flowCopy = flow;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v22 = v11;
     v23 = 2112;
-    v24 = v12;
+    v24 = uUID;
     v25 = 2112;
-    v26 = v6;
+    v26 = dCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] findOrAddUserWithUniqueID: %@", buf, 0x20u);
   }
 
@@ -11311,36 +11311,36 @@ uint64_t __74__HMMTRSyncClusterDoorLock__findUserOrAvailableSlotWithUserUniqueID
   v18[1] = 3221225472;
   v18[2] = __59__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_flow___block_invoke;
   v18[3] = &unk_2786EC948;
-  v18[4] = v9;
-  v19 = v6;
-  v20 = v7;
-  v13 = v7;
-  v14 = v6;
-  v15 = [(HMMTRSyncClusterDoorLock *)v9 serialize:v18];
+  v18[4] = selfCopy;
+  v19 = dCopy;
+  v20 = flowCopy;
+  v13 = flowCopy;
+  v14 = dCopy;
+  v15 = [(HMMTRSyncClusterDoorLock *)selfCopy serialize:v18];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (id)findOrAddUserWithUniqueID:(id)a3 withFlow:(id)a4
+- (id)findOrAddUserWithUniqueID:(id)d withFlow:(id)flow
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  flowCopy = flow;
   v8 = objc_opt_new();
-  v9 = [(HMMTRSyncClusterDoorLock *)self queue];
+  queue = [(HMMTRSyncClusterDoorLock *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_withFlow___block_invoke;
   v16[3] = &unk_2786EF378;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
+  v17 = dCopy;
+  v18 = flowCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v9, v16);
+  v11 = flowCopy;
+  v12 = dCopy;
+  dispatch_async(queue, v16);
 
   v13 = v19;
   v14 = v10;
@@ -11364,19 +11364,19 @@ void __63__HMMTRSyncClusterDoorLock_findOrAddUserWithUniqueID_withFlow___block_i
   v3 = [v2 then:v6 orRecover:v4];
 }
 
-- (void)lockDoorWithAccessoryUUID:(id)a3 completionHandler:(id)a4
+- (void)lockDoorWithAccessoryUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__HMMTRSyncClusterDoorLock_lockDoorWithAccessoryUUID_completionHandler___block_invoke;
   v11[3] = &unk_2786ECBC8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = dCopy;
   v10 = [(HMMTRSyncClusterDoorLock *)self serialize:v11];
 }
 
@@ -11746,19 +11746,19 @@ void __72__HMMTRSyncClusterDoorLock_lockDoorWithAccessoryUUID_completionHandler_
   }
 }
 
-- (void)unlockDoorWithAccessoryUUID:(id)a3 completionHandler:(id)a4
+- (void)unlockDoorWithAccessoryUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__HMMTRSyncClusterDoorLock_unlockDoorWithAccessoryUUID_completionHandler___block_invoke;
   v11[3] = &unk_2786ECBC8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = dCopy;
   v10 = [(HMMTRSyncClusterDoorLock *)self serialize:v11];
 }
 
@@ -12130,59 +12130,59 @@ uint64_t __74__HMMTRSyncClusterDoorLock_unlockDoorWithAccessoryUUID_completionHa
   }
 }
 
-- (id)ensureAccessoryConnected:(id)a3 flow:(id)a4
+- (id)ensureAccessoryConnected:(id)connected flow:(id)flow
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRSyncClusterDoorLock *)self accessoryServer];
+  connectedCopy = connected;
+  flowCopy = flow;
+  accessoryServer = [(HMMTRSyncClusterDoorLock *)self accessoryServer];
 
-  if (v8)
+  if (accessoryServer)
   {
     *buf = 0;
     v9 = [MEMORY[0x277D0F7C0] futureWithPromise:buf];
     v10 = objc_alloc(MEMORY[0x277D0F7A8]);
-    v11 = [(HMMTRSyncClusterDoorLock *)self queue];
-    v12 = [v10 initWithQueue:v11];
+    queue = [(HMMTRSyncClusterDoorLock *)self queue];
+    v12 = [v10 initWithQueue:queue];
 
-    v13 = [(HMMTRSyncClusterDoorLock *)self accessoryServer];
+    accessoryServer2 = [(HMMTRSyncClusterDoorLock *)self accessoryServer];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __58__HMMTRSyncClusterDoorLock_ensureAccessoryConnected_flow___block_invoke;
     v27[3] = &unk_2786F0EA8;
     v28 = v12;
     v29 = *buf;
-    v30 = v6;
+    v30 = connectedCopy;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __58__HMMTRSyncClusterDoorLock_ensureAccessoryConnected_flow___block_invoke_3;
     v22[3] = &unk_2786EC7E0;
     v23 = v28;
-    v24 = self;
-    v25 = v7;
+    selfCopy = self;
+    v25 = flowCopy;
     v26 = v29;
     v14 = v28;
-    [v13 queueAccessoryOperation:v27 highPriority:1 completion:v22];
+    [accessoryServer2 queueAccessoryOperation:v27 highPriority:1 completion:v22];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v7 UUID];
+      uUID = [flowCopy UUID];
       *buf = 138543618;
       *&buf[4] = v18;
       v32 = 2112;
-      v33 = v19;
+      v33 = uUID;
       _os_log_impl(&dword_22AEAE000, v17, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Accessory server is nil", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v9 = v6[2](v6);
+    v9 = connectedCopy[2](connectedCopy);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -12251,23 +12251,23 @@ void __58__HMMTRSyncClusterDoorLock_ensureAccessoryConnected_flow___block_invoke
   [v1 resolveWithFuture:v2];
 }
 
-- (id)serialize:(id)a3
+- (id)serialize:(id)serialize
 {
-  v4 = a3;
+  serializeCopy = serialize;
   v18 = 0;
   v5 = [MEMORY[0x277D0F7C0] futureWithPromise:&v18];
   os_unfair_lock_lock_with_options();
-  v6 = [(HMMTRSyncClusterDoorLock *)self apiSerializationFuture];
+  apiSerializationFuture = [(HMMTRSyncClusterDoorLock *)self apiSerializationFuture];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __38__HMMTRSyncClusterDoorLock_serialize___block_invoke;
   v14 = &unk_2786EE6B8;
   v15 = v18;
-  v7 = v4;
+  v7 = serializeCopy;
   v17 = v7;
   v8 = v5;
   v16 = v8;
-  v9 = [v6 finally:&v11];
+  v9 = [apiSerializationFuture finally:&v11];
   [(HMMTRSyncClusterDoorLock *)self setApiSerializationFuture:v9, v11, v12, v13, v14];
 
   os_unfair_lock_unlock(&self->_unfairLock);
@@ -12315,49 +12315,49 @@ uint64_t __39__HMMTRSyncClusterDoorLock_logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)validateFutureResults:(id)a3 ofClass:(Class)a4 areNullable:(BOOL)a5 flow:(id)a6
++ (id)validateFutureResults:(id)results ofClass:(Class)class areNullable:(BOOL)nullable flow:(id)flow
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 na_map:&__block_literal_global_297];
+  resultsCopy = results;
+  flowCopy = flow;
+  v12 = [resultsCopy na_map:&__block_literal_global_297];
   if ([v12 hmf_isEmpty])
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __75__HMMTRSyncClusterDoorLock_validateFutureResults_ofClass_areNullable_flow___block_invoke_298;
     v23[3] = &__block_descriptor_41_e16___NSData_16__0_8lu32l8;
-    v24 = a5;
-    v23[4] = a4;
-    v13 = [v10 na_map:v23];
+    nullableCopy = nullable;
+    v23[4] = class;
+    v13 = [resultsCopy na_map:v23];
     v14 = [v13 count];
-    if (v14 == [v10 count])
+    if (v14 == [resultsCopy count])
     {
-      v15 = 0;
+      firstObject = 0;
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = a1;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v19 = HMFGetLogIdentifier();
-        v20 = [v11 UUID];
+        uUID = [flowCopy UUID];
         *buf = 138544130;
         v29 = v19;
         v30 = 2112;
-        v31 = v20;
+        v31 = uUID;
         v32 = 2112;
-        v33 = v10;
+        v33 = resultsCopy;
         v34 = 2112;
         v35 = v13;
         _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to cast future results to correct type. results: %@, finalResults: %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v16);
-      v15 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
+      firstObject = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
     }
   }
 
@@ -12367,16 +12367,16 @@ uint64_t __39__HMMTRSyncClusterDoorLock_logCategory__block_invoke()
     v25[1] = 3221225472;
     v25[2] = __75__HMMTRSyncClusterDoorLock_validateFutureResults_ofClass_areNullable_flow___block_invoke_2;
     v25[3] = &unk_2786ED288;
-    v27 = a1;
-    v26 = v11;
+    selfCopy2 = self;
+    v26 = flowCopy;
     [v12 na_each:v25];
-    v15 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     v13 = v26;
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
 void __75__HMMTRSyncClusterDoorLock_validateFutureResults_ofClass_areNullable_flow___block_invoke_2(uint64_t a1, void *a2)
@@ -12451,26 +12451,26 @@ void *__75__HMMTRSyncClusterDoorLock_validateFutureResults_ofClass_areNullable_f
   return v3;
 }
 
-+ (id)deriveHomePinFromUUID:(id)a3 withNumberOfDigits:(int64_t)a4 flow:(id)a5
++ (id)deriveHomePinFromUUID:(id)d withNumberOfDigits:(int64_t)digits flow:(id)flow
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  flowCopy = flow;
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v8 UUIDString];
-  v12 = [v10 stringWithFormat:@"%@ %@", v11, @"Home Pin"];
+  uUIDString = [dCopy UUIDString];
+  v12 = [v10 stringWithFormat:@"%@ %@", uUIDString, @"Home Pin"];
 
-  v33 = [v12 hmmtr_sha256hash];
-  if ([v33 length] >= a4)
+  hmmtr_sha256hash = [v12 hmmtr_sha256hash];
+  if ([hmmtr_sha256hash length] >= digits)
   {
     v31 = v12;
-    v32 = v8;
-    v19 = [MEMORY[0x277CCAB68] string];
-    if (a4 < 1)
+    v32 = dCopy;
+    string = [MEMORY[0x277CCAB68] string];
+    if (digits < 1)
     {
 LABEL_9:
-      v18 = v19;
-      v8 = v32;
+      v18 = string;
+      dCopy = v32;
     }
 
     else
@@ -12478,7 +12478,7 @@ LABEL_9:
       v20 = 0;
       while (1)
       {
-        v21 = [v33 substringWithRange:{v20, 1}];
+        v21 = [hmmtr_sha256hash substringWithRange:{v20, 1}];
         v22 = [MEMORY[0x277CCAC80] scannerWithString:v21];
         v34 = 0;
         if (([v22 scanHexInt:&v34] & 1) == 0)
@@ -12488,25 +12488,25 @@ LABEL_9:
 
         v34 %= 0xAu;
         v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", v34];
-        [v19 appendString:v23];
+        [string appendString:v23];
 
-        if (a4 == ++v20)
+        if (digits == ++v20)
         {
           goto LABEL_9;
         }
       }
 
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = HMFGetLogIdentifier();
-        v28 = [v9 UUID];
+        uUID = [flowCopy UUID];
         *buf = 138543874;
         v36 = v27;
         v37 = 2112;
-        v38 = v28;
+        v38 = uUID;
         v39 = 2112;
         v40 = v21;
         _os_log_impl(&dword_22AEAE000, v26, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to scan hex to int from hash: %@", buf, 0x20u);
@@ -12514,7 +12514,7 @@ LABEL_9:
 
       objc_autoreleasePoolPop(v24);
       v18 = 0;
-      v8 = v32;
+      dCopy = v32;
     }
 
     v12 = v31;
@@ -12523,20 +12523,20 @@ LABEL_9:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v9 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138544130;
       v36 = v16;
       v37 = 2112;
-      v38 = v17;
+      v38 = uUID2;
       v39 = 2112;
-      v40 = v33;
+      v40 = hmmtr_sha256hash;
       v41 = 2048;
-      v42 = a4;
+      digitsCopy = digits;
       _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Number of digits exceeds total size of hash. Hash: %@, numberOfDigits: %ld", buf, 0x2Au);
     }
 
@@ -12549,13 +12549,13 @@ LABEL_9:
   return v18;
 }
 
-+ (id)dataOfReadValue:(id)a3
++ (id)dataOfReadValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CD5188]];
+    v5 = [valueCopy objectForKeyedSubscript:*MEMORY[0x277CD5188]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -12599,9 +12599,9 @@ LABEL_9:
   return v12;
 }
 
-+ (id)valueFromDictionaryWithData:(id)a3
++ (id)valueFromDictionaryWithData:(id)data
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
+  v3 = [data objectForKeyedSubscript:*MEMORY[0x277CD50D8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -12628,15 +12628,15 @@ LABEL_9:
   return v6;
 }
 
-+ (id)valueFromAttributeResponse:(id)a3
++ (id)valueFromAttributeResponse:(id)response
 {
-  if (a3)
+  if (response)
   {
-    v4 = [a3 firstObject];
+    firstObject = [response firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = firstObject;
     }
 
     else
@@ -12648,7 +12648,7 @@ LABEL_9:
 
     if (v6)
     {
-      v7 = [a1 valueFromDictionaryWithData:v6];
+      v7 = [self valueFromDictionaryWithData:v6];
     }
 
     else
@@ -12665,11 +12665,11 @@ LABEL_9:
   return v7;
 }
 
-+ (id)numberFromAttributeDictionary:(id)a3
++ (id)numberFromAttributeDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
+    v3 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -12692,9 +12692,9 @@ LABEL_9:
   return v5;
 }
 
-+ (id)numberFromAttributeResponse:(id)a3
++ (id)numberFromAttributeResponse:(id)response
 {
-  v3 = [a1 valueFromAttributeResponse:a3];
+  v3 = [self valueFromAttributeResponse:response];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -12740,46 +12740,46 @@ uint64_t __46__HMMTRSyncClusterDoorLock_sortedArrayOfData___block_invoke(uint64_
   return v9;
 }
 
-+ (id)doorLockFeatureMapSupportsAliroBLEUWB:(id)a3
++ (id)doorLockFeatureMapSupportsAliroBLEUWB:(id)b
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "unsignedIntValue") & 0x4000}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(b, "unsignedIntValue") & 0x4000}];
   v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
 
   return v5;
 }
 
-+ (id)doorLockFeatureMapSupportsAliroProvisioning:(id)a3
++ (id)doorLockFeatureMapSupportsAliroProvisioning:(id)provisioning
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "unsignedIntValue") & 0x2000}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(provisioning, "unsignedIntValue") & 0x2000}];
   v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
 
   return v5;
 }
 
-+ (id)doorLockFeatureMapSupportsYearDaySchedule:(id)a3
++ (id)doorLockFeatureMapSupportsYearDaySchedule:(id)schedule
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "unsignedIntValue") & 0x400}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(schedule, "unsignedIntValue") & 0x400}];
   v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
 
   return v5;
 }
 
-+ (id)doorLockFeatureMapSupportsWeekDaySchedule:(id)a3
++ (id)doorLockFeatureMapSupportsWeekDaySchedule:(id)schedule
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "unsignedIntValue") & 0x10}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(schedule, "unsignedIntValue") & 0x10}];
   v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
 
   return v5;
 }
 
-+ (id)doorLockFeatureMapSupportsPinCodes:(id)a3
++ (id)doorLockFeatureMapSupportsPinCodes:(id)codes
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "unsignedIntValue") & 1}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(codes, "unsignedIntValue") & 1}];
   v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
 
   return v5;

@@ -1,11 +1,11 @@
 @interface PLAccountingRuleManager
-+ (id)decryptData:(id)a3 withKey:(id)a4;
-+ (id)firstLineWithFile:(id)a3;
++ (id)decryptData:(id)data withKey:(id)key;
++ (id)firstLineWithFile:(id)file;
 - (NSMutableDictionary)ruleIDToRule;
 - (PLAccountingRuleManager)init;
-- (id)ruleForRuleID:(id)a3;
-- (id)rulesFromFileWithForceLoad:(BOOL)a3;
-- (void)indexRule:(id)a3;
+- (id)ruleForRuleID:(id)d;
+- (id)rulesFromFileWithForceLoad:(BOOL)load;
+- (void)indexRule:(id)rule;
 - (void)loadRules;
 @end
 
@@ -16,9 +16,9 @@
   ruleIDToRule = self->_ruleIDToRule;
   if (!ruleIDToRule)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_ruleIDToRule;
-    self->_ruleIDToRule = v4;
+    self->_ruleIDToRule = dictionary;
 
     ruleIDToRule = self->_ruleIDToRule;
   }
@@ -40,9 +40,9 @@
   return v3;
 }
 
-- (id)ruleForRuleID:(id)a3
+- (id)ruleForRuleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -59,14 +59,14 @@
     if (ruleForRuleID__classDebugEnabled == 1)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [(PLAccountingRuleManager *)self ruleIDToRule];
-      v8 = [v6 stringWithFormat:@"ruleID=%@, ruleIDToRule=%@", v4, v7];
+      ruleIDToRule = [(PLAccountingRuleManager *)self ruleIDToRule];
+      v8 = [v6 stringWithFormat:@"ruleID=%@, ruleIDToRule=%@", dCopy, ruleIDToRule];
 
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager ruleForRuleID:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:37];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:37];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -76,8 +76,8 @@
     }
   }
 
-  v14 = [(PLAccountingRuleManager *)self ruleIDToRule];
-  v15 = [v14 objectForKeyedSubscript:v4];
+  ruleIDToRule2 = [(PLAccountingRuleManager *)self ruleIDToRule];
+  v15 = [ruleIDToRule2 objectForKeyedSubscript:dCopy];
 
   return v15;
 }
@@ -89,9 +89,9 @@ uint64_t __41__PLAccountingRuleManager_ruleForRuleID___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)indexRule:(id)a3
+- (void)indexRule:(id)rule
 {
-  v4 = a3;
+  ruleCopy = rule;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -107,12 +107,12 @@ uint64_t __41__PLAccountingRuleManager_ruleForRuleID___block_invoke(uint64_t a1)
 
     if (indexRule__classDebugEnabled_1 == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"rule=%@", v4, block, v15, v16, v17, v18];
+      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"rule=%@", ruleCopy, block, v15, v16, v17, v18];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager indexRule:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:42];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:42];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -122,9 +122,9 @@ uint64_t __41__PLAccountingRuleManager_ruleForRuleID___block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [(PLAccountingRuleManager *)self ruleIDToRule];
-  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "entryID")}];
-  [v12 setObject:v4 forKeyedSubscript:v13];
+  ruleIDToRule = [(PLAccountingRuleManager *)self ruleIDToRule];
+  v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(ruleCopy, "entryID")}];
+  [ruleIDToRule setObject:ruleCopy forKeyedSubscript:v13];
 }
 
 uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
@@ -137,10 +137,10 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
 - (void)loadRules
 {
   v124 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 storage];
-  v5 = [objc_opt_class() rulesEntryKey];
-  v91 = [v4 entriesForKey:v5];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  rulesEntryKey = [objc_opt_class() rulesEntryKey];
+  v91 = [storage entriesForKey:rulesEntryKey];
 
   v6 = 0x277D3F000uLL;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -161,9 +161,9 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"rulesFromDB=%@", v91];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager loadRules]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:62];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:62];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -193,9 +193,9 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"rulesFromFile=%@", v14];
       v17 = MEMORY[0x277D3F178];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-      v19 = [v18 lastPathComponent];
+      lastPathComponent2 = [v18 lastPathComponent];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager loadRules]"];
-      [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:67];
+      [v17 logMessage:v16 fromFile:lastPathComponent2 fromFunction:v20 fromLineNumber:67];
 
       v21 = PLLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -255,9 +255,9 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
               v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"ruleToDelete=%@", v30];
               v33 = MEMORY[0x277D3F178];
               v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-              v35 = [v34 lastPathComponent];
+              lastPathComponent3 = [v34 lastPathComponent];
               v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager loadRules]"];
-              [v33 logMessage:v32 fromFile:v35 fromFunction:v36 fromLineNumber:78];
+              [v33 logMessage:v32 fromFile:lastPathComponent3 fromFunction:v36 fromLineNumber:78];
 
               v37 = PLLogCommon();
               if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -272,9 +272,9 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
             }
           }
 
-          v38 = [MEMORY[0x277D3F2A0] sharedCore];
-          v39 = [v38 storage];
-          [v39 deleteEntry:v30];
+          mEMORY[0x277D3F2A0]2 = [MEMORY[0x277D3F2A0] sharedCore];
+          storage2 = [mEMORY[0x277D3F2A0]2 storage];
+          [storage2 deleteEntry:v30];
 
           ++v29;
         }
@@ -328,9 +328,9 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
               v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"ruleToAdd=%@", v46];
               v49 = MEMORY[0x277D3F178];
               v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-              v51 = [v50 lastPathComponent];
+              lastPathComponent4 = [v50 lastPathComponent];
               v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager loadRules]"];
-              [v49 logMessage:v48 fromFile:v51 fromFunction:v52 fromLineNumber:86];
+              [v49 logMessage:v48 fromFile:lastPathComponent4 fromFunction:v52 fromLineNumber:86];
 
               v53 = PLLogCommon();
               if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -345,9 +345,9 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
             }
           }
 
-          v54 = [MEMORY[0x277D3F2A0] sharedCore];
-          v55 = [v54 storage];
-          [v55 blockingWriteEntry:v46 withCompletionBlock:&__block_literal_global_14];
+          mEMORY[0x277D3F2A0]3 = [MEMORY[0x277D3F2A0] sharedCore];
+          storage3 = [mEMORY[0x277D3F2A0]3 storage];
+          [storage3 blockingWriteEntry:v46 withCompletionBlock:&__block_literal_global_14];
 
           [(PLAccountingRuleManager *)self indexRule:v46];
           ++v45;
@@ -373,7 +373,7 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
       v59 = v58;
       v60 = *v103;
       v61 = &dependencyIDsForOwner__defaultOnce;
-      v92 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v59; ++i)
@@ -403,9 +403,9 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
               v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"ruleInBoth=%@", v63];
               v67 = MEMORY[0x277D3F178];
               v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-              v69 = [v68 lastPathComponent];
+              lastPathComponent5 = [v68 lastPathComponent];
               v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager loadRules]"];
-              [v67 logMessage:v66 fromFile:v69 fromFunction:v70 fromLineNumber:95];
+              [v67 logMessage:v66 fromFile:lastPathComponent5 fromFunction:v70 fromLineNumber:95];
 
               v71 = PLLogCommon();
               if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
@@ -417,7 +417,7 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
 
               v6 = 0x277D3F000;
               v57 = v65;
-              self = v92;
+              self = selfCopy;
               v61 = &dependencyIDsForOwner__defaultOnce;
             }
           }
@@ -477,9 +477,9 @@ uint64_t __37__PLAccountingRuleManager_indexRule___block_invoke(uint64_t a1)
               v81 = [MEMORY[0x277CCACA8] stringWithFormat:@"ruleFromDB=%@", v78];
               v82 = MEMORY[0x277D3F178];
               v83 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-              v84 = [v83 lastPathComponent];
+              lastPathComponent6 = [v83 lastPathComponent];
               v85 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager loadRules]"];
-              [v82 logMessage:v81 fromFile:v84 fromFunction:v85 fromLineNumber:102];
+              [v82 logMessage:v81 fromFile:lastPathComponent6 fromFunction:v85 fromLineNumber:102];
 
               v86 = PLLogCommon();
               if (os_log_type_enabled(v86, OS_LOG_TYPE_DEBUG))
@@ -551,22 +551,22 @@ uint64_t __36__PLAccountingRuleManager_loadRules__block_invoke_50(uint64_t a1)
   return result;
 }
 
-- (id)rulesFromFileWithForceLoad:(BOOL)a3
+- (id)rulesFromFileWithForceLoad:(BOOL)load
 {
   v105 = *MEMORY[0x277D85DE8];
-  v5 = [objc_opt_class() rulesPath];
-  if (v5)
+  rulesPath = [objc_opt_class() rulesPath];
+  if (rulesPath)
   {
-    v6 = [objc_opt_class() firstLineWithFile:v5];
+    v6 = [objc_opt_class() firstLineWithFile:rulesPath];
     v7 = 0x277CCA000uLL;
     if ([v6 rangeOfString:@"Error"] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** ERROR: parsing error in file %@", v5];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** ERROR: parsing error in file %@", rulesPath];
       v32 = MEMORY[0x277D3F178];
       v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-      v34 = [v33 lastPathComponent];
+      lastPathComponent = [v33 lastPathComponent];
       v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager rulesFromFileWithForceLoad:]"];
-      [v32 logMessage:v8 fromFile:v34 fromFunction:v35 fromLineNumber:120];
+      [v32 logMessage:v8 fromFile:lastPathComponent fromFunction:v35 fromLineNumber:120];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -574,7 +574,7 @@ uint64_t __36__PLAccountingRuleManager_loadRules__block_invoke_50(uint64_t a1)
         [PLAccountingDependency activate];
       }
 
-      v91 = 0;
+      array = 0;
       goto LABEL_65;
     }
 
@@ -586,7 +586,7 @@ uint64_t __36__PLAccountingRuleManager_loadRules__block_invoke_50(uint64_t a1)
 
     v13 = 0x277D3F000uLL;
     v14 = [MEMORY[0x277D3F180] objectForKey:v12];
-    v88 = self;
+    selfCopy = self;
     v87 = v14;
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -606,9 +606,9 @@ uint64_t __36__PLAccountingRuleManager_loadRules__block_invoke_50(uint64_t a1)
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"firstLine=%@, fileHash=%@, storedHash=%@", v6, v8, v14];
         v17 = MEMORY[0x277D3F178];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-        v19 = [v18 lastPathComponent];
+        lastPathComponent2 = [v18 lastPathComponent];
         v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager rulesFromFileWithForceLoad:]"];
-        [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:128];
+        [v17 logMessage:v16 fromFile:lastPathComponent2 fromFunction:v20 fromLineNumber:128];
 
         v21 = PLLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -618,12 +618,12 @@ uint64_t __36__PLAccountingRuleManager_loadRules__block_invoke_50(uint64_t a1)
 
         v14 = v87;
         v7 = 0x277CCA000uLL;
-        self = v88;
+        self = selfCopy;
         v13 = 0x277D3F000uLL;
       }
     }
 
-    if (!a3 && v14 && [v8 isEqualToString:v14])
+    if (!load && v14 && [v8 isEqualToString:v14])
     {
       if (![MEMORY[0x277D3F180] debugEnabled])
       {
@@ -644,16 +644,16 @@ uint64_t __36__PLAccountingRuleManager_loadRules__block_invoke_50(uint64_t a1)
       if (rulesFromFileWithForceLoad__classDebugEnabled_70 != 1)
       {
 LABEL_69:
-        v91 = 0;
+        array = 0;
         goto LABEL_64;
       }
 
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"hashes match, skipping parsing"];
       v90 = MEMORY[0x277D3F178];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-      v25 = [v24 lastPathComponent];
+      lastPathComponent3 = [v24 lastPathComponent];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager rulesFromFileWithForceLoad:]"];
-      [v90 logMessage:v23 fromFile:v25 fromFunction:v26 fromLineNumber:132];
+      [v90 logMessage:v23 fromFile:lastPathComponent3 fromFunction:v26 fromLineNumber:132];
 
       v27 = PLLogCommon();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -661,13 +661,13 @@ LABEL_69:
         [PLAccountingDependency activate];
       }
 
-      v91 = 0;
+      array = 0;
     }
 
     else
     {
       [MEMORY[0x277D3F180] setObject:v8 forKey:v12 saveToDisk:1];
-      v36 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v5];
+      v36 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:rulesPath];
       v86 = v36;
       if ([MEMORY[0x277D3F180] debugEnabled])
       {
@@ -687,9 +687,9 @@ LABEL_69:
           v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"fileBytes.length=%lu", objc_msgSend(v36, "length")];
           v39 = MEMORY[0x277D3F178];
           v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-          v41 = [v40 lastPathComponent];
+          lastPathComponent4 = [v40 lastPathComponent];
           v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager rulesFromFileWithForceLoad:]"];
-          [v39 logMessage:v38 fromFile:v41 fromFunction:v42 fromLineNumber:141];
+          [v39 logMessage:v38 fromFile:lastPathComponent4 fromFunction:v42 fromLineNumber:141];
 
           v43 = PLLogCommon();
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -698,7 +698,7 @@ LABEL_69:
           }
 
           v7 = 0x277CCA000uLL;
-          self = v88;
+          self = selfCopy;
           v13 = 0x277D3F000uLL;
           v36 = v86;
         }
@@ -709,9 +709,9 @@ LABEL_69:
       v45 = MEMORY[0x277CCACA8];
       v80 = v44;
       v46 = [v45 stringWithUTF8String:{objc_msgSend(v80, "bytes")}];
-      v47 = [MEMORY[0x277CCA900] newlineCharacterSet];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
       v79 = v46;
-      v48 = [v46 componentsSeparatedByCharactersInSet:v47];
+      v48 = [v46 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
       if ([MEMORY[0x277D3F180] debugEnabled])
       {
@@ -731,9 +731,9 @@ LABEL_69:
           v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"allLines=%@", v48];
           v51 = MEMORY[0x277D3F178];
           v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-          v53 = [v52 lastPathComponent];
+          lastPathComponent5 = [v52 lastPathComponent];
           v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager rulesFromFileWithForceLoad:]"];
-          [v51 logMessage:v50 fromFile:v53 fromFunction:v54 fromLineNumber:150];
+          [v51 logMessage:v50 fromFile:lastPathComponent5 fromFunction:v54 fromLineNumber:150];
 
           v55 = PLLogCommon();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -742,7 +742,7 @@ LABEL_69:
           }
 
           v7 = 0x277CCA000uLL;
-          self = v88;
+          self = selfCopy;
           v13 = 0x277D3F000uLL;
         }
       }
@@ -750,9 +750,9 @@ LABEL_69:
       v82 = v12;
       v83 = v8;
       v84 = v6;
-      v85 = v5;
-      v91 = [MEMORY[0x277CBEB18] array];
-      v56 = [MEMORY[0x277CBEAA8] monotonicDate];
+      v85 = rulesPath;
+      array = [MEMORY[0x277CBEB18] array];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
       v94 = 0u;
       v95 = 0u;
       v96 = 0u;
@@ -792,9 +792,9 @@ LABEL_69:
                 v63 = [*(v7 + 3240) stringWithFormat:@"line=%@", v61];
                 v64 = MEMORY[0x277D3F178];
                 v65 = [*(v7 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-                v66 = [v65 lastPathComponent];
+                lastPathComponent6 = [v65 lastPathComponent];
                 v67 = [*(v7 + 3240) stringWithUTF8String:"-[PLAccountingRuleManager rulesFromFileWithForceLoad:]"];
-                [v64 logMessage:v63 fromFile:v66 fromFunction:v67 fromLineNumber:156];
+                [v64 logMessage:v63 fromFile:lastPathComponent6 fromFunction:v67 fromLineNumber:156];
 
                 v68 = PLLogCommon();
                 if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -805,12 +805,12 @@ LABEL_69:
                 }
 
                 v7 = 0x277CCA000uLL;
-                self = v88;
+                self = selfCopy;
                 v13 = 0x277D3F000uLL;
               }
             }
 
-            v69 = [(PLAccountingRuleManager *)self ruleWithString:v61 withEntryDate:v56];
+            v69 = [(PLAccountingRuleManager *)self ruleWithString:v61 withEntryDate:monotonicDate];
             if ([*(v13 + 384) debugEnabled])
             {
               v70 = objc_opt_class();
@@ -829,9 +829,9 @@ LABEL_69:
                 v71 = [*(v7 + 3240) stringWithFormat:@"rule=%@", v69];
                 v72 = MEMORY[0x277D3F178];
                 v73 = [*(v7 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-                v74 = [v73 lastPathComponent];
+                lastPathComponent7 = [v73 lastPathComponent];
                 v75 = [*(v7 + 3240) stringWithUTF8String:"-[PLAccountingRuleManager rulesFromFileWithForceLoad:]"];
-                [v72 logMessage:v71 fromFile:v74 fromFunction:v75 fromLineNumber:160];
+                [v72 logMessage:v71 fromFile:lastPathComponent7 fromFunction:v75 fromLineNumber:160];
 
                 v76 = PLLogCommon();
                 if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
@@ -842,14 +842,14 @@ LABEL_69:
                 }
 
                 v7 = 0x277CCA000;
-                self = v88;
+                self = selfCopy;
                 v13 = 0x277D3F000;
               }
             }
 
             if (v69)
             {
-              [v91 addObject:v69];
+              [array addObject:v69];
             }
 
             ++v60;
@@ -864,7 +864,7 @@ LABEL_69:
 
       [(PLAccountingRuleManager *)self setRegex:0];
       v6 = v84;
-      v5 = v85;
+      rulesPath = v85;
       v12 = v82;
       v8 = v83;
       v23 = v86;
@@ -881,23 +881,23 @@ LABEL_65:
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** ERROR: missing rules file %@", 0];
   v28 = MEMORY[0x277D3F178];
   v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-  v30 = [v29 lastPathComponent];
+  lastPathComponent8 = [v29 lastPathComponent];
   v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRuleManager rulesFromFileWithForceLoad:]"];
-  [v28 logMessage:v6 fromFile:v30 fromFunction:v31 fromLineNumber:111];
+  [v28 logMessage:v6 fromFile:lastPathComponent8 fromFunction:v31 fromLineNumber:111];
 
   v8 = PLLogCommon();
-  v91 = 0;
+  array = 0;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [PLAccountingDependency activate];
-    v91 = 0;
+    array = 0;
   }
 
 LABEL_66:
 
   v77 = *MEMORY[0x277D85DE8];
 
-  return v91;
+  return array;
 }
 
 uint64_t __54__PLAccountingRuleManager_rulesFromFileWithForceLoad___block_invoke(uint64_t a1)
@@ -942,9 +942,9 @@ uint64_t __54__PLAccountingRuleManager_rulesFromFileWithForceLoad___block_invoke
   return result;
 }
 
-+ (id)firstLineWithFile:(id)a3
++ (id)firstLineWithFile:(id)file
 {
-  MEMORY[0x28223BE20](a1, a2, a3);
+  MEMORY[0x28223BE20](self, a2, file);
   v4 = v3;
   v21 = *MEMORY[0x277D85DE8];
   v5 = v3;
@@ -972,9 +972,9 @@ uint64_t __54__PLAccountingRuleManager_rulesFromFileWithForceLoad___block_invoke
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"buffer=%s, bytesRead=%i", v20, v19];
         v11 = MEMORY[0x277D3F178];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-        v13 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLAccountingRuleManager firstLineWithFile:]"];
-        [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:189];
+        [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:189];
 
         v15 = PLLogCommon();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1008,15 +1008,15 @@ uint64_t __45__PLAccountingRuleManager_firstLineWithFile___block_invoke(uint64_t
   return result;
 }
 
-+ (id)decryptData:(id)a3 withKey:(id)a4
++ (id)decryptData:(id)data withKey:(id)key
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   key[0] = 0;
   key[1] = 0;
   v30 = 0;
-  [a4 getCString:key maxLength:17 encoding:4];
-  dataOut = malloc_type_malloc([v5 length] + 16, 0x63EE837BuLL);
+  [key getCString:key maxLength:17 encoding:4];
+  dataOut = malloc_type_malloc([dataCopy length] + 16, 0x63EE837BuLL);
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v7 = objc_opt_class();
@@ -1032,12 +1032,12 @@ uint64_t __45__PLAccountingRuleManager_firstLineWithFile___block_invoke(uint64_t
 
     if (decryptData_withKey__classDebugEnabled == 1)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"encryptedData.length=%lu", objc_msgSend(v5, "length")];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"encryptedData.length=%lu", objc_msgSend(dataCopy, "length")];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLAccountingRuleManager decryptData:withKey:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:215];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:215];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1048,7 +1048,7 @@ uint64_t __45__PLAccountingRuleManager_firstLineWithFile___block_invoke(uint64_t
   }
 
   v27 = 0;
-  v14 = CCCrypt(1u, 0, 3u, key, 0x10uLL, 0, [v5 bytes], objc_msgSend(v5, "length"), dataOut, objc_msgSend(v5, "length") + 16, &v27);
+  v14 = CCCrypt(1u, 0, 3u, key, 0x10uLL, 0, [dataCopy bytes], objc_msgSend(dataCopy, "length"), dataOut, objc_msgSend(dataCopy, "length") + 16, &v27);
   v15 = 0;
   v16 = v27;
   *(dataOut + v27) = 0;
@@ -1075,9 +1075,9 @@ uint64_t __45__PLAccountingRuleManager_firstLineWithFile___block_invoke(uint64_t
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"numBytesDecrypted=%lu", v27];
       v19 = MEMORY[0x277D3F178];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Rule Managers/PLAccountingRuleManager.m"];
-      v21 = [v20 lastPathComponent];
+      lastPathComponent2 = [v20 lastPathComponent];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLAccountingRuleManager decryptData:withKey:]"];
-      [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:236];
+      [v19 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:236];
 
       v23 = PLLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))

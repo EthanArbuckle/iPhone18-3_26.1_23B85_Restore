@@ -3,8 +3,8 @@
 - (OS_dispatch_queue)delegateQueue;
 - (id)delegate;
 - (void)dealloc;
-- (void)invokeDelegateCallbackWithBlock:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)invokeDelegateCallbackWithBlock:(id)block;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation FigDelegateStorage
@@ -48,9 +48,9 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  if (!a3 && a4)
+  if (!delegate && queue)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -58,7 +58,7 @@
     goto LABEL_10;
   }
 
-  if (a3 && !a4)
+  if (delegate && !queue)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -67,15 +67,15 @@ LABEL_10:
     objc_exception_throw([v8 exceptionWithName:v9 reason:v10 userInfo:0]);
   }
 
-  v7 = a4;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   delegateQueue = self->_delegateQueue;
-  self->_delegateQueue = a4;
+  self->_delegateQueue = queue;
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)invokeDelegateCallbackWithBlock:(id)a3
+- (void)invokeDelegateCallbackWithBlock:(id)block
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_delegateQueue;
@@ -87,15 +87,15 @@ LABEL_10:
     v7[2] = __54__FigDelegateStorage_invokeDelegateCallbackWithBlock___block_invoke;
     v7[3] = &unk_1E7990390;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = block;
     dispatch_async(v5, v7);
   }
 
   else
   {
-    v6 = *(a3 + 2);
+    v6 = *(block + 2);
 
-    v6(a3, 0);
+    v6(block, 0);
   }
 }
 

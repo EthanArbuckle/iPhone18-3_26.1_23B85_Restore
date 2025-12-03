@@ -1,20 +1,20 @@
 @interface CCUISensorAttributionCompactControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CCUISensorAttributionCompactControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUISensorAttributionCompactControl" hasInstanceMethod:@"showingCamera" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUISensorAttributionCompactControl" hasInstanceMethod:@"showingLocation" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUISensorAttributionCompactControl" hasInstanceMethod:@"showingMicrophone" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUISensorAttributionCompactControl" hasInstanceMethod:@"setExpanded:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"CCUISensorAttributionCompactControl" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"isUserInteractionEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUISensorAttributionCompactControl" hasInstanceMethod:@"showingCamera" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUISensorAttributionCompactControl" hasInstanceMethod:@"showingLocation" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUISensorAttributionCompactControl" hasInstanceMethod:@"showingMicrophone" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUISensorAttributionCompactControl" hasInstanceMethod:@"setExpanded:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"CCUISensorAttributionCompactControl" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"isUserInteractionEnabled" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityValue

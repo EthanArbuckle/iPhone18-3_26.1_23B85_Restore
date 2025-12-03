@@ -1,31 +1,31 @@
 @interface DYSharedMemoryTransport
-- (BOOL)_clientConnect:(id *)a3;
-- (BOOL)_createAndRunSources:(id *)a3;
-- (BOOL)_initializeSMRegion:(sm_region_header *)a3 size:(unint64_t)a4 name:(const char *)a5 error:(id *)a6;
-- (BOOL)_openSMRegion:(sm_region_header *)a3 size:(unint64_t)a4 name:(const char *)a5 error:(id *)a6;
-- (BOOL)_serverConnect:(id *)a3;
-- (BOOL)send:(id)a3 inReplyTo:(id)a4 error:(id *)a5 replyQueue:(id)a6 timeout:(unint64_t)a7 handler:(id)a8;
+- (BOOL)_clientConnect:(id *)connect;
+- (BOOL)_createAndRunSources:(id *)sources;
+- (BOOL)_initializeSMRegion:(sm_region_header *)region size:(unint64_t)size name:(const char *)name error:(id *)error;
+- (BOOL)_openSMRegion:(sm_region_header *)region size:(unint64_t)size name:(const char *)name error:(id *)error;
+- (BOOL)_serverConnect:(id *)connect;
+- (BOOL)send:(id)send inReplyTo:(id)to error:(id *)error replyQueue:(id)queue timeout:(unint64_t)timeout handler:(id)handler;
 - (DYSharedMemoryTransport)init;
-- (DYSharedMemoryTransport)initWithMode:(int)a3 initialMessageSerial:(unsigned int)a4 uniqueIdentifier:(id)a5;
+- (DYSharedMemoryTransport)initWithMode:(int)mode initialMessageSerial:(unsigned int)serial uniqueIdentifier:(id)identifier;
 - (id)connect;
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4;
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4;
+- (int64_t)_read:(void *)_read size:(unint64_t)size;
+- (int64_t)_write:(const void *)_write size:(unint64_t)size;
 - (unint64_t)_computeBytesAvailableToRead;
 - (unint64_t)_computeBytesAvailableToWrite;
 - (void)_accumulateMessageBytes;
-- (void)_copyFromSM:(void *)a3 size:(unint64_t)a4;
-- (void)_copyToSM:(const void *)a3 size:(int64_t)a4;
+- (void)_copyFromSM:(void *)m size:(unint64_t)size;
+- (void)_copyToSM:(const void *)m size:(int64_t)size;
 - (void)_dequeueIncomingMessages;
 - (void)_dequeuePacket;
 - (void)_invalidate;
-- (void)_mapSharedMemoryFile:(int)a3 size:(unint64_t)a4 error:(id *)a5;
+- (void)_mapSharedMemoryFile:(int)file size:(unint64_t)size error:(id *)error;
 - (void)_relayPacket;
 - (void)_tearDownSharedMemory;
-- (void)_updateReaderOffset:(unint64_t)a3;
+- (void)_updateReaderOffset:(unint64_t)offset;
 - (void)_waitEAGAIN;
 - (void)dealloc;
-- (void)setRelayTransport:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setRelayTransport:(id)transport;
+- (void)setUrl:(id)url;
 @end
 
 @implementation DYSharedMemoryTransport
@@ -37,7 +37,7 @@
   return 0;
 }
 
-- (DYSharedMemoryTransport)initWithMode:(int)a3 initialMessageSerial:(unsigned int)a4 uniqueIdentifier:(id)a5
+- (DYSharedMemoryTransport)initWithMode:(int)mode initialMessageSerial:(unsigned int)serial uniqueIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = DYSharedMemoryTransport;
@@ -45,17 +45,17 @@
   v9 = v8;
   if (v8)
   {
-    v8->_mode = a3;
-    if ((a3 - 3) <= 0xFFFFFFFD)
+    v8->_mode = mode;
+    if ((mode - 3) <= 0xFFFFFFFD)
     {
       [DYSharedMemoryTransport initWithMode:initialMessageSerial:uniqueIdentifier:];
     }
 
-    atomic_store(a4, &v8->super.super._messageCounter);
-    if (a5)
+    atomic_store(serial, &v8->super.super._messageCounter);
+    if (identifier)
     {
       v10 = objc_alloc(MEMORY[0x277CBEBC0]);
-      v9->super.super._url = [v10 initWithString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"dysmt://localhost/%lx", objc_msgSend(a5, "unsignedLongValue"))}];
+      v9->super.super._url = [v10 initWithString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"dysmt://localhost/%lx", objc_msgSend(identifier, "unsignedLongValue"))}];
     }
 
     else
@@ -100,9 +100,9 @@
   [(DYBaseStreamTransport *)&v3 dealloc];
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  if (!a3)
+  if (!url)
   {
     [DYSharedMemoryTransport setUrl:];
   }
@@ -112,14 +112,14 @@
     dy_abort("tried to set URL on connected transport");
   }
 
-  if (([objc_msgSend(a3 "scheme")] & 1) == 0 && (objc_msgSend(objc_msgSend(a3, "scheme"), "isEqualToString:", @"dysmtdeferred") & 1) == 0)
+  if (([objc_msgSend(url "scheme")] & 1) == 0 && (objc_msgSend(objc_msgSend(url, "scheme"), "isEqualToString:", @"dysmtdeferred") & 1) == 0)
   {
-    dy_abort("url scheme has to be dysmt: %s", [objc_msgSend(a3 "absoluteString")]);
+    dy_abort("url scheme has to be dysmt: %s", [objc_msgSend(url "absoluteString")]);
   }
 
-  if (![objc_msgSend(a3 "path")])
+  if (![objc_msgSend(url "path")])
   {
-    dy_abort("url path cannot be nil or empty: %s", [objc_msgSend(a3 "absoluteString")]);
+    dy_abort("url path cannot be nil or empty: %s", [objc_msgSend(url "absoluteString")]);
   }
 
   queue = self->super.super._queue;
@@ -127,7 +127,7 @@
   block[1] = 3221225472;
   block[2] = __34__DYSharedMemoryTransport_setUrl___block_invoke;
   block[3] = &unk_27930C170;
-  block[4] = a3;
+  block[4] = url;
   block[5] = self;
   dispatch_sync(queue, block);
 }
@@ -158,7 +158,7 @@ uint64_t __34__DYSharedMemoryTransport_setUrl___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setRelayTransport:(id)a3
+- (void)setRelayTransport:(id)transport
 {
   queue = self->super.super._queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -166,7 +166,7 @@ uint64_t __34__DYSharedMemoryTransport_setUrl___block_invoke(uint64_t result)
   v4[2] = __45__DYSharedMemoryTransport_setRelayTransport___block_invoke;
   v4[3] = &unk_27930C170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = transport;
   dispatch_sync(queue, v4);
 }
 
@@ -214,15 +214,15 @@ uint64_t __45__DYSharedMemoryTransport_setRelayTransport___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)send:(id)a3 inReplyTo:(id)a4 error:(id *)a5 replyQueue:(id)a6 timeout:(unint64_t)a7 handler:(id)a8
+- (BOOL)send:(id)send inReplyTo:(id)to error:(id *)error replyQueue:(id)queue timeout:(unint64_t)timeout handler:(id)handler
 {
   if (self->_deferred)
   {
     v13 = objc_alloc_init(BufferedSendOperation);
-    [(BufferedSendOperation *)v13 setMessage:a3];
-    [(BufferedSendOperation *)v13 setReplyTo:a4];
-    [(BufferedSendOperation *)v13 setQueue:a6];
-    [(BufferedSendOperation *)v13 setReplyBlock:a8];
+    [(BufferedSendOperation *)v13 setMessage:send];
+    [(BufferedSendOperation *)v13 setReplyTo:to];
+    [(BufferedSendOperation *)v13 setQueue:queue];
+    [(BufferedSendOperation *)v13 setReplyBlock:handler];
     [(NSMutableArray *)self->_bufferedMessages addObject:v13];
     return 1;
   }
@@ -231,33 +231,33 @@ uint64_t __45__DYSharedMemoryTransport_setRelayTransport___block_invoke(uint64_t
   {
     v15.receiver = self;
     v15.super_class = DYSharedMemoryTransport;
-    return [(DYTransport *)&v15 send:a3 inReplyTo:a4 error:a5 replyQueue:a6 timeout:a7 handler:a8];
+    return [(DYTransport *)&v15 send:send inReplyTo:to error:error replyQueue:queue timeout:timeout handler:handler];
   }
 }
 
-- (void)_mapSharedMemoryFile:(int)a3 size:(unint64_t)a4 error:(id *)a5
+- (void)_mapSharedMemoryFile:(int)file size:(unint64_t)size error:(id *)error
 {
-  v8 = [(DYSharedMemoryTransport *)self _calculateVMRegionMapSize:a4];
+  v8 = [(DYSharedMemoryTransport *)self _calculateVMRegionMapSize:size];
   v9 = mmap(0, v8, 0, 4098, -1, 0);
   if (v9 == -1)
   {
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
 
     v10 = 0;
-    *a5 = [DYError errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
+    *error = [DYError errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
   }
 
   else
   {
     v10 = v9;
-    if (mmap(v9, a4, 3, 17, a3, 0) != v9 || mmap(&v10[a4], a4 - 0x4000, 3, 17, a3, 0x4000) != &v10[a4])
+    if (mmap(v9, size, 3, 17, file, 0) != v9 || mmap(&v10[size], size - 0x4000, 3, 17, file, 0x4000) != &v10[size])
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [DYError errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
+        *error = [DYError errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
       }
 
       munmap(v10, v8);
@@ -299,26 +299,26 @@ uint64_t __45__DYSharedMemoryTransport_setRelayTransport___block_invoke(uint64_t
   }
 }
 
-- (BOOL)_initializeSMRegion:(sm_region_header *)a3 size:(unint64_t)a4 name:(const char *)a5 error:(id *)a6
+- (BOOL)_initializeSMRegion:(sm_region_header *)region size:(unint64_t)size name:(const char *)name error:(id *)error
 {
-  if (((a4 + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0]) <= 0x8000)
+  if (((size + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0]) <= 0x8000)
   {
     v9 = 0x8000;
   }
 
   else
   {
-    v9 = (a4 + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0];
+    v9 = (size + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0];
   }
 
-  v10 = shm_open(a5, 2562, 390);
+  v10 = shm_open(name, 2562, 390);
   if (v10 == -1 || (v11 = v10, ftruncate(v10, v9) == -1))
   {
-    if (a6)
+    if (error)
     {
       v15 = [DYError errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
       LOBYTE(v12) = 0;
-      *a6 = v15;
+      *error = v15;
     }
 
     else
@@ -329,7 +329,7 @@ uint64_t __45__DYSharedMemoryTransport_setRelayTransport___block_invoke(uint64_t
 
   else
   {
-    v12 = [(DYSharedMemoryTransport *)self _mapSharedMemoryFile:v11 size:v9 error:a6];
+    v12 = [(DYSharedMemoryTransport *)self _mapSharedMemoryFile:v11 size:v9 error:error];
     if (v12)
     {
       v13 = v12;
@@ -344,7 +344,7 @@ uint64_t __45__DYSharedMemoryTransport_setRelayTransport___block_invoke(uint64_t
       atomic_store(0, &v13->var5);
       v13->var6 = v9;
       v13->var7 = v9 - 0x4000;
-      *a3 = v13;
+      *region = v13;
       LOBYTE(v12) = 1;
     }
   }
@@ -352,9 +352,9 @@ uint64_t __45__DYSharedMemoryTransport_setRelayTransport___block_invoke(uint64_t
   return v12;
 }
 
-- (BOOL)_openSMRegion:(sm_region_header *)a3 size:(unint64_t)a4 name:(const char *)a5 error:(id *)a6
+- (BOOL)_openSMRegion:(sm_region_header *)region size:(unint64_t)size name:(const char *)name error:(id *)error
 {
-  v11 = shm_open(a5, 2, 6);
+  v11 = shm_open(name, 2, 6);
   if (v11 == -1)
   {
     v12 = 0;
@@ -375,36 +375,36 @@ uint64_t __45__DYSharedMemoryTransport_setRelayTransport___block_invoke(uint64_t
 
       ++v12;
       sleep(1u);
-      v11 = shm_open(a5, 2, 6);
+      v11 = shm_open(name, 2, 6);
     }
 
     while (v11 == -1);
   }
 
   v14 = v11;
-  if (((a4 + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0]) <= 0x8000)
+  if (((size + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0]) <= 0x8000)
   {
     v15 = 0x8000;
   }
 
   else
   {
-    v15 = (a4 + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0];
+    v15 = (size + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0];
   }
 
-  v16 = [(DYSharedMemoryTransport *)self _mapSharedMemoryFile:v11 size:v15 error:a6];
+  v16 = [(DYSharedMemoryTransport *)self _mapSharedMemoryFile:v11 size:v15 error:error];
   if (v16)
   {
     v17 = v16;
     close(v14);
-    if (shm_unlink(a5) == -1)
+    if (shm_unlink(name) == -1)
     {
 LABEL_17:
-      if (a6)
+      if (error)
       {
         v18 = [DYError errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
         LOBYTE(v16) = 0;
-        *a6 = v18;
+        *error = v18;
       }
 
       else
@@ -415,7 +415,7 @@ LABEL_17:
 
     else
     {
-      *a3 = v17;
+      *region = v17;
       LOBYTE(v16) = 1;
     }
   }
@@ -423,7 +423,7 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)_createAndRunSources:(id *)a3
+- (BOOL)_createAndRunSources:(id *)sources
 {
   v18 = *MEMORY[0x277D85DE8];
   pthread_attr_init(&v17);
@@ -467,32 +467,32 @@ uint64_t __48__DYSharedMemoryTransport__createAndRunSources___block_invoke(uint6
   return [v4 _dequeueIncomingMessages];
 }
 
-- (BOOL)_serverConnect:(id *)a3
+- (BOOL)_serverConnect:(id *)connect
 {
   [-[DYSharedMemoryTransport _getSharedMemoryNameWithSuffix:](self _getSharedMemoryNameWithSuffix:{@"s", "getCString:maxLength:encoding:", self->_sendName, 64, 1}];
   [-[DYSharedMemoryTransport _getSharedMemoryNameWithSuffix:](self _getSharedMemoryNameWithSuffix:{@"c", "getCString:maxLength:encoding:", self->_receiveName, 64, 1}];
-  if (![(DYSharedMemoryTransport *)self _initializeSMRegion:&self->_outgoingShmem size:0x4000 name:self->_sendName error:a3]|| ![(DYSharedMemoryTransport *)self _initializeSMRegion:&self->_incomingShmem size:0x40000 name:self->_receiveName error:a3])
+  if (![(DYSharedMemoryTransport *)self _initializeSMRegion:&self->_outgoingShmem size:0x4000 name:self->_sendName error:connect]|| ![(DYSharedMemoryTransport *)self _initializeSMRegion:&self->_incomingShmem size:0x40000 name:self->_receiveName error:connect])
   {
     return 0;
   }
 
   [(DYSharedMemoryTransport *)self _setupIOBuffers];
-  result = [(DYSharedMemoryTransport *)self _createAndRunSources:a3];
+  result = [(DYSharedMemoryTransport *)self _createAndRunSources:connect];
   self->_masterSMRegion = self->_incomingShmem;
   return result;
 }
 
-- (BOOL)_clientConnect:(id *)a3
+- (BOOL)_clientConnect:(id *)connect
 {
   [-[DYSharedMemoryTransport _getSharedMemoryNameWithSuffix:](self _getSharedMemoryNameWithSuffix:{@"c", "getCString:maxLength:encoding:", self->_sendName, 64, 1}];
   [-[DYSharedMemoryTransport _getSharedMemoryNameWithSuffix:](self _getSharedMemoryNameWithSuffix:{@"s", "getCString:maxLength:encoding:", self->_receiveName, 64, 1}];
-  if (![(DYSharedMemoryTransport *)self _openSMRegion:&self->_incomingShmem size:0x4000 name:self->_receiveName error:a3]|| ![(DYSharedMemoryTransport *)self _openSMRegion:&self->_outgoingShmem size:0x40000 name:self->_sendName error:a3])
+  if (![(DYSharedMemoryTransport *)self _openSMRegion:&self->_incomingShmem size:0x4000 name:self->_receiveName error:connect]|| ![(DYSharedMemoryTransport *)self _openSMRegion:&self->_outgoingShmem size:0x40000 name:self->_sendName error:connect])
   {
     return 0;
   }
 
   [(DYSharedMemoryTransport *)self _setupIOBuffers];
-  result = [(DYSharedMemoryTransport *)self _createAndRunSources:a3];
+  result = [(DYSharedMemoryTransport *)self _createAndRunSources:connect];
   self->_masterSMRegion = self->_outgoingShmem;
   return result;
 }
@@ -702,38 +702,38 @@ unint64_t __34__DYSharedMemoryTransport_connect__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_copyToSM:(const void *)a3 size:(int64_t)a4
+- (void)_copyToSM:(const void *)m size:(int64_t)size
 {
   v6 = atomic_load(&self->_outgoingShmem->var4);
-  memcpy(self->_outgoingBuffer + v6, a3, a4);
+  memcpy(self->_outgoingBuffer + v6, m, size);
   outgoingShmem = self->_outgoingShmem;
   var7 = outgoingShmem->var7;
-  if (v6 + a4 < var7)
+  if (v6 + size < var7)
   {
     LODWORD(var7) = 0;
   }
 
-  atomic_store(v6 + a4 - var7, &outgoingShmem->var4);
+  atomic_store(v6 + size - var7, &outgoingShmem->var4);
 }
 
-- (void)_updateReaderOffset:(unint64_t)a3
+- (void)_updateReaderOffset:(unint64_t)offset
 {
   incomingShmem = self->_incomingShmem;
   var7 = incomingShmem->var7;
-  if (var7 > a3)
+  if (var7 > offset)
   {
     LODWORD(var7) = 0;
   }
 
-  atomic_store(a3 - var7, &incomingShmem->var5);
+  atomic_store(offset - var7, &incomingShmem->var5);
 }
 
-- (void)_copyFromSM:(void *)a3 size:(unint64_t)a4
+- (void)_copyFromSM:(void *)m size:(unint64_t)size
 {
   v6 = atomic_load(&self->_incomingShmem->var5);
-  memcpy(a3, self->_incomingBuffer + v6, a4);
+  memcpy(m, self->_incomingBuffer + v6, size);
 
-  [(DYSharedMemoryTransport *)self _updateReaderOffset:v6 + a4];
+  [(DYSharedMemoryTransport *)self _updateReaderOffset:v6 + size];
 }
 
 - (void)_accumulateMessageBytes
@@ -763,8 +763,8 @@ unint64_t __34__DYSharedMemoryTransport_connect__block_invoke_2(uint64_t a1)
 - (void)_dequeuePacket
 {
   v2 = objc_autoreleasePoolPush();
-  _DYOLog(a1, 3, @"not enough bytes available for packet header", v3, v4, v5, v6, v7, v8);
-  [a1 _scheduleInvalidation:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", @"DYErrorDomain", 259, 0)}];
+  _DYOLog(self, 3, @"not enough bytes available for packet header", v3, v4, v5, v6, v7, v8);
+  [self _scheduleInvalidation:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", @"DYErrorDomain", 259, 0)}];
 
   objc_autoreleasePoolPop(v2);
 }
@@ -870,24 +870,24 @@ LABEL_24:
   while ([(DYSharedMemoryTransport *)self _computeBytesAvailableToRead]<= 4 && v3++ < 4);
 }
 
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_write:(const void *)_write size:(unint64_t)size
 {
-  v4 = a4;
-  if (a4)
+  sizeCopy = size;
+  if (size)
   {
     v7 = atomic_load(&self->super.super._invalid);
     atomic_store(v7, &self->_outgoingShmem->var0);
-    v8 = [(DYSharedMemoryTransport *)self _computeBytesAvailableToWrite];
-    if (v8 > 4)
+    _computeBytesAvailableToWrite = [(DYSharedMemoryTransport *)self _computeBytesAvailableToWrite];
+    if (_computeBytesAvailableToWrite > 4)
     {
-      if (v8 - 4 < v4)
+      if (_computeBytesAvailableToWrite - 4 < sizeCopy)
       {
-        v4 = v8 - 4;
+        sizeCopy = _computeBytesAvailableToWrite - 4;
       }
 
-      v10 = v4 + 4;
+      v10 = sizeCopy + 4;
       [(DYSharedMemoryTransport *)self _copyToSM:&v10 size:4];
-      [(DYSharedMemoryTransport *)self _copyToSM:a3 size:v4];
+      [(DYSharedMemoryTransport *)self _copyToSM:_write size:sizeCopy];
       atomic_fetch_add(&self->_outgoingShmem->var1, 1u);
     }
 
@@ -898,12 +898,12 @@ LABEL_24:
     }
   }
 
-  return v4;
+  return sizeCopy;
 }
 
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4
+- (int64_t)_read:(void *)_read size:(unint64_t)size
 {
-  if (!a4)
+  if (!size)
   {
     return 0;
   }
@@ -911,18 +911,18 @@ LABEL_24:
   currentPacketBytesLeft = self->_currentPacketBytesLeft;
   if (currentPacketBytesLeft)
   {
-    if (currentPacketBytesLeft >= a4)
+    if (currentPacketBytesLeft >= size)
     {
-      v6 = a4;
+      sizeCopy = size;
     }
 
     else
     {
-      v6 = self->_currentPacketBytesLeft;
+      sizeCopy = self->_currentPacketBytesLeft;
     }
 
-    [(DYSharedMemoryTransport *)self _copyFromSM:a3 size:v6];
-    self->_currentPacketBytesLeft -= v6;
+    [(DYSharedMemoryTransport *)self _copyFromSM:_read size:sizeCopy];
+    self->_currentPacketBytesLeft -= sizeCopy;
   }
 
   else
@@ -931,7 +931,7 @@ LABEL_24:
     return -1;
   }
 
-  return v6;
+  return sizeCopy;
 }
 
 @end

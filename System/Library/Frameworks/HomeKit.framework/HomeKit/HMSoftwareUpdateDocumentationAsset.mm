@@ -1,13 +1,13 @@
 @interface HMSoftwareUpdateDocumentationAsset
-+ (HMSoftwareUpdateDocumentationAsset)assetWithURL:(id)a3;
++ (HMSoftwareUpdateDocumentationAsset)assetWithURL:(id)l;
 + (NSURL)assetDirectoryURL;
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)saveWithError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)saveWithError:(id *)error;
 - (HMSoftwareUpdateDocumentation)documentation;
 - (HMSoftwareUpdateDocumentationAsset)init;
-- (HMSoftwareUpdateDocumentationAsset)initWithCoder:(id)a3;
-- (HMSoftwareUpdateDocumentationAsset)initWithDocumentationMetadata:(id)a3 urlSession:(id)a4 extractor:(id)a5;
+- (HMSoftwareUpdateDocumentationAsset)initWithCoder:(id)coder;
+- (HMSoftwareUpdateDocumentationAsset)initWithDocumentationMetadata:(id)metadata urlSession:(id)session extractor:(id)extractor;
 - (HMSoftwareUpdateDocumentationAssetDelegate)delegate;
 - (HMSoftwareUpdateDocumentationAssetExtractor)extractor;
 - (NSError)error;
@@ -20,17 +20,17 @@
 - (id)metadataURL;
 - (int64_t)state;
 - (unint64_t)hash;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)cancelDownload;
-- (void)cancelUnarchiveWithError:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)cancelUnarchiveWithError:(id)error;
+- (void)encodeWithCoder:(id)coder;
 - (void)finishDownload;
 - (void)finishUnarchive;
-- (void)setError:(id)a3;
-- (void)setExtractionProgress:(double)a3;
-- (void)setState:(int64_t)a3;
+- (void)setError:(id)error;
+- (void)setExtractionProgress:(double)progress;
+- (void)setState:(int64_t)state;
 - (void)startCaching;
 - (void)startDownload;
 - (void)startUnarchive;
@@ -45,11 +45,11 @@
   return WeakRetained;
 }
 
-- (void)setExtractionProgress:(double)a3
+- (void)setExtractionProgress:(double)progress
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -57,7 +57,7 @@
     v10 = 138543618;
     v11 = v8;
     v12 = 2048;
-    v13 = a3 * 100.0;
+    v13 = progress * 100.0;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Unarchive progress: %.1f%%", &v10, 0x16u);
   }
 
@@ -65,32 +65,32 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v58 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 path];
+    path = [lCopy path];
     *buf = 138543618;
     v53 = v14;
     v54 = 2112;
-    v55 = v15;
+    v55 = path;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Finished downloading archived asset to: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [v9 response];
+  response = [taskCopy response];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = v16;
+    v17 = response;
   }
 
   else
@@ -103,17 +103,17 @@
   if (v18 && ([v18 statusCode] > 399 || objc_msgSend(v18, "statusCode") <= 199))
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v12;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [(HMSoftwareUpdateDocumentationAsset *)v20 archiveURL];
-      v24 = [v23 path];
+      archiveURL = [(HMSoftwareUpdateDocumentationAsset *)v20 archiveURL];
+      path2 = [archiveURL path];
       *buf = 138543874;
       v53 = v22;
       v54 = 2112;
-      v55 = v24;
+      v55 = path2;
       v56 = 2112;
       v57 = v18;
       _os_log_impl(&dword_19BB39000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to download asset to '%@' due to bad response status: %@", buf, 0x20u);
@@ -126,52 +126,52 @@
 
   else
   {
-    v26 = [MEMORY[0x1E696AC08] defaultManager];
-    v27 = [(HMSoftwareUpdateDocumentationAsset *)v12 archiveURL];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    archiveURL2 = [(HMSoftwareUpdateDocumentationAsset *)selfCopy archiveURL];
     v51 = 0;
-    v28 = [v26 moveItemAtURL:v10 toURL:v27 error:&v51];
+    v28 = [defaultManager moveItemAtURL:lCopy toURL:archiveURL2 error:&v51];
     v29 = v51;
 
     if (v28)
     {
-      queue = v12->_queue;
+      queue = selfCopy->_queue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __88__HMSoftwareUpdateDocumentationAsset_URLSession_downloadTask_didFinishDownloadingToURL___block_invoke;
       block[3] = &unk_1E754E2A8;
-      block[4] = v12;
+      block[4] = selfCopy;
       dispatch_async(queue, block);
       v25 = v29;
     }
 
     else
     {
-      v48 = v8;
+      v48 = sessionCopy;
       v31 = objc_autoreleasePoolPush();
-      v32 = v12;
+      v32 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         v34 = HMFGetLogIdentifier();
-        v35 = [(HMSoftwareUpdateDocumentationAsset *)v32 archiveURL];
-        v36 = [v35 path];
+        archiveURL3 = [(HMSoftwareUpdateDocumentationAsset *)v32 archiveURL];
+        path3 = [archiveURL3 path];
         *buf = 138543874;
         v53 = v34;
         v54 = 2112;
-        v55 = v36;
+        v55 = path3;
         v56 = 2112;
         v57 = v29;
         _os_log_impl(&dword_19BB39000, v33, OS_LOG_TYPE_ERROR, "%{public}@Failed to move downloaded asset to '%@' with error: %@. Removing existing assets at that path.", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v31);
-      v37 = [MEMORY[0x1E696AC08] defaultManager];
-      v38 = [(HMSoftwareUpdateDocumentationAsset *)v32 archiveURL];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      archiveURL4 = [(HMSoftwareUpdateDocumentationAsset *)v32 archiveURL];
       v50 = v29;
-      v39 = [v37 removeItemAtURL:v38 error:&v50];
+      v39 = [defaultManager2 removeItemAtURL:archiveURL4 error:&v50];
       v25 = v50;
 
-      v8 = v48;
+      sessionCopy = v48;
       if ((v39 & 1) == 0)
       {
         v40 = objc_autoreleasePoolPush();
@@ -180,8 +180,8 @@
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
         {
           v43 = HMFGetLogIdentifier();
-          v44 = [(HMSoftwareUpdateDocumentationAsset *)v41 archiveURL];
-          [v44 path];
+          archiveURL5 = [(HMSoftwareUpdateDocumentationAsset *)v41 archiveURL];
+          [archiveURL5 path];
           v45 = v47 = v40;
           *buf = 138543874;
           v53 = v43;
@@ -192,7 +192,7 @@
           _os_log_impl(&dword_19BB39000, v42, OS_LOG_TYPE_ERROR, "%{public}@Failed to remove existing asset at url '%@' with error: %@.", buf, 0x20u);
 
           v40 = v47;
-          v8 = v48;
+          sessionCopy = v48;
         }
 
         objc_autoreleasePoolPop(v40);
@@ -213,17 +213,17 @@ uint64_t __88__HMSoftwareUpdateDocumentationAsset_URLSession_downloadTask_didFin
   return [v2 startUnarchive];
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
   v23 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = a6 / a7;
+    v16 = written / write;
     v17 = HMFGetLogIdentifier();
     v19 = 138543618;
     v20 = v17;
@@ -236,16 +236,16 @@ uint64_t __88__HMSoftwareUpdateDocumentationAsset_URLSession_downloadTask_didFin
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -253,64 +253,64 @@ uint64_t __88__HMSoftwareUpdateDocumentationAsset_URLSession_downloadTask_didFin
       v16 = 138543618;
       v17 = v14;
       v18 = 2112;
-      v19 = v10;
+      v19 = errorCopy;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_ERROR, "%{public}@Failed to download asset with error: %@", &v16, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    [(HMSoftwareUpdateDocumentationAsset *)v12 setError:v10];
-    [(HMSoftwareUpdateDocumentationAsset *)v12 setState:5];
+    [(HMSoftwareUpdateDocumentationAsset *)selfCopy setError:errorCopy];
+    [(HMSoftwareUpdateDocumentationAsset *)selfCopy setState:5];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMSoftwareUpdateDocumentationAsset *)v6 identifier];
-    v10 = [(HMSoftwareUpdateDocumentationAsset *)v6 metadata];
+    identifier = [(HMSoftwareUpdateDocumentationAsset *)selfCopy identifier];
+    metadata = [(HMSoftwareUpdateDocumentationAsset *)selfCopy metadata];
     v14 = 138544130;
     v15 = v8;
     v16 = 2112;
-    v17 = v9;
+    v17 = identifier;
     v18 = 2112;
-    v19 = v10;
+    v19 = metadata;
     v20 = 2048;
-    v21 = [(HMSoftwareUpdateDocumentationAsset *)v6 state];
+    state = [(HMSoftwareUpdateDocumentationAsset *)selfCopy state];
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Encoding software update documentation asset with identifier: %@, metadata: %@, state: %ld", &v14, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v5);
-  v11 = [(HMSoftwareUpdateDocumentationAsset *)v6 identifier];
-  [v4 encodeObject:v11 forKey:@"HM.identifier"];
+  identifier2 = [(HMSoftwareUpdateDocumentationAsset *)selfCopy identifier];
+  [coderCopy encodeObject:identifier2 forKey:@"HM.identifier"];
 
-  v12 = [(HMSoftwareUpdateDocumentationAsset *)v6 metadata];
-  [v4 encodeObject:v12 forKey:@"HM.metadata"];
+  metadata2 = [(HMSoftwareUpdateDocumentationAsset *)selfCopy metadata];
+  [coderCopy encodeObject:metadata2 forKey:@"HM.metadata"];
 
-  [v4 encodeInteger:-[HMSoftwareUpdateDocumentationAsset state](v6 forKey:{"state"), @"HM.state"}];
+  [coderCopy encodeInteger:-[HMSoftwareUpdateDocumentationAsset state](selfCopy forKey:{"state"), @"HM.state"}];
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (HMSoftwareUpdateDocumentationAsset)initWithCoder:(id)a3
+- (HMSoftwareUpdateDocumentationAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.metadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.metadata"];
   v6 = [(HMSoftwareUpdateDocumentationAsset *)self initWithDocumentationMetadata:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
-    v6->_state = [v4 decodeIntegerForKey:@"HM.state"];
+    v6->_state = [coderCopy decodeIntegerForKey:@"HM.state"];
   }
 
   return v6;
@@ -318,10 +318,10 @@ uint64_t __88__HMSoftwareUpdateDocumentationAsset_URLSession_downloadTask_didFin
 
 - (id)logIdentifier
 {
-  v2 = [(HMSoftwareUpdateDocumentationAsset *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMSoftwareUpdateDocumentationAsset *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)finishUnarchive
@@ -329,7 +329,7 @@ uint64_t __88__HMSoftwareUpdateDocumentationAsset_URLSession_downloadTask_didFin
   v17 = *MEMORY[0x1E69E9840];
   v3 = [(HMSoftwareUpdateDocumentationAsset *)self state]== 3;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v3)
@@ -343,19 +343,19 @@ uint64_t __88__HMSoftwareUpdateDocumentationAsset_URLSession_downloadTask_didFin
     }
 
     objc_autoreleasePoolPop(v4);
-    objc_initWeak(buf, v5);
-    v9 = [(HMSoftwareUpdateDocumentationAsset *)v5 extractor];
+    objc_initWeak(buf, selfCopy);
+    extractor = [(HMSoftwareUpdateDocumentationAsset *)selfCopy extractor];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __53__HMSoftwareUpdateDocumentationAsset_finishUnarchive__block_invoke;
     v13[3] = &unk_1E754E2F8;
     objc_copyWeak(&v14, buf);
-    [v9 finishStreamWithCompletionBlock:v13];
+    [extractor finishStreamWithCompletionBlock:v13];
 
-    v10 = [(HMSoftwareUpdateDocumentationAsset *)v5 archivedFileStream];
-    [v10 close];
+    archivedFileStream = [(HMSoftwareUpdateDocumentationAsset *)selfCopy archivedFileStream];
+    [archivedFileStream close];
 
-    [(HMSoftwareUpdateDocumentationAsset *)v5 setArchivedFileStream:0];
+    [(HMSoftwareUpdateDocumentationAsset *)selfCopy setArchivedFileStream:0];
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
   }
@@ -394,12 +394,12 @@ void __53__HMSoftwareUpdateDocumentationAsset_finishUnarchive__block_invoke(uint
   }
 }
 
-- (void)cancelUnarchiveWithError:(id)a3
+- (void)cancelUnarchiveWithError:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -410,21 +410,21 @@ void __53__HMSoftwareUpdateDocumentationAsset_finishUnarchive__block_invoke(uint
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMSoftwareUpdateDocumentationAsset *)v6 setExtractor:0];
-  v9 = [(HMSoftwareUpdateDocumentationAsset *)v6 archivedFileStream];
-  [v9 close];
+  [(HMSoftwareUpdateDocumentationAsset *)selfCopy setExtractor:0];
+  archivedFileStream = [(HMSoftwareUpdateDocumentationAsset *)selfCopy archivedFileStream];
+  [archivedFileStream close];
 
-  [(HMSoftwareUpdateDocumentationAsset *)v6 setArchivedFileStream:0];
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [(HMSoftwareUpdateDocumentationAsset *)v6 bundleURL];
+  [(HMSoftwareUpdateDocumentationAsset *)selfCopy setArchivedFileStream:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  bundleURL = [(HMSoftwareUpdateDocumentationAsset *)selfCopy bundleURL];
   v20 = 0;
-  v12 = [v10 removeItemAtURL:v11 error:&v20];
+  v12 = [defaultManager removeItemAtURL:bundleURL error:&v20];
   v13 = v20;
 
   if (v12)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v6;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -439,18 +439,18 @@ void __53__HMSoftwareUpdateDocumentationAsset_finishUnarchive__block_invoke(uint
     objc_autoreleasePoolPop(v14);
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    [(HMSoftwareUpdateDocumentationAsset *)v6 setError:v4];
+    [(HMSoftwareUpdateDocumentationAsset *)selfCopy setError:errorCopy];
   }
 
   else
   {
     v18 = [MEMORY[0x1E696ABC0] hmErrorWithCode:23];
-    [(HMSoftwareUpdateDocumentationAsset *)v6 setError:v18];
+    [(HMSoftwareUpdateDocumentationAsset *)selfCopy setError:v18];
   }
 
-  [(HMSoftwareUpdateDocumentationAsset *)v6 setState:5];
+  [(HMSoftwareUpdateDocumentationAsset *)selfCopy setState:5];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -604,22 +604,22 @@ void __52__HMSoftwareUpdateDocumentationAsset_startUnarchive__block_invoke_127(u
   else
   {
     v5 = MEMORY[0x1E69D4DD8];
-    v6 = [(HMSoftwareUpdateDocumentationAsset *)self archiveURL];
-    v7 = [(HMSoftwareUpdateDocumentationAsset *)self metadata];
-    v8 = [v7 digest];
-    v9 = [v5 optionsForArchiveURL:v6 digest:v8];
+    archiveURL = [(HMSoftwareUpdateDocumentationAsset *)self archiveURL];
+    metadata = [(HMSoftwareUpdateDocumentationAsset *)self metadata];
+    digest = [metadata digest];
+    v9 = [v5 optionsForArchiveURL:archiveURL digest:digest];
 
     if (v9)
     {
       v10 = MEMORY[0x1E695DF48];
-      v11 = [(HMSoftwareUpdateDocumentationAsset *)self archiveURL];
-      v12 = [v10 inputStreamWithURL:v11];
+      archiveURL2 = [(HMSoftwareUpdateDocumentationAsset *)self archiveURL];
+      v12 = [v10 inputStreamWithURL:archiveURL2];
 
       if (v12)
       {
         [(HMSoftwareUpdateDocumentationAsset *)self setArchivedFileStream:v12];
         v13 = objc_autoreleasePoolPush();
-        v14 = self;
+        selfCopy = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
@@ -633,9 +633,9 @@ void __52__HMSoftwareUpdateDocumentationAsset_startUnarchive__block_invoke_127(u
 
         objc_autoreleasePoolPop(v13);
         v17 = objc_alloc(MEMORY[0x1E69D4DD8]);
-        v18 = [(HMSoftwareUpdateDocumentationAsset *)v14 bundleURL];
-        v19 = [v18 path];
-        v20 = [v17 initWithPath:v19 options:v9];
+        bundleURL = [(HMSoftwareUpdateDocumentationAsset *)selfCopy bundleURL];
+        path = [bundleURL path];
+        v20 = [v17 initWithPath:path options:v9];
         v21 = self->_extractor;
         self->_extractor = v20;
 
@@ -645,7 +645,7 @@ void __52__HMSoftwareUpdateDocumentationAsset_startUnarchive__block_invoke_127(u
       else
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = self;
+        selfCopy2 = self;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
@@ -663,17 +663,17 @@ void __52__HMSoftwareUpdateDocumentationAsset_startUnarchive__block_invoke_127(u
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy3 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [(HMSoftwareUpdateDocumentationAsset *)v23 metadata];
-        v27 = [v26 digest];
+        metadata2 = [(HMSoftwareUpdateDocumentationAsset *)selfCopy3 metadata];
+        digest2 = [metadata2 digest];
         v34 = 138543618;
         v35 = v25;
         v36 = 2112;
-        v37 = v27;
+        v37 = digest2;
         _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_INFO, "%{public}@Failed to create validation options for unarchiving with digest: %@", &v34, 0x16u);
       }
 
@@ -691,7 +691,7 @@ void __52__HMSoftwareUpdateDocumentationAsset_startUnarchive__block_invoke_127(u
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -702,11 +702,11 @@ void __52__HMSoftwareUpdateDocumentationAsset_startUnarchive__block_invoke_127(u
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMSoftwareUpdateDocumentationAsset *)v4 URLSession];
-  [v7 invalidateAndCancel];
+  uRLSession = [(HMSoftwareUpdateDocumentationAsset *)selfCopy URLSession];
+  [uRLSession invalidateAndCancel];
 
-  [(HMSoftwareUpdateDocumentationAsset *)v4 setURLSession:0];
-  [(HMSoftwareUpdateDocumentationAsset *)v4 setState:2];
+  [(HMSoftwareUpdateDocumentationAsset *)selfCopy setURLSession:0];
+  [(HMSoftwareUpdateDocumentationAsset *)selfCopy setState:2];
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -714,7 +714,7 @@ void __52__HMSoftwareUpdateDocumentationAsset_startUnarchive__block_invoke_127(u
 {
   v12 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -725,12 +725,12 @@ void __52__HMSoftwareUpdateDocumentationAsset_startUnarchive__block_invoke_127(u
   }
 
   objc_autoreleasePoolPop(v3);
-  queue = v4->_queue;
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__HMSoftwareUpdateDocumentationAsset_cancelDownload__block_invoke;
   block[3] = &unk_1E754E2A8;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(queue, block);
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -910,8 +910,8 @@ void __51__HMSoftwareUpdateDocumentationAsset_startDownload__block_invoke(uint64
 
 - (void)startCaching
 {
-  v3 = [(HMSoftwareUpdateDocumentationAsset *)self state];
-  if (v3 == 5)
+  state = [(HMSoftwareUpdateDocumentationAsset *)self state];
+  if (state == 5)
   {
 LABEL_4:
     [(HMSoftwareUpdateDocumentationAsset *)self setError:0];
@@ -920,9 +920,9 @@ LABEL_4:
     return;
   }
 
-  if (v3 != 2)
+  if (state != 2)
   {
-    if (v3)
+    if (state)
     {
       return;
     }
@@ -933,16 +933,16 @@ LABEL_4:
   [(HMSoftwareUpdateDocumentationAsset *)self startUnarchive];
 }
 
-- (BOOL)saveWithError:(id *)a3
+- (BOOL)saveWithError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMSoftwareUpdateDocumentationAsset *)v6 URL];
+    v9 = [(HMSoftwareUpdateDocumentationAsset *)selfCopy URL];
     *buf = 138543618;
     v35 = v8;
     v36 = 2112;
@@ -951,20 +951,20 @@ LABEL_4:
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [(HMSoftwareUpdateDocumentationAsset *)v6 URL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = [(HMSoftwareUpdateDocumentationAsset *)selfCopy URL];
   v33 = 0;
-  v12 = [v10 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v33];
+  v12 = [defaultManager createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v33];
   v13 = v33;
 
   if (v12)
   {
-    v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:a3];
+    v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:selfCopy requiringSecureCoding:1 error:error];
     if (v14)
     {
-      v15 = [(HMSoftwareUpdateDocumentationAsset *)v6 metadataURL];
+      metadataURL = [(HMSoftwareUpdateDocumentationAsset *)selfCopy metadataURL];
       v16 = 1;
-      v17 = [v14 writeToURL:v15 atomically:1];
+      v17 = [v14 writeToURL:metadataURL atomically:1];
 
       if (v17)
       {
@@ -974,7 +974,7 @@ LABEL_18:
       }
 
       v18 = objc_autoreleasePoolPush();
-      v19 = v6;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -985,10 +985,10 @@ LABEL_18:
       }
 
       objc_autoreleasePoolPop(v18);
-      if (a3)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] hmErrorWithCode:52];
-        *a3 = v16 = 0;
+        *error = v16 = 0;
         goto LABEL_18;
       }
     }
@@ -996,7 +996,7 @@ LABEL_18:
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = v6;
+      v28 = selfCopy;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -1014,7 +1014,7 @@ LABEL_18:
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = v6;
+  v23 = selfCopy;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
@@ -1027,11 +1027,11 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v22);
-  if (a3)
+  if (error)
   {
     v26 = v13;
     v16 = 0;
-    *a3 = v13;
+    *error = v13;
   }
 
   else
@@ -1049,7 +1049,7 @@ LABEL_20:
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1060,13 +1060,13 @@ LABEL_20:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMSoftwareUpdateDocumentationAsset *)v4 state];
+  state = [(HMSoftwareUpdateDocumentationAsset *)selfCopy state];
   v8 = objc_autoreleasePoolPush();
-  if (v7 == 4)
+  if (state == 4)
   {
     v9 = MEMORY[0x1E696AAE8];
-    v10 = [(HMSoftwareUpdateDocumentationAsset *)v4 bundleURL];
-    v11 = [v9 bundleWithURL:v10];
+    bundleURL = [(HMSoftwareUpdateDocumentationAsset *)selfCopy bundleURL];
+    v11 = [v9 bundleWithURL:bundleURL];
 
     if (v11)
     {
@@ -1076,7 +1076,7 @@ LABEL_20:
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = v4;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -1091,7 +1091,7 @@ LABEL_20:
 
   else
   {
-    v13 = v4;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1137,19 +1137,19 @@ LABEL_13:
 - (NSURL)URL
 {
   v3 = +[HMSoftwareUpdateDocumentationAsset assetDirectoryURL];
-  v4 = [(HMSoftwareUpdateDocumentationAsset *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [v3 URLByAppendingPathComponent:v5];
+  identifier = [(HMSoftwareUpdateDocumentationAsset *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v6 = [v3 URLByAppendingPathComponent:uUIDString];
 
   return v6;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock_with_options();
   error = self->_error;
-  self->_error = v4;
+  self->_error = errorCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1163,10 +1163,10 @@ LABEL_13:
   return v3;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  if (self->_state == a3)
+  if (self->_state == state)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -1174,11 +1174,11 @@ LABEL_13:
 
   else
   {
-    self->_state = a3;
+    self->_state = state;
     os_unfair_lock_unlock(&self->_lock);
-    v5 = [(HMSoftwareUpdateDocumentationAsset *)self delegate];
-    [v5 didUpdateDocumentationAssetState:self];
-    if (a3 <= 4 && ((1 << a3) & 0x15) != 0)
+    delegate = [(HMSoftwareUpdateDocumentationAsset *)self delegate];
+    [delegate didUpdateDocumentationAssetState:self];
+    if (state <= 4 && ((1 << state) & 0x15) != 0)
     {
       queue = self->_queue;
       block[0] = MEMORY[0x1E69E9820];
@@ -1199,10 +1199,10 @@ LABEL_13:
   return state;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -1212,7 +1212,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -1223,8 +1223,8 @@ LABEL_13:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMSoftwareUpdateDocumentationAsset *)self metadata];
-      v8 = [(HMSoftwareUpdateDocumentationAsset *)v6 metadata];
+      metadata = [(HMSoftwareUpdateDocumentationAsset *)self metadata];
+      metadata2 = [(HMSoftwareUpdateDocumentationAsset *)v6 metadata];
       v9 = HMFEqualObjects();
     }
 
@@ -1239,8 +1239,8 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(HMSoftwareUpdateDocumentationAsset *)self metadata];
-  v3 = [v2 hash];
+  metadata = [(HMSoftwareUpdateDocumentationAsset *)self metadata];
+  v3 = [metadata hash];
 
   return v3;
 }
@@ -1248,22 +1248,22 @@ LABEL_13:
 - (NSString)propertyDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMSoftwareUpdateDocumentationAsset *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(HMSoftwareUpdateDocumentationAsset *)self state];
-  if (v6 > 5)
+  identifier = [(HMSoftwareUpdateDocumentationAsset *)self identifier];
+  uUIDString = [identifier UUIDString];
+  state = [(HMSoftwareUpdateDocumentationAsset *)self state];
+  if (state > 5)
   {
     v7 = @"unknown";
   }
 
   else
   {
-    v7 = off_1E754E378[v6];
+    v7 = off_1E754E378[state];
   }
 
   v8 = v7;
-  v9 = [(HMSoftwareUpdateDocumentationAsset *)self metadata];
-  v10 = [v3 stringWithFormat:@", Identifier = %@, State = %@, Metadata = %@", v5, v8, v9];
+  metadata = [(HMSoftwareUpdateDocumentationAsset *)self metadata];
+  v10 = [v3 stringWithFormat:@", Identifier = %@, State = %@, Metadata = %@", uUIDString, v8, metadata];
 
   return v10;
 }
@@ -1271,45 +1271,45 @@ LABEL_13:
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMSoftwareUpdateDocumentationAsset *)self identifier];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMSoftwareUpdateDocumentationAsset *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
 
-- (HMSoftwareUpdateDocumentationAsset)initWithDocumentationMetadata:(id)a3 urlSession:(id)a4 extractor:(id)a5
+- (HMSoftwareUpdateDocumentationAsset)initWithDocumentationMetadata:(id)metadata urlSession:(id)session extractor:(id)extractor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  metadataCopy = metadata;
+  sessionCopy = session;
+  extractorCopy = extractor;
+  if (!metadataCopy)
   {
     v23 = _HMFPreconditionFailure();
     [(HMSoftwareUpdateDocumentationAsset *)v23 init];
   }
 
-  v12 = v11;
+  v12 = extractorCopy;
   v25.receiver = self;
   v25.super_class = HMSoftwareUpdateDocumentationAsset;
   v13 = [(HMSoftwareUpdateDocumentationAsset *)&v25 init];
   if (v13)
   {
-    v14 = [v9 metadataDigestUUID];
+    metadataDigestUUID = [metadataCopy metadataDigestUUID];
     identifier = v13->_identifier;
-    v13->_identifier = v14;
+    v13->_identifier = metadataDigestUUID;
 
-    objc_storeStrong(&v13->_metadata, a3);
+    objc_storeStrong(&v13->_metadata, metadata);
     v16 = HMDispatchQueueNameString(v13, 0);
-    v17 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v19 = dispatch_queue_create(v17, v18);
+    v19 = dispatch_queue_create(uTF8String, v18);
     queue = v13->_queue;
     v13->_queue = v19;
 
-    objc_storeStrong(&v13->_extractor, a5);
-    objc_storeStrong(&v13->_URLSession, a4);
+    objc_storeStrong(&v13->_extractor, extractor);
+    objc_storeStrong(&v13->_URLSession, session);
     URLSession = v13->_URLSession;
     if (URLSession)
     {
@@ -1355,15 +1355,15 @@ uint64_t __49__HMSoftwareUpdateDocumentationAsset_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (HMSoftwareUpdateDocumentationAsset)assetWithURL:(id)a3
++ (HMSoftwareUpdateDocumentationAsset)assetWithURL:(id)l
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
     v6 = MEMORY[0x1E695DEF0];
-    v7 = [v4 URLByAppendingPathComponent:@"metadata.plist"];
+    v7 = [lCopy URLByAppendingPathComponent:@"metadata.plist"];
     v8 = [v6 dataWithContentsOfURL:v7];
 
     if (v8)
@@ -1378,10 +1378,10 @@ uint64_t __49__HMSoftwareUpdateDocumentationAsset_logCategory__block_invoke()
           goto LABEL_12;
         }
 
-        v11 = [MEMORY[0x1E696AC08] defaultManager];
-        v12 = [v9 bundleURL];
-        v13 = [v12 path];
-        v14 = [v11 fileExistsAtPath:v13];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        bundleURL = [v9 bundleURL];
+        path = [bundleURL path];
+        v14 = [defaultManager fileExistsAtPath:path];
 
         if (v14)
         {
@@ -1393,10 +1393,10 @@ uint64_t __49__HMSoftwareUpdateDocumentationAsset_logCategory__block_invoke()
 LABEL_12:
           if ([v9 state] == 2 || objc_msgSend(v9, "state") == 4)
           {
-            v21 = [MEMORY[0x1E696AC08] defaultManager];
-            v22 = [v9 archiveURL];
-            v23 = [v22 path];
-            v24 = [v21 fileExistsAtPath:v23];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+            archiveURL = [v9 archiveURL];
+            path2 = [archiveURL path];
+            v24 = [defaultManager2 fileExistsAtPath:path2];
 
             if (v24)
             {
@@ -1418,7 +1418,7 @@ LABEL_12:
         if (v15 != [v9 state])
         {
           v29 = objc_autoreleasePoolPush();
-          v30 = a1;
+          selfCopy = self;
           v31 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
@@ -1441,7 +1441,7 @@ LABEL_12:
       else
       {
         v25 = objc_autoreleasePoolPush();
-        v26 = a1;
+        selfCopy2 = self;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
@@ -1460,16 +1460,16 @@ LABEL_12:
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = a1;
+      selfCopy3 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v19 = HMFGetLogIdentifier();
-        v20 = [v5 path];
+        path3 = [v5 path];
         *buf = 138543618;
         v39 = v19;
         v40 = 2112;
-        v41 = v20;
+        v41 = path3;
         _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to find metadata at path: %@", buf, 0x16u);
       }
 

@@ -1,6 +1,6 @@
 @interface REMReminderServiceViewController
 - (REMReminderCreationViewServiceViewController)viewServiceViewController;
-- (void)setChildViewController:(id)a3;
+- (void)setChildViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -69,41 +69,41 @@ void __47__REMReminderServiceViewController_viewDidLoad__block_invoke_3(uint64_t
   }
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
   v24[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if (self->_childViewController)
   {
     [REMReminderServiceViewController setChildViewController:];
   }
 
   childViewController = self->_childViewController;
-  self->_childViewController = v4;
-  v6 = v4;
+  self->_childViewController = controllerCopy;
+  v6 = controllerCopy;
 
-  v7 = [(REMReminderServiceViewController *)self view];
-  v8 = [(_UIResilientRemoteViewContainerViewController *)v6 view];
+  view = [(REMReminderServiceViewController *)self view];
+  view2 = [(_UIResilientRemoteViewContainerViewController *)v6 view];
   [(_UIResilientRemoteViewContainerViewController *)v6 beginAppearanceTransition:1 animated:0];
   [(REMReminderServiceViewController *)self addChildViewController:v6];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v7 addSubview:v8];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:view2];
   v18 = MEMORY[0x277CCAAD0];
-  v23 = [v8 leadingAnchor];
-  v22 = [v7 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  leadingAnchor = [view2 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[0] = v21;
-  v20 = [v8 trailingAnchor];
-  v19 = [v7 trailingAnchor];
-  v17 = [v20 constraintEqualToAnchor:v19];
+  trailingAnchor = [view2 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[1] = v17;
-  v16 = [v8 topAnchor];
-  v9 = [v7 topAnchor];
-  v10 = [v16 constraintEqualToAnchor:v9];
+  topAnchor = [view2 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[2] = v10;
-  v11 = [v8 bottomAnchor];
-  v12 = [v7 bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [view2 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
   [v18 activateConstraints:v14];
@@ -116,10 +116,10 @@ void __47__REMReminderServiceViewController_viewDidLoad__block_invoke_3(uint64_t
 
 - (REMReminderCreationViewServiceViewController)viewServiceViewController
 {
-  v2 = [(REMReminderServiceViewController *)self remoteViewController];
-  v3 = [v2 viewServiceViewController];
+  remoteViewController = [(REMReminderServiceViewController *)self remoteViewController];
+  viewServiceViewController = [remoteViewController viewServiceViewController];
 
-  return v3;
+  return viewServiceViewController;
 }
 
 void __47__REMReminderServiceViewController_viewDidLoad__block_invoke_cold_1()

@@ -1,30 +1,30 @@
 @interface BKFirstBootDetector
 + (id)sharedInstance;
-- (BKFirstBootDetector)initWithSystemAppSentinel:(id)a3 firstBootToken:(id)a4 alternateSystemAppManager:(id)a5;
+- (BKFirstBootDetector)initWithSystemAppSentinel:(id)sentinel firstBootToken:(id)token alternateSystemAppManager:(id)manager;
 - (BOOL)isFirstBoot;
 - (NSString)description;
-- (void)_queue_finishBootingIfNecessaryAndTellObservers:(BOOL)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)systemShellDidFinishLaunching:(id)a3;
+- (void)_queue_finishBootingIfNecessaryAndTellObservers:(BOOL)observers;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)systemShellDidFinishLaunching:(id)launching;
 - (void)systemShellWillBootstrap;
 @end
 
 @implementation BKFirstBootDetector
 
-- (void)_queue_finishBootingIfNecessaryAndTellObservers:(BOOL)a3
+- (void)_queue_finishBootingIfNecessaryAndTellObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   queue = self->_queue;
   BSDispatchQueueAssert();
   if ([(BKFirstBootDetector *)self isFirstBoot])
   {
-    v6 = [(BKSystemShellSentinel *)self->_systemAppSentinel primarySystemShell];
-    v7 = [(BKAlternateSystemAppManager *)self->_alternateSystemAppManager alternateSystemAppBundleIdentifier];
-    if (v6)
+    primarySystemShell = [(BKSystemShellSentinel *)self->_systemAppSentinel primarySystemShell];
+    alternateSystemAppBundleIdentifier = [(BKAlternateSystemAppManager *)self->_alternateSystemAppManager alternateSystemAppBundleIdentifier];
+    if (primarySystemShell)
     {
-      v8 = [v6 bundleIdentifier];
-      v9 = [v8 isEqualToString:v7];
+      bundleIdentifier = [primarySystemShell bundleIdentifier];
+      v9 = [bundleIdentifier isEqualToString:alternateSystemAppBundleIdentifier];
 
       if ((v9 & 1) == 0)
       {
@@ -39,14 +39,14 @@
         [(BKFirstBootTokenProviding *)self->_lock_firstBootToken unsetToken];
         self->_lock_isFirstBoot = 0;
         os_unfair_lock_unlock(&self->_lock);
-        if (v3)
+        if (observersCopy)
         {
-          v11 = [(NSHashTable *)self->_queue_observers allObjects];
+          allObjects = [(NSHashTable *)self->_queue_observers allObjects];
           v16 = 0u;
           v17 = 0u;
           v18 = 0u;
           v19 = 0u;
-          v12 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
+          v12 = [allObjects countByEnumeratingWithState:&v16 objects:v21 count:16];
           if (v12)
           {
             v13 = v12;
@@ -58,7 +58,7 @@
               {
                 if (*v17 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(allObjects);
                 }
 
                 [*(*(&v16 + 1) + 8 * v15) firstBootDetectorDidFinishFirstBoot:self];
@@ -66,7 +66,7 @@
               }
 
               while (v13 != v15);
-              v13 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
+              v13 = [allObjects countByEnumeratingWithState:&v16 objects:v21 count:16];
             }
 
             while (v13);
@@ -91,7 +91,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)systemShellDidFinishLaunching:(id)a3
+- (void)systemShellDidFinishLaunching:(id)launching
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -102,31 +102,31 @@
   dispatch_async(queue, block);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041E44;
   v7[3] = &unk_1000FD128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041EE8;
   v7[3] = &unk_1000FD128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -143,16 +143,16 @@
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendBool:self->_lock_isFirstBoot withName:@"isFirstBoot"];
   v5 = [v3 appendObject:self->_lock_firstBootToken withName:@"firstBootToken"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (BKFirstBootDetector)initWithSystemAppSentinel:(id)a3 firstBootToken:(id)a4 alternateSystemAppManager:(id)a5
+- (BKFirstBootDetector)initWithSystemAppSentinel:(id)sentinel firstBootToken:(id)token alternateSystemAppManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sentinelCopy = sentinel;
+  tokenCopy = token;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = BKFirstBootDetector;
   v12 = [(BKFirstBootDetector *)&v26 init];
@@ -160,9 +160,9 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_systemAppSentinel, a3);
-    objc_storeStrong(&v13->_lock_firstBootToken, a4);
-    objc_storeStrong(&v13->_alternateSystemAppManager, a5);
+    objc_storeStrong(&v12->_systemAppSentinel, sentinel);
+    objc_storeStrong(&v13->_lock_firstBootToken, token);
+    objc_storeStrong(&v13->_alternateSystemAppManager, manager);
     v14 = [[NSHashTable alloc] initWithOptions:517 capacity:2];
     queue_observers = v13->_queue_observers;
     v13->_queue_observers = v14;
@@ -173,14 +173,14 @@
     queue = v13->_queue;
     v13->_queue = SerialWithQoS;
 
-    v20 = [v10 isTokenSet];
-    v13->_lock_isFirstBoot = v20;
+    isTokenSet = [tokenCopy isTokenSet];
+    v13->_lock_isFirstBoot = isTokenSet;
     v21 = v13->_queue;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100042144;
     v23[3] = &unk_1000FCD90;
-    v25 = v20;
+    v25 = isTokenSet;
     v24 = v13;
     dispatch_sync(v21, v23);
   }

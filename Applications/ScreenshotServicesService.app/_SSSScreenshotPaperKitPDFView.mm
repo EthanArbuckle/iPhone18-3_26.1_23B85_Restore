@@ -15,26 +15,26 @@
 - (_SSSScreenshotPaperKitPDFView)viewWithScreenshotImage;
 - (_SSSScreenshotPaperKitPDFViewDelegate)delegate;
 - (double)vellumOpacity;
-- (id)documentFromPDFData:(id)a3;
+- (id)documentFromPDFData:(id)data;
 - (unint64_t)changeCounter;
-- (void)_toolPicker:(id)a3 startEditingOpacityWithAccessoryView:(id)a4;
+- (void)_toolPicker:(id)picker startEditingOpacityWithAccessoryView:(id)view;
 - (void)deselectAllAnnotations;
-- (void)generateCachedDocumentWithCompletionHandler:(id)a3;
+- (void)generateCachedDocumentWithCompletionHandler:(id)handler;
 - (void)layoutSubviews;
-- (void)setChangeCounter:(unint64_t)a3;
-- (void)setCurrentPageUnitCropRect:(CGRect)a3;
-- (void)setDidFailToWritePDFToURL:(BOOL)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setIsCropping:(BOOL)a3;
-- (void)setPdfData:(id)a3;
-- (void)setRulerHostView:(id)a3;
-- (void)setScreenshot:(id)a3;
-- (void)setScreenshotEditsSnapshotted:(BOOL)a3;
-- (void)setToolPicker:(id)a3;
-- (void)setVellumOpacity:(double)a3;
+- (void)setChangeCounter:(unint64_t)counter;
+- (void)setCurrentPageUnitCropRect:(CGRect)rect;
+- (void)setDidFailToWritePDFToURL:(BOOL)l;
+- (void)setEditable:(BOOL)editable;
+- (void)setIsCropping:(BOOL)cropping;
+- (void)setPdfData:(id)data;
+- (void)setRulerHostView:(id)view;
+- (void)setScreenshot:(id)screenshot;
+- (void)setScreenshotEditsSnapshotted:(BOOL)snapshotted;
+- (void)setToolPicker:(id)picker;
+- (void)setVellumOpacity:(double)opacity;
 - (void)setupDocumentViewController;
 - (void)updatePDFViewZoomParameters;
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3;
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary;
 @end
 
 @implementation _SSSScreenshotPaperKitPDFView
@@ -54,11 +54,11 @@
   return *(self + v3);
 }
 
-- (void)setScreenshotEditsSnapshotted:(BOOL)a3
+- (void)setScreenshotEditsSnapshotted:(BOOL)snapshotted
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitPDFView_screenshotEditsSnapshotted;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = snapshotted;
 }
 
 - (PDFDocument)cachedRenderedPDFDocument
@@ -70,17 +70,17 @@
 
 - (PKToolPicker)toolPicker
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100057BD0();
 
   return v3;
 }
 
-- (void)setToolPicker:(id)a3
+- (void)setToolPicker:(id)picker
 {
   v4 = *(self + OBJC_IVAR____SSSScreenshotPaperKitPDFView____lazy_storage___toolPicker);
-  *(self + OBJC_IVAR____SSSScreenshotPaperKitPDFView____lazy_storage___toolPicker) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____SSSScreenshotPaperKitPDFView____lazy_storage___toolPicker) = picker;
+  pickerCopy = picker;
 }
 
 - (NSData)pdfData
@@ -101,20 +101,20 @@
   return v3;
 }
 
-- (void)setPdfData:(id)a3
+- (void)setPdfData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -122,7 +122,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = dataCopy;
   v10[1] = v8;
   sub_100057E78(v11, v12);
 }
@@ -134,7 +134,7 @@
   v4 = *(self + v3);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = v4;
     v7 = dispatch thunk of PaperDocumentView.pdfView.getter();
   }
@@ -154,11 +154,11 @@
   return *(self + v3);
 }
 
-- (void)setDidFailToWritePDFToURL:(BOOL)a3
+- (void)setDidFailToWritePDFToURL:(BOOL)l
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitPDFView_didFailToWritePDFToURL;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = l;
 }
 
 - (double)vellumOpacity
@@ -168,10 +168,10 @@
   return *(self + v3);
 }
 
-- (void)setVellumOpacity:(double)a3
+- (void)setVellumOpacity:(double)opacity
 {
-  v4 = self;
-  sub_1000580AC(a3);
+  selfCopy = self;
+  sub_1000580AC(opacity);
 }
 
 - (SSSScreenshot)screenshot
@@ -181,14 +181,14 @@
   return *(self + v3);
 }
 
-- (void)setScreenshot:(id)a3
+- (void)setScreenshot:(id)screenshot
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitPDFView_screenshot;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = screenshot;
+  screenshotCopy = screenshot;
+  selfCopy = self;
 
   sub_100058230();
 }
@@ -207,12 +207,12 @@
   return *(self + v3);
 }
 
-- (void)setIsCropping:(BOOL)a3
+- (void)setIsCropping:(BOOL)cropping
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitPDFView_isCropping;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = cropping;
+  selfCopy = self;
   sub_100059004();
 }
 
@@ -223,11 +223,11 @@
   return *(self + v3);
 }
 
-- (void)setRulerHostView:(id)a3
+- (void)setRulerHostView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_100059250(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100059250(view);
 }
 
 - (CGRect)currentPageUnitCropRect
@@ -240,13 +240,13 @@
   return result;
 }
 
-- (void)setCurrentPageUnitCropRect:(CGRect)a3
+- (void)setCurrentPageUnitCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_1000592F8(x, y, width, height);
 }
 
@@ -262,7 +262,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10005B200();
   v5 = v4;
 
@@ -275,7 +275,7 @@
 
 - (void)updatePDFViewZoomParameters
 {
-  v2 = self;
+  selfCopy = self;
   sub_100059004();
 }
 
@@ -286,17 +286,17 @@
   return *(self + v3);
 }
 
-- (void)setChangeCounter:(unint64_t)a3
+- (void)setChangeCounter:(unint64_t)counter
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitPDFView_changeCounter;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = counter;
 }
 
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary
 {
-  v4 = self;
-  sub_10005B49C(a3);
+  selfCopy = self;
+  sub_10005B49C(necessary);
 }
 
 - (BOOL)editable
@@ -306,10 +306,10 @@
   return *(self + v3);
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  v4 = self;
-  sub_10005B638(a3);
+  selfCopy = self;
+  sub_10005B638(editable);
 }
 
 - (void)deselectAllAnnotations
@@ -319,7 +319,7 @@
   v4 = *(self + v3);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = v4;
     dispatch thunk of PaperDocumentView.deselectAll()();
   }
@@ -327,7 +327,7 @@
 
 - (void)setupDocumentViewController
 {
-  v2 = self;
+  selfCopy = self;
   sub_100058230();
 }
 
@@ -348,12 +348,12 @@
   }
 }
 
-- (void)generateCachedDocumentWithCompletionHandler:(id)a3
+- (void)generateCachedDocumentWithCompletionHandler:(id)handler
 {
   v5 = sub_100055840(&qword_1000D4170);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -369,14 +369,14 @@
   v12[3] = 0;
   v12[4] = &unk_10008F990;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100061B80(0, 0, v7, &unk_10008F9A0, v12);
 }
 
-- (id)documentFromPDFData:(id)a3
+- (id)documentFromPDFData:(id)data
 {
-  v4 = a3;
-  v5 = self;
+  dataCopy = data;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
@@ -386,13 +386,13 @@
   return v9;
 }
 
-- (void)_toolPicker:(id)a3 startEditingOpacityWithAccessoryView:(id)a4
+- (void)_toolPicker:(id)picker startEditingOpacityWithAccessoryView:(id)view
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    [Strong _paperKitPDFView:self startEditingOpacityInAccessoryView:a4];
+    [Strong _paperKitPDFView:self startEditingOpacityInAccessoryView:view];
     swift_unknownObjectRelease();
   }
 }

@@ -1,11 +1,11 @@
 @interface CRKDefaultSettingsUIVisibilityProvider
-- (BOOL)isAnyCourseActiveInEnrollmentController:(id)a3;
+- (BOOL)isAnyCourseActiveInEnrollmentController:(id)controller;
 - (CRKDefaultSettingsUIVisibilityProvider)init;
 - (void)connectToDaemon;
-- (void)enrollmentControllerDidUpdateSettingsUIVisibility:(id)a3;
+- (void)enrollmentControllerDidUpdateSettingsUIVisibility:(id)visibility;
 - (void)migrateOldUserDefaultsValues;
 - (void)updatePaneStatus;
-- (void)updatePreviouslyVisibleDefaultWithValue:(BOOL)a3;
+- (void)updatePreviouslyVisibleDefaultWithValue:(BOOL)value;
 - (void)updateVisibilityState;
 @end
 
@@ -52,10 +52,10 @@
         }
 
         v8 = [[CRKUserDefaultsObject alloc] initWithKey:*(*(&v11 + 1) + 8 * i)];
-        v9 = [(CRKUserDefaultsObject *)v8 value];
-        v10 = [v9 BOOLValue];
+        value = [(CRKUserDefaultsObject *)v8 value];
+        bOOLValue = [value BOOLValue];
 
-        v5 |= v10;
+        v5 |= bOOLValue;
         [(CRKUserDefaultsObject *)v8 setValue:0];
       }
 
@@ -70,11 +70,11 @@
   }
 }
 
-- (void)updatePreviouslyVisibleDefaultWithValue:(BOOL)a3
+- (void)updatePreviouslyVisibleDefaultWithValue:(BOOL)value
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEC38];
-  if (!a3)
+  if (!value)
   {
     v4 = 0;
   }
@@ -96,23 +96,23 @@
 - (void)updateVisibilityState
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(CRKCourseEnrollmentController *)self->mEnrollmentController settingsUIVisible];
-  if ([v3 BOOLValue])
+  settingsUIVisible = [(CRKCourseEnrollmentController *)self->mEnrollmentController settingsUIVisible];
+  if ([settingsUIVisible BOOLValue])
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v5 = [(CRKUserDefaultsObject *)self->mUIPreviouslyVisible value];
-    v4 = [v5 BOOLValue];
+    value = [(CRKUserDefaultsObject *)self->mUIPreviouslyVisible value];
+    bOOLValue = [value BOOLValue];
   }
 
   v6 = _CRKLogSettings_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v4)
+    if (bOOLValue)
     {
       v7 = @"YES";
     }
@@ -125,9 +125,9 @@
     _os_log_impl(&dword_243550000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}s] %{public}@", &v9, 0x16u);
   }
 
-  if (v4 != [(CRKDefaultSettingsUIVisibilityProvider *)self settingsUIVisible])
+  if (bOOLValue != [(CRKDefaultSettingsUIVisibilityProvider *)self settingsUIVisible])
   {
-    [(CRKDefaultSettingsUIVisibilityProvider *)self setSettingsUIVisible:v4];
+    [(CRKDefaultSettingsUIVisibilityProvider *)self setSettingsUIVisible:bOOLValue];
   }
 }
 
@@ -144,11 +144,11 @@
     v7 = &stru_285643BE8;
   }
 
-  v4 = [(CRKDefaultSettingsUIVisibilityProvider *)self paneStatus];
-  if (v4 | v7)
+  paneStatus = [(CRKDefaultSettingsUIVisibilityProvider *)self paneStatus];
+  if (paneStatus | v7)
   {
-    v5 = [(CRKDefaultSettingsUIVisibilityProvider *)self paneStatus];
-    v6 = [v5 isEqual:v7];
+    paneStatus2 = [(CRKDefaultSettingsUIVisibilityProvider *)self paneStatus];
+    v6 = [paneStatus2 isEqual:v7];
 
     if ((v6 & 1) == 0)
     {
@@ -157,16 +157,16 @@
   }
 }
 
-- (BOOL)isAnyCourseActiveInEnrollmentController:(id)a3
+- (BOOL)isAnyCourseActiveInEnrollmentController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  controllerCopy = controller;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 courses];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  courses = [controllerCopy courses];
+  v5 = [courses countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -176,17 +176,17 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(courses);
         }
 
-        if ([v3 isCourseActive:*(*(&v9 + 1) + 8 * i)])
+        if ([controllerCopy isCourseActive:*(*(&v9 + 1) + 8 * i)])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [courses countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         continue;
@@ -224,17 +224,17 @@ uint64_t __57__CRKDefaultSettingsUIVisibilityProvider_connectToDaemon__block_inv
   return [v5 updatePaneStatus];
 }
 
-- (void)enrollmentControllerDidUpdateSettingsUIVisibility:(id)a3
+- (void)enrollmentControllerDidUpdateSettingsUIVisibility:(id)visibility
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  visibilityCopy = visibility;
   v5 = _CRKLogSettings_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 settingsUIVisible];
-    v7 = [v6 BOOLValue];
+    settingsUIVisible = [visibilityCopy settingsUIVisible];
+    bOOLValue = [settingsUIVisible BOOLValue];
     v8 = @"NO";
-    if (v7)
+    if (bOOLValue)
     {
       v8 = @"YES";
     }
@@ -247,8 +247,8 @@ uint64_t __57__CRKDefaultSettingsUIVisibilityProvider_connectToDaemon__block_inv
     _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}s] %{public}@", &v11, 0x16u);
   }
 
-  v10 = [v4 settingsUIVisible];
-  -[CRKDefaultSettingsUIVisibilityProvider updatePreviouslyVisibleDefaultWithValue:](self, "updatePreviouslyVisibleDefaultWithValue:", [v10 BOOLValue]);
+  settingsUIVisible2 = [visibilityCopy settingsUIVisible];
+  -[CRKDefaultSettingsUIVisibilityProvider updatePreviouslyVisibleDefaultWithValue:](self, "updatePreviouslyVisibleDefaultWithValue:", [settingsUIVisible2 BOOLValue]);
 
   [(CRKDefaultSettingsUIVisibilityProvider *)self updateVisibilityState];
 }

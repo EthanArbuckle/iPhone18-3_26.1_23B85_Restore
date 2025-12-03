@@ -1,16 +1,16 @@
 @interface TSCHChartDonutBodyLayoutItem
-- (BOOL)layoutSpacePointIsInChartBody:(CGPoint)a3;
-- (CGPath)newElementPathWithPercentage:(double)a3 radius:(double)a4 center:(CGPoint)a5 startAngle:(double)a6 midAngle:(double)a7 endAngle:(double)a8 withInnerRadius:(id)a9;
-- (id)knobsWithRadius:(double)a3 center:(CGPoint)a4 startAngle:(double)a5 midAngle:(double)a6 endAngle:(double)a7;
+- (BOOL)layoutSpacePointIsInChartBody:(CGPoint)body;
+- (CGPath)newElementPathWithPercentage:(double)percentage radius:(double)radius center:(CGPoint)center startAngle:(double)angle midAngle:(double)midAngle endAngle:(double)endAngle withInnerRadius:(id)innerRadius;
+- (id)knobsWithRadius:(double)radius center:(CGPoint)center startAngle:(double)angle midAngle:(double)midAngle endAngle:(double)endAngle;
 @end
 
 @implementation TSCHChartDonutBodyLayoutItem
 
-- (BOOL)layoutSpacePointIsInChartBody:(CGPoint)a3
+- (BOOL)layoutSpacePointIsInChartBody:(CGPoint)body
 {
-  y = a3.y;
-  x = a3.x;
-  objc_msgSend_rootedLayoutRect(self, a2, a3.x, a3.y, v3);
+  y = body.y;
+  x = body.x;
+  objc_msgSend_rootedLayoutRect(self, a2, body.x, body.y, v3);
   v8 = v7;
   v10 = v9;
   v36 = v12;
@@ -37,13 +37,13 @@
   return CGRectContainsPoint(*&v29, *&v33);
 }
 
-- (CGPath)newElementPathWithPercentage:(double)a3 radius:(double)a4 center:(CGPoint)a5 startAngle:(double)a6 midAngle:(double)a7 endAngle:(double)a8 withInnerRadius:(id)a9
+- (CGPath)newElementPathWithPercentage:(double)percentage radius:(double)radius center:(CGPoint)center startAngle:(double)angle midAngle:(double)midAngle endAngle:(double)endAngle withInnerRadius:(id)innerRadius
 {
-  v12 = a9;
-  v17 = v12;
-  if (v12)
+  innerRadiusCopy = innerRadius;
+  v17 = innerRadiusCopy;
+  if (innerRadiusCopy)
   {
-    objc_msgSend_floatValue(v12, v13, v14, v15, v16);
+    objc_msgSend_floatValue(innerRadiusCopy, v13, v14, v15, v16);
   }
 
   else
@@ -58,7 +58,7 @@
   }
 
   v41 = v19;
-  if (v41 * a4 >= a4)
+  if (v41 * radius >= radius)
   {
     v42 = MEMORY[0x277D81150];
     v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, v41, v20, v21, "[TSCHChartDonutBodyLayoutItem newElementPathWithPercentage:radius:center:startAngle:midAngle:endAngle:withInnerRadius:]");
@@ -68,11 +68,11 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v53, v54, v55, v56);
   }
 
-  __sincos_stret(a6);
-  __sincos_stret(a8);
+  __sincos_stret(angle);
+  __sincos_stret(endAngle);
   Mutable = CGPathCreateMutable();
   CGPathMoveToPointSafe();
-  if (a3 >= 1.0)
+  if (percentage >= 1.0)
   {
     CGPathAddArcSafe();
     CGPathMoveToPointSafe();
@@ -90,24 +90,24 @@
   return Mutable;
 }
 
-- (id)knobsWithRadius:(double)a3 center:(CGPoint)a4 startAngle:(double)a5 midAngle:(double)a6 endAngle:(double)a7
+- (id)knobsWithRadius:(double)radius center:(CGPoint)center startAngle:(double)angle midAngle:(double)midAngle endAngle:(double)endAngle
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = __sincos_stret(a5);
-  v84 = y + a3 * v13.__sinval;
-  v85 = x + a3 * v13.__cosval;
-  v14 = __sincos_stret(a6);
-  v86 = y + a3 * v14.__sinval;
-  v87 = x + a3 * v14.__cosval;
-  v15 = __sincos_stret(a7);
-  v88 = y + a3 * v15.__sinval;
-  v89 = x + a3 * v15.__cosval;
+  y = center.y;
+  x = center.x;
+  v13 = __sincos_stret(angle);
+  v84 = y + radius * v13.__sinval;
+  v85 = x + radius * v13.__cosval;
+  v14 = __sincos_stret(midAngle);
+  v86 = y + radius * v14.__sinval;
+  v87 = x + radius * v14.__cosval;
+  v15 = __sincos_stret(endAngle);
+  v88 = y + radius * v15.__sinval;
+  v89 = x + radius * v15.__cosval;
   v17 = objc_msgSend_chartInfo(self, v16, v88, v15.__cosval, v89);
   v22 = objc_msgSend_valueForProperty_(v17, v18, v19, v20, v21, 1103);
 
   objc_msgSend_floatValue(v22, v23, v24, v25, v26);
-  v28 = v27 * a3;
+  v28 = v27 * radius;
   v29 = x + v28 * v13.__cosval;
   v30 = y + v28 * v13.__sinval;
   v31 = x + v28 * v14.__cosval;

@@ -1,20 +1,20 @@
 @interface CameraFocalLengthSettingsController
 + (BOOL)canEnableCustomLenses;
-+ (id)focalLengthStringForCustomLens:(int64_t)a3;
++ (id)focalLengthStringForCustomLens:(int64_t)lens;
 + (id)selectedCustomLensGroup;
-- (id)_customLensEnabled:(id)a3;
-- (id)_identifierForCustomLens:(int64_t)a3;
+- (id)_customLensEnabled:(id)enabled;
+- (id)_identifierForCustomLens:(int64_t)lens;
 - (id)specifiers;
-- (void)_handleDidChangeCustomLensGroup:(id)a3;
-- (void)_handledDidChangeDefaultCustomLensAtIndexPath:(id)a3;
+- (void)_handleDidChangeCustomLensGroup:(id)group;
+- (void)_handledDidChangeDefaultCustomLensAtIndexPath:(id)path;
 - (void)_persistCurrentDefaultCustomLens;
 - (void)_readCurrentDefaultCustomLens;
 - (void)_reloadDefaultGroup;
-- (void)_setCustomLensEnabled:(id)a3 specifier:(id)a4;
+- (void)_setCustomLensEnabled:(id)enabled specifier:(id)specifier;
 - (void)_updateCheckedDefaultIndex;
 - (void)prepareSpecifiersMetadata;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -26,9 +26,9 @@
   v7.super_class = CameraFocalLengthSettingsController;
   [(CameraSettingsBaseController *)&v7 viewDidLoad];
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isCameraButtonSupported];
+  isCameraButtonSupported = [v3 isCameraButtonSupported];
 
-  if (v4)
+  if (isCameraButtonSupported)
   {
     v5 = @"FOCAL_LENGTH_ROW_TITLE_CAMERA_BUTTON";
   }
@@ -55,17 +55,17 @@
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[CameraSettingsBaseController capabilities];
-  v64 = self;
-  v60 = [objc_opt_class() canEnableCustomLenses];
+  selfCopy = self;
+  canEnableCustomLenses = [objc_opt_class() canEnableCustomLenses];
   v5 = [PSSpecifier groupSpecifierWithID:@"customLensesGroup"];
   v6 = sub_13828(@"FOCAL_LENGTH_HEADER");
   [v5 setName:v6];
 
-  v7 = [v4 baseFocalLengthForWideCamera];
+  baseFocalLengthForWideCamera = [v4 baseFocalLengthForWideCamera];
   v8 = 0.0;
-  if (v7 <= 3)
+  if (baseFocalLengthForWideCamera <= 3)
   {
-    v8 = dbl_1FF88[v7];
+    v8 = dbl_1FF88[baseFocalLengthForWideCamera];
   }
 
   v9 = +[CameraSettingsBaseController integerFormatter];
@@ -76,7 +76,7 @@
   v13 = [NSString stringWithFormat:v12, v11];
 
   v53 = v11;
-  if ((v60 & 1) == 0)
+  if ((canEnableCustomLenses & 1) == 0)
   {
     if ([v4 isCameraButtonSupported])
     {
@@ -122,17 +122,17 @@
         }
 
         v22 = *(*(&v69 + 1) + 8 * i);
-        v23 = [v22 integerValue];
-        if (v23)
+        integerValue = [v22 integerValue];
+        if (integerValue)
         {
-          v24 = v23;
+          v24 = integerValue;
           v25 = sub_13828(@"FOCAL_LENGTH_%@_MM");
           v26 = [objc_opt_class() focalLengthStringForCustomLens:v24];
           v27 = [NSString stringWithFormat:v25, v26];
 
-          v28 = [PSSpecifier preferenceSpecifierNamed:v27 target:v64 set:"_setCustomLensEnabled:specifier:" get:"_customLensEnabled:" detail:0 cell:6 edit:0];
+          v28 = [PSSpecifier preferenceSpecifierNamed:v27 target:selfCopy set:"_setCustomLensEnabled:specifier:" get:"_customLensEnabled:" detail:0 cell:6 edit:0];
           [v28 setObject:v22 forKeyedSubscript:v58];
-          v29 = [NSNumber numberWithBool:v60];
+          v29 = [NSNumber numberWithBool:canEnableCustomLenses];
           [v28 setObject:v29 forKeyedSubscript:v57];
 
           [v3 addObject:v28];
@@ -177,8 +177,8 @@
             objc_enumerationMutation(v62);
           }
 
-          v39 = [*(*(&v65 + 1) + 8 * j) integerValue];
-          v40 = [v33 effectiveFocalLengthForCustomLens:v39];
+          integerValue2 = [*(*(&v65 + 1) + 8 * j) integerValue];
+          v40 = [v33 effectiveFocalLengthForCustomLens:integerValue2];
           v41 = 0.0;
           if (v40 <= 3)
           {
@@ -188,14 +188,14 @@
           v42 = [NSNumber numberWithDouble:v41];
           v43 = [v34 stringFromNumber:v42];
 
-          if (v39 > 5)
+          if (integerValue2 > 5)
           {
             v44 = NAN;
           }
 
           else
           {
-            v44 = dbl_1FF58[v39] / dbl_1FF28[v39];
+            v44 = dbl_1FF58[integerValue2] / dbl_1FF28[integerValue2];
           }
 
           [v33 zoomFactorForCustomLensZoomFactor:v44];
@@ -204,7 +204,7 @@
           v48 = [NSString stringWithFormat:v47, v43, v46];
 
           v49 = [PSSpecifier preferenceSpecifierNamed:v48 target:0 set:0 get:0 detail:0 cell:3 edit:0];
-          v50 = [(CameraFocalLengthSettingsController *)v64 _identifierForCustomLens:v39];
+          v50 = [(CameraFocalLengthSettingsController *)selfCopy _identifierForCustomLens:integerValue2];
           [v49 setIdentifier:v50];
 
           [v63 addObject:v49];
@@ -221,23 +221,23 @@
   }
 
   [CameraSettingsBaseController allowMultilineTitlesForSpecifiers:v3];
-  objc_storeStrong(&v64->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers], v3);
+  objc_storeStrong(&selfCopy->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers], v3);
 
   return v3;
 }
 
-- (id)_identifierForCustomLens:(int64_t)a3
+- (id)_identifierForCustomLens:(int64_t)lens
 {
-  v3 = [NSNumber numberWithInteger:a3];
-  v4 = [v3 stringValue];
+  v3 = [NSNumber numberWithInteger:lens];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
-+ (id)focalLengthStringForCustomLens:(int64_t)a3
++ (id)focalLengthStringForCustomLens:(int64_t)lens
 {
   v4 = +[CameraSettingsBaseController capabilities];
-  v5 = [v4 effectiveFocalLengthForCustomLens:a3];
+  v5 = [v4 effectiveFocalLengthForCustomLens:lens];
 
   v6 = 0.0;
   if (v5 <= 3)
@@ -285,17 +285,17 @@
   return v5;
 }
 
-- (void)_setCustomLensEnabled:(id)a3 specifier:(id)a4
+- (void)_setCustomLensEnabled:(id)enabled specifier:(id)specifier
 {
   v6 = PSValueKey;
-  v7 = a3;
-  v12 = [a4 objectForKeyedSubscript:v6];
-  v8 = [v7 BOOLValue];
+  enabledCopy = enabled;
+  v12 = [specifier objectForKeyedSubscript:v6];
+  bOOLValue = [enabledCopy BOOLValue];
 
   v9 = +[CameraFocalLengthSettingsController selectedCustomLensGroup];
   v10 = [NSMutableArray arrayWithArray:v9];
   v11 = v10;
-  if (v8)
+  if (bOOLValue)
   {
     [v10 addObject:v12];
     [v11 sortUsingSelector:"compare:"];
@@ -311,9 +311,9 @@
   [(CameraFocalLengthSettingsController *)self _handleDidChangeCustomLensGroup:v11];
 }
 
-- (id)_customLensEnabled:(id)a3
+- (id)_customLensEnabled:(id)enabled
 {
-  v3 = [a3 objectForKeyedSubscript:PSValueKey];
+  v3 = [enabled objectForKeyedSubscript:PSValueKey];
   v4 = +[CameraFocalLengthSettingsController selectedCustomLensGroup];
   v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v3]);
 
@@ -329,21 +329,21 @@
   if (keyExistsAndHasValidFormat)
   {
     v6 = +[CameraFocalLengthSettingsController selectedCustomLensGroup];
-    v7 = [v5 supportedCustomLensForLens:AppIntegerValue inGroup:v6];
+    resolvedDefaultCustomLens = [v5 supportedCustomLensForLens:AppIntegerValue inGroup:v6];
   }
 
   else
   {
-    v7 = [v4 resolvedDefaultCustomLens];
+    resolvedDefaultCustomLens = [v4 resolvedDefaultCustomLens];
   }
 
-  [(CameraFocalLengthSettingsController *)self _setDefaultCustomLens:v7];
+  [(CameraFocalLengthSettingsController *)self _setDefaultCustomLens:resolvedDefaultCustomLens];
 }
 
 - (void)_persistCurrentDefaultCustomLens
 {
-  v2 = [(CameraFocalLengthSettingsController *)self _defaultCustomLens];
-  CFPreferencesSetAppValue(CAMUserPreferencesDefaultCustomLens, [NSNumber numberWithInteger:v2], @"com.apple.camera");
+  _defaultCustomLens = [(CameraFocalLengthSettingsController *)self _defaultCustomLens];
+  CFPreferencesSetAppValue(CAMUserPreferencesDefaultCustomLens, [NSNumber numberWithInteger:_defaultCustomLens], @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
@@ -365,14 +365,14 @@
   [(CameraFocalLengthSettingsController *)self _setCheckedDefaultIndex:v4];
 }
 
-- (void)_handleDidChangeCustomLensGroup:(id)a3
+- (void)_handleDidChangeCustomLensGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CameraFocalLengthSettingsController *)self _defaultCustomLens];
+  groupCopy = group;
+  _defaultCustomLens = [(CameraFocalLengthSettingsController *)self _defaultCustomLens];
   v7 = +[CameraSettingsBaseController capabilities];
-  v6 = [v7 supportedCustomLensForLens:v5 inGroup:v4];
+  v6 = [v7 supportedCustomLensForLens:_defaultCustomLens inGroup:groupCopy];
 
-  if (v5 != v6)
+  if (_defaultCustomLens != v6)
   {
     [(CameraFocalLengthSettingsController *)self _setDefaultCustomLens:v6];
     [(CameraFocalLengthSettingsController *)self _persistCurrentDefaultCustomLens];
@@ -382,11 +382,11 @@
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-- (void)_handledDidChangeDefaultCustomLensAtIndexPath:(id)a3
+- (void)_handledDidChangeDefaultCustomLensAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7 = +[CameraFocalLengthSettingsController selectedCustomLensGroup];
-  v5 = [v4 row];
+  v5 = [pathCopy row];
 
   if (v5 < [v7 count])
   {
@@ -408,30 +408,30 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v7 = [(CameraFocalLengthSettingsController *)self specifierForID:@"defaultFocalLengthGroup"];
   v8 = [(CameraFocalLengthSettingsController *)self indexOfSpecifier:v7];
-  if ([(CameraFocalLengthSettingsController *)self indexForIndexPath:v6]> v8)
+  if ([(CameraFocalLengthSettingsController *)self indexForIndexPath:pathCopy]> v8)
   {
-    [v9 deselectRowAtIndexPath:v6 animated:1];
-    [(CameraFocalLengthSettingsController *)self _handledDidChangeDefaultCustomLensAtIndexPath:v6];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    [(CameraFocalLengthSettingsController *)self _handledDidChangeDefaultCustomLensAtIndexPath:pathCopy];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v8 = [(CameraFocalLengthSettingsController *)self specifierForID:@"defaultFocalLengthGroup"];
   v9 = [(CameraFocalLengthSettingsController *)self indexOfSpecifier:v8];
-  v10 = [(CameraFocalLengthSettingsController *)self indexForIndexPath:v7];
+  v10 = [(CameraFocalLengthSettingsController *)self indexForIndexPath:pathCopy];
 
   if (v10 > v9)
   {
-    [v11 setChecked:{v10 == -[CameraFocalLengthSettingsController _checkedDefaultIndex](self, "_checkedDefaultIndex")}];
+    [cellCopy setChecked:{v10 == -[CameraFocalLengthSettingsController _checkedDefaultIndex](self, "_checkedDefaultIndex")}];
   }
 }
 

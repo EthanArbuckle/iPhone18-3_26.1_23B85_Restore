@@ -1,42 +1,42 @@
 @interface LPEmailCompatibleHTMLCaptionBarItemComponent
-+ (id)ruleDictionaryForStyle:(id)a3;
-- (LPEmailCompatibleHTMLCaptionBarItemComponent)initWithStyle:(id)a3 themePath:(id)a4 generator:(id)a5;
++ (id)ruleDictionaryForStyle:(id)style;
+- (LPEmailCompatibleHTMLCaptionBarItemComponent)initWithStyle:(id)style themePath:(id)path generator:(id)generator;
 @end
 
 @implementation LPEmailCompatibleHTMLCaptionBarItemComponent
 
-- (LPEmailCompatibleHTMLCaptionBarItemComponent)initWithStyle:(id)a3 themePath:(id)a4 generator:(id)a5
+- (LPEmailCompatibleHTMLCaptionBarItemComponent)initWithStyle:(id)style themePath:(id)path generator:(id)generator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  pathCopy = path;
+  generatorCopy = generator;
   v27.receiver = self;
   v27.super_class = LPEmailCompatibleHTMLCaptionBarItemComponent;
-  v11 = [(LPHTMLComponent *)&v27 initWithTagName:@"td" themePath:v9 generator:v10];
+  v11 = [(LPHTMLComponent *)&v27 initWithTagName:@"td" themePath:pathCopy generator:generatorCopy];
   if (v11)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __82__LPEmailCompatibleHTMLCaptionBarItemComponent_initWithStyle_themePath_generator___block_invoke;
     aBlock[3] = &unk_1E7A357A0;
-    v12 = v9;
+    v12 = pathCopy;
     v26 = v12;
     v13 = _Block_copy(aBlock);
-    v24 = v8;
-    v14 = [v8 emailCompatibleMargin];
-    v15 = [v14 _lp_CSSText];
-    v16 = [v10 cssResolver];
-    v17 = [v16 localVariables];
+    v24 = styleCopy;
+    emailCompatibleMargin = [styleCopy emailCompatibleMargin];
+    _lp_CSSText = [emailCompatibleMargin _lp_CSSText];
+    cssResolver = [generatorCopy cssResolver];
+    localVariables = [cssResolver localVariables];
     v18 = v13[2](v13, @"local", @"margin");
-    [v17 setObject:v15 forKeyedSubscript:v18];
+    [localVariables setObject:_lp_CSSText forKeyedSubscript:v18];
 
-    v19 = [v10 cssResolver];
+    cssResolver2 = [generatorCopy cssResolver];
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"lp-rich-link-%@Item", v12];
-    v21 = [(LPHTMLComponent *)v11 element];
-    [v19 addStyle:v20 toElement:v21 inComponent:v11];
+    element = [(LPHTMLComponent *)v11 element];
+    [cssResolver2 addStyle:v20 toElement:element inComponent:v11];
 
     v22 = v11;
-    v8 = v24;
+    styleCopy = v24;
   }
 
   return v11;
@@ -60,7 +60,7 @@ id __82__LPEmailCompatibleHTMLCaptionBarItemComponent_initWithStyle_themePath_ge
   return v7;
 }
 
-+ (id)ruleDictionaryForStyle:(id)a3
++ (id)ruleDictionaryForStyle:(id)style
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"padding";

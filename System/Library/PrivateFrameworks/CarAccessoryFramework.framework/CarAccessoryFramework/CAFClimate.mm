@@ -30,25 +30,25 @@
 - (NSDictionary)ventsIndexed;
 - (NSDictionary)zoneOnsIndexed;
 - (NSDictionary)zonesSyncedsIndexed;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFClimate
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFClimate;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -61,12 +61,12 @@
   [(CAFAccessory *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -82,18 +82,18 @@
 - (CAFCabin)cabinService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000001"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000001"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -107,11 +107,11 @@
 - (NSArray)autoClimateControlServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000008"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000008"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000008"];
@@ -131,11 +131,11 @@
 - (NSArray)climateControlsLockedServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000010"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000010"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000010"];
@@ -155,11 +155,11 @@
 - (NSArray)defrostServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000005"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000005"];
@@ -179,11 +179,11 @@
 - (NSArray)temperatureServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000002"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000002"];
@@ -203,18 +203,18 @@
 - (CAFSteeringWheelHeatingCooling)steeringWheelHeatingCoolingService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000003"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000003"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -228,11 +228,11 @@
 - (NSArray)ventServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000006"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000006"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000006"];
@@ -252,11 +252,11 @@
 - (NSArray)fanServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000007"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000007"];
@@ -276,18 +276,18 @@
 - (CAFRecirculation)recirculationService
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000011"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000011"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000011"];
-  v9 = [v8 firstObject];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  firstObject = [v8 firstObject];
+  if (firstObject && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = firstObject;
   }
 
   else
@@ -301,11 +301,11 @@
 - (NSArray)zonesSyncedServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000012"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000012"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000012"];
@@ -325,11 +325,11 @@
 - (NSArray)zoneOnServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000014"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000014"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000014"];
@@ -349,11 +349,11 @@
 - (NSArray)temperatureLevelServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000011000015"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000011000015"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000011000015"];
@@ -373,11 +373,11 @@
 - (NSArray)autoClimateControls
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self autoClimateControlServices];
+  autoClimateControlServices = [(CAFClimate *)self autoClimateControlServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [autoClimateControlServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -404,11 +404,11 @@
 - (NSArray)climateControlsLockeds
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self climateControlsLockedServices];
+  climateControlsLockedServices = [(CAFClimate *)self climateControlsLockedServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [climateControlsLockedServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -435,11 +435,11 @@
 - (NSArray)defrosts
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self defrostServices];
+  defrostServices = [(CAFClimate *)self defrostServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [defrostServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -466,11 +466,11 @@
 - (NSArray)temperatures
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self temperatureServices];
+  temperatureServices = [(CAFClimate *)self temperatureServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [temperatureServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -497,11 +497,11 @@
 - (NSArray)vents
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self ventServices];
+  ventServices = [(CAFClimate *)self ventServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [ventServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -528,11 +528,11 @@
 - (NSArray)fans
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self fanServices];
+  fanServices = [(CAFClimate *)self fanServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [fanServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -559,11 +559,11 @@
 - (NSArray)zonesSynceds
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self zonesSyncedServices];
+  zonesSyncedServices = [(CAFClimate *)self zonesSyncedServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [zonesSyncedServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -590,11 +590,11 @@
 - (NSArray)zoneOns
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self zoneOnServices];
+  zoneOnServices = [(CAFClimate *)self zoneOnServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [zoneOnServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 
@@ -621,11 +621,11 @@
 - (NSArray)temperatureLevels
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CAFClimate *)self temperatureLevelServices];
+  temperatureLevelServices = [(CAFClimate *)self temperatureLevelServices];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"vehicleLayoutKey" ascending:1];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [temperatureLevelServices sortedArrayUsingDescriptors:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 

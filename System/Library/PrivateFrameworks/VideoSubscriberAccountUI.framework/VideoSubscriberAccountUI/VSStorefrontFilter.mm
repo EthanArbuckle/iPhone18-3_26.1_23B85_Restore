@@ -2,7 +2,7 @@
 + (id)keyPathsForValuesAffectingFilteredStorefronts;
 - (NSArray)filteredStorefronts;
 - (VSStorefrontFilter)init;
-- (void)setStorefronts:(id)a3;
+- (void)setStorefronts:(id)storefronts;
 @end
 
 @implementation VSStorefrontFilter
@@ -54,15 +54,15 @@ id __67__VSStorefrontFilter_keyPathsForValuesAffectingFilteredStorefronts__block
   return v1;
 }
 
-- (void)setStorefronts:(id)a3
+- (void)setStorefronts:(id)storefronts
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC98];
-  v5 = a3;
+  storefrontsCopy = storefronts;
   v6 = [v4 sortDescriptorWithKey:@"displayName" ascending:1];
   v16[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v8 = [v5 sortedArrayUsingDescriptors:v7];
+  v8 = [storefrontsCopy sortedArrayUsingDescriptors:v7];
 
   v9 = [v8 mutableCopy];
   v10 = [v9 indexOfObjectPassingTest:&__block_literal_global_18];
@@ -96,19 +96,19 @@ uint64_t __37__VSStorefrontFilter_setStorefronts___block_invoke(uint64_t a1, voi
 
 - (NSArray)filteredStorefronts
 {
-  v3 = [(VSStorefrontFilter *)self storefronts];
-  v4 = [(VSStorefrontFilter *)self searchQuery];
-  if ([v4 length])
+  storefronts = [(VSStorefrontFilter *)self storefronts];
+  searchQuery = [(VSStorefrontFilter *)self searchQuery];
+  if ([searchQuery length])
   {
     v5 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"displayName"];
-    v6 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v4];
+    v6 = [MEMORY[0x277CCA9C0] expressionForConstantValue:searchQuery];
     v7 = [MEMORY[0x277CCA918] predicateWithLeftExpression:v5 rightExpression:v6 modifier:0 type:99 options:3];
-    v8 = [v3 filteredArrayUsingPredicate:v7];
+    v8 = [storefronts filteredArrayUsingPredicate:v7];
 
-    v3 = v8;
+    storefronts = v8;
   }
 
-  return v3;
+  return storefronts;
 }
 
 @end

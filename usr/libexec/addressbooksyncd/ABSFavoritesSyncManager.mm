@@ -7,8 +7,8 @@
 - (void)deleteShadow
 {
   v3 = +[ABSyncInterface sharedInstance];
-  v2 = [v3 serverState];
-  [v2 deleteKey:@"com.apple.absd.favorites.sha"];
+  serverState = [v3 serverState];
+  [serverState deleteKey:@"com.apple.absd.favorites.sha"];
 }
 
 @end

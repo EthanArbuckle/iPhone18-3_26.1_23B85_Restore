@@ -1,5 +1,5 @@
 @interface SupportFlowViewController
-- (_TtC13SupportFlowUI25SupportFlowViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC13SupportFlowUI25SupportFlowViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)clientIsReady;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)clientIsReady
 {
-  v2 = self;
+  selfCopy = self;
   sub_26BCB7208();
 }
 
-- (_TtC13SupportFlowUI25SupportFlowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13SupportFlowUI25SupportFlowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_26BCC8F6C();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   SupportFlowViewController.init(nibName:bundle:)();
 }
 

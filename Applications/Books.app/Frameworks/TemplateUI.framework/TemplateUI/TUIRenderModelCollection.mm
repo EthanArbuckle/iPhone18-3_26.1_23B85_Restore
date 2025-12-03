@@ -1,60 +1,60 @@
 @interface TUIRenderModelCollection
-- (BOOL)isEqualToRenderModel:(id)a3;
-- (CGRect)boundingRectForMatchingQuery:(id)a3 viewState:(id)a4;
+- (BOOL)isEqualToRenderModel:(id)model;
+- (CGRect)boundingRectForMatchingQuery:(id)query viewState:(id)state;
 - (CGSize)size;
 - (NSString)description;
-- (TUIRenderModelCollection)initWithContent:(id)a3 sections:(id)a4 size:(CGSize)a5 insets:(UIEdgeInsets)a6 visibleBoundsObservers:(id)a7 info:(id)a8 anchorSet:(id)a9 layoutDirection:(unint64_t)a10 matchingUUID:(id)a11 matchingUID:(id)a12;
-- (TUIRenderModelCollection)initWithOther:(id)a3;
+- (TUIRenderModelCollection)initWithContent:(id)content sections:(id)sections size:(CGSize)size insets:(UIEdgeInsets)insets visibleBoundsObservers:(id)observers info:(id)info anchorSet:(id)set layoutDirection:(unint64_t)self0 matchingUUID:(id)self1 matchingUID:(id)self2;
+- (TUIRenderModelCollection)initWithOther:(id)other;
 - (UIEdgeInsets)insets;
-- (id)identifierForViewAtIndexPath:(id)a3;
+- (id)identifierForViewAtIndexPath:(id)path;
 - (id)layoutAttributes;
-- (id)layoutAttributesForImpressionAtIndexPath:(id)a3 snapshot:(id)a4;
-- (id)layoutAttributesForViewAtIndexPath:(id)a3 withLiveTransformResolver:(id)a4;
-- (id)sectionForIndexPath:(id)a3;
-- (id)viewAtIndexPath:(id)a3 factory:(id)a4 host:(id)a5;
-- (id)viewModelWithIndexPath:(id)a3;
+- (id)layoutAttributesForImpressionAtIndexPath:(id)path snapshot:(id)snapshot;
+- (id)layoutAttributesForViewAtIndexPath:(id)path withLiveTransformResolver:(id)resolver;
+- (id)sectionForIndexPath:(id)path;
+- (id)viewAtIndexPath:(id)path factory:(id)factory host:(id)host;
+- (id)viewModelWithIndexPath:(id)path;
 - (unint64_t)hash;
-- (void)appendImpressionLayoutAttributes:(id)a3 forElementsInRect:(CGRect)a4 snapshot:(id)a5;
-- (void)appendLayoutAttributes:(id)a3 forElementsInRect:(CGRect)a4 withLiveTransformResolver:(id)a5;
-- (void)appendLiveTransformViewInvalidationMap:(id)a3;
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6;
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4;
-- (void)invalidateRenderOverride:(id)a3 flags:(unint64_t)a4 feedView:(id)a5 uids:(id)a6;
-- (void)updateVisibleBounds:(CGRect)a3;
+- (void)appendImpressionLayoutAttributes:(id)attributes forElementsInRect:(CGRect)rect snapshot:(id)snapshot;
+- (void)appendLayoutAttributes:(id)attributes forElementsInRect:(CGRect)rect withLiveTransformResolver:(id)resolver;
+- (void)appendLiveTransformViewInvalidationMap:(id)map;
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver;
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform;
+- (void)invalidateRenderOverride:(id)override flags:(unint64_t)flags feedView:(id)view uids:(id)uids;
+- (void)updateVisibleBounds:(CGRect)bounds;
 @end
 
 @implementation TUIRenderModelCollection
 
-- (TUIRenderModelCollection)initWithContent:(id)a3 sections:(id)a4 size:(CGSize)a5 insets:(UIEdgeInsets)a6 visibleBoundsObservers:(id)a7 info:(id)a8 anchorSet:(id)a9 layoutDirection:(unint64_t)a10 matchingUUID:(id)a11 matchingUID:(id)a12
+- (TUIRenderModelCollection)initWithContent:(id)content sections:(id)sections size:(CGSize)size insets:(UIEdgeInsets)insets visibleBoundsObservers:(id)observers info:(id)info anchorSet:(id)set layoutDirection:(unint64_t)self0 matchingUUID:(id)self1 matchingUID:(id)self2
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  height = a5.height;
-  width = a5.width;
-  v25 = a3;
-  v26 = a4;
-  v27 = a7;
-  v28 = a8;
-  v29 = a9;
-  v30 = a11;
-  v31 = a12;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  contentCopy = content;
+  sectionsCopy = sections;
+  observersCopy = observers;
+  infoCopy = info;
+  setCopy = set;
+  dCopy = d;
+  iDCopy = iD;
   v49.receiver = self;
   v49.super_class = TUIRenderModelCollection;
   v32 = [(TUIRenderModelCollection *)&v49 init];
   v33 = v32;
   if (v32)
   {
-    objc_storeStrong(&v32->_content, a3);
-    v34 = [v26 copy];
+    objc_storeStrong(&v32->_content, content);
+    v34 = [sectionsCopy copy];
     sections = v33->_sections;
     v33->_sections = v34;
 
     v33->_sectionCount = [(NSArray *)v33->_sections count];
     v33->_size.width = width;
     v33->_size.height = height;
-    v36 = [v27 copy];
+    v36 = [observersCopy copy];
     visibleBoundsObservers = v33->_visibleBoundsObservers;
     v33->_visibleBoundsObservers = v36;
 
@@ -62,20 +62,20 @@
     v33->_insets.left = left;
     v33->_insets.bottom = bottom;
     v33->_insets.right = right;
-    v38 = [v28 copy];
+    v38 = [infoCopy copy];
     info = v33->_info;
     v33->_info = v38;
 
-    v40 = [v29 copy];
+    v40 = [setCopy copy];
     anchorSet = v33->_anchorSet;
     v33->_anchorSet = v40;
 
-    v33->_layoutDirection = a10;
-    v42 = [v30 copy];
+    v33->_layoutDirection = direction;
+    v42 = [dCopy copy];
     matchingSectionUUID = v33->_matchingSectionUUID;
     v33->_matchingSectionUUID = v42;
 
-    v44 = [v31 copy];
+    v44 = [iDCopy copy];
     matchingSectionUID = v33->_matchingSectionUID;
     v33->_matchingSectionUID = v44;
 
@@ -88,62 +88,62 @@
   return v33;
 }
 
-- (TUIRenderModelCollection)initWithOther:(id)a3
+- (TUIRenderModelCollection)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v29.receiver = self;
   v29.super_class = TUIRenderModelCollection;
   v5 = [(TUIRenderModelCollection *)&v29 init];
   if (v5)
   {
-    v6 = [v4 content];
+    content = [otherCopy content];
     content = v5->_content;
-    v5->_content = v6;
+    v5->_content = content;
 
-    v8 = [v4 sections];
+    sections = [otherCopy sections];
     sections = v5->_sections;
-    v5->_sections = v8;
+    v5->_sections = sections;
 
     v5->_sectionCount = [(NSArray *)v5->_sections count];
-    [v4 size];
+    [otherCopy size];
     v5->_size.width = v10;
     v5->_size.height = v11;
-    v12 = [v4 visibleBoundsObservers];
+    visibleBoundsObservers = [otherCopy visibleBoundsObservers];
     visibleBoundsObservers = v5->_visibleBoundsObservers;
-    v5->_visibleBoundsObservers = v12;
+    v5->_visibleBoundsObservers = visibleBoundsObservers;
 
-    [v4 insets];
+    [otherCopy insets];
     v5->_insets.top = v14;
     v5->_insets.left = v15;
     v5->_insets.bottom = v16;
     v5->_insets.right = v17;
-    v18 = [v4 info];
+    info = [otherCopy info];
     info = v5->_info;
-    v5->_info = v18;
+    v5->_info = info;
 
-    v20 = [v4 anchorSet];
+    anchorSet = [otherCopy anchorSet];
     anchorSet = v5->_anchorSet;
-    v5->_anchorSet = v20;
+    v5->_anchorSet = anchorSet;
 
-    v22 = [v4 liveTransformViewInvalidationMap];
+    liveTransformViewInvalidationMap = [otherCopy liveTransformViewInvalidationMap];
     liveTransformViewInvalidationMap = v5->_liveTransformViewInvalidationMap;
-    v5->_liveTransformViewInvalidationMap = v22;
+    v5->_liveTransformViewInvalidationMap = liveTransformViewInvalidationMap;
 
-    v24 = [v4 matchingSectionUUID];
+    matchingSectionUUID = [otherCopy matchingSectionUUID];
     matchingSectionUUID = v5->_matchingSectionUUID;
-    v5->_matchingSectionUUID = v24;
+    v5->_matchingSectionUUID = matchingSectionUUID;
 
-    v26 = [v4 matchingSectionUID];
+    matchingSectionUID = [otherCopy matchingSectionUID];
     matchingSectionUID = v5->_matchingSectionUID;
-    v5->_matchingSectionUID = v26;
+    v5->_matchingSectionUID = matchingSectionUID;
   }
 
   return v5;
 }
 
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
+  collectorCopy = collector;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -165,11 +165,11 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = *&a4->c;
-        v14[0] = *&a4->a;
+        v13 = *&transform->c;
+        v14[0] = *&transform->a;
         v14[1] = v13;
-        v14[2] = *&a4->tx;
-        [v12 appendResourcesToCollector:v6 transform:v14];
+        v14[2] = *&transform->tx;
+        [v12 appendResourcesToCollector:collectorCopy transform:v14];
         v11 = v11 + 1;
       }
 
@@ -181,43 +181,43 @@
   }
 }
 
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(TUIRenderModelCollection *)self uids];
+  collectorCopy = collector;
+  queryCopy = query;
+  resolverCopy = resolver;
+  uids = [(TUIRenderModelCollection *)self uids];
   sections = self->_sections;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
-  v15 = *&a4->c;
-  v25 = *&a4->a;
+  v15 = *&transform->c;
+  v25 = *&transform->a;
   v26 = v15;
   v20[2] = sub_5C668;
   v20[3] = &unk_25F5C0;
   v20[4] = self;
-  v21 = v13;
-  v27 = *&a4->tx;
-  v22 = v11;
-  v23 = v10;
-  v24 = v12;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
-  v19 = v13;
+  v21 = uids;
+  v27 = *&transform->tx;
+  v22 = queryCopy;
+  v23 = collectorCopy;
+  v24 = resolverCopy;
+  v16 = resolverCopy;
+  v17 = collectorCopy;
+  v18 = queryCopy;
+  v19 = uids;
   [(NSArray *)sections enumerateObjectsUsingBlock:v20];
 }
 
-- (void)updateVisibleBounds:(CGRect)a3
+- (void)updateVisibleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (self->_layoutDirection == 2)
   {
     v8 = self->_size.width;
-    x = v8 - CGRectGetMinX(a3) - a3.size.width;
+    x = v8 - CGRectGetMinX(bounds) - bounds.size.width;
   }
 
   v16 = 0u;
@@ -249,14 +249,14 @@
   }
 }
 
-- (void)appendLayoutAttributes:(id)a3 forElementsInRect:(CGRect)a4 withLiveTransformResolver:(id)a5
+- (void)appendLayoutAttributes:(id)attributes forElementsInRect:(CGRect)rect withLiveTransformResolver:(id)resolver
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  attributesCopy = attributes;
+  resolverCopy = resolver;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -277,8 +277,8 @@
         }
 
         v18 = *(*(&v19 + 1) + 8 * i);
-        [v18 appendLayoutAttributes:v11 forElementsInRect:v12 withLiveTransformResolver:{x, y, width, height, v19}];
-        [v18 appendLiveTransformLayoutAttributes:v11 forElementsInRect:v12 withLiveTransformResolver:{x, y, width, height}];
+        [v18 appendLayoutAttributes:attributesCopy forElementsInRect:resolverCopy withLiveTransformResolver:{x, y, width, height, v19}];
+        [v18 appendLiveTransformLayoutAttributes:attributesCopy forElementsInRect:resolverCopy withLiveTransformResolver:{x, y, width, height}];
       }
 
       v15 = [(NSArray *)v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -288,20 +288,20 @@
   }
 }
 
-- (id)layoutAttributesForViewAtIndexPath:(id)a3 withLiveTransformResolver:(id)a4
+- (id)layoutAttributesForViewAtIndexPath:(id)path withLiveTransformResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 tui_section];
-  if (v8 >= self->_sectionCount)
+  pathCopy = path;
+  resolverCopy = resolver;
+  tui_section = [pathCopy tui_section];
+  if (tui_section >= self->_sectionCount)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [(NSArray *)self->_sections objectAtIndexedSubscript:v8];
-    v10 = [v9 layoutAttributesForViewAtIndexPath:v6 withLiveTransformResolver:v7];
+    v9 = [(NSArray *)self->_sections objectAtIndexedSubscript:tui_section];
+    v10 = [v9 layoutAttributesForViewAtIndexPath:pathCopy withLiveTransformResolver:resolverCopy];
   }
 
   return v10;
@@ -329,8 +329,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) layoutAttributes];
-        [v3 addObjectsFromArray:v9];
+        layoutAttributes = [*(*(&v12 + 1) + 8 * i) layoutAttributes];
+        [v3 addObjectsFromArray:layoutAttributes];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -344,34 +344,34 @@
   return v10;
 }
 
-- (id)viewAtIndexPath:(id)a3 factory:(id)a4 host:(id)a5
+- (id)viewAtIndexPath:(id)path factory:(id)factory host:(id)host
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 tui_section];
-  if (v11 >= self->_sectionCount)
+  pathCopy = path;
+  factoryCopy = factory;
+  hostCopy = host;
+  tui_section = [pathCopy tui_section];
+  if (tui_section >= self->_sectionCount)
   {
     v13 = 0;
   }
 
   else
   {
-    v12 = [(NSArray *)self->_sections objectAtIndexedSubscript:v11];
-    v13 = [v12 viewAtIndexPath:v8 factory:v9 host:v10];
+    v12 = [(NSArray *)self->_sections objectAtIndexedSubscript:tui_section];
+    v13 = [v12 viewAtIndexPath:pathCopy factory:factoryCopy host:hostCopy];
   }
 
   return v13;
 }
 
-- (void)appendImpressionLayoutAttributes:(id)a3 forElementsInRect:(CGRect)a4 snapshot:(id)a5
+- (void)appendImpressionLayoutAttributes:(id)attributes forElementsInRect:(CGRect)rect snapshot:(id)snapshot
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  attributesCopy = attributes;
+  snapshotCopy = snapshot;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -392,7 +392,7 @@
           objc_enumerationMutation(v13);
         }
 
-        [*(*(&v18 + 1) + 8 * v17) appendImpressionLayoutAttributes:v11 forElementsInRect:v12 snapshot:{x, y, width, height, v18}];
+        [*(*(&v18 + 1) + 8 * v17) appendImpressionLayoutAttributes:attributesCopy forElementsInRect:snapshotCopy snapshot:{x, y, width, height, v18}];
         v17 = v17 + 1;
       }
 
@@ -404,93 +404,93 @@
   }
 }
 
-- (id)layoutAttributesForImpressionAtIndexPath:(id)a3 snapshot:(id)a4
+- (id)layoutAttributesForImpressionAtIndexPath:(id)path snapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 tui_section];
-  if (v8 >= self->_sectionCount)
+  pathCopy = path;
+  snapshotCopy = snapshot;
+  tui_section = [pathCopy tui_section];
+  if (tui_section >= self->_sectionCount)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [(NSArray *)self->_sections objectAtIndexedSubscript:v8];
-    v10 = [v9 layoutAttributesForImpressionAtIndexPath:v6 snapshot:v7];
+    v9 = [(NSArray *)self->_sections objectAtIndexedSubscript:tui_section];
+    v10 = [v9 layoutAttributesForImpressionAtIndexPath:pathCopy snapshot:snapshotCopy];
   }
 
   return v10;
 }
 
-- (id)viewModelWithIndexPath:(id)a3
+- (id)viewModelWithIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 tui_section];
-  if (v5 >= self->_sectionCount)
+  pathCopy = path;
+  tui_section = [pathCopy tui_section];
+  if (tui_section >= self->_sectionCount)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(NSArray *)self->_sections objectAtIndexedSubscript:v5];
-    v7 = [v6 viewModelWithIndex:{objc_msgSend(v4, "tui_row")}];
+    v6 = [(NSArray *)self->_sections objectAtIndexedSubscript:tui_section];
+    v7 = [v6 viewModelWithIndex:{objc_msgSend(pathCopy, "tui_row")}];
   }
 
   return v7;
 }
 
-- (id)sectionForIndexPath:(id)a3
+- (id)sectionForIndexPath:(id)path
 {
-  v4 = [a3 tui_section];
-  if (v4 >= self->_sectionCount)
+  tui_section = [path tui_section];
+  if (tui_section >= self->_sectionCount)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:v4];
+    v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:tui_section];
   }
 
   return v5;
 }
 
-- (id)identifierForViewAtIndexPath:(id)a3
+- (id)identifierForViewAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 tui_section];
-  if (v5 >= self->_sectionCount)
+  pathCopy = path;
+  tui_section = [pathCopy tui_section];
+  if (tui_section >= self->_sectionCount)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(NSArray *)self->_sections objectAtIndexedSubscript:v5];
-    v7 = [v6 identifierForViewAtIndex:{objc_msgSend(v4, "tui_row")}];
+    v6 = [(NSArray *)self->_sections objectAtIndexedSubscript:tui_section];
+    v7 = [v6 identifierForViewAtIndex:{objc_msgSend(pathCopy, "tui_row")}];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   if (TUIRenderModelIsEqualToRenderModel(self, v6) && (v7 = -[TUIRenderModelCollection layoutDirection](self, "layoutDirection"), v7 == [v6 layoutDirection]) && ((-[TUIRenderModelCollection insets](self, "insets"), v9 = v8, v11 = v10, v13 = v12, v15 = v14, objc_msgSend(v6, "insets"), v11 == v19) ? (v20 = v9 == v16) : (v20 = 0), v20 ? (v21 = v15 == v18) : (v21 = 0), v21 ? (v22 = v13 == v17) : (v22 = 0), v22))
   {
-    v25 = [(TUIRenderModelCollection *)self sections];
-    v26 = [v6 sections];
-    if (v25 == v26 || ([(TUIFeedContent *)v25 isEqual:v26]& 1) != 0)
+    sections = [(TUIRenderModelCollection *)self sections];
+    sections2 = [v6 sections];
+    if (sections == sections2 || ([(TUIFeedContent *)sections isEqual:sections2]& 1) != 0)
     {
 
       content = self->_content;
-      v25 = [v6 content];
-      v23 = content == v25;
+      sections = [v6 content];
+      v23 = content == sections;
     }
 
     else
@@ -508,9 +508,9 @@
   return v23;
 }
 
-- (void)appendLiveTransformViewInvalidationMap:(id)a3
+- (void)appendLiveTransformViewInvalidationMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -531,7 +531,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) appendLiveTransformViewInvalidationMap:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) appendLiveTransformViewInvalidationMap:{mapCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -543,13 +543,13 @@
   }
 }
 
-- (void)invalidateRenderOverride:(id)a3 flags:(unint64_t)a4 feedView:(id)a5 uids:(id)a6
+- (void)invalidateRenderOverride:(id)override flags:(unint64_t)flags feedView:(id)view uids:(id)uids
 {
-  v9 = a3;
-  v36 = a5;
-  v37 = a6;
-  v35 = v9;
-  v46 = [v9 query];
+  overrideCopy = override;
+  viewCopy = view;
+  uidsCopy = uids;
+  v35 = overrideCopy;
+  query = [overrideCopy query];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -566,7 +566,7 @@
   v13 = 0;
   v14 = *v52;
   v39 = v10;
-  v40 = self;
+  selfCopy = self;
   v38 = *v52;
   do
   {
@@ -583,16 +583,16 @@
       matchingSectionUUID = self->_matchingSectionUUID;
       if (matchingSectionUUID)
       {
-        v18 = matchingSectionUUID;
+        uUID = matchingSectionUUID;
       }
 
       else
       {
-        v18 = [*(*(&v51 + 1) + 8 * v15) UUID];
+        uUID = [*(*(&v51 + 1) + 8 * v15) UUID];
       }
 
-      v19 = v18;
-      v20 = [v16 section];
+      v19 = uUID;
+      section = [v16 section];
       matchingSectionUID = self->_matchingSectionUID;
       if (matchingSectionUID)
       {
@@ -601,11 +601,11 @@
 
       else
       {
-        v22 = [v37 objectAtIndexedSubscript:v20];
+        v22 = [uidsCopy objectAtIndexedSubscript:section];
       }
 
       v23 = v22;
-      if ([v46 matchesUUID:v19 uid:v22])
+      if ([query matchesUUID:v19 uid:v22])
       {
         v42 = v23;
         v43 = v19;
@@ -619,7 +619,7 @@
         if (v24)
         {
           v25 = v24;
-          v26 = v20;
+          v26 = section;
           v27 = *v48;
           do
           {
@@ -631,10 +631,10 @@
               }
 
               v29 = *(*(&v47 + 1) + 8 * i);
-              v30 = [v29 refId];
-              v31 = [v29 refInstance];
-              v32 = [v29 identifier];
-              v33 = [v46 matchesRefId:v30 refInstance:v31 identifier:v32];
+              refId = [v29 refId];
+              refInstance = [v29 refInstance];
+              identifier = [v29 identifier];
+              v33 = [query matchesRefId:refId refInstance:refInstance identifier:identifier];
 
               if (v33)
               {
@@ -655,7 +655,7 @@
         }
 
         v10 = v39;
-        self = v40;
+        self = selfCopy;
         v14 = v38;
         v12 = v41;
         v23 = v42;
@@ -674,23 +674,23 @@
 
   if (v13)
   {
-    [v36 invalidateWithContext:v13];
+    [viewCopy invalidateWithContext:v13];
 LABEL_30:
   }
 }
 
-- (CGRect)boundingRectForMatchingQuery:(id)a3 viewState:(id)a4
+- (CGRect)boundingRectForMatchingQuery:(id)query viewState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [TUIRenderReferenceCollector referenceCollectorWithViewState:v7];
+  queryCopy = query;
+  stateCopy = state;
+  v8 = [TUIRenderReferenceCollector referenceCollectorWithViewState:stateCopy];
   v9 = *&CGAffineTransformIdentity.c;
   v25 = *&CGAffineTransformIdentity.a;
   v26 = v9;
   origin = *&CGAffineTransformIdentity.tx;
-  [(TUIRenderModelCollection *)self appendReferencesToCollector:v8 transform:&v25 query:v6 liveTransformResolver:0];
-  v10 = [v8 renderReferences];
-  v11 = [v10 count];
+  [(TUIRenderModelCollection *)self appendReferencesToCollector:v8 transform:&v25 query:queryCopy liveTransformResolver:0];
+  renderReferences = [v8 renderReferences];
+  v11 = [renderReferences count];
 
   if (v11)
   {
@@ -701,13 +701,13 @@ LABEL_30:
     size = CGRectNull.size;
     origin = CGRectNull.origin;
     v28 = size;
-    v13 = [v8 renderReferences];
+    renderReferences2 = [v8 renderReferences];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_5D810;
     v24[3] = &unk_25F610;
     v24[4] = &v25;
-    [v13 enumerateKeysAndObjectsUsingBlock:v24];
+    [renderReferences2 enumerateKeysAndObjectsUsingBlock:v24];
 
     if (self->_layoutDirection == 2)
     {
@@ -750,8 +750,8 @@ LABEL_30:
 
 - (unint64_t)hash
 {
-  v2 = [(TUIRenderModelCollection *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(TUIRenderModelCollection *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }

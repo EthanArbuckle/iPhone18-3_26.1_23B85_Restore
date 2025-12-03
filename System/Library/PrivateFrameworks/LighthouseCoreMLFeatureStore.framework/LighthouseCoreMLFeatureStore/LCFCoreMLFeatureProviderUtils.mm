@@ -1,24 +1,24 @@
 @interface LCFCoreMLFeatureProviderUtils
-+ (id)toMultiArrayTypeBatchProvider:(id)a3 srcFeatureNames:(id)a4 srcLabelName:(id)a5 destFeatureName:(id)a6 destLabelName:(id)a7;
-+ (id)toMultiArrayTypeFeatureProvider:(id)a3 srcFeatureNames:(id)a4 srcLabelName:(id)a5 destFeatureName:(id)a6 destLabelName:(id)a7;
++ (id)toMultiArrayTypeBatchProvider:(id)provider srcFeatureNames:(id)names srcLabelName:(id)name destFeatureName:(id)featureName destLabelName:(id)labelName;
++ (id)toMultiArrayTypeFeatureProvider:(id)provider srcFeatureNames:(id)names srcLabelName:(id)name destFeatureName:(id)featureName destLabelName:(id)labelName;
 @end
 
 @implementation LCFCoreMLFeatureProviderUtils
 
-+ (id)toMultiArrayTypeFeatureProvider:(id)a3 srcFeatureNames:(id)a4 srcLabelName:(id)a5 destFeatureName:(id)a6 destLabelName:(id)a7
++ (id)toMultiArrayTypeFeatureProvider:(id)provider srcFeatureNames:(id)names srcLabelName:(id)name destFeatureName:(id)featureName destLabelName:(id)labelName
 {
   v77 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v49 = a5;
-  v51 = a6;
-  v50 = a7;
+  providerCopy = provider;
+  namesCopy = names;
+  nameCopy = name;
+  featureNameCopy = featureName;
+  labelNameCopy = labelName;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v12;
-  v13 = [v12 countByEnumeratingWithState:&v68 objects:v76 count:16];
+  obj = namesCopy;
+  v13 = [namesCopy countByEnumeratingWithState:&v68 objects:v76 count:16];
   if (v13)
   {
     v14 = 0;
@@ -33,7 +33,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v17 = [v11 featureValueForName:{*(*(&v68 + 1) + 8 * v16), v49}];
+        v17 = [providerCopy featureValueForName:{*(*(&v68 + 1) + 8 * v16), nameCopy}];
         if ([v17 type] == 1 || objc_msgSend(v17, "type") == 2)
         {
           ++v14;
@@ -41,12 +41,12 @@
 
         else if ([v17 type] == 5)
         {
-          v18 = [v17 multiArrayValue];
-          v19 = [v18 shape];
-          v20 = [v19 objectAtIndexedSubscript:0];
-          v21 = [v20 intValue];
+          multiArrayValue = [v17 multiArrayValue];
+          shape = [multiArrayValue shape];
+          v20 = [shape objectAtIndexedSubscript:0];
+          intValue = [v20 intValue];
 
-          v14 += v21;
+          v14 += intValue;
         }
 
         ++v16;
@@ -93,15 +93,15 @@
           objc_enumerationMutation(v24);
         }
 
-        v28 = [v11 featureValueForName:{*(*(&v56 + 1) + 8 * v27), v49}];
+        v28 = [providerCopy featureValueForName:{*(*(&v56 + 1) + 8 * v27), nameCopy}];
         if ([v28 type] == 1)
         {
-          v29 = [v28 int64Value];
+          int64Value = [v28 int64Value];
 LABEL_25:
           v30 = v65[3];
           v31 = *(v61 + 6);
           *(v61 + 6) = v31 + 1;
-          *(v30 + 8 * v31) = v29;
+          *(v30 + 8 * v31) = int64Value;
           goto LABEL_26;
         }
 
@@ -113,14 +113,14 @@ LABEL_25:
 
         if ([v28 type] == 5)
         {
-          v32 = [v28 multiArrayValue];
+          multiArrayValue2 = [v28 multiArrayValue];
           v55[0] = MEMORY[0x277D85DD0];
           v55[1] = 3221225472;
           v55[2] = __124__LCFCoreMLFeatureProviderUtils_toMultiArrayTypeFeatureProvider_srcFeatureNames_srcLabelName_destFeatureName_destLabelName___block_invoke;
           v55[3] = &unk_279815E58;
           v55[4] = &v64;
           v55[5] = &v60;
-          [v32 getBytesWithHandler:v55];
+          [multiArrayValue2 getBytesWithHandler:v55];
         }
 
 LABEL_26:
@@ -150,18 +150,18 @@ LABEL_26:
   v54[4] = &v64;
   v38 = [v36 initWithDataPointer:v37 shape:v35 dataType:65600 strides:&unk_286804870 deallocator:v54 error:&v53];
   v39 = v53;
-  v72[0] = v51;
+  v72[0] = featureNameCopy;
   v40 = [MEMORY[0x277CBFEF8] featureValueWithMultiArray:v38];
-  v72[1] = v50;
+  v72[1] = labelNameCopy;
   v73[0] = v40;
-  v41 = [v11 featureValueForName:v49];
+  v41 = [providerCopy featureValueForName:nameCopy];
   v73[1] = v41;
   v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:v72 count:2];
 
-  v43 = [LCFCoreMLFeatureProvider fromMLProvider:v11];
-  v44 = [v43 featureStoreKey];
-  v45 = [v43 timestamp];
-  v46 = [[LCFCoreMLFeatureProvider alloc] init:v44 timestamp:v45 featureValues:v42];
+  v43 = [LCFCoreMLFeatureProvider fromMLProvider:providerCopy];
+  featureStoreKey = [v43 featureStoreKey];
+  timestamp = [v43 timestamp];
+  v46 = [[LCFCoreMLFeatureProvider alloc] init:featureStoreKey timestamp:timestamp featureValues:v42];
 
   _Block_object_dispose(&v60, 8);
   _Block_object_dispose(&v64, 8);
@@ -179,32 +179,32 @@ void *__124__LCFCoreMLFeatureProviderUtils_toMultiArrayTypeFeatureProvider_srcFe
   return result;
 }
 
-+ (id)toMultiArrayTypeBatchProvider:(id)a3 srcFeatureNames:(id)a4 srcLabelName:(id)a5 destFeatureName:(id)a6 destLabelName:(id)a7
++ (id)toMultiArrayTypeBatchProvider:(id)provider srcFeatureNames:(id)names srcLabelName:(id)name destFeatureName:(id)featureName destLabelName:(id)labelName
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  providerCopy = provider;
+  namesCopy = names;
+  nameCopy = name;
+  featureNameCopy = featureName;
+  labelNameCopy = labelName;
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v11 count] >= 1)
+  if ([providerCopy count] >= 1)
   {
     v17 = 0;
     do
     {
-      v18 = [v11 featuresAtIndex:v17];
-      v19 = [LCFCoreMLFeatureProviderUtils toMultiArrayTypeFeatureProvider:v18 srcFeatureNames:v12 srcLabelName:v13 destFeatureName:v14 destLabelName:v15];
+      v18 = [providerCopy featuresAtIndex:v17];
+      v19 = [LCFCoreMLFeatureProviderUtils toMultiArrayTypeFeatureProvider:v18 srcFeatureNames:namesCopy srcLabelName:nameCopy destFeatureName:featureNameCopy destLabelName:labelNameCopy];
       [v16 addObject:v19];
 
       ++v17;
     }
 
-    while ([v11 count] > v17);
+    while ([providerCopy count] > v17);
   }
 
-  v20 = [LCFCoreMLBatchProvider fromMLProvider:v11];
-  v21 = [v20 featureStoreKey];
-  v22 = [[LCFCoreMLBatchProvider alloc] init:v21 featureProviders:v16];
+  v20 = [LCFCoreMLBatchProvider fromMLProvider:providerCopy];
+  featureStoreKey = [v20 featureStoreKey];
+  v22 = [[LCFCoreMLBatchProvider alloc] init:featureStoreKey featureProviders:v16];
 
   return v22;
 }

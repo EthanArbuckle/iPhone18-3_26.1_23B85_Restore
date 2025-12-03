@@ -1,17 +1,17 @@
 @interface WFReplaceTextAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFReplaceTextAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFReplaceTextAction *)self parameterValueForKey:@"WFReplaceTextRegularExpression" ofClass:objc_opt_class()];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = [(WFReplaceTextAction *)self parameterValueForKey:@"WFReplaceTextCaseSensitive" ofClass:objc_opt_class()];
-  v8 = [v7 BOOLValue];
+  bOOLValue2 = [v7 BOOLValue];
 
   v9 = [(WFReplaceTextAction *)self parameterValueForKey:@"WFReplaceTextFind" ofClass:objc_opt_class()];
   v10 = v9;
@@ -41,14 +41,14 @@
 
   v16 = v15;
 
-  if (v6)
+  if (bOOLValue)
   {
-    v17 = v8 ^ 1u | 0x400;
+    v17 = bOOLValue2 ^ 1u | 0x400;
   }
 
   else
   {
-    v17 = v8 ^ 1u;
+    v17 = bOOLValue2 ^ 1u;
   }
 
   v18 = objc_opt_class();
@@ -66,7 +66,7 @@
   v21[4] = self;
   v19 = v16;
   v20 = v12;
-  [v4 transformObjectRepresentationsForClass:v18 usingBlock:v22 completionHandler:v21];
+  [inputCopy transformObjectRepresentationsForClass:v18 usingBlock:v22 completionHandler:v21];
 }
 
 void __50__WFReplaceTextAction_runAsynchronouslyWithInput___block_invoke(void *a1, void *a2, uint64_t a3, void *a4, void *a5)

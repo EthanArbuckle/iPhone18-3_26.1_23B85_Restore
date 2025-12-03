@@ -1,57 +1,57 @@
 @interface _SFPBToggleButtonConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBToggleButtonConfiguration)initWithDictionary:(id)a3;
-- (_SFPBToggleButtonConfiguration)initWithFacade:(id)a3;
-- (_SFPBToggleButtonConfiguration)initWithJSON:(id)a3;
+- (_SFPBToggleButtonConfiguration)initWithDictionary:(id)dictionary;
+- (_SFPBToggleButtonConfiguration)initWithFacade:(id)facade;
+- (_SFPBToggleButtonConfiguration)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setToggledTitle:(id)a3;
-- (void)setUntoggledTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setToggledTitle:(id)title;
+- (void)setUntoggledTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBToggleButtonConfiguration
 
-- (_SFPBToggleButtonConfiguration)initWithFacade:(id)a3
+- (_SFPBToggleButtonConfiguration)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBToggleButtonConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 untoggledTitle];
+    untoggledTitle = [facadeCopy untoggledTitle];
 
-    if (v6)
+    if (untoggledTitle)
     {
-      v7 = [v4 untoggledTitle];
-      [(_SFPBToggleButtonConfiguration *)v5 setUntoggledTitle:v7];
+      untoggledTitle2 = [facadeCopy untoggledTitle];
+      [(_SFPBToggleButtonConfiguration *)v5 setUntoggledTitle:untoggledTitle2];
     }
 
-    v8 = [v4 toggledTitle];
+    toggledTitle = [facadeCopy toggledTitle];
 
-    if (v8)
+    if (toggledTitle)
     {
-      v9 = [v4 toggledTitle];
-      [(_SFPBToggleButtonConfiguration *)v5 setToggledTitle:v9];
+      toggledTitle2 = [facadeCopy toggledTitle];
+      [(_SFPBToggleButtonConfiguration *)v5 setToggledTitle:toggledTitle2];
     }
 
-    v10 = [v4 untoggledImage];
+    untoggledImage = [facadeCopy untoggledImage];
 
-    if (v10)
+    if (untoggledImage)
     {
       v11 = [_SFPBImage alloc];
-      v12 = [v4 untoggledImage];
-      v13 = [(_SFPBImage *)v11 initWithFacade:v12];
+      untoggledImage2 = [facadeCopy untoggledImage];
+      v13 = [(_SFPBImage *)v11 initWithFacade:untoggledImage2];
       [(_SFPBToggleButtonConfiguration *)v5 setUntoggledImage:v13];
     }
 
-    v14 = [v4 toggledImage];
+    toggledImage = [facadeCopy toggledImage];
 
-    if (v14)
+    if (toggledImage)
     {
       v15 = [_SFPBImage alloc];
-      v16 = [v4 toggledImage];
-      v17 = [(_SFPBImage *)v15 initWithFacade:v16];
+      toggledImage2 = [facadeCopy toggledImage];
+      v17 = [(_SFPBImage *)v15 initWithFacade:toggledImage2];
       [(_SFPBToggleButtonConfiguration *)v5 setToggledImage:v17];
     }
 
@@ -61,15 +61,15 @@
   return v5;
 }
 
-- (_SFPBToggleButtonConfiguration)initWithDictionary:(id)a3
+- (_SFPBToggleButtonConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = _SFPBToggleButtonConfiguration;
   v5 = [(_SFPBToggleButtonConfiguration *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"untoggledTitle"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"untoggledTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(_SFPBToggleButtonConfiguration *)v5 setUntoggledTitle:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"toggledTitle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"toggledTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       [(_SFPBToggleButtonConfiguration *)v5 setToggledTitle:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"untoggledImage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"untoggledImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
       [(_SFPBToggleButtonConfiguration *)v5 setUntoggledImage:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"toggledImage"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"toggledImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,30 +107,30 @@
   return v5;
 }
 
-- (_SFPBToggleButtonConfiguration)initWithJSON:(id)a3
+- (_SFPBToggleButtonConfiguration)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBToggleButtonConfiguration *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBToggleButtonConfiguration *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBToggleButtonConfiguration *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -143,54 +143,54 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_toggledImage)
   {
-    v4 = [(_SFPBToggleButtonConfiguration *)self toggledImage];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    toggledImage = [(_SFPBToggleButtonConfiguration *)self toggledImage];
+    dictionaryRepresentation = [toggledImage dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"toggledImage"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"toggledImage"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"toggledImage"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"toggledImage"];
     }
   }
 
   if (self->_toggledTitle)
   {
-    v7 = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"toggledTitle"];
+    toggledTitle = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
+    v8 = [toggledTitle copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"toggledTitle"];
   }
 
   if (self->_untoggledImage)
   {
-    v9 = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    untoggledImage = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
+    dictionaryRepresentation2 = [untoggledImage dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"untoggledImage"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"untoggledImage"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"untoggledImage"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"untoggledImage"];
     }
   }
 
   if (self->_untoggledTitle)
   {
-    v12 = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"untoggledTitle"];
+    untoggledTitle = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
+    v13 = [untoggledTitle copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"untoggledTitle"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -201,28 +201,28 @@
   return v4 ^ v5 ^ [(_SFPBImage *)self->_toggledImage hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
-  v6 = [v4 untoggledTitle];
-  if ((v5 != 0) == (v6 == 0))
+  untoggledTitle = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
+  untoggledTitle2 = [equalCopy untoggledTitle];
+  if ((untoggledTitle != 0) == (untoggledTitle2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
-  if (v7)
+  untoggledTitle3 = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
+  if (untoggledTitle3)
   {
-    v8 = v7;
-    v9 = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
-    v10 = [v4 untoggledTitle];
-    v11 = [v9 isEqual:v10];
+    v8 = untoggledTitle3;
+    untoggledTitle4 = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
+    untoggledTitle5 = [equalCopy untoggledTitle];
+    v11 = [untoggledTitle4 isEqual:untoggledTitle5];
 
     if (!v11)
     {
@@ -234,20 +234,20 @@
   {
   }
 
-  v5 = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
-  v6 = [v4 toggledTitle];
-  if ((v5 != 0) == (v6 == 0))
+  untoggledTitle = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
+  untoggledTitle2 = [equalCopy toggledTitle];
+  if ((untoggledTitle != 0) == (untoggledTitle2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
-  if (v12)
+  toggledTitle = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
+  if (toggledTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
-    v15 = [v4 toggledTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = toggledTitle;
+    toggledTitle2 = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
+    toggledTitle3 = [equalCopy toggledTitle];
+    v16 = [toggledTitle2 isEqual:toggledTitle3];
 
     if (!v16)
     {
@@ -259,20 +259,20 @@
   {
   }
 
-  v5 = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
-  v6 = [v4 untoggledImage];
-  if ((v5 != 0) == (v6 == 0))
+  untoggledTitle = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
+  untoggledTitle2 = [equalCopy untoggledImage];
+  if ((untoggledTitle != 0) == (untoggledTitle2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
-  if (v17)
+  untoggledImage = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
+  if (untoggledImage)
   {
-    v18 = v17;
-    v19 = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
-    v20 = [v4 untoggledImage];
-    v21 = [v19 isEqual:v20];
+    v18 = untoggledImage;
+    untoggledImage2 = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
+    untoggledImage3 = [equalCopy untoggledImage];
+    v21 = [untoggledImage2 isEqual:untoggledImage3];
 
     if (!v21)
     {
@@ -284,12 +284,12 @@
   {
   }
 
-  v5 = [(_SFPBToggleButtonConfiguration *)self toggledImage];
-  v6 = [v4 toggledImage];
-  if ((v5 != 0) != (v6 == 0))
+  untoggledTitle = [(_SFPBToggleButtonConfiguration *)self toggledImage];
+  untoggledTitle2 = [equalCopy toggledImage];
+  if ((untoggledTitle != 0) != (untoggledTitle2 == 0))
   {
-    v22 = [(_SFPBToggleButtonConfiguration *)self toggledImage];
-    if (!v22)
+    toggledImage = [(_SFPBToggleButtonConfiguration *)self toggledImage];
+    if (!toggledImage)
     {
 
 LABEL_25:
@@ -297,10 +297,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_SFPBToggleButtonConfiguration *)self toggledImage];
-    v25 = [v4 toggledImage];
-    v26 = [v24 isEqual:v25];
+    v23 = toggledImage;
+    toggledImage2 = [(_SFPBToggleButtonConfiguration *)self toggledImage];
+    toggledImage3 = [equalCopy toggledImage];
+    v26 = [toggledImage2 isEqual:toggledImage3];
 
     if (v26)
     {
@@ -320,46 +320,46 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
-  if (v4)
+  toCopy = to;
+  untoggledTitle = [(_SFPBToggleButtonConfiguration *)self untoggledTitle];
+  if (untoggledTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
-  if (v5)
+  toggledTitle = [(_SFPBToggleButtonConfiguration *)self toggledTitle];
+  if (toggledTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
-  if (v6)
+  untoggledImage = [(_SFPBToggleButtonConfiguration *)self untoggledImage];
+  if (untoggledImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBToggleButtonConfiguration *)self toggledImage];
-  if (v7)
+  toggledImage = [(_SFPBToggleButtonConfiguration *)self toggledImage];
+  if (toggledImage)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setToggledTitle:(id)a3
+- (void)setToggledTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   toggledTitle = self->_toggledTitle;
   self->_toggledTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setUntoggledTitle:(id)a3
+- (void)setUntoggledTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   untoggledTitle = self->_untoggledTitle;
   self->_untoggledTitle = v4;
 

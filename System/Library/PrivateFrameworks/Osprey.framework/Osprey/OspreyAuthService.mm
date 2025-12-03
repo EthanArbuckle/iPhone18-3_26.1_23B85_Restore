@@ -1,35 +1,35 @@
 @interface OspreyAuthService
-- (OspreyAuthService)initWithChannel:(id)a3 authStrategyVersion:(unint64_t)a4;
-- (void)certificateDataWithSuccess:(id)a3 failure:(id)a4;
-- (void)createClientSessionWithData:(id)a3 success:(id)a4 failure:(id)a5;
+- (OspreyAuthService)initWithChannel:(id)channel authStrategyVersion:(unint64_t)version;
+- (void)certificateDataWithSuccess:(id)success failure:(id)failure;
+- (void)createClientSessionWithData:(id)data success:(id)success failure:(id)failure;
 @end
 
 @implementation OspreyAuthService
 
-- (OspreyAuthService)initWithChannel:(id)a3 authStrategyVersion:(unint64_t)a4
+- (OspreyAuthService)initWithChannel:(id)channel authStrategyVersion:(unint64_t)version
 {
-  v7 = a3;
+  channelCopy = channel;
   v13.receiver = self;
   v13.super_class = OspreyAuthService;
   v8 = [(OspreyAuthService *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_channel, a3);
-    v10 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v8->_channel, channel);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     authUUID = v9->_authUUID;
-    v9->_authUUID = v10;
+    v9->_authUUID = uUID;
 
-    v9->_authStrategyVersion = a4;
+    v9->_authStrategyVersion = version;
   }
 
   return v9;
 }
 
-- (void)certificateDataWithSuccess:(id)a3 failure:(id)a4
+- (void)certificateDataWithSuccess:(id)success failure:(id)failure
 {
-  v6 = a3;
-  v7 = a4;
+  successCopy = success;
+  failureCopy = failure;
   OspreyLoggingInit();
   v8 = OspreyLogContextAbsinthe;
   if (os_log_type_enabled(OspreyLogContextAbsinthe, OS_LOG_TYPE_DEBUG))
@@ -54,8 +54,8 @@
   BufferPointer = flatbuffers::FlatBufferBuilder::GetBufferPointer(&v29);
   v19 = [v17 initWithBytes:BufferPointer length:(v32 - v33 + DWORD2(v32))];
   v20 = [OspreyRequest requestWithMethodName:@"/siri.sidecars.auth.AuthSession/GetCertificate"];
-  v21 = [(NSUUID *)self->_authUUID UUIDString];
-  [v20 setClientTraceId:v21];
+  uUIDString = [(NSUUID *)self->_authUUID UUIDString];
+  [v20 setClientTraceId:uUIDString];
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_authStrategyVersion];
   [v20 setDeviceAuthenticationVersion:v22];
@@ -65,9 +65,9 @@
   v26[1] = 3221225472;
   v26[2] = __56__OspreyAuthService_certificateDataWithSuccess_failure___block_invoke;
   v26[3] = &unk_2799F2070;
-  v24 = v7;
+  v24 = failureCopy;
   v27 = v24;
-  v25 = v6;
+  v25 = successCopy;
   v28 = v25;
   [(OspreyGRPCChannel *)channel unaryRequest:v20 requestData:v19 responseHandler:v26];
 
@@ -121,11 +121,11 @@ void __56__OspreyAuthService_certificateDataWithSuccess_failure___block_invoke(u
   }
 }
 
-- (void)createClientSessionWithData:(id)a3 success:(id)a4 failure:(id)a5
+- (void)createClientSessionWithData:(id)data success:(id)success failure:(id)failure
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  successCopy = success;
+  failureCopy = failure;
   OspreyLoggingInit();
   v11 = OspreyLogContextAbsinthe;
   if (os_log_type_enabled(OspreyLogContextAbsinthe, OS_LOG_TYPE_DEBUG))
@@ -133,12 +133,12 @@ void __56__OspreyAuthService_certificateDataWithSuccess_failure___block_invoke(u
     [(OspreyAuthService *)v11 createClientSessionWithData:v12 success:v13 failure:v14, v15, v16, v17, v18];
   }
 
-  v19 = [v8 bytes];
-  v20 = [v8 length];
+  bytes = [dataCopy bytes];
+  v20 = [dataCopy length];
   v48 = 0;
   v49 = 0;
   v50 = 0;
-  std::vector<unsigned char>::__init_with_size[abi:ne200100]<unsigned char *,unsigned char *>(&v48, v19, v19 + v20, v20);
+  std::vector<unsigned char>::__init_with_size[abi:ne200100]<unsigned char *,unsigned char *>(&v48, bytes, bytes + v20, v20);
   v39 = 0;
   v40 = 0;
   v41 = xmmword_25DE49DA0;
@@ -171,8 +171,8 @@ void __56__OspreyAuthService_certificateDataWithSuccess_failure___block_invoke(u
   BufferPointer = flatbuffers::FlatBufferBuilder::GetBufferPointer(&v39);
   v29 = [v27 dataWithBytes:BufferPointer length:(v42 - v43 + DWORD2(v42))];
   v30 = [OspreyRequest requestWithMethodName:@"/siri.sidecars.auth.AuthSession/CreateSession"];
-  v31 = [(NSUUID *)self->_authUUID UUIDString];
-  [v30 setClientTraceId:v31];
+  uUIDString = [(NSUUID *)self->_authUUID UUIDString];
+  [v30 setClientTraceId:uUIDString];
 
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_authStrategyVersion];
   [v30 setDeviceAuthenticationVersion:v32];
@@ -182,9 +182,9 @@ void __56__OspreyAuthService_certificateDataWithSuccess_failure___block_invoke(u
   v36[1] = 3221225472;
   v36[2] = __65__OspreyAuthService_createClientSessionWithData_success_failure___block_invoke;
   v36[3] = &unk_2799F2070;
-  v34 = v10;
+  v34 = failureCopy;
   v37 = v34;
-  v35 = v9;
+  v35 = successCopy;
   v38 = v35;
   [(OspreyGRPCChannel *)channel unaryRequest:v30 requestData:v29 responseHandler:v36];
 

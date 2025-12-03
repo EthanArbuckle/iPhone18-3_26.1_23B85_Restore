@@ -1,7 +1,7 @@
 @interface PKPaymentRequestMerchantSessionUpdate
-- (PKPaymentRequestMerchantSessionUpdate)initWithCoder:(id)a3;
+- (PKPaymentRequestMerchantSessionUpdate)initWithCoder:(id)coder;
 - (PKPaymentRequestMerchantSessionUpdate)initWithStatus:(PKPaymentAuthorizationStatus)status merchantSession:(PKPaymentMerchantSession *)session;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentRequestMerchantSessionUpdate
@@ -22,30 +22,30 @@
   return v9;
 }
 
-- (PKPaymentRequestMerchantSessionUpdate)initWithCoder:(id)a3
+- (PKPaymentRequestMerchantSessionUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPaymentRequestMerchantSessionUpdate;
   v5 = [(PKPaymentRequestMerchantSessionUpdate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session"];
     session = v5->_session;
     v5->_session = v6;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   session = self->_session;
-  v5 = a3;
-  [v5 encodeObject:session forKey:@"session"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
+  coderCopy = coder;
+  [coderCopy encodeObject:session forKey:@"session"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
 }
 
 @end

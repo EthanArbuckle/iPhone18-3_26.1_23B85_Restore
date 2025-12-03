@@ -2,7 +2,7 @@
 - (AVFullScreenViewController)avFullScreenViewController;
 - (AVFullScreenViewController)rotatableWindowViewController;
 - (AVPresentationContainerView)presentedPresentationContainerView;
-- (AVPresentationContext)initWithPresentationController:(id)a3 configuration:(id)a4;
+- (AVPresentationContext)initWithPresentationController:(id)controller configuration:(id)configuration;
 - (AVPresentationContextTransition)currentTransition;
 - (AVPresentationController)presentationController;
 - (BOOL)canBeInteractivelyDismissed;
@@ -20,7 +20,7 @@
 - (id)presentingView;
 - (id)toView;
 - (int64_t)transitionType;
-- (void)setTransitionContext:(id)a3;
+- (void)setTransitionContext:(id)context;
 @end
 
 @implementation AVPresentationContext
@@ -55,8 +55,8 @@
 
 - (id)toView
 {
-  v2 = [(AVPresentationContext *)self transitionContext];
-  v3 = [v2 viewForKey:*MEMORY[0x1E69DE780]];
+  transitionContext = [(AVPresentationContext *)self transitionContext];
+  v3 = [transitionContext viewForKey:*MEMORY[0x1E69DE780]];
 
   return v3;
 }
@@ -80,28 +80,28 @@
 {
   if ([(AVPresentationContext *)self isPresenting])
   {
-    v3 = [(AVPresentationContext *)self presentingTransition];
+    presentingTransition = [(AVPresentationContext *)self presentingTransition];
 LABEL_5:
-    v5 = v3;
-    v6 = [v3 wasInitiallyInteractive];
+    v5 = presentingTransition;
+    wasInitiallyInteractive = [presentingTransition wasInitiallyInteractive];
 
-    LOBYTE(v4) = v6;
-    return v4;
+    LOBYTE(isDismissing) = wasInitiallyInteractive;
+    return isDismissing;
   }
 
-  v4 = [(AVPresentationContext *)self isDismissing];
-  if (v4)
+  isDismissing = [(AVPresentationContext *)self isDismissing];
+  if (isDismissing)
   {
-    v3 = [(AVPresentationContext *)self dismissingTransition];
+    presentingTransition = [(AVPresentationContext *)self dismissingTransition];
     goto LABEL_5;
   }
 
-  return v4;
+  return isDismissing;
 }
 
-- (void)setTransitionContext:(id)a3
+- (void)setTransitionContext:(id)context
 {
-  obj = a3;
+  obj = context;
   WeakRetained = objc_loadWeakRetained(&self->_transitionContext);
 
   v5 = obj;
@@ -114,77 +114,77 @@ LABEL_5:
 
 - (AVFullScreenViewController)rotatableWindowViewController
 {
-  v2 = [(AVPresentationContext *)self rotatableSecondWindow];
-  v3 = [v2 rootViewController];
+  rotatableSecondWindow = [(AVPresentationContext *)self rotatableSecondWindow];
+  rootViewController = [rotatableSecondWindow rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
 - (UIWindow)presentationWindow
 {
-  v3 = [(AVPresentationContext *)self presentationController];
-  v4 = [v3 containerView];
-  v5 = [v4 window];
+  presentationController = [(AVPresentationContext *)self presentationController];
+  containerView = [presentationController containerView];
+  window = [containerView window];
 
-  if (!v5)
+  if (!window)
   {
-    v6 = [(AVPresentationContext *)self presentationController];
-    v7 = [v6 presentingViewController];
-    v8 = [v7 view];
-    v9 = [v8 window];
-    v10 = v9;
-    if (v9)
+    presentationController2 = [(AVPresentationContext *)self presentationController];
+    presentingViewController = [presentationController2 presentingViewController];
+    view = [presentingViewController view];
+    window2 = [view window];
+    v10 = window2;
+    if (window2)
     {
-      v5 = v9;
+      window = window2;
     }
 
     else
     {
-      v11 = [(AVPresentationContext *)self presentationController];
-      v12 = [v11 presentedViewController];
-      v13 = [v12 view];
-      v5 = [v13 window];
+      presentationController3 = [(AVPresentationContext *)self presentationController];
+      presentedViewController = [presentationController3 presentedViewController];
+      view2 = [presentedViewController view];
+      window = [view2 window];
     }
   }
 
-  return v5;
+  return window;
 }
 
 - (id)presentingView
 {
   if ([(AVPresentationContext *)self isPresenting])
   {
-    v3 = [(AVPresentationContext *)self fromView];
+    fromView = [(AVPresentationContext *)self fromView];
   }
 
   else if ([(AVPresentationContext *)self isDismissing])
   {
-    v3 = [(AVPresentationContext *)self toView];
+    fromView = [(AVPresentationContext *)self toView];
   }
 
   else
   {
-    v3 = 0;
+    fromView = 0;
   }
 
-  return v3;
+  return fromView;
 }
 
 - (UIViewController)presentedViewController
 {
-  v2 = [(AVPresentationContext *)self presentationController];
-  v3 = [v2 presentedViewController];
+  presentationController = [(AVPresentationContext *)self presentationController];
+  presentedViewController = [presentationController presentedViewController];
 
-  return v3;
+  return presentedViewController;
 }
 
 - (AVPresentationContainerView)presentedPresentationContainerView
 {
-  v3 = [(AVPresentationContext *)self presentedView];
+  presentedView = [(AVPresentationContext *)self presentedView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(AVPresentationContext *)self presentedView];
+  presentedView2 = [(AVPresentationContext *)self presentedView];
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
@@ -200,35 +200,35 @@ LABEL_5:
       }
     }
 
-    v8 = [(AVPresentationContext *)self presentationController];
-    v5 = [v8 presentedPresentationContainerView];
+    presentationController = [(AVPresentationContext *)self presentationController];
+    presentedView2 = [presentationController presentedPresentationContainerView];
   }
 
-  return v5;
+  return presentedView2;
 }
 
 - (UIView)presentedView
 {
-  v2 = [(AVPresentationContext *)self presentedViewController];
-  v3 = [v2 view];
+  presentedViewController = [(AVPresentationContext *)self presentedViewController];
+  view = [presentedViewController view];
 
-  return v3;
+  return view;
 }
 
 - (BOOL)isPresenting
 {
-  v2 = [(AVPresentationContext *)self presentationController];
-  v3 = [v2 presenting];
+  presentationController = [(AVPresentationContext *)self presentationController];
+  presenting = [presentationController presenting];
 
-  return v3;
+  return presenting;
 }
 
 - (BOOL)isDismissing
 {
-  v2 = [(AVPresentationContext *)self presentationController];
-  v3 = [v2 dismissing];
+  presentationController = [(AVPresentationContext *)self presentationController];
+  dismissing = [presentationController dismissing];
 
-  return v3;
+  return dismissing;
 }
 
 - (BOOL)hasActiveTransition
@@ -243,8 +243,8 @@ LABEL_5:
 
 - (id)fromView
 {
-  v2 = [(AVPresentationContext *)self transitionContext];
-  v3 = [v2 viewForKey:*MEMORY[0x1E69DE770]];
+  transitionContext = [(AVPresentationContext *)self transitionContext];
+  v3 = [transitionContext viewForKey:*MEMORY[0x1E69DE770]];
 
   return v3;
 }
@@ -253,39 +253,39 @@ LABEL_5:
 {
   if ([(AVPresentationContext *)self isPresenting])
   {
-    v3 = [(AVPresentationContext *)self presentingTransition];
+    presentingTransition = [(AVPresentationContext *)self presentingTransition];
   }
 
   else if ([(AVPresentationContext *)self isDismissing])
   {
-    v3 = [(AVPresentationContext *)self dismissingTransition];
+    presentingTransition = [(AVPresentationContext *)self dismissingTransition];
   }
 
   else
   {
-    v3 = 0;
+    presentingTransition = 0;
   }
 
-  return v3;
+  return presentingTransition;
 }
 
 - (UIView)containerView
 {
-  v3 = [(AVPresentationContext *)self presentationController];
-  v4 = [v3 containerView];
-  v5 = v4;
-  if (v4)
+  presentationController = [(AVPresentationContext *)self presentationController];
+  containerView = [presentationController containerView];
+  v5 = containerView;
+  if (containerView)
   {
-    v6 = v4;
+    containerView2 = containerView;
   }
 
   else
   {
-    v7 = [(AVPresentationContext *)self transitionContext];
-    v6 = [v7 containerView];
+    transitionContext = [(AVPresentationContext *)self transitionContext];
+    containerView2 = [transitionContext containerView];
   }
 
-  return v6;
+  return containerView2;
 }
 
 - (BOOL)canBeInteractivelyDismissed
@@ -293,38 +293,38 @@ LABEL_5:
   v3 = 1;
   if (!+[AVPresentationContext supportsInteractiveCounterRotationDismissals])
   {
-    v4 = [(AVPresentationContext *)self presentationController];
-    v5 = [v4 containerView];
-    v6 = [v5 window];
+    presentationController = [(AVPresentationContext *)self presentationController];
+    containerView = [presentationController containerView];
+    window = [containerView window];
 
-    v7 = [*MEMORY[0x1E69DDA98] _supportedInterfaceOrientationsForWindow:v6];
-    v8 = [(AVPresentationContext *)self presentationController];
-    v9 = [v8 presentingViewController];
-    v10 = [v9 supportedInterfaceOrientations];
+    v7 = [*MEMORY[0x1E69DDA98] _supportedInterfaceOrientationsForWindow:window];
+    presentationController2 = [(AVPresentationContext *)self presentationController];
+    presentingViewController = [presentationController2 presentingViewController];
+    supportedInterfaceOrientations = [presentingViewController supportedInterfaceOrientations];
 
-    v3 = ((1 << [v6 _windowInterfaceOrientation]) & ~(v10 & v7)) == 0;
+    v3 = ((1 << [window _windowInterfaceOrientation]) & ~(supportedInterfaceOrientations & v7)) == 0;
   }
 
   return v3;
 }
 
-- (AVPresentationContext)initWithPresentationController:(id)a3 configuration:(id)a4
+- (AVPresentationContext)initWithPresentationController:(id)controller configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = AVPresentationContext;
   v8 = [(AVPresentationContext *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_presentationController, v6);
-    v10 = [v6 presentedViewController];
+    objc_storeWeak(&v8->_presentationController, controllerCopy);
+    presentedViewController = [controllerCopy presentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v6 presentedViewController];
-      objc_storeWeak(&v9->_avFullScreenViewController, v11);
+      presentedViewController2 = [controllerCopy presentedViewController];
+      objc_storeWeak(&v9->_avFullScreenViewController, presentedViewController2);
     }
 
     else
@@ -341,7 +341,7 @@ LABEL_5:
     touchBlockingView = v9->_touchBlockingView;
     v9->_touchBlockingView = v14;
 
-    objc_storeStrong(&v9->_configuration, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
   }
 
   return v9;

@@ -1,27 +1,27 @@
 @interface UpdatesManager_Swift
 + (_TtC9appstored20UpdatesManager_Swift)shared;
-- (void)autoUpdateEnabled:(id)a3;
-- (void)confirmAgentRequestedUpdateAll:(id)a3;
-- (void)dropAllUpdatesIncludingVPP:(BOOL)a3 completionHandler:(id)a4;
-- (void)getManagedUpdatesWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4;
-- (void)getUpdateMetadataForBundleID:(NSString *)a3 replyHandler:(id)a4;
-- (void)getUpdatesWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4;
+- (void)autoUpdateEnabled:(id)enabled;
+- (void)confirmAgentRequestedUpdateAll:(id)all;
+- (void)dropAllUpdatesIncludingVPP:(BOOL)p completionHandler:(id)handler;
+- (void)getManagedUpdatesWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler;
+- (void)getUpdateMetadataForBundleID:(NSString *)d replyHandler:(id)handler;
+- (void)getUpdatesWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler;
 - (void)handleAccountChangeNotification;
-- (void)isTVProviderApp:(unint64_t)a3 withReplyHandler:(id)a4;
-- (void)noteUpdatesStateChanged:(id)a3 logKey:(id)a4;
-- (void)refreshUpdateCountWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4;
-- (void)refreshUpdateForApp:(int64_t)a3 token:(XPCRequestToken *)a4 replyHandler:(id)a5;
-- (void)reloadApplicationBadgeWithReason:(id)a3;
-- (void)reloadFromServerInBackgroundWithToken:(XPCRequestToken *)a3 completionBlock:(id)a4;
-- (void)reloadFromServerWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4;
-- (void)reloadManagedUpdatesWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4;
-- (void)setAutoUpdateEnabled:(BOOL)a3 withReplyHandler:(id)a4;
+- (void)isTVProviderApp:(unint64_t)app withReplyHandler:(id)handler;
+- (void)noteUpdatesStateChanged:(id)changed logKey:(id)key;
+- (void)refreshUpdateCountWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler;
+- (void)refreshUpdateForApp:(int64_t)app token:(XPCRequestToken *)token replyHandler:(id)handler;
+- (void)reloadApplicationBadgeWithReason:(id)reason;
+- (void)reloadFromServerInBackgroundWithToken:(XPCRequestToken *)token completionBlock:(id)block;
+- (void)reloadFromServerWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler;
+- (void)reloadManagedUpdatesWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler;
+- (void)setAutoUpdateEnabled:(BOOL)enabled withReplyHandler:(id)handler;
 - (void)setupFollowingMigration;
-- (void)showPendingUpdatesBadgeWithRequestToken:(id)a3;
-- (void)updateAllWithOrder:(NSArray *)a3 requestToken:(XPCRequestToken *)a4 replyHandler:(id)a5;
-- (void)verifyAllPendingUpdatesWithCompletionHandler:(id)a3;
-- (void)verifyPendingUpdates:(id)a3 bag:(id)a4;
-- (void)verifyUpdatesFollowingExternalAppInstall:(id)a3;
+- (void)showPendingUpdatesBadgeWithRequestToken:(id)token;
+- (void)updateAllWithOrder:(NSArray *)order requestToken:(XPCRequestToken *)token replyHandler:(id)handler;
+- (void)verifyAllPendingUpdatesWithCompletionHandler:(id)handler;
+- (void)verifyPendingUpdates:(id)updates bag:(id)bag;
+- (void)verifyUpdatesFollowingExternalAppInstall:(id)install;
 @end
 
 @implementation UpdatesManager_Swift
@@ -36,12 +36,12 @@
   return v2;
 }
 
-- (void)autoUpdateEnabled:(id)a3
+- (void)autoUpdateEnabled:(id)enabled
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(enabled);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -61,12 +61,12 @@
   sub_1001BD9B4(0, 0, v7, &unk_1004376C0, v12);
 }
 
-- (void)confirmAgentRequestedUpdateAll:(id)a3
+- (void)confirmAgentRequestedUpdateAll:(id)all
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(all);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -86,14 +86,14 @@
   sub_1001BD9B4(0, 0, v7, &unk_1004376A0, v12);
 }
 
-- (void)dropAllUpdatesIncludingVPP:(BOOL)a3 completionHandler:(id)a4
+- (void)dropAllUpdatesIncludingVPP:(BOOL)p completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = p;
   *(v11 + 24) = v10;
   *(v11 + 32) = self;
   v12 = type metadata accessor for TaskPriority();
@@ -112,14 +112,14 @@
   sub_1001BD9B4(0, 0, v9, &unk_100437680, v14);
 }
 
-- (void)isTVProviderApp:(unint64_t)a3 withReplyHandler:(id)a4
+- (void)isTVProviderApp:(unint64_t)app withReplyHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = app;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -138,14 +138,14 @@
   sub_1001BD9B4(0, 0, v9, &unk_100437640, v14);
 }
 
-- (void)getManagedUpdatesWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4
+- (void)getManagedUpdatesWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = token;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -160,28 +160,28 @@
   v14[3] = 0;
   v14[4] = &unk_100437618;
   v14[5] = v13;
-  v15 = a3;
+  tokenCopy = token;
 
   sub_1001BD9B4(0, 0, v9, &unk_100437620, v14);
 }
 
-- (void)noteUpdatesStateChanged:(id)a3 logKey:(id)a4
+- (void)noteUpdatesStateChanged:(id)changed logKey:(id)key
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = a4;
+  keyCopy = key;
 
-  sub_1001214F8(v5, v7, a4);
+  sub_1001214F8(v5, v7, key);
 }
 
-- (void)refreshUpdateCountWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4
+- (void)refreshUpdateCountWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = token;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -196,20 +196,20 @@
   v14[3] = 0;
   v14[4] = &unk_1004375B0;
   v14[5] = v13;
-  v15 = a3;
+  tokenCopy = token;
 
   sub_1001BD9B4(0, 0, v9, &unk_1004375B8, v14);
 }
 
-- (void)refreshUpdateForApp:(int64_t)a3 token:(XPCRequestToken *)a4 replyHandler:(id)a5
+- (void)refreshUpdateForApp:(int64_t)app token:(XPCRequestToken *)token replyHandler:(id)handler
 {
   v9 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v9 - 8);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = app;
+  v13[3] = token;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -224,12 +224,12 @@
   v16[3] = 0;
   v16[4] = &unk_100437580;
   v16[5] = v15;
-  v17 = a4;
+  tokenCopy = token;
 
   sub_1001BD9B4(0, 0, v11, &unk_100437588, v16);
 }
 
-- (void)reloadApplicationBadgeWithReason:(id)a3
+- (void)reloadApplicationBadgeWithReason:(id)reason
 {
   v4 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v4 - 8);
@@ -248,14 +248,14 @@
   sub_10019F620(0, 0, v6, &unk_100437568, v11);
 }
 
-- (void)reloadFromServerWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4
+- (void)reloadFromServerWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = token;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -270,19 +270,19 @@
   v14[3] = 0;
   v14[4] = &unk_100437550;
   v14[5] = v13;
-  v15 = a3;
+  tokenCopy = token;
 
   sub_1001BD9B4(0, 0, v9, &unk_100437558, v14);
 }
 
-- (void)reloadFromServerInBackgroundWithToken:(XPCRequestToken *)a3 completionBlock:(id)a4
+- (void)reloadFromServerInBackgroundWithToken:(XPCRequestToken *)token completionBlock:(id)block
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(block);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = token;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -297,19 +297,19 @@
   v14[3] = 0;
   v14[4] = &unk_100437530;
   v14[5] = v13;
-  v15 = a3;
+  tokenCopy = token;
 
   sub_1001BD9B4(0, 0, v9, &unk_100437538, v14);
 }
 
-- (void)reloadManagedUpdatesWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4
+- (void)reloadManagedUpdatesWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = token;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -324,19 +324,19 @@
   v14[3] = 0;
   v14[4] = &unk_100437510;
   v14[5] = v13;
-  v15 = a3;
+  tokenCopy = token;
 
   sub_1001BD9B4(0, 0, v9, &unk_100437518, v14);
 }
 
-- (void)setAutoUpdateEnabled:(BOOL)a3 withReplyHandler:(id)a4
+- (void)setAutoUpdateEnabled:(BOOL)enabled withReplyHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = enabled;
   *(v11 + 24) = v10;
   *(v11 + 32) = self;
   v12 = type metadata accessor for TaskPriority();
@@ -361,22 +361,22 @@
   sub_10012628C();
 }
 
-- (void)showPendingUpdatesBadgeWithRequestToken:(id)a3
+- (void)showPendingUpdatesBadgeWithRequestToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
 
-  sub_100126E08(v3);
+  sub_100126E08(tokenCopy);
 }
 
-- (void)updateAllWithOrder:(NSArray *)a3 requestToken:(XPCRequestToken *)a4 replyHandler:(id)a5
+- (void)updateAllWithOrder:(NSArray *)order requestToken:(XPCRequestToken *)token replyHandler:(id)handler
 {
   v9 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = order;
+  v13[3] = token;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -391,20 +391,20 @@
   v16[3] = 0;
   v16[4] = &unk_1004374C0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
+  orderCopy = order;
+  tokenCopy = token;
 
   sub_1001BD9B4(0, 0, v11, &unk_1004374C8, v16);
 }
 
-- (void)getUpdateMetadataForBundleID:(NSString *)a3 replyHandler:(id)a4
+- (void)getUpdateMetadataForBundleID:(NSString *)d replyHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -419,19 +419,19 @@
   v14[3] = 0;
   v14[4] = &unk_1004374A0;
   v14[5] = v13;
-  v15 = a3;
+  dCopy = d;
 
   sub_1001BD9B4(0, 0, v9, &unk_1004374A8, v14);
 }
 
-- (void)getUpdatesWithRequestToken:(XPCRequestToken *)a3 replyHandler:(id)a4
+- (void)getUpdatesWithRequestToken:(XPCRequestToken *)token replyHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = token;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -446,17 +446,17 @@
   v14[3] = 0;
   v14[4] = &unk_100437480;
   v14[5] = v13;
-  v15 = a3;
+  tokenCopy = token;
 
   sub_1001BD9B4(0, 0, v9, &unk_100437488, v14);
 }
 
-- (void)verifyAllPendingUpdatesWithCompletionHandler:(id)a3
+- (void)verifyAllPendingUpdatesWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -476,15 +476,15 @@
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 
-- (void)verifyPendingUpdates:(id)a3 bag:(id)a4
+- (void)verifyPendingUpdates:(id)updates bag:(id)bag
 {
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
+  bagCopy = bag;
 
-  sub_10012A7B4(v5, v6);
+  sub_10012A7B4(v5, bagCopy);
 }
 
-- (void)verifyUpdatesFollowingExternalAppInstall:(id)a3
+- (void)verifyUpdatesFollowingExternalAppInstall:(id)install
 {
   v4 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v4 - 8);

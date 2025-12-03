@@ -1,12 +1,12 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowStepContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowStepContext
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowStepContext;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   stepIdentifier = self->_stepIdentifier;
   if (stepIdentifier)
   {
-    [v3 setObject:stepIdentifier forKey:@"stepIdentifier"];
+    [dictionary setObject:stepIdentifier forKey:@"stepIdentifier"];
   }
 
   backStepIdentifier = self->_backStepIdentifier;
@@ -48,162 +48,162 @@
   welcomeStepContext = self->_welcomeStepContext;
   if (welcomeStepContext)
   {
-    v9 = [(NPKProtoStandalonePaymentProvisioningFlowWelcomeStepContext *)welcomeStepContext dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"welcomeStepContext"];
+    dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowWelcomeStepContext *)welcomeStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"welcomeStepContext"];
   }
 
   chooseFlowStepContext = self->_chooseFlowStepContext;
   if (chooseFlowStepContext)
   {
-    v11 = [(NPKProtoStandalonePaymentProvisioningFlowChooseFlowStepContext *)chooseFlowStepContext dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"chooseFlowStepContext"];
+    dictionaryRepresentation2 = [(NPKProtoStandalonePaymentProvisioningFlowChooseFlowStepContext *)chooseFlowStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"chooseFlowStepContext"];
   }
 
   chooseProductStepContext = self->_chooseProductStepContext;
   if (chooseProductStepContext)
   {
-    v13 = [(NPKProtoStandalonePaymentProvisioningFlowChooseProductStepContext *)chooseProductStepContext dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"chooseProductStepContext"];
+    dictionaryRepresentation3 = [(NPKProtoStandalonePaymentProvisioningFlowChooseProductStepContext *)chooseProductStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"chooseProductStepContext"];
   }
 
   chooseCredentialsStepContext = self->_chooseCredentialsStepContext;
   if (chooseCredentialsStepContext)
   {
-    v15 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)chooseCredentialsStepContext dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"chooseCredentialsStepContext"];
+    dictionaryRepresentation4 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)chooseCredentialsStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"chooseCredentialsStepContext"];
   }
 
   digitalIssuanceAmountStepContext = self->_digitalIssuanceAmountStepContext;
   if (digitalIssuanceAmountStepContext)
   {
-    v17 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)digitalIssuanceAmountStepContext dictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"digitalIssuanceAmountStepContext"];
+    dictionaryRepresentation5 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)digitalIssuanceAmountStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"digitalIssuanceAmountStepContext"];
   }
 
   digitalIssuancePaymentStepContext = self->_digitalIssuancePaymentStepContext;
   if (digitalIssuancePaymentStepContext)
   {
-    v19 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuancePaymentStepContext *)digitalIssuancePaymentStepContext dictionaryRepresentation];
-    [v4 setObject:v19 forKey:@"digitalIssuancePaymentStepContext"];
+    dictionaryRepresentation6 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuancePaymentStepContext *)digitalIssuancePaymentStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"digitalIssuancePaymentStepContext"];
   }
 
   moreInformationStepContext = self->_moreInformationStepContext;
   if (moreInformationStepContext)
   {
-    v21 = [(NPKProtoStandalonePaymentProvisioningFlowMoreInformationStepContext *)moreInformationStepContext dictionaryRepresentation];
-    [v4 setObject:v21 forKey:@"moreInformationStepContext"];
+    dictionaryRepresentation7 = [(NPKProtoStandalonePaymentProvisioningFlowMoreInformationStepContext *)moreInformationStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation7 forKey:@"moreInformationStepContext"];
   }
 
   readerModeEntryStepContext = self->_readerModeEntryStepContext;
   if (readerModeEntryStepContext)
   {
-    v23 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeEntryStepContext *)readerModeEntryStepContext dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"readerModeEntryStepContext"];
+    dictionaryRepresentation8 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeEntryStepContext *)readerModeEntryStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation8 forKey:@"readerModeEntryStepContext"];
   }
 
   readerModeIngestionStepContext = self->_readerModeIngestionStepContext;
   if (readerModeIngestionStepContext)
   {
-    v25 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)readerModeIngestionStepContext dictionaryRepresentation];
-    [v4 setObject:v25 forKey:@"readerModeIngestionStepContext"];
+    dictionaryRepresentation9 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)readerModeIngestionStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation9 forKey:@"readerModeIngestionStepContext"];
   }
 
   manualEntryStepContext = self->_manualEntryStepContext;
   if (manualEntryStepContext)
   {
-    v27 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)manualEntryStepContext dictionaryRepresentation];
-    [v4 setObject:v27 forKey:@"manualEntryStepContext"];
+    dictionaryRepresentation10 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)manualEntryStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation10 forKey:@"manualEntryStepContext"];
   }
 
   secondaryManualEntryStepContext = self->_secondaryManualEntryStepContext;
   if (secondaryManualEntryStepContext)
   {
-    v29 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)secondaryManualEntryStepContext dictionaryRepresentation];
-    [v4 setObject:v29 forKey:@"secondaryManualEntryStepContext"];
+    dictionaryRepresentation11 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)secondaryManualEntryStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation11 forKey:@"secondaryManualEntryStepContext"];
   }
 
   localDeviceManualEntryStepContext = self->_localDeviceManualEntryStepContext;
   if (localDeviceManualEntryStepContext)
   {
-    v31 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)localDeviceManualEntryStepContext dictionaryRepresentation];
-    [v4 setObject:v31 forKey:@"localDeviceManualEntryStepContext"];
+    dictionaryRepresentation12 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)localDeviceManualEntryStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation12 forKey:@"localDeviceManualEntryStepContext"];
   }
 
   localDeviceManualEntryProgressStepContext = self->_localDeviceManualEntryProgressStepContext;
   if (localDeviceManualEntryProgressStepContext)
   {
-    v33 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryProgressStepContext *)localDeviceManualEntryProgressStepContext dictionaryRepresentation];
-    [v4 setObject:v33 forKey:@"localDeviceManualEntryProgressStepContext"];
+    dictionaryRepresentation13 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryProgressStepContext *)localDeviceManualEntryProgressStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation13 forKey:@"localDeviceManualEntryProgressStepContext"];
   }
 
   productDisambiguationStepContext = self->_productDisambiguationStepContext;
   if (productDisambiguationStepContext)
   {
-    v35 = [(NPKProtoStandalonePaymentProvisioningFlowProductDisambiguationStepContext *)productDisambiguationStepContext dictionaryRepresentation];
-    [v4 setObject:v35 forKey:@"productDisambiguationStepContext"];
+    dictionaryRepresentation14 = [(NPKProtoStandalonePaymentProvisioningFlowProductDisambiguationStepContext *)productDisambiguationStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation14 forKey:@"productDisambiguationStepContext"];
   }
 
   passcodeUpgradeStepContext = self->_passcodeUpgradeStepContext;
   if (passcodeUpgradeStepContext)
   {
-    v37 = [(NPKProtoStandalonePaymentProvisioningFlowPasscodeUpgradeStepContext *)passcodeUpgradeStepContext dictionaryRepresentation];
-    [v4 setObject:v37 forKey:@"passcodeUpgradeStepContext"];
+    dictionaryRepresentation15 = [(NPKProtoStandalonePaymentProvisioningFlowPasscodeUpgradeStepContext *)passcodeUpgradeStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation15 forKey:@"passcodeUpgradeStepContext"];
   }
 
   termsAndConditionsStepContext = self->_termsAndConditionsStepContext;
   if (termsAndConditionsStepContext)
   {
-    v39 = [(NPKProtoStandalonePaymentProvisioningFlowTermsAndConditionsStepContext *)termsAndConditionsStepContext dictionaryRepresentation];
-    [v4 setObject:v39 forKey:@"termsAndConditionsStepContext"];
+    dictionaryRepresentation16 = [(NPKProtoStandalonePaymentProvisioningFlowTermsAndConditionsStepContext *)termsAndConditionsStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation16 forKey:@"termsAndConditionsStepContext"];
   }
 
   provisioningProgressStepContext = self->_provisioningProgressStepContext;
   if (provisioningProgressStepContext)
   {
-    v41 = [(NPKProtoStandalonePaymentProvisioningFlowProvisioningProgressStepContext *)provisioningProgressStepContext dictionaryRepresentation];
-    [v4 setObject:v41 forKey:@"provisioningProgressStepContext"];
+    dictionaryRepresentation17 = [(NPKProtoStandalonePaymentProvisioningFlowProvisioningProgressStepContext *)provisioningProgressStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation17 forKey:@"provisioningProgressStepContext"];
   }
 
   provisioningResultStepContext = self->_provisioningResultStepContext;
   if (provisioningResultStepContext)
   {
-    v43 = [(NPKProtoStandalonePaymentProvisioningFlowProvisioningResultStepContext *)provisioningResultStepContext dictionaryRepresentation];
-    [v4 setObject:v43 forKey:@"provisioningResultStepContext"];
+    dictionaryRepresentation18 = [(NPKProtoStandalonePaymentProvisioningFlowProvisioningResultStepContext *)provisioningResultStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation18 forKey:@"provisioningResultStepContext"];
   }
 
   issuerVerificationChannelsStepContext = self->_issuerVerificationChannelsStepContext;
   if (issuerVerificationChannelsStepContext)
   {
-    v45 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)issuerVerificationChannelsStepContext dictionaryRepresentation];
-    [v4 setObject:v45 forKey:@"issuerVerificationChannelsStepContext"];
+    dictionaryRepresentation19 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)issuerVerificationChannelsStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation19 forKey:@"issuerVerificationChannelsStepContext"];
   }
 
   issuerVerificationFieldsStepContext = self->_issuerVerificationFieldsStepContext;
   if (issuerVerificationFieldsStepContext)
   {
-    v47 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationFieldsStepContext *)issuerVerificationFieldsStepContext dictionaryRepresentation];
-    [v4 setObject:v47 forKey:@"issuerVerificationFieldsStepContext"];
+    dictionaryRepresentation20 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationFieldsStepContext *)issuerVerificationFieldsStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation20 forKey:@"issuerVerificationFieldsStepContext"];
   }
 
   issuerVerificationCodeStepContext = self->_issuerVerificationCodeStepContext;
   if (issuerVerificationCodeStepContext)
   {
-    v49 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationCodeStepContext *)issuerVerificationCodeStepContext dictionaryRepresentation];
-    [v4 setObject:v49 forKey:@"issuerVerificationCodeStepContext"];
+    dictionaryRepresentation21 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationCodeStepContext *)issuerVerificationCodeStepContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation21 forKey:@"issuerVerificationCodeStepContext"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_stepIdentifier)
   {
     [NPKProtoStandalonePaymentProvisioningFlowStepContext writeTo:];
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_backStepIdentifier)
   {
@@ -344,157 +344,157 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setStepIdentifier:self->_stepIdentifier];
+  toCopy = to;
+  [toCopy setStepIdentifier:self->_stepIdentifier];
   if (self->_backStepIdentifier)
   {
-    [v5 setBackStepIdentifier:?];
+    [toCopy setBackStepIdentifier:?];
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (*&self->_has)
   {
-    v5[192] = self->_allowsAddLater;
-    v5[196] |= 1u;
+    toCopy[192] = self->_allowsAddLater;
+    toCopy[196] |= 1u;
   }
 
   if (self->_welcomeStepContext)
   {
-    [v5 setWelcomeStepContext:?];
-    v4 = v5;
+    [toCopy setWelcomeStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_chooseFlowStepContext)
   {
-    [v5 setChooseFlowStepContext:?];
-    v4 = v5;
+    [toCopy setChooseFlowStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_chooseProductStepContext)
   {
-    [v5 setChooseProductStepContext:?];
-    v4 = v5;
+    [toCopy setChooseProductStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_chooseCredentialsStepContext)
   {
-    [v5 setChooseCredentialsStepContext:?];
-    v4 = v5;
+    [toCopy setChooseCredentialsStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_digitalIssuanceAmountStepContext)
   {
-    [v5 setDigitalIssuanceAmountStepContext:?];
-    v4 = v5;
+    [toCopy setDigitalIssuanceAmountStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_digitalIssuancePaymentStepContext)
   {
-    [v5 setDigitalIssuancePaymentStepContext:?];
-    v4 = v5;
+    [toCopy setDigitalIssuancePaymentStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_moreInformationStepContext)
   {
-    [v5 setMoreInformationStepContext:?];
-    v4 = v5;
+    [toCopy setMoreInformationStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_readerModeEntryStepContext)
   {
-    [v5 setReaderModeEntryStepContext:?];
-    v4 = v5;
+    [toCopy setReaderModeEntryStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_readerModeIngestionStepContext)
   {
-    [v5 setReaderModeIngestionStepContext:?];
-    v4 = v5;
+    [toCopy setReaderModeIngestionStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_manualEntryStepContext)
   {
-    [v5 setManualEntryStepContext:?];
-    v4 = v5;
+    [toCopy setManualEntryStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_secondaryManualEntryStepContext)
   {
-    [v5 setSecondaryManualEntryStepContext:?];
-    v4 = v5;
+    [toCopy setSecondaryManualEntryStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_localDeviceManualEntryStepContext)
   {
-    [v5 setLocalDeviceManualEntryStepContext:?];
-    v4 = v5;
+    [toCopy setLocalDeviceManualEntryStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_localDeviceManualEntryProgressStepContext)
   {
-    [v5 setLocalDeviceManualEntryProgressStepContext:?];
-    v4 = v5;
+    [toCopy setLocalDeviceManualEntryProgressStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_productDisambiguationStepContext)
   {
-    [v5 setProductDisambiguationStepContext:?];
-    v4 = v5;
+    [toCopy setProductDisambiguationStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_passcodeUpgradeStepContext)
   {
-    [v5 setPasscodeUpgradeStepContext:?];
-    v4 = v5;
+    [toCopy setPasscodeUpgradeStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_termsAndConditionsStepContext)
   {
-    [v5 setTermsAndConditionsStepContext:?];
-    v4 = v5;
+    [toCopy setTermsAndConditionsStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_provisioningProgressStepContext)
   {
-    [v5 setProvisioningProgressStepContext:?];
-    v4 = v5;
+    [toCopy setProvisioningProgressStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_provisioningResultStepContext)
   {
-    [v5 setProvisioningResultStepContext:?];
-    v4 = v5;
+    [toCopy setProvisioningResultStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_issuerVerificationChannelsStepContext)
   {
-    [v5 setIssuerVerificationChannelsStepContext:?];
-    v4 = v5;
+    [toCopy setIssuerVerificationChannelsStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_issuerVerificationFieldsStepContext)
   {
-    [v5 setIssuerVerificationFieldsStepContext:?];
-    v4 = v5;
+    [toCopy setIssuerVerificationFieldsStepContext:?];
+    v4 = toCopy;
   }
 
   if (self->_issuerVerificationCodeStepContext)
   {
-    [v5 setIssuerVerificationCodeStepContext:?];
-    v4 = v5;
+    [toCopy setIssuerVerificationCodeStepContext:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_stepIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_stepIdentifier copyWithZone:zone];
   v7 = *(v5 + 168);
   *(v5 + 168) = v6;
 
-  v8 = [(NSString *)self->_backStepIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_backStepIdentifier copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -504,103 +504,103 @@
     *(v5 + 196) |= 1u;
   }
 
-  v10 = [(NPKProtoStandalonePaymentProvisioningFlowWelcomeStepContext *)self->_welcomeStepContext copyWithZone:a3];
+  v10 = [(NPKProtoStandalonePaymentProvisioningFlowWelcomeStepContext *)self->_welcomeStepContext copyWithZone:zone];
   v11 = *(v5 + 184);
   *(v5 + 184) = v10;
 
-  v12 = [(NPKProtoStandalonePaymentProvisioningFlowChooseFlowStepContext *)self->_chooseFlowStepContext copyWithZone:a3];
+  v12 = [(NPKProtoStandalonePaymentProvisioningFlowChooseFlowStepContext *)self->_chooseFlowStepContext copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
-  v14 = [(NPKProtoStandalonePaymentProvisioningFlowChooseProductStepContext *)self->_chooseProductStepContext copyWithZone:a3];
+  v14 = [(NPKProtoStandalonePaymentProvisioningFlowChooseProductStepContext *)self->_chooseProductStepContext copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
-  v16 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self->_chooseCredentialsStepContext copyWithZone:a3];
+  v16 = [(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)self->_chooseCredentialsStepContext copyWithZone:zone];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
-  v18 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)self->_digitalIssuanceAmountStepContext copyWithZone:a3];
+  v18 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)self->_digitalIssuanceAmountStepContext copyWithZone:zone];
   v19 = *(v5 + 40);
   *(v5 + 40) = v18;
 
-  v20 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuancePaymentStepContext *)self->_digitalIssuancePaymentStepContext copyWithZone:a3];
+  v20 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuancePaymentStepContext *)self->_digitalIssuancePaymentStepContext copyWithZone:zone];
   v21 = *(v5 + 48);
   *(v5 + 48) = v20;
 
-  v22 = [(NPKProtoStandalonePaymentProvisioningFlowMoreInformationStepContext *)self->_moreInformationStepContext copyWithZone:a3];
+  v22 = [(NPKProtoStandalonePaymentProvisioningFlowMoreInformationStepContext *)self->_moreInformationStepContext copyWithZone:zone];
   v23 = *(v5 + 104);
   *(v5 + 104) = v22;
 
-  v24 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeEntryStepContext *)self->_readerModeEntryStepContext copyWithZone:a3];
+  v24 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeEntryStepContext *)self->_readerModeEntryStepContext copyWithZone:zone];
   v25 = *(v5 + 144);
   *(v5 + 144) = v24;
 
-  v26 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)self->_readerModeIngestionStepContext copyWithZone:a3];
+  v26 = [(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)self->_readerModeIngestionStepContext copyWithZone:zone];
   v27 = *(v5 + 152);
   *(v5 + 152) = v26;
 
-  v28 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self->_manualEntryStepContext copyWithZone:a3];
+  v28 = [(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)self->_manualEntryStepContext copyWithZone:zone];
   v29 = *(v5 + 96);
   *(v5 + 96) = v28;
 
-  v30 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self->_secondaryManualEntryStepContext copyWithZone:a3];
+  v30 = [(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)self->_secondaryManualEntryStepContext copyWithZone:zone];
   v31 = *(v5 + 160);
   *(v5 + 160) = v30;
 
-  v32 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)self->_localDeviceManualEntryStepContext copyWithZone:a3];
+  v32 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)self->_localDeviceManualEntryStepContext copyWithZone:zone];
   v33 = *(v5 + 88);
   *(v5 + 88) = v32;
 
-  v34 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryProgressStepContext *)self->_localDeviceManualEntryProgressStepContext copyWithZone:a3];
+  v34 = [(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryProgressStepContext *)self->_localDeviceManualEntryProgressStepContext copyWithZone:zone];
   v35 = *(v5 + 80);
   *(v5 + 80) = v34;
 
-  v36 = [(NPKProtoStandalonePaymentProvisioningFlowProductDisambiguationStepContext *)self->_productDisambiguationStepContext copyWithZone:a3];
+  v36 = [(NPKProtoStandalonePaymentProvisioningFlowProductDisambiguationStepContext *)self->_productDisambiguationStepContext copyWithZone:zone];
   v37 = *(v5 + 120);
   *(v5 + 120) = v36;
 
-  v38 = [(NPKProtoStandalonePaymentProvisioningFlowPasscodeUpgradeStepContext *)self->_passcodeUpgradeStepContext copyWithZone:a3];
+  v38 = [(NPKProtoStandalonePaymentProvisioningFlowPasscodeUpgradeStepContext *)self->_passcodeUpgradeStepContext copyWithZone:zone];
   v39 = *(v5 + 112);
   *(v5 + 112) = v38;
 
-  v40 = [(NPKProtoStandalonePaymentProvisioningFlowTermsAndConditionsStepContext *)self->_termsAndConditionsStepContext copyWithZone:a3];
+  v40 = [(NPKProtoStandalonePaymentProvisioningFlowTermsAndConditionsStepContext *)self->_termsAndConditionsStepContext copyWithZone:zone];
   v41 = *(v5 + 176);
   *(v5 + 176) = v40;
 
-  v42 = [(NPKProtoStandalonePaymentProvisioningFlowProvisioningProgressStepContext *)self->_provisioningProgressStepContext copyWithZone:a3];
+  v42 = [(NPKProtoStandalonePaymentProvisioningFlowProvisioningProgressStepContext *)self->_provisioningProgressStepContext copyWithZone:zone];
   v43 = *(v5 + 128);
   *(v5 + 128) = v42;
 
-  v44 = [(NPKProtoStandalonePaymentProvisioningFlowProvisioningResultStepContext *)self->_provisioningResultStepContext copyWithZone:a3];
+  v44 = [(NPKProtoStandalonePaymentProvisioningFlowProvisioningResultStepContext *)self->_provisioningResultStepContext copyWithZone:zone];
   v45 = *(v5 + 136);
   *(v5 + 136) = v44;
 
-  v46 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)self->_issuerVerificationChannelsStepContext copyWithZone:a3];
+  v46 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)self->_issuerVerificationChannelsStepContext copyWithZone:zone];
   v47 = *(v5 + 56);
   *(v5 + 56) = v46;
 
-  v48 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationFieldsStepContext *)self->_issuerVerificationFieldsStepContext copyWithZone:a3];
+  v48 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationFieldsStepContext *)self->_issuerVerificationFieldsStepContext copyWithZone:zone];
   v49 = *(v5 + 72);
   *(v5 + 72) = v48;
 
-  v50 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationCodeStepContext *)self->_issuerVerificationCodeStepContext copyWithZone:a3];
+  v50 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationCodeStepContext *)self->_issuerVerificationCodeStepContext copyWithZone:zone];
   v51 = *(v5 + 64);
   *(v5 + 64) = v50;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_51;
   }
 
   stepIdentifier = self->_stepIdentifier;
-  if (stepIdentifier | *(v4 + 21))
+  if (stepIdentifier | *(equalCopy + 21))
   {
     if (![(NSString *)stepIdentifier isEqual:?])
     {
@@ -609,7 +609,7 @@
   }
 
   backStepIdentifier = self->_backStepIdentifier;
-  if (backStepIdentifier | *(v4 + 1))
+  if (backStepIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)backStepIdentifier isEqual:?])
     {
@@ -617,18 +617,18 @@
     }
   }
 
-  v7 = *(v4 + 196);
+  v7 = *(equalCopy + 196);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  if ((*(v4 + 196) & 1) == 0)
+  if ((*(equalCopy + 196) & 1) == 0)
   {
     goto LABEL_51;
   }
 
-  v7 = *(v4 + 192);
+  v7 = *(equalCopy + 192);
   if (!self->_allowsAddLater)
   {
 LABEL_7:
@@ -642,20 +642,20 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  if ((*(v4 + 192) & 1) == 0)
+  if ((*(equalCopy + 192) & 1) == 0)
   {
     goto LABEL_51;
   }
 
 LABEL_8:
   welcomeStepContext = self->_welcomeStepContext;
-  if (welcomeStepContext | *(v4 + 23) && ![(NPKProtoStandalonePaymentProvisioningFlowWelcomeStepContext *)welcomeStepContext isEqual:?])
+  if (welcomeStepContext | *(equalCopy + 23) && ![(NPKProtoStandalonePaymentProvisioningFlowWelcomeStepContext *)welcomeStepContext isEqual:?])
   {
     goto LABEL_51;
   }
 
   chooseFlowStepContext = self->_chooseFlowStepContext;
-  if (chooseFlowStepContext | *(v4 + 3))
+  if (chooseFlowStepContext | *(equalCopy + 3))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowChooseFlowStepContext *)chooseFlowStepContext isEqual:?])
     {
@@ -664,7 +664,7 @@ LABEL_8:
   }
 
   chooseProductStepContext = self->_chooseProductStepContext;
-  if (chooseProductStepContext | *(v4 + 4))
+  if (chooseProductStepContext | *(equalCopy + 4))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowChooseProductStepContext *)chooseProductStepContext isEqual:?])
     {
@@ -673,7 +673,7 @@ LABEL_8:
   }
 
   chooseCredentialsStepContext = self->_chooseCredentialsStepContext;
-  if (chooseCredentialsStepContext | *(v4 + 2))
+  if (chooseCredentialsStepContext | *(equalCopy + 2))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowChooseCredentialsStepContext *)chooseCredentialsStepContext isEqual:?])
     {
@@ -682,7 +682,7 @@ LABEL_8:
   }
 
   digitalIssuanceAmountStepContext = self->_digitalIssuanceAmountStepContext;
-  if (digitalIssuanceAmountStepContext | *(v4 + 5))
+  if (digitalIssuanceAmountStepContext | *(equalCopy + 5))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)digitalIssuanceAmountStepContext isEqual:?])
     {
@@ -691,7 +691,7 @@ LABEL_8:
   }
 
   digitalIssuancePaymentStepContext = self->_digitalIssuancePaymentStepContext;
-  if (digitalIssuancePaymentStepContext | *(v4 + 6))
+  if (digitalIssuancePaymentStepContext | *(equalCopy + 6))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuancePaymentStepContext *)digitalIssuancePaymentStepContext isEqual:?])
     {
@@ -700,7 +700,7 @@ LABEL_8:
   }
 
   moreInformationStepContext = self->_moreInformationStepContext;
-  if (moreInformationStepContext | *(v4 + 13))
+  if (moreInformationStepContext | *(equalCopy + 13))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowMoreInformationStepContext *)moreInformationStepContext isEqual:?])
     {
@@ -709,7 +709,7 @@ LABEL_8:
   }
 
   readerModeEntryStepContext = self->_readerModeEntryStepContext;
-  if (readerModeEntryStepContext | *(v4 + 18))
+  if (readerModeEntryStepContext | *(equalCopy + 18))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowReaderModeEntryStepContext *)readerModeEntryStepContext isEqual:?])
     {
@@ -718,7 +718,7 @@ LABEL_8:
   }
 
   readerModeIngestionStepContext = self->_readerModeIngestionStepContext;
-  if (readerModeIngestionStepContext | *(v4 + 19))
+  if (readerModeIngestionStepContext | *(equalCopy + 19))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowReaderModeIngestionStepContext *)readerModeIngestionStepContext isEqual:?])
     {
@@ -727,7 +727,7 @@ LABEL_8:
   }
 
   manualEntryStepContext = self->_manualEntryStepContext;
-  if (manualEntryStepContext | *(v4 + 12))
+  if (manualEntryStepContext | *(equalCopy + 12))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowManualEntryStepContext *)manualEntryStepContext isEqual:?])
     {
@@ -736,7 +736,7 @@ LABEL_8:
   }
 
   secondaryManualEntryStepContext = self->_secondaryManualEntryStepContext;
-  if (secondaryManualEntryStepContext | *(v4 + 20))
+  if (secondaryManualEntryStepContext | *(equalCopy + 20))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowSecondaryManualEntryStepContext *)secondaryManualEntryStepContext isEqual:?])
     {
@@ -745,7 +745,7 @@ LABEL_8:
   }
 
   localDeviceManualEntryStepContext = self->_localDeviceManualEntryStepContext;
-  if (localDeviceManualEntryStepContext | *(v4 + 11))
+  if (localDeviceManualEntryStepContext | *(equalCopy + 11))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryStepContext *)localDeviceManualEntryStepContext isEqual:?])
     {
@@ -754,7 +754,7 @@ LABEL_8:
   }
 
   localDeviceManualEntryProgressStepContext = self->_localDeviceManualEntryProgressStepContext;
-  if (localDeviceManualEntryProgressStepContext | *(v4 + 10))
+  if (localDeviceManualEntryProgressStepContext | *(equalCopy + 10))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowLocalDeviceManualEntryProgressStepContext *)localDeviceManualEntryProgressStepContext isEqual:?])
     {
@@ -763,7 +763,7 @@ LABEL_8:
   }
 
   productDisambiguationStepContext = self->_productDisambiguationStepContext;
-  if (productDisambiguationStepContext | *(v4 + 15))
+  if (productDisambiguationStepContext | *(equalCopy + 15))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowProductDisambiguationStepContext *)productDisambiguationStepContext isEqual:?])
     {
@@ -772,7 +772,7 @@ LABEL_8:
   }
 
   passcodeUpgradeStepContext = self->_passcodeUpgradeStepContext;
-  if (passcodeUpgradeStepContext | *(v4 + 14))
+  if (passcodeUpgradeStepContext | *(equalCopy + 14))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowPasscodeUpgradeStepContext *)passcodeUpgradeStepContext isEqual:?])
     {
@@ -781,7 +781,7 @@ LABEL_8:
   }
 
   termsAndConditionsStepContext = self->_termsAndConditionsStepContext;
-  if (termsAndConditionsStepContext | *(v4 + 22))
+  if (termsAndConditionsStepContext | *(equalCopy + 22))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowTermsAndConditionsStepContext *)termsAndConditionsStepContext isEqual:?])
     {
@@ -790,7 +790,7 @@ LABEL_8:
   }
 
   provisioningProgressStepContext = self->_provisioningProgressStepContext;
-  if (provisioningProgressStepContext | *(v4 + 16))
+  if (provisioningProgressStepContext | *(equalCopy + 16))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowProvisioningProgressStepContext *)provisioningProgressStepContext isEqual:?])
     {
@@ -799,7 +799,7 @@ LABEL_8:
   }
 
   provisioningResultStepContext = self->_provisioningResultStepContext;
-  if (provisioningResultStepContext | *(v4 + 17))
+  if (provisioningResultStepContext | *(equalCopy + 17))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowProvisioningResultStepContext *)provisioningResultStepContext isEqual:?])
     {
@@ -808,7 +808,7 @@ LABEL_8:
   }
 
   issuerVerificationChannelsStepContext = self->_issuerVerificationChannelsStepContext;
-  if (issuerVerificationChannelsStepContext | *(v4 + 7))
+  if (issuerVerificationChannelsStepContext | *(equalCopy + 7))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationChannelsStepContext *)issuerVerificationChannelsStepContext isEqual:?])
     {
@@ -817,7 +817,7 @@ LABEL_8:
   }
 
   issuerVerificationFieldsStepContext = self->_issuerVerificationFieldsStepContext;
-  if (issuerVerificationFieldsStepContext | *(v4 + 9))
+  if (issuerVerificationFieldsStepContext | *(equalCopy + 9))
   {
     if (![(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationFieldsStepContext *)issuerVerificationFieldsStepContext isEqual:?])
     {
@@ -826,7 +826,7 @@ LABEL_8:
   }
 
   issuerVerificationCodeStepContext = self->_issuerVerificationCodeStepContext;
-  if (issuerVerificationCodeStepContext | *(v4 + 8))
+  if (issuerVerificationCodeStepContext | *(equalCopy + 8))
   {
     v29 = [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationCodeStepContext *)issuerVerificationCodeStepContext isEqual:?];
   }
@@ -878,30 +878,30 @@ LABEL_52:
   return v24 ^ v25 ^ [(NPKProtoStandalonePaymentProvisioningFlowIssuerVerificationCodeStepContext *)self->_issuerVerificationCodeStepContext hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v47 = v4;
-  if (*(v4 + 21))
+  fromCopy = from;
+  v47 = fromCopy;
+  if (*(fromCopy + 21))
   {
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setStepIdentifier:?];
-    v4 = v47;
+    fromCopy = v47;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setBackStepIdentifier:?];
-    v4 = v47;
+    fromCopy = v47;
   }
 
-  if (v4[196])
+  if (fromCopy[196])
   {
-    self->_allowsAddLater = v4[192];
+    self->_allowsAddLater = fromCopy[192];
     *&self->_has |= 1u;
   }
 
   welcomeStepContext = self->_welcomeStepContext;
-  v6 = *(v4 + 23);
+  v6 = *(fromCopy + 23);
   if (welcomeStepContext)
   {
     if (!v6)
@@ -922,10 +922,10 @@ LABEL_52:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setWelcomeStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_13:
   chooseFlowStepContext = self->_chooseFlowStepContext;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (chooseFlowStepContext)
   {
     if (!v8)
@@ -946,10 +946,10 @@ LABEL_13:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setChooseFlowStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_19:
   chooseProductStepContext = self->_chooseProductStepContext;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   if (chooseProductStepContext)
   {
     if (!v10)
@@ -970,10 +970,10 @@ LABEL_19:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setChooseProductStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_25:
   chooseCredentialsStepContext = self->_chooseCredentialsStepContext;
-  v12 = *(v4 + 2);
+  v12 = *(fromCopy + 2);
   if (chooseCredentialsStepContext)
   {
     if (!v12)
@@ -994,10 +994,10 @@ LABEL_25:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setChooseCredentialsStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_31:
   digitalIssuanceAmountStepContext = self->_digitalIssuanceAmountStepContext;
-  v14 = *(v4 + 5);
+  v14 = *(fromCopy + 5);
   if (digitalIssuanceAmountStepContext)
   {
     if (!v14)
@@ -1018,10 +1018,10 @@ LABEL_31:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setDigitalIssuanceAmountStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_37:
   digitalIssuancePaymentStepContext = self->_digitalIssuancePaymentStepContext;
-  v16 = *(v4 + 6);
+  v16 = *(fromCopy + 6);
   if (digitalIssuancePaymentStepContext)
   {
     if (!v16)
@@ -1042,10 +1042,10 @@ LABEL_37:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setDigitalIssuancePaymentStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_43:
   moreInformationStepContext = self->_moreInformationStepContext;
-  v18 = *(v4 + 13);
+  v18 = *(fromCopy + 13);
   if (moreInformationStepContext)
   {
     if (!v18)
@@ -1066,10 +1066,10 @@ LABEL_43:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setMoreInformationStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_49:
   readerModeEntryStepContext = self->_readerModeEntryStepContext;
-  v20 = *(v4 + 18);
+  v20 = *(fromCopy + 18);
   if (readerModeEntryStepContext)
   {
     if (!v20)
@@ -1090,10 +1090,10 @@ LABEL_49:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setReaderModeEntryStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_55:
   readerModeIngestionStepContext = self->_readerModeIngestionStepContext;
-  v22 = *(v4 + 19);
+  v22 = *(fromCopy + 19);
   if (readerModeIngestionStepContext)
   {
     if (!v22)
@@ -1114,10 +1114,10 @@ LABEL_55:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setReaderModeIngestionStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_61:
   manualEntryStepContext = self->_manualEntryStepContext;
-  v24 = *(v4 + 12);
+  v24 = *(fromCopy + 12);
   if (manualEntryStepContext)
   {
     if (!v24)
@@ -1138,10 +1138,10 @@ LABEL_61:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setManualEntryStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_67:
   secondaryManualEntryStepContext = self->_secondaryManualEntryStepContext;
-  v26 = *(v4 + 20);
+  v26 = *(fromCopy + 20);
   if (secondaryManualEntryStepContext)
   {
     if (!v26)
@@ -1162,10 +1162,10 @@ LABEL_67:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setSecondaryManualEntryStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_73:
   localDeviceManualEntryStepContext = self->_localDeviceManualEntryStepContext;
-  v28 = *(v4 + 11);
+  v28 = *(fromCopy + 11);
   if (localDeviceManualEntryStepContext)
   {
     if (!v28)
@@ -1186,10 +1186,10 @@ LABEL_73:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setLocalDeviceManualEntryStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_79:
   localDeviceManualEntryProgressStepContext = self->_localDeviceManualEntryProgressStepContext;
-  v30 = *(v4 + 10);
+  v30 = *(fromCopy + 10);
   if (localDeviceManualEntryProgressStepContext)
   {
     if (!v30)
@@ -1210,10 +1210,10 @@ LABEL_79:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setLocalDeviceManualEntryProgressStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_85:
   productDisambiguationStepContext = self->_productDisambiguationStepContext;
-  v32 = *(v4 + 15);
+  v32 = *(fromCopy + 15);
   if (productDisambiguationStepContext)
   {
     if (!v32)
@@ -1234,10 +1234,10 @@ LABEL_85:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setProductDisambiguationStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_91:
   passcodeUpgradeStepContext = self->_passcodeUpgradeStepContext;
-  v34 = *(v4 + 14);
+  v34 = *(fromCopy + 14);
   if (passcodeUpgradeStepContext)
   {
     if (!v34)
@@ -1258,10 +1258,10 @@ LABEL_91:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setPasscodeUpgradeStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_97:
   termsAndConditionsStepContext = self->_termsAndConditionsStepContext;
-  v36 = *(v4 + 22);
+  v36 = *(fromCopy + 22);
   if (termsAndConditionsStepContext)
   {
     if (!v36)
@@ -1282,10 +1282,10 @@ LABEL_97:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setTermsAndConditionsStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_103:
   provisioningProgressStepContext = self->_provisioningProgressStepContext;
-  v38 = *(v4 + 16);
+  v38 = *(fromCopy + 16);
   if (provisioningProgressStepContext)
   {
     if (!v38)
@@ -1306,10 +1306,10 @@ LABEL_103:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setProvisioningProgressStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_109:
   provisioningResultStepContext = self->_provisioningResultStepContext;
-  v40 = *(v4 + 17);
+  v40 = *(fromCopy + 17);
   if (provisioningResultStepContext)
   {
     if (!v40)
@@ -1330,10 +1330,10 @@ LABEL_109:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setProvisioningResultStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_115:
   issuerVerificationChannelsStepContext = self->_issuerVerificationChannelsStepContext;
-  v42 = *(v4 + 7);
+  v42 = *(fromCopy + 7);
   if (issuerVerificationChannelsStepContext)
   {
     if (!v42)
@@ -1354,10 +1354,10 @@ LABEL_115:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setIssuerVerificationChannelsStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_121:
   issuerVerificationFieldsStepContext = self->_issuerVerificationFieldsStepContext;
-  v44 = *(v4 + 9);
+  v44 = *(fromCopy + 9);
   if (issuerVerificationFieldsStepContext)
   {
     if (!v44)
@@ -1378,10 +1378,10 @@ LABEL_121:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setIssuerVerificationFieldsStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_127:
   issuerVerificationCodeStepContext = self->_issuerVerificationCodeStepContext;
-  v46 = *(v4 + 8);
+  v46 = *(fromCopy + 8);
   if (issuerVerificationCodeStepContext)
   {
     if (!v46)
@@ -1402,7 +1402,7 @@ LABEL_127:
     [(NPKProtoStandalonePaymentProvisioningFlowStepContext *)self setIssuerVerificationCodeStepContext:?];
   }
 
-  v4 = v47;
+  fromCopy = v47;
 LABEL_133:
 }
 

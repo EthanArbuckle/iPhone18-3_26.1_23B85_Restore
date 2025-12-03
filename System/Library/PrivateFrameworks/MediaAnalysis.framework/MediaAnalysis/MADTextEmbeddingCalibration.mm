@@ -2,10 +2,10 @@
 - (MADTextEmbeddingCalibration)init;
 - (int)_createPlan;
 - (int)_loadResources;
-- (int)_processEmbedding:(id)a3 version:(unint64_t)a4 typeSize:(unint64_t)a5 mean:(float *)a6 standardDeviation:(float *)a7;
+- (int)_processEmbedding:(id)embedding version:(unint64_t)version typeSize:(unint64_t)size mean:(float *)mean standardDeviation:(float *)deviation;
 - (int)loadResources;
-- (int)processEmbedding:(id)a3 mean:(float *)a4 standardDeviation:(float *)a5;
-- (int)processEmbedding:(id)a3 version:(unint64_t)a4 typeSize:(unint64_t)a5 mean:(float *)a6 standardDeviation:(float *)a7;
+- (int)processEmbedding:(id)embedding mean:(float *)mean standardDeviation:(float *)deviation;
+- (int)processEmbedding:(id)embedding version:(unint64_t)version typeSize:(unint64_t)size mean:(float *)mean standardDeviation:(float *)deviation;
 - (void)dealloc;
 @end
 
@@ -56,12 +56,12 @@
     return -18;
   }
 
-  v4 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v5 = [v4 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v6 = [MEMORY[0x1E695DFF8] URLWithString:@"text_calibration_md3.espresso.net" relativeToURL:v5];
-  v7 = [v6 path];
-  [v7 UTF8String];
+  v6 = [MEMORY[0x1E695DFF8] URLWithString:@"text_calibration_md3.espresso.net" relativeToURL:resourceURL];
+  path = [v6 path];
+  [path UTF8String];
   blob_dimensions = espresso_plan_add_network();
 
   if (!blob_dimensions)
@@ -126,8 +126,8 @@ LABEL_2:
 
       else
       {
-        v4 = [(MADTextEmbeddingCalibration *)self _createPlan];
-        if (v4)
+        _createPlan = [(MADTextEmbeddingCalibration *)self _createPlan];
+        if (_createPlan)
         {
           espresso_plan_destroy();
           self->_plan = 0;
@@ -146,7 +146,7 @@ LABEL_2:
       return -18;
     }
 
-    return v4;
+    return _createPlan;
   }
 
   v9 = *MEMORY[0x1E69660D8];
@@ -159,8 +159,8 @@ LABEL_2:
     self->_inputBuffer.value_ = 0;
   }
 
-  v4 = CVPixelBufferCreate(0, 0x200uLL, 1uLL, 0x4C303068u, v5, &self->_inputBuffer.value_);
-  if (!v4)
+  _createPlan = CVPixelBufferCreate(0, 0x200uLL, 1uLL, 0x4C303068u, v5, &self->_inputBuffer.value_);
+  if (!_createPlan)
   {
 
     goto LABEL_2;
@@ -172,7 +172,7 @@ LABEL_2:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[Text|Calibration] Failed to create input buffer", v8, 2u);
   }
 
-  return v4;
+  return _createPlan;
 }
 
 - (int)loadResources
@@ -201,12 +201,12 @@ uint64_t __44__MADTextEmbeddingCalibration_loadResources__block_invoke(uint64_t 
   return result;
 }
 
-- (int)_processEmbedding:(id)a3 version:(unint64_t)a4 typeSize:(unint64_t)a5 mean:(float *)a6 standardDeviation:(float *)a7
+- (int)_processEmbedding:(id)embedding version:(unint64_t)version typeSize:(unint64_t)size mean:(float *)mean standardDeviation:(float *)deviation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = [(MADTextEmbeddingCalibration *)self _loadResources];
-  if (v13)
+  embeddingCopy = embedding;
+  _loadResources = [(MADTextEmbeddingCalibration *)self _loadResources];
+  if (_loadResources)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -217,11 +217,11 @@ uint64_t __44__MADTextEmbeddingCalibration_loadResources__block_invoke(uint64_t 
     goto LABEL_22;
   }
 
-  if (a4 != 3)
+  if (version != 3)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+      v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:version];
       *buf = 138412290;
       *v22 = v16;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[Text|Calibration] Calibration not supported for embedding version %@", buf, 0xCu);
@@ -230,7 +230,7 @@ uint64_t __44__MADTextEmbeddingCalibration_loadResources__block_invoke(uint64_t 
     goto LABEL_21;
   }
 
-  if (a5 != 2)
+  if (size != 2)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -241,7 +241,7 @@ uint64_t __44__MADTextEmbeddingCalibration_loadResources__block_invoke(uint64_t 
     goto LABEL_21;
   }
 
-  v14 = [v12 length] >> 1;
+  v14 = [embeddingCopy length] >> 1;
   if (v14 != 512)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -255,7 +255,7 @@ uint64_t __44__MADTextEmbeddingCalibration_loadResources__block_invoke(uint64_t 
     }
 
 LABEL_21:
-    v13 = -50;
+    _loadResources = -50;
     goto LABEL_22;
   }
 
@@ -264,9 +264,9 @@ LABEL_21:
   *&v22[12] = 0;
   if (value)
   {
-    v13 = CVPixelBufferLockBaseAddress(value, 0);
-    *buf = v13;
-    if (v13)
+    _loadResources = CVPixelBufferLockBaseAddress(value, 0);
+    *buf = _loadResources;
+    if (_loadResources)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -277,12 +277,12 @@ LABEL_21:
     else
     {
       BaseAddress = CVPixelBufferGetBaseAddress(self->_inputBuffer.value_);
-      memcpy(BaseAddress, [v12 bytes], 0x400uLL);
-      v13 = CVPixelBufferLock::Unlock(buf);
-      if (!v13)
+      memcpy(BaseAddress, [embeddingCopy bytes], 0x400uLL);
+      _loadResources = CVPixelBufferLock::Unlock(buf);
+      if (!_loadResources)
       {
-        v13 = espresso_plan_execute_sync();
-        if (v13)
+        _loadResources = espresso_plan_execute_sync();
+        if (_loadResources)
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -293,8 +293,8 @@ LABEL_21:
 
         else
         {
-          *a6 = *self->_meanBuffer.data;
-          *a7 = *self->_standardDeviationBuffer.data;
+          *mean = *self->_meanBuffer.data;
+          *deviation = *self->_standardDeviationBuffer.data;
         }
       }
     }
@@ -307,7 +307,7 @@ LABEL_21:
       [VCPVideoCNNAnalyzer copyImage:withChannels:settling:];
     }
 
-    v13 = -50;
+    _loadResources = -50;
     *buf = -50;
   }
 
@@ -318,12 +318,12 @@ LABEL_21:
 
 LABEL_22:
 
-  return v13;
+  return _loadResources;
 }
 
-- (int)processEmbedding:(id)a3 mean:(float *)a4 standardDeviation:(float *)a5
+- (int)processEmbedding:(id)embedding mean:(float *)mean standardDeviation:(float *)deviation
 {
-  v8 = a3;
+  embeddingCopy = embedding;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -333,17 +333,17 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __71__MADTextEmbeddingCalibration_processEmbedding_mean_standardDeviation___block_invoke;
   block[3] = &unk_1E8350038;
-  v13 = v8;
-  v14 = self;
+  v13 = embeddingCopy;
+  selfCopy = self;
   v15 = &v18;
-  v16 = a4;
-  v17 = a5;
-  v10 = v8;
+  meanCopy = mean;
+  deviationCopy = deviation;
+  v10 = embeddingCopy;
   dispatch_sync(queue, block);
-  LODWORD(a4) = *(v19 + 6);
+  LODWORD(mean) = *(v19 + 6);
 
   _Block_object_dispose(&v18, 8);
-  return a4;
+  return mean;
 }
 
 void __71__MADTextEmbeddingCalibration_processEmbedding_mean_standardDeviation___block_invoke(uint64_t a1)
@@ -363,9 +363,9 @@ void __71__MADTextEmbeddingCalibration_processEmbedding_mean_standardDeviation__
   *(*(*(a1 + 48) + 8) + 24) = [v3 _processEmbedding:v4 version:objc_msgSend(*(a1 + 32) typeSize:"version") mean:v2 standardDeviation:{*(a1 + 56), *(a1 + 64)}];
 }
 
-- (int)processEmbedding:(id)a3 version:(unint64_t)a4 typeSize:(unint64_t)a5 mean:(float *)a6 standardDeviation:(float *)a7
+- (int)processEmbedding:(id)embedding version:(unint64_t)version typeSize:(unint64_t)size mean:(float *)mean standardDeviation:(float *)deviation
 {
-  v12 = a3;
+  embeddingCopy = embedding;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -376,18 +376,18 @@ void __71__MADTextEmbeddingCalibration_processEmbedding_mean_standardDeviation__
   block[2] = __88__MADTextEmbeddingCalibration_processEmbedding_version_typeSize_mean_standardDeviation___block_invoke;
   block[3] = &unk_1E8350060;
   block[4] = self;
-  v17 = v12;
+  v17 = embeddingCopy;
   v18 = &v23;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v14 = v12;
+  versionCopy = version;
+  sizeCopy = size;
+  meanCopy = mean;
+  deviationCopy = deviation;
+  v14 = embeddingCopy;
   dispatch_sync(queue, block);
-  LODWORD(a6) = *(v24 + 6);
+  LODWORD(mean) = *(v24 + 6);
 
   _Block_object_dispose(&v23, 8);
-  return a6;
+  return mean;
 }
 
 uint64_t __88__MADTextEmbeddingCalibration_processEmbedding_version_typeSize_mean_standardDeviation___block_invoke(uint64_t a1)

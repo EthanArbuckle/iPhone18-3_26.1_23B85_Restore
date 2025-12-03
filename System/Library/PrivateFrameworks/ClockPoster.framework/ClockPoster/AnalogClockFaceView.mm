@@ -1,14 +1,14 @@
 @interface AnalogClockFaceView
 - (UIColor)tintColor;
 - (void)layoutSubviews;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation AnalogClockFaceView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E494A194();
 }
 
@@ -16,18 +16,18 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for AnalogClockFaceView();
-  v2 = [(AnalogClockFaceView *)&v4 tintColor];
+  tintColor = [(AnalogClockFaceView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for AnalogClockFaceView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(AnalogClockFaceView *)&v6 setTintColor:v4];
+  [(AnalogClockFaceView *)&v6 setTintColor:colorCopy];
   sub_1E494B0D8();
 }
 

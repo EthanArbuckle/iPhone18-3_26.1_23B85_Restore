@@ -1,45 +1,45 @@
 @interface CAMBarsAccessibilityHUDManager
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CAMBarsAccessibilityHUDManager)initWithView:(id)a3 delegate:(id)a4 cancelsTouchesInView:(BOOL)a5;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CAMBarsAccessibilityHUDManager)initWithView:(id)view delegate:(id)delegate cancelsTouchesInView:(BOOL)inView;
 - (CAMBarsAccessibilityHUDManagerDelegate)delegate;
 - (CAMBarsAccessibilityHUDManagerGestureProvider)view;
-- (CGPoint)locationOfAccessibilityGestureInView:(id)a3;
-- (void)_handleAccessibilityLongPressGesture:(id)a3;
+- (CGPoint)locationOfAccessibilityGestureInView:(id)view;
+- (void)_handleAccessibilityLongPressGesture:(id)gesture;
 @end
 
 @implementation CAMBarsAccessibilityHUDManager
 
-- (CAMBarsAccessibilityHUDManager)initWithView:(id)a3 delegate:(id)a4 cancelsTouchesInView:(BOOL)a5
+- (CAMBarsAccessibilityHUDManager)initWithView:(id)view delegate:(id)delegate cancelsTouchesInView:(BOOL)inView
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  inViewCopy = inView;
+  viewCopy = view;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = CAMBarsAccessibilityHUDManager;
   v10 = [(CAMBarsAccessibilityHUDManager *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    [(CAMBarsAccessibilityHUDManager *)v10 setDelegate:v9];
-    [(CAMBarsAccessibilityHUDManager *)v11 setView:v8];
+    [(CAMBarsAccessibilityHUDManager *)v10 setDelegate:delegateCopy];
+    [(CAMBarsAccessibilityHUDManager *)v11 setView:viewCopy];
     v12 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v11 action:sel__handleAccessibilityLongPressGesture_];
     [v12 setMinimumPressDuration:0.15];
     [v12 setDelegate:v11];
-    [v12 setCancelsTouchesInView:v5];
+    [v12 setCancelsTouchesInView:inViewCopy];
     [(CAMBarsAccessibilityHUDManager *)v11 _setAccessibilityLongPressGestureRecognizer:v12];
-    v13 = [(CAMBarsAccessibilityHUDManager *)v11 view];
-    [v13 addGestureRecognizer:v12];
+    view = [(CAMBarsAccessibilityHUDManager *)v11 view];
+    [view addGestureRecognizer:v12];
   }
 
   return v11;
 }
 
-- (CGPoint)locationOfAccessibilityGestureInView:(id)a3
+- (CGPoint)locationOfAccessibilityGestureInView:(id)view
 {
-  v4 = a3;
-  v5 = [(CAMBarsAccessibilityHUDManager *)self _accessibilityLongPressGestureRecognizer];
-  [v5 locationInView:v4];
+  viewCopy = view;
+  _accessibilityLongPressGestureRecognizer = [(CAMBarsAccessibilityHUDManager *)self _accessibilityLongPressGestureRecognizer];
+  [_accessibilityLongPressGestureRecognizer locationInView:viewCopy];
   v7 = v6;
   v9 = v8;
 
@@ -50,28 +50,28 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(CAMBarsAccessibilityHUDManager *)self _accessibilityLongPressGestureRecognizer];
-  v7 = [v5 isEqual:v6];
+  recognizerCopy = recognizer;
+  _accessibilityLongPressGestureRecognizer = [(CAMBarsAccessibilityHUDManager *)self _accessibilityLongPressGestureRecognizer];
+  v7 = [recognizerCopy isEqual:_accessibilityLongPressGestureRecognizer];
 
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [(CAMBarsAccessibilityHUDManager *)self view];
-  v5 = [v4 traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  view = [(CAMBarsAccessibilityHUDManager *)self view];
+  traitCollection = [view traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
     return 0;
   }
 
-  v8 = [(CAMBarsAccessibilityHUDManager *)self view];
+  view2 = [(CAMBarsAccessibilityHUDManager *)self view];
   v9 = objc_opt_respondsToSelector();
 
   if ((v9 & 1) == 0)
@@ -79,40 +79,40 @@
     return 1;
   }
 
-  v10 = [(CAMBarsAccessibilityHUDManager *)self view];
-  v11 = [v10 shouldAccessibilityGestureBeginForHUDManager:self];
+  view3 = [(CAMBarsAccessibilityHUDManager *)self view];
+  v11 = [view3 shouldAccessibilityGestureBeginForHUDManager:self];
 
   return v11;
 }
 
-- (void)_handleAccessibilityLongPressGesture:(id)a3
+- (void)_handleAccessibilityLongPressGesture:(id)gesture
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [a3 state];
-  switch(v4)
+  state = [gesture state];
+  switch(state)
   {
     case 3:
-      v17 = [(CAMBarsAccessibilityHUDManager *)self delegate];
-      [v17 dismissAccessibilityHUDViewForAccessibilityHUDManager:self];
+      delegate = [(CAMBarsAccessibilityHUDManager *)self delegate];
+      [delegate dismissAccessibilityHUDViewForAccessibilityHUDManager:self];
 
-      v18 = [(CAMBarsAccessibilityHUDManager *)self view];
-      [v18 selectedByAccessibilityHUDManager:self];
+      view = [(CAMBarsAccessibilityHUDManager *)self view];
+      [view selectedByAccessibilityHUDManager:self];
       break;
     case 2:
 LABEL_12:
-      v13 = [(CAMBarsAccessibilityHUDManager *)self view];
-      v14 = [v13 hudItemForAccessibilityHUDManager:self];
+      view2 = [(CAMBarsAccessibilityHUDManager *)self view];
+      v14 = [view2 hudItemForAccessibilityHUDManager:self];
 
-      v15 = [(CAMBarsAccessibilityHUDManager *)self delegate];
-      v16 = v15;
+      delegate2 = [(CAMBarsAccessibilityHUDManager *)self delegate];
+      v16 = delegate2;
       if (v14)
       {
-        [v15 accessibilityHUDManager:self wantsToShowHUDItem:v14];
+        [delegate2 accessibilityHUDManager:self wantsToShowHUDItem:v14];
       }
 
       else
       {
-        [v15 dismissAccessibilityHUDViewForAccessibilityHUDManager:self];
+        [delegate2 dismissAccessibilityHUDViewForAccessibilityHUDManager:self];
       }
 
       return;
@@ -121,10 +121,10 @@ LABEL_12:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v5 = [(CAMBarsAccessibilityHUDManager *)self view];
-      v6 = [v5 touchingRecognizersToCancel];
+      view3 = [(CAMBarsAccessibilityHUDManager *)self view];
+      touchingRecognizersToCancel = [view3 touchingRecognizersToCancel];
 
-      v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [touchingRecognizersToCancel countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
         v8 = v7;
@@ -135,16 +135,16 @@ LABEL_12:
           {
             if (*v20 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(touchingRecognizersToCancel);
             }
 
             v11 = *(*(&v19 + 1) + 8 * i);
-            v12 = [v11 isEnabled];
+            isEnabled = [v11 isEnabled];
             [v11 setEnabled:0];
-            [v11 setEnabled:v12];
+            [v11 setEnabled:isEnabled];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v8 = [touchingRecognizersToCancel countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v8);
@@ -152,8 +152,8 @@ LABEL_12:
 
       goto LABEL_12;
     default:
-      v18 = [(CAMBarsAccessibilityHUDManager *)self delegate];
-      [v18 dismissAccessibilityHUDViewForAccessibilityHUDManager:self];
+      view = [(CAMBarsAccessibilityHUDManager *)self delegate];
+      [view dismissAccessibilityHUDViewForAccessibilityHUDManager:self];
       break;
   }
 }

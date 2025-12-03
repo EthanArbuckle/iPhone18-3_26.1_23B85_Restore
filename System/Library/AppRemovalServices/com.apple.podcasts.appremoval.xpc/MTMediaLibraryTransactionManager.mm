@@ -2,10 +2,10 @@
 - (MTMediaLibraryTransactionManager)init;
 - (void)_beginGeneratingLibraryChangeNotifications;
 - (void)_endGeneratingLibraryChangeNotifications;
-- (void)beginGeneratingLibraryChangeNotifications:(id)a3;
-- (void)endGeneratingLibraryChangeNotifications:(id)a3;
-- (void)requestMediaLibraryReadTransaction:(id)a3;
-- (void)requestMediaLibraryWriteTransaction:(id)a3 completion:(id)a4;
+- (void)beginGeneratingLibraryChangeNotifications:(id)notifications;
+- (void)endGeneratingLibraryChangeNotifications:(id)notifications;
+- (void)requestMediaLibraryReadTransaction:(id)transaction;
+- (void)requestMediaLibraryWriteTransaction:(id)transaction completion:(id)completion;
 @end
 
 @implementation MTMediaLibraryTransactionManager
@@ -26,39 +26,39 @@
   return v2;
 }
 
-- (void)requestMediaLibraryWriteTransaction:(id)a3 completion:(id)a4
+- (void)requestMediaLibraryWriteTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(MTMediaLibraryTransactionManager *)self serialQueue];
+  serialQueue = [(MTMediaLibraryTransactionManager *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000213C;
   block[3] = &unk_10000C520;
   objc_copyWeak(&v14, &location);
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = transactionCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = transactionCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)requestMediaLibraryReadTransaction:(id)a3
+- (void)requestMediaLibraryReadTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(MTMediaLibraryTransactionManager *)self serialQueue];
+  transactionCopy = transaction;
+  serialQueue = [(MTMediaLibraryTransactionManager *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002318;
   block[3] = &unk_10000C468;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = transactionCopy;
+  v6 = transactionCopy;
+  dispatch_async(serialQueue, block);
 }
 
 - (void)_beginGeneratingLibraryChangeNotifications
@@ -67,7 +67,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134217984;
-    v8 = [(MTMediaLibraryTransactionManager *)self counterForGeneratingLibraryChangeNotifications];
+    counterForGeneratingLibraryChangeNotifications = [(MTMediaLibraryTransactionManager *)self counterForGeneratingLibraryChangeNotifications];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "will beginGeneratingLibraryChangeNotifications: %li", &v7, 0xCu);
   }
 
@@ -78,9 +78,9 @@
   v5 = _MTLogCategoryMediaLibrary();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MTMediaLibraryTransactionManager *)self counterForGeneratingLibraryChangeNotifications];
+    counterForGeneratingLibraryChangeNotifications2 = [(MTMediaLibraryTransactionManager *)self counterForGeneratingLibraryChangeNotifications];
     v7 = 134217984;
-    v8 = v6;
+    counterForGeneratingLibraryChangeNotifications = counterForGeneratingLibraryChangeNotifications2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "did beginGeneratingLibraryChangeNotifications: %li", &v7, 0xCu);
   }
 }
@@ -100,9 +100,9 @@
   v4 = _MTLogCategoryMediaLibrary();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(MTMediaLibraryTransactionManager *)self counterForGeneratingLibraryChangeNotifications];
+    counterForGeneratingLibraryChangeNotifications = [(MTMediaLibraryTransactionManager *)self counterForGeneratingLibraryChangeNotifications];
     v9 = 134217984;
-    v10 = v5;
+    v10 = counterForGeneratingLibraryChangeNotifications;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "will endGeneratingLibraryChangeNotifications: %ld", &v9, 0xCu);
   }
 
@@ -113,39 +113,39 @@
   v7 = _MTLogCategoryMediaLibrary();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(MTMediaLibraryTransactionManager *)self counterForGeneratingLibraryChangeNotifications];
+    counterForGeneratingLibraryChangeNotifications2 = [(MTMediaLibraryTransactionManager *)self counterForGeneratingLibraryChangeNotifications];
     v9 = 134217984;
-    v10 = v8;
+    v10 = counterForGeneratingLibraryChangeNotifications2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "will endGeneratingLibraryChangeNotifications: %ld", &v9, 0xCu);
   }
 }
 
-- (void)beginGeneratingLibraryChangeNotifications:(id)a3
+- (void)beginGeneratingLibraryChangeNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(MTMediaLibraryTransactionManager *)self serialQueue];
+  notificationsCopy = notifications;
+  serialQueue = [(MTMediaLibraryTransactionManager *)self serialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000026EC;
   v7[3] = &unk_10000C548;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationsCopy;
+  v6 = notificationsCopy;
+  dispatch_async(serialQueue, v7);
 }
 
-- (void)endGeneratingLibraryChangeNotifications:(id)a3
+- (void)endGeneratingLibraryChangeNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(MTMediaLibraryTransactionManager *)self serialQueue];
+  notificationsCopy = notifications;
+  serialQueue = [(MTMediaLibraryTransactionManager *)self serialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000027E8;
   v7[3] = &unk_10000C490;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationsCopy;
+  v6 = notificationsCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 @end

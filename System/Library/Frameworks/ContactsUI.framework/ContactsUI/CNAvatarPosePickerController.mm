@@ -1,13 +1,13 @@
 @interface CNAvatarPosePickerController
 - (CGSize)desiredContentSize;
-- (CNAvatarPosePickerController)initWithAnimojiProviderItem:(id)a3 variantsManager:(id)a4;
-- (CNAvatarPosePickerController)initWithAvatarRecord:(id)a3 variantsManager:(id)a4;
+- (CNAvatarPosePickerController)initWithAnimojiProviderItem:(id)item variantsManager:(id)manager;
+- (CNAvatarPosePickerController)initWithAvatarRecord:(id)record variantsManager:(id)manager;
 - (CNAvatarPosePickerControllerDelegate)delegate;
 - (id)posePickerViewController;
-- (void)photoPickerVariantListController:(id)a3 didSelectProviderItem:(id)a4;
-- (void)photoPickerVariantListControllerDidCancel:(id)a3;
-- (void)setDesiredContentSize:(CGSize)a3;
-- (void)setNumberOfItemsPerRow:(int64_t)a3;
+- (void)photoPickerVariantListController:(id)controller didSelectProviderItem:(id)item;
+- (void)photoPickerVariantListControllerDidCancel:(id)cancel;
+- (void)setDesiredContentSize:(CGSize)size;
+- (void)setNumberOfItemsPerRow:(int64_t)row;
 @end
 
 @implementation CNAvatarPosePickerController
@@ -28,17 +28,17 @@
   return WeakRetained;
 }
 
-- (void)photoPickerVariantListControllerDidCancel:(id)a3
+- (void)photoPickerVariantListControllerDidCancel:(id)cancel
 {
-  v4 = [(CNAvatarPosePickerController *)self delegate];
-  [v4 posePickerController:self didSelectProviderItem:0];
+  delegate = [(CNAvatarPosePickerController *)self delegate];
+  [delegate posePickerController:self didSelectProviderItem:0];
 }
 
-- (void)photoPickerVariantListController:(id)a3 didSelectProviderItem:(id)a4
+- (void)photoPickerVariantListController:(id)controller didSelectProviderItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
-  v9 = v5;
+  v9 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v9;
@@ -53,8 +53,8 @@
 
   if (v7)
   {
-    v8 = [(CNAvatarPosePickerController *)self delegate];
-    [v8 posePickerController:self didSelectProviderItem:v7];
+    delegate = [(CNAvatarPosePickerController *)self delegate];
+    [delegate posePickerController:self didSelectProviderItem:v7];
   }
 }
 
@@ -69,18 +69,18 @@
   else
   {
     v5 = [CNPhotoPickerVariantListController alloc];
-    v6 = [(CNAvatarPosePickerController *)self variantsManager];
-    v7 = [(CNAvatarPosePickerController *)self originalProviderItem];
-    v8 = [(CNPhotoPickerVariantListController *)v5 initWithVariantsManager:v6 originalItem:v7];
+    variantsManager = [(CNAvatarPosePickerController *)self variantsManager];
+    originalProviderItem = [(CNAvatarPosePickerController *)self originalProviderItem];
+    v8 = [(CNPhotoPickerVariantListController *)v5 initWithVariantsManager:variantsManager originalItem:originalProviderItem];
 
     [(CNPhotoPickerVariantListController *)v8 setDelegate:self];
     [(CNPhotoPickerVariantListController *)v8 setShowPreview:0];
     [(CNPhotoPickerVariantListController *)v8 setCellStyle:0];
-    v9 = [(CNAvatarPosePickerController *)self numberOfItemsPerRow];
+    numberOfItemsPerRow = [(CNAvatarPosePickerController *)self numberOfItemsPerRow];
     v10 = 3;
-    if (v9)
+    if (numberOfItemsPerRow)
     {
-      v10 = v9;
+      v10 = numberOfItemsPerRow;
     }
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -108,54 +108,54 @@
   return v3;
 }
 
-- (void)setDesiredContentSize:(CGSize)a3
+- (void)setDesiredContentSize:(CGSize)size
 {
-  if (self->_desiredContentSize.width != a3.width || self->_desiredContentSize.height != a3.height)
+  if (self->_desiredContentSize.width != size.width || self->_desiredContentSize.height != size.height)
   {
-    self->_desiredContentSize = a3;
+    self->_desiredContentSize = size;
     [(CNPhotoPickerVariantListController *)self->_posePickerController setPreferredContentSize:?];
   }
 }
 
-- (void)setNumberOfItemsPerRow:(int64_t)a3
+- (void)setNumberOfItemsPerRow:(int64_t)row
 {
-  if (self->_numberOfItemsPerRow != a3)
+  if (self->_numberOfItemsPerRow != row)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_numberOfItemsPerRow = a3;
+    self->_numberOfItemsPerRow = row;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __55__CNAvatarPosePickerController_setNumberOfItemsPerRow___block_invoke;
     v5[3] = &__block_descriptor_40_e39_q40__0_CGRect__CGPoint_dd__CGSize_dd__8l;
-    v5[4] = a3;
+    v5[4] = row;
     [(CNPhotoPickerVariantListController *)self->_posePickerController setNumberOfItemsPerRowProvider:v5];
   }
 }
 
-- (CNAvatarPosePickerController)initWithAnimojiProviderItem:(id)a3 variantsManager:(id)a4
+- (CNAvatarPosePickerController)initWithAnimojiProviderItem:(id)item variantsManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = CNAvatarPosePickerController;
   v9 = [(CNAvatarPosePickerController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_variantsManager, a4);
-    objc_storeStrong(&v10->_originalProviderItem, a3);
+    objc_storeStrong(&v9->_variantsManager, manager);
+    objc_storeStrong(&v10->_originalProviderItem, item);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (CNAvatarPosePickerController)initWithAvatarRecord:(id)a3 variantsManager:(id)a4
+- (CNAvatarPosePickerController)initWithAvatarRecord:(id)record variantsManager:(id)manager
 {
-  v6 = a4;
-  v7 = [CNPhotoPickerAnimojiProvider providerItemForAvatarRecord:a3];
-  v8 = [(CNAvatarPosePickerController *)self initWithAnimojiProviderItem:v7 variantsManager:v6];
+  managerCopy = manager;
+  v7 = [CNPhotoPickerAnimojiProvider providerItemForAvatarRecord:record];
+  v8 = [(CNAvatarPosePickerController *)self initWithAnimojiProviderItem:v7 variantsManager:managerCopy];
 
   return v8;
 }

@@ -1,22 +1,22 @@
 @interface DecryptDataConsumer
-- (BOOL)_beginSessionWithDPInfo:(id)a3 error:(id *)a4;
-- (DecryptDataConsumer)initWithDPInfo:(id)a3 error:(id *)a4;
+- (BOOL)_beginSessionWithDPInfo:(id)info error:(id *)error;
+- (DecryptDataConsumer)initWithDPInfo:(id)info error:(id *)error;
 - (void)_resetDecryptionBufferAndDigestVerifier;
-- (void)_resizeSampleSizeArray:(unint64_t)a3;
-- (void)consumeData:(id)a3 withCompletionHandler:(id)a4;
+- (void)_resizeSampleSizeArray:(unint64_t)array;
+- (void)consumeData:(id)data withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)finishWithCompletionHandler:(id)a3;
-- (void)prepareWithCompletionHandler:(id)a3;
-- (void)resetWithCompletionHandler:(id)a3;
-- (void)suspendWithCompletionHandler:(id)a3;
-- (void)truncateWithCompletionHandler:(id)a3;
+- (void)finishWithCompletionHandler:(id)handler;
+- (void)prepareWithCompletionHandler:(id)handler;
+- (void)resetWithCompletionHandler:(id)handler;
+- (void)suspendWithCompletionHandler:(id)handler;
+- (void)truncateWithCompletionHandler:(id)handler;
 @end
 
 @implementation DecryptDataConsumer
 
-- (DecryptDataConsumer)initWithDPInfo:(id)a3 error:(id *)a4
+- (DecryptDataConsumer)initWithDPInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = DecryptDataConsumer;
   v7 = [(DecryptDataConsumer *)&v12 init];
@@ -31,7 +31,7 @@
     v7->_partialSampleBufferLength = 0;
     v7->_sampleSizes = 0;
     v7->_sampleSizesCount = 0;
-    if (![(DecryptDataConsumer *)v7 _beginSessionWithDPInfo:v6 error:a4])
+    if (![(DecryptDataConsumer *)v7 _beginSessionWithDPInfo:infoCopy error:error])
     {
 
       v7 = 0;
@@ -59,9 +59,9 @@
   [(DecryptDataConsumer *)&v4 dealloc];
 }
 
-- (BOOL)_beginSessionWithDPInfo:(id)a3 error:(id *)a4
+- (BOOL)_beginSessionWithDPInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -78,15 +78,15 @@
   v11[2] = sub_10001E3F0;
   v11[3] = &unk_100380670;
   v14 = &v16;
-  v8 = v6;
+  v8 = infoCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v15 = &v22;
   dispatch_sync(consumerQueue, v11);
   v9 = *(v23 + 24);
-  if (a4 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v9 = *(v23 + 24);
   }
 
@@ -96,107 +96,107 @@
   return v9 & 1;
 }
 
-- (void)_resizeSampleSizeArray:(unint64_t)a3
+- (void)_resizeSampleSizeArray:(unint64_t)array
 {
-  if (self->_sampleSizesCount < a3)
+  if (self->_sampleSizesCount < array)
   {
-    v5 = 4 * a3;
-    v6 = malloc_type_realloc(self->_sampleSizes, 4 * a3, 0x100004052888210uLL);
+    v5 = 4 * array;
+    v6 = malloc_type_realloc(self->_sampleSizes, 4 * array, 0x100004052888210uLL);
     self->_sampleSizes = v6;
     sampleSizesCount = self->_sampleSizesCount;
-    if (sampleSizesCount < a3)
+    if (sampleSizesCount < array)
     {
       memset_pattern16(&v6[sampleSizesCount], &unk_1002EA4C0, v5 - 4 * sampleSizesCount);
     }
 
-    self->_sampleSizesCount = a3;
+    self->_sampleSizesCount = array;
   }
 }
 
-- (void)consumeData:(id)a3 withCompletionHandler:(id)a4
+- (void)consumeData:(id)data withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   consumerQueue = self->_consumerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001E6E8;
   block[3] = &unk_100380698;
-  v12 = v6;
-  v13 = v7;
+  v12 = dataCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dataCopy;
+  v10 = handlerCopy;
   dispatch_async(consumerQueue, block);
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   consumerQueue = self->_consumerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001EE40;
   v7[3] = &unk_100380710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(consumerQueue, v7);
 }
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   consumerQueue = self->_consumerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001F19C;
   v7[3] = &unk_100380710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(consumerQueue, v7);
 }
 
-- (void)resetWithCompletionHandler:(id)a3
+- (void)resetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   consumerQueue = self->_consumerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001F3C8;
   v7[3] = &unk_100380710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(consumerQueue, v7);
 }
 
-- (void)suspendWithCompletionHandler:(id)a3
+- (void)suspendWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   consumerQueue = self->_consumerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001F510;
   v7[3] = &unk_100380710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(consumerQueue, v7);
 }
 
-- (void)truncateWithCompletionHandler:(id)a3
+- (void)truncateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   consumerQueue = self->_consumerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001F658;
   v7[3] = &unk_100380710;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(consumerQueue, v7);
 }
 

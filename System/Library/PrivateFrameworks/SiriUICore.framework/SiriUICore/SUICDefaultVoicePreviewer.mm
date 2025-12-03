@@ -1,19 +1,19 @@
 @interface SUICDefaultVoicePreviewer
 - (SUICVoicePreviewingDelegate)delegate;
-- (void)audioPowerUpdaterDidFire:(id)a3;
-- (void)audioPowerUpdaterDidUpdate:(id)a3;
+- (void)audioPowerUpdaterDidFire:(id)fire;
+- (void)audioPowerUpdaterDidUpdate:(id)update;
 - (void)dealloc;
-- (void)previewVoice:(id)a3 completion:(id)a4;
+- (void)previewVoice:(id)voice completion:(id)completion;
 - (void)stopVoicePreview;
 @end
 
 @implementation SUICDefaultVoicePreviewer
 
-- (void)previewVoice:(id)a3 completion:(id)a4
+- (void)previewVoice:(id)voice completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  voiceCopy = voice;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -21,7 +21,7 @@
     *buf = 136315394;
     v35 = "[SUICDefaultVoicePreviewer previewVoice:completion:]";
     v36 = 2112;
-    v37 = v6;
+    v37 = voiceCopy;
     _os_log_impl(&dword_1C432B000, v8, OS_LOG_TYPE_DEFAULT, "%s Requesting to play voice preview for : %@", buf, 0x16u);
   }
 
@@ -38,13 +38,13 @@
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  v14 = [v13 UUIDString];
+  uUIDString = [v13 UUIDString];
 
-  [(NSMutableSet *)self->previewSessions addObject:v14];
+  [(NSMutableSet *)self->previewSessions addObject:uUIDString];
   v15 = objc_alloc(MEMORY[0x1E69D3318]);
-  v16 = [v6 languageCode];
-  v17 = [v6 name];
-  v18 = [v15 initWithLanguage:v16 name:v17];
+  languageCode = [voiceCopy languageCode];
+  name = [voiceCopy name];
+  v18 = [v15 initWithLanguage:languageCode name:name];
 
   v19 = [objc_alloc(MEMORY[0x1E69D32F8]) initWithVoice:v18 previewType:1];
   objc_storeStrong(&self->_lastRequest, v19);
@@ -54,9 +54,9 @@
   v29[2] = __53__SUICDefaultVoicePreviewer_previewVoice_completion___block_invoke;
   v29[3] = &unk_1E81E7F98;
   objc_copyWeak(&v32, &location);
-  v21 = v14;
+  v21 = uUIDString;
   v30 = v21;
-  v22 = v7;
+  v22 = completionCopy;
   v31 = v22;
   [(SiriTTSServiceSession *)v20 speakWithPreviewRequest:v19 didFinish:v29];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -154,9 +154,9 @@ void __53__SUICDefaultVoicePreviewer_previewVoice_completion___block_invoke_3(ui
   }
 }
 
-- (void)audioPowerUpdaterDidFire:(id)a3
+- (void)audioPowerUpdaterDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   objc_initWeak(&location, self);
   session = self->_session;
   v7[0] = MEMORY[0x1E69E9820];
@@ -164,7 +164,7 @@ void __53__SUICDefaultVoicePreviewer_previewVoice_completion___block_invoke_3(ui
   v7[2] = __54__SUICDefaultVoicePreviewer_audioPowerUpdaterDidFire___block_invoke;
   v7[3] = &unk_1E81E8010;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = fireCopy;
   v8 = v6;
   [(SiriTTSServiceSession *)session getAudioPower:v7];
 
@@ -216,12 +216,12 @@ void __54__SUICDefaultVoicePreviewer_audioPowerUpdaterDidFire___block_invoke_2(u
   [v3 voicePreviewerAudioOutputDidChangePowerLevel:v2];
 }
 
-- (void)audioPowerUpdaterDidUpdate:(id)a3
+- (void)audioPowerUpdaterDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (![(NSMutableSet *)self->previewSessions count])
   {
-    [v4 invalidate];
+    [updateCopy invalidate];
   }
 }
 

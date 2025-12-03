@@ -3,12 +3,12 @@
 - (Box<float,)localRenderBounds;
 - (Box<float,)localSignBounds;
 - (Matrix<float,)offsetPixelForPixel:()Matrix<float;
-- (char)initWithFramesetter:(const void *)a3 signMetrics:(_OWORD *)a4 textMetrics:(__int128 *)a5 signColoring:(void *)a6 glyph:(uint64_t *)a7 cgGlyph:(CGImage *)a8 resourceStore:(uint64_t *)a9;
-- (char)initWithLine:(const void *)a3 signMetrics:(_OWORD *)a4 textMetrics:(__int128 *)a5 signColoring:(void *)a6 glyph:(uint64_t *)a7 cgGlyph:(CGImage *)a8 resourceStore:(uint64_t *)a9;
+- (char)initWithFramesetter:(const void *)framesetter signMetrics:(_OWORD *)metrics textMetrics:(__int128 *)textMetrics signColoring:(void *)coloring glyph:(uint64_t *)glyph cgGlyph:(CGImage *)cgGlyph resourceStore:(uint64_t *)store;
+- (char)initWithLine:(const void *)line signMetrics:(_OWORD *)metrics textMetrics:(__int128 *)textMetrics signColoring:(void *)coloring glyph:(uint64_t *)glyph cgGlyph:(CGImage *)cgGlyph resourceStore:(uint64_t *)store;
 - (id).cxx_construct;
 - (id)image;
-- (void)addDebugPoint:(CGPoint)a3 color:()Color<float;
-- (void)addDebugRect:(CGRect)a3 color:()Color<float;
+- (void)addDebugPoint:(CGPoint)point color:()Color<float;
+- (void)addDebugRect:(CGRect)rect color:()Color<float;
 - (void)dealloc;
 @end
 
@@ -182,7 +182,7 @@
   return self;
 }
 
-- (void)addDebugRect:(CGRect)a3 color:()Color<float
+- (void)addDebugRect:(CGRect)rect color:()Color<float
 {
   v6 = *(self + 218);
   v7 = *(self + 219);
@@ -222,7 +222,7 @@
     }
 
     v13 = 16 * ((v6 - v9) >> 4);
-    *v13 = a3;
+    *v13 = rect;
     *(v13 + 32) = *v4;
     v8 = v13 + 48;
     v14 = v13 - (v6 - v9);
@@ -254,7 +254,7 @@
 
   else
   {
-    *v6 = a3;
+    *v6 = rect;
     *(v6 + 2) = *v4;
     v8 = (v6 + 48);
   }
@@ -262,7 +262,7 @@
   *(self + 218) = v8;
 }
 
-- (void)addDebugPoint:(CGPoint)a3 color:()Color<float
+- (void)addDebugPoint:(CGPoint)point color:()Color<float
 {
   v6 = *(self + 215);
   v7 = *(self + 216);
@@ -303,7 +303,7 @@
     }
 
     v14 = 32 * v10;
-    *v14 = a3;
+    *v14 = point;
     *(v14 + 16) = *v4;
     v8 = 32 * v10 + 32;
     if (v9 != v6)
@@ -332,7 +332,7 @@
 
   else
   {
-    *v6 = a3;
+    *v6 = point;
     *(v6 + 1) = *v4;
     v8 = (v6 + 32);
   }
@@ -552,32 +552,32 @@ LABEL_41:
         v17 = *(self + 153);
         v18 = *(self + 154);
         v19 = *(self + 155);
-        v20 = [v12 image];
+        image = [v12 image];
         v86.origin.x = v16;
         v86.origin.y = v17;
         v86.size.width = v18;
         v86.size.height = v19;
-        CGContextDrawImage(v8, v86, v20);
+        CGContextDrawImage(v8, v86, image);
         v21 = *(self + 160);
         v22 = *(self + 161);
         v23 = *(self + 162);
         v24 = *(self + 163);
-        v25 = [v11 image];
+        image2 = [v11 image];
         v87.origin.x = v21;
         v87.origin.y = v22;
         v87.size.width = v23;
         v87.size.height = v24;
-        CGContextDrawImage(v8, v87, v25);
+        CGContextDrawImage(v8, v87, image2);
         v26 = *(self + 156);
         v27 = *(self + 157);
         v28 = *(self + 158);
         v29 = *(self + 159);
-        v30 = [v13 image];
+        image3 = [v13 image];
         v88.origin.x = v26;
         v88.origin.y = v27;
         v88.size.width = v28;
         v88.size.height = v29;
-        CGContextDrawImage(v8, v88, v30);
+        CGContextDrawImage(v8, v88, image3);
       }
 
       else if ((v15 & 0x408) != 0)
@@ -599,60 +599,60 @@ LABEL_41:
         v48 = *(self + 153);
         v49 = *(self + 154);
         v50 = *(self + 155);
-        v51 = [v12 image];
+        image4 = [v12 image];
         v90.origin.x = v47;
         v90.origin.y = v48;
         v90.size.width = v49;
         v90.size.height = v50;
-        CGContextDrawImage(v8, v90, v51);
+        CGContextDrawImage(v8, v90, image4);
         if (*(self + 141) > 0.0)
         {
           v52 = *(self + 168);
           v53 = *(self + 169);
           v54 = *(self + 170);
           v55 = *(self + 171);
-          v56 = [v11 image];
+          image5 = [v11 image];
           v91.origin.x = v52;
           v91.origin.y = v53;
           v91.size.width = v54;
           v91.size.height = v55;
-          CGContextDrawImage(v8, v91, v56);
+          CGContextDrawImage(v8, v91, image5);
         }
 
         v57 = *(self + 164);
         v58 = *(self + 165);
         v59 = *(self + 166);
         v60 = *(self + 167);
-        v61 = [v46 image];
+        image6 = [v46 image];
         v92.origin.x = v57;
         v92.origin.y = v58;
         v92.size.width = v59;
         v92.size.height = v60;
-        CGContextDrawImage(v8, v92, v61);
+        CGContextDrawImage(v8, v92, image6);
         if (*(self + 141) > 0.0)
         {
           v62 = *(self + 172);
           v63 = *(self + 173);
           v64 = *(self + 174);
           v65 = *(self + 175);
-          v66 = [v11 image];
+          image7 = [v11 image];
           v93.origin.x = v62;
           v93.origin.y = v63;
           v93.size.width = v64;
           v93.size.height = v65;
-          CGContextDrawImage(v8, v93, v66);
+          CGContextDrawImage(v8, v93, image7);
         }
 
         v67 = *(self + 156);
         v68 = *(self + 157);
         v69 = *(self + 158);
         v70 = *(self + 159);
-        v71 = [v13 image];
+        image8 = [v13 image];
         v94.origin.x = v67;
         v94.origin.y = v68;
         v94.size.width = v69;
         v94.size.height = v70;
-        CGContextDrawImage(v8, v94, v71);
+        CGContextDrawImage(v8, v94, image8);
       }
     }
 
@@ -700,13 +700,13 @@ LABEL_41:
     if (v36)
     {
       v37 = md::LabelIcon::image(v36);
-      v38 = [v37 image];
+      image9 = [v37 image];
     }
 
     else
     {
-      v38 = *(self + 213);
-      if (!v38)
+      image9 = *(self + 213);
+      if (!image9)
       {
 LABEL_36:
         Image = CGBitmapContextCreateImage(v8);
@@ -736,7 +736,7 @@ LABEL_36:
       }
     }
 
-    CGContextDrawImage(v8, *(self + 1096), v38);
+    CGContextDrawImage(v8, *(self + 1096), image9);
     goto LABEL_36;
   }
 
@@ -746,45 +746,45 @@ LABEL_42:
   return v8;
 }
 
-- (char)initWithLine:(const void *)a3 signMetrics:(_OWORD *)a4 textMetrics:(__int128 *)a5 signColoring:(void *)a6 glyph:(uint64_t *)a7 cgGlyph:(CGImage *)a8 resourceStore:(uint64_t *)a9
+- (char)initWithLine:(const void *)line signMetrics:(_OWORD *)metrics textMetrics:(__int128 *)textMetrics signColoring:(void *)coloring glyph:(uint64_t *)glyph cgGlyph:(CGImage *)cgGlyph resourceStore:(uint64_t *)store
 {
-  v58.receiver = a1;
+  v58.receiver = self;
   v58.super_class = VKRoadSignArtwork;
   v15 = [(VKRoadSignArtwork *)&v58 init];
   v16 = v15;
   if (v15)
   {
-    v17 = a4[1];
-    *(v15 + 2) = *a4;
+    v17 = metrics[1];
+    *(v15 + 2) = *metrics;
     *(v15 + 3) = v17;
-    v18 = a4[2];
-    v19 = a4[3];
-    v20 = a4[5];
-    *(v15 + 6) = a4[4];
+    v18 = metrics[2];
+    v19 = metrics[3];
+    v20 = metrics[5];
+    *(v15 + 6) = metrics[4];
     *(v15 + 7) = v20;
     *(v15 + 4) = v18;
     *(v15 + 5) = v19;
-    v21 = a4[6];
-    v22 = a4[7];
-    v23 = a4[9];
-    *(v15 + 10) = a4[8];
+    v21 = metrics[6];
+    v22 = metrics[7];
+    v23 = metrics[9];
+    *(v15 + 10) = metrics[8];
     *(v15 + 11) = v23;
     *(v15 + 8) = v21;
     *(v15 + 9) = v22;
-    v24 = *a5;
-    v25 = a5[1];
-    v26 = a5[2];
-    *(v15 + 30) = *(a5 + 6);
+    v24 = *textMetrics;
+    v25 = textMetrics[1];
+    v26 = textMetrics[2];
+    *(v15 + 30) = *(textMetrics + 6);
     *(v15 + 13) = v25;
     *(v15 + 14) = v26;
     *(v15 + 12) = v24;
-    std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::operator=(v15 + 31, a5 + 7);
-    std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::operator=(v16 + 35, a5 + 11);
-    v27 = *(a5 + 120);
-    *(v16 + 164) = *(a5 + 68);
+    std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::operator=(v15 + 31, textMetrics + 7);
+    std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::operator=(v16 + 35, textMetrics + 11);
+    v27 = *(textMetrics + 120);
+    *(v16 + 164) = *(textMetrics + 68);
     *(v16 + 312) = v27;
-    v28 = a6 + 1;
-    *(v16 + 177) = *a6;
+    v28 = coloring + 1;
+    *(v16 + 177) = *coloring;
     for (i = 178; i != 182; ++i)
     {
       v30 = *v28++;
@@ -798,7 +798,7 @@ LABEL_42:
       v33 = 0;
       v34 = v31;
       v35 = &v16[32 * v32 + 1456];
-      v36 = &a6[4 * v32 + 5];
+      v36 = &coloring[4 * v32 + 5];
       do
       {
         *(v35 + v33) = *(v36 + v33);
@@ -811,14 +811,14 @@ LABEL_42:
     }
 
     while ((v34 & 1) == 0);
-    v37 = a6 + 13;
+    v37 = coloring + 13;
     for (j = 190; j != 194; ++j)
     {
       v39 = *v37++;
       *&v16[8 * j] = v39;
     }
 
-    v40 = a6 + 17;
+    v40 = coloring + 17;
     do
     {
       v41 = *v40++;
@@ -826,7 +826,7 @@ LABEL_42:
     }
 
     while (j != 198);
-    v42 = a6 + 21;
+    v42 = coloring + 21;
     do
     {
       v43 = *v42++;
@@ -834,7 +834,7 @@ LABEL_42:
     }
 
     while (j != 202);
-    v44 = a6 + 25;
+    v44 = coloring + 25;
     do
     {
       v45 = *v44++;
@@ -842,7 +842,7 @@ LABEL_42:
     }
 
     while (j != 206);
-    v46 = a6 + 29;
+    v46 = coloring + 29;
     do
     {
       v47 = *v46++;
@@ -850,9 +850,9 @@ LABEL_42:
     }
 
     while (j != 210);
-    *(v16 + 210) = a6[33];
-    v49 = *a7;
-    v48 = a7[1];
+    *(v16 + 210) = coloring[33];
+    v49 = *glyph;
+    v48 = glyph[1];
     if (v48)
     {
       atomic_fetch_add_explicit((v48 + 8), 1uLL, memory_order_relaxed);
@@ -866,10 +866,10 @@ LABEL_42:
       std::__shared_weak_count::__release_shared[abi:nn200100](v50);
     }
 
-    *(v16 + 213) = a8;
-    if (a3)
+    *(v16 + 213) = cgGlyph;
+    if (line)
     {
-      v51 = CFRetain(a3);
+      v51 = CFRetain(line);
     }
 
     else
@@ -880,8 +880,8 @@ LABEL_42:
     *(v16 + 2) = 0;
     *(v16 + 3) = 0;
     *(v16 + 1) = v51;
-    v53 = *a9;
-    v52 = a9[1];
+    v53 = *store;
+    v52 = store[1];
     if (v52)
     {
       atomic_fetch_add_explicit((v52 + 16), 1uLL, memory_order_relaxed);
@@ -899,7 +899,7 @@ LABEL_42:
     memcpy(v16 + 336, __src, 0x438uLL);
     if (*(v16 + 213))
     {
-      CGImageRetain(a8);
+      CGImageRetain(cgGlyph);
     }
 
     v55 = v16;
@@ -908,45 +908,45 @@ LABEL_42:
   return v16;
 }
 
-- (char)initWithFramesetter:(const void *)a3 signMetrics:(_OWORD *)a4 textMetrics:(__int128 *)a5 signColoring:(void *)a6 glyph:(uint64_t *)a7 cgGlyph:(CGImage *)a8 resourceStore:(uint64_t *)a9
+- (char)initWithFramesetter:(const void *)framesetter signMetrics:(_OWORD *)metrics textMetrics:(__int128 *)textMetrics signColoring:(void *)coloring glyph:(uint64_t *)glyph cgGlyph:(CGImage *)cgGlyph resourceStore:(uint64_t *)store
 {
-  v58.receiver = a1;
+  v58.receiver = self;
   v58.super_class = VKRoadSignArtwork;
   v15 = [(VKRoadSignArtwork *)&v58 init];
   v16 = v15;
   if (v15)
   {
-    v17 = a4[1];
-    *(v15 + 2) = *a4;
+    v17 = metrics[1];
+    *(v15 + 2) = *metrics;
     *(v15 + 3) = v17;
-    v18 = a4[2];
-    v19 = a4[3];
-    v20 = a4[5];
-    *(v15 + 6) = a4[4];
+    v18 = metrics[2];
+    v19 = metrics[3];
+    v20 = metrics[5];
+    *(v15 + 6) = metrics[4];
     *(v15 + 7) = v20;
     *(v15 + 4) = v18;
     *(v15 + 5) = v19;
-    v21 = a4[6];
-    v22 = a4[7];
-    v23 = a4[9];
-    *(v15 + 10) = a4[8];
+    v21 = metrics[6];
+    v22 = metrics[7];
+    v23 = metrics[9];
+    *(v15 + 10) = metrics[8];
     *(v15 + 11) = v23;
     *(v15 + 8) = v21;
     *(v15 + 9) = v22;
-    v24 = *a5;
-    v25 = a5[1];
-    v26 = a5[2];
-    *(v15 + 30) = *(a5 + 6);
+    v24 = *textMetrics;
+    v25 = textMetrics[1];
+    v26 = textMetrics[2];
+    *(v15 + 30) = *(textMetrics + 6);
     *(v15 + 13) = v25;
     *(v15 + 14) = v26;
     *(v15 + 12) = v24;
-    std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::operator=(v15 + 31, a5 + 7);
-    std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::operator=(v16 + 35, a5 + 11);
-    v27 = *(a5 + 120);
-    *(v16 + 164) = *(a5 + 68);
+    std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::operator=(v15 + 31, textMetrics + 7);
+    std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::operator=(v16 + 35, textMetrics + 11);
+    v27 = *(textMetrics + 120);
+    *(v16 + 164) = *(textMetrics + 68);
     *(v16 + 312) = v27;
-    v28 = a6 + 1;
-    *(v16 + 177) = *a6;
+    v28 = coloring + 1;
+    *(v16 + 177) = *coloring;
     for (i = 178; i != 182; ++i)
     {
       v30 = *v28++;
@@ -960,7 +960,7 @@ LABEL_42:
       v33 = 0;
       v34 = v31;
       v35 = &v16[32 * v32 + 1456];
-      v36 = &a6[4 * v32 + 5];
+      v36 = &coloring[4 * v32 + 5];
       do
       {
         *(v35 + v33) = *(v36 + v33);
@@ -973,14 +973,14 @@ LABEL_42:
     }
 
     while ((v34 & 1) == 0);
-    v37 = a6 + 13;
+    v37 = coloring + 13;
     for (j = 190; j != 194; ++j)
     {
       v39 = *v37++;
       *&v16[8 * j] = v39;
     }
 
-    v40 = a6 + 17;
+    v40 = coloring + 17;
     do
     {
       v41 = *v40++;
@@ -988,7 +988,7 @@ LABEL_42:
     }
 
     while (j != 198);
-    v42 = a6 + 21;
+    v42 = coloring + 21;
     do
     {
       v43 = *v42++;
@@ -996,7 +996,7 @@ LABEL_42:
     }
 
     while (j != 202);
-    v44 = a6 + 25;
+    v44 = coloring + 25;
     do
     {
       v45 = *v44++;
@@ -1004,7 +1004,7 @@ LABEL_42:
     }
 
     while (j != 206);
-    v46 = a6 + 29;
+    v46 = coloring + 29;
     do
     {
       v47 = *v46++;
@@ -1012,9 +1012,9 @@ LABEL_42:
     }
 
     while (j != 210);
-    *(v16 + 210) = a6[33];
-    v49 = *a7;
-    v48 = a7[1];
+    *(v16 + 210) = coloring[33];
+    v49 = *glyph;
+    v48 = glyph[1];
     if (v48)
     {
       atomic_fetch_add_explicit((v48 + 8), 1uLL, memory_order_relaxed);
@@ -1028,12 +1028,12 @@ LABEL_42:
       std::__shared_weak_count::__release_shared[abi:nn200100](v50);
     }
 
-    *(v16 + 213) = a8;
+    *(v16 + 213) = cgGlyph;
     *(v16 + 1) = 0;
     *(v16 + 2) = 0;
-    if (a3)
+    if (framesetter)
     {
-      v51 = CFRetain(a3);
+      v51 = CFRetain(framesetter);
     }
 
     else
@@ -1042,8 +1042,8 @@ LABEL_42:
     }
 
     *(v16 + 3) = v51;
-    v53 = *a9;
-    v52 = a9[1];
+    v53 = *store;
+    v52 = store[1];
     if (v52)
     {
       atomic_fetch_add_explicit((v52 + 16), 1uLL, memory_order_relaxed);
@@ -1059,7 +1059,7 @@ LABEL_42:
 
     if (*(v16 + 213))
     {
-      CGImageRetain(a8);
+      CGImageRetain(cgGlyph);
     }
 
     md::RoadSignGeneratedMetrics::RoadSignGeneratedMetrics(__src, (v16 + 32), (v16 + 192));

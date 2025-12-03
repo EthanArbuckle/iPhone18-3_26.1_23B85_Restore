@@ -1,55 +1,55 @@
 @interface ARReplaySensorPublic
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentCMTime;
 - (ARReplaySensorDelegate)replaySensorDelegate;
-- (ARReplaySensorPublic)initWithDataFromFile:(id)a3;
-- (ARReplaySensorPublic)initWithSequenceURL:(id)a3 manualReplay:(BOOL)a4 synchronousMode:(BOOL)a5;
-- (ARReplaySensorPublic)initWithSequenceURL:(id)a3 replayMode:(int64_t)a4;
+- (ARReplaySensorPublic)initWithDataFromFile:(id)file;
+- (ARReplaySensorPublic)initWithSequenceURL:(id)l manualReplay:(BOOL)replay synchronousMode:(BOOL)mode;
+- (ARReplaySensorPublic)initWithSequenceURL:(id)l replayMode:(int64_t)mode;
 - (ARSensorDelegate)delegate;
 - (ARSession)session;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readNextFrameFromStream:(id)a3 forWrapper:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readNextFrameFromStream:(id)stream forWrapper:(id)wrapper;
 - (CGSize)imageResolution;
-- (double)_getMinFrameDurationForStream:(id)a3;
+- (double)_getMinFrameDurationForStream:(id)stream;
 - (double)currentTime;
-- (id)_cameraCalibrationDataForStream:(id)a3 timestamp:(double)a4;
-- (id)_mainVideoStringID:(id)a3;
-- (id)_populateCalibrationStream:(id)a3 timestamp:(double)a4;
-- (id)_streamIdentifierForCaptureDeviceType:(id)a3 position:(int64_t)a4;
-- (id)availableVideoFormatForDeviceType:(id)a3 position:(int64_t)a4;
-- (id)customDataForTimestamp:(double)a3;
-- (id)getItemsFromStream:(id)a3 upToMovieTime:(double)a4 converter:(id)a5;
-- (id)getItemsFromStream:(id)a3 upToMovieTime:(double)a4 metadataClass:(Class)a5;
+- (id)_cameraCalibrationDataForStream:(id)stream timestamp:(double)timestamp;
+- (id)_mainVideoStringID:(id)d;
+- (id)_populateCalibrationStream:(id)stream timestamp:(double)timestamp;
+- (id)_streamIdentifierForCaptureDeviceType:(id)type position:(int64_t)position;
+- (id)availableVideoFormatForDeviceType:(id)type position:(int64_t)position;
+- (id)customDataForTimestamp:(double)timestamp;
+- (id)getItemsFromStream:(id)stream upToMovieTime:(double)time converter:(id)converter;
+- (id)getItemsFromStream:(id)stream upToMovieTime:(double)time metadataClass:(Class)class;
 - (id)getNextWrappedImageDataForReplay;
-- (id)getNextWrappedItemsFromStream:(id)a3 converter:(id)a4;
-- (id)getWrappedItemsFromPixelBufferStream:(id)a3 upToMovieTime:(double)a4 converter:(id)a5;
-- (id)getWrappedItemsFromStream:(id)a3 upToMovieTime:(double)a4 converter:(id)a5;
-- (id)getWrappedItemsFromStream:(id)a3 upToMovieTime:(double)a4 withBlock:(id)a5;
-- (id)imageDataToReplayForTimestamp:(double)a3;
-- (id)keyedArchiveConverter:(Class)a3;
-- (id)keyedArchiveConverterForClasses:(id)a3;
-- (id)metadataWrapperConverter:(Class)a3;
+- (id)getNextWrappedItemsFromStream:(id)stream converter:(id)converter;
+- (id)getWrappedItemsFromPixelBufferStream:(id)stream upToMovieTime:(double)time converter:(id)converter;
+- (id)getWrappedItemsFromStream:(id)stream upToMovieTime:(double)time converter:(id)converter;
+- (id)getWrappedItemsFromStream:(id)stream upToMovieTime:(double)time withBlock:(id)block;
+- (id)imageDataToReplayForTimestamp:(double)timestamp;
+- (id)keyedArchiveConverter:(Class)converter;
+- (id)keyedArchiveConverterForClasses:(id)classes;
+- (id)metadataWrapperConverter:(Class)converter;
 - (id)peekNextWrappedImageDataForAllRequiredStreams;
-- (id)peekNextWrappedImageDataForStreamIdentifier:(id)a3;
-- (void)_appendCalibrationData:(id)a3 streamIdentifier:(id)a4;
-- (void)_appendVisionDataToImageData:(id)a3 streamIdentifier:(id)a4;
-- (void)_didOutputSensorData:(id)a3;
+- (id)peekNextWrappedImageDataForStreamIdentifier:(id)identifier;
+- (void)_appendCalibrationData:(id)data streamIdentifier:(id)identifier;
+- (void)_appendVisionDataToImageData:(id)data streamIdentifier:(id)identifier;
+- (void)_didOutputSensorData:(id)data;
 - (void)_endReplay;
-- (void)_populateDepthDataForImageData:(id)a3;
-- (void)_populateDeviceOrientationIfNeededOnImageData:(id)a3 fromDeviceOrientationData:(id)a4 accelerometerData:(id)a5 streamIdentifier:(id)a6;
+- (void)_populateDepthDataForImageData:(id)data;
+- (void)_populateDeviceOrientationIfNeededOnImageData:(id)data fromDeviceOrientationData:(id)orientationData accelerometerData:(id)accelerometerData streamIdentifier:(id)identifier;
 - (void)_replaySensorFinishedReplayingData;
 - (void)advance;
 - (void)advanceFrame;
 - (void)dealloc;
 - (void)endInterruption;
-- (void)failWithError:(id)a3;
+- (void)failWithError:(id)error;
 - (void)interrupt;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReplay;
-- (void)readAndVendCMDatasUntil:(double)a3;
-- (void)readAndVendCVADepthTOFsUntil:(double)a3;
-- (void)readAndVendCVAUserEventsUntil:(double)a3;
+- (void)readAndVendCMDatasUntil:(double)until;
+- (void)readAndVendCVADepthTOFsUntil:(double)until;
+- (void)readAndVendCVAUserEventsUntil:(double)until;
 - (void)readFileMetadata;
-- (void)setImageIndex:(int)a3;
+- (void)setImageIndex:(int)index;
 - (void)start;
 - (void)startReplayIfNeeded;
 - (void)stop;
@@ -58,17 +58,17 @@
 
 @implementation ARReplaySensorPublic
 
-- (ARReplaySensorPublic)initWithDataFromFile:(id)a3
+- (ARReplaySensorPublic)initWithDataFromFile:(id)file
 {
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:file];
   v5 = [(ARReplaySensorPublic *)self initWithSequenceURL:v4 replayMode:0];
 
   return v5;
 }
 
-- (ARReplaySensorPublic)initWithSequenceURL:(id)a3 manualReplay:(BOOL)a4 synchronousMode:(BOOL)a5
+- (ARReplaySensorPublic)initWithSequenceURL:(id)l manualReplay:(BOOL)replay synchronousMode:(BOOL)mode
 {
-  if (a4)
+  if (replay)
   {
     v5 = 3;
   }
@@ -78,17 +78,17 @@
     v5 = 0;
   }
 
-  v6 = [(ARReplaySensorPublic *)self initWithSequenceURL:a3 replayMode:v5, a5];
+  mode = [(ARReplaySensorPublic *)self initWithSequenceURL:l replayMode:v5, mode];
 
-  return v6;
+  return mode;
 }
 
-- (ARReplaySensorPublic)initWithSequenceURL:(id)a3 replayMode:(int64_t)a4
+- (ARReplaySensorPublic)initWithSequenceURL:(id)l replayMode:(int64_t)mode
 {
   v160 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v150 = 0;
-  v7 = [objc_alloc(MEMORY[0x1E698BEC0]) initWithFileURL:v6 error:&v150];
+  v7 = [objc_alloc(MEMORY[0x1E698BEC0]) initWithFileURL:lCopy error:&v150];
   v8 = v150;
   if (v7)
   {
@@ -99,7 +99,7 @@
     {
 LABEL_89:
       self = v9;
-      v57 = self;
+      selfCopy = self;
       goto LABEL_90;
     }
 
@@ -108,41 +108,41 @@ LABEL_89:
     *(v9 + 48) = v10;
 
     [*(v9 + 48) setRecordingFormat:3];
-    v12 = [v6 lastPathComponent];
-    [*(v9 + 48) setFileName:v12];
+    lastPathComponent = [lCopy lastPathComponent];
+    [*(v9 + 48) setFileName:lastPathComponent];
 
-    *(v9 + 63) = replayModeByApplyingUserDefaultOverrides(a4);
-    v13 = [v6 copy];
+    *(v9 + 63) = replayModeByApplyingUserDefaultOverrides(mode);
+    v13 = [lCopy copy];
     v14 = *(v9 + 57);
     *(v9 + 57) = v13;
 
     objc_storeStrong(v9 + 10, v7);
     *(v9 + 71) = 0;
     v9[427] = 1;
-    v15 = [*(v9 + 10) getAllStreams];
-    v16 = [v15 mutableCopy];
+    getAllStreams = [*(v9 + 10) getAllStreams];
+    v16 = [getAllStreams mutableCopy];
 
     v17 = *MEMORY[0x1E698BEF0];
     [v16 removeObject:*MEMORY[0x1E698BEF0]];
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = *(v9 + 74);
-    *(v9 + 74) = v18;
+    *(v9 + 74) = array;
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v21 = *(v9 + 72);
-    *(v9 + 72) = v20;
+    *(v9 + 72) = array2;
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v23 = *(v9 + 73);
-    *(v9 + 73) = v22;
+    *(v9 + 73) = array3;
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v25 = *(v9 + 51);
-    *(v9 + 51) = v24;
+    *(v9 + 51) = dictionary;
 
-    v26 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v27 = *(v9 + 52);
-    *(v9 + 52) = v26;
+    *(v9 + 52) = dictionary2;
 
     v28 = [*(v9 + 10) containsMetadataStream:*MEMORY[0x1E698BF00]];
     if (v28)
@@ -180,11 +180,11 @@ LABEL_89:
           }
 
           v35 = *(*(&v145 + 1) + 8 * i);
-          v36 = [MEMORY[0x1E695DF70] array];
-          [*(v9 + 51) setObject:v36 forKeyedSubscript:v35];
+          array4 = [MEMORY[0x1E695DF70] array];
+          [*(v9 + 51) setObject:array4 forKeyedSubscript:v35];
 
-          v37 = [MEMORY[0x1E695DF70] array];
-          [*(v9 + 52) setObject:v37 forKeyedSubscript:v35];
+          array5 = [MEMORY[0x1E695DF70] array];
+          [*(v9 + 52) setObject:array5 forKeyedSubscript:v35];
         }
 
         v32 = [v30 countByEnumeratingWithState:&v145 objects:v151 count:16];
@@ -203,8 +203,8 @@ LABEL_89:
     *(v9 + 17) = v40;
 
     v42 = MEMORY[0x1E695DFD8];
-    v43 = [*(v9 + 10) getAllMetadataStreams];
-    v44 = [v42 setWithArray:v43];
+    getAllMetadataStreams = [*(v9 + 10) getAllMetadataStreams];
+    v44 = [v42 setWithArray:getAllMetadataStreams];
     v45 = *(v9 + 18);
     *(v9 + 18) = v44;
 
@@ -230,9 +230,9 @@ LABEL_89:
         [v9 advanceToFrameIndex:{+[ARKitUserDefaults integerForKey:](ARKitUserDefaults, "integerForKey:", @"com_apple_arkit_replay_filepath_advanceToFrame"}];
         [ARKitUserDefaults floatForKey:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier"];
         [v9 setAdvanceFramesPerSecondMultiplier:?];
-        v50 = [MEMORY[0x1E695E000] appleGlobalDomain];
-        [v50 addObserver:v9 forKeyPath:@"com_apple_arkit_replay_filepath_advanceToFrame" options:1 context:0];
-        [v50 addObserver:v9 forKeyPath:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier" options:1 context:0];
+        appleGlobalDomain = [MEMORY[0x1E695E000] appleGlobalDomain];
+        [appleGlobalDomain addObserver:v9 forKeyPath:@"com_apple_arkit_replay_filepath_advanceToFrame" options:1 context:0];
+        [appleGlobalDomain addObserver:v9 forKeyPath:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier" options:1 context:0];
         v51 = _ARLogSensor_5();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
@@ -241,7 +241,7 @@ LABEL_89:
           *buf = 138543618;
           v153 = v53;
           v154 = 2048;
-          v155 = v9;
+          selfCopy2 = v9;
           _os_log_impl(&dword_1C241C000, v51, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Using manual command line mode.", buf, 0x16u);
         }
       }
@@ -274,7 +274,7 @@ LABEL_89:
           *buf = 138544130;
           v153 = v64;
           v154 = 2048;
-          v155 = v9;
+          selfCopy2 = v9;
           v156 = 2048;
           v157 = v65;
           v158 = 2048;
@@ -295,13 +295,13 @@ LABEL_89:
       {
         v70 = objc_opt_class();
         v71 = NSStringFromClass(v70);
-        v72 = [*(v9 + 10) depthOutputFrameRate];
+        depthOutputFrameRate = [*(v9 + 10) depthOutputFrameRate];
         *buf = 138543874;
         v153 = v71;
         v154 = 2048;
-        v155 = v9;
+        selfCopy2 = v9;
         v156 = 2112;
-        v157 = v72;
+        v157 = depthOutputFrameRate;
         _os_log_impl(&dword_1C241C000, v69, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Setting jasper replay rate to: %@ fps", buf, 0x20u);
       }
     }
@@ -324,11 +324,11 @@ LABEL_43:
           goto LABEL_76;
         }
 
-        v76 = [*(v9 + 10) grabJasperExtrinsics];
-        v77 = v76;
-        if (v76)
+        grabJasperExtrinsics = [*(v9 + 10) grabJasperExtrinsics];
+        v77 = grabJasperExtrinsics;
+        if (grabJasperExtrinsics)
         {
-          v78 = [v76 objectForKeyedSubscript:*(v9 + 67)];
+          v78 = [grabJasperExtrinsics objectForKeyedSubscript:*(v9 + 67)];
           v79 = v78;
           if (v78)
           {
@@ -395,7 +395,7 @@ LABEL_43:
             *buf = 138543618;
             v153 = v102;
             v154 = 2048;
-            v155 = v9;
+            selfCopy2 = v9;
             v103 = "%{public}@ <%p>: Unable to get extrinsics to TOF sensor.";
             v104 = v79;
             v105 = OS_LOG_TYPE_ERROR;
@@ -414,7 +414,7 @@ LABEL_43:
             *buf = 138543618;
             v153 = v102;
             v154 = 2048;
-            v155 = v9;
+            selfCopy2 = v9;
             v103 = "Error: %{public}@ <%p>: Unable to get extrinsics to TOF sensor.";
             v104 = v79;
             v105 = OS_LOG_TYPE_INFO;
@@ -439,11 +439,11 @@ LABEL_76:
             *buf = 138544130;
             v153 = v136;
             v154 = 2048;
-            v155 = v9;
+            selfCopy2 = v9;
             v156 = 2112;
             v157 = v137;
             v158 = 2112;
-            v159 = v6;
+            v159 = lCopy;
             _os_log_impl(&dword_1C241C000, v134, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Initialized: ReplayMode: %@, URL:%@", buf, 0x2Au);
           }
 
@@ -510,7 +510,7 @@ LABEL_87:
             *buf = 138543618;
             v153 = v112;
             v154 = 2048;
-            v155 = v9;
+            selfCopy2 = v9;
             v113 = "%{public}@ <%p>: Unable to get extrinsics from ultrawide to wide, using default hardcoded extrinsics";
             v114 = v110;
             v115 = OS_LOG_TYPE_ERROR;
@@ -526,16 +526,16 @@ LABEL_68:
           *buf = 138543618;
           v153 = v112;
           v154 = 2048;
-          v155 = v9;
+          selfCopy2 = v9;
           v113 = "Error: %{public}@ <%p>: Unable to get extrinsics from ultrawide to wide, using default hardcoded extrinsics";
           v114 = v110;
           v115 = OS_LOG_TYPE_INFO;
           goto LABEL_68;
         }
 
-        v117 = [*(v9 + 10) deviceString];
+        deviceString = [*(v9 + 10) deviceString];
         v74 = v107;
-        if (v117 && ([*(v9 + 10) deviceString], v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v48, "isEqualToString:", @"ST2")))
+        if (deviceString && ([*(v9 + 10) deviceString], v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v48, "isEqualToString:", @"ST2")))
         {
           v118 = ARST2UltrawideToWideExtrinsics();
           *(v9 + 46) = v119;
@@ -559,7 +559,7 @@ LABEL_68:
           *(v9 + 26) = v131;
           *(v9 + 58) = v132;
           *(v9 + 28) = v133;
-          if (!v117)
+          if (!deviceString)
           {
 LABEL_74:
 
@@ -585,18 +585,18 @@ LABEL_74:
     *buf = 138544130;
     v153 = v56;
     v154 = 2048;
-    v155 = self;
+    selfCopy2 = self;
     v156 = 2112;
-    v157 = v6;
+    v157 = lCopy;
     v158 = 2112;
     v159 = v8;
     _os_log_impl(&dword_1C241C000, v54, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to create MOVStreamReader from URL: %@. Error: %@", buf, 0x2Au);
   }
 
-  v57 = 0;
+  selfCopy = 0;
 LABEL_90:
 
-  return v57;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -610,16 +610,16 @@ LABEL_90:
     *buf = 138543618;
     v11 = v5;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
   [(ARReplaySensorPublic *)self _endReplay];
   if (self->_manualCommandLineMode)
   {
-    v6 = [MEMORY[0x1E695E000] appleGlobalDomain];
-    [v6 removeObserver:self forKeyPath:@"com_apple_arkit_replay_filepath_advanceToFrame"];
-    [v6 removeObserver:self forKeyPath:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier"];
+    appleGlobalDomain = [MEMORY[0x1E695E000] appleGlobalDomain];
+    [appleGlobalDomain removeObserver:self forKeyPath:@"com_apple_arkit_replay_filepath_advanceToFrame"];
+    [appleGlobalDomain removeObserver:self forKeyPath:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier"];
   }
 
   CVPixelBufferRelease(self->_depthFloat32PixelBuffer);
@@ -641,18 +641,18 @@ LABEL_90:
   [(ARReplaySensorPublic *)&v9 dealloc];
 }
 
-- (id)_mainVideoStringID:(id)a3
+- (id)_mainVideoStringID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  if ([v4 count] >= 2 && ((objc_msgSend(v5, "isEqualToString:", @"JasperCamera") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E6990C88])))
+  dCopy = d;
+  firstObject = [dCopy firstObject];
+  if ([dCopy count] >= 2 && ((objc_msgSend(firstObject, "isEqualToString:", @"JasperCamera") & 1) != 0 || objc_msgSend(firstObject, "isEqualToString:", *MEMORY[0x1E6990C88])))
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = dCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -674,7 +674,7 @@ LABEL_90:
             v13 = v12;
 
             self->_usingST2Recording = 1;
-            v5 = v13;
+            firstObject = v13;
             goto LABEL_14;
           }
         }
@@ -692,21 +692,21 @@ LABEL_90:
 LABEL_14:
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (id)availableVideoFormatForDeviceType:(id)a3 position:(int64_t)a4
+- (id)availableVideoFormatForDeviceType:(id)type position:(int64_t)position
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(ARReplaySensorPublic *)self _streamIdentifierForCaptureDeviceType:v6 position:a4];
+  typeCopy = type;
+  v7 = [(ARReplaySensorPublic *)self _streamIdentifierForCaptureDeviceType:typeCopy position:position];
   if ([(NSSet *)self->_availableVideoStreams containsObject:v7])
   {
     [(MOVReaderInterface *)self->_reader getSizeForStream:v7];
     v9 = v8;
     v11 = v10;
     v12 = [(MOVReaderInterface *)self->_reader getOutputPixelFormatForStream:v7];
-    if ([v6 isEqualToString:*MEMORY[0x1E6986948]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E6986948]])
     {
       v13 = &unk_1F4258E30;
     }
@@ -716,13 +716,13 @@ LABEL_14:
       v13 = &unk_1F4258E48;
     }
 
-    v14 = [[ARVideoFormat alloc] initWithImageResolution:a4 captureDevicePosition:v6 captureDeviceType:v13 frameRatesByPowerUsage:v12 pixelFormat:v9, v11];
+    v14 = [[ARVideoFormat alloc] initWithImageResolution:position captureDevicePosition:typeCopy captureDeviceType:v13 frameRatesByPowerUsage:v12 pixelFormat:v9, v11];
 LABEL_6:
     v15 = v14;
     goto LABEL_13;
   }
 
-  if ([(NSSet *)self->_availableVideoStreams count]== 1 && ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v6))
+  if ([(NSSet *)self->_availableVideoStreams count]== 1 && ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(typeCopy))
   {
     v16 = _ARLogSensor_5();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -732,11 +732,11 @@ LABEL_6:
       v20 = 138543618;
       v21 = v18;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_INFO, "%{public}@ <%p>: stream identifier not found in the recording, please use new recording format.", &v20, 0x16u);
     }
 
-    v14 = [[ARVideoFormat alloc] initWithImageResolution:a4 captureDevicePosition:v6 captureDeviceType:self->_imageResolution.width, self->_imageResolution.height];
+    v14 = [[ARVideoFormat alloc] initWithImageResolution:position captureDevicePosition:typeCopy captureDeviceType:self->_imageResolution.width, self->_imageResolution.height];
     goto LABEL_6;
   }
 
@@ -757,7 +757,7 @@ LABEL_13:
     *buf = 138543618;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: start", buf, 0x16u);
   }
 
@@ -797,7 +797,7 @@ void __29__ARReplaySensorPublic_start__block_invoke(uint64_t a1)
     *buf = 138543618;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: stop", buf, 0x16u);
   }
 
@@ -828,7 +828,7 @@ uint64_t __28__ARReplaySensorPublic_stop__block_invoke(uint64_t result)
     *buf = 138543618;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: interrupt", buf, 0x16u);
   }
 
@@ -869,7 +869,7 @@ void __33__ARReplaySensorPublic_interrupt__block_invoke(uint64_t a1)
     *buf = 138543618;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: endInterruption", buf, 0x16u);
   }
 
@@ -920,29 +920,29 @@ void __39__ARReplaySensorPublic_endInterruption__block_invoke(uint64_t a1)
   }
 }
 
-- (id)customDataForTimestamp:(double)a3
+- (id)customDataForTimestamp:(double)timestamp
 {
-  v4 = a3 - self->_recordTimestampToMovieTimestampDifference;
-  v5 = [(ARReplaySensorPublic *)self customDataClasses];
-  v6 = [(ARReplaySensorPublic *)self keyedArchiveConverterForClasses:v5];
+  v4 = timestamp - self->_recordTimestampToMovieTimestampDifference;
+  customDataClasses = [(ARReplaySensorPublic *)self customDataClasses];
+  v6 = [(ARReplaySensorPublic *)self keyedArchiveConverterForClasses:customDataClasses];
   v7 = [(ARReplaySensorPublic *)self getItemsFromStream:@"mdta/com.apple.arkit.customdata" upToMovieTime:v6 converter:v4];
-  v8 = [v7 lastObject];
+  lastObject = [v7 lastObject];
 
-  return v8;
+  return lastObject;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"com_apple_arkit_replay_filepath_advanceToFrame"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"com_apple_arkit_replay_filepath_advanceToFrame"])
   {
     [ARKitUserDefaults removeCachedObjectForKey:@"com_apple_arkit_replay_filepath_advanceToFrame"];
     [(ARReplaySensorPublic *)self advanceToFrameIndex:[ARKitUserDefaults integerForKey:@"com_apple_arkit_replay_filepath_advanceToFrame"]];
   }
 
-  else if ([v10 isEqualToString:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier"])
+  else if ([pathCopy isEqualToString:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier"])
   {
     [ARKitUserDefaults removeCachedObjectForKey:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier"];
     [ARKitUserDefaults floatForKey:@"com_apple_arkit_replay_filepath_advanceFramesPerSecondMultiplier"];
@@ -953,16 +953,16 @@ void __39__ARReplaySensorPublic_endInterruption__block_invoke(uint64_t a1)
   {
     v13.receiver = self;
     v13.super_class = ARReplaySensorPublic;
-    [(ARReplaySensorPublic *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ARReplaySensorPublic *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     sequenceURL = self->_sequenceURL;
     v7 = (sequenceURL == v5[57] || [(NSURL *)sequenceURL isEqual:?]) && self->_replayMode == v5[63];
   }
@@ -990,9 +990,9 @@ void __39__ARReplaySensorPublic_endInterruption__block_invoke(uint64_t a1)
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v4 = self;
-  v5 = [(ARParentImageSensorSettings *)self->_parentImageSensorSettings settings];
-  v6 = [v5 countByEnumeratingWithState:&v65 objects:v73 count:16];
+  selfCopy = self;
+  settings = [(ARParentImageSensorSettings *)self->_parentImageSensorSettings settings];
+  v6 = [settings countByEnumeratingWithState:&v65 objects:v73 count:16];
   if (!v6)
   {
     goto LABEL_15;
@@ -1007,25 +1007,25 @@ void __39__ARReplaySensorPublic_endInterruption__block_invoke(uint64_t a1)
     {
       if (*v66 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(settings);
       }
 
       v11 = *(*(&v65 + 1) + 8 * i);
-      v12 = [v11 videoFormat];
-      v13 = v12;
-      if (v12)
+      videoFormat = [v11 videoFormat];
+      v13 = videoFormat;
+      if (videoFormat)
       {
-        v14 = [v12 captureDeviceType];
-        v15 = [v14 isEqualToString:v9];
+        captureDeviceType = [videoFormat captureDeviceType];
+        v15 = [captureDeviceType isEqualToString:v9];
 
         if ((v15 & 1) == 0)
         {
           if ([v11 isEnabled])
           {
-            v16 = [v13 captureDeviceType];
-            v17 = -[ARReplaySensorPublic _streamIdentifierForCaptureDeviceType:position:](v4, "_streamIdentifierForCaptureDeviceType:position:", v16, [v13 captureDevicePosition]);
+            captureDeviceType2 = [v13 captureDeviceType];
+            v17 = -[ARReplaySensorPublic _streamIdentifierForCaptureDeviceType:position:](selfCopy, "_streamIdentifierForCaptureDeviceType:position:", captureDeviceType2, [v13 captureDevicePosition]);
 
-            if ([(ARReplaySensorPublic *)v4 _allStreamsAreAvailable:v17])
+            if ([(ARReplaySensorPublic *)selfCopy _allStreamsAreAvailable:v17])
             {
               [v59 addObject:v17];
 
@@ -1051,7 +1051,7 @@ void __39__ARReplaySensorPublic_endInterruption__block_invoke(uint64_t a1)
                 *buf = 138544130;
                 *&buf[4] = v53;
                 *&buf[12] = 2048;
-                *&buf[14] = v4;
+                *&buf[14] = selfCopy;
                 *&buf[22] = 2112;
                 v70 = v17;
                 v71 = 2112;
@@ -1071,7 +1071,7 @@ LABEL_43:
               *buf = 138544130;
               *&buf[4] = v53;
               *&buf[12] = 2048;
-              *&buf[14] = v4;
+              *&buf[14] = selfCopy;
               *&buf[22] = 2112;
               v70 = v17;
               v71 = 2112;
@@ -1082,7 +1082,7 @@ LABEL_43:
               goto LABEL_43;
             }
 
-            [(ARReplaySensorPublic *)v4 failWithError:v25];
+            [(ARReplaySensorPublic *)selfCopy failWithError:v25];
             goto LABEL_45;
           }
         }
@@ -1091,7 +1091,7 @@ LABEL_43:
 LABEL_13:
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v65 objects:v73 count:16];
+    v7 = [settings countByEnumeratingWithState:&v65 objects:v73 count:16];
     if (v7)
     {
       continue;
@@ -1102,9 +1102,9 @@ LABEL_13:
 
 LABEL_15:
 
-  self = v4;
+  self = selfCopy;
   v3 = v59;
-  if (!v4->_parentImageSensorSettings)
+  if (!selfCopy->_parentImageSensorSettings)
   {
     v18 = _ARLogSensor_5();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -1114,12 +1114,12 @@ LABEL_15:
       *buf = 138543618;
       *&buf[4] = v20;
       *&buf[12] = 2048;
-      *&buf[14] = v4;
+      *&buf[14] = selfCopy;
       _os_log_impl(&dword_1C241C000, v18, OS_LOG_TYPE_INFO, "%{public}@ <%p>: No image sensor settings defined, adding all available streams", buf, 0x16u);
     }
 
-    v21 = [(NSSet *)v4->_availableVideoStreams allObjects];
-    [v59 addObjectsFromArray:v21];
+    allObjects = [(NSSet *)selfCopy->_availableVideoStreams allObjects];
+    [v59 addObjectsFromArray:allObjects];
   }
 
 LABEL_19:
@@ -1154,10 +1154,10 @@ LABEL_19:
   metadataCache = self->_metadataCache;
   self->_metadataCache = v30;
 
-  v5 = [(ARReplaySensorPublic *)self peekNextWrappedImageDataForAllRequiredStreams];
-  v13 = [v5 objectForKeyedSubscript:self->_mainVideoStreamIdentifier];
-  v32 = [v13 data];
-  [v32 timestamp];
+  settings = [(ARReplaySensorPublic *)self peekNextWrappedImageDataForAllRequiredStreams];
+  v13 = [settings objectForKeyedSubscript:self->_mainVideoStreamIdentifier];
+  data = [v13 data];
+  [data timestamp];
   v34 = v33;
   [v13 timestamp];
   self->_recordTimestampToMovieTimestampDifference = v34 - v35;
@@ -1171,11 +1171,11 @@ LABEL_19:
     v61 = v13;
     v62 = v27;
     v36 = MEMORY[0x1C691B4C0](v60);
-    v37 = [(ARReplaySensorPublic *)self replaySensorDelegate];
-    (v36)[2](v36, v37);
+    replaySensorDelegate = [(ARReplaySensorPublic *)self replaySensorDelegate];
+    (v36)[2](v36, replaySensorDelegate);
 
-    v38 = [(ARReplaySensorPublic *)self traceReplaySensorDelegate];
-    (v36)[2](v36, v38);
+    traceReplaySensorDelegate = [(ARReplaySensorPublic *)self traceReplaySensorDelegate];
+    (v36)[2](v36, traceReplaySensorDelegate);
   }
 
   if (v25)
@@ -1272,8 +1272,8 @@ void __40__ARReplaySensorPublic_prepareForReplay__block_invoke(uint64_t a1, void
   {
     self->_replayStarted = 1;
     [(ARReplaySensorPublic *)self setImageIndex:0];
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     self->_startTime = v4;
 
     self->_tick = 0;
@@ -1304,8 +1304,8 @@ void __43__ARReplaySensorPublic_startReplayIfNeeded__block_invoke(uint64_t a1)
 
 - (double)currentTime
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v5 = v4 - self->_startTime;
 
   return v5;
@@ -1329,7 +1329,7 @@ void __43__ARReplaySensorPublic_startReplayIfNeeded__block_invoke(uint64_t a1)
     v10 = 138543618;
     v11 = v5;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: endReplay", &v10, 0x16u);
   }
 
@@ -1391,15 +1391,15 @@ uint64_t __54__ARReplaySensorPublic_wrappedImageDataOrderedByTime___block_invoke
 
       else
       {
-        v6 = [(ARReplaySensorPublic *)self peekNextWrappedImageDataForAllRequiredStreams];
-        v19 = v6;
-        if (v6 && [v6 count] && (objc_msgSend(v19, "objectForKeyedSubscript:", self->_mainVideoStreamIdentifier), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+        peekNextWrappedImageDataForAllRequiredStreams = [(ARReplaySensorPublic *)self peekNextWrappedImageDataForAllRequiredStreams];
+        v19 = peekNextWrappedImageDataForAllRequiredStreams;
+        if (peekNextWrappedImageDataForAllRequiredStreams && [peekNextWrappedImageDataForAllRequiredStreams count] && (objc_msgSend(v19, "objectForKeyedSubscript:", self->_mainVideoStreamIdentifier), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
         {
           if (self->_replayMode)
           {
             v8 = [v19 objectForKeyedSubscript:self->_mainVideoStreamIdentifier];
-            v9 = [v8 data];
-            v10 = [v9 captureFramesPerSecond];
+            data = [v8 data];
+            captureFramesPerSecond = [data captureFramesPerSecond];
             [(ARReplaySensorPublic *)self advanceFramesPerSecondMultiplier];
             v12 = v11;
             v13 = v11 == 0.0;
@@ -1409,7 +1409,7 @@ uint64_t __54__ARReplaySensorPublic_wrappedImageDataOrderedByTime___block_invoke
               v14 = v12;
             }
 
-            v15 = v14 * v10;
+            v15 = v14 * captureFramesPerSecond;
 
             v16 = (120.0 / v15);
             if (v16 <= 1)
@@ -1456,8 +1456,8 @@ uint64_t __54__ARReplaySensorPublic_wrappedImageDataOrderedByTime___block_invoke
 {
   v155 = *MEMORY[0x1E69E9840];
   kdebug_trace();
-  v3 = [(ARReplaySensorPublic *)self getNextWrappedImageDataForReplay];
-  if (![v3 count])
+  getNextWrappedImageDataForReplay = [(ARReplaySensorPublic *)self getNextWrappedImageDataForReplay];
+  if (![getNextWrappedImageDataForReplay count])
   {
     [(ARReplaySensorPublic *)self _endReplay];
     [(ARReplaySensorPublic *)self _replaySensorFinishedReplayingData];
@@ -1465,21 +1465,21 @@ uint64_t __54__ARReplaySensorPublic_wrappedImageDataOrderedByTime___block_invoke
     goto LABEL_78;
   }
 
-  v4 = [v3 objectForKeyedSubscript:self->_mainVideoStreamIdentifier];
-  v114 = v3;
-  v5 = [v3 allValues];
-  v6 = [(ARReplaySensorPublic *)self wrappedImageDataOrderedByTime:v5];
+  v4 = [getNextWrappedImageDataForReplay objectForKeyedSubscript:self->_mainVideoStreamIdentifier];
+  v114 = getNextWrappedImageDataForReplay;
+  allValues = [getNextWrappedImageDataForReplay allValues];
+  v6 = [(ARReplaySensorPublic *)self wrappedImageDataOrderedByTime:allValues];
 
   v112 = v6;
-  v7 = [v6 lastObject];
-  [v7 timestamp];
+  lastObject = [v6 lastObject];
+  [lastObject timestamp];
   v9 = v8;
 
   croppingTechnique = self->_croppingTechnique;
   if (croppingTechnique && v4)
   {
-    v11 = [v4 data];
-    v12 = [(ARImageCroppingTechnique *)croppingTechnique processData:v11];
+    data = [v4 data];
+    v12 = [(ARImageCroppingTechnique *)croppingTechnique processData:data];
     [v4 setData:v12];
   }
 
@@ -1638,12 +1638,12 @@ uint64_t __54__ARReplaySensorPublic_wrappedImageDataOrderedByTime___block_invoke
         [v47 setTimestamp:v50 + v51];
         kdebug_trace();
         [v47 timestamp];
-        v52 = [v47 location];
-        [v52 coordinate];
-        v53 = [v47 location];
-        [v53 coordinate];
-        v54 = [v47 location];
-        [v54 horizontalAccuracy];
+        location = [v47 location];
+        [location coordinate];
+        location2 = [v47 location];
+        [location2 coordinate];
+        location3 = [v47 location];
+        [location3 horizontalAccuracy];
         kdebug_trace();
 
         [(ARReplaySensorPublic *)self _didOutputSensorData:v47];
@@ -1660,38 +1660,38 @@ uint64_t __54__ARReplaySensorPublic_wrappedImageDataOrderedByTime___block_invoke
 
   if (self->_displaySynchronizationMarker)
   {
-    v55 = [v113 data];
-    if (v55)
+    data2 = [v113 data];
+    if (data2)
     {
-      v56 = v55;
-      v57 = [v113 data];
-      v58 = [v57 pixelBuffer];
+      v56 = data2;
+      data3 = [v113 data];
+      pixelBuffer = [data3 pixelBuffer];
 
-      if (v58)
+      if (pixelBuffer)
       {
         if (self->_synchronizationMarker)
         {
           goto LABEL_58;
         }
 
-        v59 = [v113 data];
-        [v59 imageResolution];
+        data4 = [v113 data];
+        [data4 imageResolution];
         v61 = v60;
-        v62 = [v113 data];
-        [v62 imageResolution];
+        data5 = [v113 data];
+        [data5 imageResolution];
         ARCreateSynchronizationMarker(v61, v63, &self->_synchronizationMarker);
 
-        v64 = [v113 data];
-        [v64 imageResolution];
-        LODWORD(v59) = v65;
-        v66 = [v113 data];
-        [v66 imageResolution];
-        LODWORD(v62) = v67;
-        v68 = [v113 data];
-        PixelFormatType = CVPixelBufferGetPixelFormatType([v68 pixelBuffer]);
-        LODWORD(v59) = ar_pixelBufferPoolCreateNew(v59, v62, PixelFormatType, &self->_synchronizationMarkerPool);
+        data6 = [v113 data];
+        [data6 imageResolution];
+        LODWORD(data4) = v65;
+        data7 = [v113 data];
+        [data7 imageResolution];
+        LODWORD(data5) = v67;
+        data8 = [v113 data];
+        PixelFormatType = CVPixelBufferGetPixelFormatType([data8 pixelBuffer]);
+        LODWORD(data4) = ar_pixelBufferPoolCreateNew(data4, data5, PixelFormatType, &self->_synchronizationMarkerPool);
 
-        if (!v59)
+        if (!data4)
         {
 LABEL_48:
           if (!VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], &self->_synchronizationTransferSession))
@@ -1716,7 +1716,7 @@ LABEL_48:
               *buf = 138543618;
               *&buf[4] = v83;
               v149 = 2048;
-              v150 = self;
+              selfCopy4 = self;
               v84 = "%{public}@ <%p>: Could not create transfer session";
               v85 = v81;
               v86 = OS_LOG_TYPE_ERROR;
@@ -1732,7 +1732,7 @@ LABEL_56:
             *buf = 138543618;
             *&buf[4] = v83;
             v149 = 2048;
-            v150 = self;
+            selfCopy4 = self;
             v84 = "Error: %{public}@ <%p>: Could not create transfer session";
             v85 = v81;
             v86 = OS_LOG_TYPE_INFO;
@@ -1746,8 +1746,8 @@ LABEL_58:
             CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x1E695E480], self->_synchronizationMarkerPool, buf);
             VTPixelTransferSessionTransferImage(self->_synchronizationTransferSession, self->_synchronizationMarker, *buf);
             v88 = *buf;
-            v89 = [v113 data];
-            [v89 setPixelBuffer:v88];
+            data9 = [v113 data];
+            [data9 setPixelBuffer:v88];
 
             CVPixelBufferRelease(*buf);
           }
@@ -1772,7 +1772,7 @@ LABEL_58:
             *buf = 138543618;
             *&buf[4] = v74;
             v149 = 2048;
-            v150 = self;
+            selfCopy4 = self;
             v75 = "%{public}@ <%p>: Could not create pixel buffer pool";
             v76 = v72;
             v77 = OS_LOG_TYPE_ERROR;
@@ -1788,7 +1788,7 @@ LABEL_46:
           *buf = 138543618;
           *&buf[4] = v74;
           v149 = 2048;
-          v150 = self;
+          selfCopy4 = self;
           v75 = "Error: %{public}@ <%p>: Could not create pixel buffer pool";
           v76 = v72;
           v77 = OS_LOG_TYPE_INFO;
@@ -1801,14 +1801,14 @@ LABEL_46:
   }
 
 LABEL_60:
-  v90 = [v114 allKeys];
+  allKeys = [v114 allKeys];
   v129[0] = MEMORY[0x1E69E9820];
   v129[1] = 3221225472;
   v129[2] = __31__ARReplaySensorPublic_advance__block_invoke;
   v129[3] = &unk_1E817C080;
   v91 = v114;
   v130 = v91;
-  v92 = [v90 sortedArrayUsingComparator:v129];
+  v92 = [allKeys sortedArrayUsingComparator:v129];
 
   v127 = 0u;
   v128 = 0u;
@@ -1837,24 +1837,24 @@ LABEL_60:
         v98 = *(*(&v125 + 1) + 8 * v97);
         v99 = objc_autoreleasePoolPush();
         v100 = [v91 objectForKeyedSubscript:v98];
-        v101 = [v100 data];
-        v102 = v101;
-        if (v101 && [v101 pixelBuffer])
+        data10 = [v100 data];
+        v102 = data10;
+        if (data10 && [data10 pixelBuffer])
         {
           v103 = v96;
           v104 = v91;
           [(ARReplaySensorPublic *)self _appendCalibrationData:v102 streamIdentifier:v98];
           [(ARReplaySensorPublic *)self _appendVisionDataToImageData:v102 streamIdentifier:v98];
           [(ARReplaySensorPublic *)self _populateDepthDataForImageData:v102];
-          v105 = [v94 lastObject];
-          v106 = [v117 lastObject];
-          [(ARReplaySensorPublic *)self _populateDeviceOrientationIfNeededOnImageData:v102 fromDeviceOrientationData:v105 accelerometerData:v106 streamIdentifier:v98];
+          lastObject2 = [v94 lastObject];
+          lastObject3 = [v117 lastObject];
+          [(ARReplaySensorPublic *)self _populateDeviceOrientationIfNeededOnImageData:v102 fromDeviceOrientationData:lastObject2 accelerometerData:lastObject3 streamIdentifier:v98];
 
           [ARImageSensor registerSignPostForImageData:v102];
           [v102 timestamp];
           kdebug_trace();
-          v107 = [v102 cameraType];
-          v108 = [v107 isEqualToString:v120];
+          cameraType = [v102 cameraType];
+          v108 = [cameraType isEqualToString:v120];
 
           if (v108)
           {
@@ -1903,7 +1903,7 @@ LABEL_60:
   [(ARReplaySensorPublic *)self readAndVendCVAUserEventsUntil:v110];
   kdebug_trace();
 
-  v3 = v114;
+  getNextWrappedImageDataForReplay = v114;
 LABEL_78:
 }
 
@@ -1939,25 +1939,25 @@ uint64_t __31__ARReplaySensorPublic_advance__block_invoke(uint64_t a1, uint64_t 
   return v15;
 }
 
-- (void)_populateDeviceOrientationIfNeededOnImageData:(id)a3 fromDeviceOrientationData:(id)a4 accelerometerData:(id)a5 streamIdentifier:(id)a6
+- (void)_populateDeviceOrientationIfNeededOnImageData:(id)data fromDeviceOrientationData:(id)orientationData accelerometerData:(id)accelerometerData streamIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v10 deviceOrientation])
+  dataCopy = data;
+  orientationDataCopy = orientationData;
+  accelerometerDataCopy = accelerometerData;
+  identifierCopy = identifier;
+  if (![dataCopy deviceOrientation])
   {
-    if (v11)
+    if (orientationDataCopy)
     {
-      v14 = [v11 deviceMotion];
-      [v14 gravity];
+      deviceMotion = [orientationDataCopy deviceMotion];
+      [deviceMotion gravity];
       v16 = v15;
       v18 = v17;
     }
 
     else
     {
-      if (!v12)
+      if (!accelerometerDataCopy)
       {
         v26 = 0u;
         v27 = 0u;
@@ -1965,18 +1965,18 @@ uint64_t __31__ARReplaySensorPublic_advance__block_invoke(uint64_t a1, uint64_t 
         reader = self->_reader;
         if (reader)
         {
-          [(MOVReaderInterface *)reader transformForStream:v13];
+          [(MOVReaderInterface *)reader transformForStream:identifierCopy];
         }
 
-        v23 = [v10 cameraPosition];
+        cameraPosition = [dataCopy cameraPosition];
         v24[0] = v25;
         v24[1] = v26;
         v24[2] = v27;
-        v21 = ARDeviceOrientationForCameraPositionAndVideoTransform(v23, v24);
+        v21 = ARDeviceOrientationForCameraPositionAndVideoTransform(cameraPosition, v24);
         goto LABEL_16;
       }
 
-      [v12 acceleration];
+      [accelerometerDataCopy acceleration];
       v16 = v19;
       v18 = v20;
     }
@@ -2005,22 +2005,22 @@ uint64_t __31__ARReplaySensorPublic_advance__block_invoke(uint64_t a1, uint64_t 
     }
 
 LABEL_16:
-    [v10 setDeviceOrientation:v21];
+    [dataCopy setDeviceOrientation:v21];
   }
 }
 
-- (id)_populateCalibrationStream:(id)a3 timestamp:(double)a4
+- (id)_populateCalibrationStream:(id)stream timestamp:(double)timestamp
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = [(NSMutableDictionary *)self->_calibrationBuffer objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->_calibrationBuffer objectForKeyedSubscript:stream];
   if ([(MOVReaderInterface *)self->_reader containsMetadataStream:*MEMORY[0x1E698BEE8]])
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v7 = [(NSMutableDictionary *)self->_calibrationBuffer allValues];
-    v8 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    allValues = [(NSMutableDictionary *)self->_calibrationBuffer allValues];
+    v8 = [allValues countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2032,21 +2032,21 @@ LABEL_16:
         {
           if (*v37 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v13 = *(*(&v36 + 1) + 8 * i);
-          v14 = [v13 lastObject];
-          [v14 timestamp];
+          lastObject = [v13 lastObject];
+          [lastObject timestamp];
           if (v11 <= v15)
           {
-            v16 = [v13 lastObject];
-            [v16 timestamp];
+            lastObject2 = [v13 lastObject];
+            [lastObject2 timestamp];
             v11 = v17;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v9);
@@ -2058,13 +2058,13 @@ LABEL_16:
     }
 
     v18 = v11 + 0.00000011920929;
-    if (v11 + 0.00000011920929 <= a4)
+    if (v11 + 0.00000011920929 <= timestamp)
     {
       while (1)
       {
         [v6 removeAllObjects];
-        v19 = [(MOVReaderInterface *)self->_reader grabNextCVACameraCalibrationData];
-        if (![v19 count])
+        grabNextCVACameraCalibrationData = [(MOVReaderInterface *)self->_reader grabNextCVACameraCalibrationData];
+        if (![grabNextCVACameraCalibrationData count])
         {
           break;
         }
@@ -2073,7 +2073,7 @@ LABEL_16:
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v20 = v19;
+        v20 = grabNextCVACameraCalibrationData;
         v21 = [v20 countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v21)
         {
@@ -2090,8 +2090,8 @@ LABEL_16:
 
               v25 = *(*(&v32 + 1) + 8 * j);
               calibrationBuffer = self->_calibrationBuffer;
-              v27 = [v25 streamID];
-              v28 = [(NSMutableDictionary *)calibrationBuffer objectForKeyedSubscript:v27];
+              streamID = [v25 streamID];
+              v28 = [(NSMutableDictionary *)calibrationBuffer objectForKeyedSubscript:streamID];
               [v28 addObject:v25];
 
               [v25 timestamp];
@@ -2109,7 +2109,7 @@ LABEL_16:
         }
 
         v18 = v11 + 0.00000011920929;
-        if (v11 + 0.00000011920929 > a4)
+        if (v11 + 0.00000011920929 > timestamp)
         {
           goto LABEL_27;
         }
@@ -2122,11 +2122,11 @@ LABEL_27:
   return v6;
 }
 
-- (id)_cameraCalibrationDataForStream:(id)a3 timestamp:(double)a4
+- (id)_cameraCalibrationDataForStream:(id)stream timestamp:(double)timestamp
 {
-  v6 = a3;
+  streamCopy = stream;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(ARReplaySensorPublic *)self _populateCalibrationStream:v6 timestamp:a4];
+  v8 = [(ARReplaySensorPublic *)self _populateCalibrationStream:streamCopy timestamp:timestamp];
   if (![v8 count])
   {
     goto LABEL_4;
@@ -2136,7 +2136,7 @@ LABEL_27:
   v16[1] = 3221225472;
   v16[2] = __66__ARReplaySensorPublic__cameraCalibrationDataForStream_timestamp___block_invoke;
   v16[3] = &__block_descriptor_40_e41_B32__0__CVACameraCalibrationData_8Q16_B24l;
-  *&v16[4] = a4;
+  *&v16[4] = timestamp;
   v9 = [v8 indexOfObjectPassingTest:v16];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2157,7 +2157,7 @@ LABEL_5:
   v15 = v14 + -0.00000011920929;
 
   objc_autoreleasePoolPop(v7);
-  if (v15 > a4)
+  if (v15 > timestamp)
   {
     goto LABEL_5;
   }
@@ -2169,26 +2169,26 @@ LABEL_6:
   return v11;
 }
 
-- (void)_appendVisionDataToImageData:(id)a3 streamIdentifier:(id)a4
+- (void)_appendVisionDataToImageData:(id)data streamIdentifier:(id)identifier
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   if (self->_shouldReplayVisionData)
   {
-    v8 = [(NSMutableDictionary *)self->_featureBuffers objectForKeyedSubscript:v7];
-    v52 = v7;
+    v8 = [(NSMutableDictionary *)self->_featureBuffers objectForKeyedSubscript:identifierCopy];
+    v52 = identifierCopy;
     if (v8)
     {
-      v51 = v6;
-      [v6 timestamp];
+      v51 = dataCopy;
+      [dataCopy timestamp];
       v10 = v9;
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v11 = [(NSMutableDictionary *)self->_featureBuffers allValues];
-      v12 = [v11 countByEnumeratingWithState:&v58 objects:v63 count:16];
+      allValues = [(NSMutableDictionary *)self->_featureBuffers allValues];
+      v12 = [allValues countByEnumeratingWithState:&v58 objects:v63 count:16];
       if (v12)
       {
         v13 = v12;
@@ -2200,21 +2200,21 @@ LABEL_6:
           {
             if (*v59 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allValues);
             }
 
             v17 = *(*(&v58 + 1) + 8 * i);
-            v18 = [v17 lastObject];
-            [v18 timestamp];
+            lastObject = [v17 lastObject];
+            [lastObject timestamp];
             if (v15 <= v19)
             {
-              v20 = [v17 lastObject];
-              [v20 timestamp];
+              lastObject2 = [v17 lastObject];
+              [lastObject2 timestamp];
               v15 = v21;
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v58 objects:v63 count:16];
+          v13 = [allValues countByEnumeratingWithState:&v58 objects:v63 count:16];
         }
 
         while (v13);
@@ -2235,8 +2235,8 @@ LABEL_6:
 
         v32 = objc_autoreleasePoolPush();
         [v8 removeAllObjects];
-        v33 = [(MOVReaderInterface *)self->_reader grabNextFeatureBuffer];
-        if (![v33 count])
+        grabNextFeatureBuffer = [(MOVReaderInterface *)self->_reader grabNextFeatureBuffer];
+        if (![grabNextFeatureBuffer count])
         {
 
           objc_autoreleasePoolPop(v32);
@@ -2247,7 +2247,7 @@ LABEL_6:
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v34 = v33;
+        v34 = grabNextFeatureBuffer;
         v35 = [v34 countByEnumeratingWithState:&v54 objects:v62 count:16];
         if (v35)
         {
@@ -2264,8 +2264,8 @@ LABEL_6:
 
               v39 = *(*(&v54 + 1) + 8 * j);
               featureBuffers = self->_featureBuffers;
-              v41 = [v39 sourceStreamID];
-              v42 = [(NSMutableDictionary *)featureBuffers objectForKeyedSubscript:v41];
+              sourceStreamID = [v39 sourceStreamID];
+              v42 = [(NSMutableDictionary *)featureBuffers objectForKeyedSubscript:sourceStreamID];
               [v42 addObject:v39];
 
               [v39 timestamp];
@@ -2285,7 +2285,7 @@ LABEL_6:
         objc_autoreleasePoolPop(v32);
       }
 
-      v6 = v51;
+      dataCopy = v51;
       if ([v8 count])
       {
         v53[0] = MEMORY[0x1E69E9820];
@@ -2307,9 +2307,9 @@ LABEL_6:
           [v48 timestamp];
           if (v10 >= v49 + -0.00000011920929)
           {
-            v50 = [v48 getPixelBufferCopy];
-            [v51 setVisionData:v50];
-            CVPixelBufferRelease(v50);
+            getPixelBufferCopy = [v48 getPixelBufferCopy];
+            [v51 setVisionData:getPixelBufferCopy];
+            CVPixelBufferRelease(getPixelBufferCopy);
           }
         }
       }
@@ -2331,20 +2331,20 @@ LABEL_6:
       {
         v25 = objc_opt_class();
         NSStringFromClass(v25);
-        v27 = v26 = v6;
+        v27 = v26 = dataCopy;
         *buf = 138543874;
         v65 = v27;
         v66 = 2048;
-        v67 = self;
+        selfCopy2 = self;
         v68 = 2114;
-        v69 = v7;
+        v69 = identifierCopy;
         v28 = "%{public}@ <%p>: Missing feature buffers queue for stream '%{public}@', not appending vision data";
         v29 = v24;
         v30 = OS_LOG_TYPE_ERROR;
 LABEL_34:
         _os_log_impl(&dword_1C241C000, v29, v30, v28, buf, 0x20u);
 
-        v6 = v26;
+        dataCopy = v26;
       }
     }
 
@@ -2352,13 +2352,13 @@ LABEL_34:
     {
       v45 = objc_opt_class();
       NSStringFromClass(v45);
-      v27 = v26 = v6;
+      v27 = v26 = dataCopy;
       *buf = 138543874;
       v65 = v27;
       v66 = 2048;
-      v67 = self;
+      selfCopy2 = self;
       v68 = 2114;
-      v69 = v7;
+      v69 = identifierCopy;
       v28 = "Error: %{public}@ <%p>: Missing feature buffers queue for stream '%{public}@', not appending vision data";
       v29 = v24;
       v30 = OS_LOG_TYPE_INFO;
@@ -2366,65 +2366,65 @@ LABEL_34:
     }
 
 LABEL_43:
-    v7 = v52;
+    identifierCopy = v52;
   }
 }
 
-- (void)_appendCalibrationData:(id)a3 streamIdentifier:(id)a4
+- (void)_appendCalibrationData:(id)data streamIdentifier:(id)identifier
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   if (ARDeviceSupportsJasper())
   {
-    v9 = [v7 isBackUltraWide];
+    isBackUltraWide = [dataCopy isBackUltraWide];
     v10 = 256;
-    if (v9)
+    if (isBackUltraWide)
     {
       v10 = 320;
     }
 
     v11 = 272;
-    if (v9)
+    if (isBackUltraWide)
     {
       v11 = 336;
     }
 
     v12 = 288;
-    if (v9)
+    if (isBackUltraWide)
     {
       v12 = 352;
     }
 
     v13 = 304;
-    if (v9)
+    if (isBackUltraWide)
     {
       v13 = 368;
     }
 
-    [v7 addExtrinsicMatrix:*MEMORY[0x1E6986930] toDeviceType:{*(&self->super.isa + v10), *(&self->super.isa + v11), *(&self->super.isa + v12), *(&self->super.isa + v13)}];
+    [dataCopy addExtrinsicMatrix:*MEMORY[0x1E6986930] toDeviceType:{*(&self->super.isa + v10), *(&self->super.isa + v11), *(&self->super.isa + v12), *(&self->super.isa + v13)}];
   }
 
-  [v7 timestamp];
-  v14 = [(ARReplaySensorPublic *)self _cameraCalibrationDataForStream:v8 timestamp:?];
+  [dataCopy timestamp];
+  v14 = [(ARReplaySensorPublic *)self _cameraCalibrationDataForStream:identifierCopy timestamp:?];
 
   if (v14)
   {
-    v15 = [v14 calibrationData];
-    [v7 setCalibrationData:v15];
+    calibrationData = [v14 calibrationData];
+    [dataCopy setCalibrationData:calibrationData];
 
-    v16 = [v7 calibrationData];
+    calibrationData2 = [dataCopy calibrationData];
 
-    if (!v16)
+    if (!calibrationData2)
     {
-      [v7 extrinsicMatrixToDeviceType:*MEMORY[0x1E6986930]];
+      [dataCopy extrinsicMatrixToDeviceType:*MEMORY[0x1E6986930]];
       [v14 setExtrinsicMatrix:?];
       v17 = [MEMORY[0x1E698C160] ar_initWithCVACameraCalibrationData:v14];
-      [v7 setAdCameraCalibration:v17];
+      [dataCopy setAdCameraCalibration:v17];
 
-      v18 = [v7 adCameraCalibration];
+      adCameraCalibration = [dataCopy adCameraCalibration];
 
-      if (!v18)
+      if (!adCameraCalibration)
       {
         v19 = _ARLogSensor_5();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -2441,15 +2441,15 @@ LABEL_43:
     }
   }
 
-  v22 = [v7 calibrationData];
-  if (v22)
+  calibrationData3 = [dataCopy calibrationData];
+  if (calibrationData3)
   {
     goto LABEL_18;
   }
 
-  v23 = [v7 adCameraCalibration];
+  adCameraCalibration2 = [dataCopy adCameraCalibration];
 
-  if (!v23)
+  if (!adCameraCalibration2)
   {
     v24 = _ARLogSensor_5();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -2463,33 +2463,33 @@ LABEL_43:
       _os_log_impl(&dword_1C241C000, v24, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Missing calibration from recording, attempting to use hardcoded calibrations", v42, 0x16u);
     }
 
-    v27 = [v7 cameraType];
-    v28 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v27);
+    cameraType = [dataCopy cameraType];
+    v28 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(cameraType);
 
     if (v28)
     {
-      v29 = [(MOVReaderInterface *)self->_reader deviceString];
-      if (v29 && (-[MOVReaderInterface deviceString](self->_reader, "deviceString"), v4 = objc_claimAutoreleasedReturnValue(), [v4 isEqualToString:@"ST2"]))
+      deviceString = [(MOVReaderInterface *)self->_reader deviceString];
+      if (deviceString && (-[MOVReaderInterface deviceString](self->_reader, "deviceString"), v4 = objc_claimAutoreleasedReturnValue(), [v4 isEqualToString:@"ST2"]))
       {
-        v22 = ARST2JasperWideCameraCalibration();
+        calibrationData3 = ARST2JasperWideCameraCalibration();
       }
 
       else
       {
-        v22 = ARJasperWideCameraCalibration();
-        if (!v29)
+        calibrationData3 = ARJasperWideCameraCalibration();
+        if (!deviceString)
         {
           goto LABEL_29;
         }
       }
 
 LABEL_29:
-      [v22 cameraToPlatformTransform];
-      [v7 addExtrinsicMatrix:*MEMORY[0x1E6986930] toDeviceType:?];
-      v30 = [MEMORY[0x1E698C160] ar_calibrationWithImageData:v7 adCalibrationData:v22];
+      [calibrationData3 cameraToPlatformTransform];
+      [dataCopy addExtrinsicMatrix:*MEMORY[0x1E6986930] toDeviceType:?];
+      v30 = [MEMORY[0x1E698C160] ar_calibrationWithImageData:dataCopy adCalibrationData:calibrationData3];
       if (v30)
       {
-        v31 = v7;
+        v31 = dataCopy;
         v32 = v30;
 LABEL_40:
         [v31 setAdCameraCalibration:{v32, *v42, *&v42[16], v43}];
@@ -2538,8 +2538,8 @@ LABEL_38:
         goto LABEL_38;
       }
 
-      v31 = v7;
-      v32 = v22;
+      v31 = dataCopy;
+      v32 = calibrationData3;
       goto LABEL_40;
     }
   }
@@ -2547,14 +2547,14 @@ LABEL_38:
 LABEL_26:
 }
 
-- (void)_populateDepthDataForImageData:(id)a3
+- (void)_populateDepthDataForImageData:(id)data
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   if (self->_shouldReplayPearlDepthData)
   {
     v5 = self->_depthContainer;
-    [v4 timestamp];
+    [dataCopy timestamp];
     v7 = v6;
     [(CVADepthIR *)v5 timestamp];
     if (v8 + 0.00000011920929 <= v7)
@@ -2562,23 +2562,23 @@ LABEL_26:
       do
       {
         v9 = objc_autoreleasePoolPush();
-        v10 = [(MOVReaderInterface *)self->_reader grabNextDepthIR];
-        if (![v10 count])
+        grabNextDepthIR = [(MOVReaderInterface *)self->_reader grabNextDepthIR];
+        if (![grabNextDepthIR count])
         {
 
           objc_autoreleasePoolPop(v9);
           goto LABEL_8;
         }
 
-        v11 = [v10 lastObject];
+        lastObject = [grabNextDepthIR lastObject];
 
         objc_autoreleasePoolPop(v9);
-        [v11 timestamp];
-        v5 = v11;
+        [lastObject timestamp];
+        v5 = lastObject;
       }
 
       while (v12 + 0.00000011920929 <= v7);
-      if (v11)
+      if (lastObject)
       {
         goto LABEL_9;
       }
@@ -2587,7 +2587,7 @@ LABEL_26:
     }
 
 LABEL_8:
-    v11 = v5;
+    lastObject = v5;
     if (!v5)
     {
 LABEL_35:
@@ -2596,27 +2596,27 @@ LABEL_35:
     }
 
 LABEL_9:
-    [v11 timestamp];
+    [lastObject timestamp];
     if (v7 < v13 + -0.00000011920929)
     {
-      objc_storeStrong(&self->_depthContainer, v11);
+      objc_storeStrong(&self->_depthContainer, lastObject);
       goto LABEL_35;
     }
 
     depthContainer = self->_depthContainer;
     self->_depthContainer = 0;
 
-    v15 = [v11 dataBuffer];
+    dataBuffer = [lastObject dataBuffer];
     attachmentMode = kCVAttachmentMode_ShouldNotPropagate;
-    v16 = CVBufferCopyAttachment(v15, *MEMORY[0x1E69914F0], &attachmentMode);
+    v16 = CVBufferCopyAttachment(dataBuffer, *MEMORY[0x1E69914F0], &attachmentMode);
     if (v16)
     {
       depthFloat32PixelBuffer = self->_depthFloat32PixelBuffer;
       if (!depthFloat32PixelBuffer)
       {
         v26 = *MEMORY[0x1E695E480];
-        Width = CVPixelBufferGetWidth(v15);
-        Height = CVPixelBufferGetHeight(v15);
+        Width = CVPixelBufferGetWidth(dataBuffer);
+        Height = CVPixelBufferGetHeight(dataBuffer);
         v29 = CVPixelBufferCreate(v26, Width, Height, 0x66646570u, 0, &self->_depthFloat32PixelBuffer);
         if (v29)
         {
@@ -2641,7 +2641,7 @@ LABEL_9:
             *buf = 138543874;
             v42 = v34;
             v43 = 2048;
-            v44 = self;
+            selfCopy4 = self;
             v45 = 1024;
             v46 = v30;
             v35 = "%{public}@ <%p>: Failed to create float32-formatted pixel buffer for transcoding depth frames, CVReturn=%d";
@@ -2661,7 +2661,7 @@ LABEL_9:
             *buf = 138543874;
             v42 = v34;
             v43 = 2048;
-            v44 = self;
+            selfCopy4 = self;
             v45 = 1024;
             v46 = v30;
             v35 = "Error: %{public}@ <%p>: Failed to create float32-formatted pixel buffer for transcoding depth frames, CVReturn=%d";
@@ -2677,7 +2677,7 @@ LABEL_9:
         depthFloat32PixelBuffer = self->_depthFloat32PixelBuffer;
       }
 
-      if (!ARConvertFixedPointUnsigned13_3ToDepthFloat32Buffer(v15, depthFloat32PixelBuffer))
+      if (!ARConvertFixedPointUnsigned13_3ToDepthFloat32Buffer(dataBuffer, depthFloat32PixelBuffer))
       {
 LABEL_34:
 
@@ -2685,7 +2685,7 @@ LABEL_34:
       }
 
       v18 = [objc_alloc(MEMORY[0x1E6987198]) initWithPixelBuffer:self->_depthFloat32PixelBuffer depthMetadataDictionary:v16];
-      [v4 setDepthData:v18];
+      [dataCopy setDepthData:v18];
 LABEL_33:
 
       goto LABEL_34;
@@ -2711,7 +2711,7 @@ LABEL_33:
       *buf = 138543618;
       v42 = v22;
       v43 = 2048;
-      v44 = self;
+      selfCopy4 = self;
       v23 = "%{public}@ <%p>: Failed to retrieve depth metadata dictionary from depth pixel buffer's attachments";
       v24 = v18;
       v25 = OS_LOG_TYPE_ERROR;
@@ -2729,7 +2729,7 @@ LABEL_33:
       *buf = 138543618;
       v42 = v22;
       v43 = 2048;
-      v44 = self;
+      selfCopy4 = self;
       v23 = "Error: %{public}@ <%p>: Failed to retrieve depth metadata dictionary from depth pixel buffer's attachments";
       v24 = v18;
       v25 = OS_LOG_TYPE_INFO;
@@ -2743,24 +2743,24 @@ LABEL_33:
 LABEL_36:
 }
 
-- (void)readAndVendCMDatasUntil:(double)a3
+- (void)readAndVendCMDatasUntil:(double)until
 {
   v46 = *MEMORY[0x1E69E9840];
   if ([(MOVReaderInterface *)self->_reader containsMetadataStream:*MEMORY[0x1E698BEE0]])
   {
-    v5 = [(NSMutableArray *)self->_cmDataBuffer lastObject];
-    [v5 timestamp];
+    lastObject = [(NSMutableArray *)self->_cmDataBuffer lastObject];
+    [lastObject timestamp];
     v7 = v6;
     while (1)
     {
 
-      if (v7 >= a3)
+      if (v7 >= until)
       {
         goto LABEL_16;
       }
 
-      v8 = [(MOVReaderInterface *)self->_reader grabNextCMData];
-      if (![v8 count])
+      grabNextCMData = [(MOVReaderInterface *)self->_reader grabNextCMData];
+      if (![grabNextCMData count])
       {
         break;
       }
@@ -2769,8 +2769,8 @@ LABEL_36:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v5 = v8;
-      v9 = [v5 countByEnumeratingWithState:&v35 objects:v45 count:16];
+      lastObject = grabNextCMData;
+      v9 = [lastObject countByEnumeratingWithState:&v35 objects:v45 count:16];
       if (v9)
       {
         v10 = v9;
@@ -2781,7 +2781,7 @@ LABEL_36:
           {
             if (*v36 != v11)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(lastObject);
             }
 
             v13 = *(*(&v35 + 1) + 8 * i);
@@ -2794,7 +2794,7 @@ LABEL_36:
             }
           }
 
-          v10 = [v5 countByEnumeratingWithState:&v35 objects:v45 count:16];
+          v10 = [lastObject countByEnumeratingWithState:&v35 objects:v45 count:16];
         }
 
         while (v10);
@@ -2811,16 +2811,16 @@ LABEL_16:
     v33 = v16;
     while (1)
     {
-      v17 = [(NSMutableArray *)self->_cmDataBuffer firstObject];
-      [v17 timestamp];
-      if (v18 > a3)
+      firstObject = [(NSMutableArray *)self->_cmDataBuffer firstObject];
+      [firstObject timestamp];
+      if (v18 > until)
       {
 
         return;
       }
 
       [(NSMutableArray *)self->_cmDataBuffer removeObjectAtIndex:0];
-      if (([v17 isSent] & 1) == 0)
+      if (([firstObject isSent] & 1) == 0)
       {
         break;
       }
@@ -2833,11 +2833,11 @@ LABEL_31:
       }
     }
 
-    v19 = [v17 additionalData];
+    additionalData = [firstObject additionalData];
     v20 = MEMORY[0x1E696ACD0];
     v21 = objc_opt_class();
     v34 = 0;
-    v22 = [v20 ar_unarchivedObjectOfClass:v21 fromData:v19 error:&v34];
+    v22 = [v20 ar_unarchivedObjectOfClass:v21 fromData:additionalData error:&v34];
     v23 = v34;
     if (v23)
     {
@@ -2848,7 +2848,7 @@ LABEL_31:
 
       v24 = ARShouldUseLogTypeError_internalOSVersion_4;
       v25 = _ARLogSensor_5();
-      v26 = v25;
+      session = v25;
       if (v24 == 1)
       {
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -2858,10 +2858,10 @@ LABEL_31:
           *buf = v33;
           v40 = v28;
           v41 = 2048;
-          v42 = self;
+          selfCopy2 = self;
           v43 = 2112;
           v44 = v23;
-          v29 = v26;
+          v29 = session;
           v30 = OS_LOG_TYPE_ERROR;
           v31 = "%{public}@ <%p>: Replay sensor could not decode collaboration data: %@";
 LABEL_29:
@@ -2876,10 +2876,10 @@ LABEL_29:
         *buf = v33;
         v40 = v28;
         v41 = 2048;
-        v42 = self;
+        selfCopy2 = self;
         v43 = 2112;
         v44 = v23;
-        v29 = v26;
+        v29 = session;
         v30 = OS_LOG_TYPE_INFO;
         v31 = "Error: %{public}@ <%p>: Replay sensor could not decode collaboration data: %@";
         goto LABEL_29;
@@ -2888,30 +2888,30 @@ LABEL_29:
 
     else
     {
-      v26 = [(ARReplaySensorPublic *)self session];
-      [v26 updateWithCollaborationData:v22];
+      session = [(ARReplaySensorPublic *)self session];
+      [session updateWithCollaborationData:v22];
     }
 
     goto LABEL_31;
   }
 }
 
-- (void)readAndVendCVADepthTOFsUntil:(double)a3
+- (void)readAndVendCVADepthTOFsUntil:(double)until
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = [(NSMutableArray *)self->_cvaDepthTOFBuffer lastObject];
-  [v5 timestamp];
+  lastObject = [(NSMutableArray *)self->_cvaDepthTOFBuffer lastObject];
+  [lastObject timestamp];
   v7 = v6;
   while (1)
   {
 
-    if (v7 >= a3)
+    if (v7 >= until)
     {
       break;
     }
 
-    v8 = [(MOVReaderInterface *)self->_reader grabNextDepthTOF];
-    if (![v8 count])
+    grabNextDepthTOF = [(MOVReaderInterface *)self->_reader grabNextDepthTOF];
+    if (![grabNextDepthTOF count])
     {
 
       break;
@@ -2921,8 +2921,8 @@ LABEL_29:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v5 = v8;
-    v9 = [v5 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    lastObject = grabNextDepthTOF;
+    v9 = [lastObject countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2933,7 +2933,7 @@ LABEL_29:
         {
           if (*v34 != v11)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(lastObject);
           }
 
           v13 = *(*(&v33 + 1) + 8 * i);
@@ -2946,7 +2946,7 @@ LABEL_29:
           }
         }
 
-        v10 = [v5 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        v10 = [lastObject countByEnumeratingWithState:&v33 objects:v41 count:16];
       }
 
       while (v10);
@@ -2961,29 +2961,29 @@ LABEL_29:
   while (1)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = [(NSMutableArray *)self->_cvaDepthTOFBuffer firstObject];
-    [v17 timestamp];
-    if (v18 > a3)
+    firstObject = [(NSMutableArray *)self->_cvaDepthTOFBuffer firstObject];
+    [firstObject timestamp];
+    if (v18 > until)
     {
       break;
     }
 
     [(NSMutableArray *)self->_cvaDepthTOFBuffer removeObjectAtIndex:0];
-    v19 = [v17 projectorMode];
-    if ((v19 - 1) >= 3)
+    projectorMode = [firstObject projectorMode];
+    if ((projectorMode - 1) >= 3)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = v19;
+      v20 = projectorMode;
     }
 
     v21 = [ARPointCloudSensorData alloc];
-    v22 = [v17 pointCloud];
-    [v17 timestamp];
-    v23 = [(ARPointCloudSensorData *)v21 initWithPointCloudData:v22 projectorMode:v20 timestamp:?];
+    pointCloud = [firstObject pointCloud];
+    [firstObject timestamp];
+    v23 = [(ARPointCloudSensorData *)v21 initWithPointCloudData:pointCloud projectorMode:v20 timestamp:?];
 
     if (!v23)
     {
@@ -3004,7 +3004,7 @@ LABEL_29:
           *buf = 138543618;
           v38 = v28;
           v39 = 2048;
-          v40 = self;
+          selfCopy2 = self;
           v29 = v26;
           v30 = OS_LOG_TYPE_ERROR;
           v31 = "%{public}@ <%p>: Replay sensor couldn't not decode PointCloudSensor data";
@@ -3019,7 +3019,7 @@ LABEL_29:
         *buf = 138543618;
         v38 = v28;
         v39 = 2048;
-        v40 = self;
+        selfCopy2 = self;
         v29 = v26;
         v30 = OS_LOG_TYPE_INFO;
         v31 = "Error: %{public}@ <%p>: Replay sensor couldn't not decode PointCloudSensor data";
@@ -3044,24 +3044,24 @@ LABEL_31:
   objc_autoreleasePoolPop(v16);
 }
 
-- (void)readAndVendCVAUserEventsUntil:(double)a3
+- (void)readAndVendCVAUserEventsUntil:(double)until
 {
   v51 = *MEMORY[0x1E69E9840];
   if ([(MOVReaderInterface *)self->_reader containsMetadataStream:*MEMORY[0x1E698BF08]])
   {
-    v5 = [(NSMutableArray *)self->_userEventBuffer lastObject];
-    [v5 timestamp];
+    lastObject = [(NSMutableArray *)self->_userEventBuffer lastObject];
+    [lastObject timestamp];
     v7 = v6;
     while (1)
     {
 
-      if (v7 >= a3)
+      if (v7 >= until)
       {
         goto LABEL_16;
       }
 
-      v8 = [(MOVReaderInterface *)self->_reader grabNextUserEvent];
-      if (![v8 count])
+      grabNextUserEvent = [(MOVReaderInterface *)self->_reader grabNextUserEvent];
+      if (![grabNextUserEvent count])
       {
         break;
       }
@@ -3070,8 +3070,8 @@ LABEL_31:
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v5 = v8;
-      v9 = [v5 countByEnumeratingWithState:&v40 objects:v50 count:16];
+      lastObject = grabNextUserEvent;
+      v9 = [lastObject countByEnumeratingWithState:&v40 objects:v50 count:16];
       if (v9)
       {
         v10 = v9;
@@ -3082,7 +3082,7 @@ LABEL_31:
           {
             if (*v41 != v11)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(lastObject);
             }
 
             v13 = *(*(&v40 + 1) + 8 * i);
@@ -3095,7 +3095,7 @@ LABEL_31:
             }
           }
 
-          v10 = [v5 countByEnumeratingWithState:&v40 objects:v50 count:16];
+          v10 = [lastObject countByEnumeratingWithState:&v40 objects:v50 count:16];
         }
 
         while (v10);
@@ -3112,32 +3112,32 @@ LABEL_16:
     v37 = v16;
     while (1)
     {
-      v17 = [(NSMutableArray *)self->_userEventBuffer firstObject];
-      [v17 timestamp];
-      if (v18 > a3)
+      firstObject = [(NSMutableArray *)self->_userEventBuffer firstObject];
+      [firstObject timestamp];
+      if (v18 > until)
       {
 
         return;
       }
 
       [(NSMutableArray *)self->_userEventBuffer removeObjectAtIndex:0];
-      if ([v17 eventType] == 4)
+      if ([firstObject eventType] == 4)
       {
         break;
       }
 
-      if ([v17 eventType] == 13)
+      if ([firstObject eventType] == 13)
       {
-        v19 = [v17 anchorData];
+        anchorData = [firstObject anchorData];
         v32 = MEMORY[0x1E696ACD0];
         v33 = objc_opt_class();
         v38 = 0;
-        v22 = [v32 ar_unarchivedObjectOfClass:v33 fromData:v19 error:&v38];
+        v22 = [v32 ar_unarchivedObjectOfClass:v33 fromData:anchorData error:&v38];
         v23 = v38;
         if (!v23)
         {
-          v26 = [(ARReplaySensorPublic *)self session];
-          [v26 removeAnchor:v22];
+          session = [(ARReplaySensorPublic *)self session];
+          [session removeAnchor:v22];
           goto LABEL_40;
         }
 
@@ -3148,7 +3148,7 @@ LABEL_16:
 
         v34 = ARShouldUseLogTypeError_internalOSVersion_4;
         v35 = _ARLogSensor_5();
-        v26 = v35;
+        session = v35;
         if (v34 == 1)
         {
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -3159,10 +3159,10 @@ LABEL_25:
             *buf = v37;
             v45 = v28;
             v46 = 2048;
-            v47 = self;
+            selfCopy2 = self;
             v48 = 2112;
             v49 = v23;
-            v29 = v26;
+            v29 = session;
             v30 = OS_LOG_TYPE_ERROR;
             v31 = "%{public}@ <%p>: Replay sensor could not decode anchor data: %@";
             goto LABEL_39;
@@ -3184,10 +3184,10 @@ LABEL_38:
         *buf = v37;
         v45 = v28;
         v46 = 2048;
-        v47 = self;
+        selfCopy2 = self;
         v48 = 2112;
         v49 = v23;
-        v29 = v26;
+        v29 = session;
         v30 = OS_LOG_TYPE_INFO;
         v31 = "Error: %{public}@ <%p>: Replay sensor could not decode anchor data: %@";
 LABEL_39:
@@ -3204,16 +3204,16 @@ LABEL_41:
       }
     }
 
-    v19 = [v17 anchorData];
+    anchorData = [firstObject anchorData];
     v20 = MEMORY[0x1E696ACD0];
     v21 = objc_opt_class();
     v39 = 0;
-    v22 = [v20 ar_unarchivedObjectOfClass:v21 fromData:v19 error:&v39];
+    v22 = [v20 ar_unarchivedObjectOfClass:v21 fromData:anchorData error:&v39];
     v23 = v39;
     if (!v23)
     {
-      v26 = [(ARReplaySensorPublic *)self session];
-      [v26 addAnchor:v22];
+      session = [(ARReplaySensorPublic *)self session];
+      [session addAnchor:v22];
       goto LABEL_40;
     }
 
@@ -3224,7 +3224,7 @@ LABEL_41:
 
     v24 = ARShouldUseLogTypeError_internalOSVersion_4;
     v25 = _ARLogSensor_5();
-    v26 = v25;
+    session = v25;
     if (v24 == 1)
     {
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -3244,24 +3244,24 @@ LABEL_41:
   }
 }
 
-- (id)keyedArchiveConverter:(Class)a3
+- (id)keyedArchiveConverter:(Class)converter
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:converter];
   v5 = [(ARReplaySensorPublic *)self keyedArchiveConverterForClasses:v4];
 
   return v5;
 }
 
-- (id)keyedArchiveConverterForClasses:(id)a3
+- (id)keyedArchiveConverterForClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__ARReplaySensorPublic_keyedArchiveConverterForClasses___block_invoke;
   v8[3] = &unk_1E817C0E8;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = classesCopy;
+  selfCopy = self;
+  v5 = classesCopy;
   v6 = MEMORY[0x1C691B4C0](v8);
 
   return v6;
@@ -3337,14 +3337,14 @@ LABEL_9:
   return v6;
 }
 
-- (id)metadataWrapperConverter:(Class)a3
+- (id)metadataWrapperConverter:(Class)converter
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__ARReplaySensorPublic_metadataWrapperConverter___block_invoke;
   v5[3] = &unk_1E817C110;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = converter;
   v3 = MEMORY[0x1C691B4C0](v5, a2);
 
   return v3;
@@ -3454,29 +3454,29 @@ LABEL_12:
   return nextWrappedImageDataForStreamIdentifierMap;
 }
 
-- (id)peekNextWrappedImageDataForStreamIdentifier:(id)a3
+- (id)peekNextWrappedImageDataForStreamIdentifier:(id)identifier
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_nextWrappedImageDataForStreamIdentifierMap objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_nextWrappedImageDataForStreamIdentifierMap objectForKeyedSubscript:identifierCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_nextWrappedImageDataForStreamIdentifierMap objectForKeyedSubscript:v4];
+    lastObject = [(NSMutableDictionary *)self->_nextWrappedImageDataForStreamIdentifierMap objectForKeyedSubscript:identifierCopy];
     goto LABEL_44;
   }
 
   v75 = **&MEMORY[0x1E6960CC0];
   reader = self->_reader;
   v74 = 0;
-  v8 = [(MOVReaderInterface *)reader copyNextFrameForStream:v4 timestamp:&v75 error:&v74];
+  v8 = [(MOVReaderInterface *)reader copyNextFrameForStream:identifierCopy timestamp:&v75 error:&v74];
   v9 = v74;
   v10 = v9;
   if (v8)
   {
     time = v75;
     Seconds = CMTimeGetSeconds(&time);
-    v12 = v4;
+    v12 = identifierCopy;
     v13 = v12;
     if ([(NSSet *)self->_availableVideoStreams count]== 1)
     {
@@ -3489,14 +3489,14 @@ LABEL_12:
 
     v14 = [(ARReplaySensorPublic *)self keyedArchiveConverter:objc_opt_class()];
     v15 = [(ARReplaySensorPublic *)self getWrappedItemsFromStream:v13 upToMovieTime:v14 converter:Seconds];
-    v6 = [v15 lastObject];
+    lastObject = [v15 lastObject];
 
-    if (!v6)
+    if (!lastObject)
     {
       v73 = v10;
-      v6 = objc_opt_new();
+      lastObject = objc_opt_new();
       v16 = CVBufferCopyAttachments(v8, kCVAttachmentMode_ShouldPropagate);
-      [v6 setTimestamp:Seconds];
+      [lastObject setTimestamp:Seconds];
       v17 = [[ARImageData alloc] initWithDictionary:v16];
       v18 = AVCaptureDeviceTypeFromStreamIdentifier(v12);
       [(ARImageData *)v17 setCameraType:v18];
@@ -3532,9 +3532,9 @@ LABEL_12:
             {
               v70 = v31;
               v32 = [v31 objectForKeyedSubscript:@"Width"];
-              v33 = [v32 intValue];
+              intValue = [v32 intValue];
 
-              v34 = (v33 / 640.0);
+              v34 = (intValue / 640.0);
               *&v35 = v34 * 245.391312;
               v36 = COERCE_DOUBLE(vcvt_f32_f64(vmulq_n_f64(xmmword_1C25C84D0, v34)));
               *&v37 = v35;
@@ -3599,20 +3599,20 @@ LABEL_12:
         v21 = v16;
       }
 
-      [v6 setData:v17];
+      [lastObject setData:v17];
 
       v10 = v73;
     }
 
-    v64 = [v6 data];
-    [v64 setPixelBuffer:v8];
+    data = [lastObject data];
+    [data setPixelBuffer:v8];
 
     v65 = CACurrentMediaTime();
-    v66 = [v6 data];
-    [v66 setCurrentCaptureTimestamp:v65];
+    data2 = [lastObject data];
+    [data2 setCurrentCaptureTimestamp:v65];
 
     CVPixelBufferRelease(v8);
-    [(NSMutableDictionary *)self->_nextWrappedImageDataForStreamIdentifierMap setObject:v6 forKeyedSubscript:v12];
+    [(NSMutableDictionary *)self->_nextWrappedImageDataForStreamIdentifierMap setObject:lastObject forKeyedSubscript:v12];
     goto LABEL_42;
   }
 
@@ -3662,24 +3662,24 @@ LABEL_40:
       goto LABEL_40;
     }
 
-    v6 = 0;
+    lastObject = 0;
 LABEL_42:
 
     goto LABEL_43;
   }
 
-  v6 = 0;
+  lastObject = 0;
 LABEL_43:
 
 LABEL_44:
 
-  return v6;
+  return lastObject;
 }
 
 - (id)getNextWrappedImageDataForReplay
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(ARReplaySensorPublic *)self peekNextWrappedImageDataForAllRequiredStreams];
+  peekNextWrappedImageDataForAllRequiredStreams = [(ARReplaySensorPublic *)self peekNextWrappedImageDataForAllRequiredStreams];
   if ([(NSMutableDictionary *)self->_nextWrappedImageDataForStreamIdentifierMap count])
   {
     [(ARReplaySensorPublic *)self currentTime];
@@ -3691,22 +3691,22 @@ LABEL_44:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [v7 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v26 objects:v38 count:16];
+    allKeys = [v7 allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v26 objects:v38 count:16];
     if (v9)
     {
       v11 = v9;
       v12 = *v27;
       *&v10 = 138544130;
       v24 = v10;
-      v25 = v8;
+      v25 = allKeys;
       do
       {
         for (i = 0; i != v11; ++i)
         {
           if (*v27 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
@@ -3752,14 +3752,14 @@ LABEL_44:
                 *buf = v24;
                 v31 = v22;
                 v32 = 2048;
-                v33 = self;
+                selfCopy = self;
                 v34 = 1024;
                 v35 = v17;
                 v36 = 2112;
                 v37 = v14;
                 _os_log_impl(&dword_1C241C000, v20, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Skipped %u replay frames of type: %@", buf, 0x26u);
 
-                v8 = v25;
+                allKeys = v25;
               }
 
               v15 = v17 + 1;
@@ -3778,7 +3778,7 @@ LABEL_17:
           }
         }
 
-        v11 = [v8 countByEnumeratingWithState:&v26 objects:v38 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v26 objects:v38 count:16];
       }
 
       while (v11);
@@ -3793,23 +3793,23 @@ LABEL_17:
   return v7;
 }
 
-- (id)getItemsFromStream:(id)a3 upToMovieTime:(double)a4 converter:(id)a5
+- (id)getItemsFromStream:(id)stream upToMovieTime:(double)time converter:(id)converter
 {
-  v5 = [(ARReplaySensorPublic *)self getWrappedItemsFromStream:a3 upToMovieTime:a5 converter:a4];
+  v5 = [(ARReplaySensorPublic *)self getWrappedItemsFromStream:stream upToMovieTime:converter converter:time];
   v6 = [v5 valueForKey:@"data"];
 
   return v6;
 }
 
-- (id)getItemsFromStream:(id)a3 upToMovieTime:(double)a4 metadataClass:(Class)a5
+- (id)getItemsFromStream:(id)stream upToMovieTime:(double)time metadataClass:(Class)class
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__ARReplaySensorPublic_getItemsFromStream_upToMovieTime_metadataClass___block_invoke;
   v8[3] = &unk_1E817C138;
   v8[4] = self;
-  v8[5] = a5;
-  v5 = [(ARReplaySensorPublic *)self getWrappedItemsFromStream:a3 upToMovieTime:v8 withBlock:a4];
+  v8[5] = class;
+  v5 = [(ARReplaySensorPublic *)self getWrappedItemsFromStream:stream upToMovieTime:v8 withBlock:time];
   v6 = [v5 valueForKey:@"data"];
 
   return v6;
@@ -3855,19 +3855,19 @@ id __71__ARReplaySensorPublic_getItemsFromStream_upToMovieTime_metadataClass___b
   return v2;
 }
 
-- (BOOL)readNextFrameFromStream:(id)a3 forWrapper:(id)a4
+- (BOOL)readNextFrameFromStream:(id)stream forWrapper:(id)wrapper
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  wrapperCopy = wrapper;
   v38 = **&MEMORY[0x1E6960CC0];
   reader = self->_reader;
   v37 = 0;
-  v9 = [(MOVReaderInterface *)reader copyNextFrameForStream:v6 timestamp:&v38 error:&v37];
+  v9 = [(MOVReaderInterface *)reader copyNextFrameForStream:streamCopy timestamp:&v38 error:&v37];
   v10 = v37;
   if (!v9)
   {
-    if ([(MOVReaderInterface *)self->_reader hasReachedEndOfStream:v6])
+    if ([(MOVReaderInterface *)self->_reader hasReachedEndOfStream:streamCopy])
     {
       if (ARShouldUseLogTypeError_onceToken_4 != -1)
       {
@@ -3883,13 +3883,13 @@ id __71__ARReplaySensorPublic_getItemsFromStream_upToMovieTime_metadataClass___b
         {
           v21 = objc_opt_class();
           v22 = NSStringFromClass(v21);
-          [v7 timestamp];
+          [wrapperCopy timestamp];
           LODWORD(time.value) = 138544130;
           *(&time.value + 4) = v22;
           LOWORD(time.flags) = 2048;
           *(&time.flags + 2) = self;
           HIWORD(time.epoch) = 2112;
-          v40 = v6;
+          v40 = streamCopy;
           v41 = 2048;
           v42 = v23;
           v24 = "%{public}@ <%p>: Replay sensor reached end of stream %@ at %lf";
@@ -3906,13 +3906,13 @@ LABEL_22:
       {
         v31 = objc_opt_class();
         v22 = NSStringFromClass(v31);
-        [v7 timestamp];
+        [wrapperCopy timestamp];
         LODWORD(time.value) = 138544130;
         *(&time.value + 4) = v22;
         LOWORD(time.flags) = 2048;
         *(&time.flags + 2) = self;
         HIWORD(time.epoch) = 2112;
-        v40 = v6;
+        v40 = streamCopy;
         v41 = 2048;
         v42 = v32;
         v24 = "Error: %{public}@ <%p>: Replay sensor reached end of stream %@ at %lf";
@@ -3943,13 +3943,13 @@ LABEL_23:
 
       v29 = objc_opt_class();
       v22 = NSStringFromClass(v29);
-      [v7 timestamp];
+      [wrapperCopy timestamp];
       LODWORD(time.value) = 138544386;
       *(&time.value + 4) = v22;
       LOWORD(time.flags) = 2048;
       *(&time.flags + 2) = self;
       HIWORD(time.epoch) = 2112;
-      v40 = v6;
+      v40 = streamCopy;
       v41 = 2048;
       v42 = v30;
       v43 = 2112;
@@ -3968,13 +3968,13 @@ LABEL_23:
 
       v34 = objc_opt_class();
       v22 = NSStringFromClass(v34);
-      [v7 timestamp];
+      [wrapperCopy timestamp];
       LODWORD(time.value) = 138544386;
       *(&time.value + 4) = v22;
       LOWORD(time.flags) = 2048;
       *(&time.flags + 2) = self;
       HIWORD(time.epoch) = 2112;
-      v40 = v6;
+      v40 = streamCopy;
       v41 = 2048;
       v42 = v35;
       v43 = 2112;
@@ -3989,27 +3989,27 @@ LABEL_23:
   }
 
   time = v38;
-  [v7 setTimestamp:CMTimeGetSeconds(&time)];
-  v11 = [v7 data];
+  [wrapperCopy setTimestamp:CMTimeGetSeconds(&time)];
+  data = [wrapperCopy data];
 
-  if (!v11)
+  if (!data)
   {
     v12 = CVBufferCopyAttachments(v9, kCVAttachmentMode_ShouldPropagate);
     v13 = [[ARImageData alloc] initWithDictionary:v12];
-    v14 = AVCaptureDeviceTypeFromStreamIdentifier(v6);
+    v14 = AVCaptureDeviceTypeFromStreamIdentifier(streamCopy);
     [(ARImageData *)v13 setCameraType:v14];
 
-    [(ARImageData *)v13 setCameraPosition:AVCaptureDevicePositionFromStreamIdentifier(v6)];
+    [(ARImageData *)v13 setCameraPosition:AVCaptureDevicePositionFromStreamIdentifier(streamCopy)];
     [(ARImageData *)v13 setCaptureFramesPerSecond:llround(self->_nominalFrameRate)];
-    [v7 setData:v13];
+    [wrapperCopy setData:v13];
   }
 
   v15 = CACurrentMediaTime();
-  v16 = [v7 data];
-  [v16 setCurrentCaptureTimestamp:v15];
+  data2 = [wrapperCopy data];
+  [data2 setCurrentCaptureTimestamp:v15];
 
-  v17 = [v7 data];
-  [v17 setPixelBuffer:v9];
+  data3 = [wrapperCopy data];
+  [data3 setPixelBuffer:v9];
 
   CVPixelBufferRelease(v9);
 LABEL_24:
@@ -4017,12 +4017,12 @@ LABEL_24:
   return v9 != 0;
 }
 
-- (double)_getMinFrameDurationForStream:(id)a3
+- (double)_getMinFrameDurationForStream:(id)stream
 {
   reader = self->_reader;
   if (reader)
   {
-    [(MOVReaderInterface *)reader getMinFrameDurationForStream:a3];
+    [(MOVReaderInterface *)reader getMinFrameDurationForStream:stream];
   }
 
   else
@@ -4033,16 +4033,16 @@ LABEL_24:
   return CMTimeGetSeconds(&time);
 }
 
-- (id)getWrappedItemsFromPixelBufferStream:(id)a3 upToMovieTime:(double)a4 converter:(id)a5
+- (id)getWrappedItemsFromPixelBufferStream:(id)stream upToMovieTime:(double)time converter:(id)converter
 {
-  v7 = a3;
+  streamCopy = stream;
   v8 = objc_opt_new();
-  [(ARReplaySensorPublic *)self _getMinFrameDurationForStream:v7];
+  [(ARReplaySensorPublic *)self _getMinFrameDurationForStream:streamCopy];
   v10 = v9;
   while (1)
   {
     v11 = objc_opt_new();
-    if (![(ARReplaySensorPublic *)self readNextFrameFromStream:v7 forWrapper:v11])
+    if (![(ARReplaySensorPublic *)self readNextFrameFromStream:streamCopy forWrapper:v11])
     {
       break;
     }
@@ -4051,7 +4051,7 @@ LABEL_24:
     v13 = v10 + v12;
     [v8 addObject:v11];
 
-    if (v13 > a4)
+    if (v13 > time)
     {
       v14 = v8;
       goto LABEL_6;
@@ -4064,63 +4064,63 @@ LABEL_6:
   return v14;
 }
 
-- (id)getWrappedItemsFromStream:(id)a3 upToMovieTime:(double)a4 converter:(id)a5
+- (id)getWrappedItemsFromStream:(id)stream upToMovieTime:(double)time converter:(id)converter
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  converterCopy = converter;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __74__ARReplaySensorPublic_getWrappedItemsFromStream_upToMovieTime_converter___block_invoke;
   v14[3] = &unk_1E817C160;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = [(ARReplaySensorPublic *)self getWrappedItemsFromStream:v11 upToMovieTime:v14 withBlock:a4];
+  v15 = streamCopy;
+  v16 = converterCopy;
+  v10 = converterCopy;
+  v11 = streamCopy;
+  v12 = [(ARReplaySensorPublic *)self getWrappedItemsFromStream:v11 upToMovieTime:v14 withBlock:time];
 
   return v12;
 }
 
-- (id)getWrappedItemsFromStream:(id)a3 upToMovieTime:(double)a4 withBlock:(id)a5
+- (id)getWrappedItemsFromStream:(id)stream upToMovieTime:(double)time withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
-  v11 = [(NSMutableDictionary *)self->_metadataCache objectForKeyedSubscript:v8];
+  v11 = [(NSMutableDictionary *)self->_metadataCache objectForKeyedSubscript:streamCopy];
   if (!v11)
   {
     v11 = objc_opt_new();
-    [(NSMutableDictionary *)self->_metadataCache setObject:v11 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_metadataCache setObject:v11 forKeyedSubscript:streamCopy];
   }
 
   do
   {
     if ([v11 count])
     {
-      v12 = [v11 lastObject];
-      [v12 timestamp];
+      lastObject = [v11 lastObject];
+      [lastObject timestamp];
       v14 = v13;
 
-      if (v14 > a4 + 0.00000011920929)
+      if (v14 > time + 0.00000011920929)
       {
         break;
       }
     }
 
-    v15 = v9[2](v9);
+    v15 = blockCopy[2](blockCopy);
     [v11 addObjectsFromArray:v15];
     v16 = [v15 count];
   }
 
   while (v16);
-  [(ARReplaySensorPublic *)self _getMinFrameDurationForStream:v8];
+  [(ARReplaySensorPublic *)self _getMinFrameDurationForStream:streamCopy];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __74__ARReplaySensorPublic_getWrappedItemsFromStream_upToMovieTime_withBlock___block_invoke;
   v21[3] = &__block_descriptor_56_e41_B32__0__ARReplayMovieDataWrapper_8Q16_B24l;
   *&v21[4] = v17;
-  *&v21[5] = a4;
+  *&v21[5] = time;
   *&v21[6] = v17 * 0.5;
   v18 = [v11 indexesOfObjectsPassingTest:v21];
   v19 = [v11 objectsAtIndexes:v18];
@@ -4138,26 +4138,26 @@ BOOL __74__ARReplaySensorPublic_getWrappedItemsFromStream_upToMovieTime_withBloc
   return vabdd_f64(v3, v4) <= a1[6];
 }
 
-- (id)getNextWrappedItemsFromStream:(id)a3 converter:(id)a4
+- (id)getNextWrappedItemsFromStream:(id)stream converter:(id)converter
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  converterCopy = converter;
   v8 = *(MEMORY[0x1E6960CA8] + 16);
   v29 = *MEMORY[0x1E6960CA8];
   v30 = v8;
   v31 = *(MEMORY[0x1E6960CA8] + 32);
   v9 = objc_opt_new();
   context = objc_autoreleasePoolPush();
-  v23 = v6;
-  if ([(MOVReaderInterface *)self->_reader containsMetadataStream:v6])
+  v23 = streamCopy;
+  if ([(MOVReaderInterface *)self->_reader containsMetadataStream:streamCopy])
   {
-    v10 = [(MOVReaderInterface *)self->_reader grabNextMetadataOfStream:v6 timeRange:&v29, context, v6];
+    streamCopy = [(MOVReaderInterface *)self->_reader grabNextMetadataOfStream:streamCopy timeRange:&v29, context, streamCopy];
   }
 
   else
   {
-    v10 = 0;
+    streamCopy = 0;
   }
 
   *&time.value = v29;
@@ -4167,7 +4167,7 @@ BOOL __74__ARReplaySensorPublic_getWrappedItemsFromStream_upToMovieTime_withBloc
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v10;
+  v12 = streamCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v13)
   {
@@ -4184,7 +4184,7 @@ BOOL __74__ARReplaySensorPublic_getWrappedItemsFromStream_upToMovieTime_withBloc
 
         v17 = *(*(&v24 + 1) + 8 * i);
         v18 = objc_autoreleasePoolPush();
-        v19 = v7[2](v7, v17);
+        v19 = converterCopy[2](converterCopy, v17);
         if (v19)
         {
           v20 = objc_opt_new();
@@ -4207,31 +4207,31 @@ BOOL __74__ARReplaySensorPublic_getWrappedItemsFromStream_upToMovieTime_withBloc
   return v9;
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(ARReplaySensorPublic *)self delegate];
+  errorCopy = error;
+  delegate = [(ARReplaySensorPublic *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ARReplaySensorPublic *)self delegate];
-    [v6 sensor:self didFailWithError:v7];
+    delegate2 = [(ARReplaySensorPublic *)self delegate];
+    [delegate2 sensor:self didFailWithError:errorCopy];
   }
 }
 
-- (void)_didOutputSensorData:(id)a3
+- (void)_didOutputSensorData:(id)data
 {
-  v4 = a3;
-  v5 = [(ARReplaySensorPublic *)self delegate];
-  [v5 sensor:self didOutputSensorData:v4];
+  dataCopy = data;
+  delegate = [(ARReplaySensorPublic *)self delegate];
+  [delegate sensor:self didOutputSensorData:dataCopy];
 }
 
-- (void)setImageIndex:(int)a3
+- (void)setImageIndex:(int)index
 {
-  v3 = *&a3;
-  self->_imageIndex = a3;
-  [(ARReplaySensorPublic *)self setNextFrameIndex:a3];
+  v3 = *&index;
+  self->_imageIndex = index;
+  [(ARReplaySensorPublic *)self setNextFrameIndex:index];
   if (self->_manualCommandLineMode)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:v3];
@@ -4239,19 +4239,19 @@ BOOL __74__ARReplaySensorPublic_getWrappedItemsFromStream_upToMovieTime_withBloc
   }
 }
 
-- (id)imageDataToReplayForTimestamp:(double)a3
+- (id)imageDataToReplayForTimestamp:(double)timestamp
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(ARReplaySensorPublic *)self peekNextWrappedImageDataForAllRequiredStreams];
+  peekNextWrappedImageDataForAllRequiredStreams = [(ARReplaySensorPublic *)self peekNextWrappedImageDataForAllRequiredStreams];
   v6 = objc_opt_new();
-  if ([v5 count])
+  if ([peekNextWrappedImageDataForAllRequiredStreams count])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v5 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allKeys = [peekNextWrappedImageDataForAllRequiredStreams allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (!v8)
     {
       goto LABEL_17;
@@ -4265,16 +4265,16 @@ BOOL __74__ARReplaySensorPublic_getWrappedItemsFromStream_upToMovieTime_withBloc
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v5 objectForKeyedSubscript:v12];
+        v13 = [peekNextWrappedImageDataForAllRequiredStreams objectForKeyedSubscript:v12];
         v14 = v13;
         if (!self->_replayMode)
         {
           [v13 timestamp];
-          if (v19 > a3)
+          if (v19 > timestamp)
           {
             goto LABEL_15;
           }
@@ -4289,7 +4289,7 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        v15 = [v5 objectForKeyedSubscript:self->_mainVideoStreamIdentifier];
+        v15 = [peekNextWrappedImageDataForAllRequiredStreams objectForKeyedSubscript:self->_mainVideoStreamIdentifier];
         if (v15)
         {
           [v14 timestamp];
@@ -4304,7 +4304,7 @@ LABEL_14:
 LABEL_15:
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (!v9)
       {
 LABEL_17:
@@ -4321,8 +4321,8 @@ LABEL_17:
 {
   v64 = *MEMORY[0x1E69E9840];
   self->_recordingFormatVersion = 0;
-  v3 = [(MOVReaderInterface *)self->_reader grabSummary];
-  v4 = [v3 objectForKey:@"mdta/com.apple.arkit.customuserdata"];
+  grabSummary = [(MOVReaderInterface *)self->_reader grabSummary];
+  v4 = [grabSummary objectForKey:@"mdta/com.apple.arkit.customuserdata"];
   customUserData = self->_customUserData;
   self->_customUserData = v4;
 
@@ -4346,8 +4346,8 @@ LABEL_17:
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v54 + 1) + 8 * i) identifier];
-        v13 = [v12 isEqualToString:v10];
+        identifier = [*(*(&v54 + 1) + 8 * i) identifier];
+        v13 = [identifier isEqualToString:v10];
 
         if (v13)
         {
@@ -4373,8 +4373,8 @@ LABEL_11:
     v14 = objc_opt_class();
     v15 = ARMetadataIdentifierForARSensorDataClass(v14, self->_recordingFormatVersion);
     v16 = [(MOVReaderInterface *)self->_reader metadataTrackForStream:v15];
-    v17 = [v16 totalSampleDataLength];
-    if (!v16 || v17 <= 0)
+    totalSampleDataLength = [v16 totalSampleDataLength];
+    if (!v16 || totalSampleDataLength <= 0)
     {
       v18 = _ARLogSensor_5();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -4384,7 +4384,7 @@ LABEL_11:
         *buf = 138543618;
         v60 = v20;
         v61 = 2048;
-        v62 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1C241C000, v18, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Reverting back to legacy format for metadata stream names.", buf, 0x16u);
       }
 
@@ -4392,14 +4392,14 @@ LABEL_11:
     }
   }
 
-  v21 = [v3 objectForKeyedSubscript:@"mdta/com.apple.arkit.arsensordatatypeinformation"];
+  v21 = [grabSummary objectForKeyedSubscript:@"mdta/com.apple.arkit.arsensordatatypeinformation"];
   v22 = v21;
   if (!v21)
   {
     v48 = v6;
-    v49 = v3;
+    v49 = grabSummary;
     self->_recordedSensorTypes = 1;
-    v23 = [(MOVReaderInterface *)self->_reader getAllMetadataStreams];
+    getAllMetadataStreams = [(MOVReaderInterface *)self->_reader getAllMetadataStreams];
     v24 = objc_opt_class();
     v25 = ARMetadataIdentifierForARSensorDataClass(v24, self->_recordingFormatVersion);
     v26 = objc_opt_class();
@@ -4412,7 +4412,7 @@ LABEL_11:
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v32 = v23;
+    v32 = getAllMetadataStreams;
     v33 = [v32 countByEnumeratingWithState:&v50 objects:v58 count:16];
     if (!v33)
     {
@@ -4465,7 +4465,7 @@ LABEL_11:
 LABEL_36:
 
         v6 = v48;
-        v3 = v49;
+        grabSummary = v49;
         v22 = 0;
         goto LABEL_37;
       }
@@ -4474,15 +4474,15 @@ LABEL_36:
 
   self->_recordedSensorTypes = [v21 unsignedIntegerValue];
 LABEL_37:
-  v39 = [v3 objectForKeyedSubscript:*MEMORY[0x1E698BF48]];
+  v39 = [grabSummary objectForKeyedSubscript:*MEMORY[0x1E698BF48]];
   deviceModel = self->_deviceModel;
   self->_deviceModel = v39;
 
-  v41 = [v3 objectForKeyedSubscript:@"mdta/com.apple.arkit.osversion"];
+  v41 = [grabSummary objectForKeyedSubscript:@"mdta/com.apple.arkit.osversion"];
   osVersion = self->_osVersion;
   self->_osVersion = v41;
 
-  v43 = [v3 objectForKeyedSubscript:@"mdta/com.apple.arkit.arkitversion"];
+  v43 = [grabSummary objectForKeyedSubscript:@"mdta/com.apple.arkit.arkitversion"];
   arkitVersion = self->_arkitVersion;
   self->_arkitVersion = v43;
 
@@ -4501,11 +4501,11 @@ LABEL_37:
   v6[3] = &unk_1E817C1A8;
   v6[4] = self;
   v3 = MEMORY[0x1C691B4C0](v6, a2);
-  v4 = [(ARReplaySensorPublic *)self replaySensorDelegate];
-  (v3)[2](v3, v4);
+  replaySensorDelegate = [(ARReplaySensorPublic *)self replaySensorDelegate];
+  (v3)[2](v3, replaySensorDelegate);
 
-  v5 = [(ARReplaySensorPublic *)self traceReplaySensorDelegate];
-  (v3)[2](v3, v5);
+  traceReplaySensorDelegate = [(ARReplaySensorPublic *)self traceReplaySensorDelegate];
+  (v3)[2](v3, traceReplaySensorDelegate);
 }
 
 void __58__ARReplaySensorPublic__replaySensorFinishedReplayingData__block_invoke(uint64_t a1, void *a2)
@@ -4597,10 +4597,10 @@ uint64_t __58__ARReplaySensorPublic__replaySensorFinishedReplayingData__block_in
   return [*(a1 + 40) replaySensorDidFinishReplayingData];
 }
 
-- (id)_streamIdentifierForCaptureDeviceType:(id)a3 position:(int64_t)a4
+- (id)_streamIdentifierForCaptureDeviceType:(id)type position:(int64_t)position
 {
-  v6 = a3;
-  v7 = v6;
+  typeCopy = type;
+  v7 = typeCopy;
   if (self->_usingST2Recording)
   {
     v8 = *MEMORY[0x1E6990C80];
@@ -4609,23 +4609,23 @@ uint64_t __58__ARReplaySensorPublic__replaySensorFinishedReplayingData__block_in
       goto LABEL_11;
     }
 
-    v9 = *MEMORY[0x1E6990C90];
+    position2 = *MEMORY[0x1E6990C90];
     goto LABEL_10;
   }
 
-  v8 = ARStreamIdentifierForDeviceTypeAndPosition(v6, a4);
+  v8 = ARStreamIdentifierForDeviceTypeAndPosition(typeCopy, position);
   if ([v7 isEqualToString:*MEMORY[0x1E6986948]] && !-[ARReplaySensorPublic _allStreamsAreAvailable:](self, "_allStreamsAreAvailable:", v8))
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%ld", @"AVCaptureDeviceTypeBuiltInSuperWideAngleCamera", a4];
+    position = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%ld", @"AVCaptureDeviceTypeBuiltInSuperWideAngleCamera", position];
 
-    v8 = v10;
+    v8 = position;
   }
 
   if ([v7 isEqualToString:*MEMORY[0x1E6986930]] && !-[ARReplaySensorPublic _allStreamsAreAvailable:](self, "_allStreamsAreAvailable:", v8))
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%ld", @"JasperCamera", a4];
+    position2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%ld", @"JasperCamera", position];
 LABEL_10:
-    v11 = v9;
+    v11 = position2;
 
     v8 = v11;
   }

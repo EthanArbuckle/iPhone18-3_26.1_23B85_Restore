@@ -1,13 +1,13 @@
 @interface SFProximityHandoffInvocations.PerformHandoffContentAction
-- (id)initWithCoder:(void *)a3;
+- (id)initWithCoder:(void *)coder;
 @end
 
 @implementation SFProximityHandoffInvocations.PerformHandoffContentAction
 
-- (id)initWithCoder:(void *)a3
+- (id)initWithCoder:(void *)coder
 {
-  v3 = a3;
-  v4 = sub_1A98548EC(v3);
+  coderCopy = coder;
+  v4 = sub_1A98548EC(coderCopy);
 
   return v4;
 }

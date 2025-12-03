@@ -1,18 +1,18 @@
 @interface CoreDataValidationCoreAnalyticsEvent
-- (CoreDataValidationCoreAnalyticsEvent)initWithValidationError:(int64_t)a3;
+- (CoreDataValidationCoreAnalyticsEvent)initWithValidationError:(int64_t)error;
 - (NSDictionary)payload;
 @end
 
 @implementation CoreDataValidationCoreAnalyticsEvent
 
-- (CoreDataValidationCoreAnalyticsEvent)initWithValidationError:(int64_t)a3
+- (CoreDataValidationCoreAnalyticsEvent)initWithValidationError:(int64_t)error
 {
   v5.receiver = self;
   v5.super_class = CoreDataValidationCoreAnalyticsEvent;
   result = [(CoreDataValidationCoreAnalyticsEvent *)&v5 init];
   if (result)
   {
-    result->_validationError = a3;
+    result->_validationError = error;
   }
 
   return result;

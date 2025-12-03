@@ -1,40 +1,40 @@
 @interface MapsRippleView
 - (CGSize)intrinsicContentSize;
-- (MapsRippleView)initWithCoder:(id)a3;
-- (MapsRippleView)initWithFrame:(CGRect)a3;
+- (MapsRippleView)initWithCoder:(id)coder;
+- (MapsRippleView)initWithFrame:(CGRect)frame;
 - (double)timeUntilAnimationStop;
 - (void)_commonInit;
-- (void)_drawRingInContext:(CGContext *)a3 withProgress:(double)a4 isSecondRing:(BOOL)a5;
+- (void)_drawRingInContext:(CGContext *)context withProgress:(double)progress isSecondRing:(BOOL)ring;
 - (void)_updateDisplayLink;
 - (void)_userInterfaceStyleDidChange;
 - (void)didMoveToSuperview;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)startAnimating;
 - (void)stopAnimating;
 @end
 
 @implementation MapsRippleView
 
-- (void)_drawRingInContext:(CGContext *)a3 withProgress:(double)a4 isSecondRing:(BOOL)a5
+- (void)_drawRingInContext:(CGContext *)context withProgress:(double)progress isSecondRing:(BOOL)ring
 {
-  v5 = a5;
+  ringCopy = ring;
   v8 = 0.0;
-  if (a4 > 0.0)
+  if (progress > 0.0)
   {
-    if (a4 <= 0.4)
+    if (progress <= 0.4)
     {
-      v8 = a4 * 5.0;
+      v8 = progress * 5.0;
     }
 
     else
     {
       v8 = 2.0;
-      if (a4 > 0.6)
+      if (progress > 0.6)
       {
         v8 = 0.0;
-        if (a4 <= 0.8)
+        if (progress <= 0.8)
         {
-          v8 = a4 * -10.0 + 8.0;
+          v8 = progress * -10.0 + 8.0;
         }
       }
     }
@@ -51,65 +51,65 @@
   }
   v9 = ;
   v10 = v9;
-  if (a4 <= 0.0)
+  if (progress <= 0.0)
   {
     goto LABEL_14;
   }
 
-  if (a4 <= 0.4)
+  if (progress <= 0.4)
   {
-    v12 = a4 * 1.00000001;
+    v12 = progress * 1.00000001;
   }
 
-  else if (a4 <= 0.6)
+  else if (progress <= 0.6)
   {
     v12 = 0.400000006;
   }
 
   else
   {
-    if (a4 > 0.8)
+    if (progress > 0.8)
     {
 LABEL_14:
       v11 = +[UIColor clearColor];
       goto LABEL_19;
     }
 
-    v12 = a4 * -2.00000003 + 1.60000002;
+    v12 = progress * -2.00000003 + 1.60000002;
   }
 
   v11 = [v9 colorWithAlphaComponent:v12];
 LABEL_19:
   v17 = v11;
   v13 = 70.0;
-  if (v5)
+  if (ringCopy)
   {
     v13 = 48.0;
   }
 
-  v14 = v13 * a4;
+  v14 = v13 * progress;
   v15 = 24.0;
-  if (!v5)
+  if (!ringCopy)
   {
     v15 = 35.0;
   }
 
-  v16 = 35.0 - v15 * a4;
+  v16 = 35.0 - v15 * progress;
 
   [v17 setStroke];
-  CGContextSetLineWidth(a3, v8);
+  CGContextSetLineWidth(context, v8);
   v19.origin.x = v16;
   v19.origin.y = v16;
   v19.size.width = v14;
   v19.size.height = v14;
-  CGContextStrokeEllipseInRect(a3, v19);
+  CGContextStrokeEllipseInRect(context, v19);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v12.receiver = self;
   v12.super_class = MapsRippleView;
-  [(MapsRippleView *)&v12 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MapsRippleView *)&v12 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   CurrentContext = UIGraphicsGetCurrentContext();
   if (CurrentContext)
   {
@@ -122,7 +122,7 @@ LABEL_19:
         v7 = v6 - trunc(v6);
         if (v6 <= 0.2)
         {
-          v9 = self;
+          selfCopy2 = self;
           v10 = v5;
           v11 = 0;
         }
@@ -136,13 +136,13 @@ LABEL_19:
             return;
           }
 
-          v9 = self;
+          selfCopy2 = self;
           v10 = v5;
           v7 = v8;
           v11 = 1;
         }
 
-        [(MapsRippleView *)v9 _drawRingInContext:v10 withProgress:v11 isSecondRing:v7];
+        [(MapsRippleView *)selfCopy2 _drawRingInContext:v10 withProgress:v11 isSecondRing:v7];
       }
     }
   }
@@ -167,14 +167,14 @@ LABEL_19:
 
 - (void)_userInterfaceStyleDidChange
 {
-  v3 = [(MapsRippleView *)self traitCollection];
-  -[MapsRippleView setDarkMode:](self, "setDarkMode:", [v3 userInterfaceStyle] == 2);
+  traitCollection = [(MapsRippleView *)self traitCollection];
+  -[MapsRippleView setDarkMode:](self, "setDarkMode:", [traitCollection userInterfaceStyle] == 2);
 }
 
 - (void)_updateDisplayLink
 {
-  v3 = [(MapsRippleView *)self superview];
-  if (v3 && (animating = self->_animating, v3, animating))
+  superview = [(MapsRippleView *)self superview];
+  if (superview && (animating = self->_animating, superview, animating))
   {
     if (self->_displayLink)
     {
@@ -327,7 +327,7 @@ LABEL_16:
   v4 = [(MapsRippleView *)self registerForTraitChanges:v3 withTarget:self action:"_userInterfaceStyleDidChange"];
 }
 
-- (MapsRippleView)initWithFrame:(CGRect)a3
+- (MapsRippleView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MapsRippleView;
@@ -341,11 +341,11 @@ LABEL_16:
   return v4;
 }
 
-- (MapsRippleView)initWithCoder:(id)a3
+- (MapsRippleView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MapsRippleView;
-  v3 = [(MapsRippleView *)&v6 initWithCoder:a3];
+  v3 = [(MapsRippleView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

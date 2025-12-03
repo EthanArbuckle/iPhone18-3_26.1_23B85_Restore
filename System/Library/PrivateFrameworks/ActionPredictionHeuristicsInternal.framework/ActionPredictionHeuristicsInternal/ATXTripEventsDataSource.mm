@@ -1,21 +1,21 @@
 @interface ATXTripEventsDataSource
-- (ATXTripEventsDataSource)initWithDevice:(id)a3;
-- (id)fetchTripEventsFromStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-- (void)getLocationForMostRelevantTripInRangeFrom:(id)a3 to:(id)a4 callback:(id)a5;
+- (ATXTripEventsDataSource)initWithDevice:(id)device;
+- (id)fetchTripEventsFromStartDate:(id)date endDate:(id)endDate error:(id *)error;
+- (void)getLocationForMostRelevantTripInRangeFrom:(id)from to:(id)to callback:(id)callback;
 @end
 
 @implementation ATXTripEventsDataSource
 
-- (ATXTripEventsDataSource)initWithDevice:(id)a3
+- (ATXTripEventsDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = ATXTripEventsDataSource;
   v6 = [(ATXTripEventsDataSource *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_opt_new();
     eventStore = v7->_eventStore;
     v7->_eventStore = v8;
@@ -24,11 +24,11 @@
   return v7;
 }
 
-- (id)fetchTripEventsFromStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)fetchTripEventsFromStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA290))
   {
     *buf = 0;
@@ -38,8 +38,8 @@
     v28 = __Block_byref_object_dispose__0;
     v29 = objc_opt_new();
     v10 = objc_alloc_init(MEMORY[0x277D3A568]);
-    [v10 setFromDate:v8];
-    [v10 setToDate:v9];
+    [v10 setFromDate:dateCopy];
+    [v10 setToDate:endDateCopy];
     [v10 setTripOptions:0];
     eventStore = self->_eventStore;
     v22[0] = MEMORY[0x277D85DD0];
@@ -58,17 +58,17 @@
         *v30 = 138412802;
         v31 = v12;
         v32 = 2114;
-        v33 = v8;
+        v33 = dateCopy;
         v34 = 2114;
-        v35 = v9;
+        v35 = endDateCopy;
         _os_log_error_impl(&dword_23E3EA000, v13, OS_LOG_TYPE_ERROR, "Error when fetching trip events from PersonalPortrait: %@ from %{public}@ to %{public}@", v30, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v14 = v12;
         v15 = 0;
-        *a5 = v12;
+        *error = v12;
       }
 
       else
@@ -87,9 +87,9 @@
         *v30 = 134218754;
         v31 = v18;
         v32 = 2114;
-        v33 = v8;
+        v33 = dateCopy;
         v34 = 2114;
-        v35 = v9;
+        v35 = endDateCopy;
         v36 = 2112;
         v37 = v19;
         _os_log_impl(&dword_23E3EA000, v17, OS_LOG_TYPE_DEFAULT, "Got %tu trip events from PersonalPortrait from %{public}@ to %{public}@: %@", v30, 0x2Au);
@@ -137,21 +137,21 @@ void __70__ATXTripEventsDataSource_fetchTripEventsFromStartDate_endDate_error___
   }
 }
 
-- (void)getLocationForMostRelevantTripInRangeFrom:(id)a3 to:(id)a4 callback:(id)a5
+- (void)getLocationForMostRelevantTripInRangeFrom:(id)from to:(id)to callback:(id)callback
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fromCopy = from;
+  toCopy = to;
+  callbackCopy = callback;
   v63 = 0;
-  v11 = [(ATXTripEventsDataSource *)self fetchTripEventsFromStartDate:v8 endDate:v9 error:&v63];
+  v11 = [(ATXTripEventsDataSource *)self fetchTripEventsFromStartDate:fromCopy endDate:toCopy error:&v63];
   v12 = v63;
   if (v11 && [v11 count])
   {
     v50 = v12;
-    v53 = v8;
-    v54 = v10;
-    v52 = v9;
+    v53 = fromCopy;
+    v54 = callbackCopy;
+    v52 = toCopy;
     v13 = objc_opt_new();
     v59 = 0u;
     v60 = 0u;
@@ -174,9 +174,9 @@ void __70__ATXTripEventsDataSource_fetchTripEventsFromStartDate_endDate_error___
           }
 
           v19 = *(*(&v59 + 1) + 8 * i);
-          v20 = [v19 startDate];
+          startDate = [v19 startDate];
           v21 = [MEMORY[0x277CBEAA8] now];
-          v22 = [v20 compare:v21];
+          v22 = [startDate compare:v21];
 
           if (v22 == 1)
           {
@@ -220,8 +220,8 @@ void __70__ATXTripEventsDataSource_fetchTripEventsFromStartDate_endDate_error___
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v30 = [v28 tripParts];
-      v31 = [v30 countByEnumeratingWithState:&v55 objects:v68 count:16];
+      tripParts = [v28 tripParts];
+      v31 = [tripParts countByEnumeratingWithState:&v55 objects:v68 count:16];
       if (v31)
       {
         v32 = v31;
@@ -233,19 +233,19 @@ void __70__ATXTripEventsDataSource_fetchTripEventsFromStartDate_endDate_error___
           {
             if (*v56 != v34)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(tripParts);
             }
 
             v36 = *(*(&v55 + 1) + 8 * j);
             if ([v36 tripMode] == 2)
             {
-              v37 = [v36 mainLocation];
+              mainLocation = [v36 mainLocation];
 
-              v33 = v37;
+              v33 = mainLocation;
             }
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v55 objects:v68 count:16];
+          v32 = [tripParts countByEnumeratingWithState:&v55 objects:v68 count:16];
         }
 
         while (v32);
@@ -253,23 +253,23 @@ void __70__ATXTripEventsDataSource_fetchTripEventsFromStartDate_endDate_error___
         v27 = v49;
         if (v33)
         {
-          v38 = [v33 name];
-          if (v38)
+          name = [v33 name];
+          if (name)
           {
 
-            v9 = v52;
-            v8 = v53;
-            v10 = v54;
+            toCopy = v52;
+            fromCopy = v53;
+            callbackCopy = v54;
           }
 
           else
           {
-            v41 = [v33 locality];
+            locality = [v33 locality];
 
-            v9 = v52;
-            v8 = v53;
-            v10 = v54;
-            if (!v41)
+            toCopy = v52;
+            fromCopy = v53;
+            callbackCopy = v54;
+            if (!locality)
             {
               v64 = @"location";
               v65 = v33;
@@ -289,14 +289,14 @@ LABEL_43:
           v66[1] = @"locality";
           v67[0] = v33;
           [v33 locality];
-          v44 = v43 = v10;
-          v45 = v44;
+          v44 = v43 = callbackCopy;
+          name2 = v44;
           if (!v44)
           {
-            v45 = [v33 name];
+            name2 = [v33 name];
           }
 
-          v67[1] = v45;
+          v67[1] = name2;
           v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:2];
           v43[2](v43, v46, 0);
 
@@ -304,7 +304,7 @@ LABEL_43:
           {
           }
 
-          v10 = v54;
+          callbackCopy = v54;
           v12 = v50;
           v11 = v51;
           v25 = v42;
@@ -319,8 +319,8 @@ LABEL_43:
     }
 
     v40 = __atxlog_handle_heuristic();
-    v9 = v52;
-    v8 = v53;
+    toCopy = v52;
+    fromCopy = v53;
     v12 = v50;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
@@ -328,7 +328,7 @@ LABEL_43:
       _os_log_impl(&dword_23E3EA000, v40, OS_LOG_TYPE_DEFAULT, "No selected placemark for trips", buf, 2u);
     }
 
-    v10 = v54;
+    callbackCopy = v54;
     (*(v54 + 2))(v54, 0, 0);
     v33 = 0;
     v11 = v51;
@@ -345,7 +345,7 @@ LABEL_43:
     v39 = 0;
   }
 
-  (*(v10 + 2))(v10, 0, v39);
+  (*(callbackCopy + 2))(callbackCopy, 0, v39);
 LABEL_44:
 
   v47 = *MEMORY[0x277D85DE8];

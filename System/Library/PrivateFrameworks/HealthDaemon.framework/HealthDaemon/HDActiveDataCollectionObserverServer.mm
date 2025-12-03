@@ -1,22 +1,22 @@
 @interface HDActiveDataCollectionObserverServer
 + (id)requiredEntitlements;
-+ (void)launchObservingProcessesForTypes:(id)a3;
-- (HDActiveDataCollectionObserverServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (void)_queue_computeActivelyCollectedTypesForWorkout:(char)a3 alwaysNotify:;
-- (void)_queue_didUpdateCurrentWorkout:(uint64_t)a1;
-- (void)remote_subscribeForQuantityTypes:(id)a3;
-- (void)remote_unsubscribeForQuantityTypes:(id)a3;
-- (void)workoutManager:(id)a3 currentWorkout:(id)a4 didChangeToState:(int64_t)a5;
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4;
++ (void)launchObservingProcessesForTypes:(id)types;
+- (HDActiveDataCollectionObserverServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (void)_queue_computeActivelyCollectedTypesForWorkout:(char)workout alwaysNotify:;
+- (void)_queue_didUpdateCurrentWorkout:(uint64_t)workout;
+- (void)remote_subscribeForQuantityTypes:(id)types;
+- (void)remote_unsubscribeForQuantityTypes:(id)types;
+- (void)workoutManager:(id)manager currentWorkout:(id)workout didChangeToState:(int64_t)state;
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout;
 @end
 
 @implementation HDActiveDataCollectionObserverServer
 
-- (HDActiveDataCollectionObserverServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDActiveDataCollectionObserverServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v12.receiver = self;
   v12.super_class = HDActiveDataCollectionObserverServer;
-  v6 = [(HDStandardTaskServer *)&v12 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v6 = [(HDStandardTaskServer *)&v12 initWithUUID:d configuration:configuration client:client delegate:delegate];
   if (v6)
   {
     v7 = HKCreateSerialDispatchQueue();
@@ -31,10 +31,10 @@
   return v6;
 }
 
-+ (void)launchObservingProcessesForTypes:(id)a3
++ (void)launchObservingProcessesForTypes:(id)types
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   objc_opt_self();
   v5 = MEMORY[0x277CBEB98];
   v6 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC9B0]];
@@ -47,7 +47,7 @@
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:4];
   v11 = [v5 setWithArray:v10];
 
-  LODWORD(v6) = [v4 intersectsSet:v11];
+  LODWORD(v6) = [typesCopy intersectsSet:v11];
   if (v6)
   {
     notify_post(*MEMORY[0x277CCE3C0]);
@@ -56,7 +56,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      *v15 = a1;
+      *v15 = self;
       _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Posting notification for Bluetooth to start collection", &v14, 0xCu);
     }
   }
@@ -74,17 +74,17 @@
   return v2;
 }
 
-- (void)remote_subscribeForQuantityTypes:(id)a3
+- (void)remote_subscribeForQuantityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__HDActiveDataCollectionObserverServer_remote_subscribeForQuantityTypes___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typesCopy;
+  v6 = typesCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -155,27 +155,27 @@ void __73__HDActiveDataCollectionObserverServer_remote_subscribeForQuantityTypes
   }
 }
 
-- (void)_queue_computeActivelyCollectedTypesForWorkout:(char)a3 alwaysNotify:
+- (void)_queue_computeActivelyCollectedTypesForWorkout:(char)workout alwaysNotify:
 {
   v48 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_40;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 40));
-  v5 = [*(a1 + 48) copy];
-  v6 = [a1 profile];
-  v7 = [v6 dataCollectionManager];
+  dispatch_assert_queue_V2(*(self + 40));
+  v5 = [*(self + 48) copy];
+  profile = [self profile];
+  dataCollectionManager = [profile dataCollectionManager];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v35 = a1;
-  v9 = [a1 profile];
-  v10 = [v9 workoutManager];
-  v39 = [v10 isInHeartRateRecovery];
+  selfCopy = self;
+  profile2 = [self profile];
+  workoutManager = [profile2 workoutManager];
+  isInHeartRateRecovery = [workoutManager isInHeartRateRecovery];
 
-  v41 = [v4 isActive];
+  isActive = [v4 isActive];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -192,7 +192,7 @@ void __73__HDActiveDataCollectionObserverServer_remote_subscribeForQuantityTypes
   v13 = *v44;
   v36 = *MEMORY[0x277CCCB10];
   v34 = *MEMORY[0x277CCE288];
-  v37 = v7;
+  v37 = dataCollectionManager;
   do
   {
     for (i = 0; i != v12; ++i)
@@ -203,60 +203,60 @@ void __73__HDActiveDataCollectionObserverServer_remote_subscribeForQuantityTypes
       }
 
       v15 = *(*(&v43 + 1) + 8 * i);
-      v16 = [v7 aggregatorForType:v15];
-      v17 = [v16 configuration];
+      v16 = [dataCollectionManager aggregatorForType:v15];
+      configuration = [v16 configuration];
 
       if (v4)
       {
-        if (v41)
+        if (isActive)
         {
-          v18 = [v17 hasActiveWorkout];
+          hasActiveWorkout = [configuration hasActiveWorkout];
         }
 
         else
         {
-          v18 = 0;
+          hasActiveWorkout = 0;
         }
 
         if ([v15 code] == 5)
         {
-          if ((v18 | v39))
+          if ((hasActiveWorkout | isInHeartRateRecovery))
           {
             goto LABEL_25;
           }
         }
 
-        else if (([v4 isGymKit] & 1) == 0 && ((v18 ^ 1) & 1) == 0)
+        else if (([v4 isGymKit] & 1) == 0 && ((hasActiveWorkout ^ 1) & 1) == 0)
         {
           v19 = v15;
           v20 = v4;
-          v21 = [v19 identifier];
-          v22 = [v21 isEqualToString:v36];
+          identifier = [v19 identifier];
+          v22 = [identifier isEqualToString:v36];
 
           if (!v22 || ([v20 currentActivityConfiguration], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "locationType"), v23, v24 != 3))
           {
 
-            v7 = v37;
+            dataCollectionManager = v37;
             v8 = v38;
 LABEL_25:
             [v8 addObject:v15];
             goto LABEL_26;
           }
 
-          v25 = [v35 client];
-          v26 = [v25 sourceBundleIdentifier];
+          client = [selfCopy client];
+          sourceBundleIdentifier = [client sourceBundleIdentifier];
 
-          LOBYTE(v25) = [v26 isEqualToString:v34];
-          v7 = v37;
+          LOBYTE(client) = [sourceBundleIdentifier isEqualToString:v34];
+          dataCollectionManager = v37;
           v8 = v38;
-          if ((v25 & 1) == 0)
+          if ((client & 1) == 0)
           {
             goto LABEL_25;
           }
         }
       }
 
-      else if ([v15 code] == 5 && ((objc_msgSend(v17, "hasForegroundObserver") & 1) != 0 || objc_msgSend(v17, "hasBackgroundObserver")))
+      else if ([v15 code] == 5 && ((objc_msgSend(configuration, "hasForegroundObserver") & 1) != 0 || objc_msgSend(configuration, "hasBackgroundObserver")))
       {
         goto LABEL_25;
       }
@@ -272,7 +272,7 @@ LABEL_28:
 
   if ([v8 count])
   {
-    v27 = [v4 isPaused] | v39;
+    v27 = [v4 isPaused] | isInHeartRateRecovery;
   }
 
   else
@@ -284,26 +284,26 @@ LABEL_28:
   v42[1] = 3221225472;
   v42[2] = __100__HDActiveDataCollectionObserverServer__queue_computeActivelyCollectedTypesForWorkout_alwaysNotify___block_invoke;
   v42[3] = &unk_2786138D0;
-  v42[4] = v35;
-  v28 = [v35 remoteObjectProxyWithErrorHandler:v42];
+  v42[4] = selfCopy;
+  v28 = [selfCopy remoteObjectProxyWithErrorHandler:v42];
   if (v28)
   {
-    if (a3)
+    if (workout)
     {
-      v29 = [v38 allObjects];
-      [v28 client_updatedCollectedTypes:v29];
+      allObjects = [v38 allObjects];
+      [v28 client_updatedCollectedTypes:allObjects];
 
-      objc_storeStrong((v35 + 56), v38);
+      objc_storeStrong((selfCopy + 56), v38);
       goto LABEL_34;
     }
 
-    if (([*(v35 + 56) isEqualToSet:v38] & 1) == 0)
+    if (([*(selfCopy + 56) isEqualToSet:v38] & 1) == 0)
     {
-      v31 = [v38 allObjects];
-      [v28 client_updatedCollectedTypes:v31];
+      allObjects2 = [v38 allObjects];
+      [v28 client_updatedCollectedTypes:allObjects2];
 
-      objc_storeStrong((v35 + 56), v38);
-      if (a3)
+      objc_storeStrong((selfCopy + 56), v38);
+      if (workout)
       {
 LABEL_34:
         v30 = v27 & 1;
@@ -312,11 +312,11 @@ LABEL_34:
     }
 
     v30 = v27 & 1;
-    if (*(v35 + 64) != (v27 & 1))
+    if (*(selfCopy + 64) != (v27 & 1))
     {
 LABEL_38:
       [v28 client_didChangeAllowCollectionPause:v27 & 1];
-      *(v35 + 64) = v30;
+      *(selfCopy + 64) = v30;
     }
   }
 
@@ -324,17 +324,17 @@ LABEL_40:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_unsubscribeForQuantityTypes:(id)a3
+- (void)remote_unsubscribeForQuantityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__HDActiveDataCollectionObserverServer_remote_unsubscribeForQuantityTypes___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typesCopy;
+  v6 = typesCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -365,50 +365,50 @@ void __75__HDActiveDataCollectionObserverServer_remote_unsubscribeForQuantityTyp
   [(HDActiveDataCollectionObserverServer *)*(a1 + 32) _queue_computeActivelyCollectedTypesForWorkout:v13 alwaysNotify:0];
 }
 
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout
 {
-  v5 = a4;
+  workoutCopy = workout;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__HDActiveDataCollectionObserverServer_workoutManager_didUpdateCurrentWorkout___block_invoke;
   v8[3] = &unk_278613920;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = workoutCopy;
+  v7 = workoutCopy;
   dispatch_sync(queue, v8);
 }
 
-- (void)_queue_didUpdateCurrentWorkout:(uint64_t)a1
+- (void)_queue_didUpdateCurrentWorkout:(uint64_t)workout
 {
   v9 = a2;
-  if (a1)
+  if (workout)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
-    v3 = [a1 profile];
-    v4 = [v3 workoutManager];
-    v5 = [v4 isInHeartRateRecovery];
+    dispatch_assert_queue_V2(*(workout + 40));
+    profile = [workout profile];
+    workoutManager = [profile workoutManager];
+    isInHeartRateRecovery = [workoutManager isInHeartRateRecovery];
 
-    v6 = [v9 isPaused];
-    v7 = *(a1 + 64);
-    if (v7 != v6 || v7 != v5)
+    isPaused = [v9 isPaused];
+    v7 = *(workout + 64);
+    if (v7 != isPaused || v7 != isInHeartRateRecovery)
     {
-      [(HDActiveDataCollectionObserverServer *)a1 _queue_computeActivelyCollectedTypesForWorkout:v9 alwaysNotify:0];
+      [(HDActiveDataCollectionObserverServer *)workout _queue_computeActivelyCollectedTypesForWorkout:v9 alwaysNotify:0];
     }
   }
 }
 
-- (void)workoutManager:(id)a3 currentWorkout:(id)a4 didChangeToState:(int64_t)a5
+- (void)workoutManager:(id)manager currentWorkout:(id)workout didChangeToState:(int64_t)state
 {
-  v6 = a4;
+  workoutCopy = workout;
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __87__HDActiveDataCollectionObserverServer_workoutManager_currentWorkout_didChangeToState___block_invoke;
   v9[3] = &unk_278613920;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = workoutCopy;
+  v8 = workoutCopy;
   dispatch_sync(queue, v9);
 }
 

@@ -1,29 +1,29 @@
 @interface MCProfileConnection
 + (NSArray)features;
-+ (id)profileDaemonConnectionErrorWithUnderlyingError:(id)a3;
-+ (id)profileInstallationErrorWithUnderlyingError:(id)a3;
++ (id)profileDaemonConnectionErrorWithUnderlyingError:(id)error;
++ (id)profileInstallationErrorWithUnderlyingError:(id)error;
 + (id)sharedConnection;
-- (BOOL)_areProfilesRestrictingSettings:(id)a3 outMDMName:(id *)a4 outExchangeName:(id *)a5 outExchangeCount:(int64_t *)a6 outProfileName:(id *)a7 outProfileCount:(int64_t *)a8;
+- (BOOL)_areProfilesRestrictingSettings:(id)settings outMDMName:(id *)name outExchangeName:(id *)exchangeName outExchangeCount:(int64_t *)count outProfileName:(id *)profileName outProfileCount:(int64_t *)profileCount;
 - (BOOL)_checkRemoteProcessHasMDMEntitlement;
 - (BOOL)_managedMayWriteUnmanagedContacts;
-- (BOOL)_shouldApplyContactsFilterForBundleID:(id)a3 sourceAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6;
-- (BOOL)_shouldApplyContactsFilterForTargetBundleID:(id)a3 targetAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6;
+- (BOOL)_shouldApplyContactsFilterForBundleID:(id)d sourceAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts;
+- (BOOL)_shouldApplyContactsFilterForTargetBundleID:(id)d targetAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts;
 - (BOOL)_unmanagedMayReadManagedContacts;
-- (BOOL)activationRecordIndicatesCloudConfigurationIsAvailableAndKeyExists:(BOOL *)a3;
+- (BOOL)activationRecordIndicatesCloudConfigurationIsAvailableAndKeyExists:(BOOL *)exists;
 - (BOOL)allMarketplacesAllowed;
 - (BOOL)anyMarketplaceAllowed;
-- (BOOL)applySingleAppModeConfiguration:(id)a3 clientType:(id)a4 clientUUID:(id)a5 localizedClientDescription:(id)a6 outError:(id *)a7;
-- (BOOL)areSettingsLockedDownByRestrictions:(id)a3;
+- (BOOL)applySingleAppModeConfiguration:(id)configuration clientType:(id)type clientUUID:(id)d localizedClientDescription:(id)description outError:(id *)error;
+- (BOOL)areSettingsLockedDownByRestrictions:(id)restrictions;
 - (BOOL)checkApplicationIdentifierEntitlement;
-- (BOOL)clearPasscodeWithEscrowKeybagData:(id)a3 secret:(id)a4 outError:(id *)a5;
-- (BOOL)clearPasscodeWithEscrowKeybagData:(id)a3 secretContext:(id)a4 outError:(id *)a5;
-- (BOOL)clearUserInfoForClientUUIDs:(id)a3;
+- (BOOL)clearPasscodeWithEscrowKeybagData:(id)data secret:(id)secret outError:(id *)error;
+- (BOOL)clearPasscodeWithEscrowKeybagData:(id)data secretContext:(id)context outError:(id *)error;
+- (BOOL)clearUserInfoForClientUUIDs:(id)ds;
 - (BOOL)cloudConfigIndicatesMDMProfileNeedsToBeInstalled;
-- (BOOL)communicationServiceRulesExistForBundleID:(id)a3 forCommunicationServiceType:(id)a4;
-- (BOOL)currentPasscodeIsCompliantWithGlobalRestrictionsOutError:(id *)a3;
-- (BOOL)currentPasscodeIsCompliantWithProfileRestrictionsOutError:(id *)a3;
-- (BOOL)getAreBundlesBlocked:(id *)a3 bundlePaths:(id)a4 outError:(id *)a5;
-- (BOOL)getIsBundleBlocked:(BOOL *)a3 bundlePath:(id)a4 outHash:(id *)a5 outHashType:(id *)a6 outError:(id *)a7;
+- (BOOL)communicationServiceRulesExistForBundleID:(id)d forCommunicationServiceType:(id)type;
+- (BOOL)currentPasscodeIsCompliantWithGlobalRestrictionsOutError:(id *)error;
+- (BOOL)currentPasscodeIsCompliantWithProfileRestrictionsOutError:(id *)error;
+- (BOOL)getAreBundlesBlocked:(id *)blocked bundlePaths:(id)paths outError:(id *)error;
+- (BOOL)getIsBundleBlocked:(BOOL *)blocked bundlePath:(id)path outHash:(id *)hash outHashType:(id *)type outError:(id *)error;
 - (BOOL)hasAnyMailAccountIgnoringFiltering;
 - (BOOL)hasAppAnalyticsAllowedBeenSet;
 - (BOOL)hasDiagnosticSubmissionAllowedBeenSet;
@@ -32,37 +32,37 @@
 - (BOOL)hasHealthDataSubmissionAllowedBeenSet;
 - (BOOL)hasSafetyDataSubmissionAllowedBeenSet;
 - (BOOL)hasWheelchairDataSubmissionAllowedBeenSet;
-- (BOOL)installProvisioningProfileData:(id)a3 managingProfileIdentifier:(id)a4 outError:(id *)a5;
+- (BOOL)installProvisioningProfileData:(id)data managingProfileIdentifier:(id)identifier outError:(id *)error;
 - (BOOL)isActivationLockAllowed;
 - (BOOL)isActivationLockAllowedWhileSupervised;
 - (BOOL)isAirDropUnmanagedForced;
-- (BOOL)isAppManaged:(id)a3;
+- (BOOL)isAppManaged:(id)managed;
 - (BOOL)isAppRatingLimitInEffect;
 - (BOOL)isAppleIntelligenceRestricted;
 - (BOOL)isAwaitingDeviceConfigured;
 - (BOOL)isAwaitingUserConfigured;
-- (BOOL)isBidirectionalDataTransferAllowedWithBundleID:(id)a3;
-- (BOOL)isBoolSettingLockedDownByRestrictions:(id)a3;
-- (BOOL)isBundleIDAccountBasedForDragDrop:(id)a3;
+- (BOOL)isBidirectionalDataTransferAllowedWithBundleID:(id)d;
+- (BOOL)isBoolSettingLockedDownByRestrictions:(id)restrictions;
+- (BOOL)isBundleIDAccountBasedForDragDrop:(id)drop;
 - (BOOL)isChaperoned;
 - (BOOL)isClassroomEnabled;
 - (BOOL)isClassroomInstructorRoleEnabled;
 - (BOOL)isClassroomStudentRoleEnabled;
 - (BOOL)isClassroomUnpromptedScreenObservationForced;
-- (BOOL)isCloudSyncAllowed:(id)a3;
-- (BOOL)isContactsReadAffectedByOpenInRestrictionsForTargetBundleID:(id)a3;
+- (BOOL)isCloudSyncAllowed:(id)allowed;
+- (BOOL)isContactsReadAffectedByOpenInRestrictionsForTargetBundleID:(id)d;
 - (BOOL)isEffectivelyInAppAllowListMode;
 - (BOOL)isHomeScreenLayoutApplied;
 - (BOOL)isInSingleAppMode;
-- (BOOL)isIntersectionSettingLockedDownByRestrictions:(id)a3;
+- (BOOL)isIntersectionSettingLockedDownByRestrictions:(id)restrictions;
 - (BOOL)isLocalStorageAllowed;
 - (BOOL)isManagedPasteboardRequired;
-- (BOOL)isMarketplaceAllowed:(id)a3;
+- (BOOL)isMarketplaceAllowed:(id)allowed;
 - (BOOL)isMultiUserNewUserCreationAllowed;
-- (BOOL)isNotificationsModificationAllowedForBundleID:(id)a3;
+- (BOOL)isNotificationsModificationAllowedForBundleID:(id)d;
 - (BOOL)isOpenInRestrictionInEffect;
 - (BOOL)isParentalControlsAllowPasscodeAccessToNonWhitelistedAppsUIForcedByRestrictions;
-- (BOOL)isPasscodeCompliantWithNamedPolicy:(id)a3 outError:(id *)a4;
+- (BOOL)isPasscodeCompliantWithNamedPolicy:(id)policy outError:(id *)error;
 - (BOOL)isPasscodeModificationAllowed;
 - (BOOL)isPasscodeRecoveryAllowed;
 - (BOOL)isPasscodeRecoveryRestricted;
@@ -70,42 +70,42 @@
 - (BOOL)isPasscodeRequiredByProfiles;
 - (BOOL)isPasscodeRequiredToAccessWhitelistedApps;
 - (BOOL)isPasscodeSet;
-- (BOOL)isProfileInstalledWithIdentifier:(id)a3 outError:(id *)a4;
+- (BOOL)isProfileInstalledWithIdentifier:(id)identifier outError:(id *)error;
 - (BOOL)isProfileUIInstallationAllowed;
 - (BOOL)isProfileUIInstallationEffectivelyAllowed;
-- (BOOL)isProfileWithIdentifier:(id)a3 managedByProfileWithIdentifier:(id)a4;
+- (BOOL)isProfileWithIdentifier:(id)identifier managedByProfileWithIdentifier:(id)withIdentifier;
 - (BOOL)isProvisionallyEnrolled;
-- (BOOL)isProvisioningProfilesWithUUID:(id)a3 managedByProfileWithIdentifier:(id)a4;
-- (BOOL)isRemovalRestrictedByPolicyForApp:(id)a3;
-- (BOOL)isSafariPasswordAutoFillAllowedForURL:(id)a3;
-- (BOOL)isSettingLockedDownByRestrictions:(id)a3;
+- (BOOL)isProvisioningProfilesWithUUID:(id)d managedByProfileWithIdentifier:(id)identifier;
+- (BOOL)isRemovalRestrictedByPolicyForApp:(id)app;
+- (BOOL)isSafariPasswordAutoFillAllowedForURL:(id)l;
+- (BOOL)isSettingLockedDownByRestrictions:(id)restrictions;
 - (BOOL)isSingleAppModeLogoutAllowed;
 - (BOOL)isSupervised;
 - (BOOL)isTemporarySessionOnlyModeEnabled;
-- (BOOL)isURLManaged:(id)a3;
-- (BOOL)isUnionSettingLockedDownByRestrictions:(id)a3;
-- (BOOL)isValueSettingLockedDownByRestrictions:(id)a3;
+- (BOOL)isURLManaged:(id)managed;
+- (BOOL)isUnionSettingLockedDownByRestrictions:(id)restrictions;
+- (BOOL)isValueSettingLockedDownByRestrictions:(id)restrictions;
 - (BOOL)isWebContentFilteringInEffect;
 - (BOOL)mayEnterPasscodeToAccessNonWhitelistedApps;
 - (BOOL)mayOpenFromManagedToUnmanaged;
 - (BOOL)mayOpenFromUnmanagedToManaged;
-- (BOOL)mustInstallProfileNonInteractively:(id)a3;
+- (BOOL)mustInstallProfileNonInteractively:(id)interactively;
 - (BOOL)needsCheckIn;
-- (BOOL)passcode:(id)a3 meetsCurrentConstraintsOutError:(id *)a4;
-- (BOOL)passcodeContext:(id)a3 meetsCurrentConstraintsOutError:(id *)a4;
+- (BOOL)passcode:(id)passcode meetsCurrentConstraintsOutError:(id *)error;
+- (BOOL)passcodeContext:(id)context meetsCurrentConstraintsOutError:(id *)error;
 - (BOOL)recoveryPasscodeAvailable;
-- (BOOL)removeProvisioningProfileWithUUID:(id)a3 managingProfileIdentifier:(id)a4 outError:(id *)a5;
-- (BOOL)shouldApplyFilterForBundleID:(id)a3 sourceAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6;
-- (BOOL)shouldApplyFilterForTargetBundleID:(id)a3 targetAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6;
+- (BOOL)removeProvisioningProfileWithUUID:(id)d managingProfileIdentifier:(id)identifier outError:(id *)error;
+- (BOOL)shouldApplyFilterForBundleID:(id)d sourceAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts;
+- (BOOL)shouldApplyFilterForTargetBundleID:(id)d targetAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts;
 - (BOOL)shouldDestroyOldKeybag;
 - (BOOL)shouldInstallStoredProfile;
 - (BOOL)shouldShowCloudConfigurationUI;
 - (BOOL)shouldShowSetupAssistant;
 - (BOOL)shouldSkipSetupPanes;
-- (BOOL)showProfileErrorUIWithProfileIdentifier:(id)a3 outError:(id *)a4;
-- (BOOL)syncTrustedCodeSigningIdentitiesWithOutError:(id *)a3;
-- (BOOL)unlockDeviceWithPasscode:(id)a3 outError:(id *)a4;
-- (BOOL)unlockDeviceWithPasscodeContext:(id)a3 outError:(id *)a4;
+- (BOOL)showProfileErrorUIWithProfileIdentifier:(id)identifier outError:(id *)error;
+- (BOOL)syncTrustedCodeSigningIdentitiesWithOutError:(id *)error;
+- (BOOL)unlockDeviceWithPasscode:(id)passcode outError:(id *)error;
+- (BOOL)unlockDeviceWithPasscodeContext:(id)context outError:(id *)error;
 - (BOOL)wasCloudConfigurationApplied;
 - (BOOL)wasTeslaCloudConfigurationApplied;
 - (MCProfileConnection)init;
@@ -113,36 +113,36 @@
 - (NSXPCConnection)xpcConnection;
 - (double)temporarySessionTimeout;
 - (double)userSessionTimeout;
-- (id)_cloudConfigurationRetrievalBlockWithCompletion:(id)a3;
-- (id)_disallowedRestrictionErrorForRestrictionKey:(id)a3;
-- (id)_handleQueueProfileError:(id)a3 targetDevice:(unint64_t)a4;
+- (id)_cloudConfigurationRetrievalBlockWithCompletion:(id)completion;
+- (id)_disallowedRestrictionErrorForRestrictionKey:(id)key;
+- (id)_handleQueueProfileError:(id)error targetDevice:(unint64_t)device;
 - (id)_lacksEntitlementError;
-- (id)_localizedSourceDescriptionForType:(int64_t)a3 MDMName:(id)a4 exchangeName:(id)a5 exchangeCount:(int64_t)a6 profileName:(id)a7 profileCount:(int64_t)a8;
-- (id)_restrictionEnforcedNotificationSettingsForBundleID:(id)a3 settingsArray:(id)a4;
-- (id)_settingsLockedDownByRestrictions:(id)a3;
+- (id)_localizedSourceDescriptionForType:(int64_t)type MDMName:(id)name exchangeName:(id)exchangeName exchangeCount:(int64_t)count profileName:(id)profileName profileCount:(int64_t)profileCount;
+- (id)_restrictionEnforcedNotificationSettingsForBundleID:(id)d settingsArray:(id)array;
+- (id)_settingsLockedDownByRestrictions:(id)restrictions;
 - (id)_sharedDeviceConfiguration;
-- (id)_transmogrifyRestrictionDictionaryForUserEnrollment:(id)a3 outError:(id *)a4;
+- (id)_transmogrifyRestrictionDictionaryForUserEnrollment:(id)enrollment outError:(id *)error;
 - (id)activationLockBypassHash;
 - (id)activationLockBypassKey;
 - (id)activeClassroomRoles;
-- (id)allClientUUIDsForClientType:(id)a3;
+- (id)allClientUUIDsForClientType:(id)type;
 - (id)allowedMarketplaces;
-- (id)appleConnect_installMDMAssociatedProfileData:(id)a3 outError:(id *)a4;
+- (id)appleConnect_installMDMAssociatedProfileData:(id)data outError:(id *)error;
 - (id)associatedDomainsForManagedApps;
 - (id)autonomousSingleAppModePermittedBundleIDs;
 - (id)chaperoneOrganization;
 - (id)clearRecoveryPasscode;
-- (id)clientRestrictionsForClientUUID:(id)a3;
+- (id)clientRestrictionsForClientUUID:(id)d;
 - (id)cloudConfigurationDetails;
-- (id)defaultAppBundleIDForCommunicationServiceType:(id)a3 forAccountWithIdentifier:(id)a4;
-- (id)defaultParametersForBoolSetting:(id)a3;
-- (id)defaultParametersForIntersectionSetting:(id)a3;
-- (id)defaultParametersForUnionSetting:(id)a3;
-- (id)defaultParametersForValueSetting:(id)a3;
+- (id)defaultAppBundleIDForCommunicationServiceType:(id)type forAccountWithIdentifier:(id)identifier;
+- (id)defaultParametersForBoolSetting:(id)setting;
+- (id)defaultParametersForIntersectionSetting:(id)setting;
+- (id)defaultParametersForUnionSetting:(id)setting;
+- (id)defaultParametersForValueSetting:(id)setting;
 - (id)defaultUserBookmarks;
-- (id)defaultValueForSetting:(id)a3;
-- (id)defaultValuesForIntersectionSetting:(id)a3;
-- (id)defaultValuesForUnionSetting:(id)a3;
+- (id)defaultValueForSetting:(id)setting;
+- (id)defaultValuesForIntersectionSetting:(id)setting;
+- (id)defaultValuesForUnionSetting:(id)setting;
 - (id)deniedICCIDsForImessageFaceTime;
 - (id)deniedICCIDsForRCS;
 - (id)deniedMarketplaces;
@@ -162,135 +162,135 @@
 - (id)diagnosticsUploadURL;
 - (id)doNotBackupAppIDs;
 - (id)effectiveBlockedAppBundleIDsExcludingRemovedSystemApps;
-- (id)effectiveParametersForBoolSetting:(id)a3 configurationUUID:(id)a4;
-- (id)effectiveParametersForIntersectionSetting:(id)a3;
-- (id)effectiveParametersForUnionSetting:(id)a3;
-- (id)effectiveParametersForValueSetting:(id)a3;
+- (id)effectiveParametersForBoolSetting:(id)setting configurationUUID:(id)d;
+- (id)effectiveParametersForIntersectionSetting:(id)setting;
+- (id)effectiveParametersForUnionSetting:(id)setting;
+- (id)effectiveParametersForValueSetting:(id)setting;
 - (id)effectiveRestrictions;
 - (id)effectiveRestrictionsForPairedDevice;
 - (id)effectiveUserSettings;
-- (id)effectiveValueForSetting:(id)a3;
-- (id)effectiveValueForWatchSetting:(id)a3 pairedDevice:(id)a4 outError:(id *)a5;
-- (id)effectiveValuesForIntersectionSetting:(id)a3;
-- (id)effectiveValuesForUnionSetting:(id)a3;
-- (id)effectiveValuesForWatchIntersectionSetting:(id)a3 pairedDevice:(id)a4 outError:(id *)a5;
-- (id)effectiveValuesForWatchUnionSetting:(id)a3 pairedDevice:(id)a4 outError:(id *)a5;
+- (id)effectiveValueForSetting:(id)setting;
+- (id)effectiveValueForWatchSetting:(id)setting pairedDevice:(id)device outError:(id *)error;
+- (id)effectiveValuesForIntersectionSetting:(id)setting;
+- (id)effectiveValuesForUnionSetting:(id)setting;
+- (id)effectiveValuesForWatchIntersectionSetting:(id)setting pairedDevice:(id)device outError:(id *)error;
+- (id)effectiveValuesForWatchUnionSetting:(id)setting pairedDevice:(id)device outError:(id *)error;
 - (id)effectiveWhitelistedAppBundleIDs;
 - (id)effectiveWhitelistedAppsAndOptions;
-- (id)fetchActivationLockBypassKeyWithError:(id *)a3;
-- (id)getMachineInfoWithAdditionalInfo:(id)a3;
+- (id)fetchActivationLockBypassKeyWithError:(id *)error;
+- (id)getMachineInfoWithAdditionalInfo:(id)info;
 - (id)getReducedMachineInfo;
-- (id)installProfileData:(id)a3 options:(id)a4 outError:(id *)a5;
-- (id)installProfileData:(id)a3 outError:(id *)a4;
-- (id)installedConfigurationProfileInfoWithOutMDMProfileInfo:(id *)a3;
+- (id)installProfileData:(id)data options:(id)options outError:(id *)error;
+- (id)installProfileData:(id)data outError:(id *)error;
+- (id)installedConfigurationProfileInfoWithOutMDMProfileInfo:(id *)info;
 - (id)installedMDMProfileIdentifier;
-- (id)installedProfileDataWithIdentifier:(id)a3;
+- (id)installedProfileDataWithIdentifier:(id)identifier;
 - (id)installedProfileIdentifiers;
-- (id)installedProfileIdentifiersInstalledBy:(id)a3;
-- (id)installedProfileWithIdentifier:(id)a3;
-- (id)installedProfilesInstalledBy:(id)a3;
-- (id)installedSystemProfileDataWithIdentifier:(id)a3;
-- (id)installedSystemProfileWithIdentifier:(id)a3;
-- (id)installedUserProfileDataWithIdentifier:(id)a3;
-- (id)installedUserProfileWithIdentifier:(id)a3;
+- (id)installedProfileIdentifiersInstalledBy:(id)by;
+- (id)installedProfileWithIdentifier:(id)identifier;
+- (id)installedProfilesInstalledBy:(id)by;
+- (id)installedSystemProfileDataWithIdentifier:(id)identifier;
+- (id)installedSystemProfileWithIdentifier:(id)identifier;
+- (id)installedUserProfileDataWithIdentifier:(id)identifier;
+- (id)installedUserProfileWithIdentifier:(id)identifier;
 - (id)knownAirPrintIPPURLStrings;
-- (id)listInstalledProvisioningProfileUUIDsWithManagedOnly:(BOOL)a3;
+- (id)listInstalledProvisioningProfileUUIDsWithManagedOnly:(BOOL)only;
 - (id)localizedDescriptionOfCurrentPasscodeConstraints;
 - (id)localizedDescriptionOfDefaultNewPasscodeConstraints;
-- (id)localizedRestrictionSourceDescriptionForFeatures:(id)a3;
-- (id)lockedDownRootCertificatesWithOutLocalizedSourceDescription:(id *)a3;
+- (id)localizedRestrictionSourceDescriptionForFeatures:(id)features;
+- (id)lockedDownRootCertificatesWithOutLocalizedSourceDescription:(id *)description;
 - (id)managedAppBundleIDs;
 - (id)managedAppIDs;
 - (id)managedSystemConfigurationServiceIDs;
 - (id)managedWiFiNetworkNames;
-- (id)managingOrganizationForFontAtURL:(id)a3;
+- (id)managingOrganizationForFontAtURL:(id)l;
 - (id)managingOrganizationInformation;
-- (id)objectRestrictionForFeature:(id)a3;
-- (id)parametersForBoolSetting:(id)a3;
-- (id)parametersForIntersectionSetting:(id)a3;
-- (id)parametersForUnionSetting:(id)a3;
-- (id)parametersForValueSetting:(id)a3;
+- (id)objectRestrictionForFeature:(id)feature;
+- (id)parametersForBoolSetting:(id)setting;
+- (id)parametersForIntersectionSetting:(id)setting;
+- (id)parametersForUnionSetting:(id)setting;
+- (id)parametersForValueSetting:(id)setting;
 - (id)parentalControlsBlockedAppBundleIDs;
 - (id)parentalControlsWhitelistedAppBundleIDs;
 - (id)passcodeCreationDate;
 - (id)passcodeExpiryDate;
-- (id)peekProfileDataFromPurgatoryForDeviceType:(unint64_t)a3;
+- (id)peekProfileDataFromPurgatoryForDeviceType:(unint64_t)type;
 - (id)permittedAutoLockSeconds;
 - (id)popProfileDataFromHeadOfInstallationQueue;
 - (id)provisionalEnrollmentExpirationDate;
-- (id)provisiongProfileUUIDsForSignerIdentity:(id)a3;
-- (id)queueFileDataForAcceptance:(id)a3 originalFileName:(id)a4 forBundleID:(id)a5 outError:(id *)a6;
-- (id)queueFileDataForAcceptance:(id)a3 originalFileName:(id)a4 outError:(id *)a5;
+- (id)provisiongProfileUUIDsForSignerIdentity:(id)identity;
+- (id)queueFileDataForAcceptance:(id)acceptance originalFileName:(id)name forBundleID:(id)d outError:(id *)error;
+- (id)queueFileDataForAcceptance:(id)acceptance originalFileName:(id)name outError:(id *)error;
 - (id)recoveryPasscodeExpiryDate;
 - (id)removedSystemAppBundleIDs;
-- (id)requestEffectiveBoolValueForSetting:(id)a3 configurationUUID:(id)a4 promptOptions:(id)a5 completion:(id)a6;
+- (id)requestEffectiveBoolValueForSetting:(id)setting configurationUUID:(id)d promptOptions:(id)options completion:(id)completion;
 - (id)restrictedAppBundleIDsExcludingRemovedSystemApps;
 - (id)restrictionEnforcedBlockedAppBundleIDs;
 - (id)restrictionEnforcedHomeScreenLayout;
 - (id)restrictionEnforcedNotificationSettings;
-- (id)restrictionEnforcedNotificationSettingsForBundleID:(id)a3;
+- (id)restrictionEnforcedNotificationSettingsForBundleID:(id)d;
 - (id)restrictionEnforcedWhitelistedAppBundleIDs;
-- (id)signerIdentityForBundleID:(id)a3;
+- (id)signerIdentityForBundleID:(id)d;
 - (id)skipSetupKeys;
 - (id)trustedCodeSigningIdentities;
 - (id)tvProviderUserToken;
-- (id)uninstalledProfileDataWithIdentifier:(id)a3 targetDevice:(unint64_t)a4;
-- (id)uninstalledProfileIdentifiersForDevice:(unint64_t)a3;
+- (id)uninstalledProfileDataWithIdentifier:(id)identifier targetDevice:(unint64_t)device;
+- (id)uninstalledProfileIdentifiersForDevice:(unint64_t)device;
 - (id)unverifiedInstalledMDMProfileIdentifier;
-- (id)updateProfileWithIdentifier:(id)a3 outError:(id *)a4;
+- (id)updateProfileWithIdentifier:(id)identifier outError:(id *)error;
 - (id)userBookmarks;
-- (id)userInfoForClientUUID:(id)a3;
+- (id)userInfoForClientUUID:(id)d;
 - (id)userSettingsForCurrentUser;
 - (id)userSettingsForPairedDevice;
 - (id)userSettingsForSystem;
-- (id)userValueForIntersectionSetting:(id)a3;
-- (id)userValueForSetting:(id)a3;
-- (id)userValueForUnionSetting:(id)a3;
-- (id)valueForFeature:(id)a3;
-- (id)valueRestrictionForFeature:(id)a3;
+- (id)userValueForIntersectionSetting:(id)setting;
+- (id)userValueForSetting:(id)setting;
+- (id)userValueForUnionSetting:(id)setting;
+- (id)valueForFeature:(id)feature;
+- (id)valueRestrictionForFeature:(id)feature;
 - (id)verifiedTrustedCodeSigningIdentities;
-- (int)BOOLRestrictionForFeature:(id)a3;
-- (int)_getPasscodeComplianceWarningExpiryDate:(id)a3 lastLockDate:(id)a4 outLocalizedTitle:(id *)a5 outLocalizedMessage:(id *)a6;
+- (int)BOOLRestrictionForFeature:(id)feature;
+- (int)_getPasscodeComplianceWarningExpiryDate:(id)date lastLockDate:(id)lockDate outLocalizedTitle:(id *)title outLocalizedMessage:(id *)message;
 - (int)appWhitelistState;
-- (int)applyRestrictionDictionary:(id)a3 clientType:(id)a4 clientUUID:(id)a5 localizedClientDescription:(id)a6 localizedWarningMessage:(id)a7 complianceBlocking:(int)a8 displayImmediateAlert:(BOOL)a9 limitForUserEnrollment:(BOOL)a10 outRestrictionChanged:(BOOL *)a11 outEffectiveSettingsChanged:(BOOL *)a12 outError:(id *)a13;
-- (int)defaultBoolValueForSetting:(id)a3;
-- (int)defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)a3;
-- (int)effectiveBoolValueForSetting:(id)a3 configurationUUID:(id)a4 outAsk:(BOOL *)a5;
-- (int)effectiveBoolValueForSetting:(id)a3 outAsk:(BOOL *)a4;
-- (int)effectiveBoolValueForWatchSetting:(id)a3 pairedDevice:(id)a4 outError:(id *)a5;
-- (int)effectiveRestrictedBoolValueForSetting:(id)a3;
-- (int)getPasscodeComplianceWarningLastLockDate:(id)a3 outLocalizedTitle:(id *)a4 outLocalizedMessage:(id *)a5;
-- (int)hostMayPairWithOptions:(id)a3 challenge:(id)a4;
-- (int)minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)a3;
+- (int)applyRestrictionDictionary:(id)dictionary clientType:(id)type clientUUID:(id)d localizedClientDescription:(id)description localizedWarningMessage:(id)message complianceBlocking:(int)blocking displayImmediateAlert:(BOOL)alert limitForUserEnrollment:(BOOL)self0 outRestrictionChanged:(BOOL *)self1 outEffectiveSettingsChanged:(BOOL *)self2 outError:(id *)self3;
+- (int)defaultBoolValueForSetting:(id)setting;
+- (int)defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)type;
+- (int)effectiveBoolValueForSetting:(id)setting configurationUUID:(id)d outAsk:(BOOL *)ask;
+- (int)effectiveBoolValueForSetting:(id)setting outAsk:(BOOL *)ask;
+- (int)effectiveBoolValueForWatchSetting:(id)setting pairedDevice:(id)device outError:(id *)error;
+- (int)effectiveRestrictedBoolValueForSetting:(id)setting;
+- (int)getPasscodeComplianceWarningLastLockDate:(id)date outLocalizedTitle:(id *)title outLocalizedMessage:(id *)message;
+- (int)hostMayPairWithOptions:(id)options challenge:(id)challenge;
+- (int)minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)type;
 - (int)newPasscodeEntryScreenType;
-- (int)newPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)a3;
+- (int)newPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)type;
 - (int)recoveryPasscodeUnlockScreenType;
-- (int)recoveryPasscodeUnlockScreenTypeWithOutSimplePasscodeType:(int *)a3;
-- (int)requestEffectiveBoolValueForSetting:(id)a3 configurationUUID:(id)a4 promptOptions:(id)a5 outError:(id *)a6;
-- (int)restrictedBoolValueForFeature:(id)a3;
+- (int)recoveryPasscodeUnlockScreenTypeWithOutSimplePasscodeType:(int *)type;
+- (int)requestEffectiveBoolValueForSetting:(id)setting configurationUUID:(id)d promptOptions:(id)options outError:(id *)error;
+- (int)restrictedBoolValueForFeature:(id)feature;
 - (int)unlockScreenType;
-- (int)unlockScreenTypeForSharedDataVolume:(id)a3 OutSimplePasscodeType:(int *)a4;
-- (int)unlockScreenTypeForUser:(id)a3 outSimplePasscodeType:(int *)a4;
-- (int)unlockScreenTypeWithOutSimplePasscodeType:(int *)a3;
-- (int)userBoolValueForSetting:(id)a3;
+- (int)unlockScreenTypeForSharedDataVolume:(id)volume OutSimplePasscodeType:(int *)type;
+- (int)unlockScreenTypeForUser:(id)user outSimplePasscodeType:(int *)type;
+- (int)unlockScreenTypeWithOutSimplePasscodeType:(int *)type;
+- (int)userBoolValueForSetting:(id)setting;
 - (int)userMode;
 - (int64_t)allowedGameCenterPlayerTypes;
-- (int64_t)dragDropBidirectionalManagementStateForBaseBundleID:(id)a3;
-- (int64_t)dragDropSourceManagementStateForBundleID:(id)a3;
-- (int64_t)dragDropTargetManagementStateForBundleID:(id)a3;
+- (int64_t)dragDropBidirectionalManagementStateForBaseBundleID:(id)d;
+- (int64_t)dragDropSourceManagementStateForBundleID:(id)d;
+- (int64_t)dragDropTargetManagementStateForBundleID:(id)d;
 - (int64_t)softwareUpdatePath;
 - (unint64_t)enforcedSoftwareUpdateDelayInDays;
 - (unint64_t)gracePeriod;
 - (void)__checkForProfiledCrash;
-- (void)_appWhitelistDidChange:(id)a3;
-- (void)_applyToObservers:(id)a3;
+- (void)_appWhitelistDidChange:(id)change;
+- (void)_applyToObservers:(id)observers;
 - (void)_createAndResumePublicXPCConnection;
 - (void)_createAndResumeXPCConnection;
-- (void)_debug_scheduleBackgroundTask:(id)a3 interval:(double)a4 tolerance:(double)a5 completion:(id)a6;
-- (void)_destroyPublicXPCConnectionAndInvalidate:(BOOL)a3;
-- (void)_destroyXPCConnectionAndInvalidate:(BOOL)a3;
+- (void)_debug_scheduleBackgroundTask:(id)task interval:(double)interval tolerance:(double)tolerance completion:(id)completion;
+- (void)_destroyPublicXPCConnectionAndInvalidate:(BOOL)invalidate;
+- (void)_destroyXPCConnectionAndInvalidate:(BOOL)invalidate;
 - (void)_detectProfiledCrashes;
-- (void)_effectiveSettingsDidChange:(id)a3;
+- (void)_effectiveSettingsDidChange:(id)change;
 - (void)_internalDefaultsDidChange;
 - (void)_passcodeDidChange;
 - (void)_passcodePolicyDidChange;
@@ -298,112 +298,112 @@
 - (void)_queueCreateAndResumePublicXPCConnection;
 - (void)_queueCreateAndResumeXPCConnection;
 - (void)_restrictionDidChange;
-- (void)_setAllowedGrandfatheredRestrictionFeature:(id)a3 forRestrictionKey:(id)a4;
-- (void)addActiveClassroomRole:(id)a3;
-- (void)addTrustedCodeSigningIdentities:(id)a3;
-- (void)allProfilesOutMDMProfileInfo:(id *)a3 outConfigurationProfilesInfo:(id *)a4 outUninstalledProfilesInfo:(id *)a5 forDeviceType:(unint64_t)a6;
-- (void)applyPairingWatchMDMEnrollmentData:(id)a3 completion:(id)a4;
-- (void)cancelRequestEffectiveBoolValue:(id)a3 completion:(id)a4;
+- (void)_setAllowedGrandfatheredRestrictionFeature:(id)feature forRestrictionKey:(id)key;
+- (void)addActiveClassroomRole:(id)role;
+- (void)addTrustedCodeSigningIdentities:(id)identities;
+- (void)allProfilesOutMDMProfileInfo:(id *)info outConfigurationProfilesInfo:(id *)profilesInfo outUninstalledProfilesInfo:(id *)uninstalledProfilesInfo forDeviceType:(unint64_t)type;
+- (void)applyPairingWatchMDMEnrollmentData:(id)data completion:(id)completion;
+- (void)cancelRequestEffectiveBoolValue:(id)value completion:(id)completion;
 - (void)cancelUserInputResponses;
 - (void)checkIn;
 - (void)checkInAsynchronously;
 - (void)checkInIfNeeded;
-- (void)checkInWithCompletion:(id)a3;
-- (void)clearRecoveryPasscodeWithCompletion:(id)a3;
-- (void)createMDMUnlockTokenIfNeededWithPasscode:(id)a3 completionBlock:(id)a4;
-- (void)createMDMUnlockTokenIfNeededWithPasscodeContext:(id)a3 completionBlock:(id)a4;
+- (void)checkInWithCompletion:(id)completion;
+- (void)clearRecoveryPasscodeWithCompletion:(id)completion;
+- (void)createMDMUnlockTokenIfNeededWithPasscode:(id)passcode completionBlock:(id)block;
+- (void)createMDMUnlockTokenIfNeededWithPasscodeContext:(id)context completionBlock:(id)block;
 - (void)dealloc;
 - (void)deleteActivationLockBypassKey;
-- (void)doMCICDidBeginInstallingNextProfileData:(id)a3 completion:(id)a4;
-- (void)doMCICDidFinishInstallationWithIdentifier:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)doMCICDidFinishPreflightWithError:(id)a3 completion:(id)a4;
-- (void)doMCICDidRequestMAIDSignIn:(id)a3 personaID:(id)a4 completion:(id)a5;
-- (void)doMCICDidRequestManagedRestoreWithManagedAppleID:(id)a3 personaID:(id)a4 completion:(id)a5;
-- (void)doMCICDidRequestShowUserWarnings:(id)a3 completion:(id)a4;
-- (void)doMCICDidRequestUserInput:(id)a3 completion:(id)a4;
-- (void)doMCICDidUpdateStatus:(id)a3 completion:(id)a4;
-- (void)doMCICWaitForEnrollmentToFinishWithCompletion:(id)a3;
-- (void)enrollProvisionallyWithNonce:(id)a3 completionBlock:(id)a4;
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)a3;
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)a3 completion:(id)a4;
-- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)a3;
-- (void)forceRetrieveAndStoreCloudConfigurationDetailsCompletionBlock:(id)a3;
-- (void)getPasscodeComplianceWarningLastLockDate:(id)a3 completionBlock:(id)a4;
-- (void)installProfileData:(id)a3 interactionDelegate:(id)a4;
-- (void)installProfileData:(id)a3 options:(id)a4 interactionDelegate:(id)a5;
-- (void)installStoredProfileDataWithExtraOptions:(id)a3 completion:(id)a4;
+- (void)doMCICDidBeginInstallingNextProfileData:(id)data completion:(id)completion;
+- (void)doMCICDidFinishInstallationWithIdentifier:(id)identifier error:(id)error completion:(id)completion;
+- (void)doMCICDidFinishPreflightWithError:(id)error completion:(id)completion;
+- (void)doMCICDidRequestMAIDSignIn:(id)in personaID:(id)d completion:(id)completion;
+- (void)doMCICDidRequestManagedRestoreWithManagedAppleID:(id)d personaID:(id)iD completion:(id)completion;
+- (void)doMCICDidRequestShowUserWarnings:(id)warnings completion:(id)completion;
+- (void)doMCICDidRequestUserInput:(id)input completion:(id)completion;
+- (void)doMCICDidUpdateStatus:(id)status completion:(id)completion;
+- (void)doMCICWaitForEnrollmentToFinishWithCompletion:(id)completion;
+- (void)enrollProvisionallyWithNonce:(id)nonce completionBlock:(id)block;
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)completion;
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)token completion:(id)completion;
+- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)completion;
+- (void)forceRetrieveAndStoreCloudConfigurationDetailsCompletionBlock:(id)block;
+- (void)getPasscodeComplianceWarningLastLockDate:(id)date completionBlock:(id)block;
+- (void)installProfileData:(id)data interactionDelegate:(id)delegate;
+- (void)installProfileData:(id)data options:(id)options interactionDelegate:(id)delegate;
+- (void)installStoredProfileDataWithExtraOptions:(id)options completion:(id)completion;
 - (void)invalidateRestrictionCache;
-- (void)isProfileInstalledWithIdentifier:(id)a3 completion:(id)a4;
+- (void)isProfileInstalledWithIdentifier:(id)identifier completion:(id)completion;
 - (void)lockDevice;
-- (void)lockdownDidReceiveActivationRecord:(id)a3;
+- (void)lockdownDidReceiveActivationRecord:(id)record;
 - (void)markStoredProfileAsInstalled;
 - (void)notifyClientsToRecomputeCompliance;
 - (void)notifyDeviceUnlocked;
 - (void)notifyDeviceUnlockedAndPasscodeRequired;
-- (void)notifyUserHasSeenComplianceMessageWithLastLockDate:(id)a3;
-- (void)preflightUserInputResponses:(id)a3 forPayloadIndex:(unint64_t)a4;
-- (void)queueFileDataForAcceptance:(id)a3 originalFileName:(id)a4 forBundleID:(id)a5 completion:(id)a6;
-- (void)recomputeProfileRestrictionsWithCompletionBlock:(id)a3;
+- (void)notifyUserHasSeenComplianceMessageWithLastLockDate:(id)date;
+- (void)preflightUserInputResponses:(id)responses forPayloadIndex:(unint64_t)index;
+- (void)queueFileDataForAcceptance:(id)acceptance originalFileName:(id)name forBundleID:(id)d completion:(id)completion;
+- (void)recomputeProfileRestrictionsWithCompletionBlock:(id)block;
 - (void)recomputeUserComplianceWarning;
 - (void)recomputeUserComplianceWarningSynchronously;
-- (void)registerObserver:(id)a3;
-- (void)removeActiveClassroomRole:(id)a3;
-- (void)removeBoolSetting:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)removeActiveClassroomRole:(id)role;
+- (void)removeBoolSetting:(id)setting;
 - (void)removeExpiredProfiles;
 - (void)removeOrphanedClientRestrictions;
-- (void)removeOrphanedClientRestrictionsWithCompletion:(id)a3;
-- (void)removePostSetupAutoInstallSetAsideProfileWithCompletion:(id)a3;
-- (void)removeProfileAsyncWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5;
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4;
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5;
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 errorCompletion:(id)a5;
-- (void)removeProtectedProfileAsyncWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5;
-- (void)removeSetAsideCloudConfigurationProfileWithCompletion:(id)a3;
-- (void)removeTrustedCodeSigningIdentities:(id)a3;
-- (void)removeUninstalledProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 targetDeviceType:(unint64_t)a5 completion:(id)a6;
-- (void)removeValueSetting:(id)a3;
+- (void)removeOrphanedClientRestrictionsWithCompletion:(id)completion;
+- (void)removePostSetupAutoInstallSetAsideProfileWithCompletion:(id)completion;
+- (void)removeProfileAsyncWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion;
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type;
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion;
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type errorCompletion:(id)completion;
+- (void)removeProtectedProfileAsyncWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion;
+- (void)removeSetAsideCloudConfigurationProfileWithCompletion:(id)completion;
+- (void)removeTrustedCodeSigningIdentities:(id)identities;
+- (void)removeUninstalledProfileWithIdentifier:(id)identifier installationType:(int64_t)type targetDeviceType:(unint64_t)deviceType completion:(id)completion;
+- (void)removeValueSetting:(id)setting;
 - (void)rereadManagedAppAttributes;
-- (void)resetPasscodeMetadataWithCompletion:(id)a3;
-- (void)restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:(id)a3;
-- (void)retrieveAndStoreCloudConfigurationDetailsCompletionBlock:(id)a3;
-- (void)retrieveCloudConfigurationDetailsCompletionBlock:(id)a3;
-- (void)retrieveCloudConfigurationFromURL:(id)a3 username:(id)a4 password:(id)a5 anchorCertificates:(id)a6 additionalMachineInfo:(id)a7 completionBlock:(id)a8;
-- (void)retrieveCloudConfigurationWithoutValidationCompletionBlock:(id)a3;
-- (void)setActiveClassroomRoles:(id)a3;
-- (void)setClassroomInstructorRoleEnabled:(BOOL)a3;
-- (void)setClassroomStudentRoleEnabled:(BOOL)a3;
-- (void)setGracePeriod:(unint64_t)a3 passcode:(id)a4 completionBlock:(id)a5;
-- (void)setParameters:(id)a3 forBoolSetting:(id)a4;
-- (void)setParameters:(id)a3 forValueSetting:(id)a4;
-- (void)setParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 credentialSet:(id)a7 waitUntilCompleted:(BOOL)a8 errorCompletionBlock:(id)a9;
-- (void)setParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 passcode:(id)a7 credentialSet:(id)a8 waitUntilCompleted:(BOOL)a9 errorCompletionBlock:(id)a10;
-- (void)setParentalControlsBlockedAppBundleIDs:(id)a3;
-- (void)setParentalControlsWhitelistedAppBundleIDs:(id)a3;
-- (void)setUserBookmarks:(id)a3;
-- (void)setUserInfo:(id)a3 forClientUUID:(id)a4;
-- (void)setValue:(id)a3 forSetting:(id)a4;
-- (void)setValue:(id)a3 forSetting:(id)a4 credentialSet:(id)a5 completion:(id)a6;
-- (void)setValue:(id)a3 forSetting:(id)a4 passcode:(id)a5 completion:(id)a6;
-- (void)setWebContentFilterAutoPermittedURLStrings:(id)a3;
-- (void)setWebContentFilterUserBlacklistedURLStrings:(id)a3;
-- (void)setupAssistantDidFinishWithCompletion:(id)a3;
-- (void)shutDownWithCompletion:(id)a3;
-- (void)startMonitoringEnrollmentStateWithPersonaID:(id)a3;
+- (void)resetPasscodeMetadataWithCompletion:(id)completion;
+- (void)restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:(id)completion;
+- (void)retrieveAndStoreCloudConfigurationDetailsCompletionBlock:(id)block;
+- (void)retrieveCloudConfigurationDetailsCompletionBlock:(id)block;
+- (void)retrieveCloudConfigurationFromURL:(id)l username:(id)username password:(id)password anchorCertificates:(id)certificates additionalMachineInfo:(id)info completionBlock:(id)block;
+- (void)retrieveCloudConfigurationWithoutValidationCompletionBlock:(id)block;
+- (void)setActiveClassroomRoles:(id)roles;
+- (void)setClassroomInstructorRoleEnabled:(BOOL)enabled;
+- (void)setClassroomStudentRoleEnabled:(BOOL)enabled;
+- (void)setGracePeriod:(unint64_t)period passcode:(id)passcode completionBlock:(id)block;
+- (void)setParameters:(id)parameters forBoolSetting:(id)setting;
+- (void)setParameters:(id)parameters forValueSetting:(id)setting;
+- (void)setParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user credentialSet:(id)set waitUntilCompleted:(BOOL)completed errorCompletionBlock:(id)block;
+- (void)setParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user passcode:(id)passcode credentialSet:(id)set waitUntilCompleted:(BOOL)completed errorCompletionBlock:(id)self0;
+- (void)setParentalControlsBlockedAppBundleIDs:(id)ds;
+- (void)setParentalControlsWhitelistedAppBundleIDs:(id)ds;
+- (void)setUserBookmarks:(id)bookmarks;
+- (void)setUserInfo:(id)info forClientUUID:(id)d;
+- (void)setValue:(id)value forSetting:(id)setting;
+- (void)setValue:(id)value forSetting:(id)setting credentialSet:(id)set completion:(id)completion;
+- (void)setValue:(id)value forSetting:(id)setting passcode:(id)passcode completion:(id)completion;
+- (void)setWebContentFilterAutoPermittedURLStrings:(id)strings;
+- (void)setWebContentFilterUserBlacklistedURLStrings:(id)strings;
+- (void)setupAssistantDidFinishWithCompletion:(id)completion;
+- (void)shutDownWithCompletion:(id)completion;
+- (void)startMonitoringEnrollmentStateWithPersonaID:(id)d;
 - (void)stopMonitoringEnrollmentState;
-- (void)storeCertificateData:(id)a3 forHostIdentifier:(id)a4;
-- (void)storeCloudConfigurationDetails:(id)a3 waitUntilCompleted:(BOOL)a4 completion:(id)a5;
-- (void)storePendingCloudConfigurationDetailsForMigration:(id)a3 completionHandler:(id)a4;
-- (void)storeProfileData:(id)a3 completion:(id)a4;
-- (void)storedProfileDataWithCompletion:(id)a3;
-- (void)submitUserInputResponses:(id)a3;
-- (void)unenrollWithCompletionBlock:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)a3;
-- (void)updateCloudConfigurationWithLastPushTokenHash:(id)a3;
-- (void)updateCloudConfigurationWithRMAccountIdentifier:(id)a3;
-- (void)updateMDMEnrollmentInfoForPairingWatch:(id)a3 completion:(id)a4;
-- (void)updateProfileWithIdentifier:(id)a3 interactionDelegate:(id)a4;
-- (void)validateAppBundleIDs:(id)a3 waitUntilCompleted:(BOOL)a4 completion:(id)a5;
+- (void)storeCertificateData:(id)data forHostIdentifier:(id)identifier;
+- (void)storeCloudConfigurationDetails:(id)details waitUntilCompleted:(BOOL)completed completion:(id)completion;
+- (void)storePendingCloudConfigurationDetailsForMigration:(id)migration completionHandler:(id)handler;
+- (void)storeProfileData:(id)data completion:(id)completion;
+- (void)storedProfileDataWithCompletion:(id)completion;
+- (void)submitUserInputResponses:(id)responses;
+- (void)unenrollWithCompletionBlock:(id)block;
+- (void)unregisterObserver:(id)observer;
+- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)completion;
+- (void)updateCloudConfigurationWithLastPushTokenHash:(id)hash;
+- (void)updateCloudConfigurationWithRMAccountIdentifier:(id)identifier;
+- (void)updateMDMEnrollmentInfoForPairingWatch:(id)watch completion:(id)completion;
+- (void)updateProfileWithIdentifier:(id)identifier interactionDelegate:(id)delegate;
+- (void)validateAppBundleIDs:(id)ds waitUntilCompleted:(BOOL)completed completion:(id)completion;
 @end
 
 @implementation MCProfileConnection
@@ -433,9 +433,9 @@
     goto LABEL_9;
   }
 
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.datamigrator"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.datamigrator"];
 
   if (v4)
   {
@@ -518,9 +518,9 @@ LABEL_9:
     shutDownSerialQueue = v3->_shutDownSerialQueue;
     v3->_shutDownSerialQueue = v8;
 
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v10;
+    v3->_observers = weakObjectsHashTable;
 
     v12 = dispatch_queue_create("com.apple.MCProfileConnection._notificationSyncQueue", 0);
     notificationSyncQueue = v3->_notificationSyncQueue;
@@ -615,7 +615,7 @@ LABEL_9:
     v45 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v44 addObject:v45];
 
-    v46 = [@"com.apple.managedconfiguration.appwhitelistdidchange" UTF8String];
+    uTF8String = [@"com.apple.managedconfiguration.appwhitelistdidchange" UTF8String];
     v47 = notificationQueue();
     v148[0] = MEMORY[0x1E69E9820];
     v148[1] = 3221225472;
@@ -623,13 +623,13 @@ LABEL_9:
     v148[3] = &unk_1E77D01F8;
     v48 = v43;
     v149 = v48;
-    notify_register_dispatch(v46, &out_token, v47, v148);
+    notify_register_dispatch(uTF8String, &out_token, v47, v148);
 
     v49 = v3->_notificationTokens;
     v50 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v49 addObject:v50];
 
-    v51 = [@"com.apple.managedconfiguration.defaultsdidchange" UTF8String];
+    uTF8String2 = [@"com.apple.managedconfiguration.defaultsdidchange" UTF8String];
     v52 = notificationQueue();
     v146[0] = MEMORY[0x1E69E9820];
     v146[1] = 3221225472;
@@ -637,13 +637,13 @@ LABEL_9:
     v146[3] = &unk_1E77D01F8;
     v53 = v48;
     v147 = v53;
-    notify_register_dispatch(v51, &out_token, v52, v146);
+    notify_register_dispatch(uTF8String2, &out_token, v52, v146);
 
     v54 = v3->_notificationTokens;
     v55 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v54 addObject:v55];
 
-    v56 = [@"com.apple.managedconfiguration.keyboardsettingschanged" UTF8String];
+    uTF8String3 = [@"com.apple.managedconfiguration.keyboardsettingschanged" UTF8String];
     v57 = notificationQueue();
     v144[0] = MEMORY[0x1E69E9820];
     v144[1] = 3221225472;
@@ -651,13 +651,13 @@ LABEL_9:
     v144[3] = &unk_1E77D01F8;
     v58 = v53;
     v145 = v58;
-    notify_register_dispatch(v56, &out_token, v57, v144);
+    notify_register_dispatch(uTF8String3, &out_token, v57, v144);
 
     v59 = v3->_notificationTokens;
     v60 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v59 addObject:v60];
 
-    v61 = [@"com.apple.managedconfiguration.newssettingschanged" UTF8String];
+    uTF8String4 = [@"com.apple.managedconfiguration.newssettingschanged" UTF8String];
     v62 = notificationQueue();
     v142[0] = MEMORY[0x1E69E9820];
     v142[1] = 3221225472;
@@ -665,7 +665,7 @@ LABEL_9:
     v142[3] = &unk_1E77D01F8;
     v63 = v58;
     v143 = v63;
-    notify_register_dispatch(v61, &out_token, v62, v142);
+    notify_register_dispatch(uTF8String4, &out_token, v62, v142);
 
     v64 = v3->_notificationTokens;
     v65 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
@@ -685,7 +685,7 @@ LABEL_9:
     v70 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v69 addObject:v70];
 
-    v71 = [@"com.apple.managedconfiguration.webFilterUIActiveDidChange" UTF8String];
+    uTF8String5 = [@"com.apple.managedconfiguration.webFilterUIActiveDidChange" UTF8String];
     v138[0] = MEMORY[0x1E69E9820];
     v138[1] = 3221225472;
     v138[2] = __27__MCProfileConnection_init__block_invoke_26;
@@ -693,38 +693,38 @@ LABEL_9:
     v72 = v68;
     v139 = v72;
     v73 = MEMORY[0x1E69E96A0];
-    notify_register_dispatch(v71, &out_token, MEMORY[0x1E69E96A0], v138);
+    notify_register_dispatch(uTF8String5, &out_token, MEMORY[0x1E69E96A0], v138);
     v74 = v3->_notificationTokens;
     v75 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v74 addObject:v75];
 
-    v76 = [@"com.apple.ManagedConfiguration.managedAppsChanged" UTF8String];
+    uTF8String6 = [@"com.apple.ManagedConfiguration.managedAppsChanged" UTF8String];
     v136[0] = MEMORY[0x1E69E9820];
     v136[1] = 3221225472;
     v136[2] = __27__MCProfileConnection_init__block_invoke_27;
     v136[3] = &unk_1E77D01F8;
     v77 = v72;
     v137 = v77;
-    notify_register_dispatch(v76, &out_token, v73, v136);
+    notify_register_dispatch(uTF8String6, &out_token, v73, v136);
 
     v78 = v3->_notificationTokens;
     v79 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v78 addObject:v79];
 
-    v80 = [@"MCManagedBooksChanged" UTF8String];
+    uTF8String7 = [@"MCManagedBooksChanged" UTF8String];
     v134[0] = MEMORY[0x1E69E9820];
     v134[1] = 3221225472;
     v134[2] = __27__MCProfileConnection_init__block_invoke_28;
     v134[3] = &unk_1E77D01F8;
     v81 = v77;
     v135 = v81;
-    notify_register_dispatch(v80, &out_token, v73, v134);
+    notify_register_dispatch(uTF8String7, &out_token, v73, v134);
 
     v82 = v3->_notificationTokens;
     v83 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v82 addObject:v83];
 
-    v84 = [@"com.apple.managedconfiguration.allowpasscodemodificationchanged" UTF8String];
+    uTF8String8 = [@"com.apple.managedconfiguration.allowpasscodemodificationchanged" UTF8String];
     v85 = notificationQueue();
     v132[0] = MEMORY[0x1E69E9820];
     v132[1] = 3221225472;
@@ -732,59 +732,59 @@ LABEL_9:
     v132[3] = &unk_1E77D01F8;
     v86 = v81;
     v133 = v86;
-    notify_register_dispatch(v84, &out_token, v85, v132);
+    notify_register_dispatch(uTF8String8, &out_token, v85, v132);
 
     v87 = v3->_notificationTokens;
     v88 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v87 addObject:v88];
 
-    v89 = [@"com.apple.ManagedConfiguration.removedSystemAppsChanged" UTF8String];
+    uTF8String9 = [@"com.apple.ManagedConfiguration.removedSystemAppsChanged" UTF8String];
     v130[0] = MEMORY[0x1E69E9820];
     v130[1] = 3221225472;
     v130[2] = __27__MCProfileConnection_init__block_invoke_30;
     v130[3] = &unk_1E77D01F8;
     v90 = v86;
     v131 = v90;
-    notify_register_dispatch(v89, &out_token, v73, v130);
+    notify_register_dispatch(uTF8String9, &out_token, v73, v130);
 
     v91 = v3->_notificationTokens;
     v92 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v91 addObject:v92];
 
-    v93 = [@"com.apple.ManagedConfiguration.diagnosticsCollected" UTF8String];
+    uTF8String10 = [@"com.apple.ManagedConfiguration.diagnosticsCollected" UTF8String];
     v128[0] = MEMORY[0x1E69E9820];
     v128[1] = 3221225472;
     v128[2] = __27__MCProfileConnection_init__block_invoke_31;
     v128[3] = &unk_1E77D01F8;
     v94 = v90;
     v129 = v94;
-    notify_register_dispatch(v93, &out_token, v73, v128);
+    notify_register_dispatch(uTF8String10, &out_token, v73, v128);
 
     v95 = v3->_notificationTokens;
     v96 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v95 addObject:v96];
 
-    v97 = [@"com.apple.managedconfiguration.allowhealthdatasubmissionchanged" UTF8String];
+    uTF8String11 = [@"com.apple.managedconfiguration.allowhealthdatasubmissionchanged" UTF8String];
     v126[0] = MEMORY[0x1E69E9820];
     v126[1] = 3221225472;
     v126[2] = __27__MCProfileConnection_init__block_invoke_32;
     v126[3] = &unk_1E77D01F8;
     v98 = v94;
     v127 = v98;
-    notify_register_dispatch(v97, &out_token, v73, v126);
+    notify_register_dispatch(uTF8String11, &out_token, v73, v126);
 
     v99 = v3->_notificationTokens;
     v100 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v99 addObject:v100];
 
-    v101 = [@"com.apple.managedconfiguration.homescreenlayoutchanged" UTF8String];
+    uTF8String12 = [@"com.apple.managedconfiguration.homescreenlayoutchanged" UTF8String];
     v124[0] = MEMORY[0x1E69E9820];
     v124[1] = 3221225472;
     v124[2] = __27__MCProfileConnection_init__block_invoke_33;
     v124[3] = &unk_1E77D01F8;
     v102 = v98;
     v125 = v102;
-    notify_register_dispatch(v101, &out_token, v73, v124);
+    notify_register_dispatch(uTF8String12, &out_token, v73, v124);
 
     v103 = v3->_notificationTokens;
     v104 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
@@ -812,26 +812,26 @@ LABEL_9:
     v113 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
     [(NSMutableArray *)v112 addObject:v113];
 
-    v114 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v114 addObserver:v111 selector:sel__restrictionDidChange name:@"com.apple.managedconfiguration.restrictionchanged" object:v111];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v111 selector:sel__restrictionDidChange name:@"com.apple.managedconfiguration.restrictionchanged" object:v111];
 
-    v115 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v115 addObserver:v111 selector:sel__passcodePolicyDidChange name:@"PINPolicyChangedNotification" object:v111];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v111 selector:sel__passcodePolicyDidChange name:@"PINPolicyChangedNotification" object:v111];
 
-    v116 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v116 addObserver:v111 selector:sel__passcodeDidChange name:@"com.apple.managedconfiguration.passcodechanged" object:v111];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v111 selector:sel__passcodeDidChange name:@"com.apple.managedconfiguration.passcodechanged" object:v111];
 
-    v117 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v117 addObserver:v111 selector:sel__profileListDidChange name:@"com.apple.ManagedConfiguration.profileListChanged" object:v111];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v111 selector:sel__profileListDidChange name:@"com.apple.ManagedConfiguration.profileListChanged" object:v111];
 
-    v118 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v118 addObserver:v111 selector:sel__effectiveSettingsDidChange_ name:@"com.apple.managedconfiguration.effectivesettingschanged" object:v111];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v111 selector:sel__effectiveSettingsDidChange_ name:@"com.apple.managedconfiguration.effectivesettingschanged" object:v111];
 
-    v119 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v119 addObserver:v111 selector:sel__defaultsDidChange name:@"com.apple.managedconfiguration.defaultsdidchange" object:v111];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 addObserver:v111 selector:sel__defaultsDidChange name:@"com.apple.managedconfiguration.defaultsdidchange" object:v111];
 
-    v120 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v120 addObserver:v111 selector:sel__appWhitelistDidChange_ name:@"com.apple.managedconfiguration.appwhitelistdidchange" object:v111];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter7 addObserver:v111 selector:sel__appWhitelistDidChange_ name:@"com.apple.managedconfiguration.appwhitelistdidchange" object:v111];
   }
 
   return v3;
@@ -845,10 +845,10 @@ LABEL_9:
   }
 
   v3 = +[MCRestrictionManager sharedManager];
-  v4 = [v3 effectiveUserSettings];
+  effectiveUserSettings = [v3 effectiveUserSettings];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 currentRestrictions];
-  v7 = [MCRestrictionManager appWhitelistStateWithSettingsDictionary:v4 restrictionsDictionary:v6];
+  currentRestrictions = [v5 currentRestrictions];
+  v7 = [MCRestrictionManager appWhitelistStateWithSettingsDictionary:effectiveUserSettings restrictionsDictionary:currentRestrictions];
 
   return v7;
 }
@@ -952,9 +952,9 @@ void __42__MCProfileConnection_publicXPCConnection__block_invoke(uint64_t a1)
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCPasscodeManager sharedManager];
-  v3 = [v2 isPasscodeSet];
+  isPasscodeSet = [v2 isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (id)effectiveBlockedAppBundleIDsExcludingRemovedSystemApps
@@ -984,8 +984,8 @@ void __42__MCProfileConnection_publicXPCConnection__block_invoke(uint64_t a1)
   else
   {
     v3 = +[MCRestrictionManager sharedManager];
-    v4 = [v3 effectiveWhitelistedAppBundleIDs];
-    v2 = [v4 copy];
+    effectiveWhitelistedAppBundleIDs = [v3 effectiveWhitelistedAppBundleIDs];
+    v2 = [effectiveWhitelistedAppBundleIDs copy];
   }
 
   return v2;
@@ -995,18 +995,18 @@ void __42__MCProfileConnection_publicXPCConnection__block_invoke(uint64_t a1)
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 effectiveUserSettings];
+  effectiveUserSettings = [v2 effectiveUserSettings];
 
-  return v3;
+  return effectiveUserSettings;
 }
 
 - (BOOL)isSupervised
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 isSupervised];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
-  return v3;
+  return isSupervised;
 }
 
 - (BOOL)isOpenInRestrictionInEffect
@@ -1069,19 +1069,19 @@ void __42__MCProfileConnection_publicXPCConnection__block_invoke(uint64_t a1)
 
 - (BOOL)isLocalStorageAllowed
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  if ([v2 isSharedIPad])
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  if ([mEMORY[0x1E69DF068] isSharedIPad])
   {
-    v3 = [v2 currentUser];
-    v4 = [v3 isTransientUser];
+    currentUser = [mEMORY[0x1E69DF068] currentUser];
+    isTransientUser = [currentUser isTransientUser];
   }
 
   else
   {
-    v4 = 1;
+    isTransientUser = 1;
   }
 
-  return v4;
+  return isTransientUser;
 }
 
 - (id)restrictedAppBundleIDsExcludingRemovedSystemApps
@@ -1158,10 +1158,10 @@ void __27__MCProfileConnection_init__block_invoke_18(uint64_t a1)
 - (id)managedAppIDs
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD440] attributesByAppID];
-  v3 = [v2 allKeys];
+  attributesByAppID = [MEMORY[0x1E69AD440] attributesByAppID];
+  allKeys = [attributesByAppID allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)trustedCodeSigningIdentities
@@ -1188,10 +1188,10 @@ void __27__MCProfileConnection_init__block_invoke_18(uint64_t a1)
 - (BOOL)isActivationLockAllowed
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v3 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v4 = [v3 isSupervised];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
-  if (!v4)
+  if (!isSupervised)
   {
     return 1;
   }
@@ -1258,14 +1258,14 @@ void __36__MCProfileConnection_xpcConnection__block_invoke(uint64_t a1)
   dispatch_sync(xpcConnectionSyncQueue, block);
 }
 
-- (void)_destroyXPCConnectionAndInvalidate:(BOOL)a3
+- (void)_destroyXPCConnectionAndInvalidate:(BOOL)invalidate
 {
   xpcConnectionSyncQueue = self->_xpcConnectionSyncQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58__MCProfileConnection__destroyXPCConnectionAndInvalidate___block_invoke;
   v4[3] = &unk_1E77D01A8;
-  v5 = a3;
+  invalidateCopy = invalidate;
   v4[4] = self;
   dispatch_sync(xpcConnectionSyncQueue, v4);
 }
@@ -1363,14 +1363,14 @@ void __57__MCProfileConnection__queueCreateAndResumeXPCConnection__block_invoke_
   dispatch_sync(publicXPCConnectionSyncQueue, block);
 }
 
-- (void)_destroyPublicXPCConnectionAndInvalidate:(BOOL)a3
+- (void)_destroyPublicXPCConnectionAndInvalidate:(BOOL)invalidate
 {
   publicXPCConnectionSyncQueue = self->_publicXPCConnectionSyncQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__MCProfileConnection__destroyPublicXPCConnectionAndInvalidate___block_invoke;
   v4[3] = &unk_1E77D01A8;
-  v5 = a3;
+  invalidateCopy = invalidate;
   v4[4] = self;
   dispatch_sync(publicXPCConnectionSyncQueue, v4);
 }
@@ -1820,8 +1820,8 @@ void __27__MCProfileConnection_init__block_invoke_35(uint64_t a1)
   [(NSXPCConnection *)self->_xpcConnection invalidate];
   [(NSXPCConnection *)self->_publicXPCConnection setInvalidationHandler:0];
   [(NSXPCConnection *)self->_publicXPCConnection invalidate];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v13 = 0u;
   v14 = 0u;
@@ -1861,8 +1861,8 @@ void __27__MCProfileConnection_init__block_invoke_35(uint64_t a1)
 
 - (void)checkIn
 {
-  v3 = [(MCProfileConnection *)self publicXPCConnection];
-  v2 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_55];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  v2 = [publicXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_55];
   [v2 checkInWithCompletion:&__block_literal_global_55];
 }
 
@@ -1886,17 +1886,17 @@ void __30__MCProfileConnection_checkIn__block_invoke(uint64_t a1, void *a2)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkInWithCompletion:(id)a3
+- (void)checkInWithCompletion:(id)completion
 {
-  v4 = MEMORY[0x1AC55F990](a3, a2);
+  v4 = MEMORY[0x1AC55F990](completion, a2);
   if (!v4)
   {
     v4 = &__block_literal_global_57;
   }
 
   v7 = v4;
-  v5 = [(MCProfileConnection *)self publicXPCConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v7];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  v6 = [publicXPCConnection remoteObjectProxyWithErrorHandler:v7];
   [v6 checkInWithCompletion:v7];
 }
 
@@ -1922,8 +1922,8 @@ void __45__MCProfileConnection_checkInWithCompletion___block_invoke(uint64_t a1,
 
 - (void)checkInAsynchronously
 {
-  v3 = [(MCProfileConnection *)self publicXPCConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_59];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  v2 = [publicXPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_59];
   [v2 checkInWithCompletion:&__block_literal_global_59];
 }
 
@@ -1947,10 +1947,10 @@ void __44__MCProfileConnection_checkInAsynchronously__block_invoke(uint64_t a1, 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_applyToObservers:(id)a3
+- (void)_applyToObservers:(id)observers
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observersCopy = observers;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -1986,7 +1986,7 @@ void __44__MCProfileConnection_checkInAsynchronously__block_invoke(uint64_t a1, 
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v4[2](v4, v10);
+        observersCopy[2](observersCopy, v10);
         objc_autoreleasePoolPop(v11);
         ++v9;
       }
@@ -2132,7 +2132,7 @@ void __44__MCProfileConnection__profileListDidChange__block_invoke_2(uint64_t a1
   }
 }
 
-- (void)_appWhitelistDidChange:(id)a3
+- (void)_appWhitelistDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2181,16 +2181,16 @@ void __49__MCProfileConnection__internalDefaultsDidChange__block_invoke(uint64_t
   }
 }
 
-- (void)_effectiveSettingsDidChange:(id)a3
+- (void)_effectiveSettingsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke;
   v6[3] = &unk_1E77D02D8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2217,31 +2217,31 @@ void __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke_2(uint
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationSyncQueue = self->_notificationSyncQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__MCProfileConnection_registerObserver___block_invoke;
   v7[3] = &unk_1E77D02D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationSyncQueue, v7);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationSyncQueue = self->_notificationSyncQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__MCProfileConnection_unregisterObserver___block_invoke;
   v7[3] = &unk_1E77D02D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationSyncQueue, v7);
 }
 
@@ -2254,43 +2254,43 @@ void __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke_2(uint
   return v4;
 }
 
-- (void)setActiveClassroomRoles:(id)a3
+- (void)setActiveClassroomRoles:(id)roles
 {
-  v4 = [a3 allObjects];
-  [(MCProfileConnection *)self setValues:v4 forIntersectionSetting:@"classroomRoles" toSystem:0 user:1];
+  allObjects = [roles allObjects];
+  [(MCProfileConnection *)self setValues:allObjects forIntersectionSetting:@"classroomRoles" toSystem:0 user:1];
 }
 
-- (void)addActiveClassroomRole:(id)a3
+- (void)addActiveClassroomRole:(id)role
 {
-  v4 = a3;
-  v5 = [(MCProfileConnection *)self activeClassroomRoles];
-  v6 = [v5 mutableCopy];
+  roleCopy = role;
+  activeClassroomRoles = [(MCProfileConnection *)self activeClassroomRoles];
+  v6 = [activeClassroomRoles mutableCopy];
 
-  [v6 addObject:v4];
+  [v6 addObject:roleCopy];
   [(MCProfileConnection *)self setActiveClassroomRoles:v6];
 }
 
-- (void)removeActiveClassroomRole:(id)a3
+- (void)removeActiveClassroomRole:(id)role
 {
-  v4 = a3;
-  v5 = [(MCProfileConnection *)self activeClassroomRoles];
-  v6 = [v5 mutableCopy];
+  roleCopy = role;
+  activeClassroomRoles = [(MCProfileConnection *)self activeClassroomRoles];
+  v6 = [activeClassroomRoles mutableCopy];
 
-  [v6 removeObject:v4];
+  [v6 removeObject:roleCopy];
   [(MCProfileConnection *)self setActiveClassroomRoles:v6];
 }
 
 - (BOOL)isClassroomStudentRoleEnabled
 {
-  v2 = [(MCProfileConnection *)self activeClassroomRoles];
-  v3 = [v2 containsObject:@"student"];
+  activeClassroomRoles = [(MCProfileConnection *)self activeClassroomRoles];
+  v3 = [activeClassroomRoles containsObject:@"student"];
 
   return v3;
 }
 
-- (void)setClassroomStudentRoleEnabled:(BOOL)a3
+- (void)setClassroomStudentRoleEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(MCProfileConnection *)self addActiveClassroomRole:@"student"];
   }
@@ -2303,15 +2303,15 @@ void __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke_2(uint
 
 - (BOOL)isClassroomInstructorRoleEnabled
 {
-  v2 = [(MCProfileConnection *)self activeClassroomRoles];
-  v3 = [v2 containsObject:@"instructor"];
+  activeClassroomRoles = [(MCProfileConnection *)self activeClassroomRoles];
+  v3 = [activeClassroomRoles containsObject:@"instructor"];
 
   return v3;
 }
 
-- (void)setClassroomInstructorRoleEnabled:(BOOL)a3
+- (void)setClassroomInstructorRoleEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(MCProfileConnection *)self addActiveClassroomRole:@"instructor"];
   }
@@ -2324,15 +2324,15 @@ void __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke_2(uint
 
 - (BOOL)isClassroomEnabled
 {
-  v2 = [(MCProfileConnection *)self activeClassroomRoles];
-  if ([v2 containsObject:@"instructor"])
+  activeClassroomRoles = [(MCProfileConnection *)self activeClassroomRoles];
+  if ([activeClassroomRoles containsObject:@"instructor"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 containsObject:@"student"];
+    v3 = [activeClassroomRoles containsObject:@"student"];
   }
 
   return v3;
@@ -2349,29 +2349,29 @@ void __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke_2(uint
   return v3;
 }
 
-- (int)restrictedBoolValueForFeature:(id)a3
+- (int)restrictedBoolValueForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   [(MCProfileConnection *)self checkInIfNeeded];
-  LODWORD(self) = [(MCProfileConnection *)self BOOLRestrictionForFeature:v4];
+  LODWORD(self) = [(MCProfileConnection *)self BOOLRestrictionForFeature:featureCopy];
 
   return self;
 }
 
-- (id)valueForFeature:(id)a3
+- (id)valueForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [(MCProfileConnection *)self valueRestrictionForFeature:v4];
+  v5 = [(MCProfileConnection *)self valueRestrictionForFeature:featureCopy];
 
   return v5;
 }
 
-- (int)effectiveRestrictedBoolValueForSetting:(id)a3
+- (int)effectiveRestrictedBoolValueForSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  LODWORD(self) = [(MCProfileConnection *)self effectiveBoolValueForSetting:v4];
+  LODWORD(self) = [(MCProfileConnection *)self effectiveBoolValueForSetting:settingCopy];
 
   return self;
 }
@@ -2380,8 +2380,8 @@ void __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke_2(uint
 {
   v28 = *MEMORY[0x1E69E9840];
   [(MCProfileConnection *)self checkInIfNeeded];
-  v3 = [(MCProfileConnection *)self unverifiedInstalledMDMProfileIdentifier];
-  if (v3)
+  unverifiedInstalledMDMProfileIdentifier = [(MCProfileConnection *)self unverifiedInstalledMDMProfileIdentifier];
+  if (unverifiedInstalledMDMProfileIdentifier)
   {
     v20 = 0;
     v21 = &v20;
@@ -2395,13 +2395,13 @@ void __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke_2(uint
     v17 = __Block_byref_object_copy__8;
     v18 = __Block_byref_object_dispose__8;
     v19 = 0;
-    v4 = [(MCProfileConnection *)self xpcConnection];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_invoke;
     v13[3] = &unk_1E77D2620;
     v13[4] = &v14;
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v13];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_invoke_2;
@@ -2415,16 +2415,16 @@ void __51__MCProfileConnection__effectiveSettingsDidChange___block_invoke_2(uint
       v6 = qword_1ED4ADE28;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v7 = [v15[5] MCVerboseDescription];
+        mCVerboseDescription = [v15[5] MCVerboseDescription];
         *buf = 138543362;
-        v27 = v7;
+        v27 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v6, OS_LOG_TYPE_ERROR, "MDM profile installation check failed with error: %{public}@", buf, 0xCu);
       }
 
       v8 = v21[5];
       if (!v8)
       {
-        v8 = v3;
+        v8 = unverifiedInstalledMDMProfileIdentifier;
       }
     }
 
@@ -2486,24 +2486,24 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCManifest sharedManifest];
-  v3 = [v2 allInstalledProfileIdentifiers];
+  allInstalledProfileIdentifiers = [v2 allInstalledProfileIdentifiers];
 
-  return v3;
+  return allInstalledProfileIdentifiers;
 }
 
-- (id)uninstalledProfileIdentifiersForDevice:(unint64_t)a3
+- (id)uninstalledProfileIdentifiersForDevice:(unint64_t)device
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v4 = +[MCHoldingTankManifest sharedManifest];
-  v5 = [v4 uninstalledProfileIdentifiersForDevice:a3];
+  v5 = [v4 uninstalledProfileIdentifiersForDevice:device];
 
   return v5;
 }
 
-- (id)installedProfileIdentifiersInstalledBy:(id)a3
+- (id)installedProfileIdentifiersInstalledBy:(id)by
 {
   v25 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  byCopy = by;
   [(MCProfileConnection *)self checkInIfNeeded];
   v17 = objc_opt_new();
   [(MCProfileConnection *)self installedProfileIdentifiers];
@@ -2532,10 +2532,10 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
 
         if (v11)
         {
-          v12 = [v11 installOptions];
-          v13 = [v12 objectForKey:@"installedBy"];
+          installOptions = [v11 installOptions];
+          v13 = [installOptions objectForKey:@"installedBy"];
 
-          if (v13 && [v13 isEqualToString:v18])
+          if (v13 && [v13 isEqualToString:byCopy])
           {
             [v17 addObject:v8];
           }
@@ -2556,10 +2556,10 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
   return v14;
 }
 
-- (id)installedProfilesInstalledBy:(id)a3
+- (id)installedProfilesInstalledBy:(id)by
 {
   v25 = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  byCopy = by;
   [(MCProfileConnection *)self checkInIfNeeded];
   v18 = objc_opt_new();
   [(MCProfileConnection *)self installedProfileIdentifiers];
@@ -2588,10 +2588,10 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
 
         if (v12)
         {
-          v13 = [v12 installOptions];
-          v14 = [v13 objectForKey:@"installedBy"];
+          installOptions = [v12 installOptions];
+          v14 = [installOptions objectForKey:@"installedBy"];
 
-          if (v14 && [v14 isEqualToString:v19])
+          if (v14 && [v14 isEqualToString:byCopy])
           {
             [v18 addObject:v12];
           }
@@ -2612,11 +2612,11 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
   return v15;
 }
 
-- (id)installedConfigurationProfileInfoWithOutMDMProfileInfo:(id *)a3
+- (id)installedConfigurationProfileInfoWithOutMDMProfileInfo:(id *)info
 {
   v37 = *MEMORY[0x1E69E9840];
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self unverifiedInstalledMDMProfileIdentifier];
+  unverifiedInstalledMDMProfileIdentifier = [(MCProfileConnection *)self unverifiedInstalledMDMProfileIdentifier];
   v5 = [(MCProfileConnection *)self installedProfileIdentifiersWithFilterFlags:1];
   v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
   v32 = 0u;
@@ -2648,11 +2648,11 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
         {
           v31 = v11;
           v14 = [[MCProfileInfo alloc] initWithProfile:v13];
-          v15 = [v13 managingProfileIdentifier];
-          v16 = v15;
-          if (v15)
+          managingProfileIdentifier = [v13 managingProfileIdentifier];
+          v16 = managingProfileIdentifier;
+          if (managingProfileIdentifier)
           {
-            v17 = v15;
+            v17 = managingProfileIdentifier;
           }
 
           else
@@ -2660,16 +2660,16 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
             [v13 installOptions];
             v18 = v7;
             v19 = v6;
-            v21 = v20 = v4;
+            v21 = v20 = unverifiedInstalledMDMProfileIdentifier;
             v17 = [v21 objectForKey:@"managingProfileIdentifier"];
 
-            v4 = v20;
+            unverifiedInstalledMDMProfileIdentifier = v20;
             v6 = v19;
             v7 = v18;
             v8 = v29;
           }
 
-          if ([v10 isEqualToString:v4])
+          if ([v10 isEqualToString:unverifiedInstalledMDMProfileIdentifier])
           {
             v22 = v14;
 
@@ -2680,7 +2680,7 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
           else
           {
             v11 = v31;
-            if (([v4 isEqualToString:v17] & 1) == 0)
+            if (([unverifiedInstalledMDMProfileIdentifier isEqualToString:v17] & 1) == 0)
             {
               [v28 addObject:v14];
             }
@@ -2696,10 +2696,10 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
     while (v30);
   }
 
-  if (a3)
+  if (info)
   {
     v23 = v7;
-    *a3 = v7;
+    *info = v7;
   }
 
   v24 = [v28 copy];
@@ -2709,36 +2709,36 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
   return v24;
 }
 
-- (id)installedProfileWithIdentifier:(id)a3
+- (id)installedProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCManifest installedProfileWithIdentifier:v4];
+  v5 = [MCManifest installedProfileWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)installedSystemProfileWithIdentifier:(id)a3
+- (id)installedSystemProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCManifest installedSystemProfileWithIdentifier:v4];
+  v5 = [MCManifest installedSystemProfileWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)installedUserProfileWithIdentifier:(id)a3
+- (id)installedUserProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCManifest installedUserProfileWithIdentifier:v4];
+  v5 = [MCManifest installedUserProfileWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (BOOL)isProfileInstalledWithIdentifier:(id)a3 outError:(id *)a4
+- (BOOL)isProfileInstalledWithIdentifier:(id)identifier outError:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -2749,13 +2749,13 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
   v16 = __Block_byref_object_copy__8;
   v17 = __Block_byref_object_dispose__8;
   v18 = 0;
-  v7 = [(MCProfileConnection *)self xpcConnection];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_outError___block_invoke;
   v12[3] = &unk_1E77D2620;
   v12[4] = &v13;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -2763,10 +2763,10 @@ void __62__MCProfileConnection_Profiles__installedMDMProfileIdentifier__block_in
   v11[3] = &unk_1E77D2670;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v8 isProfileInstalledWithIdentifier:v6 completion:v11];
-  if (a4)
+  [v8 isProfileInstalledWithIdentifier:identifierCopy completion:v11];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = *(v20 + 24);
@@ -2803,18 +2803,18 @@ void __75__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_outErr
   *(*(*(a1 + 40) + 8) + 24) = a3;
 }
 
-- (void)isProfileInstalledWithIdentifier:(id)a3 completion:(id)a4
+- (void)isProfileInstalledWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MCProfileConnection *)self xpcConnection];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_completion___block_invoke;
   v14[3] = &unk_1E77D2698;
-  v9 = v6;
+  v9 = completionCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -2822,7 +2822,7 @@ void __75__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_outErr
   v12[3] = &unk_1E77D26C0;
   v13 = v9;
   v11 = v9;
-  [v10 isProfileInstalledWithIdentifier:v7 completion:v12];
+  [v10 isProfileInstalledWithIdentifier:identifierCopy completion:v12];
 }
 
 void __77__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -2857,71 +2857,71 @@ uint64_t __77__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_co
   return result;
 }
 
-- (id)installedProfileDataWithIdentifier:(id)a3
+- (id)installedProfileDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCManifest installedProfileDataWithIdentifier:v4];
+  v5 = [MCManifest installedProfileDataWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)installedSystemProfileDataWithIdentifier:(id)a3
+- (id)installedSystemProfileDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCManifest installedSystemProfileDataWithIdentifier:v4];
+  v5 = [MCManifest installedSystemProfileDataWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)installedUserProfileDataWithIdentifier:(id)a3
+- (id)installedUserProfileDataWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCManifest installedUserProfileDataWithIdentifier:v4];
+  v5 = [MCManifest installedUserProfileDataWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)uninstalledProfileDataWithIdentifier:(id)a3 targetDevice:(unint64_t)a4
+- (id)uninstalledProfileDataWithIdentifier:(id)identifier targetDevice:(unint64_t)device
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   v7 = +[MCHoldingTankManifest sharedManifest];
-  v8 = [v7 uninstalledProfileDataWithIdentifier:v6 targetDevice:a4];
+  v8 = [v7 uninstalledProfileDataWithIdentifier:identifierCopy targetDevice:device];
 
   return v8;
 }
 
-- (BOOL)isProfileWithIdentifier:(id)a3 managedByProfileWithIdentifier:(id)a4
+- (BOOL)isProfileWithIdentifier:(id)identifier managedByProfileWithIdentifier:(id)withIdentifier
 {
-  v5 = a4;
-  v6 = a3;
+  withIdentifierCopy = withIdentifier;
+  identifierCopy = identifier;
   v7 = +[MCDependencyReader sharedReader];
-  v8 = [v7 dependentsOfParent:v5 inDomain:@"ManagingProfileToManagedProfile"];
+  v8 = [v7 dependentsOfParent:withIdentifierCopy inDomain:@"ManagingProfileToManagedProfile"];
 
-  LOBYTE(v7) = [v8 containsObject:v6];
+  LOBYTE(v7) = [v8 containsObject:identifierCopy];
   return v7;
 }
 
-- (void)allProfilesOutMDMProfileInfo:(id *)a3 outConfigurationProfilesInfo:(id *)a4 outUninstalledProfilesInfo:(id *)a5 forDeviceType:(unint64_t)a6
+- (void)allProfilesOutMDMProfileInfo:(id *)info outConfigurationProfilesInfo:(id *)profilesInfo outUninstalledProfilesInfo:(id *)uninstalledProfilesInfo forDeviceType:(unint64_t)type
 {
   v33 = *MEMORY[0x1E69E9840];
   [(MCProfileConnection *)self checkInIfNeeded];
-  v11 = [(MCProfileConnection *)self installedConfigurationProfileInfoWithOutMDMProfileInfo:a3];
-  if (a4)
+  v11 = [(MCProfileConnection *)self installedConfigurationProfileInfoWithOutMDMProfileInfo:info];
+  if (profilesInfo)
   {
     v11 = v11;
-    *a4 = v11;
+    *profilesInfo = v11;
   }
 
-  if (a5)
+  if (uninstalledProfilesInfo)
   {
     v26 = v11;
-    v27 = a5;
+    uninstalledProfilesInfoCopy = uninstalledProfilesInfo;
     v12 = +[MCHoldingTankManifest sharedManifest];
-    v13 = [(MCProfileConnection *)self uninstalledProfileIdentifiersForDevice:a6];
+    v13 = [(MCProfileConnection *)self uninstalledProfileIdentifiersForDevice:type];
     v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
     v28 = 0u;
     v29 = 0u;
@@ -2945,7 +2945,7 @@ uint64_t __77__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_co
 
           v20 = *(*(&v28 + 1) + 8 * v19);
           v21 = objc_autoreleasePoolPush();
-          v22 = [v12 uninstalledProfileWithIdentifier:v20 targetDevice:a6];
+          v22 = [v12 uninstalledProfileWithIdentifier:v20 targetDevice:type];
           if (v22)
           {
             v23 = [[MCProfileInfo alloc] initWithProfile:v22];
@@ -2964,7 +2964,7 @@ uint64_t __77__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_co
     }
 
     v24 = v14;
-    *v27 = v14;
+    *uninstalledProfilesInfoCopy = v14;
 
     v11 = v26;
   }
@@ -2981,8 +2981,8 @@ uint64_t __77__MCProfileConnection_Profiles__isProfileInstalledWithIdentifier_co
   v11 = __Block_byref_object_copy__8;
   v12 = __Block_byref_object_dispose__8;
   v13 = 0;
-  v3 = [(MCProfileConnection *)self xpcConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_29];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_29];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__MCProfileConnection_Profiles__popProfileDataFromHeadOfInstallationQueue__block_invoke_11;
@@ -3041,7 +3041,7 @@ void __74__MCProfileConnection_Profiles__popProfileDataFromHeadOfInstallationQue
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)peekProfileDataFromPurgatoryForDeviceType:(unint64_t)a3
+- (id)peekProfileDataFromPurgatoryForDeviceType:(unint64_t)type
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v10 = 0;
@@ -3050,14 +3050,14 @@ void __74__MCProfileConnection_Profiles__popProfileDataFromHeadOfInstallationQue
   v13 = __Block_byref_object_copy__8;
   v14 = __Block_byref_object_dispose__8;
   v15 = 0;
-  v5 = [(MCProfileConnection *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_14];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_14];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__MCProfileConnection_Profiles__peekProfileDataFromPurgatoryForDeviceType___block_invoke_15;
   v9[3] = &unk_1E77D26E8;
   v9[4] = &v10;
-  [v6 peekProfileDataFromPurgatoryForDeviceType:a3 withCompletion:v9];
+  [v6 peekProfileDataFromPurgatoryForDeviceType:type withCompletion:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -3110,14 +3110,14 @@ void __75__MCProfileConnection_Profiles__peekProfileDataFromPurgatoryForDeviceTy
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_handleQueueProfileError:(id)a3 targetDevice:(unint64_t)a4
+- (id)_handleQueueProfileError:(id)error targetDevice:(unint64_t)device
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   v6 = +[MCUserNotificationManager sharedManager];
-  v7 = [v6 displayQueueProfileError:v5 targetDevice:a4];
+  v7 = [v6 displayQueueProfileError:errorCopy targetDevice:device];
 
-  if ([v5 code] == 4036)
+  if ([errorCopy code] == 4036)
   {
     v8 = 0;
   }
@@ -3128,9 +3128,9 @@ void __75__MCProfileConnection_Profiles__peekProfileDataFromPurgatoryForDeviceTy
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_ERROR))
     {
       v10 = v9;
-      v11 = [v5 MCVerboseDescription];
+      mCVerboseDescription = [errorCopy MCVerboseDescription];
       v14 = 138543362;
-      v15 = v11;
+      v15 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v10, OS_LOG_TYPE_ERROR, "Profile data failed to queue with error: %{public}@", &v14, 0xCu);
     }
 
@@ -3182,50 +3182,50 @@ void __118__MCProfileConnection_Profiles___queueDataForAcceptance_originalFileNa
   *(*(a1[6] + 8) + 24) = a3;
 }
 
-- (void)queueFileDataForAcceptance:(id)a3 originalFileName:(id)a4 forBundleID:(id)a5 completion:(id)a6
+- (void)queueFileDataForAcceptance:(id)acceptance originalFileName:(id)name forBundleID:(id)d completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  dCopy = d;
+  nameCopy = name;
+  acceptanceCopy = acceptance;
   [(MCProfileConnection *)self checkInIfNeeded];
-  [(MCProfileConnection *)self _queueDataForAcceptance:v13 originalFileName:v12 originatingBundleID:v11 transitionToUI:1 completion:v10];
+  [(MCProfileConnection *)self _queueDataForAcceptance:acceptanceCopy originalFileName:nameCopy originatingBundleID:dCopy transitionToUI:1 completion:completionCopy];
 }
 
-- (id)queueFileDataForAcceptance:(id)a3 originalFileName:(id)a4 outError:(id *)a5
+- (id)queueFileDataForAcceptance:(id)acceptance originalFileName:(id)name outError:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  acceptanceCopy = acceptance;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v10 = [(MCProfileConnection *)self _queueDataForAcceptance:v9 originalFileName:v8 originatingBundleID:0 transitionToUI:1 outError:a5];
+  v10 = [(MCProfileConnection *)self _queueDataForAcceptance:acceptanceCopy originalFileName:nameCopy originatingBundleID:0 transitionToUI:1 outError:error];
 
   return v10;
 }
 
-- (id)queueFileDataForAcceptance:(id)a3 originalFileName:(id)a4 forBundleID:(id)a5 outError:(id *)a6
+- (id)queueFileDataForAcceptance:(id)acceptance originalFileName:(id)name forBundleID:(id)d outError:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dCopy = d;
+  nameCopy = name;
+  acceptanceCopy = acceptance;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v13 = [(MCProfileConnection *)self _queueDataForAcceptance:v12 originalFileName:v11 originatingBundleID:v10 transitionToUI:1 outError:a6];
+  v13 = [(MCProfileConnection *)self _queueDataForAcceptance:acceptanceCopy originalFileName:nameCopy originatingBundleID:dCopy transitionToUI:1 outError:error];
 
   return v13;
 }
 
-- (id)installProfileData:(id)a3 outError:(id *)a4
+- (id)installProfileData:(id)data outError:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v7 = [(MCProfileConnection *)self installProfileData:v6 options:0 outError:a4];
+  v7 = [(MCProfileConnection *)self installProfileData:dataCopy options:0 outError:error];
 
   return v7;
 }
 
-- (id)installProfileData:(id)a3 options:(id)a4 outError:(id *)a5
+- (id)installProfileData:(id)data options:(id)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  optionsCopy = options;
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self checkApplicationIdentifierEntitlement];
   v23 = 0;
@@ -3246,19 +3246,19 @@ void __118__MCProfileConnection_Profiles___queueDataForAcceptance_originalFileNa
   v16[3] = &unk_1E77D2620;
   v16[4] = &v17;
   v10 = MEMORY[0x1AC55F990](v16);
-  v11 = [(MCProfileConnection *)self xpcConnection];
-  v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v12 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__MCProfileConnection_Profiles__installProfileData_options_outError___block_invoke_19;
   v15[3] = &unk_1E77D2788;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v12 installProfileData:v8 interactive:0 options:v9 completion:v15];
+  [v12 installProfileData:dataCopy interactive:0 options:optionsCopy completion:v15];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v13 = v24[5];
@@ -3323,18 +3323,18 @@ void __69__MCProfileConnection_Profiles__installProfileData_options_outError___b
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)appleConnect_installMDMAssociatedProfileData:(id)a3 outError:(id *)a4
+- (id)appleConnect_installMDMAssociatedProfileData:(id)data outError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self checkApplicationIdentifierEntitlement];
-  v14 = [(MCProfileConnection *)self installedMDMProfileIdentifier];
-  if (v14)
+  installedMDMProfileIdentifier = [(MCProfileConnection *)self installedMDMProfileIdentifier];
+  if (installedMDMProfileIdentifier)
   {
     v15 = objc_opt_new();
     [v15 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isInstalledByMDM"];
-    [v15 setObject:v14 forKeyedSubscript:@"managingProfileIdentifier"];
+    [v15 setObject:installedMDMProfileIdentifier forKeyedSubscript:@"managingProfileIdentifier"];
     v16 = qword_1ED4ADE28;
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_INFO))
     {
@@ -3361,39 +3361,39 @@ void __69__MCProfileConnection_Profiles__installProfileData_options_outError___b
     v25[3] = &unk_1E77D2620;
     v25[4] = &v26;
     v17 = MEMORY[0x1AC55F990](v25);
-    v18 = [(MCProfileConnection *)self xpcConnection];
-    v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v17];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
+    v19 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v17];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __87__MCProfileConnection_Profiles__appleConnect_installMDMAssociatedProfileData_outError___block_invoke_24;
     v24[3] = &unk_1E77D2788;
     v24[4] = &v26;
     v24[5] = &buf;
-    [v19 appleConnect_installMDMAssociatedProfileData:v6 interactive:0 options:v15 completion:v24];
+    [v19 appleConnect_installMDMAssociatedProfileData:dataCopy interactive:0 options:v15 completion:v24];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v27[5];
+      *error = v27[5];
     }
 
-    a4 = *(*(&buf + 1) + 40);
+    error = *(*(&buf + 1) + 40);
 
     _Block_object_dispose(&v26, 8);
     _Block_object_dispose(&buf, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     v20 = MEMORY[0x1E696ABC0];
     v21 = MCErrorArray(@"ERROR_NO_ASSOCIATED_MDM_PROFILE", v7, v8, v9, v10, v11, v12, v13, 0);
-    *a4 = [v20 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4046 descriptionArray:v21 errorType:@"MCFatalError"];
+    *error = [v20 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4046 descriptionArray:v21 errorType:@"MCFatalError"];
 
-    a4 = 0;
+    error = 0;
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
 void __87__MCProfileConnection_Profiles__appleConnect_installMDMAssociatedProfileData_outError___block_invoke(uint64_t a1, void *a2)
@@ -3450,15 +3450,15 @@ void __87__MCProfileConnection_Profiles__appleConnect_installMDMAssociatedProfil
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self checkApplicationIdentifierEntitlement];
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_26];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_26];
 
-  [v8 removeProfileWithIdentifier:v6 installationType:a4 completion:&__block_literal_global_26];
+  [v8 removeProfileWithIdentifier:identifierCopy installationType:type completion:&__block_literal_global_26];
 }
 
 void __78__MCProfileConnection_Profiles__removeProfileWithIdentifier_installationType___block_invoke(uint64_t a1, void *a2)
@@ -3481,23 +3481,23 @@ void __78__MCProfileConnection_Profiles__removeProfileWithIdentifier_installatio
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeProfileAsyncWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5
+- (void)removeProfileAsyncWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self checkApplicationIdentifierEntitlement];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __94__MCProfileConnection_Profiles__removeProfileAsyncWithIdentifier_installationType_completion___block_invoke;
   v14[3] = &unk_1E77D2698;
-  v15 = v8;
-  v10 = v8;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x1AC55F990](v14);
-  v12 = [(MCProfileConnection *)self xpcConnection];
-  v13 = [v12 remoteObjectProxyWithErrorHandler:v11];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
 
-  [v13 removeProfileWithIdentifier:v9 installationType:a4 completion:v11];
+  [v13 removeProfileWithIdentifier:identifierCopy installationType:type completion:v11];
 }
 
 void __94__MCProfileConnection_Profiles__removeProfileAsyncWithIdentifier_installationType_completion___block_invoke(uint64_t a1, void *a2)
@@ -3526,23 +3526,23 @@ void __94__MCProfileConnection_Profiles__removeProfileAsyncWithIdentifier_instal
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeProtectedProfileAsyncWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5
+- (void)removeProtectedProfileAsyncWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self checkApplicationIdentifierEntitlement];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __103__MCProfileConnection_Profiles__removeProtectedProfileAsyncWithIdentifier_installationType_completion___block_invoke;
   v14[3] = &unk_1E77D2698;
-  v15 = v8;
-  v10 = v8;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x1AC55F990](v14);
-  v12 = [(MCProfileConnection *)self xpcConnection];
-  v13 = [v12 remoteObjectProxyWithErrorHandler:v11];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
 
-  [v13 removeProtectedProfileWithIdentifier:v9 installationType:a4 completion:v11];
+  [v13 removeProtectedProfileWithIdentifier:identifierCopy installationType:type completion:v11];
 }
 
 void __103__MCProfileConnection_Profiles__removeProtectedProfileAsyncWithIdentifier_installationType_completion___block_invoke(uint64_t a1, void *a2)
@@ -3571,18 +3571,18 @@ void __103__MCProfileConnection_Profiles__removeProtectedProfileAsyncWithIdentif
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __89__MCProfileConnection_Profiles__removeProfileWithIdentifier_installationType_completion___block_invoke;
     v12[3] = &unk_1E77D2698;
-    v13 = v9;
+    v13 = completionCopy;
     v11 = MEMORY[0x1AC55F990](v12);
   }
 
@@ -3591,26 +3591,26 @@ void __103__MCProfileConnection_Profiles__removeProtectedProfileAsyncWithIdentif
     v11 = 0;
   }
 
-  [(MCProfileConnection *)self removeProfileWithIdentifier:v8 installationType:a4 errorCompletion:v11];
+  [(MCProfileConnection *)self removeProfileWithIdentifier:identifierCopy installationType:type errorCompletion:v11];
 }
 
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 errorCompletion:(id)a5
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type errorCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self checkApplicationIdentifierEntitlement];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __94__MCProfileConnection_Profiles__removeProfileWithIdentifier_installationType_errorCompletion___block_invoke;
   v14[3] = &unk_1E77D2698;
-  v15 = v8;
-  v10 = v8;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x1AC55F990](v14);
-  v12 = [(MCProfileConnection *)self xpcConnection];
-  v13 = [v12 remoteObjectProxyWithErrorHandler:v11];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
 
-  [v13 removeProfileWithIdentifier:v9 installationType:a4 completion:v11];
+  [v13 removeProfileWithIdentifier:identifierCopy installationType:type completion:v11];
 }
 
 void __94__MCProfileConnection_Profiles__removeProfileWithIdentifier_installationType_errorCompletion___block_invoke(uint64_t a1, void *a2)
@@ -3639,23 +3639,23 @@ void __94__MCProfileConnection_Profiles__removeProfileWithIdentifier_installatio
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeUninstalledProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 targetDeviceType:(unint64_t)a5 completion:(id)a6
+- (void)removeUninstalledProfileWithIdentifier:(id)identifier installationType:(int64_t)type targetDeviceType:(unint64_t)deviceType completion:(id)completion
 {
-  v10 = a6;
-  v11 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self checkApplicationIdentifierEntitlement];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __117__MCProfileConnection_Profiles__removeUninstalledProfileWithIdentifier_installationType_targetDeviceType_completion___block_invoke;
   v16[3] = &unk_1E77D2698;
-  v17 = v10;
-  v12 = v10;
+  v17 = completionCopy;
+  v12 = completionCopy;
   v13 = MEMORY[0x1AC55F990](v16);
-  v14 = [(MCProfileConnection *)self xpcConnection];
-  v15 = [v14 remoteObjectProxyWithErrorHandler:v13];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v13];
 
-  [v15 removeUninstalledProfileWithIdentifier:v11 installationType:a4 targetDeviceType:a5 completion:v13];
+  [v15 removeUninstalledProfileWithIdentifier:identifierCopy installationType:type targetDeviceType:deviceType completion:v13];
 }
 
 void __117__MCProfileConnection_Profiles__removeUninstalledProfileWithIdentifier_installationType_targetDeviceType_completion___block_invoke(uint64_t a1, void *a2)
@@ -3684,19 +3684,19 @@ void __117__MCProfileConnection_Profiles__removeUninstalledProfileWithIdentifier
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removePostSetupAutoInstallSetAsideProfileWithCompletion:(id)a3
+- (void)removePostSetupAutoInstallSetAsideProfileWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __89__MCProfileConnection_Profiles__removePostSetupAutoInstallSetAsideProfileWithCompletion___block_invoke;
   v9[3] = &unk_1E77D2698;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1AC55F990](v9);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
 
   [v8 removePostSetupAutoInstallSetAsideProfileWithCompletion:v5];
 }
@@ -3727,9 +3727,9 @@ void __89__MCProfileConnection_Profiles__removePostSetupAutoInstallSetAsideProfi
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)updateProfileWithIdentifier:(id)a3 outError:(id *)a4
+- (id)updateProfileWithIdentifier:(id)identifier outError:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self checkApplicationIdentifierEntitlement];
   v20 = 0;
@@ -3750,19 +3750,19 @@ void __89__MCProfileConnection_Profiles__removePostSetupAutoInstallSetAsideProfi
   v13[3] = &unk_1E77D2620;
   v13[4] = &v14;
   v7 = MEMORY[0x1AC55F990](v13);
-  v8 = [(MCProfileConnection *)self xpcConnection];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v7];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__MCProfileConnection_Profiles__updateProfileWithIdentifier_outError___block_invoke_27;
   v12[3] = &unk_1E77D2788;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v9 updateProfileIdentifier:v6 interactive:0 completion:v12];
+  [v9 updateProfileIdentifier:identifierCopy interactive:0 completion:v12];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v10 = v21[5];
@@ -3844,12 +3844,12 @@ void __64__MCProfileConnection_Profiles___openSensitiveURLString_unlock___block_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)showProfileErrorUIWithProfileIdentifier:(id)a3 outError:(id *)a4
+- (BOOL)showProfileErrorUIWithProfileIdentifier:(id)identifier outError:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (![v6 length])
+  if (![identifierCopy length])
   {
     v40 = MEMORY[0x1E696ABC0];
     v41 = MCErrorArray(@"ERROR_UIOP_NULL_IDENTIFIER", v7, v8, v9, v10, v11, v12, v13, 0);
@@ -3882,14 +3882,14 @@ void __64__MCProfileConnection_Profiles___openSensitiveURLString_unlock___block_
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v50 + 1) + 8 * i) identifier];
-        v20 = [v19 isEqualToString:v6];
+        identifier = [*(*(&v50 + 1) + 8 * i) identifier];
+        v20 = [identifier isEqualToString:identifierCopy];
 
         if (v20)
         {
 
-          v31 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-          v29 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v31];
+          uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+          v29 = [identifierCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
           v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@&profileID=%@", @"prefs:root=General&path=ManagedConfigurationList/ProfileError", v29, v50];
           if ([(MCProfileConnection *)self _openSensitiveURLString:v32 unlock:0])
@@ -3900,7 +3900,7 @@ void __64__MCProfileConnection_Profiles___openSensitiveURLString_unlock___block_
           else
           {
             v42 = MEMORY[0x1E696ABC0];
-            v43 = MCErrorArray(@"ERROR_UIOP_CANNOT_DISPLAY_P_IDENTIFIER", v33, v34, v35, v36, v37, v38, v39, v6);
+            v43 = MCErrorArray(@"ERROR_UIOP_CANNOT_DISPLAY_P_IDENTIFIER", v33, v34, v35, v36, v37, v38, v39, identifierCopy);
             v30 = [v42 MCErrorWithDomain:@"MCUIOperationErrorDomain" code:27001 descriptionArray:v43 errorType:@"MCFatalError"];
           }
 
@@ -3919,7 +3919,7 @@ void __64__MCProfileConnection_Profiles___openSensitiveURLString_unlock___block_
   }
 
   v21 = MEMORY[0x1E696ABC0];
-  v29 = MCErrorArray(@"ERROR_UIOP_IDENTIFIER_NOT_FOUND_P_IDENTIFIER", v22, v23, v24, v25, v26, v27, v28, v6);
+  v29 = MCErrorArray(@"ERROR_UIOP_IDENTIFIER_NOT_FOUND_P_IDENTIFIER", v22, v23, v24, v25, v26, v27, v28, identifierCopy);
   v30 = [v21 MCErrorWithDomain:@"MCUIOperationErrorDomain" code:27000 descriptionArray:v29 errorType:@"MCFatalError"];
 LABEL_17:
 
@@ -3930,18 +3930,18 @@ LABEL_18:
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_ERROR))
     {
       v45 = v44;
-      v46 = [v30 MCVerboseDescription];
+      mCVerboseDescription = [v30 MCVerboseDescription];
       *buf = 138543618;
-      v55 = v6;
+      v55 = identifierCopy;
       v56 = 2114;
-      v57 = v46;
+      v57 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v45, OS_LOG_TYPE_ERROR, "Cannot display profile with identifier “%{public}@”. Error: %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v47 = v30;
-      *a4 = v30;
+      *error = v30;
     }
   }
 
@@ -3951,18 +3951,18 @@ LABEL_22:
   return v30 == 0;
 }
 
-- (id)listInstalledProvisioningProfileUUIDsWithManagedOnly:(BOOL)a3
+- (id)listInstalledProvisioningProfileUUIDsWithManagedOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__8;
   v13 = __Block_byref_object_dispose__8;
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = 0;
-  v14 = v4;
-  if (v3)
+  v14 = array;
+  if (onlyCopy)
   {
     v5 = +[MCDependencyReader sharedReader];
   }
@@ -4007,10 +4007,10 @@ BOOL __86__MCProfileConnection_Profiles__listInstalledProvisioningProfileUUIDsWi
   return v3 != 0;
 }
 
-- (BOOL)installProvisioningProfileData:(id)a3 managingProfileIdentifier:(id)a4 outError:(id *)a5
+- (BOOL)installProvisioningProfileData:(id)data managingProfileIdentifier:(id)identifier outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   v22 = 0;
   v23 = &v22;
@@ -4029,13 +4029,13 @@ BOOL __86__MCProfileConnection_Profiles__listInstalledProvisioningProfileUUIDsWi
   v15[4] = &v22;
   v15[5] = &v16;
   v10 = MEMORY[0x1AC55F990](v15);
-  v11 = [(MCProfileConnection *)self xpcConnection];
-  v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v10];
-  [v12 installProvisioningProfileData:v8 managingProfileIdentifier:v9 completion:v10];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v12 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
+  [v12 installProvisioningProfileData:dataCopy managingProfileIdentifier:identifierCopy completion:v10];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v17[5];
+    *error = v17[5];
   }
 
   v13 = *(v23 + 24);
@@ -4072,10 +4072,10 @@ void __99__MCProfileConnection_Profiles__installProvisioningProfileData_managing
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeProvisioningProfileWithUUID:(id)a3 managingProfileIdentifier:(id)a4 outError:(id *)a5
+- (BOOL)removeProvisioningProfileWithUUID:(id)d managingProfileIdentifier:(id)identifier outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   v23 = 0;
   v24 = &v23;
@@ -4093,19 +4093,19 @@ void __99__MCProfileConnection_Profiles__installProvisioningProfileData_managing
   v16[3] = &unk_1E77D2620;
   v16[4] = &v17;
   v10 = MEMORY[0x1AC55F990](v16);
-  v11 = [(MCProfileConnection *)self xpcConnection];
-  v12 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v12 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __102__MCProfileConnection_Profiles__removeProvisioningProfileWithUUID_managingProfileIdentifier_outError___block_invoke_76;
   v15[3] = &unk_1E77D2800;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v12 removeProvisioningProfileWithUUID:v8 managingProfileIdentifier:v9 completion:v15];
+  [v12 removeProvisioningProfileWithUUID:dCopy managingProfileIdentifier:identifierCopy completion:v15];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v13 = *(v24 + 24);
@@ -4174,8 +4174,8 @@ void __102__MCProfileConnection_Profiles__removeProvisioningProfileWithUUID_mana
   v11 = __Block_byref_object_copy__8;
   v12 = __Block_byref_object_dispose__8;
   v13 = 0;
-  v3 = [(MCProfileConnection *)self xpcConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_80];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_80];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__MCProfileConnection_Profiles__verifiedTrustedCodeSigningIdentities__block_invoke_81;
@@ -4234,31 +4234,31 @@ void __69__MCProfileConnection_Profiles__verifiedTrustedCodeSigningIdentities__b
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTrustedCodeSigningIdentities:(id)a3
+- (void)addTrustedCodeSigningIdentities:(id)identities
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
-  v6 = [(MCProfileConnection *)self trustedCodeSigningIdentities];
-  v8 = [v4 setWithArray:v6];
+  identitiesCopy = identities;
+  trustedCodeSigningIdentities = [(MCProfileConnection *)self trustedCodeSigningIdentities];
+  v8 = [v4 setWithArray:trustedCodeSigningIdentities];
 
-  [v8 unionSet:v5];
-  v7 = [v8 allObjects];
-  [(MCProfileConnection *)self _setTrustedCodeSigningIdentities:v7];
+  [v8 unionSet:identitiesCopy];
+  allObjects = [v8 allObjects];
+  [(MCProfileConnection *)self _setTrustedCodeSigningIdentities:allObjects];
 }
 
-- (void)removeTrustedCodeSigningIdentities:(id)a3
+- (void)removeTrustedCodeSigningIdentities:(id)identities
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
-  v6 = [(MCProfileConnection *)self trustedCodeSigningIdentities];
-  v8 = [v4 setWithArray:v6];
+  identitiesCopy = identities;
+  trustedCodeSigningIdentities = [(MCProfileConnection *)self trustedCodeSigningIdentities];
+  v8 = [v4 setWithArray:trustedCodeSigningIdentities];
 
-  [v8 minusSet:v5];
-  v7 = [v8 allObjects];
-  [(MCProfileConnection *)self _setTrustedCodeSigningIdentities:v7];
+  [v8 minusSet:identitiesCopy];
+  allObjects = [v8 allObjects];
+  [(MCProfileConnection *)self _setTrustedCodeSigningIdentities:allObjects];
 }
 
-- (BOOL)syncTrustedCodeSigningIdentitiesWithOutError:(id *)a3
+- (BOOL)syncTrustedCodeSigningIdentitiesWithOutError:(id *)error
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v11 = 0;
@@ -4273,8 +4273,8 @@ void __69__MCProfileConnection_Profiles__verifiedTrustedCodeSigningIdentities__b
   v10[3] = &unk_1E77D2620;
   v10[4] = &v11;
   v5 = MEMORY[0x1AC55F990](v10);
-  v6 = [(MCProfileConnection *)self xpcConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v5];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v5];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__MCProfileConnection_Profiles__syncTrustedCodeSigningIdentitiesWithOutError___block_invoke_84;
@@ -4282,13 +4282,13 @@ void __69__MCProfileConnection_Profiles__verifiedTrustedCodeSigningIdentities__b
   v9[4] = &v11;
   [v7 syncTrustedCodeSigningIdentitiesWithCompletion:v9];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   _Block_object_dispose(&v11, 8);
-  return a3 == 0;
+  return error == 0;
 }
 
 void __78__MCProfileConnection_Profiles__syncTrustedCodeSigningIdentitiesWithOutError___block_invoke(uint64_t a1, void *a2)
@@ -4339,9 +4339,9 @@ void __78__MCProfileConnection_Profiles__syncTrustedCodeSigningIdentitiesWithOut
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)provisiongProfileUUIDsForSignerIdentity:(id)a3
+- (id)provisiongProfileUUIDsForSignerIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   [(MCProfileConnection *)self checkInIfNeeded];
   v17 = 0;
   v18 = &v17;
@@ -4353,11 +4353,11 @@ void __78__MCProfileConnection_Profiles__syncTrustedCodeSigningIdentitiesWithOut
   v15[1] = 3221225472;
   v15[2] = __73__MCProfileConnection_Profiles__provisiongProfileUUIDsForSignerIdentity___block_invoke;
   v15[3] = &unk_1E77D2850;
-  v5 = v4;
+  v5 = identityCopy;
   v16 = v5;
   v6 = MEMORY[0x1AC55F990](v15);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__MCProfileConnection_Profiles__provisiongProfileUUIDsForSignerIdentity___block_invoke_85;
@@ -4424,9 +4424,9 @@ void __73__MCProfileConnection_Profiles__provisiongProfileUUIDsForSignerIdentity
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)signerIdentityForBundleID:(id)a3
+- (id)signerIdentityForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
   v17 = 0;
   v18 = &v17;
@@ -4438,11 +4438,11 @@ void __73__MCProfileConnection_Profiles__provisiongProfileUUIDsForSignerIdentity
   v15[1] = 3221225472;
   v15[2] = __59__MCProfileConnection_Profiles__signerIdentityForBundleID___block_invoke;
   v15[3] = &unk_1E77D2850;
-  v5 = v4;
+  v5 = dCopy;
   v16 = v5;
   v6 = MEMORY[0x1AC55F990](v15);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__MCProfileConnection_Profiles__signerIdentityForBundleID___block_invoke_86;
@@ -4509,20 +4509,20 @@ void __59__MCProfileConnection_Profiles__signerIdentityForBundleID___block_invok
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isProvisioningProfilesWithUUID:(id)a3 managedByProfileWithIdentifier:(id)a4
+- (BOOL)isProvisioningProfilesWithUUID:(id)d managedByProfileWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
   v7 = +[MCDependencyReader sharedReader];
-  v8 = [v7 dependentsOfParent:v5 inDomain:@"ManagingProfileToProvisioningProfile"];
+  v8 = [v7 dependentsOfParent:identifierCopy inDomain:@"ManagingProfileToProvisioningProfile"];
 
-  LOBYTE(v7) = [v8 containsObject:v6];
+  LOBYTE(v7) = [v8 containsObject:dCopy];
   return v7;
 }
 
-- (BOOL)getIsBundleBlocked:(BOOL *)a3 bundlePath:(id)a4 outHash:(id *)a5 outHashType:(id *)a6 outError:(id *)a7
+- (BOOL)getIsBundleBlocked:(BOOL *)blocked bundlePath:(id)path outHash:(id *)hash outHashType:(id *)type outError:(id *)error
 {
-  v12 = a4;
+  pathCopy = path;
   [(MCProfileConnection *)self checkInIfNeeded];
   v38 = 0;
   v39 = &v38;
@@ -4552,8 +4552,8 @@ void __59__MCProfileConnection_Profiles__signerIdentityForBundleID___block_invok
   v19[3] = &unk_1E77D2620;
   v19[4] = &v20;
   v13 = MEMORY[0x1AC55F990](v19);
-  v14 = [(MCProfileConnection *)self xpcConnection];
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v15 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __92__MCProfileConnection_Profiles__getIsBundleBlocked_bundlePath_outHash_outHashType_outError___block_invoke_87;
@@ -4562,26 +4562,26 @@ void __59__MCProfileConnection_Profiles__signerIdentityForBundleID___block_invok
   v18[5] = &v32;
   v18[6] = &v26;
   v18[7] = &v20;
-  [v15 isBundleBlocked:v12 completion:v18];
+  [v15 isBundleBlocked:pathCopy completion:v18];
 
-  if (a3)
+  if (blocked)
   {
-    *a3 = *(v39 + 24);
+    *blocked = *(v39 + 24);
   }
 
-  if (a5)
+  if (hash)
   {
-    *a5 = v33[5];
+    *hash = v33[5];
   }
 
-  if (a6)
+  if (type)
   {
-    *a6 = v27[5];
+    *type = v27[5];
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v21[5];
+    *error = v21[5];
   }
 
   v16 = v21[5] == 0;
@@ -4656,9 +4656,9 @@ void __92__MCProfileConnection_Profiles__getIsBundleBlocked_bundlePath_outHash_o
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getAreBundlesBlocked:(id *)a3 bundlePaths:(id)a4 outError:(id *)a5
+- (BOOL)getAreBundlesBlocked:(id *)blocked bundlePaths:(id)paths outError:(id *)error
 {
-  v7 = a4;
+  pathsCopy = paths;
   [(MCProfileConnection *)self checkInIfNeeded];
   v21 = 0;
   v22 = &v21;
@@ -4678,19 +4678,19 @@ void __92__MCProfileConnection_Profiles__getIsBundleBlocked_bundlePath_outHash_o
   v14[3] = &unk_1E77D2620;
   v14[4] = &v15;
   v8 = MEMORY[0x1AC55F990](v14);
-  v9 = [(MCProfileConnection *)self xpcConnection];
-  v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v8];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__MCProfileConnection_Profiles__getAreBundlesBlocked_bundlePaths_outError___block_invoke_89;
   v13[3] = &unk_1E77D28F0;
   v13[4] = &v21;
   v13[5] = &v15;
-  [v10 areBundlesBlocked:v7 completion:v13];
+  [v10 areBundlesBlocked:pathsCopy completion:v13];
 
-  if (a3)
+  if (blocked)
   {
-    *a3 = v22[5];
+    *blocked = v22[5];
   }
 
   v11 = v16[5] == 0;
@@ -4765,42 +4765,42 @@ void __75__MCProfileConnection_Profiles__getAreBundlesBlocked_bundlePaths_outErr
   }
 }
 
-- (void)installProfileData:(id)a3 interactionDelegate:(id)a4
+- (void)installProfileData:(id)data interactionDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  dataCopy = data;
   [(MCProfileConnection *)self checkInIfNeeded];
-  [(MCProfileConnection *)self installProfileData:v7 options:0 interactionDelegate:v6];
+  [(MCProfileConnection *)self installProfileData:dataCopy options:0 interactionDelegate:delegateCopy];
 }
 
-+ (id)profileDaemonConnectionErrorWithUnderlyingError:(id)a3
++ (id)profileDaemonConnectionErrorWithUnderlyingError:(id)error
 {
   v3 = MEMORY[0x1E696ABC0];
-  v4 = a3;
+  errorCopy = error;
   v12 = MCErrorArray(@"ERROR_PROFILE_INSTALLATION_FAILED_TITLE", v5, v6, v7, v8, v9, v10, v11, 0);
-  v13 = [v3 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4045 descriptionArray:v12 underlyingError:v4 errorType:@"MCFatalError"];
+  v13 = [v3 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4045 descriptionArray:v12 underlyingError:errorCopy errorType:@"MCFatalError"];
 
   return v13;
 }
 
-+ (id)profileInstallationErrorWithUnderlyingError:(id)a3
++ (id)profileInstallationErrorWithUnderlyingError:(id)error
 {
   v3 = MEMORY[0x1E696ABC0];
-  v4 = a3;
+  errorCopy = error;
   v12 = MCErrorArray(@"ERROR_PROFILE_INSTALLATION_FAILED_TITLE", v5, v6, v7, v8, v9, v10, v11, 0);
-  v13 = [v3 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4001 descriptionArray:v12 underlyingError:v4 errorType:@"MCFatalError"];
+  v13 = [v3 MCErrorWithDomain:@"MCInstallationErrorDomain" code:4001 descriptionArray:v12 underlyingError:errorCopy errorType:@"MCFatalError"];
 
   return v13;
 }
 
-- (void)installProfileData:(id)a3 options:(id)a4 interactionDelegate:(id)a5
+- (void)installProfileData:(id)data options:(id)options interactionDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  optionsCopy = options;
+  delegateCopy = delegate;
   [(MCProfileConnection *)self checkInIfNeeded];
-  objc_storeStrong(&self->_originalProfileData, a3);
-  objc_storeWeak(&self->_interactionDelegate, v11);
+  objc_storeStrong(&self->_originalProfileData, data);
+  objc_storeWeak(&self->_interactionDelegate, delegateCopy);
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -4809,15 +4809,15 @@ void __75__MCProfileConnection_Profiles__getAreBundlesBlocked_bundlePaths_outErr
   v17[4] = self;
   objc_copyWeak(&v18, &location);
   v12 = MEMORY[0x1AC55F990](v17);
-  v13 = [(MCProfileConnection *)self xpcConnection];
-  v14 = [v13 remoteObjectProxyWithErrorHandler:v12];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__MCProfileConnection_Profiles__installProfileData_options_interactionDelegate___block_invoke_95;
   v15[3] = &unk_1E77D2940;
   v15[4] = self;
   objc_copyWeak(&v16, &location);
-  [v14 installProfileData:v9 interactive:1 options:v10 completion:v15];
+  [v14 installProfileData:dataCopy interactive:1 options:optionsCopy completion:v15];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v18);
@@ -4875,12 +4875,12 @@ void __80__MCProfileConnection_Profiles__installProfileData_options_interactionD
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateProfileWithIdentifier:(id)a3 interactionDelegate:(id)a4
+- (void)updateProfileWithIdentifier:(id)identifier interactionDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   [(MCProfileConnection *)self checkInIfNeeded];
-  objc_storeWeak(&self->_interactionDelegate, v7);
+  objc_storeWeak(&self->_interactionDelegate, delegateCopy);
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -4889,15 +4889,15 @@ void __80__MCProfileConnection_Profiles__installProfileData_options_interactionD
   v13[4] = self;
   objc_copyWeak(&v14, &location);
   v8 = MEMORY[0x1AC55F990](v13);
-  v9 = [(MCProfileConnection *)self xpcConnection];
-  v10 = [v9 remoteObjectProxyWithErrorHandler:v8];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interactionDelegate___block_invoke_96;
   v11[3] = &unk_1E77D2940;
   v11[4] = self;
   objc_copyWeak(&v12, &location);
-  [v10 updateProfileIdentifier:v6 interactive:v7 != 0 completion:v11];
+  [v10 updateProfileIdentifier:identifierCopy interactive:delegateCopy != 0 completion:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&v14);
@@ -4971,17 +4971,17 @@ void __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interaction
     return 0;
   }
 
-  v3 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v4 = [v3 userMode] != 1;
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  v4 = [mEMORY[0x1E69AD420] userMode] != 1;
 
   return v4;
 }
 
-- (BOOL)mustInstallProfileNonInteractively:(id)a3
+- (BOOL)mustInstallProfileNonInteractively:(id)interactively
 {
-  v4 = a3;
+  interactivelyCopy = interactively;
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (-[MCProfileConnection isProfileUIInstallationEffectivelyAllowed](self, "isProfileUIInstallationEffectivelyAllowed") && ([v4 mustInstallNonInteractively] & 1) == 0)
+  if (-[MCProfileConnection isProfileUIInstallationEffectivelyAllowed](self, "isProfileUIInstallationEffectivelyAllowed") && ([interactivelyCopy mustInstallNonInteractively] & 1) == 0)
   {
     v5 = MCIsEffectivelyInAppWhitelistMode();
   }
@@ -4994,9 +4994,9 @@ void __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interaction
   return v5;
 }
 
-- (void)preflightUserInputResponses:(id)a3 forPayloadIndex:(unint64_t)a4
+- (void)preflightUserInputResponses:(id)responses forPayloadIndex:(unint64_t)index
 {
-  v6 = a3;
+  responsesCopy = responses;
   [(MCProfileConnection *)self checkInIfNeeded];
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
@@ -5006,7 +5006,7 @@ void __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interaction
   userInputReplyBlock = self->userInputReplyBlock;
   if (userInputReplyBlock)
   {
-    userInputReplyBlock[2](userInputReplyBlock, v6, 1, a4, 0);
+    userInputReplyBlock[2](userInputReplyBlock, responsesCopy, 1, index, 0);
     v8 = self->userInputReplyBlock;
     self->userInputReplyBlock = 0;
   }
@@ -5029,9 +5029,9 @@ void __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interaction
   }
 }
 
-- (void)submitUserInputResponses:(id)a3
+- (void)submitUserInputResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   [(MCProfileConnection *)self checkInIfNeeded];
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
@@ -5041,7 +5041,7 @@ void __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interaction
   userInputReplyBlock = self->userInputReplyBlock;
   if (userInputReplyBlock)
   {
-    (*(userInputReplyBlock + 2))(userInputReplyBlock, v4, 0, 0, 0);
+    (*(userInputReplyBlock + 2))(userInputReplyBlock, responsesCopy, 0, 0, 0);
     v6 = self->userInputReplyBlock;
     self->userInputReplyBlock = 0;
   }
@@ -5072,17 +5072,17 @@ void __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interaction
 - (BOOL)isChaperoned
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 isSupervised];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
-  return v3;
+  return isSupervised;
 }
 
 - (id)chaperoneOrganization
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v3 = [(MCProfileConnection *)self cloudConfigurationDetails];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999788]];
+  cloudConfigurationDetails = [(MCProfileConnection *)self cloudConfigurationDetails];
+  v4 = [cloudConfigurationDetails objectForKeyedSubscript:*MEMORY[0x1E6999788]];
 
   return v4;
 }
@@ -5091,9 +5091,9 @@ void __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interaction
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 currentRestrictions];
+  currentRestrictions = [v2 currentRestrictions];
 
-  return v3;
+  return currentRestrictions;
 }
 
 - (id)effectiveRestrictionsForPairedDevice
@@ -5104,32 +5104,32 @@ void __81__MCProfileConnection_Profiles__updateProfileWithIdentifier_interaction
   return v2;
 }
 
-- (int)BOOLRestrictionForFeature:(id)a3
+- (int)BOOLRestrictionForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 restrictedBoolForFeature:v4];
+  v6 = [v5 restrictedBoolForFeature:featureCopy];
 
   return v6;
 }
 
-- (id)valueRestrictionForFeature:(id)a3
+- (id)valueRestrictionForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 valueForFeature:v4];
+  v6 = [v5 valueForFeature:featureCopy];
 
   return v6;
 }
 
-- (id)objectRestrictionForFeature:(id)a3
+- (id)objectRestrictionForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 objectForFeature:v4];
+  v6 = [v5 objectForFeature:featureCopy];
 
   return v6;
 }
@@ -5196,35 +5196,35 @@ void __241__MCProfileConnection_Restrictions__applyRestrictionDictionary_toSyste
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (int)applyRestrictionDictionary:(id)a3 clientType:(id)a4 clientUUID:(id)a5 localizedClientDescription:(id)a6 localizedWarningMessage:(id)a7 complianceBlocking:(int)a8 displayImmediateAlert:(BOOL)a9 limitForUserEnrollment:(BOOL)a10 outRestrictionChanged:(BOOL *)a11 outEffectiveSettingsChanged:(BOOL *)a12 outError:(id *)a13
+- (int)applyRestrictionDictionary:(id)dictionary clientType:(id)type clientUUID:(id)d localizedClientDescription:(id)description localizedWarningMessage:(id)message complianceBlocking:(int)blocking displayImmediateAlert:(BOOL)alert limitForUserEnrollment:(BOOL)self0 outRestrictionChanged:(BOOL *)self1 outEffectiveSettingsChanged:(BOOL *)self2 outError:(id *)self3
 {
   v108 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v94 = a7;
+  dictionaryCopy = dictionary;
+  typeCopy = type;
+  dCopy = d;
+  descriptionCopy = description;
+  messageCopy = message;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v30 = MCLocalizedErrorFormatByDevice(@"ENCRYPTION_POLICY_CLIENT_FAILURE_TEXT", v23, v24, v25, v26, v27, v28, v29, v22);
+  v30 = MCLocalizedErrorFormatByDevice(@"ENCRYPTION_POLICY_CLIENT_FAILURE_TEXT", v23, v24, v25, v26, v27, v28, v29, descriptionCopy);
   v31 = +[MCDeviceCapabilities currentDevice];
-  v32 = [v31 validateCapabilitiesRequiredByRestrictions:v19 localizedIncompatibilityMessage:v30 outError:a13];
+  v32 = [v31 validateCapabilitiesRequiredByRestrictions:dictionaryCopy localizedIncompatibilityMessage:v30 outError:error];
 
   if (v32)
   {
-    v91 = a8;
-    if (v19 && a10)
+    blockingCopy = blocking;
+    if (dictionaryCopy && enrollment)
     {
-      v33 = v20;
+      v33 = typeCopy;
       v34 = qword_1ED4ADE28;
       if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v105 = v19;
+        v105 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v34, OS_LOG_TYPE_DEBUG, "Transmogrifying client restrictions from: %{public}@", buf, 0xCu);
       }
 
       v103 = 0;
-      v35 = [(MCProfileConnection *)self _transmogrifyRestrictionDictionaryForUserEnrollment:v19 outError:&v103];
+      v35 = [(MCProfileConnection *)self _transmogrifyRestrictionDictionaryForUserEnrollment:dictionaryCopy outError:&v103];
       v36 = v103;
       v37 = qword_1ED4ADE28;
       v38 = os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG);
@@ -5238,11 +5238,11 @@ void __241__MCProfileConnection_Restrictions__applyRestrictionDictionary_toSyste
           _os_log_impl(&dword_1A795B000, v37, OS_LOG_TYPE_DEBUG, "Rejecting client restrictions: %{public}@", buf, 0xCu);
         }
 
-        v20 = v33;
-        if (!a13)
+        typeCopy = v33;
+        if (!error)
         {
           v46 = 2;
-          v47 = v94;
+          v47 = messageCopy;
 LABEL_48:
 
           goto LABEL_49;
@@ -5250,13 +5250,13 @@ LABEL_48:
 
         v69 = v36;
         v70 = MEMORY[0x1E696ABC0];
-        v49 = MCErrorArray(@"USER_ENROLLMENT_DISALLOWED_RESTRICTIONS_P_CLIENT", v39, v40, v41, v42, v43, v44, v45, v22);
+        v49 = MCErrorArray(@"USER_ENROLLMENT_DISALLOWED_RESTRICTIONS_P_CLIENT", v39, v40, v41, v42, v43, v44, v45, descriptionCopy);
         v71 = v70;
         v36 = v69;
-        *a13 = [v71 MCErrorWithDomain:@"MCDeviceCapabilitiesErrorDomain" code:26002 descriptionArray:v49 underlyingError:v69 errorType:@"MCFatalError"];
+        *error = [v71 MCErrorWithDomain:@"MCDeviceCapabilitiesErrorDomain" code:26002 descriptionArray:v49 underlyingError:v69 errorType:@"MCFatalError"];
         v46 = 2;
-        v58 = v19;
-        v47 = v94;
+        v58 = dictionaryCopy;
+        v47 = messageCopy;
         goto LABEL_47;
       }
 
@@ -5267,46 +5267,46 @@ LABEL_48:
         _os_log_impl(&dword_1A795B000, v37, OS_LOG_TYPE_DEBUG, "Transmogrifying client restrictions to: %{public}@", buf, 0xCu);
       }
 
-      v20 = v33;
+      typeCopy = v33;
     }
 
     else
     {
-      v93 = v19;
+      v93 = dictionaryCopy;
     }
 
     v36 = +[MCRestrictionManager sharedManager];
-    v48 = [(__CFString *)v36 systemClientRestrictions];
-    v49 = [v48 objectForKey:v21];
+    systemClientRestrictions = [(__CFString *)v36 systemClientRestrictions];
+    v49 = [systemClientRestrictions objectForKey:dCopy];
 
     if (v49)
     {
       v50 = [v49 objectForKey:@"clientType"];
-      v51 = [v50 isEqualToString:v20];
+      v51 = [v50 isEqualToString:typeCopy];
 
       if (v51)
       {
-        v86 = v21;
+        v86 = dCopy;
         v88 = v36;
         v52 = [v49 objectForKey:@"clientRestrictions"];
-        v53 = [(__CFString *)v93 MCMutableDeepCopy];
+        mCMutableDeepCopy = [(__CFString *)v93 MCMutableDeepCopy];
         v54 = +[MCHacks sharedHacks];
-        [v54 _applyHeuristicsToRestrictions:v53 forProfile:0 ignoresUnrestrictableApps:0];
+        [v54 _applyHeuristicsToRestrictions:mCMutableDeepCopy forProfile:0 ignoresUnrestrictableApps:0];
 
         v55 = v52;
-        if ([v53 isEqualToDictionary:v52])
+        if ([mCMutableDeepCopy isEqualToDictionary:v52])
         {
           v56 = [v49 objectForKey:@"compliant"];
-          v57 = [v56 BOOLValue];
+          bOOLValue = [v56 BOOLValue];
 
-          if (v57)
+          if (bOOLValue)
           {
 
             v46 = 0;
             v58 = v93;
-            v47 = v94;
+            v47 = messageCopy;
             v59 = v55;
-            v21 = v86;
+            dCopy = v86;
             v36 = v88;
 LABEL_46:
 
@@ -5314,21 +5314,21 @@ LABEL_46:
           }
         }
 
-        v21 = v86;
+        dCopy = v86;
         v36 = v88;
       }
     }
 
-    v60 = self;
+    selfCopy = self;
     v58 = v93;
-    v47 = v94;
-    if ([(MCProfileConnection *)v60 applyRestrictionDictionary:v93 clientType:v20 clientUUID:v21 localizedClientDescription:v22 localizedWarningMessage:v94 outRestrictionChanged:a11 outEffectiveSettingsChanged:a12 outError:a13])
+    v47 = messageCopy;
+    if ([(MCProfileConnection *)selfCopy applyRestrictionDictionary:v93 clientType:typeCopy clientUUID:dCopy localizedClientDescription:descriptionCopy localizedWarningMessage:messageCopy outRestrictionChanged:changed outEffectiveSettingsChanged:settingsChanged outError:error])
     {
       v59 = +[MCPasscodeManager sharedManager];
-      v61 = [v59 isDeviceLocked];
-      if (v91)
+      isDeviceLocked = [v59 isDeviceLocked];
+      if (blockingCopy)
       {
-        if (v61)
+        if (isDeviceLocked)
         {
           v87 = v59;
           v89 = v36;
@@ -5363,7 +5363,7 @@ LABEL_45:
 
             v46 = 3;
             v58 = v93;
-            v47 = v94;
+            v47 = messageCopy;
             v59 = v87;
             goto LABEL_46;
           }
@@ -5386,7 +5386,7 @@ LABEL_45:
         }
 
         v72 = [v59 currentPasscodeCompliesWithPolicyFromRestrictions:v58 outError:0];
-        if (v91 != 1)
+        if (blockingCopy != 1)
         {
           if ((v72 & 1) == 0)
           {
@@ -5473,7 +5473,7 @@ LABEL_45:
               p_out_token = &v97;
             }
 
-            v47 = v94;
+            v47 = messageCopy;
             notify_cancel(*p_out_token);
 
             v59 = v87;
@@ -5490,7 +5490,7 @@ LABEL_45:
 
       else
       {
-        if (v61)
+        if (isDeviceLocked)
         {
           v46 = 4;
           goto LABEL_46;
@@ -5506,67 +5506,67 @@ LABEL_45:
     v46 = 3;
 LABEL_47:
 
-    v19 = v58;
+    dictionaryCopy = v58;
     goto LABEL_48;
   }
 
   v46 = 2;
-  v47 = v94;
+  v47 = messageCopy;
 LABEL_49:
 
   v78 = *MEMORY[0x1E69E9840];
   return v46;
 }
 
-- (id)allClientUUIDsForClientType:(id)a3
+- (id)allClientUUIDsForClientType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 allClientUUIDsForClientType:v4];
+  v6 = [v5 allClientUUIDsForClientType:typeCopy];
 
   return v6;
 }
 
-- (id)clientRestrictionsForClientUUID:(id)a3
+- (id)clientRestrictionsForClientUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 clientRestrictionsForClientUUID:v4];
+  v6 = [v5 clientRestrictionsForClientUUID:dCopy];
 
   return v6;
 }
 
-- (id)userInfoForClientUUID:(id)a3
+- (id)userInfoForClientUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 userInfoForClientUUID:v4];
+  v6 = [v5 userInfoForClientUUID:dCopy];
 
   return v6;
 }
 
-- (void)setUserInfo:(id)a3 forClientUUID:(id)a4
+- (void)setUserInfo:(id)info forClientUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  infoCopy = info;
   [(MCProfileConnection *)self checkInIfNeeded];
   if (MCIsDaemonProcess == 1)
   {
-    v8 = [NSClassFromString(&cfstr_Mcrestrictionm.isa) sharedManager];
-    [v8 setUserInfo:v7 forClientUUID:v6 sender:@"profiled"];
+    nSClassFromString(&cfstr_Mcrestrictionm.isa) = [NSClassFromString(&cfstr_Mcrestrictionm.isa) sharedManager];
+    [nSClassFromString(&cfstr_Mcrestrictionm.isa) setUserInfo:infoCopy forClientUUID:dCopy sender:@"profiled"];
   }
 
   else
   {
-    v8 = [(MCProfileConnection *)self xpcConnection];
-    v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30];
-    [v9 setUserInfo:v7 forClientUUID:v6 completion:&__block_literal_global_30];
+    nSClassFromString(&cfstr_Mcrestrictionm.isa) = [(MCProfileConnection *)self xpcConnection];
+    v9 = [nSClassFromString(&cfstr_Mcrestrictionm.isa) synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30];
+    [v9 setUserInfo:infoCopy forClientUUID:dCopy completion:&__block_literal_global_30];
 
-    v6 = v7;
-    v7 = v9;
+    dCopy = infoCopy;
+    infoCopy = v9;
   }
 
   v10 = +[MCRestrictionManager sharedManager];
@@ -5593,19 +5593,19 @@ void __63__MCProfileConnection_Restrictions__setUserInfo_forClientUUID___block_i
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)clearUserInfoForClientUUIDs:(id)a3
+- (BOOL)clearUserInfoForClientUUIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dsCopy = ds;
   v4 = MCIsDaemonProcess;
   if (MCIsDaemonProcess == 1)
   {
-    v5 = [NSClassFromString(&cfstr_Mcrestrictionm.isa) sharedManager];
+    nSClassFromString(&cfstr_Mcrestrictionm.isa) = [NSClassFromString(&cfstr_Mcrestrictionm.isa) sharedManager];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v3;
+    v6 = dsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -5621,7 +5621,7 @@ void __63__MCProfileConnection_Restrictions__setUserInfo_forClientUUID___block_i
             objc_enumerationMutation(v6);
           }
 
-          [v5 setUserInfo:v10 forClientUUID:*(*(&v14 + 1) + 8 * i) sender:{@"profiled", v14}];
+          [nSClassFromString(&cfstr_Mcrestrictionm.isa) setUserInfo:v10 forClientUUID:*(*(&v14 + 1) + 8 * i) sender:{@"profiled", v14}];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -5638,8 +5638,8 @@ void __63__MCProfileConnection_Restrictions__setUserInfo_forClientUUID___block_i
 - (void)removeOrphanedClientRestrictions
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22];
   [v3 removeOrphanedClientRestrictionsWithCompletion:&__block_literal_global_22];
 }
 
@@ -5663,19 +5663,19 @@ void __69__MCProfileConnection_Restrictions__removeOrphanedClientRestrictions__b
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeOrphanedClientRestrictionsWithCompletion:(id)a3
+- (void)removeOrphanedClientRestrictionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__MCProfileConnection_Restrictions__removeOrphanedClientRestrictionsWithCompletion___block_invoke;
   v9[3] = &unk_1E77D2698;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1AC55F990](v9);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 removeOrphanedClientRestrictionsWithCompletion:v6];
 }
 
@@ -5709,9 +5709,9 @@ void __84__MCProfileConnection_Restrictions__removeOrphanedClientRestrictionsWit
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 effectiveWhitelistedAppsAndOptions];
+  effectiveWhitelistedAppsAndOptions = [v2 effectiveWhitelistedAppsAndOptions];
 
-  return v3;
+  return effectiveWhitelistedAppsAndOptions;
 }
 
 + (NSArray)features
@@ -5792,36 +5792,36 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 credentialSet:(id)a7 waitUntilCompleted:(BOOL)a8 errorCompletionBlock:(id)a9
+- (void)setParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user credentialSet:(id)set waitUntilCompleted:(BOOL)completed errorCompletionBlock:(id)block
 {
-  v9 = a8;
-  v32 = a5;
-  v33 = a6;
+  completedCopy = completed;
+  systemCopy = system;
+  userCopy = user;
   v46 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v34 = a4;
-  v31 = a7;
-  v14 = a9;
+  typeCopy = type;
+  dCopy = d;
+  setCopy = set;
+  blockCopy = block;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v15 = [(MCProfileConnection *)self xpcConnection];
-  v16 = v15;
-  if (v9)
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v16 = xpcConnection;
+  if (completedCopy)
   {
-    [v15 synchronousRemoteObjectProxyWithErrorHandler:v14];
+    [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:blockCopy];
   }
 
   else
   {
-    [v15 remoteObjectProxyWithErrorHandler:v14];
+    [xpcConnection remoteObjectProxyWithErrorHandler:blockCopy];
   }
   v29 = ;
-  v30 = v14;
+  v30 = blockCopy;
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v17 = v13;
+  v17 = typeCopy;
   v18 = [v17 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v18)
   {
@@ -5879,7 +5879,7 @@ LABEL_6:
     while (v19);
   }
 
-  [v29 setParametersForSettingsByType:v17 configurationUUID:v34 toSystem:v32 user:v33 credentialSet:v31 completion:v30];
+  [v29 setParametersForSettingsByType:v17 configurationUUID:dCopy toSystem:systemCopy user:userCopy credentialSet:setCopy completion:v30];
   v28 = *MEMORY[0x1E69E9840];
 }
 
@@ -5918,27 +5918,27 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 passcode:(id)a7 credentialSet:(id)a8 waitUntilCompleted:(BOOL)a9 errorCompletionBlock:(id)a10
+- (void)setParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user passcode:(id)passcode credentialSet:(id)set waitUntilCompleted:(BOOL)completed errorCompletionBlock:(id)self0
 {
-  v33 = a5;
-  v34 = a6;
+  systemCopy = system;
+  userCopy = user;
   v47 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v35 = a4;
-  v32 = a7;
-  v31 = a8;
-  v15 = a10;
+  typeCopy = type;
+  dCopy = d;
+  passcodeCopy = passcode;
+  setCopy = set;
+  blockCopy = block;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v16 = [(MCProfileConnection *)self xpcConnection];
-  v17 = v16;
-  if (a9)
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v17 = xpcConnection;
+  if (completed)
   {
-    [v16 synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:blockCopy];
   }
 
   else
   {
-    [v16 remoteObjectProxyWithErrorHandler:v15];
+    [xpcConnection remoteObjectProxyWithErrorHandler:blockCopy];
   }
   v30 = ;
 
@@ -5946,7 +5946,7 @@ LABEL_6:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = v14;
+  v18 = typeCopy;
   v19 = [v18 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v19)
   {
@@ -6004,19 +6004,19 @@ LABEL_6:
     while (v20);
   }
 
-  [v30 setParametersForSettingsByType:v18 configurationUUID:v35 toSystem:v33 user:v34 passcode:v32 credentialSet:v31 completion:v15];
+  [v30 setParametersForSettingsByType:v18 configurationUUID:dCopy toSystem:systemCopy user:userCopy passcode:passcodeCopy credentialSet:setCopy completion:blockCopy];
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setParameters:(id)a3 forBoolSetting:(id)a4
+- (void)setParameters:(id)parameters forBoolSetting:(id)setting
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  settingCopy = setting;
+  parametersCopy = parameters;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v12 = v7;
+  v12 = parametersCopy;
   v13 = @"restrictedBool";
-  v11 = v6;
+  v11 = settingCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v14[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
@@ -6025,15 +6025,15 @@ LABEL_6:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setParameters:(id)a3 forValueSetting:(id)a4
+- (void)setParameters:(id)parameters forValueSetting:(id)setting
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  settingCopy = setting;
+  parametersCopy = parameters;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v12 = v7;
+  v12 = parametersCopy;
   v13 = @"restrictedValue";
-  v11 = v6;
+  v11 = settingCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v14[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
@@ -6042,43 +6042,43 @@ LABEL_6:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setValue:(id)a3 forSetting:(id)a4
+- (void)setValue:(id)value forSetting:(id)setting
 {
-  v6 = a4;
-  v7 = a3;
+  settingCopy = setting;
+  valueCopy = value;
   [(MCProfileConnection *)self checkInIfNeeded];
-  [(MCProfileConnection *)self setValue:v7 forSetting:v6 credentialSet:0];
+  [(MCProfileConnection *)self setValue:valueCopy forSetting:settingCopy credentialSet:0];
 }
 
-- (void)setValue:(id)a3 forSetting:(id)a4 credentialSet:(id)a5 completion:(id)a6
+- (void)setValue:(id)value forSetting:(id)setting credentialSet:(id)set completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  valueCopy = value;
+  settingCopy = setting;
+  completionCopy = completion;
+  setCopy = set;
   [(MCProfileConnection *)self checkInIfNeeded];
   v14 = qword_1ED4ADE28;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
     *buf = 67109378;
-    v27 = [v10 unsignedIntValue];
+    unsignedIntValue = [valueCopy unsignedIntValue];
     v28 = 2114;
-    v29 = v11;
+    v29 = settingCopy;
     _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_DEFAULT, "Set value %u for settings: %{public}@", buf, 0x12u);
   }
 
   v24 = @"restrictedValue";
-  v21 = v10;
-  v22 = v11;
+  v21 = valueCopy;
+  v22 = settingCopy;
   v20 = @"value";
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v23 = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   v25 = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-  [(MCProfileConnection *)self setParametersForSettingsByType:v18 configurationUUID:0 toSystem:1 user:0 credentialSet:v13 waitUntilCompleted:0 completion:v12];
+  [(MCProfileConnection *)self setParametersForSettingsByType:v18 configurationUUID:0 toSystem:1 user:0 credentialSet:setCopy waitUntilCompleted:0 completion:completionCopy];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -6146,28 +6146,28 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setValue:(id)a3 forSetting:(id)a4 passcode:(id)a5 completion:(id)a6
+- (void)setValue:(id)value forSetting:(id)setting passcode:(id)passcode completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  valueCopy = value;
+  settingCopy = setting;
+  completionCopy = completion;
+  passcodeCopy = passcode;
   [(MCProfileConnection *)self checkInIfNeeded];
   v14 = qword_1ED4ADE28;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
     *buf = 67109378;
-    v28 = [v10 unsignedIntValue];
+    unsignedIntValue = [valueCopy unsignedIntValue];
     v29 = 2114;
-    v30 = v11;
+    v30 = settingCopy;
     _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_DEFAULT, "Set value %u for settings: %{public}@", buf, 0x12u);
   }
 
   v25 = @"restrictedValue";
-  v22 = v10;
-  v23 = v11;
+  v22 = valueCopy;
+  v23 = settingCopy;
   v21 = @"value";
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
   v24 = v16;
@@ -6175,7 +6175,7 @@ LABEL_6:
   v26 = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
   LOBYTE(v20) = 0;
-  [(MCProfileConnection *)self setParametersForSettingsByType:v18 configurationUUID:0 toSystem:1 user:0 passcode:v13 credentialSet:0 waitUntilCompleted:v20 completion:v12];
+  [(MCProfileConnection *)self setParametersForSettingsByType:v18 configurationUUID:0 toSystem:1 user:0 passcode:passcodeCopy credentialSet:0 waitUntilCompleted:v20 completion:completionCopy];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -6184,18 +6184,18 @@ LABEL_6:
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 systemUserSettings];
+  systemUserSettings = [v2 systemUserSettings];
 
-  return v3;
+  return systemUserSettings;
 }
 
 - (id)userSettingsForCurrentUser
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 userUserSettings];
+  userUserSettings = [v2 userUserSettings];
 
-  return v3;
+  return userUserSettings;
 }
 
 - (id)userSettingsForPairedDevice
@@ -6206,177 +6206,177 @@ LABEL_6:
   return v2;
 }
 
-- (id)parametersForBoolSetting:(id)a3
+- (id)parametersForBoolSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [(MCProfileConnection *)self userSettings];
-  v6 = [v5 objectForKey:@"restrictedBool"];
-  v7 = [v6 objectForKey:v4];
+  userSettings = [(MCProfileConnection *)self userSettings];
+  v6 = [userSettings objectForKey:@"restrictedBool"];
+  v7 = [v6 objectForKey:settingCopy];
 
   return v7;
 }
 
-- (id)parametersForValueSetting:(id)a3
+- (id)parametersForValueSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [(MCProfileConnection *)self userSettings];
-  v6 = [v5 objectForKey:@"restrictedValue"];
-  v7 = [v6 objectForKey:v4];
+  userSettings = [(MCProfileConnection *)self userSettings];
+  v6 = [userSettings objectForKey:@"restrictedValue"];
+  v7 = [v6 objectForKey:settingCopy];
 
   return v7;
 }
 
-- (id)parametersForIntersectionSetting:(id)a3
+- (id)parametersForIntersectionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [(MCProfileConnection *)self userSettings];
-  v6 = [v5 objectForKey:@"intersection"];
-  v7 = [v6 objectForKey:v4];
+  userSettings = [(MCProfileConnection *)self userSettings];
+  v6 = [userSettings objectForKey:@"intersection"];
+  v7 = [v6 objectForKey:settingCopy];
 
   return v7;
 }
 
-- (id)parametersForUnionSetting:(id)a3
+- (id)parametersForUnionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [(MCProfileConnection *)self userSettings];
-  v6 = [v5 objectForKeyedSubscript:@"values"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  userSettings = [(MCProfileConnection *)self userSettings];
+  v6 = [userSettings objectForKeyedSubscript:@"values"];
+  v7 = [v6 objectForKeyedSubscript:settingCopy];
 
   return v7;
 }
 
-- (int)defaultBoolValueForSetting:(id)a3
+- (int)defaultBoolValueForSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  LODWORD(self) = [MCRestrictionManager defaultBoolValueForSetting:v4];
+  LODWORD(self) = [MCRestrictionManager defaultBoolValueForSetting:settingCopy];
 
   return self;
 }
 
-- (id)defaultValueForSetting:(id)a3
+- (id)defaultValueForSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCRestrictionManager defaultValueForSetting:v4];
+  v5 = [MCRestrictionManager defaultValueForSetting:settingCopy];
 
   return v5;
 }
 
-- (id)defaultValuesForIntersectionSetting:(id)a3
+- (id)defaultValuesForIntersectionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCRestrictionManager defaultIntersectedValuesForSetting:v4];
+  v5 = [MCRestrictionManager defaultIntersectedValuesForSetting:settingCopy];
 
   return v5;
 }
 
-- (id)defaultValuesForUnionSetting:(id)a3
+- (id)defaultValuesForUnionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCRestrictionManager defaultUnionValuesForSetting:v4];
+  v5 = [MCRestrictionManager defaultUnionValuesForSetting:settingCopy];
 
   return v5;
 }
 
-- (id)defaultParametersForBoolSetting:(id)a3
+- (id)defaultParametersForBoolSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCRestrictionManager defaultParametersForBoolSetting:v4];
+  v5 = [MCRestrictionManager defaultParametersForBoolSetting:settingCopy];
 
   return v5;
 }
 
-- (id)defaultParametersForValueSetting:(id)a3
+- (id)defaultParametersForValueSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCRestrictionManager defaultParametersForValueSetting:v4];
+  v5 = [MCRestrictionManager defaultParametersForValueSetting:settingCopy];
 
   return v5;
 }
 
-- (id)defaultParametersForIntersectionSetting:(id)a3
+- (id)defaultParametersForIntersectionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCRestrictionManager defaultParametersForIntersectedValuesSetting:v4];
+  v5 = [MCRestrictionManager defaultParametersForIntersectedValuesSetting:settingCopy];
 
   return v5;
 }
 
-- (id)defaultParametersForUnionSetting:(id)a3
+- (id)defaultParametersForUnionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MCRestrictionManager defaultParametersForUnionValuesSetting:v4];
+  v5 = [MCRestrictionManager defaultParametersForUnionValuesSetting:settingCopy];
 
   return v5;
 }
 
-- (id)effectiveParametersForBoolSetting:(id)a3 configurationUUID:(id)a4
+- (id)effectiveParametersForBoolSetting:(id)setting configurationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v8 = +[MCRestrictionManager sharedManager];
-  v9 = [v8 effectiveParametersForBoolSetting:v7 configurationUUID:v6];
+  v9 = [v8 effectiveParametersForBoolSetting:settingCopy configurationUUID:dCopy];
 
   return v9;
 }
 
-- (id)effectiveParametersForIntersectionSetting:(id)a3
+- (id)effectiveParametersForIntersectionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 effectiveParametersForIntersectedSetting:v4];
+  v6 = [v5 effectiveParametersForIntersectedSetting:settingCopy];
 
   return v6;
 }
 
-- (id)effectiveParametersForUnionSetting:(id)a3
+- (id)effectiveParametersForUnionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 effectiveParametersForUnionSetting:v4];
+  v6 = [v5 effectiveParametersForUnionSetting:settingCopy];
 
   return v6;
 }
 
-- (id)effectiveParametersForValueSetting:(id)a3
+- (id)effectiveParametersForValueSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 effectiveParametersForValueSetting:v4];
+  v6 = [v5 effectiveParametersForValueSetting:settingCopy];
 
   return v6;
 }
 
-- (int)effectiveBoolValueForSetting:(id)a3 outAsk:(BOOL *)a4
+- (int)effectiveBoolValueForSetting:(id)setting outAsk:(BOOL *)ask
 {
-  v6 = a3;
+  settingCopy = setting;
   if (![(MCProfileConnection *)self needsCheckIn])
   {
-    if ([v6 isEqualToString:@"allowCamera"])
+    if ([settingCopy isEqualToString:@"allowCamera"])
     {
       v8 = [(MCProfileConnection *)self effectiveValuesForIntersectionSetting:@"allowedCameraRestrictionBundleIDs"];
       if (v8)
       {
-        v9 = [MEMORY[0x1E696AAE8] mainBundle];
-        v10 = [v9 bundleIdentifier];
+        mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
 
-        if (v10 && ([v8 containsObject:v10] & 1) != 0)
+        if (bundleIdentifier && ([v8 containsObject:bundleIdentifier] & 1) != 0)
         {
           v7 = 1;
 LABEL_18:
@@ -6391,17 +6391,17 @@ LABEL_18:
       v8 = 0;
     }
 
-    v10 = [(MCProfileConnection *)self effectiveParametersForBoolSetting:v6];
-    v11 = [v10 objectForKeyedSubscript:@"value"];
+    bundleIdentifier = [(MCProfileConnection *)self effectiveParametersForBoolSetting:settingCopy];
+    v11 = [bundleIdentifier objectForKeyedSubscript:@"value"];
     v12 = v11;
     if (v11)
     {
       if ([v11 BOOLValue])
       {
-        if (a4)
+        if (ask)
         {
-          v13 = [v10 objectForKeyedSubscript:@"ask"];
-          *a4 = [v13 BOOLValue];
+          v13 = [bundleIdentifier objectForKeyedSubscript:@"ask"];
+          *ask = [v13 BOOLValue];
         }
 
         v7 = 1;
@@ -6427,10 +6427,10 @@ LABEL_19:
   return v7;
 }
 
-- (int)effectiveBoolValueForSetting:(id)a3 configurationUUID:(id)a4 outAsk:(BOOL *)a5
+- (int)effectiveBoolValueForSetting:(id)setting configurationUUID:(id)d outAsk:(BOOL *)ask
 {
-  v8 = a3;
-  v9 = a4;
+  settingCopy = setting;
+  dCopy = d;
   if ([(MCProfileConnection *)self needsCheckIn])
   {
     v10 = 0;
@@ -6438,17 +6438,17 @@ LABEL_19:
 
   else
   {
-    v11 = [(MCProfileConnection *)self effectiveParametersForBoolSetting:v8 configurationUUID:v9];
+    v11 = [(MCProfileConnection *)self effectiveParametersForBoolSetting:settingCopy configurationUUID:dCopy];
     v12 = [v11 objectForKeyedSubscript:@"value"];
     v13 = v12;
     if (v12)
     {
       if ([v12 BOOLValue])
       {
-        if (a5)
+        if (ask)
         {
           v14 = [v11 objectForKeyedSubscript:@"ask"];
-          *a5 = [v14 BOOLValue];
+          *ask = [v14 BOOLValue];
         }
 
         v10 = 1;
@@ -6469,9 +6469,9 @@ LABEL_19:
   return v10;
 }
 
-- (id)effectiveValueForSetting:(id)a3
+- (id)effectiveValueForSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   if ([(MCProfileConnection *)self needsCheckIn])
   {
     v5 = 0;
@@ -6479,16 +6479,16 @@ LABEL_19:
 
   else
   {
-    v6 = [(MCProfileConnection *)self effectiveParametersForValueSetting:v4];
+    v6 = [(MCProfileConnection *)self effectiveParametersForValueSetting:settingCopy];
     v5 = [v6 objectForKey:@"value"];
   }
 
   return v5;
 }
 
-- (id)effectiveValuesForIntersectionSetting:(id)a3
+- (id)effectiveValuesForIntersectionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   if ([(MCProfileConnection *)self needsCheckIn])
   {
     v5 = 0;
@@ -6496,16 +6496,16 @@ LABEL_19:
 
   else
   {
-    v6 = [(MCProfileConnection *)self effectiveParametersForIntersectionSetting:v4];
+    v6 = [(MCProfileConnection *)self effectiveParametersForIntersectionSetting:settingCopy];
     v5 = [v6 objectForKeyedSubscript:@"values"];
   }
 
   return v5;
 }
 
-- (id)effectiveValuesForUnionSetting:(id)a3
+- (id)effectiveValuesForUnionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   if ([(MCProfileConnection *)self needsCheckIn])
   {
     v5 = 0;
@@ -6513,18 +6513,18 @@ LABEL_19:
 
   else
   {
-    v6 = [(MCProfileConnection *)self effectiveParametersForUnionSetting:v4];
+    v6 = [(MCProfileConnection *)self effectiveParametersForUnionSetting:settingCopy];
     v5 = [v6 objectForKeyedSubscript:@"values"];
   }
 
   return v5;
 }
 
-- (int)effectiveBoolValueForWatchSetting:(id)a3 pairedDevice:(id)a4 outError:(id *)a5
+- (int)effectiveBoolValueForWatchSetting:(id)setting pairedDevice:(id)device outError:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  settingCopy = setting;
+  deviceCopy = device;
   if ([(MCProfileConnection *)self needsCheckIn])
   {
     v10 = 0;
@@ -6532,8 +6532,8 @@ LABEL_19:
 
   else
   {
-    v11 = [v9 valueForProperty:*MEMORY[0x1E69B3610]];
-    v12 = [v9 valueForProperty:*MEMORY[0x1E69B35F8]];
+    v11 = [deviceCopy valueForProperty:*MEMORY[0x1E69B3610]];
+    v12 = [deviceCopy valueForProperty:*MEMORY[0x1E69B35F8]];
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
@@ -6544,38 +6544,38 @@ LABEL_19:
     v24 = __Block_byref_object_copy__10;
     v25 = __Block_byref_object_dispose__10;
     v26 = 0;
-    v13 = [(MCProfileConnection *)self xpcConnection];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __89__MCProfileConnection_Settings__effectiveBoolValueForWatchSetting_pairedDevice_outError___block_invoke;
     v20[3] = &unk_1E77D2620;
     v20[4] = &v21;
-    v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v20];
+    v14 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __89__MCProfileConnection_Settings__effectiveBoolValueForWatchSetting_pairedDevice_outError___block_invoke_2;
     v19[3] = &unk_1E77D2990;
     v19[4] = &v21;
     v19[5] = &v27;
-    [v14 effectiveBoolValueForWatchSetting:v8 pairingID:v11 pairingDataStore:v12 completion:v19];
+    [v14 effectiveBoolValueForWatchSetting:settingCopy pairingID:v11 pairingDataStore:v12 completion:v19];
 
     if (v22[5])
     {
       v15 = qword_1ED4ADE28;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v22[5] MCVerboseDescription];
+        mCVerboseDescription = [v22[5] MCVerboseDescription];
         *buf = 138543618;
-        v32 = v8;
+        v32 = settingCopy;
         v33 = 2114;
-        v34 = v16;
+        v34 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_ERROR, "Failed to retrieve effective BOOL for feature “%{public}@” with error: %{public}@", buf, 0x16u);
       }
 
       v10 = 0;
-      if (a5)
+      if (error)
       {
-        *a5 = v22[5];
+        *error = v22[5];
       }
     }
 
@@ -6614,11 +6614,11 @@ void __89__MCProfileConnection_Settings__effectiveBoolValueForWatchSetting_paire
   }
 }
 
-- (id)effectiveValueForWatchSetting:(id)a3 pairedDevice:(id)a4 outError:(id *)a5
+- (id)effectiveValueForWatchSetting:(id)setting pairedDevice:(id)device outError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  settingCopy = setting;
+  deviceCopy = device;
   if ([(MCProfileConnection *)self needsCheckIn])
   {
     v10 = 0;
@@ -6626,8 +6626,8 @@ void __89__MCProfileConnection_Settings__effectiveBoolValueForWatchSetting_paire
 
   else
   {
-    v11 = [v9 valueForProperty:*MEMORY[0x1E69B3610]];
-    v12 = [v9 valueForProperty:*MEMORY[0x1E69B35F8]];
+    v11 = [deviceCopy valueForProperty:*MEMORY[0x1E69B3610]];
+    v12 = [deviceCopy valueForProperty:*MEMORY[0x1E69B35F8]];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -6640,38 +6640,38 @@ void __89__MCProfileConnection_Settings__effectiveBoolValueForWatchSetting_paire
     v24 = __Block_byref_object_copy__10;
     v25 = __Block_byref_object_dispose__10;
     v26 = 0;
-    v13 = [(MCProfileConnection *)self xpcConnection];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __85__MCProfileConnection_Settings__effectiveValueForWatchSetting_pairedDevice_outError___block_invoke;
     v20[3] = &unk_1E77D2620;
     v20[4] = &v21;
-    v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v20];
+    v14 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __85__MCProfileConnection_Settings__effectiveValueForWatchSetting_pairedDevice_outError___block_invoke_2;
     v19[3] = &unk_1E77D2990;
     v19[4] = &v21;
     v19[5] = &v27;
-    [v14 effectiveValueForWatchSetting:v8 pairingID:v11 pairingDataStore:v12 completion:v19];
+    [v14 effectiveValueForWatchSetting:settingCopy pairingID:v11 pairingDataStore:v12 completion:v19];
 
     if (v22[5])
     {
       v15 = qword_1ED4ADE28;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v22[5] MCVerboseDescription];
+        mCVerboseDescription = [v22[5] MCVerboseDescription];
         *buf = 138543618;
-        v34 = v8;
+        v34 = settingCopy;
         v35 = 2114;
-        v36 = v16;
+        v36 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_ERROR, "Failed to retrieve effective value for feature “%{public}@” with error: %{public}@", buf, 0x16u);
       }
 
       v10 = 0;
-      if (a5)
+      if (error)
       {
-        *a5 = v22[5];
+        *error = v22[5];
       }
     }
 
@@ -6700,11 +6700,11 @@ void __85__MCProfileConnection_Settings__effectiveValueForWatchSetting_pairedDev
   *(v6 + 40) = v5;
 }
 
-- (id)effectiveValuesForWatchIntersectionSetting:(id)a3 pairedDevice:(id)a4 outError:(id *)a5
+- (id)effectiveValuesForWatchIntersectionSetting:(id)setting pairedDevice:(id)device outError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  settingCopy = setting;
+  deviceCopy = device;
   if ([(MCProfileConnection *)self needsCheckIn])
   {
     v10 = 0;
@@ -6712,8 +6712,8 @@ void __85__MCProfileConnection_Settings__effectiveValueForWatchSetting_pairedDev
 
   else
   {
-    v11 = [v9 valueForProperty:*MEMORY[0x1E69B3610]];
-    v12 = [v9 valueForProperty:*MEMORY[0x1E69B35F8]];
+    v11 = [deviceCopy valueForProperty:*MEMORY[0x1E69B3610]];
+    v12 = [deviceCopy valueForProperty:*MEMORY[0x1E69B35F8]];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -6726,38 +6726,38 @@ void __85__MCProfileConnection_Settings__effectiveValueForWatchSetting_pairedDev
     v24 = __Block_byref_object_copy__10;
     v25 = __Block_byref_object_dispose__10;
     v26 = 0;
-    v13 = [(MCProfileConnection *)self xpcConnection];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __98__MCProfileConnection_Settings__effectiveValuesForWatchIntersectionSetting_pairedDevice_outError___block_invoke;
     v20[3] = &unk_1E77D2620;
     v20[4] = &v21;
-    v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v20];
+    v14 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __98__MCProfileConnection_Settings__effectiveValuesForWatchIntersectionSetting_pairedDevice_outError___block_invoke_2;
     v19[3] = &unk_1E77D29B8;
     v19[4] = &v21;
     v19[5] = &v27;
-    [v14 effectiveValuesForWatchIntersectionSetting:v8 pairingID:v11 pairingDataStore:v12 completion:v19];
+    [v14 effectiveValuesForWatchIntersectionSetting:settingCopy pairingID:v11 pairingDataStore:v12 completion:v19];
 
     if (v22[5])
     {
       v15 = qword_1ED4ADE28;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v22[5] MCVerboseDescription];
+        mCVerboseDescription = [v22[5] MCVerboseDescription];
         *buf = 138543618;
-        v34 = v8;
+        v34 = settingCopy;
         v35 = 2114;
-        v36 = v16;
+        v36 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_ERROR, "Failed to retrieve effective intersection values for feature “%{public}@” with error: %{public}@", buf, 0x16u);
       }
 
       v10 = 0;
-      if (a5)
+      if (error)
       {
-        *a5 = v22[5];
+        *error = v22[5];
       }
     }
 
@@ -6786,11 +6786,11 @@ void __98__MCProfileConnection_Settings__effectiveValuesForWatchIntersectionSett
   *(v6 + 40) = v5;
 }
 
-- (id)effectiveValuesForWatchUnionSetting:(id)a3 pairedDevice:(id)a4 outError:(id *)a5
+- (id)effectiveValuesForWatchUnionSetting:(id)setting pairedDevice:(id)device outError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  settingCopy = setting;
+  deviceCopy = device;
   if ([(MCProfileConnection *)self needsCheckIn])
   {
     v10 = 0;
@@ -6798,8 +6798,8 @@ void __98__MCProfileConnection_Settings__effectiveValuesForWatchIntersectionSett
 
   else
   {
-    v11 = [v9 valueForProperty:*MEMORY[0x1E69B3610]];
-    v12 = [v9 valueForProperty:*MEMORY[0x1E69B35F8]];
+    v11 = [deviceCopy valueForProperty:*MEMORY[0x1E69B3610]];
+    v12 = [deviceCopy valueForProperty:*MEMORY[0x1E69B35F8]];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -6812,38 +6812,38 @@ void __98__MCProfileConnection_Settings__effectiveValuesForWatchIntersectionSett
     v24 = __Block_byref_object_copy__10;
     v25 = __Block_byref_object_dispose__10;
     v26 = 0;
-    v13 = [(MCProfileConnection *)self xpcConnection];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __91__MCProfileConnection_Settings__effectiveValuesForWatchUnionSetting_pairedDevice_outError___block_invoke;
     v20[3] = &unk_1E77D2620;
     v20[4] = &v21;
-    v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v20];
+    v14 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __91__MCProfileConnection_Settings__effectiveValuesForWatchUnionSetting_pairedDevice_outError___block_invoke_2;
     v19[3] = &unk_1E77D29B8;
     v19[4] = &v21;
     v19[5] = &v27;
-    [v14 effectiveValuesForWatchUnionSetting:v8 pairingID:v11 pairingDataStore:v12 completion:v19];
+    [v14 effectiveValuesForWatchUnionSetting:settingCopy pairingID:v11 pairingDataStore:v12 completion:v19];
 
     if (v22[5])
     {
       v15 = qword_1ED4ADE28;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v22[5] MCVerboseDescription];
+        mCVerboseDescription = [v22[5] MCVerboseDescription];
         *buf = 138543618;
-        v34 = v8;
+        v34 = settingCopy;
         v35 = 2114;
-        v36 = v16;
+        v36 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_ERROR, "Failed to retrieve effective union values for feature “%{public}@” with error: %{public}@", buf, 0x16u);
       }
 
       v10 = 0;
-      if (a5)
+      if (error)
       {
-        *a5 = v22[5];
+        *error = v22[5];
       }
     }
 
@@ -6872,33 +6872,33 @@ void __91__MCProfileConnection_Settings__effectiveValuesForWatchUnionSetting_pai
   *(v6 + 40) = v5;
 }
 
-- (id)requestEffectiveBoolValueForSetting:(id)a3 configurationUUID:(id)a4 promptOptions:(id)a5 completion:(id)a6
+- (id)requestEffectiveBoolValueForSetting:(id)setting configurationUUID:(id)d promptOptions:(id)options completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __112__MCProfileConnection_Settings__requestEffectiveBoolValueForSetting_configurationUUID_promptOptions_completion___block_invoke;
   v27[3] = &unk_1E77D2A08;
-  v28 = v10;
-  v11 = v10;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  v28 = completionCopy;
+  v11 = completionCopy;
+  optionsCopy = options;
+  dCopy = d;
+  settingCopy = setting;
   v15 = MEMORY[0x1AC55F990](v27);
-  v16 = [MEMORY[0x1E696AFB0] UUID];
-  v17 = [v16 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v18 = [(MCProfileConnection *)self xpcConnection];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __112__MCProfileConnection_Settings__requestEffectiveBoolValueForSetting_configurationUUID_promptOptions_completion___block_invoke_2;
   v25 = &unk_1E77D2698;
   v26 = v15;
   v19 = v15;
-  v20 = [v18 remoteObjectProxyWithErrorHandler:&v22];
-  [v20 showFeaturePromptForSetting:v14 configurationUUID:v13 promptOptions:v12 promptIdentifier:v17 completion:{v19, v22, v23, v24, v25}];
+  v20 = [xpcConnection remoteObjectProxyWithErrorHandler:&v22];
+  [v20 showFeaturePromptForSetting:settingCopy configurationUUID:dCopy promptOptions:optionsCopy promptIdentifier:uUIDString completion:{v19, v22, v23, v24, v25}];
 
-  return v17;
+  return uUIDString;
 }
 
 void __112__MCProfileConnection_Settings__requestEffectiveBoolValueForSetting_configurationUUID_promptOptions_completion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -6935,11 +6935,11 @@ void __112__MCProfileConnection_Settings__requestEffectiveBoolValueForSetting_co
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (int)requestEffectiveBoolValueForSetting:(id)a3 configurationUUID:(id)a4 promptOptions:(id)a5 outError:(id *)a6
+- (int)requestEffectiveBoolValueForSetting:(id)setting configurationUUID:(id)d promptOptions:(id)options outError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  settingCopy = setting;
+  dCopy = d;
+  optionsCopy = options;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -6950,27 +6950,27 @@ void __112__MCProfileConnection_Settings__requestEffectiveBoolValueForSetting_co
   v23 = __Block_byref_object_copy__10;
   v24 = __Block_byref_object_dispose__10;
   v25 = 0;
-  v13 = [(MCProfileConnection *)self xpcConnection];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __110__MCProfileConnection_Settings__requestEffectiveBoolValueForSetting_configurationUUID_promptOptions_outError___block_invoke;
   v19[3] = &unk_1E77D2620;
   v19[4] = &v20;
-  v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v19];
+  v14 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __110__MCProfileConnection_Settings__requestEffectiveBoolValueForSetting_configurationUUID_promptOptions_outError___block_invoke_2;
   v18[3] = &unk_1E77D2A30;
   v18[4] = &v20;
   v18[5] = &v26;
-  [v14 showFeaturePromptForSetting:v10 configurationUUID:v11 promptOptions:v12 promptIdentifier:0 completion:v18];
+  [v14 showFeaturePromptForSetting:settingCopy configurationUUID:dCopy promptOptions:optionsCopy promptIdentifier:0 completion:v18];
 
-  if (a6)
+  if (error)
   {
     v15 = v21[5];
     if (v15)
     {
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -6988,26 +6988,26 @@ void __110__MCProfileConnection_Settings__requestEffectiveBoolValueForSetting_co
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (void)cancelRequestEffectiveBoolValue:(id)a3 completion:(id)a4
+- (void)cancelRequestEffectiveBoolValue:(id)value completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_completion___block_invoke;
   v18[3] = &unk_1E77D2698;
-  v19 = v6;
-  v7 = v6;
-  v8 = a3;
+  v19 = completionCopy;
+  v7 = completionCopy;
+  valueCopy = value;
   v9 = MEMORY[0x1AC55F990](v18);
-  v10 = [(MCProfileConnection *)self xpcConnection];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_completion___block_invoke_2;
   v16 = &unk_1E77D2698;
   v17 = v9;
   v11 = v9;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:&v13];
-  [v12 cancelFeaturePromptWithIdentifier:v8 completion:{v11, v13, v14, v15, v16}];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:&v13];
+  [v12 cancelFeaturePromptWithIdentifier:valueCopy completion:{v11, v13, v14, v15, v16}];
 }
 
 void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_completion___block_invoke(uint64_t a1, void *a2)
@@ -7043,23 +7043,23 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 isSettingLockedDownByRestrictions:v4];
+  v6 = [v5 isSettingLockedDownByRestrictions:restrictionsCopy];
 
   return v6;
 }
 
-- (BOOL)_areProfilesRestrictingSettings:(id)a3 outMDMName:(id *)a4 outExchangeName:(id *)a5 outExchangeCount:(int64_t *)a6 outProfileName:(id *)a7 outProfileCount:(int64_t *)a8
+- (BOOL)_areProfilesRestrictingSettings:(id)settings outMDMName:(id *)name outExchangeName:(id *)exchangeName outExchangeCount:(int64_t *)count outProfileName:(id *)profileName outProfileCount:(int64_t *)profileCount
 {
   v65 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  settingsCopy = settings;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v49 = v9;
-  v50 = [(MCProfileConnection *)self _settingsLockedDownByRestrictions:v9];
+  v49 = settingsCopy;
+  v50 = [(MCProfileConnection *)self _settingsLockedDownByRestrictions:settingsCopy];
   v10 = MEMORY[0x1E695DF20];
   v11 = MDMFilePath();
   v12 = [v10 dictionaryWithContentsOfFile:v11];
@@ -7087,7 +7087,7 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
   {
     v16 = v15;
     v17 = 0;
-    v18 = 0;
+    friendlyName2 = 0;
     v52 = 0;
     v19 = *v60;
     do
@@ -7104,30 +7104,30 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
         if (v12 && [v21 isEqualToString:v54])
         {
           v23 = [MCManifest installedProfileWithIdentifier:v21];
-          v24 = [v23 organization];
+          organization = [v23 organization];
 
-          if (v24)
+          if (organization)
           {
-            v25 = [v23 organization];
+            organization2 = [v23 organization];
 
-            v52 = v25;
+            v52 = organization2;
           }
 
           else
           {
-            v27 = [v23 friendlyName];
+            friendlyName = [v23 friendlyName];
 
             ++v17;
-            v18 = v27;
+            friendlyName2 = friendlyName;
           }
         }
 
         else
         {
-          if (!v18)
+          if (!friendlyName2)
           {
             v26 = [MCManifest installedProfileWithIdentifier:v21];
-            v18 = [v26 friendlyName];
+            friendlyName2 = [v26 friendlyName];
           }
 
           ++v17;
@@ -7145,14 +7145,14 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
   else
   {
     v17 = 0;
-    v18 = 0;
+    friendlyName2 = 0;
     v52 = 0;
   }
 
   v28 = +[MCRestrictionManager sharedManager];
   v29 = [v28 exchangeUUIDsRestrictingSettings:v50];
 
-  v30 = [MEMORY[0x1E6959A48] defaultStore];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
@@ -7163,7 +7163,7 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
   {
     v33 = v32;
     v51 = 0;
-    v34 = 0;
+    accountDescription = 0;
     v35 = *v56;
     do
     {
@@ -7174,11 +7174,11 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
           objc_enumerationMutation(v31);
         }
 
-        v37 = [v30 accountWithIdentifier:*(*(&v55 + 1) + 8 * j)];
+        v37 = [defaultStore accountWithIdentifier:*(*(&v55 + 1) + 8 * j)];
         v38 = v37;
-        if (!v34)
+        if (!accountDescription)
         {
-          v34 = [v37 accountDescription];
+          accountDescription = [v37 accountDescription];
         }
       }
 
@@ -7192,51 +7192,51 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
   else
   {
     v51 = 0;
-    v34 = 0;
+    accountDescription = 0;
   }
 
-  if (a4)
+  if (name)
   {
     v39 = v52;
-    *a4 = v52;
+    *name = v52;
   }
 
-  if (a5)
+  if (exchangeName)
   {
-    v40 = v34;
-    *a5 = v34;
+    v40 = accountDescription;
+    *exchangeName = accountDescription;
   }
 
-  if (a6)
+  if (count)
   {
-    *a6 = v51;
+    *count = v51;
   }
 
-  if (a7)
+  if (profileName)
   {
-    v41 = v18;
-    *a7 = v18;
+    v41 = friendlyName2;
+    *profileName = friendlyName2;
   }
 
-  if (a8)
+  if (profileCount)
   {
-    *a8 = v17;
+    *profileCount = v17;
   }
 
   v42 = *MEMORY[0x1E69E9840];
-  return (v52 | v18 | v34) != 0;
+  return (v52 | friendlyName2 | accountDescription) != 0;
 }
 
-- (id)localizedRestrictionSourceDescriptionForFeatures:(id)a3
+- (id)localizedRestrictionSourceDescriptionForFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   [(MCProfileConnection *)self checkInIfNeeded];
   v14 = 0;
   v15 = 0;
   v12 = 0;
   v13 = 0;
   v11 = 0;
-  v5 = [(MCProfileConnection *)self _areProfilesRestrictingSettings:v4 outMDMName:&v13 outExchangeName:&v12 outExchangeCount:&v15 outProfileName:&v11 outProfileCount:&v14];
+  v5 = [(MCProfileConnection *)self _areProfilesRestrictingSettings:featuresCopy outMDMName:&v13 outExchangeName:&v12 outExchangeCount:&v15 outProfileName:&v11 outProfileCount:&v14];
 
   v6 = v13;
   v7 = v12;
@@ -7250,16 +7250,16 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
   return v9;
 }
 
-- (id)_settingsLockedDownByRestrictions:(id)a3
+- (id)_settingsLockedDownByRestrictions:(id)restrictions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  restrictionsCopy = restrictions;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = restrictionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -7293,16 +7293,16 @@ void __76__MCProfileConnection_Settings__cancelRequestEffectiveBoolValue_complet
   return v12;
 }
 
-- (BOOL)areSettingsLockedDownByRestrictions:(id)a3
+- (BOOL)areSettingsLockedDownByRestrictions:(id)restrictions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  restrictionsCopy = restrictions;
   [(MCProfileConnection *)self checkInIfNeeded];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = restrictionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -7341,62 +7341,62 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)isBoolSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isBoolSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 isBoolSettingLockedDownByRestrictions:v4];
+  v6 = [v5 isBoolSettingLockedDownByRestrictions:restrictionsCopy];
 
   return v6;
 }
 
-- (BOOL)isValueSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isValueSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 isValueSettingLockedDownByRestrictions:v4];
+  v6 = [v5 isValueSettingLockedDownByRestrictions:restrictionsCopy];
 
   return v6;
 }
 
-- (BOOL)isIntersectionSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isIntersectionSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 isIntersectionSettingLockedDownByRestrictions:v4];
+  v6 = [v5 isIntersectionSettingLockedDownByRestrictions:restrictionsCopy];
 
   return v6;
 }
 
-- (BOOL)isUnionSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isUnionSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 isUnionSettingLockedDownByRestrictions:v4];
+  v6 = [v5 isUnionSettingLockedDownByRestrictions:restrictionsCopy];
 
   return v6;
 }
 
-- (void)removeBoolSetting:(id)a3
+- (void)removeBoolSetting:(id)setting
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = qword_1ED4ADE28;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = settingCopy;
     _os_log_impl(&dword_1A795B000, v5, OS_LOG_TYPE_DEFAULT, "Remove Bool settings: %{public}@", &v9, 0xCu);
   }
 
-  v6 = [(MCProfileConnection *)self xpcConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_21];
-  [v7 removeBoolSetting:v4 completion:&__block_literal_global_21];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_21];
+  [v7 removeBoolSetting:settingCopy completion:&__block_literal_global_21];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -7421,22 +7421,22 @@ void __51__MCProfileConnection_Settings__removeBoolSetting___block_invoke(uint64
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeValueSetting:(id)a3
+- (void)removeValueSetting:(id)setting
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = qword_1ED4ADE28;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = settingCopy;
     _os_log_impl(&dword_1A795B000, v5, OS_LOG_TYPE_DEFAULT, "Remove Value settings: %{public}@", &v9, 0xCu);
   }
 
-  v6 = [(MCProfileConnection *)self xpcConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_23];
-  [v7 removeValueSetting:v4 completion:&__block_literal_global_23];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_23];
+  [v7 removeValueSetting:settingCopy completion:&__block_literal_global_23];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -7507,51 +7507,51 @@ void __105__MCProfileConnection_Settings__resetAllSettingsToDefaultsIsUserInitia
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (int)userBoolValueForSetting:(id)a3
+- (int)userBoolValueForSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 BOOLSettingForFeature:v4];
+  v6 = [v5 BOOLSettingForFeature:settingCopy];
 
   return v6;
 }
 
-- (id)userValueForSetting:(id)a3
+- (id)userValueForSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 valueSettingForFeature:v4];
+  v6 = [v5 valueSettingForFeature:settingCopy];
 
   return v6;
 }
 
-- (id)userValueForIntersectionSetting:(id)a3
+- (id)userValueForIntersectionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 intersectedValuesSettingForFeature:v4];
+  v6 = [v5 intersectedValuesSettingForFeature:settingCopy];
 
   return v6;
 }
 
-- (id)userValueForUnionSetting:(id)a3
+- (id)userValueForUnionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 unionValuesSettingForFeature:v4];
+  v6 = [v5 unionValuesSettingForFeature:settingCopy];
 
   return v6;
 }
 
-- (id)lockedDownRootCertificatesWithOutLocalizedSourceDescription:(id *)a3
+- (id)lockedDownRootCertificatesWithOutLocalizedSourceDescription:(id *)description
 {
   v62 = *MEMORY[0x1E69E9840];
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = +[MCManifest sharedManifest];
   v6 = [v5 allProfileIdentifiersInstalledNonInteractivelyWithFilterFlags:1];
 
@@ -7560,11 +7560,11 @@ void __105__MCProfileConnection_Settings__resetAllSettingsToDefaultsIsUserInitia
   v8 = [(MCProfileConnection *)self installedProfileIdentifiersWithFilterFlags:2];
   [v7 addObjectsFromArray:v8];
 
-  v39 = self;
-  v9 = [(MCProfileConnection *)self installedMDMProfileIdentifier];
-  if (v9)
+  selfCopy = self;
+  installedMDMProfileIdentifier = [(MCProfileConnection *)self installedMDMProfileIdentifier];
+  if (installedMDMProfileIdentifier)
   {
-    [v7 addObject:v9];
+    [v7 addObject:installedMDMProfileIdentifier];
   }
 
   v58 = 0u;
@@ -7575,18 +7575,18 @@ void __105__MCProfileConnection_Settings__resetAllSettingsToDefaultsIsUserInitia
   v42 = [v10 countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (!v42)
   {
-    v47 = 0;
+    friendlyName = 0;
     v50 = 0;
-    v30 = 0;
+    friendlyName2 = 0;
     v29 = v10;
     goto LABEL_35;
   }
 
   v45 = 0;
   v50 = 0;
-  v47 = 0;
+  friendlyName = 0;
   v41 = *v57;
-  v48 = v4;
+  v48 = array;
   v40 = v10;
   do
   {
@@ -7612,20 +7612,20 @@ void __105__MCProfileConnection_Settings__resetAllSettingsToDefaultsIsUserInitia
         v52 = 0u;
         v53 = 0u;
         v51 = v15;
-        v16 = [v15 payloads];
-        v17 = [v16 countByEnumeratingWithState:&v52 objects:v60 count:16];
+        payloads = [v15 payloads];
+        v17 = [payloads countByEnumeratingWithState:&v52 objects:v60 count:16];
         if (v17)
         {
           v18 = v17;
           v19 = *v53;
-          v49 = v16;
+          v49 = payloads;
           do
           {
             for (j = 0; j != v18; ++j)
             {
               if (*v53 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(payloads);
               }
 
               v21 = *(*(&v52 + 1) + 8 * j);
@@ -7635,17 +7635,17 @@ void __105__MCProfileConnection_Settings__resetAllSettingsToDefaultsIsUserInitia
                 v22 = v21;
                 if ([v22 isFullyTrustedRootCert])
                 {
-                  v23 = [v22 copyCertificate];
-                  if (v23)
+                  copyCertificate = [v22 copyCertificate];
+                  if (copyCertificate)
                   {
-                    v24 = v23;
-                    v25 = SecCertificateCopyData(v23);
-                    [v4 addObject:v25];
+                    v24 = copyCertificate;
+                    v25 = SecCertificateCopyData(copyCertificate);
+                    [array addObject:v25];
                     [v51 installOptions];
-                    v27 = v26 = v9;
+                    v27 = v26 = installedMDMProfileIdentifier;
                     v28 = [v27 objectForKey:@"managingProfileIdentifier"];
 
-                    v9 = v26;
+                    installedMDMProfileIdentifier = v26;
                     if (v26 && (([v46 isEqualToString:v26] & 1) != 0 || v28 && (objc_msgSend(v28, "isEqualToString:", v26) & 1) != 0))
                     {
                       v45 = 1;
@@ -7653,9 +7653,9 @@ void __105__MCProfileConnection_Settings__resetAllSettingsToDefaultsIsUserInitia
 
                     else
                     {
-                      if (!v47)
+                      if (!friendlyName)
                       {
-                        v47 = [v51 friendlyName];
+                        friendlyName = [v51 friendlyName];
                       }
 
                       ++v50;
@@ -7663,14 +7663,14 @@ void __105__MCProfileConnection_Settings__resetAllSettingsToDefaultsIsUserInitia
 
                     CFRelease(v24);
 
-                    v4 = v48;
-                    v16 = v49;
+                    array = v48;
+                    payloads = v49;
                   }
                 }
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v52 objects:v60 count:16];
+            v18 = [payloads countByEnumeratingWithState:&v52 objects:v60 count:16];
           }
 
           while (v18);
@@ -7692,45 +7692,45 @@ void __105__MCProfileConnection_Settings__resetAllSettingsToDefaultsIsUserInitia
 
   if (v45)
   {
-    v29 = [(MCProfileConnection *)v39 installedProfileWithIdentifier:v9];
-    v30 = [v29 friendlyName];
+    v29 = [(MCProfileConnection *)selfCopy installedProfileWithIdentifier:installedMDMProfileIdentifier];
+    friendlyName2 = [v29 friendlyName];
 LABEL_35:
 
     goto LABEL_37;
   }
 
-  v30 = 0;
+  friendlyName2 = 0;
 LABEL_37:
-  v31 = [(MCProfileConnection *)v39 _localizedCertificateSourceDescriptionFromMDMName:v30 exchangeName:0 exchangeCount:0 profileName:v47 profileCount:v50];
+  v31 = [(MCProfileConnection *)selfCopy _localizedCertificateSourceDescriptionFromMDMName:friendlyName2 exchangeName:0 exchangeCount:0 profileName:friendlyName profileCount:v50];
   v32 = v31;
-  if (a3)
+  if (description)
   {
     v33 = v31;
-    *a3 = v32;
+    *description = v32;
   }
 
-  v34 = v4;
+  v34 = array;
 
   v35 = *MEMORY[0x1E69E9840];
-  return v4;
+  return array;
 }
 
 - (id)permittedAutoLockSeconds
 {
   v2 = +[MCHacks sharedHacks];
-  v3 = [v2 permittedAutoLockNumbers];
+  permittedAutoLockNumbers = [v2 permittedAutoLockNumbers];
 
-  return v3;
+  return permittedAutoLockNumbers;
 }
 
-- (void)_setAllowedGrandfatheredRestrictionFeature:(id)a3 forRestrictionKey:(id)a4
+- (void)_setAllowedGrandfatheredRestrictionFeature:(id)feature forRestrictionKey:(id)key
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  featureCopy = feature;
+  keyCopy = key;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v8 = MCSystemMetadataFilePath();
-  v9 = [v7 fileExistsAtPath:v8];
+  v9 = [defaultManager fileExistsAtPath:v8];
 
   v10 = MEMORY[0x1E695DF90];
   if (v9)
@@ -7749,13 +7749,13 @@ LABEL_37:
 
   if ([v14 count])
   {
-    v15 = [v14 objectForKeyedSubscript:v6];
+    v15 = [v14 objectForKeyedSubscript:keyCopy];
     if ([v15 count])
     {
       v16 = [v15 mutableCopy];
-      if (([v16 containsObject:v5] & 1) == 0)
+      if (([v16 containsObject:featureCopy] & 1) == 0)
       {
-        [v16 addObject:v5];
+        [v16 addObject:featureCopy];
         v17 = [v16 copy];
 
         v15 = v17;
@@ -7764,7 +7764,7 @@ LABEL_37:
 
     else
     {
-      v23[0] = v5;
+      v23[0] = featureCopy;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
 
       v15 = v18;
@@ -7773,11 +7773,11 @@ LABEL_37:
 
   else
   {
-    v22 = v5;
+    v22 = featureCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
   }
 
-  [v14 setObject:v15 forKeyedSubscript:v6];
+  [v14 setObject:v15 forKeyedSubscript:keyCopy];
 
   v19 = [v14 copy];
   [v12 setObject:v19 forKeyedSubscript:@"AllowedGrandfatheredRestrictions"];
@@ -7809,14 +7809,14 @@ LABEL_37:
   v19 = *MEMORY[0x1E69E9840];
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 systemProfileRestrictions];
+  systemProfileRestrictions = [v2 systemProfileRestrictions];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  keyEnumerator = [systemProfileRestrictions keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -7827,10 +7827,10 @@ LABEL_37:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        v9 = [v3 objectForKey:*(*(&v14 + 1) + 8 * i)];
+        v9 = [systemProfileRestrictions objectForKey:*(*(&v14 + 1) + 8 * i)];
         v10 = [MCRestrictionManager restrictedBoolForFeature:@"forcePIN" withRestrictionsDictionary:v9];
 
         if (v10 == 1)
@@ -7840,7 +7840,7 @@ LABEL_37:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -7859,13 +7859,13 @@ LABEL_11:
 
 - (BOOL)isPasscodeRecoveryAllowed
 {
-  v3 = [(MCProfileConnection *)self isPasscodeRecoverySupported];
-  if (v3)
+  isPasscodeRecoverySupported = [(MCProfileConnection *)self isPasscodeRecoverySupported];
+  if (isPasscodeRecoverySupported)
   {
-    LOBYTE(v3) = [(MCProfileConnection *)self effectiveBoolValueForSetting:@"allowPasscodeRecovery"]!= 2;
+    LOBYTE(isPasscodeRecoverySupported) = [(MCProfileConnection *)self effectiveBoolValueForSetting:@"allowPasscodeRecovery"]!= 2;
   }
 
-  return v3;
+  return isPasscodeRecoverySupported;
 }
 
 - (BOOL)isPasscodeRecoveryRestricted
@@ -7891,14 +7891,14 @@ uint64_t __85__MCProfileConnection_Passcode__setPasscodeRecoveryAllowed_passcode
 
 - (BOOL)recoveryPasscodeAvailable
 {
-  v2 = [(MCProfileConnection *)self isPasscodeRecoveryAllowed];
-  if (v2)
+  isPasscodeRecoveryAllowed = [(MCProfileConnection *)self isPasscodeRecoveryAllowed];
+  if (isPasscodeRecoveryAllowed)
   {
 
-    LOBYTE(v2) = MCKeybagMementoBlobExists();
+    LOBYTE(isPasscodeRecoveryAllowed) = MCKeybagMementoBlobExists();
   }
 
-  return v2;
+  return isPasscodeRecoveryAllowed;
 }
 
 - (id)clearRecoveryPasscode
@@ -7916,8 +7916,8 @@ uint64_t __85__MCProfileConnection_Passcode__setPasscodeRecoveryAllowed_passcode
   v9[3] = &unk_1E77D2620;
   v9[4] = &v10;
   v3 = MEMORY[0x1AC55F990](v9);
-  v4 = [(MCProfileConnection *)self xpcConnection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v3];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v3];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__MCProfileConnection_Passcode__clearRecoveryPasscode__block_invoke_5;
@@ -7975,19 +7975,19 @@ void __54__MCProfileConnection_Passcode__clearRecoveryPasscode__block_invoke_5(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearRecoveryPasscodeWithCompletion:(id)a3
+- (void)clearRecoveryPasscodeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__MCProfileConnection_Passcode__clearRecoveryPasscodeWithCompletion___block_invoke;
   v9[3] = &unk_1E77D2698;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1AC55F990](v9);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 clearRecoveryPasscodeWithCompletion:v6];
 }
 
@@ -8013,9 +8013,9 @@ void __69__MCProfileConnection_Passcode__clearRecoveryPasscodeWithCompletion___b
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isPasscodeCompliantWithNamedPolicy:(id)a3 outError:(id *)a4
+- (BOOL)isPasscodeCompliantWithNamedPolicy:(id)policy outError:(id *)error
 {
-  v6 = a3;
+  policyCopy = policy;
   [(MCProfileConnection *)self checkInIfNeeded];
   v20 = 0;
   v21 = &v20;
@@ -8033,19 +8033,19 @@ void __69__MCProfileConnection_Passcode__clearRecoveryPasscodeWithCompletion___b
   v13[3] = &unk_1E77D2620;
   v13[4] = &v14;
   v7 = MEMORY[0x1AC55F990](v13);
-  v8 = [(MCProfileConnection *)self xpcConnection];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v7];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__MCProfileConnection_Passcode__isPasscodeCompliantWithNamedPolicy_outError___block_invoke_6;
   v12[3] = &unk_1E77D2800;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v9 isPasscodeCompliantWithNamedPolicy:v6 completion:v12];
+  [v9 isPasscodeCompliantWithNamedPolicy:policyCopy completion:v12];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v10 = *(v21 + 24);
@@ -8288,10 +8288,10 @@ void __116__MCProfileConnection_Passcode__changePasscodeWithRecoveryPasscodeCont
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)clearPasscodeWithEscrowKeybagData:(id)a3 secret:(id)a4 outError:(id *)a5
+- (BOOL)clearPasscodeWithEscrowKeybagData:(id)data secret:(id)secret outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  secretCopy = secret;
   [(MCProfileConnection *)self checkInIfNeeded];
   v10 = qword_1ED4ADE28;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
@@ -8317,13 +8317,13 @@ void __116__MCProfileConnection_Passcode__changePasscodeWithRecoveryPasscodeCont
   v16[4] = &v23;
   v16[5] = buf;
   v11 = MEMORY[0x1AC55F990](v16);
-  v12 = [(MCProfileConnection *)self xpcConnection];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v11];
-  [v13 clearPasscodeWithEscrowKeybagData:v8 secret:v9 completion:v11];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
+  [v13 clearPasscodeWithEscrowKeybagData:dataCopy secret:secretCopy completion:v11];
 
-  if (a5)
+  if (error)
   {
-    *a5 = *(v18 + 5);
+    *error = *(v18 + 5);
   }
 
   v14 = *(v24 + 24);
@@ -8357,10 +8357,10 @@ void __83__MCProfileConnection_Passcode__clearPasscodeWithEscrowKeybagData_secre
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)clearPasscodeWithEscrowKeybagData:(id)a3 secretContext:(id)a4 outError:(id *)a5
+- (BOOL)clearPasscodeWithEscrowKeybagData:(id)data secretContext:(id)context outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  contextCopy = context;
   [(MCProfileConnection *)self checkInIfNeeded];
   v10 = qword_1ED4ADE28;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
@@ -8386,13 +8386,13 @@ void __83__MCProfileConnection_Passcode__clearPasscodeWithEscrowKeybagData_secre
   v16[4] = &v23;
   v16[5] = buf;
   v11 = MEMORY[0x1AC55F990](v16);
-  v12 = [(MCProfileConnection *)self xpcConnection];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v11];
-  [v13 clearPasscodeWithEscrowKeybagData:v8 secretContext:v9 completion:v11];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
+  [v13 clearPasscodeWithEscrowKeybagData:dataCopy secretContext:contextCopy completion:v11];
 
-  if (a5)
+  if (error)
   {
-    *a5 = *(v18 + 5);
+    *error = *(v18 + 5);
   }
 
   v14 = *(v24 + 24);
@@ -8426,90 +8426,90 @@ void __90__MCProfileConnection_Passcode__clearPasscodeWithEscrowKeybagData_secre
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)unlockDeviceWithPasscode:(id)a3 outError:(id *)a4
+- (BOOL)unlockDeviceWithPasscode:(id)passcode outError:(id *)error
 {
-  v6 = a3;
+  passcodeCopy = passcode;
   [(MCProfileConnection *)self checkInIfNeeded];
   v7 = +[MCPasscodeManager sharedManager];
-  LOBYTE(a4) = [v7 unlockDeviceWithPasscode:v6 outError:a4];
+  LOBYTE(error) = [v7 unlockDeviceWithPasscode:passcodeCopy outError:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)unlockDeviceWithPasscodeContext:(id)a3 outError:(id *)a4
+- (BOOL)unlockDeviceWithPasscodeContext:(id)context outError:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   [(MCProfileConnection *)self checkInIfNeeded];
   v7 = +[MCPasscodeManager sharedManager];
-  LOBYTE(a4) = [v7 unlockDeviceWithPasscodeContext:v6 outError:a4];
+  LOBYTE(error) = [v7 unlockDeviceWithPasscodeContext:contextCopy outError:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)passcode:(id)a3 meetsCurrentConstraintsOutError:(id *)a4
+- (BOOL)passcode:(id)passcode meetsCurrentConstraintsOutError:(id *)error
 {
-  v6 = a3;
+  passcodeCopy = passcode;
   [(MCProfileConnection *)self checkInIfNeeded];
   v7 = +[MCPasscodeManager sharedManager];
-  LOBYTE(a4) = [v7 passcode:v6 compliesWithPolicyCheckHistory:1 outError:a4];
+  LOBYTE(error) = [v7 passcode:passcodeCopy compliesWithPolicyCheckHistory:1 outError:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)passcodeContext:(id)a3 meetsCurrentConstraintsOutError:(id *)a4
+- (BOOL)passcodeContext:(id)context meetsCurrentConstraintsOutError:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   [(MCProfileConnection *)self checkInIfNeeded];
   v7 = +[MCPasscodeManager sharedManager];
-  LOBYTE(a4) = [v7 passcodeContext:v6 compliesWithPolicyCheckHistory:1 outError:a4];
+  LOBYTE(error) = [v7 passcodeContext:contextCopy compliesWithPolicyCheckHistory:1 outError:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)currentPasscodeIsCompliantWithGlobalRestrictionsOutError:(id *)a3
+- (BOOL)currentPasscodeIsCompliantWithGlobalRestrictionsOutError:(id *)error
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v4 = +[MCRestrictionManager sharedManager];
-  v5 = [v4 currentRestrictions];
+  currentRestrictions = [v4 currentRestrictions];
 
   v6 = +[MCPasscodeManager sharedManager];
   v10 = 0;
-  [v6 currentPasscodeCompliesWithPolicyFromRestrictions:v5 outError:&v10];
+  [v6 currentPasscodeCompliesWithPolicyFromRestrictions:currentRestrictions outError:&v10];
   v7 = v10;
 
-  if (a3 && v7)
+  if (error && v7)
   {
     v8 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v7 == 0;
 }
 
-- (BOOL)currentPasscodeIsCompliantWithProfileRestrictionsOutError:(id *)a3
+- (BOOL)currentPasscodeIsCompliantWithProfileRestrictionsOutError:(id *)error
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v4 = +[MCRestrictionManager sharedManager];
-  v5 = [v4 combinedProfileRestrictions];
+  combinedProfileRestrictions = [v4 combinedProfileRestrictions];
 
   v6 = +[MCPasscodeManager sharedManager];
-  LOBYTE(a3) = [v6 currentPasscodeCompliesWithPolicyFromRestrictions:v5 outError:a3];
+  LOBYTE(error) = [v6 currentPasscodeCompliesWithPolicyFromRestrictions:combinedProfileRestrictions outError:error];
 
-  return a3;
+  return error;
 }
 
-- (int)_getPasscodeComplianceWarningExpiryDate:(id)a3 lastLockDate:(id)a4 outLocalizedTitle:(id *)a5 outLocalizedMessage:(id *)a6
+- (int)_getPasscodeComplianceWarningExpiryDate:(id)date lastLockDate:(id)lockDate outLocalizedTitle:(id *)title outLocalizedMessage:(id *)message
 {
   v85 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  dateCopy = date;
+  lockDateCopy = lockDate;
   [(MCProfileConnection *)self checkInIfNeeded];
   if (!+[MCRestrictionManager mayChangePasscode])
   {
     v18 = 0;
     v17 = 0;
     v19 = 0;
-    if (!a5)
+    if (!title)
     {
       goto LABEL_9;
     }
@@ -8517,12 +8517,12 @@ void __90__MCProfileConnection_Passcode__clearPasscodeWithEscrowKeybagData_secre
     goto LABEL_8;
   }
 
-  [v10 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v12 >= 0.0)
   {
-    v76 = a5;
-    v77 = a6;
-    v78 = v10;
+    titleCopy = title;
+    messageCopy = message;
+    v78 = dateCopy;
     v24 = MEMORY[0x1E695DF20];
     v25 = MCNagUIMetaFilePath();
     v26 = [v24 dictionaryWithContentsOfFile:v25];
@@ -8532,12 +8532,12 @@ void __90__MCProfileConnection_Passcode__clearPasscodeWithEscrowKeybagData_secre
       v27 = 0;
       while (1)
       {
-        v28 = [MEMORY[0x1E695DF58] currentLocale];
-        v29 = [v28 localeIdentifier];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        localeIdentifier = [currentLocale localeIdentifier];
 
         v30 = [v26 objectForKeyedSubscript:@"lastLocale"];
         v31 = [v26 objectForKeyedSubscript:@"message"];
-        if (!v31 || (v32 = v31, v33 = [v29 isEqualToString:v30], v32, (v33 & 1) != 0))
+        if (!v31 || (v32 = v31, v33 = [localeIdentifier isEqualToString:v30], v32, (v33 & 1) != 0))
         {
 
           v18 = 0;
@@ -8557,7 +8557,7 @@ void __90__MCProfileConnection_Passcode__clearPasscodeWithEscrowKeybagData_secre
           *buf = 138543874;
           v80 = v30;
           v81 = 2114;
-          v82 = v29;
+          v82 = localeIdentifier;
           v83 = 1024;
           v84 = 1;
           _os_log_impl(&dword_1A795B000, v34, OS_LOG_TYPE_DEFAULT, "Cached nag may be in an old locale (it's %{public}@, we're %{public}@), asking to regenerate it (%d more tries)", buf, 0x1Cu);
@@ -8582,7 +8582,7 @@ void __90__MCProfileConnection_Passcode__clearPasscodeWithEscrowKeybagData_secre
         *buf = 138543618;
         v80 = v30;
         v81 = 2114;
-        v82 = v29;
+        v82 = localeIdentifier;
         _os_log_impl(&dword_1A795B000, v34, OS_LOG_TYPE_DEFAULT, "Cached nag may be in an old locale (it's %{public}@, we're %{public}@), continuing anyway", buf, 0x16u);
       }
 
@@ -8591,25 +8591,25 @@ void __90__MCProfileConnection_Passcode__clearPasscodeWithEscrowKeybagData_secre
       v19 = 0;
 LABEL_59:
 
-      a6 = v77;
-      v10 = v78;
-      a5 = v76;
-      if (!v76)
+      message = messageCopy;
+      dateCopy = v78;
+      title = titleCopy;
+      if (!titleCopy)
       {
         goto LABEL_9;
       }
 
 LABEL_8:
       v20 = v17;
-      *a5 = v17;
+      *title = v17;
       goto LABEL_9;
     }
 
     v38 = v26;
 LABEL_22:
-    v39 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v40 = MCBackupContainsPasscodeFilePath();
-    v41 = [v39 fileExistsAtPath:v40];
+    v41 = [defaultManager fileExistsAtPath:v40];
 
     if (!v41)
     {
@@ -8622,7 +8622,7 @@ LABEL_22:
 
     if ([(MCProfileConnection *)self isPasscodeSet])
     {
-      [(MCProfileConnection *)self notifyUserHasSeenComplianceMessageWithLastLockDate:v11];
+      [(MCProfileConnection *)self notifyUserHasSeenComplianceMessageWithLastLockDate:lockDateCopy];
       v18 = 0;
       v17 = 0;
       v19 = 0;
@@ -8647,9 +8647,9 @@ LABEL_26:
     }
 
     v49 = [v38 objectForKeyedSubscript:@"mandatory"];
-    v50 = [v49 BOOLValue];
+    bOOLValue = [v49 BOOLValue];
 
-    if (!v50)
+    if (!bOOLValue)
     {
       v55 = [v38 objectForKeyedSubscript:@"message"];
       v52 = v55;
@@ -8671,7 +8671,7 @@ LABEL_54:
       v75 = v74;
       if (v74)
       {
-        v19 = 2 * ([v74 compare:v11] == -1);
+        v19 = 2 * ([v74 compare:lockDateCopy] == -1);
       }
 
       else
@@ -8693,10 +8693,10 @@ LABEL_43:
         [v52 timeIntervalSinceNow];
         v60 = v59;
         v61 = MCFormattedStringForTimeInterval(v59);
-        v62 = [(MCProfileConnection *)self isPasscodeSet];
+        isPasscodeSet = [(MCProfileConnection *)self isPasscodeSet];
         if (v60 <= 60.0)
         {
-          if (v62)
+          if (isPasscodeSet)
           {
             v72 = @"NAG_UI_MANDATORY_MESSAGE";
           }
@@ -8714,7 +8714,7 @@ LABEL_43:
           goto LABEL_59;
         }
 
-        if (v62)
+        if (isPasscodeSet)
         {
           v70 = @"NAG_UI_COUNTDOWN_MESSAGE_P_MINUTES";
         }
@@ -8740,8 +8740,8 @@ LABEL_43:
       v52 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:3600.0];
     }
 
-    v57 = [(MCProfileConnection *)self xpcConnection];
-    v58 = [v57 remoteObjectProxyWithErrorHandler:&__block_literal_global_33];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
+    v58 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_33];
     [v58 notifyStartComplianceTimer:v52 completion:&__block_literal_global_33];
 
     goto LABEL_43;
@@ -8752,27 +8752,27 @@ LABEL_43:
   {
     v14 = MEMORY[0x1E695DF00];
     v15 = v13;
-    v16 = [v14 date];
+    date = [v14 date];
     *buf = 138543618;
-    v80 = v10;
+    v80 = dateCopy;
     v81 = 2114;
-    v82 = v16;
+    v82 = date;
     _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_DEFAULT, "Current passcode expired at %{public}@ and current date is %{public}@. Requiring mandatory passcode change.", buf, 0x16u);
   }
 
   v17 = MCLocalizedString(@"NAG_UI_EXPIRY_TITLE");
   v18 = MCLocalizedStringByDevice(@"NAG_UI_EXPIRY_MESSAGE");
   v19 = 1;
-  if (a5)
+  if (title)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  if (a6)
+  if (message)
   {
     v21 = v18;
-    *a6 = v18;
+    *message = v18;
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -8799,41 +8799,41 @@ void __124__MCProfileConnection_Passcode___getPasscodeComplianceWarningExpiryDat
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (int)getPasscodeComplianceWarningLastLockDate:(id)a3 outLocalizedTitle:(id *)a4 outLocalizedMessage:(id *)a5
+- (int)getPasscodeComplianceWarningLastLockDate:(id)date outLocalizedTitle:(id *)title outLocalizedMessage:(id *)message
 {
-  v8 = a3;
+  dateCopy = date;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v9 = [(MCProfileConnection *)self passcodeExpiryDate];
-  LODWORD(a5) = [(MCProfileConnection *)self _getPasscodeComplianceWarningExpiryDate:v9 lastLockDate:v8 outLocalizedTitle:a4 outLocalizedMessage:a5];
+  passcodeExpiryDate = [(MCProfileConnection *)self passcodeExpiryDate];
+  LODWORD(message) = [(MCProfileConnection *)self _getPasscodeComplianceWarningExpiryDate:passcodeExpiryDate lastLockDate:dateCopy outLocalizedTitle:title outLocalizedMessage:message];
 
-  return a5;
+  return message;
 }
 
-- (void)getPasscodeComplianceWarningLastLockDate:(id)a3 completionBlock:(id)a4
+- (void)getPasscodeComplianceWarningLastLockDate:(id)date completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  dateCopy = date;
   [(MCProfileConnection *)self checkInIfNeeded];
   v8 = +[MCPasscodeManager sharedManager];
-  v9 = [v8 passcodeExpiryDate];
+  passcodeExpiryDate = [v8 passcodeExpiryDate];
 
   v13 = 0;
   v14 = 0;
-  v10 = [(MCProfileConnection *)self _getPasscodeComplianceWarningExpiryDate:v9 lastLockDate:v7 outLocalizedTitle:&v14 outLocalizedMessage:&v13];
+  v10 = [(MCProfileConnection *)self _getPasscodeComplianceWarningExpiryDate:passcodeExpiryDate lastLockDate:dateCopy outLocalizedTitle:&v14 outLocalizedMessage:&v13];
 
   v11 = v14;
   v12 = v13;
-  if (v6)
+  if (blockCopy)
   {
-    v6[2](v6, v10, v11, v12);
+    blockCopy[2](blockCopy, v10, v11, v12);
   }
 }
 
 - (void)recomputeUserComplianceWarningSynchronously
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_47_1];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_47_1];
   [v3 recomputeUserComplianceWarningWithCompletion:&__block_literal_global_47_1];
 }
 
@@ -8860,8 +8860,8 @@ void __76__MCProfileConnection_Passcode__recomputeUserComplianceWarningSynchrono
 - (void)recomputeUserComplianceWarning
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_49];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_49];
   [v3 recomputeUserComplianceWarningWithCompletion:&__block_literal_global_49];
 }
 
@@ -8888,8 +8888,8 @@ void __63__MCProfileConnection_Passcode__recomputeUserComplianceWarning__block_i
 - (void)notifyClientsToRecomputeCompliance
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_51_0];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_51_0];
   [v3 recomputePerClientUserComplianceWithCompletion:&__block_literal_global_51_0];
 }
 
@@ -8913,14 +8913,14 @@ void __67__MCProfileConnection_Passcode__notifyClientsToRecomputeCompliance__blo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyUserHasSeenComplianceMessageWithLastLockDate:(id)a3
+- (void)notifyUserHasSeenComplianceMessageWithLastLockDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v7 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v4 sinceDate:1.0];
+  v7 = [MEMORY[0x1E695DF00] dateWithTimeInterval:dateCopy sinceDate:1.0];
 
-  v5 = [(MCProfileConnection *)self xpcConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_53_1];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v6 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_53_1];
   [v6 notifyHaveSeenComplianceMessageWithLastLockDate:v7 completion:&__block_literal_global_53_1];
 }
 
@@ -8948,86 +8948,86 @@ void __84__MCProfileConnection_Passcode__notifyUserHasSeenComplianceMessageWithL
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCPasscodeManager sharedManager];
-  v3 = [v2 passcodeCreationDate];
+  passcodeCreationDate = [v2 passcodeCreationDate];
 
-  return v3;
+  return passcodeCreationDate;
 }
 
 - (id)passcodeExpiryDate
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCPasscodeManager sharedManager];
-  v3 = [v2 passcodeExpiryDate];
+  passcodeExpiryDate = [v2 passcodeExpiryDate];
 
-  return v3;
+  return passcodeExpiryDate;
 }
 
 - (id)recoveryPasscodeExpiryDate
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCPasscodeManager sharedManager];
-  v3 = [v2 recoveryPasscodeExpiryDate];
+  recoveryPasscodeExpiryDate = [v2 recoveryPasscodeExpiryDate];
 
-  return v3;
+  return recoveryPasscodeExpiryDate;
 }
 
 - (int)unlockScreenType
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCPasscodeManager sharedManager];
-  v3 = [v2 currentUnlockScreenType];
+  currentUnlockScreenType = [v2 currentUnlockScreenType];
 
-  return v3;
+  return currentUnlockScreenType;
 }
 
-- (int)unlockScreenTypeWithOutSimplePasscodeType:(int *)a3
+- (int)unlockScreenTypeWithOutSimplePasscodeType:(int *)type
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (a3)
+  if (type)
   {
     v4 = +[MCPasscodeManager sharedManager];
-    v5 = [v4 currentUnlockSimplePasscodeType];
+    currentUnlockSimplePasscodeType = [v4 currentUnlockSimplePasscodeType];
 
-    *a3 = v5;
+    *type = currentUnlockSimplePasscodeType;
   }
 
   v6 = +[MCPasscodeManager sharedManager];
-  v7 = [v6 currentUnlockScreenType];
+  currentUnlockScreenType = [v6 currentUnlockScreenType];
 
-  return v7;
+  return currentUnlockScreenType;
 }
 
-- (int)unlockScreenTypeForUser:(id)a3 outSimplePasscodeType:(int *)a4
+- (int)unlockScreenTypeForUser:(id)user outSimplePasscodeType:(int *)type
 {
-  v6 = a3;
+  userCopy = user;
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (a4)
+  if (type)
   {
     v7 = +[MCPasscodeManager sharedManager];
-    v8 = [v7 unlockSimplePasscodeTypeForUser:v6];
+    v8 = [v7 unlockSimplePasscodeTypeForUser:userCopy];
 
-    *a4 = v8;
+    *type = v8;
   }
 
   v9 = +[MCPasscodeManager sharedManager];
-  v10 = [v9 unlockScreenTypeForUser:v6];
+  v10 = [v9 unlockScreenTypeForUser:userCopy];
 
   return v10;
 }
 
-- (int)unlockScreenTypeForSharedDataVolume:(id)a3 OutSimplePasscodeType:(int *)a4
+- (int)unlockScreenTypeForSharedDataVolume:(id)volume OutSimplePasscodeType:(int *)type
 {
-  v5 = a3;
-  if (a4)
+  volumeCopy = volume;
+  if (type)
   {
     v6 = +[MCPasscodeManager sharedManager];
-    v7 = [v6 unlockSimplePasscodeTypeForSharedDataVolume:v5];
+    v7 = [v6 unlockSimplePasscodeTypeForSharedDataVolume:volumeCopy];
 
-    *a4 = v7;
+    *type = v7;
   }
 
   v8 = +[MCPasscodeManager sharedManager];
-  v9 = [v8 unlockScreenTypeForSharedDataVolume:v5];
+  v9 = [v8 unlockScreenTypeForSharedDataVolume:volumeCopy];
 
   return v9;
 }
@@ -9036,70 +9036,70 @@ void __84__MCProfileConnection_Passcode__notifyUserHasSeenComplianceMessageWithL
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCPasscodeManager sharedManager];
-  v3 = [v2 recoveryPasscodeUnlockScreenType];
+  recoveryPasscodeUnlockScreenType = [v2 recoveryPasscodeUnlockScreenType];
 
-  return v3;
+  return recoveryPasscodeUnlockScreenType;
 }
 
-- (int)recoveryPasscodeUnlockScreenTypeWithOutSimplePasscodeType:(int *)a3
+- (int)recoveryPasscodeUnlockScreenTypeWithOutSimplePasscodeType:(int *)type
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (a3)
+  if (type)
   {
     v4 = +[MCPasscodeManager sharedManager];
-    v5 = [v4 recoveryPasscodeUnlockSimplePasscodeType];
+    recoveryPasscodeUnlockSimplePasscodeType = [v4 recoveryPasscodeUnlockSimplePasscodeType];
 
-    *a3 = v5;
+    *type = recoveryPasscodeUnlockSimplePasscodeType;
   }
 
   v6 = +[MCPasscodeManager sharedManager];
-  v7 = [v6 recoveryPasscodeUnlockScreenType];
+  recoveryPasscodeUnlockScreenType = [v6 recoveryPasscodeUnlockScreenType];
 
-  return v7;
+  return recoveryPasscodeUnlockScreenType;
 }
 
 - (int)newPasscodeEntryScreenType
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCPasscodeManager sharedManager];
-  v3 = [v2 newPasscodeEntryScreenType];
+  newPasscodeEntryScreenType = [v2 newPasscodeEntryScreenType];
 
-  return v3;
+  return newPasscodeEntryScreenType;
 }
 
-- (int)newPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)a3
+- (int)newPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)type
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v4 = +[MCPasscodeManager sharedManager];
-  LODWORD(a3) = [v4 newPasscodeEntryScreenTypeWithOutSimplePasscodeType:a3];
+  LODWORD(type) = [v4 newPasscodeEntryScreenTypeWithOutSimplePasscodeType:type];
 
-  return a3;
+  return type;
 }
 
-- (int)minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)a3
+- (int)minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)type
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v4 = +[MCPasscodeManager sharedManager];
-  LODWORD(a3) = [v4 minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:a3];
+  LODWORD(type) = [v4 minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:type];
 
-  return a3;
+  return type;
 }
 
-- (int)defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)a3
+- (int)defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:(int *)type
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v4 = +[MCPasscodeManager sharedManager];
-  LODWORD(a3) = [v4 defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:a3];
+  LODWORD(type) = [v4 defaultNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:type];
 
-  return a3;
+  return type;
 }
 
 - (id)localizedDescriptionOfCurrentPasscodeConstraints
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 currentRestrictions];
-  v4 = [MCPasscodeManager localizedDescriptionOfPasscodePolicyFromRestrictions:v3];
+  currentRestrictions = [v2 currentRestrictions];
+  v4 = [MCPasscodeManager localizedDescriptionOfPasscodePolicyFromRestrictions:currentRestrictions];
 
   return v4;
 }
@@ -9108,8 +9108,8 @@ void __84__MCProfileConnection_Passcode__notifyUserHasSeenComplianceMessageWithL
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 currentRestrictions];
-  v4 = [MCPasscodeManager localizedDescriptionOfDefaultNewPasscodePolicyFromRestrictions:v3];
+  currentRestrictions = [v2 currentRestrictions];
+  v4 = [MCPasscodeManager localizedDescriptionOfDefaultNewPasscodePolicyFromRestrictions:currentRestrictions];
 
   return v4;
 }
@@ -9123,8 +9123,8 @@ void __84__MCProfileConnection_Passcode__notifyUserHasSeenComplianceMessageWithL
   v11 = __Block_byref_object_copy__12;
   v12 = __Block_byref_object_dispose__12;
   v13 = 0;
-  v3 = [(MCProfileConnection *)self xpcConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_34];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_34];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__MCProfileConnection_Misc__managedWiFiNetworkNames__block_invoke_1;
@@ -9192,13 +9192,13 @@ void __52__MCProfileConnection_Misc__managedWiFiNetworkNames__block_invoke_1(uin
   [v3 invalidateRestrictions];
 }
 
-- (void)recomputeProfileRestrictionsWithCompletionBlock:(id)a3
+- (void)recomputeProfileRestrictionsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v6 = [(MCProfileConnection *)self xpcConnection];
-  v5 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_4_0];
-  [v5 recomputeProfileRestrictionsWithCompletionBlock:v4];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_4_0];
+  [v5 recomputeProfileRestrictionsWithCompletionBlock:blockCopy];
 }
 
 void __77__MCProfileConnection_Misc__recomputeProfileRestrictionsWithCompletionBlock___block_invoke(uint64_t a1, void *a2)
@@ -9221,15 +9221,15 @@ void __77__MCProfileConnection_Misc__recomputeProfileRestrictionsWithCompletionB
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)shutDownWithCompletion:(id)a3
+- (void)shutDownWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __52__MCProfileConnection_Misc__shutDownWithCompletion___block_invoke;
   v27[3] = &unk_1E77D2698;
-  v5 = v4;
+  v5 = completionCopy;
   v28 = v5;
   v6 = MEMORY[0x1AC55F990](v27);
   v25[0] = 0;
@@ -9261,8 +9261,8 @@ void __77__MCProfileConnection_Misc__recomputeProfileRestrictionsWithCompletionB
   v12 = v8;
   v17 = v12;
   v13 = MEMORY[0x1AC55F990](v16);
-  v14 = [(MCProfileConnection *)self xpcConnection];
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v15 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
   [v15 shutDownWithCompletion:v13];
 
   objc_destroyWeak(&v23);
@@ -9446,8 +9446,8 @@ void __52__MCProfileConnection_Misc__shutDownWithCompletion___block_invoke_9(uin
   v11 = __Block_byref_object_copy__12;
   v12 = __Block_byref_object_dispose__12;
   v13 = 0;
-  v3 = [(MCProfileConnection *)self xpcConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_17];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_17];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__MCProfileConnection_Misc__managedSystemConfigurationServiceIDs__block_invoke_18;
@@ -9628,15 +9628,15 @@ void __74__MCProfileConnection_Misc__migrateCleanupMigratorWithContext_completio
 {
   v28 = *MEMORY[0x1E69E9840];
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD440] attributesByAppID];
-  v3 = v2;
-  if (v2)
+  attributesByAppID = [MEMORY[0x1E69AD440] attributesByAppID];
+  v3 = attributesByAppID;
+  if (attributesByAppID)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v4 = [v2 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v4 = [attributesByAppID countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v4)
     {
       v5 = v4;
@@ -9710,43 +9710,43 @@ void __74__MCProfileConnection_Misc__migrateCleanupMigratorWithContext_completio
   return v16;
 }
 
-- (BOOL)isSafariPasswordAutoFillAllowedForURL:(id)a3
+- (BOOL)isSafariPasswordAutoFillAllowedForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCSafariPasswordAutoFillDomainsCache sharedCache];
-  v6 = [v5 isSafariPasswordAutoFillAllowedForURL:v4];
+  v6 = [v5 isSafariPasswordAutoFillAllowedForURL:lCopy];
 
   return v6;
 }
 
-- (void)validateAppBundleIDs:(id)a3 waitUntilCompleted:(BOOL)a4 completion:(id)a5
+- (void)validateAppBundleIDs:(id)ds waitUntilCompleted:(BOOL)completed completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  completedCopy = completed;
+  completionCopy = completion;
+  dsCopy = ds;
   [(MCProfileConnection *)self checkInIfNeeded];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__MCProfileConnection_Misc__validateAppBundleIDs_waitUntilCompleted_completion___block_invoke;
   v15[3] = &unk_1E77D2698;
-  v16 = v8;
-  v10 = v8;
+  v16 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x1AC55F990](v15);
-  v12 = [(MCProfileConnection *)self xpcConnection];
-  v13 = v12;
-  if (v5)
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v13 = xpcConnection;
+  if (completedCopy)
   {
-    [v12 synchronousRemoteObjectProxyWithErrorHandler:v11];
+    [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
   }
 
   else
   {
-    [v12 remoteObjectProxyWithErrorHandler:v11];
+    [xpcConnection remoteObjectProxyWithErrorHandler:v11];
   }
   v14 = ;
 
-  [v14 validateAppBundleIDs:v9 completion:v11];
+  [v14 validateAppBundleIDs:dsCopy completion:v11];
 }
 
 void __80__MCProfileConnection_Misc__validateAppBundleIDs_waitUntilCompleted_completion___block_invoke(uint64_t a1, void *a2)
@@ -9811,13 +9811,13 @@ void __80__MCProfileConnection_Misc__validateAppBundleIDs_waitUntilCompleted_com
   return v3;
 }
 
-- (BOOL)isRemovalRestrictedByPolicyForApp:(id)a3
+- (BOOL)isRemovalRestrictedByPolicyForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [MEMORY[0x1E69AD440] attributesByAppID];
-  v6 = v5;
-  if (v5 && ([v5 objectForKeyedSubscript:v4], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  attributesByAppID = [MEMORY[0x1E69AD440] attributesByAppID];
+  v6 = attributesByAppID;
+  if (attributesByAppID && ([attributesByAppID objectForKeyedSubscript:appCopy], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v9 = [v7 objectForKeyedSubscript:@"Removable"];
@@ -9860,34 +9860,34 @@ void __80__MCProfileConnection_Misc__validateAppBundleIDs_waitUntilCompleted_com
 
 - (BOOL)isActivationLockAllowedWhileSupervised
 {
-  v2 = [MEMORY[0x1E69AD428] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD428] = [MEMORY[0x1E69AD428] sharedConfiguration];
+  details = [mEMORY[0x1E69AD428] details];
 
-  if (v3)
+  if (details)
   {
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69AD500]];
-    v5 = v4;
+    defaultMDMOptions = [details objectForKeyedSubscript:*MEMORY[0x1E69AD500]];
+    v5 = defaultMDMOptions;
     v6 = *MEMORY[0x1E69AD4F8];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69AD448] defaultMDMOptions];
-    v5 = v4;
-    if (!v4)
+    defaultMDMOptions = [MEMORY[0x1E69AD448] defaultMDMOptions];
+    v5 = defaultMDMOptions;
+    if (!defaultMDMOptions)
     {
-      v8 = 0;
+      bOOLValue = 0;
       goto LABEL_6;
     }
 
     v6 = *MEMORY[0x1E69AD4F8];
   }
 
-  v7 = [v4 objectForKeyedSubscript:v6];
-  v8 = [v7 BOOLValue];
+  v7 = [defaultMDMOptions objectForKeyedSubscript:v6];
+  bOOLValue = [v7 BOOLValue];
 
 LABEL_6:
-  return v8;
+  return bOOLValue;
 }
 
 - (id)deniedICCIDsForRCS
@@ -10269,9 +10269,9 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
   v3 = [v2 effectiveValueForSetting:@"enforcedSoftwareUpdateDelay"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (int64_t)softwareUpdatePath
@@ -10282,9 +10282,9 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
 
   v5 = [v4 objectForKeyedSubscript:@"SoftwareUpdateSettings"];
   v6 = [v5 objectForKeyedSubscript:@"RecommendationCadence"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 - (id)allowedMarketplaces
@@ -10313,9 +10313,9 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
 
 - (id)deniedMarketplaces
 {
-  v3 = [(MCProfileConnection *)self allowedMarketplaces];
+  allowedMarketplaces = [(MCProfileConnection *)self allowedMarketplaces];
 
-  if (v3)
+  if (allowedMarketplaces)
   {
     v4 = 0;
   }
@@ -10337,20 +10337,20 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
   return v4;
 }
 
-- (BOOL)isMarketplaceAllowed:(id)a3
+- (BOOL)isMarketplaceAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [(MCProfileConnection *)self allowedMarketplaces];
-  v6 = v5;
-  if (v5)
+  allowedCopy = allowed;
+  allowedMarketplaces = [(MCProfileConnection *)self allowedMarketplaces];
+  v6 = allowedMarketplaces;
+  if (allowedMarketplaces)
   {
-    LOBYTE(v7) = [v5 containsObject:v4];
+    LOBYTE(v7) = [allowedMarketplaces containsObject:allowedCopy];
   }
 
   else
   {
-    v8 = [(MCProfileConnection *)self deniedMarketplaces];
-    v7 = [v8 containsObject:v4] ^ 1;
+    deniedMarketplaces = [(MCProfileConnection *)self deniedMarketplaces];
+    v7 = [deniedMarketplaces containsObject:allowedCopy] ^ 1;
   }
 
   return v7;
@@ -10358,11 +10358,11 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
 
 - (BOOL)anyMarketplaceAllowed
 {
-  v2 = [(MCProfileConnection *)self allowedMarketplaces];
-  v3 = v2;
-  if (v2)
+  allowedMarketplaces = [(MCProfileConnection *)self allowedMarketplaces];
+  v3 = allowedMarketplaces;
+  if (allowedMarketplaces)
   {
-    v4 = [v2 count] != 0;
+    v4 = [allowedMarketplaces count] != 0;
   }
 
   else
@@ -10375,19 +10375,19 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
 
 - (BOOL)allMarketplacesAllowed
 {
-  v3 = [(MCProfileConnection *)self allowedMarketplaces];
-  if (v3)
+  allowedMarketplaces = [(MCProfileConnection *)self allowedMarketplaces];
+  if (allowedMarketplaces)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(MCProfileConnection *)self deniedMarketplaces];
-    v6 = v5;
-    if (v5)
+    deniedMarketplaces = [(MCProfileConnection *)self deniedMarketplaces];
+    v6 = deniedMarketplaces;
+    if (deniedMarketplaces)
     {
-      v4 = [v5 count] == 0;
+      v4 = [deniedMarketplaces count] == 0;
     }
 
     else
@@ -10399,19 +10399,19 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
   return v4;
 }
 
-- (BOOL)isNotificationsModificationAllowedForBundleID:(id)a3
+- (BOOL)isNotificationsModificationAllowedForBundleID:(id)d
 {
-  v4 = [(MCProfileConnection *)self restrictionEnforcedNotificationSettingsForBundleID:a3];
+  v4 = [(MCProfileConnection *)self restrictionEnforcedNotificationSettingsForBundleID:d];
 
   return [(MCProfileConnection *)self effectiveBoolValueForSetting:@"allowNotificationsModification"]!= 2 && v4 == 0;
 }
 
-- (id)restrictionEnforcedNotificationSettingsForBundleID:(id)a3
+- (id)restrictionEnforcedNotificationSettingsForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [(MCProfileConnection *)self restrictionEnforcedNotificationSettings];
-  v6 = [(MCProfileConnection *)self _restrictionEnforcedNotificationSettingsForBundleID:v4 settingsArray:v5];
+  restrictionEnforcedNotificationSettings = [(MCProfileConnection *)self restrictionEnforcedNotificationSettings];
+  v6 = [(MCProfileConnection *)self _restrictionEnforcedNotificationSettingsForBundleID:dCopy settingsArray:restrictionEnforcedNotificationSettings];
 
   return v6;
 }
@@ -10431,8 +10431,8 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
     v5 = [v6 arrayWithContentsOfFile:v7];
   }
 
-  v8 = [(MCProfileConnection *)self _notificationRestrictedApps];
-  if ([v8 count])
+  _notificationRestrictedApps = [(MCProfileConnection *)self _notificationRestrictedApps];
+  if ([_notificationRestrictedApps count])
   {
     v9 = [v5 mutableCopy];
     v10 = v9;
@@ -10454,8 +10454,8 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
     v32[1] = 3221225472;
     v32[2] = __68__MCProfileConnection_Misc__restrictionEnforcedNotificationSettings__block_invoke;
     v32[3] = &unk_1E77D2B80;
-    v25 = v8;
-    v14 = v8;
+    v25 = _notificationRestrictedApps;
+    v14 = _notificationRestrictedApps;
     v33 = v14;
     v15 = [v13 predicateWithBlock:v32];
     [v12 filterUsingPredicate:v15];
@@ -10498,7 +10498,7 @@ void __61__MCProfileConnection_Misc__setSpellCheckAllowed_completion___block_inv
     }
 
     v5 = [v12 copy];
-    v8 = v25;
+    _notificationRestrictedApps = v25;
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -10515,16 +10515,16 @@ uint64_t __68__MCProfileConnection_Misc__restrictionEnforcedNotificationSettings
   return v2 ^ 1;
 }
 
-- (id)_restrictionEnforcedNotificationSettingsForBundleID:(id)a3 settingsArray:(id)a4
+- (id)_restrictionEnforcedNotificationSettingsForBundleID:(id)d settingsArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -10535,12 +10535,12 @@ uint64_t __68__MCProfileConnection_Misc__restrictionEnforcedNotificationSettings
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:{@"BundleIdentifier", v17}];
-        v13 = [v12 isEqualToString:v5];
+        v13 = [v12 isEqualToString:dCopy];
 
         if (v13)
         {
@@ -10549,7 +10549,7 @@ uint64_t __68__MCProfileConnection_Misc__restrictionEnforcedNotificationSettings
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [arrayCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -10579,8 +10579,8 @@ LABEL_11:
 - (id)deviceLockScreenFootnote
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v3 = [(MCProfileConnection *)self _sharedDeviceConfiguration];
-  v4 = [v3 objectForKeyedSubscript:@"LockScreenFootnote"];
+  _sharedDeviceConfiguration = [(MCProfileConnection *)self _sharedDeviceConfiguration];
+  v4 = [_sharedDeviceConfiguration objectForKeyedSubscript:@"LockScreenFootnote"];
 
   return v4;
 }
@@ -10589,8 +10589,8 @@ LABEL_11:
 {
   if ([(MCProfileConnection *)self isProvisionallyEnrolled])
   {
-    v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-    if ([v2 userMode] == 1)
+    mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+    if ([mEMORY[0x1E69AD420] userMode] == 1)
     {
       MCLocalizedString(@"TESLA_PROVISIONAL_ENROLLMENT_EDU_TEXT");
     }
@@ -10613,8 +10613,8 @@ LABEL_11:
 - (id)deviceAssetTag
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v3 = [(MCProfileConnection *)self _sharedDeviceConfiguration];
-  v4 = [v3 objectForKeyedSubscript:@"AssetTagInformation"];
+  _sharedDeviceConfiguration = [(MCProfileConnection *)self _sharedDeviceConfiguration];
+  v4 = [_sharedDeviceConfiguration objectForKeyedSubscript:@"AssetTagInformation"];
 
   return v4;
 }
@@ -10645,19 +10645,19 @@ LABEL_11:
   return [v2 temporarySessionOnly];
 }
 
-- (BOOL)communicationServiceRulesExistForBundleID:(id)a3 forCommunicationServiceType:(id)a4
+- (BOOL)communicationServiceRulesExistForBundleID:(id)d forCommunicationServiceType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  typeCopy = type;
   [(MCProfileConnection *)self checkInIfNeeded];
-  LODWORD(self) = [v7 isEqualToString:@"AudioCall"];
+  LODWORD(self) = [typeCopy isEqualToString:@"AudioCall"];
 
   if (self)
   {
     v8 = +[MCRestrictionManager sharedManager];
     v9 = [v8 effectiveUnionValuesForSetting:@"audioCallDefaultHandlerAppBundleIDs"];
 
-    v10 = [v9 containsObject:v6];
+    v10 = [v9 containsObject:dCopy];
   }
 
   else
@@ -10668,13 +10668,13 @@ LABEL_11:
   return v10;
 }
 
-- (id)defaultAppBundleIDForCommunicationServiceType:(id)a3 forAccountWithIdentifier:(id)a4
+- (id)defaultAppBundleIDForCommunicationServiceType:(id)type forAccountWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   v8 = 0;
-  if (v6 && v7)
+  if (typeCopy && identifierCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -10682,14 +10682,14 @@ LABEL_11:
     v16 = __Block_byref_object_copy__12;
     v17 = __Block_byref_object_dispose__12;
     v18 = 0;
-    v9 = [(MCProfileConnection *)self publicXPCConnection];
-    v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_61];
+    publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+    v10 = [publicXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_61];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __100__MCProfileConnection_Misc__defaultAppBundleIDForCommunicationServiceType_forAccountWithIdentifier___block_invoke_62;
     v12[3] = &unk_1E77D2BA8;
     v12[4] = &v13;
-    [v10 defaultAppBundleIDForCommunicationServiceType:v6 forAccountWithIdentifier:v7 completion:v12];
+    [v10 defaultAppBundleIDForCommunicationServiceType:typeCopy forAccountWithIdentifier:identifierCopy completion:v12];
 
     v8 = v14[5];
     _Block_object_dispose(&v13, 8);
@@ -10743,9 +10743,9 @@ void __100__MCProfileConnection_Misc__defaultAppBundleIDForCommunicationServiceT
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isCloudSyncAllowed:(id)a3
+- (BOOL)isCloudSyncAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   if ([(MCProfileConnection *)self effectiveBoolValueForSetting:@"allowCloudDocumentSync"]== 2)
   {
     v5 = 0;
@@ -10753,9 +10753,9 @@ void __100__MCProfileConnection_Misc__defaultAppBundleIDForCommunicationServiceT
 
   else if ([(MCProfileConnection *)self effectiveBoolValueForSetting:@"allowManagedAppsCloudSync"]== 2)
   {
-    v6 = [MEMORY[0x1E69AD440] attributesByAppID];
-    v7 = [v6 allKeys];
-    v8 = [v7 containsObject:v4];
+    attributesByAppID = [MEMORY[0x1E69AD440] attributesByAppID];
+    allKeys = [attributesByAppID allKeys];
+    v8 = [allKeys containsObject:allowedCopy];
 
     v5 = v8 ^ 1;
   }
@@ -10837,19 +10837,19 @@ void __105__MCProfileConnection_Misc__waitForMigrationIncludingPostRestoreMigrat
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setGracePeriod:(unint64_t)a3 passcode:(id)a4 completionBlock:(id)a5
+- (void)setGracePeriod:(unint64_t)period passcode:(id)passcode completionBlock:(id)block
 {
-  v12 = a5;
+  blockCopy = block;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithUnsignedInteger:a3];
-  [(MCProfileConnection *)self setValue:v10 forSetting:@"maxGracePeriod" passcode:v9];
+  passcodeCopy = passcode;
+  v10 = [v8 numberWithUnsignedInteger:period];
+  [(MCProfileConnection *)self setValue:v10 forSetting:@"maxGracePeriod" passcode:passcodeCopy];
 
-  v11 = v12;
-  if (v12)
+  v11 = blockCopy;
+  if (blockCopy)
   {
-    (*(v12 + 2))(v12, 0);
-    v11 = v12;
+    (*(blockCopy + 2))(blockCopy, 0);
+    v11 = blockCopy;
   }
 }
 
@@ -10858,25 +10858,25 @@ void __105__MCProfileConnection_Misc__waitForMigrationIncludingPostRestoreMigrat
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
   v3 = [v2 effectiveValueForSetting:@"maxGracePeriod"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)shouldDestroyOldKeybag
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v3 = [MEMORY[0x1E69AD428] sharedConfiguration];
-  [v3 refreshDetailsFromDisk];
+  mEMORY[0x1E69AD428] = [MEMORY[0x1E69AD428] sharedConfiguration];
+  [mEMORY[0x1E69AD428] refreshDetailsFromDisk];
 
-  v4 = [MEMORY[0x1E69AD428] sharedConfiguration];
-  v5 = [v4 accessRights];
+  mEMORY[0x1E69AD428]2 = [MEMORY[0x1E69AD428] sharedConfiguration];
+  accessRights = [mEMORY[0x1E69AD428]2 accessRights];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = MDMFilePath();
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:0];
+  v8 = [defaultManager fileExistsAtPath:v7 isDirectory:0];
 
-  if (![(MCProfileConnection *)self isSupervised]|| (v8 & ((v5 & 4) != 0)) != 0)
+  if (![(MCProfileConnection *)self isSupervised]|| (v8 & ((accessRights & 4) != 0)) != 0)
   {
     return 1;
   }
@@ -10884,18 +10884,18 @@ void __105__MCProfileConnection_Misc__waitForMigrationIncludingPostRestoreMigrat
   v10 = *MEMORY[0x1E695E898];
   CFPreferencesSynchronize(@"com.apple.managedconfiguration.notbackedup", @"mobile", *MEMORY[0x1E695E898]);
   v11 = CFPreferencesCopyValue(@"KeybagMigrationHasBeenClearedByHost", @"com.apple.managedconfiguration.notbackedup", @"mobile", v10);
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
-  return v12;
+  return bOOLValue;
 }
 
-- (void)startMonitoringEnrollmentStateWithPersonaID:(id)a3
+- (void)startMonitoringEnrollmentStateWithPersonaID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v6 = [(MCProfileConnection *)self publicXPCConnection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 monitorEnrollmentStateWithPersonaID:v4];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  remoteObjectProxy = [publicXPCConnection remoteObjectProxy];
+  [remoteObjectProxy monitorEnrollmentStateWithPersonaID:dCopy];
 }
 
 - (void)stopMonitoringEnrollmentState
@@ -10909,21 +10909,21 @@ void __105__MCProfileConnection_Misc__waitForMigrationIncludingPostRestoreMigrat
   }
 }
 
-- (void)createMDMUnlockTokenIfNeededWithPasscode:(id)a3 completionBlock:(id)a4
+- (void)createMDMUnlockTokenIfNeededWithPasscode:(id)passcode completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  passcodeCopy = passcode;
   [(MCProfileConnection *)self checkInIfNeeded];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__MCProfileConnection_Misc__createMDMUnlockTokenIfNeededWithPasscode_completionBlock___block_invoke;
   v12[3] = &unk_1E77D2698;
-  v13 = v6;
-  v8 = v6;
+  v13 = blockCopy;
+  v8 = blockCopy;
   v9 = MEMORY[0x1AC55F990](v12);
-  v10 = [(MCProfileConnection *)self xpcConnection];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v9];
-  [v11 createMDMUnlockTokenIfNeededWithPasscode:v7 completion:v9];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v11 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
+  [v11 createMDMUnlockTokenIfNeededWithPasscode:passcodeCopy completion:v9];
 }
 
 void __86__MCProfileConnection_Misc__createMDMUnlockTokenIfNeededWithPasscode_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -10952,21 +10952,21 @@ void __86__MCProfileConnection_Misc__createMDMUnlockTokenIfNeededWithPasscode_co
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createMDMUnlockTokenIfNeededWithPasscodeContext:(id)a3 completionBlock:(id)a4
+- (void)createMDMUnlockTokenIfNeededWithPasscodeContext:(id)context completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  contextCopy = context;
   [(MCProfileConnection *)self checkInIfNeeded];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__MCProfileConnection_Misc__createMDMUnlockTokenIfNeededWithPasscodeContext_completionBlock___block_invoke;
   v12[3] = &unk_1E77D2698;
-  v13 = v6;
-  v8 = v6;
+  v13 = blockCopy;
+  v8 = blockCopy;
   v9 = MEMORY[0x1AC55F990](v12);
-  v10 = [(MCProfileConnection *)self xpcConnection];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v9];
-  [v11 createMDMUnlockTokenIfNeededWithPasscodeContext:v7 completion:v9];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v11 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
+  [v11 createMDMUnlockTokenIfNeededWithPasscodeContext:contextCopy completion:v9];
 }
 
 void __93__MCProfileConnection_Misc__createMDMUnlockTokenIfNeededWithPasscodeContext_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -10999,84 +10999,84 @@ void __93__MCProfileConnection_Misc__createMDMUnlockTokenIfNeededWithPasscodeCon
 {
   v2 = +[MCRestrictionManager sharedManager];
   v3 = [v2 effectiveValueForSetting:@"allowedGameCenterOtherPlayerTypes"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
   v5 = 2;
-  if (v4 < 2)
+  if (integerValue < 2)
   {
-    v5 = v4;
+    v5 = integerValue;
   }
 
   return v5 & ~(v5 >> 63);
 }
 
-- (id)managingOrganizationForFontAtURL:(id)a3
+- (id)managingOrganizationForFontAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[MCDependencyReader sharedReader];
-  v6 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  v7 = [v5 dependentsOfParent:v6 inDomain:@"MCDMFontURLToProfileIdentifierKey"];
+  v7 = [v5 dependentsOfParent:absoluteString inDomain:@"MCDMFontURLToProfileIdentifierKey"];
 
-  v8 = [v7 firstObject];
-  if (v8)
+  firstObject = [v7 firstObject];
+  if (firstObject)
   {
-    v9 = [(MCProfileConnection *)self installedProfileWithIdentifier:v8];
-    v10 = [v9 organization];
+    v9 = [(MCProfileConnection *)self installedProfileWithIdentifier:firstObject];
+    organization = [v9 organization];
 
-    if (v10)
+    if (organization)
     {
-      v11 = [v9 organization];
+      organization2 = [v9 organization];
     }
 
     else
     {
-      v12 = [v9 managingProfileIdentifier];
-      if (v12)
+      managingProfileIdentifier = [v9 managingProfileIdentifier];
+      if (managingProfileIdentifier)
       {
-        v13 = [(MCProfileConnection *)self installedProfileWithIdentifier:v12];
-        v11 = [v13 organization];
+        v13 = [(MCProfileConnection *)self installedProfileWithIdentifier:managingProfileIdentifier];
+        organization2 = [v13 organization];
       }
 
       else
       {
-        v11 = 0;
+        organization2 = 0;
       }
     }
   }
 
   else
   {
-    v11 = 0;
+    organization2 = 0;
   }
 
-  return v11;
+  return organization2;
 }
 
 - (id)skipSetupKeys
 {
   v2 = objc_opt_new();
-  v3 = [v2 currentSkipKeys];
-  v4 = [v3 allObjects];
+  currentSkipKeys = [v2 currentSkipKeys];
+  allObjects = [currentSkipKeys allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (BOOL)isMultiUserNewUserCreationAllowed
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  if (([v2 isSharedIPad] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69AD428], "sharedConfiguration"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "managingProfileIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), v4, v3, !v4))
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  if (([mEMORY[0x1E69DF068] isSharedIPad] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69AD428], "sharedConfiguration"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "managingProfileIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), v4, v3, !v4))
   {
-    v6 = 1;
+    isUserEnrollment = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69AD428] sharedConfiguration];
-    v6 = [v5 isUserEnrollment];
+    mEMORY[0x1E69AD428] = [MEMORY[0x1E69AD428] sharedConfiguration];
+    isUserEnrollment = [mEMORY[0x1E69AD428] isUserEnrollment];
   }
 
-  return v6;
+  return isUserEnrollment;
 }
 
 - (BOOL)isAppleIntelligenceRestricted
@@ -11226,8 +11226,8 @@ void __69__MCProfileConnection_Private__checkCarrierProfileForceInstallation___b
 - (void)notifyDeviceUnlocked
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self publicXPCConnection];
-  v3 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_3_1];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  v3 = [publicXPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_3_1];
   [v3 notifyDeviceUnlockedWithCompletion:&__block_literal_global_3_1];
 }
 
@@ -11254,8 +11254,8 @@ void __52__MCProfileConnection_Private__notifyDeviceUnlocked__block_invoke(uint6
 - (void)notifyDeviceUnlockedAndPasscodeRequired
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self publicXPCConnection];
-  v3 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  v3 = [publicXPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
   [v3 notifyDeviceUnlockedAndPasscodeRequiredWithCompletion:&__block_literal_global_5];
 }
 
@@ -11282,8 +11282,8 @@ void __71__MCProfileConnection_Private__notifyDeviceUnlockedAndPasscodeRequired_
 - (void)removeExpiredProfiles
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
   [v3 removeExpiredProfilesWithCompletion:&__block_literal_global_7];
 }
 
@@ -11310,8 +11310,8 @@ void __53__MCProfileConnection_Private__removeExpiredProfiles__block_invoke(uint
 - (void)rereadManagedAppAttributes
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_9_0];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_9_0];
   [v3 rereadManagedAppAttributesWithCompletion:&__block_literal_global_9_0];
 }
 
@@ -11335,19 +11335,19 @@ void __58__MCProfileConnection_Private__rereadManagedAppAttributes__block_invoke
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetPasscodeMetadataWithCompletion:(id)a3
+- (void)resetPasscodeMetadataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___block_invoke;
   v9[3] = &unk_1E77D2698;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1AC55F990](v9);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v5];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v5];
   [v8 resetPasscodeMetadataWithCompletion:v6];
 }
 
@@ -11373,10 +11373,10 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)doMCICDidUpdateStatus:(id)a3 completion:(id)a4
+- (void)doMCICDidUpdateStatus:(id)status completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     [MCProfileConnection(Private) doMCICDidUpdateStatus:completion:];
@@ -11388,19 +11388,19 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_interactionDelegate);
-    [v10 profileConnection:self didUpdateStatus:v6];
+    [v10 profileConnection:self didUpdateStatus:statusCopy];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)doMCICDidBeginInstallingNextProfileData:(id)a3 completion:(id)a4
+- (void)doMCICDidBeginInstallingNextProfileData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     [MCProfileConnection(Private) doMCICDidBeginInstallingNextProfileData:completion:];
@@ -11409,9 +11409,9 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
   WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
   v9 = objc_opt_respondsToSelector();
 
-  if (v6 && (v9 & 1) != 0)
+  if (dataCopy && (v9 & 1) != 0)
   {
-    v10 = [MCProfile profileWithData:v6 outError:0];
+    v10 = [MCProfile profileWithData:dataCopy outError:0];
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_interactionDelegate);
@@ -11419,17 +11419,17 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)doMCICDidFinishInstallationWithIdentifier:(id)a3 error:(id)a4 completion:(id)a5
+- (void)doMCICDidFinishInstallationWithIdentifier:(id)identifier error:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     [MCProfileConnection(Private) doMCICDidFinishInstallationWithIdentifier:error:completion:];
@@ -11441,22 +11441,22 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_interactionDelegate);
-    [v13 profileConnection:self didFinishInstallationWithIdentifier:v8 error:v9];
+    [v13 profileConnection:self didFinishInstallationWithIdentifier:identifierCopy error:errorCopy];
 
     objc_storeWeak(&self->_interactionDelegate, 0);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)doMCICDidRequestUserInput:(id)a3 completion:(id)a4
+- (void)doMCICDidRequestUserInput:(id)input completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     [MCProfileConnection(Private) doMCICDidRequestUserInput:completion:];
@@ -11467,22 +11467,22 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
 
   if (v9)
   {
-    v10 = MEMORY[0x1AC55F990](v7);
+    v10 = MEMORY[0x1AC55F990](completionCopy);
     userInputReplyBlock = self->userInputReplyBlock;
     self->userInputReplyBlock = v10;
 
     v12 = objc_loadWeakRetained(&self->_interactionDelegate);
-    [v12 profileConnection:self didRequestUserInput:v6];
+    [v12 profileConnection:self didRequestUserInput:inputCopy];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(inputCopy, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = v6;
+    v13 = inputCopy;
     v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
     {
@@ -11495,8 +11495,8 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
           objc_enumerationMutation(v13);
         }
 
-        v17 = [MEMORY[0x1E695DF20] dictionary];
-        [v12 addObject:v17];
+        dictionary = [MEMORY[0x1E695DF20] dictionary];
+        [v12 addObject:dictionary];
 
         if (!--v15)
         {
@@ -11509,20 +11509,20 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, v12, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v12, 0, 0, 0);
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)doMCICDidRequestMAIDSignIn:(id)a3 personaID:(id)a4 completion:(id)a5
+- (void)doMCICDidRequestMAIDSignIn:(id)in personaID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  inCopy = in;
+  dCopy = d;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     [MCProfileConnection(Private) doMCICDidRequestMAIDSignIn:personaID:completion:];
@@ -11533,72 +11533,72 @@ void __68__MCProfileConnection_Private__resetPasscodeMetadataWithCompletion___bl
 
   if (v12)
   {
-    v13 = MEMORY[0x1AC55F990](v10);
+    v13 = MEMORY[0x1AC55F990](completionCopy);
     MAIDSignInReplyBlock = self->MAIDSignInReplyBlock;
     self->MAIDSignInReplyBlock = v13;
 
     v15 = objc_loadWeakRetained(&self->_interactionDelegate);
-    [v15 profileConnection:self didRequestMAIDSignIn:v8 personaID:v9];
+    [v15 profileConnection:self didRequestMAIDSignIn:inCopy personaID:dCopy];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v15 = [MEMORY[0x1E696ABC0] MCErrorWithDomain:@"MCInstallationErrorDomain" code:4001 descriptionArray:&unk_1F1AA59E0 errorType:@"MCFatalError"];
-    (*(v10 + 2))(v10, 0, v15, 0);
+    (*(completionCopy + 2))(completionCopy, 0, v15, 0);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)doMCICDidRequestManagedRestoreWithManagedAppleID:(id)a3 personaID:(id)a4 completion:(id)a5
+- (void)doMCICDidRequestManagedRestoreWithManagedAppleID:(id)d personaID:(id)iD completion:(id)completion
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = MEMORY[0x1AC55F990](v9);
+    v12 = MEMORY[0x1AC55F990](completionCopy);
     restoreReplyBlock = self->restoreReplyBlock;
     self->restoreReplyBlock = v12;
 
     v14 = objc_loadWeakRetained(&self->_interactionDelegate);
-    [v14 profileConnection:self didRequestManagedRestoreWithManagedAppleID:v15 personaID:v8];
+    [v14 profileConnection:self didRequestManagedRestoreWithManagedAppleID:dCopy personaID:iDCopy];
   }
 
   else
   {
-    if (!v9)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
     v14 = [MEMORY[0x1E696ABC0] MCErrorWithDomain:@"MCInstallationErrorDomain" code:4001 descriptionArray:&unk_1F1AA59F8 errorType:@"MCFatalError"];
-    (*(v9 + 2))(v9, 0, v14, 0);
+    (*(completionCopy + 2))(completionCopy, 0, v14, 0);
   }
 
 LABEL_6:
 }
 
-- (void)doMCICDidRequestShowUserWarnings:(id)a3 completion:(id)a4
+- (void)doMCICDidRequestShowUserWarnings:(id)warnings completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  warningsCopy = warnings;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     [MCProfileConnection(Private) doMCICDidRequestShowUserWarnings:completion:];
   }
 
-  if (![v6 count])
+  if (![warningsCopy count])
   {
 
-    v6 = 0;
+    warningsCopy = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
@@ -11606,51 +11606,51 @@ LABEL_6:
 
   if (v9)
   {
-    v10 = MEMORY[0x1AC55F990](v7);
+    v10 = MEMORY[0x1AC55F990](completionCopy);
     showWarningsReplyBlock = self->showWarningsReplyBlock;
     self->showWarningsReplyBlock = v10;
 
     v12 = objc_loadWeakRetained(&self->_interactionDelegate);
-    [v12 profileConnection:self didShowUserWarnings:v6];
+    [v12 profileConnection:self didShowUserWarnings:warningsCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)doMCICDidFinishPreflightWithError:(id)a3 completion:(id)a4
+- (void)doMCICDidFinishPreflightWithError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     [MCProfileConnection(Private) doMCICDidFinishPreflightWithError:completion:];
   }
 
-  v8 = MEMORY[0x1AC55F990](v7);
+  v8 = MEMORY[0x1AC55F990](completionCopy);
   userInputReplyBlock = self->userInputReplyBlock;
   self->userInputReplyBlock = v8;
 
   WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-  [WeakRetained profileConnection:self didFinishPreflightWithError:v6];
+  [WeakRetained profileConnection:self didFinishPreflightWithError:errorCopy];
 }
 
-- (void)doMCICWaitForEnrollmentToFinishWithCompletion:(id)a3
+- (void)doMCICWaitForEnrollmentToFinishWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     [MCProfileConnection(Private) doMCICWaitForEnrollmentToFinishWithCompletion:];
   }
 
-  v5 = MEMORY[0x1AC55F990](v4);
+  v5 = MEMORY[0x1AC55F990](completionCopy);
   waitForEnrollmentCompletionBlock = self->waitForEnrollmentCompletionBlock;
   self->waitForEnrollmentCompletionBlock = v5;
 }
 
-- (id)fetchActivationLockBypassKeyWithError:(id *)a3
+- (id)fetchActivationLockBypassKeyWithError:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
   [(MCProfileConnection *)self checkInIfNeeded];
@@ -11663,16 +11663,16 @@ LABEL_6:
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [v5 MCVerboseDescription];
+      mCVerboseDescription = [v5 MCVerboseDescription];
       *buf = 138543362;
-      v14 = v8;
+      v14 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v7, OS_LOG_TYPE_ERROR, "Activation lock bypass key fetch error. Error: %{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v9 = v5;
-      *a3 = v5;
+      *error = v5;
     }
   }
 
@@ -11681,22 +11681,22 @@ LABEL_6:
   return v4;
 }
 
-- (id)_localizedSourceDescriptionForType:(int64_t)a3 MDMName:(id)a4 exchangeName:(id)a5 exchangeCount:(int64_t)a6 profileName:(id)a7 profileCount:(int64_t)a8
+- (id)_localizedSourceDescriptionForType:(int64_t)type MDMName:(id)name exchangeName:(id)exchangeName exchangeCount:(int64_t)count profileName:(id)profileName profileCount:(int64_t)profileCount
 {
   v135 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = v15;
+  nameCopy = name;
+  exchangeNameCopy = exchangeName;
+  profileNameCopy = profileName;
+  v16 = profileNameCopy;
   v17 = @"SETTINGS";
-  if (!a3)
+  if (!type)
   {
     v17 = @"CERTIFICATES";
   }
 
-  if (v13)
+  if (nameCopy)
   {
-    v18 = a6 < 1;
+    v18 = count < 1;
   }
 
   else
@@ -11705,14 +11705,14 @@ LABEL_6:
   }
 
   v19 = v18;
-  if (v19 == 1 && a8 <= 0)
+  if (v19 == 1 && profileCount <= 0)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_MDM_NAME", v17];
     goto LABEL_19;
   }
 
   v21 = v19 ^ 1;
-  if (a8 == 1)
+  if (profileCount == 1)
   {
     v22 = v21;
   }
@@ -11726,14 +11726,14 @@ LABEL_6:
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_MDM_NAME_AND_ONE_PROFILE", v17];
     v23 = LABEL_19:;
-    MCLocalizedFormat(v23, v24, v25, v26, v27, v28, v29, v30, v13);
+    MCLocalizedFormat(v23, v24, v25, v26, v27, v28, v29, v30, nameCopy);
     v31 = LABEL_20:;
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  if (a8 < 2)
+  if (profileCount < 2)
   {
     v21 = 1;
   }
@@ -11742,16 +11742,16 @@ LABEL_21:
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_MDM_NAME_AND_MULTIPLE_PROFILES", v17];
     v23 = LABEL_29:;
-    v34 = [MEMORY[0x1E696AD98] numberWithInteger:a8];
-    MCLocalizedFormat(v23, v35, v36, v37, v38, v39, v40, v41, v13);
+    v34 = [MEMORY[0x1E696AD98] numberWithInteger:profileCount];
+    MCLocalizedFormat(v23, v35, v36, v37, v38, v39, v40, v41, nameCopy);
     v31 = LABEL_30:;
 
     goto LABEL_21;
   }
 
-  if (v13)
+  if (nameCopy)
   {
-    v42 = a6 == 1;
+    v42 = count == 1;
   }
 
   else
@@ -11760,15 +11760,15 @@ LABEL_21:
   }
 
   v43 = v42;
-  if (v42 && a8 <= 0)
+  if (v42 && profileCount <= 0)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_MDM_NAME_AND_ONE_EXCHANGE", v17];
     goto LABEL_19;
   }
 
-  if (v13)
+  if (nameCopy)
   {
-    v44 = a6 <= 1;
+    v44 = count <= 1;
   }
 
   else
@@ -11777,12 +11777,12 @@ LABEL_21:
   }
 
   v45 = !v44;
-  if (v45 == 1 && a8 <= 0)
+  if (v45 == 1 && profileCount <= 0)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_MDM_NAME_AND_MULTIPLE_EXCHANGES", v17];
     v46 = LABEL_50:;
-    v47 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
-    MCLocalizedFormat(v46, v48, v49, v50, v51, v52, v53, v54, v13);
+    v47 = [MEMORY[0x1E696AD98] numberWithInteger:count];
+    MCLocalizedFormat(v46, v48, v49, v50, v51, v52, v53, v54, nameCopy);
     v31 = LABEL_51:;
 LABEL_52:
 
@@ -11790,7 +11790,7 @@ LABEL_52:
   }
 
   v55 = v43 ^ 1;
-  if (a8 == 1)
+  if (profileCount == 1)
   {
     v56 = v55;
   }
@@ -11806,7 +11806,7 @@ LABEL_52:
     goto LABEL_19;
   }
 
-  if (a8 < 2)
+  if (profileCount < 2)
   {
     v55 = 1;
   }
@@ -11818,7 +11818,7 @@ LABEL_52:
   }
 
   v57 = v45 ^ 1;
-  if (a8 == 1)
+  if (profileCount == 1)
   {
     v58 = v57;
   }
@@ -11834,7 +11834,7 @@ LABEL_52:
     goto LABEL_50;
   }
 
-  if (a8 < 2)
+  if (profileCount < 2)
   {
     v57 = 1;
   }
@@ -11842,17 +11842,17 @@ LABEL_52:
   if ((v57 & 1) == 0)
   {
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_MDM_NAME_MULTIPLE_EXCHANGES_AND_MULTIPLE_PROFILES", v17];
-    v47 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
-    v59 = [MEMORY[0x1E696AD98] numberWithInteger:a8];
-    MCLocalizedFormat(v46, v60, v61, v62, v63, v64, v65, v66, v13);
+    v47 = [MEMORY[0x1E696AD98] numberWithInteger:count];
+    v59 = [MEMORY[0x1E696AD98] numberWithInteger:profileCount];
+    MCLocalizedFormat(v46, v60, v61, v62, v63, v64, v65, v66, nameCopy);
     v31 = LABEL_71:;
 
     goto LABEL_52;
   }
 
-  if (v14)
+  if (exchangeNameCopy)
   {
-    v67 = a6 == 1;
+    v67 = count == 1;
   }
 
   else
@@ -11861,30 +11861,30 @@ LABEL_52:
   }
 
   v68 = v67;
-  if (v67 && a8 <= 0)
+  if (v67 && profileCount <= 0)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_EXCHANGE_NAME", v17];
     v23 = LABEL_86:;
-    MCLocalizedFormat(v23, v69, v70, v71, v72, v73, v74, v75, v14);
+    MCLocalizedFormat(v23, v69, v70, v71, v72, v73, v74, v75, exchangeNameCopy);
     goto LABEL_20;
   }
 
-  if (v14 && a6 == 2 && a8 <= 0)
+  if (exchangeNameCopy && count == 2 && profileCount <= 0)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_EXCHANGE_NAME_AND_ONE_OTHER", v17];
     goto LABEL_86;
   }
 
-  if (v14 && a6 >= 3 && a8 <= 0)
+  if (exchangeNameCopy && count >= 3 && profileCount <= 0)
   {
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_EXCHANGE_NAME_AND_MULTIPLE_OTHERS", v17];
-    v47 = [MEMORY[0x1E696AD98] numberWithInteger:a6 - 1];
-    MCLocalizedFormat(v46, v76, v77, v78, v79, v80, v81, v82, v14);
+    v47 = [MEMORY[0x1E696AD98] numberWithInteger:count - 1];
+    MCLocalizedFormat(v46, v76, v77, v78, v79, v80, v81, v82, exchangeNameCopy);
     goto LABEL_51;
   }
 
   v83 = v68 ^ 1;
-  if (a8 == 1)
+  if (profileCount == 1)
   {
     v84 = v83;
   }
@@ -11900,7 +11900,7 @@ LABEL_52:
     goto LABEL_86;
   }
 
-  if (a8 < 2)
+  if (profileCount < 2)
   {
     v83 = 1;
   }
@@ -11908,29 +11908,29 @@ LABEL_52:
   if ((v83 & 1) == 0)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_EXCHANGE_NAME_AND_MULTIPLE_PROFILES", v17];
-    v34 = [MEMORY[0x1E696AD98] numberWithInteger:a8];
-    MCLocalizedFormat(v23, v85, v86, v87, v88, v89, v90, v91, v14);
+    v34 = [MEMORY[0x1E696AD98] numberWithInteger:profileCount];
+    MCLocalizedFormat(v23, v85, v86, v87, v88, v89, v90, v91, exchangeNameCopy);
     goto LABEL_30;
   }
 
-  if (a6 >= 2 && a8 == 1)
+  if (count >= 2 && profileCount == 1)
   {
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_MULTIPLE_EXCHANGES_AND_ONE_PROFILE", v17];
-    v47 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+    v47 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     MCLocalizedFormat(v46, v92, v93, v94, v95, v96, v97, v98, v47);
     goto LABEL_51;
   }
 
-  if (a6 >= 2 && a8 >= 2)
+  if (count >= 2 && profileCount >= 2)
   {
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_MULTIPLE_EXCHANGES_AND_MULTIPLE_PROFILES", v17];
-    v47 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
-    v59 = [MEMORY[0x1E696AD98] numberWithInteger:a8];
+    v47 = [MEMORY[0x1E696AD98] numberWithInteger:count];
+    v59 = [MEMORY[0x1E696AD98] numberWithInteger:profileCount];
     MCLocalizedFormat(v46, v99, v100, v101, v102, v103, v104, v105, v47);
     goto LABEL_71;
   }
 
-  if (v15 && a8 == 1)
+  if (profileNameCopy && profileCount == 1)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_PROFILE_NAME", v17];
     v23 = LABEL_112:;
@@ -11938,16 +11938,16 @@ LABEL_52:
     goto LABEL_20;
   }
 
-  if (v15 && a8 == 2)
+  if (profileNameCopy && profileCount == 2)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_PROFILE_NAME_AND_ONE_OTHER", v17];
     goto LABEL_112;
   }
 
-  if (v15 && a8 >= 3)
+  if (profileNameCopy && profileCount >= 3)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_RESTRICTED_BY_PROFILE_NAME_AND_MULTIPLE_OTHERS", v17];
-    v34 = [MEMORY[0x1E696AD98] numberWithInteger:a8 - 1];
+    v34 = [MEMORY[0x1E696AD98] numberWithInteger:profileCount - 1];
     MCLocalizedFormat(v23, v113, v114, v115, v116, v117, v118, v119, v16);
     goto LABEL_30;
   }
@@ -11957,12 +11957,12 @@ LABEL_52:
   {
     v121 = MEMORY[0x1E696AD98];
     v122 = v120;
-    v123 = [v121 numberWithInteger:a6];
-    v124 = [MEMORY[0x1E696AD98] numberWithInteger:a8];
+    v123 = [v121 numberWithInteger:count];
+    v124 = [MEMORY[0x1E696AD98] numberWithInteger:profileCount];
     *buf = 138544386;
-    v126 = v13;
+    v126 = nameCopy;
     v127 = 2114;
-    v128 = v14;
+    v128 = exchangeNameCopy;
     v129 = 2114;
     v130 = v123;
     v131 = 2114;
@@ -11980,18 +11980,18 @@ LABEL_22:
   return v31;
 }
 
-- (id)_disallowedRestrictionErrorForRestrictionKey:(id)a3
+- (id)_disallowedRestrictionErrorForRestrictionKey:(id)key
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"USER_ENROLLMENT_DISALLOWED_RESTRICTION_P_RESTRICTION", a2, a3, v3, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"USER_ENROLLMENT_DISALLOWED_RESTRICTION_P_RESTRICTION", a2, key, v3, v4, v5, v6, v7, key);
   v10 = [v8 MCErrorWithDomain:@"MCDeviceCapabilitiesErrorDomain" code:26002 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-- (id)_transmogrifyRestrictionDictionaryForUserEnrollment:(id)a3 outError:(id *)a4
+- (id)_transmogrifyRestrictionDictionaryForUserEnrollment:(id)enrollment outError:(id *)error
 {
-  v6 = a3;
+  enrollmentCopy = enrollment;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -12011,10 +12011,10 @@ LABEL_22:
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__13;
   v27 = __Block_byref_object_dispose__13;
-  v28 = [v6 MCMutableDeepCopy];
+  mCMutableDeepCopy = [enrollmentCopy MCMutableDeepCopy];
   v7 = +[MCRestrictionsPayload userEnrollmentAllowedKeysFilter];
   v8 = +[MCRestrictionManager sharedManager];
-  v9 = [v8 defaultRestrictions];
+  defaultRestrictions = [v8 defaultRestrictions];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -12024,19 +12024,19 @@ LABEL_22:
   v16 = v10;
   v19 = &v35;
   v20 = &v23;
-  v11 = v9;
+  v11 = defaultRestrictions;
   v21 = &v39;
   v22 = &v29;
   v17 = v11;
-  v18 = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:v15];
+  selfCopy = self;
+  [enrollmentCopy enumerateKeysAndObjectsUsingBlock:v15];
   if (*(v36 + 24) == 1)
   {
     [v24[5] MCSetBoolRestriction:@"allowSimple" value:0];
     [v24[5] MCSetValueRestriction:@"minLength" value:&unk_1F1AA5800];
   }
 
-  if (!a4 || (v40[3] & 1) != 0)
+  if (!error || (v40[3] & 1) != 0)
   {
     if (!*(v40 + 24))
     {
@@ -12046,7 +12046,7 @@ LABEL_22:
 
   else
   {
-    *a4 = v30[5];
+    *error = v30[5];
     if ((v40[3] & 1) == 0)
     {
 LABEL_6:
@@ -12154,14 +12154,14 @@ LABEL_4:
 LABEL_12:
 }
 
-- (void)_debug_scheduleBackgroundTask:(id)a3 interval:(double)a4 tolerance:(double)a5 completion:(id)a6
+- (void)_debug_scheduleBackgroundTask:(id)task interval:(double)interval tolerance:(double)tolerance completion:(id)completion
 {
-  v10 = a6;
-  v11 = a3;
+  completionCopy = completion;
+  taskCopy = task;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v13 = [(MCProfileConnection *)self xpcConnection];
-  v12 = [v13 remoteObjectProxyWithErrorHandler:v10];
-  [v12 _debug_scheduleBackgroundTask:v11 interval:v10 tolerance:a4 completion:a5];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:completionCopy];
+  [v12 _debug_scheduleBackgroundTask:taskCopy interval:completionCopy tolerance:interval completion:tolerance];
 }
 
 - (BOOL)checkApplicationIdentifierEntitlement
@@ -12221,19 +12221,19 @@ LABEL_13:
   return v5;
 }
 
-- (void)setUserBookmarks:(id)a3
+- (void)setUserBookmarks:(id)bookmarks
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bookmarksCopy = bookmarks;
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (v4)
+  if (bookmarksCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(bookmarksCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = bookmarksCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -12249,8 +12249,8 @@ LABEL_13:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * v10) serializableDictionary];
-          [v5 addObject:v11];
+          serializableDictionary = [*(*(&v15 + 1) + 8 * v10) serializableDictionary];
+          [v5 addObject:serializableDictionary];
 
           ++v10;
         }
@@ -12268,8 +12268,8 @@ LABEL_13:
     v5 = 0;
   }
 
-  v12 = [(MCProfileConnection *)self xpcConnection];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_38];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_38];
   [v13 setUserBookmarks:v5 completion:&__block_literal_global_38];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -12299,9 +12299,9 @@ void __57__MCProfileConnection_SafariBookmarks__setUserBookmarks___block_invoke(
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCBookmarkManager sharedManager];
-  v3 = [v2 userBookmarks];
+  userBookmarks = [v2 userBookmarks];
 
-  return v3;
+  return userBookmarks;
 }
 
 - (id)defaultUserBookmarks
@@ -12312,9 +12312,9 @@ void __57__MCProfileConnection_SafariBookmarks__setUserBookmarks___block_invoke(
   v3 = [v2 stringByAppendingPathComponent:@"/System/Library/PrivateFrameworks/WebContentAnalysis.framework"];
 
   v4 = [MEMORY[0x1E696AAE8] bundleWithPath:v3];
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [v5 languageCode];
-  v7 = [@"com.apple.webcontentfilter.defaults." stringByAppendingString:v6];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v7 = [@"com.apple.webcontentfilter.defaults." stringByAppendingString:languageCode];
 
   v8 = [v4 pathForResource:v7 ofType:@"plist"];
   if (v8)
@@ -12327,7 +12327,7 @@ LABEL_5:
     {
       v30 = v12;
       v31 = v9;
-      v32 = v5;
+      v32 = currentLocale;
       v33 = v4;
       v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
       v35 = 0u;
@@ -12373,7 +12373,7 @@ LABEL_5:
       }
 
       v4 = v33;
-      v5 = v32;
+      currentLocale = v32;
       v12 = v30;
       v9 = v31;
       v13 = v29;
@@ -12413,13 +12413,13 @@ LABEL_16:
   return v14;
 }
 
-- (void)setWebContentFilterAutoPermittedURLStrings:(id)a3
+- (void)setWebContentFilterAutoPermittedURLStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v6 = [(MCProfileConnection *)self publicXPCConnection];
-  v5 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30_1];
-  [v5 setAllowedURLStrings:v4 completion:&__block_literal_global_30_1];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  v5 = [publicXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30_1];
+  [v5 setAllowedURLStrings:stringsCopy completion:&__block_literal_global_30_1];
 }
 
 void __83__MCProfileConnection_SafariBookmarks__setWebContentFilterAutoPermittedURLStrings___block_invoke(uint64_t a1, void *a2)
@@ -12442,18 +12442,18 @@ void __83__MCProfileConnection_SafariBookmarks__setWebContentFilterAutoPermitted
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWebContentFilterUserBlacklistedURLStrings:(id)a3
+- (void)setWebContentFilterUserBlacklistedURLStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   [(MCProfileConnection *)self checkInIfNeeded];
-  [(MCProfileConnection *)self setValues:v4 forUnionSetting:@"webContentFilterBlacklistedURLs"];
+  [(MCProfileConnection *)self setValues:stringsCopy forUnionSetting:@"webContentFilterBlacklistedURLs"];
 }
 
-- (int)hostMayPairWithOptions:(id)a3 challenge:(id)a4
+- (int)hostMayPairWithOptions:(id)options challenge:(id)challenge
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  challengeCopy = challenge;
   [(MCProfileConnection *)self checkInIfNeeded];
   v8 = qword_1ED4ADE28;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_INFO))
@@ -12466,13 +12466,13 @@ void __83__MCProfileConnection_SafariBookmarks__setWebContentFilterAutoPermitted
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    *&buf[4] = v6;
+    *&buf[4] = optionsCopy;
     _os_log_impl(&dword_1A795B000, v9, OS_LOG_TYPE_DEBUG, "Pairing options: %{public}@", buf, 0xCu);
   }
 
-  v10 = [(MCProfileConnection *)self cloudConfigurationDetails];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69997B0]];
-  if (v6)
+  cloudConfigurationDetails = [(MCProfileConnection *)self cloudConfigurationDetails];
+  v11 = [cloudConfigurationDetails objectForKeyedSubscript:*MEMORY[0x1E69997B0]];
+  if (optionsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -12484,11 +12484,11 @@ void __83__MCProfileConnection_SafariBookmarks__setWebContentFilterAutoPermitted
         _os_log_impl(&dword_1A795B000, v12, OS_LOG_TYPE_ERROR, "Rejecting pairing options because it's not a dictionary.", buf, 2u);
       }
 
-      v6 = 0;
+      optionsCopy = 0;
     }
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"SupervisorCertificate"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"SupervisorCertificate"];
   if (v13)
   {
     objc_opt_class();
@@ -12525,7 +12525,7 @@ void __83__MCProfileConnection_SafariBookmarks__setWebContentFilterAutoPermitted
     goto LABEL_34;
   }
 
-  if (!v7 || ![v11 count])
+  if (!challengeCopy || ![v11 count])
   {
 LABEL_34:
     v25 = qword_1ED4ADE28;
@@ -12553,7 +12553,7 @@ LABEL_34:
     goto LABEL_40;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"ChallengeResponse"];
+  v19 = [optionsCopy objectForKeyedSubscript:@"ChallengeResponse"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -12604,7 +12604,7 @@ LABEL_33:
   }
 
   v37 = v40;
-  if (![v7 isEqualToData:?])
+  if (![challengeCopy isEqualToData:?])
   {
     v32 = qword_1ED4ADE28;
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_ERROR))
@@ -12689,10 +12689,10 @@ LABEL_40:
   return v18;
 }
 
-- (void)lockdownDidReceiveActivationRecord:(id)a3
+- (void)lockdownDidReceiveActivationRecord:(id)record
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   [(MCProfileConnection *)self checkInIfNeeded];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -12702,13 +12702,13 @@ LABEL_40:
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_INFO))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = recordCopy;
       _os_log_impl(&dword_1A795B000, v6, OS_LOG_TYPE_INFO, "Received activation record: %{public}@", &v10, 0xCu);
     }
 
-    v7 = [(MCProfileConnection *)self xpcConnection];
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_41];
-    [v8 storeActivationRecord:v4 completion:&__block_literal_global_41];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_41];
+    [v8 storeActivationRecord:recordCopy completion:&__block_literal_global_41];
   }
 
   else if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_ERROR))
@@ -12742,9 +12742,9 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
 
 - (BOOL)isHomeScreenLayoutApplied
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = MCUserHomeScreenLayoutFilePath();
-  if ([v2 fileExistsAtPath:v3])
+  if ([defaultManager fileExistsAtPath:v3])
   {
     v4 = 1;
   }
@@ -12752,7 +12752,7 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
   else
   {
     v5 = MCSystemHomeScreenLayoutFilePath();
-    v4 = [v2 fileExistsAtPath:v5];
+    v4 = [defaultManager fileExistsAtPath:v5];
   }
 
   return v4;
@@ -12802,27 +12802,27 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
   else
   {
     v3 = +[MCRestrictionManager sharedManager];
-    v4 = [v3 parentalControlsBlockedAppBundleIDs];
-    v2 = [v4 copy];
+    parentalControlsBlockedAppBundleIDs = [v3 parentalControlsBlockedAppBundleIDs];
+    v2 = [parentalControlsBlockedAppBundleIDs copy];
   }
 
   return v2;
 }
 
-- (void)setParentalControlsBlockedAppBundleIDs:(id)a3
+- (void)setParentalControlsBlockedAppBundleIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
-    v4 = [a3 allObjects];
+    allObjects = [ds allObjects];
   }
 
   else
   {
-    v4 = 0;
+    allObjects = 0;
   }
 
-  v5 = v4;
-  [(MCProfileConnection *)self setValues:v4 forUnionSetting:@"blockedAppBundleIDs"];
+  v5 = allObjects;
+  [(MCProfileConnection *)self setValues:allObjects forUnionSetting:@"blockedAppBundleIDs"];
 }
 
 - (id)restrictionEnforcedWhitelistedAppBundleIDs
@@ -12835,8 +12835,8 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
   else
   {
     v3 = +[MCRestrictionManager sharedManager];
-    v4 = [v3 restrictionEnforcedWhitelistedAppBundleIDs];
-    v2 = [v4 copy];
+    restrictionEnforcedWhitelistedAppBundleIDs = [v3 restrictionEnforcedWhitelistedAppBundleIDs];
+    v2 = [restrictionEnforcedWhitelistedAppBundleIDs copy];
   }
 
   return v2;
@@ -12846,9 +12846,9 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 isInSingleAppMode];
+  isInSingleAppMode = [v2 isInSingleAppMode];
 
-  return v3;
+  return isInSingleAppMode;
 }
 
 - (BOOL)isEffectivelyInAppAllowListMode
@@ -12862,8 +12862,8 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 effectiveUserSettings];
-  v4 = [MCRestrictionManager isPasscodeRequiredToAccessWhitelistedAppsWithSettingsDictionary:v3];
+  effectiveUserSettings = [v2 effectiveUserSettings];
+  v4 = [MCRestrictionManager isPasscodeRequiredToAccessWhitelistedAppsWithSettingsDictionary:effectiveUserSettings];
 
   return v4;
 }
@@ -12872,8 +12872,8 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 effectiveUserSettings];
-  v4 = [MCRestrictionManager mayEnterPasscodeToAccessNonWhitelistedAppsWithSettingsDictionary:v3];
+  effectiveUserSettings = [v2 effectiveUserSettings];
+  v4 = [MCRestrictionManager mayEnterPasscodeToAccessNonWhitelistedAppsWithSettingsDictionary:effectiveUserSettings];
 
   return v4;
 }
@@ -12882,9 +12882,9 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   v2 = +[MCRestrictionManager sharedManager];
-  v3 = [v2 isSingleAppModeLogoutAllowed];
+  isSingleAppModeLogoutAllowed = [v2 isSingleAppModeLogoutAllowed];
 
-  return v3;
+  return isSingleAppModeLogoutAllowed;
 }
 
 - (id)parentalControlsWhitelistedAppBundleIDs
@@ -12897,27 +12897,27 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
   else
   {
     v3 = +[MCRestrictionManager sharedManager];
-    v4 = [v3 parentalControlsWhitelistedAppBundleIDs];
-    v2 = [v4 copy];
+    parentalControlsWhitelistedAppBundleIDs = [v3 parentalControlsWhitelistedAppBundleIDs];
+    v2 = [parentalControlsWhitelistedAppBundleIDs copy];
   }
 
   return v2;
 }
 
-- (void)setParentalControlsWhitelistedAppBundleIDs:(id)a3
+- (void)setParentalControlsWhitelistedAppBundleIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
-    v4 = [a3 allObjects];
+    allObjects = [ds allObjects];
   }
 
   else
   {
-    v4 = 0;
+    allObjects = 0;
   }
 
-  v5 = v4;
-  [(MCProfileConnection *)self setValues:v4 forIntersectionSetting:@"appLockBundleIDs"];
+  v5 = allObjects;
+  [(MCProfileConnection *)self setValues:allObjects forIntersectionSetting:@"appLockBundleIDs"];
 }
 
 - (BOOL)isParentalControlsAllowPasscodeAccessToNonWhitelistedAppsUIForcedByRestrictions
@@ -12933,7 +12933,7 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
 {
   if ([(MCProfileConnection *)self needsCheckIn])
   {
-    v3 = 0;
+    allObjects = 0;
   }
 
   else
@@ -12942,46 +12942,46 @@ void __68__MCProfileConnection_Lockdown__lockdownDidReceiveActivationRecord___bl
     if (v4)
     {
       v5 = [MEMORY[0x1E695DFA8] setWithArray:v4];
-      v6 = [(MCProfileConnection *)self restrictedAppBundleIDs];
-      v7 = [(MCProfileConnection *)self effectiveWhitelistedAppBundleIDs];
-      if (v6)
+      restrictedAppBundleIDs = [(MCProfileConnection *)self restrictedAppBundleIDs];
+      effectiveWhitelistedAppBundleIDs = [(MCProfileConnection *)self effectiveWhitelistedAppBundleIDs];
+      if (restrictedAppBundleIDs)
       {
-        [v5 minusSet:v6];
+        [v5 minusSet:restrictedAppBundleIDs];
       }
 
-      if (v7)
+      if (effectiveWhitelistedAppBundleIDs)
       {
-        [v5 intersectSet:v7];
+        [v5 intersectSet:effectiveWhitelistedAppBundleIDs];
       }
 
-      v3 = [v5 allObjects];
+      allObjects = [v5 allObjects];
     }
 
     else
     {
-      v3 = 0;
+      allObjects = 0;
     }
   }
 
-  return v3;
+  return allObjects;
 }
 
-- (void)storeCertificateData:(id)a3 forHostIdentifier:(id)a4
+- (void)storeCertificateData:(id)data forHostIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   [(MCProfileConnection *)self checkInIfNeeded];
   if ([(MCProfileConnection *)self _checkRemoteProcessHasMDMEntitlement])
   {
-    v7 = [(MCProfileConnection *)self xpcConnection];
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_47];
-    [v8 storeCertificateData:v9 forIPCUIdentifier:v6 completion:&__block_literal_global_47];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_47];
+    [v8 storeCertificateData:dataCopy forIPCUIdentifier:identifierCopy completion:&__block_literal_global_47];
   }
 
   else
   {
-    v7 = [(MCProfileConnection *)self _lacksEntitlementError];
-    __67__MCProfileConnection_MDM__storeCertificateData_forHostIdentifier___block_invoke(v7, v7);
+    xpcConnection = [(MCProfileConnection *)self _lacksEntitlementError];
+    __67__MCProfileConnection_MDM__storeCertificateData_forHostIdentifier___block_invoke(xpcConnection, xpcConnection);
   }
 }
 
@@ -13027,19 +13027,19 @@ void __176__MCProfileConnection_MDM__stageMDMEnrollmentInfoForPairingWatchWithPr
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)a3
+- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__MCProfileConnection_MDM__unstageMDMEnrollmentInfoForPairingWatchWithCompletion___block_invoke;
   v9[3] = &unk_1E77D2698;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1AC55F990](v9);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 unstageMDMEnrollmentInfoForPairingWatchWithCompletion:v5];
 }
 
@@ -13065,19 +13065,19 @@ void __82__MCProfileConnection_MDM__unstageMDMEnrollmentInfoForPairingWatchWithC
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)a3
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__MCProfileConnection_MDM__fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion___block_invoke;
   v9[3] = &unk_1E77D2698;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1AC55F990](v9);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:v5];
 }
 
@@ -13103,21 +13103,21 @@ void __86__MCProfileConnection_MDM__fetchStagedMDMEnrollmentDataForPairingWatchW
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)a3 completion:(id)a4
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)token completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
   [(MCProfileConnection *)self checkInIfNeeded];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __99__MCProfileConnection_MDM__fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken_completion___block_invoke;
   v12[3] = &unk_1E77D2698;
-  v13 = v6;
-  v8 = v6;
+  v13 = completionCopy;
+  v8 = completionCopy;
   v9 = MEMORY[0x1AC55F990](v12);
-  v10 = [(MCProfileConnection *)self xpcConnection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:v7 completion:v8];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  [v11 fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:tokenCopy completion:v8];
 }
 
 void __99__MCProfileConnection_MDM__fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken_completion___block_invoke(uint64_t a1, void *a2)
@@ -13142,19 +13142,19 @@ void __99__MCProfileConnection_MDM__fetchStagedMDMEnrollmentDataForPairingWatchW
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)a3
+- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __97__MCProfileConnection_MDM__fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion___block_invoke;
   v9[3] = &unk_1E77D2698;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1AC55F990](v9);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:v5];
 }
 
@@ -13180,21 +13180,21 @@ void __97__MCProfileConnection_MDM__fetchStagedMDMEnrollmentDeclarationKeysForPa
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applyPairingWatchMDMEnrollmentData:(id)a3 completion:(id)a4
+- (void)applyPairingWatchMDMEnrollmentData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   [(MCProfileConnection *)self checkInIfNeeded];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__MCProfileConnection_MDM__applyPairingWatchMDMEnrollmentData_completion___block_invoke;
   v12[3] = &unk_1E77D2698;
-  v13 = v6;
-  v8 = v6;
+  v13 = completionCopy;
+  v8 = completionCopy;
   v9 = MEMORY[0x1AC55F990](v12);
-  v10 = [(MCProfileConnection *)self xpcConnection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 applyPairingWatchMDMEnrollmentData:v7 completion:v8];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  [v11 applyPairingWatchMDMEnrollmentData:dataCopy completion:v8];
 }
 
 void __74__MCProfileConnection_MDM__applyPairingWatchMDMEnrollmentData_completion___block_invoke(uint64_t a1, void *a2)
@@ -13219,10 +13219,10 @@ void __74__MCProfileConnection_MDM__applyPairingWatchMDMEnrollmentData_completio
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateMDMEnrollmentInfoForPairingWatch:(id)a3 completion:(id)a4
+- (void)updateMDMEnrollmentInfoForPairingWatch:(id)watch completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  watchCopy = watch;
   [(MCProfileConnection *)self checkInIfNeeded];
   v8 = qword_1ED4ADE28;
   if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEBUG))
@@ -13235,12 +13235,12 @@ void __74__MCProfileConnection_MDM__applyPairingWatchMDMEnrollmentData_completio
   v13[1] = 3221225472;
   v13[2] = __78__MCProfileConnection_MDM__updateMDMEnrollmentInfoForPairingWatch_completion___block_invoke;
   v13[3] = &unk_1E77D2698;
-  v14 = v6;
-  v9 = v6;
+  v14 = completionCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x1AC55F990](v13);
-  v11 = [(MCProfileConnection *)self xpcConnection];
-  v12 = [v11 remoteObjectProxyWithErrorHandler:v10];
-  [v12 updateMDMEnrollmentInfoForPairingWatch:v7 completion:v9];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v10];
+  [v12 updateMDMEnrollmentInfoForPairingWatch:watchCopy completion:v9];
 }
 
 void __78__MCProfileConnection_MDM__updateMDMEnrollmentInfoForPairingWatch_completion___block_invoke(uint64_t a1, void *a2)
@@ -13267,8 +13267,8 @@ void __78__MCProfileConnection_MDM__updateMDMEnrollmentInfoForPairingWatch_compl
 
 - (BOOL)_checkRemoteProcessHasMDMEntitlement
 {
-  v2 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v2 valueForEntitlement:@"com.apple.managedconfiguration.profileconnection.mdm-access"];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection valueForEntitlement:@"com.apple.managedconfiguration.profileconnection.mdm-access"];
 
   v4 = 0;
   if (v3)
@@ -13304,26 +13304,26 @@ void __78__MCProfileConnection_MDM__updateMDMEnrollmentInfoForPairingWatch_compl
 - (id)cloudConfigurationDetails
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  [v2 refreshDetailsFromDisk];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  [mEMORY[0x1E69AD420] refreshDetailsFromDisk];
+  details = [mEMORY[0x1E69AD420] details];
 
-  return v3;
+  return details;
 }
 
-- (void)enrollProvisionallyWithNonce:(id)a3 completionBlock:(id)a4
+- (void)enrollProvisionallyWithNonce:(id)nonce completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  nonceCopy = nonce;
   [(MCProfileConnection *)self checkInIfNeeded];
   v8 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__MCProfileConnection_CloudConfiguration__enrollProvisionallyWithNonce_completionBlock___block_invoke;
   v10[3] = &unk_1E77D3300;
-  v11 = v6;
-  v9 = v6;
-  [v8 provisionallyEnrollWithNonce:v7 completionBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [v8 provisionallyEnrollWithNonce:nonceCopy completionBlock:v10];
 }
 
 void __88__MCProfileConnection_CloudConfiguration__enrollProvisionallyWithNonce_completionBlock___block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -13353,17 +13353,17 @@ void __88__MCProfileConnection_CloudConfiguration__enrollProvisionallyWithNonce_
   }
 }
 
-- (void)unenrollWithCompletionBlock:(id)a3
+- (void)unenrollWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = objc_opt_new();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__MCProfileConnection_CloudConfiguration__unenrollWithCompletionBlock___block_invoke;
   v7[3] = &unk_1E77D3300;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 unenrollWithCompletionBlock:v7];
 }
 
@@ -13394,57 +13394,57 @@ void __71__MCProfileConnection_CloudConfiguration__unenrollWithCompletionBlock__
   }
 }
 
-- (void)retrieveCloudConfigurationDetailsCompletionBlock:(id)a3
+- (void)retrieveCloudConfigurationDetailsCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(MCProfileConnection *)self checkInIfNeeded];
   v6 = objc_opt_new();
-  v5 = [(MCProfileConnection *)self _cloudConfigurationRetrievalBlockWithCompletion:v4];
+  v5 = [(MCProfileConnection *)self _cloudConfigurationRetrievalBlockWithCompletion:blockCopy];
 
   [v6 fetchConfigurationWithCompletionBlock:v5];
 }
 
-- (void)retrieveCloudConfigurationWithoutValidationCompletionBlock:(id)a3
+- (void)retrieveCloudConfigurationWithoutValidationCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(MCProfileConnection *)self checkInIfNeeded];
   v6 = objc_opt_new();
-  v5 = [(MCProfileConnection *)self _cloudConfigurationRetrievalBlockWithCompletion:v4];
+  v5 = [(MCProfileConnection *)self _cloudConfigurationRetrievalBlockWithCompletion:blockCopy];
 
   [v6 fetchConfigurationWithoutValidationWithCompletionBlock:v5];
 }
 
-- (void)retrieveAndStoreCloudConfigurationDetailsCompletionBlock:(id)a3
+- (void)retrieveAndStoreCloudConfigurationDetailsCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v5 = [v4 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  if (v5)
+  if (details)
   {
-    if (v6)
+    if (blockCopy)
     {
-      v6[2](v6, 0);
+      blockCopy[2](blockCopy, 0);
     }
   }
 
   else
   {
-    [(MCProfileConnection *)self forceRetrieveAndStoreCloudConfigurationDetailsCompletionBlock:v6];
+    [(MCProfileConnection *)self forceRetrieveAndStoreCloudConfigurationDetailsCompletionBlock:blockCopy];
   }
 }
 
-- (void)forceRetrieveAndStoreCloudConfigurationDetailsCompletionBlock:(id)a3
+- (void)forceRetrieveAndStoreCloudConfigurationDetailsCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __105__MCProfileConnection_CloudConfiguration__forceRetrieveAndStoreCloudConfigurationDetailsCompletionBlock___block_invoke;
   v6[3] = &unk_1E77D3328;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MCProfileConnection *)self retrieveCloudConfigurationDetailsCompletionBlock:v6];
 }
 
@@ -13485,15 +13485,15 @@ LABEL_4:
 LABEL_7:
 }
 
-- (id)_cloudConfigurationRetrievalBlockWithCompletion:(id)a3
+- (id)_cloudConfigurationRetrievalBlockWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __91__MCProfileConnection_CloudConfiguration___cloudConfigurationRetrievalBlockWithCompletion___block_invoke;
   v7[3] = &unk_1E77D3300;
-  v8 = v3;
-  v4 = v3;
+  v8 = completionCopy;
+  v4 = completionCopy;
   v5 = MEMORY[0x1AC55F990](v7);
 
   return v5;
@@ -13534,23 +13534,23 @@ void __91__MCProfileConnection_CloudConfiguration___cloudConfigurationRetrievalB
 LABEL_7:
 }
 
-- (id)getMachineInfoWithAdditionalInfo:(id)a3
+- (id)getMachineInfoWithAdditionalInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__16;
   v14 = __Block_byref_object_dispose__16;
   v15 = 0;
-  v5 = [(MCProfileConnection *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_49];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_49];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__MCProfileConnection_CloudConfiguration__getMachineInfoWithAdditionalInfo___block_invoke_13;
   v9[3] = &unk_1E77D26E8;
   v9[4] = &v10;
-  [v6 cloudConfigurationMachineInfoDataWithAdditionalInfo:v4 completion:v9];
+  [v6 cloudConfigurationMachineInfoDataWithAdditionalInfo:infoCopy completion:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -13611,8 +13611,8 @@ void __76__MCProfileConnection_CloudConfiguration__getMachineInfoWithAdditionalI
   v10 = __Block_byref_object_copy__16;
   v11 = __Block_byref_object_dispose__16;
   v12 = 0;
-  v2 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_16];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_16];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__MCProfileConnection_CloudConfiguration__getReducedMachineInfo__block_invoke_17;
@@ -13671,33 +13671,33 @@ void __64__MCProfileConnection_CloudConfiguration__getReducedMachineInfo__block_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retrieveCloudConfigurationFromURL:(id)a3 username:(id)a4 password:(id)a5 anchorCertificates:(id)a6 additionalMachineInfo:(id)a7 completionBlock:(id)a8
+- (void)retrieveCloudConfigurationFromURL:(id)l username:(id)username password:(id)password anchorCertificates:(id)certificates additionalMachineInfo:(id)info completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  lCopy = l;
+  usernameCopy = username;
+  passwordCopy = password;
+  certificatesCopy = certificates;
+  infoCopy = info;
+  blockCopy = block;
   [(MCProfileConnection *)self checkInIfNeeded];
   v20 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __152__MCProfileConnection_CloudConfiguration__retrieveCloudConfigurationFromURL_username_password_anchorCertificates_additionalMachineInfo_completionBlock___block_invoke;
   block[3] = &unk_1E77D33A0;
-  v28 = v14;
-  v29 = self;
-  v30 = v18;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
-  v34 = v19;
-  v21 = v19;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v18;
-  v26 = v14;
+  v28 = lCopy;
+  selfCopy = self;
+  v30 = infoCopy;
+  v31 = usernameCopy;
+  v32 = passwordCopy;
+  v33 = certificatesCopy;
+  v34 = blockCopy;
+  v21 = blockCopy;
+  v22 = certificatesCopy;
+  v23 = passwordCopy;
+  v24 = usernameCopy;
+  v25 = infoCopy;
+  v26 = lCopy;
   dispatch_async(v20, block);
 }
 
@@ -13832,24 +13832,24 @@ LABEL_17:
 - (BOOL)wasCloudConfigurationApplied
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
-  v4 = [v3 objectForKey:*MEMORY[0x1E6999710]];
-  v5 = [v4 BOOLValue];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
+  v4 = [details objectForKey:*MEMORY[0x1E6999710]];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)wasTeslaCloudConfigurationApplied
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999710]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999710]];
   if ([v4 BOOLValue])
   {
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999718]];
+    v5 = [details objectForKeyedSubscript:*MEMORY[0x1E6999718]];
     v6 = [v5 intValue] == 1;
   }
 
@@ -13864,13 +13864,13 @@ LABEL_17:
 - (BOOL)isAwaitingDeviceConfigured
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999700]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999700]];
   if ([v4 BOOLValue])
   {
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999720]];
+    v5 = [details objectForKeyedSubscript:*MEMORY[0x1E6999720]];
     v6 = [v5 BOOLValue] ^ 1;
   }
 
@@ -13885,44 +13885,44 @@ LABEL_17:
 - (BOOL)isAwaitingUserConfigured
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD460] sharedClient];
-  v3 = [v2 isAwaitingUserConfigured];
+  mEMORY[0x1E69AD460] = [MEMORY[0x1E69AD460] sharedClient];
+  isAwaitingUserConfigured = [mEMORY[0x1E69AD460] isAwaitingUserConfigured];
 
-  return v3;
+  return isAwaitingUserConfigured;
 }
 
-- (void)updateCloudConfigurationWithRMAccountIdentifier:(id)a3
+- (void)updateCloudConfigurationWithRMAccountIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69AD420];
-  v5 = a3;
-  v6 = [v4 sharedConfiguration];
-  v7 = [v6 details];
-  v8 = [v7 mutableCopy];
+  identifierCopy = identifier;
+  sharedConfiguration = [v4 sharedConfiguration];
+  details = [sharedConfiguration details];
+  v8 = [details mutableCopy];
 
-  [v8 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69997A8]];
+  [v8 setObject:identifierCopy forKeyedSubscript:*MEMORY[0x1E69997A8]];
   [(MCProfileConnection *)self storeCloudConfigurationDetails:v8 waitUntilCompleted:1 completion:0];
 }
 
-- (void)updateCloudConfigurationWithLastPushTokenHash:(id)a3
+- (void)updateCloudConfigurationWithLastPushTokenHash:(id)hash
 {
   v4 = MEMORY[0x1E69AD420];
-  v5 = a3;
-  v6 = [v4 sharedConfiguration];
-  v7 = [v6 details];
-  v8 = [v7 mutableCopy];
+  hashCopy = hash;
+  sharedConfiguration = [v4 sharedConfiguration];
+  details = [sharedConfiguration details];
+  v8 = [details mutableCopy];
 
-  [v8 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6999748]];
+  [v8 setObject:hashCopy forKeyedSubscript:*MEMORY[0x1E6999748]];
   [(MCProfileConnection *)self storeCloudConfigurationDetails:v8 waitUntilCompleted:1 completion:0];
 }
 
-- (void)restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:(id)a3
+- (void)restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = [(MCProfileConnection *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_41];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_41];
 
-  [v6 restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:v4];
+  [v6 restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:completionCopy];
 }
 
 void __105__MCProfileConnection_CloudConfiguration__restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -13945,33 +13945,33 @@ void __105__MCProfileConnection_CloudConfiguration__restoreCloudConfigAndMDMProf
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeCloudConfigurationDetails:(id)a3 waitUntilCompleted:(BOOL)a4 completion:(id)a5
+- (void)storeCloudConfigurationDetails:(id)details waitUntilCompleted:(BOOL)completed completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  completedCopy = completed;
+  completionCopy = completion;
+  detailsCopy = details;
   [(MCProfileConnection *)self checkInIfNeeded];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __104__MCProfileConnection_CloudConfiguration__storeCloudConfigurationDetails_waitUntilCompleted_completion___block_invoke;
   v15[3] = &unk_1E77D2698;
-  v16 = v8;
-  v10 = v8;
+  v16 = completionCopy;
+  v10 = completionCopy;
   v11 = MEMORY[0x1AC55F990](v15);
-  v12 = [(MCProfileConnection *)self xpcConnection];
-  v13 = v12;
-  if (v5)
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v13 = xpcConnection;
+  if (completedCopy)
   {
-    [v12 synchronousRemoteObjectProxyWithErrorHandler:v11];
+    [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
   }
 
   else
   {
-    [v12 remoteObjectProxyWithErrorHandler:v11];
+    [xpcConnection remoteObjectProxyWithErrorHandler:v11];
   }
   v14 = ;
 
-  [v14 cloudConfigurationStoreDetails:v9 completion:v11];
+  [v14 cloudConfigurationStoreDetails:detailsCopy completion:v11];
 }
 
 void __104__MCProfileConnection_CloudConfiguration__storeCloudConfigurationDetails_waitUntilCompleted_completion___block_invoke(uint64_t a1, void *a2)
@@ -14009,22 +14009,22 @@ LABEL_6:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storePendingCloudConfigurationDetailsForMigration:(id)a3 completionHandler:(id)a4
+- (void)storePendingCloudConfigurationDetailsForMigration:(id)migration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  migrationCopy = migration;
   [(MCProfileConnection *)self checkInIfNeeded];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __111__MCProfileConnection_CloudConfiguration__storePendingCloudConfigurationDetailsForMigration_completionHandler___block_invoke;
   v12[3] = &unk_1E77D2698;
-  v13 = v6;
-  v8 = v6;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
   v9 = MEMORY[0x1AC55F990](v12);
-  v10 = [(MCProfileConnection *)self xpcConnection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
 
-  [v11 cloudConfigurationStoreDetailsForPendingMigration:v7 completion:v9];
+  [v11 cloudConfigurationStoreDetailsForPendingMigration:migrationCopy completion:v9];
 }
 
 void __111__MCProfileConnection_CloudConfiguration__storePendingCloudConfigurationDetailsForMigration_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -14053,19 +14053,19 @@ void __111__MCProfileConnection_CloudConfiguration__storePendingCloudConfigurati
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeSetAsideCloudConfigurationProfileWithCompletion:(id)a3
+- (void)removeSetAsideCloudConfigurationProfileWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __97__MCProfileConnection_CloudConfiguration__removeSetAsideCloudConfigurationProfileWithCompletion___block_invoke;
   v9[3] = &unk_1E77D2698;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1AC55F990](v9);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
 
   [v8 removeSetAsideCloudConfigurationProfileWithCompletion:v5];
 }
@@ -14096,7 +14096,7 @@ void __97__MCProfileConnection_CloudConfiguration__removeSetAsideCloudConfigurat
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)activationRecordIndicatesCloudConfigurationIsAvailableAndKeyExists:(BOOL *)a3
+- (BOOL)activationRecordIndicatesCloudConfigurationIsAvailableAndKeyExists:(BOOL *)exists
 {
   [(MCProfileConnection *)self checkInIfNeeded];
   [(MCProfileConnection *)self flush];
@@ -14104,8 +14104,8 @@ void __97__MCProfileConnection_CloudConfiguration__removeSetAsideCloudConfigurat
   v6 = v5;
   if (!v5)
   {
-    v7 = 0;
-    if (!a3)
+    bOOLValue = 0;
+    if (!exists)
     {
       goto LABEL_4;
     }
@@ -14113,65 +14113,65 @@ void __97__MCProfileConnection_CloudConfiguration__removeSetAsideCloudConfigurat
     goto LABEL_3;
   }
 
-  v7 = [v5 BOOLValue];
-  if (a3)
+  bOOLValue = [v5 BOOLValue];
+  if (exists)
   {
 LABEL_3:
-    *a3 = v6 != 0;
+    *exists = v6 != 0;
   }
 
 LABEL_4:
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)shouldSkipSetupPanes
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999718]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999718]];
   if ([v4 intValue] == 1)
   {
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999710]];
-    v6 = [v5 BOOLValue];
+    v5 = [details objectForKeyedSubscript:*MEMORY[0x1E6999710]];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6 & 1;
+  return bOOLValue & 1;
 }
 
 - (BOOL)shouldShowCloudConfigurationUI
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v3 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  [v3 refreshDetailsFromDisk];
-  v4 = [v3 details];
-  if (v4)
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  [mEMORY[0x1E69AD420] refreshDetailsFromDisk];
+  details = [mEMORY[0x1E69AD420] details];
+  if (details)
   {
-    v5 = v4;
+    setAsideDetails = details;
   }
 
   else
   {
-    v5 = [v3 setAsideDetails];
-    if (!v5 && ![(MCProfileConnection *)self activationRecordIndicatesCloudConfigurationIsAvailable])
+    setAsideDetails = [mEMORY[0x1E69AD420] setAsideDetails];
+    if (!setAsideDetails && ![(MCProfileConnection *)self activationRecordIndicatesCloudConfigurationIsAvailable])
     {
       goto LABEL_8;
     }
   }
 
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6999708]];
-  v7 = [v6 BOOLValue];
+  v6 = [setAsideDetails objectForKeyedSubscript:*MEMORY[0x1E6999708]];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = qword_1ED4ADE28;
   v9 = os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (bOOLValue)
   {
     if (v9)
     {
@@ -14180,8 +14180,8 @@ LABEL_4:
     }
 
 LABEL_8:
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v11 = [v10 BOOLForKey:@"MCForceShowCloudConfigurationUI"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v11 = [standardUserDefaults BOOLForKey:@"MCForceShowCloudConfigurationUI"];
 
     if (!v11)
     {
@@ -14221,18 +14221,18 @@ LABEL_16:
 - (BOOL)cloudConfigIndicatesMDMProfileNeedsToBeInstalled
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v3 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v4 = [v3 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  if (!v4)
+  if (!details)
   {
     goto LABEL_15;
   }
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69997A0]];
-  v6 = [v5 BOOLValue];
+  v5 = [details objectForKeyedSubscript:*MEMORY[0x1E69997A0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = qword_1ED4ADE28;
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT))
@@ -14248,10 +14248,10 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6999740]];
-  v11 = [v10 BOOLValue];
+  v10 = [details objectForKeyedSubscript:*MEMORY[0x1E6999740]];
+  bOOLValue2 = [v10 BOOLValue];
 
-  if ((v11 & 1) == 0)
+  if ((bOOLValue2 & 1) == 0)
   {
     v7 = qword_1ED4ADE28;
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT))
@@ -14265,10 +14265,10 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v12 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6999738]];
-  v13 = [v12 BOOLValue];
+  v12 = [details objectForKeyedSubscript:*MEMORY[0x1E6999738]];
+  bOOLValue3 = [v12 BOOLValue];
 
-  if ((v13 & 1) == 0)
+  if ((bOOLValue3 & 1) == 0)
   {
     v7 = qword_1ED4ADE28;
     if (os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT))
@@ -14282,11 +14282,11 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v14 = [(MCProfileConnection *)self unverifiedInstalledMDMProfileIdentifier];
+  unverifiedInstalledMDMProfileIdentifier = [(MCProfileConnection *)self unverifiedInstalledMDMProfileIdentifier];
 
   v7 = qword_1ED4ADE28;
   v15 = os_log_type_enabled(qword_1ED4ADE28, OS_LOG_TYPE_DEFAULT);
-  if (v14)
+  if (unverifiedInstalledMDMProfileIdentifier)
   {
     if (v15)
     {
@@ -14324,19 +14324,19 @@ LABEL_16:
   return [(MCProfileConnection *)self shouldShowMDMMigrationUI];
 }
 
-- (void)storedProfileDataWithCompletion:(id)a3
+- (void)storedProfileDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__MCProfileConnection_CloudConfiguration__storedProfileDataWithCompletion___block_invoke;
   v12[3] = &unk_1E77D2698;
-  v5 = v4;
+  v5 = completionCopy;
   v13 = v5;
   v6 = MEMORY[0x1AC55F990](v12);
-  v7 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__MCProfileConnection_CloudConfiguration__storedProfileDataWithCompletion___block_invoke_2;
@@ -14414,20 +14414,20 @@ void __75__MCProfileConnection_CloudConfiguration__storedProfileDataWithCompleti
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)installStoredProfileDataWithExtraOptions:(id)a3 completion:(id)a4
+- (void)installStoredProfileDataWithExtraOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   [(MCProfileConnection *)self checkInIfNeeded];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __95__MCProfileConnection_CloudConfiguration__installStoredProfileDataWithExtraOptions_completion___block_invoke;
   v10[3] = &unk_1E77D3440;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = optionsCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = optionsCopy;
   [(MCProfileConnection *)self storedProfileDataWithCompletion:v10];
 }
 
@@ -14512,32 +14512,32 @@ void __95__MCProfileConnection_CloudConfiguration__installStoredProfileDataWithE
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeProfileData:(id)a3 completion:(id)a4
+- (void)storeProfileData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v9 = [(MCProfileConnection *)self xpcConnection];
-  v8 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v6];
-  [v8 storeProfileData:v7 completion:v6];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:completionCopy];
+  [v8 storeProfileData:dataCopy completion:completionCopy];
 }
 
 - (BOOL)shouldInstallStoredProfile
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = MCPostSetupAutoInstallProfilePathNF();
-  v4 = [v2 fileExistsAtPath:v3];
+  v4 = [defaultManager fileExistsAtPath:v3];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E69AD420] sharedConfiguration];
-    v6 = [v5 details];
+    mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+    details = [mEMORY[0x1E69AD420] details];
 
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E6999708]];
+    v7 = [details objectForKeyedSubscript:*MEMORY[0x1E6999708]];
     if ([v7 BOOLValue])
     {
-      v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69997A0]];
+      v8 = [details objectForKeyedSubscript:*MEMORY[0x1E69997A0]];
       v4 = [v8 BOOLValue] ^ 1;
     }
 
@@ -14553,8 +14553,8 @@ void __95__MCProfileConnection_CloudConfiguration__installStoredProfileDataWithE
 - (void)markStoredProfileAsInstalled
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v4 = [(MCProfileConnection *)self xpcConnection];
-  v3 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_57_0];
+  xpcConnection = [(MCProfileConnection *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_57_0];
   [v3 markStoredProfileAsInstalledWithCompletion:&__block_literal_global_57_0];
 }
 
@@ -14578,9 +14578,9 @@ void __71__MCProfileConnection_CloudConfiguration__markStoredProfileAsInstalled_
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupAssistantDidFinishWithCompletion:(id)a3
+- (void)setupAssistantDidFinishWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   DMPerformMigrationIfNeeded();
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = qword_1ED4ADE28;
@@ -14591,13 +14591,13 @@ void __71__MCProfileConnection_CloudConfiguration__markStoredProfileAsInstalled_
   }
 
   v6 = ([MEMORY[0x1E69AD428] getManagementStateForMAID] >> 2) & 1;
-  v7 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v8 = [v7 details];
-  v9 = [v8 mutableCopy];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
+  v9 = [details mutableCopy];
 
-  v10 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v11 = [v10 setAsideDetails];
-  v12 = [v11 mutableCopy];
+  mEMORY[0x1E69AD420]2 = [MEMORY[0x1E69AD420] sharedConfiguration];
+  setAsideDetails = [mEMORY[0x1E69AD420]2 setAsideDetails];
+  v12 = [setAsideDetails mutableCopy];
 
   if (v9 || !v12)
   {
@@ -14623,7 +14623,7 @@ LABEL_9:
   v21[3] = &unk_1E77D3468;
   v23 = v6;
   v21[4] = self;
-  v14 = v4;
+  v14 = completionCopy;
   v22 = v14;
   v15 = MEMORY[0x1AC55F990](v21);
   v16 = v15;
@@ -14641,8 +14641,8 @@ LABEL_9:
   else
   {
     [(MCProfileConnection *)self storeCloudConfigurationDetails:v9 waitUntilCompleted:1 completion:0];
-    v17 = [(MCProfileConnection *)self xpcConnection];
-    v18 = [v17 remoteObjectProxyWithErrorHandler:v16];
+    xpcConnection = [(MCProfileConnection *)self xpcConnection];
+    v18 = [xpcConnection remoteObjectProxyWithErrorHandler:v16];
     [v18 setupAssistantDidFinishCompletion:v16];
   }
 }
@@ -14723,55 +14723,55 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 
 - (id)diagnosticsUploadURL
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 diagnosticsUploadURL];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  diagnosticsUploadURL = [mEMORY[0x1E69AD420] diagnosticsUploadURL];
 
-  return v3;
+  return diagnosticsUploadURL;
 }
 
 - (BOOL)isProvisionallyEnrolled
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 isProvisionallyEnrolled];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isProvisionallyEnrolled = [mEMORY[0x1E69AD420] isProvisionallyEnrolled];
 
-  return v3;
+  return isProvisionallyEnrolled;
 }
 
 - (id)provisionalEnrollmentExpirationDate
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 provisionalEnrollmentExpirationDate];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  provisionalEnrollmentExpirationDate = [mEMORY[0x1E69AD420] provisionalEnrollmentExpirationDate];
 
-  return v3;
+  return provisionalEnrollmentExpirationDate;
 }
 
 - (int)userMode
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 userMode];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  userMode = [mEMORY[0x1E69AD420] userMode];
 
-  return v3 != 0;
+  return userMode != 0;
 }
 
 - (id)tvProviderUserToken
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 tvProviderUserToken];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  tvProviderUserToken = [mEMORY[0x1E69AD420] tvProviderUserToken];
 
-  return v3;
+  return tvProviderUserToken;
 }
 
 - (id)deviceOrganizationName
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999788]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999788]];
 
   return v4;
 }
@@ -14779,10 +14779,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceDepartmentName
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999780]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999780]];
 
   return v4;
 }
@@ -14790,10 +14790,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceOrganizationAddress
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999750]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999750]];
 
   return v4;
 }
@@ -14801,10 +14801,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceOrganizationAddressLine1
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999758]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999758]];
 
   return v4;
 }
@@ -14812,10 +14812,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceOrganizationAddressLine2
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999760]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999760]];
 
   return v4;
 }
@@ -14823,10 +14823,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceOrganizationAddressLine3
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999768]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999768]];
 
   return v4;
 }
@@ -14834,10 +14834,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceOrganizationCity
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999770]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999770]];
 
   return v4;
 }
@@ -14845,10 +14845,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceOrganizationRegion
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999790]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999790]];
 
   return v4;
 }
@@ -14856,10 +14856,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceOrganizationZipCode
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999798]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999798]];
 
   return v4;
 }
@@ -14867,10 +14867,10 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
 - (id)deviceOrganizationCountry
 {
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6999778]];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x1E6999778]];
 
   return v4;
 }
@@ -14884,8 +14884,8 @@ void __81__MCProfileConnection_CloudConfiguration__setupAssistantDidFinishWithCo
   v11 = __Block_byref_object_copy__16;
   v12 = __Block_byref_object_dispose__16;
   v13 = 0;
-  v3 = [(MCProfileConnection *)self publicXPCConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_67];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  v4 = [publicXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_67];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__MCProfileConnection_CloudConfiguration__managingOrganizationInformation__block_invoke_68;
@@ -14944,19 +14944,19 @@ void __74__MCProfileConnection_CloudConfiguration__managingOrganizationInformati
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)applySingleAppModeConfiguration:(id)a3 clientType:(id)a4 clientUUID:(id)a5 localizedClientDescription:(id)a6 outError:(id *)a7
+- (BOOL)applySingleAppModeConfiguration:(id)configuration clientType:(id)type clientUUID:(id)d localizedClientDescription:(id)description outError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  typeCopy = type;
+  dCopy = d;
+  descriptionCopy = description;
   v14 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = v10;
+  v15 = configurationCopy;
   v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v16)
   {
@@ -14982,7 +14982,7 @@ void __74__MCProfileConnection_CloudConfiguration__managingOrganizationInformati
     while (v17);
   }
 
-  v22 = [(MCProfileConnection *)self applyRestrictionDictionary:v14 appsAndOptions:0 clientType:v11 clientUUID:v12 localizedClientDescription:v13 localizedWarningMessage:0 outRestrictionChanged:0 outEffectiveSettingsChanged:0 outError:a7];
+  v22 = [(MCProfileConnection *)self applyRestrictionDictionary:v14 appsAndOptions:0 clientType:typeCopy clientUUID:dCopy localizedClientDescription:descriptionCopy localizedWarningMessage:0 outRestrictionChanged:0 outEffectiveSettingsChanged:0 outError:error];
   v23 = *MEMORY[0x1E69E9840];
   return v22;
 }
@@ -15013,13 +15013,13 @@ void __74__MCProfileConnection_CloudConfiguration__managingOrganizationInformati
   return result;
 }
 
-- (BOOL)isURLManaged:(id)a3
+- (BOOL)isURLManaged:(id)managed
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managedCopy = managed;
   [(MCProfileConnection *)self checkInIfNeeded];
   v5 = +[MCManagedDomainsCache sharedCache];
-  v6 = [v5 isURLManaged:v4];
+  v6 = [v5 isURLManaged:managedCopy];
 
   v7 = qword_1ED4ADE08;
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
@@ -15031,7 +15031,7 @@ void __74__MCProfileConnection_CloudConfiguration__managingOrganizationInformati
     }
 
     v11 = 138412546;
-    v12 = v4;
+    v12 = managedCopy;
     v13 = 2112;
     v14 = v8;
     _os_log_impl(&dword_1A795B000, v7, OS_LOG_TYPE_DEBUG, "isURLManaged(%@): %@", &v11, 0x16u);
@@ -15219,15 +15219,15 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isAppManaged:(id)a3
+- (BOOL)isAppManaged:(id)managed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managedCopy = managed;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = MCContainingBundleIDForBundleID(v4);
-  v6 = [MEMORY[0x1E69AD440] attributesByAppID];
-  v7 = [v6 allKeys];
-  v8 = [v7 containsObject:v5];
+  v5 = MCContainingBundleIDForBundleID(managedCopy);
+  attributesByAppID = [MEMORY[0x1E69AD440] attributesByAppID];
+  allKeys = [attributesByAppID allKeys];
+  v8 = [allKeys containsObject:v5];
 
   v9 = qword_1ED4ADE08;
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
@@ -15239,7 +15239,7 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
     }
 
     v13 = 138412546;
-    v14 = v4;
+    v14 = managedCopy;
     v15 = 2112;
     v16 = v10;
     _os_log_impl(&dword_1A795B000, v9, OS_LOG_TYPE_DEBUG, "isAppManaged:%@ => %@", &v13, 0x16u);
@@ -15253,30 +15253,30 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
 {
   v9 = *MEMORY[0x1E69E9840];
   [(MCProfileConnection *)self checkInIfNeeded];
-  v2 = [MEMORY[0x1E69AD440] attributesByAppID];
-  v3 = [v2 allKeys];
+  attributesByAppID = [MEMORY[0x1E69AD440] attributesByAppID];
+  allKeys = [attributesByAppID allKeys];
 
   v4 = qword_1ED4ADE08;
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = allKeys;
     _os_log_impl(&dword_1A795B000, v4, OS_LOG_TYPE_DEBUG, "managedAppBundleIDs => %@", &v7, 0xCu);
   }
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return allKeys;
 }
 
-- (BOOL)isBidirectionalDataTransferAllowedWithBundleID:(id)a3
+- (BOOL)isBidirectionalDataTransferAllowedWithBundleID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
   if ([(MCProfileConnection *)self isOpenInRestrictionInEffect])
   {
-    v5 = MCContainingBundleIDForBundleID(v4);
+    v5 = MCContainingBundleIDForBundleID(dCopy);
     if (MCIsAppAccountBasedTargetForOpenIn(v5) & 1) != 0 || (MCIsAppExemptFromImportFromTargetRestrictions(v5))
     {
       v6 = 1;
@@ -15304,7 +15304,7 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
     }
 
     v12 = 138412546;
-    v13 = v4;
+    v13 = dCopy;
     v14 = 2112;
     v15 = v9;
     _os_log_impl(&dword_1A795B000, v8, OS_LOG_TYPE_DEBUG, "isBidirectionalDataTransferAllowedWithBundleID:%@ => %@", &v12, 0x16u);
@@ -15314,40 +15314,40 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
   return v6;
 }
 
-- (BOOL)isBundleIDAccountBasedForDragDrop:(id)a3
+- (BOOL)isBundleIDAccountBasedForDragDrop:(id)drop
 {
-  v3 = MCContainingBundleIDForBundleID(a3);
+  v3 = MCContainingBundleIDForBundleID(drop);
   v4 = MCIsAppAccountBasedForDragDrop(v3);
 
   return v4;
 }
 
-- (int64_t)dragDropBidirectionalManagementStateForBaseBundleID:(id)a3
+- (int64_t)dragDropBidirectionalManagementStateForBaseBundleID:(id)d
 {
-  v4 = a3;
-  if (MCIsAppAccountBasedForDragDrop(v4))
+  dCopy = d;
+  if (MCIsAppAccountBasedForDragDrop(dCopy))
   {
     v5 = 2;
   }
 
-  else if (MCIsAppExemptFromDragDropManagement(v4))
+  else if (MCIsAppExemptFromDragDropManagement(dCopy))
   {
     v5 = 3;
   }
 
   else
   {
-    v5 = [(MCProfileConnection *)self isAppManaged:v4];
+    v5 = [(MCProfileConnection *)self isAppManaged:dCopy];
   }
 
   return v5;
 }
 
-- (int64_t)dragDropSourceManagementStateForBundleID:(id)a3
+- (int64_t)dragDropSourceManagementStateForBundleID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = MCContainingBundleIDForBundleID(v4);
+  dCopy = d;
+  v5 = MCContainingBundleIDForBundleID(dCopy);
   if ([v5 isEqualToString:@"com.apple.MobileSMS"])
   {
     v6 = 3;
@@ -15362,7 +15362,7 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412546;
-    v11 = v4;
+    v11 = dCopy;
     v12 = 2048;
     v13 = v6;
     _os_log_impl(&dword_1A795B000, v7, OS_LOG_TYPE_DEBUG, "dragDropSourceManagementStateForBundleID:%@ => %li", &v10, 0x16u);
@@ -15372,11 +15372,11 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
   return v6;
 }
 
-- (int64_t)dragDropTargetManagementStateForBundleID:(id)a3
+- (int64_t)dragDropTargetManagementStateForBundleID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = MCContainingBundleIDForBundleID(v4);
+  dCopy = d;
+  v5 = MCContainingBundleIDForBundleID(dCopy);
   if ([v5 isEqualToString:@"com.apple.MobileSMS"])
   {
     v6 = 0;
@@ -15391,7 +15391,7 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412546;
-    v11 = v4;
+    v11 = dCopy;
     v12 = 2048;
     v13 = v6;
     _os_log_impl(&dword_1A795B000, v7, OS_LOG_TYPE_DEBUG, "dragDropTargetManagementStateForBundleID:%@ => %li", &v10, 0x16u);
@@ -15401,12 +15401,12 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
   return v6;
 }
 
-- (BOOL)isContactsReadAffectedByOpenInRestrictionsForTargetBundleID:(id)a3
+- (BOOL)isContactsReadAffectedByOpenInRestrictionsForTargetBundleID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
-  v5 = (MCIsAppExemptFromImportFromTargetRestrictionsForContacts(v4) & 1) == 0 && [(MCProfileConnection *)self _shouldApplyContactsFilterForTargetBundleID:v4 targetAccountManagement:0 outAllowManagedAccounts:0 outAllowUnmanagedAccounts:0];
+  v5 = (MCIsAppExemptFromImportFromTargetRestrictionsForContacts(dCopy) & 1) == 0 && [(MCProfileConnection *)self _shouldApplyContactsFilterForTargetBundleID:dCopy targetAccountManagement:0 outAllowManagedAccounts:0 outAllowUnmanagedAccounts:0];
   v6 = qword_1ED4ADE08;
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
   {
@@ -15417,7 +15417,7 @@ void __145__MCProfileConnection_ManagedOpenIn__allowedImportFromAppBundleIDsAfte
     }
 
     v10 = 138412546;
-    v11 = v4;
+    v11 = dCopy;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_1A795B000, v6, OS_LOG_TYPE_DEBUG, "isContactsReadAffectedByOpenInRestrictionsForTargetBundleID:%@ => %@", &v10, 0x16u);
@@ -15451,8 +15451,8 @@ void __74__MCProfileConnection_ManagedOpenIn__canSendMail_sourceAccountManagemen
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(MCProfileConnection *)self publicXPCConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30_3];
+  publicXPCConnection = [(MCProfileConnection *)self publicXPCConnection];
+  v4 = [publicXPCConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30_3];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -15501,25 +15501,25 @@ void __72__MCProfileConnection_ManagedOpenIn__hasAnyMailAccountIgnoringFiltering
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldApplyFilterForBundleID:(id)a3 sourceAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6
+- (BOOL)shouldApplyFilterForBundleID:(id)d sourceAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (![(MCProfileConnection *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromOpenInSourceRestrictions(v10) & 1) != 0)
+  if (![(MCProfileConnection *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromOpenInSourceRestrictions(dCopy) & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if (MCIsAppAccountBasedSourceForOpenIn(v10))
+  if (MCIsAppAccountBasedSourceForOpenIn(dCopy))
   {
-    if (a4 != 1)
+    if (management != 1)
     {
-      if (a4 != 2)
+      if (management != 2)
       {
 LABEL_3:
         v11 = 0;
-        v12 = 1;
+        mayOpenFromManagedToUnmanaged = 1;
 LABEL_4:
         v13 = 1;
         v14 = v11;
@@ -15527,8 +15527,8 @@ LABEL_4:
       }
 
 LABEL_34:
-      v12 = [(MCProfileConnection *)self mayOpenFromManagedToUnmanaged];
-      v11 = !v12;
+      mayOpenFromManagedToUnmanaged = [(MCProfileConnection *)self mayOpenFromManagedToUnmanaged];
+      v11 = !mayOpenFromManagedToUnmanaged;
       goto LABEL_4;
     }
   }
@@ -15536,7 +15536,7 @@ LABEL_34:
   else
   {
     v22 = +[MCProfileConnection sharedConnection];
-    v23 = [v22 isAppManaged:v10];
+    v23 = [v22 isAppManaged:dCopy];
 
     if (v23)
     {
@@ -15544,37 +15544,37 @@ LABEL_34:
     }
   }
 
-  v24 = [(MCProfileConnection *)self mayOpenFromUnmanagedToManaged];
+  mayOpenFromUnmanagedToManaged = [(MCProfileConnection *)self mayOpenFromUnmanagedToManaged];
   v11 = 0;
   v13 = 0;
-  v12 = 1;
+  mayOpenFromManagedToUnmanaged = 1;
   v14 = 1;
-  if (v24)
+  if (mayOpenFromUnmanagedToManaged)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (a5)
+  if (accounts)
   {
-    *a5 = v13;
+    *accounts = v13;
   }
 
-  if (a6)
+  if (unmanagedAccounts)
   {
-    *a6 = v12;
+    *unmanagedAccounts = mayOpenFromManagedToUnmanaged;
   }
 
   v15 = qword_1ED4ADE08;
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
   {
     v16 = @"UNMANAGED";
-    if (a4 == 2)
+    if (management == 2)
     {
       v16 = @"MANAGED";
     }
 
-    if (!a4)
+    if (!management)
     {
       v16 = @"NONE";
     }
@@ -15590,9 +15590,9 @@ LABEL_5:
       v18 = @"NO";
     }
 
-    if (a5)
+    if (accounts)
     {
-      if (*a5)
+      if (*accounts)
       {
         v19 = @"YES";
       }
@@ -15602,7 +15602,7 @@ LABEL_5:
         v19 = @"NO";
       }
 
-      if (a6)
+      if (unmanagedAccounts)
       {
         goto LABEL_22;
       }
@@ -15611,10 +15611,10 @@ LABEL_5:
     else
     {
       v19 = @"NOT RETURNED";
-      if (a6)
+      if (unmanagedAccounts)
       {
 LABEL_22:
-        if (*a6)
+        if (*unmanagedAccounts)
         {
           v17 = @"YES";
         }
@@ -15626,7 +15626,7 @@ LABEL_22:
     v17 = @"NOT RETURNED";
 LABEL_31:
     v25 = 138413314;
-    v26 = v10;
+    v26 = dCopy;
     v27 = 2112;
     v28 = v16;
     v29 = 2112;
@@ -15642,25 +15642,25 @@ LABEL_31:
   return v14 & 1;
 }
 
-- (BOOL)shouldApplyFilterForTargetBundleID:(id)a3 targetAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6
+- (BOOL)shouldApplyFilterForTargetBundleID:(id)d targetAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (![(MCProfileConnection *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromImportFromTargetRestrictions(v10) & 1) != 0)
+  if (![(MCProfileConnection *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromImportFromTargetRestrictions(dCopy) & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if (MCIsAppAccountBasedTargetForOpenIn(v10))
+  if (MCIsAppAccountBasedTargetForOpenIn(dCopy))
   {
-    if (a4 != 1)
+    if (management != 1)
     {
-      if (a4 != 2)
+      if (management != 2)
       {
 LABEL_3:
         v11 = 0;
-        v12 = 1;
+        mayOpenFromUnmanagedToManaged = 1;
 LABEL_4:
         v13 = 1;
         v14 = v11;
@@ -15668,8 +15668,8 @@ LABEL_4:
       }
 
 LABEL_34:
-      v12 = [(MCProfileConnection *)self mayOpenFromUnmanagedToManaged];
-      v11 = !v12;
+      mayOpenFromUnmanagedToManaged = [(MCProfileConnection *)self mayOpenFromUnmanagedToManaged];
+      v11 = !mayOpenFromUnmanagedToManaged;
       goto LABEL_4;
     }
   }
@@ -15677,7 +15677,7 @@ LABEL_34:
   else
   {
     v22 = +[MCProfileConnection sharedConnection];
-    v23 = [v22 isAppManaged:v10];
+    v23 = [v22 isAppManaged:dCopy];
 
     if (v23)
     {
@@ -15685,37 +15685,37 @@ LABEL_34:
     }
   }
 
-  v24 = [(MCProfileConnection *)self mayOpenFromManagedToUnmanaged];
+  mayOpenFromManagedToUnmanaged = [(MCProfileConnection *)self mayOpenFromManagedToUnmanaged];
   v11 = 0;
   v13 = 0;
-  v12 = 1;
+  mayOpenFromUnmanagedToManaged = 1;
   v14 = 1;
-  if (v24)
+  if (mayOpenFromManagedToUnmanaged)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (a5)
+  if (accounts)
   {
-    *a5 = v13;
+    *accounts = v13;
   }
 
-  if (a6)
+  if (unmanagedAccounts)
   {
-    *a6 = v12;
+    *unmanagedAccounts = mayOpenFromUnmanagedToManaged;
   }
 
   v15 = qword_1ED4ADE08;
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
   {
     v16 = @"UNMANAGED";
-    if (a4 == 2)
+    if (management == 2)
     {
       v16 = @"MANAGED";
     }
 
-    if (!a4)
+    if (!management)
     {
       v16 = @"NONE";
     }
@@ -15731,9 +15731,9 @@ LABEL_5:
       v18 = @"NO";
     }
 
-    if (a5)
+    if (accounts)
     {
-      if (*a5)
+      if (*accounts)
       {
         v19 = @"YES";
       }
@@ -15743,7 +15743,7 @@ LABEL_5:
         v19 = @"NO";
       }
 
-      if (a6)
+      if (unmanagedAccounts)
       {
         goto LABEL_22;
       }
@@ -15752,10 +15752,10 @@ LABEL_5:
     else
     {
       v19 = @"NOT RETURNED";
-      if (a6)
+      if (unmanagedAccounts)
       {
 LABEL_22:
-        if (*a6)
+        if (*unmanagedAccounts)
         {
           v17 = @"YES";
         }
@@ -15767,7 +15767,7 @@ LABEL_22:
     v17 = @"NOT RETURNED";
 LABEL_31:
     v25 = 138413314;
-    v26 = v10;
+    v26 = dCopy;
     v27 = 2112;
     v28 = v16;
     v29 = 2112;
@@ -15959,21 +15959,21 @@ void __126__MCProfileConnection_ManagedOpenIn__allowedKeyboardBundleIDsAfterAppl
   return result;
 }
 
-- (BOOL)_shouldApplyContactsFilterForBundleID:(id)a3 sourceAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6
+- (BOOL)_shouldApplyContactsFilterForBundleID:(id)d sourceAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (![(MCProfileConnection *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromOpenInSourceRestrictions(v10) & 1) != 0)
+  if (![(MCProfileConnection *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromOpenInSourceRestrictions(dCopy) & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if (MCIsAppAccountBasedSourceForOpenIn(v10))
+  if (MCIsAppAccountBasedSourceForOpenIn(dCopy))
   {
-    if (a4 != 1)
+    if (management != 1)
     {
-      if (a4 != 2)
+      if (management != 2)
       {
         goto LABEL_3;
       }
@@ -15985,7 +15985,7 @@ void __126__MCProfileConnection_ManagedOpenIn__allowedKeyboardBundleIDsAfterAppl
   else
   {
     v22 = +[MCProfileConnection sharedConnection];
-    v23 = [v22 isAppManaged:v10];
+    v23 = [v22 isAppManaged:dCopy];
 
     if (v23)
     {
@@ -16007,37 +16007,37 @@ LABEL_4:
     }
   }
 
-  v24 = [(MCProfileConnection *)self mayOpenFromUnmanagedToManaged];
+  mayOpenFromUnmanagedToManaged = [(MCProfileConnection *)self mayOpenFromUnmanagedToManaged];
   v11 = 0;
   v13 = 0;
   v12 = 1;
   v14 = 1;
-  if (v24)
+  if (mayOpenFromUnmanagedToManaged)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (a5)
+  if (accounts)
   {
-    *a5 = v13;
+    *accounts = v13;
   }
 
-  if (a6)
+  if (unmanagedAccounts)
   {
-    *a6 = v12;
+    *unmanagedAccounts = v12;
   }
 
   v15 = qword_1ED4ADE08;
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
   {
     v16 = @"UNMANAGED";
-    if (a4 == 2)
+    if (management == 2)
     {
       v16 = @"MANAGED";
     }
 
-    if (!a4)
+    if (!management)
     {
       v16 = @"NONE";
     }
@@ -16053,9 +16053,9 @@ LABEL_5:
       v18 = @"NO";
     }
 
-    if (a5)
+    if (accounts)
     {
-      if (*a5)
+      if (*accounts)
       {
         v19 = @"YES";
       }
@@ -16065,7 +16065,7 @@ LABEL_5:
         v19 = @"NO";
       }
 
-      if (a6)
+      if (unmanagedAccounts)
       {
         goto LABEL_22;
       }
@@ -16074,10 +16074,10 @@ LABEL_5:
     else
     {
       v19 = @"NOT RETURNED";
-      if (a6)
+      if (unmanagedAccounts)
       {
 LABEL_22:
-        if (*a6)
+        if (*unmanagedAccounts)
         {
           v17 = @"YES";
         }
@@ -16089,7 +16089,7 @@ LABEL_22:
     v17 = @"NOT RETURNED";
 LABEL_31:
     v25 = 138413314;
-    v26 = v10;
+    v26 = dCopy;
     v27 = 2112;
     v28 = v16;
     v29 = 2112;
@@ -16105,28 +16105,28 @@ LABEL_31:
   return v14;
 }
 
-- (BOOL)_shouldApplyContactsFilterForTargetBundleID:(id)a3 targetAccountManagement:(int)a4 outAllowManagedAccounts:(BOOL *)a5 outAllowUnmanagedAccounts:(BOOL *)a6
+- (BOOL)_shouldApplyContactsFilterForTargetBundleID:(id)d targetAccountManagement:(int)management outAllowManagedAccounts:(BOOL *)accounts outAllowUnmanagedAccounts:(BOOL *)unmanagedAccounts
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dCopy = d;
   [(MCProfileConnection *)self checkInIfNeeded];
-  if (![(MCProfileConnection *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromImportFromTargetRestrictionsForContacts(v10) & 1) != 0)
+  if (![(MCProfileConnection *)self isOpenInRestrictionInEffect]|| (MCIsAppExemptFromImportFromTargetRestrictionsForContacts(dCopy) & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if (MCIsAppAccountBasedTargetForOpenIn(v10))
+  if (MCIsAppAccountBasedTargetForOpenIn(dCopy))
   {
-    if (a4 != 1)
+    if (management != 1)
     {
-      if (a4 != 2)
+      if (management != 2)
       {
         goto LABEL_3;
       }
 
 LABEL_34:
-      v12 = [(MCProfileConnection *)self mayOpenFromUnmanagedToManaged];
-      v11 = !v12;
+      mayOpenFromUnmanagedToManaged = [(MCProfileConnection *)self mayOpenFromUnmanagedToManaged];
+      v11 = !mayOpenFromUnmanagedToManaged;
       goto LABEL_4;
     }
   }
@@ -16134,7 +16134,7 @@ LABEL_34:
   else
   {
     v22 = +[MCProfileConnection sharedConnection];
-    v23 = [v22 isAppManaged:v10];
+    v23 = [v22 isAppManaged:dCopy];
 
     if (v23)
     {
@@ -16146,44 +16146,44 @@ LABEL_34:
   {
 LABEL_3:
     v11 = 0;
-    v12 = 1;
+    mayOpenFromUnmanagedToManaged = 1;
 LABEL_4:
     v13 = 1;
     v14 = v11;
     goto LABEL_5;
   }
 
-  v24 = [(MCProfileConnection *)self _unmanagedMayReadManagedContacts];
+  _unmanagedMayReadManagedContacts = [(MCProfileConnection *)self _unmanagedMayReadManagedContacts];
   v11 = 0;
   v13 = 0;
-  v12 = 1;
+  mayOpenFromUnmanagedToManaged = 1;
   v14 = 1;
-  if (v24)
+  if (_unmanagedMayReadManagedContacts)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (a5)
+  if (accounts)
   {
-    *a5 = v13;
+    *accounts = v13;
   }
 
-  if (a6)
+  if (unmanagedAccounts)
   {
-    *a6 = v12;
+    *unmanagedAccounts = mayOpenFromUnmanagedToManaged;
   }
 
   v15 = qword_1ED4ADE08;
   if (os_log_type_enabled(qword_1ED4ADE08, OS_LOG_TYPE_DEBUG))
   {
     v16 = @"UNMANAGED";
-    if (a4 == 2)
+    if (management == 2)
     {
       v16 = @"MANAGED";
     }
 
-    if (!a4)
+    if (!management)
     {
       v16 = @"NONE";
     }
@@ -16199,9 +16199,9 @@ LABEL_5:
       v18 = @"NO";
     }
 
-    if (a5)
+    if (accounts)
     {
-      if (*a5)
+      if (*accounts)
       {
         v19 = @"YES";
       }
@@ -16211,7 +16211,7 @@ LABEL_5:
         v19 = @"NO";
       }
 
-      if (a6)
+      if (unmanagedAccounts)
       {
         goto LABEL_22;
       }
@@ -16220,10 +16220,10 @@ LABEL_5:
     else
     {
       v19 = @"NOT RETURNED";
-      if (a6)
+      if (unmanagedAccounts)
       {
 LABEL_22:
-        if (*a6)
+        if (*unmanagedAccounts)
         {
           v17 = @"YES";
         }
@@ -16235,7 +16235,7 @@ LABEL_22:
     v17 = @"NOT RETURNED";
 LABEL_31:
     v25 = 138413314;
-    v26 = v10;
+    v26 = dCopy;
     v27 = 2112;
     v28 = v16;
     v29 = 2112;

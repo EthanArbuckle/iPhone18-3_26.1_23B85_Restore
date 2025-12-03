@@ -1,9 +1,9 @@
 @interface BCSecureUserDatum
 - (NSString)debugDescription;
 - (id)mutableCopy;
-- (void)_configureFromUserDatum:(id)a3 withMergers:(id)a4;
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4;
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4;
+- (void)_configureFromUserDatum:(id)datum withMergers:(id)mergers;
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers;
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers;
 @end
 
 @implementation BCSecureUserDatum
@@ -15,13 +15,13 @@
   return [(BCMutableSecureUserDatum *)v3 initWithCloudData:self];
 }
 
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers
 {
-  v5 = a4;
+  mergersCopy = mergers;
   v6 = BUProtocolCast();
   if (v6)
   {
-    [(BCSecureUserDatum *)self _configureFromUserDatum:v6 withMergers:v5];
+    [(BCSecureUserDatum *)self _configureFromUserDatum:v6 withMergers:mergersCopy];
   }
 
   else
@@ -34,29 +34,29 @@
   }
 }
 
-- (void)_configureFromUserDatum:(id)a3 withMergers:(id)a4
+- (void)_configureFromUserDatum:(id)datum withMergers:(id)mergers
 {
-  v6 = a3;
+  datumCopy = datum;
   v15.receiver = self;
   v15.super_class = BCSecureUserDatum;
-  [(BCCloudData *)&v15 configureFromCloudData:v6 withMergers:a4];
-  v7 = [v6 key];
+  [(BCCloudData *)&v15 configureFromCloudData:datumCopy withMergers:mergers];
+  v7 = [datumCopy key];
   [(BCSecureUserDatum *)self setDifferentString:v7 forKey:@"key"];
 
-  v8 = [v6 value];
-  [(BCSecureUserDatum *)self setDifferentString:v8 forKey:@"value"];
+  value = [datumCopy value];
+  [(BCSecureUserDatum *)self setDifferentString:value forKey:@"value"];
 
   v9 = +[BULogUtilities shared];
-  v10 = [v9 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v9 verboseLoggingEnabled];
 
-  if (v10)
+  if (verboseLoggingEnabled)
   {
     v11 = sub_10000DB80();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = [(BCSecureUserDatum *)self key];
       v13 = [(BCSecureUserDatum *)self debugDescription];
-      v14 = [v6 key];
+      v14 = [datumCopy key];
       *buf = 138412802;
       v17 = v12;
       v18 = 2112;
@@ -68,15 +68,15 @@
   }
 }
 
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers
 {
-  v6 = a3;
+  recordCopy = record;
   v40.receiver = self;
   v40.super_class = BCSecureUserDatum;
-  [(BCCloudData *)&v40 resolveConflictsFromRecord:v6 withResolvers:a4];
-  if (v6)
+  [(BCCloudData *)&v40 resolveConflictsFromRecord:recordCopy withResolvers:resolvers];
+  if (recordCopy)
   {
-    v7 = [BCCloudData localIdentifierFromRecord:v6];
+    v7 = [BCCloudData localIdentifierFromRecord:recordCopy];
     v8 = [(BCSecureUserDatum *)self key];
     v9 = [v8 isEqualToString:v7];
 
@@ -91,15 +91,15 @@
       [(BCSecureUserDatum *)self setKey:v7];
     }
 
-    v11 = [(BCSecureUserDatum *)self modificationDate];
-    if (v11)
+    modificationDate = [(BCSecureUserDatum *)self modificationDate];
+    if (modificationDate)
     {
-      v12 = v11;
-      v13 = [(BCSecureUserDatum *)self modificationDate];
-      [v13 timeIntervalSinceReferenceDate];
+      v12 = modificationDate;
+      modificationDate2 = [(BCSecureUserDatum *)self modificationDate];
+      [modificationDate2 timeIntervalSinceReferenceDate];
       v15 = v14;
-      v16 = [v6 modificationDate];
-      [v16 timeIntervalSinceReferenceDate];
+      modificationDate3 = [recordCopy modificationDate];
+      [modificationDate3 timeIntervalSinceReferenceDate];
       v18 = v17;
 
       if (v15 > v18)
@@ -108,13 +108,13 @@
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           v20 = [(BCSecureUserDatum *)self key];
-          v21 = [v6 recordID];
-          v22 = [v21 recordName];
-          v23 = [(BCSecureUserDatum *)self modificationDate];
-          [v23 timeIntervalSinceReferenceDate];
+          recordID = [recordCopy recordID];
+          recordName = [recordID recordName];
+          modificationDate4 = [(BCSecureUserDatum *)self modificationDate];
+          [modificationDate4 timeIntervalSinceReferenceDate];
           v25 = v24;
-          v26 = [v6 modificationDate];
-          [v26 timeIntervalSinceReferenceDate];
+          modificationDate5 = [recordCopy modificationDate];
+          [modificationDate5 timeIntervalSinceReferenceDate];
           v27 = @"newer";
           *buf = 138412802;
           v42 = v20;
@@ -124,7 +124,7 @@
           }
 
           v43 = 2112;
-          v44 = v22;
+          v44 = recordName;
           v45 = 2114;
           v46 = v27;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "BCSecureUserDatum %@ Resolving conflicts from record %@, keeping my properties as my modification date is %{public}@.", buf, 0x20u);
@@ -135,29 +135,29 @@
       }
     }
 
-    v29 = [v6 objectForKey:@"value"];
+    v29 = [recordCopy objectForKey:@"value"];
     [(BCSecureUserDatum *)self setDifferentString:v29 forKey:@"value"];
-    v30 = [v6 modificationDate];
-    [(BCSecureUserDatum *)self setDifferentDate:v30 forKey:@"modificationDate"];
-    v31 = [(BCSecureUserDatum *)self hasChanges];
+    modificationDate6 = [recordCopy modificationDate];
+    [(BCSecureUserDatum *)self setDifferentDate:modificationDate6 forKey:@"modificationDate"];
+    hasChanges = [(BCSecureUserDatum *)self hasChanges];
     v32 = +[BULogUtilities shared];
-    v33 = [v32 verboseLoggingEnabled];
+    verboseLoggingEnabled = [v32 verboseLoggingEnabled];
 
-    if (v31)
+    if (hasChanges)
     {
-      if (v33)
+      if (verboseLoggingEnabled)
       {
         v34 = sub_10000DB80();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           v35 = [(BCSecureUserDatum *)self key];
-          v36 = [v6 recordID];
-          v37 = [v36 recordName];
+          recordID2 = [recordCopy recordID];
+          recordName2 = [recordID2 recordName];
           v38 = [(BCSecureUserDatum *)self debugDescription];
           *buf = 138412802;
           v42 = v35;
           v43 = 2112;
-          v44 = v37;
+          v44 = recordName2;
           v45 = 2112;
           v46 = v38;
           v39 = "\\BCSecureUserDatum %@ Resolving: Adopted properties from record: %@ %@\\"";
@@ -171,19 +171,19 @@ LABEL_22:
       }
     }
 
-    else if (v33)
+    else if (verboseLoggingEnabled)
     {
       v34 = sub_10000DB80();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         v35 = [(BCSecureUserDatum *)self key];
-        v36 = [v6 recordID];
-        v37 = [v36 recordName];
+        recordID2 = [recordCopy recordID];
+        recordName2 = [recordID2 recordName];
         v38 = [(BCSecureUserDatum *)self debugDescription];
         *buf = 138412802;
         v42 = v35;
         v43 = 2112;
-        v44 = v37;
+        v44 = recordName2;
         v45 = 2112;
         v46 = v38;
         v39 = "\\BCSecureUserDatum %@ Resolving: Identical properties from record: %@ %@\\"";
@@ -208,8 +208,8 @@ LABEL_25:
 - (NSString)debugDescription
 {
   v3 = [(BCSecureUserDatum *)self key];
-  v4 = [(BCSecureUserDatum *)self value];
-  v5 = [NSString stringWithFormat:@"key: %@, value: %@", v3, v4];
+  value = [(BCSecureUserDatum *)self value];
+  v5 = [NSString stringWithFormat:@"key: %@, value: %@", v3, value];
 
   return v5;
 }

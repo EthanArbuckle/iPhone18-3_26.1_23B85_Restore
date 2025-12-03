@@ -2,12 +2,12 @@
 - (BOOL)hasQueuedHardPauseDigits;
 - (CSDPauseDigits)nextPauseDigits;
 - (CSDPauseDigitsQueue)init;
-- (CSDPauseDigitsQueue)initWithDestinationID:(id)a3;
+- (CSDPauseDigitsQueue)initWithDestinationID:(id)d;
 - (CSDPauseDigitsQueueDelegate)delegate;
 - (id)dequeueAllPauseDigits;
 - (id)dequeueNextPauseDigits;
 - (id)description;
-- (void)_parsePauseDigitsFromDestinationID:(id)a3;
+- (void)_parsePauseDigitsFromDestinationID:(id)d;
 @end
 
 @implementation CSDPauseDigitsQueue
@@ -15,19 +15,19 @@
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CSDPauseDigitsQueue *)self baseDestinationID];
-  [v3 appendFormat:@" baseDestinationID=%@", v4];
+  baseDestinationID = [(CSDPauseDigitsQueue *)self baseDestinationID];
+  [v3 appendFormat:@" baseDestinationID=%@", baseDestinationID];
 
-  v5 = [(CSDPauseDigitsQueue *)self originalPauseDigitsString];
-  [v3 appendFormat:@" originalPauseDigitsString=%@", v5];
+  originalPauseDigitsString = [(CSDPauseDigitsQueue *)self originalPauseDigitsString];
+  [v3 appendFormat:@" originalPauseDigitsString=%@", originalPauseDigitsString];
 
-  v6 = [(CSDPauseDigitsQueue *)self pauseDigits];
-  v7 = [v6 count];
+  pauseDigits = [(CSDPauseDigitsQueue *)self pauseDigits];
+  v7 = [pauseDigits count];
 
   if (v7)
   {
-    v8 = [(CSDPauseDigitsQueue *)self pauseDigits];
-    [v3 appendFormat:@" pauseDigits=%@", v8];
+    pauseDigits2 = [(CSDPauseDigitsQueue *)self pauseDigits];
+    [v3 appendFormat:@" pauseDigits=%@", pauseDigits2];
   }
 
   [v3 appendString:@">"];
@@ -37,10 +37,10 @@
 
 - (CSDPauseDigits)nextPauseDigits
 {
-  v2 = [(CSDPauseDigitsQueue *)self pauseDigits];
-  v3 = [v2 firstObject];
+  pauseDigits = [(CSDPauseDigitsQueue *)self pauseDigits];
+  firstObject = [pauseDigits firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (BOOL)hasQueuedHardPauseDigits
@@ -49,8 +49,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CSDPauseDigitsQueue *)self pauseDigits];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  pauseDigits = [(CSDPauseDigitsQueue *)self pauseDigits];
+  v3 = [pauseDigits countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -60,7 +60,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pauseDigits);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isHardPause])
@@ -70,7 +70,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [pauseDigits countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -93,9 +93,9 @@ LABEL_11:
   return 0;
 }
 
-- (CSDPauseDigitsQueue)initWithDestinationID:(id)a3
+- (CSDPauseDigitsQueue)initWithDestinationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = CSDPauseDigitsQueue;
   v5 = [(CSDPauseDigitsQueue *)&v9 init];
@@ -105,7 +105,7 @@ LABEL_11:
     pauseDigits = v5->_pauseDigits;
     v5->_pauseDigits = v6;
 
-    [(CSDPauseDigitsQueue *)v5 _parsePauseDigitsFromDestinationID:v4];
+    [(CSDPauseDigitsQueue *)v5 _parsePauseDigitsFromDestinationID:dCopy];
   }
 
   return v5;
@@ -113,34 +113,34 @@ LABEL_11:
 
 - (id)dequeueNextPauseDigits
 {
-  v3 = [(CSDPauseDigitsQueue *)self nextPauseDigits];
-  if (v3)
+  nextPauseDigits = [(CSDPauseDigitsQueue *)self nextPauseDigits];
+  if (nextPauseDigits)
   {
-    v4 = [(CSDPauseDigitsQueue *)self pauseDigits];
-    [v4 removeObjectAtIndex:0];
+    pauseDigits = [(CSDPauseDigitsQueue *)self pauseDigits];
+    [pauseDigits removeObjectAtIndex:0];
 
-    v5 = [(CSDPauseDigitsQueue *)self delegate];
-    [v5 pauseDigitsQueueChanged:self];
+    delegate = [(CSDPauseDigitsQueue *)self delegate];
+    [delegate pauseDigitsQueueChanged:self];
   }
 
-  return v3;
+  return nextPauseDigits;
 }
 
 - (id)dequeueAllPauseDigits
 {
-  v3 = [(CSDPauseDigitsQueue *)self pauseDigits];
-  v4 = [v3 count];
+  pauseDigits = [(CSDPauseDigitsQueue *)self pauseDigits];
+  v4 = [pauseDigits count];
 
   if (v4)
   {
-    v5 = [(CSDPauseDigitsQueue *)self pauseDigits];
-    v6 = [v5 copy];
+    pauseDigits2 = [(CSDPauseDigitsQueue *)self pauseDigits];
+    v6 = [pauseDigits2 copy];
 
-    v7 = [(CSDPauseDigitsQueue *)self pauseDigits];
-    [v7 removeAllObjects];
+    pauseDigits3 = [(CSDPauseDigitsQueue *)self pauseDigits];
+    [pauseDigits3 removeAllObjects];
 
-    v8 = [(CSDPauseDigitsQueue *)self delegate];
-    [v8 pauseDigitsQueueChanged:self];
+    delegate = [(CSDPauseDigitsQueue *)self delegate];
+    [delegate pauseDigitsQueueChanged:self];
   }
 
   else
@@ -151,16 +151,16 @@ LABEL_11:
   return v6;
 }
 
-- (void)_parsePauseDigitsFromDestinationID:(id)a3
+- (void)_parsePauseDigitsFromDestinationID:(id)d
 {
-  v20 = a3;
+  dCopy = d;
   if (qword_1006ACD00 != -1)
   {
     sub_1004758A4();
   }
 
-  v4 = [v20 length];
-  v5 = [v20 rangeOfCharacterFromSet:qword_1006ACCF8 options:4 range:{0, v4}];
+  v4 = [dCopy length];
+  v5 = [dCopy rangeOfCharacterFromSet:qword_1006ACCF8 options:4 range:{0, v4}];
   if (v6)
   {
     v7 = v5 == 0x7FFFFFFFFFFFFFFFLL;
@@ -178,30 +178,30 @@ LABEL_11:
     do
     {
       v10 = v8 + 1;
-      v11 = [v20 substringWithRange:{v8, v9}];
+      v11 = [dCopy substringWithRange:{v8, v9}];
       v12 = [v11 characterAtIndex:0];
 
-      v13 = [v20 substringWithRange:{v10, v4 - v10}];
+      v13 = [dCopy substringWithRange:{v10, v4 - v10}];
       v14 = [qword_1006ACCF0 characterIsMember:v12];
       if ([v13 length] || (v14 & 1) == 0)
       {
         v15 = [[CSDPauseDigits alloc] initWithDigits:v13 isHardPause:v14];
-        v16 = [(CSDPauseDigitsQueue *)self pauseDigits];
-        [v16 insertObject:v15 atIndex:0];
+        pauseDigits = [(CSDPauseDigitsQueue *)self pauseDigits];
+        [pauseDigits insertObject:v15 atIndex:0];
       }
 
       v4 += ~[v13 length];
-      v8 = [v20 rangeOfCharacterFromSet:qword_1006ACCF8 options:4 range:{0, v4}];
+      v8 = [dCopy rangeOfCharacterFromSet:qword_1006ACCF8 options:4 range:{0, v4}];
       v9 = v17;
     }
 
     while (v9 && v8 != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  v18 = [v20 substringWithRange:{0, v4}];
+  v18 = [dCopy substringWithRange:{0, v4}];
   [(CSDPauseDigitsQueue *)self setBaseDestinationID:v18];
 
-  v19 = [v20 substringFromIndex:v4];
+  v19 = [dCopy substringFromIndex:v4];
   [(CSDPauseDigitsQueue *)self setOriginalPauseDigitsString:v19];
 }
 

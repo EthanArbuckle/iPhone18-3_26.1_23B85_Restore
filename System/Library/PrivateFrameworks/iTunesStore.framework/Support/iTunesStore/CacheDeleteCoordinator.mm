@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (BOOL)_isStale;
 - (CacheDeleteCoordinator)init;
-- (id)_periodic:(id)a3 urgency:(int)a4;
+- (id)_periodic:(id)_periodic urgency:(int)urgency;
 - (id)_purchaseHistoryCache;
-- (id)_purge:(id)a3 urgency:(int)a4;
-- (id)_purgeable:(id)a3 urgency:(int)a4;
-- (int64_t)_targetVolumeFromString:(id)a3;
+- (id)_purge:(id)_purge urgency:(int)urgency;
+- (id)_purgeable:(id)_purgeable urgency:(int)urgency;
+- (int64_t)_targetVolumeFromString:(id)string;
 - (unint64_t)_currentPurgeable;
 - (void)_cancelPurge;
 - (void)_pushUpdatedAvailableStorage;
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000D0700;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383E70 != -1)
   {
     dispatch_once(&qword_100383E70, block);
@@ -55,12 +55,12 @@
 
 - (void)dealloc
 {
-  v3 = [(CacheDeleteCoordinator *)self scheduledTimer];
+  scheduledTimer = [(CacheDeleteCoordinator *)self scheduledTimer];
 
-  if (v3)
+  if (scheduledTimer)
   {
-    v4 = [(CacheDeleteCoordinator *)self scheduledTimer];
-    dispatch_source_cancel(v4);
+    scheduledTimer2 = [(CacheDeleteCoordinator *)self scheduledTimer];
+    dispatch_source_cancel(scheduledTimer2);
   }
 
   v5.receiver = self;
@@ -97,21 +97,21 @@
   v4 = objc_retainBlock(v16);
   v5 = CacheDeleteRegisterInfoCallbacks();
   v6 = +[SSLogConfig sharedConfig];
-  v7 = [v6 shouldLog];
-  v8 = [v6 shouldLogToDisk];
-  v9 = [v6 OSLogObject];
-  v10 = v9;
-  if (v8)
+  shouldLog = [v6 shouldLog];
+  shouldLogToDisk = [v6 shouldLogToDisk];
+  oSLogObject = [v6 OSLogObject];
+  v10 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v7 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v7 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v7)
+  if (!shouldLog)
   {
     goto LABEL_8;
   }
@@ -145,46 +145,46 @@ LABEL_8:
 
 - (void)updatePurgeableStorage
 {
-  v3 = [(CacheDeleteCoordinator *)self scheduledTimer];
+  scheduledTimer = [(CacheDeleteCoordinator *)self scheduledTimer];
 
-  if (!v3)
+  if (!scheduledTimer)
   {
     v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);
     [(CacheDeleteCoordinator *)self setScheduledTimer:v4];
 
-    v5 = [(CacheDeleteCoordinator *)self scheduledTimer];
+    scheduledTimer2 = [(CacheDeleteCoordinator *)self scheduledTimer];
     v6 = dispatch_time(0, 10000000000);
-    dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
+    dispatch_source_set_timer(scheduledTimer2, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-    v7 = [(CacheDeleteCoordinator *)self scheduledTimer];
+    scheduledTimer3 = [(CacheDeleteCoordinator *)self scheduledTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000D0E9C;
     handler[3] = &unk_100327110;
     handler[4] = self;
-    dispatch_source_set_event_handler(v7, handler);
+    dispatch_source_set_event_handler(scheduledTimer3, handler);
 
-    v8 = [(CacheDeleteCoordinator *)self scheduledTimer];
-    dispatch_resume(v8);
+    scheduledTimer4 = [(CacheDeleteCoordinator *)self scheduledTimer];
+    dispatch_resume(scheduledTimer4);
   }
 }
 
 - (void)_cancelPurge
 {
   v2 = +[SSLogConfig sharedConfig];
-  v3 = [v2 shouldLog];
+  shouldLog = [v2 shouldLog];
   if ([v2 shouldLogToDisk])
   {
-    v4 = v3 | 2;
+    v4 = shouldLog | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = shouldLog;
   }
 
-  v5 = [v2 OSLogObject];
-  if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v4 &= 2u;
   }
@@ -202,7 +202,7 @@ LABEL_8:
 
   if (v7)
   {
-    v5 = [NSString stringWithCString:v7 encoding:4, &v9, v8, v9];
+    oSLogObject = [NSString stringWithCString:v7 encoding:4, &v9, v8, v9];
     free(v7);
     SSFileLog();
 LABEL_9:
@@ -212,14 +212,14 @@ LABEL_9:
 - (unint64_t)_currentPurgeable
 {
   v2 = objc_alloc_init(SSAppPurchaseHistoryCache);
-  v3 = [v2 purgeableSpace];
+  purgeableSpace = [v2 purgeableSpace];
   if (+[ISURLOperation sharedCFURLCache])
   {
     +[ISURLOperation sharedCFURLCache];
-    v3 += CFURLCacheCurrentDiskUsage();
+    purgeableSpace += CFURLCacheCurrentDiskUsage();
   }
 
-  return v3;
+  return purgeableSpace;
 }
 
 - (BOOL)_isStale
@@ -229,26 +229,26 @@ LABEL_9:
   return Current - lastUpdate > 3600.0 || lastUpdate == 0.0;
 }
 
-- (id)_periodic:(id)a3 urgency:(int)a4
+- (id)_periodic:(id)_periodic urgency:(int)urgency
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
-  v7 = [v5 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
+  _periodicCopy = _periodic;
+  v6 = [_periodicCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v7 = [_periodicCopy objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
 
   v8 = +[SSLogConfig sharedConfig];
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 &= 2u;
   }
@@ -260,7 +260,7 @@ LABEL_9:
     v22 = 2112;
     v23 = v7;
     v24 = 2048;
-    v25 = a4;
+    urgencyCopy = urgency;
     v12 = v21;
     LODWORD(v17) = 32;
     v13 = _os_log_send_and_compose_impl();
@@ -270,7 +270,7 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v11 = [NSString stringWithCString:v13 encoding:4, &v20, v17];
+    oSLogObject = [NSString stringWithCString:v13 encoding:4, &v20, v17];
     free(v13);
     SSFileLog();
   }
@@ -301,18 +301,18 @@ LABEL_10:
   return purchaseHistoryCache;
 }
 
-- (id)_purge:(id)a3 urgency:(int)a4
+- (id)_purge:(id)_purge urgency:(int)urgency
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
-  v8 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
+  _purgeCopy = _purge;
+  v7 = [_purgeCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v8 = [_purgeCopy objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
 
   if ([(CacheDeleteCoordinator *)self _targetVolumeFromString:v7]== 2)
   {
-    v9 = [v8 unsignedLongLongValue];
-    v10 = [(CacheDeleteCoordinator *)self _currentPurgeable];
-    v11 = [(CacheDeleteCoordinator *)self _purchaseHistoryCache];
-    [v11 purge:v9];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
+    _currentPurgeable = [(CacheDeleteCoordinator *)self _currentPurgeable];
+    _purchaseHistoryCache = [(CacheDeleteCoordinator *)self _purchaseHistoryCache];
+    [_purchaseHistoryCache purge:unsignedLongLongValue];
 
     if (+[ISURLOperation sharedCFURLCache])
     {
@@ -320,28 +320,28 @@ LABEL_10:
       CFURLCacheRemoveAllCachedResponses();
     }
 
-    v12 = v10 - [(CacheDeleteCoordinator *)self _currentPurgeable];
-    v13 = self;
-    objc_sync_enter(v13);
-    v13->_lastUpdate = 0.0;
-    combinedSpaceByUrgency = v13->_combinedSpaceByUrgency;
-    v13->_combinedSpaceByUrgency = 0;
+    v12 = _currentPurgeable - [(CacheDeleteCoordinator *)self _currentPurgeable];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy->_lastUpdate = 0.0;
+    combinedSpaceByUrgency = selfCopy->_combinedSpaceByUrgency;
+    selfCopy->_combinedSpaceByUrgency = 0;
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
     v15 = +[SSLogConfig sharedConfig];
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 &= 2u;
     }
@@ -355,7 +355,7 @@ LABEL_10:
       v32 = 2048;
       v33 = v12;
       v34 = 2048;
-      v35 = a4;
+      urgencyCopy = urgency;
       v19 = v29;
       LODWORD(v25) = 42;
       v24 = &v28;
@@ -368,9 +368,9 @@ LABEL_13:
         goto LABEL_15;
       }
 
-      v18 = [NSString stringWithCString:v20 encoding:4, &v28, v25];
+      oSLogObject = [NSString stringWithCString:v20 encoding:4, &v28, v25];
       free(v20);
-      v24 = v18;
+      v24 = oSLogObject;
       SSFileLog();
     }
 
@@ -389,31 +389,31 @@ LABEL_15:
   return v22;
 }
 
-- (id)_purgeable:(id)a3 urgency:(int)a4
+- (id)_purgeable:(id)_purgeable urgency:(int)urgency
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v4 = *&urgency;
+  _purgeableCopy = _purgeable;
+  v7 = [_purgeableCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   if ([(CacheDeleteCoordinator *)self _targetVolumeFromString:v7]!= 2)
   {
-    v15 = 0;
+    unsignedLongLongValue = 0;
     goto LABEL_28;
   }
 
   v8 = +[SSLogConfig sharedConfig];
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 &= 2u;
   }
@@ -442,42 +442,42 @@ LABEL_15:
   {
   }
 
-  v16 = self;
-  objc_sync_enter(v16);
-  if (!v16->_combinedSpaceByUrgency || [(CacheDeleteCoordinator *)v16 _isStale])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_combinedSpaceByUrgency || [(CacheDeleteCoordinator *)selfCopy _isStale])
   {
-    [(CacheDeleteCoordinator *)v16 _refreshPurgeableStorage];
+    [(CacheDeleteCoordinator *)selfCopy _refreshPurgeableStorage];
   }
 
-  combinedSpaceByUrgency = v16->_combinedSpaceByUrgency;
+  combinedSpaceByUrgency = selfCopy->_combinedSpaceByUrgency;
   v18 = [NSNumber numberWithInt:v4, v30];
   v19 = [(NSDictionary *)combinedSpaceByUrgency objectForKey:v18];
 
   if (v19)
   {
-    v15 = [v19 unsignedLongLongValue];
+    unsignedLongLongValue = [v19 unsignedLongLongValue];
   }
 
   else
   {
-    v15 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
   v20 = +[SSLogConfig sharedConfig];
-  v21 = [v20 shouldLog];
+  shouldLog2 = [v20 shouldLog];
   if ([v20 shouldLogToDisk])
   {
-    v22 = v21 | 2;
+    v22 = shouldLog2 | 2;
   }
 
   else
   {
-    v22 = v21;
+    v22 = shouldLog2;
   }
 
-  v23 = [v20 OSLogObject];
-  if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v20 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v22 &= 2u;
   }
@@ -491,7 +491,7 @@ LABEL_15:
   v34 = 138412802;
   v35 = v24;
   v36 = 2048;
-  v37 = v15;
+  v37 = unsignedLongLongValue;
   v38 = 2048;
   v39 = v4;
   v25 = v24;
@@ -501,9 +501,9 @@ LABEL_15:
 
   if (v26)
   {
-    v23 = [NSString stringWithCString:v26 encoding:4, &v34, v31];
+    oSLogObject2 = [NSString stringWithCString:v26 encoding:4, &v34, v31];
     free(v26);
-    v30 = v23;
+    v30 = oSLogObject2;
     SSFileLog();
 LABEL_26:
   }
@@ -512,7 +512,7 @@ LABEL_28:
   v32[0] = @"CACHE_DELETE_VOLUME";
   v32[1] = @"CACHE_DELETE_AMOUNT";
   v33[0] = v7;
-  v27 = [NSNumber numberWithLongLong:v15, v30];
+  v27 = [NSNumber numberWithLongLong:unsignedLongLongValue, v30];
   v33[1] = v27;
   v28 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
 
@@ -523,19 +523,19 @@ LABEL_28:
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   [(CacheDeleteCoordinator *)self _refreshPurgeableStorage];
-  v3 = [(CacheDeleteCoordinator *)self scheduledTimer];
+  scheduledTimer = [(CacheDeleteCoordinator *)self scheduledTimer];
 
-  if (v3)
+  if (scheduledTimer)
   {
-    v4 = [(CacheDeleteCoordinator *)self scheduledTimer];
-    dispatch_source_cancel(v4);
+    scheduledTimer2 = [(CacheDeleteCoordinator *)self scheduledTimer];
+    dispatch_source_cancel(scheduledTimer2);
 
     [(CacheDeleteCoordinator *)self setScheduledTimer:0];
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  combinedSpaceByUrgency = v5->_combinedSpaceByUrgency;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  combinedSpaceByUrgency = selfCopy->_combinedSpaceByUrgency;
   if (combinedSpaceByUrgency)
   {
     v7 = [(NSDictionary *)combinedSpaceByUrgency copy];
@@ -546,7 +546,7 @@ LABEL_28:
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   if (v7)
   {
@@ -559,19 +559,19 @@ LABEL_28:
     v8 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
     CacheDeleteUpdatePurgeable();
     v9 = +[SSLogConfig sharedConfig];
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 &= 2u;
     }
@@ -595,7 +595,7 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v12 = [NSString stringWithCString:v14 encoding:4, v16, v15, *v16, *&v16[16], v17];
+      oSLogObject = [NSString stringWithCString:v14 encoding:4, v16, v15, *v16, *&v16[16], v17];
       free(v14);
       SSFileLog();
     }
@@ -609,19 +609,19 @@ LABEL_17:
 - (void)_refreshPurgeableStorage
 {
   v3 = +[SSLogConfig sharedConfig];
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -648,12 +648,12 @@ LABEL_17:
   {
   }
 
-  v10 = [(CacheDeleteCoordinator *)self _currentPurgeable];
+  _currentPurgeable = [(CacheDeleteCoordinator *)self _currentPurgeable];
   v11 = objc_opt_new();
   v12 = 1;
   do
   {
-    v13 = [NSNumber numberWithLongLong:v10, v18];
+    v13 = [NSNumber numberWithLongLong:_currentPurgeable, v18];
     v14 = [NSNumber numberWithInt:v12];
     [v11 setObject:v13 forKey:v14];
 
@@ -661,21 +661,21 @@ LABEL_17:
   }
 
   while (v12 != 5);
-  v15 = self;
-  objc_sync_enter(v15);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = [v11 copy];
-  combinedSpaceByUrgency = v15->_combinedSpaceByUrgency;
-  v15->_combinedSpaceByUrgency = v16;
+  combinedSpaceByUrgency = selfCopy->_combinedSpaceByUrgency;
+  selfCopy->_combinedSpaceByUrgency = v16;
 
-  v15->_lastUpdate = CFAbsoluteTimeGetCurrent();
-  objc_sync_exit(v15);
+  selfCopy->_lastUpdate = CFAbsoluteTimeGetCurrent();
+  objc_sync_exit(selfCopy);
 }
 
-- (int64_t)_targetVolumeFromString:(id)a3
+- (int64_t)_targetVolumeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:@"/private/var"] & 1) == 0)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && ([stringCopy isEqualToString:@"/private/var"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"/private/var/mobile"])
     {

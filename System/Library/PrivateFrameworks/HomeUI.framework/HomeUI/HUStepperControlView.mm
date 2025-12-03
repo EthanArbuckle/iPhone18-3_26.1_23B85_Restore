@@ -1,39 +1,39 @@
 @interface HUStepperControlView
 - (BOOL)isDisabled;
 - (HUControlViewDelegate)delegate;
-- (HUStepperControlView)initWithFrame:(CGRect)a3;
+- (HUStepperControlView)initWithFrame:(CGRect)frame;
 - (double)maxValue;
 - (double)minValue;
 - (double)stepValue;
 - (id)_defaultValueFormatter;
-- (void)_stepperTouchDown:(id)a3;
-- (void)_stepperTouchUp:(id)a3;
-- (void)_stepperValueChanged:(id)a3;
+- (void)_stepperTouchDown:(id)down;
+- (void)_stepperTouchUp:(id)up;
+- (void)_stepperValueChanged:(id)changed;
 - (void)_updateValueLabel;
-- (void)setDisabled:(BOOL)a3;
-- (void)setMaxValue:(double)a3;
-- (void)setMinValue:(double)a3;
-- (void)setStepValue:(double)a3;
-- (void)setValue:(id)a3;
-- (void)setValueFormatter:(id)a3;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setMaxValue:(double)value;
+- (void)setMinValue:(double)value;
+- (void)setStepValue:(double)value;
+- (void)setValue:(id)value;
+- (void)setValueFormatter:(id)formatter;
 - (void)updateConstraints;
 @end
 
 @implementation HUStepperControlView
 
-- (HUStepperControlView)initWithFrame:(CGRect)a3
+- (HUStepperControlView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = HUStepperControlView;
-  v3 = [(HUStepperControlView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUStepperControlView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75AC0]);
     stepper = v3->_stepper;
     v3->_stepper = v4;
 
-    v6 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UIStepper *)v3->_stepper setTintColor:v6];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UIStepper *)v3->_stepper setTintColor:systemOrangeColor];
 
     [(UIStepper *)v3->_stepper setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStepper *)v3->_stepper addTarget:v3 action:sel__stepperTouchDown_ forControlEvents:1];
@@ -46,9 +46,9 @@
 
     [(UILabel *)v3->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUStepperControlView *)v3 addSubview:v3->_valueLabel];
-    v9 = [(HUStepperControlView *)v3 _defaultValueFormatter];
+    _defaultValueFormatter = [(HUStepperControlView *)v3 _defaultValueFormatter];
     valueFormatter = v3->_valueFormatter;
-    v3->_valueFormatter = v9;
+    v3->_valueFormatter = _defaultValueFormatter;
 
     [(HUStepperControlView *)v3 _updateValueLabel];
   }
@@ -58,125 +58,125 @@
 
 - (double)minValue
 {
-  v2 = [(HUStepperControlView *)self stepper];
-  [v2 minimumValue];
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper minimumValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMinValue:(double)a3
+- (void)setMinValue:(double)value
 {
-  v4 = [(HUStepperControlView *)self stepper];
-  [v4 setMinimumValue:a3];
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper setMinimumValue:value];
 }
 
 - (double)maxValue
 {
-  v2 = [(HUStepperControlView *)self stepper];
-  [v2 maximumValue];
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper maximumValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMaxValue:(double)a3
+- (void)setMaxValue:(double)value
 {
-  v4 = [(HUStepperControlView *)self stepper];
-  [v4 setMaximumValue:a3];
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper setMaximumValue:value];
 }
 
 - (double)stepValue
 {
-  v2 = [(HUStepperControlView *)self stepper];
-  [v2 stepValue];
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper stepValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setStepValue:(double)a3
+- (void)setStepValue:(double)value
 {
-  v4 = [(HUStepperControlView *)self stepper];
-  [v4 setStepValue:a3];
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper setStepValue:value];
 }
 
-- (void)setValueFormatter:(id)a3
+- (void)setValueFormatter:(id)formatter
 {
-  v4 = a3;
-  if (!v4)
+  formatterCopy = formatter;
+  if (!formatterCopy)
   {
-    v4 = [(HUStepperControlView *)self _defaultValueFormatter];
+    formatterCopy = [(HUStepperControlView *)self _defaultValueFormatter];
   }
 
   valueFormatter = self->_valueFormatter;
-  self->_valueFormatter = v4;
+  self->_valueFormatter = formatterCopy;
 
   [(HUStepperControlView *)self _updateValueLabel];
 }
 
 - (void)updateConstraints
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUStepperControlView *)self valueLabel];
-  v5 = [v4 heightAnchor];
-  v6 = [(HUStepperControlView *)self heightAnchor];
-  v7 = [v5 constraintLessThanOrEqualToAnchor:v6];
-  [v3 addObject:v7];
+  array = [MEMORY[0x277CBEB18] array];
+  valueLabel = [(HUStepperControlView *)self valueLabel];
+  heightAnchor = [valueLabel heightAnchor];
+  heightAnchor2 = [(HUStepperControlView *)self heightAnchor];
+  v7 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
+  [array addObject:v7];
 
-  v8 = [(HUStepperControlView *)self valueLabel];
-  v9 = [v8 centerYAnchor];
-  v10 = [(HUStepperControlView *)self centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
-  [v3 addObject:v11];
+  valueLabel2 = [(HUStepperControlView *)self valueLabel];
+  centerYAnchor = [valueLabel2 centerYAnchor];
+  centerYAnchor2 = [(HUStepperControlView *)self centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v11];
 
-  v12 = [(HUStepperControlView *)self valueLabel];
-  v13 = [v12 trailingAnchor];
-  v14 = [(HUStepperControlView *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
-  [v3 addObject:v15];
+  valueLabel3 = [(HUStepperControlView *)self valueLabel];
+  trailingAnchor = [valueLabel3 trailingAnchor];
+  trailingAnchor2 = [(HUStepperControlView *)self trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v15];
 
-  v16 = [(HUStepperControlView *)self valueLabel];
-  v17 = [v16 leadingAnchor];
-  v18 = [(HUStepperControlView *)self stepper];
-  v19 = [v18 trailingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19 constant:8.0];
-  [v3 addObject:v20];
+  valueLabel4 = [(HUStepperControlView *)self valueLabel];
+  leadingAnchor = [valueLabel4 leadingAnchor];
+  stepper = [(HUStepperControlView *)self stepper];
+  trailingAnchor3 = [stepper trailingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:trailingAnchor3 constant:8.0];
+  [array addObject:v20];
 
-  v21 = [(HUStepperControlView *)self stepper];
-  v22 = [v21 centerYAnchor];
-  v23 = [(HUStepperControlView *)self centerYAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
-  [v3 addObject:v24];
+  stepper2 = [(HUStepperControlView *)self stepper];
+  centerYAnchor3 = [stepper2 centerYAnchor];
+  centerYAnchor4 = [(HUStepperControlView *)self centerYAnchor];
+  v24 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+  [array addObject:v24];
 
-  v25 = [(HUStepperControlView *)self stepper];
-  v26 = [v25 leadingAnchor];
-  v27 = [(HUStepperControlView *)self leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
-  [v3 addObject:v28];
+  stepper3 = [(HUStepperControlView *)self stepper];
+  leadingAnchor2 = [stepper3 leadingAnchor];
+  leadingAnchor3 = [(HUStepperControlView *)self leadingAnchor];
+  v28 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
+  [array addObject:v28];
 
-  v29 = [(HUStepperControlView *)self heightAnchor];
-  v30 = [(HUStepperControlView *)self stepper];
-  v31 = [v30 heightAnchor];
-  v32 = [v29 constraintGreaterThanOrEqualToAnchor:v31];
-  [v3 addObject:v32];
+  heightAnchor3 = [(HUStepperControlView *)self heightAnchor];
+  stepper4 = [(HUStepperControlView *)self stepper];
+  heightAnchor4 = [stepper4 heightAnchor];
+  v32 = [heightAnchor3 constraintGreaterThanOrEqualToAnchor:heightAnchor4];
+  [array addObject:v32];
 
-  v33 = [(HUStepperControlView *)self layoutConstraints];
-  LOBYTE(v30) = [v3 isEqualToArray:v33];
+  layoutConstraints = [(HUStepperControlView *)self layoutConstraints];
+  LOBYTE(stepper4) = [array isEqualToArray:layoutConstraints];
 
-  if ((v30 & 1) == 0)
+  if ((stepper4 & 1) == 0)
   {
-    v34 = [(HUStepperControlView *)self layoutConstraints];
+    layoutConstraints2 = [(HUStepperControlView *)self layoutConstraints];
 
-    if (v34)
+    if (layoutConstraints2)
     {
       v35 = MEMORY[0x277CCAAD0];
-      v36 = [(HUStepperControlView *)self layoutConstraints];
-      [v35 deactivateConstraints:v36];
+      layoutConstraints3 = [(HUStepperControlView *)self layoutConstraints];
+      [v35 deactivateConstraints:layoutConstraints3];
     }
 
-    [(HUStepperControlView *)self setLayoutConstraints:v3];
-    [MEMORY[0x277CCAAD0] activateConstraints:v3];
+    [(HUStepperControlView *)self setLayoutConstraints:array];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   v37.receiver = self;
@@ -184,32 +184,32 @@
   [(HUStepperControlView *)&v37 updateConstraints];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  objc_storeStrong(&self->_value, a3);
-  v5 = a3;
-  [v5 doubleValue];
+  objc_storeStrong(&self->_value, value);
+  valueCopy = value;
+  [valueCopy doubleValue];
   v7 = v6;
 
-  v8 = [(HUStepperControlView *)self stepper];
-  [v8 setValue:v7];
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper setValue:v7];
 
   [(HUStepperControlView *)self _updateValueLabel];
 }
 
 - (BOOL)isDisabled
 {
-  v2 = [(HUStepperControlView *)self stepper];
-  v3 = [v2 isEnabled];
+  stepper = [(HUStepperControlView *)self stepper];
+  isEnabled = [stepper isEnabled];
 
-  return v3 ^ 1;
+  return isEnabled ^ 1;
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v4 = !a3;
-  v5 = [(HUStepperControlView *)self stepper];
-  [v5 setEnabled:v4];
+  v4 = !disabled;
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper setEnabled:v4];
 
   if (v4)
   {
@@ -221,17 +221,17 @@
     [MEMORY[0x277D75348] systemGrayColor];
   }
   v7 = ;
-  v6 = [(HUStepperControlView *)self valueLabel];
-  [v6 setTextColor:v7];
+  valueLabel = [(HUStepperControlView *)self valueLabel];
+  [valueLabel setTextColor:v7];
 }
 
 - (void)_updateValueLabel
 {
-  v6 = [(HUStepperControlView *)self valueFormatter];
-  v3 = [(HUStepperControlView *)self value];
-  v4 = [v6 stringForObjectValue:v3];
-  v5 = [(HUStepperControlView *)self valueLabel];
-  [v5 setText:v4];
+  valueFormatter = [(HUStepperControlView *)self valueFormatter];
+  value = [(HUStepperControlView *)self value];
+  v4 = [valueFormatter stringForObjectValue:value];
+  valueLabel = [(HUStepperControlView *)self valueLabel];
+  [valueLabel setText:v4];
 }
 
 - (id)_defaultValueFormatter
@@ -242,31 +242,31 @@
   return v2;
 }
 
-- (void)_stepperTouchDown:(id)a3
+- (void)_stepperTouchDown:(id)down
 {
-  v4 = [(HUStepperControlView *)self delegate];
-  [v4 controlViewDidBeginUserInteraction:self];
+  delegate = [(HUStepperControlView *)self delegate];
+  [delegate controlViewDidBeginUserInteraction:self];
 }
 
-- (void)_stepperTouchUp:(id)a3
+- (void)_stepperTouchUp:(id)up
 {
-  v4 = [(HUStepperControlView *)self delegate];
-  [v4 controlViewDidEndUserInteraction:self];
+  delegate = [(HUStepperControlView *)self delegate];
+  [delegate controlViewDidEndUserInteraction:self];
 }
 
-- (void)_stepperValueChanged:(id)a3
+- (void)_stepperValueChanged:(id)changed
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(HUStepperControlView *)self stepper];
-  [v5 value];
+  stepper = [(HUStepperControlView *)self stepper];
+  [stepper value];
   v6 = [v4 numberWithDouble:?];
   value = self->_value;
   self->_value = v6;
 
   [(HUStepperControlView *)self _updateValueLabel];
-  v9 = [(HUStepperControlView *)self delegate];
-  v8 = [(HUStepperControlView *)self value];
-  [v9 controlView:self valueDidChange:v8];
+  delegate = [(HUStepperControlView *)self delegate];
+  value = [(HUStepperControlView *)self value];
+  [delegate controlView:self valueDidChange:value];
 }
 
 - (HUControlViewDelegate)delegate

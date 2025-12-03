@@ -1,5 +1,5 @@
 @interface SBTopAffordanceDotsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGRect)axBounds;
 - (id)_accessibilityRoleDescription;
@@ -12,26 +12,26 @@
 
 @implementation SBTopAffordanceDotsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBTopAffordanceDotsView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController"];
-  [v3 validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" hasInstanceVariable:@"_deviceApplicationSceneHandle" withType:"SBDeviceApplicationSceneHandle"];
-  [v3 validateClass:@"SBDeviceApplicationSceneHandle" isKindOfClass:@"SBSceneHandle"];
-  [v3 validateClass:@"SBSceneHandle" hasInstanceMethod:@"sceneIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"continuousExposeStripTongueViewTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"personality" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherPersonality" hasInstanceMethod:@"rootModifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBDefaultImplementationsSwitcherModifier" hasInstanceMethod:@"isContinuousExposeStripVisible" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBTopAffordanceDotsView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController"];
+  [validationsCopy validateClass:@"SBMedusaDecoratedDeviceApplicationSceneViewController" hasInstanceVariable:@"_deviceApplicationSceneHandle" withType:"SBDeviceApplicationSceneHandle"];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneHandle" isKindOfClass:@"SBSceneHandle"];
+  [validationsCopy validateClass:@"SBSceneHandle" hasInstanceMethod:@"sceneIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"continuousExposeStripTongueViewTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"personality" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherPersonality" hasInstanceMethod:@"rootModifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBDefaultImplementationsSwitcherModifier" hasInstanceMethod:@"isContinuousExposeStripVisible" withFullSignature:{"B", 0}];
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(SBTopAffordanceDotsViewAccessibility *)self _axMainSwitcher];
-  v4 = [v3 _axIsChamoisSwitcherVisible];
+  _axMainSwitcher = [(SBTopAffordanceDotsViewAccessibility *)self _axMainSwitcher];
+  _axIsChamoisSwitcherVisible = [_axMainSwitcher _axIsChamoisSwitcherVisible];
 
-  if (v4)
+  if (_axIsChamoisSwitcherVisible)
   {
     v7.receiver = self;
     v7.super_class = SBTopAffordanceDotsViewAccessibility;
@@ -50,12 +50,12 @@
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = accessibilityLocalizedString(@"top.affordance.button");
-  v5 = [(SBTopAffordanceDotsViewAccessibility *)self _axApplicationDisplayName];
-  v6 = v5;
+  _axApplicationDisplayName = [(SBTopAffordanceDotsViewAccessibility *)self _axApplicationDisplayName];
+  v6 = _axApplicationDisplayName;
   v7 = &stru_2A22F9D20;
-  if (v5)
+  if (_axApplicationDisplayName)
   {
-    v7 = v5;
+    v7 = _axApplicationDisplayName;
   }
 
   v8 = [v3 stringWithFormat:v4, v7];
@@ -65,45 +65,45 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(SBTopAffordanceDotsViewAccessibility *)self _axMainSwitcher];
-  v3 = [v2 _axIsAppSwitcherPeeking];
+  _axMainSwitcher = [(SBTopAffordanceDotsViewAccessibility *)self _axMainSwitcher];
+  _axIsAppSwitcherPeeking = [_axMainSwitcher _axIsAppSwitcherPeeking];
 
-  return v3 ^ 1;
+  return _axIsAppSwitcherPeeking ^ 1;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(SBTopAffordanceDotsViewAccessibility *)self _axMainSwitcher];
-  v4 = [v3 _axIsChamoisSwitcherVisible];
+  _axMainSwitcher = [(SBTopAffordanceDotsViewAccessibility *)self _axMainSwitcher];
+  _axIsChamoisSwitcherVisible = [_axMainSwitcher _axIsChamoisSwitcherVisible];
 
-  if (v4)
+  if (_axIsChamoisSwitcherVisible)
   {
     v7.receiver = self;
     v7.super_class = SBTopAffordanceDotsViewAccessibility;
-    v5 = [(SBTopAffordanceDotsViewAccessibility *)&v7 accessibilityHint];
+    accessibilityHint = [(SBTopAffordanceDotsViewAccessibility *)&v7 accessibilityHint];
   }
 
   else
   {
-    v5 = accessibilityLocalizedString(@"top.affordance.button.hint");
+    accessibilityHint = accessibilityLocalizedString(@"top.affordance.button.hint");
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(SBTopAffordanceDotsViewAccessibility *)self _axMainSwitcher];
-  v4 = [v3 _axFluidSwitcherViewController];
+  _axMainSwitcher = [(SBTopAffordanceDotsViewAccessibility *)self _axMainSwitcher];
+  _axFluidSwitcherViewController = [_axMainSwitcher _axFluidSwitcherViewController];
 
-  v5 = [v4 safeValueForKey:@"personality.rootModifier"];
+  v5 = [_axFluidSwitcherViewController safeValueForKey:@"personality.rootModifier"];
   v6 = [v5 safeBoolForKey:@"isContinuousExposeStripVisible"];
 
   if (v6)
   {
     v17.receiver = self;
     v17.super_class = SBTopAffordanceDotsViewAccessibility;
-    v7 = [(SBTopAffordanceDotsViewAccessibility *)&v17 accessibilityCustomActions];
+    accessibilityCustomActions = [(SBTopAffordanceDotsViewAccessibility *)&v17 accessibilityCustomActions];
   }
 
   else
@@ -114,13 +114,13 @@
     v13 = 3221225472;
     v14 = __66__SBTopAffordanceDotsViewAccessibility_accessibilityCustomActions__block_invoke;
     v15 = &unk_29F2FBC38;
-    v16 = v4;
+    v16 = _axFluidSwitcherViewController;
     v10 = [v8 initWithName:v9 actionHandler:&v12];
 
-    v7 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v10, v12, v13, v14, v15}];
+    accessibilityCustomActions = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v10, v12, v13, v14, v15}];
   }
 
-  return v7;
+  return accessibilityCustomActions;
 }
 
 uint64_t __66__SBTopAffordanceDotsViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)
@@ -141,15 +141,15 @@ void __66__SBTopAffordanceDotsViewAccessibility_accessibilityCustomActions__bloc
 
 - (id)_accessibilityRoleDescription
 {
-  v2 = [(SBTopAffordanceDotsViewAccessibility *)self _accessibilityWindow];
-  v3 = [v2 _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_1];
+  _accessibilityWindow = [(SBTopAffordanceDotsViewAccessibility *)self _accessibilityWindow];
+  v3 = [_accessibilityWindow _accessibilityFindSubviewDescendantsPassingTest:&__block_literal_global_1];
 
   if ([v3 count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 _accessibilityViewController];
+    firstObject = [v3 firstObject];
+    _accessibilityViewController = [firstObject _accessibilityViewController];
 
-    v6 = [v5 safeValueForKey:@"_deviceApplicationSceneHandle"];
+    v6 = [_accessibilityViewController safeValueForKey:@"_deviceApplicationSceneHandle"];
     v7 = [v6 safeStringForKey:@"sceneIdentifier"];
   }
 

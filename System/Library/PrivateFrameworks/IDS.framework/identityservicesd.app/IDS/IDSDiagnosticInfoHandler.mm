@@ -1,8 +1,8 @@
 @interface IDSDiagnosticInfoHandler
 + (id)sharedInstance;
 - (IDSDiagnosticInfoHandler)init;
-- (void)dumpDiagnosticsToReceiver:(id)a3;
-- (void)registerDiagnosticInfoBlock:(id)a3 title:(id)a4 queue:(id)a5;
+- (void)dumpDiagnosticsToReceiver:(id)receiver;
+- (void)registerDiagnosticInfoBlock:(id)block title:(id)title queue:(id)queue;
 @end
 
 @implementation IDSDiagnosticInfoHandler
@@ -42,26 +42,26 @@
   return v2;
 }
 
-- (void)registerDiagnosticInfoBlock:(id)a3 title:(id)a4 queue:(id)a5
+- (void)registerDiagnosticInfoBlock:(id)block title:(id)title queue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 && v8)
+  titleCopy = title;
+  queueCopy = queue;
+  if (block && titleCopy)
   {
-    v10 = a3;
+    blockCopy = block;
     v11 = +[IDSFoundationLog DiagnosticInfoHandler];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = titleCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Registering diagnostic block with title: %@", &v14, 0xCu);
     }
 
     v12 = objc_alloc_init(IDSDiagnosticInfoEntry);
-    [(IDSDiagnosticInfoEntry *)v12 setTitle:v8];
-    if (v9)
+    [(IDSDiagnosticInfoEntry *)v12 setTitle:titleCopy];
+    if (queueCopy)
     {
-      [(IDSDiagnosticInfoEntry *)v12 setQueue:v9];
+      [(IDSDiagnosticInfoEntry *)v12 setQueue:queueCopy];
     }
 
     else
@@ -70,15 +70,15 @@
       [(IDSDiagnosticInfoEntry *)v12 setQueue:v13];
     }
 
-    [(IDSDiagnosticInfoEntry *)v12 setInfoBlock:v10];
+    [(IDSDiagnosticInfoEntry *)v12 setInfoBlock:blockCopy];
 
     [(NSMutableArray *)self->_diagnosticEntries addObject:v12];
   }
 }
 
-- (void)dumpDiagnosticsToReceiver:(id)a3
+- (void)dumpDiagnosticsToReceiver:(id)receiver
 {
-  v3 = a3;
+  receiverCopy = receiver;
   if (_os_feature_enabled_impl())
   {
     v4 = +[IDSFoundationLog DiagnosticInfoHandler];
@@ -113,14 +113,14 @@
       {
         for (i = 0; i != v8; i = i + 1)
         {
-          v11 = v3;
+          v11 = receiverCopy;
           if (*v23 != v9)
           {
             objc_enumerationMutation(obj);
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v12 queue];
+          queue = [v12 queue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_1005CA140;
@@ -130,10 +130,10 @@
           v20 = v26;
           v17 = v6;
           p_buf = &buf;
-          v3 = v11;
+          receiverCopy = v11;
           v18 = v11;
           v19 = v7;
-          dispatch_async(v13, block);
+          dispatch_async(queue, block);
         }
 
         v8 = [(NSMutableArray *)obj countByEnumeratingWithState:&v22 objects:v28 count:16];
@@ -148,7 +148,7 @@
 
   else
   {
-    [v3 receiveDiagnosticChunk:@"IDS/IDSDiagnosticInfoHandler is disabled." isLast:1];
+    [receiverCopy receiveDiagnosticChunk:@"IDS/IDSDiagnosticInfoHandler is disabled." isLast:1];
   }
 }
 

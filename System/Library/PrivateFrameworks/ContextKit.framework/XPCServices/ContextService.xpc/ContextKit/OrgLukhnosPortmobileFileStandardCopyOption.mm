@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgLukhnosPortmobileFileStandardCopyOption_ATOMIC_MOVE_, [OrgLukhnosPortmobileFileStandardCopyOption alloc]);
     atomic_store(1u, OrgLukhnosPortmobileFileStandardCopyOption__initialized);

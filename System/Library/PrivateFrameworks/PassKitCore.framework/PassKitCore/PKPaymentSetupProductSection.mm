@@ -1,14 +1,14 @@
 @interface PKPaymentSetupProductSection
-- (PKPaymentSetupProductSection)initWithDictionary:(id)a3;
+- (PKPaymentSetupProductSection)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation PKPaymentSetupProductSection
 
-- (PKPaymentSetupProductSection)initWithDictionary:(id)a3
+- (PKPaymentSetupProductSection)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = PKPaymentSetupProductSection;
   v5 = [(PKPaymentSetupProductSection *)&v22 init];
@@ -21,12 +21,12 @@
       goto LABEL_15;
     }
 
-    v6 = [v4 PKStringForKey:@"localizedTitle"];
+    v6 = [dictionaryCopy PKStringForKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v6;
 
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v9 = [v4 PKArrayContaining:objc_opt_class() forKey:@"items"];
+    v9 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"items"];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;

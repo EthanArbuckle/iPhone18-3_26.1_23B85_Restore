@@ -1,10 +1,10 @@
 @interface TransitDirectionsIncidentStepView
 - (TransitDirectionsIncidentCellDelegate)delegate;
-- (TransitDirectionsIncidentStepView)initWithFrame:(CGRect)a3;
+- (TransitDirectionsIncidentStepView)initWithFrame:(CGRect)frame;
 - (id)_incidentItem;
 - (void)_tapped;
-- (void)_updateNavigationStateAlpha:(double)a3;
-- (void)configureWithItem:(id)a3;
+- (void)_updateNavigationStateAlpha:(double)alpha;
+- (void)configureWithItem:(id)item;
 @end
 
 @implementation TransitDirectionsIncidentStepView
@@ -16,76 +16,76 @@
   return WeakRetained;
 }
 
-- (void)_updateNavigationStateAlpha:(double)a3
+- (void)_updateNavigationStateAlpha:(double)alpha
 {
   v5.receiver = self;
   v5.super_class = TransitDirectionsIncidentStepView;
   [(TransitDirectionsStepView *)&v5 _updateNavigationStateAlpha:?];
-  [(MKArtworkImageView *)self->_imageView setAlpha:a3];
-  [(UILabel *)self->_label setAlpha:a3];
-  [(UIImageView *)self->_chevronImageView setAlpha:a3];
+  [(MKArtworkImageView *)self->_imageView setAlpha:alpha];
+  [(UILabel *)self->_label setAlpha:alpha];
+  [(UIImageView *)self->_chevronImageView setAlpha:alpha];
 }
 
 - (void)_tapped
 {
-  v8 = [(TransitDirectionsIncidentStepView *)self _incidentItem];
-  v3 = [v8 incidentMessage];
-  v4 = [v3 advisory];
-  v5 = [v4 isClickable];
+  _incidentItem = [(TransitDirectionsIncidentStepView *)self _incidentItem];
+  incidentMessage = [_incidentItem incidentMessage];
+  advisory = [incidentMessage advisory];
+  isClickable = [advisory isClickable];
 
-  if (v5)
+  if (isClickable)
   {
-    v6 = [(TransitDirectionsIncidentStepView *)self delegate];
-    v7 = [v3 advisory];
-    [v6 transitDirectionsCell:self didTapAdvisory:v7];
+    delegate = [(TransitDirectionsIncidentStepView *)self delegate];
+    advisory2 = [incidentMessage advisory];
+    [delegate transitDirectionsCell:self didTapAdvisory:advisory2];
   }
 }
 
-- (void)configureWithItem:(id)a3
+- (void)configureWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v33.receiver = self;
   v33.super_class = TransitDirectionsIncidentStepView;
-  [(TransitDirectionsStepView *)&v33 configureWithItem:v4];
-  if ([v4 type] != 13)
+  [(TransitDirectionsStepView *)&v33 configureWithItem:itemCopy];
+  if ([itemCopy type] != 13)
   {
 
-    v4 = 0;
+    itemCopy = 0;
   }
 
-  v30 = [(TransitDirectionsIncidentStepView *)self _incidentItem];
-  v29 = [v30 incidentMessage];
-  v5 = [v29 advisory];
+  _incidentItem = [(TransitDirectionsIncidentStepView *)self _incidentItem];
+  incidentMessage = [_incidentItem incidentMessage];
+  advisory = [incidentMessage advisory];
   v6 = [MKServerFormattedString alloc];
-  v7 = [v5 titleString];
-  v8 = [v6 initWithComposedString:v7];
+  titleString = [advisory titleString];
+  v8 = [v6 initWithComposedString:titleString];
 
   v34 = NSFontAttributeName;
-  v9 = [(UILabel *)self->_label font];
-  v35 = v9;
+  font = [(UILabel *)self->_label font];
+  v35 = font;
   v10 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v28 = v8;
   v11 = [v8 multiPartAttributedStringWithAttributes:v10];
 
-  v12 = [v11 attributedString];
-  [(UILabel *)self->_label setAttributedText:v12];
+  attributedString = [v11 attributedString];
+  [(UILabel *)self->_label setAttributedText:attributedString];
 
-  v13 = [v5 artwork];
-  v14 = [[MKSizedTransitArtwork alloc] initWithArtwork:v13 shieldSize:3];
+  artwork = [advisory artwork];
+  v14 = [[MKSizedTransitArtwork alloc] initWithArtwork:artwork shieldSize:3];
   [(MKArtworkImageView *)self->_imageView setImageSource:v14];
-  v15 = [(MKArtworkImageView *)self->_imageView image];
-  v16 = v15 != 0;
-  v17 = v15 == 0;
+  image = [(MKArtworkImageView *)self->_imageView image];
+  v16 = image != 0;
+  v17 = image == 0;
 
   [(MKArtworkImageView *)self->_imageView setHidden:v17];
   [(NSLayoutConstraint *)self->_artworkShowingLabelConstraint setActive:v16];
   [(NSLayoutConstraint *)self->_artworkHiddenLabelConstraint setActive:v17];
-  v18 = [v5 isClickable];
-  [(UITapGestureRecognizer *)self->_tapGesture setEnabled:v18];
-  [(UIImageView *)self->_chevronImageView setHidden:v18 ^ 1];
-  [(NSLayoutConstraint *)self->_chevronShowingLabelConstraint setActive:v18];
-  [(NSLayoutConstraint *)self->_chevronHiddenLabelConstraint setActive:v18 ^ 1];
-  if (v18)
+  isClickable = [advisory isClickable];
+  [(UITapGestureRecognizer *)self->_tapGesture setEnabled:isClickable];
+  [(UIImageView *)self->_chevronImageView setHidden:isClickable ^ 1];
+  [(NSLayoutConstraint *)self->_chevronShowingLabelConstraint setActive:isClickable];
+  [(NSLayoutConstraint *)self->_chevronHiddenLabelConstraint setActive:isClickable ^ 1];
+  if (isClickable)
   {
     v19 = 2;
   }
@@ -96,9 +96,9 @@
   }
 
   [(UILabel *)self->_label setNumberOfLines:v19];
-  v20 = [(MKArtworkImageView *)self->_imageView image];
-  v21 = [v20 _maps_mostCommonColor];
-  v22 = [v21 colorWithAlphaComponent:0.200000003];
+  image2 = [(MKArtworkImageView *)self->_imageView image];
+  _maps_mostCommonColor = [image2 _maps_mostCommonColor];
+  v22 = [_maps_mostCommonColor colorWithAlphaComponent:0.200000003];
   v23 = v22;
   if (v22)
   {
@@ -138,11 +138,11 @@
   return v3;
 }
 
-- (TransitDirectionsIncidentStepView)initWithFrame:(CGRect)a3
+- (TransitDirectionsIncidentStepView)initWithFrame:(CGRect)frame
 {
   v96.receiver = self;
   v96.super_class = TransitDirectionsIncidentStepView;
-  v3 = [(TransitDirectionsStepView *)&v96 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitDirectionsStepView *)&v96 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -217,86 +217,86 @@
     LODWORD(v32) = 1148846080;
     [(MKArtworkImageView *)v3->_imageView setContentCompressionResistancePriority:1 forAxis:v32];
     [(TransitDirectionsIncidentStepView *)v3 addSubview:v3->_imageView];
-    v33 = [(UILabel *)v3->_label leadingAnchor];
-    v34 = [(MKArtworkImageView *)v3->_imageView trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34 constant:8.0];
+    leadingAnchor = [(UILabel *)v3->_label leadingAnchor];
+    trailingAnchor = [(MKArtworkImageView *)v3->_imageView trailingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:8.0];
     artworkShowingLabelConstraint = v3->_artworkShowingLabelConstraint;
     v3->_artworkShowingLabelConstraint = v35;
 
-    v37 = [(UILabel *)v3->_label leadingAnchor];
-    v38 = [(UIView *)v3->_backgroundView leadingAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38 constant:12.0];
+    leadingAnchor2 = [(UILabel *)v3->_label leadingAnchor];
+    leadingAnchor3 = [(UIView *)v3->_backgroundView leadingAnchor];
+    v39 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:12.0];
     artworkHiddenLabelConstraint = v3->_artworkHiddenLabelConstraint;
     v3->_artworkHiddenLabelConstraint = v39;
 
-    v41 = [(UIImageView *)v3->_chevronImageView leadingAnchor];
-    v42 = [(UILabel *)v3->_label trailingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:8.0];
+    leadingAnchor4 = [(UIImageView *)v3->_chevronImageView leadingAnchor];
+    trailingAnchor2 = [(UILabel *)v3->_label trailingAnchor];
+    v43 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:8.0];
     chevronShowingLabelConstraint = v3->_chevronShowingLabelConstraint;
     v3->_chevronShowingLabelConstraint = v43;
 
-    v45 = [(UIView *)v3->_backgroundView trailingAnchor];
-    v46 = [(UILabel *)v3->_label trailingAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46 constant:12.0];
+    trailingAnchor3 = [(UIView *)v3->_backgroundView trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v3->_label trailingAnchor];
+    v47 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:12.0];
     chevronHiddenLabelConstraint = v3->_chevronHiddenLabelConstraint;
     v3->_chevronHiddenLabelConstraint = v47;
 
-    v93 = [(UIView *)v3->_backgroundView topAnchor];
-    v94 = [(TransitDirectionsStepView *)v3 contentLayoutGuide];
-    v92 = [v94 topAnchor];
-    v91 = [v93 constraintEqualToAnchor:v92];
+    topAnchor = [(UIView *)v3->_backgroundView topAnchor];
+    contentLayoutGuide = [(TransitDirectionsStepView *)v3 contentLayoutGuide];
+    topAnchor2 = [contentLayoutGuide topAnchor];
+    v91 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v97[0] = v91;
-    v89 = [(UIView *)v3->_backgroundView leadingAnchor];
-    v90 = [(TransitDirectionsStepView *)v3 contentLayoutGuide];
-    v88 = [v90 leadingAnchor];
-    v87 = [v89 constraintEqualToAnchor:v88];
+    leadingAnchor5 = [(UIView *)v3->_backgroundView leadingAnchor];
+    contentLayoutGuide2 = [(TransitDirectionsStepView *)v3 contentLayoutGuide];
+    leadingAnchor6 = [contentLayoutGuide2 leadingAnchor];
+    v87 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v97[1] = v87;
-    v86 = [(TransitDirectionsStepView *)v3 contentLayoutGuide];
-    v85 = [v86 trailingAnchor];
-    v84 = [(UIView *)v3->_backgroundView trailingAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    contentLayoutGuide3 = [(TransitDirectionsStepView *)v3 contentLayoutGuide];
+    trailingAnchor5 = [contentLayoutGuide3 trailingAnchor];
+    trailingAnchor6 = [(UIView *)v3->_backgroundView trailingAnchor];
+    v83 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v97[2] = v83;
-    v82 = [(TransitDirectionsStepView *)v3 contentLayoutGuide];
-    v81 = [v82 bottomAnchor];
-    v80 = [(UIView *)v3->_backgroundView bottomAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    contentLayoutGuide4 = [(TransitDirectionsStepView *)v3 contentLayoutGuide];
+    bottomAnchor = [contentLayoutGuide4 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v3->_backgroundView bottomAnchor];
+    v79 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v97[3] = v79;
-    v78 = [(UIView *)v3->_backgroundView heightAnchor];
-    v77 = [v78 constraintGreaterThanOrEqualToConstant:44.0];
+    heightAnchor = [(UIView *)v3->_backgroundView heightAnchor];
+    v77 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
     v97[4] = v77;
-    v76 = [(UIImageView *)v3->_chevronImageView centerYAnchor];
-    v75 = [(UIView *)v3->_backgroundView centerYAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    centerYAnchor = [(UIImageView *)v3->_chevronImageView centerYAnchor];
+    centerYAnchor2 = [(UIView *)v3->_backgroundView centerYAnchor];
+    v74 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v97[5] = v74;
-    v73 = [(UIView *)v3->_backgroundView trailingAnchor];
-    v72 = [(UIImageView *)v3->_chevronImageView trailingAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72 constant:11.0];
+    trailingAnchor7 = [(UIView *)v3->_backgroundView trailingAnchor];
+    trailingAnchor8 = [(UIImageView *)v3->_chevronImageView trailingAnchor];
+    v71 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:11.0];
     v97[6] = v71;
-    v70 = [(MKArtworkImageView *)v3->_imageView leadingAnchor];
-    v69 = [(UIView *)v3->_backgroundView leadingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69 constant:12.0];
+    leadingAnchor7 = [(MKArtworkImageView *)v3->_imageView leadingAnchor];
+    leadingAnchor8 = [(UIView *)v3->_backgroundView leadingAnchor];
+    v68 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:12.0];
     v97[7] = v68;
-    v67 = [(MKArtworkImageView *)v3->_imageView centerYAnchor];
-    v66 = [(UIView *)v3->_backgroundView centerYAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    centerYAnchor3 = [(MKArtworkImageView *)v3->_imageView centerYAnchor];
+    centerYAnchor4 = [(UIView *)v3->_backgroundView centerYAnchor];
+    v65 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v97[8] = v65;
     v97[9] = v3->_artworkShowingLabelConstraint;
-    v64 = [(UILabel *)v3->_label topAnchor];
-    v63 = [(UIView *)v3->_backgroundView topAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63 constant:8.0];
+    topAnchor3 = [(UILabel *)v3->_label topAnchor];
+    topAnchor4 = [(UIView *)v3->_backgroundView topAnchor];
+    v62 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
     v97[10] = v62;
-    v61 = [(UILabel *)v3->_label leadingAnchor];
-    v49 = [(MKArtworkImageView *)v3->_imageView trailingAnchor];
-    v50 = [v61 constraintEqualToAnchor:v49 constant:8.0];
+    leadingAnchor9 = [(UILabel *)v3->_label leadingAnchor];
+    trailingAnchor9 = [(MKArtworkImageView *)v3->_imageView trailingAnchor];
+    v50 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor9 constant:8.0];
     v97[11] = v50;
-    v51 = [(UILabel *)v3->_label centerYAnchor];
-    v52 = [(UIView *)v3->_backgroundView centerYAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    centerYAnchor5 = [(UILabel *)v3->_label centerYAnchor];
+    centerYAnchor6 = [(UIView *)v3->_backgroundView centerYAnchor];
+    v53 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v97[12] = v53;
     v97[13] = v3->_chevronShowingLabelConstraint;
-    v54 = [(UIView *)v3->_backgroundView bottomAnchor];
-    v55 = [(UILabel *)v3->_label bottomAnchor];
-    v56 = [v54 constraintEqualToAnchor:v55 constant:8.0];
+    bottomAnchor3 = [(UIView *)v3->_backgroundView bottomAnchor];
+    bottomAnchor4 = [(UILabel *)v3->_label bottomAnchor];
+    v56 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:8.0];
     v97[14] = v56;
     v57 = [NSArray arrayWithObjects:v97 count:15];
     [NSLayoutConstraint activateConstraints:v57];

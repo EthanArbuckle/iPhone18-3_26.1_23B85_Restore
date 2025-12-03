@@ -1,19 +1,19 @@
 @interface GCMotionXPCProxyClientEndpoint
 - (GCMotionXPCProxyClientEndpoint)init;
-- (GCMotionXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialSensorsActive:(BOOL)a4;
-- (void)_remoteEndpointSetSensorsActive:(BOOL)a3;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (GCMotionXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialSensorsActive:(BOOL)active;
+- (void)_remoteEndpointSetSensorsActive:(BOOL)active;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
 - (void)invalidateConnection;
-- (void)newSensorsActive:(BOOL)a3;
+- (void)newSensorsActive:(BOOL)active;
 - (void)refreshSensorsActive;
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4;
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection;
 @end
 
 @implementation GCMotionXPCProxyClientEndpoint
 
-- (GCMotionXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialSensorsActive:(BOOL)a4
+- (GCMotionXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialSensorsActive:(BOOL)active
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = GCMotionXPCProxyClientEndpoint;
   v7 = [(GCMotionXPCProxyClientEndpoint *)&v11 init];
@@ -24,11 +24,11 @@
       [GCMotionXPCProxyClientEndpoint initWithIdentifier:initialSensorsActive:];
     }
 
-    v8 = [v6 copyWithZone:0];
+    v8 = [identifierCopy copyWithZone:0];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_sensorsActive = a4;
+    v7->_sensorsActive = active;
   }
 
   return v7;
@@ -41,10 +41,10 @@
   return 0;
 }
 
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -52,15 +52,15 @@
   v18 = &unk_1E8418D18;
   objc_copyWeak(&v19, &location);
   v9 = _Block_copy(&v15);
-  v10 = [v8 addInterruptionHandler:{v9, v15, v16, v17, v18}];
+  v10 = [connectionCopy addInterruptionHandler:{v9, v15, v16, v17, v18}];
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v10;
 
-  v12 = [v8 addInvalidationHandler:v9];
+  v12 = [connectionCopy addInvalidationHandler:v9];
   connectionInvalidationRegistration = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v12;
 
-  objc_storeStrong(&self->_serverEndpoint, a3);
+  objc_storeStrong(&self->_serverEndpoint, endpoint);
   if (gc_isInternalBuild())
   {
     v14 = getGCLogger();
@@ -94,31 +94,31 @@ void __63__GCMotionXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_i
   }
 }
 
-- (void)_remoteEndpointSetSensorsActive:(BOOL)a3
+- (void)_remoteEndpointSetSensorsActive:(BOOL)active
 {
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (WeakRetained)
   {
     v8 = WeakRetained;
-    v6 = [WeakRetained motion];
-    [v6 willChangeValueForKey:@"sensorsActive"];
+    motion = [WeakRetained motion];
+    [motion willChangeValueForKey:@"sensorsActive"];
 
-    self->_sensorsActive = a3;
-    v7 = [v8 motion];
-    [v7 didChangeValueForKey:@"sensorsActive"];
+    self->_sensorsActive = active;
+    motion2 = [v8 motion];
+    [motion2 didChangeValueForKey:@"sensorsActive"];
 
     WeakRetained = v8;
   }
 }
 
-- (void)newSensorsActive:(BOOL)a3
+- (void)newSensorsActive:(BOOL)active
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__GCMotionXPCProxyClientEndpoint_newSensorsActive___block_invoke;
   v3[3] = &unk_1E8419650;
   v3[4] = self;
-  v4 = a3;
+  activeCopy = active;
   _os_activity_initiate(&dword_1D2CD5000, "(Motion XPC Proxy Client Endpoint) New Sensors Active", OS_ACTIVITY_FLAG_DEFAULT, v3);
 }
 
@@ -169,11 +169,11 @@ void __54__GCMotionXPCProxyClientEndpoint_invalidateConnection__block_invoke(uin
   *(v6 + 16) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCMotionXPCProxyClientEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCMotionXPCProxyClientEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (void)initWithIdentifier:initialSensorsActive:.cold.1()

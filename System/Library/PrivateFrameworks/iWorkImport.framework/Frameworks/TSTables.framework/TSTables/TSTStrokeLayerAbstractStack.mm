@@ -1,15 +1,15 @@
 @interface TSTStrokeLayerAbstractStack
 - (TSTStrokeLayerAbstractStack)init;
-- (id)lookupStrokeAtIndex:(int64_t)a3;
-- (id)mutableStrokeLayerWithContext:(id)a3 subtractingDefaultsFrom:(id)a4 forRange:(TSTSimpleRange)a5;
+- (id)lookupStrokeAtIndex:(int64_t)index;
+- (id)mutableStrokeLayerWithContext:(id)context subtractingDefaultsFrom:(id)from forRange:(TSTSimpleRange)range;
 - (unint64_t)count;
 - (vector<TSTStrokeLayer)p_strokeLayerVector;
 - (void)dealloc;
-- (void)enumerateStrokesAndCapsFrom:(unsigned int)a3 to:(unsigned int)a4 usingBlock:(id)a5;
-- (void)enumerateStrokesAndCapsInRange:(TSTSimpleRange)a3 usingBlock:(id)a4;
-- (void)enumerateStrokesFrom:(unsigned int)a3 to:(unsigned int)a4 usingBlock:(id)a5;
-- (void)enumerateStrokesInRange:(TSTSimpleRange)a3 usingBlock:(id)a4;
-- (void)enumerateWidthsInRange:(TSTSimpleRange)a3 usingBlock:(id)a4;
+- (void)enumerateStrokesAndCapsFrom:(unsigned int)from to:(unsigned int)to usingBlock:(id)block;
+- (void)enumerateStrokesAndCapsInRange:(TSTSimpleRange)range usingBlock:(id)block;
+- (void)enumerateStrokesFrom:(unsigned int)from to:(unsigned int)to usingBlock:(id)block;
+- (void)enumerateStrokesInRange:(TSTSimpleRange)range usingBlock:(id)block;
+- (void)enumerateWidthsInRange:(TSTSimpleRange)range usingBlock:(id)block;
 @end
 
 @implementation TSTStrokeLayerAbstractStack
@@ -73,9 +73,9 @@
   objc_exception_throw(v22);
 }
 
-- (id)lookupStrokeAtIndex:(int64_t)a3
+- (id)lookupStrokeAtIndex:(int64_t)index
 {
-  objc_msgSend_p_strokeLayerVector(self, a2, a3, v3, v4);
+  objc_msgSend_p_strokeLayerVector(self, a2, index, v3, v4);
   if (v32 == __p || (v9 = v32 - __p, v10 = v9 - 1, v9 < 1))
   {
     v11 = 0;
@@ -85,7 +85,7 @@
   v11 = 0;
   while (1)
   {
-    v12 = objc_msgSend_findStrokeAndRangeAtIndex_(__p[v10], v6, a3, v7, v8);
+    v12 = objc_msgSend_findStrokeAndRangeAtIndex_(__p[v10], v6, index, v7, v8);
     v17 = v12;
     if (!v12)
     {
@@ -93,13 +93,13 @@
     }
 
     v18 = objc_msgSend_range(v12, v13, v14, v15, v16);
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_10;
     }
 
-    v23 = v19 && v18 <= a3;
-    if (!v23 || &v19[v18 - 1] < a3)
+    v23 = v19 && v18 <= index;
+    if (!v23 || &v19[v18 - 1] < index)
     {
       goto LABEL_10;
     }
@@ -131,34 +131,34 @@ LABEL_16:
   return v11;
 }
 
-- (void)enumerateStrokesFrom:(unsigned int)a3 to:(unsigned int)a4 usingBlock:(id)a5
+- (void)enumerateStrokesFrom:(unsigned int)from to:(unsigned int)to usingBlock:(id)block
 {
-  v9 = a5;
-  v10 = a3 - a4;
-  v11 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a4 >= a3)
+  blockCopy = block;
+  v10 = from - to;
+  toCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (to >= from)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = a4;
+    toCopy = to;
   }
 
-  if (a3 < a4)
+  if (from < to)
   {
-    v12 = a3;
+    fromCopy = from;
   }
 
   else
   {
-    v12 = v11;
+    fromCopy = toCopy;
   }
 
-  if (a3 < a4)
+  if (from < to)
   {
-    v13 = a4 - a3;
+    v13 = to - from;
   }
 
   else
@@ -166,16 +166,16 @@ LABEL_16:
     v13 = v10;
   }
 
-  v14 = v9;
-  objc_msgSend_enumerateStrokesInRange_usingBlock_(self, v8, v12, v13, v9);
+  v14 = blockCopy;
+  objc_msgSend_enumerateStrokesInRange_usingBlock_(self, v8, fromCopy, v13, blockCopy);
 }
 
-- (void)enumerateStrokesInRange:(TSTSimpleRange)a3 usingBlock:(id)a4
+- (void)enumerateStrokesInRange:(TSTSimpleRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  origin = a3.origin;
+  length = range.length;
+  origin = range.origin;
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v73 = 0;
   v75 = 0;
   memset(v74, 0, sizeof(v74));
@@ -340,14 +340,14 @@ LABEL_33:
       if (isPortalStroke)
       {
         v61 = objc_msgSend_portalledStrokeLayer(self, v57, v58, v59, v60);
-        objc_msgSend_enumerateStrokesInRange_usingBlock_(v61, v62, v46, v47, v6);
+        objc_msgSend_enumerateStrokesInRange_usingBlock_(v61, v62, v46, v47, blockCopy);
       }
 
       else
       {
         v61 = objc_msgSend_stroke(*(v74 + v24), v57, v58, v59, v60);
         v67 = objc_msgSend_order(*(v74 + v24), v63, v64, v65, v66);
-        v6[2](v6, v61, v46, v47, v67, &v73);
+        blockCopy[2](blockCopy, v61, v46, v47, v67, &v73);
       }
 
       v22 = v47 + v46;
@@ -396,14 +396,14 @@ LABEL_57:
   }
 }
 
-- (void)enumerateWidthsInRange:(TSTSimpleRange)a3 usingBlock:(id)a4
+- (void)enumerateWidthsInRange:(TSTSimpleRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  origin = a3.origin;
+  length = range.length;
+  origin = range.origin;
   v68[45] = *MEMORY[0x277D85DE8];
-  v59 = a4;
+  blockCopy = block;
   v67 = 0;
-  v56 = self;
+  selfCopy = self;
   objc_msgSend_p_strokeLayerVector(self, v6, v7, v8, v9);
   v14 = (v66 - __p) >> 3;
   if (v14 < 1)
@@ -584,13 +584,13 @@ LABEL_31:
 
       if (*(v25 + 24) == 1)
       {
-        v54 = objc_msgSend_portalledStrokeLayer(v56, v40, v41, v42, v43);
-        objc_msgSend_enumerateWidthsInRange_usingBlock_(v54, v55, v48, v49, v59);
+        v54 = objc_msgSend_portalledStrokeLayer(selfCopy, v40, v41, v42, v43);
+        objc_msgSend_enumerateWidthsInRange_usingBlock_(v54, v55, v48, v49, blockCopy);
       }
 
       else
       {
-        v59[2](v59, v48, v49, &v67, *v25);
+        blockCopy[2](blockCopy, v48, v49, &v67, *v25);
       }
 
       v21 = v49 + v48;
@@ -638,34 +638,34 @@ LABEL_56:
   }
 }
 
-- (void)enumerateStrokesAndCapsFrom:(unsigned int)a3 to:(unsigned int)a4 usingBlock:(id)a5
+- (void)enumerateStrokesAndCapsFrom:(unsigned int)from to:(unsigned int)to usingBlock:(id)block
 {
-  v9 = a5;
-  v10 = a3 - a4;
-  v11 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a4 >= a3)
+  blockCopy = block;
+  v10 = from - to;
+  toCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (to >= from)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = a4;
+    toCopy = to;
   }
 
-  if (a3 < a4)
+  if (from < to)
   {
-    v12 = a3;
+    fromCopy = from;
   }
 
   else
   {
-    v12 = v11;
+    fromCopy = toCopy;
   }
 
-  if (a3 < a4)
+  if (from < to)
   {
-    v13 = a4 - a3;
+    v13 = to - from;
   }
 
   else
@@ -673,15 +673,15 @@ LABEL_56:
     v13 = v10;
   }
 
-  v14 = v9;
-  objc_msgSend_enumerateStrokesAndCapsInRange_usingBlock_(self, v8, v12, v13, v9);
+  v14 = blockCopy;
+  objc_msgSend_enumerateStrokesAndCapsInRange_usingBlock_(self, v8, fromCopy, v13, blockCopy);
 }
 
-- (void)enumerateStrokesAndCapsInRange:(TSTSimpleRange)a3 usingBlock:(id)a4
+- (void)enumerateStrokesAndCapsInRange:(TSTSimpleRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  origin = a3.origin;
-  v7 = a4;
+  length = range.length;
+  origin = range.origin;
+  blockCopy = block;
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
@@ -784,7 +784,7 @@ LABEL_56:
   v43 = &v50;
   v44 = &v46;
   v45 = v10;
-  v14 = v7;
+  v14 = blockCopy;
   v39 = v14;
   objc_msgSend_enumerateStrokesInRange_usingBlock_(self, v15, origin, length, v38);
   if (*(v65 + 24) == 1)
@@ -828,21 +828,21 @@ LABEL_56:
   _Block_object_dispose(&v64, 8);
 }
 
-- (id)mutableStrokeLayerWithContext:(id)a3 subtractingDefaultsFrom:(id)a4 forRange:(TSTSimpleRange)a5
+- (id)mutableStrokeLayerWithContext:(id)context subtractingDefaultsFrom:(id)from forRange:(TSTSimpleRange)range
 {
-  length = a5.length;
-  origin = a5.origin;
-  v9 = a3;
-  v10 = a4;
+  length = range.length;
+  origin = range.origin;
+  contextCopy = context;
+  fromCopy = from;
   v11 = [TSTMutableStrokeLayer alloc];
-  v15 = objc_msgSend_initWithContext_(v11, v12, v9, v13, v14);
+  v15 = objc_msgSend_initWithContext_(v11, v12, contextCopy, v13, v14);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = sub_221382CF4;
   v22[3] = &unk_2784638C0;
   v25 = origin;
   v26 = length;
-  v16 = v10;
+  v16 = fromCopy;
   v23 = v16;
   v17 = v15;
   v24 = v17;

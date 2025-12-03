@@ -1,17 +1,17 @@
 @interface tmab4b5a2f057efd0a64835b9c4226bf18
-- (id)initProduct:(id)a3;
+- (id)initProduct:(id)product;
 - (int)computeMaxCGTemp;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tmab4b5a2f057efd0a64835b9c4226bf18
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tmab4b5a2f057efd0a64835b9c4226bf18;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -21,9 +21,9 @@
   return v4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
-  if (a3)
+  if (load)
   {
     [(tmab4b5a2f057efd0a64835b9c4226bf18 *)self resetVTFilterState];
   }

@@ -1,17 +1,17 @@
 @interface _MPCProtoMigrationData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addPayloads:(uint64_t)a1;
+- (uint64_t)addPayloads:(uint64_t)payloads;
 - (uint64_t)delegateInfo;
 - (uint64_t)payloads;
 - (uint64_t)timeSync;
 - (unint64_t)hash;
-- (void)setDelegateInfo:(uint64_t)a1;
-- (void)setTimeSync:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setDelegateInfo:(uint64_t)info;
+- (void)setTimeSync:(uint64_t)sync;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoMigrationData
@@ -23,13 +23,13 @@
   return v4 ^ [(_MPCProtoDelegateInfo *)self->_delegateInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((payloads = self->_payloads, !(payloads | v4[2])) || -[NSMutableArray isEqual:](payloads, "isEqual:")) && ((timeSync = self->_timeSync, !(timeSync | v4[3])) || -[_MPCProtoMigrationDataTimeSync isEqual:](timeSync, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((payloads = self->_payloads, !(payloads | equalCopy[2])) || -[NSMutableArray isEqual:](payloads, "isEqual:")) && ((timeSync = self->_timeSync, !(timeSync | equalCopy[3])) || -[_MPCProtoMigrationDataTimeSync isEqual:](timeSync, "isEqual:")))
   {
     delegateInfo = self->_delegateInfo;
-    if (delegateInfo | v4[1])
+    if (delegateInfo | equalCopy[1])
     {
       v8 = [(_MPCProtoDelegateInfo *)delegateInfo isEqual:?];
     }
@@ -48,10 +48,10 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -72,7 +72,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) copyWithZone:{a3, v17}];
+        v11 = [*(*(&v17 + 1) + 8 * v10) copyWithZone:{zone, v17}];
         [(_MPCProtoMigrationData *)v5 addPayloads:v11];
 
         ++v10;
@@ -85,32 +85,32 @@
     while (v8);
   }
 
-  v12 = [(_MPCProtoMigrationDataTimeSync *)self->_timeSync copyWithZone:a3];
+  v12 = [(_MPCProtoMigrationDataTimeSync *)self->_timeSync copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(_MPCProtoDelegateInfo *)self->_delegateInfo copyWithZone:a3];
+  v14 = [(_MPCProtoDelegateInfo *)self->_delegateInfo copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
   return v5;
 }
 
-- (uint64_t)addPayloads:(uint64_t)a1
+- (uint64_t)addPayloads:(uint64_t)payloads
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (payloads)
   {
-    v5 = *(a1 + 16);
+    v5 = *(payloads + 16);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(payloads + 16);
+      *(payloads + 16) = v6;
 
-      v5 = *(a1 + 16);
+      v5 = *(payloads + 16);
     }
 
     v3 = [v5 addObject:v9];
@@ -120,10 +120,10 @@
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -166,16 +166,16 @@
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -184,18 +184,18 @@
       while (1)
       {
         LOBYTE(v18) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v18 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v18 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v18 & 0x7F) << v6;
@@ -212,11 +212,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -226,7 +226,7 @@ LABEL_15:
         objc_storeStrong(&self->_delegateInfo, v15);
         v18 = 0;
         v19 = 0;
-        if (!PBReaderPlaceMark() || !_MPCProtoDelegateInfoReadFrom(v15, a3))
+        if (!PBReaderPlaceMark() || !_MPCProtoDelegateInfoReadFrom(v15, from))
         {
 LABEL_32:
 
@@ -247,7 +247,7 @@ LABEL_32:
         [(_MPCProtoMigrationData *)self addPayloads:v15];
         v18 = 0;
         v19 = 0;
-        if (!PBReaderPlaceMark() || !_MPCProtoMigrationDataPayloadReadFrom(v15, a3))
+        if (!PBReaderPlaceMark() || !_MPCProtoMigrationDataPayloadReadFrom(v15, from))
         {
           goto LABEL_32;
         }
@@ -264,10 +264,10 @@ LABEL_28:
       }
 
 LABEL_30:
-      v16 = [a3 position];
-      if (v16 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -275,7 +275,7 @@ LABEL_30:
     objc_storeStrong(&self->_timeSync, v15);
     v18 = 0;
     v19 = 0;
-    if (!PBReaderPlaceMark() || !_MPCProtoMigrationDataTimeSyncReadFrom(v15, a3))
+    if (!PBReaderPlaceMark() || !_MPCProtoMigrationDataTimeSyncReadFrom(v15, from))
     {
       goto LABEL_32;
     }
@@ -283,13 +283,13 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_payloads count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_payloads, "count")}];
@@ -312,8 +312,8 @@ LABEL_30:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -322,24 +322,24 @@ LABEL_30:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"payloads"];
+    [dictionary setObject:v4 forKey:@"payloads"];
   }
 
   timeSync = self->_timeSync;
   if (timeSync)
   {
-    v12 = [(_MPCProtoMigrationDataTimeSync *)timeSync dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"timeSync"];
+    dictionaryRepresentation2 = [(_MPCProtoMigrationDataTimeSync *)timeSync dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"timeSync"];
   }
 
   delegateInfo = self->_delegateInfo;
   if (delegateInfo)
   {
-    v14 = [(_MPCProtoDelegateInfo *)delegateInfo dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"delegateInfo"];
+    dictionaryRepresentation3 = [(_MPCProtoDelegateInfo *)delegateInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"delegateInfo"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -348,25 +348,25 @@ LABEL_30:
   v8.receiver = self;
   v8.super_class = _MPCProtoMigrationData;
   v4 = [(_MPCProtoMigrationData *)&v8 description];
-  v5 = [(_MPCProtoMigrationData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoMigrationData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setTimeSync:(uint64_t)a1
+- (void)setTimeSync:(uint64_t)sync
 {
-  if (a1)
+  if (sync)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((sync + 24), a2);
   }
 }
 
-- (void)setDelegateInfo:(uint64_t)a1
+- (void)setDelegateInfo:(uint64_t)info
 {
-  if (a1)
+  if (info)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((info + 8), a2);
   }
 }
 

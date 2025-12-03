@@ -1,8 +1,8 @@
 @interface _UITextSelectionHighlightView
 - (UIEdgeInsets)_selectionEdgeInsets;
-- (_UITextSelectionHighlightView)initWithFrame:(CGRect)a3;
+- (_UITextSelectionHighlightView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setSelectionRects:(id)a3;
+- (void)setSelectionRects:(id)rects;
 - (void)tintColorDidChange;
 @end
 
@@ -45,8 +45,8 @@
     while (v6);
   }
 
-  v9 = [(UIView *)self tintColor];
-  [(_UITextSelectionRangeView *)self->_rangeView setSelectionColor:v9];
+  tintColor = [(UIView *)self tintColor];
+  [(_UITextSelectionRangeView *)self->_rangeView setSelectionColor:tintColor];
 
   [(UIView *)self bounds];
   [(UIView *)self->_rangeView setFrame:?];
@@ -62,15 +62,15 @@
   v4.receiver = self;
   v4.super_class = _UITextSelectionHighlightView;
   [(UIView *)&v4 tintColorDidChange];
-  v3 = [(UIView *)self tintColor];
-  [(_UITextSelectionRangeView *)self->_rangeView setSelectionColor:v3];
+  tintColor = [(UIView *)self tintColor];
+  [(_UITextSelectionRangeView *)self->_rangeView setSelectionColor:tintColor];
 }
 
-- (_UITextSelectionHighlightView)initWithFrame:(CGRect)a3
+- (_UITextSelectionHighlightView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _UITextSelectionHighlightView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -86,12 +86,12 @@
   return v4;
 }
 
-- (void)setSelectionRects:(id)a3
+- (void)setSelectionRects:(id)rects
 {
-  v5 = a3;
+  rectsCopy = rects;
   if (![(NSArray *)self->_selectionRects isEqualToArray:?])
   {
-    objc_storeStrong(&self->_selectionRects, a3);
+    objc_storeStrong(&self->_selectionRects, rects);
     [(UIView *)self setNeedsLayout];
   }
 }

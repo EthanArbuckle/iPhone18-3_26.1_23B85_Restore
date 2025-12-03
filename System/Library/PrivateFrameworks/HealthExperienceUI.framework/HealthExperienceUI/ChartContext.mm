@@ -1,15 +1,15 @@
 @interface ChartContext
 - (NSString)description;
 - (_TtC18HealthExperienceUI12ChartContext)init;
-- (_TtC18HealthExperienceUI12ChartContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC18HealthExperienceUI12ChartContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ChartContext
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA107950();
 
   v3 = sub_1BA4A6758();
@@ -17,16 +17,16 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA107C6C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1BA107C6C(coderCopy);
 }
 
-- (_TtC18HealthExperienceUI12ChartContext)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI12ChartContext)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_1BA109074();
 
   return v4;

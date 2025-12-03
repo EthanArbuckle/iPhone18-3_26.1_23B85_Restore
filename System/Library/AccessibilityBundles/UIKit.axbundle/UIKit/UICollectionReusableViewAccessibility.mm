@@ -1,23 +1,23 @@
 @interface UICollectionReusableViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityScrollParentForComparingByXAxis;
 @end
 
 @implementation UICollectionReusableViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UICollectionViewOrthogonalScrollView"];
   objc_storeStrong(location, 0);
 }
 
 - (id)_accessibilityScrollParentForComparingByXAxis
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   v12.receiver = self;
   v12.super_class = UICollectionReusableViewAccessibility;
@@ -33,7 +33,7 @@
     v8 = __Block_byref_object_copy__3;
     v9 = __Block_byref_object_dispose__3;
     v10[0] = 0;
-    [(UICollectionReusableViewAccessibility *)v14 accessibilityEnumerateAncestorsUsingBlock:?];
+    [(UICollectionReusableViewAccessibility *)selfCopy accessibilityEnumerateAncestorsUsingBlock:?];
     if ([v5[5] _accessibilityOnlyComparesByXAxis])
     {
       objc_storeStrong(location, v5[5]);

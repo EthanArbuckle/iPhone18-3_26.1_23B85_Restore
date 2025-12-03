@@ -1,10 +1,10 @@
 @interface PSIQueryPlaceToken
-- (PSIQueryPlaceToken)initWithText:(id)a3 locationNameByCategory:(id)a4;
+- (PSIQueryPlaceToken)initWithText:(id)text locationNameByCategory:(id)category;
 @end
 
 @implementation PSIQueryPlaceToken
 
-- (PSIQueryPlaceToken)initWithText:(id)a3 locationNameByCategory:(id)a4
+- (PSIQueryPlaceToken)initWithText:(id)text locationNameByCategory:(id)category
 {
   v5 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))

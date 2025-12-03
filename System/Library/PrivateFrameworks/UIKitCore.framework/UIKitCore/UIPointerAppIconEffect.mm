@@ -8,19 +8,19 @@
 - (id)settings
 {
   v2 = +[_UIPointerSettingsDomain rootSettings];
-  v3 = [v2 SBAppIconEffectSettings];
+  sBAppIconEffectSettings = [v2 SBAppIconEffectSettings];
 
-  return v3;
+  return sBAppIconEffectSettings;
 }
 
 - (id)overrideSlipPoints
 {
   v3 = MEMORY[0x1E696B098];
-  v4 = [(UIPointerAppIconEffect *)self settings];
-  [v4 overrideSlipPoints];
+  settings = [(UIPointerAppIconEffect *)self settings];
+  [settings overrideSlipPoints];
   v6 = v5;
-  v7 = [(UIPointerAppIconEffect *)self settings];
-  [v7 overrideSlipPoints];
+  settings2 = [(UIPointerAppIconEffect *)self settings];
+  [settings2 overrideSlipPoints];
   v9 = [v3 valueWithCGPoint:{v6, v8}];
 
   return v9;

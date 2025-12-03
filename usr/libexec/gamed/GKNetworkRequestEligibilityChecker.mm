@@ -1,13 +1,13 @@
 @interface GKNetworkRequestEligibilityChecker
-- (GKNetworkRequestEligibilityChecker)initWithHasAcknowledgedLatestGDPR:(BOOL)a3 alwaysAllowedBagKeysObject:(id)a4 isAppDistributorThirdParty:(BOOL)a5 isInDebugMode:(BOOL)a6 isPreconnecting:(BOOL)a7;
-- (id)verifyEligibilityWithBagKey:(id)a3;
+- (GKNetworkRequestEligibilityChecker)initWithHasAcknowledgedLatestGDPR:(BOOL)r alwaysAllowedBagKeysObject:(id)object isAppDistributorThirdParty:(BOOL)party isInDebugMode:(BOOL)mode isPreconnecting:(BOOL)preconnecting;
+- (id)verifyEligibilityWithBagKey:(id)key;
 @end
 
 @implementation GKNetworkRequestEligibilityChecker
 
-- (GKNetworkRequestEligibilityChecker)initWithHasAcknowledgedLatestGDPR:(BOOL)a3 alwaysAllowedBagKeysObject:(id)a4 isAppDistributorThirdParty:(BOOL)a5 isInDebugMode:(BOOL)a6 isPreconnecting:(BOOL)a7
+- (GKNetworkRequestEligibilityChecker)initWithHasAcknowledgedLatestGDPR:(BOOL)r alwaysAllowedBagKeysObject:(id)object isAppDistributorThirdParty:(BOOL)party isInDebugMode:(BOOL)mode isPreconnecting:(BOOL)preconnecting
 {
-  if (a4)
+  if (object)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -19,14 +19,14 @@
     memset(v12, 0, sizeof(v12));
   }
 
-  return NetworkRequestEligibiltyChecker.init(hasAcknowledgedLatestGDPR:alwaysAllowedBagKeysObject:isAppDistributorThirdParty:isInDebugMode:isPreconnecting:)(a3, v12, a5, a6, a7);
+  return NetworkRequestEligibiltyChecker.init(hasAcknowledgedLatestGDPR:alwaysAllowedBagKeysObject:isAppDistributorThirdParty:isInDebugMode:isPreconnecting:)(r, v12, party, mode, preconnecting);
 }
 
-- (id)verifyEligibilityWithBagKey:(id)a3
+- (id)verifyEligibilityWithBagKey:(id)key
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = NetworkRequestEligibiltyChecker.verifyEligibility(bagKey:)(v4, v6);
 
   if (v8)

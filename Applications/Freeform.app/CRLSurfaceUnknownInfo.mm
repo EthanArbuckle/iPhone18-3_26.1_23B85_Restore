@@ -4,7 +4,7 @@
 - (Class)layoutClass;
 - (Class)repClass;
 - (_TtC8Freeform21CRLSurfaceUnknownInfo)init;
-- (void)setParentInfo:(id)a3;
+- (void)setParentInfo:(id)info;
 @end
 
 @implementation CRLSurfaceUnknownInfo
@@ -12,7 +12,7 @@
 - (CRLCanvasInfoGeometry)geometry
 {
   v2 = *((swift_isaMask & **(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLSurfaceUnknownInfo_underlyingItem)) + 0xE0);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
@@ -25,9 +25,9 @@
   return v2;
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
-  *(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLSurfaceUnknownInfo_parentInfo) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLSurfaceUnknownInfo_parentInfo) = info;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();

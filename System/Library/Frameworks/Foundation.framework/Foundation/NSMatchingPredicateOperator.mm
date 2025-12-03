@@ -1,6 +1,6 @@
 @interface NSMatchingPredicateOperator
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
-- (NSMatchingPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 variant:(unint64_t)a5;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
+- (NSMatchingPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier variant:(unint64_t)variant;
 - (id)symbol;
 - (void)_clearContext;
 - (void)dealloc;
@@ -8,12 +8,12 @@
 
 @implementation NSMatchingPredicateOperator
 
-- (NSMatchingPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 variant:(unint64_t)a5
+- (NSMatchingPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier variant:(unint64_t)variant
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSMatchingPredicateOperator;
-  result = [(NSStringPredicateOperator *)&v6 initWithOperatorType:a3 modifier:a4 variant:a5];
+  result = [(NSStringPredicateOperator *)&v6 initWithOperatorType:type modifier:modifier variant:variant];
   if (result)
   {
     result->_regexContext = 0;
@@ -57,20 +57,20 @@
 
 - (id)symbol
 {
-  v2 = [(NSStringPredicateOperator *)self _modifierString];
+  _modifierString = [(NSStringPredicateOperator *)self _modifierString];
 
-  return [@"MATCHES" stringByAppendingString:v2];
+  return [@"MATCHES" stringByAppendingString:_modifierString];
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
   v4 = 0;
-  if (!a3 || !a4)
+  if (!object || !andObject)
   {
     return v4;
   }
 
-  if ([&stru_1EEEFDF90 isEqual:a4])
+  if ([&stru_1EEEFDF90 isEqual:andObject])
   {
     return 0;
   }
@@ -79,7 +79,7 @@
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
-    v13 = [NSString stringWithFormat:@"Can't create a regex expression from object %@.", a4];
+    andObject = [NSString stringWithFormat:@"Can't create a regex expression from object %@.", andObject];
     v14 = v11;
     v15 = v12;
     goto LABEL_16;
@@ -89,18 +89,18 @@
   {
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695D940];
-    v13 = [NSString stringWithFormat:@"Can't do regex matching on object %@.", a3];
+    andObject = [NSString stringWithFormat:@"Can't do regex matching on object %@.", object];
     v14 = v16;
     v15 = v17;
 LABEL_16:
-    objc_exception_throw([v14 exceptionWithName:v15 reason:v13 userInfo:0]);
+    objc_exception_throw([v14 exceptionWithName:v15 reason:andObject userInfo:0]);
   }
 
   OSSpinLockLock(&self->_contextLock);
   regexContext = self->_regexContext;
   if (regexContext)
   {
-    if (regexContext->var0 && ([regexContext->var0 isEqual:a4] & 1) == 0)
+    if (regexContext->var0 && ([regexContext->var0 isEqual:andObject] & 1) == 0)
     {
       [(NSMatchingPredicateOperator *)self _clearContext];
     }
@@ -114,7 +114,7 @@ LABEL_16:
     v9->var1 = 0;
   }
 
-  v4 = [_NSPredicateOperatorUtilities doRegexForString:a3 pattern:a4 likeProtect:[(NSMatchingPredicateOperator *)self _shouldEscapeForLike] flags:[(NSStringPredicateOperator *)self flags] context:self->_regexContext];
+  v4 = [_NSPredicateOperatorUtilities doRegexForString:object pattern:andObject likeProtect:[(NSMatchingPredicateOperator *)self _shouldEscapeForLike] flags:[(NSStringPredicateOperator *)self flags] context:self->_regexContext];
   OSSpinLockUnlock(&self->_contextLock);
   return v4;
 }

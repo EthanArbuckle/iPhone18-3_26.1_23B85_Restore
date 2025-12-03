@@ -15,46 +15,46 @@
 - (NSUUID)storageIdentifier;
 - (_TtC4Maps16MapsFavoriteItem)init;
 - (id)cnLabledAddress;
-- (id)copyWithZone:(void *)a3;
-- (id)identifierForCoordinateWithCoordinate:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)identifierForCoordinateWithCoordinate:(id)coordinate;
 - (int64_t)entryType;
 - (int64_t)type;
-- (void)deleteWithCompletionHandler:(id)a3;
-- (void)deleteWithDeleteFromLibrary:(BOOL)a3 completionHandler:(id)a4;
-- (void)moveToBackWithCompletionHandler:(id)a3;
-- (void)moveToIndex:(int64_t)a3 with:(id)a4 completion:(id)a5;
-- (void)moveToPreferredIndexWith:(id)a3 completion:(id)a4;
-- (void)saveWithCompletionHandler:(id)a3;
-- (void)setContacts:(id)a3;
-- (void)setGeoMapItem:(id)a3;
-- (void)setIsHidden:(BOOL)a3;
-- (void)setMapItemStorage:(id)a3;
-- (void)setMkMapItem:(id)a3;
-- (void)setStorageIdentifier:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)updateSubtitleWithViewMode:(int64_t)a3 currentLocation:(CLLocation *)a4 completionHandler:(id)a5;
+- (void)deleteWithCompletionHandler:(id)handler;
+- (void)deleteWithDeleteFromLibrary:(BOOL)library completionHandler:(id)handler;
+- (void)moveToBackWithCompletionHandler:(id)handler;
+- (void)moveToIndex:(int64_t)index with:(id)with completion:(id)completion;
+- (void)moveToPreferredIndexWith:(id)with completion:(id)completion;
+- (void)saveWithCompletionHandler:(id)handler;
+- (void)setContacts:(id)contacts;
+- (void)setGeoMapItem:(id)item;
+- (void)setIsHidden:(BOOL)hidden;
+- (void)setMapItemStorage:(id)storage;
+- (void)setMkMapItem:(id)item;
+- (void)setStorageIdentifier:(id)identifier;
+- (void)setSubtitle:(id)subtitle;
+- (void)setType:(int64_t)type;
+- (void)updateSubtitleWithViewMode:(int64_t)mode currentLocation:(CLLocation *)location completionHandler:(id)handler;
 @end
 
 @implementation MapsFavoriteItem
 
 - (int64_t)type
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of FavoriteItem.type.getter();
 
   return v3;
 }
 
-- (void)updateSubtitleWithViewMode:(int64_t)a3 currentLocation:(CLLocation *)a4 completionHandler:(id)a5
+- (void)updateSubtitleWithViewMode:(int64_t)mode currentLocation:(CLLocation *)location completionHandler:(id)handler
 {
   v9 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = mode;
+  v13[3] = location;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -69,15 +69,15 @@
   v16[3] = 0;
   v16[4] = &unk_1011F9360;
   v16[5] = v15;
-  v17 = a4;
-  v18 = self;
+  locationCopy = location;
+  selfCopy = self;
   sub_10054DB08(0, 0, v11, &unk_1011F66B0, v16);
 }
 
 - (MKMapItem)mkMapItem
 {
-  v2 = self;
-  v3 = [objc_allocWithZone(MKMapItem) initWithGeoMapItem:-[MapsFavoriteItem geoMapItem](v2 isPlaceHolderPlace:{"geoMapItem"), 0}];
+  selfCopy = self;
+  v3 = [objc_allocWithZone(MKMapItem) initWithGeoMapItem:-[MapsFavoriteItem geoMapItem](selfCopy isPlaceHolderPlace:{"geoMapItem"), 0}];
 
   swift_unknownObjectRelease();
 
@@ -86,14 +86,14 @@
 
 - (GEOMapItem)geoMapItem
 {
-  v2 = [(MapsFavoriteItem *)self mapItemStorage];
+  mapItemStorage = [(MapsFavoriteItem *)self mapItemStorage];
 
-  return v2;
+  return mapItemStorage;
 }
 
 - (GEOMapItemStorage)mapItemStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of FavoriteItem.mapItemStorage.getter();
 
   return v3;
@@ -101,7 +101,7 @@
 
 - (NSString)uniqueIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of FavoriteItem.shortcutIdentifier.getter();
   if (v3)
   {
@@ -112,10 +112,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v4 = [(MapsFavoriteItem *)v2 createUniqueIdentifier];
-  if (v4)
+  createUniqueIdentifier = [(MapsFavoriteItem *)selfCopy createUniqueIdentifier];
+  if (createUniqueIdentifier)
   {
-    v5 = v4;
+    v5 = createUniqueIdentifier;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     goto LABEL_5;
@@ -129,7 +129,7 @@ LABEL_6:
 
 - (int64_t)entryType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100093DC8();
 
   return v3;
@@ -137,7 +137,7 @@ LABEL_6:
 
 - (GEOFeatureStyleAttributes)styleAttributes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100093E5C();
 
   return v3;
@@ -145,7 +145,7 @@ LABEL_6:
 
 - (NSArray)contacts
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of FavoriteItem.fetchContactHandles()();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -170,7 +170,7 @@ LABEL_6:
 
 - (BOOL)isHomeWorkOrSchool
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10009396C();
 
   return v3;
@@ -178,7 +178,7 @@ LABEL_6:
 
 - (BOOL)isNearbyTransit
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100546984();
 
   return v3 & 1;
@@ -193,12 +193,12 @@ LABEL_6:
   return v4;
 }
 
-- (void)saveWithCompletionHandler:(id)a3
+- (void)saveWithCompletionHandler:(id)handler
 {
   v5 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -214,16 +214,16 @@ LABEL_6:
   v12[3] = 0;
   v12[4] = &unk_10120FC58;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10054DB08(0, 0, v7, &unk_10120FC60, v12);
 }
 
-- (void)deleteWithCompletionHandler:(id)a3
+- (void)deleteWithCompletionHandler:(id)handler
 {
   v5 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -239,18 +239,18 @@ LABEL_6:
   v12[3] = 0;
   v12[4] = &unk_10120FC38;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10054DB08(0, 0, v7, &unk_10120FC40, v12);
 }
 
-- (void)deleteWithDeleteFromLibrary:(BOOL)a3 completionHandler:(id)a4
+- (void)deleteWithDeleteFromLibrary:(BOOL)library completionHandler:(id)handler
 {
   v7 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = library;
   *(v11 + 24) = v10;
   *(v11 + 32) = self;
   v12 = type metadata accessor for TaskPriority();
@@ -265,16 +265,16 @@ LABEL_6:
   v14[3] = 0;
   v14[4] = &unk_10120FC08;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_10054DB08(0, 0, v9, &unk_10120FC10, v14);
 }
 
-- (void)moveToBackWithCompletionHandler:(id)a3
+- (void)moveToBackWithCompletionHandler:(id)handler
 {
   v5 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -290,35 +290,35 @@ LABEL_6:
   v12[3] = 0;
   v12[4] = &unk_10120FBE0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10054DB08(0, 0, v7, &unk_10120FBE8, v12);
 }
 
-- (void)moveToIndex:(int64_t)a3 with:(id)a4 completion:(id)a5
+- (void)moveToIndex:(int64_t)index with:(id)with completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   type metadata accessor for MapsFavoriteItem();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = self;
-  sub_100549F34(a3, v8, sub_10041A668, v9);
+  selfCopy = self;
+  sub_100549F34(index, v8, sub_10041A668, v9);
 }
 
-- (void)moveToPreferredIndexWith:(id)a3 completion:(id)a4
+- (void)moveToPreferredIndexWith:(id)with completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for MapsFavoriteItem();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
-  v8 = self;
+  selfCopy = self;
   sub_10054AD88(v6, sub_100115C80, v7);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_10054B3B0(v6);
 
   sub_10005E838(v6, v6[3]);
@@ -327,9 +327,9 @@ LABEL_6:
   return v4;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -347,7 +347,7 @@ LABEL_6:
 
 - (GEOFeatureStyleAttributes)proposedFavoriteStyleAttributes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10054C298();
 
   return v3;
@@ -359,11 +359,11 @@ LABEL_6:
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(MapsFavoriteItem *)v7 uniqueIdentifier];
-  if (v8)
+  selfCopy = self;
+  uniqueIdentifier = [(MapsFavoriteItem *)selfCopy uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v9 = v8;
+    v9 = uniqueIdentifier;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
@@ -379,36 +379,36 @@ LABEL_6:
   return v10;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (a3 < -32768)
+  if (type < -32768)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  if (a3 >= 0x8000)
+  if (type >= 0x8000)
   {
 LABEL_7:
     __break(1u);
     return;
   }
 
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of FavoriteItem.type.setter();
 }
 
 - (BOOL)isHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = dispatch thunk of FavoriteItem.hidden.getter();
 
   return v3 & 1;
 }
 
-- (void)setIsHidden:(BOOL)a3
+- (void)setIsHidden:(BOOL)hidden
 {
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of FavoriteItem.hidden.setter();
 }
 
@@ -417,7 +417,7 @@ LABEL_7:
   v3 = sub_1000CE6B8(&unk_101918E50);
   __chkstk_darwin(v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   dispatch thunk of MapsSyncObject.identifier.getter();
 
   v7 = type metadata accessor for UUID();
@@ -434,14 +434,14 @@ LABEL_7:
   return v10;
 }
 
-- (void)setStorageIdentifier:(id)a3
+- (void)setStorageIdentifier:(id)identifier
 {
   v5 = sub_1000CE6B8(&unk_101918E50);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v8);
   v10 = &v14 - v9;
-  if (a3)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for UUID();
@@ -455,53 +455,53 @@ LABEL_7:
   }
 
   sub_1000D2DFC(v10, v7, &unk_101918E50);
-  v13 = self;
+  selfCopy = self;
   dispatch thunk of MapsSyncObject.identifier.setter();
   sub_100024F64(v10, &unk_101918E50);
 }
 
-- (void)setGeoMapItem:(id)a3
+- (void)setGeoMapItem:(id)item
 {
   v5 = objc_opt_self();
   swift_unknownObjectRetain();
-  v7 = self;
-  v6 = [v5 mapItemStorageForGEOMapItem:a3];
-  [(MapsFavoriteItem *)v7 setMapItemStorage:v6];
+  selfCopy = self;
+  v6 = [v5 mapItemStorageForGEOMapItem:item];
+  [(MapsFavoriteItem *)selfCopy setMapItemStorage:v6];
   swift_unknownObjectRelease();
 }
 
-- (void)setMapItemStorage:(id)a3
+- (void)setMapItemStorage:(id)storage
 {
-  v4 = a3;
-  v5 = self;
+  storageCopy = storage;
+  selfCopy = self;
   dispatch thunk of FavoriteItem.mapItemStorage.setter();
 }
 
-- (void)setMkMapItem:(id)a3
+- (void)setMkMapItem:(id)item
 {
-  v5 = self;
-  if (a3)
+  selfCopy = self;
+  if (item)
   {
-    v4 = [a3 _geoMapItem];
+    _geoMapItem = [item _geoMapItem];
   }
 
   else
   {
-    v4 = 0;
+    _geoMapItem = 0;
   }
 
-  [(MapsFavoriteItem *)v5 setGeoMapItem:v4];
+  [(MapsFavoriteItem *)selfCopy setGeoMapItem:_geoMapItem];
 
   swift_unknownObjectRelease();
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = *(v4 + 16);
   if (v5)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = v4 + 40;
     do
     {
@@ -516,9 +516,9 @@ LABEL_7:
   }
 }
 
-- (id)identifierForCoordinateWithCoordinate:(id)a3
+- (id)identifierForCoordinateWithCoordinate:(id)coordinate
 {
-  sub_10054EC58(a3.var0, a3.var1);
+  sub_10054EC58(coordinate.var0, coordinate.var1);
   v3 = String._bridgeToObjectiveC()();
 
   return v3;
@@ -526,7 +526,7 @@ LABEL_7:
 
 - (id)cnLabledAddress
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10054D8DC();
 
   return v3;

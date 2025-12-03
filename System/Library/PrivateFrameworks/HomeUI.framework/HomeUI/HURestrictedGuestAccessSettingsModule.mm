@@ -1,23 +1,23 @@
 @interface HURestrictedGuestAccessSettingsModule
-- (HURestrictedGuestAccessSettingsModule)initWithItemUpdater:(id)a3;
-- (HURestrictedGuestAccessSettingsModule)initWithItemUpdater:(id)a3 home:(id)a4 accessoryToAdd:(id)a5;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)enableRestrictedGuestAccessSetting:(BOOL)a3 forItem:(id)a4;
+- (HURestrictedGuestAccessSettingsModule)initWithItemUpdater:(id)updater;
+- (HURestrictedGuestAccessSettingsModule)initWithItemUpdater:(id)updater home:(id)home accessoryToAdd:(id)add;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)enableRestrictedGuestAccessSetting:(BOOL)setting forItem:(id)item;
 - (id)itemProviders;
 - (void)_buildItemProviders;
 @end
 
 @implementation HURestrictedGuestAccessSettingsModule
 
-- (HURestrictedGuestAccessSettingsModule)initWithItemUpdater:(id)a3 home:(id)a4 accessoryToAdd:(id)a5
+- (HURestrictedGuestAccessSettingsModule)initWithItemUpdater:(id)updater home:(id)home accessoryToAdd:(id)add
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  updaterCopy = updater;
+  homeCopy = home;
+  addCopy = add;
+  v12 = addCopy;
+  if (homeCopy)
   {
-    if (v11)
+    if (addCopy)
     {
       goto LABEL_3;
     }
@@ -25,8 +25,8 @@
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestAccessSettingsModule.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HURestrictedGuestAccessSettingsModule.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
 
     if (v12)
     {
@@ -34,29 +34,29 @@
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestAccessSettingsModule.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"accessoryToAdd != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestAccessSettingsModule.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"accessoryToAdd != nil"}];
 
 LABEL_3:
   v18.receiver = self;
   v18.super_class = HURestrictedGuestAccessSettingsModule;
-  v13 = [(HFItemModule *)&v18 initWithItemUpdater:v9];
+  v13 = [(HFItemModule *)&v18 initWithItemUpdater:updaterCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_home, a4);
-    objc_storeStrong(&v14->_accessoryToAdd, a5);
+    objc_storeStrong(&v13->_home, home);
+    objc_storeStrong(&v14->_accessoryToAdd, add);
     [(HURestrictedGuestAccessSettingsModule *)v14 _buildItemProviders];
   }
 
   return v14;
 }
 
-- (HURestrictedGuestAccessSettingsModule)initWithItemUpdater:(id)a3
+- (HURestrictedGuestAccessSettingsModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestAccessSettingsModule.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HURestrictedGuestAccessSettingsModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HURestrictedGuestAccessSettingsModule.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HURestrictedGuestAccessSettingsModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
@@ -64,33 +64,33 @@ LABEL_3:
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HURestrictedGuestAccessSettingsModule *)self transformedUserItemProvider];
-  v4 = [v2 setWithObjects:{v3, 0}];
+  transformedUserItemProvider = [(HURestrictedGuestAccessSettingsModule *)self transformedUserItemProvider];
+  v4 = [v2 setWithObjects:{transformedUserItemProvider, 0}];
 
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HURestrictedGuestAccessSettingsModule *)self transformedUserItemProvider];
-  v7 = [v6 items];
-  v8 = [v7 intersectsSet:v4];
+  transformedUserItemProvider = [(HURestrictedGuestAccessSettingsModule *)self transformedUserItemProvider];
+  items = [transformedUserItemProvider items];
+  v8 = [items intersectsSet:itemsCopy];
 
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HURestrictedGuestAccessSettingsUserItemSectionIdentifier"];
-    v10 = [(HURestrictedGuestAccessSettingsModule *)self transformedUserItemProvider];
-    v11 = [v10 items];
-    v12 = [v11 allObjects];
-    v13 = [objc_opt_class() _userItemComparator];
-    v14 = [v12 sortedArrayUsingComparator:v13];
+    transformedUserItemProvider2 = [(HURestrictedGuestAccessSettingsModule *)self transformedUserItemProvider];
+    items2 = [transformedUserItemProvider2 items];
+    allObjects = [items2 allObjects];
+    _userItemComparator = [objc_opt_class() _userItemComparator];
+    v14 = [allObjects sortedArrayUsingComparator:_userItemComparator];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __73__HURestrictedGuestAccessSettingsModule_buildSectionsWithDisplayedItems___block_invoke;
     v17[3] = &unk_277DB85D8;
-    v18 = v4;
+    v18 = itemsCopy;
     v15 = [v14 na_filter:v17];
     [v9 setItems:v15];
 
@@ -100,43 +100,43 @@ LABEL_3:
   return v5;
 }
 
-- (id)enableRestrictedGuestAccessSetting:(BOOL)a3 forItem:(id)a4
+- (id)enableRestrictedGuestAccessSetting:(BOOL)setting forItem:(id)item
 {
-  v4 = a3;
+  settingCopy = setting;
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  itemCopy = item;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v43 = self;
+    selfCopy2 = self;
     v44 = 2112;
     v45 = v9;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ Inside enableRestrictedGuestAccessSetting...", buf, 0x16u);
   }
 
-  v10 = [(HURestrictedGuestAccessSettingsModule *)self home];
-  v11 = [v7 user];
+  home = [(HURestrictedGuestAccessSettingsModule *)self home];
+  user = [itemCopy user];
 
-  v12 = [v10 homeAccessControlForUser:v11];
+  v12 = [home homeAccessControlForUser:user];
   v13 = objc_alloc(MEMORY[0x277CBEB58]);
-  v14 = [v12 restrictedGuestAccessSettings];
-  v15 = [v14 accessAllowedToAccessories];
-  v16 = [v13 initWithSet:v15];
+  restrictedGuestAccessSettings = [v12 restrictedGuestAccessSettings];
+  accessAllowedToAccessories = [restrictedGuestAccessSettings accessAllowedToAccessories];
+  v16 = [v13 initWithSet:accessAllowedToAccessories];
 
-  v17 = [(HURestrictedGuestAccessSettingsModule *)self accessoryToAdd];
-  v18 = [v16 na_safeContainsObject:v17];
+  accessoryToAdd = [(HURestrictedGuestAccessSettingsModule *)self accessoryToAdd];
+  v18 = [v16 na_safeContainsObject:accessoryToAdd];
 
-  if (v4)
+  if (settingCopy)
   {
     if (v18)
     {
       goto LABEL_9;
     }
 
-    v19 = [(HURestrictedGuestAccessSettingsModule *)self accessoryToAdd];
-    [v16 na_safeAddObject:v19];
+    accessoryToAdd2 = [(HURestrictedGuestAccessSettingsModule *)self accessoryToAdd];
+    [v16 na_safeAddObject:accessoryToAdd2];
   }
 
   else
@@ -146,13 +146,13 @@ LABEL_3:
       goto LABEL_9;
     }
 
-    v19 = [(HURestrictedGuestAccessSettingsModule *)self accessoryToAdd];
-    [v16 removeObject:v19];
+    accessoryToAdd2 = [(HURestrictedGuestAccessSettingsModule *)self accessoryToAdd];
+    [v16 removeObject:accessoryToAdd2];
   }
 
 LABEL_9:
-  v20 = [v12 restrictedGuestAccessSettings];
-  v21 = [v20 mutableCopy];
+  restrictedGuestAccessSettings2 = [v12 restrictedGuestAccessSettings];
+  v21 = [restrictedGuestAccessSettings2 mutableCopy];
 
   [v21 setAccessAllowedToAccessories:v16];
   v22 = HFLogForCategory();
@@ -160,7 +160,7 @@ LABEL_9:
   {
     v23 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v43 = self;
+    selfCopy2 = self;
     v44 = 2112;
     v45 = v23;
     v46 = 2112;
@@ -182,10 +182,10 @@ LABEL_9:
   v36[1] = 3221225472;
   v36[2] = __84__HURestrictedGuestAccessSettingsModule_enableRestrictedGuestAccessSetting_forItem___block_invoke_26;
   v36[3] = &unk_277DB7E68;
-  v28 = v11;
+  v28 = user;
   v37 = v28;
-  v38 = v10;
-  v29 = v10;
+  v38 = home;
+  v29 = home;
   v30 = [v27 addSuccessBlock:v36];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -325,8 +325,8 @@ uint64_t __60__HURestrictedGuestAccessSettingsModule__userItemComparator__block_
 - (void)_buildItemProviders
 {
   v3 = objc_alloc(MEMORY[0x277D14CA0]);
-  v4 = [(HURestrictedGuestAccessSettingsModule *)self home];
-  v5 = [v3 initWithHome:v4];
+  home = [(HURestrictedGuestAccessSettingsModule *)self home];
+  v5 = [v3 initWithHome:home];
 
   [v5 setIncludeGuestUsers:1];
   objc_initWeak(&location, self);

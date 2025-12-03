@@ -9,10 +9,10 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSDictionary(AppleAccount) *)a2 aa_dictionaryByAddingEntriesFromDictionary:a1];
+    [(NSDictionary(AppleAccount) *)a2 aa_dictionaryByAddingEntriesFromDictionary:self];
   }
 
-  v6 = [a1 mutableCopy];
+  v6 = [self mutableCopy];
   [v6 addEntriesFromDictionary:v5];
   v7 = [v6 copy];
 

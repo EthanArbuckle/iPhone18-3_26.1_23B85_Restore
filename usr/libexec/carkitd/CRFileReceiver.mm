@@ -1,25 +1,25 @@
 @interface CRFileReceiver
-- (CRFileReceiver)initWithChannel:(id)a3;
+- (CRFileReceiver)initWithChannel:(id)channel;
 - (CRLogArchiveReceiving)logArchiveReceiver;
 - (CRStatisticsStreamReceiving)statisticsReceiver;
 - (CRThemeAssetReceiving)themeAssetReceiver;
-- (void)_fileQueue_handleFileHeaderMessage:(id)a3;
-- (void)_fileQueue_handleFilePayloadMessage:(id)a3;
-- (void)_fileQueue_handleStreamPayloadMessage:(id)a3;
-- (void)_fileQueue_setupLogArchiveWriterForSessionID:(id)a3 chunkCount:(id)a4 message:(id)a5;
-- (void)_fileQueue_setupThemeWriterForSessionID:(id)a3 chunkCount:(id)a4 message:(id)a5;
-- (void)channel:(id)a3 didReceiveMessage:(id)a4;
-- (void)didCloseChannel:(id)a3;
+- (void)_fileQueue_handleFileHeaderMessage:(id)message;
+- (void)_fileQueue_handleFilePayloadMessage:(id)message;
+- (void)_fileQueue_handleStreamPayloadMessage:(id)message;
+- (void)_fileQueue_setupLogArchiveWriterForSessionID:(id)d chunkCount:(id)count message:(id)message;
+- (void)_fileQueue_setupThemeWriterForSessionID:(id)d chunkCount:(id)count message:(id)message;
+- (void)channel:(id)channel didReceiveMessage:(id)message;
+- (void)didCloseChannel:(id)channel;
 - (void)invalidate;
 - (void)requestLogArchive;
-- (void)requestStartStatisticsOnInterval:(unint64_t)a3;
+- (void)requestStartStatisticsOnInterval:(unint64_t)interval;
 @end
 
 @implementation CRFileReceiver
 
-- (CRFileReceiver)initWithChannel:(id)a3
+- (CRFileReceiver)initWithChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v17.receiver = self;
   v17.super_class = CRFileReceiver;
   v6 = [(CRFileReceiver *)&v17 init];
@@ -29,15 +29,15 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_channel, a3);
+  objc_storeStrong(&v6->_channel, channel);
   v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
   v9 = dispatch_queue_create("com.apple.carkit.file_receiving", v8);
   fileQueue = v7->_fileQueue;
   v7->_fileQueue = v9;
 
-  [v5 setChannelDelegate:v7];
+  [channelCopy setChannelDelegate:v7];
   v11 = 0;
-  if ([v5 openChannel])
+  if ([channelCopy openChannel])
   {
     v7->_channelIsOpen = 1;
     v12 = objc_alloc_init(NSMutableDictionary);
@@ -57,71 +57,71 @@ LABEL_4:
 
 - (void)requestLogArchive
 {
-  v3 = [(CRFileReceiver *)self fileQueue];
+  fileQueue = [(CRFileReceiver *)self fileQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000780FC;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(fileQueue, block);
 }
 
-- (void)requestStartStatisticsOnInterval:(unint64_t)a3
+- (void)requestStartStatisticsOnInterval:(unint64_t)interval
 {
-  v5 = [(CRFileReceiver *)self fileQueue];
+  fileQueue = [(CRFileReceiver *)self fileQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100078348;
   v6[3] = &unk_1000DE920;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = interval;
+  dispatch_async(fileQueue, v6);
 }
 
 - (void)invalidate
 {
-  v3 = [(CRFileReceiver *)self fileQueue];
+  fileQueue = [(CRFileReceiver *)self fileQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000785BC;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(fileQueue, block);
 }
 
-- (void)channel:(id)a3 didReceiveMessage:(id)a4
+- (void)channel:(id)channel didReceiveMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(CRFileReceiver *)self fileQueue];
+  messageCopy = message;
+  fileQueue = [(CRFileReceiver *)self fileQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000786F8;
   v8[3] = &unk_1000DD580;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = messageCopy;
+  selfCopy = self;
+  v7 = messageCopy;
+  dispatch_async(fileQueue, v8);
 }
 
-- (void)didCloseChannel:(id)a3
+- (void)didCloseChannel:(id)channel
 {
-  v4 = [(CRFileReceiver *)self fileQueue];
+  fileQueue = [(CRFileReceiver *)self fileQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000789A4;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(fileQueue, block);
 }
 
-- (void)_fileQueue_handleFileHeaderMessage:(id)a3
+- (void)_fileQueue_handleFileHeaderMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CRFileReceiver *)self fileQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  fileQueue = [(CRFileReceiver *)self fileQueue];
+  dispatch_assert_queue_V2(fileQueue);
 
   objc_opt_class();
-  v6 = [v4 objectForKey:@"payloadType"];
+  v6 = [messageCopy objectForKey:@"payloadType"];
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -135,7 +135,7 @@ LABEL_4:
   if (v7)
   {
     objc_opt_class();
-    v8 = [v4 objectForKey:@"sessionID"];
+    v8 = [messageCopy objectForKey:@"sessionID"];
     if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v9 = v8;
@@ -149,7 +149,7 @@ LABEL_4:
     if (v9)
     {
       objc_opt_class();
-      v10 = [v4 objectForKey:@"chunkCount"];
+      v10 = [messageCopy objectForKey:@"chunkCount"];
       if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
       {
         v11 = v10;
@@ -162,24 +162,24 @@ LABEL_4:
 
       if (v11)
       {
-        v12 = [v7 unsignedIntegerValue];
-        if (v12 == 2)
+        unsignedIntegerValue = [v7 unsignedIntegerValue];
+        if (unsignedIntegerValue == 2)
         {
-          v15 = [(CRFileReceiver *)self logArchiveReceiver];
+          logArchiveReceiver = [(CRFileReceiver *)self logArchiveReceiver];
 
-          if (v15)
+          if (logArchiveReceiver)
           {
-            [(CRFileReceiver *)self _fileQueue_setupLogArchiveWriterForSessionID:v9 chunkCount:v11 message:v4];
+            [(CRFileReceiver *)self _fileQueue_setupLogArchiveWriterForSessionID:v9 chunkCount:v11 message:messageCopy];
           }
         }
 
-        else if (v12 == 1)
+        else if (unsignedIntegerValue == 1)
         {
-          v13 = [(CRFileReceiver *)self themeAssetReceiver];
+          themeAssetReceiver = [(CRFileReceiver *)self themeAssetReceiver];
 
-          if (v13)
+          if (themeAssetReceiver)
           {
-            [(CRFileReceiver *)self _fileQueue_setupThemeWriterForSessionID:v9 chunkCount:v11 message:v4];
+            [(CRFileReceiver *)self _fileQueue_setupThemeWriterForSessionID:v9 chunkCount:v11 message:messageCopy];
           }
         }
       }
@@ -214,14 +214,14 @@ LABEL_4:
   }
 }
 
-- (void)_fileQueue_handleFilePayloadMessage:(id)a3
+- (void)_fileQueue_handleFilePayloadMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CRFileReceiver *)self fileQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  fileQueue = [(CRFileReceiver *)self fileQueue];
+  dispatch_assert_queue_V2(fileQueue);
 
   objc_opt_class();
-  v6 = [v4 objectForKey:@"sessionID"];
+  v6 = [messageCopy objectForKey:@"sessionID"];
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -235,7 +235,7 @@ LABEL_4:
   if (v7)
   {
     objc_opt_class();
-    v8 = [v4 objectForKey:@"data"];
+    v8 = [messageCopy objectForKey:@"data"];
     if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v9 = v8;
@@ -247,7 +247,7 @@ LABEL_4:
     }
 
     objc_opt_class();
-    v10 = [v4 objectForKey:@"chunkIndex"];
+    v10 = [messageCopy objectForKey:@"chunkIndex"];
     if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v11 = v10;
@@ -269,19 +269,19 @@ LABEL_4:
       goto LABEL_43;
     }
 
-    v12 = [(CRFileReceiver *)self themeAssetReceiver];
+    themeAssetReceiver = [(CRFileReceiver *)self themeAssetReceiver];
 
-    if (!v12 || (-[CRFileReceiver themeWritersForSessionIDs](self, "themeWritersForSessionIDs"), v13 = objc_claimAutoreleasedReturnValue(), [v13 objectForKey:v7], v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
+    if (!themeAssetReceiver || (-[CRFileReceiver themeWritersForSessionIDs](self, "themeWritersForSessionIDs"), v13 = objc_claimAutoreleasedReturnValue(), [v13 objectForKey:v7], v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
     {
-      v24 = [(CRFileReceiver *)self logArchiveReceiver];
+      logArchiveReceiver = [(CRFileReceiver *)self logArchiveReceiver];
 
-      if (!v24)
+      if (!logArchiveReceiver)
       {
         goto LABEL_44;
       }
 
-      v25 = [(CRFileReceiver *)self logArchiveWritersForSessionIDs];
-      v14 = [v25 objectForKey:v7];
+      logArchiveWritersForSessionIDs = [(CRFileReceiver *)self logArchiveWritersForSessionIDs];
+      v14 = [logArchiveWritersForSessionIDs objectForKey:v7];
 
       if (!v14)
       {
@@ -305,34 +305,34 @@ LABEL_44:
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "saved all log archive chunks!", v33, 2u);
         }
 
-        v27 = [(CRFileReceiver *)self logArchiveReceiver];
+        logArchiveReceiver2 = [(CRFileReceiver *)self logArchiveReceiver];
         v28 = objc_opt_respondsToSelector();
 
         if (v28)
         {
-          v29 = [(CRFileReceiver *)self logArchiveReceiver];
-          v30 = [v14 fileURL];
-          [v29 fileReceiverSession:self didSaveLogsAtURL:v30];
+          logArchiveReceiver3 = [(CRFileReceiver *)self logArchiveReceiver];
+          fileURL = [v14 fileURL];
+          [logArchiveReceiver3 fileReceiverSession:self didSaveLogsAtURL:fileURL];
         }
 
-        v31 = self;
+        selfCopy2 = self;
         v32 = 0;
       }
 
       else
       {
-        v31 = self;
+        selfCopy2 = self;
         v32 = 5;
       }
 
-      [(CRFileReceiver *)v31 _fileQueue_sendFileAcceptMessageWithStatus:v32];
+      [(CRFileReceiver *)selfCopy2 _fileQueue_sendFileAcceptMessageWithStatus:v32];
       goto LABEL_43;
     }
 
-    v15 = [v14 assetArchiveWriter];
-    if ([v15 saveData:v9 forIndex:v11])
+    assetArchiveWriter = [v14 assetArchiveWriter];
+    if ([assetArchiveWriter saveData:v9 forIndex:v11])
     {
-      if (![v15 hasAllChunks])
+      if (![assetArchiveWriter hasAllChunks])
       {
 LABEL_40:
 
@@ -346,28 +346,28 @@ LABEL_40:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "saved all theme asset chunks!", buf, 2u);
       }
 
-      v17 = [(CRFileReceiver *)self themeAssetReceiver];
+      themeAssetReceiver2 = [(CRFileReceiver *)self themeAssetReceiver];
       v18 = objc_opt_respondsToSelector();
 
       if (v18)
       {
-        v19 = [(CRFileReceiver *)self themeAssetReceiver];
-        v20 = [v14 version];
-        v21 = [v14 assetURL];
-        [v19 fileReceiver:self didSaveThemeAssetOfVersion:v20 atURL:v21];
+        themeAssetReceiver3 = [(CRFileReceiver *)self themeAssetReceiver];
+        version = [v14 version];
+        assetURL = [v14 assetURL];
+        [themeAssetReceiver3 fileReceiver:self didSaveThemeAssetOfVersion:version atURL:assetURL];
       }
 
-      v22 = self;
+      selfCopy4 = self;
       v23 = 0;
     }
 
     else
     {
-      v22 = self;
+      selfCopy4 = self;
       v23 = 5;
     }
 
-    [(CRFileReceiver *)v22 _fileQueue_sendFileAcceptMessageWithStatus:v23];
+    [(CRFileReceiver *)selfCopy4 _fileQueue_sendFileAcceptMessageWithStatus:v23];
     goto LABEL_40;
   }
 
@@ -380,14 +380,14 @@ LABEL_40:
 LABEL_45:
 }
 
-- (void)_fileQueue_handleStreamPayloadMessage:(id)a3
+- (void)_fileQueue_handleStreamPayloadMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CRFileReceiver *)self fileQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  fileQueue = [(CRFileReceiver *)self fileQueue];
+  dispatch_assert_queue_V2(fileQueue);
 
   objc_opt_class();
-  v6 = [v4 objectForKey:@"payloadType"];
+  v6 = [messageCopy objectForKey:@"payloadType"];
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -403,7 +403,7 @@ LABEL_45:
     if ([v7 unsignedIntegerValue] == 3)
     {
       objc_opt_class();
-      v8 = [v4 objectForKey:@"data"];
+      v8 = [messageCopy objectForKey:@"data"];
       if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
       {
         v9 = v8;
@@ -416,13 +416,13 @@ LABEL_45:
 
       if (v9)
       {
-        v10 = [(CRFileReceiver *)self statisticsReceiver];
+        statisticsReceiver = [(CRFileReceiver *)self statisticsReceiver];
         v11 = objc_opt_respondsToSelector();
 
         if (v11)
         {
-          v12 = [(CRFileReceiver *)self statisticsReceiver];
-          [v12 fileReceiver:self didReceiveStatistics:v9];
+          statisticsReceiver2 = [(CRFileReceiver *)self statisticsReceiver];
+          [statisticsReceiver2 fileReceiver:self didReceiveStatistics:v9];
         }
       }
 
@@ -456,16 +456,16 @@ LABEL_45:
   }
 }
 
-- (void)_fileQueue_setupThemeWriterForSessionID:(id)a3 chunkCount:(id)a4 message:(id)a5
+- (void)_fileQueue_setupThemeWriterForSessionID:(id)d chunkCount:(id)count message:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CRFileReceiver *)self fileQueue];
-  dispatch_assert_queue_V2(v11);
+  dCopy = d;
+  countCopy = count;
+  messageCopy = message;
+  fileQueue = [(CRFileReceiver *)self fileQueue];
+  dispatch_assert_queue_V2(fileQueue);
 
   objc_opt_class();
-  v12 = [v10 objectForKey:@"version"];
+  v12 = [messageCopy objectForKey:@"version"];
   if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v13 = v12;
@@ -478,21 +478,21 @@ LABEL_45:
 
   if (v13)
   {
-    v14 = [(CRFileReceiver *)self themeAssetReceiver];
+    themeAssetReceiver = [(CRFileReceiver *)self themeAssetReceiver];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(CRFileReceiver *)self themeAssetReceiver];
-      v17 = [v16 fileReceiver:self urlForSavingThemeAssetOfVersion:v13];
+      themeAssetReceiver2 = [(CRFileReceiver *)self themeAssetReceiver];
+      v17 = [themeAssetReceiver2 fileReceiver:self urlForSavingThemeAssetOfVersion:v13];
 
       if (v17)
       {
-        v18 = [[CRThemeAssetDataWriter alloc] initWithAssetURL:v17 version:v13 chunkCount:v9];
+        v18 = [[CRThemeAssetDataWriter alloc] initWithAssetURL:v17 version:v13 chunkCount:countCopy];
         if (v18)
         {
-          v19 = [(CRFileReceiver *)self themeWritersForSessionIDs];
-          [v19 setObject:v18 forKey:v8];
+          themeWritersForSessionIDs = [(CRFileReceiver *)self themeWritersForSessionIDs];
+          [themeWritersForSessionIDs setObject:v18 forKey:dCopy];
 
           v20 = sub_100002A68(4uLL);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -505,7 +505,7 @@ LABEL_45:
           }
 
           objc_opt_class();
-          v21 = [v10 objectForKey:@"certificate"];
+          v21 = [messageCopy objectForKey:@"certificate"];
           if (v21 && (objc_opt_isKindOfClass() & 1) != 0)
           {
             v22 = v21;
@@ -517,7 +517,7 @@ LABEL_45:
           }
 
           objc_opt_class();
-          v23 = [v10 objectForKey:@"signature"];
+          v23 = [messageCopy objectForKey:@"signature"];
           if (v23 && (objc_opt_isKindOfClass() & 1) != 0)
           {
             v24 = v23;
@@ -541,7 +541,7 @@ LABEL_45:
           }
 
           objc_opt_class();
-          v26 = [v10 objectForKey:@"additions"];
+          v26 = [messageCopy objectForKey:@"additions"];
           if (v26 && (objc_opt_isKindOfClass() & 1) != 0)
           {
             v27 = v26;
@@ -605,26 +605,26 @@ LABEL_45:
   }
 }
 
-- (void)_fileQueue_setupLogArchiveWriterForSessionID:(id)a3 chunkCount:(id)a4 message:(id)a5
+- (void)_fileQueue_setupLogArchiveWriterForSessionID:(id)d chunkCount:(id)count message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CRFileReceiver *)self fileQueue];
-  dispatch_assert_queue_V2(v9);
+  dCopy = d;
+  countCopy = count;
+  fileQueue = [(CRFileReceiver *)self fileQueue];
+  dispatch_assert_queue_V2(fileQueue);
 
-  v10 = [(CRFileReceiver *)self logArchiveReceiver];
+  logArchiveReceiver = [(CRFileReceiver *)self logArchiveReceiver];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CRFileReceiver *)self logArchiveReceiver];
-    v13 = [v12 urlForSavingLogsForFileReceiverSession:self];
+    logArchiveReceiver2 = [(CRFileReceiver *)self logArchiveReceiver];
+    v13 = [logArchiveReceiver2 urlForSavingLogsForFileReceiverSession:self];
 
     if (v13)
     {
-      v14 = [[CRFileTransferDataWriter alloc] initWithFileURL:v13 chunkCount:v8];
-      v15 = [(CRFileReceiver *)self logArchiveWritersForSessionIDs];
-      [v15 setObject:v14 forKey:v7];
+      v14 = [[CRFileTransferDataWriter alloc] initWithFileURL:v13 chunkCount:countCopy];
+      logArchiveWritersForSessionIDs = [(CRFileReceiver *)self logArchiveWritersForSessionIDs];
+      [logArchiveWritersForSessionIDs setObject:v14 forKey:dCopy];
 
       v16 = sub_100002A68(4uLL);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))

@@ -1,42 +1,42 @@
 @interface PXStoryViewModeFocusedClipsViewTransition
-- ($7A74DE1ADD4D9428579EDAA94466197A)cornerRadiusForClipWithInfo:(id *)a3 proposedCornerRadius:(id)a4 inViewMode:(int64_t)a5 layout:(id)a6;
-- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)a3 proposedOverride:(id *)a4 inViewMode:(id *)a5 layout:(int64_t)a6;
-- (CGRect)frameForClipWithInfo:(id *)a3 proposedFrame:(CGRect)a4 inViewMode:(int64_t)a5 layout:(id)a6;
-- (PXStoryViewModeFocusedClipsViewTransition)initWithSourceViewMode:(int64_t)a3 sourceSnapshot:(id)a4 destinationViewMode:(int64_t)a5 destinationSnapshot:(id)a6 assetReference:(id)a7;
-- (PXStoryViewModeFocusedClipsViewTransition)initWithSourceViewMode:(int64_t)a3 sourceSnapshot:(id)a4 destinationViewMode:(int64_t)a5 destinationSnapshot:(id)a6 assetReference:(id)a7 focusedClipIdentifiers:(id)a8 trackingClipIdentifier:(int64_t)a9;
-- (double)zPositionForClipWithInfo:(id *)a3 proposedZPosition:(double)a4 inViewMode:(int64_t)a5 layout:(id)a6;
+- ($7A74DE1ADD4D9428579EDAA94466197A)cornerRadiusForClipWithInfo:(id *)info proposedCornerRadius:(id)radius inViewMode:(int64_t)mode layout:(id)layout;
+- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)info proposedOverride:(id *)override inViewMode:(id *)mode layout:(int64_t)layout;
+- (CGRect)frameForClipWithInfo:(id *)info proposedFrame:(CGRect)frame inViewMode:(int64_t)mode layout:(id)layout;
+- (PXStoryViewModeFocusedClipsViewTransition)initWithSourceViewMode:(int64_t)mode sourceSnapshot:(id)snapshot destinationViewMode:(int64_t)viewMode destinationSnapshot:(id)destinationSnapshot assetReference:(id)reference;
+- (PXStoryViewModeFocusedClipsViewTransition)initWithSourceViewMode:(int64_t)mode sourceSnapshot:(id)snapshot destinationViewMode:(int64_t)viewMode destinationSnapshot:(id)destinationSnapshot assetReference:(id)reference focusedClipIdentifiers:(id)identifiers trackingClipIdentifier:(int64_t)identifier;
+- (double)zPositionForClipWithInfo:(id *)info proposedZPosition:(double)position inViewMode:(int64_t)mode layout:(id)layout;
 @end
 
 @implementation PXStoryViewModeFocusedClipsViewTransition
 
-- (double)zPositionForClipWithInfo:(id *)a3 proposedZPosition:(double)a4 inViewMode:(int64_t)a5 layout:(id)a6
+- (double)zPositionForClipWithInfo:(id *)info proposedZPosition:(double)position inViewMode:(int64_t)mode layout:(id)layout
 {
-  if ([(PXStoryViewModeFocusedClipsViewTransition *)self trackingClipIdentifier:a3]== a3->var0)
+  if ([(PXStoryViewModeFocusedClipsViewTransition *)self trackingClipIdentifier:info]== info->var0)
   {
-    return a4 + a4;
+    return position + position;
   }
 
   v9 = [(NSIndexSet *)self->_focusedClipIdentifiers containsIndex:?];
-  result = a4 * 0.5;
+  result = position * 0.5;
   if (v9)
   {
-    return a4;
+    return position;
   }
 
   return result;
 }
 
-- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)a3 proposedOverride:(id *)a4 inViewMode:(id *)a5 layout:(int64_t)a6
+- ($B0175D27BC26B8A5DA33FAD13D27C2F3)contentsTransformOverrideForClipWithInfo:(SEL)info proposedOverride:(id *)override inViewMode:(id *)mode layout:(int64_t)layout
 {
-  v9 = *&a5->var1.origin.y;
-  *&retstr->var0 = *&a5->var0;
+  v9 = *&mode->var1.origin.y;
+  *&retstr->var0 = *&mode->var0;
   *&retstr->var1.origin.y = v9;
-  retstr->var1.size.height = a5->var1.size.height;
+  retstr->var1.size.height = mode->var1.size.height;
   result = [(PXStoryViewModeTransition *)self regionOfInterest];
   if (result)
   {
     v11 = result;
-    v12 = [(NSIndexSet *)self->_focusedClipIdentifiers containsIndex:a4->var0];
+    v12 = [(NSIndexSet *)self->_focusedClipIdentifiers containsIndex:override->var0];
 
     if (v12)
     {
@@ -50,37 +50,37 @@
   return result;
 }
 
-- ($7A74DE1ADD4D9428579EDAA94466197A)cornerRadiusForClipWithInfo:(id *)a3 proposedCornerRadius:(id)a4 inViewMode:(int64_t)a5 layout:(id)a6
+- ($7A74DE1ADD4D9428579EDAA94466197A)cornerRadiusForClipWithInfo:(id *)info proposedCornerRadius:(id)radius inViewMode:(int64_t)mode layout:(id)layout
 {
-  v7 = *&a4.var0.var0.var0;
+  v7 = *&radius.var0.var0.var0;
   v8 = v6;
-  v10 = [(NSIndexSet *)self->_focusedClipIdentifiers containsIndex:a3->var0, *&a4.var0.var0.var0, *&a4.var0.var1[2], a5, a6];
-  if (v10)
+  layout = [(NSIndexSet *)self->_focusedClipIdentifiers containsIndex:info->var0, *&radius.var0.var0.var0, *&radius.var0.var1[2], mode, layout];
+  if (layout)
   {
-    v12 = [(PXStoryViewModeTransition *)self sourceViewMode];
+    sourceViewMode = [(PXStoryViewModeTransition *)self sourceViewMode];
     LODWORD(v13) = v8;
-    if (v12 != v7)
+    if (sourceViewMode != v7)
     {
-      v14 = [(PXStoryViewModeTransition *)self regionOfInterest];
+      regionOfInterest = [(PXStoryViewModeTransition *)self regionOfInterest];
 
       LODWORD(v15) = v8;
-      if (v14)
+      if (regionOfInterest)
       {
-        v16 = [(PXStoryViewModeTransition *)self regionOfInterest];
-        v17 = [v16 imageViewSpec];
-        [v17 cornerRadius];
+        regionOfInterest2 = [(PXStoryViewModeTransition *)self regionOfInterest];
+        imageViewSpec = [regionOfInterest2 imageViewSpec];
+        [imageViewSpec cornerRadius];
       }
     }
 
     if ([(PXStoryViewModeTransition *)self destinationViewMode]!= v7)
     {
-      v18 = [(PXStoryViewModeTransition *)self regionOfInterest];
+      regionOfInterest3 = [(PXStoryViewModeTransition *)self regionOfInterest];
 
-      if (v18)
+      if (regionOfInterest3)
       {
-        v19 = [(PXStoryViewModeTransition *)self regionOfInterest];
-        v20 = [v19 imageViewSpec];
-        [v20 cornerRadius];
+        regionOfInterest4 = [(PXStoryViewModeTransition *)self regionOfInterest];
+        imageViewSpec2 = [regionOfInterest4 imageViewSpec];
+        [imageViewSpec2 cornerRadius];
       }
     }
 
@@ -89,40 +89,40 @@
   }
 
   *&result.var0.var1[2] = v11;
-  *&result.var0.var0.var0 = v10;
+  *&result.var0.var0.var0 = layout;
   return result;
 }
 
-- (CGRect)frameForClipWithInfo:(id *)a3 proposedFrame:(CGRect)a4 inViewMode:(int64_t)a5 layout:(id)a6
+- (CGRect)frameForClipWithInfo:(id *)info proposedFrame:(CGRect)frame inViewMode:(int64_t)mode layout:(id)layout
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a6;
-  var1 = a3->var1;
-  v14 = [(PXStoryViewModeTransition *)self regionOfInterest];
-  v15 = [v12 rootLayout];
-  v16 = [v15 coordinateSpace];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  var1 = info->var1;
+  regionOfInterest = [(PXStoryViewModeTransition *)self regionOfInterest];
+  rootLayout = [layoutCopy rootLayout];
+  coordinateSpace = [rootLayout coordinateSpace];
 
   if (var1 <= 5 && ((0x32u >> var1) & 1) != 0)
   {
-    if (v14)
+    if (regionOfInterest)
     {
-      if (v16)
+      if (coordinateSpace)
       {
-        v17 = [(PXStoryViewModeFocusedClipsViewTransition *)self focusedClipIdentifiers];
-        v18 = [v17 containsIndex:a3->var0];
+        focusedClipIdentifiers = [(PXStoryViewModeFocusedClipsViewTransition *)self focusedClipIdentifiers];
+        v18 = [focusedClipIdentifiers containsIndex:info->var0];
 
         if (v18)
         {
-          [v14 rectInCoordinateSpace:v16];
+          [regionOfInterest rectInCoordinateSpace:coordinateSpace];
           v20 = v19;
           v22 = v21;
           v24 = v23;
           v26 = v25;
-          v27 = [v12 rootLayout];
-          [v12 convertRect:v27 fromLayout:{v20, v22, v24, v26}];
+          rootLayout2 = [layoutCopy rootLayout];
+          [layoutCopy convertRect:rootLayout2 fromLayout:{v20, v22, v24, v26}];
 
           [(PXStoryViewModeTransition *)self sourceViewMode];
           [(PXStoryViewModeTransition *)self destinationViewMode];
@@ -144,29 +144,29 @@
   return result;
 }
 
-- (PXStoryViewModeFocusedClipsViewTransition)initWithSourceViewMode:(int64_t)a3 sourceSnapshot:(id)a4 destinationViewMode:(int64_t)a5 destinationSnapshot:(id)a6 assetReference:(id)a7 focusedClipIdentifiers:(id)a8 trackingClipIdentifier:(int64_t)a9
+- (PXStoryViewModeFocusedClipsViewTransition)initWithSourceViewMode:(int64_t)mode sourceSnapshot:(id)snapshot destinationViewMode:(int64_t)viewMode destinationSnapshot:(id)destinationSnapshot assetReference:(id)reference focusedClipIdentifiers:(id)identifiers trackingClipIdentifier:(int64_t)identifier
 {
-  v16 = a8;
+  identifiersCopy = identifiers;
   v20.receiver = self;
   v20.super_class = PXStoryViewModeFocusedClipsViewTransition;
-  v17 = [(PXStoryViewModeTransition *)&v20 initWithSourceViewMode:a3 sourceSnapshot:a4 destinationViewMode:a5 destinationSnapshot:a6 assetReference:a7];
+  v17 = [(PXStoryViewModeTransition *)&v20 initWithSourceViewMode:mode sourceSnapshot:snapshot destinationViewMode:viewMode destinationSnapshot:destinationSnapshot assetReference:reference];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_focusedClipIdentifiers, a8);
-    v18->_trackingClipIdentifier = a9;
+    objc_storeStrong(&v17->_focusedClipIdentifiers, identifiers);
+    v18->_trackingClipIdentifier = identifier;
   }
 
   return v18;
 }
 
-- (PXStoryViewModeFocusedClipsViewTransition)initWithSourceViewMode:(int64_t)a3 sourceSnapshot:(id)a4 destinationViewMode:(int64_t)a5 destinationSnapshot:(id)a6 assetReference:(id)a7
+- (PXStoryViewModeFocusedClipsViewTransition)initWithSourceViewMode:(int64_t)mode sourceSnapshot:(id)snapshot destinationViewMode:(int64_t)viewMode destinationSnapshot:(id)destinationSnapshot assetReference:(id)reference
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"PXStoryViewModeTransition.m" lineNumber:265 description:{@"%s is not available as initializer", "-[PXStoryViewModeFocusedClipsViewTransition initWithSourceViewMode:sourceSnapshot:destinationViewMode:destinationSnapshot:assetReference:]"}];
+  snapshotCopy = snapshot;
+  destinationSnapshotCopy = destinationSnapshot;
+  referenceCopy = reference;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewModeTransition.m" lineNumber:265 description:{@"%s is not available as initializer", "-[PXStoryViewModeFocusedClipsViewTransition initWithSourceViewMode:sourceSnapshot:destinationViewMode:destinationSnapshot:assetReference:]"}];
 
   abort();
 }

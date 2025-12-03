@@ -1,12 +1,12 @@
 @interface WCDRetrieveActiveComplicationsOperation
-- (void)doWorkWithCompletionHandler:(id)a3;
+- (void)doWorkWithCompletionHandler:(id)handler;
 @end
 
 @implementation WCDRetrieveActiveComplicationsOperation
 
-- (void)doWorkWithCompletionHandler:(id)a3
+- (void)doWorkWithCompletionHandler:(id)handler
 {
-  v26 = a3;
+  handlerCopy = handler;
   v4 = wc_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -16,9 +16,9 @@
   }
 
   v5 = objc_initWeak(&location, self);
-  v6 = [(WCDRetrieveActiveComplicationsOperation *)self isCancelled];
+  isCancelled = [(WCDRetrieveActiveComplicationsOperation *)self isCancelled];
 
-  if (v6)
+  if (isCancelled)
   {
     v7 = objc_loadWeakRetained(&location);
     [v7 finish];
@@ -57,9 +57,9 @@
 
           v13 = *(*(&v35 + 1) + 8 * v12);
           v14 = objc_loadWeakRetained(&location);
-          v15 = [v14 isCancelled];
+          isCancelled2 = [v14 isCancelled];
 
-          if (v15)
+          if (isCancelled2)
           {
             v25 = objc_loadWeakRetained(&location);
             [v25 finish];
@@ -133,9 +133,9 @@
     }
 
     v22 = objc_loadWeakRetained(&location);
-    v23 = [v22 isCancelled];
+    isCancelled3 = [v22 isCancelled];
 
-    if (v23)
+    if (isCancelled3)
     {
       v24 = objc_loadWeakRetained(&location);
       [v24 finish];

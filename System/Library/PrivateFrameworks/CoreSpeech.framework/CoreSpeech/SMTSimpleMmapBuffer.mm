@@ -1,5 +1,5 @@
 @interface SMTSimpleMmapBuffer
-- (SMTSimpleMmapBuffer)initWithData:(const void *)a3 ofSize:(unint64_t)a4;
+- (SMTSimpleMmapBuffer)initWithData:(const void *)data ofSize:(unint64_t)size;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   [(SMTSimpleMmapBuffer *)&v3 dealloc];
 }
 
-- (SMTSimpleMmapBuffer)initWithData:(const void *)a3 ofSize:(unint64_t)a4
+- (SMTSimpleMmapBuffer)initWithData:(const void *)data ofSize:(unint64_t)size
 {
   v6 = [(SMTSimpleMmapBuffer *)self init];
   if (!v6)
@@ -27,10 +27,10 @@
 
   v7 = NSTemporaryDirectory();
   v8 = +[NSUUID UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v7 stringByAppendingPathComponent:v9];
-  v11 = [v10 UTF8String];
-  v12 = strlen(v11);
+  uUIDString = [v8 UUIDString];
+  v10 = [v7 stringByAppendingPathComponent:uUIDString];
+  uTF8String = [v10 UTF8String];
+  v12 = strlen(uTF8String);
   if (v12 > 0x7FFFFFFFFFFFFFF7)
   {
     sub_100017944();
@@ -45,7 +45,7 @@
   v38 = v12;
   if (v12)
   {
-    memmove(&__dst, v11, v12);
+    memmove(&__dst, uTF8String, v12);
   }
 
   *(&__dst + v13) = 0;
@@ -57,13 +57,13 @@
   v15[1].__vftable = 0;
   v15[1].__fmtflags_ = -1;
   std::filebuf::basic_filebuf();
-  v16 = a4;
+  sizeCopy4 = size;
   if (!std::filebuf::open())
   {
     std::ios_base::clear(&v42[*(v41 - 3) - 8], *&v42[*(v41 - 3) + 24] | 4);
   }
 
-  if (!a3)
+  if (!data)
   {
     std::ostream::sentry::sentry();
     v18 = &v42[*(v41 - 3) - 8];
@@ -78,7 +78,7 @@
       v49 = 0u;
       *&__b[0].__locale_ = 0u;
       v47 = 0u;
-      v54 = a4;
+      sizeCopy2 = size;
       (*(*v19 + 40))(v45);
       if (v45[16] == -1)
       {
@@ -168,13 +168,13 @@
       if (v40 - v25 < 1 || (*(*v21 + 96))(v21, v25, v40 - v25) == v40 - v25)
       {
         *(v20 + 3) = 0;
-        v16 = a4;
+        sizeCopy4 = size;
       }
 
       else
       {
 LABEL_45:
-        v16 = a4;
+        sizeCopy4 = size;
         std::ios_base::clear(&v42[*(v41 - 3) - 8], *&v42[*(v41 - 3) + 24] | 5);
       }
     }
@@ -208,7 +208,7 @@ LABEL_47:
       goto LABEL_60;
     }
 
-    [(SMTSimpleMmapBuffer *)v6 setDataPointer:mmap(0, v16, 3, 1, v33, 0)];
+    [(SMTSimpleMmapBuffer *)v6 setDataPointer:mmap(0, sizeCopy4, 3, 1, v33, 0)];
     close(v33);
     v34 = v38 >= 0 ? &__dst : __dst;
     unlink(v34);
@@ -217,7 +217,7 @@ LABEL_47:
       goto LABEL_60;
     }
 
-    [(SMTSimpleMmapBuffer *)v6 setSize:v16];
+    [(SMTSimpleMmapBuffer *)v6 setSize:sizeCopy4];
     std::filebuf::~filebuf();
     std::ostream::~ostream();
     std::ios::~ios();

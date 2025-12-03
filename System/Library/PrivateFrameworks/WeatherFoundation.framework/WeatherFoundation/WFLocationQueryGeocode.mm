@@ -1,31 +1,31 @@
 @interface WFLocationQueryGeocode
-+ (id)queryWithCoordinate:(CLLocationCoordinate2D)a3 resultHandler:(id)a4;
-+ (id)queryWithDictionaryRepresentation:(id)a3 resultHandler:(id)a4;
-+ (id)queryWithSearchCompletion:(id)a3 resultHandler:(id)a4;
-+ (id)queryWithSearchString:(id)a3 resultHandler:(id)a4;
-- (BOOL)isLocationValid:(id)a3;
++ (id)queryWithCoordinate:(CLLocationCoordinate2D)coordinate resultHandler:(id)handler;
++ (id)queryWithDictionaryRepresentation:(id)representation resultHandler:(id)handler;
++ (id)queryWithSearchCompletion:(id)completion resultHandler:(id)handler;
++ (id)queryWithSearchString:(id)string resultHandler:(id)handler;
+- (BOOL)isLocationValid:(id)valid;
 - (CLLocationCoordinate2D)searchCoordinate;
 - (CLLocationCoordinate2D)unshiftedCoordinate;
-- (WFLocationQueryGeocode)initWithCoordinate:(CLLocationCoordinate2D)a3 resultHandler:(id)a4;
-- (WFLocationQueryGeocode)initWithSearchCompletion:(id)a3 resultHandler:(id)a4;
-- (WFLocationQueryGeocode)initWithSearchString:(id)a3 resultHandler:(id)a4;
+- (WFLocationQueryGeocode)initWithCoordinate:(CLLocationCoordinate2D)coordinate resultHandler:(id)handler;
+- (WFLocationQueryGeocode)initWithSearchCompletion:(id)completion resultHandler:(id)handler;
+- (WFLocationQueryGeocode)initWithSearchString:(id)string resultHandler:(id)handler;
 - (id)_mkLocalSearchRequest;
 - (id)_reverseGeocoderLocation;
-- (void)_handleErrorResponse:(id)a3;
+- (void)_handleErrorResponse:(id)response;
 - (void)_startCLGeocoderReverseGeo;
 - (void)_startMKLocalSearch;
 - (void)cancel;
-- (void)handleSearchResponseWithLocation:(id)a3;
+- (void)handleSearchResponseWithLocation:(id)location;
 - (void)start;
 @end
 
 @implementation WFLocationQueryGeocode
 
-+ (id)queryWithDictionaryRepresentation:(id)a3 resultHandler:(id)a4
++ (id)queryWithDictionaryRepresentation:(id)representation resultHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  handlerCopy = handler;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -40,10 +40,10 @@
     v11 = v10;
     v12 = *v30;
     v27 = @"Longitude";
-    v28 = a1;
+    selfCopy = self;
     while (2)
     {
-      v13 = v7;
+      v13 = handlerCopy;
       for (i = 0; i != v11; ++i)
       {
         if (*v30 != v12)
@@ -52,11 +52,11 @@
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [v6 objectForKeyedSubscript:{v15, v27, v28}];
+        v16 = [representationCopy objectForKeyedSubscript:{v15, v27, selfCopy}];
 
         if (v16)
         {
-          v17 = [v6 objectForKeyedSubscript:v15];
+          v17 = [representationCopy objectForKeyedSubscript:v15];
           v18 = objc_opt_respondsToSelector();
 
           if (v18)
@@ -66,14 +66,14 @@
         }
 
         v25 = 0;
-        v7 = v13;
+        handlerCopy = v13;
         goto LABEL_12;
       }
 
       v11 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
-      v7 = v13;
+      handlerCopy = v13;
       v8 = v27;
-      a1 = v28;
+      self = selfCopy;
       if (v11)
       {
         continue;
@@ -83,55 +83,55 @@
     }
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"Latitude"];
+  v19 = [representationCopy objectForKeyedSubscript:@"Latitude"];
   [v19 doubleValue];
   v21 = v20;
 
-  v22 = [v6 objectForKeyedSubscript:v8];
+  v22 = [representationCopy objectForKeyedSubscript:v8];
   [v22 doubleValue];
   v24 = v23;
 
-  v25 = [a1 queryWithCoordinate:v7 resultHandler:{v21, v24}];
+  v25 = [self queryWithCoordinate:handlerCopy resultHandler:{v21, v24}];
 LABEL_12:
 
   return v25;
 }
 
-+ (id)queryWithCoordinate:(CLLocationCoordinate2D)a3 resultHandler:(id)a4
++ (id)queryWithCoordinate:(CLLocationCoordinate2D)coordinate resultHandler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithCoordinate:v6 resultHandler:{latitude, longitude}];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  handlerCopy = handler;
+  v7 = [objc_alloc(objc_opt_class()) initWithCoordinate:handlerCopy resultHandler:{latitude, longitude}];
 
   [v7 setUnshiftedCoordinate:{latitude, longitude}];
 
   return v7;
 }
 
-+ (id)queryWithSearchCompletion:(id)a3 resultHandler:(id)a4
++ (id)queryWithSearchCompletion:(id)completion resultHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithSearchCompletion:v6 resultHandler:v5];
+  handlerCopy = handler;
+  completionCopy = completion;
+  v7 = [objc_alloc(objc_opt_class()) initWithSearchCompletion:completionCopy resultHandler:handlerCopy];
 
   return v7;
 }
 
-- (WFLocationQueryGeocode)initWithSearchCompletion:(id)a3 resultHandler:(id)a4
+- (WFLocationQueryGeocode)initWithSearchCompletion:(id)completion resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  completionCopy = completion;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = WFLocationQueryGeocode;
   v9 = [(WFLocationQueryGeocode *)&v16 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [handlerCopy copy];
     resultHandler = v9->_resultHandler;
     v9->_resultHandler = v10;
 
-    objc_storeStrong(&v9->_searchCompletion, a3);
+    objc_storeStrong(&v9->_searchCompletion, completion);
     v12 = *MEMORY[0x277CE4278];
     v13 = *(MEMORY[0x277CE4278] + 8);
     [(WFLocationQueryGeocode *)v9 setSearchCoordinate:*MEMORY[0x277CE4278], v13];
@@ -142,27 +142,27 @@ LABEL_12:
   return v9;
 }
 
-+ (id)queryWithSearchString:(id)a3 resultHandler:(id)a4
++ (id)queryWithSearchString:(id)string resultHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithSearchString:v6 resultHandler:v5];
+  handlerCopy = handler;
+  stringCopy = string;
+  v7 = [objc_alloc(objc_opt_class()) initWithSearchString:stringCopy resultHandler:handlerCopy];
 
   return v7;
 }
 
-- (WFLocationQueryGeocode)initWithSearchString:(id)a3 resultHandler:(id)a4
+- (WFLocationQueryGeocode)initWithSearchString:(id)string resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = WFLocationQueryGeocode;
   v9 = [(WFLocationQueryGeocode *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_searchString, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_searchString, string);
+    v11 = [handlerCopy copy];
     resultHandler = v10->_resultHandler;
     v10->_resultHandler = v11;
 
@@ -182,11 +182,11 @@ LABEL_12:
   return v10;
 }
 
-- (WFLocationQueryGeocode)initWithCoordinate:(CLLocationCoordinate2D)a3 resultHandler:(id)a4
+- (WFLocationQueryGeocode)initWithCoordinate:(CLLocationCoordinate2D)coordinate resultHandler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v7 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = WFLocationQueryGeocode;
   v8 = [(WFLocationQueryGeocode *)&v15 init];
@@ -195,7 +195,7 @@ LABEL_12:
   {
     v8->_searchCoordinate.latitude = latitude;
     v8->_searchCoordinate.longitude = longitude;
-    v10 = [v7 copy];
+    v10 = [handlerCopy copy];
     resultHandler = v9->_resultHandler;
     v9->_resultHandler = v10;
 
@@ -214,9 +214,9 @@ LABEL_12:
 
 - (void)start
 {
-  v3 = [(WFLocationQueryGeocode *)self _reverseGeocoderLocation];
+  _reverseGeocoderLocation = [(WFLocationQueryGeocode *)self _reverseGeocoderLocation];
 
-  if (v3)
+  if (_reverseGeocoderLocation)
   {
 
     [(WFLocationQueryGeocode *)self _startCLGeocoderReverseGeo];
@@ -224,9 +224,9 @@ LABEL_12:
 
   else
   {
-    v4 = [(WFLocationQueryGeocode *)self _mkLocalSearchRequest];
+    _mkLocalSearchRequest = [(WFLocationQueryGeocode *)self _mkLocalSearchRequest];
 
-    if (v4)
+    if (_mkLocalSearchRequest)
     {
 
       [(WFLocationQueryGeocode *)self _startMKLocalSearch];
@@ -242,32 +242,32 @@ LABEL_12:
 
 - (void)cancel
 {
-  v3 = [(WFLocationQueryGeocode *)self reverseGeocoder];
-  [v3 cancelGeocode];
+  reverseGeocoder = [(WFLocationQueryGeocode *)self reverseGeocoder];
+  [reverseGeocoder cancelGeocode];
 
-  v4 = [(WFLocationQueryGeocode *)self search];
-  [v4 cancel];
+  search = [(WFLocationQueryGeocode *)self search];
+  [search cancel];
 }
 
 - (void)_startMKLocalSearch
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(WFLocationQueryGeocode *)self _mkLocalSearchRequest];
-  v4 = [objc_alloc(MEMORY[0x277CD4E20]) initWithRequest:v3];
+  _mkLocalSearchRequest = [(WFLocationQueryGeocode *)self _mkLocalSearchRequest];
+  v4 = [objc_alloc(MEMORY[0x277CD4E20]) initWithRequest:_mkLocalSearchRequest];
   [(WFLocationQueryGeocode *)self setSearch:v4];
 
   v5 = +[WFLocationQueryGeocodeCacheManager sharedManager];
-  v6 = [v3 naturalLanguageQuery];
-  v7 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  naturalLanguageQuery = [_mkLocalSearchRequest naturalLanguageQuery];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v8 = [naturalLanguageQuery stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v9 = [v8 stringByAppendingString:@"-MKLocalSearch"];
 
   v10 = WFLogForCategory(3uLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(WFLocationQueryGeocode *)self searchString];
+    searchString = [(WFLocationQueryGeocode *)self searchString];
     *buf = 138412290;
-    v21 = v11;
+    v21 = searchString;
     _os_log_impl(&dword_272B94000, v10, OS_LOG_TYPE_DEFAULT, "Executing WFLocationQueryGeocode for search string %@", buf, 0xCu);
   }
 
@@ -277,9 +277,9 @@ LABEL_12:
     v13 = WFLogForCategory(3uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(WFLocationQueryGeocode *)self searchString];
+      searchString2 = [(WFLocationQueryGeocode *)self searchString];
       *buf = 138412290;
-      v21 = v14;
+      v21 = searchString2;
       _os_log_impl(&dword_272B94000, v13, OS_LOG_TYPE_DEFAULT, "WFLocationQueryGeocode retrieved from cache for search string %@", buf, 0xCu);
     }
 
@@ -288,16 +288,16 @@ LABEL_12:
 
   else
   {
-    v15 = [(WFLocationQueryGeocode *)self search];
+    search = [(WFLocationQueryGeocode *)self search];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __45__WFLocationQueryGeocode__startMKLocalSearch__block_invoke;
     v16[3] = &unk_279E6DC50;
     v16[4] = self;
-    v17 = v3;
+    v17 = _mkLocalSearchRequest;
     v18 = v9;
     v19 = v5;
-    [v15 startWithCompletionHandler:v16];
+    [search startWithCompletionHandler:v16];
   }
 }
 
@@ -402,16 +402,16 @@ void __52__WFLocationQueryGeocode__startCLGeocoderReverseGeo__block_invoke(uint6
   }
 }
 
-- (BOOL)isLocationValid:(id)a3
+- (BOOL)isLocationValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 countryAbbreviation];
-  v5 = [v4 length];
+  validCopy = valid;
+  countryAbbreviation = [validCopy countryAbbreviation];
+  v5 = [countryAbbreviation length];
 
   if (v5)
   {
-    v6 = [v3 geoLocation];
-    [v6 coordinate];
+    geoLocation = [validCopy geoLocation];
+    [geoLocation coordinate];
     v8 = v7;
 
     if (v8 == 0.0)
@@ -425,8 +425,8 @@ void __52__WFLocationQueryGeocode__startCLGeocoderReverseGeo__block_invoke(uint6
 
     else
     {
-      v24 = [v3 geoLocation];
-      [v24 coordinate];
+      geoLocation2 = [validCopy geoLocation];
+      [geoLocation2 coordinate];
       v26 = v25;
 
       if (v26 != 0.0)
@@ -460,32 +460,32 @@ LABEL_11:
 
 - (id)_mkLocalSearchRequest
 {
-  v3 = [(WFLocationQueryGeocode *)self searchCompletion];
+  searchCompletion = [(WFLocationQueryGeocode *)self searchCompletion];
 
-  if (v3)
+  if (searchCompletion)
   {
     v4 = MEMORY[0x277CD4E38];
-    v5 = [(WFLocationQueryGeocode *)self searchCompletion];
-    v6 = [v4 searchRequestWithCompletion:v5];
+    searchCompletion2 = [(WFLocationQueryGeocode *)self searchCompletion];
+    searchString = [v4 searchRequestWithCompletion:searchCompletion2];
   }
 
   else
   {
-    v6 = [(WFLocationQueryGeocode *)self searchString];
+    searchString = [(WFLocationQueryGeocode *)self searchString];
 
-    if (!v6)
+    if (!searchString)
     {
       goto LABEL_6;
     }
 
-    v6 = objc_alloc_init(MEMORY[0x277CD4E38]);
-    v5 = [(WFLocationQueryGeocode *)self searchString];
-    [v6 setNaturalLanguageQuery:v5];
+    searchString = objc_alloc_init(MEMORY[0x277CD4E38]);
+    searchCompletion2 = [(WFLocationQueryGeocode *)self searchString];
+    [searchString setNaturalLanguageQuery:searchCompletion2];
   }
 
 LABEL_6:
 
-  return v6;
+  return searchString;
 }
 
 - (id)_reverseGeocoderLocation
@@ -508,22 +508,22 @@ LABEL_6:
   return v6;
 }
 
-- (void)handleSearchResponseWithLocation:(id)a3
+- (void)handleSearchResponseWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   [(WFLocationQueryGeocode *)self unshiftedCoordinate];
   latitude = v15.latitude;
   longitude = v15.longitude;
   if (CLLocationCoordinate2DIsValid(v15))
   {
     v7 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:latitude longitude:longitude];
-    [v4 setGeoLocation:v7];
+    [locationCopy setGeoLocation:v7];
   }
 
   v8 = [WFGeocodeResponse alloc];
-  v9 = [(WFLocationQueryGeocode *)self identifier];
-  v10 = [v9 UUID];
-  v11 = [(WFGeocodeResponse *)v8 initWithIdentifier:v10 location:v4];
+  identifier = [(WFLocationQueryGeocode *)self identifier];
+  uUID = [identifier UUID];
+  v11 = [(WFGeocodeResponse *)v8 initWithIdentifier:uUID location:locationCopy];
 
   objc_storeStrong(&self->_response, v11);
   v12 = WFLogForCategory(3uLL);
@@ -532,52 +532,52 @@ LABEL_6:
     [(WFLocationQueryGeocode *)self handleSearchResponseWithLocation:v12];
   }
 
-  v13 = [(WFLocationQueryGeocode *)self resultHandler];
+  resultHandler = [(WFLocationQueryGeocode *)self resultHandler];
 
-  if (v13)
+  if (resultHandler)
   {
-    v14 = [(WFLocationQueryGeocode *)self resultHandler];
-    (v14)[2](v14, v11);
+    resultHandler2 = [(WFLocationQueryGeocode *)self resultHandler];
+    (resultHandler2)[2](resultHandler2, v11);
   }
 }
 
-- (void)_handleErrorResponse:(id)a3
+- (void)_handleErrorResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = [WFGeocodeResponse alloc];
-  v6 = [(WFLocationQueryGeocode *)self identifier];
-  v7 = [v6 UUID];
-  v8 = [(WFGeocodeResponse *)v5 initWithIdentifier:v7 location:0];
+  identifier = [(WFLocationQueryGeocode *)self identifier];
+  uUID = [identifier UUID];
+  v8 = [(WFGeocodeResponse *)v5 initWithIdentifier:uUID location:0];
 
-  v9 = [v4 domain];
-  if ([v9 isEqualToString:*MEMORY[0x277CBFCF0]])
+  domain = [responseCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CBFCF0]])
   {
-    v10 = [v4 code];
+    code = [responseCopy code];
 
-    if (v10 != 10)
+    if (code != 10)
     {
       goto LABEL_5;
     }
 
-    [MEMORY[0x277CCA9B8] wf_errorWithCode:13 encapsulatedError:v4 userInfo:0];
-    v4 = v9 = v4;
+    [MEMORY[0x277CCA9B8] wf_errorWithCode:13 encapsulatedError:responseCopy userInfo:0];
+    responseCopy = domain = responseCopy;
   }
 
 LABEL_5:
-  [(WFResponse *)v8 setError:v4];
+  [(WFResponse *)v8 setError:responseCopy];
   objc_storeStrong(&self->_response, v8);
   v11 = WFLogForCategory(3uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [(WFLocationQueryGeocode *)self _handleErrorResponse:v4, v11];
+    [(WFLocationQueryGeocode *)self _handleErrorResponse:responseCopy, v11];
   }
 
-  v12 = [(WFLocationQueryGeocode *)self resultHandler];
+  resultHandler = [(WFLocationQueryGeocode *)self resultHandler];
 
-  if (v12)
+  if (resultHandler)
   {
-    v13 = [(WFLocationQueryGeocode *)self resultHandler];
-    (v13)[2](v13, v8);
+    resultHandler2 = [(WFLocationQueryGeocode *)self resultHandler];
+    (resultHandler2)[2](resultHandler2, v8);
   }
 }
 

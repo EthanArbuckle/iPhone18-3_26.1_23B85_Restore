@@ -1,8 +1,8 @@
 @interface GSDaemon
 + (id)daemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (GSDaemon)init;
-- (id)_registerSignal:(int)a3 queue:(id)a4;
+- (id)_registerSignal:(int)signal queue:(id)queue;
 - (int)resume;
 - (void)_resume;
 - (void)invalidate;
@@ -58,11 +58,11 @@
   return v2;
 }
 
-- (id)_registerSignal:(int)a3 queue:(id)a4
+- (id)_registerSignal:(int)signal queue:(id)queue
 {
-  v6 = a4;
-  signal(a3, 1);
-  v7 = dispatch_source_create(&_dispatch_source_type_signal, a3, 0, v6);
+  queueCopy = queue;
+  signal(signal, 1);
+  v7 = dispatch_source_create(&_dispatch_source_type_signal, signal, 0, queueCopy);
 
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
@@ -185,30 +185,30 @@
   exit(0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [[GSClient alloc] initWithConnection:v4];
-  v6 = [v4 processIdentifier];
+  connectionCopy = connection;
+  v5 = [[GSClient alloc] initWithConnection:connectionCopy];
+  processIdentifier = [connectionCopy processIdentifier];
   v7 = sub_100006FB4();
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v4 setExportedObject:v5];
+  [connectionCopy setExportedObject:v5];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000107DC;
   v11[3] = &unk_1000411C0;
-  v12 = v6;
-  v11[4] = v4;
-  [v4 setInterruptionHandler:v11];
+  v12 = processIdentifier;
+  v11[4] = connectionCopy;
+  [connectionCopy setInterruptionHandler:v11];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001088C;
   v9[3] = &unk_1000411C0;
-  v10 = v6;
-  v9[4] = v4;
-  [v4 setInvalidationHandler:v9];
-  [v4 resume];
+  v10 = processIdentifier;
+  v9[4] = connectionCopy;
+  [connectionCopy setInvalidationHandler:v9];
+  [connectionCopy resume];
 
   return 1;
 }

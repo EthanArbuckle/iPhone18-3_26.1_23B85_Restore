@@ -1,17 +1,17 @@
 @interface _MaildTerminator
-- (void)applicationsDidInstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
 @end
 
 @implementation _MaildTerminator
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  installCopy = install;
+  v4 = [installCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -23,11 +23,11 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(installCopy);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * v7) bundleIdentifier];
-        v9 = [v8 isEqualToString:v6];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * v7) bundleIdentifier];
+        v9 = [bundleIdentifier isEqualToString:v6];
 
         if (v9)
         {
@@ -45,7 +45,7 @@
       }
 
       while (v4 != v7);
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [installCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);

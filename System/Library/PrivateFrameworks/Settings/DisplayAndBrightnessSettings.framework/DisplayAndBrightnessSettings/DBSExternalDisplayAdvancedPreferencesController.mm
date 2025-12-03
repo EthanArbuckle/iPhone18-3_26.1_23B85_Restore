@@ -1,28 +1,28 @@
 @interface DBSExternalDisplayAdvancedPreferencesController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (DBSExternalDisplayAdvancedPreferencesController)init;
-- (id)adaptiveSyncEnabled:(id)a3;
+- (id)adaptiveSyncEnabled:(id)enabled;
 - (id)adaptiveSyncSpecifiers;
 - (id)adaptiveSyncSpecifiersFooterText;
 - (id)currentHDRMode;
 - (id)displayModeSpecifiers;
 - (id)displayModeSpecifiersFooterText;
-- (id)limitRefreshRateEnabled:(id)a3;
+- (id)limitRefreshRateEnabled:(id)enabled;
 - (id)limitRefreshRateSpecifiers;
-- (id)matchContentEnabled:(id)a3;
+- (id)matchContentEnabled:(id)enabled;
 - (id)specifiers;
 - (void)_updateAdaptiveSyncIfNecessary;
 - (void)_updateCurrentHDRModeIfNecessary;
 - (void)_updateLimitRefreshRateIfNecessary;
-- (void)connectedDisplayDidUpdate:(id)a3;
+- (void)connectedDisplayDidUpdate:(id)update;
 - (void)dealloc;
-- (void)setAdaptiveSyncEnabled:(id)a3 specifier:(id)a4;
-- (void)setCurrentHDRMode:(id)a3;
-- (void)setLimitRefreshRateEnabled:(id)a3 specifier:(id)a4;
-- (void)setMatchContentEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAdaptiveSyncEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCurrentHDRMode:(id)mode;
+- (void)setLimitRefreshRateEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMatchContentEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DBSExternalDisplayAdvancedPreferencesController
@@ -34,8 +34,8 @@
   v2 = [(DBSExternalDisplayAdvancedPreferencesController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_connectedDisplayDidUpdate_ name:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_connectedDisplayDidUpdate_ name:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
   }
 
   return v2;
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:DBSExternalDisplayManagerCurrentModeDidChange[0] object:0];
 
   v4.receiver = self;
   v4.super_class = DBSExternalDisplayAdvancedPreferencesController;
@@ -60,11 +60,11 @@
   [(DBSExternalDisplayAdvancedPreferencesController *)self setTitle:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = DBSExternalDisplayAdvancedPreferencesController;
-  [(DBSExternalDisplayAdvancedPreferencesController *)&v3 viewWillAppear:a3];
+  [(DBSExternalDisplayAdvancedPreferencesController *)&v3 viewWillAppear:appear];
 }
 
 - (id)specifiers
@@ -73,31 +73,31 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(DBSExternalDisplayAdvancedPreferencesController *)self displayModeSpecifiers];
-    [v5 addObjectsFromArray:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    displayModeSpecifiers = [(DBSExternalDisplayAdvancedPreferencesController *)self displayModeSpecifiers];
+    [array addObjectsFromArray:displayModeSpecifiers];
 
-    v7 = [(DBSExternalDisplayAdvancedPreferencesController *)self adaptiveSyncSpecifiers];
-    [v5 addObjectsFromArray:v7];
+    adaptiveSyncSpecifiers = [(DBSExternalDisplayAdvancedPreferencesController *)self adaptiveSyncSpecifiers];
+    [array addObjectsFromArray:adaptiveSyncSpecifiers];
 
-    v8 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v9 = *MEMORY[0x277D3FFB8];
-    [v8 setObject:@"MATCH_CONTENT_GROUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+    [emptyGroupSpecifier setObject:@"MATCH_CONTENT_GROUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
     v10 = DBS_LocalizedStringForConnectedDisplays(@"MATCH_CONTENT_FOOTER");
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setObject:v10 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-    [v5 addObject:v8];
+    [array addObject:emptyGroupSpecifier];
     v11 = MEMORY[0x277D3FAD8];
     v12 = DBS_LocalizedStringForConnectedDisplays(@"MATCH_CONTENT");
     v13 = [v11 preferenceSpecifierNamed:v12 target:self set:sel_setMatchContentEnabled_specifier_ get:sel_matchContentEnabled_ detail:0 cell:6 edit:0];
 
     [v13 setObject:@"MATCH_CONTENT" forKeyedSubscript:v9];
-    [v5 addObject:v13];
-    v14 = [(DBSExternalDisplayAdvancedPreferencesController *)self limitRefreshRateSpecifiers];
-    [v5 addObjectsFromArray:v14];
+    [array addObject:v13];
+    limitRefreshRateSpecifiers = [(DBSExternalDisplayAdvancedPreferencesController *)self limitRefreshRateSpecifiers];
+    [array addObjectsFromArray:limitRefreshRateSpecifiers];
 
     v15 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -105,23 +105,23 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DBSExternalDisplayAdvancedPreferencesController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(DBSExternalDisplayAdvancedPreferencesController *)self specifierAtIndexPath:pathCopy];
   v9 = [(DBSExternalDisplayAdvancedPreferencesController *)self specifierForID:@"COLOR_SETTING"];
   v10 = [v8 objectForKeyedSubscript:@"HDRMode"];
-  v11 = [(DBSExternalDisplayAdvancedPreferencesController *)self currentHDRMode];
-  v12 = [v11 isEqualToString:v10];
+  currentHDRMode = [(DBSExternalDisplayAdvancedPreferencesController *)self currentHDRMode];
+  v12 = [currentHDRMode isEqualToString:v10];
 
   if ((v12 & 1) == 0)
   {
     v13 = +[DBSExternalDisplayManager defaultManager];
-    v14 = [v13 preferredHDRModes];
+    preferredHDRModes = [v13 preferredHDRModes];
 
-    if ([v14 containsObject:v10])
+    if ([preferredHDRModes containsObject:v10])
     {
       [(DBSExternalDisplayAdvancedPreferencesController *)self setCurrentHDRMode:v10];
       if ([v10 isEqualToString:*MEMORY[0x277CDA160]] || objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CDA168]) || objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CDA178]))
@@ -178,7 +178,7 @@
 
   v26.receiver = self;
   v26.super_class = DBSExternalDisplayAdvancedPreferencesController;
-  [(DBSExternalDisplayAdvancedPreferencesController *)&v26 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(DBSExternalDisplayAdvancedPreferencesController *)&v26 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 void __85__DBSExternalDisplayAdvancedPreferencesController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1)
@@ -206,11 +206,11 @@ void __85__DBSExternalDisplayAdvancedPreferencesController_tableView_didSelectRo
   [WeakRetained reloadSpecifier:*(a1 + 40)];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DBSExternalDisplayAdvancedPreferencesController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(DBSExternalDisplayAdvancedPreferencesController *)self specifierAtIndexPath:pathCopy];
   v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
   v10 = [v9 isEqualToString:@"MATCH_CONTENT"];
 
@@ -223,18 +223,18 @@ void __85__DBSExternalDisplayAdvancedPreferencesController_tableView_didSelectRo
   {
     v13.receiver = self;
     v13.super_class = DBSExternalDisplayAdvancedPreferencesController;
-    v11 = [(DBSExternalDisplayAdvancedPreferencesController *)&v13 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v11 = [(DBSExternalDisplayAdvancedPreferencesController *)&v13 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v11;
 }
 
-- (void)connectedDisplayDidUpdate:(id)a3
+- (void)connectedDisplayDidUpdate:(id)update
 {
   v4 = +[DBSExternalDisplayManager defaultManager];
-  v5 = [v4 externalDisplayAvailable];
+  externalDisplayAvailable = [v4 externalDisplayAvailable];
 
-  if ((v5 & 1) == 0)
+  if ((externalDisplayAvailable & 1) == 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -248,7 +248,7 @@ void __85__DBSExternalDisplayAdvancedPreferencesController_tableView_didSelectRo
 - (id)displayModeSpecifiers
 {
   v52[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = *MEMORY[0x277CDA160];
   v51[0] = *MEMORY[0x277CDA160];
   v4 = DBS_LocalizedStringForConnectedDisplays(@"DOLBY_VISION");
@@ -264,18 +264,18 @@ void __85__DBSExternalDisplayAdvancedPreferencesController_tableView_didSelectRo
   v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:3];
 
   v7 = +[DBSExternalDisplayManager defaultManager];
-  v8 = [v7 supportedHDRModes];
+  supportedHDRModes = [v7 supportedHDRModes];
 
   v9 = +[DBSExternalDisplayManager defaultManager];
-  v35 = [v9 preferredHDRModes];
+  preferredHDRModes = [v9 preferredHDRModes];
 
-  v10 = [v8 count];
-  v11 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  v10 = [supportedHDRModes count];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v42 = *MEMORY[0x277D3FFB8];
-  [v11 setObject:@"COLOR_SETTING" forKeyedSubscript:?];
-  [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FFE8]];
-  v12 = [(DBSExternalDisplayAdvancedPreferencesController *)self displayModeSpecifiersFooterText];
-  [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+  [emptyGroupSpecifier setObject:@"COLOR_SETTING" forKeyedSubscript:?];
+  [emptyGroupSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FFE8]];
+  displayModeSpecifiersFooterText = [(DBSExternalDisplayAdvancedPreferencesController *)self displayModeSpecifiersFooterText];
+  [emptyGroupSpecifier setObject:displayModeSpecifiersFooterText forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
   v43 = v10;
   if (v10 <= 1)
@@ -289,16 +289,16 @@ void __85__DBSExternalDisplayAdvancedPreferencesController_tableView_didSelectRo
   }
 
   v14 = DBS_LocalizedStringForConnectedDisplays(v13);
-  [v11 setName:v14];
+  [emptyGroupSpecifier setName:v14];
 
-  v45 = v3;
-  v33 = v11;
-  [v3 addObject:v11];
+  v45 = array;
+  v33 = emptyGroupSpecifier;
+  [array addObject:emptyGroupSpecifier];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v8;
+  obj = supportedHDRModes;
   v15 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (!v15)
   {
@@ -351,7 +351,7 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v26 = [v35 containsObject:v37];
+        v26 = [preferredHDRModes containsObject:v37];
         v27 = [v21 isEqualToString:v37];
         if (v26)
         {
@@ -381,8 +381,8 @@ LABEL_21:
       [v24 setObject:v28 forKeyedSubscript:v38];
 
 LABEL_22:
-      v29 = [(DBSExternalDisplayAdvancedPreferencesController *)self currentHDRMode];
-      v30 = [v29 isEqualToString:v21];
+      currentHDRMode = [(DBSExternalDisplayAdvancedPreferencesController *)self currentHDRMode];
+      v30 = [currentHDRMode isEqualToString:v21];
 
       if (v30)
       {
@@ -408,14 +408,14 @@ LABEL_28:
 - (id)displayModeSpecifiersFooterText
 {
   v2 = +[DBSExternalDisplayManager defaultManager];
-  v3 = [v2 supportedHDRModes];
+  supportedHDRModes = [v2 supportedHDRModes];
 
-  if ([v3 count] < 2)
+  if ([supportedHDRModes count] < 2)
   {
     v4 = @"SDR_COLOR_SETTING_FOOTER";
   }
 
-  else if ([v3 containsObject:*MEMORY[0x277CDA160]])
+  else if ([supportedHDRModes containsObject:*MEMORY[0x277CDA160]])
   {
     v4 = @"DOLBY_COLOR_SETTING_FOOTER";
   }
@@ -427,28 +427,28 @@ LABEL_28:
 
   v5 = DBS_LocalizedStringForConnectedDisplays(v4);
   v6 = +[DBSExternalDisplayManager defaultManager];
-  v7 = [v6 supportedHDRModesWithHighRefreshRate];
+  supportedHDRModesWithHighRefreshRate = [v6 supportedHDRModesWithHighRefreshRate];
 
-  if (![v7 count])
+  if (![supportedHDRModesWithHighRefreshRate count])
   {
     goto LABEL_23;
   }
 
-  if ([v7 count] == 1)
+  if ([supportedHDRModesWithHighRefreshRate count] == 1)
   {
-    if ([v7 containsObject:*MEMORY[0x277CDA178]])
+    if ([supportedHDRModesWithHighRefreshRate containsObject:*MEMORY[0x277CDA178]])
     {
       v8 = @"COLOR_SETTING_FOOTER_REQUIRE_SDR";
     }
 
-    else if ([v7 containsObject:*MEMORY[0x277CDA168]])
+    else if ([supportedHDRModesWithHighRefreshRate containsObject:*MEMORY[0x277CDA168]])
     {
       v8 = @"COLOR_SETTING_FOOTER_REQUIRE_HDR";
     }
 
     else
     {
-      if (([v7 containsObject:*MEMORY[0x277CDA160]] & 1) == 0)
+      if (([supportedHDRModesWithHighRefreshRate containsObject:*MEMORY[0x277CDA160]] & 1) == 0)
       {
         goto LABEL_23;
       }
@@ -459,16 +459,16 @@ LABEL_28:
 
   else
   {
-    if ([v7 count] != 2)
+    if ([supportedHDRModesWithHighRefreshRate count] != 2)
     {
       goto LABEL_23;
     }
 
-    if ([v7 containsObject:*MEMORY[0x277CDA178]])
+    if ([supportedHDRModesWithHighRefreshRate containsObject:*MEMORY[0x277CDA178]])
     {
-      if ([v7 containsObject:*MEMORY[0x277CDA168]])
+      if ([supportedHDRModesWithHighRefreshRate containsObject:*MEMORY[0x277CDA168]])
       {
-        if ([v7 containsObject:*MEMORY[0x277CDA160]])
+        if ([supportedHDRModesWithHighRefreshRate containsObject:*MEMORY[0x277CDA160]])
         {
           goto LABEL_23;
         }
@@ -506,78 +506,78 @@ LABEL_24:
 
 - (id)limitRefreshRateSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = +[DBSExternalDisplayManager defaultManager];
-  v5 = [v4 supportedHDRModesWithHighRefreshRate];
+  supportedHDRModesWithHighRefreshRate = [v4 supportedHDRModesWithHighRefreshRate];
 
-  if ([v5 count])
+  if ([supportedHDRModesWithHighRefreshRate count])
   {
     v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"LIMIT_REFRESH_RATE_GROUP"];
     v7 = DBS_LocalizedStringForConnectedDisplays_J8xx(@"LIMIT_REFRESH_RATE_FOOTER");
     [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-    [v3 addObject:v6];
+    [array addObject:v6];
     v8 = MEMORY[0x277D3FAD8];
     v9 = DBS_LocalizedStringForConnectedDisplays_J8xx(@"LIMIT_REFRESH_RATE");
     v10 = [v8 preferenceSpecifierNamed:v9 target:self set:sel_setLimitRefreshRateEnabled_specifier_ get:sel_limitRefreshRateEnabled_ detail:0 cell:6 edit:0];
 
     [v10 setObject:@"LIMIT_REFRESH_RATE" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)adaptiveSyncSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = +[DBSExternalDisplayManager defaultManager];
-  v5 = [v4 supportedHDRModesWithVRR];
+  supportedHDRModesWithVRR = [v4 supportedHDRModesWithVRR];
 
-  if ([v5 count])
+  if ([supportedHDRModesWithVRR count])
   {
     v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"ADAPTIVE_SYNC_GROUP"];
-    v7 = [(DBSExternalDisplayAdvancedPreferencesController *)self adaptiveSyncSpecifiersFooterText];
-    [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    adaptiveSyncSpecifiersFooterText = [(DBSExternalDisplayAdvancedPreferencesController *)self adaptiveSyncSpecifiersFooterText];
+    [v6 setObject:adaptiveSyncSpecifiersFooterText forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-    [v3 addObject:v6];
+    [array addObject:v6];
     v8 = MEMORY[0x277D3FAD8];
     v9 = DBS_LocalizedStringForConnectedDisplays_J8xx(@"ADAPTIVE_SYNC");
     v10 = [v8 preferenceSpecifierNamed:v9 target:self set:sel_setAdaptiveSyncEnabled_specifier_ get:sel_adaptiveSyncEnabled_ detail:0 cell:6 edit:0];
 
     [v10 setObject:@"ADAPTIVE_SYNC" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)adaptiveSyncSpecifiersFooterText
 {
   v2 = DBS_LocalizedStringForConnectedDisplays_J8xx(@"ADAPTIVE_SYNC_FOOTER");
   v3 = +[DBSExternalDisplayManager defaultManager];
-  v4 = [v3 supportedHDRModesWithVRR];
+  supportedHDRModesWithVRR = [v3 supportedHDRModesWithVRR];
 
-  if (![v4 count])
+  if (![supportedHDRModesWithVRR count])
   {
     goto LABEL_18;
   }
 
-  if ([v4 count] == 1)
+  if ([supportedHDRModesWithVRR count] == 1)
   {
-    if ([v4 containsObject:*MEMORY[0x277CDA178]])
+    if ([supportedHDRModesWithVRR containsObject:*MEMORY[0x277CDA178]])
     {
       v5 = @"ADAPTIVE_SYNC_FOOTER_REQUIRE_SDR";
     }
 
-    else if ([v4 containsObject:*MEMORY[0x277CDA168]])
+    else if ([supportedHDRModesWithVRR containsObject:*MEMORY[0x277CDA168]])
     {
       v5 = @"ADAPTIVE_SYNC_FOOTER_REQUIRE_HDR";
     }
 
     else
     {
-      if (([v4 containsObject:*MEMORY[0x277CDA160]] & 1) == 0)
+      if (([supportedHDRModesWithVRR containsObject:*MEMORY[0x277CDA160]] & 1) == 0)
       {
         goto LABEL_18;
       }
@@ -588,16 +588,16 @@ LABEL_24:
 
   else
   {
-    if ([v4 count] != 2)
+    if ([supportedHDRModesWithVRR count] != 2)
     {
       goto LABEL_18;
     }
 
-    if ([v4 containsObject:*MEMORY[0x277CDA178]])
+    if ([supportedHDRModesWithVRR containsObject:*MEMORY[0x277CDA178]])
     {
-      if ([v4 containsObject:*MEMORY[0x277CDA168]])
+      if ([supportedHDRModesWithVRR containsObject:*MEMORY[0x277CDA168]])
       {
-        if ([v4 containsObject:*MEMORY[0x277CDA160]])
+        if ([supportedHDRModesWithVRR containsObject:*MEMORY[0x277CDA160]])
         {
           goto LABEL_18;
         }
@@ -636,21 +636,21 @@ LABEL_19:
 - (id)currentHDRMode
 {
   v2 = +[DBSExternalDisplayManager defaultManager];
-  v3 = [v2 currentHDRMode];
+  currentHDRMode = [v2 currentHDRMode];
 
-  return v3;
+  return currentHDRMode;
 }
 
-- (void)setCurrentHDRMode:(id)a3
+- (void)setCurrentHDRMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = +[DBSExternalDisplayManager defaultManager];
-  [v5 setCurrentHDRMode:v4];
+  [v5 setCurrentHDRMode:modeCopy];
 
   [(DBSExternalDisplayAdvancedPreferencesController *)self _updateAdaptiveSyncIfNecessary];
 }
 
-- (id)limitRefreshRateEnabled:(id)a3
+- (id)limitRefreshRateEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = +[DBSExternalDisplayManager defaultManager];
@@ -659,18 +659,18 @@ LABEL_19:
   return v5;
 }
 
-- (void)setLimitRefreshRateEnabled:(id)a3 specifier:(id)a4
+- (void)setLimitRefreshRateEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[DBSExternalDisplayManager defaultManager];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setLimitRefreshRate:v7];
+  [v6 setLimitRefreshRate:bOOLValue];
 
   [(DBSExternalDisplayAdvancedPreferencesController *)self _updateAdaptiveSyncIfNecessary];
 }
 
-- (id)adaptiveSyncEnabled:(id)a3
+- (id)adaptiveSyncEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = +[DBSExternalDisplayManager defaultManager];
@@ -679,19 +679,19 @@ LABEL_19:
   return v5;
 }
 
-- (void)setAdaptiveSyncEnabled:(id)a3 specifier:(id)a4
+- (void)setAdaptiveSyncEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[DBSExternalDisplayManager defaultManager];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setAdaptiveSyncEnabled:v7];
+  [v6 setAdaptiveSyncEnabled:bOOLValue];
   [(DBSExternalDisplayAdvancedPreferencesController *)self _updateCurrentHDRModeIfNecessary];
 
   [(DBSExternalDisplayAdvancedPreferencesController *)self _updateLimitRefreshRateIfNecessary];
 }
 
-- (id)matchContentEnabled:(id)a3
+- (id)matchContentEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = +[DBSExternalDisplayManager defaultManager];
@@ -700,13 +700,13 @@ LABEL_19:
   return v5;
 }
 
-- (void)setMatchContentEnabled:(id)a3 specifier:(id)a4
+- (void)setMatchContentEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = +[DBSExternalDisplayManager defaultManager];
-  [v5 setMatchContent:{objc_msgSend(v4, "BOOLValue")}];
+  [v5 setMatchContent:{objc_msgSend(enabledCopy, "BOOLValue")}];
 
-  [v4 BOOLValue];
+  [enabledCopy BOOLValue];
 
   ADClientAddValueForScalarKey();
 }
@@ -714,20 +714,20 @@ LABEL_19:
 - (void)_updateCurrentHDRModeIfNecessary
 {
   v3 = +[DBSExternalDisplayManager defaultManager];
-  v4 = [v3 supportedHDRModesWithVRR];
-  v5 = [v4 count];
+  supportedHDRModesWithVRR = [v3 supportedHDRModesWithVRR];
+  v5 = [supportedHDRModesWithVRR count];
 
   v6 = +[DBSExternalDisplayManager defaultManager];
   v7 = v6;
   if (v5)
   {
-    v8 = [v6 supportedHDRModesWithVRR];
+    supportedHDRModesWithVRR2 = [v6 supportedHDRModesWithVRR];
   }
 
   else
   {
-    v9 = [v6 supportedHDRModesWithHighRefreshRate];
-    v10 = [v9 count];
+    supportedHDRModesWithHighRefreshRate = [v6 supportedHDRModesWithHighRefreshRate];
+    v10 = [supportedHDRModesWithHighRefreshRate count];
 
     v11 = +[DBSExternalDisplayManager defaultManager];
     v7 = v11;
@@ -740,13 +740,13 @@ LABEL_19:
     {
       [v11 supportedHDRModes];
     }
-    v8 = ;
+    supportedHDRModesWithVRR2 = ;
   }
 
-  v19 = v8;
+  v19 = supportedHDRModesWithVRR2;
 
-  v12 = [(DBSExternalDisplayAdvancedPreferencesController *)self currentHDRMode];
-  v13 = [v19 containsObject:v12];
+  currentHDRMode = [(DBSExternalDisplayAdvancedPreferencesController *)self currentHDRMode];
+  v13 = [v19 containsObject:currentHDRMode];
 
   if ((v13 & 1) == 0)
   {
@@ -774,9 +774,9 @@ LABEL_19:
 - (void)_updateLimitRefreshRateIfNecessary
 {
   v3 = +[DBSExternalDisplayManager defaultManager];
-  v4 = [v3 adaptiveSyncEnabled];
+  adaptiveSyncEnabled = [v3 adaptiveSyncEnabled];
 
-  if (v4)
+  if (adaptiveSyncEnabled)
   {
     v5 = +[DBSExternalDisplayManager defaultManager];
     [v5 setLimitRefreshRate:0];
@@ -789,26 +789,26 @@ LABEL_19:
 - (void)_updateAdaptiveSyncIfNecessary
 {
   v3 = +[DBSExternalDisplayManager defaultManager];
-  v4 = [v3 limitRefreshRate];
+  limitRefreshRate = [v3 limitRefreshRate];
 
-  if (v4)
+  if (limitRefreshRate)
   {
 LABEL_4:
     v8 = +[DBSExternalDisplayManager defaultManager];
     [v8 setAdaptiveSyncEnabled:0];
 
-    v9 = [(DBSExternalDisplayAdvancedPreferencesController *)self specifierForID:@"ADAPTIVE_SYNC_GROUP"];
+    supportedHDRModesWithVRR = [(DBSExternalDisplayAdvancedPreferencesController *)self specifierForID:@"ADAPTIVE_SYNC_GROUP"];
     [DBSExternalDisplayAdvancedPreferencesController reloadSpecifier:"reloadSpecifier:animated:" animated:?];
     goto LABEL_5;
   }
 
   v5 = +[DBSExternalDisplayManager defaultManager];
-  v9 = [v5 supportedHDRModesWithVRR];
+  supportedHDRModesWithVRR = [v5 supportedHDRModesWithVRR];
 
-  if ([v9 count])
+  if ([supportedHDRModesWithVRR count])
   {
-    v6 = [(DBSExternalDisplayAdvancedPreferencesController *)self currentHDRMode];
-    v7 = [v9 containsObject:v6];
+    currentHDRMode = [(DBSExternalDisplayAdvancedPreferencesController *)self currentHDRMode];
+    v7 = [supportedHDRModesWithVRR containsObject:currentHDRMode];
 
     if (v7)
     {

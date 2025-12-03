@@ -1,20 +1,20 @@
 @interface NSMutableArray
-+ (NSMutableArray)arrayWithCountedSet:(id)a3;
-- (void)addRepeatingObject:(id)a3 count:(unint64_t)a4;
++ (NSMutableArray)arrayWithCountedSet:(id)set;
+- (void)addRepeatingObject:(id)object count:(unint64_t)count;
 @end
 
 @implementation NSMutableArray
 
-+ (NSMutableArray)arrayWithCountedSet:(id)a3
++ (NSMutableArray)arrayWithCountedSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = +[NSMutableArray array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v3 objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [setCopy objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -25,13 +25,13 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v4 addRepeatingObject:*(*(&v11 + 1) + 8 * i) count:{objc_msgSend(v3, "countForObject:", *(*(&v11 + 1) + 8 * i))}];
+        [v4 addRepeatingObject:*(*(&v11 + 1) + 8 * i) count:{objc_msgSend(setCopy, "countForObject:", *(*(&v11 + 1) + 8 * i))}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -40,20 +40,20 @@
   return v4;
 }
 
-- (void)addRepeatingObject:(id)a3 count:(unint64_t)a4
+- (void)addRepeatingObject:(id)object count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v4 = a4;
+    countCopy = count;
     do
     {
-      v7 = [a3 copy];
+      v7 = [object copy];
       [(NSMutableArray *)self addObject:v7];
 
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 }
 

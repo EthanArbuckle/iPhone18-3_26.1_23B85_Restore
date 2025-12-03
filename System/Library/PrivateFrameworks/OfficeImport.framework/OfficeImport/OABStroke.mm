@@ -1,32 +1,32 @@
 @interface OABStroke
-+ (char)readPresetDashStyle:(int)a3;
-+ (id)readLineEndWithType:(int)a3 width:(int)a4 length:(int)a5;
-+ (id)readStrokeFromShapeBaseManager:(id)a3 state:(id)a4;
-+ (int)writeCapStyle:(unsigned __int8)a3;
-+ (int)writeCompoundType:(unsigned __int8)a3;
-+ (int)writeLineEndLength:(unsigned __int8)a3;
-+ (int)writeLineEndType:(unsigned __int8)a3;
-+ (int)writeLineEndWidth:(unsigned __int8)a3;
-+ (int)writePresetDashStyle:(char)a3;
-+ (unsigned)readCapStyle:(int)a3;
-+ (unsigned)readCompoundType:(int)a3;
-+ (unsigned)readLineEndLength:(int)a3;
-+ (unsigned)readLineEndType:(int)a3;
-+ (unsigned)readLineEndWidth:(int)a3;
-+ (void)writePresetDashStyleForCustomDash:(id)a3 toStroke:(EshStroke *)a4 state:(id)a5;
++ (char)readPresetDashStyle:(int)style;
++ (id)readLineEndWithType:(int)type width:(int)width length:(int)length;
++ (id)readStrokeFromShapeBaseManager:(id)manager state:(id)state;
++ (int)writeCapStyle:(unsigned __int8)style;
++ (int)writeCompoundType:(unsigned __int8)type;
++ (int)writeLineEndLength:(unsigned __int8)length;
++ (int)writeLineEndType:(unsigned __int8)type;
++ (int)writeLineEndWidth:(unsigned __int8)width;
++ (int)writePresetDashStyle:(char)style;
++ (unsigned)readCapStyle:(int)style;
++ (unsigned)readCompoundType:(int)type;
++ (unsigned)readLineEndLength:(int)length;
++ (unsigned)readLineEndType:(int)type;
++ (unsigned)readLineEndWidth:(int)width;
++ (void)writePresetDashStyleForCustomDash:(id)dash toStroke:(EshStroke *)stroke state:(id)state;
 @end
 
 @implementation OABStroke
 
-+ (id)readStrokeFromShapeBaseManager:(id)a3 state:(id)a4
++ (id)readStrokeFromShapeBaseManager:(id)manager state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v39 = v7;
+  managerCopy = manager;
+  stateCopy = state;
+  v39 = stateCopy;
   v8 = objc_alloc_init(OADStroke);
-  if (v6)
+  if (managerCopy)
   {
-    [v6 strokeFgColor];
+    [managerCopy strokeFgColor];
   }
 
   else
@@ -34,25 +34,25 @@
     v44 = 0;
   }
 
-  v9 = EshFixedPointUtil::toFloat([v6 strokeFgAlpha]);
+  v9 = EshFixedPointUtil::toFloat([managerCopy strokeFgAlpha]);
   EshColor::EshColor(&v43, &v44);
   *&v10 = v9;
-  v40 = [OABShapeProperties targetColorWithSourceColor:&v43 alpha:v6 colorPropertiesManager:v7 state:v10];
+  v40 = [OABShapeProperties targetColorWithSourceColor:&v43 alpha:managerCopy colorPropertiesManager:stateCopy state:v10];
   [(OADStroke *)v8 setColor:v40];
-  v11 = [v6 isStroked];
-  v12 = [v6 strokeFillType];
-  if (v11)
+  isStroked = [managerCopy isStroked];
+  strokeFillType = [managerCopy strokeFillType];
+  if (isStroked)
   {
-    if (v12 == 1)
+    if (strokeFillType == 1)
     {
-      v14 = [v6 strokeFillBlipID];
-      v15 = [v6 strokeFillBlipName];
-      v16 = +[OABFill patternFromBlipId:blipName:blipDataReference:state:](OABFill, "patternFromBlipId:blipName:blipDataReference:state:", v14, v15, [v6 strokeFillBlipDataReference], v7);
+      strokeFillBlipID = [managerCopy strokeFillBlipID];
+      strokeFillBlipName = [managerCopy strokeFillBlipName];
+      v16 = +[OABFill patternFromBlipId:blipName:blipDataReference:state:](OABFill, "patternFromBlipId:blipName:blipDataReference:state:", strokeFillBlipID, strokeFillBlipName, [managerCopy strokeFillBlipDataReference], stateCopy);
       if (v16)
       {
-        if (v6)
+        if (managerCopy)
         {
-          [v6 strokeBgColor];
+          [managerCopy strokeBgColor];
         }
 
         else
@@ -62,7 +62,7 @@
 
         EshColor::EshColor(&v41, &v42);
         *&v17 = v9;
-        v18 = [OABShapeProperties targetColorWithSourceColor:&v41 alpha:v6 colorPropertiesManager:v7 state:v17];
+        v18 = [OABShapeProperties targetColorWithSourceColor:&v41 alpha:managerCopy colorPropertiesManager:stateCopy state:v17];
         v13 = objc_alloc_init(OADPatternFill);
         [(OADPatternFill *)v13 setFgColor:v40];
         [(OADPatternFill *)v13 setBgColor:v18];
@@ -75,7 +75,7 @@
       }
     }
 
-    else if (v12)
+    else if (strokeFillType)
     {
       v13 = 0;
     }
@@ -94,48 +94,48 @@
 
   [(OADStroke *)v8 setFill:v13];
   v38 = v13;
-  v19 = [v6 strokeCustomDash];
-  if (v19)
+  strokeCustomDash = [managerCopy strokeCustomDash];
+  if (strokeCustomDash)
   {
     v20 = objc_alloc_init(OADCustomDash);
-    v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:((*(v19 + 16) - *(v19 + 8)) >> 3) & 0x7FFFFFFFLL];
-    if (((*(v19 + 16) - *(v19 + 8)) & 0x3FFFFFFF8) != 0)
+    0x7FFFFFFFLL = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:((*(strokeCustomDash + 16) - *(strokeCustomDash + 8)) >> 3) & 0x7FFFFFFFLL];
+    if (((*(strokeCustomDash + 16) - *(strokeCustomDash + 8)) & 0x3FFFFFFF8) != 0)
     {
       v22 = 0;
       v23 = 1;
       do
       {
-        v24 = *EshBasicTablePropVal<int>::operator[](v19, v23 - 1);
-        v25 = EshBasicTablePropVal<int>::operator[](v19, v23);
+        v24 = *EshBasicTablePropVal<int>::operator[](strokeCustomDash, v23 - 1);
+        v25 = EshBasicTablePropVal<int>::operator[](strokeCustomDash, v23);
         *&v26 = v24;
         *&v27 = *v25;
-        [OADDashStop addStopWithDash:v21 space:v26 toArray:v27];
+        [OADDashStop addStopWithDash:0x7FFFFFFFLL space:v26 toArray:v27];
         ++v22;
         v23 += 2;
       }
 
-      while (v22 < (((*(v19 + 16) - *(v19 + 8)) >> 3) & 0x7FFFFFFF));
+      while (v22 < (((*(strokeCustomDash + 16) - *(strokeCustomDash + 8)) >> 3) & 0x7FFFFFFF));
     }
 
-    [(OADCustomDash *)v20 setStops:v21];
+    [(OADCustomDash *)v20 setStops:0x7FFFFFFFLL];
   }
 
   else
   {
-    v28 = [a1 readPresetDashStyle:{objc_msgSend(v6, "strokePresetDash")}];
+    v28 = [self readPresetDashStyle:{objc_msgSend(managerCopy, "strokePresetDash")}];
     v20 = objc_alloc_init(OADPresetDash);
     [(OADCustomDash *)v20 setType:v28];
   }
 
   [(OADStroke *)v8 setDash:v20];
-  v29 = [v6 strokeJoinStyle];
-  switch(v29)
+  strokeJoinStyle = [managerCopy strokeJoinStyle];
+  switch(strokeJoinStyle)
   {
     case 0:
       v30 = off_2799C5718;
       goto LABEL_29;
     case 1:
-      v31 = EshFixedPointUtil::toFloat([v6 strokeMiterLimit]);
+      v31 = EshFixedPointUtil::toFloat([managerCopy strokeMiterLimit]);
       v32 = objc_alloc_init(OADMiterLineJoin);
       *&v33 = v31;
       [(OADMiterLineJoin *)v32 setLimit:v33];
@@ -150,134 +150,134 @@ LABEL_29:
   v32 = 0;
 LABEL_31:
   [(OADStroke *)v8 setJoin:v32];
-  v34 = -[OADLineEnd initWithType:width:length:]([OADLineEnd alloc], "initWithType:width:length:", [a1 readLineEndType:{objc_msgSend(v6, "strokeStartArrowType")}], objc_msgSend(a1, "readLineEndWidth:", objc_msgSend(v6, "strokeStartArrowWidth")), objc_msgSend(a1, "readLineEndLength:", objc_msgSend(v6, "strokeStartArrowLength")));
+  v34 = -[OADLineEnd initWithType:width:length:]([OADLineEnd alloc], "initWithType:width:length:", [self readLineEndType:{objc_msgSend(managerCopy, "strokeStartArrowType")}], objc_msgSend(self, "readLineEndWidth:", objc_msgSend(managerCopy, "strokeStartArrowWidth")), objc_msgSend(self, "readLineEndLength:", objc_msgSend(managerCopy, "strokeStartArrowLength")));
   [(OADStroke *)v8 setTail:v34];
-  v35 = -[OADLineEnd initWithType:width:length:]([OADLineEnd alloc], "initWithType:width:length:", [a1 readLineEndType:{objc_msgSend(v6, "strokeEndArrowType")}], objc_msgSend(a1, "readLineEndWidth:", objc_msgSend(v6, "strokeEndArrowWidth")), objc_msgSend(a1, "readLineEndLength:", objc_msgSend(v6, "strokeEndArrowLength")));
+  v35 = -[OADLineEnd initWithType:width:length:]([OADLineEnd alloc], "initWithType:width:length:", [self readLineEndType:{objc_msgSend(managerCopy, "strokeEndArrowType")}], objc_msgSend(self, "readLineEndWidth:", objc_msgSend(managerCopy, "strokeEndArrowWidth")), objc_msgSend(self, "readLineEndLength:", objc_msgSend(managerCopy, "strokeEndArrowLength")));
   [(OADStroke *)v8 setHead:v35];
-  *&v36 = [v6 strokeWidth] / 12700.0;
+  *&v36 = [managerCopy strokeWidth] / 12700.0;
   [(OADStroke *)v8 setWidth:v36];
-  -[OADStroke setCap:](v8, "setCap:", [a1 readCapStyle:{objc_msgSend(v6, "strokeCapStyle")}]);
-  -[OADStroke setCompoundType:](v8, "setCompoundType:", [a1 readCompoundType:{objc_msgSend(v6, "strokeCompoundType")}]);
+  -[OADStroke setCap:](v8, "setCap:", [self readCapStyle:{objc_msgSend(managerCopy, "strokeCapStyle")}]);
+  -[OADStroke setCompoundType:](v8, "setCompoundType:", [self readCompoundType:{objc_msgSend(managerCopy, "strokeCompoundType")}]);
 
   return v8;
 }
 
-+ (id)readLineEndWithType:(int)a3 width:(int)a4 length:(int)a5
++ (id)readLineEndWithType:(int)type width:(int)width length:(int)length
 {
-  v5 = -[OADLineEnd initWithType:width:length:]([OADLineEnd alloc], "initWithType:width:length:", [a1 readLineEndType:*&a3], objc_msgSend(a1, "readLineEndWidth:", *&a4), objc_msgSend(a1, "readLineEndLength:", *&a5));
+  v5 = -[OADLineEnd initWithType:width:length:]([OADLineEnd alloc], "initWithType:width:length:", [self readLineEndType:*&type], objc_msgSend(self, "readLineEndWidth:", *&width), objc_msgSend(self, "readLineEndLength:", *&length));
 
   return v5;
 }
 
-+ (unsigned)readCompoundType:(int)a3
++ (unsigned)readCompoundType:(int)type
 {
-  if (a3 >= 5)
+  if (type >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (char)readPresetDashStyle:(int)a3
++ (char)readPresetDashStyle:(int)style
 {
-  if ((a3 - 1) > 9)
+  if ((style - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return byte_25D6FB972[a3 - 1];
+    return byte_25D6FB972[style - 1];
   }
 }
 
-+ (unsigned)readLineEndType:(int)a3
++ (unsigned)readLineEndType:(int)type
 {
-  if (a3 >= 6)
+  if (type >= 6)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (unsigned)readLineEndWidth:(int)a3
++ (unsigned)readLineEndWidth:(int)width
 {
-  if (a3 >= 3)
+  if (width >= 3)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return width;
   }
 }
 
-+ (unsigned)readLineEndLength:(int)a3
++ (unsigned)readLineEndLength:(int)length
 {
-  if (a3 >= 3)
+  if (length >= 3)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return length;
   }
 }
 
-+ (unsigned)readCapStyle:(int)a3
++ (unsigned)readCapStyle:(int)style
 {
-  if (a3 >= 3)
+  if (style >= 3)
   {
     return 2;
   }
 
   else
   {
-    return a3;
+    return style;
   }
 }
 
-+ (int)writeCompoundType:(unsigned __int8)a3
++ (int)writeCompoundType:(unsigned __int8)type
 {
-  if (((a3 - 1) & 0xFC) != 0)
+  if (((type - 1) & 0xFC) != 0)
   {
     return 0;
   }
 
   else
   {
-    return (a3 - 1) + 1;
+    return (type - 1) + 1;
   }
 }
 
-+ (int)writePresetDashStyle:(char)a3
++ (int)writePresetDashStyle:(char)style
 {
-  if ((a3 - 1) > 9)
+  if ((style - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D6FB97C[(a3 - 1)];
+    return dword_25D6FB97C[(style - 1)];
   }
 }
 
-+ (int)writeLineEndType:(unsigned __int8)a3
++ (int)writeLineEndType:(unsigned __int8)type
 {
-  if ((a3 - 1) < 5)
+  if ((type - 1) < 5)
   {
-    return (a3 - 1) + 1;
+    return (type - 1) + 1;
   }
 
   else
@@ -286,50 +286,50 @@ LABEL_31:
   }
 }
 
-+ (int)writeLineEndWidth:(unsigned __int8)a3
++ (int)writeLineEndWidth:(unsigned __int8)width
 {
-  if (a3 >= 3u)
+  if (width >= 3u)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return width;
   }
 }
 
-+ (int)writeLineEndLength:(unsigned __int8)a3
++ (int)writeLineEndLength:(unsigned __int8)length
 {
-  if (a3 >= 3u)
+  if (length >= 3u)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return length;
   }
 }
 
-+ (int)writeCapStyle:(unsigned __int8)a3
++ (int)writeCapStyle:(unsigned __int8)style
 {
-  if (a3 >= 2u)
+  if (style >= 2u)
   {
     return 2;
   }
 
   else
   {
-    return a3;
+    return style;
   }
 }
 
-+ (void)writePresetDashStyleForCustomDash:(id)a3 toStroke:(EshStroke *)a4 state:(id)a5
++ (void)writePresetDashStyleForCustomDash:(id)dash toStroke:(EshStroke *)stroke state:(id)state
 {
-  v14 = [a3 stops];
-  v6 = [v14 count];
-  v7 = [v14 objectAtIndexedSubscript:0];
+  stops = [dash stops];
+  v6 = [stops count];
+  v7 = [stops objectAtIndexedSubscript:0];
   [v7 dash];
   if (v8 >= 2.0)
   {
@@ -398,7 +398,7 @@ LABEL_31:
     }
   }
 
-  EshStroke::setPredefDashStyle(a4, v10);
+  EshStroke::setPredefDashStyle(stroke, v10);
 }
 
 @end

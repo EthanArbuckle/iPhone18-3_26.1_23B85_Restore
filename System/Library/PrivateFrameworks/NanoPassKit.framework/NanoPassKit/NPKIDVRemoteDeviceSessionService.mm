@@ -1,37 +1,37 @@
 @interface NPKIDVRemoteDeviceSessionService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (NPKIDVRemoteDeviceSessionService)initWithRemoteDeviceEventsCoordinator:(id)a3 connectionCoordinator:(id)a4 preflightManager:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (NPKIDVRemoteDeviceSessionService)initWithRemoteDeviceEventsCoordinator:(id)coordinator connectionCoordinator:(id)connectionCoordinator preflightManager:(id)manager;
 - (NPKIDVRemoteDeviceSessionServiceDataSource)dataSource;
-- (void)_addConnection:(id)a3;
-- (void)_addServer:(id)a3;
-- (void)_removeServer:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_addServer:(id)server;
+- (void)_removeServer:(id)server;
 - (void)dealloc;
-- (void)remoteDevicesSessionServer:(id)a3 provisionedCredentialCountsForType:(unint64_t)a4 completion:(id)a5;
-- (void)remoteDevicesSessionServer:(id)a3 remoteBiometricAuthenticationStatusForCredentialType:(unint64_t)a4 completion:(id)a5;
+- (void)remoteDevicesSessionServer:(id)server provisionedCredentialCountsForType:(unint64_t)type completion:(id)completion;
+- (void)remoteDevicesSessionServer:(id)server remoteBiometricAuthenticationStatusForCredentialType:(unint64_t)type completion:(id)completion;
 - (void)teardownCurrentRemoteDeviceSessions;
 @end
 
 @implementation NPKIDVRemoteDeviceSessionService
 
-- (NPKIDVRemoteDeviceSessionService)initWithRemoteDeviceEventsCoordinator:(id)a3 connectionCoordinator:(id)a4 preflightManager:(id)a5
+- (NPKIDVRemoteDeviceSessionService)initWithRemoteDeviceEventsCoordinator:(id)coordinator connectionCoordinator:(id)connectionCoordinator preflightManager:(id)manager
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  coordinatorCopy = coordinator;
+  connectionCoordinatorCopy = connectionCoordinator;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = NPKIDVRemoteDeviceSessionService;
   v12 = [(NPKIDVRemoteDeviceSessionService *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_remoteDeviceEventCoordinator, a3);
-    objc_storeStrong(&v13->_remoteDeviceConnectionCoordinator, a4);
+    objc_storeStrong(&v12->_remoteDeviceEventCoordinator, coordinator);
+    objc_storeStrong(&v13->_remoteDeviceConnectionCoordinator, connectionCoordinator);
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
     sessionServers = v13->_sessionServers;
     v13->_sessionServers = v14;
 
-    objc_storeStrong(&v13->_preflightManager, a5);
+    objc_storeStrong(&v13->_preflightManager, manager);
     v16 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.NanoPassbook.IDVRemoteDeviceService.session.server"];
     [(NSXPCListener *)v16 setDelegate:v13];
     xpcListener = v13->_xpcListener;
@@ -80,15 +80,15 @@ void __43__NPKIDVRemoteDeviceSessionService_dealloc__block_invoke(uint64_t a1, v
   [v3 clearConnectionReference];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   xpcListener = self->_xpcListener;
   v9 = pk_Payment_log();
   v10 = v9;
-  if (xpcListener == v6)
+  if (xpcListener == listenerCopy)
   {
     v12 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -98,15 +98,15 @@ void __43__NPKIDVRemoteDeviceSessionService_dealloc__block_invoke(uint64_t a1, v
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138412290;
-        v20 = v7;
+        v20 = connectionCopy;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested new connection:%@", &v19, 0xCu);
       }
     }
 
-    v11 = [(NSXPCListener *)v7 valueForEntitlement:@"com.apple.NanoPassbook.IDVRemoteDeviceService.session.client"];
+    v11 = [(NSXPCListener *)connectionCopy valueForEntitlement:@"com.apple.NanoPassbook.IDVRemoteDeviceService.session.client"];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v11 BOOLValue]& 1) != 0)
     {
-      [(NPKIDVRemoteDeviceSessionService *)self _addConnection:v7];
+      [(NPKIDVRemoteDeviceSessionService *)self _addConnection:connectionCopy];
       LOBYTE(self) = 1;
       goto LABEL_14;
     }
@@ -139,7 +139,7 @@ LABEL_14:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v19 = 138412290;
-      v20 = v6;
+      v20 = listenerCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_ERROR, "Error: NPKIDVRemoteDeviceService: Unknown requested connection from listener:%@", &v19, 0xCu);
     }
 
@@ -152,16 +152,16 @@ LABEL_15:
   return self;
 }
 
-- (void)remoteDevicesSessionServer:(id)a3 provisionedCredentialCountsForType:(unint64_t)a4 completion:(id)a5
+- (void)remoteDevicesSessionServer:(id)server provisionedCredentialCountsForType:(unint64_t)type completion:(id)completion
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [(NPKIDVRemoteDeviceSessionService *)self dataSource];
+  completionCopy = completion;
+  dataSource = [(NPKIDVRemoteDeviceSessionService *)self dataSource];
 
-  if (v8)
+  if (dataSource)
   {
-    v9 = [(NPKIDVRemoteDeviceSessionService *)self dataSource];
-    [v9 remoteDevicesSessionService:self provisionedCredentialCountsForType:a4 completion:v7];
+    dataSource2 = [(NPKIDVRemoteDeviceSessionService *)self dataSource];
+    [dataSource2 remoteDevicesSessionService:self provisionedCredentialCountsForType:type completion:completionCopy];
   }
 
   else
@@ -179,7 +179,7 @@ LABEL_15:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v13 = MEMORY[0x277CCA9B8];
       v18 = *MEMORY[0x277CCA450];
@@ -187,23 +187,23 @@ LABEL_15:
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v15 = [v13 errorWithDomain:@"com.apple.NPKErrorDomain" code:-1000 userInfo:v14];
 
-      v7[2](v7, 0, v15);
+      completionCopy[2](completionCopy, 0, v15);
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteDevicesSessionServer:(id)a3 remoteBiometricAuthenticationStatusForCredentialType:(unint64_t)a4 completion:(id)a5
+- (void)remoteDevicesSessionServer:(id)server remoteBiometricAuthenticationStatusForCredentialType:(unint64_t)type completion:(id)completion
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [(NPKIDVRemoteDeviceSessionService *)self dataSource];
+  completionCopy = completion;
+  dataSource = [(NPKIDVRemoteDeviceSessionService *)self dataSource];
 
-  if (v8)
+  if (dataSource)
   {
-    v9 = [(NPKIDVRemoteDeviceSessionService *)self dataSource];
-    [v9 remoteDevicesSessionService:self remoteBiometricAuthenticationStatusForCredentialType:a4 completion:v7];
+    dataSource2 = [(NPKIDVRemoteDeviceSessionService *)self dataSource];
+    [dataSource2 remoteDevicesSessionService:self remoteBiometricAuthenticationStatusForCredentialType:type completion:completionCopy];
   }
 
   else
@@ -221,7 +221,7 @@ LABEL_15:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v13 = MEMORY[0x277CCA9B8];
       v18 = *MEMORY[0x277CCA450];
@@ -229,7 +229,7 @@ LABEL_15:
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v15 = [v13 errorWithDomain:@"com.apple.NPKErrorDomain" code:-1000 userInfo:v14];
 
-      v7[2](v7, 0, v15);
+      completionCopy[2](completionCopy, 0, v15);
     }
   }
 
@@ -248,7 +248,7 @@ LABEL_15:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: %@, requested teardown all current remote device sessions", buf, 0xCu);
     }
   }
@@ -286,17 +286,17 @@ LABEL_15:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[NPKIDVRemoteDeviceSessionServer alloc] initWithConnection:v4 eventsCoordinator:self->_remoteDeviceEventCoordinator connectionCoordinator:self->_remoteDeviceConnectionCoordinator preflightManager:self->_preflightManager];
+  connectionCopy = connection;
+  v5 = [[NPKIDVRemoteDeviceSessionServer alloc] initWithConnection:connectionCopy eventsCoordinator:self->_remoteDeviceEventCoordinator connectionCoordinator:self->_remoteDeviceConnectionCoordinator preflightManager:self->_preflightManager];
   [(NPKIDVRemoteDeviceSessionServer *)v5 setDataSource:self];
   v6 = NPKIDVRemoteDeviceServiceSessionServerProtocolInterface();
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v4 setExportedObject:v5];
+  [connectionCopy setExportedObject:v5];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, connectionCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __51__NPKIDVRemoteDeviceSessionService__addConnection___block_invoke;
@@ -305,7 +305,7 @@ LABEL_15:
   objc_copyWeak(&v19, &location);
   v7 = v5;
   v17 = v7;
-  [v4 setInvalidationHandler:v16];
+  [connectionCopy setInvalidationHandler:v16];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __51__NPKIDVRemoteDeviceSessionService__addConnection___block_invoke_25;
@@ -314,9 +314,9 @@ LABEL_15:
   objc_copyWeak(&v15, &location);
   v8 = v7;
   v13 = v8;
-  [v4 setInterruptionHandler:&v9];
+  [connectionCopy setInterruptionHandler:&v9];
   [(NPKIDVRemoteDeviceSessionService *)self _addServer:v8, v9, v10, v11, v12];
-  [v4 resume];
+  [connectionCopy resume];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v14);
@@ -383,11 +383,11 @@ void __51__NPKIDVRemoteDeviceSessionService__addConnection___block_invoke_25(uin
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addServer:(id)a3
+- (void)_addServer:(id)server
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMutableSet *)self->_sessionServers addObject:v4];
+  serverCopy = server;
+  [(NSMutableSet *)self->_sessionServers addObject:serverCopy];
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -396,12 +396,12 @@ void __51__NPKIDVRemoteDeviceSessionService__addConnection___block_invoke_25(uin
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 connection];
-      v9 = [v4 connection];
+      connection = [serverCopy connection];
+      connection2 = [serverCopy connection];
       v11 = 138412546;
-      v12 = v8;
+      v12 = connection;
       v13 = 1024;
-      v14 = [v9 processIdentifier];
+      processIdentifier = [connection2 processIdentifier];
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Added new connection:{%@, PID:%d}", &v11, 0x12u);
     }
   }
@@ -409,29 +409,29 @@ void __51__NPKIDVRemoteDeviceSessionService__addConnection___block_invoke_25(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeServer:(id)a3
+- (void)_removeServer:(id)server
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 connection];
-  [v5 invalidate];
+  serverCopy = server;
+  connection = [serverCopy connection];
+  [connection invalidate];
 
-  [v4 clearConnectionReference];
-  [(NSMutableSet *)self->_sessionServers removeObject:v4];
+  [serverCopy clearConnectionReference];
+  [(NSMutableSet *)self->_sessionServers removeObject:serverCopy];
   v6 = pk_Payment_log();
-  LODWORD(v5) = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
+  LODWORD(connection) = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
-  if (v5)
+  if (connection)
   {
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 connection];
-      v9 = [v4 connection];
+      connection2 = [serverCopy connection];
+      connection3 = [serverCopy connection];
       v11 = 138412546;
-      v12 = v8;
+      v12 = connection2;
       v13 = 1024;
-      v14 = [v9 processIdentifier];
+      processIdentifier = [connection3 processIdentifier];
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Removed new connection:{%@, PID:%d}", &v11, 0x12u);
     }
   }

@@ -1,35 +1,35 @@
 @interface NFTagInternal
-- (BOOL)isEqualToNFTag:(id)a3;
+- (BOOL)isEqualToNFTag:(id)tag;
 - (NFTagA)tagA;
 - (NFTagB)tagB;
 - (NFTagF)tagF;
-- (NFTagInternal)initWithCoder:(id)a3;
-- (NFTagInternal)initWithDictionary:(id)a3;
-- (NFTagInternal)initWithNFTag:(id)a3;
-- (NFTagInternal)initWithNFTagForUIDOnly:(id)a3;
+- (NFTagInternal)initWithCoder:(id)coder;
+- (NFTagInternal)initWithDictionary:(id)dictionary;
+- (NFTagInternal)initWithNFTag:(id)tag;
+- (NFTagInternal)initWithNFTagForUIDOnly:(id)only;
 - (NSString)description;
 - (id)_getSystemCodeListString;
 - (id)asDictionary;
-- (void)_setAppData:(id)a3;
-- (void)_setAtqa:(id)a3;
-- (void)_setHistoricalBytes:(id)a3;
-- (void)_setIDm:(id)a3;
-- (void)_setIdentifier:(id)a3;
-- (void)_setPMm:(id)a3;
-- (void)_setSFGI:(unsigned __int8)a3;
-- (void)_setSak:(id)a3;
-- (void)_setSelectedAID:(id)a3;
-- (void)_setSystemCode:(id)a3;
-- (void)_setSystemCodes:(id)a3;
-- (void)_setUID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setAppData:(id)data;
+- (void)_setAtqa:(id)atqa;
+- (void)_setHistoricalBytes:(id)bytes;
+- (void)_setIDm:(id)dm;
+- (void)_setIdentifier:(id)identifier;
+- (void)_setPMm:(id)mm;
+- (void)_setSFGI:(unsigned __int8)i;
+- (void)_setSak:(id)sak;
+- (void)_setSelectedAID:(id)d;
+- (void)_setSystemCode:(id)code;
+- (void)_setSystemCodes:(id)codes;
+- (void)_setUID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFTagInternal
 
 - (NSString)description
 {
-  v3 = self;
+  selfCopy = self;
   type = self->_type;
   v5 = @"Unknown";
   v6 = @"Unknown";
@@ -83,15 +83,15 @@
     }
 
     v19 = objc_alloc(MEMORY[0x277CCACA8]);
-    v72.receiver = v3;
+    v72.receiver = selfCopy;
     v72.super_class = NFTagInternal;
     v20 = [(NFTagInternal *)&v72 description];
-    v23 = objc_msgSend_NF_asHexString(*(v3 + 56), v21, v22);
-    v26 = objc_msgSend_NF_asHexString(*(v3 + 16), v24, v25);
-    v27 = *(v3 + 112);
-    v30 = objc_msgSend_NF_asHexString(*(v3 + 96), v28, v29);
-    v33 = objc_msgSend_NF_asHexString(*(v3 + 88), v31, v32);
-    v35 = objc_msgSend_initWithFormat_(v19, v34, @"%@-%@ { Tech=%@ Type=%@ ID=%@ silentType=%d SAK=%@ ATQA=%@ sfgi=0x%X %@}", v20, v23, v15, v68, v26, v27, v30, v33, *(v3 + 113), v18);
+    v23 = objc_msgSend_NF_asHexString(*(selfCopy + 56), v21, v22);
+    v26 = objc_msgSend_NF_asHexString(*(selfCopy + 16), v24, v25);
+    v27 = *(selfCopy + 112);
+    v30 = objc_msgSend_NF_asHexString(*(selfCopy + 96), v28, v29);
+    v33 = objc_msgSend_NF_asHexString(*(selfCopy + 88), v31, v32);
+    v35 = objc_msgSend_initWithFormat_(v19, v34, @"%@-%@ { Tech=%@ Type=%@ ID=%@ silentType=%d SAK=%@ ATQA=%@ sfgi=0x%X %@}", v20, v23, v15, v68, v26, v27, v30, v33, *(selfCopy + 113), v18);
 
     goto LABEL_20;
   }
@@ -99,18 +99,18 @@
   if (!objc_msgSend_isEqualToString_(v8, a2, @"F"))
   {
     v41 = objc_alloc(MEMORY[0x277CCACA8]);
-    v70.receiver = v3;
+    v70.receiver = selfCopy;
     v70.super_class = NFTagInternal;
     v18 = [(NFTagInternal *)&v70 description];
-    v20 = objc_msgSend_NF_asHexString(*(v3 + 56), v42, v43);
-    v23 = objc_msgSend_NF_asHexString(*(v3 + 16), v44, v45);
-    v35 = objc_msgSend_initWithFormat_(v41, v46, @"%@-%@ { Tech=%@ Type=%@ ID=%@, NDEF=%d, capacity=%lu, messageSize=%lu }", v18, v20, v8, v6, v23, *(v3 + 64), *(v3 + 80), *(v3 + 72));
+    v20 = objc_msgSend_NF_asHexString(*(selfCopy + 56), v42, v43);
+    v23 = objc_msgSend_NF_asHexString(*(selfCopy + 16), v44, v45);
+    v35 = objc_msgSend_initWithFormat_(v41, v46, @"%@-%@ { Tech=%@ Type=%@ ID=%@, NDEF=%d, capacity=%lu, messageSize=%lu }", v18, v20, v8, v6, v23, *(selfCopy + 64), *(selfCopy + 80), *(selfCopy + 72));
     goto LABEL_20;
   }
 
-  if (objc_msgSend_count(*(v3 + 40), v37, v38))
+  if (objc_msgSend_count(*(selfCopy + 40), v37, v38))
   {
-    v69 = objc_msgSend__getSystemCodeListString(v3, v39, v40);
+    v69 = objc_msgSend__getSystemCodeListString(selfCopy, v39, v40);
   }
 
   else
@@ -119,18 +119,18 @@
   }
 
   v66 = objc_alloc(MEMORY[0x277CCACA8]);
-  v71.receiver = v3;
+  v71.receiver = selfCopy;
   v71.super_class = NFTagInternal;
   v20 = [(NFTagInternal *)&v71 description];
-  v23 = objc_msgSend_NF_asHexString(*(v3 + 56), v47, v48);
-  v51 = objc_msgSend_NF_asHexString(*(v3 + 16), v49, v50);
-  v67 = objc_msgSend_NF_asHexString(*(v3 + 32), v52, v53);
-  v55 = *(v3 + 48);
+  v23 = objc_msgSend_NF_asHexString(*(selfCopy + 56), v47, v48);
+  v51 = objc_msgSend_NF_asHexString(*(selfCopy + 16), v49, v50);
+  v67 = objc_msgSend_NF_asHexString(*(selfCopy + 32), v52, v53);
+  v55 = *(selfCopy + 48);
   if (v55)
   {
     v56 = objc_alloc(MEMORY[0x277CCACA8]);
-    v3 = objc_msgSend_NF_asHexString(*(v3 + 48), v57, v58);
-    v60 = objc_msgSend_initWithFormat_(v56, v59, @"SystemCode=%@", v3);
+    selfCopy = objc_msgSend_NF_asHexString(*(selfCopy + 48), v57, v58);
+    v60 = objc_msgSend_initWithFormat_(v56, v59, @"SystemCode=%@", selfCopy);
   }
 
   else
@@ -172,73 +172,73 @@ LABEL_20:
 {
   if (self->_technology == 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (NFTagB)tagB
 {
   if (self->_technology == 2)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (NFTagF)tagF
 {
   if (self->_technology == 4)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (NFTagInternal)initWithNFTag:(id)a3
+- (NFTagInternal)initWithNFTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v101.receiver = self;
   v101.super_class = NFTagInternal;
   v7 = [(NFTagInternal *)&v101 init];
   if (v7)
   {
-    v7->_type = objc_msgSend_type(v4, v5, v6);
-    v7->_technology = objc_msgSend_technology(v4, v8, v9);
-    v12 = objc_msgSend_UID(v4, v10, v11);
+    v7->_type = objc_msgSend_type(tagCopy, v5, v6);
+    v7->_technology = objc_msgSend_technology(tagCopy, v8, v9);
+    v12 = objc_msgSend_UID(tagCopy, v10, v11);
     v15 = objc_msgSend_copy(v12, v13, v14);
     uid = v7->_uid;
     v7->_uid = v15;
 
-    v19 = objc_msgSend_tagID(v4, v17, v18);
+    v19 = objc_msgSend_tagID(tagCopy, v17, v18);
     v22 = objc_msgSend_copy(v19, v20, v21);
     tagID = v7->_tagID;
     v7->_tagID = v22;
 
-    v7->_ndefAvailability = objc_msgSend_ndefAvailability(v4, v24, v25);
-    v7->_ndefMessageSize = objc_msgSend_ndefMessageSize(v4, v26, v27);
-    v7->_ndefContainerSize = objc_msgSend_ndefContainerSize(v4, v28, v29);
-    if (objc_msgSend_technology(v4, v30, v31) == 1 && objc_msgSend_conformsToProtocol_(v4, v32, &unk_2843B8760))
+    v7->_ndefAvailability = objc_msgSend_ndefAvailability(tagCopy, v24, v25);
+    v7->_ndefMessageSize = objc_msgSend_ndefMessageSize(tagCopy, v26, v27);
+    v7->_ndefContainerSize = objc_msgSend_ndefContainerSize(tagCopy, v28, v29);
+    if (objc_msgSend_technology(tagCopy, v30, v31) == 1 && objc_msgSend_conformsToProtocol_(tagCopy, v32, &unk_2843B8760))
     {
-      v34 = v4;
+      v34 = tagCopy;
       v37 = objc_msgSend_atqa(v34, v35, v36);
       v40 = objc_msgSend_copy(v37, v38, v39);
       atqa = v7->_atqa;
@@ -263,9 +263,9 @@ LABEL_20:
       v7->_sfgi = v58;
     }
 
-    if (objc_msgSend_technology(v4, v32, v33) == 2 && objc_msgSend_conformsToProtocol_(v4, v65, &unk_2843B8900))
+    if (objc_msgSend_technology(tagCopy, v32, v33) == 2 && objc_msgSend_conformsToProtocol_(tagCopy, v65, &unk_2843B8900))
     {
-      v67 = v4;
+      v67 = tagCopy;
       v70 = objc_msgSend_selectedAID(v67, v68, v69);
       v73 = objc_msgSend_copy(v70, v71, v72);
       v74 = v7->_appData;
@@ -275,9 +275,9 @@ LABEL_20:
       v7->_sfgi = v70;
     }
 
-    if (objc_msgSend_technology(v4, v65, v66) == 4 && objc_msgSend_conformsToProtocol_(v4, v77, &unk_2843B8A80))
+    if (objc_msgSend_technology(tagCopy, v65, v66) == 4 && objc_msgSend_conformsToProtocol_(tagCopy, v77, &unk_2843B8A80))
     {
-      v78 = v4;
+      v78 = tagCopy;
       v81 = objc_msgSend_PMm(v78, v79, v80);
       v84 = objc_msgSend_copy(v81, v82, v83);
       pmm = v7->_pmm;
@@ -299,37 +299,37 @@ LABEL_20:
   return v7;
 }
 
-- (NFTagInternal)initWithNFTagForUIDOnly:(id)a3
+- (NFTagInternal)initWithNFTagForUIDOnly:(id)only
 {
-  v4 = a3;
+  onlyCopy = only;
   v20.receiver = self;
   v20.super_class = NFTagInternal;
   v7 = [(NFTagInternal *)&v20 init];
   if (v7)
   {
-    v8 = objc_msgSend_UID(v4, v5, v6);
+    v8 = objc_msgSend_UID(onlyCopy, v5, v6);
     v11 = objc_msgSend_copy(v8, v9, v10);
     uid = v7->_uid;
     v7->_uid = v11;
 
-    v7->_ndefAvailability = objc_msgSend_ndefAvailability(v4, v13, v14);
-    v7->_ndefMessageSize = objc_msgSend_ndefMessageSize(v4, v15, v16);
-    v7->_ndefContainerSize = objc_msgSend_ndefContainerSize(v4, v17, v18);
+    v7->_ndefAvailability = objc_msgSend_ndefAvailability(onlyCopy, v13, v14);
+    v7->_ndefMessageSize = objc_msgSend_ndefMessageSize(onlyCopy, v15, v16);
+    v7->_ndefContainerSize = objc_msgSend_ndefContainerSize(onlyCopy, v17, v18);
   }
 
   return v7;
 }
 
-- (NFTagInternal)initWithDictionary:(id)a3
+- (NFTagInternal)initWithDictionary:(id)dictionary
 {
   v71 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v69.receiver = self;
   v69.super_class = NFTagInternal;
   v6 = [(NFTagInternal *)&v69 init];
   if (v6)
   {
-    v8 = objc_msgSend_objectForKey_(v4, v5, @"technology");
+    v8 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"technology");
     if (v8)
     {
       objc_opt_class();
@@ -339,7 +339,7 @@ LABEL_20:
       }
     }
 
-    v10 = objc_msgSend_objectForKey_(v4, v7, @"type");
+    v10 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"type");
 
     if (v10)
     {
@@ -350,7 +350,7 @@ LABEL_20:
       }
     }
 
-    v13 = objc_msgSend_objectForKey_(v4, v11, @"silentType");
+    v13 = objc_msgSend_objectForKey_(dictionaryCopy, v11, @"silentType");
 
     if (v13)
     {
@@ -361,7 +361,7 @@ LABEL_20:
       }
     }
 
-    v16 = objc_msgSend_objectForKey_(v4, v14, @"identifier");
+    v16 = objc_msgSend_objectForKey_(dictionaryCopy, v14, @"identifier");
 
     if (v16)
     {
@@ -374,7 +374,7 @@ LABEL_20:
       }
     }
 
-    v21 = objc_msgSend_objectForKey_(v4, v17, @"PMm");
+    v21 = objc_msgSend_objectForKey_(dictionaryCopy, v17, @"PMm");
 
     if (v21)
     {
@@ -407,7 +407,7 @@ LABEL_20:
             objc_enumerationMutation(&unk_2843B4DB8);
           }
 
-          v21 = objc_msgSend_objectForKey_(v4, v27, *(*(&v65 + 1) + 8 * v30));
+          v21 = objc_msgSend_objectForKey_(dictionaryCopy, v27, *(*(&v65 + 1) + 8 * v30));
 
           if (v21)
           {
@@ -438,7 +438,7 @@ LABEL_20:
     }
 
 LABEL_28:
-    v35 = objc_msgSend_objectForKey_(v4, v27, @"allSystemCodes");
+    v35 = objc_msgSend_objectForKey_(dictionaryCopy, v27, @"allSystemCodes");
 
     if (v35)
     {
@@ -451,7 +451,7 @@ LABEL_28:
       }
     }
 
-    v40 = objc_msgSend_objectForKey_(v4, v36, @"UID");
+    v40 = objc_msgSend_objectForKey_(dictionaryCopy, v36, @"UID");
 
     if (v40)
     {
@@ -464,7 +464,7 @@ LABEL_28:
       }
     }
 
-    v45 = objc_msgSend_objectForKey_(v4, v41, @"atqa");
+    v45 = objc_msgSend_objectForKey_(dictionaryCopy, v41, @"atqa");
 
     if (v45)
     {
@@ -477,7 +477,7 @@ LABEL_28:
       }
     }
 
-    v50 = objc_msgSend_objectForKey_(v4, v46, @"sak");
+    v50 = objc_msgSend_objectForKey_(dictionaryCopy, v46, @"sak");
 
     if (v50)
     {
@@ -490,7 +490,7 @@ LABEL_28:
       }
     }
 
-    v55 = objc_msgSend_objectForKey_(v4, v51, @"historicalBytes");
+    v55 = objc_msgSend_objectForKey_(dictionaryCopy, v51, @"historicalBytes");
 
     if (v55)
     {
@@ -503,7 +503,7 @@ LABEL_28:
       }
     }
 
-    v60 = objc_msgSend_objectForKey_(v4, v56, @"sfgi");
+    v60 = objc_msgSend_objectForKey_(dictionaryCopy, v56, @"sfgi");
 
     if (v60)
     {
@@ -519,99 +519,99 @@ LABEL_28:
   return v6;
 }
 
-- (NFTagInternal)initWithCoder:(id)a3
+- (NFTagInternal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = NFTagInternal;
   v6 = [(NFTagInternal *)&v46 init];
   if (v6)
   {
-    v6->_technology = objc_msgSend_decodeInt32ForKey_(v4, v5, @"technology");
-    v6->_type = objc_msgSend_decodeInt32ForKey_(v4, v7, @"type");
+    v6->_technology = objc_msgSend_decodeInt32ForKey_(coderCopy, v5, @"technology");
+    v6->_type = objc_msgSend_decodeInt32ForKey_(coderCopy, v7, @"type");
     v8 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"identifier");
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"identifier");
     tagID = v6->_tagID;
     v6->_tagID = v10;
 
     v12 = objc_opt_class();
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v13, v12, @"PMm");
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v13, v12, @"PMm");
     pmm = v6->_pmm;
     v6->_pmm = v14;
 
     v16 = objc_opt_class();
-    v18 = objc_msgSend_coder_decodeArrayOfClass_forKey_(NFNSCheckedDecoder, v17, v4, v16, @"allSystemCodes");
+    v18 = objc_msgSend_coder_decodeArrayOfClass_forKey_(NFNSCheckedDecoder, v17, coderCopy, v16, @"allSystemCodes");
     allSystemCodes = v6->_allSystemCodes;
     v6->_allSystemCodes = v18;
 
     v20 = objc_opt_class();
-    v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"UID");
+    v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"UID");
     uid = v6->_uid;
     v6->_uid = v22;
 
     v24 = objc_opt_class();
-    v26 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v25, v24, @"AppData");
+    v26 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v25, v24, @"AppData");
     appData = v6->_appData;
     v6->_appData = v26;
 
-    v6->_ndefAvailability = objc_msgSend_decodeInt32ForKey_(v4, v28, @"ndefAvailability");
-    v6->_ndefMessageSize = objc_msgSend_decodeIntegerForKey_(v4, v29, @"ndefMessageSize");
-    v6->_ndefContainerSize = objc_msgSend_decodeIntegerForKey_(v4, v30, @"ndefContainerSize");
+    v6->_ndefAvailability = objc_msgSend_decodeInt32ForKey_(coderCopy, v28, @"ndefAvailability");
+    v6->_ndefMessageSize = objc_msgSend_decodeIntegerForKey_(coderCopy, v29, @"ndefMessageSize");
+    v6->_ndefContainerSize = objc_msgSend_decodeIntegerForKey_(coderCopy, v30, @"ndefContainerSize");
     v31 = objc_opt_class();
-    v33 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v32, v31, @"atqa");
+    v33 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v32, v31, @"atqa");
     atqa = v6->_atqa;
     v6->_atqa = v33;
 
     v35 = objc_opt_class();
-    v37 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v36, v35, @"sak");
+    v37 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v36, v35, @"sak");
     sak = v6->_sak;
     v6->_sak = v37;
 
     v39 = objc_opt_class();
-    v41 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v40, v39, @"historicalBytes");
+    v41 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v40, v39, @"historicalBytes");
     historicalBytes = v6->_historicalBytes;
     v6->_historicalBytes = v41;
 
-    v6->_silentType = objc_msgSend_decodeIntForKey_(v4, v43, @"silentType");
-    v6->_sfgi = objc_msgSend_decodeIntegerForKey_(v4, v44, @"sfgi");
+    v6->_silentType = objc_msgSend_decodeIntForKey_(coderCopy, v43, @"silentType");
+    v6->_sfgi = objc_msgSend_decodeIntegerForKey_(coderCopy, v44, @"sfgi");
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   technology = self->_technology;
-  v20 = a3;
-  objc_msgSend_encodeInt32_forKey_(v20, v5, technology, @"technology");
-  objc_msgSend_encodeInt32_forKey_(v20, v6, self->_type, @"type");
-  objc_msgSend_encodeObject_forKey_(v20, v7, self->_tagID, @"identifier");
-  objc_msgSend_encodeObject_forKey_(v20, v8, self->_pmm, @"PMm");
-  objc_msgSend_encodeObject_forKey_(v20, v9, self->_allSystemCodes, @"allSystemCodes");
-  objc_msgSend_encodeObject_forKey_(v20, v10, self->_uid, @"UID");
-  objc_msgSend_encodeObject_forKey_(v20, v11, self->_appData, @"AppData");
-  objc_msgSend_encodeInt32_forKey_(v20, v12, self->_ndefAvailability, @"ndefAvailability");
-  objc_msgSend_encodeInteger_forKey_(v20, v13, self->_ndefMessageSize, @"ndefMessageSize");
-  objc_msgSend_encodeInteger_forKey_(v20, v14, self->_ndefContainerSize, @"ndefContainerSize");
-  objc_msgSend_encodeObject_forKey_(v20, v15, self->_atqa, @"atqa");
-  objc_msgSend_encodeObject_forKey_(v20, v16, self->_sak, @"sak");
-  objc_msgSend_encodeObject_forKey_(v20, v17, self->_historicalBytes, @"historicalBytes");
-  objc_msgSend_encodeInt_forKey_(v20, v18, self->_silentType, @"silentType");
-  objc_msgSend_encodeInt_forKey_(v20, v19, self->_sfgi, @"sfgi");
+  coderCopy = coder;
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v5, technology, @"technology");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v6, self->_type, @"type");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_tagID, @"identifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_pmm, @"PMm");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_allSystemCodes, @"allSystemCodes");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, self->_uid, @"UID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, self->_appData, @"AppData");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v12, self->_ndefAvailability, @"ndefAvailability");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v13, self->_ndefMessageSize, @"ndefMessageSize");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v14, self->_ndefContainerSize, @"ndefContainerSize");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, self->_atqa, @"atqa");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, self->_sak, @"sak");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, self->_historicalBytes, @"historicalBytes");
+  objc_msgSend_encodeInt_forKey_(coderCopy, v18, self->_silentType, @"silentType");
+  objc_msgSend_encodeInt_forKey_(coderCopy, v19, self->_sfgi, @"sfgi");
 }
 
-- (BOOL)isEqualToNFTag:(id)a3
+- (BOOL)isEqualToNFTag:(id)tag
 {
-  v4 = a3;
-  v7 = v4;
-  if (self == v4)
+  tagCopy = tag;
+  v7 = tagCopy;
+  if (self == tagCopy)
   {
     isEqual = 1;
     goto LABEL_13;
   }
 
   type = self->_type;
-  if (type != objc_msgSend_type(v4, v5, v6))
+  if (type != objc_msgSend_type(tagCopy, v5, v6))
   {
     goto LABEL_6;
   }
@@ -661,63 +661,63 @@ LABEL_13:
   return isEqual & 1;
 }
 
-- (void)_setIDm:(id)a3
+- (void)_setIDm:(id)dm
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(dm, a2, dm);
   tagID = self->_tagID;
   self->_tagID = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setPMm:(id)a3
+- (void)_setPMm:(id)mm
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(mm, a2, mm);
   pmm = self->_pmm;
   self->_pmm = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setSystemCode:(id)a3
+- (void)_setSystemCode:(id)code
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(code, a2, code);
   appData = self->_appData;
   self->_appData = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setIdentifier:(id)a3
+- (void)_setIdentifier:(id)identifier
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(identifier, a2, identifier);
   tagID = self->_tagID;
   self->_tagID = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setUID:(id)a3
+- (void)_setUID:(id)d
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(d, a2, d);
   uid = self->_uid;
   self->_uid = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setAppData:(id)a3
+- (void)_setAppData:(id)data
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(data, a2, data);
   appData = self->_appData;
   self->_appData = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setSystemCodes:(id)a3
+- (void)_setSystemCodes:(id)codes
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(codes, a2, codes);
   allSystemCodes = self->_allSystemCodes;
   self->_allSystemCodes = v4;
 
@@ -755,55 +755,55 @@ LABEL_13:
   return v5;
 }
 
-- (void)_setAtqa:(id)a3
+- (void)_setAtqa:(id)atqa
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(atqa, a2, atqa);
   atqa = self->_atqa;
   self->_atqa = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setSak:(id)a3
+- (void)_setSak:(id)sak
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(sak, a2, sak);
   sak = self->_sak;
   self->_sak = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setHistoricalBytes:(id)a3
+- (void)_setHistoricalBytes:(id)bytes
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(bytes, a2, bytes);
   historicalBytes = self->_historicalBytes;
   self->_historicalBytes = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setSelectedAID:(id)a3
+- (void)_setSelectedAID:(id)d
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(d, a2, d);
   appData = self->_appData;
   self->_appData = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setSFGI:(unsigned __int8)a3
+- (void)_setSFGI:(unsigned __int8)i
 {
-  if (a3 >= 0xFu)
+  if (i >= 0xFu)
   {
-    v3 = 15;
+    iCopy = 15;
   }
 
   else
   {
-    v3 = a3;
+    iCopy = i;
   }
 
-  self->_sfgi = v3;
+  self->_sfgi = iCopy;
 }
 
 - (id)asDictionary

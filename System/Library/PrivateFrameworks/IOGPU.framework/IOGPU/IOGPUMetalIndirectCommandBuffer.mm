@@ -1,57 +1,57 @@
 @interface IOGPUMetalIndirectCommandBuffer
-- (IOGPUMetalIndirectCommandBuffer)initWithBuffer:(id)a3 descriptor:(id)a4 maxCommandCount:(unint64_t)a5;
+- (IOGPUMetalIndirectCommandBuffer)initWithBuffer:(id)buffer descriptor:(id)descriptor maxCommandCount:(unint64_t)count;
 - (unint64_t)uniqueIdentifier;
 - (void)dealloc;
-- (void)getHeader:(void *)a3 headerSize:(unint64_t *)a4;
-- (void)resetWithRange:(_NSRange)a3;
+- (void)getHeader:(void *)header headerSize:(unint64_t *)size;
+- (void)resetWithRange:(_NSRange)range;
 @end
 
 @implementation IOGPUMetalIndirectCommandBuffer
 
-- (IOGPUMetalIndirectCommandBuffer)initWithBuffer:(id)a3 descriptor:(id)a4 maxCommandCount:(unint64_t)a5
+- (IOGPUMetalIndirectCommandBuffer)initWithBuffer:(id)buffer descriptor:(id)descriptor maxCommandCount:(unint64_t)count
 {
   v14.receiver = self;
   v14.super_class = IOGPUMetalIndirectCommandBuffer;
   v8 = [(IOGPUMetalResource *)&v14 initWithResource:?];
-  v8->_privateICBuffer = a3;
-  v8->_maxCommandCount = a5;
+  v8->_privateICBuffer = buffer;
+  v8->_maxCommandCount = count;
   v8->_privateIndirectRenderEncoder = 0;
   v8->_privateIndirectComputeEncoder = 0;
-  v8->_descriptor = [a4 copy];
+  v8->_descriptor = [descriptor copy];
   v8->_internalHeader.size = v8->_maxCommandCount;
-  v8->_internalHeader.commandTypes = [a4 commandTypes];
+  v8->_internalHeader.commandTypes = [descriptor commandTypes];
   v8->_internalHeader.headerSize = 56;
-  v8->_internalHeader.inheritBuffers = [a4 inheritBuffers];
-  v8->_internalHeader.inheritPipelineState = [a4 inheritPipelineState];
-  v8->_internalHeader.maxFragmentBufferBindCount = [a4 maxFragmentBufferBindCount];
-  v8->_internalHeader.maxVertexBufferBindCount = [a4 maxVertexBufferBindCount];
-  v8->_internalHeader.maxKernelBufferBindCount = [a4 maxKernelBufferBindCount];
-  v8->_internalHeader.maxObjectBufferBindCount = [a4 maxObjectBufferBindCount];
-  v8->_internalHeader.maxMeshBufferBindCount = [a4 maxMeshBufferBindCount];
-  v8->_internalHeader.supportRayTracing = [a4 supportRayTracing];
-  v8->_internalHeader.supportDynamicAttributeStride = [a4 supportDynamicAttributeStride];
-  v8->_internalHeader.maxKernelThreadgroupMemoryBindCount = [a4 maxKernelThreadgroupMemoryBindCount];
-  v8->_internalHeader.maxObjectThreadgroupMemoryBindCount = [a4 maxObjectThreadgroupMemoryBindCount];
-  v8->_internalHeader.maxScissorRectCount = [a4 maxScissorRectCount];
-  v8->_internalHeader.maxViewportCount = [a4 maxViewportCount];
-  v8->_internalHeader.inheritDepthStencilState = [a4 inheritDepthStencilState];
-  v8->_internalHeader.inheritDepthBias = [a4 inheritDepthBias];
-  v8->_internalHeader.inheritStencilReferenceValues = [a4 inheritStencilReferenceValues];
-  v8->_internalHeader.inheritDepthClipMode = [a4 inheritDepthClipMode];
-  v8->_internalHeader.inheritCullMode = [a4 inheritCullMode];
-  v8->_internalHeader.inheritFrontFacingWinding = [a4 inheritFrontFacingWinding];
-  v8->_internalHeader.inheritTriangleFillMode = [a4 inheritTriangleFillMode];
-  v8->_internalHeader.inheritDepthTestBounds = [a4 inheritDepthTestBounds];
-  v8->_internalHeader.inheritScissorRects = [a4 inheritScissorRects];
-  v8->_internalHeader.inheritViewports = [a4 inheritViewports];
-  v8->_internalHeader.inheritBlendColor = [a4 inheritBlendColor];
-  v8->_internalHeader.allowOverrideRenderStates = [a4 allowOverrideRenderStates];
-  if ([a3 storageMode] != 2)
+  v8->_internalHeader.inheritBuffers = [descriptor inheritBuffers];
+  v8->_internalHeader.inheritPipelineState = [descriptor inheritPipelineState];
+  v8->_internalHeader.maxFragmentBufferBindCount = [descriptor maxFragmentBufferBindCount];
+  v8->_internalHeader.maxVertexBufferBindCount = [descriptor maxVertexBufferBindCount];
+  v8->_internalHeader.maxKernelBufferBindCount = [descriptor maxKernelBufferBindCount];
+  v8->_internalHeader.maxObjectBufferBindCount = [descriptor maxObjectBufferBindCount];
+  v8->_internalHeader.maxMeshBufferBindCount = [descriptor maxMeshBufferBindCount];
+  v8->_internalHeader.supportRayTracing = [descriptor supportRayTracing];
+  v8->_internalHeader.supportDynamicAttributeStride = [descriptor supportDynamicAttributeStride];
+  v8->_internalHeader.maxKernelThreadgroupMemoryBindCount = [descriptor maxKernelThreadgroupMemoryBindCount];
+  v8->_internalHeader.maxObjectThreadgroupMemoryBindCount = [descriptor maxObjectThreadgroupMemoryBindCount];
+  v8->_internalHeader.maxScissorRectCount = [descriptor maxScissorRectCount];
+  v8->_internalHeader.maxViewportCount = [descriptor maxViewportCount];
+  v8->_internalHeader.inheritDepthStencilState = [descriptor inheritDepthStencilState];
+  v8->_internalHeader.inheritDepthBias = [descriptor inheritDepthBias];
+  v8->_internalHeader.inheritStencilReferenceValues = [descriptor inheritStencilReferenceValues];
+  v8->_internalHeader.inheritDepthClipMode = [descriptor inheritDepthClipMode];
+  v8->_internalHeader.inheritCullMode = [descriptor inheritCullMode];
+  v8->_internalHeader.inheritFrontFacingWinding = [descriptor inheritFrontFacingWinding];
+  v8->_internalHeader.inheritTriangleFillMode = [descriptor inheritTriangleFillMode];
+  v8->_internalHeader.inheritDepthTestBounds = [descriptor inheritDepthTestBounds];
+  v8->_internalHeader.inheritScissorRects = [descriptor inheritScissorRects];
+  v8->_internalHeader.inheritViewports = [descriptor inheritViewports];
+  v8->_internalHeader.inheritBlendColor = [descriptor inheritBlendColor];
+  v8->_internalHeader.allowOverrideRenderStates = [descriptor allowOverrideRenderStates];
+  if ([buffer storageMode] != 2)
   {
-    v9 = [a4 commandTypes];
+    commandTypes = [descriptor commandTypes];
     v10 = *&v8->super._anon_50[32];
     privateICBuffer = v8->_privateICBuffer;
-    if ((v9 & 0x60) != 0)
+    if ((commandTypes & 0x60) != 0)
     {
       v8->_privateIndirectComputeEncoder = [v10 newIndirectComputeCommandEncoderWithBuffer:privateICBuffer];
       v12 = 2;
@@ -69,22 +69,22 @@
   return v8;
 }
 
-- (void)getHeader:(void *)a3 headerSize:(unint64_t *)a4
+- (void)getHeader:(void *)header headerSize:(unint64_t *)size
 {
-  if (a3)
+  if (header)
   {
-    *a3 = &self->_internalHeader;
+    *header = &self->_internalHeader;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 56;
+    *size = 56;
   }
 }
 
-- (void)resetWithRange:(_NSRange)a3
+- (void)resetWithRange:(_NSRange)range
 {
-  if (a3.location < a3.location + a3.length)
+  if (range.location < range.location + range.length)
   {
     v15 = v8;
     v16 = v7;
@@ -94,8 +94,8 @@
     v20 = v3;
     v21 = v9;
     v22 = v10;
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     do
     {
       privateIndirectRenderEncoder = self->_privateIndirectRenderEncoder;

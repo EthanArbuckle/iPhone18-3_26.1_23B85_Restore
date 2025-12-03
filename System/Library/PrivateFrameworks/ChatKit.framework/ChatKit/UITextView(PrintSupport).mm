@@ -8,60 +8,60 @@
 {
   v36[2] = *MEMORY[0x1E69E9840];
   v5 = a3;
-  v6 = [a1 textLayoutManager];
+  textLayoutManager = [self textLayoutManager];
 
-  if (!v6)
+  if (!textLayoutManager)
   {
-    [(UITextView(PrintSupport) *)a2 ck_drawVisibleTextInCurrentContextWithContainerView:a1];
+    [(UITextView(PrintSupport) *)a2 ck_drawVisibleTextInCurrentContextWithContainerView:self];
   }
 
-  [a1 alpha];
+  [self alpha];
   if (!CKFloatApproximatelyEqualToFloatWithTolerance(v7, 0.0, 0.00000999999975))
   {
-    [(UITextView(PrintSupport) *)a2 ck_drawVisibleTextInCurrentContextWithContainerView:a1];
+    [(UITextView(PrintSupport) *)a2 ck_drawVisibleTextInCurrentContextWithContainerView:self];
   }
 
-  [a1 setAlpha:1.0];
+  [self setAlpha:1.0];
   v35[0] = *MEMORY[0x1E69DB650];
-  v8 = [MEMORY[0x1E69DC888] linkColor];
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
   v35[1] = *MEMORY[0x1E69DB758];
-  v36[0] = v8;
+  v36[0] = linkColor;
   v36[1] = &unk_1F04E7698;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
-  [a1 setLinkTextAttributes:v9];
+  [self setLinkTextAttributes:v9];
 
-  v10 = [a1 textLayoutManager];
-  [a1 bounds];
-  [v10 ensureLayoutForBounds:?];
+  textLayoutManager2 = [self textLayoutManager];
+  [self bounds];
+  [textLayoutManager2 ensureLayoutForBounds:?];
 
-  [a1 bounds];
+  [self bounds];
   v12 = v11;
   v14 = v13;
-  [a1 textContainerInset];
+  [self textContainerInset];
   v16 = v15;
   v18 = v17;
-  [a1 convertPoint:v5 toView:{v12, v14}];
+  [self convertPoint:v5 toView:{v12, v14}];
   v20 = v19;
   v22 = v21;
 
-  v23 = [a1 textLayoutManager];
-  v24 = [v23 textViewportLayoutController];
-  v25 = [v24 viewportRange];
+  textLayoutManager3 = [self textLayoutManager];
+  textViewportLayoutController = [textLayoutManager3 textViewportLayoutController];
+  viewportRange = [textViewportLayoutController viewportRange];
 
-  v26 = [a1 textLayoutManager];
-  v27 = [v25 location];
+  textLayoutManager4 = [self textLayoutManager];
+  location = [viewportRange location];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __80__UITextView_PrintSupport__ck_drawVisibleTextInCurrentContextWithContainerView___block_invoke;
   v30[3] = &unk_1E72ECA38;
-  v31 = v25;
-  v32 = a1;
+  v31 = viewportRange;
+  selfCopy = self;
   v33 = v18 + v20;
   v34 = v16 + v22;
-  v28 = v25;
-  v29 = [v26 enumerateTextLayoutFragmentsFromLocation:v27 options:4 usingBlock:v30];
+  v28 = viewportRange;
+  v29 = [textLayoutManager4 enumerateTextLayoutFragmentsFromLocation:location options:4 usingBlock:v30];
 
-  [a1 setAlpha:0.0];
+  [self setAlpha:0.0];
 }
 
 - (void)ck_drawVisibleTextInCurrentContextWithContainerView:()PrintSupport .cold.1(uint64_t a1, uint64_t a2)

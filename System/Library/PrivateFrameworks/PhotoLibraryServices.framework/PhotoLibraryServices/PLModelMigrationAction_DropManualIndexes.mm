@@ -1,6 +1,6 @@
 @interface PLModelMigrationAction_DropManualIndexes
 - (BOOL)_dropManualIndexes;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DropManualIndexes
@@ -8,9 +8,9 @@
 - (BOOL)_dropManualIndexes
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = [(PLModelMigrationActionCore *)self pathManager];
-  v4 = [v3 photosDatabasePath];
-  v5 = PLOpenSQLTransactionWithDBPath([v4 fileSystemRepresentation]);
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  photosDatabasePath = [pathManager photosDatabasePath];
+  v5 = PLOpenSQLTransactionWithDBPath([photosDatabasePath fileSystemRepresentation]);
 
   if (v5)
   {
@@ -44,8 +44,8 @@
 
       if (v14)
       {
-        v15 = [(PLModelMigrationActionCore *)self logger];
-        v16 = v15 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v16 = logger == 0;
 
         if (v16)
         {
@@ -119,9 +119,9 @@ LABEL_5:
 
   if (v8)
   {
-    v9 = [(PLModelMigrationActionCore *)self logger];
+    logger2 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v9)
+    if (logger2)
     {
       v60 = 0u;
       v61 = 0u;
@@ -184,19 +184,19 @@ LABEL_5:
   return 0;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (![(PLModelMigrationAction_DropManualIndexes *)self _dropManualIndexes:a3])
+  if (![(PLModelMigrationAction_DropManualIndexes *)self _dropManualIndexes:context])
   {
     v5 = PLMigrationGetLog();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
 
     if (v6)
     {
-      v7 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v7)
+      if (logger)
       {
         v45 = 0u;
         v46 = 0u;

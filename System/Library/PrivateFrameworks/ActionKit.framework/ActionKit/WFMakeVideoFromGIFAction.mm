@@ -1,18 +1,18 @@
 @interface WFMakeVideoFromGIFAction
 - (void)cancel;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFMakeVideoFromGIFAction
 
 - (void)cancel
 {
-  v3 = [(WFMakeVideoFromGIFAction *)self cancelBlock];
+  cancelBlock = [(WFMakeVideoFromGIFAction *)self cancelBlock];
 
-  if (v3)
+  if (cancelBlock)
   {
-    v4 = [(WFMakeVideoFromGIFAction *)self cancelBlock];
-    v4[2]();
+    cancelBlock2 = [(WFMakeVideoFromGIFAction *)self cancelBlock];
+    cancelBlock2[2]();
 
     [(WFMakeVideoFromGIFAction *)self setCancelBlock:0];
   }
@@ -22,11 +22,11 @@
   [(WFMakeVideoFromGIFAction *)&v5 cancel];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = MEMORY[0x277D79F68];
   v5 = *MEMORY[0x277CE1D88];
-  v6 = a3;
+  inputCopy = input;
   v7 = [v4 typeWithUTType:v5];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -38,7 +38,7 @@
   v8[2] = __55__WFMakeVideoFromGIFAction_runAsynchronouslyWithInput___block_invoke_3;
   v8[3] = &unk_278C21E70;
   v8[4] = self;
-  [v6 transformFirstFileRepresentationForType:v7 usingBlock:v9 completionHandler:v8];
+  [inputCopy transformFirstFileRepresentationForType:v7 usingBlock:v9 completionHandler:v8];
 }
 
 void __55__WFMakeVideoFromGIFAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

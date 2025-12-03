@@ -1,8 +1,8 @@
 @interface FPStringFormat
-+ (id)formatForPlistObject:(id)a3 localizationLookup:(id)a4;
-+ (id)formatForStringFormatDict:(id)a3 localizationLookup:(id)a4;
++ (id)formatForPlistObject:(id)object localizationLookup:(id)lookup;
++ (id)formatForStringFormatDict:(id)dict localizationLookup:(id)lookup;
 - (NSArray)keyPaths;
-- (id)evaluateWithValuesByName:(id)a3 error:(id *)a4;
+- (id)evaluateWithValuesByName:(id)name error:(id *)error;
 @end
 
 @implementation FPStringFormat
@@ -14,15 +14,15 @@
   return v2;
 }
 
-+ (id)formatForPlistObject:(id)a3 localizationLookup:(id)a4
++ (id)formatForPlistObject:(id)object localizationLookup:(id)lookup
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  lookupCopy = lookup;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = objc_opt_new();
-    v9 = [v7 localizedStringForKey:v6];
+    v9 = [lookupCopy localizedStringForKey:objectCopy];
     if (v9)
     {
       v10 = v9;
@@ -30,7 +30,7 @@
 
     else
     {
-      v10 = v6;
+      v10 = objectCopy;
     }
 
     [v8 setFormat:v10];
@@ -41,7 +41,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [a1 formatForStringFormatDict:v6 localizationLookup:v7];
+      v8 = [self formatForStringFormatDict:objectCopy localizationLookup:lookupCopy];
     }
 
     else
@@ -59,16 +59,16 @@
   return v8;
 }
 
-+ (id)formatForStringFormatDict:(id)a3 localizationLookup:(id)a4
++ (id)formatForStringFormatDict:(id)dict localizationLookup:(id)lookup
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"NSStringFormat"];
+  dictCopy = dict;
+  lookupCopy = lookup;
+  v7 = [dictCopy objectForKey:@"NSStringFormat"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 localizedStringForKey:v7];
+    v8 = [lookupCopy localizedStringForKey:v7];
     v9 = v8;
     if (v8)
     {
@@ -77,7 +77,7 @@
       v7 = v10;
     }
 
-    v11 = [v5 objectForKey:@"NSStringFormatValues"];
+    v11 = [dictCopy objectForKey:@"NSStringFormatValues"];
     v12 = v11;
     v13 = MEMORY[0x1E695E0F0];
     if (v11)
@@ -92,7 +92,7 @@
     {
       if ([v14 count] < 0xB)
       {
-        v26 = v6;
+        v26 = lookupCopy;
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
@@ -141,7 +141,7 @@
         [v16 setFormat:v7];
         [v16 setKeyPaths:v17];
 LABEL_28:
-        v6 = v26;
+        lookupCopy = v26;
         goto LABEL_29;
       }
 
@@ -181,12 +181,12 @@ LABEL_30:
   return v16;
 }
 
-- (id)evaluateWithValuesByName:(id)a3 error:(id *)a4
+- (id)evaluateWithValuesByName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(FPStringFormat *)self format];
-  v8 = [(FPStringFormat *)self keyPaths];
-  v9 = [v7 fp_localizedFormatWithKeys:v8 fromDictionary:v6 error:a4];
+  nameCopy = name;
+  format = [(FPStringFormat *)self format];
+  keyPaths = [(FPStringFormat *)self keyPaths];
+  v9 = [format fp_localizedFormatWithKeys:keyPaths fromDictionary:nameCopy error:error];
 
   return v9;
 }

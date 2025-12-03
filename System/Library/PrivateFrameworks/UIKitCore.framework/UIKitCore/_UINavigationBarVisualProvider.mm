@@ -1,13 +1,13 @@
 @interface _UINavigationBarVisualProvider
-- ($1AB5FA073B851C12C2339EC22442E995)layoutHeightsFittingWidth:(double)a3;
+- ($1AB5FA073B851C12C2339EC22442E995)layoutHeightsFittingWidth:(double)width;
 - (CGSize)intrinsicContentSize;
 - (NSDirectionalEdgeInsets)resolvedLargeTitleMargins;
-- (_UINavigationBarVisualProvider)initWithNavigationBar:(id)a3;
+- (_UINavigationBarVisualProvider)initWithNavigationBar:(id)bar;
 - (id)description;
 - (id)restingHeights;
-- (void)popAnimated:(BOOL)a3 completion:(id)a4;
-- (void)pushAnimated:(BOOL)a3 completion:(id)a4;
-- (void)setStack:(id)a3;
+- (void)popAnimated:(BOOL)animated completion:(id)completion;
+- (void)pushAnimated:(BOOL)animated completion:(id)completion;
+- (void)setStack:(id)stack;
 - (void)teardown;
 @end
 
@@ -33,33 +33,33 @@
   self->_stack = 0;
 }
 
-- (_UINavigationBarVisualProvider)initWithNavigationBar:(id)a3
+- (_UINavigationBarVisualProvider)initWithNavigationBar:(id)bar
 {
   v5.receiver = self;
   v5.super_class = _UINavigationBarVisualProvider;
   result = [(_UINavigationBarVisualProvider *)&v5 init];
   if (result)
   {
-    result->_navigationBar = a3;
+    result->_navigationBar = bar;
   }
 
   return result;
 }
 
-- (void)setStack:(id)a3
+- (void)setStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   stack = self->_stack;
-  if (stack != v4)
+  if (stack != stackCopy)
   {
-    v9 = v4;
-    v6 = v4;
+    v9 = stackCopy;
+    v6 = stackCopy;
     v7 = self->_stack;
     self->_stack = v6;
-    v8 = stack;
+    stackCopy2 = stack;
 
-    [(_UINavigationBarVisualProvider *)self stackDidChangeFrom:v8];
-    v4 = v9;
+    [(_UINavigationBarVisualProvider *)self stackDidChangeFrom:stackCopy2];
+    stackCopy = v9;
   }
 }
 
@@ -71,9 +71,9 @@
   return result;
 }
 
-- ($1AB5FA073B851C12C2339EC22442E995)layoutHeightsFittingWidth:(double)a3
+- ($1AB5FA073B851C12C2339EC22442E995)layoutHeightsFittingWidth:(double)width
 {
-  [(_UINavigationBarVisualProvider *)self sizeThatFits:a3, 0.0];
+  [(_UINavigationBarVisualProvider *)self sizeThatFits:width, 0.0];
   v4 = v3;
   v5 = v3;
   result.var2 = v5;
@@ -94,24 +94,24 @@
   return v5;
 }
 
-- (void)pushAnimated:(BOOL)a3 completion:(id)a4
+- (void)pushAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a3;
+  animatedCopy = animated;
   navigationBar = self->_navigationBar;
-  v7 = a4;
-  v9 = [(UINavigationBar *)navigationBar _stack];
-  v8 = [v9 transitionAssistant];
-  (*(a4 + 2))(v7, v5, v8);
+  completionCopy = completion;
+  _stack = [(UINavigationBar *)navigationBar _stack];
+  transitionAssistant = [_stack transitionAssistant];
+  (*(completion + 2))(completionCopy, animatedCopy, transitionAssistant);
 }
 
-- (void)popAnimated:(BOOL)a3 completion:(id)a4
+- (void)popAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a3;
+  animatedCopy = animated;
   navigationBar = self->_navigationBar;
-  v7 = a4;
-  v9 = [(UINavigationBar *)navigationBar _stack];
-  v8 = [v9 transitionAssistant];
-  (*(a4 + 2))(v7, v5, v8);
+  completionCopy = completion;
+  _stack = [(UINavigationBar *)navigationBar _stack];
+  transitionAssistant = [_stack transitionAssistant];
+  (*(completion + 2))(completionCopy, animatedCopy, transitionAssistant);
 }
 
 - (id)description

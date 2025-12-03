@@ -1,7 +1,7 @@
 @interface PKTextAttachmentDrawingViewProvider
-+ (Class)drawingClassForFileType:(id)a3;
-+ (Class)drawingViewClassForDrawingClass:(Class)a3;
-+ (Class)tiledViewClassForDrawingClass:(Class)a3;
++ (Class)drawingClassForFileType:(id)type;
++ (Class)drawingViewClassForDrawingClass:(Class)class;
++ (Class)tiledViewClassForDrawingClass:(Class)class;
 + (void)registerViewProviderClassIfNecessary;
 - (id)location;
 - (void)loadView;
@@ -25,64 +25,64 @@
 
 - (id)location
 {
-  v3 = [(PKTextAttachmentDrawingViewProvider *)self updatedLocationForRecycledViewProvider];
-  v4 = v3;
-  if (v3)
+  updatedLocationForRecycledViewProvider = [(PKTextAttachmentDrawingViewProvider *)self updatedLocationForRecycledViewProvider];
+  v4 = updatedLocationForRecycledViewProvider;
+  if (updatedLocationForRecycledViewProvider)
   {
-    v5 = v3;
+    location = updatedLocationForRecycledViewProvider;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PKTextAttachmentDrawingViewProvider;
-    v5 = [(NSTextAttachmentViewProvider *)&v8 location];
+    location = [(NSTextAttachmentViewProvider *)&v8 location];
   }
 
-  v6 = v5;
+  v6 = location;
 
   return v6;
 }
 
 - (void)loadView
 {
-  v3 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  v4 = [v3 pkInserting];
+  textAttachment = [(NSTextAttachmentViewProvider *)self textAttachment];
+  pkInserting = [textAttachment pkInserting];
 
-  v5 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  [v5 setPkInserting:0];
+  textAttachment2 = [(NSTextAttachmentViewProvider *)self textAttachment];
+  [textAttachment2 setPkInserting:0];
 
-  v6 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  v7 = [v6 fileType];
-  v8 = [PKTextAttachmentDrawingViewProvider drawingClassForFileType:v7];
+  textAttachment3 = [(NSTextAttachmentViewProvider *)self textAttachment];
+  fileType = [textAttachment3 fileType];
+  v8 = [PKTextAttachmentDrawingViewProvider drawingClassForFileType:fileType];
 
   v9 = objc_alloc([PKTextAttachmentDrawingViewProvider drawingViewClassForDrawingClass:v8]);
-  v10 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  v11 = [v9 initWithAttachment:v10 drawingClass:v8 inserted:v4];
+  textAttachment4 = [(NSTextAttachmentViewProvider *)self textAttachment];
+  v11 = [v9 initWithAttachment:textAttachment4 drawingClass:v8 inserted:pkInserting];
   [(NSTextAttachmentViewProvider *)self setView:v11];
 
-  v12 = [(NSTextAttachmentViewProvider *)self view];
-  [v12 bounds];
+  view = [(NSTextAttachmentViewProvider *)self view];
+  [view bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  [v21 setBounds:{v14, v16, v18, v20}];
+  textAttachment5 = [(NSTextAttachmentViewProvider *)self textAttachment];
+  [textAttachment5 setBounds:{v14, v16, v18, v20}];
 
-  v22 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  [v22 setEmbeddingType:1];
+  textAttachment6 = [(NSTextAttachmentViewProvider *)self textAttachment];
+  [textAttachment6 setEmbeddingType:1];
 
-  v23 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  [v23 setStandaloneAlignment:1];
+  textAttachment7 = [(NSTextAttachmentViewProvider *)self textAttachment];
+  [textAttachment7 setStandaloneAlignment:1];
 
-  v24 = [(NSTextAttachmentViewProvider *)self textAttachment];
-  [v24 setLineLayoutPadding:0.0];
+  textAttachment8 = [(NSTextAttachmentViewProvider *)self textAttachment];
+  [textAttachment8 setLineLayoutPadding:0.0];
 }
 
-+ (Class)drawingClassForFileType:(id)a3
++ (Class)drawingClassForFileType:(id)type
 {
-  if ([a3 isEqualToString:@"com.apple.paper"])
+  if ([type isEqualToString:@"com.apple.paper"])
   {
     v3 = +[PKDrawing drawingClassForPaper];
   }
@@ -95,20 +95,20 @@
   return v3;
 }
 
-+ (Class)drawingViewClassForDrawingClass:(Class)a3
++ (Class)drawingViewClassForDrawingClass:(Class)class
 {
   v5 = objc_opt_class();
-  if (+[PKDrawing drawingClassForPaper]== a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (+[PKDrawing drawingClassForPaper]== class && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [a1 drawingViewClassForPaper];
+    drawingViewClassForPaper = [self drawingViewClassForPaper];
 LABEL_7:
-    v5 = v6;
+    v5 = drawingViewClassForPaper;
     goto LABEL_8;
   }
 
-  if (objc_opt_class() == a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (objc_opt_class() == class && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [a1 inlineDrawingViewClassForPaper];
+    drawingViewClassForPaper = [self inlineDrawingViewClassForPaper];
     goto LABEL_7;
   }
 
@@ -117,20 +117,20 @@ LABEL_8:
   return v5;
 }
 
-+ (Class)tiledViewClassForDrawingClass:(Class)a3
++ (Class)tiledViewClassForDrawingClass:(Class)class
 {
-  v5 = objc_opt_class();
-  if (+[PKDrawing drawingClassForPaper]== a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  tiledViewClassForPaper = objc_opt_class();
+  if (+[PKDrawing drawingClassForPaper]== class && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [a1 tiledViewClassForPaper];
+    tiledViewClassForPaper = [self tiledViewClassForPaper];
   }
 
-  if (objc_opt_class() == a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (objc_opt_class() == class && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [a1 inlineDrawingTiledViewClassForPaper];
+    tiledViewClassForPaper = [self inlineDrawingTiledViewClassForPaper];
   }
 
-  return v5;
+  return tiledViewClassForPaper;
 }
 
 @end

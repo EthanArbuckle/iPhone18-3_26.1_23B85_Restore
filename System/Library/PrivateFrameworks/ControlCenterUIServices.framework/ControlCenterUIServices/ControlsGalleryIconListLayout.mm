@@ -1,18 +1,18 @@
 @interface ControlsGalleryIconListLayout
-- (CGSize)iconSpacingForOrientation:(int64_t)a3;
+- (CGSize)iconSpacingForOrientation:(int64_t)orientation;
 - (SBHIconGridSizeClassSet)supportedIconGridSizeClasses;
 - (SBHIconGridSizeClassSizeMap)iconGridSizeClassSizes;
 - (SBIconImageInfo)iconImageInfo;
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3;
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3;
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class;
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation;
 - (_TtC23ControlCenterUIServices29ControlsGalleryIconListLayout)init;
 @end
 
 @implementation ControlsGalleryIconListLayout
 
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation
 {
-  MEMORY[0x2821DE4B8](10, a2, a3, 28.0);
+  MEMORY[0x2821DE4B8](10, a2, orientation, 28.0);
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -22,16 +22,16 @@
 
 - (SBIconImageInfo)iconImageInfo
 {
-  v3 = self;
+  selfCopy = self;
   v4 = SBHIconGridSizeClassForCCUIGridSizeClass(0);
   sub_2442A5AB0(v4);
 
   return result;
 }
 
-- (CGSize)iconSpacingForOrientation:(int64_t)a3
+- (CGSize)iconSpacingForOrientation:(int64_t)orientation
 {
-  v3 = self;
+  selfCopy = self;
   sub_2442A5C6C();
   v5 = v4;
 
@@ -45,9 +45,9 @@
 - (SBHIconGridSizeClassSizeMap)iconGridSizeClassSizes
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
+  selfCopy = self;
+  sharedApplication = [v3 sharedApplication];
+  preferredContentSizeCategory = [sharedApplication preferredContentSizeCategory];
 
   v7 = *MEMORY[0x277D767F8];
   if (sub_2442B4A78())
@@ -58,7 +58,7 @@
   else
   {
 
-    v8 = *(&v4->super.isa + OBJC_IVAR____TtC23ControlCenterUIServices29ControlsGalleryIconListLayout_realIconGridSizeClassSizes);
+    v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtC23ControlCenterUIServices29ControlsGalleryIconListLayout_realIconGridSizeClassSizes);
   }
 
   return v8;
@@ -66,16 +66,16 @@
 
 - (SBHIconGridSizeClassSet)supportedIconGridSizeClasses
 {
-  v2 = [objc_opt_self() controlCenterDomain];
-  v3 = [v2 allNonDefaultGridSizeClasses];
+  controlCenterDomain = [objc_opt_self() controlCenterDomain];
+  allNonDefaultGridSizeClasses = [controlCenterDomain allNonDefaultGridSizeClasses];
 
-  return v3;
+  return allNonDefaultGridSizeClasses;
 }
 
-- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)a3
+- (SBIconImageInfo)iconImageInfoForGridSizeClass:(SEL)class
 {
   v5 = a4;
-  v6 = self;
+  selfCopy = self;
   sub_2442A5AB0(v5);
 
   return result;

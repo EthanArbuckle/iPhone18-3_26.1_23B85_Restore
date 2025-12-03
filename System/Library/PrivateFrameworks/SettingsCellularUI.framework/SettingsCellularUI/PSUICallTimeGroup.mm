@@ -1,23 +1,23 @@
 @interface PSUICallTimeGroup
 - (PSListController)hostController;
-- (PSUICallTimeGroup)initWithListController:(id)a3;
-- (id)callTimeDurationRestrictedToCurrentPeriod:(BOOL)a3;
+- (PSUICallTimeGroup)initWithListController:(id)controller;
+- (id)callTimeDurationRestrictedToCurrentPeriod:(BOOL)period;
 - (id)specifiers;
 - (void)handleCallTimersChanged;
 @end
 
 @implementation PSUICallTimeGroup
 
-- (PSUICallTimeGroup)initWithListController:(id)a3
+- (PSUICallTimeGroup)initWithListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = PSUICallTimeGroup;
   v5 = [(PSUICallTimeGroup *)&v28 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_hostController, v4);
+    objc_storeWeak(&v5->_hostController, controllerCopy);
     v7 = objc_alloc_init(MEMORY[0x277CF7D40]);
     callHistoryManager = v6->_callHistoryManager;
     v6->_callHistoryManager = v7;
@@ -49,8 +49,8 @@
 
     [(PSSpecifier *)v6->_lifetimeCallTimeSpecifier setIdentifier:@"CALL_TIME_TOTAL"];
     [(PSSpecifier *)v6->_lifetimeCallTimeSpecifier setProperty:v20 forKey:v19];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v6 selector:sel_handleCallTimersChanged name:*MEMORY[0x277CF7E20] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_handleCallTimersChanged name:*MEMORY[0x277CF7E20] object:0];
   }
 
   return v6;
@@ -59,8 +59,8 @@
 - (id)specifiers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICallTimeGroup *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICallTimeGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = "not null";
     if (self->_groupSpecifier)
@@ -95,7 +95,7 @@
     v16 = v7;
     v17 = 2080;
     v18 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Call time group returning, group: %s, current: %s, lifetime: %s", buf, 0x20u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Call time group returning, group: %s, current: %s, lifetime: %s", buf, 0x20u);
   }
 
   v11 = *&self->_groupSpecifier;
@@ -109,13 +109,13 @@
 - (void)handleCallTimersChanged
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICallTimeGroup *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICallTimeGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = *MEMORY[0x277CF7E20];
     *buf = 138412290;
     v9 = v4;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Call time group received notification %@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Call time group received notification %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
@@ -144,23 +144,23 @@ void __44__PSUICallTimeGroup_handleCallTimersChanged__block_invoke(uint64_t a1)
   [v7 reloadSpecifier:v6 animated:1];
 }
 
-- (id)callTimeDurationRestrictedToCurrentPeriod:(BOOL)a3
+- (id)callTimeDurationRestrictedToCurrentPeriod:(BOOL)period
 {
-  v3 = a3;
-  v5 = [(PSUICallTimeGroup *)self callHistoryManager];
-  [v5 callTimersGetOutgoing];
+  periodCopy = period;
+  callHistoryManager = [(PSUICallTimeGroup *)self callHistoryManager];
+  [callHistoryManager callTimersGetOutgoing];
   v7 = v6;
-  v8 = [(PSUICallTimeGroup *)self callHistoryManager];
-  [v8 callTimersGetIncoming];
+  callHistoryManager2 = [(PSUICallTimeGroup *)self callHistoryManager];
+  [callHistoryManager2 callTimersGetIncoming];
   v10 = v7 + v9;
 
-  v11 = [(PSUICallTimeGroup *)self callHistoryManager];
-  [v11 callTimersGetLifetime];
+  callHistoryManager3 = [(PSUICallTimeGroup *)self callHistoryManager];
+  [callHistoryManager3 callTimersGetLifetime];
   v13 = v12;
 
   v14 = ceil(v10 / 60.0);
   v15 = ceil(v13 / 60.0);
-  if (!v3)
+  if (!periodCopy)
   {
     v14 = v15;
   }

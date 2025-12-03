@@ -1,16 +1,16 @@
 @interface CPCompoundGraphicMaker
-+ (BOOL)makeCompoundGraphicsInZonesOf:(id)a3;
++ (BOOL)makeCompoundGraphicsInZonesOf:(id)of;
 - (BOOL)findClusterLevel;
 - (BOOL)groupOverlappingGraphics;
 - (BOOL)makeCompoundGraphics;
 - (BOOL)makeCompoundGraphicsFromShapeGroups;
-- (CPCompoundGraphicMaker)initWithGraphicsIn:(id)a3 ofClass:(Class)a4;
-- (void)addGroupInfoWithIndex:(unsigned int)a3 bounds:(CGRect)a4;
+- (CPCompoundGraphicMaker)initWithGraphicsIn:(id)in ofClass:(Class)class;
+- (void)addGroupInfoWithIndex:(unsigned int)index bounds:(CGRect)bounds;
 - (void)coalesceShapeGroups;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
-- (void)makeCompoundGraphicFromShapesAtIndex:(unsigned int)a3 count:(unsigned int)a4;
+- (void)makeCompoundGraphicFromShapesAtIndex:(unsigned int)index count:(unsigned int)count;
 @end
 
 @implementation CPCompoundGraphicMaker
@@ -183,16 +183,16 @@ LABEL_29:
   [(CPCluster *)v53 findClustersFromDifferences:v55 count:v7];
   if ([(CPCompoundGraphicMaker *)self findClusterLevel])
   {
-    v2 = [(CPCompoundGraphicMaker *)self groupOverlappingGraphics];
+    groupOverlappingGraphics = [(CPCompoundGraphicMaker *)self groupOverlappingGraphics];
   }
 
   else
   {
-    v2 = 0;
+    groupOverlappingGraphics = 0;
   }
 
   free(v55);
-  return v2;
+  return groupOverlappingGraphics;
 }
 
 - (BOOL)groupOverlappingGraphics
@@ -210,14 +210,14 @@ LABEL_29:
   }
 
   self->groupInfoArray = malloc_type_malloc(v4, 0x1000040B4E0BC51uLL);
-  v5 = [(CPCluster *)self->cluster clusterCount];
-  if (v5)
+  clusterCount = [(CPCluster *)self->cluster clusterCount];
+  if (clusterCount)
   {
-    v6 = v5;
+    v6 = clusterCount;
     v7 = 0;
     v8 = 0;
     v9 = 0;
-    v36 = v5;
+    v36 = clusterCount;
     while (1)
     {
       v10 = self->cluster;
@@ -251,7 +251,7 @@ LABEL_31:
       }
     }
 
-    v16 = 0;
+    zOrder = 0;
     width = 0.0;
     v18 = 1;
     x = INFINITY;
@@ -267,7 +267,7 @@ LABEL_31:
         y = v24;
         width = v25;
         height = v26;
-        v16 = [v13 zOrder];
+        zOrder = [v13 zOrder];
       }
 
       if (v14 >= v12)
@@ -286,7 +286,7 @@ LABEL_31:
         goto LABEL_21;
       }
 
-      if ([v13 zOrder] > v16 + 1)
+      if ([v13 zOrder] > zOrder + 1)
       {
         goto LABEL_23;
       }
@@ -309,7 +309,7 @@ LABEL_21:
         width = v41.size.width;
         height = v41.size.height;
         ++v18;
-        v16 = [v13 zOrder];
+        zOrder = [v13 zOrder];
         goto LABEL_25;
       }
 
@@ -446,27 +446,27 @@ LABEL_23:
   }
 }
 
-- (void)makeCompoundGraphicFromShapesAtIndex:(unsigned int)a3 count:(unsigned int)a4
+- (void)makeCompoundGraphicFromShapesAtIndex:(unsigned int)index count:(unsigned int)count
 {
   v12 = objc_alloc_init(CPCompoundGraphic);
-  v7 = a4 + a3;
-  if (v7 > a3)
+  v7 = count + index;
+  if (v7 > index)
   {
     v8 = 0;
-    v9 = a3;
+    indexCopy = index;
 LABEL_3:
-    v10 = v7 - v9;
+    v10 = v7 - indexCopy;
     do
     {
-      v11 = self->shapes[v9];
+      v11 = self->shapes[indexCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         [(CPChunk *)v12 addChildrenOf:v11];
         [v11 remove];
-        ++v9;
+        ++indexCopy;
         v8 = 1;
-        if (v7 != v9)
+        if (v7 != indexCopy)
         {
           goto LABEL_3;
         }
@@ -475,7 +475,7 @@ LABEL_3:
       }
 
       [(CPChunk *)v12 add:v11];
-      ++v9;
+      ++indexCopy;
       --v10;
     }
 
@@ -493,12 +493,12 @@ LABEL_11:
   [(CPChunk *)self->parentChunk add:v12];
 }
 
-- (void)addGroupInfoWithIndex:(unsigned int)a3 bounds:(CGRect)a4
+- (void)addGroupInfoWithIndex:(unsigned int)index bounds:(CGRect)bounds
 {
   groupInfoArray = self->groupInfoArray;
-  groupInfoArray[self->groupInfoCount].var0 = a3;
+  groupInfoArray[self->groupInfoCount].var0 = index;
   groupInfoCount = self->groupInfoCount;
-  groupInfoArray[groupInfoCount].var1 = a4;
+  groupInfoArray[groupInfoCount].var1 = bounds;
   self->groupInfoCount = groupInfoCount + 1;
 }
 
@@ -525,10 +525,10 @@ LABEL_11:
     v4 = 0.75;
   }
 
-  v5 = [(CPCluster *)self->cluster levels];
-  if (v5)
+  levels = [(CPCluster *)self->cluster levels];
+  if (levels)
   {
-    v6 = v5;
+    v6 = levels;
     v7 = 0;
     v8 = 0;
     while (1)
@@ -644,7 +644,7 @@ LABEL_11:
   }
 }
 
-- (CPCompoundGraphicMaker)initWithGraphicsIn:(id)a3 ofClass:(Class)a4
+- (CPCompoundGraphicMaker)initWithGraphicsIn:(id)in ofClass:(Class)class
 {
   v18.receiver = self;
   v18.super_class = CPCompoundGraphicMaker;
@@ -652,17 +652,17 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v6->parentChunk = a3;
-    v6->shapesAreVectorGraphics = objc_opt_class() == a4;
-    v8 = [(CPObject *)v7->parentChunk countOfClass:a4];
+    v6->parentChunk = in;
+    v6->shapesAreVectorGraphics = objc_opt_class() == class;
+    v8 = [(CPObject *)v7->parentChunk countOfClass:class];
     v7->shapeCount = v8;
     if (v8)
     {
       v7->shapes = malloc_type_malloc(8 * v8, 0x80040B8603338uLL);
-      v9 = [(CPObject *)v7->parentChunk children];
+      children = [(CPObject *)v7->parentChunk children];
       shapes = v7->shapes;
       shapeCount = v7->shapeCount;
-      v12 = [v9 count];
+      v12 = [children count];
       v13 = v12;
       if (v12)
       {
@@ -670,7 +670,7 @@ LABEL_11:
         v15 = &shapes[shapeCount];
         do
         {
-          v16 = [v9 objectAtIndex:v14];
+          v16 = [children objectAtIndex:v14];
           if (objc_opt_isKindOfClass())
           {
             *shapes++ = v16;
@@ -693,25 +693,25 @@ LABEL_11:
   return v7;
 }
 
-+ (BOOL)makeCompoundGraphicsInZonesOf:(id)a3
++ (BOOL)makeCompoundGraphicsInZonesOf:(id)of
 {
-  v4 = [[CPCompoundGraphicMaker alloc] initWithGraphicsIn:a3 ofClass:objc_opt_class()];
-  v5 = [(CPCompoundGraphicMaker *)v4 makeCompoundGraphics];
+  v4 = [[CPCompoundGraphicMaker alloc] initWithGraphicsIn:of ofClass:objc_opt_class()];
+  makeCompoundGraphics = [(CPCompoundGraphicMaker *)v4 makeCompoundGraphics];
   [(CPCompoundGraphicMaker *)v4 dispose];
 
-  v6 = [[CPCompoundGraphicMaker alloc] initWithGraphicsIn:a3 ofClass:objc_opt_class()];
-  v7 = [(CPCompoundGraphicMaker *)v6 makeCompoundGraphics]|| v5;
+  v6 = [[CPCompoundGraphicMaker alloc] initWithGraphicsIn:of ofClass:objc_opt_class()];
+  v7 = [(CPCompoundGraphicMaker *)v6 makeCompoundGraphics]|| makeCompoundGraphics;
   [(CPCompoundGraphicMaker *)v6 dispose];
 
-  v8 = [a3 children];
-  v9 = [v8 count];
+  children = [of children];
+  v9 = [children count];
   v10 = v9;
   if (v9)
   {
     v11 = 0;
     do
     {
-      v12 = [v8 objectAtIndex:v11];
+      v12 = [children objectAtIndex:v11];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {

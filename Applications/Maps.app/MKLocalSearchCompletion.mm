@@ -1,16 +1,16 @@
 @interface MKLocalSearchCompletion
-- (id)entryWithTicket:(id)a3;
-- (void)updateModel:(id)a3;
+- (id)entryWithTicket:(id)ticket;
+- (void)updateModel:(id)model;
 @end
 
 @implementation MKLocalSearchCompletion
 
-- (id)entryWithTicket:(id)a3
+- (id)entryWithTicket:(id)ticket
 {
-  v4 = a3;
-  v5 = [(MKLocalSearchCompletion *)self mapItem];
-  v6 = v5;
-  if (v5)
+  ticketCopy = ticket;
+  mapItem = [(MKLocalSearchCompletion *)self mapItem];
+  v6 = mapItem;
+  if (mapItem)
   {
     v7 = 1;
   }
@@ -21,47 +21,47 @@
   }
 
   v8 = [[GEORPSuggestionEntry alloc] initWithType:v7];
-  if (v4 && v6)
+  if (ticketCopy && v6)
   {
-    v9 = [(MKLocalSearchCompletion *)self mapItem];
-    v10 = [v9 _identifier];
+    mapItem2 = [(MKLocalSearchCompletion *)self mapItem];
+    _identifier = [mapItem2 _identifier];
 
-    [v4 applyToSuggestionEntry:v8 withAutocompleteSearchResultIdentifier:v10];
+    [ticketCopy applyToSuggestionEntry:v8 withAutocompleteSearchResultIdentifier:_identifier];
   }
 
   else
   {
-    v11 = [(MKLocalSearchCompletion *)self title];
-    [v8 safeAddDisplayLine:v11];
+    title = [(MKLocalSearchCompletion *)self title];
+    [v8 safeAddDisplayLine:title];
 
-    v10 = [(MKLocalSearchCompletion *)self subtitle];
-    [v8 safeAddDisplayLine:v10];
+    _identifier = [(MKLocalSearchCompletion *)self subtitle];
+    [v8 safeAddDisplayLine:_identifier];
   }
 
   return v8;
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v9 = a3;
-  v4 = [(MKLocalSearchCompletion *)self mapItem];
-  [v4 updateModel:v9];
+  modelCopy = model;
+  mapItem = [(MKLocalSearchCompletion *)self mapItem];
+  [mapItem updateModel:modelCopy];
 
-  v5 = [(MKLocalSearchCompletion *)self displayLines];
-  if ([v5 count])
+  displayLines = [(MKLocalSearchCompletion *)self displayLines];
+  if ([displayLines count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
-    [v9 setFirstLine:v6];
+    v6 = [displayLines objectAtIndexedSubscript:0];
+    [modelCopy setFirstLine:v6];
   }
 
-  if ([v5 count] >= 2)
+  if ([displayLines count] >= 2)
   {
-    v7 = [v5 objectAtIndexedSubscript:1];
-    [v9 setSecondLine:v7];
+    v7 = [displayLines objectAtIndexedSubscript:1];
+    [modelCopy setSecondLine:v7];
   }
 
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[LocalSearch lines=%lu]", [v5 count]);
-  [v9 setDebugSubtitle:v8];
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[LocalSearch lines=%lu]", [displayLines count]);
+  [modelCopy setDebugSubtitle:v8];
 }
 
 @end

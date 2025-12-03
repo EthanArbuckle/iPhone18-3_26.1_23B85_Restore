@@ -1,29 +1,29 @@
 @interface SSItemImageCollection
-- (SSItemImageCollection)initWithImageCollection:(id)a3;
-- (SSItemImageCollection)initWithItemImages:(id)a3;
-- (SSItemImageCollection)initWithXPCEncoding:(id)a3;
-- (id)_imagesForSize:(CGSize)a3 scale:(double)a4;
-- (id)_newImagesForDictionary:(id)a3;
-- (id)bestImageForSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSItemImageCollection)initWithImageCollection:(id)collection;
+- (SSItemImageCollection)initWithItemImages:(id)images;
+- (SSItemImageCollection)initWithXPCEncoding:(id)encoding;
+- (id)_imagesForSize:(CGSize)size scale:(double)scale;
+- (id)_newImagesForDictionary:(id)dictionary;
+- (id)bestImageForSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (id)imagesForKind:(id)a3;
-- (id)imagesForSize:(CGSize)a3;
+- (id)imagesForKind:(id)kind;
+- (id)imagesForSize:(CGSize)size;
 - (void)dealloc;
 @end
 
 @implementation SSItemImageCollection
 
-- (SSItemImageCollection)initWithImageCollection:(id)a3
+- (SSItemImageCollection)initWithImageCollection:(id)collection
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a3)
+  if (collection)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      a3 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+      collection = [MEMORY[0x1E695DEC8] arrayWithObject:collection];
     }
   }
 
@@ -31,7 +31,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [collection countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,7 +43,7 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(collection);
         }
 
         v9 = *(*(&v22 + 1) + 8 * v8);
@@ -85,7 +85,7 @@
       }
 
       while (v8 != v6);
-      v6 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [collection countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -96,14 +96,14 @@
   return v15;
 }
 
-- (SSItemImageCollection)initWithItemImages:(id)a3
+- (SSItemImageCollection)initWithItemImages:(id)images
 {
   v6.receiver = self;
   v6.super_class = SSItemImageCollection;
   v4 = [(SSItemImageCollection *)&v6 init];
   if (v4)
   {
-    v4->_itemImages = [a3 copy];
+    v4->_itemImages = [images copy];
   }
 
   return v4;
@@ -116,16 +116,16 @@
   [(SSItemImageCollection *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [(NSArray *)self->_itemImages copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [(NSArray *)self->_itemImages copyWithZone:zone];
   return v5;
 }
 
-- (id)bestImageForSize:(CGSize)a3
+- (id)bestImageForSize:(CGSize)size
 {
-  v3 = [(SSItemImageCollection *)self imagesForSize:a3.width, a3.height];
+  v3 = [(SSItemImageCollection *)self imagesForSize:size.width, size.height];
   result = [v3 count];
   if (result)
   {
@@ -136,10 +136,10 @@
   return result;
 }
 
-- (id)imagesForSize:(CGSize)a3
+- (id)imagesForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   GSMainScreenScaleFactor();
   [v6 addObjectsFromArray:{-[SSItemImageCollection _imagesForSize:scale:](self, "_imagesForSize:scale:", width, height, v7)}];
@@ -153,11 +153,11 @@
   return v8;
 }
 
-- (id)imagesForKind:(id)a3
+- (id)imagesForKind:(id)kind
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   GSMainScreenScaleFactor();
   v8 = v7;
   v19 = 0u;
@@ -186,10 +186,10 @@
           [v15 imageScale];
           if (v16 == v12)
           {
-            [v6 addObject:v15];
+            [array2 addObject:v15];
           }
 
-          [v5 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -199,25 +199,25 @@
     while (v11);
   }
 
-  if ([v6 count])
+  if ([array2 count])
   {
-    v17 = v6;
+    v17 = array2;
   }
 
   else
   {
-    v17 = v5;
+    v17 = array;
   }
 
   return [v17 sortedArrayUsingFunction:__ImageSizeSort context:0];
 }
 
-- (id)_imagesForSize:(CGSize)a3 scale:(double)a4
+- (id)_imagesForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v57 = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -241,9 +241,9 @@
         [v14 imageSize];
         if (width == v16 && height == v15)
         {
-          if (a4 < 0.00000011920929 || ([v14 imageScale], v18 == a4))
+          if (scale < 0.00000011920929 || ([v14 imageScale], v18 == scale))
           {
-            [v8 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -254,7 +254,7 @@
     while (v11);
   }
 
-  if (![v8 count])
+  if (![array count])
   {
     v48 = 0u;
     v49 = 0u;
@@ -279,9 +279,9 @@
           [v24 imageSize];
           if (SSItemImageSizeEqualToSize(width, height, v25, v26))
           {
-            if (a4 < 0.00000011920929 || ([v24 imageScale], v27 == a4))
+            if (scale < 0.00000011920929 || ([v24 imageScale], v27 == scale))
             {
-              [v8 addObject:v24];
+              [array addObject:v24];
             }
           }
         }
@@ -293,7 +293,7 @@
     }
   }
 
-  if (![v8 count])
+  if (![array count])
   {
     v44 = 0u;
     v45 = 0u;
@@ -318,10 +318,10 @@
           }
 
           v37 = *(*(&v42 + 1) + 8 * k);
-          if (a4 >= 0.00000011920929)
+          if (scale >= 0.00000011920929)
           {
             [*(*(&v42 + 1) + 8 * k) imageScale];
-            if (v38 != a4)
+            if (v38 != scale)
             {
               continue;
             }
@@ -342,19 +342,19 @@
       while (v31);
       if (v32)
       {
-        [v8 addObject:v32];
+        [array addObject:v32];
       }
     }
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_newImagesForDictionary:(id)a3
+- (id)_newImagesForDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [a3 objectForKey:@"image-type"];
+  v5 = [dictionary objectForKey:@"image-type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -362,7 +362,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [dictionary countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -373,11 +373,11 @@
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(dictionary);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [a3 objectForKey:v10];
+          v11 = [dictionary objectForKey:v10];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -390,7 +390,7 @@
           }
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [dictionary countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -399,7 +399,7 @@
 
   else
   {
-    v13 = [[SSItemArtworkImage alloc] initWithArtworkDictionary:a3];
+    v13 = [[SSItemArtworkImage alloc] initWithArtworkDictionary:dictionary];
     if ([(SSItemArtworkImage *)v13 URLString])
     {
       [v4 addObject:v13];
@@ -409,9 +409,9 @@
   return v4;
 }
 
-- (SSItemImageCollection)initWithXPCEncoding:(id)a3
+- (SSItemImageCollection)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v15.receiver = self;
     v15.super_class = SSItemImageCollection;
@@ -419,7 +419,7 @@
     if (v5)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      value = xpc_dictionary_get_value(a3, "0");
+      value = xpc_dictionary_get_value(encoding, "0");
       if (value)
       {
         v9 = value;
@@ -480,11 +480,11 @@
           objc_enumerationMutation(itemImages);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) copyXPCEncoding];
-        if (v10)
+        copyXPCEncoding = [*(*(&v13 + 1) + 8 * v9) copyXPCEncoding];
+        if (copyXPCEncoding)
         {
-          v11 = v10;
-          xpc_array_append_value(v4, v10);
+          v11 = copyXPCEncoding;
+          xpc_array_append_value(v4, copyXPCEncoding);
           xpc_release(v11);
         }
 

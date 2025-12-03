@@ -1,13 +1,13 @@
 @interface ObjcAPIWrappers
-- (void)requestPhoneNumberCredentialForSimLabelID:(id)a3 withCompletion:(id)a4;
+- (void)requestPhoneNumberCredentialForSimLabelID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation ObjcAPIWrappers
 
-- (void)requestPhoneNumberCredentialForSimLabelID:(id)a3 withCompletion:(id)a4
+- (void)requestPhoneNumberCredentialForSimLabelID:(id)d withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (CUTWeakLinkClass())
   {
     v7 = objc_alloc_init(CUTWeakLinkClass());
@@ -17,8 +17,8 @@
       v9[1] = 3221225472;
       v9[2] = __76__ObjcAPIWrappers_requestPhoneNumberCredentialForSimLabelID_withCompletion___block_invoke_29;
       v9[3] = &unk_279B92A08;
-      v10 = v6;
-      [v7 requestPhoneNumberCredentialForService:2 simLabelID:v5 withCompletion:v9];
+      v10 = completionCopy;
+      [v7 requestPhoneNumberCredentialForService:2 simLabelID:dCopy withCompletion:v9];
     }
   }
 
@@ -37,7 +37,7 @@
     }
 
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ObjcWrapperError" code:0 userInfo:0];
-    (*(v6 + 2))(v6, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 }
 

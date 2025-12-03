@@ -1,5 +1,5 @@
 @interface PersonalHotspotDataUsageDetails
-- (BOOL)_isUnknownDevice:(id)a3;
+- (BOOL)_isUnknownDevice:(id)device;
 - (PersonalHotspotDataUsageDetails)init;
 - (id)specifiers;
 - (void)dealloc;
@@ -49,13 +49,13 @@
   v4.receiver = self;
   v4.super_class = PersonalHotspotDataUsageDetails;
   [(PersonalHotspotDataUsageDetails *)&v4 viewDidLoad];
-  v3 = [(PersonalHotspotDataUsageDetails *)self refreshControl];
-  [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] setRefreshControl:v3];
+  refreshControl = [(PersonalHotspotDataUsageDetails *)self refreshControl];
+  [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] setRefreshControl:refreshControl];
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSListController__specifiers;
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
@@ -89,7 +89,7 @@
       v49 = v10;
       v50 = v3;
       v61 = 0;
-      v62 = v2;
+      v62 = selfCopy;
       v53 = 0;
       v59 = *v68;
       v60 = 0;
@@ -165,7 +165,7 @@
       if (v60)
       {
         v37 = v61;
-        v2 = v62;
+        selfCopy = v62;
         v3 = v50;
         v5 = v51;
         v9 = &WiFiManagerClientCopyProperty_ptr;
@@ -180,7 +180,7 @@
       else
       {
         v37 = v61;
-        v2 = v62;
+        selfCopy = v62;
         v3 = v50;
         v5 = v51;
         v10 = v49;
@@ -195,14 +195,14 @@
       v36 = 0;
     }
 
-    v38 = [(PersonalHotspotDataUsageDetails *)v2 usageComparator];
-    [v52 sortUsingComparator:v38];
+    usageComparator = [(PersonalHotspotDataUsageDetails *)selfCopy usageComparator];
+    [v52 sortUsingComparator:usageComparator];
 
     [v5 addObjectsFromArray:v52];
     if (v36)
     {
-      v39 = [v9[126] emptyGroupSpecifier];
-      [v5 addObject:v39];
+      emptyGroupSpecifier = [v9[126] emptyGroupSpecifier];
+      [v5 addObject:emptyGroupSpecifier];
       [v5 addObject:v36];
       v63 = v36;
       v40 = [NSBundle bundleForClass:objc_opt_class()];
@@ -211,7 +211,7 @@
       v42 = v12;
       v44 = v43 = v37;
       v45 = [v40 localizedStringForKey:v44 value:&stru_C668 table:@"PersonalHotspotDataUsage"];
-      [v39 setProperty:v45 forKey:PSFooterTextGroupKey];
+      [emptyGroupSpecifier setProperty:v45 forKey:PSFooterTextGroupKey];
 
       v37 = v43;
       v12 = v42;
@@ -222,10 +222,10 @@
     }
 
     v46 = [v5 copy];
-    v47 = *&v2->PSListController_opaque[v3];
-    *&v2->PSListController_opaque[v3] = v46;
+    v47 = *&selfCopy->PSListController_opaque[v3];
+    *&selfCopy->PSListController_opaque[v3] = v46;
 
-    v4 = *&v2->PSListController_opaque[v3];
+    v4 = *&selfCopy->PSListController_opaque[v3];
   }
 
   return v4;
@@ -249,10 +249,10 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_isUnknownDevice:(id)a3
+- (BOOL)_isUnknownDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:kWiFiSettingDataUsageProductMarketingNameKey];
+  deviceCopy = device;
+  v4 = [deviceCopy objectForKeyedSubscript:kWiFiSettingDataUsageProductMarketingNameKey];
   if (v4)
   {
     v5 = 0;
@@ -260,7 +260,7 @@
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:kWiFiSettingDataUsageInterfacePeerDisplayNameKey];
+    v6 = [deviceCopy objectForKeyedSubscript:kWiFiSettingDataUsageInterfacePeerDisplayNameKey];
     v5 = v6 == 0;
   }
 

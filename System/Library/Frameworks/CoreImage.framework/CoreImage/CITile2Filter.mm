@@ -123,17 +123,17 @@
 
 - (float32x2_t)_roiCenter
 {
-  [a1[13] doubleValue];
+  [self[13] doubleValue];
   v3 = v2;
-  [a1[12] doubleValue];
+  [self[12] doubleValue];
   v5 = v4;
-  [a1[14] doubleValue];
+  [self[14] doubleValue];
   v7 = v6;
   v8 = __sincos_stret(v5);
   v9 = __sincos_stret(v5 + v7);
-  [a1[11] X];
+  [self[11] X];
   v16 = v10;
-  [a1[11] Y];
+  [self[11] Y];
   v11.f64[0] = v16;
   v11.f64[1] = v12;
   v13 = vcvt_f32_f64(v11);
@@ -166,8 +166,8 @@
     return 0;
   }
 
-  v3 = [(CITile2Filter *)self _singlePixelImage];
-  if (!v3)
+  _singlePixelImage = [(CITile2Filter *)self _singlePixelImage];
+  if (!_singlePixelImage)
   {
     [(NSNumber *)self->super.inputWidth doubleValue];
     v5 = v4;
@@ -201,7 +201,7 @@
     affine::inverse(&v36, v32);
     v20 = [CIVector vectorWithX:v32[0] * 0.5 Y:v32[2] * 0.5 Z:v32[1] * 0.5 W:v32[3] * 0.5];
     v21 = [CIVector vectorWithX:v36 Y:v38 Z:v37 W:v39];
-    v22 = [(CITileFilter *)self _kernel];
+    _kernel = [(CITileFilter *)self _kernel];
     v23 = v11;
     v24 = v13;
     v25 = *MEMORY[0x1E695F040];
@@ -217,11 +217,11 @@
     v40[0] = [CIVector vectorWithX:v23 Y:v24];
     v40[1] = v20;
     v40[2] = v21;
-    v3 = [v22 applyWithExtent:v31 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v40, 3), v25, v26, v28, v27}];
+    _singlePixelImage = [_kernel applyWithExtent:v31 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v40, 3), v25, v26, v28, v27}];
     _Block_object_dispose(v33, 8);
   }
 
-  return v3;
+  return _singlePixelImage;
 }
 
 @end

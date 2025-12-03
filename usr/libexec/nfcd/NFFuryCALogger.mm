@@ -29,13 +29,13 @@
 
     if (!v7)
     {
-      v8 = [v5 dictionaryRepresentation];
-      v9 = [v8 allKeys];
+      dictionaryRepresentation = [v5 dictionaryRepresentation];
+      allKeys = [dictionaryRepresentation allKeys];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
         v11 = v10;
@@ -46,7 +46,7 @@
           {
             if (*v26 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allKeys);
             }
 
             v14 = *(*(&v25 + 1) + 8 * i);
@@ -70,7 +70,7 @@
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v11 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v11);

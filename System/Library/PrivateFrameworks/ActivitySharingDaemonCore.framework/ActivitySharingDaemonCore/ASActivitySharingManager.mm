@@ -1,5 +1,5 @@
 @interface ASActivitySharingManager
-- (ASActivitySharingManager)initWithDatabaseClient:(id)a3 isWatch:(BOOL)a4;
+- (ASActivitySharingManager)initWithDatabaseClient:(id)client isWatch:(BOOL)watch;
 - (ASActivitySharingManagerSecureCloudDelegate)secureCloudDelegate;
 - (BOOL)_mainQueue_shouldCompleteSetup;
 - (BOOL)_mainQueue_startSubmanagerProcessingIfNeeded;
@@ -13,60 +13,60 @@
 - (void)_mainQueue_notifyObserversOfActivation;
 - (void)_mainQueue_notifyObserversOfDeactivation;
 - (void)_mainQueue_notifySubmanagersOfManagerReady;
-- (void)_updateSubmanagerProcessingStarted:(BOOL)a3;
+- (void)_updateSubmanagerProcessingStarted:(BOOL)started;
 - (void)_waitUntilSubmanagersReady;
-- (void)acceptCompetitionRequestFromFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)acceptInviteRequestFromFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)addFriendListObserver:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)clearFriendListWithCompletion:(id)a3;
-- (void)cloudKitAccountStatusWithCompletion:(id)a3;
-- (void)completeCompetitionWithFriendWithUUID:(id)a3 completion:(id)a4;
+- (void)acceptCompetitionRequestFromFriendWithUUID:(id)d completion:(id)completion;
+- (void)acceptInviteRequestFromFriendWithUUID:(id)d completion:(id)completion;
+- (void)addFriendListObserver:(id)observer;
+- (void)addObserver:(id)observer;
+- (void)clearFriendListWithCompletion:(id)completion;
+- (void)cloudKitAccountStatusWithCompletion:(id)completion;
+- (void)completeCompetitionWithFriendWithUUID:(id)d completion:(id)completion;
 - (void)daemonReady;
 - (void)dealloc;
-- (void)expireChangeTokenWithCompletion:(id)a3;
-- (void)fetchAllDataIfTimeSinceLastFetchIsGreaterThan:(unint64_t)a3 completion:(id)a4;
-- (void)fetchAllDataWithCompletion:(id)a3;
-- (void)fetchAreMultipleDevicesSharingDataForSnapshotIndex:(id)a3 withCompletion:(id)a4;
-- (void)fetchCodableFriendWithRemoteUUID:(id)a3 completion:(id)a4;
-- (void)fetchFriendWithRemoteUUID:(id)a3 completion:(id)a4;
-- (void)fitnessAppsStateObserver:(id)a3 applicationInstallStateDidChangeForBundleIdentifiers:(id)a4;
-- (void)fitnessAppsStateObserver:(id)a3 restrictedStateDidChange:(int64_t)a4;
-- (void)handleNotificationResponse:(id)a3 completion:(id)a4;
-- (void)ignoreCompetitionRequestFromFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)ignoreInviteRequestFromFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)pushActivityDataToAllFriendsWithCompletion:(id)a3;
-- (void)pushFakeActivityDataToAllFriendsWithCompletion:(id)a3;
-- (void)queryAppBadgeCountWithCompletion:(id)a3;
-- (void)removeFriendListObserver:(id)a3;
-- (void)removeFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)rollCompetitionWithFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)sendCompetitionRequestToFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)sendInviteRequestToDestination:(id)a3 callerID:(id)a4 serviceIdentifier:(id)a5 completion:(id)a6;
-- (void)sendWithdrawInviteRequestToFriendWithUUID:(id)a3 completion:(id)a4;
+- (void)expireChangeTokenWithCompletion:(id)completion;
+- (void)fetchAllDataIfTimeSinceLastFetchIsGreaterThan:(unint64_t)than completion:(id)completion;
+- (void)fetchAllDataWithCompletion:(id)completion;
+- (void)fetchAreMultipleDevicesSharingDataForSnapshotIndex:(id)index withCompletion:(id)completion;
+- (void)fetchCodableFriendWithRemoteUUID:(id)d completion:(id)completion;
+- (void)fetchFriendWithRemoteUUID:(id)d completion:(id)completion;
+- (void)fitnessAppsStateObserver:(id)observer applicationInstallStateDidChangeForBundleIdentifiers:(id)identifiers;
+- (void)fitnessAppsStateObserver:(id)observer restrictedStateDidChange:(int64_t)change;
+- (void)handleNotificationResponse:(id)response completion:(id)completion;
+- (void)ignoreCompetitionRequestFromFriendWithUUID:(id)d completion:(id)completion;
+- (void)ignoreInviteRequestFromFriendWithUUID:(id)d completion:(id)completion;
+- (void)pushActivityDataToAllFriendsWithCompletion:(id)completion;
+- (void)pushFakeActivityDataToAllFriendsWithCompletion:(id)completion;
+- (void)queryAppBadgeCountWithCompletion:(id)completion;
+- (void)removeFriendListObserver:(id)observer;
+- (void)removeFriendWithUUID:(id)d completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)rollCompetitionWithFriendWithUUID:(id)d completion:(id)completion;
+- (void)sendCompetitionRequestToFriendWithUUID:(id)d completion:(id)completion;
+- (void)sendInviteRequestToDestination:(id)destination callerID:(id)d serviceIdentifier:(id)identifier completion:(id)completion;
+- (void)sendWithdrawInviteRequestToFriendWithUUID:(id)d completion:(id)completion;
 @end
 
 @implementation ASActivitySharingManager
 
-- (ASActivitySharingManager)initWithDatabaseClient:(id)a3 isWatch:(BOOL)a4
+- (ASActivitySharingManager)initWithDatabaseClient:(id)client isWatch:(BOOL)watch
 {
-  v4 = a4;
-  v7 = a3;
+  watchCopy = watch;
+  clientCopy = client;
   v25.receiver = self;
   v25.super_class = ASActivitySharingManager;
   v8 = [(ASActivitySharingManager *)&v25 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_databaseClient, a3);
+    objc_storeStrong(&v8->_databaseClient, client);
     v10 = objc_alloc_init(MEMORY[0x277D09598]);
     fitnessAppsStateObserver = v9->_fitnessAppsStateObserver;
     v9->_fitnessAppsStateObserver = v10;
 
     [(FIFitnessAppsStateObserver *)v9->_fitnessAppsStateObserver setDelegate:v9];
     v12 = MEMORY[0x277D09518];
-    if (!v4)
+    if (!watchCopy)
     {
       v12 = MEMORY[0x277D09530];
     }
@@ -88,11 +88,11 @@
     v9->_submanagerBarrierGroup = v17;
 
     dispatch_group_enter(v9->_submanagerBarrierGroup);
-    v9->_isWatch = v4;
+    v9->_isWatch = watchCopy;
     *&v9->_submanagerInitializationComplete = 0;
-    v19 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v9->_observers;
-    v9->_observers = v19;
+    v9->_observers = weakObjectsHashTable;
 
     databaseClient = v9->_databaseClient;
     v23[0] = MEMORY[0x277D85DD0];
@@ -300,10 +300,10 @@ void __39__ASActivitySharingManager_daemonReady__block_invoke_312(uint64_t a1)
     }
 
     self->_submanagerInitializationComplete = 1;
-    v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v6 = [v5 isStandalonePhoneFitnessMode];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isStandalonePhoneFitnessMode = [mEMORY[0x277CCDD30] isStandalonePhoneFitnessMode];
 
-    if ((v6 & 1) == 0)
+    if ((isStandalonePhoneFitnessMode & 1) == 0)
     {
       v7 = [[ASAchievementManager alloc] initWithIsWatch:self->_isWatch];
       achievementManager = self->_achievementManager;
@@ -366,7 +366,7 @@ void __39__ASActivitySharingManager_daemonReady__block_invoke_312(uint64_t a1)
     setupManager = self->_setupManager;
     self->_setupManager = v35;
 
-    if (((self->_isWatch | v6) & 1) == 0)
+    if (((self->_isWatch | isStandalonePhoneFitnessMode) & 1) == 0)
     {
       goto LABEL_14;
     }
@@ -488,7 +488,7 @@ void __60__ASActivitySharingManager__mainQueue_completeSetupIfNeeded__block_invo
     _os_log_impl(&dword_23E5E3000, v4, OS_LOG_TYPE_DEFAULT, "Attempting to start submanagers", &v16, 2u);
   }
 
-  v5 = [(ASActivitySharingManager *)self processingStarted];
+  processingStarted = [(ASActivitySharingManager *)self processingStarted];
   if (self->_appInstalled)
   {
     if (self->_fitnessAppsRestricted)
@@ -508,7 +508,7 @@ LABEL_12:
 
     else
     {
-      if (!v5)
+      if (!processingStarted)
       {
         v15 = [MEMORY[0x277D10678] transactionWithOwner:self];
         [(ASContactsManager *)self->_contactsManager loadCachedContacts];
@@ -575,7 +575,7 @@ LABEL_15:
     _os_log_impl(&dword_23E5E3000, v4, OS_LOG_TYPE_DEFAULT, "Attempting to stop submanagers", &v18, 2u);
   }
 
-  v5 = [(ASActivitySharingManager *)self processingStarted];
+  processingStarted = [(ASActivitySharingManager *)self processingStarted];
   v6 = MEMORY[0x277D09518];
   if (!self->_isWatch)
   {
@@ -606,7 +606,7 @@ LABEL_16:
   ASLoggingInitialize();
   v8 = *v3;
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (!v5)
+  if (!processingStarted)
   {
     if (v9)
     {
@@ -649,56 +649,56 @@ LABEL_17:
 {
   v46[15] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v37 = [(ASActivitySharingManager *)self activityDataManager];
-  v46[0] = v37;
-  v36 = [(ASActivitySharingManager *)self cloudKitManager];
-  v46[1] = v36;
-  v35 = [(ASActivitySharingManager *)self competitionManager];
-  v46[2] = v35;
-  v34 = [(ASActivitySharingManager *)self contactsManager];
-  v46[3] = v34;
-  v33 = [(ASActivitySharingManager *)self fakingManager];
-  v46[4] = v33;
-  v32 = [(ASActivitySharingManager *)self friendListManager];
-  v46[5] = v32;
-  v31 = [(ASActivitySharingManager *)self gatewayManager];
-  v46[6] = v31;
-  v3 = [(ASActivitySharingManager *)self periodicUpdateManager];
-  v46[7] = v3;
-  v4 = [(ASActivitySharingManager *)self relationshipManager];
-  v46[8] = v4;
-  v5 = [(ASActivitySharingManager *)self activityDataBulletinManager];
-  v46[9] = v5;
-  v6 = [(ASActivitySharingManager *)self competitionBulletinManager];
-  v46[10] = v6;
-  v7 = [(ASActivitySharingManager *)self friendInviteBulletinManager];
-  v46[11] = v7;
-  v8 = [(ASActivitySharingManager *)self fakeBulletinManager];
-  v46[12] = v8;
-  v9 = [(ASActivitySharingManager *)self bulletinPostingManager];
-  v46[13] = v9;
-  v10 = [(ASActivitySharingManager *)self setupManager];
-  v46[14] = v10;
+  activityDataManager = [(ASActivitySharingManager *)self activityDataManager];
+  v46[0] = activityDataManager;
+  cloudKitManager = [(ASActivitySharingManager *)self cloudKitManager];
+  v46[1] = cloudKitManager;
+  competitionManager = [(ASActivitySharingManager *)self competitionManager];
+  v46[2] = competitionManager;
+  contactsManager = [(ASActivitySharingManager *)self contactsManager];
+  v46[3] = contactsManager;
+  fakingManager = [(ASActivitySharingManager *)self fakingManager];
+  v46[4] = fakingManager;
+  friendListManager = [(ASActivitySharingManager *)self friendListManager];
+  v46[5] = friendListManager;
+  gatewayManager = [(ASActivitySharingManager *)self gatewayManager];
+  v46[6] = gatewayManager;
+  periodicUpdateManager = [(ASActivitySharingManager *)self periodicUpdateManager];
+  v46[7] = periodicUpdateManager;
+  relationshipManager = [(ASActivitySharingManager *)self relationshipManager];
+  v46[8] = relationshipManager;
+  activityDataBulletinManager = [(ASActivitySharingManager *)self activityDataBulletinManager];
+  v46[9] = activityDataBulletinManager;
+  competitionBulletinManager = [(ASActivitySharingManager *)self competitionBulletinManager];
+  v46[10] = competitionBulletinManager;
+  friendInviteBulletinManager = [(ASActivitySharingManager *)self friendInviteBulletinManager];
+  v46[11] = friendInviteBulletinManager;
+  fakeBulletinManager = [(ASActivitySharingManager *)self fakeBulletinManager];
+  v46[12] = fakeBulletinManager;
+  bulletinPostingManager = [(ASActivitySharingManager *)self bulletinPostingManager];
+  v46[13] = bulletinPostingManager;
+  setupManager = [(ASActivitySharingManager *)self setupManager];
+  v46[14] = setupManager;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:15];
 
-  v12 = [(ASActivitySharingManager *)self achievementManager];
+  achievementManager = [(ASActivitySharingManager *)self achievementManager];
 
-  if (v12)
+  if (achievementManager)
   {
-    v13 = [(ASActivitySharingManager *)self achievementManager];
-    v45 = v13;
+    achievementManager2 = [(ASActivitySharingManager *)self achievementManager];
+    v45 = achievementManager2;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
     v15 = [v14 arrayByAddingObjectsFromArray:v11];
 
     v11 = v15;
   }
 
-  v16 = [(ASActivitySharingManager *)self activityDataNotificationManager];
+  activityDataNotificationManager = [(ASActivitySharingManager *)self activityDataNotificationManager];
 
-  if (v16)
+  if (activityDataNotificationManager)
   {
-    v17 = [(ASActivitySharingManager *)self activityDataNotificationManager];
-    v18 = [v11 arrayByAddingObject:v17];
+    activityDataNotificationManager2 = [(ASActivitySharingManager *)self activityDataNotificationManager];
+    v18 = [v11 arrayByAddingObject:activityDataNotificationManager2];
 
     v11 = v18;
   }
@@ -796,10 +796,10 @@ void __54__ASActivitySharingManager__waitUntilSubmanagersReady__block_invoke_2(u
   return submanagerProcessingStarted;
 }
 
-- (void)_updateSubmanagerProcessingStarted:(BOOL)a3
+- (void)_updateSubmanagerProcessingStarted:(BOOL)started
 {
   os_unfair_lock_lock(&self->_submanagersProcessingStartedLock);
-  self->_submanagerProcessingStarted = a3;
+  self->_submanagerProcessingStarted = started;
 
   os_unfair_lock_unlock(&self->_submanagersProcessingStartedLock);
 }
@@ -819,20 +819,20 @@ void __54__ASActivitySharingManager__waitUntilSubmanagersReady__block_invoke_2(u
   [(ASGatewayManager *)self->_gatewayManager updateState];
 }
 
-- (void)fitnessAppsStateObserver:(id)a3 applicationInstallStateDidChangeForBundleIdentifiers:(id)a4
+- (void)fitnessAppsStateObserver:(id)observer applicationInstallStateDidChangeForBundleIdentifiers:(id)identifiers
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifiersCopy = identifiers;
   ASLoggingInitialize();
   v6 = *MEMORY[0x277CE8FE8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = v5;
+    v10 = identifiersCopy;
     _os_log_impl(&dword_23E5E3000, v6, OS_LOG_TYPE_DEFAULT, "ActivitySharingManager applications install state changed: %{public}@", buf, 0xCu);
   }
 
-  if ([v5 containsObject:self->_appBundleIdentifier])
+  if ([identifiersCopy containsObject:self->_appBundleIdentifier])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -862,7 +862,7 @@ uint64_t __106__ASActivitySharingManager_fitnessAppsStateObserver_applicationIns
   }
 }
 
-- (void)fitnessAppsStateObserver:(id)a3 restrictedStateDidChange:(int64_t)a4
+- (void)fitnessAppsStateObserver:(id)observer restrictedStateDidChange:(int64_t)change
 {
   v11 = *MEMORY[0x277D85DE8];
   ASLoggingInitialize();
@@ -870,7 +870,7 @@ uint64_t __106__ASActivitySharingManager_fitnessAppsStateObserver_applicationIns
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = a4;
+    changeCopy = change;
     _os_log_impl(&dword_23E5E3000, v6, OS_LOG_TYPE_DEFAULT, "ActivitySharingManager fitness apps restriction state changed: %ld", buf, 0xCu);
   }
 
@@ -971,275 +971,275 @@ void __59__ASActivitySharingManager__activateActivitySharingManager__block_invok
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)sendInviteRequestToDestination:(id)a3 callerID:(id)a4 serviceIdentifier:(id)a5 completion:(id)a6
+- (void)sendInviteRequestToDestination:(id)destination callerID:(id)d serviceIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  dCopy = d;
+  destinationCopy = destination;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  [(ASRelationshipManager *)self->_relationshipManager sendInviteToPersonWithDestination:v13 callerID:v12 serviceIdentifier:v11 completion:v10];
+  [(ASRelationshipManager *)self->_relationshipManager sendInviteToPersonWithDestination:destinationCopy callerID:dCopy serviceIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)acceptInviteRequestFromFriendWithUUID:(id)a3 completion:(id)a4
+- (void)acceptInviteRequestFromFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   relationshipManager = self->_relationshipManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASRelationshipManager *)relationshipManager acceptInviteRequestFromFriendWithUUID:v9 completion:v6];
+  [(ASRelationshipManager *)relationshipManager acceptInviteRequestFromFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)sendWithdrawInviteRequestToFriendWithUUID:(id)a3 completion:(id)a4
+- (void)sendWithdrawInviteRequestToFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   relationshipManager = self->_relationshipManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASRelationshipManager *)relationshipManager sendWithdrawInviteRequestToFriendWithUUID:v9 completion:v6];
+  [(ASRelationshipManager *)relationshipManager sendWithdrawInviteRequestToFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)removeFriendWithUUID:(id)a3 completion:(id)a4
+- (void)removeFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   relationshipManager = self->_relationshipManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASRelationshipManager *)relationshipManager removeFriendWithUUID:v9 completion:v6];
+  [(ASRelationshipManager *)relationshipManager removeFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)ignoreInviteRequestFromFriendWithUUID:(id)a3 completion:(id)a4
+- (void)ignoreInviteRequestFromFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   relationshipManager = self->_relationshipManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASRelationshipManager *)relationshipManager ignoreInviteRequestFromFriendWithUUID:v9 completion:v6];
+  [(ASRelationshipManager *)relationshipManager ignoreInviteRequestFromFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)sendCompetitionRequestToFriendWithUUID:(id)a3 completion:(id)a4
+- (void)sendCompetitionRequestToFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   competitionManager = self->_competitionManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASCompetitionManager *)competitionManager sendCompetitionRequestToFriendWithUUID:v9 completion:v6];
+  [(ASCompetitionManager *)competitionManager sendCompetitionRequestToFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)acceptCompetitionRequestFromFriendWithUUID:(id)a3 completion:(id)a4
+- (void)acceptCompetitionRequestFromFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   competitionManager = self->_competitionManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASCompetitionManager *)competitionManager acceptCompetitionRequestFromFriendWithUUID:v9 completion:v6];
+  [(ASCompetitionManager *)competitionManager acceptCompetitionRequestFromFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)ignoreCompetitionRequestFromFriendWithUUID:(id)a3 completion:(id)a4
+- (void)ignoreCompetitionRequestFromFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   competitionManager = self->_competitionManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASCompetitionManager *)competitionManager ignoreCompetitionRequestFromFriendWithUUID:v9 completion:v6];
+  [(ASCompetitionManager *)competitionManager ignoreCompetitionRequestFromFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)completeCompetitionWithFriendWithUUID:(id)a3 completion:(id)a4
+- (void)completeCompetitionWithFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   competitionManager = self->_competitionManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASCompetitionManager *)competitionManager completeCompetitionWithFriendWithUUID:v9 completion:v6];
+  [(ASCompetitionManager *)competitionManager completeCompetitionWithFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)rollCompetitionWithFriendWithUUID:(id)a3 completion:(id)a4
+- (void)rollCompetitionWithFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
   competitionManager = self->_competitionManager;
-  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [(ASCompetitionManager *)competitionManager rollCompetitionWithFriendWithUUID:v9 completion:v6];
+  [(ASCompetitionManager *)competitionManager rollCompetitionWithFriendWithUUID:v9 completion:completionCopy];
 }
 
-- (void)pushActivityDataToAllFriendsWithCompletion:(id)a3
+- (void)pushActivityDataToAllFriendsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v6 = [(ASActivitySharingManager *)self periodicUpdateManager];
+  periodicUpdateManager = [(ASActivitySharingManager *)self periodicUpdateManager];
   v5 = ASCloudKitGroupUserActionExplicit();
-  [v6 requestImmediateUpdateWithCloudKitGroup:v5 completion:v4];
+  [periodicUpdateManager requestImmediateUpdateWithCloudKitGroup:v5 completion:completionCopy];
 }
 
-- (void)fetchAllDataWithCompletion:(id)a3
+- (void)fetchAllDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v6 = [(ASActivitySharingManager *)self cloudKitManager];
+  cloudKitManager = [(ASActivitySharingManager *)self cloudKitManager];
   v5 = ASCloudKitGroupUserActionExplicit();
-  [v6 fetchAllChangesWithPriority:2 activity:0 group:v5 completion:v4];
+  [cloudKitManager fetchAllChangesWithPriority:2 activity:0 group:v5 completion:completionCopy];
 }
 
-- (void)fetchAllDataIfTimeSinceLastFetchIsGreaterThan:(unint64_t)a3 completion:(id)a4
+- (void)fetchAllDataIfTimeSinceLastFetchIsGreaterThan:(unint64_t)than completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v7 = [(ASActivitySharingManager *)self activityDataManager];
-  [v7 loadLocalActivityDataIfNeeded];
+  activityDataManager = [(ASActivitySharingManager *)self activityDataManager];
+  [activityDataManager loadLocalActivityDataIfNeeded];
 
-  v9 = [(ASActivitySharingManager *)self cloudKitManager];
+  cloudKitManager = [(ASActivitySharingManager *)self cloudKitManager];
   v8 = ASCloudKitGroupUserActionExplicit();
-  [v9 fetchAllChangesIfTimeSinceLastFetchIsGreaterThan:a3 priority:2 activity:0 group:v8 completion:v6];
+  [cloudKitManager fetchAllChangesIfTimeSinceLastFetchIsGreaterThan:than priority:2 activity:0 group:v8 completion:completionCopy];
 }
 
-- (void)cloudKitAccountStatusWithCompletion:(id)a3
+- (void)cloudKitAccountStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v5 = [(ASActivitySharingManager *)self cloudKitManager];
-  [v5 fetchCloudKitAccountStatusWithCompletion:v4];
+  cloudKitManager = [(ASActivitySharingManager *)self cloudKitManager];
+  [cloudKitManager fetchCloudKitAccountStatusWithCompletion:completionCopy];
 }
 
-- (void)expireChangeTokenWithCompletion:(id)a3
+- (void)expireChangeTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v5 = [(ASActivitySharingManager *)self cloudKitManager];
-  [v5 expireChangeTokenWithCompletion:v4];
+  cloudKitManager = [(ASActivitySharingManager *)self cloudKitManager];
+  [cloudKitManager expireChangeTokenWithCompletion:completionCopy];
 }
 
-- (void)fetchAreMultipleDevicesSharingDataForSnapshotIndex:(id)a3 withCompletion:(id)a4
+- (void)fetchAreMultipleDevicesSharingDataForSnapshotIndex:(id)index withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  indexCopy = index;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v8 = [(ASActivitySharingManager *)self activityDataManager];
-  [v8 fetchAreMultipleDevicesSharingDataForSnapshotIndex:v7 withCompletion:v6];
+  activityDataManager = [(ASActivitySharingManager *)self activityDataManager];
+  [activityDataManager fetchAreMultipleDevicesSharingDataForSnapshotIndex:indexCopy withCompletion:completionCopy];
 }
 
-- (void)pushFakeActivityDataToAllFriendsWithCompletion:(id)a3
+- (void)pushFakeActivityDataToAllFriendsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v5 = [(ASActivitySharingManager *)self fakingManager];
-  [v5 pushFakeActivityDataToAllFriendsWithCompletion:v4];
+  fakingManager = [(ASActivitySharingManager *)self fakingManager];
+  [fakingManager pushFakeActivityDataToAllFriendsWithCompletion:completionCopy];
 }
 
-- (void)clearFriendListWithCompletion:(id)a3
+- (void)clearFriendListWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v5 = [(ASActivitySharingManager *)self friendListManager];
-  [v5 clearFriendListWithCompletion:v4];
+  friendListManager = [(ASActivitySharingManager *)self friendListManager];
+  [friendListManager clearFriendListWithCompletion:completionCopy];
 }
 
 - (id)allFriends
 {
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v3 = [(ASActivitySharingManager *)self activityDataManager];
-  [v3 loadLocalActivityDataIfNeeded];
+  activityDataManager = [(ASActivitySharingManager *)self activityDataManager];
+  [activityDataManager loadLocalActivityDataIfNeeded];
 
   friendListManager = self->_friendListManager;
 
   return [(ASFriendListManager *)friendListManager friends];
 }
 
-- (void)fetchCodableFriendWithRemoteUUID:(id)a3 completion:(id)a4
+- (void)fetchCodableFriendWithRemoteUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v9 = [(ASActivitySharingManager *)self friendListManager];
-  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  friendListManager = [(ASActivitySharingManager *)self friendListManager];
+  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [v9 fetchCodableFriendWithRemoteUUID:v8 completion:v6];
+  [friendListManager fetchCodableFriendWithRemoteUUID:v8 completion:completionCopy];
 }
 
-- (void)fetchFriendWithRemoteUUID:(id)a3 completion:(id)a4
+- (void)fetchFriendWithRemoteUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v9 = [(ASActivitySharingManager *)self friendListManager];
-  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
+  friendListManager = [(ASActivitySharingManager *)self friendListManager];
+  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
-  [v9 fetchfriendDataWithRemoteUUID:v8 completion:v6];
+  [friendListManager fetchfriendDataWithRemoteUUID:v8 completion:completionCopy];
 }
 
-- (void)handleNotificationResponse:(id)a3 completion:(id)a4
+- (void)handleNotificationResponse:(id)response completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  responseCopy = response;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v8 = [(ASActivitySharingManager *)self bulletinPostingManager];
-  [v8 handleNotificationResponse:v7 completion:v6];
+  bulletinPostingManager = [(ASActivitySharingManager *)self bulletinPostingManager];
+  [bulletinPostingManager handleNotificationResponse:responseCopy completion:completionCopy];
 }
 
-- (void)queryAppBadgeCountWithCompletion:(id)a3
+- (void)queryAppBadgeCountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v5 = [(ASActivitySharingManager *)self friendListManager];
-  [v5 queryAppBadgeCountWithCompletion:v4];
+  friendListManager = [(ASActivitySharingManager *)self friendListManager];
+  [friendListManager queryAppBadgeCountWithCompletion:completionCopy];
 }
 
-- (void)addFriendListObserver:(id)a3
+- (void)addFriendListObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v5 = [(ASActivitySharingManager *)self friendListManager];
-  [v5 addObserver:v4];
+  friendListManager = [(ASActivitySharingManager *)self friendListManager];
+  [friendListManager addObserver:observerCopy];
 }
 
-- (void)removeFriendListObserver:(id)a3
+- (void)removeFriendListObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(ASActivitySharingManager *)self _waitUntilSubmanagersReady];
-  v5 = [(ASActivitySharingManager *)self friendListManager];
-  [v5 removeObserver:v4];
+  friendListManager = [(ASActivitySharingManager *)self friendListManager];
+  [friendListManager removeObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__ASActivitySharingManager_addObserver___block_invoke;
   v6[3] = &unk_278C4B250;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__ASActivitySharingManager_removeObserver___block_invoke;
   v6[3] = &unk_278C4B250;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

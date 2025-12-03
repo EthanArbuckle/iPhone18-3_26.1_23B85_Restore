@@ -1,5 +1,5 @@
 @interface LeadingContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIView)viewForLastBaselineLayout;
 @end
 
@@ -12,11 +12,11 @@
   return Baseline;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v8 = LeadingContainerView.sizeThatFits(_:)(width, height, v6, v7);
   v10 = v9;
 

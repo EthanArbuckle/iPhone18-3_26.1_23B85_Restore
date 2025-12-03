@@ -1,18 +1,18 @@
 @interface SKUIDialogTemplateViewElement
 - (NSArray)buttons;
-- (SKUIDialogTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIDialogTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUILabelViewElement)message;
 - (SKUILabelViewElement)title;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIDialogTemplateViewElement
 
-- (SKUIDialogTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIDialogTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDialogTemplateViewElement initWithDOMElement:parent:elementFactory:];
@@ -20,10 +20,10 @@
 
   v15.receiver = self;
   v15.super_class = SKUIDialogTemplateViewElement;
-  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"type"];
+    v12 = [elementCopy getAttribute:@"type"];
     if ([v12 isEqualToString:@"actionSheet"])
     {
       v13 = 1;
@@ -59,12 +59,12 @@ LABEL_15:
 
 - (NSArray)buttons
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__SKUIDialogTemplateViewElement_buttons__block_invoke;
   v6[3] = &unk_2781F9640;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v6];
 
@@ -140,16 +140,16 @@ void __38__SKUIDialogTemplateViewElement_title__block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUIDialogTemplateViewElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_dialogType = [(SKUIDialogTemplateViewElement *)v4 dialogType];
+    self->_dialogType = [(SKUIDialogTemplateViewElement *)elementCopy dialogType];
   }
 
   return v6;

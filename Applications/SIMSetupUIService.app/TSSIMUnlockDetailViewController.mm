@@ -5,37 +5,37 @@
 - (BOOL)canResignFirstResponder;
 - (BOOL)isFirstResponder;
 - (BOOL)resignFirstResponder;
-- (TSSIMUnlockDetailViewController)initWithSubscriptionContext:(id)a3 subscriptionAction:(id)a4 lockedSIMName:(id)a5 delegate:(id)a6;
-- (TSSIMUnlockDetailViewController)initWithSubscriptionContext:(id)a3 subscriptionAction:(id)a4 suppressCancellation:(BOOL)a5 delegate:(id)a6;
+- (TSSIMUnlockDetailViewController)initWithSubscriptionContext:(id)context subscriptionAction:(id)action lockedSIMName:(id)name delegate:(id)delegate;
+- (TSSIMUnlockDetailViewController)initWithSubscriptionContext:(id)context subscriptionAction:(id)action suppressCancellation:(BOOL)cancellation delegate:(id)delegate;
 - (TSSIMUnlockDetailViewControllerDelegate)delegate;
-- (void)_cancelButtonPressed:(id)a3;
+- (void)_cancelButtonPressed:(id)pressed;
 - (void)changeHeaderText;
-- (void)entryView:(id)a3 didEnterText:(id)a4;
-- (void)simPinEntryErrorDidOccur:(id)a3 status:(id)a4;
-- (void)simPukEntryErrorDidOccur:(id)a3 status:(id)a4;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
-- (void)unlockDetailViewController:(id)a3 didCompleteWithResult:(int64_t)a4;
+- (void)entryView:(id)view didEnterText:(id)text;
+- (void)simPinEntryErrorDidOccur:(id)occur status:(id)status;
+- (void)simPukEntryErrorDidOccur:(id)occur status:(id)status;
+- (void)simStatusDidChange:(id)change status:(id)status;
+- (void)unlockDetailViewController:(id)controller didCompleteWithResult:(int64_t)result;
 - (void)viewDidLoad;
 @end
 
 @implementation TSSIMUnlockDetailViewController
 
-- (TSSIMUnlockDetailViewController)initWithSubscriptionContext:(id)a3 subscriptionAction:(id)a4 lockedSIMName:(id)a5 delegate:(id)a6
+- (TSSIMUnlockDetailViewController)initWithSubscriptionContext:(id)context subscriptionAction:(id)action lockedSIMName:(id)name delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  actionCopy = action;
+  nameCopy = name;
+  delegateCopy = delegate;
   v14 = sub_10000C1BC();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     sub_10000E858();
   }
 
-  v15 = [(TSSIMUnlockDetailViewController *)self initWithSubscriptionContext:v10 subscriptionAction:v11 suppressCancellation:1 delegate:v13];
+  v15 = [(TSSIMUnlockDetailViewController *)self initWithSubscriptionContext:contextCopy subscriptionAction:actionCopy suppressCancellation:1 delegate:delegateCopy];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [nameCopy copy];
     lockedSIMName = v15->_lockedSIMName;
     v15->_lockedSIMName = v16;
   }
@@ -43,11 +43,11 @@
   return v15;
 }
 
-- (TSSIMUnlockDetailViewController)initWithSubscriptionContext:(id)a3 subscriptionAction:(id)a4 suppressCancellation:(BOOL)a5 delegate:(id)a6
+- (TSSIMUnlockDetailViewController)initWithSubscriptionContext:(id)context subscriptionAction:(id)action suppressCancellation:(BOOL)cancellation delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  contextCopy = context;
+  actionCopy = action;
+  delegateCopy = delegate;
   v14 = sub_10000C1BC();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -60,16 +60,16 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_subscriptionContext, a3);
-    objc_storeStrong(&v16->_subscriptionAction, a4);
-    objc_storeWeak(&v16->_delegate, v13);
-    v16->_suppressCancellation = a5;
+    objc_storeStrong(&v15->_subscriptionContext, context);
+    objc_storeStrong(&v16->_subscriptionAction, action);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    v16->_suppressCancellation = cancellation;
     v17 = [[CoreTelephonyClient alloc] initWithQueue:&_dispatch_main_q];
     telephonyClient = v16->_telephonyClient;
     v16->_telephonyClient = v17;
 
-    v19 = [(TSSIMUnlockDetailViewController *)v16 view];
-    [v19 setAutoresizesSubviews:0];
+    view = [(TSSIMUnlockDetailViewController *)v16 view];
+    [view setAutoresizesSubviews:0];
 
     [(CoreTelephonyClient *)v16->_telephonyClient setDelegate:v16];
   }
@@ -87,55 +87,55 @@
   self->_detailView = v3;
 
   [(TSSIMUnlockDetailViewController *)self changeHeaderText];
-  v5 = [(TSSIMUnlockDetailViewController *)self view];
-  [v5 bounds];
+  view = [(TSSIMUnlockDetailViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v32);
 
-  v7 = [(TSSIMUnlockDetailViewController *)self view];
-  [v7 bounds];
+  view2 = [(TSSIMUnlockDetailViewController *)self view];
+  [view2 bounds];
   Height = CGRectGetHeight(v33);
 
   v9 = Height / 3.0;
-  v10 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v11 = [v10 entryField];
-  [v11 setFrame:{Width * 0.5 + -50.0, v9, 100.0, 30.0}];
+  entryView = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  entryField = [entryView entryField];
+  [entryField setFrame:{Width * 0.5 + -50.0, v9, 100.0, 30.0}];
 
-  v12 = [(TSSIMUnlockDetailViewController *)self view];
-  v13 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v14 = [v13 entryField];
-  [v12 addSubview:v14];
+  view3 = [(TSSIMUnlockDetailViewController *)self view];
+  entryView2 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  entryField2 = [entryView2 entryField];
+  [view3 addSubview:entryField2];
 
-  v15 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v16 = [v15 okButton];
-  [v16 setFrame:{Width * 0.5 + 50.0, v9, 100.0, 30.0}];
+  entryView3 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  okButton = [entryView3 okButton];
+  [okButton setFrame:{Width * 0.5 + 50.0, v9, 100.0, 30.0}];
 
-  v17 = [(TSSIMUnlockDetailViewController *)self view];
-  v18 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v19 = [v18 okButton];
-  [v17 addSubview:v19];
+  view4 = [(TSSIMUnlockDetailViewController *)self view];
+  entryView4 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  okButton2 = [entryView4 okButton];
+  [view4 addSubview:okButton2];
 
-  v20 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v21 = [v20 detailLabel];
-  [v21 setFrame:{0.0, v9 + -30.0 + -20.0, Width, 60.0}];
+  entryView5 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  detailLabel = [entryView5 detailLabel];
+  [detailLabel setFrame:{0.0, v9 + -30.0 + -20.0, Width, 60.0}];
 
-  v22 = [(TSSIMUnlockDetailViewController *)self view];
-  v23 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v24 = [v23 detailLabel];
-  [v22 addSubview:v24];
+  view5 = [(TSSIMUnlockDetailViewController *)self view];
+  entryView6 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  detailLabel2 = [entryView6 detailLabel];
+  [view5 addSubview:detailLabel2];
 
-  v25 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  [v25 setDelegate:self];
+  entryView7 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  [entryView7 setDelegate:self];
 
   if (!self->_suppressCancellation)
   {
     v26 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonPressed:"];
-    v27 = [(TSSIMUnlockDetailViewController *)self navigationItem];
-    [v27 setLeftBarButtonItem:v26];
+    navigationItem = [(TSSIMUnlockDetailViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v26];
 
     v28 = +[UIColor systemBackgroundColor];
-    v29 = [(TSSIMUnlockDetailViewController *)self navigationController];
-    v30 = [v29 view];
-    [v30 setBackgroundColor:v28];
+    navigationController = [(TSSIMUnlockDetailViewController *)self navigationController];
+    view6 = [navigationController view];
+    [view6 setBackgroundColor:v28];
   }
 
   [(TSSIMUnlockDetailViewController *)self setNavigationBarColor];
@@ -144,92 +144,92 @@
 
 - (void)changeHeaderText
 {
-  v3 = [(TSSIMUnlockDetailViewController *)self headerView];
-  v4 = [(TSSIMUnlockDetailView *)self->_detailView titleLabel];
-  [v3 setTitle:v4];
+  headerView = [(TSSIMUnlockDetailViewController *)self headerView];
+  titleLabel = [(TSSIMUnlockDetailView *)self->_detailView titleLabel];
+  [headerView setTitle:titleLabel];
 
-  v6 = [(TSSIMUnlockDetailViewController *)self headerView];
-  v5 = [(TSSIMUnlockDetailView *)self->_detailView descriptionLabel];
-  [v6 setDetailText:v5];
+  headerView2 = [(TSSIMUnlockDetailViewController *)self headerView];
+  descriptionLabel = [(TSSIMUnlockDetailView *)self->_detailView descriptionLabel];
+  [headerView2 setDetailText:descriptionLabel];
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(TSSIMUnlockDetailViewController *)self _appearingOrAppeared];
-  if (v3)
+  _appearingOrAppeared = [(TSSIMUnlockDetailViewController *)self _appearingOrAppeared];
+  if (_appearingOrAppeared)
   {
-    v4 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-    v5 = [v4 becomeFirstResponder];
+    entryView = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+    becomeFirstResponder = [entryView becomeFirstResponder];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_appearingOrAppeared) = becomeFirstResponder;
   }
 
-  return v3;
+  return _appearingOrAppeared;
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(TSSIMUnlockDetailViewController *)self _appearingOrAppeared];
-  if (v3)
+  _appearingOrAppeared = [(TSSIMUnlockDetailViewController *)self _appearingOrAppeared];
+  if (_appearingOrAppeared)
   {
-    v4 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-    v5 = [v4 canBecomeFirstResponder];
+    entryView = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+    canBecomeFirstResponder = [entryView canBecomeFirstResponder];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_appearingOrAppeared) = canBecomeFirstResponder;
   }
 
-  return v3;
+  return _appearingOrAppeared;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v3 = [v2 resignFirstResponder];
+  entryView = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  resignFirstResponder = [entryView resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v3 = [v2 canResignFirstResponder];
+  entryView = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  canResignFirstResponder = [entryView canResignFirstResponder];
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)isFirstResponder
 {
-  v2 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-  v3 = [v2 isFirstResponder];
+  entryView = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+  isFirstResponder = [entryView isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
-- (void)entryView:(id)a3 didEnterText:(id)a4
+- (void)entryView:(id)view didEnterText:(id)text
 {
-  v5 = a4;
+  textCopy = text;
   v6 = sub_10000C1BC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_10000EA68(self);
   }
 
-  v7 = [(TSSubscriptionAction *)self->_subscriptionAction actionType];
-  if (v7 == 3)
+  actionType = [(TSSubscriptionAction *)self->_subscriptionAction actionType];
+  if (actionType == 3)
   {
-    v9 = self->_subscriptionAction;
+    subscriptionContext = self->_subscriptionAction;
     v10 = sub_10000C1BC();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000EB10(v9);
+      sub_10000EB10(subscriptionContext);
     }
 
-    v11 = [(TSSubscriptionAction *)v9 actionSubtype];
-    if (v11 == 3)
+    actionSubtype = [(TSSubscriptionAction *)subscriptionContext actionSubtype];
+    if (actionSubtype == 3)
     {
       v16 = self->_subscriptionAction;
-      v17 = [(TSSubscriptionAction *)v16 pin1];
-      v18 = [v17 isEqualToString:v5];
+      pin1 = [(TSSubscriptionAction *)v16 pin1];
+      v18 = [pin1 isEqualToString:textCopy];
 
       if (v18)
       {
@@ -238,8 +238,8 @@
         telephonyClient = self->_telephonyClient;
         subscriptionContext = self->_subscriptionContext;
         WeakRetained = [(TSSubscriptionAction *)v16 puk];
-        v22 = [(TSSubscriptionAction *)v16 pin1];
-        [(CoreTelephonyClient *)telephonyClient unlockPUK:subscriptionContext puk:WeakRetained newPin:v22 error:0];
+        pin12 = [(TSSubscriptionAction *)v16 pin1];
+        [(CoreTelephonyClient *)telephonyClient unlockPUK:subscriptionContext puk:WeakRetained newPin:pin12 error:0];
       }
 
       else
@@ -251,19 +251,19 @@
       goto LABEL_19;
     }
 
-    if (v11 == 2)
+    if (actionSubtype == 2)
     {
-      v12 = [(TSSubscriptionAction *)v9 copyByApplyingPIN1:v5];
+      v12 = [(TSSubscriptionAction *)subscriptionContext copyByApplyingPIN1:textCopy];
     }
 
     else
     {
-      if (v11 != 1)
+      if (actionSubtype != 1)
       {
         goto LABEL_19;
       }
 
-      v12 = [(TSSubscriptionAction *)v9 copyByApplyingPUK:v5];
+      v12 = [(TSSubscriptionAction *)subscriptionContext copyByApplyingPUK:textCopy];
     }
 
     v13 = v12;
@@ -271,26 +271,26 @@
 
     if (v14)
     {
-      v15 = [(TSSIMUnlockDetailViewController *)self navigationController];
-      [v15 pushViewController:v14 animated:1];
+      navigationController = [(TSSIMUnlockDetailViewController *)self navigationController];
+      [navigationController pushViewController:v14 animated:1];
 
-      v9 = v14;
+      subscriptionContext = v14;
       goto LABEL_19;
     }
   }
 
-  else if (v7 == 2)
+  else if (actionType == 2)
   {
     [(TSSIMUnlockDetailView *)self->_detailView setUnlocking:1];
     [(TSSIMUnlockDetailViewController *)self changeHeaderText];
     v8 = self->_telephonyClient;
-    v9 = [(TSSIMUnlockDetailViewController *)self subscriptionContext];
-    [(CoreTelephonyClient *)v8 unlockPIN:v9 pin:v5 error:0];
+    subscriptionContext = [(TSSIMUnlockDetailViewController *)self subscriptionContext];
+    [(CoreTelephonyClient *)v8 unlockPIN:subscriptionContext pin:textCopy error:0];
 LABEL_19:
   }
 }
 
-- (void)unlockDetailViewController:(id)a3 didCompleteWithResult:(int64_t)a4
+- (void)unlockDetailViewController:(id)controller didCompleteWithResult:(int64_t)result
 {
   v6 = sub_10000C1BC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -298,30 +298,30 @@ LABEL_19:
     v17 = 136315650;
     v18 = "[TSSIMUnlockDetailViewController unlockDetailViewController:didCompleteWithResult:]";
     v19 = 2048;
-    v20 = a4;
+    resultCopy = result;
     v21 = 2080;
     v22 = "[TSSIMUnlockDetailViewController unlockDetailViewController:didCompleteWithResult:]";
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s, result %ld @%s", &v17, 0x20u);
   }
 
-  if (a4 > 3)
+  if (result > 3)
   {
-    if (a4 == 4)
+    if (result == 4)
     {
-      v11 = [(TSSIMUnlockDetailViewController *)self navigationController];
-      v12 = [v11 popToViewController:self animated:1];
+      navigationController = [(TSSIMUnlockDetailViewController *)self navigationController];
+      v12 = [navigationController popToViewController:self animated:1];
 
-      v13 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-      [v13 setPinMismatch:1];
+      entryView = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+      [entryView setPinMismatch:1];
 
-      v8 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-      [v8 resetEnteredTextWithShakeAnimation:0];
+      entryView2 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+      [entryView2 resetEnteredTextWithShakeAnimation:0];
       goto LABEL_17;
     }
 
-    if (a4 != 5)
+    if (result != 5)
     {
-      if (a4 != 6)
+      if (result != 6)
       {
         return;
       }
@@ -331,53 +331,53 @@ LABEL_19:
 
     if ([(TSSubscriptionAction *)self->_subscriptionAction actionSubtype]!= 1)
     {
-      v7 = [(TSSIMUnlockDetailViewController *)self delegate];
-      v8 = v7;
-      v9 = self;
-      v10 = 5;
+      delegate = [(TSSIMUnlockDetailViewController *)self delegate];
+      entryView2 = delegate;
+      selfCopy2 = self;
+      resultCopy2 = 5;
       goto LABEL_12;
     }
 
-    v14 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-    [v14 setPinMismatch:0];
+    entryView3 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+    [entryView3 setPinMismatch:0];
 
-    v15 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-    [v15 resetEnteredTextWithShakeAnimation:1];
+    entryView4 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+    [entryView4 resetEnteredTextWithShakeAnimation:1];
 
 LABEL_16:
-    v8 = [(TSSIMUnlockDetailViewController *)self navigationController];
-    v16 = [v8 popToViewController:self animated:1];
+    entryView2 = [(TSSIMUnlockDetailViewController *)self navigationController];
+    v16 = [entryView2 popToViewController:self animated:1];
     goto LABEL_17;
   }
 
-  if ((a4 - 1) < 2)
+  if ((result - 1) < 2)
   {
     goto LABEL_16;
   }
 
-  if (!a4 || a4 == 3)
+  if (!result || result == 3)
   {
 LABEL_11:
-    v7 = [(TSSIMUnlockDetailViewController *)self delegate];
-    v8 = v7;
-    v9 = self;
-    v10 = a4;
+    delegate = [(TSSIMUnlockDetailViewController *)self delegate];
+    entryView2 = delegate;
+    selfCopy2 = self;
+    resultCopy2 = result;
 LABEL_12:
-    [v7 unlockDetailViewController:v9 didCompleteWithResult:v10];
+    [delegate unlockDetailViewController:selfCopy2 didCompleteWithResult:resultCopy2];
 LABEL_17:
   }
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  changeCopy = change;
+  statusCopy = status;
+  if (statusCopy)
   {
     v8 = sub_10000C1BC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      [v6 slotID];
+      [changeCopy slotID];
       v9 = CTSubscriptionSlotAsString();
       v10 = sub_1000071C0([(TSSubscriptionAction *)self->_subscriptionAction actionType]);
       v17 = 136316162;
@@ -385,7 +385,7 @@ LABEL_17:
       v19 = 2080;
       v20 = v9;
       v21 = 2112;
-      v22 = v7;
+      v22 = statusCopy;
       v23 = 2112;
       v24 = v10;
       v25 = 2080;
@@ -395,35 +395,35 @@ LABEL_17:
 
     if ([(TSSubscriptionAction *)self->_subscriptionAction actionType]== 2 || [(TSSubscriptionAction *)self->_subscriptionAction actionType]== 3)
     {
-      v11 = [v6 uuid];
-      v12 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext uuid];
-      v13 = [v11 isEqual:v12];
+      uuid = [changeCopy uuid];
+      uuid2 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext uuid];
+      v13 = [uuid isEqual:uuid2];
 
       if (v13)
       {
-        if ([v7 isEqualToString:kCTSIMSupportSIMStatusPUKLocked])
+        if ([statusCopy isEqualToString:kCTSIMSupportSIMStatusPUKLocked])
         {
           v14 = 3;
 LABEL_17:
-          v16 = [(TSSIMUnlockDetailViewController *)self delegate];
-          [v16 unlockDetailViewController:self didCompleteWithResult:v14];
+          delegate = [(TSSIMUnlockDetailViewController *)self delegate];
+          [delegate unlockDetailViewController:self didCompleteWithResult:v14];
 
           goto LABEL_18;
         }
 
-        if ([v7 isEqualToString:kCTSIMSupportSIMStatusPermanentlyLocked])
+        if ([statusCopy isEqualToString:kCTSIMSupportSIMStatusPermanentlyLocked])
         {
           v14 = 6;
           goto LABEL_17;
         }
 
-        if ([v7 isEqualToString:kCTSIMSupportSIMStatusReady])
+        if ([statusCopy isEqualToString:kCTSIMSupportSIMStatusReady])
         {
           v14 = 0;
           goto LABEL_17;
         }
 
-        if ((sub_10000144C(v7) & 1) == 0)
+        if ((sub_10000144C(statusCopy) & 1) == 0)
         {
           v15 = sub_10000C1BC();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -443,10 +443,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)simPinEntryErrorDidOccur:(id)a3 status:(id)a4
+- (void)simPinEntryErrorDidOccur:(id)occur status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  occurCopy = occur;
+  statusCopy = status;
   v8 = sub_10000C1BC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -455,22 +455,22 @@ LABEL_18:
 
   if ([(TSSubscriptionAction *)self->_subscriptionAction actionType]== 2)
   {
-    v9 = [v6 uuid];
-    v10 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext uuid];
-    v11 = [v9 isEqual:v10];
+    uuid = [occurCopy uuid];
+    uuid2 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext uuid];
+    v11 = [uuid isEqual:uuid2];
 
     if (v11)
     {
-      if ([v7 isEqualToString:kCTSIMSupportSIMStatusPUKLocked])
+      if ([statusCopy isEqualToString:kCTSIMSupportSIMStatusPUKLocked])
       {
-        v12 = [(TSSIMUnlockDetailView *)self->_detailView entryView];
-        [v12 resignFirstResponder];
+        entryView = [(TSSIMUnlockDetailView *)self->_detailView entryView];
+        [entryView resignFirstResponder];
 
-        v13 = [(TSSIMUnlockDetailViewController *)self delegate];
-        [v13 unlockDetailViewController:self didCompleteWithResult:3];
+        delegate = [(TSSIMUnlockDetailViewController *)self delegate];
+        [delegate unlockDetailViewController:self didCompleteWithResult:3];
       }
 
-      else if ([v7 isEqualToString:kCTSIMSupportSIMStatusPINLocked])
+      else if ([statusCopy isEqualToString:kCTSIMSupportSIMStatusPINLocked])
       {
         objc_initWeak(&location, self);
         v14 = dispatch_time(0, 500000000);
@@ -487,10 +487,10 @@ LABEL_18:
   }
 }
 
-- (void)simPukEntryErrorDidOccur:(id)a3 status:(id)a4
+- (void)simPukEntryErrorDidOccur:(id)occur status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  occurCopy = occur;
+  statusCopy = status;
   v8 = sub_10000C1BC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -499,9 +499,9 @@ LABEL_18:
 
   if ([(TSSubscriptionAction *)self->_subscriptionAction actionSubtype]== 3)
   {
-    v9 = [v6 uuid];
-    v10 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext uuid];
-    v11 = [v9 isEqual:v10];
+    uuid = [occurCopy uuid];
+    uuid2 = [(CTXPCServiceSubscriptionContext *)self->_subscriptionContext uuid];
+    v11 = [uuid isEqual:uuid2];
 
     if (v11)
     {
@@ -512,7 +512,7 @@ LABEL_18:
       block[2] = sub_100002C08;
       block[3] = &unk_10001C6C0;
       objc_copyWeak(&v15, &location);
-      v14 = v7;
+      v14 = statusCopy;
       dispatch_after(v12, &_dispatch_main_q, block);
 
       objc_destroyWeak(&v15);
@@ -521,7 +521,7 @@ LABEL_18:
   }
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained unlockDetailViewController:self didCompleteWithResult:2];
@@ -529,13 +529,13 @@ LABEL_18:
 
 - (BOOL)_appearingOrAppeared
 {
-  v3 = [(TSSIMUnlockDetailViewController *)self _appearState];
-  if (v3 != 1)
+  _appearState = [(TSSIMUnlockDetailViewController *)self _appearState];
+  if (_appearState != 1)
   {
-    LOBYTE(v3) = [(TSSIMUnlockDetailViewController *)self _appearState]== 2;
+    LOBYTE(_appearState) = [(TSSIMUnlockDetailViewController *)self _appearState]== 2;
   }
 
-  return v3;
+  return _appearState;
 }
 
 - (TSSIMUnlockDetailViewControllerDelegate)delegate

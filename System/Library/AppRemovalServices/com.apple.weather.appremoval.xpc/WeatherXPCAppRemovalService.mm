@@ -1,17 +1,17 @@
 @interface WeatherXPCAppRemovalService
 - (id)appContainerPath;
-- (id)deleteAllFilesInDirectory:(id)a3 except:(id)a4;
+- (id)deleteAllFilesInDirectory:(id)directory except:(id)except;
 - (id)deleteAllUserDefaults;
 - (id)deleteNanoUserDefaults;
-- (id)removeUserDefaults:(id)a3 container:(id)a4 doNanoSync:(BOOL)a5;
-- (void)removeAppWithReply:(id)a3;
+- (id)removeUserDefaults:(id)defaults container:(id)container doNanoSync:(BOOL)sync;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation WeatherXPCAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = os_log_xpcAppRemoval();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,17 +19,17 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting AppRemoval.", buf, 2u);
   }
 
-  v6 = [(WeatherXPCAppRemovalService *)self deleteAllUserDefaults];
-  if (v6 || ([(WeatherXPCAppRemovalService *)self deleteNanoUserDefaults], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  deleteAllUserDefaults = [(WeatherXPCAppRemovalService *)self deleteAllUserDefaults];
+  if (deleteAllUserDefaults || ([(WeatherXPCAppRemovalService *)self deleteNanoUserDefaults], (deleteAllUserDefaults = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = v6;
+    v7 = deleteAllUserDefaults;
     v8 = os_log_xpcAppRemoval();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       sub_100003E78();
     }
 
-    v4[2](v4, v7);
+    replyCopy[2](replyCopy, v7);
   }
 
   else
@@ -47,32 +47,32 @@
     v10[2] = sub_100001984;
     v10[3] = &unk_100008310;
     v10[4] = self;
-    v11 = v4;
+    v11 = replyCopy;
     [(WeatherDaemonDecommissioner *)v7 decommissionDaemonWithCompletion:v10];
   }
 }
 
-- (id)removeUserDefaults:(id)a3 container:(id)a4 doNanoSync:(BOOL)a5
+- (id)removeUserDefaults:(id)defaults container:(id)container doNanoSync:(BOOL)sync
 {
-  v5 = a5;
-  applicationID = a3;
-  v7 = a4;
+  syncCopy = sync;
+  applicationID = defaults;
+  containerCopy = container;
   v8 = os_log_xpcAppRemoval();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  v34 = v7;
-  if (v7)
+  v34 = containerCopy;
+  if (containerCopy)
   {
     if (v9)
     {
       *buf = 138412290;
-      v50 = v7;
+      v50 = containerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Container is %@.", buf, 0xCu);
     }
 
     v10 = _CFPreferencesCopyKeyListWithContainer();
     if (v10)
     {
-      v33 = v5;
+      v33 = syncCopy;
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
@@ -142,7 +142,7 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v33 = v5;
+  v33 = syncCopy;
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
@@ -228,16 +228,16 @@ LABEL_35:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Removing User Defaults for %@", buf, 0xCu);
   }
 
-  v4 = [(WeatherXPCAppRemovalService *)self appContainerPath];
+  appContainerPath = [(WeatherXPCAppRemovalService *)self appContainerPath];
   v5 = os_log_xpcAppRemoval();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = appContainerPath;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "GroupContainer URL: %@", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!appContainerPath)
   {
     v11 = os_log_xpcAppRemoval();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -257,8 +257,8 @@ LABEL_35:
   }
 
   [NSUserActivity deleteAllSavedUserActivitiesWithCompletionHandler:&stru_100008330];
-  v6 = [(__CFString *)v4 path];
-  v7 = [(WeatherXPCAppRemovalService *)self removeUserDefaults:@"group.com.apple.weather" container:v6 doNanoSync:0];
+  path = [(__CFString *)appContainerPath path];
+  v7 = [(WeatherXPCAppRemovalService *)self removeUserDefaults:@"group.com.apple.weather" container:path doNanoSync:0];
 
   if (v7)
   {
@@ -311,14 +311,14 @@ LABEL_16:
   if (!v4)
   {
     v5 = +[NRPairedDeviceRegistry sharedInstance];
-    v6 = [v5 getPairedDevices];
+    getPairedDevices = [v5 getPairedDevices];
 
     v27 = objc_alloc_init(NPSManager);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = v6;
+    obj = getPairedDevices;
     v31 = [obj countByEnumeratingWithState:&v39 objects:v46 count:16];
     v4 = 0;
     if (v31)
@@ -345,22 +345,22 @@ LABEL_16:
             v11 = os_log_xpcAppRemoval();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
-              v12 = [v10 UUIDString];
+              uUIDString = [v10 UUIDString];
               *buf = 138412290;
-              v48 = v12;
+              v48 = uUIDString;
               _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Removing Nano Defaults for device: %@", buf, 0xCu);
             }
 
             v32 = v10;
 
-            v13 = [v9 dictionaryRepresentation];
-            v14 = [v13 allKeys];
+            dictionaryRepresentation = [v9 dictionaryRepresentation];
+            allKeys = [dictionaryRepresentation allKeys];
 
             v37 = 0u;
             v38 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v15 = v14;
+            v15 = allKeys;
             v16 = [v15 countByEnumeratingWithState:&v35 objects:v45 count:16];
             if (v16)
             {
@@ -393,16 +393,16 @@ LABEL_16:
               while (v17);
             }
 
-            v22 = [v9 synchronize];
+            synchronize = [v9 synchronize];
 
-            if (v22)
+            if (synchronize)
             {
               v23 = os_log_xpcAppRemoval();
               v24 = v32;
               if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v48 = v22;
+                v48 = synchronize;
                 _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Error synchronizing NanoDomain. error=%@", buf, 0xCu);
               }
 
@@ -439,33 +439,33 @@ LABEL_16:
   return v4;
 }
 
-- (id)deleteAllFilesInDirectory:(id)a3 except:(id)a4
+- (id)deleteAllFilesInDirectory:(id)directory except:(id)except
 {
-  v5 = a3;
-  v6 = a4;
+  directoryCopy = directory;
+  exceptCopy = except;
   v7 = os_log_xpcAppRemoval();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 path];
+    path = [directoryCopy path];
     *buf = 138412290;
-    v28 = v8;
+    v28 = path;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Removing files in directory: %@", buf, 0xCu);
   }
 
   v9 = +[NSFileManager defaultManager];
-  v10 = [v5 path];
-  v11 = [v9 enumeratorAtPath:v10];
-  v12 = [v11 nextObject];
-  if (v12)
+  path2 = [directoryCopy path];
+  v11 = [v9 enumeratorAtPath:path2];
+  nextObject = [v11 nextObject];
+  if (nextObject)
   {
-    v14 = v12;
+    nextObject3 = nextObject;
     v25 = 0;
     *&v13 = 138412546;
     v23 = v13;
     do
     {
-      v15 = v14;
-      while ([v6 containsObject:{v15, v23}])
+      v15 = nextObject3;
+      while ([exceptCopy containsObject:{v15, v23}])
       {
         v16 = os_log_xpcAppRemoval();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -476,17 +476,17 @@ LABEL_16:
         }
 
         [v11 skipDescendants];
-        v17 = [v11 nextObject];
+        nextObject2 = [v11 nextObject];
 
-        v15 = v17;
-        if (!v17)
+        v15 = nextObject2;
+        if (!nextObject2)
         {
           goto LABEL_20;
         }
       }
 
-      v24 = v5;
-      v18 = [v10 stringByAppendingPathComponent:v15];
+      v24 = directoryCopy;
+      v18 = [path2 stringByAppendingPathComponent:v15];
       v26 = 0;
       [v9 removeItemAtPath:v18 error:&v26];
       v19 = v26;
@@ -514,12 +514,12 @@ LABEL_16:
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Removed item: %@", buf, 0xCu);
       }
 
-      v14 = [v11 nextObject];
+      nextObject3 = [v11 nextObject];
 
-      v5 = v24;
+      directoryCopy = v24;
     }
 
-    while (v14);
+    while (nextObject3);
   }
 
   else

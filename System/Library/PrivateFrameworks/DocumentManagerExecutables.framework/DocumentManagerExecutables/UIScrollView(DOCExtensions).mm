@@ -11,16 +11,16 @@
 {
   if (a3 < 0)
   {
-    [(UIScrollView(DOCExtensions) *)a2 doc_setAutomaticContentOffsetAdjustmentDisabledCount:a1];
+    [(UIScrollView(DOCExtensions) *)a2 doc_setAutomaticContentOffsetAdjustmentDisabledCount:self];
   }
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  objc_setAssociatedObject(a1, &doc_automaticContentOffsetAdjustmentDisabledCountKey, v5, 0x301);
+  objc_setAssociatedObject(self, &doc_automaticContentOffsetAdjustmentDisabledCountKey, v5, 0x301);
 }
 
 - (uint64_t)doc_automaticContentOffsetAdjustmentDisabledCount
 {
-  v1 = objc_getAssociatedObject(a1, &doc_automaticContentOffsetAdjustmentDisabledCountKey);
+  v1 = objc_getAssociatedObject(self, &doc_automaticContentOffsetAdjustmentDisabledCountKey);
   v2 = v1;
   v3 = &unk_285CE9D60;
   if (v1)
@@ -30,26 +30,26 @@
 
   v4 = v3;
 
-  v5 = [v4 integerValue];
-  return v5;
+  integerValue = [v4 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)doc_adjustForAutomaticKeyboardInfo:()DOCExtensions animated:lastAdjustment:
 {
   v7 = *a5;
-  result = [a1 doc_verticalOverlapIntoSafeAreaForView:a1 usingKeyboardInfo:a3];
+  result = [self doc_verticalOverlapIntoSafeAreaForView:self usingKeyboardInfo:a3];
   if (v7 != v9)
   {
     *a5 = v9;
     v10 = v9 - v7;
-    [a1 contentInset];
+    [self contentInset];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v10 + v17;
-    [a1 setContentInset:?];
+    [self setContentInset:?];
 
-    return [a1 setScrollIndicatorInsets:{v12, v14, v18, v16}];
+    return [self setScrollIndicatorInsets:{v12, v14, v18, v16}];
   }
 
   return result;
@@ -68,31 +68,31 @@
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [a1 window];
-    v18 = [v17 windowScene];
-    v19 = [v18 coordinateSpace];
-    v20 = [a1 window];
-    v21 = [v20 windowScene];
-    v22 = [v21 screen];
-    v23 = [v22 coordinateSpace];
-    [v19 convertRect:v23 fromCoordinateSpace:{v10, v12, v14, v16}];
+    window = [self window];
+    windowScene = [window windowScene];
+    coordinateSpace = [windowScene coordinateSpace];
+    window2 = [self window];
+    windowScene2 = [window2 windowScene];
+    screen = [windowScene2 screen];
+    coordinateSpace2 = [screen coordinateSpace];
+    [coordinateSpace convertRect:coordinateSpace2 fromCoordinateSpace:{v10, v12, v14, v16}];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
-    v32 = [a1 window];
-    v33 = [v32 windowScene];
-    v34 = [v33 coordinateSpace];
-    [v34 convertRect:v6 toCoordinateSpace:{v25, v27, v29, v31}];
+    window3 = [self window];
+    windowScene3 = [window3 windowScene];
+    coordinateSpace3 = [windowScene3 coordinateSpace];
+    [coordinateSpace3 convertRect:v6 toCoordinateSpace:{v25, v27, v29, v31}];
     v36 = v35;
     v38 = v37;
     v40 = v39;
     v42 = v41;
 
-    [a1 safeAreaInsets];
+    [self safeAreaInsets];
     v44 = v42 - v43;
-    [a1 safeAreaInsets];
+    [self safeAreaInsets];
     v46 = v38 + v45;
   }
 

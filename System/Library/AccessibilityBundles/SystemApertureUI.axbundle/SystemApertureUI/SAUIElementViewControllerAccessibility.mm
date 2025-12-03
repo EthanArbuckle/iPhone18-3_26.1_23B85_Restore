@@ -1,21 +1,21 @@
 @interface SAUIElementViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadLayoutInformation;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SAUIElementViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SAUIElementViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SAUIElementViewController" hasInstanceMethod:@"_elementView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"layoutMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SAUIElementView" hasInstanceMethod:@"elementViewProvider" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"SAUIElementViewProviding" hasRequiredInstanceMethod:@"minimalView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SAUIElementViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SAUIElementViewController" hasInstanceMethod:@"_elementView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"layoutMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SAUIElementView" hasInstanceMethod:@"elementViewProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"SAUIElementViewProviding" hasRequiredInstanceMethod:@"minimalView"];
 }
 
 - (void)_accessibilityLoadLayoutInformation
@@ -88,11 +88,11 @@ void __82__SAUIElementViewControllerAccessibility__axShiftFocusToElementViewForP
   [(SAUIElementViewControllerAccessibility *)self _axShiftFocusToElementViewForPowerAlerts];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = SAUIElementViewControllerAccessibility;
-  [(SAUIElementViewControllerAccessibility *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(SAUIElementViewControllerAccessibility *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(SAUIElementViewControllerAccessibility *)self _axShiftFocusToElementViewForPowerAlerts];
 }
 

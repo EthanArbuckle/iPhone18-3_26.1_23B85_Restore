@@ -1,24 +1,24 @@
 @interface SiriUISelectionTemplateView
-- (SiriUISelectionTemplateView)initWithDataSource:(id)a3;
+- (SiriUISelectionTemplateView)initWithDataSource:(id)source;
 - (void)layoutSubviews;
 - (void)reloadData;
 @end
 
 @implementation SiriUISelectionTemplateView
 
-- (SiriUISelectionTemplateView)initWithDataSource:(id)a3
+- (SiriUISelectionTemplateView)initWithDataSource:(id)source
 {
   v13.receiver = self;
   v13.super_class = SiriUISelectionTemplateView;
-  v3 = [(SiriUISettingTemplateView *)&v13 initWithDataSource:a3];
+  v3 = [(SiriUISettingTemplateView *)&v13 initWithDataSource:source];
   if (v3)
   {
     v4 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
-    v5 = [MEMORY[0x277D75348] siriui_platterTextColor];
-    v6 = [v4 _flatImageWithColor:v5];
-    v7 = [v6 imageFlippedForRightToLeftLayoutDirection];
+    siriui_platterTextColor = [MEMORY[0x277D75348] siriui_platterTextColor];
+    v6 = [v4 _flatImageWithColor:siriui_platterTextColor];
+    imageFlippedForRightToLeftLayoutDirection = [v6 imageFlippedForRightToLeftLayoutDirection];
 
-    v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v7];
+    v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageFlippedForRightToLeftLayoutDirection];
     checkmarkImageView = v3->_checkmarkImageView;
     v3->_checkmarkImageView = v8;
 
@@ -39,8 +39,8 @@
   v4.receiver = self;
   v4.super_class = SiriUISelectionTemplateView;
   [(SiriUISettingTemplateView *)&v4 reloadData];
-  v3 = [(SiriUIBaseTemplateView *)self dataSource];
-  -[UIImageView setHidden:](self->_checkmarkImageView, "setHidden:", [v3 selected] ^ 1);
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  -[UIImageView setHidden:](self->_checkmarkImageView, "setHidden:", [dataSource selected] ^ 1);
 }
 
 - (void)layoutSubviews
@@ -53,12 +53,12 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-  [v11 templatedContentMargins];
+  templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
+  [templatedSuperview templatedContentMargins];
 
-  v12 = [(SiriUISelectionTemplateView *)self semanticContentAttribute];
+  semanticContentAttribute = [(SiriUISelectionTemplateView *)self semanticContentAttribute];
   [(UIImageView *)self->_checkmarkImageView sizeThatFits:v8, v10];
-  if (v12 != 4)
+  if (semanticContentAttribute != 4)
   {
     v14.origin.x = v4;
     v14.origin.y = v6;

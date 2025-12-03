@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneSearchConstantScoreWeight
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4;
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat;
 @end
 
 @implementation OrgApacheLuceneSearchConstantScoreWeight
 
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat
 {
-  v4 = a3 * a4;
+  v4 = float * withFloat;
   self->queryNorm_ = v4;
   self->queryWeight_ = v4 * self->queryWeight_;
 }

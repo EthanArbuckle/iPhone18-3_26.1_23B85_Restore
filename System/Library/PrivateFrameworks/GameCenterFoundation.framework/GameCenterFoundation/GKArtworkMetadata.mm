@@ -1,34 +1,34 @@
 @interface GKArtworkMetadata
 + (id)secureCodedPropertyKeys;
-- (GKArtworkMetadata)initWithTemplateURL:(id)a3 width:(id)a4 height:(id)a5 textColor1:(id)a6 textColor2:(id)a7 textColor3:(id)a8 textColor4:(id)a9 backgroundColor:(id)a10;
+- (GKArtworkMetadata)initWithTemplateURL:(id)l width:(id)width height:(id)height textColor1:(id)color1 textColor2:(id)color2 textColor3:(id)color3 textColor4:(id)color4 backgroundColor:(id)self0;
 @end
 
 @implementation GKArtworkMetadata
 
-- (GKArtworkMetadata)initWithTemplateURL:(id)a3 width:(id)a4 height:(id)a5 textColor1:(id)a6 textColor2:(id)a7 textColor3:(id)a8 textColor4:(id)a9 backgroundColor:(id)a10
+- (GKArtworkMetadata)initWithTemplateURL:(id)l width:(id)width height:(id)height textColor1:(id)color1 textColor2:(id)color2 textColor3:(id)color3 textColor4:(id)color4 backgroundColor:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v21 = a9;
-  v17 = a10;
+  lCopy = l;
+  widthCopy = width;
+  heightCopy = height;
+  color1Copy = color1;
+  color2Copy = color2;
+  color3Copy = color3;
+  color4Copy = color4;
+  colorCopy = color;
   v28.receiver = self;
   v28.super_class = GKArtworkMetadata;
   v18 = [(GKArtworkMetadata *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_templateURL, a3);
-    objc_storeStrong(&v19->_width, a4);
-    objc_storeStrong(&v19->_height, a5);
-    objc_storeStrong(&v19->_textColor1, a6);
-    objc_storeStrong(&v19->_textColor2, a7);
-    objc_storeStrong(&v19->_textColor3, a8);
-    objc_storeStrong(&v19->_textColor4, a9);
-    objc_storeStrong(&v19->_backgroundColor, a10);
+    objc_storeStrong(&v18->_templateURL, l);
+    objc_storeStrong(&v19->_width, width);
+    objc_storeStrong(&v19->_height, height);
+    objc_storeStrong(&v19->_textColor1, color1);
+    objc_storeStrong(&v19->_textColor2, color2);
+    objc_storeStrong(&v19->_textColor3, color3);
+    objc_storeStrong(&v19->_textColor4, color4);
+    objc_storeStrong(&v19->_backgroundColor, color);
   }
 
   return v19;

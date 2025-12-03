@@ -1,24 +1,24 @@
 @interface FCUIAddActivityFooterView
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FCUIAddActivityFooterView)initWithAction:(id)a3;
-- (void)_configureActivityTitleLabelIfNecessaryWithTitle:(id)a3;
-- (void)_configureAddActivityControlIfNecessaryWithAction:(id)a3;
-- (void)_layoutSubviewsInBounds:(CGRect)a3 measuringOnly:(CGSize *)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FCUIAddActivityFooterView)initWithAction:(id)action;
+- (void)_configureActivityTitleLabelIfNecessaryWithTitle:(id)title;
+- (void)_configureAddActivityControlIfNecessaryWithAction:(id)action;
+- (void)_layoutSubviewsInBounds:(CGRect)bounds measuringOnly:(CGSize *)only;
 - (void)_setNeedsTextAttributesUpdate;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesForTitleLabel;
 - (void)_updateTextAttributesIfNecessary;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
 @end
 
 @implementation FCUIAddActivityFooterView
 
-- (FCUIAddActivityFooterView)initWithAction:(id)a3
+- (FCUIAddActivityFooterView)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = FCUIAddActivityFooterView;
   v5 = [(FCUIAddActivityFooterView *)&v9 init];
@@ -26,15 +26,15 @@
   if (v5)
   {
     v5->_adjustsFontForContentSizeCategory = 1;
-    [(FCUIAddActivityFooterView *)v5 _configureAddActivityControlIfNecessaryWithAction:v4];
-    v7 = [v4 title];
-    [(FCUIAddActivityFooterView *)v6 _configureActivityTitleLabelIfNecessaryWithTitle:v7];
+    [(FCUIAddActivityFooterView *)v5 _configureAddActivityControlIfNecessaryWithAction:actionCopy];
+    title = [actionCopy title];
+    [(FCUIAddActivityFooterView *)v6 _configureActivityTitleLabelIfNecessaryWithTitle:title];
   }
 
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(FCUIAddActivityFooterView *)self _updateTextAttributesIfNecessary];
   v6 = *MEMORY[0x277CBF3A8];
@@ -57,11 +57,11 @@
   [(FCUIAddActivityFooterView *)self _layoutSubviewsInBounds:0 measuringOnly:?];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(FCUIAddActivityFooterView *)self _setNeedsTextAttributesUpdate];
     addActivityControl = self->_addActivityControl;
     adjustsFontForContentSizeCategory = self->_adjustsFontForContentSizeCategory;
@@ -72,21 +72,21 @@
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(FCUIAddActivityFooterView *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(FCUIAddActivityFooterView *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
     [(FCUIAddActivityFooterView *)self _setNeedsTextAttributesUpdate];
     [(_FCUIAddActivityControl *)self->_addActivityControl adjustForContentSizeCategoryChange];
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (void)_layoutSubviewsInBounds:(CGRect)a3 measuringOnly:(CGSize *)a4
+- (void)_layoutSubviewsInBounds:(CGRect)bounds measuringOnly:(CGSize *)only
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(_FCUIAddActivityControl *)self->_addActivityControl sizeThatFits:a3.size.width, a3.size.height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(_FCUIAddActivityControl *)self->_addActivityControl sizeThatFits:bounds.size.width, bounds.size.height];
   BSRectWithSize();
   v25 = 0;
   UIRectCenteredXInRectScale();
@@ -94,7 +94,7 @@
   v13 = v9;
   v14 = v10;
   v15 = v11;
-  if (!a4)
+  if (!only)
   {
     [(_FCUIAddActivityControl *)self->_addActivityControl setFrame:v8, v9, v10, v11, 0];
   }
@@ -110,15 +110,15 @@
   v21 = v17;
   v22 = v18;
   v23 = v19;
-  if (a4)
+  if (only)
   {
     v28.origin.x = v12;
     v28.origin.y = v13;
     v28.size.width = v14;
     v28.size.height = v15;
     v29 = CGRectUnion(v28, *&v20);
-    a4->width = v29.size.width;
-    a4->height = v29.size.height;
+    only->width = v29.size.width;
+    only->height = v29.size.height;
   }
 
   else
@@ -129,12 +129,12 @@
   }
 }
 
-- (void)_configureAddActivityControlIfNecessaryWithAction:(id)a3
+- (void)_configureAddActivityControlIfNecessaryWithAction:(id)action
 {
   if (!self->_addActivityControl)
   {
-    v4 = a3;
-    v5 = [[_FCUIAddActivityControl alloc] initWithAction:v4];
+    actionCopy = action;
+    v5 = [[_FCUIAddActivityControl alloc] initWithAction:actionCopy];
 
     addActivityControl = self->_addActivityControl;
     self->_addActivityControl = v5;
@@ -145,22 +145,22 @@
   }
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style];
   }
   v6 = ;
   v15 = *MEMORY[0x277D74380];
   v13 = *MEMORY[0x277D74430];
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v14 = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v16[0] = v8;
@@ -194,10 +194,10 @@
 
 - (void)_updateTextAttributes
 {
-  v3 = [(FCUIAddActivityFooterView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(FCUIAddActivityFooterView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
-  self->_preferredContentSizeCategory = v4;
+  self->_preferredContentSizeCategory = preferredContentSizeCategory;
 
   [(FCUIAddActivityFooterView *)self _updateTextAttributesForTitleLabel];
 }
@@ -211,28 +211,28 @@
   }
 }
 
-- (void)_configureActivityTitleLabelIfNecessaryWithTitle:(id)a3
+- (void)_configureActivityTitleLabelIfNecessaryWithTitle:(id)title
 {
   if (!self->_titleLabel)
   {
     v4 = MEMORY[0x277D756B8];
-    v5 = a3;
+    titleCopy = title;
     v6 = objc_alloc_init(v4);
     titleLabel = self->_titleLabel;
     self->_titleLabel = v6;
 
-    [(UILabel *)self->_titleLabel setText:v5];
+    [(UILabel *)self->_titleLabel setText:titleCopy];
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     [(UILabel *)self->_titleLabel setLineBreakMode:4];
-    v11 = [(UILabel *)self->_titleLabel layer];
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [v11 setShadowColor:{objc_msgSend(v8, "CGColor")}];
+    layer = [(UILabel *)self->_titleLabel layer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
     LODWORD(v9) = 1045220557;
-    [v11 setShadowOpacity:v9];
-    [v11 setShadowRadius:20.0];
-    [v11 setShadowOffset:{0.0, 2.0}];
-    [v11 setShadowPathIsBounds:1];
+    [layer setShadowOpacity:v9];
+    [layer setShadowRadius:20.0];
+    [layer setShadowOffset:{0.0, 2.0}];
+    [layer setShadowPathIsBounds:1];
     [(FCUIAddActivityFooterView *)self addSubview:self->_titleLabel];
     [(FCUIAddActivityFooterView *)self _updateTextAttributesForTitleLabel];
     v10 = [(_FCUIAddActivityControl *)self->_addActivityControl visualStylingProviderForCategory:1];

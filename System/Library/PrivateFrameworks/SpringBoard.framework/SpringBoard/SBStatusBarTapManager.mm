@@ -1,16 +1,16 @@
 @interface SBStatusBarTapManager
-- (BOOL)_isUILocked:(id)a3;
-- (BOOL)_performAfterAttemptingUnlockForAppWithBundleIdentifier:(id)a3 windowScene:(id)a4 completion:(id)a5;
-- (BOOL)canHandleTapForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4;
-- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4;
-- (id)_allApplicationDestinationsForApplications:(id)a3 windowScene:(id)a4;
-- (id)_appDestinationForNextSceneToVisitForApps:(id)a3 andBackgroundActivityWithIdentifier:(id)a4 windowScene:(id)a5;
-- (id)_foregroundApplicationDestinationsForApplications:(id)a3 windowScene:(id)a4;
-- (id)_handlerForBackgroundActivityWithIdentifier:(id)a3 orOutApplications:(id *)a4;
-- (id)_handlerForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4;
-- (id)_recentlyTappedApplicationDestinationsForBackgroundActivityWithIdentifier:(id)a3;
-- (void)_addRecentlyTappedApplicationDestinations:(id)a3 forBackgroundActivityWithIdentifier:(id)a4;
-- (void)_scheduleResetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:(id)a3;
+- (BOOL)_isUILocked:(id)locked;
+- (BOOL)_performAfterAttemptingUnlockForAppWithBundleIdentifier:(id)identifier windowScene:(id)scene completion:(id)completion;
+- (BOOL)canHandleTapForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene;
+- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene;
+- (id)_allApplicationDestinationsForApplications:(id)applications windowScene:(id)scene;
+- (id)_appDestinationForNextSceneToVisitForApps:(id)apps andBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene;
+- (id)_foregroundApplicationDestinationsForApplications:(id)applications windowScene:(id)scene;
+- (id)_handlerForBackgroundActivityWithIdentifier:(id)identifier orOutApplications:(id *)applications;
+- (id)_handlerForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene;
+- (id)_recentlyTappedApplicationDestinationsForBackgroundActivityWithIdentifier:(id)identifier;
+- (void)_addRecentlyTappedApplicationDestinations:(id)destinations forBackgroundActivityWithIdentifier:(id)identifier;
+- (void)_scheduleResetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:(id)identifier;
 @end
 
 @implementation SBStatusBarTapManager
@@ -25,11 +25,11 @@ uint64_t __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifie
   return result;
 }
 
-- (BOOL)canHandleTapForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4
+- (BOOL)canHandleTapForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene
 {
-  v6 = a4;
+  sceneCopy = scene;
   v7 = MEMORY[0x277CCACC8];
-  v8 = a3;
+  identifierCopy = identifier;
   if (([v7 isMainThread] & 1) == 0)
   {
     [SBStatusBarTapManager canHandleTapForBackgroundActivityWithIdentifier:windowScene:];
@@ -37,7 +37,7 @@ uint64_t __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifie
 
   v9 = [MEMORY[0x277CBEB98] set];
   v17 = v9;
-  v10 = [(SBStatusBarTapManager *)self _handlerForBackgroundActivityWithIdentifier:v8 orOutApplications:&v17];
+  v10 = [(SBStatusBarTapManager *)self _handlerForBackgroundActivityWithIdentifier:identifierCopy orOutApplications:&v17];
 
   v11 = v17;
   if (v10)
@@ -47,8 +47,8 @@ uint64_t __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifie
 
   else if ([v11 count])
   {
-    v13 = [(SBStatusBarTapManager *)self _allApplicationDestinationsForApplications:v11 windowScene:v6];
-    v14 = [(SBStatusBarTapManager *)self _foregroundApplicationDestinationsForApplications:v11 windowScene:v6];
+    v13 = [(SBStatusBarTapManager *)self _allApplicationDestinationsForApplications:v11 windowScene:sceneCopy];
+    v14 = [(SBStatusBarTapManager *)self _foregroundApplicationDestinationsForApplications:v11 windowScene:sceneCopy];
     v15 = [v13 mutableCopy];
     [v15 minusOrderedSet:v14];
     v12 = [v15 count] != 0;
@@ -62,13 +62,13 @@ uint64_t __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifie
   return v12;
 }
 
-- (id)_handlerForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4
+- (id)_handlerForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  sceneCopy = scene;
   v9 = [MEMORY[0x277CBEB98] set];
   v16 = v9;
-  v10 = [(SBStatusBarTapManager *)self _handlerForBackgroundActivityWithIdentifier:v7 orOutApplications:&v16];
+  v10 = [(SBStatusBarTapManager *)self _handlerForBackgroundActivityWithIdentifier:identifierCopy orOutApplications:&v16];
   v11 = v16;
 
   if ([v11 count])
@@ -78,7 +78,7 @@ uint64_t __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifie
       [SBStatusBarTapManager _handlerForBackgroundActivityWithIdentifier:a2 windowScene:self];
     }
 
-    v12 = [(SBStatusBarTapManager *)self _appDestinationForNextSceneToVisitForApps:v11 andBackgroundActivityWithIdentifier:v7 windowScene:v8];
+    v12 = [(SBStatusBarTapManager *)self _appDestinationForNextSceneToVisitForApps:v11 andBackgroundActivityWithIdentifier:identifierCopy windowScene:sceneCopy];
     if (v12)
     {
       v15 = [[_SBStatusBarTapHandler alloc] initWithApplicationDestination:v12];
@@ -92,39 +92,39 @@ uint64_t __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifie
     v13 = SBLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(SBStatusBarTapManager *)v7 _handlerForBackgroundActivityWithIdentifier:v11 windowScene:v13];
+      [(SBStatusBarTapManager *)identifierCopy _handlerForBackgroundActivityWithIdentifier:v11 windowScene:v13];
     }
   }
 
   return v10;
 }
 
-- (id)_handlerForBackgroundActivityWithIdentifier:(id)a3 orOutApplications:(id *)a4
+- (id)_handlerForBackgroundActivityWithIdentifier:(id)identifier orOutApplications:(id *)applications
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [MEMORY[0x277CBEB58] set];
-  if ([v5 isEqualToString:*MEMORY[0x277D6BC70]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D6BC70]])
   {
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x277D6BC80]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D6BC80]])
   {
     v7 = SBMapsBundleIdentifier;
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x277D6BCA8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D6BCA8]])
   {
     v12 = +[SBActivityManager sharedInstance];
     v13 = [v12 lastRedisplayableActivityForBundleId:@"com.apple.VoiceMemos"];
     if (!v13)
     {
-      v14 = [SBApp audioRecordingManager];
-      v15 = [v14 nowRecordingApplication];
-      if (v15)
+      audioRecordingManager = [SBApp audioRecordingManager];
+      nowRecordingApplication = [audioRecordingManager nowRecordingApplication];
+      if (nowRecordingApplication)
       {
-        [v6 addObject:v15];
+        [v6 addObject:nowRecordingApplication];
       }
 
       goto LABEL_19;
@@ -143,22 +143,22 @@ uint64_t __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifie
     goto LABEL_38;
   }
 
-  if (![v5 isEqualToString:*MEMORY[0x277D6BC30]])
+  if (![identifierCopy isEqualToString:*MEMORY[0x277D6BC30]])
   {
-    if ([v5 isEqualToString:*MEMORY[0x277D6BC00]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D6BC00]])
     {
-      v8 = [SBApp nowLocatingApps];
-      if (!v8)
+      nowLocatingApps = [SBApp nowLocatingApps];
+      if (!nowLocatingApps)
       {
         goto LABEL_6;
       }
 
 LABEL_28:
-      [v6 addObjectsFromArray:v8];
+      [v6 addObjectsFromArray:nowLocatingApps];
       goto LABEL_6;
     }
 
-    if ([v5 isEqualToString:*MEMORY[0x277D6BC50]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D6BC50]])
     {
       v26 = [_SBStatusBarTapHandler alloc];
       v27 = &__block_literal_global_375;
@@ -166,7 +166,7 @@ LABEL_28:
 
     else
     {
-      if ([v5 isEqualToString:*MEMORY[0x277D6BCF8]])
+      if ([identifierCopy isEqualToString:*MEMORY[0x277D6BCF8]])
       {
         v18 = [_SBStatusBarTapHandler alloc];
         v19 = MEMORY[0x277CBEBC0];
@@ -174,20 +174,20 @@ LABEL_28:
         goto LABEL_53;
       }
 
-      if ([v5 isEqualToString:*MEMORY[0x277D6BC38]])
+      if ([identifierCopy isEqualToString:*MEMORY[0x277D6BC38]])
       {
         v7 = SBDiagnosticsBundleIdentifier;
 LABEL_4:
-        v8 = SBWorkspaceApplicationForIdentifier(*v7);
-        if (v8)
+        nowLocatingApps = SBWorkspaceApplicationForIdentifier(*v7);
+        if (nowLocatingApps)
         {
-          [v6 addObject:v8];
+          [v6 addObject:nowLocatingApps];
         }
 
         goto LABEL_6;
       }
 
-      if ([v5 isEqualToString:*MEMORY[0x277D6BC78]])
+      if ([identifierCopy isEqualToString:*MEMORY[0x277D6BC78]])
       {
         v18 = [_SBStatusBarTapHandler alloc];
         v19 = MEMORY[0x277CBEBC0];
@@ -195,12 +195,12 @@ LABEL_4:
         goto LABEL_53;
       }
 
-      if ([v5 isEqualToString:*MEMORY[0x277D6BCF0]])
+      if ([identifierCopy isEqualToString:*MEMORY[0x277D6BCF0]])
       {
         v21 = +[SBPlatformController sharedInstance];
-        v22 = [v21 isInternalInstall];
+        isInternalInstall = [v21 isInternalInstall];
 
-        if (!v22)
+        if (!isInternalInstall)
         {
           goto LABEL_7;
         }
@@ -211,11 +211,11 @@ LABEL_4:
         goto LABEL_53;
       }
 
-      if (![v5 isEqualToString:*MEMORY[0x277D6BCD0]])
+      if (![identifierCopy isEqualToString:*MEMORY[0x277D6BCD0]])
       {
-        if (![v5 isEqualToString:*MEMORY[0x277D6BC28]])
+        if (![identifierCopy isEqualToString:*MEMORY[0x277D6BC28]])
         {
-          if ([v5 isEqualToString:@"com.apple.activityprogress.backgroundui"])
+          if ([identifierCopy isEqualToString:@"com.apple.activityprogress.backgroundui"])
           {
             v12 = +[SBActivityManager sharedInstance];
             v13 = [v12 lastRedisplayableActivityForBundleId:@"com.apple.ActivityProgress.ActivityProgressUI"];
@@ -244,12 +244,12 @@ LABEL_38:
             goto LABEL_20;
           }
 
-          if (!v5 || (STUIBackgroundActivityIdentiferRepresentsStyleOverride() & 1) != 0)
+          if (!identifierCopy || (STUIBackgroundActivityIdentiferRepresentsStyleOverride() & 1) != 0)
           {
             goto LABEL_7;
           }
 
-          v8 = [SBApp appsForBackgroundActivityWithIdentifier:v5];
+          nowLocatingApps = [SBApp appsForBackgroundActivityWithIdentifier:identifierCopy];
           goto LABEL_28;
         }
 
@@ -270,13 +270,13 @@ LABEL_53:
     goto LABEL_8;
   }
 
-  v8 = +[SBPlatformController sharedInstance];
-  if ([v8 isInternalInstall])
+  nowLocatingApps = +[SBPlatformController sharedInstance];
+  if ([nowLocatingApps isInternalInstall])
   {
-    v16 = [MEMORY[0x277D431C0] sharedInstance];
-    v17 = [v16 activePrototypingEnabled];
+    mEMORY[0x277D431C0] = [MEMORY[0x277D431C0] sharedInstance];
+    activePrototypingEnabled = [mEMORY[0x277D431C0] activePrototypingEnabled];
 
-    if (!v17)
+    if (!activePrototypingEnabled)
     {
       goto LABEL_7;
     }
@@ -292,10 +292,10 @@ LABEL_6:
 LABEL_7:
   v9 = 0;
 LABEL_8:
-  if (a4 && [v6 count])
+  if (applications && [v6 count])
   {
     v10 = v6;
-    *a4 = v6;
+    *applications = v6;
   }
 
   return v9;
@@ -307,22 +307,22 @@ void __87__SBStatusBarTapManager__handlerForBackgroundActivityWithIdentifier_orO
   [v0 postNotificationName:@"SBStatusBarReturnToHearingAidNotification" object:0 userInfo:0];
 }
 
-- (id)_appDestinationForNextSceneToVisitForApps:(id)a3 andBackgroundActivityWithIdentifier:(id)a4 windowScene:(id)a5
+- (id)_appDestinationForNextSceneToVisitForApps:(id)apps andBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(SBStatusBarTapManager *)self _allApplicationDestinationsForApplications:v10 windowScene:v9];
-  v12 = [(SBStatusBarTapManager *)self _foregroundApplicationDestinationsForApplications:v10 windowScene:v9];
+  identifierCopy = identifier;
+  sceneCopy = scene;
+  appsCopy = apps;
+  v11 = [(SBStatusBarTapManager *)self _allApplicationDestinationsForApplications:appsCopy windowScene:sceneCopy];
+  v12 = [(SBStatusBarTapManager *)self _foregroundApplicationDestinationsForApplications:appsCopy windowScene:sceneCopy];
 
-  v13 = [(SBStatusBarTapManager *)self _recentlyTappedApplicationDestinationsForBackgroundActivityWithIdentifier:v8];
+  v13 = [(SBStatusBarTapManager *)self _recentlyTappedApplicationDestinationsForBackgroundActivityWithIdentifier:identifierCopy];
   v14 = [v11 mutableCopy];
-  v15 = [(SBStatusBarTapManager *)self _isUILocked:v9];
+  v15 = [(SBStatusBarTapManager *)self _isUILocked:sceneCopy];
 
   if (v15)
   {
 LABEL_6:
-    v19 = [v14 firstObject];
+    firstObject = [v14 firstObject];
     goto LABEL_7;
   }
 
@@ -332,13 +332,13 @@ LABEL_6:
     [v14 minusSet:v13];
     if (![v14 count])
     {
-      [(SBStatusBarTapManager *)self _resetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:v8];
+      [(SBStatusBarTapManager *)self _resetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:identifierCopy];
     }
 
     v16 = [v12 set];
-    [(SBStatusBarTapManager *)self _addRecentlyTappedApplicationDestinations:v16 forBackgroundActivityWithIdentifier:v8];
+    [(SBStatusBarTapManager *)self _addRecentlyTappedApplicationDestinations:v16 forBackgroundActivityWithIdentifier:identifierCopy];
 
-    v17 = [(SBStatusBarTapManager *)self _recentlyTappedApplicationDestinationsForBackgroundActivityWithIdentifier:v8];
+    v17 = [(SBStatusBarTapManager *)self _recentlyTappedApplicationDestinationsForBackgroundActivityWithIdentifier:identifierCopy];
 
     v18 = [v11 mutableCopy];
     [v18 minusSet:v17];
@@ -347,18 +347,18 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v19 = 0;
+  firstObject = 0;
 LABEL_7:
 
-  return v19;
+  return firstObject;
 }
 
-- (void)_addRecentlyTappedApplicationDestinations:(id)a3 forBackgroundActivityWithIdentifier:(id)a4
+- (void)_addRecentlyTappedApplicationDestinations:(id)destinations forBackgroundActivityWithIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  destinationsCopy = destinations;
+  identifierCopy = identifier;
+  if (!destinationsCopy)
   {
     [SBStatusBarTapManager _addRecentlyTappedApplicationDestinations:a2 forBackgroundActivityWithIdentifier:self];
   }
@@ -366,14 +366,14 @@ LABEL_7:
   backgroundActivityIdentifiersToRecentScenes = self->_backgroundActivityIdentifiersToRecentScenes;
   if (!backgroundActivityIdentifiersToRecentScenes)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v11 = self->_backgroundActivityIdentifiersToRecentScenes;
-    self->_backgroundActivityIdentifiersToRecentScenes = v10;
+    self->_backgroundActivityIdentifiersToRecentScenes = dictionary;
 
     backgroundActivityIdentifiersToRecentScenes = self->_backgroundActivityIdentifiersToRecentScenes;
   }
 
-  v12 = [(NSMutableDictionary *)backgroundActivityIdentifiersToRecentScenes objectForKeyedSubscript:v8];
+  v12 = [(NSMutableDictionary *)backgroundActivityIdentifiersToRecentScenes objectForKeyedSubscript:identifierCopy];
   v13 = v12;
   if (v12)
   {
@@ -387,15 +387,15 @@ LABEL_7:
 
   v15 = v14;
 
-  v16 = [v7 allObjects];
-  [v15 addObjectsFromArray:v16];
+  allObjects = [destinationsCopy allObjects];
+  [v15 addObjectsFromArray:allObjects];
 
-  [(NSMutableDictionary *)self->_backgroundActivityIdentifiersToRecentScenes setObject:v15 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_backgroundActivityIdentifiersToRecentScenes setObject:v15 forKeyedSubscript:identifierCopy];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v17 = v7;
+  v17 = destinationsCopy;
   v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v18)
   {
@@ -411,9 +411,9 @@ LABEL_7:
         }
 
         v22 = *(*(&v24 + 1) + 8 * i);
-        v23 = [v22 sceneIdentifier];
+        sceneIdentifier = [v22 sceneIdentifier];
 
-        if (!v23)
+        if (!sceneIdentifier)
         {
           [v15 removeObject:v22];
         }
@@ -425,21 +425,21 @@ LABEL_7:
     while (v19);
   }
 
-  [(SBStatusBarTapManager *)self _scheduleResetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:v8];
+  [(SBStatusBarTapManager *)self _scheduleResetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:identifierCopy];
 }
 
-- (void)_scheduleResetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:(id)a3
+- (void)_scheduleResetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (!self->_backgroundActivityIdentifiersToRecentSceneResetTimers)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     backgroundActivityIdentifiersToRecentSceneResetTimers = self->_backgroundActivityIdentifiersToRecentSceneResetTimers;
-    self->_backgroundActivityIdentifiersToRecentSceneResetTimers = v5;
+    self->_backgroundActivityIdentifiersToRecentSceneResetTimers = dictionary;
   }
 
   objc_initWeak(&location, self);
-  v7 = [(NSMutableDictionary *)self->_backgroundActivityIdentifiersToRecentSceneResetTimers objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_backgroundActivityIdentifiersToRecentSceneResetTimers objectForKeyedSubscript:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -452,12 +452,12 @@ LABEL_7:
   v13[2] = __105__SBStatusBarTapManager__scheduleResetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier___block_invoke;
   v13[3] = &unk_2783AF5B0;
   objc_copyWeak(&v15, &location);
-  v10 = v4;
+  v10 = identifierCopy;
   v14 = v10;
   v11 = [v9 timerWithTimeInterval:0 repeats:v13 block:8.0];
 
-  v12 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v12 addTimer:v11 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:v11 forMode:*MEMORY[0x277CBE738]];
 
   [v11 setTolerance:1.0];
   [(NSMutableDictionary *)self->_backgroundActivityIdentifiersToRecentSceneResetTimers setObject:v11 forKeyedSubscript:v10];
@@ -472,21 +472,21 @@ void __105__SBStatusBarTapManager__scheduleResetRecentlyTappedSceneIdentifiersFo
   [WeakRetained _resetRecentlyTappedSceneIdentifiersForBackgroundActivityWithIdentifier:*(a1 + 32)];
 }
 
-- (id)_recentlyTappedApplicationDestinationsForBackgroundActivityWithIdentifier:(id)a3
+- (id)_recentlyTappedApplicationDestinationsForBackgroundActivityWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_backgroundActivityIdentifiersToRecentScenes objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_backgroundActivityIdentifiersToRecentScenes objectForKeyedSubscript:identifier];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (BOOL)_isUILocked:(id)a3
+- (BOOL)_isUILocked:(id)locked
 {
-  v3 = [a3 uiLockStateProvider];
-  v4 = v3;
-  if (v3)
+  uiLockStateProvider = [locked uiLockStateProvider];
+  v4 = uiLockStateProvider;
+  if (uiLockStateProvider)
   {
-    v5 = v3;
+    v5 = uiLockStateProvider;
   }
 
   else
@@ -496,21 +496,21 @@ void __105__SBStatusBarTapManager__scheduleResetRecentlyTappedSceneIdentifiersFo
 
   v6 = v5;
 
-  v7 = [v6 isUILocked];
-  return v7;
+  isUILocked = [v6 isUILocked];
+  return isUILocked;
 }
 
-- (id)_allApplicationDestinationsForApplications:(id)a3 windowScene:(id)a4
+- (id)_allApplicationDestinationsForApplications:(id)applications windowScene:(id)scene
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v29 = [MEMORY[0x277CBEB40] orderedSet];
+  applicationsCopy = applications;
+  sceneCopy = scene;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
+  obj = applicationsCopy;
   v27 = [obj countByEnumeratingWithState:&v34 objects:v45 count:16];
   if (v27)
   {
@@ -530,8 +530,8 @@ void __105__SBStatusBarTapManager__scheduleResetRecentlyTappedSceneIdentifiersFo
         v32 = 0u;
         v33 = 0u;
         v9 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-        v10 = [v8 bundleIdentifier];
-        v11 = [v9 _persistenceIdentifiersForBundleIdentifier:v10 onlyIncludeLaunchableIdentifiers:1];
+        bundleIdentifier = [v8 bundleIdentifier];
+        v11 = [v9 _persistenceIdentifiersForBundleIdentifier:bundleIdentifier onlyIncludeLaunchableIdentifiers:1];
 
         v12 = [v11 countByEnumeratingWithState:&v30 objects:v44 count:16];
         if (!v12)
@@ -544,8 +544,8 @@ LABEL_20:
             [(SBStatusBarTapManager *)v38 _allApplicationDestinationsForApplications:v8 windowScene:&v39, v22];
           }
 
-          v23 = [[_SBStatusBarTapApplicationDestination alloc] initWithApplication:v8 sceneIdentifier:0 windowScene:v6];
-          [v29 addObject:v23];
+          v23 = [[_SBStatusBarTapApplicationDestination alloc] initWithApplication:v8 sceneIdentifier:0 windowScene:sceneCopy];
+          [orderedSet addObject:v23];
 
           continue;
         }
@@ -567,8 +567,8 @@ LABEL_20:
             v18 = [v8 _sceneIdentifierForStoredPersistenceIdentifier:v17];
             if (v18)
             {
-              v19 = [[_SBStatusBarTapApplicationDestination alloc] initWithApplication:v8 sceneIdentifier:v18 windowScene:v6];
-              [v29 addObject:v19];
+              v19 = [[_SBStatusBarTapApplicationDestination alloc] initWithApplication:v8 sceneIdentifier:v18 windowScene:sceneCopy];
+              [orderedSet addObject:v19];
               v14 = 1;
             }
 
@@ -577,12 +577,12 @@ LABEL_20:
               v19 = SBLogCommon();
               if (os_log_type_enabled(&v19->super, OS_LOG_TYPE_ERROR))
               {
-                v20 = [v8 bundleIdentifier];
+                bundleIdentifier2 = [v8 bundleIdentifier];
                 *buf = 138412546;
                 v41 = v17;
                 v42 = 2112;
-                v43 = v20;
-                v21 = v20;
+                v43 = bundleIdentifier2;
+                v21 = bundleIdentifier2;
                 _os_log_error_impl(&dword_21ED4E000, &v19->super, OS_LOG_TYPE_ERROR, "Unable to find a scene identifier for persistence identifier %@ with application %@", buf, 0x16u);
               }
             }
@@ -606,20 +606,20 @@ LABEL_20:
     while (v27);
   }
 
-  return v29;
+  return orderedSet;
 }
 
-- (id)_foregroundApplicationDestinationsForApplications:(id)a3 windowScene:(id)a4
+- (id)_foregroundApplicationDestinationsForApplications:(id)applications windowScene:(id)scene
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB40] orderedSet];
-  v8 = [v6 sceneManager];
-  v9 = v8;
-  if (v8)
+  applicationsCopy = applications;
+  sceneCopy = scene;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  sceneManager = [sceneCopy sceneManager];
+  v9 = sceneManager;
+  if (sceneManager)
   {
-    v10 = v8;
+    v10 = sceneManager;
   }
 
   else
@@ -634,8 +634,8 @@ LABEL_20:
   v45 = 0u;
   v46 = 0u;
   v37 = v11;
-  v12 = [v11 externalForegroundApplicationSceneHandles];
-  v13 = [v12 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  externalForegroundApplicationSceneHandles = [v11 externalForegroundApplicationSceneHandles];
+  v13 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v13)
   {
     v14 = v13;
@@ -646,20 +646,20 @@ LABEL_20:
       {
         if (*v46 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(externalForegroundApplicationSceneHandles);
         }
 
         v17 = *(*(&v45 + 1) + 8 * i);
-        v18 = [v17 sceneIdentifier];
-        v19 = [v17 application];
-        if ([v5 containsObject:v19])
+        sceneIdentifier = [v17 sceneIdentifier];
+        application = [v17 application];
+        if ([applicationsCopy containsObject:application])
         {
-          v20 = [[_SBStatusBarTapApplicationDestination alloc] initWithApplication:v19 sceneIdentifier:v18 windowScene:v6];
-          [v7 addObject:v20];
+          v20 = [[_SBStatusBarTapApplicationDestination alloc] initWithApplication:application sceneIdentifier:sceneIdentifier windowScene:sceneCopy];
+          [orderedSet addObject:v20];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v14 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v45 objects:v50 count:16];
     }
 
     while (v14);
@@ -668,13 +668,13 @@ LABEL_20:
   v21 = +[SBSystemApertureSceneElement activeElements];
   if ([v21 count])
   {
-    v38 = v7;
+    v38 = orderedSet;
     v22 = MEMORY[0x277CBEB98];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __87__SBStatusBarTapManager__foregroundApplicationDestinationsForApplications_windowScene___block_invoke;
     v43[3] = &unk_2783C0CB8;
-    v44 = v5;
+    v44 = applicationsCopy;
     v36 = v21;
     v23 = [v21 bs_compactMap:v43];
     v24 = [v22 setWithArray:v23];
@@ -684,9 +684,9 @@ LABEL_20:
     v39 = 0u;
     v40 = 0u;
     v25 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v26 = [v25 externalApplicationSceneHandles];
+    externalApplicationSceneHandles = [v25 externalApplicationSceneHandles];
 
-    v27 = [v26 countByEnumeratingWithState:&v39 objects:v49 count:16];
+    v27 = [externalApplicationSceneHandles countByEnumeratingWithState:&v39 objects:v49 count:16];
     if (v27)
     {
       v28 = v27;
@@ -697,30 +697,30 @@ LABEL_20:
         {
           if (*v40 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(externalApplicationSceneHandles);
           }
 
           v31 = *(*(&v39 + 1) + 8 * j);
-          v32 = [v31 sceneIdentifier];
-          v33 = [v31 application];
-          if ([v24 containsObject:v33])
+          sceneIdentifier2 = [v31 sceneIdentifier];
+          application2 = [v31 application];
+          if ([v24 containsObject:application2])
           {
-            v34 = [[_SBStatusBarTapApplicationDestination alloc] initWithApplication:v33 sceneIdentifier:v32 windowScene:v6];
+            v34 = [[_SBStatusBarTapApplicationDestination alloc] initWithApplication:application2 sceneIdentifier:sceneIdentifier2 windowScene:sceneCopy];
             [v38 addObject:v34];
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v39 objects:v49 count:16];
+        v28 = [externalApplicationSceneHandles countByEnumeratingWithState:&v39 objects:v49 count:16];
       }
 
       while (v28);
     }
 
-    v7 = v38;
+    orderedSet = v38;
     v21 = v36;
   }
 
-  return v7;
+  return orderedSet;
 }
 
 id __87__SBStatusBarTapManager__foregroundApplicationDestinationsForApplications_windowScene___block_invoke(uint64_t a1, void *a2)
@@ -747,40 +747,40 @@ id __87__SBStatusBarTapManager__foregroundApplicationDestinationsForApplications
   return v4;
 }
 
-- (BOOL)_performAfterAttemptingUnlockForAppWithBundleIdentifier:(id)a3 windowScene:(id)a4 completion:(id)a5
+- (BOOL)_performAfterAttemptingUnlockForAppWithBundleIdentifier:(id)identifier windowScene:(id)scene completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  sceneCopy = scene;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(SBLockScreenUnlockRequest);
   [(SBLockScreenUnlockRequest *)v10 setName:@"Unlock to launch double height status bar app."];
   [(SBLockScreenUnlockRequest *)v10 setSource:24];
-  [(SBLockScreenUnlockRequest *)v10 setWindowScene:v7];
-  v11 = SBWorkspaceApplicationForIdentifier(v9);
+  [(SBLockScreenUnlockRequest *)v10 setWindowScene:sceneCopy];
+  v11 = SBWorkspaceApplicationForIdentifier(identifierCopy);
 
-  if (!SBWorkspaceApplicationCanActivateWhilePasscodeLocked(v11) || [v7 isContinuityDisplayWindowScene])
+  if (!SBWorkspaceApplicationCanActivateWhilePasscodeLocked(v11) || [sceneCopy isContinuityDisplayWindowScene])
   {
     [(SBLockScreenUnlockRequest *)v10 setIntent:3];
   }
 
   v12 = +[SBLockScreenManager sharedInstance];
-  v13 = [v12 unlockWithRequest:v10 completion:v8];
+  v13 = [v12 unlockWithRequest:v10 completion:completionCopy];
 
   return v13;
 }
 
-- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4
+- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  sceneCopy = scene;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBStatusBarTapManager handleTapForBackgroundActivityWithIdentifier:windowScene:]"];
-    [v16 handleFailureInFunction:v17 file:@"SBStatusBarTapManager.m" lineNumber:69 description:@"this call must be made on the main thread"];
+    [currentHandler handleFailureInFunction:v17 file:@"SBStatusBarTapManager.m" lineNumber:69 description:@"this call must be made on the main thread"];
   }
 
-  v8 = [(SBStatusBarTapManager *)self _handlerForBackgroundActivityWithIdentifier:v6 windowScene:v7];
+  v8 = [(SBStatusBarTapManager *)self _handlerForBackgroundActivityWithIdentifier:identifierCopy windowScene:sceneCopy];
   v9 = v8;
   if (v8)
   {
@@ -799,19 +799,19 @@ id __87__SBStatusBarTapManager__foregroundApplicationDestinationsForApplications
   v21[2] = __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifier_windowScene___block_invoke;
   v21[3] = &unk_2783C0C90;
   objc_copyWeak(&v23, &location);
-  v12 = v6;
+  v12 = identifierCopy;
   v22 = v12;
   v13 = MEMORY[0x223D6F7F0](v21);
-  if (v9 && v9[3] && [(SBStatusBarTapManager *)self _isUILocked:v7])
+  if (v9 && v9[3] && [(SBStatusBarTapManager *)self _isUILocked:sceneCopy])
   {
-    v14 = [v11 bundleIdentifier];
+    bundleIdentifier = [v11 bundleIdentifier];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __82__SBStatusBarTapManager_handleTapForBackgroundActivityWithIdentifier_windowScene___block_invoke_2;
     v18[3] = &unk_2783B3B78;
     v20 = v13;
     v19 = v9;
-    [(SBStatusBarTapManager *)self _performAfterAttemptingUnlockForAppWithBundleIdentifier:v14 windowScene:v7 completion:v18];
+    [(SBStatusBarTapManager *)self _performAfterAttemptingUnlockForAppWithBundleIdentifier:bundleIdentifier windowScene:sceneCopy completion:v18];
   }
 
   else

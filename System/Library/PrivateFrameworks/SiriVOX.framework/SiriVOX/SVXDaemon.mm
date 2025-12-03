@@ -1,39 +1,39 @@
 @interface SVXDaemon
 + (void)initialize;
-- (BOOL)handleClientServiceXPCConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)handleClientServiceXPCConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SVXDaemon)init;
-- (SVXDaemon)initWithClientServiceQueuePerformer:(id)a3 mainQueuePerformer:(id)a4 clientServiceListener:(id)a5 platformDependenciesTracker:(id)a6 virtualDeviceManager:(id)a7 runningObserver:(id)a8 siriActivationListenerDelegate:(id)a9 remoraVirtualDeviceManager:(id)a10 homeHubManagerObserver:(id)a11 rebootExecutor:(id)a12 connectionFactory:(id)a13;
-- (void)_enumerateVirtualDevicesUsingBlock:(id)a3;
-- (void)clientServiceServerConnectionDidInvalidate:(id)a3;
-- (void)startWithPlatformDependencies:(id)a3;
+- (SVXDaemon)initWithClientServiceQueuePerformer:(id)performer mainQueuePerformer:(id)queuePerformer clientServiceListener:(id)listener platformDependenciesTracker:(id)tracker virtualDeviceManager:(id)manager runningObserver:(id)observer siriActivationListenerDelegate:(id)delegate remoraVirtualDeviceManager:(id)self0 homeHubManagerObserver:(id)self1 rebootExecutor:(id)self2 connectionFactory:(id)self3;
+- (void)_enumerateVirtualDevicesUsingBlock:(id)block;
+- (void)clientServiceServerConnectionDidInvalidate:(id)invalidate;
+- (void)startWithPlatformDependencies:(id)dependencies;
 - (void)stop;
 @end
 
 @implementation SVXDaemon
 
-- (void)_enumerateVirtualDevicesUsingBlock:(id)a3
+- (void)_enumerateVirtualDevicesUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     virtualDeviceManager = self->_virtualDeviceManager;
-    v5 = a3;
-    v6 = [(SVXVirtualDeviceManager *)virtualDeviceManager hostVirtualDevice];
-    (*(a3 + 2))(v5, v6);
+    blockCopy = block;
+    hostVirtualDevice = [(SVXVirtualDeviceManager *)virtualDeviceManager hostVirtualDevice];
+    (*(block + 2))(blockCopy, hostVirtualDevice);
   }
 }
 
-- (void)clientServiceServerConnectionDidInvalidate:(id)a3
+- (void)clientServiceServerConnectionDidInvalidate:(id)invalidate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[SVXDaemon clientServiceServerConnectionDidInvalidate:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = invalidateCopy;
     _os_log_impl(&dword_2695B9000, v5, OS_LOG_TYPE_INFO, "%s connection = %@", buf, 0x16u);
   }
 
@@ -43,8 +43,8 @@
   v9[2] = __56__SVXDaemon_clientServiceServerConnectionDidInvalidate___block_invoke;
   v9[3] = &unk_279C68FE8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = invalidateCopy;
+  v7 = invalidateCopy;
   [(SVXQueuePerformer *)mainQueuePerformer performBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -67,10 +67,10 @@ void __56__SVXDaemon_clientServiceServerConnectionDidInvalidate___block_invoke_2
   [v3 removeConnection:*(a1 + 32)];
 }
 
-- (BOOL)handleClientServiceXPCConnection:(id)a3
+- (BOOL)handleClientServiceXPCConnection:(id)connection
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = MEMORY[0x277CEF098];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
@@ -80,11 +80,11 @@ void __56__SVXDaemon_clientServiceServerConnectionDidInvalidate___block_invoke_2
     *&buf[12] = 2112;
     *&buf[14] = @"com.apple.SiriVOXService.client";
     *&buf[22] = 2112;
-    v24 = v4;
+    v24 = connectionCopy;
     _os_log_impl(&dword_2695B9000, v6, OS_LOG_TYPE_INFO, "%s Checking entitlement %@ on %@...", buf, 0x20u);
   }
 
-  v7 = [v4 valueForEntitlement:@"com.apple.SiriVOXService.client"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.SiriVOXService.client"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -118,15 +118,15 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v8 = [(SVXQueuePerformer *)self->_clientServiceQueuePerformer queue];
-  [v4 _setQueue:v8];
+  queue = [(SVXQueuePerformer *)self->_clientServiceQueuePerformer queue];
+  [connectionCopy _setQueue:queue];
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v24 = __Block_byref_object_copy__12981;
   v25 = __Block_byref_object_dispose__12982;
-  v26 = [(SVXClientServiceServerConnectionFactory *)self->_connectionFactory createWithXPCConnection:v4 performer:self->_clientServiceQueuePerformer delegate:self];
+  v26 = [(SVXClientServiceServerConnectionFactory *)self->_connectionFactory createWithXPCConnection:connectionCopy performer:self->_clientServiceQueuePerformer delegate:self];
   v9 = *v5;
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_INFO))
   {
@@ -157,7 +157,7 @@ LABEL_16:
   v18[4] = self;
   v18[5] = buf;
   [(SVXQueuePerformer *)clientServiceQueuePerformer performBlock:v18 withOptions:0];
-  [v4 resume];
+  [connectionCopy resume];
   _Block_object_dispose(buf, 8);
 
   v13 = 1;
@@ -291,14 +291,14 @@ void __46__SVXDaemon_handleClientServiceXPCConnection___block_invoke_2_15(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_clientServiceListener == v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_clientServiceListener == listenerCopy)
   {
-    v9 = [(SVXDaemon *)self handleClientServiceXPCConnection:v7];
+    v9 = [(SVXDaemon *)self handleClientServiceXPCConnection:connectionCopy];
   }
 
   else
@@ -326,17 +326,17 @@ void __46__SVXDaemon_handleClientServiceXPCConnection___block_invoke_2_15(uint64
   {
     v4 = MEMORY[0x277CCAC38];
     v5 = v3;
-    v6 = [v4 processInfo];
-    v7 = [v6 processName];
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    v9 = [v8 processIdentifier];
+    processInfo = [v4 processInfo];
+    processName = [processInfo processName];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processIdentifier = [processInfo2 processIdentifier];
     v10 = AFBuildVersion();
     *buf = 136315906;
     v15 = "[SVXDaemon stop]";
     v16 = 2112;
-    v17 = v7;
+    v17 = processName;
     v18 = 1024;
-    v19 = v9;
+    v19 = processIdentifier;
     v20 = 2112;
     v21 = v10;
     _os_log_impl(&dword_2695B9000, v5, OS_LOG_TYPE_INFO, "%s Stopping SiriVOX service in %@ (pid=%d) on %@...", buf, 0x26u);
@@ -390,26 +390,26 @@ void __17__SVXDaemon_stop__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithPlatformDependencies:(id)a3
+- (void)startWithPlatformDependencies:(id)dependencies
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dependenciesCopy = dependencies;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v6 = MEMORY[0x277CCAC38];
     v7 = v5;
-    v8 = [v6 processInfo];
-    v9 = [v8 processName];
-    v10 = [MEMORY[0x277CCAC38] processInfo];
-    v11 = [v10 processIdentifier];
+    processInfo = [v6 processInfo];
+    processName = [processInfo processName];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processIdentifier = [processInfo2 processIdentifier];
     v12 = AFBuildVersion();
     *buf = 136315906;
     v19 = "[SVXDaemon startWithPlatformDependencies:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = processName;
     v22 = 1024;
-    v23 = v11;
+    v23 = processIdentifier;
     v24 = 2112;
     v25 = v12;
     _os_log_impl(&dword_2695B9000, v7, OS_LOG_TYPE_INFO, "%s Starting SiriVOX service in %@ (pid=%d) on %@...", buf, 0x26u);
@@ -421,8 +421,8 @@ void __17__SVXDaemon_stop__block_invoke(uint64_t a1)
   v16[2] = __43__SVXDaemon_startWithPlatformDependencies___block_invoke;
   v16[3] = &unk_279C68FE8;
   v16[4] = self;
-  v17 = v4;
-  v14 = v4;
+  v17 = dependenciesCopy;
+  v14 = dependenciesCopy;
   [(SVXQueuePerformer *)mainQueuePerformer performBlock:v16 withOptions:2];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -469,44 +469,44 @@ void __43__SVXDaemon_startWithPlatformDependencies___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (SVXDaemon)initWithClientServiceQueuePerformer:(id)a3 mainQueuePerformer:(id)a4 clientServiceListener:(id)a5 platformDependenciesTracker:(id)a6 virtualDeviceManager:(id)a7 runningObserver:(id)a8 siriActivationListenerDelegate:(id)a9 remoraVirtualDeviceManager:(id)a10 homeHubManagerObserver:(id)a11 rebootExecutor:(id)a12 connectionFactory:(id)a13
+- (SVXDaemon)initWithClientServiceQueuePerformer:(id)performer mainQueuePerformer:(id)queuePerformer clientServiceListener:(id)listener platformDependenciesTracker:(id)tracker virtualDeviceManager:(id)manager runningObserver:(id)observer siriActivationListenerDelegate:(id)delegate remoraVirtualDeviceManager:(id)self0 homeHubManagerObserver:(id)self1 rebootExecutor:(id)self2 connectionFactory:(id)self3
 {
-  v38 = a3;
-  v37 = a4;
-  v29 = a5;
-  v36 = a5;
-  v35 = a6;
-  v30 = a7;
-  v34 = a7;
-  v31 = a8;
-  v33 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
+  performerCopy = performer;
+  queuePerformerCopy = queuePerformer;
+  listenerCopy = listener;
+  listenerCopy2 = listener;
+  trackerCopy = tracker;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  observerCopy = observer;
+  observerCopy2 = observer;
+  delegateCopy = delegate;
+  deviceManagerCopy = deviceManager;
+  managerObserverCopy = managerObserver;
+  executorCopy = executor;
+  factoryCopy = factory;
   v39.receiver = self;
   v39.super_class = SVXDaemon;
   v23 = [(SVXDaemon *)&v39 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_clientServiceQueuePerformer, a3);
-    objc_storeStrong(&v24->_mainQueuePerformer, a4);
-    objc_storeStrong(&v24->_clientServiceListener, v29);
+    objc_storeStrong(&v23->_clientServiceQueuePerformer, performer);
+    objc_storeStrong(&v24->_mainQueuePerformer, queuePerformer);
+    objc_storeStrong(&v24->_clientServiceListener, listenerCopy);
     [(NSXPCListener *)v24->_clientServiceListener setDelegate:v24];
     clientServiceListener = v24->_clientServiceListener;
-    v26 = [(SVXQueuePerformer *)v24->_clientServiceQueuePerformer queue];
-    [(NSXPCListener *)clientServiceListener _setQueue:v26];
+    queue = [(SVXQueuePerformer *)v24->_clientServiceQueuePerformer queue];
+    [(NSXPCListener *)clientServiceListener _setQueue:queue];
 
-    objc_storeStrong(&v24->_platformDependenciesTracker, a6);
-    objc_storeStrong(&v24->_virtualDeviceManager, v30);
-    objc_storeStrong(&v24->_runningObserver, v31);
-    objc_storeStrong(&v24->_siriActivationListenerDelegate, a9);
-    objc_storeStrong(&v24->_remoraVirtualDeviceManager, a10);
-    objc_storeStrong(&v24->_homeHubManagerObserver, a11);
-    objc_storeStrong(&v24->_rebootExecutor, a12);
-    objc_storeStrong(&v24->_connectionFactory, a13);
+    objc_storeStrong(&v24->_platformDependenciesTracker, tracker);
+    objc_storeStrong(&v24->_virtualDeviceManager, managerCopy);
+    objc_storeStrong(&v24->_runningObserver, observerCopy);
+    objc_storeStrong(&v24->_siriActivationListenerDelegate, delegate);
+    objc_storeStrong(&v24->_remoraVirtualDeviceManager, deviceManager);
+    objc_storeStrong(&v24->_homeHubManagerObserver, managerObserver);
+    objc_storeStrong(&v24->_rebootExecutor, executor);
+    objc_storeStrong(&v24->_connectionFactory, factory);
   }
 
   return v24;
@@ -532,7 +532,7 @@ void __43__SVXDaemon_startWithPlatformDependencies___block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     MEMORY[0x282141828]();

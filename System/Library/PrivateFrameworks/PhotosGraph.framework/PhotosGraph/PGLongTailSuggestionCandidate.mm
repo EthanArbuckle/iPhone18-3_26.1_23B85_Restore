@@ -1,14 +1,14 @@
 @interface PGLongTailSuggestionCandidate
-- (BOOL)isValidBeforeKeyItemFilterWithMeNodeLocalIdentifier:(id)a3;
-- (BOOL)isValidWithMeNodeLocalIdentifier:(id)a3;
-- (PGLongTailSuggestionCandidate)initWithAsset:(id)a3 score:(unint64_t)a4;
+- (BOOL)isValidBeforeKeyItemFilterWithMeNodeLocalIdentifier:(id)identifier;
+- (BOOL)isValidWithMeNodeLocalIdentifier:(id)identifier;
+- (PGLongTailSuggestionCandidate)initWithAsset:(id)asset score:(unint64_t)score;
 @end
 
 @implementation PGLongTailSuggestionCandidate
 
-- (BOOL)isValidBeforeKeyItemFilterWithMeNodeLocalIdentifier:(id)a3
+- (BOOL)isValidBeforeKeyItemFilterWithMeNodeLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ((-[PHAsset clsIsNonMemorable](self->_asset, "clsIsNonMemorable") & 1) != 0 || ![MEMORY[0x277D3C7C0] assetIsSafeForWidgetDisplay:self->_asset] || (-[PHAsset clsIsTragicFailure](self->_asset, "clsIsTragicFailure") & 1) != 0 || (-[PHAsset clsIsUtility](self->_asset, "clsIsUtility") & 1) != 0 || (-[PHAsset aspectRatio](self->_asset, "aspectRatio"), v5 >= 3.0))
   {
     v7 = 0;
@@ -20,8 +20,8 @@
     v7 = v6 > 0.333333343;
   }
 
-  v8 = [(PHAsset *)self->_asset clsPeopleCount];
-  if (v8)
+  clsPeopleCount = [(PHAsset *)self->_asset clsPeopleCount];
+  if (clsPeopleCount)
   {
     v9 = !v7;
   }
@@ -33,8 +33,8 @@
 
   if (v9)
   {
-    v15 = v8 == 0 && v7;
-    if (!v4)
+    v15 = clsPeopleCount == 0 && v7;
+    if (!identifierCopy)
     {
 LABEL_18:
       LOBYTE(v11) = v15;
@@ -44,22 +44,22 @@ LABEL_18:
 
   else
   {
-    v14 = [(PHAsset *)self->_asset clsConsolidatedPersonLocalIdentifiers];
-    v15 = [v14 count] != 0;
+    clsConsolidatedPersonLocalIdentifiers = [(PHAsset *)self->_asset clsConsolidatedPersonLocalIdentifiers];
+    v15 = [clsConsolidatedPersonLocalIdentifiers count] != 0;
 
-    if (!v4)
+    if (!identifierCopy)
     {
       goto LABEL_18;
     }
   }
 
-  v10 = [(PHAsset *)self->_asset clsPeopleCount];
-  LOBYTE(v11) = (v10 != 1) & v15;
-  if (v10 == 1 && ((v15 ^ 1) & 1) == 0)
+  clsPeopleCount2 = [(PHAsset *)self->_asset clsPeopleCount];
+  LOBYTE(v11) = (clsPeopleCount2 != 1) & v15;
+  if (clsPeopleCount2 == 1 && ((v15 ^ 1) & 1) == 0)
   {
-    v12 = [(PHAsset *)self->_asset clsPersonLocalIdentifiers];
-    v13 = [v12 firstObject];
-    v11 = [v13 isEqualToString:v4] ^ 1;
+    clsPersonLocalIdentifiers = [(PHAsset *)self->_asset clsPersonLocalIdentifiers];
+    firstObject = [clsPersonLocalIdentifiers firstObject];
+    v11 = [firstObject isEqualToString:identifierCopy] ^ 1;
   }
 
 LABEL_19:
@@ -67,9 +67,9 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)isValidWithMeNodeLocalIdentifier:(id)a3
+- (BOOL)isValidWithMeNodeLocalIdentifier:(id)identifier
 {
-  v4 = [(PGLongTailSuggestionCandidate *)self isValidBeforeKeyItemFilterWithMeNodeLocalIdentifier:a3];
+  v4 = [(PGLongTailSuggestionCandidate *)self isValidBeforeKeyItemFilterWithMeNodeLocalIdentifier:identifier];
   if (v4)
   {
     LOBYTE(v4) = [(PHAsset *)self->_asset clsAvoidIfPossibleAsKeyItemForMemories:0 allowGuestAsset:0]^ 1;
@@ -78,17 +78,17 @@ LABEL_19:
   return v4;
 }
 
-- (PGLongTailSuggestionCandidate)initWithAsset:(id)a3 score:(unint64_t)a4
+- (PGLongTailSuggestionCandidate)initWithAsset:(id)asset score:(unint64_t)score
 {
-  v7 = a3;
+  assetCopy = asset;
   v11.receiver = self;
   v11.super_class = PGLongTailSuggestionCandidate;
   v8 = [(PGLongTailSuggestionCandidate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_asset, a3);
-    v9->_score = a4;
+    objc_storeStrong(&v8->_asset, asset);
+    v9->_score = score;
   }
 
   return v9;

@@ -1,38 +1,38 @@
 @interface ICMoveFolderActivity
-+ (BOOL)canShowMoveActionForFolder:(id)a3 viewControllerManager:(id)a4;
-- (ICMoveFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4;
++ (BOOL)canShowMoveActionForFolder:(id)folder viewControllerManager:(id)manager;
+- (ICMoveFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICMoveFolderActivity
 
-- (ICMoveFolderActivity)initWithFolder:(id)a3 presentingViewController:(id)a4
+- (ICMoveFolderActivity)initWithFolder:(id)folder presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  folderCopy = folder;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = ICMoveFolderActivity;
   v9 = [(ICMoveFolderActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_folder, a3);
-    objc_storeWeak(&v10->_presentingViewController, v8);
+    objc_storeStrong(&v9->_folder, folder);
+    objc_storeWeak(&v10->_presentingViewController, controllerCopy);
   }
 
   return v10;
 }
 
-+ (BOOL)canShowMoveActionForFolder:(id)a3 viewControllerManager:(id)a4
++ (BOOL)canShowMoveActionForFolder:(id)folder viewControllerManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isMovable])
+  folderCopy = folder;
+  managerCopy = manager;
+  if ([folderCopy isMovable])
   {
-    v7 = [v6 hasMultipleModernAccounts];
-    v8 = [v5 isSmartFolder] ^ 1 | v7;
+    hasMultipleModernAccounts = [managerCopy hasMultipleModernAccounts];
+    v8 = [folderCopy isSmartFolder] ^ 1 | hasMultipleModernAccounts;
   }
 
   else
@@ -51,36 +51,36 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICMoveFolderActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICMoveFolderActivity *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     v6 = [ICMoveDecisionController alloc];
-    v7 = [(ICMoveFolderActivity *)self folder];
-    v14 = v7;
+    folder = [(ICMoveFolderActivity *)self folder];
+    v14 = folder;
     v8 = [NSArray arrayWithObjects:&v14 count:1];
-    v9 = [(ICMoveFolderActivity *)self presentingViewController];
-    v10 = [(ICMoveDecisionController *)v6 initWithSourceObjects:v8 presentingViewController:v9];
+    presentingViewController2 = [(ICMoveFolderActivity *)self presentingViewController];
+    v10 = [(ICMoveDecisionController *)v6 initWithSourceObjects:v8 presentingViewController:presentingViewController2];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000ACE28;
     v12[3] = &unk_100648068;
     v12[4] = self;
-    v13 = v4;
+    v13 = completionCopy;
     [(ICMoveDecisionController *)v10 performDecisionWithCompletion:v12];
   }
 
   else
   {
     [(ICMoveFolderActivity *)self activityDidFinish:0];
-    if (v4)
+    if (completionCopy)
     {
-      v11 = [(ICMoveFolderActivity *)self activityType];
-      (*(v4 + 2))(v4, 0, v11);
+      activityType = [(ICMoveFolderActivity *)self activityType];
+      (*(completionCopy + 2))(completionCopy, 0, activityType);
     }
   }
 }

@@ -1,18 +1,18 @@
 @interface PLAssetsdResourceAvailabilityClient
-- (id)sendMakeResourceAvailableRequest:(id)a3 reply:(id)a4;
-- (id)sendResourceRepairRequest:(id)a3 errorCodes:(id)a4 reply:(id)a5;
-- (id)sendResourceRepairRequestForAsset:(id)a3 errorCodes:(id)a4 reply:(id)a5;
-- (id)sendVideoRequest:(id)a3 reply:(id)a4;
-- (void)sendMakeResourceUnavailableRequest:(id)a3;
-- (void)setSharedMemoryForCacheMetricsCollector:(id)a3;
+- (id)sendMakeResourceAvailableRequest:(id)request reply:(id)reply;
+- (id)sendResourceRepairRequest:(id)request errorCodes:(id)codes reply:(id)reply;
+- (id)sendResourceRepairRequestForAsset:(id)asset errorCodes:(id)codes reply:(id)reply;
+- (id)sendVideoRequest:(id)request reply:(id)reply;
+- (void)sendMakeResourceUnavailableRequest:(id)request;
+- (void)setSharedMemoryForCacheMetricsCollector:(id)collector;
 @end
 
 @implementation PLAssetsdResourceAvailabilityClient
 
-- (void)setSharedMemoryForCacheMetricsCollector:(id)a3
+- (void)setSharedMemoryForCacheMetricsCollector:(id)collector
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  collectorCopy = collector;
   v24 = 0u;
   *sel = 0u;
   v23 = 0u;
@@ -27,13 +27,13 @@
     os_activity_scope_enter(v7, (&v24 + 8));
   }
 
-  if (!v5)
+  if (!collectorCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceAvailabilityClient.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"sharedData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceAvailabilityClient.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"sharedData"}];
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3254779904;
   v16[2] = __79__PLAssetsdResourceAvailabilityClient_setSharedMemoryForCacheMetricsCollector___block_invoke_16;
@@ -43,9 +43,9 @@
   v20 = v24;
   v21 = *sel;
   v22 = a2;
-  v10 = v5;
+  v10 = collectorCopy;
   v17 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_1711 handler:v16];
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_1711 handler:v16];
 
   if (v23 == 1)
   {
@@ -120,12 +120,12 @@ void __79__PLAssetsdResourceAvailabilityClient_setSharedMemoryForCacheMetricsCol
   }
 }
 
-- (id)sendResourceRepairRequestForAsset:(id)a3 errorCodes:(id)a4 reply:(id)a5
+- (id)sendResourceRepairRequestForAsset:(id)asset errorCodes:(id)codes reply:(id)reply
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  codesCopy = codes;
+  replyCopy = reply;
   v29 = 0u;
   *sel = 0u;
   v28 = 0u;
@@ -140,21 +140,21 @@ void __79__PLAssetsdResourceAvailabilityClient_setSharedMemoryForCacheMetricsCol
     os_activity_scope_enter(v12, (&v29 + 8));
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __90__PLAssetsdResourceAvailabilityClient_sendResourceRepairRequestForAsset_errorCodes_reply___block_invoke;
   v26[3] = &unk_1E7932DA8;
-  v15 = v10;
+  v15 = replyCopy;
   v27 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v26];
+  v16 = [proxyFactory remoteObjectProxyWithErrorHandler:v26];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __90__PLAssetsdResourceAvailabilityClient_sendResourceRepairRequestForAsset_errorCodes_reply___block_invoke_7;
   v24[3] = &unk_1E7932DD0;
   v17 = v15;
   v25 = v17;
-  v18 = [v16 appyCorrectionsToAssetWithRequest:v8 errorCodes:v9 reply:v24];
+  v18 = [v16 appyCorrectionsToAssetWithRequest:assetCopy errorCodes:codesCopy reply:v24];
 
   if (v28 == 1)
   {
@@ -195,12 +195,12 @@ void __90__PLAssetsdResourceAvailabilityClient_sendResourceRepairRequestForAsset
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)sendResourceRepairRequest:(id)a3 errorCodes:(id)a4 reply:(id)a5
+- (id)sendResourceRepairRequest:(id)request errorCodes:(id)codes reply:(id)reply
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  codesCopy = codes;
+  replyCopy = reply;
   v29 = 0u;
   *sel = 0u;
   v28 = 0u;
@@ -215,21 +215,21 @@ void __90__PLAssetsdResourceAvailabilityClient_sendResourceRepairRequestForAsset
     os_activity_scope_enter(v12, (&v29 + 8));
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __82__PLAssetsdResourceAvailabilityClient_sendResourceRepairRequest_errorCodes_reply___block_invoke;
   v26[3] = &unk_1E7932DA8;
-  v15 = v10;
+  v15 = replyCopy;
   v27 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v26];
+  v16 = [proxyFactory remoteObjectProxyWithErrorHandler:v26];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __82__PLAssetsdResourceAvailabilityClient_sendResourceRepairRequest_errorCodes_reply___block_invoke_5;
   v24[3] = &unk_1E7932DD0;
   v17 = v15;
   v25 = v17;
-  v18 = [v16 appyCorrectionsToResourceWithRequest:v8 errorCodes:v9 reply:v24];
+  v18 = [v16 appyCorrectionsToResourceWithRequest:requestCopy errorCodes:codesCopy reply:v24];
 
   if (v28 == 1)
   {
@@ -270,11 +270,11 @@ void __82__PLAssetsdResourceAvailabilityClient_sendResourceRepairRequest_errorCo
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)sendVideoRequest:(id)a3 reply:(id)a4
+- (id)sendVideoRequest:(id)request reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -289,21 +289,21 @@ void __82__PLAssetsdResourceAvailabilityClient_sendResourceRepairRequest_errorCo
     os_activity_scope_enter(v9, (&v26 + 8));
   }
 
-  v11 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __62__PLAssetsdResourceAvailabilityClient_sendVideoRequest_reply___block_invoke;
   v23[3] = &unk_1E7932DA8;
-  v12 = v7;
+  v12 = replyCopy;
   v24 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v23];
+  v13 = [proxyFactory remoteObjectProxyWithErrorHandler:v23];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __62__PLAssetsdResourceAvailabilityClient_sendVideoRequest_reply___block_invoke_3;
   v21[3] = &unk_1E792FCD0;
   v14 = v12;
   v22 = v14;
-  v15 = [v13 runVideoRequest:v6 reply:v21];
+  v15 = [v13 runVideoRequest:requestCopy reply:v21];
 
   if (v25 == 1)
   {
@@ -344,10 +344,10 @@ void __62__PLAssetsdResourceAvailabilityClient_sendVideoRequest_reply___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendMakeResourceUnavailableRequest:(id)a3
+- (void)sendMakeResourceUnavailableRequest:(id)request
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v13 = 0u;
   *sel = 0u;
   v11 = 0u;
@@ -360,9 +360,9 @@ void __62__PLAssetsdResourceAvailabilityClient_sendVideoRequest_reply___block_in
     os_activity_scope_enter(*(&v11 + 1), (&v13 + 8));
   }
 
-  v6 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v7 = [v6 _unboostingRemoteObjectProxy];
-  [v7 makeResourceUnavailableWithRequest:v4];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy makeResourceUnavailableWithRequest:requestCopy];
 
   if (v12 == 1)
   {
@@ -383,11 +383,11 @@ void __62__PLAssetsdResourceAvailabilityClient_sendVideoRequest_reply___block_in
   }
 }
 
-- (id)sendMakeResourceAvailableRequest:(id)a3 reply:(id)a4
+- (id)sendMakeResourceAvailableRequest:(id)request reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -402,21 +402,21 @@ void __62__PLAssetsdResourceAvailabilityClient_sendVideoRequest_reply___block_in
     os_activity_scope_enter(v9, (&v26 + 8));
   }
 
-  v11 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __78__PLAssetsdResourceAvailabilityClient_sendMakeResourceAvailableRequest_reply___block_invoke;
   v23[3] = &unk_1E7932DA8;
-  v12 = v7;
+  v12 = replyCopy;
   v24 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v23];
+  v13 = [proxyFactory remoteObjectProxyWithErrorHandler:v23];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __78__PLAssetsdResourceAvailabilityClient_sendMakeResourceAvailableRequest_reply___block_invoke_1;
   v21[3] = &unk_1E792FCA8;
   v14 = v12;
   v22 = v14;
-  v15 = [v13 makeResourceAvailableWithRequest:v6 reply:v21];
+  v15 = [v13 makeResourceAvailableWithRequest:requestCopy reply:v21];
 
   if (v25 == 1)
   {

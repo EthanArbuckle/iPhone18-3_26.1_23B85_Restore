@@ -1,66 +1,66 @@
 @interface USDeviceActivityMonitorExtensionProxy
-- (USDeviceActivityMonitorExtensionProxy)initWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (USDeviceActivityMonitorExtensionProxy)initWithClientIdentifier:(id)a3 error:(id *)a4;
-- (USDeviceActivityMonitorExtensionProxy)initWithExtensionsMatchingAttributes:(id)a3 error:(id *)a4;
-- (id)_scheduleTimerWithIntervalInSeconds:(unint64_t)a3 leewayInSeconds:(unint64_t)a4 extensionPID:(int)a5 handler:(id)a6;
-- (id)_scheduleTimerWithIntervalInSeconds:(unint64_t)a3 leewayInSeconds:(unint64_t)a4 handler:(id)a5;
-- (void)_cancelTimer:(id)a3;
-- (void)_requestExtensionVendorProxyForExtension:(id)a3 proxyHandler:(id)a4;
-- (void)eventDidReachThreshold:(id)a3 activity:(id)a4 replyHandler:(id)a5;
-- (void)eventDidUnreachThreshold:(id)a3 activity:(id)a4 replyHandler:(id)a5;
-- (void)eventWillReachThresholdWarning:(id)a3 activity:(id)a4 replyHandler:(id)a5;
-- (void)intervalDidEndForActivity:(id)a3 replyHandler:(id)a4;
-- (void)intervalDidStartForActivity:(id)a3 replyHandler:(id)a4;
-- (void)intervalWillEndWarningForActivity:(id)a3 replyHandler:(id)a4;
-- (void)intervalWillStartWarningForActivity:(id)a3 replyHandler:(id)a4;
+- (USDeviceActivityMonitorExtensionProxy)initWithBundleIdentifier:(id)identifier error:(id *)error;
+- (USDeviceActivityMonitorExtensionProxy)initWithClientIdentifier:(id)identifier error:(id *)error;
+- (USDeviceActivityMonitorExtensionProxy)initWithExtensionsMatchingAttributes:(id)attributes error:(id *)error;
+- (id)_scheduleTimerWithIntervalInSeconds:(unint64_t)seconds leewayInSeconds:(unint64_t)inSeconds extensionPID:(int)d handler:(id)handler;
+- (id)_scheduleTimerWithIntervalInSeconds:(unint64_t)seconds leewayInSeconds:(unint64_t)inSeconds handler:(id)handler;
+- (void)_cancelTimer:(id)timer;
+- (void)_requestExtensionVendorProxyForExtension:(id)extension proxyHandler:(id)handler;
+- (void)eventDidReachThreshold:(id)threshold activity:(id)activity replyHandler:(id)handler;
+- (void)eventDidUnreachThreshold:(id)threshold activity:(id)activity replyHandler:(id)handler;
+- (void)eventWillReachThresholdWarning:(id)warning activity:(id)activity replyHandler:(id)handler;
+- (void)intervalDidEndForActivity:(id)activity replyHandler:(id)handler;
+- (void)intervalDidStartForActivity:(id)activity replyHandler:(id)handler;
+- (void)intervalWillEndWarningForActivity:(id)activity replyHandler:(id)handler;
+- (void)intervalWillStartWarningForActivity:(id)activity replyHandler:(id)handler;
 @end
 
 @implementation USDeviceActivityMonitorExtensionProxy
 
-- (USDeviceActivityMonitorExtensionProxy)initWithBundleIdentifier:(id)a3 error:(id *)a4
+- (USDeviceActivityMonitorExtensionProxy)initWithBundleIdentifier:(id)identifier error:(id *)error
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CCA0E0];
   v13[0] = *MEMORY[0x277CCA0F8];
   v13[1] = v6;
   v14[0] = @"com.apple.deviceactivity.monitor-extension";
-  v14[1] = a3;
+  v14[1] = identifier;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = [v7 dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  v10 = [(USDeviceActivityMonitorExtensionProxy *)self initWithExtensionsMatchingAttributes:v9 error:a4];
+  v10 = [(USDeviceActivityMonitorExtensionProxy *)self initWithExtensionsMatchingAttributes:v9 error:error];
   v11 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (USDeviceActivityMonitorExtensionProxy)initWithClientIdentifier:(id)a3 error:(id *)a4
+- (USDeviceActivityMonitorExtensionProxy)initWithClientIdentifier:(id)identifier error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v26 = 0;
-  v7 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:v6 error:&v26];
+  v7 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:identifierCopy error:&v26];
   v8 = v26;
   if (!v7)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [USDeviceActivityMonitorExtensionProxy initWithClientIdentifier:v6 error:v8];
-      if (a4)
+      [USDeviceActivityMonitorExtensionProxy initWithClientIdentifier:identifierCopy error:v8];
+      if (error)
       {
         goto LABEL_5;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_5:
       v15 = +[USUsageTrackingBundle usageTrackingBundle];
       v16 = [v15 localizedStringForKey:@"ExtensionMatchingError" value:&stru_288083FC8 table:0];
 
       v17 = objc_alloc(MEMORY[0x277CCACA8]);
-      v18 = [MEMORY[0x277CBEAF8] currentLocale];
-      v19 = [v17 initWithFormat:v16 locale:v18, 0];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v19 = [v17 initWithFormat:v16 locale:currentLocale, 0];
 
       v20 = MEMORY[0x277CCA9B8];
       v29 = *MEMORY[0x277CCA450];
@@ -69,12 +69,12 @@ LABEL_5:
       v22 = [v20 errorWithDomain:@"UsageTrackingErrorDomain" code:200 userInfo:v21];
 
       v23 = v22;
-      v14 = 0;
-      *a4 = v22;
+      selfCopy = 0;
+      *error = v22;
       goto LABEL_8;
     }
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -84,23 +84,23 @@ LABEL_5:
   v27[0] = v9;
   v27[1] = v10;
   v11 = [v7 URL];
-  v12 = [v11 path];
-  v28[1] = v12;
+  path = [v11 path];
+  v28[1] = path;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
 
-  self = [(USDeviceActivityMonitorExtensionProxy *)self initWithExtensionsMatchingAttributes:v13 error:a4];
-  v14 = self;
+  self = [(USDeviceActivityMonitorExtensionProxy *)self initWithExtensionsMatchingAttributes:v13 error:error];
+  selfCopy = self;
 LABEL_8:
 
   v24 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (USDeviceActivityMonitorExtensionProxy)initWithExtensionsMatchingAttributes:(id)a3 error:(id *)a4
+- (USDeviceActivityMonitorExtensionProxy)initWithExtensionsMatchingAttributes:(id)attributes error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CCA9C8] extensionsWithMatchingAttributes:v6 error:a4];
+  attributesCopy = attributes;
+  v7 = [MEMORY[0x277CCA9C8] extensionsWithMatchingAttributes:attributesCopy error:error];
   if ([v7 count])
   {
     v24.receiver = self;
@@ -118,15 +118,15 @@ LABEL_8:
   {
 
     v8 = 0;
-    if (a4 && v7)
+    if (error && v7)
     {
-      v12 = v6;
+      v12 = attributesCopy;
       v13 = +[USUsageTrackingBundle usageTrackingBundle];
       v14 = [v13 localizedStringForKey:@"ExtensionMatchingError" value:&stru_288083FC8 table:0];
 
       v15 = objc_alloc(MEMORY[0x277CCACA8]);
-      v16 = [MEMORY[0x277CBEAF8] currentLocale];
-      v17 = [v15 initWithFormat:v14 locale:v16, v12];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v17 = [v15 initWithFormat:v14 locale:currentLocale, v12];
 
       v18 = MEMORY[0x277CCA9B8];
       v25 = *MEMORY[0x277CCA450];
@@ -136,7 +136,7 @@ LABEL_8:
 
       v21 = v20;
       v8 = 0;
-      *a4 = v20;
+      *error = v20;
     }
   }
 
@@ -144,11 +144,11 @@ LABEL_8:
   return v8;
 }
 
-- (void)intervalDidStartForActivity:(id)a3 replyHandler:(id)a4
+- (void)intervalDidStartForActivity:(id)activity replyHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  handlerCopy = handler;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -174,8 +174,8 @@ LABEL_8:
         v15[1] = 3221225472;
         v15[2] = __82__USDeviceActivityMonitorExtensionProxy_intervalDidStartForActivity_replyHandler___block_invoke;
         v15[3] = &unk_279E09910;
-        v16 = v6;
-        v17 = v7;
+        v16 = activityCopy;
+        v17 = handlerCopy;
         [(USDeviceActivityMonitorExtensionProxy *)self _requestExtensionVendorProxyForExtension:v12 proxyHandler:v15];
 
         ++v11;
@@ -204,11 +204,11 @@ uint64_t __82__USDeviceActivityMonitorExtensionProxy_intervalDidStartForActivity
   }
 }
 
-- (void)intervalDidEndForActivity:(id)a3 replyHandler:(id)a4
+- (void)intervalDidEndForActivity:(id)activity replyHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  handlerCopy = handler;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -234,8 +234,8 @@ uint64_t __82__USDeviceActivityMonitorExtensionProxy_intervalDidStartForActivity
         v15[1] = 3221225472;
         v15[2] = __80__USDeviceActivityMonitorExtensionProxy_intervalDidEndForActivity_replyHandler___block_invoke;
         v15[3] = &unk_279E09910;
-        v16 = v6;
-        v17 = v7;
+        v16 = activityCopy;
+        v17 = handlerCopy;
         [(USDeviceActivityMonitorExtensionProxy *)self _requestExtensionVendorProxyForExtension:v12 proxyHandler:v15];
 
         ++v11;
@@ -264,12 +264,12 @@ uint64_t __80__USDeviceActivityMonitorExtensionProxy_intervalDidEndForActivity_r
   }
 }
 
-- (void)eventDidReachThreshold:(id)a3 activity:(id)a4 replyHandler:(id)a5
+- (void)eventDidReachThreshold:(id)threshold activity:(id)activity replyHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  thresholdCopy = threshold;
+  activityCopy = activity;
+  handlerCopy = handler;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -295,9 +295,9 @@ uint64_t __80__USDeviceActivityMonitorExtensionProxy_intervalDidEndForActivity_r
         v18[1] = 3221225472;
         v18[2] = __86__USDeviceActivityMonitorExtensionProxy_eventDidReachThreshold_activity_replyHandler___block_invoke;
         v18[3] = &unk_279E09938;
-        v19 = v8;
-        v20 = v9;
-        v21 = v10;
+        v19 = thresholdCopy;
+        v20 = activityCopy;
+        v21 = handlerCopy;
         [(USDeviceActivityMonitorExtensionProxy *)self _requestExtensionVendorProxyForExtension:v15 proxyHandler:v18];
 
         ++v14;
@@ -326,12 +326,12 @@ uint64_t __86__USDeviceActivityMonitorExtensionProxy_eventDidReachThreshold_acti
   }
 }
 
-- (void)eventDidUnreachThreshold:(id)a3 activity:(id)a4 replyHandler:(id)a5
+- (void)eventDidUnreachThreshold:(id)threshold activity:(id)activity replyHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  thresholdCopy = threshold;
+  activityCopy = activity;
+  handlerCopy = handler;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -357,9 +357,9 @@ uint64_t __86__USDeviceActivityMonitorExtensionProxy_eventDidReachThreshold_acti
         v18[1] = 3221225472;
         v18[2] = __88__USDeviceActivityMonitorExtensionProxy_eventDidUnreachThreshold_activity_replyHandler___block_invoke;
         v18[3] = &unk_279E09938;
-        v19 = v8;
-        v20 = v9;
-        v21 = v10;
+        v19 = thresholdCopy;
+        v20 = activityCopy;
+        v21 = handlerCopy;
         [(USDeviceActivityMonitorExtensionProxy *)self _requestExtensionVendorProxyForExtension:v15 proxyHandler:v18];
 
         ++v14;
@@ -388,11 +388,11 @@ uint64_t __88__USDeviceActivityMonitorExtensionProxy_eventDidUnreachThreshold_ac
   }
 }
 
-- (void)intervalWillStartWarningForActivity:(id)a3 replyHandler:(id)a4
+- (void)intervalWillStartWarningForActivity:(id)activity replyHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  handlerCopy = handler;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -418,8 +418,8 @@ uint64_t __88__USDeviceActivityMonitorExtensionProxy_eventDidUnreachThreshold_ac
         v15[1] = 3221225472;
         v15[2] = __90__USDeviceActivityMonitorExtensionProxy_intervalWillStartWarningForActivity_replyHandler___block_invoke;
         v15[3] = &unk_279E09910;
-        v16 = v6;
-        v17 = v7;
+        v16 = activityCopy;
+        v17 = handlerCopy;
         [(USDeviceActivityMonitorExtensionProxy *)self _requestExtensionVendorProxyForExtension:v12 proxyHandler:v15];
 
         ++v11;
@@ -448,11 +448,11 @@ uint64_t __90__USDeviceActivityMonitorExtensionProxy_intervalWillStartWarningFor
   }
 }
 
-- (void)intervalWillEndWarningForActivity:(id)a3 replyHandler:(id)a4
+- (void)intervalWillEndWarningForActivity:(id)activity replyHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  handlerCopy = handler;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -478,8 +478,8 @@ uint64_t __90__USDeviceActivityMonitorExtensionProxy_intervalWillStartWarningFor
         v15[1] = 3221225472;
         v15[2] = __88__USDeviceActivityMonitorExtensionProxy_intervalWillEndWarningForActivity_replyHandler___block_invoke;
         v15[3] = &unk_279E09910;
-        v16 = v6;
-        v17 = v7;
+        v16 = activityCopy;
+        v17 = handlerCopy;
         [(USDeviceActivityMonitorExtensionProxy *)self _requestExtensionVendorProxyForExtension:v12 proxyHandler:v15];
 
         ++v11;
@@ -508,12 +508,12 @@ uint64_t __88__USDeviceActivityMonitorExtensionProxy_intervalWillEndWarningForAc
   }
 }
 
-- (void)eventWillReachThresholdWarning:(id)a3 activity:(id)a4 replyHandler:(id)a5
+- (void)eventWillReachThresholdWarning:(id)warning activity:(id)activity replyHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  warningCopy = warning;
+  activityCopy = activity;
+  handlerCopy = handler;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -539,9 +539,9 @@ uint64_t __88__USDeviceActivityMonitorExtensionProxy_intervalWillEndWarningForAc
         v18[1] = 3221225472;
         v18[2] = __94__USDeviceActivityMonitorExtensionProxy_eventWillReachThresholdWarning_activity_replyHandler___block_invoke;
         v18[3] = &unk_279E09938;
-        v19 = v8;
-        v20 = v9;
-        v21 = v10;
+        v19 = warningCopy;
+        v20 = activityCopy;
+        v21 = handlerCopy;
         [(USDeviceActivityMonitorExtensionProxy *)self _requestExtensionVendorProxyForExtension:v15 proxyHandler:v18];
 
         ++v14;
@@ -570,21 +570,21 @@ uint64_t __94__USDeviceActivityMonitorExtensionProxy_eventWillReachThresholdWarn
   }
 }
 
-- (void)_requestExtensionVendorProxyForExtension:(id)a3 proxyHandler:(id)a4
+- (void)_requestExtensionVendorProxyForExtension:(id)extension proxyHandler:(id)handler
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  handlerCopy = handler;
   v8 = [MEMORY[0x277CBEAA8] now];
-  v9 = [(USDeviceActivityMonitorExtensionProxy *)self timeoutInSeconds];
-  v10 = [(USDeviceActivityMonitorExtensionProxy *)self timeoutLeewayInSeconds];
+  timeoutInSeconds = [(USDeviceActivityMonitorExtensionProxy *)self timeoutInSeconds];
+  timeoutLeewayInSeconds = [(USDeviceActivityMonitorExtensionProxy *)self timeoutLeewayInSeconds];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __95__USDeviceActivityMonitorExtensionProxy__requestExtensionVendorProxyForExtension_proxyHandler___block_invoke;
   v43[3] = &unk_279E098B8;
-  v11 = v6;
+  v11 = extensionCopy;
   v44 = v11;
-  v12 = [(USDeviceActivityMonitorExtensionProxy *)self _scheduleTimerWithIntervalInSeconds:v9 leewayInSeconds:v10 handler:v43];
+  v12 = [(USDeviceActivityMonitorExtensionProxy *)self _scheduleTimerWithIntervalInSeconds:timeoutInSeconds leewayInSeconds:timeoutLeewayInSeconds handler:v43];
   v42 = 0;
   v13 = [v11 beginExtensionRequestWithOptions:0 inputItems:0 error:&v42];
   v14 = v42;
@@ -592,14 +592,14 @@ uint64_t __94__USDeviceActivityMonitorExtensionProxy_eventWillReachThresholdWarn
   if (v13)
   {
     v37 = v14;
-    v15 = [(USDeviceActivityMonitorExtensionProxy *)self timeoutInSeconds];
+    timeoutInSeconds2 = [(USDeviceActivityMonitorExtensionProxy *)self timeoutInSeconds];
     v16 = [MEMORY[0x277CBEAA8] now];
     v38 = v8;
     [v16 timeIntervalSinceDate:v8];
-    v18 = v15 - v17;
+    v18 = timeoutInSeconds2 - v17;
 
     v19 = [v11 pidForRequestIdentifier:v13];
-    v20 = [(USDeviceActivityMonitorExtensionProxy *)self timeoutLeewayInSeconds];
+    timeoutLeewayInSeconds2 = [(USDeviceActivityMonitorExtensionProxy *)self timeoutLeewayInSeconds];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __95__USDeviceActivityMonitorExtensionProxy__requestExtensionVendorProxyForExtension_proxyHandler___block_invoke_9;
@@ -608,25 +608,25 @@ uint64_t __94__USDeviceActivityMonitorExtensionProxy_eventWillReachThresholdWarn
     v40 = v21;
     v22 = v13;
     v41 = v22;
-    v23 = [(USDeviceActivityMonitorExtensionProxy *)self _scheduleTimerWithIntervalInSeconds:v18 leewayInSeconds:v20 extensionPID:v19 handler:v39];
+    v23 = [(USDeviceActivityMonitorExtensionProxy *)self _scheduleTimerWithIntervalInSeconds:v18 leewayInSeconds:timeoutLeewayInSeconds2 extensionPID:v19 handler:v39];
 
     v24 = [v21 _extensionContextForUUID:v22];
-    v25 = [v24 _auxiliaryConnection];
-    if (v25)
+    _auxiliaryConnection = [v24 _auxiliaryConnection];
+    if (_auxiliaryConnection)
     {
-      [USXPCRemoteObjectProxy synchronousProxyFromConnection:v25 withRetryCount:1 proxyHandler:v7];
+      [USXPCRemoteObjectProxy synchronousProxyFromConnection:_auxiliaryConnection withRetryCount:1 proxyHandler:handlerCopy];
     }
 
     else
     {
       v26 = +[USUsageTrackingBundle usageTrackingBundle];
       v35 = [v26 localizedStringForKey:@"ExtensionConnectionError" value:&stru_288083FC8 table:0];
-      v36 = v7;
+      v36 = handlerCopy;
 
       v27 = objc_alloc(MEMORY[0x277CCACA8]);
-      v28 = [MEMORY[0x277CBEAF8] currentLocale];
-      v29 = [v21 identifier];
-      v30 = [v27 initWithFormat:v35 locale:v28, v29];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      identifier = [v21 identifier];
+      v30 = [v27 initWithFormat:v35 locale:currentLocale, identifier];
 
       v31 = MEMORY[0x277CCA9B8];
       v45 = *MEMORY[0x277CCA450];
@@ -635,7 +635,7 @@ uint64_t __94__USDeviceActivityMonitorExtensionProxy_eventWillReachThresholdWarn
       v33 = [v31 errorWithDomain:@"UsageTrackingErrorDomain" code:201 userInfo:v32];
       v36[2](v36, 0, v33);
 
-      v7 = v36;
+      handlerCopy = v36;
     }
 
     [(USDeviceActivityMonitorExtensionProxy *)self _cancelTimer:v23];
@@ -646,7 +646,7 @@ uint64_t __94__USDeviceActivityMonitorExtensionProxy_eventWillReachThresholdWarn
 
   else
   {
-    v7[2](v7, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
     v23 = v12;
   }
 
@@ -675,9 +675,9 @@ void __95__USDeviceActivityMonitorExtensionProxy__requestExtensionVendorProxyFor
   [v2 postNotificationName:@"DidCancelDeviceActivityMonitorExtensionRequest" object:0];
 }
 
-- (id)_scheduleTimerWithIntervalInSeconds:(unint64_t)a3 leewayInSeconds:(unint64_t)a4 extensionPID:(int)a5 handler:(id)a6
+- (id)_scheduleTimerWithIntervalInSeconds:(unint64_t)seconds leewayInSeconds:(unint64_t)inSeconds extensionPID:(int)d handler:(id)handler
 {
-  v9 = a6;
+  handlerCopy = handler;
   if (BSPIDIsBeingDebugged())
   {
     v10 = 0;
@@ -685,32 +685,32 @@ void __95__USDeviceActivityMonitorExtensionProxy__requestExtensionVendorProxyFor
 
   else
   {
-    v10 = [(USDeviceActivityMonitorExtensionProxy *)self _scheduleTimerWithIntervalInSeconds:a3 leewayInSeconds:a4 handler:v9];
+    v10 = [(USDeviceActivityMonitorExtensionProxy *)self _scheduleTimerWithIntervalInSeconds:seconds leewayInSeconds:inSeconds handler:handlerCopy];
   }
 
   return v10;
 }
 
-- (id)_scheduleTimerWithIntervalInSeconds:(unint64_t)a3 leewayInSeconds:(unint64_t)a4 handler:(id)a5
+- (id)_scheduleTimerWithIntervalInSeconds:(unint64_t)seconds leewayInSeconds:(unint64_t)inSeconds handler:(id)handler
 {
-  v8 = a5;
-  v9 = [(USDeviceActivityMonitorExtensionProxy *)self timeoutQueue];
-  v10 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v9);
+  handlerCopy = handler;
+  timeoutQueue = [(USDeviceActivityMonitorExtensionProxy *)self timeoutQueue];
+  v10 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, timeoutQueue);
 
-  v11 = dispatch_time(0, 1000000000 * a3);
-  dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 1000000000 * a4);
-  dispatch_source_set_event_handler(v10, v8);
+  v11 = dispatch_time(0, 1000000000 * seconds);
+  dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 1000000000 * inSeconds);
+  dispatch_source_set_event_handler(v10, handlerCopy);
 
   dispatch_resume(v10);
 
   return v10;
 }
 
-- (void)_cancelTimer:(id)a3
+- (void)_cancelTimer:(id)timer
 {
-  if (a3)
+  if (timer)
   {
-    dispatch_source_cancel(a3);
+    dispatch_source_cancel(timer);
   }
 }
 

@@ -8,31 +8,31 @@
 - (id)mpc_jsonValue
 {
   v101 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() emptyIdentifierSet];
+  emptyIdentifierSet = [objc_opt_class() emptyIdentifierSet];
 
-  if (v2 == a1)
+  if (emptyIdentifierSet == self)
   {
-    v3 = &unk_1F4599A10;
+    dictionary = &unk_1F4599A10;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    v4 = [a1 modelKind];
-    v5 = [v4 mpc_jsonValue];
-    [v3 setObject:v5 forKeyedSubscript:@"kind"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    modelKind = [self modelKind];
+    mpc_jsonValue = [modelKind mpc_jsonValue];
+    [dictionary setObject:mpc_jsonValue forKeyedSubscript:@"kind"];
 
-    v6 = [a1 sources];
-    [v3 setObject:v6 forKeyedSubscript:@"sources"];
+    sources = [self sources];
+    [dictionary setObject:sources forKeyedSubscript:@"sources"];
 
-    v7 = [a1 library];
-    if (v7)
+    library = [self library];
+    if (library)
     {
       v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-      v9 = [v7 databaseID];
-      [v8 setObject:v9 forKeyedSubscript:@"db-id"];
+      databaseID = [library databaseID];
+      [v8 setObject:databaseID forKeyedSubscript:@"db-id"];
 
-      quot = [v7 persistentID];
+      quot = [library persistentID];
       if (quot)
       {
         v11 = quot;
@@ -73,17 +73,17 @@
 
       [v8 setObject:v16 forKeyedSubscript:@"pid"];
 
-      if ([v7 containedPersistentID])
+      if ([library containedPersistentID])
       {
-        v17 = [v7 containedPersistentID];
-        if (v17)
+        containedPersistentID = [library containedPersistentID];
+        if (containedPersistentID)
         {
-          v18 = v17;
+          v18 = containedPersistentID;
           v19 = &v101 + 1;
           do
           {
-            v20 = lldiv(v17, 10);
-            v17 = v20.quot;
+            v20 = lldiv(containedPersistentID, 10);
+            containedPersistentID = v20.quot;
             if (v20.rem >= 0)
             {
               LOBYTE(v21) = v20.rem;
@@ -122,17 +122,17 @@
         [v8 setObject:0 forKeyedSubscript:@"contained-pid"];
       }
 
-      if ([v7 syncID])
+      if ([library syncID])
       {
-        v24 = [v7 syncID];
-        if (v24)
+        syncID = [library syncID];
+        if (syncID)
         {
-          v25 = v24;
+          v25 = syncID;
           v26 = &v101 + 1;
           do
           {
-            v27 = lldiv(v24, 10);
-            v24 = v27.quot;
+            v27 = lldiv(syncID, 10);
+            syncID = v27.quot;
             if (v27.rem >= 0)
             {
               LOBYTE(v28) = v27.rem;
@@ -171,27 +171,27 @@
         [v8 setObject:0 forKeyedSubscript:@"sync"];
       }
 
-      [v3 setObject:v8 forKeyedSubscript:@"library"];
+      [dictionary setObject:v8 forKeyedSubscript:@"library"];
     }
 
-    v31 = [a1 personalizedStore];
-    if (v31)
+    personalizedStore = [self personalizedStore];
+    if (personalizedStore)
     {
       v32 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-      v33 = [v31 personID];
-      [v32 setObject:v33 forKeyedSubscript:@"person-id"];
+      personID = [personalizedStore personID];
+      [v32 setObject:personID forKeyedSubscript:@"person-id"];
 
-      if ([v31 cloudID])
+      if ([personalizedStore cloudID])
       {
-        v34 = [v31 cloudID];
-        if (v34)
+        cloudID = [personalizedStore cloudID];
+        if (cloudID)
         {
-          v35 = v34;
+          v35 = cloudID;
           v36 = &v101 + 1;
           do
           {
-            v37 = lldiv(v34, 10);
-            v34 = v37.quot;
+            v37 = lldiv(cloudID, 10);
+            cloudID = v37.quot;
             if (v37.rem >= 0)
             {
               LOBYTE(v38) = v37.rem;
@@ -230,33 +230,33 @@
         [v32 setObject:0 forKeyedSubscript:@"cloud"];
       }
 
-      v41 = [v31 cloudAlbumID];
-      [v32 setObject:v41 forKeyedSubscript:@"cloud-album"];
+      cloudAlbumID = [personalizedStore cloudAlbumID];
+      [v32 setObject:cloudAlbumID forKeyedSubscript:@"cloud-album"];
 
-      v42 = [v31 recommendationID];
-      [v32 setObject:v42 forKeyedSubscript:@"reco-id"];
+      recommendationID = [personalizedStore recommendationID];
+      [v32 setObject:recommendationID forKeyedSubscript:@"reco-id"];
 
-      [v3 setObject:v32 forKeyedSubscript:@"personal"];
+      [dictionary setObject:v32 forKeyedSubscript:@"personal"];
     }
 
-    v43 = [a1 universalStore];
-    if (v43)
+    universalStore = [self universalStore];
+    if (universalStore)
     {
       v44 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:9];
-      v45 = [v43 globalPlaylistID];
-      [v44 setObject:v45 forKeyedSubscript:@"global-playlist"];
+      globalPlaylistID = [universalStore globalPlaylistID];
+      [v44 setObject:globalPlaylistID forKeyedSubscript:@"global-playlist"];
 
-      if ([v43 adamID])
+      if ([universalStore adamID])
       {
-        v46 = [v43 adamID];
-        if (v46)
+        adamID = [universalStore adamID];
+        if (adamID)
         {
-          v47 = v46;
+          v47 = adamID;
           v48 = &v101 + 1;
           do
           {
-            v49 = lldiv(v46, 10);
-            v46 = v49.quot;
+            v49 = lldiv(adamID, 10);
+            adamID = v49.quot;
             if (v49.rem >= 0)
             {
               LOBYTE(v50) = v49.rem;
@@ -295,11 +295,11 @@
         [v44 setObject:0 forKeyedSubscript:@"adam"];
       }
 
-      v53 = [v43 formerAdamIDs];
-      if ([v53 count])
+      formerAdamIDs = [universalStore formerAdamIDs];
+      if ([formerAdamIDs count])
       {
-        v54 = [v43 formerAdamIDs];
-        v55 = [v54 msv_map:&__block_literal_global_217];
+        formerAdamIDs2 = [universalStore formerAdamIDs];
+        v55 = [formerAdamIDs2 msv_map:&__block_literal_global_217];
         [v44 setObject:v55 forKeyedSubscript:@"former-ids"];
       }
 
@@ -308,20 +308,20 @@
         [v44 setObject:0 forKeyedSubscript:@"former-ids"];
       }
 
-      v56 = [v43 universalCloudLibraryID];
-      [v44 setObject:v56 forKeyedSubscript:@"ulid"];
+      universalCloudLibraryID = [universalStore universalCloudLibraryID];
+      [v44 setObject:universalCloudLibraryID forKeyedSubscript:@"ulid"];
 
-      if ([v43 purchasedAdamID])
+      if ([universalStore purchasedAdamID])
       {
-        v57 = [v43 purchasedAdamID];
-        if (v57)
+        purchasedAdamID = [universalStore purchasedAdamID];
+        if (purchasedAdamID)
         {
-          v58 = v57;
+          v58 = purchasedAdamID;
           v59 = &v101 + 1;
           do
           {
-            v60 = lldiv(v57, 10);
-            v57 = v60.quot;
+            v60 = lldiv(purchasedAdamID, 10);
+            purchasedAdamID = v60.quot;
             if (v60.rem >= 0)
             {
               LOBYTE(v61) = v60.rem;
@@ -360,17 +360,17 @@
         [v44 setObject:0 forKeyedSubscript:@"purchased"];
       }
 
-      if ([v43 subscriptionAdamID])
+      if ([universalStore subscriptionAdamID])
       {
-        v64 = [v43 subscriptionAdamID];
-        if (v64)
+        subscriptionAdamID = [universalStore subscriptionAdamID];
+        if (subscriptionAdamID)
         {
-          v65 = v64;
+          v65 = subscriptionAdamID;
           v66 = &v101 + 1;
           do
           {
-            v67 = lldiv(v64, 10);
-            v64 = v67.quot;
+            v67 = lldiv(subscriptionAdamID, 10);
+            subscriptionAdamID = v67.quot;
             if (v67.rem >= 0)
             {
               LOBYTE(v68) = v67.rem;
@@ -409,26 +409,26 @@
         [v44 setObject:0 forKeyedSubscript:@"subscription"];
       }
 
-      v71 = [v43 socialProfileID];
-      [v44 setObject:v71 forKeyedSubscript:@"social-profile"];
+      socialProfileID = [universalStore socialProfileID];
+      [v44 setObject:socialProfileID forKeyedSubscript:@"social-profile"];
 
-      v72 = [v43 informalMediaClipID];
-      [v44 setObject:v72 forKeyedSubscript:@"media-clip"];
+      informalMediaClipID = [universalStore informalMediaClipID];
+      [v44 setObject:informalMediaClipID forKeyedSubscript:@"media-clip"];
 
-      v73 = [v43 informalStaticAssetID];
-      [v44 setObject:v73 forKeyedSubscript:@"static-asset"];
+      informalStaticAssetID = [universalStore informalStaticAssetID];
+      [v44 setObject:informalStaticAssetID forKeyedSubscript:@"static-asset"];
 
-      if ([v43 reportingAdamID])
+      if ([universalStore reportingAdamID])
       {
-        v74 = [v43 reportingAdamID];
-        if (v74)
+        reportingAdamID = [universalStore reportingAdamID];
+        if (reportingAdamID)
         {
-          v75 = v74;
+          v75 = reportingAdamID;
           v76 = &v101 + 1;
           do
           {
-            v77 = lldiv(v74, 10);
-            v74 = v77.quot;
+            v77 = lldiv(reportingAdamID, 10);
+            reportingAdamID = v77.quot;
             if (v77.rem >= 0)
             {
               LOBYTE(v78) = v77.rem;
@@ -467,17 +467,17 @@
         [v44 setObject:0 forKeyedSubscript:@"reporting-adam-id"];
       }
 
-      if ([v43 assetAdamID])
+      if ([universalStore assetAdamID])
       {
-        v81 = [v43 assetAdamID];
-        if (v81)
+        assetAdamID = [universalStore assetAdamID];
+        if (assetAdamID)
         {
-          v82 = v81;
+          v82 = assetAdamID;
           v83 = &v101 + 1;
           do
           {
-            v84 = lldiv(v81, 10);
-            v81 = v84.quot;
+            v84 = lldiv(assetAdamID, 10);
+            assetAdamID = v84.quot;
             if (v84.rem >= 0)
             {
               LOBYTE(v85) = v84.rem;
@@ -516,22 +516,22 @@
         [v44 setObject:0 forKeyedSubscript:@"asset-adam-id"];
       }
 
-      [v3 setObject:v44 forKeyedSubscript:@"universal"];
+      [dictionary setObject:v44 forKeyedSubscript:@"universal"];
     }
 
-    v88 = [a1 radio];
-    if (v88)
+    radio = [self radio];
+    if (radio)
     {
       v89 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
-      v90 = [v88 stationStringID];
-      [v89 setObject:v90 forKeyedSubscript:@"station-string"];
+      stationStringID = [radio stationStringID];
+      [v89 setObject:stationStringID forKeyedSubscript:@"station-string"];
 
-      v91 = [v88 stationHash];
-      [v89 setObject:v91 forKeyedSubscript:@"station-hash"];
+      stationHash = [radio stationHash];
+      [v89 setObject:stationHash forKeyedSubscript:@"station-hash"];
 
-      if ([v88 stationID])
+      if ([radio stationID])
       {
-        v92 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v88, "stationID")}];
+        v92 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(radio, "stationID")}];
         [v89 setObject:v92 forKeyedSubscript:@"station-id"];
       }
 
@@ -540,43 +540,43 @@
         [v89 setObject:0 forKeyedSubscript:@"station-id"];
       }
 
-      [v3 setObject:v89 forKeyedSubscript:@"radio"];
+      [dictionary setObject:v89 forKeyedSubscript:@"radio"];
     }
 
-    v93 = [a1 containerUniqueID];
-    [v3 setObject:v93 forKeyedSubscript:@"containerUniqueID"];
+    containerUniqueID = [self containerUniqueID];
+    [dictionary setObject:containerUniqueID forKeyedSubscript:@"containerUniqueID"];
 
-    v94 = [a1 handoffCorrelationID];
-    [v3 setObject:v94 forKeyedSubscript:@"handoffCorrelationID"];
+    handoffCorrelationID = [self handoffCorrelationID];
+    [dictionary setObject:handoffCorrelationID forKeyedSubscript:@"handoffCorrelationID"];
 
-    v95 = [a1 contentItemID];
-    [v3 setObject:v95 forKeyedSubscript:@"contentItemID"];
+    contentItemID = [self contentItemID];
+    [dictionary setObject:contentItemID forKeyedSubscript:@"contentItemID"];
 
-    v96 = [a1 lyricsID];
-    [v3 setObject:v96 forKeyedSubscript:@"lyricsID"];
+    lyricsID = [self lyricsID];
+    [dictionary setObject:lyricsID forKeyedSubscript:@"lyricsID"];
 
-    v97 = [a1 vendorID];
-    [v3 setObject:v97 forKeyedSubscript:@"vendorID"];
+    vendorID = [self vendorID];
+    [dictionary setObject:vendorID forKeyedSubscript:@"vendorID"];
 
-    v98 = [a1 opaqueID];
-    [v3 setObject:v98 forKeyedSubscript:@"opaqueID"];
+    opaqueID = [self opaqueID];
+    [dictionary setObject:opaqueID forKeyedSubscript:@"opaqueID"];
 
-    v99 = [a1 versionHash];
-    [v3 setObject:v99 forKeyedSubscript:@"versionHash"];
+    versionHash = [self versionHash];
+    [dictionary setObject:versionHash forKeyedSubscript:@"versionHash"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 + (id)payloadValueFromJSONValue:()MPCPlaybackEngineEventPayload
 {
   v4 = a3;
   v5 = [v4 objectForKeyedSubscript:@"_empty"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [a1 emptyIdentifierSet];
+    emptyIdentifierSet = [self emptyIdentifierSet];
   }
 
   else
@@ -586,7 +586,7 @@
     v10 = [v8 payloadValueFromJSONValue:v9];
 
     v11 = [v4 objectForKeyedSubscript:@"sources"];
-    v12 = [a1 alloc];
+    v12 = [self alloc];
     if (v11)
     {
       v13 = v11;
@@ -602,10 +602,10 @@
     v15[2] = __76__MPIdentifierSet_MPCPlaybackEngineEventPayload__payloadValueFromJSONValue___block_invoke;
     v15[3] = &unk_1E82389D8;
     v16 = v4;
-    v7 = [v12 _initWithSources:v13 modelKind:v10 block:v15];
+    emptyIdentifierSet = [v12 _initWithSources:v13 modelKind:v10 block:v15];
   }
 
-  return v7;
+  return emptyIdentifierSet;
 }
 
 @end

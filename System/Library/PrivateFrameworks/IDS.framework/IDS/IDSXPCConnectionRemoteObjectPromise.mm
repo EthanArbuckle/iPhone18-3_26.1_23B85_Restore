@@ -1,21 +1,21 @@
 @interface IDSXPCConnectionRemoteObjectPromise
-- (BOOL)respondsToSelector:(SEL)a3;
-- (IDSXPCConnectionRemoteObjectPromise)initWithInterface:(id)a3 queue:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (IDSXPCConnectionRemoteObjectPromise)initWithInterface:(id)interface queue:(id)queue;
 - (NSMutableArray)pendingInvocations;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_assertVoidReturnValueInInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_assertVoidReturnValueInInvocation:(id)invocation;
 - (void)dealloc;
-- (void)failWithError:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)fulfillWithRemoteObject:(id)a3;
+- (void)failWithError:(id)error;
+- (void)forwardInvocation:(id)invocation;
+- (void)fulfillWithRemoteObject:(id)object;
 @end
 
 @implementation IDSXPCConnectionRemoteObjectPromise
 
 - (NSMutableArray)pendingInvocations
 {
-  v3 = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   pendingInvocations = self->_pendingInvocations;
   if (!pendingInvocations)
@@ -40,7 +40,7 @@
     *buf = 138543618;
     v8 = target;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "Dealloc'ing IDSXPCConnectionRemoteObjectPromise {target: %{public}@, pointer: %p}", buf, 0x16u);
   }
 
@@ -50,49 +50,49 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (IDSXPCConnectionRemoteObjectPromise)initWithInterface:(id)a3 queue:(id)a4
+- (IDSXPCConnectionRemoteObjectPromise)initWithInterface:(id)interface queue:(id)queue
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  queueCopy = queue;
   v9 = [MEMORY[0x1E69A5270] xpc];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "Alloc'ing IDSXPCConnectionRemoteObjectPromise {pointer: %p}", buf, 0xCu);
   }
 
-  dispatch_assert_queue_V2(v8);
+  dispatch_assert_queue_V2(queueCopy);
   v14.receiver = self;
   v14.super_class = IDSXPCConnectionRemoteObjectPromise;
   v10 = [(IDSXPCConnectionRemoteObjectPromise *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_interface, a3);
-    objc_storeStrong(&v11->_queue, a4);
+    objc_storeStrong(&v10->_interface, interface);
+    objc_storeStrong(&v11->_queue, queue);
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (void)fulfillWithRemoteObject:(id)a3
+- (void)fulfillWithRemoteObject:(id)object
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
-  dispatch_assert_queue_V2(v6);
+  objectCopy = object;
+  queue = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(IDSXPCConnectionRemoteObjectPromise *)self target];
+  target = [(IDSXPCConnectionRemoteObjectPromise *)self target];
 
-  if (v7)
+  if (target)
   {
     sub_195B2B48C(a2, self);
   }
 
-  [(IDSXPCConnectionRemoteObjectPromise *)self setTarget:v5];
+  [(IDSXPCConnectionRemoteObjectPromise *)self setTarget:objectCopy];
   if ([(NSMutableArray *)self->_pendingInvocations count])
   {
     v19 = 0u;
@@ -116,8 +116,8 @@
           }
 
           v13 = *(*(&v17 + 1) + 8 * v12);
-          v14 = [(IDSXPCConnectionRemoteObjectPromise *)self target];
-          [v13 invokeWithTarget:v14];
+          target2 = [(IDSXPCConnectionRemoteObjectPromise *)self target];
+          [v13 invokeWithTarget:target2];
 
           ++v12;
         }
@@ -136,10 +136,10 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if ([(NSMutableArray *)self->_pendingInvocations count])
   {
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_pendingInvocations, "count")}];
@@ -179,7 +179,7 @@
     v12 = [MEMORY[0x1E69A5270] xpc];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_195B2B500(v5, v4, v12);
+      sub_195B2B500(v5, errorCopy, v12);
     }
   }
 
@@ -189,13 +189,13 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v4;
+      v21 = errorCopy;
       _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "Failing xpcRemoteObjectPromise with no pending invocations {error: %{public}@}", buf, 0xCu);
     }
   }
 
-  v13 = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
-  dispatch_assert_queue_V2(v13);
+  queue = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   pendingInvocations = self->_pendingInvocations;
   self->_pendingInvocations = 0;
@@ -203,13 +203,13 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v5 = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(IDSXPCConnectionRemoteObjectPromise *)self interface];
-  v7 = [v6 _respondsToRemoteSelector:a3];
+  interface = [(IDSXPCConnectionRemoteObjectPromise *)self interface];
+  v7 = [interface _respondsToRemoteSelector:selector];
 
   if (v7 == 2)
   {
@@ -223,57 +223,57 @@
 
   v9.receiver = self;
   v9.super_class = IDSXPCConnectionRemoteObjectPromise;
-  return [(IDSXPCConnectionRemoteObjectPromise *)&v9 respondsToSelector:a3];
+  return [(IDSXPCConnectionRemoteObjectPromise *)&v9 respondsToSelector:selector];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(IDSXPCConnectionRemoteObjectPromise *)self interface];
-  v7 = [v6 _methodSignatureForRemoteSelector:a3];
+  interface = [(IDSXPCConnectionRemoteObjectPromise *)self interface];
+  v7 = [interface _methodSignatureForRemoteSelector:selector];
 
   if (!v7)
   {
     v9.receiver = self;
     v9.super_class = IDSXPCConnectionRemoteObjectPromise;
-    v7 = [(IDSXPCConnectionRemoteObjectPromise *)&v9 methodSignatureForSelector:a3];
+    v7 = [(IDSXPCConnectionRemoteObjectPromise *)&v9 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v7 = a3;
-  v4 = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
-  dispatch_assert_queue_V2(v4);
+  invocationCopy = invocation;
+  queue = [(IDSXPCConnectionRemoteObjectPromise *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(IDSXPCConnectionRemoteObjectPromise *)self _assertVoidReturnValueInInvocation:v7];
-  v5 = [(IDSXPCConnectionRemoteObjectPromise *)self target];
+  [(IDSXPCConnectionRemoteObjectPromise *)self _assertVoidReturnValueInInvocation:invocationCopy];
+  target = [(IDSXPCConnectionRemoteObjectPromise *)self target];
 
-  if (v5)
+  if (target)
   {
-    v6 = [(IDSXPCConnectionRemoteObjectPromise *)self target];
-    [v7 invokeWithTarget:v6];
+    target2 = [(IDSXPCConnectionRemoteObjectPromise *)self target];
+    [invocationCopy invokeWithTarget:target2];
   }
 
   else
   {
-    [v7 retainArguments];
-    v6 = [(IDSXPCConnectionRemoteObjectPromise *)self pendingInvocations];
-    [v6 addObject:v7];
+    [invocationCopy retainArguments];
+    target2 = [(IDSXPCConnectionRemoteObjectPromise *)self pendingInvocations];
+    [target2 addObject:invocationCopy];
   }
 }
 
-- (void)_assertVoidReturnValueInInvocation:(id)a3
+- (void)_assertVoidReturnValueInInvocation:(id)invocation
 {
-  v5 = a3;
-  v3 = [v5 methodSignature];
-  if (strncmp([v3 methodReturnType], "v", objc_msgSend(v3, "methodReturnLength")))
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  if (strncmp([methodSignature methodReturnType], "v", objc_msgSend(methodSignature, "methodReturnLength")))
   {
-    v4 = NSStringFromSelector([v5 selector]);
+    v4 = NSStringFromSelector([invocationCopy selector]);
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"XPC methods must have void return values {selector: %@}", v4}];
   }
 }

@@ -1,17 +1,17 @@
 @interface VNBrightnessMeasure
-+ (BOOL)computeBrightnessScore:(float *)a3 onImage:(__CVBuffer *)a4 error:(id *)a5;
++ (BOOL)computeBrightnessScore:(float *)score onImage:(__CVBuffer *)image error:(id *)error;
 @end
 
 @implementation VNBrightnessMeasure
 
-+ (BOOL)computeBrightnessScore:(float *)a3 onImage:(__CVBuffer *)a4 error:(id *)a5
++ (BOOL)computeBrightnessScore:(float *)score onImage:(__CVBuffer *)image error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a4, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a4, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
+  CVPixelBufferLockBaseAddress(image, 1uLL);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(image, 0);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(image, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(image, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(image, 0);
   v10 = (WidthOfPlane >> 8);
   if (WidthOfPlane < 0x100)
   {
@@ -28,7 +28,7 @@
   v51 = v11;
   if (HeightOfPlane)
   {
-    v46 = a3;
+    scoreCopy = score;
     v49 = HeightOfPlane;
     v9 = 0uLL;
     v12 = 0.0;
@@ -123,7 +123,7 @@
 
     while ((v51 + v52) < v49);
     v38 = vcvt_f32_u32(*&v9);
-    a3 = v46;
+    score = scoreCopy;
   }
 
   else
@@ -135,8 +135,8 @@
   v39 = vdiv_f32(v38, vdup_lane_s32(*&v9, 0));
   __asm { FMOV            V1.2S, #1.0 }
 
-  *a3 = vaddv_f32(vsub_f32(_D1, v39)) * 0.5;
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+  *score = vaddv_f32(vsub_f32(_D1, v39)) * 0.5;
+  CVPixelBufferUnlockBaseAddress(image, 1uLL);
   return 1;
 }
 

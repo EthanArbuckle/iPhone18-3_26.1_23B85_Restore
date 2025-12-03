@@ -1,17 +1,17 @@
 @interface BCCardViewControllerScrollView
 - (BCCardViewControllerScrollViewAccessibilityDelegate)accessibilityDelegate;
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
 - (UIEdgeInsets)_accessibilityVisibleContentInset;
 - (UIScrollView)contentScrollView;
-- (void)accessibilityApplyScrollContent:(CGPoint)a3 sendScrollStatus:(BOOL)a4 animated:(BOOL)a5;
+- (void)accessibilityApplyScrollContent:(CGPoint)content sendScrollStatus:(BOOL)status animated:(BOOL)animated;
 @end
 
 @implementation BCCardViewControllerScrollView
 
 - (UIEdgeInsets)_accessibilityVisibleContentInset
 {
-  v3 = [(BCCardViewControllerScrollView *)self accessibilityDelegate];
-  [v3 accessibilityVisibleContentInsetForCardViewControllerScrollView:self];
+  accessibilityDelegate = [(BCCardViewControllerScrollView *)self accessibilityDelegate];
+  [accessibilityDelegate accessibilityVisibleContentInsetForCardViewControllerScrollView:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -28,20 +28,20 @@
   return result;
 }
 
-- (void)accessibilityApplyScrollContent:(CGPoint)a3 sendScrollStatus:(BOOL)a4 animated:(BOOL)a5
+- (void)accessibilityApplyScrollContent:(CGPoint)content sendScrollStatus:(BOOL)status animated:(BOOL)animated
 {
-  x = a3.x;
-  y = a3.y;
+  x = content.x;
+  y = content.y;
   v8 = fmaxf(y, 0.0);
-  v9 = [(BCCardViewControllerScrollView *)self accessibilityDelegate:a4];
+  v9 = [(BCCardViewControllerScrollView *)self accessibilityDelegate:status];
   [v9 cardViewControllerScrollView:self accessibilityWantsToScrollToOffset:{x, v8}];
 }
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
-  v5 = [(BCCardViewControllerScrollView *)self contentScrollView];
-  v6 = [v5 touchesShouldCancelInContentView:v4];
+  viewCopy = view;
+  contentScrollView = [(BCCardViewControllerScrollView *)self contentScrollView];
+  v6 = [contentScrollView touchesShouldCancelInContentView:viewCopy];
 
   if (v6)
   {
@@ -52,7 +52,7 @@
   {
     v9.receiver = self;
     v9.super_class = BCCardViewControllerScrollView;
-    v7 = [(BCCardViewControllerScrollView *)&v9 touchesShouldCancelInContentView:v4];
+    v7 = [(BCCardViewControllerScrollView *)&v9 touchesShouldCancelInContentView:viewCopy];
   }
 
   return v7;

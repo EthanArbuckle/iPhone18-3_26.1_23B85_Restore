@@ -1,21 +1,21 @@
 @interface CHDrawingSegmentGroup
 - (CGRect)bounds;
-- (CHDrawingSegmentGroup)initWithSegmentGroupIndex:(int64_t)a3 segments:(id)a4;
+- (CHDrawingSegmentGroup)initWithSegmentGroupIndex:(int64_t)index segments:(id)segments;
 @end
 
 @implementation CHDrawingSegmentGroup
 
-- (CHDrawingSegmentGroup)initWithSegmentGroupIndex:(int64_t)a3 segments:(id)a4
+- (CHDrawingSegmentGroup)initWithSegmentGroupIndex:(int64_t)index segments:(id)segments
 {
-  v7 = a4;
+  segmentsCopy = segments;
   v11.receiver = self;
   v11.super_class = CHDrawingSegmentGroup;
   v8 = [(CHDrawingSegmentGroup *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_segmentGroupIndex = a3;
-    objc_storeStrong(&v8->_segments, a4);
+    v8->_segmentGroupIndex = index;
+    objc_storeStrong(&v8->_segments, segments);
   }
 
   return v9;

@@ -1,32 +1,32 @@
 @interface MBRestoreOperationLogger
-- (MBRestoreOperationLogger)initWithPath:(id)a3;
+- (MBRestoreOperationLogger)initWithPath:(id)path;
 - (void)close;
 - (void)dealloc;
 - (void)flush;
-- (void)logCloneForRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6;
-- (void)logCreateDirectoryForRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5;
-- (void)logCreateZeroByteRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5;
-- (void)logFixUpDirectoryAttributesForRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5;
-- (void)logLinkForRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6;
-- (void)logMoveForRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6;
-- (void)logRenameForRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6;
-- (void)logSetClassForRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5 value:(int)a6;
-- (void)logSymlinkRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6;
-- (void)logUnlinkForRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5;
+- (void)logCloneForRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target;
+- (void)logCreateDirectoryForRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path;
+- (void)logCreateZeroByteRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path;
+- (void)logFixUpDirectoryAttributesForRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path;
+- (void)logLinkForRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target;
+- (void)logMoveForRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target;
+- (void)logRenameForRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target;
+- (void)logSetClassForRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path value:(int)value;
+- (void)logSymlinkRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target;
+- (void)logUnlinkForRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path;
 @end
 
 @implementation MBRestoreOperationLogger
 
-- (MBRestoreOperationLogger)initWithPath:(id)a3
+- (MBRestoreOperationLogger)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = MBRestoreOperationLogger;
   v6 = [(MBRestoreOperationLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     v7->_writeLock._os_unfair_lock_opaque = 0;
     v7->_file = 0;
   }
@@ -42,99 +42,99 @@
   [(MBRestoreOperationLogger *)&v3 dealloc];
 }
 
-- (void)logCloneForRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6
+- (void)logCloneForRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target
 {
-  v10 = a6;
-  v11 = a5;
-  v20 = [a3 domain];
-  v12 = [v20 name];
-  v19 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"clonefile|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, v12);
+  targetCopy = target;
+  sourceCopy = source;
+  domain = [restorable domain];
+  name = [domain name];
+  v19 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"clonefile|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, name);
 }
 
-- (void)logSymlinkRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6
+- (void)logSymlinkRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target
 {
-  v10 = a6;
-  v11 = a5;
-  v20 = [a3 domain];
-  v12 = [v20 name];
-  v19 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"symlink|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, v12);
+  targetCopy = target;
+  sourceCopy = source;
+  domain = [restorable domain];
+  name = [domain name];
+  v19 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"symlink|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, name);
 }
 
-- (void)logLinkForRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6
+- (void)logLinkForRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target
 {
-  v10 = a6;
-  v11 = a5;
-  v20 = [a3 domain];
-  v12 = [v20 name];
-  v19 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"link|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, v12);
+  targetCopy = target;
+  sourceCopy = source;
+  domain = [restorable domain];
+  name = [domain name];
+  v19 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"link|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, name);
 }
 
-- (void)logRenameForRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6
+- (void)logRenameForRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target
 {
-  v10 = a6;
-  v11 = a5;
-  v20 = [a3 domain];
-  v12 = [v20 name];
-  v19 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"rename|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, v12);
+  targetCopy = target;
+  sourceCopy = source;
+  domain = [restorable domain];
+  name = [domain name];
+  v19 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"rename|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, name);
 }
 
-- (void)logMoveForRestorable:(id)a3 state:(unint64_t)a4 source:(id)a5 target:(id)a6
+- (void)logMoveForRestorable:(id)restorable state:(unint64_t)state source:(id)source target:(id)target
 {
-  v10 = a6;
-  v11 = a5;
-  v20 = [a3 domain];
-  v12 = [v20 name];
-  v19 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"move|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, v12);
+  targetCopy = target;
+  sourceCopy = source;
+  domain = [restorable domain];
+  name = [domain name];
+  v19 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"move|%@|%@|%@|%@", v13, v14, v15, v16, v17, v18, name);
 }
 
-- (void)logSetClassForRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5 value:(int)a6
+- (void)logSetClassForRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path value:(int)value
 {
-  v9 = a5;
-  v18 = [a3 domain];
-  v10 = [v18 name];
-  v17 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"setclass|%@|%@|%d|%@", v11, v12, v13, v14, v15, v16, v10);
+  pathCopy = path;
+  domain = [restorable domain];
+  name = [domain name];
+  v17 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"setclass|%@|%@|%d|%@", v11, v12, v13, v14, v15, v16, name);
 }
 
-- (void)logCreateZeroByteRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5
+- (void)logCreateZeroByteRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path
 {
-  v8 = a5;
-  v17 = [a3 domain];
-  v9 = [v17 name];
-  v16 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"empty|%@|%@|%@", v10, v11, v12, v13, v14, v15, v9);
+  pathCopy = path;
+  domain = [restorable domain];
+  name = [domain name];
+  v16 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"empty|%@|%@|%@", v10, v11, v12, v13, v14, v15, name);
 }
 
-- (void)logUnlinkForRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5
+- (void)logUnlinkForRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path
 {
-  v8 = a5;
-  v17 = [a3 domain];
-  v9 = [v17 name];
-  v16 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"unlink|%@|%@|%@", v10, v11, v12, v13, v14, v15, v9);
+  pathCopy = path;
+  domain = [restorable domain];
+  name = [domain name];
+  v16 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"unlink|%@|%@|%@", v10, v11, v12, v13, v14, v15, name);
 }
 
-- (void)logCreateDirectoryForRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5
+- (void)logCreateDirectoryForRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path
 {
-  v8 = a5;
-  v17 = [a3 domain];
-  v9 = [v17 name];
-  v16 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"mkdir|%@|%@|%@", v10, v11, v12, v13, v14, v15, v9);
+  pathCopy = path;
+  domain = [restorable domain];
+  name = [domain name];
+  v16 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"mkdir|%@|%@|%@", v10, v11, v12, v13, v14, v15, name);
 }
 
-- (void)logFixUpDirectoryAttributesForRestorable:(id)a3 state:(unint64_t)a4 absolutePath:(id)a5
+- (void)logFixUpDirectoryAttributesForRestorable:(id)restorable state:(unint64_t)state absolutePath:(id)path
 {
-  v8 = a5;
-  v17 = [a3 domain];
-  v9 = [v17 name];
-  v16 = MBRestorableStateToString(a4);
-  sub_10021390C(self, @"futimes|%@|%@|%@", v10, v11, v12, v13, v14, v15, v9);
+  pathCopy = path;
+  domain = [restorable domain];
+  name = [domain name];
+  v16 = MBRestorableStateToString(state);
+  sub_10021390C(self, @"futimes|%@|%@|%@", v10, v11, v12, v13, v14, v15, name);
 }
 
 - (void)flush

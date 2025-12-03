@@ -1,8 +1,8 @@
 @interface AVHapticProcessTaskToken
-- (AVHapticProcessTaskToken)initWithCoder:(id)a3;
-- (AVHapticProcessTaskToken)initWithXPCDictionary:(id)a3;
+- (AVHapticProcessTaskToken)initWithCoder:(id)coder;
+- (AVHapticProcessTaskToken)initWithXPCDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVHapticProcessTaskToken
@@ -17,9 +17,9 @@
   [(AVHapticProcessTaskToken *)&v4 dealloc];
 }
 
-- (AVHapticProcessTaskToken)initWithCoder:(id)a3
+- (AVHapticProcessTaskToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -31,21 +31,21 @@
     [v5 raise:*MEMORY[0x1E695D940] format:{@"An %@ can only be decoded with an instance of NSXPCCoder; attempting to decode with %@", v7, v9}];
   }
 
-  v10 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"XPC_ProcessTaskToken"];
+  v10 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"XPC_ProcessTaskToken"];
   v11 = [(AVHapticProcessTaskToken *)self initWithXPCDictionary:v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if (self)
     {
-      [v9 encodeXPCObject:self->_taskTokenDictionary forKey:@"XPC_ProcessTaskToken"];
+      [coderCopy encodeXPCObject:self->_taskTokenDictionary forKey:@"XPC_ProcessTaskToken"];
     }
   }
 
@@ -60,16 +60,16 @@
   }
 }
 
-- (AVHapticProcessTaskToken)initWithXPCDictionary:(id)a3
+- (AVHapticProcessTaskToken)initWithXPCDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AVHapticProcessTaskToken;
   v6 = [(AVHapticProcessTaskToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_taskTokenDictionary, a3);
+    objc_storeStrong(&v6->_taskTokenDictionary, dictionary);
   }
 
   return v7;

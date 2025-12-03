@@ -1,12 +1,12 @@
 @interface BridgeSleepScoreLevelListController
-- (_TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController)initWithCoder:(id)a3;
-- (_TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController)initWithCoder:(id)coder;
+- (_TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (id)subtitleValue:(id)a3;
+- (id)subtitleValue:(id)value;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -22,7 +22,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_E140();
 }
 
@@ -36,7 +36,7 @@
   if (*&self->PSListController_opaque[OBJC_IVAR____TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController_sleepHealthNotificationSettingsProvider])
   {
     (*(v4 + 104))(v7, enum case for SleepHealthNotificationSettingsProvider.ObservableKey.sleepScoreNotificationLevels(_:), v3);
-    v8 = self;
+    selfCopy = self;
 
     sub_1159C();
 
@@ -45,7 +45,7 @@
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
   }
 
   v10 = type metadata accessor for BridgeSleepScoreLevelListController();
@@ -64,7 +64,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_E974();
 
   v4.super.isa = sub_1176C().super.isa;
@@ -72,7 +72,7 @@
   return v4.super.isa;
 }
 
-- (id)subtitleValue:(id)a3
+- (id)subtitleValue:(id)value
 {
   sub_117CC();
   sub_117BC();
@@ -83,9 +83,9 @@
   }
 
   v5 = PSValueKey;
-  v6 = a3;
-  v7 = self;
-  result = [v6 propertyForKey:v5];
+  valueCopy = value;
+  selfCopy = self;
+  result = [valueCopy propertyForKey:v5];
   if (result)
   {
     sub_1186C();
@@ -106,7 +106,7 @@
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1148C();
   v7 = *(v6 - 8);
@@ -122,14 +122,14 @@
   }
 
   sub_1146C();
-  v11 = a3;
-  v12 = self;
-  sub_F2B0(v11, v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_F2B0(viewCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_1148C();
   v9 = *(v8 - 8);
@@ -145,15 +145,15 @@
   }
 
   sub_1146C();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_10CEC(v14);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_10CEC(cellCopy);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (_TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_117CC();
   sub_117BC();
@@ -163,10 +163,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_116EC();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -174,13 +174,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_FC6C(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_FC6C(v6, name, bundle);
 
   return v9;
 }
 
-- (_TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController)initWithCoder:(id)a3
+- (_TtC25NanoBedtimeBridgeSettings35BridgeSleepScoreLevelListController)initWithCoder:(id)coder
 {
   sub_117CC();
   sub_117BC();
@@ -190,27 +190,27 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_FDEC(a3);
+  v4 = sub_FDEC(coder);
 
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v10 = sub_116EC();
     v12 = v11;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v18, 0, sizeof(v18));
-    v16 = a5;
-    v17 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_4;
     }
@@ -222,18 +222,18 @@ LABEL_7:
 
   v10 = 0;
   v12 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_1186C();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_7;
   }
@@ -244,7 +244,7 @@ LABEL_4:
   v15 = sub_1167C();
 
 LABEL_8:
-  sub_FF4C(v10, v12, v18, v15, a6);
+  sub_FF4C(v10, v12, v18, v15, context);
 
   sub_104BC(v18);
 }

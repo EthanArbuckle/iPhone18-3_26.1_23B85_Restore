@@ -1,5 +1,5 @@
 @interface NowPlayingLyricsCell
-- (_TtC12NowPlayingUI20NowPlayingLyricsCell)initWithFrame:(CGRect)a3;
+- (_TtC12NowPlayingUI20NowPlayingLyricsCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_A36B4();
 }
 
-- (_TtC12NowPlayingUI20NowPlayingLyricsCell)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI20NowPlayingLyricsCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI20NowPlayingLyricsCell_isBottomHairlineVisible) = 1;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI20NowPlayingLyricsCell_bottomHairlineView) = 0;

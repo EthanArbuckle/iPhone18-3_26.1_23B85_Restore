@@ -1,19 +1,19 @@
 @interface NFCCSettingsView
-- (NFCCSettingsView)initWithFrame:(CGRect)a3;
+- (NFCCSettingsView)initWithFrame:(CGRect)frame;
 - (void)_contentSizeCategoryDidChange;
 - (void)_setUp;
 - (void)didMoveToWindow;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateOrientationIfNeeded;
 @end
 
 @implementation NFCCSettingsView
 
-- (NFCCSettingsView)initWithFrame:(CGRect)a3
+- (NFCCSettingsView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NFCCSettingsView;
-  v3 = [(NFCCSettingsView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NFCCSettingsView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,68 +47,68 @@
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_contentView addSubview:self->_titleLabel];
-  v12 = [[NFCCPillButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[NFCCPillButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   turnOnNFCButton = self->_turnOnNFCButton;
-  self->_turnOnNFCButton = v12;
+  self->_turnOnNFCButton = height;
 
   v14 = _BCSLocalizedString();
-  v15 = [(NFCCPillButton *)self->_turnOnNFCButton titleLabel];
-  [v15 setText:v14];
+  titleLabel = [(NFCCPillButton *)self->_turnOnNFCButton titleLabel];
+  [titleLabel setText:v14];
 
   [(NFCCPillButton *)self->_turnOnNFCButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_contentView addSubview:self->_turnOnNFCButton];
   [(NFCCSettingsView *)self _contentSizeCategoryDidChange];
-  v55 = [(UIView *)self->_contentView leadingAnchor];
-  v54 = [(NFCCSettingsView *)self leadingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54 constant:16.0];
+  leadingAnchor = [(UIView *)self->_contentView leadingAnchor];
+  leadingAnchor2 = [(NFCCSettingsView *)self leadingAnchor];
+  v53 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v56[0] = v53;
-  v52 = [(UIView *)self->_contentView topAnchor];
-  v51 = [(NFCCSettingsView *)self topAnchor];
-  v50 = [v52 constraintGreaterThanOrEqualToAnchor:v51 constant:16.0];
+  topAnchor = [(UIView *)self->_contentView topAnchor];
+  topAnchor2 = [(NFCCSettingsView *)self topAnchor];
+  v50 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:16.0];
   v56[1] = v50;
-  v49 = [(NFCCSettingsView *)self trailingAnchor];
-  v48 = [(UIView *)self->_contentView trailingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48 constant:16.0];
+  trailingAnchor = [(NFCCSettingsView *)self trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_contentView trailingAnchor];
+  v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:16.0];
   v56[2] = v47;
-  v46 = [(NFCCSettingsView *)self bottomAnchor];
-  v45 = [(UIView *)self->_contentView bottomAnchor];
-  v44 = [v46 constraintGreaterThanOrEqualToAnchor:v45 constant:16.0];
+  bottomAnchor = [(NFCCSettingsView *)self bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_contentView bottomAnchor];
+  v44 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:16.0];
   v56[3] = v44;
-  v43 = [(UIView *)self->_contentView centerYAnchor];
-  v42 = [(NFCCSettingsView *)self centerYAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  centerYAnchor = [(UIView *)self->_contentView centerYAnchor];
+  centerYAnchor2 = [(NFCCSettingsView *)self centerYAnchor];
+  v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v56[4] = v41;
-  v40 = [(UILabel *)self->_titleLabel topAnchor];
-  v39 = [(UIView *)self->_contentView topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor4 = [(UIView *)self->_contentView topAnchor];
+  v38 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v56[5] = v38;
-  v37 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v36 = [(UIView *)self->_contentView leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_contentView leadingAnchor];
+  v35 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v56[6] = v35;
-  v34 = [(UIView *)self->_contentView trailingAnchor];
-  v33 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  trailingAnchor3 = [(UIView *)self->_contentView trailingAnchor];
+  trailingAnchor4 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v32 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v56[7] = v32;
-  v31 = [(NFCCPillButton *)self->_turnOnNFCButton centerXAnchor];
-  v30 = [(UIView *)self->_contentView centerXAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  centerXAnchor = [(NFCCPillButton *)self->_turnOnNFCButton centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+  v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v56[8] = v29;
-  v28 = [(NFCCPillButton *)self->_turnOnNFCButton leadingAnchor];
-  v27 = [(UIView *)self->_contentView leadingAnchor];
-  v26 = [v28 constraintGreaterThanOrEqualToAnchor:v27];
+  leadingAnchor5 = [(NFCCPillButton *)self->_turnOnNFCButton leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_contentView leadingAnchor];
+  v26 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6];
   v56[9] = v26;
-  v25 = [(NFCCPillButton *)self->_turnOnNFCButton topAnchor];
-  v16 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-  v17 = [v25 constraintEqualToAnchor:v16 constant:24.0];
+  topAnchor5 = [(NFCCPillButton *)self->_turnOnNFCButton topAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  v17 = [topAnchor5 constraintEqualToAnchor:lastBaselineAnchor constant:24.0];
   v56[10] = v17;
-  v18 = [(UIView *)self->_contentView trailingAnchor];
-  v19 = [(NFCCPillButton *)self->_turnOnNFCButton trailingAnchor];
-  v20 = [v18 constraintGreaterThanOrEqualToAnchor:v19];
+  trailingAnchor5 = [(UIView *)self->_contentView trailingAnchor];
+  trailingAnchor6 = [(NFCCPillButton *)self->_turnOnNFCButton trailingAnchor];
+  v20 = [trailingAnchor5 constraintGreaterThanOrEqualToAnchor:trailingAnchor6];
   v56[11] = v20;
-  v21 = [(UIView *)self->_contentView bottomAnchor];
-  v22 = [(NFCCPillButton *)self->_turnOnNFCButton bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  bottomAnchor3 = [(UIView *)self->_contentView bottomAnchor];
+  bottomAnchor4 = [(NFCCPillButton *)self->_turnOnNFCButton bottomAnchor];
+  v23 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v56[12] = v23;
   v24 = [NSArray arrayWithObjects:v56 count:13];
   [NSLayoutConstraint activateConstraints:v24];
@@ -119,9 +119,9 @@
   v6.receiver = self;
   v6.super_class = NFCCSettingsView;
   [(NFCCSettingsView *)&v6 didMoveToWindow];
-  v3 = [(NFCCSettingsView *)self window];
+  window = [(NFCCSettingsView *)self window];
 
-  if (v3)
+  if (window)
   {
     v4 = [(NFCCSettingsView *)self visualStylingProviderForCategory:1];
     visualStylingProvider = self->_visualStylingProvider;
@@ -134,17 +134,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = NFCCSettingsView;
-  v4 = a3;
-  [(NFCCSettingsView *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(NFCCSettingsView *)&v9 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(NFCCSettingsView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 isEqualToString:v7];
+  traitCollection = [(NFCCSettingsView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v8 & 1) == 0)
   {
@@ -167,12 +167,12 @@
 
 - (void)_contentSizeCategoryDidChange
 {
-  v3 = [(NFCCSettingsView *)self traitCollection];
-  v8 = [v3 preferredContentSizeCategory];
+  traitCollection = [(NFCCSettingsView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v4 = [UIApp activeInterfaceOrientation];
-  self->_interfaceOrientation = v4;
-  if (sub_5758(v8, v4))
+  activeInterfaceOrientation = [UIApp activeInterfaceOrientation];
+  self->_interfaceOrientation = activeInterfaceOrientation;
+  if (sub_5758(preferredContentSizeCategory, activeInterfaceOrientation))
   {
     v5 = UIContentSizeCategoryAccessibilityLarge;
 
@@ -181,7 +181,7 @@
 
   else
   {
-    v6 = v8;
+    v6 = preferredContentSizeCategory;
   }
 
   v9 = v6;

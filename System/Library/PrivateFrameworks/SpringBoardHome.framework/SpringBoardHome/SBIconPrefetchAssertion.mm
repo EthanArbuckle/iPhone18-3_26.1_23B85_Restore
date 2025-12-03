@@ -1,20 +1,20 @@
 @interface SBIconPrefetchAssertion
-- (BOOL)consumeContentLayerIfMatchesImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5 consumptionHandler:(id)a6;
-- (BOOL)matchesImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5;
-- (BOOL)takeIconLayerFromPrefetchAssertionIfDesired:(id)a3;
-- (BOOL)takeIconLayerIfDesired:(id)a3;
-- (BOOL)wantsReusedContentLayerWithImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5 imageGeneration:(unint64_t)a6;
+- (BOOL)consumeContentLayerIfMatchesImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options consumptionHandler:(id)handler;
+- (BOOL)matchesImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options;
+- (BOOL)takeIconLayerFromPrefetchAssertionIfDesired:(id)desired;
+- (BOOL)takeIconLayerIfDesired:(id)desired;
+- (BOOL)wantsReusedContentLayerWithImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options imageGeneration:(unint64_t)generation;
 - (NSString)description;
 - (SBIcon)icon;
-- (SBIconPrefetchAssertion)initWithIcon:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 imageAppearance:(id)a5 priority:(int64_t)a6 imageOptions:(unint64_t)a7 reason:(id)a8 prefetchBehavior:(int64_t)a9;
-- (unint64_t)priorityForProvidingContentLayerIfMatchesImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5;
-- (void)addObserver:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (SBIconPrefetchAssertion)initWithIcon:(id)icon iconImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance priority:(int64_t)priority imageOptions:(unint64_t)options reason:(id)reason prefetchBehavior:(int64_t)behavior;
+- (unint64_t)priorityForProvidingContentLayerIfMatchesImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options;
+- (void)addObserver:(id)observer;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)cancelDelayTimer;
 - (void)clearContentLayer;
 - (void)dealloc;
 - (void)handleConsumedContentLayer;
-- (void)handleRegeneratedContentLayer:(id)a3 imageGeneration:(unint64_t)a4 traitCollection:(id)a5;
+- (void)handleRegeneratedContentLayer:(id)layer imageGeneration:(unint64_t)generation traitCollection:(id)collection;
 - (void)invalidate;
 - (void)regenerateContentLayer;
 - (void)startDelayTimerIfAppropriate;
@@ -34,8 +34,8 @@
   if (![(SBIconPrefetchAssertion *)self isInvalidated])
   {
     [(SBIconPrefetchAssertion *)self setInvalidated:1];
-    v3 = [(SBIconPrefetchAssertion *)self icon];
-    [v3 prefetchAssertionDidInvalidate:self];
+    icon = [(SBIconPrefetchAssertion *)self icon];
+    [icon prefetchAssertionDidInvalidate:self];
     [(SBIconPrefetchAssertion *)self clearContentLayer];
     [(SBIconPrefetchAssertion *)self cancelDelayTimer];
   }
@@ -54,39 +54,39 @@
   [(SBIconPrefetchAssertion *)&v3 dealloc];
 }
 
-- (SBIconPrefetchAssertion)initWithIcon:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 imageAppearance:(id)a5 priority:(int64_t)a6 imageOptions:(unint64_t)a7 reason:(id)a8 prefetchBehavior:(int64_t)a9
+- (SBIconPrefetchAssertion)initWithIcon:(id)icon iconImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance priority:(int64_t)priority imageOptions:(unint64_t)options reason:(id)reason prefetchBehavior:(int64_t)behavior
 {
-  v15 = a6;
+  priorityCopy = priority;
   v18 = v12;
   v19 = v11;
   v20 = v10;
   v21 = v9;
-  v23 = a3;
-  v24 = a4;
-  v25 = a7;
+  iconCopy = icon;
+  infoCopy = info;
+  optionsCopy = options;
   v33.receiver = self;
   v33.super_class = SBIconPrefetchAssertion;
   v26 = [(SBIconPrefetchAssertion *)&v33 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeWeak(&v26->_icon, v23);
+    objc_storeWeak(&v26->_icon, iconCopy);
     v27->_iconImageInfo.size.width = v21;
     v27->_iconImageInfo.size.height = v20;
     v27->_iconImageInfo.scale = v19;
     v27->_iconImageInfo.continuousCornerRadius = v18;
-    v28 = [(SBIconImageInfo *)v24 copy];
+    v28 = [(SBIconImageInfo *)infoCopy copy];
     iconImageAppearance = v27->_iconImageAppearance;
     v27->_iconImageAppearance = v28;
 
-    v27->_priority = a5;
-    v27->_imageOptions = v15 & 0x11;
-    v30 = [v25 copy];
+    v27->_priority = appearance;
+    v27->_imageOptions = priorityCopy & 0x11;
+    v30 = [optionsCopy copy];
     reason = v27->_reason;
     v27->_reason = v30;
 
-    v27->_prefetchBehavior = a8;
-    if ([SBIconPrefetchAssertion wantsInitialIconLayerForBehavior:a8])
+    v27->_prefetchBehavior = reason;
+    if ([SBIconPrefetchAssertion wantsInitialIconLayerForBehavior:reason])
     {
       [(SBIconPrefetchAssertion *)v27 regenerateContentLayer];
     }
@@ -100,23 +100,23 @@
   return v27;
 }
 
-- (BOOL)matchesImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5
+- (BOOL)matchesImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options
 {
-  v9 = a4;
+  appearanceCopy = appearance;
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
+  infoCopy = info;
   [(SBIconPrefetchAssertion *)self iconImageInfo];
   if (v19 == v13 && v16 == v12 && v17 == v11 && v18 == v10)
   {
-    v24 = [(SBIconPrefetchAssertion *)self iconImageAppearance];
+    iconImageAppearance = [(SBIconPrefetchAssertion *)self iconImageAppearance];
     if (BSEqualObjects())
     {
-      v25 = [(SBIconPrefetchAssertion *)self icon];
-      v26 = [v25 imageGeneration];
-      v23 = [(SBIconPrefetchAssertion *)self contentGeneration]<= v26 && [(SBIconPrefetchAssertion *)self imageOptions]== (v9 & 0x11);
+      icon = [(SBIconPrefetchAssertion *)self icon];
+      imageGeneration = [icon imageGeneration];
+      v23 = [(SBIconPrefetchAssertion *)self contentGeneration]<= imageGeneration && [(SBIconPrefetchAssertion *)self imageOptions]== (appearanceCopy & 0x11);
     }
 
     else
@@ -133,19 +133,19 @@
   return v23;
 }
 
-- (unint64_t)priorityForProvidingContentLayerIfMatchesImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5
+- (unint64_t)priorityForProvidingContentLayerIfMatchesImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options
 {
-  if (![(SBIconPrefetchAssertion *)self matchesImageInfo:a3 imageAppearance:a4 imageOptions:a5])
+  if (![(SBIconPrefetchAssertion *)self matchesImageInfo:info imageAppearance:appearance imageOptions:options])
   {
     return 0;
   }
 
-  v6 = [(SBIconPrefetchAssertion *)self state];
-  if (!v6)
+  state = [(SBIconPrefetchAssertion *)self state];
+  if (!state)
   {
-    v8 = [(SBIconPrefetchAssertion *)self postRegenerationConsumptionHandler];
+    postRegenerationConsumptionHandler = [(SBIconPrefetchAssertion *)self postRegenerationConsumptionHandler];
 
-    if (!v8)
+    if (!postRegenerationConsumptionHandler)
     {
       v9 = mach_continuous_time();
       return v9 - [(SBIconPrefetchAssertion *)self regenerationStartTime];
@@ -154,7 +154,7 @@
     return 0;
   }
 
-  if (v6 == 1)
+  if (state == 1)
   {
     return -1;
   }
@@ -165,22 +165,22 @@
   }
 }
 
-- (BOOL)consumeContentLayerIfMatchesImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5 consumptionHandler:(id)a6
+- (BOOL)consumeContentLayerIfMatchesImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options consumptionHandler:(id)handler
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v17 = a5;
-  if (![(SBIconPrefetchAssertion *)self matchesImageInfo:a3 imageAppearance:a4 imageOptions:v15, v14, v13, v12])
+  optionsCopy = options;
+  if (![(SBIconPrefetchAssertion *)self matchesImageInfo:info imageAppearance:appearance imageOptions:v15, v14, v13, v12])
   {
     goto LABEL_10;
   }
 
   if ([(SBIconPrefetchAssertion *)self state])
   {
-    v18 = [(SBIconPrefetchAssertion *)self contentLayer];
-    v19 = [(SBIconPrefetchAssertion *)self contentGeneration];
+    contentLayer = [(SBIconPrefetchAssertion *)self contentLayer];
+    contentGeneration = [(SBIconPrefetchAssertion *)self contentGeneration];
     v20 = SBLogIcon();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -188,24 +188,24 @@
     }
 
     [(SBIconPrefetchAssertion *)self handleConsumedContentLayer];
-    if (v17)
+    if (optionsCopy)
     {
-      v17[2](v17, v18, v19);
+      optionsCopy[2](optionsCopy, contentLayer, contentGeneration);
     }
 
     goto LABEL_8;
   }
 
-  v22 = [(SBIconPrefetchAssertion *)self postRegenerationConsumptionHandler];
+  postRegenerationConsumptionHandler = [(SBIconPrefetchAssertion *)self postRegenerationConsumptionHandler];
 
-  if (v22)
+  if (postRegenerationConsumptionHandler)
   {
 LABEL_10:
     v21 = 0;
     goto LABEL_11;
   }
 
-  [(SBIconPrefetchAssertion *)self setPostRegenerationConsumptionHandler:v17];
+  [(SBIconPrefetchAssertion *)self setPostRegenerationConsumptionHandler:optionsCopy];
 LABEL_8:
   v21 = 1;
 LABEL_11:
@@ -215,13 +215,13 @@ LABEL_11:
 
 - (void)handleConsumedContentLayer
 {
-  v3 = [(SBIconPrefetchAssertion *)self prefetchBehavior];
-  if ((v3 - 1) < 2)
+  prefetchBehavior = [(SBIconPrefetchAssertion *)self prefetchBehavior];
+  if ((prefetchBehavior - 1) < 2)
   {
     goto LABEL_4;
   }
 
-  if ((v3 - 3) < 2)
+  if ((prefetchBehavior - 3) < 2)
   {
     [(SBIconPrefetchAssertion *)self invalidate];
 LABEL_4:
@@ -234,7 +234,7 @@ LABEL_6:
     return;
   }
 
-  if (v3)
+  if (prefetchBehavior)
   {
     v4 = 0;
     goto LABEL_5;
@@ -258,19 +258,19 @@ LABEL_6:
 
 - (void)regenerateContentLayer
 {
-  v3 = [(SBIconPrefetchAssertion *)self icon];
+  icon = [(SBIconPrefetchAssertion *)self icon];
   if ([objc_opt_class() allowsPrefetch])
   {
     [(SBIconPrefetchAssertion *)self setState:0];
-    v4 = [(SBIconPrefetchAssertion *)self iconImageAppearance];
-    v5 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:v4];
+    iconImageAppearance = [(SBIconPrefetchAssertion *)self iconImageAppearance];
+    v5 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:iconImageAppearance];
     [(SBIconPrefetchAssertion *)self iconImageInfo];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SBIconPrefetchAssertion *)self priority];
-    v15 = [(SBIconPrefetchAssertion *)self imageOptions];
+    priority = [(SBIconPrefetchAssertion *)self priority];
+    imageOptions = [(SBIconPrefetchAssertion *)self imageOptions];
     [(SBIconPrefetchAssertion *)self setRegenerationStartTime:mach_continuous_time()];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -279,7 +279,7 @@ LABEL_6:
     v17[4] = self;
     v18 = v5;
     v16 = v5;
-    [v3 loadRealIconContentLayerWithInfo:v16 traitCollection:v15 | 8 options:v14 priority:v17 completionHandler:{v7, v9, v11, v13}];
+    [icon loadRealIconContentLayerWithInfo:v16 traitCollection:imageOptions | 8 options:priority priority:v17 completionHandler:{v7, v9, v11, v13}];
   }
 
   else
@@ -296,23 +296,23 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
   [*(a1 + 32) handleRegeneratedContentLayer:v6 imageGeneration:a3 traitCollection:*(a1 + 40)];
 }
 
-- (void)handleRegeneratedContentLayer:(id)a3 imageGeneration:(unint64_t)a4 traitCollection:(id)a5
+- (void)handleRegeneratedContentLayer:(id)layer imageGeneration:(unint64_t)generation traitCollection:(id)collection
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(SBIconPrefetchAssertion *)self postRegenerationConsumptionHandler];
-  if (v8)
+  layerCopy = layer;
+  postRegenerationConsumptionHandler = [(SBIconPrefetchAssertion *)self postRegenerationConsumptionHandler];
+  if (postRegenerationConsumptionHandler)
   {
     [(SBIconPrefetchAssertion *)self setPostRegenerationConsumptionHandler:0];
-    (v8)[2](v8, v7, a4);
+    (postRegenerationConsumptionHandler)[2](postRegenerationConsumptionHandler, layerCopy, generation);
     [(SBIconPrefetchAssertion *)self handleConsumedContentLayer];
   }
 
   else if ([(SBIconPrefetchAssertion *)self state]!= 1)
   {
-    [(SBIconPrefetchAssertion *)self setContentLayer:v7];
-    [(SBIconPrefetchAssertion *)self setContentGeneration:a4];
-    if (v7)
+    [(SBIconPrefetchAssertion *)self setContentLayer:layerCopy];
+    [(SBIconPrefetchAssertion *)self setContentGeneration:generation];
+    if (layerCopy)
     {
       v9 = 1;
     }
@@ -327,8 +327,8 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(NSHashTable *)self->_observers allObjects];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v11 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -339,7 +339,7 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           v15 = *(*(&v16 + 1) + 8 * i);
@@ -349,7 +349,7 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -357,44 +357,44 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
   }
 }
 
-- (BOOL)wantsReusedContentLayerWithImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5 imageGeneration:(unint64_t)a6
+- (BOOL)wantsReusedContentLayerWithImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options imageGeneration:(unint64_t)generation
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v17 = a3;
-  v18 = [(SBIconPrefetchAssertion *)self wantsReusedIconLayers]&& ([(SBIconPrefetchAssertion *)self state]& 0xFFFFFFFFFFFFFFFDLL) == 0 && [(SBIconPrefetchAssertion *)self matchesImageInfo:v17 imageAppearance:a4 imageOptions:v15, v14, v13, v12]&& [(SBIconPrefetchAssertion *)self contentGeneration]<= a5;
+  infoCopy = info;
+  v18 = [(SBIconPrefetchAssertion *)self wantsReusedIconLayers]&& ([(SBIconPrefetchAssertion *)self state]& 0xFFFFFFFFFFFFFFFDLL) == 0 && [(SBIconPrefetchAssertion *)self matchesImageInfo:infoCopy imageAppearance:appearance imageOptions:v15, v14, v13, v12]&& [(SBIconPrefetchAssertion *)self contentGeneration]<= options;
 
   return v18;
 }
 
-- (BOOL)takeIconLayerIfDesired:(id)a3
+- (BOOL)takeIconLayerIfDesired:(id)desired
 {
-  v4 = a3;
-  if ([v4 iconContentType] == 2)
+  desiredCopy = desired;
+  if ([desiredCopy iconContentType] == 2)
   {
-    v5 = [v4 iconIdentifier];
-    v6 = [(SBIconPrefetchAssertion *)self icon];
-    v7 = [v4 iconImageAppearance];
-    [v4 iconImageInfo];
+    iconIdentifier = [desiredCopy iconIdentifier];
+    icon = [(SBIconPrefetchAssertion *)self icon];
+    iconImageAppearance = [desiredCopy iconImageAppearance];
+    [desiredCopy iconImageInfo];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v4 iconImageOptions];
-    v17 = [v4 iconContentGeneration];
-    if ([(SBIconPrefetchAssertion *)self wantsReusedContentLayerWithImageInfo:v7 imageAppearance:v16 imageOptions:v17 imageGeneration:v9, v11, v13, v15])
+    iconImageOptions = [desiredCopy iconImageOptions];
+    iconContentGeneration = [desiredCopy iconContentGeneration];
+    if ([(SBIconPrefetchAssertion *)self wantsReusedContentLayerWithImageInfo:iconImageAppearance imageAppearance:iconImageOptions imageOptions:iconContentGeneration imageGeneration:v9, v11, v13, v15])
     {
-      v18 = [v4 iconContentLayer];
-      v19 = v18 != 0;
-      if (v18)
+      iconContentLayer = [desiredCopy iconContentLayer];
+      v19 = iconContentLayer != 0;
+      if (iconContentLayer)
       {
-        [v4 setIconContentLayer:0 generation:0 type:0 animated:0];
+        [desiredCopy setIconContentLayer:0 generation:0 type:0 animated:0];
         if ([(SBIconPrefetchAssertion *)self state]|| ([(SBIconPrefetchAssertion *)self postRegenerationConsumptionHandler], (v21 = objc_claimAutoreleasedReturnValue()) == 0))
         {
-          [(SBIconPrefetchAssertion *)self setContentLayer:v18];
-          [(SBIconPrefetchAssertion *)self setContentGeneration:v17];
+          [(SBIconPrefetchAssertion *)self setContentLayer:iconContentLayer];
+          [(SBIconPrefetchAssertion *)self setContentGeneration:iconContentGeneration];
           [(SBIconPrefetchAssertion *)self setState:1];
           [(SBIconPrefetchAssertion *)self startDelayTimerIfAppropriate];
           v20 = SBLogIcon();
@@ -408,7 +408,7 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
         {
           v22 = v21;
           [(SBIconPrefetchAssertion *)self setPostRegenerationConsumptionHandler:0];
-          (v22)[2](v22, v18, v17);
+          (v22)[2](v22, iconContentLayer, iconContentGeneration);
         }
       }
     }
@@ -427,28 +427,28 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
   return v19;
 }
 
-- (BOOL)takeIconLayerFromPrefetchAssertionIfDesired:(id)a3
+- (BOOL)takeIconLayerFromPrefetchAssertionIfDesired:(id)desired
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  desiredCopy = desired;
+  if ([desiredCopy state] == 1)
   {
-    v5 = [v4 iconImageAppearance];
-    [v4 iconImageInfo];
+    iconImageAppearance = [desiredCopy iconImageAppearance];
+    [desiredCopy iconImageInfo];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v4 imageOptions];
-    v15 = [v4 contentGeneration];
-    v16 = [(SBIconPrefetchAssertion *)self wantsReusedContentLayerWithImageInfo:v5 imageAppearance:v14 imageOptions:v15 imageGeneration:v7, v9, v11, v13];
+    imageOptions = [desiredCopy imageOptions];
+    contentGeneration = [desiredCopy contentGeneration];
+    v16 = [(SBIconPrefetchAssertion *)self wantsReusedContentLayerWithImageInfo:iconImageAppearance imageAppearance:imageOptions imageOptions:contentGeneration imageGeneration:v7, v9, v11, v13];
     if (v16)
     {
-      v17 = [v4 contentLayer];
-      [v4 clearContentLayer];
+      contentLayer = [desiredCopy contentLayer];
+      [desiredCopy clearContentLayer];
       if ([(SBIconPrefetchAssertion *)self state]|| ([(SBIconPrefetchAssertion *)self postRegenerationConsumptionHandler], (v19 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        [(SBIconPrefetchAssertion *)self setContentLayer:v17];
-        [(SBIconPrefetchAssertion *)self setContentGeneration:v15];
+        [(SBIconPrefetchAssertion *)self setContentLayer:contentLayer];
+        [(SBIconPrefetchAssertion *)self setContentGeneration:contentGeneration];
         [(SBIconPrefetchAssertion *)self setState:1];
         [(SBIconPrefetchAssertion *)self startDelayTimerIfAppropriate];
         v18 = SBLogIcon();
@@ -462,7 +462,7 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
       {
         v20 = v19;
         [(SBIconPrefetchAssertion *)self setPostRegenerationConsumptionHandler:0];
-        (v20)[2](v20, v17, v15);
+        (v20)[2](v20, contentLayer, contentGeneration);
       }
     }
   }
@@ -483,22 +483,22 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
   [(SBIconPrefetchAssertion *)self setState:2];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (void)startDelayTimerIfAppropriate
@@ -513,8 +513,8 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
 
 - (void)cancelDelayTimer
 {
-  v3 = [(SBIconPrefetchAssertion *)self delayTimer];
-  [v3 invalidate];
+  delayTimer = [(SBIconPrefetchAssertion *)self delayTimer];
+  [delayTimer invalidate];
   [(SBIconPrefetchAssertion *)self setDelayTimer:0];
 }
 
@@ -527,49 +527,49 @@ void __49__SBIconPrefetchAssertion_regenerateContentLayer__block_invoke(uint64_t
   return v4;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v16 = a3;
-  v4 = [(SBIconPrefetchAssertion *)self state];
-  if (v4 > 2)
+  formatterCopy = formatter;
+  state = [(SBIconPrefetchAssertion *)self state];
+  if (state > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E8090FF0[v4];
+    v5 = off_1E8090FF0[state];
   }
 
-  [v16 appendString:v5 withName:@"state"];
-  v6 = [(SBIconPrefetchAssertion *)self icon];
-  v7 = [v16 appendObject:v6 withName:@"icon"];
+  [formatterCopy appendString:v5 withName:@"state"];
+  icon = [(SBIconPrefetchAssertion *)self icon];
+  v7 = [formatterCopy appendObject:icon withName:@"icon"];
 
-  v8 = [(SBIconPrefetchAssertion *)self iconImageAppearance];
-  v9 = [v16 appendObject:v8 withName:@"imageAppearance"];
+  iconImageAppearance = [(SBIconPrefetchAssertion *)self iconImageAppearance];
+  v9 = [formatterCopy appendObject:iconImageAppearance withName:@"imageAppearance"];
 
   v10 = SBHStringForIconImageOptions([(SBIconPrefetchAssertion *)self imageOptions]);
-  [v16 appendString:v10 withName:@"imageOptions"];
+  [formatterCopy appendString:v10 withName:@"imageOptions"];
 
   v11 = SBHStringForIconImageLoadPriority([(SBIconPrefetchAssertion *)self priority]);
-  [v16 appendString:v11 withName:@"priority"];
+  [formatterCopy appendString:v11 withName:@"priority"];
 
-  v12 = [(SBIconPrefetchAssertion *)self reason];
-  [v16 appendString:v12 withName:@"reason"];
+  reason = [(SBIconPrefetchAssertion *)self reason];
+  [formatterCopy appendString:reason withName:@"reason"];
 
-  v13 = [(SBIconPrefetchAssertion *)self prefetchBehavior];
-  if (v13 > 4)
+  prefetchBehavior = [(SBIconPrefetchAssertion *)self prefetchBehavior];
+  if (prefetchBehavior > 4)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = off_1E8091008[v13];
+    v14 = off_1E8091008[prefetchBehavior];
   }
 
-  [v16 appendString:v14 withName:@"prefetchBehavior"];
-  v15 = [v16 appendBool:-[SBIconPrefetchAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
+  [formatterCopy appendString:v14 withName:@"prefetchBehavior"];
+  v15 = [formatterCopy appendBool:-[SBIconPrefetchAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
 }
 
 @end

@@ -1,132 +1,132 @@
 @interface RTDaemonClient
-+ (id)filterVisits:(id)a3 executable:(id)a4;
++ (id)filterVisits:(id)visits executable:(id)executable;
 - (BOOL)hasReasonToOutliveClientConnection;
 - (NSString)description;
 - (RTClientListenerProtocol)clientManagerDelegate;
-- (RTDaemonClient)initWithQueue:(id)a3 restorationData:(id)a4 accountManager:(id)a5 assetManager:(id)a6 authorizationManager:(id)a7 backgroundInertialOdometryManager:(id)a8 contactsManager:(id)a9 defaultsManager:(id)a10 deviceLocationPredictor:(id)a11 diagnostics:(id)a12 elevationManager:(id)a13 eventAgentManager:(id)a14 eventModelProvider:(id)a15 authorizedLocationManager:(id)a16 fingerprintManager:(id)a17 healthKitManager:(id)a18 hintManager:(id)a19 intermittentGNSSManager:(id)a20 learnedLocationManager:(id)a21 learnedLocationStore:(id)a22 locationManager:(id)a23 locationContextManager:(id)a24 locationStore:(id)a25 mapServiceManager:(id)a26 metricManager:(id)a27 motionActivityManager:(id)a28 peopleDiscoveryProvider:(id)a29 placeInferenceManager:(id)a30 predictedContextManager:(id)a31 purgeManager:(id)a32 scenarioTriggerManager:(id)a33 timerManager:(id)a34 tripSegmentManager:(id)a35 userCurationManager:(id)a36 vehicleLocationProvider:(id)a37 vehicleStore:(id)a38 visitManager:(id)a39 wifiManager:(id)a40 tripClusterManager:(id)a41 visitConsolidator:(id)a42;
+- (RTDaemonClient)initWithQueue:(id)queue restorationData:(id)data accountManager:(id)manager assetManager:(id)assetManager authorizationManager:(id)authorizationManager backgroundInertialOdometryManager:(id)odometryManager contactsManager:(id)contactsManager defaultsManager:(id)self0 deviceLocationPredictor:(id)self1 diagnostics:(id)self2 elevationManager:(id)self3 eventAgentManager:(id)self4 eventModelProvider:(id)self5 authorizedLocationManager:(id)self6 fingerprintManager:(id)self7 healthKitManager:(id)self8 hintManager:(id)self9 intermittentGNSSManager:(id)sManager learnedLocationManager:(id)learnedLocationManager learnedLocationStore:(id)store locationManager:(id)a23 locationContextManager:(id)contextManager locationStore:(id)locationStore mapServiceManager:(id)serviceManager metricManager:(id)metricManager motionActivityManager:(id)activityManager peopleDiscoveryProvider:(id)discoveryProvider placeInferenceManager:(id)queue0 predictedContextManager:(id)queue1 purgeManager:(id)queue2 scenarioTriggerManager:(id)queue3 timerManager:(id)queue4 tripSegmentManager:(id)queue5 userCurationManager:(id)queue6 vehicleLocationProvider:(id)queue7 vehicleStore:(id)queue8 visitManager:(id)queue9 wifiManager:(id)data0 tripClusterManager:(id)data1 visitConsolidator:(id)data2;
 - (id)_clientIdentifier;
 - (id)_clientIdentity;
-- (void)_onLocationContextManagerNotification:(id)a3;
-- (void)_onVisitManagerNotification:(id)a3;
+- (void)_onLocationContextManagerNotification:(id)notification;
+- (void)_onVisitManagerNotification:(id)notification;
 - (void)_startMonitoringVehicleEvents;
-- (void)addBackgroundInertialOdometrySamples:(id)a3 reply:(id)a4;
-- (void)addElevations:(id)a3 handler:(id)a4;
-- (void)addLocationOfInterestOfType:(int64_t)a3 mapItemStorage:(id)a4 customLabel:(id)a5 reply:(id)a6;
-- (void)clearAllVehicleEventsWithReply:(id)a3;
-- (void)clearRoutineWithReply:(id)a3;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)correctLabelForVisitWithIdentifier:(id)a3 entryDate:(id)a4 originalLabel:(id)a5 newLabel:(id)a6 handler:(id)a7;
-- (void)deleteTripSegmentWithUUID:(id)a3 reply:(id)a4;
-- (void)engageInVehicleEventWithIdentifier:(id)a3 reply:(id)a4;
-- (void)extendLifetimeOfVisitsWithIdentifiers:(id)a3 reply:(id)a4;
-- (void)fetchAllLocationsOfInterestForSettingsWithReply:(id)a3;
-- (void)fetchAuthorizedLocationStatus:(id)a3;
-- (void)fetchAutomaticVehicleEventDetectionSupportedWithReply:(id)a3;
-- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchCloudSyncAuthorizationStateWithReply:(id)a3;
-- (void)fetchContactScoresFromContactIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchCurrentPredictedLocationsOfInterestLookingBack:(double)a3 lookingAhead:(double)a4 reply:(id)a5;
-- (void)fetchDedupedLocationOfInterestIdentifiersWithIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchElevationsWithContext:(id)a3 reply:(id)a4;
-- (void)fetchElevationsWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(id)a4 reply:(id)a5;
-- (void)fetchEstimatedLocationAtDate:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)fetchFamiliarityIndexResultsWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchFinerGranularityInferredMapItemWithVisitIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchFormattedPostalAddressesFromMeCard:(id)a3;
-- (void)fetchLastVehicleEventsWithReply:(id)a3;
-- (void)fetchLearnedRoutesWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchLocationOfInterestAtLocation:(id)a3 reply:(id)a4;
-- (void)fetchLocationOfInterestForRegion:(id)a3 reply:(id)a4;
-- (void)fetchLocationOfInterestWithIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchLocationsCountForTripSegmentWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchLocationsForTripSegmentWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchLocationsOfInterestOfType:(int64_t)a3 reply:(id)a4;
-- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)a3 endDate:(id)a4 reply:(id)a5;
-- (void)fetchLocationsOfInterestWithinDistance:(double)a3 ofLocation:(id)a4 reply:(id)a5;
-- (void)fetchLookbackWindowStartDateWithLocation:(id)a3 reply:(id)a4;
-- (void)fetchMonitoredScenarioTriggerTypesWithReply:(id)a3;
-- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 reply:(id)a6;
-- (void)fetchOngoingPeopleDensity:(id)a3;
-- (void)fetchPathToDiagnosticFilesWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchPeopleCountEventsHistory:(id)a3 completionHandler:(id)a4;
-- (void)fetchPeopleDensityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)fetchPlaceInferencesWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchPredictedContextWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchPredictedExitDatesFromLocation:(id)a3 onDate:(id)a4 reply:(id)a5;
-- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5 reply:(id)a6;
-- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 reply:(id)a5;
-- (void)fetchPredictedLocationsOfInterestOnDate:(id)a3 reply:(id)a4;
-- (void)fetchProximityHistoryFromEventIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchProximityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)fetchRemoteStatusWithReply:(id)a3;
-- (void)fetchRoutineEnabledWithReply:(id)a3;
-- (void)fetchRoutineModeFromLocation:(id)a3 reply:(id)a4;
-- (void)fetchStoredLocationsWithContext:(id)a3 reply:(id)a4;
-- (void)fetchStoredVisitsWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchTransitionsBetweenStartDate:(id)a3 endDate:(id)a4 reply:(id)a5;
-- (void)fetchTripClusterMetadataWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchTripSegmentMetadataWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchTripSegmentsWithOptions:(id)a3 reply:(id)a4;
-- (void)fetchVehiclesWithOptions:(id)a3 reply:(id)a4;
+- (void)addBackgroundInertialOdometrySamples:(id)samples reply:(id)reply;
+- (void)addElevations:(id)elevations handler:(id)handler;
+- (void)addLocationOfInterestOfType:(int64_t)type mapItemStorage:(id)storage customLabel:(id)label reply:(id)reply;
+- (void)clearAllVehicleEventsWithReply:(id)reply;
+- (void)clearRoutineWithReply:(id)reply;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)correctLabelForVisitWithIdentifier:(id)identifier entryDate:(id)date originalLabel:(id)label newLabel:(id)newLabel handler:(id)handler;
+- (void)deleteTripSegmentWithUUID:(id)d reply:(id)reply;
+- (void)engageInVehicleEventWithIdentifier:(id)identifier reply:(id)reply;
+- (void)extendLifetimeOfVisitsWithIdentifiers:(id)identifiers reply:(id)reply;
+- (void)fetchAllLocationsOfInterestForSettingsWithReply:(id)reply;
+- (void)fetchAuthorizedLocationStatus:(id)status;
+- (void)fetchAutomaticVehicleEventDetectionSupportedWithReply:(id)reply;
+- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)options reply:(id)reply;
+- (void)fetchCloudSyncAuthorizationStateWithReply:(id)reply;
+- (void)fetchContactScoresFromContactIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchCurrentPredictedLocationsOfInterestLookingBack:(double)back lookingAhead:(double)ahead reply:(id)reply;
+- (void)fetchDedupedLocationOfInterestIdentifiersWithIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchElevationsWithContext:(id)context reply:(id)reply;
+- (void)fetchElevationsWithOptions:(id)options reply:(id)reply;
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(id)offset reply:(id)reply;
+- (void)fetchEstimatedLocationAtDate:(id)date options:(id)options reply:(id)reply;
+- (void)fetchFamiliarityIndexResultsWithOptions:(id)options reply:(id)reply;
+- (void)fetchFinerGranularityInferredMapItemWithVisitIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchFormattedPostalAddressesFromMeCard:(id)card;
+- (void)fetchLastVehicleEventsWithReply:(id)reply;
+- (void)fetchLearnedRoutesWithOptions:(id)options reply:(id)reply;
+- (void)fetchLocationOfInterestAtLocation:(id)location reply:(id)reply;
+- (void)fetchLocationOfInterestForRegion:(id)region reply:(id)reply;
+- (void)fetchLocationOfInterestWithIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchLocationsCountForTripSegmentWithOptions:(id)options reply:(id)reply;
+- (void)fetchLocationsForTripSegmentWithOptions:(id)options reply:(id)reply;
+- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchLocationsOfInterestOfType:(int64_t)type reply:(id)reply;
+- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)date endDate:(id)endDate reply:(id)reply;
+- (void)fetchLocationsOfInterestWithinDistance:(double)distance ofLocation:(id)location reply:(id)reply;
+- (void)fetchLookbackWindowStartDateWithLocation:(id)location reply:(id)reply;
+- (void)fetchMonitoredScenarioTriggerTypesWithReply:(id)reply;
+- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)location startDate:(id)date timeInterval:(double)interval reply:(id)reply;
+- (void)fetchOngoingPeopleDensity:(id)density;
+- (void)fetchPathToDiagnosticFilesWithOptions:(id)options reply:(id)reply;
+- (void)fetchPeopleCountEventsHistory:(id)history completionHandler:(id)handler;
+- (void)fetchPeopleDensityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)fetchPlaceInferencesWithOptions:(id)options reply:(id)reply;
+- (void)fetchPredictedContextWithOptions:(id)options reply:(id)reply;
+- (void)fetchPredictedExitDatesFromLocation:(id)location onDate:(id)date reply:(id)reply;
+- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate reply:(id)reply;
+- (void)fetchPredictedLocationsOfInterestOnDate:(id)date reply:(id)reply;
+- (void)fetchProximityHistoryFromEventIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchProximityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)fetchRemoteStatusWithReply:(id)reply;
+- (void)fetchRoutineEnabledWithReply:(id)reply;
+- (void)fetchRoutineModeFromLocation:(id)location reply:(id)reply;
+- (void)fetchStoredLocationsWithContext:(id)context reply:(id)reply;
+- (void)fetchStoredVisitsWithOptions:(id)options reply:(id)reply;
+- (void)fetchTransitionsBetweenStartDate:(id)date endDate:(id)endDate reply:(id)reply;
+- (void)fetchTripClusterMetadataWithOptions:(id)options reply:(id)reply;
+- (void)fetchTripSegmentMetadataWithOptions:(id)options reply:(id)reply;
+- (void)fetchTripSegmentsWithOptions:(id)options reply:(id)reply;
+- (void)fetchVehiclesWithOptions:(id)options reply:(id)reply;
 - (void)launchClient;
-- (void)onAuthorizationNotification:(id)a3;
-- (void)onLocationContextManagerNotification:(id)a3;
-- (void)onVisitManagerNotification:(id)a3;
-- (void)peopleDiscoveryRegistrar:(id)a3 didReceivePeopleDensityUpdate:(id)a4 error:(id)a5;
-- (void)performBluePOIQueryLookingBack:(double)a3 lookingAhead:(double)a4 reply:(id)a5;
-- (void)predictedContextRegistrar:(id)a3 didReceivePredictedContextResult:(id)a4 error:(id)a5;
-- (void)processHindsightVisitsWithReply:(id)a3;
-- (void)purgeTripClusterTable:(id)a3 reply:(id)a4;
-- (void)purgeTripClusterWithClusterID:(id)a3 reply:(id)a4;
-- (void)remoteStatusRegistrar:(id)a3 didReceiveRemoteStatus:(int64_t)a4 error:(id)a5;
-- (void)removeLocationOfInterestWithIdentifier:(id)a3 reply:(id)a4;
-- (void)removeVisitWithIdentifier:(id)a3 reply:(id)a4;
+- (void)onAuthorizationNotification:(id)notification;
+- (void)onLocationContextManagerNotification:(id)notification;
+- (void)onVisitManagerNotification:(id)notification;
+- (void)peopleDiscoveryRegistrar:(id)registrar didReceivePeopleDensityUpdate:(id)update error:(id)error;
+- (void)performBluePOIQueryLookingBack:(double)back lookingAhead:(double)ahead reply:(id)reply;
+- (void)predictedContextRegistrar:(id)registrar didReceivePredictedContextResult:(id)result error:(id)error;
+- (void)processHindsightVisitsWithReply:(id)reply;
+- (void)purgeTripClusterTable:(id)table reply:(id)reply;
+- (void)purgeTripClusterWithClusterID:(id)d reply:(id)reply;
+- (void)remoteStatusRegistrar:(id)registrar didReceiveRemoteStatus:(int64_t)status error:(id)error;
+- (void)removeLocationOfInterestWithIdentifier:(id)identifier reply:(id)reply;
+- (void)removeVisitWithIdentifier:(id)identifier reply:(id)reply;
 - (void)restore;
-- (void)scenarioTriggerRegistrar:(id)a3 didReceiveScenarioTriggers:(id)a4 error:(id)a5;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setHintForRegionState:(int64_t)a3 significantRegion:(id)a4 reply:(id)a5;
-- (void)setLeechLowConfidenceVisits:(BOOL)a3;
-- (void)setLeechVisits:(BOOL)a3;
-- (void)setMonitorPlaceInferences:(BOOL)a3;
-- (void)setMonitorVisits:(BOOL)a3;
-- (void)setRestorationIdentifier:(id)a3;
-- (void)setRoutineEnabled:(BOOL)a3 reply:(id)a4;
-- (void)setTargetUserSession:(BOOL)a3;
+- (void)scenarioTriggerRegistrar:(id)registrar didReceiveScenarioTriggers:(id)triggers error:(id)error;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setHintForRegionState:(int64_t)state significantRegion:(id)region reply:(id)reply;
+- (void)setLeechLowConfidenceVisits:(BOOL)visits;
+- (void)setLeechVisits:(BOOL)visits;
+- (void)setMonitorPlaceInferences:(BOOL)inferences;
+- (void)setMonitorVisits:(BOOL)visits;
+- (void)setRestorationIdentifier:(id)identifier;
+- (void)setRoutineEnabled:(BOOL)enabled reply:(id)reply;
+- (void)setTargetUserSession:(BOOL)session;
 - (void)shutdown;
-- (void)startLeechingLowConfidenceVisitsWithReply:(id)a3;
-- (void)startLeechingVisitsWithReply:(id)a3;
-- (void)startMonitoringForPeopleDiscoveryWithIdentifier:(id)a3 configuration:(id)a4 reply:(id)a5;
-- (void)startMonitoringPlaceInferencesWithOptions:(id)a3 reply:(id)a4;
-- (void)startMonitoringPredictedContextWithOptions:(id)a3 reply:(id)a4;
-- (void)startMonitoringRemoteStatusWithReply:(id)a3;
-- (void)startMonitoringScenarioTriggerOfType:(unint64_t)a3 reply:(id)a4;
-- (void)startMonitoringVehicleEventsWithReply:(id)a3;
-- (void)startMonitoringVisitsWithReply:(id)a3;
-- (void)stopLeechingLowConfidenceVisitsWithReply:(id)a3;
-- (void)stopLeechingVisitsWithReply:(id)a3;
-- (void)stopMonitoringForPeopleDiscoveryWithIdentifier:(id)a3 reply:(id)a4;
-- (void)stopMonitoringPlaceInferencesWithReply:(id)a3;
-- (void)stopMonitoringPredictedContextWithReply:(id)a3;
-- (void)stopMonitoringRemoteStatusWithReply:(id)a3;
-- (void)stopMonitoringScenarioTriggerOfType:(unint64_t)a3 reply:(id)a4;
-- (void)stopMonitoringVehicleEventsWithReply:(id)a3;
-- (void)stopMonitoringVisitsWithReply:(id)a3;
-- (void)submitUserCurationForVisitDateRange:(id)a3 newLabel:(id)a4 handler:(id)a5;
-- (void)updateCloudSyncProvisionedForAccount:(BOOL)a3 reply:(id)a4;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 customLabel:(id)a4 reply:(id)a5;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 mapItemStorage:(id)a4 reply:(id)a5;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 customLabel:(id)a5 reply:(id)a6;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 mapItemStorage:(id)a5 customLabel:(id)a6 reply:(id)a7;
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 reply:(id)a5;
-- (void)updateVehicleEventWithIdentifier:(id)a3 geoMapItem:(id)a4 reply:(id)a5;
-- (void)updateVehicleEventWithIdentifier:(id)a3 location:(id)a4 reply:(id)a5;
-- (void)updateVehicleEventWithIdentifier:(id)a3 notes:(id)a4 reply:(id)a5;
-- (void)updateVehicleEventWithIdentifier:(id)a3 photo:(id)a4 reply:(id)a5;
-- (void)userInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4 feedback:(id)a5 geoMapItem:(id)a6 reply:(id)a7;
-- (void)vehicleEventAtLocation:(id)a3 notes:(id)a4 reply:(id)a5;
-- (void)vehicleEventRegistrar:(id)a3 didReceiveVehicleEvents:(id)a4 error:(id)a5;
+- (void)startLeechingLowConfidenceVisitsWithReply:(id)reply;
+- (void)startLeechingVisitsWithReply:(id)reply;
+- (void)startMonitoringForPeopleDiscoveryWithIdentifier:(id)identifier configuration:(id)configuration reply:(id)reply;
+- (void)startMonitoringPlaceInferencesWithOptions:(id)options reply:(id)reply;
+- (void)startMonitoringPredictedContextWithOptions:(id)options reply:(id)reply;
+- (void)startMonitoringRemoteStatusWithReply:(id)reply;
+- (void)startMonitoringScenarioTriggerOfType:(unint64_t)type reply:(id)reply;
+- (void)startMonitoringVehicleEventsWithReply:(id)reply;
+- (void)startMonitoringVisitsWithReply:(id)reply;
+- (void)stopLeechingLowConfidenceVisitsWithReply:(id)reply;
+- (void)stopLeechingVisitsWithReply:(id)reply;
+- (void)stopMonitoringForPeopleDiscoveryWithIdentifier:(id)identifier reply:(id)reply;
+- (void)stopMonitoringPlaceInferencesWithReply:(id)reply;
+- (void)stopMonitoringPredictedContextWithReply:(id)reply;
+- (void)stopMonitoringRemoteStatusWithReply:(id)reply;
+- (void)stopMonitoringScenarioTriggerOfType:(unint64_t)type reply:(id)reply;
+- (void)stopMonitoringVehicleEventsWithReply:(id)reply;
+- (void)stopMonitoringVisitsWithReply:(id)reply;
+- (void)submitUserCurationForVisitDateRange:(id)range newLabel:(id)label handler:(id)handler;
+- (void)updateCloudSyncProvisionedForAccount:(BOOL)account reply:(id)reply;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier customLabel:(id)label reply:(id)reply;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier mapItemStorage:(id)storage reply:(id)reply;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type customLabel:(id)label reply:(id)reply;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type mapItemStorage:(id)storage customLabel:(id)label reply:(id)reply;
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type reply:(id)reply;
+- (void)updateVehicleEventWithIdentifier:(id)identifier geoMapItem:(id)item reply:(id)reply;
+- (void)updateVehicleEventWithIdentifier:(id)identifier location:(id)location reply:(id)reply;
+- (void)updateVehicleEventWithIdentifier:(id)identifier notes:(id)notes reply:(id)reply;
+- (void)updateVehicleEventWithIdentifier:(id)identifier photo:(id)photo reply:(id)reply;
+- (void)userInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction feedback:(id)feedback geoMapItem:(id)item reply:(id)reply;
+- (void)vehicleEventAtLocation:(id)location notes:(id)notes reply:(id)reply;
+- (void)vehicleEventRegistrar:(id)registrar didReceiveVehicleEvents:(id)events error:(id)error;
 @end
 
 @implementation RTDaemonClient
@@ -134,8 +134,8 @@
 - (void)restore
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(RTDaemonClient *)self restorationData];
-  v4 = [v3 count];
+  restorationData = [(RTDaemonClient *)self restorationData];
+  v4 = [restorationData count];
 
   if (v4)
   {
@@ -145,18 +145,18 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "restoring client, %@, from existing session", buf, 0xCu);
       }
     }
 
-    v6 = [(RTDaemonClient *)self restorationData];
+    restorationData2 = [(RTDaemonClient *)self restorationData];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __25__RTDaemonClient_restore__block_invoke;
     v7[3] = &unk_2788C5890;
     v7[4] = self;
-    [v6 enumerateKeysAndObjectsUsingBlock:v7];
+    [restorationData2 enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
 
@@ -232,9 +232,9 @@ LABEL_18:
 
 - (id)_clientIdentifier
 {
-  v3 = [(RTDaemonClient *)self bundleIdentifier];
+  bundleIdentifier = [(RTDaemonClient *)self bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
     [(RTDaemonClient *)self bundleIdentifier];
   }
@@ -258,7 +258,7 @@ LABEL_18:
     {
       v12 = NSStringFromSelector(a2);
       v13 = 138412546;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = v12;
       _os_log_debug_impl(&dword_2304B3000, v4, OS_LOG_TYPE_DEBUG, "client, %@, called, %@", &v13, 0x16u);
@@ -267,21 +267,21 @@ LABEL_18:
 
   if (![(RTDaemonClient *)self enabled])
   {
-    v5 = [(RTDaemonClient *)self xpcConnection];
-    v6 = [v5 remoteObjectProxy];
+    xpcConnection = [(RTDaemonClient *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:2 userInfo:0];
-    [v6 onVehicleEvents:0 error:v7];
+    [remoteObjectProxy onVehicleEvents:0 error:v7];
   }
 
-  v8 = [(RTDaemonClient *)self vehicleEventRegistrar];
-  [v8 startMonitoringVehicleEvents];
+  vehicleEventRegistrar = [(RTDaemonClient *)self vehicleEventRegistrar];
+  [vehicleEventRegistrar startMonitoringVehicleEvents];
 
-  v9 = [(RTDaemonClient *)self restorationData];
+  restorationData = [(RTDaemonClient *)self restorationData];
   v10 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v9 setObject:v10 forKey:@"vehicleEventRegistrar"];
+  [restorationData setObject:v10 forKey:@"vehicleEventRegistrar"];
 
-  v11 = [(RTDaemonClient *)self clientManagerDelegate];
-  [v11 saveDaemonClient:self];
+  clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+  [clientManagerDelegate saveDaemonClient:self];
 }
 
 - (RTClientListenerProtocol)clientManagerDelegate
@@ -294,10 +294,10 @@ LABEL_18:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTDaemonClient *)self executablePath];
-  v5 = [(RTDaemonClient *)self processIdentifier];
-  v6 = [(RTDaemonClient *)self restorationIdentifier];
-  if (v6)
+  executablePath = [(RTDaemonClient *)self executablePath];
+  processIdentifier = [(RTDaemonClient *)self processIdentifier];
+  restorationIdentifier = [(RTDaemonClient *)self restorationIdentifier];
+  if (restorationIdentifier)
   {
     [(RTDaemonClient *)self restorationIdentifier];
   }
@@ -307,56 +307,56 @@ LABEL_18:
     [(RTDaemonClient *)self signingIdentifier];
   }
   v7 = ;
-  v8 = [v3 stringWithFormat:@"%@(%d), %@", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"%@(%d), %@", executablePath, processIdentifier, v7];
 
   return v8;
 }
 
-- (RTDaemonClient)initWithQueue:(id)a3 restorationData:(id)a4 accountManager:(id)a5 assetManager:(id)a6 authorizationManager:(id)a7 backgroundInertialOdometryManager:(id)a8 contactsManager:(id)a9 defaultsManager:(id)a10 deviceLocationPredictor:(id)a11 diagnostics:(id)a12 elevationManager:(id)a13 eventAgentManager:(id)a14 eventModelProvider:(id)a15 authorizedLocationManager:(id)a16 fingerprintManager:(id)a17 healthKitManager:(id)a18 hintManager:(id)a19 intermittentGNSSManager:(id)a20 learnedLocationManager:(id)a21 learnedLocationStore:(id)a22 locationManager:(id)a23 locationContextManager:(id)a24 locationStore:(id)a25 mapServiceManager:(id)a26 metricManager:(id)a27 motionActivityManager:(id)a28 peopleDiscoveryProvider:(id)a29 placeInferenceManager:(id)a30 predictedContextManager:(id)a31 purgeManager:(id)a32 scenarioTriggerManager:(id)a33 timerManager:(id)a34 tripSegmentManager:(id)a35 userCurationManager:(id)a36 vehicleLocationProvider:(id)a37 vehicleStore:(id)a38 visitManager:(id)a39 wifiManager:(id)a40 tripClusterManager:(id)a41 visitConsolidator:(id)a42
+- (RTDaemonClient)initWithQueue:(id)queue restorationData:(id)data accountManager:(id)manager assetManager:(id)assetManager authorizationManager:(id)authorizationManager backgroundInertialOdometryManager:(id)odometryManager contactsManager:(id)contactsManager defaultsManager:(id)self0 deviceLocationPredictor:(id)self1 diagnostics:(id)self2 elevationManager:(id)self3 eventAgentManager:(id)self4 eventModelProvider:(id)self5 authorizedLocationManager:(id)self6 fingerprintManager:(id)self7 healthKitManager:(id)self8 hintManager:(id)self9 intermittentGNSSManager:(id)sManager learnedLocationManager:(id)learnedLocationManager learnedLocationStore:(id)store locationManager:(id)a23 locationContextManager:(id)contextManager locationStore:(id)locationStore mapServiceManager:(id)serviceManager metricManager:(id)metricManager motionActivityManager:(id)activityManager peopleDiscoveryProvider:(id)discoveryProvider placeInferenceManager:(id)queue0 predictedContextManager:(id)queue1 purgeManager:(id)queue2 scenarioTriggerManager:(id)queue3 timerManager:(id)queue4 tripSegmentManager:(id)queue5 userCurationManager:(id)queue6 vehicleLocationProvider:(id)queue7 vehicleStore:(id)queue8 visitManager:(id)queue9 wifiManager:(id)data0 tripClusterManager:(id)data1 visitConsolidator:(id)data2
 {
   v347[32] = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v257 = a4;
-  v180 = a5;
-  v46 = a5;
-  v272 = a6;
-  v290 = a7;
-  v288 = a8;
-  v287 = a9;
-  v286 = a10;
-  v285 = a11;
-  v284 = a12;
-  v283 = a13;
-  v282 = a14;
-  v281 = a15;
-  v280 = a16;
-  v279 = a17;
-  v278 = a18;
-  v277 = a19;
-  v276 = a20;
-  v275 = a21;
-  v274 = a22;
+  queueCopy = queue;
+  dataCopy = data;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  assetManagerCopy = assetManager;
+  authorizationManagerCopy = authorizationManager;
+  odometryManagerCopy = odometryManager;
+  contactsManagerCopy = contactsManager;
+  defaultsManagerCopy = defaultsManager;
+  predictorCopy = predictor;
+  diagnosticsCopy = diagnostics;
+  elevationManagerCopy = elevationManager;
+  agentManagerCopy = agentManager;
+  providerCopy = provider;
+  locationManagerCopy = locationManager;
+  fingerprintManagerCopy = fingerprintManager;
+  kitManagerCopy = kitManager;
+  hintManagerCopy = hintManager;
+  sManagerCopy = sManager;
+  learnedLocationManagerCopy = learnedLocationManager;
+  storeCopy = store;
   v273 = a23;
-  v271 = a24;
-  v256 = a25;
-  v270 = a26;
-  v269 = a27;
-  v268 = a28;
-  v267 = a29;
-  v266 = a30;
-  v265 = a31;
-  v264 = a32;
-  v263 = a33;
-  v262 = a34;
-  v261 = a35;
-  v260 = a36;
-  v259 = a37;
-  v255 = a38;
-  v258 = a39;
-  v254 = a40;
-  v253 = a41;
-  v252 = a42;
-  if (!v45)
+  contextManagerCopy = contextManager;
+  locationStoreCopy = locationStore;
+  serviceManagerCopy = serviceManager;
+  metricManagerCopy = metricManager;
+  activityManagerCopy = activityManager;
+  discoveryProviderCopy = discoveryProvider;
+  inferenceManagerCopy = inferenceManager;
+  predictedContextManagerCopy = predictedContextManager;
+  purgeManagerCopy = purgeManager;
+  triggerManagerCopy = triggerManager;
+  timerManagerCopy = timerManager;
+  segmentManagerCopy = segmentManager;
+  curationManagerCopy = curationManager;
+  locationProviderCopy = locationProvider;
+  vehicleStoreCopy = vehicleStore;
+  visitManagerCopy = visitManager;
+  wifiManagerCopy = wifiManager;
+  clusterManagerCopy = clusterManager;
+  consolidatorCopy = consolidator;
+  if (!queueCopy)
   {
     v90 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
@@ -366,12 +366,12 @@ LABEL_18:
     }
 
     v91 = 0;
-    v92 = v46;
+    v92 = managerCopy2;
     goto LABEL_66;
   }
 
-  v187 = v46;
-  if (!v46)
+  v187 = managerCopy2;
+  if (!managerCopy2)
   {
     v93 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
@@ -383,16 +383,16 @@ LABEL_18:
     v91 = 0;
     v92 = 0;
 LABEL_66:
-    v47 = v272;
+    v47 = assetManagerCopy;
 LABEL_103:
-    v96 = v256;
-    v97 = self;
-    v98 = v257;
+    v96 = locationStoreCopy;
+    selfCopy2 = self;
+    v98 = dataCopy;
     goto LABEL_104;
   }
 
-  v47 = v272;
-  if (!v272)
+  v47 = assetManagerCopy;
+  if (!assetManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -407,7 +407,7 @@ LABEL_101:
     goto LABEL_102;
   }
 
-  if (!v290)
+  if (!authorizationManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -420,7 +420,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v288)
+  if (!odometryManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -433,7 +433,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v287)
+  if (!contactsManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -446,7 +446,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v286)
+  if (!defaultsManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -459,7 +459,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v285)
+  if (!predictorCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -472,7 +472,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v284)
+  if (!diagnosticsCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -485,7 +485,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v283)
+  if (!elevationManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -498,7 +498,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v282)
+  if (!agentManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -511,7 +511,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v281)
+  if (!providerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -524,7 +524,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v280)
+  if (!locationManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -537,7 +537,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v279)
+  if (!fingerprintManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -550,7 +550,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v278)
+  if (!kitManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -563,7 +563,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v277)
+  if (!hintManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -576,7 +576,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v276)
+  if (!sManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -589,7 +589,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v275)
+  if (!learnedLocationManagerCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -602,7 +602,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (!v274)
+  if (!storeCopy)
   {
     v94 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
@@ -615,7 +615,7 @@ LABEL_101:
 LABEL_102:
 
     v91 = 0;
-    v92 = v46;
+    v92 = managerCopy2;
     goto LABEL_103;
   }
 
@@ -631,8 +631,8 @@ LABEL_102:
     goto LABEL_145;
   }
 
-  v172 = v45;
-  if (!v271)
+  v172 = queueCopy;
+  if (!contextManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -647,7 +647,7 @@ LABEL_144:
     goto LABEL_145;
   }
 
-  if (!v270)
+  if (!serviceManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -660,7 +660,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v269)
+  if (!metricManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -673,7 +673,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v268)
+  if (!activityManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -686,7 +686,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v267)
+  if (!discoveryProviderCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -699,7 +699,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v266)
+  if (!inferenceManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -712,7 +712,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v265)
+  if (!predictedContextManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -725,7 +725,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v264)
+  if (!purgeManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -738,7 +738,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v263)
+  if (!triggerManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -751,7 +751,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v262)
+  if (!timerManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -764,7 +764,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v261)
+  if (!segmentManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -777,7 +777,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v260)
+  if (!curationManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -790,7 +790,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v259)
+  if (!locationProviderCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -803,7 +803,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v258)
+  if (!visitManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -816,7 +816,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v255)
+  if (!vehicleStoreCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -829,7 +829,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v254)
+  if (!wifiManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -842,7 +842,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v253)
+  if (!clusterManagerCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -855,7 +855,7 @@ LABEL_144:
     goto LABEL_144;
   }
 
-  if (!v252)
+  if (!consolidatorCopy)
   {
     v100 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -868,11 +868,11 @@ LABEL_144:
 LABEL_145:
 
     v91 = 0;
-    v98 = v257;
-    v92 = v46;
-    v47 = v272;
-    v96 = v256;
-    v97 = self;
+    v98 = dataCopy;
+    v92 = managerCopy2;
+    v47 = assetManagerCopy;
+    v96 = locationStoreCopy;
+    selfCopy2 = self;
     goto LABEL_104;
   }
 
@@ -881,45 +881,45 @@ LABEL_145:
   v251 = [(RTDaemonClient *)&v307 init];
   if (v251)
   {
-    objc_storeStrong(&v251->_queue, a3);
-    objc_storeStrong(&v251->_accountManager, v180);
-    objc_storeStrong(&v251->_assetManager, a6);
-    objc_storeStrong(&v251->_authorizationManager, a7);
-    objc_storeStrong(&v251->_backgroundInertialOdometryManager, a8);
-    objc_storeStrong(&v251->_contactsManager, a9);
-    objc_storeStrong(&v251->_defaultsManager, a10);
-    objc_storeStrong(&v251->_deviceLocationPredictor, a11);
-    objc_storeStrong(&v251->_diagnostics, a12);
-    objc_storeStrong(&v251->_elevationManager, a13);
-    objc_storeStrong(&v251->_eventAgentManager, a14);
-    objc_storeStrong(&v251->_eventModelProvider, a15);
-    objc_storeStrong(&v251->_authorizedLocationManager, a16);
-    objc_storeStrong(&v251->_fingerprintManager, a17);
-    objc_storeStrong(&v251->_healthKitManager, a18);
-    objc_storeStrong(&v251->_hintManager, a19);
-    objc_storeStrong(&v251->_intermittentGNSSManager, a20);
-    objc_storeStrong(&v251->_learnedLocationManager, a21);
-    objc_storeStrong(&v251->_learnedLocationStore, a22);
+    objc_storeStrong(&v251->_queue, queue);
+    objc_storeStrong(&v251->_accountManager, managerCopy);
+    objc_storeStrong(&v251->_assetManager, assetManager);
+    objc_storeStrong(&v251->_authorizationManager, authorizationManager);
+    objc_storeStrong(&v251->_backgroundInertialOdometryManager, odometryManager);
+    objc_storeStrong(&v251->_contactsManager, contactsManager);
+    objc_storeStrong(&v251->_defaultsManager, defaultsManager);
+    objc_storeStrong(&v251->_deviceLocationPredictor, predictor);
+    objc_storeStrong(&v251->_diagnostics, diagnostics);
+    objc_storeStrong(&v251->_elevationManager, elevationManager);
+    objc_storeStrong(&v251->_eventAgentManager, agentManager);
+    objc_storeStrong(&v251->_eventModelProvider, provider);
+    objc_storeStrong(&v251->_authorizedLocationManager, locationManager);
+    objc_storeStrong(&v251->_fingerprintManager, fingerprintManager);
+    objc_storeStrong(&v251->_healthKitManager, kitManager);
+    objc_storeStrong(&v251->_hintManager, hintManager);
+    objc_storeStrong(&v251->_intermittentGNSSManager, sManager);
+    objc_storeStrong(&v251->_learnedLocationManager, learnedLocationManager);
+    objc_storeStrong(&v251->_learnedLocationStore, store);
     objc_storeStrong(&v251->_locationManager, a23);
-    objc_storeStrong(&v251->_locationContextManager, a24);
-    objc_storeStrong(&v251->_locationStore, a25);
-    objc_storeStrong(&v251->_mapServiceManager, a26);
-    objc_storeStrong(&v251->_metricManager, a27);
-    objc_storeStrong(&v251->_motionActivityManager, a28);
-    objc_storeStrong(&v251->_peopleDiscoveryProvider, a29);
-    objc_storeStrong(&v251->_placeInferenceManager, a30);
-    objc_storeStrong(&v251->_predictedContextManager, a31);
-    objc_storeStrong(&v251->_purgeManager, a32);
-    objc_storeStrong(&v251->_scenarioTriggerManager, a33);
-    objc_storeStrong(&v251->_timerManager, a34);
-    objc_storeStrong(&v251->_vehicleLocationProvider, a37);
-    objc_storeStrong(&v251->_vehicleStore, a38);
-    objc_storeStrong(&v251->_visitManager, a39);
-    objc_storeStrong(&v251->_tripSegmentManager, a35);
-    objc_storeStrong(&v251->_userCurationManager, a36);
-    objc_storeStrong(&v251->_wifiManager, a40);
-    objc_storeStrong(&v251->_tripClusterManager, a41);
-    objc_storeStrong(&v251->_visitConsolidator, a42);
+    objc_storeStrong(&v251->_locationContextManager, contextManager);
+    objc_storeStrong(&v251->_locationStore, locationStore);
+    objc_storeStrong(&v251->_mapServiceManager, serviceManager);
+    objc_storeStrong(&v251->_metricManager, metricManager);
+    objc_storeStrong(&v251->_motionActivityManager, activityManager);
+    objc_storeStrong(&v251->_peopleDiscoveryProvider, discoveryProvider);
+    objc_storeStrong(&v251->_placeInferenceManager, inferenceManager);
+    objc_storeStrong(&v251->_predictedContextManager, predictedContextManager);
+    objc_storeStrong(&v251->_purgeManager, purgeManager);
+    objc_storeStrong(&v251->_scenarioTriggerManager, triggerManager);
+    objc_storeStrong(&v251->_timerManager, timerManager);
+    objc_storeStrong(&v251->_vehicleLocationProvider, locationProvider);
+    objc_storeStrong(&v251->_vehicleStore, vehicleStore);
+    objc_storeStrong(&v251->_visitManager, visitManager);
+    objc_storeStrong(&v251->_tripSegmentManager, segmentManager);
+    objc_storeStrong(&v251->_userCurationManager, curationManager);
+    objc_storeStrong(&v251->_wifiManager, wifiManager);
+    objc_storeStrong(&v251->_tripClusterManager, clusterManager);
+    objc_storeStrong(&v251->_visitConsolidator, consolidator);
     v153 = MEMORY[0x277CBEB98];
     v248 = NSStringFromSelector(sel_startMonitoringVisitsWithReply_);
     v246 = NSStringFromSelector(sel_stopMonitoringVisitsWithReply_);
@@ -1359,8 +1359,8 @@ LABEL_145:
           v300 = 0u;
           v301 = 0u;
           v302 = 0u;
-          v72 = [objc_opt_class() vendedClasses];
-          v73 = [v72 countByEnumeratingWithState:&v299 objects:v312 count:16];
+          vendedClasses = [objc_opt_class() vendedClasses];
+          v73 = [vendedClasses countByEnumeratingWithState:&v299 objects:v312 count:16];
           if (v73)
           {
             v74 = v73;
@@ -1371,7 +1371,7 @@ LABEL_145:
               {
                 if (*v300 != v75)
                 {
-                  objc_enumerationMutation(v72);
+                  objc_enumerationMutation(vendedClasses);
                 }
 
                 v77 = *(*(&v299 + 1) + 8 * j);
@@ -1400,7 +1400,7 @@ LABEL_145:
                 [(NSMutableDictionary *)v82 setObject:v71 forKey:v83];
               }
 
-              v74 = [v72 countByEnumeratingWithState:&v299 objects:v312 count:16];
+              v74 = [vendedClasses countByEnumeratingWithState:&v299 objects:v312 count:16];
             }
 
             while (v74);
@@ -1417,9 +1417,9 @@ LABEL_145:
     entitlementProvider = v251->_entitlementProvider;
     v251->_entitlementProvider = v87;
 
-    if (v257)
+    if (dataCopy)
     {
-      v89 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v257 copyItems:1];
+      v89 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:dataCopy copyItems:1];
     }
 
     else
@@ -1431,12 +1431,12 @@ LABEL_145:
     restorationData = v251->_restorationData;
     v251->_restorationData = v89;
 
-    v104 = [v257 objectForKey:@"restorationIdentifier"];
+    v104 = [dataCopy objectForKey:@"restorationIdentifier"];
     v105 = [v104 copy];
     restorationIdentifier = v251->_restorationIdentifier;
     v251->_restorationIdentifier = v105;
 
-    v107 = [v257 objectForKey:@"bundleIdentifier"];
+    v107 = [dataCopy objectForKey:@"bundleIdentifier"];
     v108 = [v107 copy];
     bundleIdentifier = v251->_bundleIdentifier;
     v251->_bundleIdentifier = v108;
@@ -1448,27 +1448,27 @@ LABEL_145:
     [(RTDaemonClientRegistrarScenarioTrigger *)v102->_scenarioTriggerRegistrar setDelegate:v102];
     v112 = [RTDaemonClientRegistrarVehicleEvent alloc];
     vehicleLocationProvider = v251->_vehicleLocationProvider;
-    v114 = [(RTDaemonClient *)v251 queue];
-    v115 = [(RTDaemonClientRegistrarVehicleEvent *)v112 initWithVehicleLocationProvider:vehicleLocationProvider queue:v114];
+    queue = [(RTDaemonClient *)v251 queue];
+    v115 = [(RTDaemonClientRegistrarVehicleEvent *)v112 initWithVehicleLocationProvider:vehicleLocationProvider queue:queue];
     vehicleEventRegistrar = v251->_vehicleEventRegistrar;
     v251->_vehicleEventRegistrar = v115;
 
-    v117 = [(RTDaemonClient *)v251 vehicleEventRegistrar];
-    [v117 setDelegate:v251];
+    vehicleEventRegistrar = [(RTDaemonClient *)v251 vehicleEventRegistrar];
+    [vehicleEventRegistrar setDelegate:v251];
 
     v118 = [RTDaemonClientRegistrarPredictedContext alloc];
     predictedContextManager = v251->_predictedContextManager;
-    v120 = [(RTDaemonClient *)v251 queue];
-    v121 = [(RTDaemonClient *)v251 _clientIdentity];
-    v122 = [(RTDaemonClientRegistrarPredictedContext *)v118 initWithPredictedContextManager:predictedContextManager queue:v120 clientIdentity:v121];
+    queue2 = [(RTDaemonClient *)v251 queue];
+    _clientIdentity = [(RTDaemonClient *)v251 _clientIdentity];
+    v122 = [(RTDaemonClientRegistrarPredictedContext *)v118 initWithPredictedContextManager:predictedContextManager queue:queue2 clientIdentity:_clientIdentity];
     predictedContextRegistrar = v251->_predictedContextRegistrar;
     v251->_predictedContextRegistrar = v122;
 
     [(RTDaemonClientRegistrarPredictedContext *)v102->_predictedContextRegistrar setDelegate:v102];
     v124 = [RTDaemonClientRegistrarRemoteStatus alloc];
     intermittentGNSSManager = v251->_intermittentGNSSManager;
-    v126 = [(RTDaemonClient *)v251 queue];
-    v127 = [(RTDaemonClientRegistrarRemoteStatus *)v124 initWithIntermittentGNSSManager:intermittentGNSSManager queue:v126];
+    queue3 = [(RTDaemonClient *)v251 queue];
+    v127 = [(RTDaemonClientRegistrarRemoteStatus *)v124 initWithIntermittentGNSSManager:intermittentGNSSManager queue:queue3];
     remoteStatusRegistrar = v251->_remoteStatusRegistrar;
     v251->_remoteStatusRegistrar = v127;
 
@@ -1476,10 +1476,10 @@ LABEL_145:
     v129 = _rt_log_facility_get_os_log(RTLogFacilityClient);
     if (os_log_type_enabled(v129, OS_LOG_TYPE_DEFAULT))
     {
-      v130 = [(RTDaemonClient *)v251 executableName];
+      executableName = [(RTDaemonClient *)v251 executableName];
       v131 = v251->_restorationIdentifier;
       *buf = 138412546;
-      v309 = v130;
+      v309 = executableName;
       v310 = 2112;
       v311 = v131;
       _os_log_impl(&dword_2304B3000, v129, OS_LOG_TYPE_DEFAULT, "client, %@, _restorationIdentifier, %@", buf, 0x16u);
@@ -1517,22 +1517,22 @@ LABEL_145:
     v295 = v137;
     v142 = v137;
     [(RTAuthorizationManager *)v140 fetchRoutineEnabledWithHandler:v293];
-    v143 = [(RTDaemonClient *)v141 queue];
+    queue4 = [(RTDaemonClient *)v141 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __759__RTDaemonClient_initWithQueue_restorationData_accountManager_assetManager_authorizationManager_backgroundInertialOdometryManager_contactsManager_defaultsManager_deviceLocationPredictor_diagnostics_elevationManager_eventAgentManager_eventModelProvider_authorizedLocationManager_fingerprintManager_healthKitManager_hintManager_intermittentGNSSManager_learnedLocationManager_learnedLocationStore_locationManager_locationContextManager_locationStore_mapServiceManager_metricManager_motionActivityManager_peopleDiscoveryProvider_placeInferenceManager_predictedContextManager_purgeManager_scenarioTriggerManager_timerManager_tripSegmentManager_userCurationManager_vehicleLocationProvider_vehicleStore_visitManager_wifiManager_tripClusterManager_visitConsolidator___block_invoke_5;
     block[3] = &unk_2788C4EA0;
     v292 = v141;
-    dispatch_group_notify(v142, v143, block);
+    dispatch_group_notify(v142, queue4, block);
   }
 
-  v97 = v251;
-  v91 = v97;
-  v45 = v172;
-  v98 = v257;
+  selfCopy2 = v251;
+  v91 = selfCopy2;
+  queueCopy = v172;
+  v98 = dataCopy;
   v92 = v187;
-  v47 = v272;
-  v96 = v256;
+  v47 = assetManagerCopy;
+  v96 = locationStoreCopy;
 LABEL_104:
 
   return v91;
@@ -1589,8 +1589,8 @@ void __759__RTDaemonClient_initWithQueue_restorationData_accountManager_assetMan
 
 - (id)_clientIdentity
 {
-  v3 = [(RTDaemonClient *)self restorationIdentifier];
-  if (v3)
+  restorationIdentifier = [(RTDaemonClient *)self restorationIdentifier];
+  if (restorationIdentifier)
   {
     [(RTDaemonClient *)self restorationIdentifier];
   }
@@ -1614,12 +1614,12 @@ void __759__RTDaemonClient_initWithQueue_restorationData_accountManager_assetMan
   return v5;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  [v10 retainArguments];
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -1655,13 +1655,13 @@ void __759__RTDaemonClient_initWithQueue_restorationData_accountManager_assetMan
   block[1] = 3221225472;
   block[2] = __54__RTDaemonClient_connection_handleInvocation_isReply___block_invoke;
   block[3] = &unk_2788C5440;
-  v29 = a5;
-  v25 = v10;
-  v26 = self;
-  v27 = v9;
+  replyCopy = reply;
+  v25 = invocationCopy;
+  selfCopy = self;
+  v27 = connectionCopy;
   v28 = v30;
-  v19 = v9;
-  v20 = v10;
+  v19 = connectionCopy;
+  v20 = invocationCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v30, 8);
@@ -1932,24 +1932,24 @@ void __54__RTDaemonClient_connection_handleInvocation_isReply___block_invoke_670
   [v3 invoke];
 }
 
-- (void)fetchLocationsOfInterestWithinDistance:(double)a3 ofLocation:(id)a4 reply:(id)a5
+- (void)fetchLocationsOfInterestWithinDistance:(double)distance ofLocation:(id)location reply:(id)reply
 {
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  locationCopy = location;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
-    v12 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v9];
+    v12 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __74__RTDaemonClient_fetchLocationsOfInterestWithinDistance_ofLocation_reply___block_invoke;
     v14[3] = &unk_2788C5490;
     v14[4] = self;
     v17 = a2;
-    v18 = a3;
-    v15 = v9;
-    v16 = v10;
-    [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestWithinDistance:v12 ofLocation:v14 handler:a3];
+    distanceCopy = distance;
+    v15 = locationCopy;
+    v16 = replyCopy;
+    [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestWithinDistance:v12 ofLocation:v14 handler:distance];
   }
 
   else
@@ -2019,12 +2019,12 @@ void __74__RTDaemonClient_fetchLocationsOfInterestWithinDistance_ofLocation_repl
   (*(v8 + 16))(v8, v9, *(a1 + 56));
 }
 
-- (void)fetchLocationsOfInterestOfType:(int64_t)a3 reply:(id)a4
+- (void)fetchLocationsOfInterestOfType:(int64_t)type reply:(id)reply
 {
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [RTLearnedPlace placeTypeFromType:a3];
+    v8 = [RTLearnedPlace placeTypeFromType:type];
     learnedLocationManager = self->_learnedLocationManager;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -2033,7 +2033,7 @@ void __74__RTDaemonClient_fetchLocationsOfInterestWithinDistance_ofLocation_repl
     v11[4] = self;
     v13 = a2;
     v14 = v8;
-    v12 = v7;
+    v12 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestWithPlaceType:v8 handler:v11];
   }
 
@@ -2103,11 +2103,11 @@ void __55__RTDaemonClient_fetchLocationsOfInterestOfType_reply___block_invoke_2(
   (*(v8 + 16))(v8, v9, *(a1 + 48));
 }
 
-- (void)fetchAllLocationsOfInterestForSettingsWithReply:(id)a3
+- (void)fetchAllLocationsOfInterestForSettingsWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  replyCopy = reply;
+  v6 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v9[0] = MEMORY[0x277D85DD0];
@@ -2116,7 +2116,7 @@ void __55__RTDaemonClient_fetchLocationsOfInterestOfType_reply___block_invoke_2(
     v9[3] = &unk_2788C5508;
     v9[4] = self;
     v11 = a2;
-    v10 = v5;
+    v10 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchAllLocationsOfInterestWithHandler:v9];
   }
 
@@ -2181,23 +2181,23 @@ void __66__RTDaemonClient_fetchAllLocationsOfInterestForSettingsWithReply___bloc
   (*(v7 + 16))(v7, v8, *(a1 + 48));
 }
 
-- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 reply:(id)a6
+- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)location startDate:(id)date timeInterval:(double)interval reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v12)
+  locationCopy = location;
+  dateCopy = date;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v10];
+    v13 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
     deviceLocationPredictor = self->_deviceLocationPredictor;
-    v15 = [(RTDaemonClient *)self _clientIdentifier];
+    _clientIdentifier = [(RTDaemonClient *)self _clientIdentifier];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __97__RTDaemonClient_fetchNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval_reply___block_invoke;
     v16[3] = &unk_2788C5558;
     v16[4] = self;
-    v17 = v12;
-    [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchNextPredictedLocationsOfInterestFromLocation:v13 startDate:v11 timeInterval:v15 clientIdentifier:v16 handler:a5];
+    v17 = replyCopy;
+    [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchNextPredictedLocationsOfInterestFromLocation:v13 startDate:dateCopy timeInterval:_clientIdentifier clientIdentifier:v16 handler:interval];
   }
 
   else
@@ -2278,12 +2278,12 @@ void __97__RTDaemonClient_fetchNextPredictedLocationsOfInterestFromLocation_star
   }
 }
 
-- (void)fetchPlaceInferencesWithOptions:(id)a3 reply:(id)a4
+- (void)fetchPlaceInferencesWithOptions:(id)options reply:(id)reply
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2295,7 +2295,7 @@ void __97__RTDaemonClient_fetchNextPredictedLocationsOfInterestFromLocation_star
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!optionsCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2303,7 +2303,7 @@ void __97__RTDaemonClient_fetchNextPredictedLocationsOfInterestFromLocation_star
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v21 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "options is required, %@", buf, 0xCu);
       }
     }
@@ -2316,21 +2316,21 @@ void __97__RTDaemonClient_fetchNextPredictedLocationsOfInterestFromLocation_star
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v9 = [v11 errorWithDomain:v12 code:7 userInfo:v14];
 
-    v7[2](v7, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v8 = [(RTDaemonClient *)self queue];
+  queue = [(RTDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__RTDaemonClient_fetchPlaceInferencesWithOptions_reply___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  dispatch_async(v8, block);
+  v16 = optionsCopy;
+  v17 = replyCopy;
+  dispatch_async(queue, block);
 
 LABEL_12:
 }
@@ -2401,12 +2401,12 @@ uint64_t __56__RTDaemonClient_fetchPlaceInferencesWithOptions_reply___block_invo
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)fetchRoutineEnabledWithReply:(id)a3
+- (void)fetchRoutineEnabledWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v4[2](v4, [(RTDaemonClient *)self enabled]);
+    replyCopy[2](replyCopy, [(RTDaemonClient *)self enabled]);
   }
 
   else
@@ -2420,12 +2420,12 @@ uint64_t __56__RTDaemonClient_fetchPlaceInferencesWithOptions_reply___block_invo
   }
 }
 
-- (void)setRoutineEnabled:(BOOL)a3 reply:(id)a4
+- (void)setRoutineEnabled:(BOOL)enabled reply:(id)reply
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  replyCopy = reply;
+  if (replyCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2433,21 +2433,21 @@ uint64_t __56__RTDaemonClient_fetchPlaceInferencesWithOptions_reply___block_invo
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v8 = @"NO";
-        if (v4)
+        if (enabledCopy)
         {
           v8 = @"YES";
         }
 
         v10 = 138412546;
-        v11 = self;
+        selfCopy = self;
         v12 = 2112;
         v13 = v8;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "client, %@, setting CoreRoutine enabled to, %@", &v10, 0x16u);
       }
     }
 
-    [(RTAuthorizationManager *)self->_authorizationManager setRoutineEnabled:v4 withHandler:v6];
-    [(RTDaemonClient *)self setEnabled:v4];
+    [(RTAuthorizationManager *)self->_authorizationManager setRoutineEnabled:enabledCopy withHandler:replyCopy];
+    [(RTDaemonClient *)self setEnabled:enabledCopy];
   }
 
   else
@@ -2461,9 +2461,9 @@ uint64_t __56__RTDaemonClient_fetchPlaceInferencesWithOptions_reply___block_invo
   }
 }
 
-- (void)clearRoutineWithReply:(id)a3
+- (void)clearRoutineWithReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
     purgeManager = self->_purgeManager;
 
@@ -2483,9 +2483,9 @@ uint64_t __56__RTDaemonClient_fetchPlaceInferencesWithOptions_reply___block_invo
   }
 }
 
-- (void)fetchCloudSyncAuthorizationStateWithReply:(id)a3
+- (void)fetchCloudSyncAuthorizationStateWithReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
     accountManager = self->_accountManager;
 
@@ -2505,13 +2505,13 @@ uint64_t __56__RTDaemonClient_fetchPlaceInferencesWithOptions_reply___block_invo
   }
 }
 
-- (void)updateCloudSyncProvisionedForAccount:(BOOL)a3 reply:(id)a4
+- (void)updateCloudSyncProvisionedForAccount:(BOOL)account reply:(id)reply
 {
-  if (a4)
+  if (reply)
   {
     accountManager = self->_accountManager;
 
-    [(RTAccountManager *)accountManager updateCloudSyncProvisionedForAccount:a3 handler:?];
+    [(RTAccountManager *)accountManager updateCloudSyncProvisionedForAccount:account handler:?];
   }
 
   else
@@ -2527,22 +2527,22 @@ uint64_t __56__RTDaemonClient_fetchPlaceInferencesWithOptions_reply___block_invo
   }
 }
 
-- (void)fetchRoutineModeFromLocation:(id)a3 reply:(id)a4
+- (void)fetchRoutineModeFromLocation:(id)location reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  locationCopy = location;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
-    v10 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v7];
+    v10 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __53__RTDaemonClient_fetchRoutineModeFromLocation_reply___block_invoke;
     v12[3] = &unk_2788C55D0;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
+    v13 = locationCopy;
+    v14 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchModeAtLocation:v10 handler:v12];
   }
 
@@ -2607,11 +2607,11 @@ uint64_t __53__RTDaemonClient_fetchRoutineModeFromLocation_reply___block_invoke_
   return (*(*(a1 + 56) + 16))(*(a1 + 56), [MEMORY[0x277D01170] routineModeFromLearnedLocationMode:*(a1 + 72)], *(a1 + 48));
 }
 
-- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)a3 reply:(id)a4
+- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  replyCopy = reply;
+  v7 = replyCopy;
+  if (replyCopy)
   {
     eventModelProvider = self->_eventModelProvider;
     v10[0] = MEMORY[0x277D85DD0];
@@ -2619,8 +2619,8 @@ uint64_t __53__RTDaemonClient_fetchRoutineModeFromLocation_reply___block_invoke_
     v10[2] = __71__RTDaemonClient_fetchLocationsOfInterestAssociatedToIdentifier_reply___block_invoke;
     v10[3] = &unk_2788C5558;
     v10[4] = self;
-    v11 = v6;
-    [(RTEventModelProvider *)eventModelProvider fetchLocationsOfInterestAssociatedToIdentifier:a3 withHandler:v10];
+    v11 = replyCopy;
+    [(RTEventModelProvider *)eventModelProvider fetchLocationsOfInterestAssociatedToIdentifier:identifier withHandler:v10];
   }
 
   else
@@ -2678,11 +2678,11 @@ uint64_t __71__RTDaemonClient_fetchLocationsOfInterestAssociatedToIdentifier_rep
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5 reply:(id)a6
+- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier reply:(id)reply
 {
-  v10 = a6;
-  v11 = v10;
-  if (v10)
+  replyCopy = reply;
+  v11 = replyCopy;
+  if (replyCopy)
   {
     eventModelProvider = self->_eventModelProvider;
     v14[0] = MEMORY[0x277D85DD0];
@@ -2690,8 +2690,8 @@ uint64_t __71__RTDaemonClient_fetchLocationsOfInterestAssociatedToIdentifier_rep
     v14[2] = __103__RTDaemonClient_fetchPredictedLocationsOfInterestAssociatedToTitle_location_calendarIdentifier_reply___block_invoke;
     v14[3] = &unk_2788C5558;
     v14[4] = self;
-    v15 = v10;
-    [(RTEventModelProvider *)eventModelProvider fetchPredictedLocationsOfInterestAssociatedToTitle:a3 location:a4 calendarIdentifier:a5 withHandler:v14];
+    v15 = replyCopy;
+    [(RTEventModelProvider *)eventModelProvider fetchPredictedLocationsOfInterestAssociatedToTitle:title location:location calendarIdentifier:identifier withHandler:v14];
   }
 
   else
@@ -2749,22 +2749,22 @@ uint64_t __103__RTDaemonClient_fetchPredictedLocationsOfInterestAssociatedToTitl
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchPredictedLocationsOfInterestOnDate:(id)a3 reply:(id)a4
+- (void)fetchPredictedLocationsOfInterestOnDate:(id)date reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dateCopy = date;
+  replyCopy = reply;
+  if (replyCopy)
   {
     deviceLocationPredictor = self->_deviceLocationPredictor;
-    v9 = [(RTDaemonClient *)self _clientIdentifier];
+    _clientIdentifier = [(RTDaemonClient *)self _clientIdentifier];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__RTDaemonClient_fetchPredictedLocationsOfInterestOnDate_reply___block_invoke;
     v11[3] = &unk_2788C55A8;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
-    [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchPredictedLocationsOfInterestOnDate:v12 clientIdentifier:v9 withHandler:v11];
+    v12 = dateCopy;
+    v13 = replyCopy;
+    [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchPredictedLocationsOfInterestOnDate:v12 clientIdentifier:_clientIdentifier withHandler:v11];
   }
 
   else
@@ -2849,10 +2849,10 @@ void __64__RTDaemonClient_fetchPredictedLocationsOfInterestOnDate_reply___block_
   }
 }
 
-- (void)fetchCurrentPredictedLocationsOfInterestLookingBack:(double)a3 lookingAhead:(double)a4 reply:(id)a5
+- (void)fetchCurrentPredictedLocationsOfInterestLookingBack:(double)back lookingAhead:(double)ahead reply:(id)reply
 {
-  v9 = a5;
-  if (v9)
+  replyCopy = reply;
+  if (replyCopy)
   {
     v10 = [[RTCurrentMapItemProvider alloc] initWithFingerprintManager:self->_fingerprintManager locationManager:self->_locationManager mapServiceManager:self->_mapServiceManager wifiManager:self->_wifiManager];
     v11[0] = MEMORY[0x277D85DD0];
@@ -2861,10 +2861,10 @@ void __64__RTDaemonClient_fetchPredictedLocationsOfInterestOnDate_reply___block_
     v11[3] = &unk_2788C5620;
     v11[4] = self;
     v13 = a2;
-    v14 = a3;
-    v15 = a4;
-    v12 = v9;
-    [(RTCurrentMapItemProvider *)v10 fetchCurrentMapItemsLookingBack:v11 lookingAhead:a3 handler:a4];
+    backCopy = back;
+    aheadCopy = ahead;
+    v12 = replyCopy;
+    [(RTCurrentMapItemProvider *)v10 fetchCurrentMapItemsLookingBack:v11 lookingAhead:back handler:ahead];
   }
 
   else
@@ -2936,10 +2936,10 @@ void __89__RTDaemonClient_fetchCurrentPredictedLocationsOfInterestLookingBack_lo
   (*(v9 + 16))(v9, v10, *(a1 + 48));
 }
 
-- (void)performBluePOIQueryLookingBack:(double)a3 lookingAhead:(double)a4 reply:(id)a5
+- (void)performBluePOIQueryLookingBack:(double)back lookingAhead:(double)ahead reply:(id)reply
 {
-  v9 = a5;
-  if (v9)
+  replyCopy = reply;
+  if (replyCopy)
   {
     v10 = [[RTCurrentMapItemProvider alloc] initWithFingerprintManager:self->_fingerprintManager locationManager:self->_locationManager mapServiceManager:self->_mapServiceManager wifiManager:self->_wifiManager];
     v11[0] = MEMORY[0x277D85DD0];
@@ -2948,10 +2948,10 @@ void __89__RTDaemonClient_fetchCurrentPredictedLocationsOfInterestLookingBack_lo
     v11[3] = &unk_2788C5670;
     v11[4] = self;
     v13 = a2;
-    v14 = a3;
-    v15 = a4;
-    v12 = v9;
-    [(RTCurrentMapItemProvider *)v10 performBluePOIQueryLookingBack:v11 lookingAhead:a3 handler:a4];
+    backCopy = back;
+    aheadCopy = ahead;
+    v12 = replyCopy;
+    [(RTCurrentMapItemProvider *)v10 performBluePOIQueryLookingBack:v11 lookingAhead:back handler:ahead];
   }
 
   else
@@ -3031,13 +3031,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   (*(v9 + 16))(v9, v11, v10, v12, *(a1 + 48));
 }
 
-- (void)setMonitorVisits:(BOOL)a3
+- (void)setMonitorVisits:(BOOL)visits
 {
-  if (self->_monitorVisits != a3)
+  if (self->_monitorVisits != visits)
   {
-    self->_monitorVisits = a3;
+    self->_monitorVisits = visits;
     visitManager = self->_visitManager;
-    if (a3)
+    if (visits)
     {
       v6 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
       [(RTNotifier *)visitManager addObserver:self selector:sel_onVisitManagerNotification_ name:?];
@@ -3051,13 +3051,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)startMonitoringVisitsWithReply:(id)a3
+- (void)startMonitoringVisitsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTDaemonClient *)self setMonitorVisits:1];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -3071,13 +3071,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)stopMonitoringVisitsWithReply:(id)a3
+- (void)stopMonitoringVisitsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTDaemonClient *)self setMonitorVisits:0];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -3091,13 +3091,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)startLeechingVisitsWithReply:(id)a3
+- (void)startLeechingVisitsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTDaemonClient *)self setLeechVisits:1];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -3111,13 +3111,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)stopLeechingVisitsWithReply:(id)a3
+- (void)stopLeechingVisitsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTDaemonClient *)self setLeechVisits:0];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -3131,13 +3131,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)setLeechVisits:(BOOL)a3
+- (void)setLeechVisits:(BOOL)visits
 {
-  if (self->_leechVisits != a3)
+  if (self->_leechVisits != visits)
   {
-    self->_leechVisits = a3;
+    self->_leechVisits = visits;
     visitManager = self->_visitManager;
-    if (a3)
+    if (visits)
     {
       v6 = +[(RTNotification *)RTVisitManagerLeechedVisitIncidentNotification];
       [(RTNotifier *)visitManager addObserver:self selector:sel_onVisitManagerNotification_ name:?];
@@ -3151,13 +3151,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)startLeechingLowConfidenceVisitsWithReply:(id)a3
+- (void)startLeechingLowConfidenceVisitsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTDaemonClient *)self setLeechLowConfidenceVisits:1];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -3171,13 +3171,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)stopLeechingLowConfidenceVisitsWithReply:(id)a3
+- (void)stopLeechingLowConfidenceVisitsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTDaemonClient *)self setLeechLowConfidenceVisits:0];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -3191,13 +3191,13 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)setLeechLowConfidenceVisits:(BOOL)a3
+- (void)setLeechLowConfidenceVisits:(BOOL)visits
 {
-  if (self->_leechLowConfidenceVisits != a3)
+  if (self->_leechLowConfidenceVisits != visits)
   {
-    self->_leechLowConfidenceVisits = a3;
+    self->_leechLowConfidenceVisits = visits;
     visitManager = self->_visitManager;
-    if (a3)
+    if (visits)
     {
       v6 = +[(RTNotification *)RTVisitManagerLowConfidenceVisitIncidentNotification];
       [(RTNotifier *)visitManager addObserver:self selector:sel_onVisitManagerNotification_ name:?];
@@ -3211,123 +3211,123 @@ void __68__RTDaemonClient_performBluePOIQueryLookingBack_lookingAhead_reply___bl
   }
 }
 
-- (void)_onVisitManagerNotification:(id)a3
+- (void)_onVisitManagerNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
     if ([(RTDaemonClient *)self monitorVisits])
     {
-      v8 = [v4 visitIncident];
+      visitIncident = [notificationCopy visitIncident];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v9 = _rt_log_facility_get_os_log(RTLogFacilityClient);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v20 = 138740227;
-          v21 = v8;
+          v21 = visitIncident;
           v22 = 2112;
-          v23 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "sending visit, %{sensitive}@, to client, %@", &v20, 0x16u);
         }
       }
 
-      v10 = [(RTDaemonClient *)self xpcConnection];
-      v11 = [v10 remoteObjectProxy];
-      [v11 onVisit:v8 withError:0];
+      xpcConnection = [(RTDaemonClient *)self xpcConnection];
+      remoteObjectProxy = [xpcConnection remoteObjectProxy];
+      [remoteObjectProxy onVisit:visitIncident withError:0];
 LABEL_22:
     }
   }
 
   else
   {
-    v12 = [v4 name];
+    name2 = [notificationCopy name];
     v13 = +[(RTNotification *)RTVisitManagerLeechedVisitIncidentNotification];
-    v14 = [v12 isEqualToString:v13];
+    v14 = [name2 isEqualToString:v13];
 
     if (v14)
     {
       if ([(RTDaemonClient *)self leechVisits])
       {
-        v8 = [v4 visitIncident];
+        visitIncident = [notificationCopy visitIncident];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v15 = _rt_log_facility_get_os_log(RTLogFacilityClient);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
             v20 = 138740227;
-            v21 = v8;
+            v21 = visitIncident;
             v22 = 2112;
-            v23 = self;
+            selfCopy3 = self;
             _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "sending leeched visit, %{sensitive}@, to client, %@", &v20, 0x16u);
           }
         }
 
-        v10 = [(RTDaemonClient *)self xpcConnection];
-        v11 = [v10 remoteObjectProxy];
-        [v11 onLeechedVisit:v8 withError:0];
+        xpcConnection = [(RTDaemonClient *)self xpcConnection];
+        remoteObjectProxy = [xpcConnection remoteObjectProxy];
+        [remoteObjectProxy onLeechedVisit:visitIncident withError:0];
         goto LABEL_22;
       }
     }
 
     else
     {
-      v16 = [v4 name];
+      name3 = [notificationCopy name];
       v17 = +[(RTNotification *)RTVisitManagerLowConfidenceVisitIncidentNotification];
-      v18 = [v16 isEqualToString:v17];
+      v18 = [name3 isEqualToString:v17];
 
       if (v18 && [(RTDaemonClient *)self leechLowConfidenceVisits])
       {
-        v8 = [v4 visitIncident];
+        visitIncident = [notificationCopy visitIncident];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v19 = _rt_log_facility_get_os_log(RTLogFacilityClient);
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             v20 = 138740227;
-            v21 = v8;
+            v21 = visitIncident;
             v22 = 2112;
-            v23 = self;
+            selfCopy3 = self;
             _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "sending leeched low conf visit, %{sensitive}@, to client, %@", &v20, 0x16u);
           }
         }
 
-        v10 = [(RTDaemonClient *)self xpcConnection];
-        v11 = [v10 remoteObjectProxy];
-        [v11 onLeechedLowConfidenceVisit:v8 withError:0];
+        xpcConnection = [(RTDaemonClient *)self xpcConnection];
+        remoteObjectProxy = [xpcConnection remoteObjectProxy];
+        [remoteObjectProxy onLeechedLowConfidenceVisit:visitIncident withError:0];
         goto LABEL_22;
       }
     }
   }
 }
 
-- (void)onVisitManagerNotification:(id)a3
+- (void)onVisitManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTDaemonClient *)self queue];
+  notificationCopy = notification;
+  queue = [(RTDaemonClient *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__RTDaemonClient_onVisitManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)startMonitoringPlaceInferencesWithOptions:(id)a3 reply:(id)a4
+- (void)startMonitoringPlaceInferencesWithOptions:(id)options reply:(id)reply
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if ([v6 fidelityPolicy])
+    if ([optionsCopy fidelityPolicy])
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = *MEMORY[0x277D01448];
@@ -3335,13 +3335,13 @@ LABEL_22:
       v15[0] = @"invalid fidelity policy passed. Only Local is accepted";
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
       v11 = [v8 errorWithDomain:v9 code:7 userInfo:v10];
-      v7[2](v7, v11);
+      replyCopy[2](replyCopy, v11);
     }
 
     else
     {
       [(RTDaemonClient *)self setMonitorPlaceInferences:1];
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -3356,13 +3356,13 @@ LABEL_22:
   }
 }
 
-- (void)stopMonitoringPlaceInferencesWithReply:(id)a3
+- (void)stopMonitoringPlaceInferencesWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTDaemonClient *)self setMonitorPlaceInferences:0];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -3376,13 +3376,13 @@ LABEL_22:
   }
 }
 
-- (void)setMonitorPlaceInferences:(BOOL)a3
+- (void)setMonitorPlaceInferences:(BOOL)inferences
 {
-  if (self->_monitorPlaceInferences != a3)
+  if (self->_monitorPlaceInferences != inferences)
   {
-    self->_monitorPlaceInferences = a3;
+    self->_monitorPlaceInferences = inferences;
     locationContextManager = self->_locationContextManager;
-    if (a3)
+    if (inferences)
     {
       v6 = +[(RTNotification *)RTLocationContextManagerPlaceInferencesNotification];
       [(RTNotifier *)locationContextManager addObserver:self selector:sel_onLocationContextManagerNotification_ name:?];
@@ -3396,31 +3396,31 @@ LABEL_22:
   }
 }
 
-- (void)onLocationContextManagerNotification:(id)a3
+- (void)onLocationContextManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTDaemonClient *)self queue];
+  notificationCopy = notification;
+  queue = [(RTDaemonClient *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__RTDaemonClient_onLocationContextManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onLocationContextManagerNotification:(id)a3
+- (void)_onLocationContextManagerNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTLocationContextManagerPlaceInferencesNotification];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8 && [(RTDaemonClient *)self monitorPlaceInferences])
   {
-    v9 = [v5 placeInferences];
+    placeInferences = [notificationCopy placeInferences];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilityLocationContext);
@@ -3434,23 +3434,23 @@ LABEL_22:
         v18 = 2112;
         v19 = v13;
         v20 = 2117;
-        v21 = v9;
+        v21 = placeInferences;
         v22 = 2112;
-        v23 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, %@, sending place inferences, %{sensitive}@, to client, %@", &v16, 0x2Au);
       }
     }
 
-    v14 = [(RTDaemonClient *)self xpcConnection];
-    v15 = [v14 remoteObjectProxy];
-    [v15 onPlaceInferences:v9 error:0];
+    xpcConnection = [(RTDaemonClient *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
+    [remoteObjectProxy onPlaceInferences:placeInferences error:0];
   }
 }
 
-+ (id)filterVisits:(id)a3 executable:(id)a4
++ (id)filterVisits:(id)visits executable:(id)executable
 {
   v14[10] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  visitsCopy = visits;
   v14[0] = @"locationd";
   v14[1] = @"wedge";
   v14[2] = @"loctool";
@@ -3462,18 +3462,18 @@ LABEL_22:
   v14[8] = @"MomentsUIService";
   v14[9] = @"poser";
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
+  executableCopy = executable;
   v8 = [v6 arrayWithObjects:v14 count:10];
-  LODWORD(v6) = [v8 containsObject:v7];
+  LODWORD(v6) = [v8 containsObject:executableCopy];
 
-  if (v6 || ([v5 lastObject], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "type"), v9, v10 != 1))
+  if (v6 || ([visitsCopy lastObject], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "type"), v9, v10 != 1))
   {
-    v12 = v5;
+    v12 = visitsCopy;
   }
 
   else
   {
-    v11 = [v5 mutableCopy];
+    v11 = [visitsCopy mutableCopy];
     [v11 removeLastObject];
     v12 = [v11 copy];
   }
@@ -3481,12 +3481,12 @@ LABEL_22:
   return v12;
 }
 
-- (void)fetchStoredVisitsWithOptions:(id)a3 reply:(id)a4
+- (void)fetchStoredVisitsWithOptions:(id)options reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -3497,7 +3497,7 @@ LABEL_22:
         *buf = 138412546;
         v16 = v12;
         v17 = 2112;
-        v18 = v7;
+        v18 = optionsCopy;
         _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "%@, options, %@", buf, 0x16u);
       }
     }
@@ -3508,8 +3508,8 @@ LABEL_22:
     v13[2] = __53__RTDaemonClient_fetchStoredVisitsWithOptions_reply___block_invoke;
     v13[3] = &unk_2788C5558;
     v13[4] = self;
-    v14 = v8;
-    [(RTVisitConsolidator *)visitConsolidator fetchStoredVisitsWithOptions:v7 handler:v13];
+    v14 = replyCopy;
+    [(RTVisitConsolidator *)visitConsolidator fetchStoredVisitsWithOptions:optionsCopy handler:v13];
   }
 
   else
@@ -3552,11 +3552,11 @@ void __53__RTDaemonClient_fetchStoredVisitsWithOptions_reply___block_invoke_2(ui
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)processHindsightVisitsWithReply:(id)a3
+- (void)processHindsightVisitsWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  replyCopy = reply;
+  v6 = replyCopy;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v9[0] = MEMORY[0x277D85DD0];
@@ -3565,7 +3565,7 @@ void __53__RTDaemonClient_fetchStoredVisitsWithOptions_reply___block_invoke_2(ui
     v9[3] = &unk_2788C56C0;
     v9[4] = self;
     v11 = a2;
-    v10 = v5;
+    v10 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager trainForReason:2 mode:2 handler:v9];
   }
 
@@ -3621,11 +3621,11 @@ uint64_t __50__RTDaemonClient_processHindsightVisitsWithReply___block_invoke_2(u
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchPathToDiagnosticFilesWithOptions:(id)a3 reply:(id)a4
+- (void)fetchPathToDiagnosticFilesWithOptions:(id)options reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
     diagnostics = self->_diagnostics;
     v11[0] = MEMORY[0x277D85DD0];
@@ -3634,8 +3634,8 @@ uint64_t __50__RTDaemonClient_processHindsightVisitsWithReply___block_invoke_2(u
     v11[3] = &unk_2788C5710;
     v11[4] = self;
     v14 = a2;
-    v12 = v7;
-    v13 = v8;
+    v12 = optionsCopy;
+    v13 = replyCopy;
     [(RTDiagnostics *)diagnostics fetchPathToDiagnosticFilesWithOptions:v12 handler:v11];
   }
 
@@ -3702,28 +3702,28 @@ uint64_t __62__RTDaemonClient_fetchPathToDiagnosticFilesWithOptions_reply___bloc
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)onAuthorizationNotification:(id)a3
+- (void)onAuthorizationNotification:(id)notification
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTAuthorizationManagerNotificationRoutineEnabled];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    -[RTDaemonClient setEnabled:](self, "setEnabled:", [v5 enabled]);
+    -[RTDaemonClient setEnabled:](self, "setEnabled:", [notificationCopy enabled]);
   }
 
   else
   {
-    v9 = [v5 name];
+    name2 = [notificationCopy name];
     v10 = +[(RTNotification *)RTAuthorizationManagerNotificationConsoleUserDidChange];
-    v11 = [v9 isEqualToString:v10];
+    v11 = [name2 isEqualToString:v10];
 
     if (v11)
     {
-      v12 = v5;
+      v12 = notificationCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v13 = _rt_log_facility_get_os_log(RTLogFacilityClient);
@@ -3753,7 +3753,7 @@ uint64_t __62__RTDaemonClient_fetchPathToDiagnosticFilesWithOptions_reply___bloc
 
           *&v20[4] = v14;
           v21 = 2112;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2112;
           v24 = v15;
           v25 = 2112;
@@ -3773,13 +3773,13 @@ uint64_t __62__RTDaemonClient_fetchPathToDiagnosticFilesWithOptions_reply___bloc
             *v20 = 138412546;
             *&v20[4] = v18;
             v21 = 2112;
-            v22 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_2304B3000, v17, OS_LOG_TYPE_INFO, "%@, invalidating connection to client, %@", v20, 0x16u);
           }
         }
 
-        v19 = [(RTDaemonClient *)self xpcConnection];
-        [v19 invalidate];
+        xpcConnection = [(RTDaemonClient *)self xpcConnection];
+        [xpcConnection invalidate];
       }
     }
   }
@@ -3787,14 +3787,14 @@ uint64_t __62__RTDaemonClient_fetchPathToDiagnosticFilesWithOptions_reply___bloc
 
 - (void)shutdown
 {
-  v4 = [(RTDaemonClient *)self queue];
+  queue = [(RTDaemonClient *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __26__RTDaemonClient_shutdown__block_invoke;
   v5[3] = &unk_2788C52E8;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(queue, v5);
 }
 
 void __26__RTDaemonClient_shutdown__block_invoke(uint64_t a1)
@@ -3831,22 +3831,22 @@ void __26__RTDaemonClient_shutdown__block_invoke(uint64_t a1)
   [v9 removeObserver:*(a1 + 32)];
 }
 
-- (void)fetchLocationOfInterestForRegion:(id)a3 reply:(id)a4
+- (void)fetchLocationOfInterestForRegion:(id)region reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  regionCopy = region;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
-    v10 = [objc_alloc(MEMORY[0x277D01160]) initWithCLCircularRegion:v7];
+    v10 = [objc_alloc(MEMORY[0x277D01160]) initWithCLCircularRegion:regionCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __57__RTDaemonClient_fetchLocationOfInterestForRegion_reply___block_invoke;
     v12[3] = &unk_2788C5738;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
+    v13 = regionCopy;
+    v14 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchLocationOfInterestForRegion:v10 handler:v12];
   }
 
@@ -3915,22 +3915,22 @@ void __57__RTDaemonClient_fetchLocationOfInterestForRegion_reply___block_invoke_
   (*(v8 + 16))(v8, v9, *(a1 + 56));
 }
 
-- (void)fetchLocationOfInterestAtLocation:(id)a3 reply:(id)a4
+- (void)fetchLocationOfInterestAtLocation:(id)location reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  locationCopy = location;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
-    v10 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v7];
+    v10 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __58__RTDaemonClient_fetchLocationOfInterestAtLocation_reply___block_invoke;
     v12[3] = &unk_2788C5738;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
+    v13 = locationCopy;
+    v14 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchLocationOfInterestAtLocation:v10 handler:v12];
   }
 
@@ -3999,11 +3999,11 @@ void __58__RTDaemonClient_fetchLocationOfInterestAtLocation_reply___block_invoke
   (*(v8 + 16))(v8, v9, *(a1 + 56));
 }
 
-- (void)fetchLocationOfInterestWithIdentifier:(id)a3 reply:(id)a4
+- (void)fetchLocationOfInterestWithIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v11[0] = MEMORY[0x277D85DD0];
@@ -4012,8 +4012,8 @@ void __58__RTDaemonClient_fetchLocationOfInterestAtLocation_reply___block_invoke
     v11[3] = &unk_2788C5738;
     v11[4] = self;
     v14 = a2;
-    v12 = v7;
-    v13 = v8;
+    v12 = identifierCopy;
+    v13 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchLocationOfInterestWithIdentifier:v12 handler:v11];
   }
 
@@ -4082,19 +4082,19 @@ void __62__RTDaemonClient_fetchLocationOfInterestWithIdentifier_reply___block_in
   (*(v8 + 16))(v8, v9, *(a1 + 56));
 }
 
-- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)a3 endDate:(id)a4 reply:(id)a5
+- (void)fetchLocationsOfInterestVisitedBetweenStartDate:(id)date endDate:(id)endDate reply:(id)reply
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dateCopy = date;
+  endDateCopy = endDate;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v9)
+    if (dateCopy)
     {
-      if (v10)
+      if (endDateCopy)
       {
-        if ([v9 compare:v10] != 1)
+        if ([dateCopy compare:endDateCopy] != 1)
         {
           learnedLocationManager = self->_learnedLocationManager;
           v21[0] = MEMORY[0x277D85DD0];
@@ -4103,8 +4103,8 @@ void __62__RTDaemonClient_fetchLocationOfInterestWithIdentifier_reply___block_in
           v21[3] = &unk_2788C5508;
           v21[4] = self;
           v23 = a2;
-          v22 = v11;
-          [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestVisitedBetweenStartDate:v9 endDate:v10 handler:v21];
+          v22 = replyCopy;
+          [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestVisitedBetweenStartDate:dateCopy endDate:endDateCopy handler:v21];
 
           goto LABEL_12;
         }
@@ -4143,7 +4143,7 @@ void __62__RTDaemonClient_fetchLocationOfInterestWithIdentifier_reply___block_in
 
     v18 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:1];
     v19 = [v12 errorWithDomain:v13 code:7 userInfo:v18];
-    (*(v11 + 2))(v11, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 
   else
@@ -4237,12 +4237,12 @@ void __80__RTDaemonClient_fetchLocationsOfInterestVisitedBetweenStartDate_endDat
   }
 }
 
-- (void)fetchTransitionsBetweenStartDate:(id)a3 endDate:(id)a4 reply:(id)a5
+- (void)fetchTransitionsBetweenStartDate:(id)date endDate:(id)endDate reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dateCopy = date;
+  endDateCopy = endDate;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v12 = dispatch_group_create();
     v13 = v12;
@@ -4269,10 +4269,10 @@ void __80__RTDaemonClient_fetchLocationsOfInterestVisitedBetweenStartDate_endDat
       v23 = buf;
       v24 = v25;
       v22 = v13;
-      [(RTLearnedLocationManager *)learnedLocationManager fetchTransitionsBetweenStartDate:v9 endDate:v10 handler:v21];
+      [(RTLearnedLocationManager *)learnedLocationManager fetchTransitionsBetweenStartDate:dateCopy endDate:endDateCopy handler:v21];
     }
 
-    v15 = [(RTDaemonClient *)self queue];
+    queue = [(RTDaemonClient *)self queue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __65__RTDaemonClient_fetchTransitionsBetweenStartDate_endDate_reply___block_invoke_2;
@@ -4281,8 +4281,8 @@ void __80__RTDaemonClient_fetchLocationsOfInterestVisitedBetweenStartDate_endDat
     v20 = a2;
     v18 = v25;
     v16[4] = self;
-    v17 = v11;
-    dispatch_group_notify(v13, v15, v16);
+    v17 = replyCopy;
+    dispatch_group_notify(v13, queue, v16);
 
     _Block_object_dispose(v25, 8);
     _Block_object_dispose(buf, 8);
@@ -4403,11 +4403,11 @@ void __65__RTDaemonClient_fetchTransitionsBetweenStartDate_endDate_reply___block
   (*(*(v21 + 40) + 16))();
 }
 
-- (void)fetchFinerGranularityInferredMapItemWithVisitIdentifier:(id)a3 reply:(id)a4
+- (void)fetchFinerGranularityInferredMapItemWithVisitIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v11[0] = MEMORY[0x277D85DD0];
@@ -4416,8 +4416,8 @@ void __65__RTDaemonClient_fetchTransitionsBetweenStartDate_endDate_reply___block
     v11[3] = &unk_2788C57A8;
     v11[4] = self;
     v14 = a2;
-    v12 = v7;
-    v13 = v8;
+    v12 = identifierCopy;
+    v13 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchFinerGranularityInferredMapItemWithVisitIdentifier:v12 handler:v11];
   }
 
@@ -4488,12 +4488,12 @@ uint64_t __80__RTDaemonClient_fetchFinerGranularityInferredMapItemWithVisitIdent
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)setHintForRegionState:(int64_t)a3 significantRegion:(id)a4 reply:(id)a5
+- (void)setHintForRegionState:(int64_t)state significantRegion:(id)region reply:(id)reply
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (!a3)
+  regionCopy = region;
+  replyCopy = reply;
+  if (!state)
   {
     v16 = MEMORY[0x277CCA9B8];
     v17 = *MEMORY[0x277D01448];
@@ -4502,7 +4502,7 @@ uint64_t __80__RTDaemonClient_fetchFinerGranularityInferredMapItemWithVisitIdent
     v27[0] = @"Region State Unknown. Unable to determine what type of hint we need to inject";
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v20 = [v16 errorWithDomain:v17 code:0 userInfo:v19];
-    v9[2](v9, 0, v20);
+    replyCopy[2](replyCopy, 0, v20);
 
 LABEL_9:
     v21 = MEMORY[0x277CCA9B8];
@@ -4510,22 +4510,22 @@ LABEL_9:
     v25 = @"Region State unsuported yet";
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v23 = [v21 errorWithDomain:v17 code:0 userInfo:v22];
-    v9[2](v9, 0, v23);
+    replyCopy[2](replyCopy, 0, v23);
 
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     hintManager = self->_hintManager;
-    v11 = [objc_alloc(MEMORY[0x277D01160]) initWithCLCircularRegion:v8];
+    v11 = [objc_alloc(MEMORY[0x277D01160]) initWithCLCircularRegion:regionCopy];
     v12 = hintManager;
     v13 = v11;
     v14 = 9;
     goto LABEL_6;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
     v17 = *MEMORY[0x277D01448];
     v18 = *MEMORY[0x277CCA450];
@@ -4533,30 +4533,30 @@ LABEL_9:
   }
 
   v10 = self->_hintManager;
-  v11 = [objc_alloc(MEMORY[0x277D01160]) initWithCLCircularRegion:v8];
+  v11 = [objc_alloc(MEMORY[0x277D01160]) initWithCLCircularRegion:regionCopy];
   v12 = v10;
   v13 = v11;
   v14 = 10;
 LABEL_6:
-  [(RTHintManager *)v12 storeHintSignificantRegion:v13 hintSource:v14 handler:v9];
+  [(RTHintManager *)v12 storeHintSignificantRegion:v13 hintSource:v14 handler:replyCopy];
 
 LABEL_10:
 }
 
-- (void)startMonitoringScenarioTriggerOfType:(unint64_t)a3 reply:(id)a4
+- (void)startMonitoringScenarioTriggerOfType:(unint64_t)type reply:(id)reply
 {
-  v6 = a4;
-  if (v6)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    [(RTDaemonClientRegistrarScenarioTrigger *)self->_scenarioTriggerRegistrar startMonitoringForScenarioTriggerType:a3];
+    [(RTDaemonClientRegistrarScenarioTrigger *)self->_scenarioTriggerRegistrar startMonitoringForScenarioTriggerType:type];
     v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self->_scenarioTriggerRegistrar requiringSecureCoding:1 error:0];
-    v8 = [(RTDaemonClient *)self restorationData];
-    [v8 setObject:v7 forKey:@"scenarioTriggerRegistrar"];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData setObject:v7 forKey:@"scenarioTriggerRegistrar"];
 
-    v9 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v9 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -4570,20 +4570,20 @@ LABEL_10:
   }
 }
 
-- (void)stopMonitoringScenarioTriggerOfType:(unint64_t)a3 reply:(id)a4
+- (void)stopMonitoringScenarioTriggerOfType:(unint64_t)type reply:(id)reply
 {
-  v6 = a4;
-  if (v6)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    [(RTDaemonClientRegistrarScenarioTrigger *)self->_scenarioTriggerRegistrar stopMonitoringForScenarioTriggerType:a3];
+    [(RTDaemonClientRegistrarScenarioTrigger *)self->_scenarioTriggerRegistrar stopMonitoringForScenarioTriggerType:type];
     v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self->_scenarioTriggerRegistrar requiringSecureCoding:1 error:0];
-    v8 = [(RTDaemonClient *)self restorationData];
-    [v8 setObject:v7 forKey:@"scenarioTriggerRegistrar"];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData setObject:v7 forKey:@"scenarioTriggerRegistrar"];
 
-    v9 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v9 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -4597,23 +4597,23 @@ LABEL_10:
   }
 }
 
-- (void)fetchMonitoredScenarioTriggerTypesWithReply:(id)a3
+- (void)fetchMonitoredScenarioTriggerTypesWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     scenarioTriggerRegistrar = self->_scenarioTriggerRegistrar;
     if (scenarioTriggerRegistrar)
     {
-      v6 = [(RTDaemonClientRegistrarScenarioTrigger *)scenarioTriggerRegistrar monitoredScenarioTriggerTypes];
+      monitoredScenarioTriggerTypes = [(RTDaemonClientRegistrarScenarioTrigger *)scenarioTriggerRegistrar monitoredScenarioTriggerTypes];
     }
 
     else
     {
-      v6 = 0;
+      monitoredScenarioTriggerTypes = 0;
     }
 
-    v4[2](v4, v6, 0);
+    replyCopy[2](replyCopy, monitoredScenarioTriggerTypes, 0);
   }
 
   else
@@ -4627,25 +4627,25 @@ LABEL_10:
   }
 }
 
-- (void)scenarioTriggerRegistrar:(id)a3 didReceiveScenarioTriggers:(id)a4 error:(id)a5
+- (void)scenarioTriggerRegistrar:(id)registrar didReceiveScenarioTriggers:(id)triggers error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  triggersCopy = triggers;
+  errorCopy = error;
   if ([(RTDaemonClient *)self enabled]&& [(RTDaemonClient *)self supported])
   {
-    if ([v8 count])
+    if ([triggersCopy count])
     {
-      v10 = [(RTDaemonClient *)self queue];
+      queue = [(RTDaemonClient *)self queue];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __76__RTDaemonClient_scenarioTriggerRegistrar_didReceiveScenarioTriggers_error___block_invoke;
       v13[3] = &unk_2788C4C70;
       v13[4] = self;
-      v14 = v8;
-      v15 = v9;
+      v14 = triggersCopy;
+      v15 = errorCopy;
       v16 = a2;
-      dispatch_async(v10, v13);
+      dispatch_async(queue, v13);
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4665,9 +4665,9 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      v18 = [(RTDaemonClient *)self enabled];
+      enabled = [(RTDaemonClient *)self enabled];
       v19 = 1024;
-      v20 = [(RTDaemonClient *)self supported];
+      supported = [(RTDaemonClient *)self supported];
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "Dropping callback to scenario trigger monitor handler because routine is either not enabled %d or supported %d.", buf, 0xEu);
     }
   }
@@ -4831,23 +4831,23 @@ void __76__RTDaemonClient_scenarioTriggerRegistrar_didReceiveScenarioTriggers_er
   }
 }
 
-- (void)fetchPredictedExitDatesFromLocation:(id)a3 onDate:(id)a4 reply:(id)a5
+- (void)fetchPredictedExitDatesFromLocation:(id)location onDate:(id)date reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  locationCopy = location;
+  dateCopy = date;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v11 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v8];
+    v11 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
     deviceLocationPredictor = self->_deviceLocationPredictor;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __67__RTDaemonClient_fetchPredictedExitDatesFromLocation_onDate_reply___block_invoke;
     v13[3] = &unk_2788C5848;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    v14 = locationCopy;
+    v15 = dateCopy;
+    v16 = replyCopy;
     [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchPredictedExitDatesFromLocation:v11 onDate:v15 withHandler:v13];
   }
 
@@ -4937,24 +4937,24 @@ void __67__RTDaemonClient_fetchPredictedExitDatesFromLocation_onDate_reply___blo
   }
 }
 
-- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 reply:(id)a5
+- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  replyCopy = reply;
+  if (replyCopy)
   {
     deviceLocationPredictor = self->_deviceLocationPredictor;
-    v12 = [(RTDaemonClient *)self _clientIdentifier];
+    _clientIdentifier = [(RTDaemonClient *)self _clientIdentifier];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __82__RTDaemonClient_fetchPredictedLocationsOfInterestBetweenStartDate_endDate_reply___block_invoke;
     v14[3] = &unk_2788C5848;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
-    v17 = v10;
-    [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchPredictedLocationsOfInterestBetweenStartDate:v15 endDate:v16 clientIdentifier:v12 withHandler:v14];
+    v15 = dateCopy;
+    v16 = endDateCopy;
+    v17 = replyCopy;
+    [(RTDeviceLocationPredictor *)deviceLocationPredictor fetchPredictedLocationsOfInterestBetweenStartDate:v15 endDate:v16 clientIdentifier:_clientIdentifier withHandler:v14];
   }
 
   else
@@ -5043,61 +5043,61 @@ void __82__RTDaemonClient_fetchPredictedLocationsOfInterestBetweenStartDate_endD
   }
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  if (![(NSString *)self->_bundleIdentifier isEqualToString:v9])
+  identifierCopy = identifier;
+  if (![(NSString *)self->_bundleIdentifier isEqualToString:identifierCopy])
   {
-    v4 = [v9 copy];
+    v4 = [identifierCopy copy];
     bundleIdentifier = self->_bundleIdentifier;
     self->_bundleIdentifier = v4;
 
     v6 = self->_bundleIdentifier;
-    v7 = [(RTDaemonClient *)self restorationData];
-    v8 = v7;
+    restorationData = [(RTDaemonClient *)self restorationData];
+    v8 = restorationData;
     if (v6)
     {
-      [v7 setObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+      [restorationData setObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
     }
 
     else
     {
-      [v7 removeObjectForKey:@"bundleIdentifier"];
+      [restorationData removeObjectForKey:@"bundleIdentifier"];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setRestorationIdentifier:(id)a3
+- (void)setRestorationIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (identifier)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = a3;
-    v6 = [(RTDaemonClient *)self signingIdentifier];
-    v7 = [v4 stringWithFormat:@"%@-%@", v6, v5];
+    identifierCopy = identifier;
+    signingIdentifier = [(RTDaemonClient *)self signingIdentifier];
+    identifierCopy = [v4 stringWithFormat:@"%@-%@", signingIdentifier, identifierCopy];
 
     restorationIdentifier = self->_restorationIdentifier;
-    self->_restorationIdentifier = v7;
+    self->_restorationIdentifier = identifierCopy;
 
-    v9 = [(RTDaemonClient *)self restorationData];
-    [v9 setObject:self->_restorationIdentifier forKey:@"restorationIdentifier"];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData setObject:self->_restorationIdentifier forKey:@"restorationIdentifier"];
 
-    v10 = [(RTDaemonClient *)self clientManagerDelegate];
-    v11 = [v10 handleRestorationForDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    v11 = [clientManagerDelegate handleRestorationForDaemonClient:self];
 
-    v12 = [v11 scenarioTriggerRegistrar];
-    if (([v12 invocationsPending] & 1) == 0)
+    scenarioTriggerRegistrar = [v11 scenarioTriggerRegistrar];
+    if (([scenarioTriggerRegistrar invocationsPending] & 1) == 0)
     {
-      v13 = [v11 vehicleEventRegistrar];
-      if (![v13 invocationsPending])
+      vehicleEventRegistrar = [v11 vehicleEventRegistrar];
+      if (![vehicleEventRegistrar invocationsPending])
       {
-        v18 = [v11 predictedContextRegistrar];
-        v19 = [v18 invocationsPending];
+        predictedContextRegistrar = [v11 predictedContextRegistrar];
+        invocationsPending = [predictedContextRegistrar invocationsPending];
 
-        if ((v19 & 1) == 0)
+        if ((invocationsPending & 1) == 0)
         {
 LABEL_11:
 
@@ -5116,15 +5116,15 @@ LABEL_6:
           }
         }
 
-        v15 = [v11 xpcConnection];
-        v16 = [v15 processIdentifier];
-        v17 = [(RTDaemonClient *)self queue];
+        xpcConnection = [v11 xpcConnection];
+        processIdentifier = [xpcConnection processIdentifier];
+        queue = [(RTDaemonClient *)self queue];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __43__RTDaemonClient_setRestorationIdentifier___block_invoke;
         v20[3] = &unk_2788C4EA0;
         v21 = v11;
-        [RTLaunchServices createProcessAssertionForPid:v16 timeout:v17 queue:v20 timeoutHandler:10.0];
+        [RTLaunchServices createProcessAssertionForPid:processIdentifier timeout:queue queue:v20 timeoutHandler:10.0];
 
         goto LABEL_11;
       }
@@ -5150,24 +5150,24 @@ void __43__RTDaemonClient_setRestorationIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTargetUserSession:(BOOL)a3
+- (void)setTargetUserSession:(BOOL)session
 {
-  self->_targetUserSession = a3;
-  if (a3)
+  self->_targetUserSession = session;
+  if (session)
   {
-    v5 = [(RTDaemonClient *)self authorizationManager];
+    authorizationManager = [(RTDaemonClient *)self authorizationManager];
     v4 = +[(RTNotification *)RTAuthorizationManagerNotificationConsoleUserDidChange];
-    [v5 addObserver:self selector:sel_onAuthorizationNotification_ name:v4];
+    [authorizationManager addObserver:self selector:sel_onAuthorizationNotification_ name:v4];
   }
 }
 
 - (BOOL)hasReasonToOutliveClientConnection
 {
-  v3 = [(RTDaemonClient *)self restorationIdentifier];
-  if (v3)
+  restorationIdentifier = [(RTDaemonClient *)self restorationIdentifier];
+  if (restorationIdentifier)
   {
-    v4 = [(RTDaemonClient *)self restorationData];
-    v5 = [v4 count] != 0;
+    restorationData = [(RTDaemonClient *)self restorationData];
+    v5 = [restorationData count] != 0;
   }
 
   else
@@ -5215,23 +5215,23 @@ void __25__RTDaemonClient_restore__block_invoke_748(uint64_t a1, void *a2)
 
 - (void)launchClient
 {
-  v3 = [(RTDaemonClient *)self bundleIdentifier];
-  if (v3)
+  bundleIdentifier = [(RTDaemonClient *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v4 = v3;
-    v5 = [(RTDaemonClient *)self restorationIdentifier];
+    v4 = bundleIdentifier;
+    restorationIdentifier = [(RTDaemonClient *)self restorationIdentifier];
 
-    if (v5)
+    if (restorationIdentifier)
     {
-      v6 = [(RTDaemonClient *)self bundleIdentifier];
-      v7 = [(RTDaemonClient *)self restorationIdentifier];
+      bundleIdentifier2 = [(RTDaemonClient *)self bundleIdentifier];
+      restorationIdentifier2 = [(RTDaemonClient *)self restorationIdentifier];
       eventAgentManager = self->_eventAgentManager;
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __30__RTDaemonClient_launchClient__block_invoke;
       v9[3] = &unk_2788C4730;
       v9[4] = self;
-      [RTLaunchServices launchClientWithBundleIdentifier:v6 restorationIdentifier:v7 eventAgentManager:eventAgentManager handler:v9];
+      [RTLaunchServices launchClientWithBundleIdentifier:bundleIdentifier2 restorationIdentifier:restorationIdentifier2 eventAgentManager:eventAgentManager handler:v9];
     }
   }
 }
@@ -5269,11 +5269,11 @@ void __30__RTDaemonClient_launchClient__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)fetchLastVehicleEventsWithReply:(id)a3
+- (void)fetchLastVehicleEventsWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  replyCopy = reply;
+  v5 = replyCopy;
+  if (replyCopy)
   {
     vehicleLocationProvider = self->_vehicleLocationProvider;
     v8[0] = MEMORY[0x277D85DD0];
@@ -5281,7 +5281,7 @@ void __30__RTDaemonClient_launchClient__block_invoke_2(uint64_t a1)
     v8[2] = __50__RTDaemonClient_fetchLastVehicleEventsWithReply___block_invoke;
     v8[3] = &unk_2788C5558;
     v8[4] = self;
-    v9 = v4;
+    v9 = replyCopy;
     [(RTVehicleLocationProvider *)vehicleLocationProvider fetchLastVehicleEventsWithHandler:v8];
   }
 
@@ -5340,19 +5340,19 @@ uint64_t __50__RTDaemonClient_fetchLastVehicleEventsWithReply___block_invoke_2(u
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)vehicleEventAtLocation:(id)a3 notes:(id)a4 reply:(id)a5
+- (void)vehicleEventAtLocation:(id)location notes:(id)notes reply:(id)reply
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (replyCopy)
   {
     vehicleLocationProvider = self->_vehicleLocationProvider;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __53__RTDaemonClient_vehicleEventAtLocation_notes_reply___block_invoke;
     v12[3] = &unk_2788C48C0;
-    v13 = v8;
-    [(RTVehicleLocationProvider *)vehicleLocationProvider vehicleEventAtLocation:a3 notes:a4 handler:v12];
+    v13 = replyCopy;
+    [(RTVehicleLocationProvider *)vehicleLocationProvider vehicleEventAtLocation:location notes:notes handler:v12];
     v11 = v13;
   }
 
@@ -5378,13 +5378,13 @@ uint64_t __53__RTDaemonClient_vehicleEventAtLocation_notes_reply___block_invoke(
   return result;
 }
 
-- (void)clearAllVehicleEventsWithReply:(id)a3
+- (void)clearAllVehicleEventsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTVehicleLocationProvider *)self->_vehicleLocationProvider clearAllVehicleEvents];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -5398,13 +5398,13 @@ uint64_t __53__RTDaemonClient_vehicleEventAtLocation_notes_reply___block_invoke(
   }
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 notes:(id)a4 reply:(id)a5
+- (void)updateVehicleEventWithIdentifier:(id)identifier notes:(id)notes reply:(id)reply
 {
-  v8 = a5;
-  if (v8)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    [(RTVehicleLocationProvider *)self->_vehicleLocationProvider updateVehicleEventWithIdentifier:a3 notes:a4];
-    v8[2](v8, 0);
+    [(RTVehicleLocationProvider *)self->_vehicleLocationProvider updateVehicleEventWithIdentifier:identifier notes:notes];
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -5418,13 +5418,13 @@ uint64_t __53__RTDaemonClient_vehicleEventAtLocation_notes_reply___block_invoke(
   }
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 photo:(id)a4 reply:(id)a5
+- (void)updateVehicleEventWithIdentifier:(id)identifier photo:(id)photo reply:(id)reply
 {
-  v8 = a5;
-  if (v8)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    [(RTVehicleLocationProvider *)self->_vehicleLocationProvider updateVehicleEventWithIdentifier:a3 photo:a4];
-    v8[2](v8, 0);
+    [(RTVehicleLocationProvider *)self->_vehicleLocationProvider updateVehicleEventWithIdentifier:identifier photo:photo];
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -5438,23 +5438,23 @@ uint64_t __53__RTDaemonClient_vehicleEventAtLocation_notes_reply___block_invoke(
   }
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 geoMapItem:(id)a4 reply:(id)a5
+- (void)updateVehicleEventWithIdentifier:(id)identifier geoMapItem:(id)item reply:(id)reply
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  identifierCopy = identifier;
+  itemCopy = item;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
-      if (v10)
+      if (itemCopy)
       {
         mapServiceManager = self->_mapServiceManager;
-        v13 = [MEMORY[0x277CCAD78] UUID];
-        v14 = [MEMORY[0x277CBEAA8] date];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        date = [MEMORY[0x277CBEAA8] date];
         v24 = 0;
-        v15 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:v13 geoMapItem:v10 source:8 creationDate:v14 error:&v24];
+        v15 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:uUID geoMapItem:itemCopy source:8 creationDate:date error:&v24];
         v16 = v24;
 
         if (v16)
@@ -5467,7 +5467,7 @@ uint64_t __53__RTDaemonClient_vehicleEventAtLocation_notes_reply___block_invoke(
             _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
 
-          v11[2](v11, v16);
+          replyCopy[2](replyCopy, v16);
 LABEL_8:
 
           goto LABEL_17;
@@ -5486,7 +5486,7 @@ LABEL_8:
           v26 = @"Map item must be non-nil.";
           v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
           v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v21];
-          v11[2](v11, v22);
+          replyCopy[2](replyCopy, v22);
 
           goto LABEL_8;
         }
@@ -5497,8 +5497,8 @@ LABEL_8:
         v15 = 0;
       }
 
-      [(RTVehicleLocationProvider *)self->_vehicleLocationProvider updateVehicleEventWithIdentifier:v9 mapItem:v15];
-      v11[2](v11, 0);
+      [(RTVehicleLocationProvider *)self->_vehicleLocationProvider updateVehicleEventWithIdentifier:identifierCopy mapItem:v15];
+      replyCopy[2](replyCopy, 0);
       goto LABEL_17;
     }
 
@@ -5517,7 +5517,7 @@ LABEL_8:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "error while calling %@, %@", buf, 0x16u);
     }
 
-    v11[2](v11, v18);
+    replyCopy[2](replyCopy, v18);
   }
 
   else
@@ -5533,13 +5533,13 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 location:(id)a4 reply:(id)a5
+- (void)updateVehicleEventWithIdentifier:(id)identifier location:(id)location reply:(id)reply
 {
-  v8 = a5;
-  if (v8)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    [(RTVehicleLocationProvider *)self->_vehicleLocationProvider updateVehicleEventWithIdentifier:a3 location:a4];
-    v8[2](v8, 0);
+    [(RTVehicleLocationProvider *)self->_vehicleLocationProvider updateVehicleEventWithIdentifier:identifier location:location];
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -5553,13 +5553,13 @@ LABEL_17:
   }
 }
 
-- (void)engageInVehicleEventWithIdentifier:(id)a3 reply:(id)a4
+- (void)engageInVehicleEventWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a4;
-  if (v6)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    [(RTVehicleLocationProvider *)self->_vehicleLocationProvider engageInVehicleEventWithIdentifier:a3];
-    v6[2](v6, 0);
+    [(RTVehicleLocationProvider *)self->_vehicleLocationProvider engageInVehicleEventWithIdentifier:identifier];
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -5573,13 +5573,13 @@ LABEL_17:
   }
 }
 
-- (void)startMonitoringVehicleEventsWithReply:(id)a3
+- (void)startMonitoringVehicleEventsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     [(RTDaemonClient *)self _startMonitoringVehicleEvents];
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -5593,21 +5593,21 @@ LABEL_17:
   }
 }
 
-- (void)stopMonitoringVehicleEventsWithReply:(id)a3
+- (void)stopMonitoringVehicleEventsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClient *)self vehicleEventRegistrar];
-    [v5 stopMonitoringVehicleEvents];
+    vehicleEventRegistrar = [(RTDaemonClient *)self vehicleEventRegistrar];
+    [vehicleEventRegistrar stopMonitoringVehicleEvents];
 
-    v6 = [(RTDaemonClient *)self restorationData];
-    [v6 removeObjectForKey:@"vehicleEventRegistrar"];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData removeObjectForKey:@"vehicleEventRegistrar"];
 
-    v7 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v7 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -5621,11 +5621,11 @@ LABEL_17:
   }
 }
 
-- (void)fetchAutomaticVehicleEventDetectionSupportedWithReply:(id)a3
+- (void)fetchAutomaticVehicleEventDetectionSupportedWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  replyCopy = reply;
+  v5 = replyCopy;
+  if (replyCopy)
   {
     vehicleLocationProvider = self->_vehicleLocationProvider;
     v8[0] = MEMORY[0x277D85DD0];
@@ -5633,7 +5633,7 @@ LABEL_17:
     v8[2] = __72__RTDaemonClient_fetchAutomaticVehicleEventDetectionSupportedWithReply___block_invoke;
     v8[3] = &unk_2788C58B8;
     v8[4] = self;
-    v9 = v4;
+    v9 = replyCopy;
     [(RTVehicleLocationProvider *)vehicleLocationProvider fetchAutomaticVehicleEventDetectionSupportedWithHandler:v8];
   }
 
@@ -5689,25 +5689,25 @@ uint64_t __72__RTDaemonClient_fetchAutomaticVehicleEventDetectionSupportedWithRe
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)vehicleEventRegistrar:(id)a3 didReceiveVehicleEvents:(id)a4 error:(id)a5
+- (void)vehicleEventRegistrar:(id)registrar didReceiveVehicleEvents:(id)events error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTDaemonClient *)self queue];
+  registrarCopy = registrar;
+  eventsCopy = events;
+  errorCopy = error;
+  queue = [(RTDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTDaemonClient_vehicleEventRegistrar_didReceiveVehicleEvents_error___block_invoke;
   block[3] = &unk_2788C50E8;
   block[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v9;
+  v17 = eventsCopy;
+  v18 = errorCopy;
+  v19 = registrarCopy;
   v20 = a2;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v12, block);
+  v13 = registrarCopy;
+  v14 = errorCopy;
+  v15 = eventsCopy;
+  dispatch_async(queue, block);
 }
 
 void __70__RTDaemonClient_vehicleEventRegistrar_didReceiveVehicleEvents_error___block_invoke(uint64_t a1)
@@ -5811,21 +5811,21 @@ void __70__RTDaemonClient_vehicleEventRegistrar_didReceiveVehicleEvents_error___
   [v9 onVehicleEvents:0 error:v5];
 }
 
-- (void)addLocationOfInterestOfType:(int64_t)a3 mapItemStorage:(id)a4 customLabel:(id)a5 reply:(id)a6
+- (void)addLocationOfInterestOfType:(int64_t)type mapItemStorage:(id)storage customLabel:(id)label reply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  storageCopy = storage;
+  labelCopy = label;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v11)
+    if (storageCopy)
     {
       mapServiceManager = self->_mapServiceManager;
-      v15 = [MEMORY[0x277CCAD78] UUID];
-      v16 = [MEMORY[0x277CBEAA8] date];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      date = [MEMORY[0x277CBEAA8] date];
       v27 = 0;
-      v17 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:v15 geoMapItem:v11 source:8 creationDate:v16 error:&v27];
+      v17 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:uUID geoMapItem:storageCopy source:8 creationDate:date error:&v27];
       v18 = v27;
 
       if (v18)
@@ -5838,15 +5838,15 @@ void __70__RTDaemonClient_vehicleEventRegistrar_didReceiveVehicleEvents_error___
           _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
 
-        v13[2](v13, 0, v18);
+        replyCopy[2](replyCopy, 0, v18);
         goto LABEL_14;
       }
 
       if (v17)
       {
         objc_initWeak(buf, self);
-        v20 = [RTLearnedPlace placeTypeFromType:a3];
-        v21 = [(RTDaemonClient *)self learnedLocationManager];
+        v20 = [RTLearnedPlace placeTypeFromType:type];
+        learnedLocationManager = [(RTDaemonClient *)self learnedLocationManager];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __79__RTDaemonClient_addLocationOfInterestOfType_mapItemStorage_customLabel_reply___block_invoke;
@@ -5854,8 +5854,8 @@ void __70__RTDaemonClient_vehicleEventRegistrar_didReceiveVehicleEvents_error___
         objc_copyWeak(v26, buf);
         v26[1] = a2;
         v26[2] = v20;
-        v25 = v13;
-        [v21 addLocationOfInterestWithType:v20 mapItem:v17 customLabel:v12 handler:v24];
+        v25 = replyCopy;
+        [learnedLocationManager addLocationOfInterestWithType:v20 mapItem:v17 customLabel:labelCopy handler:v24];
 
         objc_destroyWeak(v26);
         objc_destroyWeak(buf);
@@ -5874,7 +5874,7 @@ void __70__RTDaemonClient_vehicleEventRegistrar_didReceiveVehicleEvents_error___
     v29 = @"Map item must be non-nil.";
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v17];
-    v13[2](v13, 0, v23);
+    replyCopy[2](replyCopy, 0, v23);
   }
 
   else
@@ -5975,23 +5975,23 @@ void __79__RTDaemonClient_addLocationOfInterestOfType_mapItemStorage_customLabel
   (*(v8 + 16))(v8, v9, *(a1 + 48));
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 mapItemStorage:(id)a5 customLabel:(id)a6 reply:(id)a7
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type mapItemStorage:(id)storage customLabel:(id)label reply:(id)reply
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  identifierCopy = identifier;
+  storageCopy = storage;
+  labelCopy = label;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v14)
+    if (storageCopy)
     {
-      v30 = v13;
+      v30 = identifierCopy;
       mapServiceManager = self->_mapServiceManager;
-      v18 = [MEMORY[0x277CCAD78] UUID];
-      v19 = [MEMORY[0x277CBEAA8] date];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      date = [MEMORY[0x277CBEAA8] date];
       v36 = 0;
-      v20 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:v18 geoMapItem:v14 source:8 creationDate:v19 error:&v36];
+      v20 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:uUID geoMapItem:storageCopy source:8 creationDate:date error:&v36];
       v21 = v36;
 
       if (v21)
@@ -6004,13 +6004,13 @@ void __79__RTDaemonClient_addLocationOfInterestOfType_mapItemStorage_customLabel
           _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
 
-        v16[2](v16, 0, v21);
-        v13 = v30;
+        replyCopy[2](replyCopy, 0, v21);
+        identifierCopy = v30;
       }
 
       else if (v20)
       {
-        v26 = [RTLearnedPlace placeTypeFromType:a4];
+        v26 = [RTLearnedPlace placeTypeFromType:type];
         learnedLocationManager = self->_learnedLocationManager;
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
@@ -6019,16 +6019,16 @@ void __79__RTDaemonClient_addLocationOfInterestOfType_mapItemStorage_customLabel
         v31[4] = self;
         v34 = a2;
         v35 = v26;
-        v32 = v15;
-        v33 = v16;
-        v13 = v30;
+        v32 = labelCopy;
+        v33 = replyCopy;
+        identifierCopy = v30;
         [(RTLearnedLocationManager *)learnedLocationManager updateLocationOfInterestWithIdentifier:v30 type:v26 mapItem:v20 mapItemSource:8 customLabel:v32 handler:v31];
       }
 
       else
       {
         v28 = _rt_log_facility_get_os_log(RTLogFacilityClient);
-        v13 = v30;
+        identifierCopy = v30;
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
@@ -6039,7 +6039,7 @@ void __79__RTDaemonClient_addLocationOfInterestOfType_mapItemStorage_customLabel
         v38 = @"Map item must be non-nil.";
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
         v29 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v20];
-        v16[2](v16, 0, v29);
+        replyCopy[2](replyCopy, 0, v29);
       }
     }
 
@@ -6051,7 +6051,7 @@ void __79__RTDaemonClient_addLocationOfInterestOfType_mapItemStorage_customLabel
       v42[0] = @"requires a valid mapItem.";
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
       v25 = [v23 errorWithDomain:v24 code:0 userInfo:v20];
-      v16[2](v16, 0, v25);
+      replyCopy[2](replyCopy, 0, v25);
     }
   }
 
@@ -6125,21 +6125,21 @@ void __95__RTDaemonClient_updateLocationOfInterestWithIdentifier_type_mapItemSto
   (*(v9 + 16))(v9, v10, *(a1 + 56));
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 mapItemStorage:(id)a4 reply:(id)a5
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier mapItemStorage:(id)storage reply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  identifierCopy = identifier;
+  storageCopy = storage;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v10)
+    if (storageCopy)
     {
       mapServiceManager = self->_mapServiceManager;
-      v13 = [MEMORY[0x277CCAD78] UUID];
-      v14 = [MEMORY[0x277CBEAA8] date];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      date = [MEMORY[0x277CBEAA8] date];
       v25 = 0;
-      v15 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:v13 geoMapItem:v10 source:8 creationDate:v14 error:&v25];
+      v15 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:uUID geoMapItem:storageCopy source:8 creationDate:date error:&v25];
       v16 = v25;
 
       if (v16)
@@ -6152,7 +6152,7 @@ void __95__RTDaemonClient_updateLocationOfInterestWithIdentifier_type_mapItemSto
           _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
 
-        v11[2](v11, v16);
+        replyCopy[2](replyCopy, v16);
         goto LABEL_14;
       }
 
@@ -6165,8 +6165,8 @@ void __95__RTDaemonClient_updateLocationOfInterestWithIdentifier_type_mapItemSto
         v21[3] = &unk_2788C5738;
         v21[4] = self;
         v24 = a2;
-        v22 = v9;
-        v23 = v11;
+        v22 = identifierCopy;
+        v23 = replyCopy;
         [(RTLearnedLocationManager *)learnedLocationManager updateLocationOfInterestWithIdentifier:v22 mapItem:v15 mapItemSource:8 handler:v21];
 
         goto LABEL_14;
@@ -6184,7 +6184,7 @@ void __95__RTDaemonClient_updateLocationOfInterestWithIdentifier_type_mapItemSto
     v27 = @"Map item must be non-nil.";
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v15];
-    v11[2](v11, v20);
+    replyCopy[2](replyCopy, v20);
   }
 
   else
@@ -6252,13 +6252,13 @@ uint64_t __78__RTDaemonClient_updateLocationOfInterestWithIdentifier_mapItemStor
   return result;
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 reply:(id)a5
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type reply:(id)reply
 {
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v11 = [RTLearnedPlace placeTypeFromType:a4];
+    v11 = [RTLearnedPlace placeTypeFromType:type];
     learnedLocationManager = self->_learnedLocationManager;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -6266,9 +6266,9 @@ uint64_t __78__RTDaemonClient_updateLocationOfInterestWithIdentifier_mapItemStor
     v14[3] = &unk_2788C5980;
     v14[4] = self;
     v17 = a2;
-    v15 = v9;
+    v15 = identifierCopy;
     v18 = v11;
-    v16 = v10;
+    v16 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager updateLocationOfInterestWithIdentifier:v15 type:v11 handler:v14];
   }
 
@@ -6340,14 +6340,14 @@ uint64_t __68__RTDaemonClient_updateLocationOfInterestWithIdentifier_type_reply_
   return result;
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 type:(int64_t)a4 customLabel:(id)a5 reply:(id)a6
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier type:(int64_t)type customLabel:(id)label reply:(id)reply
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  identifierCopy = identifier;
+  labelCopy = label;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v14 = [RTLearnedPlace placeTypeFromType:a4];
+    v14 = [RTLearnedPlace placeTypeFromType:type];
     learnedLocationManager = self->_learnedLocationManager;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -6355,10 +6355,10 @@ uint64_t __68__RTDaemonClient_updateLocationOfInterestWithIdentifier_type_reply_
     v17[3] = &unk_2788C59A8;
     v17[4] = self;
     v21 = a2;
-    v18 = v11;
+    v18 = identifierCopy;
     v22 = v14;
-    v19 = v12;
-    v20 = v13;
+    v19 = labelCopy;
+    v20 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager updateLocationOfInterestWithIdentifier:v18 type:v14 customLabel:v19 handler:v17];
   }
 
@@ -6435,11 +6435,11 @@ uint64_t __80__RTDaemonClient_updateLocationOfInterestWithIdentifier_type_custom
   return result;
 }
 
-- (void)updateLocationOfInterestWithIdentifier:(id)a3 customLabel:(id)a4 reply:(id)a5
+- (void)updateLocationOfInterestWithIdentifier:(id)identifier customLabel:(id)label reply:(id)reply
 {
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v13[0] = MEMORY[0x277D85DD0];
@@ -6448,9 +6448,9 @@ uint64_t __80__RTDaemonClient_updateLocationOfInterestWithIdentifier_type_custom
     v13[3] = &unk_2788C5738;
     v13[4] = self;
     v16 = a2;
-    v14 = v9;
-    v15 = v10;
-    [(RTLearnedLocationManager *)learnedLocationManager updateLocationOfInterestWithIdentifier:v14 customLabel:a4 handler:v13];
+    v14 = identifierCopy;
+    v15 = replyCopy;
+    [(RTLearnedLocationManager *)learnedLocationManager updateLocationOfInterestWithIdentifier:v14 customLabel:label handler:v13];
   }
 
   else
@@ -6516,11 +6516,11 @@ uint64_t __75__RTDaemonClient_updateLocationOfInterestWithIdentifier_customLabel
   return result;
 }
 
-- (void)removeLocationOfInterestWithIdentifier:(id)a3 reply:(id)a4
+- (void)removeLocationOfInterestWithIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v11[0] = MEMORY[0x277D85DD0];
@@ -6529,8 +6529,8 @@ uint64_t __75__RTDaemonClient_updateLocationOfInterestWithIdentifier_customLabel
     v11[3] = &unk_2788C59D0;
     v11[4] = self;
     v14 = a2;
-    v12 = v7;
-    v13 = v8;
+    v12 = identifierCopy;
+    v13 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager removeLocationOfInterestWithIdentifier:v12 handler:v11];
   }
 
@@ -6591,11 +6591,11 @@ uint64_t __63__RTDaemonClient_removeLocationOfInterestWithIdentifier_reply___blo
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)removeVisitWithIdentifier:(id)a3 reply:(id)a4
+- (void)removeVisitWithIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v9 = dispatch_group_create();
     v10 = v9;
@@ -6615,23 +6615,23 @@ uint64_t __63__RTDaemonClient_removeLocationOfInterestWithIdentifier_reply___blo
       v19[3] = &unk_2788C5A20;
       v19[4] = self;
       v23 = a2;
-      v20 = v7;
+      v20 = identifierCopy;
       v22 = buf;
       v21 = v10;
       [(RTLearnedLocationManager *)learnedLocationManager removeVisitWithIdentifier:v20 handler:v19];
     }
 
-    v12 = [(RTDaemonClient *)self queue];
+    queue = [(RTDaemonClient *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __50__RTDaemonClient_removeVisitWithIdentifier_reply___block_invoke_772;
     v13[3] = &unk_2788C5A48;
     v17 = buf;
     v18 = a2;
-    v14 = v7;
-    v15 = self;
-    v16 = v8;
-    dispatch_group_notify(v10, v12, v13);
+    v14 = identifierCopy;
+    selfCopy = self;
+    v16 = replyCopy;
+    dispatch_group_notify(v10, queue, v13);
 
     _Block_object_dispose(buf, 8);
   }
@@ -6717,13 +6717,13 @@ void __50__RTDaemonClient_removeVisitWithIdentifier_reply___block_invoke_772(uin
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)extendLifetimeOfVisitsWithIdentifiers:(id)a3 reply:(id)a4
+- (void)extendLifetimeOfVisitsWithIdentifiers:(id)identifiers reply:(id)reply
 {
-  if (a4)
+  if (reply)
   {
     learnedLocationManager = self->_learnedLocationManager;
 
-    [(RTLearnedLocationManager *)learnedLocationManager extendLifetimeOfVisitsWithIdentifiers:a3 handler:?];
+    [(RTLearnedLocationManager *)learnedLocationManager extendLifetimeOfVisitsWithIdentifiers:identifiers handler:?];
   }
 
   else
@@ -6739,11 +6739,11 @@ void __50__RTDaemonClient_removeVisitWithIdentifier_reply___block_invoke_772(uin
   }
 }
 
-- (void)fetchDedupedLocationOfInterestIdentifiersWithIdentifier:(id)a3 reply:(id)a4
+- (void)fetchDedupedLocationOfInterestIdentifiersWithIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (replyCopy)
   {
     learnedLocationManager = self->_learnedLocationManager;
     v11[0] = MEMORY[0x277D85DD0];
@@ -6751,9 +6751,9 @@ void __50__RTDaemonClient_removeVisitWithIdentifier_reply___block_invoke_772(uin
     v11[2] = __80__RTDaemonClient_fetchDedupedLocationOfInterestIdentifiersWithIdentifier_reply___block_invoke;
     v11[3] = &unk_2788C5A70;
     v15 = a2;
-    v12 = v7;
-    v13 = self;
-    v14 = v8;
+    v12 = identifierCopy;
+    selfCopy = self;
+    v14 = replyCopy;
     [(RTLearnedLocationManager *)learnedLocationManager fetchDedupedLocationOfInterestIdentifiersWithIdentifier:v12 handler:v11];
 
     v10 = v12;
@@ -6800,22 +6800,22 @@ void __80__RTDaemonClient_fetchDedupedLocationOfInterestIdentifiersWithIdentifie
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)userInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4 feedback:(id)a5 geoMapItem:(id)a6 reply:(id)a7
+- (void)userInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction feedback:(id)feedback geoMapItem:(id)item reply:(id)reply
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  interestCopy = interest;
+  feedbackCopy = feedback;
+  itemCopy = item;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v14)
+    if (itemCopy)
     {
       mapServiceManager = self->_mapServiceManager;
-      v17 = [MEMORY[0x277CCAD78] UUID];
-      v18 = [MEMORY[0x277CBEAA8] date];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      date = [MEMORY[0x277CBEAA8] date];
       v24 = 0;
-      v19 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:v17 geoMapItem:v14 source:8 creationDate:v18 error:&v24];
+      v19 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:uUID geoMapItem:itemCopy source:8 creationDate:date error:&v24];
       v20 = v24;
 
       if (v20)
@@ -6828,13 +6828,13 @@ void __80__RTDaemonClient_fetchDedupedLocationOfInterestIdentifiersWithIdentifie
           _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
 
-        v15[2](v15, v20);
+        replyCopy[2](replyCopy, v20);
         goto LABEL_14;
       }
 
       if (v19)
       {
-        [(RTEventModelProvider *)self->_eventModelProvider userInteractionWithPredictedLocationOfInterest:v12 interaction:a4 feedback:v13 mapItem:v19 handler:v15];
+        [(RTEventModelProvider *)self->_eventModelProvider userInteractionWithPredictedLocationOfInterest:interestCopy interaction:interaction feedback:feedbackCopy mapItem:v19 handler:replyCopy];
         goto LABEL_14;
       }
     }
@@ -6850,7 +6850,7 @@ void __80__RTDaemonClient_fetchDedupedLocationOfInterestIdentifiersWithIdentifie
     v26 = @"Map item must be non-nil.";
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v19];
-    v15[2](v15, v23);
+    replyCopy[2](replyCopy, v23);
   }
 
   else
@@ -6866,23 +6866,23 @@ void __80__RTDaemonClient_fetchDedupedLocationOfInterestIdentifiersWithIdentifie
 LABEL_14:
 }
 
-- (void)remoteStatusRegistrar:(id)a3 didReceiveRemoteStatus:(int64_t)a4 error:(id)a5
+- (void)remoteStatusRegistrar:(id)registrar didReceiveRemoteStatus:(int64_t)status error:(id)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(RTDaemonClient *)self queue];
+  registrarCopy = registrar;
+  errorCopy = error;
+  queue = [(RTDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__RTDaemonClient_remoteStatusRegistrar_didReceiveRemoteStatus_error___block_invoke;
   block[3] = &unk_2788C5AC0;
   block[4] = self;
-  v15 = v10;
-  v16 = v9;
-  v17 = a4;
+  v15 = errorCopy;
+  v16 = registrarCopy;
+  statusCopy = status;
   v18 = a2;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v12 = registrarCopy;
+  v13 = errorCopy;
+  dispatch_async(queue, block);
 }
 
 void __69__RTDaemonClient_remoteStatusRegistrar_didReceiveRemoteStatus_error___block_invoke(uint64_t a1)
@@ -6988,11 +6988,11 @@ void __69__RTDaemonClient_remoteStatusRegistrar_didReceiveRemoteStatus_error___b
   [v7 onRemoteStatusUpdate:*(a1 + 48) error:*(a1 + 40)];
 }
 
-- (void)fetchRemoteStatusWithReply:(id)a3
+- (void)fetchRemoteStatusWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  replyCopy = reply;
+  v6 = replyCopy;
+  if (replyCopy)
   {
     intermittentGNSSManager = self->_intermittentGNSSManager;
     v9[0] = MEMORY[0x277D85DD0];
@@ -7001,7 +7001,7 @@ void __69__RTDaemonClient_remoteStatusRegistrar_didReceiveRemoteStatus_error___b
     v9[3] = &unk_2788C5AE8;
     v11 = a2;
     v9[4] = self;
-    v10 = v5;
+    v10 = replyCopy;
     [(RTIntermittentGNSSManager *)intermittentGNSSManager fetchRemoteStatusWithHandler:v9];
   }
 
@@ -7042,49 +7042,49 @@ void __45__RTDaemonClient_fetchRemoteStatusWithReply___block_invoke(uint64_t a1,
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)startMonitoringRemoteStatusWithReply:(id)a3
+- (void)startMonitoringRemoteStatusWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClient *)self remoteStatusRegistrar];
-    [v5 startMonitoringForRemoteStatus:0];
-    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
-    v7 = [(RTDaemonClient *)self restorationData];
-    [v7 setObject:v6 forKey:@"remoteStatusRegistrar"];
+    remoteStatusRegistrar = [(RTDaemonClient *)self remoteStatusRegistrar];
+    [remoteStatusRegistrar startMonitoringForRemoteStatus:0];
+    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:remoteStatusRegistrar requiringSecureCoding:1 error:0];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData setObject:v6 forKey:@"remoteStatusRegistrar"];
 
-    v8 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v8 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    remoteStatusRegistrar = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(remoteStatusRegistrar, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, remoteStatusRegistrar, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
     }
   }
 }
 
-- (void)stopMonitoringRemoteStatusWithReply:(id)a3
+- (void)stopMonitoringRemoteStatusWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClient *)self remoteStatusRegistrar];
-    [v5 stopMonitoringRemoteStatus];
+    remoteStatusRegistrar = [(RTDaemonClient *)self remoteStatusRegistrar];
+    [remoteStatusRegistrar stopMonitoringRemoteStatus];
 
-    v6 = [(RTDaemonClient *)self restorationData];
-    [v6 removeObjectForKey:@"remoteStatusRegistrar"];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData removeObjectForKey:@"remoteStatusRegistrar"];
 
-    v7 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v7 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -7098,33 +7098,33 @@ void __45__RTDaemonClient_fetchRemoteStatusWithReply___block_invoke(uint64_t a1,
   }
 }
 
-- (void)fetchLookbackWindowStartDateWithLocation:(id)a3 reply:(id)a4
+- (void)fetchLookbackWindowStartDateWithLocation:(id)location reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  locationCopy = location;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v18 = [RTSensitiveDateClassifier alloc];
-    v17 = [(RTDaemonClient *)self defaultsManager];
-    v9 = [(RTDaemonClient *)self healthKitManager];
-    v10 = [(RTDaemonClient *)self learnedLocationStore];
-    v11 = [(RTDaemonClient *)self locationManager];
-    v12 = [(RTDaemonClient *)self motionActivityManager];
+    defaultsManager = [(RTDaemonClient *)self defaultsManager];
+    healthKitManager = [(RTDaemonClient *)self healthKitManager];
+    learnedLocationStore = [(RTDaemonClient *)self learnedLocationStore];
+    locationManager = [(RTDaemonClient *)self locationManager];
+    motionActivityManager = [(RTDaemonClient *)self motionActivityManager];
     [(RTDaemonClient *)self timerManager];
     v13 = v20 = a2;
     [(RTDaemonClient *)self vehicleLocationProvider];
-    v14 = v19 = v7;
-    v15 = [(RTDaemonClient *)self wifiManager];
-    v16 = [(RTSensitiveDateClassifier *)v18 initWithDefaultsManager:v17 healthKitManager:v9 learnedLocationStore:v10 locationManager:v11 motionActivityManager:v12 timerManager:v13 vehicleLocationProvider:v14 wifiManager:v15];
+    v14 = v19 = locationCopy;
+    wifiManager = [(RTDaemonClient *)self wifiManager];
+    v16 = [(RTSensitiveDateClassifier *)v18 initWithDefaultsManager:defaultsManager healthKitManager:healthKitManager learnedLocationStore:learnedLocationStore locationManager:locationManager motionActivityManager:motionActivityManager timerManager:v13 vehicleLocationProvider:v14 wifiManager:wifiManager];
 
-    v7 = v19;
+    locationCopy = v19;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __65__RTDaemonClient_fetchLookbackWindowStartDateWithLocation_reply___block_invoke;
     v21[3] = &unk_2788C5B10;
     v21[4] = self;
     v23 = v20;
-    v22 = v8;
+    v22 = replyCopy;
     [v16 fetchLookbackWindowStartDateWithLocation:v19 handler:v21];
   }
 
@@ -7186,11 +7186,11 @@ uint64_t __65__RTDaemonClient_fetchLookbackWindowStartDateWithLocation_reply___b
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchStoredLocationsWithContext:(id)a3 reply:(id)a4
+- (void)fetchStoredLocationsWithContext:(id)context reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  replyCopy = reply;
+  if (replyCopy)
   {
     locationManager = self->_locationManager;
     if (locationManager)
@@ -7201,8 +7201,8 @@ uint64_t __65__RTDaemonClient_fetchLookbackWindowStartDateWithLocation_reply___b
       v12[3] = &unk_2788C5A70;
       v12[4] = self;
       v15 = a2;
-      v13 = v7;
-      v14 = v8;
+      v13 = contextCopy;
+      v14 = replyCopy;
       [(RTLocationManager *)locationManager fetchStoredLocationsWithContext:v13 handler:v12];
     }
 
@@ -7215,7 +7215,7 @@ uint64_t __65__RTDaemonClient_fetchLookbackWindowStartDateWithLocation_reply___b
         _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "LocationManager is nil, returning", buf, 2u);
       }
 
-      (*(v8 + 2))(v8, MEMORY[0x277CBEBF8], 0);
+      (*(replyCopy + 2))(replyCopy, MEMORY[0x277CBEBF8], 0);
     }
   }
 
@@ -7281,13 +7281,13 @@ uint64_t __56__RTDaemonClient_fetchStoredLocationsWithContext_reply___block_invo
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)fetchEstimatedLocationAtDate:(id)a3 options:(id)a4 reply:(id)a5
+- (void)fetchEstimatedLocationAtDate:(id)date options:(id)options reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  dateCopy = date;
+  optionsCopy = options;
+  replyCopy = reply;
+  v12 = replyCopy;
+  if (!dateCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -7304,7 +7304,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (!v11)
+  if (!replyCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -7326,8 +7326,8 @@ LABEL_14:
     v17[3] = &unk_2788C5B38;
     v17[4] = self;
     v19 = a2;
-    v18 = v11;
-    [(RTLocationManager *)locationManager fetchEstimatedLocationAtDate:v9 options:v10 handler:v17];
+    v18 = replyCopy;
+    [(RTLocationManager *)locationManager fetchEstimatedLocationAtDate:dateCopy options:optionsCopy handler:v17];
   }
 
   else
@@ -7392,12 +7392,12 @@ uint64_t __61__RTDaemonClient_fetchEstimatedLocationAtDate_options_reply___block
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchLearnedRoutesWithOptions:(id)a3 reply:(id)a4
+- (void)fetchLearnedRoutesWithOptions:(id)options reply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -7405,20 +7405,20 @@ uint64_t __61__RTDaemonClient_fetchEstimatedLocationAtDate_options_reply___block
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = NSStringFromSelector(a2);
-        v11 = [v7 bundleIdentifier];
-        v12 = [v7 bundlePath];
+        bundleIdentifier = [optionsCopy bundleIdentifier];
+        bundlePath = [optionsCopy bundlePath];
         *buf = 138412802;
         v27 = v10;
         v28 = 2112;
-        v29 = v11;
+        v29 = bundleIdentifier;
         v30 = 2112;
-        v31 = v12;
+        v31 = bundlePath;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@,bundleID,%@,bundlePath,%@", buf, 0x20u);
       }
     }
 
-    v13 = [v7 bundleIdentifier];
-    v14 = [v7 bundlePath];
+    bundleIdentifier2 = [optionsCopy bundleIdentifier];
+    bundlePath2 = [optionsCopy bundlePath];
     v15 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsLearnedRoutesFetchSPIBundleAuthBypass"];
     if (v15)
     {
@@ -7427,7 +7427,7 @@ uint64_t __61__RTDaemonClient_fetchEstimatedLocationAtDate_options_reply___block
       {
         v16 = v15;
         v17 = v16;
-        if (v13 && ([v16 isEqualToString:v13]& 1) != 0 || v14 && [v17 isEqualToString:v14])
+        if (bundleIdentifier2 && ([v16 isEqualToString:bundleIdentifier2]& 1) != 0 || bundlePath2 && [v17 isEqualToString:bundlePath2])
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -7440,8 +7440,8 @@ uint64_t __61__RTDaemonClient_fetchEstimatedLocationAtDate_options_reply___block
             }
           }
 
-          v19 = [(RTDaemonClient *)self tripClusterManager];
-          [v19 fetchLearnedRoutesWithOptions:v7 handler:v8];
+          tripClusterManager = [(RTDaemonClient *)self tripClusterManager];
+          [tripClusterManager fetchLearnedRoutesWithOptions:optionsCopy handler:replyCopy];
 
 LABEL_29:
           goto LABEL_30;
@@ -7465,12 +7465,12 @@ LABEL_29:
         }
       }
 
-      v14 = 0;
+      bundlePath2 = 0;
     }
 
     else
     {
-      v20 = v13;
+      v20 = bundleIdentifier2;
     }
 
     v22 = MEMORY[0x277CBFC10];
@@ -7479,19 +7479,19 @@ LABEL_29:
     v23[2] = __54__RTDaemonClient_fetchLearnedRoutesWithOptions_reply___block_invoke;
     v23[3] = &unk_2788C5B88;
     v23[4] = self;
-    v25 = v8;
-    v24 = v7;
-    [v22 _checkAndExerciseLearnedRoutesAuthorizationForBundleID:v20 orBundlePath:v14 completionHandler:v23];
+    v25 = replyCopy;
+    v24 = optionsCopy;
+    [v22 _checkAndExerciseLearnedRoutesAuthorizationForBundleID:v20 orBundlePath:bundlePath2 completionHandler:v23];
 
-    v13 = v20;
+    bundleIdentifier2 = v20;
     goto LABEL_29;
   }
 
-  v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  bundleIdentifier2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(bundleIdentifier2, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, bundleIdentifier2, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", buf, 2u);
   }
 
 LABEL_30:
@@ -7563,35 +7563,35 @@ void __54__RTDaemonClient_fetchLearnedRoutesWithOptions_reply___block_invoke_2(u
   }
 }
 
-- (void)fetchTripClusterMetadataWithOptions:(id)a3 reply:(id)a4
+- (void)fetchTripClusterMetadataWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClient *)self tripClusterManager];
-    [v8 fetchTripClusterMetadataWithOptions:v6 handler:v7];
+    tripClusterManager = [(RTDaemonClient *)self tripClusterManager];
+    [tripClusterManager fetchTripClusterMetadataWithOptions:optionsCopy handler:replyCopy];
   }
 
   else
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripClusterManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(tripClusterManager, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, tripClusterManager, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", v9, 2u);
     }
   }
 }
 
-- (void)purgeTripClusterTable:(id)a3 reply:(id)a4
+- (void)purgeTripClusterTable:(id)table reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  tableCopy = table;
+  replyCopy = reply;
+  if (!replyCopy)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripClusterManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(tripClusterManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -7600,14 +7600,14 @@ void __54__RTDaemonClient_fetchLearnedRoutesWithOptions_reply___block_invoke_2(u
     v9 = "Invalid parameter not satisfying: handler";
     v10 = &v12;
 LABEL_9:
-    _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, v9, v10, 2u);
+    _os_log_error_impl(&dword_2304B3000, tripClusterManager, OS_LOG_TYPE_ERROR, v9, v10, 2u);
     goto LABEL_7;
   }
 
-  if (!v6)
+  if (!tableCopy)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripClusterManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(tripClusterManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -7618,19 +7618,19 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [(RTDaemonClient *)self tripClusterManager];
-  -[NSObject purgeTripClusterTable:handler:](v8, "purgeTripClusterTable:handler:", [v6 intValue], v7);
+  tripClusterManager = [(RTDaemonClient *)self tripClusterManager];
+  -[NSObject purgeTripClusterTable:handler:](tripClusterManager, "purgeTripClusterTable:handler:", [tableCopy intValue], replyCopy);
 LABEL_7:
 }
 
-- (void)purgeTripClusterWithClusterID:(id)a3 reply:(id)a4
+- (void)purgeTripClusterWithClusterID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dCopy = d;
+  replyCopy = reply;
+  if (!replyCopy)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripClusterManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(tripClusterManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -7639,14 +7639,14 @@ LABEL_7:
     v9 = "Invalid parameter not satisfying: handler";
     v10 = &v12;
 LABEL_9:
-    _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, v9, v10, 2u);
+    _os_log_error_impl(&dword_2304B3000, tripClusterManager, OS_LOG_TYPE_ERROR, v9, v10, 2u);
     goto LABEL_7;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripClusterManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(tripClusterManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -7657,174 +7657,174 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [(RTDaemonClient *)self tripClusterManager];
-  [v8 purgeTripClusterWithClusterID:v6 handler:v7];
+  tripClusterManager = [(RTDaemonClient *)self tripClusterManager];
+  [tripClusterManager purgeTripClusterWithClusterID:dCopy handler:replyCopy];
 LABEL_7:
 }
 
-- (void)fetchTripSegmentsWithOptions:(id)a3 reply:(id)a4
+- (void)fetchTripSegmentsWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClient *)self tripSegmentManager];
-    [v8 fetchTripSegmentsWithOptions:v6 handler:v7];
+    tripSegmentManager = [(RTDaemonClient *)self tripSegmentManager];
+    [tripSegmentManager fetchTripSegmentsWithOptions:optionsCopy handler:replyCopy];
   }
 
   else
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripSegmentManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(tripSegmentManager, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, tripSegmentManager, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", v9, 2u);
     }
   }
 }
 
-- (void)fetchLocationsCountForTripSegmentWithOptions:(id)a3 reply:(id)a4
+- (void)fetchLocationsCountForTripSegmentWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClient *)self tripSegmentManager];
-    [v8 fetchLocationsCountForTripSegmentWithOptions:v6 handler:v7];
+    tripSegmentManager = [(RTDaemonClient *)self tripSegmentManager];
+    [tripSegmentManager fetchLocationsCountForTripSegmentWithOptions:optionsCopy handler:replyCopy];
   }
 
   else
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripSegmentManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(tripSegmentManager, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, tripSegmentManager, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
     }
   }
 }
 
-- (void)fetchLocationsForTripSegmentWithOptions:(id)a3 reply:(id)a4
+- (void)fetchLocationsForTripSegmentWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClient *)self tripSegmentManager];
-    [v8 fetchLocationsForTripSegmentWithOptions:v6 handler:v7];
+    tripSegmentManager = [(RTDaemonClient *)self tripSegmentManager];
+    [tripSegmentManager fetchLocationsForTripSegmentWithOptions:optionsCopy handler:replyCopy];
   }
 
   else
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripSegmentManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(tripSegmentManager, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, tripSegmentManager, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
     }
   }
 }
 
-- (void)deleteTripSegmentWithUUID:(id)a3 reply:(id)a4
+- (void)deleteTripSegmentWithUUID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClient *)self tripSegmentManager];
-    [v8 deleteTripSegmentWithUUID:v6 handler:v7];
+    tripSegmentManager = [(RTDaemonClient *)self tripSegmentManager];
+    [tripSegmentManager deleteTripSegmentWithUUID:dCopy handler:replyCopy];
   }
 
   else
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripSegmentManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(tripSegmentManager, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, tripSegmentManager, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
     }
   }
 }
 
-- (void)fetchVehiclesWithOptions:(id)a3 reply:(id)a4
+- (void)fetchVehiclesWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClient *)self vehicleStore];
-    [v8 fetchVehiclesWithOptions:v6 handler:v7];
+    vehicleStore = [(RTDaemonClient *)self vehicleStore];
+    [vehicleStore fetchVehiclesWithOptions:optionsCopy handler:replyCopy];
   }
 
   else
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    vehicleStore = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(vehicleStore, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, vehicleStore, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler", v9, 2u);
     }
   }
 }
 
-- (void)fetchTripSegmentMetadataWithOptions:(id)a3 reply:(id)a4
+- (void)fetchTripSegmentMetadataWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClient *)self tripSegmentManager];
-    [v8 fetchTripSegmentMetadataWithOptions:v6 handler:v7];
+    tripSegmentManager = [(RTDaemonClient *)self tripSegmentManager];
+    [tripSegmentManager fetchTripSegmentMetadataWithOptions:optionsCopy handler:replyCopy];
   }
 
   else
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    tripSegmentManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(tripSegmentManager, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, tripSegmentManager, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: reply", v9, 2u);
     }
   }
 }
 
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(id)a4 reply:(id)a5
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(id)offset reply:(id)reply
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  optionsCopy = options;
+  offsetCopy = offset;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if (v8)
+    if (optionsCopy)
     {
-      if (v9)
+      if (offsetCopy)
       {
-        v11 = [v9 unsignedIntegerValue];
-        v12 = [v8 enumeratedType];
+        unsignedIntegerValue = [offsetCopy unsignedIntegerValue];
+        enumeratedType = [optionsCopy enumeratedType];
         vendedClassesStoreManagerDict = self->_vendedClassesStoreManagerDict;
-        v14 = NSStringFromClass(v12);
+        v14 = NSStringFromClass(enumeratedType);
         v15 = [(NSMutableDictionary *)vendedClassesStoreManagerDict objectForKey:v14];
 
-        v16 = [objc_opt_class() vendedClasses];
-        v17 = [v16 member:v12];
+        vendedClasses = [objc_opt_class() vendedClasses];
+        v17 = [vendedClasses member:enumeratedType];
 
         if (v17)
         {
-          [v15 fetchEnumerableObjectsWithOptions:v8 offset:v11 handler:v10];
+          [v15 fetchEnumerableObjectsWithOptions:optionsCopy offset:unsignedIntegerValue handler:replyCopy];
         }
 
         else
         {
-          v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"no store supports the type expected by options, %@", v8];
+          optionsCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"no store supports the type expected by options, %@", optionsCopy];
           v25 = MEMORY[0x277CCA9B8];
           v26 = *MEMORY[0x277D01448];
           v30 = *MEMORY[0x277CCA450];
-          v31 = v24;
+          v31 = optionsCopy;
           v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
           v28 = [v25 errorWithDomain:v26 code:7 userInfo:v27];
 
-          (*(v10 + 2))(v10, 0, 0, v28);
+          (*(replyCopy + 2))(replyCopy, 0, 0, v28);
         }
 
         goto LABEL_11;
@@ -7853,7 +7853,7 @@ LABEL_7:
     v23 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:1];
     v15 = [v18 errorWithDomain:v19 code:7 userInfo:v23];
 
-    (*(v10 + 2))(v10, 0, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v15);
     goto LABEL_11;
   }
 
@@ -7867,12 +7867,12 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)fetchFamiliarityIndexResultsWithOptions:(id)a3 reply:(id)a4
+- (void)fetchFamiliarityIndexResultsWithOptions:(id)options reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (!optionsCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -7887,7 +7887,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (!v8)
+  if (!replyCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -7902,7 +7902,7 @@ LABEL_14:
 
   if (self->_learnedLocationManager)
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     learnedLocationManager = self->_learnedLocationManager;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -7910,10 +7910,10 @@ LABEL_14:
     v15[3] = &unk_2788C5A70;
     v18 = a2;
     v15[4] = self;
-    v16 = v10;
+    v16 = date;
     v17 = v9;
-    v12 = v10;
-    [(RTLearnedLocationManager *)learnedLocationManager fetchFamiliarityIndexResultsWithOptions:v7 handler:v15];
+    v12 = date;
+    [(RTLearnedLocationManager *)learnedLocationManager fetchFamiliarityIndexResultsWithOptions:optionsCopy handler:v15];
 
 LABEL_8:
     goto LABEL_9;
@@ -7983,11 +7983,11 @@ uint64_t __64__RTDaemonClient_fetchFamiliarityIndexResultsWithOptions_reply___bl
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)fetchAuthorizedLocationStatus:(id)a3
+- (void)fetchAuthorizedLocationStatus:(id)status
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  statusCopy = status;
+  if (!statusCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -8002,7 +8002,7 @@ uint64_t __64__RTDaemonClient_fetchFamiliarityIndexResultsWithOptions_reply___bl
 
   if (self->_authorizedLocationManager)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     authorizedLocationManager = self->_authorizedLocationManager;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -8010,9 +8010,9 @@ uint64_t __64__RTDaemonClient_fetchFamiliarityIndexResultsWithOptions_reply___bl
     v11[3] = &unk_2788C5BB0;
     v14 = a2;
     v11[4] = self;
-    v12 = v7;
-    v13 = v5;
-    v9 = v7;
+    v12 = date;
+    v13 = statusCopy;
+    v9 = date;
     [(RTAuthorizedLocationManager *)authorizedLocationManager fetchAuthorizedLocationExtendedStatus:v11];
   }
 
@@ -8025,7 +8025,7 @@ uint64_t __64__RTDaemonClient_fetchFamiliarityIndexResultsWithOptions_reply___bl
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "AuthorizedLocationManager is nil, returning", buf, 2u);
     }
 
-    (*(v5 + 2))(v5, 0, 0);
+    (*(statusCopy + 2))(statusCopy, 0, 0);
   }
 }
 
@@ -8082,25 +8082,25 @@ uint64_t __48__RTDaemonClient_fetchAuthorizedLocationStatus___block_invoke_2(uin
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)peopleDiscoveryRegistrar:(id)a3 didReceivePeopleDensityUpdate:(id)a4 error:(id)a5
+- (void)peopleDiscoveryRegistrar:(id)registrar didReceivePeopleDensityUpdate:(id)update error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTDaemonClient *)self queue];
+  registrarCopy = registrar;
+  updateCopy = update;
+  errorCopy = error;
+  queue = [(RTDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__RTDaemonClient_peopleDiscoveryRegistrar_didReceivePeopleDensityUpdate_error___block_invoke;
   block[3] = &unk_2788C50E8;
   block[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v9;
+  v17 = updateCopy;
+  v18 = errorCopy;
+  v19 = registrarCopy;
   v20 = a2;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v12, block);
+  v13 = registrarCopy;
+  v14 = errorCopy;
+  v15 = updateCopy;
+  dispatch_async(queue, block);
 }
 
 void __79__RTDaemonClient_peopleDiscoveryRegistrar_didReceivePeopleDensityUpdate_error___block_invoke(uint64_t a1)
@@ -8204,33 +8204,33 @@ void __79__RTDaemonClient_peopleDiscoveryRegistrar_didReceivePeopleDensityUpdate
   [v9 onDensityUpdate:0 error:v5];
 }
 
-- (void)startMonitoringForPeopleDiscoveryWithIdentifier:(id)a3 configuration:(id)a4 reply:(id)a5
+- (void)startMonitoringForPeopleDiscoveryWithIdentifier:(id)identifier configuration:(id)configuration reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412546;
-      v16 = v8;
+      v16 = identifierCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = configurationCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_DEFAULT, "identifier %@, configuration %@", &v15, 0x16u);
     }
 
-    [(RTDaemonClientRegistrarPeopleDiscovery *)self->_peopleDiscoveryRegistrar startMonitoringForPeopleDiscoveryWithIdentifier:v8 configuration:v9];
+    [(RTDaemonClientRegistrarPeopleDiscovery *)self->_peopleDiscoveryRegistrar startMonitoringForPeopleDiscoveryWithIdentifier:identifierCopy configuration:configurationCopy];
     v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self->_peopleDiscoveryRegistrar requiringSecureCoding:1 error:0];
-    v13 = [(RTDaemonClient *)self restorationData];
-    [v13 setObject:v12 forKey:@"peopleDiscoveryRegistrar"];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData setObject:v12 forKey:@"peopleDiscoveryRegistrar"];
 
-    v14 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v14 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -8244,19 +8244,19 @@ void __79__RTDaemonClient_peopleDiscoveryRegistrar_didReceivePeopleDensityUpdate
   }
 }
 
-- (void)stopMonitoringForPeopleDiscoveryWithIdentifier:(id)a3 reply:(id)a4
+- (void)stopMonitoringForPeopleDiscoveryWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a4;
-  if (v6)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    [(RTDaemonClientRegistrarPeopleDiscovery *)self->_peopleDiscoveryRegistrar stopMonitoringForPeopleDiscoveryWithIdentifier:a3];
-    v7 = [(RTDaemonClient *)self restorationData];
-    [v7 removeObjectForKey:@"peopleDiscoveryRegistrar"];
+    [(RTDaemonClientRegistrarPeopleDiscovery *)self->_peopleDiscoveryRegistrar stopMonitoringForPeopleDiscoveryWithIdentifier:identifier];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData removeObjectForKey:@"peopleDiscoveryRegistrar"];
 
-    v8 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v8 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -8270,13 +8270,13 @@ void __79__RTDaemonClient_peopleDiscoveryRegistrar_didReceivePeopleDensityUpdate
   }
 }
 
-- (void)fetchProximityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)fetchProximityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (!dateCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -8292,7 +8292,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v10)
+  if (!endDateCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -8305,10 +8305,10 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v12 = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isProximityEventsEnabled];
+  isProximityEventsEnabled = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isProximityEventsEnabled];
   v13 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (!v12)
+  if (!isProximityEventsEnabled)
   {
     if (v14)
     {
@@ -8323,7 +8323,7 @@ LABEL_15:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v16 = [v18 errorWithDomain:v19 code:13 userInfo:v20];
 
-    v11[2](v11, MEMORY[0x277CBEBF8], v16);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v16);
     goto LABEL_15;
   }
 
@@ -8340,8 +8340,8 @@ LABEL_15:
   v21[3] = &unk_2788C5508;
   v21[4] = self;
   v23 = a2;
-  v22 = v11;
-  [(RTPeopleDiscoveryProvider *)peopleDiscoveryProvider fetchProximityHistoryFromStartDate:v9 endDate:v10 completionHandler:v21];
+  v22 = handlerCopy;
+  [(RTPeopleDiscoveryProvider *)peopleDiscoveryProvider fetchProximityHistoryFromStartDate:dateCopy endDate:endDateCopy completionHandler:v21];
 
 LABEL_16:
 }
@@ -8393,12 +8393,12 @@ uint64_t __79__RTDaemonClient_fetchProximityHistoryFromStartDate_endDate_complet
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchProximityHistoryFromEventIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchProximityHistoryFromEventIDs:(id)ds completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (!dsCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -8410,10 +8410,10 @@ uint64_t __79__RTDaemonClient_fetchProximityHistoryFromStartDate_endDate_complet
     goto LABEL_11;
   }
 
-  v9 = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isProximityEventsEnabled];
+  isProximityEventsEnabled = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isProximityEventsEnabled];
   v10 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (!v9)
+  if (!isProximityEventsEnabled)
   {
     if (v11)
     {
@@ -8428,7 +8428,7 @@ uint64_t __79__RTDaemonClient_fetchProximityHistoryFromStartDate_endDate_complet
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v13 = [v14 errorWithDomain:v15 code:13 userInfo:v16];
 
-    v8[2](v8, MEMORY[0x277CBEBF8], v13);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v13);
 LABEL_11:
 
     goto LABEL_12;
@@ -8447,8 +8447,8 @@ LABEL_11:
   v17[3] = &unk_2788C5508;
   v17[4] = self;
   v19 = a2;
-  v18 = v8;
-  [(RTPeopleDiscoveryProvider *)peopleDiscoveryProvider fetchProximityHistoryFromEventIDs:v7 completionHandler:v17];
+  v18 = handlerCopy;
+  [(RTPeopleDiscoveryProvider *)peopleDiscoveryProvider fetchProximityHistoryFromEventIDs:dsCopy completionHandler:v17];
 
 LABEL_12:
 }
@@ -8500,11 +8500,11 @@ uint64_t __70__RTDaemonClient_fetchProximityHistoryFromEventIDs_completionHandle
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchPeopleCountEventsHistory:(id)a3 completionHandler:(id)a4
+- (void)fetchPeopleCountEventsHistory:(id)history completionHandler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (history)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -8520,7 +8520,7 @@ uint64_t __70__RTDaemonClient_fetchProximityHistoryFromEventIDs_completionHandle
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v10 = [v7 errorWithDomain:v8 code:10 userInfo:v9];
 
-    v5[2](v5, MEMORY[0x277CBEBF8], v10);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v10);
   }
 
   else
@@ -8534,14 +8534,14 @@ uint64_t __70__RTDaemonClient_fetchProximityHistoryFromEventIDs_completionHandle
   }
 }
 
-- (void)fetchOngoingPeopleDensity:(id)a3
+- (void)fetchOngoingPeopleDensity:(id)density
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isPeopleDensityEventsEnabled];
+  densityCopy = density;
+  isPeopleDensityEventsEnabled = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isPeopleDensityEventsEnabled];
   v7 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isPeopleDensityEventsEnabled)
   {
     if (v8)
     {
@@ -8556,7 +8556,7 @@ uint64_t __70__RTDaemonClient_fetchProximityHistoryFromEventIDs_completionHandle
     v14[3] = &unk_2788C5BD8;
     v14[4] = self;
     v16 = a2;
-    v15 = v5;
+    v15 = densityCopy;
     [(RTPeopleDiscoveryProvider *)peopleDiscoveryProvider fetchMostRecentPeopleDensity:v14];
   }
 
@@ -8575,7 +8575,7 @@ uint64_t __70__RTDaemonClient_fetchProximityHistoryFromEventIDs_completionHandle
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v13 = [v10 errorWithDomain:v11 code:13 userInfo:v12];
 
-    (*(v5 + 2))(v5, 0, v13);
+    (*(densityCopy + 2))(densityCopy, 0, v13);
   }
 }
 
@@ -8626,13 +8626,13 @@ uint64_t __44__RTDaemonClient_fetchOngoingPeopleDensity___block_invoke_2(uint64_
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchPeopleDensityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)fetchPeopleDensityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (!dateCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -8648,7 +8648,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v10)
+  if (!endDateCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -8661,10 +8661,10 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v12 = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isPeopleDensityEventsEnabled];
+  isPeopleDensityEventsEnabled = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isPeopleDensityEventsEnabled];
   v13 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (!v12)
+  if (!isPeopleDensityEventsEnabled)
   {
     if (v14)
     {
@@ -8679,7 +8679,7 @@ LABEL_15:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v16 = [v18 errorWithDomain:v19 code:13 userInfo:v20];
 
-    v11[2](v11, MEMORY[0x277CBEBF8], v16);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v16);
     goto LABEL_15;
   }
 
@@ -8696,8 +8696,8 @@ LABEL_15:
   v21[3] = &unk_2788C5508;
   v21[4] = self;
   v23 = a2;
-  v22 = v11;
-  [(RTPeopleDiscoveryProvider *)peopleDiscoveryProvider fetchPeopleDensityHistoryFromStartDate:v9 endDate:v10 completionHandler:v21];
+  v22 = handlerCopy;
+  [(RTPeopleDiscoveryProvider *)peopleDiscoveryProvider fetchPeopleDensityHistoryFromStartDate:dateCopy endDate:endDateCopy completionHandler:v21];
 
 LABEL_16:
 }
@@ -8749,17 +8749,17 @@ uint64_t __83__RTDaemonClient_fetchPeopleDensityHistoryFromStartDate_endDate_com
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchContactScoresFromContactIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchContactScoresFromContactIDs:(id)ds completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy)
   {
-    v8 = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isProximityEventsEnabled];
+    isProximityEventsEnabled = [(RTPeopleDiscoveryProvider *)self->_peopleDiscoveryProvider isProximityEventsEnabled];
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (isProximityEventsEnabled)
     {
       if (v10)
       {
@@ -8796,7 +8796,7 @@ uint64_t __83__RTDaemonClient_fetchPeopleDensityHistoryFromStartDate_endDate_com
     v17 = [v13 dictionaryWithObjects:v14 forKeys:v15 count:1];
     v16 = [v11 errorWithDomain:v12 code:13 userInfo:v17];
 
-    v7[2](v7, MEMORY[0x277CBEBF8], v16);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v16);
   }
 
   else
@@ -8810,9 +8810,9 @@ uint64_t __83__RTDaemonClient_fetchPeopleDensityHistoryFromStartDate_endDate_com
   }
 }
 
-- (void)fetchFormattedPostalAddressesFromMeCard:(id)a3
+- (void)fetchFormattedPostalAddressesFromMeCard:(id)card
 {
-  if (a3)
+  if (card)
   {
     contactsManager = self->_contactsManager;
 
@@ -8832,25 +8832,25 @@ uint64_t __83__RTDaemonClient_fetchPeopleDensityHistoryFromStartDate_endDate_com
   }
 }
 
-- (void)predictedContextRegistrar:(id)a3 didReceivePredictedContextResult:(id)a4 error:(id)a5
+- (void)predictedContextRegistrar:(id)registrar didReceivePredictedContextResult:(id)result error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTDaemonClient *)self queue];
+  registrarCopy = registrar;
+  resultCopy = result;
+  errorCopy = error;
+  queue = [(RTDaemonClient *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__RTDaemonClient_predictedContextRegistrar_didReceivePredictedContextResult_error___block_invoke;
   block[3] = &unk_2788C50E8;
   block[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v9;
+  v17 = resultCopy;
+  v18 = errorCopy;
+  v19 = registrarCopy;
   v20 = a2;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v12, block);
+  v13 = registrarCopy;
+  v14 = errorCopy;
+  v15 = resultCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__RTDaemonClient_predictedContextRegistrar_didReceivePredictedContextResult_error___block_invoke(uint64_t a1)
@@ -8954,25 +8954,25 @@ void __83__RTDaemonClient_predictedContextRegistrar_didReceivePredictedContextRe
   [v9 onPredictedContextResult:0 error:v5];
 }
 
-- (void)fetchPredictedContextWithOptions:(id)a3 reply:(id)a4
+- (void)fetchPredictedContextWithOptions:(id)options reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [(RTDaemonClient *)self queue];
+    date = [MEMORY[0x277CBEAA8] date];
+    queue = [(RTDaemonClient *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__RTDaemonClient_fetchPredictedContextWithOptions_reply___block_invoke;
     block[3] = &unk_2788C5110;
     block[4] = self;
     v16 = a2;
-    v13 = v7;
-    v14 = v9;
-    v15 = v8;
-    v11 = v9;
-    dispatch_async(v10, block);
+    v13 = optionsCopy;
+    v14 = date;
+    v15 = replyCopy;
+    v11 = date;
+    dispatch_async(queue, block);
   }
 
   else
@@ -9033,23 +9033,23 @@ void __57__RTDaemonClient_fetchPredictedContextWithOptions_reply___block_invoke_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)startMonitoringPredictedContextWithOptions:(id)a3 reply:(id)a4
+- (void)startMonitoringPredictedContextWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = [(RTDaemonClient *)self predictedContextRegistrar];
-    [v8 startMonitoringForPredictedContextWithOptions:v6 error:0];
+    predictedContextRegistrar = [(RTDaemonClient *)self predictedContextRegistrar];
+    [predictedContextRegistrar startMonitoringForPredictedContextWithOptions:optionsCopy error:0];
 
     v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self->_predictedContextRegistrar requiringSecureCoding:1 error:0];
-    v10 = [(RTDaemonClient *)self restorationData];
-    [v10 setObject:v9 forKey:@"predictedContextRegistrar"];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData setObject:v9 forKey:@"predictedContextRegistrar"];
 
-    v11 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v11 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -9063,21 +9063,21 @@ void __57__RTDaemonClient_fetchPredictedContextWithOptions_reply___block_invoke_
   }
 }
 
-- (void)stopMonitoringPredictedContextWithReply:(id)a3
+- (void)stopMonitoringPredictedContextWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [(RTDaemonClient *)self predictedContextRegistrar];
-    [v5 stopMonitoringForPredictedContext];
+    predictedContextRegistrar = [(RTDaemonClient *)self predictedContextRegistrar];
+    [predictedContextRegistrar stopMonitoringForPredictedContext];
 
-    v6 = [(RTDaemonClient *)self restorationData];
-    [v6 removeObjectForKey:@"predictedContextRegistrar"];
+    restorationData = [(RTDaemonClient *)self restorationData];
+    [restorationData removeObjectForKey:@"predictedContextRegistrar"];
 
-    v7 = [(RTDaemonClient *)self clientManagerDelegate];
-    [v7 saveDaemonClient:self];
+    clientManagerDelegate = [(RTDaemonClient *)self clientManagerDelegate];
+    [clientManagerDelegate saveDaemonClient:self];
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -9091,15 +9091,15 @@ void __57__RTDaemonClient_fetchPredictedContextWithOptions_reply___block_invoke_
   }
 }
 
-- (void)addElevations:(id)a3 handler:(id)a4
+- (void)addElevations:(id)elevations handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  elevationsCopy = elevations;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!elevationsCopy)
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    elevationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(elevationManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -9108,14 +9108,14 @@ void __57__RTDaemonClient_fetchPredictedContextWithOptions_reply___block_invoke_
     v10 = "Invalid parameter not satisfying: elevations";
     v11 = &v13;
 LABEL_9:
-    _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, v10, v11, 2u);
+    _os_log_error_impl(&dword_2304B3000, elevationManager, OS_LOG_TYPE_ERROR, v10, v11, 2u);
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    elevationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(elevationManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -9126,20 +9126,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(RTDaemonClient *)self elevationManager];
-  [v9 addElevations:v6 handler:v8];
+  elevationManager = [(RTDaemonClient *)self elevationManager];
+  [elevationManager addElevations:elevationsCopy handler:v8];
 LABEL_7:
 }
 
-- (void)fetchElevationsWithOptions:(id)a3 reply:(id)a4
+- (void)fetchElevationsWithOptions:(id)options reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  optionsCopy = options;
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (!optionsCopy)
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    elevationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(elevationManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -9148,14 +9148,14 @@ LABEL_7:
     v10 = "Invalid parameter not satisfying: options";
     v11 = &v13;
 LABEL_9:
-    _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, v10, v11, 2u);
+    _os_log_error_impl(&dword_2304B3000, elevationManager, OS_LOG_TYPE_ERROR, v10, v11, 2u);
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!replyCopy)
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    elevationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(elevationManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -9166,20 +9166,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(RTDaemonClient *)self elevationManager];
-  [v9 fetchElevationsWithOptions:v6 handler:v8];
+  elevationManager = [(RTDaemonClient *)self elevationManager];
+  [elevationManager fetchElevationsWithOptions:optionsCopy handler:v8];
 LABEL_7:
 }
 
-- (void)fetchElevationsWithContext:(id)a3 reply:(id)a4
+- (void)fetchElevationsWithContext:(id)context reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  contextCopy = context;
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (!contextCopy)
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    elevationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(elevationManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -9188,14 +9188,14 @@ LABEL_7:
     v10 = "Invalid parameter not satisfying: context";
     v11 = &v13;
 LABEL_9:
-    _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, v10, v11, 2u);
+    _os_log_error_impl(&dword_2304B3000, elevationManager, OS_LOG_TYPE_ERROR, v10, v11, 2u);
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!replyCopy)
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    elevationManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(elevationManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
@@ -9206,21 +9206,21 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(RTDaemonClient *)self elevationManager];
-  [v9 fetchElevationsWithContext:v6 handler:v8];
+  elevationManager = [(RTDaemonClient *)self elevationManager];
+  [elevationManager fetchElevationsWithContext:contextCopy handler:v8];
 LABEL_7:
 }
 
-- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)a3 reply:(id)a4
+- (void)fetchBackgroundInertialOdometrySamplesWithOptions:(id)options reply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  optionsCopy = options;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (!optionsCopy)
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    backgroundInertialOdometryManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(backgroundInertialOdometryManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -9228,14 +9228,14 @@ LABEL_7:
     LOWORD(v16) = 0;
     v15 = "Invalid parameter not satisfying: options";
 LABEL_13:
-    _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, v15, &v16, 2u);
+    _os_log_error_impl(&dword_2304B3000, backgroundInertialOdometryManager, OS_LOG_TYPE_ERROR, v15, &v16, 2u);
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!replyCopy)
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    backgroundInertialOdometryManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(backgroundInertialOdometryManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -9261,21 +9261,21 @@ LABEL_13:
     }
   }
 
-  v14 = [(RTDaemonClient *)self backgroundInertialOdometryManager];
-  [v14 fetchBackgroundInertialOdometrySamplesWithOptions:v7 handler:v9];
+  backgroundInertialOdometryManager = [(RTDaemonClient *)self backgroundInertialOdometryManager];
+  [backgroundInertialOdometryManager fetchBackgroundInertialOdometrySamplesWithOptions:optionsCopy handler:v9];
 LABEL_11:
 }
 
-- (void)addBackgroundInertialOdometrySamples:(id)a3 reply:(id)a4
+- (void)addBackgroundInertialOdometrySamples:(id)samples reply:(id)reply
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  samplesCopy = samples;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (!samplesCopy)
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    backgroundInertialOdometryManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(backgroundInertialOdometryManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -9283,14 +9283,14 @@ LABEL_11:
     LOWORD(v16) = 0;
     v15 = "Invalid parameter not satisfying: samples";
 LABEL_13:
-    _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, v15, &v16, 2u);
+    _os_log_error_impl(&dword_2304B3000, backgroundInertialOdometryManager, OS_LOG_TYPE_ERROR, v15, &v16, 2u);
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!replyCopy)
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    backgroundInertialOdometryManager = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(backgroundInertialOdometryManager, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -9313,24 +9313,24 @@ LABEL_13:
       v18 = 2112;
       v19 = v13;
       v20 = 1029;
-      v21 = [v7 count];
+      v21 = [samplesCopy count];
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@,%@ invoked with %{sensitive}d samples", &v16, 0x1Cu);
     }
   }
 
-  v14 = [(RTDaemonClient *)self backgroundInertialOdometryManager];
-  [v14 addBackgroundInertialOdometrySamples:v7 handler:v9];
+  backgroundInertialOdometryManager = [(RTDaemonClient *)self backgroundInertialOdometryManager];
+  [backgroundInertialOdometryManager addBackgroundInertialOdometrySamples:samplesCopy handler:v9];
 LABEL_11:
 }
 
-- (void)submitUserCurationForVisitDateRange:(id)a3 newLabel:(id)a4 handler:(id)a5
+- (void)submitUserCurationForVisitDateRange:(id)range newLabel:(id)label handler:(id)handler
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  rangeCopy = range;
+  labelCopy = label;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (!rangeCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -9345,7 +9345,7 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -9374,17 +9374,17 @@ LABEL_17:
     }
   }
 
-  if (!v10)
+  if (!labelCopy)
   {
     v20 = 0;
     goto LABEL_20;
   }
 
-  v17 = [(RTDaemonClient *)self mapServiceManager];
-  v18 = [MEMORY[0x277CCAD78] UUID];
-  v19 = [MEMORY[0x277CBEAA8] date];
+  mapServiceManager = [(RTDaemonClient *)self mapServiceManager];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  date = [MEMORY[0x277CBEAA8] date];
   v39 = 0;
-  v20 = [v17 mapItemWithIdentifier:v18 geoMapItemStorage:v10 source:8 creationDate:v19 error:&v39];
+  v20 = [mapServiceManager mapItemWithIdentifier:uUID geoMapItemStorage:labelCopy source:8 creationDate:date error:&v39];
   v21 = v39;
 
   if (!v21)
@@ -9415,9 +9415,9 @@ LABEL_17:
 
 LABEL_20:
     objc_initWeak(buf, self);
-    v24 = [(RTDaemonClient *)self userCurationManager];
-    v25 = [v9 startDate];
-    v26 = [v9 endDate];
+    userCurationManager = [(RTDaemonClient *)self userCurationManager];
+    startDate = [rangeCopy startDate];
+    endDate = [rangeCopy endDate];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __71__RTDaemonClient_submitUserCurationForVisitDateRange_newLabel_handler___block_invoke;
@@ -9426,7 +9426,7 @@ LABEL_20:
     objc_copyWeak(v38, buf);
     v36[4] = self;
     v38[1] = a2;
-    [v24 createAndStoreCurationWithEntryDate:v25 exitDate:v26 curatedLabel:v20 handler:v36];
+    [userCurationManager createAndStoreCurationWithEntryDate:startDate exitDate:endDate curatedLabel:v20 handler:v36];
 
     objc_destroyWeak(v38);
     objc_destroyWeak(buf);
@@ -9509,16 +9509,16 @@ void __71__RTDaemonClient_submitUserCurationForVisitDateRange_newLabel_handler__
   }
 }
 
-- (void)correctLabelForVisitWithIdentifier:(id)a3 entryDate:(id)a4 originalLabel:(id)a5 newLabel:(id)a6 handler:(id)a7
+- (void)correctLabelForVisitWithIdentifier:(id)identifier entryDate:(id)date originalLabel:(id)label newLabel:(id)newLabel handler:(id)handler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v13 = a4;
-  v14 = a5;
-  v55 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (!v13)
+  identifierCopy = identifier;
+  dateCopy = date;
+  labelCopy = label;
+  newLabelCopy = newLabel;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  if (!dateCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -9533,7 +9533,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v14)
+  if (!labelCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -9546,7 +9546,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!handlerCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -9576,11 +9576,11 @@ LABEL_19:
     }
   }
 
-  v21 = [(RTDaemonClient *)self mapServiceManager];
-  v22 = [MEMORY[0x277CCAD78] UUID];
-  v23 = [MEMORY[0x277CBEAA8] date];
+  mapServiceManager = [(RTDaemonClient *)self mapServiceManager];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  date = [MEMORY[0x277CBEAA8] date];
   v60 = 0;
-  v24 = [v21 mapItemWithIdentifier:v22 geoMapItemStorage:v14 source:8 creationDate:v23 error:&v60];
+  v24 = [mapServiceManager mapItemWithIdentifier:uUID geoMapItemStorage:labelCopy source:8 creationDate:date error:&v60];
   v53 = v60;
 
   if (v53)
@@ -9606,13 +9606,13 @@ LABEL_19:
 
   if (v24)
   {
-    if (v55)
+    if (newLabelCopy)
     {
-      v27 = [(RTDaemonClient *)self mapServiceManager];
-      v28 = [MEMORY[0x277CCAD78] UUID];
-      v29 = [MEMORY[0x277CBEAA8] date];
+      mapServiceManager2 = [(RTDaemonClient *)self mapServiceManager];
+      uUID2 = [MEMORY[0x277CCAD78] UUID];
+      date2 = [MEMORY[0x277CBEAA8] date];
       v59 = 0;
-      v53 = [v27 mapItemWithIdentifier:v28 geoMapItemStorage:v55 source:8 creationDate:v29 error:&v59];
+      v53 = [mapServiceManager2 mapItemWithIdentifier:uUID2 geoMapItemStorage:newLabelCopy source:8 creationDate:date2 error:&v59];
       v30 = v59;
 
       if (v30)
@@ -9670,7 +9670,7 @@ LABEL_12:
     }
 
     objc_initWeak(buf, self);
-    v35 = [(RTDaemonClient *)self userCurationManager];
+    userCurationManager = [(RTDaemonClient *)self userCurationManager];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __94__RTDaemonClient_correctLabelForVisitWithIdentifier_entryDate_originalLabel_newLabel_handler___block_invoke;
@@ -9679,7 +9679,7 @@ LABEL_12:
     objc_copyWeak(v58, buf);
     v56[4] = self;
     v58[1] = aSelectora;
-    [v35 createAndStoreCurationWithEntryDate:v13 exitDate:v13 visitIdentifier:v54 originalLabel:v24 curatedLabel:v53 handler:v56];
+    [userCurationManager createAndStoreCurationWithEntryDate:dateCopy exitDate:dateCopy visitIdentifier:identifierCopy originalLabel:v24 curatedLabel:v53 handler:v56];
 
     objc_destroyWeak(v58);
     objc_destroyWeak(buf);

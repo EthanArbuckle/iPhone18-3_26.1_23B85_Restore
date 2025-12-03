@@ -1,5 +1,5 @@
 @interface FBSProcessExecutableSlice
-+ (id)sliceWithType:(int)a3 subtype:(int)a4;
++ (id)sliceWithType:(int)type subtype:(int)subtype;
 + (void)initialize;
 - (id)description;
 - (id)membersForCoder;
@@ -7,11 +7,11 @@
 
 @implementation FBSProcessExecutableSlice
 
-+ (id)sliceWithType:(int)a3 subtype:(int)a4
++ (id)sliceWithType:(int)type subtype:(int)subtype
 {
   v6 = objc_opt_new();
-  v6[2] = a3;
-  v6[3] = a4;
+  v6[2] = type;
+  v6[3] = subtype;
 
   return v6;
 }
@@ -45,7 +45,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BSXPCAutoCodingInitialize();

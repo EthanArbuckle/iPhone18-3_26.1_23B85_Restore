@@ -1,25 +1,25 @@
 @interface _COHomeKitAudioDestinationControllerListener
 - (_COHomeKitAudioDestinationControllerListenerDelegate)delegate;
-- (id)initWitAccessory:(id)a3 home:(id)a4 delegate:(id)a5;
-- (void)accessoryDidUpdateAudioDestinationController:(id)a3;
+- (id)initWitAccessory:(id)accessory home:(id)home delegate:(id)delegate;
+- (void)accessoryDidUpdateAudioDestinationController:(id)controller;
 @end
 
 @implementation _COHomeKitAudioDestinationControllerListener
 
-- (id)initWitAccessory:(id)a3 home:(id)a4 delegate:(id)a5
+- (id)initWitAccessory:(id)accessory home:(id)home delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accessoryCopy = accessory;
+  homeCopy = home;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = _COHomeKitAudioDestinationControllerListener;
   v12 = [(_COHomeKitAudioDestinationControllerListener *)&v16 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v11);
-    objc_storeStrong(p_isa + 1, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(p_isa + 1, accessory);
+    objc_storeStrong(p_isa + 2, home);
     [p_isa[1] setDelegate:p_isa];
     v14 = COCoreLogForCategory(1);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -31,14 +31,14 @@
   return p_isa;
 }
 
-- (void)accessoryDidUpdateAudioDestinationController:(id)a3
+- (void)accessoryDidUpdateAudioDestinationController:(id)controller
 {
-  v6 = a3;
-  v4 = [(_COHomeKitAudioDestinationControllerListener *)self delegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  controllerCopy = controller;
+  delegate = [(_COHomeKitAudioDestinationControllerListener *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [(_COHomeKitAudioDestinationControllerListener *)self home];
-    [v4 audioDestinationControllerDidUpdateForAccessory:v6 inHome:v5];
+    home = [(_COHomeKitAudioDestinationControllerListener *)self home];
+    [delegate audioDestinationControllerDidUpdateForAccessory:controllerCopy inHome:home];
   }
 }
 

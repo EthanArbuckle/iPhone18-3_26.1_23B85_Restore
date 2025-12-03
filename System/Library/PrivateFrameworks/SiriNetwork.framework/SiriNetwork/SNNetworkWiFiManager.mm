@@ -22,22 +22,22 @@
 
 - (id)getWiFiRecord
 {
-  v2 = [(SNNetworkWiFiManagerInternal *)self->_underlyingNetworkWiFiManager getWiFiRecordRepresentation];
-  if (v2)
+  getWiFiRecordRepresentation = [(SNNetworkWiFiManagerInternal *)self->_underlyingNetworkWiFiManager getWiFiRecordRepresentation];
+  if (getWiFiRecordRepresentation)
   {
     v3 = objc_alloc_init(SNWiFiRecord);
-    -[SNWiFiRecord setRssi:](v3, "setRssi:", [v2 rssi]);
-    -[SNWiFiRecord setSnr:](v3, "setSnr:", [v2 snr]);
-    -[SNWiFiRecord setCca:](v3, "setCca:", [v2 cca]);
-    v4 = [v2 channelInfo];
-    [(SNWiFiRecord *)v3 setChannelInfo:v4];
+    -[SNWiFiRecord setRssi:](v3, "setRssi:", [getWiFiRecordRepresentation rssi]);
+    -[SNWiFiRecord setSnr:](v3, "setSnr:", [getWiFiRecordRepresentation snr]);
+    -[SNWiFiRecord setCca:](v3, "setCca:", [getWiFiRecordRepresentation cca]);
+    channelInfo = [getWiFiRecordRepresentation channelInfo];
+    [(SNWiFiRecord *)v3 setChannelInfo:channelInfo];
 
-    v5 = [v2 phyMode];
-    [(SNWiFiRecord *)v3 setPhyMode:v5];
+    phyMode = [getWiFiRecordRepresentation phyMode];
+    [(SNWiFiRecord *)v3 setPhyMode:phyMode];
 
-    -[SNWiFiRecord setIsCaptive:](v3, "setIsCaptive:", [v2 isCaptive]);
-    v6 = [v2 timestamp];
-    [(SNWiFiRecord *)v3 setTimestamp:v6];
+    -[SNWiFiRecord setIsCaptive:](v3, "setIsCaptive:", [getWiFiRecordRepresentation isCaptive]);
+    timestamp = [getWiFiRecordRepresentation timestamp];
+    [(SNWiFiRecord *)v3 setTimestamp:timestamp];
   }
 
   else

@@ -1,28 +1,28 @@
 @interface CWFJITTDImpactEstimator
 + (id)initJITTDImpactEstimator;
-- (BOOL)canSubmitToCA:(id)a3;
-- (BOOL)checkCellularDataSanity:(id)a3;
+- (BOOL)canSubmitToCA:(id)a;
+- (BOOL)checkCellularDataSanity:(id)sanity;
 - (CWFJITTDImpactEstimator)init;
-- (id)computeDataUsageInCurrentSession:(id)a3;
-- (id)twoSigFig:(unint64_t)a3;
+- (id)computeDataUsageInCurrentSession:(id)session;
+- (id)twoSigFig:(unint64_t)fig;
 - (void)__stopCellularDataUsageAccountingPostTD;
 - (void)cancelBoundaryTimer;
 - (void)cancelPeriodicTimer;
-- (void)gatherCellularDataUsageSoFar:(id)a3;
+- (void)gatherCellularDataUsageSoFar:(id)far;
 - (void)invalidate;
 - (void)issueFullBandScan;
 - (void)notifyAJDelayedOnlyDueToJITTD;
-- (void)notifyScanResult:(id)a3 withError:(id)a4;
-- (void)postCellularDataUsageAccountingPreAJ:(id)a3;
-- (void)postCellularDataUsageAccoutingPostTD:(id)a3;
+- (void)notifyScanResult:(id)result withError:(id)error;
+- (void)postCellularDataUsageAccountingPreAJ:(id)j;
+- (void)postCellularDataUsageAccoutingPostTD:(id)d;
 - (void)resetStores;
 - (void)setupPeriodicTimerForScan;
-- (void)startCellularDataUsageAccountingDelayedAJ:(int64_t)a3 withMaxRSSI:(int64_t)a4 forNetwork:(id)a5;
-- (void)startCellularDataUsageAccountingPostTD:(id)a3 withMinRSSI:(int64_t)a4;
+- (void)startCellularDataUsageAccountingDelayedAJ:(int64_t)j withMaxRSSI:(int64_t)i forNetwork:(id)network;
+- (void)startCellularDataUsageAccountingPostTD:(id)d withMinRSSI:(int64_t)i;
 - (void)stopAccounting;
 - (void)stopCellularDataUsageAccountingDelayedAJ;
 - (void)stopCellularDataUsageAccountingPostTD;
-- (void)storeCellularDataUsage:(id)a3;
+- (void)storeCellularDataUsage:(id)usage;
 @end
 
 @implementation CWFJITTDImpactEstimator
@@ -48,8 +48,8 @@
   v3 = dispatch_queue_create("com.apple.wifi.CWFJITTDImpactEstimator", 0);
   [(CWFJITTDImpactEstimator *)v2 set_serviceQueue:v3];
 
-  v4 = [(CWFJITTDImpactEstimator *)v2 _serviceQueue];
-  LODWORD(v3) = v4 == 0;
+  _serviceQueue = [(CWFJITTDImpactEstimator *)v2 _serviceQueue];
+  LODWORD(v3) = _serviceQueue == 0;
 
   if (v3)
   {
@@ -84,8 +84,8 @@
   v5 = dispatch_queue_create("com.apple.wifi.CWFJITTDImpactTimer", 0);
   [(CWFJITTDImpactEstimator *)v2 set_timerQueue:v5];
 
-  v6 = [(CWFJITTDImpactEstimator *)v2 _timerQueue];
-  LODWORD(v5) = v6 == 0;
+  _timerQueue = [(CWFJITTDImpactEstimator *)v2 _timerQueue];
+  LODWORD(v5) = _timerQueue == 0;
 
   if (v5)
   {
@@ -116,14 +116,14 @@
     goto LABEL_27;
   }
 
-  v7 = [(CWFJITTDImpactEstimator *)v2 _timerQueue];
-  v8 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v7);
+  _timerQueue2 = [(CWFJITTDImpactEstimator *)v2 _timerQueue];
+  v8 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, _timerQueue2);
   [(CWFJITTDImpactEstimator *)v2 set_boundaryTimer:v8];
 
-  v9 = [(CWFJITTDImpactEstimator *)v2 _boundaryTimer];
-  LODWORD(v7) = v9 == 0;
+  _boundaryTimer = [(CWFJITTDImpactEstimator *)v2 _boundaryTimer];
+  LODWORD(_timerQueue2) = _boundaryTimer == 0;
 
-  if (v7)
+  if (_timerQueue2)
   {
 
     v23 = CWFGetOSLog();
@@ -159,25 +159,25 @@ LABEL_29:
     goto LABEL_8;
   }
 
-  v10 = [(CWFJITTDImpactEstimator *)v2 _boundaryTimer];
+  _boundaryTimer2 = [(CWFJITTDImpactEstimator *)v2 _boundaryTimer];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = sub_1E0C00A3C;
   handler[3] = &unk_1E86E6190;
   objc_copyWeak(&v33, &location);
-  dispatch_source_set_event_handler(v10, handler);
+  dispatch_source_set_event_handler(_boundaryTimer2, handler);
 
-  v11 = [(CWFJITTDImpactEstimator *)v2 _boundaryTimer];
-  dispatch_activate(v11);
+  _boundaryTimer3 = [(CWFJITTDImpactEstimator *)v2 _boundaryTimer];
+  dispatch_activate(_boundaryTimer3);
 
-  v12 = [(CWFJITTDImpactEstimator *)v2 _timerQueue];
-  v13 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v12);
+  _timerQueue3 = [(CWFJITTDImpactEstimator *)v2 _timerQueue];
+  v13 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, _timerQueue3);
   [(CWFJITTDImpactEstimator *)v2 set_periodicTimer:v13];
 
-  v14 = [(CWFJITTDImpactEstimator *)v2 _periodicTimer];
-  LODWORD(v12) = v14 == 0;
+  _periodicTimer = [(CWFJITTDImpactEstimator *)v2 _periodicTimer];
+  LODWORD(_timerQueue3) = _periodicTimer == 0;
 
-  if (v12)
+  if (_timerQueue3)
   {
 
     v24 = CWFGetOSLog();
@@ -208,16 +208,16 @@ LABEL_29:
 
   else
   {
-    v15 = [(CWFJITTDImpactEstimator *)v2 _periodicTimer];
+    _periodicTimer2 = [(CWFJITTDImpactEstimator *)v2 _periodicTimer];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = sub_1E0C00A80;
     v30[3] = &unk_1E86E6190;
     objc_copyWeak(&v31, &location);
-    dispatch_source_set_event_handler(v15, v30);
+    dispatch_source_set_event_handler(_periodicTimer2, v30);
 
-    v16 = [(CWFJITTDImpactEstimator *)v2 _periodicTimer];
-    dispatch_activate(v16);
+    _periodicTimer3 = [(CWFJITTDImpactEstimator *)v2 _periodicTimer];
+    dispatch_activate(_periodicTimer3);
 
     [(CWFJITTDImpactEstimator *)v2 set_lastSubmissionTimePreAJ:0];
     [(CWFJITTDImpactEstimator *)v2 set_lastSubmissionTimePostTD:0];
@@ -236,74 +236,74 @@ LABEL_8:
 {
   [(CWFJITTDImpactEstimator *)self setGatherCellularDataStats:0];
   [(CWFJITTDImpactEstimator *)self setScanForNetworkHandler:0];
-  v3 = [(CWFJITTDImpactEstimator *)self _boundaryTimer];
+  _boundaryTimer = [(CWFJITTDImpactEstimator *)self _boundaryTimer];
 
-  if (v3)
+  if (_boundaryTimer)
   {
-    v4 = [(CWFJITTDImpactEstimator *)self _boundaryTimer];
-    dispatch_source_cancel(v4);
+    _boundaryTimer2 = [(CWFJITTDImpactEstimator *)self _boundaryTimer];
+    dispatch_source_cancel(_boundaryTimer2);
   }
 
-  v5 = [(CWFJITTDImpactEstimator *)self _periodicTimer];
+  _periodicTimer = [(CWFJITTDImpactEstimator *)self _periodicTimer];
 
-  if (v5)
+  if (_periodicTimer)
   {
-    v6 = [(CWFJITTDImpactEstimator *)self _periodicTimer];
-    dispatch_source_cancel(v6);
+    _periodicTimer2 = [(CWFJITTDImpactEstimator *)self _periodicTimer];
+    dispatch_source_cancel(_periodicTimer2);
   }
 }
 
-- (void)startCellularDataUsageAccountingDelayedAJ:(int64_t)a3 withMaxRSSI:(int64_t)a4 forNetwork:(id)a5
+- (void)startCellularDataUsageAccountingDelayedAJ:(int64_t)j withMaxRSSI:(int64_t)i forNetwork:(id)network
 {
-  v8 = a5;
-  v9 = [(CWFJITTDImpactEstimator *)self _serviceQueue];
+  networkCopy = network;
+  _serviceQueue = [(CWFJITTDImpactEstimator *)self _serviceQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1E0C00C48;
   v11[3] = &unk_1E86E61B8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
-  v10 = v8;
-  dispatch_sync(v9, v11);
+  v12 = networkCopy;
+  jCopy = j;
+  iCopy = i;
+  v10 = networkCopy;
+  dispatch_sync(_serviceQueue, v11);
 }
 
 - (void)stopCellularDataUsageAccountingDelayedAJ
 {
-  v3 = [(CWFJITTDImpactEstimator *)self _serviceQueue];
+  _serviceQueue = [(CWFJITTDImpactEstimator *)self _serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C01490;
   block[3] = &unk_1E86E6010;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_serviceQueue, block);
 }
 
 - (void)notifyAJDelayedOnlyDueToJITTD
 {
-  v3 = [(CWFJITTDImpactEstimator *)self _serviceQueue];
+  _serviceQueue = [(CWFJITTDImpactEstimator *)self _serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C018BC;
   block[3] = &unk_1E86E6010;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_serviceQueue, block);
 }
 
-- (void)startCellularDataUsageAccountingPostTD:(id)a3 withMinRSSI:(int64_t)a4
+- (void)startCellularDataUsageAccountingPostTD:(id)d withMinRSSI:(int64_t)i
 {
-  v6 = a3;
-  v7 = [(CWFJITTDImpactEstimator *)self _serviceQueue];
+  dCopy = d;
+  _serviceQueue = [(CWFJITTDImpactEstimator *)self _serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C01DC8;
   block[3] = &unk_1E86E61E0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = dCopy;
+  iCopy = i;
+  v8 = dCopy;
+  dispatch_sync(_serviceQueue, block);
 }
 
 - (void)__stopCellularDataUsageAccountingPostTD
@@ -313,8 +313,8 @@ LABEL_8:
   [(CWFJITTDImpactEstimator *)self cancelBoundaryTimer];
   if ([(CWFJITTDImpactEstimator *)self _activity]== 1)
   {
-    v3 = [(CWFJITTDImpactEstimator *)self _previousCellularDataUsageInPostTD];
-    [(CWFJITTDImpactEstimator *)self postCellularDataUsageAccoutingPostTD:v3];
+    _previousCellularDataUsageInPostTD = [(CWFJITTDImpactEstimator *)self _previousCellularDataUsageInPostTD];
+    [(CWFJITTDImpactEstimator *)self postCellularDataUsageAccoutingPostTD:_previousCellularDataUsageInPostTD];
   }
 
   else
@@ -322,16 +322,16 @@ LABEL_8:
     v5 = CWFGetOSLog();
     if (v5)
     {
-      v3 = CWFGetOSLog();
+      _previousCellularDataUsageInPostTD = CWFGetOSLog();
     }
 
     else
     {
-      v3 = MEMORY[0x1E69E9C10];
+      _previousCellularDataUsageInPostTD = MEMORY[0x1E69E9C10];
       v6 = MEMORY[0x1E69E9C10];
     }
 
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(_previousCellularDataUsageInPostTD, OS_LOG_TYPE_ERROR))
     {
       _os_log_send_and_compose_impl();
     }
@@ -343,22 +343,22 @@ LABEL_8:
 
 - (void)stopCellularDataUsageAccountingPostTD
 {
-  v3 = [(CWFJITTDImpactEstimator *)self _serviceQueue];
+  _serviceQueue = [(CWFJITTDImpactEstimator *)self _serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0C026B0;
   block[3] = &unk_1E86E6010;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_serviceQueue, block);
 }
 
-- (void)gatherCellularDataUsageSoFar:(id)a3
+- (void)gatherCellularDataUsageSoFar:(id)far
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CWFJITTDImpactEstimator *)self gatherCellularDataStats];
+  farCopy = far;
+  gatherCellularDataStats = [(CWFJITTDImpactEstimator *)self gatherCellularDataStats];
 
-  if (!v5)
+  if (!gatherCellularDataStats)
   {
     v10 = CWFGetOSLog();
     if (v10)
@@ -406,11 +406,11 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  if (!v4)
+  if (!farCopy)
   {
-    v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v6 = [(CWFJITTDImpactEstimator *)self gatherCellularDataStats];
-    v7 = (v6)[2](v6, v4);
+    farCopy = objc_alloc_init(MEMORY[0x1E695DF90]);
+    gatherCellularDataStats2 = [(CWFJITTDImpactEstimator *)self gatherCellularDataStats];
+    v7 = (gatherCellularDataStats2)[2](gatherCellularDataStats2, farCopy);
 
     if ((v7 & 1) == 0)
     {
@@ -435,7 +435,7 @@ LABEL_28:
     }
   }
 
-  if (![(CWFJITTDImpactEstimator *)self checkCellularDataSanity:v4])
+  if (![(CWFJITTDImpactEstimator *)self checkCellularDataSanity:farCopy])
   {
     v14 = CWFGetOSLog();
     if (v14)
@@ -457,38 +457,38 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  v8 = [(CWFJITTDImpactEstimator *)self computeDataUsageInCurrentSession:v4];
+  v8 = [(CWFJITTDImpactEstimator *)self computeDataUsageInCurrentSession:farCopy];
   [(CWFJITTDImpactEstimator *)self set_previousCellularDataUsageInPostTD:v8];
 
 LABEL_7:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)checkCellularDataSanity:(id)a3
+- (BOOL)checkCellularDataSanity:(id)sanity
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"CellularDataOutPackets"];
-  v5 = [v4 unsignedIntValue];
+  sanityCopy = sanity;
+  v4 = [sanityCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  if (!v5)
+  if (!unsignedIntValue)
   {
     goto LABEL_6;
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"CellularDataInPackets"];
-  v7 = [v6 unsignedIntValue];
+  v6 = [sanityCopy objectForKeyedSubscript:@"CellularDataInPackets"];
+  unsignedIntValue2 = [v6 unsignedIntValue];
 
-  if (!v7)
+  if (!unsignedIntValue2)
   {
     goto LABEL_6;
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"CellularDataOutBytes"];
-  v9 = [v8 unsignedIntValue];
+  v8 = [sanityCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
+  unsignedIntValue3 = [v8 unsignedIntValue];
 
-  if (v9)
+  if (unsignedIntValue3)
   {
-    v10 = [v3 objectForKeyedSubscript:@"CellularDataInBytes"];
+    v10 = [sanityCopy objectForKeyedSubscript:@"CellularDataInBytes"];
     v11 = [v10 unsignedIntValue] != 0;
   }
 
@@ -501,29 +501,29 @@ LABEL_6:
   return v11;
 }
 
-- (void)notifyScanResult:(id)a3 withError:(id)a4
+- (void)notifyScanResult:(id)result withError:(id)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  resultCopy = result;
   [(CWFJITTDImpactEstimator *)self cancelPeriodicTimer];
   if ([(CWFJITTDImpactEstimator *)self _activity])
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_26;
     }
 
-    v7 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+    _tdNetwork = [(CWFJITTDImpactEstimator *)self _tdNetwork];
 
-    if (v7)
+    if (_tdNetwork)
     {
-      if (v6)
+      if (resultCopy)
       {
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v8 = v6;
+        v8 = resultCopy;
         v9 = [v8 countByEnumeratingWithState:&v47 objects:v51 count:16];
         if (!v9)
         {
@@ -532,11 +532,11 @@ LABEL_6:
         }
 
         v10 = v9;
-        v40 = v6;
+        v40 = resultCopy;
         v41 = 0;
         v11 = *v48;
         v12 = v8;
-        v42 = self;
+        selfCopy = self;
         v43 = v8;
         v45 = *v48;
         while (1)
@@ -551,27 +551,27 @@ LABEL_6:
             }
 
             v14 = *(*(&v47 + 1) + 8 * v13);
-            v15 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
-            v16 = [v15 SSID];
-            if (!v16)
+            _tdNetwork2 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+            sSID = [_tdNetwork2 SSID];
+            if (!sSID)
             {
               goto LABEL_19;
             }
 
-            v17 = v16;
-            v18 = [v14 SSID];
-            if (!v18)
+            v17 = sSID;
+            sSID2 = [v14 SSID];
+            if (!sSID2)
             {
 
 LABEL_19:
               goto LABEL_23;
             }
 
-            v19 = v18;
-            v20 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
-            v21 = [v20 SSID];
-            v22 = [v14 SSID];
-            if (![v21 isEqual:v22])
+            v19 = sSID2;
+            _tdNetwork3 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+            sSID3 = [_tdNetwork3 SSID];
+            sSID4 = [v14 SSID];
+            if (![sSID3 isEqual:sSID4])
             {
 
 LABEL_22:
@@ -580,28 +580,28 @@ LABEL_22:
               goto LABEL_23;
             }
 
-            v23 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
-            v24 = [v23 supportedSecurityTypes];
-            if (([v14 supportedSecurityTypes] & v24) == 0)
+            _tdNetwork4 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+            supportedSecurityTypes = [_tdNetwork4 supportedSecurityTypes];
+            if (([v14 supportedSecurityTypes] & supportedSecurityTypes) == 0)
             {
 
-              self = v42;
+              self = selfCopy;
               v12 = v43;
               goto LABEL_22;
             }
 
-            v44 = [v14 RSSI];
-            v25 = [(CWFJITTDImpactEstimator *)v42 _rssi];
+            rSSI = [v14 RSSI];
+            _rssi = [(CWFJITTDImpactEstimator *)selfCopy _rssi];
 
             v11 = v45;
-            self = v42;
+            self = selfCopy;
             v12 = v43;
             v10 = v46;
-            if (v44 > v25)
+            if (rSSI > _rssi)
             {
-              if ([(CWFJITTDImpactEstimator *)v42 _activity]== 1)
+              if ([(CWFJITTDImpactEstimator *)selfCopy _activity]== 1)
               {
-                [(CWFJITTDImpactEstimator *)v42 gatherCellularDataUsageSoFar:0];
+                [(CWFJITTDImpactEstimator *)selfCopy gatherCellularDataUsageSoFar:0];
               }
 
               v41 = 1;
@@ -616,16 +616,16 @@ LABEL_23:
           if (!v10)
           {
 
-            v6 = v40;
+            resultCopy = v40;
             if (v41)
             {
 LABEL_26:
-              v26 = self;
+              selfCopy2 = self;
               goto LABEL_27;
             }
 
 LABEL_29:
-            v27 = self;
+            selfCopy5 = self;
             v28 = CWFGetOSLog();
             if (v28)
             {
@@ -654,7 +654,7 @@ LABEL_29:
         }
       }
 
-      v33 = self;
+      selfCopy4 = self;
       v34 = CWFGetOSLog();
       if (v34)
       {
@@ -680,14 +680,14 @@ LABEL_29:
         _os_log_send_and_compose_impl();
       }
 
-      v26 = v33;
+      selfCopy2 = selfCopy4;
 LABEL_27:
-      [(CWFJITTDImpactEstimator *)v26 setupPeriodicTimerForScan:v38];
+      [(CWFJITTDImpactEstimator *)selfCopy2 setupPeriodicTimerForScan:v38];
     }
 
     else
     {
-      v27 = self;
+      selfCopy5 = self;
       v32 = CWFGetOSLog();
       if (v32)
       {
@@ -714,88 +714,88 @@ LABEL_34:
 
 LABEL_35:
 
-      [(CWFJITTDImpactEstimator *)v27 stopAccounting];
+      [(CWFJITTDImpactEstimator *)selfCopy5 stopAccounting];
     }
   }
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canSubmitToCA:(id)a3
+- (BOOL)canSubmitToCA:(id)a
 {
-  if (!a3)
+  if (!a)
   {
     return 1;
   }
 
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
-  v5 = [v3 date];
-  [v5 timeIntervalSinceDate:v4];
+  aCopy = a;
+  date = [v3 date];
+  [date timeIntervalSinceDate:aCopy];
   v7 = v6;
 
   v8 = v7 > 86400.0;
   return v8;
 }
 
-- (id)twoSigFig:(unint64_t)a3
+- (id)twoSigFig:(unint64_t)fig
 {
-  if (a3)
+  if (fig)
   {
-    v4 = a3;
-    v5 = log10(a3);
+    figCopy = fig;
+    v5 = log10(fig);
     v6 = __exp10(floor(v5) + -1.0);
-    a3 = (v4 / v6) * v6;
+    fig = (figCopy / v6) * v6;
     v3 = vars8;
   }
 
   v7 = MEMORY[0x1E696AD98];
 
-  return [v7 numberWithUnsignedInteger:a3];
+  return [v7 numberWithUnsignedInteger:fig];
 }
 
-- (void)postCellularDataUsageAccoutingPostTD:(id)a3
+- (void)postCellularDataUsageAccoutingPostTD:(id)d
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = sub_1E0BC2CD4;
   v35 = sub_1E0BC61B4;
   v36 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v4)
+  if (dCopy)
   {
     if (objc_opt_class())
     {
-      v5 = [v4 objectForKeyedSubscript:@"impactTimeIns"];
+      v5 = [dCopy objectForKeyedSubscript:@"impactTimeIns"];
       [v32[5] setObject:v5 forKeyedSubscript:@"TotalTime_s"];
 
-      v6 = [v4 objectForKeyedSubscript:@"CellularDataOutPackets"];
+      v6 = [dCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
       v7 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v6 unsignedIntValue]);
       [v32[5] setObject:v7 forKeyedSubscript:@"TotalTxPackets"];
 
-      v8 = [v4 objectForKeyedSubscript:@"CellularDataInPackets"];
+      v8 = [dCopy objectForKeyedSubscript:@"CellularDataInPackets"];
       v9 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v8 unsignedIntValue]);
       [v32[5] setObject:v9 forKeyedSubscript:@"TotalRxPackets"];
 
-      v10 = [v4 objectForKeyedSubscript:@"CellularDataOutBytes"];
+      v10 = [dCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
       v11 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v10 unsignedIntValue]);
       [v32[5] setObject:v11 forKeyedSubscript:@"TotalTx_Bytes"];
 
-      v12 = [v4 objectForKeyedSubscript:@"CellularDataInBytes"];
+      v12 = [dCopy objectForKeyedSubscript:@"CellularDataInBytes"];
       v13 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v12 unsignedIntValue]);
       [v32[5] setObject:v13 forKeyedSubscript:@"TotalRx_Bytes"];
 
-      v14 = [v4 objectForKeyedSubscript:@"CellularDataOutPackets"];
-      v15 = [v14 unsignedIntValue];
-      v16 = [v4 objectForKeyedSubscript:@"CellularDataInPackets"];
-      v17 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v16 unsignedIntValue] + v15);
+      v14 = [dCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
+      unsignedIntValue = [v14 unsignedIntValue];
+      v16 = [dCopy objectForKeyedSubscript:@"CellularDataInPackets"];
+      v17 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v16 unsignedIntValue] + unsignedIntValue);
       [v32[5] setObject:v17 forKeyedSubscript:@"TotalPackets"];
 
-      v18 = [v4 objectForKeyedSubscript:@"CellularDataOutBytes"];
+      v18 = [dCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
       LODWORD(v17) = [v18 unsignedIntValue];
-      v19 = [v4 objectForKeyedSubscript:@"CellularDataInBytes"];
+      v19 = [dCopy objectForKeyedSubscript:@"CellularDataInBytes"];
       v20 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v19 unsignedIntValue] + v17);
       [v32[5] setObject:v20 forKeyedSubscript:@"TotalData_Bytes"];
 
@@ -826,24 +826,24 @@ LABEL_35:
         _os_log_send_and_compose_impl();
       }
 
-      v25 = [MEMORY[0x1E695DF00] date];
-      [(CWFJITTDImpactEstimator *)self set_lastSubmissionTimePostTD:v25];
+      date = [MEMORY[0x1E695DF00] date];
+      [(CWFJITTDImpactEstimator *)self set_lastSubmissionTimePostTD:date];
       goto LABEL_9;
     }
 
     v28 = CWFGetOSLog();
     if (v28)
     {
-      v25 = CWFGetOSLog();
+      date = CWFGetOSLog();
     }
 
     else
     {
-      v25 = MEMORY[0x1E69E9C10];
+      date = MEMORY[0x1E69E9C10];
       v30 = MEMORY[0x1E69E9C10];
     }
 
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       v37 = 136446722;
       v38 = "[CWFJITTDImpactEstimator postCellularDataUsageAccoutingPostTD:]";
@@ -860,16 +860,16 @@ LABEL_35:
     v27 = CWFGetOSLog();
     if (v27)
     {
-      v25 = CWFGetOSLog();
+      date = CWFGetOSLog();
     }
 
     else
     {
-      v25 = MEMORY[0x1E69E9C10];
+      date = MEMORY[0x1E69E9C10];
       v29 = MEMORY[0x1E69E9C10];
     }
 
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       v37 = 136446722;
       v38 = "[CWFJITTDImpactEstimator postCellularDataUsageAccoutingPostTD:]";
@@ -888,31 +888,31 @@ LABEL_9:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postCellularDataUsageAccountingPreAJ:(id)a3
+- (void)postCellularDataUsageAccountingPreAJ:(id)j
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  jCopy = j;
   v57 = 0;
   v58 = &v57;
   v59 = 0x3032000000;
   v60 = sub_1E0BC2CD4;
   v61 = sub_1E0BC61B4;
   v62 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (!v4)
+  if (!jCopy)
   {
     v53 = CWFGetOSLog();
     if (v53)
     {
-      v51 = CWFGetOSLog();
+      date = CWFGetOSLog();
     }
 
     else
     {
-      v51 = MEMORY[0x1E69E9C10];
+      date = MEMORY[0x1E69E9C10];
       v55 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -933,16 +933,16 @@ LABEL_22:
     v54 = CWFGetOSLog();
     if (v54)
     {
-      v51 = CWFGetOSLog();
+      date = CWFGetOSLog();
     }
 
     else
     {
-      v51 = MEMORY[0x1E69E9C10];
+      date = MEMORY[0x1E69E9C10];
       v56 = MEMORY[0x1E69E9C10];
     }
 
-    if (!os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -956,79 +956,79 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"impactTimeIns"];
+  v5 = [jCopy objectForKeyedSubscript:@"impactTimeIns"];
   [v58[5] setObject:v5 forKeyedSubscript:@"TotalTime_s"];
 
-  v6 = [v4 objectForKeyedSubscript:@"CellularDataOutPackets"];
+  v6 = [jCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
   v7 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v6 unsignedIntValue]);
   [v58[5] setObject:v7 forKeyedSubscript:@"TotalTxPackets"];
 
-  v8 = [v4 objectForKeyedSubscript:@"CellularDataInPackets"];
+  v8 = [jCopy objectForKeyedSubscript:@"CellularDataInPackets"];
   v9 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v8 unsignedIntValue]);
   [v58[5] setObject:v9 forKeyedSubscript:@"TotalRxPackets"];
 
-  v10 = [v4 objectForKeyedSubscript:@"CellularDataOutBytes"];
+  v10 = [jCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
   v11 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v10 unsignedIntValue]);
   [v58[5] setObject:v11 forKeyedSubscript:@"TotalTx_Bytes"];
 
-  v12 = [v4 objectForKeyedSubscript:@"CellularDataInBytes"];
+  v12 = [jCopy objectForKeyedSubscript:@"CellularDataInBytes"];
   v13 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v12 unsignedIntValue]);
   [v58[5] setObject:v13 forKeyedSubscript:@"TotalRx_Bytes"];
 
-  v14 = [v4 objectForKeyedSubscript:@"CellularDataOutPackets"];
-  v15 = [v14 unsignedIntValue];
-  v16 = [v4 objectForKeyedSubscript:@"CellularDataInPackets"];
-  v17 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v16 unsignedIntValue] + v15);
+  v14 = [jCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
+  unsignedIntValue = [v14 unsignedIntValue];
+  v16 = [jCopy objectForKeyedSubscript:@"CellularDataInPackets"];
+  v17 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v16 unsignedIntValue] + unsignedIntValue);
   [v58[5] setObject:v17 forKeyedSubscript:@"TotalPackets"];
 
-  v18 = [v4 objectForKeyedSubscript:@"CellularDataOutBytes"];
+  v18 = [jCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
   LODWORD(v17) = [v18 unsignedIntValue];
-  v19 = [v4 objectForKeyedSubscript:@"CellularDataInBytes"];
+  v19 = [jCopy objectForKeyedSubscript:@"CellularDataInBytes"];
   v20 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v19 unsignedIntValue] + v17);
   [v58[5] setObject:v20 forKeyedSubscript:@"TotalData_Bytes"];
 
-  v21 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-  LOBYTE(v18) = v21 == 0;
+  _cellularDataUsageInLegacyBoundary = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+  LOBYTE(v18) = _cellularDataUsageInLegacyBoundary == 0;
 
   if ((v18 & 1) == 0)
   {
-    v22 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v23 = [v22 objectForKeyedSubscript:@"impactTimeIns"];
+    _cellularDataUsageInLegacyBoundary2 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v23 = [_cellularDataUsageInLegacyBoundary2 objectForKeyedSubscript:@"impactTimeIns"];
     [v58[5] setObject:v23 forKeyedSubscript:@"TotalTimeLegacy_s"];
 
-    v24 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v25 = [v24 objectForKeyedSubscript:@"CellularDataOutPackets"];
+    _cellularDataUsageInLegacyBoundary3 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v25 = [_cellularDataUsageInLegacyBoundary3 objectForKeyedSubscript:@"CellularDataOutPackets"];
     v26 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v25 unsignedIntValue]);
     [v58[5] setObject:v26 forKeyedSubscript:@"TotalTxLegacyPackets"];
 
-    v27 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v28 = [v27 objectForKeyedSubscript:@"CellularDataInPackets"];
+    _cellularDataUsageInLegacyBoundary4 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v28 = [_cellularDataUsageInLegacyBoundary4 objectForKeyedSubscript:@"CellularDataInPackets"];
     v29 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v28 unsignedIntValue]);
     [v58[5] setObject:v29 forKeyedSubscript:@"TotalRxLegacyPackets"];
 
-    v30 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v31 = [v30 objectForKeyedSubscript:@"CellularDataOutBytes"];
+    _cellularDataUsageInLegacyBoundary5 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v31 = [_cellularDataUsageInLegacyBoundary5 objectForKeyedSubscript:@"CellularDataOutBytes"];
     v32 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v31 unsignedIntValue]);
     [v58[5] setObject:v32 forKeyedSubscript:@"TotalTxLegacy_Bytes"];
 
-    v33 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v34 = [v33 objectForKeyedSubscript:@"CellularDataInBytes"];
+    _cellularDataUsageInLegacyBoundary6 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v34 = [_cellularDataUsageInLegacyBoundary6 objectForKeyedSubscript:@"CellularDataInBytes"];
     v35 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v34 unsignedIntValue]);
     [v58[5] setObject:v35 forKeyedSubscript:@"TotalRxLegacy_Bytes"];
 
-    v36 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v37 = [v36 objectForKeyedSubscript:@"CellularDataOutPackets"];
-    v38 = [v37 unsignedIntValue];
-    v39 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v40 = [v39 objectForKeyedSubscript:@"CellularDataInPackets"];
-    v41 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v40 unsignedIntValue] + v38);
+    _cellularDataUsageInLegacyBoundary7 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v37 = [_cellularDataUsageInLegacyBoundary7 objectForKeyedSubscript:@"CellularDataOutPackets"];
+    unsignedIntValue2 = [v37 unsignedIntValue];
+    _cellularDataUsageInLegacyBoundary8 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v40 = [_cellularDataUsageInLegacyBoundary8 objectForKeyedSubscript:@"CellularDataInPackets"];
+    v41 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v40 unsignedIntValue] + unsignedIntValue2);
     [v58[5] setObject:v41 forKeyedSubscript:@"TotalLegacyPackets"];
 
-    v42 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v43 = [v42 objectForKeyedSubscript:@"CellularDataOutBytes"];
+    _cellularDataUsageInLegacyBoundary9 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v43 = [_cellularDataUsageInLegacyBoundary9 objectForKeyedSubscript:@"CellularDataOutBytes"];
     LODWORD(v41) = [v43 unsignedIntValue];
-    v44 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
-    v45 = [v44 objectForKeyedSubscript:@"CellularDataInBytes"];
+    _cellularDataUsageInLegacyBoundary10 = [(CWFJITTDImpactEstimator *)self _cellularDataUsageInLegacyBoundary];
+    v45 = [_cellularDataUsageInLegacyBoundary10 objectForKeyedSubscript:@"CellularDataInBytes"];
     v46 = -[CWFJITTDImpactEstimator twoSigFig:](self, "twoSigFig:", [v45 unsignedIntValue] + v41);
     [v58[5] setObject:v46 forKeyedSubscript:@"TotalDataLegacy_Bytes"];
   }
@@ -1060,8 +1060,8 @@ LABEL_22:
     _os_log_send_and_compose_impl();
   }
 
-  v51 = [MEMORY[0x1E695DF00] date];
-  [(CWFJITTDImpactEstimator *)self set_lastSubmissionTimePreAJ:v51];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CWFJITTDImpactEstimator *)self set_lastSubmissionTimePreAJ:date];
 LABEL_11:
 
   _Block_object_dispose(&v57, 8);
@@ -1073,29 +1073,29 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
   if ([(CWFJITTDImpactEstimator *)self _activity]== 1)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v5 = v4;
-    v6 = [(CWFJITTDImpactEstimator *)self _startTime];
-    [v6 timeIntervalSinceReferenceDate];
+    _startTime = [(CWFJITTDImpactEstimator *)self _startTime];
+    [_startTime timeIntervalSinceReferenceDate];
     v8 = v5 - v7 + 30.0;
-    v9 = [(CWFJITTDImpactEstimator *)self _boundaryTime];
+    _boundaryTime = [(CWFJITTDImpactEstimator *)self _boundaryTime];
 
-    if (v8 >= v9)
+    if (v8 >= _boundaryTime)
     {
       v14 = CWFGetOSLog();
       if (v14)
       {
-        v11 = CWFGetOSLog();
+        _periodicTimer = CWFGetOSLog();
       }
 
       else
       {
-        v11 = MEMORY[0x1E69E9C10];
+        _periodicTimer = MEMORY[0x1E69E9C10];
         v15 = MEMORY[0x1E69E9C10];
       }
 
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(_periodicTimer, OS_LOG_TYPE_ERROR))
       {
         _os_log_send_and_compose_impl();
       }
@@ -1103,49 +1103,49 @@ LABEL_11:
 
     else
     {
-      v10 = [(CWFJITTDImpactEstimator *)self _boundaryTimer];
-      dispatch_activate(v10);
+      _boundaryTimer = [(CWFJITTDImpactEstimator *)self _boundaryTimer];
+      dispatch_activate(_boundaryTimer);
 
-      v11 = [(CWFJITTDImpactEstimator *)self _periodicTimer];
+      _periodicTimer = [(CWFJITTDImpactEstimator *)self _periodicTimer];
       v12 = dispatch_walltime(0, 30000000000);
-      dispatch_source_set_timer(v11, v12, 0xFFFFFFFFFFFFFFFFLL, 0);
+      dispatch_source_set_timer(_periodicTimer, v12, 0xFFFFFFFFFFFFFFFFLL, 0);
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeCellularDataUsage:(id)a3
+- (void)storeCellularDataUsage:(id)usage
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"CellularDataInBytes"];
+  usageCopy = usage;
+  v5 = [usageCopy objectForKeyedSubscript:@"CellularDataInBytes"];
   [(CWFJITTDImpactEstimator *)self set_totalCellularInBytes:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"CellularDataOutBytes"];
+  v6 = [usageCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
   [(CWFJITTDImpactEstimator *)self set_totalCellularOutBytes:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"CellularDataInPackets"];
+  v7 = [usageCopy objectForKeyedSubscript:@"CellularDataInPackets"];
   [(CWFJITTDImpactEstimator *)self set_totalCellularInPackets:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"CellularDataOutPackets"];
+  v8 = [usageCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
 
   [(CWFJITTDImpactEstimator *)self set_totalCellularOutPackets:v8];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [(CWFJITTDImpactEstimator *)self set_startTime:v9];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CWFJITTDImpactEstimator *)self set_startTime:date];
 }
 
-- (id)computeDataUsageInCurrentSession:(id)a3
+- (id)computeDataUsageInCurrentSession:(id)session
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [(CWFJITTDImpactEstimator *)self _totalCellularInBytes];
-  v8 = [v7 unsignedIntValue];
-  v9 = [v4 objectForKeyedSubscript:@"CellularDataInBytes"];
-  v10 = [v9 unsignedIntValue];
+  date = [MEMORY[0x1E695DF00] date];
+  _totalCellularInBytes = [(CWFJITTDImpactEstimator *)self _totalCellularInBytes];
+  unsignedIntValue = [_totalCellularInBytes unsignedIntValue];
+  v9 = [sessionCopy objectForKeyedSubscript:@"CellularDataInBytes"];
+  unsignedIntValue2 = [v9 unsignedIntValue];
 
-  if (v8 > v10)
+  if (unsignedIntValue > unsignedIntValue2)
   {
     v58 = CWFGetOSLog();
     if (v58)
@@ -1164,17 +1164,17 @@ LABEL_11:
       goto LABEL_34;
     }
 
-    v64 = [(CWFJITTDImpactEstimator *)self _totalCellularInBytes];
-    v65 = [v4 objectForKeyedSubscript:@"CellularDataInBytes"];
+    _totalCellularInBytes2 = [(CWFJITTDImpactEstimator *)self _totalCellularInBytes];
+    v65 = [sessionCopy objectForKeyedSubscript:@"CellularDataInBytes"];
     goto LABEL_33;
   }
 
-  v11 = [(CWFJITTDImpactEstimator *)self _totalCellularOutBytes];
-  v12 = [v11 unsignedIntValue];
-  v13 = [v4 objectForKeyedSubscript:@"CellularDataOutBytes"];
-  v14 = [v13 unsignedIntValue];
+  _totalCellularOutBytes = [(CWFJITTDImpactEstimator *)self _totalCellularOutBytes];
+  unsignedIntValue3 = [_totalCellularOutBytes unsignedIntValue];
+  v13 = [sessionCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
+  unsignedIntValue4 = [v13 unsignedIntValue];
 
-  if (v12 > v14)
+  if (unsignedIntValue3 > unsignedIntValue4)
   {
     v60 = CWFGetOSLog();
     if (v60)
@@ -1193,17 +1193,17 @@ LABEL_11:
       goto LABEL_34;
     }
 
-    v64 = [(CWFJITTDImpactEstimator *)self _totalCellularOutBytes];
-    v65 = [v4 objectForKeyedSubscript:@"CellularDataOutBytes"];
+    _totalCellularInBytes2 = [(CWFJITTDImpactEstimator *)self _totalCellularOutBytes];
+    v65 = [sessionCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
     goto LABEL_33;
   }
 
-  v15 = [(CWFJITTDImpactEstimator *)self _totalCellularInPackets];
-  v16 = [v15 unsignedIntValue];
-  v17 = [v4 objectForKeyedSubscript:@"CellularDataInPackets"];
-  v18 = [v17 unsignedIntValue];
+  _totalCellularInPackets = [(CWFJITTDImpactEstimator *)self _totalCellularInPackets];
+  unsignedIntValue5 = [_totalCellularInPackets unsignedIntValue];
+  v17 = [sessionCopy objectForKeyedSubscript:@"CellularDataInPackets"];
+  unsignedIntValue6 = [v17 unsignedIntValue];
 
-  if (v16 > v18)
+  if (unsignedIntValue5 > unsignedIntValue6)
   {
     v61 = CWFGetOSLog();
     if (v61)
@@ -1222,17 +1222,17 @@ LABEL_11:
       goto LABEL_34;
     }
 
-    v64 = [(CWFJITTDImpactEstimator *)self _totalCellularInPackets];
-    v65 = [v4 objectForKeyedSubscript:@"CellularDataInPackets"];
+    _totalCellularInBytes2 = [(CWFJITTDImpactEstimator *)self _totalCellularInPackets];
+    v65 = [sessionCopy objectForKeyedSubscript:@"CellularDataInPackets"];
     goto LABEL_33;
   }
 
-  v19 = [(CWFJITTDImpactEstimator *)self _totalCellularOutPackets];
-  v20 = [v19 unsignedIntValue];
-  v21 = [v4 objectForKeyedSubscript:@"CellularDataOutPackets"];
-  v22 = [v21 unsignedIntValue];
+  _totalCellularOutPackets = [(CWFJITTDImpactEstimator *)self _totalCellularOutPackets];
+  unsignedIntValue7 = [_totalCellularOutPackets unsignedIntValue];
+  v21 = [sessionCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
+  unsignedIntValue8 = [v21 unsignedIntValue];
 
-  if (v20 > v22)
+  if (unsignedIntValue7 > unsignedIntValue8)
   {
     v62 = CWFGetOSLog();
     if (v62)
@@ -1251,8 +1251,8 @@ LABEL_11:
       goto LABEL_34;
     }
 
-    v64 = [(CWFJITTDImpactEstimator *)self _totalCellularOutPackets];
-    v65 = [v4 objectForKeyedSubscript:@"CellularDataOutPackets"];
+    _totalCellularInBytes2 = [(CWFJITTDImpactEstimator *)self _totalCellularOutPackets];
+    v65 = [sessionCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
 LABEL_33:
     _os_log_send_and_compose_impl();
 
@@ -1263,38 +1263,38 @@ LABEL_34:
   }
 
   v23 = objc_alloc(MEMORY[0x1E696AD98]);
-  v24 = [v4 objectForKeyedSubscript:@"CellularDataInBytes"];
-  v25 = [v24 unsignedIntValue];
-  v26 = [(CWFJITTDImpactEstimator *)self _totalCellularInBytes];
-  v27 = [v23 initWithUnsignedInt:{v25 - objc_msgSend(v26, "unsignedIntValue")}];
+  v24 = [sessionCopy objectForKeyedSubscript:@"CellularDataInBytes"];
+  unsignedIntValue9 = [v24 unsignedIntValue];
+  _totalCellularInBytes3 = [(CWFJITTDImpactEstimator *)self _totalCellularInBytes];
+  v27 = [v23 initWithUnsignedInt:{unsignedIntValue9 - objc_msgSend(_totalCellularInBytes3, "unsignedIntValue")}];
   [v5 setObject:v27 forKeyedSubscript:@"CellularDataInBytes"];
 
   v28 = objc_alloc(MEMORY[0x1E696AD98]);
-  v29 = [v4 objectForKeyedSubscript:@"CellularDataOutBytes"];
-  v30 = [v29 unsignedIntValue];
-  v31 = [(CWFJITTDImpactEstimator *)self _totalCellularOutBytes];
-  v32 = [v28 initWithUnsignedInt:{v30 - objc_msgSend(v31, "unsignedIntValue")}];
+  v29 = [sessionCopy objectForKeyedSubscript:@"CellularDataOutBytes"];
+  unsignedIntValue10 = [v29 unsignedIntValue];
+  _totalCellularOutBytes2 = [(CWFJITTDImpactEstimator *)self _totalCellularOutBytes];
+  v32 = [v28 initWithUnsignedInt:{unsignedIntValue10 - objc_msgSend(_totalCellularOutBytes2, "unsignedIntValue")}];
   [v5 setObject:v32 forKeyedSubscript:@"CellularDataOutBytes"];
 
   v33 = objc_alloc(MEMORY[0x1E696AD98]);
-  v34 = [v4 objectForKeyedSubscript:@"CellularDataInPackets"];
-  v35 = [v34 unsignedIntValue];
-  v36 = [(CWFJITTDImpactEstimator *)self _totalCellularInPackets];
-  v37 = [v33 initWithUnsignedInt:{v35 - objc_msgSend(v36, "unsignedIntValue")}];
+  v34 = [sessionCopy objectForKeyedSubscript:@"CellularDataInPackets"];
+  unsignedIntValue11 = [v34 unsignedIntValue];
+  _totalCellularInPackets2 = [(CWFJITTDImpactEstimator *)self _totalCellularInPackets];
+  v37 = [v33 initWithUnsignedInt:{unsignedIntValue11 - objc_msgSend(_totalCellularInPackets2, "unsignedIntValue")}];
   [v5 setObject:v37 forKeyedSubscript:@"CellularDataInPackets"];
 
   v38 = objc_alloc(MEMORY[0x1E696AD98]);
-  v39 = [v4 objectForKeyedSubscript:@"CellularDataOutPackets"];
-  v40 = [v39 unsignedIntValue];
-  v41 = [(CWFJITTDImpactEstimator *)self _totalCellularOutPackets];
-  v42 = [v38 initWithUnsignedInt:{v40 - objc_msgSend(v41, "unsignedIntValue")}];
+  v39 = [sessionCopy objectForKeyedSubscript:@"CellularDataOutPackets"];
+  unsignedIntValue12 = [v39 unsignedIntValue];
+  _totalCellularOutPackets2 = [(CWFJITTDImpactEstimator *)self _totalCellularOutPackets];
+  v42 = [v38 initWithUnsignedInt:{unsignedIntValue12 - objc_msgSend(_totalCellularOutPackets2, "unsignedIntValue")}];
   [v5 setObject:v42 forKeyedSubscript:@"CellularDataOutPackets"];
 
   v43 = MEMORY[0x1E696AD98];
-  [v6 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v45 = v44;
-  v46 = [(CWFJITTDImpactEstimator *)self _startTime];
-  [v46 timeIntervalSinceReferenceDate];
+  _startTime = [(CWFJITTDImpactEstimator *)self _startTime];
+  [_startTime timeIntervalSinceReferenceDate];
   v48 = [v43 numberWithUnsignedInteger:(v45 - v47)];
   [v5 setObject:v48 forKeyedSubscript:@"impactTimeIns"];
 
@@ -1350,9 +1350,9 @@ LABEL_10:
   [(CWFJITTDImpactEstimator *)self cancelPeriodicTimer];
   v3 = objc_alloc_init(CWFScanParameters);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+  _tdNetwork = [(CWFJITTDImpactEstimator *)self _tdNetwork];
 
-  if (!v5)
+  if (!_tdNetwork)
   {
     v15 = CWFGetOSLog();
     if (v15)
@@ -1379,10 +1379,10 @@ LABEL_23:
     goto LABEL_7;
   }
 
-  v6 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
-  v7 = [v6 networkName];
+  _tdNetwork2 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+  networkName = [_tdNetwork2 networkName];
 
-  if (!v7)
+  if (!networkName)
   {
     v17 = CWFGetOSLog();
     if (v17)
@@ -1398,16 +1398,16 @@ LABEL_23:
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+      _tdNetwork3 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
       _os_log_send_and_compose_impl();
     }
 
     goto LABEL_23;
   }
 
-  v8 = [(CWFJITTDImpactEstimator *)self scanForNetworkHandler];
+  scanForNetworkHandler = [(CWFJITTDImpactEstimator *)self scanForNetworkHandler];
 
-  if (!v8)
+  if (!scanForNetworkHandler)
   {
     v18 = CWFGetOSLog();
     if (v18)
@@ -1429,14 +1429,14 @@ LABEL_23:
     goto LABEL_22;
   }
 
-  v9 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
-  v10 = [v9 networkName];
+  _tdNetwork4 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+  networkName2 = [_tdNetwork4 networkName];
 
-  if (v10)
+  if (networkName2)
   {
-    v11 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
-    v12 = [v11 networkName];
-    [v4 addObject:v12];
+    _tdNetwork5 = [(CWFJITTDImpactEstimator *)self _tdNetwork];
+    networkName3 = [_tdNetwork5 networkName];
+    [v4 addObject:networkName3];
   }
 
   [(CWFScanParameters *)v3 setScanType:1];
@@ -1447,8 +1447,8 @@ LABEL_23:
   [(CWFScanParameters *)v3 setChannels:0];
   [(CWFScanParameters *)v3 setScanFlags:2592];
   [(CWFScanParameters *)v3 setSSIDList:v4];
-  v13 = [(CWFJITTDImpactEstimator *)self scanForNetworkHandler];
-  (v13)[2](v13, v3);
+  scanForNetworkHandler2 = [(CWFJITTDImpactEstimator *)self scanForNetworkHandler];
+  (scanForNetworkHandler2)[2](scanForNetworkHandler2, v3);
 
 LABEL_7:
   v14 = *MEMORY[0x1E69E9840];
@@ -1456,14 +1456,14 @@ LABEL_7:
 
 - (void)cancelBoundaryTimer
 {
-  v2 = [(CWFJITTDImpactEstimator *)self _boundaryTimer];
-  dispatch_source_set_timer(v2, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+  _boundaryTimer = [(CWFJITTDImpactEstimator *)self _boundaryTimer];
+  dispatch_source_set_timer(_boundaryTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
 - (void)cancelPeriodicTimer
 {
-  v2 = [(CWFJITTDImpactEstimator *)self _periodicTimer];
-  dispatch_source_set_timer(v2, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+  _periodicTimer = [(CWFJITTDImpactEstimator *)self _periodicTimer];
+  dispatch_source_set_timer(_periodicTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
 - (void)resetStores

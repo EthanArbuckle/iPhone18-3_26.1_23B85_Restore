@@ -1,28 +1,28 @@
 @interface EXPSiriSchemaEXPServerExperimentTriggeredTier1
-- (BOOL)isEqual:(id)a3;
-- (EXPSiriSchemaEXPServerExperimentTriggeredTier1)initWithDictionary:(id)a3;
-- (EXPSiriSchemaEXPServerExperimentTriggeredTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EXPSiriSchemaEXPServerExperimentTriggeredTier1)initWithDictionary:(id)dictionary;
+- (EXPSiriSchemaEXPServerExperimentTriggeredTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAllocation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAllocation:(id)allocation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSiriSchemaEXPServerExperimentTriggeredTier1
 
-- (EXPSiriSchemaEXPServerExperimentTriggeredTier1)initWithDictionary:(id)a3
+- (EXPSiriSchemaEXPServerExperimentTriggeredTier1)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = EXPSiriSchemaEXPServerExperimentTriggeredTier1;
   v5 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"allocation"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"allocation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"codepathId", v21}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"codepathId", v21}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)v5 setCodepathId:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"pegasusId"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"pegasusId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (EXPSiriSchemaEXPServerExperimentTriggeredTier1)initWithJSON:(id)a3
+- (EXPSiriSchemaEXPServerExperimentTriggeredTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,10 +125,10 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_allocations count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -148,16 +148,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -167,44 +167,44 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"allocation"];
+    [dictionary setObject:array forKeyedSubscript:@"allocation"];
   }
 
   if (self->_codepathId)
   {
-    v12 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    codepathId = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
+    dictionaryRepresentation2 = [codepathId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"codepathId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"codepathId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"codepathId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"codepathId"];
     }
   }
 
   if (self->_pegasusId)
   {
-    v15 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    pegasusId = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
+    dictionaryRepresentation3 = [pegasusId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"pegasusId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"pegasusId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"pegasusId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"pegasusId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v19];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v19];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -214,28 +214,28 @@
   return v4 ^ [(SISchemaUUID *)self->_pegasusId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self allocations];
-  v6 = [v4 allocations];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self allocations];
+  allocations2 = [equalCopy allocations];
+  if ((allocations != 0) == (allocations2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self allocations];
-  if (v7)
+  allocations3 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self allocations];
+  if (allocations3)
   {
-    v8 = v7;
-    v9 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self allocations];
-    v10 = [v4 allocations];
-    v11 = [v9 isEqual:v10];
+    v8 = allocations3;
+    allocations4 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self allocations];
+    allocations5 = [equalCopy allocations];
+    v11 = [allocations4 isEqual:allocations5];
 
     if (!v11)
     {
@@ -247,20 +247,20 @@
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
-  v6 = [v4 codepathId];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
+  allocations2 = [equalCopy codepathId];
+  if ((allocations != 0) == (allocations2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
-  if (v12)
+  codepathId = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
+  if (codepathId)
   {
-    v13 = v12;
-    v14 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
-    v15 = [v4 codepathId];
-    v16 = [v14 isEqual:v15];
+    v13 = codepathId;
+    codepathId2 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
+    codepathId3 = [equalCopy codepathId];
+    v16 = [codepathId2 isEqual:codepathId3];
 
     if (!v16)
     {
@@ -272,12 +272,12 @@
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
-  v6 = [v4 pegasusId];
-  if ((v5 != 0) != (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
+  allocations2 = [equalCopy pegasusId];
+  if ((allocations != 0) != (allocations2 == 0))
   {
-    v17 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
-    if (!v17)
+    pegasusId = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
+    if (!pegasusId)
     {
 
 LABEL_20:
@@ -285,10 +285,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
-    v20 = [v4 pegasusId];
-    v21 = [v19 isEqual:v20];
+    v18 = pegasusId;
+    pegasusId2 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
+    pegasusId3 = [equalCopy pegasusId];
+    v21 = [pegasusId2 isEqual:pegasusId3];
 
     if (v21)
     {
@@ -308,10 +308,10 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -343,65 +343,65 @@ LABEL_18:
     while (v7);
   }
 
-  v10 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
+  codepathId = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
 
-  if (v10)
+  if (codepathId)
   {
-    v11 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
+    codepathId2 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
+  pegasusId = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
 
-  if (v12)
+  if (pegasusId)
   {
-    v13 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
+    pegasusId2 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addAllocation:(id)a3
+- (void)addAllocation:(id)allocation
 {
-  v4 = a3;
+  allocationCopy = allocation;
   allocations = self->_allocations;
-  v8 = v4;
+  v8 = allocationCopy;
   if (!allocations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_allocations;
-    self->_allocations = v6;
+    self->_allocations = array;
 
-    v4 = v8;
+    allocationCopy = v8;
     allocations = self->_allocations;
   }
 
-  [(NSArray *)allocations addObject:v4];
+  [(NSArray *)allocations addObject:allocationCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = EXPSiriSchemaEXPServerExperimentTriggeredTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self allocations];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  allocations = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self allocations];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:allocations underConditions:policyCopy];
   [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self setAllocations:v7];
 
-  v8 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
-  v10 = [v9 suppressMessage];
+  codepathId = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self codepathId];
+  v9 = [codepathId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v9 suppressMessage];
 
-  if (v10)
+  if (suppressMessage)
   {
     [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self deleteCodepathId];
   }
 
-  v11 = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  pegasusId = [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self pegasusId];
+  v12 = [pegasusId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(EXPSiriSchemaEXPServerExperimentTriggeredTier1 *)self deletePegasusId];
   }

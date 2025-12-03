@@ -1,5 +1,5 @@
 @interface SBNotificationPresentableViewController
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)handleHomeButtonDoublePress;
 - (BOOL)handleHomeButtonLongPress;
 - (BOOL)handleHomeButtonPress;
@@ -8,12 +8,12 @@
 - (BOOL)handleVolumeDownButtonPress;
 - (BOOL)handleVolumeUpButtonPress;
 - (BOOL)shouldAcquireWindowLevelAssertion;
-- (BOOL)shouldDismissForReason:(id)a3 outReason:(id *)a4;
+- (BOOL)shouldDismissForReason:(id)reason outReason:(id *)outReason;
 - (SBUIPresentableHomeGestureContext)homeGestureContext;
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3;
-- (void)longLookDidPresentForNotificationViewController:(id)a3;
-- (void)longLookWillDismissForNotificationViewController:(id)a3;
-- (void)longLookWillPresentForNotificationViewController:(id)a3;
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view;
+- (void)longLookDidPresentForNotificationViewController:(id)controller;
+- (void)longLookWillDismissForNotificationViewController:(id)controller;
+- (void)longLookWillPresentForNotificationViewController:(id)controller;
 @end
 
 @implementation SBNotificationPresentableViewController
@@ -25,29 +25,29 @@
   return WeakRetained;
 }
 
-- (void)longLookWillPresentForNotificationViewController:(id)a3
+- (void)longLookWillPresentForNotificationViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SBNotificationPresentableViewController;
-  [(NCNotificationPresentableViewController *)&v5 longLookWillPresentForNotificationViewController:a3];
+  [(NCNotificationPresentableViewController *)&v5 longLookWillPresentForNotificationViewController:controller];
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
   [WeakRetained setWantsHomeGesture:1];
 }
 
-- (void)longLookDidPresentForNotificationViewController:(id)a3
+- (void)longLookDidPresentForNotificationViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = SBNotificationPresentableViewController;
-  [(NCNotificationPresentableViewController *)&v21 longLookDidPresentForNotificationViewController:v4];
+  [(NCNotificationPresentableViewController *)&v21 longLookDidPresentForNotificationViewController:controllerCopy];
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
   if (objc_opt_respondsToSelector())
   {
     v6 = [WeakRetained platterBarSwipeAffordanceViewForParticipant:self];
     [v6 addObserver:self];
-    v7 = [v4 containerViewForExpandedContent];
-    [v7 addSubview:v6];
-    [v7 bounds];
+    containerViewForExpandedContent = [controllerCopy containerViewForExpandedContent];
+    [containerViewForExpandedContent addSubview:v6];
+    [containerViewForExpandedContent bounds];
     x = v22.origin.x;
     y = v22.origin.y;
     width = v22.size.width;
@@ -73,134 +73,134 @@
   }
 }
 
-- (void)longLookWillDismissForNotificationViewController:(id)a3
+- (void)longLookWillDismissForNotificationViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SBNotificationPresentableViewController;
-  [(NCNotificationPresentableViewController *)&v5 longLookWillDismissForNotificationViewController:a3];
+  [(NCNotificationPresentableViewController *)&v5 longLookWillDismissForNotificationViewController:controller];
   WeakRetained = objc_loadWeakRetained(&self->_homeGestureContext);
   [WeakRetained setWantsHomeGesture:0];
 }
 
 - (BOOL)handleHomeButtonPress
 {
-  v2 = [(NCNotificationPresentableViewController *)self delegate];
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 handleHomeButtonPress];
+    handleHomeButtonPress = [delegate handleHomeButtonPress];
   }
 
   else
   {
-    v3 = 0;
+    handleHomeButtonPress = 0;
   }
 
-  return v3;
+  return handleHomeButtonPress;
 }
 
 - (BOOL)handleHomeButtonDoublePress
 {
-  v2 = [(NCNotificationPresentableViewController *)self delegate];
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 handleHomeButtonDoublePress];
+    handleHomeButtonDoublePress = [delegate handleHomeButtonDoublePress];
   }
 
   else
   {
-    v3 = 0;
+    handleHomeButtonDoublePress = 0;
   }
 
-  return v3;
+  return handleHomeButtonDoublePress;
 }
 
 - (BOOL)handleHomeButtonLongPress
 {
-  v2 = [(NCNotificationPresentableViewController *)self delegate];
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 handleHomeButtonLongPress];
+    handleHomeButtonLongPress = [delegate handleHomeButtonLongPress];
   }
 
   else
   {
-    v3 = 0;
+    handleHomeButtonLongPress = 0;
   }
 
-  return v3;
+  return handleHomeButtonLongPress;
 }
 
 - (BOOL)handleLockButtonPress
 {
-  v2 = [(NCNotificationPresentableViewController *)self delegate];
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 handleLockButtonPress];
+    handleLockButtonPress = [delegate handleLockButtonPress];
   }
 
   else
   {
-    v3 = 0;
+    handleLockButtonPress = 0;
   }
 
-  return v3;
+  return handleLockButtonPress;
 }
 
 - (BOOL)handleVoiceCommandButtonPress
 {
-  v2 = [(NCNotificationPresentableViewController *)self delegate];
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 handleVoiceCommandButtonPress];
+    handleVoiceCommandButtonPress = [delegate handleVoiceCommandButtonPress];
   }
 
   else
   {
-    v3 = 0;
+    handleVoiceCommandButtonPress = 0;
   }
 
-  return v3;
+  return handleVoiceCommandButtonPress;
 }
 
 - (BOOL)handleVolumeUpButtonPress
 {
-  v2 = [(NCNotificationPresentableViewController *)self delegate];
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 handleVolumeUpButtonPress];
+    handleVolumeUpButtonPress = [delegate handleVolumeUpButtonPress];
   }
 
   else
   {
-    v3 = 0;
+    handleVolumeUpButtonPress = 0;
   }
 
-  return v3;
+  return handleVolumeUpButtonPress;
 }
 
 - (BOOL)handleVolumeDownButtonPress
 {
-  v2 = [(NCNotificationPresentableViewController *)self delegate];
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 handleVolumeDownButtonPress];
+    handleVolumeDownButtonPress = [delegate handleVolumeDownButtonPress];
   }
 
   else
   {
-    v3 = 0;
+    handleVolumeDownButtonPress = 0;
   }
 
-  return v3;
+  return handleVolumeDownButtonPress;
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  v3 = a3;
-  v4 = [(NCNotificationPresentableViewController *)self delegate];
+  pressCopy = press;
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 handleHeadsetButtonPress:v3];
+    v5 = [delegate handleHeadsetButtonPress:pressCopy];
   }
 
   else
@@ -213,27 +213,27 @@
 
 - (BOOL)shouldAcquireWindowLevelAssertion
 {
-  v2 = [(NCNotificationPresentableViewController *)self delegate];
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 shouldAcquireWindowLevelAssertion];
+    shouldAcquireWindowLevelAssertion = [delegate shouldAcquireWindowLevelAssertion];
   }
 
   else
   {
-    v3 = 0;
+    shouldAcquireWindowLevelAssertion = 0;
   }
 
-  return v3;
+  return shouldAcquireWindowLevelAssertion;
 }
 
-- (BOOL)shouldDismissForReason:(id)a3 outReason:(id *)a4
+- (BOOL)shouldDismissForReason:(id)reason outReason:(id *)outReason
 {
-  v6 = a3;
-  v7 = [(NCNotificationPresentableViewController *)self delegate];
+  reasonCopy = reason;
+  delegate = [(NCNotificationPresentableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 shouldDismissForReason:v6 outReason:a4];
+    v8 = [delegate shouldDismissForReason:reasonCopy outReason:outReason];
   }
 
   else
@@ -244,16 +244,16 @@
   return v8;
 }
 
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view
 {
-  v3 = [(NCNotificationPresentableViewController *)self notificationViewController];
-  v6 = [v3 presentedExpandedPlatterViewController];
+  notificationViewController = [(NCNotificationPresentableViewController *)self notificationViewController];
+  presentedExpandedPlatterViewController = [notificationViewController presentedExpandedPlatterViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = v6;
-    v5 = [v4 dismisser];
-    [v5 expandedPlatterPresentable:v4 requestsDismissalWithTrigger:2];
+    v4 = presentedExpandedPlatterViewController;
+    dismisser = [v4 dismisser];
+    [dismisser expandedPlatterPresentable:v4 requestsDismissalWithTrigger:2];
   }
 }
 

@@ -1,46 +1,46 @@
 @interface TSKSegmentedControl
-- (TSKSegmentedControl)initWithItems:(id)a3 style:(int)a4;
-- (TSKSegmentedControl)initWithItems:(id)a3 style:(int)a4 target:(id)a5 action:(SEL)a6;
+- (TSKSegmentedControl)initWithItems:(id)items style:(int)style;
+- (TSKSegmentedControl)initWithItems:(id)items style:(int)style target:(id)target action:(SEL)action;
 - (UIColor)selectedTintColor;
-- (id)p_backgroundImageForButton:(id)a3 item:(id)a4 fillColor:(id)a5;
-- (id)p_fullBleedBackgroundImageForButton:(id)a3 item:(id)a4 fillColor:(id)a5;
-- (id)p_losengeBackgroundImageForButton:(id)a3 item:(id)a4 fillColor:(id)a5;
-- (int64_t)tagForSegment:(unint64_t)a3;
-- (unint64_t)segmentWithTag:(int64_t)a3;
+- (id)p_backgroundImageForButton:(id)button item:(id)item fillColor:(id)color;
+- (id)p_fullBleedBackgroundImageForButton:(id)button item:(id)item fillColor:(id)color;
+- (id)p_losengeBackgroundImageForButton:(id)button item:(id)item fillColor:(id)color;
+- (int64_t)tagForSegment:(unint64_t)segment;
+- (unint64_t)segmentWithTag:(int64_t)tag;
 - (void)dealloc;
-- (void)p_setButtonAttributedTitle:(id)a3 color:(id)a4 forState:(unint64_t)a5 button:(id)a6;
-- (void)p_setSelectedTintColor:(id)a3;
+- (void)p_setButtonAttributedTitle:(id)title color:(id)color forState:(unint64_t)state button:(id)button;
+- (void)p_setSelectedTintColor:(id)color;
 - (void)p_updateSegmentProperties;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 forSegment:(unint64_t)a5;
-- (void)setEnabled:(BOOL)a3 forSegment:(unint64_t)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3 forSegment:(unint64_t)a4;
-- (void)setSegmentedControlStyle:(int)a3;
-- (void)setSelectedSegmentIndices:(id)a3;
-- (void)setSelectedTintColor:(id)a3;
-- (void)setTag:(int64_t)a3 forSegment:(unint64_t)a4;
-- (void)setTitle:(id)a3 forSegment:(unint64_t)a4;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state forSegment:(unint64_t)segment;
+- (void)setEnabled:(BOOL)enabled forSegment:(unint64_t)segment;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image forSegment:(unint64_t)segment;
+- (void)setSegmentedControlStyle:(int)style;
+- (void)setSelectedSegmentIndices:(id)indices;
+- (void)setSelectedTintColor:(id)color;
+- (void)setTag:(int64_t)tag forSegment:(unint64_t)segment;
+- (void)setTitle:(id)title forSegment:(unint64_t)segment;
 - (void)sizeToFit;
-- (void)sizeToFitWidth:(float)a3;
-- (void)tappedSegment:(id)a3;
+- (void)sizeToFitWidth:(float)width;
+- (void)tappedSegment:(id)segment;
 @end
 
 @implementation TSKSegmentedControl
 
-- (TSKSegmentedControl)initWithItems:(id)a3 style:(int)a4
+- (TSKSegmentedControl)initWithItems:(id)items style:(int)style
 {
-  v4 = *&a4;
+  v4 = *&style;
   v11.receiver = self;
   v11.super_class = TSKSegmentedControl;
   v6 = [(TSKSegmentedControl *)&v11 initWithFrame:0.0, 0.0, 0.0, 44.0];
   if (v6)
   {
-    v6->mItems = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:a3];
-    v6->mButtonSegments = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(a3, "count")}];
+    v6->mItems = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:items];
+    v6->mButtonSegments = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(items, "count")}];
     [(TSKSegmentedControl *)v6 setAllowsMultipleSelection:0];
     [(TSKSegmentedControl *)v6 setAllowsEmptySelection:0];
     v6->mLastPressedSegmentIndex = -1;
-    v7 = [a3 count];
+    v7 = [items count];
     if (v7)
     {
       v8 = v7;
@@ -66,13 +66,13 @@
   return v6;
 }
 
-- (TSKSegmentedControl)initWithItems:(id)a3 style:(int)a4 target:(id)a5 action:(SEL)a6
+- (TSKSegmentedControl)initWithItems:(id)items style:(int)style target:(id)target action:(SEL)action
 {
-  v8 = [(TSKSegmentedControl *)self initWithItems:a3 style:*&a4];
+  v8 = [(TSKSegmentedControl *)self initWithItems:items style:*&style];
   v9 = v8;
-  if (a6 && v8)
+  if (action && v8)
   {
-    [(TSKSegmentedControl *)v8 addTarget:a5 action:a6 forControlEvents:64];
+    [(TSKSegmentedControl *)v8 addTarget:target action:action forControlEvents:64];
   }
 
   return v9;
@@ -85,16 +85,16 @@
   [(TSKSegmentedControl *)&v3 dealloc];
 }
 
-- (void)p_setSelectedTintColor:(id)a3
+- (void)p_setSelectedTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
 
-  self->mSelectedTintColor = a3;
+  self->mSelectedTintColor = color;
 }
 
-- (void)setSelectedTintColor:(id)a3
+- (void)setSelectedTintColor:(id)color
 {
-  [(TSKSegmentedControl *)self p_setSelectedTintColor:a3];
+  [(TSKSegmentedControl *)self p_setSelectedTintColor:color];
 
   [(TSKSegmentedControl *)self p_updateSegmentProperties];
 }
@@ -116,21 +116,21 @@
   }
 }
 
-- (void)setSegmentedControlStyle:(int)a3
+- (void)setSegmentedControlStyle:(int)style
 {
-  [(TSKSegmentedControl *)self p_setSegmentedControlStyle:*&a3];
+  [(TSKSegmentedControl *)self p_setSegmentedControlStyle:*&style];
 
   [(TSKSegmentedControl *)self p_updateSegmentProperties];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v24 = *MEMORY[0x277D85DE8];
   v22.receiver = self;
   v22.super_class = TSKSegmentedControl;
-  [(TSKSegmentedControl *)&v22 setFrame:a3.origin.x, a3.origin.y];
+  [(TSKSegmentedControl *)&v22 setFrame:frame.origin.x, frame.origin.y];
   v6 = floor(width / [(TSKSegmentedControl *)self numberOfSegments]);
   v18 = 0u;
   v19 = 0u;
@@ -163,10 +163,10 @@
   }
 
   v13 = width - v6 * [(TSKSegmentedControl *)self numberOfSegments];
-  v14 = [(TSKSegmentedControl *)self numberOfSegments];
+  numberOfSegments = [(TSKSegmentedControl *)self numberOfSegments];
   if (v13 > 0.0)
   {
-    v15 = v14 - 1;
+    v15 = numberOfSegments - 1;
     do
     {
       v16 = [(NSMutableArray *)self->mButtonSegments objectAtIndex:v15];
@@ -224,86 +224,86 @@
   [(TSKSegmentedControl *)self sizeToFitWidth:v10];
 }
 
-- (void)sizeToFitWidth:(float)a3
+- (void)sizeToFitWidth:(float)width
 {
   [(TSKSegmentedControl *)self frame];
 
   [(TSKSegmentedControl *)self setFrame:?];
 }
 
-- (void)setTitle:(id)a3 forSegment:(unint64_t)a4
+- (void)setTitle:(id)title forSegment:(unint64_t)segment
 {
-  if ([(TSKSegmentedControl *)self numberOfSegments]> a4)
+  if ([(TSKSegmentedControl *)self numberOfSegments]> segment)
   {
-    [(NSMutableArray *)self->mItems replaceObjectAtIndex:a4 withObject:a3];
+    [(NSMutableArray *)self->mItems replaceObjectAtIndex:segment withObject:title];
   }
 
   [(TSKSegmentedControl *)self p_updateSegmentProperties];
 }
 
-- (void)setEnabled:(BOOL)a3 forSegment:(unint64_t)a4
+- (void)setEnabled:(BOOL)enabled forSegment:(unint64_t)segment
 {
-  v5 = a3;
-  if ([(TSKSegmentedControl *)self numberOfSegments]> a4)
+  enabledCopy = enabled;
+  if ([(TSKSegmentedControl *)self numberOfSegments]> segment)
   {
-    v7 = [(NSMutableArray *)self->mButtonSegments objectAtIndex:a4];
+    v7 = [(NSMutableArray *)self->mButtonSegments objectAtIndex:segment];
 
-    [v7 setEnabled:v5];
+    [v7 setEnabled:enabledCopy];
   }
 }
 
-- (void)setImage:(id)a3 forSegment:(unint64_t)a4
+- (void)setImage:(id)image forSegment:(unint64_t)segment
 {
-  if ([(TSKSegmentedControl *)self numberOfSegments]> a4)
+  if ([(TSKSegmentedControl *)self numberOfSegments]> segment)
   {
-    [(NSMutableArray *)self->mItems replaceObjectAtIndex:a4 withObject:a3];
+    [(NSMutableArray *)self->mItems replaceObjectAtIndex:segment withObject:image];
   }
 
   [(TSKSegmentedControl *)self p_updateSegmentProperties];
 }
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 forSegment:(unint64_t)a5
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state forSegment:(unint64_t)segment
 {
-  if ([(TSKSegmentedControl *)self numberOfSegments]> a5)
+  if ([(TSKSegmentedControl *)self numberOfSegments]> segment)
   {
-    [-[NSMutableArray objectAtIndex:](self->mButtonSegments objectAtIndex:{a5), "setBackgroundImage:forState:", a3, a4}];
-    if (!a4)
+    [-[NSMutableArray objectAtIndex:](self->mButtonSegments objectAtIndex:{segment), "setBackgroundImage:forState:", image, state}];
+    if (!state)
     {
-      [(NSMutableArray *)self->mItems objectAtIndex:a5];
+      [(NSMutableArray *)self->mItems objectAtIndex:segment];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         mItems = self->mItems;
 
-        [(NSMutableArray *)mItems replaceObjectAtIndex:a5 withObject:a3];
+        [(NSMutableArray *)mItems replaceObjectAtIndex:segment withObject:image];
       }
     }
   }
 }
 
-- (void)setTag:(int64_t)a3 forSegment:(unint64_t)a4
+- (void)setTag:(int64_t)tag forSegment:(unint64_t)segment
 {
-  if ([(TSKSegmentedControl *)self numberOfSegments]> a4)
+  if ([(TSKSegmentedControl *)self numberOfSegments]> segment)
   {
-    v7 = [(NSMutableArray *)self->mButtonSegments objectAtIndex:a4];
+    v7 = [(NSMutableArray *)self->mButtonSegments objectAtIndex:segment];
 
-    [v7 setTag:a3];
+    [v7 setTag:tag];
   }
 }
 
-- (int64_t)tagForSegment:(unint64_t)a3
+- (int64_t)tagForSegment:(unint64_t)segment
 {
-  if ([(TSKSegmentedControl *)self numberOfSegments]<= a3)
+  if ([(TSKSegmentedControl *)self numberOfSegments]<= segment)
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->mButtonSegments objectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->mButtonSegments objectAtIndex:segment];
 
   return [v5 tag];
 }
 
-- (unint64_t)segmentWithTag:(int64_t)a3
+- (unint64_t)segmentWithTag:(int64_t)tag
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -331,7 +331,7 @@ LABEL_3:
       objc_enumerationMutation(mButtonSegments);
     }
 
-    if ([*(*(&v12 + 1) + 8 * v9) tag] == a3)
+    if ([*(*(&v12 + 1) + 8 * v9) tag] == tag)
     {
       return v10;
     }
@@ -350,7 +350,7 @@ LABEL_3:
   }
 }
 
-- (id)p_fullBleedBackgroundImageForButton:(id)a3 item:(id)a4 fillColor:(id)a5
+- (id)p_fullBleedBackgroundImageForButton:(id)button item:(id)item fillColor:(id)color
 {
   v10.width = 3.0;
   v10.height = 3.0;
@@ -361,7 +361,7 @@ LABEL_3:
   v11.size.width = 3.0;
   v11.size.height = 3.0;
   CGContextClearRect(CurrentContext, v11);
-  CGContextSetFillColorWithColor(CurrentContext, [a5 CGColor]);
+  CGContextSetFillColorWithColor(CurrentContext, [color CGColor]);
   v12.origin.x = 0.0;
   v12.origin.y = 0.0;
   v12.size.width = 3.0;
@@ -373,14 +373,14 @@ LABEL_3:
   return [(UIImage *)ImageFromCurrentImageContext resizableImageWithCapInsets:1.0, 1.0, 1.0, 1.0];
 }
 
-- (id)p_losengeBackgroundImageForButton:(id)a3 item:(id)a4 fillColor:(id)a5
+- (id)p_losengeBackgroundImageForButton:(id)button item:(id)item fillColor:(id)color
 {
   objc_opt_class();
   if (TSUDynamicCast())
   {
-    [a3 bounds];
-    [a3 contentRectForBounds:?];
-    [a3 imageRectForContentRect:?];
+    [button bounds];
+    [button contentRectForBounds:?];
+    [button imageRectForContentRect:?];
     v8 = v7;
   }
 
@@ -392,14 +392,14 @@ LABEL_3:
   objc_opt_class();
   if (TSUDynamicCast())
   {
-    [a3 bounds];
-    [a3 contentRectForBounds:?];
-    [a3 titleRectForContentRect:?];
+    [button bounds];
+    [button contentRectForBounds:?];
+    [button titleRectForContentRect:?];
     v8 = v9;
   }
 
-  [a3 bounds];
-  [a3 backgroundRectForBounds:?];
+  [button bounds];
+  [button backgroundRectForBounds:?];
   width = v17.size.width;
   height = v17.size.height;
   if (CGRectIsEmpty(v17))
@@ -416,7 +416,7 @@ LABEL_3:
   v18.size.width = width;
   v18.size.height = height;
   CGContextClearRect(CurrentContext, v18);
-  CGContextSetFillColorWithColor(CurrentContext, [a5 CGColor]);
+  CGContextSetFillColorWithColor(CurrentContext, [color CGColor]);
   v14 = fmax(v8 + 15.0, 38.0);
   CGContextAddPath(CurrentContext, [objc_msgSend(MEMORY[0x277D75208] bezierPathWithRoundedRect:width * 0.5 - v14 * 0.5 cornerRadius:{height * 0.5 + -19.0, v14, 38.0, 19.0), "CGPath"}]);
   CGContextFillPath(CurrentContext);
@@ -425,22 +425,22 @@ LABEL_3:
   return ImageFromCurrentImageContext;
 }
 
-- (id)p_backgroundImageForButton:(id)a3 item:(id)a4 fillColor:(id)a5
+- (id)p_backgroundImageForButton:(id)button item:(id)item fillColor:(id)color
 {
   if ([(TSKSegmentedControl *)self segmentedControlStyle]== 1)
   {
 
-    return [(TSKSegmentedControl *)self p_losengeBackgroundImageForButton:a3 item:a4 fillColor:a5];
+    return [(TSKSegmentedControl *)self p_losengeBackgroundImageForButton:button item:item fillColor:color];
   }
 
   else
   {
 
-    return [(TSKSegmentedControl *)self p_fullBleedBackgroundImageForButton:a3 item:a4 fillColor:a5];
+    return [(TSKSegmentedControl *)self p_fullBleedBackgroundImageForButton:button item:item fillColor:color];
   }
 }
 
-- (void)p_setButtonAttributedTitle:(id)a3 color:(id)a4 forState:(unint64_t)a5 button:(id)a6
+- (void)p_setButtonAttributedTitle:(id)title color:(id)color forState:(unint64_t)state button:(id)button
 {
   v14[2] = *MEMORY[0x277D85DE8];
   mFont = self->mFont;
@@ -453,19 +453,19 @@ LABEL_3:
   v13[0] = *MEMORY[0x277D740A8];
   v13[1] = v11;
   v14[0] = mFont;
-  v14[1] = a4;
+  v14[1] = color;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  [a6 setAttributedTitle:objc_msgSend(objc_alloc(MEMORY[0x277CCA898]) forState:{"initWithString:attributes:", a3, v12), a5}];
+  [button setAttributedTitle:objc_msgSend(objc_alloc(MEMORY[0x277CCA898]) forState:{"initWithString:attributes:", title, v12), state}];
 }
 
 - (void)p_updateSegmentProperties
 {
   if ([(TSKSegmentedControl *)self numberOfSegments])
   {
-    v3 = [MEMORY[0x277D75348] whiteColor];
-    v20 = [(TSKSegmentedControl *)self tintColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    tintColor = [(TSKSegmentedControl *)self tintColor];
     v19 = [-[TSKSegmentedControl tintColor](self "tintColor")];
-    v21 = [(TSKSegmentedControl *)self selectedTintColor];
+    selectedTintColor = [(TSKSegmentedControl *)self selectedTintColor];
     v4 = [-[TSKSegmentedControl tintColor](self "tintColor")];
     v5 = [(UIColor *)[(TSKSegmentedControl *)self selectedTintColor] colorWithAlphaComponent:0.5];
     if ([(TSKSegmentedControl *)self numberOfSegments])
@@ -490,12 +490,12 @@ LABEL_3:
           CurrentContext = UIGraphicsGetCurrentContext();
           CGContextTranslateCTM(CurrentContext, 0.0, height);
           CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-          v14 = [v9 CGImage];
+          cGImage = [v9 CGImage];
           v23.origin.x = 0.0;
           v23.origin.y = 0.0;
           v23.size.width = v11;
           v23.size.height = height;
-          CGContextClipToMask(CurrentContext, v23, v14);
+          CGContextClipToMask(CurrentContext, v23, cGImage);
           CGContextSetFillColorWithColor(CurrentContext, [-[TSKSegmentedControl tintColor](self "tintColor")]);
           v24.origin.x = 0.0;
           v24.origin.y = 0.0;
@@ -532,14 +532,14 @@ LABEL_3:
         if (v17)
         {
           v18 = v17;
-          [(TSKSegmentedControl *)self p_setButtonAttributedTitle:v17 color:v20 forState:0 button:v7];
-          [(TSKSegmentedControl *)self p_setButtonAttributedTitle:v18 color:v3 forState:4 button:v7];
-          [(TSKSegmentedControl *)self p_setButtonAttributedTitle:v18 color:v3 forState:5 button:v7];
+          [(TSKSegmentedControl *)self p_setButtonAttributedTitle:v17 color:tintColor forState:0 button:v7];
+          [(TSKSegmentedControl *)self p_setButtonAttributedTitle:v18 color:whiteColor forState:4 button:v7];
+          [(TSKSegmentedControl *)self p_setButtonAttributedTitle:v18 color:whiteColor forState:5 button:v7];
           [(TSKSegmentedControl *)self p_setButtonAttributedTitle:v18 color:v19 forState:2 button:v7];
         }
 
         [v7 setBackgroundImage:0 forState:0];
-        [v7 setBackgroundImage:-[TSKSegmentedControl p_backgroundImageForButton:item:fillColor:](self forState:{"p_backgroundImageForButton:item:fillColor:", v7, -[NSMutableArray objectAtIndex:](self->mItems, "objectAtIndex:", v6), v21), 4}];
+        [v7 setBackgroundImage:-[TSKSegmentedControl p_backgroundImageForButton:item:fillColor:](self forState:{"p_backgroundImageForButton:item:fillColor:", v7, -[NSMutableArray objectAtIndex:](self->mItems, "objectAtIndex:", v6), selectedTintColor), 4}];
         [v7 setBackgroundImage:-[TSKSegmentedControl p_backgroundImageForButton:item:fillColor:](self forState:{"p_backgroundImageForButton:item:fillColor:", v7, -[NSMutableArray objectAtIndex:](self->mItems, "objectAtIndex:", v6), v4), 1}];
         [v7 setBackgroundImage:-[TSKSegmentedControl p_backgroundImageForButton:item:fillColor:](self forState:{"p_backgroundImageForButton:item:fillColor:", v7, -[NSMutableArray objectAtIndex:](self->mItems, "objectAtIndex:", v6++), v5), 5}];
       }
@@ -549,12 +549,12 @@ LABEL_3:
   }
 }
 
-- (void)setSelectedSegmentIndices:(id)a3
+- (void)setSelectedSegmentIndices:(id)indices
 {
   if (![(NSIndexSet *)self->mSelectedSegmentIndices isEqualToIndexSet:?])
   {
 
-    self->mSelectedSegmentIndices = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:a3];
+    self->mSelectedSegmentIndices = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexSet:indices];
     v5 = [(NSMutableArray *)self->mButtonSegments count];
     if (v5)
     {
@@ -576,10 +576,10 @@ uint64_t __49__TSKSegmentedControl_setSelectedSegmentIndices___block_invoke(void
   return [v1 setSelected:v2];
 }
 
-- (void)tappedSegment:(id)a3
+- (void)tappedSegment:(id)segment
 {
   v51 = *MEMORY[0x277D85DE8];
-  self->mLastPressedSegmentIndex = [(NSMutableArray *)self->mButtonSegments indexOfObject:a3];
+  self->mLastPressedSegmentIndex = [(NSMutableArray *)self->mButtonSegments indexOfObject:segment];
   if ([(TSKSegmentedControl *)self allowsMultipleSelection])
   {
     v4 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexSet:{-[TSKSegmentedControl selectedSegmentIndices](self, "selectedSegmentIndices")}];
@@ -614,15 +614,15 @@ LABEL_7:
   if (!v7)
   {
 LABEL_12:
-    v9 = [v8 indexSetWithIndex:self->mLastPressedSegmentIndex];
+    indexSet = [v8 indexSetWithIndex:self->mLastPressedSegmentIndex];
     goto LABEL_13;
   }
 
-  v9 = [MEMORY[0x277CCAA78] indexSet];
+  indexSet = [MEMORY[0x277CCAA78] indexSet];
 LABEL_13:
-  [(TSKSegmentedControl *)self setSelectedSegmentIndices:v9];
+  [(TSKSegmentedControl *)self setSelectedSegmentIndices:indexSet];
 LABEL_14:
-  v10 = self;
+  selfCopy = self;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -672,9 +672,9 @@ LABEL_14:
 
               else
               {
-                v20 = [MEMORY[0x277D6C290] currentHandler];
+                currentHandler = [MEMORY[0x277D6C290] currentHandler];
                 v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKSegmentedControl tappedSegment:]"];
-                [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKSegmentedControl.m"), 513, @"%@ does not respond to selector %@", v12, v18}];
+                [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKSegmentedControl.m"), 513, @"%@ does not respond to selector %@", v12, v18}];
               }
             }
 
@@ -712,9 +712,9 @@ LABEL_14:
 
               else
               {
-                v29 = [MEMORY[0x277D6C290] currentHandler];
+                currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
                 v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKSegmentedControl tappedSegment:]"];
-                [v29 handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKSegmentedControl.m"), 522, @"%@ does not respond to selector %@", v12, v27}];
+                [currentHandler2 handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKSegmentedControl.m"), 522, @"%@ does not respond to selector %@", v12, v27}];
               }
             }
 
@@ -734,7 +734,7 @@ LABEL_14:
     while (v34);
   }
 
-  v31 = self;
+  selfCopy2 = self;
 }
 
 @end

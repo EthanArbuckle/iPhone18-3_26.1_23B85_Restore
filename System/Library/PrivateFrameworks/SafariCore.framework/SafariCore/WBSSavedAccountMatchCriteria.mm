@@ -1,66 +1,66 @@
 @interface WBSSavedAccountMatchCriteria
-+ (id)criteriaForExactFQDNPasswordMatchesOfURL:(id)a3;
-+ (id)criteriaForNonAutofillablePasskeyWithCredentialIdentifier:(id)a3 relyingPartyURL:(id)a4;
++ (id)criteriaForExactFQDNPasswordMatchesOfURL:(id)l;
++ (id)criteriaForNonAutofillablePasskeyWithCredentialIdentifier:(id)identifier relyingPartyURL:(id)l;
 - (BOOL)queryShouldIncludeSavedAccountsWithDoNotSaveMarkers;
 - (NSSet)associatedDomainsForURL;
-- (WBSSavedAccountMatchCriteria)initWithURL:(id)a3 options:(unint64_t)a4 userNameQuery:(id)a5 passkeyCredentialIdentifier:(id)a6 associatedDomainsManager:(id)a7 webFrameIdentifier:(id)a8;
+- (WBSSavedAccountMatchCriteria)initWithURL:(id)l options:(unint64_t)options userNameQuery:(id)query passkeyCredentialIdentifier:(id)identifier associatedDomainsManager:(id)manager webFrameIdentifier:(id)frameIdentifier;
 - (id)_optionsDescription;
 - (id)description;
-- (id)urlWithoutWWWSubdomainFromURL:(id)a3;
+- (id)urlWithoutWWWSubdomainFromURL:(id)l;
 @end
 
 @implementation WBSSavedAccountMatchCriteria
 
-+ (id)criteriaForExactFQDNPasswordMatchesOfURL:(id)a3
++ (id)criteriaForExactFQDNPasswordMatchesOfURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[WBSStringQuery queryThatMatchesEverything];
-  v6 = [[a1 alloc] initWithURL:v4 options:16 userNameQuery:v5 associatedDomainsManager:0 webFrameIdentifier:0];
+  v6 = [[self alloc] initWithURL:lCopy options:16 userNameQuery:v5 associatedDomainsManager:0 webFrameIdentifier:0];
 
   return v6;
 }
 
-+ (id)criteriaForNonAutofillablePasskeyWithCredentialIdentifier:(id)a3 relyingPartyURL:(id)a4
++ (id)criteriaForNonAutofillablePasskeyWithCredentialIdentifier:(id)identifier relyingPartyURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  identifierCopy = identifier;
   v8 = +[WBSStringQuery queryThatMatchesEverything];
-  v9 = [[a1 alloc] initWithURL:v6 options:48 userNameQuery:v8 passkeyCredentialIdentifier:v7 associatedDomainsManager:0 webFrameIdentifier:0];
+  v9 = [[self alloc] initWithURL:lCopy options:48 userNameQuery:v8 passkeyCredentialIdentifier:identifierCopy associatedDomainsManager:0 webFrameIdentifier:0];
 
   return v9;
 }
 
-- (WBSSavedAccountMatchCriteria)initWithURL:(id)a3 options:(unint64_t)a4 userNameQuery:(id)a5 passkeyCredentialIdentifier:(id)a6 associatedDomainsManager:(id)a7 webFrameIdentifier:(id)a8
+- (WBSSavedAccountMatchCriteria)initWithURL:(id)l options:(unint64_t)options userNameQuery:(id)query passkeyCredentialIdentifier:(id)identifier associatedDomainsManager:(id)manager webFrameIdentifier:(id)frameIdentifier
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  lCopy = l;
+  queryCopy = query;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  frameIdentifierCopy = frameIdentifier;
   v29.receiver = self;
   v29.super_class = WBSSavedAccountMatchCriteria;
   v19 = [(WBSSavedAccountMatchCriteria *)&v29 init];
   v20 = v19;
   if (v19)
   {
-    v21 = [(WBSSavedAccountMatchCriteria *)v19 urlWithoutWWWSubdomainFromURL:v14];
+    v21 = [(WBSSavedAccountMatchCriteria *)v19 urlWithoutWWWSubdomainFromURL:lCopy];
     URL = v20->_URL;
     v20->_URL = v21;
 
-    v20->_options = a4;
-    objc_storeStrong(&v20->_userNameQuery, a5);
-    objc_storeStrong(&v20->_associatedDomainsManager, a7);
+    v20->_options = options;
+    objc_storeStrong(&v20->_userNameQuery, query);
+    objc_storeStrong(&v20->_associatedDomainsManager, manager);
     v23 = +[WBSSavedAccountContext defaultContext];
     context = v20->_context;
     v20->_context = v23;
 
-    v25 = [v16 copy];
+    v25 = [identifierCopy copy];
     passkeyCredentialIdentifier = v20->_passkeyCredentialIdentifier;
     v20->_passkeyCredentialIdentifier = v25;
 
-    if ((a4 & 0x70) == 0)
+    if ((options & 0x70) == 0)
     {
-      objc_storeStrong(&v20->_webFrameIdentifier, a8);
+      objc_storeStrong(&v20->_webFrameIdentifier, frameIdentifier);
     }
 
     v27 = v20;
@@ -76,9 +76,9 @@
     return 1;
   }
 
-  v2 = [(WBSStringQuery *)self->_userNameQuery string];
+  string = [(WBSStringQuery *)self->_userNameQuery string];
   v3 = +[WBSDontSaveMarker dontSaveMarker];
-  v4 = [v2 isEqualToString:v3];
+  v4 = [string isEqualToString:v3];
 
   return v4;
 }
@@ -88,9 +88,9 @@
   if ([(WBSSavedAccountMatchCriteria *)self queryShouldReturnSavedAccountsMatchingAssociatedDomains])
   {
     associatedDomainsManager = self->_associatedDomainsManager;
-    v4 = [(NSURL *)self->_URL host];
-    v5 = [v4 safari_stringByRemovingWwwDotPrefix];
-    v6 = [(WBSAutoFillAssociatedDomainsManager *)associatedDomainsManager domainsWithAssociatedCredentialsForDomain:v5];
+    host = [(NSURL *)self->_URL host];
+    safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
+    v6 = [(WBSAutoFillAssociatedDomainsManager *)associatedDomainsManager domainsWithAssociatedCredentialsForDomain:safari_stringByRemovingWwwDotPrefix];
   }
 
   else
@@ -107,11 +107,11 @@
   v11.receiver = self;
   v11.super_class = WBSSavedAccountMatchCriteria;
   v4 = [(WBSSavedAccountMatchCriteria *)&v11 description];
-  v5 = [(NSURL *)self->_URL absoluteString];
-  v6 = [(WBSStringQuery *)self->_userNameQuery string];
-  v7 = [(WBSStringQuery *)self->_userNameQuery matchingTypeDescriptionString];
-  v8 = [(WBSSavedAccountMatchCriteria *)self _optionsDescription];
-  v9 = [v3 stringWithFormat:@"<%@ url=%@ userNameQuery='%@', '%@'; options=%@; associatedDomains=%@ context=%@; passkeyCredentialID=%@; webFrameID=%@;>", v4, v5, v6, v7, v8, self->_associatedDomainsManager, self->_context, self->_passkeyCredentialIdentifier, self->_webFrameIdentifier];;
+  absoluteString = [(NSURL *)self->_URL absoluteString];
+  string = [(WBSStringQuery *)self->_userNameQuery string];
+  matchingTypeDescriptionString = [(WBSStringQuery *)self->_userNameQuery matchingTypeDescriptionString];
+  _optionsDescription = [(WBSSavedAccountMatchCriteria *)self _optionsDescription];
+  v9 = [v3 stringWithFormat:@"<%@ url=%@ userNameQuery='%@', '%@'; options=%@; associatedDomains=%@ context=%@; passkeyCredentialID=%@; webFrameID=%@;>", v4, absoluteString, string, matchingTypeDescriptionString, _optionsDescription, self->_associatedDomainsManager, self->_context, self->_passkeyCredentialIdentifier, self->_webFrameIdentifier];;
 
   return v9;
 }
@@ -120,12 +120,12 @@
 {
   if (self->_options)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = v3;
+    array = [MEMORY[0x1E695DF70] array];
+    v4 = array;
     options = self->_options;
     if (options)
     {
-      [v3 addObject:@"highLevelAndSimplifiedDomains"];
+      [array addObject:@"highLevelAndSimplifiedDomains"];
       options = self->_options;
       if ((options & 2) == 0)
       {
@@ -192,14 +192,14 @@ LABEL_10:
   return v6;
 }
 
-- (id)urlWithoutWWWSubdomainFromURL:(id)a3
+- (id)urlWithoutWWWSubdomainFromURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-    v4 = [v3 host];
-    v5 = [v4 safari_stringByRemovingWwwDotPrefix];
-    [v3 setHost:v5];
+    v3 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:0];
+    host = [v3 host];
+    safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
+    [v3 setHost:safari_stringByRemovingWwwDotPrefix];
 
     v6 = [v3 URL];
   }

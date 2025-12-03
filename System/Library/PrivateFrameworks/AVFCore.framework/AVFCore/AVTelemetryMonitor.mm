@@ -2,7 +2,7 @@
 + (id)shared;
 - (AVTelemetryMonitor)init;
 - (void)dealloc;
-- (void)incrementBucketCount:(unint64_t)a3 executionTime:(int64_t)a4;
+- (void)incrementBucketCount:(unint64_t)count executionTime:(int64_t)time;
 - (void)reportAllAggregatedCounts;
 @end
 
@@ -85,15 +85,15 @@ AVTelemetryMonitor *__28__AVTelemetryMonitor_shared__block_invoke()
   return v3;
 }
 
-- (void)incrementBucketCount:(unint64_t)a3 executionTime:(int64_t)a4
+- (void)incrementBucketCount:(unint64_t)count executionTime:(int64_t)time
 {
-  if (a4 > 7999 && a4 >> 7 > 0x7C)
+  if (time > 7999 && time >> 7 > 0x7C)
   {
-    if (a4 > 0x80E7)
+    if (time > 0x80E7)
     {
-      if (a4 > 0x101CF)
+      if (time > 0x101CF)
       {
-        if (a4 > 0x40F0F)
+        if (time > 0x40F0F)
         {
           FigAtomicIncrement32();
           if ([MEMORY[0x1E696AF00] isMainThread])
@@ -139,7 +139,7 @@ AVTelemetryMonitor *__28__AVTelemetryMonitor_shared__block_invoke()
 {
   v2 = 0;
   v3 = 36;
-  v6 = self;
+  selfCopy = self;
   do
   {
     allAggregratedCount = self->_allAggregratedCount;
@@ -156,7 +156,7 @@ AVTelemetryMonitor *__28__AVTelemetryMonitor_shared__block_invoke()
       FigAtomicAdd32();
       allAggregratedCount = v7;
       v2 = v8;
-      self = v6;
+      self = selfCopy;
     }
 
     if (*(allAggregratedCount + v3 - 12) || *(allAggregratedCount + v3 - 4) || *(&allAggregratedCount->var0 + v3))
@@ -168,7 +168,7 @@ AVTelemetryMonitor *__28__AVTelemetryMonitor_shared__block_invoke()
       FigAtomicAdd32();
       FigAtomicAdd32();
       v2 = v5;
-      self = v6;
+      self = selfCopy;
     }
 
     ++v2;

@@ -1,7 +1,7 @@
 @interface HMDAccessoryFirmwareUpdateApplyTask
 - (BOOL)_isApplyAllowedByPolicy;
 - (BOOL)shouldRun;
-- (HMDAccessoryFirmwareUpdateApplyTask)initWithSession:(id)a3 profile:(id)a4 policy:(id)a5 userInitiated:(BOOL)a6 delay:(BOOL)a7;
+- (HMDAccessoryFirmwareUpdateApplyTask)initWithSession:(id)session profile:(id)profile policy:(id)policy userInitiated:(BOOL)initiated delay:(BOOL)delay;
 - (HMDAccessoryFirmwareUpdatePolicy)policy;
 - (id)criteria;
 - (void)run;
@@ -18,28 +18,28 @@
 
 - (BOOL)_isApplyAllowedByPolicy
 {
-  v3 = [(HMDAccessoryFirmwareUpdateApplyTask *)self policy];
-  v4 = [(HMDAccessoryFirmwareUpdateApplyTask *)self isUserInitiated];
-  v5 = 1;
-  if (!v4 && v3)
+  policy = [(HMDAccessoryFirmwareUpdateApplyTask *)self policy];
+  isUserInitiated = [(HMDAccessoryFirmwareUpdateApplyTask *)self isUserInitiated];
+  status = 1;
+  if (!isUserInitiated && policy)
   {
-    v5 = [v3 status];
+    status = [policy status];
   }
 
-  return v5;
+  return status;
 }
 
 - (void)run
 {
-  v2 = [(HMDAccessoryFirmwareUpdateTask *)self session];
-  [v2 resumeWithState:2];
+  session = [(HMDAccessoryFirmwareUpdateTask *)self session];
+  [session resumeWithState:2];
 }
 
 - (BOOL)shouldRun
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdateTask *)self session];
-  if (-[HMDAccessoryFirmwareUpdateTask shouldRunOnCurrentDevice](self, "shouldRunOnCurrentDevice") && [v3 isReadyToApplyUpdate] && objc_msgSend(v3, "sessionState") == 2 && -[HMDAccessoryFirmwareUpdateApplyTask _isApplyAllowedByPolicy](self, "_isApplyAllowedByPolicy"))
+  session = [(HMDAccessoryFirmwareUpdateTask *)self session];
+  if (-[HMDAccessoryFirmwareUpdateTask shouldRunOnCurrentDevice](self, "shouldRunOnCurrentDevice") && [session isReadyToApplyUpdate] && objc_msgSend(session, "sessionState") == 2 && -[HMDAccessoryFirmwareUpdateApplyTask _isApplyAllowedByPolicy](self, "_isApplyAllowedByPolicy"))
   {
     v4 = 1;
   }
@@ -47,28 +47,28 @@
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      [v3 isReadyToApplyUpdate];
+      [session isReadyToApplyUpdate];
       v9 = HMFBooleanToString();
-      [v3 sessionState];
+      [session sessionState];
       v10 = HMFBooleanToString();
-      v11 = [v3 sessionState];
-      if ((v11 - 1) > 2)
+      sessionState = [session sessionState];
+      if ((sessionState - 1) > 2)
       {
         v12 = @"Up-To-Date";
       }
 
       else
       {
-        v12 = off_27972C5C0[v11 - 1];
+        v12 = off_27972C5C0[sessionState - 1];
       }
 
       v13 = v12;
-      [(HMDAccessoryFirmwareUpdateApplyTask *)v6 _isApplyAllowedByPolicy];
+      [(HMDAccessoryFirmwareUpdateApplyTask *)selfCopy _isApplyAllowedByPolicy];
       v14 = HMFBooleanToString();
       v17 = 138544386;
       v18 = v8;
@@ -98,8 +98,8 @@
     goto LABEL_2;
   }
 
-  v4 = [(HMDAccessoryFirmwareUpdateTask *)self accessoryActiveTransport];
-  if (v4 == 4)
+  accessoryActiveTransport = [(HMDAccessoryFirmwareUpdateTask *)self accessoryActiveTransport];
+  if (accessoryActiveTransport == 4)
   {
     v3 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v3, *MEMORY[0x277D86280], "com.apple.homed.firmwareUpdate.threadAccessory.apply.group");
@@ -112,9 +112,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v4 != 3)
+  if (accessoryActiveTransport != 3)
   {
-    if (v4 != 2)
+    if (accessoryActiveTransport != 2)
     {
 LABEL_2:
       v3 = 0;
@@ -140,14 +140,14 @@ LABEL_11:
   return v3;
 }
 
-- (HMDAccessoryFirmwareUpdateApplyTask)initWithSession:(id)a3 profile:(id)a4 policy:(id)a5 userInitiated:(BOOL)a6 delay:(BOOL)a7
+- (HMDAccessoryFirmwareUpdateApplyTask)initWithSession:(id)session profile:(id)profile policy:(id)policy userInitiated:(BOOL)initiated delay:(BOOL)delay
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  delayCopy = delay;
+  sessionCopy = session;
+  profileCopy = profile;
+  policyCopy = policy;
   v15 = 0.0;
-  if (v7 && !a6)
+  if (delayCopy && !initiated)
   {
     v16 = uint32ForPreference(@"firmwareUpdateApplyMinDelay");
     v17 = uint32ForPreference(@"firmwareUpdateApplyMaxDelay");
@@ -156,12 +156,12 @@ LABEL_11:
 
   v21.receiver = self;
   v21.super_class = HMDAccessoryFirmwareUpdateApplyTask;
-  v18 = [(HMDAccessoryFirmwareUpdateTask *)&v21 initWithSession:v12 profile:v13 initialDelay:v15];
+  v18 = [(HMDAccessoryFirmwareUpdateTask *)&v21 initWithSession:sessionCopy profile:profileCopy initialDelay:v15];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_policy, v14);
-    v19->_userInitiated = a6;
+    objc_storeWeak(&v18->_policy, policyCopy);
+    v19->_userInitiated = initiated;
   }
 
   return v19;

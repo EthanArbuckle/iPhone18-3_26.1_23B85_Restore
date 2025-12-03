@@ -1,11 +1,11 @@
 @interface RSInputRoutePickerViewController
-+ (id)createWithClientIdentifier:(id)a3;
++ (id)createWithClientIdentifier:(id)identifier;
 - (_TtC19AVKitRoutingService32RSInputRoutePickerViewController)init;
 @end
 
 @implementation RSInputRoutePickerViewController
 
-+ (id)createWithClientIdentifier:(id)a3
++ (id)createWithClientIdentifier:(id)identifier
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

@@ -7,16 +7,16 @@
 
 - (uint64_t)floatPointer
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 dataPointer];
+  return [selfCopy dataPointer];
 }
 
 - (uint64_t)doublePointer
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 dataPointer];
+  return [selfCopy dataPointer];
 }
 
 @end

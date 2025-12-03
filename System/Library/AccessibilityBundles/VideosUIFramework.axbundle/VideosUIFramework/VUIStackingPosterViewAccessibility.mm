@@ -1,5 +1,5 @@
 @interface VUIStackingPosterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,14 +7,14 @@
 
 @implementation VUIStackingPosterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.LegacyEditorialCollectionViewCell"];
-  [v3 validateClass:@"VUILabel"];
-  [v3 validateClass:@"VUIStackingPosterView" hasInstanceMethod:@"animatedLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIStackingPosterView" hasInstanceMethod:@"mainImageComponent" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIStackingPosterView" hasInstanceMethod:@"filteredComponents" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.LegacyEditorialCollectionViewCell"];
+  [validationsCopy validateClass:@"VUILabel"];
+  [validationsCopy validateClass:@"VUIStackingPosterView" hasInstanceMethod:@"animatedLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIStackingPosterView" hasInstanceMethod:@"mainImageComponent" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIStackingPosterView" hasInstanceMethod:@"filteredComponents" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -29,12 +29,12 @@
   v31 = 0u;
   v29 = 0;
   objc_opt_class();
-  v24 = self;
+  selfCopy = self;
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  obj = subviews;
+  v5 = [subviews countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -61,16 +61,16 @@
           }
         }
 
-        v11 = [(VUIStackingPosterViewAccessibility *)v24 _accessibilityAncestorIsKindOf:MEMORY[0x29ED3FF70](@"VideosUI.LegacyEditorialCollectionViewCell")];
+        v11 = [(VUIStackingPosterViewAccessibility *)selfCopy _accessibilityAncestorIsKindOf:MEMORY[0x29ED3FF70](@"VideosUI.LegacyEditorialCollectionViewCell")];
         if (v11)
         {
-          v12 = [v10 accessibilityLabel];
+          accessibilityLabel = [v10 accessibilityLabel];
           v26[0] = MEMORY[0x29EDCA5F8];
           v26[1] = 3221225472;
           v27[0] = __80__VUIStackingPosterViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
           v27[1] = &unk_29F31C520;
-          v28 = v12;
-          v25 = v12;
+          v28 = accessibilityLabel;
+          v25 = accessibilityLabel;
           v13 = [v11 _accessibilityFindSubviewDescendantsPassingTest:v26];
           v14 = MEMORY[0x29EDB8D80];
           v15 = AXLabelForElements();
@@ -130,9 +130,9 @@ uint64_t __80__VUIStackingPosterViewAccessibility__accessibilityLoadAccessibilit
   v3 = [(VUIStackingPosterViewAccessibility *)self safeArrayForKey:@"filteredComponents"];
   v4 = [(VUIStackingPosterViewAccessibility *)self safeValueForKey:@"animatedLabel"];
   v5 = [(VUIStackingPosterViewAccessibility *)self safeValueForKey:@"mainImageComponent"];
-  v6 = [v4 accessibilityLabel];
-  v7 = [v5 accessibilityLabel];
-  v19 = accessibilityExpandTVEpisodeNumber(v7);
+  accessibilityLabel = [v4 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
+  v19 = accessibilityExpandTVEpisodeNumber(accessibilityLabel2);
   v8 = __UIAXStringForVariables();
 
   v23 = 0u;
@@ -157,7 +157,7 @@ uint64_t __80__VUIStackingPosterViewAccessibility__accessibilityLoadAccessibilit
         v14 = *(*(&v21 + 1) + 8 * i);
         if (v14 != v4 && v14 != v5)
         {
-          v20 = [v14 accessibilityLabel];
+          accessibilityLabel3 = [v14 accessibilityLabel];
           v16 = __UIAXStringForVariables();
 
           v8 = v16;

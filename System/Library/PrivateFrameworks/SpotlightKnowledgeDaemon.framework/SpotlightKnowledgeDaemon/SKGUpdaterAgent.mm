@@ -2,39 +2,39 @@
 + (BOOL)enableEventUpdaters;
 + (void)initialize;
 - (BOOL)_doStart;
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3;
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection;
 - (BOOL)enableAppEntities;
 - (BOOL)enableDocumentUnderstanding;
 - (BOOL)enableEmbeddings;
 - (BOOL)enableKeyPhrases;
 - (BOOL)enableProcessingStateUpdater;
 - (BOOL)enableSuggestedEvents;
-- (BOOL)handleCheckedInMessage:(id)a3;
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5;
-- (BOOL)handleDiagnose:(id)a3;
-- (BOOL)handleDocumentUnderstandingProgressReport:(id)a3;
-- (BOOL)handleEmbeddingCompleteness:(id)a3;
-- (BOOL)handleEmbeddingGenerationConfiguration:(id)a3;
-- (BOOL)handleEmbeddingProgressReport:(id)a3;
-- (BOOL)handleEventsJournalsStats:(id)a3;
-- (BOOL)handleExtendedKeyphraseProgressReport:(id)a3;
-- (BOOL)handleHistoricalReports:(id)a3;
-- (BOOL)handleKeyphraseProgressReport:(id)a3;
-- (BOOL)handleLaunchUpgradeTasks:(id)a3;
-- (BOOL)handleProcessRecordMessage:(id)a3;
-- (BOOL)handleProgressReport:(id)a3;
-- (BOOL)handleSuggestedEventsProgressReport:(id)a3;
-- (BOOL)handleTurboMessage:(id)a3;
+- (BOOL)handleCheckedInMessage:(id)message;
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection;
+- (BOOL)handleDiagnose:(id)diagnose;
+- (BOOL)handleDocumentUnderstandingProgressReport:(id)report;
+- (BOOL)handleEmbeddingCompleteness:(id)completeness;
+- (BOOL)handleEmbeddingGenerationConfiguration:(id)configuration;
+- (BOOL)handleEmbeddingProgressReport:(id)report;
+- (BOOL)handleEventsJournalsStats:(id)stats;
+- (BOOL)handleExtendedKeyphraseProgressReport:(id)report;
+- (BOOL)handleHistoricalReports:(id)reports;
+- (BOOL)handleKeyphraseProgressReport:(id)report;
+- (BOOL)handleLaunchUpgradeTasks:(id)tasks;
+- (BOOL)handleProcessRecordMessage:(id)message;
+- (BOOL)handleProgressReport:(id)report;
+- (BOOL)handleSuggestedEventsProgressReport:(id)report;
+- (BOOL)handleTurboMessage:(id)message;
 - (BOOL)start;
-- (id)encodeProcessorReport:(id)a3;
-- (id)encodeProgressReport:(id)a3;
-- (id)formatProgressReport:(id)a3;
+- (id)encodeProcessorReport:(id)report;
+- (id)encodeProgressReport:(id)report;
+- (id)formatProgressReport:(id)report;
 - (uint64_t)didStart;
 - (uint64_t)setDidStart:(uint64_t)result;
 - (void)_setup;
-- (void)deviceStateWillChange:(BOOL)a3;
-- (void)didReceiveMemoryPressureNotification:(unint64_t)a3;
-- (void)didReceiveSignal:(unint64_t)a3;
+- (void)deviceStateWillChange:(BOOL)change;
+- (void)didReceiveMemoryPressureNotification:(unint64_t)notification;
+- (void)didReceiveSignal:(unint64_t)signal;
 - (void)locked;
 - (void)locking;
 - (void)unlocked;
@@ -122,10 +122,10 @@
 - (BOOL)enableKeyPhrases
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D657A0] sharedContext];
-  v3 = [v2 enableKeyphrases];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableKeyphrases = [mEMORY[0x277D657A0] enableKeyphrases];
 
-  if (v3 && !_os_feature_enabled_impl())
+  if (enableKeyphrases && !_os_feature_enabled_impl())
   {
     result = 1;
   }
@@ -206,10 +206,10 @@
     v2 = +[CSXPCEventListener sharedInstance];
   }
 
-  v3 = [MEMORY[0x277D657A0] sharedContext];
-  v4 = [v3 enableScheduledReceivers];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableScheduledReceivers = [mEMORY[0x277D657A0] enableScheduledReceivers];
 
-  if (v4)
+  if (enableScheduledReceivers)
   {
     [MEMORY[0x277D65760] setupScheduledSender];
   }
@@ -231,10 +231,10 @@
 
 - (BOOL)start
 {
-  v3 = [MEMORY[0x277D65740] sharedLockHandler];
-  v4 = [v3 unlockedSinceBoot];
+  mEMORY[0x277D65740] = [MEMORY[0x277D65740] sharedLockHandler];
+  unlockedSinceBoot = [mEMORY[0x277D65740] unlockedSinceBoot];
 
-  if (v4)
+  if (unlockedSinceBoot)
   {
 
     return [(SKGUpdaterAgent *)self _doStart];
@@ -283,8 +283,8 @@
       {
         if ([(SKGUpdaterAgent *)self enableEmbeddings])
         {
-          v6 = [MEMORY[0x277D65798] sharedProcessor];
-          [v6 loadEmbedder];
+          mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+          [mEMORY[0x277D65798] loadEmbedder];
 
           +[CSEventFeedback logEmbeddingPrewarmRequestTime];
         }
@@ -343,18 +343,18 @@
       }
 
       v17 = +[SKDDefaults sharedDefaults];
-      v18 = [v17 anyPipelineEnabled];
+      anyPipelineEnabled = [v17 anyPipelineEnabled];
 
-      if (v18)
+      if (anyPipelineEnabled)
       {
         v19 = +[SKDPipelineManager sharedManager];
-        v20 = [v19 journalProcessingJobs];
+        journalProcessingJobs = [v19 journalProcessingJobs];
 
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v21 = v20;
+        v21 = journalProcessingJobs;
         v22 = [v21 countByEnumeratingWithState:&v46 objects:v53 count:16];
         if (v22)
         {
@@ -391,25 +391,25 @@
 
         if ((v28 & 1) == 0)
         {
-          v29 = [MEMORY[0x277D65798] sharedProcessor];
-          [v29 loadKeyphraser];
+          mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+          [mEMORY[0x277D65798]2 loadKeyphraser];
 
           v30 = objc_opt_new();
           [v3 addObject:v30];
         }
       }
 
-      v31 = [MEMORY[0x277D657A0] sharedContext];
-      v32 = [v31 enableScheduledReceivers];
+      mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+      enableScheduledReceivers = [mEMORY[0x277D657A0] enableScheduledReceivers];
 
-      if (v32)
+      if (enableScheduledReceivers)
       {
         v44 = 0u;
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v33 = [MEMORY[0x277D65760] supportedConfigs];
-        v34 = [v33 countByEnumeratingWithState:&v42 objects:v52 count:16];
+        supportedConfigs = [MEMORY[0x277D65760] supportedConfigs];
+        v34 = [supportedConfigs countByEnumeratingWithState:&v42 objects:v52 count:16];
         if (v34)
         {
           v35 = v34;
@@ -421,7 +421,7 @@
             {
               if (*v43 != v36)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(supportedConfigs);
               }
 
               v38 = [[CSScheduledReceiverUpdater alloc] initWithSpotlightReceiverConfig:*(*(&v42 + 1) + 8 * v37)];
@@ -431,7 +431,7 @@
             }
 
             while (v35 != v37);
-            v35 = [v33 countByEnumeratingWithState:&v42 objects:v52 count:16];
+            v35 = [supportedConfigs countByEnumeratingWithState:&v42 objects:v52 count:16];
           }
 
           while (v35);
@@ -474,8 +474,8 @@
   self->_lockHandlerQueue = v6;
 
   [MEMORY[0x277D65740] setLockHandlerWithDelegate:self options:0];
-  v12 = [MEMORY[0x277D65740] sharedLockHandler];
-  [v12 start];
+  mEMORY[0x277D65740] = [MEMORY[0x277D65740] sharedLockHandler];
+  [mEMORY[0x277D65740] start];
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_UTILITY, 0);
   v10 = dispatch_queue_create("com.apple.spotlightknowledged.client-check-in", v9);
@@ -483,11 +483,11 @@
   self->_clientCheckInQueue = v10;
 }
 
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  pid = xpc_connection_get_pid(v3);
+  connectionCopy = connection;
+  pid = xpc_connection_get_pid(connectionCopy);
   xpc_connection_get_audit_token();
 
   v5 = *MEMORY[0x277CBECE8];
@@ -497,9 +497,9 @@
   {
     v7 = v6;
     v8 = SecTaskCopyValueForEntitlement(v6, @"com.apple.private.corespotlight.skgupdater", 0);
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
     CurrentLoggingLevel = SKGLogGetCurrentLoggingLevel();
-    if (v9)
+    if (bOOLValue)
     {
       if (CurrentLoggingLevel >= 5)
       {
@@ -531,110 +531,110 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  LOBYTE(v9) = 0;
+  LOBYTE(bOOLValue) = 0;
 LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue;
 }
 
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  connectionCopy = connection;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v10 = SKGLogUpdaterInit();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v23 = 136315394;
-      v24 = a3;
+      commandCopy = command;
       v25 = 2048;
-      v26 = v8;
+      v26 = infoCopy;
       _os_log_impl(&dword_231B25000, v10, OS_LOG_TYPE_INFO, "command %s info:%p", &v23, 0x16u);
     }
   }
 
-  if (strcmp(a3, "test"))
+  if (strcmp(command, "test"))
   {
-    if (!strcmp(a3, "processCheckedInBundleID"))
+    if (!strcmp(command, "processCheckedInBundleID"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleCheckedInMessage:v8];
+      v14 = [(SKGUpdaterAgent *)self handleCheckedInMessage:infoCopy];
     }
 
-    else if (!strcmp(a3, "processRecord"))
+    else if (!strcmp(command, "processRecord"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleProcessRecordMessage:v8];
+      v14 = [(SKGUpdaterAgent *)self handleProcessRecordMessage:infoCopy];
     }
 
-    else if (!strcmp(a3, "turboMode"))
+    else if (!strcmp(command, "turboMode"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleTurboMessage:v8];
+      v14 = [(SKGUpdaterAgent *)self handleTurboMessage:infoCopy];
     }
 
-    else if (!strcmp(a3, "embeddingGenerationProgress"))
+    else if (!strcmp(command, "embeddingGenerationProgress"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleEmbeddingProgressReport:v8];
+      v14 = [(SKGUpdaterAgent *)self handleEmbeddingProgressReport:infoCopy];
     }
 
-    else if (!strcmp(a3, "embeddingGenerationConfiguration"))
+    else if (!strcmp(command, "embeddingGenerationConfiguration"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleEmbeddingGenerationConfiguration:v8];
+      v14 = [(SKGUpdaterAgent *)self handleEmbeddingGenerationConfiguration:infoCopy];
     }
 
-    else if (!strcmp(a3, "suggestedEventsGenerationProgress"))
+    else if (!strcmp(command, "suggestedEventsGenerationProgress"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleSuggestedEventsProgressReport:v8];
+      v14 = [(SKGUpdaterAgent *)self handleSuggestedEventsProgressReport:infoCopy];
     }
 
-    else if (!strcmp(a3, "documentUnderstandingGenerationProgress"))
+    else if (!strcmp(command, "documentUnderstandingGenerationProgress"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleDocumentUnderstandingProgressReport:v8];
+      v14 = [(SKGUpdaterAgent *)self handleDocumentUnderstandingProgressReport:infoCopy];
     }
 
-    else if (!strcmp(a3, "keyphraseGenerationProgress"))
+    else if (!strcmp(command, "keyphraseGenerationProgress"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleKeyphraseProgressReport:v8];
+      v14 = [(SKGUpdaterAgent *)self handleKeyphraseProgressReport:infoCopy];
     }
 
-    else if (!strcmp(a3, "KeyphraseProgressReport"))
+    else if (!strcmp(command, "KeyphraseProgressReport"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleExtendedKeyphraseProgressReport:v8];
+      v14 = [(SKGUpdaterAgent *)self handleExtendedKeyphraseProgressReport:infoCopy];
     }
 
-    else if (!strcmp(a3, "ProgressReport"))
+    else if (!strcmp(command, "ProgressReport"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleProgressReport:v8];
+      v14 = [(SKGUpdaterAgent *)self handleProgressReport:infoCopy];
     }
 
-    else if (!strcmp(a3, "embeddingCompleteness"))
+    else if (!strcmp(command, "embeddingCompleteness"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleEmbeddingCompleteness:v8];
+      v14 = [(SKGUpdaterAgent *)self handleEmbeddingCompleteness:infoCopy];
     }
 
-    else if (!strcmp(a3, "eventsJournalsStats"))
+    else if (!strcmp(command, "eventsJournalsStats"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleEventsJournalsStats:v8];
+      v14 = [(SKGUpdaterAgent *)self handleEventsJournalsStats:infoCopy];
     }
 
-    else if (!strcmp(a3, "diagnose"))
+    else if (!strcmp(command, "diagnose"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleDiagnose:v8];
+      v14 = [(SKGUpdaterAgent *)self handleDiagnose:infoCopy];
     }
 
-    else if (!strcmp(a3, "historicalReports"))
+    else if (!strcmp(command, "historicalReports"))
     {
-      v14 = [(SKGUpdaterAgent *)self handleHistoricalReports:v8];
+      v14 = [(SKGUpdaterAgent *)self handleHistoricalReports:infoCopy];
     }
 
     else
     {
-      if (strcmp(a3, "launchUpgradeTasks"))
+      if (strcmp(command, "launchUpgradeTasks"))
       {
-        if (sEnableCSEventListener == 1 && *a3 == 106 && !a3[1])
+        if (sEnableCSEventListener == 1 && *command == 106 && !command[1])
         {
           v21 = +[CSXPCEventListener sharedInstance];
-          v22 = [v21 handleMessage:v8 connection:v9];
+          v22 = [v21 handleMessage:infoCopy connection:connectionCopy];
 
           v11 = 1;
           if (v22)
@@ -653,7 +653,7 @@ LABEL_42:
         goto LABEL_43;
       }
 
-      v14 = [(SKGUpdaterAgent *)self handleLaunchUpgradeTasks:v8];
+      v14 = [(SKGUpdaterAgent *)self handleLaunchUpgradeTasks:infoCopy];
     }
 
     v11 = 1;
@@ -670,10 +670,10 @@ LABEL_42:
   v13 = 0;
   v11 = v12 == 0;
 LABEL_43:
-  v15 = xpc_dictionary_get_remote_connection(v8);
+  v15 = xpc_dictionary_get_remote_connection(infoCopy);
   if (v15)
   {
-    reply = xpc_dictionary_create_reply(v8);
+    reply = xpc_dictionary_create_reply(infoCopy);
     v17 = reply;
     v18 = reply != 0;
     if (reply)
@@ -700,7 +700,7 @@ LABEL_51:
   return v11;
 }
 
-- (void)didReceiveSignal:(unint64_t)a3
+- (void)didReceiveSignal:(unint64_t)signal
 {
   v8 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -709,12 +709,12 @@ LABEL_51:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      signalCopy = signal;
       _os_log_impl(&dword_231B25000, v4, OS_LOG_TYPE_INFO, "didReceiveSignal %ld", &v6, 0xCu);
     }
   }
 
-  if (a3 == 15)
+  if (signal == 15)
   {
     exit(0);
   }
@@ -722,7 +722,7 @@ LABEL_51:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveMemoryPressureNotification:(unint64_t)a3
+- (void)didReceiveMemoryPressureNotification:(unint64_t)notification
 {
   v8 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -731,7 +731,7 @@ LABEL_51:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      notificationCopy = notification;
       _os_log_impl(&dword_231B25000, v4, OS_LOG_TYPE_INFO, "didReceiveMemoryPressureNotification %llx", &v6, 0xCu);
     }
   }
@@ -739,9 +739,9 @@ LABEL_51:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceStateWillChange:(BOOL)a3
+- (void)deviceStateWillChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     [(SKGUpdaterAgent *)self _doStart];
   }
@@ -792,9 +792,9 @@ LABEL_51:
   [v3 handleDeviceUnlocked];
 }
 
-- (BOOL)handleCheckedInMessage:(id)a3
+- (BOOL)handleCheckedInMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v5 = SKGLogUpdaterInit();
@@ -805,38 +805,38 @@ LABEL_51:
     }
   }
 
-  v6 = [MEMORY[0x277CC3510] copyNSStringForKey:"bundleIdentifier" fromXPCDictionary:v4];
+  v6 = [MEMORY[0x277CC3510] copyNSStringForKey:"bundleIdentifier" fromXPCDictionary:messageCopy];
   v7 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1 force:0];
-  v8 = [MEMORY[0x277D657A0] sharedContext];
-  v9 = [v8 excludeBundles];
-  if ([v9 containsObject:v6])
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  excludeBundles = [mEMORY[0x277D657A0] excludeBundles];
+  if ([excludeBundles containsObject:v6])
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [v7 doNotUpdateDelegatesList];
-  v11 = [v10 containsObject:v6];
+  doNotUpdateDelegatesList = [v7 doNotUpdateDelegatesList];
+  v11 = [doNotUpdateDelegatesList containsObject:v6];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(SKGUpdaterAgent *)self clientCheckInQueue];
+    clientCheckInQueue = [(SKGUpdaterAgent *)self clientCheckInQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke;
     v16[3] = &unk_27893D900;
     v17 = v7;
     v18 = v6;
-    dispatch_async(v12, v16);
+    dispatch_async(clientCheckInQueue, v16);
 
-    v8 = v17;
+    mEMORY[0x277D657A0] = v17;
     goto LABEL_9;
   }
 
 LABEL_10:
-  v13 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  v13 = xpc_dictionary_get_remote_connection(messageCopy);
+  reply = xpc_dictionary_create_reply(messageCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   xpc_connection_send_message(v13, reply);
 
@@ -849,18 +849,18 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   [(SKGJob *)v2 requestCSReindexForClientWithBundleIdentifier:*(a1 + 40) batchProcessedBlock:&__block_literal_global_43 batchUpdatedBlock:&__block_literal_global_80 cancelBlock:&__block_literal_global_83_0];
 }
 
-- (id)encodeProcessorReport:(id)a3
+- (id)encodeProcessorReport:(id)report
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  reportCopy = report;
+  if ([reportCopy count])
   {
     empty = xpc_array_create_empty();
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = reportCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -897,11 +897,11 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return empty;
 }
 
-- (id)encodeProgressReport:(id)a3
+- (id)encodeProgressReport:(id)report
 {
   v96 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  reportCopy = report;
+  if ([reportCopy count])
   {
     v90 = objc_opt_new();
     v89 = objc_opt_new();
@@ -927,7 +927,7 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v5 = v3;
+    v5 = reportCopy;
     v6 = [v5 countByEnumeratingWithState:&v91 objects:v95 count:16];
     if (v6)
     {
@@ -1106,10 +1106,10 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return xdict;
 }
 
-- (id)formatProgressReport:(id)a3
+- (id)formatProgressReport:(id)report
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  reportCopy = report;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v5 = [@"Bundle" stringByPaddingToLength:50 withString:@" " startingAtIndex:0];
   [v4 appendString:v5];
@@ -1147,7 +1147,7 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v11 = v3;
+  v11 = reportCopy;
   v12 = [v11 countByEnumeratingWithState:&v53 objects:v63 count:16];
   if (v12)
   {
@@ -1284,12 +1284,12 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)handleEmbeddingProgressReport:(id)a3
+- (BOOL)handleEmbeddingProgressReport:(id)report
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v5 = MEMORY[0x277CC3510];
-  v6 = xpc_dictionary_get_value(v4, "protectionClasses");
+  v6 = xpc_dictionary_get_value(reportCopy, "protectionClasses");
   v7 = [v5 copyNSStringArrayFromXPCArray:v6];
 
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1303,8 +1303,8 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  v9 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  v9 = xpc_dictionary_get_remote_connection(reportCopy);
+  reply = xpc_dictionary_create_reply(reportCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   v11 = objc_autoreleasePoolPush();
   v12 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
@@ -1323,9 +1323,9 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)handleEmbeddingGenerationConfiguration:(id)a3
+- (BOOL)handleEmbeddingGenerationConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v4 = SKGLogUpdaterInit();
@@ -1336,46 +1336,46 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  v5 = xpc_dictionary_get_remote_connection(v3);
-  reply = xpc_dictionary_create_reply(v3);
+  v5 = xpc_dictionary_get_remote_connection(configurationCopy);
+  reply = xpc_dictionary_create_reply(configurationCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   v7 = objc_autoreleasePoolPush();
   empty = xpc_dictionary_create_empty();
-  v9 = [MEMORY[0x277D657A0] sharedContext];
-  xpc_dictionary_set_int64(empty, "embeddingVersion", [v9 embeddingVersion]);
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  xpc_dictionary_set_int64(empty, "embeddingVersion", [mEMORY[0x277D657A0] embeddingVersion]);
 
-  v10 = [MEMORY[0x277D657A0] sharedContext];
-  xpc_dictionary_set_int64(empty, "embeddingModelVersion", [v10 embeddingModelVersion]);
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  xpc_dictionary_set_int64(empty, "embeddingModelVersion", [mEMORY[0x277D657A0]2 embeddingModelVersion]);
 
-  v11 = [MEMORY[0x277D657A0] sharedContext];
-  xpc_dictionary_set_int64(empty, "embeddingRedonationThrottleHorizonDate", [v11 redonationThrottleHorizonDate]);
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  xpc_dictionary_set_int64(empty, "embeddingRedonationThrottleHorizonDate", [mEMORY[0x277D657A0]3 redonationThrottleHorizonDate]);
 
-  v12 = [MEMORY[0x277D657A0] sharedContext];
-  xpc_dictionary_set_int64(empty, "embeddingRedonationRepeatCap", [v12 redonationRepeatCap]);
+  mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+  xpc_dictionary_set_int64(empty, "embeddingRedonationRepeatCap", [mEMORY[0x277D657A0]4 redonationRepeatCap]);
 
   v13 = MEMORY[0x277CC3510];
-  v14 = [MEMORY[0x277D657A0] sharedContext];
-  v15 = [v14 embeddingExcludeBundles];
-  [v13 dictionary:empty setStringArray:v15 forKey:"embeddingExcludeBundles"];
+  mEMORY[0x277D657A0]5 = [MEMORY[0x277D657A0] sharedContext];
+  embeddingExcludeBundles = [mEMORY[0x277D657A0]5 embeddingExcludeBundles];
+  [v13 dictionary:empty setStringArray:embeddingExcludeBundles forKey:"embeddingExcludeBundles"];
 
-  v16 = [MEMORY[0x277D657A0] sharedContext];
-  LODWORD(v14) = [v16 enableEmbeddings];
+  mEMORY[0x277D657A0]6 = [MEMORY[0x277D657A0] sharedContext];
+  LODWORD(mEMORY[0x277D657A0]5) = [mEMORY[0x277D657A0]6 enableEmbeddings];
 
-  if (v14)
+  if (mEMORY[0x277D657A0]5)
   {
     v26 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
-    v17 = [v26 embeddingGenStartTime];
-    v18 = [MEMORY[0x277CBEA80] currentCalendar];
+    embeddingGenStartTime = [v26 embeddingGenStartTime];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     [MEMORY[0x277CBEAA8] now];
-    v19 = v3;
+    v19 = configurationCopy;
     v20 = v5;
     v22 = v21 = v7;
-    v23 = [v18 components:16 fromDate:v17 toDate:v22 options:6];
+    v23 = [currentCalendar components:16 fromDate:embeddingGenStartTime toDate:v22 options:6];
     v24 = [v23 day];
 
     v7 = v21;
     v5 = v20;
-    v3 = v19;
+    configurationCopy = v19;
 
     xpc_dictionary_set_int64(empty, "embeddingDaysSinceEnablement", v24);
   }
@@ -1393,9 +1393,9 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)handleEventsJournalsStats:(id)a3
+- (BOOL)handleEventsJournalsStats:(id)stats
 {
-  v3 = a3;
+  statsCopy = stats;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v4 = SKGLogUpdaterInit();
@@ -1406,8 +1406,8 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  v5 = xpc_dictionary_get_remote_connection(v3);
-  reply = xpc_dictionary_create_reply(v3);
+  v5 = xpc_dictionary_get_remote_connection(statsCopy);
+  reply = xpc_dictionary_create_reply(statsCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   v7 = objc_autoreleasePoolPush();
   v8 = +[CSEventJournalStats generateStats];
@@ -1423,12 +1423,12 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)handleSuggestedEventsProgressReport:(id)a3
+- (BOOL)handleSuggestedEventsProgressReport:(id)report
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v5 = MEMORY[0x277CC3510];
-  v6 = xpc_dictionary_get_value(v4, "protectionClasses");
+  v6 = xpc_dictionary_get_value(reportCopy, "protectionClasses");
   v7 = [v5 copyNSStringArrayFromXPCArray:v6];
 
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1442,8 +1442,8 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  v9 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  v9 = xpc_dictionary_get_remote_connection(reportCopy);
+  reply = xpc_dictionary_create_reply(reportCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   v11 = objc_autoreleasePoolPush();
   v12 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
@@ -1462,12 +1462,12 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)handleDocumentUnderstandingProgressReport:(id)a3
+- (BOOL)handleDocumentUnderstandingProgressReport:(id)report
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v5 = MEMORY[0x277CC3510];
-  v6 = xpc_dictionary_get_value(v4, "protectionClasses");
+  v6 = xpc_dictionary_get_value(reportCopy, "protectionClasses");
   v7 = [v5 copyNSStringArrayFromXPCArray:v6];
 
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1481,8 +1481,8 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  v9 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  v9 = xpc_dictionary_get_remote_connection(reportCopy);
+  reply = xpc_dictionary_create_reply(reportCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   v11 = objc_autoreleasePoolPush();
   v12 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
@@ -1501,12 +1501,12 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)handleKeyphraseProgressReport:(id)a3
+- (BOOL)handleKeyphraseProgressReport:(id)report
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v5 = MEMORY[0x277CC3510];
-  v6 = xpc_dictionary_get_value(v4, "protectionClasses");
+  v6 = xpc_dictionary_get_value(reportCopy, "protectionClasses");
   v7 = [v5 copyNSStringArrayFromXPCArray:v6];
 
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1520,8 +1520,8 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  v9 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  v9 = xpc_dictionary_get_remote_connection(reportCopy);
+  reply = xpc_dictionary_create_reply(reportCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   v11 = objc_autoreleasePoolPush();
   v12 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
@@ -1540,12 +1540,12 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)handleExtendedKeyphraseProgressReport:(id)a3
+- (BOOL)handleExtendedKeyphraseProgressReport:(id)report
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v5 = MEMORY[0x277CC3510];
-  v6 = xpc_dictionary_get_value(v4, "protectionClasses");
+  v6 = xpc_dictionary_get_value(reportCopy, "protectionClasses");
   v7 = [v5 copyNSStringArrayFromXPCArray:v6];
 
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1559,9 +1559,9 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  int64 = xpc_dictionary_get_int64(v4, "verbose");
-  v10 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  int64 = xpc_dictionary_get_int64(reportCopy, "verbose");
+  v10 = xpc_dictionary_get_remote_connection(reportCopy);
+  reply = xpc_dictionary_create_reply(reportCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   v12 = objc_autoreleasePoolPush();
   v13 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
@@ -1591,12 +1591,12 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)handleProgressReport:(id)a3
+- (BOOL)handleProgressReport:(id)report
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  reportCopy = report;
   v4 = MEMORY[0x277CC3510];
-  v5 = xpc_dictionary_get_value(v3, "protectionClasses");
+  v5 = xpc_dictionary_get_value(reportCopy, "protectionClasses");
   v6 = [v4 copyNSStringArrayFromXPCArray:v5];
 
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1610,18 +1610,18 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  int64 = xpc_dictionary_get_int64(v3, "verbose");
-  connection = xpc_dictionary_get_remote_connection(v3);
-  reply = xpc_dictionary_create_reply(v3);
+  int64 = xpc_dictionary_get_int64(reportCopy, "verbose");
+  connection = xpc_dictionary_get_remote_connection(reportCopy);
+  reply = xpc_dictionary_create_reply(reportCopy);
   xpc_dictionary_set_int64(reply, "status", 0);
   context = objc_autoreleasePoolPush();
   v10 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
   v11 = [[SKGJob alloc] initWithJobContext:v10];
-  v12 = [MEMORY[0x277D657A0] sharedContext];
-  v13 = [v12 enableEmbeddings];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableEmbeddings = [mEMORY[0x277D657A0] enableEmbeddings];
 
   v14 = v6;
-  if (v13)
+  if (enableEmbeddings)
   {
     v15 = 16;
   }
@@ -1631,27 +1631,27 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     v15 = 0;
   }
 
-  v16 = [MEMORY[0x277D657A0] sharedContext];
-  v17 = [v16 enableKeyphrases];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  enableKeyphrases = [mEMORY[0x277D657A0]2 enableKeyphrases];
 
-  if (v17)
+  if (enableKeyphrases)
   {
     v15 |= 0x20u;
   }
 
-  v18 = [MEMORY[0x277D657A0] sharedContext];
-  v19 = [v18 enableDocumentUnderstanding];
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  enableDocumentUnderstanding = [mEMORY[0x277D657A0]3 enableDocumentUnderstanding];
 
-  if (v19)
+  if (enableDocumentUnderstanding)
   {
     v15 |= 0x100u;
   }
 
-  v20 = [MEMORY[0x277D657A0] sharedContext];
-  v21 = [v20 enableSuggestedEvents];
+  mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+  enableSuggestedEvents = [mEMORY[0x277D657A0]4 enableSuggestedEvents];
 
   v22 = v15 | 0x80;
-  if (!v21)
+  if (!enableSuggestedEvents)
   {
     v22 = v15;
   }
@@ -1680,9 +1680,9 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (BOOL)handleHistoricalReports:(id)a3
+- (BOOL)handleHistoricalReports:(id)reports
 {
-  v3 = a3;
+  reportsCopy = reports;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v4 = SKGLogUpdaterInit();
@@ -1693,18 +1693,18 @@ void __42__SKGUpdaterAgent_handleCheckedInMessage___block_invoke(uint64_t a1)
     }
   }
 
-  v5 = xpc_dictionary_get_double(v3, "startDate");
-  v6 = xpc_dictionary_get_double(v3, "duration");
+  v5 = xpc_dictionary_get_double(reportsCopy, "startDate");
+  v6 = xpc_dictionary_get_double(reportsCopy, "duration");
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v5];
   v8 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 duration:v6];
-  v9 = [MEMORY[0x277D65758] sharedInstance];
+  mEMORY[0x277D65758] = [MEMORY[0x277D65758] sharedInstance];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __43__SKGUpdaterAgent_handleHistoricalReports___block_invoke;
   v12[3] = &unk_27893F7D0;
-  v13 = v3;
-  v10 = v3;
-  [v9 getReportsForDateInterval:v8 reportHandler:v12];
+  v13 = reportsCopy;
+  v10 = reportsCopy;
+  [mEMORY[0x277D65758] getReportsForDateInterval:v8 reportHandler:v12];
 
   return 1;
 }
@@ -1763,7 +1763,7 @@ void __43__SKGUpdaterAgent_handleHistoricalReports___block_invoke(uint64_t a1, v
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleLaunchUpgradeTasks:(id)a3
+- (BOOL)handleLaunchUpgradeTasks:(id)tasks
 {
   v9 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1784,9 +1784,9 @@ void __43__SKGUpdaterAgent_handleHistoricalReports___block_invoke(uint64_t a1, v
   return 1;
 }
 
-- (BOOL)handleProcessRecordMessage:(id)a3
+- (BOOL)handleProcessRecordMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v4 = SKGLogUpdaterInit();
@@ -1797,63 +1797,63 @@ void __43__SKGUpdaterAgent_handleHistoricalReports___block_invoke(uint64_t a1, v
     }
   }
 
-  v5 = [MEMORY[0x277CC3510] copyBoolForKey:"includeEmbeddings" fromXPCDictionary:v3];
-  v6 = [MEMORY[0x277CC3510] copyBoolForKey:"includeKeyphrases" fromXPCDictionary:v3];
-  v7 = [MEMORY[0x277CC3510] copyBoolForKey:"includeSKG" fromXPCDictionary:v3];
-  v8 = [MEMORY[0x277CC3510] copyNSStringForKey:"protectionClass" fromXPCDictionary:v3];
+  v5 = [MEMORY[0x277CC3510] copyBoolForKey:"includeEmbeddings" fromXPCDictionary:messageCopy];
+  v6 = [MEMORY[0x277CC3510] copyBoolForKey:"includeKeyphrases" fromXPCDictionary:messageCopy];
+  v7 = [MEMORY[0x277CC3510] copyBoolForKey:"includeSKG" fromXPCDictionary:messageCopy];
+  v8 = [MEMORY[0x277CC3510] copyNSStringForKey:"protectionClass" fromXPCDictionary:messageCopy];
   if (!v8)
   {
     LOBYTE(v14) = 0;
-    v12 = 0;
+    decode = 0;
 LABEL_22:
     v15 = 0;
     goto LABEL_26;
   }
 
   v9 = objc_alloc(MEMORY[0x277CC33C8]);
-  v10 = [MEMORY[0x277CC3510] copyNSDataForKey:"record" fromXPCDictionary:v3];
+  v10 = [MEMORY[0x277CC3510] copyNSDataForKey:"record" fromXPCDictionary:messageCopy];
   v11 = [v9 initWithData:v10];
-  v12 = [v11 decode];
+  decode = [v11 decode];
 
-  if (!v12)
+  if (!decode)
   {
     LOBYTE(v14) = 0;
     goto LABEL_22;
   }
 
-  v13 = [MEMORY[0x277D65798] sharedProcessor];
-  v14 = [v13 recordIsValid:v12];
+  mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+  v14 = [mEMORY[0x277D65798] recordIsValid:decode];
 
   if (v14)
   {
-    v15 = xpc_dictionary_get_remote_connection(v3);
-    if (!v15 || (reply = xpc_dictionary_create_reply(v3)) == 0)
+    v15 = xpc_dictionary_get_remote_connection(messageCopy);
+    if (!v15 || (reply = xpc_dictionary_create_reply(messageCopy)) == 0)
     {
       LOBYTE(v14) = 0;
       goto LABEL_26;
     }
 
     v26 = reply;
-    v27 = [MEMORY[0x277CC3510] copyNSStringForKey:"referenceIdentifier" fromXPCDictionary:v3];
+    v27 = [MEMORY[0x277CC3510] copyNSStringForKey:"referenceIdentifier" fromXPCDictionary:messageCopy];
     v17 = v5 | v7;
     if ((v5 | v7))
     {
-      v18 = [MEMORY[0x277D65798] sharedProcessor];
-      [v18 loadEmbedder];
+      mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+      [mEMORY[0x277D65798]2 loadEmbedder];
     }
 
     v19 = v6 | v7;
     if ((v6 | v7))
     {
-      v20 = [MEMORY[0x277D65798] sharedProcessor];
-      [v20 loadKeyphraser];
+      mEMORY[0x277D65798]3 = [MEMORY[0x277D65798] sharedProcessor];
+      [mEMORY[0x277D65798]3 loadKeyphraser];
     }
 
     *buf = 0;
     v32 = buf;
     v33 = 0x2020000000;
     v34 = -1;
-    v21 = [MEMORY[0x277D65798] sharedProcessor];
+    mEMORY[0x277D65798]4 = [MEMORY[0x277D65798] sharedProcessor];
     v22 = 2;
     if ((v17 & 1) == 0)
     {
@@ -1877,7 +1877,7 @@ LABEL_22:
     v24 = v26;
     v29 = v24;
     v30 = buf;
-    [v21 enumerateProcessedItemsFromRecord:v12 referenceIdentifier:v27 bundleIdentifier:0 protectionClass:v8 processorFlags:v23 processedItemBlock:v28 cancelBlock:&__block_literal_global_223];
+    [mEMORY[0x277D65798]4 enumerateProcessedItemsFromRecord:decode referenceIdentifier:v27 bundleIdentifier:0 protectionClass:v8 processorFlags:v23 processedItemBlock:v28 cancelBlock:&__block_literal_global_223];
 
     xpc_dictionary_set_int64(v24, "status", *(v32 + 6));
     xpc_connection_send_message(v15, v24);
@@ -1888,8 +1888,8 @@ LABEL_22:
   else
   {
     v15 = 0;
-    v24 = v12;
-    v12 = 0;
+    v24 = decode;
+    decode = 0;
   }
 
 LABEL_26:
@@ -1917,12 +1917,12 @@ uint64_t __46__SKGUpdaterAgent_handleProcessRecordMessage___block_invoke(uint64_
   return 0;
 }
 
-- (BOOL)handleEmbeddingCompleteness:(id)a3
+- (BOOL)handleEmbeddingCompleteness:(id)completeness
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CC3510];
-  v4 = a3;
-  v5 = [v3 copyNSStringForKey:"bundleIdentifier" fromXPCDictionary:v4];
+  completenessCopy = completeness;
+  v5 = [v3 copyNSStringForKey:"bundleIdentifier" fromXPCDictionary:completenessCopy];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v6 = SKGLogUpdaterInit();
@@ -1934,8 +1934,8 @@ uint64_t __46__SKGUpdaterAgent_handleProcessRecordMessage___block_invoke(uint64_
     }
   }
 
-  v7 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  v7 = xpc_dictionary_get_remote_connection(completenessCopy);
+  reply = xpc_dictionary_create_reply(completenessCopy);
 
   xpc_dictionary_set_int64(reply, "status", 0);
   v9 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
@@ -1958,9 +1958,9 @@ uint64_t __46__SKGUpdaterAgent_handleProcessRecordMessage___block_invoke(uint64_
   return 1;
 }
 
-- (BOOL)handleTurboMessage:(id)a3
+- (BOOL)handleTurboMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (SKGLogGetCurrentLoggingLevel() >= 5)
   {
     v4 = SKGLogUpdaterInit();
@@ -1971,16 +1971,16 @@ uint64_t __46__SKGUpdaterAgent_handleProcessRecordMessage___block_invoke(uint64_
     }
   }
 
-  v5 = xpc_dictionary_get_BOOL(v3, "state");
+  v5 = xpc_dictionary_get_BOOL(messageCopy, "state");
   v6 = +[CSXPCEventListener sharedInstance];
   [v6 setTurboMode:v5];
 
   return 1;
 }
 
-- (BOOL)handleDiagnose:(id)a3
+- (BOOL)handleDiagnose:(id)diagnose
 {
-  v4 = a3;
+  diagnoseCopy = diagnose;
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v5 = SKGLogUpdaterInit();
@@ -1991,47 +1991,47 @@ uint64_t __46__SKGUpdaterAgent_handleProcessRecordMessage___block_invoke(uint64_
     }
   }
 
-  v44 = v4;
-  v6 = [MEMORY[0x277CC3510] copyNSStringForKey:"path" fromXPCDictionary:v4];
+  v44 = diagnoseCopy;
+  v6 = [MEMORY[0x277CC3510] copyNSStringForKey:"path" fromXPCDictionary:diagnoseCopy];
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v6, @"embedding-status.log"];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v6, @"events-journals-stats.log"];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v6, @"historical-reports"];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v6, @"SKGActivityJournal.log"];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v11 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [defaultManager fileExistsAtPath:v7];
 
   if (v12)
   {
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
-    [v13 removeItemAtPath:v7 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 removeItemAtPath:v7 error:0];
   }
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [v14 fileExistsAtPath:v8];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  v15 = [defaultManager3 fileExistsAtPath:v8];
 
   if (v15)
   {
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    [v16 removeItemAtPath:v8 error:0];
+    defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager4 removeItemAtPath:v8 error:0];
   }
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
-  v18 = [v17 fileExistsAtPath:v9];
+  defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+  v18 = [defaultManager5 fileExistsAtPath:v9];
 
   if (v18)
   {
-    v19 = [MEMORY[0x277CCAA00] defaultManager];
-    [v19 removeItemAtPath:v9 error:0];
+    defaultManager6 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager6 removeItemAtPath:v9 error:0];
   }
 
   v45 = v9;
-  v20 = [MEMORY[0x277CCAA00] defaultManager];
-  v21 = [v20 fileExistsAtPath:v10];
+  defaultManager7 = [MEMORY[0x277CCAA00] defaultManager];
+  v21 = [defaultManager7 fileExistsAtPath:v10];
 
   if (v21)
   {
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
-    [v22 removeItemAtPath:v10 error:0];
+    defaultManager8 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager8 removeItemAtPath:v10 error:0];
   }
 
   v41 = v10;
@@ -2049,18 +2049,18 @@ uint64_t __46__SKGUpdaterAgent_handleProcessRecordMessage___block_invoke(uint64_
   v42 = v8;
   [v28 writeToFile:v8 atomically:1 encoding:4 error:0];
 
-  v29 = [MEMORY[0x277CBEAA8] date];
-  v30 = [v29 dateByAddingTimeInterval:-2592000.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v30 = [date dateByAddingTimeInterval:-2592000.0];
   *buf = 0;
   v50 = buf;
   v51 = 0x3032000000;
   v52 = __Block_byref_object_copy__25;
   v53 = __Block_byref_object_dispose__25;
-  v54 = [MEMORY[0x277CBEB28] data];
-  v31 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v30 endDate:v29];
+  data = [MEMORY[0x277CBEB28] data];
+  v31 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v30 endDate:date];
   v32 = dispatch_group_create();
   dispatch_group_enter(v32);
-  v33 = [MEMORY[0x277D65758] sharedInstance];
+  mEMORY[0x277D65758] = [MEMORY[0x277D65758] sharedInstance];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __34__SKGUpdaterAgent_handleDiagnose___block_invoke_247;
@@ -2068,7 +2068,7 @@ uint64_t __46__SKGUpdaterAgent_handleProcessRecordMessage___block_invoke(uint64_
   v48 = buf;
   v34 = v32;
   v47 = v34;
-  [v33 getReportsForDateInterval:v31 reportHandler:v46];
+  [mEMORY[0x277D65758] getReportsForDateInterval:v31 reportHandler:v46];
 
   dispatch_group_wait(v34, 0xFFFFFFFFFFFFFFFFLL);
   [*(v50 + 5) writeToFile:v45 atomically:1];
@@ -2076,15 +2076,15 @@ uint64_t __46__SKGUpdaterAgent_handleProcessRecordMessage___block_invoke(uint64_
   _Block_object_dispose(buf, 8);
   objc_autoreleasePoolPop(context);
   v35 = +[SKGActivityJournal sharedJournal];
-  v36 = [v35 path];
+  path = [v35 path];
 
-  v37 = [MEMORY[0x277CCAA00] defaultManager];
-  LODWORD(v34) = [v37 fileExistsAtPath:v36];
+  defaultManager9 = [MEMORY[0x277CCAA00] defaultManager];
+  LODWORD(v34) = [defaultManager9 fileExistsAtPath:path];
 
   if (v34)
   {
-    v38 = [MEMORY[0x277CCAA00] defaultManager];
-    [v38 copyItemAtPath:v36 toPath:v41 error:0];
+    defaultManager10 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager10 copyItemAtPath:path toPath:v41 error:0];
   }
 
   return 1;
@@ -2136,9 +2136,9 @@ void __34__SKGUpdaterAgent_handleDiagnose___block_invoke_247(uint64_t a1, void *
 
 - (uint64_t)didStart
 {
-  if (a1)
+  if (self)
   {
-    v1 = atomic_load((a1 + 56));
+    v1 = atomic_load((self + 56));
   }
 
   else

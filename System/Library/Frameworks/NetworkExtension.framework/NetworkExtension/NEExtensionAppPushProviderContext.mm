@@ -2,12 +2,12 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (void)dealloc;
-- (void)reportIncomingCall:(id)a3;
-- (void)reportPushToTalkMessage:(id)a3;
+- (void)reportIncomingCall:(id)call;
+- (void)reportPushToTalkMessage:(id)message;
 - (void)sendTimerEvent;
-- (void)setProviderConfiguration:(id)a3;
-- (void)startConnectionWithProviderConfig:(id)a3 completionHandler:(id)a4;
-- (void)stopWithReason:(int)a3 completionHandler:(id)a4;
+- (void)setProviderConfiguration:(id)configuration;
+- (void)startConnectionWithProviderConfig:(id)config completionHandler:(id)handler;
+- (void)stopWithReason:(int)reason completionHandler:(id)handler;
 - (void)unmatchEthernet;
 @end
 
@@ -20,59 +20,59 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "%@ sendTimerEvent called", &v6, 0xCu);
   }
 
-  v4 = [(NEExtensionProviderContext *)self _principalObject];
-  [v4 handleTimerEvent];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  [_principalObject handleTimerEvent];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
 - (void)unmatchEthernet
 {
-  v2 = [(NEExtensionProviderContext *)self hostContext];
-  [v2 unmatchEthernet];
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext unmatchEthernet];
 }
 
-- (void)reportPushToTalkMessage:(id)a3
+- (void)reportPushToTalkMessage:(id)message
 {
-  v4 = a3;
-  v6 = [(NEExtensionProviderContext *)self hostContext];
-  [v6 reportPushToTalkMessage:v4];
+  messageCopy = message;
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext reportPushToTalkMessage:messageCopy];
 }
 
-- (void)reportIncomingCall:(id)a3
+- (void)reportIncomingCall:(id)call
 {
-  v4 = a3;
-  v6 = [(NEExtensionProviderContext *)self hostContext];
-  [v6 reportIncomingCall:v4];
+  callCopy = call;
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext reportIncomingCall:callCopy];
 }
 
-- (void)setProviderConfiguration:(id)a3
+- (void)setProviderConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderContext *)self _principalObject];
-  [v5 setProviderConfiguration:v4];
+  configurationCopy = configuration;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  [_principalObject setProviderConfiguration:configurationCopy];
 }
 
-- (void)stopWithReason:(int)a3 completionHandler:(id)a4
+- (void)stopWithReason:(int)reason completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = ne_log_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v15 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_DEBUG, "%@ stopWithReason called", buf, 0xCu);
   }
 
-  v8 = [(NEExtensionProviderContext *)self _principalObject];
-  if (self && (a3 - 1) <= 0x29)
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  if (self && (reason - 1) <= 0x29)
   {
-    v9 = qword_1BAA4E658[a3 - 1];
+    v9 = qword_1BAA4E658[reason - 1];
   }
 
   else
@@ -85,9 +85,9 @@
   v12[2] = __70__NEExtensionAppPushProviderContext_stopWithReason_completionHandler___block_invoke;
   v12[3] = &unk_1E7F0B588;
   v12[4] = self;
-  v13 = v6;
-  v10 = v6;
-  [v8 stopWithReason:v9 completionHandler:v12];
+  v13 = handlerCopy;
+  v10 = handlerCopy;
+  [_principalObject stopWithReason:v9 completionHandler:v12];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -109,16 +109,16 @@ uint64_t __70__NEExtensionAppPushProviderContext_stopWithReason_completionHandle
   return result;
 }
 
-- (void)startConnectionWithProviderConfig:(id)a3 completionHandler:(id)a4
+- (void)startConnectionWithProviderConfig:(id)config completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEExtensionProviderContext *)self _principalObject];
-  v9 = v8;
-  if (v6)
+  configCopy = config;
+  handlerCopy = handler;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  v9 = _principalObject;
+  if (configCopy)
   {
-    [v8 setProviderConfiguration:v6];
+    [_principalObject setProviderConfiguration:configCopy];
   }
 
   v10 = v9;
@@ -142,12 +142,12 @@ uint64_t __70__NEExtensionAppPushProviderContext_stopWithReason_completionHandle
     if (v17)
     {
       *buf = 138412290;
-      v22 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEBUG, "%@ the new start method is overridden", buf, 0xCu);
     }
 
     [v11 start];
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -155,7 +155,7 @@ uint64_t __70__NEExtensionAppPushProviderContext_stopWithReason_completionHandle
     if (v17)
     {
       *buf = 138412290;
-      v22 = self;
+      selfCopy2 = self;
       _os_log_debug_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEBUG, "%@ the new start method is not overridden", buf, 0xCu);
     }
 
@@ -164,7 +164,7 @@ uint64_t __70__NEExtensionAppPushProviderContext_stopWithReason_completionHandle
     v19[2] = __89__NEExtensionAppPushProviderContext_startConnectionWithProviderConfig_completionHandler___block_invoke;
     v19[3] = &unk_1E7F0B628;
     v19[4] = self;
-    v20 = v7;
+    v20 = handlerCopy;
     [v11 startWithCompletionHandler:v19];
   }
 
@@ -201,7 +201,7 @@ void __89__NEExtensionAppPushProviderContext_startConnectionWithProviderConfig_c
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "%@: dealloc", buf, 0xCu);
   }
 

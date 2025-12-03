@@ -1,27 +1,27 @@
 @interface AXUISettingsEditableTextCell
-- (AXUISettingsEditableTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (id)textFieldValue:(id)a3;
+- (AXUISettingsEditableTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (id)textFieldValue:(id)value;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)initializeView;
 - (void)layoutSubviews;
 - (void)markNameTextFieldAccessible;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelectionStyle:(int64_t)a3;
-- (void)setTextFieldValue:(id)a3 specifier:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setSelectionStyle:(int64_t)style;
+- (void)setTextFieldValue:(id)value specifier:(id)specifier;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)updateText;
 @end
 
 @implementation AXUISettingsEditableTextCell
 
-- (AXUISettingsEditableTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXUISettingsEditableTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AXUISettingsEditableTextCell;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,17 +31,17 @@
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = AXUISettingsEditableTextCell;
-  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:v4];
+  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
   nameTextField = self->_nameTextField;
-  v6 = [(AXUISettingsEditableTextCell *)self textFieldValue:v4];
+  v6 = [(AXUISettingsEditableTextCell *)self textFieldValue:specifierCopy];
   [(UITextField *)nameTextField setText:v6];
 
-  v7 = [v4 propertyForKey:@"ShouldDisableTextFieldWhenNotEditing"];
+  v7 = [specifierCopy propertyForKey:@"ShouldDisableTextFieldWhenNotEditing"];
   -[AXUISettingsEditableTextCell setShouldDisableTextFieldWhenNotEditing:](self, "setShouldDisableTextFieldWhenNotEditing:", [v7 BOOLValue]);
 
   if ([(AXUISettingsEditableTextCell *)self shouldDisableTextFieldWhenNotEditing])
@@ -49,7 +49,7 @@
     [(UITextField *)self->_nameTextField setEnabled:0];
   }
 
-  v8 = [v4 propertyForKey:@"ShouldAllowSelection"];
+  v8 = [specifierCopy propertyForKey:@"ShouldAllowSelection"];
   -[AXUISettingsEditableTextCell setShouldAllowSelection:](self, "setShouldAllowSelection:", [v8 BOOLValue]);
 
   if ([(AXUISettingsEditableTextCell *)self shouldAllowSelection])
@@ -99,13 +99,13 @@
   [(UITextField *)self->_nameTextField setDelegate:self];
   [(UITextField *)self->_nameTextField setReturnKeyType:9];
   v5 = self->_nameTextField;
-  v6 = [(PSTableCell *)self specifier];
-  v7 = [(AXUISettingsEditableTextCell *)self textFieldValue:v6];
+  specifier = [(PSTableCell *)self specifier];
+  v7 = [(AXUISettingsEditableTextCell *)self textFieldValue:specifier];
   [(UITextField *)v5 setText:v7];
 
   [(AXUISettingsEditableTextCell *)self markNameTextFieldAccessible];
-  v8 = [(PSTableCell *)self specifier];
-  v9 = [v8 propertyForKey:@"ShouldDisableTextFieldWhenNotEditing"];
+  specifier2 = [(PSTableCell *)self specifier];
+  v9 = [specifier2 propertyForKey:@"ShouldDisableTextFieldWhenNotEditing"];
   -[AXUISettingsEditableTextCell setShouldDisableTextFieldWhenNotEditing:](self, "setShouldDisableTextFieldWhenNotEditing:", [v9 BOOLValue]);
 
   if ([(AXUISettingsEditableTextCell *)self shouldDisableTextFieldWhenNotEditing])
@@ -113,8 +113,8 @@
     [(UITextField *)self->_nameTextField setEnabled:0];
   }
 
-  v10 = [(PSTableCell *)self specifier];
-  v11 = [v10 propertyForKey:@"ShouldAllowSelection"];
+  specifier3 = [(PSTableCell *)self specifier];
+  v11 = [specifier3 propertyForKey:@"ShouldAllowSelection"];
   -[AXUISettingsEditableTextCell setShouldAllowSelection:](self, "setShouldAllowSelection:", [v11 BOOLValue]);
 
   if ([(AXUISettingsEditableTextCell *)self shouldAllowSelection])
@@ -131,29 +131,29 @@
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v6.receiver = self;
   v6.super_class = AXUISettingsEditableTextCell;
-  [(AXUISettingsEditableTextCell *)&v6 setEditing:a3 animated:a4];
+  [(AXUISettingsEditableTextCell *)&v6 setEditing:editing animated:animated];
   if ([(AXUISettingsEditableTextCell *)self shouldDisableTextFieldWhenNotEditing])
   {
-    [(UITextField *)self->_nameTextField setEnabled:v4];
-    if (!v4)
+    [(UITextField *)self->_nameTextField setEnabled:editingCopy];
+    if (!editingCopy)
     {
       [(UITextField *)self->_nameTextField resignFirstResponder];
     }
   }
 }
 
-- (void)setSelectionStyle:(int64_t)a3
+- (void)setSelectionStyle:(int64_t)style
 {
   if (![(AXUISettingsEditableTextCell *)self shouldAllowSelection])
   {
     v5.receiver = self;
     v5.super_class = AXUISettingsEditableTextCell;
-    [(AXUISettingsEditableTextCell *)&v5 setSelectionStyle:a3];
+    [(AXUISettingsEditableTextCell *)&v5 setSelectionStyle:style];
   }
 }
 
@@ -162,61 +162,61 @@
   v15.receiver = self;
   v15.super_class = AXUISettingsEditableTextCell;
   [(PSTableCell *)&v15 layoutSubviews];
-  v3 = [(AXUISettingsEditableTextCell *)self contentView];
-  v4 = [(AXUISettingsEditableTextCell *)self textLabel];
-  v5 = [v4 superview];
+  contentView = [(AXUISettingsEditableTextCell *)self contentView];
+  textLabel = [(AXUISettingsEditableTextCell *)self textLabel];
+  superview = [textLabel superview];
 
-  if (v5 == v3)
+  if (superview == contentView)
   {
-    [v4 removeFromSuperview];
+    [textLabel removeFromSuperview];
   }
 
-  v6 = [(UITextField *)self->_nameTextField superview];
+  superview2 = [(UITextField *)self->_nameTextField superview];
 
-  if (v6 != v3)
+  if (superview2 != contentView)
   {
-    [v3 addSubview:self->_nameTextField];
+    [contentView addSubview:self->_nameTextField];
   }
 
   nameTextField = self->_nameTextField;
-  v8 = [v3 backgroundColor];
-  [(UITextField *)nameTextField setBackgroundColor:v8];
+  backgroundColor = [contentView backgroundColor];
+  [(UITextField *)nameTextField setBackgroundColor:backgroundColor];
 
   v9 = self->_nameTextField;
-  v10 = [v4 font];
-  [(UITextField *)v9 setFont:v10];
+  font = [textLabel font];
+  [(UITextField *)v9 setFont:font];
 
   v11 = self->_nameTextField;
-  [v4 frame];
+  [textLabel frame];
   [(UITextField *)v11 setFrame:?];
   v12 = self->_nameTextField;
-  v13 = [MEMORY[0x1E69C5710] appearance];
-  v14 = [v13 textColor];
-  [(UITextField *)v12 setTextColor:v14];
+  appearance = [MEMORY[0x1E69C5710] appearance];
+  textColor = [appearance textColor];
+  [(UITextField *)v12 setTextColor:textColor];
 }
 
 - (void)updateText
 {
-  v4 = [(PSTableCell *)self specifier];
-  v3 = [(AXUISettingsEditableTextCell *)self textFieldValue:v4];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [(AXUISettingsEditableTextCell *)self textFieldValue:specifier];
   [(UITextField *)self->_nameTextField setText:v3];
 }
 
-- (id)textFieldValue:(id)a3
+- (id)textFieldValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    v5 = [v3 target];
+    target = [valueCopy target];
     v6 = MEMORY[0x1E69C57D0];
-    if (!v5 || (v7 = *&v4[*MEMORY[0x1E69C57D0]], v5, !v7))
+    if (!target || (v7 = *&v4[*MEMORY[0x1E69C57D0]], target, !v7))
     {
       _AXAssert();
     }
 
-    v8 = [v4 target];
-    v9 = [v8 performSelector:*&v4[*v6] withObject:v4];
+    target2 = [v4 target];
+    v9 = [target2 performSelector:*&v4[*v6] withObject:v4];
   }
 
   else
@@ -227,22 +227,22 @@
   return v9;
 }
 
-- (void)setTextFieldValue:(id)a3 specifier:(id)a4
+- (void)setTextFieldValue:(id)value specifier:(id)specifier
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  valueCopy = value;
+  specifierCopy = specifier;
+  v6 = specifierCopy;
+  if (specifierCopy)
   {
-    v7 = [v5 target];
+    target = [specifierCopy target];
     v8 = MEMORY[0x1E69C57D8];
-    if (!v7 || (v9 = *&v6[*MEMORY[0x1E69C57D8]], v7, !v9))
+    if (!target || (v9 = *&v6[*MEMORY[0x1E69C57D8]], target, !v9))
     {
       _AXAssert();
     }
 
-    v10 = [v6 target];
-    [v10 performSelector:*&v6[*v8] withObject:v11 withObject:v6];
+    target2 = [v6 target];
+    [target2 performSelector:*&v6[*v8] withObject:valueCopy withObject:v6];
   }
 
   else
@@ -251,10 +251,10 @@
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   nameTextField = self->_nameTextField;
-  if (nameTextField == a3)
+  if (nameTextField == return)
   {
     [(UITextField *)nameTextField resignFirstResponder:v3];
   }
@@ -262,18 +262,18 @@
   return 0;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v7 = [(UITextField *)self->_nameTextField text];
-  v4 = [(PSTableCell *)self specifier];
-  if (v4)
+  text = [(UITextField *)self->_nameTextField text];
+  specifier = [(PSTableCell *)self specifier];
+  if (specifier)
   {
-    v5 = [(AXUISettingsEditableTextCell *)self textFieldValue:v4];
-    v6 = [v5 isEqualToString:v7];
+    v5 = [(AXUISettingsEditableTextCell *)self textFieldValue:specifier];
+    v6 = [v5 isEqualToString:text];
 
     if ((v6 & 1) == 0)
     {
-      [(AXUISettingsEditableTextCell *)self setTextFieldValue:v7 specifier:v4];
+      [(AXUISettingsEditableTextCell *)self setTextFieldValue:text specifier:specifier];
     }
   }
 }

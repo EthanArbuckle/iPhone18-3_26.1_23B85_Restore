@@ -1,20 +1,20 @@
 @interface AKNoteAnnotationRenderer
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKNoteAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  [a3 rectangle];
+  [annotation rectangle];
 
   return CGRectInset(*&v3, -1.0, -1.0);
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = -1.0;
   v4 = -1.0;
@@ -23,16 +23,16 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v27 = a3;
-  v10 = a6;
-  v11 = a5;
-  CGContextSaveGState(a4);
-  v12 = [v11 forDisplay];
+  annotationCopy = annotation;
+  nilCopy = nil;
+  optionsCopy = options;
+  CGContextSaveGState(context);
+  forDisplay = [optionsCopy forDisplay];
 
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v27 forDisplay:v12 pageControllerOrNil:v10];
-  [v27 rectangle];
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:forDisplay pageControllerOrNil:nilCopy];
+  [annotationCopy rectangle];
   x = v29.origin.x;
   y = v29.origin.y;
   width = v29.size.width;
@@ -41,18 +41,18 @@
   if (v17)
   {
     v18 = v17;
-    v19 = [v27 fillColor];
-    CGContextSetFillColorWithColor(a4, [v19 CGColor]);
-    CGContextSetBlendMode(a4, kCGBlendModeNormal);
-    CGContextAddPath(a4, v18);
-    CGContextFillPath(a4);
-    v20 = [v27 fillColor];
-    v21 = [AKHighlightAppearanceHelper attributeTagForNoteOfColor:v20];
+    fillColor = [annotationCopy fillColor];
+    CGContextSetFillColorWithColor(context, [fillColor CGColor]);
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    CGContextAddPath(context, v18);
+    CGContextFillPath(context);
+    fillColor2 = [annotationCopy fillColor];
+    v21 = [AKHighlightAppearanceHelper attributeTagForNoteOfColor:fillColor2];
 
     if (v21 == 763000 || ([AKHighlightAppearanceHelper borderColorForNoteOfHighlightAttributeTag:v21], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v24 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.2];
-      CGContextSetFillColorWithColor(a4, [v24 CGColor]);
+      CGContextSetFillColorWithColor(context, [v24 CGColor]);
 
       v30.origin.x = x;
       v30.origin.y = y;
@@ -63,8 +63,8 @@
       if (v25)
       {
         v26 = v25;
-        CGContextAddPath(a4, v25);
-        CGContextFillPath(a4);
+        CGContextAddPath(context, v25);
+        CGContextFillPath(context);
         CGPathRelease(v26);
       }
     }
@@ -72,23 +72,23 @@
     else
     {
       v23 = v22;
-      CGContextSetStrokeColorWithColor(a4, [v22 CGColor]);
-      CGContextSetLineWidth(a4, 1.0);
-      CGContextAddPath(a4, v18);
-      CGContextStrokePath(a4);
+      CGContextSetStrokeColorWithColor(context, [v22 CGColor]);
+      CGContextSetLineWidth(context, 1.0);
+      CGContextAddPath(context, v18);
+      CGContextStrokePath(context);
     }
 
     CGPathRelease(v18);
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 rectangle];
+  y = inside.y;
+  x = inside.x;
+  [annotation rectangle];
   v10 = x;
   v11 = y;
 

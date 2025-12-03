@@ -1,24 +1,24 @@
 @interface ATStoreBookDownloadAssetsOperation
 - (void)cancel;
 - (void)dealloc;
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5;
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4;
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error;
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change;
 - (void)execute;
-- (void)finishWithError:(id)a3 operationResult:(id)a4;
+- (void)finishWithError:(id)error operationResult:(id)result;
 @end
 
 @implementation ATStoreBookDownloadAssetsOperation
 
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  statesCopy = states;
+  errorCopy = error;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = statesCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -35,12 +35,12 @@
 
         if (self->_bookDownloadID)
         {
-          v14 = [*(*(&v17 + 1) + 8 * i) downloadID];
-          v15 = [v14 isEqualToString:self->_bookDownloadID];
+          downloadID = [*(*(&v17 + 1) + 8 * i) downloadID];
+          v15 = [downloadID isEqualToString:self->_bookDownloadID];
 
           if (v15)
           {
-            v16 = [MEMORY[0x277CCA9B8] at_ATErrorFromError:v8];
+            v16 = [MEMORY[0x277CCA9B8] at_ATErrorFromError:errorCopy];
             [(ATStoreBookDownloadAssetsOperation *)self finishWithError:v16 operationResult:0];
 
             goto LABEL_12;
@@ -61,15 +61,15 @@
 LABEL_12:
 }
 
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change
 {
   v36 = *MEMORY[0x277D85DE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v35 count:16];
+  changeCopy = change;
+  v6 = [changeCopy countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -80,47 +80,47 @@ LABEL_12:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(changeCopy);
         }
 
         if (self->_bookDownloadID)
         {
           v10 = *(*(&v25 + 1) + 8 * i);
-          v11 = [v10 downloadID];
-          v12 = [v11 isEqualToString:self->_bookDownloadID];
+          downloadID = [v10 downloadID];
+          v12 = [downloadID isEqualToString:self->_bookDownloadID];
 
           if (v12)
           {
             if ([v10 downloadPhase] == 2)
             {
-              v13 = [v10 transferBytesWritten];
-              [v13 floatValue];
+              transferBytesWritten = [v10 transferBytesWritten];
+              [transferBytesWritten floatValue];
               v15 = v14;
 
-              v16 = [v10 transferBytesExpected];
-              [v16 floatValue];
+              transferBytesExpected = [v10 transferBytesExpected];
+              [transferBytesExpected floatValue];
               v18 = v17;
 
               v19 = _ATLogCategoryStoreDownloads();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
               {
-                v20 = [(ATStoreDownloadOperation *)self asset];
+                asset = [(ATStoreDownloadOperation *)self asset];
                 *buf = 138543874;
-                v30 = self;
+                selfCopy = self;
                 v31 = 2114;
-                v32 = v20;
+                v32 = asset;
                 v33 = 2048;
                 v34 = (v15 / v18);
                 _os_log_impl(&dword_223819000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ : %.2f", buf, 0x20u);
               }
 
-              v21 = [(ICRequestOperation *)self progress];
-              v22 = [v10 transferBytesExpected];
-              [v21 setTotalUnitCount:{objc_msgSend(v22, "longLongValue")}];
+              progress = [(ICRequestOperation *)self progress];
+              transferBytesExpected2 = [v10 transferBytesExpected];
+              [progress setTotalUnitCount:{objc_msgSend(transferBytesExpected2, "longLongValue")}];
 
-              v23 = [(ICRequestOperation *)self progress];
-              v24 = [v10 transferBytesWritten];
-              [v23 setCompletedUnitCount:{objc_msgSend(v24, "longLongValue")}];
+              progress2 = [(ICRequestOperation *)self progress];
+              transferBytesWritten2 = [v10 transferBytesWritten];
+              [progress2 setCompletedUnitCount:{objc_msgSend(transferBytesWritten2, "longLongValue")}];
             }
 
             goto LABEL_15;
@@ -128,7 +128,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v35 count:16];
+      v7 = [changeCopy countByEnumeratingWithState:&v25 objects:v35 count:16];
       if (v7)
       {
         continue;
@@ -141,38 +141,38 @@ LABEL_12:
 LABEL_15:
 }
 
-- (void)finishWithError:(id)a3 operationResult:(id)a4
+- (void)finishWithError:(id)error operationResult:(id)result
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  resultCopy = result;
   v8 = _ATLogCategoryStoreDownloads();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v6;
+    v13 = errorCopy;
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ finished download with error %{public}@.", buf, 0x16u);
   }
 
   v9.receiver = self;
   v9.super_class = ATStoreBookDownloadAssetsOperation;
-  [(ATStoreDownloadOperation *)&v9 finishWithError:v6 operationResult:v7];
+  [(ATStoreDownloadOperation *)&v9 finishWithError:errorCopy operationResult:resultCopy];
 }
 
 - (void)cancel
 {
   if (self->_bookDownloadID)
   {
-    v3 = [getBLDownloadQueueNonUIClass() sharedInstance];
+    sharedInstance = [getBLDownloadQueueNonUIClass() sharedInstance];
     bookDownloadID = self->_bookDownloadID;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __44__ATStoreBookDownloadAssetsOperation_cancel__block_invoke;
     v6[3] = &unk_2784E58E8;
     v6[4] = self;
-    [v3 cancelDownloadWithID:bookDownloadID withCompletion:v6];
+    [sharedInstance cancelDownloadWithID:bookDownloadID withCompletion:v6];
   }
 
   else
@@ -201,29 +201,29 @@ id __44__ATStoreBookDownloadAssetsOperation_cancel__block_invoke(uint64_t a1)
 
   else
   {
-    v3 = [(ATStoreDownloadOperation *)self asset];
-    v4 = [v3 storeInfo];
+    asset = [(ATStoreDownloadOperation *)self asset];
+    storeInfo = [asset storeInfo];
     v5 = _ATLogCategoryStoreDownloads();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v3;
+      *&buf[14] = asset;
       _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting download for asset %{public}@.", buf, 0x16u);
     }
 
-    v6 = [getBLDownloadQueueNonUIClass() sharedInstance];
-    [v6 addObserver:self];
-    if ([v3 isRestore])
+    sharedInstance = [getBLDownloadQueueNonUIClass() sharedInstance];
+    [sharedInstance addObserver:self];
+    if ([asset isRestore])
     {
-      v7 = [v3 storeInfo];
-      v8 = [v7 downloadDictionary];
-      v9 = [v8 mutableCopy];
+      storeInfo2 = [asset storeInfo];
+      downloadDictionary = [storeInfo2 downloadDictionary];
+      v9 = [downloadDictionary mutableCopy];
 
       [v9 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D6A000]];
-      v10 = [v3 assetType];
-      v11 = [v10 isEqualToString:@"Audiobook"];
+      assetType = [asset assetType];
+      v11 = [assetType isEqualToString:@"Audiobook"];
       v12 = MEMORY[0x277D69EA0];
       if (!v11)
       {
@@ -251,9 +251,9 @@ id __44__ATStoreBookDownloadAssetsOperation_cancel__block_invoke(uint64_t a1)
       v14 = v13;
       _Block_object_dispose(&v29, 8);
       v15 = [v13 alloc];
-      v16 = [v3 storeInfo];
-      v17 = [v16 assetDictionary];
-      v18 = [v15 initWithDownloadDictionary:v9 assetDictionary:v17];
+      storeInfo3 = [asset storeInfo];
+      assetDictionary = [storeInfo3 assetDictionary];
+      v18 = [v15 initWithDownloadDictionary:v9 assetDictionary:assetDictionary];
 
       v33 = v18;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
@@ -262,7 +262,7 @@ id __44__ATStoreBookDownloadAssetsOperation_cancel__block_invoke(uint64_t a1)
       v28[2] = __45__ATStoreBookDownloadAssetsOperation_execute__block_invoke;
       v28[3] = &unk_2784E4EA8;
       v28[4] = self;
-      [v6 addDownloadsWithRestoreContentRequestItems:v19 completion:v28];
+      [sharedInstance addDownloadsWithRestoreContentRequestItems:v19 completion:v28];
     }
 
     else
@@ -285,23 +285,23 @@ id __44__ATStoreBookDownloadAssetsOperation_cancel__block_invoke(uint64_t a1)
 
       v21 = v20;
       _Block_object_dispose(&v29, 8);
-      v22 = [v4 redownloadParams];
-      v23 = [v4 adamID];
-      v9 = [v20 requestWithBuyParameters:v22 storeIdentifier:v23];
+      redownloadParams = [storeInfo redownloadParams];
+      adamID = [storeInfo adamID];
+      v9 = [v20 requestWithBuyParameters:redownloadParams storeIdentifier:adamID];
 
-      [v9 setRestore:{objc_msgSend(v3, "isRestore")}];
-      v24 = [v3 assetType];
-      [v9 setAudiobook:{objc_msgSend(v24, "isEqualToString:", @"Audiobook"}];
+      [v9 setRestore:{objc_msgSend(asset, "isRestore")}];
+      assetType2 = [asset assetType];
+      [v9 setAudiobook:{objc_msgSend(assetType2, "isEqualToString:", @"Audiobook"}];
 
-      v25 = [v4 DSID];
-      [v9 setAccountIdentifier:v25];
+      dSID = [storeInfo DSID];
+      [v9 setAccountIdentifier:dSID];
 
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __45__ATStoreBookDownloadAssetsOperation_execute__block_invoke_8;
       v27[3] = &unk_2784E4ED0;
       v27[4] = self;
-      [v6 purchaseWithRequest:v9 completion:v27];
+      [sharedInstance purchaseWithRequest:v9 completion:v27];
     }
   }
 }
@@ -384,8 +384,8 @@ void __45__ATStoreBookDownloadAssetsOperation_execute__block_invoke_8(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [getBLDownloadQueueNonUIClass() sharedInstance];
-  [v3 removeObserver:self];
+  sharedInstance = [getBLDownloadQueueNonUIClass() sharedInstance];
+  [sharedInstance removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ATStoreBookDownloadAssetsOperation;

@@ -1,18 +1,18 @@
 @interface HLPHelpTableOfContentCell
 - (CGAffineTransform)arrowTransform;
-- (HLPHelpTableOfContentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HLPHelpTableOfContentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)accessibilityLabel;
 - (int64_t)itemLevel;
 - (void)cancelIconRequest;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setClosed:(BOOL)a3;
-- (void)setHelpItem:(id)a3;
+- (void)setClosed:(BOOL)closed;
+- (void)setHelpItem:(id)item;
 - (void)updateConstraints;
 - (void)updateFont;
-- (void)updateToggleImageAnimated:(BOOL)a3;
+- (void)updateToggleImageAnimated:(BOOL)animated;
 @end
 
 @implementation HLPHelpTableOfContentCell
@@ -20,29 +20,29 @@
 - (void)dealloc
 {
   [(HLPHelpTableOfContentCell *)self cancelIconRequest];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = HLPHelpTableOfContentCell;
   [(HLPHelpTableOfContentCell *)&v4 dealloc];
 }
 
-- (HLPHelpTableOfContentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HLPHelpTableOfContentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v87.receiver = self;
   v87.super_class = HLPHelpTableOfContentCell;
-  v4 = [(HLPHelpTableOfContentCell *)&v87 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HLPHelpTableOfContentCell *)&v87 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
     v4->_closed = 1;
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    v4->_RTL = [v6 userInterfaceLayoutDirection] == 1;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v4->_RTL = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
 
-    LODWORD(v6) = +[HLPCommonDefines isVisionOS];
+    LODWORD(mEMORY[0x277D75128]) = +[HLPCommonDefines isVisionOS];
     v7 = objc_alloc_init(MEMORY[0x277D755E8]);
     accessoryImageView = v4->_accessoryImageView;
     v4->_accessoryImageView = v7;
@@ -54,8 +54,8 @@
     v86[1] = v86[4];
     v86[2] = v86[5];
     [(UIImageView *)v9 setTransform:v86];
-    v10 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    [v10 addSubview:v4->_accessoryImageView];
+    contentView = [(HLPHelpTableOfContentCell *)v4 contentView];
+    [contentView addSubview:v4->_accessoryImageView];
 
     v11 = objc_alloc_init(MEMORY[0x277D755E8]);
     sectionImageView = v4->_sectionImageView;
@@ -63,8 +63,8 @@
 
     [(UIImageView *)v4->_sectionImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v4->_sectionImageView setHidden:1];
-    v13 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    [v13 addSubview:v4->_sectionImageView];
+    contentView2 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    [contentView2 addSubview:v4->_sectionImageView];
 
     v14 = objc_alloc(MEMORY[0x277D756B8]);
     v15 = [v14 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -75,10 +75,10 @@
     [(UILabel *)v4->_nameLabel setLineBreakStrategy:0];
     [(UILabel *)v4->_nameLabel setNumberOfLines:0];
     [(UILabel *)v4->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    if (v6)
+    if (mEMORY[0x277D75128])
     {
-      v17 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [(UILabel *)v4->_nameLabel setTextColor:v17];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [(UILabel *)v4->_nameLabel setTextColor:secondaryLabelColor];
 
       v18 = 0x404E000000000000;
     }
@@ -90,110 +90,110 @@
 
     v19 = *&v18;
     [(HLPHelpTableOfContentCell *)v4 updateFont];
-    v20 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    [v20 addSubview:v4->_nameLabel];
+    contentView3 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    [contentView3 addSubview:v4->_nameLabel];
 
-    v21 = [(UIImageView *)v4->_accessoryImageView centerYAnchor];
-    v22 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v23 = [v22 centerYAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    centerYAnchor = [(UIImageView *)v4->_accessoryImageView centerYAnchor];
+    contentView4 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v24 setActive:1];
 
     LODWORD(v25) = 1148846080;
     [(UIImageView *)v4->_accessoryImageView setContentCompressionResistancePriority:0 forAxis:v25];
-    v26 = [(UIImageView *)v4->_sectionImageView widthAnchor];
-    v27 = [v26 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIImageView *)v4->_sectionImageView widthAnchor];
+    v27 = [widthAnchor constraintEqualToConstant:0.0];
     sectionImageWidthConstraint = v4->_sectionImageWidthConstraint;
     v4->_sectionImageWidthConstraint = v27;
 
     [(NSLayoutConstraint *)v4->_sectionImageWidthConstraint setActive:1];
-    v29 = [(UIImageView *)v4->_sectionImageView heightAnchor];
-    v30 = [(UIImageView *)v4->_sectionImageView widthAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    heightAnchor = [(UIImageView *)v4->_sectionImageView heightAnchor];
+    widthAnchor2 = [(UIImageView *)v4->_sectionImageView widthAnchor];
+    v31 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     [v31 setActive:1];
 
-    v32 = [(UIImageView *)v4->_sectionImageView centerYAnchor];
-    v33 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v34 = [v33 centerYAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34];
+    centerYAnchor3 = [(UIImageView *)v4->_sectionImageView centerYAnchor];
+    contentView5 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    centerYAnchor4 = [contentView5 centerYAnchor];
+    v35 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v35 setActive:1];
 
     LODWORD(v36) = 1148846080;
     [(UIImageView *)v4->_sectionImageView setContentCompressionResistancePriority:0 forAxis:v36];
     v37 = objc_alloc_init(MEMORY[0x277D756D0]);
-    v38 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    [v38 addLayoutGuide:v37];
+    contentView6 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    [contentView6 addLayoutGuide:v37];
 
-    v39 = [v37 leadingAnchor];
-    v40 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v41 = [v40 leadingAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41];
+    leadingAnchor = [v37 leadingAnchor];
+    contentView7 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    leadingAnchor2 = [contentView7 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v42 setActive:1];
 
-    v43 = [v37 trailingAnchor];
-    v44 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v45 = [v44 trailingAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45];
+    trailingAnchor = [v37 trailingAnchor];
+    contentView8 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    trailingAnchor2 = [contentView8 trailingAnchor];
+    v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v46 setActive:1];
 
-    v47 = [(UILabel *)v4->_nameLabel trailingAnchor];
-    v48 = [(UIImageView *)v4->_accessoryImageView leadingAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48 constant:-16.0];
+    trailingAnchor3 = [(UILabel *)v4->_nameLabel trailingAnchor];
+    leadingAnchor3 = [(UIImageView *)v4->_accessoryImageView leadingAnchor];
+    v49 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3 constant:-16.0];
     [v49 setActive:1];
 
-    v50 = [(UILabel *)v4->_nameLabel leadingAnchor];
-    v51 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v52 = [v51 leadingAnchor];
-    v53 = [v50 constraintEqualToAnchor:v52 constant:0.0];
+    leadingAnchor4 = [(UILabel *)v4->_nameLabel leadingAnchor];
+    contentView9 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    leadingAnchor5 = [contentView9 leadingAnchor];
+    v53 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:0.0];
     labelLeadingConstraint = v4->_labelLeadingConstraint;
     v4->_labelLeadingConstraint = v53;
 
-    v55 = [(UIImageView *)v4->_sectionImageView leadingAnchor];
-    v56 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v57 = [v56 leadingAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57];
+    leadingAnchor6 = [(UIImageView *)v4->_sectionImageView leadingAnchor];
+    contentView10 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    leadingAnchor7 = [contentView10 leadingAnchor];
+    v58 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     sectionImageLeadingConstraint = v4->_sectionImageLeadingConstraint;
     v4->_sectionImageLeadingConstraint = v58;
 
-    v60 = [(UIImageView *)v4->_accessoryImageView trailingAnchor];
-    v61 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v62 = [v61 trailingAnchor];
-    v63 = [v60 constraintEqualToAnchor:v62 constant:-16.0];
+    trailingAnchor4 = [(UIImageView *)v4->_accessoryImageView trailingAnchor];
+    contentView11 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    trailingAnchor5 = [contentView11 trailingAnchor];
+    v63 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-16.0];
     accessoryImageViewTrailingConstraint = v4->_accessoryImageViewTrailingConstraint;
     v4->_accessoryImageViewTrailingConstraint = v63;
 
     [(NSLayoutConstraint *)v4->_accessoryImageViewTrailingConstraint setActive:1];
-    v65 = [v37 heightAnchor];
-    v66 = [v65 constraintGreaterThanOrEqualToConstant:v19];
+    heightAnchor2 = [v37 heightAnchor];
+    v66 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:v19];
 
     LODWORD(v67) = 1147207680;
     [v66 setPriority:v67];
     [v66 setActive:1];
-    v68 = [v37 topAnchor];
-    v69 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v70 = [v69 topAnchor];
-    v71 = [v68 constraintEqualToAnchor:v70];
+    topAnchor = [v37 topAnchor];
+    contentView12 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    topAnchor2 = [contentView12 topAnchor];
+    v71 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v71 setActive:1];
 
-    v72 = [v37 bottomAnchor];
-    v73 = [(HLPHelpTableOfContentCell *)v4 contentView];
-    v74 = [v73 bottomAnchor];
-    v75 = [v72 constraintEqualToAnchor:v74];
+    bottomAnchor = [v37 bottomAnchor];
+    contentView13 = [(HLPHelpTableOfContentCell *)v4 contentView];
+    bottomAnchor2 = [contentView13 bottomAnchor];
+    v75 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v75 setActive:1];
 
-    v76 = [(UILabel *)v4->_nameLabel centerYAnchor];
-    v77 = [v37 centerYAnchor];
-    v78 = [v76 constraintEqualToAnchor:v77];
+    centerYAnchor5 = [(UILabel *)v4->_nameLabel centerYAnchor];
+    centerYAnchor6 = [v37 centerYAnchor];
+    v78 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     [v78 setActive:1];
 
-    v79 = [(UILabel *)v4->_nameLabel topAnchor];
-    v80 = [v37 topAnchor];
-    v81 = [v79 constraintEqualToAnchor:v80 constant:12.0];
+    topAnchor3 = [(UILabel *)v4->_nameLabel topAnchor];
+    topAnchor4 = [v37 topAnchor];
+    v81 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:12.0];
     [v81 setActive:1];
 
-    v82 = [(UILabel *)v4->_nameLabel bottomAnchor];
-    v83 = [v37 bottomAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83 constant:-12.0];
+    bottomAnchor3 = [(UILabel *)v4->_nameLabel bottomAnchor];
+    bottomAnchor4 = [v37 bottomAnchor];
+    v84 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-12.0];
     [v84 setActive:1];
 
     [(NSLayoutConstraint *)v4->_labelLeadingConstraint setActive:1];
@@ -210,11 +210,11 @@
   [(HLPHelpTableOfContentCell *)&v5 prepareForReuse];
   self->_closed = 1;
   [(HLPHelpTableOfContentCell *)self arrowTransform];
-  v3 = [(HLPHelpTableOfContentCell *)self accessoryImageView];
+  accessoryImageView = [(HLPHelpTableOfContentCell *)self accessoryImageView];
   v4[0] = v4[3];
   v4[1] = v4[4];
   v4[2] = v4[5];
-  [v3 setTransform:v4];
+  [accessoryImageView setTransform:v4];
 
   if (self->_updateSeparatorInsetAutomatically)
   {
@@ -238,10 +238,10 @@
   [(UILabel *)self->_nameLabel setFont:v4];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  category = [v4 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  category = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
   IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(category);
   LODWORD(v6) = 1053609165;
@@ -265,18 +265,18 @@
   self->_sectionImageURLSessionItem = 0;
 }
 
-- (void)setHelpItem:(id)a3
+- (void)setHelpItem:(id)item
 {
-  v5 = a3;
-  if (self->_helpItem != v5)
+  itemCopy = item;
+  if (self->_helpItem != itemCopy)
   {
-    objc_storeStrong(&self->_helpItem, a3);
-    v6 = [(HLPHelpItem *)v5 decodedName];
-    [(UILabel *)self->_nameLabel setText:v6];
+    objc_storeStrong(&self->_helpItem, item);
+    decodedName = [(HLPHelpItem *)itemCopy decodedName];
+    [(UILabel *)self->_nameLabel setText:decodedName];
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v8 = [(HLPHelpTableOfContentCell *)self itemLevel];
+    itemLevel = [(HLPHelpTableOfContentCell *)self itemLevel];
     if (isKindOfClass)
     {
       v9 = 0;
@@ -290,7 +290,7 @@
     [(UIImageView *)self->_accessoryImageView setHidden:v9];
     if (+[HLPCommonDefines isVisionOS])
     {
-      v10 = [MEMORY[0x277D75348] secondaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
       v11 = [MEMORY[0x277D755D0] configurationWithScale:1];
     }
 
@@ -305,7 +305,7 @@
       {
         [MEMORY[0x277D75348] tertiaryLabelColor];
       }
-      v10 = ;
+      secondaryLabelColor = ;
       v12 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76968] addingSymbolicTraits:2 options:0];
       v13 = [MEMORY[0x277D74300] fontWithDescriptor:v12 size:0.0];
       v11 = [MEMORY[0x277D755D0] configurationWithFont:v13];
@@ -313,30 +313,30 @@
 
     v14 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.right" withConfiguration:v11];
     v15 = 1;
-    v16 = [v14 imageWithTintColor:v10 renderingMode:1];
+    v16 = [v14 imageWithTintColor:secondaryLabelColor renderingMode:1];
     [(UIImageView *)self->_accessoryImageView setImage:v16];
 
-    if (!v8)
+    if (!itemLevel)
     {
       v15 = !self->_showFirstLevelIcon;
     }
 
     [(UIImageView *)self->_sectionImageView setHidden:v15];
     [(HLPHelpTableOfContentCell *)self updateFont];
-    v17 = [(HLPHelpItem *)self->_helpItem iconURL];
-    if (v17 && (v18 = v17, v19 = [(UIImageView *)self->_sectionImageView isHidden], v18, (v19 & 1) == 0))
+    iconURL = [(HLPHelpItem *)self->_helpItem iconURL];
+    if (iconURL && (v18 = iconURL, v19 = [(UIImageView *)self->_sectionImageView isHidden], v18, (v19 & 1) == 0))
     {
       [(UIImageView *)self->_sectionImageView setImage:0];
       [(UIImageView *)self->_sectionImageView setHidden:0];
       v20 = +[HLPURLSessionManager defaultManager];
-      v21 = [(HLPHelpItem *)self->_helpItem iconURL];
-      v22 = [v21 absoluteString];
+      iconURL2 = [(HLPHelpItem *)self->_helpItem iconURL];
+      absoluteString = [iconURL2 absoluteString];
 
-      if (v22)
+      if (absoluteString)
       {
         v31 = v20;
         v23 = MEMORY[0x277CCAB70];
-        v24 = [MEMORY[0x277CBEBC0] URLWithString:v22];
+        v24 = [MEMORY[0x277CBEBC0] URLWithString:absoluteString];
         v25 = [v23 requestWithURL:v24];
 
         v26 = +[HLPCommonDefines assetRequestHeaderFields];
@@ -345,7 +345,7 @@
           [v25 setAllHTTPHeaderFields:v26];
         }
 
-        v27 = [v22 lastPathComponent];
+        lastPathComponent = [absoluteString lastPathComponent];
         objc_initWeak(&location, self);
         v28 = +[HLPImageCacheController sharedInstance];
         v32[0] = MEMORY[0x277D85DD0];
@@ -353,7 +353,7 @@
         v32[2] = __41__HLPHelpTableOfContentCell_setHelpItem___block_invoke;
         v32[3] = &unk_279707618;
         objc_copyWeak(&v33, &location);
-        v29 = [v28 formattedDataForRequest:v25 identifier:v27 completionHandler:v32];
+        v29 = [v28 formattedDataForRequest:v25 identifier:lastPathComponent completionHandler:v32];
         sectionImageURLSessionItem = self->_sectionImageURLSessionItem;
         self->_sectionImageURLSessionItem = v29;
 
@@ -395,11 +395,11 @@ void __41__HLPHelpTableOfContentCell_setHelpItem___block_invoke(uint64_t a1, voi
   [WeakRetained setSectionImageURLSessionItem:0];
 }
 
-- (void)setClosed:(BOOL)a3
+- (void)setClosed:(BOOL)closed
 {
-  if (self->_closed != a3)
+  if (self->_closed != closed)
   {
-    self->_closed = a3;
+    self->_closed = closed;
     [(HLPHelpTableOfContentCell *)self updateToggleImageAnimated:0];
   }
 }
@@ -425,17 +425,17 @@ void __41__HLPHelpTableOfContentCell_setHelpItem___block_invoke(uint64_t a1, voi
   }
 
   [(NSLayoutConstraint *)self->_sectionImageLeadingConstraint setConstant:v4];
-  v5 = [(UIImageView *)self->_sectionImageView isHidden];
+  isHidden = [(UIImageView *)self->_sectionImageView isHidden];
   v6 = 26.0;
-  if (v5)
+  if (isHidden)
   {
     v6 = 0.0;
   }
 
   [(NSLayoutConstraint *)self->_sectionImageWidthConstraint setConstant:v6];
-  v7 = [(HLPHelpTableOfContentCell *)self itemLevel];
-  v8 = v7;
-  if (+[HLPCommonDefines isVisionOS]&& v7 > 0)
+  itemLevel = [(HLPHelpTableOfContentCell *)self itemLevel];
+  v8 = itemLevel;
+  if (+[HLPCommonDefines isVisionOS]&& itemLevel > 0)
   {
     v8 = v8 + -1.0;
   }
@@ -454,7 +454,7 @@ void __41__HLPHelpTableOfContentCell_setHelpItem___block_invoke(uint64_t a1, voi
   }
 
   v9 = v8 * (v3 + 16.0) + 16.0;
-  if (!self->_ignoreLevels && !v7 && ![(UIImageView *)self->_sectionImageView isHidden])
+  if (!self->_ignoreLevels && !itemLevel && ![(UIImageView *)self->_sectionImageView isHidden])
   {
     v9 = v3 + v9;
   }
@@ -511,19 +511,19 @@ void __41__HLPHelpTableOfContentCell_setHelpItem___block_invoke(uint64_t a1, voi
   return CGAffineTransformMakeRotation(retstr, v5);
 }
 
-- (void)updateToggleImageAnimated:(BOOL)a3
+- (void)updateToggleImageAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(HLPHelpTableOfContentCell *)self accessoryImageView];
-  v6 = [v5 isHidden];
+  animatedCopy = animated;
+  accessoryImageView = [(HLPHelpTableOfContentCell *)self accessoryImageView];
+  isHidden = [accessoryImageView isHidden];
 
-  if ((v6 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     v17 = 0u;
     v18 = 0u;
     v16 = 0u;
     [(HLPHelpTableOfContentCell *)self arrowTransform];
-    if (v3)
+    if (animatedCopy)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
@@ -541,11 +541,11 @@ void __41__HLPHelpTableOfContentCell_setHelpItem___block_invoke(uint64_t a1, voi
       v9 = v16;
       v10 = v17;
       v11 = v18;
-      v7 = [(HLPHelpTableOfContentCell *)self accessoryImageView];
+      accessoryImageView2 = [(HLPHelpTableOfContentCell *)self accessoryImageView];
       v8[0] = v9;
       v8[1] = v10;
       v8[2] = v11;
-      [v7 setTransform:v8];
+      [accessoryImageView2 setTransform:v8];
     }
   }
 }
@@ -576,8 +576,8 @@ void __55__HLPHelpTableOfContentCell_updateToggleImageAnimated___block_invoke(ui
   v7 = [v4 localizedStringForKey:v6 value:&stru_2864756F0 table:0];
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(HLPHelpItem *)self->_helpItem name];
-  v10 = [v8 stringWithFormat:@"%@. %@", v9, v7];
+  name = [(HLPHelpItem *)self->_helpItem name];
+  v10 = [v8 stringWithFormat:@"%@. %@", name, v7];
 
   return v10;
 }

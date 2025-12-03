@@ -7,7 +7,7 @@
 
 - (void)thermalLevelDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000AF66C();
 }
 

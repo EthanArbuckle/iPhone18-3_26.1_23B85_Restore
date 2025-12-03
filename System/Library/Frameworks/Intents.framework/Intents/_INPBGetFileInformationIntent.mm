@@ -1,83 +1,83 @@
 @interface _INPBGetFileInformationIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBGetFileInformationIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGetFileInformationIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsEntityType:(id)a3;
-- (int)StringAsPropertyName:(id)a3;
-- (int)StringAsQualifier:(id)a3;
+- (int)StringAsEntityType:(id)type;
+- (int)StringAsPropertyName:(id)name;
+- (int)StringAsQualifier:(id)qualifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEntityType:(int)a3;
-- (void)setHasPropertyName:(BOOL)a3;
-- (void)setHasQualifier:(BOOL)a3;
-- (void)setPropertyName:(int)a3;
-- (void)setQualifier:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEntityType:(int)type;
+- (void)setHasPropertyName:(BOOL)name;
+- (void)setHasQualifier:(BOOL)qualifier;
+- (void)setPropertyName:(int)name;
+- (void)setQualifier:(int)qualifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGetFileInformationIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBGetFileInformationIntent *)self entityName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"entityName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  entityName = [(_INPBGetFileInformationIntent *)self entityName];
+  dictionaryRepresentation = [entityName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entityName"];
 
   if ([(_INPBGetFileInformationIntent *)self hasEntityType])
   {
-    v6 = [(_INPBGetFileInformationIntent *)self entityType];
-    if (v6 >= 4)
+    entityType = [(_INPBGetFileInformationIntent *)self entityType];
+    if (entityType >= 4)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", entityType];
     }
 
     else
     {
-      v7 = off_1E7281EF8[v6];
+      v7 = off_1E7281EF8[entityType];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"entityType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"entityType"];
   }
 
-  v8 = [(_INPBGetFileInformationIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBGetFileInformationIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBGetFileInformationIntent *)self hasPropertyName])
   {
-    v10 = [(_INPBGetFileInformationIntent *)self propertyName];
-    if (v10 >= 0xC)
+    propertyName = [(_INPBGetFileInformationIntent *)self propertyName];
+    if (propertyName >= 0xC)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", propertyName];
     }
 
     else
     {
-      v11 = off_1E7281F18[v10];
+      v11 = off_1E7281F18[propertyName];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"propertyName"];
+    [dictionary setObject:v11 forKeyedSubscript:@"propertyName"];
   }
 
   if ([(_INPBGetFileInformationIntent *)self hasQualifier])
   {
-    v12 = [(_INPBGetFileInformationIntent *)self qualifier];
-    if (v12 >= 5)
+    qualifier = [(_INPBGetFileInformationIntent *)self qualifier];
+    if (qualifier >= 5)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", qualifier];
     }
 
     else
     {
-      v13 = off_1E7281F78[v12];
+      v13 = off_1E7281F78[qualifier];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"qualifier"];
+    [dictionary setObject:v13 forKeyedSubscript:@"qualifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -117,28 +117,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBGetFileInformationIntent *)self entityName];
-  v6 = [v4 entityName];
-  if ((v5 != 0) == (v6 == 0))
+  entityName = [(_INPBGetFileInformationIntent *)self entityName];
+  entityName2 = [equalCopy entityName];
+  if ((entityName != 0) == (entityName2 == 0))
   {
     goto LABEL_15;
   }
 
-  v7 = [(_INPBGetFileInformationIntent *)self entityName];
-  if (v7)
+  entityName3 = [(_INPBGetFileInformationIntent *)self entityName];
+  if (entityName3)
   {
-    v8 = v7;
-    v9 = [(_INPBGetFileInformationIntent *)self entityName];
-    v10 = [v4 entityName];
-    v11 = [v9 isEqual:v10];
+    v8 = entityName3;
+    entityName4 = [(_INPBGetFileInformationIntent *)self entityName];
+    entityName5 = [equalCopy entityName];
+    v11 = [entityName4 isEqual:entityName5];
 
     if (!v11)
     {
@@ -150,40 +150,40 @@
   {
   }
 
-  v12 = [(_INPBGetFileInformationIntent *)self hasEntityType];
-  if (v12 != [v4 hasEntityType])
+  hasEntityType = [(_INPBGetFileInformationIntent *)self hasEntityType];
+  if (hasEntityType != [equalCopy hasEntityType])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBGetFileInformationIntent *)self hasEntityType])
   {
-    if ([v4 hasEntityType])
+    if ([equalCopy hasEntityType])
     {
       entityType = self->_entityType;
-      if (entityType != [v4 entityType])
+      if (entityType != [equalCopy entityType])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v5 = [(_INPBGetFileInformationIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  entityName = [(_INPBGetFileInformationIntent *)self intentMetadata];
+  entityName2 = [equalCopy intentMetadata];
+  if ((entityName != 0) == (entityName2 == 0))
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v14 = [(_INPBGetFileInformationIntent *)self intentMetadata];
-  if (v14)
+  intentMetadata = [(_INPBGetFileInformationIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v15 = v14;
-    v16 = [(_INPBGetFileInformationIntent *)self intentMetadata];
-    v17 = [v4 intentMetadata];
-    v18 = [v16 isEqual:v17];
+    v15 = intentMetadata;
+    intentMetadata2 = [(_INPBGetFileInformationIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v18 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v18)
     {
@@ -195,15 +195,15 @@ LABEL_15:
   {
   }
 
-  v21 = [(_INPBGetFileInformationIntent *)self hasPropertyName];
-  if (v21 == [v4 hasPropertyName])
+  hasPropertyName = [(_INPBGetFileInformationIntent *)self hasPropertyName];
+  if (hasPropertyName == [equalCopy hasPropertyName])
   {
-    if (!-[_INPBGetFileInformationIntent hasPropertyName](self, "hasPropertyName") || ![v4 hasPropertyName] || (propertyName = self->_propertyName, propertyName == objc_msgSend(v4, "propertyName")))
+    if (!-[_INPBGetFileInformationIntent hasPropertyName](self, "hasPropertyName") || ![equalCopy hasPropertyName] || (propertyName = self->_propertyName, propertyName == objc_msgSend(equalCopy, "propertyName")))
     {
-      v23 = [(_INPBGetFileInformationIntent *)self hasQualifier];
-      if (v23 == [v4 hasQualifier])
+      hasQualifier = [(_INPBGetFileInformationIntent *)self hasQualifier];
+      if (hasQualifier == [equalCopy hasQualifier])
       {
-        if (!-[_INPBGetFileInformationIntent hasQualifier](self, "hasQualifier") || ![v4 hasQualifier] || (qualifier = self->_qualifier, qualifier == objc_msgSend(v4, "qualifier")))
+        if (!-[_INPBGetFileInformationIntent hasQualifier](self, "hasQualifier") || ![equalCopy hasQualifier] || (qualifier = self->_qualifier, qualifier == objc_msgSend(equalCopy, "qualifier")))
         {
           v19 = 1;
           goto LABEL_17;
@@ -219,10 +219,10 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBGetFileInformationIntent allocWithZone:](_INPBGetFileInformationIntent init];
-  v6 = [(_INPBString *)self->_entityName copyWithZone:a3];
+  v6 = [(_INPBString *)self->_entityName copyWithZone:zone];
   [(_INPBGetFileInformationIntent *)v5 setEntityName:v6];
 
   if ([(_INPBGetFileInformationIntent *)self hasEntityType])
@@ -230,7 +230,7 @@ LABEL_17:
     [(_INPBGetFileInformationIntent *)v5 setEntityType:[(_INPBGetFileInformationIntent *)self entityType]];
   }
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBGetFileInformationIntent *)v5 setIntentMetadata:v7];
 
   if ([(_INPBGetFileInformationIntent *)self hasPropertyName])
@@ -246,38 +246,38 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGetFileInformationIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBGetFileInformationIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGetFileInformationIntent)initWithCoder:(id)a3
+- (_INPBGetFileInformationIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGetFileInformationIntent *)self initWithData:v6];
+    self = [(_INPBGetFileInformationIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBGetFileInformationIntent *)self entityName];
+  toCopy = to;
+  entityName = [(_INPBGetFileInformationIntent *)self entityName];
 
-  if (v4)
+  if (entityName)
   {
-    v5 = [(_INPBGetFileInformationIntent *)self entityName];
+    entityName2 = [(_INPBGetFileInformationIntent *)self entityName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -287,11 +287,11 @@ LABEL_17:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_INPBGetFileInformationIntent *)self intentMetadata];
+  intentMetadata = [(_INPBGetFileInformationIntent *)self intentMetadata];
 
-  if (v7)
+  if (intentMetadata)
   {
-    v8 = [(_INPBGetFileInformationIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBGetFileInformationIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -308,30 +308,30 @@ LABEL_17:
   }
 }
 
-- (int)StringAsQualifier:(id)a3
+- (int)StringAsQualifier:(id)qualifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EQUAL"])
+  qualifierCopy = qualifier;
+  if ([qualifierCopy isEqualToString:@"EQUAL"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AT_LEAST"])
+  else if ([qualifierCopy isEqualToString:@"AT_LEAST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AT_MOST"])
+  else if ([qualifierCopy isEqualToString:@"AT_MOST"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MIN"])
+  else if ([qualifierCopy isEqualToString:@"MIN"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MAX"])
+  else if ([qualifierCopy isEqualToString:@"MAX"])
   {
     v4 = 4;
   }
@@ -344,9 +344,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasQualifier:(BOOL)a3
+- (void)setHasQualifier:(BOOL)qualifier
 {
-  if (a3)
+  if (qualifier)
   {
     v3 = 4;
   }
@@ -359,10 +359,10 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setQualifier:(int)a3
+- (void)setQualifier:(int)qualifier
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (qualifier == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -370,69 +370,69 @@ LABEL_17:
   else
   {
     *&self->_has = has | 4;
-    self->_qualifier = a3;
+    self->_qualifier = qualifier;
   }
 }
 
-- (int)StringAsPropertyName:(id)a3
+- (int)StringAsPropertyName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SIZE"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"SIZE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CONTENTS"])
+  else if ([nameCopy isEqualToString:@"CONTENTS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AUTHOR"])
+  else if ([nameCopy isEqualToString:@"AUTHOR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CREATION_TIME"])
+  else if ([nameCopy isEqualToString:@"CREATION_TIME"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ACCESSED_TIME"])
+  else if ([nameCopy isEqualToString:@"ACCESSED_TIME"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MODIFIED_TIME"])
+  else if ([nameCopy isEqualToString:@"MODIFIED_TIME"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PRINTED_TIME"])
+  else if ([nameCopy isEqualToString:@"PRINTED_TIME"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SENDER"])
+  else if ([nameCopy isEqualToString:@"SENDER"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RECIPIENT"])
+  else if ([nameCopy isEqualToString:@"RECIPIENT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PAGE_COUNT"])
+  else if ([nameCopy isEqualToString:@"PAGE_COUNT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TAG"])
+  else if ([nameCopy isEqualToString:@"TAG"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"FILE_TYPE"])
+  else if ([nameCopy isEqualToString:@"FILE_TYPE"])
   {
     v4 = 11;
   }
@@ -445,9 +445,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasPropertyName:(BOOL)a3
+- (void)setHasPropertyName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 2;
   }
@@ -460,10 +460,10 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setPropertyName:(int)a3
+- (void)setPropertyName:(int)name
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (name == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -471,29 +471,29 @@ LABEL_17:
   else
   {
     *&self->_has = has | 2;
-    self->_propertyName = a3;
+    self->_propertyName = name;
   }
 }
 
-- (int)StringAsEntityType:(id)a3
+- (int)StringAsEntityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FILE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"FILE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FOLDER"])
+  else if ([typeCopy isEqualToString:@"FOLDER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REFERENCE"])
+  else if ([typeCopy isEqualToString:@"REFERENCE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([typeCopy isEqualToString:@"URL"])
   {
     v4 = 3;
   }
@@ -506,10 +506,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setEntityType:(int)a3
+- (void)setEntityType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -517,7 +517,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 1;
-    self->_entityType = a3;
+    self->_entityType = type;
   }
 }
 

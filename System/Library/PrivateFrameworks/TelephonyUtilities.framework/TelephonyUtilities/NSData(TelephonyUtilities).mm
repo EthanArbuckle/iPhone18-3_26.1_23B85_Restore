@@ -9,22 +9,22 @@
 
 - (id)tu_URLSafeBase64EncodedString
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 base64EncodedStringWithOptions:0];
+    v2 = [self base64EncodedStringWithOptions:0];
     v3 = [v2 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
 
     v4 = [v3 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 
-    v5 = [v4 tu_stringByStrippingBase64Padding];
+    tu_stringByStrippingBase64Padding = [v4 tu_stringByStrippingBase64Padding];
   }
 
   else
   {
-    v5 = 0;
+    tu_stringByStrippingBase64Padding = 0;
   }
 
-  return v5;
+  return tu_stringByStrippingBase64Padding;
 }
 
 + (id)tu_dataForURLSafeBase64EncodedString:()TelephonyUtilities
@@ -36,9 +36,9 @@
 
     v5 = [v4 stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
 
-    v6 = [v5 tu_stringByAddingBase64Padding];
+    tu_stringByAddingBase64Padding = [v5 tu_stringByAddingBase64Padding];
 
-    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v6 options:1];
+    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:tu_stringByAddingBase64Padding options:1];
   }
 
   else
@@ -52,11 +52,11 @@
 - (id)tu_UUID
 {
   v5[2] = *MEMORY[0x1E69E9840];
-  if ([a1 length] == 16)
+  if ([self length] == 16)
   {
     v5[0] = 0;
     v5[1] = 0;
-    [a1 getBytes:v5 length:16];
+    [self getBytes:v5 length:16];
     v2 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v5];
   }
 

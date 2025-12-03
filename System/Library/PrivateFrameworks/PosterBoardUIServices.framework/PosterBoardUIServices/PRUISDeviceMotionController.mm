@@ -2,23 +2,23 @@
 + (id)_sbUserDefaults;
 - (BOOL)isGeneratingMotionEvents;
 - (PRUISDeviceMotionController)init;
-- (PRUISDeviceMotionController)initWithMotionProvider:(id)a3;
+- (PRUISDeviceMotionController)initWithMotionProvider:(id)provider;
 - (PRUISDeviceMotionControllerDelegate)delegate;
-- (double)updateMotionUpdateInterval:(double)a3 reason:(int64_t)a4;
+- (double)updateMotionUpdateInterval:(double)interval reason:(int64_t)reason;
 - (int64_t)deviceMotionActivityLevel;
-- (void)_lowPowerModeDidChange:(id)a3;
+- (void)_lowPowerModeDidChange:(id)change;
 - (void)_queue_pauseGeneratingMotionEvents;
-- (void)_queue_setDeviceMotionActivityLevel:(int64_t)a3;
+- (void)_queue_setDeviceMotionActivityLevel:(int64_t)level;
 - (void)_queue_startGeneratingMotionEvents;
 - (void)_queue_stopGeneratingMotionEvents;
-- (void)_reduceMotionStatusDidChange:(id)a3;
+- (void)_reduceMotionStatusDidChange:(id)change;
 - (void)dealloc;
-- (void)deviceMotionDisableAssertionManager:(id)a3 didDisableDeviceMotion:(BOOL)a4;
+- (void)deviceMotionDisableAssertionManager:(id)manager didDisableDeviceMotion:(BOOL)motion;
 - (void)invalidate;
-- (void)motionProvider:(id)a3 motionActivityLevelDidUpdate:(int64_t)a4;
-- (void)motionProvider:(uint64_t)a3 motionDidUpdateWithRotation:(_OWORD *)a4;
-- (void)setDeviceMotionActivityLevel:(int64_t)a3;
-- (void)setDeviceMotionMode:(unint64_t)a3;
+- (void)motionProvider:(id)provider motionActivityLevelDidUpdate:(int64_t)update;
+- (void)motionProvider:(uint64_t)provider motionDidUpdateWithRotation:(_OWORD *)rotation;
+- (void)setDeviceMotionActivityLevel:(int64_t)level;
+- (void)setDeviceMotionMode:(unint64_t)mode;
 - (void)startGeneratingMotionEvents;
 - (void)stopGeneratingMotionEvents;
 @end
@@ -46,8 +46,8 @@ uint64_t __46__PRUISDeviceMotionController__sbUserDefaults__block_invoke()
 
 - (PRUISDeviceMotionController)init
 {
-  v3 = [objc_opt_class() _sbUserDefaults];
-  v4 = [v3 BOOLForKey:@"SBDeviceMotionTesting"];
+  _sbUserDefaults = [objc_opt_class() _sbUserDefaults];
+  v4 = [_sbUserDefaults BOOLForKey:@"SBDeviceMotionTesting"];
 
   v5 = off_1E83A6598;
   if (!v4)
@@ -55,15 +55,15 @@ uint64_t __46__PRUISDeviceMotionController__sbUserDefaults__block_invoke()
     v5 = off_1E83A63D0;
   }
 
-  v6 = [(__objc2_class *)*v5 motionProvider];
-  v7 = [(PRUISDeviceMotionController *)self initWithMotionProvider:v6];
+  motionProvider = [(__objc2_class *)*v5 motionProvider];
+  v7 = [(PRUISDeviceMotionController *)self initWithMotionProvider:motionProvider];
 
   return v7;
 }
 
-- (PRUISDeviceMotionController)initWithMotionProvider:(id)a3
+- (PRUISDeviceMotionController)initWithMotionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = PRUISDeviceMotionController;
   v6 = [(PRUISDeviceMotionController *)&v19 init];
@@ -73,7 +73,7 @@ uint64_t __46__PRUISDeviceMotionController__sbUserDefaults__block_invoke()
     invalidationSignal = v6->_invalidationSignal;
     v6->_invalidationSignal = v7;
 
-    objc_storeStrong(&v6->_motionProvider, a3);
+    objc_storeStrong(&v6->_motionProvider, provider);
     [(PRUISDeviceMotionProviding *)v6->_motionProvider setDelegate:v6];
     v9 = objc_alloc_init(PRUISDeviceMotionSettings);
     deviceMotionSettings = v6->_deviceMotionSettings;
@@ -81,8 +81,8 @@ uint64_t __46__PRUISDeviceMotionController__sbUserDefaults__block_invoke()
 
     [(PRUISDeviceMotionSettings *)v6->_deviceMotionSettings setReducedMotionEnabled:UIAccessibilityIsReduceMotionEnabled()];
     v11 = v6->_deviceMotionSettings;
-    v12 = [MEMORY[0x1E696AE30] processInfo];
-    -[PRUISDeviceMotionSettings setLowPowerModeEnabled:](v11, "setLowPowerModeEnabled:", [v12 isLowPowerModeEnabled]);
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    -[PRUISDeviceMotionSettings setLowPowerModeEnabled:](v11, "setLowPowerModeEnabled:", [processInfo isLowPowerModeEnabled]);
 
     [(PRUISDeviceMotionSettings *)v6->_deviceMotionSettings setSignificantMotion:1];
     [(PRUISDeviceMotionSettings *)v6->_deviceMotionSettings setDeviceMotionMode:1];
@@ -97,9 +97,9 @@ uint64_t __46__PRUISDeviceMotionController__sbUserDefaults__block_invoke()
     motionControlQueue = v6->_motionControlQueue;
     v6->_motionControlQueue = v15;
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v6 selector:sel__reduceMotionStatusDidChange_ name:*MEMORY[0x1E69DD918] object:0];
-    [v17 addObserver:v6 selector:sel__lowPowerModeDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__reduceMotionStatusDidChange_ name:*MEMORY[0x1E69DD918] object:0];
+    [defaultCenter addObserver:v6 selector:sel__lowPowerModeDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
   }
 
   return v6;
@@ -132,7 +132,7 @@ uint64_t __46__PRUISDeviceMotionController__sbUserDefaults__block_invoke()
   return v3;
 }
 
-- (void)setDeviceMotionActivityLevel:(int64_t)a3
+- (void)setDeviceMotionActivityLevel:(int64_t)level
 {
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {
@@ -142,25 +142,25 @@ uint64_t __46__PRUISDeviceMotionController__sbUserDefaults__block_invoke()
     v6[2] = __60__PRUISDeviceMotionController_setDeviceMotionActivityLevel___block_invoke;
     v6[3] = &unk_1E83A7828;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = level;
     dispatch_sync(motionControlQueue, v6);
   }
 }
 
-- (void)_queue_setDeviceMotionActivityLevel:(int64_t)a3
+- (void)_queue_setDeviceMotionActivityLevel:(int64_t)level
 {
   v12 = *MEMORY[0x1E69E9840];
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {
     BSDispatchQueueAssert();
     os_unfair_lock_lock(&self->_lock);
-    if (self->_lock_deviceMotionActivityLevel != a3)
+    if (self->_lock_deviceMotionActivityLevel != level)
     {
       v5 = PRUISLogMotionEvents();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = PRUISStringFromDeviceMotionActivityLevel(self->_lock_deviceMotionActivityLevel);
-        v7 = PRUISStringFromDeviceMotionActivityLevel(a3);
+        v7 = PRUISStringFromDeviceMotionActivityLevel(level);
         v8 = 138412546;
         v9 = v6;
         v10 = 2112;
@@ -168,16 +168,16 @@ uint64_t __46__PRUISDeviceMotionController__sbUserDefaults__block_invoke()
         _os_log_impl(&dword_1CAE63000, v5, OS_LOG_TYPE_DEFAULT, "Device motion activity level updated from %@ to %@", &v8, 0x16u);
       }
 
-      self->_lock_deviceMotionActivityLevel = a3;
+      self->_lock_deviceMotionActivityLevel = level;
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    if (a3 == 2)
+    if (level == 2)
     {
       [(PRUISDeviceMotionController *)self _queue_startGeneratingMotionEvents];
     }
 
-    else if (a3 == 1)
+    else if (level == 1)
     {
       [(PRUISDeviceMotionController *)self _queue_pauseGeneratingMotionEvents];
     }
@@ -285,42 +285,42 @@ LABEL_5:
   }
 }
 
-- (double)updateMotionUpdateInterval:(double)a3 reason:(int64_t)a4
+- (double)updateMotionUpdateInterval:(double)interval reason:(int64_t)reason
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = [(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled];
+  hasBeenSignalled = [(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled];
   result = -1.0;
-  if ((v7 & 1) == 0)
+  if ((hasBeenSignalled & 1) == 0)
   {
     [(PRUISDeviceMotionProviding *)self->_motionProvider motionUpdateInterval];
     v10 = v9;
     v11 = PRUISLogMotionEvents();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      if (a4 > 2)
+      if (reason > 2)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = off_1E83A7848[a4];
+        v12 = off_1E83A7848[reason];
       }
 
       v16 = 134218498;
-      v17 = v10;
+      intervalCopy2 = v10;
       v18 = 2048;
-      v19 = a3;
+      intervalCopy = interval;
       v20 = 2112;
       v21 = v12;
       _os_log_impl(&dword_1CAE63000, v11, OS_LOG_TYPE_DEFAULT, "Current device motion update interval is %f (s). Attempting to update to %f (s) for reason: %@", &v16, 0x20u);
     }
 
-    if (a4)
+    if (reason)
     {
-      if (a4 == 1)
+      if (reason == 1)
       {
-        if (a3 < 0.0083 || a3 > 0.0333)
+        if (interval < 0.0083 || interval > 0.0333)
         {
           v13 = PRUISLogMotionEvents();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -334,22 +334,22 @@ LABEL_5:
 
       else
       {
-        if (a4 != 2)
+        if (reason != 2)
         {
 LABEL_21:
           v14 = PRUISLogMotionEvents();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            [(PRUISDeviceMotionController *)a4 updateMotionUpdateInterval:v14 reason:a3];
+            [(PRUISDeviceMotionController *)reason updateMotionUpdateInterval:v14 reason:interval];
           }
 
-          a3 = v10;
+          interval = v10;
 LABEL_24:
 
-          return a3;
+          return interval;
         }
 
-        if (a3 < 0.0083 || a3 > 0.0333)
+        if (interval < 0.0083 || interval > 0.0333)
         {
           v13 = PRUISLogMotionEvents();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -364,15 +364,15 @@ LABEL_20:
       }
     }
 
-    [(PRUISDeviceMotionProviding *)self->_motionProvider setMotionUpdateInterval:a3];
+    [(PRUISDeviceMotionProviding *)self->_motionProvider setMotionUpdateInterval:interval];
     v14 = PRUISLogMotionEvents();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = off_1E83A7848[a4];
+      v15 = off_1E83A7848[reason];
       v16 = 134218242;
-      v17 = a3;
+      intervalCopy2 = interval;
       v18 = 2112;
-      v19 = *&v15;
+      intervalCopy = *&v15;
       _os_log_impl(&dword_1CAE63000, v14, OS_LOG_TYPE_DEFAULT, "Device motion update interval is updated to %f for reason: %@", &v16, 0x16u);
     }
 
@@ -382,11 +382,11 @@ LABEL_20:
   return result;
 }
 
-- (void)setDeviceMotionMode:(unint64_t)a3
+- (void)setDeviceMotionMode:(unint64_t)mode
 {
-  if ([(PRUISDeviceMotionSettings *)self->_deviceMotionSettings deviceMotionMode]!= a3)
+  if ([(PRUISDeviceMotionSettings *)self->_deviceMotionSettings deviceMotionMode]!= mode)
   {
-    [(PRUISDeviceMotionSettings *)self->_deviceMotionSettings setDeviceMotionMode:a3];
+    [(PRUISDeviceMotionSettings *)self->_deviceMotionSettings setDeviceMotionMode:mode];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -395,35 +395,35 @@ LABEL_20:
   }
 }
 
-- (void)motionProvider:(uint64_t)a3 motionDidUpdateWithRotation:(_OWORD *)a4
+- (void)motionProvider:(uint64_t)provider motionDidUpdateWithRotation:(_OWORD *)rotation
 {
-  if (([*(a1 + 40) hasBeenSignalled] & 1) == 0)
+  if (([*(self + 40) hasBeenSignalled] & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
-    v7 = a4[1];
-    v8[0] = *a4;
+    WeakRetained = objc_loadWeakRetained((self + 64));
+    v7 = rotation[1];
+    v8[0] = *rotation;
     v8[1] = v7;
-    [WeakRetained deviceMotionController:a1 didUpdateMotionWithRotation:v8];
+    [WeakRetained deviceMotionController:self didUpdateMotionWithRotation:v8];
   }
 }
 
-- (void)motionProvider:(id)a3 motionActivityLevelDidUpdate:(int64_t)a4
+- (void)motionProvider:(id)provider motionActivityLevelDidUpdate:(int64_t)update
 {
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {
 
-    [(PRUISDeviceMotionController *)self setDeviceMotionActivityLevel:a4];
+    [(PRUISDeviceMotionController *)self setDeviceMotionActivityLevel:update];
   }
 }
 
-- (void)_reduceMotionStatusDidChange:(id)a3
+- (void)_reduceMotionStatusDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {
-    v4 = [(PRUISDeviceMotionSettings *)self->_deviceMotionSettings isReducedMotionEnabled];
+    isReducedMotionEnabled = [(PRUISDeviceMotionSettings *)self->_deviceMotionSettings isReducedMotionEnabled];
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-    if (v4 != IsReduceMotionEnabled)
+    if (isReducedMotionEnabled != IsReduceMotionEnabled)
     {
       v6 = IsReduceMotionEnabled;
       v7 = PRUISLogMotionEvents();
@@ -444,26 +444,26 @@ LABEL_20:
   }
 }
 
-- (void)_lowPowerModeDidChange:(id)a3
+- (void)_lowPowerModeDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {
-    v4 = [(PRUISDeviceMotionSettings *)self->_deviceMotionSettings isLowPowerModeEnabled];
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    v6 = [v5 isLowPowerModeEnabled];
+    isLowPowerModeEnabled = [(PRUISDeviceMotionSettings *)self->_deviceMotionSettings isLowPowerModeEnabled];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    isLowPowerModeEnabled2 = [processInfo isLowPowerModeEnabled];
 
-    if (v4 != v6)
+    if (isLowPowerModeEnabled != isLowPowerModeEnabled2)
     {
       v7 = PRUISLogMotionEvents();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9[0] = 67109120;
-        v9[1] = v6;
+        v9[1] = isLowPowerModeEnabled2;
         _os_log_impl(&dword_1CAE63000, v7, OS_LOG_TYPE_DEFAULT, "Low Power mode enabled: %{BOOL}u", v9, 8u);
       }
 
-      [(PRUISDeviceMotionSettings *)self->_deviceMotionSettings setLowPowerModeEnabled:v6];
+      [(PRUISDeviceMotionSettings *)self->_deviceMotionSettings setLowPowerModeEnabled:isLowPowerModeEnabled2];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
@@ -473,7 +473,7 @@ LABEL_20:
   }
 }
 
-- (void)deviceMotionDisableAssertionManager:(id)a3 didDisableDeviceMotion:(BOOL)a4
+- (void)deviceMotionDisableAssertionManager:(id)manager didDisableDeviceMotion:(BOOL)motion
 {
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {

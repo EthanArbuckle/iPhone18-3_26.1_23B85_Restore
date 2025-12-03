@@ -1,7 +1,7 @@
 @interface GCSPreferencesStore
-- (BOOL)controllerIsConnected:(id)a3;
-- (BOOL)controllerIsFusedController:(id)a3;
-- (BOOL)fusedControllerIsConnectedWithPilotOrCopilotController:(id)a3;
+- (BOOL)controllerIsConnected:(id)connected;
+- (BOOL)controllerIsFusedController:(id)controller;
+- (BOOL)fusedControllerIsConnectedWithPilotOrCopilotController:(id)controller;
 - (GCSGame)defaultGame;
 - (GCSProfile)defaultProfile;
 - (NSArray)connectedControllerIdentifiers;
@@ -9,35 +9,35 @@
 - (NSDictionary)tombstones;
 - (NSString)systemButtonLongPressAction;
 - (double)thumbstickScrollingSpeed;
-- (id)controllerConnectionFor:(id)a3;
-- (id)copilotFusedControllerWithController:(id)a3;
-- (id)copilotFusedControllerWithFusedController:(id)a3;
-- (id)copilotFusedControllerWithPilotOrCopilotController:(id)a3;
-- (id)gameWithBundleIdentifier:(id)a3 controller:(id)a4;
-- (void)addController:(id)a3 saveToDisk:(BOOL)a4;
-- (void)addCopilotFusedController:(id)a3 saveToDisk:(BOOL)a4;
-- (void)addGame:(id)a3 saveToDisk:(BOOL)a4;
-- (void)addMouseProfile:(id)a3 saveToDisk:(BOOL)a4;
-- (void)addProfile:(id)a3 saveToDisk:(BOOL)a4;
+- (id)controllerConnectionFor:(id)for;
+- (id)copilotFusedControllerWithController:(id)controller;
+- (id)copilotFusedControllerWithFusedController:(id)controller;
+- (id)copilotFusedControllerWithPilotOrCopilotController:(id)controller;
+- (id)gameWithBundleIdentifier:(id)identifier controller:(id)controller;
+- (void)addController:(id)controller saveToDisk:(BOOL)disk;
+- (void)addCopilotFusedController:(id)controller saveToDisk:(BOOL)disk;
+- (void)addGame:(id)game saveToDisk:(BOOL)disk;
+- (void)addMouseProfile:(id)profile saveToDisk:(BOOL)disk;
+- (void)addProfile:(id)profile saveToDisk:(BOOL)disk;
 - (void)calculateProfileUsageStats;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeController:(id)a3 saveToDisk:(BOOL)a4;
-- (void)removeControllers:(id)a3 saveToDisk:(BOOL)a4;
-- (void)removeGame:(id)a3 saveToDisk:(BOOL)a4;
-- (void)removeMouseProfile:(id)a3 saveToDisk:(BOOL)a4;
-- (void)removeProfile:(id)a3 saveToDisk:(BOOL)a4;
-- (void)setConnectedControllerIdentifiers:(id)a3;
-- (void)setNaturalThumbstickScrollDirection:(BOOL)a3;
-- (void)setProfileUsageStats:(id)a3;
-- (void)setSystemButtonActionsEnabled:(BOOL)a3;
-- (void)setSystemButtonLongPressAction:(id)a3;
-- (void)setThumbstickScrollingSpeed:(double)a3;
-- (void)setTombstones:(id)a3;
-- (void)updateControllerFrom:(id)a3 to:(id)a4 saveToDisk:(BOOL)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeController:(id)controller saveToDisk:(BOOL)disk;
+- (void)removeControllers:(id)controllers saveToDisk:(BOOL)disk;
+- (void)removeGame:(id)game saveToDisk:(BOOL)disk;
+- (void)removeMouseProfile:(id)profile saveToDisk:(BOOL)disk;
+- (void)removeProfile:(id)profile saveToDisk:(BOOL)disk;
+- (void)setConnectedControllerIdentifiers:(id)identifiers;
+- (void)setNaturalThumbstickScrollDirection:(BOOL)direction;
+- (void)setProfileUsageStats:(id)stats;
+- (void)setSystemButtonActionsEnabled:(BOOL)enabled;
+- (void)setSystemButtonLongPressAction:(id)action;
+- (void)setThumbstickScrollingSpeed:(double)speed;
+- (void)setTombstones:(id)tombstones;
+- (void)updateControllerFrom:(id)from to:(id)to saveToDisk:(BOOL)disk;
 - (void)updateControllers;
-- (void)updateGameFrom:(id)a3 to:(id)a4 saveToDisk:(BOOL)a5;
-- (void)updateMouseProfileFrom:(id)a3 to:(id)a4 saveToDisk:(BOOL)a5;
-- (void)updateProfileFrom:(id)a3 to:(id)a4 saveToDisk:(BOOL)a5;
+- (void)updateGameFrom:(id)from to:(id)to saveToDisk:(BOOL)disk;
+- (void)updateMouseProfileFrom:(id)from to:(id)to saveToDisk:(BOOL)disk;
+- (void)updateProfileFrom:(id)from to:(id)to saveToDisk:(BOOL)disk;
 @end
 
 @implementation GCSPreferencesStore
@@ -46,7 +46,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_D6AC8();
 
   v4.super.isa = sub_D7D18().super.isa;
@@ -54,12 +54,12 @@
   return v4.super.isa;
 }
 
-- (void)setConnectedControllerIdentifiers:(id)a3
+- (void)setConnectedControllerIdentifiers:(id)identifiers
 {
   sub_D7D28();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_D6AD8();
 }
 
@@ -67,7 +67,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_D6AC8();
 
   sub_DC40(&qword_119050);
@@ -76,13 +76,13 @@
   return v4.super.isa;
 }
 
-- (void)setTombstones:(id)a3
+- (void)setTombstones:(id)tombstones
 {
   sub_DC40(&qword_119050);
   sub_D7B48();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_D6AD8();
 }
 
@@ -90,7 +90,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_D6AC8();
 
   sub_D6998();
@@ -101,7 +101,7 @@
   return v4.super.isa;
 }
 
-- (void)setProfileUsageStats:(id)a3
+- (void)setProfileUsageStats:(id)stats
 {
   sub_D6998();
   type metadata accessor for GCSProfileUsageStats();
@@ -109,25 +109,25 @@
   sub_D7B48();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_D6AD8();
 }
 
-- (void)setSystemButtonActionsEnabled:(BOOL)a3
+- (void)setSystemButtonActionsEnabled:(BOOL)enabled
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_D6AD8();
-  v5 = *(&v4->super.isa + OBJC_IVAR____TtC25GameControlleriOSSettings19GCSPreferencesStore_userDefaults);
-  [v5 setBool:-[GCSPreferencesStore systemButtonActionsEnabled](v4 forKey:{"systemButtonActionsEnabled"), @"bluetoothPrefsMenuLongPressAction"}];
+  v5 = *(&selfCopy->super.isa + OBJC_IVAR____TtC25GameControlleriOSSettings19GCSPreferencesStore_userDefaults);
+  [v5 setBool:-[GCSPreferencesStore systemButtonActionsEnabled](selfCopy forKey:{"systemButtonActionsEnabled"), @"bluetoothPrefsMenuLongPressAction"}];
 }
 
 - (NSString)systemButtonLongPressAction
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_D6AC8();
 
   if (v6)
@@ -143,23 +143,23 @@
   return v4;
 }
 
-- (void)setSystemButtonLongPressAction:(id)a3
+- (void)setSystemButtonLongPressAction:(id)action
 {
-  if (a3)
+  if (action)
   {
     sub_D7C18();
   }
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_D6AD8();
   sub_904E8();
 }
 
-- (void)setNaturalThumbstickScrollDirection:(BOOL)a3
+- (void)setNaturalThumbstickScrollDirection:(BOOL)direction
 {
-  v3 = self;
+  selfCopy = self;
   sub_90A1C();
 }
 
@@ -167,21 +167,21 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_D6AC8();
 
   return v5;
 }
 
-- (void)setThumbstickScrollingSpeed:(double)a3
+- (void)setThumbstickScrollingSpeed:(double)speed
 {
-  v3 = self;
+  selfCopy = self;
   sub_90F80();
 }
 
 - (GCSGame)defaultGame
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_92734();
 
   return v3;
@@ -189,221 +189,221 @@
 
 - (GCSProfile)defaultProfile
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_92A08();
 
   return v3;
 }
 
-- (BOOL)controllerIsConnected:(id)a3
+- (BOOL)controllerIsConnected:(id)connected
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_93AB4(v4);
+  connectedCopy = connected;
+  selfCopy = self;
+  LOBYTE(self) = sub_93AB4(connectedCopy);
 
   return self & 1;
 }
 
-- (BOOL)fusedControllerIsConnectedWithPilotOrCopilotController:(id)a3
+- (BOOL)fusedControllerIsConnectedWithPilotOrCopilotController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   LOBYTE(self) = sub_93D24();
 
   return self & 1;
 }
 
-- (BOOL)controllerIsFusedController:(id)a3
+- (BOOL)controllerIsFusedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(GCSPreferencesStore *)v5 fusedControllers];
+  controllerCopy = controller;
+  selfCopy = self;
+  fusedControllers = [(GCSPreferencesStore *)selfCopy fusedControllers];
   sub_450A0(0, &qword_117060);
   v7 = sub_D7D28();
 
-  v10 = v4;
+  v10 = controllerCopy;
   v9[2] = &v10;
-  LOBYTE(v6) = sub_91AB8(sub_A69CC, v9, v7);
+  LOBYTE(fusedControllers) = sub_91AB8(sub_A69CC, v9, v7);
 
-  return v6 & 1;
+  return fusedControllers & 1;
 }
 
-- (id)copilotFusedControllerWithController:(id)a3
+- (id)copilotFusedControllerWithController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_94044(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_94044(controllerCopy);
 
   return v6;
 }
 
-- (id)copilotFusedControllerWithPilotOrCopilotController:(id)a3
+- (id)copilotFusedControllerWithPilotOrCopilotController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_943C8(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_943C8(controllerCopy);
 
   return v6;
 }
 
-- (id)copilotFusedControllerWithFusedController:(id)a3
+- (id)copilotFusedControllerWithFusedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_946AC(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_946AC(controllerCopy);
 
   return v6;
 }
 
-- (id)controllerConnectionFor:(id)a3
+- (id)controllerConnectionFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_A47D8(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_A47D8(forCopy);
 
   return v6;
 }
 
 - (void)calculateProfileUsageStats
 {
-  v2 = self;
+  selfCopy = self;
   sub_94960();
 }
 
-- (id)gameWithBundleIdentifier:(id)a3 controller:(id)a4
+- (id)gameWithBundleIdentifier:(id)identifier controller:(id)controller
 {
   v6 = sub_D7C18();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_95C60(v6, v8, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  v11 = sub_95C60(v6, v8, controllerCopy);
 
   return v11;
 }
 
-- (void)updateGameFrom:(id)a3 to:(id)a4 saveToDisk:(BOOL)a5
+- (void)updateGameFrom:(id)from to:(id)to saveToDisk:(BOOL)disk
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_95EC0(v8, v9, v5);
+  diskCopy = disk;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  sub_95EC0(fromCopy, toCopy, diskCopy);
 }
 
-- (void)addGame:(id)a3 saveToDisk:(BOOL)a4
+- (void)addGame:(id)game saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_95F78(v6, a4);
+  gameCopy = game;
+  selfCopy = self;
+  sub_95F78(gameCopy, disk);
 }
 
-- (void)removeGame:(id)a3 saveToDisk:(BOOL)a4
+- (void)removeGame:(id)game saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_96010(v6, a4);
+  gameCopy = game;
+  selfCopy = self;
+  sub_96010(gameCopy, disk);
 }
 
-- (void)updateProfileFrom:(id)a3 to:(id)a4 saveToDisk:(BOOL)a5
+- (void)updateProfileFrom:(id)from to:(id)to saveToDisk:(BOOL)disk
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_966E8(v8, v9, v5);
+  diskCopy = disk;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  sub_966E8(fromCopy, toCopy, diskCopy);
 }
 
-- (void)addCopilotFusedController:(id)a3 saveToDisk:(BOOL)a4
+- (void)addCopilotFusedController:(id)controller saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_96B30(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_96B30(controllerCopy, disk);
 }
 
-- (void)addProfile:(id)a3 saveToDisk:(BOOL)a4
+- (void)addProfile:(id)profile saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_97098(v6, a4);
+  profileCopy = profile;
+  selfCopy = self;
+  sub_97098(profileCopy, disk);
 }
 
-- (void)removeProfile:(id)a3 saveToDisk:(BOOL)a4
+- (void)removeProfile:(id)profile saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_97130(v6, a4);
+  profileCopy = profile;
+  selfCopy = self;
+  sub_97130(profileCopy, disk);
 }
 
-- (void)addMouseProfile:(id)a3 saveToDisk:(BOOL)a4
+- (void)addMouseProfile:(id)profile saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_97BD8(v6, a4);
+  profileCopy = profile;
+  selfCopy = self;
+  sub_97BD8(profileCopy, disk);
 }
 
-- (void)removeMouseProfile:(id)a3 saveToDisk:(BOOL)a4
+- (void)removeMouseProfile:(id)profile saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_97C70(v6, a4);
+  profileCopy = profile;
+  selfCopy = self;
+  sub_97C70(profileCopy, disk);
 }
 
-- (void)updateMouseProfileFrom:(id)a3 to:(id)a4 saveToDisk:(BOOL)a5
+- (void)updateMouseProfileFrom:(id)from to:(id)to saveToDisk:(BOOL)disk
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_97FC8(v8, v9, v5);
+  diskCopy = disk;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  sub_97FC8(fromCopy, toCopy, diskCopy);
 }
 
-- (void)addController:(id)a3 saveToDisk:(BOOL)a4
+- (void)addController:(id)controller saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_9807C(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_9807C(controllerCopy, disk);
 }
 
-- (void)updateControllerFrom:(id)a3 to:(id)a4 saveToDisk:(BOOL)a5
+- (void)updateControllerFrom:(id)from to:(id)to saveToDisk:(BOOL)disk
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_9892C(v8, v9, v5);
+  diskCopy = disk;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  sub_9892C(fromCopy, toCopy, diskCopy);
 }
 
-- (void)removeController:(id)a3 saveToDisk:(BOOL)a4
+- (void)removeController:(id)controller saveToDisk:(BOOL)disk
 {
-  v6 = a3;
-  v7 = self;
-  sub_98CE8(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_98CE8(controllerCopy, disk);
 }
 
-- (void)removeControllers:(id)a3 saveToDisk:(BOOL)a4
+- (void)removeControllers:(id)controllers saveToDisk:(BOOL)disk
 {
   sub_450A0(0, &qword_117060);
   v6 = sub_D7D28();
-  v7 = self;
-  sub_98F7C(v6, a4);
+  selfCopy = self;
+  sub_98F7C(v6, disk);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v10 = sub_D7C18();
     v12 = v11;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v18, 0, sizeof(v18));
-    v16 = a5;
-    v17 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_4;
     }
@@ -415,18 +415,18 @@ LABEL_7:
 
   v10 = 0;
   v12 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_D7F58();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_7;
   }
@@ -437,14 +437,14 @@ LABEL_4:
   v15 = sub_D7B48();
 
 LABEL_8:
-  sub_9B540(v10, v12, v18, v15, a6);
+  sub_9B540(v10, v12, v18, v15, context);
 
   sub_160BC(v18, &qword_119330);
 }
 
 - (void)updateControllers
 {
-  v2 = self;
+  selfCopy = self;
   sub_9BDB4();
 }
 

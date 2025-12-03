@@ -1,74 +1,74 @@
 @interface WFSmartPromptConfiguration
-- (WFSmartPromptConfiguration)initWithCoder:(id)a3;
-- (WFSmartPromptConfiguration)initWithDeletionAuthorizationState:(id)a3 contentCollection:(id)a4 action:(id)a5 reference:(id)a6 source:(id)a7;
-- (WFSmartPromptConfiguration)initWithOutputContentCollection:(id)a3 reference:(id)a4 source:(id)a5;
-- (WFSmartPromptConfiguration)initWithSmartPromptStates:(id)a3 attributionSet:(id)a4 previousAttributions:(id)a5 contentItemCache:(id)a6 action:(id)a7 contentDestination:(id)a8 reference:(id)a9 workflowName:(id)a10 source:(id)a11 isWebpageCoercion:(BOOL)a12;
-- (id)authorizationDialogRequestWithAttribution:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFSmartPromptConfiguration)initWithCoder:(id)coder;
+- (WFSmartPromptConfiguration)initWithDeletionAuthorizationState:(id)state contentCollection:(id)collection action:(id)action reference:(id)reference source:(id)source;
+- (WFSmartPromptConfiguration)initWithOutputContentCollection:(id)collection reference:(id)reference source:(id)source;
+- (WFSmartPromptConfiguration)initWithSmartPromptStates:(id)states attributionSet:(id)set previousAttributions:(id)attributions contentItemCache:(id)cache action:(id)action contentDestination:(id)destination reference:(id)reference workflowName:(id)self0 source:(id)self1 isWebpageCoercion:(BOOL)self2;
+- (id)authorizationDialogRequestWithAttribution:(id)attribution;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSmartPromptConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = WFSmartPromptConfiguration;
-  v4 = a3;
-  [(WFWorkflowAuthorizationConfiguration *)&v14 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowAuthorizationConfiguration *)&v14 encodeWithCoder:coderCopy];
   v5 = [(WFSmartPromptConfiguration *)self requestType:v14.receiver];
-  [v4 encodeObject:v5 forKey:@"requestType"];
+  [coderCopy encodeObject:v5 forKey:@"requestType"];
 
-  v6 = [(WFSmartPromptConfiguration *)self requestSource];
-  [v4 encodeObject:v6 forKey:@"requestSource"];
+  requestSource = [(WFSmartPromptConfiguration *)self requestSource];
+  [coderCopy encodeObject:requestSource forKey:@"requestSource"];
 
-  v7 = [(WFSmartPromptConfiguration *)self smartPromptStates];
-  [v4 encodeObject:v7 forKey:@"smartPromptStates"];
+  smartPromptStates = [(WFSmartPromptConfiguration *)self smartPromptStates];
+  [coderCopy encodeObject:smartPromptStates forKey:@"smartPromptStates"];
 
-  v8 = [(WFSmartPromptConfiguration *)self deletionAuthorizationState];
-  [v4 encodeObject:v8 forKey:@"deletionAuthorizationState"];
+  deletionAuthorizationState = [(WFSmartPromptConfiguration *)self deletionAuthorizationState];
+  [coderCopy encodeObject:deletionAuthorizationState forKey:@"deletionAuthorizationState"];
 
-  v9 = [(WFSmartPromptConfiguration *)self workflowReference];
-  [v4 encodeObject:v9 forKey:@"workflowReference"];
+  workflowReference = [(WFSmartPromptConfiguration *)self workflowReference];
+  [coderCopy encodeObject:workflowReference forKey:@"workflowReference"];
 
-  v10 = [(WFSmartPromptConfiguration *)self workflowName];
-  [v4 encodeObject:v10 forKey:@"workflowName"];
+  workflowName = [(WFSmartPromptConfiguration *)self workflowName];
+  [coderCopy encodeObject:workflowName forKey:@"workflowName"];
 
-  v11 = [(WFSmartPromptConfiguration *)self actionUUID];
-  [v4 encodeObject:v11 forKey:@"actionUUID"];
+  actionUUID = [(WFSmartPromptConfiguration *)self actionUUID];
+  [coderCopy encodeObject:actionUUID forKey:@"actionUUID"];
 
-  v12 = [(WFSmartPromptConfiguration *)self archivedSourceContentCollection];
-  [v4 encodeObject:v12 forKey:@"archivedSourceContentCollection"];
+  archivedSourceContentCollection = [(WFSmartPromptConfiguration *)self archivedSourceContentCollection];
+  [coderCopy encodeObject:archivedSourceContentCollection forKey:@"archivedSourceContentCollection"];
 
-  v13 = [(WFSmartPromptConfiguration *)self localizedPrompt];
-  [v4 encodeObject:v13 forKey:@"localizedPrompt"];
+  localizedPrompt = [(WFSmartPromptConfiguration *)self localizedPrompt];
+  [coderCopy encodeObject:localizedPrompt forKey:@"localizedPrompt"];
 }
 
-- (WFSmartPromptConfiguration)initWithCoder:(id)a3
+- (WFSmartPromptConfiguration)initWithCoder:(id)coder
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = WFSmartPromptConfiguration;
-  v5 = [(WFWorkflowAuthorizationConfiguration *)&v30 initWithCoder:v4];
+  v5 = [(WFWorkflowAuthorizationConfiguration *)&v30 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestType"];
     requestType = v5->_requestType;
     v5->_requestType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestSource"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestSource"];
     requestSource = v5->_requestSource;
     v5->_requestSource = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archivedSourceContentCollection"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedSourceContentCollection"];
     archivedSourceContentCollection = v5->_archivedSourceContentCollection;
     v5->_archivedSourceContentCollection = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedPrompt"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedPrompt"];
     localizedPrompt = v5->_localizedPrompt;
     v5->_localizedPrompt = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deletionAuthorizationState"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deletionAuthorizationState"];
     deletionAuthorizationState = v5->_deletionAuthorizationState;
     v5->_deletionAuthorizationState = v14;
 
@@ -77,19 +77,19 @@
     v31[1] = objc_opt_class();
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"smartPromptStates"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"smartPromptStates"];
     smartPromptStates = v5->_smartPromptStates;
     v5->_smartPromptStates = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workflowReference"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workflowReference"];
     workflowReference = v5->_workflowReference;
     v5->_workflowReference = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workflowName"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workflowName"];
     workflowName = v5->_workflowName;
     v5->_workflowName = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
     actionUUID = v5->_actionUUID;
     v5->_actionUUID = v25;
 
@@ -100,20 +100,20 @@
   return v5;
 }
 
-- (id)authorizationDialogRequestWithAttribution:(id)a3
+- (id)authorizationDialogRequestWithAttribution:(id)attribution
 {
-  v4 = a3;
-  v5 = [[WFSmartPromptDialogRequest alloc] initWithConfiguration:self attribution:v4];
+  attributionCopy = attribution;
+  v5 = [[WFSmartPromptDialogRequest alloc] initWithConfiguration:self attribution:attributionCopy];
 
   return v5;
 }
 
-- (WFSmartPromptConfiguration)initWithOutputContentCollection:(id)a3 reference:(id)a4 source:(id)a5
+- (WFSmartPromptConfiguration)initWithOutputContentCollection:(id)collection reference:(id)reference source:(id)source
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  referenceCopy = reference;
+  sourceCopy = source;
   v31.receiver = self;
   v31.super_class = WFSmartPromptConfiguration;
   v11 = [(WFWorkflowAuthorizationConfiguration *)&v31 init];
@@ -123,30 +123,30 @@
     requestType = v11->_requestType;
     v11->_requestType = @"SmartPrompt";
 
-    objc_storeStrong(&v12->_requestSource, a5);
+    objc_storeStrong(&v12->_requestSource, source);
     deletionAuthorizationState = v12->_deletionAuthorizationState;
     v12->_deletionAuthorizationState = 0;
 
-    objc_storeStrong(&v12->_workflowReference, a4);
+    objc_storeStrong(&v12->_workflowReference, reference);
     smartPromptStates = v12->_smartPromptStates;
     v12->_smartPromptStates = 0;
 
-    v16 = [WFSmartPromptStringGenerator localizedOutputContentDescriptionWithContentCollection:v8];
+    v16 = [WFSmartPromptStringGenerator localizedOutputContentDescriptionWithContentCollection:collectionCopy];
     v17 = MEMORY[0x1E696AEC0];
     v18 = WFLocalizedString(@"Allow “%1$@” to output %2$@?");
-    v19 = [v9 name];
-    v20 = [v16 localizedLowercaseString];
-    v21 = [v17 localizedStringWithFormat:v18, v19, v20];
+    name = [referenceCopy name];
+    localizedLowercaseString = [v16 localizedLowercaseString];
+    v21 = [v17 localizedStringWithFormat:v18, name, localizedLowercaseString];
     localizedPrompt = v12->_localizedPrompt;
     v12->_localizedPrompt = v21;
 
-    v23 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:v8];
+    v23 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:collectionCopy];
     archivedSourceContentCollection = v12->_archivedSourceContentCollection;
     v12->_archivedSourceContentCollection = v23;
 
     if (v12->_archivedSourceContentCollection)
     {
-      v25 = [v8 copy];
+      v25 = [collectionCopy copy];
       cachedSourceContentCollection = v12->_cachedSourceContentCollection;
       v12->_cachedSourceContentCollection = v25;
 
@@ -177,14 +177,14 @@
   return v27;
 }
 
-- (WFSmartPromptConfiguration)initWithDeletionAuthorizationState:(id)a3 contentCollection:(id)a4 action:(id)a5 reference:(id)a6 source:(id)a7
+- (WFSmartPromptConfiguration)initWithDeletionAuthorizationState:(id)state contentCollection:(id)collection action:(id)action reference:(id)reference source:(id)source
 {
   v50 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  stateCopy = state;
+  collectionCopy = collection;
+  actionCopy = action;
+  referenceCopy = reference;
+  sourceCopy = source;
   v47.receiver = self;
   v47.super_class = WFSmartPromptConfiguration;
   v18 = [(WFWorkflowAuthorizationConfiguration *)&v47 init];
@@ -194,65 +194,65 @@
     requestType = v18->_requestType;
     v18->_requestType = @"DeletionAuthorization";
 
-    objc_storeStrong(&v19->_requestSource, a7);
-    v21 = [v15 UUID];
+    objc_storeStrong(&v19->_requestSource, source);
+    uUID = [actionCopy UUID];
     actionUUID = v19->_actionUUID;
-    v19->_actionUUID = v21;
+    v19->_actionUUID = uUID;
 
-    objc_storeStrong(&v19->_deletionAuthorizationState, a3);
-    objc_storeStrong(&v19->_workflowReference, a6);
+    objc_storeStrong(&v19->_deletionAuthorizationState, state);
+    objc_storeStrong(&v19->_workflowReference, reference);
     smartPromptStates = v19->_smartPromptStates;
     v19->_smartPromptStates = 0;
 
-    v24 = [v13 contentItemClassName];
-    if ([(NSString *)v24 length])
+    contentItemClassName = [stateCopy contentItemClassName];
+    if ([(NSString *)contentItemClassName length])
     {
-      v25 = NSClassFromString(v24);
+      v25 = NSClassFromString(contentItemClassName);
       if (v25)
       {
         v26 = v25;
-        v45 = v17;
+        v45 = sourceCopy;
         if (objc_opt_respondsToSelector())
         {
-          v27 = -[objc_class localizedCountDescriptionWithValue:](v26, "localizedCountDescriptionWithValue:", [v14 numberOfItems]);
+          v27 = -[objc_class localizedCountDescriptionWithValue:](v26, "localizedCountDescriptionWithValue:", [collectionCopy numberOfItems]);
         }
 
         else
         {
           v30 = MEMORY[0x1E696AEC0];
-          v31 = [(objc_class *)v26 countDescription];
-          v27 = [v30 localizedStringWithFormat:v31, objc_msgSend(v14, "numberOfItems")];
+          countDescription = [(objc_class *)v26 countDescription];
+          v27 = [v30 localizedStringWithFormat:countDescription, objc_msgSend(collectionCopy, "numberOfItems")];
         }
 
         v32 = MEMORY[0x1E696AEC0];
         v33 = WFLocalizedString(@"Allow “%1$@” to delete %2$@?");
-        v46 = v16;
-        v34 = [v16 name];
-        v35 = [v27 localizedLowercaseString];
-        v36 = [v32 localizedStringWithFormat:v33, v34, v35];
+        v46 = referenceCopy;
+        name = [referenceCopy name];
+        localizedLowercaseString = [v27 localizedLowercaseString];
+        v36 = [v32 localizedStringWithFormat:v33, name, localizedLowercaseString];
         localizedPrompt = v19->_localizedPrompt;
         v19->_localizedPrompt = v36;
 
-        v38 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:v14];
+        v38 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:collectionCopy];
         archivedSourceContentCollection = v19->_archivedSourceContentCollection;
         v19->_archivedSourceContentCollection = v38;
 
         if (v19->_archivedSourceContentCollection)
         {
-          v40 = [v14 copy];
+          v40 = [collectionCopy copy];
           cachedSourceContentCollection = v19->_cachedSourceContentCollection;
           v19->_cachedSourceContentCollection = v40;
 
           v19->_isSpecialRequest = 0;
           v28 = v19;
-          v17 = v45;
-          v16 = v46;
+          sourceCopy = v45;
+          referenceCopy = v46;
         }
 
         else
         {
           v42 = getWFGeneralLogObject();
-          v17 = v45;
+          sourceCopy = v45;
           if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
           {
             *buf = 136315138;
@@ -261,7 +261,7 @@
           }
 
           v28 = 0;
-          v16 = v46;
+          referenceCopy = v46;
         }
 
         goto LABEL_19;
@@ -303,18 +303,18 @@ LABEL_20:
   return v28;
 }
 
-- (WFSmartPromptConfiguration)initWithSmartPromptStates:(id)a3 attributionSet:(id)a4 previousAttributions:(id)a5 contentItemCache:(id)a6 action:(id)a7 contentDestination:(id)a8 reference:(id)a9 workflowName:(id)a10 source:(id)a11 isWebpageCoercion:(BOOL)a12
+- (WFSmartPromptConfiguration)initWithSmartPromptStates:(id)states attributionSet:(id)set previousAttributions:(id)attributions contentItemCache:(id)cache action:(id)action contentDestination:(id)destination reference:(id)reference workflowName:(id)self0 source:(id)self1 isWebpageCoercion:(BOOL)self2
 {
   v65 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v57 = a4;
-  v56 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v55 = a9;
-  v22 = a10;
-  v53 = a11;
+  statesCopy = states;
+  setCopy = set;
+  attributionsCopy = attributions;
+  cacheCopy = cache;
+  actionCopy = action;
+  destinationCopy = destination;
+  referenceCopy = reference;
+  nameCopy = name;
+  sourceCopy = source;
   v61.receiver = self;
   v61.super_class = WFSmartPromptConfiguration;
   v23 = [(WFWorkflowAuthorizationConfiguration *)&v61 init];
@@ -324,49 +324,49 @@ LABEL_20:
     requestType = v23->_requestType;
     v23->_requestType = @"SmartPrompt";
 
-    objc_storeStrong(&v24->_requestSource, a11);
-    v26 = [v20 UUID];
+    objc_storeStrong(&v24->_requestSource, source);
+    uUID = [actionCopy UUID];
     actionUUID = v24->_actionUUID;
-    v24->_actionUUID = v26;
+    v24->_actionUUID = uUID;
 
-    objc_storeStrong(&v24->_smartPromptStates, a3);
+    objc_storeStrong(&v24->_smartPromptStates, states);
     deletionAuthorizationState = v24->_deletionAuthorizationState;
     v24->_deletionAuthorizationState = 0;
 
-    objc_storeStrong(&v24->_workflowReference, a9);
-    v29 = v22;
-    if (!v22)
+    objc_storeStrong(&v24->_workflowReference, reference);
+    name = nameCopy;
+    if (!nameCopy)
     {
-      v29 = [v55 name];
+      name = [referenceCopy name];
     }
 
-    objc_storeStrong(&v24->_workflowName, v29);
-    if (!v22)
+    objc_storeStrong(&v24->_workflowName, name);
+    if (!nameCopy)
     {
     }
 
-    if ([v21 promptingBehaviour] == 2 && (objc_msgSend(v20, "identifier"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqualToString:", @"is.workflow.actions.askllm"), v30, (v31 & 1) == 0))
+    if ([destinationCopy promptingBehaviour] == 2 && (objc_msgSend(actionCopy, "identifier"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isEqualToString:", @"is.workflow.actions.askllm"), v30, (v31 & 1) == 0))
     {
-      v37 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     else
     {
       v32 = MEMORY[0x1E695DFB8];
-      v33 = [v57 attributions];
-      v34 = [v33 if_flatMap:&__block_literal_global_41238];
+      attributions = [setCopy attributions];
+      v34 = [attributions if_flatMap:&__block_literal_global_41238];
       v35 = [v32 orderedSetWithArray:v34];
 
       v59[0] = MEMORY[0x1E69E9820];
       v59[1] = 3221225472;
       v59[2] = __183__WFSmartPromptConfiguration_initWithSmartPromptStates_attributionSet_previousAttributions_contentItemCache_action_contentDestination_reference_workflowName_source_isWebpageCoercion___block_invoke_2;
       v59[3] = &unk_1E8379A58;
-      v60 = v19;
+      v60 = cacheCopy;
       v36 = [v35 if_compactMap:v59];
-      v37 = [v36 array];
+      array = [v36 array];
     }
 
-    v39 = [MEMORY[0x1E6996D40] collectionWithItems:v37];
+    v39 = [MEMORY[0x1E6996D40] collectionWithItems:array];
     v40 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:v39];
     archivedSourceContentCollection = v24->_archivedSourceContentCollection;
     v24->_archivedSourceContentCollection = v40;
@@ -377,13 +377,13 @@ LABEL_20:
       cachedSourceContentCollection = v24->_cachedSourceContentCollection;
       v24->_cachedSourceContentCollection = v42;
 
-      LOBYTE(v51) = a12;
-      v44 = [WFSmartPromptStringGenerator localizedPromptForWorkflowName:v22 attributionSet:v57 contentCollection:v24->_cachedSourceContentCollection contentItemCache:v19 contentDestination:v21 action:v20 isWebpageCoercion:v51];
+      LOBYTE(v51) = coercion;
+      v44 = [WFSmartPromptStringGenerator localizedPromptForWorkflowName:nameCopy attributionSet:setCopy contentCollection:v24->_cachedSourceContentCollection contentItemCache:cacheCopy contentDestination:destinationCopy action:actionCopy isWebpageCoercion:v51];
       localizedPrompt = v24->_localizedPrompt;
       v24->_localizedPrompt = v44;
 
-      LOBYTE(v52) = a12;
-      v46 = [WFSmartPromptStringGenerator localizedSubtitleForWorkflowName:v22 attributionSet:v57 previousAttributions:v56 contentItemCache:v19 contentDestination:v21 action:v20 isWebpageCoercion:v52];
+      LOBYTE(v52) = coercion;
+      v46 = [WFSmartPromptStringGenerator localizedSubtitleForWorkflowName:nameCopy attributionSet:setCopy previousAttributions:attributionsCopy contentItemCache:cacheCopy contentDestination:destinationCopy action:actionCopy isWebpageCoercion:v52];
       localizedSubtitle = v24->_localizedSubtitle;
       v24->_localizedSubtitle = v46;
 
@@ -398,7 +398,7 @@ LABEL_20:
         v58[2] = __183__WFSmartPromptConfiguration_initWithSmartPromptStates_attributionSet_previousAttributions_contentItemCache_action_contentDestination_reference_workflowName_source_isWebpageCoercion___block_invoke_205;
         v58[3] = &unk_1E8379A80;
         v58[4] = &buf;
-        [v54 enumerateObjectsUsingBlock:v58];
+        [statesCopy enumerateObjectsUsingBlock:v58];
         v24->_isSpecialRequest = *(*(&buf + 1) + 24);
         _Block_object_dispose(&buf, 8);
       }

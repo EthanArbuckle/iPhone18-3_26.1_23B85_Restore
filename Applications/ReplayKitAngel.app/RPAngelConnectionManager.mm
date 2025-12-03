@@ -1,31 +1,31 @@
 @interface RPAngelConnectionManager
 + (id)sharedInstance;
-- (BOOL)addConnection:(id)a3;
-- (BOOL)isConnectingProcessAuthorized:(id)a3;
-- (BOOL)showReactionsTipForApplication:(id)a3 bundleID:(id)a4;
+- (BOOL)addConnection:(id)connection;
+- (BOOL)isConnectingProcessAuthorized:(id)authorized;
+- (BOOL)showReactionsTipForApplication:(id)application bundleID:(id)d;
 - (RPAngelConnectionManager)init;
 - (id)connectionManagerQueue;
 - (void)cancelRecordingCountdown;
-- (void)connectToAngelWithCompletionHandler:(id)a3;
-- (void)countdownInterruptWithStatus:(id)a3;
+- (void)connectToAngelWithCompletionHandler:(id)handler;
+- (void)countdownInterruptWithStatus:(id)status;
 - (void)dealloc;
 - (void)disableCameraPip;
-- (void)dismissReactionsTipForApplication:(id)a3 bundleID:(id)a4;
+- (void)dismissReactionsTipForApplication:(id)application bundleID:(id)d;
 - (void)enableCameraPip;
 - (void)hideAndStopRecordingBanner;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 - (void)pauseCurrentSystemSession;
 - (void)requestToCancelReadyToRecord;
 - (void)resumeCurrentSystemSession;
-- (void)setCountdownState:(id)a3;
-- (void)showBannerWithURL:(id)a3 identifier:(id)a4 sessionID:(id)a5 completionHandler:(id)a6;
+- (void)setCountdownState:(id)state;
+- (void)showBannerWithURL:(id)l identifier:(id)identifier sessionID:(id)d completionHandler:(id)handler;
 - (void)showRecordingBanner;
 - (void)startReadyToRecord;
-- (void)startRecordingCountdownWithSessionType:(id)a3;
+- (void)startRecordingCountdownWithSessionType:(id)type;
 - (void)stopCurrentSession;
 - (void)stopReadyToRecord;
 - (void)stopRecordingCalled;
-- (void)updateTimer:(id)a3;
+- (void)updateTimer:(id)timer;
 @end
 
 @implementation RPAngelConnectionManager
@@ -127,11 +127,11 @@
   return v3;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
-  v7 = [v6 remoteProcess];
-  v8 = [(RPAngelConnectionManager *)self isConnectingProcessAuthorized:v7];
+  connectionCopy = connection;
+  remoteProcess = [connectionCopy remoteProcess];
+  v8 = [(RPAngelConnectionManager *)self isConnectingProcessAuthorized:remoteProcess];
 
   if (v8)
   {
@@ -145,15 +145,15 @@
     v12[2] = sub_1000062A8;
     v12[3] = &unk_10005D330;
     v12[4] = self;
-    [v6 configureConnection:v12];
-    v9 = [(RPAngelConnectionManager *)self connectionManagerQueue];
+    [connectionCopy configureConnection:v12];
+    connectionManagerQueue = [(RPAngelConnectionManager *)self connectionManagerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100006634;
     block[3] = &unk_10005D188;
     block[4] = self;
-    v11 = v6;
-    dispatch_sync(v9, block);
+    v11 = connectionCopy;
+    dispatch_sync(connectionManagerQueue, block);
   }
 
   else if (__RPLogLevel <= 2u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -162,20 +162,20 @@
   }
 }
 
-- (BOOL)isConnectingProcessAuthorized:(id)a3
+- (BOOL)isConnectingProcessAuthorized:(id)authorized
 {
-  v3 = a3;
+  authorizedCopy = authorized;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v3 bundleIdentifier];
-    v5 = [v3 pid];
-    v6 = [v3 valueForEntitlement:@"application-identifier"];
+    bundleIdentifier = [authorizedCopy bundleIdentifier];
+    v5 = [authorizedCopy pid];
+    v6 = [authorizedCopy valueForEntitlement:@"application-identifier"];
     v10 = 136447234;
     v11 = "[RPAngelConnectionManager isConnectingProcessAuthorized:]";
     v12 = 1024;
     v13 = 136;
     v14 = 2112;
-    v15 = v4;
+    v15 = bundleIdentifier;
     v16 = 1024;
     v17 = v5;
     v18 = 2112;
@@ -183,33 +183,33 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Connection BundleID=%@ pid=%d valueFor=%@", &v10, 0x2Cu);
   }
 
-  if ([v3 hasEntitlement:@"com.apple.private.ReplayKitAngel.client"])
+  if ([authorizedCopy hasEntitlement:@"com.apple.private.ReplayKitAngel.client"])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v3 bundleIdentifier];
-    v7 = [v8 isEqualToString:@"com.apple.springboard"];
+    bundleIdentifier2 = [authorizedCopy bundleIdentifier];
+    v7 = [bundleIdentifier2 isEqualToString:@"com.apple.springboard"];
   }
 
   return v7;
 }
 
-- (BOOL)addConnection:(id)a3
+- (BOOL)addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 remoteToken], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  if (!connectionCopy || ([connectionCopy remoteToken], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
 LABEL_11:
     v9 = 0;
     goto LABEL_12;
   }
 
-  v7 = [v5 remoteToken];
-  v8 = [v7 valueForEntitlement:@"application-identifier"];
+  remoteToken = [v5 remoteToken];
+  v8 = [remoteToken valueForEntitlement:@"application-identifier"];
 
   if (!v8)
   {
@@ -285,12 +285,12 @@ LABEL_12:
   [(RPSessionProxy *)v2 finish];
 }
 
-- (void)showBannerWithURL:(id)a3 identifier:(id)a4 sessionID:(id)a5 completionHandler:(id)a6
+- (void)showBannerWithURL:(id)l identifier:(id)identifier sessionID:(id)d completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  dCopy = d;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136446722;
@@ -298,16 +298,16 @@ LABEL_12:
     v19 = 1024;
     v20 = 172;
     v21 = 2112;
-    v22 = v12;
+    v22 = dCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d sessionID=%@", &v17, 0x1Cu);
   }
 
   v14 = objc_alloc_init(RPSessionProxy);
-  v15 = [(RPSessionProxy *)v14 currentSessionID];
-  if (self->_delegate && [v12 isEqualToString:v15])
+  currentSessionID = [(RPSessionProxy *)v14 currentSessionID];
+  if (self->_delegate && [dCopy isEqualToString:currentSessionID])
   {
-    [(RPAngelConnectionManagerDelegate *)self->_delegate showBannerWithURL:v10 identifier:v11 sessionID:v12];
-    v13[2](v13, 0);
+    [(RPAngelConnectionManagerDelegate *)self->_delegate showBannerWithURL:lCopy identifier:identifierCopy sessionID:dCopy];
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -319,18 +319,18 @@ LABEL_12:
       v19 = 1024;
       v20 = 179;
       v21 = 2112;
-      v22 = v15;
+      v22 = currentSessionID;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d saved to photos completed when session has finished, currentSessionID=%@", &v17, 0x1Cu);
     }
 
     v16 = [NSError _rpUserErrorForCode:-5800 userInfo:0];
-    (v13)[2](v13, v16);
+    (handlerCopy)[2](handlerCopy, v16);
   }
 }
 
-- (void)updateTimer:(id)a3
+- (void)updateTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   if (!__RPLogLevel && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;
@@ -340,12 +340,12 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d ", &v5, 0x12u);
   }
 
-  [(RPAngelConnectionManagerDelegate *)self->_delegate updateTimer:v4];
+  [(RPAngelConnectionManagerDelegate *)self->_delegate updateTimer:timerCopy];
 }
 
-- (void)startRecordingCountdownWithSessionType:(id)a3
+- (void)startRecordingCountdownWithSessionType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;
@@ -356,7 +356,7 @@ LABEL_12:
   }
 
   v4 = objc_alloc_init(RPSessionProxy);
-  [(RPSessionProxy *)v4 startWithSessionType:v3];
+  [(RPSessionProxy *)v4 startWithSessionType:typeCopy];
 }
 
 - (void)cancelRecordingCountdown
@@ -404,9 +404,9 @@ LABEL_12:
   [v2 stopReadyBanner];
 }
 
-- (void)connectToAngelWithCompletionHandler:(id)a3
+- (void)connectToAngelWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -417,13 +417,13 @@ LABEL_12:
   }
 
   v4 = objc_alloc_init(RPSessionProxy);
-  v5 = [(RPSessionProxy *)v4 currentSessionID];
-  v3[2](v3, v5, 0);
+  currentSessionID = [(RPSessionProxy *)v4 currentSessionID];
+  handlerCopy[2](handlerCopy, currentSessionID, 0);
 }
 
-- (void)setCountdownState:(id)a3
+- (void)setCountdownState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -438,8 +438,8 @@ LABEL_12:
   v6[2] = sub_100007648;
   v6[3] = &unk_10005D188;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
@@ -481,10 +481,10 @@ LABEL_12:
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (BOOL)showReactionsTipForApplication:(id)a3 bundleID:(id)a4
+- (BOOL)showReactionsTipForApplication:(id)application bundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136446466;
@@ -495,15 +495,15 @@ LABEL_12:
   }
 
   v7 = +[RPRemoteAlertManager sharedInstance];
-  v8 = [v7 createRemoteHandleForApplication:v5 bundleID:v6];
+  v8 = [v7 createRemoteHandleForApplication:applicationCopy bundleID:dCopy];
 
   return v8;
 }
 
-- (void)dismissReactionsTipForApplication:(id)a3 bundleID:(id)a4
+- (void)dismissReactionsTipForApplication:(id)application bundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136446466;
@@ -529,11 +529,11 @@ LABEL_12:
   }
 
   v3 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:@"com.apple.springboard"];
-  v4 = [v3 remoteTarget];
+  remoteTarget = [v3 remoteTarget];
 
-  if (v4)
+  if (remoteTarget)
   {
-    [v4 stopCurrentSession];
+    [remoteTarget stopCurrentSession];
   }
 
   else if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -558,11 +558,11 @@ LABEL_12:
   }
 
   v3 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:@"com.apple.springboard"];
-  v4 = [v3 remoteTarget];
+  remoteTarget = [v3 remoteTarget];
 
-  if (v4)
+  if (remoteTarget)
   {
-    [v4 requestToCancelReadyToRecord];
+    [remoteTarget requestToCancelReadyToRecord];
   }
 
   else if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -575,9 +575,9 @@ LABEL_12:
   }
 }
 
-- (void)countdownInterruptWithStatus:(id)a3
+- (void)countdownInterruptWithStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446466;
@@ -588,11 +588,11 @@ LABEL_12:
   }
 
   v5 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:@"com.apple.springboard"];
-  v6 = [v5 remoteTarget];
+  remoteTarget = [v5 remoteTarget];
 
-  if (v6)
+  if (remoteTarget)
   {
-    [v6 countdownInterruptWithStatus:v4];
+    [remoteTarget countdownInterruptWithStatus:statusCopy];
   }
 
   else if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -617,11 +617,11 @@ LABEL_12:
   }
 
   v3 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:@"com.apple.replayd"];
-  v4 = [v3 remoteTarget];
+  remoteTarget = [v3 remoteTarget];
 
-  if (v4)
+  if (remoteTarget)
   {
-    [v4 pauseCurrentSystemSession];
+    [remoteTarget pauseCurrentSystemSession];
   }
 
   else if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -646,11 +646,11 @@ LABEL_12:
   }
 
   v3 = [(NSMutableDictionary *)self->_connections objectForKeyedSubscript:@"com.apple.replayd"];
-  v4 = [v3 remoteTarget];
+  remoteTarget = [v3 remoteTarget];
 
-  if (v4)
+  if (remoteTarget)
   {
-    [v4 resumeCurrentSystemSession];
+    [remoteTarget resumeCurrentSystemSession];
   }
 
   else if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))

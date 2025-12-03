@@ -1,64 +1,64 @@
 @interface NPKOpenURLRouter
-+ (void)openURLInSafariForURL:(id)a3 fromPresentingController:(id)a4;
-- (BOOL)_handleServiceModeRequestedForPassWithUniqueID:(id)a3;
-- (BOOL)_handleShareForMailboxAddress:(id)a3 referralSource:(id)a4;
-- (BOOL)_handleShareableCredentialsAcceptanceWithShareableCredentials:(id)a3 thumbnailImageData:(id)a4;
-- (BOOL)_handleSubcredentialInvitationAcceptanceForLocalInvitationIdentifier:(id)a3 remoteInvitationIdentifier:(id)a4 contactName:(id)a5 thumbnailImageData:(id)a6;
-- (BOOL)_handleUniversalLinkURLAsShoeboxURLForPathComponents:(id)a3 shouldParsePathComponents:(BOOL)a4 urlComponents:(id)a5;
-- (BOOL)_isValidRelayServerURL:(id)a3 outPathComponents:(id *)a4;
-- (BOOL)_presentEntitlementDetailsForPassUniqueID:(id)a3;
++ (void)openURLInSafariForURL:(id)l fromPresentingController:(id)controller;
+- (BOOL)_handleServiceModeRequestedForPassWithUniqueID:(id)d;
+- (BOOL)_handleShareForMailboxAddress:(id)address referralSource:(id)source;
+- (BOOL)_handleShareableCredentialsAcceptanceWithShareableCredentials:(id)credentials thumbnailImageData:(id)data;
+- (BOOL)_handleSubcredentialInvitationAcceptanceForLocalInvitationIdentifier:(id)identifier remoteInvitationIdentifier:(id)invitationIdentifier contactName:(id)name thumbnailImageData:(id)data;
+- (BOOL)_handleUniversalLinkURLAsShoeboxURLForPathComponents:(id)components shouldParsePathComponents:(BOOL)pathComponents urlComponents:(id)urlComponents;
+- (BOOL)_isValidRelayServerURL:(id)l outPathComponents:(id *)components;
+- (BOOL)_presentEntitlementDetailsForPassUniqueID:(id)d;
 - (BOOL)_presentExpiredPassList;
 - (BOOL)_presentListActionsMenu;
-- (BOOL)_presentPassBalanceDetailsForPassWithUniqueID:(id)a3;
-- (BOOL)_presentPassDetailsForPassWithUniqueID:(id)a3;
+- (BOOL)_presentPassBalanceDetailsForPassWithUniqueID:(id)d;
+- (BOOL)_presentPassDetailsForPassWithUniqueID:(id)d;
 - (BOOL)_presentPassList;
 - (BOOL)_presentPassListPreventAppUninstall;
 - (BOOL)_presentProvisioningFlow;
-- (BOOL)_presentSavingsDetailsWithPassUniqueID:(id)a3;
-- (BOOL)_presentShareDetailsForPassUniqueID:(id)a3 shareIdentifier:(id)a4;
-- (BOOL)_presentTransactionDetailsForPassWithUniqueID:(id)a3 transactionIdentifier:(id)a4;
-- (BOOL)_presentTransactionDetailsForPassWithUniqueID:(id)a3 transactionServiceIdentifier:(id)a4 transactionSourceIdentifier:(id)a5;
-- (BOOL)_processBalanceSummaryHostWithPathComponents:(id)a3 queryItems:(id)a4;
-- (BOOL)_processCardHostWithPathComponents:(id)a3 queryItems:(id)a4;
-- (BOOL)_processDailyCashHostWithPathComponents:(id)a3 queryItems:(id)a4;
-- (BOOL)_processPassUpdateHostWithPathComponents:(id)a3;
-- (BOOL)_processPassesHostWithPathComponents:(id)a3 urlComponents:(id)a4;
-- (BOOL)_processProvisioningContinuityHostWithPathComponents:(id)a3;
-- (BOOL)_processSavingsHostWithPathComponents:(id)a3;
-- (BOOL)_processShareHostWithPathComponents:(id)a3 urlComponents:(id)a4;
-- (BOOL)_processShareableCredentialsHostWithQueryItems:(id)a3;
-- (BOOL)_processShoeboxSchemeForHost:(id)a3 pathComponents:(id)a4 urlComponents:(id)a5;
-- (BOOL)_processShoeboxSchemeForURL:(id)a3;
-- (BOOL)_processSubcredentialInvitationHostWithQueryItems:(id)a3;
-- (BOOL)_processTransactionHostWithQueryItems:(id)a3;
-- (BOOL)handleOpenURL:(id)a3;
-- (BOOL)handleUniversalLinkWithURL:(id)a3;
-- (BOOL)handleUniversalLinkWithUserActivity:(id)a3;
-- (NPKOpenURLRouter)initWithDelegate:(id)a3;
+- (BOOL)_presentSavingsDetailsWithPassUniqueID:(id)d;
+- (BOOL)_presentShareDetailsForPassUniqueID:(id)d shareIdentifier:(id)identifier;
+- (BOOL)_presentTransactionDetailsForPassWithUniqueID:(id)d transactionIdentifier:(id)identifier;
+- (BOOL)_presentTransactionDetailsForPassWithUniqueID:(id)d transactionServiceIdentifier:(id)identifier transactionSourceIdentifier:(id)sourceIdentifier;
+- (BOOL)_processBalanceSummaryHostWithPathComponents:(id)components queryItems:(id)items;
+- (BOOL)_processCardHostWithPathComponents:(id)components queryItems:(id)items;
+- (BOOL)_processDailyCashHostWithPathComponents:(id)components queryItems:(id)items;
+- (BOOL)_processPassUpdateHostWithPathComponents:(id)components;
+- (BOOL)_processPassesHostWithPathComponents:(id)components urlComponents:(id)urlComponents;
+- (BOOL)_processProvisioningContinuityHostWithPathComponents:(id)components;
+- (BOOL)_processSavingsHostWithPathComponents:(id)components;
+- (BOOL)_processShareHostWithPathComponents:(id)components urlComponents:(id)urlComponents;
+- (BOOL)_processShareableCredentialsHostWithQueryItems:(id)items;
+- (BOOL)_processShoeboxSchemeForHost:(id)host pathComponents:(id)components urlComponents:(id)urlComponents;
+- (BOOL)_processShoeboxSchemeForURL:(id)l;
+- (BOOL)_processSubcredentialInvitationHostWithQueryItems:(id)items;
+- (BOOL)_processTransactionHostWithQueryItems:(id)items;
+- (BOOL)handleOpenURL:(id)l;
+- (BOOL)handleUniversalLinkWithURL:(id)l;
+- (BOOL)handleUniversalLinkWithUserActivity:(id)activity;
+- (NPKOpenURLRouter)initWithDelegate:(id)delegate;
 - (NPKOpenURLRouterDelegate)delegate;
 @end
 
 @implementation NPKOpenURLRouter
 
-- (NPKOpenURLRouter)initWithDelegate:(id)a3
+- (NPKOpenURLRouter)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = NPKOpenURLRouter;
   v5 = [(NPKOpenURLRouter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (BOOL)handleOpenURL:(id)a3
+- (BOOL)handleOpenURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -68,25 +68,25 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = lCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Handling URL: %@", &v17, 0xCu);
     }
   }
 
-  if ([(NPKOpenURLRouter *)self handleUniversalLinkWithURL:v4])
+  if ([(NPKOpenURLRouter *)self handleUniversalLinkWithURL:lCopy])
   {
     goto LABEL_10;
   }
 
-  v8 = [v4 scheme];
-  if ([v8 isEqualToString:@"shoebox"])
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"shoebox"])
   {
   }
 
   else
   {
-    v9 = [v4 scheme];
-    v10 = [v9 isEqualToString:@"wallet"];
+    scheme2 = [lCopy scheme];
+    v10 = [scheme2 isEqualToString:@"wallet"];
 
     if (!v10)
     {
@@ -94,7 +94,7 @@
     }
   }
 
-  if ([(NPKOpenURLRouter *)self _processShoeboxSchemeForURL:v4])
+  if ([(NPKOpenURLRouter *)self _processShoeboxSchemeForURL:lCopy])
   {
 LABEL_10:
     v11 = 1;
@@ -112,7 +112,7 @@ LABEL_12:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = lCopy;
       _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: Didn't understand URL: %@", &v17, 0xCu);
     }
 
@@ -125,16 +125,16 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)handleUniversalLinkWithUserActivity:(id)a3
+- (BOOL)handleUniversalLinkWithUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [v5 isEqual:*MEMORY[0x277CCA850]];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [activityType isEqual:*MEMORY[0x277CCA850]];
 
   if (v6)
   {
-    v7 = [v4 webpageURL];
-    v8 = [(NPKOpenURLRouter *)self handleUniversalLinkWithURL:v7];
+    webpageURL = [activityCopy webpageURL];
+    v8 = [(NPKOpenURLRouter *)self handleUniversalLinkWithURL:webpageURL];
   }
 
   else
@@ -145,11 +145,11 @@ LABEL_11:
   return v8;
 }
 
-+ (void)openURLInSafariForURL:(id)a3 fromPresentingController:(id)a4
++ (void)openURLInSafariForURL:(id)l fromPresentingController:(id)controller
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([a1 canOpenURLInSafariForURL:v5] & 1) == 0)
+  lCopy = l;
+  if (([self canOpenURLInSafariForURL:lCopy] & 1) == 0)
   {
     v6 = pk_General_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
@@ -160,7 +160,7 @@ LABEL_11:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = v5;
+        v11 = lCopy;
         _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_ERROR, "Error: Unable to re-direct url: %@ to Safari.", &v10, 0xCu);
       }
     }
@@ -203,10 +203,10 @@ void __62__NPKOpenURLRouter_openDeepLinkForURL_isSensitive_completion___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleUniversalLinkWithURL:(id)a3
+- (BOOL)handleUniversalLinkWithURL:(id)l
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -216,27 +216,27 @@ void __62__NPKOpenURLRouter_openDeepLinkForURL_isSensitive_completion___block_in
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = lCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Attempting to handle URL: %@ as universal link", buf, 0xCu);
     }
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v4 resolvingAgainstBaseURL:1];
-  v9 = [v8 scheme];
-  if ([&unk_286CE7558 containsObject:v9])
+  v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:1];
+  scheme = [v8 scheme];
+  if ([&unk_286CE7558 containsObject:scheme])
   {
     v10 = [v8 URL];
-    v11 = [v10 pathComponents];
+    pathComponents = [v10 pathComponents];
 
-    v22 = v11;
-    v12 = [(NPKOpenURLRouter *)self _isValidRelayServerURL:v4 outPathComponents:&v22];
+    v22 = pathComponents;
+    v12 = [(NPKOpenURLRouter *)self _isValidRelayServerURL:lCopy outPathComponents:&v22];
     v13 = v22;
 
     if (!v12)
     {
-      v14 = [v8 host];
+      host = [v8 host];
       v15 = *MEMORY[0x277D38AF0];
-      v16 = v14;
+      v16 = host;
       v17 = v16;
       if (v16 == v15)
       {
@@ -274,97 +274,97 @@ LABEL_18:
   return v19;
 }
 
-- (BOOL)_processShoeboxSchemeForURL:(id)a3
+- (BOOL)_processShoeboxSchemeForURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  v6 = [v4 pathComponents];
-  v7 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v4 resolvingAgainstBaseURL:0];
+  lCopy = l;
+  host = [lCopy host];
+  pathComponents = [lCopy pathComponents];
+  v7 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
 
-  LOBYTE(self) = [(NPKOpenURLRouter *)self _processShoeboxSchemeForHost:v5 pathComponents:v6 urlComponents:v7];
+  LOBYTE(self) = [(NPKOpenURLRouter *)self _processShoeboxSchemeForHost:host pathComponents:pathComponents urlComponents:v7];
   return self;
 }
 
-- (BOOL)_processShoeboxSchemeForHost:(id)a3 pathComponents:(id)a4 urlComponents:(id)a5
+- (BOOL)_processShoeboxSchemeForHost:(id)host pathComponents:(id)components urlComponents:(id)urlComponents
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 queryItems];
-  if ([v8 isEqualToString:*MEMORY[0x277D38AC8]])
+  hostCopy = host;
+  componentsCopy = components;
+  urlComponentsCopy = urlComponents;
+  queryItems = [urlComponentsCopy queryItems];
+  if ([hostCopy isEqualToString:*MEMORY[0x277D38AC8]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processCardHostWithPathComponents:v9 queryItems:v11];
+    v12 = [(NPKOpenURLRouter *)self _processCardHostWithPathComponents:componentsCopy queryItems:queryItems];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D389A8]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D389A8]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processShareableCredentialsHostWithQueryItems:v11];
+    v12 = [(NPKOpenURLRouter *)self _processShareableCredentialsHostWithQueryItems:queryItems];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D38588]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D38588]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processSubcredentialInvitationHostWithQueryItems:v11];
+    v12 = [(NPKOpenURLRouter *)self _processSubcredentialInvitationHostWithQueryItems:queryItems];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D38AD8]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D38AD8]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processTransactionHostWithQueryItems:v11];
+    v12 = [(NPKOpenURLRouter *)self _processTransactionHostWithQueryItems:queryItems];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D38A30]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D38A30]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processShareHostWithPathComponents:v9 urlComponents:v10];
+    v12 = [(NPKOpenURLRouter *)self _processShareHostWithPathComponents:componentsCopy urlComponents:urlComponentsCopy];
   }
 
-  else if ([v8 isEqualToString:@"passes"])
+  else if ([hostCopy isEqualToString:@"passes"])
   {
-    v12 = [(NPKOpenURLRouter *)self _processPassesHostWithPathComponents:v9 urlComponents:v10];
+    v12 = [(NPKOpenURLRouter *)self _processPassesHostWithPathComponents:componentsCopy urlComponents:urlComponentsCopy];
   }
 
-  else if ([v8 isEqualToString:@"listActions"])
+  else if ([hostCopy isEqualToString:@"listActions"])
   {
-    v12 = [(NPKOpenURLRouter *)self _processListActionsMenuHostWithPathComponents:v9];
+    v12 = [(NPKOpenURLRouter *)self _processListActionsMenuHostWithPathComponents:componentsCopy];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D38A38]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D38A38]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processExpiredPassListHostWithPathComponents:v9];
+    v12 = [(NPKOpenURLRouter *)self _processExpiredPassListHostWithPathComponents:componentsCopy];
   }
 
-  else if ([v8 isEqualToString:@"addCard"] || objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277D38A28]))
+  else if ([hostCopy isEqualToString:@"addCard"] || objc_msgSend(hostCopy, "isEqualToString:", *MEMORY[0x277D38A28]))
   {
-    v12 = [(NPKOpenURLRouter *)self _processAddCardHostWithPathComponents:v9];
+    v12 = [(NPKOpenURLRouter *)self _processAddCardHostWithPathComponents:componentsCopy];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D38AB8]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D38AB8]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processDailyCashHostWithPathComponents:v9 queryItems:v11];
+    v12 = [(NPKOpenURLRouter *)self _processDailyCashHostWithPathComponents:componentsCopy queryItems:queryItems];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D38AB0]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D38AB0]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processBalanceSummaryHostWithPathComponents:v9 queryItems:v11];
+    v12 = [(NPKOpenURLRouter *)self _processBalanceSummaryHostWithPathComponents:componentsCopy queryItems:queryItems];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D38A20]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D38A20]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processSavingsHostWithPathComponents:v9];
+    v12 = [(NPKOpenURLRouter *)self _processSavingsHostWithPathComponents:componentsCopy];
   }
 
-  else if ([v8 isEqualToString:*MEMORY[0x277D38AA8]])
+  else if ([hostCopy isEqualToString:*MEMORY[0x277D38AA8]])
   {
-    v12 = [(NPKOpenURLRouter *)self _processPassUpdateHostWithPathComponents:v9];
+    v12 = [(NPKOpenURLRouter *)self _processPassUpdateHostWithPathComponents:componentsCopy];
   }
 
   else
   {
-    if (![v8 isEqualToString:*MEMORY[0x277D38A18]])
+    if (![hostCopy isEqualToString:*MEMORY[0x277D38A18]])
     {
       v13 = 0;
       goto LABEL_21;
     }
 
-    v12 = [(NPKOpenURLRouter *)self _processProvisioningContinuityHostWithPathComponents:v9];
+    v12 = [(NPKOpenURLRouter *)self _processProvisioningContinuityHostWithPathComponents:componentsCopy];
   }
 
   v13 = v12;
@@ -373,16 +373,16 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)_processCardHostWithPathComponents:(id)a3 queryItems:(id)a4
+- (BOOL)_processCardHostWithPathComponents:(id)components queryItems:(id)items
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  componentsCopy = components;
+  itemsCopy = items;
+  v8 = [componentsCopy count];
   if (v8 == 3)
   {
-    v9 = [v6 objectAtIndexedSubscript:1];
-    v14 = [v6 objectAtIndexedSubscript:2];
+    lastObject = [componentsCopy objectAtIndexedSubscript:1];
+    v14 = [componentsCopy objectAtIndexedSubscript:2];
     v15 = pk_General_log();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
@@ -394,14 +394,14 @@ LABEL_21:
         *buf = 138412546;
         v45 = v14;
         v46 = 2112;
-        v47 = v9;
+        v47 = lastObject;
         _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Notice: Handling action %@ for pass ID %@", buf, 0x16u);
       }
     }
 
     if ([v14 isEqualToString:@"persistent_emulation"])
     {
-      v18 = [(NPKOpenURLRouter *)self _handleServiceModeRequestedForPassWithUniqueID:v9];
+      v18 = [(NPKOpenURLRouter *)self _handleServiceModeRequestedForPassWithUniqueID:lastObject];
     }
 
     else
@@ -409,15 +409,15 @@ LABEL_21:
       if ([v14 isEqualToString:*MEMORY[0x277D38AD0]])
       {
         v34 = v14;
-        v35 = self;
-        v36 = v9;
-        v37 = v7;
-        v38 = v6;
+        selfCopy = self;
+        v36 = lastObject;
+        v37 = itemsCopy;
+        v38 = componentsCopy;
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v19 = v7;
+        v19 = itemsCopy;
         v20 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
         if (v20)
         {
@@ -435,13 +435,13 @@ LABEL_21:
               }
 
               v26 = *(*(&v39 + 1) + 8 * i);
-              v27 = [v26 name];
-              v28 = [v27 isEqualToString:v24];
+              name = [v26 name];
+              v28 = [name isEqualToString:v24];
 
               if (v28)
               {
-                v29 = [v26 value];
-                v30 = [v29 componentsSeparatedByString:{@", "}];
+                value = [v26 value];
+                v30 = [value componentsSeparatedByString:{@", "}];
 
                 v22 = v30;
               }
@@ -460,26 +460,26 @@ LABEL_21:
 
         if ([v22 count] > 1)
         {
-          v31 = 0;
+          firstObject = 0;
         }
 
         else
         {
-          v31 = [v22 firstObject];
+          firstObject = [v22 firstObject];
         }
 
-        v7 = v37;
-        v6 = v38;
-        v9 = v36;
+        itemsCopy = v37;
+        componentsCopy = v38;
+        lastObject = v36;
         v14 = v34;
-        v13 = [(NPKOpenURLRouter *)v35 _presentShareDetailsForPassUniqueID:v36 shareIdentifier:v31];
+        v13 = [(NPKOpenURLRouter *)selfCopy _presentShareDetailsForPassUniqueID:v36 shareIdentifier:firstObject];
 
         goto LABEL_36;
       }
 
       if ([v14 isEqualToString:*MEMORY[0x277D38AC0]])
       {
-        v18 = [(NPKOpenURLRouter *)self _presentEntitlementDetailsForPassUniqueID:v9];
+        v18 = [(NPKOpenURLRouter *)self _presentEntitlementDetailsForPassUniqueID:lastObject];
       }
 
       else
@@ -491,7 +491,7 @@ LABEL_21:
           goto LABEL_37;
         }
 
-        v18 = [(NPKOpenURLRouter *)self _presentPassDetailsForPassWithUniqueID:v9];
+        v18 = [(NPKOpenURLRouter *)self _presentPassDetailsForPassWithUniqueID:lastObject];
       }
     }
 
@@ -504,7 +504,7 @@ LABEL_37:
 
   if (v8 == 2)
   {
-    v9 = [v6 lastObject];
+    lastObject = [componentsCopy lastObject];
     v10 = pk_General_log();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -514,12 +514,12 @@ LABEL_37:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v45 = v9;
+        v45 = lastObject;
         _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Handling regular pass with pass ID %@", buf, 0xCu);
       }
     }
 
-    v13 = [(NPKOpenURLRouter *)self _presentPassDetailsForPassWithUniqueID:v9];
+    v13 = [(NPKOpenURLRouter *)self _presentPassDetailsForPassWithUniqueID:lastObject];
     goto LABEL_37;
   }
 
@@ -530,26 +530,26 @@ LABEL_38:
   return v13;
 }
 
-- (BOOL)_processShareableCredentialsHostWithQueryItems:(id)a3
+- (BOOL)_processShareableCredentialsHostWithQueryItems:(id)items
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v5)
   {
     v6 = v5;
-    v37 = self;
+    selfCopy = self;
     v7 = 0;
     v41 = 0;
     v8 = *v51;
     v9 = *MEMORY[0x277D389A0];
     v10 = *MEMORY[0x277CCA308];
     v44 = *MEMORY[0x277D389B0];
-    v38 = v4;
+    v38 = itemsCopy;
     v39 = *MEMORY[0x277D389A0];
     v40 = *v51;
     do
@@ -560,22 +560,22 @@ LABEL_38:
       {
         if (*v51 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v12 = *(*(&v50 + 1) + 8 * v11);
-        v13 = [v12 name];
-        if ([v9 isEqualToString:v13])
+        name = [v12 name];
+        if ([v9 isEqualToString:name])
         {
-          v14 = [v12 value];
-          v15 = [v14 pk_decodeHexadecimal];
+          value = [v12 value];
+          pk_decodeHexadecimal = [value pk_decodeHexadecimal];
 
-          if (v15)
+          if (pk_decodeHexadecimal)
           {
             v43 = v7;
             v16 = objc_alloc(MEMORY[0x277CCAAC8]);
             v49 = 0;
-            v17 = [v16 initForReadingFromData:v15 error:&v49];
+            v17 = [v16 initForReadingFromData:pk_decodeHexadecimal error:&v49];
             v18 = v49;
             if (v17)
             {
@@ -599,7 +599,7 @@ LABEL_38:
               if (v24)
               {
                 v41 = v24;
-                v4 = v38;
+                itemsCopy = v38;
               }
 
               else
@@ -621,7 +621,7 @@ LABEL_38:
                   v41 = 0;
                 }
 
-                v4 = v38;
+                itemsCopy = v38;
 
                 v20 = v29;
               }
@@ -642,19 +642,19 @@ LABEL_38:
           v6 = v42;
         }
 
-        if ([v44 isEqualToString:v13])
+        if ([v44 isEqualToString:name])
         {
-          v30 = [v12 value];
-          v31 = [v30 pk_decodeHexadecimal];
+          value2 = [v12 value];
+          pk_decodeHexadecimal2 = [value2 pk_decodeHexadecimal];
 
-          v7 = v31;
+          v7 = pk_decodeHexadecimal2;
         }
 
         ++v11;
       }
 
       while (v6 != v11);
-      v6 = [v4 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v50 objects:v54 count:16];
     }
 
     while (v6);
@@ -675,7 +675,7 @@ LABEL_38:
       v33 = 0;
     }
 
-    self = v37;
+    self = selfCopy;
   }
 
   else
@@ -700,23 +700,23 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
   return v5;
 }
 
-- (BOOL)_processSubcredentialInvitationHostWithQueryItems:(id)a3
+- (BOOL)_processSubcredentialInvitationHostWithQueryItems:(id)items
 {
-  v27 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = a3;
+  obj = items;
   v3 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
-    v30 = 0;
-    v29 = 0;
-    v6 = 0;
+    value2 = 0;
+    value3 = 0;
+    pk_decodeHexadecimal = 0;
+    value = 0;
     v7 = *v33;
     v8 = *MEMORY[0x277D38570];
     v9 = *MEMORY[0x277D38580];
@@ -731,12 +731,12 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v8 isEqualToString:v12];
+        name = [v11 name];
+        v13 = [v8 isEqualToString:name];
 
         if (v13)
         {
-          v14 = v6 == 0;
+          v14 = value == 0;
         }
 
         else
@@ -746,17 +746,17 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
 
         if (v14)
         {
-          v6 = [v11 value];
+          value = [v11 value];
         }
 
         else
         {
-          v15 = [v11 name];
-          v16 = [v9 isEqualToString:v15];
+          name2 = [v11 name];
+          v16 = [v9 isEqualToString:name2];
 
           if (v16)
           {
-            v17 = v5 == 0;
+            v17 = value2 == 0;
           }
 
           else
@@ -766,17 +766,17 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
 
           if (v17)
           {
-            v5 = [v11 value];
+            value2 = [v11 value];
           }
 
           else
           {
-            v18 = [v11 name];
-            v19 = [@"contact_name" isEqualToString:v18];
+            name3 = [v11 name];
+            v19 = [@"contact_name" isEqualToString:name3];
 
             if (v19)
             {
-              v20 = v30 == 0;
+              v20 = value3 == 0;
             }
 
             else
@@ -786,18 +786,18 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
 
             if (v20)
             {
-              v30 = [v11 value];
+              value3 = [v11 value];
             }
 
             else
             {
-              v21 = [v11 name];
-              v22 = [v28 isEqualToString:v21];
+              name4 = [v11 name];
+              v22 = [v28 isEqualToString:name4];
 
-              if (v22 && !v29)
+              if (v22 && !pk_decodeHexadecimal)
               {
-                v23 = [v11 value];
-                v29 = [v23 pk_decodeHexadecimal];
+                value4 = [v11 value];
+                pk_decodeHexadecimal = [value4 pk_decodeHexadecimal];
               }
             }
           }
@@ -812,19 +812,19 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
 
   else
   {
-    v5 = 0;
-    v30 = 0;
-    v29 = 0;
-    v6 = 0;
+    value2 = 0;
+    value3 = 0;
+    pk_decodeHexadecimal = 0;
+    value = 0;
   }
 
-  v24 = [(NPKOpenURLRouter *)v27 _handleSubcredentialInvitationAcceptanceForLocalInvitationIdentifier:v6 remoteInvitationIdentifier:v5 contactName:v30 thumbnailImageData:v29, v27];
+  selfCopy = [(NPKOpenURLRouter *)selfCopy _handleSubcredentialInvitationAcceptanceForLocalInvitationIdentifier:value remoteInvitationIdentifier:value2 contactName:value3 thumbnailImageData:pk_decodeHexadecimal, selfCopy];
 
   v25 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
-- (BOOL)_processTransactionHostWithQueryItems:(id)a3
+- (BOOL)_processTransactionHostWithQueryItems:(id)items
 {
   v51 = *MEMORY[0x277D85DE8];
   v44 = 0;
@@ -837,12 +837,12 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = a3;
+  obj = items;
   v4 = [obj countByEnumeratingWithState:&v40 objects:v50 count:16];
-  v32 = self;
-  v5 = 0;
-  v6 = 0;
-  v7 = 0;
+  selfCopy = self;
+  value = 0;
+  value2 = 0;
+  value3 = 0;
   if (v4)
   {
     v8 = *v41;
@@ -862,44 +862,44 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
         v11 = *(*(&v40 + 1) + 8 * i);
         if (v45[5] || ([*(*(&v40 + 1) + 8 * i) name], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v9, "isEqualToString:", v12), v12, !v13))
         {
-          if (v7 || ([v11 name], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v35, "isEqualToString:", v16), v16, !v17))
+          if (value3 || ([v11 name], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v35, "isEqualToString:", v16), v16, !v17))
           {
-            if (v6 || ([v11 name], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v34, "isEqualToString:", v18), v18, !v19))
+            if (value2 || ([v11 name], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v34, "isEqualToString:", v18), v18, !v19))
             {
-              if (!v5)
+              if (!value)
               {
-                v20 = [v11 name];
-                v21 = [v33 isEqualToString:v20];
+                name = [v11 name];
+                v21 = [v33 isEqualToString:name];
 
                 if (v21)
                 {
-                  v5 = [v11 value];
+                  value = [v11 value];
                 }
 
                 else
                 {
-                  v5 = 0;
+                  value = 0;
                 }
               }
             }
 
             else
             {
-              v6 = [v11 value];
+              value2 = [v11 value];
             }
           }
 
           else
           {
-            v7 = [v11 value];
+            value3 = [v11 value];
           }
         }
 
         else
         {
-          v14 = [v11 value];
+          value4 = [v11 value];
           v15 = v45[5];
-          v45[5] = v14;
+          v45[5] = value4;
         }
       }
 
@@ -912,7 +912,7 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
   v22 = dispatch_group_create();
   if (!v45[5])
   {
-    if ([v7 length])
+    if ([value3 length])
     {
       dispatch_group_enter(v22);
       v23 = objc_alloc_init(MEMORY[0x277D380F0]);
@@ -923,12 +923,12 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
       v39[3] = &unk_279947358;
       v39[5] = &v44;
       v39[4] = v22;
-      [v23 passUniqueIdentifierForTransactionWithIdentifier:v7 completion:v39];
+      [v23 passUniqueIdentifierForTransactionWithIdentifier:value3 completion:v39];
     }
 
     else
     {
-      if (![v6 length])
+      if (![value2 length])
       {
         v29 = 0;
         goto LABEL_34;
@@ -936,7 +936,7 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
 
       dispatch_group_enter(v22);
       v23 = objc_alloc_init(MEMORY[0x277D380F0]);
-      if ([v5 length])
+      if ([value length])
       {
         v24 = v38;
         v38[0] = MEMORY[0x277D85DD0];
@@ -945,7 +945,7 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
         v38[3] = &unk_279947358;
         v38[5] = &v44;
         v38[4] = v22;
-        [v23 passUniqueIdentifierForTransactionWithServiceIdentifier:v6 transactionSourceIdentifier:v5 completion:v38];
+        [v23 passUniqueIdentifierForTransactionWithServiceIdentifier:value2 transactionSourceIdentifier:value completion:v38];
       }
 
       else
@@ -957,30 +957,30 @@ id __67__NPKOpenURLRouter__processShareableCredentialsHostWithQueryItems___block
         v37[3] = &unk_279947358;
         v37[5] = &v44;
         v37[4] = v22;
-        [v23 ambiguousPassUniqueIdentifierForTransactionWithServiceIdentifier:v6 completion:v37];
+        [v23 ambiguousPassUniqueIdentifierForTransactionWithServiceIdentifier:value2 completion:v37];
       }
     }
   }
 
   v25 = dispatch_time(0, 300000000000);
   dispatch_group_wait(v22, v25);
-  if ([v7 length])
+  if ([value3 length])
   {
-    v26 = [(NPKOpenURLRouter *)v32 _presentTransactionDetailsForPassWithUniqueID:v45[5] transactionIdentifier:v7];
+    v26 = [(NPKOpenURLRouter *)selfCopy _presentTransactionDetailsForPassWithUniqueID:v45[5] transactionIdentifier:value3];
   }
 
   else
   {
-    v27 = [v6 length];
+    v27 = [value2 length];
     v28 = v45[5];
     if (v27)
     {
-      v26 = [(NPKOpenURLRouter *)v32 _presentTransactionDetailsForPassWithUniqueID:v28 transactionServiceIdentifier:v6 transactionSourceIdentifier:v5];
+      v26 = [(NPKOpenURLRouter *)selfCopy _presentTransactionDetailsForPassWithUniqueID:v28 transactionServiceIdentifier:value2 transactionSourceIdentifier:value];
     }
 
     else
     {
-      v26 = [(NPKOpenURLRouter *)v32 _presentPassDetailsForPassWithUniqueID:v28];
+      v26 = [(NPKOpenURLRouter *)selfCopy _presentPassDetailsForPassWithUniqueID:v28];
     }
   }
 
@@ -1013,14 +1013,14 @@ void __58__NPKOpenURLRouter__processTransactionHostWithQueryItems___block_invoke
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)_processShareHostWithPathComponents:(id)a3 urlComponents:(id)a4
+- (BOOL)_processShareHostWithPathComponents:(id)components urlComponents:(id)urlComponents
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  componentsCopy = components;
+  urlComponentsCopy = urlComponents;
+  v8 = [componentsCopy count];
   if (v8 == 2)
   {
-    v9 = [v6 objectAtIndexedSubscript:1];
+    v9 = [componentsCopy objectAtIndexedSubscript:1];
     if (!v9)
     {
       goto LABEL_17;
@@ -1042,7 +1042,7 @@ LABEL_17:
     v12 = 1;
     do
     {
-      v13 = [v6 objectAtIndexedSubscript:v12];
+      v13 = [componentsCopy objectAtIndexedSubscript:v12];
       v14 = v13;
       if (v13 == @"https:" || v13 && (v15 = [(__CFString *)v13 isEqualToString:@"https:"], v14, v15))
       {
@@ -1058,8 +1058,8 @@ LABEL_17:
     }
 
     while (v10 != v12);
-    v16 = [v7 fragment];
-    [v11 appendFormat:@"#%@", v16];
+    fragment = [urlComponentsCopy fragment];
+    [v11 appendFormat:@"#%@", fragment];
 
     v9 = [v11 copy];
     if (!v9)
@@ -1068,15 +1068,15 @@ LABEL_17:
     }
   }
 
-  v17 = [v7 queryItems];
-  v18 = [v17 pk_firstObjectPassingTest:&__block_literal_global_114];
+  queryItems = [urlComponentsCopy queryItems];
+  v18 = [queryItems pk_firstObjectPassingTest:&__block_literal_global_114];
 
-  v19 = [v18 value];
-  v20 = v19;
+  value = [v18 value];
+  v20 = value;
   v21 = *MEMORY[0x277D38510];
-  if (v19)
+  if (value)
   {
-    v21 = v19;
+    v21 = value;
   }
 
   v22 = v21;
@@ -1111,16 +1111,16 @@ uint64_t __70__NPKOpenURLRouter__processShareHostWithPathComponents_urlComponent
   return v7;
 }
 
-- (BOOL)_processPassesHostWithPathComponents:(id)a3 urlComponents:(id)a4
+- (BOOL)_processPassesHostWithPathComponents:(id)components urlComponents:(id)urlComponents
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count] == 2)
+  componentsCopy = components;
+  if ([componentsCopy count] == 2)
   {
-    v6 = [v5 lastObject];
-    if ([v6 isEqualToString:@"preventAppUninstall"])
+    lastObject = [componentsCopy lastObject];
+    if ([lastObject isEqualToString:@"preventAppUninstall"])
     {
-      v7 = [(NPKOpenURLRouter *)self _presentPassListPreventAppUninstall];
+      _presentPassListPreventAppUninstall = [(NPKOpenURLRouter *)self _presentPassListPreventAppUninstall];
     }
 
     else
@@ -1134,51 +1134,51 @@ uint64_t __70__NPKOpenURLRouter__processShareHostWithPathComponents_urlComponent
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           v14 = 138412290;
-          v15 = v6;
+          v15 = lastObject;
           _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_ERROR, "Error: Cannot handle unsupported pass list action: %@. Presenting pass list.", &v14, 0xCu);
         }
       }
 
-      v7 = [(NPKOpenURLRouter *)self _presentPassList];
+      _presentPassListPreventAppUninstall = [(NPKOpenURLRouter *)self _presentPassList];
     }
 
-    v8 = v7;
+    _presentPassList = _presentPassListPreventAppUninstall;
   }
 
   else
   {
-    v8 = [(NPKOpenURLRouter *)self _presentPassList];
+    _presentPassList = [(NPKOpenURLRouter *)self _presentPassList];
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v8;
+  return _presentPassList;
 }
 
-- (BOOL)_processDailyCashHostWithPathComponents:(id)a3 queryItems:(id)a4
+- (BOOL)_processDailyCashHostWithPathComponents:(id)components queryItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] < 2)
+  componentsCopy = components;
+  itemsCopy = items;
+  if ([componentsCopy count] < 2)
   {
-    v9 = [v7 npkFindFirstObjectMatchingCondition:&__block_literal_global_116];
+    v9 = [itemsCopy npkFindFirstObjectMatchingCondition:&__block_literal_global_116];
     v10 = v9;
     if (v9)
     {
-      v8 = [v9 value];
+      value = [v9 value];
     }
 
     else
     {
-      v8 = 0;
+      value = 0;
     }
   }
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:1];
+    value = [componentsCopy objectAtIndexedSubscript:1];
   }
 
-  v11 = [(NPKOpenURLRouter *)self _presentPassBalanceDetailsForPassWithUniqueID:v8];
+  v11 = [(NPKOpenURLRouter *)self _presentPassBalanceDetailsForPassWithUniqueID:value];
 
   return v11;
 }
@@ -1191,21 +1191,21 @@ uint64_t __71__NPKOpenURLRouter__processDailyCashHostWithPathComponents_queryIte
   return v3;
 }
 
-- (BOOL)_processBalanceSummaryHostWithPathComponents:(id)a3 queryItems:(id)a4
+- (BOOL)_processBalanceSummaryHostWithPathComponents:(id)components queryItems:(id)items
 {
-  v5 = [a4 npkFindFirstObjectMatchingCondition:&__block_literal_global_118];
+  v5 = [items npkFindFirstObjectMatchingCondition:&__block_literal_global_118];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 value];
+    value = [v5 value];
   }
 
   else
   {
-    v7 = 0;
+    value = 0;
   }
 
-  v8 = [(NPKOpenURLRouter *)self _presentPassBalanceDetailsForPassWithUniqueID:v7];
+  v8 = [(NPKOpenURLRouter *)self _presentPassBalanceDetailsForPassWithUniqueID:value];
 
   return v8;
 }
@@ -1218,16 +1218,16 @@ uint64_t __76__NPKOpenURLRouter__processBalanceSummaryHostWithPathComponents_que
   return v3;
 }
 
-- (BOOL)_processSavingsHostWithPathComponents:(id)a3
+- (BOOL)_processSavingsHostWithPathComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__9;
   v20 = __Block_byref_object_dispose__9;
   v21 = 0;
-  v5 = [MEMORY[0x277D37CD0] sharedInstance];
+  mEMORY[0x277D37CD0] = [MEMORY[0x277D37CD0] sharedInstance];
   v6 = dispatch_group_create();
   dispatch_group_enter(v6);
   v10 = MEMORY[0x277D85DD0];
@@ -1237,7 +1237,7 @@ uint64_t __76__NPKOpenURLRouter__processBalanceSummaryHostWithPathComponents_que
   v15 = &v16;
   v7 = v6;
   v14 = v7;
-  [v5 defaultAccountForFeature:2 completion:&v10];
+  [mEMORY[0x277D37CD0] defaultAccountForFeature:2 completion:&v10];
   v8 = dispatch_time(0, 300000000000);
   dispatch_group_wait(v7, v8);
   LOBYTE(self) = [(NPKOpenURLRouter *)self _presentSavingsDetailsWithPassUniqueID:v17[5], v10, v11, v12, v13];
@@ -1292,17 +1292,17 @@ void __58__NPKOpenURLRouter__processSavingsHostWithPathComponents___block_invoke
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_processPassUpdateHostWithPathComponents:(id)a3
+- (BOOL)_processPassUpdateHostWithPathComponents:(id)components
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] == 2)
+  componentsCopy = components;
+  if ([componentsCopy count] == 2)
   {
-    v5 = [v4 lastObject];
-    v6 = [MEMORY[0x277D37FC0] sharedInstance];
-    v7 = [v6 diffForPassUpdateUserNotificationWithIdentifier:v5];
-    v8 = [v7 passUniqueID];
-    if ([v8 length])
+    lastObject = [componentsCopy lastObject];
+    mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
+    v7 = [mEMORY[0x277D37FC0] diffForPassUpdateUserNotificationWithIdentifier:lastObject];
+    passUniqueID = [v7 passUniqueID];
+    if ([passUniqueID length])
     {
       v9 = pk_General_log();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -1313,20 +1313,20 @@ void __58__NPKOpenURLRouter__processSavingsHostWithPathComponents___block_invoke
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412290;
-          v20 = v8;
+          v20 = passUniqueID;
           _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Successfully retrieved passUniqueID from notificationID: %@", &v19, 0xCu);
         }
       }
 
-      v12 = [(NPKOpenURLRouter *)self _presentPassDetailsForPassWithUniqueID:v8];
+      _presentPassList = [(NPKOpenURLRouter *)self _presentPassDetailsForPassWithUniqueID:passUniqueID];
     }
 
     else
     {
-      v12 = [(NPKOpenURLRouter *)self _presentPassList];
+      _presentPassList = [(NPKOpenURLRouter *)self _presentPassList];
     }
 
-    v16 = v12;
+    _presentPassList2 = _presentPassList;
   }
 
   else
@@ -1344,21 +1344,21 @@ void __58__NPKOpenURLRouter__processSavingsHostWithPathComponents___block_invoke
       }
     }
 
-    v16 = [(NPKOpenURLRouter *)self _presentPassList];
+    _presentPassList2 = [(NPKOpenURLRouter *)self _presentPassList];
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v16;
+  return _presentPassList2;
 }
 
-- (BOOL)_processProvisioningContinuityHostWithPathComponents:(id)a3
+- (BOOL)_processProvisioningContinuityHostWithPathComponents:(id)components
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  componentsCopy = components;
+  v4 = [componentsCopy count];
   if (v4 == 2)
   {
-    v5 = [v3 lastObject];
+    lastObject = [componentsCopy lastObject];
     v6 = objc_alloc_init(MEMORY[0x277D380F0]);
     v7 = dispatch_group_create();
     dispatch_group_enter(v7);
@@ -1368,7 +1368,7 @@ void __58__NPKOpenURLRouter__processSavingsHostWithPathComponents___block_invoke
     v14[3] = &unk_279944F98;
     v15 = v7;
     v8 = v7;
-    [v6 userNotificationActionPerformed:2 notificationIdentifier:v5 completion:v14];
+    [v6 userNotificationActionPerformed:2 notificationIdentifier:lastObject completion:v14];
     v9 = dispatch_time(0, 300000000000);
     dispatch_group_wait(v8, v9);
   }
@@ -1383,12 +1383,12 @@ void __58__NPKOpenURLRouter__processSavingsHostWithPathComponents___block_invoke
       goto LABEL_7;
     }
 
-    v5 = pk_General_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    lastObject = pk_General_log();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v3;
-      _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: Unable to handle provisioningContinuity url with path components: %@", buf, 0xCu);
+      v17 = componentsCopy;
+      _os_log_impl(&dword_25B300000, lastObject, OS_LOG_TYPE_DEFAULT, "Notice: Unable to handle provisioningContinuity url with path components: %@", buf, 0xCu);
     }
   }
 
@@ -1397,126 +1397,126 @@ LABEL_7:
   return v4 == 2;
 }
 
-- (BOOL)_presentPassDetailsForPassWithUniqueID:(id)a3
+- (BOOL)_presentPassDetailsForPassWithUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dCopy = d;
+  v5 = [dCopy length];
   if (v5)
   {
-    v6 = [(NPKOpenURLRouter *)self delegate];
-    [v6 urlRouter:self requestPassDetailsPresentationForPassWithUniqueID:v4];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestPassDetailsPresentationForPassWithUniqueID:dCopy];
   }
 
   return v5 != 0;
 }
 
-- (BOOL)_handleServiceModeRequestedForPassWithUniqueID:(id)a3
+- (BOOL)_handleServiceModeRequestedForPassWithUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dCopy = d;
+  v5 = [dCopy length];
   if (v5)
   {
-    v6 = [(NPKOpenURLRouter *)self delegate];
-    [v6 urlRouter:self requestServiceModeForPassWithUniqueID:v4];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestServiceModeForPassWithUniqueID:dCopy];
   }
 
   return v5 != 0;
 }
 
-- (BOOL)_presentShareDetailsForPassUniqueID:(id)a3 shareIdentifier:(id)a4
+- (BOOL)_presentShareDetailsForPassUniqueID:(id)d shareIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  dCopy = d;
+  identifierCopy = identifier;
+  v8 = [dCopy length];
   if (v8)
   {
-    v9 = [(NPKOpenURLRouter *)self delegate];
-    [v9 urlRouter:self requestShareDetailsPresentationForPassWithUniqueID:v6 shareIdentifier:v7];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestShareDetailsPresentationForPassWithUniqueID:dCopy shareIdentifier:identifierCopy];
   }
 
   return v8 != 0;
 }
 
-- (BOOL)_presentEntitlementDetailsForPassUniqueID:(id)a3
+- (BOOL)_presentEntitlementDetailsForPassUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dCopy = d;
+  v5 = [dCopy length];
   if (v5)
   {
-    v6 = [(NPKOpenURLRouter *)self delegate];
-    [v6 urlRouter:self requestEntitlementDetailsPresentationForPassWithUniqueID:v4];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestEntitlementDetailsPresentationForPassWithUniqueID:dCopy];
   }
 
   return v5 != 0;
 }
 
-- (BOOL)_handleShareableCredentialsAcceptanceWithShareableCredentials:(id)a3 thumbnailImageData:(id)a4
+- (BOOL)_handleShareableCredentialsAcceptanceWithShareableCredentials:(id)credentials thumbnailImageData:(id)data
 {
-  if (a3)
+  if (credentials)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(NPKOpenURLRouter *)self delegate];
-    [v8 urlRouter:self requestShareableCredentialAcceptanceFlowPresentationWithShareableCredentials:v7 thumbnailImageData:v6];
+    dataCopy = data;
+    credentialsCopy = credentials;
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestShareableCredentialAcceptanceFlowPresentationWithShareableCredentials:credentialsCopy thumbnailImageData:dataCopy];
   }
 
-  return a3 != 0;
+  return credentials != 0;
 }
 
-- (BOOL)_handleSubcredentialInvitationAcceptanceForLocalInvitationIdentifier:(id)a3 remoteInvitationIdentifier:(id)a4 contactName:(id)a5 thumbnailImageData:(id)a6
+- (BOOL)_handleSubcredentialInvitationAcceptanceForLocalInvitationIdentifier:(id)identifier remoteInvitationIdentifier:(id)invitationIdentifier contactName:(id)name thumbnailImageData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 length];
+  identifierCopy = identifier;
+  invitationIdentifierCopy = invitationIdentifier;
+  nameCopy = name;
+  dataCopy = data;
+  v14 = [identifierCopy length];
   if (v14)
   {
-    v15 = [(NPKOpenURLRouter *)self delegate];
-    [v15 urlRouter:self requestSubcredentialInvitationAcceptanceFlowPresentationWithLocalInvitationIdentifier:v10 remoteInvitationIdentifier:v11 contactName:v12 thumbnailImageData:v13];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestSubcredentialInvitationAcceptanceFlowPresentationWithLocalInvitationIdentifier:identifierCopy remoteInvitationIdentifier:invitationIdentifierCopy contactName:nameCopy thumbnailImageData:dataCopy];
   }
 
   return v14 != 0;
 }
 
-- (BOOL)_handleShareForMailboxAddress:(id)a3 referralSource:(id)a4
+- (BOOL)_handleShareForMailboxAddress:(id)address referralSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  addressCopy = address;
+  sourceCopy = source;
+  v8 = [addressCopy length];
   if (v8)
   {
-    v9 = [(NPKOpenURLRouter *)self delegate];
-    [v9 urlRouter:self requestSharedInvitationAcceptanceFlowPresentationWithMailboxAddress:v6 referralSource:v7];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestSharedInvitationAcceptanceFlowPresentationWithMailboxAddress:addressCopy referralSource:sourceCopy];
   }
 
   return v8 != 0;
 }
 
-- (BOOL)_presentTransactionDetailsForPassWithUniqueID:(id)a3 transactionServiceIdentifier:(id)a4 transactionSourceIdentifier:(id)a5
+- (BOOL)_presentTransactionDetailsForPassWithUniqueID:(id)d transactionServiceIdentifier:(id)identifier transactionSourceIdentifier:(id)sourceIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 length];
+  dCopy = d;
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  v11 = [dCopy length];
   if (v11)
   {
-    v12 = [(NPKOpenURLRouter *)self delegate];
-    [v12 urlRouter:self requestTransactionDetailsForPassWithUniqueID:v8 transactionServiceIdentifier:v9 transactionSourceIdentifier:v10];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestTransactionDetailsForPassWithUniqueID:dCopy transactionServiceIdentifier:identifierCopy transactionSourceIdentifier:sourceIdentifierCopy];
   }
 
   return v11 != 0;
 }
 
-- (BOOL)_presentTransactionDetailsForPassWithUniqueID:(id)a3 transactionIdentifier:(id)a4
+- (BOOL)_presentTransactionDetailsForPassWithUniqueID:(id)d transactionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  dCopy = d;
+  identifierCopy = identifier;
+  v8 = [dCopy length];
   if (v8)
   {
-    v9 = [(NPKOpenURLRouter *)self delegate];
-    [v9 urlRouter:self requestTransactionDetailsForPassWithUniqueID:v6 transactionIdentifier:v7];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestTransactionDetailsForPassWithUniqueID:dCopy transactionIdentifier:identifierCopy];
   }
 
   return v8 != 0;
@@ -1524,53 +1524,53 @@ LABEL_7:
 
 - (BOOL)_presentPassList
 {
-  v3 = [(NPKOpenURLRouter *)self delegate];
-  [v3 requestPassListForURLRouter:self];
+  delegate = [(NPKOpenURLRouter *)self delegate];
+  [delegate requestPassListForURLRouter:self];
 
   return 1;
 }
 
 - (BOOL)_presentListActionsMenu
 {
-  v3 = [(NPKOpenURLRouter *)self delegate];
-  [v3 requestListActionsMenuForURLRouter:self];
+  delegate = [(NPKOpenURLRouter *)self delegate];
+  [delegate requestListActionsMenuForURLRouter:self];
 
   return 1;
 }
 
 - (BOOL)_presentExpiredPassList
 {
-  v3 = [(NPKOpenURLRouter *)self delegate];
-  [v3 requestExpiredPassListForURLRouter:self];
+  delegate = [(NPKOpenURLRouter *)self delegate];
+  [delegate requestExpiredPassListForURLRouter:self];
 
   return 1;
 }
 
 - (BOOL)_presentPassListPreventAppUninstall
 {
-  v3 = [(NPKOpenURLRouter *)self delegate];
-  [v3 requestPassListPreventAppUninstallForURLRouter:self];
+  delegate = [(NPKOpenURLRouter *)self delegate];
+  [delegate requestPassListPreventAppUninstallForURLRouter:self];
 
   return 1;
 }
 
 - (BOOL)_presentProvisioningFlow
 {
-  v3 = [(NPKOpenURLRouter *)self delegate];
-  [v3 requestProvisioningFlowForURLRouter:self];
+  delegate = [(NPKOpenURLRouter *)self delegate];
+  [delegate requestProvisioningFlowForURLRouter:self];
 
   return 1;
 }
 
-- (BOOL)_presentPassBalanceDetailsForPassWithUniqueID:(id)a3
+- (BOOL)_presentPassBalanceDetailsForPassWithUniqueID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  dCopy = d;
+  v5 = [dCopy length];
   if (v5)
   {
-    v6 = [(NPKOpenURLRouter *)self delegate];
-    [v6 urlRouter:self requestPassBalanceDetailsPresentationForPassWithUniqueID:v4];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestPassBalanceDetailsPresentationForPassWithUniqueID:dCopy];
   }
 
   else
@@ -1584,7 +1584,7 @@ LABEL_7:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_ERROR, "Error: Could not find pass with uniqueID: %@", &v12, 0xCu);
       }
     }
@@ -1594,15 +1594,15 @@ LABEL_7:
   return v5 != 0;
 }
 
-- (BOOL)_presentSavingsDetailsWithPassUniqueID:(id)a3
+- (BOOL)_presentSavingsDetailsWithPassUniqueID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 length];
+  dCopy = d;
+  v5 = [dCopy length];
   if (v5)
   {
-    v6 = [(NPKOpenURLRouter *)self delegate];
-    [v6 urlRouter:self requestSavingsDetailsPresentationWithPassUniqueID:v4];
+    delegate = [(NPKOpenURLRouter *)self delegate];
+    [delegate urlRouter:self requestSavingsDetailsPresentationWithPassUniqueID:dCopy];
   }
 
   else
@@ -1616,7 +1616,7 @@ LABEL_7:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_ERROR, "Error: Could not find card with uniqueID: %@", &v12, 0xCu);
       }
     }
@@ -1626,24 +1626,24 @@ LABEL_7:
   return v5 != 0;
 }
 
-- (BOOL)_isValidRelayServerURL:(id)a3 outPathComponents:(id *)a4
+- (BOOL)_isValidRelayServerURL:(id)l outPathComponents:(id *)components
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(MEMORY[0x277D380F0]);
-  v7 = [v6 sharedPaymentWebServiceContext];
-  v8 = [v7 configuration];
+  sharedPaymentWebServiceContext = [v6 sharedPaymentWebServiceContext];
+  configuration = [sharedPaymentWebServiceContext configuration];
   v9 = PKCurrentRegion();
-  v10 = [v8 allowedRelayServerHostsForRegion:v9];
+  v10 = [configuration allowedRelayServerHostsForRegion:v9];
 
-  v11 = [v5 host];
-  if ([v10 containsObject:v11])
+  host = [lCopy host];
+  if ([v10 containsObject:host])
   {
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
     v13 = *MEMORY[0x277D389C0];
     v14 = [v12 initWithFormat:@"/v%@/%@/", *MEMORY[0x277D389C0], *MEMORY[0x277D389B8]];
     v15 = *MEMORY[0x277D38AF0];
-    v16 = v11;
+    v16 = host;
     v17 = v16;
     if (v16 == v15)
     {
@@ -1665,8 +1665,8 @@ LABEL_7:
       }
     }
 
-    v20 = [v5 path];
-    v21 = [v20 hasPrefix:v14];
+    path = [lCopy path];
+    v21 = [path hasPrefix:v14];
 
     if (!v21)
     {
@@ -1678,9 +1678,9 @@ LABEL_13:
 
 LABEL_12:
     v25[0] = *MEMORY[0x277D38A30];
-    v22 = [v5 absoluteString];
-    v25[1] = v22;
-    *a4 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
+    absoluteString = [lCopy absoluteString];
+    v25[1] = absoluteString;
+    *components = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
 
     v19 = 1;
     goto LABEL_13;
@@ -1693,14 +1693,14 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)_handleUniversalLinkURLAsShoeboxURLForPathComponents:(id)a3 shouldParsePathComponents:(BOOL)a4 urlComponents:(id)a5
+- (BOOL)_handleUniversalLinkURLAsShoeboxURLForPathComponents:(id)components shouldParsePathComponents:(BOOL)pathComponents urlComponents:(id)urlComponents
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 count];
+  pathComponentsCopy = pathComponents;
+  componentsCopy = components;
+  urlComponentsCopy = urlComponents;
+  v10 = [componentsCopy count];
   v11 = v10;
-  if (!v6)
+  if (!pathComponentsCopy)
   {
     v12 = 0;
     goto LABEL_10;
@@ -1714,7 +1714,7 @@ LABEL_14:
   v12 = 0;
   while (1)
   {
-    v13 = [v8 objectAtIndexedSubscript:v12];
+    v13 = [componentsCopy objectAtIndexedSubscript:v12];
     if (![v13 isEqualToString:@"/"])
     {
       break;
@@ -1742,7 +1742,7 @@ LABEL_14:
   }
 
 LABEL_10:
-  v15 = [v8 objectAtIndexedSubscript:v12];
+  v15 = [componentsCopy objectAtIndexedSubscript:v12];
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v16 addObject:@"/"];
   v17 = v12 + 1;
@@ -1750,7 +1750,7 @@ LABEL_10:
   {
     do
     {
-      v18 = [v8 objectAtIndexedSubscript:v17];
+      v18 = [componentsCopy objectAtIndexedSubscript:v17];
       [v16 addObject:v18];
 
       ++v17;
@@ -1759,7 +1759,7 @@ LABEL_10:
     while (v11 != v17);
   }
 
-  v19 = [(NPKOpenURLRouter *)self _processShoeboxSchemeForHost:v15 pathComponents:v16 urlComponents:v9];
+  v19 = [(NPKOpenURLRouter *)self _processShoeboxSchemeForHost:v15 pathComponents:v16 urlComponents:urlComponentsCopy];
 
 LABEL_15:
   return v19;

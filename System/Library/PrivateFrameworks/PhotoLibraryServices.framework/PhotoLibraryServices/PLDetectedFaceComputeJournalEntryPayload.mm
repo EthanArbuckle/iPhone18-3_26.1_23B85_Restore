@@ -1,13 +1,13 @@
 @interface PLDetectedFaceComputeJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
-+ (id)payloadAdapterForManagedObject:(id)a3;
++ (id)payloadAdapterForManagedObject:(id)object;
 + (id)payloadClassID;
 + (id)persistedPropertyNamesForEntityNames;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)insertWithAssets:(id)a3 inManagedObjectContext:(id)a4;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)insertWithAssets:(id)assets inManagedObjectContext:(id)context;
 @end
 
 @implementation PLDetectedFaceComputeJournalEntryPayload
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __59__PLDetectedFaceComputeJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_49708 != -1)
   {
     dispatch_once(&modelProperties_onceToken_49708, block);
@@ -45,7 +45,7 @@ uint64_t __59__PLDetectedFaceComputeJournalEntryPayload_modelProperties__block_i
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DF90];
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___PLDetectedFaceComputeJournalEntryPayload;
   v3 = objc_msgSendSuper2(&v12, sel_modelPropertiesDescription);
   v4 = [v2 dictionaryWithDictionary:v3];
@@ -73,23 +73,23 @@ uint64_t __59__PLDetectedFaceComputeJournalEntryPayload_modelProperties__block_i
 
 + (id)payloadClassID
 {
-  v2 = [a1 entityName];
-  v3 = [v2 stringByAppendingString:@"Compute"];
+  entityName = [self entityName];
+  v3 = [entityName stringByAppendingString:@"Compute"];
 
   return v3;
 }
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (name)
   {
     v8 = 1;
     goto LABEL_13;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"assetForFace.uuid"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"assetForFace.uuid"];
   if (!v9)
   {
     v4 = [v7 objectForKeyedSubscript:@"assetForFace.cloudAssetGUID"];
@@ -130,32 +130,32 @@ LABEL_13:
   return v8;
 }
 
-+ (id)payloadAdapterForManagedObject:(id)a3
++ (id)payloadAdapterForManagedObject:(id)object
 {
-  v3 = a3;
-  v4 = [(PLJournalEntryPayloadUpdateAdapter *)[PLDetectedFaceComputePayloadAdapter alloc] initWithManagedObject:v3];
+  objectCopy = object;
+  v4 = [(PLJournalEntryPayloadUpdateAdapter *)[PLDetectedFaceComputePayloadAdapter alloc] initWithManagedObject:objectCopy];
 
   return v4;
 }
 
-- (BOOL)insertWithAssets:(id)a3 inManagedObjectContext:(id)a4
+- (BOOL)insertWithAssets:(id)assets inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  v9 = [v8 additionalAttributes];
-  v10 = [v9 faceAnalysisVersion];
+  assetsCopy = assets;
+  contextCopy = context;
+  anyObject = [assetsCopy anyObject];
+  additionalAttributes = [anyObject additionalAttributes];
+  faceAnalysisVersion = [additionalAttributes faceAnalysisVersion];
 
   v11 = 0;
-  if (v8 && v10 <= 1)
+  if (anyObject && faceAnalysisVersion <= 1)
   {
     v14.receiver = self;
     v14.super_class = PLDetectedFaceComputeJournalEntryPayload;
-    if ([(PLDetectedFaceJournalEntryPayload *)&v14 insertWithAssets:v6 inManagedObjectContext:v7])
+    if ([(PLDetectedFaceJournalEntryPayload *)&v14 insertWithAssets:assetsCopy inManagedObjectContext:contextCopy])
     {
-      v12 = [v8 additionalAttributes];
+      additionalAttributes2 = [anyObject additionalAttributes];
       v11 = 1;
-      [v12 setFaceAnalysisVersion:1];
+      [additionalAttributes2 setFaceAnalysisVersion:1];
     }
 
     else
@@ -167,18 +167,18 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v9 isEqualToKey:@"person"])
+  valueCopy = value;
+  propertyCopy = property;
+  dictionaryValueCopy = dictionaryValue;
+  if ([propertyCopy isEqualToKey:@"person"])
   {
-    v11 = [v10 objectForKeyedSubscript:@"personUUID"];
+    v11 = [dictionaryValueCopy objectForKeyedSubscript:@"personUUID"];
 
-    if (v8 | v11)
+    if (valueCopy | v11)
     {
-      v12 = [v11 isEqualToString:v8];
+      v12 = [v11 isEqualToString:valueCopy];
     }
 
     else
@@ -191,7 +191,7 @@ LABEL_13:
   {
     v14.receiver = self;
     v14.super_class = PLDetectedFaceComputeJournalEntryPayload;
-    v12 = [(PLDetectedFaceJournalEntryPayload *)&v14 comparePayloadValue:v8 toObjectDictionaryValue:v10 forPayloadProperty:v9];
+    v12 = [(PLDetectedFaceJournalEntryPayload *)&v14 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
   }
 
   return v12;
@@ -203,7 +203,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __80__PLDetectedFaceComputeJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_49706 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_49706, block);
@@ -224,7 +224,7 @@ void __80__PLDetectedFaceComputeJournalEntryPayload_persistedPropertyNamesForEnt
 + (id)nonPersistedModelPropertiesDescription
 {
   v2 = MEMORY[0x1E695DF90];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___PLDetectedFaceComputeJournalEntryPayload;
   v3 = objc_msgSendSuper2(&v8, sel_nonPersistedModelPropertiesDescription);
   v4 = [v2 dictionaryWithDictionary:v3];

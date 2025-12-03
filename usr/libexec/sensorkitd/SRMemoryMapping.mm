@@ -7,7 +7,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071B58 = os_log_create("com.apple.SensorKit", "SRMemoryMapping");
   }

@@ -1,21 +1,21 @@
 @interface DRSystemConnection
-- (DRSystemConnection)initWithQueue:(id)a3;
-- (void)notifySessionDidEnd:(id)a3;
-- (void)notifySessionWillBegin:(id)a3;
+- (DRSystemConnection)initWithQueue:(id)queue;
+- (void)notifySessionDidEnd:(id)end;
+- (void)notifySessionWillBegin:(id)begin;
 @end
 
 @implementation DRSystemConnection
 
-- (DRSystemConnection)initWithQueue:(id)a3
+- (DRSystemConnection)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = DRSystemConnection;
   v5 = [(DRSystemConnection *)&v15 init];
   if (v5)
   {
     v6 = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.DragUI.druid.system" options:0];
-    [v6 _setQueue:v4];
+    [v6 _setQueue:queueCopy];
     objc_storeStrong(&v5->_connection, v6);
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -44,9 +44,9 @@
   return v5;
 }
 
-- (void)notifySessionWillBegin:(id)a3
+- (void)notifySessionWillBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   connection = self->_connection;
   if (connection)
   {
@@ -57,15 +57,15 @@
     v17[4] = self;
     v6 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v17];
     v7 = objc_opt_new();
-    [v7 setSessionIdentifier:{objc_msgSend(v4, "identifier")}];
-    v8 = [v4 sourceConnection];
-    [v7 setProcessIdentifier:{objc_msgSend(v8, "processIdentifier")}];
+    [v7 setSessionIdentifier:{objc_msgSend(beginCopy, "identifier")}];
+    sourceConnection = [beginCopy sourceConnection];
+    [v7 setProcessIdentifier:{objc_msgSend(sourceConnection, "processIdentifier")}];
 
-    v9 = [v4 sourceConnection];
-    v10 = v9;
-    if (v9)
+    sourceConnection2 = [beginCopy sourceConnection];
+    v10 = sourceConnection2;
+    if (sourceConnection2)
     {
-      [v9 auditToken];
+      [sourceConnection2 auditToken];
     }
 
     else
@@ -78,22 +78,22 @@
     v14[1] = v16;
     [v7 setAuditToken:v14];
 
-    [v7 setSupportsSystemDrag:{objc_msgSend(v4, "supportsSystemDrag")}];
-    v11 = [v4 persistentSceneIdentifier];
-    [v7 setPersistentSceneIdentifier:v11];
+    [v7 setSupportsSystemDrag:{objc_msgSend(beginCopy, "supportsSystemDrag")}];
+    persistentSceneIdentifier = [beginCopy persistentSceneIdentifier];
+    [v7 setPersistentSceneIdentifier:persistentSceneIdentifier];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10002E924;
     v12[3] = &unk_100056568;
-    v13 = v4;
+    v13 = beginCopy;
     [v6 dragDidBeginWithSystemSession:v13 info:v7 reply:v12];
   }
 }
 
-- (void)notifySessionDidEnd:(id)a3
+- (void)notifySessionDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   connection = self->_connection;
   if (connection)
   {
@@ -104,15 +104,15 @@
     v15[4] = self;
     v6 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v15];
     v7 = objc_opt_new();
-    [v7 setSessionIdentifier:{objc_msgSend(v4, "identifier")}];
-    v8 = [v4 sourceConnection];
-    [v7 setProcessIdentifier:{objc_msgSend(v8, "processIdentifier")}];
+    [v7 setSessionIdentifier:{objc_msgSend(endCopy, "identifier")}];
+    sourceConnection = [endCopy sourceConnection];
+    [v7 setProcessIdentifier:{objc_msgSend(sourceConnection, "processIdentifier")}];
 
-    v9 = [v4 sourceConnection];
-    v10 = v9;
-    if (v9)
+    sourceConnection2 = [endCopy sourceConnection];
+    v10 = sourceConnection2;
+    if (sourceConnection2)
     {
-      [v9 auditToken];
+      [sourceConnection2 auditToken];
     }
 
     else
@@ -125,9 +125,9 @@
     v12[1] = v14;
     [v7 setAuditToken:v12];
 
-    [v7 setSupportsSystemDrag:{objc_msgSend(v4, "supportsSystemDrag")}];
-    v11 = [v4 persistentSceneIdentifier];
-    [v7 setPersistentSceneIdentifier:v11];
+    [v7 setSupportsSystemDrag:{objc_msgSend(endCopy, "supportsSystemDrag")}];
+    persistentSceneIdentifier = [endCopy persistentSceneIdentifier];
+    [v7 setPersistentSceneIdentifier:persistentSceneIdentifier];
 
     [v6 dragDidEndWithSystemSession:v7];
   }

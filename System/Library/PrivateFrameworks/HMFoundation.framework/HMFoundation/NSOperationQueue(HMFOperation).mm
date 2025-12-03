@@ -8,12 +8,12 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 operations];
+  operations = [self operations];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -25,7 +25,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(operations);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -44,7 +44,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

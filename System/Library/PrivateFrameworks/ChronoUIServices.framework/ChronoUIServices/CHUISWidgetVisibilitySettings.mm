@@ -1,16 +1,16 @@
 @interface CHUISWidgetVisibilitySettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)visibleBounds;
 - (CHUISWidgetVisibilitySettings)init;
-- (CHUISWidgetVisibilitySettings)initWithXPCDictionary:(id)a3;
-- (id)_initWithVisibilitySettings:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (CHUISWidgetVisibilitySettings)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithVisibilitySettings:(id)settings;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation CHUISWidgetVisibilitySettings
@@ -46,10 +46,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(CHUISWidgetVisibilitySettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHUISWidgetVisibilitySettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -62,31 +62,31 @@
   return v3;
 }
 
-- (id)_initWithVisibilitySettings:(id)a3
+- (id)_initWithVisibilitySettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = CHUISWidgetVisibilitySettings;
   v5 = [(CHUISWidgetVisibilitySettings *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v5->_settled = v4[8];
-    v5->_focal = v4[9];
-    v7 = *(v4 + 2);
-    v5->_visibleBounds.origin = *(v4 + 1);
+    v5->_settled = settingsCopy[8];
+    v5->_focal = settingsCopy[9];
+    v7 = *(settingsCopy + 2);
+    v5->_visibleBounds.origin = *(settingsCopy + 1);
     v5->_visibleBounds.size = v7;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -147,26 +147,26 @@ double __41__CHUISWidgetVisibilitySettings_isEqual___block_invoke_3(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:self->_settled];
-  v5 = [v3 appendBool:self->_focal];
-  v6 = [v3 appendCGRect:{self->_visibleBounds.origin.x, self->_visibleBounds.origin.y, self->_visibleBounds.size.width, self->_visibleBounds.size.height}];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:self->_settled];
+  v5 = [builder appendBool:self->_focal];
+  v6 = [builder appendCGRect:{self->_visibleBounds.origin.x, self->_visibleBounds.origin.y, self->_visibleBounds.size.width, self->_visibleBounds.size.height}];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHUISWidgetVisibilitySettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHUISWidgetVisibilitySettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -174,8 +174,8 @@ double __41__CHUISWidgetVisibilitySettings_isEqual___block_invoke_3(uint64_t a1)
   v9[3] = &unk_1E8575520;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -188,16 +188,16 @@ id __71__CHUISWidgetVisibilitySettings_descriptionBuilderWithMultilinePrefix___b
   return [*(a1 + 32) appendRect:@"visibleBounds" withName:{*(*(a1 + 40) + 16), *(*(a1 + 40) + 24), *(*(a1 + 40) + 32), *(*(a1 + 40) + 40)}];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISMutableWidgetVisibilitySettings alloc];
 
   return [(CHUISWidgetVisibilitySettings *)v4 _initWithVisibilitySettings:self];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   xpc_dictionary_set_BOOL(xdict, "settled", self->_settled);
   xpc_dictionary_set_BOOL(xdict, "focal", self->_focal);
   x = self->_visibleBounds.origin.x;
@@ -207,14 +207,14 @@ id __71__CHUISWidgetVisibilitySettings_descriptionBuilderWithMultilinePrefix___b
   BSSerializeCGRectToXPCDictionaryWithKey();
 }
 
-- (CHUISWidgetVisibilitySettings)initWithXPCDictionary:(id)a3
+- (CHUISWidgetVisibilitySettings)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(CHUISWidgetVisibilitySettings *)self init];
   if (v5)
   {
-    v5->_settled = xpc_dictionary_get_BOOL(v4, "settled");
-    v5->_focal = xpc_dictionary_get_BOOL(v4, "focal");
+    v5->_settled = xpc_dictionary_get_BOOL(dictionaryCopy, "settled");
+    v5->_focal = xpc_dictionary_get_BOOL(dictionaryCopy, "focal");
     BSDeserializeCGRectFromXPCDictionaryWithKey();
     v5->_visibleBounds.origin.x = v6;
     v5->_visibleBounds.origin.y = v7;

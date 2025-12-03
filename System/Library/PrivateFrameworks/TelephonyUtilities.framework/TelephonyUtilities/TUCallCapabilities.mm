@@ -5,9 +5,9 @@
 + (BOOL)areCallsOnOtherDevicesEnabled;
 + (BOOL)areRelayCallingFeaturesEnabled;
 + (BOOL)canAttemptEmergencyCallsWithoutCellularConnection;
-+ (BOOL)canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:(id)a3;
++ (BOOL)canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:(id)d;
 + (BOOL)canAttemptTelephonyCallsWithoutCellularConnection;
-+ (BOOL)canAttemptTelephonyCallsWithoutCellularConnectionWithSenderIdentityCapabilities:(id)a3;
++ (BOOL)canAttemptTelephonyCallsWithoutCellularConnectionWithSenderIdentityCapabilities:(id)capabilities;
 + (BOOL)isCSCallingCurrentlyAvailable;
 + (BOOL)isDirectFaceTimeAudioCallingCurrentlyAvailable;
 + (BOOL)isDirectFaceTimeVideoCallingCurrentlyAvailable;
@@ -15,11 +15,11 @@
 + (BOOL)isEmergencyCallbackModeEnabled;
 + (BOOL)isEmergencyCallbackPossible;
 + (BOOL)isRelayCallingEnabled;
-+ (BOOL)isRelayCallingEnabledForDeviceWithID:(id)a3;
-+ (BOOL)isSimultaneousVoiceAndDataSupportedForSIMWithUUID:(id)a3;
++ (BOOL)isRelayCallingEnabledForDeviceWithID:(id)d;
++ (BOOL)isSimultaneousVoiceAndDataSupportedForSIMWithUUID:(id)d;
 + (BOOL)isThumperCallingAllowedForCurrentDevice;
 + (BOOL)isThumperCallingAllowedOnDefaultPairedSecondaryDevice;
-+ (BOOL)isThumperCallingAllowedOnSecondaryDeviceWithID:(id)a3;
++ (BOOL)isThumperCallingAllowedOnSecondaryDeviceWithID:(id)d;
 + (BOOL)isThumperCallingCurrentlyAvailable;
 + (BOOL)isThumperCallingEnabled;
 + (BOOL)isVoLTECallingCurrentlyAvailable;
@@ -51,19 +51,19 @@
 + (id)_senderIdentityCapabilitiesByUUID;
 + (id)client;
 + (id)debugDescription;
-+ (id)senderIdentityCapabilitiesWithUUID:(id)a3;
++ (id)senderIdentityCapabilitiesWithUUID:(id)d;
 + (int)faceTimeAudioCallSupport;
 + (int)faceTimeVideoCallSupport;
 + (int)relayCallingAvailability;
 + (int)telephonyCallSupport;
-+ (void)_sendNotificationsAndCallbacksAfterRunningBlock:(id)a3;
-+ (void)addDelegate:(id)a3 queue:(id)a4;
++ (void)_sendNotificationsAndCallbacksAfterRunningBlock:(id)block;
++ (void)addDelegate:(id)delegate queue:(id)queue;
 + (void)cancelPinRequestFromPrimaryDevice;
 + (void)endEmergencyCallbackMode;
 + (void)initializeCachedValues;
 + (void)invalidateAndRefreshThumperCallingProvisioningURL;
 + (void)invalidateAndRefreshWiFiCallingProvisioningURL;
-+ (void)removeDelegate:(id)a3;
++ (void)removeDelegate:(id)delegate;
 + (void)requestPinFromPrimaryDevice;
 @end
 
@@ -71,7 +71,7 @@
 
 + (void)initializeCachedValues
 {
-  v2 = [a1 client];
+  client = [self client];
 }
 
 uint64_t __28__TUCallCapabilities_client__block_invoke()
@@ -95,53 +95,53 @@ uint64_t __28__TUCallCapabilities_client__block_invoke()
 
 + (BOOL)supportsPrimaryCalling
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsPrimaryCalling];
+  client = [self client];
+  state = [client state];
+  supportsPrimaryCalling = [state supportsPrimaryCalling];
 
-  return v4;
+  return supportsPrimaryCalling;
 }
 
 + (BOOL)supportsDisplayingFaceTimeAudioCalls
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsDisplayingFaceTimeAudioCalls];
+  client = [self client];
+  state = [client state];
+  supportsDisplayingFaceTimeAudioCalls = [state supportsDisplayingFaceTimeAudioCalls];
 
-  return v4;
+  return supportsDisplayingFaceTimeAudioCalls;
 }
 
 + (BOOL)supportsDisplayingFaceTimeVideoCalls
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsDisplayingFaceTimeVideoCalls];
+  client = [self client];
+  state = [client state];
+  supportsDisplayingFaceTimeVideoCalls = [state supportsDisplayingFaceTimeVideoCalls];
 
-  return v4;
+  return supportsDisplayingFaceTimeVideoCalls;
 }
 
 + (BOOL)supportsTelephonyRelayCalling
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsTelephonyRelayCalling];
+  client = [self client];
+  state = [client state];
+  supportsTelephonyRelayCalling = [state supportsTelephonyRelayCalling];
 
-  return v4;
+  return supportsTelephonyRelayCalling;
 }
 
 + (NSString)outgoingRelayCallerID
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 outgoingRelayCallerID];
+  client = [self client];
+  state = [client state];
+  outgoingRelayCallerID = [state outgoingRelayCallerID];
 
-  return v4;
+  return outgoingRelayCallerID;
 }
 
 + (BOOL)isThumperCallingEnabled
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 tu_containsObjectPassingTest:&__block_literal_global_54];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  v3 = [senderIdentityCapabilities tu_containsObjectPassingTest:&__block_literal_global_54];
 
   return v3;
 }
@@ -149,16 +149,16 @@ uint64_t __28__TUCallCapabilities_client__block_invoke()
 + (NSSet)senderIdentityCapabilities
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [a1 client];
-  v4 = [v3 state];
-  v5 = [v4 senderIdentityCapabilitiesStateByUUID];
+  client = [self client];
+  state = [client state];
+  senderIdentityCapabilitiesStateByUUID = [state senderIdentityCapabilitiesStateByUUID];
 
-  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(senderIdentityCapabilitiesStateByUUID, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = senderIdentityCapabilitiesStateByUUID;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -176,8 +176,8 @@ uint64_t __28__TUCallCapabilities_client__block_invoke()
         v12 = *(*(&v20 + 1) + 8 * i);
         v13 = [v7 objectForKeyedSubscript:{v12, v20}];
         v14 = [TUSenderIdentityCapabilities alloc];
-        v15 = [a1 client];
-        v16 = [(TUSenderIdentityCapabilities *)v14 initWithSenderIdentityUUID:v12 state:v13 client:v15];
+        client2 = [self client];
+        v16 = [(TUSenderIdentityCapabilities *)v14 initWithSenderIdentityUUID:v12 state:v13 client:client2];
 
         [v6 addObject:v16];
       }
@@ -203,62 +203,62 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
 
 + (BOOL)isDirectTelephonyCallingCurrentlyAvailable
 {
-  if ([a1 supportsPrimaryCalling] & 1) != 0 || (objc_msgSend(a1, "isWiFiCallingCurrentlyAvailable") & 1) != 0 || (objc_msgSend(a1, "isThumperCallingCurrentlyAvailable") & 1) != 0 || (objc_msgSend(a1, "isVoLTECallingCurrentlyAvailable"))
+  if ([self supportsPrimaryCalling] & 1) != 0 || (objc_msgSend(self, "isWiFiCallingCurrentlyAvailable") & 1) != 0 || (objc_msgSend(self, "isThumperCallingCurrentlyAvailable") & 1) != 0 || (objc_msgSend(self, "isVoLTECallingCurrentlyAvailable"))
   {
     return 1;
   }
 
-  return [a1 isCSCallingCurrentlyAvailable];
+  return [self isCSCallingCurrentlyAvailable];
 }
 
 + (BOOL)supportsRelayCalling
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsRelayCalling];
+  client = [self client];
+  state = [client state];
+  supportsRelayCalling = [state supportsRelayCalling];
 
-  return v4;
+  return supportsRelayCalling;
 }
 
 + (BOOL)isRelayCallingEnabled
 {
-  if (![a1 supportsRelayCalling] || !objc_msgSend(a1, "accountsSupportSecondaryCalling"))
+  if (![self supportsRelayCalling] || !objc_msgSend(self, "accountsSupportSecondaryCalling"))
   {
     return 0;
   }
 
-  v3 = [a1 client];
-  v4 = [v3 state];
-  v5 = [v4 isRelayCallingEnabled];
+  client = [self client];
+  state = [client state];
+  isRelayCallingEnabled = [state isRelayCallingEnabled];
 
-  return v5;
+  return isRelayCallingEnabled;
 }
 
 + (TUCTCapabilityInfo)thumperCallingCapabilityInfo
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 thumperCallingCapabilityInfo];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  thumperCallingCapabilityInfo = [anyObject thumperCallingCapabilityInfo];
 
-  return v4;
+  return thumperCallingCapabilityInfo;
 }
 
 + (int)telephonyCallSupport
 {
-  result = [a1 supportsDisplayingTelephonyCalls];
+  result = [self supportsDisplayingTelephonyCalls];
   if (result)
   {
-    if ([a1 isDirectTelephonyCallingCurrentlyAvailable])
+    if ([self isDirectTelephonyCallingCurrentlyAvailable])
     {
       return 3;
     }
 
     else
     {
-      result = [a1 areRelayCallingFeaturesEnabled];
+      result = [self areRelayCallingFeaturesEnabled];
       if (result)
       {
-        if ([a1 supportsTelephonyRelayCalling])
+        if ([self supportsTelephonyRelayCalling])
         {
           return 2;
         }
@@ -276,29 +276,29 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
 
 + (BOOL)supportsDisplayingTelephonyCalls
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsDisplayingTelephonyCalls];
+  client = [self client];
+  state = [client state];
+  supportsDisplayingTelephonyCalls = [state supportsDisplayingTelephonyCalls];
 
-  return v4;
+  return supportsDisplayingTelephonyCalls;
 }
 
 + (int)faceTimeAudioCallSupport
 {
-  result = [a1 supportsDisplayingFaceTimeAudioCalls];
+  result = [self supportsDisplayingFaceTimeAudioCalls];
   if (result)
   {
-    if ([a1 isDirectFaceTimeAudioCallingCurrentlyAvailable])
+    if ([self isDirectFaceTimeAudioCallingCurrentlyAvailable])
     {
       return 3;
     }
 
     else
     {
-      result = [a1 areRelayCallingFeaturesEnabled];
+      result = [self areRelayCallingFeaturesEnabled];
       if (result)
       {
-        if ([a1 supportsFaceTimeAudioRelayCalling])
+        if ([self supportsFaceTimeAudioRelayCalling])
         {
           return 2;
         }
@@ -316,20 +316,20 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
 
 + (int)faceTimeVideoCallSupport
 {
-  result = [a1 supportsDisplayingFaceTimeVideoCalls];
+  result = [self supportsDisplayingFaceTimeVideoCalls];
   if (result)
   {
-    if ([a1 isDirectFaceTimeVideoCallingCurrentlyAvailable])
+    if ([self isDirectFaceTimeVideoCallingCurrentlyAvailable])
     {
       return 3;
     }
 
     else
     {
-      result = [a1 areRelayCallingFeaturesEnabled];
+      result = [self areRelayCallingFeaturesEnabled];
       if (result)
       {
-        return [a1 supportsFaceTimeVideoRelayCalling];
+        return [self supportsFaceTimeVideoRelayCalling];
       }
     }
   }
@@ -339,89 +339,89 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
 
 + (BOOL)isDirectFaceTimeAudioCallingCurrentlyAvailable
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 isFaceTimeAudioAvailable];
+  client = [self client];
+  state = [client state];
+  isFaceTimeAudioAvailable = [state isFaceTimeAudioAvailable];
 
-  return v4;
+  return isFaceTimeAudioAvailable;
 }
 
 + (BOOL)isDirectFaceTimeVideoCallingCurrentlyAvailable
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 isFaceTimeVideoAvailable];
+  client = [self client];
+  state = [client state];
+  isFaceTimeVideoAvailable = [state isFaceTimeVideoAvailable];
 
-  return v4;
+  return isFaceTimeVideoAvailable;
 }
 
 + (BOOL)accountsSupportSecondaryCalling
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 accountsSupportSecondaryCalling];
+  client = [self client];
+  state = [client state];
+  accountsSupportSecondaryCalling = [state accountsSupportSecondaryCalling];
 
-  return v4;
+  return accountsSupportSecondaryCalling;
 }
 
 + (BOOL)areRelayCallingFeaturesEnabled
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 areRelayCallingFeaturesEnabled];
+  client = [self client];
+  state = [client state];
+  areRelayCallingFeaturesEnabled = [state areRelayCallingFeaturesEnabled];
 
-  return v4;
+  return areRelayCallingFeaturesEnabled;
 }
 
 + (NSArray)cloudCallingDevices
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 cloudCallingDevices];
+  client = [self client];
+  state = [client state];
+  cloudCallingDevices = [state cloudCallingDevices];
 
-  return v4;
+  return cloudCallingDevices;
 }
 
 + (int)relayCallingAvailability
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 relayCallingAvailability];
+  client = [self client];
+  state = [client state];
+  relayCallingAvailability = [state relayCallingAvailability];
 
-  return v4;
+  return relayCallingAvailability;
 }
 
 + (BOOL)isEmergencyCallbackModeEnabled
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 isEmergencyCallbackModeEnabled];
+  client = [self client];
+  state = [client state];
+  isEmergencyCallbackModeEnabled = [state isEmergencyCallbackModeEnabled];
 
-  return v4;
+  return isEmergencyCallbackModeEnabled;
 }
 
 + (BOOL)isEmergencyCallbackPossible
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 isEmergencyCallbackPossible];
+  client = [self client];
+  state = [client state];
+  isEmergencyCallbackPossible = [state isEmergencyCallbackPossible];
 
-  return v4;
+  return isEmergencyCallbackPossible;
 }
 
 + (id)_senderIdentityCapabilitiesByUUID
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [a1 client];
-  v4 = [v3 state];
-  v5 = [v4 senderIdentityCapabilitiesStateByUUID];
+  client = [self client];
+  state = [client state];
+  senderIdentityCapabilitiesStateByUUID = [state senderIdentityCapabilitiesStateByUUID];
 
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(senderIdentityCapabilitiesStateByUUID, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = senderIdentityCapabilitiesStateByUUID;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -439,8 +439,8 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
         v12 = *(*(&v20 + 1) + 8 * i);
         v13 = [v7 objectForKeyedSubscript:{v12, v20}];
         v14 = [TUSenderIdentityCapabilities alloc];
-        v15 = [a1 client];
-        v16 = [(TUSenderIdentityCapabilities *)v14 initWithSenderIdentityUUID:v12 state:v13 client:v15];
+        client2 = [self client];
+        v16 = [(TUSenderIdentityCapabilities *)v14 initWithSenderIdentityUUID:v12 state:v13 client:client2];
 
         [v6 setObject:v16 forKeyedSubscript:v12];
       }
@@ -459,11 +459,11 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
 
 + (BOOL)supportsSimultaneousVoiceAndData
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 supportsSimultaneousVoiceAndData];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  supportsSimultaneousVoiceAndData = [anyObject supportsSimultaneousVoiceAndData];
 
-  return v4;
+  return supportsSimultaneousVoiceAndData;
 }
 
 + (BOOL)isWiFiCallingCurrentlyAvailable
@@ -473,8 +473,8 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  v3 = [senderIdentityCapabilities countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -484,7 +484,7 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(senderIdentityCapabilities);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isWiFiCallingCurrentlyAvailable])
@@ -494,7 +494,7 @@ uint64_t __45__TUCallCapabilities_isThumperCallingEnabled__block_invoke(uint64_t
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [senderIdentityCapabilities countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -512,109 +512,109 @@ LABEL_11:
 
 + (BOOL)canAttemptTelephonyCallsWithoutCellularConnection
 {
-  if ([a1 isWiFiCallingCurrentlyAvailable])
+  if ([self isWiFiCallingCurrentlyAvailable])
   {
     return 1;
   }
 
-  if ([a1 supportsPrimaryCalling])
+  if ([self supportsPrimaryCalling])
   {
     return 0;
   }
 
-  if ([a1 isThumperCallingCurrentlyAvailable])
+  if ([self isThumperCallingCurrentlyAvailable])
   {
     return 1;
   }
 
-  return [a1 areRelayCallingFeaturesEnabled];
+  return [self areRelayCallingFeaturesEnabled];
 }
 
-+ (BOOL)canAttemptTelephonyCallsWithoutCellularConnectionWithSenderIdentityCapabilities:(id)a3
++ (BOOL)canAttemptTelephonyCallsWithoutCellularConnectionWithSenderIdentityCapabilities:(id)capabilities
 {
-  v4 = a3;
-  if (([v4 isWiFiCallingCurrentlyAvailable] & 1) == 0)
+  capabilitiesCopy = capabilities;
+  if (([capabilitiesCopy isWiFiCallingCurrentlyAvailable] & 1) == 0)
   {
-    if ([a1 supportsPrimaryCalling])
+    if ([self supportsPrimaryCalling])
     {
-      v5 = 0;
+      areRelayCallingFeaturesEnabled = 0;
       goto LABEL_7;
     }
 
-    if (([v4 isThumperCallingCurrentlyAvailable] & 1) == 0)
+    if (([capabilitiesCopy isThumperCallingCurrentlyAvailable] & 1) == 0)
     {
-      v5 = [a1 areRelayCallingFeaturesEnabled];
+      areRelayCallingFeaturesEnabled = [self areRelayCallingFeaturesEnabled];
       goto LABEL_7;
     }
   }
 
-  v5 = 1;
+  areRelayCallingFeaturesEnabled = 1;
 LABEL_7:
 
-  return v5;
+  return areRelayCallingFeaturesEnabled;
 }
 
 + (BOOL)canAttemptEmergencyCallsWithoutCellularConnection
 {
-  v3 = [a1 canAttemptTelephonyCallsWithoutCellularConnection];
-  if (v3)
+  canAttemptTelephonyCallsWithoutCellularConnection = [self canAttemptTelephonyCallsWithoutCellularConnection];
+  if (canAttemptTelephonyCallsWithoutCellularConnection)
   {
-    v4 = [a1 senderIdentityCapabilities];
-    v5 = [v4 anyObject];
-    v6 = [v5 isEmergencyWiFiCallingCurrentlyAvailable];
+    senderIdentityCapabilities = [self senderIdentityCapabilities];
+    anyObject = [senderIdentityCapabilities anyObject];
+    isEmergencyWiFiCallingCurrentlyAvailable = [anyObject isEmergencyWiFiCallingCurrentlyAvailable];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(canAttemptTelephonyCallsWithoutCellularConnection) = isEmergencyWiFiCallingCurrentlyAvailable;
   }
 
-  return v3;
+  return canAttemptTelephonyCallsWithoutCellularConnection;
 }
 
-+ (BOOL)canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:(id)a3
++ (BOOL)canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:(id)d
 {
-  v4 = [a1 senderIdentityCapabilitiesWithUUID:a3];
-  if (v4 && [a1 canAttemptTelephonyCallsWithoutCellularConnectionWithSenderIdentityCapabilities:v4])
+  v4 = [self senderIdentityCapabilitiesWithUUID:d];
+  if (v4 && [self canAttemptTelephonyCallsWithoutCellularConnectionWithSenderIdentityCapabilities:v4])
   {
-    v5 = [v4 isEmergencyWiFiCallingCurrentlyAvailable];
+    isEmergencyWiFiCallingCurrentlyAvailable = [v4 isEmergencyWiFiCallingCurrentlyAvailable];
   }
 
   else
   {
-    v5 = 0;
+    isEmergencyWiFiCallingCurrentlyAvailable = 0;
   }
 
-  return v5;
+  return isEmergencyWiFiCallingCurrentlyAvailable;
 }
 
 + (BOOL)supportsBasebandCalling
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsBasebandCalling];
+  client = [self client];
+  state = [client state];
+  supportsBasebandCalling = [state supportsBasebandCalling];
 
-  return v4;
+  return supportsBasebandCalling;
 }
 
-+ (BOOL)isSimultaneousVoiceAndDataSupportedForSIMWithUUID:(id)a3
++ (BOOL)isSimultaneousVoiceAndDataSupportedForSIMWithUUID:(id)d
 {
-  v3 = [a1 senderIdentityCapabilitiesWithUUID:a3];
-  v4 = [v3 supportsSimultaneousVoiceAndData];
+  v3 = [self senderIdentityCapabilitiesWithUUID:d];
+  supportsSimultaneousVoiceAndData = [v3 supportsSimultaneousVoiceAndData];
 
-  return v4;
+  return supportsSimultaneousVoiceAndData;
 }
 
 + (BOOL)areCTCapabilitiesValid
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 areCTCapabilitiesValid];
+  client = [self client];
+  state = [client state];
+  areCTCapabilitiesValid = [state areCTCapabilitiesValid];
 
-  return v4;
+  return areCTCapabilitiesValid;
 }
 
 + (BOOL)isCSCallingCurrentlyAvailable
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 tu_containsObjectPassingTest:&__block_literal_global_11];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  v3 = [senderIdentityCapabilities tu_containsObjectPassingTest:&__block_literal_global_11];
 
   return v3;
 }
@@ -628,80 +628,80 @@ uint64_t __51__TUCallCapabilities_isCSCallingCurrentlyAvailable__block_invoke(ui
 
 + (BOOL)supportsWiFiCalling
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 supportsWiFiCalling];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  supportsWiFiCalling = [anyObject supportsWiFiCalling];
 
-  return v4;
+  return supportsWiFiCalling;
 }
 
 + (BOOL)isWiFiCallingEnabled
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 isWiFiCallingEnabled];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  isWiFiCallingEnabled = [anyObject isWiFiCallingEnabled];
 
-  return v4;
+  return isWiFiCallingEnabled;
 }
 
 + (BOOL)isWiFiCallingRoamingEnabled
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 isWiFiCallingRoamingEnabled];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  isWiFiCallingRoamingEnabled = [anyObject isWiFiCallingRoamingEnabled];
 
-  return v4;
+  return isWiFiCallingRoamingEnabled;
 }
 
 + (TUCTCapabilityInfo)wiFiCallingCapabilityInfo
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 wiFiCallingCapabilityInfo];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  wiFiCallingCapabilityInfo = [anyObject wiFiCallingCapabilityInfo];
 
-  return v4;
+  return wiFiCallingCapabilityInfo;
 }
 
 + (BOOL)supportsWiFiEmergencyCalling
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 supportsEmergencyWiFiCalling];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  supportsEmergencyWiFiCalling = [anyObject supportsEmergencyWiFiCalling];
 
-  return v4;
+  return supportsEmergencyWiFiCalling;
 }
 
 + (BOOL)supportsVoLTECalling
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 supportsVoLTECalling];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  supportsVoLTECalling = [anyObject supportsVoLTECalling];
 
-  return v4;
+  return supportsVoLTECalling;
 }
 
 + (BOOL)isVoLTECallingEnabled
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 isVoLTECallingEnabled];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  isVoLTECallingEnabled = [anyObject isVoLTECallingEnabled];
 
-  return v4;
+  return isVoLTECallingEnabled;
 }
 
 + (TUCTCapabilityInfo)voLTECallingCapabilityInfo
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 anyObject];
-  v4 = [v3 voLTECallingCapabilityInfo];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  voLTECallingCapabilityInfo = [anyObject voLTECallingCapabilityInfo];
 
-  return v4;
+  return voLTECallingCapabilityInfo;
 }
 
 + (BOOL)isVoLTECallingCurrentlyAvailable
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 tu_containsObjectPassingTest:&__block_literal_global_48];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  v3 = [senderIdentityCapabilities tu_containsObjectPassingTest:&__block_literal_global_48];
 
   return v3;
 }
@@ -715,17 +715,17 @@ uint64_t __54__TUCallCapabilities_isVoLTECallingCurrentlyAvailable__block_invoke
 
 + (BOOL)accountsMatchForSecondaryCalling
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 accountsMatchForSecondaryCalling];
+  client = [self client];
+  state = [client state];
+  accountsMatchForSecondaryCalling = [state accountsMatchForSecondaryCalling];
 
-  return v4;
+  return accountsMatchForSecondaryCalling;
 }
 
 + (BOOL)supportsThumperCalling
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 tu_containsObjectPassingTest:&__block_literal_global_50];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  v3 = [senderIdentityCapabilities tu_containsObjectPassingTest:&__block_literal_global_50];
 
   return v3;
 }
@@ -739,17 +739,17 @@ uint64_t __44__TUCallCapabilities_supportsThumperCalling__block_invoke(uint64_t 
 
 + (BOOL)supportsThumperCallingOverCellularData
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsCellularData];
+  client = [self client];
+  state = [client state];
+  supportsCellularData = [state supportsCellularData];
 
-  return v4;
+  return supportsCellularData;
 }
 
 + (BOOL)isThumperCallingAllowedForCurrentDevice
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 tu_containsObjectPassingTest:&__block_literal_global_52];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  v3 = [senderIdentityCapabilities tu_containsObjectPassingTest:&__block_literal_global_52];
 
   return v3;
 }
@@ -763,8 +763,8 @@ uint64_t __61__TUCallCapabilities_isThumperCallingAllowedForCurrentDevice__block
 
 + (BOOL)isThumperCallingCurrentlyAvailable
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 tu_containsObjectPassingTest:&__block_literal_global_56];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  v3 = [senderIdentityCapabilities tu_containsObjectPassingTest:&__block_literal_global_56];
 
   return v3;
 }
@@ -776,17 +776,17 @@ uint64_t __56__TUCallCapabilities_isThumperCallingCurrentlyAvailable__block_invo
   return result;
 }
 
-+ (BOOL)isThumperCallingAllowedOnSecondaryDeviceWithID:(id)a3
++ (BOOL)isThumperCallingAllowedOnSecondaryDeviceWithID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 senderIdentityCapabilities];
+  dCopy = d;
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__TUCallCapabilities_isThumperCallingAllowedOnSecondaryDeviceWithID___block_invoke;
   v10[3] = &unk_1E74254B0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 tu_anyObjectPassingTest:v10];
+  v11 = dCopy;
+  v6 = dCopy;
+  v7 = [senderIdentityCapabilities tu_anyObjectPassingTest:v10];
   v8 = v7 != 0;
 
   return v8;
@@ -801,8 +801,8 @@ uint64_t __69__TUCallCapabilities_isThumperCallingAllowedOnSecondaryDeviceWithID
 
 + (BOOL)isThumperCallingAllowedOnDefaultPairedSecondaryDevice
 {
-  v2 = [a1 senderIdentityCapabilities];
-  v3 = [v2 tu_anyObjectPassingTest:&__block_literal_global_58];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  v3 = [senderIdentityCapabilities tu_anyObjectPassingTest:&__block_literal_global_58];
   v4 = v3 != 0;
 
   return v4;
@@ -817,285 +817,285 @@ uint64_t __75__TUCallCapabilities_isThumperCallingAllowedOnDefaultPairedSecondar
 
 + (void)invalidateAndRefreshWiFiCallingProvisioningURL
 {
-  v3 = [a1 senderIdentityCapabilities];
-  v2 = [v3 anyObject];
-  [v2 invalidateAndRefreshWiFiCallingProvisioningURL];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  [anyObject invalidateAndRefreshWiFiCallingProvisioningURL];
 }
 
 + (void)invalidateAndRefreshThumperCallingProvisioningURL
 {
-  v3 = [a1 senderIdentityCapabilities];
-  v2 = [v3 anyObject];
-  [v2 invalidateAndRefreshThumperCallingProvisioningURL];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  [anyObject invalidateAndRefreshThumperCallingProvisioningURL];
 }
 
 + (BOOL)areCallsOnOtherDevicesEnabled
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 isRelayCallingEnabled];
+  client = [self client];
+  state = [client state];
+  isRelayCallingEnabled = [state isRelayCallingEnabled];
 
-  return v4;
+  return isRelayCallingEnabled;
 }
 
-+ (BOOL)isRelayCallingEnabledForDeviceWithID:(id)a3
++ (BOOL)isRelayCallingEnabledForDeviceWithID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 client];
-  v6 = [v5 state];
-  v7 = [v6 relayCallingDisabledForDeviceID];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  dCopy = d;
+  client = [self client];
+  state = [client state];
+  relayCallingDisabledForDeviceID = [state relayCallingDisabledForDeviceID];
+  v8 = [relayCallingDisabledForDeviceID objectForKeyedSubscript:dCopy];
 
-  LOBYTE(v4) = [v8 BOOLValue];
-  return v4 ^ 1;
+  LOBYTE(dCopy) = [v8 BOOLValue];
+  return dCopy ^ 1;
 }
 
 + (BOOL)supportsFaceTimeAudioRelayCalling
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsFaceTimeAudioRelayCalling];
+  client = [self client];
+  state = [client state];
+  supportsFaceTimeAudioRelayCalling = [state supportsFaceTimeAudioRelayCalling];
 
-  return v4;
+  return supportsFaceTimeAudioRelayCalling;
 }
 
 + (BOOL)supportsFaceTimeVideoRelayCalling
 {
-  v2 = [a1 client];
-  v3 = [v2 state];
-  v4 = [v3 supportsFaceTimeVideoRelayCalling];
+  client = [self client];
+  state = [client state];
+  supportsFaceTimeVideoRelayCalling = [state supportsFaceTimeVideoRelayCalling];
 
-  return v4;
+  return supportsFaceTimeVideoRelayCalling;
 }
 
 + (void)requestPinFromPrimaryDevice
 {
-  v3 = [a1 senderIdentityCapabilities];
-  v2 = [v3 anyObject];
-  [v2 requestPinFromPrimaryDeviceForThumperCalling];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  [anyObject requestPinFromPrimaryDeviceForThumperCalling];
 }
 
 + (void)cancelPinRequestFromPrimaryDevice
 {
-  v3 = [a1 senderIdentityCapabilities];
-  v2 = [v3 anyObject];
-  [v2 cancelPinRequestFromPrimaryDeviceForThumperCalling];
+  senderIdentityCapabilities = [self senderIdentityCapabilities];
+  anyObject = [senderIdentityCapabilities anyObject];
+  [anyObject cancelPinRequestFromPrimaryDeviceForThumperCalling];
 }
 
 + (void)endEmergencyCallbackMode
 {
-  v2 = [a1 client];
-  [v2 endEmergencyCallbackMode];
+  client = [self client];
+  [client endEmergencyCallbackMode];
 }
 
-+ (id)senderIdentityCapabilitiesWithUUID:(id)a3
++ (id)senderIdentityCapabilitiesWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 client];
-  v6 = [v5 state];
-  v7 = [v6 senderIdentityCapabilitiesStateByUUID];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  dCopy = d;
+  client = [self client];
+  state = [client state];
+  senderIdentityCapabilitiesStateByUUID = [state senderIdentityCapabilitiesStateByUUID];
+  v8 = [senderIdentityCapabilitiesStateByUUID objectForKeyedSubscript:dCopy];
 
   v9 = [TUSenderIdentityCapabilities alloc];
-  v10 = [a1 client];
-  v11 = [(TUSenderIdentityCapabilities *)v9 initWithSenderIdentityUUID:v4 state:v8 client:v10];
+  client2 = [self client];
+  v11 = [(TUSenderIdentityCapabilities *)v9 initWithSenderIdentityUUID:dCopy state:v8 client:client2];
 
   return v11;
 }
 
-+ (void)addDelegate:(id)a3 queue:(id)a4
++ (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 client];
-  [v8 addDelegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  client = [self client];
+  [client addDelegate:delegateCopy queue:queueCopy];
 }
 
-+ (void)removeDelegate:(id)a3
++ (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [a1 client];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  client = [self client];
+  [client removeDelegate:delegateCopy];
 }
 
-+ (void)_sendNotificationsAndCallbacksAfterRunningBlock:(id)a3
++ (void)_sendNotificationsAndCallbacksAfterRunningBlock:(id)block
 {
   v104 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 supportsTelephonyCalls];
-  v6 = [a1 supportsFaceTimeAudioCalls];
-  v7 = [a1 supportsFaceTimeVideoCalls];
-  v67 = [a1 isDirectFaceTimeAudioCallingCurrentlyAvailable];
-  v66 = [a1 isDirectFaceTimeVideoCallingCurrentlyAvailable];
-  v78 = [a1 supportsRelayCalling];
-  v69 = [a1 isRelayCallingEnabled];
-  v81 = [a1 areRelayCallingFeaturesEnabled];
-  v8 = [a1 cloudCallingDevices];
-  v85 = [a1 outgoingRelayCallerID];
-  v79 = [a1 relayCallingAvailability];
-  v71 = [a1 isEmergencyCallbackModeEnabled];
-  v72 = [a1 isEmergencyCallbackPossible];
-  v73 = [a1 _senderIdentityCapabilitiesByUUID];
-  v74 = v4;
-  (*(v4 + 2))(v4);
-  v9 = [a1 supportsTelephonyCalls];
-  v10 = [a1 supportsFaceTimeAudioCalls];
-  v11 = [a1 supportsFaceTimeVideoCalls];
-  v75 = [a1 isDirectFaceTimeAudioCallingCurrentlyAvailable];
-  v65 = [a1 isDirectFaceTimeVideoCallingCurrentlyAvailable];
-  v76 = [a1 supportsRelayCalling];
-  v68 = [a1 isRelayCallingEnabled];
-  v80 = [a1 areRelayCallingFeaturesEnabled];
-  v12 = [a1 cloudCallingDevices];
-  v84 = [a1 outgoingRelayCallerID];
-  v77 = [a1 relayCallingAvailability];
-  v70 = [a1 isEmergencyCallbackModeEnabled];
-  v13 = [a1 isEmergencyCallbackPossible];
-  v87 = a1;
-  v86 = [a1 _senderIdentityCapabilitiesByUUID];
-  v83 = v8;
-  if (v5 != v9)
+  blockCopy = block;
+  supportsTelephonyCalls = [self supportsTelephonyCalls];
+  supportsFaceTimeAudioCalls = [self supportsFaceTimeAudioCalls];
+  supportsFaceTimeVideoCalls = [self supportsFaceTimeVideoCalls];
+  isDirectFaceTimeAudioCallingCurrentlyAvailable = [self isDirectFaceTimeAudioCallingCurrentlyAvailable];
+  isDirectFaceTimeVideoCallingCurrentlyAvailable = [self isDirectFaceTimeVideoCallingCurrentlyAvailable];
+  supportsRelayCalling = [self supportsRelayCalling];
+  isRelayCallingEnabled = [self isRelayCallingEnabled];
+  areRelayCallingFeaturesEnabled = [self areRelayCallingFeaturesEnabled];
+  cloudCallingDevices = [self cloudCallingDevices];
+  outgoingRelayCallerID = [self outgoingRelayCallerID];
+  relayCallingAvailability = [self relayCallingAvailability];
+  isEmergencyCallbackModeEnabled = [self isEmergencyCallbackModeEnabled];
+  isEmergencyCallbackPossible = [self isEmergencyCallbackPossible];
+  _senderIdentityCapabilitiesByUUID = [self _senderIdentityCapabilitiesByUUID];
+  v74 = blockCopy;
+  (*(blockCopy + 2))(blockCopy);
+  supportsTelephonyCalls2 = [self supportsTelephonyCalls];
+  supportsFaceTimeAudioCalls2 = [self supportsFaceTimeAudioCalls];
+  supportsFaceTimeVideoCalls2 = [self supportsFaceTimeVideoCalls];
+  isDirectFaceTimeAudioCallingCurrentlyAvailable2 = [self isDirectFaceTimeAudioCallingCurrentlyAvailable];
+  isDirectFaceTimeVideoCallingCurrentlyAvailable2 = [self isDirectFaceTimeVideoCallingCurrentlyAvailable];
+  supportsRelayCalling2 = [self supportsRelayCalling];
+  isRelayCallingEnabled2 = [self isRelayCallingEnabled];
+  areRelayCallingFeaturesEnabled2 = [self areRelayCallingFeaturesEnabled];
+  cloudCallingDevices2 = [self cloudCallingDevices];
+  outgoingRelayCallerID2 = [self outgoingRelayCallerID];
+  relayCallingAvailability2 = [self relayCallingAvailability];
+  isEmergencyCallbackModeEnabled2 = [self isEmergencyCallbackModeEnabled];
+  isEmergencyCallbackPossible2 = [self isEmergencyCallbackPossible];
+  selfCopy = self;
+  _senderIdentityCapabilitiesByUUID2 = [self _senderIdentityCapabilitiesByUUID];
+  v83 = cloudCallingDevices;
+  if (supportsTelephonyCalls != supportsTelephonyCalls2)
   {
     v14 = TUDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v101 = v5;
+      *v101 = supportsTelephonyCalls;
       *&v101[4] = 1024;
-      *&v101[6] = v9;
+      *&v101[6] = supportsTelephonyCalls2;
       _os_log_impl(&dword_1956FD000, v14, OS_LOG_TYPE_DEFAULT, "Telephony support changed from %d to %d", buf, 0xEu);
     }
 
-    v15 = [a1 client];
-    [v15 performDelegateCallbackBlock:&__block_literal_global_67];
+    client = [self client];
+    [client performDelegateCallbackBlock:&__block_literal_global_67];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 postNotificationName:@"TUCallCapabilitiesSupportsTelephonyCallsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"TUCallCapabilitiesSupportsTelephonyCallsChangedNotification" object:0];
 
-    v8 = v83;
+    cloudCallingDevices = v83;
   }
 
-  v17 = v86;
-  if (v6 != v10)
+  v17 = _senderIdentityCapabilitiesByUUID2;
+  if (supportsFaceTimeAudioCalls != supportsFaceTimeAudioCalls2)
   {
     v18 = TUDefaultLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v101 = v6;
+      *v101 = supportsFaceTimeAudioCalls;
       *&v101[4] = 1024;
-      *&v101[6] = v10;
+      *&v101[6] = supportsFaceTimeAudioCalls2;
       _os_log_impl(&dword_1956FD000, v18, OS_LOG_TYPE_DEFAULT, "FaceTime Audio support changed from %d to %d", buf, 0xEu);
     }
 
-    v19 = [a1 client];
-    [v19 performDelegateCallbackBlock:&__block_literal_global_71];
+    client2 = [self client];
+    [client2 performDelegateCallbackBlock:&__block_literal_global_71];
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 postNotificationName:@"TUCallCapabilitiesSupportsFaceTimeAudioCallsChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"TUCallCapabilitiesSupportsFaceTimeAudioCallsChangedNotification" object:0];
   }
 
-  if (v7 != v11)
+  if (supportsFaceTimeVideoCalls != supportsFaceTimeVideoCalls2)
   {
     v21 = TUDefaultLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v101 = v7;
+      *v101 = supportsFaceTimeVideoCalls;
       *&v101[4] = 1024;
-      *&v101[6] = v11;
+      *&v101[6] = supportsFaceTimeVideoCalls2;
       _os_log_impl(&dword_1956FD000, v21, OS_LOG_TYPE_DEFAULT, "FaceTime Video support changed from %d to %d", buf, 0xEu);
     }
 
-    v22 = [a1 client];
-    [v22 performDelegateCallbackBlock:&__block_literal_global_76];
+    client3 = [self client];
+    [client3 performDelegateCallbackBlock:&__block_literal_global_76];
 
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 postNotificationName:@"TUCallCapabilitiesSupportsFaceTimeVideoCallsChangedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 postNotificationName:@"TUCallCapabilitiesSupportsFaceTimeVideoCallsChangedNotification" object:0];
   }
 
-  if (v67 != v75 || v66 != v65)
+  if (isDirectFaceTimeAudioCallingCurrentlyAvailable != isDirectFaceTimeAudioCallingCurrentlyAvailable2 || isDirectFaceTimeVideoCallingCurrentlyAvailable != isDirectFaceTimeVideoCallingCurrentlyAvailable2)
   {
     v24 = TUDefaultLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109888;
-      *v101 = v67;
+      *v101 = isDirectFaceTimeAudioCallingCurrentlyAvailable;
       *&v101[4] = 1024;
-      *&v101[6] = v66;
+      *&v101[6] = isDirectFaceTimeVideoCallingCurrentlyAvailable;
       LOWORD(v102) = 1024;
-      *(&v102 + 2) = v75;
+      *(&v102 + 2) = isDirectFaceTimeAudioCallingCurrentlyAvailable2;
       HIWORD(v102) = 1024;
-      v103 = v65;
+      v103 = isDirectFaceTimeVideoCallingCurrentlyAvailable2;
       _os_log_impl(&dword_1956FD000, v24, OS_LOG_TYPE_DEFAULT, "FaceTime availability changed from (audio=%d video=%d) to (audio=%d video=%d)", buf, 0x1Au);
     }
 
-    v25 = [a1 client];
-    [v25 performDelegateCallbackBlock:&__block_literal_global_81];
+    client4 = [self client];
+    [client4 performDelegateCallbackBlock:&__block_literal_global_81];
 
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 postNotificationName:@"TUCallCapabilitiesFaceTimeAvailabilityChangedNotification" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 postNotificationName:@"TUCallCapabilitiesFaceTimeAvailabilityChangedNotification" object:0];
   }
 
-  if (v78 != v76 || v69 != v68)
+  if (supportsRelayCalling != supportsRelayCalling2 || isRelayCallingEnabled != isRelayCallingEnabled2)
   {
     v27 = TUDefaultLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109888;
-      *v101 = v78;
+      *v101 = supportsRelayCalling;
       *&v101[4] = 1024;
-      *&v101[6] = v69;
+      *&v101[6] = isRelayCallingEnabled;
       LOWORD(v102) = 1024;
-      *(&v102 + 2) = v76;
+      *(&v102 + 2) = supportsRelayCalling2;
       HIWORD(v102) = 1024;
-      v103 = v68;
+      v103 = isRelayCallingEnabled2;
       _os_log_impl(&dword_1956FD000, v27, OS_LOG_TYPE_DEFAULT, "Relay capabilities changed from (supported=%d enabled=%d) to (supported=%d enabled=%d)", buf, 0x1Au);
     }
 
-    v28 = [a1 client];
-    [v28 performDelegateCallbackBlock:&__block_literal_global_86];
+    client5 = [self client];
+    [client5 performDelegateCallbackBlock:&__block_literal_global_86];
 
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 postNotificationName:@"TUCallCapabilitiesRelayCallingChangedNotification" object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 postNotificationName:@"TUCallCapabilitiesRelayCallingChangedNotification" object:0];
   }
 
-  if (v79 != v77)
+  if (relayCallingAvailability != relayCallingAvailability2)
   {
     v30 = TUDefaultLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v101 = v79;
+      *v101 = relayCallingAvailability;
       *&v101[4] = 1024;
-      *&v101[6] = v77;
+      *&v101[6] = relayCallingAvailability2;
       _os_log_impl(&dword_1956FD000, v30, OS_LOG_TYPE_DEFAULT, "Relay calling availability changed from %d to %d", buf, 0xEu);
     }
 
-    v31 = [a1 client];
-    [v31 performDelegateCallbackBlock:&__block_literal_global_91];
+    client6 = [self client];
+    [client6 performDelegateCallbackBlock:&__block_literal_global_91];
 
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 postNotificationName:@"TUCallCapabilitiesRelayCallingAvailabilityChangedNotification" object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 postNotificationName:@"TUCallCapabilitiesRelayCallingAvailabilityChangedNotification" object:0];
   }
 
-  if (v81 != v80)
+  if (areRelayCallingFeaturesEnabled != areRelayCallingFeaturesEnabled2)
   {
     v33 = TUDefaultLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v101 = v81;
+      *v101 = areRelayCallingFeaturesEnabled;
       *&v101[4] = 1024;
-      *&v101[6] = v80;
+      *&v101[6] = areRelayCallingFeaturesEnabled2;
       _os_log_impl(&dword_1956FD000, v33, OS_LOG_TYPE_DEFAULT, "Relay calling features changed from %d to %d", buf, 0xEu);
     }
 
-    v34 = [a1 client];
-    [v34 performDelegateCallbackBlock:&__block_literal_global_96];
+    client7 = [self client];
+    [client7 performDelegateCallbackBlock:&__block_literal_global_96];
   }
 
-  if (([v8 isEqualToArray:v12] & 1) == 0)
+  if (([cloudCallingDevices isEqualToArray:cloudCallingDevices2] & 1) == 0)
   {
     v35 = TUDefaultLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -1104,77 +1104,77 @@ uint64_t __75__TUCallCapabilities_isThumperCallingAllowedOnDefaultPairedSecondar
       _os_log_impl(&dword_1956FD000, v35, OS_LOG_TYPE_DEFAULT, "Cloud calling devices changed", buf, 2u);
     }
 
-    v36 = [a1 client];
-    [v36 performDelegateCallbackBlock:&__block_literal_global_101];
+    client8 = [self client];
+    [client8 performDelegateCallbackBlock:&__block_literal_global_101];
 
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 postNotificationName:@"TUCallCapabilitiesCloudCallingDevicesChangedNotification" object:0];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter7 postNotificationName:@"TUCallCapabilitiesCloudCallingDevicesChangedNotification" object:0];
   }
 
-  if ((TUStringsAreEqualOrNil(v85, v84) & 1) == 0)
+  if ((TUStringsAreEqualOrNil(outgoingRelayCallerID, outgoingRelayCallerID2) & 1) == 0)
   {
     v38 = TUDefaultLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v101 = v85;
+      *v101 = outgoingRelayCallerID;
       *&v101[8] = 2112;
-      v102 = v84;
+      v102 = outgoingRelayCallerID2;
       _os_log_impl(&dword_1956FD000, v38, OS_LOG_TYPE_DEFAULT, "Outgoing relay caller ID changed from %@ to %@", buf, 0x16u);
     }
 
-    v39 = [a1 client];
-    [v39 performDelegateCallbackBlock:&__block_literal_global_106];
+    client9 = [self client];
+    [client9 performDelegateCallbackBlock:&__block_literal_global_106];
 
-    v40 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v40 postNotificationName:@"TUCallCapabilitiesOutgoingRelayCallerIDChangedNotification" object:0];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter8 postNotificationName:@"TUCallCapabilitiesOutgoingRelayCallerIDChangedNotification" object:0];
   }
 
-  if (v71 != v70)
+  if (isEmergencyCallbackModeEnabled != isEmergencyCallbackModeEnabled2)
   {
     v41 = TUDefaultLog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v101 = v71;
+      *v101 = isEmergencyCallbackModeEnabled;
       *&v101[4] = 1024;
-      *&v101[6] = v70;
+      *&v101[6] = isEmergencyCallbackModeEnabled2;
       _os_log_impl(&dword_1956FD000, v41, OS_LOG_TYPE_DEFAULT, "Emergency Callback Mode changed from %d to %d", buf, 0xEu);
     }
 
-    v42 = [a1 client];
-    [v42 performDelegateCallbackBlock:&__block_literal_global_111];
+    client10 = [self client];
+    [client10 performDelegateCallbackBlock:&__block_literal_global_111];
 
-    v43 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v43 postNotificationName:@"TUCallCapabilitiesEmergencyCallbackModeChangedNotification" object:0];
+    defaultCenter9 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter9 postNotificationName:@"TUCallCapabilitiesEmergencyCallbackModeChangedNotification" object:0];
   }
 
-  v82 = v12;
-  if (v72 != v13)
+  v82 = cloudCallingDevices2;
+  if (isEmergencyCallbackPossible != isEmergencyCallbackPossible2)
   {
     v44 = TUDefaultLog();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v101 = v72;
+      *v101 = isEmergencyCallbackPossible;
       *&v101[4] = 1024;
-      *&v101[6] = v13;
+      *&v101[6] = isEmergencyCallbackPossible2;
       _os_log_impl(&dword_1956FD000, v44, OS_LOG_TYPE_DEFAULT, "Emergency Callback Possible changed from %d to %d", buf, 0xEu);
     }
 
-    v45 = [a1 client];
-    [v45 performDelegateCallbackBlock:&__block_literal_global_116];
+    client11 = [self client];
+    [client11 performDelegateCallbackBlock:&__block_literal_global_116];
 
-    v46 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v46 postNotificationName:@"TUCallCapabilitiesEmergencyCallbackPossibleChangedNotification" object:0];
+    defaultCenter10 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter10 postNotificationName:@"TUCallCapabilitiesEmergencyCallbackPossibleChangedNotification" object:0];
   }
 
-  v47 = [v86 mutableCopy];
+  v47 = [_senderIdentityCapabilitiesByUUID2 mutableCopy];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v48 = v73;
+  v48 = _senderIdentityCapabilitiesByUUID;
   v49 = [v48 countByEnumeratingWithState:&v94 objects:v99 count:16];
   if (v49)
   {
@@ -1200,15 +1200,15 @@ uint64_t __75__TUCallCapabilities_isThumperCallingAllowedOnDefaultPairedSecondar
 
         else
         {
-          v56 = [v87 client];
+          client12 = [selfCopy client];
           v93[0] = MEMORY[0x1E69E9820];
           v93[1] = 3221225472;
           v93[2] = __70__TUCallCapabilities__sendNotificationsAndCallbacksAfterRunningBlock___block_invoke_2;
           v93[3] = &unk_1E7424DA0;
           v93[4] = v53;
-          [v56 performDelegateCallbackBlock:v93];
+          [client12 performDelegateCallbackBlock:v93];
 
-          v17 = v86;
+          v17 = _senderIdentityCapabilitiesByUUID2;
         }
       }
 
@@ -1238,13 +1238,13 @@ uint64_t __75__TUCallCapabilities_isThumperCallingAllowedOnDefaultPairedSecondar
         }
 
         v62 = *(*(&v89 + 1) + 8 * j);
-        v63 = [v87 client];
+        client13 = [selfCopy client];
         v88[0] = MEMORY[0x1E69E9820];
         v88[1] = 3221225472;
         v88[2] = __70__TUCallCapabilities__sendNotificationsAndCallbacksAfterRunningBlock___block_invoke_3;
         v88[3] = &unk_1E7424DA0;
         v88[4] = v62;
-        [v63 performDelegateCallbackBlock:v88];
+        [client13 performDelegateCallbackBlock:v88];
       }
 
       v59 = [v57 countByEnumeratingWithState:&v89 objects:v98 count:16];
@@ -1377,60 +1377,60 @@ void __70__TUCallCapabilities__sendNotificationsAndCallbacksAfterRunningBlock___
 {
   v3 = [MEMORY[0x1E696AD60] stringWithString:@"== TUCallCapabilities ==\n"];
   [v3 appendString:@"General Support:\n"];
-  [v3 appendFormat:@"    supportsTelephonyCalls: %d\n", objc_msgSend(a1, "supportsTelephonyCalls")];
-  [v3 appendFormat:@"    supportsFaceTimeAudioCalls: %d\n", objc_msgSend(a1, "supportsFaceTimeAudioCalls")];
-  [v3 appendFormat:@"    supportsFaceTimeVideoCalls: %d\n", objc_msgSend(a1, "supportsFaceTimeVideoCalls")];
-  [v3 appendFormat:@"    canAttemptTelephonyCallsWithoutCellularConnection: %d\n", objc_msgSend(a1, "canAttemptTelephonyCallsWithoutCellularConnection")];
-  [v3 appendFormat:@"    canAttemptEmergencyCallsWithoutCellularConnection: %d\n", objc_msgSend(a1, "canAttemptEmergencyCallsWithoutCellularConnection")];
+  [v3 appendFormat:@"    supportsTelephonyCalls: %d\n", objc_msgSend(self, "supportsTelephonyCalls")];
+  [v3 appendFormat:@"    supportsFaceTimeAudioCalls: %d\n", objc_msgSend(self, "supportsFaceTimeAudioCalls")];
+  [v3 appendFormat:@"    supportsFaceTimeVideoCalls: %d\n", objc_msgSend(self, "supportsFaceTimeVideoCalls")];
+  [v3 appendFormat:@"    canAttemptTelephonyCallsWithoutCellularConnection: %d\n", objc_msgSend(self, "canAttemptTelephonyCallsWithoutCellularConnection")];
+  [v3 appendFormat:@"    canAttemptEmergencyCallsWithoutCellularConnection: %d\n", objc_msgSend(self, "canAttemptEmergencyCallsWithoutCellularConnection")];
   [v3 appendString:@"Primary/Secondary Device:\n"];
-  [v3 appendFormat:@"    supportsPrimaryCalling: %d\n", objc_msgSend(a1, "supportsPrimaryCalling")];
+  [v3 appendFormat:@"    supportsPrimaryCalling: %d\n", objc_msgSend(self, "supportsPrimaryCalling")];
   [v3 appendString:@"Call support:\n"];
-  [v3 appendFormat:@"    telephonyCallSupport: %d\n", objc_msgSend(a1, "telephonyCallSupport")];
-  [v3 appendFormat:@"    faceTimeAudioCallSupport: %d\n", objc_msgSend(a1, "faceTimeAudioCallSupport")];
-  [v3 appendFormat:@"    faceTimeVideoCallSupport: %d\n", objc_msgSend(a1, "faceTimeVideoCallSupport")];
+  [v3 appendFormat:@"    telephonyCallSupport: %d\n", objc_msgSend(self, "telephonyCallSupport")];
+  [v3 appendFormat:@"    faceTimeAudioCallSupport: %d\n", objc_msgSend(self, "faceTimeAudioCallSupport")];
+  [v3 appendFormat:@"    faceTimeVideoCallSupport: %d\n", objc_msgSend(self, "faceTimeVideoCallSupport")];
   [v3 appendString:@"Displaying support:\n"];
-  [v3 appendFormat:@"    supportsDisplayingTelephonyCalls: %d\n", objc_msgSend(a1, "supportsDisplayingTelephonyCalls")];
-  [v3 appendFormat:@"    supportsDisplayingFaceTimeAudioCalls: %d\n", objc_msgSend(a1, "supportsDisplayingFaceTimeAudioCalls")];
-  [v3 appendFormat:@"    supportsDisplayingFaceTimeVideoCalls: %d\n", objc_msgSend(a1, "supportsDisplayingFaceTimeVideoCalls")];
+  [v3 appendFormat:@"    supportsDisplayingTelephonyCalls: %d\n", objc_msgSend(self, "supportsDisplayingTelephonyCalls")];
+  [v3 appendFormat:@"    supportsDisplayingFaceTimeAudioCalls: %d\n", objc_msgSend(self, "supportsDisplayingFaceTimeAudioCalls")];
+  [v3 appendFormat:@"    supportsDisplayingFaceTimeVideoCalls: %d\n", objc_msgSend(self, "supportsDisplayingFaceTimeVideoCalls")];
   [v3 appendString:@"Call Availability:\n"];
-  [v3 appendFormat:@"    isDirectTelephonyCallingCurrentlyAvailable: %d\n", objc_msgSend(a1, "isDirectTelephonyCallingCurrentlyAvailable")];
-  [v3 appendFormat:@"    isDirectFaceTimeAudioCallingCurrentlyAvailable: %d\n", objc_msgSend(a1, "isDirectFaceTimeAudioCallingCurrentlyAvailable")];
-  [v3 appendFormat:@"    isDirectFaceTimeVideoCallingCurrentlyAvailable: %d\n", objc_msgSend(a1, "isDirectFaceTimeVideoCallingCurrentlyAvailable")];
+  [v3 appendFormat:@"    isDirectTelephonyCallingCurrentlyAvailable: %d\n", objc_msgSend(self, "isDirectTelephonyCallingCurrentlyAvailable")];
+  [v3 appendFormat:@"    isDirectFaceTimeAudioCallingCurrentlyAvailable: %d\n", objc_msgSend(self, "isDirectFaceTimeAudioCallingCurrentlyAvailable")];
+  [v3 appendFormat:@"    isDirectFaceTimeVideoCallingCurrentlyAvailable: %d\n", objc_msgSend(self, "isDirectFaceTimeVideoCallingCurrentlyAvailable")];
   [v3 appendString:@"System capabilities:\n"];
-  [v3 appendFormat:@"    supportsSimultaneousVoiceAndData: %d\n", objc_msgSend(a1, "supportsSimultaneousVoiceAndData")];
+  [v3 appendFormat:@"    supportsSimultaneousVoiceAndData: %d\n", objc_msgSend(self, "supportsSimultaneousVoiceAndData")];
   [v3 appendString:@"Wi-Fi calling:\n"];
-  [v3 appendFormat:@"    supportsWiFiCalling: %d\n", objc_msgSend(a1, "supportsWiFiCalling")];
-  [v3 appendFormat:@"    isWiFiCallingEnabled: %d\n", objc_msgSend(a1, "isWiFiCallingEnabled")];
-  [v3 appendFormat:@"    isWiFiCallingCurrentlyAvailable: %d\n", objc_msgSend(a1, "isWiFiCallingCurrentlyAvailable")];
+  [v3 appendFormat:@"    supportsWiFiCalling: %d\n", objc_msgSend(self, "supportsWiFiCalling")];
+  [v3 appendFormat:@"    isWiFiCallingEnabled: %d\n", objc_msgSend(self, "isWiFiCallingEnabled")];
+  [v3 appendFormat:@"    isWiFiCallingCurrentlyAvailable: %d\n", objc_msgSend(self, "isWiFiCallingCurrentlyAvailable")];
   [v3 appendString:@"VoLTE calling:\n"];
-  [v3 appendFormat:@"    supportsVoLTECalling: %d\n", objc_msgSend(a1, "supportsVoLTECalling")];
-  [v3 appendFormat:@"    isVoLTECallingEnabled: %d\n", objc_msgSend(a1, "isVoLTECallingEnabled")];
-  [v3 appendFormat:@"    isVoLTECallingCurrentlyAvailable: %d\n", objc_msgSend(a1, "isVoLTECallingCurrentlyAvailable")];
+  [v3 appendFormat:@"    supportsVoLTECalling: %d\n", objc_msgSend(self, "supportsVoLTECalling")];
+  [v3 appendFormat:@"    isVoLTECallingEnabled: %d\n", objc_msgSend(self, "isVoLTECallingEnabled")];
+  [v3 appendFormat:@"    isVoLTECallingCurrentlyAvailable: %d\n", objc_msgSend(self, "isVoLTECallingCurrentlyAvailable")];
   [v3 appendString:@"Secondary calling:\n"];
-  [v3 appendFormat:@"    accountsMatchForSecondaryCalling: %d\n", objc_msgSend(a1, "accountsMatchForSecondaryCalling")];
-  [v3 appendFormat:@"    accountsSupportSecondaryCalling: %d\n", objc_msgSend(a1, "accountsSupportSecondaryCalling")];
+  [v3 appendFormat:@"    accountsMatchForSecondaryCalling: %d\n", objc_msgSend(self, "accountsMatchForSecondaryCalling")];
+  [v3 appendFormat:@"    accountsSupportSecondaryCalling: %d\n", objc_msgSend(self, "accountsSupportSecondaryCalling")];
   [v3 appendString:@"Thumper calling:\n"];
-  [v3 appendFormat:@"    supportsThumperCalling: %d\n", objc_msgSend(a1, "supportsThumperCalling")];
-  [v3 appendFormat:@"    isThumperCallingAllowedForCurrentDevice: %d\n", objc_msgSend(a1, "isThumperCallingAllowedForCurrentDevice")];
-  [v3 appendFormat:@"    isThumperCallingEnabled: %d\n", objc_msgSend(a1, "isThumperCallingEnabled")];
-  [v3 appendFormat:@"    supportsThumperCallingOverCellularData: %d\n", objc_msgSend(a1, "supportsThumperCallingOverCellularData")];
-  [v3 appendFormat:@"    isThumperCallingCurrentlyAvailable: %d\n", objc_msgSend(a1, "isThumperCallingCurrentlyAvailable")];
+  [v3 appendFormat:@"    supportsThumperCalling: %d\n", objc_msgSend(self, "supportsThumperCalling")];
+  [v3 appendFormat:@"    isThumperCallingAllowedForCurrentDevice: %d\n", objc_msgSend(self, "isThumperCallingAllowedForCurrentDevice")];
+  [v3 appendFormat:@"    isThumperCallingEnabled: %d\n", objc_msgSend(self, "isThumperCallingEnabled")];
+  [v3 appendFormat:@"    supportsThumperCallingOverCellularData: %d\n", objc_msgSend(self, "supportsThumperCallingOverCellularData")];
+  [v3 appendFormat:@"    isThumperCallingCurrentlyAvailable: %d\n", objc_msgSend(self, "isThumperCallingCurrentlyAvailable")];
   [v3 appendString:@"Relay calling:\n"];
-  [v3 appendFormat:@"    supportsRelayingToOtherDevices: %d\n", objc_msgSend(a1, "supportsRelayingToOtherDevices")];
-  [v3 appendFormat:@"    supportsRelayCalling: %d\n", objc_msgSend(a1, "supportsRelayCalling")];
-  [v3 appendFormat:@"    isRelayCallingEnabled: %d\n", objc_msgSend(a1, "isRelayCallingEnabled")];
-  [v3 appendFormat:@"    isRelayCallingGuaranteed: %d\n", objc_msgSend(a1, "relayCallingAvailability") == 2];
-  [v3 appendFormat:@"    areRelayCallingFeaturesEnabled: %d\n", objc_msgSend(a1, "areRelayCallingFeaturesEnabled")];
+  [v3 appendFormat:@"    supportsRelayingToOtherDevices: %d\n", objc_msgSend(self, "supportsRelayingToOtherDevices")];
+  [v3 appendFormat:@"    supportsRelayCalling: %d\n", objc_msgSend(self, "supportsRelayCalling")];
+  [v3 appendFormat:@"    isRelayCallingEnabled: %d\n", objc_msgSend(self, "isRelayCallingEnabled")];
+  [v3 appendFormat:@"    isRelayCallingGuaranteed: %d\n", objc_msgSend(self, "relayCallingAvailability") == 2];
+  [v3 appendFormat:@"    areRelayCallingFeaturesEnabled: %d\n", objc_msgSend(self, "areRelayCallingFeaturesEnabled")];
   [v3 appendString:@"Outgoing relay calling:\n"];
-  [v3 appendFormat:@"    supportsTelephonyRelayCalling: %d\n", objc_msgSend(a1, "supportsTelephonyRelayCalling")];
-  [v3 appendFormat:@"    supportsFaceTimeAudioRelayCalling: %d\n", objc_msgSend(a1, "supportsFaceTimeAudioRelayCalling")];
-  [v3 appendFormat:@"    supportsFaceTimeVideoRelayCalling: %d\n", objc_msgSend(a1, "supportsFaceTimeVideoRelayCalling")];
-  v4 = [a1 outgoingRelayCallerID];
-  [v3 appendFormat:@"    outgoingRelayCallerID: %@\n", v4];
+  [v3 appendFormat:@"    supportsTelephonyRelayCalling: %d\n", objc_msgSend(self, "supportsTelephonyRelayCalling")];
+  [v3 appendFormat:@"    supportsFaceTimeAudioRelayCalling: %d\n", objc_msgSend(self, "supportsFaceTimeAudioRelayCalling")];
+  [v3 appendFormat:@"    supportsFaceTimeVideoRelayCalling: %d\n", objc_msgSend(self, "supportsFaceTimeVideoRelayCalling")];
+  outgoingRelayCallerID = [self outgoingRelayCallerID];
+  [v3 appendFormat:@"    outgoingRelayCallerID: %@\n", outgoingRelayCallerID];
 
   [v3 appendString:@"Emergency callback mode:\n"];
-  [v3 appendFormat:@"    isEmergencyCallbackModeEnabled: %d\n", objc_msgSend(a1, "isEmergencyCallbackModeEnabled")];
-  [v3 appendFormat:@"    isEmergencyCallbackPossible: %d\n", objc_msgSend(a1, "isEmergencyCallbackPossible")];
+  [v3 appendFormat:@"    isEmergencyCallbackModeEnabled: %d\n", objc_msgSend(self, "isEmergencyCallbackModeEnabled")];
+  [v3 appendFormat:@"    isEmergencyCallbackPossible: %d\n", objc_msgSend(self, "isEmergencyCallbackPossible")];
 
   return v3;
 }

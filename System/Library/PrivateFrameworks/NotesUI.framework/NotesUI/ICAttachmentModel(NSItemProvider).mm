@@ -6,34 +6,34 @@
 
 - (id)itemProvider
 {
-  v2 = [a1 attachment];
-  v3 = [v2 isURL];
+  attachment = [self attachment];
+  isURL = [attachment isURL];
 
-  if (v3)
+  if (isURL)
   {
-    v4 = [a1 attachment];
-    v5 = [v4 URL];
+    attachment2 = [self attachment];
+    attachment5 = [attachment2 URL];
 
-    v6 = [a1 attachment];
-    v7 = [v6 title];
+    attachment3 = [self attachment];
+    title = [attachment3 title];
 
-    if (![v7 length])
+    if (![title length])
     {
       v8 = MEMORY[0x1E69B7680];
-      v9 = [a1 attachment];
-      v10 = [v8 defaultTitleForAttachmentType:{objc_msgSend(v9, "attachmentType")}];
+      attachment4 = [self attachment];
+      v10 = [v8 defaultTitleForAttachmentType:{objc_msgSend(attachment4, "attachmentType")}];
 
-      v7 = v10;
+      title = v10;
     }
 
-    if ([v7 length])
+    if ([title length])
     {
-      v11 = [MEMORY[0x1E696ACA0] itemProviderWithURL:v5 title:v7];
+      v11 = [MEMORY[0x1E696ACA0] itemProviderWithURL:attachment5 title:title];
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v5];
+      v11 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:attachment5];
     }
 
     v14 = v11;
@@ -45,10 +45,10 @@
     v13 = ICCheckedProtocolCast();
     v14 = [v12 initWithObject:v13];
 
-    [a1 registerFileLoadHandlersOnItemProvider:v14];
-    v5 = [a1 attachment];
-    v7 = [v5 title];
-    [v14 setSuggestedName:v7];
+    [self registerFileLoadHandlersOnItemProvider:v14];
+    attachment5 = [self attachment];
+    title = [attachment5 title];
+    [v14 setSuggestedName:title];
   }
 
   return v14;

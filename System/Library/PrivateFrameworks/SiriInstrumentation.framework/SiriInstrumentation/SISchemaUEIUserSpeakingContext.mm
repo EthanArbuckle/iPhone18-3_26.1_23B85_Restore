@@ -1,32 +1,32 @@
 @interface SISchemaUEIUserSpeakingContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIUserSpeakingContext)initWithDictionary:(id)a3;
-- (SISchemaUEIUserSpeakingContext)initWithJSON:(id)a3;
+- (SISchemaUEIUserSpeakingContext)initWithDictionary:(id)dictionary;
+- (SISchemaUEIUserSpeakingContext)initWithJSON:(id)n;
 - (SISchemaUEIUserSpeakingEnded)ended;
 - (SISchemaUEIUserSpeakingStarted)startedOrChanged;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteEnded;
 - (void)deleteStartedOrChanged;
-- (void)setEnded:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIUserSpeakingContext
 
-- (SISchemaUEIUserSpeakingContext)initWithDictionary:(id)a3
+- (SISchemaUEIUserSpeakingContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SISchemaUEIUserSpeakingContext;
   v5 = [(SISchemaUEIUserSpeakingContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       [(SISchemaUEIUserSpeakingContext *)v5 setStartedOrChanged:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
       [(SISchemaUEIUserSpeakingContext *)v5 setEnded:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"trpId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (SISchemaUEIUserSpeakingContext)initWithJSON:(id)a3
+- (SISchemaUEIUserSpeakingContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIUserSpeakingContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIUserSpeakingContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIUserSpeakingContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,58 +92,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(SISchemaUEIUserSpeakingContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(SISchemaUEIUserSpeakingContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v7 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    startedOrChanged = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
+    dictionaryRepresentation2 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"startedOrChanged"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
   if (self->_trpId)
   {
-    v10 = [(SISchemaUEIUserSpeakingContext *)self trpId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    trpId = [(SISchemaUEIUserSpeakingContext *)self trpId];
+    dictionaryRepresentation3 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"trpId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"trpId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -153,34 +153,34 @@
   return v4 ^ [(SISchemaUUID *)self->_trpId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_18;
   }
 
-  v6 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
+  startedOrChanged2 = [equalCopy startedOrChanged];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
-  if (v8)
+  startedOrChanged3 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
+  if (startedOrChanged3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
-    v11 = [v4 startedOrChanged];
-    v12 = [v10 isEqual:v11];
+    v9 = startedOrChanged3;
+    startedOrChanged4 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
+    startedOrChanged5 = [equalCopy startedOrChanged];
+    v12 = [startedOrChanged4 isEqual:startedOrChanged5];
 
     if (!v12)
     {
@@ -192,20 +192,20 @@
   {
   }
 
-  v6 = [(SISchemaUEIUserSpeakingContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(SISchemaUEIUserSpeakingContext *)self ended];
+  startedOrChanged2 = [equalCopy ended];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(SISchemaUEIUserSpeakingContext *)self ended];
-  if (v13)
+  ended = [(SISchemaUEIUserSpeakingContext *)self ended];
+  if (ended)
   {
-    v14 = v13;
-    v15 = [(SISchemaUEIUserSpeakingContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(SISchemaUEIUserSpeakingContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (!v17)
     {
@@ -217,12 +217,12 @@
   {
   }
 
-  v6 = [(SISchemaUEIUserSpeakingContext *)self trpId];
-  v7 = [v4 trpId];
-  if ((v6 != 0) != (v7 == 0))
+  startedOrChanged = [(SISchemaUEIUserSpeakingContext *)self trpId];
+  startedOrChanged2 = [equalCopy trpId];
+  if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
   {
-    v18 = [(SISchemaUEIUserSpeakingContext *)self trpId];
-    if (!v18)
+    trpId = [(SISchemaUEIUserSpeakingContext *)self trpId];
+    if (!trpId)
     {
 
 LABEL_21:
@@ -230,10 +230,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(SISchemaUEIUserSpeakingContext *)self trpId];
-    v21 = [v4 trpId];
-    v22 = [v20 isEqual:v21];
+    v19 = trpId;
+    trpId2 = [(SISchemaUEIUserSpeakingContext *)self trpId];
+    trpId3 = [equalCopy trpId];
+    v22 = [trpId2 isEqual:trpId3];
 
     if (v22)
     {
@@ -253,34 +253,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
+    startedOrChanged2 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaUEIUserSpeakingContext *)self ended];
+  ended = [(SISchemaUEIUserSpeakingContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(SISchemaUEIUserSpeakingContext *)self ended];
+    ended2 = [(SISchemaUEIUserSpeakingContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SISchemaUEIUserSpeakingContext *)self trpId];
+  trpId = [(SISchemaUEIUserSpeakingContext *)self trpId];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (trpId)
   {
-    v10 = [(SISchemaUEIUserSpeakingContext *)self trpId];
+    trpId2 = [(SISchemaUEIUserSpeakingContext *)self trpId];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -309,15 +309,15 @@ LABEL_19:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (endedCopy != 0);
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -345,46 +345,46 @@ LABEL_19:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ended = self->_ended;
   self->_ended = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = changedCopy != 0;
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = SISchemaUEIUserSpeakingContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  startedOrChanged = [(SISchemaUEIUserSpeakingContext *)self startedOrChanged];
+  v7 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaUEIUserSpeakingContext *)self deleteStartedOrChanged];
   }
 
-  v9 = [(SISchemaUEIUserSpeakingContext *)self ended];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ended = [(SISchemaUEIUserSpeakingContext *)self ended];
+  v10 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaUEIUserSpeakingContext *)self deleteEnded];
   }
 
-  v12 = [(SISchemaUEIUserSpeakingContext *)self trpId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  trpId = [(SISchemaUEIUserSpeakingContext *)self trpId];
+  v13 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaUEIUserSpeakingContext *)self deleteTrpId];
   }

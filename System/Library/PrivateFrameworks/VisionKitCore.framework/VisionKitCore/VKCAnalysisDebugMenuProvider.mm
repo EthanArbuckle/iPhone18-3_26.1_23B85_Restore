@@ -1,53 +1,53 @@
 @interface VKCAnalysisDebugMenuProvider
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)menuFromElements:(id)a3 title:(id)a4;
-- (id)menuFromProvider:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)presentDebugMenuProvider:(id)a3 fromView:(id)a4 rect:(CGRect)a5;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)menuFromElements:(id)elements title:(id)title;
+- (id)menuFromProvider:(id)provider;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)presentDebugMenuProvider:(id)provider fromView:(id)view rect:(CGRect)rect;
 @end
 
 @implementation VKCAnalysisDebugMenuProvider
 
-- (void)presentDebugMenuProvider:(id)a3 fromView:(id)a4 rect:(CGRect)a5
+- (void)presentDebugMenuProvider:(id)provider fromView:(id)view rect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11 = MEMORY[0x1E69DC8E0];
-  v12 = a4;
-  v13 = a3;
+  viewCopy = view;
+  providerCopy = provider;
   v14 = [[v11 alloc] initWithDelegate:self];
   [(VKCAnalysisDebugMenuProvider *)self setContextMenuInteraction:v14];
 
-  v15 = [(VKCAnalysisDebugMenuProvider *)self contextMenuInteraction];
-  [v12 addInteraction:v15];
+  contextMenuInteraction = [(VKCAnalysisDebugMenuProvider *)self contextMenuInteraction];
+  [viewCopy addInteraction:contextMenuInteraction];
 
-  [(VKCAnalysisDebugMenuProvider *)self setProvider:v13];
-  v17 = [(VKCAnalysisDebugMenuProvider *)self contextMenuInteraction];
-  v16 = [[VKQuad alloc] initWithRect:x, y, width, height];
-  [(VKQuad *)v16 bottomRight];
-  [v17 _presentMenuAtLocation:?];
+  [(VKCAnalysisDebugMenuProvider *)self setProvider:providerCopy];
+  contextMenuInteraction2 = [(VKCAnalysisDebugMenuProvider *)self contextMenuInteraction];
+  height = [[VKQuad alloc] initWithRect:x, y, width, height];
+  [(VKQuad *)height bottomRight];
+  [contextMenuInteraction2 _presentMenuAtLocation:?];
 }
 
-- (id)menuFromProvider:(id)a3
+- (id)menuFromProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [v3 analysisResult];
-  v88 = [v3 delegate];
-  v90 = [v4 text];
-  v5 = [v4 text];
-  v6 = [v5 length];
+  providerCopy = provider;
+  analysisResult = [providerCopy analysisResult];
+  delegate = [providerCopy delegate];
+  text = [analysisResult text];
+  text2 = [analysisResult text];
+  v6 = [text2 length];
 
-  v91 = [v3 selectedRange];
-  [v3 totalQuadTextArea];
+  selectedRange = [providerCopy selectedRange];
+  [providerCopy totalQuadTextArea];
   v8 = v7;
-  [v3 totalBoundingBoxTextArea];
+  [providerCopy totalBoundingBoxTextArea];
   v10 = v9;
-  if (v3)
+  if (providerCopy)
   {
-    [v3 visibleTextAreaInfo];
+    [providerCopy visibleTextAreaInfo];
     v11 = 0.0 * 100.0;
     v85 = 0.0;
     v84 = v85;
@@ -64,19 +64,19 @@
 
   v12 = v8 * 100.0;
   v13 = v10 * 100.0;
-  v86 = [v3 subjectRequestStatus];
-  v14 = [v3 subjectContext];
-  v82 = [v14 subjectCount];
-  v89 = [v14 animatedStickerScore];
+  subjectRequestStatus = [providerCopy subjectRequestStatus];
+  subjectContext = [providerCopy subjectContext];
+  subjectCount = [subjectContext subjectCount];
+  animatedStickerScore = [subjectContext animatedStickerScore];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v16 = [v3 analysisResult];
-  v17 = [v16 request];
-  v18 = VKMUIStringForAnalysisTypes([v17 analysisTypes]);
+  analysisResult2 = [providerCopy analysisResult];
+  request = [analysisResult2 request];
+  v18 = VKMUIStringForAnalysisTypes([request analysisTypes]);
 
   v19 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"AnalysisTypes" subtitle:v18];
   [v15 addObject:v19];
 
-  v20 = VKMUIStringForAnalysisInteractionTypes([v3 activeInteractionTypes]);
+  v20 = VKMUIStringForAnalysisInteractionTypes([providerCopy activeInteractionTypes]);
 
   v21 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"Interaction Types" subtitle:v20];
   [v15 addObject:v21];
@@ -90,13 +90,13 @@
   [v15 addObject:v24];
 
   v25 = MEMORY[0x1E69DC628];
-  v26 = VKMUIStringForVKRange(v91);
+  v26 = VKMUIStringForVKRange(selectedRange);
   v27 = [v25 vk_itemWithTitle:@"SelectedRange" subtitle:v26];
   [v15 addObject:v27];
 
-  if ([v91 length])
+  if ([selectedRange length])
   {
-    v28 = [v90 vk_substringWithVKRange:v91];
+    v28 = [text vk_substringWithVKRange:selectedRange];
   }
 
   else
@@ -124,23 +124,23 @@
   v37 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"Visible Quad Height (In Window)" subtitle:v36];
   [v15 addObject:v37];
 
-  v38 = [MEMORY[0x1E696AD98] numberWithInteger:v82];
+  v38 = [MEMORY[0x1E696AD98] numberWithInteger:subjectCount];
   v39 = [v38 description];
 
   v40 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"Subject Count" subtitle:v39];
   [v15 addObject:v40];
 
-  v41 = VKMUIStringForSubjectRequestStatus(v86);
+  v41 = VKMUIStringForSubjectRequestStatus(subjectRequestStatus);
 
   v42 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"Subject Request Status" subtitle:v41];
   [v15 addObject:v42];
 
-  if (v14)
+  if (subjectContext)
   {
-    if (v89)
+    if (animatedStickerScore)
     {
       v43 = MEMORY[0x1E696AEC0];
-      [v89 floatValue];
+      [animatedStickerScore floatValue];
       v45 = [v43 stringWithFormat:@"Sticker Score: %.02f", v44];
     }
 
@@ -155,12 +155,12 @@
     v41 = v45;
   }
 
-  [v3 contentsRect];
+  [providerCopy contentsRect];
   v48 = v47;
   v50 = v49;
   v52 = v51;
   v54 = v53;
-  [v3 visibleImageRect];
+  [providerCopy visibleImageRect];
   v56 = v55;
   v58 = v57;
   v60 = v59;
@@ -179,20 +179,20 @@
   v70 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"VisibleRect" subtitle:v69];
   [v15 addObject:v70];
 
-  v71 = [v4 textDataDetectorElements];
-  v72 = [(VKCAnalysisDebugMenuProvider *)self menuFromElements:v71 title:@"Data Detectors"];
+  textDataDetectorElements = [analysisResult textDataDetectorElements];
+  v72 = [(VKCAnalysisDebugMenuProvider *)self menuFromElements:textDataDetectorElements title:@"Data Detectors"];
   [v15 addObject:v72];
 
-  v73 = [v4 mrcDataDetectorElements];
-  v74 = [(VKCAnalysisDebugMenuProvider *)self menuFromElements:v73 title:@"MRC DD"];
+  mrcDataDetectorElements = [analysisResult mrcDataDetectorElements];
+  v74 = [(VKCAnalysisDebugMenuProvider *)self menuFromElements:mrcDataDetectorElements title:@"MRC DD"];
   [v15 addObject:v74];
 
-  v75 = [v4 visualSearchResult];
-  v76 = [v75 resultItems];
-  v77 = [(VKCAnalysisDebugMenuProvider *)self menuFromElements:v76 title:@"Visual Search"];
+  visualSearchResult = [analysisResult visualSearchResult];
+  resultItems = [visualSearchResult resultItems];
+  v77 = [(VKCAnalysisDebugMenuProvider *)self menuFromElements:resultItems title:@"Visual Search"];
   [v15 addObject:v77];
 
-  v78 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v88];
+  v78 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", delegate];
 
   v79 = [MEMORY[0x1E69DC628] vk_itemWithTitle:v78 subtitle:0];
   [v15 addObject:v79];
@@ -202,23 +202,23 @@
   return v80;
 }
 
-- (id)menuFromElements:(id)a3 title:(id)a4
+- (id)menuFromElements:(id)elements title:(id)title
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 stringWithFormat:@"%@: (%lu)", v6, objc_msgSend(v7, "count")];
+  titleCopy = title;
+  elementsCopy = elements;
+  v8 = [v5 stringWithFormat:@"%@: (%lu)", titleCopy, objc_msgSend(elementsCopy, "count")];
 
-  v9 = [v7 vk_compactMap:&__block_literal_global_9];
+  v9 = [elementsCopy vk_compactMap:&__block_literal_global_9];
 
   v10 = [MEMORY[0x1E69DCC60] vk_menuWithItems:v9 title:v8];
 
   return v10;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69DC8D8];
   v9[0] = MEMORY[0x1E69E9820];
@@ -243,19 +243,19 @@ id __86__VKCAnalysisDebugMenuProvider_contextMenuInteraction_configurationForMen
   return v4;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v4 = [MEMORY[0x1E69DD440] defaultStyle];
-  [v4 setPreferredLayout:3];
+  defaultStyle = [MEMORY[0x1E69DD440] defaultStyle];
+  [defaultStyle setPreferredLayout:3];
 
-  return v4;
+  return defaultStyle;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v5 = a3;
-  v6 = [v5 view];
-  [v6 removeInteraction:v5];
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  [view removeInteraction:interactionCopy];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface FxPlugGroup
-+ (id)fxPlugGroupWithDescriptor:(id)a3;
-- (FxPlugGroup)initWithDescriptor:(id)a3;
++ (id)fxPlugGroupWithDescriptor:(id)descriptor;
+- (FxPlugGroup)initWithDescriptor:(id)descriptor;
 - (void)dealloc;
 @end
 
 @implementation FxPlugGroup
 
-- (FxPlugGroup)initWithDescriptor:(id)a3
+- (FxPlugGroup)initWithDescriptor:(id)descriptor
 {
   v7.receiver = self;
   v7.super_class = FxPlugGroup;
@@ -17,7 +17,7 @@
     v4->_priv = v5;
     if (v5)
     {
-      v4->_priv->var1 = a3;
+      v4->_priv->var1 = descriptor;
       v4->_priv->var0 = [MEMORY[0x277CBEB18] array];
     }
   }
@@ -52,9 +52,9 @@
   [(FxPlugGroup *)&v11 dealloc];
 }
 
-+ (id)fxPlugGroupWithDescriptor:(id)a3
++ (id)fxPlugGroupWithDescriptor:(id)descriptor
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithDescriptor:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithDescriptor:descriptor];
 
   return v3;
 }

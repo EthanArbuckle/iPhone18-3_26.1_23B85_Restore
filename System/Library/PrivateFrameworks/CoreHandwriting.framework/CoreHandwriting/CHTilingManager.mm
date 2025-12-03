@@ -1,28 +1,28 @@
 @interface CHTilingManager
-- (CHTilingManager)initWithStrokeProvider:(id)a3;
-- (id)_tileAtPosition:(id)a3 fromTilesPerPosition:(id)a4;
-- (id)updatedTilingResult:(id)a3 addingStrokes:(id)a4 removingStrokeIdentifiers:(id)a5 allStrokes:(id)a6 strokeBoundsPerStrokeIdentifier:(id)a7 maxTileSize:(int64_t)a8;
-- (void)_addStrokeIdentifier:(id)a3 withBounds:(CGRect)a4 intoTile:(id)a5 strokeType:(int64_t)a6 mutableDocumentTilesPerPosition:(id)a7 skipMainTile:(BOOL)a8;
-- (void)_assignStrokeWithBounds:(CGRect)a3 toContentTile:(id *)a4 overlapTiles:(id *)a5 contextTiles:(id *)a6;
-- (void)_estimateScaleOfTiles:(id)a3 mutableDocumentTilesPerPosition:(id)a4 strokeBoundsPerStrokeIdentifier:(id)a5 defaultTileSizeFactor:(double)a6;
-- (void)_removeStrokeIdentifier:(id)a3 fromTile:(id)a4 mutableDocumentTilesPerPosition:(id)a5;
-- (void)_removeSubtilesFromTile:(id)a3 mutableDocumentTilesPerPosition:(id)a4;
-- (void)_splitTilesIntoSubtiles:(id)a3 mutableDocumentTilesPerPosition:(id)a4 maxTileSize:(int64_t)a5 strokeBoundsPerStrokeIdentifier:(id)a6;
-- (void)_updateTileBounds:(id)a3;
+- (CHTilingManager)initWithStrokeProvider:(id)provider;
+- (id)_tileAtPosition:(id)position fromTilesPerPosition:(id)perPosition;
+- (id)updatedTilingResult:(id)result addingStrokes:(id)strokes removingStrokeIdentifiers:(id)identifiers allStrokes:(id)allStrokes strokeBoundsPerStrokeIdentifier:(id)identifier maxTileSize:(int64_t)size;
+- (void)_addStrokeIdentifier:(id)identifier withBounds:(CGRect)bounds intoTile:(id)tile strokeType:(int64_t)type mutableDocumentTilesPerPosition:(id)position skipMainTile:(BOOL)mainTile;
+- (void)_assignStrokeWithBounds:(CGRect)bounds toContentTile:(id *)tile overlapTiles:(id *)tiles contextTiles:(id *)contextTiles;
+- (void)_estimateScaleOfTiles:(id)tiles mutableDocumentTilesPerPosition:(id)position strokeBoundsPerStrokeIdentifier:(id)identifier defaultTileSizeFactor:(double)factor;
+- (void)_removeStrokeIdentifier:(id)identifier fromTile:(id)tile mutableDocumentTilesPerPosition:(id)position;
+- (void)_removeSubtilesFromTile:(id)tile mutableDocumentTilesPerPosition:(id)position;
+- (void)_splitTilesIntoSubtiles:(id)subtiles mutableDocumentTilesPerPosition:(id)position maxTileSize:(int64_t)size strokeBoundsPerStrokeIdentifier:(id)identifier;
+- (void)_updateTileBounds:(id)bounds;
 @end
 
 @implementation CHTilingManager
 
-- (CHTilingManager)initWithStrokeProvider:(id)a3
+- (CHTilingManager)initWithStrokeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CHTilingManager;
   v6 = [(CHTilingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_strokeProvider, a3);
+    objc_storeStrong(&v6->_strokeProvider, provider);
     *&v7->_documentTileWidth = vdupq_n_s64(0x320uLL);
     *&v7->_documentTilingTileHorizontalOverlap = vdupq_n_s64(0x64uLL);
     *&v7->_documentTilingTileHorizontalContextOverlap = vdupq_n_s64(0xC8uLL);
@@ -31,19 +31,19 @@
   return v7;
 }
 
-- (id)updatedTilingResult:(id)a3 addingStrokes:(id)a4 removingStrokeIdentifiers:(id)a5 allStrokes:(id)a6 strokeBoundsPerStrokeIdentifier:(id)a7 maxTileSize:(int64_t)a8
+- (id)updatedTilingResult:(id)result addingStrokes:(id)strokes removingStrokeIdentifiers:(id)identifiers allStrokes:(id)allStrokes strokeBoundsPerStrokeIdentifier:(id)identifier maxTileSize:(int64_t)size
 {
   v752 = *MEMORY[0x1E69E9840];
-  v674 = a3;
-  v654 = a4;
-  v656 = a5;
-  v653 = a6;
-  v687 = a7;
+  resultCopy = result;
+  strokesCopy = strokes;
+  identifiersCopy = identifiers;
+  allStrokesCopy = allStrokes;
+  identifierCopy = identifier;
   v689 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v13, v14, v15, v16, v17);
   v688 = objc_msgSend_set(MEMORY[0x1E695DFA8], v18, v19, v20, v21, v22);
-  if (objc_msgSend_count(v653, v23, v24, v25, v26, v27))
+  if (objc_msgSend_count(allStrokesCopy, v23, v24, v25, v26, v27))
   {
-    v33 = objc_msgSend_count(v653, v28, v29, v30, v31, v32);
+    v33 = objc_msgSend_count(allStrokesCopy, v28, v29, v30, v31, v32);
     if (v33)
     {
       if (!(v33 >> 61))
@@ -55,11 +55,11 @@
     }
 
     memset(v733, 0, sizeof(v733));
-    obj = v653;
+    obj = allStrokesCopy;
     if (objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v35, v733, v751, 16, v36))
     {
       v42 = objc_msgSend_encodedStrokeIdentifier(**(&v733[0] + 1), v37, v38, v39, v40, v41);
-      v47 = objc_msgSend_objectForKeyedSubscript_(v687, v43, v42, v44, v45, v46);
+      v47 = objc_msgSend_objectForKeyedSubscript_(identifierCopy, v43, v42, v44, v45, v46);
       objc_msgSend_ch_CGRectValue(v47, v48, v49, v50, v51, v52);
 
       operator new();
@@ -103,7 +103,7 @@
     }
 
     operator delete(0);
-    if (!v674)
+    if (!resultCopy)
     {
       goto LABEL_26;
     }
@@ -112,20 +112,20 @@
   else
   {
     v34 = 1.0;
-    if (!v674)
+    if (!resultCopy)
     {
       goto LABEL_26;
     }
   }
 
-  objc_msgSend_tileSizeFactor(v674, v28, v29, v30, v31, v32);
+  objc_msgSend_tileSizeFactor(resultCopy, v28, v29, v30, v31, v32);
   if (v69 == v34)
   {
     v731 = 0u;
     v732 = 0u;
     v729 = 0u;
     v730 = 0u;
-    v70 = objc_msgSend_documentTiles(v674, v64, v65, v66, v67, v68);
+    v70 = objc_msgSend_documentTiles(resultCopy, v64, v65, v66, v67, v68);
     v78 = objc_msgSend_countByEnumeratingWithState_objects_count_(v70, v71, &v729, v750, 16, v72);
     if (v78)
     {
@@ -140,7 +140,7 @@
           }
 
           v81 = *(*(&v729 + 1) + 8 * i);
-          v82 = objc_msgSend_documentTiles(v674, v73, v74, v75, v76, v77);
+          v82 = objc_msgSend_documentTiles(resultCopy, v73, v74, v75, v76, v77);
           v87 = objc_msgSend_objectForKeyedSubscript_(v82, v83, v81, v84, v85, v86);
           v93 = objc_msgSend_mutableCopy(v87, v88, v89, v90, v91, v92);
 
@@ -158,18 +158,18 @@
   }
 
 LABEL_26:
-  v101 = v653;
+  v101 = allStrokesCopy;
 
-  v70 = v656;
-  v654 = v101;
-  v656 = 0;
+  v70 = identifiersCopy;
+  strokesCopy = v101;
+  identifiersCopy = 0;
 LABEL_27:
 
   v727 = 0u;
   v728 = 0u;
   v725 = 0u;
   v726 = 0u;
-  v657 = v656;
+  v657 = identifiersCopy;
   v665 = objc_msgSend_countByEnumeratingWithState_objects_count_(v657, v102, &v725, v749, 16, v103);
   if (v665)
   {
@@ -184,7 +184,7 @@ LABEL_27:
         }
 
         v108 = *(*(&v725 + 1) + 8 * obja);
-        v109 = objc_msgSend_objectForKeyedSubscript_(v687, v104, v108, v105, v106, v107);
+        v109 = objc_msgSend_objectForKeyedSubscript_(identifierCopy, v104, v108, v105, v106, v107);
         objc_msgSend_ch_CGRectValue(v109, v110, v111, v112, v113, v114);
         v116 = v115;
         v118 = v117;
@@ -268,8 +268,8 @@ LABEL_27:
   v717 = 0u;
   v714 = 0u;
   v715 = 0u;
-  v655 = v654;
-  v212 = v687;
+  v655 = strokesCopy;
+  v212 = identifierCopy;
   v662 = objc_msgSend_countByEnumeratingWithState_objects_count_(v655, v213, &v714, v747, 16, v214);
   if (v662)
   {
@@ -365,7 +365,7 @@ LABEL_27:
           while (v278);
         }
 
-        v212 = v687;
+        v212 = identifierCopy;
       }
 
       v662 = objc_msgSend_countByEnumeratingWithState_objects_count_(v655, v215, &v714, v747, 16, v219);
@@ -556,8 +556,8 @@ LABEL_115:
     while (v299);
   }
 
-  objc_msgSend__splitTilesIntoSubtiles_mutableDocumentTilesPerPosition_maxTileSize_strokeBoundsPerStrokeIdentifier_(self, v537, v688, v689, a8, v687);
-  objc_msgSend__estimateScaleOfTiles_mutableDocumentTilesPerPosition_strokeBoundsPerStrokeIdentifier_defaultTileSizeFactor_(self, v538, v688, v689, v687, v539, v34);
+  objc_msgSend__splitTilesIntoSubtiles_mutableDocumentTilesPerPosition_maxTileSize_strokeBoundsPerStrokeIdentifier_(self, v537, v688, v689, size, identifierCopy);
+  objc_msgSend__estimateScaleOfTiles_mutableDocumentTilesPerPosition_strokeBoundsPerStrokeIdentifier_defaultTileSizeFactor_(self, v538, v688, v689, identifierCopy, v539, v34);
   v679 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v540, v541, v542, v543, v544);
   v692 = 0u;
   v693 = 0u;
@@ -622,7 +622,7 @@ LABEL_127:
 LABEL_131:
 
   v621 = v673;
-  if (v673 != objc_msgSend_count(v653, v611, v612, v613, v614, v615))
+  if (v673 != objc_msgSend_count(allStrokesCopy, v611, v612, v613, v614, v615))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -632,7 +632,7 @@ LABEL_131:
     v622 = qword_1EA84DC50[0];
     if (os_log_type_enabled(v622, OS_LOG_TYPE_ERROR))
     {
-      v628 = objc_msgSend_count(v653, v623, v624, v625, v626, v627);
+      v628 = objc_msgSend_count(allStrokesCopy, v623, v624, v625, v626, v627);
       *buf = 134218240;
       v736 = v673;
       v737 = 2048;
@@ -643,7 +643,7 @@ LABEL_131:
     v621 = v673;
   }
 
-  if (v621 != objc_msgSend_count(v653, v616, v617, v618, v619, v620))
+  if (v621 != objc_msgSend_count(allStrokesCopy, v616, v617, v618, v619, v620))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -653,7 +653,7 @@ LABEL_131:
     v629 = qword_1EA84DC50[0];
     if (os_log_type_enabled(v629, OS_LOG_TYPE_FAULT))
     {
-      v635 = objc_msgSend_count(v653, v630, v631, v632, v633, v634);
+      v635 = objc_msgSend_count(allStrokesCopy, v630, v631, v632, v633, v634);
       *buf = 134218240;
       v736 = v621;
       v737 = 2048;
@@ -669,26 +669,26 @@ LABEL_131:
   return v647;
 }
 
-- (id)_tileAtPosition:(id)a3 fromTilesPerPosition:(id)a4
+- (id)_tileAtPosition:(id)position fromTilesPerPosition:(id)perPosition
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v6, v9, v10, v11);
+  positionCopy = position;
+  perPositionCopy = perPosition;
+  v12 = objc_msgSend_objectForKeyedSubscript_(perPositionCopy, v8, positionCopy, v9, v10, v11);
   if (!v12)
   {
     v13 = [CHMutableDocumentTile alloc];
-    v12 = objc_msgSend_initWithTilePosition_scale_(v13, v14, v6, v15, v16, v17, 1.0);
-    objc_msgSend_setObject_forKeyedSubscript_(v7, v18, v12, v6, v19, v20);
+    v12 = objc_msgSend_initWithTilePosition_scale_(v13, v14, positionCopy, v15, v16, v17, 1.0);
+    objc_msgSend_setObject_forKeyedSubscript_(perPositionCopy, v18, v12, positionCopy, v19, v20);
     objc_msgSend__updateTileBounds_(self, v21, v12, v22, v23, v24);
   }
 
   return v12;
 }
 
-- (void)_updateTileBounds:(id)a3
+- (void)_updateTileBounds:(id)bounds
 {
-  v85 = a3;
-  v9 = objc_msgSend_tilePosition(v85, v4, v5, v6, v7, v8);
+  boundsCopy = bounds;
+  v9 = objc_msgSend_tilePosition(boundsCopy, v4, v5, v6, v7, v8);
   v15 = objc_msgSend_column(v9, v10, v11, v12, v13, v14);
   documentTileWidth = self->_documentTileWidth;
   v22 = objc_msgSend_row(v9, v17, v18, v19, v20, v21);
@@ -761,25 +761,25 @@ LABEL_131:
   v63 = v89.origin.y;
   v64 = v89.size.width;
   v65 = v89.size.height;
-  objc_msgSend_setContentArea_(v85, v66, v67, v68, v69, v70, v31, v33, v34, v35);
-  objc_msgSend_setOverlapArea_(v85, v71, v72, v73, v74, v75, x, y, width, height);
-  objc_msgSend_setContextArea_(v85, v76, v77, v78, v79, v80, v62, v63, v64, v65);
+  objc_msgSend_setContentArea_(boundsCopy, v66, v67, v68, v69, v70, v31, v33, v34, v35);
+  objc_msgSend_setOverlapArea_(boundsCopy, v71, v72, v73, v74, v75, x, y, width, height);
+  objc_msgSend_setContextArea_(boundsCopy, v76, v77, v78, v79, v80, v62, v63, v64, v65);
 }
 
-- (void)_assignStrokeWithBounds:(CGRect)a3 toContentTile:(id *)a4 overlapTiles:(id *)a5 contextTiles:(id *)a6
+- (void)_assignStrokeWithBounds:(CGRect)bounds toContentTile:(id *)tile overlapTiles:(id *)tiles contextTiles:(id *)contextTiles
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v114 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, a4, a5, a6, v6);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v114 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, tile, tiles, contextTiles, v6);
   v20 = objc_msgSend_set(MEMORY[0x1E695DFA8], v15, v16, v17, v18, v19);
   v116.origin.x = x;
   v116.origin.y = y;
   v116.size.width = width;
   v116.size.height = height;
   MidX = CGRectGetMidX(v116);
-  v113 = a6;
+  contextTilesCopy = contextTiles;
   v117.origin.x = x;
   v117.origin.y = y;
   v117.size.width = width;
@@ -824,7 +824,7 @@ LABEL_131:
 
       if (MidY <= v36 - self->_documentTilingTileVerticalOverlap || MidX <= v43 - self->_documentTilingTileHorizontalOverlap)
       {
-        v54 = objc_msgSend_tilePositionWithRow_column_(CHTilePosition, v28, v23 + 1, v24 + 1, v29, v30, v113);
+        v54 = objc_msgSend_tilePositionWithRow_column_(CHTilePosition, v28, v23 + 1, v24 + 1, v29, v30, contextTilesCopy);
         objc_msgSend_addObject_(v20, v88, v54, v89, v90, v91);
       }
 
@@ -837,7 +837,7 @@ LABEL_131:
 
     else if (MidY >= v35 + self->_documentTilingTileVerticalOverlap || MidX <= v43 - self->_documentTilingTileHorizontalOverlap)
     {
-      v54 = objc_msgSend_tilePositionWithRow_column_(CHTilePosition, v28, v23 - 1, v24 + 1, v29, v30, v113);
+      v54 = objc_msgSend_tilePositionWithRow_column_(CHTilePosition, v28, v23 - 1, v24 + 1, v29, v30, contextTilesCopy);
       objc_msgSend_addObject_(v20, v84, v54, v85, v86, v87);
     }
 
@@ -872,7 +872,7 @@ LABEL_131:
 
       if (MidY <= v36 - self->_documentTilingTileVerticalOverlap || MidX >= v34 + self->_documentTilingTileHorizontalOverlap)
       {
-        v54 = objc_msgSend_tilePositionWithRow_column_(CHTilePosition, v28, v23 + 1, v24 - 1, v29, v30, v113);
+        v54 = objc_msgSend_tilePositionWithRow_column_(CHTilePosition, v28, v23 + 1, v24 - 1, v29, v30, contextTilesCopy);
         objc_msgSend_addObject_(v20, v80, v54, v81, v82, v83);
       }
 
@@ -885,7 +885,7 @@ LABEL_131:
 
     else if (MidY >= v35 + self->_documentTilingTileVerticalOverlap || MidX >= v34 + self->_documentTilingTileHorizontalOverlap)
     {
-      v54 = objc_msgSend_tilePositionWithRow_column_(CHTilePosition, v28, v23 - 1, v24 - 1, v29, v30, v113);
+      v54 = objc_msgSend_tilePositionWithRow_column_(CHTilePosition, v28, v23 - 1, v24 - 1, v29, v30, contextTilesCopy);
       objc_msgSend_addObject_(v20, v63, v54, v64, v65, v66);
     }
 
@@ -935,51 +935,51 @@ LABEL_30:
   }
 
 LABEL_39:
-  if (a4)
+  if (tile)
   {
     v111 = v31;
-    *a4 = v31;
+    *tile = v31;
   }
 
-  if (a5)
+  if (tiles)
   {
-    *a5 = v114;
+    *tiles = v114;
   }
 
-  if (v113)
+  if (contextTilesCopy)
   {
     v112 = v20;
-    *v113 = v20;
+    *contextTilesCopy = v20;
   }
 }
 
-- (void)_addStrokeIdentifier:(id)a3 withBounds:(CGRect)a4 intoTile:(id)a5 strokeType:(int64_t)a6 mutableDocumentTilesPerPosition:(id)a7 skipMainTile:(BOOL)a8
+- (void)_addStrokeIdentifier:(id)identifier withBounds:(CGRect)bounds intoTile:(id)tile strokeType:(int64_t)type mutableDocumentTilesPerPosition:(id)position skipMainTile:(BOOL)mainTile
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v117 = *MEMORY[0x1E69E9840];
-  v109 = a3;
-  v105 = a5;
-  v22 = a7;
-  if (!a8)
+  identifierCopy = identifier;
+  tileCopy = tile;
+  positionCopy = position;
+  if (!mainTile)
   {
-    switch(a6)
+    switch(type)
     {
       case 2:
-        objc_msgSend_addContextStroke_(v105, v17, v109, v19, v20, v21);
+        objc_msgSend_addContextStroke_(tileCopy, v17, identifierCopy, v19, v20, v21);
         break;
       case 1:
-        objc_msgSend_addOverlapStroke_(v105, v17, v109, v19, v20, v21);
+        objc_msgSend_addOverlapStroke_(tileCopy, v17, identifierCopy, v19, v20, v21);
         break;
       case 0:
-        objc_msgSend_addContentStroke_(v105, v17, v109, v19, v20, v21);
+        objc_msgSend_addContentStroke_(tileCopy, v17, identifierCopy, v19, v20, v21);
         break;
     }
   }
 
-  if (objc_msgSend_hasSubtiles(v105, v17, v18, v19, v20, v21, v105))
+  if (objc_msgSend_hasSubtiles(tileCopy, v17, v18, v19, v20, v21, tileCopy))
   {
     v28 = objc_msgSend_subtilePositions(v106, v23, v24, v25, v26, v27);
     v34 = objc_msgSend_count(v28, v29, v30, v31, v32, v33);
@@ -1053,21 +1053,21 @@ LABEL_39:
           }
 
           v88 = *(*(&v110 + 1) + 8 * i);
-          v89 = objc_msgSend__tileAtPosition_fromTilesPerPosition_(self, v82, v88, v22, v83, v84);
+          v89 = objc_msgSend__tileAtPosition_fromTilesPerPosition_(self, v82, v88, positionCopy, v83, v84);
           v95 = v89;
-          if (a6 == 2)
+          if (type == 2)
           {
             goto LABEL_28;
           }
 
-          if (!a6)
+          if (!type)
           {
             objc_msgSend_contentArea(v89, v90, v91, v92, v93, v94);
             v118.x = MidX;
             v118.y = MidY;
             if (CGRectContainsPoint(v123, v118) || (v107 & 1) == 0 && (objc_msgSend_subtilePositions(v106, v90, v91, v92, v93, v94), v96 = objc_claimAutoreleasedReturnValue(), objc_msgSend_lastObject(v96, v97, v98, v99, v100, v101), v102 = objc_claimAutoreleasedReturnValue(), v103 = sub_1838D3488(v88, v102), v102, v96, v103))
             {
-              objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v90, v109, v95, 0, v22, 0, x, y, width, height);
+              objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v90, identifierCopy, v95, 0, positionCopy, 0, x, y, width, height);
               v107 = 1;
               goto LABEL_30;
             }
@@ -1084,13 +1084,13 @@ LABEL_28:
             v120.y = MidY;
             if (CGRectContainsPoint(v125, v120))
             {
-              objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v104, v109, v95, 2, v22, 0, x, y, width, height);
+              objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v104, identifierCopy, v95, 2, positionCopy, 0, x, y, width, height);
             }
           }
 
           else
           {
-            objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v90, v109, v95, 1, v22, 0, x, y, width, height);
+            objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v90, identifierCopy, v95, 1, positionCopy, 0, x, y, width, height);
           }
 
 LABEL_30:
@@ -1105,19 +1105,19 @@ LABEL_30:
   }
 }
 
-- (void)_removeStrokeIdentifier:(id)a3 fromTile:(id)a4 mutableDocumentTilesPerPosition:(id)a5
+- (void)_removeStrokeIdentifier:(id)identifier fromTile:(id)tile mutableDocumentTilesPerPosition:(id)position
 {
   v80 = *MEMORY[0x1E69E9840];
-  v68 = a3;
-  v7 = a4;
-  v8 = a5;
-  v67 = v7;
-  v18 = objc_msgSend_arrayWithObject_(MEMORY[0x1E695DF70], v9, v7, v10, v11, v12);
+  identifierCopy = identifier;
+  tileCopy = tile;
+  positionCopy = position;
+  v67 = tileCopy;
+  v18 = objc_msgSend_arrayWithObject_(MEMORY[0x1E695DF70], v9, tileCopy, v10, v11, v12);
   while (objc_msgSend_count(v18, v13, v14, v15, v16, v17))
   {
     v24 = objc_msgSend_lastObject(v18, v19, v20, v21, v22, v23);
     objc_msgSend_removeLastObject(v18, v25, v26, v27, v28, v29);
-    objc_msgSend_removeStroke_(v24, v30, v68, v31, v32, v33);
+    objc_msgSend_removeStroke_(v24, v30, identifierCopy, v31, v32, v33);
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
@@ -1140,7 +1140,7 @@ LABEL_30:
           }
 
           v55 = *(*(&v69 + 1) + 8 * v54);
-          v60 = objc_msgSend_objectForKeyedSubscript_(v8, v48, v55, v49, v50, v51);
+          v60 = objc_msgSend_objectForKeyedSubscript_(positionCopy, v48, v55, v49, v50, v51);
           if (v60)
           {
             objc_msgSend_addObject_(v18, v56, v60, v57, v58, v59);
@@ -1159,7 +1159,7 @@ LABEL_30:
               *buf = 138412802;
               v74 = v55;
               v75 = 2112;
-              v76 = v68;
+              v76 = identifierCopy;
               v77 = 2112;
               v78 = v24;
               _os_log_impl(&dword_18366B000, v61, OS_LOG_TYPE_DEBUG, "Subtile at position %@ not found when removing stroke %@. Parent tile: %@", buf, 0x20u);
@@ -1180,12 +1180,12 @@ LABEL_30:
   }
 }
 
-- (void)_removeSubtilesFromTile:(id)a3 mutableDocumentTilesPerPosition:(id)a4
+- (void)_removeSubtilesFromTile:(id)tile mutableDocumentTilesPerPosition:(id)position
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v16 = objc_msgSend_arrayWithObject_(MEMORY[0x1E695DF70], v7, v5, v8, v9, v10);
+  tileCopy = tile;
+  positionCopy = position;
+  v16 = objc_msgSend_arrayWithObject_(MEMORY[0x1E695DF70], v7, tileCopy, v8, v9, v10);
   while (objc_msgSend_count(v16, v11, v12, v13, v14, v15))
   {
     v22 = objc_msgSend_lastObject(v16, v17, v18, v19, v20, v21);
@@ -1209,9 +1209,9 @@ LABEL_30:
           }
 
           v43 = *(*(&v53 + 1) + 8 * i);
-          v44 = objc_msgSend_objectForKeyedSubscript_(v6, v36, v43, v37, v38, v39);
+          v44 = objc_msgSend_objectForKeyedSubscript_(positionCopy, v36, v43, v37, v38, v39);
           objc_msgSend_addObject_(v16, v45, v44, v46, v47, v48);
-          objc_msgSend_removeObjectForKey_(v6, v49, v43, v50, v51, v52);
+          objc_msgSend_removeObjectForKey_(positionCopy, v49, v43, v50, v51, v52);
         }
 
         v40 = objc_msgSend_countByEnumeratingWithState_objects_count_(v33, v36, &v53, v57, 16, v39);
@@ -1221,17 +1221,17 @@ LABEL_30:
     }
   }
 
-  objc_msgSend_discardSubtiles(v5, v17, v18, v19, v20, v21);
+  objc_msgSend_discardSubtiles(tileCopy, v17, v18, v19, v20, v21);
 }
 
-- (void)_estimateScaleOfTiles:(id)a3 mutableDocumentTilesPerPosition:(id)a4 strokeBoundsPerStrokeIdentifier:(id)a5 defaultTileSizeFactor:(double)a6
+- (void)_estimateScaleOfTiles:(id)tiles mutableDocumentTilesPerPosition:(id)position strokeBoundsPerStrokeIdentifier:(id)identifier defaultTileSizeFactor:(double)factor
 {
   v70 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tilesCopy = tiles;
+  positionCopy = position;
+  identifierCopy = identifier;
   v12 = MEMORY[0x1E695DF70];
-  v18 = objc_msgSend_allObjects(v9, v13, v14, v15, v16, v17);
+  v18 = objc_msgSend_allObjects(tilesCopy, v13, v14, v15, v16, v17);
   v23 = objc_msgSend_arrayWithArray_(v12, v19, v18, v20, v21, v22);
 
   while (objc_msgSend_count(v23, v24, v25, v26, v27, v28))
@@ -1259,7 +1259,7 @@ LABEL_30:
               objc_enumerationMutation(v50);
             }
 
-            v60 = objc_msgSend_objectForKeyedSubscript_(v10, v53, *(*(&v65 + 1) + 8 * v59), v54, v55, v56);
+            v60 = objc_msgSend_objectForKeyedSubscript_(positionCopy, v53, *(*(&v65 + 1) + 8 * v59), v54, v55, v56);
             objc_msgSend_addObject_(v23, v61, v60, v62, v63, v64);
 
             ++v59;
@@ -1275,22 +1275,22 @@ LABEL_30:
 
     else
     {
-      objc_msgSend_estimateScaleUsingStrokeBounds_defaultTileSizeFactor_(v34, v45, v11, v47, v48, v49, a6);
+      objc_msgSend_estimateScaleUsingStrokeBounds_defaultTileSizeFactor_(v34, v45, identifierCopy, v47, v48, v49, factor);
     }
   }
 }
 
-- (void)_splitTilesIntoSubtiles:(id)a3 mutableDocumentTilesPerPosition:(id)a4 maxTileSize:(int64_t)a5 strokeBoundsPerStrokeIdentifier:(id)a6
+- (void)_splitTilesIntoSubtiles:(id)subtiles mutableDocumentTilesPerPosition:(id)position maxTileSize:(int64_t)size strokeBoundsPerStrokeIdentifier:(id)identifier
 {
   v373 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v356 = a6;
+  subtilesCopy = subtiles;
+  positionCopy = position;
+  identifierCopy = identifier;
   v366 = 0u;
   v367 = 0u;
   v368 = 0u;
   v369 = 0u;
-  obj = v9;
+  obj = subtilesCopy;
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v366, v372, 16, v12);
   if (v18)
   {
@@ -1321,7 +1321,7 @@ LABEL_30:
             if (objc_msgSend_hasSubtiles(v19, v40, v41, v42, v43, v44))
             {
               v50 = objc_msgSend_orderedStrokeIdentifiers(v19, v45, v46, v47, v48, v49);
-              v56 = objc_msgSend_count(v50, v51, v52, v53, v54, v55) > a5;
+              v56 = objc_msgSend_count(v50, v51, v52, v53, v54, v55) > size;
 
               if (v56)
               {
@@ -1343,7 +1343,7 @@ LABEL_30:
                         objc_enumerationMutation(v62);
                       }
 
-                      v72 = objc_msgSend_objectForKeyedSubscript_(v10, v65, *(*(&v362 + 1) + 8 * j), v66, v67, v68);
+                      v72 = objc_msgSend_objectForKeyedSubscript_(positionCopy, v65, *(*(&v362 + 1) + 8 * j), v66, v67, v68);
                       objc_msgSend_addObject_(v357, v73, v72, v74, v75, v76);
                     }
 
@@ -1356,13 +1356,13 @@ LABEL_30:
                 goto LABEL_40;
               }
 
-              objc_msgSend__removeSubtilesFromTile_mutableDocumentTilesPerPosition_(self, v57, v19, v10, v60, v61);
+              objc_msgSend__removeSubtilesFromTile_mutableDocumentTilesPerPosition_(self, v57, v19, positionCopy, v60, v61);
             }
 
             else
             {
               v77 = objc_msgSend_orderedStrokeIdentifiers(v19, v45, v46, v47, v48, v49);
-              v83 = objc_msgSend_count(v77, v78, v79, v80, v81, v82) > a5;
+              v83 = objc_msgSend_count(v77, v78, v79, v80, v81, v82) > size;
 
               if (v83)
               {
@@ -1401,7 +1401,7 @@ LABEL_30:
                 objc_msgSend_addSubtilePosition_(v19, v178, v177, v179, v180, v181);
 
                 v187 = objc_msgSend_tilePosition(v163, v182, v183, v184, v185, v186);
-                objc_msgSend_setObject_forKeyedSubscript_(v10, v188, v163, v187, v189, v190);
+                objc_msgSend_setObject_forKeyedSubscript_(positionCopy, v188, v163, v187, v189, v190);
 
                 v196 = objc_msgSend_tilePosition(v19, v191, v192, v193, v194, v195);
                 v207 = objc_msgSend_subtileIndex(v196, v197, v198, v199, v200, v201);
@@ -1438,7 +1438,7 @@ LABEL_30:
                 objc_msgSend_addSubtilePosition_(v19, v285, v284, v286, v287, v288);
 
                 v294 = objc_msgSend_tilePosition(v270, v289, v290, v291, v292, v293);
-                objc_msgSend_setObject_forKeyedSubscript_(v10, v295, v270, v294, v296, v297);
+                objc_msgSend_setObject_forKeyedSubscript_(positionCopy, v295, v270, v294, v296, v297);
 
                 v360 = 0u;
                 v361 = 0u;
@@ -1459,7 +1459,7 @@ LABEL_30:
                       }
 
                       v312 = *(*(&v358 + 1) + 8 * k);
-                      v313 = objc_msgSend_objectForKeyedSubscript_(v356, v305, v312, v306, v307, v308);
+                      v313 = objc_msgSend_objectForKeyedSubscript_(identifierCopy, v305, v312, v306, v307, v308);
                       objc_msgSend_ch_CGRectValue(v313, v314, v315, v316, v317, v318);
                       v320 = v319;
                       v322 = v321;
@@ -1471,7 +1471,7 @@ LABEL_30:
 
                       if (v337)
                       {
-                        objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v338, v312, v19, 0, v10, 1, v320, v322, v324, v326);
+                        objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v338, v312, v19, 0, positionCopy, 1, v320, v322, v324, v326);
                       }
 
                       else
@@ -1481,12 +1481,12 @@ LABEL_30:
 
                         if (v348)
                         {
-                          objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v349, v312, v19, 1, v10, 1, v320, v322, v324, v326);
+                          objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v349, v312, v19, 1, positionCopy, 1, v320, v322, v324, v326);
                         }
 
                         else
                         {
-                          objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v349, v312, v19, 2, v10, 1, v320, v322, v324, v326);
+                          objc_msgSend__addStrokeIdentifier_withBounds_intoTile_strokeType_mutableDocumentTilesPerPosition_skipMainTile_(self, v349, v312, v19, 2, positionCopy, 1, v320, v322, v324, v326);
                         }
                       }
                     }
@@ -1503,7 +1503,7 @@ LABEL_40:
 
             if (objc_msgSend_count(v357, v84, v85, v86, v87, v88))
             {
-              objc_msgSend__splitTilesIntoSubtiles_mutableDocumentTilesPerPosition_maxTileSize_strokeBoundsPerStrokeIdentifier_(self, v350, v357, v10, a5, v356);
+              objc_msgSend__splitTilesIntoSubtiles_mutableDocumentTilesPerPosition_maxTileSize_strokeBoundsPerStrokeIdentifier_(self, v350, v357, positionCopy, size, identifierCopy);
             }
 
             continue;

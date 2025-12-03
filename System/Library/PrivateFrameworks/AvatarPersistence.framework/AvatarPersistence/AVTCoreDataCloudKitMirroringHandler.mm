@@ -1,30 +1,30 @@
 @interface AVTCoreDataCloudKitMirroringHandler
-- (AVTCoreDataCloudKitMirroringHandler)initWithLogger:(id)a3 blockScheduler:(id)a4;
+- (AVTCoreDataCloudKitMirroringHandler)initWithLogger:(id)logger blockScheduler:(id)scheduler;
 - (AVTCoreDataCloudKitMirroringHandlerDelegate)delegate;
 - (void)dealloc;
-- (void)didResetSync:(id)a3;
-- (void)exportChangesWithManagedObjectContext:(id)a3 discretionary:(BOOL)a4 workQueue:(id)a5 completionHandler:(id)a6;
-- (void)importChangesWithManagedObjectContext:(id)a3 discretionary:(BOOL)a4 workQueue:(id)a5 completionHandler:(id)a6;
-- (void)resetZoneWithManagedObjectContext:(id)a3 completionHandler:(id)a4;
-- (void)scheduleExportChangesWithManagedObjectContext:(id)a3 discretionary:(BOOL)a4 workQueue:(id)a5 completionHandler:(id)a6;
-- (void)startObservingResetSyncWithNotificationCenter:(id)a3;
-- (void)willResetSync:(id)a3;
+- (void)didResetSync:(id)sync;
+- (void)exportChangesWithManagedObjectContext:(id)context discretionary:(BOOL)discretionary workQueue:(id)queue completionHandler:(id)handler;
+- (void)importChangesWithManagedObjectContext:(id)context discretionary:(BOOL)discretionary workQueue:(id)queue completionHandler:(id)handler;
+- (void)resetZoneWithManagedObjectContext:(id)context completionHandler:(id)handler;
+- (void)scheduleExportChangesWithManagedObjectContext:(id)context discretionary:(BOOL)discretionary workQueue:(id)queue completionHandler:(id)handler;
+- (void)startObservingResetSyncWithNotificationCenter:(id)center;
+- (void)willResetSync:(id)sync;
 @end
 
 @implementation AVTCoreDataCloudKitMirroringHandler
 
-- (AVTCoreDataCloudKitMirroringHandler)initWithLogger:(id)a3 blockScheduler:(id)a4
+- (AVTCoreDataCloudKitMirroringHandler)initWithLogger:(id)logger blockScheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
+  loggerCopy = logger;
+  schedulerCopy = scheduler;
   v12.receiver = self;
   v12.super_class = AVTCoreDataCloudKitMirroringHandler;
   v9 = [(AVTCoreDataCloudKitMirroringHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_logger, a3);
-    objc_storeStrong(&v10->_blockScheduler, a4);
+    objc_storeStrong(&v9->_logger, logger);
+    objc_storeStrong(&v10->_blockScheduler, scheduler);
   }
 
   return v10;
@@ -32,22 +32,22 @@
 
 - (void)dealloc
 {
-  v3 = [(AVTCoreDataCloudKitMirroringHandler *)self willResetNotificationToken];
+  willResetNotificationToken = [(AVTCoreDataCloudKitMirroringHandler *)self willResetNotificationToken];
 
-  if (v3)
+  if (willResetNotificationToken)
   {
-    v4 = [(AVTCoreDataCloudKitMirroringHandler *)self notificationCenter];
-    v5 = [(AVTCoreDataCloudKitMirroringHandler *)self willResetNotificationToken];
-    [v4 removeObserver:v5];
+    notificationCenter = [(AVTCoreDataCloudKitMirroringHandler *)self notificationCenter];
+    willResetNotificationToken2 = [(AVTCoreDataCloudKitMirroringHandler *)self willResetNotificationToken];
+    [notificationCenter removeObserver:willResetNotificationToken2];
   }
 
-  v6 = [(AVTCoreDataCloudKitMirroringHandler *)self didResetNotificationToken];
+  didResetNotificationToken = [(AVTCoreDataCloudKitMirroringHandler *)self didResetNotificationToken];
 
-  if (v6)
+  if (didResetNotificationToken)
   {
-    v7 = [(AVTCoreDataCloudKitMirroringHandler *)self notificationCenter];
-    v8 = [(AVTCoreDataCloudKitMirroringHandler *)self didResetNotificationToken];
-    [v7 removeObserver:v8];
+    notificationCenter2 = [(AVTCoreDataCloudKitMirroringHandler *)self notificationCenter];
+    didResetNotificationToken2 = [(AVTCoreDataCloudKitMirroringHandler *)self didResetNotificationToken];
+    [notificationCenter2 removeObserver:didResetNotificationToken2];
   }
 
   v9.receiver = self;
@@ -55,11 +55,11 @@
   [(AVTCoreDataCloudKitMirroringHandler *)&v9 dealloc];
 }
 
-- (void)startObservingResetSyncWithNotificationCenter:(id)a3
+- (void)startObservingResetSyncWithNotificationCenter:(id)center
 {
-  v4 = a3;
-  v5 = [(AVTCoreDataCloudKitMirroringHandler *)self willResetNotificationToken];
-  if (v5)
+  centerCopy = center;
+  willResetNotificationToken = [(AVTCoreDataCloudKitMirroringHandler *)self willResetNotificationToken];
+  if (willResetNotificationToken)
   {
 
 LABEL_4:
@@ -67,26 +67,26 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(AVTCoreDataCloudKitMirroringHandler *)self didResetNotificationToken];
+  didResetNotificationToken = [(AVTCoreDataCloudKitMirroringHandler *)self didResetNotificationToken];
 
-  if (v6)
+  if (didResetNotificationToken)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  v7 = [(AVTCoreDataCloudKitMirroringHandler *)self logger];
-  [v7 logStartObservingResetSync];
+  logger = [(AVTCoreDataCloudKitMirroringHandler *)self logger];
+  [logger logStartObservingResetSync];
 
   objc_initWeak(&location, self);
-  [(AVTCoreDataCloudKitMirroringHandler *)self setNotificationCenter:v4];
+  [(AVTCoreDataCloudKitMirroringHandler *)self setNotificationCenter:centerCopy];
   v8 = *MEMORY[0x277CBE140];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __85__AVTCoreDataCloudKitMirroringHandler_startObservingResetSyncWithNotificationCenter___block_invoke;
   v14[3] = &unk_278CFA0D0;
   objc_copyWeak(&v15, &location);
-  v9 = [v4 addObserverForName:v8 object:0 queue:0 usingBlock:v14];
+  v9 = [centerCopy addObserverForName:v8 object:0 queue:0 usingBlock:v14];
   [(AVTCoreDataCloudKitMirroringHandler *)self setWillResetNotificationToken:v9];
 
   v10 = *MEMORY[0x277CBE130];
@@ -95,7 +95,7 @@ LABEL_5:
   v12[2] = __85__AVTCoreDataCloudKitMirroringHandler_startObservingResetSyncWithNotificationCenter___block_invoke_2;
   v12[3] = &unk_278CFA0D0;
   objc_copyWeak(&v13, &location);
-  v11 = [v4 addObserverForName:v10 object:0 queue:0 usingBlock:v12];
+  v11 = [centerCopy addObserverForName:v10 object:0 queue:0 usingBlock:v12];
   [(AVTCoreDataCloudKitMirroringHandler *)self setDidResetNotificationToken:v11];
 
   objc_destroyWeak(&v13);
@@ -117,18 +117,18 @@ void __85__AVTCoreDataCloudKitMirroringHandler_startObservingResetSyncWithNotifi
   [WeakRetained didResetSync:v3];
 }
 
-- (void)willResetSync:(id)a3
+- (void)willResetSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(AVTCoreDataCloudKitMirroringHandler *)self logger];
+  syncCopy = sync;
+  logger = [(AVTCoreDataCloudKitMirroringHandler *)self logger];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__AVTCoreDataCloudKitMirroringHandler_willResetSync___block_invoke;
   v7[3] = &unk_278CFA580;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 processingWillResetSyncNotification:v7];
+  v8 = syncCopy;
+  selfCopy = self;
+  v6 = syncCopy;
+  [logger processingWillResetSyncNotification:v7];
 }
 
 void __53__AVTCoreDataCloudKitMirroringHandler_willResetSync___block_invoke(uint64_t a1)
@@ -156,18 +156,18 @@ void __53__AVTCoreDataCloudKitMirroringHandler_willResetSync___block_invoke(uint
   [v6 mirroringHandler:*(a1 + 40) willResetSyncWithReason:v3];
 }
 
-- (void)didResetSync:(id)a3
+- (void)didResetSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(AVTCoreDataCloudKitMirroringHandler *)self logger];
+  syncCopy = sync;
+  logger = [(AVTCoreDataCloudKitMirroringHandler *)self logger];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__AVTCoreDataCloudKitMirroringHandler_didResetSync___block_invoke;
   v7[3] = &unk_278CFA580;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 processingDidResetSyncNotification:v7];
+  v8 = syncCopy;
+  selfCopy = self;
+  v6 = syncCopy;
+  [logger processingDidResetSyncNotification:v7];
 }
 
 void __52__AVTCoreDataCloudKitMirroringHandler_didResetSync___block_invoke(uint64_t a1)
@@ -195,25 +195,25 @@ void __52__AVTCoreDataCloudKitMirroringHandler_didResetSync___block_invoke(uint6
   [v6 mirroringHandler:*(a1 + 40) didResetSyncWithReason:v3];
 }
 
-- (void)scheduleExportChangesWithManagedObjectContext:(id)a3 discretionary:(BOOL)a4 workQueue:(id)a5 completionHandler:(id)a6
+- (void)scheduleExportChangesWithManagedObjectContext:(id)context discretionary:(BOOL)discretionary workQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(AVTCoreDataCloudKitMirroringHandler *)self blockScheduler];
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  blockScheduler = [(AVTCoreDataCloudKitMirroringHandler *)self blockScheduler];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __127__AVTCoreDataCloudKitMirroringHandler_scheduleExportChangesWithManagedObjectContext_discretionary_workQueue_completionHandler___block_invoke;
   v17[3] = &unk_278CFA5A8;
   v17[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  [v13 performBlock:v17 afterDelay:v14 onQueue:0.0];
+  v18 = contextCopy;
+  discretionaryCopy = discretionary;
+  v19 = queueCopy;
+  v20 = handlerCopy;
+  v14 = queueCopy;
+  v15 = contextCopy;
+  v16 = handlerCopy;
+  [blockScheduler performBlock:v17 afterDelay:v14 onQueue:0.0];
 }
 
 void __127__AVTCoreDataCloudKitMirroringHandler_scheduleExportChangesWithManagedObjectContext_discretionary_workQueue_completionHandler___block_invoke(uint64_t a1)
@@ -248,23 +248,23 @@ void __127__AVTCoreDataCloudKitMirroringHandler_scheduleExportChangesWithManaged
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)importChangesWithManagedObjectContext:(id)a3 discretionary:(BOOL)a4 workQueue:(id)a5 completionHandler:(id)a6
+- (void)importChangesWithManagedObjectContext:(id)context discretionary:(BOOL)discretionary workQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __119__AVTCoreDataCloudKitMirroringHandler_importChangesWithManagedObjectContext_discretionary_workQueue_completionHandler___block_invoke;
   v16[3] = &unk_278CFA670;
   v16[4] = self;
-  v17 = v11;
-  v18 = v10;
-  v19 = v12;
-  v20 = a4;
-  v13 = v12;
-  v14 = v10;
-  v15 = v11;
+  v17 = queueCopy;
+  v18 = contextCopy;
+  v19 = handlerCopy;
+  discretionaryCopy = discretionary;
+  v13 = handlerCopy;
+  v14 = contextCopy;
+  v15 = queueCopy;
   [v14 performBlockAndWait:v16];
 }
 
@@ -371,23 +371,23 @@ void __119__AVTCoreDataCloudKitMirroringHandler_importChangesWithManagedObjectCo
   }
 }
 
-- (void)exportChangesWithManagedObjectContext:(id)a3 discretionary:(BOOL)a4 workQueue:(id)a5 completionHandler:(id)a6
+- (void)exportChangesWithManagedObjectContext:(id)context discretionary:(BOOL)discretionary workQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __119__AVTCoreDataCloudKitMirroringHandler_exportChangesWithManagedObjectContext_discretionary_workQueue_completionHandler___block_invoke;
   v16[3] = &unk_278CFA670;
   v16[4] = self;
-  v17 = v11;
-  v18 = v10;
-  v19 = v12;
-  v20 = a4;
-  v13 = v12;
-  v14 = v10;
-  v15 = v11;
+  v17 = queueCopy;
+  v18 = contextCopy;
+  v19 = handlerCopy;
+  discretionaryCopy = discretionary;
+  v13 = handlerCopy;
+  v14 = contextCopy;
+  v15 = queueCopy;
   [v14 performBlockAndWait:v16];
 }
 
@@ -494,18 +494,18 @@ void __119__AVTCoreDataCloudKitMirroringHandler_exportChangesWithManagedObjectCo
   }
 }
 
-- (void)resetZoneWithManagedObjectContext:(id)a3 completionHandler:(id)a4
+- (void)resetZoneWithManagedObjectContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __91__AVTCoreDataCloudKitMirroringHandler_resetZoneWithManagedObjectContext_completionHandler___block_invoke;
   v9[3] = &unk_278CF9F50;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = contextCopy;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = contextCopy;
   [v8 performBlockAndWait:v9];
 }
 

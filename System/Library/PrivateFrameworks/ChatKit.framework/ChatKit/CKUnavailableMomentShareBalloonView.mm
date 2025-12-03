@@ -1,16 +1,16 @@
 @interface CKUnavailableMomentShareBalloonView
 + (id)_secondaryLabelString;
-- (CKUnavailableMomentShareBalloonView)initWithFrame:(CGRect)a3;
-- (void)handleTap:(id)a3;
+- (CKUnavailableMomentShareBalloonView)initWithFrame:(CGRect)frame;
+- (void)handleTap:(id)tap;
 @end
 
 @implementation CKUnavailableMomentShareBalloonView
 
-- (CKUnavailableMomentShareBalloonView)initWithFrame:(CGRect)a3
+- (CKUnavailableMomentShareBalloonView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKUnavailableMomentShareBalloonView;
-  v3 = [(CKMomentShareStatusBalloonView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKMomentShareStatusBalloonView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v3 action:sel_handleTap_];
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = [(CKBalloonView *)self delegate];
+  delegate = [(CKBalloonView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didTapUnavailableMomentShareBalloonView:self];
+    [delegate didTapUnavailableMomentShareBalloonView:self];
   }
 }
 

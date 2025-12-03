@@ -1,12 +1,12 @@
 @interface ASDatabaseCompetitionEntity
-+ (BOOL)_insertCompetitions:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)removeAllCompetitionsWithProfile:(id)a3 error:(id *)a4;
-+ (BOOL)removeCompetitionsForFriendUUID:(id)a3 type:(int64_t)a4 profile:(id)a5 withError:(id *)a6;
-+ (BOOL)saveCompetitions:(id)a3 profile:(id)a4 withError:(id *)a5;
-+ (id)_competitionsWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)_insertCompetition:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)allDatabaseCompetitionsWithProfile:(id)a3 withError:(id *)a4;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)_insertCompetitions:(id)competitions profile:(id)profile error:(id *)error;
++ (BOOL)removeAllCompetitionsWithProfile:(id)profile error:(id *)error;
++ (BOOL)removeCompetitionsForFriendUUID:(id)d type:(int64_t)type profile:(id)profile withError:(id *)error;
++ (BOOL)saveCompetitions:(id)competitions profile:(id)profile withError:(id *)error;
++ (id)_competitionsWithPredicate:(id)predicate profile:(id)profile error:(id *)error;
++ (id)_insertCompetition:(id)competition database:(id)database error:(id *)error;
++ (id)allDatabaseCompetitionsWithProfile:(id)profile withError:(id *)error;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)uniquedColumns;
 @end
 
@@ -23,50 +23,50 @@
   return v2;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[ASDatabseCompetitionEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[ASDatabseCompetitionEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (BOOL)saveCompetitions:(id)a3 profile:(id)a4 withError:(id *)a5
++ (BOOL)saveCompetitions:(id)competitions profile:(id)profile withError:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  LOBYTE(a5) = [objc_opt_class() _insertCompetitions:v8 profile:v7 error:a5];
+  profileCopy = profile;
+  competitionsCopy = competitions;
+  LOBYTE(error) = [objc_opt_class() _insertCompetitions:competitionsCopy profile:profileCopy error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)removeCompetitionsForFriendUUID:(id)a3 type:(int64_t)a4 profile:(id)a5 withError:(id *)a6
++ (BOOL)removeCompetitionsForFriendUUID:(id)d type:(int64_t)type profile:(id)profile withError:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 database];
+  dCopy = d;
+  profileCopy = profile;
+  database = [profileCopy database];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __86__ASDatabaseCompetitionEntity_removeCompetitionsForFriendUUID_type_profile_withError___block_invoke;
   v24[3] = &unk_278C4D960;
-  v25 = v10;
-  v27 = a4;
-  v28 = a1;
-  v26 = v11;
+  v25 = dCopy;
+  typeCopy = type;
+  selfCopy = self;
+  v26 = profileCopy;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __86__ASDatabaseCompetitionEntity_removeCompetitionsForFriendUUID_type_profile_withError___block_invoke_2;
   v20[3] = &unk_278C4D988;
   v13 = v25;
   v21 = v13;
-  v23 = a4;
+  typeCopy2 = type;
   v14 = v26;
   v22 = v14;
-  v15 = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v24 inaccessibilityHandler:v20];
+  v15 = [self performWriteTransactionWithHealthDatabase:database error:error block:v24 inaccessibilityHandler:v20];
 
   if ((v15 & 1) == 0)
   {
@@ -74,11 +74,11 @@
     v16 = *MEMORY[0x277CE8FE0];
     if (os_log_type_enabled(*MEMORY[0x277CE8FE0], OS_LOG_TYPE_ERROR))
     {
-      v19 = *a6;
+      v19 = *error;
       *buf = 138543874;
       v30 = v13;
       v31 = 2048;
-      v32 = a4;
+      typeCopy3 = type;
       v33 = 2114;
       v34 = v19;
       _os_log_error_impl(&dword_23E5E3000, v16, OS_LOG_TYPE_ERROR, "Error removing competition %{public}@/%ld: %{public}@", buf, 0x20u);
@@ -109,23 +109,23 @@ uint64_t __86__ASDatabaseCompetitionEntity_removeCompetitionsForFriendUUID_type_
   return v7;
 }
 
-+ (BOOL)removeAllCompetitionsWithProfile:(id)a3 error:(id *)a4
++ (BOOL)removeAllCompetitionsWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 database];
+  profileCopy = profile;
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__ASDatabaseCompetitionEntity_removeAllCompetitionsWithProfile_error___block_invoke;
   v14[3] = &unk_278C4BEF0;
-  v16 = a1;
-  v15 = v6;
+  selfCopy = self;
+  v15 = profileCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__ASDatabaseCompetitionEntity_removeAllCompetitionsWithProfile_error___block_invoke_2;
   v12[3] = &unk_278C4BF18;
   v8 = v15;
   v13 = v8;
-  v9 = [a1 performWriteTransactionWithHealthDatabase:v7 error:a4 block:v14 inaccessibilityHandler:v12];
+  v9 = [self performWriteTransactionWithHealthDatabase:database error:error block:v14 inaccessibilityHandler:v12];
 
   if ((v9 & 1) == 0)
   {
@@ -133,7 +133,7 @@ uint64_t __86__ASDatabaseCompetitionEntity_removeCompetitionsForFriendUUID_type_
     v10 = *MEMORY[0x277CE8FE0];
     if (os_log_type_enabled(*MEMORY[0x277CE8FE0], OS_LOG_TYPE_ERROR))
     {
-      [ASDatabaseCompetitionListEntryEntity removeAllCompetitionListsWithProfile:a4 error:v10];
+      [ASDatabaseCompetitionListEntryEntity removeAllCompetitionListsWithProfile:error error:v10];
     }
   }
 
@@ -160,36 +160,36 @@ uint64_t __70__ASDatabaseCompetitionEntity_removeAllCompetitionsWithProfile_erro
   return v7;
 }
 
-+ (id)allDatabaseCompetitionsWithProfile:(id)a3 withError:(id *)a4
++ (id)allDatabaseCompetitionsWithProfile:(id)profile withError:(id *)error
 {
   v6 = MEMORY[0x277D10B70];
-  v7 = a3;
-  v8 = [v6 truePredicate];
-  v9 = [a1 _competitionsWithPredicate:v8 profile:v7 error:a4];
+  profileCopy = profile;
+  truePredicate = [v6 truePredicate];
+  v9 = [self _competitionsWithPredicate:truePredicate profile:profileCopy error:error];
 
   return v9;
 }
 
-+ (id)_competitionsWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)_competitionsWithPredicate:(id)predicate profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  profileCopy = profile;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v11 = [v9 database];
+  database = [profileCopy database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __72__ASDatabaseCompetitionEntity__competitionsWithPredicate_profile_error___block_invoke;
   v18[3] = &unk_278C4D9D8;
-  v19 = v9;
-  v20 = v8;
+  v19 = profileCopy;
+  v20 = predicateCopy;
   v21 = v10;
-  v22 = a1;
+  selfCopy = self;
   v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v11 error:a5 block:v18];
+  v13 = predicateCopy;
+  v14 = profileCopy;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  if (a5)
+  if (error)
   {
     v15 = v12;
   }
@@ -262,26 +262,26 @@ BOOL __72__ASDatabaseCompetitionEntity__competitionsWithPredicate_profile_error_
   return v8 != 0;
 }
 
-+ (BOOL)_insertCompetitions:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)_insertCompetitions:(id)competitions profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 database];
+  competitionsCopy = competitions;
+  profileCopy = profile;
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __65__ASDatabaseCompetitionEntity__insertCompetitions_profile_error___block_invoke;
   v19[3] = &unk_278C4BEF0;
-  v21 = a1;
-  v20 = v8;
+  selfCopy = self;
+  v20 = competitionsCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __65__ASDatabaseCompetitionEntity__insertCompetitions_profile_error___block_invoke_2;
   v16[3] = &unk_278C4BF40;
   v11 = v20;
   v17 = v11;
-  v12 = v9;
+  v12 = profileCopy;
   v18 = v12;
-  v13 = [a1 performWriteTransactionWithHealthDatabase:v10 error:a5 block:v19 inaccessibilityHandler:v16];
+  v13 = [self performWriteTransactionWithHealthDatabase:database error:error block:v19 inaccessibilityHandler:v16];
 
   if ((v13 & 1) == 0)
   {
@@ -289,7 +289,7 @@ BOOL __72__ASDatabaseCompetitionEntity__competitionsWithPredicate_profile_error_
     v14 = *MEMORY[0x277CE8FE0];
     if (os_log_type_enabled(*MEMORY[0x277CE8FE0], OS_LOG_TYPE_ERROR))
     {
-      [ASDatabaseCompetitionEntity _insertCompetitions:v11 profile:a5 error:v14];
+      [ASDatabaseCompetitionEntity _insertCompetitions:v11 profile:error error:v14];
     }
   }
 
@@ -415,18 +415,18 @@ uint64_t __65__ASDatabaseCompetitionEntity__insertCompetitions_profile_error___b
   return v15;
 }
 
-+ (id)_insertCompetition:(id)a3 database:(id)a4 error:(id *)a5
++ (id)_insertCompetition:(id)competition database:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  competitionCopy = competition;
+  databaseCopy = database;
   v10 = ASAllDatabaseCompetitionKeys();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__ASDatabaseCompetitionEntity__insertCompetition_database_error___block_invoke;
   v14[3] = &unk_278C4BF68;
-  v15 = v8;
-  v11 = v8;
-  v12 = [a1 insertOrReplaceEntity:1 database:v9 properties:v10 error:a5 bindingHandler:v14];
+  v15 = competitionCopy;
+  v11 = competitionCopy;
+  v12 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v10 error:error bindingHandler:v14];
 
   return v12;
 }

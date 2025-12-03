@@ -1,38 +1,38 @@
 @interface DIPage
 - (DIPage)init;
-- (DIPage)initWithAttributes:(id)a3 title:(id)a4 subTitle:(id)a5 page:(int64_t)a6;
-- (DIPage)initWithCoder:(id)a3;
+- (DIPage)initWithAttributes:(id)attributes title:(id)title subTitle:(id)subTitle page:(int64_t)page;
+- (DIPage)initWithCoder:(id)coder;
 - (NSArray)attributes;
 - (NSDictionary)serverValidationGroup;
 - (NSString)subTitle;
 - (NSString)title;
 - (id)description;
 - (unint64_t)page;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttributes:(id)a3;
-- (void)setPage:(unint64_t)a3;
-- (void)setServerValidationGroup:(id)a3;
-- (void)setSubTitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttributes:(id)attributes;
+- (void)setPage:(unint64_t)page;
+- (void)setServerValidationGroup:(id)group;
+- (void)setSubTitle:(id)title;
+- (void)setTitle:(id)title;
 @end
 
 @implementation DIPage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeObject:self->_attributes forKey:@"attributes"];
-  [v4 encodeInteger:self->_page forKey:@"pageNumber"];
-  [v4 encodeObject:self->_title forKey:@"title"];
-  [v4 encodeObject:self->_subTitle forKey:@"subTitle"];
+  [coderCopy encodeObject:self->_attributes forKey:@"attributes"];
+  [coderCopy encodeInteger:self->_page forKey:@"pageNumber"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subTitle forKey:@"subTitle"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (DIPage)initWithCoder:(id)a3
+- (DIPage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DIPage *)self init];
   if (v5)
   {
@@ -50,16 +50,16 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v26 setWithObjects:{v25, v24, v23, v22, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"attributes"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"attributes"];
     attributes = v5->_attributes;
     v5->_attributes = v15;
 
-    v5->_page = [v4 decodeIntegerForKey:@"pageNumber"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v5->_page = [coderCopy decodeIntegerForKey:@"pageNumber"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
     subTitle = v5->_subTitle;
     v5->_subTitle = v19;
   }
@@ -67,19 +67,19 @@
   return v5;
 }
 
-- (DIPage)initWithAttributes:(id)a3 title:(id)a4 subTitle:(id)a5 page:(int64_t)a6
+- (DIPage)initWithAttributes:(id)attributes title:(id)title subTitle:(id)subTitle page:(int64_t)page
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  attributesCopy = attributes;
+  titleCopy = title;
+  subTitleCopy = subTitle;
   v14 = [(DIPage *)self init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_attributes, a3);
-    v15->_page = a6;
-    objc_storeStrong(&v15->_title, a4);
-    objc_storeStrong(&v15->_subTitle, a5);
+    objc_storeStrong(&v14->_attributes, attributes);
+    v15->_page = page;
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v15->_subTitle, subTitle);
   }
 
   return v15;
@@ -98,13 +98,13 @@
   return result;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  v6 = a3;
+  attributesCopy = attributes;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_attributes != v6)
+  if (self->_attributes != attributesCopy)
   {
-    v4 = [(NSArray *)v6 copyWithZone:0];
+    v4 = [(NSArray *)attributesCopy copyWithZone:0];
     attributes = self->_attributes;
     self->_attributes = v4;
   }
@@ -112,21 +112,21 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setPage:(unint64_t)a3
+- (void)setPage:(unint64_t)page
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_page = a3;
+  self->_page = page;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_title != v6)
+  if (self->_title != titleCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)titleCopy copyWithZone:0];
     title = self->_title;
     self->_title = v4;
   }
@@ -134,13 +134,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSubTitle:(id)a3
+- (void)setSubTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_subTitle != v6)
+  if (self->_subTitle != titleCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)titleCopy copyWithZone:0];
     subTitle = self->_subTitle;
     self->_subTitle = v4;
   }
@@ -148,13 +148,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setServerValidationGroup:(id)a3
+- (void)setServerValidationGroup:(id)group
 {
-  v6 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_serverValidationGroup != v6)
+  if (self->_serverValidationGroup != groupCopy)
   {
-    v4 = [(NSDictionary *)v6 copyWithZone:0];
+    v4 = [(NSDictionary *)groupCopy copyWithZone:0];
     serverValidationGroup = self->_serverValidationGroup;
     self->_serverValidationGroup = v4;
   }

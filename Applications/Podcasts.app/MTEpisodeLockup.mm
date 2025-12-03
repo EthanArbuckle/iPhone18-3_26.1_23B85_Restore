@@ -1,44 +1,44 @@
 @interface MTEpisodeLockup
 + (BOOL)useLayoutForSkinnyPhones;
-+ (CGRect)frameForContentViewSize:(CGSize)a3 style:(unint64_t)a4;
-+ (CGSize)artworkSizeForStyle:(unint64_t)a3;
-+ (double)artworkHeightForStyle:(unint64_t)a3 sizeType:(unint64_t)a4;
++ (CGRect)frameForContentViewSize:(CGSize)size style:(unint64_t)style;
++ (CGSize)artworkSizeForStyle:(unint64_t)style;
++ (double)artworkHeightForStyle:(unint64_t)style sizeType:(unint64_t)type;
 + (double)descriptionMaxHeightForCurrentOrientation;
-+ (double)estimatedHeightForWidth:(double)a3 showsArtwork:(BOOL)a4;
-+ (double)estimatedHeightForWidth:(double)a3 style:(unint64_t)a4;
-+ (double)leadingMarginForViewWidth:(double)a3;
-+ (double)maximumContentWidthForStyle:(unint64_t)a3 showsPlayState:(BOOL)a4;
-+ (id)defaultArtworkForStyle:(unint64_t)a3;
-+ (id)defaultArtworkWithSize:(CGSize)a3;
++ (double)estimatedHeightForWidth:(double)width showsArtwork:(BOOL)artwork;
++ (double)estimatedHeightForWidth:(double)width style:(unint64_t)style;
++ (double)leadingMarginForViewWidth:(double)width;
++ (double)maximumContentWidthForStyle:(unint64_t)style showsPlayState:(BOOL)state;
++ (id)defaultArtworkForStyle:(unint64_t)style;
++ (id)defaultArtworkWithSize:(CGSize)size;
 + (id)dependentPropertyKeys;
 + (id)descriptionFont;
 + (id)metadataFooterFont;
 + (id)metadataHeaderFont;
 + (id)mockEpisode;
 + (id)titleFont;
-+ (unint64_t)descriptionNumberOfLinesForStyle:(unint64_t)a3 isTitleMultipleLines:(BOOL)a4;
-+ (unint64_t)styleForWidth:(double)a3 showsArtwork:(BOOL)a4;
-+ (unint64_t)titleNumberOfLinesForStyle:(unint64_t)a3;
-- (BOOL)isLabelMultipleLinesWithFrame:(CGRect)a3 font:(id)a4;
++ (unint64_t)descriptionNumberOfLinesForStyle:(unint64_t)style isTitleMultipleLines:(BOOL)lines;
++ (unint64_t)styleForWidth:(double)width showsArtwork:(BOOL)artwork;
++ (unint64_t)titleNumberOfLinesForStyle:(unint64_t)style;
+- (BOOL)isLabelMultipleLinesWithFrame:(CGRect)frame font:(id)font;
 - (BOOL)updateDisabledReason;
 - (BOOL)updateIsCurrentPlayerItemState;
 - (BOOL)updateTitleFontIfNeeded;
-- (CGRect)actionButtonFrameForViewWidth:(double)a3 titleOriginY:(double)a4;
-- (CGRect)artworkFrameForStyle:(unint64_t)a3 forViewWidth:(double)a4;
-- (CGRect)buttonsFrameForActionButtonFrame:(CGRect)a3 downloadButtonFrame:(CGRect)a4;
-- (CGRect)descriptionButtonFrameForDescriptionFrame:(CGRect)a3;
-- (CGRect)downloadButtonFrameForActionButtonFrame:(CGRect)a3 titleOriginY:(double)a4;
-- (CGRect)explicitIconFrameForViewWidth:(double)a3 titleFrame:(CGRect)a4;
-- (CGRect)footerFrameForDescriptionButtonFrame:(CGRect)a3 descriptionFrame:(CGRect)a4;
-- (CGRect)iconsViewFrameForViewWidth:(double)a3 titleFrame:(CGRect)a4 metadataFrame:(CGRect *)a5 style:(unint64_t)a6;
-- (CGRect)metadataFrameForViewWidth:(double)a3 titleFrame:(CGRect)a4 style:(unint64_t)a5;
-- (CGRect)moreButtonFrameForDescriptionFrame:(CGRect)a3;
-- (CGRect)playStatusViewFrameForViewWidth:(double)a3 titleFrame:(CGRect)a4 artworkFrame:(CGRect)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)titleSizeForViewWidth:(double)a3 titleOrigin:(CGPoint)a4 artworkFrame:(CGRect)a5 buttonViewFrame:(CGRect)a6 style:(unint64_t)a7;
+- (CGRect)actionButtonFrameForViewWidth:(double)width titleOriginY:(double)y;
+- (CGRect)artworkFrameForStyle:(unint64_t)style forViewWidth:(double)width;
+- (CGRect)buttonsFrameForActionButtonFrame:(CGRect)frame downloadButtonFrame:(CGRect)buttonFrame;
+- (CGRect)descriptionButtonFrameForDescriptionFrame:(CGRect)frame;
+- (CGRect)downloadButtonFrameForActionButtonFrame:(CGRect)frame titleOriginY:(double)y;
+- (CGRect)explicitIconFrameForViewWidth:(double)width titleFrame:(CGRect)frame;
+- (CGRect)footerFrameForDescriptionButtonFrame:(CGRect)frame descriptionFrame:(CGRect)descriptionFrame;
+- (CGRect)iconsViewFrameForViewWidth:(double)width titleFrame:(CGRect)frame metadataFrame:(CGRect *)metadataFrame style:(unint64_t)style;
+- (CGRect)metadataFrameForViewWidth:(double)width titleFrame:(CGRect)frame style:(unint64_t)style;
+- (CGRect)moreButtonFrameForDescriptionFrame:(CGRect)frame;
+- (CGRect)playStatusViewFrameForViewWidth:(double)width titleFrame:(CGRect)frame artworkFrame:(CGRect)artworkFrame;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)titleSizeForViewWidth:(double)width titleOrigin:(CGPoint)origin artworkFrame:(CGRect)frame buttonViewFrame:(CGRect)viewFrame style:(unint64_t)style;
 - (IMActionSheetAction)moreAction;
 - (MTEpisodeArtworkView)artworkView;
-- (MTEpisodeLockup)initWithFrame:(CGRect)a3;
+- (MTEpisodeLockup)initWithFrame:(CGRect)frame;
 - (MTEpisodeLockupDelegate)delegate;
 - (MTEpisodeStateView)iconView;
 - (MTNowPlayingIndicatorView)barsView;
@@ -46,66 +46,66 @@
 - (MTTouchInsetsButton)moreButton;
 - (UIButton)actionButton;
 - (UIEdgeInsets)_layoutMargins;
-- (UIEdgeInsets)_layoutMarginsForViewWidth:(double)a3;
+- (UIEdgeInsets)_layoutMarginsForViewWidth:(double)width;
 - (UIImageView)explicitIconView;
 - (UIImageView)playStatusView;
 - (UILabel)metadataLabel;
 - (UITextView)descriptionTextView;
 - (UITextView)footerTextView;
 - (UITextView)titleTextView;
-- (double)descriptionOriginForViewWidth:(CGFloat)a3 artworkFrame:(CGFloat)a4 buttonViewFrame:(CGFloat)a5 titleFrame:(CGFloat)a6 metadataFrame:(uint64_t)a7 iconViewFrame:(unint64_t)a8 style:(double)a9;
-- (double)descriptionWidthForViewWidth:(double)a3 titleFrame:(CGRect)a4 style:(unint64_t)a5;
-- (double)exactDescriptionSizeForOrigin:(double)a3 viewWidth:(double)a4 titleFrame:(double)a5 actionButtonFrame:(double)a6 downloadButtonFrame:(double)a7 style:(double)a8;
-- (double)heightForWidth:(double)a3 style:(unint64_t)a4;
-- (double)titleOriginXForViewWidth:(double)result artworkFrame:(CGRect)a4 buttonFrame:(CGRect)a5 style:(unint64_t)a6;
-- (double)titleOriginYForArtworkFrame:(CGRect)a3 style:(unint64_t)a4;
+- (double)descriptionOriginForViewWidth:(CGFloat)width artworkFrame:(CGFloat)frame buttonViewFrame:(CGFloat)viewFrame titleFrame:(CGFloat)titleFrame metadataFrame:(uint64_t)metadataFrame iconViewFrame:(unint64_t)iconViewFrame style:(double)style;
+- (double)descriptionWidthForViewWidth:(double)width titleFrame:(CGRect)frame style:(unint64_t)style;
+- (double)exactDescriptionSizeForOrigin:(double)origin viewWidth:(double)width titleFrame:(double)frame actionButtonFrame:(double)buttonFrame downloadButtonFrame:(double)downloadButtonFrame style:(double)style;
+- (double)heightForWidth:(double)width style:(unint64_t)style;
+- (double)titleOriginXForViewWidth:(double)result artworkFrame:(CGRect)frame buttonFrame:(CGRect)buttonFrame style:(unint64_t)style;
+- (double)titleOriginYForArtworkFrame:(CGRect)frame style:(unint64_t)style;
 - (id)_currentDescriptionColor;
 - (id)_currentDescriptionFont;
 - (id)_currentTitleColor;
 - (id)_currentTitleFont;
-- (id)descriptionExclusionPathsForOrigin:(CGPoint)a3 descriptionWidth:(double)a4 buttonsFrame:(CGRect)a5 titleFrame:(CGRect)a6;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)titleExclusionPathsForButtonViewFrame:(CGRect)a3;
-- (id)titleExclusionPathsForExplicitIconFrame:(CGRect)a3 viewWidth:(double)a4;
-- (void)_setNumberOfLinesForDescription:(unint64_t)a3;
-- (void)airplaneModeChanged:(id)a3;
+- (id)descriptionExclusionPathsForOrigin:(CGPoint)origin descriptionWidth:(double)width buttonsFrame:(CGRect)frame titleFrame:(CGRect)titleFrame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)titleExclusionPathsForButtonViewFrame:(CGRect)frame;
+- (id)titleExclusionPathsForExplicitIconFrame:(CGRect)frame viewWidth:(double)width;
+- (void)_setNumberOfLinesForDescription:(unint64_t)description;
+- (void)airplaneModeChanged:(id)changed;
 - (void)beginLoadingArtwork;
 - (void)configureSubviews;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)dismissActionSheetsAndPopovers;
 - (void)fixEmptyTextContainers;
 - (void)invalidateLayoutMargins;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)moreButtonTapped:(id)a3;
+- (void)moreButtonTapped:(id)tapped;
 - (void)playbackStateDidChange;
 - (void)prepareForReuse;
-- (void)reachabilityChangedFrom:(BOOL)a3 to:(BOOL)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setColorTheme:(id)a3;
-- (void)setCurrentPlayerItem:(BOOL)a3;
-- (void)setDisabledReason:(int64_t)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setEpisode:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setShowsArtwork:(BOOL)a3;
-- (void)setShowsDescriptionButton:(BOOL)a3;
-- (void)setShowsExplicitIcon:(BOOL)a3;
-- (void)setShowsFooterTextView:(BOOL)a3;
-- (void)setShowsMoreButton:(BOOL)a3;
-- (void)setShowsPlayState:(BOOL)a3;
-- (void)setShowsPubDate:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTitleImage:(id)a3;
+- (void)reachabilityChangedFrom:(BOOL)from to:(BOOL)to;
+- (void)setBounds:(CGRect)bounds;
+- (void)setColorTheme:(id)theme;
+- (void)setCurrentPlayerItem:(BOOL)item;
+- (void)setDisabledReason:(int64_t)reason;
+- (void)setEditing:(BOOL)editing;
+- (void)setEpisode:(id)episode;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setFrame:(CGRect)frame;
+- (void)setShowsArtwork:(BOOL)artwork;
+- (void)setShowsDescriptionButton:(BOOL)button;
+- (void)setShowsExplicitIcon:(BOOL)icon;
+- (void)setShowsFooterTextView:(BOOL)view;
+- (void)setShowsMoreButton:(BOOL)button;
+- (void)setShowsPlayState:(BOOL)state;
+- (void)setShowsPubDate:(BOOL)date;
+- (void)setStyle:(unint64_t)style;
+- (void)setTitleImage:(id)image;
 - (void)startObservingPlaybackState;
 - (void)stopObservingPlaybackState;
 - (void)update;
 - (void)updateActionSheetsAndPopovers;
 - (void)updateAssetStatusIcons;
 - (void)updateColors;
-- (void)updateColorsForBarsView:(id)a3;
+- (void)updateColorsForBarsView:(id)view;
 - (void)updateDescriptionText;
 - (void)updateFooterText;
 - (void)updateFooterTextViewVisbility;
@@ -114,57 +114,57 @@
 - (void)updateMetadataText;
 - (void)updateMoreButtonVisibility;
 - (void)updatePlayStatusIcons;
-- (void)updateStateForBarsView:(id)a3;
+- (void)updateStateForBarsView:(id)view;
 - (void)updateTitleIncludingIcons;
 @end
 
 @implementation MTEpisodeLockup
 
-+ (unint64_t)styleForWidth:(double)a3 showsArtwork:(BOOL)a4
++ (unint64_t)styleForWidth:(double)width showsArtwork:(BOOL)artwork
 {
   v4 = 2;
-  if (a3 > 472.0)
+  if (width > 472.0)
   {
     v4 = 3;
   }
 
-  if (a4)
+  if (artwork)
   {
     return v4;
   }
 
   else
   {
-    return a3 > 472.0;
+    return width > 472.0;
   }
 }
 
-+ (double)estimatedHeightForWidth:(double)a3 showsArtwork:(BOOL)a4
++ (double)estimatedHeightForWidth:(double)width showsArtwork:(BOOL)artwork
 {
-  v6 = [a1 styleForWidth:a4 showsArtwork:?];
+  v6 = [self styleForWidth:artwork showsArtwork:?];
 
-  [a1 estimatedHeightForWidth:v6 style:a3];
+  [self estimatedHeightForWidth:v6 style:width];
   return result;
 }
 
-+ (double)estimatedHeightForWidth:(double)a3 style:(unint64_t)a4
++ (double)estimatedHeightForWidth:(double)width style:(unint64_t)style
 {
   v7 = objc_opt_new();
-  [v7 setStyle:a4];
-  v8 = [a1 mockEpisode];
-  [v7 setEpisode:v8];
+  [v7 setStyle:style];
+  mockEpisode = [self mockEpisode];
+  [v7 setEpisode:mockEpisode];
 
-  [v7 sizeThatFits:{a3, 1.79769313e308}];
+  [v7 sizeThatFits:{width, 1.79769313e308}];
   v10 = v9;
 
   return v10;
 }
 
-+ (unint64_t)titleNumberOfLinesForStyle:(unint64_t)a3
++ (unint64_t)titleNumberOfLinesForStyle:(unint64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
-    if ([a1 useLayoutForSkinnyPhones])
+    if ([self useLayoutForSkinnyPhones])
     {
       return 2;
     }
@@ -175,7 +175,7 @@
     }
   }
 
-  else if (a3)
+  else if (style)
   {
     return 2;
   }
@@ -191,12 +191,12 @@
   }
 }
 
-+ (unint64_t)descriptionNumberOfLinesForStyle:(unint64_t)a3 isTitleMultipleLines:(BOOL)a4
++ (unint64_t)descriptionNumberOfLinesForStyle:(unint64_t)style isTitleMultipleLines:(BOOL)lines
 {
-  v4 = a4;
-  if (a3 == 3)
+  linesCopy = lines;
+  if (style == 3)
   {
-    v8 = !a4;
+    v8 = !lines;
     v9 = 1;
 LABEL_11:
     if (v8)
@@ -210,21 +210,21 @@ LABEL_11:
     }
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
-    v8 = !a4;
+    v8 = !lines;
     v9 = 2;
     goto LABEL_11;
   }
 
-  if (a3)
+  if (style)
   {
     return 3;
   }
 
   v5 = +[MTEpisodeLockup useSelfSizingCells];
   v6 = 2;
-  if (!v4)
+  if (!linesCopy)
   {
     v6 = 3;
   }
@@ -240,15 +240,15 @@ LABEL_11:
   }
 }
 
-+ (double)maximumContentWidthForStyle:(unint64_t)a3 showsPlayState:(BOOL)a4
++ (double)maximumContentWidthForStyle:(unint64_t)style showsPlayState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v7 = +[MTEpisodeLockup descriptionFont];
   [v7 readableWidth];
   IMRoundToPixel();
   v9 = v8;
 
-  [a1 artworkSizeForStyle:a3];
+  [self artworkSizeForStyle:style];
   v11 = v10 + 8.0;
   v12 = v10 <= 0.0;
   v13 = 0.0;
@@ -257,7 +257,7 @@ LABEL_11:
     v11 = 0.0;
   }
 
-  if (v4)
+  if (stateCopy)
   {
     v13 = 24.0;
   }
@@ -265,13 +265,13 @@ LABEL_11:
   return v9 + v13 + v11;
 }
 
-+ (CGRect)frameForContentViewSize:(CGSize)a3 style:(unint64_t)a4
++ (CGRect)frameForContentViewSize:(CGSize)size style:(unint64_t)style
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   x = CGPointZero.x;
   y = CGPointZero.y;
-  [MTEpisodeLockup maximumContentWidthForStyle:a4];
+  [MTEpisodeLockup maximumContentWidthForStyle:style];
   if (width > v8)
   {
     v9 = width - v8;
@@ -291,54 +291,54 @@ LABEL_11:
   return result;
 }
 
-+ (double)artworkHeightForStyle:(unint64_t)a3 sizeType:(unint64_t)a4
++ (double)artworkHeightForStyle:(unint64_t)style sizeType:(unint64_t)type
 {
   v7 = 0.0;
-  if (![a1 showsArtworkForStyle:?])
+  if (![self showsArtworkForStyle:?])
   {
     return v7;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v8 = [a1 titleTextStyle];
+    titleTextStyle = [self titleTextStyle];
     v9 = &UIContentSizeCategoryExtraExtraLarge;
   }
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
-      v11 = [a1 titleFont];
-      v13 = [a1 descriptionFont];
+      titleFont = [self titleFont];
+      descriptionFont = [self descriptionFont];
       goto LABEL_8;
     }
 
-    v8 = [a1 titleTextStyle];
+    titleTextStyle = [self titleTextStyle];
     v9 = &UIContentSizeCategorySmall;
   }
 
   v10 = *v9;
-  v11 = [UIFont mt_fontForTextStyle:v8 contentSizeCategoryName:*v9];
+  titleFont = [UIFont mt_fontForTextStyle:titleTextStyle contentSizeCategoryName:*v9];
 
-  v12 = [a1 descriptionTextStyle];
-  v13 = [UIFont mt_fontForTextStyle:v12 contentSizeCategoryName:v10];
+  descriptionTextStyle = [self descriptionTextStyle];
+  descriptionFont = [UIFont mt_fontForTextStyle:descriptionTextStyle contentSizeCategoryName:v10];
 
 LABEL_8:
-  v14 = [a1 titleNumberOfLinesForStyle:a3];
+  v14 = [self titleNumberOfLinesForStyle:style];
   v15 = 1.0;
-  if (a3 == 3)
+  if (style == 3)
   {
-    v15 = ([a1 descriptionNumberOfLinesForStyle:3 isTitleMultipleLines:1] + 2);
+    v15 = ([self descriptionNumberOfLinesForStyle:3 isTitleMultipleLines:1] + 2);
   }
 
-  [v11 lineHeight];
+  [titleFont lineHeight];
   v17 = v14 * v16 + 2.0;
-  [v13 lineHeight];
+  [descriptionFont lineHeight];
   v19 = v17 + v15 * v18;
-  if (a3 != 3)
+  if (style != 3)
   {
-    [v11 mt_offsetFromCapHeightToAscent];
+    [titleFont mt_offsetFromCapHeightToAscent];
     v19 = v19 + v20;
   }
 
@@ -347,17 +347,17 @@ LABEL_8:
   return v7;
 }
 
-+ (CGSize)artworkSizeForStyle:(unint64_t)a3
++ (CGSize)artworkSizeForStyle:(unint64_t)style
 {
-  [a1 artworkHeightForStyle:a3 sizeType:0];
+  [self artworkHeightForStyle:style sizeType:0];
   v6 = v5;
-  if (a3 == 3)
+  if (style == 3)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000B9180;
     v15[3] = &unk_1004DB360;
-    v15[4] = a1;
+    v15[4] = self;
     v15[5] = 3;
     if (qword_100583BA8 != -1)
     {
@@ -372,7 +372,7 @@ LABEL_8:
   {
     v7 = 0.0;
     v8 = 0.0;
-    if (a3 != 2)
+    if (style != 2)
     {
       goto LABEL_10;
     }
@@ -381,7 +381,7 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = sub_1000B9134;
     block[3] = &unk_1004DB360;
-    block[4] = a1;
+    block[4] = self;
     block[5] = 2;
     if (qword_100583B98 != -1)
     {
@@ -428,24 +428,24 @@ LABEL_10:
   return result;
 }
 
-+ (id)defaultArtworkForStyle:(unint64_t)a3
++ (id)defaultArtworkForStyle:(unint64_t)style
 {
-  [a1 artworkSizeForStyle:a3];
+  [self artworkSizeForStyle:style];
 
-  return [a1 defaultArtworkWithSize:?];
+  return [self defaultArtworkWithSize:?];
 }
 
-+ (id)defaultArtworkWithSize:(CGSize)a3
++ (id)defaultArtworkWithSize:(CGSize)size
 {
-  width = a3.width;
-  if (a3.width < 1.0 || a3.height < 1.0)
+  width = size.width;
+  if (size.width < 1.0 || size.height < 1.0)
   {
     v7 = 0;
   }
 
   else
   {
-    height = a3.height;
+    height = size.height;
     v6 = +[MTImageStore defaultStore];
     v7 = [v6 imageForKey:kMTLibraryDefaultImageKey size:{width, height}];
   }
@@ -456,8 +456,8 @@ LABEL_10:
 + (id)mockEpisode
 {
   v2 = +[MTDB managedObjectModel];
-  v3 = [v2 entitiesByName];
-  v4 = [v3 objectForKeyedSubscript:kMTEpisodeEntityName];
+  entitiesByName = [v2 entitiesByName];
+  v4 = [entitiesByName objectForKeyedSubscript:kMTEpisodeEntityName];
 
   v5 = [[MTEpisode alloc] initWithEntity:v4 insertIntoManagedObjectContext:0];
   [v5 setTitle:@"This is a really long title that will always reach the maximum number of lines even when the maximum number of lines is really large and when the text size is really small. Really... we promise it will be long enough to always reach the maximum. We promise... "];
@@ -467,13 +467,13 @@ LABEL_10:
   [v5 setPrimitiveValue:v6 forKey:v7];
   [v5 didChangeValueForKey:v7];
   [v5 setUuid:@"mockEpisodeUuid"];
-  v8 = [v5 title];
-  v9 = [v5 title];
-  v10 = [v8 stringByAppendingString:v9];
+  title = [v5 title];
+  title2 = [v5 title];
+  v10 = [title stringByAppendingString:title2];
   [v5 setTitle:v10];
 
-  v11 = [v5 title];
-  [v5 setCleanedTitle:v11];
+  title3 = [v5 title];
+  [v5 setCleanedTitle:title3];
 
   v12 = +[NSDate date];
   [v12 timeIntervalSinceReferenceDate];
@@ -529,9 +529,9 @@ LABEL_10:
   return v4 < 375.0;
 }
 
-+ (double)leadingMarginForViewWidth:(double)a3
++ (double)leadingMarginForViewWidth:(double)width
 {
-  v3 = [UIView mt_areMarginsGenerousForWidth:a3];
+  v3 = [UIView mt_areMarginsGenerousForWidth:width];
   result = 32.0;
   if (!v3)
   {
@@ -558,41 +558,41 @@ LABEL_10:
 
 + (id)titleFont
 {
-  v2 = [a1 titleTextStyle];
-  v3 = [UIFont mt_preferredFontForTextStyle:v2];
+  titleTextStyle = [self titleTextStyle];
+  v3 = [UIFont mt_preferredFontForTextStyle:titleTextStyle];
 
   return v3;
 }
 
 + (id)metadataHeaderFont
 {
-  v2 = [a1 descriptionTextStyle];
-  v3 = [UIFont mt_preferredFontForTextStyle:v2 addingSymbolicTraits:2];
+  descriptionTextStyle = [self descriptionTextStyle];
+  v3 = [UIFont mt_preferredFontForTextStyle:descriptionTextStyle addingSymbolicTraits:2];
 
   return v3;
 }
 
 + (id)descriptionFont
 {
-  v2 = [a1 descriptionTextStyle];
-  v3 = [UIFont mt_preferredFontForTextStyle:v2];
+  descriptionTextStyle = [self descriptionTextStyle];
+  v3 = [UIFont mt_preferredFontForTextStyle:descriptionTextStyle];
 
   return v3;
 }
 
 + (id)metadataFooterFont
 {
-  v2 = [a1 footerTextStyle];
-  v3 = [UIFont mt_preferredFontForTextStyle:v2];
+  footerTextStyle = [self footerTextStyle];
+  v3 = [UIFont mt_preferredFontForTextStyle:footerTextStyle];
 
   return v3;
 }
 
-- (MTEpisodeLockup)initWithFrame:(CGRect)a3
+- (MTEpisodeLockup)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MTEpisodeLockup;
-  v3 = [(MTEpisodeLockup *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTEpisodeLockup *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSMutableDictionary dictionary];
@@ -636,37 +636,37 @@ LABEL_10:
 
 - (void)configureSubviews
 {
-  v3 = [(MTEpisodeLockup *)self layer];
-  [v3 setAllowsGroupOpacity:0];
+  layer = [(MTEpisodeLockup *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
   if ([(MTEpisodeLockup *)self showsPlayState])
   {
-    v4 = [(MTEpisodeLockup *)self playStatusView];
-    [(MTEpisodeLockup *)self addSubview:v4];
+    playStatusView = [(MTEpisodeLockup *)self playStatusView];
+    [(MTEpisodeLockup *)self addSubview:playStatusView];
   }
 
-  v5 = [(MTEpisodeLockup *)self titleTextView];
-  [(MTEpisodeLockup *)self addSubview:v5];
+  titleTextView = [(MTEpisodeLockup *)self titleTextView];
+  [(MTEpisodeLockup *)self addSubview:titleTextView];
 
-  v6 = [(MTEpisodeLockup *)self metadataLabel];
-  [(MTEpisodeLockup *)self addSubview:v6];
+  metadataLabel = [(MTEpisodeLockup *)self metadataLabel];
+  [(MTEpisodeLockup *)self addSubview:metadataLabel];
 
-  v7 = [(MTEpisodeLockup *)self descriptionTextView];
-  [(MTEpisodeLockup *)self addSubview:v7];
+  descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+  [(MTEpisodeLockup *)self addSubview:descriptionTextView];
 
   if ([(MTEpisodeLockup *)self isExpanded])
   {
-    v8 = [(MTEpisodeLockup *)self footerTextView];
-    [(MTEpisodeLockup *)self addSubview:v8];
+    footerTextView = [(MTEpisodeLockup *)self footerTextView];
+    [(MTEpisodeLockup *)self addSubview:footerTextView];
   }
 
-  v9 = [(MTEpisodeLockup *)self actionButton];
-  [(MTEpisodeLockup *)self addSubview:v9];
+  actionButton = [(MTEpisodeLockup *)self actionButton];
+  [(MTEpisodeLockup *)self addSubview:actionButton];
 
   if (![(MTEpisodeLockup *)self isExpanded])
   {
-    v10 = [(MTEpisodeLockup *)self moreButton];
-    [(MTEpisodeLockup *)self addSubview:v10];
+    moreButton = [(MTEpisodeLockup *)self moreButton];
+    [(MTEpisodeLockup *)self addSubview:moreButton];
   }
 
   [(MTEpisodeLockup *)self updateColors];
@@ -754,18 +754,18 @@ LABEL_10:
     v8 = [v7 localizedStringForKey:@"more..." value:&stru_1004F3018 table:0];
     [(MTTouchInsetsButton *)v6 setTitle:v8 forState:0];
 
-    v9 = [(MTTouchInsetsButton *)self->_moreButton titleLabel];
+    titleLabel = [(MTTouchInsetsButton *)self->_moreButton titleLabel];
     v10 = +[MTEpisodeLockup descriptionFont];
-    [v9 setFont:v10];
+    [titleLabel setFont:v10];
 
     [(MTTouchInsetsButton *)self->_moreButton addTarget:self action:"moreButtonTapped:" forControlEvents:64];
     [(MTTouchInsetsButton *)self->_moreButton setTouchInsets:-16.0, -8.0, -8.0, -12.0];
-    v11 = [(MTTouchInsetsButton *)self->_moreButton titleLabel];
-    [v11 sizeToFit];
+    titleLabel2 = [(MTTouchInsetsButton *)self->_moreButton titleLabel];
+    [titleLabel2 sizeToFit];
 
     v12 = self->_moreButton;
-    v13 = [(MTTouchInsetsButton *)v12 titleLabel];
-    [v13 bounds];
+    titleLabel3 = [(MTTouchInsetsButton *)v12 titleLabel];
+    [titleLabel3 bounds];
     [(MTTouchInsetsButton *)v12 setFrame:?];
 
     moreButton = self->_moreButton;
@@ -788,17 +788,17 @@ LABEL_10:
     v8 = [v7 localizedStringForKey:@"show full description" value:&stru_1004F3018 table:0];
     [(MTTouchInsetsButton *)v6 setTitle:v8 forState:0];
 
-    v9 = [(MTTouchInsetsButton *)self->_descriptionButton titleLabel];
+    titleLabel = [(MTTouchInsetsButton *)self->_descriptionButton titleLabel];
     v10 = +[MTEpisodeLockup descriptionFont];
-    [v9 setFont:v10];
+    [titleLabel setFont:v10];
 
     [(MTTouchInsetsButton *)self->_descriptionButton setTouchInsets:-16.0, -8.0, -8.0, -12.0];
-    v11 = [(MTTouchInsetsButton *)self->_descriptionButton titleLabel];
-    [v11 sizeToFit];
+    titleLabel2 = [(MTTouchInsetsButton *)self->_descriptionButton titleLabel];
+    [titleLabel2 sizeToFit];
 
     v12 = self->_descriptionButton;
-    v13 = [(MTTouchInsetsButton *)v12 titleLabel];
-    [v13 bounds];
+    titleLabel3 = [(MTTouchInsetsButton *)v12 titleLabel];
+    [titleLabel3 bounds];
     [(MTTouchInsetsButton *)v12 setFrame:?];
 
     descriptionButton = self->_descriptionButton;
@@ -809,10 +809,10 @@ LABEL_10:
 
 - (UIButton)actionButton
 {
-  v2 = [(MTEpisodeLockup *)self moreAction];
-  v3 = [v2 button];
+  moreAction = [(MTEpisodeLockup *)self moreAction];
+  button = [moreAction button];
 
-  return v3;
+  return button;
 }
 
 - (IMActionSheetAction)moreAction
@@ -859,21 +859,21 @@ LABEL_10:
     [(UITextView *)self->_titleTextView setBackgroundColor:v6];
 
     [(UITextView *)self->_titleTextView setDataDetectorTypes:0];
-    v7 = [objc_opt_class() titleFont];
-    [(UITextView *)self->_titleTextView setFont:v7];
+    titleFont = [objc_opt_class() titleFont];
+    [(UITextView *)self->_titleTextView setFont:titleFont];
 
     [(UITextView *)self->_titleTextView setTextContainerInset:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-    v8 = [(UITextView *)self->_titleTextView textContainer];
-    [v8 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)self->_titleTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    v9 = [(UITextView *)self->_titleTextView textContainer];
-    [v9 setWidthTracksTextView:1];
+    textContainer2 = [(UITextView *)self->_titleTextView textContainer];
+    [textContainer2 setWidthTracksTextView:1];
 
-    v10 = [(UITextView *)self->_titleTextView textContainer];
-    [v10 setHeightTracksTextView:1];
+    textContainer3 = [(UITextView *)self->_titleTextView textContainer];
+    [textContainer3 setHeightTracksTextView:1];
 
-    v11 = [(UITextView *)self->_titleTextView textContainer];
-    [v11 setLineBreakMode:4];
+    textContainer4 = [(UITextView *)self->_titleTextView textContainer];
+    [textContainer4 setLineBreakMode:4];
 
     titleTextView = self->_titleTextView;
   }
@@ -897,17 +897,17 @@ LABEL_10:
     v6 = +[UIColor clearColor];
     [(UITextView *)self->_descriptionTextView setBackgroundColor:v6];
 
-    v7 = [(UITextView *)self->_descriptionTextView textContainer];
-    [v7 setLineBreakMode:4];
+    textContainer = [(UITextView *)self->_descriptionTextView textContainer];
+    [textContainer setLineBreakMode:4];
 
-    v8 = [(UITextView *)self->_descriptionTextView textContainer];
-    [v8 setLineFragmentPadding:0.0];
+    textContainer2 = [(UITextView *)self->_descriptionTextView textContainer];
+    [textContainer2 setLineFragmentPadding:0.0];
 
-    v9 = [(UITextView *)self->_descriptionTextView textContainer];
-    [v9 setHeightTracksTextView:1];
+    textContainer3 = [(UITextView *)self->_descriptionTextView textContainer];
+    [textContainer3 setHeightTracksTextView:1];
 
-    v10 = [(UITextView *)self->_descriptionTextView textContainer];
-    [v10 setWidthTracksTextView:1];
+    textContainer4 = [(UITextView *)self->_descriptionTextView textContainer];
+    [textContainer4 setWidthTracksTextView:1];
 
     [(UITextView *)self->_descriptionTextView setTextContainerInset:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     [(UITextView *)self->_descriptionTextView setDataDetectorTypes:0];
@@ -959,17 +959,17 @@ LABEL_10:
     v6 = +[UIColor clearColor];
     [(UITextView *)self->_footerTextView setBackgroundColor:v6];
 
-    v7 = [(UITextView *)self->_footerTextView textContainer];
-    [v7 setLineBreakMode:4];
+    textContainer = [(UITextView *)self->_footerTextView textContainer];
+    [textContainer setLineBreakMode:4];
 
-    v8 = [(UITextView *)self->_footerTextView textContainer];
-    [v8 setLineFragmentPadding:0.0];
+    textContainer2 = [(UITextView *)self->_footerTextView textContainer];
+    [textContainer2 setLineFragmentPadding:0.0];
 
-    v9 = [(UITextView *)self->_footerTextView textContainer];
-    [v9 setHeightTracksTextView:1];
+    textContainer3 = [(UITextView *)self->_footerTextView textContainer];
+    [textContainer3 setHeightTracksTextView:1];
 
-    v10 = [(UITextView *)self->_footerTextView textContainer];
-    [v10 setWidthTracksTextView:1];
+    textContainer4 = [(UITextView *)self->_footerTextView textContainer];
+    [textContainer4 setWidthTracksTextView:1];
 
     [(UITextView *)self->_footerTextView setTextContainerInset:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     [(UITextView *)self->_footerTextView setDataDetectorTypes:0];
@@ -1006,96 +1006,96 @@ LABEL_10:
   return barsView;
 }
 
-- (void)setColorTheme:(id)a3
+- (void)setColorTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   colorTheme = self->_colorTheme;
-  if (colorTheme != v5)
+  if (colorTheme != themeCopy)
   {
-    v8 = v5;
-    v7 = [(MTColorTheme *)colorTheme isEqual:v5];
-    v5 = v8;
+    v8 = themeCopy;
+    v7 = [(MTColorTheme *)colorTheme isEqual:themeCopy];
+    themeCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_colorTheme, a3);
+      objc_storeStrong(&self->_colorTheme, theme);
       [(MTEpisodeLockup *)self updateColors];
-      v5 = v8;
+      themeCopy = v8;
     }
   }
 }
 
 - (void)updateColors
 {
-  v3 = [(MTEpisodeLockup *)self colorTheme];
-  v20 = [UIColor tintColorForTheme:v3];
+  colorTheme = [(MTEpisodeLockup *)self colorTheme];
+  v20 = [UIColor tintColorForTheme:colorTheme];
 
-  v4 = [(MTEpisodeLockup *)self colorTheme];
-  v5 = [UIColor primaryTextColorForTheme:v4];
+  colorTheme2 = [(MTEpisodeLockup *)self colorTheme];
+  v5 = [UIColor primaryTextColorForTheme:colorTheme2];
 
-  v6 = [(MTEpisodeLockup *)self colorTheme];
-  v7 = [UIColor secondaryTextColorForTheme:v6];
+  colorTheme3 = [(MTEpisodeLockup *)self colorTheme];
+  v7 = [UIColor secondaryTextColorForTheme:colorTheme3];
 
-  v8 = [(MTEpisodeLockup *)self titleTextView];
-  [v8 setTextColor:v5];
+  titleTextView = [(MTEpisodeLockup *)self titleTextView];
+  [titleTextView setTextColor:v5];
 
-  v9 = [(MTEpisodeLockup *)self descriptionTextView];
-  [v9 setTextColor:v7];
+  descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+  [descriptionTextView setTextColor:v7];
 
-  v10 = [(MTEpisodeLockup *)self footerTextView];
-  [v10 setTextColor:v7];
+  footerTextView = [(MTEpisodeLockup *)self footerTextView];
+  [footerTextView setTextColor:v7];
 
-  v11 = [(MTEpisodeLockup *)self metadataLabel];
-  [v11 setTextColor:v7];
+  metadataLabel = [(MTEpisodeLockup *)self metadataLabel];
+  [metadataLabel setTextColor:v7];
 
-  v12 = [(MTEpisodeLockup *)self iconView];
-  v13 = [(MTEpisodeLockup *)self colorTheme];
-  [v12 setColorTheme:v13];
+  iconView = [(MTEpisodeLockup *)self iconView];
+  colorTheme4 = [(MTEpisodeLockup *)self colorTheme];
+  [iconView setColorTheme:colorTheme4];
 
-  v14 = [(MTEpisodeLockup *)self actionController];
-  v15 = [(MTEpisodeLockup *)self colorTheme];
-  [v14 setColorTheme:v15];
+  actionController = [(MTEpisodeLockup *)self actionController];
+  colorTheme5 = [(MTEpisodeLockup *)self colorTheme];
+  [actionController setColorTheme:colorTheme5];
 
-  v16 = [(MTEpisodeLockup *)self actionButton];
-  [v16 setTintColor:v20];
+  actionButton = [(MTEpisodeLockup *)self actionButton];
+  [actionButton setTintColor:v20];
 
-  v17 = [(MTEpisodeLockup *)self descriptionTextView];
-  [v17 setTintColor:v20];
+  descriptionTextView2 = [(MTEpisodeLockup *)self descriptionTextView];
+  [descriptionTextView2 setTintColor:v20];
 
-  v18 = [(MTEpisodeLockup *)self moreButton];
-  [v18 setTintColor:v20];
+  moreButton = [(MTEpisodeLockup *)self moreButton];
+  [moreButton setTintColor:v20];
 
-  v19 = [(MTEpisodeLockup *)self descriptionButton];
-  [v19 setTintColor:v20];
+  descriptionButton = [(MTEpisodeLockup *)self descriptionButton];
+  [descriptionButton setTintColor:v20];
 
   [(MTEpisodeLockup *)self updateColorsForBarsView:self->_barsView];
   [(MTEpisodeLockup *)self updatePlayStatusIcons];
 }
 
-- (void)updateColorsForBarsView:(id)a3
+- (void)updateColorsForBarsView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
-    v6 = [(MTEpisodeLockup *)self colorTheme];
-    v5 = [UIColor barsTintColorForTheme:v6];
-    [v4 setTintColor:v5];
+    viewCopy = view;
+    colorTheme = [(MTEpisodeLockup *)self colorTheme];
+    v5 = [UIColor barsTintColorForTheme:colorTheme];
+    [viewCopy setTintColor:v5];
   }
 }
 
-- (void)moreButtonTapped:(id)a3
+- (void)moreButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(MTEpisodeLockup *)self delegate];
-  [v5 lockup:self moreButtonTapped:v4];
+  tappedCopy = tapped;
+  delegate = [(MTEpisodeLockup *)self delegate];
+  [delegate lockup:self moreButtonTapped:tappedCopy];
 }
 
-- (void)airplaneModeChanged:(id)a3
+- (void)airplaneModeChanged:(id)changed
 {
   if (![(MTEpisodeLockup *)self updateDisabledReason])
   {
-    v4 = [(MTEpisodeLockup *)self episode];
+    episode = [(MTEpisodeLockup *)self episode];
 
-    if (v4)
+    if (episode)
     {
 
       [(MTEpisodeLockup *)self updateIcons];
@@ -1103,7 +1103,7 @@ LABEL_10:
   }
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   [(MTTouchInsetsButton *)self->_moreButton removeFromSuperview];
   moreButton = self->_moreButton;
@@ -1117,7 +1117,7 @@ LABEL_10:
   }
 }
 
-- (void)reachabilityChangedFrom:(BOOL)a3 to:(BOOL)a4
+- (void)reachabilityChangedFrom:(BOOL)from to:(BOOL)to
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
@@ -1130,35 +1130,35 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)setEpisode:(id)a3
+- (void)setEpisode:(id)episode
 {
-  objc_storeStrong(&self->_episode, a3);
-  if (a3)
+  objc_storeStrong(&self->_episode, episode);
+  if (episode)
   {
 
     [(MTEpisodeLockup *)self update];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(MTEpisodeLockup *)self updateMoreButtonVisibility];
   }
 }
 
-- (void)setCurrentPlayerItem:(BOOL)a3
+- (void)setCurrentPlayerItem:(BOOL)item
 {
-  if (self->_currentPlayerItem != a3)
+  if (self->_currentPlayerItem != item)
   {
-    v3 = a3;
-    self->_currentPlayerItem = a3;
+    itemCopy = item;
+    self->_currentPlayerItem = item;
     [(MTEpisodeArtworkView *)self->_artworkView setCurrentPlayerItem:?];
     [(MTEpisodeLockup *)self updatePlayStatusIcons];
     [(MTEpisodeLockup *)self updateIconView];
-    if (v3)
+    if (itemCopy)
     {
 
       [(MTEpisodeLockup *)self startObservingPlaybackState];
@@ -1172,13 +1172,13 @@ LABEL_10:
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(MTEpisodeLockup *)self updateMoreButtonVisibility];
-    if (a3)
+    if (expanded)
     {
       v6 = 0;
     }
@@ -1189,9 +1189,9 @@ LABEL_10:
     }
 
     [(MTEpisodeLockup *)self _setNumberOfLinesForDescription:v6];
-    v7 = [(MTEpisodeLockup *)self episode];
+    episode = [(MTEpisodeLockup *)self episode];
 
-    if (v7)
+    if (episode)
     {
       [(MTEpisodeLockup *)self updateDescriptionText];
     }
@@ -1202,16 +1202,16 @@ LABEL_10:
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3 || !self->_initialized)
+  if (self->_style != style || !self->_initialized)
   {
-    self->_style = a3;
-    [(MTEpisodeLockup *)self setShowsArtwork:[MTEpisodeLockup showsArtworkForStyle:a3]];
-    v5 = [objc_opt_class() titleNumberOfLinesForStyle:a3];
-    v6 = [(MTEpisodeLockup *)self titleTextView];
-    v7 = [v6 textContainer];
-    [v7 setMaximumNumberOfLines:v5];
+    self->_style = style;
+    [(MTEpisodeLockup *)self setShowsArtwork:[MTEpisodeLockup showsArtworkForStyle:style]];
+    v5 = [objc_opt_class() titleNumberOfLinesForStyle:style];
+    titleTextView = [(MTEpisodeLockup *)self titleTextView];
+    textContainer = [titleTextView textContainer];
+    [textContainer setMaximumNumberOfLines:v5];
 
     [(MTEpisodeLockup *)self updateTitleFontIfNeeded];
     [(MTEpisodeLockup *)self invalidateSizeMetrics];
@@ -1220,41 +1220,41 @@ LABEL_10:
   }
 }
 
-- (void)setShowsPubDate:(BOOL)a3
+- (void)setShowsPubDate:(BOOL)date
 {
-  if (self->_showsPubDate != a3)
+  if (self->_showsPubDate != date)
   {
-    self->_showsPubDate = a3;
+    self->_showsPubDate = date;
     [(MTEpisodeLockup *)self updateDescriptionText];
   }
 }
 
-- (void)setShowsPlayState:(BOOL)a3
+- (void)setShowsPlayState:(BOOL)state
 {
-  if (self->_showsPlayState == a3)
+  if (self->_showsPlayState == state)
   {
     return;
   }
 
-  v4 = a3;
-  self->_showsPlayState = a3;
-  v6 = [(MTEpisodeLockup *)self playStatusView];
-  v7 = [v6 superview];
+  stateCopy = state;
+  self->_showsPlayState = state;
+  playStatusView = [(MTEpisodeLockup *)self playStatusView];
+  superview = [playStatusView superview];
 
-  if (v4)
+  if (stateCopy)
   {
-    if (v7 != self)
+    if (superview != self)
     {
-      v8 = [(MTEpisodeLockup *)self playStatusView];
-      [(MTEpisodeLockup *)self addSubview:v8];
+      playStatusView2 = [(MTEpisodeLockup *)self playStatusView];
+      [(MTEpisodeLockup *)self addSubview:playStatusView2];
 LABEL_7:
     }
   }
 
-  else if (v7)
+  else if (superview)
   {
-    v8 = [(MTEpisodeLockup *)self playStatusView];
-    [v8 removeFromSuperview];
+    playStatusView2 = [(MTEpisodeLockup *)self playStatusView];
+    [playStatusView2 removeFromSuperview];
     goto LABEL_7;
   }
 
@@ -1266,22 +1266,22 @@ LABEL_7:
   [(MTEpisodeLockup *)self setEpisode:0];
   [(MTEpisodeLockup *)self setExpanded:0];
   [(MTEpisodeLockup *)self setDelegate:0];
-  v3 = [(MTEpisodeLockup *)self actionController];
-  [v3 prepareForReuse];
+  actionController = [(MTEpisodeLockup *)self actionController];
+  [actionController prepareForReuse];
 
   [(MTEpisodeLockup *)self setDisabledReason:0];
   [(MTEpisodeLockup *)self invalidateSizeMetrics];
   [(MTEpisodeLockup *)self invalidateLayoutMargins];
   self->_shouldShowNowPlaying = 1;
   [(MTEpisodeLockup *)self setCurrentPlayerItem:0];
-  v4 = [(MTEpisodeLockup *)self artworkView];
-  v5 = [v4 artwork];
+  artworkView = [(MTEpisodeLockup *)self artworkView];
+  artwork = [artworkView artwork];
 
-  if (v5)
+  if (artwork)
   {
     v7 = [objc_opt_class() defaultArtworkForStyle:{-[MTEpisodeLockup style](self, "style")}];
-    v6 = [(MTEpisodeLockup *)self artworkView];
-    [v6 setArtwork:v7];
+    artworkView2 = [(MTEpisodeLockup *)self artworkView];
+    [artworkView2 setArtwork:v7];
   }
 }
 
@@ -1294,38 +1294,38 @@ LABEL_7:
 
 - (void)updateActionSheetsAndPopovers
 {
-  v3 = [(MTEpisodeLockup *)self moreAction];
-  sub_1000BB420(v3, v3);
+  moreAction = [(MTEpisodeLockup *)self moreAction];
+  sub_1000BB420(moreAction, moreAction);
 
-  v4 = [(MTEpisodeLockup *)self actionController];
-  [v4 updateActionSheetsAndPopovers];
+  actionController = [(MTEpisodeLockup *)self actionController];
+  [actionController updateActionSheetsAndPopovers];
 }
 
 - (void)dismissActionSheetsAndPopovers
 {
-  v3 = [(MTEpisodeLockup *)self moreAction];
-  sub_1000BB4F8(v3, v3);
+  moreAction = [(MTEpisodeLockup *)self moreAction];
+  sub_1000BB4F8(moreAction, moreAction);
 
-  v4 = [(MTEpisodeLockup *)self actionController];
-  [v4 dismissActionSheetsAndPopovers];
+  actionController = [(MTEpisodeLockup *)self actionController];
+  [actionController dismissActionSheetsAndPopovers];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = MTEpisodeLockup;
-  v8 = [(MTEpisodeLockup *)&v15 hitTest:v7 withEvent:x, y];
-  v9 = [(MTEpisodeLockup *)self moreButton];
+  v8 = [(MTEpisodeLockup *)&v15 hitTest:eventCopy withEvent:x, y];
+  moreButton = [(MTEpisodeLockup *)self moreButton];
 
-  if (v8 == v9)
+  if (v8 == moreButton)
   {
-    v10 = [(MTEpisodeLockup *)self actionButton];
-    v11 = [(MTEpisodeLockup *)self actionButton];
-    [(MTEpisodeLockup *)self convertPoint:v11 toView:x, y];
-    v12 = [v10 hitTest:v7 withEvent:?];
+    actionButton = [(MTEpisodeLockup *)self actionButton];
+    actionButton2 = [(MTEpisodeLockup *)self actionButton];
+    [(MTEpisodeLockup *)self convertPoint:actionButton2 toView:x, y];
+    v12 = [actionButton hitTest:eventCopy withEvent:?];
 
     if (v12)
     {
@@ -1352,8 +1352,8 @@ LABEL_7:
     y = v7;
     width = v9;
     height = v11;
-    v13 = [(MTEpisodeLockup *)self artworkView];
-    [v13 setFrame:{x, y, width, height}];
+    artworkView = [(MTEpisodeLockup *)self artworkView];
+    [artworkView setFrame:{x, y, width, height}];
   }
 
   else
@@ -1378,8 +1378,8 @@ LABEL_7:
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(MTEpisodeLockup *)self actionButton];
-  [v27 setFrame:{v20, v22, v24, v26}];
+  actionButton = [(MTEpisodeLockup *)self actionButton];
+  [actionButton setFrame:{v20, v22, v24, v26}];
 
   [(MTEpisodeLockup *)self downloadButtonFrameForActionButtonFrame:v20 titleOriginY:v22, v24, v26, v18];
   v123 = v22;
@@ -1404,8 +1404,8 @@ LABEL_7:
   [(MTEpisodeLockup *)self titleSizeForViewWidth:[(MTEpisodeLockup *)self style] titleOrigin:v16 artworkFrame:v40 buttonViewFrame:v113 style:v127, y, v125, height, v33, v35, v37, v39];
   v42 = v41;
   v44 = v43;
-  v45 = [(MTEpisodeLockup *)self titleTextView];
-  [v45 setFrame:{v128, v113, v42, v44}];
+  titleTextView = [(MTEpisodeLockup *)self titleTextView];
+  [titleTextView setFrame:{v128, v113, v42, v44}];
 
   v46 = v44;
   v47 = v42;
@@ -1414,16 +1414,16 @@ LABEL_7:
   v51 = v50;
   v53 = v52;
   v55 = v54;
-  v56 = [(MTEpisodeLockup *)self playStatusView];
-  [v56 setFrame:{v49, v51, v53, v55}];
+  playStatusView = [(MTEpisodeLockup *)self playStatusView];
+  [playStatusView setFrame:{v49, v51, v53, v55}];
 
-  v57 = [(MTEpisodeLockup *)self barsView];
-  v58 = [v57 superview];
+  barsView = [(MTEpisodeLockup *)self barsView];
+  superview = [barsView superview];
 
-  if (v58)
+  if (superview)
   {
-    v59 = [(MTEpisodeLockup *)self barsView];
-    [v59 setFrame:{v49, v51, v53, v55}];
+    barsView2 = [(MTEpisodeLockup *)self barsView];
+    [barsView2 setFrame:{v49, v51, v53, v55}];
   }
 
   [(MTEpisodeLockup *)self metadataFrameForViewWidth:[(MTEpisodeLockup *)self style] titleFrame:v129 style:v128, v113, v47, v46];
@@ -1436,27 +1436,27 @@ LABEL_7:
   v67 = v66;
   v69 = v68;
   v71 = v70;
-  v72 = [(MTEpisodeLockup *)self iconView];
-  v73 = [v72 superview];
+  iconView = [(MTEpisodeLockup *)self iconView];
+  superview2 = [iconView superview];
 
-  if (v73)
+  if (superview2)
   {
-    v74 = [(MTEpisodeLockup *)self iconView];
-    [v74 setFrame:{v65, v67, v69, v71}];
+    iconView2 = [(MTEpisodeLockup *)self iconView];
+    [iconView2 setFrame:{v65, v67, v69, v71}];
   }
 
-  v75 = [(MTEpisodeLockup *)self metadataLabel];
-  [v75 setFrame:{v132, v133, v134}];
+  metadataLabel = [(MTEpisodeLockup *)self metadataLabel];
+  [metadataLabel setFrame:{v132, v133, v134}];
 
-  v76 = [(MTEpisodeLockup *)self style];
-  [(MTEpisodeLockup *)self descriptionOriginForViewWidth:v76 artworkFrame:v129 buttonViewFrame:v127 titleFrame:v126 metadataFrame:v125 iconViewFrame:height style:v117, v116, v37, v114, *&v128, *&v113, *&v47, *&v46, *&v132, v133, *&v134, *&v65, *&v67, *&v69, *&v71];
+  style = [(MTEpisodeLockup *)self style];
+  [(MTEpisodeLockup *)self descriptionOriginForViewWidth:style artworkFrame:v129 buttonViewFrame:v127 titleFrame:v126 metadataFrame:v125 iconViewFrame:height style:v117, v116, v37, v114, *&v128, *&v113, *&v47, *&v46, *&v132, v133, *&v134, *&v65, *&v67, *&v69, *&v71];
   v78 = v77;
   v80 = v79;
   [(MTEpisodeLockup *)self exactDescriptionSizeForOrigin:[(MTEpisodeLockup *)self style] viewWidth:v77 titleFrame:v79 actionButtonFrame:v129 downloadButtonFrame:v128 style:v113, v47, v46, *&v124, *&v123, *&v122, *&v115, v121, v120, v119, v118];
   v82 = v81;
   v84 = v83;
-  v85 = [(MTEpisodeLockup *)self descriptionTextView];
-  [v85 frame];
+  descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+  [descriptionTextView frame];
   v137.origin.x = v86;
   v137.origin.y = v87;
   v137.size.width = v88;
@@ -1469,8 +1469,8 @@ LABEL_7:
 
   if (!v90)
   {
-    v91 = [(MTEpisodeLockup *)self descriptionTextView];
-    [v91 setFrame:{v78, v80, v82, v84}];
+    descriptionTextView2 = [(MTEpisodeLockup *)self descriptionTextView];
+    [descriptionTextView2 setFrame:{v78, v80, v82, v84}];
   }
 
   [(MTEpisodeLockup *)self fixEmptyTextContainers];
@@ -1515,30 +1515,30 @@ LABEL_7:
     v107 = v106;
     v109 = v108;
     v111 = v110;
-    v112 = [(MTEpisodeLockup *)self footerTextView];
-    [v112 setFrame:{v105, v107, v109, v111}];
+    footerTextView = [(MTEpisodeLockup *)self footerTextView];
+    [footerTextView setFrame:{v105, v107, v109, v111}];
   }
 }
 
-- (CGRect)explicitIconFrameForViewWidth:(double)a3 titleFrame:(CGRect)a4
+- (CGRect)explicitIconFrameForViewWidth:(double)width titleFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = +[MTEpisodeLockup titleFont];
-  v11 = [(MTEpisodeLockup *)self explicitIconView];
-  [v11 frame];
+  explicitIconView = [(MTEpisodeLockup *)self explicitIconView];
+  [explicitIconView frame];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(MTEpisodeLockup *)self _isRTL];
-  v62 = a3;
+  _isRTL = [(MTEpisodeLockup *)self _isRTL];
+  widthCopy = width;
   v17 = x;
   v18 = y;
-  v19 = width;
+  widthCopy2 = width;
   v20 = height;
-  if (v16)
+  if (_isRTL)
   {
     v21 = CGRectGetMinX(*&v17) - v13;
     [(MTEpisodeLockup *)self _layoutMargins];
@@ -1557,9 +1557,9 @@ LABEL_7:
   {
     MaxX = CGRectGetMaxX(*&v17);
     [(MTEpisodeLockup *)self _layoutMargins];
-    if (MaxX >= a3 - v25 - v13)
+    if (MaxX >= width - v25 - v13)
     {
-      v23 = a3 - v25 - v13;
+      v23 = width - v25 - v13;
     }
 
     else
@@ -1594,28 +1594,28 @@ LABEL_7:
     v33 = v31;
   }
 
-  v34 = [(MTEpisodeLockup *)self titleTextView];
-  v35 = [v34 layoutManager];
-  v36 = [v35 numberOfGlyphs] - 1;
+  titleTextView = [(MTEpisodeLockup *)self titleTextView];
+  layoutManager = [titleTextView layoutManager];
+  v36 = [layoutManager numberOfGlyphs] - 1;
 
   if (v36)
   {
     v61 = v28;
     v37 = MaxY;
-    v38 = [(MTEpisodeLockup *)self titleTextView];
-    v39 = [v38 layoutManager];
-    [v39 lineFragmentRectForGlyphAtIndex:v36 effectiveRange:0];
+    titleTextView2 = [(MTEpisodeLockup *)self titleTextView];
+    layoutManager2 = [titleTextView2 layoutManager];
+    [layoutManager2 lineFragmentRectForGlyphAtIndex:v36 effectiveRange:0];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
 
-    v48 = [(MTEpisodeLockup *)self _isRTL];
+    _isRTL2 = [(MTEpisodeLockup *)self _isRTL];
     v49 = v41;
     v50 = v43;
     v51 = v45;
     v52 = v47;
-    if (v48)
+    if (_isRTL2)
     {
       v53 = CGRectGetMinX(*&v49) + -5.0 - v13;
       [(MTEpisodeLockup *)self _layoutMargins];
@@ -1634,9 +1634,9 @@ LABEL_7:
     {
       v55 = CGRectGetMaxX(*&v49) + 5.0;
       [(MTEpisodeLockup *)self _layoutMargins];
-      if (v55 >= v62 - v56 - v13)
+      if (v55 >= widthCopy - v56 - v13)
       {
-        v23 = v62 - v56 - v13;
+        v23 = widthCopy - v56 - v13;
       }
 
       else
@@ -1660,11 +1660,11 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MTEpisodeLockup *)self style];
+  height = fits.height;
+  width = fits.width;
+  style = [(MTEpisodeLockup *)self style];
   if ([(MTEpisodeLockup *)self isExpanded])
   {
     v7 = @"e";
@@ -1678,7 +1678,7 @@ LABEL_7:
   v19.width = width;
   v19.height = height;
   v8 = NSStringFromCGSize(v19);
-  v9 = [NSString stringWithFormat:@"%lu-%@-%@", v6, v7, v8];
+  v9 = [NSString stringWithFormat:@"%lu-%@-%@", style, v7, v8];
 
   v10 = [(NSMutableDictionary *)self->_sizeCache objectForKeyedSubscript:v9];
   v11 = v10;
@@ -1708,49 +1708,49 @@ LABEL_7:
 
 - (void)fixEmptyTextContainers
 {
-  v3 = [(MTEpisodeLockup *)self descriptionTextView];
-  v4 = [v3 textContainer];
-  [v4 size];
+  descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+  textContainer = [descriptionTextView textContainer];
+  [textContainer size];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(MTEpisodeLockup *)self descriptionTextView];
-  [v9 frame];
+  descriptionTextView2 = [(MTEpisodeLockup *)self descriptionTextView];
+  [descriptionTextView2 frame];
   v11 = v10;
   v13 = v12;
 
   if (v6 != v11 || v8 != v13)
   {
-    v15 = [(MTEpisodeLockup *)self descriptionTextView];
-    v16 = [v15 textContainer];
-    [v16 setSize:{v11, v13}];
+    descriptionTextView3 = [(MTEpisodeLockup *)self descriptionTextView];
+    textContainer2 = [descriptionTextView3 textContainer];
+    [textContainer2 setSize:{v11, v13}];
   }
 
-  v17 = [(MTEpisodeLockup *)self titleTextView];
-  v18 = [v17 textContainer];
-  [v18 size];
+  titleTextView = [(MTEpisodeLockup *)self titleTextView];
+  textContainer3 = [titleTextView textContainer];
+  [textContainer3 size];
   v20 = v19;
   v22 = v21;
 
-  v23 = [(MTEpisodeLockup *)self titleTextView];
-  [v23 frame];
+  titleTextView2 = [(MTEpisodeLockup *)self titleTextView];
+  [titleTextView2 frame];
   v25 = v24;
   v27 = v26;
 
   if (v20 != v25 || v22 != v27)
   {
-    v29 = [(MTEpisodeLockup *)self titleTextView];
-    v28 = [v29 textContainer];
-    [v28 setSize:{v25, v27}];
+    titleTextView3 = [(MTEpisodeLockup *)self titleTextView];
+    textContainer4 = [titleTextView3 textContainer];
+    [textContainer4 setSize:{v25, v27}];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MTEpisodeLockup *)self frame];
   if (v8 != width)
   {
@@ -1763,12 +1763,12 @@ LABEL_7:
   [(MTEpisodeLockup *)&v9 setFrame:x, y, width, height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MTEpisodeLockup *)self bounds];
   if (v8 != width)
   {
@@ -1816,9 +1816,9 @@ LABEL_7:
   return result;
 }
 
-- (UIEdgeInsets)_layoutMarginsForViewWidth:(double)a3
+- (UIEdgeInsets)_layoutMarginsForViewWidth:(double)width
 {
-  [objc_opt_class() leadingMarginForViewWidth:a3];
+  [objc_opt_class() leadingMarginForViewWidth:width];
   v6 = v5;
   v7 = *&self->__layoutMargins.top;
   v8 = *&self->__layoutMargins.bottom;
@@ -1826,7 +1826,7 @@ LABEL_7:
   {
     [MTEpisodeLockup maximumContentWidthForStyle:[(MTEpisodeLockup *)self style]];
     v12 = v11;
-    [(MTEpisodeLockup *)self mt_layoutMarginsForWidth:a3];
+    [(MTEpisodeLockup *)self mt_layoutMarginsForWidth:width];
     v14 = v13;
     v20 = v16;
     v21 = v15;
@@ -1841,7 +1841,7 @@ LABEL_7:
       left = v14;
     }
 
-    if (a3 - left - right > v12)
+    if (width - left - right > v12)
     {
       IMRoundToPixel();
       left = v18;
@@ -1870,16 +1870,16 @@ LABEL_7:
   return result;
 }
 
-- (double)heightForWidth:(double)a3 style:(unint64_t)a4
+- (double)heightForWidth:(double)width style:(unint64_t)style
 {
   [MTEpisodeLockup artworkFrameForStyle:"artworkFrameForStyle:forViewWidth:" forViewWidth:?];
   v114 = v7;
   v94 = v8;
   v109 = v9;
   v11 = v10;
-  [(MTEpisodeLockup *)self titleOriginYForArtworkFrame:a4 style:?];
+  [(MTEpisodeLockup *)self titleOriginYForArtworkFrame:style style:?];
   v93 = v12;
-  [(MTEpisodeLockup *)self actionButtonFrameForViewWidth:a3 titleOriginY:v12];
+  [(MTEpisodeLockup *)self actionButtonFrameForViewWidth:width titleOriginY:v12];
   v14 = v13;
   v105 = v15;
   v107 = v13;
@@ -1901,22 +1901,22 @@ LABEL_7:
   v95 = v29;
   v96 = v27;
   v113 = v11;
-  [(MTEpisodeLockup *)self titleOriginXForViewWidth:a4 artworkFrame:a3 buttonFrame:v114 style:v11, v94, v109, v25, v27, v29, v31];
+  [(MTEpisodeLockup *)self titleOriginXForViewWidth:style artworkFrame:width buttonFrame:v114 style:v11, v94, v109, v25, v27, v29, v31];
   v92 = v30;
   v33 = v32;
-  [(MTEpisodeLockup *)self titleSizeForViewWidth:a4 titleOrigin:a3 artworkFrame:v26 buttonViewFrame:v28 style:v92, v111];
+  [(MTEpisodeLockup *)self titleSizeForViewWidth:style titleOrigin:width artworkFrame:v26 buttonViewFrame:v28 style:v92, v111];
   v35 = v34;
   v37 = v36;
-  [(MTEpisodeLockup *)self metadataFrameForViewWidth:a4 titleFrame:a3 style:v33, v93, v34, v36];
+  [(MTEpisodeLockup *)self metadataFrameForViewWidth:style titleFrame:width style:v33, v93, v34, v36];
   v115 = v38;
   *&v116 = v39;
   *(&v116 + 1) = v40;
   v117 = v41;
-  [(MTEpisodeLockup *)self iconsViewFrameForViewWidth:&v115 titleFrame:a4 metadataFrame:a3 style:v33, v93, v35, v37];
-  [(MTEpisodeLockup *)self descriptionOriginForViewWidth:a4 artworkFrame:a3 buttonViewFrame:v114 titleFrame:v113 metadataFrame:v94 iconViewFrame:v109 style:v26, v96, v95, v111, *&v33, *&v93, *&v35, *&v37, v115, v116, v117, v42, v43, v44, v45];
+  [(MTEpisodeLockup *)self iconsViewFrameForViewWidth:&v115 titleFrame:style metadataFrame:width style:v33, v93, v35, v37];
+  [(MTEpisodeLockup *)self descriptionOriginForViewWidth:style artworkFrame:width buttonViewFrame:v114 titleFrame:v113 metadataFrame:v94 iconViewFrame:v109 style:v26, v96, v95, v111, *&v33, *&v93, *&v35, *&v37, v115, v116, v117, v42, v43, v44, v45];
   v47 = v46;
   v49 = v48;
-  [(MTEpisodeLockup *)self exactDescriptionSizeForOrigin:a4 viewWidth:*&v107 titleFrame:*&v105 actionButtonFrame:*&v103 downloadButtonFrame:*&v101 style:*&v100, *&v99, *&v98, *&v97];
+  [(MTEpisodeLockup *)self exactDescriptionSizeForOrigin:style viewWidth:*&v107 titleFrame:*&v105 actionButtonFrame:*&v103 downloadButtonFrame:*&v101 style:*&v100, *&v99, *&v98, *&v97];
   v51 = v50;
   v112 = v52;
   [(MTEpisodeLockup *)self moreButtonFrameForDescriptionFrame:v49, v47];
@@ -1948,8 +1948,8 @@ LABEL_7:
 
   if ([(MTEpisodeLockup *)self isExpanded])
   {
-    v63 = [(MTEpisodeLockup *)self descriptionTextView];
-    [v63 frame];
+    descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+    [descriptionTextView frame];
     v125.origin.x = v64;
     v125.origin.y = v65;
     v125.size.width = v66;
@@ -1962,8 +1962,8 @@ LABEL_7:
 
     if (!v68)
     {
-      v69 = [(MTEpisodeLockup *)self descriptionTextView];
-      [v69 setFrame:{v49, v47, v112, v51}];
+      descriptionTextView2 = [(MTEpisodeLockup *)self descriptionTextView];
+      [descriptionTextView2 setFrame:{v49, v47, v112, v51}];
     }
 
     [(MTEpisodeLockup *)self descriptionButtonFrameForDescriptionFrame:v49, v47, v112, v51];
@@ -1983,9 +1983,9 @@ LABEL_7:
       v82 = v61;
       width = v83;
       height = v85;
-      v87 = [(MTEpisodeLockup *)self footerTextView];
+      footerTextView = [(MTEpisodeLockup *)self footerTextView];
       x = v79;
-      [v87 setFrame:{v79, y, width, height}];
+      [footerTextView setFrame:{v79, y, width, height}];
     }
 
     else
@@ -2017,18 +2017,18 @@ LABEL_7:
     CGRectGetMaxY(v124);
   }
 
-  v88 = [objc_opt_class() titleFont];
-  [v88 _scaledValueForValue:8.0];
+  titleFont = [objc_opt_class() titleFont];
+  [titleFont _scaledValueForValue:8.0];
   v89 = 100.0;
-  if (a4 > 1)
+  if (style > 1)
   {
-    if (a4 == 3 || a4 == 2)
+    if (style == 3 || style == 2)
     {
       goto LABEL_17;
     }
   }
 
-  else if (a4 <= 1)
+  else if (style <= 1)
   {
 LABEL_17:
     IMRoundToPixel();
@@ -2038,23 +2038,23 @@ LABEL_17:
   return v89;
 }
 
-- (CGRect)artworkFrameForStyle:(unint64_t)a3 forViewWidth:(double)a4
+- (CGRect)artworkFrameForStyle:(unint64_t)style forViewWidth:(double)width
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((style & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [objc_opt_class() artworkSizeForStyle:a3];
+    [objc_opt_class() artworkSizeForStyle:style];
     width = v7;
     height = v9;
-    v11 = [(MTEpisodeLockup *)self _isRTL];
+    _isRTL = [(MTEpisodeLockup *)self _isRTL];
     [(MTEpisodeLockup *)self _layoutMargins];
-    x = a4 - v12 - width;
-    if (!v11)
+    x = width - v12 - width;
+    if (!_isRTL)
     {
       x = v12;
     }
 
     y = 8.0;
-    if (a3 == 2)
+    if (style == 2)
     {
       y = 16.0;
     }
@@ -2068,23 +2068,23 @@ LABEL_17:
     height = CGRectZero.size.height;
   }
 
-  v15 = width;
+  widthCopy = width;
   v16 = height;
   result.size.height = v16;
-  result.size.width = v15;
+  result.size.width = widthCopy;
   result.origin.y = y;
   result.origin.x = x;
   return result;
 }
 
-- (double)titleOriginXForViewWidth:(double)result artworkFrame:(CGRect)a4 buttonFrame:(CGRect)a5 style:(unint64_t)a6
+- (double)titleOriginXForViewWidth:(double)result artworkFrame:(CGRect)frame buttonFrame:(CGRect)buttonFrame style:(unint64_t)style
 {
-  if (a6 - 2 < 2)
+  if (style - 2 < 2)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
     if (![(MTEpisodeLockup *)self _isRTL])
     {
       v13 = x;
@@ -2097,7 +2097,7 @@ LABEL_17:
 
   else
   {
-    if (a6 > 1)
+    if (style > 1)
     {
       return result;
     }
@@ -2109,52 +2109,52 @@ LABEL_17:
     }
   }
 
-  if (CGRectIsEmpty(a5))
+  if (CGRectIsEmpty(buttonFrame))
   {
     [(MTEpisodeLockup *)self _layoutMargins];
     return v12;
   }
 
-  v13 = a5.origin.x;
-  v14 = a5.origin.y;
-  v15 = a5.size.width;
-  v16 = a5.size.height;
+  v13 = buttonFrame.origin.x;
+  v14 = buttonFrame.origin.y;
+  v15 = buttonFrame.size.width;
+  v16 = buttonFrame.size.height;
   return CGRectGetMaxX(*&v13) + 8.0;
 }
 
-- (CGSize)titleSizeForViewWidth:(double)a3 titleOrigin:(CGPoint)a4 artworkFrame:(CGRect)a5 buttonViewFrame:(CGRect)a6 style:(unint64_t)a7
+- (CGSize)titleSizeForViewWidth:(double)width titleOrigin:(CGPoint)origin artworkFrame:(CGRect)frame buttonViewFrame:(CGRect)viewFrame style:(unint64_t)style
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = [objc_opt_class() showsArtworkForStyle:a7];
-  v11 = [(MTEpisodeLockup *)self titleTextView];
-  [v11 frame];
+  y = origin.y;
+  x = origin.x;
+  v10 = [objc_opt_class() showsArtworkForStyle:style];
+  titleTextView = [(MTEpisodeLockup *)self titleTextView];
+  [titleTextView frame];
   v13 = v12;
   v15 = v14;
 
   if (x != v13 || y != v15)
   {
-    v17 = [(MTEpisodeLockup *)self titleTextView];
-    [v17 frame];
+    titleTextView2 = [(MTEpisodeLockup *)self titleTextView];
+    [titleTextView2 frame];
     v19 = v18;
     v21 = v20;
-    v22 = [(MTEpisodeLockup *)self titleTextView];
-    [v22 setFrame:{x, y, v19, v21}];
+    titleTextView3 = [(MTEpisodeLockup *)self titleTextView];
+    [titleTextView3 setFrame:{x, y, v19, v21}];
   }
 
-  v23 = [(MTEpisodeLockup *)self titleExclusionPathsForButtonViewFrame:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
-  v24 = [(MTEpisodeLockup *)self titleTextView];
-  v25 = [v24 textContainer];
-  [v25 setExclusionPaths:v23];
+  v23 = [(MTEpisodeLockup *)self titleExclusionPathsForButtonViewFrame:viewFrame.origin.x, viewFrame.origin.y, viewFrame.size.width, viewFrame.size.height];
+  titleTextView4 = [(MTEpisodeLockup *)self titleTextView];
+  textContainer = [titleTextView4 textContainer];
+  [textContainer setExclusionPaths:v23];
 
-  LODWORD(v24) = CGRectIsEmpty(a6);
-  v26 = [(MTEpisodeLockup *)self _isRTL];
-  if (v24)
+  LODWORD(titleTextView4) = CGRectIsEmpty(viewFrame);
+  _isRTL = [(MTEpisodeLockup *)self _isRTL];
+  if (titleTextView4)
   {
-    if (!v26)
+    if (!_isRTL)
     {
       [(MTEpisodeLockup *)self _layoutMargins];
-      v32 = a3 - v33;
+      v32 = width - v33;
       goto LABEL_16;
     }
 
@@ -2166,22 +2166,22 @@ LABEL_17:
 
   else
   {
-    if (!v26)
+    if (!_isRTL)
     {
-      v27 = a6.origin.x;
-      v28 = a6.origin.y;
-      width = a6.size.width;
-      height = a6.size.height;
+      v27 = viewFrame.origin.x;
+      v28 = viewFrame.origin.y;
+      width = viewFrame.size.width;
+      height = viewFrame.size.height;
       goto LABEL_15;
     }
 
     if (v10)
     {
 LABEL_9:
-      v27 = a5.origin.x;
-      v28 = a5.origin.y;
-      width = a5.size.width;
-      height = a5.size.height;
+      v27 = frame.origin.x;
+      v28 = frame.origin.y;
+      width = frame.size.width;
+      height = frame.size.height;
 LABEL_15:
       v32 = CGRectGetMinX(*&v27) + -8.0;
       goto LABEL_16;
@@ -2189,11 +2189,11 @@ LABEL_15:
   }
 
   [(MTEpisodeLockup *)self _layoutMargins];
-  v32 = a3 - v31;
+  v32 = width - v31;
 LABEL_16:
   v34 = v32 - x;
-  v35 = [(MTEpisodeLockup *)self titleTextView];
-  [v35 sizeThatFits:{v34, 1.79769313e308}];
+  titleTextView5 = [(MTEpisodeLockup *)self titleTextView];
+  [titleTextView5 sizeThatFits:{v34, 1.79769313e308}];
   v37 = v36;
 
   v38 = v34;
@@ -2203,19 +2203,19 @@ LABEL_16:
   return result;
 }
 
-- (double)titleOriginYForArtworkFrame:(CGRect)a3 style:(unint64_t)a4
+- (double)titleOriginYForArtworkFrame:(CGRect)frame style:(unint64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(MTEpisodeLockup *)self _currentTitleFont];
-  v11 = v10;
-  if (a4 > 1)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _currentTitleFont = [(MTEpisodeLockup *)self _currentTitleFont];
+  v11 = _currentTitleFont;
+  if (style > 1)
   {
-    if (a4 == 2)
+    if (style == 2)
     {
-      [v10 mt_offsetFromCapHeightToAscent];
+      [_currentTitleFont mt_offsetFromCapHeightToAscent];
       v15.origin.x = x;
       v15.origin.y = y;
       v15.size.width = width;
@@ -2224,7 +2224,7 @@ LABEL_16:
       goto LABEL_11;
     }
 
-    if (a4 == 3)
+    if (style == 3)
     {
       v14.origin.x = x;
       v14.origin.y = y;
@@ -2238,15 +2238,15 @@ LABEL_16:
 
   else
   {
-    if (!a4)
+    if (!style)
     {
-      [v10 mt_offsetFromCapHeightToAscent];
+      [_currentTitleFont mt_offsetFromCapHeightToAscent];
       goto LABEL_11;
     }
 
-    if (a4 == 1)
+    if (style == 1)
     {
-      [v10 mt_offsetFromCapHeightToAscent];
+      [_currentTitleFont mt_offsetFromCapHeightToAscent];
 LABEL_11:
       IMRoundToPixel();
       v4 = v12;
@@ -2256,9 +2256,9 @@ LABEL_11:
   return v4;
 }
 
-- (double)descriptionOriginForViewWidth:(CGFloat)a3 artworkFrame:(CGFloat)a4 buttonViewFrame:(CGFloat)a5 titleFrame:(CGFloat)a6 metadataFrame:(uint64_t)a7 iconViewFrame:(unint64_t)a8 style:(double)a9
+- (double)descriptionOriginForViewWidth:(CGFloat)width artworkFrame:(CGFloat)frame buttonViewFrame:(CGFloat)viewFrame titleFrame:(CGFloat)titleFrame metadataFrame:(uint64_t)metadataFrame iconViewFrame:(unint64_t)iconViewFrame style:(double)style
 {
-  v31 = [a1 _currentTitleFont];
+  _currentTitleFont = [self _currentTitleFont];
   v32 = +[MTEpisodeLockup metadataHeaderFont];
   v58.origin.x = a20;
   v58.origin.y = a21;
@@ -2277,7 +2277,7 @@ LABEL_11:
 
   if (v34 <= 0.0)
   {
-    v35 = v31;
+    v35 = _currentTitleFont;
   }
 
   else
@@ -2286,10 +2286,10 @@ LABEL_11:
   }
 
   v36 = v35;
-  if (a8 < 2)
+  if (iconViewFrame < 2)
   {
 LABEL_9:
-    [v31 lineHeight];
+    [_currentTitleFont lineHeight];
     [v36 mt_offsetFromLastBaselineToBottom];
     [v32 mt_offsetFromFirstBaselineToTop];
     v60.origin.x = a16;
@@ -2316,10 +2316,10 @@ LABEL_9:
     v63.size.height = a27;
     if (CGRectGetMaxY(v63) > MaxY)
     {
-      v38 = [a1 iconView];
-      v39 = [v38 isNotEmpty];
+      iconView = [self iconView];
+      isNotEmpty = [iconView isNotEmpty];
 
-      if (v39)
+      if (isNotEmpty)
       {
         v40 = +[UIScreen mainScreen];
         [v40 scale];
@@ -2333,9 +2333,9 @@ LABEL_9:
     }
 
     IMRoundToPixel();
-    if ([a1 _isRTL])
+    if ([self _isRTL])
     {
-      [a1 descriptionWidthForViewWidth:a8 titleFrame:a2 style:{a16, a17, a18, a19}];
+      [self descriptionWidthForViewWidth:iconViewFrame titleFrame:a2 style:{a16, a17, a18, a19}];
       v42 = v41;
       v65.origin.x = a16;
       v65.origin.y = a17;
@@ -2356,9 +2356,9 @@ LABEL_9:
     goto LABEL_29;
   }
 
-  if (a8 != 2)
+  if (iconViewFrame != 2)
   {
-    if (a8 != 3)
+    if (iconViewFrame != 3)
     {
       MinX = CGPointZero.x;
       goto LABEL_29;
@@ -2367,28 +2367,28 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v44 = [a1 _isRTL];
-  v45 = a3;
-  v46 = a4;
-  if (v44)
+  _isRTL = [self _isRTL];
+  widthCopy = width;
+  frameCopy = frame;
+  if (_isRTL)
   {
-    v45 = a12;
-    v46 = a13;
+    widthCopy = a12;
+    frameCopy = a13;
   }
 
   else
   {
-    a14 = a5;
+    a14 = viewFrame;
   }
 
-  if (!v44)
+  if (!_isRTL)
   {
-    a15 = a6;
+    a15 = titleFrame;
   }
 
-  v55 = CGRectGetMinX(*&v45);
-  v49 = [a1 iconView];
-  if ([v49 isNotEmpty])
+  v55 = CGRectGetMinX(*&widthCopy);
+  iconView2 = [self iconView];
+  if ([iconView2 isNotEmpty])
   {
     v67.origin.x = a24;
     v67.origin.y = a25;
@@ -2416,11 +2416,11 @@ LABEL_9:
   v70.size.width = a18;
   v70.size.height = a19;
   CGRectGetMaxY(v70);
-  [v31 mt_offsetFromLastBaselineToBottom];
-  v71.origin.x = a3;
-  v71.origin.y = a4;
-  v71.size.width = a5;
-  v71.size.height = a6;
+  [_currentTitleFont mt_offsetFromLastBaselineToBottom];
+  v71.origin.x = width;
+  v71.origin.y = frame;
+  v71.size.width = viewFrame;
+  v71.size.height = titleFrame;
   CGRectGetMaxY(v71);
   v50 = +[MTEpisodeLockup metadataFooterFont];
   [v50 mt_offsetFromCapHeightToAscent];
@@ -2432,12 +2432,12 @@ LABEL_29:
   return MinX;
 }
 
-- (double)exactDescriptionSizeForOrigin:(double)a3 viewWidth:(double)a4 titleFrame:(double)a5 actionButtonFrame:(double)a6 downloadButtonFrame:(double)a7 style:(double)a8
+- (double)exactDescriptionSizeForOrigin:(double)origin viewWidth:(double)width titleFrame:(double)frame actionButtonFrame:(double)buttonFrame downloadButtonFrame:(double)downloadButtonFrame style:(double)style
 {
-  v31 = [a1 _currentTitleFont];
-  v32 = [a1 isLabelMultipleLinesWithFrame:v31 font:{a5, a6, a7, a8}];
+  _currentTitleFont = [self _currentTitleFont];
+  v32 = [self isLabelMultipleLinesWithFrame:_currentTitleFont font:{frame, buttonFrame, downloadButtonFrame, style}];
 
-  if ([a1 isExpanded])
+  if ([self isExpanded])
   {
     v33 = 0;
   }
@@ -2447,27 +2447,27 @@ LABEL_29:
     v33 = [objc_opt_class() descriptionNumberOfLinesForStyle:a10 isTitleMultipleLines:v32];
   }
 
-  [a1 _setNumberOfLinesForDescription:v33];
-  v34 = a1 + 3;
-  v35 = a1[3];
-  if (v35 == CGSizeZero.width && a1[4] == CGSizeZero.height)
+  [self _setNumberOfLinesForDescription:v33];
+  v34 = self + 3;
+  v35 = self[3];
+  if (v35 == CGSizeZero.width && self[4] == CGSizeZero.height)
   {
-    [a1 buttonsFrameForActionButtonFrame:a12 downloadButtonFrame:{a13, a14, a15, a16, a17, a18, a19}];
+    [self buttonsFrameForActionButtonFrame:a12 downloadButtonFrame:{a13, a14, a15, a16, a17, a18, a19}];
     v38 = v37;
     v59 = v40;
     v60 = v39;
     v58 = v41;
-    [a1 descriptionWidthForViewWidth:a10 titleFrame:a4 style:{a5, a6, a7, a8}];
+    [self descriptionWidthForViewWidth:a10 titleFrame:width style:{frame, buttonFrame, downloadButtonFrame, style}];
     v35 = v42;
-    v43 = [a1 descriptionExclusionPathsForOrigin:a2 descriptionWidth:a3 buttonsFrame:v42 titleFrame:{v38, v60, v59, v58, *&a5, *&a6, *&a7, *&a8}];
-    v44 = [a1 descriptionTextView];
-    v45 = [v44 textContainer];
-    [v45 setExclusionPaths:v43];
+    v43 = [self descriptionExclusionPathsForOrigin:a2 descriptionWidth:origin buttonsFrame:v42 titleFrame:{v38, v60, v59, v58, *&frame, *&buttonFrame, *&downloadButtonFrame, *&style}];
+    descriptionTextView = [self descriptionTextView];
+    textContainer = [descriptionTextView textContainer];
+    [textContainer setExclusionPaths:v43];
 
     [objc_opt_class() descriptionMaxHeightForCurrentOrientation];
     v47 = v46;
-    v48 = [a1 descriptionTextView];
-    [v48 sizeThatFits:{v35, v47}];
+    descriptionTextView2 = [self descriptionTextView];
+    [descriptionTextView2 sizeThatFits:{v35, v47}];
     v50 = v49;
 
     v51 = v50 > v47;
@@ -2476,20 +2476,20 @@ LABEL_29:
       v47 = v50;
     }
 
-    [a1 setShowsDescriptionButton:v51];
+    [self setShowsDescriptionButton:v51];
     if (v47 > 0.0)
     {
-      v52 = [a1 descriptionTextView];
-      v53 = [v52 text];
-      if ([v53 length])
+      descriptionTextView3 = [self descriptionTextView];
+      text = [descriptionTextView3 text];
+      if ([text length])
       {
       }
 
       else
       {
-        v54 = [a1 descriptionTextView];
-        v55 = [v54 attributedText];
-        v56 = [v55 length];
+        descriptionTextView4 = [self descriptionTextView];
+        attributedText = [descriptionTextView4 attributedText];
+        v56 = [attributedText length];
 
         if (!v56)
         {
@@ -2505,55 +2505,55 @@ LABEL_29:
   return v35;
 }
 
-- (double)descriptionWidthForViewWidth:(double)a3 titleFrame:(CGRect)a4 style:(unint64_t)a5
+- (double)descriptionWidthForViewWidth:(double)width titleFrame:(CGRect)frame style:(unint64_t)style
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   result = 0.0;
-  if (a5 > 1)
+  if (style > 1)
   {
-    if (a5 == 3)
+    if (style == 3)
     {
 LABEL_8:
-      v14 = [(MTEpisodeLockup *)self _isRTL];
+      _isRTL = [(MTEpisodeLockup *)self _isRTL];
       v15 = x;
       v16 = y;
-      v17 = width;
+      widthCopy = width;
       v18 = height;
-      if (v14)
+      if (_isRTL)
       {
         MaxX = CGRectGetMaxX(*&v15);
       }
 
       else
       {
-        MaxX = a3 - CGRectGetMinX(*&v15);
+        MaxX = width - CGRectGetMinX(*&v15);
       }
 
       goto LABEL_11;
     }
 
-    if (a5 != 2)
+    if (style != 2)
     {
       return result;
     }
 
 LABEL_7:
     [(MTEpisodeLockup *)self _layoutMargins];
-    MaxX = a3 - v12;
+    MaxX = width - v12;
 LABEL_11:
     [(MTEpisodeLockup *)self _layoutMargins];
     return MaxX - v19;
   }
 
-  if (!a5)
+  if (!style)
   {
     goto LABEL_7;
   }
 
-  if (a5 == 1)
+  if (style == 1)
   {
     goto LABEL_8;
   }
@@ -2561,21 +2561,21 @@ LABEL_11:
   return result;
 }
 
-- (id)titleExclusionPathsForButtonViewFrame:(CGRect)a3
+- (id)titleExclusionPathsForButtonViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (CGRectIsEmpty(frame))
   {
     v8 = &__NSArray0__struct;
   }
 
   else
   {
-    v9 = [(MTEpisodeLockup *)self titleTextView];
-    [v9 convertRect:self fromView:{x, y, width, height}];
+    titleTextView = [(MTEpisodeLockup *)self titleTextView];
+    [titleTextView convertRect:self fromView:{x, y, width, height}];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -2598,21 +2598,21 @@ LABEL_11:
   return v8;
 }
 
-- (id)titleExclusionPathsForExplicitIconFrame:(CGRect)a3 viewWidth:(double)a4
+- (id)titleExclusionPathsForExplicitIconFrame:(CGRect)frame viewWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (CGRectIsEmpty(frame))
   {
     v10 = &__NSArray0__struct;
   }
 
   else
   {
-    v11 = [(MTEpisodeLockup *)self titleTextView];
-    [v11 convertRect:self fromView:{x, y, width, height}];
+    titleTextView = [(MTEpisodeLockup *)self titleTextView];
+    [titleTextView convertRect:self fromView:{x, y, width, height}];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -2635,7 +2635,7 @@ LABEL_11:
       v28.origin.y = v15;
       v28.size.width = v17;
       v28.size.height = v19;
-      v20 = a4 - CGRectGetMinX(v28);
+      v20 = width - CGRectGetMinX(v28);
     }
 
     v22 = [UIBezierPath bezierPathWithRect:v21, v15, v20, v19];
@@ -2655,15 +2655,15 @@ LABEL_11:
   return v10;
 }
 
-- (id)descriptionExclusionPathsForOrigin:(CGPoint)a3 descriptionWidth:(double)a4 buttonsFrame:(CGRect)a5 titleFrame:(CGRect)a6
+- (id)descriptionExclusionPathsForOrigin:(CGPoint)origin descriptionWidth:(double)width buttonsFrame:(CGRect)frame titleFrame:(CGRect)titleFrame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3.y;
-  v12 = a3.x;
-  if (CGRectIsEmpty(a5) || (v19.size.height = 1.79769313e308, v19.origin.x = v12, v19.origin.y = v11, v19.size.width = a4, v22.origin.x = x, v22.origin.y = y, v22.size.width = width, v22.size.height = height, !CGRectIntersectsRect(v19, v22)))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v11 = origin.y;
+  v12 = origin.x;
+  if (CGRectIsEmpty(frame) || (v19.size.height = 1.79769313e308, v19.origin.x = v12, v19.origin.y = v11, v19.size.width = width, v22.origin.x = x, v22.origin.y = y, v22.size.width = width, v22.size.height = height, !CGRectIntersectsRect(v19, v22)))
   {
     v13 = 0;
   }
@@ -2690,19 +2690,19 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)isLabelMultipleLinesWithFrame:(CGRect)a3 font:(id)a4
+- (BOOL)isLabelMultipleLinesWithFrame:(CGRect)frame font:(id)font
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  fontCopy = font;
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
   v16.size.height = height;
   v9 = CGRectGetHeight(v16);
-  [v8 lineHeight];
+  [fontCopy lineHeight];
   v11 = v10;
 
   v12 = v11 * 1.5;
@@ -2721,16 +2721,16 @@ LABEL_11:
   return v9 >= v13;
 }
 
-- (CGRect)metadataFrameForViewWidth:(double)a3 titleFrame:(CGRect)a4 style:(unint64_t)a5
+- (CGRect)metadataFrameForViewWidth:(double)width titleFrame:(CGRect)frame style:(unint64_t)style
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MinX = CGRectGetMinX(a4);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  MinX = CGRectGetMinX(frame);
   v46.origin.x = x;
   v46.origin.y = y;
-  v44 = width;
+  widthCopy = width;
   rect = height;
   v46.size.width = width;
   v46.size.height = height;
@@ -2743,26 +2743,26 @@ LABEL_11:
 
   else
   {
-    v14 = a3 - v12;
+    v14 = width - v12;
   }
 
-  v15 = [(MTEpisodeLockup *)self metadataLabel];
-  v16 = [v15 attributedText];
-  if ([v16 length])
+  metadataLabel = [(MTEpisodeLockup *)self metadataLabel];
+  attributedText = [metadataLabel attributedText];
+  if ([attributedText length])
   {
 
 LABEL_7:
-    v20 = [(MTEpisodeLockup *)self metadataLabel];
-    [v20 sizeThatFits:{v14, 1.79769313e308}];
+    metadataLabel2 = [(MTEpisodeLockup *)self metadataLabel];
+    [metadataLabel2 sizeThatFits:{v14, 1.79769313e308}];
     v22 = v21;
     v24 = v23;
 
     goto LABEL_8;
   }
 
-  v17 = [(MTEpisodeLockup *)self metadataLabel];
-  v18 = [v17 text];
-  v19 = [v18 length];
+  metadataLabel3 = [(MTEpisodeLockup *)self metadataLabel];
+  text = [metadataLabel3 text];
+  v19 = [text length];
 
   if (v19)
   {
@@ -2806,9 +2806,9 @@ LABEL_8:
     v32 = v30;
   }
 
-  v33 = [(MTEpisodeLockup *)self _isRTL];
-  v34 = v44;
-  if (v33)
+  _isRTL = [(MTEpisodeLockup *)self _isRTL];
+  v34 = widthCopy;
+  if (_isRTL)
   {
     v12 = MaxX - v29;
   }
@@ -2831,12 +2831,12 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)moreButtonFrameForDescriptionFrame:(CGRect)a3
+- (CGRect)moreButtonFrameForDescriptionFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (![(MTEpisodeLockup *)self showsMoreButton])
   {
     MinX = CGRectZero.origin.x;
@@ -2850,17 +2850,17 @@ LABEL_8:
   [v8 lineHeight];
   [v8 mt_offsetFromLastBaselineToBottom];
   [v8 mt_offsetFromFirstBaselineToTop];
-  v9 = [(MTEpisodeLockup *)self descriptionTextView];
-  v10 = [v9 attributedText];
-  if ([v10 length])
+  descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+  attributedText = [descriptionTextView attributedText];
+  if ([attributedText length])
   {
   }
 
   else
   {
-    v15 = [(MTEpisodeLockup *)self descriptionTextView];
-    v16 = [v15 text];
-    v17 = [v16 length];
+    descriptionTextView2 = [(MTEpisodeLockup *)self descriptionTextView];
+    text = [descriptionTextView2 text];
+    v17 = [text length];
 
     if (!v17)
     {
@@ -2879,17 +2879,17 @@ LABEL_8:
   v31.size.height = height;
   CGRectGetMaxY(v31);
 LABEL_7:
-  v18 = [(MTEpisodeLockup *)self moreButton];
-  [v18 frame];
+  moreButton = [(MTEpisodeLockup *)self moreButton];
+  [moreButton frame];
   v13 = v19;
   v14 = v20;
 
-  v21 = [(MTEpisodeLockup *)self _isRTL];
+  _isRTL = [(MTEpisodeLockup *)self _isRTL];
   v22 = x;
   v23 = y;
   v24 = width;
   v25 = height;
-  if (v21)
+  if (_isRTL)
   {
     MinX = CGRectGetMaxX(*&v22) - v13;
   }
@@ -2914,13 +2914,13 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)iconsViewFrameForViewWidth:(double)a3 titleFrame:(CGRect)a4 metadataFrame:(CGRect *)a5 style:(unint64_t)a6
+- (CGRect)iconsViewFrameForViewWidth:(double)width titleFrame:(CGRect)frame metadataFrame:(CGRect *)metadataFrame style:(unint64_t)style
 {
-  v9 = [MTEpisodeLockup titleFont:a5];
+  v9 = [MTEpisodeLockup titleFont:metadataFrame];
   v10 = +[MTEpisodeLockup metadataHeaderFont];
-  v11 = [(MTEpisodeLockup *)self metadataLabel];
-  v12 = [v11 attributedText];
-  if ([v12 length])
+  metadataLabel = [(MTEpisodeLockup *)self metadataLabel];
+  attributedText = [metadataLabel attributedText];
+  if ([attributedText length])
   {
 
 LABEL_4:
@@ -2930,40 +2930,40 @@ LABEL_4:
     [@" " sizeWithAttributes:v16];
     v18 = v17;
 
-    MaxY = CGRectGetMaxY(*a5);
+    MaxY = CGRectGetMaxY(*metadataFrame);
     [v10 mt_offsetFromLastBaselineToBottom];
     v21 = MaxY - v20;
     v22 = 0.0;
     goto LABEL_5;
   }
 
-  v13 = [(MTEpisodeLockup *)self metadataLabel];
-  v14 = [v13 text];
-  v15 = [v14 length];
+  metadataLabel2 = [(MTEpisodeLockup *)self metadataLabel];
+  text = [metadataLabel2 text];
+  v15 = [text length];
 
   if (v15)
   {
     goto LABEL_4;
   }
 
-  MinY = CGRectGetMinY(*a5);
+  MinY = CGRectGetMinY(*metadataFrame);
   [v10 mt_offsetFromFirstBaselineToTop];
   v21 = MinY + v47;
   [v9 mt_leftMargin];
   v22 = v48;
   v18 = 0.0;
 LABEL_5:
-  v23 = [(MTEpisodeLockup *)self iconView];
-  [v23 frame];
+  iconView = [(MTEpisodeLockup *)self iconView];
+  [iconView frame];
   v25 = v24;
   v27 = v26;
 
-  v28 = [(MTEpisodeLockup *)self _isRTL];
-  x = a5->origin.x;
-  y = a5->origin.y;
-  width = a5->size.width;
-  height = a5->size.height;
-  if (v28)
+  _isRTL = [(MTEpisodeLockup *)self _isRTL];
+  x = metadataFrame->origin.x;
+  y = metadataFrame->origin.y;
+  width = metadataFrame->size.width;
+  height = metadataFrame->size.height;
+  if (_isRTL)
   {
     v33 = CGRectGetMinX(*&x) - v25 - v18 - v22;
   }
@@ -2979,9 +2979,9 @@ LABEL_5:
     v35 = v34 - v33;
     if (v34 - v33 > 0.0)
     {
-      a5->origin.x = v35 + a5->origin.x;
+      metadataFrame->origin.x = v35 + metadataFrame->origin.x;
 LABEL_12:
-      a5->size.width = a5->size.width - v35;
+      metadataFrame->size.width = metadataFrame->size.width - v35;
     }
   }
 
@@ -2991,7 +2991,7 @@ LABEL_12:
     v51.origin.y = v21 - v27;
     v51.size.width = v25;
     v51.size.height = v27;
-    v36 = CGRectGetMaxX(v51) - a3;
+    v36 = CGRectGetMaxX(v51) - width;
     [(MTEpisodeLockup *)self _layoutMargins];
     v35 = v36 + v37;
     if (v36 + v37 > 0.0)
@@ -3015,26 +3015,26 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)playStatusViewFrameForViewWidth:(double)a3 titleFrame:(CGRect)a4 artworkFrame:(CGRect)a5
+- (CGRect)playStatusViewFrameForViewWidth:(double)width titleFrame:(CGRect)frame artworkFrame:(CGRect)artworkFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11 = +[UIScreen mainScreen];
   [v11 scale];
   v13 = v12;
 
   if ([(MTEpisodeLockup *)self showsPlayState])
   {
-    [objc_opt_class() leadingMarginForViewWidth:a3];
+    [objc_opt_class() leadingMarginForViewWidth:width];
     IMRoundToPixel();
     v15 = v14;
-    v16 = [(MTEpisodeLockup *)self _isRTL];
-    v17 = [(MTEpisodeLockup *)self showsArtwork];
-    if (v17)
+    _isRTL = [(MTEpisodeLockup *)self _isRTL];
+    showsArtwork = [(MTEpisodeLockup *)self showsArtwork];
+    if (showsArtwork)
     {
-      v18 = a5.size.height;
+      v18 = artworkFrame.size.height;
     }
 
     else
@@ -3042,20 +3042,20 @@ LABEL_12:
       v18 = height;
     }
 
-    if (v17)
+    if (showsArtwork)
     {
-      v19 = a5.size.width;
+      widthCopy = artworkFrame.size.width;
     }
 
     else
     {
-      v19 = width;
+      widthCopy = width;
     }
 
-    v20 = a5.origin.x;
-    if (v17)
+    v20 = artworkFrame.origin.x;
+    if (showsArtwork)
     {
-      v21 = a5.origin.y;
+      v21 = artworkFrame.origin.y;
     }
 
     else
@@ -3063,12 +3063,12 @@ LABEL_12:
       v21 = y;
     }
 
-    if (!v17)
+    if (!showsArtwork)
     {
       v20 = x;
     }
 
-    if (v16)
+    if (_isRTL)
     {
       v22 = v15 + CGRectGetMaxX(*(&v18 - 3));
     }
@@ -3083,8 +3083,8 @@ LABEL_12:
     v30.size.width = width;
     v30.size.height = height;
     CGRectGetMinY(v30);
-    v26 = [(MTEpisodeLockup *)self _currentTitleFont];
-    [v26 mt_offsetFromCapHeightToAscent];
+    _currentTitleFont = [(MTEpisodeLockup *)self _currentTitleFont];
+    [_currentTitleFont mt_offsetFromCapHeightToAscent];
     IMRoundToPixel();
     v23 = v27 - (1.0 / v13 + 1.0 / v13);
 
@@ -3109,7 +3109,7 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)downloadButtonFrameForActionButtonFrame:(CGRect)a3 titleOriginY:(double)a4
+- (CGRect)downloadButtonFrameForActionButtonFrame:(CGRect)frame titleOriginY:(double)y
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -3122,10 +3122,10 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)actionButtonFrameForViewWidth:(double)a3 titleOriginY:(double)a4
+- (CGRect)actionButtonFrameForViewWidth:(double)width titleOriginY:(double)y
 {
-  v6 = [(MTEpisodeLockup *)self actionButton];
-  [v6 frame];
+  actionButton = [(MTEpisodeLockup *)self actionButton];
+  [actionButton frame];
   v8 = v7;
   v10 = v9;
 
@@ -3139,7 +3139,7 @@ LABEL_12:
   else
   {
     [(MTEpisodeLockup *)self _layoutMargins];
-    v13 = a3 - v8 - v14;
+    v13 = width - v8 - v14;
   }
 
   [v11 mt_offsetFromCapHeightToAscent];
@@ -3158,17 +3158,17 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)buttonsFrameForActionButtonFrame:(CGRect)a3 downloadButtonFrame:(CGRect)a4
+- (CGRect)buttonsFrameForActionButtonFrame:(CGRect)frame downloadButtonFrame:(CGRect)buttonFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  if (!CGRectIsEmpty(a4))
+  height = buttonFrame.size.height;
+  width = buttonFrame.size.width;
+  y = buttonFrame.origin.y;
+  x = buttonFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  if (!CGRectIsEmpty(buttonFrame))
   {
     v16.origin.x = v11;
     v16.origin.y = v10;
@@ -3196,28 +3196,28 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)descriptionButtonFrameForDescriptionFrame:(CGRect)a3
+- (CGRect)descriptionButtonFrameForDescriptionFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinY = CGRectGetMinY(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  MinY = CGRectGetMinY(frame);
   v45.origin.x = x;
   v45.origin.y = y;
   v45.size.width = width;
   v45.size.height = height;
   if (CGRectGetHeight(v45) > 0.0)
   {
-    v9 = [(MTEpisodeLockup *)self descriptionTextView];
-    v10 = [(MTEpisodeLockup *)self descriptionTextView];
-    v11 = [v10 layoutManager];
-    [v9 _lastGlyphBaselineRightPointWithLayoutManager:v11];
+    descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+    descriptionTextView2 = [(MTEpisodeLockup *)self descriptionTextView];
+    layoutManager = [descriptionTextView2 layoutManager];
+    [descriptionTextView _lastGlyphBaselineRightPointWithLayoutManager:layoutManager];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(MTEpisodeLockup *)self descriptionTextView];
-    [(MTEpisodeLockup *)self convertPoint:v16 fromView:v13, v15];
+    descriptionTextView3 = [(MTEpisodeLockup *)self descriptionTextView];
+    [(MTEpisodeLockup *)self convertPoint:descriptionTextView3 fromView:v13, v15];
     v18 = v17;
 
     MinY = v18 + 2.0;
@@ -3230,8 +3230,8 @@ LABEL_12:
   [v19 mt_offsetFromFirstBaselineToTop];
   if ([(MTEpisodeLockup *)self showsDescriptionButton])
   {
-    v22 = [(MTEpisodeLockup *)self descriptionButton];
-    [v22 frame];
+    descriptionButton = [(MTEpisodeLockup *)self descriptionButton];
+    [descriptionButton frame];
     v24 = v23;
     v44 = v25;
   }
@@ -3242,12 +3242,12 @@ LABEL_12:
     v44 = CGSizeZero.height;
   }
 
-  v26 = [(MTEpisodeLockup *)self _isRTL];
+  _isRTL = [(MTEpisodeLockup *)self _isRTL];
   v27 = x;
   v28 = y;
   v29 = width;
   v30 = height;
-  if (v26)
+  if (_isRTL)
   {
     MaxX = CGRectGetMaxX(*&v27);
     v32 = height;
@@ -3281,16 +3281,16 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)footerFrameForDescriptionButtonFrame:(CGRect)a3 descriptionFrame:(CGRect)a4
+- (CGRect)footerFrameForDescriptionButtonFrame:(CGRect)frame descriptionFrame:(CGRect)descriptionFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
+  height = descriptionFrame.size.height;
+  width = descriptionFrame.size.width;
+  y = descriptionFrame.origin.y;
+  x = descriptionFrame.origin.x;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  v9 = frame.origin.y;
+  v10 = frame.origin.x;
   v12 = +[MTEpisodeLockup descriptionFont];
   v13 = +[MTEpisodeLockup metadataFooterFont];
   v32.origin.x = v10;
@@ -3362,8 +3362,8 @@ LABEL_12:
     v35.size.width = width;
     v35.size.height = height;
     v23 = CGRectGetWidth(v35);
-    v24 = [(MTEpisodeLockup *)self footerTextView];
-    [v24 sizeThatFits:{v23, 1.79769313e308}];
+    footerTextView = [(MTEpisodeLockup *)self footerTextView];
+    [footerTextView sizeThatFits:{v23, 1.79769313e308}];
     v26 = v25;
   }
 
@@ -3397,9 +3397,9 @@ LABEL_12:
     [(MTEpisodeLockup *)self updateDescriptionText];
   }
 
-  v4 = [(MTEpisodeLockup *)self artworkView];
+  artworkView = [(MTEpisodeLockup *)self artworkView];
 
-  if (v4)
+  if (artworkView)
   {
     [(MTEpisodeLockup *)self beginLoadingArtwork];
   }
@@ -3422,21 +3422,21 @@ LABEL_12:
   }
 
   v7 = +[MTEpisodeDescriptionCache sharedInstance];
-  v4 = [(MTEpisodeLockup *)self episode];
-  v5 = [v7 descriptionForEpisode:v4 options:v3];
-  v6 = [(MTEpisodeLockup *)self metadataLabel];
-  [v6 setAttributedText:v5];
+  episode = [(MTEpisodeLockup *)self episode];
+  v5 = [v7 descriptionForEpisode:episode options:v3];
+  metadataLabel = [(MTEpisodeLockup *)self metadataLabel];
+  [metadataLabel setAttributedText:v5];
 }
 
 - (void)updateFooterText
 {
   if ([(MTEpisodeLockup *)self isExpanded])
   {
-    v3 = [(MTEpisodeLockup *)self episode];
-    if ([v3 isPartiallyPlayed])
+    episode = [(MTEpisodeLockup *)self episode];
+    if ([episode isPartiallyPlayed])
     {
-      v4 = [(MTEpisodeLockup *)self episode];
-      [v4 timeRemaining];
+      episode2 = [(MTEpisodeLockup *)self episode];
+      [episode2 timeRemaining];
       v6 = v5 > 0.0;
     }
 
@@ -3446,8 +3446,8 @@ LABEL_12:
     }
 
     v7 = +[MTEpisodeDescriptionCache sharedInstance];
-    v8 = [(MTEpisodeLockup *)self episode];
-    v13 = [v7 metadataFooterForEpisode:v8 includingDuration:v6];
+    episode3 = [(MTEpisodeLockup *)self episode];
+    v13 = [v7 metadataFooterForEpisode:episode3 includingDuration:v6];
 
     if ([v13 length])
     {
@@ -3459,25 +3459,25 @@ LABEL_12:
       v9 = 0;
     }
 
-    v10 = [(MTEpisodeLockup *)self _currentDescriptionColor];
-    [v9 im_addAttribute:NSForegroundColorAttributeName value:v10];
+    _currentDescriptionColor = [(MTEpisodeLockup *)self _currentDescriptionColor];
+    [v9 im_addAttribute:NSForegroundColorAttributeName value:_currentDescriptionColor];
 
     v11 = [v9 copy];
-    v12 = [(MTEpisodeLockup *)self footerTextView];
-    [v12 setAttributedText:v11];
+    footerTextView = [(MTEpisodeLockup *)self footerTextView];
+    [footerTextView setAttributedText:v11];
   }
 }
 
 - (void)updateDescriptionText
 {
-  v3 = [(MTEpisodeLockup *)self episode];
+  episode = [(MTEpisodeLockup *)self episode];
 
-  if (v3)
+  if (episode)
   {
     [(MTEpisodeLockup *)self updateMetadataText];
     v4 = +[MTEpisodeDescriptionCache sharedInstance];
-    v5 = [(MTEpisodeLockup *)self episode];
-    v10 = [v4 descriptionForEpisode:v5 options:16];
+    episode2 = [(MTEpisodeLockup *)self episode];
+    v10 = [v4 descriptionForEpisode:episode2 options:16];
 
     if ([v10 length])
     {
@@ -3489,12 +3489,12 @@ LABEL_12:
       v6 = 0;
     }
 
-    v7 = [(MTEpisodeLockup *)self _currentDescriptionColor];
-    [v6 addAttribute:NSForegroundColorAttributeName value:v7 range:{0, objc_msgSend(v10, "length")}];
+    _currentDescriptionColor = [(MTEpisodeLockup *)self _currentDescriptionColor];
+    [v6 addAttribute:NSForegroundColorAttributeName value:_currentDescriptionColor range:{0, objc_msgSend(v10, "length")}];
 
     v8 = [v6 copy];
-    v9 = [(MTEpisodeLockup *)self descriptionTextView];
-    [v9 setAttributedText:v8];
+    descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+    [descriptionTextView setAttributedText:v8];
 
     [(MTEpisodeLockup *)self updateFooterText];
     [(MTEpisodeLockup *)self invalidateSizeMetrics];
@@ -3504,24 +3504,24 @@ LABEL_12:
 
 - (BOOL)updateDisabledReason
 {
-  v3 = [(MTEpisodeLockup *)self episode];
-  v4 = [v3 reasonForNotPlayable];
+  episode = [(MTEpisodeLockup *)self episode];
+  reasonForNotPlayable = [episode reasonForNotPlayable];
 
-  v5 = [(MTEpisodeLockup *)self disabledReason];
-  if (v5 != v4)
+  disabledReason = [(MTEpisodeLockup *)self disabledReason];
+  if (disabledReason != reasonForNotPlayable)
   {
-    [(MTEpisodeLockup *)self setDisabledReason:v4];
+    [(MTEpisodeLockup *)self setDisabledReason:reasonForNotPlayable];
   }
 
-  return v5 != v4;
+  return disabledReason != reasonForNotPlayable;
 }
 
-- (void)setDisabledReason:(int64_t)a3
+- (void)setDisabledReason:(int64_t)reason
 {
-  if (self->_disabledReason != a3)
+  if (self->_disabledReason != reason)
   {
-    self->_disabledReason = a3;
-    if (a3)
+    self->_disabledReason = reason;
+    if (reason)
     {
       UIInterfaceGetContentDisabledAlpha();
     }
@@ -3532,9 +3532,9 @@ LABEL_12:
     }
 
     [(MTEpisodeLockup *)self setAlpha:v4];
-    v5 = [(MTEpisodeLockup *)self episode];
+    episode = [(MTEpisodeLockup *)self episode];
 
-    if (v5)
+    if (episode)
     {
       [(MTEpisodeLockup *)self updateDescriptionText];
       [(MTEpisodeLockup *)self updateIcons];
@@ -3542,39 +3542,39 @@ LABEL_12:
 
     if ([(MTEpisodeLockup *)self isExpanded])
     {
-      v6 = [(MTEpisodeLockup *)self delegate];
-      [v6 lockupDidChangeSize:self];
+      delegate = [(MTEpisodeLockup *)self delegate];
+      [delegate lockupDidChangeSize:self];
     }
   }
 }
 
-- (void)setShowsArtwork:(BOOL)a3
+- (void)setShowsArtwork:(BOOL)artwork
 {
-  if (self->_showsArtwork != a3)
+  if (self->_showsArtwork != artwork)
   {
     v15 = v5;
     v16 = v4;
     v17 = v3;
-    self->_showsArtwork = a3;
-    if (a3)
+    self->_showsArtwork = artwork;
+    if (artwork)
     {
       v10 = [objc_opt_class() defaultArtworkForStyle:{-[MTEpisodeLockup style](self, "style")}];
-      v11 = [(MTEpisodeLockup *)self artworkView];
-      [v11 setArtwork:v10];
+      artworkView = [(MTEpisodeLockup *)self artworkView];
+      [artworkView setArtwork:v10];
 
-      v12 = [(MTEpisodeLockup *)self artworkView];
-      [v12 sizeToFit];
+      artworkView2 = [(MTEpisodeLockup *)self artworkView];
+      [artworkView2 sizeToFit];
 
-      v13 = [(MTEpisodeLockup *)self artworkView];
-      [(MTEpisodeLockup *)self addSubview:v13];
+      artworkView3 = [(MTEpisodeLockup *)self artworkView];
+      [(MTEpisodeLockup *)self addSubview:artworkView3];
 
       [(MTEpisodeLockup *)self beginLoadingArtwork];
     }
 
     else
     {
-      v14 = [(MTEpisodeLockup *)self artworkView];
-      [v14 removeFromSuperview];
+      artworkView4 = [(MTEpisodeLockup *)self artworkView];
+      [artworkView4 removeFromSuperview];
 
       [(MTEpisodeLockup *)self setArtworkView:0];
     }
@@ -3587,13 +3587,13 @@ LABEL_12:
 
 - (void)beginLoadingArtwork
 {
-  v3 = [(MTEpisodeArtworkView *)self->_artworkView superview];
-  if (v3)
+  superview = [(MTEpisodeArtworkView *)self->_artworkView superview];
+  if (superview)
   {
-    v4 = v3;
-    v5 = [(MTEpisodeLockup *)self episode];
-    v6 = [v5 podcastUuid];
-    v7 = [v6 length];
+    v4 = superview;
+    episode = [(MTEpisodeLockup *)self episode];
+    podcastUuid = [episode podcastUuid];
+    v7 = [podcastUuid length];
 
     if (v7)
     {
@@ -3604,16 +3604,16 @@ LABEL_12:
         v11 = v8;
         if (v8 >= 0.100000001)
         {
-          v12 = [(MTEpisodeLockup *)self episode];
-          v13 = [v12 podcastUuid];
+          episode2 = [(MTEpisodeLockup *)self episode];
+          podcastUuid2 = [episode2 podcastUuid];
 
           v14 = +[MTImageStore defaultStore];
-          v15 = [v14 imageInMemoryForKey:v13 size:{v10, v11}];
+          v15 = [v14 imageInMemoryForKey:podcastUuid2 size:{v10, v11}];
 
           if (v15)
           {
-            v16 = [(MTEpisodeLockup *)self artworkView];
-            [v16 setArtwork:v15];
+            artworkView = [(MTEpisodeLockup *)self artworkView];
+            [artworkView setArtwork:v15];
           }
 
           else
@@ -3625,7 +3625,7 @@ LABEL_12:
             v18[2] = sub_1000BF244;
             v18[3] = &unk_1004DB3B0;
             objc_copyWeak(&v19, &location);
-            [v17 asyncImageForKey:v13 size:v18 completionHandler:{v10, v11}];
+            [v17 asyncImageForKey:podcastUuid2 size:v18 completionHandler:{v10, v11}];
 
             objc_destroyWeak(&v19);
             objc_destroyWeak(&location);
@@ -3636,22 +3636,22 @@ LABEL_12:
   }
 }
 
-- (void)setShowsMoreButton:(BOOL)a3
+- (void)setShowsMoreButton:(BOOL)button
 {
-  if (self->_showsMoreButton != a3)
+  if (self->_showsMoreButton != button)
   {
-    v4 = a3;
-    self->_showsMoreButton = a3;
-    v6 = [(MTEpisodeLockup *)self moreButton];
-    v7 = v6;
-    if (v4)
+    buttonCopy = button;
+    self->_showsMoreButton = button;
+    moreButton = [(MTEpisodeLockup *)self moreButton];
+    v7 = moreButton;
+    if (buttonCopy)
     {
-      [(MTEpisodeLockup *)self addSubview:v6];
+      [(MTEpisodeLockup *)self addSubview:moreButton];
     }
 
     else
     {
-      [v6 removeFromSuperview];
+      [moreButton removeFromSuperview];
     }
 
     [(MTEpisodeLockup *)self setNeedsLayout];
@@ -3673,44 +3673,44 @@ LABEL_12:
   [(MTEpisodeLockup *)self setShowsMoreButton:v3];
 }
 
-- (void)setShowsDescriptionButton:(BOOL)a3
+- (void)setShowsDescriptionButton:(BOOL)button
 {
-  if (self->_showsDescriptionButton != a3)
+  if (self->_showsDescriptionButton != button)
   {
-    v4 = a3;
-    self->_showsDescriptionButton = a3;
-    v6 = [(MTEpisodeLockup *)self descriptionButton];
-    v7 = v6;
-    if (v4)
+    buttonCopy = button;
+    self->_showsDescriptionButton = button;
+    descriptionButton = [(MTEpisodeLockup *)self descriptionButton];
+    v7 = descriptionButton;
+    if (buttonCopy)
     {
-      [(MTEpisodeLockup *)self addSubview:v6];
+      [(MTEpisodeLockup *)self addSubview:descriptionButton];
     }
 
     else
     {
-      [v6 removeFromSuperview];
+      [descriptionButton removeFromSuperview];
     }
 
     [(MTEpisodeLockup *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsFooterTextView:(BOOL)a3
+- (void)setShowsFooterTextView:(BOOL)view
 {
-  if (self->_showsFooterTextView != a3)
+  if (self->_showsFooterTextView != view)
   {
-    v4 = a3;
-    self->_showsFooterTextView = a3;
-    v6 = [(MTEpisodeLockup *)self footerTextView];
-    v7 = v6;
-    if (v4)
+    viewCopy = view;
+    self->_showsFooterTextView = view;
+    footerTextView = [(MTEpisodeLockup *)self footerTextView];
+    v7 = footerTextView;
+    if (viewCopy)
     {
-      [(MTEpisodeLockup *)self addSubview:v6];
+      [(MTEpisodeLockup *)self addSubview:footerTextView];
     }
 
     else
     {
-      [v6 removeFromSuperview];
+      [footerTextView removeFromSuperview];
     }
 
     [(MTEpisodeLockup *)self setNeedsLayout];
@@ -3721,9 +3721,9 @@ LABEL_12:
 {
   if ([(MTEpisodeLockup *)self isExpanded])
   {
-    v4 = [(MTEpisodeLockup *)self footerTextView];
-    v3 = [v4 attributedText];
-    -[MTEpisodeLockup setShowsFooterTextView:](self, "setShowsFooterTextView:", [v3 length] != 0);
+    footerTextView = [(MTEpisodeLockup *)self footerTextView];
+    attributedText = [footerTextView attributedText];
+    -[MTEpisodeLockup setShowsFooterTextView:](self, "setShowsFooterTextView:", [attributedText length] != 0);
   }
 
   else
@@ -3735,18 +3735,18 @@ LABEL_12:
 
 - (BOOL)updateTitleFontIfNeeded
 {
-  v3 = [objc_opt_class() titleFont];
-  v4 = [(MTEpisodeLockup *)self _currentTitleFont];
-  v5 = [v3 isEqual:v4];
+  titleFont = [objc_opt_class() titleFont];
+  _currentTitleFont = [(MTEpisodeLockup *)self _currentTitleFont];
+  v5 = [titleFont isEqual:_currentTitleFont];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(MTEpisodeLockup *)self titleTextView];
-    [v6 setFont:v3];
+    titleTextView = [(MTEpisodeLockup *)self titleTextView];
+    [titleTextView setFont:titleFont];
 
-    v7 = [(MTEpisodeLockup *)self titleImage];
+    titleImage = [(MTEpisodeLockup *)self titleImage];
 
-    if (v7)
+    if (titleImage)
     {
       [(MTEpisodeLockup *)self updateTitleIncludingIcons];
     }
@@ -3755,67 +3755,67 @@ LABEL_12:
   return v5 ^ 1;
 }
 
-- (void)setTitleImage:(id)a3
+- (void)setTitleImage:(id)image
 {
-  v5 = a3;
-  if (self->_titleImage != v5)
+  imageCopy = image;
+  if (self->_titleImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_titleImage, image);
     [(MTEpisodeLockup *)self updateTitleIncludingIcons];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
 - (void)updateTitleIncludingIcons
 {
-  v3 = [(MTEpisodeLockup *)self titleImage];
+  titleImage = [(MTEpisodeLockup *)self titleImage];
 
-  if (v3)
+  if (titleImage)
   {
-    v4 = objc_opt_new();
-    v5 = [(MTEpisodeLockup *)self titleImage];
-    [v4 setImage:v5];
+    episode3 = objc_opt_new();
+    titleImage2 = [(MTEpisodeLockup *)self titleImage];
+    [episode3 setImage:titleImage2];
 
-    v6 = objc_alloc_init(NSMutableAttributedString);
-    v7 = [(MTEpisodeLockup *)self episode];
-    v8 = [v7 bestTitle];
+    bestTitle3 = objc_alloc_init(NSMutableAttributedString);
+    episode = [(MTEpisodeLockup *)self episode];
+    bestTitle = [episode bestTitle];
 
-    if (v8)
+    if (bestTitle)
     {
       v9 = [NSAttributedString alloc];
-      v10 = [(MTEpisodeLockup *)self episode];
-      v11 = [v10 bestTitle];
-      v12 = [v9 initWithString:v11];
-      [v6 appendAttributedString:v12];
+      episode2 = [(MTEpisodeLockup *)self episode];
+      bestTitle2 = [episode2 bestTitle];
+      v12 = [v9 initWithString:bestTitle2];
+      [bestTitle3 appendAttributedString:v12];
     }
 
     v13 = [[NSAttributedString alloc] initWithString:@" "];
-    [v6 appendAttributedString:v13];
+    [bestTitle3 appendAttributedString:v13];
 
-    v14 = [NSAttributedString attributedStringWithAttachment:v4];
-    [v6 appendAttributedString:v14];
+    v14 = [NSAttributedString attributedStringWithAttachment:episode3];
+    [bestTitle3 appendAttributedString:v14];
 
     v20[0] = NSFontAttributeName;
-    v15 = [(MTEpisodeLockup *)self _currentTitleFont];
-    v21[0] = v15;
+    _currentTitleFont = [(MTEpisodeLockup *)self _currentTitleFont];
+    v21[0] = _currentTitleFont;
     v20[1] = NSForegroundColorAttributeName;
-    v16 = [(MTEpisodeLockup *)self _currentTitleColor];
-    v21[1] = v16;
-    v17 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
+    _currentTitleColor = [(MTEpisodeLockup *)self _currentTitleColor];
+    v21[1] = _currentTitleColor;
+    titleTextView2 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
 
-    [v6 addAttributes:v17 range:{0, objc_msgSend(v6, "length")}];
-    v18 = [[NSAttributedString alloc] initWithAttributedString:v6];
-    v19 = [(MTEpisodeLockup *)self titleTextView];
-    [v19 setAttributedText:v18];
+    [bestTitle3 addAttributes:titleTextView2 range:{0, objc_msgSend(bestTitle3, "length")}];
+    v18 = [[NSAttributedString alloc] initWithAttributedString:bestTitle3];
+    titleTextView = [(MTEpisodeLockup *)self titleTextView];
+    [titleTextView setAttributedText:v18];
   }
 
   else
   {
-    v4 = [(MTEpisodeLockup *)self episode];
-    v6 = [v4 bestTitle];
-    v17 = [(MTEpisodeLockup *)self titleTextView];
-    [v17 setText:v6];
+    episode3 = [(MTEpisodeLockup *)self episode];
+    bestTitle3 = [episode3 bestTitle];
+    titleTextView2 = [(MTEpisodeLockup *)self titleTextView];
+    [titleTextView2 setText:bestTitle3];
   }
 
   [(MTEpisodeLockup *)self setNeedsLayout];
@@ -3844,8 +3844,8 @@ LABEL_12:
 
 - (void)updateIcons
 {
-  v3 = [(MTEpisodeLockup *)self episode];
-  -[MTEpisodeLockup setShowsExplicitIcon:](self, "setShowsExplicitIcon:", [v3 isExplicit]);
+  episode = [(MTEpisodeLockup *)self episode];
+  -[MTEpisodeLockup setShowsExplicitIcon:](self, "setShowsExplicitIcon:", [episode isExplicit]);
 
   if (![(MTEpisodeLockup *)self updateIsCurrentPlayerItemState])
   {
@@ -3853,9 +3853,9 @@ LABEL_12:
   }
 
   [(MTEpisodeLockup *)self updateAssetStatusIcons];
-  v4 = [(MTEpisodeLockup *)self iconView];
-  v5 = [(MTEpisodeLockup *)self episode];
-  [v4 setVideo:{objc_msgSend(v5, "isVideo")}];
+  iconView = [(MTEpisodeLockup *)self iconView];
+  episode2 = [(MTEpisodeLockup *)self episode];
+  [iconView setVideo:{objc_msgSend(episode2, "isVideo")}];
 
   [(MTEpisodeLockup *)self updateIconView];
 }
@@ -3863,9 +3863,9 @@ LABEL_12:
 - (BOOL)updateIsCurrentPlayerItemState
 {
   v3 = +[MTPlayerController defaultInstance];
-  v4 = [(MTEpisodeLockup *)self episode];
-  v5 = [v4 uuid];
-  v6 = [v3 isPlayingEpisodeUuid:v5];
+  episode = [(MTEpisodeLockup *)self episode];
+  uuid = [episode uuid];
+  v6 = [v3 isPlayingEpisodeUuid:uuid];
 
   v7 = v6 ^ [(MTEpisodeLockup *)self isCurrentPlayerItem];
   if (v7 == 1)
@@ -3880,37 +3880,37 @@ LABEL_12:
 {
   if ([(MTEpisodeLockup *)self showsPlayState]&& ![(MTEpisodeLockup *)self showsArtwork]&& [(MTEpisodeLockup *)self shouldShowNowPlaying])
   {
-    v3 = [(MTEpisodeLockup *)self isCurrentPlayerItem];
+    isCurrentPlayerItem = [(MTEpisodeLockup *)self isCurrentPlayerItem];
   }
 
   else
   {
-    v3 = 0;
+    isCurrentPlayerItem = 0;
   }
 
   v12 = 0;
-  if ([(MTEpisodeLockup *)self showsPlayState]&& (v3 & 1) == 0)
+  if ([(MTEpisodeLockup *)self showsPlayState]&& (isCurrentPlayerItem & 1) == 0)
   {
-    v4 = [(MTEpisodeLockup *)self episode];
-    v5 = [(MTEpisodeLockup *)self colorTheme];
-    v12 = [v4 playStatusImageForTheme:v5];
+    episode = [(MTEpisodeLockup *)self episode];
+    colorTheme = [(MTEpisodeLockup *)self colorTheme];
+    v12 = [episode playStatusImageForTheme:colorTheme];
   }
 
-  v6 = [(MTEpisodeLockup *)self playStatusView];
-  [v6 setImage:v12];
+  playStatusView = [(MTEpisodeLockup *)self playStatusView];
+  [playStatusView setImage:v12];
 
-  v7 = [(MTEpisodeLockup *)self playStatusView];
-  [v7 sizeToFit];
+  playStatusView2 = [(MTEpisodeLockup *)self playStatusView];
+  [playStatusView2 sizeToFit];
 
-  if (v3)
+  if (isCurrentPlayerItem)
   {
-    v8 = [(MTEpisodeLockup *)self barsView];
-    v9 = [v8 superview];
+    barsView = [(MTEpisodeLockup *)self barsView];
+    superview = [barsView superview];
 
-    if (v9 != self)
+    if (superview != self)
     {
-      v10 = [(MTEpisodeLockup *)self barsView];
-      [(MTEpisodeLockup *)self addSubview:v10];
+      barsView2 = [(MTEpisodeLockup *)self barsView];
+      [(MTEpisodeLockup *)self addSubview:barsView2];
     }
 
     [(MTEpisodeLockup *)self updateStateForBarsView:self->_barsView];
@@ -3918,9 +3918,9 @@ LABEL_12:
 
   else
   {
-    v11 = [(MTNowPlayingIndicatorView *)self->_barsView superview];
+    superview2 = [(MTNowPlayingIndicatorView *)self->_barsView superview];
 
-    if (v11)
+    if (superview2)
     {
       [(MTNowPlayingIndicatorView *)self->_barsView setPlaybackState:0];
       [(MTNowPlayingIndicatorView *)self->_barsView removeFromSuperview];
@@ -3930,15 +3930,15 @@ LABEL_12:
   [(MTEpisodeLockup *)self setNeedsLayout];
 }
 
-- (void)updateStateForBarsView:(id)a3
+- (void)updateStateForBarsView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   if ([(MTEpisodeLockup *)self isCurrentPlayerItem])
   {
     v4 = +[MTPlayerController defaultInstance];
-    v5 = [v4 isTargetPlaying];
+    isTargetPlaying = [v4 isTargetPlaying];
 
-    if (v5)
+    if (isTargetPlaying)
     {
       v6 = 1;
     }
@@ -3954,15 +3954,15 @@ LABEL_12:
     v6 = 0;
   }
 
-  [v7 setPlaybackState:v6];
+  [viewCopy setPlaybackState:v6];
 }
 
 - (void)updateAssetStatusIcons
 {
-  v3 = [(MTEpisodeLockup *)self episode];
-  v4 = [v3 isExternalType];
+  episode = [(MTEpisodeLockup *)self episode];
+  isExternalType = [episode isExternalType];
 
-  if (v4)
+  if (isExternalType)
   {
     v5 = 1;
     goto LABEL_8;
@@ -3971,10 +3971,10 @@ LABEL_12:
   v6 = +[MTReachability sharedInstance];
   if ([v6 isReachable])
   {
-    v7 = [(MTEpisodeLockup *)self episode];
-    v8 = [v7 feedDeleted];
+    episode2 = [(MTEpisodeLockup *)self episode];
+    feedDeleted = [episode2 feedDeleted];
 
-    if (!v8)
+    if (!feedDeleted)
     {
       v5 = 2;
       goto LABEL_8;
@@ -3987,111 +3987,111 @@ LABEL_12:
 
   v5 = 3;
 LABEL_8:
-  v9 = [(MTEpisodeLockup *)self iconView];
-  [v9 setAssetStatus:v5];
+  iconView = [(MTEpisodeLockup *)self iconView];
+  [iconView setAssetStatus:v5];
 }
 
 - (void)updateIconView
 {
-  v3 = [(MTEpisodeLockup *)self iconView];
-  v4 = [v3 isNotEmpty];
+  iconView = [(MTEpisodeLockup *)self iconView];
+  isNotEmpty = [iconView isNotEmpty];
 
-  v5 = [(MTEpisodeLockup *)self iconView];
-  v6 = v5;
-  if (!v4)
+  iconView2 = [(MTEpisodeLockup *)self iconView];
+  v6 = iconView2;
+  if (!isNotEmpty)
   {
-    v10 = [v5 superview];
+    superview = [iconView2 superview];
 
-    if (!v10)
+    if (!superview)
     {
       return;
     }
 
-    v9 = [(MTEpisodeLockup *)self iconView];
-    [v9 removeFromSuperview];
+    iconView3 = [(MTEpisodeLockup *)self iconView];
+    [iconView3 removeFromSuperview];
     goto LABEL_6;
   }
 
-  [v5 updateSizeIfNeeded];
+  [iconView2 updateSizeIfNeeded];
 
-  v7 = [(MTEpisodeLockup *)self iconView];
-  v8 = [v7 superview];
+  iconView4 = [(MTEpisodeLockup *)self iconView];
+  superview2 = [iconView4 superview];
 
-  if (v8 != self)
+  if (superview2 != self)
   {
-    v9 = [(MTEpisodeLockup *)self iconView];
-    [(MTEpisodeLockup *)self addSubview:v9];
+    iconView3 = [(MTEpisodeLockup *)self iconView];
+    [(MTEpisodeLockup *)self addSubview:iconView3];
 LABEL_6:
   }
 
   [(MTEpisodeLockup *)self setNeedsLayout];
 }
 
-- (void)setShowsExplicitIcon:(BOOL)a3
+- (void)setShowsExplicitIcon:(BOOL)icon
 {
-  if (self->_showsExplicitIcon != a3)
+  if (self->_showsExplicitIcon != icon)
   {
-    v4 = a3;
-    self->_showsExplicitIcon = a3;
-    v5 = [(MTEpisodeLockup *)self iconView];
-    [v5 setExplicit:v4];
+    iconCopy = icon;
+    self->_showsExplicitIcon = icon;
+    iconView = [(MTEpisodeLockup *)self iconView];
+    [iconView setExplicit:iconCopy];
   }
 }
 
 - (id)_currentTitleFont
 {
-  v2 = [(MTEpisodeLockup *)self titleTextView];
-  v3 = [v2 font];
-  v4 = v3;
-  if (v3)
+  titleTextView = [(MTEpisodeLockup *)self titleTextView];
+  font = [titleTextView font];
+  v4 = font;
+  if (font)
   {
-    v5 = v3;
+    titleFont = font;
   }
 
   else
   {
-    v5 = [objc_opt_class() titleFont];
+    titleFont = [objc_opt_class() titleFont];
   }
 
-  v6 = v5;
+  v6 = titleFont;
 
   return v6;
 }
 
 - (id)_currentDescriptionFont
 {
-  v2 = [(MTEpisodeLockup *)self descriptionTextView];
-  v3 = [v2 font];
-  v4 = v3;
-  if (v3)
+  descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+  font = [descriptionTextView font];
+  v4 = font;
+  if (font)
   {
-    v5 = v3;
+    descriptionFont = font;
   }
 
   else
   {
-    v5 = [objc_opt_class() descriptionFont];
+    descriptionFont = [objc_opt_class() descriptionFont];
   }
 
-  v6 = v5;
+  v6 = descriptionFont;
 
   return v6;
 }
 
 - (id)_currentTitleColor
 {
-  v3 = [(MTEpisodeLockup *)self titleTextView];
-  v4 = [v3 textColor];
-  v5 = v4;
-  if (v4)
+  titleTextView = [(MTEpisodeLockup *)self titleTextView];
+  textColor = [titleTextView textColor];
+  v5 = textColor;
+  if (textColor)
   {
-    v6 = v4;
+    v6 = textColor;
   }
 
   else
   {
-    v7 = [(MTEpisodeLockup *)self colorTheme];
-    v6 = [UIColor primaryTextColorForTheme:v7];
+    colorTheme = [(MTEpisodeLockup *)self colorTheme];
+    v6 = [UIColor primaryTextColorForTheme:colorTheme];
   }
 
   return v6;
@@ -4099,40 +4099,40 @@ LABEL_6:
 
 - (id)_currentDescriptionColor
 {
-  v3 = [(MTEpisodeLockup *)self descriptionTextView];
-  v4 = [v3 textColor];
-  v5 = v4;
-  if (v4)
+  descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+  textColor = [descriptionTextView textColor];
+  v5 = textColor;
+  if (textColor)
   {
-    v6 = v4;
+    v6 = textColor;
   }
 
   else
   {
-    v7 = [(MTEpisodeLockup *)self colorTheme];
-    v6 = [UIColor secondaryTextColorForTheme:v7];
+    colorTheme = [(MTEpisodeLockup *)self colorTheme];
+    v6 = [UIColor secondaryTextColorForTheme:colorTheme];
   }
 
   return v6;
 }
 
-- (void)_setNumberOfLinesForDescription:(unint64_t)a3
+- (void)_setNumberOfLinesForDescription:(unint64_t)description
 {
-  v5 = [(MTEpisodeLockup *)self descriptionTextView];
-  v6 = [v5 textContainer];
-  v7 = [v6 maximumNumberOfLines];
+  descriptionTextView = [(MTEpisodeLockup *)self descriptionTextView];
+  textContainer = [descriptionTextView textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  if (v7 != a3)
+  if (maximumNumberOfLines != description)
   {
-    v8 = [(MTEpisodeLockup *)self descriptionTextView];
-    v9 = [v8 textContainer];
-    [v9 setMaximumNumberOfLines:a3];
+    descriptionTextView2 = [(MTEpisodeLockup *)self descriptionTextView];
+    textContainer2 = [descriptionTextView2 textContainer];
+    [textContainer2 setMaximumNumberOfLines:description];
 
-    v10 = [(MTEpisodeLockup *)self descriptionTextView];
-    v11 = [v10 layoutManager];
-    v12 = [(MTEpisodeLockup *)self descriptionTextView];
-    v13 = [v12 textContainer];
-    [v11 textContainerChangedGeometry:v13];
+    descriptionTextView3 = [(MTEpisodeLockup *)self descriptionTextView];
+    layoutManager = [descriptionTextView3 layoutManager];
+    descriptionTextView4 = [(MTEpisodeLockup *)self descriptionTextView];
+    textContainer3 = [descriptionTextView4 textContainer];
+    [layoutManager textContainerChangedGeometry:textContainer3];
 
     self->_descriptionSize = CGSizeZero;
   }

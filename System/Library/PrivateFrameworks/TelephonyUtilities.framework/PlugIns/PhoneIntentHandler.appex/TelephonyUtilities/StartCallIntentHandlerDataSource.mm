@@ -14,38 +14,38 @@
 - (FavoritesDataSource)favoritesDataSource;
 - (NSArray)siriEmergencyServices;
 - (RadiosPreferences)radiosPreferences;
-- (StartCallIntentHandlerDataSource)initWithDispatchQueue:(id)a3 featureFlags:(id)a4 emergencyProvider:(id)a5 emergencyServicesOverrideProvider:(id)a6;
+- (StartCallIntentHandlerDataSource)initWithDispatchQueue:(id)queue featureFlags:(id)flags emergencyProvider:(id)provider emergencyServicesOverrideProvider:(id)overrideProvider;
 - (TUCallProvider)emergencyProvider;
 - (TUCallProviderManager)providerManager;
 - (TUContactsDataSource)contactsDataSource;
 - (TUSenderIdentityClient)senderIdentityClient;
-- (id)fetchSPIHandlesForGroupID:(id)a3;
-- (id)restrictedContacts:(id)a3 callProvider:(id)a4;
-- (unint64_t)callFilterStatusForDialRequest:(id)a3;
+- (id)fetchSPIHandlesForGroupID:(id)d;
+- (id)restrictedContacts:(id)contacts callProvider:(id)provider;
+- (unint64_t)callFilterStatusForDialRequest:(id)request;
 @end
 
 @implementation StartCallIntentHandlerDataSource
 
-- (StartCallIntentHandlerDataSource)initWithDispatchQueue:(id)a3 featureFlags:(id)a4 emergencyProvider:(id)a5 emergencyServicesOverrideProvider:(id)a6
+- (StartCallIntentHandlerDataSource)initWithDispatchQueue:(id)queue featureFlags:(id)flags emergencyProvider:(id)provider emergencyServicesOverrideProvider:(id)overrideProvider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  flagsCopy = flags;
+  providerCopy = provider;
+  overrideProviderCopy = overrideProvider;
   v20.receiver = self;
   v20.super_class = StartCallIntentHandlerDataSource;
   v15 = [(StartCallIntentHandlerDataSource *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_dispatchQueue, a3);
+    objc_storeStrong(&v15->_dispatchQueue, queue);
     v17 = [TUCallCenter callCenterWithQueue:v16->_dispatchQueue];
     callCenter = v16->_callCenter;
     v16->_callCenter = v17;
 
-    objc_storeStrong(&v16->_featureFlags, a4);
-    objc_storeStrong(&v16->_emergencyProvider, a5);
-    objc_storeStrong(&v16->_emergencyServicesOverrideProvider, a6);
+    objc_storeStrong(&v16->_featureFlags, flags);
+    objc_storeStrong(&v16->_emergencyProvider, provider);
+    objc_storeStrong(&v16->_emergencyServicesOverrideProvider, overrideProvider);
   }
 
   return v16;
@@ -71,10 +71,10 @@
   emergencyProvider = self->_emergencyProvider;
   if (!emergencyProvider)
   {
-    v4 = [(StartCallIntentHandlerDataSource *)self providerManager];
-    v5 = [v4 emergencyProvider];
+    providerManager = [(StartCallIntentHandlerDataSource *)self providerManager];
+    emergencyProvider = [providerManager emergencyProvider];
     v6 = self->_emergencyProvider;
-    self->_emergencyProvider = v5;
+    self->_emergencyProvider = emergencyProvider;
 
     emergencyProvider = self->_emergencyProvider;
   }
@@ -159,57 +159,57 @@
 
 - (BOOL)isAirplaneModeEnabled
 {
-  v2 = [(StartCallIntentHandlerDataSource *)self radiosPreferences];
-  v3 = [v2 airplaneMode];
+  radiosPreferences = [(StartCallIntentHandlerDataSource *)self radiosPreferences];
+  airplaneMode = [radiosPreferences airplaneMode];
 
-  return v3;
+  return airplaneMode;
 }
 
-- (unint64_t)callFilterStatusForDialRequest:(id)a3
+- (unint64_t)callFilterStatusForDialRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(StartCallIntentHandlerDataSource *)self dispatchQueue];
+  dispatchQueue = [(StartCallIntentHandlerDataSource *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001F9F0;
   block[3] = &unk_10004D050;
-  v10 = v4;
+  v10 = requestCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = requestCopy;
+  dispatch_sync(dispatchQueue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v7;
 }
 
-- (id)restrictedContacts:(id)a3 callProvider:(id)a4
+- (id)restrictedContacts:(id)contacts callProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  providerCopy = provider;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_10001FBCC;
   v21 = sub_10001FBDC;
   v22 = 0;
-  v8 = [(StartCallIntentHandlerDataSource *)self dispatchQueue];
+  dispatchQueue = [(StartCallIntentHandlerDataSource *)self dispatchQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001FBE4;
   v13[3] = &unk_10004D078;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = contactsCopy;
+  v15 = providerCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = providerCopy;
+  v10 = contactsCopy;
+  dispatch_sync(dispatchQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -327,25 +327,25 @@
 - (BOOL)isFaceTimeAudioBlocked
 {
   v2 = +[FTDeviceSupport sharedInstance];
-  v3 = [v2 callingBlocked];
+  callingBlocked = [v2 callingBlocked];
 
-  return v3;
+  return callingBlocked;
 }
 
 - (BOOL)isFaceTimeVideoBlocked
 {
   v2 = +[FTDeviceSupport sharedInstance];
-  v3 = [v2 faceTimeBlocked];
+  faceTimeBlocked = [v2 faceTimeBlocked];
 
-  return v3;
+  return faceTimeBlocked;
 }
 
 - (TUContactsDataSource)contactsDataSource
 {
-  v2 = [(StartCallIntentHandlerDataSource *)self callCenter];
-  v3 = [v2 contactStore];
+  callCenter = [(StartCallIntentHandlerDataSource *)self callCenter];
+  contactStore = [callCenter contactStore];
 
-  return v3;
+  return contactStore;
 }
 
 - (BOOL)useLegacyContactResolution
@@ -366,10 +366,10 @@
 
 - (NSArray)siriEmergencyServices
 {
-  v3 = [(StartCallIntentHandlerDataSource *)self featureFlags];
-  v4 = [v3 emergencyServicesOverrideEnabled];
+  featureFlags = [(StartCallIntentHandlerDataSource *)self featureFlags];
+  emergencyServicesOverrideEnabled = [featureFlags emergencyServicesOverrideEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((emergencyServicesOverrideEnabled & 1) == 0)
   {
     v8 = IntentHandlerDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -380,9 +380,9 @@
     goto LABEL_7;
   }
 
-  v5 = [(StartCallIntentHandlerDataSource *)self emergencyProvider];
-  v6 = [v5 emergencyLabeledHandles];
-  v7 = [v6 count];
+  emergencyProvider = [(StartCallIntentHandlerDataSource *)self emergencyProvider];
+  emergencyLabeledHandles = [emergencyProvider emergencyLabeledHandles];
+  v7 = [emergencyLabeledHandles count];
 
   v8 = IntentHandlerDefaultLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -395,8 +395,8 @@
 
 LABEL_7:
 
-    v10 = [(StartCallIntentHandlerDataSource *)self emergencyProvider];
-    v11 = [v10 emergencyLabeledHandles];
+    emergencyProvider2 = [(StartCallIntentHandlerDataSource *)self emergencyProvider];
+    emergencyLabeledHandles2 = [emergencyProvider2 emergencyLabeledHandles];
     goto LABEL_8;
   }
 
@@ -405,10 +405,10 @@ LABEL_7:
     sub_100030918();
   }
 
-  v10 = [(StartCallIntentHandlerDataSource *)self emergencyServicesOverrideProvider];
-  v11 = [v10 emergencyServicesOverrides];
+  emergencyProvider2 = [(StartCallIntentHandlerDataSource *)self emergencyServicesOverrideProvider];
+  emergencyLabeledHandles2 = [emergencyProvider2 emergencyServicesOverrides];
 LABEL_8:
-  v12 = v11;
+  v12 = emergencyLabeledHandles2;
 
   return v12;
 }
@@ -453,9 +453,9 @@ LABEL_8:
   return _os_feature_enabled_impl();
 }
 
-- (id)fetchSPIHandlesForGroupID:(id)a3
+- (id)fetchSPIHandlesForGroupID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = dispatch_queue_attr_make_with_qos_class(&_dispatch_queue_attr_concurrent, QOS_CLASS_UNSPECIFIED, 0);
   v6 = dispatch_queue_create("com.apple.messages.imcore.spi.qos-unspecified", v5);
@@ -466,7 +466,7 @@ LABEL_8:
   v20 = sub_10001FBCC;
   v21 = sub_10001FBDC;
   v22 = 0;
-  if ([v3 length])
+  if ([dCopy length])
   {
     v16 = dispatch_semaphore_create(0);
     IMSPIQueryChatWithGuid();
@@ -477,22 +477,22 @@ LABEL_8:
   v8 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v18[5] handles];
+    handles = [v18[5] handles];
     *buf = 138412290;
-    v24 = v9;
+    v24 = handles;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "spiChat person handles: %@", buf, 0xCu);
   }
 
   v10 = v18[5];
   if (v10)
   {
-    v11 = [v10 handles];
-    v12 = [v11 count] == 0;
+    handles2 = [v10 handles];
+    v12 = [handles2 count] == 0;
 
     if (!v12)
     {
-      v13 = [v18[5] handles];
-      v14 = [v13 copy];
+      handles3 = [v18[5] handles];
+      v14 = [handles3 copy];
 
       v4 = v14;
     }

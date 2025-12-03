@@ -1,57 +1,57 @@
 @interface STScreenTimeReportController
 - (BOOL)isDatePickerHidden;
-- (STScreenTimeReportController)initWithTitle:(id)a3 coordinator:(id)a4 pinControllerDelegate:(id)a5;
+- (STScreenTimeReportController)initWithTitle:(id)title coordinator:(id)coordinator pinControllerDelegate:(id)delegate;
 - (id)parentController;
 - (id)rootController;
-- (void)_dateModeDidChange:(id)a3;
+- (void)_dateModeDidChange:(id)change;
 - (void)_dateModePickerDidAppear;
 - (void)_dateModePickerDidDisappear;
-- (void)_devicesDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_didPressAddApplicationLimitButton:(id)a3;
-- (void)_didPressAddCategoryLimitButton:(id)a3;
-- (void)_didPressAddWebDomainLimitButton:(id)a3;
-- (void)_didTapBarMark:(id)a3;
-- (void)_didTapEditLimitLink:(id)a3;
-- (void)_didTapNotificationsLink:(id)a3;
-- (void)_didTapShowThisWeekButton:(id)a3;
-- (void)_didTapShowTodayButton:(id)a3;
-- (void)_editLimit:(id)a3 isNewLimit:(BOOL)a4;
-- (void)_selectedCoreDuetIdentifierDidChange:(id)a3;
-- (void)_selectedUsageReportDidChangeFrom:(id)a3 to:(id)a4;
-- (void)allowanceDetailController:(id)a3 didDeleteAllowance:(id)a4;
-- (void)allowanceDetailController:(id)a3 didSaveAllowance:(id)a4;
+- (void)_devicesDidChangeFrom:(id)from to:(id)to;
+- (void)_didPressAddApplicationLimitButton:(id)button;
+- (void)_didPressAddCategoryLimitButton:(id)button;
+- (void)_didPressAddWebDomainLimitButton:(id)button;
+- (void)_didTapBarMark:(id)mark;
+- (void)_didTapEditLimitLink:(id)link;
+- (void)_didTapNotificationsLink:(id)link;
+- (void)_didTapShowThisWeekButton:(id)button;
+- (void)_didTapShowTodayButton:(id)button;
+- (void)_editLimit:(id)limit isNewLimit:(BOOL)newLimit;
+- (void)_selectedCoreDuetIdentifierDidChange:(id)change;
+- (void)_selectedUsageReportDidChangeFrom:(id)from to:(id)to;
+- (void)allowanceDetailController:(id)controller didDeleteAllowance:(id)allowance;
+- (void)allowanceDetailController:(id)controller didSaveAllowance:(id)allowance;
 - (void)dealloc;
-- (void)debouncer:(id)a3 didDebounce:(id)a4;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)setDatePickerHidden:(BOOL)a3;
-- (void)setSpecifier:(id)a3;
-- (void)showController:(id)a3 animate:(BOOL)a4;
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)setDatePickerHidden:(BOOL)hidden;
+- (void)setSpecifier:(id)specifier;
+- (void)showController:(id)controller animate:(BOOL)animate;
 - (void)viewDidLoad;
 @end
 
 @implementation STScreenTimeReportController
 
-- (STScreenTimeReportController)initWithTitle:(id)a3 coordinator:(id)a4 pinControllerDelegate:(id)a5
+- (STScreenTimeReportController)initWithTitle:(id)title coordinator:(id)coordinator pinControllerDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  coordinatorCopy = coordinator;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = STScreenTimeReportController;
   v11 = [(STScreenTimeReportController *)&v26 initWithNibName:0 bundle:0];
-  [(STScreenTimeReportController *)v11 setTitle:v8];
+  [(STScreenTimeReportController *)v11 setTitle:titleCopy];
   objc_initWeak(&location, v11);
   v12 = [_TtC20ScreenTimeSettingsUI27STAllActivityViewController alloc];
-  v13 = [v9 viewModel];
-  v14 = [v13 me];
-  v15 = [v14 altDSID];
-  v16 = [(STAllActivityViewController *)v12 initWithUserAltDSID:v15 deviceIdentifier:0];
+  viewModel = [coordinatorCopy viewModel];
+  v14 = [viewModel me];
+  altDSID = [v14 altDSID];
+  v16 = [(STAllActivityViewController *)v12 initWithUserAltDSID:altDSID deviceIdentifier:0];
   appAndWebsiteActivityViewController = v11->_appAndWebsiteActivityViewController;
   v11->_appAndWebsiteActivityViewController = v16;
 
-  objc_storeStrong(&v11->_pinControllerDelegate, a5);
+  objc_storeStrong(&v11->_pinControllerDelegate, delegate);
   v18 = objc_opt_new();
   notificationSettingsGateway = v11->_notificationSettingsGateway;
   v11->_notificationSettingsGateway = v18;
@@ -60,13 +60,13 @@
   datePickerBar = v11->_datePickerBar;
   v11->_datePickerBar = v20;
 
-  [(STDatePickerBar *)v11->_datePickerBar updateWithCoordinator:v9];
+  [(STDatePickerBar *)v11->_datePickerBar updateWithCoordinator:coordinatorCopy];
   v22 = [objc_alloc(MEMORY[0x277D4B990]) initWithMinCoalescenceInterval:0.1 maxCoalescenceInterval:1.0];
   datePickerHiddenDebouncer = v11->_datePickerHiddenDebouncer;
   v11->_datePickerHiddenDebouncer = v22;
 
   [(STDebouncer *)v11->_datePickerHiddenDebouncer setDelegate:v11];
-  [(STScreenTimeReportController *)v11 setCoordinator:v9];
+  [(STScreenTimeReportController *)v11 setCoordinator:coordinatorCopy];
   [(STAllActivityViewController *)v11->_appAndWebsiteActivityViewController loadViewIfNeeded];
   [MEMORY[0x277CCA9A0] defaultCenter];
 
@@ -82,16 +82,16 @@
   [(STScreenTimeReportController *)&v3 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   [(STRootViewModelCoordinator *)self->_coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedCoreDuetIdentifier" context:"KVOContextScreenTimeReportController"];
   [(STRootViewModelCoordinator *)self->_coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" context:"KVOContextScreenTimeReportController"];
   [(STRootViewModelCoordinator *)self->_coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.devices" context:"KVOContextScreenTimeReportController"];
   [(STRootViewModelCoordinator *)self->_coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedItemDisplayName" context:"KVOContextScreenTimeReportController"];
   coordinator = self->_coordinator;
-  self->_coordinator = v4;
-  v6 = v4;
+  self->_coordinator = coordinatorCopy;
+  v6 = coordinatorCopy;
 
   [(STRootViewModelCoordinator *)self->_coordinator addObserver:self forKeyPath:@"usageDetailsCoordinator.devices" options:7 context:"KVOContextScreenTimeReportController"];
   [(STRootViewModelCoordinator *)self->_coordinator addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedItemDisplayName" options:5 context:"KVOContextScreenTimeReportController"];
@@ -104,51 +104,51 @@
   v33.receiver = self;
   v33.super_class = STScreenTimeReportController;
   [(STScreenTimeReportController *)&v33 viewDidLoad];
-  v3 = [(STScreenTimeReportController *)self appAndWebsiteActivityViewController];
-  [(STScreenTimeReportController *)self addChildViewController:v3];
-  v4 = [v3 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(STScreenTimeReportController *)self view];
-  [v5 addSubview:v4];
-  v6 = _NSDictionaryOfVariableBindings(&cfstr_Contentview.isa, v4, 0);
+  appAndWebsiteActivityViewController = [(STScreenTimeReportController *)self appAndWebsiteActivityViewController];
+  [(STScreenTimeReportController *)self addChildViewController:appAndWebsiteActivityViewController];
+  view = [appAndWebsiteActivityViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(STScreenTimeReportController *)self view];
+  [view2 addSubview:view];
+  v6 = _NSDictionaryOfVariableBindings(&cfstr_Contentview.isa, view, 0);
   v7 = 0x277CCA000uLL;
   v8 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:0 views:v6];
   v9 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[contentView]|" options:0 metrics:0 views:v6];
-  v10 = [(STScreenTimeReportController *)self datePickerBar];
-  v31 = v5;
-  if (v10)
+  datePickerBar = [(STScreenTimeReportController *)self datePickerBar];
+  v31 = view2;
+  if (datePickerBar)
   {
-    [v5 addSubview:v10];
-    [v5 readableContentGuide];
+    [view2 addSubview:datePickerBar];
+    [view2 readableContentGuide];
     v11 = v28 = v6;
-    v12 = [v11 topAnchor];
+    topAnchor = [v11 topAnchor];
 
-    v13 = [v10 topAnchor];
-    v25 = v12;
-    v26 = [v13 constraintEqualToAnchor:v12];
+    topAnchor2 = [datePickerBar topAnchor];
+    v25 = topAnchor;
+    v26 = [topAnchor2 constraintEqualToAnchor:topAnchor];
 
     [(STScreenTimeReportController *)self setDatePickerTopConstraint:v26];
-    v14 = [v10 bottomAnchor];
-    [v14 constraintEqualToAnchor:v12];
+    bottomAnchor = [datePickerBar bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:topAnchor];
     v15 = v27 = v8;
 
     [(STScreenTimeReportController *)self setDatePickerBottomConstraint:v15];
     v16 = objc_alloc(MEMORY[0x277CBEB18]);
-    v24 = [v10 leadingAnchor];
-    v17 = [v5 leadingAnchor];
-    [v24 constraintEqualToAnchor:v17];
-    v18 = v30 = v3;
-    [v10 trailingAnchor];
-    v19 = v29 = v4;
-    [v5 trailingAnchor];
+    leadingAnchor = [datePickerBar leadingAnchor];
+    leadingAnchor2 = [view2 leadingAnchor];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    v18 = v30 = appAndWebsiteActivityViewController;
+    [datePickerBar trailingAnchor];
+    v19 = v29 = view;
+    [view2 trailingAnchor];
     v21 = v20 = v9;
     v22 = [v19 constraintEqualToAnchor:v21];
     v23 = [v16 initWithObjects:{v15, v18, v22, 0}];
 
     v9 = v20;
-    v4 = v29;
+    view = v29;
 
-    v3 = v30;
+    appAndWebsiteActivityViewController = v30;
     v7 = 0x277CCA000;
 
     v6 = v28;
@@ -163,7 +163,7 @@
   [v23 addObjectsFromArray:v8];
   [v23 addObjectsFromArray:v9];
   [*(v7 + 2768) activateConstraints:v23];
-  [v3 didMoveToParentViewController:self];
+  [appAndWebsiteActivityViewController didMoveToParentViewController:self];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -171,29 +171,29 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextScreenTimeReportController")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextScreenTimeReportController")
   {
     [(STScreenTimeReportController *)self coordinator];
 
-    if ([v10 isEqualToString:@"usageDetailsCoordinator.viewModel.selectedUsageReport"])
+    if ([pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.selectedUsageReport"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null2)
       {
 
         v14 = 0;
@@ -206,16 +206,16 @@
     {
       [(STScreenTimeReportController *)self coordinator];
 
-      if (![v10 isEqualToString:@"usageDetailsCoordinator.devices"])
+      if (![pathCopy isEqualToString:@"usageDetailsCoordinator.devices"])
       {
         [(STScreenTimeReportController *)self coordinator];
 
-        if ([v10 isEqualToString:@"usageDetailsCoordinator.viewModel.selectedItemDisplayName"])
+        if ([pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.selectedItemDisplayName"])
         {
-          v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-          v18 = [MEMORY[0x277CBEB68] null];
+          v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+          null3 = [MEMORY[0x277CBEB68] null];
 
-          if (v12 == v18)
+          if (v12 == null3)
           {
 
             v12 = 0;
@@ -228,15 +228,15 @@
         {
           [(STScreenTimeReportController *)self coordinator];
 
-          if (![v10 isEqualToString:@"usageDetailsCoordinator.viewModel.selectedCoreDuetIdentifier"])
+          if (![pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.selectedCoreDuetIdentifier"])
           {
             goto LABEL_17;
           }
 
-          v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-          v19 = [MEMORY[0x277CBEB68] null];
+          v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+          null4 = [MEMORY[0x277CBEB68] null];
 
-          if (v12 == v19)
+          if (v12 == null4)
           {
 
             v12 = 0;
@@ -248,19 +248,19 @@
         goto LABEL_16;
       }
 
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v16 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null5 = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v16)
+      if (v12 == null5)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v17 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null6 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v17)
+      if (v14 == null6)
       {
 
         v14 = 0;
@@ -275,145 +275,145 @@ LABEL_16:
 
   v20.receiver = self;
   v20.super_class = STScreenTimeReportController;
-  [(STScreenTimeReportController *)&v20 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STScreenTimeReportController *)&v20 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_17:
 }
 
-- (void)_selectedUsageReportDidChangeFrom:(id)a3 to:(id)a4
+- (void)_selectedUsageReportDidChangeFrom:(id)from to:(id)to
 {
-  v16 = a3;
-  v6 = a4;
-  if (v16 != v6)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy != toCopy)
   {
-    v7 = [v16 isEqual:v6];
-    if (v6)
+    v7 = [fromCopy isEqual:toCopy];
+    if (toCopy)
     {
       if ((v7 & 1) == 0)
       {
-        [v6 type];
-        v8 = [v6 reportDateInterval];
-        v9 = [v8 startDate];
-        [v9 timeIntervalSinceReferenceDate];
+        [toCopy type];
+        reportDateInterval = [toCopy reportDateInterval];
+        startDate = [reportDateInterval startDate];
+        [startDate timeIntervalSinceReferenceDate];
         v11 = v10;
 
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", v11];
-        v13 = [MEMORY[0x277CCA9A0] defaultCenter];
-        [v13 postNotificationName:*MEMORY[0x277D4BE10] object:v12];
-        v14 = [(STScreenTimeReportController *)self datePickerBar];
-        v15 = [(STScreenTimeReportController *)self coordinator];
-        [v14 updateWithCoordinator:v15];
+        defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+        [defaultCenter postNotificationName:*MEMORY[0x277D4BE10] object:v12];
+        datePickerBar = [(STScreenTimeReportController *)self datePickerBar];
+        coordinator = [(STScreenTimeReportController *)self coordinator];
+        [datePickerBar updateWithCoordinator:coordinator];
       }
     }
   }
 }
 
-- (void)_devicesDidChangeFrom:(id)a3 to:(id)a4
+- (void)_devicesDidChangeFrom:(id)from to:(id)to
 {
-  v6 = a4;
-  v7 = [a3 count] > 1;
-  v8 = [v6 count];
+  toCopy = to;
+  v7 = [from count] > 1;
+  v8 = [toCopy count];
 
   if (((v7 ^ (v8 < 2)) & 1) == 0)
   {
-    v9 = [(STScreenTimeReportController *)self coordinator];
-    [STDevicesMenu updateWithCoordinator:v9 viewController:self];
+    coordinator = [(STScreenTimeReportController *)self coordinator];
+    [STDevicesMenu updateWithCoordinator:coordinator viewController:self];
   }
 }
 
-- (void)_selectedCoreDuetIdentifierDidChange:(id)a3
+- (void)_selectedCoreDuetIdentifierDidChange:(id)change
 {
-  v4 = [(STScreenTimeReportController *)self coordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 me];
-  v11 = [v6 altDSID];
+  coordinator = [(STScreenTimeReportController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v6 = [viewModel me];
+  altDSID = [v6 altDSID];
 
-  v7 = [(STScreenTimeReportController *)self appAndWebsiteActivityViewController];
-  if (v11)
+  appAndWebsiteActivityViewController = [(STScreenTimeReportController *)self appAndWebsiteActivityViewController];
+  if (altDSID)
   {
-    v8 = [(STScreenTimeReportController *)self coordinator];
-    v9 = [v8 usageDetailsCoordinator];
-    v10 = [v9 selectedDeviceIdentifier];
-    [v7 updateWithUserAltDSID:v11 deviceIdentifier:v10];
+    coordinator2 = [(STScreenTimeReportController *)self coordinator];
+    usageDetailsCoordinator = [coordinator2 usageDetailsCoordinator];
+    selectedDeviceIdentifier = [usageDetailsCoordinator selectedDeviceIdentifier];
+    [appAndWebsiteActivityViewController updateWithUserAltDSID:altDSID deviceIdentifier:selectedDeviceIdentifier];
   }
 
   else
   {
-    [v7 updateWithUserAltDSID:0 deviceIdentifier:0];
+    [appAndWebsiteActivityViewController updateWithUserAltDSID:0 deviceIdentifier:0];
   }
 }
 
-- (void)_dateModeDidChange:(id)a3
+- (void)_dateModeDidChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [v4 intValue];
+  object = [change object];
+  intValue = [object intValue];
 
-  v6 = [(STScreenTimeReportController *)self coordinator];
-  v7 = [v6 usageDetailsCoordinator];
-  v9 = [v7 viewModel];
+  coordinator = [(STScreenTimeReportController *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
 
-  if (v5)
+  if (intValue)
   {
-    v8 = v9;
-    if (v5 != 1)
+    v8 = viewModel;
+    if (intValue != 1)
     {
       goto LABEL_6;
     }
 
-    [v9 setSelectedDay:0x7FFFFFFFFFFFFFFFLL];
+    [viewModel setSelectedDay:0x7FFFFFFFFFFFFFFFLL];
   }
 
   else
   {
-    [v9 selectToday];
+    [viewModel selectToday];
   }
 
-  v8 = v9;
+  v8 = viewModel;
 LABEL_6:
 }
 
 - (void)_dateModePickerDidAppear
 {
-  v2 = [(STScreenTimeReportController *)self datePickerHiddenDebouncer];
-  [v2 bounce:MEMORY[0x277CBEC38]];
+  datePickerHiddenDebouncer = [(STScreenTimeReportController *)self datePickerHiddenDebouncer];
+  [datePickerHiddenDebouncer bounce:MEMORY[0x277CBEC38]];
 }
 
 - (void)_dateModePickerDidDisappear
 {
-  v2 = [(STScreenTimeReportController *)self datePickerHiddenDebouncer];
-  [v2 bounce:MEMORY[0x277CBEC28]];
+  datePickerHiddenDebouncer = [(STScreenTimeReportController *)self datePickerHiddenDebouncer];
+  [datePickerHiddenDebouncer bounce:MEMORY[0x277CBEC28]];
 }
 
-- (void)_didTapShowTodayButton:(id)a3
+- (void)_didTapShowTodayButton:(id)button
 {
-  v5 = [(STScreenTimeReportController *)self coordinator];
-  v3 = [v5 usageDetailsCoordinator];
-  v4 = [v3 viewModel];
-  [v4 selectToday];
+  coordinator = [(STScreenTimeReportController *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
+  [viewModel selectToday];
 }
 
-- (void)_didTapShowThisWeekButton:(id)a3
+- (void)_didTapShowThisWeekButton:(id)button
 {
-  v5 = [(STScreenTimeReportController *)self coordinator];
-  v3 = [v5 usageDetailsCoordinator];
-  v4 = [v3 viewModel];
-  [v4 setSelectedWeek:0];
+  coordinator = [(STScreenTimeReportController *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
+  [viewModel setSelectedWeek:0];
 }
 
-- (void)_didTapNotificationsLink:(id)a3
+- (void)_didTapNotificationsLink:(id)link
 {
-  v16 = [a3 object];
-  v4 = [(STScreenTimeReportController *)self notificationSettingsGateway];
-  v5 = [v4 notificationSettingsForBundleIdentifier:v16];
+  object = [link object];
+  notificationSettingsGateway = [(STScreenTimeReportController *)self notificationSettingsGateway];
+  v5 = [notificationSettingsGateway notificationSettingsForBundleIdentifier:object];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277D4B8C0] sharedCache];
-    v7 = [v6 appInfoForBundleIdentifier:v16];
+    mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+    v7 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:object];
 
     v8 = MEMORY[0x277D3FAD8];
-    v9 = [v7 displayName];
-    v10 = [(STScreenTimeReportController *)self pinControllerDelegate];
-    v11 = [v8 preferenceSpecifierNamed:v9 target:v10 set:0 get:0 detail:0 cell:2 edit:0];
+    displayName = [v7 displayName];
+    pinControllerDelegate = [(STScreenTimeReportController *)self pinControllerDelegate];
+    v11 = [v8 preferenceSpecifierNamed:displayName target:pinControllerDelegate set:0 get:0 detail:0 cell:2 edit:0];
 
     v12 = PSBundlePathForPreferenceBundle();
     [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277D40000]];
@@ -422,9 +422,9 @@ LABEL_6:
     [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FE00]];
     [v11 setControllerLoadAction:sel_lazyLoadBundle_];
     [v11 setObject:v5 forKeyedSubscript:*MEMORY[0x277D4BE18]];
-    [v11 setIdentifier:v16];
-    v13 = [(STScreenTimeReportController *)self pinControllerDelegate];
-    v14 = [v13 selectSpecifier:v11];
+    [v11 setIdentifier:object];
+    pinControllerDelegate2 = [(STScreenTimeReportController *)self pinControllerDelegate];
+    v14 = [pinControllerDelegate2 selectSpecifier:v11];
 
     [v14 setParentController:self];
     WeakRetained = objc_loadWeakRetained(&self->_rootController);
@@ -435,40 +435,40 @@ LABEL_6:
   }
 }
 
-- (void)_didTapEditLimitLink:(id)a3
+- (void)_didTapEditLimitLink:(id)link
 {
-  v12 = a3;
-  v4 = [(STScreenTimeReportController *)self viewIfLoaded];
-  v5 = [v4 window];
+  linkCopy = link;
+  viewIfLoaded = [(STScreenTimeReportController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [v12 object];
-    v7 = [(STScreenTimeReportController *)self coordinator];
-    v8 = [v7 timeAllowancesCoordinator];
-    v9 = [v8 viewModel];
-    v10 = [v9 allowancesByIdentifier];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    object = [linkCopy object];
+    coordinator = [(STScreenTimeReportController *)self coordinator];
+    timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+    viewModel = [timeAllowancesCoordinator viewModel];
+    allowancesByIdentifier = [viewModel allowancesByIdentifier];
+    v11 = [allowancesByIdentifier objectForKeyedSubscript:object];
 
     [(STScreenTimeReportController *)self _editLimit:v11 isNewLimit:0];
   }
 }
 
-- (void)_didPressAddApplicationLimitButton:(id)a3
+- (void)_didPressAddApplicationLimitButton:(id)button
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STScreenTimeReportController *)self viewIfLoaded];
-  v6 = [v5 window];
+  buttonCopy = button;
+  viewIfLoaded = [(STScreenTimeReportController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [v4 object];
-    v8 = [(STScreenTimeReportController *)self coordinator];
-    v9 = [v8 isPasscodeEnabled];
-    v10 = v7;
+    object = [buttonCopy object];
+    coordinator = [(STScreenTimeReportController *)self coordinator];
+    isPasscodeEnabled = [coordinator isPasscodeEnabled];
+    v10 = object;
     v11 = objc_opt_new();
-    [v11 setBehaviorType:v9];
+    [v11 setBehaviorType:isPasscodeEnabled];
     if (v10)
     {
       v13[0] = v10;
@@ -480,21 +480,21 @@ LABEL_6:
   }
 }
 
-- (void)_didPressAddCategoryLimitButton:(id)a3
+- (void)_didPressAddCategoryLimitButton:(id)button
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STScreenTimeReportController *)self viewIfLoaded];
-  v6 = [v5 window];
+  buttonCopy = button;
+  viewIfLoaded = [(STScreenTimeReportController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [v4 object];
-    v8 = [(STScreenTimeReportController *)self coordinator];
-    v9 = [v8 isPasscodeEnabled];
-    v10 = v7;
+    object = [buttonCopy object];
+    coordinator = [(STScreenTimeReportController *)self coordinator];
+    isPasscodeEnabled = [coordinator isPasscodeEnabled];
+    v10 = object;
     v11 = objc_opt_new();
-    [v11 setBehaviorType:v9];
+    [v11 setBehaviorType:isPasscodeEnabled];
     if (v10)
     {
       v13[0] = v10;
@@ -506,21 +506,21 @@ LABEL_6:
   }
 }
 
-- (void)_didPressAddWebDomainLimitButton:(id)a3
+- (void)_didPressAddWebDomainLimitButton:(id)button
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STScreenTimeReportController *)self viewIfLoaded];
-  v6 = [v5 window];
+  buttonCopy = button;
+  viewIfLoaded = [(STScreenTimeReportController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [v4 object];
-    v8 = [(STScreenTimeReportController *)self coordinator];
-    v9 = [v8 isPasscodeEnabled];
-    v10 = v7;
+    object = [buttonCopy object];
+    coordinator = [(STScreenTimeReportController *)self coordinator];
+    isPasscodeEnabled = [coordinator isPasscodeEnabled];
+    v10 = object;
     v11 = objc_opt_new();
-    [v11 setBehaviorType:v9];
+    [v11 setBehaviorType:isPasscodeEnabled];
     if (v10)
     {
       v13[0] = v10;
@@ -532,105 +532,105 @@ LABEL_6:
   }
 }
 
-- (void)_didTapBarMark:(id)a3
+- (void)_didTapBarMark:(id)mark
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  markCopy = mark;
   v6 = [v4 alloc];
-  v7 = [v5 object];
+  object = [markCopy object];
 
-  [v7 doubleValue];
+  [object doubleValue];
   v14 = [v6 initWithTimeIntervalSinceReferenceDate:?];
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 components:512 fromDate:v14];
-  v10 = [v9 weekday];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar components:512 fromDate:v14];
+  weekday = [v9 weekday];
 
-  v11 = [(STScreenTimeReportController *)self coordinator];
-  v12 = [v11 usageDetailsCoordinator];
-  v13 = [v12 viewModel];
+  coordinator = [(STScreenTimeReportController *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
 
-  [v13 setSelectedDay:v10];
+  [viewModel setSelectedDay:weekday];
 }
 
-- (void)_editLimit:(id)a3 isNewLimit:(BOOL)a4
+- (void)_editLimit:(id)limit isNewLimit:(BOOL)newLimit
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(STScreenTimeReportController *)self coordinator];
-  v8 = [(STScreenTimeReportController *)self pinControllerDelegate];
+  newLimitCopy = newLimit;
+  limitCopy = limit;
+  coordinator = [(STScreenTimeReportController *)self coordinator];
+  pinControllerDelegate = [(STScreenTimeReportController *)self pinControllerDelegate];
   if ([MEMORY[0x277D75128] isRunningInStoreDemoMode])
   {
-    v9 = [MEMORY[0x277D75110] alertControllerForFeatureNotAvailable];
-    [(STScreenTimeReportController *)self presentViewController:v9 animated:1 completion:0];
+    alertControllerForFeatureNotAvailable = [MEMORY[0x277D75110] alertControllerForFeatureNotAvailable];
+    [(STScreenTimeReportController *)self presentViewController:alertControllerForFeatureNotAvailable animated:1 completion:0];
   }
 
   else
   {
-    if ([v7 isPasscodeEnabled] && (objc_msgSend(v7, "hasAlreadyEnteredPINForSession") & 1) == 0)
+    if ([coordinator isPasscodeEnabled] && (objc_msgSend(coordinator, "hasAlreadyEnteredPINForSession") & 1) == 0)
     {
       v16 = MEMORY[0x277D3FAD8];
       v17 = objc_opt_new();
-      v18 = [v17 UUIDString];
-      v10 = [v16 preferenceSpecifierNamed:v18 target:v8 set:0 get:0 detail:0 cell:13 edit:objc_opt_class()];
+      uUIDString = [v17 UUIDString];
+      v10 = [v16 preferenceSpecifierNamed:uUIDString target:pinControllerDelegate set:0 get:0 detail:0 cell:13 edit:objc_opt_class()];
 
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       [(STAllowanceDetailListController *)v10 setObject:v20 forKeyedSubscript:*MEMORY[0x277D400B8]];
 
       [(STAllowanceDetailListController *)v10 setObject:&unk_28769D028 forKeyedSubscript:*MEMORY[0x277D401C0]];
-      [(STAllowanceDetailListController *)v10 setObject:v8 forKeyedSubscript:*MEMORY[0x277D401B8]];
+      [(STAllowanceDetailListController *)v10 setObject:pinControllerDelegate forKeyedSubscript:*MEMORY[0x277D401B8]];
       [(STAllowanceDetailListController *)v10 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A28];
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __54__STScreenTimeReportController__editLimit_isNewLimit___block_invoke;
       aBlock[3] = &unk_279B7CF48;
       aBlock[4] = self;
-      v27 = v6;
-      v28 = v4;
+      v27 = limitCopy;
+      v28 = newLimitCopy;
       v21 = _Block_copy(aBlock);
       [(STAllowanceDetailListController *)v10 setObject:v21 forKeyedSubscript:0x287675888];
 
       v22 = objc_opt_new();
-      [v22 setParentController:v8];
+      [v22 setParentController:pinControllerDelegate];
       WeakRetained = objc_loadWeakRetained(&self->_rootController);
       [v22 setRootController:WeakRetained];
 
       [v22 setSpecifier:v10];
       v24 = objc_opt_new();
-      [v24 setPinDelegate:v8];
+      [v24 setPinDelegate:pinControllerDelegate];
       [v24 setParentController:v22];
-      v25 = [v22 rootController];
-      [v24 setRootController:v25];
+      rootController = [v22 rootController];
+      [v24 setRootController:rootController];
 
       [v24 setSpecifier:v10];
-      [v8 showController:v22 animate:1];
+      [pinControllerDelegate showController:v22 animate:1];
     }
 
     else
     {
-      v10 = [[STAllowanceDetailListController alloc] initWithCoordinator:v7];
-      [(STAllowanceDetailListController *)v10 setAllowance:v6];
+      v10 = [[STAllowanceDetailListController alloc] initWithCoordinator:coordinator];
+      [(STAllowanceDetailListController *)v10 setAllowance:limitCopy];
       [(STAllowanceDetailListController *)v10 setDelegate:self];
-      [(STAllowanceDetailListController *)v10 setIsSetupController:v4];
-      [(STAllowanceDetailListController *)v10 setCreatingNewAllowance:v4];
-      if (v4)
+      [(STAllowanceDetailListController *)v10 setIsSetupController:newLimitCopy];
+      [(STAllowanceDetailListController *)v10 setCreatingNewAllowance:newLimitCopy];
+      if (newLimitCopy)
       {
         v11 = objc_opt_new();
-        [v11 setParentController:v8];
+        [v11 setParentController:pinControllerDelegate];
         v12 = objc_loadWeakRetained(&self->_rootController);
         [v11 setRootController:v12];
 
         [v11 setSpecifier:self->_specifier];
         [(STAllowanceDetailListController *)v10 setParentController:v11];
-        v13 = [v11 rootController];
-        [(STAllowanceDetailListController *)v10 setRootController:v13];
+        rootController2 = [v11 rootController];
+        [(STAllowanceDetailListController *)v10 setRootController:rootController2];
 
-        v14 = [v11 specifier];
-        [(STAllowanceDetailListController *)v10 setSpecifier:v14];
+        specifier = [v11 specifier];
+        [(STAllowanceDetailListController *)v10 setSpecifier:specifier];
 
         [v11 showController:v10];
-        [v8 showController:v11 animate:1];
+        [pinControllerDelegate showController:v11 animate:1];
       }
 
       else
@@ -656,47 +656,47 @@ uint64_t __54__STScreenTimeReportController__editLimit_isNewLimit___block_invoke
   return result;
 }
 
-- (void)debouncer:(id)a3 didDebounce:(id)a4
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce
 {
-  v5 = [a4 BOOLValue];
+  bOOLValue = [debounce BOOLValue];
 
-  [(STScreenTimeReportController *)self setDatePickerHidden:v5];
+  [(STScreenTimeReportController *)self setDatePickerHidden:bOOLValue];
 }
 
 - (BOOL)isDatePickerHidden
 {
-  v3 = [(STScreenTimeReportController *)self datePickerTopConstraint];
-  if ([v3 isActive])
+  datePickerTopConstraint = [(STScreenTimeReportController *)self datePickerTopConstraint];
+  if ([datePickerTopConstraint isActive])
   {
-    v4 = 0;
+    isActive = 0;
   }
 
   else
   {
-    v5 = [(STScreenTimeReportController *)self datePickerBottomConstraint];
-    v4 = [v5 isActive];
+    datePickerBottomConstraint = [(STScreenTimeReportController *)self datePickerBottomConstraint];
+    isActive = [datePickerBottomConstraint isActive];
   }
 
-  return v4;
+  return isActive;
 }
 
-- (void)setDatePickerHidden:(BOOL)a3
+- (void)setDatePickerHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v10 = [(STScreenTimeReportController *)self viewIfLoaded];
-  v5 = [v10 window];
-  if (v5)
+  hiddenCopy = hidden;
+  viewIfLoaded = [(STScreenTimeReportController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  if (window)
   {
-    v6 = v5;
-    v7 = [(STScreenTimeReportController *)self isDatePickerHidden];
+    v6 = window;
+    isDatePickerHidden = [(STScreenTimeReportController *)self isDatePickerHidden];
 
-    if (v7 != v3)
+    if (isDatePickerHidden != hiddenCopy)
     {
-      v8 = [(STScreenTimeReportController *)self datePickerTopConstraint];
-      [v8 setActive:v3 ^ 1];
+      datePickerTopConstraint = [(STScreenTimeReportController *)self datePickerTopConstraint];
+      [datePickerTopConstraint setActive:hiddenCopy ^ 1];
 
-      v9 = [(STScreenTimeReportController *)self datePickerBottomConstraint];
-      [v9 setActive:v3];
+      datePickerBottomConstraint = [(STScreenTimeReportController *)self datePickerBottomConstraint];
+      [datePickerBottomConstraint setActive:hiddenCopy];
 
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
@@ -709,7 +709,7 @@ uint64_t __54__STScreenTimeReportController__editLimit_isNewLimit___block_invoke
       v11[2] = __52__STScreenTimeReportController_setDatePickerHidden___block_invoke_2;
       v11[3] = &unk_279B7CF70;
       v11[4] = self;
-      v12 = v3;
+      v12 = hiddenCopy;
       [MEMORY[0x277D75D18] animateWithDuration:0x20000 delay:v11 options:0 animations:0.2 completion:0.0];
     }
   }
@@ -741,20 +741,20 @@ void __52__STScreenTimeReportController_setDatePickerHidden___block_invoke_2(uin
   [v2 setAlpha:v1];
 }
 
-- (void)allowanceDetailController:(id)a3 didSaveAllowance:(id)a4
+- (void)allowanceDetailController:(id)controller didSaveAllowance:(id)allowance
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STScreenTimeReportController *)self coordinator];
-  v9 = [v8 timeAllowancesCoordinator];
+  controllerCopy = controller;
+  allowanceCopy = allowance;
+  coordinator = [(STScreenTimeReportController *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__STScreenTimeReportController_allowanceDetailController_didSaveAllowance___block_invoke;
   v11[3] = &unk_279B7CBC8;
-  v12 = v6;
-  v13 = self;
-  v10 = v6;
-  [v9 saveAllowance:v7 completionHandler:v11];
+  v12 = controllerCopy;
+  selfCopy = self;
+  v10 = controllerCopy;
+  [timeAllowancesCoordinator saveAllowance:allowanceCopy completionHandler:v11];
 }
 
 void __75__STScreenTimeReportController_allowanceDetailController_didSaveAllowance___block_invoke(uint64_t a1, void *a2)
@@ -775,17 +775,17 @@ void __75__STScreenTimeReportController_allowanceDetailController_didSaveAllowan
   }
 }
 
-- (void)allowanceDetailController:(id)a3 didDeleteAllowance:(id)a4
+- (void)allowanceDetailController:(id)controller didDeleteAllowance:(id)allowance
 {
-  v5 = a4;
-  v6 = [(STScreenTimeReportController *)self coordinator];
-  v7 = [v6 timeAllowancesCoordinator];
+  allowanceCopy = allowance;
+  coordinator = [(STScreenTimeReportController *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__STScreenTimeReportController_allowanceDetailController_didDeleteAllowance___block_invoke;
   v8[3] = &unk_279B7CC18;
   v8[4] = self;
-  [v7 deleteAllowance:v5 completionHandler:v8];
+  [timeAllowancesCoordinator deleteAllowance:allowanceCopy completionHandler:v8];
 }
 
 void __77__STScreenTimeReportController_allowanceDetailController_didDeleteAllowance___block_invoke(uint64_t a1, void *a2)
@@ -817,41 +817,41 @@ void __77__STScreenTimeReportController_allowanceDetailController_didDeleteAllow
   return WeakRetained;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  if (self->_specifier != v5)
+  specifierCopy = specifier;
+  if (self->_specifier != specifierCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_specifier, a3);
-    v5 = v6;
+    v6 = specifierCopy;
+    objc_storeStrong(&self->_specifier, specifier);
+    specifierCopy = v6;
   }
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v8 = a3;
-  if (v4)
+  animateCopy = animate;
+  controllerCopy = controller;
+  if (animateCopy)
   {
-    [(STScreenTimeReportController *)self showViewController:v8 sender:self];
-    v6 = v8;
+    [(STScreenTimeReportController *)self showViewController:controllerCopy sender:self];
+    v6 = controllerCopy;
   }
 
   else
   {
-    v7 = [(STScreenTimeReportController *)self navigationController];
-    [v7 pushViewController:v8 animated:0];
+    navigationController = [(STScreenTimeReportController *)self navigationController];
+    [navigationController pushViewController:controllerCopy animated:0];
 
-    v6 = v7;
+    v6 = navigationController;
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 

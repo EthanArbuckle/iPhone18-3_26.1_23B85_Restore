@@ -1,30 +1,30 @@
 @interface OADVector3D
-- (BOOL)isEqual:(id)a3;
-- (OADVector3D)initWithDx:(float)a3 dy:(float)a4 dz:(float)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADVector3D)initWithDx:(float)dx dy:(float)dy dz:(float)dz;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation OADVector3D
 
-- (OADVector3D)initWithDx:(float)a3 dy:(float)a4 dz:(float)a5
+- (OADVector3D)initWithDx:(float)dx dy:(float)dy dz:(float)dz
 {
   v9.receiver = self;
   v9.super_class = OADVector3D;
   result = [(OADVector3D *)&v9 init];
   if (result)
   {
-    result->mDx = a3;
-    result->mDy = a4;
-    result->mDz = a5;
+    result->mDx = dx;
+    result->mDy = dy;
+    result->mDz = dz;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   *&v5 = self->mDx;
   *&v6 = self->mDy;
   *&v7 = self->mDz;
@@ -32,9 +32,9 @@
   return [v4 initWithDx:v5 dy:v6 dz:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -44,7 +44,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (!v5)
   {

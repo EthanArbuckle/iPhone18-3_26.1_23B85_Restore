@@ -1,21 +1,21 @@
 @interface FIReplicaNode
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isKindOfClass:(Class)class;
 - (id)description;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (void)dealloc;
 @end
 
 @implementation FIReplicaNode
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v4 = a3;
+  initCopy = init;
   v8.receiver = self;
   v8.super_class = FIReplicaNode;
   v5 = [(FIReplicaNode *)&v8 init];
   original = v5->_original;
-  v5->_original = v4;
+  v5->_original = initCopy;
 
   return v5;
 }
@@ -40,9 +40,9 @@
   return v6;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3 || (v8.receiver = self, v8.super_class = FIReplicaNode, [(FIReplicaNode *)&v8 isKindOfClass:a3]))
+  if (objc_opt_class() == class || (v8.receiver = self, v8.super_class = FIReplicaNode, [(FIReplicaNode *)&v8 isKindOfClass:class]))
   {
     isKindOfClass = 1;
   }
@@ -56,10 +56,10 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  if (([(FINode *)self->_original conformsToProtocol:v4]& 1) != 0)
+  protocolCopy = protocol;
+  if (([(FINode *)self->_original conformsToProtocol:protocolCopy]& 1) != 0)
   {
     v5 = 1;
   }
@@ -68,7 +68,7 @@
   {
     v7.receiver = self;
     v7.super_class = FIReplicaNode;
-    v5 = [(FIReplicaNode *)&v7 conformsToProtocol:v4];
+    v5 = [(FIReplicaNode *)&v7 conformsToProtocol:protocolCopy];
   }
 
   return v5;

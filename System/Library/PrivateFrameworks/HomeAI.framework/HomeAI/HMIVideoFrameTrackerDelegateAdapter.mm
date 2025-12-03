@@ -1,20 +1,20 @@
 @interface HMIVideoFrameTrackerDelegateAdapter
-- (void)frameTracker:(id)a3 didTrackFrame:(opaqueCMSampleBuffer *)a4 background:(opaqueCMSampleBuffer *)a5 motionDetections:(id)a6 tracks:(id)a7;
+- (void)frameTracker:(id)tracker didTrackFrame:(opaqueCMSampleBuffer *)frame background:(opaqueCMSampleBuffer *)background motionDetections:(id)detections tracks:(id)tracks;
 @end
 
 @implementation HMIVideoFrameTrackerDelegateAdapter
 
-- (void)frameTracker:(id)a3 didTrackFrame:(opaqueCMSampleBuffer *)a4 background:(opaqueCMSampleBuffer *)a5 motionDetections:(id)a6 tracks:(id)a7
+- (void)frameTracker:(id)tracker didTrackFrame:(opaqueCMSampleBuffer *)frame background:(opaqueCMSampleBuffer *)background motionDetections:(id)detections tracks:(id)tracks
 {
-  v16 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(HMIVideoFrameTrackerDelegateAdapter *)self frameTrackerDidTrackFrame];
+  trackerCopy = tracker;
+  detectionsCopy = detections;
+  tracksCopy = tracks;
+  frameTrackerDidTrackFrame = [(HMIVideoFrameTrackerDelegateAdapter *)self frameTrackerDidTrackFrame];
 
-  if (v14)
+  if (frameTrackerDidTrackFrame)
   {
-    v15 = [(HMIVideoFrameTrackerDelegateAdapter *)self frameTrackerDidTrackFrame];
-    (v15)[2](v15, v16, a4, a5, v12, v13);
+    frameTrackerDidTrackFrame2 = [(HMIVideoFrameTrackerDelegateAdapter *)self frameTrackerDidTrackFrame];
+    (frameTrackerDidTrackFrame2)[2](frameTrackerDidTrackFrame2, trackerCopy, frame, background, detectionsCopy, tracksCopy);
   }
 }
 

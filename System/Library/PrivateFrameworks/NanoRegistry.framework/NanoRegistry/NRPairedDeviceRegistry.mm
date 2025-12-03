@@ -3,8 +3,8 @@
 + (id)sharedInstance;
 - (BOOL)canPairAnotherClassic;
 - (BOOL)canPairAnotherTinker;
-- (BOOL)hasCompletedInitialSyncForPairingID:(id)a3;
-- (BOOL)isAssertionActive:(id)a3;
+- (BOOL)hasCompletedInitialSyncForPairingID:(id)d;
+- (BOOL)isAssertionActive:(id)active;
 - (BOOL)isKeychainEnabled;
 - (BOOL)isPaired;
 - (BOOL)isWatchSetupPushActive;
@@ -18,30 +18,30 @@
 - (id)_getChangeHistory;
 - (id)_getClientInfo;
 - (id)_getLocalDeviceCollection;
-- (id)_getSecureProperties:(id)a3;
+- (id)_getSecureProperties:(id)properties;
 - (id)_mostlyClassicPairedDevices;
 - (id)_mostlyTinkerPairedDevices;
-- (id)applyDiff:(id)a3;
+- (id)applyDiff:(id)diff;
 - (id)blockAndQueryVersions;
-- (id)deviceForBTDeviceID:(id)a3;
-- (id)deviceForBluetoothID:(id)a3;
-- (id)deviceForIDSDevice:(id)a3;
-- (id)deviceForNRDevice:(id)a3 fromIDSDevices:(id)a4;
-- (id)deviceForPairingID:(id)a3;
-- (id)devicesFromMigrationConsentRequestData:(id)a3;
+- (id)deviceForBTDeviceID:(id)d;
+- (id)deviceForBluetoothID:(id)d;
+- (id)deviceForIDSDevice:(id)device;
+- (id)deviceForNRDevice:(id)device fromIDSDevices:(id)devices;
+- (id)deviceForPairingID:(id)d;
+- (id)devicesFromMigrationConsentRequestData:(id)data;
 - (id)getActivePairedDeviceExcludingAltAccount;
 - (id)getActivePairedDeviceIncludingAltAccount;
-- (id)getAllDevicesWithArchivedAltAccountDevicesMatching:(id)a3;
-- (id)getAllDevicesWithArchivedDevicesMatching:(id)a3;
+- (id)getAllDevicesWithArchivedAltAccountDevicesMatching:(id)matching;
+- (id)getAllDevicesWithArchivedDevicesMatching:(id)matching;
 - (id)getDevices;
-- (id)getDevicesMatching:(id)a3;
+- (id)getDevicesMatching:(id)matching;
 - (id)getPairedDevices;
 - (id)getSetupCompletedDevices;
 - (id)lastMigrationRequestPhoneName;
 - (id)migrationConsentRequestData;
-- (id)nonActiveDeviceForBTDeviceID:(id)a3;
-- (id)nonActiveDeviceForBluetoothID:(id)a3;
-- (id)nonActiveDeviceForIDSDevice:(id)a3;
+- (id)nonActiveDeviceForBTDeviceID:(id)d;
+- (id)nonActiveDeviceForBluetoothID:(id)d;
+- (id)nonActiveDeviceForIDSDevice:(id)device;
 - (id)pairingID;
 - (id)pairingStorePath;
 - (id)waitForActiveDevice;
@@ -53,76 +53,76 @@
 - (int64_t)maxClassicPairedDeviceCount;
 - (int64_t)maxPairingCompatibilityVersion;
 - (int64_t)maxTinkerPairedDeviceCount;
-- (int64_t)migrationCountForPairingID:(id)a3;
+- (int64_t)migrationCountForPairingID:(id)d;
 - (int64_t)minPairingCompatibilityVersion;
 - (int64_t)minQuickSwitchCompatibilityVersion;
 - (int64_t)pairingCompatibilityVersion;
-- (uint64_t)_getCompatibilityStateWithCollection:(void *)a1;
-- (unint64_t)_getStatusWithCollection:(id)a3;
+- (uint64_t)_getCompatibilityStateWithCollection:(void *)collection;
+- (unint64_t)_getStatusWithCollection:(id)collection;
 - (unint64_t)status;
 - (unsigned)compatibilityState;
 - (unsigned)switchIndex;
-- (void)_getActiveDeviceAssertionsWithInlineBlock:(id)a3;
-- (void)_invalidateActiveDeviceAssertionWithIdentifier:(id)a3;
-- (void)_pingActiveGizmoWithPriority:(int64_t)a3 withMessageSize:(int64_t)a4 withBlock:(id)a5;
-- (void)_postNotification:(void *)a3 forDeviceID:(void *)a4 withUserInfo:;
+- (void)_getActiveDeviceAssertionsWithInlineBlock:(id)block;
+- (void)_invalidateActiveDeviceAssertionWithIdentifier:(id)identifier;
+- (void)_pingActiveGizmoWithPriority:(int64_t)priority withMessageSize:(int64_t)size withBlock:(id)block;
+- (void)_postNotification:(void *)notification forDeviceID:(void *)d withUserInfo:;
 - (void)_submitAlbertPairingReport;
-- (void)abortPairingWithReason:(id)a3;
-- (void)altAccountPairingStorePathPairingID:(id)a3;
+- (void)abortPairingWithReason:(id)reason;
+- (void)altAccountPairingStorePathPairingID:(id)d;
 - (void)beginDiscovery;
-- (void)beginMigrationWithDevice:(id)a3 passcode:(id)a4 withBlock:(id)a5;
-- (void)beginMigrationWithDevice:(id)a3 withCompletion:(id)a4;
-- (void)checkIfFlaggedForRecoveryWithCompletion:(id)a3;
-- (void)clearRecoveryFlagWithCompletion:(id)a3;
-- (void)clearWatchNeedsGraduation:(id)a3;
-- (void)companionOOBDiscoverAndPairWithName:(id)a3 withOutOfBandPairingKey:(id)a4 withOptions:(id)a5 operationHasBegun:(id)a6;
-- (void)companionPasscodePairWithDevice:(id)a3 withOptions:(id)a4 operationHasBegun:(id)a5;
-- (void)completeRTCPairingMetricForMetricID:(id)a3 withSuccess:(id)a4;
+- (void)beginMigrationWithDevice:(id)device passcode:(id)passcode withBlock:(id)block;
+- (void)beginMigrationWithDevice:(id)device withCompletion:(id)completion;
+- (void)checkIfFlaggedForRecoveryWithCompletion:(id)completion;
+- (void)clearRecoveryFlagWithCompletion:(id)completion;
+- (void)clearWatchNeedsGraduation:(id)graduation;
+- (void)companionOOBDiscoverAndPairWithName:(id)name withOutOfBandPairingKey:(id)key withOptions:(id)options operationHasBegun:(id)begun;
+- (void)companionPasscodePairWithDevice:(id)device withOptions:(id)options operationHasBegun:(id)begun;
+- (void)completeRTCPairingMetricForMetricID:(id)d withSuccess:(id)success;
 - (void)endDiscovery;
-- (void)fakePairedSyncIsCompleteWithCompletion:(id)a3;
-- (void)getDevicesWithBlock:(id)a3;
-- (void)getMigrationPairingCharacteristicReadDataWithQueue:(id)a3 completion:(id)a4;
-- (void)getSwitchEventsFromIndex:(unsigned int)a3 inlineCallback:(id)a4;
-- (void)gizmoOOBAdvertiseAndPairWithName:(id)a3 operationHasBegun:(id)a4;
-- (void)gizmoPasscodeAdvertiseAndPairWithName:(id)a3 operationHasBegun:(id)a4;
-- (void)isPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4;
-- (void)keepPhoneUnlockedInternalTestSPI:(id)a3;
-- (void)listWatchStagedForTransferWithCompletion:(id)a3;
+- (void)fakePairedSyncIsCompleteWithCompletion:(id)completion;
+- (void)getDevicesWithBlock:(id)block;
+- (void)getMigrationPairingCharacteristicReadDataWithQueue:(id)queue completion:(id)completion;
+- (void)getSwitchEventsFromIndex:(unsigned int)index inlineCallback:(id)callback;
+- (void)gizmoOOBAdvertiseAndPairWithName:(id)name operationHasBegun:(id)begun;
+- (void)gizmoPasscodeAdvertiseAndPairWithName:(id)name operationHasBegun:(id)begun;
+- (void)isPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion;
+- (void)keepPhoneUnlockedInternalTestSPI:(id)i;
+- (void)listWatchStagedForTransferWithCompletion:(id)completion;
 - (void)logCallFrequency;
 - (void)notifyPairingShouldContinue;
-- (void)notifyPasscode:(id)a3 forDevice:(id)a4;
-- (void)overrideSignalStrengthLimit:(int64_t)a3;
-- (void)pairWithSimulator:(id)a3 withQueue:(id)a4 withCompletion:(id)a5;
-- (void)pairingClientDidEnterPhase:(id)a3;
-- (void)pairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forDevice:(id)a5 completion:(id)a6;
-- (void)pairingClientSetPairingParentName:(id)a3 pairingParentAltDSID:(id)a4 forDevice:(id)a5 completion:(id)a6;
-- (void)pairingStorePathPairingID:(id)a3;
-- (void)putMigrationChallengeCharacteristicWriteData:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)notifyPasscode:(id)passcode forDevice:(id)device;
+- (void)overrideSignalStrengthLimit:(int64_t)limit;
+- (void)pairWithSimulator:(id)simulator withQueue:(id)queue withCompletion:(id)completion;
+- (void)pairingClientDidEnterPhase:(id)phase;
+- (void)pairingClientSetAltAccountName:(id)name altDSID:(id)d forDevice:(id)device completion:(id)completion;
+- (void)pairingClientSetPairingParentName:(id)name pairingParentAltDSID:(id)d forDevice:(id)device completion:(id)completion;
+- (void)pairingStorePathPairingID:(id)d;
+- (void)putMigrationChallengeCharacteristicWriteData:(id)data queue:(id)queue completion:(id)completion;
 - (void)resumePairingClientCrashMonitoring;
 - (void)retriggerUnpairInfoDialog;
 - (void)sendDevicesUpdatedNotification;
-- (void)setActivePairedDevice:(id)a3 withActiveDeviceAssertionHandler:(id)a4;
-- (void)setWatchBuddyCompletedSetupSteps:(id)a3;
-- (void)setWatchBuddyPushedSyncTrapUI:(id)a3;
-- (void)setWatchNeedsGraduation:(id)a3;
-- (void)stageWatchForGraduationWithDeviceID:(id)a3 completion:(id)a4;
-- (void)stageWatchForTransferWithDeviceID:(id)a3 completion:(id)a4;
+- (void)setActivePairedDevice:(id)device withActiveDeviceAssertionHandler:(id)handler;
+- (void)setWatchBuddyCompletedSetupSteps:(id)steps;
+- (void)setWatchBuddyPushedSyncTrapUI:(id)i;
+- (void)setWatchNeedsGraduation:(id)graduation;
+- (void)stageWatchForGraduationWithDeviceID:(id)d completion:(id)completion;
+- (void)stageWatchForTransferWithDeviceID:(id)d completion:(id)completion;
 - (void)startAdvertisingForMigration;
 - (void)startWatchSetupPush;
 - (void)stopAdvertisingForMigration;
 - (void)stopWatchSetupPush;
 - (void)suspendPairingClientCrashMonitoring;
-- (void)switchToSimulator:(id)a3 withQueue:(id)a4 withCompletion:(id)a5;
-- (void)threadIsBlockedWaitingOn_nanoregistryd_syncGrabLegacyRegistryWithBlock:(id)a3;
-- (void)triggerTailspinFrom:(unint64_t)a3;
-- (void)unpairWithDevice:(id)a3 withOptions:(id)a4 operationHasBegun:(id)a5;
-- (void)unpairWithSimulator:(id)a3 withQueue:(id)a4 withCompletion:(id)a5;
+- (void)switchToSimulator:(id)simulator withQueue:(id)queue withCompletion:(id)completion;
+- (void)threadIsBlockedWaitingOn_nanoregistryd_syncGrabLegacyRegistryWithBlock:(id)block;
+- (void)triggerTailspinFrom:(unint64_t)from;
+- (void)unpairWithDevice:(id)device withOptions:(id)options operationHasBegun:(id)begun;
+- (void)unpairWithSimulator:(id)simulator withQueue:(id)queue withCompletion:(id)completion;
 - (void)userIsCheckingForUpdate;
-- (void)waitForAltAccountPairingStorePathPairingID:(id)a3;
-- (void)waitForPairingStorePathPairingID:(id)a3;
-- (void)waitForWatchPairingExtendedMetadataForAdvertisedName:(id)a3 completion:(id)a4;
-- (void)xpcDeviceID:(id)a3 needsPasscode:(id)a4;
-- (void)xpcHasNewOOBKey:(id)a3;
+- (void)waitForAltAccountPairingStorePathPairingID:(id)d;
+- (void)waitForPairingStorePathPairingID:(id)d;
+- (void)waitForWatchPairingExtendedMetadataForAdvertisedName:(id)name completion:(id)completion;
+- (void)xpcDeviceID:(id)d needsPasscode:(id)passcode;
+- (void)xpcHasNewOOBKey:(id)key;
 @end
 
 @implementation NRPairedDeviceRegistry
@@ -133,7 +133,7 @@
   block[1] = 3221225472;
   block[2] = __40__NRPairedDeviceRegistry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6F0A38 != -1)
   {
     dispatch_once(&qword_1ED6F0A38, block);
@@ -153,31 +153,31 @@ uint64_t __40__NRPairedDeviceRegistry_sharedInstance__block_invoke(uint64_t a1)
 
 - (NRPairedDeviceRegistry)init
 {
-  v3 = [objc_opt_class() shouldBoostProcess];
+  shouldBoostProcess = [objc_opt_class() shouldBoostProcess];
 
-  return [(NRPairedDeviceRegistry *)self initWithBoost:v3];
+  return [(NRPairedDeviceRegistry *)self initWithBoost:shouldBoostProcess];
 }
 
 + (BOOL)shouldBoostProcess
 {
-  MEMORY[0x1EEE9AC00](a1, a2);
+  MEMORY[0x1EEE9AC00](self, a2);
   v20 = *MEMORY[0x1E69E9840];
   v2 = getpid();
   if (proc_pidpath(v2, buffer, 0x1000u) < 1)
   {
-    v4 = 0;
+    lastPathComponent = 0;
   }
 
   else
   {
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:buffer];
-    v4 = [v3 lastPathComponent];
+    lastPathComponent = [v3 lastPathComponent];
   }
 
   v5 = @"(unknown)";
-  if (v4)
+  if (lastPathComponent)
   {
-    v5 = v4;
+    v5 = lastPathComponent;
   }
 
   v6 = v5;
@@ -240,19 +240,19 @@ LABEL_16:
 
 - (id)getPairedDevices
 {
-  v3 = [objc_opt_class() pairedDevicesSelectorBlock];
-  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:v3];
+  pairedDevicesSelectorBlock = [objc_opt_class() pairedDevicesSelectorBlock];
+  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:pairedDevicesSelectorBlock];
 
   return v4;
 }
 
 - (id)getActivePairedDeviceExcludingAltAccount
 {
-  v3 = [objc_opt_class() activePairedDeviceSelectorBlock];
-  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  activePairedDeviceSelectorBlock = [objc_opt_class() activePairedDeviceSelectorBlock];
+  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (void)logCallFrequency
@@ -296,23 +296,23 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
 
 - (BOOL)canPairAnotherClassic
 {
-  v3 = [(NRPairedDeviceRegistry *)self pairedDeviceCountIsLessThanMaxClassicPairedDevices];
-  if (v3)
+  pairedDeviceCountIsLessThanMaxClassicPairedDevices = [(NRPairedDeviceRegistry *)self pairedDeviceCountIsLessThanMaxClassicPairedDevices];
+  if (pairedDeviceCountIsLessThanMaxClassicPairedDevices)
   {
 
-    LOBYTE(v3) = [(NRPairedDeviceRegistry *)self pairedDeviceCountIsLessThanMaxAllPairedDevices];
+    LOBYTE(pairedDeviceCountIsLessThanMaxClassicPairedDevices) = [(NRPairedDeviceRegistry *)self pairedDeviceCountIsLessThanMaxAllPairedDevices];
   }
 
-  return v3;
+  return pairedDeviceCountIsLessThanMaxClassicPairedDevices;
 }
 
 - (BOOL)pairedDeviceCountIsLessThanMaxClassicPairedDevices
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(NRPairedDeviceRegistry *)self _mostlyClassicPairedDevices];
-  v4 = [v3 count];
+  _mostlyClassicPairedDevices = [(NRPairedDeviceRegistry *)self _mostlyClassicPairedDevices];
+  v4 = [_mostlyClassicPairedDevices count];
 
-  v5 = [(NRPairedDeviceRegistry *)self maxClassicPairedDeviceCount];
+  maxClassicPairedDeviceCount = [(NRPairedDeviceRegistry *)self maxClassicPairedDeviceCount];
   v6 = nr_framework_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -324,7 +324,7 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
       v11 = 134218240;
       v12 = v4;
       v13 = 2048;
-      v14 = v5;
+      v14 = maxClassicPairedDeviceCount;
       _os_log_impl(&dword_1E0ADF000, v8, OS_LOG_TYPE_DEFAULT, "ClassicPairedDevices check: paired %lu vs. limit %ld", &v11, 0x16u);
     }
   }
@@ -371,7 +371,7 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
     v5 = nr_framework_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -381,7 +381,7 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 134217984;
-        v11 = v4;
+        v11 = integerValue;
         _os_log_impl(&dword_1E0ADF000, v7, OS_LOG_TYPE_DEFAULT, "Overriding maxClassicPairedDeviceCount to %ld", &v10, 0xCu);
       }
     }
@@ -389,23 +389,23 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
 
   else
   {
-    v4 = 5;
+    integerValue = 5;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)pairedDeviceCountIsLessThanMaxAllPairedDevices
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(NRPairedDeviceRegistry *)self _mostlyClassicPairedDevices];
-  v4 = [v3 count];
+  _mostlyClassicPairedDevices = [(NRPairedDeviceRegistry *)self _mostlyClassicPairedDevices];
+  v4 = [_mostlyClassicPairedDevices count];
 
-  v5 = [(NRPairedDeviceRegistry *)self _mostlyTinkerPairedDevices];
-  v6 = [v5 count];
+  _mostlyTinkerPairedDevices = [(NRPairedDeviceRegistry *)self _mostlyTinkerPairedDevices];
+  v6 = [_mostlyTinkerPairedDevices count];
 
-  v7 = [(NRPairedDeviceRegistry *)self maxAllPairedDeviceCount];
+  maxAllPairedDeviceCount = [(NRPairedDeviceRegistry *)self maxAllPairedDeviceCount];
   v8 = nr_framework_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -419,12 +419,12 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
       v15 = 2048;
       v16 = v6;
       v17 = 2048;
-      v18 = v7;
+      v18 = maxAllPairedDeviceCount;
       _os_log_impl(&dword_1E0ADF000, v10, OS_LOG_TYPE_DEFAULT, "AllPairedDevices check: Classic paired %lu + Tinker paired %lu vs. limit %ld", &v13, 0x20u);
     }
   }
 
-  result = v6 + v4 < v7;
+  result = v6 + v4 < maxAllPairedDeviceCount;
   v12 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -444,7 +444,7 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     v6 = nr_framework_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -454,7 +454,7 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134217984;
-        v13 = v5;
+        v13 = integerValue;
         _os_log_impl(&dword_1E0ADF000, v8, OS_LOG_TYPE_DEFAULT, "Overriding maxAllPairedDeviceCount to %ld", &v12, 0xCu);
       }
     }
@@ -462,12 +462,12 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
 
   else
   {
-    v9 = [(NRPairedDeviceRegistry *)self maxClassicPairedDeviceCount];
-    v5 = [(NRPairedDeviceRegistry *)self maxTinkerPairedDeviceCount]+ v9;
+    maxClassicPairedDeviceCount = [(NRPairedDeviceRegistry *)self maxClassicPairedDeviceCount];
+    integerValue = [(NRPairedDeviceRegistry *)self maxTinkerPairedDeviceCount]+ maxClassicPairedDeviceCount;
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)maxTinkerPairedDeviceCount
@@ -477,7 +477,7 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
     v5 = nr_framework_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -487,7 +487,7 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 134217984;
-        v11 = v4;
+        v11 = integerValue;
         _os_log_impl(&dword_1E0ADF000, v7, OS_LOG_TYPE_DEFAULT, "Overriding maxTinkerPairedDeviceCount to %ld", &v10, 0xCu);
       }
     }
@@ -495,32 +495,32 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
 
   else
   {
-    v4 = 5;
+    integerValue = 5;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)canPairAnotherTinker
 {
-  v3 = [(NRPairedDeviceRegistry *)self pairedDeviceCountIsLessThanMaxTinkerPairedDevices];
-  if (v3)
+  pairedDeviceCountIsLessThanMaxTinkerPairedDevices = [(NRPairedDeviceRegistry *)self pairedDeviceCountIsLessThanMaxTinkerPairedDevices];
+  if (pairedDeviceCountIsLessThanMaxTinkerPairedDevices)
   {
 
-    LOBYTE(v3) = [(NRPairedDeviceRegistry *)self pairedDeviceCountIsLessThanMaxAllPairedDevices];
+    LOBYTE(pairedDeviceCountIsLessThanMaxTinkerPairedDevices) = [(NRPairedDeviceRegistry *)self pairedDeviceCountIsLessThanMaxAllPairedDevices];
   }
 
-  return v3;
+  return pairedDeviceCountIsLessThanMaxTinkerPairedDevices;
 }
 
 - (BOOL)pairedDeviceCountIsLessThanMaxTinkerPairedDevices
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(NRPairedDeviceRegistry *)self _mostlyTinkerPairedDevices];
-  v4 = [v3 count];
+  _mostlyTinkerPairedDevices = [(NRPairedDeviceRegistry *)self _mostlyTinkerPairedDevices];
+  v4 = [_mostlyTinkerPairedDevices count];
 
-  v5 = [(NRPairedDeviceRegistry *)self maxTinkerPairedDeviceCount];
+  maxTinkerPairedDeviceCount = [(NRPairedDeviceRegistry *)self maxTinkerPairedDeviceCount];
   v6 = nr_framework_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -532,12 +532,12 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
       v11 = 134218240;
       v12 = v4;
       v13 = 2048;
-      v14 = v5;
+      v14 = maxTinkerPairedDeviceCount;
       _os_log_impl(&dword_1E0ADF000, v8, OS_LOG_TYPE_DEFAULT, "TinkerPairedDevices check: paired %lu vs. limit %ld", &v11, 0x16u);
     }
   }
 
-  result = v4 < v5;
+  result = v4 < maxTinkerPairedDeviceCount;
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -570,8 +570,8 @@ void __56__NRPairedDeviceRegistry_sendDevicesUpdatedNotification__block_invoke(u
 
 - (void)retriggerUnpairInfoDialog
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_387];
+  connection = [(NRRegistryClient *)self connection];
+  v2 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_387];
   [v2 xpcRetriggerUnpairInfoDialogWithBlock:&__block_literal_global_389];
 }
 
@@ -601,16 +601,16 @@ uint64_t __51__NRPairedDeviceRegistry_activeDeviceSelectorBlock__block_invoke(ui
   return v3;
 }
 
-- (void)threadIsBlockedWaitingOn_nanoregistryd_syncGrabLegacyRegistryWithBlock:(id)a3
+- (void)threadIsBlockedWaitingOn_nanoregistryd_syncGrabLegacyRegistryWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
   v13[3] = 0;
-  v6 = [(NRRegistry *)self managementQueue];
-  dispatch_assert_queue_not_V2(v6);
+  managementQueue = [(NRRegistry *)self managementQueue];
+  dispatch_assert_queue_not_V2(managementQueue);
 
   dispatch_assert_queue_not_V2(self->_pairedDeviceRegistryDeviceListQueue);
   dispatch_assert_queue_not_V2(self->_pairedRegistryGetDevicesQueue);
@@ -620,10 +620,10 @@ uint64_t __51__NRPairedDeviceRegistry_activeDeviceSelectorBlock__block_invoke(ui
   v9[2] = __97__NRPairedDeviceRegistry_threadIsBlockedWaitingOn_nanoregistryd_syncGrabLegacyRegistryWithBlock___block_invoke;
   v9[3] = &unk_1E86DBFA0;
   v9[4] = self;
-  v10 = v4;
+  v10 = blockCopy;
   v11 = v13;
   v12 = v5;
-  v8 = v4;
+  v8 = blockCopy;
   dispatch_sync(pairedRegistryGetDevicesQueue, v9);
 
   _Block_object_dispose(v13, 8);
@@ -708,8 +708,8 @@ double __97__NRPairedDeviceRegistry_threadIsBlockedWaitingOn_nanoregistryd_syncG
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(NRRegistryClient *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:0];
+  connection = [(NRRegistryClient *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:0];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__NRPairedDeviceRegistry_watchNeedsGraduation__block_invoke;
@@ -717,28 +717,28 @@ double __97__NRPairedDeviceRegistry_threadIsBlockedWaitingOn_nanoregistryd_syncG
   v5[4] = &v6;
   [v3 xpcWatchNeedsGraduation:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(connection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return connection;
 }
 
-- (void)clearWatchNeedsGraduation:(id)a3
+- (void)clearWatchNeedsGraduation:(id)graduation
 {
-  v4 = a3;
-  v5 = [(NRRegistryClient *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:0];
+  graduationCopy = graduation;
+  connection = [(NRRegistryClient *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__NRPairedDeviceRegistry_clearWatchNeedsGraduation___block_invoke;
   v8[3] = &unk_1E86DACE8;
-  v9 = v4;
-  v7 = v4;
+  v9 = graduationCopy;
+  v7 = graduationCopy;
   [v6 xpcClearWatchNeedsGraduation:v8];
 }
 
-- (void)setWatchNeedsGraduation:(id)a3
+- (void)setWatchNeedsGraduation:(id)graduation
 {
-  v4 = a3;
+  graduationCopy = graduation;
   v5 = nr_framework_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -752,14 +752,14 @@ double __97__NRPairedDeviceRegistry_threadIsBlockedWaitingOn_nanoregistryd_syncG
     }
   }
 
-  v8 = [(NRRegistryClient *)self connection];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:0];
+  connection = [(NRRegistryClient *)self connection];
+  v9 = [connection synchronousRemoteObjectProxyWithErrorHandler:0];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__NRPairedDeviceRegistry_setWatchNeedsGraduation___block_invoke;
   v11[3] = &unk_1E86DACE8;
-  v12 = v4;
-  v10 = v4;
+  v12 = graduationCopy;
+  v10 = graduationCopy;
   [v9 xpcSetWatchNeedsGraduation:v11];
 }
 
@@ -810,16 +810,16 @@ uint64_t __52__NRPairedDeviceRegistry__mostlyTinkerPairedDevices__block_invoke(u
 
 - (BOOL)pairedDeviceSupportQuickSwitch
 {
-  v2 = [(NRPairedDeviceRegistry *)self getPairedDevices];
-  v3 = [v2 firstObject];
+  getPairedDevices = [(NRPairedDeviceRegistry *)self getPairedDevices];
+  firstObject = [getPairedDevices firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 valueForProperty:@"maxPairingCompatibilityVersion"];
-    v5 = [v4 integerValue];
-    v6 = [v3 valueForProperty:@"chipID"];
+    v4 = [firstObject valueForProperty:@"maxPairingCompatibilityVersion"];
+    integerValue = [v4 integerValue];
+    v6 = [firstObject valueForProperty:@"chipID"];
     v7 = +[NRPairingCompatibilityVersionInfo systemVersions];
-    v8 = v5 >= [v7 minQuickSwitchPairingCompatibilityVersionForChipID:v6];
+    v8 = integerValue >= [v7 minQuickSwitchPairingCompatibilityVersionForChipID:v6];
   }
 
   else
@@ -874,47 +874,47 @@ void __84__NRPairedDeviceRegistry_setActivePairedDevice_isMagicSwitch_operationH
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)setActivePairedDevice:(id)a3 withActiveDeviceAssertionHandler:(id)a4
+- (void)setActivePairedDevice:(id)device withActiveDeviceAssertionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v8 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v8)
+    if (connection)
     {
-      v9 = [(NRRegistryClient *)self connection];
+      connection2 = [(NRRegistryClient *)self connection];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __81__NRPairedDeviceRegistry_setActivePairedDevice_withActiveDeviceAssertionHandler___block_invoke;
       v19[3] = &unk_1E86DACE8;
       v10 = &v20;
-      v11 = v7;
+      v11 = handlerCopy;
       v20 = v11;
-      v12 = [v9 remoteObjectProxyWithErrorHandler:v19];
-      v13 = [v6 pairingID];
+      v12 = [connection2 remoteObjectProxyWithErrorHandler:v19];
+      pairingID = [deviceCopy pairingID];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __81__NRPairedDeviceRegistry_setActivePairedDevice_withActiveDeviceAssertionHandler___block_invoke_3;
       v16[3] = &unk_1E86DBFF0;
       v18 = v11;
-      v17 = v6;
-      [v12 xpcSwitchActiveDeviceWithDeviceID:v13 withAssertionHandler:v16];
+      v17 = deviceCopy;
+      [v12 xpcSwitchActiveDeviceWithDeviceID:pairingID withAssertionHandler:v16];
 
 LABEL_6:
       goto LABEL_7;
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __81__NRPairedDeviceRegistry_setActivePairedDevice_withActiveDeviceAssertionHandler___block_invoke_5;
     v14[3] = &unk_1E86DAE70;
     v10 = &v15;
-    v15 = v7;
+    v15 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v14);
     goto LABEL_6;
   }
@@ -1173,32 +1173,32 @@ void __53__NRPairedDeviceRegistry_initWithBoost_disconnected___block_invoke_3(ui
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_getCompatibilityStateWithCollection:(void *)a1
+- (uint64_t)_getCompatibilityStateWithCollection:(void *)collection
 {
   v3 = a2;
-  if (a1 && ([a1 daemonIdle] & 1) == 0 && (objc_msgSend(v3, "activeDeviceID"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (collection && ([collection daemonIdle] & 1) == 0 && (objc_msgSend(v3, "activeDeviceID"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v3 objectForKeyedSubscript:v4];
     if ([v6 isArchived])
     {
-      v7 = 0;
+      integerValue = 0;
     }
 
     else
     {
       v8 = [v6 objectForKeyedSubscript:@"compatibilityState"];
-      v9 = [v8 value];
-      v7 = [v9 integerValue];
+      value = [v8 value];
+      integerValue = [value integerValue];
     }
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 void __53__NRPairedDeviceRegistry_initWithBoost_disconnected___block_invoke_341(uint64_t a1)
@@ -1278,23 +1278,23 @@ void __53__NRPairedDeviceRegistry_initWithBoost_disconnected___block_invoke_341(
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_postNotification:(void *)a3 forDeviceID:(void *)a4 withUserInfo:
+- (void)_postNotification:(void *)notification forDeviceID:(void *)d withUserInfo:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  notificationCopy = notification;
+  dCopy = d;
+  if (self)
   {
-    if (v8)
+    if (notificationCopy)
     {
-      v10 = *(a1 + 168);
+      v10 = *(self + 168);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __69__NRPairedDeviceRegistry__postNotification_forDeviceID_withUserInfo___block_invoke;
       block[3] = &unk_1E86DC0B8;
-      block[4] = a1;
-      v17 = v8;
-      v18 = v9;
+      block[4] = self;
+      v17 = notificationCopy;
+      v18 = dCopy;
       v19 = v7;
       dispatch_async(v10, block);
 
@@ -1308,8 +1308,8 @@ void __53__NRPairedDeviceRegistry_initWithBoost_disconnected___block_invoke_341(
       v12[2] = __69__NRPairedDeviceRegistry__postNotification_forDeviceID_withUserInfo___block_invoke_3;
       v12[3] = &unk_1E86DAEE8;
       v13 = v7;
-      v14 = a1;
-      v15 = v9;
+      selfCopy = self;
+      v15 = dCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v12);
 
       v11 = v13;
@@ -1336,55 +1336,55 @@ void __71__NRPairedDeviceRegistry__fireStatusChangedNotificationWithCollection__
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_getStatusWithCollection:(id)a3
+- (unint64_t)_getStatusWithCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (![(NRPairedDeviceRegistry *)self supportsWatch])
   {
-    v5 = 0;
+    integerValue = 0;
     goto LABEL_14;
   }
 
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v6 = [v4 activeDevice];
-    v7 = v6;
-    if (v6)
+    activeDevice = [collectionCopy activeDevice];
+    v7 = activeDevice;
+    if (activeDevice)
     {
-      if (([v6 isArchived] & 1) == 0)
+      if (([activeDevice isArchived] & 1) == 0)
       {
         v8 = [v7 objectForKeyedSubscript:@"statusCode"];
-        v9 = [v8 value];
-        v5 = [v9 integerValue];
+        value = [v8 value];
+        integerValue = [value integerValue];
 
 LABEL_13:
         goto LABEL_14;
       }
     }
 
-    else if ([v4 paired])
+    else if ([collectionCopy paired])
     {
-      if ([v4 allAltAccount])
+      if ([collectionCopy allAltAccount])
       {
-        v5 = 2;
+        integerValue = 2;
       }
 
       else
       {
-        v5 = 3;
+        integerValue = 3;
       }
 
       goto LABEL_13;
     }
 
-    v5 = 2;
+    integerValue = 2;
     goto LABEL_13;
   }
 
-  v5 = 2;
+  integerValue = 2;
 LABEL_14:
 
-  return v5;
+  return integerValue;
 }
 
 uint64_t __32__NRPairedDeviceRegistry_status__block_invoke(uint64_t a1, uint64_t a2)
@@ -1508,9 +1508,9 @@ void __99__NRPairedDeviceRegistry__fireChangeNotificationsForDiff_collection_sec
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getDevicesWithBlock:(id)a3
+- (void)getDevicesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
@@ -1523,7 +1523,7 @@ void __99__NRPairedDeviceRegistry__fireChangeNotificationsForDiff_collection_sec
   v5[3] = &unk_1E86DC108;
   v5[4] = &v6;
   [(NRPairedDeviceRegistry *)self threadIsBlockedWaitingOn_nanoregistryd_syncGrabLegacyRegistryWithBlock:v5];
-  v4[2](v4, v7[5]);
+  blockCopy[2](blockCopy, v7[5]);
   _Block_object_dispose(&v6, 8);
 }
 
@@ -1538,25 +1538,25 @@ void __46__NRPairedDeviceRegistry_getDevicesWithBlock___block_invoke(uint64_t a1
 
 - (id)getDevices
 {
-  v3 = [objc_opt_class() activePairedDeviceSelectorBlock];
-  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:v3];
+  activePairedDeviceSelectorBlock = [objc_opt_class() activePairedDeviceSelectorBlock];
+  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:activePairedDeviceSelectorBlock];
 
   return v4;
 }
 
 - (id)getActivePairedDeviceIncludingAltAccount
 {
-  v3 = [objc_opt_class() activePairedDeviceSelectorBlock];
-  v4 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  activePairedDeviceSelectorBlock = [objc_opt_class() activePairedDeviceSelectorBlock];
+  v4 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (id)getSetupCompletedDevices
 {
-  v3 = [objc_opt_class() setupCompletedDevicesSelectorBlock];
-  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:v3];
+  setupCompletedDevicesSelectorBlock = [objc_opt_class() setupCompletedDevicesSelectorBlock];
+  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:setupCompletedDevicesSelectorBlock];
 
   return v4;
 }
@@ -1587,9 +1587,9 @@ uint64_t __60__NRPairedDeviceRegistry_setupCompletedDevicesSelectorBlock__block_
   return v5;
 }
 
-- (id)getDevicesMatching:(id)a3
+- (id)getDevicesMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1600,7 +1600,7 @@ uint64_t __60__NRPairedDeviceRegistry_setupCompletedDevicesSelectorBlock__block_
   v8[1] = 3221225472;
   v8[2] = __45__NRPairedDeviceRegistry_getDevicesMatching___block_invoke;
   v8[3] = &unk_1E86DC130;
-  v5 = v4;
+  v5 = matchingCopy;
   v9 = v5;
   v10 = &v11;
   [(NRPairedDeviceRegistry *)self getDevicesWithBlock:v8];
@@ -1671,9 +1671,9 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getAllDevicesWithArchivedDevicesMatching:(id)a3
+- (id)getAllDevicesWithArchivedDevicesMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1684,7 +1684,7 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = __67__NRPairedDeviceRegistry_getAllDevicesWithArchivedDevicesMatching___block_invoke;
   v8[3] = &unk_1E86DC130;
-  v5 = v4;
+  v5 = matchingCopy;
   v9 = v5;
   v10 = &v11;
   [(NRPairedDeviceRegistry *)self getDevicesWithBlock:v8];
@@ -1743,9 +1743,9 @@ void __67__NRPairedDeviceRegistry_getAllDevicesWithArchivedDevicesMatching___blo
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getAllDevicesWithArchivedAltAccountDevicesMatching:(id)a3
+- (id)getAllDevicesWithArchivedAltAccountDevicesMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1756,7 +1756,7 @@ void __67__NRPairedDeviceRegistry_getAllDevicesWithArchivedDevicesMatching___blo
   v8[1] = 3221225472;
   v8[2] = __77__NRPairedDeviceRegistry_getAllDevicesWithArchivedAltAccountDevicesMatching___block_invoke;
   v8[3] = &unk_1E86DC130;
-  v5 = v4;
+  v5 = matchingCopy;
   v9 = v5;
   v10 = &v11;
   [(NRPairedDeviceRegistry *)self getDevicesWithBlock:v8];
@@ -1809,32 +1809,32 @@ void __77__NRPairedDeviceRegistry_getAllDevicesWithArchivedAltAccountDevicesMatc
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)companionOOBDiscoverAndPairWithName:(id)a3 withOutOfBandPairingKey:(id)a4 withOptions:(id)a5 operationHasBegun:(id)a6
+- (void)companionOOBDiscoverAndPairWithName:(id)name withOutOfBandPairingKey:(id)key withOptions:(id)options operationHasBegun:(id)begun
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NRRegistryClient *)self connection];
+  nameCopy = name;
+  keyCopy = key;
+  optionsCopy = options;
+  begunCopy = begun;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v14)
+  if (connection)
   {
-    v15 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __116__NRPairedDeviceRegistry_companionOOBDiscoverAndPairWithName_withOutOfBandPairingKey_withOptions_operationHasBegun___block_invoke;
     v25[3] = &unk_1E86DACE8;
     v16 = &v26;
-    v17 = v13;
+    v17 = begunCopy;
     v26 = v17;
-    v18 = [v15 remoteObjectProxyWithErrorHandler:v25];
+    v18 = [connection2 remoteObjectProxyWithErrorHandler:v25];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __116__NRPairedDeviceRegistry_companionOOBDiscoverAndPairWithName_withOutOfBandPairingKey_withOptions_operationHasBegun___block_invoke_3;
     v23[3] = &unk_1E86DACE8;
     v24 = v17;
     v19 = v17;
-    [v18 xpcCompanionOOBDiscoverAndPairWithName:v10 withOutOfBandPairingKey:v11 withOptions:v12 operationHasBegun:v23];
+    [v18 xpcCompanionOOBDiscoverAndPairWithName:nameCopy withOutOfBandPairingKey:keyCopy withOptions:optionsCopy operationHasBegun:v23];
   }
 
   else
@@ -1844,8 +1844,8 @@ void __77__NRPairedDeviceRegistry_getAllDevicesWithArchivedAltAccountDevicesMatc
     block[2] = __116__NRPairedDeviceRegistry_companionOOBDiscoverAndPairWithName_withOutOfBandPairingKey_withOptions_operationHasBegun___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v16 = &v22;
-    v22 = v13;
-    v20 = v13;
+    v22 = begunCopy;
+    v20 = begunCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -1892,32 +1892,32 @@ void __116__NRPairedDeviceRegistry_companionOOBDiscoverAndPairWithName_withOutOf
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)companionPasscodePairWithDevice:(id)a3 withOptions:(id)a4 operationHasBegun:(id)a5
+- (void)companionPasscodePairWithDevice:(id)device withOptions:(id)options operationHasBegun:(id)begun
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NRRegistryClient *)self connection];
+  deviceCopy = device;
+  optionsCopy = options;
+  begunCopy = begun;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v11)
+  if (connection)
   {
-    v12 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __88__NRPairedDeviceRegistry_companionPasscodePairWithDevice_withOptions_operationHasBegun___block_invoke;
     v23[3] = &unk_1E86DACE8;
     v13 = &v24;
-    v14 = v10;
+    v14 = begunCopy;
     v24 = v14;
-    v15 = [v12 remoteObjectProxyWithErrorHandler:v23];
-    v16 = [v8 pairingID];
+    v15 = [connection2 remoteObjectProxyWithErrorHandler:v23];
+    pairingID = [deviceCopy pairingID];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __88__NRPairedDeviceRegistry_companionPasscodePairWithDevice_withOptions_operationHasBegun___block_invoke_3;
     v21[3] = &unk_1E86DACE8;
     v22 = v14;
     v17 = v14;
-    [v15 xpcCompanionPasscodePairWithDeviceID:v16 withOptions:v9 operationHasBegun:v21];
+    [v15 xpcCompanionPasscodePairWithDeviceID:pairingID withOptions:optionsCopy operationHasBegun:v21];
   }
 
   else
@@ -1927,8 +1927,8 @@ void __116__NRPairedDeviceRegistry_companionOOBDiscoverAndPairWithName_withOutOf
     block[2] = __88__NRPairedDeviceRegistry_companionPasscodePairWithDevice_withOptions_operationHasBegun___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v13 = &v20;
-    v20 = v10;
-    v18 = v10;
+    v20 = begunCopy;
+    v18 = begunCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -1975,30 +1975,30 @@ void __88__NRPairedDeviceRegistry_companionPasscodePairWithDevice_withOptions_op
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)gizmoOOBAdvertiseAndPairWithName:(id)a3 operationHasBegun:(id)a4
+- (void)gizmoOOBAdvertiseAndPairWithName:(id)name operationHasBegun:(id)begun
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NRRegistryClient *)self connection];
+  nameCopy = name;
+  begunCopy = begun;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v8)
+  if (connection)
   {
-    v9 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __77__NRPairedDeviceRegistry_gizmoOOBAdvertiseAndPairWithName_operationHasBegun___block_invoke;
     v19[3] = &unk_1E86DACE8;
     v10 = &v20;
-    v11 = v7;
+    v11 = begunCopy;
     v20 = v11;
-    v12 = [v9 remoteObjectProxyWithErrorHandler:v19];
+    v12 = [connection2 remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __77__NRPairedDeviceRegistry_gizmoOOBAdvertiseAndPairWithName_operationHasBegun___block_invoke_3;
     v17[3] = &unk_1E86DACE8;
     v18 = v11;
     v13 = v11;
-    [v12 xpcGizmoOOBAdvertiseAndPairWithName:v6 operationHasBegun:v17];
+    [v12 xpcGizmoOOBAdvertiseAndPairWithName:nameCopy operationHasBegun:v17];
   }
 
   else
@@ -2008,8 +2008,8 @@ void __88__NRPairedDeviceRegistry_companionPasscodePairWithDevice_withOptions_op
     block[2] = __77__NRPairedDeviceRegistry_gizmoOOBAdvertiseAndPairWithName_operationHasBegun___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v10 = &v16;
-    v16 = v7;
-    v14 = v7;
+    v16 = begunCopy;
+    v14 = begunCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -2056,30 +2056,30 @@ void __77__NRPairedDeviceRegistry_gizmoOOBAdvertiseAndPairWithName_operationHasB
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)gizmoPasscodeAdvertiseAndPairWithName:(id)a3 operationHasBegun:(id)a4
+- (void)gizmoPasscodeAdvertiseAndPairWithName:(id)name operationHasBegun:(id)begun
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NRRegistryClient *)self connection];
+  nameCopy = name;
+  begunCopy = begun;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v8)
+  if (connection)
   {
-    v9 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __82__NRPairedDeviceRegistry_gizmoPasscodeAdvertiseAndPairWithName_operationHasBegun___block_invoke;
     v19[3] = &unk_1E86DACE8;
     v10 = &v20;
-    v11 = v7;
+    v11 = begunCopy;
     v20 = v11;
-    v12 = [v9 remoteObjectProxyWithErrorHandler:v19];
+    v12 = [connection2 remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __82__NRPairedDeviceRegistry_gizmoPasscodeAdvertiseAndPairWithName_operationHasBegun___block_invoke_3;
     v17[3] = &unk_1E86DACE8;
     v18 = v11;
     v13 = v11;
-    [v12 xpcGizmoOOBAdvertiseAndPairWithName:v6 operationHasBegun:v17];
+    [v12 xpcGizmoOOBAdvertiseAndPairWithName:nameCopy operationHasBegun:v17];
   }
 
   else
@@ -2089,8 +2089,8 @@ void __77__NRPairedDeviceRegistry_gizmoOOBAdvertiseAndPairWithName_operationHasB
     block[2] = __82__NRPairedDeviceRegistry_gizmoPasscodeAdvertiseAndPairWithName_operationHasBegun___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v10 = &v16;
-    v16 = v7;
-    v14 = v7;
+    v16 = begunCopy;
+    v14 = begunCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -2137,62 +2137,62 @@ void __82__NRPairedDeviceRegistry_gizmoPasscodeAdvertiseAndPairWithName_operatio
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)notifyPasscode:(id)a3 forDevice:(id)a4
+- (void)notifyPasscode:(id)passcode forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(NRRegistryClient *)self connection];
-  v8 = [v10 remoteObjectProxy];
-  v9 = [v6 pairingID];
+  deviceCopy = device;
+  passcodeCopy = passcode;
+  connection = [(NRRegistryClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  pairingID = [deviceCopy pairingID];
 
-  [v8 xpcNotifyPasscode:v7 withDeviceID:v9];
+  [remoteObjectProxy xpcNotifyPasscode:passcodeCopy withDeviceID:pairingID];
 }
 
 - (void)notifyPairingShouldContinue
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 xpcPairingShouldContinue];
+  connection = [(NRRegistryClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy xpcPairingShouldContinue];
 }
 
-- (void)unpairWithDevice:(id)a3 withOptions:(id)a4 operationHasBegun:(id)a5
+- (void)unpairWithDevice:(id)device withOptions:(id)options operationHasBegun:(id)begun
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NRRegistryClient *)self connection];
+  deviceCopy = device;
+  optionsCopy = options;
+  begunCopy = begun;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v11)
+  if (connection)
   {
-    v12 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __73__NRPairedDeviceRegistry_unpairWithDevice_withOptions_operationHasBegun___block_invoke;
     v21[3] = &unk_1E86DACE8;
     v13 = &v22;
-    v14 = v10;
+    v14 = begunCopy;
     v22 = v14;
-    v15 = [v12 remoteObjectProxyWithErrorHandler:v21];
-    v16 = [v8 pairingID];
+    v15 = [connection2 remoteObjectProxyWithErrorHandler:v21];
+    pairingID = [deviceCopy pairingID];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __73__NRPairedDeviceRegistry_unpairWithDevice_withOptions_operationHasBegun___block_invoke_3;
     v19[3] = &unk_1E86DACE8;
     v20 = v14;
-    [v15 xpcUnpairWithDeviceID:v16 withOptions:v9 operationHasBegun:v19];
+    [v15 xpcUnpairWithDeviceID:pairingID withOptions:optionsCopy operationHasBegun:v19];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v10)
+  if (begunCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__NRPairedDeviceRegistry_unpairWithDevice_withOptions_operationHasBegun___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v13 = &v18;
-    v18 = v10;
+    v18 = begunCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     goto LABEL_5;
   }
@@ -2244,30 +2244,30 @@ void __73__NRPairedDeviceRegistry_unpairWithDevice_withOptions_operationHasBegun
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)pairWithSimulator:(id)a3 withQueue:(id)a4 withCompletion:(id)a5
+- (void)pairWithSimulator:(id)simulator withQueue:(id)queue withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(NRRegistryClient *)self connection];
+  simulatorCopy = simulator;
+  completionCopy = completion;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v9)
+  if (connection)
   {
-    v10 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __69__NRPairedDeviceRegistry_pairWithSimulator_withQueue_withCompletion___block_invoke;
     v20[3] = &unk_1E86DACE8;
     v11 = &v21;
-    v12 = v8;
+    v12 = completionCopy;
     v21 = v12;
-    v13 = [v10 remoteObjectProxyWithErrorHandler:v20];
+    v13 = [connection2 remoteObjectProxyWithErrorHandler:v20];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __69__NRPairedDeviceRegistry_pairWithSimulator_withQueue_withCompletion___block_invoke_3;
     v18[3] = &unk_1E86DACE8;
     v19 = v12;
     v14 = v12;
-    [v13 xpcPairWithSimulator:v7 withCompletion:v18];
+    [v13 xpcPairWithSimulator:simulatorCopy withCompletion:v18];
   }
 
   else
@@ -2277,8 +2277,8 @@ void __73__NRPairedDeviceRegistry_unpairWithDevice_withOptions_operationHasBegun
     block[2] = __69__NRPairedDeviceRegistry_pairWithSimulator_withQueue_withCompletion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v11 = &v17;
-    v17 = v8;
-    v15 = v8;
+    v17 = completionCopy;
+    v15 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -2325,30 +2325,30 @@ void __69__NRPairedDeviceRegistry_pairWithSimulator_withQueue_withCompletion___b
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)unpairWithSimulator:(id)a3 withQueue:(id)a4 withCompletion:(id)a5
+- (void)unpairWithSimulator:(id)simulator withQueue:(id)queue withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(NRRegistryClient *)self connection];
+  simulatorCopy = simulator;
+  completionCopy = completion;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v9)
+  if (connection)
   {
-    v10 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __71__NRPairedDeviceRegistry_unpairWithSimulator_withQueue_withCompletion___block_invoke;
     v20[3] = &unk_1E86DACE8;
     v11 = &v21;
-    v12 = v8;
+    v12 = completionCopy;
     v21 = v12;
-    v13 = [v10 remoteObjectProxyWithErrorHandler:v20];
+    v13 = [connection2 remoteObjectProxyWithErrorHandler:v20];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __71__NRPairedDeviceRegistry_unpairWithSimulator_withQueue_withCompletion___block_invoke_3;
     v18[3] = &unk_1E86DACE8;
     v19 = v12;
     v14 = v12;
-    [v13 xpcUnpairWithSimulator:v7 withCompletion:v18];
+    [v13 xpcUnpairWithSimulator:simulatorCopy withCompletion:v18];
   }
 
   else
@@ -2358,8 +2358,8 @@ void __69__NRPairedDeviceRegistry_pairWithSimulator_withQueue_withCompletion___b
     block[2] = __71__NRPairedDeviceRegistry_unpairWithSimulator_withQueue_withCompletion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v11 = &v17;
-    v17 = v8;
-    v15 = v8;
+    v17 = completionCopy;
+    v15 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -2406,30 +2406,30 @@ void __71__NRPairedDeviceRegistry_unpairWithSimulator_withQueue_withCompletion__
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)switchToSimulator:(id)a3 withQueue:(id)a4 withCompletion:(id)a5
+- (void)switchToSimulator:(id)simulator withQueue:(id)queue withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(NRRegistryClient *)self connection];
+  simulatorCopy = simulator;
+  completionCopy = completion;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v9)
+  if (connection)
   {
-    v10 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __69__NRPairedDeviceRegistry_switchToSimulator_withQueue_withCompletion___block_invoke;
     v20[3] = &unk_1E86DACE8;
     v11 = &v21;
-    v12 = v8;
+    v12 = completionCopy;
     v21 = v12;
-    v13 = [v10 remoteObjectProxyWithErrorHandler:v20];
+    v13 = [connection2 remoteObjectProxyWithErrorHandler:v20];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __69__NRPairedDeviceRegistry_switchToSimulator_withQueue_withCompletion___block_invoke_3;
     v18[3] = &unk_1E86DACE8;
     v19 = v12;
     v14 = v12;
-    [v13 xpcSwitchToSimulator:v7 withCompletion:v18];
+    [v13 xpcSwitchToSimulator:simulatorCopy withCompletion:v18];
   }
 
   else
@@ -2439,8 +2439,8 @@ void __71__NRPairedDeviceRegistry_unpairWithSimulator_withQueue_withCompletion__
     block[2] = __69__NRPairedDeviceRegistry_switchToSimulator_withQueue_withCompletion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v11 = &v17;
-    v17 = v8;
-    v15 = v8;
+    v17 = completionCopy;
+    v15 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -2487,22 +2487,22 @@ void __69__NRPairedDeviceRegistry_switchToSimulator_withQueue_withCompletion___b
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)fakePairedSyncIsCompleteWithCompletion:(id)a3
+- (void)fakePairedSyncIsCompleteWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NRRegistryClient *)self connection];
+  completionCopy = completion;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v5)
+  if (connection)
   {
-    v6 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __65__NRPairedDeviceRegistry_fakePairedSyncIsCompleteWithCompletion___block_invoke;
     v16[3] = &unk_1E86DACE8;
     v7 = &v17;
-    v8 = v4;
+    v8 = completionCopy;
     v17 = v8;
-    v9 = [v6 remoteObjectProxyWithErrorHandler:v16];
+    v9 = [connection2 remoteObjectProxyWithErrorHandler:v16];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __65__NRPairedDeviceRegistry_fakePairedSyncIsCompleteWithCompletion___block_invoke_3;
@@ -2519,8 +2519,8 @@ void __69__NRPairedDeviceRegistry_switchToSimulator_withQueue_withCompletion___b
     block[2] = __65__NRPairedDeviceRegistry_fakePairedSyncIsCompleteWithCompletion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v7 = &v13;
-    v13 = v4;
-    v11 = v4;
+    v13 = completionCopy;
+    v11 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -2567,55 +2567,55 @@ void __65__NRPairedDeviceRegistry_fakePairedSyncIsCompleteWithCompletion___block
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)triggerTailspinFrom:(unint64_t)a3
+- (void)triggerTailspinFrom:(unint64_t)from
 {
-  v5 = [(NRRegistryClient *)self connection];
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v5)
+  if (connection)
   {
-    v7 = [(NRRegistryClient *)self connection];
-    v6 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_367];
-    [v6 xpcTriggerTailspinFrom:a3 forApp:0];
+    connection2 = [(NRRegistryClient *)self connection];
+    v6 = [connection2 remoteObjectProxyWithErrorHandler:&__block_literal_global_367];
+    [v6 xpcTriggerTailspinFrom:from forApp:0];
   }
 }
 
-- (void)pairingStorePathPairingID:(id)a3
+- (void)pairingStorePathPairingID:(id)d
 {
-  v4 = a3;
-  v7 = [(NRPairedDeviceRegistry *)self getActivePairedDevice];
-  v5 = [v7 objectForKeyedSubscript:@"localPairingDataStorePath"];
-  v6 = [v7 pairingID];
-  v4[2](v4, v5, v6);
+  dCopy = d;
+  getActivePairedDevice = [(NRPairedDeviceRegistry *)self getActivePairedDevice];
+  v5 = [getActivePairedDevice objectForKeyedSubscript:@"localPairingDataStorePath"];
+  pairingID = [getActivePairedDevice pairingID];
+  dCopy[2](dCopy, v5, pairingID);
 }
 
-- (void)altAccountPairingStorePathPairingID:(id)a3
+- (void)altAccountPairingStorePathPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v6 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-  v9 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  v7 = [v9 objectForKeyedSubscript:@"localPairingDataStorePath"];
-  v8 = [v9 pairingID];
-  v4[2](v4, v7, v8);
+  v7 = [firstObject objectForKeyedSubscript:@"localPairingDataStorePath"];
+  pairingID = [firstObject pairingID];
+  dCopy[2](dCopy, v7, pairingID);
 }
 
-- (void)waitForPairingStorePathPairingID:(id)a3
+- (void)waitForPairingStorePathPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(NRRegistry *)self managementQueue];
+  managementQueue = [(NRRegistry *)self managementQueue];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __59__NRPairedDeviceRegistry_waitForPairingStorePathPairingID___block_invoke;
   v11 = &unk_1E86DAF10;
-  v12 = self;
+  selfCopy = self;
   v13 = v5;
   v7 = v5;
-  dispatch_async(v6, &v8);
+  dispatch_async(managementQueue, &v8);
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  [(NRPairedDeviceRegistry *)self pairingStorePathPairingID:v4, v8, v9, v10, v11, v12];
+  [(NRPairedDeviceRegistry *)self pairingStorePathPairingID:dCopy, v8, v9, v10, v11, selfCopy];
 }
 
 void __59__NRPairedDeviceRegistry_waitForPairingStorePathPairingID___block_invoke(uint64_t a1)
@@ -2673,22 +2673,22 @@ uint64_t __59__NRPairedDeviceRegistry_waitForPairingStorePathPairingID___block_i
   return result;
 }
 
-- (void)waitForAltAccountPairingStorePathPairingID:(id)a3
+- (void)waitForAltAccountPairingStorePathPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(NRRegistry *)self managementQueue];
+  managementQueue = [(NRRegistry *)self managementQueue];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __69__NRPairedDeviceRegistry_waitForAltAccountPairingStorePathPairingID___block_invoke;
   v11 = &unk_1E86DAF10;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v7 = v5;
-  dispatch_async(v6, &v8);
+  dispatch_async(managementQueue, &v8);
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  [(NRPairedDeviceRegistry *)self altAccountPairingStorePathPairingID:v4, v8, v9, v10, v11];
+  [(NRPairedDeviceRegistry *)self altAccountPairingStorePathPairingID:dCopy, v8, v9, v10, v11];
 }
 
 void __69__NRPairedDeviceRegistry_waitForAltAccountPairingStorePathPairingID___block_invoke(uint64_t a1)
@@ -2749,22 +2749,22 @@ uint64_t __69__NRPairedDeviceRegistry_waitForAltAccountPairingStorePathPairingID
 - (id)waitForActiveOrAltAccountDevice
 {
   v3 = dispatch_semaphore_create(0);
-  v4 = [(NRRegistry *)self managementQueue];
+  managementQueue = [(NRRegistry *)self managementQueue];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __57__NRPairedDeviceRegistry_waitForActiveOrAltAccountDevice__block_invoke;
   v13 = &unk_1E86DAF10;
   v14 = v3;
-  v15 = self;
+  selfCopy = self;
   v5 = v3;
-  dispatch_async(v4, &v10);
+  dispatch_async(managementQueue, &v10);
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  v6 = [objc_opt_class() activeDeviceSelectorBlock];
-  v7 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:v6];
-  v8 = [v7 firstObject];
+  activeDeviceSelectorBlock = [objc_opt_class() activeDeviceSelectorBlock];
+  v7 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:activeDeviceSelectorBlock];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 void __57__NRPairedDeviceRegistry_waitForActiveOrAltAccountDevice__block_invoke(uint64_t a1)
@@ -2810,22 +2810,22 @@ uint64_t __57__NRPairedDeviceRegistry_waitForActiveOrAltAccountDevice__block_inv
 - (id)waitForActiveDevice
 {
   v3 = dispatch_semaphore_create(0);
-  v4 = [(NRRegistry *)self managementQueue];
+  managementQueue = [(NRRegistry *)self managementQueue];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __45__NRPairedDeviceRegistry_waitForActiveDevice__block_invoke;
   v13 = &unk_1E86DAF10;
   v14 = v3;
-  v15 = self;
+  selfCopy = self;
   v5 = v3;
-  dispatch_async(v4, &v10);
+  dispatch_async(managementQueue, &v10);
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  v6 = [objc_opt_class() activeDeviceSelectorBlock];
-  v7 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:v6];
-  v8 = [v7 firstObject];
+  activeDeviceSelectorBlock = [objc_opt_class() activeDeviceSelectorBlock];
+  v7 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:activeDeviceSelectorBlock];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 void __45__NRPairedDeviceRegistry_waitForActiveDevice__block_invoke(uint64_t a1)
@@ -2875,28 +2875,28 @@ uint64_t __45__NRPairedDeviceRegistry_waitForActiveDevice__block_invoke_3(uint64
   return result;
 }
 
-- (void)abortPairingWithReason:(id)a3
+- (void)abortPairingWithReason:(id)reason
 {
-  v6 = a3;
+  reasonCopy = reason;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v4 = [(NRRegistryClient *)self connection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_375];
-    [v5 xpcAbortPairingReason:v6 withBlock:&__block_literal_global_377];
+    connection = [(NRRegistryClient *)self connection];
+    v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_375];
+    [v5 xpcAbortPairingReason:reasonCopy withBlock:&__block_literal_global_377];
   }
 }
 
 - (void)suspendPairingClientCrashMonitoring
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_379];
+  connection = [(NRRegistryClient *)self connection];
+  v2 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_379];
   [v2 xpcSuspendPairingClientCrashMonitoring:&__block_literal_global_381];
 }
 
 - (void)resumePairingClientCrashMonitoring
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_383];
+  connection = [(NRRegistryClient *)self connection];
+  v2 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_383];
   [v2 xpcResumePairingClientCrashMonitoring:&__block_literal_global_385];
 }
 
@@ -2988,8 +2988,8 @@ void __35__NRPairedDeviceRegistry_pairingID__block_invoke(uint64_t a1, void *a2,
 
 - (BOOL)isPaired
 {
-  v2 = [(NRPairedDeviceRegistry *)self getPairedDevices];
-  v3 = [v2 count] != 0;
+  getPairedDevices = [(NRPairedDeviceRegistry *)self getPairedDevices];
+  v3 = [getPairedDevices count] != 0;
 
   return v3;
 }
@@ -3002,13 +3002,13 @@ void __35__NRPairedDeviceRegistry_pairingID__block_invoke(uint64_t a1, void *a2,
   v9 = __Block_byref_object_copy__2;
   v10 = __Block_byref_object_dispose__2;
   v11 = 0;
-  v2 = [(NRRegistry *)self managementQueue];
+  managementQueue = [(NRRegistry *)self managementQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__NRPairedDeviceRegistry_blockAndQueryVersions__block_invoke;
   block[3] = &unk_1E86DC1F0;
   block[4] = &v6;
-  dispatch_sync(v2, block);
+  dispatch_sync(managementQueue, block);
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -3028,58 +3028,58 @@ uint64_t __47__NRPairedDeviceRegistry_blockAndQueryVersions__block_invoke(uint64
 
 - (void)userIsCheckingForUpdate
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 xpcTriggerVersion4Workaround];
+  connection = [(NRRegistryClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy xpcTriggerVersion4Workaround];
 }
 
 - (int64_t)pairingCompatibilityVersion
 {
   v2 = +[NRPairingCompatibilityVersionInfo systemVersions];
-  v3 = [v2 pairingCompatibilityVersion];
+  pairingCompatibilityVersion = [v2 pairingCompatibilityVersion];
 
-  return v3;
+  return pairingCompatibilityVersion;
 }
 
 - (int64_t)maxPairingCompatibilityVersion
 {
   v2 = +[NRPairingCompatibilityVersionInfo systemVersions];
-  v3 = [v2 maxPairingCompatibilityVersion];
+  maxPairingCompatibilityVersion = [v2 maxPairingCompatibilityVersion];
 
-  return v3;
+  return maxPairingCompatibilityVersion;
 }
 
 - (int64_t)minPairingCompatibilityVersion
 {
   v2 = +[NRPairingCompatibilityVersionInfo systemVersions];
-  v3 = [v2 minPairingCompatibilityVersion];
+  minPairingCompatibilityVersion = [v2 minPairingCompatibilityVersion];
 
-  return v3;
+  return minPairingCompatibilityVersion;
 }
 
 - (int64_t)minQuickSwitchCompatibilityVersion
 {
   v2 = +[NRPairingCompatibilityVersionInfo systemVersions];
-  v3 = [v2 minQuickSwitchCompatibilityVersion];
+  minQuickSwitchCompatibilityVersion = [v2 minQuickSwitchCompatibilityVersion];
 
-  return v3;
+  return minQuickSwitchCompatibilityVersion;
 }
 
 - (void)beginDiscovery
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_391];
+  connection = [(NRRegistryClient *)self connection];
+  v2 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_391];
   [v2 xpcBeginDiscoveryWithBlock:&__block_literal_global_393];
 }
 
 - (void)endDiscovery
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_395];
+  connection = [(NRRegistryClient *)self connection];
+  v2 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_395];
   [v2 xpcEndDiscoveryWithBlock:&__block_literal_global_397];
 }
 
-- (void)overrideSignalStrengthLimit:(int64_t)a3
+- (void)overrideSignalStrengthLimit:(int64_t)limit
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = nr_framework_log();
@@ -3091,7 +3091,7 @@ uint64_t __47__NRPairedDeviceRegistry_blockAndQueryVersions__block_invoke(uint64
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      limitCopy = limit;
       _os_log_impl(&dword_1E0ADF000, v6, OS_LOG_TYPE_DEFAULT, "overrideSignalStrengthLimit:%ld not implemented", &v8, 0xCu);
     }
   }
@@ -3099,33 +3099,33 @@ uint64_t __47__NRPairedDeviceRegistry_blockAndQueryVersions__block_invoke(uint64
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)xpcDeviceID:(id)a3 needsPasscode:(id)a4
+- (void)xpcDeviceID:(id)d needsPasscode:(id)passcode
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  dCopy = d;
+  if (passcode)
   {
     v10 = @"passcode";
-    v11[0] = a4;
+    v11[0] = passcode;
     v7 = MEMORY[0x1E695DF20];
-    v8 = a4;
-    a4 = [v7 dictionaryWithObjects:v11 forKeys:&v10 count:1];
+    passcodeCopy = passcode;
+    passcode = [v7 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
-  [(NRPairedDeviceRegistry *)self _postNotification:v6 forDeviceID:a4 withUserInfo:?];
+  [(NRPairedDeviceRegistry *)self _postNotification:dCopy forDeviceID:passcode withUserInfo:?];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)xpcHasNewOOBKey:(id)a3
+- (void)xpcHasNewOOBKey:(id)key
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (key)
   {
     v8 = @"OOBKey";
-    v9[0] = a3;
+    v9[0] = key;
     v4 = MEMORY[0x1E695DF20];
-    v5 = a3;
+    keyCopy = key;
     v6 = [v4 dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
 
@@ -3139,24 +3139,24 @@ uint64_t __47__NRPairedDeviceRegistry_blockAndQueryVersions__block_invoke(uint64
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completeRTCPairingMetricForMetricID:(id)a3 withSuccess:(id)a4
+- (void)completeRTCPairingMetricForMetricID:(id)d withSuccess:(id)success
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NRRegistryClient *)self connection];
+  dCopy = d;
+  successCopy = success;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v8)
+  if (connection)
   {
-    v9 = [(NRRegistryClient *)self connection];
+    connection2 = [(NRRegistryClient *)self connection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __74__NRPairedDeviceRegistry_completeRTCPairingMetricForMetricID_withSuccess___block_invoke;
     v16[3] = &unk_1E86DACE8;
     v10 = &v17;
-    v17 = v7;
-    v11 = v7;
-    v12 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v16];
-    [v12 xpcSubmitRTCPairingMetricForMetricID:v6 withSuccess:v11];
+    v17 = successCopy;
+    v11 = successCopy;
+    v12 = [connection2 synchronousRemoteObjectProxyWithErrorHandler:v16];
+    [v12 xpcSubmitRTCPairingMetricForMetricID:dCopy withSuccess:v11];
   }
 
   else
@@ -3166,8 +3166,8 @@ uint64_t __47__NRPairedDeviceRegistry_blockAndQueryVersions__block_invoke(uint64
     v14[2] = __74__NRPairedDeviceRegistry_completeRTCPairingMetricForMetricID_withSuccess___block_invoke_3;
     v14[3] = &unk_1E86DAE70;
     v10 = &v15;
-    v15 = v7;
-    v13 = v7;
+    v15 = successCopy;
+    v13 = successCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v14);
   }
 }
@@ -3207,9 +3207,9 @@ void __61__NRPairedDeviceRegistry_updateWatchBuddyStage_forPairingID___block_inv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)deviceForPairingID:(id)a3
+- (id)deviceForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -3221,7 +3221,7 @@ void __61__NRPairedDeviceRegistry_updateWatchBuddyStage_forPairingID___block_inv
   v8[2] = __45__NRPairedDeviceRegistry_deviceForPairingID___block_invoke;
   v8[3] = &unk_1E86DC218;
   v10 = &v11;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
   [(NRPairedDeviceRegistry *)self threadIsBlockedWaitingOn_nanoregistryd_syncGrabLegacyRegistryWithBlock:v8];
   v6 = v12[5];
@@ -3241,30 +3241,30 @@ uint64_t __45__NRPairedDeviceRegistry_deviceForPairingID___block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (id)deviceForBTDeviceID:(id)a3
+- (id)deviceForBTDeviceID:(id)d
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithUUIDString:v5];
+  dCopy = d;
+  v6 = [[v4 alloc] initWithUUIDString:dCopy];
 
   v7 = [(NRPairedDeviceRegistry *)self deviceForBluetoothID:v6];
 
   return v7;
 }
 
-- (id)deviceForBluetoothID:(id)a3
+- (id)deviceForBluetoothID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__NRPairedDeviceRegistry_deviceForBluetoothID___block_invoke;
   v9[3] = &unk_1E86DC240;
-  v10 = v4;
-  v5 = v4;
+  v10 = dCopy;
+  v5 = dCopy;
   v6 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:v9];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 BOOL __47__NRPairedDeviceRegistry_deviceForBluetoothID___block_invoke(uint64_t a1, void *a2)
@@ -3287,23 +3287,23 @@ BOOL __47__NRPairedDeviceRegistry_deviceForBluetoothID___block_invoke(uint64_t a
   return v8;
 }
 
-- (id)nonActiveDeviceForBTDeviceID:(id)a3
+- (id)nonActiveDeviceForBTDeviceID:(id)d
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithUUIDString:v5];
+  dCopy = d;
+  v6 = [[v4 alloc] initWithUUIDString:dCopy];
 
   v7 = [(NRPairedDeviceRegistry *)self nonActiveDeviceForBluetoothID:v6];
 
   return v7;
 }
 
-- (id)nonActiveDeviceForBluetoothID:(id)a3
+- (id)nonActiveDeviceForBluetoothID:(id)d
 {
   v3 = [(NRPairedDeviceRegistry *)self getAllDevicesWithArchivedAltAccountDevicesMatching:&__block_literal_global_401];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 uint64_t __56__NRPairedDeviceRegistry_nonActiveDeviceForBluetoothID___block_invoke(uint64_t a1, void *a2)
@@ -3323,34 +3323,34 @@ uint64_t __56__NRPairedDeviceRegistry_nonActiveDeviceForBluetoothID___block_invo
   return v4;
 }
 
-- (id)deviceForIDSDevice:(id)a3
+- (id)deviceForIDSDevice:(id)device
 {
-  v4 = [(NRPairedDeviceRegistry *)self deviceIDForIDSDevice:a3];
-  v5 = [v4 UUIDString];
-  v6 = [(NRPairedDeviceRegistry *)self deviceForBTDeviceID:v5];
+  v4 = [(NRPairedDeviceRegistry *)self deviceIDForIDSDevice:device];
+  uUIDString = [v4 UUIDString];
+  v6 = [(NRPairedDeviceRegistry *)self deviceForBTDeviceID:uUIDString];
 
   return v6;
 }
 
-- (id)nonActiveDeviceForIDSDevice:(id)a3
+- (id)nonActiveDeviceForIDSDevice:(id)device
 {
-  v4 = [(NRPairedDeviceRegistry *)self deviceIDForIDSDevice:a3];
-  v5 = [v4 UUIDString];
-  v6 = [(NRPairedDeviceRegistry *)self nonActiveDeviceForBTDeviceID:v5];
+  v4 = [(NRPairedDeviceRegistry *)self deviceIDForIDSDevice:device];
+  uUIDString = [v4 UUIDString];
+  v6 = [(NRPairedDeviceRegistry *)self nonActiveDeviceForBTDeviceID:uUIDString];
 
   return v6;
 }
 
-- (id)deviceForNRDevice:(id)a3 fromIDSDevices:(id)a4
+- (id)deviceForNRDevice:(id)device fromIDSDevices:(id)devices
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(NRPairedDeviceRegistry *)self deviceIDForNRDevice:a3];
+  devicesCopy = devices;
+  v7 = [(NRPairedDeviceRegistry *)self deviceIDForNRDevice:device];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = devicesCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -3394,59 +3394,59 @@ LABEL_11:
   return v16;
 }
 
-- (void)pairingClientDidEnterPhase:(id)a3
+- (void)pairingClientDidEnterPhase:(id)phase
 {
-  v6 = a3;
+  phaseCopy = phase;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v4 = [(NRRegistryClient *)self connection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_403];
-    [v5 xpcPairingClientDidEnterPhase:v6 withBlock:&__block_literal_global_405];
+    connection = [(NRRegistryClient *)self connection];
+    v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_403];
+    [v5 xpcPairingClientDidEnterPhase:phaseCopy withBlock:&__block_literal_global_405];
   }
 }
 
-- (void)pairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forDevice:(id)a5 completion:(id)a6
+- (void)pairingClientSetAltAccountName:(id)name altDSID:(id)d forDevice:(id)device completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  dCopy = d;
+  deviceCopy = device;
+  completionCopy = completion;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v14 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v14)
+    if (connection)
     {
-      v15 = [(NRRegistryClient *)self connection];
+      connection2 = [(NRRegistryClient *)self connection];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __86__NRPairedDeviceRegistry_pairingClientSetAltAccountName_altDSID_forDevice_completion___block_invoke;
       v24[3] = &unk_1E86DACE8;
       v16 = &v25;
-      v17 = v13;
+      v17 = completionCopy;
       v25 = v17;
-      v18 = [v15 remoteObjectProxyWithErrorHandler:v24];
-      v19 = [v12 pairingID];
+      v18 = [connection2 remoteObjectProxyWithErrorHandler:v24];
+      pairingID = [deviceCopy pairingID];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __86__NRPairedDeviceRegistry_pairingClientSetAltAccountName_altDSID_forDevice_completion___block_invoke_3;
       v22[3] = &unk_1E86DACE8;
       v23 = v17;
-      [v18 xpcPairingClientSetAltAccountName:v10 altDSID:v11 forPairingID:v19 completion:v22];
+      [v18 xpcPairingClientSetAltAccountName:nameCopy altDSID:dCopy forPairingID:pairingID completion:v22];
 
 LABEL_6:
       goto LABEL_7;
     }
   }
 
-  if (v13)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __86__NRPairedDeviceRegistry_pairingClientSetAltAccountName_altDSID_forDevice_completion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v16 = &v21;
-    v21 = v13;
+    v21 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     goto LABEL_6;
   }
@@ -3498,48 +3498,48 @@ void __86__NRPairedDeviceRegistry_pairingClientSetAltAccountName_altDSID_forDevi
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)pairingClientSetPairingParentName:(id)a3 pairingParentAltDSID:(id)a4 forDevice:(id)a5 completion:(id)a6
+- (void)pairingClientSetPairingParentName:(id)name pairingParentAltDSID:(id)d forDevice:(id)device completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  dCopy = d;
+  deviceCopy = device;
+  completionCopy = completion;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v14 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v14)
+    if (connection)
     {
-      v15 = [(NRRegistryClient *)self connection];
+      connection2 = [(NRRegistryClient *)self connection];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __102__NRPairedDeviceRegistry_pairingClientSetPairingParentName_pairingParentAltDSID_forDevice_completion___block_invoke;
       v24[3] = &unk_1E86DACE8;
       v16 = &v25;
-      v17 = v13;
+      v17 = completionCopy;
       v25 = v17;
-      v18 = [v15 remoteObjectProxyWithErrorHandler:v24];
-      v19 = [v12 pairingID];
+      v18 = [connection2 remoteObjectProxyWithErrorHandler:v24];
+      pairingID = [deviceCopy pairingID];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __102__NRPairedDeviceRegistry_pairingClientSetPairingParentName_pairingParentAltDSID_forDevice_completion___block_invoke_3;
       v22[3] = &unk_1E86DACE8;
       v23 = v17;
-      [v18 xpcPairingClientSetPairingParentName:v10 pairingParentAltDSID:v11 forPairingID:v19 completion:v22];
+      [v18 xpcPairingClientSetPairingParentName:nameCopy pairingParentAltDSID:dCopy forPairingID:pairingID completion:v22];
 
 LABEL_6:
       goto LABEL_7;
     }
   }
 
-  if (v13)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __102__NRPairedDeviceRegistry_pairingClientSetPairingParentName_pairingParentAltDSID_forDevice_completion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v16 = &v21;
-    v21 = v13;
+    v21 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     goto LABEL_6;
   }
@@ -3591,24 +3591,24 @@ void __102__NRPairedDeviceRegistry_pairingClientSetPairingParentName_pairingPare
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)setWatchBuddyPushedSyncTrapUI:(id)a3
+- (void)setWatchBuddyPushedSyncTrapUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v5 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v5)
+    if (connection)
     {
-      v6 = [(NRRegistryClient *)self connection];
+      connection2 = [(NRRegistryClient *)self connection];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __56__NRPairedDeviceRegistry_setWatchBuddyPushedSyncTrapUI___block_invoke;
       v14[3] = &unk_1E86DACE8;
       v7 = &v15;
-      v8 = v4;
+      v8 = iCopy;
       v15 = v8;
-      v9 = [v6 remoteObjectProxyWithErrorHandler:v14];
+      v9 = [connection2 remoteObjectProxyWithErrorHandler:v14];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __56__NRPairedDeviceRegistry_setWatchBuddyPushedSyncTrapUI___block_invoke_3;
@@ -3621,14 +3621,14 @@ LABEL_6:
     }
   }
 
-  if (v4)
+  if (iCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__NRPairedDeviceRegistry_setWatchBuddyPushedSyncTrapUI___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v7 = &v11;
-    v11 = v4;
+    v11 = iCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     goto LABEL_6;
   }
@@ -3680,24 +3680,24 @@ void __56__NRPairedDeviceRegistry_setWatchBuddyPushedSyncTrapUI___block_invoke_5
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)setWatchBuddyCompletedSetupSteps:(id)a3
+- (void)setWatchBuddyCompletedSetupSteps:(id)steps
 {
-  v4 = a3;
+  stepsCopy = steps;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v5 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v5)
+    if (connection)
     {
-      v6 = [(NRRegistryClient *)self connection];
+      connection2 = [(NRRegistryClient *)self connection];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invoke;
       v14[3] = &unk_1E86DACE8;
       v7 = &v15;
-      v8 = v4;
+      v8 = stepsCopy;
       v15 = v8;
-      v9 = [v6 remoteObjectProxyWithErrorHandler:v14];
+      v9 = [connection2 remoteObjectProxyWithErrorHandler:v14];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invoke_3;
@@ -3710,14 +3710,14 @@ LABEL_6:
     }
   }
 
-  if (v4)
+  if (stepsCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v7 = &v11;
-    v11 = v4;
+    v11 = stepsCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     goto LABEL_6;
   }
@@ -3777,8 +3777,8 @@ void __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invok
   v11 = 0;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v3 = [(NRRegistryClient *)self connection];
-    v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_407];
+    connection = [(NRRegistryClient *)self connection];
+    v4 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_407];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __37__NRPairedDeviceRegistry_switchIndex__block_invoke_2;
@@ -3792,17 +3792,17 @@ void __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invok
   return v5;
 }
 
-- (void)getSwitchEventsFromIndex:(unsigned int)a3 inlineCallback:(id)a4
+- (void)getSwitchEventsFromIndex:(unsigned int)index inlineCallback:(id)callback
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3 + 1;
-  v8 = [(NRPairedDeviceRegistry *)self switchIndex];
+  callbackCopy = callback;
+  v7 = index + 1;
+  switchIndex = [(NRPairedDeviceRegistry *)self switchIndex];
   *&v9 = 67109376;
   v17 = v9;
   do
   {
-    v18 = v6;
+    v18 = callbackCopy;
     if (self)
     {
       v10 = nr_framework_log();
@@ -3816,12 +3816,12 @@ void __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invok
           *buf = v17;
           *&buf[4] = v7;
           v20 = 1024;
-          v21 = v8;
+          v21 = switchIndex;
           _os_log_impl(&dword_1E0ADF000, v12, OS_LOG_TYPE_DEFAULT, "%u %u", buf, 0xEu);
         }
       }
 
-      for (; v7 <= v8; v7 = (v7 + 1))
+      for (; v7 <= switchIndex; v7 = (v7 + 1))
       {
         *buf = 0;
         v13 = [(NRPairedDeviceRegistry *)self _deviceIDAtSwitchIndex:v7 date:buf, v17];
@@ -3838,26 +3838,26 @@ void __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invok
 
         if (!v15)
         {
-          (*(v6 + 2))(v18, v7);
+          (*(callbackCopy + 2))(v18, v7);
         }
       }
     }
 
-    v7 = v8 + 1;
-    v8 = [(NRPairedDeviceRegistry *)self switchIndex];
+    v7 = switchIndex + 1;
+    switchIndex = [(NRPairedDeviceRegistry *)self switchIndex];
   }
 
-  while (v8 >= v7);
+  while (switchIndex >= v7);
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getMigrationPairingCharacteristicReadDataWithQueue:(id)a3 completion:(id)a4
+- (void)getMigrationPairingCharacteristicReadDataWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (queueCopy)
   {
-    v8 = v6;
+    v8 = queueCopy;
   }
 
   else
@@ -3886,14 +3886,14 @@ void __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invok
     block[2] = __88__NRPairedDeviceRegistry_getMigrationPairingCharacteristicReadDataWithQueue_completion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v15 = &v22;
-    v22 = v7;
-    v20 = v7;
+    v22 = completionCopy;
+    v20 = completionCopy;
     dispatch_async(v8, block);
   }
 
   else
   {
-    v14 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __88__NRPairedDeviceRegistry_getMigrationPairingCharacteristicReadDataWithQueue_completion___block_invoke;
@@ -3901,9 +3901,9 @@ void __59__NRPairedDeviceRegistry_setWatchBuddyCompletedSetupSteps___block_invok
     v15 = &v27;
     v16 = v8;
     v27 = v16;
-    v17 = v7;
+    v17 = completionCopy;
     v28 = v17;
-    v18 = [v14 remoteObjectProxyWithErrorHandler:v26];
+    v18 = [connection remoteObjectProxyWithErrorHandler:v26];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __88__NRPairedDeviceRegistry_getMigrationPairingCharacteristicReadDataWithQueue_completion___block_invoke_3;
@@ -3941,14 +3941,14 @@ void __88__NRPairedDeviceRegistry_getMigrationPairingCharacteristicReadDataWithQ
   dispatch_async(v4, v7);
 }
 
-- (void)putMigrationChallengeCharacteristicWriteData:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)putMigrationChallengeCharacteristicWriteData:(id)data queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  dataCopy = data;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (queueCopy)
   {
-    v11 = v9;
+    v11 = queueCopy;
   }
 
   else
@@ -3964,14 +3964,14 @@ void __88__NRPairedDeviceRegistry_getMigrationPairingCharacteristicReadDataWithQ
     block[2] = __88__NRPairedDeviceRegistry_putMigrationChallengeCharacteristicWriteData_queue_completion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v15 = &v22;
-    v22 = v10;
-    v20 = v10;
+    v22 = completionCopy;
+    v20 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    v14 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __88__NRPairedDeviceRegistry_putMigrationChallengeCharacteristicWriteData_queue_completion___block_invoke;
@@ -3979,9 +3979,9 @@ void __88__NRPairedDeviceRegistry_getMigrationPairingCharacteristicReadDataWithQ
     v15 = &v27;
     v16 = v11;
     v27 = v16;
-    v17 = v10;
+    v17 = completionCopy;
     v28 = v17;
-    v18 = [v14 remoteObjectProxyWithErrorHandler:v26];
+    v18 = [connection remoteObjectProxyWithErrorHandler:v26];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __88__NRPairedDeviceRegistry_putMigrationChallengeCharacteristicWriteData_queue_completion___block_invoke_3;
@@ -3989,7 +3989,7 @@ void __88__NRPairedDeviceRegistry_getMigrationPairingCharacteristicReadDataWithQ
     v24 = v16;
     v25 = v17;
     v19 = v17;
-    [v18 xpcPutMigrationChallengeCharacteristicWriteData:v8 completion:v23];
+    [v18 xpcPutMigrationChallengeCharacteristicWriteData:dataCopy completion:v23];
   }
 }
 
@@ -4020,12 +4020,12 @@ void __88__NRPairedDeviceRegistry_putMigrationChallengeCharacteristicWriteData_q
 {
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v3 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v3)
+    if (connection)
     {
-      v5 = [(NRRegistryClient *)self connection];
-      v4 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_411];
+      connection2 = [(NRRegistryClient *)self connection];
+      v4 = [connection2 remoteObjectProxyWithErrorHandler:&__block_literal_global_411];
       [v4 xpcStartAdvertisingForMigration];
     }
   }
@@ -4035,22 +4035,22 @@ void __88__NRPairedDeviceRegistry_putMigrationChallengeCharacteristicWriteData_q
 {
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v3 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v3)
+    if (connection)
     {
-      v5 = [(NRRegistryClient *)self connection];
-      v4 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_413];
+      connection2 = [(NRRegistryClient *)self connection];
+      v4 = [connection2 remoteObjectProxyWithErrorHandler:&__block_literal_global_413];
       [v4 xpcStopAdvertisingForMigration];
     }
   }
 }
 
-- (void)stageWatchForGraduationWithDeviceID:(id)a3 completion:(id)a4
+- (void)stageWatchForGraduationWithDeviceID:(id)d completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = nr_framework_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
 
@@ -4072,23 +4072,23 @@ void __88__NRPairedDeviceRegistry_putMigrationChallengeCharacteristicWriteData_q
     v18[2] = __73__NRPairedDeviceRegistry_stageWatchForGraduationWithDeviceID_completion___block_invoke_3;
     v18[3] = &unk_1E86DAE70;
     v13 = &v19;
-    v19 = v7;
-    v16 = v7;
+    v19 = completionCopy;
+    v16 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v18);
   }
 
   else
   {
-    v12 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __73__NRPairedDeviceRegistry_stageWatchForGraduationWithDeviceID_completion___block_invoke;
     v20[3] = &unk_1E86DACE8;
     v13 = &v21;
-    v21 = v7;
-    v14 = v7;
-    v15 = [v12 remoteObjectProxyWithErrorHandler:v20];
-    [v15 xpcStageWatchForGraduationWithDeviceID:v6 completion:v14];
+    v21 = completionCopy;
+    v14 = completionCopy;
+    v15 = [connection remoteObjectProxyWithErrorHandler:v20];
+    [v15 xpcStageWatchForGraduationWithDeviceID:dCopy completion:v14];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -4118,11 +4118,11 @@ void __73__NRPairedDeviceRegistry_stageWatchForGraduationWithDeviceID_completion
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)stageWatchForTransferWithDeviceID:(id)a3 completion:(id)a4
+- (void)stageWatchForTransferWithDeviceID:(id)d completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = nr_framework_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
 
@@ -4144,23 +4144,23 @@ void __73__NRPairedDeviceRegistry_stageWatchForGraduationWithDeviceID_completion
     v18[2] = __71__NRPairedDeviceRegistry_stageWatchForTransferWithDeviceID_completion___block_invoke_3;
     v18[3] = &unk_1E86DAE70;
     v13 = &v19;
-    v19 = v7;
-    v16 = v7;
+    v19 = completionCopy;
+    v16 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v18);
   }
 
   else
   {
-    v12 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __71__NRPairedDeviceRegistry_stageWatchForTransferWithDeviceID_completion___block_invoke;
     v20[3] = &unk_1E86DACE8;
     v13 = &v21;
-    v21 = v7;
-    v14 = v7;
-    v15 = [v12 remoteObjectProxyWithErrorHandler:v20];
-    [v15 xpcStageWatchForTransferWithDeviceID:v6 completion:v14];
+    v21 = completionCopy;
+    v14 = completionCopy;
+    v15 = [connection remoteObjectProxyWithErrorHandler:v20];
+    [v15 xpcStageWatchForTransferWithDeviceID:dCopy completion:v14];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -4190,10 +4190,10 @@ void __71__NRPairedDeviceRegistry_stageWatchForTransferWithDeviceID_completion__
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)listWatchStagedForTransferWithCompletion:(id)a3
+- (void)listWatchStagedForTransferWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = nr_framework_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
 
@@ -4208,14 +4208,14 @@ void __71__NRPairedDeviceRegistry_stageWatchForTransferWithDeviceID_completion__
     }
   }
 
-  v8 = [(NRRegistryClient *)self connection];
+  connection = [(NRRegistryClient *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__NRPairedDeviceRegistry_listWatchStagedForTransferWithCompletion___block_invoke;
   v12[3] = &unk_1E86DACE8;
-  v13 = v4;
-  v9 = v4;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v12];
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v12];
   [v10 xpcListWatchStagedForTransferWithCompletion:v9];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -4240,8 +4240,8 @@ void __67__NRPairedDeviceRegistry_listWatchStagedForTransferWithCompletion___blo
 
 - (void)startWatchSetupPush
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_419];
+  connection = [(NRRegistryClient *)self connection];
+  v2 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_419];
   [v2 xpcStartWatchSetupPushWithBlock:&__block_literal_global_421];
 }
 
@@ -4265,30 +4265,30 @@ void __67__NRPairedDeviceRegistry_listWatchStagedForTransferWithCompletion___blo
 
 - (void)stopWatchSetupPush
 {
-  v3 = [(NRRegistryClient *)self connection];
-  v2 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_423];
+  connection = [(NRRegistryClient *)self connection];
+  v2 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_423];
   [v2 xpcStopWatchSetupPushWithBlock:&__block_literal_global_425];
 }
 
-- (void)waitForWatchPairingExtendedMetadataForAdvertisedName:(id)a3 completion:(id)a4
+- (void)waitForWatchPairingExtendedMetadataForAdvertisedName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NRRegistryClient *)self connection];
+  completionCopy = completion;
+  nameCopy = name;
+  connection = [(NRRegistryClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __90__NRPairedDeviceRegistry_waitForWatchPairingExtendedMetadataForAdvertisedName_completion___block_invoke;
   v14[3] = &unk_1E86DACE8;
-  v9 = v6;
+  v9 = completionCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__NRPairedDeviceRegistry_waitForWatchPairingExtendedMetadataForAdvertisedName_completion___block_invoke_3;
   v12[3] = &unk_1E86DC290;
   v13 = v9;
   v11 = v9;
-  [v10 xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:v7 completion:v12];
+  [v10 xpcWaitForWatchPairingExtendedMetadataForAdvertisedName:nameCopy completion:v12];
 }
 
 void __90__NRPairedDeviceRegistry_waitForWatchPairingExtendedMetadataForAdvertisedName_completion___block_invoke(uint64_t a1)
@@ -4358,47 +4358,47 @@ void __70__NRPairedDeviceRegistry_setMigrationConsented_forDeviceID_withBlock___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)beginMigrationWithDevice:(id)a3 passcode:(id)a4 withBlock:(id)a5
+- (void)beginMigrationWithDevice:(id)device passcode:(id)passcode withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  passcodeCopy = passcode;
+  blockCopy = block;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v11 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v11)
+    if (connection)
     {
-      v12 = [(NRRegistryClient *)self connection];
+      connection2 = [(NRRegistryClient *)self connection];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __70__NRPairedDeviceRegistry_beginMigrationWithDevice_passcode_withBlock___block_invoke;
       v21[3] = &unk_1E86DACE8;
       v13 = &v22;
-      v14 = v10;
+      v14 = blockCopy;
       v22 = v14;
-      v15 = [v12 remoteObjectProxyWithErrorHandler:v21];
-      v16 = [v8 pairingID];
+      v15 = [connection2 remoteObjectProxyWithErrorHandler:v21];
+      pairingID = [deviceCopy pairingID];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __70__NRPairedDeviceRegistry_beginMigrationWithDevice_passcode_withBlock___block_invoke_3;
       v19[3] = &unk_1E86DAE70;
       v20 = v14;
-      [v15 xpcBeginMigrationWithDeviceID:v16 passcode:v9 withBlock:v19];
+      [v15 xpcBeginMigrationWithDeviceID:pairingID passcode:passcodeCopy withBlock:v19];
 
 LABEL_6:
       goto LABEL_7;
     }
   }
 
-  if (v10)
+  if (blockCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__NRPairedDeviceRegistry_beginMigrationWithDevice_passcode_withBlock___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v13 = &v18;
-    v18 = v10;
+    v18 = blockCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     goto LABEL_6;
   }
@@ -4448,46 +4448,46 @@ void __70__NRPairedDeviceRegistry_beginMigrationWithDevice_passcode_withBlock___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)beginMigrationWithDevice:(id)a3 withCompletion:(id)a4
+- (void)beginMigrationWithDevice:(id)device withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v8 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v8)
+    if (connection)
     {
-      v9 = [(NRRegistryClient *)self connection];
+      connection2 = [(NRRegistryClient *)self connection];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __66__NRPairedDeviceRegistry_beginMigrationWithDevice_withCompletion___block_invoke;
       v18[3] = &unk_1E86DACE8;
       v10 = &v19;
-      v11 = v7;
+      v11 = completionCopy;
       v19 = v11;
-      v12 = [v9 remoteObjectProxyWithErrorHandler:v18];
-      v13 = [v6 pairingID];
+      v12 = [connection2 remoteObjectProxyWithErrorHandler:v18];
+      pairingID = [deviceCopy pairingID];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __66__NRPairedDeviceRegistry_beginMigrationWithDevice_withCompletion___block_invoke_3;
       v16[3] = &unk_1E86DACE8;
       v17 = v11;
-      [v12 xpcBeginMigrationWithDeviceID:v13 completion:v16];
+      [v12 xpcBeginMigrationWithDeviceID:pairingID completion:v16];
 
 LABEL_6:
       goto LABEL_7;
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__NRPairedDeviceRegistry_beginMigrationWithDevice_withCompletion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v10 = &v15;
-    v15 = v7;
+    v15 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     goto LABEL_6;
   }
@@ -4547,8 +4547,8 @@ void __66__NRPairedDeviceRegistry_beginMigrationWithDevice_withCompletion___bloc
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v2 = [(NRRegistryClient *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_428];
+  connection = [(NRRegistryClient *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_428];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__NRPairedDeviceRegistry_lastMigrationRequestPhoneName__block_invoke_2;
@@ -4565,32 +4565,32 @@ void __66__NRPairedDeviceRegistry_beginMigrationWithDevice_withCompletion___bloc
 - (id)migrationConsentRequestData
 {
   v2 = +[NRMigrator sharedMigrator];
-  v3 = [v2 migrationConsentRequestData];
+  migrationConsentRequestData = [v2 migrationConsentRequestData];
 
-  return v3;
+  return migrationConsentRequestData;
 }
 
-- (id)devicesFromMigrationConsentRequestData:(id)a3
+- (id)devicesFromMigrationConsentRequestData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[NRMigrator sharedMigrator];
-  v5 = [v4 devicesFromMigrationConsentRequestData:v3];
+  v5 = [v4 devicesFromMigrationConsentRequestData:dataCopy];
 
   return v5;
 }
 
-- (void)keepPhoneUnlockedInternalTestSPI:(id)a3
+- (void)keepPhoneUnlockedInternalTestSPI:(id)i
 {
-  v4 = a3;
-  v5 = [(NRRegistryClient *)self connection];
-  v6 = [v5 remoteObjectProxy];
+  iCopy = i;
+  connection = [(NRRegistryClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_invoke;
   v8[3] = &unk_1E86DAE70;
-  v9 = v4;
-  v7 = v4;
-  [v6 xpcKeepPhoneUnlockedInternalTestSPI:v8];
+  v9 = iCopy;
+  v7 = iCopy;
+  [remoteObjectProxy xpcKeepPhoneUnlockedInternalTestSPI:v8];
 }
 
 uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_invoke(uint64_t a1)
@@ -4613,8 +4613,8 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
   v24 = 0;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v3 = [(NRRegistryClient *)self connection];
-    v4 = v3 == 0;
+    connection = [(NRRegistryClient *)self connection];
+    v4 = connection == 0;
 
     if (!v4)
     {
@@ -4624,8 +4624,8 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
       v18 = __Block_byref_object_copy__2;
       v19 = __Block_byref_object_dispose__2;
       v20 = 0;
-      v5 = [(NRRegistryClient *)self connection];
-      v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_432];
+      connection2 = [(NRRegistryClient *)self connection];
+      v6 = [connection2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_432];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __45__NRPairedDeviceRegistry_lastSyncSwitchIndex__block_invoke_2;
@@ -4662,18 +4662,18 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
   return v10;
 }
 
-- (int64_t)migrationCountForPairingID:(id)a3
+- (int64_t)migrationCountForPairingID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v5 = [(NRRegistryClient *)self connection];
-    v6 = !v4 || v5 == 0;
+    connection = [(NRRegistryClient *)self connection];
+    v6 = !dCopy || connection == 0;
     v7 = !v6;
 
     if (v7)
@@ -4684,15 +4684,15 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
       v21 = __Block_byref_object_copy__2;
       v22 = __Block_byref_object_dispose__2;
       v23 = 0;
-      v8 = [(NRRegistryClient *)self connection];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_435];
+      connection2 = [(NRRegistryClient *)self connection];
+      v9 = [connection2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_435];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __53__NRPairedDeviceRegistry_migrationCountForPairingID___block_invoke_2;
       v17[3] = &unk_1E86DC2E0;
       v17[4] = &v24;
       v17[5] = &v18;
-      [v9 xpcGetMigrationCountForPairingID:v4 completion:v17];
+      [v9 xpcGetMigrationCountForPairingID:dCopy completion:v17];
 
       if (v19[5])
       {
@@ -4706,7 +4706,7 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
           {
             v16 = v19[5];
             *buf = 138412546;
-            v29 = v4;
+            v29 = dCopy;
             v30 = 2112;
             v31 = v16;
             _os_log_error_impl(&dword_1E0ADF000, v12, OS_LOG_TYPE_ERROR, "NanoRegistry client: Failed to get migrationCount value for pairingID %@ from CFPrefs- error %@", buf, 0x16u);
@@ -4725,18 +4725,18 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
   return v13;
 }
 
-- (BOOL)hasCompletedInitialSyncForPairingID:(id)a3
+- (BOOL)hasCompletedInitialSyncForPairingID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v5 = [(NRRegistryClient *)self connection];
-    v6 = !v4 || v5 == 0;
+    connection = [(NRRegistryClient *)self connection];
+    v6 = !dCopy || connection == 0;
     v7 = !v6;
 
     if (v7)
@@ -4747,15 +4747,15 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
       v21 = __Block_byref_object_copy__2;
       v22 = __Block_byref_object_dispose__2;
       v23 = 0;
-      v8 = [(NRRegistryClient *)self connection];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_437];
+      connection2 = [(NRRegistryClient *)self connection];
+      v9 = [connection2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_437];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __62__NRPairedDeviceRegistry_hasCompletedInitialSyncForPairingID___block_invoke_2;
       v17[3] = &unk_1E86DC308;
       v17[4] = &v24;
       v17[5] = &v18;
-      [v9 xpcGetInitialSyncCompletedForPairingID:v4 completion:v17];
+      [v9 xpcGetInitialSyncCompletedForPairingID:dCopy completion:v17];
 
       if (v19[5])
       {
@@ -4769,7 +4769,7 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
           {
             v16 = v19[5];
             *buf = 138412546;
-            v29 = v4;
+            v29 = dCopy;
             v30 = 2112;
             v31 = v16;
             _os_log_error_impl(&dword_1E0ADF000, v12, OS_LOG_TYPE_ERROR, "NanoRegistry client: Failed to get initialsynccompleted value for pairingID %@ from CFPrefs- error %@", buf, 0x16u);
@@ -4788,18 +4788,18 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
   return v13 & 1;
 }
 
-- (BOOL)isAssertionActive:(id)a3
+- (BOOL)isAssertionActive:(id)active
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activeCopy = active;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v5 = [(NRRegistryClient *)self connection];
-    v6 = !v4 || v5 == 0;
+    connection = [(NRRegistryClient *)self connection];
+    v6 = !activeCopy || connection == 0;
     v7 = !v6;
 
     if (v7)
@@ -4810,15 +4810,15 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
       v21 = __Block_byref_object_copy__2;
       v22 = __Block_byref_object_dispose__2;
       v23 = 0;
-      v8 = [(NRRegistryClient *)self connection];
-      v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_440];
+      connection2 = [(NRRegistryClient *)self connection];
+      v9 = [connection2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_440];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __44__NRPairedDeviceRegistry_isAssertionActive___block_invoke_2;
       v17[3] = &unk_1E86DC308;
       v17[4] = &v24;
       v17[5] = &v18;
-      [v9 xpcIsAssertionActive:v4 withCompletion:v17];
+      [v9 xpcIsAssertionActive:activeCopy withCompletion:v17];
 
       if (v19[5])
       {
@@ -4832,7 +4832,7 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
           {
             v16 = v19[5];
             *buf = 138412546;
-            v29 = v4;
+            v29 = activeCopy;
             v30 = 2112;
             v31 = v16;
             _os_log_error_impl(&dword_1E0ADF000, v12, OS_LOG_TYPE_ERROR, "NanoRegistry client: Failed to get isAssertionActive value for assertion %@- error %@", buf, 0x16u);
@@ -4851,46 +4851,46 @@ uint64_t __59__NRPairedDeviceRegistry_keepPhoneUnlockedInternalTestSPI___block_i
   return v13 & 1;
 }
 
-- (void)isPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4
+- (void)isPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v8 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
 
-    if (v8)
+    if (connection)
     {
-      v9 = [(NRRegistryClient *)self connection];
+      connection2 = [(NRRegistryClient *)self connection];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __69__NRPairedDeviceRegistry_isPhoneReadyToMigrateDevice_withCompletion___block_invoke;
       v18[3] = &unk_1E86DACE8;
       v10 = &v19;
-      v11 = v7;
+      v11 = completionCopy;
       v19 = v11;
-      v12 = [v9 remoteObjectProxyWithErrorHandler:v18];
-      v13 = [v6 pairingID];
+      v12 = [connection2 remoteObjectProxyWithErrorHandler:v18];
+      pairingID = [deviceCopy pairingID];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __69__NRPairedDeviceRegistry_isPhoneReadyToMigrateDevice_withCompletion___block_invoke_3;
       v16[3] = &unk_1E86DC330;
       v17 = v11;
-      [v12 xpcIsPhoneReadyToMigrateDevice:v13 withCompletion:v16];
+      [v12 xpcIsPhoneReadyToMigrateDevice:pairingID withCompletion:v16];
 
 LABEL_6:
       goto LABEL_7;
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __69__NRPairedDeviceRegistry_isPhoneReadyToMigrateDevice_withCompletion___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v10 = &v15;
-    v15 = v7;
+    v15 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     goto LABEL_6;
   }
@@ -4947,8 +4947,8 @@ void __69__NRPairedDeviceRegistry_isPhoneReadyToMigrateDevice_withCompletion___b
 {
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v4 = [(NRRegistryClient *)self connection];
-    v3 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_14];
+    connection = [(NRRegistryClient *)self connection];
+    v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_14];
     [v3 xpcSubmitAlbertPairingReport:&__block_literal_global_10];
   }
 }
@@ -4991,8 +4991,8 @@ uint64_t __61__NRPairedDeviceRegistry_Internal___getLocalDeviceCollection__block
   v12 = __Block_byref_object_copy__10;
   v13 = __Block_byref_object_dispose__10;
   v14 = 0;
-  v2 = [(NRRegistryClient *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:0];
+  connection = [(NRRegistryClient *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__NRPairedDeviceRegistry_Internal___getChangeHistory__block_invoke;
@@ -5017,9 +5017,9 @@ uint64_t __61__NRPairedDeviceRegistry_Internal___getLocalDeviceCollection__block
   return v6;
 }
 
-- (id)_getSecureProperties:(id)a3
+- (id)_getSecureProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -5031,7 +5031,7 @@ uint64_t __61__NRPairedDeviceRegistry_Internal___getLocalDeviceCollection__block
   v8[2] = __57__NRPairedDeviceRegistry_Internal___getSecureProperties___block_invoke;
   v8[3] = &unk_1E86DC090;
   v10 = &v11;
-  v5 = v4;
+  v5 = propertiesCopy;
   v9 = v5;
   [(NRRegistryClient *)self syncGrabRegistryWithReadBlock:v8];
   v6 = v12[5];
@@ -5099,20 +5099,20 @@ void __64__NRPairedDeviceRegistry_Internal___deviceIDAtSwitchIndex_date___block_
   }
 }
 
-- (void)_invalidateActiveDeviceAssertionWithIdentifier:(id)a3
+- (void)_invalidateActiveDeviceAssertionWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v4 = [(NRRegistryClient *)self connection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18];
-    [v5 xpcInvalidateSwitchAssertionWithIdentifier:v6 block:&__block_literal_global_20];
+    connection = [(NRRegistryClient *)self connection];
+    v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18];
+    [v5 xpcInvalidateSwitchAssertionWithIdentifier:identifierCopy block:&__block_literal_global_20];
   }
 }
 
-- (void)_getActiveDeviceAssertionsWithInlineBlock:(id)a3
+- (void)_getActiveDeviceAssertionsWithInlineBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -5121,8 +5121,8 @@ void __64__NRPairedDeviceRegistry_Internal___deviceIDAtSwitchIndex_date___block_
   v13 = 0;
   if (![(NRRegistryClient *)self daemonIdle])
   {
-    v5 = [(NRRegistryClient *)self connection];
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22];
+    connection = [(NRRegistryClient *)self connection];
+    v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __78__NRPairedDeviceRegistry_Internal___getActiveDeviceAssertionsWithInlineBlock___block_invoke_2;
@@ -5131,13 +5131,13 @@ void __64__NRPairedDeviceRegistry_Internal___deviceIDAtSwitchIndex_date___block_
     [v6 xpcActiveDeviceAssertions:v7];
   }
 
-  v4[2](v4, v9[5]);
+  blockCopy[2](blockCopy, v9[5]);
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_pingActiveGizmoWithPriority:(int64_t)a3 withMessageSize:(int64_t)a4 withBlock:(id)a5
+- (void)_pingActiveGizmoWithPriority:(int64_t)priority withMessageSize:(int64_t)size withBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   if ([(NRRegistryClient *)self daemonIdle]|| ([(NRRegistryClient *)self connection], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -5145,29 +5145,29 @@ void __64__NRPairedDeviceRegistry_Internal___deviceIDAtSwitchIndex_date___block_
     block[2] = __91__NRPairedDeviceRegistry_Internal___pingActiveGizmoWithPriority_withMessageSize_withBlock___block_invoke_5;
     block[3] = &unk_1E86DAE70;
     v11 = &v17;
-    v17 = v8;
-    v15 = v8;
+    v17 = blockCopy;
+    v15 = blockCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    v10 = [(NRRegistryClient *)self connection];
+    connection = [(NRRegistryClient *)self connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __91__NRPairedDeviceRegistry_Internal___pingActiveGizmoWithPriority_withMessageSize_withBlock___block_invoke;
     v20[3] = &unk_1E86DACE8;
     v11 = &v21;
-    v12 = v8;
+    v12 = blockCopy;
     v21 = v12;
-    v13 = [v10 remoteObjectProxyWithErrorHandler:v20];
+    v13 = [connection remoteObjectProxyWithErrorHandler:v20];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __91__NRPairedDeviceRegistry_Internal___pingActiveGizmoWithPriority_withMessageSize_withBlock___block_invoke_3;
     v18[3] = &unk_1E86DC9D0;
     v19 = v12;
     v14 = v12;
-    [v13 xpcPingActiveGizmoWithPriority:a3 withMessageSize:a4 withBlock:v18];
+    [v13 xpcPingActiveGizmoWithPriority:priority withMessageSize:size withBlock:v18];
   }
 }
 
@@ -5201,8 +5201,8 @@ void __91__NRPairedDeviceRegistry_Internal___pingActiveGizmoWithPriority_withMes
   v10 = __Block_byref_object_copy__10;
   v11 = __Block_byref_object_dispose__10;
   v12 = MEMORY[0x1E695E0F0];
-  v2 = [(NRRegistryClient *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:0];
+  connection = [(NRRegistryClient *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:0];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__NRPairedDeviceRegistry_Internal___getClientInfo__block_invoke;
@@ -5216,13 +5216,13 @@ void __91__NRPairedDeviceRegistry_Internal___pingActiveGizmoWithPriority_withMes
   return v4;
 }
 
-- (id)applyDiff:(id)a3
+- (id)applyDiff:(id)diff
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NRRegistryClient *)self connection];
+  diffCopy = diff;
+  connection = [(NRRegistryClient *)self connection];
 
-  if (v5)
+  if (connection)
   {
     v16 = 0;
     v17 = &v16;
@@ -5230,14 +5230,14 @@ void __91__NRPairedDeviceRegistry_Internal___pingActiveGizmoWithPriority_withMes
     v19 = __Block_byref_object_copy__10;
     v20 = __Block_byref_object_dispose__10;
     v21 = 0;
-    v6 = [(NRRegistryClient *)self connection];
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
+    connection2 = [(NRRegistryClient *)self connection];
+    v7 = [connection2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __46__NRPairedDeviceRegistry_Internal__applyDiff___block_invoke_2;
     v15[3] = &unk_1E86DCA20;
     v15[4] = &v16;
-    [v7 xpcApplyDiff:v4 withSecureProperties:0 block:v15];
+    [v7 xpcApplyDiff:diffCopy withSecureProperties:0 block:v15];
 
     if (v17[5])
     {
@@ -5278,8 +5278,8 @@ void __91__NRPairedDeviceRegistry_Internal___pingActiveGizmoWithPriority_withMes
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [objc_opt_class() pairedDevicesSelectorBlock];
-  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:v3];
+  pairedDevicesSelectorBlock = [objc_opt_class() pairedDevicesSelectorBlock];
+  v4 = [(NRPairedDeviceRegistry *)self getDevicesMatching:pairedDevicesSelectorBlock];
 
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
@@ -5320,25 +5320,25 @@ void __91__NRPairedDeviceRegistry_Internal___pingActiveGizmoWithPriority_withMes
   v10 = 0;
 LABEL_11:
 
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
   v12 = *MEMORY[0x1E69E9840];
-  return v11 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)checkIfFlaggedForRecoveryWithCompletion:(id)a3
+- (void)checkIfFlaggedForRecoveryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(NRRegistryClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 xpcCheckIfFlaggedForRecoveryWithCompletion:v4];
+  completionCopy = completion;
+  connection = [(NRRegistryClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy xpcCheckIfFlaggedForRecoveryWithCompletion:completionCopy];
 }
 
-- (void)clearRecoveryFlagWithCompletion:(id)a3
+- (void)clearRecoveryFlagWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(NRRegistryClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 xpcClearRecoveryFlagWithCompletion:v4];
+  completionCopy = completion;
+  connection = [(NRRegistryClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy xpcClearRecoveryFlagWithCompletion:completionCopy];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface TSWPLoadableFonts
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedInstance;
 - (TSWPLoadableFonts)init;
 - (void)dealloc;
-- (void)loadFontWithName:(id)a3;
-- (void)loadFontsForGroup:(id)a3;
-- (void)p_loadFontWithInfo:(id)a3;
+- (void)loadFontWithName:(id)name;
+- (void)loadFontsForGroup:(id)group;
+- (void)p_loadFontWithInfo:(id)info;
 - (void)pauseBackgroundLoading;
-- (void)registerFontName:(id)a3 forPath:(id)a4 forGroup:(id)a5 isObfuscated:(BOOL)a6 backgroundLoad:(BOOL)a7;
+- (void)registerFontName:(id)name forPath:(id)path forGroup:(id)group isObfuscated:(BOOL)obfuscated backgroundLoad:(BOOL)load;
 - (void)resumeBackgroundLoading;
-- (void)unregisterFontsForGroup:(id)a3;
+- (void)unregisterFontsForGroup:(id)group;
 @end
 
 @implementation TSWPLoadableFonts
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSWPLoadableFonts;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -27,32 +27,32 @@
   result = +[TSWPLoadableFonts sharedInstance]::sSingletonInstance;
   if (!+[TSWPLoadableFonts sharedInstance]::sSingletonInstance)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!+[TSWPLoadableFonts sharedInstance]::sSingletonInstance)
     {
-      v4 = [objc_msgSend(a1 "_singletonAlloc")];
+      v4 = [objc_msgSend(self "_singletonAlloc")];
       __dmb(0xBu);
       +[TSWPLoadableFonts sharedInstance]::sSingletonInstance = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPLoadableFonts sharedInstance]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"), 138, @"Couldn't create singleton instance of %@", a1}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"), 138, @"Couldn't create singleton instance of %@", self}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return +[TSWPLoadableFonts sharedInstance]::sSingletonInstance;
   }
 
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPLoadableFonts allocWithZone:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"), 138, @"Don't alloc a singleton"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"), 138, @"Don't alloc a singleton"}];
   return 0;
 }
 
@@ -95,25 +95,25 @@
   objc_sync_exit(self);
 }
 
-- (void)loadFontWithName:(id)a3
+- (void)loadFontWithName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLoadableFonts loadFontWithName:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"), 198, @"invalid nil value for '%s'", "fontName"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"), 198, @"invalid nil value for '%s'", "fontName"}];
   }
 
   if ([(NSMutableDictionary *)self->_loadableFonts count])
   {
-    v7 = [a3 lowercaseString];
+    lowercaseString = [name lowercaseString];
     objc_sync_enter(self);
-    v8 = [(NSOperationQueue *)self->_fontQueue isSuspended];
+    isSuspended = [(NSOperationQueue *)self->_fontQueue isSuspended];
     [(NSOperationQueue *)self->_fontQueue setSuspended:1];
     objc_opt_class();
-    [(NSMutableDictionary *)self->_loadableFonts objectForKey:v7];
+    [(NSMutableDictionary *)self->_loadableFonts objectForKey:lowercaseString];
     v9 = TSUDynamicCast();
-    if (v9 || (objc_opt_class(), -[NSMutableDictionary objectForKey:](self->_loadableFontFamilies, "objectForKey:", v7), (v9 = [TSUDynamicCast() anyObject]) != 0))
+    if (v9 || (objc_opt_class(), -[NSMutableDictionary objectForKey:](self->_loadableFontFamilies, "objectForKey:", lowercaseString), (v9 = [TSUDynamicCast() anyObject]) != 0))
     {
       [(TSWPLoadableFonts *)self p_loadFontWithInfo:v9];
     }
@@ -132,7 +132,7 @@
       [v10 enumerateObjectsUsingBlock:v11];
     }
 
-    [(NSOperationQueue *)self->_fontQueue setSuspended:v8];
+    [(NSOperationQueue *)self->_fontQueue setSuspended:isSuspended];
     objc_sync_exit(self);
   }
 }
@@ -147,17 +147,17 @@ uint64_t __38__TSWPLoadableFonts_loadFontWithName___block_invoke(uint64_t result
   return result;
 }
 
-- (void)loadFontsForGroup:(id)a3
+- (void)loadFontsForGroup:(id)group
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->_loadableFonts allValues];
+  allValues = [(NSMutableDictionary *)self->_loadableFonts allValues];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__TSWPLoadableFonts_loadFontsForGroup___block_invoke;
   v6[3] = &unk_279D4A208;
-  v6[4] = a3;
+  v6[4] = group;
   v6[5] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [allValues enumerateObjectsUsingBlock:v6];
   objc_sync_exit(self);
 }
 
@@ -174,16 +174,16 @@ uint64_t __39__TSWPLoadableFonts_loadFontsForGroup___block_invoke(uint64_t a1, v
   return result;
 }
 
-- (void)registerFontName:(id)a3 forPath:(id)a4 forGroup:(id)a5 isObfuscated:(BOOL)a6 backgroundLoad:(BOOL)a7
+- (void)registerFontName:(id)name forPath:(id)path forGroup:(id)group isObfuscated:(BOOL)obfuscated backgroundLoad:(BOOL)load
 {
-  v8 = a6;
+  obfuscatedCopy = obfuscated;
   objc_sync_enter(self);
   v13 = objc_alloc_init(TSWPLoadableFontInfo);
-  v14 = [a3 lowercaseString];
-  [(TSWPLoadableFontInfo *)v13 setFontName:v14];
-  [(TSWPLoadableFontInfo *)v13 setGroupUID:a5];
-  [(TSWPLoadableFontInfo *)v13 setFontPath:a4];
-  [(TSWPLoadableFontInfo *)v13 setObfuscated:v8];
+  lowercaseString = [name lowercaseString];
+  [(TSWPLoadableFontInfo *)v13 setFontName:lowercaseString];
+  [(TSWPLoadableFontInfo *)v13 setGroupUID:group];
+  [(TSWPLoadableFontInfo *)v13 setFontPath:path];
+  [(TSWPLoadableFontInfo *)v13 setObfuscated:obfuscatedCopy];
   loadableFonts = self->_loadableFonts;
   if (!loadableFonts)
   {
@@ -191,10 +191,10 @@ uint64_t __39__TSWPLoadableFonts_loadFontsForGroup___block_invoke(uint64_t a1, v
     self->_loadableFonts = loadableFonts;
   }
 
-  if (![(NSMutableDictionary *)loadableFonts objectForKey:v14])
+  if (![(NSMutableDictionary *)loadableFonts objectForKey:lowercaseString])
   {
-    [(NSMutableDictionary *)self->_loadableFonts setObject:v13 forKey:v14];
-    if (a7)
+    [(NSMutableDictionary *)self->_loadableFonts setObject:v13 forKey:lowercaseString];
+    if (load)
     {
       fontQueue = self->_fontQueue;
       v22[0] = MEMORY[0x277D85DD0];
@@ -213,27 +213,27 @@ uint64_t __39__TSWPLoadableFonts_loadFontsForGroup___block_invoke(uint64_t a1, v
         self->_loadableFontFamilies = objc_alloc_init(MEMORY[0x277CBEB38]);
       }
 
-      v17 = [v14 rangeOfString:@"-"];
+      v17 = [lowercaseString rangeOfString:@"-"];
       if (v18)
       {
-        v14 = [v14 substringToIndex:v17];
+        lowercaseString = [lowercaseString substringToIndex:v17];
       }
 
-      [(TSWPLoadableFontInfo *)v13 setFontFamily:v14];
+      [(TSWPLoadableFontInfo *)v13 setFontFamily:lowercaseString];
       objc_opt_class();
-      [(NSMutableDictionary *)self->_loadableFontFamilies objectForKey:v14];
+      [(NSMutableDictionary *)self->_loadableFontFamilies objectForKey:lowercaseString];
       v19 = TSUDynamicCast();
       if (!v19)
       {
         v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
-        [(NSMutableDictionary *)self->_loadableFontFamilies setObject:v19 forKey:v14];
+        [(NSMutableDictionary *)self->_loadableFontFamilies setObject:v19 forKey:lowercaseString];
       }
 
       if ([v19 containsObject:v13])
       {
-        v20 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLoadableFonts registerFontName:forPath:forGroup:isObfuscated:backgroundLoad:]"];
-        [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"), 316, @"Already added this font to this family."}];
+        [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"), 316, @"Already added this font to this family."}];
       }
 
       [v19 addObject:v13];
@@ -243,18 +243,18 @@ uint64_t __39__TSWPLoadableFonts_loadFontsForGroup___block_invoke(uint64_t a1, v
   objc_sync_exit(self);
 }
 
-- (void)unregisterFontsForGroup:(id)a3
+- (void)unregisterFontsForGroup:(id)group
 {
   objc_sync_enter(self);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(NSMutableDictionary *)self->_loadableFonts allValues];
+  allValues = [(NSMutableDictionary *)self->_loadableFonts allValues];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__TSWPLoadableFonts_unregisterFontsForGroup___block_invoke;
   v7[3] = &unk_279D4A208;
-  v7[4] = a3;
+  v7[4] = group;
   v7[5] = v5;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [allValues enumerateObjectsUsingBlock:v7];
   [(NSMutableDictionary *)self->_loadableFonts removeObjectsForKeys:v5];
 
   objc_sync_exit(self);
@@ -274,19 +274,19 @@ uint64_t __45__TSWPLoadableFonts_unregisterFontsForGroup___block_invoke(uint64_t
   return result;
 }
 
-- (void)p_loadFontWithInfo:(id)a3
+- (void)p_loadFontWithInfo:(id)info
 {
-  if ((atomic_fetch_or(a3 + 48, 1u) & 1) == 0)
+  if ((atomic_fetch_or(info + 48, 1u) & 1) == 0)
   {
     error = 0;
-    if ([a3 groupUID] && objc_msgSend(a3, "obfuscated"))
+    if ([info groupUID] && objc_msgSend(info, "obfuscated"))
     {
-      Sequential = CGDataProviderCreateSequential(-[TSWPObfuscatedFontDataProvider initWithPath:groupUID:]([TSWPObfuscatedFontDataProvider alloc], "initWithPath:groupUID:", [a3 fontPath], objc_msgSend(a3, "groupUID")), &-[TSWPLoadableFonts p_loadFontWithInfo:]::unobfuscate);
+      Sequential = CGDataProviderCreateSequential(-[TSWPObfuscatedFontDataProvider initWithPath:groupUID:]([TSWPObfuscatedFontDataProvider alloc], "initWithPath:groupUID:", [info fontPath], objc_msgSend(info, "groupUID")), &-[TSWPLoadableFonts p_loadFontWithInfo:]::unobfuscate);
     }
 
     else
     {
-      Sequential = CGDataProviderCreateWithURL([MEMORY[0x277CBEBC0] fileURLWithPath:{objc_msgSend(a3, "fontPath")}]);
+      Sequential = CGDataProviderCreateWithURL([MEMORY[0x277CBEBC0] fileURLWithPath:{objc_msgSend(info, "fontPath")}]);
     }
 
     v5 = Sequential;
@@ -300,12 +300,12 @@ uint64_t __45__TSWPLoadableFonts_unregisterFontsForGroup___block_invoke(uint64_t
     {
       CGDataProviderRelease(v5);
 LABEL_13:
-      v12 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLoadableFonts p_loadFontWithInfo:]"];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"];
-      v15 = [a3 fontName];
-      v16 = [a3 fontPath];
-      [v12 handleFailureInFunction:v13 file:v14 lineNumber:478 description:{@"failed to load and register font %@ at %@ with error %@", v15, v16, error}];
+      fontName = [info fontName];
+      fontPath = [info fontPath];
+      [currentHandler handleFailureInFunction:v13 file:v14 lineNumber:478 description:{@"failed to load and register font %@ at %@ with error %@", fontName, fontPath, error}];
       return;
     }
 
@@ -313,15 +313,15 @@ LABEL_13:
     v8 = CTFontManagerRegisterGraphicsFont(v6, &error);
     if (v8)
     {
-      [a3 setCgFont:v7];
+      [info setCgFont:v7];
     }
 
     else
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLoadableFonts p_loadFontWithInfo:]"];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLoadableFonts.mm"];
-      [v9 handleFailureInFunction:v10 file:v11 lineNumber:418 description:{@"CTFontManagerRegisterGraphicsFont couldn't register font - %@", error}];
+      [currentHandler2 handleFailureInFunction:v10 file:v11 lineNumber:418 description:{@"CTFontManagerRegisterGraphicsFont couldn't register font - %@", error}];
     }
 
     CGFontRelease(v7);

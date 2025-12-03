@@ -1,9 +1,9 @@
 @interface MTROperationalCredentialsClusterAttestationResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTROperationalCredentialsClusterAttestationResponseParams)init;
-- (MTROperationalCredentialsClusterAttestationResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTROperationalCredentialsClusterAttestationResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTROperationalCredentialsClusterAttestationResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,13 +16,13 @@
   v2 = [(MTROperationalCredentialsClusterAttestationResponseParams *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     attestationElements = v2->_attestationElements;
-    v2->_attestationElements = v3;
+    v2->_attestationElements = data;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
     attestationSignature = v2->_attestationSignature;
-    v2->_attestationSignature = v5;
+    v2->_attestationSignature = data2;
 
     timedInvokeTimeoutMs = v2->_timedInvokeTimeoutMs;
     v2->_timedInvokeTimeoutMs = 0;
@@ -31,17 +31,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterAttestationResponseParams);
-  v5 = [(MTROperationalCredentialsClusterAttestationResponseParams *)self attestationElements];
-  [(MTROperationalCredentialsClusterAttestationResponseParams *)v4 setAttestationElements:v5];
+  attestationElements = [(MTROperationalCredentialsClusterAttestationResponseParams *)self attestationElements];
+  [(MTROperationalCredentialsClusterAttestationResponseParams *)v4 setAttestationElements:attestationElements];
 
-  v6 = [(MTROperationalCredentialsClusterAttestationResponseParams *)self attestationSignature];
-  [(MTROperationalCredentialsClusterAttestationResponseParams *)v4 setAttestationSignature:v6];
+  attestationSignature = [(MTROperationalCredentialsClusterAttestationResponseParams *)self attestationSignature];
+  [(MTROperationalCredentialsClusterAttestationResponseParams *)v4 setAttestationSignature:attestationSignature];
 
-  v7 = [(MTROperationalCredentialsClusterAttestationResponseParams *)self timedInvokeTimeoutMs];
-  [(MTROperationalCredentialsClusterAttestationResponseParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTROperationalCredentialsClusterAttestationResponseParams *)self timedInvokeTimeoutMs];
+  [(MTROperationalCredentialsClusterAttestationResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -303,7 +303,7 @@ LABEL_35:
   return v13;
 }
 
-- (MTROperationalCredentialsClusterAttestationResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTROperationalCredentialsClusterAttestationResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTROperationalCredentialsClusterAttestationResponseParams;
@@ -311,7 +311,7 @@ LABEL_35:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTROperationalCredentialsClusterAttestationResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTROperationalCredentialsClusterAttestationResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -327,12 +327,12 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CBEA90] dataWithBytes:*a3 length:*(a3 + 1)];
+  v5 = [MEMORY[0x277CBEA90] dataWithBytes:*struct length:*(struct + 1)];
   [(MTROperationalCredentialsClusterAttestationResponseParams *)self setAttestationElements:v5];
 
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 2) length:*(a3 + 3)];
+  v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 2) length:*(struct + 3)];
   [(MTROperationalCredentialsClusterAttestationResponseParams *)self setAttestationSignature:v6];
 
   v7 = 0;

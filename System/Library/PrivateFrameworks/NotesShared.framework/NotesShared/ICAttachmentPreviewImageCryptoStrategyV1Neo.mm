@@ -1,19 +1,19 @@
 @interface ICAttachmentPreviewImageCryptoStrategyV1Neo
-- (BOOL)writeEncryptedImageData:(id)a3;
-- (BOOL)writeEncryptedMetadata:(id)a3;
+- (BOOL)writeEncryptedImageData:(id)data;
+- (BOOL)writeEncryptedMetadata:(id)metadata;
 - (id)decryptedImageData;
 - (id)decryptedMetadata;
 - (void)decryptedImageData;
 - (void)decryptedMetadata;
-- (void)serializeEncryptedMetadata:(id)a3;
+- (void)serializeEncryptedMetadata:(id)metadata;
 @end
 
 @implementation ICAttachmentPreviewImageCryptoStrategyV1Neo
 
-- (BOOL)writeEncryptedMetadata:(id)a3
+- (BOOL)writeEncryptedMetadata:(id)metadata
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -28,19 +28,19 @@
   v13[1] = 3221225472;
   v13[2] = __70__ICAttachmentPreviewImageCryptoStrategyV1Neo_writeEncryptedMetadata___block_invoke;
   v13[3] = &unk_278197650;
-  v6 = v4;
+  v6 = metadataCopy;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [(ICCryptoStrategyBase *)self performBlockIfPreviewImageExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v18 + 24)];
     *buf = 138413058;
-    v22 = v11;
+    v22 = shortLoggingDescription;
     v23 = 2112;
     v25 = 2080;
     v24 = v12;
@@ -86,10 +86,10 @@ LABEL_5:
 LABEL_9:
 }
 
-- (BOOL)writeEncryptedImageData:(id)a3
+- (BOOL)writeEncryptedImageData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -105,18 +105,18 @@ LABEL_9:
   v13[2] = __71__ICAttachmentPreviewImageCryptoStrategyV1Neo_writeEncryptedImageData___block_invoke;
   v13[3] = &unk_278197650;
   v13[4] = self;
-  v6 = v4;
+  v6 = dataCopy;
   v14 = v6;
   v15 = &v16;
   [(ICCryptoStrategyBase *)self performBlockIfPreviewImageExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v17 + 24)];
     *buf = 138413058;
-    v21 = v11;
+    v21 = shortLoggingDescription;
     v22 = 2112;
     v24 = 2080;
     v23 = v12;
@@ -192,15 +192,15 @@ void __71__ICAttachmentPreviewImageCryptoStrategyV1Neo_writeEncryptedImageData__
   v2 = [v3 ic_postNotificationOnMainThreadAfterSaveWithName:@"ICAttachmentPreviewImagesDidUpdateNotification"];
 }
 
-- (void)serializeEncryptedMetadata:(id)a3
+- (void)serializeEncryptedMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__ICAttachmentPreviewImageCryptoStrategyV1Neo_serializeEncryptedMetadata___block_invoke;
   v6[3] = &unk_278197678;
-  v7 = v4;
-  v5 = v4;
+  v7 = metadataCopy;
+  v5 = metadataCopy;
   [(ICCryptoStrategyBase *)self performBlockIfPreviewImageExists:v6];
 }
 
@@ -287,11 +287,11 @@ LABEL_12:
   v4 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ICCryptoStrategyBase *)self object];
-    v8 = [v7 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v9 = [MEMORY[0x277CCABB0] numberWithInt:v12[5] != 0];
     *buf = 138413058;
-    v18 = v8;
+    v18 = shortLoggingDescription;
     v19 = 2112;
     v21 = 2080;
     v20 = v9;
@@ -367,11 +367,11 @@ LABEL_7:
   v4 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(ICCryptoStrategyBase *)self object];
-    v8 = [v7 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v9 = [MEMORY[0x277CCABB0] numberWithInt:v12[5] != 0];
     *buf = 138413058;
-    v18 = v8;
+    v18 = shortLoggingDescription;
     v19 = 2112;
     v21 = 2080;
     v20 = v9;
@@ -526,8 +526,8 @@ void __74__ICAttachmentPreviewImageCryptoStrategyV1Neo_serializeEncryptedMetadat
 
 - (void)decryptedMetadata
 {
-  v1 = [a1 object];
-  v2 = [v1 shortLoggingDescription];
+  object = [self object];
+  shortLoggingDescription = [object shortLoggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_1();
   OUTLINED_FUNCTION_3_6(&dword_214D51000, v3, v4, "Decrypting preview image metadata… {previewImage: %@}%s:%d", v5, v6, v7, v8, v9);
@@ -542,8 +542,8 @@ void __64__ICAttachmentPreviewImageCryptoStrategyV1Neo_decryptedMetadata__block_
 
 - (void)decryptedImageData
 {
-  v1 = [a1 object];
-  v2 = [v1 shortLoggingDescription];
+  object = [self object];
+  shortLoggingDescription = [object shortLoggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_1();
   OUTLINED_FUNCTION_3_6(&dword_214D51000, v3, v4, "Decrypting preview image data… {previewImage: %@}%s:%d", v5, v6, v7, v8, v9);

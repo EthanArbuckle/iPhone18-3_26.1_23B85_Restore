@@ -1,10 +1,10 @@
 @interface SearchHomeUserGuidesDataProvider
 - (NSArray)objects;
 - (_TtC4Maps32SearchHomeUserGuidesDataProvider)init;
-- (_TtC4Maps32SearchHomeUserGuidesDataProvider)initWithObjects:(id)a3 type:(int64_t)a4 identifier:(id)a5 title:(id)a6;
+- (_TtC4Maps32SearchHomeUserGuidesDataProvider)initWithObjects:(id)objects type:(int64_t)type identifier:(id)identifier title:(id)title;
 - (id)headerAccessibilityIdentifier;
-- (void)deleteEntryAtIndex:(unint64_t)a3;
-- (void)setObjects:(id)a3;
+- (void)deleteEntryAtIndex:(unint64_t)index;
+- (void)setObjects:(id)objects;
 @end
 
 @implementation SearchHomeUserGuidesDataProvider
@@ -18,7 +18,7 @@
   return v2.super.isa;
 }
 
-- (void)setObjects:(id)a3
+- (void)setObjects:(id)objects
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR____TtC4Maps32SearchHomeUserGuidesDataProvider_objects;
@@ -26,14 +26,14 @@
   *(self + v5) = v4;
 }
 
-- (_TtC4Maps32SearchHomeUserGuidesDataProvider)initWithObjects:(id)a3 type:(int64_t)a4 identifier:(id)a5 title:(id)a6
+- (_TtC4Maps32SearchHomeUserGuidesDataProvider)initWithObjects:(id)objects type:(int64_t)type identifier:(id)identifier title:(id)title
 {
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   *(self + OBJC_IVAR____TtC4Maps32SearchHomeUserGuidesDataProvider_objects) = v8;
-  *(self + OBJC_IVAR____TtC4Maps32SearchHomeUserGuidesDataProvider_type) = a4;
+  *(self + OBJC_IVAR____TtC4Maps32SearchHomeUserGuidesDataProvider_type) = type;
   v13 = (self + OBJC_IVAR____TtC4Maps32SearchHomeUserGuidesDataProvider_identifier);
   *v13 = v9;
   v13[1] = v11;
@@ -59,10 +59,10 @@
   return result;
 }
 
-- (void)deleteEntryAtIndex:(unint64_t)a3
+- (void)deleteEntryAtIndex:(unint64_t)index
 {
-  v4 = self;
-  sub_100134304(a3);
+  selfCopy = self;
+  sub_100134304(index);
 }
 
 @end

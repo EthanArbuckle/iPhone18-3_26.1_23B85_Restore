@@ -25,7 +25,7 @@
 - (void)saveProbeOrderList
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_24A929000, a1, a3, "%s: Can't get probe order URL, can't save probe order", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_24A929000, self, a3, "%s: Can't get probe order URL, can't save probe order", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -39,7 +39,7 @@
 - (void)saveEnabledList
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_24A929000, a1, a3, "%s: Can't get enabled list URL, can't save enabled list", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_24A929000, self, a3, "%s: Can't get enabled list URL, can't save enabled list", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,20 +1,20 @@
 @interface DBMutableWorkspaceStateChangeRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)activateApplication:(id)a3;
-- (void)activateApplication:(id)a3 withSettings:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)activateApplication:(id)application;
+- (void)activateApplication:(id)application withSettings:(id)settings;
 - (void)activateHomeScreen;
-- (void)activateOEMPunchthrough:(id)a3;
+- (void)activateOEMPunchthrough:(id)punchthrough;
 - (void)activateSiri;
 - (void)activateSiriFloating;
-- (void)activateStackedApplication:(id)a3;
-- (void)activateStackedApplication:(id)a3 withSettings:(id)a4;
-- (void)addChangeItem:(id)a3;
-- (void)deactivateApplication:(id)a3;
-- (void)deactivateOEMPunchthrough:(id)a3;
+- (void)activateStackedApplication:(id)application;
+- (void)activateStackedApplication:(id)application withSettings:(id)settings;
+- (void)addChangeItem:(id)item;
+- (void)deactivateApplication:(id)application;
+- (void)deactivateOEMPunchthrough:(id)punchthrough;
 - (void)deactivateSiri;
-- (void)destroyApplication:(id)a3;
-- (void)removeChangeItem:(id)a3;
+- (void)destroyApplication:(id)application;
+- (void)removeChangeItem:(id)item;
 @end
 
 @implementation DBMutableWorkspaceStateChangeRequest
@@ -27,52 +27,52 @@
   [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v3];
 }
 
-- (void)addChangeItem:(id)a3
+- (void)addChangeItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   changeItems = self->super._changeItems;
-  v8 = v4;
+  v8 = itemCopy;
   if (!changeItems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->super._changeItems;
     self->super._changeItems = v6;
 
-    v4 = v8;
+    itemCopy = v8;
     changeItems = self->super._changeItems;
   }
 
-  [(NSMutableArray *)changeItems addObject:v4];
+  [(NSMutableArray *)changeItems addObject:itemCopy];
 }
 
-- (void)removeChangeItem:(id)a3
+- (void)removeChangeItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     [(NSMutableArray *)self->super._changeItems removeObject:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DBWorkspaceStateChangeRequest alloc];
 
   return [(DBWorkspaceStateChangeRequest *)v4 _initWithRequest:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DBMutableWorkspaceStateChangeRequest alloc];
 
   return [(DBWorkspaceStateChangeRequest *)v4 _initWithRequest:self];
 }
 
-- (void)deactivateApplication:(id)a3
+- (void)deactivateApplication:(id)application
 {
-  v4 = a3;
-  if (v4)
+  applicationCopy = application;
+  if (applicationCopy)
   {
-    v5 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:v4];
+    v5 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:applicationCopy];
     [(DBDashboardWorkspaceStateChangeItem *)v5 setChangeType:1];
     [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v5];
   }
@@ -87,12 +87,12 @@
   }
 }
 
-- (void)destroyApplication:(id)a3
+- (void)destroyApplication:(id)application
 {
-  v4 = a3;
-  if (v4)
+  applicationCopy = application;
+  if (applicationCopy)
   {
-    v5 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:v4];
+    v5 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:applicationCopy];
     [(DBDashboardWorkspaceStateChangeItem *)v5 setChangeType:2];
     [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v5];
   }
@@ -107,12 +107,12 @@
   }
 }
 
-- (void)activateApplication:(id)a3
+- (void)activateApplication:(id)application
 {
-  v4 = a3;
-  if (v4)
+  applicationCopy = application;
+  if (applicationCopy)
   {
-    v5 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:v4];
+    v5 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:applicationCopy];
     [(DBDashboardWorkspaceStateChangeItem *)v5 setChangeType:0];
     [(DBDashboardWorkspaceStateChangeItem *)v5 setPresentationPreference:1];
     [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v5];
@@ -128,16 +128,16 @@
   }
 }
 
-- (void)activateApplication:(id)a3 withSettings:(id)a4
+- (void)activateApplication:(id)application withSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  applicationCopy = application;
+  settingsCopy = settings;
+  if (applicationCopy)
   {
-    v8 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:v6];
+    v8 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:applicationCopy];
     [(DBDashboardWorkspaceStateChangeItem *)v8 setChangeType:0];
     [(DBDashboardWorkspaceStateChangeItem *)v8 setPresentationPreference:1];
-    [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)v8 setActivationSettings:v7];
+    [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)v8 setActivationSettings:settingsCopy];
     [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v8];
   }
 
@@ -151,12 +151,12 @@
   }
 }
 
-- (void)activateStackedApplication:(id)a3
+- (void)activateStackedApplication:(id)application
 {
-  v4 = a3;
-  if (v4)
+  applicationCopy = application;
+  if (applicationCopy)
   {
-    v5 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:v4];
+    v5 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:applicationCopy];
     [(DBDashboardWorkspaceStateChangeItem *)v5 setChangeType:0];
     [(DBDashboardWorkspaceStateChangeItem *)v5 setPresentationPreference:2];
     [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v5];
@@ -172,16 +172,16 @@
   }
 }
 
-- (void)activateStackedApplication:(id)a3 withSettings:(id)a4
+- (void)activateStackedApplication:(id)application withSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  applicationCopy = application;
+  settingsCopy = settings;
+  if (applicationCopy)
   {
-    v8 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:v6];
+    v8 = [[DBDashboardWorkspaceStateApplicationSceneChangeItem alloc] initWithApplication:applicationCopy];
     [(DBDashboardWorkspaceStateChangeItem *)v8 setChangeType:0];
     [(DBDashboardWorkspaceStateChangeItem *)v8 setPresentationPreference:2];
-    [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)v8 setActivationSettings:v7];
+    [(DBDashboardWorkspaceStateApplicationSceneChangeItem *)v8 setActivationSettings:settingsCopy];
     [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v8];
   }
 
@@ -219,23 +219,23 @@
   [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v3];
 }
 
-- (void)activateOEMPunchthrough:(id)a3
+- (void)activateOEMPunchthrough:(id)punchthrough
 {
-  v4 = a3;
+  punchthroughCopy = punchthrough;
   v5 = objc_alloc_init(DBDashboardWorkspaceStateOEMPunchthroughChangeItem);
-  [(DBDashboardWorkspaceStateOEMPunchthroughChangeItem *)v5 setOemPunchthroughIdentifier:v4];
+  [(DBDashboardWorkspaceStateOEMPunchthroughChangeItem *)v5 setOemPunchthroughIdentifier:punchthroughCopy];
 
   [(DBDashboardWorkspaceStateChangeItem *)v5 setPresentationPreference:2];
   [(DBDashboardWorkspaceStateChangeItem *)v5 setChangeType:0];
   [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v5];
 }
 
-- (void)deactivateOEMPunchthrough:(id)a3
+- (void)deactivateOEMPunchthrough:(id)punchthrough
 {
-  v4 = a3;
+  punchthroughCopy = punchthrough;
   v5 = objc_alloc_init(DBDashboardWorkspaceStateOEMPunchthroughChangeItem);
   [(DBDashboardWorkspaceStateChangeItem *)v5 setChangeType:1];
-  [(DBDashboardWorkspaceStateOEMPunchthroughChangeItem *)v5 setOemPunchthroughIdentifier:v4];
+  [(DBDashboardWorkspaceStateOEMPunchthroughChangeItem *)v5 setOemPunchthroughIdentifier:punchthroughCopy];
 
   [(DBMutableWorkspaceStateChangeRequest *)self addChangeItem:v5];
 }

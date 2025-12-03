@@ -1,27 +1,27 @@
 @interface HDProtectedDataOperationScheduler
-- (HDProtectedDataOperationScheduler)initWithProfile:(id)a3;
+- (HDProtectedDataOperationScheduler)initWithProfile:(id)profile;
 - (id)diagnosticDescription;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)registerProtectedDataAvailableObserver:(id)a3;
-- (void)startEnqueuedWorkWithName:(id)a3;
-- (void)startWorkNow:(BOOL)a3 name:(id)a4 asynchronousBlock:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)registerObserver:(id)observer;
+- (void)registerProtectedDataAvailableObserver:(id)observer;
+- (void)startEnqueuedWorkWithName:(id)name;
+- (void)startWorkNow:(BOOL)now name:(id)name asynchronousBlock:(id)block;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDProtectedDataOperationScheduler
 
-- (HDProtectedDataOperationScheduler)initWithProfile:(id)a3
+- (HDProtectedDataOperationScheduler)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v21.receiver = self;
   v21.super_class = HDProtectedDataOperationScheduler;
   v5 = [(HDProtectedDataOperationScheduler *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     clientQueue = v6->_clientQueue;
     v6->_clientQueue = v7;
@@ -41,24 +41,24 @@
     clientQueue_clientsAwaitingProtectedDataAvailable = v6->_clientQueue_clientsAwaitingProtectedDataAvailable;
     v6->_clientQueue_clientsAwaitingProtectedDataAvailable = v17;
 
-    v19 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v19 addObject:v6];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v6];
   }
 
   return v6;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HDProtectedDataOperationScheduler_registerObserver___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(clientQueue, v7);
 }
 
@@ -80,17 +80,17 @@ void __54__HDProtectedDataOperationScheduler_registerObserver___block_invoke(uin
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HDProtectedDataOperationScheduler_unregisterObserver___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(clientQueue, v7);
 }
 
@@ -103,17 +103,17 @@ uint64_t __56__HDProtectedDataOperationScheduler_unregisterObserver___block_invo
   return [v3 unregisterObserver:v2];
 }
 
-- (void)registerProtectedDataAvailableObserver:(id)a3
+- (void)registerProtectedDataAvailableObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__HDProtectedDataOperationScheduler_registerProtectedDataAvailableObserver___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(clientQueue, v7);
 }
 
@@ -144,38 +144,38 @@ uint64_t __76__HDProtectedDataOperationScheduler_registerProtectedDataAvailableO
   }
 }
 
-- (void)startWorkNow:(BOOL)a3 name:(id)a4 asynchronousBlock:(id)a5
+- (void)startWorkNow:(BOOL)now name:(id)name asynchronousBlock:(id)block
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
+  nowCopy = now;
+  blockCopy = block;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
-  v16 = [HDMaintenanceOperation maintenanceOperationWithName:v9 database:v11 asynchronousBlock:v8];
+  database = [WeakRetained database];
+  v16 = [HDMaintenanceOperation maintenanceOperationWithName:nameCopy database:database asynchronousBlock:blockCopy];
 
   v12 = objc_loadWeakRetained(&self->_profile);
-  v13 = [v12 daemon];
-  v14 = [v13 maintenanceWorkCoordinator];
-  v15 = v14;
-  if (v6)
+  daemon = [v12 daemon];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+  v15 = maintenanceWorkCoordinator;
+  if (nowCopy)
   {
-    [v14 startOperationImmediately:v16];
+    [maintenanceWorkCoordinator startOperationImmediately:v16];
   }
 
   else
   {
-    [v14 enqueueMaintenanceOperation:v16];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v16];
   }
 }
 
-- (void)startEnqueuedWorkWithName:(id)a3
+- (void)startEnqueuedWorkWithName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained daemon];
-  v7 = [v6 maintenanceWorkCoordinator];
-  v8 = [v7 startNextOperationWithNameImmediately:v4];
+  daemon = [WeakRetained daemon];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+  v8 = [maintenanceWorkCoordinator startNextOperationWithNameImmediately:nameCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -186,7 +186,7 @@ uint64_t __76__HDProtectedDataOperationScheduler_registerProtectedDataAvailableO
       v12 = 138543618;
       v13 = objc_opt_class();
       v14 = 2114;
-      v15 = v4;
+      v15 = nameCopy;
       v10 = v13;
       _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did not find a pending operation with name: %{public}@", &v12, 0x16u);
     }
@@ -195,7 +195,7 @@ uint64_t __76__HDProtectedDataOperationScheduler_registerProtectedDataAvailableO
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   self->_queue_hasNotifiedForProfileReady = 1;
@@ -216,11 +216,11 @@ uint64_t __76__HDProtectedDataOperationScheduler_registerProtectedDataAvailableO
   v9 = 3221225472;
   v10 = __58__HDProtectedDataOperationScheduler_diagnosticDescription__block_invoke;
   v11 = &unk_278613920;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   dispatch_async_and_wait(clientQueue, &v8);
-  v6 = [v5 componentsJoinedByString:{@"\n", v8, v9, v10, v11, v12}];
+  v6 = [v5 componentsJoinedByString:{@"\n", v8, v9, v10, v11, selfCopy}];
 
   return v6;
 }
@@ -243,12 +243,12 @@ void __58__HDProtectedDataOperationScheduler_diagnosticDescription__block_invoke
   [v2 addObject:v3];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   v24 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (v4)
+  if (availableCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     clientQueue_clientsAwaitingProtectedDataAvailable = self->_clientQueue_clientsAwaitingProtectedDataAvailable;
@@ -291,8 +291,8 @@ void __58__HDProtectedDataOperationScheduler_diagnosticDescription__block_invoke
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v15 = [WeakRetained database];
-    [v15 removeProtectedDataObserver:self];
+    database = [WeakRetained database];
+    [database removeProtectedDataObserver:self];
   }
 
   v16 = *MEMORY[0x277D85DE8];

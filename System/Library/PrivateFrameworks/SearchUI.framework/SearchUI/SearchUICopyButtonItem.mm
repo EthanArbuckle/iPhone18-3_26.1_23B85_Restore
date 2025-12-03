@@ -1,20 +1,20 @@
 @interface SearchUICopyButtonItem
 + (double)offsetSinceLastPasteboardUpdate;
-+ (void)pasteboardWasUpdatedWithObject:(id)a3;
++ (void)pasteboardWasUpdatedWithObject:(id)object;
 - (BOOL)pasteboardStringMatches;
-- (SearchUICopyButtonItem)initWithSFButtonItem:(id)a3;
+- (SearchUICopyButtonItem)initWithSFButtonItem:(id)item;
 - (id)stateSymbolTransition;
-- (void)didUpdatePasteboard:(id)a3;
-- (void)setStatus:(unint64_t)a3;
+- (void)didUpdatePasteboard:(id)pasteboard;
+- (void)setStatus:(unint64_t)status;
 @end
 
 @implementation SearchUICopyButtonItem
 
-- (SearchUICopyButtonItem)initWithSFButtonItem:(id)a3
+- (SearchUICopyButtonItem)initWithSFButtonItem:(id)item
 {
   v8.receiver = self;
   v8.super_class = SearchUICopyButtonItem;
-  v3 = [(SearchUIButtonItem *)&v8 initWithSFButtonItem:a3];
+  v3 = [(SearchUIButtonItem *)&v8 initWithSFButtonItem:item];
   if (v3)
   {
     v4 = *MEMORY[0x1E69DE270];
@@ -24,16 +24,16 @@
       [(SearchUICopyButtonItem *)v3 setStatus:1];
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel_didUpdatePasteboard_ name:v4 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_didUpdatePasteboard_ name:v4 object:0];
   }
 
   return v3;
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
-  if ([(SearchUIButtonItem *)self status]!= a3)
+  if ([(SearchUIButtonItem *)self status]!= status)
   {
     v5 = self->_statusTimer;
     v6 = v5;
@@ -44,7 +44,7 @@
       self->_statusTimer = 0;
     }
 
-    if (a3 == 1)
+    if (status == 1)
     {
       +[SearchUICopyButtonItem offsetSinceLastPasteboardUpdate];
       if (v8 < 2.0)
@@ -74,7 +74,7 @@
     {
       v13.receiver = self;
       v13.super_class = SearchUICopyButtonItem;
-      [(SearchUIButtonItem *)&v13 setStatus:a3];
+      [(SearchUIButtonItem *)&v13 setStatus:status];
     }
   }
 }
@@ -91,29 +91,29 @@ void __36__SearchUICopyButtonItem_setStatus___block_invoke(uint64_t a1)
 {
   if ([(SearchUIButtonItem *)self status]== 1)
   {
-    v2 = 0;
+    replaceUpUpTransition = 0;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E6982288] replaceUpUpTransition];
+    replaceUpUpTransition = [MEMORY[0x1E6982288] replaceUpUpTransition];
   }
 
-  return v2;
+  return replaceUpUpTransition;
 }
 
 - (BOOL)pasteboardStringMatches
 {
-  v3 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v4 = [v3 string];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  string = [generalPasteboard string];
 
-  v5 = [(SearchUIButtonItem *)self command];
-  v6 = [v5 copyableItem];
+  command = [(SearchUIButtonItem *)self command];
+  copyableItem = [command copyableItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 copyableString];
-    v8 = [v7 isEqualToString:v4];
+    copyableString = [copyableItem copyableString];
+    v8 = [copyableString isEqualToString:string];
   }
 
   else
@@ -124,35 +124,35 @@ void __36__SearchUICopyButtonItem_setStatus___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)didUpdatePasteboard:(id)a3
+- (void)didUpdatePasteboard:(id)pasteboard
 {
   [SearchUICopyButtonItem pasteboardWasUpdatedWithObject:0];
   [(SearchUICopyButtonItem *)self setStatus:[(SearchUICopyButtonItem *)self pasteboardStringMatches]];
-  v4 = [(SearchUIButtonItem *)self delegate];
-  [v4 stateDidChangeForButtonItem:self];
+  delegate = [(SearchUIButtonItem *)self delegate];
+  [delegate stateDidChangeForButtonItem:self];
 }
 
-+ (void)pasteboardWasUpdatedWithObject:(id)a3
++ (void)pasteboardWasUpdatedWithObject:(id)object
 {
-  v7 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = [MEMORY[0x1E695DF00] now];
   [v5 timeIntervalSince1970];
   sLastCopyTimestamp = v6;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 + (double)offsetSinceLastPasteboardUpdate
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = [MEMORY[0x1E695DF00] now];
   [v3 timeIntervalSince1970];
   v5 = v4 - *&sLastCopyTimestamp;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 

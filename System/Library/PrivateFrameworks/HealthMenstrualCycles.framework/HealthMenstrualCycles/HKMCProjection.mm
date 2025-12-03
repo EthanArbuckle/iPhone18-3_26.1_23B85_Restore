@@ -2,20 +2,20 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)allDays;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)mostLikelyDays;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)startDayRange;
-- (BOOL)isEqual:(id)a3;
-- (HKMCProjection)initWithCoder:(id)a3;
-- (HKMCProjection)initWithStartMean:(double)a3 startStandardDeviation:(double)a4 endMean:(double)a5 endStandardDeviation:(double)a6 allDays:(id)a7 partiallyLogged:(BOOL)a8 daysOffsetFromCalendarMethod:(int64_t)a9 predictionPrimarySource:(int64_t)a10;
+- (BOOL)isEqual:(id)equal;
+- (HKMCProjection)initWithCoder:(id)coder;
+- (HKMCProjection)initWithStartMean:(double)mean startStandardDeviation:(double)deviation endMean:(double)endMean endStandardDeviation:(double)standardDeviation allDays:(id)days partiallyLogged:(BOOL)logged daysOffsetFromCalendarMethod:(int64_t)method predictionPrimarySource:(int64_t)self0;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCProjection
 
-- (HKMCProjection)initWithStartMean:(double)a3 startStandardDeviation:(double)a4 endMean:(double)a5 endStandardDeviation:(double)a6 allDays:(id)a7 partiallyLogged:(BOOL)a8 daysOffsetFromCalendarMethod:(int64_t)a9 predictionPrimarySource:(int64_t)a10
+- (HKMCProjection)initWithStartMean:(double)mean startStandardDeviation:(double)deviation endMean:(double)endMean endStandardDeviation:(double)standardDeviation allDays:(id)days partiallyLogged:(BOOL)logged daysOffsetFromCalendarMethod:(int64_t)method predictionPrimarySource:(int64_t)self0
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
+  var1 = days.var1;
+  var0 = days.var0;
   v31.receiver = self;
   v31.super_class = HKMCProjection;
   v20 = [(HKMCProjection *)&v31 init];
@@ -25,19 +25,19 @@
     goto LABEL_15;
   }
 
-  v20->_startMean = a3;
-  v20->_startStandardDeviation = a4;
-  v20->_endMean = a5;
-  v20->_endStandardDeviation = a6;
+  v20->_startMean = mean;
+  v20->_startStandardDeviation = deviation;
+  v20->_endMean = endMean;
+  v20->_endStandardDeviation = standardDeviation;
   v20->_allDays.start = var0;
   v20->_allDays.duration = var1;
-  v20->_partiallyLogged = a8;
-  v20->_daysOffsetFromCalendarMethod = a9;
-  v20->_predictionPrimarySource = a10;
-  v22 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v23 = [v22 isAppleInternalInstall];
+  v20->_partiallyLogged = logged;
+  v20->_daysOffsetFromCalendarMethod = method;
+  v20->_predictionPrimarySource = source;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-  if (v23)
+  if (isAppleInternalInstall)
   {
     [(HKMCProjection *)v21 mostLikelyDays];
     if (HKUnionDayIndexRange() != var0 || v24 != var1)
@@ -68,42 +68,42 @@ LABEL_15:
   return v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startMean = self->_startMean;
-  v5 = a3;
-  [v5 encodeDouble:@"StartMean" forKey:startMean];
-  [v5 encodeDouble:@"StartStandardDeviation" forKey:self->_startStandardDeviation];
-  [v5 encodeDouble:@"EndMean" forKey:self->_endMean];
-  [v5 encodeDouble:@"EndStandardDeviation" forKey:self->_endStandardDeviation];
-  [v5 encodeInteger:self->_allDays.start forKey:@"AllDaysStart"];
-  [v5 encodeInteger:self->_allDays.duration forKey:@"AllDaysDuration"];
-  [v5 encodeBool:self->_partiallyLogged forKey:@"PartiallyLogged"];
-  [v5 encodeInteger:self->_daysOffsetFromCalendarMethod forKey:@"DaysOffsetFromCalendarMethod"];
-  [v5 encodeInteger:self->_predictionPrimarySource forKey:@"PredictionPrimarySource"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"StartMean" forKey:startMean];
+  [coderCopy encodeDouble:@"StartStandardDeviation" forKey:self->_startStandardDeviation];
+  [coderCopy encodeDouble:@"EndMean" forKey:self->_endMean];
+  [coderCopy encodeDouble:@"EndStandardDeviation" forKey:self->_endStandardDeviation];
+  [coderCopy encodeInteger:self->_allDays.start forKey:@"AllDaysStart"];
+  [coderCopy encodeInteger:self->_allDays.duration forKey:@"AllDaysDuration"];
+  [coderCopy encodeBool:self->_partiallyLogged forKey:@"PartiallyLogged"];
+  [coderCopy encodeInteger:self->_daysOffsetFromCalendarMethod forKey:@"DaysOffsetFromCalendarMethod"];
+  [coderCopy encodeInteger:self->_predictionPrimarySource forKey:@"PredictionPrimarySource"];
 }
 
-- (HKMCProjection)initWithCoder:(id)a3
+- (HKMCProjection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKMCProjection;
   v5 = [(HKMCProjection *)&v11 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"StartMean"];
+    [coderCopy decodeDoubleForKey:@"StartMean"];
     v5->_startMean = v6;
-    [v4 decodeDoubleForKey:@"StartStandardDeviation"];
+    [coderCopy decodeDoubleForKey:@"StartStandardDeviation"];
     v5->_startStandardDeviation = v7;
-    [v4 decodeDoubleForKey:@"EndMean"];
+    [coderCopy decodeDoubleForKey:@"EndMean"];
     v5->_endMean = v8;
-    [v4 decodeDoubleForKey:@"EndStandardDeviation"];
+    [coderCopy decodeDoubleForKey:@"EndStandardDeviation"];
     v5->_endStandardDeviation = v9;
-    v5->_allDays.start = [v4 decodeIntegerForKey:@"AllDaysStart"];
-    v5->_allDays.duration = [v4 decodeIntegerForKey:@"AllDaysDuration"];
-    v5->_partiallyLogged = [v4 decodeBoolForKey:@"PartiallyLogged"];
-    v5->_daysOffsetFromCalendarMethod = [v4 decodeIntegerForKey:@"DaysOffsetFromCalendarMethod"];
-    v5->_predictionPrimarySource = [v4 decodeIntegerForKey:@"PredictionPrimarySource"];
+    v5->_allDays.start = [coderCopy decodeIntegerForKey:@"AllDaysStart"];
+    v5->_allDays.duration = [coderCopy decodeIntegerForKey:@"AllDaysDuration"];
+    v5->_partiallyLogged = [coderCopy decodeBoolForKey:@"PartiallyLogged"];
+    v5->_daysOffsetFromCalendarMethod = [coderCopy decodeIntegerForKey:@"DaysOffsetFromCalendarMethod"];
+    v5->_predictionPrimarySource = [coderCopy decodeIntegerForKey:@"PredictionPrimarySource"];
   }
 
   return v5;
@@ -147,29 +147,29 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
     goto LABEL_14;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || vabdd_f64(self->_startMean, v4->_startMean) >= 2.22044605e-16 || vabdd_f64(self->_startStandardDeviation, v4->_startStandardDeviation) >= 2.22044605e-16 || vabdd_f64(self->_endMean, v4->_endMean) >= 2.22044605e-16 || vabdd_f64(self->_endStandardDeviation, v4->_endStandardDeviation) >= 2.22044605e-16)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || vabdd_f64(self->_startMean, equalCopy->_startMean) >= 2.22044605e-16 || vabdd_f64(self->_startStandardDeviation, equalCopy->_startStandardDeviation) >= 2.22044605e-16 || vabdd_f64(self->_endMean, equalCopy->_endMean) >= 2.22044605e-16 || vabdd_f64(self->_endStandardDeviation, equalCopy->_endStandardDeviation) >= 2.22044605e-16)
   {
     goto LABEL_12;
   }
 
-  v5 = [(HKMCProjection *)self allDays];
+  allDays = [(HKMCProjection *)self allDays];
   v7 = v6;
   v9 = 0;
-  if (v5 == [(HKMCProjection *)v4 allDays]&& v7 == v8)
+  if (allDays == [(HKMCProjection *)equalCopy allDays]&& v7 == v8)
   {
-    if (self->_partiallyLogged == v4->_partiallyLogged && self->_daysOffsetFromCalendarMethod == v4->_daysOffsetFromCalendarMethod)
+    if (self->_partiallyLogged == equalCopy->_partiallyLogged && self->_daysOffsetFromCalendarMethod == equalCopy->_daysOffsetFromCalendarMethod)
     {
-      v9 = self->_predictionPrimarySource == v4->_predictionPrimarySource;
+      v9 = self->_predictionPrimarySource == equalCopy->_predictionPrimarySource;
       goto LABEL_14;
     }
 

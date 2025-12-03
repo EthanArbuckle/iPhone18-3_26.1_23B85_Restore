@@ -35,27 +35,27 @@
 + (VOSSettingsItem)TypingStyle;
 + (VOSSettingsItem)Voice;
 + (VOSSettingsItem)Volume;
-+ (id)settingsIDtoItemMap:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)settingsIDtoItemMap:(id)map;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedName;
-- (id)_initWithIdentifier:(id)a3 itemType:(int64_t)a4;
+- (id)_initWithIdentifier:(id)identifier itemType:(int64_t)type;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation VOSSettingsItem
 
-- (id)_initWithIdentifier:(id)a3 itemType:(int64_t)a4
+- (id)_initWithIdentifier:(id)identifier itemType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = VOSSettingsItem;
   v7 = [(VOSSettingsItem *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(VOSSettingsItem *)v7 setIdentifier:v6];
-    [(VOSSettingsItem *)v8 setItemType:a4];
+    [(VOSSettingsItem *)v7 setIdentifier:identifierCopy];
+    [(VOSSettingsItem *)v8 setItemType:type];
   }
 
   return v8;
@@ -64,21 +64,21 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(VOSSettingsItem *)self identifier];
-  v4 = [v2 stringWithFormat:@"VOSSettingsItem '%@'", v3];
+  identifier = [(VOSSettingsItem *)self identifier];
+  v4 = [v2 stringWithFormat:@"VOSSettingsItem '%@'", identifier];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(VOSSettingsItem *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [(VOSSettingsItem *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -91,8 +91,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VOSSettingsItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(VOSSettingsItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -884,16 +884,16 @@ uint64_t __35__VOSSettingsItem_allSettingsItems__block_invoke_3(uint64_t a1, voi
   return v10;
 }
 
-+ (id)settingsIDtoItemMap:(id)a3
++ (id)settingsIDtoItemMap:(id)map
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  mapCopy = map;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = mapCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -909,8 +909,8 @@ uint64_t __35__VOSSettingsItem_allSettingsItems__block_invoke_3(uint64_t a1, voi
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        identifier = [v10 identifier];
+        [dictionary setObject:v10 forKeyedSubscript:identifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -921,14 +921,14 @@ uint64_t __35__VOSSettingsItem_allSettingsItems__block_invoke_3(uint64_t a1, voi
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 - (NSString)localizedName
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(VOSSettingsItem *)self identifier];
-  v4 = [v2 stringWithFormat:@"VOSSettingsItem.%@", v3];
+  identifier = [(VOSSettingsItem *)self identifier];
+  v4 = [v2 stringWithFormat:@"VOSSettingsItem.%@", identifier];
 
   v5 = VOSLocString(v4);
 

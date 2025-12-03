@@ -1,13 +1,13 @@
 @interface NLSearchParserManager
 + (NLSearchParserManager)defaultManager;
 + (id)availableLanguages;
-- (NLSearchParserManager)initWithLocale:(id)a3 context:(id)a4 options:(id)a5;
-- (NLSearchParserManager)initWithOptions:(id)a3;
-- (id)tokenizeAndEnumerateAttributedParsesForQuery:(id)a3 options:(id)a4 withBlock:(id)a5;
+- (NLSearchParserManager)initWithLocale:(id)locale context:(id)context options:(id)options;
+- (NLSearchParserManager)initWithOptions:(id)options;
+- (id)tokenizeAndEnumerateAttributedParsesForQuery:(id)query options:(id)options withBlock:(id)block;
 - (void)dealloc;
-- (void)enumerateAttributedParsesForQuery:(id)a3 options:(id)a4 withBlock:(id)a5;
-- (void)enumerateDateRangeAttributedParseForOptions:(id)a3 withBlock:(id)a4;
-- (void)enumerateSearchSuggestions:(id)a3 options:(id)a4 withBlock:(id)a5;
+- (void)enumerateAttributedParsesForQuery:(id)query options:(id)options withBlock:(id)block;
+- (void)enumerateDateRangeAttributedParseForOptions:(id)options withBlock:(id)block;
+- (void)enumerateSearchSuggestions:(id)suggestions options:(id)options withBlock:(id)block;
 @end
 
 @implementation NLSearchParserManager
@@ -40,7 +40,7 @@ NLSearchParserManager *__39__NLSearchParserManager_defaultManager__block_invoke(
   return v2;
 }
 
-- (NLSearchParserManager)initWithOptions:(id)a3
+- (NLSearchParserManager)initWithOptions:(id)options
 {
   v4.receiver = self;
   v4.super_class = NLSearchParserManager;
@@ -52,28 +52,28 @@ NLSearchParserManager *__39__NLSearchParserManager_defaultManager__block_invoke(
   return 0;
 }
 
-- (NLSearchParserManager)initWithLocale:(id)a3 context:(id)a4 options:(id)a5
+- (NLSearchParserManager)initWithLocale:(id)locale context:(id)context options:(id)options
 {
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a5];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:options];
   v9 = v8;
-  if (a3)
+  if (locale)
   {
-    [v8 setObject:a3 forKey:@"locale"];
+    [v8 setObject:locale forKey:@"locale"];
   }
 
-  if (a4)
+  if (context)
   {
-    [v9 setObject:a4 forKey:@"contextIdentifier"];
+    [v9 setObject:context forKey:@"contextIdentifier"];
   }
 
   return [(NLSearchParserManager *)self initWithOptions:v9];
 }
 
-- (void)enumerateDateRangeAttributedParseForOptions:(id)a3 withBlock:(id)a4
+- (void)enumerateDateRangeAttributedParseForOptions:(id)options withBlock:(id)block
 {
-  if ([a3 valueForKey:@"startDateQuery"] && objc_msgSend(a3, "valueForKey:", @"startDateQuery") && objc_msgSend(a3, "valueForKey:", @"endDateQuery"))
+  if ([options valueForKey:@"startDateQuery"] && objc_msgSend(options, "valueForKey:", @"startDateQuery") && objc_msgSend(options, "valueForKey:", @"endDateQuery"))
   {
-    if ([a3 valueForKey:@"endDateQuery"])
+    if ([options valueForKey:@"endDateQuery"])
     {
       v8[0] = 0;
       v8[1] = v8;
@@ -84,10 +84,10 @@ NLSearchParserManager *__39__NLSearchParserManager_defaultManager__block_invoke(
       v7[2] = __79__NLSearchParserManager_enumerateDateRangeAttributedParseForOptions_withBlock___block_invoke;
       v7[3] = &unk_278740700;
       v7[4] = self;
-      v7[5] = a3;
-      v7[6] = a4;
+      v7[5] = options;
+      v7[6] = block;
       v7[7] = v8;
-      [(NLSearchParserManager *)self enumerateSearchSuggestions:0 options:a3 withBlock:v7];
+      [(NLSearchParserManager *)self enumerateSearchSuggestions:0 options:options withBlock:v7];
       _Block_object_dispose(v8, 8);
     }
   }
@@ -168,33 +168,33 @@ uint64_t __79__NLSearchParserManager_enumerateDateRangeAttributedParseForOptions
   return result;
 }
 
-- (void)enumerateAttributedParsesForQuery:(id)a3 options:(id)a4 withBlock:(id)a5
+- (void)enumerateAttributedParsesForQuery:(id)query options:(id)options withBlock:(id)block
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (options)
   {
-    if ([a4 objectForKeyedSubscript:@"locale"])
+    if ([options objectForKeyedSubscript:@"locale"])
     {
-      NLSearchParserSetLocale(self->_parser, [a4 objectForKeyedSubscript:@"locale"]);
+      NLSearchParserSetLocale(self->_parser, [options objectForKeyedSubscript:@"locale"]);
     }
 
-    if ([a4 objectForKeyedSubscript:@"date"])
+    if ([options objectForKeyedSubscript:@"date"])
     {
-      NLSearchParserSetDate(self->_parser, [a4 objectForKeyedSubscript:@"date"]);
+      NLSearchParserSetDate(self->_parser, [options objectForKeyedSubscript:@"date"]);
     }
 
-    if ([a4 objectForKeyedSubscript:@"customResourceDirectory"])
+    if ([options objectForKeyedSubscript:@"customResourceDirectory"])
     {
-      NLSearchParserSetCustomResourceDirectory(self->_parser, [a4 objectForKeyedSubscript:@"customResourceDirectory"]);
+      NLSearchParserSetCustomResourceDirectory(self->_parser, [options objectForKeyedSubscript:@"customResourceDirectory"]);
     }
 
-    if ([objc_msgSend(a4 objectForKeyedSubscript:{@"includeFutureDates", "BOOLValue"}])
+    if ([objc_msgSend(options objectForKeyedSubscript:{@"includeFutureDates", "BOOLValue"}])
     {
       NLSearchParserSetFutureDates(self->_parser, 1);
     }
   }
 
-  NLSearchParserSetString(self->_parser, a3);
+  NLSearchParserSetString(self->_parser, query);
   parser = self->_parser;
   NLSearchParserCopyParseWithOptions();
 }
@@ -304,33 +304,33 @@ LABEL_24:
   return [v22 setAttributes:v15 range:{a3, a4}];
 }
 
-- (id)tokenizeAndEnumerateAttributedParsesForQuery:(id)a3 options:(id)a4 withBlock:(id)a5
+- (id)tokenizeAndEnumerateAttributedParsesForQuery:(id)query options:(id)options withBlock:(id)block
 {
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a3 && [a3 length])
+  if (query && [query length])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __88__NLSearchParserManager_tokenizeAndEnumerateAttributedParsesForQuery_options_withBlock___block_invoke_2;
     v11[3] = &unk_278740750;
-    v11[4] = a5;
-    [(NLSearchParserManager *)self enumerateAttributedParsesForQuery:a3 options:a4 withBlock:v11];
+    v11[4] = block;
+    [(NLSearchParserManager *)self enumerateAttributedParsesForQuery:query options:options withBlock:v11];
   }
 
-  else if (a4 && [a4 objectForKey:@"startDateQuery"])
+  else if (options && [options objectForKey:@"startDateQuery"])
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __88__NLSearchParserManager_tokenizeAndEnumerateAttributedParsesForQuery_options_withBlock___block_invoke;
     v12[3] = &unk_278740750;
-    v12[4] = a5;
-    [(NLSearchParserManager *)self enumerateDateRangeAttributedParseForOptions:a4 withBlock:v12];
+    v12[4] = block;
+    [(NLSearchParserManager *)self enumerateDateRangeAttributedParseForOptions:options withBlock:v12];
   }
 
   return v9;
 }
 
-- (void)enumerateSearchSuggestions:(id)a3 options:(id)a4 withBlock:(id)a5
+- (void)enumerateSearchSuggestions:(id)suggestions options:(id)options withBlock:(id)block
 {
   v7[0] = 0;
   v7[1] = v7;
@@ -341,9 +341,9 @@ LABEL_24:
   v6[1] = 3221225472;
   v6[2] = __70__NLSearchParserManager_enumerateSearchSuggestions_options_withBlock___block_invoke;
   v6[3] = &unk_278740778;
-  v6[4] = a5;
+  v6[4] = block;
   v6[5] = v7;
-  NLSearchParserEnumerateSuggestions(parser, a3, a4, v6);
+  NLSearchParserEnumerateSuggestions(parser, suggestions, options, v6);
   _Block_object_dispose(v7, 8);
 }
 

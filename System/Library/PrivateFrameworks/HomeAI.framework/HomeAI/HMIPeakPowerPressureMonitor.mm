@@ -38,9 +38,9 @@ uint64_t __45__HMIPeakPowerPressureMonitor_sharedInstance__block_invoke()
   {
     v4 = HMIDispatchQueueNameString(v2, 0);
     v5 = v4;
-    v6 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     notificationQueue = v3->_notificationQueue;
     v3->_notificationQueue = v8;
 
@@ -121,7 +121,7 @@ void __35__HMIPeakPowerPressureMonitor_init__block_invoke(uint64_t a1)
 LABEL_12:
   self->_peakPowerPressureLevel = v3;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -135,8 +135,8 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v4);
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"HMIPeakPowerPressureLevelDidChangeNotification" object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"HMIPeakPowerPressureLevelDidChangeNotification" object:selfCopy];
 }
 
 - (void)dealloc

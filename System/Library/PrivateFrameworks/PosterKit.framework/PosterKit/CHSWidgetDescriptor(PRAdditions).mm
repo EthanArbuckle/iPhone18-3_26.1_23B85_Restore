@@ -12,31 +12,31 @@
     v3 = 1;
   }
 
-  else if ([a1 pr_isVisibilityWidgetDefined:{objc_msgSend(a1, "widgetVisibility")}])
+  else if ([self pr_isVisibilityWidgetDefined:{objc_msgSend(self, "widgetVisibility")}])
   {
     v4 = objc_alloc(MEMORY[0x1E695E000]);
-    v5 = [a1 extensionBundleIdentifier];
-    v6 = [v4 initWithSuiteName:v5];
+    extensionBundleIdentifier = [self extensionBundleIdentifier];
+    v6 = [v4 initWithSuiteName:extensionBundleIdentifier];
 
     v7 = *MEMORY[0x1E6994210];
     v8 = [v6 objectForKey:*MEMORY[0x1E6994210]];
 
     if (v8)
     {
-      v9 = [v6 BOOLForKey:v7];
+      pr_isVisibleByDefault = [v6 BOOLForKey:v7];
     }
 
     else
     {
-      v9 = [a1 pr_isVisibleByDefault];
+      pr_isVisibleByDefault = [self pr_isVisibleByDefault];
     }
 
-    v3 = v9;
+    v3 = pr_isVisibleByDefault;
   }
 
   else
   {
-    v3 = [a1 isInternal] ^ 1;
+    v3 = [self isInternal] ^ 1;
   }
 
   return v3;

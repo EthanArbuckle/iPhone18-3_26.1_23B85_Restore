@@ -1,36 +1,36 @@
 @interface IMDCKUpdateSyncController
-+ (id)_fetchUpdatesCKConfiguration:(id)a3;
-+ (id)_zoneChangesOptionsDictionaryUsingToken:(id)a3 zoneID:(id)a4 resultsLimit:(unint64_t)a5;
-+ (id)fetchOperationFactory:(id)a3 token:(id)a4 batchSize:(unint64_t)a5 activity:(id)a6;
++ (id)_fetchUpdatesCKConfiguration:(id)configuration;
++ (id)_zoneChangesOptionsDictionaryUsingToken:(id)token zoneID:(id)d resultsLimit:(unint64_t)limit;
++ (id)fetchOperationFactory:(id)factory token:(id)token batchSize:(unint64_t)size activity:(id)activity;
 + (id)sharedInstance;
-+ (int64_t)stepAfter:(int64_t)a3;
++ (int64_t)stepAfter:(int64_t)after;
 - (BOOL)_zoneCreated;
 - (IMDCKUpdateSyncController)init;
-- (IMDCKUpdateSyncController)initWithSyncTokenStore:(id)a3;
-- (id)_fetchRecordsOperationWithActivity:(id)a3;
-- (id)_saveRecordsT1OperationWithMap:(id)a3 activity:(id)a4;
-- (id)_saveRecordsT2OperationWithMap:(id)a3 activity:(id)a4;
-- (id)_writeUpdatesCKConfiguration:(id)a3;
-- (id)saveT1UpdatesOperationFactory:(id)a3 token:(id)a4 batchSize:(unint64_t)a5 recordNameToRowIDMap:(id)a6 activity:(id)a7;
-- (id)saveT2UpdatesOperationFactory:(id)a3 token:(id)a4 batchSize:(unint64_t)a5 recordNameToRowIDMap:(id)a6 activity:(id)a7;
-- (void)_onChangeTokenUpdated:(id)a3 token:(id)a4 data:(id)a5;
-- (void)_onReadComplete:(int64_t)a3 error:(id)a4 activity:(id)a5 completion:(id)a6;
-- (void)_onRecordDeleted:(id)a3 type:(id)a4;
-- (void)_onRecordRead:(id)a3;
-- (void)_onRecordT1Write:(id)a3 error:(id)a4 recordNameToRowIDMap:(id)a5;
-- (void)_onRecordT2Write:(id)a3 error:(id)a4 recordNameToItemMap:(id)a5;
-- (void)_onRecordZoneFetchComplete:(id)a3 token:(id)a4 tokenData:(id)a5 moreComing:(BOOL)a6 error:(id)a7;
-- (void)_onWriteT1Complete:(int64_t)a3 error:(id)a4 shouldWriteMore:(BOOL)a5 activity:(id)a6 completion:(id)a7;
-- (void)_onWriteT2Complete:(int64_t)a3 error:(id)a4 shouldWriteMore:(BOOL)a5 activity:(id)a6 completion:(id)a7;
-- (void)_readRecordsWithType:(int64_t)a3 attemptCount:(unint64_t)a4 activity:(id)a5 completion:(id)a6;
-- (void)_scheduleOperation:(id)a3;
-- (void)_writeT1RecordUpdatesWithType:(int64_t)a3 activity:(id)a4 completion:(id)a5;
-- (void)_writeT2RecordUpdatesWithType:(int64_t)a3 activity:(id)a4 completion:(id)a5;
-- (void)_writeUpdatesWithType:(int64_t)a3 updateStep:(int64_t)a4 activity:(id)a5 completion:(id)a6;
-- (void)clearLocalSyncState:(unint64_t)a3;
+- (IMDCKUpdateSyncController)initWithSyncTokenStore:(id)store;
+- (id)_fetchRecordsOperationWithActivity:(id)activity;
+- (id)_saveRecordsT1OperationWithMap:(id)map activity:(id)activity;
+- (id)_saveRecordsT2OperationWithMap:(id)map activity:(id)activity;
+- (id)_writeUpdatesCKConfiguration:(id)configuration;
+- (id)saveT1UpdatesOperationFactory:(id)factory token:(id)token batchSize:(unint64_t)size recordNameToRowIDMap:(id)map activity:(id)activity;
+- (id)saveT2UpdatesOperationFactory:(id)factory token:(id)token batchSize:(unint64_t)size recordNameToRowIDMap:(id)map activity:(id)activity;
+- (void)_onChangeTokenUpdated:(id)updated token:(id)token data:(id)data;
+- (void)_onReadComplete:(int64_t)complete error:(id)error activity:(id)activity completion:(id)completion;
+- (void)_onRecordDeleted:(id)deleted type:(id)type;
+- (void)_onRecordRead:(id)read;
+- (void)_onRecordT1Write:(id)write error:(id)error recordNameToRowIDMap:(id)map;
+- (void)_onRecordT2Write:(id)write error:(id)error recordNameToItemMap:(id)map;
+- (void)_onRecordZoneFetchComplete:(id)complete token:(id)token tokenData:(id)data moreComing:(BOOL)coming error:(id)error;
+- (void)_onWriteT1Complete:(int64_t)complete error:(id)error shouldWriteMore:(BOOL)more activity:(id)activity completion:(id)completion;
+- (void)_onWriteT2Complete:(int64_t)complete error:(id)error shouldWriteMore:(BOOL)more activity:(id)activity completion:(id)completion;
+- (void)_readRecordsWithType:(int64_t)type attemptCount:(unint64_t)count activity:(id)activity completion:(id)completion;
+- (void)_scheduleOperation:(id)operation;
+- (void)_writeT1RecordUpdatesWithType:(int64_t)type activity:(id)activity completion:(id)completion;
+- (void)_writeT2RecordUpdatesWithType:(int64_t)type activity:(id)activity completion:(id)completion;
+- (void)_writeUpdatesWithType:(int64_t)type updateStep:(int64_t)step activity:(id)activity completion:(id)completion;
+- (void)clearLocalSyncState:(unint64_t)state;
 - (void)deleteUpdateSyncToken;
 - (void)deleteUpdateZone;
-- (void)syncWithType:(int64_t)a3 withActivity:(id)a4 withCompletion:(id)a5;
+- (void)syncWithType:(int64_t)type withActivity:(id)activity withCompletion:(id)completion;
 @end
 
 @implementation IMDCKUpdateSyncController
@@ -47,9 +47,9 @@
   return v3;
 }
 
-- (IMDCKUpdateSyncController)initWithSyncTokenStore:(id)a3
+- (IMDCKUpdateSyncController)initWithSyncTokenStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = IMDCKUpdateSyncController;
   v6 = [(IMDCKUpdateSyncController *)&v12 init];
@@ -63,7 +63,7 @@
     recordZoneManager = v6->_recordZoneManager;
     v6->_recordZoneManager = v9;
 
-    objc_storeStrong(&v6->_syncTokenStore, a3);
+    objc_storeStrong(&v6->_syncTokenStore, store);
   }
 
   return v6;
@@ -79,18 +79,18 @@
 
 - (void)deleteUpdateZone
 {
-  v3 = [(IMDCKUpdateSyncController *)self ckQueue];
+  ckQueue = [(IMDCKUpdateSyncController *)self ckQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B6BDB74;
   block[3] = &unk_278702FF0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(ckQueue, block);
 }
 
-- (void)clearLocalSyncState:(unint64_t)a3
+- (void)clearLocalSyncState:(unint64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   v8 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
   {
@@ -98,12 +98,12 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = stateCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Clearing local updates sync state, flags 0x%x", v7, 8u);
     }
   }
 
-  if (v3)
+  if (stateCopy)
   {
     [(IMDCKUpdateSyncController *)self deleteUpdateSyncToken];
   }
@@ -113,21 +113,21 @@
 
 - (void)deleteUpdateSyncToken
 {
-  v3 = [(IMDCKUpdateSyncController *)self ckQueue];
+  ckQueue = [(IMDCKUpdateSyncController *)self ckQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B6BDD34;
   block[3] = &unk_278702FF0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(ckQueue, block);
 }
 
-- (void)syncWithType:(int64_t)a3 withActivity:(id)a4 withCompletion:(id)a5
+- (void)syncWithType:(int64_t)type withActivity:(id)activity withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D1A990] sharedInstance];
-  v11 = [v10 getBoolFromDomain:@"com.apple.madrid" forKey:@"mic-delete-update-zone"];
+  activityCopy = activity;
+  completionCopy = completion;
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v11 = [mEMORY[0x277D1A990] getBoolFromDomain:@"com.apple.madrid" forKey:@"mic-delete-update-zone"];
 
   if (v11)
   {
@@ -144,24 +144,24 @@
     v13 = +[IMDRecordZoneManager sharedInstance];
     [v13 deleteUpdateZone];
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    [(IMDCKUpdateSyncController *)self _readRecordsWithType:a3 attemptCount:0 activity:v8 completion:v9];
+    [(IMDCKUpdateSyncController *)self _readRecordsWithType:type attemptCount:0 activity:activityCopy completion:completionCopy];
   }
 }
 
-- (void)_readRecordsWithType:(int64_t)a3 attemptCount:(unint64_t)a4 activity:(id)a5 completion:(id)a6
+- (void)_readRecordsWithType:(int64_t)type attemptCount:(unint64_t)count activity:(id)activity completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v11 = [(IMDCKUpdateSyncController *)self _fetchRecordsOperationWithActivity:v9];
+  activityCopy = activity;
+  completionCopy = completion;
+  v11 = [(IMDCKUpdateSyncController *)self _fetchRecordsOperationWithActivity:activityCopy];
   v12 = v11;
   if (v11)
   {
@@ -193,10 +193,10 @@
     v16 = 3221225472;
     v17 = sub_22B6BE26C;
     v18 = &unk_278707038;
-    v19 = self;
-    v22 = a3;
-    v20 = v9;
-    v21 = v10;
+    selfCopy = self;
+    typeCopy = type;
+    v20 = activityCopy;
+    v21 = completionCopy;
     [v12 setFetchRecordZoneChangesCompletionBlock:&v15];
     if (IMOSLoggingEnabled())
     {
@@ -209,27 +209,27 @@
       }
     }
 
-    [(IMDCKUpdateSyncController *)self _scheduleOperation:v12, v15, v16, v17, v18, v19];
+    [(IMDCKUpdateSyncController *)self _scheduleOperation:v12, v15, v16, v17, v18, selfCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onRecordRead:(id)a3
+- (void)_onRecordRead:(id)read
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  readCopy = read;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v3 _stringForKey:@"ut"];
+      v5 = [readCopy _stringForKey:@"ut"];
       *buf = 138412290;
       v11 = v5;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "Fetched update record with type %@", buf, 0xCu);
@@ -239,7 +239,7 @@
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v6 = +[IMDChatRegistry sharedInstance];
-    [v6 handleMessageUpdate:v3];
+    [v6 handleMessageUpdate:readCopy];
   }
 
   else
@@ -248,7 +248,7 @@
     block[1] = 3221225472;
     block[2] = sub_22B6BE410;
     block[3] = &unk_278702FF0;
-    v9 = v3;
+    v9 = readCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
     v6 = v9;
   }
@@ -256,10 +256,10 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onRecordDeleted:(id)a3 type:(id)a4
+- (void)_onRecordDeleted:(id)deleted type:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  deletedCopy = deleted;
+  typeCopy = type;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -271,90 +271,90 @@
   }
 }
 
-- (void)_onChangeTokenUpdated:(id)a3 token:(id)a4 data:(id)a5
+- (void)_onChangeTokenUpdated:(id)updated token:(id)token data:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  tokenCopy = token;
+  dataCopy = data;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v18 = v8;
+      v18 = updatedCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = tokenCopy;
       v21 = 2112;
-      v22 = v10;
+      v22 = dataCopy;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "recordZoneChangeTokensUpdatedBlock recordZoneID %@ serverChangeToken %@ clientChangeToken %@", buf, 0x20u);
     }
   }
 
-  v12 = [(IMDCKUpdateSyncController *)self ckQueue];
+  ckQueue = [(IMDCKUpdateSyncController *)self ckQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_22B6BE6B0;
   v15[3] = &unk_278702FA0;
   v15[4] = self;
-  v16 = v9;
-  v13 = v9;
-  dispatch_sync(v12, v15);
+  v16 = tokenCopy;
+  v13 = tokenCopy;
+  dispatch_sync(ckQueue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onRecordZoneFetchComplete:(id)a3 token:(id)a4 tokenData:(id)a5 moreComing:(BOOL)a6 error:(id)a7
+- (void)_onRecordZoneFetchComplete:(id)complete token:(id)token tokenData:(id)data moreComing:(BOOL)coming error:(id)error
 {
-  v8 = a6;
+  comingCopy = coming;
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  completeCopy = complete;
+  tokenCopy = token;
+  dataCopy = data;
+  errorCopy = error;
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v18 = 138413314;
-      v19 = v12;
+      v19 = completeCopy;
       v20 = 2112;
-      v21 = v13;
+      v21 = tokenCopy;
       v22 = 2112;
-      v23 = v14;
+      v23 = dataCopy;
       v24 = 1024;
-      v25 = v8;
+      v25 = comingCopy;
       v26 = 2112;
-      v27 = v15;
+      v27 = errorCopy;
       _os_log_impl(&dword_22B4CC000, v16, OS_LOG_TYPE_INFO, "Record Zone fetch complete zoneID %@ changeToken %@ tokenData %@ moreComing %d error %@", &v18, 0x30u);
     }
   }
 
-  [(IMDCKUpdateSyncController *)self _onChangeTokenUpdated:v12 token:v13 data:v14];
+  [(IMDCKUpdateSyncController *)self _onChangeTokenUpdated:completeCopy token:tokenCopy data:dataCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onReadComplete:(int64_t)a3 error:(id)a4 activity:(id)a5 completion:(id)a6
+- (void)_onReadComplete:(int64_t)complete error:(id)error activity:(id)activity completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  errorCopy = error;
+  activityCopy = activity;
+  completionCopy = completion;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = sub_22B4D7820;
   v34 = sub_22B4D7978;
-  v13 = v10;
+  v13 = errorCopy;
   v35 = v13;
-  v14 = [(IMDCKAbstractSyncController *)self errorAnalyzer];
-  v15 = [v14 errorIndicatesZoneNotCreated:v31[5]];
+  errorAnalyzer = [(IMDCKAbstractSyncController *)self errorAnalyzer];
+  v15 = [errorAnalyzer errorIndicatesZoneNotCreated:v31[5]];
 
-  v16 = [(IMDCKAbstractSyncController *)self errorAnalyzer];
-  v17 = [v16 errorIndicatesUserDeletedZone:v31[5]];
+  errorAnalyzer2 = [(IMDCKAbstractSyncController *)self errorAnalyzer];
+  v17 = [errorAnalyzer2 errorIndicatesUserDeletedZone:v31[5]];
 
   if ((v15 | v17))
   {
@@ -377,20 +377,20 @@
       }
     }
 
-    v20 = [(IMDCKUpdateSyncController *)self ckQueue];
+    ckQueue = [(IMDCKUpdateSyncController *)self ckQueue];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = sub_22B6BEC90;
     v29[3] = &unk_278707088;
     v29[4] = self;
     v29[5] = &v30;
-    dispatch_sync(v20, v29);
+    dispatch_sync(ckQueue, v29);
   }
 
   if (v31[5])
   {
-    v21 = [(IMDCKAbstractSyncController *)self errorAnalyzer];
-    v22 = [v21 CKPartialError:v31[5] hasErrorCode:&unk_283F4ED50];
+    errorAnalyzer3 = [(IMDCKAbstractSyncController *)self errorAnalyzer];
+    v22 = [errorAnalyzer3 CKPartialError:v31[5] hasErrorCode:&unk_283F4ED50];
 
     if (v22)
     {
@@ -421,9 +421,9 @@
       }
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, 0, v31[5]);
+      completionCopy[2](completionCopy, 0, v31[5]);
     }
   }
 
@@ -439,7 +439,7 @@
       }
     }
 
-    [(IMDCKUpdateSyncController *)self _writeRecordsWithType:a3 activity:v11 completion:v12];
+    [(IMDCKUpdateSyncController *)self _writeRecordsWithType:complete activity:activityCopy completion:completionCopy];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -454,7 +454,7 @@
   v16 = 0x2020000000;
   v17 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(IMDCKUpdateSyncController *)self recordZoneManager];
+  recordZoneManager = [(IMDCKUpdateSyncController *)self recordZoneManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_22B6BEF9C;
@@ -462,7 +462,7 @@
   v13 = &v14;
   v5 = v3;
   v12 = v5;
-  [v4 createUpdateZoneIfNeededWithCompletionBlock:v11];
+  [recordZoneManager createUpdateZoneIfNeededWithCompletionBlock:v11];
 
   v6 = dispatch_time(0, 300000000000);
   if (dispatch_semaphore_wait(v5, v6))
@@ -485,15 +485,15 @@
   return v8;
 }
 
-+ (int64_t)stepAfter:(int64_t)a3
++ (int64_t)stepAfter:(int64_t)after
 {
   v3 = 3;
-  if (a3 != 2)
+  if (after != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (after == 1)
   {
     return 2;
   }
@@ -504,34 +504,34 @@
   }
 }
 
-- (void)_writeUpdatesWithType:(int64_t)a3 updateStep:(int64_t)a4 activity:(id)a5 completion:(id)a6
+- (void)_writeUpdatesWithType:(int64_t)type updateStep:(int64_t)step activity:(id)activity completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  activityCopy = activity;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22B6BF214;
   aBlock[3] = &unk_2787081F8;
-  v18 = a4;
-  v19 = a3;
+  stepCopy = step;
+  typeCopy = type;
   aBlock[4] = self;
-  v12 = v10;
+  v12 = activityCopy;
   v16 = v12;
-  v13 = v11;
+  v13 = completionCopy;
   v17 = v13;
   v14 = _Block_copy(aBlock);
-  if (a4 == 3)
+  if (step == 3)
   {
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (step == 2)
   {
-    [(IMDCKUpdateSyncController *)self _writeT2RecordUpdatesWithType:a3 activity:v12 completion:v14];
+    [(IMDCKUpdateSyncController *)self _writeT2RecordUpdatesWithType:type activity:v12 completion:v14];
     goto LABEL_8;
   }
 
-  if (a4 != 1)
+  if (step != 1)
   {
 LABEL_5:
     if (v13)
@@ -542,24 +542,24 @@ LABEL_5:
 
   else
   {
-    [(IMDCKUpdateSyncController *)self _writeT1RecordUpdatesWithType:a3 activity:v12 completion:v14];
+    [(IMDCKUpdateSyncController *)self _writeT1RecordUpdatesWithType:type activity:v12 completion:v14];
   }
 
 LABEL_8:
 }
 
-- (void)_writeT1RecordUpdatesWithType:(int64_t)a3 activity:(id)a4 completion:(id)a5
+- (void)_writeT1RecordUpdatesWithType:(int64_t)type activity:(id)activity completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  activityCopy = activity;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = sub_22B4D7820;
   v24 = sub_22B4D7978;
   v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = [(IMDCKUpdateSyncController *)self _saveRecordsT1OperationWithMap:v21[5] activity:v8];
+  v10 = [(IMDCKUpdateSyncController *)self _saveRecordsT1OperationWithMap:v21[5] activity:activityCopy];
   v11 = v10;
   if (v10)
   {
@@ -575,10 +575,10 @@ LABEL_8:
     v14[2] = sub_22B6BF630;
     v14[3] = &unk_2787070D8;
     v17 = &v20;
-    v18 = a3;
+    typeCopy = type;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
+    v15 = activityCopy;
+    v16 = completionCopy;
     [v11 setModifyRecordsCompletionBlock:v14];
     if (IMOSLoggingEnabled())
     {
@@ -594,56 +594,56 @@ LABEL_8:
     [(IMDCKUpdateSyncController *)self _scheduleOperation:v11];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   _Block_object_dispose(&v20, 8);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onRecordT1Write:(id)a3 error:(id)a4 recordNameToRowIDMap:(id)a5
+- (void)_onRecordT1Write:(id)write error:(id)error recordNameToRowIDMap:(id)map
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  writeCopy = write;
+  errorCopy = error;
+  mapCopy = map;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v26 = 138412546;
-      v27 = v8;
+      v27 = writeCopy;
       v28 = 2112;
-      v29 = v9;
+      v29 = errorCopy;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Wrote T1 update record %@ with error %@", &v26, 0x16u);
     }
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
-    v22 = [v8 recordID];
-    v14 = [v22 recordName];
+    recordID = [writeCopy recordID];
+    recordName = [recordID recordName];
 
-    v17 = [v10 objectForKey:v14];
-    v23 = [v17 longLongValue];
+    v17 = [mapCopy objectForKey:recordName];
+    longLongValue = [v17 longLongValue];
     if (IMOSLoggingEnabled())
     {
       v24 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v26 = 134218242;
-        v27 = v23;
+        v27 = longLongValue;
         v28 = 2112;
-        v29 = v14;
+        v29 = recordName;
         _os_log_impl(&dword_22B4CC000, v24, OS_LOG_TYPE_INFO, "Marking row %lld for %@ as clean", &v26, 0x16u);
       }
     }
 
     v21 = +[IMDMessageStore sharedInstance];
-    [v21 markMessageAsCleanWithROWID:v23];
+    [v21 markMessageAsCleanWithROWID:longLongValue];
     goto LABEL_21;
   }
 
@@ -653,57 +653,57 @@ LABEL_8:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v26 = 138412546;
-      v27 = v9;
+      v27 = errorCopy;
       v28 = 2112;
-      v29 = v8;
+      v29 = writeCopy;
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Error %@ while writing up record %@ ", &v26, 0x16u);
     }
   }
 
-  v13 = [(IMDCKAbstractSyncController *)self ckUtilities];
-  v14 = [v13 extractServerRecordFromCKServerErrorRecordChanged:v9];
+  ckUtilities = [(IMDCKAbstractSyncController *)self ckUtilities];
+  recordName = [ckUtilities extractServerRecordFromCKServerErrorRecordChanged:errorCopy];
 
-  v15 = [v14 recordID];
-  v16 = [v15 recordName];
-  v17 = [v10 objectForKey:v16];
+  recordID2 = [recordName recordID];
+  recordName2 = [recordID2 recordName];
+  v17 = [mapCopy objectForKey:recordName2];
 
-  v18 = [v17 longLongValue];
-  if (v14)
+  longLongValue2 = [v17 longLongValue];
+  if (recordName)
   {
-    v19 = v18;
+    v19 = longLongValue2;
     if (IMOSLoggingEnabled())
     {
       v20 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v26 = 138412290;
-        v27 = v14;
+        v27 = recordName;
         _os_log_impl(&dword_22B4CC000, v20, OS_LOG_TYPE_INFO, "Extracted record from server error%@ ", &v26, 0xCu);
       }
     }
 
     v21 = +[IMDChatRegistry sharedInstance];
-    [v21 handleMessageUpdateConflictType:@"UT1" serverRecord:v14 localRowID:v19];
+    [v21 handleMessageUpdateConflictType:@"UT1" serverRecord:recordName localRowID:v19];
 LABEL_21:
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onWriteT1Complete:(int64_t)a3 error:(id)a4 shouldWriteMore:(BOOL)a5 activity:(id)a6 completion:(id)a7
+- (void)_onWriteT1Complete:(int64_t)complete error:(id)error shouldWriteMore:(BOOL)more activity:(id)activity completion:(id)completion
 {
-  v9 = a5;
+  moreCopy = more;
   v22 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  errorCopy = error;
+  activityCopy = activity;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = @"NO";
-      if (!v12)
+      if (!errorCopy)
       {
         v16 = @"YES";
       }
@@ -711,44 +711,44 @@ LABEL_21:
       v18 = 138412546;
       v19 = v16;
       v20 = 2112;
-      v21 = v12;
+      v21 = errorCopy;
       _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Update T1 writes completed sucess: %@ error %@", &v18, 0x16u);
     }
   }
 
-  if (v12)
+  if (errorCopy)
   {
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14, 0, v12);
+      completionCopy[2](completionCopy, 0, errorCopy);
     }
   }
 
-  else if (v9)
+  else if (moreCopy)
   {
-    [(IMDCKUpdateSyncController *)self _writeRecordsWithType:a3 activity:v13 completion:v14];
+    [(IMDCKUpdateSyncController *)self _writeRecordsWithType:complete activity:activityCopy completion:completionCopy];
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
-    v14[2](v14, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_writeT2RecordUpdatesWithType:(int64_t)a3 activity:(id)a4 completion:(id)a5
+- (void)_writeT2RecordUpdatesWithType:(int64_t)type activity:(id)activity completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  activityCopy = activity;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = sub_22B4D7820;
   v24 = sub_22B4D7978;
   v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = [(IMDCKUpdateSyncController *)self _saveRecordsT2OperationWithMap:v21[5] activity:v8];
+  v10 = [(IMDCKUpdateSyncController *)self _saveRecordsT2OperationWithMap:v21[5] activity:activityCopy];
   v11 = v10;
   if (v10)
   {
@@ -764,10 +764,10 @@ LABEL_21:
     v14[2] = sub_22B6C0010;
     v14[3] = &unk_2787070D8;
     v17 = &v20;
-    v18 = a3;
+    typeCopy = type;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
+    v15 = activityCopy;
+    v16 = completionCopy;
     [v11 setModifyRecordsCompletionBlock:v14];
     if (IMOSLoggingEnabled())
     {
@@ -783,40 +783,40 @@ LABEL_21:
     [(IMDCKUpdateSyncController *)self _scheduleOperation:v11];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   _Block_object_dispose(&v20, 8);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onRecordT2Write:(id)a3 error:(id)a4 recordNameToItemMap:(id)a5
+- (void)_onRecordT2Write:(id)write error:(id)error recordNameToItemMap:(id)map
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  writeCopy = write;
+  errorCopy = error;
+  mapCopy = map;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v27 = 138412546;
-      v28 = v8;
+      v28 = writeCopy;
       v29 = 2112;
-      v30 = v9;
+      v30 = errorCopy;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Wrote T2 update record %@ with error %@", &v27, 0x16u);
     }
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
-    v23 = [v8 recordID];
-    v14 = [v23 recordName];
+    recordID = [writeCopy recordID];
+    recordName = [recordID recordName];
 
-    v17 = [v10 objectForKey:v14];
+    v17 = [mapCopy objectForKey:recordName];
     v18 = [v17 objectForKey:@"MID"];
     v22 = [v17 objectForKey:@"SR"];
     if (IMOSLoggingEnabled())
@@ -842,58 +842,58 @@ LABEL_21:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v27 = 138412546;
-      v28 = v9;
+      v28 = errorCopy;
       v29 = 2112;
-      v30 = v8;
+      v30 = writeCopy;
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Error %@ while writing up record %@ ", &v27, 0x16u);
     }
   }
 
-  v13 = [(IMDCKAbstractSyncController *)self ckUtilities];
-  v14 = [v13 extractServerRecordFromCKServerErrorRecordChanged:v9];
+  ckUtilities = [(IMDCKAbstractSyncController *)self ckUtilities];
+  recordName = [ckUtilities extractServerRecordFromCKServerErrorRecordChanged:errorCopy];
 
-  v15 = [v14 recordID];
-  v16 = [v15 recordName];
-  v17 = [v10 objectForKey:v16];
+  recordID2 = [recordName recordID];
+  recordName2 = [recordID2 recordName];
+  v17 = [mapCopy objectForKey:recordName2];
 
   v18 = [v17 objectForKey:@"ROWID"];
-  v19 = [v18 longLongValue];
-  if (v14)
+  longLongValue = [v18 longLongValue];
+  if (recordName)
   {
-    v20 = v19;
+    v20 = longLongValue;
     if (IMOSLoggingEnabled())
     {
       v21 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v27 = 138412290;
-        v28 = v14;
+        v28 = recordName;
         _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "Extracted record from server error%@ ", &v27, 0xCu);
       }
     }
 
     v22 = +[IMDChatRegistry sharedInstance];
-    [v22 handleMessageUpdateConflictType:@"UT2" serverRecord:v14 localRowID:v20];
+    [v22 handleMessageUpdateConflictType:@"UT2" serverRecord:recordName localRowID:v20];
 LABEL_21:
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_onWriteT2Complete:(int64_t)a3 error:(id)a4 shouldWriteMore:(BOOL)a5 activity:(id)a6 completion:(id)a7
+- (void)_onWriteT2Complete:(int64_t)complete error:(id)error shouldWriteMore:(BOOL)more activity:(id)activity completion:(id)completion
 {
-  v9 = a5;
+  moreCopy = more;
   v22 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  errorCopy = error;
+  activityCopy = activity;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = @"NO";
-      if (!v12)
+      if (!errorCopy)
       {
         v16 = @"YES";
       }
@@ -901,108 +901,108 @@ LABEL_21:
       v18 = 138412546;
       v19 = v16;
       v20 = 2112;
-      v21 = v12;
+      v21 = errorCopy;
       _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Update T2 writes completed sucess: %@ error %@", &v18, 0x16u);
     }
   }
 
-  if (v12)
+  if (errorCopy)
   {
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14, 0, v12);
+      completionCopy[2](completionCopy, 0, errorCopy);
     }
   }
 
-  else if (v9)
+  else if (moreCopy)
   {
-    [(IMDCKUpdateSyncController *)self _writeRecordsWithType:a3 activity:v13 completion:v14];
+    [(IMDCKUpdateSyncController *)self _writeRecordsWithType:complete activity:activityCopy completion:completionCopy];
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
-    v14[2](v14, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchRecordsOperationWithActivity:(id)a3
+- (id)_fetchRecordsOperationWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(IMDCKUpdateSyncController *)self recordZoneManager];
-  v6 = [v5 updateRecordZoneID];
-  v7 = [(IMDCKAbstractSyncController *)self latestSyncToken];
-  v8 = [IMDCKUpdateSyncController fetchOperationFactory:v6 token:v7 batchSize:[(IMDCKUpdateSyncController *)self _numberOfRecordsToFetchPerBatch] activity:v4];
+  activityCopy = activity;
+  recordZoneManager = [(IMDCKUpdateSyncController *)self recordZoneManager];
+  updateRecordZoneID = [recordZoneManager updateRecordZoneID];
+  latestSyncToken = [(IMDCKAbstractSyncController *)self latestSyncToken];
+  v8 = [IMDCKUpdateSyncController fetchOperationFactory:updateRecordZoneID token:latestSyncToken batchSize:[(IMDCKUpdateSyncController *)self _numberOfRecordsToFetchPerBatch] activity:activityCopy];
 
   return v8;
 }
 
-- (id)_saveRecordsT1OperationWithMap:(id)a3 activity:(id)a4
+- (id)_saveRecordsT1OperationWithMap:(id)map activity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IMDCKUpdateSyncController *)self recordZoneManager];
-  v9 = [v8 updateRecordZoneID];
-  v10 = [(IMDCKAbstractSyncController *)self latestSyncToken];
-  v11 = [(IMDCKUpdateSyncController *)self saveT1UpdatesOperationFactory:v9 token:v10 batchSize:[(IMDCKUpdateSyncController *)self _numberOfRecordsToFetchPerBatch] recordNameToRowIDMap:v7 activity:v6];
+  activityCopy = activity;
+  mapCopy = map;
+  recordZoneManager = [(IMDCKUpdateSyncController *)self recordZoneManager];
+  updateRecordZoneID = [recordZoneManager updateRecordZoneID];
+  latestSyncToken = [(IMDCKAbstractSyncController *)self latestSyncToken];
+  v11 = [(IMDCKUpdateSyncController *)self saveT1UpdatesOperationFactory:updateRecordZoneID token:latestSyncToken batchSize:[(IMDCKUpdateSyncController *)self _numberOfRecordsToFetchPerBatch] recordNameToRowIDMap:mapCopy activity:activityCopy];
 
   return v11;
 }
 
-- (id)_saveRecordsT2OperationWithMap:(id)a3 activity:(id)a4
+- (id)_saveRecordsT2OperationWithMap:(id)map activity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IMDCKUpdateSyncController *)self recordZoneManager];
-  v9 = [v8 updateRecordZoneID];
-  v10 = [(IMDCKAbstractSyncController *)self latestSyncToken];
-  v11 = [(IMDCKUpdateSyncController *)self saveT2UpdatesOperationFactory:v9 token:v10 batchSize:[(IMDCKUpdateSyncController *)self _numberOfRecordsToFetchPerBatch] recordNameToRowIDMap:v7 activity:v6];
+  activityCopy = activity;
+  mapCopy = map;
+  recordZoneManager = [(IMDCKUpdateSyncController *)self recordZoneManager];
+  updateRecordZoneID = [recordZoneManager updateRecordZoneID];
+  latestSyncToken = [(IMDCKAbstractSyncController *)self latestSyncToken];
+  v11 = [(IMDCKUpdateSyncController *)self saveT2UpdatesOperationFactory:updateRecordZoneID token:latestSyncToken batchSize:[(IMDCKUpdateSyncController *)self _numberOfRecordsToFetchPerBatch] recordNameToRowIDMap:mapCopy activity:activityCopy];
 
   return v11;
 }
 
-+ (id)_zoneChangesOptionsDictionaryUsingToken:(id)a3 zoneID:(id)a4 resultsLimit:(unint64_t)a5
++ (id)_zoneChangesOptionsDictionaryUsingToken:(id)token zoneID:(id)d resultsLimit:(unint64_t)limit
 {
   v7 = MEMORY[0x277CBEB38];
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  tokenCopy = token;
   v10 = objc_alloc_init(v7);
   v11 = objc_alloc_init(MEMORY[0x277CBC3A0]);
   [v11 setDesiredKeys:0];
-  [v11 setPreviousServerChangeToken:v9];
+  [v11 setPreviousServerChangeToken:tokenCopy];
 
-  [v11 setResultsLimit:a5];
-  [v10 setObject:v11 forKey:v8];
+  [v11 setResultsLimit:limit];
+  [v10 setObject:v11 forKey:dCopy];
 
   return v10;
 }
 
-+ (id)_fetchUpdatesCKConfiguration:(id)a3
++ (id)_fetchUpdatesCKConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277CBC4F0];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(v3);
   [v5 setQualityOfService:17];
   [v5 setAllowsCellularAccess:1];
-  [v5 im_setActivity:v4];
+  [v5 im_setActivity:configurationCopy];
 
   return v5;
 }
 
-+ (id)fetchOperationFactory:(id)a3 token:(id)a4 batchSize:(unint64_t)a5 activity:(id)a6
++ (id)fetchOperationFactory:(id)factory token:(id)token batchSize:(unint64_t)size activity:(id)activity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  factoryCopy = factory;
+  tokenCopy = token;
+  activityCopy = activity;
+  if (factoryCopy)
   {
     v13 = objc_alloc(MEMORY[0x277CBC3B8]);
     v14 = IMSingleObjectArray();
-    v15 = [a1 _zoneChangesOptionsDictionaryUsingToken:v11 zoneID:v10 resultsLimit:a5];
+    v15 = [self _zoneChangesOptionsDictionaryUsingToken:tokenCopy zoneID:factoryCopy resultsLimit:size];
     v16 = [v13 initWithRecordZoneIDs:v14 configurationsByRecordZoneID:v15];
 
-    v17 = [a1 _fetchUpdatesCKConfiguration:v12];
+    v17 = [self _fetchUpdatesCKConfiguration:activityCopy];
     [v16 setConfiguration:v17];
 
     [v16 setFetchAllChanges:1];
@@ -1026,27 +1026,27 @@ LABEL_21:
   return v16;
 }
 
-- (id)_writeUpdatesCKConfiguration:(id)a3
+- (id)_writeUpdatesCKConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277CBC4F0];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(v3);
   [v5 setQualityOfService:17];
   [v5 setAllowsCellularAccess:1];
-  [v5 im_setActivity:v4];
+  [v5 im_setActivity:configurationCopy];
 
   return v5;
 }
 
-- (id)saveT1UpdatesOperationFactory:(id)a3 token:(id)a4 batchSize:(unint64_t)a5 recordNameToRowIDMap:(id)a6 activity:(id)a7
+- (id)saveT1UpdatesOperationFactory:(id)factory token:(id)token batchSize:(unint64_t)size recordNameToRowIDMap:(id)map activity:(id)activity
 {
-  v9 = a5;
+  sizeCopy = size;
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  factoryCopy = factory;
+  tokenCopy = token;
+  mapCopy = map;
+  activityCopy = activity;
+  if (factoryCopy)
   {
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -1054,7 +1054,7 @@ LABEL_21:
     aBlock[2] = sub_22B6C0F10;
     aBlock[3] = &unk_2787038F8;
     aBlock[4] = self;
-    v29 = v14;
+    v29 = mapCopy;
     v17 = v16;
     v30 = v17;
     v18 = _Block_copy(aBlock);
@@ -1080,7 +1080,7 @@ LABEL_21:
         *buf = 134218240;
         v32 = v24;
         v33 = 1024;
-        v34 = v9;
+        v34 = sizeCopy;
         _os_log_impl(&dword_22B4CC000, v23, OS_LOG_TYPE_INFO, "Found %lu of %u max T1 updates to write up", buf, 0x12u);
       }
     }
@@ -1089,7 +1089,7 @@ LABEL_21:
     {
       v20 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:v22 recordIDsToDelete:0];
       [v20 setSavePolicy:1];
-      v25 = [(IMDCKUpdateSyncController *)self _writeUpdatesCKConfiguration:v15];
+      v25 = [(IMDCKUpdateSyncController *)self _writeUpdatesCKConfiguration:activityCopy];
       [v20 setConfiguration:v25];
     }
 
@@ -1119,15 +1119,15 @@ LABEL_21:
   return v20;
 }
 
-- (id)saveT2UpdatesOperationFactory:(id)a3 token:(id)a4 batchSize:(unint64_t)a5 recordNameToRowIDMap:(id)a6 activity:(id)a7
+- (id)saveT2UpdatesOperationFactory:(id)factory token:(id)token batchSize:(unint64_t)size recordNameToRowIDMap:(id)map activity:(id)activity
 {
-  v9 = a5;
+  sizeCopy = size;
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  factoryCopy = factory;
+  tokenCopy = token;
+  mapCopy = map;
+  activityCopy = activity;
+  if (factoryCopy)
   {
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -1135,7 +1135,7 @@ LABEL_21:
     aBlock[2] = sub_22B6C14FC;
     aBlock[3] = &unk_2787038F8;
     aBlock[4] = self;
-    v29 = v14;
+    v29 = mapCopy;
     v17 = v16;
     v30 = v17;
     v18 = _Block_copy(aBlock);
@@ -1161,7 +1161,7 @@ LABEL_21:
         *buf = 134218240;
         v32 = v24;
         v33 = 1024;
-        v34 = v9;
+        v34 = sizeCopy;
         _os_log_impl(&dword_22B4CC000, v23, OS_LOG_TYPE_INFO, "Found %lu of %u max T2 updates to write up", buf, 0x12u);
       }
     }
@@ -1170,7 +1170,7 @@ LABEL_21:
     {
       v20 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:v22 recordIDsToDelete:0];
       [v20 setSavePolicy:1];
-      v25 = [(IMDCKUpdateSyncController *)self _writeUpdatesCKConfiguration:v15];
+      v25 = [(IMDCKUpdateSyncController *)self _writeUpdatesCKConfiguration:activityCopy];
       [v20 setConfiguration:v25];
     }
 
@@ -1200,12 +1200,12 @@ LABEL_21:
   return v20;
 }
 
-- (void)_scheduleOperation:(id)a3
+- (void)_scheduleOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   v5 = +[IMDCKDatabaseManager sharedInstance];
-  v4 = [v5 truthDatabase];
-  [v4 addOperation:v3];
+  truthDatabase = [v5 truthDatabase];
+  [truthDatabase addOperation:operationCopy];
 }
 
 @end

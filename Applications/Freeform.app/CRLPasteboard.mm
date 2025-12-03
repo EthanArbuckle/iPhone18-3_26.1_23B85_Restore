@@ -1,18 +1,18 @@
 @interface CRLPasteboard
-+ (CRLPasteboard)pasteboardWithName:(id)a3 create:(BOOL)a4;
-+ (CRLPasteboard)pasteboardWithPasteboard:(id)a3;
++ (CRLPasteboard)pasteboardWithName:(id)name create:(BOOL)create;
++ (CRLPasteboard)pasteboardWithPasteboard:(id)pasteboard;
 + (CRLPasteboard)pasteboardWithUniqueName;
 + (CRLPasteboard)stylePasteboard;
-+ (id)activePasteboardForName:(id)a3;
++ (id)activePasteboardForName:(id)name;
 + (id)activePasteboards;
 + (id)activePasteboardsQueue;
 + (id)generalPasteboard;
-- (BOOL)containsAnyPasteboardTypeInArray:(id)a3;
+- (BOOL)containsAnyPasteboardTypeInArray:(id)array;
 - (BOOL)containsContentLanguageDrawableTypes;
 - (BOOL)containsImportableRichTextTypes;
 - (BOOL)containsImportableTextTypes;
 - (BOOL)containsNativePasteboardTypes;
-- (BOOL)containsPasteboardTypes:(id)a3;
+- (BOOL)containsPasteboardTypes:(id)types;
 - (BOOL)isSmartCopy;
 - (id)description;
 @end
@@ -43,25 +43,25 @@
   return v3;
 }
 
-+ (id)activePasteboardForName:(id)a3
++ (id)activePasteboardForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1000E8050;
   v17 = sub_1000E8060;
   v18 = 0;
-  v5 = [a1 activePasteboardsQueue];
+  activePasteboardsQueue = [self activePasteboardsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E8068;
   block[3] = &unk_10183B670;
   v11 = &v13;
-  v12 = a1;
-  v10 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  selfCopy = self;
+  v10 = nameCopy;
+  v6 = nameCopy;
+  dispatch_sync(activePasteboardsQueue, block);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -75,7 +75,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000E8180;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A34510 != -1)
   {
     dispatch_once(&qword_101A34510, block);
@@ -86,26 +86,26 @@
   return v2;
 }
 
-+ (CRLPasteboard)pasteboardWithName:(id)a3 create:(BOOL)a4
++ (CRLPasteboard)pasteboardWithName:(id)name create:(BOOL)create
 {
-  v6 = a3;
+  nameCopy = name;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_1000E8050;
   v20 = sub_1000E8060;
   v21 = 0;
-  v7 = [a1 activePasteboardsQueue];
+  activePasteboardsQueue = [self activePasteboardsQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000E83F8;
   v11[3] = &unk_10183B6B8;
   v13 = &v16;
-  v14 = a1;
-  v12 = v6;
-  v15 = a4;
-  v8 = v6;
-  dispatch_sync(v7, v11);
+  selfCopy = self;
+  v12 = nameCopy;
+  createCopy = create;
+  v8 = nameCopy;
+  dispatch_sync(activePasteboardsQueue, v11);
 
   v9 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -115,39 +115,39 @@
 
 + (CRLPasteboard)pasteboardWithUniqueName
 {
-  v3 = [objc_alloc(objc_msgSend(a1 "pasteboardClass"))];
-  v4 = [a1 activePasteboardsQueue];
+  v3 = [objc_alloc(objc_msgSend(self "pasteboardClass"))];
+  activePasteboardsQueue = [self activePasteboardsQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E858C;
   v7[3] = &unk_10183B720;
-  v9 = a1;
+  selfCopy = self;
   v5 = v3;
   v8 = v5;
-  dispatch_async(v4, v7);
+  dispatch_async(activePasteboardsQueue, v7);
 
   return v5;
 }
 
-+ (CRLPasteboard)pasteboardWithPasteboard:(id)a3
++ (CRLPasteboard)pasteboardWithPasteboard:(id)pasteboard
 {
-  v4 = a3;
+  pasteboardCopy = pasteboard;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1000E8050;
   v17 = sub_1000E8060;
   v18 = 0;
-  v5 = [a1 activePasteboardsQueue];
+  activePasteboardsQueue = [self activePasteboardsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E88E4;
   block[3] = &unk_10183B748;
   v11 = &v13;
-  v12 = a1;
-  v10 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  selfCopy = self;
+  v10 = pasteboardCopy;
+  v6 = pasteboardCopy;
+  dispatch_sync(activePasteboardsQueue, block);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -155,10 +155,10 @@
   return v7;
 }
 
-- (BOOL)containsPasteboardTypes:(id)a3
+- (BOOL)containsPasteboardTypes:(id)types
 {
-  v4 = a3;
-  v5 = [v4 count];
+  typesCopy = types;
+  v5 = [typesCopy count];
   [(CRLPasteboard *)self pasteboardTypes];
   v13 = 0u;
   v14 = 0u;
@@ -178,7 +178,7 @@
           objc_enumerationMutation(v6);
         }
 
-        if ([v4 containsObject:{*(*(&v13 + 1) + 8 * i), v13}])
+        if ([typesCopy containsObject:{*(*(&v13 + 1) + 8 * i), v13}])
         {
           if (!--v5)
           {
@@ -204,9 +204,9 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)containsAnyPasteboardTypeInArray:(id)a3
+- (BOOL)containsAnyPasteboardTypeInArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   [(CRLPasteboard *)self pasteboardTypes];
   v10 = 0u;
   v11 = 0u;
@@ -225,7 +225,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) crl_conformsToAnyUTI:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) crl_conformsToAnyUTI:{arrayCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -259,11 +259,11 @@ LABEL_11:
 
 - (BOOL)containsImportableRichTextTypes
 {
-  v2 = self;
-  v3 = [(CRLPasteboard *)self importableRichTextTypes];
-  LOBYTE(v2) = [(CRLPasteboard *)v2 containsAnyPasteboardTypeInArray:v3];
+  selfCopy = self;
+  importableRichTextTypes = [(CRLPasteboard *)self importableRichTextTypes];
+  LOBYTE(selfCopy) = [(CRLPasteboard *)selfCopy containsAnyPasteboardTypeInArray:importableRichTextTypes];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)containsImportableTextTypes
@@ -320,9 +320,9 @@ LABEL_11:
 - (id)description
 {
   v3 = [objc_opt_class() description];
-  v4 = [(CRLPasteboard *)self name];
-  v5 = [(CRLPasteboard *)self pasteboardTypes];
-  v6 = [NSString stringWithFormat:@"<%@ %p name=%@ pasteboardTypes=%@>", v3, self, v4, v5];
+  name = [(CRLPasteboard *)self name];
+  pasteboardTypes = [(CRLPasteboard *)self pasteboardTypes];
+  v6 = [NSString stringWithFormat:@"<%@ %p name=%@ pasteboardTypes=%@>", v3, self, name, pasteboardTypes];
 
   return v6;
 }
@@ -333,7 +333,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_1000E90B0;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A34520 != -1)
   {
     dispatch_once(&qword_101A34520, block);
@@ -346,7 +346,7 @@ LABEL_11:
 
 - (BOOL)containsContentLanguageDrawableTypes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D8BE80();
 
   return v3 & 1;

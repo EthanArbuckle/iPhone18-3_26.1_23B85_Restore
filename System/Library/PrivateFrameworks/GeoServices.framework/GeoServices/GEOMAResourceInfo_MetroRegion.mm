@@ -1,8 +1,8 @@
 @interface GEOMAResourceInfo_MetroRegion
 + (id)_defaultQueryParameters;
 + (id)allExisitngInfos;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldPrefetchResource:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldPrefetchResource:(id)resource;
 - (MADownloadOptions)downloadOptions;
 - (NSURL)baseURL;
 - (double)timeToLive;
@@ -11,13 +11,13 @@
 
 @implementation GEOMAResourceInfo_MetroRegion
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [(NSString *)self->_countryCode isEqualToString:v4[3]];
+    v6 = [(NSString *)self->_countryCode isEqualToString:equalCopy[3]];
   }
 
   else
@@ -28,17 +28,17 @@
   return v6;
 }
 
-- (BOOL)shouldPrefetchResource:(id)a3
+- (BOOL)shouldPrefetchResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   if ([(GEOMAResourceInfo_MetroRegion *)self policy]== 2)
   {
     v5 = +[GEOCountryConfiguration sharedConfiguration];
-    v6 = [v5 countryCode];
+    countryCode = [v5 countryCode];
 
-    v7 = [v4 attributes];
-    v8 = [v7 objectForKeyedSubscript:GEOMetroRegionCountryCodeKey];
-    v9 = [v8 isEqual:v6];
+    attributes = [resourceCopy attributes];
+    v8 = [attributes objectForKeyedSubscript:GEOMetroRegionCountryCodeKey];
+    v9 = [v8 isEqual:countryCode];
   }
 
   else
@@ -53,9 +53,9 @@
 {
   v4.receiver = self;
   v4.super_class = GEOMAResourceInfo_MetroRegion;
-  v2 = [(GEOMAResourceInfo *)&v4 _backgroundDownloadOptions];
+  _backgroundDownloadOptions = [(GEOMAResourceInfo *)&v4 _backgroundDownloadOptions];
 
-  return v2;
+  return _backgroundDownloadOptions;
 }
 
 - (double)timeToLive
@@ -93,8 +93,8 @@
 {
   v6.receiver = self;
   v6.super_class = GEOMAResourceInfo_MetroRegion;
-  v3 = [(GEOMAResourceInfo *)&v6 baseURL];
-  v4 = [v3 URLByAppendingPathComponent:self->_countryCode isDirectory:1];
+  baseURL = [(GEOMAResourceInfo *)&v6 baseURL];
+  v4 = [baseURL URLByAppendingPathComponent:self->_countryCode isDirectory:1];
 
   return v4;
 }
@@ -102,16 +102,16 @@
 + (id)_defaultQueryParameters
 {
   v2 = +[GEOCountryConfiguration sharedConfiguration];
-  v3 = [v2 countryCode];
+  countryCode = [v2 countryCode];
 
   v7[0] = @"Type";
   v7[1] = @"_CompatibilityVersion";
   v8[0] = @"Metro";
   v8[1] = @"1";
   v7[2] = GEOMetroRegionCountryCodeKey;
-  if (v3)
+  if (countryCode)
   {
-    v4 = v3;
+    v4 = countryCode;
   }
 
   else
@@ -132,7 +132,7 @@
   v5[1] = 3221225472;
   v5[2] = sub_1000385C4;
   v5[3] = &unk_1000837A0;
-  v3 = v7 = a1;
+  v3 = v7 = self;
   v6 = v3;
   [GEOMAResource onFileAccessQueueSync:v5];
 

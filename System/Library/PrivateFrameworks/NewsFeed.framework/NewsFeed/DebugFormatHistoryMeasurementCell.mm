@@ -1,16 +1,16 @@
 @interface DebugFormatHistoryMeasurementCell
-- (_TtC8NewsFeed33DebugFormatHistoryMeasurementCell)initWithCoder:(id)a3;
-- (_TtC8NewsFeed33DebugFormatHistoryMeasurementCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed33DebugFormatHistoryMeasurementCell)initWithCoder:(id)coder;
+- (_TtC8NewsFeed33DebugFormatHistoryMeasurementCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugFormatHistoryMeasurementCell
 
-- (_TtC8NewsFeed33DebugFormatHistoryMeasurementCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed33DebugFormatHistoryMeasurementCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D726207C();
+    identifier = sub_1D726207C();
     v6 = v5;
   }
 
@@ -19,10 +19,10 @@
     v6 = 0;
   }
 
-  return sub_1D6F590D0(a3, a4, v6);
+  return sub_1D6F590D0(style, identifier, v6);
 }
 
-- (_TtC8NewsFeed33DebugFormatHistoryMeasurementCell)initWithCoder:(id)a3
+- (_TtC8NewsFeed33DebugFormatHistoryMeasurementCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeed33DebugFormatHistoryMeasurementCell_timeInMilliseconds) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeed33DebugFormatHistoryMeasurementCell_totalTimeInMilliseconds) = 0;
@@ -37,7 +37,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6F59398();
 }
 

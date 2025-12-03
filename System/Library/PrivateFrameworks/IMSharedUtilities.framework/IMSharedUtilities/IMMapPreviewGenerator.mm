@@ -1,15 +1,15 @@
 @interface IMMapPreviewGenerator
-+ (CGImage)newPreviewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6;
-+ (CGImage)newPreviewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 interfaceStyle:(int64_t)a6 error:(id *)a7;
-+ (CGSize)mapThumbnailFillSizeForWidth:(double)a3;
-+ (CLLocationCoordinate2D)_legacyCoordinateForvCardURL:(id)a3;
-+ (CLLocationCoordinate2D)coordinateForvCardURL:(id)a3 senderContext:(id)a4;
++ (CGImage)newPreviewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (CGImage)newPreviewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints interfaceStyle:(int64_t)style error:(id *)error;
++ (CGSize)mapThumbnailFillSizeForWidth:(double)width;
++ (CLLocationCoordinate2D)_legacyCoordinateForvCardURL:(id)l;
++ (CLLocationCoordinate2D)coordinateForvCardURL:(id)l senderContext:(id)context;
 + (id)UTITypes;
 + (id)mapSnapshotterQueue;
-+ (id)titleBarMaskImageForWidth:(double)a3 constraints:(IMPreviewConstraints *)a4 error:(id *)a5;
-+ (id)vCardDataForURL:(id)a3;
-+ (id)vCardURLSForData:(id)a3;
-+ (id)valueForKey:(id)a3 forURLComponents:(id)a4;
++ (id)titleBarMaskImageForWidth:(double)width constraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (id)vCardDataForURL:(id)l;
++ (id)vCardURLSForData:(id)data;
++ (id)valueForKey:(id)key forURLComponents:(id)components;
 @end
 
 @implementation IMMapPreviewGenerator
@@ -24,32 +24,32 @@
   return v3;
 }
 
-+ (CGImage)newPreviewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6
++ (CGImage)newPreviewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
-  v6 = *&a5->var1.height;
-  v8[0] = *&a5->var0;
+  v6 = *&constraints->var1.height;
+  v8[0] = *&constraints->var0;
   v8[1] = v6;
-  v9 = *&a5->var3;
-  return [a1 newPreviewFromSourceURL:a3 senderContext:a4 withPreviewConstraints:v8 interfaceStyle:1 error:a6];
+  v9 = *&constraints->var3;
+  return [self newPreviewFromSourceURL:l senderContext:context withPreviewConstraints:v8 interfaceStyle:1 error:error];
 }
 
-+ (CGImage)newPreviewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 interfaceStyle:(int64_t)a6 error:(id *)a7
++ (CGImage)newPreviewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints interfaceStyle:(int64_t)style error:(id *)error
 {
   v78 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  lCopy = l;
+  contextCopy = context;
   v14 = _os_activity_create(&dword_1A85E5000, "com.apple.messages.AttachmentGeneratePreviewMap", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v14, &state);
-  if (v12)
+  if (lCopy)
   {
     if (qword_1EB30B768 != -1)
     {
       sub_1A88C5D40();
     }
 
-    v15 = [a1 coordinateForvCardURL:v12 senderContext:v13];
+    v15 = [self coordinateForvCardURL:lCopy senderContext:contextCopy];
     v17 = v16;
     v19 = v18;
     if (off_1EB30B760(v15))
@@ -62,7 +62,7 @@
         v60 = [MEMORY[0x1AC570AA0](@"UITraitCollection" @"UIKit")];
         [v21 setTraitCollection:v60];
         [v21 _setUseSnapshotService:1];
-        [a1 mapThumbnailFillSizeForWidth:a5->var0];
+        [self mapThumbnailFillSizeForWidth:constraints->var0];
         v23 = v22;
         v25 = v24;
         if (qword_1EB30B778 != -1)
@@ -72,7 +72,7 @@
 
         off_1EB30B770(v17, v19, 500.0, 500.0);
         [v21 setRegion:?];
-        [v21 setSize:{v23 * (1.0 / a5->var2), v25 * (1.0 / a5->var2)}];
+        [v21 setSize:{v23 * (1.0 / constraints->var2), v25 * (1.0 / constraints->var2)}];
         v26 = MEMORY[0x1AC570AA0](@"MKMapSnapshotter", @"MapKit");
         if (!v26)
         {
@@ -93,10 +93,10 @@
             }
           }
 
-          if (a7)
+          if (error)
           {
             [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:10 userInfo:0];
-            *a7 = Copy = 0;
+            *error = Copy = 0;
           }
 
           else
@@ -120,17 +120,17 @@
         v69 = 0;
         v27 = dispatch_group_create();
         dispatch_group_enter(v27);
-        v28 = [a1 mapSnapshotterQueue];
+        mapSnapshotterQueue = [self mapSnapshotterQueue];
         v61[0] = MEMORY[0x1E69E9820];
         v61[1] = 3221225472;
         v61[2] = sub_1A86EFD48;
         v61[3] = &unk_1E782B238;
         v64 = &v66;
-        v65 = a1;
+        selfCopy = self;
         v63 = v74;
         v29 = v27;
         v62 = v29;
-        [v59 startWithQueue:v28 completionHandler:v61];
+        [v59 startWithQueue:mapSnapshotterQueue completionHandler:v61];
 
         v30 = dispatch_time(0, 20000000000);
         if (dispatch_group_wait(v29, v30))
@@ -148,9 +148,9 @@
             }
           }
 
-          if (a7)
+          if (error)
           {
-            *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:12 userInfo:0];
+            *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:12 userInfo:0];
           }
 
           *(v67 + 24) = 0;
@@ -161,7 +161,7 @@
           v48 = MEMORY[0x1AC570AA0](@"_UIBackdropViewSettings", @"UIKit");
           if (v48)
           {
-            if (a6 == 2)
+            if (style == 2)
             {
               v49 = 2030;
             }
@@ -171,11 +171,11 @@
               v49 = 2020;
             }
 
-            v50 = *&a5->var1.height;
-            *buf = *&a5->var0;
+            v50 = *&constraints->var1.height;
+            *buf = *&constraints->var0;
             v72 = v50;
-            v73 = *&a5->var3;
-            v51 = [a1 titleBarMaskImageForWidth:buf constraints:a7 error:{v23, v21}];
+            v73 = *&constraints->var3;
+            v51 = [self titleBarMaskImageForWidth:buf constraints:error error:{v23, v21}];
             if (v51)
             {
               v52 = [v48 settingsForPrivateStyle:v49 graphicsQuality:100];
@@ -210,7 +210,7 @@
             }
           }
 
-          if (!a7 || *a7)
+          if (!error || *error)
           {
             goto LABEL_51;
           }
@@ -218,7 +218,7 @@
           goto LABEL_52;
         }
 
-        if (!a7 || *a7)
+        if (!error || *error)
         {
 LABEL_51:
           Copy = 0;
@@ -233,7 +233,7 @@ LABEL_63:
 
 LABEL_52:
         [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:1 userInfo:0];
-        *a7 = Copy = 0;
+        *error = Copy = 0;
         goto LABEL_62;
       }
 
@@ -254,7 +254,7 @@ LABEL_52:
         }
       }
 
-      if (a7)
+      if (error)
       {
         v37 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:10 userInfo:0];
         goto LABEL_35;
@@ -274,13 +274,13 @@ LABEL_65:
         *v74 = 138412546;
         *&v74[4] = v39;
         *&v74[12] = 2112;
-        *&v74[14] = v12;
+        *&v74[14] = lCopy;
         v40 = v39;
         _os_log_impl(&dword_1A85E5000, v38, OS_LOG_TYPE_INFO, "%@ - Unable to parse coordinate for for %@", v74, 0x16u);
       }
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_65;
     }
@@ -303,7 +303,7 @@ LABEL_65:
       }
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_65;
     }
@@ -313,7 +313,7 @@ LABEL_65:
 
 LABEL_35:
   Copy = 0;
-  *a7 = v37;
+  *error = v37;
 LABEL_66:
   os_activity_scope_leave(&state);
 
@@ -332,21 +332,21 @@ LABEL_66:
   return v3;
 }
 
-+ (CGSize)mapThumbnailFillSizeForWidth:(double)a3
++ (CGSize)mapThumbnailFillSizeForWidth:(double)width
 {
-  v3 = a3 / 1.33333333;
-  v4 = round(a3);
+  v3 = width / 1.33333333;
+  v4 = round(width);
   v5 = round(v3);
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (id)vCardDataForURL:(id)a3
++ (id)vCardDataForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3 options:8 error:0];
+    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l options:8 error:0];
   }
 
   else
@@ -357,22 +357,22 @@ LABEL_66:
   return v4;
 }
 
-+ (id)vCardURLSForData:(id)a3
++ (id)vCardURLSForData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = MEMORY[0x1AC570AA0](@"CNContactVCardSerialization", @"Contacts");
     if (v4)
     {
       v12 = 0;
-      v5 = [v4 contactsWithData:v3 error:&v12];
+      v5 = [v4 contactsWithData:dataCopy error:&v12];
       v6 = v12;
       if (!v6 && v5 && [v5 count])
       {
-        v7 = [v5 firstObject];
-        v8 = [v7 urlAddresses];
+        firstObject = [v5 firstObject];
+        urlAddresses = [firstObject urlAddresses];
 
         goto LABEL_17;
       }
@@ -400,16 +400,16 @@ LABEL_66:
     }
   }
 
-  v8 = 0;
+  urlAddresses = 0;
 LABEL_17:
 
-  return v8;
+  return urlAddresses;
 }
 
-+ (CLLocationCoordinate2D)coordinateForvCardURL:(id)a3 senderContext:(id)a4
++ (CLLocationCoordinate2D)coordinateForvCardURL:(id)l senderContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  contextCopy = context;
   if (+[IMMapPreviewGenerator supportsBlastDoor])
   {
     if (qword_1EB30B798 != -1)
@@ -417,7 +417,7 @@ LABEL_17:
       sub_1A88C5DA4();
     }
 
-    v8 = [a1 vCardDataForURL:v6];
+    v8 = [self vCardDataForURL:lCopy];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3010000000;
@@ -437,7 +437,7 @@ LABEL_17:
       v20 = &v21;
       v11 = v10;
       v19 = v11;
-      [IMAttachmentBlastdoor sendData:v8 senderContext:v7 forPreviewType:0 withCompletionBlock:v18];
+      [IMAttachmentBlastdoor sendData:v8 senderContext:contextCopy forPreviewType:0 withCompletionBlock:v18];
       dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
       v12 = v22[4];
       v13 = v22[5];
@@ -454,7 +454,7 @@ LABEL_17:
 
   else
   {
-    [a1 _legacyCoordinateForvCardURL:v6];
+    [self _legacyCoordinateForvCardURL:lCopy];
     v12 = v14;
     v13 = v15;
   }
@@ -466,17 +466,17 @@ LABEL_17:
   return result;
 }
 
-+ (CLLocationCoordinate2D)_legacyCoordinateForvCardURL:(id)a3
++ (CLLocationCoordinate2D)_legacyCoordinateForvCardURL:(id)l
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   if (qword_1EB30B7A8 != -1)
   {
     sub_1A88C5DCC();
   }
 
-  v5 = [a1 vCardDataForURL:v4];
-  v6 = [a1 vCardURLSForData:v5];
+  v5 = [self vCardDataForURL:lCopy];
+  v6 = [self vCardURLSForData:v5];
   v7 = sub_1A86F03C4();
   v9 = v8;
   v29 = 0u;
@@ -499,8 +499,8 @@ LABEL_17:
         }
 
         v15 = MEMORY[0x1E695DFF8];
-        v16 = [*(*(&v29 + 1) + 8 * i) value];
-        v17 = [v15 URLWithString:v16];
+        value = [*(*(&v29 + 1) + 8 * i) value];
+        v17 = [v15 URLWithString:value];
 
         v18 = [IMMapURLHelpers coordinatesFromURL:v17];
         if ([v18 count] == 2)
@@ -510,8 +510,8 @@ LABEL_17:
           [v20 doubleValue];
           v22 = v21;
           v23 = [v18 objectAtIndex:1];
-          v24 = [v23 doubleValue];
-          v7 = v19(v24, v22, v25);
+          doubleValue = [v23 doubleValue];
+          v7 = v19(doubleValue, v22, v25);
           v9 = v26;
 
           goto LABEL_13;
@@ -537,21 +537,21 @@ LABEL_13:
   return result;
 }
 
-+ (id)valueForKey:(id)a3 forURLComponents:(id)a4
++ (id)valueForKey:(id)key forURLComponents:(id)components
 {
-  v5 = a3;
-  v6 = [a4 queryItems];
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"name=%@", v5];
+  keyCopy = key;
+  queryItems = [components queryItems];
+  keyCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"name=%@", keyCopy];
 
-  v8 = [v6 filteredArrayUsingPredicate:v7];
-  v9 = [v8 firstObject];
+  v8 = [queryItems filteredArrayUsingPredicate:keyCopy];
+  firstObject = [v8 firstObject];
 
-  v10 = [v9 value];
+  value = [firstObject value];
 
-  return v10;
+  return value;
 }
 
-+ (id)titleBarMaskImageForWidth:(double)a3 constraints:(IMPreviewConstraints *)a4 error:(id *)a5
++ (id)titleBarMaskImageForWidth:(double)width constraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   v38 = 0;
@@ -659,10 +659,10 @@ LABEL_13:
 
   if (v9 && sub_1A86F10B4() && sub_1A86F11F8() && sub_1A86F10B4() && sub_1A86F1334() && sub_1A86F10B4() && sub_1A86F1470() && sub_1A86F10B4() && sub_1A86F15AC())
   {
-    [a1 mapThumbnailFillSizeForWidth:{a3, v38}];
+    [self mapThumbnailFillSizeForWidth:{width, v38}];
     v27 = v26;
     v29 = v28;
-    var2 = a4->var2;
+    var2 = constraints->var2;
     v31 = sub_1A86F11F8();
     if (!v31 || (v31(0, v27, v29, 0.0), [v9 blackColor], v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "set"), v32, (v33 = sub_1A86F1470()) == 0) || (v33(0.0, v29 - var2 * 37.5, v27), (v34 = sub_1A86F1334()) == 0) || (v34(), v35 = objc_claimAutoreleasedReturnValue(), (v36 = sub_1A86F15AC()) == 0))
     {
@@ -674,10 +674,10 @@ LABEL_13:
     v36();
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:10 userInfo:{0, v38}];
-    *a5 = v35 = 0;
+    *error = v35 = 0;
   }
 
   else

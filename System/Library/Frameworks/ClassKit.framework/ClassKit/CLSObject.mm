@@ -1,14 +1,14 @@
 @interface CLSObject
 + (id)hashableColumnNames;
-+ (void)resolveConflictForLocalRecord:(id)a3 serverRecord:(id)a4 commonAncestorRecord:(id)a5;
-- (BOOL)writeInDatabase:(id)a3;
++ (void)resolveConflictForLocalRecord:(id)record serverRecord:(id)serverRecord commonAncestorRecord:(id)ancestorRecord;
+- (BOOL)writeInDatabase:(id)database;
 - (unint64_t)changeHash;
-- (void)_initCommonPropsWithDatabaseRow:(id)a3;
-- (void)_initCommonPropsWithRecord:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)setExpiration:(double)a3;
-- (void)updateParentReferencesForRecord:(id)a3;
+- (void)_initCommonPropsWithDatabaseRow:(id)row;
+- (void)_initCommonPropsWithRecord:(id)record;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)setExpiration:(double)expiration;
+- (void)updateParentReferencesForRecord:(id)record;
 @end
 
 @implementation CLSObject
@@ -24,73 +24,73 @@
 
 - (unint64_t)changeHash
 {
-  v3 = [(CLSObject *)self objectID];
-  v4 = [v3 _cls_stableHash];
+  objectID = [(CLSObject *)self objectID];
+  _cls_stableHash = [objectID _cls_stableHash];
 
-  v5 = [(CLSObject *)self dateLastModified];
-  v6 = [v5 hash];
+  dateLastModified = [(CLSObject *)self dateLastModified];
+  v6 = [dateLastModified hash];
 
-  return v6 ^ v4;
+  return v6 ^ _cls_stableHash;
 }
 
-- (void)_initCommonPropsWithDatabaseRow:(id)a3
+- (void)_initCommonPropsWithDatabaseRow:(id)row
 {
-  v10 = a3;
-  v4 = sub_10016D778(v10, @"objectID");
+  rowCopy = row;
+  v4 = sub_10016D778(rowCopy, @"objectID");
   [(CLSObject *)self setObjectID:v4];
 
   [(CLSObject *)self setTemporary:0];
-  v5 = sub_10016D778(v10, @"appIdentifier");
+  v5 = sub_10016D778(rowCopy, @"appIdentifier");
 
   if (v5)
   {
-    v6 = sub_10016D778(v10, @"appIdentifier");
+    v6 = sub_10016D778(rowCopy, @"appIdentifier");
     [(CLSObject *)self setAppIdentifier:v6];
   }
 
-  v7 = sub_10016D6F0(v10, @"dateCreated");
+  v7 = sub_10016D6F0(rowCopy, @"dateCreated");
   [(CLSObject *)self setDateCreated:v7];
 
-  v8 = sub_10016D6F0(v10, @"dateLastModified");
+  v8 = sub_10016D6F0(rowCopy, @"dateLastModified");
   [(CLSObject *)self setDateLastModified:v8];
 
   if ([(CLSObject *)self conformsToProtocol:&OBJC_PROTOCOL___PDExpirableDatabaseEntity])
   {
-    v9 = sub_10016D6F0(v10, @"dateExpires");
+    v9 = sub_10016D6F0(rowCopy, @"dateExpires");
     [(CLSObject *)self setDateExpires:v9];
   }
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v10 = a3;
-  v4 = [(CLSObject *)self objectID];
-  sub_1000982FC(v10, v4, @"objectID");
+  toCopy = to;
+  objectID = [(CLSObject *)self objectID];
+  sub_1000982FC(toCopy, objectID, @"objectID");
 
-  v5 = [(CLSObject *)self appIdentifier];
+  appIdentifier = [(CLSObject *)self appIdentifier];
 
-  if (v5)
+  if (appIdentifier)
   {
-    v6 = [(CLSObject *)self appIdentifier];
-    sub_1000982FC(v10, v6, @"appIdentifier");
+    appIdentifier2 = [(CLSObject *)self appIdentifier];
+    sub_1000982FC(toCopy, appIdentifier2, @"appIdentifier");
   }
 
-  v7 = [(CLSObject *)self dateCreated];
-  sub_1000982FC(v10, v7, @"dateCreated");
+  dateCreated = [(CLSObject *)self dateCreated];
+  sub_1000982FC(toCopy, dateCreated, @"dateCreated");
 
-  v8 = [(CLSObject *)self dateLastModified];
-  sub_1000982FC(v10, v8, @"dateLastModified");
+  dateLastModified = [(CLSObject *)self dateLastModified];
+  sub_1000982FC(toCopy, dateLastModified, @"dateLastModified");
 
   if ([(CLSObject *)self conformsToProtocol:&OBJC_PROTOCOL___PDExpirableDatabaseEntity])
   {
-    v9 = [(CLSObject *)self dateExpires];
-    sub_1000982FC(v10, v9, @"dateExpires");
+    dateExpires = [(CLSObject *)self dateExpires];
+    sub_1000982FC(toCopy, dateExpires, @"dateExpires");
   }
 }
 
-- (void)setExpiration:(double)a3
+- (void)setExpiration:(double)expiration
 {
-  if (a3 == 0.0)
+  if (expiration == 0.0)
   {
 
     [(CLSObject *)self setDateExpires:0];
@@ -103,66 +103,66 @@
   }
 }
 
-- (void)_initCommonPropsWithRecord:(id)a3
+- (void)_initCommonPropsWithRecord:(id)record
 {
-  v18 = a3;
-  v4 = [v18 recordID];
-  v5 = [v4 recordName];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
 
-  [(CLSObject *)self setObjectID:v5];
+  [(CLSObject *)self setObjectID:recordName];
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(CLSObject *)self parentReferenceName], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [v18 objectForKeyedSubscript:v6];
-    v9 = [v8 recordID];
-    v10 = [v9 recordName];
+    v8 = [recordCopy objectForKeyedSubscript:v6];
+    recordID2 = [v8 recordID];
+    recordName2 = [recordID2 recordName];
 
-    if (v10)
+    if (recordName2)
     {
-      [(CLSObject *)self setParentObjectID:v10];
+      [(CLSObject *)self setParentObjectID:recordName2];
     }
   }
 
   else
   {
-    v10 = v5;
+    recordName2 = recordName;
   }
 
-  v11 = [v18 objectForKeyedSubscript:@"appIdentifier"];
+  v11 = [recordCopy objectForKeyedSubscript:@"appIdentifier"];
   [(CLSObject *)self setAppIdentifier:v11];
 
-  v12 = [v18 objectForKeyedSubscript:@"dateCreated"];
+  v12 = [recordCopy objectForKeyedSubscript:@"dateCreated"];
   [(CLSObject *)self setDateCreated:v12];
 
-  v13 = [(CLSObject *)self dateCreated];
+  dateCreated = [(CLSObject *)self dateCreated];
 
-  if (!v13)
+  if (!dateCreated)
   {
     v14 = +[NSDate date];
     [(CLSObject *)self setDateCreated:v14];
   }
 
-  v15 = [v18 objectForKeyedSubscript:@"dateLastModified"];
+  v15 = [recordCopy objectForKeyedSubscript:@"dateLastModified"];
   [(CLSObject *)self setDateLastModified:v15];
 
-  v16 = [(CLSObject *)self dateLastModified];
+  dateLastModified = [(CLSObject *)self dateLastModified];
 
-  if (!v16)
+  if (!dateLastModified)
   {
-    v17 = [(CLSObject *)self dateCreated];
-    [(CLSObject *)self setDateLastModified:v17];
+    dateCreated2 = [(CLSObject *)self dateCreated];
+    [(CLSObject *)self setDateLastModified:dateCreated2];
   }
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
-  v9 = a3;
-  v4 = [(CLSObject *)self appIdentifier];
-  [v9 setObject:v4 forKeyedSubscript:@"appIdentifier"];
+  populateCopy = populate;
+  appIdentifier = [(CLSObject *)self appIdentifier];
+  [populateCopy setObject:appIdentifier forKeyedSubscript:@"appIdentifier"];
 
-  v5 = [(CLSObject *)self dateCreated];
+  dateCreated = [(CLSObject *)self dateCreated];
 
-  if (v5)
+  if (dateCreated)
   {
     [(CLSObject *)self dateCreated];
   }
@@ -172,64 +172,64 @@
     +[NSDate date];
   }
   v6 = ;
-  [v9 setObject:v6 forKeyedSubscript:@"dateCreated"];
+  [populateCopy setObject:v6 forKeyedSubscript:@"dateCreated"];
 
-  v7 = [(CLSObject *)self dateLastModified];
+  dateLastModified = [(CLSObject *)self dateLastModified];
 
-  if (v7)
+  if (dateLastModified)
   {
     [(CLSObject *)self dateLastModified];
   }
 
   else
   {
-    [v9 objectForKeyedSubscript:@"dateCreated"];
+    [populateCopy objectForKeyedSubscript:@"dateCreated"];
   }
   v8 = ;
-  [v9 setObject:v8 forKeyedSubscript:@"dateLastModified"];
+  [populateCopy setObject:v8 forKeyedSubscript:@"dateLastModified"];
 }
 
-- (void)updateParentReferencesForRecord:(id)a3
+- (void)updateParentReferencesForRecord:(id)record
 {
-  v13 = a3;
-  v4 = [(CLSObject *)self parentObjectID];
-  if (v4)
+  recordCopy = record;
+  parentObjectID = [(CLSObject *)self parentObjectID];
+  if (parentObjectID)
   {
     v5 = [CKRecordID alloc];
-    v6 = [v13 recordID];
-    v7 = [v6 zoneID];
-    v8 = [v5 initWithRecordName:v4 zoneID:v7];
+    recordID = [recordCopy recordID];
+    zoneID = [recordID zoneID];
+    v8 = [v5 initWithRecordName:parentObjectID zoneID:zoneID];
 
     v9 = [[CKReference alloc] initWithRecordID:v8 action:0];
-    [v13 setParent:v9];
+    [recordCopy setParent:v9];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CLSObject *)self parentReferenceName];
-      if (v10)
+      parentReferenceName = [(CLSObject *)self parentReferenceName];
+      if (parentReferenceName)
       {
-        v11 = v10;
+        v11 = parentReferenceName;
         v12 = [[CKReference alloc] initWithRecordID:v8 action:1];
 
-        [v13 setObject:v12 forKeyedSubscript:v11];
+        [recordCopy setObject:v12 forKeyedSubscript:v11];
         v9 = v12;
       }
     }
   }
 }
 
-+ (void)resolveConflictForLocalRecord:(id)a3 serverRecord:(id)a4 commonAncestorRecord:(id)a5
++ (void)resolveConflictForLocalRecord:(id)record serverRecord:(id)serverRecord commonAncestorRecord:(id)ancestorRecord
 {
-  v8 = a3;
-  v9 = a4;
-  v38 = a5;
-  v10 = [v38 values];
-  v11 = sub_1000A3110(a1, v8, v10);
-  v37 = v10;
-  v12 = sub_1000A3110(a1, v9, v10);
-  v39 = v8;
-  v13 = [v8 objectForKeyedSubscript:@"dateLastModified"];
-  v41 = v9;
-  v35 = [v9 objectForKeyedSubscript:@"dateLastModified"];
+  recordCopy = record;
+  serverRecordCopy = serverRecord;
+  ancestorRecordCopy = ancestorRecord;
+  values = [ancestorRecordCopy values];
+  v11 = sub_1000A3110(self, recordCopy, values);
+  v37 = values;
+  v12 = sub_1000A3110(self, serverRecordCopy, values);
+  v39 = recordCopy;
+  v13 = [recordCopy objectForKeyedSubscript:@"dateLastModified"];
+  v41 = serverRecordCopy;
+  v35 = [serverRecordCopy objectForKeyedSubscript:@"dateLastModified"];
   v36 = v13;
   v14 = [v13 compare:v35];
   if (v14 == -1)
@@ -298,8 +298,8 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v26 = [v16 keyEnumerator];
-  v27 = [v26 countByEnumeratingWithState:&v42 objects:v50 count:16];
+  keyEnumerator = [v16 keyEnumerator];
+  v27 = [keyEnumerator countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v27)
   {
     v28 = v27;
@@ -311,7 +311,7 @@
       {
         if (*v43 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v31 = *(*(&v42 + 1) + 8 * v30);
@@ -332,25 +332,25 @@
       }
 
       while (v28 != v30);
-      v28 = [v26 countByEnumeratingWithState:&v42 objects:v50 count:16];
+      v28 = [keyEnumerator countByEnumeratingWithState:&v42 objects:v50 count:16];
     }
 
     while (v28);
   }
 }
 
-- (BOOL)writeInDatabase:(id)a3
+- (BOOL)writeInDatabase:(id)database
 {
-  v4 = self;
-  v5 = a3;
-  if ([(CLSObject *)v4 isDeleted])
+  selfCopy = self;
+  databaseCopy = database;
+  if ([(CLSObject *)selfCopy isDeleted])
   {
-    v6 = [v5 deleteObject:v4];
+    v6 = [databaseCopy deleteObject:selfCopy];
   }
 
   else
   {
-    v6 = [v5 insertOrUpdateObject:v4];
+    v6 = [databaseCopy insertOrUpdateObject:selfCopy];
   }
 
   v7 = v6;

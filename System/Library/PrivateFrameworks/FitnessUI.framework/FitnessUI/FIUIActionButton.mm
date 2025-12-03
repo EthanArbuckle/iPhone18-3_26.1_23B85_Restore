@@ -1,22 +1,22 @@
 @interface FIUIActionButton
-+ (id)buttonWithTitle:(id)a3 color:(id)a4 icon:(id)a5;
++ (id)buttonWithTitle:(id)title color:(id)color icon:(id)icon;
 - (CGRect)backgroundImageFrame;
-- (CGRect)backgroundRectForBounds:(CGRect)a3;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)backgroundRectForBounds:(CGRect)bounds;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (CGSize)FIUIActionButtonSize;
-- (FIUIActionButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_animateHighlighted:(BOOL)a3;
+- (FIUIActionButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_animateHighlighted:(BOOL)highlighted;
 - (void)_setupInternalTouchActions;
 - (void)_touchDown;
 - (void)_touchUp;
 - (void)layoutSubviews;
-- (void)setBackgroundImageColor:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setImageViewTintColor:(id)a3;
-- (void)turnIntoSolidDotWithDuration:(double)a3 completion:(id)a4;
+- (void)setBackgroundImageColor:(id)color;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setImageViewTintColor:(id)color;
+- (void)turnIntoSolidDotWithDuration:(double)duration completion:(id)completion;
 @end
 
 @implementation FIUIActionButton
@@ -35,21 +35,21 @@
   v24.receiver = self;
   v24.super_class = FIUIActionButton;
   [(FIUIActionButton *)&v24 layoutSubviews];
-  v3 = [(FIUIActionButton *)self imageView];
-  [v3 setAlpha:0.0];
+  imageView = [(FIUIActionButton *)self imageView];
+  [imageView setAlpha:0.0];
 
-  v4 = [(FIUIActionButton *)self transformingImageView];
-  [v4 intrinsicContentSize];
+  transformingImageView = [(FIUIActionButton *)self transformingImageView];
+  [transformingImageView intrinsicContentSize];
   v6 = v5;
-  v7 = [(FIUIActionButton *)self transformingImageView];
-  [v7 intrinsicContentSize];
+  transformingImageView2 = [(FIUIActionButton *)self transformingImageView];
+  [transformingImageView2 intrinsicContentSize];
   v9 = v8;
 
-  v10 = [(FIUIActionButton *)self transformingImageView];
-  v11 = v10;
-  if (v10)
+  transformingImageView3 = [(FIUIActionButton *)self transformingImageView];
+  v11 = transformingImageView3;
+  if (transformingImageView3)
   {
-    [v10 transform];
+    [transformingImageView3 transform];
   }
 
   else
@@ -66,15 +66,15 @@
   y = v26.origin.y;
   width = v26.size.width;
   height = v26.size.height;
-  v16 = [(FIUIActionButton *)self transformingImageView];
-  [v16 setFrame:{x, y, width, height}];
+  transformingImageView4 = [(FIUIActionButton *)self transformingImageView];
+  [transformingImageView4 setFrame:{x, y, width, height}];
 
-  v17 = [(FIUIActionButton *)self imageView];
-  [v17 center];
+  imageView2 = [(FIUIActionButton *)self imageView];
+  [imageView2 center];
   v19 = v18;
   v21 = v20;
-  v22 = [(FIUIActionButton *)self transformingImageView];
-  [v22 setCenter:{v19, v21}];
+  transformingImageView5 = [(FIUIActionButton *)self transformingImageView];
+  [transformingImageView5 setCenter:{v19, v21}];
 }
 
 - (void)_touchDown
@@ -93,21 +93,21 @@
   }
 }
 
-+ (id)buttonWithTitle:(id)a3 color:(id)a4 icon:(id)a5
++ (id)buttonWithTitle:(id)title color:(id)color icon:(id)icon
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 buttonWithType:0];
-  [v11 setTitle:v10 forState:0];
+  iconCopy = icon;
+  colorCopy = color;
+  titleCopy = title;
+  v11 = [self buttonWithType:0];
+  [v11 setTitle:titleCopy forState:0];
 
-  v12 = [v8 imageWithRenderingMode:2];
+  v12 = [iconCopy imageWithRenderingMode:2];
 
   [v11 setImage:v12 forState:0];
-  v13 = [v9 colorWithAlphaComponent:0.2];
+  v13 = [colorCopy colorWithAlphaComponent:0.2];
   [v11 setBackgroundImageColor:v13];
 
-  v14 = [v9 colorWithAlphaComponent:1.0];
+  v14 = [colorCopy colorWithAlphaComponent:1.0];
 
   [v11 setImageViewTintColor:v14];
   [v11 sizeToFit];
@@ -115,29 +115,29 @@
   return v11;
 }
 
-- (FIUIActionButton)initWithFrame:(CGRect)a3
+- (FIUIActionButton)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = FIUIActionButton;
-  v3 = [(FIUIActionButton *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FIUIActionButton *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDD10]];
-    v5 = [(FIUIActionButton *)v3 titleLabel];
-    [v5 setFont:v4];
+    titleLabel = [(FIUIActionButton *)v3 titleLabel];
+    [titleLabel setFont:v4];
 
-    v6 = [(FIUIActionButton *)v3 titleLabel];
-    [v6 setLineBreakMode:4];
+    titleLabel2 = [(FIUIActionButton *)v3 titleLabel];
+    [titleLabel2 setLineBreakMode:4];
 
-    v7 = [(FIUIActionButton *)v3 titleLabel];
-    [v7 setTextAlignment:1];
+    titleLabel3 = [(FIUIActionButton *)v3 titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    v9 = [(FIUIActionButton *)v3 titleLabel];
-    [v9 setTextColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    titleLabel4 = [(FIUIActionButton *)v3 titleLabel];
+    [titleLabel4 setTextColor:whiteColor];
 
-    v10 = [(FIUIActionButton *)v3 titleLabel];
-    [v10 setAllowsDefaultTighteningForTruncation:1];
+    titleLabel5 = [(FIUIActionButton *)v3 titleLabel];
+    [titleLabel5 setAllowsDefaultTighteningForTruncation:1];
 
     [(FIUIActionButton *)v3 _setupInternalTouchActions];
     v11 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -146,8 +146,8 @@
 
     [(UIImageView *)v3->_transformingImageView setContentMode:1];
     [(FIUIActionButton *)v3 addSubview:v3->_transformingImageView];
-    v13 = [(FIUIActionButton *)v3 imageView];
-    [v13 setAlpha:0.0];
+    imageView = [(FIUIActionButton *)v3 imageView];
+    [imageView setAlpha:0.0];
 
     [(FIUIActionButton *)v3 setExclusiveTouch:1];
   }
@@ -155,11 +155,11 @@
   return v3;
 }
 
-- (void)turnIntoSolidDotWithDuration:(double)a3 completion:(id)a4
+- (void)turnIntoSolidDotWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(FIUIActionButton *)self backgroundImageColor];
-  v8 = [v7 colorWithAlphaComponent:1.0];
+  completionCopy = completion;
+  backgroundImageColor = [(FIUIActionButton *)self backgroundImageColor];
+  v8 = [backgroundImageColor colorWithAlphaComponent:1.0];
 
   v9 = MEMORY[0x1E69DD250];
   v14[0] = MEMORY[0x1E69E9820];
@@ -172,10 +172,10 @@
   v12[1] = 3221225472;
   v12[2] = __60__FIUIActionButton_turnIntoSolidDotWithDuration_completion___block_invoke_2;
   v12[3] = &unk_1E878BE28;
-  v13 = v6;
-  v10 = v6;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  [v9 transitionWithView:self duration:5439616 options:v14 animations:v12 completion:a3];
+  [v9 transitionWithView:self duration:5439616 options:v14 animations:v12 completion:duration];
 }
 
 void __60__FIUIActionButton_turnIntoSolidDotWithDuration_completion___block_invoke(uint64_t a1)
@@ -185,25 +185,25 @@ void __60__FIUIActionButton_turnIntoSolidDotWithDuration_completion___block_invo
   [v2 setAlpha:0.0];
 }
 
-- (void)setImageViewTintColor:(id)a3
+- (void)setImageViewTintColor:(id)color
 {
-  v7 = a3;
-  if (([v7 isEqual:self->_imageViewTintColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_imageViewTintColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_imageViewTintColor, a3);
+    objc_storeStrong(&self->_imageViewTintColor, color);
     imageViewTintColor = self->_imageViewTintColor;
-    v6 = [(FIUIActionButton *)self transformingImageView];
-    [v6 setTintColor:imageViewTintColor];
+    transformingImageView = [(FIUIActionButton *)self transformingImageView];
+    [transformingImageView setTintColor:imageViewTintColor];
   }
 }
 
-- (void)setBackgroundImageColor:(id)a3
+- (void)setBackgroundImageColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_backgroundImageColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_backgroundImageColor, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_backgroundImageColor, color);
+    v5 = colorCopy;
     v10.width = 67.5;
     v10.height = 43.5;
     UIGraphicsBeginImageContextWithOptions(v10, 0, 0.0);
@@ -218,20 +218,20 @@ void __60__FIUIActionButton_turnIntoSolidDotWithDuration_completion___block_invo
   }
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
   v8.receiver = self;
   v8.super_class = FIUIActionButton;
-  v6 = a3;
-  [(FIUIActionButton *)&v8 setImage:v6 forState:a4];
+  imageCopy = image;
+  [(FIUIActionButton *)&v8 setImage:imageCopy forState:state];
   v7 = [(FIUIActionButton *)self transformingImageView:v8.receiver];
-  [v7 setImage:v6];
+  [v7 setImage:imageCopy];
 }
 
 - (CGSize)FIUIActionButtonSize
 {
-  v2 = [(FIUIActionButton *)self titleLabel];
-  [v2 frame];
+  titleLabel = [(FIUIActionButton *)self titleLabel];
+  [titleLabel frame];
   v4 = v3;
 
   v5 = v4 + 43.5 + 1.0;
@@ -241,33 +241,33 @@ void __60__FIUIActionButton_turnIntoSolidDotWithDuration_completion___block_invo
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8.receiver = self;
   v8.super_class = FIUIActionButton;
   [(FIUIActionButton *)&v8 setEnabled:?];
-  if (v3)
+  if (enabledCopy)
   {
     [(FIUIActionButton *)self setAlpha:1.0];
     imageViewTintColor = self->_imageViewTintColor;
-    v6 = [(FIUIActionButton *)self transformingImageView];
-    [v6 setTintColor:imageViewTintColor];
+    transformingImageView = [(FIUIActionButton *)self transformingImageView];
+    [transformingImageView setTintColor:imageViewTintColor];
   }
 
   else
   {
     [(FIUIActionButton *)self setAlpha:0.400000006];
-    v6 = [MEMORY[0x1E69DC888] lightGrayColor];
-    v7 = [(FIUIActionButton *)self transformingImageView];
-    [v7 setTintColor:v6];
+    transformingImageView = [MEMORY[0x1E69DC888] lightGrayColor];
+    transformingImageView2 = [(FIUIActionButton *)self transformingImageView];
+    [transformingImageView2 setTintColor:transformingImageView];
   }
 }
 
-- (void)_animateHighlighted:(BOOL)a3
+- (void)_animateHighlighted:(BOOL)highlighted
 {
   v3 = 0.8;
-  if (!a3)
+  if (!highlighted)
   {
     v3 = 1.0;
   }
@@ -283,7 +283,7 @@ void __60__FIUIActionButton_turnIntoSolidDotWithDuration_completion___block_invo
   v4[2] = __40__FIUIActionButton__animateHighlighted___block_invoke_2;
   v4[3] = &unk_1E878CC40;
   v4[4] = self;
-  v5 = a3;
+  highlightedCopy = highlighted;
   [MEMORY[0x1E69DD250] animateWithDuration:v6 animations:v4 completion:0.15];
 }
 
@@ -317,10 +317,10 @@ void __40__FIUIActionButton__animateHighlighted___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(FIUIActionButton *)self bounds];
   [(FIUIActionButton *)self backgroundRectForBounds:?];
   v15.origin.x = v7 + -8.0;
@@ -331,20 +331,20 @@ void __40__FIUIActionButton__animateHighlighted___block_invoke_2(uint64_t a1)
   v14.y = y;
   if (CGRectContainsPoint(v15, v14))
   {
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (CGRect)backgroundRectForBounds:(CGRect)a3
+- (CGRect)backgroundRectForBounds:(CGRect)bounds
 {
-  v3 = (a3.size.width + -67.5) * 0.5;
+  v3 = (bounds.size.width + -67.5) * 0.5;
   v4 = 67.5;
   v5 = 43.5;
   v6 = 0.0;
@@ -355,22 +355,22 @@ void __40__FIUIActionButton__animateHighlighted___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(FIUIActionButton *)self currentTitle];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  currentTitle = [(FIUIActionButton *)self currentTitle];
 
-  if (v8)
+  if (currentTitle)
   {
-    v9 = [(FIUIActionButton *)self titleLabel];
-    [v9 _firstBaselineOffsetFromTop];
+    titleLabel = [(FIUIActionButton *)self titleLabel];
+    [titleLabel _firstBaselineOffsetFromTop];
     v11 = v10;
 
-    v12 = [(FIUIActionButton *)self titleLabel];
-    [v12 intrinsicContentSize];
+    titleLabel2 = [(FIUIActionButton *)self titleLabel];
+    [titleLabel2 intrinsicContentSize];
     v14 = v13;
 
     if (width < v14)
@@ -385,18 +385,18 @@ void __40__FIUIActionButton__animateHighlighted___block_invoke_2(uint64_t a1)
       v29.size.width = width;
       v29.size.height = height;
       v15 = CGRectGetWidth(v29) * 0.5;
-      v16 = [(FIUIActionButton *)self titleLabel];
-      [v16 intrinsicContentSize];
+      titleLabel3 = [(FIUIActionButton *)self titleLabel];
+      [titleLabel3 intrinsicContentSize];
       v18 = v15 - v17 * 0.5;
 
-      v19 = [(FIUIActionButton *)self titleLabel];
-      [v19 intrinsicContentSize];
+      titleLabel4 = [(FIUIActionButton *)self titleLabel];
+      [titleLabel4 intrinsicContentSize];
       width = v20;
     }
 
     v21 = y + 43.5 + 15.5 - v11;
-    v23 = [(FIUIActionButton *)self titleLabel];
-    [v23 intrinsicContentSize];
+    titleLabel5 = [(FIUIActionButton *)self titleLabel];
+    [titleLabel5 intrinsicContentSize];
     v22 = v24;
   }
 
@@ -419,10 +419,10 @@ void __40__FIUIActionButton__animateHighlighted___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  width = a3.size.width;
-  v4 = [(FIUIActionButton *)self imageForState:[(FIUIActionButton *)self state:a3.origin.x]];
+  width = rect.size.width;
+  v4 = [(FIUIActionButton *)self imageForState:[(FIUIActionButton *)self state:rect.origin.x]];
   [v4 size];
   v6 = (width - v5) * 0.5;
   [v4 size];

@@ -1,7 +1,7 @@
 @interface PHASEDefinition
 - (PHASEDefinition)init;
 - (id)initInternal;
-- (void)setIdentifier:(id)a3;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation PHASEDefinition
@@ -20,10 +20,10 @@
   v2 = [(PHASEDefinition *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
 
     v6 = v2;
   }
@@ -31,12 +31,12 @@
   return v2;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    objc_storeStrong(&self->_identifier, a3);
+    objc_storeStrong(&self->_identifier, identifier);
   }
 
   else

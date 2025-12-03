@@ -1,12 +1,12 @@
 @interface _UILayoutSpacer
 + (id)_horizontalLayoutSpacer;
 + (id)_verticalLayoutSpacer;
-- (_UILayoutSpacer)initWithCoder:(id)a3;
+- (_UILayoutSpacer)initWithCoder:(id)coder;
 - (double)length;
 - (id)_layoutVariablesWithAmbiguousValue;
 - (void)_setUpCounterDimensionConstraint;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UILayoutSpacer
@@ -73,20 +73,20 @@
   }
 }
 
-- (_UILayoutSpacer)initWithCoder:(id)a3
+- (_UILayoutSpacer)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UILayoutSpacer;
   v4 = [(UILayoutGuide *)&v6 initWithCoder:?];
   if (v4)
   {
-    if ([a3 containsValueForKey:@"_UILayoutSpacerIsHorizontal"])
+    if ([coder containsValueForKey:@"_UILayoutSpacerIsHorizontal"])
     {
       v4->_horizontal = 1;
     }
 
-    v4->_constraintsToRemoveAtRuntime = [objc_msgSend(a3 decodeObjectForKey:{@"_UILayoutSpacerConstraintsToRemove", "copy"}];
-    if ([a3 containsValueForKey:@"_UILayoutSpacerCompatibilityGuideAllowsArchivingAsSubview"])
+    v4->_constraintsToRemoveAtRuntime = [objc_msgSend(coder decodeObjectForKey:{@"_UILayoutSpacerConstraintsToRemove", "copy"}];
+    if ([coder containsValueForKey:@"_UILayoutSpacerCompatibilityGuideAllowsArchivingAsSubview"])
     {
       v4->_compatibilityGuideAllowsArchivingAsSubview = 1;
     }
@@ -95,20 +95,20 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UILayoutSpacer;
   [(UILayoutGuide *)&v5 encodeWithCoder:?];
   if (self->_horizontal)
   {
-    [a3 encodeBool:1 forKey:@"_UILayoutSpacerIsHorizontal"];
+    [coder encodeBool:1 forKey:@"_UILayoutSpacerIsHorizontal"];
   }
 
-  [a3 encodeObject:-[_UILayoutSpacer _constraintsToRemoveAtRuntime](self forKey:{"_constraintsToRemoveAtRuntime"), @"_UILayoutSpacerConstraintsToRemove"}];
+  [coder encodeObject:-[_UILayoutSpacer _constraintsToRemoveAtRuntime](self forKey:{"_constraintsToRemoveAtRuntime"), @"_UILayoutSpacerConstraintsToRemove"}];
   if (self->_compatibilityGuideAllowsArchivingAsSubview)
   {
-    [a3 encodeBool:1 forKey:@"_UILayoutSpacerCompatibilityGuideAllowsArchivingAsSubview"];
+    [coder encodeBool:1 forKey:@"_UILayoutSpacerCompatibilityGuideAllowsArchivingAsSubview"];
   }
 }
 
@@ -118,15 +118,15 @@
   v3 = _layoutVariablesWithAmbiguousValueForLayoutItem(self);
   if (self->_horizontal)
   {
-    v4 = [(UILayoutGuide *)self nsli_minYVariable];
+    nsli_minYVariable = [(UILayoutGuide *)self nsli_minYVariable];
   }
 
   else
   {
-    v4 = [(UILayoutGuide *)self nsli_minXVariable];
+    nsli_minYVariable = [(UILayoutGuide *)self nsli_minXVariable];
   }
 
-  v6[0] = v4;
+  v6[0] = nsli_minYVariable;
   return [v3 arrayByExcludingObjectsInArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v6, 1)}];
 }
 

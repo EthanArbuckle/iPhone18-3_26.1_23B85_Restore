@@ -1,64 +1,64 @@
 @interface VUIDownloadButtonViewModel
-+ (BOOL)shouldShowExpiredImageWithDownloadState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6;
-+ (id)viewModelForSeasonDownloadWithCanonicalId:(id)a3 title:(id)a4 episodeCount:(int64_t)a5 useShowCanonicalIdForSeasonDownload:(BOOL)a6 showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)a7;
-+ (id)viewModelWithAssetController:(id)a3;
-+ (id)viewModelWithCanonicalId:(id)a3 title:(id)a4 episodeCount:(int64_t)a5 downloadType:(unint64_t)a6;
-+ (id)viewModelWithMPMediaItem:(id)a3 seasonMediaItemCollection:(id)a4;
-+ (id)viewModelWithMPMediaItemCollection:(id)a3;
-+ (id)viewModelWithVideoManagedObject:(id)a3;
-+ (id)viewModelWithVideosPlayable:(id)a3;
++ (BOOL)shouldShowExpiredImageWithDownloadState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed;
++ (id)viewModelForSeasonDownloadWithCanonicalId:(id)id title:(id)title episodeCount:(int64_t)count useShowCanonicalIdForSeasonDownload:(BOOL)download showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)downloads;
++ (id)viewModelWithAssetController:(id)controller;
++ (id)viewModelWithCanonicalId:(id)id title:(id)title episodeCount:(int64_t)count downloadType:(unint64_t)type;
++ (id)viewModelWithMPMediaItem:(id)item seasonMediaItemCollection:(id)collection;
++ (id)viewModelWithMPMediaItemCollection:(id)collection;
++ (id)viewModelWithVideoManagedObject:(id)object;
++ (id)viewModelWithVideosPlayable:(id)playable;
 - (BOOL)allowsManualDownloadRenewal;
 - (BOOL)isExpired;
 - (BOOL)isExpiringSoon;
 - (NSString)brandID;
 - (NSString)brandName;
 - (NSString)downloadStateStringValue;
-- (VUIDownloadButtonViewModel)initWithAssetController:(id)a3;
-- (VUIDownloadButtonViewModel)initWithCanonicalId:(id)a3 title:(id)a4 episodeCount:(int64_t)a5 useShowCanonicalIdForSeason:(BOOL)a6 showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)a7 downloadType:(unint64_t)a8;
-- (VUIDownloadButtonViewModel)initWithMPMediaItem:(id)a3 seasonMediaItemCollection:(id)a4;
-- (VUIDownloadButtonViewModel)initWithMPMediaItemCollection:(id)a3;
-- (VUIDownloadButtonViewModel)initWithVideoManagedObject:(id)a3;
-- (VUIDownloadButtonViewModel)initWithVideosPlayable:(id)a3;
-- (unint64_t)_downloadStateFromAssetsControllerStatus:(unint64_t)a3;
-- (void)_assetControllerStateDidChange:(id)a3;
-- (void)_downloadQueueManagerDidAddDownload:(id)a3;
-- (void)_downloadQueueManagerDidRemoveDownload:(id)a3;
+- (VUIDownloadButtonViewModel)initWithAssetController:(id)controller;
+- (VUIDownloadButtonViewModel)initWithCanonicalId:(id)id title:(id)title episodeCount:(int64_t)count useShowCanonicalIdForSeason:(BOOL)season showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)downloads downloadType:(unint64_t)type;
+- (VUIDownloadButtonViewModel)initWithMPMediaItem:(id)item seasonMediaItemCollection:(id)collection;
+- (VUIDownloadButtonViewModel)initWithMPMediaItemCollection:(id)collection;
+- (VUIDownloadButtonViewModel)initWithVideoManagedObject:(id)object;
+- (VUIDownloadButtonViewModel)initWithVideosPlayable:(id)playable;
+- (unint64_t)_downloadStateFromAssetsControllerStatus:(unint64_t)status;
+- (void)_assetControllerStateDidChange:(id)change;
+- (void)_downloadQueueManagerDidAddDownload:(id)download;
+- (void)_downloadQueueManagerDidRemoveDownload:(id)download;
 - (void)_initDownloadButtonStateForTVShowOrSeason;
-- (void)_updateDownloadStateFromAssetControllerState:(id)a3;
+- (void)_updateDownloadStateFromAssetControllerState:(id)state;
 - (void)dealloc;
 - (void)deleteDownload;
 - (void)fetchNewKeysForDownloadedVideo;
 - (void)pauseDownload;
-- (void)preflightPresentingViewController:(id)a3 completion:(id)a4;
+- (void)preflightPresentingViewController:(id)controller completion:(id)completion;
 - (void)resumeDownload;
-- (void)setAssetController:(id)a3;
-- (void)startDownloadAllowingCellular:(BOOL)a3 shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)a4 quality:(int64_t)a5 prefer3DOrImmersiveDownload:(BOOL)a6;
+- (void)setAssetController:(id)controller;
+- (void)startDownloadAllowingCellular:(BOOL)cellular shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)failure quality:(int64_t)quality prefer3DOrImmersiveDownload:(BOOL)download;
 - (void)stopDownload;
 @end
 
 @implementation VUIDownloadButtonViewModel
 
-+ (id)viewModelWithVideosPlayable:(id)a3
++ (id)viewModelWithVideosPlayable:(id)playable
 {
-  v3 = a3;
-  v4 = [[VUIDownloadButtonViewModel alloc] initWithVideosPlayable:v3];
+  playableCopy = playable;
+  v4 = [[VUIDownloadButtonViewModel alloc] initWithVideosPlayable:playableCopy];
 
   return v4;
 }
 
-- (VUIDownloadButtonViewModel)initWithVideosPlayable:(id)a3
+- (VUIDownloadButtonViewModel)initWithVideosPlayable:(id)playable
 {
-  v4 = a3;
+  playableCopy = playable;
   v16.receiver = self;
   v16.super_class = VUIDownloadButtonViewModel;
   v5 = [(VUIDownloadButtonViewModel *)&v16 init];
-  if (v5 && ([v4 adamID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+  if (v5 && ([playableCopy adamID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
   {
-    [(VUIDownloadButtonViewModel *)v5 setVideosPlayable:v4];
+    [(VUIDownloadButtonViewModel *)v5 setVideosPlayable:playableCopy];
     v11 = MEMORY[0x1E69E9820];
     v12 = __53__VUIDownloadButtonViewModel_initWithVideosPlayable___block_invoke;
     v13 = &unk_1E872D990;
-    v14 = v4;
+    v14 = playableCopy;
     v8 = v5;
     v15 = v8;
     if ([MEMORY[0x1E696AF00] isMainThread])
@@ -71,8 +71,8 @@
       dispatch_async(MEMORY[0x1E69E96A0], &v11);
     }
 
-    v9 = [(VUIDownloadButtonViewModel *)v8 _createDownloadStateToStringArrayMap];
-    [(VUIDownloadButtonViewModel *)v8 setDownloadStateToString:v9];
+    _createDownloadStateToStringArrayMap = [(VUIDownloadButtonViewModel *)v8 _createDownloadStateToStringArrayMap];
+    [(VUIDownloadButtonViewModel *)v8 setDownloadStateToString:_createDownloadStateToStringArrayMap];
 
     v5 = v14;
   }
@@ -91,74 +91,74 @@ void __53__VUIDownloadButtonViewModel_initWithVideosPlayable___block_invoke(uint
   [*(a1 + 40) setAssetController:v2];
 }
 
-+ (id)viewModelWithAssetController:(id)a3
++ (id)viewModelWithAssetController:(id)controller
 {
-  v3 = a3;
-  v4 = [[VUIDownloadButtonViewModel alloc] initWithAssetController:v3];
+  controllerCopy = controller;
+  v4 = [[VUIDownloadButtonViewModel alloc] initWithAssetController:controllerCopy];
 
   return v4;
 }
 
-+ (id)viewModelWithMPMediaItem:(id)a3 seasonMediaItemCollection:(id)a4
++ (id)viewModelWithMPMediaItem:(id)item seasonMediaItemCollection:(id)collection
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[VUIDownloadButtonViewModel alloc] initWithMPMediaItem:v6 seasonMediaItemCollection:v5];
+  collectionCopy = collection;
+  itemCopy = item;
+  v7 = [[VUIDownloadButtonViewModel alloc] initWithMPMediaItem:itemCopy seasonMediaItemCollection:collectionCopy];
 
   return v7;
 }
 
-+ (id)viewModelWithVideoManagedObject:(id)a3
++ (id)viewModelWithVideoManagedObject:(id)object
 {
-  v3 = a3;
-  v4 = [[VUIDownloadButtonViewModel alloc] initWithVideoManagedObject:v3];
+  objectCopy = object;
+  v4 = [[VUIDownloadButtonViewModel alloc] initWithVideoManagedObject:objectCopy];
 
   return v4;
 }
 
-+ (id)viewModelWithMPMediaItemCollection:(id)a3
++ (id)viewModelWithMPMediaItemCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [[VUIDownloadButtonViewModel alloc] initWithMPMediaItemCollection:v3];
+  collectionCopy = collection;
+  v4 = [[VUIDownloadButtonViewModel alloc] initWithMPMediaItemCollection:collectionCopy];
 
   return v4;
 }
 
-- (VUIDownloadButtonViewModel)initWithAssetController:(id)a3
+- (VUIDownloadButtonViewModel)initWithAssetController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = VUIDownloadButtonViewModel;
   v5 = [(VUIDownloadButtonViewModel *)&v9 init];
   v6 = v5;
-  if (v4)
+  if (controllerCopy)
   {
     if (v5)
     {
-      [(VUIDownloadButtonViewModel *)v5 setAssetController:v4];
-      v7 = [(VUIDownloadButtonViewModel *)v6 _createDownloadStateToStringArrayMap];
-      [(VUIDownloadButtonViewModel *)v6 setDownloadStateToString:v7];
+      [(VUIDownloadButtonViewModel *)v5 setAssetController:controllerCopy];
+      _createDownloadStateToStringArrayMap = [(VUIDownloadButtonViewModel *)v6 _createDownloadStateToStringArrayMap];
+      [(VUIDownloadButtonViewModel *)v6 setDownloadStateToString:_createDownloadStateToStringArrayMap];
     }
 
     else
     {
-      v7 = 0;
+      _createDownloadStateToStringArrayMap = 0;
     }
   }
 
   else
   {
-    v7 = v5;
+    _createDownloadStateToStringArrayMap = v5;
     v6 = 0;
   }
 
   return v6;
 }
 
-- (VUIDownloadButtonViewModel)initWithMPMediaItem:(id)a3 seasonMediaItemCollection:(id)a4
+- (VUIDownloadButtonViewModel)initWithMPMediaItem:(id)item seasonMediaItemCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = VUIDownloadButtonViewModel;
   v8 = [(VUIDownloadButtonViewModel *)&v16 init];
@@ -168,8 +168,8 @@ void __53__VUIDownloadButtonViewModel_initWithVideosPlayable___block_invoke(uint
     block[1] = 3221225472;
     v11 = __76__VUIDownloadButtonViewModel_initWithMPMediaItem_seasonMediaItemCollection___block_invoke;
     v12 = &unk_1E872E008;
-    v13 = v6;
-    v14 = v7;
+    v13 = itemCopy;
+    v14 = collectionCopy;
     v15 = v8;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -195,9 +195,9 @@ void __76__VUIDownloadButtonViewModel_initWithMPMediaItem_seasonMediaItemCollect
   [v2 setDownloadStateToString:v3];
 }
 
-- (VUIDownloadButtonViewModel)initWithVideoManagedObject:(id)a3
+- (VUIDownloadButtonViewModel)initWithVideoManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = VUIDownloadButtonViewModel;
   v5 = [(VUIDownloadButtonViewModel *)&v12 init];
@@ -206,7 +206,7 @@ void __76__VUIDownloadButtonViewModel_initWithMPMediaItem_seasonMediaItemCollect
     v7 = MEMORY[0x1E69E9820];
     v8 = __57__VUIDownloadButtonViewModel_initWithVideoManagedObject___block_invoke;
     v9 = &unk_1E872D990;
-    v10 = v4;
+    v10 = objectCopy;
     v11 = v5;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -231,9 +231,9 @@ void __57__VUIDownloadButtonViewModel_initWithVideoManagedObject___block_invoke(
   [v2 setDownloadStateToString:v3];
 }
 
-- (VUIDownloadButtonViewModel)initWithMPMediaItemCollection:(id)a3
+- (VUIDownloadButtonViewModel)initWithMPMediaItemCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = VUIDownloadButtonViewModel;
   v5 = [(VUIDownloadButtonViewModel *)&v12 init];
@@ -242,7 +242,7 @@ void __57__VUIDownloadButtonViewModel_initWithVideoManagedObject___block_invoke(
     v7 = MEMORY[0x1E69E9820];
     v8 = __60__VUIDownloadButtonViewModel_initWithMPMediaItemCollection___block_invoke;
     v9 = &unk_1E872D990;
-    v10 = v4;
+    v10 = collectionCopy;
     v11 = v5;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -267,30 +267,30 @@ void __60__VUIDownloadButtonViewModel_initWithMPMediaItemCollection___block_invo
   [v2 setDownloadStateToString:v3];
 }
 
-+ (id)viewModelWithCanonicalId:(id)a3 title:(id)a4 episodeCount:(int64_t)a5 downloadType:(unint64_t)a6
++ (id)viewModelWithCanonicalId:(id)id title:(id)title episodeCount:(int64_t)count downloadType:(unint64_t)type
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [[VUIDownloadButtonViewModel alloc] initWithCanonicalId:v10 title:v9 episodeCount:a5 useShowCanonicalIdForSeason:0 showDownloadingOnlyWhenWholeCollectionDownloads:0 downloadType:a6];
+  titleCopy = title;
+  idCopy = id;
+  v11 = [[VUIDownloadButtonViewModel alloc] initWithCanonicalId:idCopy title:titleCopy episodeCount:count useShowCanonicalIdForSeason:0 showDownloadingOnlyWhenWholeCollectionDownloads:0 downloadType:type];
 
   return v11;
 }
 
-+ (id)viewModelForSeasonDownloadWithCanonicalId:(id)a3 title:(id)a4 episodeCount:(int64_t)a5 useShowCanonicalIdForSeasonDownload:(BOOL)a6 showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)a7
++ (id)viewModelForSeasonDownloadWithCanonicalId:(id)id title:(id)title episodeCount:(int64_t)count useShowCanonicalIdForSeasonDownload:(BOOL)download showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)downloads
 {
-  v7 = a7;
-  v8 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[VUIDownloadButtonViewModel alloc] initWithCanonicalId:v12 title:v11 episodeCount:a5 useShowCanonicalIdForSeason:v8 showDownloadingOnlyWhenWholeCollectionDownloads:v7 downloadType:2];
+  downloadsCopy = downloads;
+  downloadCopy = download;
+  titleCopy = title;
+  idCopy = id;
+  v13 = [[VUIDownloadButtonViewModel alloc] initWithCanonicalId:idCopy title:titleCopy episodeCount:count useShowCanonicalIdForSeason:downloadCopy showDownloadingOnlyWhenWholeCollectionDownloads:downloadsCopy downloadType:2];
 
   return v13;
 }
 
-- (VUIDownloadButtonViewModel)initWithCanonicalId:(id)a3 title:(id)a4 episodeCount:(int64_t)a5 useShowCanonicalIdForSeason:(BOOL)a6 showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)a7 downloadType:(unint64_t)a8
+- (VUIDownloadButtonViewModel)initWithCanonicalId:(id)id title:(id)title episodeCount:(int64_t)count useShowCanonicalIdForSeason:(BOOL)season showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)downloads downloadType:(unint64_t)type
 {
-  v14 = a3;
-  v15 = a4;
+  idCopy = id;
+  titleCopy = title;
   v29.receiver = self;
   v29.super_class = VUIDownloadButtonViewModel;
   v16 = [(VUIDownloadButtonViewModel *)&v29 init];
@@ -301,12 +301,12 @@ void __60__VUIDownloadButtonViewModel_initWithMPMediaItemCollection___block_invo
     v20 = __158__VUIDownloadButtonViewModel_initWithCanonicalId_title_episodeCount_useShowCanonicalIdForSeason_showDownloadingOnlyWhenWholeCollectionDownloads_downloadType___block_invoke;
     v21 = &unk_1E87352A8;
     v22 = v16;
-    v23 = v14;
-    v24 = v15;
-    v25 = a5;
-    v26 = a8;
-    v27 = a6;
-    v28 = a7;
+    v23 = idCopy;
+    v24 = titleCopy;
+    countCopy = count;
+    typeCopy = type;
+    seasonCopy = season;
+    downloadsCopy = downloads;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
       v20(&v19);
@@ -350,7 +350,7 @@ void __158__VUIDownloadButtonViewModel_initWithCanonicalId_title_episodeCount_us
   v28 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
   v4 = +[VUIMediaLibraryManager defaultManager];
-  v5 = [v4 sidebandMediaLibrary];
+  sidebandMediaLibrary = [v4 sidebandMediaLibrary];
 
   v6 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F5E5D980, &unk_1F5E5D998, &unk_1F5E5D9B0, &unk_1F5E5D9C8, 0}];
   downloadType = self->_downloadType;
@@ -366,11 +366,11 @@ void __158__VUIDownloadButtonViewModel_initWithCanonicalId_title_episodeCount_us
 
     if (!self->_shouldUseShowCanonicalIdForSeasonDownload)
     {
-      v8 = [(VUIDownloadButtonViewModel *)self canonicalId];
-      if (v8)
+      canonicalId = [(VUIDownloadButtonViewModel *)self canonicalId];
+      if (canonicalId)
       {
-        v9 = [v5 episodesWithDownloadStates:v6 seasonCanonicalId:v8 usingMainThreadContext:1];
-        v10 = [v5 countOfComingSoonVideosWithSeasonCanonicalId:v8];
+        v9 = [sidebandMediaLibrary episodesWithDownloadStates:v6 seasonCanonicalId:canonicalId usingMainThreadContext:1];
+        v10 = [sidebandMediaLibrary countOfComingSoonVideosWithSeasonCanonicalId:canonicalId];
         goto LABEL_9;
       }
 
@@ -381,14 +381,14 @@ LABEL_10:
     }
   }
 
-  v8 = [(VUIDownloadButtonViewModel *)self canonicalId];
-  if (!v8)
+  canonicalId = [(VUIDownloadButtonViewModel *)self canonicalId];
+  if (!canonicalId)
   {
     goto LABEL_10;
   }
 
-  v9 = [v5 episodesWithDownloadStates:v6 showCanonicalId:v8 usingMainThreadContext:1];
-  v10 = [v5 countOfComingSoonVideosWithShowCanonicalId:v8];
+  v9 = [sidebandMediaLibrary episodesWithDownloadStates:v6 showCanonicalId:canonicalId usingMainThreadContext:1];
+  v10 = [sidebandMediaLibrary countOfComingSoonVideosWithShowCanonicalId:canonicalId];
 LABEL_9:
   v11 = v10;
 LABEL_11:
@@ -435,15 +435,15 @@ LABEL_12:
   [(VUIDownloadButtonViewModel *)self setAssetController:v21];
 }
 
-- (void)_downloadQueueManagerDidAddDownload:(id)a3
+- (void)_downloadQueueManagerDidAddDownload:(id)download
 {
-  v17 = [a3 userInfo];
-  v4 = [v17 objectForKeyedSubscript:@"VUIDownloadQueueDidAddDownloadsAssetControllersKey"];
-  v5 = [v17 objectForKeyedSubscript:@"VUIDownloadQueueDidAddDownloadsCompletionCountKey"];
+  userInfo = [download userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"VUIDownloadQueueDidAddDownloadsAssetControllersKey"];
+  v5 = [userInfo objectForKeyedSubscript:@"VUIDownloadQueueDidAddDownloadsCompletionCountKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -453,18 +453,18 @@ LABEL_12:
     downloadType = self->_downloadType;
     if (downloadType == 2)
     {
-      v8 = [(VUIDownloadButtonViewModel *)self canonicalId];
+      canonicalId = [(VUIDownloadButtonViewModel *)self canonicalId];
       if (self->_shouldUseShowCanonicalIdForSeasonDownload)
       {
-        [v6 showCanonicalId];
+        [firstObject showCanonicalId];
       }
 
       else
       {
-        [v6 seasonCanonicalId];
+        [firstObject seasonCanonicalId];
       }
-      v9 = ;
-      v11 = [v8 isEqualToString:v9];
+      showCanonicalId = ;
+      v11 = [canonicalId isEqualToString:showCanonicalId];
       v10 = 0;
     }
 
@@ -485,20 +485,20 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v8 = [(VUIDownloadButtonViewModel *)self canonicalId];
-      v9 = [v6 showCanonicalId];
-      v10 = [v9 isEqualToString:v8];
+      canonicalId = [(VUIDownloadButtonViewModel *)self canonicalId];
+      showCanonicalId = [firstObject showCanonicalId];
+      v10 = [showCanonicalId isEqualToString:canonicalId];
       v11 = 0;
     }
 
     if (v10)
     {
 LABEL_13:
-      v12 = [(VUIDownloadButtonViewModel *)self assetController];
+      assetController = [(VUIDownloadButtonViewModel *)self assetController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = v12;
+        v13 = assetController;
         if (v5)
         {
           if (v11)
@@ -508,13 +508,13 @@ LABEL_13:
 
           else if (v10)
           {
-            v14 = [(VUIDownloadButtonViewModel *)self canonicalId];
-            if (v14)
+            canonicalId2 = [(VUIDownloadButtonViewModel *)self canonicalId];
+            if (canonicalId2)
             {
               v15 = +[VUIMediaLibraryManager defaultManager];
-              v16 = [v15 sidebandMediaLibrary];
+              sidebandMediaLibrary = [v15 sidebandMediaLibrary];
 
-              [v13 setCompletionCount:{self->_episodeCount - objc_msgSend(v16, "countOfComingSoonVideosWithShowCanonicalId:", v14)}];
+              [v13 setCompletionCount:{self->_episodeCount - objc_msgSend(sidebandMediaLibrary, "countOfComingSoonVideosWithShowCanonicalId:", canonicalId2)}];
             }
           }
         }
@@ -531,32 +531,32 @@ LABEL_13:
 LABEL_24:
 }
 
-- (void)_downloadQueueManagerDidRemoveDownload:(id)a3
+- (void)_downloadQueueManagerDidRemoveDownload:(id)download
 {
-  v14 = [a3 userInfo];
-  v4 = [v14 objectForKeyedSubscript:@"VUIDownloadQueueDidRemoveDownloadsAssetControllersKey"];
+  userInfo = [download userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"VUIDownloadQueueDidRemoveDownloadsAssetControllersKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       downloadType = self->_downloadType;
       if (downloadType == 2)
       {
-        v10 = [(VUIDownloadButtonViewModel *)self canonicalId];
+        canonicalId = [(VUIDownloadButtonViewModel *)self canonicalId];
         if (self->_shouldUseShowCanonicalIdForSeasonDownload)
         {
-          [v5 showCanonicalId];
+          [firstObject showCanonicalId];
         }
 
         else
         {
-          [v5 seasonCanonicalId];
+          [firstObject seasonCanonicalId];
         }
         v11 = ;
-        v12 = [v10 isEqualToString:v11];
+        v12 = [canonicalId isEqualToString:v11];
 
         if (!v12)
         {
@@ -571,9 +571,9 @@ LABEL_24:
           goto LABEL_14;
         }
 
-        v7 = [(VUIDownloadButtonViewModel *)self canonicalId];
-        v8 = [v5 showCanonicalId];
-        v9 = [v8 isEqualToString:v7];
+        canonicalId2 = [(VUIDownloadButtonViewModel *)self canonicalId];
+        showCanonicalId = [firstObject showCanonicalId];
+        v9 = [showCanonicalId isEqualToString:canonicalId2];
 
         if ((v9 & 1) == 0)
         {
@@ -581,11 +581,11 @@ LABEL_24:
         }
       }
 
-      v13 = [(VUIDownloadButtonViewModel *)self assetController];
+      assetController = [(VUIDownloadButtonViewModel *)self assetController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v13 removeAssetControllers:v4];
+        [assetController removeAssetControllers:v4];
       }
     }
 
@@ -596,31 +596,31 @@ LABEL_14:
 - (void)dealloc
 {
   [(VUIDownloadButtonViewModel *)self setAssetController:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIDownloadButtonViewModel;
   [(VUIDownloadButtonViewModel *)&v4 dealloc];
 }
 
-- (void)setAssetController:(id)a3
+- (void)setAssetController:(id)controller
 {
-  v5 = a3;
-  if (self->_assetController != v5)
+  controllerCopy = controller;
+  if (self->_assetController != controllerCopy)
   {
-    v9 = v5;
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:0];
+    v9 = controllerCopy;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:0];
 
-    objc_storeStrong(&self->_assetController, a3);
+    objc_storeStrong(&self->_assetController, controller);
     if (v9)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:self selector:sel__assetControllerStateDidChange_ name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:v9];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__assetControllerStateDidChange_ name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:v9];
 
-      v8 = [(VUIMediaEntityAssetController *)v9 state];
-      [(VUIDownloadButtonViewModel *)self _updateDownloadStateFromAssetControllerState:v8];
+      state = [(VUIMediaEntityAssetController *)v9 state];
+      [(VUIDownloadButtonViewModel *)self _updateDownloadStateFromAssetControllerState:state];
     }
 
     else
@@ -628,51 +628,51 @@ LABEL_14:
       [(VUIDownloadButtonViewModel *)self setDownloadState:0];
     }
 
-    v5 = v9;
+    controllerCopy = v9;
   }
 }
 
 - (NSString)brandName
 {
-  v3 = [(VUIDownloadButtonViewModel *)self assetController];
+  assetController = [(VUIDownloadButtonViewModel *)self assetController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VUIDownloadButtonViewModel *)self assetController];
-    v6 = [v5 brandName];
+    assetController2 = [(VUIDownloadButtonViewModel *)self assetController];
+    brandName = [assetController2 brandName];
   }
 
   else
   {
-    v6 = 0;
+    brandName = 0;
   }
 
-  return v6;
+  return brandName;
 }
 
 - (NSString)brandID
 {
-  v3 = [(VUIDownloadButtonViewModel *)self assetController];
+  assetController = [(VUIDownloadButtonViewModel *)self assetController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VUIDownloadButtonViewModel *)self assetController];
-    v6 = [v5 brandID];
+    assetController2 = [(VUIDownloadButtonViewModel *)self assetController];
+    brandID = [assetController2 brandID];
   }
 
   else
   {
-    v6 = 0;
+    brandID = 0;
   }
 
-  return v6;
+  return brandID;
 }
 
 - (BOOL)allowsManualDownloadRenewal
 {
-  v3 = [(VUIDownloadButtonViewModel *)self assetController];
+  assetController = [(VUIDownloadButtonViewModel *)self assetController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -680,20 +680,20 @@ LABEL_14:
     return 0;
   }
 
-  v5 = [(VUIDownloadButtonViewModel *)self assetController];
-  v6 = [v5 allowsManualDownloadRenewal];
+  assetController2 = [(VUIDownloadButtonViewModel *)self assetController];
+  allowsManualDownloadRenewal = [assetController2 allowsManualDownloadRenewal];
 
-  return v6;
+  return allowsManualDownloadRenewal;
 }
 
-- (void)startDownloadAllowingCellular:(BOOL)a3 shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)a4 quality:(int64_t)a5 prefer3DOrImmersiveDownload:(BOOL)a6
+- (void)startDownloadAllowingCellular:(BOOL)cellular shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)failure quality:(int64_t)quality prefer3DOrImmersiveDownload:(BOOL)download
 {
-  v6 = a6;
-  v8 = a4;
-  v9 = a3;
+  downloadCopy = download;
+  failureCopy = failure;
+  cellularCopy = cellular;
   v23 = *MEMORY[0x1E69E9840];
-  v11 = [(VUIDownloadButtonViewModel *)self downloadState];
-  if (v11 == 2)
+  downloadState = [(VUIDownloadButtonViewModel *)self downloadState];
+  if (downloadState == 2)
   {
     v12 = VUIDefaultLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -705,10 +705,10 @@ LABEL_14:
 
   else
   {
-    v13 = v11;
-    v14 = [(VUIDownloadButtonViewModel *)self assetController];
-    v12 = v14;
-    if (v13 == 4 && ![v14 supportsRedownloadingContent])
+    v13 = downloadState;
+    assetController = [(VUIDownloadButtonViewModel *)self assetController];
+    v12 = assetController;
+    if (v13 == 4 && ![assetController supportsRedownloadingContent])
     {
       v16 = VUIDefaultLogObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -720,7 +720,7 @@ LABEL_14:
 
     else
     {
-      [v12 startDownloadAllowingCellular:v9 quality:a5 shouldMarkAsDeletedOnCancellationOrFailure:v8 prefer3DOrImmersiveDownload:v6 isAutomatic:0 completion:0];
+      [v12 startDownloadAllowingCellular:cellularCopy quality:quality shouldMarkAsDeletedOnCancellationOrFailure:failureCopy prefer3DOrImmersiveDownload:downloadCopy isAutomatic:0 completion:0];
       v15 = VUIDefaultLogObject();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -733,7 +733,7 @@ LABEL_14:
       block[1] = 3221225472;
       v18 = __139__VUIDownloadButtonViewModel_startDownloadAllowingCellular_shouldMarkAsDeletedOnCancellationOrFailure_quality_prefer3DOrImmersiveDownload___block_invoke;
       v19 = &unk_1E872D768;
-      v20 = self;
+      selfCopy = self;
       if ([MEMORY[0x1E696AF00] isMainThread])
       {
         v18(block);
@@ -764,8 +764,8 @@ uint64_t __139__VUIDownloadButtonViewModel_startDownloadAllowingCellular_shouldM
 {
   if ([(VUIDownloadButtonViewModel *)self downloadState]== 4)
   {
-    v4 = [(VUIDownloadButtonViewModel *)self assetController];
-    [v4 fetchNewKeysForDownloadedVideo];
+    assetController = [(VUIDownloadButtonViewModel *)self assetController];
+    [assetController fetchNewKeysForDownloadedVideo];
   }
 
   else
@@ -782,168 +782,168 @@ uint64_t __139__VUIDownloadButtonViewModel_startDownloadAllowingCellular_shouldM
 - (void)pauseDownload
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(VUIDownloadButtonViewModel *)self assetController];
+  assetController = [(VUIDownloadButtonViewModel *)self assetController];
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = v2;
+    v5 = assetController;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_INFO, "Asset controller %@ pausing download.", &v4, 0xCu);
   }
 
-  [v2 pauseDownload];
+  [assetController pauseDownload];
 }
 
 - (void)resumeDownload
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(VUIDownloadButtonViewModel *)self assetController];
+  assetController = [(VUIDownloadButtonViewModel *)self assetController];
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = v2;
+    v5 = assetController;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_INFO, "Asset controller %@ resuming download.", &v4, 0xCu);
   }
 
-  [v2 resumeDownload];
+  [assetController resumeDownload];
 }
 
 - (void)stopDownload
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [(VUIDownloadButtonViewModel *)self assetController];
+  assetController = [(VUIDownloadButtonViewModel *)self assetController];
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v2;
+    v7 = assetController;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_INFO, "Asset controller %@ canceling download.", &v6, 0xCu);
   }
 
-  v4 = [v2 state];
-  v5 = [v4 performsKeyFetchOnly];
+  state = [assetController state];
+  performsKeyFetchOnly = [state performsKeyFetchOnly];
 
-  if (v5)
+  if (performsKeyFetchOnly)
   {
-    [v2 cancelKeyFetch];
+    [assetController cancelKeyFetch];
   }
 
   else
   {
-    [v2 cancelAndRemoveDownload];
+    [assetController cancelAndRemoveDownload];
   }
 }
 
 - (void)deleteDownload
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(VUIDownloadButtonViewModel *)self assetController];
+  assetController = [(VUIDownloadButtonViewModel *)self assetController];
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = v2;
+    v5 = assetController;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_INFO, "Asset controller %@ deleting download.", &v4, 0xCu);
   }
 
-  [v2 cancelAndRemoveDownload];
+  [assetController cancelAndRemoveDownload];
 }
 
-- (void)preflightPresentingViewController:(id)a3 completion:(id)a4
+- (void)preflightPresentingViewController:(id)controller completion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14 && v6)
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (controllerCopy && completionCopy)
   {
-    v7 = [(VUIDownloadButtonViewModel *)self assetController];
-    v8 = [(VUIDownloadButtonViewModel *)self videosPlayable];
+    assetController = [(VUIDownloadButtonViewModel *)self assetController];
+    videosPlayable = [(VUIDownloadButtonViewModel *)self videosPlayable];
 
-    if (v8)
+    if (videosPlayable)
     {
-      v9 = +[VUIDownloadManager sharedInstance];
-      v10 = [(VUIDownloadButtonViewModel *)self videosPlayable];
-      [v9 preflightDownloadForVideosPlayable:v10 presentingViewController:v14 contentAllowsCellularDownload:objc_msgSend(v7 completion:{"contentAllowsCellularDownload"), v6}];
+      contentRating = +[VUIDownloadManager sharedInstance];
+      videosPlayable2 = [(VUIDownloadButtonViewModel *)self videosPlayable];
+      [contentRating preflightDownloadForVideosPlayable:videosPlayable2 presentingViewController:controllerCopy contentAllowsCellularDownload:objc_msgSend(assetController completion:{"contentAllowsCellularDownload"), completionCopy}];
     }
 
     else
     {
-      v11 = [(VUIDownloadButtonViewModel *)self assetController];
+      assetController2 = [(VUIDownloadButtonViewModel *)self assetController];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v13 = [(VUIDownloadButtonViewModel *)self assetController];
-        v9 = [v13 contentRating];
+        assetController3 = [(VUIDownloadButtonViewModel *)self assetController];
+        contentRating = [assetController3 contentRating];
       }
 
       else
       {
-        v9 = 0;
+        contentRating = 0;
       }
 
-      v10 = +[VUIDownloadManager sharedInstance];
-      [v10 preflightDownloadForContentRating:v9 presentingViewController:v14 contentAllowsCellularDownload:objc_msgSend(v7 completion:{"contentAllowsCellularDownload"), v6}];
+      videosPlayable2 = +[VUIDownloadManager sharedInstance];
+      [videosPlayable2 preflightDownloadForContentRating:contentRating presentingViewController:controllerCopy contentAllowsCellularDownload:objc_msgSend(assetController completion:{"contentAllowsCellularDownload"), completionCopy}];
     }
   }
 }
 
 - (BOOL)isExpired
 {
-  v3 = [(VUIDownloadButtonViewModel *)self downloadExpirationDate];
-  if (v3)
+  downloadExpirationDate = [(VUIDownloadButtonViewModel *)self downloadExpirationDate];
+  if (downloadExpirationDate)
   {
-    v4 = [(VUIDownloadButtonViewModel *)self downloadExpirationDate];
-    v5 = [v4 vui_isInThePast];
+    downloadExpirationDate2 = [(VUIDownloadButtonViewModel *)self downloadExpirationDate];
+    vui_isInThePast = [downloadExpirationDate2 vui_isInThePast];
   }
 
   else
   {
-    v5 = 0;
+    vui_isInThePast = 0;
   }
 
-  return v5;
+  return vui_isInThePast;
 }
 
 - (BOOL)isExpiringSoon
 {
   v2 = MEMORY[0x1E695DF00];
-  v3 = [(VUIDownloadButtonViewModel *)self downloadExpirationDate];
-  LOBYTE(v2) = [v2 shouldShowLabelForDownloadExpirationDate:v3];
+  downloadExpirationDate = [(VUIDownloadButtonViewModel *)self downloadExpirationDate];
+  LOBYTE(v2) = [v2 shouldShowLabelForDownloadExpirationDate:downloadExpirationDate];
 
   return v2;
 }
 
-+ (BOOL)shouldShowExpiredImageWithDownloadState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6
++ (BOOL)shouldShowExpiredImageWithDownloadState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed
 {
-  switch(a3)
+  switch(state)
   {
     case 0uLL:
-      return a4 || a6;
+      return expired || failed;
     case 4uLL:
-      return a4 || a5;
+      return expired || soon;
     case 3uLL:
-      return a4 || a6;
+      return expired || failed;
   }
 
   return 0;
 }
 
-- (void)_assetControllerStateDidChange:(id)a3
+- (void)_assetControllerStateDidChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
+  changeCopy = change;
+  object = [changeCopy object];
+  userInfo = [changeCopy userInfo];
 
-  v7 = [v6 objectForKey:@"VUIMediaEntityAssetControllerStateKey"];
+  v7 = [userInfo objectForKey:@"VUIMediaEntityAssetControllerStateKey"];
 
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = VUIMediaEntityAssetControllerStatusLogString([v7 status]);
     v10 = 138412546;
-    v11 = v5;
+    v11 = object;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_INFO, "Asset controller %@ state changed to: %@", &v10, 0x16u);
@@ -952,11 +952,11 @@ uint64_t __139__VUIDownloadButtonViewModel_startDownloadAllowingCellular_shouldM
   [(VUIDownloadButtonViewModel *)self _updateDownloadStateFromAssetControllerState:v7];
 }
 
-- (void)_updateDownloadStateFromAssetControllerState:(id)a3
+- (void)_updateDownloadStateFromAssetControllerState:(id)state
 {
-  v23 = a3;
-  v4 = -[VUIDownloadButtonViewModel _downloadStateFromAssetsControllerStatus:](self, "_downloadStateFromAssetsControllerStatus:", [v23 status]);
-  [v23 downloadProgress];
+  stateCopy = state;
+  v4 = -[VUIDownloadButtonViewModel _downloadStateFromAssetsControllerStatus:](self, "_downloadStateFromAssetsControllerStatus:", [stateCopy status]);
+  [stateCopy downloadProgress];
   if (v4 == 5 || v4 == 2)
   {
     v7 = v5;
@@ -965,14 +965,14 @@ uint64_t __139__VUIDownloadButtonViewModel_startDownloadAllowingCellular_shouldM
     [(VUIDownloadButtonViewModel *)self setDownloadProgress:v7];
     if (v9 != v7)
     {
-      v10 = [v23 downloadExpirationDate];
-      [(VUIDownloadButtonViewModel *)self setDownloadExpirationDate:v10];
+      downloadExpirationDate = [stateCopy downloadExpirationDate];
+      [(VUIDownloadButtonViewModel *)self setDownloadExpirationDate:downloadExpirationDate];
 
 LABEL_9:
-      -[VUIDownloadButtonViewModel setRenewsOfflineKeysAutomatically:](self, "setRenewsOfflineKeysAutomatically:", [v23 renewsOfflineKeysAutomatically]);
+      -[VUIDownloadButtonViewModel setRenewsOfflineKeysAutomatically:](self, "setRenewsOfflineKeysAutomatically:", [stateCopy renewsOfflineKeysAutomatically]);
 LABEL_10:
-      v14 = [v23 availabilityEndDate];
-      [(VUIDownloadButtonViewModel *)self setAvailabilityEndDate:v14];
+      availabilityEndDate = [stateCopy availabilityEndDate];
+      [(VUIDownloadButtonViewModel *)self setAvailabilityEndDate:availabilityEndDate];
 
 LABEL_11:
       v15 = 1;
@@ -980,47 +980,47 @@ LABEL_11:
     }
   }
 
-  v11 = [(VUIDownloadButtonViewModel *)self downloadExpirationDate];
-  v12 = [v23 downloadExpirationDate];
+  downloadExpirationDate2 = [(VUIDownloadButtonViewModel *)self downloadExpirationDate];
+  downloadExpirationDate3 = [stateCopy downloadExpirationDate];
 
-  v13 = [v23 downloadExpirationDate];
-  [(VUIDownloadButtonViewModel *)self setDownloadExpirationDate:v13];
+  downloadExpirationDate4 = [stateCopy downloadExpirationDate];
+  [(VUIDownloadButtonViewModel *)self setDownloadExpirationDate:downloadExpirationDate4];
 
-  if (v11 != v12)
+  if (downloadExpirationDate2 != downloadExpirationDate3)
   {
     goto LABEL_9;
   }
 
-  v17 = [(VUIDownloadButtonViewModel *)self renewsOfflineKeysAutomatically];
-  v18 = [v23 renewsOfflineKeysAutomatically];
-  -[VUIDownloadButtonViewModel setRenewsOfflineKeysAutomatically:](self, "setRenewsOfflineKeysAutomatically:", [v23 renewsOfflineKeysAutomatically]);
-  if (v17 != v18)
+  renewsOfflineKeysAutomatically = [(VUIDownloadButtonViewModel *)self renewsOfflineKeysAutomatically];
+  renewsOfflineKeysAutomatically2 = [stateCopy renewsOfflineKeysAutomatically];
+  -[VUIDownloadButtonViewModel setRenewsOfflineKeysAutomatically:](self, "setRenewsOfflineKeysAutomatically:", [stateCopy renewsOfflineKeysAutomatically]);
+  if (renewsOfflineKeysAutomatically != renewsOfflineKeysAutomatically2)
   {
     goto LABEL_10;
   }
 
-  v19 = [(VUIDownloadButtonViewModel *)self availabilityEndDate];
-  v20 = [v23 availabilityEndDate];
+  availabilityEndDate2 = [(VUIDownloadButtonViewModel *)self availabilityEndDate];
+  availabilityEndDate3 = [stateCopy availabilityEndDate];
 
-  v21 = [v23 availabilityEndDate];
-  [(VUIDownloadButtonViewModel *)self setAvailabilityEndDate:v21];
+  availabilityEndDate4 = [stateCopy availabilityEndDate];
+  [(VUIDownloadButtonViewModel *)self setAvailabilityEndDate:availabilityEndDate4];
 
-  if (v19 != v20)
+  if (availabilityEndDate2 != availabilityEndDate3)
   {
     goto LABEL_11;
   }
 
-  v22 = [(VUIDownloadButtonViewModel *)self downloadFailedDueToError];
-  v15 = v22 ^ [v23 downloadFailedDueToError];
+  downloadFailedDueToError = [(VUIDownloadButtonViewModel *)self downloadFailedDueToError];
+  v15 = downloadFailedDueToError ^ [stateCopy downloadFailedDueToError];
 LABEL_12:
-  -[VUIDownloadButtonViewModel setDownloadFailedDueToError:](self, "setDownloadFailedDueToError:", [v23 downloadFailedDueToError]);
+  -[VUIDownloadButtonViewModel setDownloadFailedDueToError:](self, "setDownloadFailedDueToError:", [stateCopy downloadFailedDueToError]);
   if ([(VUIDownloadButtonViewModel *)self downloadState]== v4)
   {
     if (v15)
     {
       [(VUIDownloadButtonViewModel *)self setDownloadState:v4];
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 postNotificationName:@"VUIDownloadViewModelDownloadStateDidChangeNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"VUIDownloadViewModelDownloadStateDidChangeNotification" object:self];
     }
   }
 
@@ -1030,16 +1030,16 @@ LABEL_12:
   }
 }
 
-- (unint64_t)_downloadStateFromAssetsControllerStatus:(unint64_t)a3
+- (unint64_t)_downloadStateFromAssetsControllerStatus:(unint64_t)status
 {
-  if (a3 - 1 >= 5)
+  if (status - 1 >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 

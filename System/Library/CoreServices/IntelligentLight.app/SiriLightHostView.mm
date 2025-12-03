@@ -1,7 +1,7 @@
 @interface SiriLightHostView
 + (Class)layerClass;
-- (_TtC16IntelligentLight17SiriLightHostView)initWithCoder:(id)a3;
-- (_TtC16IntelligentLight17SiriLightHostView)initWithFrame:(CGRect)a3;
+- (_TtC16IntelligentLight17SiriLightHostView)initWithCoder:(id)coder;
+- (_TtC16IntelligentLight17SiriLightHostView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000059E8();
 }
 
@@ -20,14 +20,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC16IntelligentLight17SiriLightHostView)initWithCoder:(id)a3
+- (_TtC16IntelligentLight17SiriLightHostView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtC16IntelligentLight17SiriLightHostView)initWithFrame:(CGRect)a3
+- (_TtC16IntelligentLight17SiriLightHostView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

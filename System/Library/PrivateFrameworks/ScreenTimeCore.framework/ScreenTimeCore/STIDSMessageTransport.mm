@@ -1,64 +1,64 @@
 @interface STIDSMessageTransport
-- (STIDSMessageTransport)initWithPrimitives:(id)a3 messageAddressMap:(id)a4 messageIdentifierMap:(id)a5 addressValidator:(id)a6 userAliasResolver:(id)a7 returnAddressProvider:(id)a8 transportQueue:(id)a9;
+- (STIDSMessageTransport)initWithPrimitives:(id)primitives messageAddressMap:(id)map messageIdentifierMap:(id)identifierMap addressValidator:(id)validator userAliasResolver:(id)resolver returnAddressProvider:(id)provider transportQueue:(id)queue;
 - (STMessageTransportDelegate)delegate;
-- (id)_prepareToSendToAddresses:(id)a3;
-- (id)_reachabilityMapFromDestinations:(id)a3;
-- (id)_refreshReachabilityForDestinations:(id)a3;
-- (id)_sendMessage:(id)a3 toReachableDestinations:(id)a4 fromAddress:(id)a5;
-- (id)sendMessage:(id)a3 toAddresses:(id)a4 fromAddress:(id)a5;
-- (void)_isCapabilityEnabledForUser:(id)a3 capability:(id)a4 completionHandler:(id)a5;
-- (void)_mightSendMessage:(id)a3 toDestinationsWithUnknownReachability:(id)a4;
-- (void)_sendAcknowledgementMessageForResponseIdentifier:(id)a3 toDestination:(id)a4;
-- (void)_willSendMessage:(id)a3 usingDestinationReachabilityMap:(id)a4;
-- (void)primitives:(id)a3 didDeliverMessageWithPrimitiveIdentifier:(id)a4 toPrimitiveDestination:(id)a5;
-- (void)primitives:(id)a3 didObserveUpdatedPrimitiveDestinationReachabilityMap:(id)a4;
-- (void)primitives:(id)a3 didReceiveData:(id)a4 fromPrimitiveDestination:(id)a5 primitiveResponseIdentifier:(id)a6;
-- (void)primitives:(id)a3 didSendMessageWithPrimitiveIdentifier:(id)a4 success:(BOOL)a5 error:(id)a6;
-- (void)stopTrackingMessageWithIdentifier:(id)a3;
+- (id)_prepareToSendToAddresses:(id)addresses;
+- (id)_reachabilityMapFromDestinations:(id)destinations;
+- (id)_refreshReachabilityForDestinations:(id)destinations;
+- (id)_sendMessage:(id)message toReachableDestinations:(id)destinations fromAddress:(id)address;
+- (id)sendMessage:(id)message toAddresses:(id)addresses fromAddress:(id)address;
+- (void)_isCapabilityEnabledForUser:(id)user capability:(id)capability completionHandler:(id)handler;
+- (void)_mightSendMessage:(id)message toDestinationsWithUnknownReachability:(id)reachability;
+- (void)_sendAcknowledgementMessageForResponseIdentifier:(id)identifier toDestination:(id)destination;
+- (void)_willSendMessage:(id)message usingDestinationReachabilityMap:(id)map;
+- (void)primitives:(id)primitives didDeliverMessageWithPrimitiveIdentifier:(id)identifier toPrimitiveDestination:(id)destination;
+- (void)primitives:(id)primitives didObserveUpdatedPrimitiveDestinationReachabilityMap:(id)map;
+- (void)primitives:(id)primitives didReceiveData:(id)data fromPrimitiveDestination:(id)destination primitiveResponseIdentifier:(id)identifier;
+- (void)primitives:(id)primitives didSendMessageWithPrimitiveIdentifier:(id)identifier success:(BOOL)success error:(id)error;
+- (void)stopTrackingMessageWithIdentifier:(id)identifier;
 @end
 
 @implementation STIDSMessageTransport
 
-- (STIDSMessageTransport)initWithPrimitives:(id)a3 messageAddressMap:(id)a4 messageIdentifierMap:(id)a5 addressValidator:(id)a6 userAliasResolver:(id)a7 returnAddressProvider:(id)a8 transportQueue:(id)a9
+- (STIDSMessageTransport)initWithPrimitives:(id)primitives messageAddressMap:(id)map messageIdentifierMap:(id)identifierMap addressValidator:(id)validator userAliasResolver:(id)resolver returnAddressProvider:(id)provider transportQueue:(id)queue
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  primitivesCopy = primitives;
+  mapCopy = map;
+  identifierMapCopy = identifierMap;
+  validatorCopy = validator;
+  resolverCopy = resolver;
+  providerCopy = provider;
+  queueCopy = queue;
   v42.receiver = self;
   v42.super_class = STIDSMessageTransport;
   v22 = [(STIDSMessageTransport *)&v42 init];
   primitives = v22->_primitives;
-  v22->_primitives = v15;
-  v24 = v15;
+  v22->_primitives = primitivesCopy;
+  v24 = primitivesCopy;
 
   [(STIDSTransportPrimitives *)v22->_primitives setDelegate:v22];
   messageAddressMap = v22->_messageAddressMap;
-  v22->_messageAddressMap = v16;
-  v26 = v16;
+  v22->_messageAddressMap = mapCopy;
+  v26 = mapCopy;
 
   messageIdentifierMap = v22->_messageIdentifierMap;
-  v22->_messageIdentifierMap = v17;
-  v28 = v17;
+  v22->_messageIdentifierMap = identifierMapCopy;
+  v28 = identifierMapCopy;
 
   addressValidator = v22->_addressValidator;
-  v22->_addressValidator = v18;
-  v30 = v18;
+  v22->_addressValidator = validatorCopy;
+  v30 = validatorCopy;
 
   userAliasResolver = v22->_userAliasResolver;
-  v22->_userAliasResolver = v19;
-  v32 = v19;
+  v22->_userAliasResolver = resolverCopy;
+  v32 = resolverCopy;
 
   returnAddressProvider = v22->_returnAddressProvider;
-  v22->_returnAddressProvider = v20;
-  v34 = v20;
+  v22->_returnAddressProvider = providerCopy;
+  v34 = providerCopy;
 
   queue = v22->_queue;
-  v22->_queue = v21;
-  v36 = v21;
+  v22->_queue = queueCopy;
+  v36 = queueCopy;
 
   v37 = [[STIDSTransportPrimitiveDestinationReachabilityMap alloc] initWithReachableDestinations:0 unreachableDestinations:0 unknownReachabilityDestinations:0];
   destinationReachabilityMap = v22->_destinationReachabilityMap;
@@ -72,23 +72,23 @@
   return v22;
 }
 
-- (id)sendMessage:(id)a3 toAddresses:(id)a4 fromAddress:(id)a5
+- (id)sendMessage:(id)message toAddresses:(id)addresses fromAddress:(id)address
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  addressesCopy = addresses;
+  addressCopy = address;
   v11 = +[STLog familyMessaging];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 contentType];
-    if ((v12 - 1) > 4)
+    contentType = [messageCopy contentType];
+    if ((contentType - 1) > 4)
     {
       v13 = @"Unknown";
     }
 
     else
     {
-      v13 = off_1001A4230[(v12 - 1)];
+      v13 = off_1001A4230[(contentType - 1)];
     }
 
     *buf = 136446978;
@@ -96,25 +96,25 @@
     v30 = 2114;
     v31 = v13;
     v32 = 2112;
-    v33 = v9;
+    v33 = addressesCopy;
     v34 = 2112;
-    v35 = v10;
+    v35 = addressCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nmessage.contentType: %{public}@, \ntoAddresses: %@, \nfromAddress: %@", buf, 0x2Au);
   }
 
-  v14 = [(STIDSMessageTransport *)self primitives];
-  if ([v14 canSend])
+  primitives = [(STIDSMessageTransport *)self primitives];
+  if ([primitives canSend])
   {
-    v15 = [(STIDSMessageTransport *)self _prepareToSendToAddresses:v9];
-    v16 = [v15 then];
+    v15 = [(STIDSMessageTransport *)self _prepareToSendToAddresses:addressesCopy];
+    then = [v15 then];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100040754;
     v25[3] = &unk_1001A4110;
     v25[4] = self;
-    v26 = v8;
-    v27 = v10;
-    v17 = (v16)[2](v16, v25);
+    v26 = messageCopy;
+    v27 = addressCopy;
+    v17 = (then)[2](then, v25);
   }
 
   else
@@ -129,27 +129,27 @@
 
     v21 = [STPromise alloc];
     v22 = [STResult failure:v19];
-    v23 = [(STIDSMessageTransport *)self queue];
-    v17 = [(STPromise *)v21 initWithResolution:v22 onQueue:v23];
+    queue = [(STIDSMessageTransport *)self queue];
+    v17 = [(STPromise *)v21 initWithResolution:v22 onQueue:queue];
   }
 
   return v17;
 }
 
-- (id)_prepareToSendToAddresses:(id)a3
+- (id)_prepareToSendToAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [(STIDSMessageTransport *)self messageAddressMap];
-  v6 = [v5 primitiveDestinationsForMessageAddresses:v4];
+  addressesCopy = addresses;
+  messageAddressMap = [(STIDSMessageTransport *)self messageAddressMap];
+  v6 = [messageAddressMap primitiveDestinationsForMessageAddresses:addressesCopy];
 
   v7 = [v6 count];
-  v8 = [v4 count];
+  v8 = [addressesCopy count];
 
   if (v7 == v8)
   {
     v9 = [(STIDSMessageTransport *)self _reachabilityMapFromDestinations:v6];
-    v10 = [v9 then];
-    v11 = (v10)[2](v10, &stru_1001A4150);
+    then = [v9 then];
+    v11 = (then)[2](then, &stru_1001A4150);
   }
 
   else
@@ -164,19 +164,19 @@
 
     v14 = [STPromise alloc];
     v15 = [STResult failure:v9];
-    v16 = [(STIDSMessageTransport *)self queue];
-    v11 = [(STPromise *)v14 initWithResolution:v15 onQueue:v16];
+    queue = [(STIDSMessageTransport *)self queue];
+    v11 = [(STPromise *)v14 initWithResolution:v15 onQueue:queue];
   }
 
   return v11;
 }
 
-- (void)_willSendMessage:(id)a3 usingDestinationReachabilityMap:(id)a4
+- (void)_willSendMessage:(id)message usingDestinationReachabilityMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 reachableDestinations];
-  if ([v8 count])
+  messageCopy = message;
+  mapCopy = map;
+  reachableDestinations = [mapCopy reachableDestinations];
+  if ([reachableDestinations count])
   {
     v9 = +[STLog idsMessageTransport];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -184,19 +184,19 @@
       *buf = 136446723;
       v33 = "[STIDSMessageTransport _willSendMessage:usingDestinationReachabilityMap:]";
       v34 = 2113;
-      v35 = v6;
+      v35 = messageCopy;
       v36 = 2113;
-      v37 = v8;
+      v37 = reachableDestinations;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nMessage: %{private}@ will be sent to: %{private}@", buf, 0x20u);
     }
   }
 
-  v26 = v8;
-  v10 = [v7 unreachableDestinations];
-  v11 = [v10 mutableCopy];
+  v26 = reachableDestinations;
+  unreachableDestinations = [mapCopy unreachableDestinations];
+  v11 = [unreachableDestinations mutableCopy];
 
-  v12 = [v7 unknownReachabilityDestinations];
-  [v11 unionSet:v12];
+  unknownReachabilityDestinations = [mapCopy unknownReachabilityDestinations];
+  [v11 unionSet:unknownReachabilityDestinations];
 
   if ([v11 count])
   {
@@ -206,15 +206,15 @@
       *buf = 136446723;
       v33 = "[STIDSMessageTransport _willSendMessage:usingDestinationReachabilityMap:]";
       v34 = 2113;
-      v35 = v6;
+      v35 = messageCopy;
       v36 = 2113;
       v37 = v11;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nMessage: %{private}@ will not be sent to destinations: %{private}@", buf, 0x20u);
     }
   }
 
-  v14 = [(STIDSMessageTransport *)self messageAddressMap];
-  v15 = [v14 messageAddressesForPrimitiveDestinations:v11];
+  messageAddressMap = [(STIDSMessageTransport *)self messageAddressMap];
+  v15 = [messageAddressMap messageAddressesForPrimitiveDestinations:v11];
 
   v16 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v15 count]);
   v17 = [NSError alloc];
@@ -250,37 +250,37 @@
     while (v21);
   }
 
-  v24 = [(STIDSMessageTransport *)self delegate];
+  delegate = [(STIDSMessageTransport *)self delegate];
   v25 = [v16 copy];
-  [v24 transport:self willSendMessage:v6 errorsByAddress:v25];
+  [delegate transport:self willSendMessage:messageCopy errorsByAddress:v25];
 }
 
-- (void)_mightSendMessage:(id)a3 toDestinationsWithUnknownReachability:(id)a4
+- (void)_mightSendMessage:(id)message toDestinationsWithUnknownReachability:(id)reachability
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  reachabilityCopy = reachability;
   v8 = +[STLog idsMessageTransport];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136446723;
     v11 = "[STIDSMessageTransport _mightSendMessage:toDestinationsWithUnknownReachability:]";
     v12 = 2113;
-    v13 = v6;
+    v13 = messageCopy;
     v14 = 2113;
-    v15 = v7;
+    v15 = reachabilityCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nMessage: %{private}@ might be sent to destinations: %{private}@", &v10, 0x20u);
   }
 
-  v9 = [(STIDSMessageTransport *)self delegate];
-  [v9 transport:self willSendMessage:v6 errorsByAddress:&__NSDictionary0__struct];
+  delegate = [(STIDSMessageTransport *)self delegate];
+  [delegate transport:self willSendMessage:messageCopy errorsByAddress:&__NSDictionary0__struct];
 }
 
-- (id)_sendMessage:(id)a3 toReachableDestinations:(id)a4 fromAddress:(id)a5
+- (id)_sendMessage:(id)message toReachableDestinations:(id)destinations fromAddress:(id)address
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 contentType] - 1;
+  messageCopy = message;
+  destinationsCopy = destinations;
+  addressCopy = address;
+  v11 = [messageCopy contentType] - 1;
   if (v11 > 4)
   {
     v12 = @"Unknown";
@@ -299,13 +299,13 @@
     v52 = 2082;
     v53 = "[STIDSMessageTransport _sendMessage:toReachableDestinations:fromAddress:]";
     v54 = 2112;
-    v55 = v9;
+    v55 = destinationsCopy;
     v56 = 2112;
-    v57 = v10;
+    v57 = addressCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[v2] >>>>>>> SEND (message.contentType: %{public}@), %{public}s: destinations: %@, fromAddress: %@", buf, 0x2Au);
   }
 
-  v14 = [[STMessageTransportReturnAddressedMessage alloc] initWithMessage:v8 returnAddress:v10];
+  v14 = [[STMessageTransportReturnAddressedMessage alloc] initWithMessage:messageCopy returnAddress:addressCopy];
   v47 = 0;
   v15 = [NSKeyedArchiver archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v47];
   v16 = v47;
@@ -324,37 +324,37 @@
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nSend message size %{public}lu", buf, 0x16u);
     }
 
-    v20 = [(STIDSMessageTransport *)self userAliasResolver];
-    v21 = [v10 userDSID];
-    v22 = [v20 appleIDForUserDSID:v21];
+    userAliasResolver = [(STIDSMessageTransport *)self userAliasResolver];
+    userDSID = [addressCopy userDSID];
+    v22 = [userAliasResolver appleIDForUserDSID:userDSID];
 
     if (v22)
     {
-      v23 = [(STIDSMessageTransport *)self primitives];
-      v24 = [v23 primitiveDestinationFromRawAddress:v22];
+      primitives = [(STIDSMessageTransport *)self primitives];
+      v24 = [primitives primitiveDestinationFromRawAddress:v22];
 
       if (v24)
       {
-        v25 = [(STIDSMessageTransport *)self primitives];
-        v42 = [v25 sendData:v15 toDestinations:v9 fromDestination:v24];
+        primitives2 = [(STIDSMessageTransport *)self primitives];
+        v42 = [primitives2 sendData:v15 toDestinations:destinationsCopy fromDestination:v24];
         v44[0] = _NSConcreteStackBlock;
         v44[1] = 3221225472;
         v44[2] = sub_100041418;
         v44[3] = &unk_1001A4178;
-        v45 = v8;
-        v46 = self;
+        v45 = messageCopy;
+        selfCopy = self;
         [v42 flatMap:v44];
         v26 = v15;
-        v27 = v10;
-        v28 = v8;
+        v27 = addressCopy;
+        v28 = messageCopy;
         v29 = v14;
-        v31 = v30 = v9;
+        v31 = v30 = destinationsCopy;
         v32 = [v31 mapError:&stru_1001A4198];
 
-        v9 = v30;
+        destinationsCopy = v30;
         v14 = v29;
-        v8 = v28;
-        v10 = v27;
+        messageCopy = v28;
+        addressCopy = v27;
         v15 = v26;
       }
 
@@ -367,8 +367,8 @@
         }
 
         v40 = [NSError alloc];
-        v25 = [v40 initWithDomain:STErrorDomain code:28 userInfo:0];
-        v32 = [STResult failure:v25];
+        primitives2 = [v40 initWithDomain:STErrorDomain code:28 userInfo:0];
+        v32 = [STResult failure:primitives2];
       }
     }
 
@@ -409,37 +409,37 @@
   return v32;
 }
 
-- (id)_reachabilityMapFromDestinations:(id)a3
+- (id)_reachabilityMapFromDestinations:(id)destinations
 {
-  v4 = [(STIDSMessageTransport *)self _refreshReachabilityForDestinations:a3];
-  v5 = [v4 then];
+  v4 = [(STIDSMessageTransport *)self _refreshReachabilityForDestinations:destinations];
+  then = [v4 then];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004168C;
   v8[3] = &unk_1001A41C0;
   v8[4] = self;
-  v6 = (v5)[2](v5, v8);
+  v6 = (then)[2](then, v8);
 
   return v6;
 }
 
-- (id)_refreshReachabilityForDestinations:(id)a3
+- (id)_refreshReachabilityForDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   os_unfair_lock_lock(&self->_destinationReachabilityMapLock);
-  v5 = [(STIDSMessageTransport *)self destinationReachabilityMap];
+  destinationReachabilityMap = [(STIDSMessageTransport *)self destinationReachabilityMap];
   os_unfair_lock_unlock(&self->_destinationReachabilityMapLock);
-  v25 = v5;
-  v26 = v4;
-  v6 = [v5 intersectWithDestinations:v4];
-  v7 = [v6 unknownReachabilityDestinations];
-  v8 = [v7 mutableCopy];
+  v25 = destinationReachabilityMap;
+  v26 = destinationsCopy;
+  v6 = [destinationReachabilityMap intersectWithDestinations:destinationsCopy];
+  unknownReachabilityDestinations = [v6 unknownReachabilityDestinations];
+  v8 = [unknownReachabilityDestinations mutableCopy];
 
-  v9 = [v6 unreachableDestinations];
-  [v8 unionSet:v9];
+  unreachableDestinations = [v6 unreachableDestinations];
+  [v8 unionSet:unreachableDestinations];
 
   v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
-  v11 = [(STIDSMessageTransport *)self primitives];
+  primitives = [(STIDSMessageTransport *)self primitives];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -459,7 +459,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [v11 refreshedReachabilityOfPrimitiveDestination:*(*(&v29 + 1) + 8 * i)];
+        v17 = [primitives refreshedReachabilityOfPrimitiveDestination:*(*(&v29 + 1) + 8 * i)];
         [v10 addObject:v17];
       }
 
@@ -469,39 +469,39 @@
     while (v14);
   }
 
-  v18 = [(STIDSMessageTransport *)self queue];
-  v19 = [STPromise onQueue:v18 all:v10];
-  v20 = [v19 then];
+  queue = [(STIDSMessageTransport *)self queue];
+  v19 = [STPromise onQueue:queue all:v10];
+  then = [v19 then];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100041A78;
   v27[3] = &unk_1001A41E8;
   v28 = v6;
-  v21 = v20[2];
+  v21 = then[2];
   v22 = v6;
-  v23 = v21(v20, v27);
+  v23 = v21(then, v27);
 
   return v23;
 }
 
-- (void)_isCapabilityEnabledForUser:(id)a3 capability:(id)a4 completionHandler:(id)a5
+- (void)_isCapabilityEnabledForUser:(id)user capability:(id)capability completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(STIDSMessageTransport *)self userAliasResolver];
-  v12 = [v8 dsid];
-  v13 = [v11 appleIDForUserDSID:v12];
+  userCopy = user;
+  capabilityCopy = capability;
+  handlerCopy = handler;
+  userAliasResolver = [(STIDSMessageTransport *)self userAliasResolver];
+  dsid = [userCopy dsid];
+  v13 = [userAliasResolver appleIDForUserDSID:dsid];
 
   if (v13)
   {
-    v14 = [(STIDSMessageTransport *)self primitives];
-    v15 = [v14 primitiveDestinationFromRawAddress:v13];
+    primitives = [(STIDSMessageTransport *)self primitives];
+    v15 = [primitives primitiveDestinationFromRawAddress:v13];
 
     if (v15)
     {
-      v16 = [(STIDSMessageTransport *)self primitives];
-      [v16 isCapabilityEnabledForDestination:v15 capability:v9 completionHandler:v10];
+      primitives2 = [(STIDSMessageTransport *)self primitives];
+      [primitives2 isCapabilityEnabledForDestination:v15 capability:capabilityCopy completionHandler:handlerCopy];
     }
 
     else
@@ -513,8 +513,8 @@
       }
 
       v20 = [NSError alloc];
-      v16 = [v20 initWithDomain:STErrorDomain code:28 userInfo:0];
-      v10[2](v10, 0, v16);
+      primitives2 = [v20 initWithDomain:STErrorDomain code:28 userInfo:0];
+      handlerCopy[2](handlerCopy, 0, primitives2);
     }
   }
 
@@ -523,105 +523,105 @@
     v17 = +[STLog idsMessageTransport];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_1001173CC(v8, v17);
+      sub_1001173CC(userCopy, v17);
     }
 
     v18 = [NSError alloc];
     v15 = [v18 initWithDomain:STErrorDomain code:28 userInfo:0];
-    v10[2](v10, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
   }
 }
 
-- (void)stopTrackingMessageWithIdentifier:(id)a3
+- (void)stopTrackingMessageWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[STLog idsMessageTransport];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446466;
     v8 = "[STIDSMessageTransport stopTrackingMessageWithIdentifier:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nStopping tracking of message: %{public}@", &v7, 0x16u);
   }
 
-  v6 = [(STIDSMessageTransport *)self messageIdentifierMap];
-  [v6 removeMessageIdentifier:v4];
+  messageIdentifierMap = [(STIDSMessageTransport *)self messageIdentifierMap];
+  [messageIdentifierMap removeMessageIdentifier:identifierCopy];
 }
 
-- (void)primitives:(id)a3 didObserveUpdatedPrimitiveDestinationReachabilityMap:(id)a4
+- (void)primitives:(id)primitives didObserveUpdatedPrimitiveDestinationReachabilityMap:(id)map
 {
-  v5 = a4;
+  mapCopy = map;
   os_unfair_lock_lock(&self->_destinationReachabilityMapLock);
-  v6 = [(STIDSMessageTransport *)self destinationReachabilityMap];
-  v7 = [v6 merge:v5];
+  destinationReachabilityMap = [(STIDSMessageTransport *)self destinationReachabilityMap];
+  v7 = [destinationReachabilityMap merge:mapCopy];
 
   [(STIDSMessageTransport *)self setDestinationReachabilityMap:v7];
   v8 = +[STLog idsMessageTransport];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(STIDSMessageTransport *)self destinationReachabilityMap];
+    destinationReachabilityMap2 = [(STIDSMessageTransport *)self destinationReachabilityMap];
     v10 = 136446467;
     v11 = "[STIDSMessageTransport primitives:didObserveUpdatedPrimitiveDestinationReachabilityMap:]";
     v12 = 2113;
-    v13 = v9;
+    v13 = destinationReachabilityMap2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nCurrent primitive destination reachability: %{private}@", &v10, 0x16u);
   }
 
   os_unfair_lock_unlock(&self->_destinationReachabilityMapLock);
 }
 
-- (void)primitives:(id)a3 didReceiveData:(id)a4 fromPrimitiveDestination:(id)a5 primitiveResponseIdentifier:(id)a6
+- (void)primitives:(id)primitives didReceiveData:(id)data fromPrimitiveDestination:(id)destination primitiveResponseIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  primitivesCopy = primitives;
+  dataCopy = data;
+  destinationCopy = destination;
+  identifierCopy = identifier;
   v14 = +[STLog familyMessaging];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446979;
     v32 = "[STIDSMessageTransport primitives:didReceiveData:fromPrimitiveDestination:primitiveResponseIdentifier:]";
     v33 = 2113;
-    v34 = v10;
+    v34 = primitivesCopy;
     v35 = 2113;
-    v36 = v12;
+    v36 = destinationCopy;
     v37 = 2113;
-    v38 = v13;
+    v38 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nprimatives: %{private}@, \nfromPrimativeDestination: %{private}@, \nprimitiveResponseIdentifier: %{private}@", buf, 0x2Au);
   }
 
-  v15 = [(STIDSMessageTransport *)self primitives];
-  v16 = [v15 rawAddressFromPrimitiveDestination:v12];
+  primitives = [(STIDSMessageTransport *)self primitives];
+  v16 = [primitives rawAddressFromPrimitiveDestination:destinationCopy];
 
-  v17 = [(STIDSMessageTransport *)self addressValidator];
-  v18 = [v17 validateAddressIsAllowed:v16];
+  addressValidator = [(STIDSMessageTransport *)self addressValidator];
+  v18 = [addressValidator validateAddressIsAllowed:v16];
 
   if (v18)
   {
-    [(STIDSMessageTransport *)self _sendAcknowledgementMessageForResponseIdentifier:v13 toDestination:v12];
+    [(STIDSMessageTransport *)self _sendAcknowledgementMessageForResponseIdentifier:identifierCopy toDestination:destinationCopy];
     v30 = 0;
-    v19 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:&v30];
+    v19 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v30];
     v20 = v30;
     if (v19)
     {
-      v29 = v10;
-      v21 = [v19 message];
-      v22 = [v21 contentType];
-      if ((v22 - 1) > 4)
+      v29 = primitivesCopy;
+      message = [v19 message];
+      contentType = [message contentType];
+      if ((contentType - 1) > 4)
       {
         v23 = @"Unknown";
       }
 
       else
       {
-        v23 = off_1001A4230[(v22 - 1)];
+        v23 = off_1001A4230[(contentType - 1)];
       }
 
       v25 = +[STLog familyMessaging];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v11 length];
+        v26 = [dataCopy length];
         *buf = 138544130;
         v32 = v23;
         v33 = 2050;
@@ -629,24 +629,24 @@
         v35 = 2082;
         v36 = "[STIDSMessageTransport primitives:didReceiveData:fromPrimitiveDestination:primitiveResponseIdentifier:]";
         v37 = 2112;
-        v38 = v12;
+        v38 = destinationCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[v2] <<<<<<< RECEIVE (message.contentType: %{public}@, size: %{public}lu), %{public}s: fromPrimitiveDestination: %@", buf, 0x2Au);
       }
 
-      v24 = [v19 returnAddress];
-      v27 = [(STIDSMessageTransport *)self messageAddressMap];
-      [v27 insertPrimitiveDestination:v12 forMessageAddress:v24];
+      returnAddress = [v19 returnAddress];
+      messageAddressMap = [(STIDSMessageTransport *)self messageAddressMap];
+      [messageAddressMap insertPrimitiveDestination:destinationCopy forMessageAddress:returnAddress];
 
-      v28 = [(STIDSMessageTransport *)self delegate];
-      [v28 transport:self didReceiveMessage:v19];
+      delegate = [(STIDSMessageTransport *)self delegate];
+      [delegate transport:self didReceiveMessage:v19];
 
-      v10 = v29;
+      primitivesCopy = v29;
     }
 
     else
     {
-      v24 = +[STLog idsMessageTransport];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      returnAddress = +[STLog idsMessageTransport];
+      if (os_log_type_enabled(returnAddress, OS_LOG_TYPE_ERROR))
       {
         sub_1001174E0();
       }
@@ -663,35 +663,35 @@
   }
 }
 
-- (void)_sendAcknowledgementMessageForResponseIdentifier:(id)a3 toDestination:(id)a4
+- (void)_sendAcknowledgementMessageForResponseIdentifier:(id)identifier toDestination:(id)destination
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  destinationCopy = destination;
   v8 = +[STLog familyMessaging];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446723;
     v25 = "[STIDSMessageTransport _sendAcknowledgementMessageForResponseIdentifier:toDestination:]";
     v26 = 2112;
-    v27 = v6;
+    v27 = identifierCopy;
     v28 = 2113;
-    v29 = v7;
+    v29 = destinationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nresponseIdentifier: %@, \ntoDestination: %{private}@", buf, 0x20u);
   }
 
-  v9 = [(STIDSMessageTransport *)self returnAddressProvider];
-  v10 = [v9 returnAddress];
+  returnAddressProvider = [(STIDSMessageTransport *)self returnAddressProvider];
+  returnAddress = [returnAddressProvider returnAddress];
 
-  if (v10)
+  if (returnAddress)
   {
-    v11 = [(STIDSMessageTransport *)self userAliasResolver];
-    v12 = [v10 userDSID];
-    v13 = [v11 appleIDForUserDSID:v12];
+    userAliasResolver = [(STIDSMessageTransport *)self userAliasResolver];
+    userDSID = [returnAddress userDSID];
+    v13 = [userAliasResolver appleIDForUserDSID:userDSID];
 
     if (v13)
     {
-      v14 = [(STIDSMessageTransport *)self primitives];
-      v15 = [v14 primitiveDestinationFromRawAddress:v13];
+      primitives = [(STIDSMessageTransport *)self primitives];
+      v15 = [primitives primitiveDestinationFromRawAddress:v13];
 
       v16 = +[STLog idsMessageTransport];
       v17 = v16;
@@ -702,19 +702,19 @@
           *buf = 136446467;
           v25 = "[STIDSMessageTransport _sendAcknowledgementMessageForResponseIdentifier:toDestination:]";
           v26 = 2113;
-          v27 = v6;
+          v27 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nAcknowledging message: %{private}@", buf, 0x16u);
         }
 
-        v18 = [(STIDSMessageTransport *)self primitives];
-        v17 = [v18 sendAcknowledgementMessageForResponseIdentifier:v6 toDestination:v7 fromDestination:v15];
+        primitives2 = [(STIDSMessageTransport *)self primitives];
+        v17 = [primitives2 sendAcknowledgementMessageForResponseIdentifier:identifierCopy toDestination:destinationCopy fromDestination:v15];
 
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100042588;
         v21[3] = &unk_1001A4210;
-        v22 = v6;
-        v23 = self;
+        v22 = identifierCopy;
+        selfCopy = self;
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_100042680;
@@ -749,11 +749,11 @@
   }
 }
 
-- (void)primitives:(id)a3 didSendMessageWithPrimitiveIdentifier:(id)a4 success:(BOOL)a5 error:(id)a6
+- (void)primitives:(id)primitives didSendMessageWithPrimitiveIdentifier:(id)identifier success:(BOOL)success error:(id)error
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = a6;
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
   v11 = +[STLog familyMessaging];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -761,8 +761,8 @@
     *&v20[4] = "[STIDSMessageTransport primitives:didSendMessageWithPrimitiveIdentifier:success:error:]";
     *&v20[12] = 2112;
     *v20 = 136446978;
-    *&v20[14] = v9;
-    if (v7)
+    *&v20[14] = identifierCopy;
+    if (successCopy)
     {
       v12 = "YES";
     }
@@ -770,31 +770,31 @@
     *&v20[22] = 2082;
     v21 = v12;
     v22 = 2114;
-    v23 = v10;
+    v23 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nprimitiveMessageIdentifier: %@, \nsuccess: %{public}s, \nerror: %{public}@", v20, 0x2Au);
   }
 
-  v13 = [(STIDSMessageTransport *)self pendingAcknowledgementIdentifiers];
-  if ([v13 containsObject:v9])
+  pendingAcknowledgementIdentifiers = [(STIDSMessageTransport *)self pendingAcknowledgementIdentifiers];
+  if ([pendingAcknowledgementIdentifiers containsObject:identifierCopy])
   {
-    [v13 removeObject:v9];
+    [pendingAcknowledgementIdentifiers removeObject:identifierCopy];
   }
 
   else
   {
-    v14 = [(STIDSMessageTransport *)self messageIdentifierMap];
-    v15 = [v14 messageIdentifierForPrimitiveMessageIdentifier:v9];
+    messageIdentifierMap = [(STIDSMessageTransport *)self messageIdentifierMap];
+    v15 = [messageIdentifierMap messageIdentifierForPrimitiveMessageIdentifier:identifierCopy];
 
     if (v15)
     {
-      if (v7)
+      if (successCopy)
       {
         +[STResult success];
       }
 
       else
       {
-        [STResult failure:v10];
+        [STResult failure:errorCopy];
       }
       v16 = ;
       v17 = [STLog idsMessageTransport:*v20];
@@ -805,20 +805,20 @@
         *&v20[12] = 2114;
         *v20 = 136446979;
         *&v20[14] = v15;
-        if (v7)
+        if (successCopy)
         {
           v18 = "YES";
         }
 
         *&v20[22] = 2113;
-        v21 = v9;
+        v21 = identifierCopy;
         v22 = 2082;
         v23 = v18;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nDid send messageIdentifier: %{public}@, \nprimitiveMessageIdentifier: %{private}@, \nsuccess: %{public}s", v20, 0x2Au);
       }
 
-      v19 = [(STIDSMessageTransport *)self delegate];
-      [v19 transport:self didSendMessageWithIdentifier:v15 result:v16];
+      delegate = [(STIDSMessageTransport *)self delegate];
+      [delegate transport:self didSendMessageWithIdentifier:v15 result:v16];
     }
 
     else
@@ -832,23 +832,23 @@
   }
 }
 
-- (void)primitives:(id)a3 didDeliverMessageWithPrimitiveIdentifier:(id)a4 toPrimitiveDestination:(id)a5
+- (void)primitives:(id)primitives didDeliverMessageWithPrimitiveIdentifier:(id)identifier toPrimitiveDestination:(id)destination
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(STIDSMessageTransport *)self messageIdentifierMap];
-  v10 = [v9 messageIdentifierForPrimitiveMessageIdentifier:v7];
+  identifierCopy = identifier;
+  destinationCopy = destination;
+  messageIdentifierMap = [(STIDSMessageTransport *)self messageIdentifierMap];
+  v10 = [messageIdentifierMap messageIdentifierForPrimitiveMessageIdentifier:identifierCopy];
 
   if (v10)
   {
-    v11 = [(STIDSMessageTransport *)self messageAddressMap];
-    v12 = [NSSet setWithObject:v8];
-    v13 = [v11 messageAddressesForPrimitiveDestinations:v12];
-    v14 = [v13 anyObject];
+    messageAddressMap = [(STIDSMessageTransport *)self messageAddressMap];
+    v12 = [NSSet setWithObject:destinationCopy];
+    v13 = [messageAddressMap messageAddressesForPrimitiveDestinations:v12];
+    anyObject = [v13 anyObject];
 
     v15 = +[STLog idsMessageTransport];
-    v16 = v15;
-    if (v14)
+    delegate = v15;
+    if (anyObject)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -857,12 +857,12 @@
         v19 = 2114;
         v20 = v10;
         v21 = 2113;
-        v22 = v7;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nDid deliver message: \nmessageIdentifier: %{public}@, \nprimitiveMessageIdentifier: %{private}@)", &v17, 0x20u);
+        v22 = identifierCopy;
+        _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nDid deliver message: \nmessageIdentifier: %{public}@, \nprimitiveMessageIdentifier: %{private}@)", &v17, 0x20u);
       }
 
-      v16 = [(STIDSMessageTransport *)self delegate];
-      [v16 transport:self didDeliverMessageWithIdentifier:v10 toMessageAddress:v14];
+      delegate = [(STIDSMessageTransport *)self delegate];
+      [delegate transport:self didDeliverMessageWithIdentifier:v10 toMessageAddress:anyObject];
     }
 
     else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -873,8 +873,8 @@
 
   else
   {
-    v14 = +[STLog idsMessageTransport];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    anyObject = +[STLog idsMessageTransport];
+    if (os_log_type_enabled(anyObject, OS_LOG_TYPE_ERROR))
     {
       sub_100117844();
     }

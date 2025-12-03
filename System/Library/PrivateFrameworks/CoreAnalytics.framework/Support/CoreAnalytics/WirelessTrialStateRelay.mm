@@ -1,14 +1,14 @@
 @interface WirelessTrialStateRelay
-- (WirelessTrialStateRelay)initWithMonitoring:(WirelessTrialStateDelegate *)a3;
+- (WirelessTrialStateRelay)initWithMonitoring:(WirelessTrialStateDelegate *)monitoring;
 - (optional<std::string>)getWirelessTrialIdentifier;
-- (void)_updateWirelessTrialIdentifier:(optional<std::string> *)a3;
+- (void)_updateWirelessTrialIdentifier:(optional<std::string> *)identifier;
 - (void)refreshWirelessTrialIdentifier;
 - (void)subscribeToTrial;
 @end
 
 @implementation WirelessTrialStateRelay
 
-- (WirelessTrialStateRelay)initWithMonitoring:(WirelessTrialStateDelegate *)a3
+- (WirelessTrialStateRelay)initWithMonitoring:(WirelessTrialStateDelegate *)monitoring
 {
   v11.receiver = self;
   v11.super_class = WirelessTrialStateRelay;
@@ -17,7 +17,7 @@
   {
     if (objc_opt_class())
     {
-      v4->_wirelessTrialStateDelegate = a3;
+      v4->_wirelessTrialStateDelegate = monitoring;
       v5 = dispatch_queue_create("analyticsd.TrialCellularWireless.CallbackQueue", 0);
       fObj = v4->_trialCellularWirelessClientQueue.fObj.fObj;
       v4->_trialCellularWirelessClientQueue.fObj.fObj = v5;
@@ -80,31 +80,31 @@
       goto LABEL_20;
     }
 
-    v8 = [v6 fileValue];
-    v9 = [v8 path];
-    if (v9)
+    fileValue = [v6 fileValue];
+    path = [fileValue path];
+    if (path)
     {
-      v10 = [v7 fileValue];
-      v11 = [v10 path];
-      v12 = [v11 length] == 0;
+      fileValue2 = [v7 fileValue];
+      path2 = [fileValue2 path];
+      v12 = [path2 length] == 0;
 
       if (!v12)
       {
-        v13 = [v7 fileValue];
-        v14 = [v13 path];
-        v15 = [NSURL fileURLWithPath:v14];
+        fileValue3 = [v7 fileValue];
+        path3 = [fileValue3 path];
+        v15 = [NSURL fileURLWithPath:path3];
 
         if (v15)
         {
-          v16 = [v5 treatmentId];
-          v17 = v16;
-          *v23 = [v16 UTF8String];
+          treatmentId = [v5 treatmentId];
+          v17 = treatmentId;
+          *v23 = [treatmentId UTF8String];
           sub_1000817A4(retstr, v23);
           v18 = qword_100192D98;
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
-            v20 = [v5 experimentId];
-            v21 = [v5 deploymentId];
+            experimentId = [v5 experimentId];
+            deploymentId = [v5 deploymentId];
             if (*(&retstr->var0.var1.__rep_.__l + 23) >= 0)
             {
               data = retstr;
@@ -116,9 +116,9 @@
             }
 
             *v23 = 138412802;
-            *&v23[4] = v20;
+            *&v23[4] = experimentId;
             v24 = 1024;
-            v25 = v21;
+            v25 = deploymentId;
             v26 = 2080;
             v27 = data;
             _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[WirelessTrialStateRelay] WirelessTrialIdentifier: experimentIdentifiers are: experimentId: %@, deploymentId: %d, treatmentId: %s", v23, 0x1Cu);
@@ -218,10 +218,10 @@ LABEL_21:
   }
 }
 
-- (void)_updateWirelessTrialIdentifier:(optional<std::string> *)a3
+- (void)_updateWirelessTrialIdentifier:(optional<std::string> *)identifier
 {
   wirelessTrialStateDelegate = self->_wirelessTrialStateDelegate;
-  sub_10009B928(__p, &a3->var0.var0);
+  sub_10009B928(__p, &identifier->var0.var0);
   (*(wirelessTrialStateDelegate->var0 + 2))(&v5, wirelessTrialStateDelegate, __p);
   v4 = v5;
   v5 = 0;

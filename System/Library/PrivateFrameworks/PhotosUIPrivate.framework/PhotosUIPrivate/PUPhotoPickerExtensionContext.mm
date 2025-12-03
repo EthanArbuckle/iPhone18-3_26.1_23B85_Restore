@@ -2,42 +2,42 @@
 + (void)configureImageManagerLimit;
 - (NSOperationQueue)multipleMediaConversionConcurrentQueue;
 - (OS_dispatch_queue)multipleMediaIsolationQueue;
-- (PUPhotoPickerExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
-- (id)_createSandboxTokenForPath:(id)a3;
-- (id)_createSandboxTokenForURL:(id)a3;
+- (PUPhotoPickerExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
+- (id)_createSandboxTokenForPath:(id)path;
+- (id)_createSandboxTokenForURL:(id)l;
 - (id)_host;
-- (void)_createPhotoPickerInfoDictionaryFromInfoDictionary:(id)a3 appendTo:(id)a4 completion:(id)a5;
-- (void)_handleLivePhotoImageUrlFetch:(id)a3 appendTo:(id)a4 completion:(id)a5;
-- (void)_handleLivePhotoVideoUrlFetch:(id)a3 appendTo:(id)a4 completion:(id)a5;
-- (void)_handleMutlipleMediaCompletion:(id)a3;
-- (void)_photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:(id)a3 completion:(id)a4;
-- (void)_saveImageURLForLivePhoto:(id)a3 fileURL:(id)a4 appendTo:(id)a5 completion:(id)a6;
-- (void)_saveVideoURLForLivePhoto:(id)a3 fileURL:(id)a4 appendTo:(id)a5 completion:(id)a6;
+- (void)_createPhotoPickerInfoDictionaryFromInfoDictionary:(id)dictionary appendTo:(id)to completion:(id)completion;
+- (void)_handleLivePhotoImageUrlFetch:(id)fetch appendTo:(id)to completion:(id)completion;
+- (void)_handleLivePhotoVideoUrlFetch:(id)fetch appendTo:(id)to completion:(id)completion;
+- (void)_handleMutlipleMediaCompletion:(id)completion;
+- (void)_photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:(id)dictionary completion:(id)completion;
+- (void)_saveImageURLForLivePhoto:(id)photo fileURL:(id)l appendTo:(id)to completion:(id)completion;
+- (void)_saveVideoURLForLivePhoto:(id)photo fileURL:(id)l appendTo:(id)to completion:(id)completion;
 - (void)cancelPhotoPicker;
 - (void)didDisplayPhotoPickerPreview;
-- (void)didDisplayPhotoPickerSourceType:(id)a3;
-- (void)didSelectMediaWithInfoDictionary:(id)a3;
-- (void)didSelectMultipleMediaItemsWithInfoDictionaries:(id)a3;
-- (void)didSetOnboardingHeaderDismissed:(BOOL)a3;
-- (void)dismissCurrentViewControllerFromPhotoPickerAnimated:(id)a3;
+- (void)didDisplayPhotoPickerSourceType:(id)type;
+- (void)didSelectMediaWithInfoDictionary:(id)dictionary;
+- (void)didSelectMultipleMediaItemsWithInfoDictionaries:(id)dictionaries;
+- (void)didSetOnboardingHeaderDismissed:(BOOL)dismissed;
+- (void)dismissCurrentViewControllerFromPhotoPickerAnimated:(id)animated;
 - (void)initiatePhotoPickerSelection;
 - (void)invalidatePhotoPickerHostServices;
 - (void)invalidatePhotoPickerRemoteServices;
 - (void)performPhotoPickerPreviewOfFirstAsset;
-- (void)performTraitCollectionUpdateUsingData:(id)a3 completion:(id)a4;
+- (void)performTraitCollectionUpdateUsingData:(id)data completion:(id)completion;
 - (void)photoPickerIsReadyForDisplay;
-- (void)requestedViewControllerOptionsWithCompletionHandler:(id)a3;
+- (void)requestedViewControllerOptionsWithCompletionHandler:(id)handler;
 @end
 
 @implementation PUPhotoPickerExtensionContext
 
-- (id)_createSandboxTokenForPath:(id)a3
+- (id)_createSandboxTokenForPath:(id)path
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUPhotoPickerExtensionContext.m" lineNumber:456 description:@"path cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoPickerExtensionContext.m" lineNumber:456 description:@"path cannot be nil"];
   }
 
   v6 = PLGetSandboxExtensionToken();
@@ -45,55 +45,55 @@
   return v6;
 }
 
-- (id)_createSandboxTokenForURL:(id)a3
+- (id)_createSandboxTokenForURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(PUPhotoPickerExtensionContext *)self _createSandboxTokenForPath:v4];
+  path = [l path];
+  v5 = [(PUPhotoPickerExtensionContext *)self _createSandboxTokenForPath:path];
 
   return v5;
 }
 
-- (void)_saveVideoURLForLivePhoto:(id)a3 fileURL:(id)a4 appendTo:(id)a5 completion:(id)a6
+- (void)_saveVideoURLForLivePhoto:(id)photo fileURL:(id)l appendTo:(id)to completion:(id)completion
 {
-  v14 = a6;
-  v9 = a4;
-  v10 = [a5 mutableCopy];
-  v11 = [v9 path];
-  [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69791F0]];
+  completionCopy = completion;
+  lCopy = l;
+  v10 = [to mutableCopy];
+  path = [lCopy path];
+  [v10 setObject:path forKeyedSubscript:*MEMORY[0x1E69791F0]];
 
-  v12 = [(PUPhotoPickerExtensionContext *)self _createSandboxTokenForURL:v9];
+  v12 = [(PUPhotoPickerExtensionContext *)self _createSandboxTokenForURL:lCopy];
 
   [v10 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69791F8]];
-  if (v14)
+  if (completionCopy)
   {
     v13 = [v10 copy];
-    v14[2](v14, v13);
+    completionCopy[2](completionCopy, v13);
   }
 }
 
-- (void)_handleLivePhotoVideoUrlFetch:(id)a3 appendTo:(id)a4 completion:(id)a5
+- (void)_handleLivePhotoVideoUrlFetch:(id)fetch appendTo:(id)to completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fetchCopy = fetch;
+  toCopy = to;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__PUPhotoPickerExtensionContext__handleLivePhotoVideoUrlFetch_appendTo_completion___block_invoke;
   aBlock[3] = &unk_1E7B7C150;
   objc_copyWeak(&v21, &location);
-  v11 = v8;
+  v11 = fetchCopy;
   v18 = v11;
-  v12 = v9;
+  v12 = toCopy;
   v19 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [v11 videoFileLoader];
-  v16 = v15;
-  if (v15)
+  videoFileLoader = [v11 videoFileLoader];
+  v16 = videoFileLoader;
+  if (videoFileLoader)
   {
-    (*(v15 + 16))(v15, 0, 0, v14);
+    (*(videoFileLoader + 16))(videoFileLoader, 0, 0, v14);
   }
 
   objc_destroyWeak(&v21);
@@ -107,45 +107,45 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoVideoUrlFetch_appendTo_
   [WeakRetained _saveVideoURLForLivePhoto:*(a1 + 32) fileURL:v3 appendTo:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)_saveImageURLForLivePhoto:(id)a3 fileURL:(id)a4 appendTo:(id)a5 completion:(id)a6
+- (void)_saveImageURLForLivePhoto:(id)photo fileURL:(id)l appendTo:(id)to completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v16 = [a5 mutableCopy];
-  v13 = [v11 path];
-  [v16 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69791E0]];
+  completionCopy = completion;
+  lCopy = l;
+  photoCopy = photo;
+  v16 = [to mutableCopy];
+  path = [lCopy path];
+  [v16 setObject:path forKeyedSubscript:*MEMORY[0x1E69791E0]];
 
-  v14 = [(PUPhotoPickerExtensionContext *)self _createSandboxTokenForURL:v11];
+  v14 = [(PUPhotoPickerExtensionContext *)self _createSandboxTokenForURL:lCopy];
 
   [v16 setObject:v14 forKeyedSubscript:*MEMORY[0x1E69791E8]];
   v15 = [v16 copy];
-  [(PUPhotoPickerExtensionContext *)self _handleLivePhotoVideoUrlFetch:v12 appendTo:v15 completion:v10];
+  [(PUPhotoPickerExtensionContext *)self _handleLivePhotoVideoUrlFetch:photoCopy appendTo:v15 completion:completionCopy];
 }
 
-- (void)_handleLivePhotoImageUrlFetch:(id)a3 appendTo:(id)a4 completion:(id)a5
+- (void)_handleLivePhotoImageUrlFetch:(id)fetch appendTo:(id)to completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fetchCopy = fetch;
+  toCopy = to;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_completion___block_invoke;
   aBlock[3] = &unk_1E7B7C150;
   objc_copyWeak(&v21, &location);
-  v11 = v8;
+  v11 = fetchCopy;
   v18 = v11;
-  v12 = v9;
+  v12 = toCopy;
   v19 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [v11 imageFileLoader];
-  v16 = v15;
-  if (v15)
+  imageFileLoader = [v11 imageFileLoader];
+  v16 = imageFileLoader;
+  if (imageFileLoader)
   {
-    (*(v15 + 16))(v15, 0, 0, v14);
+    (*(imageFileLoader + 16))(imageFileLoader, 0, 0, v14);
   }
 
   objc_destroyWeak(&v21);
@@ -159,22 +159,22 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
   [WeakRetained _saveImageURLForLivePhoto:*(a1 + 32) fileURL:v3 appendTo:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)_photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:(id)a3 completion:(id)a4
+- (void)_photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:(id)dictionary completion:(id)completion
 {
   v121[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v89 = a4;
-  v86 = v6;
-  v7 = [v6 mutableCopy];
-  v98 = self;
-  v96 = [(PUPhotoPickerExtensionContext *)self _principalObject];
-  v8 = [v96 savingOptions];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
+  v86 = dictionaryCopy;
+  v7 = [dictionaryCopy mutableCopy];
+  selfCopy = self;
+  _principalObject = [(PUPhotoPickerExtensionContext *)self _principalObject];
+  savingOptions = [_principalObject savingOptions];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:savingOptions];
   [v7 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6979240]];
 
-  v88 = [v96 properties];
+  properties = [_principalObject properties];
   v10 = *MEMORY[0x1E69DE940];
-  v87 = [v88 objectForKeyedSubscript:*MEMORY[0x1E69DE940]];
+  v87 = [properties objectForKeyedSubscript:*MEMORY[0x1E69DE940]];
   [v7 setObject:v87 forKeyedSubscript:v10];
   v11 = *MEMORY[0x1E69DDE10];
   v94 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DDE10]];
@@ -204,8 +204,8 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
   v97 = v16;
   if (v16)
   {
-    v17 = [v16 path];
-    [v7 setObject:v17 forKeyedSubscript:*MEMORY[0x1E6979210]];
+    path = [v16 path];
+    [v7 setObject:path forKeyedSubscript:*MEMORY[0x1E6979210]];
     [v7 setObject:0 forKeyedSubscript:v15];
 
     v16 = v97;
@@ -248,11 +248,11 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
     v117 = __Block_byref_object_copy__60974;
     v118 = __Block_byref_object_dispose__60975;
     v119 = 0;
-    v25 = [MEMORY[0x1E696AC08] defaultManager];
-    v26 = [v25 temporaryDirectory];
-    v27 = [MEMORY[0x1E696AFB0] UUID];
-    v28 = [v27 UUIDString];
-    v29 = [v26 URLByAppendingPathComponent:v28 isDirectory:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    temporaryDirectory = [defaultManager temporaryDirectory];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v29 = [temporaryDirectory URLByAppendingPathComponent:uUIDString isDirectory:0];
 
     v30 = [MEMORY[0x1E69AE880] collectionWithMainResourceURL:v97];
     v31 = [MEMORY[0x1E69AE880] collectionWithMainResourceURL:v29];
@@ -267,12 +267,12 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
     [v92 convertImageAtSourceURLCollection:v30 toDestinationURLCollection:v31 options:v24 completionHandler:v103];
     v33 = dispatch_time(0, 10000000000);
     dispatch_semaphore_wait(v32, v33);
-    v34 = [v29 path];
+    path2 = [v29 path];
     v35 = PLGetSandboxExtensionToken();
     v36 = v35;
-    if (v108[3] == 1 && v34 && v35)
+    if (v108[3] == 1 && path2 && v35)
     {
-      [v7 setObject:v34 forKeyedSubscript:*MEMORY[0x1E6979210]];
+      [v7 setObject:path2 forKeyedSubscript:*MEMORY[0x1E6979210]];
       [v7 setObject:v36 forKeyedSubscript:*MEMORY[0x1E6979218]];
     }
 
@@ -281,11 +281,11 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
       v37 = PLUIGetLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
-        v38 = [*(*&buf[8] + 40) localizedDescription];
+        localizedDescription = [*(*&buf[8] + 40) localizedDescription];
         *v112 = 136315394;
         v113 = "[PUPhotoPickerExtensionContext _photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:completion:]";
         v114 = 2112;
-        v115 = v38;
+        v115 = localizedDescription;
         _os_log_impl(&dword_1B36F3000, v37, OS_LOG_TYPE_ERROR, "%s Unable to scale image with error: %@", v112, 0x16u);
       }
     }
@@ -369,8 +369,8 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
   v53 = v52;
   if (v52)
   {
-    v54 = [v52 absoluteString];
-    [v7 setObject:v54 forKeyedSubscript:*MEMORY[0x1E6979230]];
+    absoluteString = [v52 absoluteString];
+    [v7 setObject:absoluteString forKeyedSubscript:*MEMORY[0x1E6979230]];
   }
 
   [v7 setObject:0 forKeyedSubscript:v51];
@@ -379,10 +379,10 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
   v57 = v56;
   if (v56)
   {
-    v58 = [v56 path];
-    [v7 setObject:v58 forKeyedSubscript:*MEMORY[0x1E6979200]];
+    path3 = [v56 path];
+    [v7 setObject:path3 forKeyedSubscript:*MEMORY[0x1E6979200]];
 
-    v59 = [(PUPhotoPickerExtensionContext *)v98 _createSandboxTokenForURL:v57];
+    v59 = [(PUPhotoPickerExtensionContext *)selfCopy _createSandboxTokenForURL:v57];
     [v7 setObject:v59 forKeyedSubscript:*MEMORY[0x1E6979208]];
   }
 
@@ -392,10 +392,10 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
   v62 = v61;
   if (v61)
   {
-    v63 = [v61 path];
-    [v7 setObject:v63 forKeyedSubscript:*MEMORY[0x1E6979220]];
+    path4 = [v61 path];
+    [v7 setObject:path4 forKeyedSubscript:*MEMORY[0x1E6979220]];
 
-    v64 = [(PUPhotoPickerExtensionContext *)v98 _createSandboxTokenForURL:v62];
+    v64 = [(PUPhotoPickerExtensionContext *)selfCopy _createSandboxTokenForURL:v62];
     [v7 setObject:v64 forKeyedSubscript:*MEMORY[0x1E6979228]];
   }
 
@@ -405,10 +405,10 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
   v67 = v66;
   if (v66)
   {
-    v68 = [v66 path];
-    [v7 setObject:v68 forKeyedSubscript:*MEMORY[0x1E69791C8]];
+    path5 = [v66 path];
+    [v7 setObject:path5 forKeyedSubscript:*MEMORY[0x1E69791C8]];
 
-    v69 = [(PUPhotoPickerExtensionContext *)v98 _createSandboxTokenForURL:v67];
+    v69 = [(PUPhotoPickerExtensionContext *)selfCopy _createSandboxTokenForURL:v67];
     [v7 setObject:v69 forKeyedSubscript:*MEMORY[0x1E69791D0]];
   }
 
@@ -416,8 +416,8 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
   v70 = [v7 objectForKeyedSubscript:@"_UIImagePickerDebugSidecarFileURLs"];
   if (v70)
   {
-    v71 = [(PUPhotoPickerExtensionContext *)v98 _auxiliaryConnection];
-    v72 = [v71 valueForEntitlement:@"com.apple.photos.debugsidecar"];
+    _auxiliaryConnection = [(PUPhotoPickerExtensionContext *)selfCopy _auxiliaryConnection];
+    v72 = [_auxiliaryConnection valueForEntitlement:@"com.apple.photos.debugsidecar"];
     v73 = v72 == 0;
 
     if (!v73)
@@ -450,33 +450,33 @@ void __83__PUPhotoPickerExtensionContext__handleLivePhotoImageUrlFetch_appendTo_
   {
     [v7 setObject:0 forKeyedSubscript:v77];
     [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69791D8]];
-    v79 = [v78 imageURL];
-    v80 = [v78 videoURL];
-    v81 = v80;
-    if (!v79 || !v80)
+    imageURL = [v78 imageURL];
+    videoURL = [v78 videoURL];
+    v81 = videoURL;
+    if (!imageURL || !videoURL)
     {
-      [(PUPhotoPickerExtensionContext *)v98 _handleLivePhotoImageUrlFetch:v78 appendTo:v7 completion:v89];
+      [(PUPhotoPickerExtensionContext *)selfCopy _handleLivePhotoImageUrlFetch:v78 appendTo:v7 completion:completionCopy];
 
       goto LABEL_61;
     }
 
-    v82 = [v79 path];
-    [v7 setObject:v82 forKeyedSubscript:*MEMORY[0x1E69791E0]];
+    path6 = [imageURL path];
+    [v7 setObject:path6 forKeyedSubscript:*MEMORY[0x1E69791E0]];
 
-    v83 = [(PUPhotoPickerExtensionContext *)v98 _createSandboxTokenForURL:v79];
+    v83 = [(PUPhotoPickerExtensionContext *)selfCopy _createSandboxTokenForURL:imageURL];
     [v7 setObject:v83 forKeyedSubscript:*MEMORY[0x1E69791E8]];
 
-    v84 = [v81 path];
-    [v7 setObject:v84 forKeyedSubscript:*MEMORY[0x1E69791F0]];
+    path7 = [v81 path];
+    [v7 setObject:path7 forKeyedSubscript:*MEMORY[0x1E69791F0]];
 
-    v85 = [(PUPhotoPickerExtensionContext *)v98 _createSandboxTokenForURL:v81];
+    v85 = [(PUPhotoPickerExtensionContext *)selfCopy _createSandboxTokenForURL:v81];
     [v7 setObject:v85 forKeyedSubscript:*MEMORY[0x1E69791F8]];
   }
 
-  if (v89)
+  if (completionCopy)
   {
-    v79 = [v7 copy];
-    v89[2](v89, v79);
+    imageURL = [v7 copy];
+    completionCopy[2](completionCopy, imageURL);
 LABEL_61:
   }
 }
@@ -491,18 +491,18 @@ void __112__PUPhotoPickerExtensionContext__photoPickerInfoDictionaryFromUIImageP
 
 - (void)photoPickerIsReadyForDisplay
 {
-  v2 = [(PUPhotoPickerExtensionContext *)self _host];
-  [v2 photoPickerIsReadyForDisplay];
+  _host = [(PUPhotoPickerExtensionContext *)self _host];
+  [_host photoPickerIsReadyForDisplay];
 }
 
 - (void)performPhotoPickerPreviewOfFirstAsset
 {
   v3.receiver = self;
   v3.super_class = PUPhotoPickerExtensionContext;
-  v2 = [(PUPhotoPickerAbstractExtensionContext *)&v3 principalObject];
-  if ([v2 conformsToProtocol:&unk_1F2C6A348])
+  principalObject = [(PUPhotoPickerAbstractExtensionContext *)&v3 principalObject];
+  if ([principalObject conformsToProtocol:&unk_1F2C6A348])
   {
-    [v2 performPhotoPickerPreviewOfFirstAsset];
+    [principalObject performPhotoPickerPreviewOfFirstAsset];
   }
 }
 
@@ -522,23 +522,23 @@ void __112__PUPhotoPickerExtensionContext__photoPickerInfoDictionaryFromUIImageP
 
   v7.receiver = self;
   v7.super_class = PUPhotoPickerExtensionContext;
-  v6 = [(PUPhotoPickerAbstractExtensionContext *)&v7 principalObject];
-  if ([v6 conformsToProtocol:&unk_1F2C6B0E8])
+  principalObject = [(PUPhotoPickerAbstractExtensionContext *)&v7 principalObject];
+  if ([principalObject conformsToProtocol:&unk_1F2C6B0E8])
   {
-    [v6 performPhotosSelection];
+    [principalObject performPhotosSelection];
   }
 }
 
-- (void)didSelectMediaWithInfoDictionary:(id)a3
+- (void)didSelectMediaWithInfoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__PUPhotoPickerExtensionContext_didSelectMediaWithInfoDictionary___block_invoke;
   v5[3] = &unk_1E7B7CF78;
   objc_copyWeak(&v6, &location);
-  [(PUPhotoPickerExtensionContext *)self _photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:v4 completion:v5];
+  [(PUPhotoPickerExtensionContext *)self _photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:dictionaryCopy completion:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -551,24 +551,24 @@ void __66__PUPhotoPickerExtensionContext_didSelectMediaWithInfoDictionary___bloc
   [v4 didSelectMediaWithInfoDictionary:v3];
 }
 
-- (void)_handleMutlipleMediaCompletion:(id)a3
+- (void)_handleMutlipleMediaCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__60974;
   v18 = __Block_byref_object_dispose__60975;
   v19 = 0;
-  v5 = [(PUPhotoPickerExtensionContext *)self multipleMediaIsolationQueue];
+  multipleMediaIsolationQueue = [(PUPhotoPickerExtensionContext *)self multipleMediaIsolationQueue];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __64__PUPhotoPickerExtensionContext__handleMutlipleMediaCompletion___block_invoke;
   v11 = &unk_1E7B800C8;
   v13 = &v14;
-  v6 = v4;
+  v6 = completionCopy;
   v12 = v6;
-  dispatch_sync(v5, &v8);
+  dispatch_sync(multipleMediaIsolationQueue, &v8);
 
   v7 = [(PUPhotoPickerExtensionContext *)self _host:v8];
   [v7 didSelectMultipleMediaItemsWithInfoDictionaries:v15[5]];
@@ -586,22 +586,22 @@ uint64_t __64__PUPhotoPickerExtensionContext__handleMutlipleMediaCompletion___bl
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)_createPhotoPickerInfoDictionaryFromInfoDictionary:(id)a3 appendTo:(id)a4 completion:(id)a5
+- (void)_createPhotoPickerInfoDictionaryFromInfoDictionary:(id)dictionary appendTo:(id)to completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  toCopy = to;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __104__PUPhotoPickerExtensionContext__createPhotoPickerInfoDictionaryFromInfoDictionary_appendTo_completion___block_invoke;
   v13[3] = &unk_1E7B7C100;
   objc_copyWeak(&v16, &location);
-  v11 = v9;
+  v11 = toCopy;
   v14 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v15 = v12;
-  [(PUPhotoPickerExtensionContext *)self _photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:v8 completion:v13];
+  [(PUPhotoPickerExtensionContext *)self _photoPickerInfoDictionaryFromUIImagePickerControllerInfoDictionary:dictionaryCopy completion:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -632,10 +632,10 @@ void __104__PUPhotoPickerExtensionContext__createPhotoPickerInfoDictionaryFromIn
   }
 }
 
-- (void)didSelectMultipleMediaItemsWithInfoDictionaries:(id)a3
+- (void)didSelectMultipleMediaItemsWithInfoDictionaries:(id)dictionaries
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   v5 = PLPhotoPickerGetLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -643,20 +643,20 @@ void __104__PUPhotoPickerExtensionContext__createPhotoPickerInfoDictionaryFromIn
   if ((v6 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 134349056;
-    v34 = [v4 count];
+    v34 = [dictionariesCopy count];
     _os_signpost_emit_with_name_impl(&dword_1B36F3000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "ProcessingSelections", "%{public}ld", buf, 0xCu);
   }
 
   v18 = v8;
 
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dictionariesCopy, "count")}];
   v10 = dispatch_group_create();
   objc_initWeak(buf, self);
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v4;
+  obj = dictionariesCopy;
   v11 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
@@ -672,7 +672,7 @@ void __104__PUPhotoPickerExtensionContext__createPhotoPickerInfoDictionaryFromIn
 
         v14 = *(*(&v28 + 1) + 8 * i);
         dispatch_group_enter(v10);
-        v15 = [(PUPhotoPickerExtensionContext *)self multipleMediaConversionConcurrentQueue];
+        multipleMediaConversionConcurrentQueue = [(PUPhotoPickerExtensionContext *)self multipleMediaConversionConcurrentQueue];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __81__PUPhotoPickerExtensionContext_didSelectMultipleMediaItemsWithInfoDictionaries___block_invoke;
@@ -681,7 +681,7 @@ void __104__PUPhotoPickerExtensionContext__createPhotoPickerInfoDictionaryFromIn
         v24[4] = v14;
         v25 = v9;
         v26 = v10;
-        [v15 addOperationWithBlock:v24];
+        [multipleMediaConversionConcurrentQueue addOperationWithBlock:v24];
 
         objc_destroyWeak(&v27);
       }
@@ -738,59 +738,59 @@ void __81__PUPhotoPickerExtensionContext_didSelectMultipleMediaItemsWithInfoDict
 
 - (void)didDisplayPhotoPickerPreview
 {
-  v2 = [(PUPhotoPickerExtensionContext *)self _host];
-  [v2 didDisplayPhotoPickerPreview];
+  _host = [(PUPhotoPickerExtensionContext *)self _host];
+  [_host didDisplayPhotoPickerPreview];
 }
 
-- (void)didDisplayPhotoPickerSourceType:(id)a3
+- (void)didDisplayPhotoPickerSourceType:(id)type
 {
-  v4 = a3;
-  v5 = [(PUPhotoPickerExtensionContext *)self _host];
-  [v5 didDisplayPhotoPickerSourceType:v4];
+  typeCopy = type;
+  _host = [(PUPhotoPickerExtensionContext *)self _host];
+  [_host didDisplayPhotoPickerSourceType:typeCopy];
 }
 
-- (void)dismissCurrentViewControllerFromPhotoPickerAnimated:(id)a3
+- (void)dismissCurrentViewControllerFromPhotoPickerAnimated:(id)animated
 {
-  v4 = a3;
-  v5 = [(PUPhotoPickerExtensionContext *)self _host];
-  [v5 dismissCurrentViewControllerFromPhotoPickerAnimated:v4];
+  animatedCopy = animated;
+  _host = [(PUPhotoPickerExtensionContext *)self _host];
+  [_host dismissCurrentViewControllerFromPhotoPickerAnimated:animatedCopy];
 }
 
-- (void)didSetOnboardingHeaderDismissed:(BOOL)a3
+- (void)didSetOnboardingHeaderDismissed:(BOOL)dismissed
 {
-  v3 = a3;
-  v4 = [(PUPhotoPickerExtensionContext *)self _host];
-  [v4 didSetOnboardingHeaderDismissed:v3];
+  dismissedCopy = dismissed;
+  _host = [(PUPhotoPickerExtensionContext *)self _host];
+  [_host didSetOnboardingHeaderDismissed:dismissedCopy];
 }
 
 - (void)invalidatePhotoPickerHostServices
 {
-  v2 = [(PUPhotoPickerExtensionContext *)self _host];
-  [v2 invalidatePhotoPickerHostServices];
+  _host = [(PUPhotoPickerExtensionContext *)self _host];
+  [_host invalidatePhotoPickerHostServices];
 }
 
 - (void)cancelPhotoPicker
 {
-  v2 = [(PUPhotoPickerExtensionContext *)self _host];
-  [v2 cancelPhotoPicker];
+  _host = [(PUPhotoPickerExtensionContext *)self _host];
+  [_host cancelPhotoPicker];
 }
 
-- (void)performTraitCollectionUpdateUsingData:(id)a3 completion:(id)a4
+- (void)performTraitCollectionUpdateUsingData:(id)data completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dataCopy = data;
+  completionCopy = completion;
+  if (!dataCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUPhotoPickerExtensionContext.m" lineNumber:114 description:@"NSData may not be nil in setTraitCollectionWithData:completion"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoPickerExtensionContext.m" lineNumber:114 description:@"NSData may not be nil in setTraitCollectionWithData:completion"];
   }
 
   v11.receiver = self;
   v11.super_class = PUPhotoPickerExtensionContext;
-  v9 = [(PUPhotoPickerAbstractExtensionContext *)&v11 principalObject];
-  if ([v9 conformsToProtocol:&unk_1F2C6B0E8])
+  principalObject = [(PUPhotoPickerAbstractExtensionContext *)&v11 principalObject];
+  if ([principalObject conformsToProtocol:&unk_1F2C6B0E8])
   {
-    [v9 performTraitCollectionUpdateUsingData:v7 completion:v8];
+    [principalObject performTraitCollectionUpdateUsingData:dataCopy completion:completionCopy];
   }
 }
 
@@ -807,9 +807,9 @@ void __81__PUPhotoPickerExtensionContext_didSelectMultipleMediaItemsWithInfoDict
 {
   v4.receiver = self;
   v4.super_class = PUPhotoPickerExtensionContext;
-  v2 = [(PUPhotoPickerAbstractExtensionContext *)&v4 proxy];
+  proxy = [(PUPhotoPickerAbstractExtensionContext *)&v4 proxy];
 
-  return v2;
+  return proxy;
 }
 
 - (NSOperationQueue)multipleMediaConversionConcurrentQueue
@@ -830,37 +830,37 @@ void __81__PUPhotoPickerExtensionContext_didSelectMultipleMediaItemsWithInfoDict
 
 - (OS_dispatch_queue)multipleMediaIsolationQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  multipleMediaIsolationQueue = v2->_multipleMediaIsolationQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  multipleMediaIsolationQueue = selfCopy->_multipleMediaIsolationQueue;
   if (!multipleMediaIsolationQueue)
   {
     v4 = dispatch_queue_create("com.apple.mobileslideshow.photo-picker.multiplemediawrite", 0);
-    v5 = v2->_multipleMediaIsolationQueue;
-    v2->_multipleMediaIsolationQueue = v4;
+    v5 = selfCopy->_multipleMediaIsolationQueue;
+    selfCopy->_multipleMediaIsolationQueue = v4;
 
-    multipleMediaIsolationQueue = v2->_multipleMediaIsolationQueue;
+    multipleMediaIsolationQueue = selfCopy->_multipleMediaIsolationQueue;
   }
 
   v6 = multipleMediaIsolationQueue;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)requestedViewControllerOptionsWithCompletionHandler:(id)a3
+- (void)requestedViewControllerOptionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PUPhotoPickerExtensionContext *)self inputItems];
+  handlerCopy = handler;
+  inputItems = [(PUPhotoPickerExtensionContext *)self inputItems];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__PUPhotoPickerExtensionContext_requestedViewControllerOptionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7B7C0D8;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   objc_copyWeak(&v9, &location);
-  [(PUPhotoPickerAbstractExtensionContext *)self firstPayloadFromExtensionItems:v5 completion:v7];
+  [(PUPhotoPickerAbstractExtensionContext *)self firstPayloadFromExtensionItems:inputItems completion:v7];
   objc_destroyWeak(&v9);
 
   objc_destroyWeak(&location);
@@ -894,11 +894,11 @@ void __85__PUPhotoPickerExtensionContext_requestedViewControllerOptionsWithCompl
   }
 }
 
-- (PUPhotoPickerExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (PUPhotoPickerExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v7.receiver = self;
   v7.super_class = PUPhotoPickerExtensionContext;
-  v5 = [(PUPhotoPickerExtensionContext *)&v7 initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5];
+  v5 = [(PUPhotoPickerExtensionContext *)&v7 initWithInputItems:items listenerEndpoint:endpoint contextUUID:d];
   if (v5)
   {
     [objc_opt_class() configureImageManagerLimit];

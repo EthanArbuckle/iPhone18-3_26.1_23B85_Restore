@@ -1,68 +1,68 @@
 @interface PUPhotoEditEffectsSupport
-+ (id)identifierForLightingType:(int64_t)a3 lightingVersion:(int64_t)a4;
++ (id)identifierForLightingType:(int64_t)type lightingVersion:(int64_t)version;
 + (id)lightingEffectTypesByIdentifier;
-+ (int64_t)lightingEffectTypeForIdentifier:(id)a3;
-+ (void)_clearPortraitEffectsWithCompositionController:(id)a3;
-+ (void)_clearStandardEffectsWithCompositionController:(id)a3;
-+ (void)_clearStylesWithCompositionController:(id)a3;
-+ (void)_setEffectFilterName:(id)a3 withIntensity:(double)a4 withVersion:(unint64_t)a5 forCompositionController:(id)a6;
-+ (void)_setPortraitEffectEnabled:(BOOL)a3 forCompositionController:(id)a4;
-+ (void)_setPortraitEffectFilterName:(id)a3 withVersion:(unint64_t)a4 forCompositionController:(id)a5 portraitInfo:(id)a6 spillMatteAllowed:(id)a7;
-+ (void)_setStyleWithCast:(id)a3 tone:(double)a4 color:(double)a5 intensity:(double)a6 forCompositionController:(id)a7;
-+ (void)updateCompositionController:(id)a3 withDepthEnabled:(BOOL)a4 livePortraitBehaviorController:(id)a5;
-+ (void)updateCompositionController:(id)a3 withEffect:(id)a4 intensity:(double)a5 updateVersion:(BOOL)a6;
-+ (void)updateCompositionController:(id)a3 withLightingIdentifier:(id)a4 portraitInfo:(id)a5 spillMatteAllowed:(id)a6;
++ (int64_t)lightingEffectTypeForIdentifier:(id)identifier;
++ (void)_clearPortraitEffectsWithCompositionController:(id)controller;
++ (void)_clearStandardEffectsWithCompositionController:(id)controller;
++ (void)_clearStylesWithCompositionController:(id)controller;
++ (void)_setEffectFilterName:(id)name withIntensity:(double)intensity withVersion:(unint64_t)version forCompositionController:(id)controller;
++ (void)_setPortraitEffectEnabled:(BOOL)enabled forCompositionController:(id)controller;
++ (void)_setPortraitEffectFilterName:(id)name withVersion:(unint64_t)version forCompositionController:(id)controller portraitInfo:(id)info spillMatteAllowed:(id)allowed;
++ (void)_setStyleWithCast:(id)cast tone:(double)tone color:(double)color intensity:(double)intensity forCompositionController:(id)controller;
++ (void)updateCompositionController:(id)controller withDepthEnabled:(BOOL)enabled livePortraitBehaviorController:(id)behaviorController;
++ (void)updateCompositionController:(id)controller withEffect:(id)effect intensity:(double)intensity updateVersion:(BOOL)version;
++ (void)updateCompositionController:(id)controller withLightingIdentifier:(id)identifier portraitInfo:(id)info spillMatteAllowed:(id)allowed;
 @end
 
 @implementation PUPhotoEditEffectsSupport
 
-+ (void)_clearStylesWithCompositionController:(id)a3
++ (void)_clearStylesWithCompositionController:(id)controller
 {
-  v4 = a3;
-  v3 = [v4 semanticStyleAdjustmentController];
+  controllerCopy = controller;
+  semanticStyleAdjustmentController = [controllerCopy semanticStyleAdjustmentController];
 
-  if (v3)
+  if (semanticStyleAdjustmentController)
   {
-    [v4 modifyAdjustmentWithKey:*MEMORY[0x1E69BE0C8] modificationBlock:&__block_literal_global_50_53845];
+    [controllerCopy modifyAdjustmentWithKey:*MEMORY[0x1E69BE0C8] modificationBlock:&__block_literal_global_50_53845];
   }
 }
 
-+ (void)_clearPortraitEffectsWithCompositionController:(id)a3
++ (void)_clearPortraitEffectsWithCompositionController:(id)controller
 {
-  v3 = a3;
-  v5 = [v3 adjustmentConstants];
-  v4 = [v5 PIPortraitAdjustmentKey];
-  [v3 removeAdjustmentWithKey:v4];
+  controllerCopy = controller;
+  adjustmentConstants = [controllerCopy adjustmentConstants];
+  pIPortraitAdjustmentKey = [adjustmentConstants PIPortraitAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIPortraitAdjustmentKey];
 }
 
-+ (void)_clearStandardEffectsWithCompositionController:(id)a3
++ (void)_clearStandardEffectsWithCompositionController:(id)controller
 {
-  v3 = a3;
-  v6 = [v3 adjustmentConstants];
-  v4 = [v6 PIEffectAdjustmentKey];
-  [v3 removeAdjustmentWithKey:v4];
+  controllerCopy = controller;
+  adjustmentConstants = [controllerCopy adjustmentConstants];
+  pIEffectAdjustmentKey = [adjustmentConstants PIEffectAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIEffectAdjustmentKey];
 
-  v5 = [v6 PIEffect3DAdjustmentKey];
-  [v3 removeAdjustmentWithKey:v5];
+  pIEffect3DAdjustmentKey = [adjustmentConstants PIEffect3DAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIEffect3DAdjustmentKey];
 }
 
-+ (void)_setStyleWithCast:(id)a3 tone:(double)a4 color:(double)a5 intensity:(double)a6 forCompositionController:(id)a7
++ (void)_setStyleWithCast:(id)cast tone:(double)tone color:(double)color intensity:(double)intensity forCompositionController:(id)controller
 {
-  v12 = a3;
-  v13 = a7;
-  [a1 _clearPortraitEffectsWithCompositionController:v13];
-  [a1 _clearStandardEffectsWithCompositionController:v13];
+  castCopy = cast;
+  controllerCopy = controller;
+  [self _clearPortraitEffectsWithCompositionController:controllerCopy];
+  [self _clearStandardEffectsWithCompositionController:controllerCopy];
   v14 = *MEMORY[0x1E69BE0C8];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __93__PUPhotoEditEffectsSupport__setStyleWithCast_tone_color_intensity_forCompositionController___block_invoke;
   v16[3] = &unk_1E7B7AB70;
-  v17 = v12;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v15 = v12;
-  [v13 modifyAdjustmentWithKey:v14 modificationBlock:v16];
+  v17 = castCopy;
+  toneCopy = tone;
+  colorCopy = color;
+  intensityCopy = intensity;
+  v15 = castCopy;
+  [controllerCopy modifyAdjustmentWithKey:v14 modificationBlock:v16];
 }
 
 void __93__PUPhotoEditEffectsSupport__setStyleWithCast_tone_color_intensity_forCompositionController___block_invoke(uint64_t a1, void *a2)
@@ -75,52 +75,52 @@ void __93__PUPhotoEditEffectsSupport__setStyleWithCast_tone_color_intensity_forC
   [v3 setIntensity:*(a1 + 56)];
 }
 
-+ (void)_setPortraitEffectEnabled:(BOOL)a3 forCompositionController:(id)a4
++ (void)_setPortraitEffectEnabled:(BOOL)enabled forCompositionController:(id)controller
 {
-  v5 = a4;
-  v6 = [v5 portraitAdjustmentController];
-  v7 = v6;
-  if (a3 || v6)
+  controllerCopy = controller;
+  portraitAdjustmentController = [controllerCopy portraitAdjustmentController];
+  v7 = portraitAdjustmentController;
+  if (enabled || portraitAdjustmentController)
   {
-    v8 = [v5 adjustmentConstants];
-    v9 = [v8 PIPortraitAdjustmentKey];
+    adjustmentConstants = [controllerCopy adjustmentConstants];
+    pIPortraitAdjustmentKey = [adjustmentConstants PIPortraitAdjustmentKey];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __80__PUPhotoEditEffectsSupport__setPortraitEffectEnabled_forCompositionController___block_invoke;
     v10[3] = &__block_descriptor_33_e32_v16__0__PIAdjustmentController_8l;
-    v11 = a3;
-    [v5 modifyAdjustmentWithKey:v9 modificationBlock:v10];
+    enabledCopy = enabled;
+    [controllerCopy modifyAdjustmentWithKey:pIPortraitAdjustmentKey modificationBlock:v10];
   }
 }
 
-+ (void)_setPortraitEffectFilterName:(id)a3 withVersion:(unint64_t)a4 forCompositionController:(id)a5 portraitInfo:(id)a6 spillMatteAllowed:(id)a7
++ (void)_setPortraitEffectFilterName:(id)name withVersion:(unint64_t)version forCompositionController:(id)controller portraitInfo:(id)info spillMatteAllowed:(id)allowed
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a5;
-  if (v12)
+  nameCopy = name;
+  infoCopy = info;
+  allowedCopy = allowed;
+  controllerCopy = controller;
+  if (nameCopy)
   {
-    [a1 _clearStandardEffectsWithCompositionController:v15];
-    [a1 _clearStylesWithCompositionController:v15];
-    v16 = [v15 adjustmentConstants];
-    v17 = [v16 PIPortraitAdjustmentKey];
+    [self _clearStandardEffectsWithCompositionController:controllerCopy];
+    [self _clearStylesWithCompositionController:controllerCopy];
+    adjustmentConstants = [controllerCopy adjustmentConstants];
+    pIPortraitAdjustmentKey = [adjustmentConstants PIPortraitAdjustmentKey];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __126__PUPhotoEditEffectsSupport__setPortraitEffectFilterName_withVersion_forCompositionController_portraitInfo_spillMatteAllowed___block_invoke;
     v18[3] = &unk_1E7B7AB48;
-    v19 = v12;
-    v20 = v13;
-    v21 = v14;
-    v22 = a4;
-    [v15 modifyAdjustmentWithKey:v17 modificationBlock:v18];
+    v19 = nameCopy;
+    v20 = infoCopy;
+    v21 = allowedCopy;
+    versionCopy = version;
+    [controllerCopy modifyAdjustmentWithKey:pIPortraitAdjustmentKey modificationBlock:v18];
 
-    v15 = v19;
+    controllerCopy = v19;
   }
 
   else
   {
-    [a1 _clearPortraitEffectsWithCompositionController:v15];
+    [self _clearPortraitEffectsWithCompositionController:controllerCopy];
   }
 }
 
@@ -136,47 +136,47 @@ void __126__PUPhotoEditEffectsSupport__setPortraitEffectFilterName_withVersion_f
   }
 }
 
-+ (void)_setEffectFilterName:(id)a3 withIntensity:(double)a4 withVersion:(unint64_t)a5 forCompositionController:(id)a6
++ (void)_setEffectFilterName:(id)name withIntensity:(double)intensity withVersion:(unint64_t)version forCompositionController:(id)controller
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [v11 copy];
-  [a1 _clearPortraitEffectsWithCompositionController:v12];
-  [a1 _clearStylesWithCompositionController:v11];
-  v13 = [v10 isEqualToString:*MEMORY[0x1E69BEC10]];
-  if (!v10 || v13)
+  nameCopy = name;
+  controllerCopy = controller;
+  v12 = [controllerCopy copy];
+  [self _clearPortraitEffectsWithCompositionController:v12];
+  [self _clearStylesWithCompositionController:controllerCopy];
+  v13 = [nameCopy isEqualToString:*MEMORY[0x1E69BEC10]];
+  if (!nameCopy || v13)
   {
-    [a1 _clearStandardEffectsWithCompositionController:v12];
+    [self _clearStandardEffectsWithCompositionController:v12];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69BDEF0] is3DEffect:v10];
-    v15 = [v12 adjustmentConstants];
-    v16 = [v15 PIEffectAdjustmentKey];
-    v17 = [v15 PIEffect3DAdjustmentKey];
+    v14 = [MEMORY[0x1E69BDEF0] is3DEffect:nameCopy];
+    adjustmentConstants = [v12 adjustmentConstants];
+    pIEffectAdjustmentKey = [adjustmentConstants PIEffectAdjustmentKey];
+    pIEffect3DAdjustmentKey = [adjustmentConstants PIEffect3DAdjustmentKey];
     if (v14)
     {
-      v18 = [v15 PIEffect3DAdjustmentKey];
+      pIEffect3DAdjustmentKey2 = [adjustmentConstants PIEffect3DAdjustmentKey];
 
-      v19 = [v15 PIEffectAdjustmentKey];
+      pIEffectAdjustmentKey2 = [adjustmentConstants PIEffectAdjustmentKey];
 
-      v16 = v18;
-      v17 = v19;
+      pIEffectAdjustmentKey = pIEffect3DAdjustmentKey2;
+      pIEffect3DAdjustmentKey = pIEffectAdjustmentKey2;
     }
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __101__PUPhotoEditEffectsSupport__setEffectFilterName_withIntensity_withVersion_forCompositionController___block_invoke;
     v20[3] = &unk_1E7B7AB20;
-    v21 = v10;
-    v22 = a5;
-    v23 = a4;
-    [v12 modifyAdjustmentWithKey:v16 modificationBlock:v20];
-    [v12 removeAdjustmentWithKey:v17];
+    v21 = nameCopy;
+    versionCopy = version;
+    intensityCopy = intensity;
+    [v12 modifyAdjustmentWithKey:pIEffectAdjustmentKey modificationBlock:v20];
+    [v12 removeAdjustmentWithKey:pIEffect3DAdjustmentKey];
   }
 
-  [v11 applyChangesFromCompositionController:v12];
+  [controllerCopy applyChangesFromCompositionController:v12];
 }
 
 void __101__PUPhotoEditEffectsSupport__setEffectFilterName_withIntensity_withVersion_forCompositionController___block_invoke(uint64_t a1, void *a2)
@@ -194,7 +194,7 @@ void __101__PUPhotoEditEffectsSupport__setEffectFilterName_withIntensity_withVer
   [v5 setEnabled:1];
 }
 
-+ (id)identifierForLightingType:(int64_t)a3 lightingVersion:(int64_t)a4
++ (id)identifierForLightingType:(int64_t)type lightingVersion:(int64_t)version
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
@@ -202,9 +202,9 @@ void __101__PUPhotoEditEffectsSupport__setEffectFilterName_withIntensity_withVer
   v21 = 0u;
   v22 = 0u;
   v6 = +[PUPhotoEditEffectsSupport lightingEffectTypesByIdentifier];
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -216,15 +216,15 @@ void __101__PUPhotoEditEffectsSupport__setEffectFilterName_withIntensity_withVer
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        if ([PUPhotoEditEffectsSupport lightingEffectTypeForIdentifier:v13]== a3)
+        if ([PUPhotoEditEffectsSupport lightingEffectTypeForIdentifier:v13]== type)
         {
           v14 = [MEMORY[0x1E69BE668] effectWithIdentifier:v13];
-          v15 = [v14 lightingVersion];
-          if (v15 <= a4 && v15 >= [v10 lightingVersion])
+          lightingVersion = [v14 lightingVersion];
+          if (lightingVersion <= version && lightingVersion >= [v10 lightingVersion])
           {
             v16 = v14;
 
@@ -233,7 +233,7 @@ void __101__PUPhotoEditEffectsSupport__setEffectFilterName_withIntensity_withVer
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
@@ -244,19 +244,19 @@ void __101__PUPhotoEditEffectsSupport__setEffectFilterName_withIntensity_withVer
     v10 = 0;
   }
 
-  v17 = [v10 filterIdentifier];
+  filterIdentifier = [v10 filterIdentifier];
 
-  return v17;
+  return filterIdentifier;
 }
 
-+ (int64_t)lightingEffectTypeForIdentifier:(id)a3
++ (int64_t)lightingEffectTypeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 lightingEffectTypesByIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  lightingEffectTypesByIdentifier = [self lightingEffectTypesByIdentifier];
+  v6 = [lightingEffectTypesByIdentifier objectForKey:identifierCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
 + (id)lightingEffectTypesByIdentifier
@@ -300,26 +300,26 @@ void __60__PUPhotoEditEffectsSupport_lightingEffectTypesByIdentifier__block_invo
   lightingEffectTypesByIdentifier_typeMap = v5;
 }
 
-+ (void)updateCompositionController:(id)a3 withLightingIdentifier:(id)a4 portraitInfo:(id)a5 spillMatteAllowed:(id)a6
++ (void)updateCompositionController:(id)controller withLightingIdentifier:(id)identifier portraitInfo:(id)info spillMatteAllowed:(id)allowed
 {
   v10 = MEMORY[0x1E69BE668];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v17 = [v10 effectWithIdentifier:a4];
-  v14 = [v17 filterIdentifier];
-  if ([v14 isEqualToString:*MEMORY[0x1E69BEC08]])
+  allowedCopy = allowed;
+  infoCopy = info;
+  controllerCopy = controller;
+  v17 = [v10 effectWithIdentifier:identifier];
+  filterIdentifier = [v17 filterIdentifier];
+  if ([filterIdentifier isEqualToString:*MEMORY[0x1E69BEC08]])
   {
 
     v15 = 0;
-    v14 = 0;
+    filterIdentifier = 0;
   }
 
   else
   {
-    if (v14)
+    if (filterIdentifier)
     {
-      v16 = [v17 latestVersion];
+      latestVersion = [v17 latestVersion];
       v15 = 1;
       goto LABEL_7;
     }
@@ -327,53 +327,53 @@ void __60__PUPhotoEditEffectsSupport_lightingEffectTypesByIdentifier__block_invo
     v15 = 0;
   }
 
-  v16 = 0x7FFFFFFFFFFFFFFFLL;
+  latestVersion = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_7:
-  [a1 _setPortraitEffectEnabled:v15 forCompositionController:v13];
-  [a1 _setPortraitEffectFilterName:v14 withVersion:v16 forCompositionController:v13 portraitInfo:v12 spillMatteAllowed:v11];
+  [self _setPortraitEffectEnabled:v15 forCompositionController:controllerCopy];
+  [self _setPortraitEffectFilterName:filterIdentifier withVersion:latestVersion forCompositionController:controllerCopy portraitInfo:infoCopy spillMatteAllowed:allowedCopy];
 }
 
-+ (void)updateCompositionController:(id)a3 withEffect:(id)a4 intensity:(double)a5 updateVersion:(BOOL)a6
++ (void)updateCompositionController:(id)controller withEffect:(id)effect intensity:(double)intensity updateVersion:(BOOL)version
 {
-  v6 = a6;
-  v15 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v6)
+  versionCopy = version;
+  controllerCopy = controller;
+  effectCopy = effect;
+  v11 = effectCopy;
+  if (versionCopy)
   {
-    v12 = [v10 latestVersion];
+    latestVersion = [effectCopy latestVersion];
   }
 
   else
   {
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    latestVersion = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   if ([v11 isPortrait])
   {
-    v13 = [v11 filterIdentifier];
-    [a1 _setPortraitEffectFilterName:v13 withVersion:v12 forCompositionController:v15 portraitInfo:0 spillMatteAllowed:0];
+    filterIdentifier = [v11 filterIdentifier];
+    [self _setPortraitEffectFilterName:filterIdentifier withVersion:latestVersion forCompositionController:controllerCopy portraitInfo:0 spillMatteAllowed:0];
 
-    [a1 _setPortraitEffectEnabled:1 forCompositionController:v15];
+    [self _setPortraitEffectEnabled:1 forCompositionController:controllerCopy];
   }
 
   else
   {
-    v14 = [v11 CIFilterName];
-    [a1 _setEffectFilterName:v14 withIntensity:v12 withVersion:v15 forCompositionController:a5];
+    cIFilterName = [v11 CIFilterName];
+    [self _setEffectFilterName:cIFilterName withIntensity:latestVersion withVersion:controllerCopy forCompositionController:intensity];
   }
 }
 
-+ (void)updateCompositionController:(id)a3 withDepthEnabled:(BOOL)a4 livePortraitBehaviorController:(id)a5
++ (void)updateCompositionController:(id)controller withDepthEnabled:(BOOL)enabled livePortraitBehaviorController:(id)behaviorController
 {
-  v7 = a3;
-  v18 = a5;
-  v8 = [v7 adjustmentConstants];
-  v9 = [v7 compositionKeys];
-  v10 = [v8 PIDepthAdjustmentKey];
-  if (a4 || [v9 containsObject:v10])
+  controllerCopy = controller;
+  behaviorControllerCopy = behaviorController;
+  adjustmentConstants = [controllerCopy adjustmentConstants];
+  compositionKeys = [controllerCopy compositionKeys];
+  pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
+  if (enabled || [compositionKeys containsObject:pIDepthAdjustmentKey])
   {
-    v11 = [v7 copy];
+    v11 = [controllerCopy copy];
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
@@ -383,43 +383,43 @@ LABEL_7:
     v21[2] = __105__PUPhotoEditEffectsSupport_updateCompositionController_withDepthEnabled_livePortraitBehaviorController___block_invoke;
     v21[3] = &unk_1E7B7AAD8;
     v21[4] = &v23;
-    v22 = a4;
-    [v11 modifyAdjustmentWithKey:v10 modificationBlock:v21];
-    v12 = [v8 PIPortraitAdjustmentKey];
-    if ([v9 containsObject:v12])
+    enabledCopy = enabled;
+    [v11 modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:v21];
+    pIPortraitAdjustmentKey = [adjustmentConstants PIPortraitAdjustmentKey];
+    if ([compositionKeys containsObject:pIPortraitAdjustmentKey])
     {
-      v13 = [v11 portraitAdjustmentController];
-      v14 = [v13 kind];
-      v15 = [v14 isEqualToString:@"Light"];
+      portraitAdjustmentController = [v11 portraitAdjustmentController];
+      kind = [portraitAdjustmentController kind];
+      v15 = [kind isEqualToString:@"Light"];
 
       if (v15)
       {
-        [v11 removeAdjustmentWithKey:v12];
+        [v11 removeAdjustmentWithKey:pIPortraitAdjustmentKey];
       }
 
       else
       {
         v16 = +[PUPhotoEditProtoSettings sharedInstance];
-        v17 = [v16 apertureSliderHasOffPosition];
+        apertureSliderHasOffPosition = [v16 apertureSliderHasOffPosition];
 
-        if ((v17 & 1) == 0)
+        if ((apertureSliderHasOffPosition & 1) == 0)
         {
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __105__PUPhotoEditEffectsSupport_updateCompositionController_withDepthEnabled_livePortraitBehaviorController___block_invoke_2;
           v19[3] = &__block_descriptor_33_e32_v16__0__PIAdjustmentController_8l;
-          v20 = a4;
-          [v11 modifyAdjustmentWithKey:v12 modificationBlock:v19];
+          enabledCopy2 = enabled;
+          [v11 modifyAdjustmentWithKey:pIPortraitAdjustmentKey modificationBlock:v19];
         }
       }
     }
 
-    if (v18 && (v24[3] & 1) != 0)
+    if (behaviorControllerCopy && (v24[3] & 1) != 0)
     {
-      [v18 applySideEffectsForAction:0 compositionController:v11];
+      [behaviorControllerCopy applySideEffectsForAction:0 compositionController:v11];
     }
 
-    [v7 applyChangesFromCompositionController:v11];
+    [controllerCopy applyChangesFromCompositionController:v11];
 
     _Block_object_dispose(&v23, 8);
   }

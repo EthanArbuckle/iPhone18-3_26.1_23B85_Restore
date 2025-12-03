@@ -1,22 +1,22 @@
 @interface HMIPersonsModelSummary
-- (HMIPersonsModelSummary)initWithSourceUUID:(id)a3 externalLibrary:(BOOL)a4 faceCountsByPerson:(id)a5;
+- (HMIPersonsModelSummary)initWithSourceUUID:(id)d externalLibrary:(BOOL)library faceCountsByPerson:(id)person;
 @end
 
 @implementation HMIPersonsModelSummary
 
-- (HMIPersonsModelSummary)initWithSourceUUID:(id)a3 externalLibrary:(BOOL)a4 faceCountsByPerson:(id)a5
+- (HMIPersonsModelSummary)initWithSourceUUID:(id)d externalLibrary:(BOOL)library faceCountsByPerson:(id)person
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  personCopy = person;
   v14.receiver = self;
   v14.super_class = HMIPersonsModelSummary;
   v11 = [(HMIPersonsModelSummary *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceUUID, a3);
-    v12->_externalLibrary = a4;
-    objc_storeStrong(&v12->_faceCountsByPerson, a5);
+    objc_storeStrong(&v11->_sourceUUID, d);
+    v12->_externalLibrary = library;
+    objc_storeStrong(&v12->_faceCountsByPerson, person);
   }
 
   return v12;

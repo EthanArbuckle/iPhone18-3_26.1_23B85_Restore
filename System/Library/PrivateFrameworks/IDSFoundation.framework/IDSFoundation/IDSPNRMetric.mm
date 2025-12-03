@@ -1,19 +1,19 @@
 @interface IDSPNRMetric
-- (IDSPNRMetric)initWithPNRReason:(int64_t)a3 mechanism:(int64_t)a4;
+- (IDSPNRMetric)initWithPNRReason:(int64_t)reason mechanism:(int64_t)mechanism;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSPNRMetric
 
-- (IDSPNRMetric)initWithPNRReason:(int64_t)a3 mechanism:(int64_t)a4
+- (IDSPNRMetric)initWithPNRReason:(int64_t)reason mechanism:(int64_t)mechanism
 {
   v7.receiver = self;
   v7.super_class = IDSPNRMetric;
   result = [(IDSPNRMetric *)&v7 init];
   if (result)
   {
-    result->_pnrReason = a3;
-    result->_mechanism = a4;
+    result->_pnrReason = reason;
+    result->_mechanism = mechanism;
   }
 
   return result;

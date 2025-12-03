@@ -1,18 +1,18 @@
 @interface LocationDescriptionGenerator
-+ (id)conferenceStringFor:(id)a3 conferenceURLIsBroadcast:(BOOL)a4 options:(unint64_t)a5 outImageName:(id *)a6 incomplete:(BOOL *)a7;
-+ (id)labelFor:(id)a3;
-+ (id)locationStringFor:(id)a3 locationWithoutPrediction:(id)a4 preferredLocation:(id)a5 conferenceURL:(id)a6 conferenceURLIsBroadcast:(BOOL)a7 options:(unint64_t)a8 incomplete:(BOOL *)a9 leadingImageName:(id *)a10;
-+ (id)locationStringFor:(id)a3 options:(unint64_t)a4 incomplete:(BOOL *)a5 leadingImageName:(id *)a6;
++ (id)conferenceStringFor:(id)for conferenceURLIsBroadcast:(BOOL)broadcast options:(unint64_t)options outImageName:(id *)name incomplete:(BOOL *)incomplete;
++ (id)labelFor:(id)for;
++ (id)locationStringFor:(id)for locationWithoutPrediction:(id)prediction preferredLocation:(id)location conferenceURL:(id)l conferenceURLIsBroadcast:(BOOL)broadcast options:(unint64_t)options incomplete:(BOOL *)incomplete leadingImageName:(id *)self0;
++ (id)locationStringFor:(id)for options:(unint64_t)options incomplete:(BOOL *)incomplete leadingImageName:(id *)name;
 - (_TtC13CalendarUIKit28LocationDescriptionGenerator)init;
 @end
 
 @implementation LocationDescriptionGenerator
 
-+ (id)locationStringFor:(id)a3 options:(unint64_t)a4 incomplete:(BOOL *)a5 leadingImageName:(id *)a6
++ (id)locationStringFor:(id)for options:(unint64_t)options incomplete:(BOOL *)incomplete leadingImageName:(id *)name
 {
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = static LocationDescriptionGenerator.locationString(for:options:incomplete:leadingImageName:)(a3, a4, a5, a6);
+  forCopy = for;
+  v11 = static LocationDescriptionGenerator.locationString(for:options:incomplete:leadingImageName:)(for, options, incomplete, name);
 
   return v11;
 }
@@ -24,14 +24,14 @@
   return [(LocationDescriptionGenerator *)&v3 init];
 }
 
-+ (id)locationStringFor:(id)a3 locationWithoutPrediction:(id)a4 preferredLocation:(id)a5 conferenceURL:(id)a6 conferenceURLIsBroadcast:(BOOL)a7 options:(unint64_t)a8 incomplete:(BOOL *)a9 leadingImageName:(id *)a10
++ (id)locationStringFor:(id)for locationWithoutPrediction:(id)prediction preferredLocation:(id)location conferenceURL:(id)l conferenceURLIsBroadcast:(BOOL)broadcast options:(unint64_t)options incomplete:(BOOL *)incomplete leadingImageName:(id *)self0
 {
-  v25 = a8;
-  HIDWORD(v24) = a7;
+  optionsCopy = options;
+  HIDWORD(v24) = broadcast;
   v14 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC465450);
   MEMORY[0x1EEE9AC00](v14 - 8);
   v16 = &v24 - v15;
-  if (a6)
+  if (l)
   {
     sub_1CAD4BFC4();
     v17 = sub_1CAD4BFF4();
@@ -45,31 +45,31 @@
   }
 
   swift_getObjCClassMetadata();
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = static LocationDescriptionGenerator.locationString(for:locationWithoutPrediction:preferredLocation:conferenceURL:conferenceURLIsBroadcast:options:incomplete:leadingImageName:)(a3, a4, a5, v16, SHIDWORD(v24), v25, a9, a10);
+  forCopy = for;
+  predictionCopy = prediction;
+  locationCopy = location;
+  v22 = static LocationDescriptionGenerator.locationString(for:locationWithoutPrediction:preferredLocation:conferenceURL:conferenceURLIsBroadcast:options:incomplete:leadingImageName:)(for, prediction, location, v16, SHIDWORD(v24), optionsCopy, incomplete, name);
 
   sub_1CAB21B68(v16, &qword_1EC465450);
 
   return v22;
 }
 
-+ (id)labelFor:(id)a3
++ (id)labelFor:(id)for
 {
-  v4 = a3;
-  v5 = _s13CalendarUIKit28LocationDescriptionGeneratorC5label3forSo8NSStringCSgSo012EKStructuredC0CSg_tFZ_0(a3);
+  forCopy = for;
+  v5 = _s13CalendarUIKit28LocationDescriptionGeneratorC5label3forSo8NSStringCSgSo012EKStructuredC0CSg_tFZ_0(for);
 
   return v5;
 }
 
-+ (id)conferenceStringFor:(id)a3 conferenceURLIsBroadcast:(BOOL)a4 options:(unint64_t)a5 outImageName:(id *)a6 incomplete:(BOOL *)a7
++ (id)conferenceStringFor:(id)for conferenceURLIsBroadcast:(BOOL)broadcast options:(unint64_t)options outImageName:(id *)name incomplete:(BOOL *)incomplete
 {
-  v10 = a4;
+  broadcastCopy = broadcast;
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC465450);
   MEMORY[0x1EEE9AC00](v12 - 8);
   v14 = &v19 - v13;
-  if (a3)
+  if (for)
   {
     sub_1CAD4BFC4();
     v15 = sub_1CAD4BFF4();
@@ -82,7 +82,7 @@
     (*(*(v16 - 8) + 56))(v14, 1, 1, v16);
   }
 
-  v17 = static LocationDescriptionGenerator.conferenceString(for:conferenceURLIsBroadcast:options:outImageName:incomplete:)(v14, v10, a5, a6, a7);
+  v17 = static LocationDescriptionGenerator.conferenceString(for:conferenceURLIsBroadcast:options:outImageName:incomplete:)(v14, broadcastCopy, options, name, incomplete);
   sub_1CAB21B68(v14, &qword_1EC465450);
 
   return v17;

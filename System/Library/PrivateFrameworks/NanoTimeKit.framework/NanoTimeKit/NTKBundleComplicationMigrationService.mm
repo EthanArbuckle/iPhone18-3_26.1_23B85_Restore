@@ -1,12 +1,12 @@
 @interface NTKBundleComplicationMigrationService
 - (NTKBundleComplicationMigrationService)init;
-- (id)_loadAndFetchClassesForBundleIdentifier:(id)a3;
-- (void)_enumerateBundles:(id)a3;
-- (void)_performMigrationWithDataSource:(id)a3 complication:(id)a4 family:(int64_t)a5 device:(id)a6 completion:(id)a7;
-- (void)_processFallbackRequest:(id)a3 completion:(id)a4;
-- (void)_processSingleRequest:(id)a3 completion:(id)a4;
-- (void)generateComplicationTypeLookupForDevice:(id)a3 completion:(id)a4;
-- (void)processRequest:(id)a3 completion:(id)a4;
+- (id)_loadAndFetchClassesForBundleIdentifier:(id)identifier;
+- (void)_enumerateBundles:(id)bundles;
+- (void)_performMigrationWithDataSource:(id)source complication:(id)complication family:(int64_t)family device:(id)device completion:(id)completion;
+- (void)_processFallbackRequest:(id)request completion:(id)completion;
+- (void)_processSingleRequest:(id)request completion:(id)completion;
+- (void)generateComplicationTypeLookupForDevice:(id)device completion:(id)completion;
+- (void)processRequest:(id)request completion:(id)completion;
 @end
 
 @implementation NTKBundleComplicationMigrationService
@@ -28,14 +28,14 @@
   return v2;
 }
 
-- (void)processRequest:(id)a3 completion:(id)a4
+- (void)processRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NTKBundleComplicationMigrationService *)self _processSingleRequest:v8 completion:v6];
+    [(NTKBundleComplicationMigrationService *)self _processSingleRequest:requestCopy completion:completionCopy];
   }
 
   else
@@ -43,42 +43,42 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NTKBundleComplicationMigrationService *)self _processFallbackRequest:v8 completion:v6];
+      [(NTKBundleComplicationMigrationService *)self _processFallbackRequest:requestCopy completion:completionCopy];
     }
 
     else
     {
       v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.NTKBundleComplicationMigrationService" code:3 userInfo:0];
-      v6[2](v6, 0, v7);
+      completionCopy[2](completionCopy, 0, v7);
     }
   }
 }
 
-- (void)_processFallbackRequest:(id)a3 completion:(id)a4
+- (void)_processFallbackRequest:(id)request completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = requestCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "NTKBundleComplicationMigrationService: Begin processing fallback request %@", buf, 0xCu);
   }
 
   cache = self->_cache;
-  v10 = [v6 complication];
+  complication = [requestCopy complication];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__NTKBundleComplicationMigrationService__processFallbackRequest_completion___block_invoke;
   v13[3] = &unk_278781F68;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  [(NTKBundleComplicationIdentifierCache *)cache fetchIdentifiersForComplication:v10 completion:v13];
+  v14 = requestCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = requestCopy;
+  [(NTKBundleComplicationIdentifierCache *)cache fetchIdentifiersForComplication:complication completion:v13];
 }
 
 void __76__NTKBundleComplicationMigrationService__processFallbackRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -182,31 +182,31 @@ LABEL_17:
   [v23 _performMigrationWithDataSource:v32 complication:v24 family:v25 device:v26 completion:*(a1 + 48)];
 }
 
-- (void)_processSingleRequest:(id)a3 completion:(id)a4
+- (void)_processSingleRequest:(id)request completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = requestCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "NTKBundleComplicationMigrationService: Processing single request %@", buf, 0xCu);
   }
 
   cache = self->_cache;
-  v10 = [v6 complication];
+  complication = [requestCopy complication];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__NTKBundleComplicationMigrationService__processSingleRequest_completion___block_invoke;
   v13[3] = &unk_278781F68;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  [(NTKBundleComplicationIdentifierCache *)cache fetchIdentifiersForComplication:v10 completion:v13];
+  v14 = requestCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = requestCopy;
+  [(NTKBundleComplicationIdentifierCache *)cache fetchIdentifiersForComplication:complication completion:v13];
 }
 
 void __74__NTKBundleComplicationMigrationService__processSingleRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -267,24 +267,24 @@ LABEL_11:
   [v18 _performMigrationWithDataSource:v7 complication:v19 family:v20 device:v21 completion:*(a1 + 48)];
 }
 
-- (void)_performMigrationWithDataSource:(id)a3 complication:(id)a4 family:(int64_t)a5 device:(id)a6 completion:(id)a7
+- (void)_performMigrationWithDataSource:(id)source complication:(id)complication family:(int64_t)family device:(id)device completion:(id)completion
 {
   v55 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if (([v13 supportsWidgetMigration] & 1) == 0)
+  sourceCopy = source;
+  complicationCopy = complication;
+  deviceCopy = device;
+  completionCopy = completion;
+  if (([deviceCopy supportsWidgetMigration] & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  if (!v11)
+  if (!sourceCopy)
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.NTKBundleComplicationMigrationService" code:0 userInfo:0];
 LABEL_10:
     v17 = v16;
-    v14[2](v14, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
 
     goto LABEL_11;
   }
@@ -296,17 +296,17 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (([objc_opt_class() hasMigratedToWidgetForFamily:a5 device:v13] & 1) == 0)
+  if (([objc_opt_class() hasMigratedToWidgetForFamily:family device:deviceCopy] & 1) == 0)
   {
 LABEL_7:
-    v14[2](v14, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
     goto LABEL_11;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v12 complicationDescriptor];
+    [complicationCopy complicationDescriptor];
   }
 
   else
@@ -323,39 +323,39 @@ LABEL_7:
   aBlock[2] = __111__NTKBundleComplicationMigrationService__performMigrationWithDataSource_complication_family_device_completion___block_invoke;
   aBlock[3] = &unk_278781F90;
   v44 = v45;
-  v43 = v14;
+  v43 = completionCopy;
   v19 = _Block_copy(aBlock);
   v20 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = CLKComplicationFamilyDescription();
-    v22 = [objc_opt_class() bundleIdentifier];
+    bundleIdentifier = [objc_opt_class() bundleIdentifier];
     *buf = 138413058;
-    v48 = v12;
+    v48 = complicationCopy;
     v49 = 2112;
     v50 = v21;
     v51 = 2048;
-    v52 = a5;
+    familyCopy = family;
     v53 = 2112;
-    v54 = v22;
+    v54 = bundleIdentifier;
     _os_log_impl(&dword_22D9C5000, v20, OS_LOG_TYPE_DEFAULT, "Fetching migration for request <complication=%@, family=%@ (%li)> from %@", buf, 0x2Au);
   }
 
-  v23 = [objc_opt_class() appIdentifier];
+  appIdentifier = [objc_opt_class() appIdentifier];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __111__NTKBundleComplicationMigrationService__performMigrationWithDataSource_complication_family_device_completion___block_invoke_11;
   v36[3] = &unk_278781FE0;
-  v30 = v23;
+  v30 = appIdentifier;
   v37 = v30;
   v24 = v19;
   v40 = v24;
-  v25 = v11;
+  v25 = sourceCopy;
   v38 = v25;
-  v26 = v12;
+  v26 = complicationCopy;
   v39 = v26;
-  v41 = a5;
-  [v25 fetchWidgetMigrationForDescriptor:v18 family:a5 completion:v36];
+  familyCopy2 = family;
+  [v25 fetchWidgetMigrationForDescriptor:v18 family:family completion:v36];
   v27 = v18;
   v28 = dispatch_time(0, 10000000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -365,7 +365,7 @@ LABEL_7:
   v34 = v24;
   v32 = v25;
   v33 = v26;
-  v35 = a5;
+  familyCopy3 = family;
   v29 = v24;
   dispatch_after(v28, MEMORY[0x277D85CD0], block);
 
@@ -533,18 +533,18 @@ void __111__NTKBundleComplicationMigrationService__performMigrationWithDataSourc
   }
 }
 
-- (void)generateComplicationTypeLookupForDevice:(id)a3 completion:(id)a4
+- (void)generateComplicationTypeLookupForDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CBBAE8] deviceForDescriptor:a3];
+  completionCopy = completion;
+  v7 = [MEMORY[0x277CBBAE8] deviceForDescriptor:device];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__NTKBundleComplicationMigrationService_generateComplicationTypeLookupForDevice_completion___block_invoke;
   v10[3] = &unk_278782030;
   v11 = v7;
-  v12 = v6;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v6;
+  v9 = completionCopy;
   [NTKBundleComplicationMigrationTypeLookupGenerator generateLookupUsingService:self device:v8 completion:v10];
 }
 
@@ -592,10 +592,10 @@ void __92__NTKBundleComplicationMigrationService_generateComplicationTypeLookupF
   }
 }
 
-- (void)_enumerateBundles:(id)a3
+- (void)_enumerateBundles:(id)bundles
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  bundlesCopy = bundles;
   if (_enumerateBundles__onceToken != -1)
   {
     [NTKBundleComplicationMigrationService _enumerateBundles:];
@@ -626,7 +626,7 @@ void __92__NTKBundleComplicationMigrationService_generateComplicationTypeLookupF
         v11[1] = 3221225472;
         v11[2] = __59__NTKBundleComplicationMigrationService__enumerateBundles___block_invoke_2;
         v11[3] = &unk_278782058;
-        v12 = v3;
+        v12 = bundlesCopy;
         [v9 enumerateBundlesFromDirectoryURL:v8 enumerator:v11];
       }
 
@@ -699,9 +699,9 @@ LABEL_13:
   return v8;
 }
 
-- (id)_loadAndFetchClassesForBundleIdentifier:(id)a3
+- (id)_loadAndFetchClassesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -712,7 +712,7 @@ LABEL_13:
   v8[1] = 3221225472;
   v8[2] = __81__NTKBundleComplicationMigrationService__loadAndFetchClassesForBundleIdentifier___block_invoke;
   v8[3] = &unk_278782080;
-  v5 = v4;
+  v5 = identifierCopy;
   v9 = v5;
   v10 = &v11;
   [(NTKBundleComplicationMigrationService *)self _enumerateBundles:v8];

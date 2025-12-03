@@ -8,7 +8,7 @@
 + (void)StopService
 {
   v11 = *MEMORY[0x277D85DE8];
-  InCider::InstanceOpt(a1);
+  InCider::InstanceOpt(self);
   if (byte_28133BC80)
   {
     InCider::InstanceOpt(v2);
@@ -53,7 +53,7 @@ LABEL_8:
 + (void)StartService
 {
   v11 = *MEMORY[0x277D85DE8];
-  InCider::InstanceOpt(a1);
+  InCider::InstanceOpt(self);
   if (byte_28133BC80 != 1)
   {
     InCider::InstanceOpt(v2);

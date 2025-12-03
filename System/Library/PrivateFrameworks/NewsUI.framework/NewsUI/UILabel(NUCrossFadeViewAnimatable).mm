@@ -7,9 +7,9 @@
 
 - (uint64_t)nu_crossFadeViewClearVisibleState
 {
-  [a1 setText:0];
+  [self setText:0];
 
-  return [a1 setAttributedText:0];
+  return [self setAttributedText:0];
 }
 
 - (void)nu_crossFadeViewSetValue:()NUCrossFadeViewAnimatable
@@ -18,7 +18,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = a1;
+    selfCopy2 = self;
     v5 = v8;
   }
 
@@ -27,22 +27,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 setText:v8];
+      [self setText:v8];
       goto LABEL_7;
     }
 
-    [a1 setText:0];
-    v4 = a1;
+    [self setText:0];
+    selfCopy2 = self;
     v5 = 0;
   }
 
-  [v4 setAttributedText:v5];
+  [selfCopy2 setAttributedText:v5];
 LABEL_7:
-  v6 = [a1 superview];
-  [v6 setNeedsLayout];
+  superview = [self superview];
+  [superview setNeedsLayout];
 
-  v7 = [a1 superview];
-  [v7 layoutIfNeeded];
+  superview2 = [self superview];
+  [superview2 layoutIfNeeded];
 }
 
 @end

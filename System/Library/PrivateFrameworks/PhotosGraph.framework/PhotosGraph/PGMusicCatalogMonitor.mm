@@ -1,16 +1,16 @@
 @interface PGMusicCatalogMonitor
-+ (void)clearCatalogMusicFromCacheWithPhotoLibrary:(id)a3 progressReporter:(id)a4 completionHandler:(id)a5;
++ (void)clearCatalogMusicFromCacheWithPhotoLibrary:(id)library progressReporter:(id)reporter completionHandler:(id)handler;
 @end
 
 @implementation PGMusicCatalogMonitor
 
-+ (void)clearCatalogMusicFromCacheWithPhotoLibrary:(id)a3 progressReporter:(id)a4 completionHandler:(id)a5
++ (void)clearCatalogMusicFromCacheWithPhotoLibrary:(id)library progressReporter:(id)reporter completionHandler:(id)handler
 {
   v10 = 0;
-  v7 = a5;
-  v8 = [PGWrapperMusicCatalogMonitor clearCatalogMusicFromCacheWithPhotoLibrary:a3 progressReporter:a4 error:&v10];
+  handlerCopy = handler;
+  v8 = [PGWrapperMusicCatalogMonitor clearCatalogMusicFromCacheWithPhotoLibrary:library progressReporter:reporter error:&v10];
   v9 = v10;
-  v7[2](v7, v8, v9);
+  handlerCopy[2](handlerCopy, v8, v9);
 }
 
 @end

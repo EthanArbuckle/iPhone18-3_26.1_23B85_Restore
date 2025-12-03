@@ -1,26 +1,26 @@
 @interface BKPreferredLayoutCache
-- (unint64_t)preferredDirectoryTypeForBook:(id)a3;
-- (void)setPreferredDirectoryType:(unint64_t)a3 forBook:(id)a4;
+- (unint64_t)preferredDirectoryTypeForBook:(id)book;
+- (void)setPreferredDirectoryType:(unint64_t)type forBook:(id)book;
 @end
 
 @implementation BKPreferredLayoutCache
 
-- (unint64_t)preferredDirectoryTypeForBook:(id)a3
+- (unint64_t)preferredDirectoryTypeForBook:(id)book
 {
-  v3 = a3;
+  bookCopy = book;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 dictionaryForKey:@"_BKFixedLayoutPreferredTOCStyle"];
-  v6 = sub_D2CEC(v3);
+  v6 = sub_D2CEC(bookCopy);
 
   v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (void)setPreferredDirectoryType:(unint64_t)a3 forBook:(id)a4
+- (void)setPreferredDirectoryType:(unint64_t)type forBook:(id)book
 {
-  v5 = a4;
+  bookCopy = book;
   v12 = +[NSUserDefaults standardUserDefaults];
   v6 = [v12 dictionaryForKey:@"_BKFixedLayoutPreferredTOCStyle"];
   v7 = v6;
@@ -31,9 +31,9 @@
 
   v8 = [v6 mutableCopy];
 
-  v9 = sub_D2CEC(v5);
+  v9 = sub_D2CEC(bookCopy);
 
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
+  v10 = [NSNumber numberWithUnsignedInteger:type];
   [v8 setObject:v10 forKeyedSubscript:v9];
 
   v11 = [v8 copy];

@@ -1,25 +1,25 @@
 @interface PREditingButtonMaterialView
-+ (id)colorBurnContentImageForImage:(id)a3;
-- (PREditingButtonMaterialView)initWithFrame:(CGRect)a3 backgroundView:(id)a4 foregroundImage:(id)a5;
++ (id)colorBurnContentImageForImage:(id)image;
+- (PREditingButtonMaterialView)initWithFrame:(CGRect)frame backgroundView:(id)view foregroundImage:(id)image;
 - (UIEdgeInsets)backgroundInsets;
 - (void)_addHighlightViewIfNecessary;
 - (void)layoutSubviews;
-- (void)setBackgroundInsets:(UIEdgeInsets)a3;
-- (void)setBrightness:(double)a3;
-- (void)setForegroundImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLegibilityStyle:(int64_t)a3;
+- (void)setBackgroundInsets:(UIEdgeInsets)insets;
+- (void)setBrightness:(double)brightness;
+- (void)setForegroundImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLegibilityStyle:(int64_t)style;
 @end
 
 @implementation PREditingButtonMaterialView
 
-+ (id)colorBurnContentImageForImage:(id)a3
++ (id)colorBurnContentImageForImage:(id)image
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  imageCopy = image;
+  v4 = imageCopy;
+  if (imageCopy)
   {
-    v5 = objc_getAssociatedObject(v3, "PREditingButtonMaterialViewColorBurnImageAssociationKey");
+    v5 = objc_getAssociatedObject(imageCopy, "PREditingButtonMaterialViewColorBurnImageAssociationKey");
     if (!v5)
     {
       v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.3 alpha:1.0];
@@ -40,28 +40,28 @@
   return v5;
 }
 
-- (PREditingButtonMaterialView)initWithFrame:(CGRect)a3 backgroundView:(id)a4 foregroundImage:(id)a5
+- (PREditingButtonMaterialView)initWithFrame:(CGRect)frame backgroundView:(id)view foregroundImage:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
+  viewCopy = view;
+  imageCopy = image;
   v43.receiver = self;
   v43.super_class = PREditingButtonMaterialView;
-  v13 = [(PREditingButtonMaterialView *)&v43 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(PREditingButtonMaterialView *)&v43 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    [(PREditingButtonMaterialView *)v13 setOpaque:0];
-    v15 = [(PREditingButtonMaterialView *)v14 layer];
-    [v15 setAllowsGroupBlending:0];
+    [(PREditingButtonMaterialView *)height setOpaque:0];
+    layer = [(PREditingButtonMaterialView *)v14 layer];
+    [layer setAllowsGroupBlending:0];
 
-    if (v11)
+    if (viewCopy)
     {
-      v16 = v11;
+      v16 = viewCopy;
       backgroundView = v14->_backgroundView;
       v14->_backgroundView = v16;
     }
@@ -83,27 +83,27 @@
     v14->_whiteTintView = v21;
 
     v23 = v14->_whiteTintView;
-    v24 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v23 setBackgroundColor:v24];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v23 setBackgroundColor:whiteColor];
 
     [(UIView *)v14->_whiteTintView setAlpha:0.42];
     [(PREditingButtonMaterialView *)v14 addSubview:v14->_whiteTintView];
-    v25 = [objc_opt_class() colorBurnContentImageForImage:v12];
+    v25 = [objc_opt_class() colorBurnContentImageForImage:imageCopy];
     v26 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v25];
     xColorBurnView = v14->_xColorBurnView;
     v14->_xColorBurnView = v26;
 
-    v28 = [(UIImageView *)v14->_xColorBurnView layer];
-    [v28 setCompositingFilter:*MEMORY[0x1E6979850]];
+    layer2 = [(UIImageView *)v14->_xColorBurnView layer];
+    [layer2 setCompositingFilter:*MEMORY[0x1E6979850]];
 
     [(PREditingButtonMaterialView *)v14 addSubview:v14->_xColorBurnView];
-    v29 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v12];
+    v29 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     xPlusDView = v14->_xPlusDView;
     v14->_xPlusDView = v29;
 
-    v31 = [(UIImageView *)v14->_xPlusDView layer];
+    layer3 = [(UIImageView *)v14->_xPlusDView layer];
     v32 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]];
-    [v31 setCompositingFilter:v32];
+    [layer3 setCompositingFilter:v32];
 
     [(UIImageView *)v14->_xPlusDView setAlpha:0.3];
     [(PREditingButtonMaterialView *)v14 addSubview:v14->_xPlusDView];
@@ -111,8 +111,8 @@
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v33 = [(PREditingButtonMaterialView *)v14 subviews];
-    v34 = [v33 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    subviews = [(PREditingButtonMaterialView *)v14 subviews];
+    v34 = [subviews countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v34)
     {
       v35 = v34;
@@ -124,14 +124,14 @@
         {
           if (*v40 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v39 + 1) + 8 * v37++) setUserInteractionEnabled:0];
         }
 
         while (v35 != v37);
-        v35 = [v33 countByEnumeratingWithState:&v39 objects:v44 count:16];
+        v35 = [subviews countByEnumeratingWithState:&v39 objects:v44 count:16];
       }
 
       while (v35);
@@ -141,56 +141,56 @@
   return v14;
 }
 
-- (void)setBackgroundInsets:(UIEdgeInsets)a3
+- (void)setBackgroundInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_backgroundInsets.top), vceqq_f64(v4, *&self->_backgroundInsets.bottom)))) & 1) == 0)
   {
-    self->_backgroundInsets = a3;
+    self->_backgroundInsets = insets;
     [(PREditingButtonMaterialView *)self setNeedsLayout];
   }
 }
 
-- (void)setForegroundImage:(id)a3
+- (void)setForegroundImage:(id)image
 {
-  v6 = a3;
-  v4 = [(PREditingButtonMaterialView *)self foregroundImage];
+  imageCopy = image;
+  foregroundImage = [(PREditingButtonMaterialView *)self foregroundImage];
 
-  if (v4 != v6)
+  if (foregroundImage != imageCopy)
   {
-    [(UIImageView *)self->_xPlusDView setImage:v6];
-    v5 = [objc_opt_class() colorBurnContentImageForImage:v6];
+    [(UIImageView *)self->_xPlusDView setImage:imageCopy];
+    v5 = [objc_opt_class() colorBurnContentImageForImage:imageCopy];
     [(UIImageView *)self->_xColorBurnView setImage:v5];
     [(PREditingButtonMaterialView *)self setNeedsLayout];
   }
 }
 
-- (void)setLegibilityStyle:(int64_t)a3
+- (void)setLegibilityStyle:(int64_t)style
 {
   whiteTintView = self->_whiteTintView;
   v5 = 0.42;
-  if (a3 == 2)
+  if (style == 2)
   {
     v5 = 0.0;
   }
 
-  v6 = dbl_1A8BF7F30[a3 == 2];
+  v6 = dbl_1A8BF7F30[style == 2];
   [(UIView *)whiteTintView setAlpha:v5];
   xPlusDView = self->_xPlusDView;
 
   [(UIImageView *)xPlusDView setAlpha:v6];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     v3 = 0.466666667;
-    if (!a3)
+    if (!highlighted)
     {
       v3 = 1.0;
     }
@@ -199,12 +199,12 @@
   }
 }
 
-- (void)setBrightness:(double)a3
+- (void)setBrightness:(double)brightness
 {
   [(PREditingButtonMaterialView *)self _addHighlightViewIfNecessary];
   highlightView = self->_highlightView;
 
-  [(UIView *)highlightView setAlpha:1.0 - a3];
+  [(UIView *)highlightView setAlpha:1.0 - brightness];
 }
 
 - (void)layoutSubviews
@@ -237,25 +237,25 @@
   v39.size.height = v18;
   v19 = CGRectGetHeight(v39) * 0.5;
   [(UIView *)self->_backgroundView setFrame:v12, v14, v16, v18];
-  v20 = [(UIView *)self->_backgroundView layer];
-  [v20 setMasksToBounds:1];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setMasksToBounds:1];
 
-  v21 = [(UIView *)self->_backgroundView layer];
+  layer2 = [(UIView *)self->_backgroundView layer];
   v37 = v19;
-  [v21 setCornerRadius:v19];
+  [layer2 setCornerRadius:v19];
 
-  v22 = [(UIView *)self->_backgroundView layer];
-  v23 = [v22 cornerCurve];
+  layer3 = [(UIView *)self->_backgroundView layer];
+  cornerCurve = [layer3 cornerCurve];
 
   [(UIView *)self->_whiteTintView setFrame:v12, v14, v16, v18];
-  v24 = [(UIView *)self->_whiteTintView layer];
-  [v24 setCornerRadius:v19];
+  layer4 = [(UIView *)self->_whiteTintView layer];
+  [layer4 setCornerRadius:v19];
 
-  v25 = [(UIView *)self->_whiteTintView layer];
-  [v25 setCornerCurve:v23];
+  layer5 = [(UIView *)self->_whiteTintView layer];
+  [layer5 setCornerCurve:cornerCurve];
 
-  v26 = [(UIImageView *)self->_xColorBurnView image];
-  [v26 size];
+  image = [(UIImageView *)self->_xColorBurnView image];
+  [image size];
   BSRectWithSize();
   UIRectCenteredIntegralRectScale();
   v28 = v27;
@@ -266,11 +266,11 @@
   [(UIImageView *)self->_xColorBurnView setFrame:v28, v30, v32, v34, 0];
   [(UIImageView *)self->_xPlusDView setFrame:v28, v30, v32, v34];
   [(UIView *)self->_highlightView setFrame:v12, v14, v16, v18];
-  v35 = [(UIView *)self->_highlightView layer];
-  [v35 setCornerRadius:v37];
+  layer6 = [(UIView *)self->_highlightView layer];
+  [layer6 setCornerRadius:v37];
 
-  v36 = [(UIView *)self->_highlightView layer];
-  [v36 setCornerCurve:v23];
+  layer7 = [(UIView *)self->_highlightView layer];
+  [layer7 setCornerCurve:cornerCurve];
 }
 
 - (void)_addHighlightViewIfNecessary

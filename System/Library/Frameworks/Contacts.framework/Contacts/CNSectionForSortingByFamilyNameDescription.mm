@@ -1,20 +1,20 @@
 @interface CNSectionForSortingByFamilyNameDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNSectionForSortingByFamilyNameDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sectionForSortingByFamilyName];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  sectionForSortingByFamilyName = [contactCopy sectionForSortingByFamilyName];
+  if (!sectionForSortingByFamilyName)
   {
-    v4 = [v7 sectionForSortingByFamilyName];
-    if (!v4)
+    sectionForSortingByFamilyName2 = [otherCopy sectionForSortingByFamilyName];
+    if (!sectionForSortingByFamilyName2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 sectionForSortingByFamilyName];
-  v10 = [v7 sectionForSortingByFamilyName];
-  v11 = [v9 isEqual:v10];
+  sectionForSortingByFamilyName3 = [contactCopy sectionForSortingByFamilyName];
+  sectionForSortingByFamilyName4 = [otherCopy sectionForSortingByFamilyName];
+  v11 = [sectionForSortingByFamilyName3 isEqual:sectionForSortingByFamilyName4];
 
-  if (!v8)
+  if (!sectionForSortingByFamilyName)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_sectionForSortingByFamilyName"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sectionForSortingByFamilyName"];
 
   v7 = [v9 copy];
-  v8 = v5[23];
-  v5[23] = v7;
+  v8 = contactCopy[23];
+  contactCopy[23] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A480];
+    *d = *MEMORY[0x1E698A480];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

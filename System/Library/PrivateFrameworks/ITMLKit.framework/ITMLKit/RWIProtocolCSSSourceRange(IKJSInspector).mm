@@ -9,17 +9,17 @@
 + (id)ik_newLineIndexSetForStyleMarkup:()IKJSInspector
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CCAB58] indexSet];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [MEMORY[0x277CCA900] newlineCharacterSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  date = [MEMORY[0x277CBEAA8] date];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
   if ([v3 length])
   {
     v7 = 0;
     do
     {
-      if ([v6 characterIsMember:{objc_msgSend(v3, "characterAtIndex:", v7)}])
+      if ([newlineCharacterSet characterIsMember:{objc_msgSend(v3, "characterAtIndex:", v7)}])
       {
-        [v4 addIndex:v7];
+        [indexSet addIndex:v7];
       }
 
       ++v7;
@@ -31,10 +31,10 @@
   v8 = ITMLKitGetLogObject(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [RWIProtocolCSSSourceRange(IKJSInspector) ik_newLineIndexSetForStyleMarkup:v5];
+    [RWIProtocolCSSSourceRange(IKJSInspector) ik_newLineIndexSetForStyleMarkup:date];
   }
 
-  return v4;
+  return indexSet;
 }
 
 + (id)ik_cssSourceRangeForRange:()IKJSInspector withNewLineIndexSet:
@@ -70,7 +70,7 @@
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  if ([a1 startLine] == 1)
+  if ([self startLine] == 1)
   {
     v5 = 0;
   }
@@ -84,7 +84,7 @@
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
-  if ([a1 endLine] == 1)
+  if ([self endLine] == 1)
   {
     v6 = 0;
   }
@@ -99,7 +99,7 @@
   v10[1] = 3221225472;
   v10[2] = __72__RWIProtocolCSSSourceRange_IKJSInspector__ik_rangeWithNewLineIndexSet___block_invoke;
   v10[3] = &unk_279799728;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = v19;
   v10[6] = &v15;
   v10[7] = &v11;
@@ -112,12 +112,12 @@
 
   else
   {
-    v8 = v7 + [a1 startColumn];
+    v8 = v7 + [self startColumn];
   }
 
   if (v12[3] != -100)
   {
-    [a1 endColumn];
+    [self endColumn];
   }
 
   _Block_object_dispose(&v11, 8);

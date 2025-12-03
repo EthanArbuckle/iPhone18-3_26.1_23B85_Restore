@@ -1,9 +1,9 @@
 @interface SUCorePowerAssertion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUCorePowerAssertion)init;
-- (SUCorePowerAssertion)initWithCoder:(id)a3;
+- (SUCorePowerAssertion)initWithCoder:(id)coder;
 - (id)copy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCorePowerAssertion
@@ -21,26 +21,26 @@
   return result;
 }
 
-- (SUCorePowerAssertion)initWithCoder:(id)a3
+- (SUCorePowerAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SUCorePowerAssertion;
   v5 = [(SUCorePowerAssertion *)&v7 init];
   if (v5)
   {
-    v5->_activeAssertionCount = [v4 decodeIntegerForKey:@"activeAssertionCount"];
-    v5->_assertionID = [v4 decodeIntegerForKey:@"assertionID"];
+    v5->_activeAssertionCount = [coderCopy decodeIntegerForKey:@"activeAssertionCount"];
+    v5->_assertionID = [coderCopy decodeIntegerForKey:@"assertionID"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SUCorePowerAssertion activeAssertionCount](self forKey:{"activeAssertionCount"), @"activeAssertionCount"}];
-  [v4 encodeInteger:-[SUCorePowerAssertion assertionID](self forKey:{"assertionID"), @"assertionID"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SUCorePowerAssertion activeAssertionCount](self forKey:{"activeAssertionCount"), @"activeAssertionCount"}];
+  [coderCopy encodeInteger:-[SUCorePowerAssertion assertionID](self forKey:{"assertionID"), @"assertionID"}];
 }
 
 - (id)copy
@@ -51,10 +51,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -64,12 +64,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUCorePowerAssertion *)v5 activeAssertionCount];
-      if (v6 == [(SUCorePowerAssertion *)self activeAssertionCount])
+      v5 = equalCopy;
+      activeAssertionCount = [(SUCorePowerAssertion *)v5 activeAssertionCount];
+      if (activeAssertionCount == [(SUCorePowerAssertion *)self activeAssertionCount])
       {
-        v7 = [(SUCorePowerAssertion *)v5 assertionID];
-        v8 = v7 == [(SUCorePowerAssertion *)self assertionID];
+        assertionID = [(SUCorePowerAssertion *)v5 assertionID];
+        v8 = assertionID == [(SUCorePowerAssertion *)self assertionID];
       }
 
       else

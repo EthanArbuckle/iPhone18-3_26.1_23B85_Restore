@@ -1,44 +1,44 @@
 @interface PXSlowMotionEditor
-- (BOOL)_isPoint:(CGPoint)a3 inHandleIsStart:(BOOL)a4 outTouchOffset:(double *)a5;
+- (BOOL)_isPoint:(CGPoint)point inHandleIsStart:(BOOL)start outTouchOffset:(double *)offset;
 - (BOOL)_isZoomed;
-- (CGRect)_handleFrameForValue:(double)a3 isStart:(BOOL)a4;
+- (CGRect)_handleFrameForValue:(double)value isStart:(BOOL)start;
 - (CGRect)_trackFrame;
 - (CGRect)_trackFrameNoZoom;
 - (CGRect)endHandleFrame;
 - (CGRect)startHandleFrame;
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (PXSlowMotionEditor)initWithFrame:(CGRect)a3;
+- (PXSlowMotionEditor)initWithFrame:(CGRect)frame;
 - (PXSlowMotionEditorDelegate)delegate;
 - (UIEdgeInsets)trackInsets;
 - (double)_trackScale;
 - (double)_trimHandleWidth;
-- (double)_valueFromHandleFrame:(CGRect)a3 isStart:(BOOL)a4;
+- (double)_valueFromHandleFrame:(CGRect)frame isStart:(BOOL)start;
 - (double)_zoomMaxValue;
 - (id)_handleTintColor;
 - (id)_tickColor;
 - (id)_trackColor;
-- (id)_trackImageForZoom:(BOOL)a3;
-- (void)_beginTrackingZoomWithPoint:(CGPoint)a3;
+- (id)_trackImageForZoom:(BOOL)zoom;
+- (void)_beginTrackingZoomWithPoint:(CGPoint)point;
 - (void)_cancelTrackingZoom;
 - (void)_cancelZoom;
-- (void)_cancelZoomTrackingIfNeccessaryWithPoint:(CGPoint)a3;
-- (void)_drawCurveWithFlatEndsFromX:(double)a3 fromY:(double)a4 toX:(double)a5 toY:(double)a6;
-- (void)_updateSlidersWithPoint:(CGPoint)a3;
+- (void)_cancelZoomTrackingIfNeccessaryWithPoint:(CGPoint)point;
+- (void)_drawCurveWithFlatEndsFromX:(double)x fromY:(double)y toX:(double)toX toY:(double)toY;
+- (void)_updateSlidersWithPoint:(CGPoint)point;
 - (void)_updateTrack;
 - (void)_zoomPressWasHeld;
-- (void)handleBeginTrackingAtLocation:(CGPoint)a3;
-- (void)handleChangeTrackingAtLocation:(CGPoint)a3;
-- (void)handleEndTrackingAtLocation:(CGPoint)a3;
+- (void)handleBeginTrackingAtLocation:(CGPoint)location;
+- (void)handleChangeTrackingAtLocation:(CGPoint)location;
+- (void)handleEndTrackingAtLocation:(CGPoint)location;
 - (void)layoutSubviews;
-- (void)setEndValue:(double)minValue notify:(BOOL)a4;
+- (void)setEndValue:(double)minValue notify:(BOOL)notify;
 - (void)setMaxValue:(double)maxValue;
 - (void)setMinValue:(double)minValue;
-- (void)setRegionEditorStyle:(unint64_t)a3;
-- (void)setStartValue:(double)minValue notify:(BOOL)a4;
-- (void)setTrackInsets:(UIEdgeInsets)a3;
-- (void)setZoomAnimating:(BOOL)a3;
-- (void)setZoomMinValue:(double)a3 maxValue:(double)a4;
+- (void)setRegionEditorStyle:(unint64_t)style;
+- (void)setStartValue:(double)minValue notify:(BOOL)notify;
+- (void)setTrackInsets:(UIEdgeInsets)insets;
+- (void)setZoomAnimating:(BOOL)animating;
+- (void)setZoomMinValue:(double)value maxValue:(double)maxValue;
 @end
 
 @implementation PXSlowMotionEditor
@@ -63,88 +63,88 @@
   return WeakRetained;
 }
 
-- (void)_drawCurveWithFlatEndsFromX:(double)a3 fromY:(double)a4 toX:(double)a5 toY:(double)a6
+- (void)_drawCurveWithFlatEndsFromX:(double)x fromY:(double)y toX:(double)toX toY:(double)toY
 {
   CurrentContext = UIGraphicsGetCurrentContext();
 
-  CGContextAddCurveToPoint(CurrentContext, a5 * 0.5 + a3 * 0.5, a4, a5 * 0.5 + a3 * 0.5, a6, a5, a6);
+  CGContextAddCurveToPoint(CurrentContext, toX * 0.5 + x * 0.5, y, toX * 0.5 + x * 0.5, toY, toX, toY);
 }
 
 - (id)_handleTintColor
 {
-  v2 = [(PXSlowMotionEditor *)self regionEditorStyle];
-  if (v2)
+  regionEditorStyle = [(PXSlowMotionEditor *)self regionEditorStyle];
+  if (regionEditorStyle)
   {
-    if (v2 == 2 || v2 == 1)
+    if (regionEditorStyle == 2 || regionEditorStyle == 1)
     {
-      v3 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
     else
     {
-      v3 = 0;
+      labelColor = 0;
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    labelColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
 
-  return v3;
+  return labelColor;
 }
 
 - (id)_trackColor
 {
-  v2 = [(PXSlowMotionEditor *)self regionEditorStyle];
-  switch(v2)
+  regionEditorStyle = [(PXSlowMotionEditor *)self regionEditorStyle];
+  switch(regionEditorStyle)
   {
     case 0uLL:
-      v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
+      labelColor = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
       goto LABEL_7;
     case 2uLL:
-      v4 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
       goto LABEL_9;
     case 1uLL:
-      v3 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
 LABEL_7:
-      v5 = v3;
-      v4 = [v3 colorWithAlphaComponent:0.1];
+      v5 = labelColor;
+      clearColor = [labelColor colorWithAlphaComponent:0.1];
 
       goto LABEL_9;
   }
 
-  v4 = 0;
+  clearColor = 0;
 LABEL_9:
 
-  return v4;
+  return clearColor;
 }
 
 - (id)_tickColor
 {
-  v2 = [(PXSlowMotionEditor *)self regionEditorStyle];
-  if (v2)
+  regionEditorStyle = [(PXSlowMotionEditor *)self regionEditorStyle];
+  if (regionEditorStyle)
   {
-    if (v2 == 2 || v2 == 1)
+    if (regionEditorStyle == 2 || regionEditorStyle == 1)
     {
-      v3 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
     else
     {
-      v3 = 0;
+      labelColor = 0;
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
+    labelColor = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.478431373 blue:1.0 alpha:1.0];
   }
 
-  return v3;
+  return labelColor;
 }
 
-- (id)_trackImageForZoom:(BOOL)a3
+- (id)_trackImageForZoom:(BOOL)zoom
 {
   [(PXSlowMotionEditor *)self _trackFrame];
   v5 = v4;
@@ -187,8 +187,8 @@ LABEL_9:
     CGContextSetBaseCTM();
   }
 
-  v33 = [(PXSlowMotionEditor *)self _trackColor];
-  CGContextSetFillColorWithColor(v32, [v33 CGColor]);
+  _trackColor = [(PXSlowMotionEditor *)self _trackColor];
+  CGContextSetFillColorWithColor(v32, [_trackColor CGColor]);
 
   v65.origin.x = v23;
   v65.origin.y = v24;
@@ -266,8 +266,8 @@ LABEL_9:
     }
   }
 
-  v50 = [(PXSlowMotionEditor *)self _tickColor];
-  CGContextSetStrokeColorWithColor(v32, [v50 CGColor]);
+  _tickColor = [(PXSlowMotionEditor *)self _tickColor];
+  CGContextSetStrokeColorWithColor(v32, [_tickColor CGColor]);
 
   CGContextStrokePath(v32);
   Image = CGBitmapContextCreateImage(v32);
@@ -309,28 +309,28 @@ LABEL_9:
   }
 }
 
-- (void)_cancelZoomTrackingIfNeccessaryWithPoint:(CGPoint)a3
+- (void)_cancelZoomTrackingIfNeccessaryWithPoint:(CGPoint)point
 {
-  if (vabdd_f64(a3.x, self->_touchLocationWhenTrackingZoomBegan.x) > 4.0)
+  if (vabdd_f64(point.x, self->_touchLocationWhenTrackingZoomBegan.x) > 4.0)
   {
     [(PXSlowMotionEditor *)self _cancelTrackingZoom];
   }
 }
 
-- (void)_beginTrackingZoomWithPoint:(CGPoint)a3
+- (void)_beginTrackingZoomWithPoint:(CGPoint)point
 {
   if (!self->_trackingZoom && !self->_zoomed)
   {
     self->_trackingZoom = 1;
-    self->_touchLocationWhenTrackingZoomBegan = a3;
+    self->_touchLocationWhenTrackingZoomBegan = point;
     [(PXSlowMotionEditor *)self performSelector:sel__zoomPressWasHeld withObject:0 afterDelay:self->_zoomDelay];
   }
 }
 
-- (void)_updateSlidersWithPoint:(CGPoint)a3
+- (void)_updateSlidersWithPoint:(CGPoint)point
 {
-  x = a3.x;
-  if ((self->_draggingStart || self->_draggingEnd) && ![(PXSlowMotionEditor *)self isZoomAnimating:a3.x])
+  x = point.x;
+  if ((self->_draggingStart || self->_draggingEnd) && ![(PXSlowMotionEditor *)self isZoomAnimating:point.x])
   {
     if (self->_draggingStart)
     {
@@ -362,9 +362,9 @@ LABEL_9:
   }
 }
 
-- (void)handleEndTrackingAtLocation:(CGPoint)a3
+- (void)handleEndTrackingAtLocation:(CGPoint)location
 {
-  [(PXSlowMotionEditor *)self _updateSlidersWithPoint:a3.x, a3.y];
+  [(PXSlowMotionEditor *)self _updateSlidersWithPoint:location.x, location.y];
   if (self->_draggingStart)
   {
     self->_draggingStart = 0;
@@ -391,10 +391,10 @@ LABEL_5:
   [(PXSlowMotionEditor *)self _cancelZoom];
 }
 
-- (void)handleChangeTrackingAtLocation:(CGPoint)a3
+- (void)handleChangeTrackingAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(PXSlowMotionEditor *)self _updateSlidersWithPoint:?];
   if (self->_draggingStart || self->_draggingEnd)
   {
@@ -404,10 +404,10 @@ LABEL_5:
   }
 }
 
-- (void)handleBeginTrackingAtLocation:(CGPoint)a3
+- (void)handleBeginTrackingAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v17 = 1.79769313e308;
   v18 = 1.79769313e308;
   v6 = [(PXSlowMotionEditor *)self _isPoint:1 inHandleIsStart:&v18 outTouchOffset:?];
@@ -455,11 +455,11 @@ LABEL_5:
   }
 }
 
-- (BOOL)_isPoint:(CGPoint)a3 inHandleIsStart:(BOOL)a4 outTouchOffset:(double *)a5
+- (BOOL)_isPoint:(CGPoint)point inHandleIsStart:(BOOL)start outTouchOffset:(double *)offset
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = point.y;
+  x = point.x;
+  if (start)
   {
     [(PXSlowMotionEditor *)self startHandleFrame];
   }
@@ -481,16 +481,16 @@ LABEL_5:
   MidY = CGRectGetMidY(v20);
   v18 = vabdd_f64(x, MidX) <= 44.0;
   result = vabdd_f64(y, MidY) <= 44.0 && v18;
-  *a5 = x - MidX;
+  *offset = x - MidX;
   return result;
 }
 
-- (double)_valueFromHandleFrame:(CGRect)a3 isStart:(BOOL)a4
+- (double)_valueFromHandleFrame:(CGRect)frame isStart:(BOOL)start
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PXSlowMotionEditor *)self _trackFrame];
   if (v10 <= 0.0)
   {
@@ -509,7 +509,7 @@ LABEL_5:
   return self->_minValue + (CGRectGetMidX(v17) - (v11 + v14)) / v15 * (self->_maxValue - self->_minValue);
 }
 
-- (CGRect)_handleFrameForValue:(double)a3 isStart:(BOOL)a4
+- (CGRect)_handleFrameForValue:(double)value isStart:(BOOL)start
 {
   [(PXSlowMotionEditor *)self _trackFrame];
   v7 = v6;
@@ -525,11 +525,11 @@ LABEL_5:
 
   else
   {
-    v16 = (a3 - minValue) / (maxValue - minValue);
+    v16 = (value - minValue) / (maxValue - minValue);
   }
 
-  v17 = [(UIImageView *)self->_startHandleView image];
-  [v17 size];
+  image = [(UIImageView *)self->_startHandleView image];
+  [image size];
   v19 = v18;
   v21 = v20;
 
@@ -649,26 +649,26 @@ LABEL_5:
   return result;
 }
 
-- (void)setRegionEditorStyle:(unint64_t)a3
+- (void)setRegionEditorStyle:(unint64_t)style
 {
-  if (self->_regionEditorStyle != a3)
+  if (self->_regionEditorStyle != style)
   {
-    self->_regionEditorStyle = a3;
-    v5 = [(PXSlowMotionEditor *)self _handleTintColor];
-    [(UIImageView *)self->_startHandleView setTintColor:v5];
-    [(UIImageView *)self->_endHandleView setTintColor:v5];
+    self->_regionEditorStyle = style;
+    _handleTintColor = [(PXSlowMotionEditor *)self _handleTintColor];
+    [(UIImageView *)self->_startHandleView setTintColor:_handleTintColor];
+    [(UIImageView *)self->_endHandleView setTintColor:_handleTintColor];
     self->_forceLayout = 1;
     [(PXSlowMotionEditor *)self setNeedsLayout];
     [(PXSlowMotionEditor *)self layoutIfNeeded];
   }
 }
 
-- (void)setZoomAnimating:(BOOL)a3
+- (void)setZoomAnimating:(BOOL)animating
 {
-  if (self->_zoomAnimating != a3)
+  if (self->_zoomAnimating != animating)
   {
-    self->_zoomAnimating = a3;
-    if (!a3)
+    self->_zoomAnimating = animating;
+    if (!animating)
     {
       [(UIImageView *)self->_trackSnapshotView setImage:0];
     }
@@ -694,12 +694,12 @@ LABEL_5:
   return result;
 }
 
-- (void)setZoomMinValue:(double)a3 maxValue:(double)a4
+- (void)setZoomMinValue:(double)value maxValue:(double)maxValue
 {
-  if (self->_zoomMinValue == a3)
+  if (self->_zoomMinValue == value)
   {
     p_zoomMaxValue = &self->_zoomMaxValue;
-    if (self->_zoomMaxValue == a4)
+    if (self->_zoomMaxValue == maxValue)
     {
       return;
     }
@@ -707,15 +707,15 @@ LABEL_5:
 
   else
   {
-    self->_zoomMinValue = a3;
+    self->_zoomMinValue = value;
     p_zoomMaxValue = &self->_zoomMaxValue;
-    if (self->_zoomMaxValue == a4)
+    if (self->_zoomMaxValue == maxValue)
     {
       goto LABEL_6;
     }
   }
 
-  *p_zoomMaxValue = a4;
+  *p_zoomMaxValue = maxValue;
 LABEL_6:
   v6 = self->_trackSnapshotView;
   objc_storeStrong(&self->_trackSnapshotView, self->_trackImageView);
@@ -730,7 +730,7 @@ LABEL_6:
   [(UIImageView *)self->_trackSnapshotView setAlpha:0.0];
 }
 
-- (void)setEndValue:(double)minValue notify:(BOOL)a4
+- (void)setEndValue:(double)minValue notify:(BOOL)notify
 {
   if (self->_minValue > minValue)
   {
@@ -744,15 +744,15 @@ LABEL_6:
 
   if (self->_endValue != minValue)
   {
-    v4 = a4;
+    notifyCopy = notify;
     self->_endValue = minValue;
     if (self->_startValue > minValue)
     {
-      [(PXSlowMotionEditor *)self setStartValue:a4 notify:?];
+      [(PXSlowMotionEditor *)self setStartValue:notify notify:?];
     }
 
     [(PXSlowMotionEditor *)self setNeedsLayout];
-    if (v4)
+    if (notifyCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained slowMotionEditorEndValueChanged:self];
@@ -760,7 +760,7 @@ LABEL_6:
   }
 }
 
-- (void)setStartValue:(double)minValue notify:(BOOL)a4
+- (void)setStartValue:(double)minValue notify:(BOOL)notify
 {
   if (self->_minValue > minValue)
   {
@@ -774,15 +774,15 @@ LABEL_6:
 
   if (self->_startValue != minValue)
   {
-    v4 = a4;
+    notifyCopy = notify;
     self->_startValue = minValue;
     if (self->_endValue < minValue)
     {
-      [(PXSlowMotionEditor *)self setEndValue:a4 notify:?];
+      [(PXSlowMotionEditor *)self setEndValue:notify notify:?];
     }
 
     [(PXSlowMotionEditor *)self setNeedsLayout];
-    if (v4)
+    if (notifyCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained slowMotionEditorStartValueChanged:self];
@@ -830,15 +830,15 @@ LABEL_6:
   }
 }
 
-- (void)setTrackInsets:(UIEdgeInsets)a3
+- (void)setTrackInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_trackInsets.top), vceqq_f64(v4, *&self->_trackInsets.bottom)))) & 1) == 0)
   {
-    self->_trackInsets = a3;
+    self->_trackInsets = insets;
     [(PXSlowMotionEditor *)self setNeedsLayout];
   }
 }
@@ -885,17 +885,17 @@ LABEL_6:
   }
 }
 
-- (PXSlowMotionEditor)initWithFrame:(CGRect)a3
+- (PXSlowMotionEditor)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = PXSlowMotionEditor;
-  v3 = [(PXSlowMotionEditor *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXSlowMotionEditor *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PXSlowMotionEditor *)v3 setOpaque:0];
     v4->_regionEditorStyle = 0;
-    v5 = [objc_opt_class() handleImage];
+    handleImage = [objc_opt_class() handleImage];
     v6 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -912,12 +912,12 @@ LABEL_6:
     v4->_trackImageView = v13;
 
     [(PXSlowMotionEditor *)v4 addSubview:v4->_trackImageView];
-    v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v5];
+    v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:handleImage];
     startHandleView = v4->_startHandleView;
     v4->_startHandleView = v15;
 
     [(PXSlowMotionEditor *)v4 addSubview:v4->_startHandleView];
-    v17 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v5];
+    v17 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:handleImage];
     endHandleView = v4->_endHandleView;
     v4->_endHandleView = v17;
 

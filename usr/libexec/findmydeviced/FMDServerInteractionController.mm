@@ -1,36 +1,36 @@
 @interface FMDServerInteractionController
-- (BOOL)enqueueRequest:(id)a3;
-- (FMDServerInteractionController)initWithChannels:(id)a3 delegate:(id)a4;
+- (BOOL)enqueueRequest:(id)request;
+- (FMDServerInteractionController)initWithChannels:(id)channels delegate:(id)delegate;
 - (NSString)udid;
 - (id)account;
-- (id)redirectedRequestURLForType:(id)a3 udid:(id)a4;
-- (id)redirectedURL:(id)a3;
-- (id)requestUrlForType:(id)a3 udid:(id)a4;
-- (void)_beginXPCTransactionForRequest:(id)a3;
-- (void)_disablePowerAssertionForRequest:(id)a3;
-- (void)_enablePowerAssertionForRequest:(id)a3;
-- (void)_endXPCTransactionForRequest:(id)a3;
-- (void)_evaluateRetriesForRequest:(id)a3;
-- (void)_handleResponseForRequest:(id)a3 withStatus:(int64_t)a4 headers:(id)a5 body:(id)a6 location:(id)a7 error:(id)a8;
-- (void)_markRequestCancelled:(id)a3;
-- (void)_sendRequest:(id)a3;
+- (id)redirectedRequestURLForType:(id)type udid:(id)udid;
+- (id)redirectedURL:(id)l;
+- (id)requestUrlForType:(id)type udid:(id)udid;
+- (void)_beginXPCTransactionForRequest:(id)request;
+- (void)_disablePowerAssertionForRequest:(id)request;
+- (void)_enablePowerAssertionForRequest:(id)request;
+- (void)_endXPCTransactionForRequest:(id)request;
+- (void)_evaluateRetriesForRequest:(id)request;
+- (void)_handleResponseForRequest:(id)request withStatus:(int64_t)status headers:(id)headers body:(id)body location:(id)location error:(id)error;
+- (void)_markRequestCancelled:(id)cancelled;
+- (void)_sendRequest:(id)request;
 - (void)cancelAllRequests;
-- (void)cancelRequest:(id)a3;
+- (void)cancelRequest:(id)request;
 @end
 
 @implementation FMDServerInteractionController
 
-- (FMDServerInteractionController)initWithChannels:(id)a3 delegate:(id)a4
+- (FMDServerInteractionController)initWithChannels:(id)channels delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  channelsCopy = channels;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = FMDServerInteractionController;
   v9 = [(FMDServerInteractionController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_channels, a3);
+    objc_storeStrong(&v9->_channels, channels);
     v11 = +[NSMutableArray array];
     requests = v10->_requests;
     v10->_requests = v11;
@@ -39,19 +39,19 @@
     requestModifierLock = v10->_requestModifierLock;
     v10->_requestModifierLock = v13;
 
-    objc_storeStrong(&v10->_delegate, a4);
+    objc_storeStrong(&v10->_delegate, delegate);
   }
 
   return v10;
 }
 
-- (BOOL)enqueueRequest:(id)a3
+- (BOOL)enqueueRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 type])
+  requestCopy = request;
+  if ([requestCopy type])
   {
-    v5 = [v4 authId];
-    if (v5 && ([v4 authToken], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+    authId = [requestCopy authId];
+    if (authId && ([requestCopy authToken], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
@@ -59,7 +59,7 @@
     {
       v7 = objc_opt_class();
       v8 = objc_opt_class();
-      if (v5)
+      if (authId)
       {
       }
 
@@ -71,7 +71,7 @@
           *buf = 138412546;
           v44 = objc_opt_class();
           v45 = 2048;
-          v46 = v4;
+          v46 = requestCopy;
           v10 = v44;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) No credentials found. Not sending the request", buf, 0x16u);
         }
@@ -81,7 +81,7 @@
     }
   }
 
-  if ([v4 cancelled])
+  if ([requestCopy cancelled])
   {
     v9 = sub_100002880();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -89,7 +89,7 @@
       *buf = 138412546;
       v44 = objc_opt_class();
       v45 = 2048;
-      v46 = v4;
+      v46 = requestCopy;
       v11 = v44;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) Enqueueing request already cancelled", buf, 0x16u);
     }
@@ -100,8 +100,8 @@ LABEL_14:
     goto LABEL_36;
   }
 
-  v13 = [(FMDServerInteractionController *)self requestModifierLock];
-  [v13 lock];
+  requestModifierLock = [(FMDServerInteractionController *)self requestModifierLock];
+  [requestModifierLock lock];
 
   v14 = sub_100002880();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -109,7 +109,7 @@ LABEL_14:
     *buf = 138412546;
     v44 = objc_opt_class();
     v45 = 2048;
-    v46 = v4;
+    v46 = requestCopy;
     v15 = v44;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) Enqueueing request", buf, 0x16u);
   }
@@ -119,8 +119,8 @@ LABEL_14:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v17 = [(FMDServerInteractionController *)self requests];
-  v18 = [v17 countByEnumeratingWithState:&v39 objects:v52 count:16];
+  requests = [(FMDServerInteractionController *)self requests];
+  v18 = [requests countByEnumeratingWithState:&v39 objects:v52 count:16];
   if (v18)
   {
     v19 = *v40;
@@ -130,17 +130,17 @@ LABEL_14:
       {
         if (*v40 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(requests);
         }
 
         v21 = *(*(&v39 + 1) + 8 * i);
-        if ([v4 canReplace:v21])
+        if ([requestCopy canReplace:v21])
         {
           [v16 addObject:v21];
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v39 objects:v52 count:16];
+      v18 = [requests countByEnumeratingWithState:&v39 objects:v52 count:16];
     }
 
     while (v18);
@@ -177,12 +177,12 @@ LABEL_14:
           v47 = 2112;
           v48 = v28;
           v49 = 2048;
-          v50 = v4;
-          v29 = self;
+          v50 = requestCopy;
+          selfCopy = self;
           v30 = v28;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) is being replaced with %@ (0x%lX)", buf, 0x2Au);
 
-          self = v29;
+          self = selfCopy;
         }
 
         [(FMDServerInteractionController *)self cancelRequest:v25];
@@ -194,13 +194,13 @@ LABEL_14:
     while (v22);
   }
 
-  v31 = [(FMDServerInteractionController *)self requests];
-  [v31 addObject:v4];
+  requests2 = [(FMDServerInteractionController *)self requests];
+  [requests2 addObject:requestCopy];
 
-  v32 = [(FMDServerInteractionController *)self requestModifierLock];
-  [v32 unlock];
+  requestModifierLock2 = [(FMDServerInteractionController *)self requestModifierLock];
+  [requestModifierLock2 unlock];
 
-  [(FMDServerInteractionController *)self _sendRequest:v4];
+  [(FMDServerInteractionController *)self _sendRequest:requestCopy];
   v12 = 1;
 LABEL_36:
 
@@ -209,24 +209,24 @@ LABEL_36:
 
 - (void)cancelAllRequests
 {
-  v3 = [(FMDServerInteractionController *)self requestModifierLock];
-  [v3 lock];
+  requestModifierLock = [(FMDServerInteractionController *)self requestModifierLock];
+  [requestModifierLock lock];
 
-  v4 = [(FMDServerInteractionController *)self requests];
-  v5 = [v4 copy];
+  requests = [(FMDServerInteractionController *)self requests];
+  v5 = [requests copy];
 
   v6 = +[NSMutableArray array];
   [(FMDServerInteractionController *)self setRequests:v6];
 
-  v7 = [(FMDServerInteractionController *)self requestModifierLock];
-  [v7 unlock];
+  requestModifierLock2 = [(FMDServerInteractionController *)self requestModifierLock];
+  [requestModifierLock2 unlock];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(FMDServerInteractionController *)self channels];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  channels = [(FMDServerInteractionController *)self channels];
+  v9 = [channels countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v9)
   {
     v10 = *v21;
@@ -236,13 +236,13 @@ LABEL_36:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(channels);
         }
 
         [*(*(&v20 + 1) + 8 * i) cancelAllRequests];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v9 = [channels countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v9);
@@ -276,17 +276,17 @@ LABEL_36:
   }
 }
 
-- (void)_sendRequest:(id)a3
+- (void)_sendRequest:(id)request
 {
-  v4 = a3;
-  if (([v4 inProgress] & 1) == 0 && (objc_msgSend(v4, "cancelled") & 1) == 0 && (objc_msgSend(v4, "completed") & 1) == 0 && objc_msgSend(v4, "willRetry"))
+  requestCopy = request;
+  if (([requestCopy inProgress] & 1) == 0 && (objc_msgSend(requestCopy, "cancelled") & 1) == 0 && (objc_msgSend(requestCopy, "completed") & 1) == 0 && objc_msgSend(requestCopy, "willRetry"))
   {
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v5 = [(FMDServerInteractionController *)self channels];
-    v6 = [v5 countByEnumeratingWithState:&v52 objects:v62 count:16];
+    channels = [(FMDServerInteractionController *)self channels];
+    v6 = [channels countByEnumeratingWithState:&v52 objects:v62 count:16];
     if (v6)
     {
       v7 = v6;
@@ -297,13 +297,13 @@ LABEL_7:
       {
         if (*v53 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(channels);
         }
 
         v10 = *(*(&v52 + 1) + 8 * v9);
         if ([v10 isActive])
         {
-          if ([v10 supportsRequestType:{objc_msgSend(v4, "type")}])
+          if ([v10 supportsRequestType:{objc_msgSend(requestCopy, "type")}])
           {
             break;
           }
@@ -311,7 +311,7 @@ LABEL_7:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v52 objects:v62 count:16];
+          v7 = [channels countByEnumeratingWithState:&v52 objects:v62 count:16];
           if (v7)
           {
             goto LABEL_7;
@@ -333,28 +333,28 @@ LABEL_7:
       {
         v13 = objc_opt_class();
         v14 = v13;
-        v15 = [v11 fm_logID];
+        fm_logID = [v11 fm_logID];
         *buf = 138412802;
         v57 = v13;
         v58 = 2048;
-        v59 = v4;
+        v59 = requestCopy;
         v60 = 2112;
-        v61 = v15;
+        v61 = fm_logID;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) Sending to channel %@", buf, 0x20u);
       }
 
-      [v4 setInProgress:1];
-      [v4 setAlertFromServerResponse:0];
-      v16 = [v4 willSendHandler];
+      [requestCopy setInProgress:1];
+      [requestCopy setAlertFromServerResponse:0];
+      willSendHandler = [requestCopy willSendHandler];
 
-      if (v16)
+      if (willSendHandler)
       {
-        v17 = [v4 willSendHandler];
-        (v17)[2](v17, v4);
+        willSendHandler2 = [requestCopy willSendHandler];
+        (willSendHandler2)[2](willSendHandler2, requestCopy);
       }
 
-      v18 = [v4 requestUrl];
-      v19 = [(FMDServerInteractionController *)self redirectedURL:v18];
+      requestUrl = [requestCopy requestUrl];
+      v19 = [(FMDServerInteractionController *)self redirectedURL:requestUrl];
       v20 = v19;
       if (v19)
       {
@@ -363,19 +363,19 @@ LABEL_7:
 
       else
       {
-        v22 = [v4 urlTemplateType];
-        v23 = [(FMDServerInteractionController *)self udid];
-        v21 = [(FMDServerInteractionController *)self redirectedRequestURLForType:v22 udid:v23];
+        urlTemplateType = [requestCopy urlTemplateType];
+        udid = [(FMDServerInteractionController *)self udid];
+        v21 = [(FMDServerInteractionController *)self redirectedRequestURLForType:urlTemplateType udid:udid];
       }
 
-      v24 = [v4 requestBody];
-      v25 = [v4 requestBodyData];
-      if (v25)
+      requestBody = [requestCopy requestBody];
+      requestBodyData = [requestCopy requestBodyData];
+      if (requestBodyData)
       {
         goto LABEL_24;
       }
 
-      if (!v24)
+      if (!requestBody)
       {
 LABEL_44:
 
@@ -383,18 +383,18 @@ LABEL_44:
       }
 
       v51 = 0;
-      v27 = [NSJSONSerialization dataWithJSONObject:v24 options:0 error:&v51];
+      requestHeaders = [NSJSONSerialization dataWithJSONObject:requestBody options:0 error:&v51];
       v41 = v51;
-      v25 = v41;
-      if (v27)
+      requestBodyData = v41;
+      if (requestHeaders)
       {
         if (!v41)
         {
-          v25 = v27;
+          requestBodyData = requestHeaders;
 LABEL_24:
           v26 = v21;
-          v27 = [v4 requestHeaders];
-          v28 = [v27 mutableCopy];
+          requestHeaders = [requestCopy requestHeaders];
+          v28 = [requestHeaders mutableCopy];
           v29 = [v28 objectForKeyedSubscript:@"Authorization"];
 
           if (v29)
@@ -402,7 +402,7 @@ LABEL_24:
             [v28 setObject:@"REDACTED" forKeyedSubscript:@"Authorization"];
           }
 
-          v30 = [NSJSONSerialization JSONObjectWithData:v25 options:0 error:0];
+          v30 = [NSJSONSerialization JSONObjectWithData:requestBodyData options:0 error:0];
           v31 = sub_10000C688();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
@@ -410,7 +410,7 @@ LABEL_24:
             *buf = 138412802;
             v57 = v32;
             v58 = 2048;
-            v59 = v4;
+            v59 = requestCopy;
             v60 = 2112;
             v61 = v26;
             v33 = v32;
@@ -424,7 +424,7 @@ LABEL_24:
             *buf = 138412802;
             v57 = v35;
             v58 = 2048;
-            v59 = v4;
+            v59 = requestCopy;
             v60 = 2112;
             v61 = v28;
             v36 = v35;
@@ -438,14 +438,14 @@ LABEL_24:
             *buf = 138412802;
             v57 = v38;
             v58 = 2048;
-            v59 = v4;
+            v59 = requestCopy;
             v60 = 2112;
             v61 = v30;
             v39 = v38;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) Sending with body dict : \n%@ ", buf, 0x20u);
           }
 
-          if ([v4 cancelled])
+          if ([requestCopy cancelled])
           {
             v40 = sub_100002880();
             v21 = v26;
@@ -457,29 +457,29 @@ LABEL_24:
 
           else
           {
-            [(FMDServerInteractionController *)self _enablePowerAssertionForRequest:v4];
-            v42 = [v4 retryHelper];
-            v43 = [v42 totalRetryCount];
+            [(FMDServerInteractionController *)self _enablePowerAssertionForRequest:requestCopy];
+            retryHelper = [requestCopy retryHelper];
+            totalRetryCount = [retryHelper totalRetryCount];
 
             v21 = v26;
-            if (!v43)
+            if (!totalRetryCount)
             {
-              [(FMDServerInteractionController *)self _beginXPCTransactionForRequest:v4];
+              [(FMDServerInteractionController *)self _beginXPCTransactionForRequest:requestCopy];
             }
 
-            v44 = [v4 requestId];
+            requestId = [requestCopy requestId];
             v48[0] = _NSConcreteStackBlock;
             v48[1] = 3221225472;
             v48[2] = sub_10012DB58;
             v48[3] = &unk_1002CD360;
-            v49 = v4;
-            v50 = self;
-            [v11 sendRequestWithId:v44 toURL:v26 withHeaders:v27 body:v25 completion:v48];
+            v49 = requestCopy;
+            selfCopy = self;
+            [v11 sendRequestWithId:requestId toURL:v26 withHeaders:requestHeaders body:requestBodyData completion:v48];
 
             v40 = v49;
           }
 
-          v24 = v47;
+          requestBody = v47;
 LABEL_43:
 
           goto LABEL_44;
@@ -494,7 +494,7 @@ LABEL_43:
           sub_100225B48();
         }
 
-        if (!v25)
+        if (!requestBodyData)
         {
           goto LABEL_44;
         }
@@ -516,36 +516,36 @@ LABEL_43:
     }
 
 LABEL_14:
-    v11 = v5;
+    v11 = channels;
 LABEL_45:
   }
 
 LABEL_46:
 }
 
-- (void)_handleResponseForRequest:(id)a3 withStatus:(int64_t)a4 headers:(id)a5 body:(id)a6 location:(id)a7 error:(id)a8
+- (void)_handleResponseForRequest:(id)request withStatus:(int64_t)status headers:(id)headers body:(id)body location:(id)location error:(id)error
 {
-  v14 = a3;
-  v84 = a5;
-  v15 = a6;
-  v81 = a7;
-  v83 = a8;
+  requestCopy = request;
+  headersCopy = headers;
+  bodyCopy = body;
+  locationCopy = location;
+  errorCopy = error;
   v16 = sub_10000C688();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = objc_opt_class();
     v18 = v17;
-    v19 = [v83 domain];
+    domain = [errorCopy domain];
     *buf = 138413314;
     v87 = v17;
     v88 = 2048;
-    v89 = v14;
+    v89 = requestCopy;
     v90 = 2048;
-    v91 = a4;
+    statusCopy = status;
     v92 = 2112;
-    v93 = v19;
+    v93 = domain;
     v94 = 2048;
-    v95 = [v83 code];
+    code = [errorCopy code];
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) received response with status %ld, error %@:%ld", buf, 0x34u);
   }
 
@@ -554,19 +554,19 @@ LABEL_46:
   {
     v21 = objc_opt_class();
     v22 = v21;
-    v23 = [v84 objectForKeyedSubscript:@"X-Apple-Request-UUID"];
-    v24 = [v84 objectForKeyedSubscript:@"X-Request-UUID"];
-    v25 = [v84 objectForKeyedSubscript:@"X-Responding-Instance"];
+    v23 = [headersCopy objectForKeyedSubscript:@"X-Apple-Request-UUID"];
+    v24 = [headersCopy objectForKeyedSubscript:@"X-Request-UUID"];
+    v25 = [headersCopy objectForKeyedSubscript:@"X-Responding-Instance"];
     *buf = 138413314;
     v87 = v21;
     v88 = 2048;
-    v89 = v14;
+    v89 = requestCopy;
     v90 = 2114;
-    v91 = v23;
+    statusCopy = v23;
     v92 = 2114;
     v93 = v24;
     v94 = 2114;
-    v95 = v25;
+    code = v25;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) X-Apple-Request-UUID: %{public}@, X-Request-UUID: %{public}@, X-Apple-Responding-Instance : %{public}@", buf, 0x34u);
   }
 
@@ -575,19 +575,19 @@ LABEL_46:
   {
     v27 = objc_opt_class();
     v28 = v27;
-    v29 = [v84 description];
+    v29 = [headersCopy description];
     *buf = 138412802;
     v87 = v27;
     v88 = 2048;
-    v89 = v14;
+    v89 = requestCopy;
     v90 = 2112;
-    v91 = v29;
+    statusCopy = v29;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) received headers: \n%@", buf, 0x20u);
   }
 
-  if (v15)
+  if (bodyCopy)
   {
-    v30 = [[NSString alloc] initWithData:v15 encoding:4];
+    v30 = [[NSString alloc] initWithData:bodyCopy encoding:4];
   }
 
   else
@@ -602,25 +602,25 @@ LABEL_46:
     *buf = 138412802;
     v87 = v32;
     v88 = 2048;
-    v89 = v14;
+    v89 = requestCopy;
     v90 = 2112;
-    v91 = v30;
+    statusCopy = v30;
     v33 = v32;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) raw response body : %@", buf, 0x20u);
   }
 
-  [v14 setHttpResponseStatus:a4];
-  [v14 setHttpResponseHeaders:v84];
-  [v14 setHttpResponseError:v83];
-  if ([v15 length])
+  [requestCopy setHttpResponseStatus:status];
+  [requestCopy setHttpResponseHeaders:headersCopy];
+  [requestCopy setHttpResponseError:errorCopy];
+  if ([bodyCopy length])
   {
     v85 = 0;
-    v34 = [NSJSONSerialization JSONObjectWithData:v15 options:0 error:&v85];
+    v34 = [NSJSONSerialization JSONObjectWithData:bodyCopy options:0 error:&v85];
     v35 = v85;
     v36 = v35;
     if (v34 || !v35)
     {
-      [v14 setHttpResponseBody:v34];
+      [requestCopy setHttpResponseBody:v34];
       if (!v34)
       {
 LABEL_21:
@@ -637,9 +637,9 @@ LABEL_21:
         *buf = 138412802;
         v87 = v38;
         v88 = 2048;
-        v89 = v14;
+        v89 = requestCopy;
         v90 = 2112;
-        v91 = v40;
+        statusCopy = v40;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) response body dict : \n%@", buf, 0x20u);
       }
     }
@@ -657,61 +657,61 @@ LABEL_21:
   }
 
 LABEL_22:
-  v41 = [v14 httpResponseBody];
-  v42 = v41 == 0;
+  httpResponseBody = [requestCopy httpResponseBody];
+  v42 = httpResponseBody == 0;
 
   if (!v42)
   {
-    v43 = [v14 httpResponseBody];
-    v44 = [v43 objectForKeyedSubscript:@"alert"];
-    v45 = [v44 fm_nullToNil];
-    [v14 setAlertFromServerResponse:v45];
+    httpResponseBody2 = [requestCopy httpResponseBody];
+    v44 = [httpResponseBody2 objectForKeyedSubscript:@"alert"];
+    fm_nullToNil = [v44 fm_nullToNil];
+    [requestCopy setAlertFromServerResponse:fm_nullToNil];
   }
 
-  [v14 setCompleted:{objc_msgSend(v14, "responseErrorType") == 0}];
-  if ([v14 responseErrorType] == 1025)
+  [requestCopy setCompleted:{objc_msgSend(requestCopy, "responseErrorType") == 0}];
+  if ([requestCopy responseErrorType] == 1025)
   {
-    v46 = [v14 httpResponseHeaders];
-    v47 = [v46 stringForCaseInsensitiveStringKey:@"X-Apple-MMe-Host"];
+    httpResponseHeaders = [requestCopy httpResponseHeaders];
+    v47 = [httpResponseHeaders stringForCaseInsensitiveStringKey:@"X-Apple-MMe-Host"];
 
     if (v47)
     {
-      v48 = [v14 urlTemplateType];
-      v49 = [(FMDServerInteractionController *)self udid];
-      v50 = [(FMDServerInteractionController *)self redirectedRequestURLForType:v48 udid:v49];
-      v51 = [v50 host];
+      urlTemplateType = [requestCopy urlTemplateType];
+      udid = [(FMDServerInteractionController *)self udid];
+      v50 = [(FMDServerInteractionController *)self redirectedRequestURLForType:urlTemplateType udid:udid];
+      host = [v50 host];
 
-      v52 = [(FMDServerInteractionController *)self account];
-      v53 = [v52 authId];
-      [FMDRealmSupport setRedirectedHost:v47 forHost:v51 withContext:v53];
+      account = [(FMDServerInteractionController *)self account];
+      authId = [account authId];
+      [FMDRealmSupport setRedirectedHost:v47 forHost:host withContext:authId];
 
       v54 = sub_100002880();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
         v55 = objc_opt_class();
         v56 = v55;
-        v57 = [(FMDServerInteractionController *)self account];
-        v58 = [v57 authId];
+        account2 = [(FMDServerInteractionController *)self account];
+        authId2 = [account2 authId];
         *buf = 138413314;
         v87 = v55;
         v88 = 2048;
-        v89 = v14;
+        v89 = requestCopy;
         v90 = 2112;
-        v91 = v51;
+        statusCopy = host;
         v92 = 2112;
         v93 = v47;
         v94 = 2112;
-        v95 = v58;
+        code = authId2;
         _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) Realm redirection from %@ to %@ for %@", buf, 0x34u);
       }
     }
   }
 
-  [(FMDServerInteractionController *)self _evaluateRetriesForRequest:v14];
-  [v14 setInProgress:0];
-  v59 = [v14 completionHandler];
+  [(FMDServerInteractionController *)self _evaluateRetriesForRequest:requestCopy];
+  [requestCopy setInProgress:0];
+  completionHandler = [requestCopy completionHandler];
 
-  if (v59)
+  if (completionHandler)
   {
     v60 = sub_10000C688();
     if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
@@ -719,28 +719,28 @@ LABEL_22:
       sub_100225D9C();
     }
 
-    v61 = [v14 completionHandler];
-    (v61)[2](v61, v14);
+    completionHandler2 = [requestCopy completionHandler];
+    (completionHandler2)[2](completionHandler2, requestCopy);
   }
 
-  v62 = [v14 alertFromServerResponse];
+  alertFromServerResponse = [requestCopy alertFromServerResponse];
 
-  if (v62)
+  if (alertFromServerResponse)
   {
-    v63 = [(FMDServerInteractionController *)self delegate];
-    [v63 didReceiveServerAlertForRequest:v14];
+    delegate = [(FMDServerInteractionController *)self delegate];
+    [delegate didReceiveServerAlertForRequest:requestCopy];
   }
 
-  v64 = [v14 httpResponseHeaders];
-  v65 = [v64 stringForCaseInsensitiveStringKey:@"X-Apple-Force-Register"];
+  httpResponseHeaders2 = [requestCopy httpResponseHeaders];
+  v65 = [httpResponseHeaders2 stringForCaseInsensitiveStringKey:@"X-Apple-Force-Register"];
   if ([v65 isEqualToString:@"true"])
   {
   }
 
   else
   {
-    v66 = [v14 httpResponseHeaders];
-    v67 = [v66 BOOLForCaseInsensitiveStringKey:@"X-Apple-Force-Register"];
+    httpResponseHeaders3 = [requestCopy httpResponseHeaders];
+    v67 = [httpResponseHeaders3 BOOLForCaseInsensitiveStringKey:@"X-Apple-Force-Register"];
 
     if (!v67)
     {
@@ -752,8 +752,8 @@ LABEL_22:
   [v68 registerDeviceWithCause:@"ForcedServerRegister" force:1];
 
 LABEL_40:
-  v69 = [v14 httpResponseHeaders];
-  v70 = [v69 objectForKey:@"X-Apple-Ctx"];
+  httpResponseHeaders4 = [requestCopy httpResponseHeaders];
+  v70 = [httpResponseHeaders4 objectForKey:@"X-Apple-Ctx"];
 
   if (v70)
   {
@@ -764,7 +764,7 @@ LABEL_40:
     v73 = [v72 saveContext:v70 forContextKey:@"serverContextHeaderContext" dataProtectionClass:4];
   }
 
-  if (([v14 willRetry] & 1) == 0)
+  if (([requestCopy willRetry] & 1) == 0)
   {
     v74 = sub_100002880();
     if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
@@ -773,43 +773,43 @@ LABEL_40:
       *buf = 138412546;
       v87 = v75;
       v88 = 2048;
-      v89 = v14;
+      v89 = requestCopy;
       v76 = v75;
       _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) Removing from the queue as it was completed or it exhausted its retries", buf, 0x16u);
     }
 
-    [v14 deinitializeRequest];
-    v77 = [(FMDServerInteractionController *)self requestModifierLock];
-    [v77 lock];
+    [requestCopy deinitializeRequest];
+    requestModifierLock = [(FMDServerInteractionController *)self requestModifierLock];
+    [requestModifierLock lock];
 
-    v78 = [(FMDServerInteractionController *)self requests];
-    [v78 removeObject:v14];
+    requests = [(FMDServerInteractionController *)self requests];
+    [requests removeObject:requestCopy];
 
-    v79 = [(FMDServerInteractionController *)self requestModifierLock];
-    [v79 unlock];
+    requestModifierLock2 = [(FMDServerInteractionController *)self requestModifierLock];
+    [requestModifierLock2 unlock];
 
-    [(FMDServerInteractionController *)self _endXPCTransactionForRequest:v14];
+    [(FMDServerInteractionController *)self _endXPCTransactionForRequest:requestCopy];
   }
 
-  if ([v14 responseErrorType] == 257)
+  if ([requestCopy responseErrorType] == 257)
   {
-    v80 = [(FMDServerInteractionController *)self delegate];
-    [v80 didReceiveAuthFailureForRequest:v14];
+    delegate2 = [(FMDServerInteractionController *)self delegate];
+    [delegate2 didReceiveAuthFailureForRequest:requestCopy];
   }
 
-  [(FMDServerInteractionController *)self _disablePowerAssertionForRequest:v14];
+  [(FMDServerInteractionController *)self _disablePowerAssertionForRequest:requestCopy];
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v22 = objc_opt_class();
     v23 = 2048;
-    v24 = v4;
+    v24 = requestCopy;
     v6 = v22;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Cancelling request %@ (0x%lX)", buf, 0x16u);
   }
@@ -818,8 +818,8 @@ LABEL_40:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(FMDServerInteractionController *)self channels];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  channels = [(FMDServerInteractionController *)self channels];
+  v8 = [channels countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -829,70 +829,70 @@ LABEL_40:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(channels);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v4 requestId];
-        [v11 cancelRequestWithId:v12];
+        requestId = [requestCopy requestId];
+        [v11 cancelRequestWithId:requestId];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [channels countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  [(FMDServerInteractionController *)self _markRequestCancelled:v4];
-  v13 = [(FMDServerInteractionController *)self requestModifierLock];
-  [v13 lock];
+  [(FMDServerInteractionController *)self _markRequestCancelled:requestCopy];
+  requestModifierLock = [(FMDServerInteractionController *)self requestModifierLock];
+  [requestModifierLock lock];
 
-  v14 = [(FMDServerInteractionController *)self requests];
-  [v14 removeObject:v4];
+  requests = [(FMDServerInteractionController *)self requests];
+  [requests removeObject:requestCopy];
 
-  v15 = [(FMDServerInteractionController *)self requestModifierLock];
-  [v15 unlock];
+  requestModifierLock2 = [(FMDServerInteractionController *)self requestModifierLock];
+  [requestModifierLock2 unlock];
 }
 
-- (void)_markRequestCancelled:(id)a3
+- (void)_markRequestCancelled:(id)cancelled
 {
-  v4 = a3;
+  cancelledCopy = cancelled;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 138412546;
     *&v9[4] = objc_opt_class();
     *&v9[12] = 2048;
-    *&v9[14] = v4;
+    *&v9[14] = cancelledCopy;
     v6 = *&v9[4];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Marking request cancelled %@ (0x%lX)", v9, 0x16u);
   }
 
-  [v4 setCancelled:1];
-  [v4 setInProgress:0];
-  [(FMDServerInteractionController *)self _evaluateRetriesForRequest:v4];
-  v7 = [v4 completionHandler];
+  [cancelledCopy setCancelled:1];
+  [cancelledCopy setInProgress:0];
+  [(FMDServerInteractionController *)self _evaluateRetriesForRequest:cancelledCopy];
+  completionHandler = [cancelledCopy completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [v4 completionHandler];
-    (v8)[2](v8, v4);
+    completionHandler2 = [cancelledCopy completionHandler];
+    (completionHandler2)[2](completionHandler2, cancelledCopy);
   }
 
-  [v4 deinitializeRequest];
-  [(FMDServerInteractionController *)self _endXPCTransactionForRequest:v4];
-  [(FMDServerInteractionController *)self _disablePowerAssertionForRequest:v4];
+  [cancelledCopy deinitializeRequest];
+  [(FMDServerInteractionController *)self _endXPCTransactionForRequest:cancelledCopy];
+  [(FMDServerInteractionController *)self _disablePowerAssertionForRequest:cancelledCopy];
 }
 
-- (void)_evaluateRetriesForRequest:(id)a3
+- (void)_evaluateRetriesForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 retryHelper];
+  requestCopy = request;
+  retryHelper = [requestCopy retryHelper];
 
-  if (!v5)
+  if (!retryHelper)
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, requestCopy);
     v6 = [FMDRequestRetryHelper alloc];
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
@@ -900,8 +900,8 @@ LABEL_40:
     v12 = &unk_1002CD388;
     objc_copyWeak(&v13, &location);
     objc_copyWeak(&v14, &from);
-    v7 = [(FMDRequestRetryHelper *)v6 initWithRequest:v4 retryAction:&v9];
-    [v4 setRetryHelper:{v7, v9, v10, v11, v12}];
+    v7 = [(FMDRequestRetryHelper *)v6 initWithRequest:requestCopy retryAction:&v9];
+    [requestCopy setRetryHelper:{v7, v9, v10, v11, v12}];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&v13);
@@ -909,92 +909,92 @@ LABEL_40:
     objc_destroyWeak(&location);
   }
 
-  v8 = [v4 retryHelper];
-  [v8 checkAndScheduleRetries];
+  retryHelper2 = [requestCopy retryHelper];
+  [retryHelper2 checkAndScheduleRetries];
 }
 
-- (void)_beginXPCTransactionForRequest:(id)a3
+- (void)_beginXPCTransactionForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v7 = [NSString stringWithFormat:@"%@-0x%p", v5, v3];
+  requestCopy = [NSString stringWithFormat:@"%@-0x%p", v5, requestCopy];
 
   v6 = +[FMXPCTransactionManager sharedInstance];
-  [v6 beginTransaction:v7];
+  [v6 beginTransaction:requestCopy];
 }
 
-- (void)_endXPCTransactionForRequest:(id)a3
+- (void)_endXPCTransactionForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v7 = [NSString stringWithFormat:@"%@-0x%p", v5, v3];
+  requestCopy = [NSString stringWithFormat:@"%@-0x%p", v5, requestCopy];
 
   v6 = +[FMXPCTransactionManager sharedInstance];
-  [v6 endTransaction:v7];
+  [v6 endTransaction:requestCopy];
 }
 
-- (void)_enablePowerAssertionForRequest:(id)a3
+- (void)_enablePowerAssertionForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v7 = [NSString stringWithFormat:@"%@-0x%p", v5, v3];
+  requestCopy = [NSString stringWithFormat:@"%@-0x%p", v5, requestCopy];
 
   v6 = +[FMDPowerMgr sharedInstance];
-  [v6 powerAssertionEnableWithReason:v7];
+  [v6 powerAssertionEnableWithReason:requestCopy];
 }
 
-- (void)_disablePowerAssertionForRequest:(id)a3
+- (void)_disablePowerAssertionForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v7 = [NSString stringWithFormat:@"%@-0x%p", v5, v3];
+  requestCopy = [NSString stringWithFormat:@"%@-0x%p", v5, requestCopy];
 
   v6 = +[FMDPowerMgr sharedInstance];
-  [v6 powerAssertionDisableWithReason:v7];
+  [v6 powerAssertionDisableWithReason:requestCopy];
 }
 
-- (id)requestUrlForType:(id)a3 udid:(id)a4
+- (id)requestUrlForType:(id)type udid:(id)udid
 {
-  v6 = a4;
-  v7 = a3;
+  udidCopy = udid;
+  typeCopy = type;
   v8 = +[FMDServerConfig sharedInstance];
-  v9 = [v8 urlTemplateForRequestType:v7];
+  v9 = [v8 urlTemplateForRequestType:typeCopy];
 
   v10 = objc_alloc_init(RequestTemplateURL);
-  v11 = [(FMDServerInteractionController *)self account];
-  v12 = [(RequestTemplateURL *)v10 urlFromTemplate:v9 account:v11 udid:v6];
+  account = [(FMDServerInteractionController *)self account];
+  v12 = [(RequestTemplateURL *)v10 urlFromTemplate:v9 account:account udid:udidCopy];
 
   return v12;
 }
 
-- (id)redirectedRequestURLForType:(id)a3 udid:(id)a4
+- (id)redirectedRequestURLForType:(id)type udid:(id)udid
 {
-  v5 = [(FMDServerInteractionController *)self requestUrlForType:a3 udid:a4];
+  v5 = [(FMDServerInteractionController *)self requestUrlForType:type udid:udid];
   v6 = [(FMDServerInteractionController *)self redirectedURL:v5];
 
   return v6;
 }
 
-- (id)redirectedURL:(id)a3
+- (id)redirectedURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
-    v6 = [v4 host];
-    v7 = [(FMDServerInteractionController *)self account];
-    v8 = [v7 authId];
-    v9 = [FMDRealmSupport redirectedHostForHost:v6 withContext:v8];
+    host = [lCopy host];
+    account = [(FMDServerInteractionController *)self account];
+    authId = [account authId];
+    v9 = [FMDRealmSupport redirectedHostForHost:host withContext:authId];
 
     v10 = v5;
     if (v9)
     {
       v10 = v5;
-      if (([v6 isEqualToString:v9] & 1) == 0)
+      if (([host isEqualToString:v9] & 1) == 0)
       {
         v10 = [v5 URLByReplacingHost:v9];
       }
@@ -1011,26 +1011,26 @@ LABEL_40:
 
 - (id)account
 {
-  v3 = [(FMDServerInteractionController *)self requestAccount];
+  requestAccount = [(FMDServerInteractionController *)self requestAccount];
 
-  if (v3)
+  if (requestAccount)
   {
-    v4 = [(FMDServerInteractionController *)self requestAccount];
+    requestAccount2 = [(FMDServerInteractionController *)self requestAccount];
   }
 
   else
   {
-    v5 = [(FMDServerInteractionController *)self delegate];
-    v4 = [v5 accountForServerInteractionController:self];
+    delegate = [(FMDServerInteractionController *)self delegate];
+    requestAccount2 = [delegate accountForServerInteractionController:self];
   }
 
-  return v4;
+  return requestAccount2;
 }
 
 - (NSString)udid
 {
   v3 = +[FMDSystemConfig sharedInstance];
-  v4 = [v3 deviceUDID];
+  deviceUDID = [v3 deviceUDID];
 
   if (self->_udid)
   {
@@ -1039,7 +1039,7 @@ LABEL_40:
 
   else
   {
-    udid = v4;
+    udid = deviceUDID;
   }
 
   v6 = udid;

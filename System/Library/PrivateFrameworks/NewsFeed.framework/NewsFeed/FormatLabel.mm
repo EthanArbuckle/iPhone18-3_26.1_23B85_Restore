@@ -1,10 +1,10 @@
 @interface FormatLabel
-- (_TtC8NewsFeed11FormatLabel)initWithCoder:(id)a3;
+- (_TtC8NewsFeed11FormatLabel)initWithCoder:(id)coder;
 @end
 
 @implementation FormatLabel
 
-- (_TtC8NewsFeed11FormatLabel)initWithCoder:(id)a3
+- (_TtC8NewsFeed11FormatLabel)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeed11FormatLabel_identifier);
   *v3 = 0;

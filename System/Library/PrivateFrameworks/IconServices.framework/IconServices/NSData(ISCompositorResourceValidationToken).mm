@@ -48,12 +48,12 @@
 
 - (id)_is_getSequenceNumber:()ISCompositorResourceValidationToken andUUID:
 {
-  result = [a1 length];
+  result = [self length];
   if (result == 40)
   {
-    v8 = [a1 bytes];
-    *a3 = *(v8 + 16);
-    result = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v8];
+    bytes = [self bytes];
+    *a3 = *(bytes + 16);
+    result = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:bytes];
     *a4 = result;
   }
 
@@ -62,10 +62,10 @@
 
 - (id)_is_databaseUUID
 {
-  if ([a1 length] == 40)
+  if ([self length] == 40)
   {
-    v2 = [a1 bytes];
-    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v2];
+    bytes = [self bytes];
+    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:bytes];
   }
 
   else
@@ -78,9 +78,9 @@
 
 - (uint64_t)_is_SequenceNumber
 {
-  if ([a1 length] == 40)
+  if ([self length] == 40)
   {
-    return *([a1 bytes] + 16);
+    return *([self bytes] + 16);
   }
 
   else
@@ -91,10 +91,10 @@
 
 - (id)_is_persistentIdentifierDigest
 {
-  if ([a1 length] == 40)
+  if ([self length] == 40)
   {
-    v2 = [a1 bytes];
-    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v2 + 24];
+    bytes = [self bytes];
+    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:bytes + 24];
   }
 
   else

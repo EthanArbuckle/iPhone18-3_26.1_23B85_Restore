@@ -1,36 +1,36 @@
 @interface CXChannelSourceManager
-- (CXChannelSourceManager)initWithDelegate:(id)a3 queue:(id)a4;
+- (CXChannelSourceManager)initWithDelegate:(id)delegate queue:(id)queue;
 - (CXChannelSourceManagerDelegate)delegate;
 - (NSArray)channelSources;
-- (id)channelSourceForIdentifier:(id)a3;
-- (void)addAction:(id)a3 toUncommittedTransactionForChannelSource:(id)a4;
-- (void)addChannelSource:(id)a3;
+- (id)channelSourceForIdentifier:(id)identifier;
+- (void)addAction:(id)action toUncommittedTransactionForChannelSource:(id)source;
+- (void)addChannelSource:(id)source;
 - (void)commitUncommittedTransactions;
-- (void)failOutstandingActionsForChannelWithUUID:(id)a3;
-- (void)performDelegateCallback:(id)a3;
-- (void)removeChannelSource:(id)a3;
-- (void)serviceServer:(id)a3 client:(id)a4 actionCompleted:(id)a5;
-- (void)serviceServer:(id)a3 client:(id)a4 registeredWithConfiguration:(id)a5;
-- (void)serviceServer:(id)a3 client:(id)a4 reportedAudioFinishedForChannelWithUUID:(id)a5;
-- (void)serviceServer:(id)a3 client:(id)a4 reportedChannelWithUUID:(id)a5 connectedAtDate:(id)a6;
-- (void)serviceServer:(id)a3 client:(id)a4 reportedChannelWithUUID:(id)a5 disconnectedAtDate:(id)a6 disconnectedReason:(int64_t)a7;
-- (void)serviceServer:(id)a3 client:(id)a4 reportedChannelWithUUID:(id)a5 startedConnectingAtDate:(id)a6;
-- (void)serviceServer:(id)a3 client:(id)a4 reportedChannelWithUUID:(id)a5 updated:(id)a6;
-- (void)serviceServer:(id)a3 client:(id)a4 reportedIncomingTransmissionEndedForChannelWithUUID:(id)a5 reason:(int64_t)a6 completionHandler:(id)a7;
-- (void)serviceServer:(id)a3 client:(id)a4 reportedIncomingTransmissionStartedForChannelWithUUID:(id)a5 update:(id)a6 shouldReplaceOutgoingTransmission:(BOOL)a7 completionHandler:(id)a8;
-- (void)serviceServer:(id)a3 client:(id)a4 requestedTransaction:(id)a5 completionHandler:(id)a6;
-- (void)serviceServer:(id)a3 didAddClient:(id)a4;
-- (void)serviceServer:(id)a3 didRemoveClient:(id)a4;
-- (void)transactionManager:(id)a3 actionTimedOut:(id)a4 forCallSource:(id)a5;
-- (void)transactionManager:(id)a3 transactionGroupCompleted:(id)a4;
+- (void)failOutstandingActionsForChannelWithUUID:(id)d;
+- (void)performDelegateCallback:(id)callback;
+- (void)removeChannelSource:(id)source;
+- (void)serviceServer:(id)server client:(id)client actionCompleted:(id)completed;
+- (void)serviceServer:(id)server client:(id)client registeredWithConfiguration:(id)configuration;
+- (void)serviceServer:(id)server client:(id)client reportedAudioFinishedForChannelWithUUID:(id)d;
+- (void)serviceServer:(id)server client:(id)client reportedChannelWithUUID:(id)d connectedAtDate:(id)date;
+- (void)serviceServer:(id)server client:(id)client reportedChannelWithUUID:(id)d disconnectedAtDate:(id)date disconnectedReason:(int64_t)reason;
+- (void)serviceServer:(id)server client:(id)client reportedChannelWithUUID:(id)d startedConnectingAtDate:(id)date;
+- (void)serviceServer:(id)server client:(id)client reportedChannelWithUUID:(id)d updated:(id)updated;
+- (void)serviceServer:(id)server client:(id)client reportedIncomingTransmissionEndedForChannelWithUUID:(id)d reason:(int64_t)reason completionHandler:(id)handler;
+- (void)serviceServer:(id)server client:(id)client reportedIncomingTransmissionStartedForChannelWithUUID:(id)d update:(id)update shouldReplaceOutgoingTransmission:(BOOL)transmission completionHandler:(id)handler;
+- (void)serviceServer:(id)server client:(id)client requestedTransaction:(id)transaction completionHandler:(id)handler;
+- (void)serviceServer:(id)server didAddClient:(id)client;
+- (void)serviceServer:(id)server didRemoveClient:(id)client;
+- (void)transactionManager:(id)manager actionTimedOut:(id)out forCallSource:(id)source;
+- (void)transactionManager:(id)manager transactionGroupCompleted:(id)completed;
 @end
 
 @implementation CXChannelSourceManager
 
-- (CXChannelSourceManager)initWithDelegate:(id)a3 queue:(id)a4
+- (CXChannelSourceManager)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v28.receiver = self;
   v28.super_class = CXChannelSourceManager;
   v8 = [(CXChannelSourceManager *)&v28 init];
@@ -39,16 +39,16 @@
   {
     v8->_accessorLock._os_unfair_lock_opaque = 0;
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.callkit.queue.%@.%p", objc_opt_class(), v8];
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     queue = v9->_queue;
     v9->_queue = v13;
 
-    objc_storeWeak(&v9->_delegate, v6);
-    if (v7)
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    if (queueCopy)
     {
-      v15 = v7;
+      v15 = queueCopy;
       delegateQueue = v9->_delegateQueue;
       v9->_delegateQueue = v15;
     }
@@ -85,22 +85,22 @@
   return v9;
 }
 
-- (void)addChannelSource:(id)a3
+- (void)addChannelSource:(id)source
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = sourceCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Asked to add channel source %@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_accessorLock);
-  v6 = [(CXChannelSourceManager *)self identifierToChannelSource];
-  v7 = [v4 identifier];
-  [v6 setObject:v4 forKeyedSubscript:v7];
+  identifierToChannelSource = [(CXChannelSourceManager *)self identifierToChannelSource];
+  identifier = [sourceCopy identifier];
+  [identifierToChannelSource setObject:sourceCopy forKeyedSubscript:identifier];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -119,12 +119,12 @@ void __43__CXChannelSourceManager_addChannelSource___block_invoke(uint64_t a1)
   [v2 channelSourcesChangedForChannelSourceManager:*(a1 + 32)];
 }
 
-- (id)channelSourceForIdentifier:(id)a3
+- (id)channelSourceForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CXChannelSourceManager *)self identifierToChannelSource];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierToChannelSource = [(CXChannelSourceManager *)self identifierToChannelSource];
+  v6 = [identifierToChannelSource objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
@@ -134,36 +134,36 @@ void __43__CXChannelSourceManager_addChannelSource___block_invoke(uint64_t a1)
 - (NSArray)channelSources
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  v3 = [(CXChannelSourceManager *)self identifierToChannelSource];
-  v4 = [v3 allValues];
+  identifierToChannelSource = [(CXChannelSourceManager *)self identifierToChannelSource];
+  allValues = [identifierToChannelSource allValues];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
-  return v4;
+  return allValues;
 }
 
-- (void)removeChannelSource:(id)a3
+- (void)removeChannelSource:(id)source
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = sourceCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Asked to remove channel source %@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_accessorLock);
-  v6 = [v4 identifier];
-  v7 = [(CXChannelSourceManager *)self identifierToChannelSource];
-  v8 = [v7 objectForKeyedSubscript:v6];
-  v9 = [v8 isEqual:v4];
+  identifier = [sourceCopy identifier];
+  identifierToChannelSource = [(CXChannelSourceManager *)self identifierToChannelSource];
+  v8 = [identifierToChannelSource objectForKeyedSubscript:identifier];
+  v9 = [v8 isEqual:sourceCopy];
 
   if (v9)
   {
-    v10 = [(CXChannelSourceManager *)self identifierToChannelSource];
-    [v10 setObject:0 forKeyedSubscript:v6];
+    identifierToChannelSource2 = [(CXChannelSourceManager *)self identifierToChannelSource];
+    [identifierToChannelSource2 setObject:0 forKeyedSubscript:identifier];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -183,33 +183,33 @@ void __46__CXChannelSourceManager_removeChannelSource___block_invoke(uint64_t a1
   [v2 channelSourcesChangedForChannelSourceManager:*(a1 + 32)];
 }
 
-- (void)performDelegateCallback:(id)a3
+- (void)performDelegateCallback:(id)callback
 {
-  block = a3;
-  v4 = [(CXChannelSourceManager *)self delegate];
+  block = callback;
+  delegate = [(CXChannelSourceManager *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CXChannelSourceManager *)self delegateQueue];
-    dispatch_async(v5, block);
+    delegateQueue = [(CXChannelSourceManager *)self delegateQueue];
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)addAction:(id)a3 toUncommittedTransactionForChannelSource:(id)a4
+- (void)addAction:(id)action toUncommittedTransactionForChannelSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXChannelSourceManager *)self queue];
+  actionCopy = action;
+  sourceCopy = source;
+  queue = [(CXChannelSourceManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__CXChannelSourceManager_addAction_toUncommittedTransactionForChannelSource___block_invoke;
   block[3] = &unk_1E7C06C80;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = actionCopy;
+  v13 = sourceCopy;
+  selfCopy = self;
+  v9 = sourceCopy;
+  v10 = actionCopy;
+  dispatch_async(queue, block);
 }
 
 void __77__CXChannelSourceManager_addAction_toUncommittedTransactionForChannelSource___block_invoke(id *a1)
@@ -261,18 +261,18 @@ void __77__CXChannelSourceManager_addAction_toUncommittedTransactionForChannelSo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)failOutstandingActionsForChannelWithUUID:(id)a3
+- (void)failOutstandingActionsForChannelWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CXChannelSourceManager *)self queue];
+  dCopy = d;
+  queue = [(CXChannelSourceManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__CXChannelSourceManager_failOutstandingActionsForChannelWithUUID___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__CXChannelSourceManager_failOutstandingActionsForChannelWithUUID___block_invoke(uint64_t a1)
@@ -283,13 +283,13 @@ void __67__CXChannelSourceManager_failOutstandingActionsForChannelWithUUID___blo
 
 - (void)commitUncommittedTransactions
 {
-  v3 = [(CXChannelSourceManager *)self queue];
+  queue = [(CXChannelSourceManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CXChannelSourceManager_commitUncommittedTransactions__block_invoke;
   block[3] = &unk_1E7C06CA8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __55__CXChannelSourceManager_commitUncommittedTransactions__block_invoke(uint64_t a1)
@@ -351,27 +351,27 @@ void __55__CXChannelSourceManager_commitUncommittedTransactions__block_invoke(ui
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 actionCompleted:(id)a5
+- (void)serviceServer:(id)server client:(id)client actionCompleted:(id)completed
 {
-  v7 = a4;
-  v8 = a5;
+  clientCopy = client;
+  completedCopy = completed;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 identifier];
-    v10 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v9];
+    identifier = [clientCopy identifier];
+    v10 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v10)
     {
-      v11 = [(CXChannelSourceManager *)self queue];
+      queue = [(CXChannelSourceManager *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __63__CXChannelSourceManager_serviceServer_client_actionCompleted___block_invoke;
       block[3] = &unk_1E7C06C80;
       block[4] = self;
       v13 = v10;
-      v14 = v8;
-      dispatch_async(v11, block);
+      v14 = completedCopy;
+      dispatch_async(queue, block);
     }
   }
 }
@@ -426,25 +426,25 @@ void __63__CXChannelSourceManager_serviceServer_client_actionCompleted___block_i
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serviceServer:(id)a3 didAddClient:(id)a4
+- (void)serviceServer:(id)server didAddClient:(id)client
 {
-  v6 = a4;
+  clientCopy = client;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[CXXPCChannelSource alloc] initWithClient:v6];
+    v5 = [[CXXPCChannelSource alloc] initWithClient:clientCopy];
     [(CXChannelSourceManager *)self addChannelSource:v5];
   }
 }
 
-- (void)serviceServer:(id)a3 didRemoveClient:(id)a4
+- (void)serviceServer:(id)server didRemoveClient:(id)client
 {
-  v7 = a4;
+  clientCopy = client;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v7 identifier];
-    v6 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v5];
+    identifier = [clientCopy identifier];
+    v6 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v6)
     {
@@ -455,15 +455,15 @@ void __63__CXChannelSourceManager_serviceServer_client_actionCompleted___block_i
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 registeredWithConfiguration:(id)a5
+- (void)serviceServer:(id)server client:(id)client registeredWithConfiguration:(id)configuration
 {
-  v7 = a4;
-  v8 = a5;
+  clientCopy = client;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 identifier];
-    v10 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v9];
+    identifier = [clientCopy identifier];
+    v10 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v10)
     {
@@ -473,7 +473,7 @@ void __63__CXChannelSourceManager_serviceServer_client_actionCompleted___block_i
       v11[3] = &unk_1E7C06C80;
       v11[4] = self;
       v12 = v10;
-      v13 = v8;
+      v13 = configurationCopy;
       [(CXChannelSourceManager *)self performDelegateCallback:v11];
     }
   }
@@ -485,15 +485,15 @@ void __75__CXChannelSourceManager_serviceServer_client_registeredWithConfigurati
   [v2 providerSource:*(a1 + 40) registeredWithConfiguration:*(a1 + 48)];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 reportedAudioFinishedForChannelWithUUID:(id)a5
+- (void)serviceServer:(id)server client:(id)client reportedAudioFinishedForChannelWithUUID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  clientCopy = client;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 identifier];
-    v10 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v9];
+    identifier = [clientCopy identifier];
+    v10 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v10)
     {
@@ -503,7 +503,7 @@ void __75__CXChannelSourceManager_serviceServer_client_registeredWithConfigurati
       v11[3] = &unk_1E7C06C80;
       v11[4] = self;
       v12 = v10;
-      v13 = v8;
+      v13 = dCopy;
       [(CXChannelSourceManager *)self performDelegateCallback:v11];
     }
   }
@@ -515,16 +515,16 @@ void __87__CXChannelSourceManager_serviceServer_client_reportedAudioFinishedForC
   [v2 providerSource:*(a1 + 40) reportedAudioFinishedForChannelWithUUID:*(a1 + 48)];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 reportedChannelWithUUID:(id)a5 startedConnectingAtDate:(id)a6
+- (void)serviceServer:(id)server client:(id)client reportedChannelWithUUID:(id)d startedConnectingAtDate:(id)date
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  clientCopy = client;
+  dCopy = d;
+  dateCopy = date;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v9 identifier];
-    v13 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v12];
+    identifier = [clientCopy identifier];
+    v13 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v13)
     {
@@ -534,8 +534,8 @@ void __87__CXChannelSourceManager_serviceServer_client_reportedAudioFinishedForC
       v14[3] = &unk_1E7C06F98;
       v14[4] = self;
       v15 = v13;
-      v16 = v10;
-      v17 = v11;
+      v16 = dCopy;
+      v17 = dateCopy;
       [(CXChannelSourceManager *)self performDelegateCallback:v14];
     }
   }
@@ -547,16 +547,16 @@ void __95__CXChannelSourceManager_serviceServer_client_reportedChannelWithUUID_s
   [v2 providerSource:*(a1 + 40) reportedChannelWithUUID:*(a1 + 48) startedConnectingAtDate:*(a1 + 56)];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 reportedChannelWithUUID:(id)a5 connectedAtDate:(id)a6
+- (void)serviceServer:(id)server client:(id)client reportedChannelWithUUID:(id)d connectedAtDate:(id)date
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  clientCopy = client;
+  dCopy = d;
+  dateCopy = date;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v9 identifier];
-    v13 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v12];
+    identifier = [clientCopy identifier];
+    v13 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v13)
     {
@@ -566,8 +566,8 @@ void __95__CXChannelSourceManager_serviceServer_client_reportedChannelWithUUID_s
       v14[3] = &unk_1E7C06F98;
       v14[4] = self;
       v15 = v13;
-      v16 = v10;
-      v17 = v11;
+      v16 = dCopy;
+      v17 = dateCopy;
       [(CXChannelSourceManager *)self performDelegateCallback:v14];
     }
   }
@@ -579,16 +579,16 @@ void __87__CXChannelSourceManager_serviceServer_client_reportedChannelWithUUID_c
   [v2 providerSource:*(a1 + 40) reportedChannelWithUUID:*(a1 + 48) connectedAtDate:*(a1 + 56)];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 reportedChannelWithUUID:(id)a5 disconnectedAtDate:(id)a6 disconnectedReason:(int64_t)a7
+- (void)serviceServer:(id)server client:(id)client reportedChannelWithUUID:(id)d disconnectedAtDate:(id)date disconnectedReason:(int64_t)reason
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  dCopy = d;
+  dateCopy = date;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v11 identifier];
-    v15 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v14];
+    identifier = [clientCopy identifier];
+    v15 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v15)
     {
@@ -598,9 +598,9 @@ void __87__CXChannelSourceManager_serviceServer_client_reportedChannelWithUUID_c
       v16[3] = &unk_1E7C06FE8;
       v16[4] = self;
       v17 = v15;
-      v18 = v12;
-      v19 = v13;
-      v20 = a7;
+      v18 = dCopy;
+      v19 = dateCopy;
+      reasonCopy = reason;
       [(CXChannelSourceManager *)self performDelegateCallback:v16];
     }
   }
@@ -612,16 +612,16 @@ void __109__CXChannelSourceManager_serviceServer_client_reportedChannelWithUUID_
   [v2 providerSource:*(a1 + 40) reportedChannelWithUUID:*(a1 + 48) disconnectedAtDate:*(a1 + 56) disconnectedReason:*(a1 + 64)];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 reportedChannelWithUUID:(id)a5 updated:(id)a6
+- (void)serviceServer:(id)server client:(id)client reportedChannelWithUUID:(id)d updated:(id)updated
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  clientCopy = client;
+  dCopy = d;
+  updatedCopy = updated;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v9 identifier];
-    v13 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v12];
+    identifier = [clientCopy identifier];
+    v13 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v13)
     {
@@ -631,8 +631,8 @@ void __109__CXChannelSourceManager_serviceServer_client_reportedChannelWithUUID_
       v14[3] = &unk_1E7C06F98;
       v14[4] = self;
       v15 = v13;
-      v16 = v10;
-      v17 = v11;
+      v16 = dCopy;
+      v17 = updatedCopy;
       [(CXChannelSourceManager *)self performDelegateCallback:v14];
     }
   }
@@ -644,16 +644,16 @@ void __79__CXChannelSourceManager_serviceServer_client_reportedChannelWithUUID_u
   [v2 providerSource:*(a1 + 40) reportedChannelWithUUID:*(a1 + 48) updated:*(a1 + 56)];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 reportedIncomingTransmissionEndedForChannelWithUUID:(id)a5 reason:(int64_t)a6 completionHandler:(id)a7
+- (void)serviceServer:(id)server client:(id)client reportedIncomingTransmissionEndedForChannelWithUUID:(id)d reason:(int64_t)reason completionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  clientCopy = client;
+  dCopy = d;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v11 identifier];
-    v15 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v14];
+    identifier = [clientCopy identifier];
+    v15 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v15)
     {
@@ -663,9 +663,9 @@ void __79__CXChannelSourceManager_serviceServer_client_reportedChannelWithUUID_u
       v16[3] = &unk_1E7C07338;
       v16[4] = self;
       v17 = v15;
-      v18 = v12;
-      v20 = a6;
-      v19 = v13;
+      v18 = dCopy;
+      reasonCopy = reason;
+      v19 = handlerCopy;
       [(CXChannelSourceManager *)self performDelegateCallback:v16];
     }
   }
@@ -677,17 +677,17 @@ void __124__CXChannelSourceManager_serviceServer_client_reportedIncomingTransmis
   [v2 providerSource:*(a1 + 40) reportedIncomingTransmissionEndedForChannelWithUUID:*(a1 + 48) reason:*(a1 + 64) completionHandler:*(a1 + 56)];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 reportedIncomingTransmissionStartedForChannelWithUUID:(id)a5 update:(id)a6 shouldReplaceOutgoingTransmission:(BOOL)a7 completionHandler:(id)a8
+- (void)serviceServer:(id)server client:(id)client reportedIncomingTransmissionStartedForChannelWithUUID:(id)d update:(id)update shouldReplaceOutgoingTransmission:(BOOL)transmission completionHandler:(id)handler
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  clientCopy = client;
+  dCopy = d;
+  updateCopy = update;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v13 identifier];
-    v18 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v17];
+    identifier = [clientCopy identifier];
+    v18 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v18)
     {
@@ -697,10 +697,10 @@ void __124__CXChannelSourceManager_serviceServer_client_reportedIncomingTransmis
       v19[3] = &unk_1E7C07360;
       v19[4] = self;
       v20 = v18;
-      v21 = v14;
-      v22 = v15;
-      v24 = a7;
-      v23 = v16;
+      v21 = dCopy;
+      v22 = updateCopy;
+      transmissionCopy = transmission;
+      v23 = handlerCopy;
       [(CXChannelSourceManager *)self performDelegateCallback:v19];
     }
   }
@@ -712,16 +712,16 @@ void __160__CXChannelSourceManager_serviceServer_client_reportedIncomingTransmis
   [v2 providerSource:*(a1 + 40) reportedIncomingTransmissionStartedForChannelWithUUID:*(a1 + 48) update:*(a1 + 56) shouldReplaceOutgoingTransmission:*(a1 + 72) completionHandler:*(a1 + 64)];
 }
 
-- (void)serviceServer:(id)a3 client:(id)a4 requestedTransaction:(id)a5 completionHandler:(id)a6
+- (void)serviceServer:(id)server client:(id)client requestedTransaction:(id)transaction completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  clientCopy = client;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v9 identifier];
-    v13 = [(CXChannelSourceManager *)self channelSourceForIdentifier:v12];
+    identifier = [clientCopy identifier];
+    v13 = [(CXChannelSourceManager *)self channelSourceForIdentifier:identifier];
 
     if (v13)
     {
@@ -731,8 +731,8 @@ void __160__CXChannelSourceManager_serviceServer_client_reportedIncomingTransmis
       v14[3] = &unk_1E7C06DE0;
       v14[4] = self;
       v15 = v13;
-      v16 = v10;
-      v17 = v11;
+      v16 = transactionCopy;
+      v17 = handlerCopy;
       [(CXChannelSourceManager *)self performDelegateCallback:v14];
     }
   }
@@ -744,34 +744,34 @@ void __86__CXChannelSourceManager_serviceServer_client_requestedTransaction_comp
   [v2 providerSource:*(a1 + 40) requestedTransaction:*(a1 + 48) completionHandler:*(a1 + 56)];
 }
 
-- (void)transactionManager:(id)a3 actionTimedOut:(id)a4 forCallSource:(id)a5
+- (void)transactionManager:(id)manager actionTimedOut:(id)out forCallSource:(id)source
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a5;
+  outCopy = out;
+  sourceCopy = source;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = outCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = sourceCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "[WARN] Action %@ timed out for call source %@", &v10, 0x16u);
   }
 
-  [v7 handleActionTimeout:v6];
+  [sourceCopy handleActionTimeout:outCopy];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transactionManager:(id)a3 transactionGroupCompleted:(id)a4
+- (void)transactionManager:(id)manager transactionGroupCompleted:(id)completed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completedCopy = completed;
   v6 = CXDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = completedCopy;
     _os_log_impl(&dword_1B47F3000, v6, OS_LOG_TYPE_DEFAULT, "Notifying delegate of completed transaction group: %@", buf, 0xCu);
   }
 
@@ -780,8 +780,8 @@ void __86__CXChannelSourceManager_serviceServer_client_requestedTransaction_comp
   v9[2] = __71__CXChannelSourceManager_transactionManager_transactionGroupCompleted___block_invoke;
   v9[3] = &unk_1E7C06BE0;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = completedCopy;
+  v7 = completedCopy;
   [(CXChannelSourceManager *)self performDelegateCallback:v9];
 
   v8 = *MEMORY[0x1E69E9840];

@@ -1,11 +1,11 @@
 @interface PSAutomaticANCSettingsDetail
 + (BOOL)isEnabled;
-+ (void)setEnabled:(BOOL)a3;
++ (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PSAutomaticANCSettingsDetail
 
-+ (void)setEnabled:(BOOL)a3
++ (void)setEnabled:(BOOL)enabled
 {
   v3 = PSConnected698();
   if (v3)

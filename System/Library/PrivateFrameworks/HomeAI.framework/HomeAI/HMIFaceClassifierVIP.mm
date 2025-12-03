@@ -1,12 +1,12 @@
 @interface HMIFaceClassifierVIP
-- (HMIFaceClassifierVIP)initWithError:(id *)a3;
-- (id)classifyFaceEvent:(id)a3 pixelBuffer:(__CVBuffer *)a4 fastMode:(BOOL)a5 homeUUID:(id)a6 error:(id *)a7;
-- (id)qualityPredictionFromSVMUsingFaceQualityFilterSVM:(id)a3 detectorConfidence:(double)a4 laplacian:(double)a5 yaw:(double)a6 boxSize:(double)a7 error:(id *)a8;
+- (HMIFaceClassifierVIP)initWithError:(id *)error;
+- (id)classifyFaceEvent:(id)event pixelBuffer:(__CVBuffer *)buffer fastMode:(BOOL)mode homeUUID:(id)d error:(id *)error;
+- (id)qualityPredictionFromSVMUsingFaceQualityFilterSVM:(id)m detectorConfidence:(double)confidence laplacian:(double)laplacian yaw:(double)yaw boxSize:(double)size error:(id *)error;
 @end
 
 @implementation HMIFaceClassifierVIP
 
-- (HMIFaceClassifierVIP)initWithError:(id *)a3
+- (HMIFaceClassifierVIP)initWithError:(id *)error
 {
   v30.receiver = self;
   v30.super_class = HMIFaceClassifierVIP;
@@ -62,10 +62,10 @@ LABEL_5:
     v17 = v23;
   }
 
-  if (a3)
+  if (error)
   {
     v26 = v17;
-    *a3 = v17;
+    *error = v17;
   }
 
   HMIErrorLog(v4, v17);
@@ -76,30 +76,30 @@ LABEL_10:
   return v25;
 }
 
-- (id)qualityPredictionFromSVMUsingFaceQualityFilterSVM:(id)a3 detectorConfidence:(double)a4 laplacian:(double)a5 yaw:(double)a6 boxSize:(double)a7 error:(id *)a8
+- (id)qualityPredictionFromSVMUsingFaceQualityFilterSVM:(id)m detectorConfidence:(double)confidence laplacian:(double)laplacian yaw:(double)yaw boxSize:(double)size error:(id *)error
 {
-  v14 = a3;
+  mCopy = m;
   v30 = 0;
   v15 = [objc_alloc(MEMORY[0x277CBFF48]) initWithShape:&unk_284075510 dataType:65600 error:&v30];
   v16 = v30;
   v17 = v16;
   if (v15)
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v18 = [MEMORY[0x277CCABB0] numberWithDouble:confidence];
     [v15 setObject:v18 atIndexedSubscript:0];
 
-    v19 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v19 = [MEMORY[0x277CCABB0] numberWithDouble:laplacian];
     [v15 setObject:v19 atIndexedSubscript:1];
 
-    v20 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+    v20 = [MEMORY[0x277CCABB0] numberWithDouble:yaw];
     [v15 setObject:v20 atIndexedSubscript:2];
 
-    v21 = [MEMORY[0x277CCABB0] numberWithDouble:a7];
+    v21 = [MEMORY[0x277CCABB0] numberWithDouble:size];
     [v15 setObject:v21 atIndexedSubscript:3];
 
     v28 = v17;
     v29 = 0.0;
-    v22 = [v14 predict:v15 output:&v29 error:&v28];
+    v22 = [mCopy predict:v15 output:&v29 error:&v28];
     v23 = v28;
 
     if (v22)
@@ -109,10 +109,10 @@ LABEL_10:
 
     else
     {
-      if (a8)
+      if (error)
       {
         v26 = v23;
-        *a8 = v23;
+        *error = v23;
       }
 
       HMIErrorLog(self, v23);
@@ -124,10 +124,10 @@ LABEL_10:
 
   else
   {
-    if (a8)
+    if (error)
     {
       v25 = v16;
-      *a8 = v17;
+      *error = v17;
     }
 
     HMIErrorLog(self, v17);
@@ -137,33 +137,33 @@ LABEL_10:
   return v24;
 }
 
-- (id)classifyFaceEvent:(id)a3 pixelBuffer:(__CVBuffer *)a4 fastMode:(BOOL)a5 homeUUID:(id)a6 error:(id *)a7
+- (id)classifyFaceEvent:(id)event pixelBuffer:(__CVBuffer *)buffer fastMode:(BOOL)mode homeUUID:(id)d error:(id *)error
 {
-  v9 = a5;
+  modeCopy = mode;
   v226 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = [v12 roll];
-  v15 = [HMIFaceprinter createFacePixelBufferForFaceEvent:v12 pixelBuffer:a4 roll:v14 error:a7];
+  eventCopy = event;
+  dCopy = d;
+  roll = [eventCopy roll];
+  v15 = [HMIFaceprinter createFacePixelBufferForFaceEvent:eventCopy pixelBuffer:buffer roll:roll error:error];
 
   if (v15)
   {
-    v196 = v13;
+    v196 = dCopy;
     v16 = objc_alloc_init(HMIFaceQualityEntropyOfLaplacian);
-    v17 = [v12 confidence];
-    [v17 value];
+    confidence = [eventCopy confidence];
+    [confidence value];
     v19 = v18;
 
     [(HMIFaceQualityEntropyOfLaplacian *)v16 computeJunkScoreForPixelBuffer:v15];
     v21 = v20;
-    v22 = [v12 yaw];
+    v22 = [eventCopy yaw];
     [v22 doubleValue];
     v24 = v23;
 
-    [v12 boundingBox];
+    [eventCopy boundingBox];
     v26 = v25;
     v28 = v27;
-    Size = HMICVPixelBufferGetSize(a4);
+    Size = HMICVPixelBufferGetSize(buffer);
     v31 = HMICGSizeAreaInPixelsFromNormalized(v26, v28, Size, v30);
     faceRecognizabilityFilter = self->_faceRecognizabilityFilter;
     v207 = 0;
@@ -177,7 +177,7 @@ LABEL_10:
       {
         v67 = v16;
         v68 = objc_autoreleasePoolPush();
-        v69 = self;
+        selfCopy = self;
         v70 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
         {
@@ -200,15 +200,15 @@ LABEL_10:
         v74 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v219 forKeys:&v218 count:1];
 
         v75 = [HMIVideoAnalyzerEventFace alloc];
-        v76 = [v12 confidence];
-        [v12 boundingBox];
+        confidence2 = [eventCopy confidence];
+        [eventCopy boundingBox];
         v78 = v77;
         v80 = v79;
         v82 = v81;
         v84 = v83;
-        v85 = [v12 yaw];
-        v86 = [v12 roll];
-        v65 = [(HMIVideoAnalyzerEventFace *)v75 initWithConfidence:v76 boundingBox:v85 yaw:v86 roll:0 faceRecognition:v74 userInfo:v78, v80, v82, v84];
+        v85 = [eventCopy yaw];
+        roll2 = [eventCopy roll];
+        v134 = [(HMIVideoAnalyzerEventFace *)v75 initWithConfidence:confidence2 boundingBox:v85 yaw:roll2 roll:0 faceRecognition:v74 userInfo:v78, v80, v82, v84];
 
         v16 = v67;
       }
@@ -216,13 +216,13 @@ LABEL_10:
       else
       {
         v195 = v16;
-        v37 = [(HMIFaceClassifierVIP *)self faceprinter];
-        v38 = [v37 createFaceprintForFacePixelBuffer:v15 fastMode:v9 error:a7];
+        faceprinter = [(HMIFaceClassifierVIP *)self faceprinter];
+        v38 = [faceprinter createFaceprintForFacePixelBuffer:v15 fastMode:modeCopy error:error];
 
         if (v38)
         {
-          v39 = [v38 faceprint];
-          [v39 confidence];
+          faceprint = [v38 faceprint];
+          [faceprint confidence];
           v41 = v40;
 
           HIDWORD(v43) = 1069128089;
@@ -230,12 +230,12 @@ LABEL_10:
           {
             LODWORD(v43) = 1.0;
             LODWORD(v42) = 1.0;
-            v87 = [HMIVisionUtilities createJPEGDataFromPixelBuffer:v15 scale:a7 encodeQuality:v43 error:v42];
+            v87 = [HMIVisionUtilities createJPEGDataFromPixelBuffer:v15 scale:error encodeQuality:v43 error:v42];
             CVPixelBufferRelease(v15);
             if (v87)
             {
               v88 = +[HMIPersonsModelManager sharedInstance];
-              v89 = [v88 predictPersonFromFaceObservation:v38 homeUUID:v196 error:a7];
+              v89 = [v88 predictPersonFromFaceObservation:v38 homeUUID:v196 error:error];
 
               if (v89)
               {
@@ -243,27 +243,27 @@ LABEL_10:
                 v189 = v87;
                 if ([v89 count])
                 {
-                  v90 = [v38 faceAttributes];
-                  v91 = [v90 facemaskCategory];
+                  faceAttributes = [v38 faceAttributes];
+                  facemaskCategory = [faceAttributes facemaskCategory];
 
-                  v187 = v91;
-                  v92 = [v91 label];
-                  [v92 identifier];
+                  v187 = facemaskCategory;
+                  label = [facemaskCategory label];
+                  [label identifier];
                   v93 = v188 = v38;
                   v183 = [v93 isEqualToString:*MEMORY[0x277CE2ED0]];
 
                   v94 = [HMIFaceCrop alloc];
-                  v95 = [MEMORY[0x277CCAD78] UUID];
-                  v96 = [MEMORY[0x277CBEAA8] date];
-                  v194 = [(HMIFaceCrop *)v94 initWithUUID:v95 dataRepresentation:v87 dateCreated:v96 faceBoundingBox:0.0, 0.0, 1.0, 1.0];
+                  uUID = [MEMORY[0x277CCAD78] UUID];
+                  date = [MEMORY[0x277CBEAA8] date];
+                  v194 = [(HMIFaceCrop *)v94 initWithUUID:uUID dataRepresentation:v87 dateCreated:date faceBoundingBox:0.0, 0.0, 1.0, 1.0];
 
                   v190 = [HMIFaceprint alloc];
-                  v185 = [MEMORY[0x277CCAD78] UUID];
-                  v97 = [v188 faceprint];
-                  v98 = [v97 descriptorData];
+                  uUID2 = [MEMORY[0x277CCAD78] UUID];
+                  faceprint2 = [v188 faceprint];
+                  descriptorData = [faceprint2 descriptorData];
                   v99 = +[HMIFaceprinter currentModelUUID];
-                  v100 = [(HMIFaceCrop *)v194 UUID];
-                  v191 = [(HMIFaceprint *)v190 initWithUUID:v185 data:v98 modelUUID:v99 faceCropUUID:v100];
+                  uUID3 = [(HMIFaceCrop *)v194 UUID];
+                  v191 = [(HMIFaceprint *)v190 initWithUUID:uUID2 data:descriptorData modelUUID:v99 faceCropUUID:uUID3];
 
                   faceAestheticQualityFilter = self->_faceAestheticQualityFilter;
                   v206 = v35;
@@ -283,7 +283,7 @@ LABEL_10:
                     v205 = v183;
                     v105 = v102;
                     v199 = v105;
-                    v106 = v12;
+                    v106 = eventCopy;
                     v200 = v106;
                     v203 = v21;
                     v204 = v31;
@@ -306,7 +306,7 @@ LABEL_10:
                         v110 = v107;
                         v111 = v108;
                         v112 = objc_autoreleasePoolPush();
-                        v113 = self;
+                        selfCopy2 = self;
                         v114 = HMFGetOSLogHandle();
                         if (os_log_type_enabled(v114, OS_LOG_TYPE_INFO))
                         {
@@ -326,28 +326,28 @@ LABEL_10:
                       v116 = [HMIFaceRecognition alloc];
                       [v105 doubleValue];
                       v118 = v117;
-                      v119 = [(HMIFaceprint *)v107 UUID];
+                      uUID4 = [(HMIFaceprint *)v107 UUID];
                       v120 = v182;
                       v121 = v180;
-                      v122 = [(HMIFaceRecognition *)v116 initWithFaceCrop:v108 faceprint:v107 classifications:*&v182 predictedLinkedEntityUUIDs:v180 faceQualityScore:0 sessionEntityAssignment:v119 sessionEntityUUID:v118];
+                      v122 = [(HMIFaceRecognition *)v116 initWithFaceCrop:v108 faceprint:v107 classifications:*&v182 predictedLinkedEntityUUIDs:v180 faceQualityScore:0 sessionEntityAssignment:uUID4 sessionEntityUUID:v118];
 
                       v208 = @"FaceFilteredState";
                       v123 = HMIFaceFilteredStateAsString(0);
                       v209 = v123;
-                      v124 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v209 forKeys:&v208 count:1];
+                      confidence4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v209 forKeys:&v208 count:1];
 
                       v125 = [HMIVideoAnalyzerEventFace alloc];
-                      v126 = [v184 confidence];
+                      confidence3 = [v184 confidence];
                       [v184 boundingBox];
                       v128 = v127;
                       v130 = v129;
                       v132 = v131;
                       v134 = v133;
-                      v135 = [v184 yaw];
-                      v136 = [v184 roll];
+                      roll4 = [v184 yaw];
+                      roll3 = [v184 roll];
                       v137 = v125;
                       v138 = v122;
-                      v65 = [(HMIVideoAnalyzerEventFace *)v137 initWithConfidence:v126 boundingBox:v135 yaw:v136 roll:v122 faceRecognition:v124 userInfo:v128, v130, v132, v134];
+                      v134 = [(HMIVideoAnalyzerEventFace *)v137 initWithConfidence:confidence3 boundingBox:roll4 yaw:roll3 roll:v122 faceRecognition:confidence4 userInfo:v128, v130, v132, v134];
 
                       v38 = v188;
                     }
@@ -355,7 +355,7 @@ LABEL_10:
                     else
                     {
                       v160 = objc_autoreleasePoolPush();
-                      v161 = self;
+                      selfCopy3 = self;
                       v162 = HMFGetOSLogHandle();
                       if (os_log_type_enabled(v162, OS_LOG_TYPE_DEBUG))
                       {
@@ -390,17 +390,17 @@ LABEL_10:
                       v168 = [v165 dictionaryWithObjects:v166 forKeys:v167 count:1];
 
                       v169 = [HMIVideoAnalyzerEventFace alloc];
-                      v124 = [v106 confidence];
+                      confidence4 = [v106 confidence];
                       [v106 boundingBox];
                       v171 = v170;
                       v173 = v172;
                       v175 = v174;
                       v177 = v176;
-                      v126 = [v106 yaw];
-                      v135 = [v106 roll];
+                      confidence3 = [v106 yaw];
+                      roll4 = [v106 roll];
                       v178 = v169;
                       v138 = v168;
-                      v65 = [(HMIVideoAnalyzerEventFace *)v178 initWithConfidence:v124 boundingBox:v126 yaw:v135 roll:0 faceRecognition:v168 userInfo:v171, v173, v175, v177];
+                      v134 = [(HMIVideoAnalyzerEventFace *)v178 initWithConfidence:confidence4 boundingBox:confidence3 yaw:roll4 roll:0 faceRecognition:v168 userInfo:v171, v173, v175, v177];
                       v121 = v180;
                       v120 = v182;
                     }
@@ -409,7 +409,7 @@ LABEL_10:
                     v16 = v195;
                     v155 = v192;
                     v89 = v193;
-                    v156 = v186;
+                    roll5 = v186;
                     v158 = v187;
                   }
 
@@ -417,26 +417,26 @@ LABEL_10:
                   {
                     v16 = v195;
                     v89 = v193;
-                    if (a7)
+                    if (error)
                     {
                       v159 = v103;
-                      *a7 = v103;
+                      *error = v103;
                     }
 
                     HMIErrorLog(self, v103);
-                    v65 = 0;
+                    v134 = 0;
                     v35 = v103;
                     v158 = v187;
                     v38 = v188;
                     v155 = v191;
-                    v156 = 0;
+                    roll5 = 0;
                   }
                 }
 
                 else
                 {
                   v139 = objc_autoreleasePoolPush();
-                  v140 = self;
+                  selfCopy4 = self;
                   v141 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v141, OS_LOG_TYPE_ERROR))
                   {
@@ -453,18 +453,18 @@ LABEL_10:
                   v144 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v215 forKeys:&v214 count:1];
 
                   v145 = [HMIVideoAnalyzerEventFace alloc];
-                  v146 = [v12 confidence];
-                  [v12 boundingBox];
+                  confidence5 = [eventCopy confidence];
+                  [eventCopy boundingBox];
                   v148 = v147;
                   v150 = v149;
                   v152 = v151;
                   v154 = v153;
-                  v155 = [v12 yaw];
-                  v156 = [v12 roll];
-                  v194 = v146;
-                  v157 = v146;
+                  v155 = [eventCopy yaw];
+                  roll5 = [eventCopy roll];
+                  v194 = confidence5;
+                  v157 = confidence5;
                   v158 = v144;
-                  v65 = [(HMIVideoAnalyzerEventFace *)v145 initWithConfidence:v157 boundingBox:v155 yaw:v156 roll:0 faceRecognition:v144 userInfo:v148, v150, v152, v154];
+                  v134 = [(HMIVideoAnalyzerEventFace *)v145 initWithConfidence:v157 boundingBox:v155 yaw:roll5 roll:0 faceRecognition:v144 userInfo:v148, v150, v152, v154];
                   v16 = v195;
                   v89 = v193;
                 }
@@ -474,14 +474,14 @@ LABEL_10:
 
               else
               {
-                v65 = 0;
+                v134 = 0;
                 v16 = v195;
               }
             }
 
             else
             {
-              v65 = 0;
+              v134 = 0;
               v16 = v195;
             }
           }
@@ -490,13 +490,13 @@ LABEL_10:
           {
             v44 = v38;
             v45 = objc_autoreleasePoolPush();
-            v46 = self;
+            selfCopy5 = self;
             v47 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
             {
               v48 = HMFGetLogIdentifier();
-              v49 = [v38 faceprint];
-              [v49 confidence];
+              faceprint3 = [v38 faceprint];
+              [faceprint3 confidence];
               *buf = 138543618;
               v221 = v48;
               v222 = 2048;
@@ -512,15 +512,15 @@ LABEL_10:
             v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v217 forKeys:&v216 count:1];
 
             v53 = [HMIVideoAnalyzerEventFace alloc];
-            v54 = [v12 confidence];
-            [v12 boundingBox];
+            confidence6 = [eventCopy confidence];
+            [eventCopy boundingBox];
             v56 = v55;
             v58 = v57;
             v60 = v59;
             v62 = v61;
-            v63 = [v12 yaw];
-            v64 = [v12 roll];
-            v65 = [(HMIVideoAnalyzerEventFace *)v53 initWithConfidence:v54 boundingBox:v63 yaw:v64 roll:0 faceRecognition:v52 userInfo:v56, v58, v60, v62];
+            v63 = [eventCopy yaw];
+            roll6 = [eventCopy roll];
+            v134 = [(HMIVideoAnalyzerEventFace *)v53 initWithConfidence:confidence6 boundingBox:v63 yaw:roll6 roll:0 faceRecognition:v52 userInfo:v56, v58, v60, v62];
 
             v16 = v195;
             v38 = v44;
@@ -530,7 +530,7 @@ LABEL_10:
         else
         {
           CVPixelBufferRelease(v15);
-          v65 = 0;
+          v134 = 0;
           v16 = v195;
         }
       }
@@ -538,26 +538,26 @@ LABEL_10:
 
     else
     {
-      if (a7)
+      if (error)
       {
         v66 = v34;
-        *a7 = v35;
+        *error = v35;
       }
 
       HMIErrorLog(self, v35);
       CVPixelBufferRelease(v15);
-      v65 = 0;
+      v134 = 0;
     }
 
-    v13 = v196;
+    dCopy = v196;
   }
 
   else
   {
-    v65 = 0;
+    v134 = 0;
   }
 
-  return v65;
+  return v134;
 }
 
 HMIFaceClassification *__78__HMIFaceClassifierVIP_classifyFaceEvent_pixelBuffer_fastMode_homeUUID_error___block_invoke(uint64_t a1, void *a2)

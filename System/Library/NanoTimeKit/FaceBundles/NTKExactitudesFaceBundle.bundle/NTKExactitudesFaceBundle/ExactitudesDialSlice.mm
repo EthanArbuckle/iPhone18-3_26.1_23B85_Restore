@@ -1,10 +1,10 @@
 @interface ExactitudesDialSlice
-- (_TtC24NTKExactitudesFaceBundle20ExactitudesDialSlice)initWithLayer:(id)a3;
+- (_TtC24NTKExactitudesFaceBundle20ExactitudesDialSlice)initWithLayer:(id)layer;
 @end
 
 @implementation ExactitudesDialSlice
 
-- (_TtC24NTKExactitudesFaceBundle20ExactitudesDialSlice)initWithLayer:(id)a3
+- (_TtC24NTKExactitudesFaceBundle20ExactitudesDialSlice)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_2175C();

@@ -1,11 +1,11 @@
 @interface AXUIInstructionalCellContentViewBridge
 - (AXUIInstructionalCellContentViewBridge)init;
-- (id)makeContentViewControllerWithViewModel:(id)a3;
+- (id)makeContentViewControllerWithViewModel:(id)model;
 @end
 
 @implementation AXUIInstructionalCellContentViewBridge
 
-- (id)makeContentViewControllerWithViewModel:(id)a3
+- (id)makeContentViewControllerWithViewModel:(id)model
 {
   v4 = type metadata accessor for AXTipCellContentView(0);
   v5 = v4 - 8;
@@ -18,7 +18,7 @@
   v9 = (v8 + *(v5 + 28));
   type metadata accessor for AXUIInstructionalCellContentViewModel(0);
   sub_23D9A5688(&qword_27E2F68B0, type metadata accessor for AXUIInstructionalCellContentViewModel);
-  v10 = a3;
+  modelCopy = model;
   *v9 = sub_23D9D95E4();
   v9[1] = v11;
   v12 = objc_allocWithZone(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E2F68B8, &qword_23D9E1168));

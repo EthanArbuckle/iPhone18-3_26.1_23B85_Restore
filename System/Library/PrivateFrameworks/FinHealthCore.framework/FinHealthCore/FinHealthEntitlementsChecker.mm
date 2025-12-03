@@ -1,24 +1,24 @@
 @interface FinHealthEntitlementsChecker
-- (BOOL)_BOOLValueOfEntitlement:(id)a3;
-- (FinHealthEntitlementsChecker)initWithConnection:(id)a3;
-- (id)_arrayValueOfEntitlement:(id)a3;
-- (id)_stringValueOfEntitlement:(id)a3;
+- (BOOL)_BOOLValueOfEntitlement:(id)entitlement;
+- (FinHealthEntitlementsChecker)initWithConnection:(id)connection;
+- (id)_arrayValueOfEntitlement:(id)entitlement;
+- (id)_stringValueOfEntitlement:(id)entitlement;
 - (id)applicationID;
-- (void)copyValueOfEntitlement:(id)a3;
+- (void)copyValueOfEntitlement:(id)entitlement;
 @end
 
 @implementation FinHealthEntitlementsChecker
 
-- (FinHealthEntitlementsChecker)initWithConnection:(id)a3
+- (FinHealthEntitlementsChecker)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = FinHealthEntitlementsChecker;
   v6 = [(FinHealthEntitlementsChecker *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -32,9 +32,9 @@
   return v3;
 }
 
-- (BOOL)_BOOLValueOfEntitlement:(id)a3
+- (BOOL)_BOOLValueOfEntitlement:(id)entitlement
 {
-  v3 = [(FinHealthEntitlementsChecker *)self copyValueOfEntitlement:a3];
+  v3 = [(FinHealthEntitlementsChecker *)self copyValueOfEntitlement:entitlement];
   if (!v3)
   {
     return 0;
@@ -47,9 +47,9 @@
   return v6;
 }
 
-- (id)_arrayValueOfEntitlement:(id)a3
+- (id)_arrayValueOfEntitlement:(id)entitlement
 {
-  v3 = [(FinHealthEntitlementsChecker *)self copyValueOfEntitlement:a3];
+  v3 = [(FinHealthEntitlementsChecker *)self copyValueOfEntitlement:entitlement];
   if (v3)
   {
     v4 = v3;
@@ -76,9 +76,9 @@
   return v7;
 }
 
-- (id)_stringValueOfEntitlement:(id)a3
+- (id)_stringValueOfEntitlement:(id)entitlement
 {
-  v3 = [(FinHealthEntitlementsChecker *)self copyValueOfEntitlement:a3];
+  v3 = [(FinHealthEntitlementsChecker *)self copyValueOfEntitlement:entitlement];
   if (v3)
   {
     v4 = v3;
@@ -105,10 +105,10 @@
   return v7;
 }
 
-- (void)copyValueOfEntitlement:(id)a3
+- (void)copyValueOfEntitlement:(id)entitlement
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitlementCopy = entitlement;
   error = 0;
   v5 = *MEMORY[0x277CBECE8];
   connection = self->_connection;
@@ -123,7 +123,7 @@
   }
 
   v7 = SecTaskCreateWithAuditToken(v5, &token);
-  v8 = SecTaskCopyValueForEntitlement(v7, v4, &error);
+  v8 = SecTaskCopyValueForEntitlement(v7, entitlementCopy, &error);
   if (error)
   {
     v9 = FinHealthLogObject(@"FinHealthCore");
@@ -143,7 +143,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       token.val[0] = 138412290;
-      *&token.val[1] = v4;
+      *&token.val[1] = entitlementCopy;
       _os_log_impl(&dword_226DD4000, v10, OS_LOG_TYPE_DEBUG, "Client has entitlement for %@", &token, 0xCu);
     }
   }

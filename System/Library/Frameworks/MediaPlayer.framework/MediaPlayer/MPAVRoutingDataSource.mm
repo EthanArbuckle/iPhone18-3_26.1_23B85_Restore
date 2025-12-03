@@ -2,18 +2,18 @@
 - (BOOL)hasActiveAudioCategory;
 - (MPAVRoutingDataSource)init;
 - (NSString)activeAudioCategory;
-- (id)getRoutesForCategory:(id)a3;
-- (void)_activeAudioRouteDidChangeNotification:(id)a3;
-- (void)_externalScreenTypeDidChangeNotification:(id)a3;
-- (void)_reloadActiveAudioCategoryWithCompletion:(id)a3;
+- (id)getRoutesForCategory:(id)category;
+- (void)_activeAudioRouteDidChangeNotification:(id)notification;
+- (void)_externalScreenTypeDidChangeNotification:(id)notification;
+- (void)_reloadActiveAudioCategoryWithCompletion:(id)completion;
 - (void)_superclassRegisterNotifications;
 - (void)_superclassUnregisterNotifications;
-- (void)_volumeControlAvailabilityDidChangeNotification:(id)a3;
+- (void)_volumeControlAvailabilityDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)getExternalScreenTypeWithCompletion:(id)a3;
-- (void)getPickedRouteHasVolumeControlWithCompletion:(id)a3;
-- (void)setPickedRoute:(id)a3 withPassword:(id)a4 completion:(id)a5;
-- (void)unpickAirPlayAVRoutesWithCompletion:(id)a3;
+- (void)getExternalScreenTypeWithCompletion:(id)completion;
+- (void)getPickedRouteHasVolumeControlWithCompletion:(id)completion;
+- (void)setPickedRoute:(id)route withPassword:(id)password completion:(id)completion;
+- (void)unpickAirPlayAVRoutesWithCompletion:(id)completion;
 @end
 
 @implementation MPAVRoutingDataSource
@@ -52,16 +52,16 @@
 - (void)_superclassRegisterNotifications
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__volumeControlAvailabilityDidChangeNotification_ name:*MEMORY[0x1E69B12A8] object:0];
-  [v3 addObserver:self selector:sel__externalScreenTypeDidChangeNotification_ name:*MEMORY[0x1E69B0DB0] object:0];
-  v4 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__volumeControlAvailabilityDidChangeNotification_ name:*MEMORY[0x1E69B12A8] object:0];
+  [defaultCenter addObserver:self selector:sel__externalScreenTypeDidChangeNotification_ name:*MEMORY[0x1E69B0DB0] object:0];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
   v5 = MEMORY[0x1E69AE9C0];
   v7[0] = *MEMORY[0x1E69AE9C0];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-  [v4 setAttribute:v6 forKey:*MEMORY[0x1E69AECD8] error:0];
+  [mEMORY[0x1E69AED10] setAttribute:v6 forKey:*MEMORY[0x1E69AECD8] error:0];
 
-  [v3 addObserver:self selector:sel__activeAudioRouteDidChangeNotification_ name:*v5 object:0];
+  [defaultCenter addObserver:self selector:sel__activeAudioRouteDidChangeNotification_ name:*v5 object:0];
   MRMediaRemoteSetWantsVolumeControlNotifications();
   MRMediaRemoteSetWantsExternalScreenTypeChangeNotifications();
 }
@@ -114,25 +114,25 @@ void __29__MPAVRoutingDataSource_init__block_invoke(uint64_t a1)
 
 - (void)_superclassUnregisterNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B12A8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B0DB0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AE9C0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B12A8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B0DB0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AE9C0] object:0];
   MRMediaRemoteSetWantsVolumeControlNotifications();
   MRMediaRemoteSetWantsExternalScreenTypeChangeNotifications();
 }
 
-- (void)_reloadActiveAudioCategoryWithCompletion:(id)a3
+- (void)_reloadActiveAudioCategoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workerQueue = self->_workerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__MPAVRoutingDataSource__reloadActiveAudioCategoryWithCompletion___block_invoke;
   v7[3] = &unk_1E76824C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workerQueue, v7);
 }
 
@@ -176,15 +176,15 @@ void __66__MPAVRoutingDataSource__reloadActiveAudioCategoryWithCompletion___bloc
   *(v3 + 32) = v2;
 }
 
-- (void)_activeAudioRouteDidChangeNotification:(id)a3
+- (void)_activeAudioRouteDidChangeNotification:(id)notification
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = notificationCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "[BaseRoutingDataSource] Received active audio route did change notification: %{public}@", buf, 0xCu);
   }
 
@@ -192,9 +192,9 @@ void __66__MPAVRoutingDataSource__reloadActiveAudioCategoryWithCompletion___bloc
   v7[1] = 3221225472;
   v7[2] = __64__MPAVRoutingDataSource__activeAudioRouteDidChangeNotification___block_invoke;
   v7[3] = &unk_1E76768C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   [(MPAVRoutingDataSource *)self _reloadActiveAudioCategoryWithCompletion:v7];
 }
 
@@ -221,21 +221,21 @@ void __64__MPAVRoutingDataSource__activeAudioRouteDidChangeNotification___block_
   [v2 postNotificationName:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:*(a1 + 40) userInfo:v3];
 }
 
-- (void)_externalScreenTypeDidChangeNotification:(id)a3
+- (void)_externalScreenTypeDidChangeNotification:(id)notification
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69B0DB8]];
-  v6 = [v5 unsignedIntValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69B0DB8]];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  if (v6 == 1)
+  if (unsignedIntValue == 1)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = 2 * (v6 == 2);
+    v7 = 2 * (unsignedIntValue == 2);
   }
 
   v14 = @"ExternalScreenType";
@@ -243,44 +243,44 @@ void __64__MPAVRoutingDataSource__activeAudioRouteDidChangeNotification___block_
   v15[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = v6;
+    v13 = unsignedIntValue;
     _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "[BaseRoutingDataSource] Received external screen type did change notification with screen type = %ld", &v12, 0xCu);
   }
 
-  [v10 postNotificationName:@"MPAVRoutingDataSourceExternalScreenTypeDidChangeNotification" object:self userInfo:v9];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceExternalScreenTypeDidChangeNotification" object:self userInfo:v9];
 }
 
-- (void)_volumeControlAvailabilityDidChangeNotification:(id)a3
+- (void)_volumeControlAvailabilityDidChangeNotification:(id)notification
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  [v5 objectForKey:*MEMORY[0x1E69B1310]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  [userInfo objectForKey:*MEMORY[0x1E69B1310]];
 
   MRNowPlayingPlayerPathGetOrigin();
   if (MROriginIsLocalOrigin())
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69B12B0]];
+    userInfo2 = [notificationCopy userInfo];
+    v7 = [userInfo2 objectForKey:*MEMORY[0x1E69B12B0]];
 
     v10 = @"VolumeControlAvailability";
     v11[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"MPAVRoutingDataSourceVolumeControlAvailabilityDidChangeNotification" object:self userInfo:v8];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVRoutingDataSourceVolumeControlAvailabilityDidChangeNotification" object:self userInfo:v8];
   }
 }
 
-- (void)setPickedRoute:(id)a3 withPassword:(id)a4 completion:(id)a5
+- (void)setPickedRoute:(id)route withPassword:(id)password completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  routeCopy = route;
+  passwordCopy = password;
+  completionCopy = completion;
   v11 = MEMORY[0x1E695DF30];
   v12 = *MEMORY[0x1E695D930];
   v13 = MEMORY[0x1E696AEC0];
@@ -292,9 +292,9 @@ void __64__MPAVRoutingDataSource__activeAudioRouteDidChangeNotification___block_
   objc_exception_throw(v16);
 }
 
-- (id)getRoutesForCategory:(id)a3
+- (id)getRoutesForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -306,9 +306,9 @@ void __64__MPAVRoutingDataSource__activeAudioRouteDidChangeNotification___block_
   objc_exception_throw(v10);
 }
 
-- (void)unpickAirPlayAVRoutesWithCompletion:(id)a3
+- (void)unpickAirPlayAVRoutesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -316,8 +316,8 @@ void __64__MPAVRoutingDataSource__activeAudioRouteDidChangeNotification___block_
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEFAULT, "[BaseRoutingDataSource] Unpicking AirPlay AV routes...", buf, 2u);
   }
 
-  v6 = v3;
-  v5 = v3;
+  v6 = completionCopy;
+  v5 = completionCopy;
   MRMediaRemoteUnpickAirPlayAVRoutes();
 }
 
@@ -367,10 +367,10 @@ LABEL_7:
   return result;
 }
 
-- (void)getPickedRouteHasVolumeControlWithCompletion:(id)a3
+- (void)getPickedRouteHasVolumeControlWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = qos_class_self();
     v8[0] = MEMORY[0x1E69E9820];
@@ -378,7 +378,7 @@ LABEL_7:
     v8[2] = __70__MPAVRoutingDataSource_getPickedRouteHasVolumeControlWithCompletion___block_invoke;
     v8[3] = &unk_1E76824C8;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     v6 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v5, 0, v8);
     v7 = dispatch_get_global_queue(0, 0);
     dispatch_async(v7, v6);
@@ -391,13 +391,13 @@ void __70__MPAVRoutingDataSource_getPickedRouteHasVolumeControlWithCompletion___
   MRMediaRemoteGetPickedRouteHasVolumeControl();
 }
 
-- (void)getExternalScreenTypeWithCompletion:(id)a3
+- (void)getExternalScreenTypeWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  completionCopy = completion;
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    v5 = v3;
+    v5 = completionCopy;
     MRMediaRemoteGetExternalScreenType();
   }
 }

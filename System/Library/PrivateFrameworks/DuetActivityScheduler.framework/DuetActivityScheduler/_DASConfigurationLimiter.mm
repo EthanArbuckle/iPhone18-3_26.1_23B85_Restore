@@ -1,13 +1,13 @@
 @interface _DASConfigurationLimiter
-+ (id)intervalLimiterResponseForActivity:(id)a3;
++ (id)intervalLimiterResponseForActivity:(id)activity;
 + (id)sharedLimiter;
-- (BOOL)deleteLimitForActivity:(id)a3;
-- (BOOL)limitedActivity:(id)a3 withLimitsResponses:(id)a4;
-- (BOOL)limitsApplyToActivity:(id)a3;
-- (BOOL)setLimitForActivity:(id)a3;
+- (BOOL)deleteLimitForActivity:(id)activity;
+- (BOOL)limitedActivity:(id)activity withLimitsResponses:(id)responses;
+- (BOOL)limitsApplyToActivity:(id)activity;
+- (BOOL)setLimitForActivity:(id)activity;
 - (_DASConfigurationLimiter)init;
-- (id)responseWithActivityConfigurations:(id)a3;
-- (id)shouldLimitActivityAtSubmission:(id)a3;
+- (id)responseWithActivityConfigurations:(id)configurations;
+- (id)shouldLimitActivityAtSubmission:(id)submission;
 @end
 
 @implementation _DASConfigurationLimiter
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __41___DASConfigurationLimiter_sharedLimiter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedLimiter_onceToken_0 != -1)
   {
     dispatch_once(&sharedLimiter_onceToken_0, block);
@@ -49,19 +49,19 @@
   return v2;
 }
 
-- (BOOL)deleteLimitForActivity:(id)a3
+- (BOOL)deleteLimitForActivity:(id)activity
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_testingOverride containsObject:v4];
+  activityCopy = activity;
+  v5 = [(NSMutableArray *)self->_testingOverride containsObject:activityCopy];
   if (v5)
   {
-    [(NSMutableArray *)self->_testingOverride removeObject:v4];
+    [(NSMutableArray *)self->_testingOverride removeObject:activityCopy];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = activityCopy;
       v7 = "Removing override for %@";
 LABEL_6:
       _os_log_impl(&dword_1B6E2F000, log, OS_LOG_TYPE_DEFAULT, v7, &v10, 0xCu);
@@ -74,7 +74,7 @@ LABEL_6:
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = activityCopy;
       v7 = "Failed to remove override for %@";
       goto LABEL_6;
     }
@@ -84,26 +84,26 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)setLimitForActivity:(id)a3
+- (BOOL)setLimitForActivity:(id)activity
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activityCopy = activity;
   testingOverride = self->_testingOverride;
   if (!testingOverride)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_testingOverride;
-    self->_testingOverride = v6;
+    self->_testingOverride = array;
 
     testingOverride = self->_testingOverride;
   }
 
-  [(NSMutableArray *)testingOverride addObject:v4];
+  [(NSMutableArray *)testingOverride addObject:activityCopy];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = activityCopy;
     _os_log_impl(&dword_1B6E2F000, log, OS_LOG_TYPE_DEFAULT, "Adding %@ to override list", &v11, 0xCu);
   }
 
@@ -111,43 +111,43 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)limitsApplyToActivity:(id)a3
+- (BOOL)limitsApplyToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 requestsImmediateRuntime])
+  activityCopy = activity;
+  if ([activityCopy requestsImmediateRuntime])
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(name) = 1;
   }
 
   else
   {
-    v5 = [v3 schedulingPriority];
-    if (v5 <= _DASSchedulingPriorityDefault)
+    schedulingPriority = [activityCopy schedulingPriority];
+    if (schedulingPriority <= _DASSchedulingPriorityDefault)
     {
-      v4 = [v3 name];
+      name = [activityCopy name];
 
-      if (v4)
+      if (name)
       {
-        v4 = +[_DASPlistParser sharedInstance];
-        v6 = [v4 containsOverrideForActivity:v3 withLimitation:@"Configuration"];
+        name = +[_DASPlistParser sharedInstance];
+        v6 = [name containsOverrideForActivity:activityCopy withLimitation:@"Configuration"];
 
-        LOBYTE(v4) = v6 ^ 1;
+        LOBYTE(name) = v6 ^ 1;
       }
     }
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(name) = 0;
     }
   }
 
-  return v4;
+  return name;
 }
 
-+ (id)intervalLimiterResponseForActivity:(id)a3
++ (id)intervalLimiterResponseForActivity:(id)activity
 {
-  v3 = a3;
-  [v3 interval];
+  activityCopy = activity;
+  [activityCopy interval];
   if (v4 <= 0.0)
   {
     goto LABEL_20;
@@ -156,8 +156,8 @@ LABEL_6:
   v5 = v4;
   if (v4 >= 300.0)
   {
-    v8 = [v3 shouldWakeDevice];
-    if (v5 < 3600.0 && v8 != 0)
+    shouldWakeDevice = [activityCopy shouldWakeDevice];
+    if (v5 < 3600.0 && shouldWakeDevice != 0)
     {
       v6 = @"Waking with Interval < 1 hour";
 LABEL_21:
@@ -165,15 +165,15 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v10 = [v3 preventDeviceSleep];
-    if (v5 < 3600.0 && v10 != 0)
+    preventDeviceSleep = [activityCopy preventDeviceSleep];
+    if (v5 < 3600.0 && preventDeviceSleep != 0)
     {
       v6 = @"Prevent Device Sleep with interval < 1 hour";
       goto LABEL_21;
     }
 
-    v12 = [v3 isIntensive];
-    if (v5 < 86400.0 && v12 != 0)
+    isIntensive = [activityCopy isIntensive];
+    if (v5 < 86400.0 && isIntensive != 0)
     {
       v6 = @"Intensive with interval < 1 day";
       goto LABEL_4;
@@ -194,13 +194,13 @@ LABEL_23:
   return v14;
 }
 
-- (id)responseWithActivityConfigurations:(id)a3
+- (id)responseWithActivityConfigurations:(id)configurations
 {
-  v3 = a3;
-  if ([v3 requiresRemoteDeviceWake])
+  configurationsCopy = configurations;
+  if ([configurationsCopy requiresRemoteDeviceWake])
   {
-    v4 = [v3 remoteDevice];
-    if (!v4 || (v5 = v4, v6 = [v3 targetDevice], v5, !v6))
+    remoteDevice = [configurationsCopy remoteDevice];
+    if (!remoteDevice || (v5 = remoteDevice, v6 = [configurationsCopy targetDevice], v5, !v6))
     {
       v13 = @"Requires Remote Device Wake && (!RemoteDevice || Target Device Local)";
 LABEL_9:
@@ -211,27 +211,27 @@ LABEL_32:
     }
   }
 
-  v7 = [v3 remoteDevice];
-  if (v7)
+  remoteDevice2 = [configurationsCopy remoteDevice];
+  if (remoteDevice2)
   {
-    v8 = v7;
-    v9 = [v3 targetDevice];
+    v8 = remoteDevice2;
+    targetDevice = [configurationsCopy targetDevice];
 
-    if (!v9)
+    if (!targetDevice)
     {
       v13 = @"Remote Device && Target Device Local";
       goto LABEL_31;
     }
   }
 
-  v10 = [v3 fileProtection];
+  fileProtection = [configurationsCopy fileProtection];
   v11 = +[_DASFileProtection complete];
   v12 = v11;
-  if (v10 == v11)
+  if (fileProtection == v11)
   {
-    v15 = [v3 requiresPlugin];
+    requiresPlugin = [configurationsCopy requiresPlugin];
 
-    if (v15)
+    if (requiresPlugin)
     {
       v13 = @"Class A && Plugged In";
 LABEL_31:
@@ -244,45 +244,45 @@ LABEL_31:
   {
   }
 
-  if ([v3 shouldWakeDevice])
+  if ([configurationsCopy shouldWakeDevice])
   {
-    v16 = [v3 schedulingPriority];
-    if (v16 < _DASSchedulingPriorityDefault)
+    schedulingPriority = [configurationsCopy schedulingPriority];
+    if (schedulingPriority < _DASSchedulingPriorityDefault)
     {
       v13 = @"Should Wake && Priority < Default";
       goto LABEL_31;
     }
   }
 
-  v17 = [v3 fileProtection];
+  fileProtection2 = [configurationsCopy fileProtection];
   v18 = +[_DASFileProtection complete];
   v19 = v18;
-  if (v17 != v18)
+  if (fileProtection2 != v18)
   {
 
     goto LABEL_20;
   }
 
-  v20 = [v3 requiresDeviceInactivity];
+  requiresDeviceInactivity = [configurationsCopy requiresDeviceInactivity];
 
-  if (v20)
+  if (requiresDeviceInactivity)
   {
     v13 = @"Class A && Requires Inactivity";
     goto LABEL_9;
   }
 
 LABEL_20:
-  v21 = [v3 submittedFileProtection];
+  submittedFileProtection = [configurationsCopy submittedFileProtection];
   v22 = +[_DASFileProtection none];
   v23 = v22;
-  if (v21 != v22)
+  if (submittedFileProtection != v22)
   {
 
     goto LABEL_22;
   }
 
-  v25 = [v3 producedResultIdentifiers];
-  if ([v25 count])
+  producedResultIdentifiers = [configurationsCopy producedResultIdentifiers];
+  if ([producedResultIdentifiers count])
   {
 
 LABEL_30:
@@ -290,8 +290,8 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v26 = [v3 dependencies];
-  v27 = [v26 count];
+  dependencies = [configurationsCopy dependencies];
+  v27 = [dependencies count];
 
   if (v27)
   {
@@ -299,34 +299,34 @@ LABEL_30:
   }
 
 LABEL_22:
-  v24 = [v3 fastPass];
+  fastPass = [configurationsCopy fastPass];
 
-  if (v24)
+  if (fastPass)
   {
-    if ([v3 requiresSignificantUserInactivity])
+    if ([configurationsCopy requiresSignificantUserInactivity])
     {
       v13 = @"Fast Pass && Requires Significant Inactivity";
       goto LABEL_9;
     }
 
-    if ([v3 requiresPlugin])
+    if ([configurationsCopy requiresPlugin])
     {
       v13 = @"Fast Pass && Requires Plugin";
       goto LABEL_9;
     }
 
-    v30 = [v3 schedulingPriority];
-    if (v30 < _DASSchedulingPriorityUtility)
+    schedulingPriority2 = [configurationsCopy schedulingPriority];
+    if (schedulingPriority2 < _DASSchedulingPriorityUtility)
     {
       v13 = @"Fast Pass && Priority < Utility";
       goto LABEL_9;
     }
   }
 
-  if ([v3 requestsImmediateRuntime])
+  if ([configurationsCopy requestsImmediateRuntime])
   {
     v31 = +[_DASPlistParser sharedInstance];
-    v32 = [v31 containsOverrideForActivity:v3 withLimitation:@"ImmediateRuntime"];
+    v32 = [v31 containsOverrideForActivity:configurationsCopy withLimitation:@"ImmediateRuntime"];
 
     if ((v32 & 1) == 0)
     {
@@ -341,53 +341,53 @@ LABEL_33:
   return v28;
 }
 
-- (id)shouldLimitActivityAtSubmission:(id)a3
+- (id)shouldLimitActivityAtSubmission:(id)submission
 {
-  v4 = a3;
-  if ([(_DASConfigurationLimiter *)self limitsApplyToActivity:v4])
+  submissionCopy = submission;
+  if ([(_DASConfigurationLimiter *)self limitsApplyToActivity:submissionCopy])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [_DASConfigurationLimiter intervalLimiterResponseForActivity:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    v6 = [_DASConfigurationLimiter intervalLimiterResponseForActivity:submissionCopy];
     v7 = v6;
     if (v6 && [v6 decision])
     {
-      [v5 addObject:v7];
+      [array addObject:v7];
     }
 
-    v8 = [(_DASConfigurationLimiter *)self responseWithActivityConfigurations:v4];
+    v8 = [(_DASConfigurationLimiter *)self responseWithActivityConfigurations:submissionCopy];
 
     if (v8 && [v8 decision])
     {
-      [v5 addObject:v8];
+      [array addObject:v8];
     }
   }
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (BOOL)limitedActivity:(id)a3 withLimitsResponses:(id)a4
+- (BOOL)limitedActivity:(id)activity withLimitsResponses:(id)responses
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(_DASConfigurationLimiter *)self limitsApplyToActivity:v6]&& ((v8 = [_DASLimiterResponse queryActivityDecision:4 fromResponses:v7], v9 = [_DASLimiterResponse queryActivityDecision:1 fromResponses:v7], v8) || v9))
+  activityCopy = activity;
+  responsesCopy = responses;
+  if ([(_DASConfigurationLimiter *)self limitsApplyToActivity:activityCopy]&& ((v8 = [_DASLimiterResponse queryActivityDecision:4 fromResponses:responsesCopy], v9 = [_DASLimiterResponse queryActivityDecision:1 fromResponses:responsesCopy], v8) || v9))
   {
-    v11 = [v6 identifier];
-    if (v11 && [(NSMutableArray *)self->_testingOverride containsObject:v11])
+    identifier = [activityCopy identifier];
+    if (identifier && [(NSMutableArray *)self->_testingOverride containsObject:identifier])
     {
       log = self->_log;
       v10 = 0;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412546;
-        v16 = v6;
+        v16 = activityCopy;
         v17 = 2112;
-        v18 = v7;
+        v18 = responsesCopy;
         _os_log_impl(&dword_1B6E2F000, log, OS_LOG_TYPE_DEFAULT, "%@ overrode configuration limit %@", &v15, 0x16u);
         v10 = 0;
       }
@@ -395,7 +395,7 @@ LABEL_33:
 
     else
     {
-      [_DASLimiterResponse updateActivity:v6 withLimitResponse:v7];
+      [_DASLimiterResponse updateActivity:activityCopy withLimitResponse:responsesCopy];
       v10 = 1;
     }
   }

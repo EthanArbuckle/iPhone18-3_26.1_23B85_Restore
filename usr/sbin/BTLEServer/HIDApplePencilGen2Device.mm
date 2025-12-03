@@ -1,20 +1,20 @@
 @interface HIDApplePencilGen2Device
-- (HIDApplePencilGen2Device)initWithProperties:(id)a3 reports:(id)a4 loggingIdentifier:(id)a5;
+- (HIDApplePencilGen2Device)initWithProperties:(id)properties reports:(id)reports loggingIdentifier:(id)identifier;
 - (id)desiredConnectionParameters;
-- (id)newUserDevices:(id)a3;
+- (id)newUserDevices:(id)devices;
 - (int)stictionCollection;
 - (void)authFailureNotification;
 - (void)authSuccessNotification;
-- (void)handleAnalyticsData:(unsigned __int8)a3 data:(const void *)a4 length:(unint64_t)a5;
+- (void)handleAnalyticsData:(unsigned __int8)data data:(const void *)a4 length:(unint64_t)length;
 - (void)maybeQueryOOBPAndSendStatus;
-- (void)notifyPencilOnChargerState:(BOOL)a3;
+- (void)notifyPencilOnChargerState:(BOOL)state;
 - (void)pairingInfoCompleted;
-- (void)piconetClockNotification:(id)a3;
+- (void)piconetClockNotification:(id)notification;
 - (void)publishProperties;
 - (void)start;
 - (void)startCollectionTimer;
 - (void)stictionCollectionGate;
-- (void)stictionCollectionRestartTimer:(double)a3;
+- (void)stictionCollectionRestartTimer:(double)timer;
 - (void)stop;
 - (void)stopCollectionTimer;
 - (void)unpublishProperties;
@@ -31,12 +31,12 @@
   [(HIDApplePencilGen2Device *)self startCollectionTimer];
 }
 
-- (HIDApplePencilGen2Device)initWithProperties:(id)a3 reports:(id)a4 loggingIdentifier:(id)a5
+- (HIDApplePencilGen2Device)initWithProperties:(id)properties reports:(id)reports loggingIdentifier:(id)identifier
 {
-  v9 = a3;
+  propertiesCopy = properties;
   v26.receiver = self;
   v26.super_class = HIDApplePencilGen2Device;
-  v10 = [(HIDApplePencilDevice *)&v26 initWithProperties:v9 reports:a4 loggingIdentifier:a5];
+  v10 = [(HIDApplePencilDevice *)&v26 initWithProperties:propertiesCopy reports:reports loggingIdentifier:identifier];
   v12 = v10;
   if (!v10)
   {
@@ -57,8 +57,8 @@
   }
 
   v15 = [HIDChargerNotifier alloc];
-  v16 = [(HIDApplePencilDevice *)v12 queue];
-  v17 = [(HIDChargerNotifier *)v15 initWithQueue:v16];
+  queue = [(HIDApplePencilDevice *)v12 queue];
+  v17 = [(HIDChargerNotifier *)v15 initWithQueue:queue];
   chargerNotifier = v12->_chargerNotifier;
   v12->_chargerNotifier = v17;
 
@@ -66,16 +66,16 @@
   if (v19)
   {
     [(HIDChargerNotifier *)v19 setDelegate:v12];
-    objc_storeStrong(&v12->_properties, a3);
+    objc_storeStrong(&v12->_properties, properties);
     v12->_authStatus = 0;
     v12->_accdPairingFinished = 0;
     v20 = +[NSNotificationCenter defaultCenter];
-    v21 = [(HIDBluetoothDevice *)v12 peripheral];
-    [v20 addObserver:v12 selector:"authSuccessNotification" name:@"AuthenticationServiceAuthDidSucceedNotification" object:v21];
+    peripheral = [(HIDBluetoothDevice *)v12 peripheral];
+    [v20 addObserver:v12 selector:"authSuccessNotification" name:@"AuthenticationServiceAuthDidSucceedNotification" object:peripheral];
 
     v22 = +[NSNotificationCenter defaultCenter];
-    v23 = [(HIDBluetoothDevice *)v12 peripheral];
-    [v22 addObserver:v12 selector:"authFailureNotification" name:@"AuthenticationServiceAuthDidFailNotification" object:v23];
+    peripheral2 = [(HIDBluetoothDevice *)v12 peripheral];
+    [v22 addObserver:v12 selector:"authFailureNotification" name:@"AuthenticationServiceAuthDidFailNotification" object:peripheral2];
 
     v24 = v12;
   }
@@ -89,19 +89,19 @@ LABEL_5:
   return v24;
 }
 
-- (id)newUserDevices:(id)a3
+- (id)newUserDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(HIDApplePencilGen2Device *)self newDeviceMgntDevice:v4 keyholeID:0];
-  v6 = [(HIDApplePencilGen2Device *)self newTouchDevice:v4 keyholeID:1];
-  v7 = [(HIDApplePencilGen2Device *)self newForceDevice:v4 keyholeID:8];
-  v8 = [(HIDApplePencilGen2Device *)self newWakeDevice:v4 keyholeID:4];
+  devicesCopy = devices;
+  v5 = [(HIDApplePencilGen2Device *)self newDeviceMgntDevice:devicesCopy keyholeID:0];
+  v6 = [(HIDApplePencilGen2Device *)self newTouchDevice:devicesCopy keyholeID:1];
+  v7 = [(HIDApplePencilGen2Device *)self newForceDevice:devicesCopy keyholeID:8];
+  v8 = [(HIDApplePencilGen2Device *)self newWakeDevice:devicesCopy keyholeID:4];
 
   if (!v5)
   {
     sub_100078498(&v13);
 LABEL_11:
-    v11 = v13;
+    allValues = v13;
     goto LABEL_6;
   }
 
@@ -136,10 +136,10 @@ LABEL_11:
   self->_userDevices = v9;
 
   [(NSDictionary *)self->_userDevices enumerateKeysAndObjectsUsingBlock:&stru_1000BE1D8];
-  v11 = [(NSDictionary *)self->_userDevices allValues];
+  allValues = [(NSDictionary *)self->_userDevices allValues];
 LABEL_6:
 
-  return v11;
+  return allValues;
 }
 
 - (void)stop
@@ -158,9 +158,9 @@ LABEL_6:
   [(HIDApplePencilDevice *)&v5 stop];
 }
 
-- (void)handleAnalyticsData:(unsigned __int8)a3 data:(const void *)a4 length:(unint64_t)a5
+- (void)handleAnalyticsData:(unsigned __int8)data data:(const void *)a4 length:(unint64_t)length
 {
-  if (!a3 && a5 == 5 && *a4 == 68)
+  if (!data && length == 5 && *a4 == 68)
   {
     v6 = *(a4 + 1);
     v9 = @"TimeOn0_1C";
@@ -176,55 +176,55 @@ LABEL_6:
   }
 }
 
-- (void)piconetClockNotification:(id)a3
+- (void)piconetClockNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100078668(v5, v4);
+    sub_100078668(v5, notificationCopy);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"PiconetClockUserInfoKey"];
-  v8 = [v7 unsignedIntegerValue];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"PiconetClockUserInfoKey"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"PiconetPhaseClockUserInfoKey"];
-  v11 = [v10 unsignedIntegerValue];
+  userInfo2 = [notificationCopy userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:@"PiconetPhaseClockUserInfoKey"];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  v12 = [(HIDApplePencilGen2Device *)self timestampSync];
-  [v12 processTimestampSync:v8 phase:v11];
+  timestampSync = [(HIDApplePencilGen2Device *)self timestampSync];
+  [timestampSync processTimestampSync:unsignedIntegerValue phase:unsignedIntegerValue2];
 }
 
-- (void)notifyPencilOnChargerState:(BOOL)a3
+- (void)notifyPencilOnChargerState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if ([objc_opt_class() hasWirelessCharging])
   {
     v5 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(HIDApplePencilDevice *)self loggingIdentifier];
-      v8 = v7;
+      loggingIdentifier = [(HIDApplePencilDevice *)self loggingIdentifier];
+      v8 = loggingIdentifier;
       v9 = "detached";
-      if (v3)
+      if (stateCopy)
       {
         v9 = "attached";
       }
 
       *v11 = 138412546;
-      *&v11[4] = v7;
+      *&v11[4] = loggingIdentifier;
       v12 = 2080;
       v13 = v9;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ notifying pencil that wireless charging is %s", v11, 0x16u);
     }
 
     v11[0] = -64;
-    v11[1] = v3;
-    v10 = [(HIDApplePencilGen2Device *)self deviceMgntUserDevice];
-    [v10 setReport:v11 reportLength:2 reportID:192 reportType:2];
+    v11[1] = stateCopy;
+    deviceMgntUserDevice = [(HIDApplePencilGen2Device *)self deviceMgntUserDevice];
+    [deviceMgntUserDevice setReport:v11 reportLength:2 reportID:192 reportType:2];
   }
 }
 
@@ -235,29 +235,29 @@ LABEL_6:
     sub_100078800();
   }
 
-  v3 = [(HIDApplePencilDevice *)self queue];
-  v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v3);
+  queue = [(HIDApplePencilDevice *)self queue];
+  v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   [(HIDApplePencilGen2Device *)self setTimer:v4];
 
-  v5 = [(HIDApplePencilGen2Device *)self timer];
+  timer = [(HIDApplePencilGen2Device *)self timer];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10004E2BC;
   handler[3] = &unk_1000BD398;
   handler[4] = self;
-  dispatch_source_set_event_handler(v5, handler);
+  dispatch_source_set_event_handler(timer, handler);
 
-  v6 = [(HIDApplePencilGen2Device *)self timer];
+  timer2 = [(HIDApplePencilGen2Device *)self timer];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004E2C4;
   v8[3] = &unk_1000BD398;
   v8[4] = self;
-  dispatch_source_set_cancel_handler(v6, v8);
+  dispatch_source_set_cancel_handler(timer2, v8);
 
   [(HIDApplePencilGen2Device *)self stictionCollectionRestartTimer:10.0];
-  v7 = [(HIDApplePencilGen2Device *)self timer];
-  dispatch_resume(v7);
+  timer3 = [(HIDApplePencilGen2Device *)self timer];
+  dispatch_resume(timer3);
 }
 
 - (void)stopCollectionTimer
@@ -267,14 +267,14 @@ LABEL_6:
     sub_100078840();
   }
 
-  v3 = [(HIDApplePencilGen2Device *)self timer];
-  dispatch_source_cancel(v3);
+  timer = [(HIDApplePencilGen2Device *)self timer];
+  dispatch_source_cancel(timer);
 }
 
-- (void)stictionCollectionRestartTimer:(double)a3
+- (void)stictionCollectionRestartTimer:(double)timer
 {
   source = [(HIDApplePencilGen2Device *)self timer];
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (timer * 1000000000.0));
   dispatch_source_set_timer(source, v4, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 }
 
@@ -494,9 +494,9 @@ LABEL_6:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(HIDApplePencilDevice *)self loggingIdentifier];
+    loggingIdentifier = [(HIDApplePencilDevice *)self loggingIdentifier];
     v6 = 138412290;
-    v7 = v5;
+    v7 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ received pairing info", &v6, 0xCu);
   }
 
@@ -508,16 +508,16 @@ LABEL_6:
 {
   v5.receiver = self;
   v5.super_class = HIDApplePencilGen2Device;
-  v3 = [(HIDApplePencilDevice *)&v5 desiredConnectionParameters];
+  desiredConnectionParameters = [(HIDApplePencilDevice *)&v5 desiredConnectionParameters];
   [(HIDApplePencilGen2Device *)self preferredInterval];
-  [v3 setMinInterval:?];
+  [desiredConnectionParameters setMinInterval:?];
   [(HIDApplePencilGen2Device *)self preferredInterval];
-  [v3 setPreferredInterval:?];
-  [v3 setPreferredPeripheralLatency:{-[HIDApplePencilGen2Device preferredPeripheralLatency](self, "preferredPeripheralLatency")}];
-  [v3 setMaxPeripheralLatency:{-[HIDApplePencilGen2Device maxPeripheralLatency](self, "maxPeripheralLatency")}];
-  [v3 setTimeout:2000];
+  [desiredConnectionParameters setPreferredInterval:?];
+  [desiredConnectionParameters setPreferredPeripheralLatency:{-[HIDApplePencilGen2Device preferredPeripheralLatency](self, "preferredPeripheralLatency")}];
+  [desiredConnectionParameters setMaxPeripheralLatency:{-[HIDApplePencilGen2Device maxPeripheralLatency](self, "maxPeripheralLatency")}];
+  [desiredConnectionParameters setTimeout:2000];
 
-  return v3;
+  return desiredConnectionParameters;
 }
 
 - (void)authSuccessNotification
@@ -526,19 +526,19 @@ LABEL_6:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(HIDApplePencilDevice *)self loggingIdentifier];
+    loggingIdentifier = [(HIDApplePencilDevice *)self loggingIdentifier];
     *buf = 138412290;
-    v9 = v5;
+    v9 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ authSuccessNotification", buf, 0xCu);
   }
 
-  v6 = [(HIDApplePencilDevice *)self queue];
+  queue = [(HIDApplePencilDevice *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004EC1C;
   block[3] = &unk_1000BD398;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 - (void)authFailureNotification
@@ -547,19 +547,19 @@ LABEL_6:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(HIDApplePencilDevice *)self loggingIdentifier];
+    loggingIdentifier = [(HIDApplePencilDevice *)self loggingIdentifier];
     *buf = 138412290;
-    v9 = v5;
+    v9 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ authFailureNotification", buf, 0xCu);
   }
 
-  v6 = [(HIDApplePencilDevice *)self queue];
+  queue = [(HIDApplePencilDevice *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004ED58;
   block[3] = &unk_1000BD398;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 - (void)maybeQueryOOBPAndSendStatus
@@ -568,11 +568,11 @@ LABEL_6:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(HIDApplePencilDevice *)self loggingIdentifier];
+    loggingIdentifier = [(HIDApplePencilDevice *)self loggingIdentifier];
     authStatus = self->_authStatus;
     accdPairingFinished = self->_accdPairingFinished;
     buf[0] = 138412802;
-    *&buf[1] = v5;
+    *&buf[1] = loggingIdentifier;
     LOWORD(buf[3]) = 1024;
     *(&buf[3] + 2) = authStatus;
     HIWORD(buf[4]) = 1024;
@@ -582,15 +582,15 @@ LABEL_6:
 
   if (self->_authStatus == 1 && self->_accdPairingFinished)
   {
-    v8 = [(HIDApplePencilGen2Device *)self deviceMgntUserDevice];
+    deviceMgntUserDevice = [(HIDApplePencilGen2Device *)self deviceMgntUserDevice];
 
-    if (v8)
+    if (deviceMgntUserDevice)
     {
       memset(buf + 1, 0, 32);
       LOBYTE(buf[0]) = 65;
       v12 = 33;
-      v9 = [(HIDApplePencilGen2Device *)self deviceMgntUserDevice];
-      v10 = [v9 getReport:buf reportLength:&v12 reportID:65 reportType:2];
+      deviceMgntUserDevice2 = [(HIDApplePencilGen2Device *)self deviceMgntUserDevice];
+      v10 = [deviceMgntUserDevice2 getReport:buf reportLength:&v12 reportID:65 reportType:2];
 
       if (!v10 && (v12 == 33 || v12 == 17))
       {
@@ -617,27 +617,27 @@ LABEL_6:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(HIDApplePencilDevice *)self loggingIdentifier];
-    v6 = [(HIDApplePencilGen2Device *)self properties];
+    loggingIdentifier = [(HIDApplePencilDevice *)self loggingIdentifier];
+    properties = [(HIDApplePencilGen2Device *)self properties];
     *buf = 138412546;
-    v34 = v5;
+    v34 = loggingIdentifier;
     v35 = 2112;
-    v36 = v6;
+    v36 = properties;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ publishing device with properties: %@", buf, 0x16u);
   }
 
   [(HIDApplePencilGen2Device *)self unpublishProperties];
-  v7 = [(HIDApplePencilGen2Device *)self properties];
-  v8 = [v7 objectForKeyedSubscript:@"PhysicalDeviceUniqueID"];
+  properties2 = [(HIDApplePencilGen2Device *)self properties];
+  v8 = [properties2 objectForKeyedSubscript:@"PhysicalDeviceUniqueID"];
 
   v9 = +[ACCTransportClient sharedClient];
   v30 = v8;
   v10 = [v9 createConnectionWithType:2 andIdentifier:v8];
   [(HIDApplePencilGen2Device *)self setConnectionUUID:v10];
 
-  v11 = [(HIDApplePencilGen2Device *)self connectionUUID];
+  connectionUUID = [(HIDApplePencilGen2Device *)self connectionUUID];
 
-  if (!v11)
+  if (!connectionUUID)
   {
     v12 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -647,30 +647,30 @@ LABEL_6:
   }
 
   v13 = +[ACCTransportClient sharedClient];
-  v14 = [(HIDApplePencilGen2Device *)self connectionUUID];
-  v29 = [v13 createEndpointWithTransportType:3 andProtocol:1 andIdentifier:0 andDataOutHandler:0 forConnectionWithUUID:v14 publishConnection:0];
+  connectionUUID2 = [(HIDApplePencilGen2Device *)self connectionUUID];
+  v29 = [v13 createEndpointWithTransportType:3 andProtocol:1 andIdentifier:0 andDataOutHandler:0 forConnectionWithUUID:connectionUUID2 publishConnection:0];
 
   v32[0] = @"Apple Pencil";
   v31[0] = kACCInfo_Name;
   v31[1] = kACCInfo_Manufacturer;
-  v28 = [(HIDApplePencilGen2Device *)self properties];
-  v27 = [v28 objectForKeyedSubscript:@"Manufacturer"];
+  properties3 = [(HIDApplePencilGen2Device *)self properties];
+  v27 = [properties3 objectForKeyedSubscript:@"Manufacturer"];
   v32[1] = v27;
   v31[2] = kACCInfo_Model;
-  v15 = [(HIDApplePencilGen2Device *)self properties];
-  v16 = [v15 objectForKeyedSubscript:@"ModelNumber"];
+  properties4 = [(HIDApplePencilGen2Device *)self properties];
+  v16 = [properties4 objectForKeyedSubscript:@"ModelNumber"];
   v32[2] = v16;
   v31[3] = kACCInfo_SerialNumber;
-  v17 = [(HIDApplePencilGen2Device *)self properties];
-  v18 = [v17 objectForKeyedSubscript:@"SerialNumber"];
+  properties5 = [(HIDApplePencilGen2Device *)self properties];
+  v18 = [properties5 objectForKeyedSubscript:@"SerialNumber"];
   v32[3] = v18;
   v31[4] = kACCInfo_HardwareVersion;
-  v19 = [(HIDApplePencilGen2Device *)self properties];
-  v20 = [v19 objectForKeyedSubscript:@"kBTHardwareRevisionKey"];
+  properties6 = [(HIDApplePencilGen2Device *)self properties];
+  v20 = [properties6 objectForKeyedSubscript:@"kBTHardwareRevisionKey"];
   v32[4] = v20;
   v31[5] = kACCInfo_FirmwareVersionActive;
-  v21 = [(HIDApplePencilGen2Device *)self properties];
-  v22 = [v21 objectForKeyedSubscript:@"kBTFirmwareRevisionKey"];
+  properties7 = [(HIDApplePencilGen2Device *)self properties];
+  v22 = [properties7 objectForKeyedSubscript:@"kBTFirmwareRevisionKey"];
   v32[5] = v22;
   v23 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:6];
 
@@ -678,29 +678,29 @@ LABEL_6:
   [v24 setAccessoryInfo:v23 forEndpointWithUUID:v29];
 
   v25 = +[ACCTransportClient sharedClient];
-  v26 = [(HIDApplePencilGen2Device *)self connectionUUID];
-  [v25 publishConnectionWithUUID:v26];
+  connectionUUID3 = [(HIDApplePencilGen2Device *)self connectionUUID];
+  [v25 publishConnectionWithUUID:connectionUUID3];
 }
 
 - (void)unpublishProperties
 {
-  v3 = [(HIDApplePencilGen2Device *)self connectionUUID];
+  connectionUUID = [(HIDApplePencilGen2Device *)self connectionUUID];
 
-  if (v3)
+  if (connectionUUID)
   {
     v4 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(HIDApplePencilDevice *)self loggingIdentifier];
+      loggingIdentifier = [(HIDApplePencilDevice *)self loggingIdentifier];
       v9 = 138412290;
-      v10 = v6;
+      v10 = loggingIdentifier;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ unpublishing device properties", &v9, 0xCu);
     }
 
     v7 = +[ACCTransportClient sharedClient];
-    v8 = [(HIDApplePencilGen2Device *)self connectionUUID];
-    [v7 destroyConnectionWithUUID:v8];
+    connectionUUID2 = [(HIDApplePencilGen2Device *)self connectionUUID];
+    [v7 destroyConnectionWithUUID:connectionUUID2];
   }
 }
 

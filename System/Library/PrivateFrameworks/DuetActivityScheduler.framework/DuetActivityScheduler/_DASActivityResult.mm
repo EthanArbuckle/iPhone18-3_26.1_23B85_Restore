@@ -1,52 +1,52 @@
 @interface _DASActivityResult
-- (BOOL)isEqual:(id)a3;
-- (_DASActivityResult)initWithCoder:(id)a3;
-- (_DASActivityResult)initWithIdentifier:(id)a3;
-- (_DASActivityResult)initWithIdentifier:(id)a3 count:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_DASActivityResult)initWithCoder:(id)coder;
+- (_DASActivityResult)initWithIdentifier:(id)identifier;
+- (_DASActivityResult)initWithIdentifier:(id)identifier count:(int64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASActivityResult
 
-- (_DASActivityResult)initWithIdentifier:(id)a3
+- (_DASActivityResult)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _DASActivityResult;
   v6 = [(_DASActivityResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v7->_count = 0;
   }
 
   return v7;
 }
 
-- (_DASActivityResult)initWithIdentifier:(id)a3 count:(int64_t)a4
+- (_DASActivityResult)initWithIdentifier:(id)identifier count:(int64_t)count
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = _DASActivityResult;
   v8 = [(_DASActivityResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_count = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_count = count;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -56,8 +56,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_DASActivityResult *)v4 identifier];
-      v6 = [v5 isEqual:self->_identifier];
+      identifier = [(_DASActivityResult *)equalCopy identifier];
+      v6 = [identifier isEqual:self->_identifier];
     }
 
     else
@@ -69,38 +69,38 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   count = self->_count;
 
   return [v4 initWithIdentifier:identifier count:count];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   count = self->_count;
 
   return [v4 initWithIdentifier:identifier count:count];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_count];
-  [v5 encodeObject:v6 forKey:@"count"];
+  [coderCopy encodeObject:v6 forKey:@"count"];
 }
 
-- (_DASActivityResult)initWithCoder:(id)a3
+- (_DASActivityResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"count"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"count"];
 
   if (v5)
   {

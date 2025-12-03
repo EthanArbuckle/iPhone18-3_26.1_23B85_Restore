@@ -1,19 +1,19 @@
 @interface NFCISO15693ReaderSession
 - (NFCISO15693ReaderSession)initWithDelegate:(id)delegate queue:(dispatch_queue_t)queue;
-- (void)didDetectTags:(id)a3 connectedTagIndex:(unint64_t)a4;
+- (void)didDetectTags:(id)tags connectedTagIndex:(unint64_t)index;
 - (void)restartPolling;
 @end
 
 @implementation NFCISO15693ReaderSession
 
-- (void)didDetectTags:(id)a3 connectedTagIndex:(unint64_t)a4
+- (void)didDetectTags:(id)tags connectedTagIndex:(unint64_t)index
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  tagsCopy = tags;
   v36.receiver = self;
   v36.super_class = NFCISO15693ReaderSession;
-  [(NFCReaderSession *)&v36 didDetectTags:v7 connectedTagIndex:a4];
-  v8 = [(NFCReaderSession *)self delegate];
+  [(NFCReaderSession *)&v36 didDetectTags:tagsCopy connectedTagIndex:index];
+  delegate = [(NFCReaderSession *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -23,7 +23,7 @@
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v11 = v7;
+    v11 = tagsCopy;
     v12 = [v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v12)
     {

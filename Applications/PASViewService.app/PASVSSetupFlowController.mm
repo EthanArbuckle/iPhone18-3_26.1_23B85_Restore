@@ -1,10 +1,10 @@
 @interface PASVSSetupFlowController
-- (void)handleScannedCode:(id)a3;
+- (void)handleScannedCode:(id)code;
 @end
 
 @implementation PASVSSetupFlowController
 
-- (void)handleScannedCode:(id)a3
+- (void)handleScannedCode:(id)code
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

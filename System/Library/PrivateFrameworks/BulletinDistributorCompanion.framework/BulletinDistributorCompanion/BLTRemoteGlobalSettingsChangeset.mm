@@ -1,38 +1,38 @@
 @interface BLTRemoteGlobalSettingsChangeset
-+ (id)remoteGlobalSettingsChangesetWithProvider:(id)a3;
++ (id)remoteGlobalSettingsChangesetWithProvider:(id)provider;
 - (BLTPBSetRemoteGlobalSettingsRequest)blt_protobuf;
-- (BLTRemoteGlobalSettingsChangeset)initWithProvider:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLTRemoteGlobalSettingsChangeset)initWithProvider:(id)provider;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsSend;
 - (BOOL)sendSuccess;
 - (NSString)remoteInfoDirectoryLocation;
 - (NSString)remoteInfoFileLocation;
 - (id)description;
-- (id)descriptionForBBSystemSetting:(int64_t)a3;
+- (id)descriptionForBBSystemSetting:(int64_t)setting;
 - (id)globalScheduledDeliverySettingDescription;
 - (void)needsSend;
 @end
 
 @implementation BLTRemoteGlobalSettingsChangeset
 
-- (BLTRemoteGlobalSettingsChangeset)initWithProvider:(id)a3
+- (BLTRemoteGlobalSettingsChangeset)initWithProvider:(id)provider
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = BLTRemoteGlobalSettingsChangeset;
   v5 = [(BLTRemoteGlobalSettingsChangeset *)&v9 init];
   if (v5)
   {
-    -[BLTRemoteGlobalSettingsChangeset setGlobalScheduledDeliverySetting:](v5, "setGlobalScheduledDeliverySetting:", [v4 globalScheduledDeliverySetting]);
-    -[BLTRemoteGlobalSettingsChangeset setGlobalSummarizationSetting:](v5, "setGlobalSummarizationSetting:", [v4 globalSummarizationSetting]);
+    -[BLTRemoteGlobalSettingsChangeset setGlobalScheduledDeliverySetting:](v5, "setGlobalScheduledDeliverySetting:", [providerCopy globalScheduledDeliverySetting]);
+    -[BLTRemoteGlobalSettingsChangeset setGlobalSummarizationSetting:](v5, "setGlobalSummarizationSetting:", [providerCopy globalSummarizationSetting]);
     v6 = blt_global_settings_sync_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v11 = v5;
       v12 = 2112;
-      v13 = v4;
+      v13 = providerCopy;
       _os_log_impl(&dword_241FB3000, v6, OS_LOG_TYPE_DEFAULT, "%@ initWithProvider: %@", buf, 0x16u);
     }
   }
@@ -41,10 +41,10 @@
   return v5;
 }
 
-+ (id)remoteGlobalSettingsChangesetWithProvider:(id)a3
++ (id)remoteGlobalSettingsChangesetWithProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithProvider:v4];
+  providerCopy = provider;
+  v5 = [[self alloc] initWithProvider:providerCopy];
 
   return v5;
 }
@@ -59,8 +59,8 @@
 
 - (NSString)remoteInfoFileLocation
 {
-  v2 = [(BLTRemoteGlobalSettingsChangeset *)self remoteInfoDirectoryLocation];
-  v3 = [v2 stringByAppendingPathComponent:@"bb_global_remote_settings.plist"];
+  remoteInfoDirectoryLocation = [(BLTRemoteGlobalSettingsChangeset *)self remoteInfoDirectoryLocation];
+  v3 = [remoteInfoDirectoryLocation stringByAppendingPathComponent:@"bb_global_remote_settings.plist"];
 
   return v3;
 }
@@ -71,26 +71,26 @@
   if ([(BLTRemoteGlobalSettingsChangeset *)self globalScheduledDeliverySetting]|| [(BLTRemoteGlobalSettingsChangeset *)self globalSummarizationSetting])
   {
     v3 = MEMORY[0x277CBEAC0];
-    v4 = [(BLTRemoteGlobalSettingsChangeset *)self remoteInfoFileLocation];
-    v5 = [v3 dictionaryWithContentsOfFile:v4];
+    remoteInfoFileLocation = [(BLTRemoteGlobalSettingsChangeset *)self remoteInfoFileLocation];
+    v5 = [v3 dictionaryWithContentsOfFile:remoteInfoFileLocation];
 
     if (v5)
     {
       v6 = [v5 objectForKeyedSubscript:@"globalScheduledDeliverySetting"];
-      v7 = [v6 intValue];
-      if ([(BLTRemoteGlobalSettingsChangeset *)self globalScheduledDeliverySetting]== v7)
+      intValue = [v6 intValue];
+      if ([(BLTRemoteGlobalSettingsChangeset *)self globalScheduledDeliverySetting]== intValue)
       {
         v8 = [v5 objectForKeyedSubscript:@"globalSummarizationSetting"];
-        v9 = [v8 intValue];
-        v10 = [(BLTRemoteGlobalSettingsChangeset *)self globalSummarizationSetting];
+        intValue2 = [v8 intValue];
+        globalSummarizationSetting = [(BLTRemoteGlobalSettingsChangeset *)self globalSummarizationSetting];
 
-        if (v10 == v9)
+        if (globalSummarizationSetting == intValue2)
         {
           v11 = blt_global_settings_sync_log();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             v18 = 138412546;
-            v19 = self;
+            selfCopy3 = self;
             v20 = 2112;
             v21 = v5;
             _os_log_impl(&dword_241FB3000, v11, OS_LOG_TYPE_DEFAULT, "%@ needsSend: remoteSettings: %@ SHOULD NOT SEND", &v18, 0x16u);
@@ -109,7 +109,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412546;
-        v19 = self;
+        selfCopy3 = self;
         v20 = 2112;
         v21 = v5;
         v13 = "%@ needsSend: remoteSettings: %@ SHOULD SEND";
@@ -125,7 +125,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = self;
+        selfCopy3 = self;
         v13 = "%@ needsSend: !remoteSettings";
         v14 = v11;
         v15 = 12;
@@ -164,14 +164,14 @@ LABEL_17:
   v18[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
-  v6 = [(BLTRemoteGlobalSettingsChangeset *)self remoteInfoFileLocation];
-  v7 = [v5 writeToFile:v6 atomically:1];
+  remoteInfoFileLocation = [(BLTRemoteGlobalSettingsChangeset *)self remoteInfoFileLocation];
+  v7 = [v5 writeToFile:remoteInfoFileLocation atomically:1];
 
   v8 = blt_global_settings_sync_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v5;
     v15 = 1024;
@@ -197,7 +197,7 @@ LABEL_17:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v3;
     _os_log_impl(&dword_241FB3000, v5, OS_LOG_TYPE_DEFAULT, "%@ blt_protobuf: %@", &v8, 0x16u);
@@ -208,14 +208,14 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 globalScheduledDeliverySetting], v5 == -[BLTRemoteGlobalSettingsChangeset globalScheduledDeliverySetting](self, "globalScheduledDeliverySetting")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [equalCopy globalScheduledDeliverySetting], v5 == -[BLTRemoteGlobalSettingsChangeset globalScheduledDeliverySetting](self, "globalScheduledDeliverySetting")))
   {
-    v6 = [v4 globalSummarizationSetting];
-    v7 = v6 == [(BLTRemoteGlobalSettingsChangeset *)self globalSummarizationSetting];
+    globalSummarizationSetting = [equalCopy globalSummarizationSetting];
+    v7 = globalSummarizationSetting == [(BLTRemoteGlobalSettingsChangeset *)self globalSummarizationSetting];
   }
 
   else
@@ -231,9 +231,9 @@ LABEL_17:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(BLTRemoteGlobalSettingsChangeset *)self globalScheduledDeliverySettingDescription];
+  globalScheduledDeliverySettingDescription = [(BLTRemoteGlobalSettingsChangeset *)self globalScheduledDeliverySettingDescription];
   v7 = [(BLTRemoteGlobalSettingsChangeset *)self descriptionForBBSystemSetting:[(BLTRemoteGlobalSettingsChangeset *)self globalSummarizationSetting]];
-  v8 = [v3 stringWithFormat:@"<%@: %p %@, %@>", v5, self, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p %@, %@>", v5, self, globalScheduledDeliverySettingDescription, v7];
 
   return v8;
 }
@@ -271,26 +271,26 @@ LABEL_17:
   return v3;
 }
 
-- (id)descriptionForBBSystemSetting:(int64_t)a3
+- (id)descriptionForBBSystemSetting:(int64_t)setting
 {
-  if ((a3 + 1) >= 4)
+  if ((setting + 1) >= 4)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"<BBSystemSetting: <unknown> %ld>", a3];
+    setting = [MEMORY[0x277CCACA8] stringWithFormat:@"<BBSystemSetting: <unknown> %ld>", setting];
   }
 
   else
   {
-    v4 = off_278D31948[a3 + 1];
+    setting = off_278D31948[setting + 1];
   }
 
-  return v4;
+  return setting;
 }
 
 - (void)needsSend
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_241FB3000, a2, OS_LOG_TYPE_ERROR, "%@ needsSend: UNEXPECTED: globalScheduledDeliverySetting == BBScheduledDeliverySettingDefault && globalSummarizationSetting == BBSystemSettingDefault - not sending and this should never happen", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

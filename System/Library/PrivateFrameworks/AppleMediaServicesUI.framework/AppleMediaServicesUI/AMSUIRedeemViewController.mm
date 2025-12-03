@@ -2,44 +2,44 @@
 - (ACAccount)account;
 - (AMSBagProtocol)bag;
 - (AMSProcessInfo)clientInfo;
-- (AMSUIRedeemViewController)initWithAccount:(id)a3 bag:(id)a4;
-- (AMSUIRedeemViewController)initWithAccount:(id)a3 bag:(id)a4 clientInfo:(id)a5;
+- (AMSUIRedeemViewController)initWithAccount:(id)account bag:(id)bag;
+- (AMSUIRedeemViewController)initWithAccount:(id)account bag:(id)bag clientInfo:(id)info;
 - (NSDictionary)clientOptions;
 - (NSDictionary)metricsOverlay;
-- (id)_redeemURLWithInitialCode:(id)a3;
+- (id)_redeemURLWithInitialCode:(id)code;
 - (void)loadView;
-- (void)setAccount:(id)a3;
-- (void)setBag:(id)a3;
-- (void)setClientInfo:(id)a3;
-- (void)setClientOptions:(id)a3;
-- (void)setMetricsOverlay:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setBag:(id)bag;
+- (void)setClientInfo:(id)info;
+- (void)setClientOptions:(id)options;
+- (void)setMetricsOverlay:(id)overlay;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AMSUIRedeemViewController
 
-- (AMSUIRedeemViewController)initWithAccount:(id)a3 bag:(id)a4
+- (AMSUIRedeemViewController)initWithAccount:(id)account bag:(id)bag
 {
   v6 = MEMORY[0x1E698CAC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentProcess];
-  v10 = [(AMSUIRedeemViewController *)self initWithAccount:v8 bag:v7 clientInfo:v9];
+  bagCopy = bag;
+  accountCopy = account;
+  currentProcess = [v6 currentProcess];
+  v10 = [(AMSUIRedeemViewController *)self initWithAccount:accountCopy bag:bagCopy clientInfo:currentProcess];
 
   return v10;
 }
 
-- (AMSUIRedeemViewController)initWithAccount:(id)a3 bag:(id)a4 clientInfo:(id)a5
+- (AMSUIRedeemViewController)initWithAccount:(id)account bag:(id)bag clientInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  bagCopy = bag;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = AMSUIRedeemViewController;
   v11 = [(AMSUICommonViewController *)&v15 init];
   if (v11)
   {
-    v12 = [[AMSUIWebViewController alloc] initWithBag:v9 account:v8 clientInfo:v10];
+    v12 = [[AMSUIWebViewController alloc] initWithBag:bagCopy account:accountCopy clientInfo:infoCopy];
     webViewController = v11->_webViewController;
     v11->_webViewController = v12;
   }
@@ -49,77 +49,77 @@
 
 - (ACAccount)account
 {
-  v2 = [(AMSUIRedeemViewController *)self webViewController];
-  v3 = [v2 account];
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  account = [webViewController account];
 
-  return v3;
+  return account;
 }
 
 - (AMSBagProtocol)bag
 {
-  v2 = [(AMSUIRedeemViewController *)self webViewController];
-  v3 = [v2 bag];
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  v3 = [webViewController bag];
 
   return v3;
 }
 
 - (AMSProcessInfo)clientInfo
 {
-  v2 = [(AMSUIRedeemViewController *)self webViewController];
-  v3 = [v2 clientInfo];
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  clientInfo = [webViewController clientInfo];
 
-  return v3;
+  return clientInfo;
 }
 
 - (NSDictionary)clientOptions
 {
-  v2 = [(AMSUIRedeemViewController *)self webViewController];
-  v3 = [v2 clientOptions];
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  clientOptions = [webViewController clientOptions];
 
-  return v3;
+  return clientOptions;
 }
 
 - (NSDictionary)metricsOverlay
 {
-  v2 = [(AMSUIRedeemViewController *)self webViewController];
-  v3 = [v2 metricsOverlay];
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  metricsOverlay = [webViewController metricsOverlay];
 
-  return v3;
+  return metricsOverlay;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AMSUIRedeemViewController *)self webViewController];
-  [v5 setAccount:v4];
+  accountCopy = account;
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  [webViewController setAccount:accountCopy];
 }
 
-- (void)setBag:(id)a3
+- (void)setBag:(id)bag
 {
-  v4 = a3;
-  v5 = [(AMSUIRedeemViewController *)self webViewController];
-  [v5 setBag:v4];
+  bagCopy = bag;
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  [webViewController setBag:bagCopy];
 }
 
-- (void)setClientInfo:(id)a3
+- (void)setClientInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSUIRedeemViewController *)self webViewController];
-  [v5 setClientInfo:v4];
+  infoCopy = info;
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  [webViewController setClientInfo:infoCopy];
 }
 
-- (void)setClientOptions:(id)a3
+- (void)setClientOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(AMSUIRedeemViewController *)self webViewController];
-  [v5 setClientOptions:v4];
+  optionsCopy = options;
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  [webViewController setClientOptions:optionsCopy];
 }
 
-- (void)setMetricsOverlay:(id)a3
+- (void)setMetricsOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(AMSUIRedeemViewController *)self webViewController];
-  [v5 setMetricsOverlay:v4];
+  overlayCopy = overlay;
+  webViewController = [(AMSUIRedeemViewController *)self webViewController];
+  [webViewController setMetricsOverlay:overlayCopy];
 }
 
 - (void)loadView
@@ -127,9 +127,9 @@
   v8.receiver = self;
   v8.super_class = AMSUIRedeemViewController;
   [(AMSUICommonViewController *)&v8 loadView];
-  v3 = [(AMSUIRedeemViewController *)self navigationController];
+  navigationController = [(AMSUIRedeemViewController *)self navigationController];
 
-  if (v3)
+  if (navigationController)
   {
     [(AMSUIRedeemViewController *)self webViewController];
   }
@@ -137,8 +137,8 @@
   else
   {
     v4 = objc_alloc(MEMORY[0x1E69DCCD8]);
-    v5 = [(AMSUIRedeemViewController *)self webViewController];
-    v6 = [v4 initWithRootViewController:v5];
+    webViewController = [(AMSUIRedeemViewController *)self webViewController];
+    v6 = [v4 initWithRootViewController:webViewController];
     [(AMSUIRedeemViewController *)self setNavViewController:v6];
 
     [(AMSUIRedeemViewController *)self navViewController];
@@ -152,37 +152,37 @@
   v17.receiver = self;
   v17.super_class = AMSUIRedeemViewController;
   [(AMSUIRedeemViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(AMSUIRedeemViewController *)self childViewControllers];
-  v4 = [v3 firstObject];
+  childViewControllers = [(AMSUIRedeemViewController *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [(AMSUICommonViewController *)self view];
-    [v5 bounds];
+    view = [(AMSUICommonViewController *)self view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(AMSUIRedeemViewController *)self childViewControllers];
-    v15 = [v14 firstObject];
-    v16 = [v15 view];
-    [v16 setFrame:{v7, v9, v11, v13}];
+    childViewControllers2 = [(AMSUIRedeemViewController *)self childViewControllers];
+    firstObject2 = [childViewControllers2 firstObject];
+    view2 = [firstObject2 view];
+    [view2 setFrame:{v7, v9, v11, v13}];
   }
 }
 
-- (id)_redeemURLWithInitialCode:(id)a3
+- (id)_redeemURLWithInitialCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = [(AMSUIRedeemViewController *)self bag];
   v6 = [v5 URLForKey:@"redeemCodeLanding"];
 
-  if (v4)
+  if (codeCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __55__AMSUIRedeemViewController__redeemURLWithInitialCode___block_invoke;
     v9[3] = &unk_1E7F25928;
-    v10 = v4;
+    v10 = codeCopy;
     v7 = [v6 transformWithBlock:v9];
   }
 

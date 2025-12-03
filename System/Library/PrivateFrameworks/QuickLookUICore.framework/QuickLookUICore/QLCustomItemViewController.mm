@@ -1,32 +1,32 @@
 @interface QLCustomItemViewController
 - (UIView)shareSheetPresentationView;
 - (void)dismissPreviewController;
-- (void)forwardMessageToHost:(id)a3 completionHandler:(id)a4;
-- (void)getFrameWithCompletionBlock:(id)a3;
-- (void)presentActivityViewControllerFromView:(id)a3 withURL:(id)a4;
+- (void)forwardMessageToHost:(id)host completionHandler:(id)handler;
+- (void)getFrameWithCompletionBlock:(id)block;
+- (void)presentActivityViewControllerFromView:(id)view withURL:(id)l;
 @end
 
 @implementation QLCustomItemViewController
 
 - (void)dismissPreviewController
 {
-  v2 = [(QLCustomItemViewController *)self hostViewControllerProxy];
-  [v2 dismissQuickLook];
+  hostViewControllerProxy = [(QLCustomItemViewController *)self hostViewControllerProxy];
+  [hostViewControllerProxy dismissQuickLook];
 }
 
-- (void)presentActivityViewControllerFromView:(id)a3 withURL:(id)a4
+- (void)presentActivityViewControllerFromView:(id)view withURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeWeak(&self->_shareSheetPresentationView, v6);
+  viewCopy = view;
+  lCopy = l;
+  objc_storeWeak(&self->_shareSheetPresentationView, viewCopy);
   objc_initWeak(&location, self);
-  v8 = [(QLCustomItemViewController *)self hostViewControllerProxy];
+  hostViewControllerProxy = [(QLCustomItemViewController *)self hostViewControllerProxy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__QLCustomItemViewController_presentActivityViewControllerFromView_withURL___block_invoke;
   v9[3] = &unk_279AE15D8;
   objc_copyWeak(&v10, &location);
-  [v8 presentShareSheetWithPopoverTracker:self customSharedURL:v7 dismissCompletion:v9];
+  [hostViewControllerProxy presentShareSheetWithPopoverTracker:self customSharedURL:lCopy dismissCompletion:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -54,12 +54,12 @@ void __76__QLCustomItemViewController_presentActivityViewControllerFromView_with
   }
 }
 
-- (void)forwardMessageToHost:(id)a3 completionHandler:(id)a4
+- (void)forwardMessageToHost:(id)host completionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = v6;
+    v7 = handlerCopy;
   }
 
   else
@@ -67,15 +67,15 @@ void __76__QLCustomItemViewController_presentActivityViewControllerFromView_with
     v7 = &__block_literal_global_2;
   }
 
-  v8 = a3;
-  v9 = [(QLCustomItemViewController *)self hostViewControllerProxy];
+  hostCopy = host;
+  hostViewControllerProxy = [(QLCustomItemViewController *)self hostViewControllerProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__QLCustomItemViewController_forwardMessageToHost_completionHandler___block_invoke_2;
   v11[3] = &unk_279AE1648;
   v12 = v7;
   v10 = v7;
-  [v9 forwardMessageToHostOfCustomViewController:v8 completionHandler:v11];
+  [hostViewControllerProxy forwardMessageToHostOfCustomViewController:hostCopy completionHandler:v11];
 }
 
 void __69__QLCustomItemViewController_forwardMessageToHost_completionHandler___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -95,16 +95,16 @@ void __69__QLCustomItemViewController_forwardMessageToHost_completionHandler___b
   QLRunInMainThread(v10);
 }
 
-- (void)getFrameWithCompletionBlock:(id)a3
+- (void)getFrameWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__QLCustomItemViewController_getFrameWithCompletionBlock___block_invoke;
   v6[3] = &unk_279AE1670;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   QLRunInMainThread(v6);
 }
 

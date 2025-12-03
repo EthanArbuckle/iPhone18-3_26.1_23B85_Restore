@@ -1,14 +1,14 @@
 @interface _UISupplementalLexiconOperation
 - (_UISupplementalLexicon)lexicon;
-- (id)initAddOperationWithLexicon:(id)a3;
-- (id)initRemoveOperationWithLexiconIdentifier:(unint64_t)a3;
+- (id)initAddOperationWithLexicon:(id)lexicon;
+- (id)initRemoveOperationWithLexiconIdentifier:(unint64_t)identifier;
 @end
 
 @implementation _UISupplementalLexiconOperation
 
-- (id)initAddOperationWithLexicon:(id)a3
+- (id)initAddOperationWithLexicon:(id)lexicon
 {
-  v4 = a3;
+  lexiconCopy = lexicon;
   v8.receiver = self;
   v8.super_class = _UISupplementalLexiconOperation;
   v5 = [(_UISupplementalLexiconOperation *)&v8 init];
@@ -16,14 +16,14 @@
   if (v5)
   {
     v5->_type = 0;
-    objc_storeWeak(&v5->_lexicon, v4);
-    v6->_lexiconIdentifier = [v4[1] identifier];
+    objc_storeWeak(&v5->_lexicon, lexiconCopy);
+    v6->_lexiconIdentifier = [lexiconCopy[1] identifier];
   }
 
   return v6;
 }
 
-- (id)initRemoveOperationWithLexiconIdentifier:(unint64_t)a3
+- (id)initRemoveOperationWithLexiconIdentifier:(unint64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = _UISupplementalLexiconOperation;
@@ -31,7 +31,7 @@
   if (result)
   {
     *(result + 1) = 1;
-    *(result + 3) = a3;
+    *(result + 3) = identifier;
   }
 
   return result;

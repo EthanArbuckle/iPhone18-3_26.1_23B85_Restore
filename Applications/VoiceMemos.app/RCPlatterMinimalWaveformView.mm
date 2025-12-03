@@ -8,9 +8,9 @@
 - (unint64_t)numberOfSlices
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 platterMinimalViewSliceCount];
+  platterMinimalViewSliceCount = [v2 platterMinimalViewSliceCount];
 
-  return v3;
+  return platterMinimalViewSliceCount;
 }
 
 - (id)accessibilityLabel

@@ -1,17 +1,17 @@
 @interface AAFAnalyticsTransportCA
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation AAFAnalyticsTransportCA
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
+  eventCopy = event;
+  v5 = eventCopy;
   if (MEMORY[0x1EEE86508])
   {
-    v6 = [v4 eventName];
-    v7 = [v5 reportData];
+    eventName = [eventCopy eventName];
+    reportData = [v5 reportData];
     AnalyticsSendEvent();
   }
 

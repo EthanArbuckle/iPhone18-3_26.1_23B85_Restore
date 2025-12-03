@@ -1,14 +1,14 @@
 @interface VCUserDefaults
-- (_TtC12VoiceControlP33_B83C1536E71AFC7DD8A14C611F75D0B914VCUserDefaults)initWithSuiteName:(id)a3;
-- (id)objectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (_TtC12VoiceControlP33_B83C1536E71AFC7DD8A14C611F75D0B914VCUserDefaults)initWithSuiteName:(id)name;
+- (id)objectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation VCUserDefaults
 
-- (_TtC12VoiceControlP33_B83C1536E71AFC7DD8A14C611F75D0B914VCUserDefaults)initWithSuiteName:(id)a3
+- (_TtC12VoiceControlP33_B83C1536E71AFC7DD8A14C611F75D0B914VCUserDefaults)initWithSuiteName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2723FE5B4();
   }
@@ -22,12 +22,12 @@
   return sub_2723E80E0(v3, v4);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v15.receiver = self;
   v15.super_class = type metadata accessor for VCUserDefaults();
   v4 = v15.receiver;
-  if ([(VCUserDefaults *)&v15 objectForKey:a3])
+  if ([(VCUserDefaults *)&v15 objectForKey:key])
   {
     sub_2723FE994();
     swift_unknownObjectRelease();
@@ -64,12 +64,12 @@
   return v11;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2723FE994();
     swift_unknownObjectRelease();
@@ -78,8 +78,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   sub_2723FE5B4();

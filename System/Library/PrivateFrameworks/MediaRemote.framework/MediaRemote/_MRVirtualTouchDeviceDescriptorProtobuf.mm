@@ -1,22 +1,22 @@
 @interface _MRVirtualTouchDeviceDescriptorProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAbsolute:(BOOL)a3;
-- (void)setHasIntegratedDisplay:(BOOL)a3;
-- (void)setHasScreenSizeWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAbsolute:(BOOL)absolute;
+- (void)setHasIntegratedDisplay:(BOOL)display;
+- (void)setHasScreenSizeWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRVirtualTouchDeviceDescriptorProtobuf
 
-- (void)setHasAbsolute:(BOOL)a3
+- (void)setHasAbsolute:(BOOL)absolute
 {
-  if (a3)
+  if (absolute)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIntegratedDisplay:(BOOL)a3
+- (void)setHasIntegratedDisplay:(BOOL)display
 {
-  if (a3)
+  if (display)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasScreenSizeWidth:(BOOL)a3
+- (void)setHasScreenSizeWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = _MRVirtualTouchDeviceDescriptorProtobuf;
   v4 = [(_MRVirtualTouchDeviceDescriptorProtobuf *)&v8 description];
-  v5 = [(_MRVirtualTouchDeviceDescriptorProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRVirtualTouchDeviceDescriptorProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_absolute];
-    [v3 setObject:v8 forKey:@"absolute"];
+    [dictionary setObject:v8 forKey:@"absolute"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -99,7 +99,7 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_integratedDisplay];
-  [v3 setObject:v9 forKey:@"integratedDisplay"];
+  [dictionary setObject:v9 forKey:@"integratedDisplay"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -116,24 +116,24 @@ LABEL_4:
 LABEL_11:
   *&v4 = self->_screenSizeWidth;
   v10 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v10 forKey:@"screenSizeWidth"];
+  [dictionary setObject:v10 forKey:@"screenSizeWidth"];
 
   if (*&self->_has)
   {
 LABEL_5:
     *&v4 = self->_screenSizeHeight;
     v6 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-    [v3 setObject:v6 forKey:@"screenSizeHeight"];
+    [dictionary setObject:v6 forKey:@"screenSizeHeight"];
   }
 
 LABEL_6:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -184,14 +184,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[16] = self->_absolute;
-    v4[20] |= 4u;
+    toCopy[16] = self->_absolute;
+    toCopy[20] |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -210,8 +210,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[17] = self->_integratedDisplay;
-  v4[20] |= 8u;
+  toCopy[17] = self->_integratedDisplay;
+  toCopy[20] |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -225,21 +225,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(v4 + 3) = LODWORD(self->_screenSizeWidth);
-  v4[20] |= 2u;
+  *(toCopy + 3) = LODWORD(self->_screenSizeWidth);
+  toCopy[20] |= 2u;
   if (*&self->_has)
   {
 LABEL_5:
-    *(v4 + 2) = LODWORD(self->_screenSizeHeight);
-    v4[20] |= 1u;
+    *(toCopy + 2) = LODWORD(self->_screenSizeHeight);
+    toCopy[20] |= 1u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -291,44 +291,44 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0)
+    if ((*(equalCopy + 20) & 4) == 0)
     {
       goto LABEL_26;
     }
 
-    v5 = *(v4 + 16);
+    v5 = *(equalCopy + 16);
     if (self->_absolute)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 20) & 4) != 0)
+  else if ((*(equalCopy + 20) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 20) & 8) == 0)
+    if ((*(equalCopy + 20) & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -338,21 +338,21 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 20) & 8) == 0)
+  if ((*(equalCopy + 20) & 8) == 0)
   {
     goto LABEL_26;
   }
 
-  v6 = *(v4 + 17);
+  v6 = *(equalCopy + 17);
   if (self->_integratedDisplay)
   {
-    if ((*(v4 + 17) & 1) == 0)
+    if ((*(equalCopy + 17) & 1) == 0)
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 17))
+  else if (*(equalCopy + 17))
   {
     goto LABEL_26;
   }
@@ -360,21 +360,21 @@ LABEL_26:
 LABEL_6:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_screenSizeWidth != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_screenSizeWidth != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_26;
   }
 
-  v7 = (*(v4 + 20) & 1) == 0;
+  v7 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_screenSizeHeight != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_screenSizeHeight != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
@@ -486,15 +486,15 @@ LABEL_11:
   return v5 ^ v4 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if ((v5 & 4) != 0)
   {
-    self->_absolute = *(v4 + 16);
+    self->_absolute = *(fromCopy + 16);
     *&self->_has |= 4u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -507,14 +507,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 8) == 0)
+  else if ((*(fromCopy + 20) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_integratedDisplay = *(v4 + 17);
+  self->_integratedDisplay = *(fromCopy + 17);
   *&self->_has |= 8u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -527,12 +527,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_screenSizeWidth = *(v4 + 3);
+  self->_screenSizeWidth = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
 LABEL_5:
-    self->_screenSizeHeight = *(v4 + 2);
+    self->_screenSizeHeight = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

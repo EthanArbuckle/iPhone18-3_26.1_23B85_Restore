@@ -1,45 +1,45 @@
 @interface CDRichComplicationImageView
 - (BOOL)_isSymbolImageProvider;
 - (BOOL)_isSymbolImageProviderWithoutSpecificSize;
-- (BOOL)viewShouldIgnoreTwoPieceImage:(id)a3;
-- (CDRichComplicationImageView)initWithDevice:(id)a3 useAccentColor:(BOOL)a4;
+- (BOOL)viewShouldIgnoreTwoPieceImage:(id)image;
+- (CDRichComplicationImageView)initWithDevice:(id)device useAccentColor:(BOOL)color;
 - (CDStackedImagesComplicationImageView)monochromeImageView;
 - (CLKMonochromeFilterProvider)filterProvider;
 - (UIView)richComplicationImageView;
 - (id)_createMonochromeImageView;
-- (id)backgroundColorForView:(id)a3;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)interpolatedColorForView:(id)a3;
+- (id)backgroundColorForView:(id)view;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)interpolatedColorForView:(id)view;
 - (int64_t)_filterStyle;
 - (void)layoutSubviews;
-- (void)setFontDescriptor:(id)a3;
-- (void)setFontSizeFactor:(double)a3;
-- (void)setImageProvider:(id)a3 reason:(int64_t)a4;
-- (void)setPaused:(BOOL)a3;
-- (void)setTintedFraction:(double)a3;
-- (void)setTintedPlatterColor:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setFontDescriptor:(id)descriptor;
+- (void)setFontSizeFactor:(double)factor;
+- (void)setImageProvider:(id)provider reason:(int64_t)reason;
+- (void)setPaused:(BOOL)paused;
+- (void)setTintedFraction:(double)fraction;
+- (void)setTintedPlatterColor:(id)color;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation CDRichComplicationImageView
 
-- (CDRichComplicationImageView)initWithDevice:(id)a3 useAccentColor:(BOOL)a4
+- (CDRichComplicationImageView)initWithDevice:(id)device useAccentColor:(BOOL)color
 {
-  v7 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = CDRichComplicationImageView;
   v8 = [(CDRichComplicationImageView *)&v12 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
-    v9->_useAccentColor = a4;
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [(CDRichComplicationImageView *)v9 setBackgroundColor:v10];
+    objc_storeStrong(&v8->_device, device);
+    v9->_useAccentColor = color;
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CDRichComplicationImageView *)v9 setBackgroundColor:clearColor];
 
     [(CDRichComplicationImageView *)v9 setOpaque:0];
   }
@@ -64,54 +64,54 @@
   return v3;
 }
 
-- (void)setImageProvider:(id)a3 reason:(int64_t)a4
+- (void)setImageProvider:(id)provider reason:(int64_t)reason
 {
-  v25 = a3;
-  objc_storeStrong(&self->_imageProvider, a3);
-  if ((a4 - 1) >= 3)
+  providerCopy = provider;
+  objc_storeStrong(&self->_imageProvider, provider);
+  if ((reason - 1) >= 3)
   {
-    a4 = 0;
+    reason = 0;
   }
 
-  v7 = [v25 ImageViewClass];
-  if (!v7)
+  imageViewClass = [providerCopy ImageViewClass];
+  if (!imageViewClass)
   {
-    v7 = objc_opt_class();
+    imageViewClass = objc_opt_class();
   }
 
-  v8 = [(CDRichComplicationImageView *)self richComplicationImageView];
+  richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
   v9 = objc_opt_class();
 
-  if (v7 != v9)
+  if (imageViewClass != v9)
   {
-    v10 = [(CDRichComplicationImageView *)self layer];
-    [v10 setFilters:MEMORY[0x277CBEBF8]];
+    layer = [(CDRichComplicationImageView *)self layer];
+    [layer setFilters:MEMORY[0x277CBEBF8]];
 
-    [(CDRichComplicationImageView *)self setHostingOverrideView:v7 != objc_opt_class()];
-    v11 = [(CDRichComplicationImageView *)self richComplicationImageView];
-    [v11 removeFromSuperview];
+    [(CDRichComplicationImageView *)self setHostingOverrideView:imageViewClass != objc_opt_class()];
+    richComplicationImageView2 = [(CDRichComplicationImageView *)self richComplicationImageView];
+    [richComplicationImageView2 removeFromSuperview];
 
-    v12 = [(CDRichComplicationImageView *)self monochromeImageView];
-    [v12 removeFromSuperview];
+    monochromeImageView = [(CDRichComplicationImageView *)self monochromeImageView];
+    [monochromeImageView removeFromSuperview];
 
     if ([(CDRichComplicationImageView *)self isHostingOverrideView])
     {
-      v13 = [v7 alloc];
-      v14 = [(CDRichComplicationImageView *)self device];
-      v15 = [v13 initFullColorImageViewWithDevice:v14];
+      v13 = [imageViewClass alloc];
+      device = [(CDRichComplicationImageView *)self device];
+      v15 = [v13 initFullColorImageViewWithDevice:device];
     }
 
     else
     {
       v16 = objc_alloc(MEMORY[0x277D755E8]);
       v15 = [v16 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-      v14 = [(CDRichComplicationImageView *)self _createMonochromeImageView];
-      [v14 setAutoresizingMask:0];
-      [v14 setHidden:1];
-      [v14 setFilterProvider:self];
-      [v14 setMulticolorAlpha:1.0];
-      [(CDRichComplicationImageView *)self addSubview:v14];
-      [(CDRichComplicationImageView *)self setMonochromeImageView:v14];
+      device = [(CDRichComplicationImageView *)self _createMonochromeImageView];
+      [device setAutoresizingMask:0];
+      [device setHidden:1];
+      [device setFilterProvider:self];
+      [device setMulticolorAlpha:1.0];
+      [(CDRichComplicationImageView *)self addSubview:device];
+      [(CDRichComplicationImageView *)self setMonochromeImageView:device];
     }
 
     [(CDRichComplicationImageView *)self addSubview:v15];
@@ -135,52 +135,52 @@
     }
   }
 
-  self->_monochromeFilterType = [v25 monochromeFilterType];
-  if (v25)
+  self->_monochromeFilterType = [providerCopy monochromeFilterType];
+  if (providerCopy)
   {
     if ([(CDRichComplicationImageView *)self isHostingOverrideView])
     {
-      v17 = [(CDRichComplicationImageView *)self richComplicationImageView];
+      richComplicationImageView3 = [(CDRichComplicationImageView *)self richComplicationImageView];
       if (objc_opt_respondsToSelector())
       {
-        v18 = [(CDRichComplicationImageView *)self fontDescriptor];
-        [v17 setFontDescriptor:v18];
+        fontDescriptor = [(CDRichComplicationImageView *)self fontDescriptor];
+        [richComplicationImageView3 setFontDescriptor:fontDescriptor];
       }
 
       if (objc_opt_respondsToSelector())
       {
         [(CDRichComplicationImageView *)self fontSizeFactor];
-        [v17 setFontSizeFactor:?];
+        [richComplicationImageView3 setFontSizeFactor:?];
       }
 
-      [v17 configureWithImageProvider:v25 reason:a4];
+      [richComplicationImageView3 configureWithImageProvider:providerCopy reason:reason];
     }
 
     else
     {
-      -[CDRichComplicationImageView setPrefersFilterOverTransition:](self, "setPrefersFilterOverTransition:", [v25 prefersFilterOverTransition]);
-      v17 = [(CDRichComplicationImageView *)self richComplicationImageView];
+      -[CDRichComplicationImageView setPrefersFilterOverTransition:](self, "setPrefersFilterOverTransition:", [providerCopy prefersFilterOverTransition]);
+      richComplicationImageView3 = [(CDRichComplicationImageView *)self richComplicationImageView];
       if ([(CDRichComplicationImageView *)self _isSymbolImageProvider])
       {
-        [v25 createSymbolImage];
+        [providerCopy createSymbolImage];
       }
 
       else
       {
-        [v25 image];
+        [providerCopy image];
       }
       v21 = ;
-      [v17 setImage:v21];
+      [richComplicationImageView3 setImage:v21];
 
-      v22 = [v25 tintColor];
-      [v17 setTintColor:v22];
+      tintColor = [providerCopy tintColor];
+      [richComplicationImageView3 setTintColor:tintColor];
 
-      [v17 setHidden:0];
-      v23 = [v25 tintedImageProvider];
-      if (v23)
+      [richComplicationImageView3 setHidden:0];
+      tintedImageProvider = [providerCopy tintedImageProvider];
+      if (tintedImageProvider)
       {
-        v24 = [(CDRichComplicationImageView *)self monochromeImageView];
-        [v24 setImageProvider:v23];
+        monochromeImageView2 = [(CDRichComplicationImageView *)self monochromeImageView];
+        [monochromeImageView2 setImageProvider:tintedImageProvider];
       }
     }
 
@@ -199,11 +199,11 @@
 
   else
   {
-    v19 = [(CDRichComplicationImageView *)self richComplicationImageView];
-    [v19 setHidden:1];
+    richComplicationImageView4 = [(CDRichComplicationImageView *)self richComplicationImageView];
+    [richComplicationImageView4 setHidden:1];
 
-    v20 = [(CDRichComplicationImageView *)self monochromeImageView];
-    [v20 setHidden:1];
+    monochromeImageView3 = [(CDRichComplicationImageView *)self monochromeImageView];
+    [monochromeImageView3 setHidden:1];
   }
 }
 
@@ -212,33 +212,33 @@
   v19.receiver = self;
   v19.super_class = CDRichComplicationImageView;
   [(CDRichComplicationImageView *)&v19 layoutSubviews];
-  v3 = [(CDRichComplicationImageView *)self richComplicationImageView];
+  richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
   [(CDRichComplicationImageView *)self bounds];
   Width = CGRectGetWidth(v20);
   [(CDRichComplicationImageView *)self bounds];
-  [v3 setBounds:{0.0, 0.0, Width, CGRectGetHeight(v21)}];
+  [richComplicationImageView setBounds:{0.0, 0.0, Width, CGRectGetHeight(v21)}];
   [(CDRichComplicationImageView *)self bounds];
   MidX = CGRectGetMidX(v22);
   [(CDRichComplicationImageView *)self bounds];
-  [v3 setCenter:{MidX, CGRectGetMidY(v23)}];
-  v6 = [(CDRichComplicationImageView *)self monochromeImageView];
+  [richComplicationImageView setCenter:{MidX, CGRectGetMidY(v23)}];
+  monochromeImageView = [(CDRichComplicationImageView *)self monochromeImageView];
   [(CDRichComplicationImageView *)self bounds];
   v7 = CGRectGetMidX(v24);
   [(CDRichComplicationImageView *)self bounds];
-  [v6 setCenter:{v7, CGRectGetMidY(v25)}];
+  [monochromeImageView setCenter:{v7, CGRectGetMidY(v25)}];
 
-  v8 = [(CDRichComplicationImageView *)self richComplicationImageView];
+  richComplicationImageView2 = [(CDRichComplicationImageView *)self richComplicationImageView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(CDRichComplicationImageView *)self richComplicationImageView];
-    v11 = [v10 image];
-    [v11 size];
+    richComplicationImageView3 = [(CDRichComplicationImageView *)self richComplicationImageView];
+    image = [richComplicationImageView3 image];
+    [image size];
     v13 = v12;
     [(CDRichComplicationImageView *)self bounds];
-    if (v13 <= v14 && ([v11 size], v16 = v15, -[CDRichComplicationImageView bounds](self, "bounds"), v16 <= v17))
+    if (v13 <= v14 && ([image size], v16 = v15, -[CDRichComplicationImageView bounds](self, "bounds"), v16 <= v17))
     {
       v18 = 4;
     }
@@ -248,53 +248,53 @@
       v18 = 2;
     }
 
-    [v10 setContentMode:v18];
+    [richComplicationImageView3 setContentMode:v18];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    v4 = a3;
-    self->_paused = a3;
+    pausedCopy = paused;
+    self->_paused = paused;
     if ([(CDRichComplicationImageView *)self isHostingOverrideView])
     {
-      v6 = [(CDRichComplicationImageView *)self richComplicationImageView];
-      v9 = v6;
-      if (v4)
+      richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
+      richComplicationImageView2 = richComplicationImageView;
+      if (pausedCopy)
       {
-        [v6 pauseLiveFullColorImageView];
+        [richComplicationImageView pauseLiveFullColorImageView];
       }
 
       else
       {
-        [v6 resumeLiveFullColorImageView];
+        [richComplicationImageView resumeLiveFullColorImageView];
       }
     }
 
     else
     {
-      v7 = [(CDRichComplicationImageView *)self isPaused];
-      v9 = [(CDRichComplicationImageView *)self richComplicationImageView];
-      v8 = [v9 layer];
-      [v8 setShouldRasterize:v7];
+      isPaused = [(CDRichComplicationImageView *)self isPaused];
+      richComplicationImageView2 = [(CDRichComplicationImageView *)self richComplicationImageView];
+      layer = [richComplicationImageView2 layer];
+      [layer setShouldRasterize:isPaused];
     }
   }
 }
 
-- (void)setFontDescriptor:(id)a3
+- (void)setFontDescriptor:(id)descriptor
 {
-  if (self->_fontDescriptor != a3)
+  if (self->_fontDescriptor != descriptor)
   {
-    objc_storeStrong(&self->_fontDescriptor, a3);
+    objc_storeStrong(&self->_fontDescriptor, descriptor);
     if ([(CDRichComplicationImageView *)self isHostingOverrideView])
     {
-      v5 = [(CDRichComplicationImageView *)self richComplicationImageView];
+      richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
       if (objc_opt_respondsToSelector())
       {
-        v6 = [(CDRichComplicationImageView *)self fontDescriptor];
-        [v5 setFontDescriptor:v6];
+        fontDescriptor = [(CDRichComplicationImageView *)self fontDescriptor];
+        [richComplicationImageView setFontDescriptor:fontDescriptor];
       }
     }
   }
@@ -302,18 +302,18 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setFontSizeFactor:(double)a3
+- (void)setFontSizeFactor:(double)factor
 {
-  if (self->_fontSizeFactor != a3)
+  if (self->_fontSizeFactor != factor)
   {
-    self->_fontSizeFactor = a3;
+    self->_fontSizeFactor = factor;
     if ([(CDRichComplicationImageView *)self isHostingOverrideView])
     {
-      v4 = [(CDRichComplicationImageView *)self richComplicationImageView];
+      richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
       if (objc_opt_respondsToSelector())
       {
         [(CDRichComplicationImageView *)self fontSizeFactor];
-        [v4 setFontSizeFactor:?];
+        [richComplicationImageView setFontSizeFactor:?];
       }
     }
   }
@@ -333,152 +333,152 @@
     return 0;
   }
 
-  v3 = [(CLKFullColorImageProvider *)self->_imageProvider pointSize];
-  if (v3)
+  pointSize = [(CLKFullColorImageProvider *)self->_imageProvider pointSize];
+  if (pointSize)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CLKFullColorImageProvider *)self->_imageProvider overridePointSize];
-    v4 = v5 == 0;
+    overridePointSize = [(CLKFullColorImageProvider *)self->_imageProvider overridePointSize];
+    v4 = overridePointSize == 0;
   }
 
   return v4;
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  self->_inMonochromeModeFraction = a3;
+  self->_inMonochromeModeFraction = fraction;
   if ([(CDRichComplicationImageView *)self isHostingOverrideView])
   {
-    v5 = [(CDRichComplicationImageView *)self richComplicationImageView];
+    richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CDRichComplicationImageView *)self richComplicationImageView];
+      richComplicationImageView2 = [(CDRichComplicationImageView *)self richComplicationImageView];
 LABEL_12:
-      v45 = v7;
-      v22 = a3;
+      richComplicationImageView4 = richComplicationImageView2;
+      fractionCopy = fraction;
 LABEL_13:
-      [v7 transitionToMonochromeWithFraction:v22];
+      [richComplicationImageView2 transitionToMonochromeWithFraction:fractionCopy];
       goto LABEL_14;
     }
   }
 
-  v8 = [(CDRichComplicationImageView *)self monochromeImageView];
-  v9 = [v8 imageProvider];
+  monochromeImageView = [(CDRichComplicationImageView *)self monochromeImageView];
+  imageProvider = [monochromeImageView imageProvider];
 
-  if (!v9)
+  if (!imageProvider)
   {
-    v15 = [(CDRichComplicationImageView *)self filterProvider];
-    v45 = [v15 filtersForView:self style:-[CDRichComplicationImageView _filterStyle](self fraction:{"_filterStyle"), a3}];
+    filterProvider = [(CDRichComplicationImageView *)self filterProvider];
+    richComplicationImageView4 = [filterProvider filtersForView:self style:-[CDRichComplicationImageView _filterStyle](self fraction:{"_filterStyle"), fraction}];
 
-    v16 = v45;
-    if (!v45)
+    v16 = richComplicationImageView4;
+    if (!richComplicationImageView4)
     {
       goto LABEL_15;
     }
 
-    v13 = [(CDRichComplicationImageView *)self layer];
-    [v13 setFilters:v45];
+    layer = [(CDRichComplicationImageView *)self layer];
+    [layer setFilters:richComplicationImageView4];
     goto LABEL_9;
   }
 
-  v10 = [(CDRichComplicationImageView *)self layer];
-  [v10 setFilters:MEMORY[0x277CBEBF8]];
+  layer2 = [(CDRichComplicationImageView *)self layer];
+  [layer2 setFilters:MEMORY[0x277CBEBF8]];
 
-  if (fabs(a3) < 0.00000011920929)
+  if (fabs(fraction) < 0.00000011920929)
   {
-    v11 = [(CDRichComplicationImageView *)self monochromeImageView];
-    [v11 setHidden:1];
+    monochromeImageView2 = [(CDRichComplicationImageView *)self monochromeImageView];
+    [monochromeImageView2 setHidden:1];
 
-    v12 = [(CDRichComplicationImageView *)self richComplicationImageView];
-    [v12 setHidden:0];
+    richComplicationImageView3 = [(CDRichComplicationImageView *)self richComplicationImageView];
+    [richComplicationImageView3 setHidden:0];
 
-    v45 = [(CDRichComplicationImageView *)self richComplicationImageView];
-    v13 = [v45 layer];
+    richComplicationImageView4 = [(CDRichComplicationImageView *)self richComplicationImageView];
+    layer = [richComplicationImageView4 layer];
     LODWORD(v14) = 1.0;
-    [v13 setOpacity:v14];
+    [layer setOpacity:v14];
 LABEL_9:
 
 LABEL_14:
-    v16 = v45;
+    v16 = richComplicationImageView4;
     goto LABEL_15;
   }
 
-  if (fabs(a3 + -1.0) < 0.00000011920929)
+  if (fabs(fraction + -1.0) < 0.00000011920929)
   {
-    v17 = [(CDRichComplicationImageView *)self richComplicationImageView];
-    [v17 setHidden:1];
+    richComplicationImageView5 = [(CDRichComplicationImageView *)self richComplicationImageView];
+    [richComplicationImageView5 setHidden:1];
 
-    v18 = [(CDRichComplicationImageView *)self monochromeImageView];
-    [v18 setHidden:0];
+    monochromeImageView3 = [(CDRichComplicationImageView *)self monochromeImageView];
+    [monochromeImageView3 setHidden:0];
 
-    v19 = [(CDRichComplicationImageView *)self monochromeImageView];
-    v20 = [v19 layer];
+    monochromeImageView4 = [(CDRichComplicationImageView *)self monochromeImageView];
+    layer3 = [monochromeImageView4 layer];
     LODWORD(v21) = 1.0;
-    [v20 setOpacity:v21];
+    [layer3 setOpacity:v21];
 
-    v7 = [(CDRichComplicationImageView *)self monochromeImageView];
+    richComplicationImageView2 = [(CDRichComplicationImageView *)self monochromeImageView];
     goto LABEL_12;
   }
 
-  v23 = [(CDRichComplicationImageView *)self prefersFilterOverTransition];
-  v24 = [(CDRichComplicationImageView *)self richComplicationImageView];
-  v25 = v24;
-  if (!v23)
+  prefersFilterOverTransition = [(CDRichComplicationImageView *)self prefersFilterOverTransition];
+  richComplicationImageView6 = [(CDRichComplicationImageView *)self richComplicationImageView];
+  v25 = richComplicationImageView6;
+  if (!prefersFilterOverTransition)
   {
-    [v24 setHidden:0];
+    [richComplicationImageView6 setHidden:0];
 
-    v37 = [(CDRichComplicationImageView *)self richComplicationImageView];
-    v38 = [v37 layer];
-    v36 = 1.0 - a3;
+    richComplicationImageView7 = [(CDRichComplicationImageView *)self richComplicationImageView];
+    layer4 = [richComplicationImageView7 layer];
+    v36 = 1.0 - fraction;
     *&v39 = v36;
-    [v38 setOpacity:v39];
+    [layer4 setOpacity:v39];
 
-    v40 = [(CDRichComplicationImageView *)self monochromeImageView];
-    [v40 setHidden:0];
+    monochromeImageView5 = [(CDRichComplicationImageView *)self monochromeImageView];
+    [monochromeImageView5 setHidden:0];
 
-    v42 = [(CDRichComplicationImageView *)self monochromeImageView];
-    v43 = [v42 layer];
-    v41 = a3;
-    *&v44 = v41;
-    [v43 setOpacity:v44];
+    monochromeImageView6 = [(CDRichComplicationImageView *)self monochromeImageView];
+    layer5 = [monochromeImageView6 layer];
+    fractionCopy2 = fraction;
+    *&v44 = fractionCopy2;
+    [layer5 setOpacity:v44];
 
-    v7 = [(CDRichComplicationImageView *)self monochromeImageView];
-    v45 = v7;
-    v22 = 1.0;
+    richComplicationImageView2 = [(CDRichComplicationImageView *)self monochromeImageView];
+    richComplicationImageView4 = richComplicationImageView2;
+    fractionCopy = 1.0;
     goto LABEL_13;
   }
 
-  [v24 setHidden:1];
+  [richComplicationImageView6 setHidden:1];
 
-  v26 = [(CDRichComplicationImageView *)self richComplicationImageView];
-  v27 = [v26 layer];
+  richComplicationImageView8 = [(CDRichComplicationImageView *)self richComplicationImageView];
+  layer6 = [richComplicationImageView8 layer];
   LODWORD(v28) = 1.0;
-  [v27 setOpacity:v28];
+  [layer6 setOpacity:v28];
 
-  v29 = [(CDRichComplicationImageView *)self monochromeImageView];
-  [v29 setHidden:0];
+  monochromeImageView7 = [(CDRichComplicationImageView *)self monochromeImageView];
+  [monochromeImageView7 setHidden:0];
 
-  v30 = [(CDRichComplicationImageView *)self monochromeImageView];
-  v31 = [v30 layer];
+  monochromeImageView8 = [(CDRichComplicationImageView *)self monochromeImageView];
+  layer7 = [monochromeImageView8 layer];
   LODWORD(v32) = 1.0;
-  [v31 setOpacity:v32];
+  [layer7 setOpacity:v32];
 
-  v33 = [(CDRichComplicationImageView *)self filterProvider];
-  v34 = [(CDRichComplicationImageView *)self monochromeImageView];
-  v45 = [v33 filtersForView:v34 style:-[CDRichComplicationImageView _filterStyle](self fraction:{"_filterStyle"), a3}];
+  filterProvider2 = [(CDRichComplicationImageView *)self filterProvider];
+  monochromeImageView9 = [(CDRichComplicationImageView *)self monochromeImageView];
+  richComplicationImageView4 = [filterProvider2 filtersForView:monochromeImageView9 style:-[CDRichComplicationImageView _filterStyle](self fraction:{"_filterStyle"), fraction}];
 
-  v16 = v45;
-  if (v45)
+  v16 = richComplicationImageView4;
+  if (richComplicationImageView4)
   {
-    v13 = [(CDRichComplicationImageView *)self monochromeImageView];
-    v35 = [v13 layer];
-    [v35 setFilters:v45];
+    layer = [(CDRichComplicationImageView *)self monochromeImageView];
+    v13Layer = [layer layer];
+    [v13Layer setFilters:richComplicationImageView4];
 
     goto LABEL_9;
   }
@@ -491,52 +491,52 @@ LABEL_15:
   self->_inMonochromeModeFraction = 1.0;
   if ([(CDRichComplicationImageView *)self isHostingOverrideView]&& ([(CDRichComplicationImageView *)self richComplicationImageView], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
   {
-    v16 = [(CDRichComplicationImageView *)self richComplicationImageView];
-    [v16 updateMonochromeColor];
+    richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
+    [richComplicationImageView updateMonochromeColor];
   }
 
   else
   {
-    v5 = [(CDRichComplicationImageView *)self monochromeImageView];
-    v6 = [v5 imageProvider];
+    monochromeImageView = [(CDRichComplicationImageView *)self monochromeImageView];
+    imageProvider = [monochromeImageView imageProvider];
 
-    if (v6)
+    if (imageProvider)
     {
-      v7 = [(CDRichComplicationImageView *)self layer];
-      [v7 setFilters:MEMORY[0x277CBEBF8]];
+      layer = [(CDRichComplicationImageView *)self layer];
+      [layer setFilters:MEMORY[0x277CBEBF8]];
 
-      v8 = [(CDRichComplicationImageView *)self monochromeImageView];
-      [v8 setHidden:0];
+      monochromeImageView2 = [(CDRichComplicationImageView *)self monochromeImageView];
+      [monochromeImageView2 setHidden:0];
 
-      v9 = [(CDRichComplicationImageView *)self monochromeImageView];
-      v10 = [v9 layer];
+      monochromeImageView3 = [(CDRichComplicationImageView *)self monochromeImageView];
+      layer2 = [monochromeImageView3 layer];
       LODWORD(v11) = 1.0;
-      [v10 setOpacity:v11];
+      [layer2 setOpacity:v11];
 
-      v12 = [(CDRichComplicationImageView *)self monochromeImageView];
-      [v12 updateMonochromeColor];
+      monochromeImageView4 = [(CDRichComplicationImageView *)self monochromeImageView];
+      [monochromeImageView4 updateMonochromeColor];
 
-      v16 = [(CDRichComplicationImageView *)self richComplicationImageView];
-      [v16 setHidden:1];
+      richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
+      [richComplicationImageView setHidden:1];
     }
 
     else
     {
-      v13 = [(CDRichComplicationImageView *)self filterProvider];
-      v16 = [v13 filtersForView:self style:{-[CDRichComplicationImageView _filterStyle](self, "_filterStyle")}];
+      filterProvider = [(CDRichComplicationImageView *)self filterProvider];
+      richComplicationImageView = [filterProvider filtersForView:self style:{-[CDRichComplicationImageView _filterStyle](self, "_filterStyle")}];
 
-      v14 = v16;
-      if (!v16)
+      v14 = richComplicationImageView;
+      if (!richComplicationImageView)
       {
         goto LABEL_9;
       }
 
-      v15 = [(CDRichComplicationImageView *)self layer];
-      [v15 setFilters:v16];
+      layer3 = [(CDRichComplicationImageView *)self layer];
+      [layer3 setFilters:richComplicationImageView];
     }
   }
 
-  v14 = v16;
+  v14 = richComplicationImageView;
 LABEL_9:
 }
 
@@ -565,48 +565,48 @@ LABEL_9:
   }
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(CDRichComplicationImageView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:a4 fraction:a5];
+  filterProvider = [(CDRichComplicationImageView *)self filterProvider];
+  v9 = [filterProvider filtersForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4
+- (id)filtersForView:(id)view style:(int64_t)style
 {
-  v6 = [(CDRichComplicationImageView *)self filterProvider];
-  v7 = [v6 filtersForView:self style:a4];
+  filterProvider = [(CDRichComplicationImageView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:style];
 
   return v7;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(CDRichComplicationImageView *)self filterProvider];
-  v9 = [v8 filterForView:self style:a4 fraction:a5];
+  filterProvider = [(CDRichComplicationImageView *)self filterProvider];
+  v9 = [filterProvider filterForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
-  v6 = [(CDRichComplicationImageView *)self filterProvider];
-  v7 = [v6 filterForView:self style:a4];
+  filterProvider = [(CDRichComplicationImageView *)self filterProvider];
+  v7 = [filterProvider filterForView:self style:style];
 
   return v7;
 }
 
-- (id)interpolatedColorForView:(id)a3
+- (id)interpolatedColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationImageView *)self filterProvider];
+  viewCopy = view;
+  filterProvider = [(CDRichComplicationImageView *)self filterProvider];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CDRichComplicationImageView *)self filterProvider];
-    v8 = [v7 interpolatedColorForView:v4];
+    filterProvider2 = [(CDRichComplicationImageView *)self filterProvider];
+    v8 = [filterProvider2 interpolatedColorForView:viewCopy];
   }
 
   else
@@ -617,25 +617,25 @@ LABEL_9:
   return v8;
 }
 
-- (id)backgroundColorForView:(id)a3
+- (id)backgroundColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationImageView *)self filterProvider];
-  v6 = [v5 backgroundColorForView:v4];
+  viewCopy = view;
+  filterProvider = [(CDRichComplicationImageView *)self filterProvider];
+  v6 = [filterProvider backgroundColorForView:viewCopy];
 
   return v6;
 }
 
-- (BOOL)viewShouldIgnoreTwoPieceImage:(id)a3
+- (BOOL)viewShouldIgnoreTwoPieceImage:(id)image
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationImageView *)self filterProvider];
+  imageCopy = image;
+  filterProvider = [(CDRichComplicationImageView *)self filterProvider];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CDRichComplicationImageView *)self filterProvider];
-    v8 = [v7 viewShouldIgnoreTwoPieceImage:v4];
+    filterProvider2 = [(CDRichComplicationImageView *)self filterProvider];
+    v8 = [filterProvider2 viewShouldIgnoreTwoPieceImage:imageCopy];
   }
 
   else
@@ -646,22 +646,22 @@ LABEL_9:
   return v8;
 }
 
-- (void)setTintedFraction:(double)a3
+- (void)setTintedFraction:(double)fraction
 {
-  v4 = [(CDRichComplicationImageView *)self richComplicationImageView];
-  if ([v4 conformsToProtocol:&unk_2857149A0])
+  richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
+  if ([richComplicationImageView conformsToProtocol:&unk_2857149A0])
   {
-    [v4 setTintedFraction:a3];
+    [richComplicationImageView setTintedFraction:fraction];
   }
 }
 
-- (void)setTintedPlatterColor:(id)a3
+- (void)setTintedPlatterColor:(id)color
 {
-  v5 = a3;
-  v4 = [(CDRichComplicationImageView *)self richComplicationImageView];
-  if ([v4 conformsToProtocol:&unk_2857149A0])
+  colorCopy = color;
+  richComplicationImageView = [(CDRichComplicationImageView *)self richComplicationImageView];
+  if ([richComplicationImageView conformsToProtocol:&unk_2857149A0])
   {
-    [v4 setTintedPlatterColor:v5];
+    [richComplicationImageView setTintedPlatterColor:colorCopy];
   }
 }
 

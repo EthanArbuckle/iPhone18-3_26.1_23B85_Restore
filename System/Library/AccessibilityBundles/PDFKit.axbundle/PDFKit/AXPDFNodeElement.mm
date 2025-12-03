@@ -1,10 +1,10 @@
 @interface AXPDFNodeElement
-- (AXPDFNodeElement)initWithAccessibilityContainer:(id)a3 withPage:(id)a4;
+- (AXPDFNodeElement)initWithAccessibilityContainer:(id)container withPage:(id)page;
 - (BOOL)_accessibilityIncludeDuringContentReading;
 - (BOOL)isLastNodeInPage;
 - (BOOL)pdfViewRequiresPageTurning;
-- (CGRect)axConvertBoundsFromPageToScreenCoordinates:(CGRect)a3;
-- (CGRect)convertedAccessibilityFrame:(CGRect)a3;
+- (CGRect)axConvertBoundsFromPageToScreenCoordinates:(CGRect)coordinates;
+- (CGRect)convertedAccessibilityFrame:(CGRect)frame;
 - (PDFPage)page;
 - (id)pdfView;
 - (id)plugin;
@@ -12,13 +12,13 @@
 
 @implementation AXPDFNodeElement
 
-- (AXPDFNodeElement)initWithAccessibilityContainer:(id)a3 withPage:(id)a4
+- (AXPDFNodeElement)initWithAccessibilityContainer:(id)container withPage:(id)page
 {
   v8.receiver = self;
   v8.super_class = AXPDFNodeElement;
-  v5 = a4;
-  v6 = [(AXPDFNodeElement *)&v8 initWithAccessibilityContainer:a3];
-  [(AXPDFNodeElement *)v6 setPage:v5, v8.receiver, v8.super_class];
+  pageCopy = page;
+  v6 = [(AXPDFNodeElement *)&v8 initWithAccessibilityContainer:container];
+  [(AXPDFNodeElement *)v6 setPage:pageCopy, v8.receiver, v8.super_class];
 
   return v6;
 }
@@ -26,9 +26,9 @@
 - (id)pdfView
 {
   WeakRetained = objc_loadWeakRetained(&self->_pdfView);
-  v4 = [WeakRetained window];
+  window = [WeakRetained window];
 
-  if (!v4)
+  if (!window)
   {
     v5 = [(AXPDFNodeElement *)self _accessibilityAncestorIsKindOf:MEMORY[0x29C2E4220](@"PDFView")];
     objc_storeWeak(&self->_pdfView, v5);
@@ -41,17 +41,17 @@
 
 - (id)plugin
 {
-  v2 = [(AXPDFNodeElement *)self page];
-  v3 = [v2 safeValueForKey:@"plugin"];
+  page = [(AXPDFNodeElement *)self page];
+  v3 = [page safeValueForKey:@"plugin"];
 
   return v3;
 }
 
 - (BOOL)isLastNodeInPage
 {
-  v3 = [(AXPDFNodeElement *)self pdfView];
+  pdfView = [(AXPDFNodeElement *)self pdfView];
 
-  if (!v3 || ![(AXPDFNodeElement *)self isAccessibilityElement])
+  if (!pdfView || ![(AXPDFNodeElement *)self isAccessibilityElement])
   {
     return 0;
   }
@@ -66,8 +66,8 @@
     return 0;
   }
 
-  v6 = [(AXPDFNodeElement *)self accessibilityContainer];
-  if (v6)
+  accessibilityContainer = [(AXPDFNodeElement *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
     do
     {
@@ -77,27 +77,27 @@
         break;
       }
 
-      v7 = [v6 accessibilityContainer];
+      v6AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-      v6 = v7;
+      accessibilityContainer = v6AccessibilityContainer;
     }
 
-    while (v7);
+    while (v6AccessibilityContainer);
   }
 
-  v8 = [v6 _accessibilityValueForKey:@"AXValidElements"];
+  v8 = [accessibilityContainer _accessibilityValueForKey:@"AXValidElements"];
   if (!v8)
   {
     [(AXPDFNodeElement *)self setIsGatheringLeafDescendents:1];
-    v9 = [MEMORY[0x29EDC7328] options];
-    v8 = [v6 _accessibilityLeafDescendantsWithOptions:v9];
+    options = [MEMORY[0x29EDC7328] options];
+    v8 = [accessibilityContainer _accessibilityLeafDescendantsWithOptions:options];
 
     [(AXPDFNodeElement *)self setIsGatheringLeafDescendents:0];
-    [v6 _accessibilitySetRetainedValue:v8 forKey:@"AXValidElements"];
+    [accessibilityContainer _accessibilitySetRetainedValue:v8 forKey:@"AXValidElements"];
   }
 
-  v10 = [v8 lastObject];
-  self->_isLastNodeInPage = v10 == self;
+  lastObject = [v8 lastObject];
+  self->_isLastNodeInPage = lastObject == self;
 
   [(AXPDFNodeElement *)self setDidDetermineLastNodeStatus:1];
   isLastNodeInPage = self->_isLastNodeInPage;
@@ -107,17 +107,17 @@
 
 - (BOOL)pdfViewRequiresPageTurning
 {
-  v2 = [(AXPDFNodeElement *)self pdfView];
-  v3 = ([v2 isUsingPageViewController] & 1) != 0 || objc_msgSend(v2, "displayMode") == 2 || objc_msgSend(v2, "displayMode") == 0;
+  pdfView = [(AXPDFNodeElement *)self pdfView];
+  v3 = ([pdfView isUsingPageViewController] & 1) != 0 || objc_msgSend(pdfView, "displayMode") == 2 || objc_msgSend(pdfView, "displayMode") == 0;
 
   return v3;
 }
 
 - (BOOL)_accessibilityIncludeDuringContentReading
 {
-  v3 = [(AXPDFNodeElement *)self plugin];
+  plugin = [(AXPDFNodeElement *)self plugin];
 
-  if (v3)
+  if (plugin)
   {
     return 0;
   }
@@ -125,13 +125,13 @@
   return [(AXPDFNodeElement *)self pdfViewRequiresPageTurning];
 }
 
-- (CGRect)axConvertBoundsFromPageToScreenCoordinates:(CGRect)a3
+- (CGRect)axConvertBoundsFromPageToScreenCoordinates:(CGRect)coordinates
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x4010000000;
   v14 = "";
-  v15 = a3;
+  coordinatesCopy = coordinates;
   AXPerformSafeBlock();
   v3 = v12[4];
   v4 = v12[5];
@@ -166,22 +166,22 @@ void __63__AXPDFNodeElement_axConvertBoundsFromPageToScreenCoordinates___block_i
   *(*(*(a1 + 40) + 8) + 32) = UIAccessibilityConvertFrameToScreenCoordinates(v10[1], v11);
 }
 
-- (CGRect)convertedAccessibilityFrame:(CGRect)a3
+- (CGRect)convertedAccessibilityFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(AXPDFNodeElement *)self plugin];
-  if (v8 && (v9 = v8, [(AXPDFNodeElement *)self plugin], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  plugin = [(AXPDFNodeElement *)self plugin];
+  if (plugin && (v9 = plugin, [(AXPDFNodeElement *)self plugin], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
   {
-    v12 = [(AXPDFNodeElement *)self page];
-    v13 = [v12 document];
-    v14 = [(AXPDFNodeElement *)self page];
-    v15 = [v13 indexForPage:v14];
+    page = [(AXPDFNodeElement *)self page];
+    document = [page document];
+    page2 = [(AXPDFNodeElement *)self page];
+    v15 = [document indexForPage:page2];
 
-    v16 = [(AXPDFNodeElement *)self plugin];
-    [v16 convertFromPDFPageToScreenForAccessibility:v15 pageIndex:{x, y, width, height}];
+    plugin2 = [(AXPDFNodeElement *)self plugin];
+    [plugin2 convertFromPDFPageToScreenForAccessibility:v15 pageIndex:{x, y, width, height}];
     v18 = v17;
     v20 = v19;
     v22 = v21;

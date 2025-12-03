@@ -1,21 +1,21 @@
 @interface GKCloudKitMultiplayer
-+ (id)formattedContact:(id)a3;
-+ (id)lastSevenDigits:(id)a3;
++ (id)formattedContact:(id)contact;
++ (id)lastSevenDigits:(id)digits;
 + (id)msgServiceQueue;
-+ (id)packFakeRealTimeBulletinWithZoneData:(id)a3;
-+ (id)packFakeTurnBasedBulletinWithZoneData:(id)a3;
++ (id)packFakeRealTimeBulletinWithZoneData:(id)data;
++ (id)packFakeTurnBasedBulletinWithZoneData:(id)data;
 + (id)sessionCache;
-+ (void)acceptShareMetadata:(id)a3 retryCount:(int)a4 completionHandler:(id)a5;
-+ (void)databaseForZoneID:(id)a3 withCompletionHandler:(id)a4;
-+ (void)deleteInviteRecordWithRecordID:(id)a3 fromDatabase:(id)a4;
-+ (void)generateAndStoreInviteBulletinForRecord:(id)a3 database:(id)a4;
-+ (void)getAssociatedAccountsWithCompletionHandler:(id)a3;
-+ (void)handleCloudKitShareMetadata:(id)a3 completionHandler:(id)a4;
-+ (void)handleLegacyShareMetadata:(id)a3 needsAccept:(BOOL)a4 completionHandler:(id)a5;
-+ (void)isOwnZoneID:(id)a3 withCompletionHandler:(id)a4;
++ (void)acceptShareMetadata:(id)metadata retryCount:(int)count completionHandler:(id)handler;
++ (void)databaseForZoneID:(id)d withCompletionHandler:(id)handler;
++ (void)deleteInviteRecordWithRecordID:(id)d fromDatabase:(id)database;
++ (void)generateAndStoreInviteBulletinForRecord:(id)record database:(id)database;
++ (void)getAssociatedAccountsWithCompletionHandler:(id)handler;
++ (void)handleCloudKitShareMetadata:(id)metadata completionHandler:(id)handler;
++ (void)handleLegacyShareMetadata:(id)metadata needsAccept:(BOOL)accept completionHandler:(id)handler;
++ (void)isOwnZoneID:(id)d withCompletionHandler:(id)handler;
 + (void)refetchUserRecordID;
-+ (void)searchAndSaveIdentityForRecord:(id)a3 database:(id)a4 completionHandler:(id)a5;
-+ (void)userRecordIDWithCompletionHandler:(id)a3;
++ (void)searchAndSaveIdentityForRecord:(id)record database:(id)database completionHandler:(id)handler;
++ (void)userRecordIDWithCompletionHandler:(id)handler;
 @end
 
 @implementation GKCloudKitMultiplayer
@@ -32,66 +32,66 @@
   return v3;
 }
 
-+ (void)userRecordIDWithCompletionHandler:(id)a3
++ (void)userRecordIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 sessionCache];
-  [v5 userRecordIDWithCompletionHandler:v4];
+  handlerCopy = handler;
+  sessionCache = [self sessionCache];
+  [sessionCache userRecordIDWithCompletionHandler:handlerCopy];
 }
 
 + (void)refetchUserRecordID
 {
-  v2 = [a1 sessionCache];
-  [v2 refetchUserRecordID];
+  sessionCache = [self sessionCache];
+  [sessionCache refetchUserRecordID];
 }
 
-+ (void)isOwnZoneID:(id)a3 withCompletionHandler:(id)a4
++ (void)isOwnZoneID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ownerName];
-  v9 = [v8 isEqualToString:CKCurrentUserDefaultName];
+  dCopy = d;
+  handlerCopy = handler;
+  ownerName = [dCopy ownerName];
+  v9 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
   if (v9)
   {
-    v7[2](v7, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
   {
-    v10 = [a1 sessionCache];
+    sessionCache = [self sessionCache];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000F7FE8;
     v11[3] = &unk_1003616B8;
-    v13 = v7;
-    v12 = v6;
-    [v10 userRecordIDWithCompletionHandler:v11];
+    v13 = handlerCopy;
+    v12 = dCopy;
+    [sessionCache userRecordIDWithCompletionHandler:v11];
   }
 }
 
-+ (void)databaseForZoneID:(id)a3 withCompletionHandler:(id)a4
++ (void)databaseForZoneID:(id)d withCompletionHandler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F813C;
   v7[3] = &unk_1003668E0;
-  v8 = a4;
-  v6 = v8;
-  [a1 isOwnZoneID:a3 withCompletionHandler:v7];
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  [self isOwnZoneID:d withCompletionHandler:v7];
 }
 
-+ (void)handleCloudKitShareMetadata:(id)a3 completionHandler:(id)a4
++ (void)handleCloudKitShareMetadata:(id)metadata completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 share];
-  v9 = [v8 recordID];
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  share = [metadataCopy share];
+  recordID = [share recordID];
 
-  v10 = [v9 zoneID];
-  v11 = [v10 zoneName];
+  zoneID = [recordID zoneID];
+  zoneName = [zoneID zoneName];
 
-  if (([v11 isEqualToString:@"com.apple.legacygaming.invites"] & 1) == 0)
+  if (([zoneName isEqualToString:@"com.apple.legacygaming.invites"] & 1) == 0)
   {
     if (!os_log_GKGeneral)
     {
@@ -104,7 +104,7 @@
     }
 
 LABEL_17:
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_19;
   }
 
@@ -117,7 +117,7 @@ LABEL_17:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v36 = v6;
+    v36 = metadataCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Handle CloudKit share metadata - %@", buf, 0xCu);
   }
 
@@ -125,24 +125,24 @@ LABEL_17:
   [v14 recordMessageInviteProcessingTimestamp];
 
   v15 = +[GKInviteURLManager sharedManager];
-  v16 = [v15 acceptingInProgressRecordIDs];
-  v17 = [v16 containsObject:v9];
+  acceptingInProgressRecordIDs = [v15 acceptingInProgressRecordIDs];
+  v17 = [acceptingInProgressRecordIDs containsObject:recordID];
 
   if (!v17)
   {
     v21 = +[GKInviteURLManager sharedManager];
-    v22 = [v21 acceptingInProgressRecordIDs];
-    [v22 addObject:v9];
+    acceptingInProgressRecordIDs2 = [v21 acceptingInProgressRecordIDs];
+    [acceptingInProgressRecordIDs2 addObject:recordID];
 
     v23 = [GKDispatchGroup dispatchGroupWithName:@"acceptShareWithShareMetadata"];
-    LOBYTE(v22) = [v6 participantStatus] != 2;
+    LOBYTE(acceptingInProgressRecordIDs2) = [metadataCopy participantStatus] != 2;
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1000F8560;
     v30[3] = &unk_100366908;
-    v33 = a1;
-    v31 = v6;
-    v34 = v22;
+    selfCopy = self;
+    v31 = metadataCopy;
+    v34 = acceptingInProgressRecordIDs2;
     v24 = v23;
     v32 = v24;
     [v24 perform:v30];
@@ -150,9 +150,9 @@ LABEL_17:
     v26[1] = 3221225472;
     v26[2] = sub_1000F8670;
     v26[3] = &unk_100361068;
-    v27 = v9;
+    v27 = recordID;
     v28 = v24;
-    v29 = v7;
+    v29 = handlerCopy;
     v25 = v24;
     [v25 notifyOnMainQueueWithBlock:v26];
 
@@ -171,7 +171,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Already processing same share metadata, returning.", buf, 2u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     goto LABEL_17;
   }
@@ -179,21 +179,21 @@ LABEL_17:
 LABEL_19:
 }
 
-+ (void)handleLegacyShareMetadata:(id)a3 needsAccept:(BOOL)a4 completionHandler:(id)a5
++ (void)handleLegacyShareMetadata:(id)metadata needsAccept:(BOOL)accept completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  acceptCopy = accept;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v10 = [GKDispatchGroup dispatchGroupWithName:@"acceptShareWithShareMetadata"];
-  if (v6)
+  if (acceptCopy)
   {
     v11 = v18;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000F88D8;
     v18[3] = &unk_100361FB8;
-    v18[4] = v8;
-    v18[6] = a1;
+    v18[4] = metadataCopy;
+    v18[6] = self;
     v18[5] = v10;
   }
 
@@ -204,9 +204,9 @@ LABEL_19:
     v17[1] = 3221225472;
     v17[2] = sub_1000F8AF0;
     v17[3] = &unk_100361FB8;
-    v17[4] = v8;
+    v17[4] = metadataCopy;
     v17[5] = v10;
-    v17[6] = a1;
+    v17[6] = self;
   }
 
   [v10 perform:v11];
@@ -216,18 +216,18 @@ LABEL_19:
   v14[2] = sub_1000F8EDC;
   v14[3] = &unk_100360EB0;
   v15 = v10;
-  v16 = v9;
+  v16 = handlerCopy;
   v12 = v10;
-  v13 = v9;
+  v13 = handlerCopy;
   [v12 notifyOnMainQueueWithBlock:v14];
 }
 
-+ (void)acceptShareMetadata:(id)a3 retryCount:(int)a4 completionHandler:(id)a5
++ (void)acceptShareMetadata:(id)metadata retryCount:(int)count completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v10 = [CKAcceptSharesOperation alloc];
-  v25 = v8;
+  v25 = metadataCopy;
   v11 = [NSArray arrayWithObjects:&v25 count:1];
   v12 = [v10 initWithShareMetadatas:v11];
 
@@ -238,20 +238,20 @@ LABEL_19:
   v18 = 3221225472;
   v19 = sub_1000F90E4;
   v20 = &unk_1003669F8;
-  v22 = v9;
-  v23 = a1;
-  v21 = v8;
-  v24 = a4;
-  v14 = v9;
-  v15 = v8;
+  v22 = handlerCopy;
+  selfCopy = self;
+  v21 = metadataCopy;
+  countCopy = count;
+  v14 = handlerCopy;
+  v15 = metadataCopy;
   [v12 setAcceptSharesCompletionBlock:&v17];
   v16 = [CKContainer containerWithIdentifier:@"com.apple.socialgaming.sessions", v17, v18, v19, v20];
   [v16 addOperation:v12];
 }
 
-+ (id)packFakeRealTimeBulletinWithZoneData:(id)a3
++ (id)packFakeRealTimeBulletinWithZoneData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -261,7 +261,7 @@ LABEL_19:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *&buf[4] = v3;
+    *&buf[4] = dataCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "packFakeRealTimeBulletinWithZoneData: %@", buf, 0xCu);
   }
 
@@ -272,15 +272,15 @@ LABEL_19:
 
   [v6 setObject:&off_100382568 forKeyedSubscript:GKPushCommandKey];
   v82 = v9;
-  v10 = [v9 playerInternal];
-  v11 = [v10 playerID];
-  [v6 setObject:v11 forKeyedSubscript:@"i"];
+  playerInternal = [v9 playerInternal];
+  playerID = [playerInternal playerID];
+  [v6 setObject:playerID forKeyedSubscript:@"i"];
 
-  v12 = [v3 objectForKeyedSubscript:@"session-token"];
+  v12 = [dataCopy objectForKeyedSubscript:@"session-token"];
 
   if (v12)
   {
-    v13 = [v3 objectForKeyedSubscript:@"session-token"];
+    v13 = [dataCopy objectForKeyedSubscript:@"session-token"];
     [v6 setObject:v13 forKeyedSubscript:@"s"];
   }
 
@@ -289,11 +289,11 @@ LABEL_19:
     [v6 setObject:&stru_100374F10 forKeyedSubscript:@"s"];
   }
 
-  v14 = [v3 objectForKeyedSubscript:@"playerID"];
+  v14 = [dataCopy objectForKeyedSubscript:@"playerID"];
 
   if (v14)
   {
-    v15 = [v3 objectForKeyedSubscript:@"playerID"];
+    v15 = [dataCopy objectForKeyedSubscript:@"playerID"];
     [v6 setObject:v15 forKeyedSubscript:@"I"];
   }
 
@@ -302,11 +302,11 @@ LABEL_19:
     [v6 setObject:&stru_100374F10 forKeyedSubscript:@"I"];
   }
 
-  v16 = [v3 objectForKeyedSubscript:@"self-push-token"];
+  v16 = [dataCopy objectForKeyedSubscript:@"self-push-token"];
 
   if (v16)
   {
-    v17 = [v3 objectForKeyedSubscript:@"self-push-token"];
+    v17 = [dataCopy objectForKeyedSubscript:@"self-push-token"];
     [v6 setObject:v17 forKeyedSubscript:@"P"];
   }
 
@@ -315,11 +315,11 @@ LABEL_19:
     [v6 setObject:&stru_100374F10 forKeyedSubscript:@"P"];
   }
 
-  v18 = [v3 objectForKeyedSubscript:@"self-nat-type"];
+  v18 = [dataCopy objectForKeyedSubscript:@"self-nat-type"];
 
   if (v18)
   {
-    v19 = [v3 objectForKeyedSubscript:@"self-nat-type"];
+    v19 = [dataCopy objectForKeyedSubscript:@"self-nat-type"];
     [v6 setObject:v19 forKeyedSubscript:@"N"];
   }
 
@@ -328,11 +328,11 @@ LABEL_19:
     [v6 setObject:&stru_100374F10 forKeyedSubscript:@"N"];
   }
 
-  v20 = [v3 objectForKeyedSubscript:@"self-nat-ip"];
+  v20 = [dataCopy objectForKeyedSubscript:@"self-nat-ip"];
 
   if (v20)
   {
-    v21 = [v3 objectForKeyedSubscript:@"self-nat-ip"];
+    v21 = [dataCopy objectForKeyedSubscript:@"self-nat-ip"];
     [v6 setObject:v21 forKeyedSubscript:@"A"];
   }
 
@@ -341,11 +341,11 @@ LABEL_19:
     [v6 setObject:&stru_100374F10 forKeyedSubscript:@"A"];
   }
 
-  v22 = [v3 objectForKeyedSubscript:@"self-blob"];
+  v22 = [dataCopy objectForKeyedSubscript:@"self-blob"];
 
   if (v22)
   {
-    v23 = [v3 objectForKeyedSubscript:@"self-blob"];
+    v23 = [dataCopy objectForKeyedSubscript:@"self-blob"];
     [v6 setObject:v23 forKeyedSubscript:@"B"];
   }
 
@@ -354,11 +354,11 @@ LABEL_19:
     [v6 setObject:&stru_100374F10 forKeyedSubscript:@"B"];
   }
 
-  v24 = [v3 objectForKeyedSubscript:@"blob-type"];
+  v24 = [dataCopy objectForKeyedSubscript:@"blob-type"];
 
   if (v24)
   {
-    v25 = [v3 objectForKeyedSubscript:@"blob-type"];
+    v25 = [dataCopy objectForKeyedSubscript:@"blob-type"];
     [v6 setObject:v25 forKeyedSubscript:@"g"];
   }
 
@@ -367,34 +367,34 @@ LABEL_19:
     [v6 setObject:&stru_100374F10 forKeyedSubscript:@"g"];
   }
 
-  v26 = [v3 objectForKeyedSubscript:@"self-nat-type"];
-  v27 = [v26 integerValue];
+  v26 = [dataCopy objectForKeyedSubscript:@"self-nat-type"];
+  integerValue = [v26 integerValue];
 
-  *buf = v27;
+  *buf = integerValue;
   v28 = [&stru_100374F10 dataUsingEncoding:4];
   v29 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [v28 length] + 2);
   [v29 appendBytes:buf length:1];
-  v30 = [v3 objectForKeyedSubscript:@"matchType"];
-  v31 = [v30 integerValue];
+  v30 = [dataCopy objectForKeyedSubscript:@"matchType"];
+  integerValue2 = [v30 integerValue];
 
-  v85 = v31 == 1;
+  v85 = integerValue2 == 1;
   [v29 appendBytes:&v85 length:1];
   v81 = v28;
   [v29 appendData:v28];
   [v29 appendBytes:&unk_1002C2AB0 length:1];
-  v32 = [v3 objectForKeyedSubscript:@"inviteVersion"];
-  v33 = [v32 unsignedIntValue];
+  v32 = [dataCopy objectForKeyedSubscript:@"inviteVersion"];
+  unsignedIntValue = [v32 unsignedIntValue];
 
-  v84 = v33;
+  v84 = unsignedIntValue;
   [v29 appendBytes:&v84 length:1];
   v80 = v29;
   v34 = [v29 base64EncodedStringWithOptions:0];
   v35 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v34, @"s", 0];
-  v36 = [v3 objectForKeyedSubscript:@"g"];
+  v36 = [dataCopy objectForKeyedSubscript:@"g"];
 
   if (v36)
   {
-    v37 = [v3 objectForKeyedSubscript:@"g"];
+    v37 = [dataCopy objectForKeyedSubscript:@"g"];
     [v35 setObject:v37 forKey:@"g"];
   }
 
@@ -403,11 +403,11 @@ LABEL_19:
     [v35 setObject:&stru_100374F10 forKey:@"g"];
   }
 
-  v38 = [v3 objectForKeyedSubscript:@"a"];
+  v38 = [dataCopy objectForKeyedSubscript:@"a"];
 
   if (v38)
   {
-    v39 = [v3 objectForKeyedSubscript:@"a"];
+    v39 = [dataCopy objectForKeyedSubscript:@"a"];
     [v35 setObject:v39 forKey:@"a"];
   }
 
@@ -417,7 +417,7 @@ LABEL_19:
   }
 
   v40 = GKTransportPseudonymKey;
-  v41 = [v3 objectForKeyedSubscript:GKTransportPseudonymKey];
+  v41 = [dataCopy objectForKeyedSubscript:GKTransportPseudonymKey];
   v42 = v41;
   if (v41)
   {
@@ -432,7 +432,7 @@ LABEL_19:
   [v35 setObject:v43 forKey:v40];
 
   v44 = GKInviteSessionIDKey;
-  v45 = [v3 objectForKeyedSubscript:GKInviteSessionIDKey];
+  v45 = [dataCopy objectForKeyedSubscript:GKInviteSessionIDKey];
   v46 = v45;
   if (v45)
   {
@@ -447,7 +447,7 @@ LABEL_19:
   [v35 setObject:v47 forKey:v44];
 
   v48 = GKSuggestedTransportVersionPushShortKey;
-  v49 = [v3 objectForKeyedSubscript:GKSuggestedTransportVersionPushShortKey];
+  v49 = [dataCopy objectForKeyedSubscript:GKSuggestedTransportVersionPushShortKey];
   if (v49)
   {
     [v35 setObject:v49 forKey:v48];
@@ -460,7 +460,7 @@ LABEL_19:
   }
 
   v51 = +[NSMutableDictionary dictionary];
-  v52 = [v3 objectForKeyedSubscript:@"bundle-id"];
+  v52 = [dataCopy objectForKeyedSubscript:@"bundle-id"];
   v53 = v52;
   if (v52)
   {
@@ -474,7 +474,7 @@ LABEL_19:
 
   [v51 setObject:v54 forKey:@"i"];
 
-  v55 = [v3 objectForKeyedSubscript:@"bundle-version"];
+  v55 = [dataCopy objectForKeyedSubscript:@"bundle-version"];
   v56 = v55;
   if (v55)
   {
@@ -488,7 +488,7 @@ LABEL_19:
 
   [v51 setObject:v57 forKey:@"v"];
 
-  v58 = [v3 objectForKeyedSubscript:@"short-bundle-version"];
+  v58 = [dataCopy objectForKeyedSubscript:@"short-bundle-version"];
   v59 = v58;
   if (v58)
   {
@@ -502,13 +502,13 @@ LABEL_19:
 
   [v51 setObject:v60 forKey:@"V"];
 
-  v61 = [v3 objectForKeyedSubscript:@"adam-id"];
+  v61 = [dataCopy objectForKeyedSubscript:@"adam-id"];
   if (v61)
   {
     [v51 setObject:v61 forKey:@"a"];
   }
 
-  v62 = [v3 objectForKeyedSubscript:@"p"];
+  v62 = [dataCopy objectForKeyedSubscript:@"p"];
   v63 = v62;
   if (v62)
   {
@@ -525,7 +525,7 @@ LABEL_19:
   [v6 setObject:v51 forKeyedSubscript:@"d"];
   [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:GKInviteIsFromMessageKey];
   v65 = GKInviteArchivedParticipantInfoKey;
-  v66 = [v3 objectForKeyedSubscript:GKInviteArchivedParticipantInfoKey];
+  v66 = [dataCopy objectForKeyedSubscript:GKInviteArchivedParticipantInfoKey];
 
   if (!v66)
   {
@@ -534,7 +534,7 @@ LABEL_19:
 
   v79 = v34;
   v67 = +[GKServiceInterface plistClasses];
-  v68 = [v3 objectForKeyedSubscript:v65];
+  v68 = [dataCopy objectForKeyedSubscript:v65];
   v83 = 0;
   v69 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v67 fromData:v68 error:&v83];
   v70 = v83;
@@ -583,28 +583,28 @@ LABEL_68:
   return v6;
 }
 
-+ (id)packFakeTurnBasedBulletinWithZoneData:(id)a3
++ (id)packFakeTurnBasedBulletinWithZoneData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = +[GKPlayerCredentialController sharedController];
   v6 = +[GKDataRequestManager sharedManager];
   v7 = [v5 primaryCredentialForEnvironment:{objc_msgSend(v6, "currentEnvironment")}];
 
   [v4 setObject:&off_100382580 forKeyedSubscript:GKPushCommandKey];
-  v8 = [v7 playerInternal];
-  v9 = [v8 playerID];
-  [v4 setObject:v9 forKeyedSubscript:@"i"];
+  playerInternal = [v7 playerInternal];
+  playerID = [playerInternal playerID];
+  [v4 setObject:playerID forKeyedSubscript:@"i"];
 
   [v4 setObject:&stru_100374F10 forKeyedSubscript:@"m"];
   v10 = [NSNumber numberWithInteger:1];
   [v4 setObject:v10 forKeyedSubscript:@"t"];
 
-  v11 = [v3 objectForKeyedSubscript:@"session-id"];
+  v11 = [dataCopy objectForKeyedSubscript:@"session-id"];
 
   if (v11)
   {
-    v12 = [v3 objectForKeyedSubscript:@"session-id"];
+    v12 = [dataCopy objectForKeyedSubscript:@"session-id"];
     [v4 setObject:v12 forKeyedSubscript:@"s"];
   }
 
@@ -613,11 +613,11 @@ LABEL_68:
     [v4 setObject:&stru_100374F10 forKeyedSubscript:@"s"];
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"playerID"];
+  v13 = [dataCopy objectForKeyedSubscript:@"playerID"];
 
   if (v13)
   {
-    v14 = [v3 objectForKeyedSubscript:@"playerID"];
+    v14 = [dataCopy objectForKeyedSubscript:@"playerID"];
     [v4 setObject:v14 forKeyedSubscript:@"I"];
   }
 
@@ -627,11 +627,11 @@ LABEL_68:
   }
 
   v15 = +[NSMutableDictionary dictionary];
-  v16 = [v3 objectForKeyedSubscript:@"bundle-id"];
+  v16 = [dataCopy objectForKeyedSubscript:@"bundle-id"];
 
   if (v16)
   {
-    v17 = [v3 objectForKeyedSubscript:@"bundle-id"];
+    v17 = [dataCopy objectForKeyedSubscript:@"bundle-id"];
     [v15 setObject:v17 forKey:@"i"];
   }
 
@@ -640,11 +640,11 @@ LABEL_68:
     [v15 setObject:&stru_100374F10 forKey:@"i"];
   }
 
-  v18 = [v3 objectForKeyedSubscript:@"bundle-version"];
+  v18 = [dataCopy objectForKeyedSubscript:@"bundle-version"];
 
   if (v18)
   {
-    v19 = [v3 objectForKeyedSubscript:@"bundle-version"];
+    v19 = [dataCopy objectForKeyedSubscript:@"bundle-version"];
     [v15 setObject:v19 forKey:@"v"];
   }
 
@@ -653,11 +653,11 @@ LABEL_68:
     [v15 setObject:&stru_100374F10 forKey:@"v"];
   }
 
-  v20 = [v3 objectForKeyedSubscript:@"short-bundle-version"];
+  v20 = [dataCopy objectForKeyedSubscript:@"short-bundle-version"];
 
   if (v20)
   {
-    v21 = [v3 objectForKeyedSubscript:@"short-bundle-version"];
+    v21 = [dataCopy objectForKeyedSubscript:@"short-bundle-version"];
     [v15 setObject:v21 forKey:@"V"];
   }
 
@@ -666,11 +666,11 @@ LABEL_68:
     [v15 setObject:&stru_100374F10 forKey:@"V"];
   }
 
-  v22 = [v3 objectForKeyedSubscript:@"adam-id"];
+  v22 = [dataCopy objectForKeyedSubscript:@"adam-id"];
 
   if (v22)
   {
-    v23 = [v3 objectForKeyedSubscript:@"adam-id"];
+    v23 = [dataCopy objectForKeyedSubscript:@"adam-id"];
     [v15 setObject:v23 forKey:@"a"];
   }
 
@@ -685,16 +685,16 @@ LABEL_68:
   return v4;
 }
 
-+ (void)generateAndStoreInviteBulletinForRecord:(id)a3 database:(id)a4
++ (void)generateAndStoreInviteBulletinForRecord:(id)record database:(id)database
 {
-  v5 = a3;
-  v6 = a4;
+  recordCopy = record;
+  databaseCopy = database;
   v7 = +[GKInviteURLManager sharedManager];
-  v8 = [v7 isRecordEqualToMostRecentInviteShare:v5];
+  v8 = [v7 isRecordEqualToMostRecentInviteShare:recordCopy];
 
   if (v8)
   {
-    v9 = [v5 objectForKeyedSubscript:@"connectionData"];
+    v9 = [recordCopy objectForKeyedSubscript:@"connectionData"];
 
     if (v9)
     {
@@ -705,8 +705,8 @@ LABEL_68:
       v15[1] = 3221225472;
       v15[2] = sub_1000FA744;
       v15[3] = &unk_100360FF0;
-      v16 = v5;
-      v17 = v6;
+      v16 = recordCopy;
+      v17 = databaseCopy;
       [v11 perform:v15];
       [v11 notifyOnMainQueueWithBlock:&stru_100366A40];
     }
@@ -735,7 +735,7 @@ LABEL_68:
     v13 = os_log_GKMatch;
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_ERROR))
     {
-      sub_10028D6E4(v13, v5);
+      sub_10028D6E4(v13, recordCopy);
     }
   }
 }
@@ -752,26 +752,26 @@ LABEL_68:
   return v3;
 }
 
-+ (void)getAssociatedAccountsWithCompletionHandler:(id)a3
++ (void)getAssociatedAccountsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() msgServiceQueue];
+  handlerCopy = handler;
+  msgServiceQueue = [objc_opt_class() msgServiceQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FADD0;
   block[3] = &unk_100360FA0;
-  v7 = v3;
-  v5 = v3;
-  dispatch_async(v4, block);
+  v7 = handlerCopy;
+  v5 = handlerCopy;
+  dispatch_async(msgServiceQueue, block);
 }
 
-+ (id)formattedContact:(id)a3
++ (id)formattedContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   if (IMStringIsEmail())
   {
-    v4 = [v3 lowercaseString];
-    v5 = [NSMutableString stringWithString:v4];
+    lowercaseString = [contactCopy lowercaseString];
+    stringByRemovingWhitespace = [NSMutableString stringWithString:lowercaseString];
 LABEL_5:
 
     goto LABEL_7;
@@ -779,44 +779,44 @@ LABEL_5:
 
   if (IMStringIsPhoneNumber())
   {
-    v4 = +[NSCharacterSet punctuationCharacterSet];
-    v6 = [v3 stringByRemovingCharactersFromSet:v4];
+    lowercaseString = +[NSCharacterSet punctuationCharacterSet];
+    v6 = [contactCopy stringByRemovingCharactersFromSet:lowercaseString];
     v7 = +[NSCharacterSet symbolCharacterSet];
     v8 = [v6 stringByRemovingCharactersFromSet:v7];
-    v5 = [v8 stringByRemovingWhitespace];
+    stringByRemovingWhitespace = [v8 stringByRemovingWhitespace];
 
     goto LABEL_5;
   }
 
-  v5 = +[NSMutableString string];
+  stringByRemovingWhitespace = +[NSMutableString string];
 LABEL_7:
 
-  return v5;
+  return stringByRemovingWhitespace;
 }
 
-+ (id)lastSevenDigits:(id)a3
++ (id)lastSevenDigits:(id)digits
 {
-  v3 = a3;
-  if ([v3 length] == 7)
+  digitsCopy = digits;
+  if ([digitsCopy length] == 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 length] - 7;
+    v4 = [digitsCopy length] - 7;
   }
 
-  v5 = [v3 substringFromIndex:v4];
+  v5 = [digitsCopy substringFromIndex:v4];
 
   return v5;
 }
 
-+ (void)searchAndSaveIdentityForRecord:(id)a3 database:(id)a4 completionHandler:(id)a5
++ (void)searchAndSaveIdentityForRecord:(id)record database:(id)database completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  databaseCopy = database;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v11 = GKOSLoggers();
@@ -833,24 +833,24 @@ LABEL_7:
   v14 = +[GKDataRequestManager sharedManager];
   v15 = [v13 primaryCredentialForEnvironment:{objc_msgSend(v14, "currentEnvironment")}];
 
-  v16 = [v15 playerInternal];
-  v17 = [v16 playerID];
+  playerInternal = [v15 playerInternal];
+  playerID = [playerInternal playerID];
 
-  if (v17)
+  if (playerID)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000FB2B4;
     v20[3] = &unk_100366A88;
-    v21 = v8;
-    v25 = a1;
-    v22 = v17;
-    v23 = v9;
-    v24 = v10;
+    v21 = recordCopy;
+    selfCopy = self;
+    v22 = playerID;
+    v23 = databaseCopy;
+    v24 = handlerCopy;
     [GKCloudKitMultiplayer getAssociatedAccountsWithCompletionHandler:v20];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
     if (!os_log_GKGeneral)
     {
@@ -863,18 +863,18 @@ LABEL_7:
       sub_10028D918(v19);
     }
 
-    (*(v10 + 2))(v10, v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, recordCopy, 0);
   }
 }
 
-+ (void)deleteInviteRecordWithRecordID:(id)a3 fromDatabase:(id)a4
++ (void)deleteInviteRecordWithRecordID:(id)d fromDatabase:(id)database
 {
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = a4;
+    databaseCopy = database;
     v7 = [CKModifyRecordsOperation alloc];
-    v12 = v5;
+    v12 = dCopy;
     v8 = [NSArray arrayWithObjects:&v12 count:1];
     v9 = [v7 initWithRecordsToSave:0 recordIDsToDelete:v8];
 
@@ -882,9 +882,9 @@ LABEL_7:
     v10[1] = 3221225472;
     v10[2] = sub_1000FBCE4;
     v10[3] = &unk_100366AB0;
-    v11 = v5;
+    v11 = dCopy;
     [v9 setModifyRecordsCompletionBlock:v10];
-    [v6 addOperation:v9];
+    [databaseCopy addOperation:v9];
   }
 }
 

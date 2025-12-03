@@ -1,21 +1,21 @@
 @interface TDSimpleArtworkRenditionSpec
-- ($56AE26BFB60993BDE24C7578AE3A2D7B)_edgeMetricsForAlignmentRect:(SEL)a3 originalRenditionSize:(CGRect)a4 newRenditionSize:(id)a5;
-- (BOOL)canBePackedWithDocument:(id)a3;
-- (BOOL)updatePackingPropertiesWithDocument:(id)a3;
-- (CGImage)_createImageRefWithURL:(id)a3 andDocument:(id)a4 format:(unsigned int *)a5 vectorBased:(BOOL *)a6;
+- ($56AE26BFB60993BDE24C7578AE3A2D7B)_edgeMetricsForAlignmentRect:(SEL)rect originalRenditionSize:(CGRect)size newRenditionSize:(id)renditionSize;
+- (BOOL)canBePackedWithDocument:(id)document;
+- (BOOL)updatePackingPropertiesWithDocument:(id)document;
+- (CGImage)_createImageRefWithURL:(id)l andDocument:(id)document format:(unsigned int *)format vectorBased:(BOOL *)based;
 - (CGRect)alignmentRect;
 - (CGRect)primitiveAlignmentRect;
-- (CGSize)_scaleRecognitionImageFromSize:(CGSize)a3;
+- (CGSize)_scaleRecognitionImageFromSize:(CGSize)size;
 - (CGSize)physicalSizeInMeters;
-- (id)_sliceRectanglesForRenditionSize:(id)a3 unadjustedSliceRectangles:(id *)a4 imageSlicesNeedAdjustment:(BOOL *)a5 newRenditionSize:(id *)a6;
-- (id)associatedFileModificationDateWithDocument:(id)a3;
-- (int)_rawPixelFormatOfCGImage:(CGImage *)a3;
+- (id)_sliceRectanglesForRenditionSize:(id)size unadjustedSliceRectangles:(id *)rectangles imageSlicesNeedAdjustment:(BOOL *)adjustment newRenditionSize:(id *)renditionSize;
+- (id)associatedFileModificationDateWithDocument:(id)document;
+- (int)_rawPixelFormatOfCGImage:(CGImage *)image;
 - (void)awakeFromFetch;
-- (void)copyAttributesInto:(id)a3;
+- (void)copyAttributesInto:(id)into;
 - (void)dealloc;
-- (void)drawPackableRenditionInContext:(CGContext *)a3 withDocument:(id)a4;
-- (void)setAlignmentRect:(CGRect)a3;
-- (void)setPhysicalSizeInMeters:(CGSize)a3;
+- (void)drawPackableRenditionInContext:(CGContext *)context withDocument:(id)document;
+- (void)setAlignmentRect:(CGRect)rect;
+- (void)setPhysicalSizeInMeters:(CGSize)meters;
 @end
 
 @implementation TDSimpleArtworkRenditionSpec
@@ -41,12 +41,12 @@
   return result;
 }
 
-- (void)setAlignmentRect:(CGRect)a3
+- (void)setAlignmentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TDSimpleArtworkRenditionSpec *)self willChangeValueForKey:@"alignmentRect"];
   self->_alignmentRect.origin.x = x;
   self->_alignmentRect.origin.y = y;
@@ -82,18 +82,18 @@
   return result;
 }
 
-- (void)setPhysicalSizeInMeters:(CGSize)a3
+- (void)setPhysicalSizeInMeters:(CGSize)meters
 {
-  v4 = NSStringFromSize(a3);
+  v4 = NSStringFromSize(meters);
 
   [(TDSimpleArtworkRenditionSpec *)self setPhysicalSizeInMetersString:v4];
 }
 
 - (CGSize)physicalSizeInMeters
 {
-  v2 = [(TDSimpleArtworkRenditionSpec *)self physicalSizeInMetersString];
+  physicalSizeInMetersString = [(TDSimpleArtworkRenditionSpec *)self physicalSizeInMetersString];
 
-  v5 = NSSizeFromString(v2);
+  v5 = NSSizeFromString(physicalSizeInMetersString);
   height = v5.height;
   width = v5.width;
   result.height = height;
@@ -110,38 +110,38 @@
   [(TDSimpleArtworkRenditionSpec *)self setPrimitiveAlignmentRect:v4.origin.x, v4.origin.y, v4.size.width, v4.size.height];
 }
 
-- (void)copyAttributesInto:(id)a3
+- (void)copyAttributesInto:(id)into
 {
   [(TDSimpleArtworkRenditionSpec *)self alignmentRect];
-  [a3 setAlignmentRect:?];
-  [a3 setNonAlphaImageAreaString:{-[TDSimpleArtworkRenditionSpec nonAlphaImageAreaString](self, "nonAlphaImageAreaString")}];
-  [a3 setAlphaCrop:{-[TDSimpleArtworkRenditionSpec alphaCrop](self, "alphaCrop")}];
-  [a3 setHeight:{-[TDSimpleArtworkRenditionSpec height](self, "height")}];
-  [a3 setWidth:{-[TDSimpleArtworkRenditionSpec width](self, "width")}];
-  [a3 setMonochrome:{-[TDSimpleArtworkRenditionSpec monochrome](self, "monochrome")}];
-  [a3 setOpaque:{-[TDSimpleArtworkRenditionSpec opaque](self, "opaque")}];
-  [a3 setCompressionType:{-[TDSimpleArtworkRenditionSpec compressionType](self, "compressionType")}];
-  [a3 setRenditionType:{-[TDRenditionSpec renditionType](self, "renditionType")}];
+  [into setAlignmentRect:?];
+  [into setNonAlphaImageAreaString:{-[TDSimpleArtworkRenditionSpec nonAlphaImageAreaString](self, "nonAlphaImageAreaString")}];
+  [into setAlphaCrop:{-[TDSimpleArtworkRenditionSpec alphaCrop](self, "alphaCrop")}];
+  [into setHeight:{-[TDSimpleArtworkRenditionSpec height](self, "height")}];
+  [into setWidth:{-[TDSimpleArtworkRenditionSpec width](self, "width")}];
+  [into setMonochrome:{-[TDSimpleArtworkRenditionSpec monochrome](self, "monochrome")}];
+  [into setOpaque:{-[TDSimpleArtworkRenditionSpec opaque](self, "opaque")}];
+  [into setCompressionType:{-[TDSimpleArtworkRenditionSpec compressionType](self, "compressionType")}];
+  [into setRenditionType:{-[TDRenditionSpec renditionType](self, "renditionType")}];
   [(TDSimpleArtworkRenditionSpec *)self postScaleFactor];
-  [a3 setPostScaleFactor:?];
-  [a3 setAllowsPaletteImageCompression:{-[TDSimpleArtworkRenditionSpec allowsPaletteImageCompression](self, "allowsPaletteImageCompression")}];
-  [a3 setAllowsHevcCompression:{-[TDSimpleArtworkRenditionSpec allowsHevcCompression](self, "allowsHevcCompression")}];
-  [a3 setAllowsDeepmapCompression:{-[TDSimpleArtworkRenditionSpec allowsDeepmapCompression](self, "allowsDeepmapCompression")}];
-  [a3 setAllowsDeepmap2Compression:{-[TDSimpleArtworkRenditionSpec allowsDeepmap2Compression](self, "allowsDeepmap2Compression")}];
-  [a3 setPhysicalSizeInMetersString:{-[TDSimpleArtworkRenditionSpec physicalSizeInMetersString](self, "physicalSizeInMetersString")}];
-  v5 = [(TDSimpleArtworkRenditionSpec *)self preserveForArchiveOnly];
+  [into setPostScaleFactor:?];
+  [into setAllowsPaletteImageCompression:{-[TDSimpleArtworkRenditionSpec allowsPaletteImageCompression](self, "allowsPaletteImageCompression")}];
+  [into setAllowsHevcCompression:{-[TDSimpleArtworkRenditionSpec allowsHevcCompression](self, "allowsHevcCompression")}];
+  [into setAllowsDeepmapCompression:{-[TDSimpleArtworkRenditionSpec allowsDeepmapCompression](self, "allowsDeepmapCompression")}];
+  [into setAllowsDeepmap2Compression:{-[TDSimpleArtworkRenditionSpec allowsDeepmap2Compression](self, "allowsDeepmap2Compression")}];
+  [into setPhysicalSizeInMetersString:{-[TDSimpleArtworkRenditionSpec physicalSizeInMetersString](self, "physicalSizeInMetersString")}];
+  preserveForArchiveOnly = [(TDSimpleArtworkRenditionSpec *)self preserveForArchiveOnly];
 
-  [a3 setPreserveForArchiveOnly:v5];
+  [into setPreserveForArchiveOnly:preserveForArchiveOnly];
 }
 
-- (id)associatedFileModificationDateWithDocument:(id)a3
+- (id)associatedFileModificationDateWithDocument:(id)document
 {
   v3 = [objc_msgSend(-[TDSimpleArtworkRenditionSpec asset](self "asset")];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
   if (v5)
   {
-    v6 = [v4 attributesOfItemAtPath:v3 error:0];
+    v6 = [defaultManager attributesOfItemAtPath:v3 error:0];
   }
 
   else
@@ -171,19 +171,19 @@
   return result;
 }
 
-- (id)_sliceRectanglesForRenditionSize:(id)a3 unadjustedSliceRectangles:(id *)a4 imageSlicesNeedAdjustment:(BOOL *)a5 newRenditionSize:(id *)a6
+- (id)_sliceRectanglesForRenditionSize:(id)size unadjustedSliceRectangles:(id *)rectangles imageSlicesNeedAdjustment:(BOOL *)adjustment newRenditionSize:(id *)renditionSize
 {
   v166 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(TDSimpleArtworkRenditionSpec *)self _slicesToUseForCSI];
-  v11 = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
-  if ([v10 count])
+  array = [MEMORY[0x277CBEB18] array];
+  _slicesToUseForCSI = [(TDSimpleArtworkRenditionSpec *)self _slicesToUseForCSI];
+  identifier = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
+  if ([_slicesToUseForCSI count])
   {
     v162 = 0u;
     v163 = 0u;
     v160 = 0u;
     v161 = 0u;
-    v12 = [v10 countByEnumeratingWithState:&v160 objects:v165 count:16];
+    v12 = [_slicesToUseForCSI countByEnumeratingWithState:&v160 objects:v165 count:16];
     if (v12)
     {
       v13 = v12;
@@ -194,66 +194,66 @@
         {
           if (*v161 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_slicesToUseForCSI);
           }
 
           [*(*(&v160 + 1) + 8 * i) sliceRect];
-          [v9 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithRect:")}];
+          [array addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithRect:")}];
         }
 
-        v13 = [v10 countByEnumeratingWithState:&v160 objects:v165 count:16];
+        v13 = [_slicesToUseForCSI countByEnumeratingWithState:&v160 objects:v165 count:16];
       }
 
       while (v13);
     }
   }
 
-  if (![v9 count])
+  if (![array count])
   {
-    [v9 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithRect:", 0.0, 0.0, a3.var0, a3.var1)}];
+    [array addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithRect:", 0.0, 0.0, size.var0, size.var1)}];
   }
 
-  if (v11 - 1 > 1)
+  if (identifier - 1 > 1)
   {
-    if (v11 == 3 && [v9 count] == 9)
+    if (identifier == 3 && [array count] == 9)
     {
-      [objc_msgSend(v9 objectAtIndex:{1), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{1), "rectValue"}];
       v49 = v48;
       v51 = v50;
-      [objc_msgSend(v9 objectAtIndex:{2), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{2), "rectValue"}];
       v53 = v52 - (v49 + v51);
-      [objc_msgSend(v9 objectAtIndex:{3), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{3), "rectValue"}];
       v55 = v54;
       v57 = v56;
-      [objc_msgSend(v9 objectAtIndex:{6), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{6), "rectValue"}];
       v59 = v58 - (v55 + v57);
       if (v53 > 0.0 || v59 > 0.0)
       {
-        v76 = (a6->var0 - v53);
-        var1 = a6->var1;
-        *a5 = 1;
-        a6->var0 = v76;
-        a6->var1 = (var1 - v59);
+        v76 = (renditionSize->var0 - v53);
+        var1 = renditionSize->var1;
+        *adjustment = 1;
+        renditionSize->var0 = v76;
+        renditionSize->var1 = (var1 - v59);
         goto LABEL_41;
       }
     }
   }
 
-  else if ([v9 count] == 4)
+  else if ([array count] == 4)
   {
-    *(&a6->var0 + (v11 != 1)) = 0;
-    v16 = [MEMORY[0x277CBEB18] array];
-    if ([v9 count])
+    *(&renditionSize->var0 + (identifier != 1)) = 0;
+    array2 = [MEMORY[0x277CBEB18] array];
+    if ([array count])
     {
       v17 = 0;
       do
       {
         if (v17 != 2)
         {
-          v18 = [v9 objectAtIndex:v17];
-          [v16 addObject:v18];
+          v18 = [array objectAtIndex:v17];
+          [array2 addObject:v18];
           [v18 rectValue];
-          if (v11 == 1)
+          if (identifier == 1)
           {
             v21 = v19;
           }
@@ -263,26 +263,26 @@
             v21 = v20;
           }
 
-          *(&a6->var0 + (v11 != 1)) = (v21 + *(&a6->var0 + (v11 != 1)));
+          *(&renditionSize->var0 + (identifier != 1)) = (v21 + *(&renditionSize->var0 + (identifier != 1)));
         }
 
         ++v17;
       }
 
-      while (v17 < [v9 count]);
+      while (v17 < [array count]);
     }
 
-    *a5 = 1;
-    if (v11 == 2)
+    *adjustment = 1;
+    if (identifier == 2)
     {
-      if ([v16 count] == 3)
+      if ([array2 count] == 3)
       {
-        [objc_msgSend(v16 objectAtIndex:{2), "rectValue"}];
+        [objc_msgSend(array2 objectAtIndex:{2), "rectValue"}];
         v23 = v22;
         v25 = v24;
         v27 = v26;
         v29 = v28;
-        [objc_msgSend(v16 objectAtIndex:{1), "rectValue"}];
+        [objc_msgSend(array2 objectAtIndex:{1), "rectValue"}];
         v31 = v30;
         v33 = v32;
         v35 = v34;
@@ -294,7 +294,7 @@
         }
 
         v39 = v25 - v38;
-        [objc_msgSend(v16 objectAtIndex:{0), "rectValue"}];
+        [objc_msgSend(array2 objectAtIndex:{0), "rectValue"}];
         v40 = MEMORY[0x277CBEA60];
         v41 = [MEMORY[0x277CCAE60] valueWithRect:?];
         v42 = [MEMORY[0x277CCAE60] valueWithRect:{v31, v33, v35, v37}];
@@ -306,21 +306,21 @@
 LABEL_37:
         v75 = [v40 arrayWithObjects:{v41, v42, objc_msgSend(v43, "valueWithRect:", v44, v45, v46, v47), 0}];
 LABEL_55:
-        v9 = v75;
+        array = v75;
         goto LABEL_31;
       }
 
       goto LABEL_57;
     }
 
-    if (v11 == 1)
+    if (identifier == 1)
     {
-      if ([v16 count] == 3)
+      if ([array2 count] == 3)
       {
-        [objc_msgSend(v16 objectAtIndex:{1), "rectValue"}];
+        [objc_msgSend(array2 objectAtIndex:{1), "rectValue"}];
         v63 = v62;
         v65 = v64;
-        [objc_msgSend(v16 objectAtIndex:{2), "rectValue"}];
+        [objc_msgSend(array2 objectAtIndex:{2), "rectValue"}];
         v68 = v67;
         v70 = v69;
         v72 = v71;
@@ -332,8 +332,8 @@ LABEL_55:
 
         v74 = v66 - v73;
         v40 = MEMORY[0x277CBEA60];
-        v41 = [v16 objectAtIndex:0];
-        v42 = [v16 objectAtIndex:1];
+        v41 = [array2 objectAtIndex:0];
+        v42 = [array2 objectAtIndex:1];
         v43 = MEMORY[0x277CCAE60];
         v44 = v74;
         v45 = v68;
@@ -343,60 +343,60 @@ LABEL_55:
       }
 
 LABEL_57:
-      v9 = 0;
+      array = 0;
       goto LABEL_31;
     }
 
-    if (v11 != 3)
+    if (identifier != 3)
     {
       goto LABEL_57;
     }
 
-    v9 = v16;
+    array = array2;
 LABEL_41:
-    if ([v9 count] == 9)
+    if ([array count] == 9)
     {
-      [objc_msgSend(v9 objectAtIndex:{0), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{0), "rectValue"}];
       v156 = v79;
       v158 = v78;
       v154 = v81;
       v155 = v80;
-      [objc_msgSend(v9 objectAtIndex:{1), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{1), "rectValue"}];
       v83 = v82;
       v152 = v85;
       v153 = v84;
       v87 = v86;
-      [objc_msgSend(v9 objectAtIndex:{2), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{2), "rectValue"}];
       v89 = v88;
       v150 = v91;
       v151 = v90;
       v149 = v92;
-      [objc_msgSend(v9 objectAtIndex:{3), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{3), "rectValue"}];
       v147 = v94;
       v148 = v93;
       v96 = v95;
       v129 = v97;
-      [objc_msgSend(v9 objectAtIndex:{4), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{4), "rectValue"}];
       v145 = v99;
       v146 = v98;
       v143 = v101;
       v144 = v100;
-      [objc_msgSend(v9 objectAtIndex:{5), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{5), "rectValue"}];
       v103 = v102;
       v141 = v105;
       v142 = v104;
       v140 = v106;
-      [objc_msgSend(v9 objectAtIndex:{6), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{6), "rectValue"}];
       v138 = v108;
       v139 = v107;
       v110 = v109;
       v137 = v111;
-      [objc_msgSend(v9 objectAtIndex:{7), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{7), "rectValue"}];
       v135 = v113;
       v136 = v112;
       v115 = v114;
       v134 = v116;
-      [objc_msgSend(v9 objectAtIndex:{8), "rectValue"}];
+      [objc_msgSend(array objectAtIndex:{8), "rectValue"}];
       v132 = v120;
       v133 = v119;
       v121 = v89 - (v83 + v87);
@@ -457,43 +457,43 @@ LABEL_41:
       v164[7] = [MEMORY[0x277CCAE60] valueWithRect:{v136, v115, v135, v134}];
       v164[8] = [MEMORY[0x277CCAE60] valueWithRect:{v131, v130, v133, v132}];
       v75 = [MEMORY[0x277CBEA60] arrayWithObjects:v164 count:9];
-      v16 = v9;
+      array2 = array;
       goto LABEL_55;
     }
 
-    v16 = v9;
+    array2 = array;
     goto LABEL_57;
   }
 
-  v16 = v9;
+  array2 = array;
 LABEL_31:
-  *a4 = v16;
+  *rectangles = array2;
   v60 = *MEMORY[0x277D85DE8];
-  return v9;
+  return array;
 }
 
-- ($56AE26BFB60993BDE24C7578AE3A2D7B)_edgeMetricsForAlignmentRect:(SEL)a3 originalRenditionSize:(CGRect)a4 newRenditionSize:(id)a5
+- ($56AE26BFB60993BDE24C7578AE3A2D7B)_edgeMetricsForAlignmentRect:(SEL)rect originalRenditionSize:(CGRect)size newRenditionSize:(id)renditionSize
 {
-  v6 = a4.size.width - (a5.var0 - a6.var0);
-  v7 = a4.size.height - (a5.var1 - a6.var1);
-  retstr->var0.width = a4.origin.x;
-  retstr->var0.height = a4.origin.y;
-  retstr->var1.width = a6.var0 - (a4.origin.x + v6);
-  retstr->var1.height = a6.var1 - (a4.origin.y + v7);
+  v6 = size.size.width - (renditionSize.var0 - a6.var0);
+  v7 = size.size.height - (renditionSize.var1 - a6.var1);
+  retstr->var0.width = size.origin.x;
+  retstr->var0.height = size.origin.y;
+  retstr->var1.width = a6.var0 - (size.origin.x + v6);
+  retstr->var1.height = a6.var1 - (size.origin.y + v7);
   retstr->var2.width = v6;
   retstr->var2.height = v7;
   return self;
 }
 
-- (BOOL)canBePackedWithDocument:(id)a3
+- (BOOL)canBePackedWithDocument:(id)document
 {
   v10.receiver = self;
   v10.super_class = TDSimpleArtworkRenditionSpec;
-  v4 = [(TDRenditionSpec *)&v10 canBePackedWithDocument:a3];
-  if (v4)
+  scaleFactor = [(TDRenditionSpec *)&v10 canBePackedWithDocument:document];
+  if (scaleFactor)
   {
-    v5 = [(TDSimpleArtworkRenditionSpec *)self asset];
-    v6 = [objc_msgSend(v5 "name")];
+    asset = [(TDSimpleArtworkRenditionSpec *)self asset];
+    v6 = [objc_msgSend(asset "name")];
     if ([v6 length])
     {
       if ([v6 caseInsensitiveCompare:@"PDF"] && objc_msgSend(v6, "caseInsensitiveCompare:", @"SVG"))
@@ -506,8 +506,8 @@ LABEL_31:
             [(TDSimpleArtworkRenditionSpec *)self physicalSizeInMeters];
             if (v8 <= 0.0)
             {
-              LOBYTE(v4) = 0;
-              return v4;
+              LOBYTE(scaleFactor) = 0;
+              return scaleFactor;
             }
           }
         }
@@ -515,27 +515,27 @@ LABEL_31:
 
       else
       {
-        v4 = [v5 scaleFactor];
-        if (!v4)
+        scaleFactor = [asset scaleFactor];
+        if (!scaleFactor)
         {
-          return v4;
+          return scaleFactor;
         }
       }
     }
 
-    LOBYTE(v4) = 1;
+    LOBYTE(scaleFactor) = 1;
   }
 
-  return v4;
+  return scaleFactor;
 }
 
-- (int)_rawPixelFormatOfCGImage:(CGImage *)a3
+- (int)_rawPixelFormatOfCGImage:(CGImage *)image
 {
   v5 = 1095911234;
   if ([(TDSimpleArtworkRenditionSpec *)self allowsMultiPassEncoding])
   {
-    v6 = [(TDSimpleArtworkRenditionSpec *)self monochrome];
-    BitsPerComponent = CGImageGetBitsPerComponent(a3);
+    monochrome = [(TDSimpleArtworkRenditionSpec *)self monochrome];
+    BitsPerComponent = CGImageGetBitsPerComponent(image);
     if (BitsPerComponent <= 15)
     {
       v8 = 1095911234;
@@ -556,7 +556,7 @@ LABEL_31:
       v9 = 1195454774;
     }
 
-    if (v6)
+    if (monochrome)
     {
       return v9;
     }
@@ -570,50 +570,50 @@ LABEL_31:
   return v5;
 }
 
-- (CGImage)_createImageRefWithURL:(id)a3 andDocument:(id)a4 format:(unsigned int *)a5 vectorBased:(BOOL *)a6
+- (CGImage)_createImageRefWithURL:(id)l andDocument:(id)document format:(unsigned int *)format vectorBased:(BOOL *)based
 {
-  v12 = [(TDSimpleArtworkRenditionSpec *)self asset];
-  if (![objc_msgSend(a3 "pathExtension")])
+  asset = [(TDSimpleArtworkRenditionSpec *)self asset];
+  if (![objc_msgSend(l "pathExtension")])
   {
-    v16 = [v12 scaleFactor];
-    if (a5 && !v16)
+    scaleFactor = [asset scaleFactor];
+    if (format && !scaleFactor)
     {
       Image = 0;
       v15 = 1346651680;
       goto LABEL_17;
     }
 
-    v18 = CGPDFDocumentCreateWithURL(a3);
+    v18 = CGPDFDocumentCreateWithURL(l);
     if (v18)
     {
       v19 = v18;
       v91 = a2;
-      v92 = a6;
-      v20 = [v12 scaleFactor];
-      v21 = v20;
+      basedCopy = based;
+      scaleFactor2 = [asset scaleFactor];
+      v21 = scaleFactor2;
       Page = CGPDFDocumentGetPage(v19, 1uLL);
       BoxRect = CGPDFPageGetBoxRect(Page, kCGPDFCropBox);
       x = BoxRect.origin.x;
       y = BoxRect.origin.y;
       width = BoxRect.size.width;
       height = BoxRect.size.height;
-      v27 = [v12 fileScaleFactor];
-      if (!v27)
+      fileScaleFactor = [asset fileScaleFactor];
+      if (!fileScaleFactor)
       {
-        v27 = +[TDAsset scaleFactorFromImageFilename:](TDAsset, "scaleFactorFromImageFilename:", [a3 path]);
+        fileScaleFactor = +[TDAsset scaleFactorFromImageFilename:](TDAsset, "scaleFactorFromImageFilename:", [l path]);
       }
 
-      if (!v20)
+      if (!scaleFactor2)
       {
         v21 = 1.0;
       }
 
       [(TDSimpleArtworkRenditionSpec *)self postScaleFactor];
       v29 = v21 * v28;
-      v90 = v27;
-      v30 = v27;
-      v31 = round(width / v27 * v29);
-      v32 = round(height / v27 * v29);
+      v90 = fileScaleFactor;
+      v30 = fileScaleFactor;
+      v31 = round(width / fileScaleFactor * v29);
+      v32 = round(height / fileScaleFactor * v29);
       if ((CGPDFPageContainsWideGamutContent() & 1) == 0)
       {
         goto LABEL_82;
@@ -629,10 +629,10 @@ LABEL_31:
         v72 = CGBitmapContextCreate(0, v31, v32, v36, (v31 * i), v71, v34);
         if (!v72)
         {
-          v89 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v88 = [objc_msgSend(-[TDSimpleArtworkRenditionSpec production](self "production")];
           [(TDSimpleArtworkRenditionSpec *)self postScaleFactor];
-          [v89 handleFailureInMethod:v91 object:self file:@"TDSimpleArtworkRenditionSpec.m" lineNumber:483 description:{@"CoreThemeDefinition: '%@' Unable to create bitmap context for %s (%fx%f) colorSpace:'%@' [pdfsize:%fx%f fileScale:%d postScaleFactor:%f scale:%f bpc:%d bpp:%d bitmapInfo:%d]", v88, "-[TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:]", *&v31, *&v32, v71, *&width, *&height, v90, v87, *&v29, v36, i, v34}];
+          [currentHandler handleFailureInMethod:v91 object:self file:@"TDSimpleArtworkRenditionSpec.m" lineNumber:483 description:{@"CoreThemeDefinition: '%@' Unable to create bitmap context for %s (%fx%f) colorSpace:'%@' [pdfsize:%fx%f fileScale:%d postScaleFactor:%f scale:%f bpc:%d bpp:%d bitmapInfo:%d]", v88, "-[TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:]", *&v31, *&v32, v71, *&width, *&height, v90, v87, *&v29, v36, i, v34}];
         }
 
         CGColorSpaceRelease(v71);
@@ -657,14 +657,14 @@ LABEL_82:
       CFRelease(v72);
       CGPDFDocumentRelease(v19);
       a2 = v91;
-      if (v92)
+      if (basedCopy)
       {
-        *v92 = 1;
+        *basedCopy = 1;
       }
 
-      if (a5)
+      if (format)
       {
-        *a5 = [(TDSimpleArtworkRenditionSpec *)self _rawPixelFormatOfCGImage:Image];
+        *format = [(TDSimpleArtworkRenditionSpec *)self _rawPixelFormatOfCGImage:Image];
       }
 
       goto LABEL_92;
@@ -673,10 +673,10 @@ LABEL_82:
     return 0;
   }
 
-  if (![objc_msgSend(a3 "pathExtension")])
+  if (![objc_msgSend(l "pathExtension")])
   {
-    v17 = [v12 scaleFactor];
-    if (a5 && !v17)
+    scaleFactor3 = [asset scaleFactor];
+    if (format && !scaleFactor3)
     {
       Image = 0;
       v15 = 1398163232;
@@ -685,34 +685,34 @@ LABEL_82:
 
     if ([objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self "keySpec")] || objc_msgSend(objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self, "keySpec"), "glyphSize"), "identifier"))
     {
-      v43 = +[TDVectorGlyphReader vectorGlyphReaderWithURL:platform:error:](TDVectorGlyphReader, "vectorGlyphReaderWithURL:platform:error:", a3, [a4 targetPlatform], 0);
+      v43 = +[TDVectorGlyphReader vectorGlyphReaderWithURL:platform:error:](TDVectorGlyphReader, "vectorGlyphReaderWithURL:platform:error:", l, [document targetPlatform], 0);
       -[TDVectorGlyphReader canvasSizeForWeight:size:](v43, "canvasSizeForWeight:size:", [objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self "keySpec")], objc_msgSend(objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self, "keySpec"), "glyphSize"), "identifier"));
       v45 = v44;
       v47 = v46;
       [(TDVectorGlyphReader *)v43 templateVersion];
-      v48 = [(TDVectorGlyphReader *)v43 containsWideGamutContent];
+      containsWideGamutContent = [(TDVectorGlyphReader *)v43 containsWideGamutContent];
       v49 = 0;
     }
 
     else
     {
-      v68 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:a3 options:8 error:0];
+      v68 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:l options:8 error:0];
       v49 = CGSVGDocumentCreateFromData();
       CGSVGDocumentGetCanvasSize();
       v45 = v69;
       v47 = v70;
-      v48 = CGSVGDocumentContainsWideGamutContent();
+      containsWideGamutContent = CGSVGDocumentContainsWideGamutContent();
 
       v43 = 0;
     }
 
     if (v45 != 0.0 && v47 != 0.0)
     {
-      v93 = a6;
-      v50 = [v12 scaleFactor];
-      v51 = v50;
-      [v12 fileScaleFactor];
-      if (!v50)
+      basedCopy2 = based;
+      scaleFactor4 = [asset scaleFactor];
+      v51 = scaleFactor4;
+      [asset fileScaleFactor];
+      if (!scaleFactor4)
       {
         v51 = 1.0;
       }
@@ -722,7 +722,7 @@ LABEL_82:
       v54 = v45 * v53;
       v55 = ceil(v54);
       v56 = v47 * v53;
-      if (v48)
+      if (containsWideGamutContent)
       {
         v57 = 16;
       }
@@ -732,7 +732,7 @@ LABEL_82:
         v57 = 8;
       }
 
-      if (v48)
+      if (containsWideGamutContent)
       {
         v58 = 8.0;
       }
@@ -742,7 +742,7 @@ LABEL_82:
         v58 = 4.0;
       }
 
-      if (v48)
+      if (containsWideGamutContent)
       {
         v59 = 4097;
       }
@@ -753,7 +753,7 @@ LABEL_82:
       }
 
       v60 = MEMORY[0x277CBF3E0];
-      if (!v48)
+      if (!containsWideGamutContent)
       {
         v60 = MEMORY[0x277CBF4B8];
       }
@@ -771,7 +771,7 @@ LABEL_82:
         [(TDSimpleArtworkRenditionSpec *)self postScaleFactor];
         v64 = v63;
         [(TDVectorGlyphReader *)v43 defaultPointSize];
-        -[TDVectorGlyphReader drawInContext:atPointSize:scaleFactor:weight:size:](v43, "drawInContext:atPointSize:scaleFactor:weight:size:", v62, [objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self "keySpec")], objc_msgSend(objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self, "keySpec"), "glyphSize"), "identifier"), v64 * v65, objc_msgSend(v12, "scaleFactor"));
+        -[TDVectorGlyphReader drawInContext:atPointSize:scaleFactor:weight:size:](v43, "drawInContext:atPointSize:scaleFactor:weight:size:", v62, [objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self "keySpec")], objc_msgSend(objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self, "keySpec"), "glyphSize"), "identifier"), v64 * v65, objc_msgSend(asset, "scaleFactor"));
       }
 
       else
@@ -783,14 +783,14 @@ LABEL_82:
       Image = CGBitmapContextCreateImage(v62);
       CFRelease(v62);
       CGSVGDocumentRelease();
-      if (v93)
+      if (basedCopy2)
       {
-        *v93 = 1;
+        *basedCopy2 = 1;
       }
 
-      if (a5)
+      if (format)
       {
-        *a5 = [(TDSimpleArtworkRenditionSpec *)self _rawPixelFormatOfCGImage:Image];
+        *format = [(TDSimpleArtworkRenditionSpec *)self _rawPixelFormatOfCGImage:Image];
       }
 
       if (v43)
@@ -802,7 +802,7 @@ LABEL_82:
 
     if ([objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self "keySpec")] || objc_msgSend(objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self, "keySpec"), "glyphSize"), "identifier"))
     {
-      NSLog(&cfstr_SGotZeroWidthH.isa, "-[TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:]", a3, [objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self "keySpec")], objc_msgSend(objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self, "keySpec"), "glyphSize"), "identifier"));
+      NSLog(&cfstr_SGotZeroWidthH.isa, "-[TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:]", l, [objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self "keySpec")], objc_msgSend(objc_msgSend(-[TDSimpleArtworkRenditionSpec keySpec](self, "keySpec"), "glyphSize"), "identifier"));
       if (v45 == 0.0 && v47 == 0.0)
       {
         [TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:];
@@ -811,7 +811,7 @@ LABEL_82:
 
     else
     {
-      NSLog(&cfstr_SGotZeroWidthH_0.isa, "[TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:]", a3);
+      NSLog(&cfstr_SGotZeroWidthH_0.isa, "[TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:]", l);
       if (v45 == 0.0 && v47 == 0.0)
       {
         [TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:];
@@ -826,27 +826,27 @@ LABEL_82:
     return 0;
   }
 
-  v13 = [a3 pathExtension];
-  if ([v13 length])
+  pathExtension = [l pathExtension];
+  if ([pathExtension length])
   {
-    if ([v13 caseInsensitiveCompare:@"JPEG"] && objc_msgSend(v13, "caseInsensitiveCompare:", @"JPG"))
+    if ([pathExtension caseInsensitiveCompare:@"JPEG"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"JPG"))
     {
-      if ([v13 caseInsensitiveCompare:@"HEIF"] && objc_msgSend(v13, "caseInsensitiveCompare:", @"HEIC"))
+      if ([pathExtension caseInsensitiveCompare:@"HEIF"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"HEIC"))
       {
-        if ([v13 caseInsensitiveCompare:@"PNG"])
+        if ([pathExtension caseInsensitiveCompare:@"PNG"])
         {
           goto LABEL_9;
         }
 
 LABEL_32:
-        v41 = [v12 sourceImageWithDocument:a4];
-        v42 = [v41 image];
+        v41 = [asset sourceImageWithDocument:document];
+        image = [v41 image];
         if (v41)
         {
-          Image = v42;
-          if (a5)
+          Image = image;
+          if (format)
           {
-            *a5 = [(TDSimpleArtworkRenditionSpec *)self _rawPixelFormatOfCGImage:v42];
+            *format = [(TDSimpleArtworkRenditionSpec *)self _rawPixelFormatOfCGImage:image];
           }
 
           goto LABEL_68;
@@ -855,13 +855,13 @@ LABEL_32:
         return 0;
       }
 
-      if (a5)
+      if (format)
       {
-        *a5 = 1212500294;
+        *format = 1212500294;
       }
     }
 
-    else if (a5)
+    else if (format)
     {
       if (([(TDSimpleArtworkRenditionSpec *)self alphaCrop]& 1) != 0 || ([(TDSimpleArtworkRenditionSpec *)self physicalSizeInMeters], v38 > 0.0) || ([(TDSimpleArtworkRenditionSpec *)self physicalSizeInMeters], v39 > 0.0))
       {
@@ -873,14 +873,14 @@ LABEL_32:
         v40 = 1246774599;
       }
 
-      *a5 = v40;
+      *format = v40;
     }
 
-    v66 = [v12 sourceImageWithDocument:a4];
-    v67 = [v66 image];
+    v66 = [asset sourceImageWithDocument:document];
+    image2 = [v66 image];
     if (v66)
     {
-      Image = v67;
+      Image = image2;
 LABEL_68:
       CGImageRetain(Image);
       goto LABEL_92;
@@ -889,18 +889,18 @@ LABEL_68:
     return 0;
   }
 
-  if (![a3 checkResourceIsReachableAndReturnError:0])
+  if (![l checkResourceIsReachableAndReturnError:0])
   {
     goto LABEL_32;
   }
 
 LABEL_9:
   Image = 0;
-  if (a5)
+  if (format)
   {
     v15 = 1145132097;
 LABEL_17:
-    *a5 = v15;
+    *format = v15;
   }
 
 LABEL_92:
@@ -954,10 +954,10 @@ LABEL_92:
   return Image;
 }
 
-- (CGSize)_scaleRecognitionImageFromSize:(CGSize)a3
+- (CGSize)_scaleRecognitionImageFromSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TDSimpleArtworkRenditionSpec *)self physicalSizeInMeters];
   if (v6 > 0.0 || ([(TDSimpleArtworkRenditionSpec *)self physicalSizeInMeters], v7 > 0.0))
   {
@@ -984,18 +984,18 @@ LABEL_92:
   return result;
 }
 
-- (BOOL)updatePackingPropertiesWithDocument:(id)a3
+- (BOOL)updatePackingPropertiesWithDocument:(id)document
 {
-  v5 = [(TDSimpleArtworkRenditionSpec *)self asset];
+  asset = [(TDSimpleArtworkRenditionSpec *)self asset];
   v81.receiver = self;
   v81.super_class = TDSimpleArtworkRenditionSpec;
-  [(TDRenditionSpec *)&v81 updatePackingPropertiesWithDocument:a3];
-  v6 = [v5 fileURLWithDocument:a3];
-  v7 = [v6 pathExtension];
-  v8 = [v7 length];
-  if (![v7 caseInsensitiveCompare:@"PDF"])
+  [(TDRenditionSpec *)&v81 updatePackingPropertiesWithDocument:document];
+  v6 = [asset fileURLWithDocument:document];
+  pathExtension = [v6 pathExtension];
+  v8 = [pathExtension length];
+  if (![pathExtension caseInsensitiveCompare:@"PDF"])
   {
-    if (![v5 scaleFactor])
+    if (![asset scaleFactor])
     {
       return 1;
     }
@@ -1011,17 +1011,17 @@ LABEL_92:
     BoxRect = CGPDFPageGetBoxRect(Page, kCGPDFCropBox);
     width = BoxRect.size.width;
     height = BoxRect.size.height;
-    v27 = [v5 scaleFactor];
+    scaleFactor = [asset scaleFactor];
     [(TDSimpleArtworkRenditionSpec *)self postScaleFactor];
-    v29 = v28 * v27;
-    v30 = [v5 fileScaleFactor];
-    if (!v30)
+    v29 = v28 * scaleFactor;
+    fileScaleFactor = [asset fileScaleFactor];
+    if (!fileScaleFactor)
     {
-      v30 = +[TDAsset scaleFactorFromImageFilename:](TDAsset, "scaleFactorFromImageFilename:", [v6 path]);
+      fileScaleFactor = +[TDAsset scaleFactorFromImageFilename:](TDAsset, "scaleFactorFromImageFilename:", [v6 path]);
     }
 
-    v32 = v30;
-    LODWORD(v31) = llround(v29 * (width / v30));
+    v32 = fileScaleFactor;
+    LODWORD(v31) = llround(v29 * (width / fileScaleFactor));
     [(TDSimpleArtworkRenditionSpec *)self setWidth:v31];
     LODWORD(v33) = llround(v29 * (height / v32));
     [(TDSimpleArtworkRenditionSpec *)self setHeight:v33];
@@ -1034,7 +1034,7 @@ LABEL_92:
     {
       LODWORD(v72) = 0;
       LOBYTE(v67) = 0;
-      v41 = [(TDSimpleArtworkRenditionSpec *)self _createImageRefWithURL:v6 andDocument:a3 format:&v72 vectorBased:&v67];
+      v41 = [(TDSimpleArtworkRenditionSpec *)self _createImageRefWithURL:v6 andDocument:document format:&v72 vectorBased:&v67];
       [(TDSimpleArtworkRenditionSpec *)self setMonochrome:CUIImageIsMonochrome()];
       CFRelease(v41);
     }
@@ -1047,14 +1047,14 @@ LABEL_31:
 
   if (![objc_msgSend(v6 "pathExtension")])
   {
-    if (![v5 scaleFactor] || (objc_msgSend(v5, "rawData") & 1) != 0)
+    if (![asset scaleFactor] || (objc_msgSend(asset, "rawData") & 1) != 0)
     {
       return 1;
     }
 
     LODWORD(v72) = 0;
     LOBYTE(v67) = 0;
-    v34 = [(TDSimpleArtworkRenditionSpec *)self _createImageRefWithURL:v6 andDocument:a3 format:&v72 vectorBased:&v67];
+    v34 = [(TDSimpleArtworkRenditionSpec *)self _createImageRefWithURL:v6 andDocument:document format:&v72 vectorBased:&v67];
     [(TDSimpleArtworkRenditionSpec *)self setWidth:CGImageGetWidth(v34)];
     [(TDSimpleArtworkRenditionSpec *)self setHeight:CGImageGetHeight(v34)];
     if ([-[TDSimpleArtworkRenditionSpec production](self "production")])
@@ -1074,11 +1074,11 @@ LABEL_31:
 
   if (v8)
   {
-    if ([v7 caseInsensitiveCompare:@"JPEG"] && objc_msgSend(v7, "caseInsensitiveCompare:", @"JPG"))
+    if ([pathExtension caseInsensitiveCompare:@"JPEG"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"JPG"))
     {
-      if (![v7 caseInsensitiveCompare:@"PNG"])
+      if (![pathExtension caseInsensitiveCompare:@"PNG"])
       {
-        v9 = [v5 sourceImageWithDocument:a3];
+        v9 = [asset sourceImageWithDocument:document];
         if (v9)
         {
           v10 = v9;
@@ -1117,9 +1117,9 @@ LABEL_31:
           v48 = &v47;
           v49 = 0x2020000000;
           v50 = 0;
-          v12 = [(TDSimpleArtworkRenditionSpec *)self alphaCrop];
-          v13 = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
-          v48[3] = v13;
+          alphaCrop = [(TDSimpleArtworkRenditionSpec *)self alphaCrop];
+          identifier = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
+          v48[3] = identifier;
           [v10 size];
           [(TDSimpleArtworkRenditionSpec *)self _scaleRecognitionImageFromSize:?];
           v15 = v14;
@@ -1141,7 +1141,7 @@ LABEL_31:
           block[3] = &unk_278EBB5B8;
           block[4] = v10;
           block[5] = &v47;
-          v46 = v12;
+          v46 = alphaCrop;
           block[6] = &v67;
           block[7] = &v72;
           block[8] = &v59;
@@ -1158,7 +1158,7 @@ LABEL_31:
           dispatch_group_async(v21, global_queue, v44);
           dispatch_group_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
           dispatch_release(v21);
-          if (((v48[3] == 0) & v12) == 1)
+          if (((v48[3] == 0) & alphaCrop) == 1)
           {
             if (!CGRectIsEmpty(v73[1]))
             {
@@ -1189,7 +1189,7 @@ LABEL_31:
 
     else if (([(TDSimpleArtworkRenditionSpec *)self alphaCrop]& 1) != 0 || ([(TDSimpleArtworkRenditionSpec *)self physicalSizeInMeters], v36 > 0.0) || ([(TDSimpleArtworkRenditionSpec *)self physicalSizeInMeters], v37 > 0.0))
     {
-      v38 = [v5 sourceImageWithDocument:a3];
+      v38 = [asset sourceImageWithDocument:document];
       if (v38)
       {
         LOBYTE(v63) = 0;
@@ -1288,7 +1288,7 @@ uint64_t __68__TDSimpleArtworkRenditionSpec_updatePackingPropertiesWithDocument_
   return result;
 }
 
-- (void)drawPackableRenditionInContext:(CGContext *)a3 withDocument:(id)a4
+- (void)drawPackableRenditionInContext:(CGContext *)context withDocument:(id)document
 {
   v57 = 0;
   v56 = 1246774599;
@@ -1298,9 +1298,9 @@ uint64_t __68__TDSimpleArtworkRenditionSpec_updatePackingPropertiesWithDocument_
   [(TDRenditionSpec *)self packedPoint];
   v47 = v7;
   v48 = v8;
-  v9 = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
-  v10 = -[TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:](self, "_createImageRefWithURL:andDocument:format:vectorBased:", [-[TDSimpleArtworkRenditionSpec asset](self "asset")], a4, &v56, &v57);
-  if (CGImageGetBitsPerComponent(v10) >= 9 && CGBitmapContextGetBitsPerComponent(a3) == 8)
+  identifier = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
+  v10 = -[TDSimpleArtworkRenditionSpec _createImageRefWithURL:andDocument:format:vectorBased:](self, "_createImageRefWithURL:andDocument:format:vectorBased:", [-[TDSimpleArtworkRenditionSpec asset](self "asset")], document, &v56, &v57);
+  if (CGImageGetBitsPerComponent(v10) >= 9 && CGBitmapContextGetBitsPerComponent(context) == 8)
   {
     v11 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
     v12 = CUIConvertDeepImageTo8();
@@ -1321,21 +1321,21 @@ uint64_t __68__TDSimpleArtworkRenditionSpec_updatePackingPropertiesWithDocument_
   v17 = [(TDSimpleArtworkRenditionSpec *)self _sliceRectanglesForRenditionSize:__PAIR64__(Height unadjustedSliceRectangles:Width) imageSlicesNeedAdjustment:&v54 newRenditionSize:&v55, &v53];
   if (v55 == 1)
   {
-    if (a3)
+    if (context)
     {
       v18 = v17;
       if ([v54 count])
       {
-        CGContextSaveGState(a3);
+        CGContextSaveGState(context);
         x = *MEMORY[0x277CBF398];
         v51 = *(MEMORY[0x277CBF398] + 16);
         y = *(MEMORY[0x277CBF398] + 8);
         v50 = *(MEMORY[0x277CBF398] + 24);
-        CGContextSetBlendMode(a3, kCGBlendModeCopy);
+        CGContextSetBlendMode(context, kCGBlendModeCopy);
         if ([v18 count])
         {
           v20 = 0;
-          v21 = v9 & 0xFFFFFFFE;
+          v21 = identifier & 0xFFFFFFFE;
           do
           {
             [objc_msgSend(v54 objectAtIndex:{v20), "rectValue"}];
@@ -1369,7 +1369,7 @@ uint64_t __68__TDSimpleArtworkRenditionSpec_updatePackingPropertiesWithDocument_
               v59.origin.y = v48 + v37;
               v59.size.width = v35;
               v59.size.height = v36;
-              CGContextDrawImage(a3, v59, v38);
+              CGContextDrawImage(context, v59, v38);
               CGImageRelease(v38);
               v60.origin.x = v49;
               v60.size.height = v50;
@@ -1392,8 +1392,8 @@ uint64_t __68__TDSimpleArtworkRenditionSpec_updatePackingPropertiesWithDocument_
           while (v20 < [v18 count]);
         }
 
-        v39 = CGBitmapContextGetHeight(a3) - (v50 + y);
-        Image = CGBitmapContextCreateImage(a3);
+        v39 = CGBitmapContextGetHeight(context) - (v50 + y);
+        Image = CGBitmapContextCreateImage(context);
         v62.origin.x = x;
         v62.origin.y = v39;
         v62.size.width = v51;
@@ -1403,12 +1403,12 @@ uint64_t __68__TDSimpleArtworkRenditionSpec_updatePackingPropertiesWithDocument_
         CUIDrawExtrudedImageInContext();
         CGImageRelease(Image);
         CGImageRelease(v41);
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(context);
       }
     }
   }
 
-  else if (a3)
+  else if (context)
   {
     v63 = NSRectFromString([(TDSimpleArtworkRenditionSpec *)self nonAlphaImageAreaString]);
     v42 = v63.origin.x;
@@ -1422,7 +1422,7 @@ uint64_t __68__TDSimpleArtworkRenditionSpec_updatePackingPropertiesWithDocument_
       v64.origin.y = v48 + 0.0;
       v64.size.width = Width;
       v64.size.height = v16;
-      CGContextDrawImage(a3, v64, v10);
+      CGContextDrawImage(context, v64, v10);
       CUIDrawExtrudedImageInContext();
     }
 
@@ -1438,7 +1438,7 @@ uint64_t __68__TDSimpleArtworkRenditionSpec_updatePackingPropertiesWithDocument_
       v66.origin.y = v48 + 0.0;
       v66.size.width = v44;
       v66.size.height = v45;
-      CGContextDrawImage(a3, v66, v46);
+      CGContextDrawImage(context, v66, v46);
       CUIDrawExtrudedImageInContext();
       CGImageRelease(v46);
     }

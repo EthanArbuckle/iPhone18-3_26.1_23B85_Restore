@@ -1,40 +1,40 @@
 @interface HKElectrocardiogram
-+ (id)_electrocardiogramWithStartDate:(id)a3 device:(id)a4 metadata:(id)a5;
-+ (id)_localizedClassification:(unint64_t)a3 withActiveAlgorithmVersion:(int64_t)a4;
-- (BOOL)isEquivalent:(id)a3;
-- (BOOL)prepareForSaving:(id *)a3;
-- (HKElectrocardiogram)initWithCoder:(id)a3;
++ (id)_electrocardiogramWithStartDate:(id)date device:(id)device metadata:(id)metadata;
++ (id)_localizedClassification:(unint64_t)classification withActiveAlgorithmVersion:(int64_t)version;
+- (BOOL)isEquivalent:(id)equivalent;
+- (BOOL)prepareForSaving:(id *)saving;
+- (HKElectrocardiogram)initWithCoder:(id)coder;
 - (HKElectrocardiogramClassification)classification;
 - (HKQuantity)samplingFrequency;
 - (NSArray)_localizedSymptoms;
 - (NSArray)leadNames;
 - (NSInteger)numberOfVoltageMeasurements;
 - (NSNumber)_algorithmVersion;
-- (id)_localizedClassificationWithActiveAlgorithmVersion:(int64_t)a3;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_localizedClassificationWithActiveAlgorithmVersion:(int64_t)version;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)payload;
 - (id)voltageMeasurementEnumerator;
 - (unint64_t)privateSymptoms;
-- (void)_enumerateDataForLead:(int64_t)a3 block:(id)a4;
-- (void)_setPayload:(id)a3;
-- (void)copyMeasurementFlagsForLead:(int64_t)a3 count:(unint64_t)a4 target:(char *)a5;
-- (void)copyMeasurementValuesForLead:(int64_t)a3 count:(unint64_t)a4 target:(float *)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setReading:(Electrocardiogram *)a3;
+- (void)_enumerateDataForLead:(int64_t)lead block:(id)block;
+- (void)_setPayload:(id)payload;
+- (void)copyMeasurementFlagsForLead:(int64_t)lead count:(unint64_t)count target:(char *)target;
+- (void)copyMeasurementValuesForLead:(int64_t)lead count:(unint64_t)count target:(float *)target;
+- (void)encodeWithCoder:(id)coder;
+- (void)setReading:(Electrocardiogram *)reading;
 @end
 
 @implementation HKElectrocardiogram
 
-+ (id)_electrocardiogramWithStartDate:(id)a3 device:(id)a4 metadata:(id)a5
++ (id)_electrocardiogramWithStartDate:(id)date device:(id)device metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  deviceCopy = device;
+  metadataCopy = metadata;
   v11 = +[(HKObjectType *)HKElectrocardiogramType];
-  [v8 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v13 = v12;
-  [v8 timeIntervalSinceReferenceDate];
-  v15 = [a1 _newSampleWithType:v11 startDate:v9 endDate:v10 device:0 metadata:v13 config:v14];
+  [dateCopy timeIntervalSinceReferenceDate];
+  v15 = [self _newSampleWithType:v11 startDate:deviceCopy endDate:metadataCopy device:0 metadata:v13 config:v14];
 
   return v15;
 }
@@ -88,22 +88,22 @@
 
 - (HKElectrocardiogramClassification)classification
 {
-  v2 = [(HKElectrocardiogram *)self privateClassification];
-  if (v2 - 1 > 9)
+  privateClassification = [(HKElectrocardiogram *)self privateClassification];
+  if (privateClassification - 1 > 9)
   {
     return 0;
   }
 
   else
   {
-    return qword_191DCE6F0[v2 - 1];
+    return qword_191DCE6F0[privateClassification - 1];
   }
 }
 
 - (NSNumber)_algorithmVersion
 {
-  v2 = [(HKObject *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"HKMetadataKeyAppleECGAlgorithmVersion"];
+  metadata = [(HKObject *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"HKMetadataKeyAppleECGAlgorithmVersion"];
 
   if (v3)
   {
@@ -118,12 +118,12 @@
   return v4;
 }
 
-- (void)setReading:(Electrocardiogram *)a3
+- (void)setReading:(Electrocardiogram *)reading
 {
-  binarysample::Electrocardiogram::operator=(&self->_reading, a3);
-  v4 = [(HKElectrocardiogram *)self samplingFrequency];
+  binarysample::Electrocardiogram::operator=(&self->_reading, reading);
+  samplingFrequency = [(HKElectrocardiogram *)self samplingFrequency];
   v5 = +[HKUnit hertzUnit];
-  [v4 doubleValueForUnit:v5];
+  [samplingFrequency doubleValueForUnit:v5];
   v7 = v6;
 
   [(HKSample *)self _startTimestamp];
@@ -132,49 +132,49 @@
   [(HKSample *)self _setEndTimestamp:v9];
 }
 
-- (void)copyMeasurementValuesForLead:(int64_t)a3 count:(unint64_t)a4 target:(float *)a5
+- (void)copyMeasurementValuesForLead:(int64_t)lead count:(unint64_t)count target:(float *)target
 {
   begin = self->_reading._leads._v.__begin_;
   for (i = self->_reading._leads._v.__end_; begin != i; begin += 8)
   {
     v10 = *begin;
-    if ((*(*begin + 60) & 1) != 0 && *(v10 + 56) == a3)
+    if ((*(*begin + 60) & 1) != 0 && *(v10 + 56) == lead)
     {
       v11 = *(v10 + 32);
-      v12 = (*(v10 + 40) - v11) >> 2;
-      if (v12 >= a4)
+      countCopy = (*(v10 + 40) - v11) >> 2;
+      if (countCopy >= count)
       {
-        v12 = a4;
+        countCopy = count;
       }
 
-      if (v12)
+      if (countCopy)
       {
-        memmove(a5, v11, 4 * v12);
+        memmove(target, v11, 4 * countCopy);
       }
     }
   }
 }
 
-- (void)copyMeasurementFlagsForLead:(int64_t)a3 count:(unint64_t)a4 target:(char *)a5
+- (void)copyMeasurementFlagsForLead:(int64_t)lead count:(unint64_t)count target:(char *)target
 {
   begin = self->_reading._leads._v.__begin_;
   end = self->_reading._leads._v.__end_;
   while (begin != end)
   {
     v7 = *begin;
-    if ((*(*begin + 60) & 1) != 0 && *(v7 + 56) == a3)
+    if ((*(*begin + 60) & 1) != 0 && *(v7 + 56) == lead)
     {
-      v8 = (*(v7 + 16) - *(v7 + 8)) >> 2;
-      if (v8 >= a4)
+      countCopy = (*(v7 + 16) - *(v7 + 8)) >> 2;
+      if (countCopy >= count)
       {
-        v8 = a4;
+        countCopy = count;
       }
 
-      if (v8 >= 1)
+      if (countCopy >= 1)
       {
-        for (i = 0; i != v8; ++i)
+        for (i = 0; i != countCopy; ++i)
         {
-          a5[i] = *(*(v7 + 8) + 4 * i);
+          target[i] = *(*(v7 + 8) + 4 * i);
         }
       }
     }
@@ -183,20 +183,20 @@
   }
 }
 
-- (void)_enumerateDataForLead:(int64_t)a3 block:(id)a4
+- (void)_enumerateDataForLead:(int64_t)lead block:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HKElectrocardiogram *)self samplingFrequency];
+  blockCopy = block;
+  samplingFrequency = [(HKElectrocardiogram *)self samplingFrequency];
 
-  if (v7)
+  if (samplingFrequency)
   {
     begin = self->_reading._leads._v.__begin_;
     end = self->_reading._leads._v.__end_;
     while (begin != end)
     {
       v10 = *begin;
-      if ((*(*begin + 60) & 1) != 0 && *(v10 + 56) == a3)
+      if ((*(*begin + 60) & 1) != 0 && *(v10 + 56) == lead)
       {
         v15 = *(v10 + 32);
         if (*(v10 + 40) != v15)
@@ -205,7 +205,7 @@
           do
           {
             v17[0] = 0;
-            v6[2](v6, v16, v17, *(v15 + 4 * v16));
+            blockCopy[2](blockCopy, v16, v17, *(v15 + 4 * v16));
             if (v17[0])
             {
               break;
@@ -231,9 +231,9 @@
     v11 = HKLogHeartRhythm;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(HKObject *)self UUID];
-      v13 = [v12 UUIDString];
-      [(HKElectrocardiogram *)v13 _enumerateDataForLead:v17 block:v11, v12];
+      uUID = [(HKObject *)self UUID];
+      uUIDString = [uUID UUIDString];
+      [(HKElectrocardiogram *)uUIDString _enumerateDataForLead:v17 block:v11, uUID];
     }
   }
 
@@ -274,15 +274,15 @@ LABEL_10:
   return v6;
 }
 
-- (void)_setPayload:(id)a3
+- (void)_setPayload:(id)payload
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  payloadCopy = payload;
+  v5 = payloadCopy;
+  if (payloadCopy)
   {
-    v6 = [v4 bytes];
+    bytes = [payloadCopy bytes];
     [v5 length];
-    PB::Reader::Reader(v7, v6);
+    PB::Reader::Reader(v7, bytes);
     (*(self->_reading._vptr$Base + 2))(&self->_reading, v7);
   }
 
@@ -305,11 +305,11 @@ LABEL_10:
   return v4;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v15.receiver = self;
   v15.super_class = HKElectrocardiogram;
-  v5 = [(HKSample *)&v15 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSample *)&v15 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -346,7 +346,7 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)prepareForSaving:(id *)a3
+- (BOOL)prepareForSaving:(id *)saving
 {
   if (self->_reading._leads._v.__end_ == self->_reading._leads._v.__begin_)
   {
@@ -356,11 +356,11 @@ LABEL_9:
     v13 = v16;
     if (v16)
     {
-      if (a3)
+      if (saving)
       {
 LABEL_13:
         v17 = v13;
-        *a3 = v13;
+        *saving = v13;
         goto LABEL_15;
       }
 
@@ -371,11 +371,11 @@ LABEL_14:
 
   else
   {
-    v6 = [(HKObject *)self metadata];
-    v7 = [v6 objectForKeyedSubscript:@"_HKPrivateMetadataKeyElectrocardiogramSymptoms"];
-    v8 = [v7 integerValue];
+    metadata = [(HKObject *)self metadata];
+    v7 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataKeyElectrocardiogramSymptoms"];
+    integerValue = [v7 integerValue];
 
-    if (v8 == 1 || (v8 & 1) == 0)
+    if (integerValue == 1 || (integerValue & 1) == 0)
     {
       return 1;
     }
@@ -386,7 +386,7 @@ LABEL_14:
     v13 = v16;
     if (v16)
     {
-      if (a3)
+      if (saving)
       {
         goto LABEL_13;
       }
@@ -400,50 +400,50 @@ LABEL_15:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKElectrocardiogram;
-  [(HKSample *)&v7 encodeWithCoder:v4];
-  v5 = [(HKElectrocardiogram *)self payload];
-  [v4 encodeObject:v5 forKey:@"payload"];
+  [(HKSample *)&v7 encodeWithCoder:coderCopy];
+  payload = [(HKElectrocardiogram *)self payload];
+  [coderCopy encodeObject:payload forKey:@"payload"];
 
-  v6 = [(HKElectrocardiogram *)self averageHeartRate];
-  [v4 encodeObject:v6 forKey:@"averageHeartRate"];
+  averageHeartRate = [(HKElectrocardiogram *)self averageHeartRate];
+  [coderCopy encodeObject:averageHeartRate forKey:@"averageHeartRate"];
 
-  [v4 encodeInteger:-[HKElectrocardiogram privateClassification](self forKey:{"privateClassification"), @"classification"}];
-  [v4 encodeInteger:-[HKElectrocardiogram symptoms](self forKey:{"symptoms"), @"symptoms_status"}];
+  [coderCopy encodeInteger:-[HKElectrocardiogram privateClassification](self forKey:{"privateClassification"), @"classification"}];
+  [coderCopy encodeInteger:-[HKElectrocardiogram symptoms](self forKey:{"symptoms"), @"symptoms_status"}];
 }
 
-- (HKElectrocardiogram)initWithCoder:(id)a3
+- (HKElectrocardiogram)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKElectrocardiogram;
-  v5 = [(HKSample *)&v9 initWithCoder:v4];
+  v5 = [(HKSample *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
     [(HKElectrocardiogram *)v5 _setPayload:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"averageHeartRate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageHeartRate"];
     [(HKElectrocardiogram *)v5 _setAverageHeartRate:v7];
 
-    -[HKElectrocardiogram _setPrivateClassification:](v5, "_setPrivateClassification:", [v4 decodeIntegerForKey:@"classification"]);
-    -[HKElectrocardiogram _setSymptomsStatus:](v5, "_setSymptomsStatus:", [v4 decodeIntegerForKey:@"symptoms_status"]);
+    -[HKElectrocardiogram _setPrivateClassification:](v5, "_setPrivateClassification:", [coderCopy decodeIntegerForKey:@"classification"]);
+    -[HKElectrocardiogram _setSymptomsStatus:](v5, "_setSymptomsStatus:", [coderCopy decodeIntegerForKey:@"symptoms_status"]);
   }
 
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v26.receiver = self;
     v26.super_class = HKElectrocardiogram;
     if (![(HKSample *)&v26 isEquivalent:v5])
@@ -451,30 +451,30 @@ LABEL_15:
       goto LABEL_17;
     }
 
-    v6 = [(HKElectrocardiogram *)self numberOfVoltageMeasurements];
-    if (v6 != [v5 numberOfVoltageMeasurements])
+    numberOfVoltageMeasurements = [(HKElectrocardiogram *)self numberOfVoltageMeasurements];
+    if (numberOfVoltageMeasurements != [v5 numberOfVoltageMeasurements])
     {
       goto LABEL_17;
     }
 
-    v7 = [(HKElectrocardiogram *)self samplingFrequency];
-    v8 = [v5 samplingFrequency];
-    v9 = v8;
-    if (v7 == v8)
+    samplingFrequency = [(HKElectrocardiogram *)self samplingFrequency];
+    samplingFrequency2 = [v5 samplingFrequency];
+    v9 = samplingFrequency2;
+    if (samplingFrequency == samplingFrequency2)
     {
     }
 
     else
     {
-      v10 = [v5 samplingFrequency];
-      if (!v10)
+      samplingFrequency3 = [v5 samplingFrequency];
+      if (!samplingFrequency3)
       {
         goto LABEL_16;
       }
 
-      v11 = [(HKElectrocardiogram *)self samplingFrequency];
-      v12 = [v5 samplingFrequency];
-      v13 = [v11 isEqual:v12];
+      samplingFrequency4 = [(HKElectrocardiogram *)self samplingFrequency];
+      samplingFrequency5 = [v5 samplingFrequency];
+      v13 = [samplingFrequency4 isEqual:samplingFrequency5];
 
       if ((v13 & 1) == 0)
       {
@@ -482,39 +482,39 @@ LABEL_15:
       }
     }
 
-    v15 = [(HKElectrocardiogram *)self payload];
-    v16 = [v5 payload];
-    v17 = [v15 isEqualToData:v16];
+    payload = [(HKElectrocardiogram *)self payload];
+    payload2 = [v5 payload];
+    v17 = [payload isEqualToData:payload2];
 
     if ((v17 & 1) == 0)
     {
       goto LABEL_17;
     }
 
-    v18 = [(HKElectrocardiogram *)self privateClassification];
-    if (v18 != [v5 privateClassification])
+    privateClassification = [(HKElectrocardiogram *)self privateClassification];
+    if (privateClassification != [v5 privateClassification])
     {
       goto LABEL_17;
     }
 
-    v7 = [(HKElectrocardiogram *)self averageHeartRate];
-    v19 = [v5 averageHeartRate];
-    v9 = v19;
-    if (v7 == v19)
+    samplingFrequency = [(HKElectrocardiogram *)self averageHeartRate];
+    averageHeartRate = [v5 averageHeartRate];
+    v9 = averageHeartRate;
+    if (samplingFrequency == averageHeartRate)
     {
 
 LABEL_21:
-      v25 = [(HKElectrocardiogram *)self symptomsStatus];
-      v14 = v25 == [v5 symptomsStatus];
+      symptomsStatus = [(HKElectrocardiogram *)self symptomsStatus];
+      v14 = symptomsStatus == [v5 symptomsStatus];
       goto LABEL_18;
     }
 
-    v20 = [v5 averageHeartRate];
-    if (v20)
+    averageHeartRate2 = [v5 averageHeartRate];
+    if (averageHeartRate2)
     {
-      v21 = [(HKElectrocardiogram *)self averageHeartRate];
-      v22 = [v5 averageHeartRate];
-      v23 = [v21 isEqual:v22];
+      averageHeartRate3 = [(HKElectrocardiogram *)self averageHeartRate];
+      averageHeartRate4 = [v5 averageHeartRate];
+      v23 = [averageHeartRate3 isEqual:averageHeartRate4];
 
       if (v23)
       {
@@ -539,14 +539,14 @@ LABEL_19:
   return v14;
 }
 
-+ (id)_localizedClassification:(unint64_t)a3 withActiveAlgorithmVersion:(int64_t)a4
++ (id)_localizedClassification:(unint64_t)classification withActiveAlgorithmVersion:(int64_t)version
 {
   v4 = 0;
-  if (a3 > 5)
+  if (classification > 5)
   {
-    if (a3 <= 7)
+    if (classification <= 7)
     {
-      if (a3 == 6)
+      if (classification == 6)
       {
         v5 = HKHealthKitFrameworkBundle();
         [v5 localizedStringForKey:@"ELECTROCARDIOGRAM_ATRIAL_FIBRILLATION_CLASSIFICATION_HEART_RATE_BELOW_50" value:&stru_1F05FF230 table:@"Localizable-Cinnamon"];
@@ -562,9 +562,9 @@ LABEL_19:
       goto LABEL_23;
     }
 
-    if (a3 - 8 >= 2)
+    if (classification - 8 >= 2)
     {
-      if (a3 != 10)
+      if (classification != 10)
       {
         goto LABEL_24;
       }
@@ -578,9 +578,9 @@ LABEL_19:
     goto LABEL_8;
   }
 
-  if (a3 > 2)
+  if (classification > 2)
   {
-    if (a3 == 3)
+    if (classification == 3)
     {
       v5 = HKHealthKitFrameworkBundle();
       v6 = [v5 localizedStringForKey:@"ELECTROCARDIOGRAM_ATRIAL_FIBRILLATION_CLASSIFICATION_SINUS_RHYTHM_HEART_RATE_50_TO_100" value:&stru_1F05FF230 table:@"Localizable-Cinnamon"];
@@ -588,7 +588,7 @@ LABEL_19:
       goto LABEL_23;
     }
 
-    if (a3 != 4)
+    if (classification != 4)
     {
       v5 = HKHealthKitFrameworkBundle();
       v6 = [v5 localizedStringForKey:@"ELECTROCARDIOGRAM_ATRIAL_FIBRILLATION_CLASSIFICATION_HEART_RATE_ABOVE_120" value:&stru_1F05FF230 table:@"Localizable-Cinnamon"];
@@ -606,9 +606,9 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  if (a3 != 1)
+  if (classification != 1)
   {
-    if (a3 != 2)
+    if (classification != 2)
     {
       goto LABEL_24;
     }
@@ -619,7 +619,7 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  if (a4 == 2)
+  if (version == 2)
   {
     v5 = HKHealthKitFrameworkBundle();
     v6 = [v5 localizedStringForKey:@"ELECTROCARDIOGRAM_ATRIAL_FIBRILLATION_CLASSIFICATION_POOR_RECORDING" value:&stru_1F05FF230 table:@"Localizable-Cinnamon"];
@@ -627,7 +627,7 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  if (a4 == 1)
+  if (version == 1)
   {
     v5 = HKHealthKitFrameworkBundle();
     v6 = [v5 localizedStringForKey:@"ELECTROCARDIOGRAM_ATRIAL_FIBRILLATION_CLASSIFICATION_INCONCLUSIVE_POOR_READING" value:&stru_1F05FF230 table:@"Localizable-Cinnamon"];
@@ -641,12 +641,12 @@ LABEL_24:
   return v4;
 }
 
-- (id)_localizedClassificationWithActiveAlgorithmVersion:(int64_t)a3
+- (id)_localizedClassificationWithActiveAlgorithmVersion:(int64_t)version
 {
   v5 = objc_opt_class();
-  v6 = [(HKElectrocardiogram *)self privateClassification];
+  privateClassification = [(HKElectrocardiogram *)self privateClassification];
 
-  return [v5 _localizedClassification:v6 withActiveAlgorithmVersion:a3];
+  return [v5 _localizedClassification:privateClassification withActiveAlgorithmVersion:version];
 }
 
 - (NSArray)_localizedSymptoms
@@ -671,13 +671,13 @@ LABEL_24:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v15 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v15 + 1) + 8 * i) integerValue];
         v9 = 0;
-        if (v8 <= 15)
+        if (integerValue <= 15)
         {
-          if (v8 > 3)
+          if (integerValue > 3)
           {
-            if (v8 == 4)
+            if (integerValue == 4)
             {
               v10 = HKHealthKitFrameworkBundle();
               v11 = [v10 localizedStringForKey:@"ELECTROCARDIOGRAM_SYMPTOM_DIZZINESS" value:&stru_1F05FF230 table:@"Localizable-Cinnamon"];
@@ -686,7 +686,7 @@ LABEL_24:
 
             else
             {
-              if (v8 != 8)
+              if (integerValue != 8)
               {
                 goto LABEL_29;
               }
@@ -697,7 +697,7 @@ LABEL_24:
             }
           }
 
-          else if (v8 == 1)
+          else if (integerValue == 1)
           {
             v10 = HKHealthKitFrameworkBundle();
             v11 = [v10 localizedStringForKey:@"ELECTROCARDIOGRAM_SYMPTOM_NO_SYMPTOMS" value:&stru_1F05FF230 table:@"Localizable-Cinnamon"];
@@ -706,7 +706,7 @@ LABEL_24:
 
           else
           {
-            if (v8 != 2)
+            if (integerValue != 2)
             {
               goto LABEL_29;
             }
@@ -717,9 +717,9 @@ LABEL_24:
           }
         }
 
-        else if (v8 <= 127)
+        else if (integerValue <= 127)
         {
-          if (v8 == 16)
+          if (integerValue == 16)
           {
             v10 = HKHealthKitFrameworkBundle();
             v11 = [v10 localizedStringForKey:@"ELECTROCARDIOGRAM_SYMPTOM_FAINTING" value:&stru_1F05FF230 table:@"Localizable-Cinnamon"];
@@ -728,7 +728,7 @@ LABEL_24:
 
           else
           {
-            if (v8 != 64)
+            if (integerValue != 64)
             {
               goto LABEL_29;
             }
@@ -741,7 +741,7 @@ LABEL_24:
 
         else
         {
-          switch(v8)
+          switch(integerValue)
           {
             case 128:
               v10 = HKHealthKitFrameworkBundle();
@@ -786,11 +786,11 @@ LABEL_29:
 
 - (unint64_t)privateSymptoms
 {
-  v2 = [(HKObject *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"_HKPrivateMetadataKeyElectrocardiogramSymptoms"];
-  v4 = [v3 integerValue];
+  metadata = [(HKObject *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataKeyElectrocardiogramSymptoms"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (void)_enumerateDataForLead:(os_log_t)log block:(void *)a4 .cold.1(void *a1, uint8_t *buf, os_log_t log, void *a4)

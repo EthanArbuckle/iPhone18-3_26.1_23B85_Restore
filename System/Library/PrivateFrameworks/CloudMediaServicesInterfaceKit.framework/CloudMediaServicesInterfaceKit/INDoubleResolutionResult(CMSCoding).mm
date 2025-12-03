@@ -28,7 +28,7 @@
 
     v9 = MEMORY[0x277CD3BB8];
     [v7 doubleValue];
-    v10 = [v9 successWithResolvedValue:?];
+    unsupported = [v9 successWithResolvedValue:?];
   }
 
   else
@@ -48,7 +48,7 @@
 
     if (v16)
     {
-      v10 = [MEMORY[0x277CD3BB8] unsupported];
+      unsupported = [MEMORY[0x277CD3BB8] unsupported];
     }
 
     else
@@ -57,7 +57,7 @@
 
       if (v17)
       {
-        v10 = [MEMORY[0x277CD3BB8] needsValue];
+        unsupported = [MEMORY[0x277CD3BB8] needsValue];
       }
 
       else
@@ -69,12 +69,12 @@
           goto LABEL_10;
         }
 
-        v10 = [MEMORY[0x277CD3BB8] notRequired];
+        unsupported = [MEMORY[0x277CD3BB8] notRequired];
       }
     }
   }
 
-  v11 = v10;
+  v11 = unsupported;
 LABEL_10:
 
 LABEL_11:

@@ -1,14 +1,14 @@
 @interface SYDocumentWorkflowsActivityObserver
 - (SYDocumentWorkflowsActivityObserver)init;
-- (void)_handleActiveUserActivityChange:(id)a3;
-- (void)_handleActiveUserActivityChangeAfterDelay:(id)a3;
-- (void)_handleAppBecomeActive:(id)a3;
-- (void)_handleAppResignActive:(id)a3;
+- (void)_handleActiveUserActivityChange:(id)change;
+- (void)_handleActiveUserActivityChangeAfterDelay:(id)delay;
+- (void)_handleAppBecomeActive:(id)active;
+- (void)_handleAppResignActive:(id)active;
 - (void)_updateLinkedDocuments;
 - (void)dealloc;
 - (void)registerForAppStateNotifications;
-- (void)userActivityDidBecomeCurrent:(id)a3 current:(BOOL)a4;
-- (void)userActivityPersistentIdentifierWasChanged:(id)a3 persistentIdentifier:(id)a4 previousValue:(id)a5;
+- (void)userActivityDidBecomeCurrent:(id)current current:(BOOL)a4;
+- (void)userActivityPersistentIdentifierWasChanged:(id)changed persistentIdentifier:(id)identifier previousValue:(id)value;
 @end
 
 @implementation SYDocumentWorkflowsActivityObserver
@@ -97,7 +97,7 @@ void __71__SYDocumentWorkflowsActivityObserver_registerForAppStateNotifications_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_225901000, v3, OS_LOG_TYPE_DEFAULT, "deallocating: %p", buf, 0xCu);
   }
 
@@ -107,15 +107,15 @@ void __71__SYDocumentWorkflowsActivityObserver_registerForAppStateNotifications_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAppBecomeActive:(id)a3
+- (void)_handleAppBecomeActive:(id)active
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activeCopy = active;
   v5 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = activeCopy;
     _os_log_impl(&dword_225901000, v5, OS_LOG_TYPE_DEFAULT, "application did become active: %@", buf, 0xCu);
   }
 
@@ -139,15 +139,15 @@ uint64_t __62__SYDocumentWorkflowsActivityObserver__handleAppBecomeActive___bloc
   return result;
 }
 
-- (void)_handleAppResignActive:(id)a3
+- (void)_handleAppResignActive:(id)active
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activeCopy = active;
   v5 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = activeCopy;
     _os_log_impl(&dword_225901000, v5, OS_LOG_TYPE_DEFAULT, "application did resign active: %@", &v7, 0xCu);
   }
 
@@ -155,9 +155,9 @@ uint64_t __62__SYDocumentWorkflowsActivityObserver__handleAppBecomeActive___bloc
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userActivityDidBecomeCurrent:(id)a3 current:(BOOL)a4
+- (void)userActivityDidBecomeCurrent:(id)current current:(BOOL)a4
 {
-  v5 = a3;
+  currentCopy = current;
   v6 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -165,40 +165,40 @@ uint64_t __62__SYDocumentWorkflowsActivityObserver__handleAppBecomeActive___bloc
     _os_log_impl(&dword_225901000, v6, OS_LOG_TYPE_DEFAULT, "user activity did become current", v7, 2u);
   }
 
-  [(SYDocumentWorkflowsActivityObserver *)self _handleActiveUserActivityChange:v5];
+  [(SYDocumentWorkflowsActivityObserver *)self _handleActiveUserActivityChange:currentCopy];
 }
 
-- (void)userActivityPersistentIdentifierWasChanged:(id)a3 persistentIdentifier:(id)a4 previousValue:(id)a5
+- (void)userActivityPersistentIdentifierWasChanged:(id)changed persistentIdentifier:(id)identifier previousValue:(id)value
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  valueCopy = value;
+  changedCopy = changed;
   v11 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v9;
+    v14 = valueCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = identifierCopy;
     _os_log_impl(&dword_225901000, v11, OS_LOG_TYPE_DEFAULT, "user activity persistent identifier was changed from %@ to %@", &v13, 0x16u);
   }
 
-  [(SYDocumentWorkflowsActivityObserver *)self _handleActiveUserActivityChange:v10];
+  [(SYDocumentWorkflowsActivityObserver *)self _handleActiveUserActivityChange:changedCopy];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActiveUserActivityChange:(id)a3
+- (void)_handleActiveUserActivityChange:(id)change
 {
   v4 = MEMORY[0x277D82BB8];
-  v5 = a3;
-  [v4 cancelPreviousPerformRequestsWithTarget:self selector:sel__handleActiveUserActivityChangeAfterDelay_ object:v5];
-  [(SYDocumentWorkflowsActivityObserver *)self performSelector:sel__handleActiveUserActivityChangeAfterDelay_ withObject:v5 afterDelay:0.1];
+  changeCopy = change;
+  [v4 cancelPreviousPerformRequestsWithTarget:self selector:sel__handleActiveUserActivityChangeAfterDelay_ object:changeCopy];
+  [(SYDocumentWorkflowsActivityObserver *)self performSelector:sel__handleActiveUserActivityChangeAfterDelay_ withObject:changeCopy afterDelay:0.1];
 }
 
-- (void)_handleActiveUserActivityChangeAfterDelay:(id)a3
+- (void)_handleActiveUserActivityChangeAfterDelay:(id)delay
 {
-  v4 = a3;
+  delayCopy = delay;
   objc_initWeak(&location, self);
   objc_initWeak(&from, self->_appStateObserver);
   observerQueue = self->_observerQueue;
@@ -208,8 +208,8 @@ uint64_t __62__SYDocumentWorkflowsActivityObserver__handleAppBecomeActive___bloc
   block[3] = &unk_27856BC88;
   objc_copyWeak(&v9, &location);
   objc_copyWeak(&v10, &from);
-  v8 = v4;
-  v6 = v4;
+  v8 = delayCopy;
+  v6 = delayCopy;
   dispatch_async(observerQueue, block);
 
   objc_destroyWeak(&v10);

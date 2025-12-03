@@ -1,32 +1,32 @@
 @interface _MRUpdateContentItemMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addContentItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRUpdateContentItemMessageProtobuf
 
-- (void)addContentItems:(id)a3
+- (void)addContentItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   contentItems = self->_contentItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!contentItems)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contentItems;
     self->_contentItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     contentItems = self->_contentItems;
   }
 
-  [(NSMutableArray *)contentItems addObject:v4];
+  [(NSMutableArray *)contentItems addObject:itemsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = _MRUpdateContentItemMessageProtobuf;
   v4 = [(_MRUpdateContentItemMessageProtobuf *)&v8 description];
-  v5 = [(_MRUpdateContentItemMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRUpdateContentItemMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_contentItems count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_contentItems, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -77,25 +77,25 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"contentItems"];
+    [dictionary setObject:v4 forKey:@"contentItems"];
   }
 
   playerPath = self->_playerPath;
   if (playerPath)
   {
-    v12 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"playerPath"];
+    dictionaryRepresentation2 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"playerPath"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -136,34 +136,34 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_MRUpdateContentItemMessageProtobuf *)self contentItemsCount])
   {
-    [v8 clearContentItems];
-    v4 = [(_MRUpdateContentItemMessageProtobuf *)self contentItemsCount];
-    if (v4)
+    [toCopy clearContentItems];
+    contentItemsCount = [(_MRUpdateContentItemMessageProtobuf *)self contentItemsCount];
+    if (contentItemsCount)
     {
-      v5 = v4;
+      v5 = contentItemsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRUpdateContentItemMessageProtobuf *)self contentItemsAtIndex:i];
-        [v8 addContentItems:v7];
+        [toCopy addContentItems:v7];
       }
     }
   }
 
   if (self->_playerPath)
   {
-    [v8 setPlayerPath:?];
+    [toCopy setPlayerPath:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -184,7 +184,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{a3, v16}];
+        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{zone, v16}];
         [v5 addContentItems:v11];
 
         ++v10;
@@ -197,7 +197,7 @@
     while (v8);
   }
 
-  v12 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:a3];
+  v12 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -205,13 +205,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((contentItems = self->_contentItems, !(contentItems | v4[1])) || -[NSMutableArray isEqual:](contentItems, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((contentItems = self->_contentItems, !(contentItems | equalCopy[1])) || -[NSMutableArray isEqual:](contentItems, "isEqual:")))
   {
     playerPath = self->_playerPath;
-    if (playerPath | v4[2])
+    if (playerPath | equalCopy[2])
     {
       v7 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath isEqual:?];
     }
@@ -230,15 +230,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -263,7 +263,7 @@
   }
 
   playerPath = self->_playerPath;
-  v11 = v4[2];
+  v11 = fromCopy[2];
   if (playerPath)
   {
     if (v11)

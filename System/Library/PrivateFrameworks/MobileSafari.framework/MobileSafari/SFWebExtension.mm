@@ -1,38 +1,38 @@
 @interface SFWebExtension
 - (BOOL)_canShowBanner;
-- (BOOL)canLoadWithErrorString:(id *)a3;
+- (BOOL)canLoadWithErrorString:(id *)string;
 - (BOOL)isDevelopmentBuild;
 - (NSArray)menuElements;
 - (WKWebViewConfiguration)extensionWebViewConfiguration;
-- (id)_discoverabilityTitleForCommand:(id)a3;
+- (id)_discoverabilityTitleForCommand:(id)command;
 - (id)_lastInteractionDate;
 - (id)_updateLastInteractionDate;
 - (void)_hidePermissionBanner;
-- (void)_showAccessRequestDialogForPendingRequestsAndAdditionalURLs:(id)a3 additionalCallingAPIName:(id)a4 performingUserGestureInTab:(id)a5 completionHandler:(id)a6;
+- (void)_showAccessRequestDialogForPendingRequestsAndAdditionalURLs:(id)ls additionalCallingAPIName:(id)name performingUserGestureInTab:(id)tab completionHandler:(id)handler;
 - (void)permissionRequestBannerWasDismissed;
-- (void)promptForAccessToURLs:(id)a3 inTab:(id)a4 completionHandler:(id)a5;
-- (void)requestPermissionsFromToolbarItemInTab:(id)a3 completionHandler:(id)a4;
+- (void)promptForAccessToURLs:(id)ls inTab:(id)tab completionHandler:(id)handler;
+- (void)requestPermissionsFromToolbarItemInTab:(id)tab completionHandler:(id)handler;
 - (void)showAlertForPendingPermissionRequests;
 - (void)showOrHidePermissionRequestBannerIfNeeded;
-- (void)userGesturePerformedInTab:(id)a3;
+- (void)userGesturePerformedInTab:(id)tab;
 @end
 
 @implementation SFWebExtension
 
 - (WKWebViewConfiguration)extensionWebViewConfiguration
 {
-  v2 = [(WBSWebExtensionData *)self webKitContext];
-  v3 = [v2 webViewConfiguration];
+  webKitContext = [(WBSWebExtensionData *)self webKitContext];
+  webViewConfiguration = [webKitContext webViewConfiguration];
 
-  return v3;
+  return webViewConfiguration;
 }
 
-- (void)promptForAccessToURLs:(id)a3 inTab:(id)a4 completionHandler:(id)a5
+- (void)promptForAccessToURLs:(id)ls inTab:(id)tab completionHandler:(id)handler
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lsCopy = ls;
+  tabCopy = tab;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   if (self->_isAccessRequestDialogPresentedOrScheduled)
   {
@@ -41,9 +41,9 @@
     aBlock[2] = __64__SFWebExtension_promptForAccessToURLs_inTab_completionHandler___block_invoke;
     aBlock[3] = &unk_1E721E238;
     objc_copyWeak(&v52, &location);
-    v49 = v8;
-    v50 = v9;
-    v51 = v10;
+    v49 = lsCopy;
+    v50 = tabCopy;
+    v51 = handlerCopy;
     v11 = _Block_copy(aBlock);
     accessRequestDialogCompletionHandlers = self->_accessRequestDialogCompletionHandlers;
     v13 = _Block_copy(v11);
@@ -68,13 +68,13 @@
     objc_destroyWeak(&v52);
   }
 
-  else if ([v8 count])
+  else if ([lsCopy count])
   {
-    v18 = [(WBSSafariExtension *)self extensionsController];
-    if ([v18 parentalControlsAreEnabledForExtensions])
+    extensionsController = [(WBSSafariExtension *)self extensionsController];
+    if ([extensionsController parentalControlsAreEnabledForExtensions])
     {
       v19 = [MEMORY[0x1E695DFD8] set];
-      (*(v10 + 2))(v10, v19, 0);
+      (*(handlerCopy + 2))(handlerCopy, v19, 0);
     }
 
     else
@@ -83,14 +83,14 @@
       v44[1] = 3221225472;
       v44[2] = __64__SFWebExtension_promptForAccessToURLs_inTab_completionHandler___block_invoke_2;
       v44[3] = &unk_1E721E288;
-      v45 = v8;
-      v46 = self;
-      v47 = v9;
+      v45 = lsCopy;
+      selfCopy = self;
+      v47 = tabCopy;
       v22 = _Block_copy(v44);
-      v23 = [(WBSWebExtensionData *)self toolbarItem];
-      v24 = [v23 showingExtensionPopup];
+      toolbarItem = [(WBSWebExtensionData *)self toolbarItem];
+      showingExtensionPopup = [toolbarItem showingExtensionPopup];
 
-      if (v24)
+      if (showingExtensionPopup)
       {
         v25 = v22[2](v22);
         if ([v25 count])
@@ -99,7 +99,7 @@
           v38[1] = 3221225472;
           v38[2] = __64__SFWebExtension_promptForAccessToURLs_inTab_completionHandler___block_invoke_6;
           v38[3] = &unk_1E721BA70;
-          v39 = v10;
+          v39 = handlerCopy;
           [(SFWebExtension *)self _showAccessRequestDialogForPendingRequestsAndAdditionalURLs:v25 additionalCallingAPIName:0 performingUserGestureInTab:0 completionHandler:v38];
           v26 = v39;
         }
@@ -107,15 +107,15 @@
         else
         {
           v26 = [MEMORY[0x1E695DFD8] set];
-          (*(v10 + 2))(v10, v26, 0);
+          (*(handlerCopy + 2))(handlerCopy, v26, 0);
         }
       }
 
       else
       {
-        v27 = [(WBSWebExtensionData *)self hasPendingWebsiteRequests];
+        hasPendingWebsiteRequests = [(WBSWebExtensionData *)self hasPendingWebsiteRequests];
         v25 = v22[2](v22);
-        if (([v25 count] != 0 || v27) && (+[WBSWebExtensionsController pendingSiteAccessTimeoutInterval](SFWebExtensionsController, "pendingSiteAccessTimeoutInterval"), v29 = v28, v28 > 0.0 || v27))
+        if (([v25 count] != 0 || hasPendingWebsiteRequests) && (+[WBSWebExtensionsController pendingSiteAccessTimeoutInterval](SFWebExtensionsController, "pendingSiteAccessTimeoutInterval"), v29 = v28, v28 > 0.0 || hasPendingWebsiteRequests))
         {
           v30 = dispatch_time(0, ((v28 + 1.0) * 1000000000.0));
           block[0] = MEMORY[0x1E69E9820];
@@ -133,15 +133,15 @@
           v40[1] = 3221225472;
           v40[2] = __64__SFWebExtension_promptForAccessToURLs_inTab_completionHandler___block_invoke_5;
           v40[3] = &unk_1E721D338;
-          v41 = v10;
+          v41 = handlerCopy;
           [v31 setCompletionHandler:v40];
           v33 = *MEMORY[0x1E69C9910];
           v34 = *(&self->super.super.super.isa + v33);
           if (!v34)
           {
-            v35 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v36 = *(&self->super.super.super.isa + v33);
-            *(&self->super.super.super.isa + v33) = v35;
+            *(&self->super.super.super.isa + v33) = array;
 
             v34 = *(&self->super.super.super.isa + v33);
           }
@@ -155,7 +155,7 @@
         else
         {
           v37 = [MEMORY[0x1E695DFD8] set];
-          (*(v10 + 2))(v10, v37, 0);
+          (*(handlerCopy + 2))(handlerCopy, v37, 0);
         }
       }
 
@@ -165,7 +165,7 @@
 
   else
   {
-    (*(v10 + 2))(v10, v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, lsCopy, 0);
   }
 
   objc_destroyWeak(&location);
@@ -241,19 +241,19 @@ void __64__SFWebExtension_promptForAccessToURLs_inTab_completionHandler___block_
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)_showAccessRequestDialogForPendingRequestsAndAdditionalURLs:(id)a3 additionalCallingAPIName:(id)a4 performingUserGestureInTab:(id)a5 completionHandler:(id)a6
+- (void)_showAccessRequestDialogForPendingRequestsAndAdditionalURLs:(id)ls additionalCallingAPIName:(id)name performingUserGestureInTab:(id)tab completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(WBSWebExtensionData *)self urlsPendingApproval];
-  v38 = [v14 count];
+  lsCopy = ls;
+  nameCopy = name;
+  tabCopy = tab;
+  handlerCopy = handler;
+  urlsPendingApproval = [(WBSWebExtensionData *)self urlsPendingApproval];
+  v38 = [urlsPendingApproval count];
   v40 = v38 != 0;
-  v44 = v14;
-  if (v14)
+  v44 = urlsPendingApproval;
+  if (urlsPendingApproval)
   {
-    v15 = v14;
+    v15 = urlsPendingApproval;
   }
 
   else
@@ -262,20 +262,20 @@ void __64__SFWebExtension_promptForAccessToURLs_inTab_completionHandler___block_
   }
 
   v16 = v15;
-  if (v10)
+  if (lsCopy)
   {
-    v17 = [v15 setByAddingObjectsFromSet:v10];
+    v17 = [v15 setByAddingObjectsFromSet:lsCopy];
 
     v16 = v17;
   }
 
   v43 = [v16 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_41];
   self->_isAccessRequestDialogPresentedOrScheduled = 1;
-  v18 = [(WBSWebExtensionData *)self apiNamesPendingApproval];
-  v19 = v18;
-  if (v18)
+  apiNamesPendingApproval = [(WBSWebExtensionData *)self apiNamesPendingApproval];
+  v19 = apiNamesPendingApproval;
+  if (apiNamesPendingApproval)
   {
-    v20 = v18;
+    v20 = apiNamesPendingApproval;
   }
 
   else
@@ -285,31 +285,31 @@ void __64__SFWebExtension_promptForAccessToURLs_inTab_completionHandler___block_
 
   v21 = v20;
 
-  if (v11)
+  if (nameCopy)
   {
-    v22 = [v21 setByAddingObject:v11];
+    v22 = [v21 setByAddingObject:nameCopy];
 
     v21 = v22;
   }
 
-  v23 = [v21 allObjects];
-  v24 = [v23 componentsJoinedByString:{@", "}];
+  allObjects = [v21 allObjects];
+  v24 = [allObjects componentsJoinedByString:{@", "}];
 
-  v25 = [(WBSWebExtensionData *)self hasMoreThanOneRequestedOriginNotAlreadyConfigured];
-  v26 = [(WBSSafariExtension *)self extensionsController];
+  hasMoreThanOneRequestedOriginNotAlreadyConfigured = [(WBSWebExtensionData *)self hasMoreThanOneRequestedOriginNotAlreadyConfigured];
+  extensionsController = [(WBSSafariExtension *)self extensionsController];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __148__SFWebExtension__showAccessRequestDialogForPendingRequestsAndAdditionalURLs_additionalCallingAPIName_performingUserGestureInTab_completionHandler___block_invoke_2;
   aBlock[3] = &unk_1E721E2F0;
-  v27 = v12;
+  v27 = tabCopy;
   v53 = v27;
-  v54 = self;
+  selfCopy = self;
   v41 = v16;
   v55 = v41;
-  v42 = v13;
+  v42 = handlerCopy;
   v56 = v42;
   v28 = _Block_copy(aBlock);
-  if ([v26 parentalControlsAreEnabledForExtensions])
+  if ([extensionsController parentalControlsAreEnabledForExtensions])
   {
     v28[2](v28, 3, 0);
     v29 = v43;
@@ -322,24 +322,24 @@ void __64__SFWebExtension_promptForAccessToURLs_inTab_completionHandler___block_
     v45[1] = 3221225472;
     v45[2] = __148__SFWebExtension__showAccessRequestDialogForPendingRequestsAndAdditionalURLs_additionalCallingAPIName_performingUserGestureInTab_completionHandler___block_invoke_4;
     v45[3] = &unk_1E721E318;
-    v50 = v25;
-    v30 = v26;
+    v50 = hasMoreThanOneRequestedOriginNotAlreadyConfigured;
+    v30 = extensionsController;
     v39 = v21;
-    v31 = v26;
+    v31 = extensionsController;
     v32 = v27;
-    v33 = v11;
+    v33 = nameCopy;
     v34 = v30;
     v46 = v30;
-    v47 = self;
-    v36 = v25;
+    selfCopy2 = self;
+    v36 = hasMoreThanOneRequestedOriginNotAlreadyConfigured;
     v29 = v43;
     v48 = v43;
     v51 = v40;
     v49 = v28;
     v35 = v34;
-    v11 = v33;
+    nameCopy = v33;
     v27 = v32;
-    v26 = v31;
+    extensionsController = v31;
     v21 = v39;
     [v35 showAccessRequestDialogForExtension:self domains:v48 callingAPIName:v24 showMoreOptionsForAlwaysAllow:v36 includeDenyButton:v37 responseBlock:v45];
   }
@@ -521,35 +521,35 @@ uint64_t __148__SFWebExtension__showAccessRequestDialogForPendingRequestsAndAddi
 
 - (id)_updateLastInteractionDate
 {
-  v3 = [(WBSSafariExtension *)self extensionsController];
+  extensionsController = [(WBSSafariExtension *)self extensionsController];
   v4 = *MEMORY[0x1E69C9908];
-  v5 = [v3 _extensionStateForExtension:*(&self->super.super.super.isa + v4)];
+  v5 = [extensionsController _extensionStateForExtension:*(&self->super.super.super.isa + v4)];
   v6 = [v5 mutableCopy];
 
   v7 = [MEMORY[0x1E695DF00] now];
   [v6 setObject:v7 forKeyedSubscript:@"LastInteractionDate"];
-  [v3 _setExtensionState:v6 forExtension:*(&self->super.super.super.isa + v4)];
+  [extensionsController _setExtensionState:v6 forExtension:*(&self->super.super.super.isa + v4)];
 
   return v7;
 }
 
 - (id)_lastInteractionDate
 {
-  v3 = [(WBSSafariExtension *)self extensionsController];
-  v4 = [v3 _extensionStateForExtension:*(&self->super.super.super.isa + *MEMORY[0x1E69C9908])];
+  extensionsController = [(WBSSafariExtension *)self extensionsController];
+  v4 = [extensionsController _extensionStateForExtension:*(&self->super.super.super.isa + *MEMORY[0x1E69C9908])];
   v5 = [v4 safari_dateForKey:@"LastInteractionDate"];
 
   if (v5)
   {
-    v6 = v5;
+    _updateLastInteractionDate = v5;
   }
 
   else
   {
-    v6 = [(SFWebExtension *)self _updateLastInteractionDate];
+    _updateLastInteractionDate = [(SFWebExtension *)self _updateLastInteractionDate];
   }
 
-  v7 = v6;
+  v7 = _updateLastInteractionDate;
 
   return v7;
 }
@@ -558,8 +558,8 @@ uint64_t __148__SFWebExtension__showAccessRequestDialogForPendingRequestsAndAddi
 {
   if (self->_isBannerShownOrScheduled)
   {
-    v3 = [(WBSSafariExtension *)self extensionsController];
-    [v3 hidePermissionBannerForExtension:self];
+    extensionsController = [(WBSSafariExtension *)self extensionsController];
+    [extensionsController hidePermissionBannerForExtension:self];
 
     self->_isBannerShownOrScheduled = 0;
   }
@@ -567,8 +567,8 @@ uint64_t __148__SFWebExtension__showAccessRequestDialogForPendingRequestsAndAddi
 
 - (BOOL)_canShowBanner
 {
-  v2 = [(SFWebExtension *)self _lastInteractionDate];
-  v3 = [v2 dateByAddingTimeInterval:480.0];
+  _lastInteractionDate = [(SFWebExtension *)self _lastInteractionDate];
+  v3 = [_lastInteractionDate dateByAddingTimeInterval:480.0];
   v4 = [MEMORY[0x1E695DF00] now];
   [v4 timeIntervalSinceDate:v3];
   v6 = v5 < 0.0;
@@ -578,47 +578,47 @@ uint64_t __148__SFWebExtension__showAccessRequestDialogForPendingRequestsAndAddi
 
 - (void)showOrHidePermissionRequestBannerIfNeeded
 {
-  v3 = [(WBSSafariExtension *)self extensionsController];
+  extensionsController = [(WBSSafariExtension *)self extensionsController];
   if ([(WBSWebExtensionData *)self hasPendingWebsiteRequests]&& [(SFWebExtension *)self _canShowBanner])
   {
     if (!self->_isBannerShownOrScheduled)
     {
-      [v3 showPermissionBannerForExtension:self];
+      [extensionsController showPermissionBannerForExtension:self];
       self->_isBannerShownOrScheduled = 1;
     }
   }
 
   else if (self->_isBannerShownOrScheduled)
   {
-    [v3 hidePermissionBannerForExtension:self];
+    [extensionsController hidePermissionBannerForExtension:self];
     self->_isBannerShownOrScheduled = 0;
   }
 }
 
 - (void)permissionRequestBannerWasDismissed
 {
-  v3 = [(WBSSafariExtension *)self extensionsController];
+  extensionsController = [(WBSSafariExtension *)self extensionsController];
   [(WBSWebExtensionData *)self dispatchAllPendingWebsiteRequests];
 }
 
 - (void)showAlertForPendingPermissionRequests
 {
-  v3 = [(WBSSafariExtension *)self extensionsController];
+  extensionsController = [(WBSSafariExtension *)self extensionsController];
   [(SFWebExtension *)self _showAccessRequestDialogForPendingRequestsAndAdditionalURLs:0 additionalCallingAPIName:0 performingUserGestureInTab:0 completionHandler:0];
 }
 
-- (void)requestPermissionsFromToolbarItemInTab:(id)a3 completionHandler:(id)a4
+- (void)requestPermissionsFromToolbarItemInTab:(id)tab completionHandler:(id)handler
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(WBSWebExtensionData *)self toolbarItem];
-  v8 = [v7 shouldRequestAccessForTab:v13];
+  tabCopy = tab;
+  handlerCopy = handler;
+  toolbarItem = [(WBSWebExtensionData *)self toolbarItem];
+  v8 = [toolbarItem shouldRequestAccessForTab:tabCopy];
 
   if (v8)
   {
     v9 = MEMORY[0x1E695DFD8];
-    v10 = [v13 urlForExtensions];
-    v11 = [v9 setWithObject:v10];
+    urlForExtensions = [tabCopy urlForExtensions];
+    v11 = [v9 setWithObject:urlForExtensions];
 
     v12 = @"action";
   }
@@ -629,21 +629,21 @@ uint64_t __148__SFWebExtension__showAccessRequestDialogForPendingRequestsAndAddi
     v12 = 0;
   }
 
-  [(SFWebExtension *)self _showAccessRequestDialogForPendingRequestsAndAdditionalURLs:v11 additionalCallingAPIName:v12 performingUserGestureInTab:v13 completionHandler:v6];
+  [(SFWebExtension *)self _showAccessRequestDialogForPendingRequestsAndAdditionalURLs:v11 additionalCallingAPIName:v12 performingUserGestureInTab:tabCopy completionHandler:handlerCopy];
 }
 
-- (BOOL)canLoadWithErrorString:(id *)a3
+- (BOOL)canLoadWithErrorString:(id *)string
 {
   if ([(WBSWebExtensionData *)self backgroundPageIsPersistent])
   {
-    v5 = [(WBSWebExtensionData *)self manifestErrors];
-    v6 = v5;
-    if (a3)
+    manifestErrors = [(WBSWebExtensionData *)self manifestErrors];
+    v6 = manifestErrors;
+    if (string)
     {
-      if ([v5 count])
+      if ([manifestErrors count])
       {
-        v7 = [v6 firstObject];
-        *a3 = [v7 localizedDescription];
+        firstObject = [v6 firstObject];
+        *string = [firstObject localizedDescription];
       }
     }
 
@@ -654,60 +654,60 @@ uint64_t __148__SFWebExtension__showAccessRequestDialogForPendingRequestsAndAddi
   {
     v9.receiver = self;
     v9.super_class = SFWebExtension;
-    return [(WBSWebExtensionData *)&v9 canLoadWithErrorString:a3];
+    return [(WBSWebExtensionData *)&v9 canLoadWithErrorString:string];
   }
 }
 
-- (void)userGesturePerformedInTab:(id)a3
+- (void)userGesturePerformedInTab:(id)tab
 {
   v6.receiver = self;
   v6.super_class = SFWebExtension;
-  [(WBSWebExtensionData *)&v6 userGesturePerformedInTab:a3];
-  v4 = [(SFWebExtension *)self _updateLastInteractionDate];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:*MEMORY[0x1E69C9A38] object:self];
+  [(WBSWebExtensionData *)&v6 userGesturePerformedInTab:tab];
+  _updateLastInteractionDate = [(SFWebExtension *)self _updateLastInteractionDate];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69C9A38] object:self];
 }
 
 - (BOOL)isDevelopmentBuild
 {
-  v2 = [*(&self->super.super.super.isa + *MEMORY[0x1E69C9908]) _plugIn];
-  v3 = [v2 entitlements];
-  v4 = [v3 safari_BOOLForKey:@"get-task-allow"];
+  _plugIn = [*(&self->super.super.super.isa + *MEMORY[0x1E69C9908]) _plugIn];
+  entitlements = [_plugIn entitlements];
+  v4 = [entitlements safari_BOOLForKey:@"get-task-allow"];
 
   return v4;
 }
 
-- (id)_discoverabilityTitleForCommand:(id)a3
+- (id)_discoverabilityTitleForCommand:(id)command
 {
-  v4 = a3;
-  v5 = [v4 commandDescription];
-  v6 = [v5 length];
+  commandCopy = command;
+  commandDescription = [commandCopy commandDescription];
+  v6 = [commandDescription length];
 
   if (v6)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [v4 commandDescription];
-    v9 = [(WBSWebExtensionData *)self displayShortName];
-    v10 = [v7 stringWithFormat:@"%@ — %@", v8, v9];
+    commandDescription2 = [commandCopy commandDescription];
+    displayShortName = [(WBSWebExtensionData *)self displayShortName];
+    displayShortName2 = [v7 stringWithFormat:@"%@ — %@", commandDescription2, displayShortName];
   }
 
   else
   {
-    v10 = [(WBSWebExtensionData *)self displayShortName];
+    displayShortName2 = [(WBSWebExtensionData *)self displayShortName];
   }
 
-  return v10;
+  return displayShortName2;
 }
 
 - (NSArray)menuElements
 {
-  v3 = [(WBSWebExtensionData *)self commands];
+  commands = [(WBSWebExtensionData *)self commands];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__SFWebExtension_menuElements__block_invoke;
   v6[3] = &unk_1E721E340;
   v6[4] = self;
-  v4 = [v3 safari_mapObjectsUsingBlock:v6];
+  v4 = [commands safari_mapObjectsUsingBlock:v6];
 
   return v4;
 }

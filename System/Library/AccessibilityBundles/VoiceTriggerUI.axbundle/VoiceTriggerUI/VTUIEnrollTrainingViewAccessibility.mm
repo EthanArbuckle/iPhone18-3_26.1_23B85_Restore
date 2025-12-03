@@ -1,22 +1,22 @@
 @interface VTUIEnrollTrainingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (VTUIEnrollTrainingViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (VTUIEnrollTrainingViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupUI;
 @end
 
 @implementation VTUIEnrollTrainingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VTUIEnrollTrainingView" hasInstanceVariable:@"_instructionPagedLabel" withType:"VTUIPagedLabel"];
-  [v3 validateClass:@"VTUIEnrollTrainingView" hasInstanceVariable:@"_radarButton" withType:"SiriUIContentButton"];
-  [v3 validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelLeft" withType:"UILabel"];
-  [v3 validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelRight" withType:"UILabel"];
-  [v3 validateClass:@"VTUIEnrollTrainingView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingView" hasInstanceMethod:@"_setupUI" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollTrainingView" hasInstanceMethod:@"orbView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VTUIEnrollTrainingView" hasInstanceVariable:@"_instructionPagedLabel" withType:"VTUIPagedLabel"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingView" hasInstanceVariable:@"_radarButton" withType:"SiriUIContentButton"];
+  [validationsCopy validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelLeft" withType:"UILabel"];
+  [validationsCopy validateClass:@"VTUIPagedLabel" hasInstanceVariable:@"_instructionLabelRight" withType:"UILabel"];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingView" hasInstanceMethod:@"_setupUI" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollTrainingView" hasInstanceMethod:@"orbView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,11 +38,11 @@
   [v9 _accessibilitySetRetainedValue:v7 forKey:@"AXIsInstructionLabel"];
 }
 
-- (VTUIEnrollTrainingViewAccessibility)initWithFrame:(CGRect)a3
+- (VTUIEnrollTrainingViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = VTUIEnrollTrainingViewAccessibility;
-  v3 = [(VTUIEnrollTrainingViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VTUIEnrollTrainingViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(VTUIEnrollTrainingViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }

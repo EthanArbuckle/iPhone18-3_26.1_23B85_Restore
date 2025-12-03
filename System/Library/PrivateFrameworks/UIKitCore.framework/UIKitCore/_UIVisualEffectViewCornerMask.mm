@@ -1,14 +1,14 @@
 @interface _UIVisualEffectViewCornerMask
-+ (_UIVisualEffectViewCornerMask)cornerMaskWithCornerRadii:(CACornerRadii *)a3 continuous:(BOOL)a4;
-+ (_UIVisualEffectViewCornerMask)cornerMaskWithRadius:(double)a3 continuous:(BOOL)a4 cornerMask:(unint64_t)a5;
-+ (id)imageCornerMaskWithImage:(id)a3 radius:(double)a4;
-+ (void)_applyZeroMaskToLayer:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (_UIVisualEffectViewCornerMask)cornerMaskWithCornerRadii:(CACornerRadii *)radii continuous:(BOOL)continuous;
++ (_UIVisualEffectViewCornerMask)cornerMaskWithRadius:(double)radius continuous:(BOOL)continuous cornerMask:(unint64_t)mask;
++ (id)imageCornerMaskWithImage:(id)image radius:(double)radius;
++ (void)_applyZeroMaskToLayer:(id)layer;
+- (BOOL)isEqual:(id)equal;
 - (_UIVisualEffectViewCornerMask)init;
 - (id)_clone;
-- (id)cornerMaskAppliedToCorners:(unint64_t)a3;
-- (id)cornerMaskEffectingEdges:(BOOL)a3;
-- (void)_applyToLayer:(id)a3;
+- (id)cornerMaskAppliedToCorners:(unint64_t)corners;
+- (id)cornerMaskEffectingEdges:(BOOL)edges;
+- (void)_applyToLayer:(id)layer;
 @end
 
 @implementation _UIVisualEffectViewCornerMask
@@ -31,26 +31,26 @@
   return result;
 }
 
-+ (_UIVisualEffectViewCornerMask)cornerMaskWithRadius:(double)a3 continuous:(BOOL)a4 cornerMask:(unint64_t)a5
++ (_UIVisualEffectViewCornerMask)cornerMaskWithRadius:(double)radius continuous:(BOOL)continuous cornerMask:(unint64_t)mask
 {
-  if (a3 <= 0.0)
+  if (radius <= 0.0)
   {
     v9 = 0;
   }
 
   else
   {
-    v6 = a5;
-    v9 = objc_alloc_init(a1);
-    v9[16] = a3;
-    *(v9 + 120) = a4;
-    *(v9 + 6) = v6 & 0xF;
+    maskCopy = mask;
+    v9 = objc_alloc_init(self);
+    v9[16] = radius;
+    *(v9 + 120) = continuous;
+    *(v9 + 6) = maskCopy & 0xF;
   }
 
   return v9;
 }
 
-+ (_UIVisualEffectViewCornerMask)cornerMaskWithCornerRadii:(CACornerRadii *)a3 continuous:(BOOL)a4
++ (_UIVisualEffectViewCornerMask)cornerMaskWithCornerRadii:(CACornerRadii *)radii continuous:(BOOL)continuous
 {
   if (CACornerRadiiEqualToRadii())
   {
@@ -59,39 +59,39 @@
 
   else
   {
-    v7 = objc_alloc_init(a1);
+    v7 = objc_alloc_init(self);
     v7[122] = 1;
-    maxXMinY = a3->maxXMinY;
-    minXMinY = a3->minXMinY;
-    maxXMaxY = a3->maxXMaxY;
-    *(v7 + 56) = a3->minXMaxY;
+    maxXMinY = radii->maxXMinY;
+    minXMinY = radii->minXMinY;
+    maxXMaxY = radii->maxXMaxY;
+    *(v7 + 56) = radii->minXMaxY;
     *(v7 + 104) = minXMinY;
     *(v7 + 88) = maxXMinY;
     *(v7 + 72) = maxXMaxY;
-    v7[120] = a4;
+    v7[120] = continuous;
     *(v7 + 6) = 15;
   }
 
   return v7;
 }
 
-+ (id)imageCornerMaskWithImage:(id)a3 radius:(double)a4
++ (id)imageCornerMaskWithImage:(id)image radius:(double)radius
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 <= 0.0)
+  imageCopy = image;
+  v8 = imageCopy;
+  if (radius <= 0.0)
   {
     v14 = 0;
   }
 
   else
   {
-    v9 = [v7 images];
+    images = [imageCopy images];
 
-    if (v9)
+    if (images)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:a1 file:@"UIVisualEffectView.m" lineNumber:150 description:@"Cannot use an animated image"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIVisualEffectView.m" lineNumber:150 description:@"Cannot use an animated image"];
     }
 
     [v8 size];
@@ -99,12 +99,12 @@
     v13 = v10;
     if (v11 <= 0.0 || v10 <= 0.0)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:a1 file:@"UIVisualEffectView.m" lineNumber:152 description:@"Can't mask with an empty image"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIVisualEffectView.m" lineNumber:152 description:@"Can't mask with an empty image"];
     }
 
-    v14 = objc_alloc_init(a1);
-    v14[16] = a4;
+    v14 = objc_alloc_init(self);
+    v14[16] = radius;
     *(v14 + 120) = 0;
     v15 = [v8 copy];
     v16 = *(v14 + 1);
@@ -139,40 +139,40 @@
   return v3;
 }
 
-- (id)cornerMaskAppliedToCorners:(unint64_t)a3
+- (id)cornerMaskAppliedToCorners:(unint64_t)corners
 {
-  v3 = a3 & 0xF;
+  v3 = corners & 0xF;
   if (v3 == self->_appliedCorners)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [(_UIVisualEffectViewCornerMask *)self _clone];
-    v4->_appliedCorners = v3;
+    selfCopy = [(_UIVisualEffectViewCornerMask *)self _clone];
+    selfCopy->_appliedCorners = v3;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)cornerMaskEffectingEdges:(BOOL)a3
+- (id)cornerMaskEffectingEdges:(BOOL)edges
 {
-  if (self->_effectsEdges == a3)
+  if (self->_effectsEdges == edges)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(_UIVisualEffectViewCornerMask *)self _clone];
-    v3->_effectsEdges = a3;
+    selfCopy = [(_UIVisualEffectViewCornerMask *)self _clone];
+    selfCopy->_effectsEdges = edges;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_applyToLayer:(id)a3
+- (void)_applyToLayer:(id)layer
 {
   if (self->_useCornerRadii)
   {
@@ -182,62 +182,62 @@
     minXMinY = self->_cornerRadii.minXMinY;
     maxXMinY = self->_cornerRadii.maxXMinY;
     v15 = minXMinY;
-    v7 = a3;
-    [v7 setCornerRadii:&minXMaxY];
+    layerCopy = layer;
+    [layerCopy setCornerRadii:&minXMaxY];
     v8 = MEMORY[0x1E69796E8];
     if (!self->_continuous)
     {
       v8 = MEMORY[0x1E69796E0];
     }
 
-    [v7 setCornerCurve:{*v8, minXMaxY, v13, maxXMinY, v15}];
+    [layerCopy setCornerCurve:{*v8, minXMaxY, v13, maxXMinY, v15}];
   }
 
   else
   {
     radius = self->_radius;
-    v10 = a3;
-    [v10 setCornerRadius:radius];
+    layerCopy2 = layer;
+    [layerCopy2 setCornerRadius:radius];
     v11 = MEMORY[0x1E69796E8];
     if (!self->_continuous)
     {
       v11 = MEMORY[0x1E69796E0];
     }
 
-    [v10 setCornerCurve:*v11];
-    [v10 setCornerContentsMasksEdges:self->_effectsEdges];
-    [v10 setMaskedCorners:self->_appliedCorners];
-    [v10 setCornerContents:{-[UIImage CGImage](self->_image, "CGImage")}];
-    [v10 setCornerContentsCenter:{self->_imageCenter.origin.x, self->_imageCenter.origin.y, self->_imageCenter.size.width, self->_imageCenter.size.height}];
+    [layerCopy2 setCornerCurve:*v11];
+    [layerCopy2 setCornerContentsMasksEdges:self->_effectsEdges];
+    [layerCopy2 setMaskedCorners:self->_appliedCorners];
+    [layerCopy2 setCornerContents:{-[UIImage CGImage](self->_image, "CGImage")}];
+    [layerCopy2 setCornerContentsCenter:{self->_imageCenter.origin.x, self->_imageCenter.origin.y, self->_imageCenter.size.width, self->_imageCenter.size.height}];
   }
 }
 
-+ (void)_applyZeroMaskToLayer:(id)a3
++ (void)_applyZeroMaskToLayer:(id)layer
 {
-  v3 = a3;
-  [v3 setCornerRadius:0.0];
-  [v3 setCornerCurve:*MEMORY[0x1E69796E0]];
-  [v3 setCornerContentsMasksEdges:0];
-  [v3 setMaskedCorners:15];
-  [v3 setCornerContents:0];
-  [v3 setCornerContentsCenter:{0.5, 0.5, 0.0, 0.0}];
+  layerCopy = layer;
+  [layerCopy setCornerRadius:0.0];
+  [layerCopy setCornerCurve:*MEMORY[0x1E69796E0]];
+  [layerCopy setCornerContentsMasksEdges:0];
+  [layerCopy setMaskedCorners:15];
+  [layerCopy setCornerContents:0];
+  [layerCopy setCornerContentsCenter:{0.5, 0.5, 0.0, 0.0}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (self == v4)
+      if (self == equalCopy)
       {
         v9 = 1;
         goto LABEL_16;
       }
 
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_radius != v5->_radius || self->_continuous != v5->_continuous || self->_appliedCorners != v5->_appliedCorners || self->_effectsEdges != v5->_effectsEdges)
       {

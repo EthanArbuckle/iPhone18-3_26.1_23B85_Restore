@@ -1,13 +1,13 @@
 @interface HMDRemoteEventRouterAssertionController
 + (id)logCategory;
-- (HMDRemoteEventRouterAssertionController)initWithQueue:(id)a3 notificationCenter:(id)a4;
+- (HMDRemoteEventRouterAssertionController)initWithQueue:(id)queue notificationCenter:(id)center;
 - (id)takeEventRouterAssertion;
 - (uint64_t)hasActiveClients;
 - (void)_notifyDidChangeHasForegroundClient;
-- (void)assertionDidBecomeInactive:(id)a3;
+- (void)assertionDidBecomeInactive:(id)inactive;
 - (void)configure;
-- (void)handleConnectionActiveStateUpdatedNotification:(id)a3;
-- (void)registerClient:(id)a3;
+- (void)handleConnectionActiveStateUpdatedNotification:(id)notification;
+- (void)registerClient:(id)client;
 @end
 
 @implementation HMDRemoteEventRouterAssertionController
@@ -24,12 +24,12 @@
   return v3;
 }
 
-- (void)assertionDidBecomeInactive:(id)a3
+- (void)assertionDidBecomeInactive:(id)inactive
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inactiveCopy = inactive;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -37,15 +37,15 @@
     *buf = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v4;
+    v18 = inactiveCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Event router active assertion became inactive: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  if (v6)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v6, v9, 56, 1);
+    Property = objc_getProperty(selfCopy, v9, 56, 1);
   }
 
   else
@@ -54,12 +54,12 @@
   }
 
   v11 = Property;
-  [v11 removeObject:v4];
+  [v11 removeObject:inactiveCopy];
 
-  os_unfair_lock_unlock(&v6->_lock);
-  if (v6)
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  if (selfCopy)
   {
-    queue = v6->_queue;
+    queue = selfCopy->_queue;
   }
 
   else
@@ -71,7 +71,7 @@
   block[1] = 3221225472;
   block[2] = __70__HMDRemoteEventRouterAssertionController_assertionDidBecomeInactive___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v6;
+  block[4] = selfCopy;
   dispatch_async(queue, block);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -80,15 +80,15 @@
 - (void)_notifyDidChangeHasForegroundClient
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    active = [(HMDRemoteEventRouterAssertionController *)a1 hasActiveClients];
+    dispatch_assert_queue_V2(*(self + 16));
+    active = [(HMDRemoteEventRouterAssertionController *)self hasActiveClients];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = *(a1 + 32);
+    v3 = *(self + 32);
     v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
@@ -121,14 +121,14 @@
 - (uint64_t)hasActiveClients
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = objc_getProperty(a1, v2, 56, 1);
+    v3 = objc_getProperty(self, v2, 56, 1);
     v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
@@ -161,7 +161,7 @@
 
 LABEL_12:
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(self + 2);
   }
 
   else
@@ -178,7 +178,7 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
   v3 = [[HMDRemoteEventRouterAssertion alloc] initWithAssertionController:self];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -192,9 +192,9 @@ LABEL_12:
 
   objc_autoreleasePoolPop(v4);
   os_unfair_lock_lock_with_options();
-  if (v5)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v5, v8, 56, 1);
+    Property = objc_getProperty(selfCopy, v8, 56, 1);
   }
 
   else
@@ -205,10 +205,10 @@ LABEL_12:
   v10 = Property;
   [v10 addObject:v3];
 
-  os_unfair_lock_unlock(&v5->_lock);
-  if (v5)
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  if (selfCopy)
   {
-    queue = v5->_queue;
+    queue = selfCopy->_queue;
   }
 
   else
@@ -220,16 +220,16 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __67__HMDRemoteEventRouterAssertionController_takeEventRouterAssertion__block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v5;
+  block[4] = selfCopy;
   dispatch_async(queue, block);
   v12 = *MEMORY[0x277D85DE8];
 
   return v3;
 }
 
-- (void)registerClient:(id)a3
+- (void)registerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (self)
   {
     queue = self->_queue;
@@ -245,8 +245,8 @@ LABEL_12:
   v7[2] = __58__HMDRemoteEventRouterAssertionController_registerClient___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(queue, v7);
 }
 
@@ -456,15 +456,15 @@ void __68__HMDRemoteEventRouterAssertionController__registerForNotifications__bl
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleConnectionActiveStateUpdatedNotification:(id)a3
+- (void)handleConnectionActiveStateUpdatedNotification:(id)notification
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -491,27 +491,27 @@ void __68__HMDRemoteEventRouterAssertionController__registerForNotifications__bl
     v18[2] = __90__HMDRemoteEventRouterAssertionController_handleConnectionActiveStateUpdatedNotification___block_invoke;
     v18[3] = &unk_27868A750;
     v19 = v7;
-    v20 = self;
+    selfCopy = self;
     dispatch_async(queue, v18);
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 name];
-      v14 = [v4 object];
-      v15 = [v4 object];
+      name = [notificationCopy name];
+      object2 = [notificationCopy object];
+      object3 = [notificationCopy object];
       *buf = 138544130;
       v22 = v12;
       v23 = 2112;
-      v24 = v13;
+      v24 = name;
       v25 = 2112;
-      v26 = v14;
+      v26 = object2;
       v27 = 2112;
       v28 = objc_opt_class();
       v16 = v28;
@@ -570,25 +570,25 @@ void __90__HMDRemoteEventRouterAssertionController_handleConnectionActiveStateUp
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDRemoteEventRouterAssertionController)initWithQueue:(id)a3 notificationCenter:(id)a4
+- (HMDRemoteEventRouterAssertionController)initWithQueue:(id)queue notificationCenter:(id)center
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  centerCopy = center;
   v16.receiver = self;
   v16.super_class = HMDRemoteEventRouterAssertionController;
   v9 = [(HMDRemoteEventRouterAssertionController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_notificationCenter, a4);
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_notificationCenter, center);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     clients = v10->_clients;
-    v10->_clients = v11;
+    v10->_clients = weakObjectsHashTable;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     daemonAssertions = v10->_daemonAssertions;
-    v10->_daemonAssertions = v13;
+    v10->_daemonAssertions = weakObjectsHashTable2;
 
     v10->_isPluggedIn = IOPSDrawingUnlimitedPower();
     v10->_lock._os_unfair_lock_opaque = 0;

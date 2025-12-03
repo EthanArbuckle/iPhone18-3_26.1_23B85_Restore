@@ -1,9 +1,9 @@
 @interface BKAccessibility
 + (BOOL)_isDisplayBacklightOff;
 + (BOOL)_objectWithinProximity;
-+ (CGPoint)_displayConvertFromCAScreen:(CGPoint)a3;
-+ (CGPoint)_displayConvertToCAScreen:(CGPoint)a3;
-+ (void)_accessibilityProcessExternHIDEvent:(__IOHIDEvent *)a3;
++ (CGPoint)_displayConvertFromCAScreen:(CGPoint)screen;
++ (CGPoint)_displayConvertToCAScreen:(CGPoint)screen;
++ (void)_accessibilityProcessExternHIDEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation BKAccessibility
@@ -25,7 +25,7 @@
   return v2;
 }
 
-+ (CGPoint)_displayConvertToCAScreen:(CGPoint)a3
++ (CGPoint)_displayConvertToCAScreen:(CGPoint)screen
 {
   sub_100007C3C(0);
   result.y = v4;
@@ -33,7 +33,7 @@
   return result;
 }
 
-+ (CGPoint)_displayConvertFromCAScreen:(CGPoint)a3
++ (CGPoint)_displayConvertFromCAScreen:(CGPoint)screen
 {
   sub_100028ED0(0);
   result.y = v4;
@@ -41,10 +41,10 @@
   return result;
 }
 
-+ (void)_accessibilityProcessExternHIDEvent:(__IOHIDEvent *)a3
++ (void)_accessibilityProcessExternHIDEvent:(__IOHIDEvent *)event
 {
   v4 = +[BKHIDSystemInterface sharedInstance];
-  [v4 injectHIDEvent:a3];
+  [v4 injectHIDEvent:event];
 }
 
 @end

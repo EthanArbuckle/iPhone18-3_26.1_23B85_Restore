@@ -1,15 +1,15 @@
 @interface _UIPageIndicatorFeed
-- (BOOL)_isPageWithinActiveBounds:(int64_t)a3;
-- (CGSize)indicatorSizeForCustomImage:(id)a3;
-- (CGSize)indicatorSizeForPage:(int64_t)a3;
+- (BOOL)_isPageWithinActiveBounds:(int64_t)bounds;
+- (CGSize)indicatorSizeForCustomImage:(id)image;
+- (CGSize)indicatorSizeForPage:(int64_t)page;
 - (NSArray)indicators;
-- (_UIPageIndicatorFeed)initWithPageControl:(id)a3;
+- (_UIPageIndicatorFeed)initWithPageControl:(id)control;
 - (_UIPageIndicatorFeedDelegate)delegate;
-- (id)activeIndicatorForPage:(int64_t)a3;
-- (id)indicatorForPage:(int64_t)a3 forSizeOnly:(BOOL)a4;
+- (id)activeIndicatorForPage:(int64_t)page;
+- (id)indicatorForPage:(int64_t)page forSizeOnly:(BOOL)only;
 - (void)invalidateIndicators;
-- (void)prepareIndicatorsFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)reloadIndicatorImageForPage:(int64_t)a3;
+- (void)prepareIndicatorsFrom:(int64_t)from to:(int64_t)to;
+- (void)reloadIndicatorImageForPage:(int64_t)page;
 - (void)reloadIndicatorImages;
 - (void)updateReuseQueue;
 @end
@@ -18,33 +18,33 @@
 
 - (NSArray)indicators
 {
-  v2 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v3 = [v2 copy];
+  activeQueue = [(_UIPageIndicatorFeed *)self activeQueue];
+  v3 = [activeQueue copy];
 
   return v3;
 }
 
 - (void)updateReuseQueue
 {
-  v3 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v4 = [v3 count];
+  activeQueue = [(_UIPageIndicatorFeed *)self activeQueue];
+  v4 = [activeQueue count];
 
   if (v4 - 1 >= 0)
   {
     do
     {
       --v4;
-      v5 = [(_UIPageIndicatorFeed *)self activeQueue];
-      v6 = [v5 objectAtIndexedSubscript:v4];
+      activeQueue2 = [(_UIPageIndicatorFeed *)self activeQueue];
+      v6 = [activeQueue2 objectAtIndexedSubscript:v4];
 
       if ([v6 isInvalidated])
       {
         [v6 removeFromSuperview];
-        v7 = [(_UIPageIndicatorFeed *)self reuseQueue];
-        [v7 addObject:v6];
+        reuseQueue = [(_UIPageIndicatorFeed *)self reuseQueue];
+        [reuseQueue addObject:v6];
 
-        v8 = [(_UIPageIndicatorFeed *)self activeQueue];
-        [v8 removeObjectAtIndex:v4];
+        activeQueue3 = [(_UIPageIndicatorFeed *)self activeQueue];
+        [activeQueue3 removeObjectAtIndex:v4];
       }
     }
 
@@ -59,16 +59,16 @@
   return WeakRetained;
 }
 
-- (_UIPageIndicatorFeed)initWithPageControl:(id)a3
+- (_UIPageIndicatorFeed)initWithPageControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v10.receiver = self;
   v10.super_class = _UIPageIndicatorFeed;
   v5 = [(_UIPageIndicatorFeed *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v5->_pageControl = v4;
+    v5->_pageControl = controlCopy;
     v7 = objc_opt_new();
     [(_UIPageIndicatorFeed *)v6 setActiveQueue:v7];
 
@@ -86,8 +86,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  activeQueue = [(_UIPageIndicatorFeed *)self activeQueue];
+  v4 = [activeQueue countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -98,7 +98,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeQueue);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -106,18 +106,18 @@
         [v8 removeFromSuperview];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [activeQueue countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(_UIPageIndicatorFeed *)self reuseQueue];
-  v10 = [(_UIPageIndicatorFeed *)self activeQueue];
-  [v9 addObjectsFromArray:v10];
+  reuseQueue = [(_UIPageIndicatorFeed *)self reuseQueue];
+  activeQueue2 = [(_UIPageIndicatorFeed *)self activeQueue];
+  [reuseQueue addObjectsFromArray:activeQueue2];
 
-  v11 = [(_UIPageIndicatorFeed *)self activeQueue];
-  [v11 removeAllObjects];
+  activeQueue3 = [(_UIPageIndicatorFeed *)self activeQueue];
+  [activeQueue3 removeAllObjects];
 }
 
 - (void)reloadIndicatorImages
@@ -127,8 +127,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  activeQueue = [(_UIPageIndicatorFeed *)self activeQueue];
+  v4 = [activeQueue countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -140,46 +140,46 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeQueue);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(_UIPageIndicatorFeed *)self delegate];
-        [v9 configureIndicatorImagesForIndicator:v8 atPage:{objc_msgSend(v8, "page")}];
+        delegate = [(_UIPageIndicatorFeed *)self delegate];
+        [delegate configureIndicatorImagesForIndicator:v8 atPage:{objc_msgSend(v8, "page")}];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [activeQueue countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)reloadIndicatorImageForPage:(int64_t)a3
+- (void)reloadIndicatorImageForPage:(int64_t)page
 {
   if ([(_UIPageIndicatorFeed *)self _isPageWithinActiveBounds:?])
   {
-    v6 = [(_UIPageIndicatorFeed *)self indicatorForPage:a3];
-    v5 = [(_UIPageIndicatorFeed *)self delegate];
-    [v5 configureIndicatorImagesForIndicator:v6 atPage:{objc_msgSend(v6, "page")}];
+    v6 = [(_UIPageIndicatorFeed *)self indicatorForPage:page];
+    delegate = [(_UIPageIndicatorFeed *)self delegate];
+    [delegate configureIndicatorImagesForIndicator:v6 atPage:{objc_msgSend(v6, "page")}];
 
     [v6 sizeToFit];
   }
 }
 
-- (BOOL)_isPageWithinActiveBounds:(int64_t)a3
+- (BOOL)_isPageWithinActiveBounds:(int64_t)bounds
 {
-  v5 = (a3 & 0x8000000000000000) == 0 && [(UIPageControl *)self->_pageControl numberOfPages]> a3;
-  v6 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v7 = [v6 firstObject];
-  if ([v7 page] <= a3)
+  v5 = (bounds & 0x8000000000000000) == 0 && [(UIPageControl *)self->_pageControl numberOfPages]> bounds;
+  activeQueue = [(_UIPageIndicatorFeed *)self activeQueue];
+  firstObject = [activeQueue firstObject];
+  if ([firstObject page] <= bounds)
   {
-    v9 = [(_UIPageIndicatorFeed *)self activeQueue];
-    v10 = [v9 lastObject];
-    v8 = [v10 page] >= a3;
+    activeQueue2 = [(_UIPageIndicatorFeed *)self activeQueue];
+    lastObject = [activeQueue2 lastObject];
+    v8 = [lastObject page] >= bounds;
   }
 
   else
@@ -190,19 +190,19 @@
   return v5 && v8;
 }
 
-- (void)prepareIndicatorsFrom:(int64_t)a3 to:(int64_t)a4
+- (void)prepareIndicatorsFrom:(int64_t)from to:(int64_t)to
 {
-  v7 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v8 = [v7 firstObject];
-  v9 = [v8 page];
+  activeQueue = [(_UIPageIndicatorFeed *)self activeQueue];
+  firstObject = [activeQueue firstObject];
+  page = [firstObject page];
 
-  v10 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v11 = [v10 lastObject];
-  v12 = [v11 page];
+  activeQueue2 = [(_UIPageIndicatorFeed *)self activeQueue];
+  lastObject = [activeQueue2 lastObject];
+  page2 = [lastObject page];
 
-  if (v9 <= a4)
+  if (page <= to)
   {
-    if (a3 <= v12)
+    if (from <= page2)
     {
       goto LABEL_9;
     }
@@ -210,49 +210,49 @@
 
   else
   {
-    v10 = [(_UIPageIndicatorFeed *)self activeQueue];
-    if (v9 - a4 >= [v10 count])
+    activeQueue2 = [(_UIPageIndicatorFeed *)self activeQueue];
+    if (page - to >= [activeQueue2 count])
     {
 
       goto LABEL_16;
     }
 
-    if (a3 <= v12)
+    if (from <= page2)
     {
 
 LABEL_9:
-      v16 = [(_UIPageIndicatorFeed *)self activeQueue];
-      v17 = [v16 firstObject];
-      v18 = [v17 page];
+      activeQueue3 = [(_UIPageIndicatorFeed *)self activeQueue];
+      firstObject2 = [activeQueue3 firstObject];
+      page3 = [firstObject2 page];
 
-      while (v18 > a3)
+      while (page3 > from)
       {
-        v19 = [(_UIPageIndicatorFeed *)self indicatorForPage:--v18];
+        v19 = [(_UIPageIndicatorFeed *)self indicatorForPage:--page3];
       }
 
-      v20 = [(_UIPageIndicatorFeed *)self activeQueue];
-      v21 = [v20 lastObject];
-      v22 = [v21 page];
+      activeQueue4 = [(_UIPageIndicatorFeed *)self activeQueue];
+      lastObject2 = [activeQueue4 lastObject];
+      page4 = [lastObject2 page];
 
-      if (v22 < a4)
+      if (page4 < to)
       {
         do
         {
-          v23 = [(_UIPageIndicatorFeed *)self indicatorForPage:v22++];
+          v23 = [(_UIPageIndicatorFeed *)self indicatorForPage:page4++];
         }
 
-        while (a4 != v22);
+        while (to != page4);
       }
 
       return;
     }
   }
 
-  v13 = a3 - v12;
-  v14 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v15 = [v14 count];
+  v13 = from - page2;
+  activeQueue5 = [(_UIPageIndicatorFeed *)self activeQueue];
+  v15 = [activeQueue5 count];
 
-  if (v9 > a4)
+  if (page > to)
   {
   }
 
@@ -263,20 +263,20 @@ LABEL_9:
 
 LABEL_16:
   [(_UIPageIndicatorFeed *)self invalidateIndicators];
-  if (a3 < a4)
+  if (from < to)
   {
     do
     {
-      v24 = [(_UIPageIndicatorFeed *)self indicatorForPage:a3++];
+      v24 = [(_UIPageIndicatorFeed *)self indicatorForPage:from++];
     }
 
-    while (a4 != a3);
+    while (to != from);
   }
 }
 
-- (CGSize)indicatorSizeForPage:(int64_t)a3
+- (CGSize)indicatorSizeForPage:(int64_t)page
 {
-  v3 = [(_UIPageIndicatorFeed *)self indicatorForPage:a3 forSizeOnly:1];
+  v3 = [(_UIPageIndicatorFeed *)self indicatorForPage:page forSizeOnly:1];
   [v3 bounds];
   v5 = v4;
   v7 = v6;
@@ -288,11 +288,11 @@ LABEL_16:
   return result;
 }
 
-- (id)activeIndicatorForPage:(int64_t)a3
+- (id)activeIndicatorForPage:(int64_t)page
 {
   if ([(_UIPageIndicatorFeed *)self _isPageWithinActiveBounds:?])
   {
-    v5 = [(_UIPageIndicatorFeed *)self indicatorForPage:a3];
+    v5 = [(_UIPageIndicatorFeed *)self indicatorForPage:page];
   }
 
   else
@@ -303,31 +303,31 @@ LABEL_16:
   return v5;
 }
 
-- (CGSize)indicatorSizeForCustomImage:(id)a3
+- (CGSize)indicatorSizeForCustomImage:(id)image
 {
-  v4 = a3;
-  v5 = [(_UIPageIndicatorFeed *)self reuseQueue];
-  v6 = [v5 lastObject];
+  imageCopy = image;
+  reuseQueue = [(_UIPageIndicatorFeed *)self reuseQueue];
+  lastObject = [reuseQueue lastObject];
 
-  if (v6)
+  if (lastObject)
   {
-    v7 = [(_UIPageIndicatorFeed *)self reuseQueue];
-    v8 = [v7 lastObject];
+    reuseQueue2 = [(_UIPageIndicatorFeed *)self reuseQueue];
+    lastObject2 = [reuseQueue2 lastObject];
   }
 
   else
   {
-    v8 = objc_opt_new();
-    v7 = [(_UIPageIndicatorFeed *)self reuseQueue];
-    [v7 addObject:v8];
+    lastObject2 = objc_opt_new();
+    reuseQueue2 = [(_UIPageIndicatorFeed *)self reuseQueue];
+    [reuseQueue2 addObject:lastObject2];
   }
 
-  [v8 invalidate];
-  v9 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v10 = [v9 firstObject];
-  v11 = [v10 traitCollection];
+  [lastObject2 invalidate];
+  activeQueue = [(_UIPageIndicatorFeed *)self activeQueue];
+  firstObject = [activeQueue firstObject];
+  traitCollection = [firstObject traitCollection];
 
-  [v8 sizeForImage:v4 traits:v11];
+  [lastObject2 sizeForImage:imageCopy traits:traitCollection];
   v13 = v12;
   v15 = v14;
 
@@ -338,71 +338,71 @@ LABEL_16:
   return result;
 }
 
-- (id)indicatorForPage:(int64_t)a3 forSizeOnly:(BOOL)a4
+- (id)indicatorForPage:(int64_t)page forSizeOnly:(BOOL)only
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = [(_UIPageIndicatorFeed *)self activeQueue];
-  v8 = [v7 firstObject];
-  v9 = a3 - [v8 page];
+  activeQueue = [(_UIPageIndicatorFeed *)self activeQueue];
+  firstObject = [activeQueue firstObject];
+  v9 = page - [firstObject page];
 
   if ((v9 & 0x8000000000000000) != 0 || (-[_UIPageIndicatorFeed activeQueue](self, "activeQueue"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9 >= v11))
   {
-    v20 = [(_UIPageIndicatorFeed *)self reuseQueue];
-    v21 = [v20 lastObject];
+    reuseQueue = [(_UIPageIndicatorFeed *)self reuseQueue];
+    lastObject = [reuseQueue lastObject];
 
-    if (v21)
+    if (lastObject)
     {
-      v22 = [(_UIPageIndicatorFeed *)self reuseQueue];
-      v13 = [v22 lastObject];
+      reuseQueue2 = [(_UIPageIndicatorFeed *)self reuseQueue];
+      lastObject2 = [reuseQueue2 lastObject];
 
-      v23 = [(_UIPageIndicatorFeed *)self reuseQueue];
-      [v23 removeLastObject];
+      reuseQueue3 = [(_UIPageIndicatorFeed *)self reuseQueue];
+      [reuseQueue3 removeLastObject];
     }
 
     else
     {
-      v13 = objc_opt_new();
+      lastObject2 = objc_opt_new();
     }
 
-    v24 = [(_UIPageIndicatorFeed *)self delegate];
-    [v24 configureIndicatorImagesForIndicator:v13 atPage:a3];
+    delegate = [(_UIPageIndicatorFeed *)self delegate];
+    [delegate configureIndicatorImagesForIndicator:lastObject2 atPage:page];
 
-    if (a4)
+    if (only)
     {
-      [v13 sizeToFit];
-      [v13 invalidate];
-      v25 = [(_UIPageIndicatorFeed *)self reuseQueue];
+      [lastObject2 sizeToFit];
+      [lastObject2 invalidate];
+      reuseQueue4 = [(_UIPageIndicatorFeed *)self reuseQueue];
     }
 
     else
     {
-      [v13 setPage:a3];
-      v26 = [(_UIPageIndicatorFeed *)self delegate];
-      [v26 configureIndicator:v13 atPage:a3];
+      [lastObject2 setPage:page];
+      delegate2 = [(_UIPageIndicatorFeed *)self delegate];
+      [delegate2 configureIndicator:lastObject2 atPage:page];
 
-      v27 = [(_UIPageIndicatorFeed *)self activeQueue];
-      v28 = [v27 firstObject];
-      v29 = [v28 page] - 1;
+      activeQueue2 = [(_UIPageIndicatorFeed *)self activeQueue];
+      firstObject2 = [activeQueue2 firstObject];
+      v29 = [firstObject2 page] - 1;
 
-      v30 = [(_UIPageIndicatorFeed *)self activeQueue];
-      v16 = v30;
-      if (v29 == a3)
+      activeQueue3 = [(_UIPageIndicatorFeed *)self activeQueue];
+      v16 = activeQueue3;
+      if (v29 == page)
       {
-        [v30 insertObject:v13 atIndex:0];
+        [activeQueue3 insertObject:lastObject2 atIndex:0];
 LABEL_14:
 
         goto LABEL_25;
       }
 
-      v31 = [v30 lastObject];
-      if ([v31 page] + 1 == a3)
+      lastObject3 = [activeQueue3 lastObject];
+      if ([lastObject3 page] + 1 == page)
       {
       }
 
       else
       {
-        v32 = [(_UIPageIndicatorFeed *)self activeQueue];
-        v33 = [v32 count];
+        activeQueue4 = [(_UIPageIndicatorFeed *)self activeQueue];
+        v33 = [activeQueue4 count];
 
         if (v33)
         {
@@ -417,21 +417,21 @@ LABEL_14:
             v46 = objc_opt_class();
             v18 = NSStringFromClass(v46);
             pageControl = self->_pageControl;
-            v37 = [(_UIPageIndicatorFeed *)self activeQueue];
-            v38 = [v37 firstObject];
-            v48 = [v38 page];
-            v40 = [(_UIPageIndicatorFeed *)self activeQueue];
-            v41 = [v40 lastObject];
+            activeQueue5 = [(_UIPageIndicatorFeed *)self activeQueue];
+            firstObject3 = [activeQueue5 firstObject];
+            page = [firstObject3 page];
+            activeQueue6 = [(_UIPageIndicatorFeed *)self activeQueue];
+            lastObject4 = [activeQueue6 lastObject];
             v49 = 138413314;
             v50 = v18;
             v51 = 2048;
             v52 = pageControl;
             v53 = 2048;
-            v54 = a3;
+            pageCopy4 = page;
             v55 = 2048;
-            v56 = v48;
+            page5 = page;
             v57 = 2048;
-            v58 = [v41 page];
+            page2 = [lastObject4 page];
             _os_log_fault_impl(&dword_188A29000, v16, OS_LOG_TYPE_FAULT, "<%@ %p>: Attempting to fetch indicator outside of queue bound. Asked for %ld, bound is in %ld..<%ld. This is a UIKit bug.", &v49, 0x34u);
           }
 
@@ -447,21 +447,21 @@ LABEL_14:
             v35 = objc_opt_class();
             v18 = NSStringFromClass(v35);
             v36 = self->_pageControl;
-            v37 = [(_UIPageIndicatorFeed *)self activeQueue];
-            v38 = [v37 firstObject];
-            v39 = [v38 page];
-            v40 = [(_UIPageIndicatorFeed *)self activeQueue];
-            v41 = [v40 lastObject];
+            activeQueue5 = [(_UIPageIndicatorFeed *)self activeQueue];
+            firstObject3 = [activeQueue5 firstObject];
+            page3 = [firstObject3 page];
+            activeQueue6 = [(_UIPageIndicatorFeed *)self activeQueue];
+            lastObject4 = [activeQueue6 lastObject];
             v49 = 138413314;
             v50 = v18;
             v51 = 2048;
             v52 = v36;
             v53 = 2048;
-            v54 = a3;
+            pageCopy4 = page;
             v55 = 2048;
-            v56 = v39;
+            page5 = page3;
             v57 = 2048;
-            v58 = [v41 page];
+            page2 = [lastObject4 page];
             _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "<%@ %p>: Attempting to fetch indicator outside of queue bound. Asked for %ld, bound is in %ld..<%ld. This is a UIKit bug.", &v49, 0x34u);
           }
 
@@ -469,23 +469,23 @@ LABEL_14:
         }
       }
 
-      v25 = [(_UIPageIndicatorFeed *)self activeQueue];
+      reuseQueue4 = [(_UIPageIndicatorFeed *)self activeQueue];
     }
 
-    v42 = v25;
-    [v25 addObject:v13];
+    v42 = reuseQueue4;
+    [reuseQueue4 addObject:lastObject2];
   }
 
   else
   {
-    v12 = [(_UIPageIndicatorFeed *)self activeQueue];
-    v13 = [v12 objectAtIndexedSubscript:v9];
+    activeQueue7 = [(_UIPageIndicatorFeed *)self activeQueue];
+    lastObject2 = [activeQueue7 objectAtIndexedSubscript:v9];
 
-    LODWORD(v12) = os_variant_has_internal_diagnostics();
-    v14 = [v13 page];
-    if (v12)
+    LODWORD(activeQueue7) = os_variant_has_internal_diagnostics();
+    page4 = [lastObject2 page];
+    if (activeQueue7)
     {
-      if (v14 != a3)
+      if (page4 != page)
       {
         v16 = __UIFaultDebugAssertLog();
         if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -501,15 +501,15 @@ LABEL_14:
         v51 = 2048;
         v52 = v45;
         v53 = 2048;
-        v54 = a3;
+        pageCopy4 = page;
         v55 = 2048;
-        v56 = [v13 page];
+        page5 = [lastObject2 page];
         _os_log_fault_impl(&dword_188A29000, v16, OS_LOG_TYPE_FAULT, "<%@ %p>: There is an inconsistency in the page control's reuse queue, expected (%ld) found (%ld). This is a UIKit bug.", &v49, 0x2Au);
         goto LABEL_22;
       }
     }
 
-    else if (v14 != a3)
+    else if (page4 != page)
     {
       v15 = *(__UILogGetCategoryCachedImpl("Assert", &_MergedGlobals_1274) + 8);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -523,9 +523,9 @@ LABEL_14:
         v51 = 2048;
         v52 = v19;
         v53 = 2048;
-        v54 = a3;
+        pageCopy4 = page;
         v55 = 2048;
-        v56 = [v13 page];
+        page5 = [lastObject2 page];
         _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "<%@ %p>: There is an inconsistency in the page control's reuse queue, expected (%ld) found (%ld). This is a UIKit bug.", &v49, 0x2Au);
 LABEL_22:
 
@@ -536,7 +536,7 @@ LABEL_22:
 
 LABEL_25:
 
-  return v13;
+  return lastObject2;
 }
 
 @end

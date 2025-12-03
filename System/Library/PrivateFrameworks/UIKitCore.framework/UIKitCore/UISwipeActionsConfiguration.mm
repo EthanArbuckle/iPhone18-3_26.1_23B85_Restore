@@ -9,7 +9,7 @@
 + (UISwipeActionsConfiguration)configurationWithActions:(NSArray *)actions
 {
   v4 = actions;
-  v5 = objc_alloc_init(a1);
+  v5 = objc_alloc_init(self);
   v6 = v5[2];
   v5[2] = v4;
 

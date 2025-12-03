@@ -1,23 +1,23 @@
 @interface _GCDeviceDriverServiceConnection
-+ (id)connectionToServiceInDriver:(id)a3 withClient:(id)a4;
-- (_GCDeviceDriverServiceConnection)initWithDriverConnection:(id)a3 serviceVendor:(id)a4;
-- (id)addInvalidationHandler:(id)a3;
++ (id)connectionToServiceInDriver:(id)driver withClient:(id)client;
+- (_GCDeviceDriverServiceConnection)initWithDriverConnection:(id)connection serviceVendor:(id)vendor;
+- (id)addInvalidationHandler:(id)handler;
 - (id)invalidationHandlers;
 - (id)serviceVendor;
-- (id)serviceVendorRequestWithLabel:(id)a3 handler:(id)a4;
-- (void)setInvalidationHandlers:(void *)a1;
+- (id)serviceVendorRequestWithLabel:(id)label handler:(id)handler;
+- (void)setInvalidationHandlers:(void *)handlers;
 @end
 
 @implementation _GCDeviceDriverServiceConnection
 
-+ (id)connectionToServiceInDriver:(id)a3 withClient:(id)a4
++ (id)connectionToServiceInDriver:(id)driver withClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  driverCopy = driver;
+  clientCopy = client;
+  v8 = clientCopy;
+  if (driverCopy)
   {
-    if (v7)
+    if (clientCopy)
     {
       goto LABEL_3;
     }
@@ -34,31 +34,31 @@
 
   +[_GCDeviceDriverServiceConnection connectionToServiceInDriver:withClient:];
 LABEL_3:
-  v9 = [a1 serviceProtocol];
-  v10 = [v6 connectToDeviceService:v9 withClient:v8];
+  serviceProtocol = [self serviceProtocol];
+  v10 = [driverCopy connectToDeviceService:serviceProtocol withClient:v8];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75___GCDeviceDriverServiceConnection_connectionToServiceInDriver_withClient___block_invoke;
   v14[3] = &unk_1E84144A0;
-  v15 = v6;
-  v16 = a1;
-  v11 = v6;
+  v15 = driverCopy;
+  selfCopy = self;
+  v11 = driverCopy;
   v12 = [v10 thenSynchronouslyWithResult:v14];
 
   return v12;
 }
 
-- (_GCDeviceDriverServiceConnection)initWithDriverConnection:(id)a3 serviceVendor:(id)a4
+- (_GCDeviceDriverServiceConnection)initWithDriverConnection:(id)connection serviceVendor:(id)vendor
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  vendorCopy = vendor;
   v27.receiver = self;
   v27.super_class = _GCDeviceDriverServiceConnection;
   v9 = [(_GCDeviceDriverServiceConnection *)&v27 init];
-  if (!v7)
+  if (!connectionCopy)
   {
     [_GCDeviceDriverServiceConnection initWithDriverConnection:serviceVendor:];
-    if (v8)
+    if (vendorCopy)
     {
       goto LABEL_3;
     }
@@ -68,14 +68,14 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!vendorCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  objc_storeStrong(&v9->_driverConnection, a3);
-  objc_storeStrong(&v9->_serviceVendor, a4);
+  objc_storeStrong(&v9->_driverConnection, connection);
+  objc_storeStrong(&v9->_serviceVendor, vendor);
   v10 = objc_opt_new();
   invalidationHandlers = v9->_invalidationHandlers;
   v9->_invalidationHandlers = v10;
@@ -108,36 +108,36 @@ LABEL_3:
   return v19;
 }
 
-- (id)addInvalidationHandler:(id)a3
+- (id)addInvalidationHandler:(id)handler
 {
-  v4 = [a3 copy];
-  v5 = self;
-  objc_sync_enter(v5);
-  v7 = atomic_load(&v5->_invalid);
+  v4 = [handler copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = atomic_load(&selfCopy->_invalid);
   if (v7)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v8 = 0;
   }
 
   else
   {
-    v9 = objc_getProperty(v5, v6, 48, 1);
+    v9 = objc_getProperty(selfCopy, v6, 48, 1);
     v10 = [v9 mutableCopy];
 
     v11 = _Block_copy(v4);
     [v10 addObject:v11];
 
-    objc_setProperty_atomic_copy(v5, v12, v10, 48);
-    objc_sync_exit(v5);
+    objc_setProperty_atomic_copy(selfCopy, v12, v10, 48);
+    objc_sync_exit(selfCopy);
 
     v13 = [GCDisposable alloc];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __59___GCDeviceDriverServiceConnection_addInvalidationHandler___block_invoke;
     v15[3] = &unk_1E84144C8;
-    v15[4] = v5;
+    v15[4] = selfCopy;
     v16 = v4;
     v8 = [(GCDisposable *)v13 initWithCleanupHandler:v15];
   }
@@ -145,32 +145,32 @@ LABEL_3:
   return v8;
 }
 
-- (id)serviceVendorRequestWithLabel:(id)a3 handler:(id)a4
+- (id)serviceVendorRequestWithLabel:(id)label handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  labelCopy = label;
   v8 = [[GCOperation alloc] initOnQueue:0 withOptions:0];
-  [v8 setLabel:v7];
+  [v8 setLabel:labelCopy];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __74___GCDeviceDriverServiceConnection_serviceVendorRequestWithLabel_handler___block_invoke;
   v19[3] = &unk_1E8414540;
   v19[4] = self;
-  v9 = v6;
+  v9 = handlerCopy;
   v20 = v9;
   [v8 setSyncBlock:v19];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __74___GCDeviceDriverServiceConnection_serviceVendorRequestWithLabel_handler___block_invoke_3;
   v16 = &unk_1E84145B8;
-  v17 = self;
+  selfCopy = self;
   v18 = v9;
   v10 = v9;
   [v8 setAsyncBlock:&v13];
-  v11 = [v8 activate];
+  activate = [v8 activate];
 
-  return v11;
+  return activate;
 }
 
 - (id)invalidationHandlers
@@ -183,11 +183,11 @@ LABEL_3:
   return result;
 }
 
-- (void)setInvalidationHandlers:(void *)a1
+- (void)setInvalidationHandlers:(void *)handlers
 {
-  if (a1)
+  if (handlers)
   {
-    objc_setProperty_atomic_copy(a1, newValue, newValue, 48);
+    objc_setProperty_atomic_copy(handlers, newValue, newValue, 48);
   }
 }
 

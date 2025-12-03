@@ -1,6 +1,6 @@
 @interface MTRContentLauncherClusterParameterStruct
 - (MTRContentLauncherClusterParameterStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterParameterStruct);
-  v5 = [(MTRContentLauncherClusterParameterStruct *)self type];
-  [(MTRContentLauncherClusterParameterStruct *)v4 setType:v5];
+  type = [(MTRContentLauncherClusterParameterStruct *)self type];
+  [(MTRContentLauncherClusterParameterStruct *)v4 setType:type];
 
-  v6 = [(MTRContentLauncherClusterParameterStruct *)self value];
-  [(MTRContentLauncherClusterParameterStruct *)v4 setValue:v6];
+  value = [(MTRContentLauncherClusterParameterStruct *)self value];
+  [(MTRContentLauncherClusterParameterStruct *)v4 setValue:value];
 
-  v7 = [(MTRContentLauncherClusterParameterStruct *)self externalIDList];
-  [(MTRContentLauncherClusterParameterStruct *)v4 setExternalIDList:v7];
+  externalIDList = [(MTRContentLauncherClusterParameterStruct *)self externalIDList];
+  [(MTRContentLauncherClusterParameterStruct *)v4 setExternalIDList:externalIDList];
 
   return v4;
 }

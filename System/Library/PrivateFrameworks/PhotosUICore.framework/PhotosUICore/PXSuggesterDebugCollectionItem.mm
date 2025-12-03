@@ -1,6 +1,6 @@
 @interface PXSuggesterDebugCollectionItem
 - (BOOL)isInvalid;
-- (PXSuggesterDebugCollectionItem)initWithSuggestion:(id)a3 suggestionInfo:(id)a4;
+- (PXSuggesterDebugCollectionItem)initWithSuggestion:(id)suggestion suggestionInfo:(id)info;
 @end
 
 @implementation PXSuggesterDebugCollectionItem
@@ -8,22 +8,22 @@
 - (BOOL)isInvalid
 {
   v2 = [(NSDictionary *)self->_info objectForKeyedSubscript:@"isInvalid"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (PXSuggesterDebugCollectionItem)initWithSuggestion:(id)a3 suggestionInfo:(id)a4
+- (PXSuggesterDebugCollectionItem)initWithSuggestion:(id)suggestion suggestionInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  suggestionCopy = suggestion;
+  infoCopy = info;
   v40.receiver = self;
   v40.super_class = PXSuggesterDebugCollectionItem;
   v9 = [(PXSuggesterDebugCollectionItem *)&v40 init];
   if (v9)
   {
-    v10 = [v7 localizedTitle];
-    v11 = [v10 stringByReplacingOccurrencesOfString:@"\\n" withString:@" "];
+    localizedTitle = [suggestionCopy localizedTitle];
+    v11 = [localizedTitle stringByReplacingOccurrencesOfString:@"\\n" withString:@" "];
     v12 = v11;
     if (v11)
     {
@@ -32,14 +32,14 @@
 
     else
     {
-      v13 = [v8 objectForKeyedSubscript:@"keyAssetUUID"];
+      v13 = [infoCopy objectForKeyedSubscript:@"keyAssetUUID"];
     }
 
     name = v9->_name;
     v9->_name = v13;
 
-    v15 = [v7 localizedSubtitle];
-    v16 = [v15 stringByReplacingOccurrencesOfString:@"\\n" withString:@" "];
+    localizedSubtitle = [suggestionCopy localizedSubtitle];
+    v16 = [localizedSubtitle stringByReplacingOccurrencesOfString:@"\\n" withString:@" "];
     p_description = &v9->_description;
     description = v9->_description;
     v9->_description = v16;
@@ -60,13 +60,13 @@
 
     v22 = *p_description;
     v23 = MEMORY[0x1E696AB78];
-    v24 = [v8 objectForKeyedSubscript:@"keyAssetCreationDate"];
+    v24 = [infoCopy objectForKeyedSubscript:@"keyAssetCreationDate"];
     v25 = [v23 localizedStringFromDate:v24 dateStyle:1 timeStyle:2];
     v26 = [v22 stringByAppendingString:v25];
     v27 = *p_description;
     *p_description = v26;
 
-    v28 = [v8 objectForKeyedSubscript:@"reasons"];
+    v28 = [infoCopy objectForKeyedSubscript:@"reasons"];
     if ([v28 count])
     {
       v29 = [*p_description stringByAppendingString:{@", "}];
@@ -80,23 +80,23 @@
       *p_description = v33;
     }
 
-    objc_storeStrong(&v9->_suggestion, a3);
-    v35 = [v7 startDate];
-    v36 = v35;
-    if (v35)
+    objc_storeStrong(&v9->_suggestion, suggestion);
+    startDate = [suggestionCopy startDate];
+    v36 = startDate;
+    if (startDate)
     {
-      v37 = v35;
+      v37 = startDate;
     }
 
     else
     {
-      v37 = [v8 objectForKeyedSubscript:@"universalStartDate"];
+      v37 = [infoCopy objectForKeyedSubscript:@"universalStartDate"];
     }
 
     date = v9->_date;
     v9->_date = v37;
 
-    objc_storeStrong(&v9->_info, a4);
+    objc_storeStrong(&v9->_info, info);
   }
 
   return v9;

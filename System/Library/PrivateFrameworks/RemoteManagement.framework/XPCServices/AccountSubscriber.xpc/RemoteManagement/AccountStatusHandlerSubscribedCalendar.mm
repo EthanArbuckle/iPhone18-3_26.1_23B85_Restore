@@ -1,30 +1,30 @@
 @interface AccountStatusHandlerSubscribedCalendar
-- (id)getStatusInfoFromAccount:(id)a3;
+- (id)getStatusInfoFromAccount:(id)account;
 @end
 
 @implementation AccountStatusHandlerSubscribedCalendar
 
-- (id)getStatusInfoFromAccount:(id)a3
+- (id)getStatusInfoFromAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [RMModelStatusAccountListSubscribedCalendar buildRequiredOnlyWithIdentifier:v4];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  v5 = [RMModelStatusAccountListSubscribedCalendar buildRequiredOnlyWithIdentifier:identifier];
 
-  v6 = [v3 objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
+  v6 = [accountCopy objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
   [v5 setStatusDeclarationIdentifier:v6];
 
-  v7 = [v3 accountDescription];
-  [v5 setStatusVisibleName:v7];
+  accountDescription = [accountCopy accountDescription];
+  [v5 setStatusVisibleName:accountDescription];
 
-  v8 = [DAAccount daAccountSubclassWithBackingAccountInfo:v3];
-  v9 = [v8 subscriptionURL];
-  v10 = [v9 absoluteString];
-  [v5 setStatusCalendarUrl:v10];
+  v8 = [DAAccount daAccountSubclassWithBackingAccountInfo:accountCopy];
+  subscriptionURL = [v8 subscriptionURL];
+  absoluteString = [subscriptionURL absoluteString];
+  [v5 setStatusCalendarUrl:absoluteString];
 
-  v11 = [v3 username];
-  [v5 setStatusUsername:v11];
+  username = [accountCopy username];
+  [v5 setStatusUsername:username];
 
-  v12 = [v3 isEnabledForDataclass:kASSAccountDataclassCalendars];
+  v12 = [accountCopy isEnabledForDataclass:kASSAccountDataclassCalendars];
   v13 = [NSNumber numberWithBool:v12];
   [v5 setStatusIsEnabled:v13];
 

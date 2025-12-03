@@ -1,7 +1,7 @@
 @interface MultimediaRecordRequest
 - (NSArray)requestItems;
 - (_TtC9progressd23MultimediaRecordRequest)init;
-- (void)setRequestItems:(id)a3;
+- (void)setRequestItems:(id)items;
 @end
 
 @implementation MultimediaRecordRequest
@@ -18,7 +18,7 @@
   return v5.super.isa;
 }
 
-- (void)setRequestItems:(id)a3
+- (void)setRequestItems:(id)items
 {
   type metadata accessor for MultimediaRecordRequestItems();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

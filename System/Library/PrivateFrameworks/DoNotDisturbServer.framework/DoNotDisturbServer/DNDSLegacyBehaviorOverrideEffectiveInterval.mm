@@ -1,31 +1,31 @@
 @interface DNDSLegacyBehaviorOverrideEffectiveInterval
-- (DNDSLegacyBehaviorOverrideEffectiveInterval)initWithCoder:(id)a3;
-- (DNDSLegacyBehaviorOverrideEffectiveInterval)initWithStartComponents:(id)a3 endComponents:(id)a4 calendarIdentifier:(id)a5 repeatInterval:(unint64_t)a6 identifier:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (DNDSLegacyBehaviorOverrideEffectiveInterval)initWithCoder:(id)coder;
+- (DNDSLegacyBehaviorOverrideEffectiveInterval)initWithStartComponents:(id)components endComponents:(id)endComponents calendarIdentifier:(id)identifier repeatInterval:(unint64_t)interval identifier:(id)a7;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDSLegacyBehaviorOverrideEffectiveInterval
 
-- (DNDSLegacyBehaviorOverrideEffectiveInterval)initWithStartComponents:(id)a3 endComponents:(id)a4 calendarIdentifier:(id)a5 repeatInterval:(unint64_t)a6 identifier:(id)a7
+- (DNDSLegacyBehaviorOverrideEffectiveInterval)initWithStartComponents:(id)components endComponents:(id)endComponents calendarIdentifier:(id)identifier repeatInterval:(unint64_t)interval identifier:(id)a7
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  componentsCopy = components;
+  endComponentsCopy = endComponents;
+  identifierCopy = identifier;
   v15 = a7;
   v28.receiver = self;
   v28.super_class = DNDSLegacyBehaviorOverrideEffectiveInterval;
   v16 = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)&v28 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [componentsCopy copy];
     startComponents = v16->_startComponents;
     v16->_startComponents = v17;
 
-    v19 = [v13 copy];
+    v19 = [endComponentsCopy copy];
     endComponents = v16->_endComponents;
     v16->_endComponents = v19;
 
-    v21 = [v14 copy];
+    v21 = [identifierCopy copy];
     v22 = v21;
     v23 = *MEMORY[0x277CBE5C0];
     if (v21)
@@ -40,7 +40,7 @@
 
     objc_storeStrong(&v16->_calendarIdentifier, v24);
 
-    v16->_repeatInterval = a6;
+    v16->_repeatInterval = interval;
     v25 = [v15 copy];
     identifier = v16->_identifier;
     v16->_identifier = v25;
@@ -49,34 +49,34 @@
   return v16;
 }
 
-- (DNDSLegacyBehaviorOverrideEffectiveInterval)initWithCoder:(id)a3
+- (DNDSLegacyBehaviorOverrideEffectiveInterval)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startComponents"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endComponents"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendar"];
-  v8 = [v4 decodeIntegerForKey:@"repeatInterval"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startComponents"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endComponents"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendar"];
+  v8 = [coderCopy decodeIntegerForKey:@"repeatInterval"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v10 = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self initWithStartComponents:v5 endComponents:v6 calendarIdentifier:v7 repeatInterval:v8 identifier:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self startComponents];
-  [v4 encodeObject:v5 forKey:@"startComponents"];
+  coderCopy = coder;
+  startComponents = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self startComponents];
+  [coderCopy encodeObject:startComponents forKey:@"startComponents"];
 
-  v6 = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self endComponents];
-  [v4 encodeObject:v6 forKey:@"endComponents"];
+  endComponents = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self endComponents];
+  [coderCopy encodeObject:endComponents forKey:@"endComponents"];
 
-  v7 = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self calendarIdentifier];
-  [v4 encodeObject:v7 forKey:@"calendar"];
+  calendarIdentifier = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self calendarIdentifier];
+  [coderCopy encodeObject:calendarIdentifier forKey:@"calendar"];
 
-  [v4 encodeInteger:-[DNDSLegacyBehaviorOverrideEffectiveInterval repeatInterval](self forKey:{"repeatInterval"), @"repeatInterval"}];
-  v8 = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self identifier];
-  [v4 encodeObject:v8 forKey:@"identifier"];
+  [coderCopy encodeInteger:-[DNDSLegacyBehaviorOverrideEffectiveInterval repeatInterval](self forKey:{"repeatInterval"), @"repeatInterval"}];
+  identifier = [(DNDSLegacyBehaviorOverrideEffectiveInterval *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 @end

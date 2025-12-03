@@ -11,9 +11,9 @@
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(PGPhotosChallengeMetricEvent *)self identifier];
-  v8 = [(PGPhotosChallengeSyndicatedAssetsMetricEvent *)self payloads];
-  v9 = [v3 stringWithFormat:@"<%@: %p> %@:\nIdentifier:%@\nPayloads:%@", v4, self, v6, v7, v8];
+  identifier = [(PGPhotosChallengeMetricEvent *)self identifier];
+  payloads = [(PGPhotosChallengeSyndicatedAssetsMetricEvent *)self payloads];
+  v9 = [v3 stringWithFormat:@"<%@: %p> %@:\nIdentifier:%@\nPayloads:%@", v4, self, v6, identifier, payloads];
 
   return v9;
 }
@@ -21,8 +21,8 @@
 - (NSArray)payloads
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PGPhotosChallengeMetricEvent *)self evaluation];
-  if (!v3)
+  evaluation = [(PGPhotosChallengeMetricEvent *)self evaluation];
+  if (!evaluation)
   {
     v32.receiver = self;
     v32.super_class = PGPhotosChallengeSyndicatedAssetsMetricEvent;
@@ -38,14 +38,14 @@ LABEL_15:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v18 = +[PGLogging sharedLogging];
-    v19 = [v18 loggingConnection];
+    loggingConnection = [v18 loggingConnection];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(PGPhotosChallengeMetricEvent *)self evaluation];
+      evaluation2 = [(PGPhotosChallengeMetricEvent *)self evaluation];
       *buf = 138412290;
       v36 = objc_opt_class();
-      _os_log_error_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_ERROR, "PGPhotosChallengeSyndicatedAssetsMetricEvent: evaluation object is the wrong type (%@)", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "PGPhotosChallengeSyndicatedAssetsMetricEvent: evaluation object is the wrong type (%@)", buf, 0xCu);
     }
 
     v31.receiver = self;
@@ -61,7 +61,7 @@ LABEL_15:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = [v3 evaluationByReason];
+  obj = [evaluation evaluationByReason];
   v4 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v4)
   {
@@ -77,14 +77,14 @@ LABEL_15:
         }
 
         v7 = *(*(&v27 + 1) + 8 * i);
-        v8 = [v3 evaluationByReason];
-        [v8 objectForKeyedSubscript:v7];
-        v10 = v9 = v3;
+        evaluationByReason = [evaluation evaluationByReason];
+        [evaluationByReason objectForKeyedSubscript:v7];
+        v10 = v9 = evaluation;
 
         v26.receiver = self;
         v26.super_class = PGPhotosChallengeSyndicatedAssetsMetricEvent;
-        v11 = [(PGPhotosChallengeMetricEvent *)&v26 payload];
-        v12 = [v11 mutableCopy];
+        payload = [(PGPhotosChallengeMetricEvent *)&v26 payload];
+        v12 = [payload mutableCopy];
 
         [v12 setObject:v7 forKeyedSubscript:@"questionInfo"];
         v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "falseNegatives")}];
@@ -100,7 +100,7 @@ LABEL_15:
         [v12 setObject:v16 forKeyedSubscript:@"truePositiveCount"];
 
         [v25 addObject:v12];
-        v3 = v9;
+        evaluation = v9;
       }
 
       v5 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];

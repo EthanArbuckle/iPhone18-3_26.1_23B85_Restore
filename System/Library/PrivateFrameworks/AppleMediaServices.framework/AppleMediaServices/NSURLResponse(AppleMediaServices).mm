@@ -10,11 +10,11 @@
 
 - (id)ams_allHeaderFields
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   else
@@ -22,18 +22,18 @@
     v2 = 0;
   }
 
-  v3 = [v2 allHeaderFields];
+  allHeaderFields = [v2 allHeaderFields];
 
-  return v3;
+  return allHeaderFields;
 }
 
 - (uint64_t)ams_statusCode
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   else
@@ -41,16 +41,16 @@
     v2 = 0;
   }
 
-  v3 = [v2 statusCode];
-  return v3;
+  statusCode = [v2 statusCode];
+  return statusCode;
 }
 
 - (double)ams_expirationInterval
 {
   v8 = -1.0;
-  if (([a1 _getCacheControlMaxAge:&v8] & 1) == 0)
+  if (([self _getCacheControlMaxAge:&v8] & 1) == 0)
   {
-    v2 = [a1 ams_valueForHTTPHeaderField:@"Expires"];
+    v2 = [self ams_valueForHTTPHeaderField:@"Expires"];
     v3 = -1.0;
     if (v2)
     {
@@ -71,12 +71,12 @@
 
 - (id)ams_valueForHTTPHeaderField:()AppleMediaServices
 {
-  v4 = a1;
+  selfCopy = self;
   v5 = a3;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = selfCopy;
   }
 
   else
@@ -91,7 +91,7 @@
 
 - (uint64_t)_getCacheControlMaxAge:()AppleMediaServices
 {
-  v4 = [a1 ams_valueForHTTPHeaderField:@"Cache-Control"];
+  v4 = [self ams_valueForHTTPHeaderField:@"Cache-Control"];
   if (!v4)
   {
     v9 = 0;
@@ -105,7 +105,7 @@
   }
 
   v21 = a3;
-  v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
   v20 = v4;
   v6 = [v4 componentsSeparatedByString:{@", "}];
   v7 = [v6 count];
@@ -118,7 +118,7 @@
     do
     {
       v12 = [v6 objectAtIndex:v10];
-      v13 = [v12 stringByTrimmingCharactersInSet:v5];
+      v13 = [v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       v14 = [v13 componentsSeparatedByString:@"="];
       if ([v14 count] == 2)

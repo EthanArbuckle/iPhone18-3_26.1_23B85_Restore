@@ -1,26 +1,26 @@
 @interface HUHomeHubMigrationBannerItem
-- (BOOL)shouldHideForHomes:(id)a3 withUserDefaults:(id)a4 softwareUpdateCounter:(id)a5;
-- (HUHomeHubMigrationBannerItem)initWithHome:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (BOOL)shouldHideForHomes:(id)homes withUserDefaults:(id)defaults softwareUpdateCounter:(id)counter;
+- (HUHomeHubMigrationBannerItem)initWithHome:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUHomeHubMigrationBannerItem
 
-- (HUHomeHubMigrationBannerItem)initWithHome:(id)a3
+- (HUHomeHubMigrationBannerItem)initWithHome:(id)home
 {
   v9.receiver = self;
   v9.super_class = HUHomeHubMigrationBannerItem;
-  v3 = [(HUBannerItem *)&v9 initWithHome:a3];
+  v3 = [(HUBannerItem *)&v9 initWithHome:home];
   if (v3)
   {
-    v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v5 = [v4 homeManager];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __45__HUHomeHubMigrationBannerItem_initWithHome___block_invoke;
     v7[3] = &unk_277DBBEB0;
     v8 = v3;
-    [v5 fetchDevicesWithCompletionHandler:v7];
+    [homeManager fetchDevicesWithCompletionHandler:v7];
   }
 
   return v3;
@@ -48,40 +48,40 @@ void __45__HUHomeHubMigrationBannerItem_initWithHome___block_invoke(uint64_t a1,
   *(v9 + 72) = v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v6 = [v5 BOOLValue];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = MEMORY[0x277D2C900];
     v8 = MEMORY[0x277D14780];
     v31 = *MEMORY[0x277D13FB8];
     v32[0] = MEMORY[0x277CBEC38];
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    v10 = [v8 outcomeWithResults:v9];
+    homeManager = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
+    v10 = [v8 outcomeWithResults:homeManager];
     v11 = [v7 futureWithResult:v10];
   }
 
   else
   {
-    v12 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v9 = [v12 homeManager];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
 
-    if ([v9 isHH2MigrationAvailable] && !objc_msgSend(v9, "hasOptedToHH2"))
+    if ([homeManager isHH2MigrationAvailable] && !objc_msgSend(homeManager, "hasOptedToHH2"))
     {
       objc_initWeak(&buf, self);
-      v19 = [MEMORY[0x277D146E8] sharedDispatcher];
-      v20 = [v19 allHomesFuture];
+      mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+      allHomesFuture = [mEMORY[0x277D146E8]2 allHomesFuture];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __60__HUHomeHubMigrationBannerItem__subclass_updateWithOptions___block_invoke;
       v22[3] = &unk_277DC00F0;
       objc_copyWeak(&v23, &buf);
-      v11 = [v20 flatMap:v22];
+      v11 = [allHomesFuture flatMap:v22];
       objc_destroyWeak(&v23);
 
       objc_destroyWeak(&buf);
@@ -92,13 +92,13 @@ void __45__HUHomeHubMigrationBannerItem_initWithHome___block_invoke(uint64_t a1,
       v13 = HFLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(HUBannerItem *)self home];
+        home = [(HUBannerItem *)self home];
         LODWORD(buf) = 67109632;
-        HIDWORD(buf) = [v14 hf_currentUserIsOwner];
+        HIDWORD(buf) = [home hf_currentUserIsOwner];
         v27 = 1024;
-        v28 = [v9 isHH2MigrationAvailable];
+        isHH2MigrationAvailable = [homeManager isHH2MigrationAvailable];
         v29 = 1024;
-        v30 = [v9 hasOptedToHH2];
+        hasOptedToHH2 = [homeManager hasOptedToHH2];
         _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationBannerItem-_subclass_updateWithOptions:] Should show HH2 migration banner?:NO | Owner:%{BOOL}d | migrationAvailable:%{BOOL}d | userAlreadyOptedIn:%{BOOL}d | Skipping all additional checks.", &buf, 0x14u);
       }
 
@@ -152,11 +152,11 @@ id __60__HUHomeHubMigrationBannerItem__subclass_updateWithOptions___block_invoke
   return v21;
 }
 
-- (BOOL)shouldHideForHomes:(id)a3 withUserDefaults:(id)a4 softwareUpdateCounter:(id)a5
+- (BOOL)shouldHideForHomes:(id)homes withUserDefaults:(id)defaults softwareUpdateCounter:(id)counter
 {
   v88 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  homesCopy = homes;
+  counterCopy = counter;
   if (HFForceHomeHubMigrationBannerVisible())
   {
     v9 = HFLogForCategory();
@@ -166,19 +166,19 @@ id __60__HUHomeHubMigrationBannerItem__subclass_updateWithOptions___block_invoke
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "(HUHomeHubMigrationBannerItem:shouldHideForHomes:withUserDefaults:softwareUpdateCounter) Forcing home hub migration banner to be visible.", buf, 2u);
     }
 
-    LOBYTE(v10) = 0;
+    LOBYTE(isHH2MigrationInProgress) = 0;
     goto LABEL_51;
   }
 
-  v11 = [(HUBannerItem *)self home];
-  v12 = [v11 hf_shouldBlockCurrentUserFromHomeForRoarUpgrade];
+  home = [(HUBannerItem *)self home];
+  hf_shouldBlockCurrentUserFromHomeForRoarUpgrade = [home hf_shouldBlockCurrentUserFromHomeForRoarUpgrade];
 
-  if (!v12)
+  if (!hf_shouldBlockCurrentUserFromHomeForRoarUpgrade)
   {
-    v53 = self;
-    v55 = v7;
-    v56 = v8;
-    v13 = [v7 na_filter:&__block_literal_global_169];
+    selfCopy = self;
+    v55 = homesCopy;
+    v56 = counterCopy;
+    v13 = [homesCopy na_filter:&__block_literal_global_169];
     v14 = objc_opt_new();
     v66 = 0u;
     v67 = 0u;
@@ -203,15 +203,15 @@ id __60__HUHomeHubMigrationBannerItem__subclass_updateWithOptions___block_invoke
             objc_enumerationMutation(v9);
           }
 
-          v20 = [*(*(&v66 + 1) + 8 * v19) hf_homePods];
-          [v14 na_safeAddObjectsFromArray:v20];
+          hf_homePods = [*(*(&v66 + 1) + 8 * v19) hf_homePods];
+          [v14 na_safeAddObjectsFromArray:hf_homePods];
           if (v18)
           {
             v64 = 0u;
             v65 = 0u;
             v62 = 0u;
             v63 = 0u;
-            v21 = v20;
+            v21 = hf_homePods;
             v22 = [v21 countByEnumeratingWithState:&v62 objects:v86 count:16];
             if (v22)
             {
@@ -228,10 +228,10 @@ id __60__HUHomeHubMigrationBannerItem__subclass_updateWithOptions___block_invoke
                     objc_enumerationMutation(v21);
                   }
 
-                  v28 = [*(*(&v62 + 1) + 8 * i) device];
-                  v29 = [v28 supportsHH2];
+                  device = [*(*(&v62 + 1) + 8 * i) device];
+                  supportsHH2 = [device supportsHH2];
 
-                  if (!v29)
+                  if (!supportsHH2)
                   {
                     v18 = 0;
                     goto LABEL_26;
@@ -281,7 +281,7 @@ LABEL_26:
       v18 = 1;
     }
 
-    v8 = v56;
+    counterCopy = v56;
     if (v56)
     {
       v30 = v56;
@@ -293,24 +293,24 @@ LABEL_26:
     }
 
     v31 = v30;
-    v32 = v53;
-    v58 = [v30 softwareUpdatesInProgress];
-    v33 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v34 = [v33 homeManager];
+    v32 = selfCopy;
+    softwareUpdatesInProgress = [v30 softwareUpdatesInProgress];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
 
-    v35 = [(HUBannerItem *)v53 home];
-    v36 = [v35 hf_currentUserIsOwner];
+    home2 = [(HUBannerItem *)selfCopy home];
+    hf_currentUserIsOwner = [home2 hf_currentUserIsOwner];
 
     v61 = v31;
-    if (v36)
+    if (hf_currentUserIsOwner)
     {
-      v37 = [(HUBannerItem *)v53 home];
-      v38 = [v37 hf_canUpdateToHH2];
+      home3 = [(HUBannerItem *)selfCopy home];
+      hf_canUpdateToHH2 = [home3 hf_canUpdateToHH2];
 
-      v10 = 1;
-      if (v38 && !v58 && ((v18 ^ 1) & 1) == 0)
+      isHH2MigrationInProgress = 1;
+      if (hf_canUpdateToHH2 && !softwareUpdatesInProgress && ((v18 ^ 1) & 1) == 0)
       {
-        v10 = [v34 isHH2MigrationInProgress];
+        isHH2MigrationInProgress = [homeManager isHH2MigrationInProgress];
       }
 
       v39 = HFLogForCategory();
@@ -319,33 +319,33 @@ LABEL_26:
         goto LABEL_50;
       }
 
-      v52 = v58 != 0;
-      v59 = [(HUBannerItem *)v53 home];
-      v54 = [v59 currentUser];
-      v40 = [v54 uniqueIdentifier];
-      v51 = [(HUBannerItem *)v32 home];
-      v50 = [v51 hf_currentUserIsOwner];
-      v41 = [v34 isHH2MigrationAvailable];
-      v42 = [v34 isHH2MigrationInProgress];
-      v43 = [v34 hasOptedToHH2];
+      v52 = softwareUpdatesInProgress != 0;
+      home4 = [(HUBannerItem *)selfCopy home];
+      currentUser = [home4 currentUser];
+      uniqueIdentifier = [currentUser uniqueIdentifier];
+      home5 = [(HUBannerItem *)v32 home];
+      hf_currentUserIsOwner2 = [home5 hf_currentUserIsOwner];
+      isHH2MigrationAvailable = [homeManager isHH2MigrationAvailable];
+      isHH2MigrationInProgress2 = [homeManager isHH2MigrationInProgress];
+      hasOptedToHH2 = [homeManager hasOptedToHH2];
       *buf = 67111170;
-      v71 = v10;
+      v71 = isHH2MigrationInProgress;
       v72 = 1024;
-      *v73 = v38;
+      *v73 = hf_canUpdateToHH2;
       *&v73[4] = 2114;
-      *&v73[6] = v40;
-      v44 = v40;
+      *&v73[6] = uniqueIdentifier;
+      uniqueIdentifier2 = uniqueIdentifier;
       v74 = 1024;
-      v75 = v50;
+      v75 = hf_currentUserIsOwner2;
       v76 = 1024;
-      v77 = v41;
+      v77 = isHH2MigrationAvailable;
       v78 = 1024;
-      v79 = v42;
+      v79 = isHH2MigrationInProgress2;
       v80 = 1024;
-      v81 = v43;
+      v81 = hasOptedToHH2;
       v82 = 1024;
       v83 = v52;
-      v8 = v56;
+      counterCopy = v56;
       v84 = 1024;
       v85 = v18;
       _os_log_impl(&dword_20CEB6000, v39, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationBannerItem-shouldHideForHomes:withUserDefaults:softwareUpdateCounter:] HH2 migration banner shouldHide = %{BOOL}d | canUpdateToHH2 = %{BOOL}d | currentUser.uniqueIdentifier: %{public}@ (isOwner = %{BOOL}d) | isHH2MigrationAvailable = %{BOOL}d | isHH2MigrationInProgress = %{BOOL}d | hasOptedToHH2 = %{BOOL}d | hasHomePodsUpdating = %{BOOL}d | allHomePodsSupportHH2 = %{BOOL}d", buf, 0x3Cu);
@@ -353,19 +353,19 @@ LABEL_26:
 
     else
     {
-      if ([v34 hasOptedToHH2] & 1) != 0 || !objc_msgSend(v34, "isHH2MigrationAvailable") || (objc_msgSend(v34, "isHH2MigrationInProgress"))
+      if ([homeManager hasOptedToHH2] & 1) != 0 || !objc_msgSend(homeManager, "isHH2MigrationAvailable") || (objc_msgSend(homeManager, "isHH2MigrationInProgress"))
       {
-        v10 = 1;
+        isHH2MigrationInProgress = 1;
       }
 
-      else if (v58)
+      else if (softwareUpdatesInProgress)
       {
-        v10 = 1;
+        isHH2MigrationInProgress = 1;
       }
 
       else
       {
-        v10 = v18 ^ 1;
+        isHH2MigrationInProgress = v18 ^ 1;
       }
 
       v39 = HFLogForCategory();
@@ -374,33 +374,33 @@ LABEL_26:
         goto LABEL_50;
       }
 
-      v45 = v58 != 0;
-      v59 = [(HUBannerItem *)v53 home];
-      v54 = [v59 currentUser];
-      v44 = [v54 uniqueIdentifier];
-      v46 = [v34 hasOptedToHH2];
-      v47 = [v34 isHH2MigrationAvailable];
-      v48 = [v34 isHH2MigrationInProgress];
+      v45 = softwareUpdatesInProgress != 0;
+      home4 = [(HUBannerItem *)selfCopy home];
+      currentUser = [home4 currentUser];
+      uniqueIdentifier2 = [currentUser uniqueIdentifier];
+      hasOptedToHH22 = [homeManager hasOptedToHH2];
+      isHH2MigrationAvailable2 = [homeManager isHH2MigrationAvailable];
+      isHH2MigrationInProgress3 = [homeManager isHH2MigrationInProgress];
       *buf = 67110658;
-      v71 = v10;
+      v71 = isHH2MigrationInProgress;
       v72 = 2114;
-      *v73 = v44;
+      *v73 = uniqueIdentifier2;
       *&v73[8] = 1024;
-      *&v73[10] = v46;
+      *&v73[10] = hasOptedToHH22;
       v74 = 1024;
-      v75 = v47;
+      v75 = isHH2MigrationAvailable2;
       v76 = 1024;
-      v77 = v48;
+      v77 = isHH2MigrationInProgress3;
       v78 = 1024;
       v79 = v45;
-      v8 = v56;
+      counterCopy = v56;
       v80 = 1024;
       v81 = v18;
       _os_log_impl(&dword_20CEB6000, v39, OS_LOG_TYPE_DEFAULT, "<HUHomeHubMigrationBannerItem-shouldHideForHomes:withUserDefaults:softwareUpdateCounter:> HH2 banner shouldHide = %{BOOL}d | currentUser is NOT owner (uniqueIdentifier: %{public}@) | hasOptedToHH2 = %{BOOL}d | isHH2MigrationAvailable = %{BOOL}d | hh2MigrationInProgress = %{BOOL}d | hasHomePodsUpdating = %{BOOL}d | allHomePodsSupportHH2 = %{BOOL}d", buf, 0x30u);
     }
 
 LABEL_50:
-    v7 = v55;
+    homesCopy = v55;
 
     goto LABEL_51;
   }
@@ -412,10 +412,10 @@ LABEL_50:
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "[HUHomeHubMigrationBannerItem:shouldHideForHomes:withUserDefaults:softwareUpdateCounter] Hiding banner because the block view is visible.", buf, 2u);
   }
 
-  LOBYTE(v10) = 1;
+  LOBYTE(isHH2MigrationInProgress) = 1;
 LABEL_51:
 
-  return v10;
+  return isHH2MigrationInProgress;
 }
 
 uint64_t __90__HUHomeHubMigrationBannerItem_shouldHideForHomes_withUserDefaults_softwareUpdateCounter___block_invoke(uint64_t a1, void *a2)

@@ -1,11 +1,11 @@
 @interface ClimateContinuousStepper
 - (NSUUID)trackerUUID;
-- (void)didSlide:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didSlide:(id)slide;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)siblingDidStartSliding;
-- (void)siblingDidStopSlidingWithWasIncreasing:(BOOL)a3;
-- (void)siblingDidUpdateWithProgress:(double)a3;
+- (void)siblingDidStopSlidingWithWasIncreasing:(BOOL)increasing;
+- (void)siblingDidUpdateWithProgress:(double)progress;
 @end
 
 @implementation ClimateContinuousStepper
@@ -25,43 +25,43 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B85CC();
 }
 
-- (void)didSlide:(id)a3
+- (void)didSlide:(id)slide
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000B9238(v4);
+  slideCopy = slide;
+  selfCopy = self;
+  sub_1000B9238(slideCopy);
 }
 
 - (void)siblingDidStartSliding
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BA720();
 }
 
-- (void)siblingDidUpdateWithProgress:(double)a3
+- (void)siblingDidUpdateWithProgress:(double)progress
 {
-  v4 = self;
-  sub_1000BA89C(a3);
+  selfCopy = self;
+  sub_1000BA89C(progress);
 }
 
-- (void)siblingDidStopSlidingWithWasIncreasing:(BOOL)a3
+- (void)siblingDidStopSlidingWithWasIncreasing:(BOOL)increasing
 {
-  v4 = self;
-  sub_1000BA9E0(a3);
+  selfCopy = self;
+  sub_1000BA9E0(increasing);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for ClimateContinuousStepper();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v9.receiver;
-  [(ClimateContinuousStepper *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
+  [(ClimateContinuousStepper *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
   sub_1000B7D34();
 }
 

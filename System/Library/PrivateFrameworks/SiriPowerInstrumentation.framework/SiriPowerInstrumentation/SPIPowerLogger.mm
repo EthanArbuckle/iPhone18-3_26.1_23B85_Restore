@@ -8,17 +8,17 @@
 
 - (SPIPowerLogger)initWithCurrentProcess
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 processIdentifier];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processIdentifier = [processInfo processIdentifier];
 
-  return [(SPIPowerLogger *)self initWithProcessIdentifier:v4];
+  return [(SPIPowerLogger *)self initWithProcessIdentifier:processIdentifier];
 }
 
 + (id)_staticWrappedInitWithCurrentProcess
 {
-  v2 = [[SPIPowerLogger alloc] initWithCurrentProcess];
+  initWithCurrentProcess = [[SPIPowerLogger alloc] initWithCurrentProcess];
 
-  return v2;
+  return initWithCurrentProcess;
 }
 
 - (id)captureSnapshot

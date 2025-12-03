@@ -12,7 +12,7 @@
 - (id)aa_arrayByRemovingObject:()AppleAccount
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObject:v4];
 
   v6 = [v5 copy];
@@ -28,7 +28,7 @@
     [NSArray(AppleAccount) aa_filter:];
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __35__NSArray_AppleAccount__aa_filter___block_invoke;
@@ -37,7 +37,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -51,7 +51,7 @@
     [NSArray(AppleAccount) aa_firstObjectPassingTest:];
   }
 
-  v5 = [a1 indexOfObjectPassingTest:v4];
+  v5 = [self indexOfObjectPassingTest:v4];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -59,7 +59,7 @@
 
   else
   {
-    v6 = [a1 objectAtIndex:v5];
+    v6 = [self objectAtIndex:v5];
   }
 
   return v6;
@@ -73,7 +73,7 @@
     [NSArray(AppleAccount) aa_map:];
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __32__NSArray_AppleAccount__aa_map___block_invoke;
@@ -82,7 +82,7 @@
   v15 = v4;
   v6 = v4;
   v7 = v5;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v7 copy];
 
   return v8;
@@ -96,7 +96,7 @@
     [NSArray(AppleAccount) aa_mapNullable:];
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __40__NSArray_AppleAccount__aa_mapNullable___block_invoke;
@@ -105,7 +105,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -115,7 +115,7 @@
 {
   v4 = MEMORY[0x1E695DFD8];
   v5 = a3;
-  v6 = [[v4 alloc] initWithArray:a1];
+  v6 = [[v4 alloc] initWithArray:self];
   v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v5];
 
   v8 = [v6 isSubsetOfSet:v7];

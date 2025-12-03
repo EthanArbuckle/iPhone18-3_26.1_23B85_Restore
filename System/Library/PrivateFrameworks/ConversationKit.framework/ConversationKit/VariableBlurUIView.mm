@@ -14,7 +14,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   VariableBlurUIView.layoutSubviews()();
 }
 

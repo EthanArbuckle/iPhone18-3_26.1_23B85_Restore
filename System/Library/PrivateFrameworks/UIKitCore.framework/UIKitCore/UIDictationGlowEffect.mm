@@ -1,7 +1,7 @@
 @interface UIDictationGlowEffect
-- (UIDictationGlowEffect)initWithView:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTintColor:(id)a3 animated:(BOOL)a4 duration:(double)a5 autoreverses:(BOOL)a6 repeatCount:(double)a7;
+- (UIDictationGlowEffect)initWithView:(id)view;
+- (void)setTintColor:(id)color;
+- (void)setTintColor:(id)color animated:(BOOL)animated duration:(double)duration autoreverses:(BOOL)autoreverses repeatCount:(double)count;
 - (void)updateColorWithUserInterfaceStyleChange;
 @end
 
@@ -11,10 +11,10 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_glowEffectView);
-  v4 = [WeakRetained traitCollection];
-  v5 = [v4 userInterfaceStyle];
-  v6 = v5;
-  v8 = v5 == 2 || v5 == 1000;
+  traitCollection = [WeakRetained traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  v6 = userInterfaceStyle;
+  v8 = userInterfaceStyle == 2 || userInterfaceStyle == 1000;
 
   if (self->_cachedDarkMode != v8)
   {
@@ -23,17 +23,17 @@
     v10 = v9;
     if (v6 == 1000 || v6 == 2)
     {
-      v11 = [v9 darkModeCompositingFiler];
+      darkModeCompositingFiler = [v9 darkModeCompositingFiler];
     }
 
     else
     {
-      v11 = [v9 lightModeCompositingFiler];
+      darkModeCompositingFiler = [v9 lightModeCompositingFiler];
     }
 
-    v12 = v11;
-    v13 = [(TUIGlowEffect *)self->_glowEffect layer];
-    [v13 setCompositingFilter:v12];
+    v12 = darkModeCompositingFiler;
+    layer = [(TUIGlowEffect *)self->_glowEffect layer];
+    [layer setCompositingFilter:v12];
 
     if (self->_cachedTintColor && !self->_cachedDarkMode)
     {
@@ -53,10 +53,10 @@
   }
 }
 
-- (UIDictationGlowEffect)initWithView:(id)a3
+- (UIDictationGlowEffect)initWithView:(id)view
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   if (+[UIKeyboard isInlineDictationGlowEffectEnabled](UIKeyboard, "isInlineDictationGlowEffectEnabled") && !+[UIKeyboard isKeyboardProcess])
   {
     v29.receiver = self;
@@ -65,11 +65,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeWeak(&v6->_glowEffectView, v4);
+      objc_storeWeak(&v6->_glowEffectView, viewCopy);
       v8 = objc_alloc(getTUIGlowEffectClass());
       WeakRetained = objc_loadWeakRetained(&v7->_glowEffectView);
-      v10 = [WeakRetained layer];
-      v11 = [v8 initWithLayer:v10];
+      layer = [WeakRetained layer];
+      v11 = [v8 initWithLayer:layer];
       glowEffect = v7->_glowEffect;
       v7->_glowEffect = v11;
 
@@ -85,9 +85,9 @@
       v17 = [v15 _registerForTraitTokenChanges:v16 withTarget:v7 action:sel_updateColorWithUserInterfaceStyleChange];
 
       v18 = objc_loadWeakRetained(&v7->_glowEffectView);
-      v19 = [v18 traitCollection];
-      v20 = [v19 userInterfaceStyle];
-      v22 = v20 == 2 || v20 == 1000;
+      traitCollection = [v18 traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
+      v22 = userInterfaceStyle == 2 || userInterfaceStyle == 1000;
       v7->_cachedDarkMode = v22;
 
       cachedDarkMode = v7->_cachedDarkMode;
@@ -103,38 +103,38 @@
         [v24 lightModeCompositingFiler];
       }
       v26 = ;
-      v27 = [(TUIGlowEffect *)v7->_glowEffect layer];
-      [v27 setCompositingFilter:v26];
+      layer2 = [(TUIGlowEffect *)v7->_glowEffect layer];
+      [layer2 setCompositingFilter:v26];
     }
 
     self = v7;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v5 = v4;
+    v5 = colorCopy;
     if (self->_cachedDarkMode)
     {
       v16 = 0.0;
       v17 = 0;
       TUIGlowEffectClass = getTUIGlowEffectClass();
       cachedDarkMode = self->_cachedDarkMode;
-      v8 = [v5 CGColor];
+      cGColor = [v5 CGColor];
       [v5 alphaComponent];
-      if ([TUIGlowEffectClass adjustVisibilityForDarkMode:cachedDarkMode tintColor:v8 alpha:&v17 outTintColor:&v16 outAlpha:?])
+      if ([TUIGlowEffectClass adjustVisibilityForDarkMode:cachedDarkMode tintColor:cGColor alpha:&v17 outTintColor:&v16 outAlpha:?])
       {
         v9 = [v5 copy];
         cachedTintColor = self->_cachedTintColor;
@@ -170,13 +170,13 @@
   }
 }
 
-- (void)setTintColor:(id)a3 animated:(BOOL)a4 duration:(double)a5 autoreverses:(BOOL)a6 repeatCount:(double)a7
+- (void)setTintColor:(id)color animated:(BOOL)animated duration:(double)duration autoreverses:(BOOL)autoreverses repeatCount:(double)count
 {
-  v8 = a6;
-  v10 = a4;
+  autoreversesCopy = autoreverses;
+  animatedCopy = animated;
   v25 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+  colorCopy = color;
+  if (colorCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     if (self->_cachedDarkMode)
     {
@@ -184,9 +184,9 @@
       v20 = 0;
       TUIGlowEffectClass = getTUIGlowEffectClass();
       cachedDarkMode = self->_cachedDarkMode;
-      v15 = [v12 CGColor];
-      [v12 alphaComponent];
-      if ([TUIGlowEffectClass adjustVisibilityForDarkMode:cachedDarkMode tintColor:v15 alpha:&v20 outTintColor:&v19 outAlpha:?])
+      cGColor = [colorCopy CGColor];
+      [colorCopy alphaComponent];
+      if ([TUIGlowEffectClass adjustVisibilityForDarkMode:cachedDarkMode tintColor:cGColor alpha:&v20 outTintColor:&v19 outAlpha:?])
       {
         v16 = [UIColor colorWithCGColor:v20];
         v17 = [v16 colorWithAlphaComponent:v19];
@@ -201,11 +201,11 @@
           _os_log_debug_impl(&dword_188A29000, v18, OS_LOG_TYPE_DEBUG, "setTintColor: with dark-mode-adjusted opacity %f and color %@", buf, 0x16u);
         }
 
-        v12 = v17;
+        colorCopy = v17;
       }
     }
 
-    -[TUIGlowEffect setTintColor:animated:duration:autoreverses:repeatCount:](self->_glowEffect, "setTintColor:animated:duration:autoreverses:repeatCount:", [v12 CGColor], v10, v8, a5, a7);
+    -[TUIGlowEffect setTintColor:animated:duration:autoreverses:repeatCount:](self->_glowEffect, "setTintColor:animated:duration:autoreverses:repeatCount:", [colorCopy CGColor], animatedCopy, autoreversesCopy, duration, count);
   }
 }
 

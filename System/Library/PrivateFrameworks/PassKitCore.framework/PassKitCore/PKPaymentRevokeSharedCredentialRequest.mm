@@ -1,15 +1,15 @@
 @interface PKPaymentRevokeSharedCredentialRequest
-- (PKPaymentRevokeSharedCredentialRequest)initWithCredential:(id)a3 revocationAttestation:(id)a4;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKPaymentRevokeSharedCredentialRequest)initWithCredential:(id)credential revocationAttestation:(id)attestation;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 - (id)requestBody;
 @end
 
 @implementation PKPaymentRevokeSharedCredentialRequest
 
-- (PKPaymentRevokeSharedCredentialRequest)initWithCredential:(id)a3 revocationAttestation:(id)a4
+- (PKPaymentRevokeSharedCredentialRequest)initWithCredential:(id)credential revocationAttestation:(id)attestation
 {
-  v7 = a3;
-  v8 = a4;
+  credentialCopy = credential;
+  attestationCopy = attestation;
   v18.receiver = self;
   v18.super_class = PKPaymentRevokeSharedCredentialRequest;
   v9 = [(PKOverlayableWebServiceRequest *)&v18 init];
@@ -19,8 +19,8 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v9->_credential, a3);
-  v11 = dictionaryFromSubcredentialEncryptedRequest(v8);
+  objc_storeStrong(&v9->_credential, credential);
+  v11 = dictionaryFromSubcredentialEncryptedRequest(attestationCopy);
   revocationAttestation = v10->_revocationAttestation;
   v10->_revocationAttestation = v11;
 
@@ -64,14 +64,14 @@ LABEL_11:
 - (id)requestBody
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKAppletSubcredential *)self->_credential identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"keyID"];
+  identifier = [(PKAppletSubcredential *)self->_credential identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"keyID"];
 
-  v5 = [(PKAppletSubcredential *)self->_credential partnerIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"partnerID"];
+  partnerIdentifier = [(PKAppletSubcredential *)self->_credential partnerIdentifier];
+  [v3 setObject:partnerIdentifier forKeyedSubscript:@"partnerID"];
 
-  v6 = [(PKAppletSubcredential *)self->_credential brandIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"brand"];
+  brandIdentifier = [(PKAppletSubcredential *)self->_credential brandIdentifier];
+  [v3 setObject:brandIdentifier forKeyedSubscript:@"brand"];
 
   revocationAttestation = self->_revocationAttestation;
   if (revocationAttestation)
@@ -82,24 +82,24 @@ LABEL_11:
   return v3;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v22 = *MEMORY[0x1E69E9840];
   v19 = @"devices";
-  v20 = a4;
+  identifierCopy = identifier;
   v21 = @"deleteKey";
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  informationCopy = information;
+  identifierCopy2 = identifier;
+  lCopy = l;
   v12 = [v8 arrayWithObjects:&v19 count:3];
 
-  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v11 endpointComponents:v12 queryParameters:0 appleAccountInformation:v9, v19, v20, v21, v22];
+  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy, v19, identifierCopy, v21, v22];
 
   [v13 setHTTPMethod:@"POST"];
   v14 = objc_opt_class();
-  v15 = [(PKPaymentRevokeSharedCredentialRequest *)self requestBody];
-  v16 = [v14 _HTTPBodyWithDictionary:v15];
+  requestBody = [(PKPaymentRevokeSharedCredentialRequest *)self requestBody];
+  v16 = [v14 _HTTPBodyWithDictionary:requestBody];
   [v13 setHTTPBody:v16];
 
   v17 = [v13 copy];

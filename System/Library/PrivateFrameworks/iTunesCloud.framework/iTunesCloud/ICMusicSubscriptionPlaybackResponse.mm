@@ -1,12 +1,12 @@
 @interface ICMusicSubscriptionPlaybackResponse
-- (ICMusicSubscriptionPlaybackResponse)initWithResponseDictionary:(id)a3 requestDate:(id)a4 urlBag:(id)a5;
+- (ICMusicSubscriptionPlaybackResponse)initWithResponseDictionary:(id)dictionary requestDate:(id)date urlBag:(id)bag;
 - (ICStoreDialogResponse)dialog;
 - (NSArray)items;
 - (NSData)leaseInfoData;
 - (NSDate)leaseExpirationDate;
 - (NSError)serverError;
 - (NSString)householdID;
-- (id)itemWithStoreAdamID:(int64_t)a3;
+- (id)itemWithStoreAdamID:(int64_t)d;
 @end
 
 @implementation ICMusicSubscriptionPlaybackResponse
@@ -61,7 +61,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)itemWithStoreAdamID:(int64_t)a3
+- (id)itemWithStoreAdamID:(int64_t)d
 {
   v17 = *MEMORY[0x1E69E9840];
   [(ICMusicSubscriptionPlaybackResponse *)self items];
@@ -84,7 +84,7 @@ LABEL_7:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 storeAdamID] == a3)
+        if ([v9 storeAdamID] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -177,8 +177,8 @@ LABEL_11:
 
 - (NSDate)leaseExpirationDate
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 objectForKey:@"ICMusicSubscriptionLeaseDurationInterval"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"ICMusicSubscriptionLeaseDurationInterval"];
 
   if (objc_opt_respondsToSelector())
   {
@@ -203,9 +203,9 @@ LABEL_6:
 
   else
   {
-    v8 = [(ICMusicSubscriptionPlaybackResponse *)self serverError];
+    serverError = [(ICMusicSubscriptionPlaybackResponse *)self serverError];
 
-    if (v8)
+    if (serverError)
     {
       v9 = 0;
       goto LABEL_12;
@@ -253,18 +253,18 @@ LABEL_12:
   return v3;
 }
 
-- (ICMusicSubscriptionPlaybackResponse)initWithResponseDictionary:(id)a3 requestDate:(id)a4 urlBag:(id)a5
+- (ICMusicSubscriptionPlaybackResponse)initWithResponseDictionary:(id)dictionary requestDate:(id)date urlBag:(id)bag
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
+  bagCopy = bag;
   v12 = [(ICMusicSubscriptionPlaybackResponse *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_responseDictionary, a3);
-    objc_storeStrong(&v13->_requestDate, a4);
-    objc_storeStrong(&v13->_urlBag, a5);
+    objc_storeStrong(&v12->_responseDictionary, dictionary);
+    objc_storeStrong(&v13->_requestDate, date);
+    objc_storeStrong(&v13->_urlBag, bag);
   }
 
   return v13;

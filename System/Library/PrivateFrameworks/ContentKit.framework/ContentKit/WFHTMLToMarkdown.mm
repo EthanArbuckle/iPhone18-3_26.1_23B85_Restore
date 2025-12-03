@@ -1,27 +1,27 @@
 @interface WFHTMLToMarkdown
-- (BOOL)onlywhite:(id)a3;
-- (BOOL)skipwrap:(id)a3;
+- (BOOL)onlywhite:(id)onlywhite;
+- (BOOL)skipwrap:(id)skipwrap;
 - (NSDictionary)nameToCodepointMapping;
 - (NSDictionary)unifiableN;
-- (WFHTMLToMarkdown)initWithBaseURL:(id)a3;
-- (id)charref:(id)a3;
-- (id)entityref:(id)a3;
-- (id)escapeMD:(id)a3;
-- (id)escapeMDSection:(id)a3 snob:(BOOL)a4;
-- (id)handleHTML:(id)a3;
-- (id)optwrap:(id)a3;
-- (id)previousIndex:(id)a3;
-- (id)wrapText:(id)a3 toWidth:(int64_t)a4;
-- (int)tagHeaderNumber:(id)a3;
-- (unsigned)nameToCodepoint:(id)a3;
-- (void)addOutput:(id)a3;
+- (WFHTMLToMarkdown)initWithBaseURL:(id)l;
+- (id)charref:(id)charref;
+- (id)entityref:(id)entityref;
+- (id)escapeMD:(id)d;
+- (id)escapeMDSection:(id)section snob:(BOOL)snob;
+- (id)handleHTML:(id)l;
+- (id)optwrap:(id)optwrap;
+- (id)previousIndex:(id)index;
+- (id)wrapText:(id)text toWidth:(int64_t)width;
+- (int)tagHeaderNumber:(id)number;
+- (unsigned)nameToCodepoint:(id)codepoint;
+- (void)addOutput:(id)output;
 - (void)close;
-- (void)handleTag:(id)a3 attributes:(id)a4 start:(BOOL)a5;
-- (void)output:(id)a3 pureData:(BOOL)a4 force:(id)a5;
-- (void)parser:(id)a3 foundCharacterRef:(id)a4;
-- (void)parser:(id)a3 foundData:(id)a4;
-- (void)parser:(id)a3 foundEntityRef:(id)a4;
-- (void)parser:(id)a3 foundStartTag:(id)a4 attributes:(id)a5;
+- (void)handleTag:(id)tag attributes:(id)attributes start:(BOOL)start;
+- (void)output:(id)output pureData:(BOOL)data force:(id)force;
+- (void)parser:(id)parser foundCharacterRef:(id)ref;
+- (void)parser:(id)parser foundData:(id)data;
+- (void)parser:(id)parser foundEntityRef:(id)ref;
+- (void)parser:(id)parser foundStartTag:(id)tag attributes:(id)attributes;
 - (void)pbr;
 @end
 
@@ -33,15 +33,15 @@
   if (!unifiableN)
   {
     v4 = objc_opt_new();
-    v5 = [(WFHTMLToMarkdown *)self unifiable];
+    unifiable = [(WFHTMLToMarkdown *)self unifiable];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __30__WFHTMLToMarkdown_unifiableN__block_invoke;
     v14 = &unk_278349AD8;
     v6 = v4;
     v15 = v6;
-    v16 = self;
-    [v5 enumerateKeysAndObjectsUsingBlock:&v11];
+    selfCopy = self;
+    [unifiable enumerateKeysAndObjectsUsingBlock:&v11];
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[WFHTMLToMarkdown nameToCodepoint:](self, "nameToCodepoint:", @"nbsp", v11, v12, v13, v14)}];
     [(NSDictionary *)v6 removeObjectForKey:v7];
 
@@ -65,22 +65,22 @@ void __30__WFHTMLToMarkdown_unifiableN__block_invoke(uint64_t a1, uint64_t a2, v
   [v5 setObject:v7 forKey:v8];
 }
 
-- (unsigned)nameToCodepoint:(id)a3
+- (unsigned)nameToCodepoint:(id)codepoint
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"apos"])
+  codepointCopy = codepoint;
+  if ([codepointCopy isEqualToString:@"apos"])
   {
-    v5 = 39;
+    unsignedShortValue = 39;
   }
 
   else
   {
-    v6 = [(WFHTMLToMarkdown *)self nameToCodepointMapping];
-    v7 = [v6 objectForKey:v4];
-    v5 = [v7 unsignedShortValue];
+    nameToCodepointMapping = [(WFHTMLToMarkdown *)self nameToCodepointMapping];
+    v7 = [nameToCodepointMapping objectForKey:codepointCopy];
+    unsignedShortValue = [v7 unsignedShortValue];
   }
 
-  return v5;
+  return unsignedShortValue;
 }
 
 - (NSDictionary)nameToCodepointMapping
@@ -95,23 +95,23 @@ void __30__WFHTMLToMarkdown_unifiableN__block_invoke(uint64_t a1, uint64_t a2, v
   return nameToCodepointMapping;
 }
 
-- (void)parser:(id)a3 foundData:(id)a4
+- (void)parser:(id)parser foundData:(id)data
 {
-  v10 = a4;
-  if ([v10 containsString:@"/script>"])
+  dataCopy = data;
+  if ([dataCopy containsString:@"/script>"])
   {
     [(WFHTMLToMarkdown *)self setQuiet:[(WFHTMLToMarkdown *)self quiet]- 1];
   }
 
-  v5 = [(WFHTMLToMarkdown *)self maybeAutomaticLink];
+  maybeAutomaticLink = [(WFHTMLToMarkdown *)self maybeAutomaticLink];
 
-  if (v5)
+  if (maybeAutomaticLink)
   {
-    v6 = [(WFHTMLToMarkdown *)self maybeAutomaticLink];
-    if ([v6 isEqualToString:v10] && +[WFURLDetector stringMatchesExactly:](WFURLDetector, "stringMatchesExactly:", v6))
+    maybeAutomaticLink2 = [(WFHTMLToMarkdown *)self maybeAutomaticLink];
+    if ([maybeAutomaticLink2 isEqualToString:dataCopy] && +[WFURLDetector stringMatchesExactly:](WFURLDetector, "stringMatchesExactly:", maybeAutomaticLink2))
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@>", v10];
-      [(WFHTMLToMarkdown *)self output:v7];
+      dataCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@>", dataCopy];
+      [(WFHTMLToMarkdown *)self output:dataCopy];
 
       goto LABEL_13;
     }
@@ -122,63 +122,63 @@ void __30__WFHTMLToMarkdown_unifiableN__block_invoke(uint64_t a1, uint64_t a2, v
 
   if ([(WFHTMLToMarkdown *)self code]|| [(WFHTMLToMarkdown *)self pre])
   {
-    v8 = v10;
+    v8 = dataCopy;
   }
 
   else
   {
-    v9 = [(WFHTMLToMarkdown *)self escapeMDSection:v10 snob:[(WFHTMLToMarkdown *)self escapeSnob]];
+    v9 = [(WFHTMLToMarkdown *)self escapeMDSection:dataCopy snob:[(WFHTMLToMarkdown *)self escapeSnob]];
 
     v8 = v9;
   }
 
-  v10 = v8;
+  dataCopy = v8;
   [(WFHTMLToMarkdown *)self output:v8 pureData:1 force:0];
 LABEL_13:
 }
 
-- (void)output:(id)a3 pureData:(BOOL)a4 force:(id)a5
+- (void)output:(id)output pureData:(BOOL)data force:(id)force
 {
-  v6 = a4;
+  dataCopy = data;
   v93 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  outputCopy = output;
+  forceCopy = force;
   abbreviationData = self->_abbreviationData;
   if (abbreviationData)
   {
-    v11 = [(NSString *)abbreviationData stringByAppendingString:v8];
+    v11 = [(NSString *)abbreviationData stringByAppendingString:outputCopy];
     v12 = self->_abbreviationData;
     self->_abbreviationData = v11;
   }
 
   if (![(WFHTMLToMarkdown *)self quiet])
   {
-    v82 = self;
-    if (v6 && ![(WFHTMLToMarkdown *)self pre])
+    selfCopy = self;
+    if (dataCopy && ![(WFHTMLToMarkdown *)self pre])
     {
       v13 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"[ \t\n\r\f\v]+" options:0 error:0];
-      v14 = [v13 stringByReplacingMatchesInString:v8 options:0 range:0 withTemplate:{objc_msgSend(v8, "length"), @" "}];
+      v14 = [v13 stringByReplacingMatchesInString:outputCopy options:0 range:0 withTemplate:{objc_msgSend(outputCopy, "length"), @" "}];
 
       if ([v14 length] && objc_msgSend(v14, "characterAtIndex:", 0) == 32)
       {
         [(WFHTMLToMarkdown *)self setSpace:1];
-        v8 = [v14 substringFromIndex:1];
+        outputCopy = [v14 substringFromIndex:1];
       }
 
       else
       {
-        v8 = v14;
+        outputCopy = v14;
       }
     }
 
-    v15 = [v8 length];
-    if (v9 || v15)
+    v15 = [outputCopy length];
+    if (forceCopy || v15)
     {
-      if (-[WFHTMLToMarkdown startpre](self, "startpre") && ([v8 hasPrefix:@"\n"] & 1) == 0)
+      if (-[WFHTMLToMarkdown startpre](self, "startpre") && ([outputCopy hasPrefix:@"\n"] & 1) == 0)
       {
-        v16 = [@"\n" stringByAppendingString:v8];
+        v16 = [@"\n" stringByAppendingString:outputCopy];
 
-        v8 = v16;
+        outputCopy = v16;
       }
 
       v17 = objc_opt_new();
@@ -191,23 +191,23 @@ LABEL_13:
           ++v18;
         }
 
-        while ([(WFHTMLToMarkdown *)v82 blockquote]> v18);
+        while ([(WFHTMLToMarkdown *)selfCopy blockquote]> v18);
       }
 
-      if ((!v9 || ![v8 length] || objc_msgSend(v8, "characterAtIndex:", 0) != 62) && -[WFHTMLToMarkdown blockquote](v82, "blockquote"))
+      if ((!forceCopy || ![outputCopy length] || objc_msgSend(outputCopy, "characterAtIndex:", 0) != 62) && -[WFHTMLToMarkdown blockquote](selfCopy, "blockquote"))
       {
         [v17 appendString:@" "];
       }
 
-      if ([(WFHTMLToMarkdown *)v82 pre])
+      if ([(WFHTMLToMarkdown *)selfCopy pre])
       {
-        v19 = [(WFHTMLToMarkdown *)v82 list];
-        v20 = [v19 count];
+        list = [(WFHTMLToMarkdown *)selfCopy list];
+        v20 = [list count];
 
         if (v20)
         {
-          v21 = [(WFHTMLToMarkdown *)v82 list];
-          v22 = [v21 count];
+          list2 = [(WFHTMLToMarkdown *)selfCopy list];
+          v22 = [list2 count];
 
           if (v22)
           {
@@ -216,8 +216,8 @@ LABEL_13:
             {
               [v17 appendString:@"    "];
               ++v23;
-              v24 = [(WFHTMLToMarkdown *)v82 list];
-              v25 = [v24 count];
+              list3 = [(WFHTMLToMarkdown *)selfCopy list];
+              v25 = [list3 count];
             }
 
             while (v25 > v23);
@@ -230,44 +230,44 @@ LABEL_13:
         }
 
         v26 = [@"\n" stringByAppendingString:v17];
-        v27 = [v8 stringByReplacingOccurrencesOfString:@"\n" withString:v26];
+        v27 = [outputCopy stringByReplacingOccurrencesOfString:@"\n" withString:v26];
 
-        v8 = v27;
+        outputCopy = v27;
       }
 
-      if ([(WFHTMLToMarkdown *)v82 startpre])
+      if ([(WFHTMLToMarkdown *)selfCopy startpre])
       {
-        [(WFHTMLToMarkdown *)v82 setStartpre:0];
-        v28 = [(WFHTMLToMarkdown *)v82 list];
-        v29 = [v28 count];
+        [(WFHTMLToMarkdown *)selfCopy setStartpre:0];
+        list4 = [(WFHTMLToMarkdown *)selfCopy list];
+        v29 = [list4 count];
 
         if (v29)
         {
           v30 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"\n"];
-          v31 = [v8 wf_stringByTrimmingLeadingCharactersInSet:v30];
+          v31 = [outputCopy wf_stringByTrimmingLeadingCharactersInSet:v30];
 
-          v8 = v31;
+          outputCopy = v31;
         }
       }
 
-      if ([(WFHTMLToMarkdown *)v82 start])
+      if ([(WFHTMLToMarkdown *)selfCopy start])
       {
-        [(WFHTMLToMarkdown *)v82 setSpace:0];
-        [(WFHTMLToMarkdown *)v82 setP_p:0];
-        [(WFHTMLToMarkdown *)v82 setStart:0];
+        [(WFHTMLToMarkdown *)selfCopy setSpace:0];
+        [(WFHTMLToMarkdown *)selfCopy setP_p:0];
+        [(WFHTMLToMarkdown *)selfCopy setStart:0];
       }
 
-      if ([v9 isEqualToString:@"end"])
+      if ([forceCopy isEqualToString:@"end"])
       {
-        [(WFHTMLToMarkdown *)v82 setP_p:0];
-        [(WFHTMLToMarkdown *)v82 addOutput:@"\n"];
-        [(WFHTMLToMarkdown *)v82 setSpace:0];
+        [(WFHTMLToMarkdown *)selfCopy setP_p:0];
+        [(WFHTMLToMarkdown *)selfCopy addOutput:@"\n"];
+        [(WFHTMLToMarkdown *)selfCopy setSpace:0];
       }
 
-      if ([(WFHTMLToMarkdown *)v82 p_p])
+      if ([(WFHTMLToMarkdown *)selfCopy p_p])
       {
         v32 = objc_opt_new();
-        if ([(WFHTMLToMarkdown *)v82 p_p]>= 1)
+        if ([(WFHTMLToMarkdown *)selfCopy p_p]>= 1)
         {
           v33 = 0;
           do
@@ -278,33 +278,33 @@ LABEL_13:
             ++v33;
           }
 
-          while ([(WFHTMLToMarkdown *)v82 p_p]> v33);
+          while ([(WFHTMLToMarkdown *)selfCopy p_p]> v33);
         }
 
-        [(WFHTMLToMarkdown *)v82 addOutput:v32];
-        [(WFHTMLToMarkdown *)v82 setSpace:0];
+        [(WFHTMLToMarkdown *)selfCopy addOutput:v32];
+        [(WFHTMLToMarkdown *)selfCopy setSpace:0];
       }
 
-      if ([(WFHTMLToMarkdown *)v82 space])
+      if ([(WFHTMLToMarkdown *)selfCopy space])
       {
-        if (![(WFHTMLToMarkdown *)v82 lastWasNewline])
+        if (![(WFHTMLToMarkdown *)selfCopy lastWasNewline])
         {
-          [(WFHTMLToMarkdown *)v82 addOutput:@" "];
+          [(WFHTMLToMarkdown *)selfCopy addOutput:@" "];
         }
 
-        [(WFHTMLToMarkdown *)v82 setSpace:0];
+        [(WFHTMLToMarkdown *)selfCopy setSpace:0];
       }
 
-      v35 = [(WFHTMLToMarkdown *)v82 a];
+      v35 = [(WFHTMLToMarkdown *)selfCopy a];
       if ([v35 count])
       {
-        if ([(WFHTMLToMarkdown *)v82 p_p]== 2 && [(WFHTMLToMarkdown *)v82 linksEachParagraph])
+        if ([(WFHTMLToMarkdown *)selfCopy p_p]== 2 && [(WFHTMLToMarkdown *)selfCopy linksEachParagraph])
         {
         }
 
         else
         {
-          v36 = [v9 isEqualToString:@"end"];
+          v36 = [forceCopy isEqualToString:@"end"];
 
           if ((v36 & 1) == 0)
           {
@@ -313,13 +313,13 @@ LABEL_13:
         }
 
         v75 = v17;
-        v77 = v8;
-        v74 = v9;
-        v37 = [v9 isEqualToString:@"end"];
-        v38 = v82;
+        v77 = outputCopy;
+        v74 = forceCopy;
+        v37 = [forceCopy isEqualToString:@"end"];
+        v38 = selfCopy;
         if (v37)
         {
-          [(WFHTMLToMarkdown *)v82 addOutput:@"\n"];
+          [(WFHTMLToMarkdown *)selfCopy addOutput:@"\n"];
         }
 
         v79 = objc_opt_new();
@@ -327,7 +327,7 @@ LABEL_13:
         v88 = 0u;
         v89 = 0u;
         v90 = 0u;
-        obj = [(WFHTMLToMarkdown *)v82 a];
+        obj = [(WFHTMLToMarkdown *)selfCopy a];
         v39 = [obj countByEnumeratingWithState:&v87 objects:v92 count:16];
         if (v39)
         {
@@ -347,11 +347,11 @@ LABEL_13:
               }
 
               v44 = *(*(&v87 + 1) + 8 * v43);
-              v45 = [(WFHTMLToMarkdown *)v38 outCount];
+              outCount = [(WFHTMLToMarkdown *)v38 outCount];
               v46 = [v44 objectForKey:v41];
-              v47 = [v46 integerValue];
+              integerValue = [v46 integerValue];
 
-              if (v45 <= v47)
+              if (outCount <= integerValue)
               {
                 [v79 addObject:v44];
               }
@@ -363,12 +363,12 @@ LABEL_13:
                 v50 = [v44 objectForKey:@"count"];
                 v51 = MEMORY[0x277CBEBC0];
                 v52 = [v44 objectForKey:@"href"];
-                v53 = [(WFHTMLToMarkdown *)v38 baseURL];
-                v54 = [v51 URLWithString:v52 relativeToURL:v53];
+                baseURL = [(WFHTMLToMarkdown *)v38 baseURL];
+                v54 = [v51 URLWithString:v52 relativeToURL:baseURL];
                 v55 = [v49 stringWithFormat:@"   [%@]: %@", v50, v54];
 
-                v38 = v82;
-                [(WFHTMLToMarkdown *)v82 addOutput:v55];
+                v38 = selfCopy;
+                [(WFHTMLToMarkdown *)selfCopy addOutput:v55];
                 v56 = [v44 objectForKey:@"title"];
 
                 if (v56)
@@ -376,10 +376,10 @@ LABEL_13:
                   v57 = MEMORY[0x277CCACA8];
                   v58 = [v44 objectForKey:@"title"];
                   v59 = [v57 stringWithFormat:@" (\"%@\"", v58];
-                  [(WFHTMLToMarkdown *)v82 addOutput:v59];
+                  [(WFHTMLToMarkdown *)selfCopy addOutput:v59];
                 }
 
-                [(WFHTMLToMarkdown *)v82 addOutput:@"\n"];
+                [(WFHTMLToMarkdown *)selfCopy addOutput:@"\n"];
 
                 v41 = v48;
                 v42 = v78;
@@ -400,7 +400,7 @@ LABEL_13:
         v61 = [v60 isEqualToArray:v79];
 
         v17 = v75;
-        v8 = v77;
+        outputCopy = v77;
         if ((v61 & 1) == 0)
         {
           [(WFHTMLToMarkdown *)v38 addOutput:@" "];
@@ -408,7 +408,7 @@ LABEL_13:
 
         [(WFHTMLToMarkdown *)v38 setA:v79];
 
-        v9 = v74;
+        forceCopy = v74;
       }
 
       else
@@ -416,17 +416,17 @@ LABEL_13:
       }
 
 LABEL_70:
-      v62 = [(WFHTMLToMarkdown *)v82 abbreviationList];
-      if ([v62 count])
+      abbreviationList = [(WFHTMLToMarkdown *)selfCopy abbreviationList];
+      if ([abbreviationList count])
       {
-        v63 = [v9 isEqualToString:@"end"];
+        v63 = [forceCopy isEqualToString:@"end"];
 
         if (!v63)
         {
 LABEL_81:
-          [(WFHTMLToMarkdown *)v82 setP_p:0];
-          [(WFHTMLToMarkdown *)v82 addOutput:v8];
-          [(WFHTMLToMarkdown *)v82 setOutCount:[(WFHTMLToMarkdown *)v82 outCount]+ 1];
+          [(WFHTMLToMarkdown *)selfCopy setP_p:0];
+          [(WFHTMLToMarkdown *)selfCopy addOutput:outputCopy];
+          [(WFHTMLToMarkdown *)selfCopy setOutCount:[(WFHTMLToMarkdown *)selfCopy outCount]+ 1];
 
           goto LABEL_82;
         }
@@ -435,13 +435,13 @@ LABEL_81:
         v86 = 0u;
         v83 = 0u;
         v84 = 0u;
-        v62 = [(WFHTMLToMarkdown *)v82 abbreviationList];
-        v64 = [v62 countByEnumeratingWithState:&v83 objects:v91 count:16];
+        abbreviationList = [(WFHTMLToMarkdown *)selfCopy abbreviationList];
+        v64 = [abbreviationList countByEnumeratingWithState:&v83 objects:v91 count:16];
         if (v64)
         {
           v65 = v64;
           v76 = v17;
-          v66 = v9;
+          v66 = forceCopy;
           v67 = *v84;
           do
           {
@@ -449,22 +449,22 @@ LABEL_81:
             {
               if (*v84 != v67)
               {
-                objc_enumerationMutation(v62);
+                objc_enumerationMutation(abbreviationList);
               }
 
               v69 = *(*(&v83 + 1) + 8 * i);
               v70 = MEMORY[0x277CCACA8];
-              v71 = [v69 abbreviation];
-              v72 = [v69 title];
-              v73 = [v70 stringWithFormat:@"  *[%@]: %@\n", v71, v72];
-              [(WFHTMLToMarkdown *)v82 addOutput:v73];
+              abbreviation = [v69 abbreviation];
+              title = [v69 title];
+              v73 = [v70 stringWithFormat:@"  *[%@]: %@\n", abbreviation, title];
+              [(WFHTMLToMarkdown *)selfCopy addOutput:v73];
             }
 
-            v65 = [v62 countByEnumeratingWithState:&v83 objects:v91 count:16];
+            v65 = [abbreviationList countByEnumeratingWithState:&v83 objects:v91 count:16];
           }
 
           while (v65);
-          v9 = v66;
+          forceCopy = v66;
           v17 = v76;
         }
       }
@@ -485,13 +485,13 @@ LABEL_82:
   }
 }
 
-- (void)handleTag:(id)a3 attributes:(id)a4 start:(BOOL)a5
+- (void)handleTag:(id)tag attributes:(id)attributes start:(BOOL)start
 {
-  v5 = a5;
+  startCopy = start;
   v111[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 mutableCopy];
+  tagCopy = tag;
+  attributesCopy = attributes;
+  v10 = [attributesCopy mutableCopy];
   v11 = v10;
   if (v10)
   {
@@ -503,12 +503,12 @@ LABEL_82:
     v12 = objc_opt_new();
   }
 
-  v13 = [(WFHTMLToMarkdown *)self tagHeaderNumber:v8];
+  v13 = [(WFHTMLToMarkdown *)self tagHeaderNumber:tagCopy];
   if (v13)
   {
     v14 = v13;
     [(WFHTMLToMarkdown *)self p];
-    if (!v5)
+    if (!startCopy)
     {
       goto LABEL_151;
     }
@@ -529,30 +529,30 @@ LABEL_82:
     [(WFHTMLToMarkdown *)self output:v15];
   }
 
-  if (([v8 isEqualToString:@"p"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"div"))
+  if (([tagCopy isEqualToString:@"p"] & 1) != 0 || objc_msgSend(tagCopy, "isEqualToString:", @"div"))
   {
     [(WFHTMLToMarkdown *)self p];
   }
 
-  if ([v8 isEqualToString:@"br"] && v5)
+  if ([tagCopy isEqualToString:@"br"] && startCopy)
   {
     [(WFHTMLToMarkdown *)self output:@"  \n"];
   }
 
-  if ([v8 isEqualToString:@"hr"] && v5)
+  if ([tagCopy isEqualToString:@"hr"] && startCopy)
   {
     [(WFHTMLToMarkdown *)self p];
     [(WFHTMLToMarkdown *)self output:@"* * *"];
     [(WFHTMLToMarkdown *)self p];
   }
 
-  if (([v8 isEqualToString:@"head"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"style") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"script"))
+  if (([tagCopy isEqualToString:@"head"] & 1) != 0 || (objc_msgSend(tagCopy, "isEqualToString:", @"style") & 1) != 0 || objc_msgSend(tagCopy, "isEqualToString:", @"script"))
   {
-    v16 = [(WFHTMLToMarkdown *)self quiet];
-    if (v5)
+    quiet = [(WFHTMLToMarkdown *)self quiet];
+    if (startCopy)
     {
-      [(WFHTMLToMarkdown *)self setQuiet:v16 + 1];
-      if (([v8 isEqualToString:@"style"] & 1) == 0)
+      [(WFHTMLToMarkdown *)self setQuiet:quiet + 1];
+      if (([tagCopy isEqualToString:@"style"] & 1) == 0)
       {
         goto LABEL_27;
       }
@@ -560,8 +560,8 @@ LABEL_82:
       goto LABEL_23;
     }
 
-    [(WFHTMLToMarkdown *)self setQuiet:v16 - 1];
-    if (([v8 isEqualToString:@"style"] & 1) == 0)
+    [(WFHTMLToMarkdown *)self setQuiet:quiet - 1];
+    if (([tagCopy isEqualToString:@"style"] & 1) == 0)
     {
       goto LABEL_27;
     }
@@ -569,9 +569,9 @@ LABEL_82:
     goto LABEL_25;
   }
 
-  if ([v8 isEqualToString:@"style"])
+  if ([tagCopy isEqualToString:@"style"])
   {
-    if (v5)
+    if (startCopy)
     {
 LABEL_23:
       v17 = 1;
@@ -586,14 +586,14 @@ LABEL_25:
   }
 
 LABEL_27:
-  if ([v8 isEqualToString:@"body"])
+  if ([tagCopy isEqualToString:@"body"])
   {
     [(WFHTMLToMarkdown *)self setQuiet:0];
   }
 
-  if ([v8 isEqualToString:@"blockquote"])
+  if ([tagCopy isEqualToString:@"blockquote"])
   {
-    if (v5)
+    if (startCopy)
     {
       [(WFHTMLToMarkdown *)self p];
       [(WFHTMLToMarkdown *)self output:@"> " pureData:0 force:@"1"];
@@ -608,21 +608,21 @@ LABEL_27:
     }
   }
 
-  if ((([v8 isEqualToString:@"em"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"i") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"u")) && !-[WFHTMLToMarkdown ignoreEmphasis](self, "ignoreEmphasis"))
+  if ((([tagCopy isEqualToString:@"em"] & 1) != 0 || (objc_msgSend(tagCopy, "isEqualToString:", @"i") & 1) != 0 || objc_msgSend(tagCopy, "isEqualToString:", @"u")) && !-[WFHTMLToMarkdown ignoreEmphasis](self, "ignoreEmphasis"))
   {
-    v18 = [(WFHTMLToMarkdown *)self emphasisMark];
-    [(WFHTMLToMarkdown *)self output:v18];
+    emphasisMark = [(WFHTMLToMarkdown *)self emphasisMark];
+    [(WFHTMLToMarkdown *)self output:emphasisMark];
   }
 
-  if ((([v8 isEqualToString:@"strong"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"b")) && !-[WFHTMLToMarkdown ignoreEmphasis](self, "ignoreEmphasis"))
+  if ((([tagCopy isEqualToString:@"strong"] & 1) != 0 || objc_msgSend(tagCopy, "isEqualToString:", @"b")) && !-[WFHTMLToMarkdown ignoreEmphasis](self, "ignoreEmphasis"))
   {
-    v19 = [(WFHTMLToMarkdown *)self strongMark];
-    [(WFHTMLToMarkdown *)self output:v19];
+    strongMark = [(WFHTMLToMarkdown *)self strongMark];
+    [(WFHTMLToMarkdown *)self output:strongMark];
   }
 
-  if (([v8 isEqualToString:@"del"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"strike") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"s"))
+  if (([tagCopy isEqualToString:@"del"] & 1) != 0 || (objc_msgSend(tagCopy, "isEqualToString:", @"strike") & 1) != 0 || objc_msgSend(tagCopy, "isEqualToString:", @"s"))
   {
-    if (v5)
+    if (startCopy)
     {
       v20 = @"<%@>";
     }
@@ -632,17 +632,17 @@ LABEL_27:
       v20 = @"</%@>";
     }
 
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:v20, v8];
-    [(WFHTMLToMarkdown *)self output:v21];
+    tagCopy = [MEMORY[0x277CCACA8] stringWithFormat:v20, tagCopy];
+    [(WFHTMLToMarkdown *)self output:tagCopy];
   }
 
-  if ((([v8 isEqualToString:@"code"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"tt")) && !-[WFHTMLToMarkdown pre](self, "pre"))
+  if ((([tagCopy isEqualToString:@"code"] & 1) != 0 || objc_msgSend(tagCopy, "isEqualToString:", @"tt")) && !-[WFHTMLToMarkdown pre](self, "pre"))
   {
   }
 
-  if ([v8 isEqualToString:@"abbr"])
+  if ([tagCopy isEqualToString:@"abbr"])
   {
-    if (v5)
+    if (startCopy)
     {
       [(WFHTMLToMarkdown *)self setAbbreviationData:&stru_282F53518];
       v22 = [v12 objectForKey:@"title"];
@@ -651,19 +651,19 @@ LABEL_27:
 
     else
     {
-      v23 = [(WFHTMLToMarkdown *)self abbreviationTitle];
+      abbreviationTitle = [(WFHTMLToMarkdown *)self abbreviationTitle];
 
-      if (v23)
+      if (abbreviationTitle)
       {
         v24 = objc_opt_new();
-        v25 = [(WFHTMLToMarkdown *)self abbreviationData];
-        [v24 setAbbreviation:v25];
+        abbreviationData = [(WFHTMLToMarkdown *)self abbreviationData];
+        [v24 setAbbreviation:abbreviationData];
 
-        v26 = [(WFHTMLToMarkdown *)self abbreviationTitle];
-        [v24 setTitle:v26];
+        abbreviationTitle2 = [(WFHTMLToMarkdown *)self abbreviationTitle];
+        [v24 setTitle:abbreviationTitle2];
 
-        v27 = [(WFHTMLToMarkdown *)self abbreviationList];
-        [v27 addObject:v24];
+        abbreviationList = [(WFHTMLToMarkdown *)self abbreviationList];
+        [abbreviationList addObject:v24];
 
         [(WFHTMLToMarkdown *)self setAbbreviationTitle:0];
       }
@@ -672,12 +672,12 @@ LABEL_27:
     }
   }
 
-  if (![v8 isEqualToString:@"a"] || -[WFHTMLToMarkdown ignoreLinks](self, "ignoreLinks"))
+  if (![tagCopy isEqualToString:@"a"] || -[WFHTMLToMarkdown ignoreLinks](self, "ignoreLinks"))
   {
     goto LABEL_75;
   }
 
-  if (v5)
+  if (startCopy)
   {
     v28 = [v12 objectForKey:@"href"];
     if (v28)
@@ -698,25 +698,25 @@ LABEL_27:
       {
       }
 
-      v40 = [(WFHTMLToMarkdown *)self aStack];
+      aStack = [(WFHTMLToMarkdown *)self aStack];
       v41 = [v12 mutableCopy];
-      [v40 addObject:v41];
+      [aStack addObject:v41];
 
-      v32 = [v12 objectForKey:@"href"];
-      [(WFHTMLToMarkdown *)self setMaybeAutomaticLink:v32];
+      aStack2 = [v12 objectForKey:@"href"];
+      [(WFHTMLToMarkdown *)self setMaybeAutomaticLink:aStack2];
       goto LABEL_74;
     }
 
 LABEL_65:
-    v32 = [(WFHTMLToMarkdown *)self aStack];
-    v33 = [MEMORY[0x277CBEB68] null];
-    [v32 addObject:v33];
+    aStack2 = [(WFHTMLToMarkdown *)self aStack];
+    null = [MEMORY[0x277CBEB68] null];
+    [aStack2 addObject:null];
 
 LABEL_74:
 LABEL_75:
-    if ([v8 isEqualToString:@"img"])
+    if ([tagCopy isEqualToString:@"img"])
     {
-      if (v5 && ![(WFHTMLToMarkdown *)self ignoreImages])
+      if (startCopy && ![(WFHTMLToMarkdown *)self ignoreImages])
       {
         v42 = [v12 objectForKey:@"src"];
 
@@ -740,7 +740,7 @@ LABEL_75:
           v50 = [v48 stringWithFormat:@"![%@]", v49];
           [(WFHTMLToMarkdown *)self output:v50];
 
-          v51 = v9;
+          v51 = attributesCopy;
           if ([(WFHTMLToMarkdown *)self inlineLinks])
           {
             v52 = MEMORY[0x277CCACA8];
@@ -780,12 +780,12 @@ LABEL_75:
           v65 = ;
           [(WFHTMLToMarkdown *)self output:v65];
 
-          v9 = v51;
+          attributesCopy = v51;
         }
       }
     }
 
-    if ([v8 isEqualToString:@"dl"] && v5)
+    if ([tagCopy isEqualToString:@"dl"] && startCopy)
     {
       [(WFHTMLToMarkdown *)self p];
     }
@@ -793,20 +793,20 @@ LABEL_75:
     goto LABEL_100;
   }
 
-  v34 = [(WFHTMLToMarkdown *)self aStack];
-  v35 = [v34 count];
+  aStack3 = [(WFHTMLToMarkdown *)self aStack];
+  v35 = [aStack3 count];
 
   if (v35)
   {
-    v36 = [(WFHTMLToMarkdown *)self aStack];
-    v37 = [v36 lastObject];
+    aStack4 = [(WFHTMLToMarkdown *)self aStack];
+    lastObject = [aStack4 lastObject];
 
-    v38 = [(WFHTMLToMarkdown *)self aStack];
-    [v38 removeLastObject];
+    aStack5 = [(WFHTMLToMarkdown *)self aStack];
+    [aStack5 removeLastObject];
 
-    v39 = [(WFHTMLToMarkdown *)self maybeAutomaticLink];
+    maybeAutomaticLink = [(WFHTMLToMarkdown *)self maybeAutomaticLink];
 
-    if (v39)
+    if (maybeAutomaticLink)
     {
       [(WFHTMLToMarkdown *)self setMaybeAutomaticLink:0];
     }
@@ -819,87 +819,87 @@ LABEL_75:
         if ([(WFHTMLToMarkdown *)self inlineLinks])
         {
           v57 = MEMORY[0x277CCACA8];
-          v58 = [v37 objectForKey:@"href"];
+          v58 = [lastObject objectForKey:@"href"];
           [(WFHTMLToMarkdown *)self escapeMD:v58];
-          v60 = v59 = v9;
+          v60 = v59 = attributesCopy;
           v61 = [v57 stringWithFormat:@"](%@)", v60];
           [(WFHTMLToMarkdown *)self output:v61];
 
-          v9 = v59;
+          attributesCopy = v59;
         }
 
         else
         {
-          v66 = v9;
-          v67 = [(WFHTMLToMarkdown *)self previousIndex:v37];
+          v66 = attributesCopy;
+          v67 = [(WFHTMLToMarkdown *)self previousIndex:lastObject];
           if (v67)
           {
             v68 = [(WFHTMLToMarkdown *)self a];
             v69 = [v68 objectAtIndex:{objc_msgSend(v67, "unsignedIntegerValue")}];
 
-            v37 = v69;
+            lastObject = v69;
           }
 
           else
           {
             [(WFHTMLToMarkdown *)self setACount:[(WFHTMLToMarkdown *)self aCount]+ 1];
             v70 = [MEMORY[0x277CCABB0] numberWithInteger:{-[WFHTMLToMarkdown aCount](self, "aCount")}];
-            [v37 setObject:v70 forKey:@"count"];
+            [lastObject setObject:v70 forKey:@"count"];
 
             v71 = [MEMORY[0x277CCABB0] numberWithInteger:{-[WFHTMLToMarkdown outCount](self, "outCount")}];
-            [v37 setObject:v71 forKey:@"outcount"];
+            [lastObject setObject:v71 forKey:@"outcount"];
 
             v68 = [(WFHTMLToMarkdown *)self a];
-            [v68 addObject:v37];
+            [v68 addObject:lastObject];
           }
 
           v72 = MEMORY[0x277CCACA8];
-          v73 = [v37 objectForKey:@"count"];
+          v73 = [lastObject objectForKey:@"count"];
           v74 = [v72 stringWithFormat:@"][%@]", v73];
           [(WFHTMLToMarkdown *)self output:v74];
 
-          v9 = v66;
+          attributesCopy = v66;
         }
       }
     }
   }
 
-  [v8 isEqualToString:@"img"];
-  [v8 isEqualToString:@"dl"];
+  [tagCopy isEqualToString:@"img"];
+  [tagCopy isEqualToString:@"dl"];
 LABEL_100:
-  if ([v8 isEqualToString:@"dt"] && !v5)
+  if ([tagCopy isEqualToString:@"dt"] && !startCopy)
   {
     [(WFHTMLToMarkdown *)self pbr];
   }
 
-  if ([v8 isEqualToString:@"dd"] && v5)
+  if ([tagCopy isEqualToString:@"dd"] && startCopy)
   {
     [(WFHTMLToMarkdown *)self output:@"    "];
   }
 
-  if ([v8 isEqualToString:@"dd"] && !v5)
+  if ([tagCopy isEqualToString:@"dd"] && !startCopy)
   {
     [(WFHTMLToMarkdown *)self pbr];
   }
 
-  if (([v8 isEqualToString:@"ol"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"ul"))
+  if (([tagCopy isEqualToString:@"ol"] & 1) != 0 || objc_msgSend(tagCopy, "isEqualToString:", @"ul"))
   {
-    v75 = [(WFHTMLToMarkdown *)self list];
-    if ([v75 count])
+    list = [(WFHTMLToMarkdown *)self list];
+    if ([list count])
     {
     }
 
     else
     {
-      v76 = [(WFHTMLToMarkdown *)self lastWasList];
+      lastWasList = [(WFHTMLToMarkdown *)self lastWasList];
 
-      if (!v76)
+      if (!lastWasList)
       {
         [(WFHTMLToMarkdown *)self p];
       }
     }
 
-    if (v5)
+    if (startCopy)
     {
       v77 = [v12 objectForKey:@"start"];
 
@@ -911,70 +911,70 @@ LABEL_100:
 
       v110[0] = @"name";
       v110[1] = @"num";
-      v111[0] = v8;
+      v111[0] = tagCopy;
       v79 = [MEMORY[0x277CCABB0] numberWithInt:v77];
       v111[1] = v79;
       v80 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v111 forKeys:v110 count:2];
 
-      v81 = [(WFHTMLToMarkdown *)self list];
+      list2 = [(WFHTMLToMarkdown *)self list];
       v82 = [v80 mutableCopy];
-      [v81 addObject:v82];
+      [list2 addObject:v82];
     }
 
     else
     {
-      v83 = [(WFHTMLToMarkdown *)self list];
-      v84 = [v83 count];
+      list3 = [(WFHTMLToMarkdown *)self list];
+      v84 = [list3 count];
 
       if (v84)
       {
-        v85 = [(WFHTMLToMarkdown *)self list];
-        [v85 removeLastObject];
+        list4 = [(WFHTMLToMarkdown *)self list];
+        [list4 removeLastObject];
       }
     }
 
-    v86 = self;
+    selfCopy2 = self;
     v87 = 1;
   }
 
   else
   {
-    v86 = self;
+    selfCopy2 = self;
     v87 = 0;
   }
 
-  [(WFHTMLToMarkdown *)v86 setLastWasList:v87];
-  if ([v8 isEqualToString:@"li"])
+  [(WFHTMLToMarkdown *)selfCopy2 setLastWasList:v87];
+  if ([tagCopy isEqualToString:@"li"])
   {
     [(WFHTMLToMarkdown *)self pbr];
-    if (!v5)
+    if (!startCopy)
     {
-      if (([v8 isEqualToString:@"table"] & 1) == 0)
+      if (([tagCopy isEqualToString:@"table"] & 1) == 0)
       {
-        [v8 isEqualToString:@"tr"];
+        [tagCopy isEqualToString:@"tr"];
       }
 
       goto LABEL_145;
     }
 
-    v88 = [(WFHTMLToMarkdown *)self list];
-    v89 = [v88 count];
+    list5 = [(WFHTMLToMarkdown *)self list];
+    v89 = [list5 count];
 
-    v109 = v9;
+    v109 = attributesCopy;
     if (v89)
     {
-      v90 = [(WFHTMLToMarkdown *)self list];
-      v91 = [v90 lastObject];
+      list6 = [(WFHTMLToMarkdown *)self list];
+      lastObject2 = [list6 lastObject];
     }
 
     else
     {
-      v91 = [&unk_282F7BFE0 mutableCopy];
+      lastObject2 = [&unk_282F7BFE0 mutableCopy];
     }
 
     v92 = objc_opt_new();
-    v93 = [(WFHTMLToMarkdown *)self list];
-    v94 = [v93 count];
+    list7 = [(WFHTMLToMarkdown *)self list];
+    v94 = [list7 count];
 
     if (v94)
     {
@@ -983,26 +983,26 @@ LABEL_100:
       {
         [v92 appendString:@"  "];
         ++v95;
-        v96 = [(WFHTMLToMarkdown *)self list];
-        v97 = [v96 count];
+        list8 = [(WFHTMLToMarkdown *)self list];
+        v97 = [list8 count];
       }
 
       while (v97 > v95);
     }
 
     [(WFHTMLToMarkdown *)self output:v92];
-    v98 = [v91 objectForKey:@"name"];
+    v98 = [lastObject2 objectForKey:@"name"];
     v99 = [v98 isEqualToString:@"ul"];
 
     if (v99)
     {
-      v100 = [(WFHTMLToMarkdown *)self ulItemMark];
-      v101 = [v100 stringByAppendingString:@" "];
+      ulItemMark = [(WFHTMLToMarkdown *)self ulItemMark];
+      v100 = [ulItemMark stringByAppendingString:@" "];
     }
 
     else
     {
-      v102 = [v91 objectForKey:@"name"];
+      v102 = [lastObject2 objectForKey:@"name"];
       v103 = [v102 isEqualToString:@"ol"];
 
       if (!v103)
@@ -1010,50 +1010,50 @@ LABEL_100:
 LABEL_138:
         [(WFHTMLToMarkdown *)self setStart:1];
 
-        v9 = v109;
+        attributesCopy = v109;
         goto LABEL_139;
       }
 
       v104 = MEMORY[0x277CCABB0];
-      v105 = [v91 objectForKey:@"num"];
+      v105 = [lastObject2 objectForKey:@"num"];
       v106 = [v104 numberWithInt:{objc_msgSend(v105, "intValue") + 1}];
-      [v91 setObject:v106 forKey:@"num"];
+      [lastObject2 setObject:v106 forKey:@"num"];
 
       v107 = MEMORY[0x277CCACA8];
-      v100 = [v91 objectForKey:@"num"];
-      v101 = [v107 stringWithFormat:@"%@. ", v100];
+      ulItemMark = [lastObject2 objectForKey:@"num"];
+      v100 = [v107 stringWithFormat:@"%@. ", ulItemMark];
     }
 
-    v108 = v101;
-    [(WFHTMLToMarkdown *)self output:v101];
+    v108 = v100;
+    [(WFHTMLToMarkdown *)self output:v100];
 
     goto LABEL_138;
   }
 
 LABEL_139:
-  if ([v8 isEqualToString:@"table"])
+  if ([tagCopy isEqualToString:@"table"])
   {
-    if (!v5)
+    if (!startCopy)
     {
       goto LABEL_145;
     }
   }
 
-  else if (![v8 isEqualToString:@"tr"] || !v5)
+  else if (![tagCopy isEqualToString:@"tr"] || !startCopy)
   {
     goto LABEL_145;
   }
 
   [(WFHTMLToMarkdown *)self p];
 LABEL_145:
-  if ([v8 isEqualToString:@"td"])
+  if ([tagCopy isEqualToString:@"td"])
   {
     [(WFHTMLToMarkdown *)self pbr];
   }
 
-  if ([v8 isEqualToString:@"pre"])
+  if ([tagCopy isEqualToString:@"pre"])
   {
-    if (v5)
+    if (startCopy)
     {
       [(WFHTMLToMarkdown *)self setStartpre:1];
     }
@@ -1065,17 +1065,17 @@ LABEL_145:
 LABEL_151:
 }
 
-- (id)escapeMDSection:(id)a3 snob:(BOOL)a4
+- (id)escapeMDSection:(id)section snob:(BOOL)snob
 {
-  v4 = a4;
+  snobCopy = snob;
   v5 = MEMORY[0x277CCAC68];
   v6 = MEMORY[0x277CCACA8];
-  v8 = v7 = a3;
+  v8 = v7 = section;
   v9 = [v5 regularExpressionWithPattern:v8 options:0 error:0];
 
   v10 = [v9 stringByReplacingMatchesInString:v7 options:0 range:0 withTemplate:{objc_msgSend(v7, "length"), @"\\\\$1"}];
 
-  if (v4)
+  if (snobCopy)
     v11 = {;
     v12 = [v11 stringByReplacingMatchesInString:v10 options:0 range:0 withTemplate:{objc_msgSend(v10, "length"), @"\\\\$1"}];
 
@@ -1094,22 +1094,22 @@ LABEL_151:
   return v18;
 }
 
-- (id)escapeMD:(id)a3
+- (id)escapeMD:(id)d
 {
   v3 = MEMORY[0x277CCAC68];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 regularExpressionWithPattern:@"([\\\\\\[\\]\\(\\)])" options:0 error:0];
-  v6 = [v5 stringByReplacingMatchesInString:v4 options:0 range:0 withTemplate:{objc_msgSend(v4, "length"), @"\\\\$1"}];
+  v6 = [v5 stringByReplacingMatchesInString:dCopy options:0 range:0 withTemplate:{objc_msgSend(dCopy, "length"), @"\\\\$1"}];
 
   return v6;
 }
 
-- (int)tagHeaderNumber:(id)a3
+- (int)tagHeaderNumber:(id)number
 {
-  v3 = a3;
-  if ([v3 length] == 2 && objc_msgSend(v3, "characterAtIndex:", 0) == 104)
+  numberCopy = number;
+  if ([numberCopy length] == 2 && objc_msgSend(numberCopy, "characterAtIndex:", 0) == 104)
   {
-    v4 = [v3 characterAtIndex:1];
+    v4 = [numberCopy characterAtIndex:1];
     if ((v4 - 49) >= 9)
     {
       v5 = 0;
@@ -1129,11 +1129,11 @@ LABEL_151:
   return v5;
 }
 
-- (id)previousIndex:(id)a3
+- (id)previousIndex:(id)index
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"href"];
+  indexCopy = index;
+  v5 = [indexCopy objectForKey:@"href"];
 
   if (v5)
   {
@@ -1146,7 +1146,7 @@ LABEL_151:
     if (v6)
     {
       v7 = v6;
-      v30 = v4;
+      v30 = indexCopy;
       v8 = *v32;
       v9 = -1;
       while (2)
@@ -1231,7 +1231,7 @@ LABEL_20:
 
       v5 = 0;
 LABEL_21:
-      v4 = v30;
+      indexCopy = v30;
     }
 
     else
@@ -1243,17 +1243,17 @@ LABEL_21:
   return v5;
 }
 
-- (void)parser:(id)a3 foundStartTag:(id)a4 attributes:(id)a5
+- (void)parser:(id)parser foundStartTag:(id)tag attributes:(id)attributes
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  tagCopy = tag;
+  attributesCopy = attributes;
   v9 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v8;
+  v10 = attributesCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -1269,17 +1269,17 @@ LABEL_21:
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 name];
-        if (v16)
+        name = [v15 name];
+        if (name)
         {
-          v17 = v16;
-          v18 = [v15 value];
+          v17 = name;
+          value = [v15 value];
 
-          if (v18)
+          if (value)
           {
-            v19 = [v15 value];
-            v20 = [v15 name];
-            [v9 setObject:v19 forKey:v20];
+            value2 = [v15 value];
+            name2 = [v15 name];
+            [v9 setObject:value2 forKey:name2];
           }
         }
       }
@@ -1290,30 +1290,30 @@ LABEL_21:
     while (v12);
   }
 
-  [(WFHTMLToMarkdown *)self handleTag:v7 attributes:v9 start:1];
+  [(WFHTMLToMarkdown *)self handleTag:tagCopy attributes:v9 start:1];
 }
 
-- (void)parser:(id)a3 foundEntityRef:(id)a4
+- (void)parser:(id)parser foundEntityRef:(id)ref
 {
-  v5 = [(WFHTMLToMarkdown *)self entityref:a4];
+  v5 = [(WFHTMLToMarkdown *)self entityref:ref];
   [(WFHTMLToMarkdown *)self output:v5 pureData:1 force:0];
 }
 
-- (void)parser:(id)a3 foundCharacterRef:(id)a4
+- (void)parser:(id)parser foundCharacterRef:(id)ref
 {
-  v5 = [(WFHTMLToMarkdown *)self charref:a4];
+  v5 = [(WFHTMLToMarkdown *)self charref:ref];
   [(WFHTMLToMarkdown *)self output:v5 pureData:1 force:0];
 }
 
-- (id)entityref:(id)a3
+- (id)entityref:(id)entityref
 {
-  v4 = a3;
-  v5 = [(WFHTMLToMarkdown *)self unifiable];
-  v6 = [v5 objectForKey:v4];
+  entityrefCopy = entityref;
+  unifiable = [(WFHTMLToMarkdown *)self unifiable];
+  v6 = [unifiable objectForKey:entityrefCopy];
 
   if ([(WFHTMLToMarkdown *)self unicodeSnob]|| !v6)
   {
-    v8 = [(WFHTMLToMarkdown *)self nameToCodepoint:v4];
+    v8 = [(WFHTMLToMarkdown *)self nameToCodepoint:entityrefCopy];
     if (v8)
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v8];
@@ -1321,7 +1321,7 @@ LABEL_21:
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"&%@;", v4];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"&%@;", entityrefCopy];
     }
     v7 = ;
   }
@@ -1336,30 +1336,30 @@ LABEL_21:
   return v9;
 }
 
-- (id)charref:(id)a3
+- (id)charref:(id)charref
 {
-  v4 = a3;
-  if (([v4 hasPrefix:@"x"] & 1) != 0 || objc_msgSend(v4, "hasPrefix:", @"X"))
+  charrefCopy = charref;
+  if (([charrefCopy hasPrefix:@"x"] & 1) != 0 || objc_msgSend(charrefCopy, "hasPrefix:", @"X"))
   {
-    v5 = [v4 substringFromIndex:1];
-    v6 = strtol([v5 UTF8String], 0, 16);
+    v5 = [charrefCopy substringFromIndex:1];
+    intValue = strtol([v5 UTF8String], 0, 16);
   }
 
   else
   {
-    v6 = [v4 intValue];
+    intValue = [charrefCopy intValue];
   }
 
-  if (-[WFHTMLToMarkdown unicodeSnob](self, "unicodeSnob") || (-[WFHTMLToMarkdown unifiableN](self, "unifiableN"), v7 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCABB0] numberWithUnsignedShort:v6], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKey:", v8), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9))
+  if (-[WFHTMLToMarkdown unicodeSnob](self, "unicodeSnob") || (-[WFHTMLToMarkdown unifiableN](self, "unifiableN"), v7 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCABB0] numberWithUnsignedShort:intValue], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKey:", v8), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v9))
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v6];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", intValue];
   }
 
   else
   {
-    v10 = [(WFHTMLToMarkdown *)self unifiableN];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v6];
-    v12 = [v10 objectForKey:v11];
+    unifiableN = [(WFHTMLToMarkdown *)self unifiableN];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:intValue];
+    v12 = [unifiableN objectForKey:v11];
   }
 
   return v12;
@@ -1367,13 +1367,13 @@ LABEL_21:
 
 - (void)close
 {
-  v3 = [(WFHTMLToMarkdown *)self parser];
-  [v3 close];
+  parser = [(WFHTMLToMarkdown *)self parser];
+  [parser close];
 
   [(WFHTMLToMarkdown *)self pbr];
   [(WFHTMLToMarkdown *)self output:&stru_282F53518 pureData:0 force:@"end"];
-  v4 = [(WFHTMLToMarkdown *)self outTextList];
-  v5 = [v4 componentsJoinedByString:&stru_282F53518];
+  outTextList = [(WFHTMLToMarkdown *)self outTextList];
+  v5 = [outTextList componentsJoinedByString:&stru_282F53518];
   [(WFHTMLToMarkdown *)self setOutText:v5];
 
   if ([(WFHTMLToMarkdown *)self unicodeSnob])
@@ -1387,15 +1387,15 @@ LABEL_21:
   }
 
   v9 = v6;
-  v7 = [(WFHTMLToMarkdown *)self outText];
-  v8 = [v7 stringByReplacingOccurrencesOfString:@"&nbsp_place_holder" withString:v9];;
+  outText = [(WFHTMLToMarkdown *)self outText];
+  v8 = [outText stringByReplacingOccurrencesOfString:@"&nbsp_place_holder" withString:v9];;
   [(WFHTMLToMarkdown *)self setOutText:v8];
 }
 
-- (id)optwrap:(id)a3
+- (id)optwrap:(id)optwrap
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optwrapCopy = optwrap;
   if ([(WFHTMLToMarkdown *)self bodyWidth])
   {
     v5 = objc_opt_new();
@@ -1403,8 +1403,8 @@ LABEL_21:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v16 = v4;
-    v6 = [v4 componentsSeparatedByString:@"\n"];
+    v16 = optwrapCopy;
+    v6 = [optwrapCopy componentsSeparatedByString:@"\n"];
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (!v7)
     {
@@ -1468,45 +1468,45 @@ LABEL_15:
       {
 LABEL_20:
 
-        v4 = v16;
+        optwrapCopy = v16;
         goto LABEL_22;
       }
     }
   }
 
-  v5 = v4;
+  v5 = optwrapCopy;
 LABEL_22:
 
   return v5;
 }
 
-- (BOOL)onlywhite:(id)a3
+- (BOOL)onlywhite:(id)onlywhite
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@" "])
+  onlywhiteCopy = onlywhite;
+  if ([onlywhiteCopy isEqualToString:@" "])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"  "];
+    v4 = [onlywhiteCopy isEqualToString:@"  "];
   }
 
   return v4;
 }
 
-- (id)wrapText:(id)a3 toWidth:(int64_t)a4
+- (id)wrapText:(id)text toWidth:(int64_t)width
 {
-  v5 = a3;
+  textCopy = text;
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-  v7 = [MEMORY[0x277CCAB50] whitespaceCharacterSet];
+  whitespaceCharacterSet = [MEMORY[0x277CCAB50] whitespaceCharacterSet];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", 160];
-  [v7 removeCharactersInString:v8];
+  [whitespaceCharacterSet removeCharactersInString:v8];
 
-  v22 = v7;
-  v23 = v5;
-  v9 = [v5 componentsSeparatedByCharactersInSet:v7];
+  v22 = whitespaceCharacterSet;
+  v23 = textCopy;
+  v9 = [textCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
   v10 = [v9 count];
   if (v10 >= 1)
   {
@@ -1519,7 +1519,7 @@ LABEL_22:
       v15 = [v14 length];
       do
       {
-        if (v13 + v15 + 1 > a4)
+        if (v13 + v15 + 1 > width)
         {
           break;
         }
@@ -1539,8 +1539,8 @@ LABEL_22:
       }
 
       while (v12 < v11);
-      v18 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v19 = [v14 wf_stringByTrimmingTrailingCharactersInSet:v18];
+      whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v19 = [v14 wf_stringByTrimmingTrailingCharactersInSet:whitespaceCharacterSet2];
 
       if ([v19 length])
       {
@@ -1556,23 +1556,23 @@ LABEL_22:
   return v20;
 }
 
-- (BOOL)skipwrap:(id)a3
+- (BOOL)skipwrap:(id)skipwrap
 {
-  v3 = a3;
-  if (([v3 hasPrefix:@"    "] & 1) != 0 || objc_msgSend(v3, "length") && objc_msgSend(v3, "characterAtIndex:", 0) == 9)
+  skipwrapCopy = skipwrap;
+  if (([skipwrapCopy hasPrefix:@"    "] & 1) != 0 || objc_msgSend(skipwrapCopy, "length") && objc_msgSend(skipwrapCopy, "characterAtIndex:", 0) == 9)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters];
-    if ([v5 hasPrefix:@"--"] && objc_msgSend(v5, "length") >= 3 && objc_msgSend(v5, "characterAtIndex:", 2) != 45)
+    wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters = [skipwrapCopy wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters];
+    if ([wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters hasPrefix:@"--"] && objc_msgSend(wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters, "length") >= 3 && objc_msgSend(wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters, "characterAtIndex:", 2) != 45)
     {
       v4 = 0;
     }
 
-    else if ([v5 hasPrefix:@"-"] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"*"))
+    else if ([wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters hasPrefix:@"-"] & 1) != 0 || (objc_msgSend(wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters, "hasPrefix:", @"*"))
     {
       v4 = 1;
     }
@@ -1580,7 +1580,7 @@ LABEL_22:
     else
     {
       v6 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"\\d+\\.\\s" options:0 error:0];
-      if ([v6 numberOfMatchesInString:v5 options:4 range:{0, objc_msgSend(v5, "length")}])
+      if ([v6 numberOfMatchesInString:wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters options:4 range:{0, objc_msgSend(wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters, "length")}])
       {
         v4 = 1;
       }
@@ -1588,7 +1588,7 @@ LABEL_22:
       else
       {
         v7 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"[-\\*\\+]\\s" options:0 error:0];
-        v4 = [v7 numberOfMatchesInString:v5 options:4 range:{0, objc_msgSend(v5, "length")}] != 0;
+        v4 = [v7 numberOfMatchesInString:wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters options:4 range:{0, objc_msgSend(wf_stringByTrimmingLeadingWhitespaceAndNewlineCharacters, "length")}] != 0;
       }
     }
   }
@@ -1596,34 +1596,34 @@ LABEL_22:
   return v4;
 }
 
-- (id)handleHTML:(id)a3
+- (id)handleHTML:(id)l
 {
-  v4 = a3;
-  v5 = [(WFHTMLToMarkdown *)self parser];
-  [v5 feed:v4];
+  lCopy = l;
+  parser = [(WFHTMLToMarkdown *)self parser];
+  [parser feed:lCopy];
 
   [(WFHTMLToMarkdown *)self close];
-  v6 = [(WFHTMLToMarkdown *)self outText];
-  v7 = [(WFHTMLToMarkdown *)self optwrap:v6];
+  outText = [(WFHTMLToMarkdown *)self outText];
+  v7 = [(WFHTMLToMarkdown *)self optwrap:outText];
 
   return v7;
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
-  v5 = a3;
-  v4 = [(WFHTMLToMarkdown *)self outTextList];
-  [v4 addObject:v5];
+  outputCopy = output;
+  outTextList = [(WFHTMLToMarkdown *)self outTextList];
+  [outTextList addObject:outputCopy];
 
-  if ([v5 length])
+  if ([outputCopy length])
   {
-    -[WFHTMLToMarkdown setLastWasNewline:](self, "setLastWasNewline:", [v5 hasSuffix:@"\n"]);
+    -[WFHTMLToMarkdown setLastWasNewline:](self, "setLastWasNewline:", [outputCopy hasSuffix:@"\n"]);
   }
 }
 
-- (WFHTMLToMarkdown)initWithBaseURL:(id)a3
+- (WFHTMLToMarkdown)initWithBaseURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v27.receiver = self;
   v27.super_class = WFHTMLToMarkdown;
   v6 = [(WFHTMLToMarkdown *)&v27 init];
@@ -1634,7 +1634,7 @@ LABEL_22:
     *(v6 + 5) = v7;
 
     [*(v6 + 5) setDelegate:v6];
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(v6 + 3, l);
     *(v6 + 4) = 0;
     v6[10] = 0;
     *(v6 + 4) = 0;

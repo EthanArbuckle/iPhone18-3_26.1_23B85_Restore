@@ -1,18 +1,18 @@
 @interface PKSelectedPaymentOfferInstallment
-+ (id)confirmationRecordFollowUpWithInstallmentAssessment:(id)a3 passDetails:(id)a4 criteria:(id)a5 sessionIdentifier:(id)a6;
-+ (id)postPurchaseFollowupWithCriteria:(id)a3 passDetails:(id)a4;
-+ (id)selectedOfferWithInstallmentAssessment:(id)a3 selectedOfferIdentifier:(id)a4 criteria:(id)a5 passDetails:(id)a6 sessionIdentifier:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)confirmationRecordFollowUpWithInstallmentAssessment:(id)assessment passDetails:(id)details criteria:(id)criteria sessionIdentifier:(id)identifier;
++ (id)postPurchaseFollowupWithCriteria:(id)criteria passDetails:(id)details;
++ (id)selectedOfferWithInstallmentAssessment:(id)assessment selectedOfferIdentifier:(id)identifier criteria:(id)criteria passDetails:(id)details sessionIdentifier:(id)sessionIdentifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresUserAction;
-- (PKSelectedPaymentOfferInstallment)initWithCoder:(id)a3;
-- (PKSelectedPaymentOfferInstallment)initWithSelectionType:(int64_t)a3 installmentAssessment:(id)a4 selectedOfferIdentifier:(id)a5 criteria:(id)a6 passDetails:(id)a7 sessionIdentifier:(id)a8;
+- (PKSelectedPaymentOfferInstallment)initWithCoder:(id)coder;
+- (PKSelectedPaymentOfferInstallment)initWithSelectionType:(int64_t)type installmentAssessment:(id)assessment selectedOfferIdentifier:(id)identifier criteria:(id)criteria passDetails:(id)details sessionIdentifier:(id)sessionIdentifier;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)selectedInstallmentOffer;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateSelectedOfferIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateSelectedOfferIdentifier:(id)identifier;
 @end
 
 @implementation PKSelectedPaymentOfferInstallment
@@ -24,65 +24,65 @@
   return [(PKSelectedPaymentOffer *)&v3 _init];
 }
 
-- (PKSelectedPaymentOfferInstallment)initWithSelectionType:(int64_t)a3 installmentAssessment:(id)a4 selectedOfferIdentifier:(id)a5 criteria:(id)a6 passDetails:(id)a7 sessionIdentifier:(id)a8
+- (PKSelectedPaymentOfferInstallment)initWithSelectionType:(int64_t)type installmentAssessment:(id)assessment selectedOfferIdentifier:(id)identifier criteria:(id)criteria passDetails:(id)details sessionIdentifier:(id)sessionIdentifier
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
-  v17 = a7;
-  v18 = a5;
-  v28 = v14;
-  v19 = [v14 installmentOfferWithIdentifier:v18];
-  v20 = [v19 serviceProviderData];
+  assessmentCopy = assessment;
+  criteriaCopy = criteria;
+  sessionIdentifierCopy = sessionIdentifier;
+  detailsCopy = details;
+  identifierCopy = identifier;
+  v28 = assessmentCopy;
+  v19 = [assessmentCopy installmentOfferWithIdentifier:identifierCopy];
+  serviceProviderData = [v19 serviceProviderData];
   v21 = [v19 type] == 1;
-  v22 = [v15 identifier];
+  identifier = [criteriaCopy identifier];
   v29.receiver = self;
   v29.super_class = PKSelectedPaymentOfferInstallment;
-  v23 = [(PKSelectedPaymentOffer *)&v29 initWithType:1 selectedOfferIdentifier:v18 passDetails:v17 criteriaIdentifier:v22 sessionIdentifier:v16 serviceProviderData:v20 storageType:v21];
+  v23 = [(PKSelectedPaymentOffer *)&v29 initWithType:1 selectedOfferIdentifier:identifierCopy passDetails:detailsCopy criteriaIdentifier:identifier sessionIdentifier:sessionIdentifierCopy serviceProviderData:serviceProviderData storageType:v21];
 
   if (v23)
   {
-    v23->_selectionType = a3;
-    objc_storeStrong(&v23->_installmentAssessment, a4);
-    [v15 setupAfterPurchaseActiveDuration];
+    v23->_selectionType = type;
+    objc_storeStrong(&v23->_installmentAssessment, assessment);
+    [criteriaCopy setupAfterPurchaseActiveDuration];
     v23->_setupAfterPurchaseActiveDuration = v24;
-    [v15 setupAfterPurchaseStickyDuration];
+    [criteriaCopy setupAfterPurchaseStickyDuration];
     v23->_setupAfterPurchaseStickyDuration = v25;
   }
 
   return v23;
 }
 
-+ (id)selectedOfferWithInstallmentAssessment:(id)a3 selectedOfferIdentifier:(id)a4 criteria:(id)a5 passDetails:(id)a6 sessionIdentifier:(id)a7
++ (id)selectedOfferWithInstallmentAssessment:(id)assessment selectedOfferIdentifier:(id)identifier criteria:(id)criteria passDetails:(id)details sessionIdentifier:(id)sessionIdentifier
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] initWithSelectionType:0 installmentAssessment:v16 selectedOfferIdentifier:v15 criteria:v14 passDetails:v13 sessionIdentifier:v12];
+  sessionIdentifierCopy = sessionIdentifier;
+  detailsCopy = details;
+  criteriaCopy = criteria;
+  identifierCopy = identifier;
+  assessmentCopy = assessment;
+  v17 = [[self alloc] initWithSelectionType:0 installmentAssessment:assessmentCopy selectedOfferIdentifier:identifierCopy criteria:criteriaCopy passDetails:detailsCopy sessionIdentifier:sessionIdentifierCopy];
 
   return v17;
 }
 
-+ (id)postPurchaseFollowupWithCriteria:(id)a3 passDetails:(id)a4
++ (id)postPurchaseFollowupWithCriteria:(id)criteria passDetails:(id)details
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSelectionType:1 installmentAssessment:0 selectedOfferIdentifier:0 criteria:v7 passDetails:v6 sessionIdentifier:0];
+  detailsCopy = details;
+  criteriaCopy = criteria;
+  v8 = [[self alloc] initWithSelectionType:1 installmentAssessment:0 selectedOfferIdentifier:0 criteria:criteriaCopy passDetails:detailsCopy sessionIdentifier:0];
 
   return v8;
 }
 
-+ (id)confirmationRecordFollowUpWithInstallmentAssessment:(id)a3 passDetails:(id)a4 criteria:(id)a5 sessionIdentifier:(id)a6
++ (id)confirmationRecordFollowUpWithInstallmentAssessment:(id)assessment passDetails:(id)details criteria:(id)criteria sessionIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 alloc];
-  v15 = [v13 selectedOfferIdentifier];
-  v16 = [v14 initWithSelectionType:2 installmentAssessment:v13 selectedOfferIdentifier:v15 criteria:v11 passDetails:v12 sessionIdentifier:v10];
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  detailsCopy = details;
+  assessmentCopy = assessment;
+  v14 = [self alloc];
+  selectedOfferIdentifier = [assessmentCopy selectedOfferIdentifier];
+  v16 = [v14 initWithSelectionType:2 installmentAssessment:assessmentCopy selectedOfferIdentifier:selectedOfferIdentifier criteria:criteriaCopy passDetails:detailsCopy sessionIdentifier:identifierCopy];
 
   return v16;
 }
@@ -90,8 +90,8 @@
 - (id)selectedInstallmentOffer
 {
   installmentAssessment = self->_installmentAssessment;
-  v3 = [(PKSelectedPaymentOffer *)self selectedOfferIdentifier];
-  v4 = [(PKPaymentOfferInstallmentAssessment *)installmentAssessment installmentOfferWithIdentifier:v3];
+  selectedOfferIdentifier = [(PKSelectedPaymentOffer *)self selectedOfferIdentifier];
+  v4 = [(PKPaymentOfferInstallmentAssessment *)installmentAssessment installmentOfferWithIdentifier:selectedOfferIdentifier];
 
   return v4;
 }
@@ -103,18 +103,18 @@
     return 0;
   }
 
-  v3 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment action];
+  action = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment action];
 
-  if (v3)
+  if (action)
   {
     return 1;
   }
 
-  v6 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment offers];
-  if ([v6 count])
+  offers = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment offers];
+  if ([offers count])
   {
-    v7 = [(PKSelectedPaymentOffer *)self selectedOfferIdentifier];
-    v4 = v7 == 0;
+    selectedOfferIdentifier = [(PKSelectedPaymentOffer *)self selectedOfferIdentifier];
+    v4 = selectedOfferIdentifier == 0;
   }
 
   else
@@ -125,20 +125,20 @@
   return v4;
 }
 
-- (void)updateSelectedOfferIdentifier:(id)a3
+- (void)updateSelectedOfferIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment offers];
+    offers = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment offers];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __67__PKSelectedPaymentOfferInstallment_updateSelectedOfferIdentifier___block_invoke;
     v10[3] = &unk_1E79DEAE8;
-    v6 = v4;
+    v6 = identifierCopy;
     v11 = v6;
-    v7 = [v5 pk_containsObjectPassingTest:v10];
+    v7 = [offers pk_containsObjectPassingTest:v10];
 
     if (v7)
     {
@@ -150,7 +150,7 @@
         *buf = 138412546;
         v13 = v6;
         v14 = 2112;
-        v15 = self;
+        selfCopy2 = self;
         v9 = "Updating selected payment offer identifier to %@ for assessment %@";
 LABEL_7:
         _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 0x16u);
@@ -165,7 +165,7 @@ LABEL_7:
         *buf = 138412546;
         v13 = v6;
         v14 = 2112;
-        v15 = self;
+        selfCopy2 = self;
         v9 = "Cannot select offer identifier %@ on the installment assessment since the offer identifier doesnt exist %@";
         goto LABEL_7;
       }
@@ -197,18 +197,18 @@ uint64_t __67__PKSelectedPaymentOfferInstallment_updateSelectedOfferIdentifier__
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -302,35 +302,35 @@ LABEL_26:
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
-  v4 = [(PKSelectedPaymentOffer *)self type];
+  type = [(PKSelectedPaymentOffer *)self type];
   v5 = @"unknown";
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = @"installment";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"rewards";
   }
 
   [v3 appendFormat:@"type: '%@'; ", v5];
-  v6 = [(PKSelectedPaymentOffer *)self selectedOfferIdentifier];
-  [v3 appendFormat:@"selectedOfferIdentifier: '%@'; ", v6];
+  selectedOfferIdentifier = [(PKSelectedPaymentOffer *)self selectedOfferIdentifier];
+  [v3 appendFormat:@"selectedOfferIdentifier: '%@'; ", selectedOfferIdentifier];
 
   [v3 appendFormat:@"installmentAssessment: '%@'; ", self->_installmentAssessment];
-  v7 = [(PKSelectedPaymentOffer *)self criteriaIdentifier];
-  [v3 appendFormat:@"criteriaIdentifier: '%@'; ", v7];
+  criteriaIdentifier = [(PKSelectedPaymentOffer *)self criteriaIdentifier];
+  [v3 appendFormat:@"criteriaIdentifier: '%@'; ", criteriaIdentifier];
 
-  v8 = [(PKSelectedPaymentOffer *)self passUniqueID];
-  [v3 appendFormat:@"passUniqueID: '%@'; ", v8];
+  passUniqueID = [(PKSelectedPaymentOffer *)self passUniqueID];
+  [v3 appendFormat:@"passUniqueID: '%@'; ", passUniqueID];
 
-  v9 = [(PKSelectedPaymentOffer *)self sessionIdentifier];
-  [v3 appendFormat:@"sessionIdentifier: '%@'; ", v9];
+  sessionIdentifier = [(PKSelectedPaymentOffer *)self sessionIdentifier];
+  [v3 appendFormat:@"sessionIdentifier: '%@'; ", sessionIdentifier];
 
-  v10 = [(PKSelectedPaymentOffer *)self storageType];
+  storageType = [(PKSelectedPaymentOffer *)self storageType];
   v11 = @"persistent";
-  if (!v10)
+  if (!storageType)
   {
     v11 = @"default";
   }
@@ -346,11 +346,11 @@ LABEL_26:
     [v3 appendFormat:@"userEnteredAmount: '%@'; ", self->_userEnteredAmount];
   }
 
-  v12 = [(PKSelectedPaymentOffer *)self userSelectionDate];
-  [v3 appendFormat:@"userSelectionDate: '%@'; ", v12];
+  userSelectionDate = [(PKSelectedPaymentOffer *)self userSelectionDate];
+  [v3 appendFormat:@"userSelectionDate: '%@'; ", userSelectionDate];
 
-  v13 = [(PKSelectedPaymentOffer *)self createdDate];
-  [v3 appendFormat:@"createdDate: '%@'; ", v13];
+  createdDate = [(PKSelectedPaymentOffer *)self createdDate];
+  [v3 appendFormat:@"createdDate: '%@'; ", createdDate];
 
   selectionType = self->_selectionType;
   v15 = @"selectedOffer";
@@ -377,53 +377,53 @@ LABEL_26:
   return v3;
 }
 
-- (PKSelectedPaymentOfferInstallment)initWithCoder:(id)a3
+- (PKSelectedPaymentOfferInstallment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKSelectedPaymentOfferInstallment;
-  v5 = [(PKSelectedPaymentOffer *)&v11 initWithCoder:v4];
+  v5 = [(PKSelectedPaymentOffer *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentAssessment"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentAssessment"];
     installmentAssessment = v5->_installmentAssessment;
     v5->_installmentAssessment = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userEnteredAmount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userEnteredAmount"];
     userEnteredAmount = v5->_userEnteredAmount;
     v5->_userEnteredAmount = v8;
 
-    v5->_isPreconfiguredOffer = [v4 decodeBoolForKey:@"isPreconfiguredOffer"];
-    v5->_selectionType = [v4 decodeIntegerForKey:@"installmentSelectionType"];
-    v5->_setupAfterPurchaseActiveDuration = [v4 decodeIntegerForKey:@"setupAfterPurchaseActiveDuration"];
-    v5->_setupAfterPurchaseStickyDuration = [v4 decodeIntegerForKey:@"setupAfterPurchaseStickyDuration"];
+    v5->_isPreconfiguredOffer = [coderCopy decodeBoolForKey:@"isPreconfiguredOffer"];
+    v5->_selectionType = [coderCopy decodeIntegerForKey:@"installmentSelectionType"];
+    v5->_setupAfterPurchaseActiveDuration = [coderCopy decodeIntegerForKey:@"setupAfterPurchaseActiveDuration"];
+    v5->_setupAfterPurchaseStickyDuration = [coderCopy decodeIntegerForKey:@"setupAfterPurchaseStickyDuration"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKSelectedPaymentOfferInstallment;
-  v4 = a3;
-  [(PKSelectedPaymentOffer *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_installmentAssessment forKey:{@"installmentAssessment", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_userEnteredAmount forKey:@"userEnteredAmount"];
-  [v4 encodeBool:self->_isPreconfiguredOffer forKey:@"isPreconfiguredOffer"];
-  [v4 encodeInteger:self->_selectionType forKey:@"installmentSelectionType"];
-  [v4 encodeInteger:self->_setupAfterPurchaseActiveDuration forKey:@"setupAfterPurchaseActiveDuration"];
-  [v4 encodeInteger:self->_setupAfterPurchaseStickyDuration forKey:@"setupAfterPurchaseStickyDuration"];
+  coderCopy = coder;
+  [(PKSelectedPaymentOffer *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_installmentAssessment forKey:{@"installmentAssessment", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_userEnteredAmount forKey:@"userEnteredAmount"];
+  [coderCopy encodeBool:self->_isPreconfiguredOffer forKey:@"isPreconfiguredOffer"];
+  [coderCopy encodeInteger:self->_selectionType forKey:@"installmentSelectionType"];
+  [coderCopy encodeInteger:self->_setupAfterPurchaseActiveDuration forKey:@"setupAfterPurchaseActiveDuration"];
+  [coderCopy encodeInteger:self->_setupAfterPurchaseStickyDuration forKey:@"setupAfterPurchaseStickyDuration"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment copyWithZone:zone];
   v7 = *(v5 + 96);
   *(v5 + 96) = v6;
 
-  v8 = [(PKCurrencyAmount *)self->_userEnteredAmount copyWithZone:a3];
+  v8 = [(PKCurrencyAmount *)self->_userEnteredAmount copyWithZone:zone];
   v9 = *(v5 + 104);
   *(v5 + 104) = v8;
 

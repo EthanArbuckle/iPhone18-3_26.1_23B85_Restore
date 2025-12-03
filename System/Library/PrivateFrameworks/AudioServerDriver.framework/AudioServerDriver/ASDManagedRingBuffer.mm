@@ -1,5 +1,5 @@
 @interface ASDManagedRingBuffer
-- (ASDManagedRingBuffer)initWithFrameCapacity:(int64_t)a3 writeFormat:(id)a4 readFormat:(id)a5;
+- (ASDManagedRingBuffer)initWithFrameCapacity:(int64_t)capacity writeFormat:(id)format readFormat:(id)readFormat;
 - (void)startReader;
 - (void)startWriter;
 - (void)stopReader;
@@ -8,13 +8,13 @@
 
 @implementation ASDManagedRingBuffer
 
-- (ASDManagedRingBuffer)initWithFrameCapacity:(int64_t)a3 writeFormat:(id)a4 readFormat:(id)a5
+- (ASDManagedRingBuffer)initWithFrameCapacity:(int64_t)capacity writeFormat:(id)format readFormat:(id)readFormat
 {
-  v8 = a4;
-  v9 = a5;
+  formatCopy = format;
+  readFormatCopy = readFormat;
   v16.receiver = self;
   v16.super_class = ASDManagedRingBuffer;
-  v10 = [(ASDRingBuffer *)&v16 initWithFrameCapacity:a3 writeFormat:v8 readFormat:v9];
+  v10 = [(ASDRingBuffer *)&v16 initWithFrameCapacity:capacity writeFormat:formatCopy readFormat:readFormatCopy];
   if (v10)
   {
     v11 = objc_opt_class();

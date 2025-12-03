@@ -1,21 +1,21 @@
 @interface PFAXPackage
-+ (BOOL)validateMimetypeInArchive:(id)a3 validMimetypes:(id)a4;
-+ (__CFDictionary)rightsInfoForArchive:(id)a3;
-+ (__CFDictionary)rightsInfoForArchiveAtPath:(id)a3;
-+ (id)encryptionXmlPathForArchive:(id)a3;
-+ (id)newAllEncryptionInfoForArchive:(id)a3;
-+ (id)newAllEncryptionInfoFromAssetForArchive:(id)a3;
-+ (id)newAllEncryptionInfoFromAssetForArchiveAtPath:(id)a3;
-+ (id)newAllEncryptionInfoFromCacheForArchive:(id)a3 originalEncryptionPath:(id)a4;
-+ (id)opfXmlUriFromPackage:(id)a3;
-+ (void)writeContainerXmlToStream:(id)a3;
++ (BOOL)validateMimetypeInArchive:(id)archive validMimetypes:(id)mimetypes;
++ (__CFDictionary)rightsInfoForArchive:(id)archive;
++ (__CFDictionary)rightsInfoForArchiveAtPath:(id)path;
++ (id)encryptionXmlPathForArchive:(id)archive;
++ (id)newAllEncryptionInfoForArchive:(id)archive;
++ (id)newAllEncryptionInfoFromAssetForArchive:(id)archive;
++ (id)newAllEncryptionInfoFromAssetForArchiveAtPath:(id)path;
++ (id)newAllEncryptionInfoFromCacheForArchive:(id)archive originalEncryptionPath:(id)path;
++ (id)opfXmlUriFromPackage:(id)package;
++ (void)writeContainerXmlToStream:(id)stream;
 @end
 
 @implementation PFAXPackage
 
-+ (void)writeContainerXmlToStream:(id)a3
++ (void)writeContainerXmlToStream:(id)stream
 {
-  v3 = [PFXStreamWriter createXmlTextWriterAtEntry:@"META-INF/container.xml" inOutputStream:a3 isCompressed:1];
+  v3 = [PFXStreamWriter createXmlTextWriterAtEntry:@"META-INF/container.xml" inOutputStream:stream isCompressed:1];
   xmlTextWriterStartDocument(v3, 0, "UTF-8", 0);
   if ([PFXStreamWriter startElementInStream:v3 name:@"container" prefix:0 ns:PFXCommonEpubContainerNS[0]])
   {
@@ -34,22 +34,22 @@
   xmlFreeTextWriter(v3);
 }
 
-+ (id)opfXmlUriFromPackage:(id)a3
++ (id)opfXmlUriFromPackage:(id)package
 {
-  v3 = [a3 entryWithName:@"META-INF/container.xml"];
+  v3 = [package entryWithName:@"META-INF/container.xml"];
   if (!v3)
   {
     return 0;
   }
 
-  v4 = [v3 xmlReader];
-  if (!v4)
+  xmlReader = [v3 xmlReader];
+  if (!xmlReader)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = xmlTextReaderDepth(v4);
+  v5 = xmlReader;
+  v6 = xmlTextReaderDepth(xmlReader);
   while (xmlTextReaderRead(v5) == 1)
   {
     v7 = xmlTextReaderNodeType(v5);
@@ -149,14 +149,14 @@ LABEL_14:
   return v14;
 }
 
-+ (BOOL)validateMimetypeInArchive:(id)a3 validMimetypes:(id)a4
++ (BOOL)validateMimetypeInArchive:(id)archive validMimetypes:(id)mimetypes
 {
-  if (!a3)
+  if (!archive)
   {
     return 0;
   }
 
-  v5 = [a3 entryWithName:@"mimetype"];
+  v5 = [archive entryWithName:@"mimetype"];
   if (!v5)
   {
     return 0;
@@ -164,7 +164,7 @@ LABEL_14:
 
   v6 = v5;
   v7 = objc_alloc_init(NSMutableData);
-  if ([v6 readIntoData:v7] && (v8 = objc_msgSend([NSString alloc], "initWithData:encoding:", v7, 4), v9 = +[NSString stringWithString:](NSString, "stringWithString:", v8), v8, v22 = 0u, v23 = 0u, v20 = 0u, v21 = 0u, (v10 = objc_msgSend(a4, "countByEnumeratingWithState:objects:count:", &v20, v24, 16)) != 0))
+  if ([v6 readIntoData:v7] && (v8 = objc_msgSend([NSString alloc], "initWithData:encoding:", v7, 4), v9 = +[NSString stringWithString:](NSString, "stringWithString:", v8), v8, v22 = 0u, v23 = 0u, v20 = 0u, v21 = 0u, (v10 = objc_msgSend(mimetypes, "countByEnumeratingWithState:objects:count:", &v20, v24, 16)) != 0))
   {
     v11 = v10;
     v12 = *v21;
@@ -174,7 +174,7 @@ LABEL_14:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(mimetypes);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -196,7 +196,7 @@ LABEL_14:
         }
       }
 
-      v11 = [a4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [mimetypes countByEnumeratingWithState:&v20 objects:v24 count:16];
       v18 = 0;
       if (v11)
       {
@@ -217,17 +217,17 @@ LABEL_19:
   return v18;
 }
 
-+ (id)encryptionXmlPathForArchive:(id)a3
++ (id)encryptionXmlPathForArchive:(id)archive
 {
-  v4 = [a3 rootFolder];
+  rootFolder = [archive rootFolder];
 
-  return [a1 encryptionXmlPathForArchiveAtPath:v4];
+  return [self encryptionXmlPathForArchiveAtPath:rootFolder];
 }
 
-+ (id)newAllEncryptionInfoFromAssetForArchiveAtPath:(id)a3
++ (id)newAllEncryptionInfoFromAssetForArchiveAtPath:(id)path
 {
   v4 = 0;
-  if (-[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [a1 encryptionXmlPathForArchiveAtPath:?], &v4) && (v4 & 1) == 0)
+  if (-[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [self encryptionXmlPathForArchiveAtPath:?], &v4) && (v4 & 1) == 0)
   {
     operator new();
   }
@@ -235,21 +235,21 @@ LABEL_19:
   return 0;
 }
 
-+ (id)newAllEncryptionInfoFromAssetForArchive:(id)a3
++ (id)newAllEncryptionInfoFromAssetForArchive:(id)archive
 {
-  v4 = [a3 rootFolder];
+  rootFolder = [archive rootFolder];
 
-  return [a1 newAllEncryptionInfoFromAssetForArchiveAtPath:v4];
+  return [self newAllEncryptionInfoFromAssetForArchiveAtPath:rootFolder];
 }
 
-+ (id)newAllEncryptionInfoFromCacheForArchive:(id)a3 originalEncryptionPath:(id)a4
++ (id)newAllEncryptionInfoFromCacheForArchive:(id)archive originalEncryptionPath:(id)path
 {
-  if (![objc_msgSend(a3 "asset")])
+  if (![objc_msgSend(archive "asset")])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v7 = [+[THApplicationDelegate cacheDirectoryForAsset:](THApplicationDelegate cacheDirectoryForAsset:{objc_msgSend(a3, "asset")), "stringByAppendingPathComponent:", @"encryption_xml_cache.plist"}];
+  v7 = [+[THApplicationDelegate cacheDirectoryForAsset:](THApplicationDelegate cacheDirectoryForAsset:{objc_msgSend(archive, "asset")), "stringByAppendingPathComponent:", @"encryption_xml_cache.plist"}];
   v41 = v7;
   if (v7 && (v8 = v7, v43 = 0, [+[NSFileManager fileExistsAtPath:"fileExistsAtPath:isDirectory:"]&& (v43 & 1) == 0)
   {
@@ -265,7 +265,7 @@ LABEL_19:
   [[NSURL fileURLWithPath:?]forKey:"getResourceValue:forKey:error:" error:&v42, NSURLFileSizeKey, 0];
   if (v9)
   {
-    v40 = a1;
+    selfCopy = self;
     objc_opt_class();
     [v9 objectForKey:PFAXPackageEncryptionCacheVersion];
     [TSUDynamicCast() doubleValue];
@@ -310,7 +310,7 @@ LABEL_19:
 
     v17 = v16;
     v18 = +[NSDate date];
-    v19 = -[NSFileManager attributesOfItemAtPath:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "attributesOfItemAtPath:error:", [v40 encryptionXmlPathForArchive:a3], 0);
+    v19 = -[NSFileManager attributesOfItemAtPath:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "attributesOfItemAtPath:error:", [selfCopy encryptionXmlPathForArchive:archive], 0);
     if (v19)
     {
       v20 = [(NSDictionary *)v19 objectForKey:NSFileCreationDate];
@@ -330,11 +330,11 @@ LABEL_19:
       v23 = [v20 compare:v12] == &dword_0 + 1;
     }
 
-    v24 = +[THAsset asset:isSameAsAsset:](THAsset, "asset:isSameAsAsset:", [a3 asset], +[THAsset assetWithURL:assetID:type:](THAsset, "assetWithURL:assetID:type:", v14, v39, v37));
-    v25 = [objc_msgSend(a3 "bookVersion")];
-    v26 = [v42 integerValue];
-    v27 = [v38 integerValue];
-    if (v22 < 0.00999999978 && !v23 && v24 && v25 && v21 && v26 == v27)
+    v24 = +[THAsset asset:isSameAsAsset:](THAsset, "asset:isSameAsAsset:", [archive asset], +[THAsset assetWithURL:assetID:type:](THAsset, "assetWithURL:assetID:type:", v14, v39, v37));
+    v25 = [objc_msgSend(archive "bookVersion")];
+    integerValue = [v42 integerValue];
+    integerValue2 = [v38 integerValue];
+    if (v22 < 0.00999999978 && !v23 && v24 && v25 && v21 && integerValue == integerValue2)
     {
       objc_opt_class();
       [v9 objectForKey:PFAXPackageEncryptionCachePayload];
@@ -353,39 +353,39 @@ LABEL_19:
       v29 = NSArray_ptr;
     }
 
-    a1 = v40;
+    self = selfCopy;
     if ([objc_msgSend(v29[69] "defaultManager")])
     {
       [objc_msgSend(v29[69] "defaultManager")];
     }
   }
 
-  v28 = [a1 newAllEncryptionInfoFromAssetForArchive:a3];
+  v28 = [self newAllEncryptionInfoFromAssetForArchive:archive];
   v30 = objc_alloc_init(NSMutableDictionary);
   v31 = [NSNumber numberWithDouble:1.0];
   [v30 setObject:v31 forKey:PFAXPackageEncryptionCacheVersion];
   [v30 setObject:+[NSDate date](NSDate forKey:{"date"), PFAXPackageEncryptionCacheTimestamp}];
-  if ([objc_msgSend(a3 "asset")])
+  if ([objc_msgSend(archive "asset")])
   {
-    v32 = [objc_msgSend(a3 "asset")];
+    v32 = [objc_msgSend(archive "asset")];
     [v30 setObject:v32 forKey:PFAXPackageEncryptionCacheAssetID];
   }
 
-  if ([objc_msgSend(a3 "asset")])
+  if ([objc_msgSend(archive "asset")])
   {
-    v33 = [objc_msgSend(a3 "asset")];
+    v33 = [objc_msgSend(archive "asset")];
     [v30 setObject:v33 forKey:PFAXPackageEncryptionCacheAssetType];
   }
 
-  if ([objc_msgSend(a3 "asset")])
+  if ([objc_msgSend(archive "asset")])
   {
-    v34 = [objc_msgSend(objc_msgSend(a3 "asset")];
+    v34 = [objc_msgSend(objc_msgSend(archive "asset")];
     [v30 setObject:v34 forKey:PFAXPackageEncryptionCacheAssetURL];
   }
 
-  if ([objc_msgSend(a3 "bookVersion")])
+  if ([objc_msgSend(archive "bookVersion")])
   {
-    v35 = [objc_msgSend(a3 "bookVersion")];
+    v35 = [objc_msgSend(archive "bookVersion")];
     [v30 setObject:v35 forKey:PFAXPackageEncryptionCacheBookVersion];
   }
 
@@ -399,15 +399,15 @@ LABEL_19:
     [v30 setObject:v42 forKey:PFAXPackageEncryptionCacheOriginalEncryptionFileSize];
   }
 
-  +[THApplicationDelegate ensureCacheDirectory:](THApplicationDelegate, "ensureCacheDirectory:", [a3 asset]);
+  +[THApplicationDelegate ensureCacheDirectory:](THApplicationDelegate, "ensureCacheDirectory:", [archive asset]);
   [v30 writeToFile:v41 atomically:1];
 
   return v28;
 }
 
-+ (id)newAllEncryptionInfoForArchive:(id)a3
++ (id)newAllEncryptionInfoForArchive:(id)archive
 {
-  v5 = [a1 encryptionXmlPathForArchive:?];
+  v5 = [self encryptionXmlPathForArchive:?];
   v8 = 0;
   if (![+[NSFileManager fileExistsAtPath:"fileExistsAtPath:isDirectory:"]
   {
@@ -415,30 +415,30 @@ LABEL_19:
   }
 
   v7 = [+[NSUserDefaults standardUserDefaults](NSUserDefaults BOOLForKey:"BOOLForKey:", @"preventUseOfEncryptionCache"];
-  if ([objc_msgSend(a3 "asset")] && objc_msgSend(objc_msgSend(a3, "bookVersion"), "isValid") && ((objc_msgSend(a3, "preventUseOfEncryptionCache") | v7) & 1) == 0)
+  if ([objc_msgSend(archive "asset")] && objc_msgSend(objc_msgSend(archive, "bookVersion"), "isValid") && ((objc_msgSend(archive, "preventUseOfEncryptionCache") | v7) & 1) == 0)
   {
-    return [a1 newAllEncryptionInfoFromCacheForArchive:a3 originalEncryptionPath:v5];
+    return [self newAllEncryptionInfoFromCacheForArchive:archive originalEncryptionPath:v5];
   }
 
   else
   {
-    return [a1 newAllEncryptionInfoFromAssetForArchive:a3];
+    return [self newAllEncryptionInfoFromAssetForArchive:archive];
   }
 }
 
-+ (__CFDictionary)rightsInfoForArchive:(id)a3
++ (__CFDictionary)rightsInfoForArchive:(id)archive
 {
-  v4 = [a3 perUserRootFolder];
+  perUserRootFolder = [archive perUserRootFolder];
 
-  return [a1 rightsInfoForArchiveAtPath:v4];
+  return [self rightsInfoForArchiveAtPath:perUserRootFolder];
 }
 
-+ (__CFDictionary)rightsInfoForArchiveAtPath:(id)a3
++ (__CFDictionary)rightsInfoForArchiveAtPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = 0;
-    if (-[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [a3 stringByAppendingString:@"/META-INF/sinf.xml"], &v4))
+    if (-[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [path stringByAppendingString:@"/META-INF/sinf.xml"], &v4))
     {
       if ((v4 & 1) == 0)
       {

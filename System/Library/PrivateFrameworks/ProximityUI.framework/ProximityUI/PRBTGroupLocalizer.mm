@@ -1,32 +1,32 @@
 @interface PRBTGroupLocalizer
-- (BOOL)startRangingOn:(id)a3 withError:(id *)a4;
-- (BOOL)stopRangingOn:(id)a3 withError:(id *)a4;
-- (PRBTGroupLocalizer)initWithDelegate:(id)a3 queue:(id)a4 id:(id)a5 isUT:(BOOL)a6 withAnalytics:(BOOL)a7;
-- (PRBTGroupLocalizer)initWithDelegate:(id)a3 queue:(id)a4 id:(id)a5 withAnalytics:(BOOL)a6;
+- (BOOL)startRangingOn:(id)on withError:(id *)error;
+- (BOOL)stopRangingOn:(id)on withError:(id *)error;
+- (PRBTGroupLocalizer)initWithDelegate:(id)delegate queue:(id)queue id:(id)id isUT:(BOOL)t withAnalytics:(BOOL)analytics;
+- (PRBTGroupLocalizer)initWithDelegate:(id)delegate queue:(id)queue id:(id)id withAnalytics:(BOOL)analytics;
 - (PRBTGroupLocalizerDelegate)delegate;
-- (void)btLocalizerChangedState:(unint64_t)a3 onItem:(id)a4;
+- (void)btLocalizerChangedState:(unint64_t)state onItem:(id)item;
 - (void)dealloc;
-- (void)didFailWithError:(id)a3 onItem:(id)a4;
-- (void)informDelegateRangingStarted:(id)a3 withError:(id)a4;
-- (void)informDelegateRangingStopped:(id)a3 withError:(id)a4;
-- (void)updateDelegateWithSelector:(SEL)a3 object:(id)a4;
+- (void)didFailWithError:(id)error onItem:(id)item;
+- (void)informDelegateRangingStarted:(id)started withError:(id)error;
+- (void)informDelegateRangingStopped:(id)stopped withError:(id)error;
+- (void)updateDelegateWithSelector:(SEL)selector object:(id)object;
 @end
 
 @implementation PRBTGroupLocalizer
 
-- (PRBTGroupLocalizer)initWithDelegate:(id)a3 queue:(id)a4 id:(id)a5 isUT:(BOOL)a6 withAnalytics:(BOOL)a7
+- (PRBTGroupLocalizer)initWithDelegate:(id)delegate queue:(id)queue id:(id)id isUT:(BOOL)t withAnalytics:(BOOL)analytics
 {
-  v51 = a6;
-  v52 = a7;
+  tCopy = t;
+  analyticsCopy = analytics;
   v61 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v47 = v12;
-  v48 = a5;
-  v46 = v11;
-  if (v11)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v47 = queueCopy;
+  idCopy = id;
+  v46 = delegateCopy;
+  if (delegateCopy)
   {
-    if (v12)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -34,17 +34,17 @@
 
   else
   {
-    v44 = [MEMORY[0x277CCA890] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"PRBTGroupLocalizer.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRBTGroupLocalizer.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
 
-    if (v12)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v45 = [MEMORY[0x277CCA890] currentHandler];
-  [v45 handleFailureInMethod:a2 object:self file:@"PRBTGroupLocalizer.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PRBTGroupLocalizer.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
 LABEL_3:
   v57.receiver = self;
@@ -53,7 +53,7 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    [(PRBTGroupLocalizer *)v13 setDelegate:v11];
+    [(PRBTGroupLocalizer *)v13 setDelegate:delegateCopy];
     [(PRBTGroupLocalizer *)v14 setDelegateQueue:v47];
     v15 = dispatch_queue_create("com.apple.findmy.btgroupranging", 0);
     [(PRBTGroupLocalizer *)v14 setProximityQueue:v15];
@@ -62,7 +62,7 @@ LABEL_3:
     logger = v14->_logger;
     v14->_logger = v16;
 
-    v49 = [v48 count];
+    v49 = [idCopy count];
     v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v49];
     [(PRBTGroupLocalizer *)v14 setLocalizerArray:v18];
 
@@ -79,7 +79,7 @@ LABEL_3:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    obj = v48;
+    obj = idCopy;
     v22 = [obj countByEnumeratingWithState:&v53 objects:v60 count:16];
     if (v22)
     {
@@ -98,29 +98,29 @@ LABEL_3:
           v27 = v14->_logger;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [v26 UUIDString];
+            uUIDString = [v26 UUIDString];
             *buf = 138412290;
-            v59 = v28;
+            v59 = uUIDString;
             _os_log_impl(&dword_2613DF000, v27, OS_LOG_TYPE_DEFAULT, "BTGroupLocalizer adding item %@ to the map", buf, 0xCu);
           }
 
-          v29 = [(PRBTGroupLocalizer *)v14 localizerArray];
+          localizerArray = [(PRBTGroupLocalizer *)v14 localizerArray];
           v30 = [PRBTLocalizer alloc];
-          v31 = [(PRBTGroupLocalizer *)v14 proximityQueue];
-          v32 = [(PRBTLocalizer *)v30 initWithDelegate:v14 queue:v31 id:v26 isUT:v51 productUUID:0 withAnalytics:v52];
-          [v29 addObject:v32];
+          proximityQueue = [(PRBTGroupLocalizer *)v14 proximityQueue];
+          v32 = [(PRBTLocalizer *)v30 initWithDelegate:v14 queue:proximityQueue id:v26 isUT:tCopy productUUID:0 withAnalytics:analyticsCopy];
+          [localizerArray addObject:v32];
 
-          v33 = [(PRBTGroupLocalizer *)v14 localizerShouldRangeArray];
+          localizerShouldRangeArray = [(PRBTGroupLocalizer *)v14 localizerShouldRangeArray];
           v34 = [MEMORY[0x277CCABB0] numberWithBool:0];
-          [v33 addObject:v34];
+          [localizerShouldRangeArray addObject:v34];
 
-          v35 = [(PRBTGroupLocalizer *)v14 localizerStateArray];
+          localizerStateArray = [(PRBTGroupLocalizer *)v14 localizerStateArray];
           v36 = [MEMORY[0x277CCABB0] numberWithInt:0];
-          [v35 addObject:v36];
+          [localizerStateArray addObject:v36];
 
-          v37 = [(PRBTGroupLocalizer *)v14 uuidIndexMap];
+          uuidIndexMap = [(PRBTGroupLocalizer *)v14 uuidIndexMap];
           v38 = [MEMORY[0x277CCABB0] numberWithInt:v23];
-          [v37 setObject:v38 forKey:v26];
+          [uuidIndexMap setObject:v38 forKey:v26];
 
           v23 = (v23 + 1);
         }
@@ -135,8 +135,8 @@ LABEL_3:
     {
       for (j = 0; j != v49; ++j)
       {
-        v40 = [(PRBTGroupLocalizer *)v14 localizerArray];
-        v41 = [v40 objectAtIndexedSubscript:j];
+        localizerArray2 = [(PRBTGroupLocalizer *)v14 localizerArray];
+        v41 = [localizerArray2 objectAtIndexedSubscript:j];
         [v41 configure];
       }
     }
@@ -146,18 +146,18 @@ LABEL_3:
   return v14;
 }
 
-- (PRBTGroupLocalizer)initWithDelegate:(id)a3 queue:(id)a4 id:(id)a5 withAnalytics:(BOOL)a6
+- (PRBTGroupLocalizer)initWithDelegate:(id)delegate queue:(id)queue id:(id)id withAnalytics:(BOOL)analytics
 {
-  v60 = a6;
+  analyticsCopy = analytics;
   v74 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v55 = v11;
-  v56 = a5;
-  v54 = v10;
-  if (v10)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v55 = queueCopy;
+  idCopy = id;
+  v54 = delegateCopy;
+  if (delegateCopy)
   {
-    if (v11)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -165,8 +165,8 @@ LABEL_3:
 
   else
   {
-    v52 = [MEMORY[0x277CCA890] currentHandler];
-    [v52 handleFailureInMethod:a2 object:self file:@"PRBTGroupLocalizer.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRBTGroupLocalizer.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
 
     if (v55)
     {
@@ -174,8 +174,8 @@ LABEL_3:
     }
   }
 
-  v53 = [MEMORY[0x277CCA890] currentHandler];
-  [v53 handleFailureInMethod:a2 object:self file:@"PRBTGroupLocalizer.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PRBTGroupLocalizer.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
 LABEL_3:
   v66.receiver = self;
@@ -184,7 +184,7 @@ LABEL_3:
   v13 = v12;
   if (v12)
   {
-    [(PRBTGroupLocalizer *)v12 setDelegate:v10];
+    [(PRBTGroupLocalizer *)v12 setDelegate:delegateCopy];
     [(PRBTGroupLocalizer *)v13 setDelegateQueue:v55];
     v14 = dispatch_queue_create("com.apple.findmy.btgroupranging", 0);
     [(PRBTGroupLocalizer *)v13 setProximityQueue:v14];
@@ -193,7 +193,7 @@ LABEL_3:
     logger = v13->_logger;
     v13->_logger = v15;
 
-    v57 = [v56 count];
+    v57 = [idCopy count];
     v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v57];
     [(PRBTGroupLocalizer *)v13 setLocalizerArray:v17];
 
@@ -210,7 +210,7 @@ LABEL_3:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    obj = v56;
+    obj = idCopy;
     v21 = [obj countByEnumeratingWithState:&v62 objects:v73 count:16];
     if (v21)
     {
@@ -227,28 +227,28 @@ LABEL_3:
           }
 
           v24 = *(*(&v62 + 1) + 8 * i);
-          v25 = [v24 uuid];
-          v26 = [v24 productUUID];
-          v27 = [v24 isOwned];
+          uuid = [v24 uuid];
+          productUUID = [v24 productUUID];
+          isOwned = [v24 isOwned];
           v28 = v13->_logger;
           v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-          if (v26)
+          if (productUUID)
           {
             if (v29)
             {
-              v30 = [v25 UUIDString];
-              v31 = [v26 UUIDString];
-              v32 = v31;
+              uUIDString = [uuid UUIDString];
+              uUIDString2 = [productUUID UUIDString];
+              v32 = uUIDString2;
               *buf = 138412802;
               v33 = "true";
-              if (v27)
+              if (isOwned)
               {
                 v33 = "false";
               }
 
-              v68 = v30;
+              v68 = uUIDString;
               v69 = 2112;
-              v70 = v31;
+              v70 = uUIDString2;
               v71 = 2080;
               v72 = v33;
               _os_log_impl(&dword_2613DF000, v28, OS_LOG_TYPE_DEFAULT, "BTGroupLocalizer adding item %@ to the map with productUUID %@, isUT: %s", buf, 0x20u);
@@ -257,38 +257,38 @@ LABEL_3:
 
           else if (v29)
           {
-            v34 = [v25 UUIDString];
-            v35 = v34;
+            uUIDString3 = [uuid UUIDString];
+            v35 = uUIDString3;
             *buf = 138412546;
             v36 = "true";
-            if (v27)
+            if (isOwned)
             {
               v36 = "false";
             }
 
-            v68 = v34;
+            v68 = uUIDString3;
             v69 = 2080;
             v70 = v36;
             _os_log_impl(&dword_2613DF000, v28, OS_LOG_TYPE_DEFAULT, "BTGroupLocalizer adding item %@ to the map with no productUUID, isUT: %s", buf, 0x16u);
           }
 
-          v37 = [(PRBTGroupLocalizer *)v13 localizerArray];
+          localizerArray = [(PRBTGroupLocalizer *)v13 localizerArray];
           v38 = [PRBTLocalizer alloc];
-          v39 = [(PRBTGroupLocalizer *)v13 proximityQueue];
-          v40 = [(PRBTLocalizer *)v38 initWithDelegate:v13 queue:v39 id:v25 isUT:v27 ^ 1u productUUID:v26 withAnalytics:v60];
-          [v37 addObject:v40];
+          proximityQueue = [(PRBTGroupLocalizer *)v13 proximityQueue];
+          v40 = [(PRBTLocalizer *)v38 initWithDelegate:v13 queue:proximityQueue id:uuid isUT:isOwned ^ 1u productUUID:productUUID withAnalytics:analyticsCopy];
+          [localizerArray addObject:v40];
 
-          v41 = [(PRBTGroupLocalizer *)v13 localizerShouldRangeArray];
+          localizerShouldRangeArray = [(PRBTGroupLocalizer *)v13 localizerShouldRangeArray];
           v42 = [MEMORY[0x277CCABB0] numberWithBool:0];
-          [v41 addObject:v42];
+          [localizerShouldRangeArray addObject:v42];
 
-          v43 = [(PRBTGroupLocalizer *)v13 localizerStateArray];
+          localizerStateArray = [(PRBTGroupLocalizer *)v13 localizerStateArray];
           v44 = [MEMORY[0x277CCABB0] numberWithInt:0];
-          [v43 addObject:v44];
+          [localizerStateArray addObject:v44];
 
-          v45 = [(PRBTGroupLocalizer *)v13 uuidIndexMap];
+          uuidIndexMap = [(PRBTGroupLocalizer *)v13 uuidIndexMap];
           v46 = [MEMORY[0x277CCABB0] numberWithInt:v22];
-          [v45 setObject:v46 forKey:v25];
+          [uuidIndexMap setObject:v46 forKey:uuid];
 
           v22 = (v22 + 1);
         }
@@ -303,8 +303,8 @@ LABEL_3:
     {
       for (j = 0; j != v57; ++j)
       {
-        v48 = [(PRBTGroupLocalizer *)v13 localizerArray];
-        v49 = [v48 objectAtIndexedSubscript:j];
+        localizerArray2 = [(PRBTGroupLocalizer *)v13 localizerArray];
+        v49 = [localizerArray2 objectAtIndexedSubscript:j];
         [v49 configure];
       }
     }
@@ -314,19 +314,19 @@ LABEL_3:
   return v13;
 }
 
-- (void)didFailWithError:(id)a3 onItem:(id)a4
+- (void)didFailWithError:(id)error onItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PRBTGroupLocalizer *)self delegateQueue];
-  if (v8)
+  errorCopy = error;
+  itemCopy = item;
+  delegateQueue = [(PRBTGroupLocalizer *)self delegateQueue];
+  if (delegateQueue)
   {
-    v9 = [(PRBTGroupLocalizer *)self delegateQueue];
+    delegateQueue2 = [(PRBTGroupLocalizer *)self delegateQueue];
   }
 
   else
   {
-    v9 = MEMORY[0x277D85CD0];
+    delegateQueue2 = MEMORY[0x277D85CD0];
     v10 = MEMORY[0x277D85CD0];
   }
 
@@ -338,44 +338,44 @@ LABEL_3:
     block[2] = __46__PRBTGroupLocalizer_didFailWithError_onItem___block_invoke;
     block[3] = &unk_279AD6280;
     v13 = WeakRetained;
-    v14 = v6;
-    v15 = v7;
-    dispatch_async(v9, block);
+    v14 = errorCopy;
+    v15 = itemCopy;
+    dispatch_async(delegateQueue2, block);
   }
 }
 
-- (void)updateDelegateWithSelector:(SEL)a3 object:(id)a4
+- (void)updateDelegateWithSelector:(SEL)selector object:(id)object
 {
-  v6 = a4;
-  v7 = [(PRBTGroupLocalizer *)self delegate];
+  objectCopy = object;
+  delegate = [(PRBTGroupLocalizer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(PRBTGroupLocalizer *)self delegateQueue];
+    delegateQueue = [(PRBTGroupLocalizer *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__PRBTGroupLocalizer_updateDelegateWithSelector_object___block_invoke;
     block[3] = &unk_279AD6128;
-    v10 = v7;
-    v12 = a3;
-    v11 = v6;
-    dispatch_async(v8, block);
+    v10 = delegate;
+    selectorCopy = selector;
+    v11 = objectCopy;
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)btLocalizerChangedState:(unint64_t)a3 onItem:(id)a4
+- (void)btLocalizerChangedState:(unint64_t)state onItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v7 = [(PRBTGroupLocalizer *)self proximityQueue];
+  proximityQueue = [(PRBTGroupLocalizer *)self proximityQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__PRBTGroupLocalizer_btLocalizerChangedState_onItem___block_invoke;
   v9[3] = &unk_279AD6100;
   objc_copyWeak(v11, &location);
-  v10 = v6;
-  v11[1] = a3;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = itemCopy;
+  v11[1] = state;
+  v8 = itemCopy;
+  dispatch_async(proximityQueue, v9);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
@@ -631,19 +631,19 @@ LABEL_46:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (void)informDelegateRangingStarted:(id)a3 withError:(id)a4
+- (void)informDelegateRangingStarted:(id)started withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PRBTGroupLocalizer *)self delegateQueue];
-  if (v8)
+  startedCopy = started;
+  errorCopy = error;
+  delegateQueue = [(PRBTGroupLocalizer *)self delegateQueue];
+  if (delegateQueue)
   {
-    v9 = [(PRBTGroupLocalizer *)self delegateQueue];
+    delegateQueue2 = [(PRBTGroupLocalizer *)self delegateQueue];
   }
 
   else
   {
-    v9 = MEMORY[0x277D85CD0];
+    delegateQueue2 = MEMORY[0x277D85CD0];
     v10 = MEMORY[0x277D85CD0];
   }
 
@@ -655,25 +655,25 @@ LABEL_46:
     block[2] = __61__PRBTGroupLocalizer_informDelegateRangingStarted_withError___block_invoke;
     block[3] = &unk_279AD6280;
     v13 = WeakRetained;
-    v14 = v6;
-    v15 = v7;
-    dispatch_async(v9, block);
+    v14 = startedCopy;
+    v15 = errorCopy;
+    dispatch_async(delegateQueue2, block);
   }
 }
 
-- (void)informDelegateRangingStopped:(id)a3 withError:(id)a4
+- (void)informDelegateRangingStopped:(id)stopped withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PRBTGroupLocalizer *)self delegateQueue];
-  if (v8)
+  stoppedCopy = stopped;
+  errorCopy = error;
+  delegateQueue = [(PRBTGroupLocalizer *)self delegateQueue];
+  if (delegateQueue)
   {
-    v9 = [(PRBTGroupLocalizer *)self delegateQueue];
+    delegateQueue2 = [(PRBTGroupLocalizer *)self delegateQueue];
   }
 
   else
   {
-    v9 = MEMORY[0x277D85CD0];
+    delegateQueue2 = MEMORY[0x277D85CD0];
     v10 = MEMORY[0x277D85CD0];
   }
 
@@ -685,25 +685,25 @@ LABEL_46:
     block[2] = __61__PRBTGroupLocalizer_informDelegateRangingStopped_withError___block_invoke;
     block[3] = &unk_279AD6280;
     v13 = WeakRetained;
-    v14 = v6;
-    v15 = v7;
-    dispatch_async(v9, block);
+    v14 = stoppedCopy;
+    v15 = errorCopy;
+    dispatch_async(delegateQueue2, block);
   }
 }
 
-- (BOOL)startRangingOn:(id)a3 withError:(id *)a4
+- (BOOL)startRangingOn:(id)on withError:(id *)error
 {
-  v5 = a3;
+  onCopy = on;
   objc_initWeak(&location, self);
-  v6 = [(PRBTGroupLocalizer *)self proximityQueue];
+  proximityQueue = [(PRBTGroupLocalizer *)self proximityQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__PRBTGroupLocalizer_startRangingOn_withError___block_invoke;
   block[3] = &unk_279AD6150;
   objc_copyWeak(&v11, &location);
-  v10 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v10 = onCopy;
+  v7 = onCopy;
+  dispatch_async(proximityQueue, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -811,19 +811,19 @@ void __47__PRBTGroupLocalizer_startRangingOn_withError___block_invoke(uint64_t a
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)stopRangingOn:(id)a3 withError:(id *)a4
+- (BOOL)stopRangingOn:(id)on withError:(id *)error
 {
-  v5 = a3;
+  onCopy = on;
   objc_initWeak(&location, self);
-  v6 = [(PRBTGroupLocalizer *)self proximityQueue];
+  proximityQueue = [(PRBTGroupLocalizer *)self proximityQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__PRBTGroupLocalizer_stopRangingOn_withError___block_invoke;
   block[3] = &unk_279AD6150;
   objc_copyWeak(&v11, &location);
-  v10 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v10 = onCopy;
+  v7 = onCopy;
+  dispatch_async(proximityQueue, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -962,22 +962,22 @@ void __46__PRBTGroupLocalizer_stopRangingOn_withError___block_invoke(uint64_t a1
         }
 
         v8 = *(*(&v43 + 1) + 8 * i);
-        v9 = [(PRBTGroupLocalizer *)self uuidIndexMap];
-        v10 = [v9 objectForKey:v8];
-        v11 = [v10 intValue];
+        uuidIndexMap = [(PRBTGroupLocalizer *)self uuidIndexMap];
+        v10 = [uuidIndexMap objectForKey:v8];
+        intValue = [v10 intValue];
 
-        v12 = [(PRBTGroupLocalizer *)self localizerShouldRangeArray];
-        v13 = v11;
-        v14 = [v12 objectAtIndexedSubscript:v11];
-        v15 = [v14 BOOLValue];
+        localizerShouldRangeArray = [(PRBTGroupLocalizer *)self localizerShouldRangeArray];
+        v13 = intValue;
+        v14 = [localizerShouldRangeArray objectAtIndexedSubscript:intValue];
+        bOOLValue = [v14 BOOLValue];
 
-        v16 = [(PRBTGroupLocalizer *)self localizerStateArray];
-        v17 = [v16 objectAtIndexedSubscript:v13];
-        v18 = [v17 intValue];
+        localizerStateArray = [(PRBTGroupLocalizer *)self localizerStateArray];
+        v17 = [localizerStateArray objectAtIndexedSubscript:v13];
+        intValue2 = [v17 intValue];
 
-        if ((v18 & 0xFFFFFFFE) == 2)
+        if ((intValue2 & 0xFFFFFFFE) == 2)
         {
-          v19 = v15;
+          v19 = bOOLValue;
         }
 
         else
@@ -991,16 +991,16 @@ void __46__PRBTGroupLocalizer_stopRangingOn_withError___block_invoke(uint64_t a1
         {
           if (v21)
           {
-            v22 = [v8 UUIDString];
-            v23 = v22;
-            v24 = [v22 UTF8String];
+            uUIDString = [v8 UUIDString];
+            v23 = uUIDString;
+            uTF8String = [uUIDString UTF8String];
             *buf = 136315138;
-            v48 = v24;
+            v48 = uTF8String;
             _os_log_impl(&dword_2613DF000, v20, OS_LOG_TYPE_DEFAULT, "%s: Device is still ranging - Stop is sent", buf, 0xCu);
           }
 
-          v25 = [(PRBTGroupLocalizer *)self localizerArray];
-          v26 = [v25 objectAtIndexedSubscript:v13];
+          localizerArray = [(PRBTGroupLocalizer *)self localizerArray];
+          v26 = [localizerArray objectAtIndexedSubscript:v13];
           v42 = 0;
           v27 = [v26 stop:&v42];
           v20 = v42;
@@ -1010,16 +1010,16 @@ void __46__PRBTGroupLocalizer_stopRangingOn_withError___block_invoke(uint64_t a1
             v28 = self->_logger;
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
-              v29 = [v8 UUIDString];
-              v30 = v29;
-              v31 = [v29 UTF8String];
-              v32 = [(OS_os_log *)v20 localizedDescription];
-              v33 = v32;
-              v34 = [v32 UTF8String];
+              uUIDString2 = [v8 UUIDString];
+              v30 = uUIDString2;
+              uTF8String2 = [uUIDString2 UTF8String];
+              localizedDescription = [(OS_os_log *)v20 localizedDescription];
+              v33 = localizedDescription;
+              uTF8String3 = [localizedDescription UTF8String];
               *buf = v39;
-              v48 = v31;
+              v48 = uTF8String2;
               v49 = 2080;
-              v50 = v34;
+              v50 = uTF8String3;
               _os_log_impl(&dword_2613DF000, v28, OS_LOG_TYPE_DEFAULT, "%s: Failed to stop ranging with error: %s", buf, 0x16u);
             }
           }
@@ -1027,11 +1027,11 @@ void __46__PRBTGroupLocalizer_stopRangingOn_withError___block_invoke(uint64_t a1
 
         else if (v21)
         {
-          v35 = [v8 UUIDString];
-          v36 = v35;
-          v37 = [v35 UTF8String];
+          uUIDString3 = [v8 UUIDString];
+          v36 = uUIDString3;
+          uTF8String4 = [uUIDString3 UTF8String];
           *buf = 136315138;
-          v48 = v37;
+          v48 = uTF8String4;
           _os_log_impl(&dword_2613DF000, v20, OS_LOG_TYPE_DEFAULT, "%s: Device is not ranging", buf, 0xCu);
         }
       }

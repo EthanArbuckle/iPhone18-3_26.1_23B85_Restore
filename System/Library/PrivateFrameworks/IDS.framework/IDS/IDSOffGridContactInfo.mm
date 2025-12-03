@@ -1,23 +1,23 @@
 @interface IDSOffGridContactInfo
-- (IDSOffGridContactInfo)initWithCoder:(id)a3;
-- (IDSOffGridContactInfo)initWithURI:(id)a3 type:(int64_t)a4;
+- (IDSOffGridContactInfo)initWithCoder:(id)coder;
+- (IDSOffGridContactInfo)initWithURI:(id)i type:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSOffGridContactInfo
 
-- (IDSOffGridContactInfo)initWithURI:(id)a3 type:(int64_t)a4
+- (IDSOffGridContactInfo)initWithURI:(id)i type:(int64_t)type
 {
-  v7 = a3;
+  iCopy = i;
   v11.receiver = self;
   v11.super_class = IDSOffGridContactInfo;
   v8 = [(IDSOffGridContactInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_uri, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_uri, i);
+    v9->_type = type;
   }
 
   return v9;
@@ -32,19 +32,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uri = self->_uri;
-  v5 = a3;
-  [v5 encodeObject:uri forKey:@"uri"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uri forKey:@"uri"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (IDSOffGridContactInfo)initWithCoder:(id)a3
+- (IDSOffGridContactInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
-  v6 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+  v6 = [coderCopy decodeIntegerForKey:@"type"];
 
   v7 = [[IDSOffGridContactInfo alloc] initWithURI:v5 type:v6];
   return v7;

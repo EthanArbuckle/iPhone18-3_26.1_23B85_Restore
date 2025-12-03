@@ -1,21 +1,21 @@
 @interface SCROBrailleUIDisplayManager
 + (id)sharedManager;
-- (BOOL)_isFirstViewEqualTo:(id)a3;
+- (BOOL)_isFirstViewEqualTo:(id)to;
 - (SCROBrailleUIDisplayManager)init;
 - (SCROBrailleUIView)visibleView;
 - (id)_brailleUILineForCurrentBraille;
-- (id)lineForView:(id)a3;
+- (id)lineForView:(id)view;
 - (void)_commitDisplayedBrailleToTopMostView;
 - (void)_speakFocusedListItem;
 - (void)_updateBrailleModel;
 - (void)_updateIsHidingViews;
 - (void)dismissAll;
-- (void)dismissLineForView:(id)a3;
+- (void)dismissLineForView:(id)view;
 - (void)hideViews;
-- (void)showFirstLineForView:(id)a3;
-- (void)showLastLineForView:(id)a3;
-- (void)showNextLineForView:(id)a3;
-- (void)showPreviousLineForView:(id)a3;
+- (void)showFirstLineForView:(id)view;
+- (void)showLastLineForView:(id)view;
+- (void)showNextLineForView:(id)view;
+- (void)showPreviousLineForView:(id)view;
 - (void)showViews;
 @end
 
@@ -60,11 +60,11 @@ uint64_t __44__SCROBrailleUIDisplayManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)dismissLineForView:(id)a3
+- (void)dismissLineForView:(id)view
 {
-  v14 = a3;
-  v4 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-  v5 = [v4 count];
+  viewCopy = view;
+  lineQueue = [(SCROBrailleUIDisplayManager *)self lineQueue];
+  v5 = [lineQueue count];
 
   v6 = v5 - 1;
   if (v5 - 1 >= 0)
@@ -72,17 +72,17 @@ uint64_t __44__SCROBrailleUIDisplayManager_sharedManager__block_invoke()
     v7 = 0;
     do
     {
-      v8 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-      v9 = [v8 objectAtIndex:v6];
-      v10 = [v9 isEqual:v14];
+      viewQueue = [(SCROBrailleUIDisplayManager *)self viewQueue];
+      v9 = [viewQueue objectAtIndex:v6];
+      v10 = [v9 isEqual:viewCopy];
 
       if (v10)
       {
-        v11 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-        [v11 removeObjectAtIndex:v6];
+        lineQueue2 = [(SCROBrailleUIDisplayManager *)self lineQueue];
+        [lineQueue2 removeObjectAtIndex:v6];
 
-        v12 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-        [v12 removeObjectAtIndex:v6];
+        viewQueue2 = [(SCROBrailleUIDisplayManager *)self viewQueue];
+        [viewQueue2 removeObjectAtIndex:v6];
 
         v7 |= v6 == 0;
       }
@@ -101,11 +101,11 @@ uint64_t __44__SCROBrailleUIDisplayManager_sharedManager__block_invoke()
 
 - (void)dismissAll
 {
-  v3 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-  [v3 removeAllObjects];
+  lineQueue = [(SCROBrailleUIDisplayManager *)self lineQueue];
+  [lineQueue removeAllObjects];
 
-  v4 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-  [v4 removeAllObjects];
+  viewQueue = [(SCROBrailleUIDisplayManager *)self viewQueue];
+  [viewQueue removeAllObjects];
 
   [(SCROBrailleUIDisplayManager *)self _updateIsHidingViews];
 
@@ -116,8 +116,8 @@ uint64_t __44__SCROBrailleUIDisplayManager_sharedManager__block_invoke()
 {
   if (![(SCROBrailleUIDisplayManager *)self isHidingViews])
   {
-    v3 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-    v4 = [v3 count];
+    viewQueue = [(SCROBrailleUIDisplayManager *)self viewQueue];
+    v4 = [viewQueue count];
 
     if (v4)
     {
@@ -140,85 +140,85 @@ uint64_t __44__SCROBrailleUIDisplayManager_sharedManager__block_invoke()
   }
 }
 
-- (void)showPreviousLineForView:(id)a3
+- (void)showPreviousLineForView:(id)view
 {
-  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:a3])
+  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:view])
   {
-    v3 = [MEMORY[0x277CF3318] sharedModel];
-    [v3 showPreviousLine];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    [mEMORY[0x277CF3318] showPreviousLine];
   }
 }
 
-- (void)showNextLineForView:(id)a3
+- (void)showNextLineForView:(id)view
 {
-  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:a3])
+  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:view])
   {
-    v3 = [MEMORY[0x277CF3318] sharedModel];
-    [v3 showNextLine];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    [mEMORY[0x277CF3318] showNextLine];
   }
 }
 
-- (void)showFirstLineForView:(id)a3
+- (void)showFirstLineForView:(id)view
 {
-  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:a3])
+  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:view])
   {
-    v3 = [MEMORY[0x277CF3318] sharedModel];
-    [v3 showFirstLine];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    [mEMORY[0x277CF3318] showFirstLine];
   }
 }
 
-- (void)showLastLineForView:(id)a3
+- (void)showLastLineForView:(id)view
 {
-  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:a3])
+  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:view])
   {
-    v3 = [MEMORY[0x277CF3318] sharedModel];
-    [v3 showLastLine];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    [mEMORY[0x277CF3318] showLastLine];
   }
 }
 
 - (SCROBrailleUIView)visibleView
 {
-  v3 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-  v4 = [v3 count];
+  viewQueue = [(SCROBrailleUIDisplayManager *)self viewQueue];
+  v4 = [viewQueue count];
 
   if (v4)
   {
-    v5 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-    v6 = [v5 firstObject];
+    viewQueue2 = [(SCROBrailleUIDisplayManager *)self viewQueue];
+    firstObject = [viewQueue2 firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
-- (id)lineForView:(id)a3
+- (id)lineForView:(id)view
 {
-  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:a3])
+  if ([(SCROBrailleUIDisplayManager *)self _isFirstViewEqualTo:view])
   {
-    v4 = [(SCROBrailleUIDisplayManager *)self _brailleUILineForCurrentBraille];
+    _brailleUILineForCurrentBraille = [(SCROBrailleUIDisplayManager *)self _brailleUILineForCurrentBraille];
   }
 
   else
   {
-    v4 = 0;
+    _brailleUILineForCurrentBraille = 0;
   }
 
-  return v4;
+  return _brailleUILineForCurrentBraille;
 }
 
-- (BOOL)_isFirstViewEqualTo:(id)a3
+- (BOOL)_isFirstViewEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-  if ([v5 count])
+  toCopy = to;
+  viewQueue = [(SCROBrailleUIDisplayManager *)self viewQueue];
+  if ([viewQueue count])
   {
-    v6 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-    v7 = [v6 firstObject];
-    v8 = [v7 isEqual:v4];
+    viewQueue2 = [(SCROBrailleUIDisplayManager *)self viewQueue];
+    firstObject = [viewQueue2 firstObject];
+    v8 = [firstObject isEqual:toCopy];
   }
 
   else
@@ -231,75 +231,75 @@ uint64_t __44__SCROBrailleUIDisplayManager_sharedManager__block_invoke()
 
 - (id)_brailleUILineForCurrentBraille
 {
-  v3 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-  if (![v3 count])
+  lineQueue = [(SCROBrailleUIDisplayManager *)self lineQueue];
+  if (![lineQueue count])
   {
 
     goto LABEL_6;
   }
 
-  v4 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-  v5 = [v4 firstObject];
-  v6 = [v5 isMultiLine];
+  lineQueue2 = [(SCROBrailleUIDisplayManager *)self lineQueue];
+  firstObject = [lineQueue2 firstObject];
+  isMultiLine = [firstObject isMultiLine];
 
-  if (!v6)
+  if (!isMultiLine)
   {
 LABEL_6:
-    v20 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-    if ([v20 count])
+    lineQueue3 = [(SCROBrailleUIDisplayManager *)self lineQueue];
+    if ([lineQueue3 count])
     {
-      v21 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-      v22 = [v21 firstObject];
-      v23 = [v22 shouldTruncateAtPanBoundary];
+      lineQueue4 = [(SCROBrailleUIDisplayManager *)self lineQueue];
+      firstObject2 = [lineQueue4 firstObject];
+      shouldTruncateAtPanBoundary = [firstObject2 shouldTruncateAtPanBoundary];
     }
 
     else
     {
-      v23 = 0;
+      shouldTruncateAtPanBoundary = 0;
     }
 
-    v24 = [MEMORY[0x277CF3318] sharedModel];
-    v8 = [v24 displayedBraille];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    displayedBraille = [mEMORY[0x277CF3318] displayedBraille];
 
-    v25 = [v8 string];
-    v27 = [v8 selection];
-    if (v27 == 0x7FFFFFFFFFFFFFFFLL)
+    string = [displayedBraille string];
+    selection = [displayedBraille selection];
+    if (selection == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [SCROBrailleUIBraille lineWithBraille:v25 shouldTruncateAtPanBoundary:v23];
+      [SCROBrailleUIBraille lineWithBraille:string shouldTruncateAtPanBoundary:shouldTruncateAtPanBoundary];
     }
 
     else
     {
-      [SCROBrailleUIBraille lineWithEditableBraille:v25 selection:v27, v26];
+      [SCROBrailleUIBraille lineWithEditableBraille:string selection:selection, v26];
     }
     v28 = ;
 
     goto LABEL_15;
   }
 
-  v7 = [MEMORY[0x277CF3318] sharedModel];
-  v8 = [v7 uiBraille];
+  mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+  displayedBraille = [mEMORY[0x277CF3318]2 uiBraille];
 
-  v9 = [MEMORY[0x277CF3318] sharedModel];
-  v10 = [v9 uiSelection];
+  mEMORY[0x277CF3318]3 = [MEMORY[0x277CF3318] sharedModel];
+  uiSelection = [mEMORY[0x277CF3318]3 uiSelection];
   v12 = v11;
 
-  v13 = [MEMORY[0x277CF3318] sharedModel];
-  v14 = [v13 uiDisplayRange];
+  mEMORY[0x277CF3318]4 = [MEMORY[0x277CF3318] sharedModel];
+  uiDisplayRange = [mEMORY[0x277CF3318]4 uiDisplayRange];
   v16 = v15;
 
-  v17 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-  v18 = [v17 firstObject];
-  v19 = [v18 isEditable];
+  lineQueue5 = [(SCROBrailleUIDisplayManager *)self lineQueue];
+  firstObject3 = [lineQueue5 firstObject];
+  isEditable = [firstObject3 isEditable];
 
-  if (v19)
+  if (isEditable)
   {
-    [SCROBrailleUIBraille multiLineEditableBraille:v8 selection:v10, v12];
+    [SCROBrailleUIBraille multiLineEditableBraille:displayedBraille selection:uiSelection, v12];
   }
 
   else
   {
-    [SCROBrailleUIBraille multiLineBraille:v8 focus:v14, v16];
+    [SCROBrailleUIBraille multiLineBraille:displayedBraille focus:uiDisplayRange, v16];
   }
   v28 = ;
 LABEL_15:
@@ -309,24 +309,24 @@ LABEL_15:
 
 - (void)_commitDisplayedBrailleToTopMostView
 {
-  v3 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-  v4 = [v3 count];
+  viewQueue = [(SCROBrailleUIDisplayManager *)self viewQueue];
+  v4 = [viewQueue count];
 
   if (v4)
   {
-    v6 = [(SCROBrailleUIDisplayManager *)self _brailleUILineForCurrentBraille];
-    v5 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-    [v5 setObject:v6 atIndexedSubscript:0];
+    _brailleUILineForCurrentBraille = [(SCROBrailleUIDisplayManager *)self _brailleUILineForCurrentBraille];
+    lineQueue = [(SCROBrailleUIDisplayManager *)self lineQueue];
+    [lineQueue setObject:_brailleUILineForCurrentBraille atIndexedSubscript:0];
   }
 }
 
 - (void)_speakFocusedListItem
 {
-  v13 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-  if ([v13 count])
+  viewQueue = [(SCROBrailleUIDisplayManager *)self viewQueue];
+  if ([viewQueue count])
   {
-    v3 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-    v4 = [v3 objectAtIndex:0];
+    viewQueue2 = [(SCROBrailleUIDisplayManager *)self viewQueue];
+    v4 = [viewQueue2 objectAtIndex:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -335,25 +335,25 @@ LABEL_15:
       return;
     }
 
-    v6 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-    v13 = [v6 objectAtIndex:0];
+    viewQueue3 = [(SCROBrailleUIDisplayManager *)self viewQueue];
+    viewQueue = [viewQueue3 objectAtIndex:0];
 
-    v7 = [v13 focusedItem];
-    v8 = [v7 speakableLabel];
-    if (!v8)
+    focusedItem = [viewQueue focusedItem];
+    speakableLabel = [focusedItem speakableLabel];
+    if (!speakableLabel)
     {
       goto LABEL_6;
     }
 
-    v9 = v8;
+    v9 = speakableLabel;
     v10 = +[SCROBrailleUISettingsManager sharedInstance];
-    v11 = [v10 isReadListItemsEnabled];
+    isReadListItemsEnabled = [v10 isReadListItemsEnabled];
 
-    if (v11)
+    if (isReadListItemsEnabled)
     {
-      v7 = [v13 focusedItem];
-      v12 = [v7 speakableLabel];
-      [(SCROBrailleUIDisplayManager *)self requestSpeech:v12 language:0 shouldQueue:0];
+      focusedItem = [viewQueue focusedItem];
+      speakableLabel2 = [focusedItem speakableLabel];
+      [(SCROBrailleUIDisplayManager *)self requestSpeech:speakableLabel2 language:0 shouldQueue:0];
 
 LABEL_6:
     }
@@ -362,44 +362,44 @@ LABEL_6:
 
 - (void)_updateBrailleModel
 {
-  v3 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-  if ([v3 count])
+  lineQueue = [(SCROBrailleUIDisplayManager *)self lineQueue];
+  if ([lineQueue count])
   {
-    v4 = [(SCROBrailleUIDisplayManager *)self isHidingViews];
+    isHidingViews = [(SCROBrailleUIDisplayManager *)self isHidingViews];
 
-    if (!v4)
+    if (!isHidingViews)
     {
-      v5 = [MEMORY[0x277CF3318] sharedModel];
-      [v5 setBrailleUIActive:1];
+      mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+      [mEMORY[0x277CF3318] setBrailleUIActive:1];
 
-      v6 = [(SCROBrailleUIDisplayManager *)self lineQueue];
-      v19 = [v6 firstObject];
+      lineQueue2 = [(SCROBrailleUIDisplayManager *)self lineQueue];
+      firstObject = [lineQueue2 firstObject];
 
       v7 = objc_alloc(MEMORY[0x277CF3330]);
-      v8 = [v19 braille];
-      v9 = [v19 selection];
+      braille = [firstObject braille];
+      selection = [firstObject selection];
       v11 = v10;
-      v12 = [v19 focus];
-      v14 = [v7 initWithString:v8 selection:v9 focus:v11 token:v12 suggestion:v13 textFormattingRanges:{0, 0x7FFFFFFFFFFFFFFFLL, 0, 0}];
+      focus = [firstObject focus];
+      v14 = [v7 initWithString:braille selection:selection focus:v11 token:focus suggestion:v13 textFormattingRanges:{0, 0x7FFFFFFFFFFFFFFFLL, 0, 0}];
 
-      v15 = [MEMORY[0x277CF3318] sharedModel];
-      [v15 setUIBraille:v14 truncateAtPanBoundary:{objc_msgSend(v19, "shouldTruncateAtPanBoundary")}];
+      mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+      [mEMORY[0x277CF3318]2 setUIBraille:v14 truncateAtPanBoundary:{objc_msgSend(firstObject, "shouldTruncateAtPanBoundary")}];
 
-      v16 = [MEMORY[0x277CF3318] sharedModel];
-      [v16 setEditable:{objc_msgSend(v19, "isEditable")}];
+      mEMORY[0x277CF3318]3 = [MEMORY[0x277CF3318] sharedModel];
+      [mEMORY[0x277CF3318]3 setEditable:{objc_msgSend(firstObject, "isEditable")}];
 
-      v17 = [MEMORY[0x277CF3318] sharedModel];
-      if ([v19 isMultiLine])
+      mEMORY[0x277CF3318]4 = [MEMORY[0x277CF3318] sharedModel];
+      if ([firstObject isMultiLine])
       {
-        v18 = [v19 isEditable];
+        isEditable = [firstObject isEditable];
       }
 
       else
       {
-        v18 = 0;
+        isEditable = 0;
       }
 
-      [v17 setHandleReturnInternally:v18];
+      [mEMORY[0x277CF3318]4 setHandleReturnInternally:isEditable];
 
       goto LABEL_9;
     }
@@ -409,15 +409,15 @@ LABEL_6:
   {
   }
 
-  v19 = [MEMORY[0x277CF3318] sharedModel];
-  [v19 setBrailleUIActive:0];
+  firstObject = [MEMORY[0x277CF3318] sharedModel];
+  [firstObject setBrailleUIActive:0];
 LABEL_9:
 }
 
 - (void)_updateIsHidingViews
 {
-  v3 = [(SCROBrailleUIDisplayManager *)self viewQueue];
-  v4 = [v3 count];
+  viewQueue = [(SCROBrailleUIDisplayManager *)self viewQueue];
+  v4 = [viewQueue count];
 
   if (!v4)
   {

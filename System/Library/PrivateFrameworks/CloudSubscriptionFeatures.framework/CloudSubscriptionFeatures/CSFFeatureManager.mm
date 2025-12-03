@@ -1,30 +1,30 @@
 @interface CSFFeatureManager
-+ (id)addFeatureChangeObserverWithChange:(id)a3;
-+ (id)addTicketChangeObserverWithFeatureName:(id)a3 change:(id)a4;
-+ (id)cachedFeatureObjectWithId:(id)a3;
-+ (id)urlForRSVPDataDetectorsWithContext:(id)a3;
-+ (unint64_t)_statusFromSwiftTicketStatus:(id)a3;
-+ (void)clearCFUWithCompletionHandler:(id)a3;
-+ (void)deviceHasAnyTicketWithCompletionHandler:(id)a3;
-+ (void)getFeatureEligibilityForFeatureWithId:(id)a3 bundleId:(id)a4 completion:(id)a5;
-+ (void)getTicketForFeature:(NSString *)a3 completionHandler:(id)a4;
-+ (void)getTicketForFeature:(id)a3 withCompletionHandler:(id)a4;
-+ (void)getTicketStatusForFeature:(NSString *)a3 completionHandler:(id)a4;
-+ (void)getTicketStatusForFeature:(id)a3 withCompletionHandler:(id)a4;
-+ (void)getTicketStatusFromCacheForFeature:(NSString *)a3 completionHandler:(id)a4;
-+ (void)gmOptInToggleWithCompletionHandler:(id)a3;
-+ (void)postCFUIfEligibleWithCompletionHandler:(id)a3;
-+ (void)requestFeatureWithId:(id)a3 allowStale:(BOOL)a4 completion:(id)a5;
-+ (void)requestGeoClassificationForFeatureID:(id)a3 bundleID:(id)a4 altDSID:(id)a5 ignoreCache:(BOOL)a6 completion:(id)a7;
-+ (void)requestGeoClassificationForFeatureID:(id)a3 bundleID:(id)a4 ignoreCache:(BOOL)a5 completion:(id)a6;
-+ (void)revalidateCFUWithCompletionHandler:(id)a3;
++ (id)addFeatureChangeObserverWithChange:(id)change;
++ (id)addTicketChangeObserverWithFeatureName:(id)name change:(id)change;
++ (id)cachedFeatureObjectWithId:(id)id;
++ (id)urlForRSVPDataDetectorsWithContext:(id)context;
++ (unint64_t)_statusFromSwiftTicketStatus:(id)status;
++ (void)clearCFUWithCompletionHandler:(id)handler;
++ (void)deviceHasAnyTicketWithCompletionHandler:(id)handler;
++ (void)getFeatureEligibilityForFeatureWithId:(id)id bundleId:(id)bundleId completion:(id)completion;
++ (void)getTicketForFeature:(NSString *)feature completionHandler:(id)handler;
++ (void)getTicketForFeature:(id)feature withCompletionHandler:(id)handler;
++ (void)getTicketStatusForFeature:(NSString *)feature completionHandler:(id)handler;
++ (void)getTicketStatusForFeature:(id)feature withCompletionHandler:(id)handler;
++ (void)getTicketStatusFromCacheForFeature:(NSString *)feature completionHandler:(id)handler;
++ (void)gmOptInToggleWithCompletionHandler:(id)handler;
++ (void)postCFUIfEligibleWithCompletionHandler:(id)handler;
++ (void)requestFeatureWithId:(id)id allowStale:(BOOL)stale completion:(id)completion;
++ (void)requestGeoClassificationForFeatureID:(id)d bundleID:(id)iD altDSID:(id)sID ignoreCache:(BOOL)cache completion:(id)completion;
++ (void)requestGeoClassificationForFeatureID:(id)d bundleID:(id)iD ignoreCache:(BOOL)cache completion:(id)completion;
++ (void)revalidateCFUWithCompletionHandler:(id)handler;
 @end
 
 @implementation CSFFeatureManager
 
-+ (id)addFeatureChangeObserverWithChange:(id)a3
++ (id)addFeatureChangeObserverWithChange:(id)change
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(change);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   if (qword_1ED955AD8 != -1)
@@ -37,21 +37,21 @@
   return v5;
 }
 
-+ (void)requestFeatureWithId:(id)a3 allowStale:(BOOL)a4 completion:(id)a5
++ (void)requestFeatureWithId:(id)id allowStale:(BOOL)stale completion:(id)completion
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(completion);
   v7 = sub_1DF564944();
   v9 = v8;
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v6);
-  sub_1DF47F2AC(v7, v9, a4, ObjCClassMetadata, v6);
+  sub_1DF47F2AC(v7, v9, stale, ObjCClassMetadata, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-+ (void)getFeatureEligibilityForFeatureWithId:(id)a3 bundleId:(id)a4 completion:(id)a5
++ (void)getFeatureEligibilityForFeatureWithId:(id)id bundleId:(id)bundleId completion:(id)completion
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(completion);
   v6 = sub_1DF564944();
   v8 = v7;
   v9 = sub_1DF564944();
@@ -62,17 +62,17 @@
   _Block_release(v5);
 }
 
-+ (void)getTicketForFeature:(id)a3 withCompletionHandler:(id)a4
++ (void)getTicketForFeature:(id)feature withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__CSFFeatureManager_getTicketForFeature_withCompletionHandler___block_invoke;
   v8[3] = &unk_1E86BB300;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a1 getTicketForFeature:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  selfCopy = self;
+  v7 = handlerCopy;
+  [self getTicketForFeature:feature completionHandler:v8];
 }
 
 void __63__CSFFeatureManager_getTicketForFeature_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -105,17 +105,17 @@ void __63__CSFFeatureManager_getTicketForFeature_withCompletionHandler___block_i
   v6();
 }
 
-+ (void)getTicketStatusForFeature:(id)a3 withCompletionHandler:(id)a4
++ (void)getTicketStatusForFeature:(id)feature withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__CSFFeatureManager_getTicketStatusForFeature_withCompletionHandler___block_invoke;
   v8[3] = &unk_1E86BB328;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a1 getTicketStatusForFeature:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  selfCopy = self;
+  v7 = handlerCopy;
+  [self getTicketStatusForFeature:feature completionHandler:v8];
 }
 
 void __69__CSFFeatureManager_getTicketStatusForFeature_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -140,13 +140,13 @@ void __69__CSFFeatureManager_getTicketStatusForFeature_withCompletionHandler___b
   v6();
 }
 
-+ (unint64_t)_statusFromSwiftTicketStatus:(id)a3
++ (unint64_t)_statusFromSwiftTicketStatus:(id)status
 {
-  v3 = a3;
-  v4 = [v3 rawValue];
+  statusCopy = status;
+  rawValue = [statusCopy rawValue];
   v5 = +[_TtC25CloudSubscriptionFeatures12TicketStatus notYetQueued];
-  v6 = [v5 rawValue];
-  v7 = [v4 isEqualToString:v6];
+  rawValue2 = [v5 rawValue];
+  v7 = [rawValue isEqualToString:rawValue2];
 
   if (v7)
   {
@@ -155,10 +155,10 @@ void __69__CSFFeatureManager_getTicketStatusForFeature_withCompletionHandler___b
 
   else
   {
-    v9 = [v3 rawValue];
+    rawValue3 = [statusCopy rawValue];
     v10 = +[_TtC25CloudSubscriptionFeatures12TicketStatus enqueued];
-    v11 = [v10 rawValue];
-    v12 = [v9 isEqualToString:v11];
+    rawValue4 = [v10 rawValue];
+    v12 = [rawValue3 isEqualToString:rawValue4];
 
     if (v12)
     {
@@ -167,10 +167,10 @@ void __69__CSFFeatureManager_getTicketStatusForFeature_withCompletionHandler___b
 
     else
     {
-      v13 = [v3 rawValue];
+      rawValue5 = [statusCopy rawValue];
       v14 = +[_TtC25CloudSubscriptionFeatures12TicketStatus active];
-      v15 = [v14 rawValue];
-      v16 = [v13 isEqualToString:v15];
+      rawValue6 = [v14 rawValue];
+      v16 = [rawValue5 isEqualToString:rawValue6];
 
       if (v16)
       {
@@ -217,7 +217,7 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)cachedFeatureObjectWithId:(id)a3
++ (id)cachedFeatureObjectWithId:(id)id
 {
   v3 = sub_1DF564944();
   v5 = sub_1DF4812FC(v3, v4);
@@ -235,9 +235,9 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-+ (void)requestGeoClassificationForFeatureID:(id)a3 bundleID:(id)a4 altDSID:(id)a5 ignoreCache:(BOOL)a6 completion:(id)a7
++ (void)requestGeoClassificationForFeatureID:(id)d bundleID:(id)iD altDSID:(id)sID ignoreCache:(BOOL)cache completion:(id)completion
 {
-  v8 = _Block_copy(a7);
+  v8 = _Block_copy(completion);
   v9 = sub_1DF564944();
   v11 = v10;
   v12 = sub_1DF564944();
@@ -245,28 +245,28 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   v15 = sub_1DF564944();
   v17 = v16;
   _Block_copy(v8);
-  sub_1DF51D340(v9, v11, v12, v14, v15, v17, a6, v8);
+  sub_1DF51D340(v9, v11, v12, v14, v15, v17, cache, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-+ (void)requestGeoClassificationForFeatureID:(id)a3 bundleID:(id)a4 ignoreCache:(BOOL)a5 completion:(id)a6
++ (void)requestGeoClassificationForFeatureID:(id)d bundleID:(id)iD ignoreCache:(BOOL)cache completion:(id)completion
 {
-  v7 = _Block_copy(a6);
+  v7 = _Block_copy(completion);
   v8 = sub_1DF564944();
   v10 = v9;
   v11 = sub_1DF564944();
   v13 = v12;
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v7);
-  sub_1DF51D97C(v8, v10, v11, v13, a5, ObjCClassMetadata, v7);
+  sub_1DF51D97C(v8, v10, v11, v13, cache, ObjCClassMetadata, v7);
   _Block_release(v7);
   _Block_release(v7);
 }
 
-+ (id)addTicketChangeObserverWithFeatureName:(id)a3 change:(id)a4
++ (id)addTicketChangeObserverWithFeatureName:(id)name change:(id)change
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(change);
   v5 = sub_1DF564944();
   v7 = v6;
   v8 = swift_allocObject();
@@ -289,7 +289,7 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   return v11;
 }
 
-+ (id)urlForRSVPDataDetectorsWithContext:(id)a3
++ (id)urlForRSVPDataDetectorsWithContext:(id)context
 {
   v3 = sub_1DF564344();
   v4 = *(v3 - 8);
@@ -305,17 +305,17 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-+ (void)getTicketStatusForFeature:(NSString *)a3 completionHandler:(id)a4
++ (void)getTicketStatusForFeature:(NSString *)feature completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = feature;
   v12[3] = v11;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = sub_1DF564B44();
   (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
   v14 = swift_allocObject();
@@ -328,21 +328,21 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   v15[3] = 0;
   v15[4] = &unk_1DF56BC50;
   v15[5] = v14;
-  v16 = a3;
+  featureCopy = feature;
   sub_1DF51CC08(0, 0, v10, &unk_1DF56BC58, v15);
 }
 
-+ (void)getTicketStatusFromCacheForFeature:(NSString *)a3 completionHandler:(id)a4
++ (void)getTicketStatusFromCacheForFeature:(NSString *)feature completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = feature;
   v12[3] = v11;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = sub_1DF564B44();
   (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
   v14 = swift_allocObject();
@@ -355,21 +355,21 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   v15[3] = 0;
   v15[4] = &unk_1DF56BC30;
   v15[5] = v14;
-  v16 = a3;
+  featureCopy = feature;
   sub_1DF51CC08(0, 0, v10, &unk_1DF56BC38, v15);
 }
 
-+ (void)getTicketForFeature:(NSString *)a3 completionHandler:(id)a4
++ (void)getTicketForFeature:(NSString *)feature completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = feature;
   v12[3] = v11;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = sub_1DF564B44();
   (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
   v14 = swift_allocObject();
@@ -382,20 +382,20 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   v15[3] = 0;
   v15[4] = &unk_1DF56BC10;
   v15[5] = v14;
-  v16 = a3;
+  featureCopy = feature;
   sub_1DF51CC08(0, 0, v10, &unk_1DF56BC18, v15);
 }
 
-+ (void)deviceHasAnyTicketWithCompletionHandler:(id)a3
++ (void)deviceHasAnyTicketWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_1DF564B44();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();
@@ -411,16 +411,16 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   sub_1DF51CC08(0, 0, v8, &unk_1DF56BBF8, v13);
 }
 
-+ (void)clearCFUWithCompletionHandler:(id)a3
++ (void)clearCFUWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_1DF564B44();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();
@@ -436,16 +436,16 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   sub_1DF51CC08(0, 0, v8, &unk_1DF56BBD8, v13);
 }
 
-+ (void)postCFUIfEligibleWithCompletionHandler:(id)a3
++ (void)postCFUIfEligibleWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_1DF564B44();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();
@@ -461,16 +461,16 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   sub_1DF51CC08(0, 0, v8, &unk_1DF56BBB8, v13);
 }
 
-+ (void)revalidateCFUWithCompletionHandler:(id)a3
++ (void)revalidateCFUWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_1DF564B44();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();
@@ -486,16 +486,16 @@ void __34__CSFFeatureManager_revalidateCFU__block_invoke(uint64_t a1, void *a2)
   sub_1DF51CC08(0, 0, v8, &unk_1DF56BB98, v13);
 }
 
-+ (void)gmOptInToggleWithCompletionHandler:(id)a3
++ (void)gmOptInToggleWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECE383B0, &qword_1DF568C10);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_1DF564B44();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();

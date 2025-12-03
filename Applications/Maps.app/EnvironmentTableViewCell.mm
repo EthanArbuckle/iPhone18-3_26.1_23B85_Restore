@@ -1,14 +1,14 @@
 @interface EnvironmentTableViewCell
-- (EnvironmentTableViewCell)initWithReuseIdentifier:(id)a3;
+- (EnvironmentTableViewCell)initWithReuseIdentifier:(id)identifier;
 - (void)_configureEnvironmentCell;
-- (void)_startObservingEnvironment:(id)a3;
-- (void)_startObservingProgressForEnvironment:(id)a3;
+- (void)_startObservingEnvironment:(id)environment;
+- (void)_startObservingProgressForEnvironment:(id)environment;
 - (void)_stopObservingEnvironment;
 - (void)_stopObservingProgress;
-- (void)configureFromEnvironment:(id)a3;
+- (void)configureFromEnvironment:(id)environment;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReuse;
 @end
 
@@ -19,13 +19,13 @@
   v11.receiver = self;
   v11.super_class = EnvironmentTableViewCell;
   [(EnvironmentTableViewCell *)&v11 layoutSubviews];
-  v3 = [(EnvironmentTableViewCell *)self imageView];
-  [v3 frame];
+  imageView = [(EnvironmentTableViewCell *)self imageView];
+  [imageView frame];
   MidX = CGRectGetMidX(v12);
   [(MapsPieProgressView *)self->_progressView bounds];
   v5 = MidX - CGRectGetWidth(v13) * 0.5;
-  v6 = [(EnvironmentTableViewCell *)self imageView];
-  [v6 frame];
+  imageView2 = [(EnvironmentTableViewCell *)self imageView];
+  [imageView2 frame];
   MidY = CGRectGetMidY(v14);
   [(MapsPieProgressView *)self->_progressView bounds];
   v8 = MidY - CGRectGetHeight(v15) * 0.5;
@@ -35,17 +35,17 @@
   [(MapsPieProgressView *)self->_progressView setFrame:v5, v8, v10];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (self->_environment == v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_environment == objectCopy)
   {
     [(EnvironmentTableViewCell *)self configureFromEnvironment:?];
   }
 
-  else if (self->_observedProgress == v11)
+  else if (self->_observedProgress == objectCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -59,26 +59,26 @@
   {
     v13.receiver = self;
     v13.super_class = EnvironmentTableViewCell;
-    [(EnvironmentTableViewCell *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(EnvironmentTableViewCell *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)configureFromEnvironment:(id)a3
+- (void)configureFromEnvironment:(id)environment
 {
-  v5 = a3;
-  v6 = 8;
-  if (self->_environment != v5)
+  environmentCopy = environment;
+  activationProgress = 8;
+  if (self->_environment != environmentCopy)
   {
     [(EnvironmentTableViewCell *)self _stopObservingEnvironment];
-    [(EnvironmentTableViewCell *)self _startObservingEnvironment:v5];
+    [(EnvironmentTableViewCell *)self _startObservingEnvironment:environmentCopy];
   }
 
-  objc_storeStrong(&self->_environment, a3);
-  v7 = [(GEOEnvironmentInfo *)v5 isActive];
-  if (v7)
+  objc_storeStrong(&self->_environment, environment);
+  isActive = [(GEOEnvironmentInfo *)environmentCopy isActive];
+  if (isActive)
   {
-    v6 = [(GEOEnvironmentInfo *)v5 activationProgress];
-    v8 = v6 != 0;
+    activationProgress = [(GEOEnvironmentInfo *)environmentCopy activationProgress];
+    v8 = activationProgress != 0;
   }
 
   else
@@ -86,16 +86,16 @@
     v8 = 1;
   }
 
-  v9 = [(EnvironmentTableViewCell *)self imageView];
-  [v9 setHidden:v8];
+  imageView = [(EnvironmentTableViewCell *)self imageView];
+  [imageView setHidden:v8];
 
-  if (v7)
+  if (isActive)
   {
   }
 
-  v10 = [(GEOEnvironmentInfo *)v5 state];
+  state = [(GEOEnvironmentInfo *)environmentCopy state];
   loadingView = self->_loadingView;
-  if (v10 == 1)
+  if (state == 1)
   {
     [(UIActivityIndicatorView *)loadingView startAnimating];
   }
@@ -105,11 +105,11 @@
     [(UIActivityIndicatorView *)loadingView stopAnimating];
   }
 
-  v12 = [(GEOEnvironmentInfo *)v5 activationProgress];
+  activationProgress2 = [(GEOEnvironmentInfo *)environmentCopy activationProgress];
 
-  if (v12)
+  if (activationProgress2)
   {
-    [(EnvironmentTableViewCell *)self _startObservingProgressForEnvironment:v5];
+    [(EnvironmentTableViewCell *)self _startObservingProgressForEnvironment:environmentCopy];
     [(MapsPieProgressView *)self->_progressView setHidden:0];
   }
 
@@ -120,36 +120,36 @@
   }
 
   [(UIImageView *)self->_secureEnvironmentImageView setHidden:1];
-  v13 = [(GEOEnvironmentInfo *)v5 state];
-  if (v13 == 1)
+  state2 = [(GEOEnvironmentInfo *)environmentCopy state];
+  if (state2 == 1)
   {
     [(EnvironmentTableViewCell *)self setAccessoryType:0];
     errorButton = self->_loadingView;
     goto LABEL_36;
   }
 
-  if (v13 == 3)
+  if (state2 == 3)
   {
     [(EnvironmentTableViewCell *)self setAccessoryType:0];
     errorButton = self->_errorButton;
 LABEL_36:
-    v36 = self;
+    selfCopy2 = self;
     goto LABEL_38;
   }
 
-  if (v13 == 2)
+  if (state2 == 2)
   {
     [(EnvironmentTableViewCell *)self setAccessoryType:2];
     [(EnvironmentTableViewCell *)self setAccessoryView:0];
     v14 = 1;
     [(EnvironmentTableViewCell *)self setSelectionStyle:1];
     v15 = +[UIColor labelColor];
-    v16 = [(EnvironmentTableViewCell *)self textLabel];
-    [v16 setTextColor:v15];
+    textLabel = [(EnvironmentTableViewCell *)self textLabel];
+    [textLabel setTextColor:v15];
 
-    v17 = [(GEOEnvironmentInfo *)v5 resourceManifest];
-    v18 = [v17 resources];
-    if (!v18)
+    resourceManifest = [(GEOEnvironmentInfo *)environmentCopy resourceManifest];
+    resources = [resourceManifest resources];
+    if (!resources)
     {
 LABEL_43:
 
@@ -158,9 +158,9 @@ LABEL_43:
     }
 
     v19 = +[GEOResourceManifestManager modernManager];
-    v20 = [v19 activeTileGroup];
-    v21 = [v20 dataSet];
-    v22 = [v18 preferedURLSetFor:v21];
+    activeTileGroup = [v19 activeTileGroup];
+    dataSet = [activeTileGroup dataSet];
+    v22 = [resources preferedURLSetFor:dataSet];
 
     if (![v22 hasAuthProxyURL])
     {
@@ -170,16 +170,16 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v39 = v17;
-    v23 = [v18 data];
+    v39 = resourceManifest;
+    data = [resources data];
     v24 = GEOGetProxyAuthFromResourceManifest();
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v25 = [v24 allValues];
-    v26 = [v25 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    allValues = [v24 allValues];
+    v26 = [allValues countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v26)
     {
       v27 = v26;
@@ -190,7 +190,7 @@ LABEL_21:
       {
         if (*v41 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v40 + 1) + 8 * v29) BOOLValue])
@@ -200,7 +200,7 @@ LABEL_21:
 
         if (v27 == ++v29)
         {
-          v27 = [v25 countByEnumeratingWithState:&v40 objects:v44 count:16];
+          v27 = [allValues countByEnumeratingWithState:&v40 objects:v44 count:16];
           if (v27)
           {
             goto LABEL_21;
@@ -215,36 +215,36 @@ LABEL_21:
     {
 LABEL_27:
 
-      v30 = [v18 tileGroups];
-      v25 = [v30 firstObject];
+      tileGroups = [resources tileGroups];
+      allValues = [tileGroups firstObject];
 
-      if (!v25 || ![v25 tileSetsCount])
+      if (!allValues || ![allValues tileSetsCount])
       {
 LABEL_33:
         v14 = 1;
 LABEL_41:
 
-        v17 = v39;
+        resourceManifest = v39;
         goto LABEL_42;
       }
 
       v31 = 0;
       while (1)
       {
-        v32 = [v25 tileSetAtIndex:v31];
-        if ([v18 tileSetsCount] > HIDWORD(v32))
+        v32 = [allValues tileSetAtIndex:v31];
+        if ([resources tileSetsCount] > HIDWORD(v32))
         {
-          v33 = [v18 tileSets];
-          v34 = [v33 objectAtIndexedSubscript:HIDWORD(v32)];
+          tileSets = [resources tileSets];
+          v34 = [tileSets objectAtIndexedSubscript:HIDWORD(v32)];
 
-          LOBYTE(v33) = [v34 useAuthProxy];
-          if (v33)
+          LOBYTE(tileSets) = [v34 useAuthProxy];
+          if (tileSets)
           {
             break;
           }
         }
 
-        if (++v31 >= [v25 tileSetsCount])
+        if (++v31 >= [allValues tileSetsCount])
         {
           goto LABEL_33;
         }
@@ -256,14 +256,14 @@ LABEL_41:
   }
 
   [(EnvironmentTableViewCell *)self setAccessoryType:0];
-  v36 = self;
+  selfCopy2 = self;
   errorButton = 0;
 LABEL_38:
-  [(EnvironmentTableViewCell *)v36 setAccessoryView:errorButton];
+  [(EnvironmentTableViewCell *)selfCopy2 setAccessoryView:errorButton];
   [(EnvironmentTableViewCell *)self setSelectionStyle:0];
   v37 = +[UIColor secondaryLabelColor];
-  v38 = [(EnvironmentTableViewCell *)self textLabel];
-  [v38 setTextColor:v37];
+  textLabel2 = [(EnvironmentTableViewCell *)self textLabel];
+  [textLabel2 setTextColor:v37];
 
 LABEL_44:
 }
@@ -281,22 +281,22 @@ LABEL_44:
   }
 }
 
-- (void)_startObservingProgressForEnvironment:(id)a3
+- (void)_startObservingProgressForEnvironment:(id)environment
 {
-  v10 = a3;
-  v4 = [v10 activationProgress];
+  environmentCopy = environment;
+  activationProgress = [environmentCopy activationProgress];
   observedProgress = self->_observedProgress;
 
-  if (v4 != observedProgress)
+  if (activationProgress != observedProgress)
   {
     if (self->_observedProgress)
     {
       [(EnvironmentTableViewCell *)self _stopObservingProgress];
     }
 
-    v6 = [v10 activationProgress];
+    activationProgress2 = [environmentCopy activationProgress];
     v7 = self->_observedProgress;
-    self->_observedProgress = v6;
+    self->_observedProgress = activationProgress2;
 
     v8 = self->_observedProgress;
     if (v8)
@@ -323,13 +323,13 @@ LABEL_44:
   }
 }
 
-- (void)_startObservingEnvironment:(id)a3
+- (void)_startObservingEnvironment:(id)environment
 {
-  if (a3 && self->_environment != a3)
+  if (environment && self->_environment != environment)
   {
-    v4 = a3;
-    [v4 addObserver:self forKeyPath:@"state" options:1 context:0];
-    [v4 addObserver:self forKeyPath:@"activationProgress" options:1 context:0];
+    environmentCopy = environment;
+    [environmentCopy addObserver:self forKeyPath:@"state" options:1 context:0];
+    [environmentCopy addObserver:self forKeyPath:@"activationProgress" options:1 context:0];
   }
 }
 
@@ -353,11 +353,11 @@ LABEL_44:
   [(EnvironmentTableViewCell *)&v3 dealloc];
 }
 
-- (EnvironmentTableViewCell)initWithReuseIdentifier:(id)a3
+- (EnvironmentTableViewCell)initWithReuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = EnvironmentTableViewCell;
-  v3 = [(EnvironmentTableViewCell *)&v7 initWithStyle:3 reuseIdentifier:a3];
+  v3 = [(EnvironmentTableViewCell *)&v7 initWithStyle:3 reuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -371,12 +371,12 @@ LABEL_44:
 - (void)_configureEnvironmentCell
 {
   v3 = [UIImage systemImageNamed:@"checkmark"];
-  v4 = [(EnvironmentTableViewCell *)self imageView];
-  [v4 setImage:v3];
+  imageView = [(EnvironmentTableViewCell *)self imageView];
+  [imageView setImage:v3];
 
   v5 = +[UIColor tertiaryLabelColor];
-  v6 = [(EnvironmentTableViewCell *)self detailTextLabel];
-  [v6 setTextColor:v5];
+  detailTextLabel = [(EnvironmentTableViewCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:v5];
 
   v7 = [UIButton buttonWithType:118];
   errorButton = self->_errorButton;
@@ -393,11 +393,11 @@ LABEL_44:
   [(UIActivityIndicatorView *)self->_loadingView setColor:v12];
 
   v13 = [MapsPieProgressView alloc];
-  v14 = [(EnvironmentTableViewCell *)self imageView];
-  [v14 frame];
+  imageView2 = [(EnvironmentTableViewCell *)self imageView];
+  [imageView2 frame];
   v15 = CGRectGetMidX(v34) + -12.0;
-  v16 = [(EnvironmentTableViewCell *)self imageView];
-  [v16 frame];
+  imageView3 = [(EnvironmentTableViewCell *)self imageView];
+  [imageView3 frame];
   v17 = [(MapsPieProgressView *)v13 initWithFrame:v15, CGRectGetMidY(v35) + -12.0, 24.0, 24.0];
   progressView = self->_progressView;
   self->_progressView = v17;
@@ -416,15 +416,15 @@ LABEL_44:
   [(UIImageView *)self->_secureEnvironmentImageView setHidden:1];
   [(UIImageView *)self->_secureEnvironmentImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(EnvironmentTableViewCell *)self addSubview:self->_secureEnvironmentImageView];
-  v24 = [(UIImageView *)self->_secureEnvironmentImageView firstBaselineAnchor];
-  v25 = [(EnvironmentTableViewCell *)self textLabel];
-  v26 = [v25 firstBaselineAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  firstBaselineAnchor = [(UIImageView *)self->_secureEnvironmentImageView firstBaselineAnchor];
+  textLabel = [(EnvironmentTableViewCell *)self textLabel];
+  firstBaselineAnchor2 = [textLabel firstBaselineAnchor];
+  v27 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v33[0] = v27;
-  v28 = [(UIImageView *)self->_secureEnvironmentImageView leadingAnchor];
-  v29 = [(EnvironmentTableViewCell *)self textLabel];
-  v30 = [v29 trailingAnchor];
-  v31 = [v28 constraintEqualToSystemSpacingAfterAnchor:v30 multiplier:1.0];
+  leadingAnchor = [(UIImageView *)self->_secureEnvironmentImageView leadingAnchor];
+  textLabel2 = [(EnvironmentTableViewCell *)self textLabel];
+  trailingAnchor = [textLabel2 trailingAnchor];
+  v31 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
   v33[1] = v31;
   v32 = [NSArray arrayWithObjects:v33 count:2];
   [NSLayoutConstraint activateConstraints:v32];

@@ -1,14 +1,14 @@
 @interface NotesAppRemovalService
 - (id)deleteAppUserDefaults;
 - (id)deleteSharedUserDefaults;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation NotesAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v104 = a3;
+  replyCopy = reply;
   v4 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -24,7 +24,7 @@
     sub_100002338();
   }
 
-  v101 = self;
+  selfCopy = self;
 
   v7 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -37,8 +37,8 @@
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
-  v9 = [v8 accounts];
-  v10 = [v9 countByEnumeratingWithState:&v128 objects:v139 count:16];
+  accounts = [v8 accounts];
+  v10 = [accounts countByEnumeratingWithState:&v128 objects:v139 count:16];
   if (v10)
   {
     v11 = v10;
@@ -50,18 +50,18 @@
       {
         if (*v129 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(accounts);
         }
 
-        v15 = [*(*(&v128 + 1) + 8 * i) displayAccount];
-        if ([v15 isEnabledForDataclass:v13])
+        displayAccount = [*(*(&v128 + 1) + 8 * i) displayAccount];
+        if ([displayAccount isEnabledForDataclass:v13])
         {
-          [v15 setEnabled:0 forDataclass:v13];
-          [v8 saveAccount:v15 withCompletionHandler:0];
+          [displayAccount setEnabled:0 forDataclass:v13];
+          [v8 saveAccount:displayAccount withCompletionHandler:0];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v128 objects:v139 count:16];
+      v11 = [accounts countByEnumeratingWithState:&v128 objects:v139 count:16];
     }
 
     while (v11);
@@ -99,7 +99,7 @@
 
   v21 = +[ICPaths applicationDocumentsURL];
   v22 = +[ICPaths persistentStoreURL];
-  v23 = [v22 lastPathComponent];
+  lastPathComponent = [v22 lastPathComponent];
 
   context = objc_autoreleasePoolPush();
   v127 = 0;
@@ -138,26 +138,26 @@
 
         v32 = *(*(&v123 + 1) + 8 * v31);
         v33 = objc_autoreleasePoolPush();
-        v34 = [v32 lastPathComponent];
-        if (([v34 hasPrefix:v23]& 1) != 0)
+        lastPathComponent2 = [v32 lastPathComponent];
+        if (([lastPathComponent2 hasPrefix:lastPathComponent]& 1) != 0)
         {
           goto LABEL_34;
         }
 
-        v35 = [v32 lastPathComponent];
-        v36 = [v35 isEqualToString:@"tmp"];
+        lastPathComponent3 = [v32 lastPathComponent];
+        v36 = [lastPathComponent3 isEqualToString:@"tmp"];
 
         if ((v36 & 1) == 0)
         {
           v122 = 0;
           [v108 removeItemAtURL:v32 error:&v122];
-          v34 = v122;
-          if ([v34 code]== 4)
+          lastPathComponent2 = v122;
+          if ([lastPathComponent2 code]== 4)
           {
             goto LABEL_34;
           }
 
-          if (v34)
+          if (lastPathComponent2)
           {
             v37 = os_log_create("com.apple.notes", "Application");
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -165,12 +165,12 @@
               *buf = 138412546;
               v135 = v32;
               v136 = 2112;
-              v137 = v34;
+              v137 = lastPathComponent2;
               _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "couldn't remove file at URL: %@, error: %@", buf, 0x16u);
             }
 
-            v34 = v34;
-            v106 = v34;
+            lastPathComponent2 = lastPathComponent2;
+            v106 = lastPathComponent2;
 LABEL_34:
           }
         }
@@ -215,7 +215,7 @@ LABEL_34:
 
   v43 = CPSharedResourcesDirectory();
   v44 = NoteContextPersistentStorePath();
-  v107 = [v44 lastPathComponent];
+  lastPathComponent4 = [v44 lastPathComponent];
 
   v97 = objc_autoreleasePoolPush();
   contexta = v43;
@@ -256,8 +256,8 @@ LABEL_34:
 
         v53 = *(*(&v117 + 1) + 8 * v52);
         v54 = objc_autoreleasePoolPush();
-        v55 = [v53 lastPathComponent];
-        v56 = [v55 hasPrefix:v107];
+        lastPathComponent5 = [v53 lastPathComponent];
+        v56 = [lastPathComponent5 hasPrefix:lastPathComponent4];
 
         if ((v56 & 1) == 0)
         {
@@ -311,8 +311,8 @@ LABEL_68:
     sub_100002644();
   }
 
-  v62 = [(NotesAppRemovalService *)v101 deleteAppUserDefaults];
-  if (v62)
+  deleteAppUserDefaults = [(NotesAppRemovalService *)selfCopy deleteAppUserDefaults];
+  if (deleteAppUserDefaults)
   {
     v63 = os_log_create("com.apple.notes", "Application");
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
@@ -322,7 +322,7 @@ LABEL_68:
 
     if (!v46)
     {
-      v46 = v62;
+      v46 = deleteAppUserDefaults;
     }
   }
 
@@ -338,9 +338,9 @@ LABEL_68:
     sub_100002714();
   }
 
-  v66 = [(NotesAppRemovalService *)v101 deleteSharedUserDefaults];
+  deleteSharedUserDefaults = [(NotesAppRemovalService *)selfCopy deleteSharedUserDefaults];
 
-  if (v66)
+  if (deleteSharedUserDefaults)
   {
     v67 = os_log_create("com.apple.notes", "Application");
     if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -350,7 +350,7 @@ LABEL_68:
 
     if (!v46)
     {
-      v46 = v66;
+      v46 = deleteSharedUserDefaults;
     }
   }
 
@@ -426,7 +426,7 @@ LABEL_99:
     }
   }
 
-  v102 = v66;
+  v102 = deleteSharedUserDefaults;
   v112 = 0u;
   v113 = 0u;
   v110 = 0u;
@@ -507,7 +507,7 @@ LABEL_118:
     sub_10000291C();
   }
 
-  v104[2](v104, v77);
+  replyCopy[2](replyCopy, v77);
 }
 
 - (id)deleteAppUserDefaults
@@ -520,10 +520,10 @@ LABEL_118:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 dictionaryRepresentation];
-  v6 = [v5 allKeys];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v29 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v22 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -534,7 +534,7 @@ LABEL_118:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         if (*(*(&v22 + 1) + 8 * i))
@@ -543,7 +543,7 @@ LABEL_118:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v29 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v22 objects:v29 count:16];
     }
 
     while (v8);
@@ -556,10 +556,10 @@ LABEL_118:
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [v11 dictionaryRepresentation];
-    v13 = [v12 allKeys];
+    dictionaryRepresentation2 = [v11 dictionaryRepresentation];
+    allKeys2 = [dictionaryRepresentation2 allKeys];
 
-    v14 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v14 = [allKeys2 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v14)
     {
       v15 = *v19;
@@ -569,7 +569,7 @@ LABEL_118:
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys2);
           }
 
           if (*(*(&v18 + 1) + 8 * j))
@@ -578,7 +578,7 @@ LABEL_118:
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v14 = [allKeys2 countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v14);
@@ -592,8 +592,8 @@ LABEL_118:
     v28[0] = @"Unable to synchronize app NSUserDefaults for AppRemoval.";
     v11 = ICNotesAppBundleIdentifier();
     v28[1] = v11;
-    v13 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
-    v14 = [NSError errorWithDomain:@"com.apple.mobilenotes.appremoval.errorDomain" code:-1 userInfo:v13];
+    allKeys2 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
+    v14 = [NSError errorWithDomain:@"com.apple.mobilenotes.appremoval.errorDomain" code:-1 userInfo:allKeys2];
   }
 
   return v14;
@@ -606,10 +606,10 @@ LABEL_118:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 allKeys];
+  dictionaryRepresentation = [v2 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -620,7 +620,7 @@ LABEL_118:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         if (*(*(&v13 + 1) + 8 * i))
@@ -629,7 +629,7 @@ LABEL_118:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v6);

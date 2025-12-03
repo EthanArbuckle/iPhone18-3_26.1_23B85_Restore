@@ -1,31 +1,31 @@
 @interface SBHViewControllerTransitionAnimatorAdapter
-- (SBHViewControllerTransitionAnimatorAdapter)initWithAnimator:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)cancelTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5;
+- (SBHViewControllerTransitionAnimatorAdapter)initWithAnimator:(id)animator;
+- (void)animateTransition:(id)transition;
+- (void)cancelTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve;
 @end
 
 @implementation SBHViewControllerTransitionAnimatorAdapter
 
-- (SBHViewControllerTransitionAnimatorAdapter)initWithAnimator:(id)a3
+- (SBHViewControllerTransitionAnimatorAdapter)initWithAnimator:(id)animator
 {
-  v5 = a3;
+  animatorCopy = animator;
   v9.receiver = self;
   v9.super_class = SBHViewControllerTransitionAnimatorAdapter;
   v6 = [(SBHViewControllerTransitionAnimatorAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_animator, a3);
+    objc_storeStrong(&v6->_animator, animator);
   }
 
   return v7;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = transitionCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -46,15 +46,15 @@
 
   v8 = v7;
 
-  v9 = [v8 animationContext];
-  v10 = v9;
-  if (v9)
+  animationContext = [v8 animationContext];
+  v10 = animationContext;
+  if (animationContext)
   {
-    v11 = [v9 transitionEndpoint];
-    v12 = [(SBHViewControllerTransitionAnimatorAdapter *)self animator];
+    transitionEndpoint = [animationContext transitionEndpoint];
+    animator = [(SBHViewControllerTransitionAnimatorAdapter *)self animator];
     if (([v8 transitionWasRestarted] & 1) == 0)
     {
-      [v12 prepareToAnimateFromEndpoint:v11 != 1 withContext:v10];
+      [animator prepareToAnimateFromEndpoint:transitionEndpoint != 1 withContext:v10];
     }
 
     v13 = [(SBHViewControllerTransitionAnimatorAdapter *)self transitionToken]+ 1;
@@ -64,13 +64,13 @@
     v15[2] = __64__SBHViewControllerTransitionAnimatorAdapter_animateTransition___block_invoke;
     v15[3] = &unk_1E808EC20;
     v15[4] = self;
-    v16 = v12;
+    v16 = animator;
     v19 = v13;
-    v20 = v11;
+    v20 = transitionEndpoint;
     v17 = v10;
     v18 = v6;
-    v14 = v12;
-    [v14 animateToEndpoint:v11 withContext:v17 completion:v15];
+    v14 = animator;
+    [v14 animateToEndpoint:transitionEndpoint withContext:v17 completion:v15];
   }
 
   else
@@ -94,11 +94,11 @@ uint64_t __64__SBHViewControllerTransitionAnimatorAdapter_animateTransition___bl
   return result;
 }
 
-- (void)cancelTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5
+- (void)cancelTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve
 {
-  v6 = a3;
+  transitionCopy = transition;
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = transitionCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -119,11 +119,11 @@ uint64_t __64__SBHViewControllerTransitionAnimatorAdapter_animateTransition___bl
 
   v10 = v9;
 
-  v11 = [v10 animationContext];
-  if (v11)
+  animationContext = [v10 animationContext];
+  if (animationContext)
   {
-    v12 = [(SBHViewControllerTransitionAnimatorAdapter *)self animator];
-    v13 = [v11 transitionEndpoint] != 1;
+    animator = [(SBHViewControllerTransitionAnimatorAdapter *)self animator];
+    v13 = [animationContext transitionEndpoint] != 1;
     v14 = [(SBHViewControllerTransitionAnimatorAdapter *)self transitionToken]+ 1;
     [(SBHViewControllerTransitionAnimatorAdapter *)self setTransitionToken:v14];
     v16[0] = MEMORY[0x1E69E9820];
@@ -131,12 +131,12 @@ uint64_t __64__SBHViewControllerTransitionAnimatorAdapter_animateTransition___bl
     v16[2] = __99__SBHViewControllerTransitionAnimatorAdapter_cancelTransition_withCompletionSpeed_completionCurve___block_invoke;
     v16[3] = &unk_1E808EC20;
     v16[4] = self;
-    v17 = v12;
+    v17 = animator;
     v20 = v14;
     v21 = v13;
-    v18 = v11;
+    v18 = animationContext;
     v19 = v8;
-    v15 = v12;
+    v15 = animator;
     [v15 animateToEndpoint:v13 withContext:v18 completion:v16];
   }
 

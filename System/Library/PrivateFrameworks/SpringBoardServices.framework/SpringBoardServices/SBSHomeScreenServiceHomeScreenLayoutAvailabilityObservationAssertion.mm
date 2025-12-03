@@ -1,6 +1,6 @@
 @interface SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion
 - (SBSHomeScreenService)service;
-- (SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion)initWithObserver:(id)a3 service:(id)a4;
+- (SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion)initWithObserver:(id)observer service:(id)service;
 - (SBSHomeScreenServiceLayoutAvailableObserver)observer;
 - (void)dealloc;
 - (void)invalidate;
@@ -8,18 +8,18 @@
 
 @implementation SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion
 
-- (SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion)initWithObserver:(id)a3 service:(id)a4
+- (SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion)initWithObserver:(id)observer service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion;
   v8 = [(SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_observer, v6);
-    objc_storeWeak(&v9->_service, v7);
+    objc_storeWeak(&v8->_observer, observerCopy);
+    objc_storeWeak(&v9->_service, serviceCopy);
   }
 
   return v9;
@@ -48,8 +48,8 @@
 {
   if (![(SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion *)self isInvalidated])
   {
-    v3 = [(SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion *)self service];
-    [v3 removeHomeScreenLayoutAvailabilityObservationAssertion:self];
+    service = [(SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion *)self service];
+    [service removeHomeScreenLayoutAvailabilityObservationAssertion:self];
     [(SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion *)self setService:0];
     [(SBSHomeScreenServiceHomeScreenLayoutAvailabilityObservationAssertion *)self setInvalidated:1];
   }

@@ -1,13 +1,13 @@
 @interface JRSchemaJRClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRClientEvent)initWithDictionary:(id)a3;
-- (JRSchemaJRClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRClientEvent)initWithDictionary:(id)dictionary;
+- (JRSchemaJRClientEvent)initWithJSON:(id)n;
 - (JRSchemaJRExperimentTriggered)jrExperimentTriggered;
 - (JRSchemaJRInferenceContext)jrInferenceContext;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -16,22 +16,22 @@
 - (unint64_t)hash;
 - (void)deleteJrExperimentTriggered;
 - (void)deleteJrInferenceContext;
-- (void)setJrExperimentTriggered:(id)a3;
-- (void)setJrInferenceContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setJrExperimentTriggered:(id)triggered;
+- (void)setJrInferenceContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRClientEvent
 
-- (JRSchemaJRClientEvent)initWithDictionary:(id)a3
+- (JRSchemaJRClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = JRSchemaJRClientEvent;
   v5 = [(JRSchemaJRClientEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(JRSchemaJRClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"jrInferenceContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"jrInferenceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(JRSchemaJRClientEvent *)v5 setJrInferenceContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"jrExperimentTriggered"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"jrExperimentTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,30 +61,30 @@
   return v5;
 }
 
-- (JRSchemaJRClientEvent)initWithJSON:(id)a3
+- (JRSchemaJRClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -97,58 +97,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(JRSchemaJRClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(JRSchemaJRClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_jrExperimentTriggered)
   {
-    v7 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    jrExperimentTriggered = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
+    dictionaryRepresentation2 = [jrExperimentTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"jrExperimentTriggered"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"jrExperimentTriggered"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"jrExperimentTriggered"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"jrExperimentTriggered"];
     }
   }
 
   if (self->_jrInferenceContext)
   {
-    v10 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    jrInferenceContext = [(JRSchemaJRClientEvent *)self jrInferenceContext];
+    dictionaryRepresentation3 = [jrInferenceContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"jrInferenceContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"jrInferenceContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"jrInferenceContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"jrInferenceContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,34 +158,34 @@
   return v4 ^ [(JRSchemaJRExperimentTriggered *)self->_jrExperimentTriggered hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(JRSchemaJRClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(JRSchemaJRClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(JRSchemaJRClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(JRSchemaJRClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(JRSchemaJRClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(JRSchemaJRClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -197,20 +197,20 @@
   {
   }
 
-  v6 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
-  v7 = [v4 jrInferenceContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(JRSchemaJRClientEvent *)self jrInferenceContext];
+  eventMetadata2 = [equalCopy jrInferenceContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
-  if (v13)
+  jrInferenceContext = [(JRSchemaJRClientEvent *)self jrInferenceContext];
+  if (jrInferenceContext)
   {
-    v14 = v13;
-    v15 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
-    v16 = [v4 jrInferenceContext];
-    v17 = [v15 isEqual:v16];
+    v14 = jrInferenceContext;
+    jrInferenceContext2 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
+    jrInferenceContext3 = [equalCopy jrInferenceContext];
+    v17 = [jrInferenceContext2 isEqual:jrInferenceContext3];
 
     if (!v17)
     {
@@ -222,12 +222,12 @@
   {
   }
 
-  v6 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
-  v7 = [v4 jrExperimentTriggered];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
+  eventMetadata2 = [equalCopy jrExperimentTriggered];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v18 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
-    if (!v18)
+    jrExperimentTriggered = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
+    if (!jrExperimentTriggered)
     {
 
 LABEL_21:
@@ -235,10 +235,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
-    v21 = [v4 jrExperimentTriggered];
-    v22 = [v20 isEqual:v21];
+    v19 = jrExperimentTriggered;
+    jrExperimentTriggered2 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
+    jrExperimentTriggered3 = [equalCopy jrExperimentTriggered];
+    v22 = [jrExperimentTriggered2 isEqual:jrExperimentTriggered3];
 
     if (v22)
     {
@@ -258,34 +258,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(JRSchemaJRClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(JRSchemaJRClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(JRSchemaJRClientEvent *)self eventMetadata];
+    eventMetadata2 = [(JRSchemaJRClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
+  jrInferenceContext = [(JRSchemaJRClientEvent *)self jrInferenceContext];
 
-  if (v6)
+  if (jrInferenceContext)
   {
-    v7 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
+    jrInferenceContext2 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
+  jrExperimentTriggered = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (jrExperimentTriggered)
   {
-    v10 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
+    jrExperimentTriggered2 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -314,21 +314,21 @@ LABEL_19:
   return v3;
 }
 
-- (void)setJrExperimentTriggered:(id)a3
+- (void)setJrExperimentTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   jrInferenceContext = self->_jrInferenceContext;
   self->_jrInferenceContext = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   jrExperimentTriggered = self->_jrExperimentTriggered;
-  self->_jrExperimentTriggered = v4;
+  self->_jrExperimentTriggered = triggeredCopy;
 }
 
 - (void)deleteJrInferenceContext
@@ -356,33 +356,33 @@ LABEL_19:
   return v3;
 }
 
-- (void)setJrInferenceContext:(id)a3
+- (void)setJrInferenceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   jrExperimentTriggered = self->_jrExperimentTriggered;
   self->_jrExperimentTriggered = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   jrInferenceContext = self->_jrInferenceContext;
-  self->_jrInferenceContext = v4;
+  self->_jrInferenceContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(JRSchemaJRClientEvent *)self whichEvent_Type];
+  whichEvent_Type = [(JRSchemaJRClientEvent *)self whichEvent_Type];
   v3 = @"com.apple.aiml.siri.jr.JRClientEvent";
-  if (v2 == 102)
+  if (whichEvent_Type == 102)
   {
     v3 = @"com.apple.aiml.siri.jr.JRClientEvent.JRExperimentTriggered";
   }
 
-  if (v2 == 101)
+  if (whichEvent_Type == 101)
   {
     return @"com.apple.aiml.siri.jr.JRClientEvent.JRInferenceContext";
   }
@@ -393,35 +393,35 @@ LABEL_19:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = JRSchemaJRClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(JRSchemaJRClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(JRSchemaJRClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(JRSchemaJRClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(JRSchemaJRClientEvent *)self jrInferenceContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  jrInferenceContext = [(JRSchemaJRClientEvent *)self jrInferenceContext];
+  v10 = [jrInferenceContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(JRSchemaJRClientEvent *)self deleteJrInferenceContext];
   }
 
-  v12 = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  jrExperimentTriggered = [(JRSchemaJRClientEvent *)self jrExperimentTriggered];
+  v13 = [jrExperimentTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(JRSchemaJRClientEvent *)self deleteJrExperimentTriggered];
   }
@@ -439,82 +439,82 @@ LABEL_19:
 
 - (int)componentName
 {
-  v2 = [(JRSchemaJRClientEvent *)self eventMetadata];
-  v3 = [v2 jrId];
+  eventMetadata = [(JRSchemaJRClientEvent *)self eventMetadata];
+  jrId = [eventMetadata jrId];
 
-  if (v3)
+  if (jrId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [jrId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [jrId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 49;
+        LODWORD(value) = 49;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(JRSchemaJRClientEvent *)self eventMetadata];
-  v3 = [v2 jrId];
+  eventMetadata = [(JRSchemaJRClientEvent *)self eventMetadata];
+  jrId = [eventMetadata jrId];
 
-  if (!v3)
+  if (!jrId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [jrId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [jrId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = jrId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(JRSchemaJRClientEvent *)self whichEvent_Type];
-  if (v3 == 101)
+  whichEvent_Type = [(JRSchemaJRClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type == 101)
   {
     v4 = &OBJC_IVAR___JRSchemaJRClientEvent__jrInferenceContext;
     goto LABEL_5;
   }
 
-  if (v3 == 102)
+  if (whichEvent_Type == 102)
   {
     v4 = &OBJC_IVAR___JRSchemaJRClientEvent__jrExperimentTriggered;
 LABEL_5:
@@ -528,15 +528,15 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
   v3 = @"jrExperimentTriggered";
-  if (a3 != 102)
+  if (tag != 102)
   {
     v3 = 0;
   }
 
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"jrInferenceContext";
   }

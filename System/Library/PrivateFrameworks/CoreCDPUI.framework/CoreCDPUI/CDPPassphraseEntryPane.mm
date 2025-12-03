@@ -1,6 +1,6 @@
 @interface CDPPassphraseEntryPane
 - (BOOL)shouldInsetContent;
-- (CDPPassphraseEntryPane)initWithFrame:(CGRect)a3;
+- (CDPPassphraseEntryPane)initWithFrame:(CGRect)frame;
 - (CGRect)availableHeaderRect;
 - (double)desiredMinPinHeight;
 - (double)keyboardHeightOffset;
@@ -18,12 +18,12 @@
 
 @implementation CDPPassphraseEntryPane
 
-- (CDPPassphraseEntryPane)initWithFrame:(CGRect)a3
+- (CDPPassphraseEntryPane)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16.receiver = self;
   v16.super_class = CDPPassphraseEntryPane;
   v7 = [(DevicePINPane *)&v16 initWithFrame:?];
@@ -36,11 +36,11 @@
     [(UIScrollView *)v7->_containerView setKeyboardDismissMode:0];
     [(CDPPassphraseEntryPane *)v7 addSubview:v7->_containerView];
     [(UIScrollView *)v7->_containerView addSubview:*(&v7->super.super.super.super.super.isa + *MEMORY[0x277D3FBD8])];
-    v10 = [MEMORY[0x277D75348] _systemBackgroundColor];
-    [(CDPPassphraseEntryPane *)v7 setBackgroundColor:v10];
+    _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+    [(CDPPassphraseEntryPane *)v7 setBackgroundColor:_systemBackgroundColor];
 
-    v11 = [MEMORY[0x277D75348] _systemBackgroundColor];
-    [(UIScrollView *)v7->_containerView setBackgroundColor:v11];
+    _systemBackgroundColor2 = [MEMORY[0x277D75348] _systemBackgroundColor];
+    [(UIScrollView *)v7->_containerView setBackgroundColor:_systemBackgroundColor2];
 
     v12 = [CDPPaneHeaderView alloc];
     v13 = [(CDPPaneHeaderView *)v12 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -56,8 +56,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CDPPassphraseEntryPane;
@@ -66,8 +66,8 @@
 
 - (void)startListeningForKeyboardEvents
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__keyboardLayoutChanged name:*MEMORY[0x277D76BE8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardLayoutChanged name:*MEMORY[0x277D76BE8] object:0];
 }
 
 - (BOOL)shouldInsetContent
@@ -84,21 +84,21 @@
 
 - (void)_keyboardLayoutChanged
 {
-  v3 = [(PSEditingPane *)self viewController];
-  v4 = [v3 navigationController];
-  v5 = [(PSEditingPane *)self viewController];
-  v6 = v5;
-  if (v4)
+  viewController = [(PSEditingPane *)self viewController];
+  navigationController = [viewController navigationController];
+  viewController2 = [(PSEditingPane *)self viewController];
+  v6 = viewController2;
+  if (navigationController)
   {
-    [v5 navigationController];
+    [viewController2 navigationController];
   }
 
   else
   {
-    [v5 parentViewController];
+    [viewController2 parentViewController];
   }
   v7 = ;
-  v8 = [v7 parentViewController];
+  parentViewController = [v7 parentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -108,7 +108,7 @@
     v10[2] = __48__CDPPassphraseEntryPane__keyboardLayoutChanged__block_invoke;
     v10[3] = &unk_278E2BCF8;
     v10[4] = self;
-    [v8 offsetForCurrentKeyboard:v10];
+    [parentViewController offsetForCurrentKeyboard:v10];
   }
 
   else
@@ -136,23 +136,23 @@ void __48__CDPPassphraseEntryPane__keyboardLayoutChanged__block_invoke(uint64_t 
 - (double)keyboardHeightOffset
 {
   v3 = MEMORY[0x277D75658];
-  v4 = [(PSEditingPane *)self viewController];
-  [v3 sizeForInterfaceOrientation:{objc_msgSend(v4, "interfaceOrientation")}];
+  viewController = [(PSEditingPane *)self viewController];
+  [v3 sizeForInterfaceOrientation:{objc_msgSend(viewController, "interfaceOrientation")}];
   v29 = v5;
 
-  v6 = [(PSEditingPane *)self viewController];
-  v7 = [v6 view];
-  v8 = [(PSEditingPane *)self viewController];
-  v9 = [v8 view];
-  [v9 bounds];
-  [v7 convertRect:0 toView:?];
+  viewController2 = [(PSEditingPane *)self viewController];
+  view = [viewController2 view];
+  viewController3 = [(PSEditingPane *)self viewController];
+  view2 = [viewController3 view];
+  [view2 bounds];
+  [view convertRect:0 toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -172,28 +172,28 @@ void __48__CDPPassphraseEntryPane__keyboardLayoutChanged__block_invoke(uint64_t 
 
 - (void)layoutSubviews
 {
-  v1 = [MEMORY[0x277CCABB0] numberWithDouble:*(a1 + 560)];
+  v1 = [MEMORY[0x277CCABB0] numberWithDouble:*(self + 560)];
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_3_0(&dword_2451DB000, v2, v3, "Starting layout with KB offset: %@", v4, v5, v6, v7, v8);
 }
 
 - (void)_layoutSubviews
 {
-  v3 = [(PSEditingPane *)self viewController];
-  v4 = [v3 navigationController];
-  v5 = [(PSEditingPane *)self viewController];
-  v6 = v5;
-  if (v4)
+  viewController = [(PSEditingPane *)self viewController];
+  navigationController = [viewController navigationController];
+  viewController2 = [(PSEditingPane *)self viewController];
+  v6 = viewController2;
+  if (navigationController)
   {
-    [v5 navigationController];
+    [viewController2 navigationController];
   }
 
   else
   {
-    [v5 parentViewController];
+    [viewController2 parentViewController];
   }
   v7 = ;
-  v9 = [v7 parentViewController];
+  parentViewController = [v7 parentViewController];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -234,9 +234,9 @@ void __48__CDPPassphraseEntryPane__keyboardLayoutChanged__block_invoke(uint64_t 
 
 - (double)desiredMinPinHeight
 {
-  v2 = [(DevicePINPane *)self simplePIN];
+  simplePIN = [(DevicePINPane *)self simplePIN];
   result = 75.0;
-  if (v2)
+  if (simplePIN)
   {
     return 73.0;
   }
@@ -247,10 +247,10 @@ void __48__CDPPassphraseEntryPane__keyboardLayoutChanged__block_invoke(uint64_t 
 - (void)_layoutContainerView
 {
   containerView = self->_containerView;
-  v5 = [(PSEditingPane *)self viewController];
-  v3 = [v5 view];
-  v4 = [v3 safeAreaLayoutGuide];
-  [v4 layoutFrame];
+  viewController = [(PSEditingPane *)self viewController];
+  view = [viewController view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   [(UIScrollView *)containerView setFrame:?];
 }
 
@@ -266,7 +266,7 @@ void __48__CDPPassphraseEntryPane__keyboardLayoutChanged__block_invoke(uint64_t 
 
 - (void)_layoutPinView
 {
-  v4 = NSStringFromCGRect(*&a1);
+  v4 = NSStringFromCGRect(*&self);
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_3_0(&dword_2451DB000, v5, v6, "Laid out pin view: %@", v7, v8, v9, v10, v11);
 }
@@ -286,7 +286,7 @@ void __48__CDPPassphraseEntryPane__keyboardLayoutChanged__block_invoke(uint64_t 
 - (void)availableHeaderRect
 {
   v10.size.height = a2;
-  v10.size.width = a1;
+  v10.size.width = self;
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v2 = NSStringFromCGRect(v10);

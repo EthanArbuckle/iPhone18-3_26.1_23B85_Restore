@@ -1,43 +1,43 @@
 @interface INStartCallIntentDonationMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INStartCallIntentDonationMetadata)init;
-- (INStartCallIntentDonationMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (INStartCallIntentDonationMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INStartCallIntentDonationMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INStartCallIntentDonationMetadata;
-  v4 = a3;
-  [(INIntentDonationMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"callDuration" forKey:{self->_callDuration, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"timeToEstablish" forKey:self->_timeToEstablish];
-  [v4 encodeObject:self->_recentCallStatus forKey:@"recentCallStatus"];
-  [v4 encodeObject:self->_disconnectedReason forKey:@"disconnectedReason"];
+  coderCopy = coder;
+  [(INIntentDonationMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"callDuration" forKey:{self->_callDuration, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"timeToEstablish" forKey:self->_timeToEstablish];
+  [coderCopy encodeObject:self->_recentCallStatus forKey:@"recentCallStatus"];
+  [coderCopy encodeObject:self->_disconnectedReason forKey:@"disconnectedReason"];
 }
 
-- (INStartCallIntentDonationMetadata)initWithCoder:(id)a3
+- (INStartCallIntentDonationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = INStartCallIntentDonationMetadata;
-  v5 = [(INIntentDonationMetadata *)&v14 initWithCoder:v4];
+  v5 = [(INIntentDonationMetadata *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"callDuration"];
+    [coderCopy decodeDoubleForKey:@"callDuration"];
     v5->_callDuration = v6;
-    [v4 decodeDoubleForKey:@"timeToEstablish"];
+    [coderCopy decodeDoubleForKey:@"timeToEstablish"];
     v5->_timeToEstablish = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recentCallStatus"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recentCallStatus"];
     recentCallStatus = v5->_recentCallStatus;
     v5->_recentCallStatus = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disconnectedReason"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disconnectedReason"];
     disconnectedReason = v5->_disconnectedReason;
     v5->_disconnectedReason = v10;
 
@@ -47,31 +47,31 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = INStartCallIntentDonationMetadata;
-  v4 = [(INIntentDonationMetadata *)&v8 copyWithZone:a3];
+  v4 = [(INIntentDonationMetadata *)&v8 copyWithZone:zone];
   [(INStartCallIntentDonationMetadata *)self callDuration];
   [v4 setCallDuration:?];
   [(INStartCallIntentDonationMetadata *)self timeToEstablish];
   [v4 setTimeToEstablish:?];
-  v5 = [(INStartCallIntentDonationMetadata *)self recentCallStatus];
-  [v4 setRecentCallStatus:v5];
+  recentCallStatus = [(INStartCallIntentDonationMetadata *)self recentCallStatus];
+  [v4 setRecentCallStatus:recentCallStatus];
 
-  v6 = [(INStartCallIntentDonationMetadata *)self disconnectedReason];
-  [v4 setDisconnectedReason:v6];
+  disconnectedReason = [(INStartCallIntentDonationMetadata *)self disconnectedReason];
+  [v4 setDisconnectedReason:disconnectedReason];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
@@ -88,13 +88,13 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v13 = [(INStartCallIntentDonationMetadata *)self recentCallStatus];
-        v14 = [(INStartCallIntentDonationMetadata *)v6 recentCallStatus];
-        if (v13 == v14)
+        recentCallStatus = [(INStartCallIntentDonationMetadata *)self recentCallStatus];
+        recentCallStatus2 = [(INStartCallIntentDonationMetadata *)v6 recentCallStatus];
+        if (recentCallStatus == recentCallStatus2)
         {
-          v16 = [(INStartCallIntentDonationMetadata *)self disconnectedReason];
-          v17 = [(INStartCallIntentDonationMetadata *)v6 disconnectedReason];
-          v15 = v16 == v17;
+          disconnectedReason = [(INStartCallIntentDonationMetadata *)self disconnectedReason];
+          disconnectedReason2 = [(INStartCallIntentDonationMetadata *)v6 disconnectedReason];
+          v15 = disconnectedReason == disconnectedReason2;
         }
 
         else
@@ -106,14 +106,14 @@ LABEL_15:
       else
       {
         v15 = 0;
-        v13 = v6;
+        recentCallStatus = v6;
         v6 = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      recentCallStatus = 0;
       v15 = 0;
     }
 

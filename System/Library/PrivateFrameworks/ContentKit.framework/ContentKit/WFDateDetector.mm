@@ -1,17 +1,17 @@
 @interface WFDateDetector
-+ (id)datesInString:(id)a3 error:(id *)a4;
-+ (id)detectedDatesInString:(id)a3 error:(id *)a4;
++ (id)datesInString:(id)string error:(id *)error;
++ (id)detectedDatesInString:(id)string error:(id *)error;
 @end
 
 @implementation WFDateDetector
 
-+ (id)detectedDatesInString:(id)a3 error:(id *)a4
++ (id)detectedDatesInString:(id)string error:(id *)error
 {
-  if (a3)
+  if (string)
   {
-    v4 = [WFDataDetector resultsForString:a3 ofTypes:8 error:0];
-    v5 = [v4 textCheckingResults];
-    v6 = [v5 if_compactMap:&__block_literal_global_26874];
+    v4 = [WFDataDetector resultsForString:string ofTypes:8 error:0];
+    textCheckingResults = [v4 textCheckingResults];
+    v6 = [textCheckingResults if_compactMap:&__block_literal_global_26874];
   }
 
   else
@@ -38,20 +38,20 @@ WFDetectedDate *__46__WFDateDetector_detectedDatesInString_error___block_invoke(
   return v3;
 }
 
-+ (id)datesInString:(id)a3 error:(id *)a4
++ (id)datesInString:(id)string error:(id *)error
 {
-  if (a3)
+  if (string)
   {
-    v4 = [WFDataDetector resultsForString:a3 ofTypes:8 error:a4];
-    v5 = [v4 dates];
+    v4 = [WFDataDetector resultsForString:string ofTypes:8 error:error];
+    dates = [v4 dates];
   }
 
   else
   {
-    v5 = MEMORY[0x277CBEBF8];
+    dates = MEMORY[0x277CBEBF8];
   }
 
-  return v5;
+  return dates;
 }
 
 @end

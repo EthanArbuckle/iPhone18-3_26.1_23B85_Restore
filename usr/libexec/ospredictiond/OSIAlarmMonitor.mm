@@ -1,6 +1,6 @@
 @interface OSIAlarmMonitor
 - (OSIAlarmMonitor)init;
-- (id)nextAlarmFireDateBetweenDate:(id)a3 andDate:(id)a4;
+- (id)nextAlarmFireDateBetweenDate:(id)date andDate:(id)andDate;
 @end
 
 @implementation OSIAlarmMonitor
@@ -20,15 +20,15 @@
   return v2;
 }
 
-- (id)nextAlarmFireDateBetweenDate:(id)a3 andDate:(id)a4
+- (id)nextAlarmFireDateBetweenDate:(id)date andDate:(id)andDate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  dateCopy = date;
+  andDateCopy = andDate;
+  v8 = andDateCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (dateCopy && andDateCopy)
   {
-    [v7 timeIntervalSinceDate:v6];
+    [andDateCopy timeIntervalSinceDate:dateCopy];
     if (v10 <= 0.0)
     {
       v9 = 0;
@@ -36,7 +36,7 @@
 
     else
     {
-      v11 = [[NSDateInterval alloc] initWithStartDate:v6 endDate:v8];
+      v11 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:v8];
       v12 = [(MTAlarmManager *)self->_alarmManager nextAlarmsInRange:v11 maxCount:64 includeSleepAlarm:1];
       v19 = 0;
       v20 = &v19;

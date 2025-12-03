@@ -1,88 +1,88 @@
 @interface PLAssetsdDebugService
-- (PLAssetsdDebugService)initWithLibraryServicesManager:(id)a3 resourceDownloader:(id)a4 bundleController:(id)a5 connectionAuthorization:(id)a6;
+- (PLAssetsdDebugService)initWithLibraryServicesManager:(id)manager resourceDownloader:(id)downloader bundleController:(id)controller connectionAuthorization:(id)authorization;
 - (id)_persistentStoreCoordinator;
-- (id)runAssetContainmentOnAllSocialGroups:(id)a3;
-- (id)runAssetContainmentOnSocialGroup:(id)a3 reply:(id)a4;
-- (id)updateAndSaveAssetPersonEdgesWithReply:(id)a3;
-- (void)archiveComputeCacheWithReply:(id)a3;
-- (void)asynchronousUnloadImageFilesForAssetWithObjectURI:(id)a3 minimumFormat:(unsigned __int16)a4 reply:(id)a5;
-- (void)backgroundAssetResourceNetworkStatusForBundleID:(id)a3 withLevel:(int64_t)a4 reply:(id)a5;
-- (void)backgroundMigrationWithReply:(id)a3;
-- (void)cleanupEmptyHighlightsWithReply:(id)a3;
+- (id)runAssetContainmentOnAllSocialGroups:(id)groups;
+- (id)runAssetContainmentOnSocialGroup:(id)group reply:(id)reply;
+- (id)updateAndSaveAssetPersonEdgesWithReply:(id)reply;
+- (void)archiveComputeCacheWithReply:(id)reply;
+- (void)asynchronousUnloadImageFilesForAssetWithObjectURI:(id)i minimumFormat:(unsigned __int16)format reply:(id)reply;
+- (void)backgroundAssetResourceNetworkStatusForBundleID:(id)d withLevel:(int64_t)level reply:(id)reply;
+- (void)backgroundMigrationWithReply:(id)reply;
+- (void)cleanupEmptyHighlightsWithReply:(id)reply;
 - (void)clearPrefetchState;
-- (void)clearSensitivityStateForAssetsWithUUIDs:(id)a3 reply:(id)a4;
-- (void)closeSearchIndexWithReply:(id)a3;
-- (void)coalesceJournalsForManagerName:(id)a3 payloadClassIDs:(id)a4 withChangeJournalOverThreshold:(float)a5 reply:(id)a6;
-- (void)computeCacheStatusWithReply:(id)a3;
-- (void)debugSidecarURLsWithObjectURI:(id)a3 reply:(id)a4;
-- (void)dropSearchIndexWithReply:(id)a3;
-- (void)dumpMetadataForMomentsToPath:(id)a3 reply:(id)a4;
-- (void)dumpMomentsMetadataToPath:(id)a3 reply:(id)a4;
+- (void)clearSensitivityStateForAssetsWithUUIDs:(id)ds reply:(id)reply;
+- (void)closeSearchIndexWithReply:(id)reply;
+- (void)coalesceJournalsForManagerName:(id)name payloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold reply:(id)reply;
+- (void)computeCacheStatusWithReply:(id)reply;
+- (void)debugSidecarURLsWithObjectURI:(id)i reply:(id)reply;
+- (void)dropSearchIndexWithReply:(id)reply;
+- (void)dumpMetadataForMomentsToPath:(id)path reply:(id)reply;
+- (void)dumpMomentsMetadataToPath:(id)path reply:(id)reply;
 - (void)enqueuePrefetch;
-- (void)fileTapToRadarWithTitle:(id)a3 description:(id)a4 reply:(id)a5;
-- (void)getCPLStateForDebug:(BOOL)a3 withReply:(id)a4;
-- (void)getTaskConstraintStatusWithReply:(id)a3;
-- (void)getXPCTransactionStatusWithReply:(id)a3;
+- (void)fileTapToRadarWithTitle:(id)title description:(id)description reply:(id)reply;
+- (void)getCPLStateForDebug:(BOOL)debug withReply:(id)reply;
+- (void)getTaskConstraintStatusWithReply:(id)reply;
+- (void)getXPCTransactionStatusWithReply:(id)reply;
 - (void)identifyAssetsWithInconsistentCloudState;
-- (void)indexAssetsWithUUIDs:(id)a3 reply:(id)a4;
-- (void)insertBackgroundResourceJobConfigurationWithBundleIdentifier:(id)a3 state:(signed __int16)a4 reply:(id)a5;
-- (void)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithCompletionBlock:(id)a3;
-- (void)locationOfInterestUpdateWithReply:(id)a3;
-- (void)momentGenerationStatusWithReply:(id)a3;
-- (void)prefetchResourcesForHighlights:(id)a3 reply:(id)a4;
-- (void)prefetchResourcesForMemories:(id)a3 reply:(id)a4;
-- (void)prefetchResourcesWithMode:(int64_t)a3 reply:(id)a4;
-- (void)privateDownloadCloudPhotoLibraryAsset:(id)a3 resourceType:(unint64_t)a4 highPriority:(BOOL)a5 reply:(id)a6;
-- (void)processRecentHighlightsWithReply:(id)a3;
-- (void)processUnprocessedMomentLocationsWithReply:(id)a3;
-- (void)pruneAssetsWithUUID:(id)a3 resourceTypes:(id)a4 reply:(id)a5;
+- (void)indexAssetsWithUUIDs:(id)ds reply:(id)reply;
+- (void)insertBackgroundResourceJobConfigurationWithBundleIdentifier:(id)identifier state:(signed __int16)state reply:(id)reply;
+- (void)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithCompletionBlock:(id)block;
+- (void)locationOfInterestUpdateWithReply:(id)reply;
+- (void)momentGenerationStatusWithReply:(id)reply;
+- (void)prefetchResourcesForHighlights:(id)highlights reply:(id)reply;
+- (void)prefetchResourcesForMemories:(id)memories reply:(id)reply;
+- (void)prefetchResourcesWithMode:(int64_t)mode reply:(id)reply;
+- (void)privateDownloadCloudPhotoLibraryAsset:(id)asset resourceType:(unint64_t)type highPriority:(BOOL)priority reply:(id)reply;
+- (void)processRecentHighlightsWithReply:(id)reply;
+- (void)processUnprocessedMomentLocationsWithReply:(id)reply;
+- (void)pruneAssetsWithUUID:(id)d resourceTypes:(id)types reply:(id)reply;
 - (void)rebuildAllThumbnails;
-- (void)rebuildCloudFeedWithReply:(id)a3;
-- (void)rebuildHighlightsDeletingExistingHighlights:(BOOL)a3 reply:(id)a4;
-- (void)rebuildMomentsDeletingExistingMoments:(BOOL)a3 reply:(id)a4;
-- (void)rebuildSearchIndexWithReply:(id)a3;
-- (void)rebuildTableThumbsWithReply:(id)a3;
+- (void)rebuildCloudFeedWithReply:(id)reply;
+- (void)rebuildHighlightsDeletingExistingHighlights:(BOOL)highlights reply:(id)reply;
+- (void)rebuildMomentsDeletingExistingMoments:(BOOL)moments reply:(id)reply;
+- (void)rebuildSearchIndexWithReply:(id)reply;
+- (void)rebuildTableThumbsWithReply:(id)reply;
 - (void)recoverAssetsInInconsistentCloudState;
-- (void)removeAllThumbnailsForDryRun:(BOOL)a3 reply:(id)a4;
-- (void)resetBackgroundMigrationClassName:(id)a3 reply:(id)a4;
-- (void)resetComputeCacheWithReply:(id)a3;
-- (void)resetDrawAssetPersonEdgesBackgroundMigrationActionWithReply:(id)a3;
-- (void)resetMaintenanceTasksWithReply:(id)a3;
-- (void)restoreComputeCacheWithReply:(id)a3;
-- (void)revertToOriginalWithObjectURI:(id)a3 reply:(id)a4;
-- (void)runMaintenanceTask:(id)a3 reply:(id)a4;
-- (void)searchAttributesForAssetWithUUID:(id)a3 redacted:(BOOL)a4 reply:(id)a5;
-- (void)setSearchIndexPaused:(BOOL)a3 reason:(id)a4 reply:(id)a5;
-- (void)signalBackgroundJobServiceForWorkerCodes:(id)a3 reply:(id)a4;
-- (void)snapshotJournalsForManagerName:(id)a3 payloadClassIDs:(id)a4 reply:(id)a5;
-- (void)syndicationIngestMutexStateDescriptionWithReply:(id)a3;
-- (void)updateHighlightTitlesWithReply:(id)a3;
-- (void)verifyAssetResourceJobConsistencyWithReply:(id)a3;
-- (void)waitForMomentGenerationWithReply:(id)a3;
+- (void)removeAllThumbnailsForDryRun:(BOOL)run reply:(id)reply;
+- (void)resetBackgroundMigrationClassName:(id)name reply:(id)reply;
+- (void)resetComputeCacheWithReply:(id)reply;
+- (void)resetDrawAssetPersonEdgesBackgroundMigrationActionWithReply:(id)reply;
+- (void)resetMaintenanceTasksWithReply:(id)reply;
+- (void)restoreComputeCacheWithReply:(id)reply;
+- (void)revertToOriginalWithObjectURI:(id)i reply:(id)reply;
+- (void)runMaintenanceTask:(id)task reply:(id)reply;
+- (void)searchAttributesForAssetWithUUID:(id)d redacted:(BOOL)redacted reply:(id)reply;
+- (void)setSearchIndexPaused:(BOOL)paused reason:(id)reason reply:(id)reply;
+- (void)signalBackgroundJobServiceForWorkerCodes:(id)codes reply:(id)reply;
+- (void)snapshotJournalsForManagerName:(id)name payloadClassIDs:(id)ds reply:(id)reply;
+- (void)syndicationIngestMutexStateDescriptionWithReply:(id)reply;
+- (void)updateHighlightTitlesWithReply:(id)reply;
+- (void)verifyAssetResourceJobConsistencyWithReply:(id)reply;
+- (void)waitForMomentGenerationWithReply:(id)reply;
 @end
 
 @implementation PLAssetsdDebugService
 
-- (void)insertBackgroundResourceJobConfigurationWithBundleIdentifier:(id)a3 state:(signed __int16)a4 reply:(id)a5
+- (void)insertBackgroundResourceJobConfigurationWithBundleIdentifier:(id)identifier state:(signed __int16)state reply:(id)reply
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__17927;
   v32 = __Block_byref_object_dispose__17928;
   v33 = 0;
-  if (v8)
+  if (identifierCopy)
   {
     v24 = 0;
     v25 = &v24;
     v26 = 0x2020000000;
     v27 = 0;
-    v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v11 = [v10 databaseContext];
-    v12 = [v11 newShortLivedLibraryWithName:"-[PLAssetsdDebugService insertBackgroundResourceJobConfigurationWithBundleIdentifier:state:reply:]"];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
+    v12 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService insertBackgroundResourceJobConfigurationWithBundleIdentifier:state:reply:]"];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -90,12 +90,12 @@
     v18[3] = &unk_1E75685A8;
     v13 = v12;
     v19 = v13;
-    v23 = a4;
-    v20 = v8;
+    stateCopy = state;
+    v20 = identifierCopy;
     v21 = &v24;
     v22 = &v28;
     [v13 performBlockAndWait:v18];
-    v9[2](v9, *(v25 + 24), v29[5]);
+    replyCopy[2](replyCopy, *(v25 + 24), v29[5]);
 
     _Block_object_dispose(&v24, 8);
   }
@@ -110,7 +110,7 @@
     v17 = v29[5];
     v29[5] = v16;
 
-    v9[2](v9, 0, v29[5]);
+    replyCopy[2](replyCopy, 0, v29[5]);
   }
 
   _Block_object_dispose(&v28, 8);
@@ -132,21 +132,21 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   *(*(*(a1 + 48) + 8) + 24) = v4;
 }
 
-- (void)verifyAssetResourceJobConsistencyWithReply:(id)a3
+- (void)verifyAssetResourceJobConsistencyWithReply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v6 = [v5 backgroundAssetResourceUploader];
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  backgroundAssetResourceUploader = [libraryServicesManager backgroundAssetResourceUploader];
 
-  if (v6)
+  if (backgroundAssetResourceUploader)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__PLAssetsdDebugService_verifyAssetResourceJobConsistencyWithReply___block_invoke;
     v11[3] = &unk_1E7576AA0;
-    v12 = v4;
-    [v6 verifyJobConsistencyWithCompletionHandler:v11];
+    v12 = replyCopy;
+    [backgroundAssetResourceUploader verifyJobConsistencyWithCompletionHandler:v11];
   }
 
   else
@@ -154,35 +154,35 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v7 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-      v9 = [v8 libraryURL];
-      v10 = [v9 path];
+      libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+      libraryURL = [libraryServicesManager2 libraryURL];
+      path = [libraryURL path];
       *buf = 138412290;
-      v14 = v10;
+      v14 = path;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Unable to get PLBackgroundAssetResourceUploader for library at path: %@", buf, 0xCu);
     }
 
-    v4[2](v4);
+    replyCopy[2](replyCopy);
   }
 }
 
-- (void)backgroundAssetResourceNetworkStatusForBundleID:(id)a3 withLevel:(int64_t)a4 reply:(id)a5
+- (void)backgroundAssetResourceNetworkStatusForBundleID:(id)d withLevel:(int64_t)level reply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v11 = [v10 backgroundAssetResourceUploader];
+  dCopy = d;
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  backgroundAssetResourceUploader = [libraryServicesManager backgroundAssetResourceUploader];
 
-  if (v11)
+  if (backgroundAssetResourceUploader)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __89__PLAssetsdDebugService_backgroundAssetResourceNetworkStatusForBundleID_withLevel_reply___block_invoke;
     v21[3] = &unk_1E7568698;
-    v22 = v9;
-    [v11 networkStatusForBundleID:v8 withLevel:a4 completionHandler:v21];
-    v12 = v22;
+    v22 = replyCopy;
+    [backgroundAssetResourceUploader networkStatusForBundleID:dCopy withLevel:level completionHandler:v21];
+    libraryServicesManager3 = v22;
   }
 
   else
@@ -190,43 +190,43 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v13 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-      v15 = [v14 libraryURL];
-      v16 = [v15 path];
+      libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+      libraryURL = [libraryServicesManager2 libraryURL];
+      path = [libraryURL path];
       *buf = 138412290;
-      v24 = v16;
+      v24 = path;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Unable to get PLBackgroundAssetResourceUploader for library at path: %@", buf, 0xCu);
     }
 
     v17 = MEMORY[0x1E696AEC0];
-    v12 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v18 = [v12 libraryURL];
-    v19 = [v18 path];
-    v20 = [v17 stringWithFormat:@"Unable to get PLBackgroundAssetResourceUploader for library at path: %@", v19];
-    (*(v9 + 2))(v9, v20);
+    libraryServicesManager3 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    libraryURL2 = [libraryServicesManager3 libraryURL];
+    path2 = [libraryURL2 path];
+    v20 = [v17 stringWithFormat:@"Unable to get PLBackgroundAssetResourceUploader for library at path: %@", path2];
+    (*(replyCopy + 2))(replyCopy, v20);
   }
 }
 
-- (void)fileTapToRadarWithTitle:(id)a3 description:(id)a4 reply:(id)a5
+- (void)fileTapToRadarWithTitle:(id)title description:(id)description reply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  descriptionCopy = description;
+  replyCopy = reply;
   v16 = 0u;
   *sel = 0u;
   v14 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v14) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v14) = enabled;
+  if (enabled)
   {
     *(&v14 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: fileTapToRadarWithTitle:description:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v14 + 1), (&v16 + 8));
   }
 
-  [PLDiagnostics tapToRadarWithTitle:v7 description:v8 radarComponent:0 isUserInitiated:1 displayReason:0 attachments:MEMORY[0x1E695E0F0], v14];
-  v9[2](v9, 1, 0);
+  [PLDiagnostics tapToRadarWithTitle:titleCopy description:descriptionCopy radarComponent:0 isUserInitiated:1 displayReason:0 attachments:MEMORY[0x1E695E0F0], v14];
+  replyCopy[2](replyCopy, 1, 0);
   if (v15 == 1)
   {
     os_activity_scope_leave((&v16 + 8));
@@ -246,26 +246,26 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)signalBackgroundJobServiceForWorkerCodes:(id)a3 reply:(id)a4
+- (void)signalBackgroundJobServiceForWorkerCodes:(id)codes reply:(id)reply
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  codesCopy = codes;
+  replyCopy = reply;
   v19 = 0u;
   *sel = 0u;
   v17 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v17) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v17) = enabled;
+  if (enabled)
   {
     *(&v17 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: signalBackgroundJobServiceForWorkerCodes:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v17 + 1), (&v19 + 8));
   }
 
-  if (v6)
+  if (codesCopy)
   {
-    [PLBackgroundJobWorkerTypes typesMaskFromWorkerCodes:v6];
+    [PLBackgroundJobWorkerTypes typesMaskFromWorkerCodes:codesCopy];
   }
 
   else
@@ -273,13 +273,13 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     +[PLBackgroundJobWorkerTypes allTypesMask];
   }
   v9 = ;
-  v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v11 = [v10 backgroundJobService];
-  v12 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v13 = [v12 libraryBundle];
-  [v11 signalBackgroundProcessingNeededOnBundle:v13 workerTypes:v9];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  backgroundJobService = [libraryServicesManager backgroundJobService];
+  libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  libraryBundle = [libraryServicesManager2 libraryBundle];
+  [backgroundJobService signalBackgroundProcessingNeededOnBundle:libraryBundle workerTypes:v9];
 
-  v7[2](v7, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
   if (v18 == 1)
   {
     os_activity_scope_leave((&v19 + 8));
@@ -299,17 +299,17 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)runMaintenanceTask:(id)a3 reply:(id)a4
+- (void)runMaintenanceTask:(id)task reply:(id)reply
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  replyCopy = reply;
   v31 = 0u;
   *sel = 0u;
   v30 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v30) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v30) = enabled;
+  if (enabled)
   {
     *(&v30 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: runMaintenanceTask:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -317,19 +317,19 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 
   v9 = [MEMORY[0x1E69BF360] transaction:"-[PLAssetsdDebugService runMaintenanceTask:reply:]"];
-  if (v6)
+  if (taskCopy)
   {
-    v10 = NSClassFromString(v6);
+    v10 = NSClassFromString(taskCopy);
     v11 = NSClassFromString(&cfstr_Plmaintenancet.isa);
     if (v10 && (v12 = v11) != 0)
     {
-      v13 = [v10 alloc];
+      taskCopy = [v10 alloc];
       if (objc_opt_isKindOfClass())
       {
-        v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-        v15 = v13;
-        v16 = [v14 libraryBundle];
-        v17 = [v15 initWithLibraryBundle:v16];
+        libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+        v15 = taskCopy;
+        libraryBundle = [libraryServicesManager libraryBundle];
+        v17 = [v15 initWithLibraryBundle:libraryBundle];
 
         v18 = [v17 runTaskWithTransaction:v9];
         if (v18)
@@ -346,33 +346,33 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
           v19 = [v25 errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v26];
         }
 
-        v7[2](v7, v18, v19);
+        replyCopy[2](replyCopy, v18, v19);
       }
 
       else
       {
         v22 = MEMORY[0x1E696AEC0];
         v23 = NSStringFromClass(v12);
-        v14 = [v22 stringWithFormat:@"runMaintenanceTask error: %@ is not a %@", v6, v23];
+        libraryServicesManager = [v22 stringWithFormat:@"runMaintenanceTask error: %@ is not a %@", taskCopy, v23];
 
         v24 = MEMORY[0x1E696ABC0];
         v35 = *MEMORY[0x1E696A278];
-        v36 = v14;
+        v36 = libraryServicesManager;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
         v19 = [v24 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v17];
-        v7[2](v7, 0, v19);
+        replyCopy[2](replyCopy, 0, v19);
       }
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"runMaintenanceTask for %@ - class not found", v6];
+      taskCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"runMaintenanceTask for %@ - class not found", taskCopy];
       v21 = MEMORY[0x1E696ABC0];
       v37 = *MEMORY[0x1E696A278];
-      v38 = v13;
-      v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      v17 = [v21 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v14];
-      v7[2](v7, 0, v17);
+      v38 = taskCopy;
+      libraryServicesManager = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
+      v17 = [v21 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:libraryServicesManager];
+      replyCopy[2](replyCopy, 0, v17);
     }
   }
 
@@ -381,9 +381,9 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v20 = MEMORY[0x1E696ABC0];
     v39 = *MEMORY[0x1E696A278];
     v40 = @"runMaintenanceTask for all (nil arg) not supported yet";
-    v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-    v14 = [v20 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v13];
-    v7[2](v7, 0, v14);
+    taskCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
+    libraryServicesManager = [v20 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:taskCopy];
+    replyCopy[2](replyCopy, 0, libraryServicesManager);
   }
 
   if (v30 == 1)
@@ -405,16 +405,16 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)resetMaintenanceTasksWithReply:(id)a3
+- (void)resetMaintenanceTasksWithReply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v22) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v22) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: resetMaintenanceTasksWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v22 + 1);
@@ -424,9 +424,9 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 
   v8 = MEMORY[0x1E69BF188];
-  v9 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v10 = [v9 libraryURL];
-  v11 = [v8 appPrivateDataForLibraryURL:v10];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  libraryURL = [libraryServicesManager libraryURL];
+  v11 = [v8 appPrivateDataForLibraryURL:libraryURL];
 
   v12 = [v11 valueForKey:@"PLDeferredCriticalMaintenanceTask"];
   if (v12)
@@ -457,7 +457,7 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v14 = 1;
   }
 
-  v4[2](v4, v14, v15);
+  replyCopy[2](replyCopy, v14, v15);
 
   if (v22 == 1)
   {
@@ -479,16 +479,16 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)resetDrawAssetPersonEdgesBackgroundMigrationActionWithReply:(id)a3
+- (void)resetDrawAssetPersonEdgesBackgroundMigrationActionWithReply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: resetDrawAssetPersonEdgesBackgroundMigrationActionWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v21 + 1);
@@ -497,14 +497,14 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     os_activity_scope_enter(v6, (&v22 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 databaseContext];
-  v10 = [v9 newShortLivedLibraryWithName:"-[PLAssetsdDebugService resetDrawAssetPersonEdgesBackgroundMigrationActionWithReply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v10 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService resetDrawAssetPersonEdgesBackgroundMigrationActionWithReply:]"];
 
   v11 = objc_opt_class();
-  v12 = [v10 pathManager];
+  pathManager = [v10 pathManager];
   v20 = 0;
-  v13 = [PLBackgroundModelMigration resetBackgroundActionClass:v11 pathManager:v12 error:&v20];
+  v13 = [PLBackgroundModelMigration resetBackgroundActionClass:v11 pathManager:pathManager error:&v20];
   v14 = v20;
 
   if (v13)
@@ -517,7 +517,7 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v15 = v14;
   }
 
-  (v4)[2](v4, v13, v15);
+  (replyCopy)[2](replyCopy, v13, v15);
 
   if (v21 == 1)
   {
@@ -539,17 +539,17 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)resetBackgroundMigrationClassName:(id)a3 reply:(id)a4
+- (void)resetBackgroundMigrationClassName:(id)name reply:(id)reply
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  replyCopy = reply;
   v32 = 0u;
   *sel = 0u;
   v31 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v31) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v31) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: resetBackgroundMigrationClassName:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v31 + 1);
@@ -602,9 +602,9 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
         *buf = 0u;
         v14 = PLMigrationGetLog();
         os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-        v15 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+        trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
         v36 = 138543362;
-        v37 = v15;
+        v37 = trustedCallerBundleID;
         LODWORD(v29) = 12;
         v16 = _os_log_send_and_compose_impl();
 
@@ -620,19 +620,19 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
         v20 = PLMigrationGetLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+          trustedCallerBundleID2 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
           *buf = 138543362;
-          *&buf[4] = v21;
+          *&buf[4] = trustedCallerBundleID2;
           _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Reseting background migration action from client: %{public}@", buf, 0xCu);
         }
       }
     }
 
-    v22 = NSClassFromString(v6);
-    v23 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v24 = [v23 pathManager];
+    v22 = NSClassFromString(nameCopy);
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    pathManager = [libraryServicesManager pathManager];
     v30 = 0;
-    v19 = [PLBackgroundModelMigration resetBackgroundActionClass:v22 pathManager:v24 error:&v30];
+    v19 = [PLBackgroundModelMigration resetBackgroundActionClass:v22 pathManager:pathManager error:&v30];
     v18 = v30;
   }
 
@@ -646,7 +646,7 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v19 = 0;
   }
 
-  v7[2](v7, v19, v18);
+  replyCopy[2](replyCopy, v19, v18);
   if (v31 == 1)
   {
     os_activity_scope_leave((&v32 + 8));
@@ -667,16 +667,16 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)backgroundMigrationWithReply:(id)a3
+- (void)backgroundMigrationWithReply:(id)reply
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v30 = 0u;
   *sel = 0u;
   v29 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v29) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v29) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: backgroundMigrationWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v29 + 1);
@@ -729,9 +729,9 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
         *buf = 0u;
         v11 = PLMigrationGetLog();
         os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-        v12 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+        trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
         v34 = 138543362;
-        v35 = v12;
+        v35 = trustedCallerBundleID;
         LODWORD(v27) = 12;
         v13 = _os_log_send_and_compose_impl();
 
@@ -747,18 +747,18 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
         v18 = PLMigrationGetLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
+          trustedCallerBundleID2 = [(PLAssetsdConnectionAuthorization *)self->_connectionAuthorization trustedCallerBundleID];
           *buf = 138543362;
-          *&buf[4] = v19;
+          *&buf[4] = trustedCallerBundleID2;
           _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Background migration action client: %{public}@", buf, 0xCu);
         }
       }
     }
 
-    v20 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v21 = [v20 libraryBundle];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    libraryBundle = [libraryServicesManager libraryBundle];
     v28 = 0;
-    v22 = [PLBackgroundModelMigration migrateBackgroundActionsWithPhotoLibraryBundle:v21 logger:v8 error:&v28 reportProgressUsingBlock:0 continuationHandler:&__block_literal_global_17982];
+    v22 = [PLBackgroundModelMigration migrateBackgroundActionsWithPhotoLibraryBundle:libraryBundle logger:v8 error:&v28 reportProgressUsingBlock:0 continuationHandler:&__block_literal_global_17982];
     v16 = v28;
 
     v17 = v22 == 1;
@@ -775,7 +775,7 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v17 = 0;
   }
 
-  v4[2](v4, v17, v16);
+  replyCopy[2](replyCopy, v17, v16);
 
   if (v29 == 1)
   {
@@ -797,12 +797,12 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)waitForMomentGenerationWithReply:(id)a3
+- (void)waitForMomentGenerationWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v6 = [v5 momentGenerationDataManager];
-  v7 = [v6 generator];
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
   v8 = dispatch_semaphore_create(0);
   v10[0] = MEMORY[0x1E69E9820];
@@ -811,41 +811,41 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   v10[3] = &unk_1E75781E8;
   v11 = v8;
   v9 = v8;
-  [v7 generateWithIncrementalDataCompletionHandler:v10];
+  [generator generateWithIncrementalDataCompletionHandler:v10];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)syndicationIngestMutexStateDescriptionWithReply:(id)a3
+- (void)syndicationIngestMutexStateDescriptionWithReply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v17) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v17) = enabled;
+  if (enabled)
   {
     *(&v17 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: syndicationIngestMutexStateDescriptionWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v17 + 1), (&v18 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
 
-  v8 = [v7 syndicationIngestMutex];
-  v9 = [v8 syndicationIngestMutexStateDescription];
+  syndicationIngestMutex = [databaseContext syndicationIngestMutex];
+  syndicationIngestMutexStateDescription = [syndicationIngestMutex syndicationIngestMutexStateDescription];
 
-  if (v9)
+  if (syndicationIngestMutexStateDescription)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to get state description. databaseContext = %p", v7];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to get state description. databaseContext = %p", databaseContext];
     v12 = MEMORY[0x1E696ABC0];
     v20 = *MEMORY[0x1E696A278];
     v21 = v11;
@@ -853,7 +853,7 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v10 = [v12 errorWithDomain:*MEMORY[0x1E69BFF48] code:41001 userInfo:v13];
   }
 
-  v4[2](v4, v9, v10);
+  replyCopy[2](replyCopy, syndicationIngestMutexStateDescription, v10);
 
   if (v17 == 1)
   {
@@ -874,43 +874,43 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)computeCacheStatusWithReply:(id)a3
+- (void)computeCacheStatusWithReply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v17) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v17) = enabled;
+  if (enabled)
   {
     *(&v17 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: computeCacheStatusWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v17 + 1), (&v18 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 computeCacheManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  computeCacheManager = [libraryServicesManager computeCacheManager];
 
-  if (v7)
+  if (computeCacheManager)
   {
-    v8 = [v7 status];
-    v4[2](v4, v8, 0);
+    status = [computeCacheManager status];
+    replyCopy[2](replyCopy, status, 0);
   }
 
   else
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = +[PLComputeCacheManager name];
-    v8 = [v9 stringWithFormat:@"Failed to obtain manager: %@", v10];
+    status = [v9 stringWithFormat:@"Failed to obtain manager: %@", v10];
 
     v11 = MEMORY[0x1E696ABC0];
     v20 = *MEMORY[0x1E696A278];
-    v21 = v8;
+    v21 = status;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v13 = [v11 errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v12];
-    (v4)[2](v4, 0, v13);
+    (replyCopy)[2](replyCopy, 0, v13);
   }
 
   if (v17 == 1)
@@ -932,16 +932,16 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)resetComputeCacheWithReply:(id)a3
+- (void)resetComputeCacheWithReply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: resetComputeCacheWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v21 + 1);
@@ -950,15 +950,15 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     os_activity_scope_enter(v6, (&v22 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 computeCacheManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  computeCacheManager = [libraryServicesManager computeCacheManager];
 
-  if (v9)
+  if (computeCacheManager)
   {
     v20 = 0;
-    [v9 resetComputeCacheWithError:&v20];
+    [computeCacheManager resetComputeCacheWithError:&v20];
     v10 = v20;
-    v4[2](v4, v10);
+    replyCopy[2](replyCopy, v10);
   }
 
   else
@@ -972,7 +972,7 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v25 = v10;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v15 = [v13 errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v14];
-    v4[2](v4, v15);
+    replyCopy[2](replyCopy, v15);
   }
 
   if (v21 == 1)
@@ -995,16 +995,16 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (void)archiveComputeCacheWithReply:(id)a3
+- (void)archiveComputeCacheWithReply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: archiveComputeCacheWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v21 + 1);
@@ -1013,15 +1013,15 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     os_activity_scope_enter(v6, (&v22 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 computeCacheManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  computeCacheManager = [libraryServicesManager computeCacheManager];
 
-  if (v9)
+  if (computeCacheManager)
   {
     v20 = 0;
-    [v9 createArchiveWithError:&v20];
+    [computeCacheManager createArchiveWithError:&v20];
     v10 = v20;
-    v4[2](v4, v10);
+    replyCopy[2](replyCopy, v10);
   }
 
   else
@@ -1035,7 +1035,7 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     v25 = v10;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v15 = [v13 errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v14];
-    v4[2](v4, v15);
+    replyCopy[2](replyCopy, v15);
   }
 
   if (v21 == 1)
@@ -1058,16 +1058,16 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   }
 }
 
-- (id)updateAndSaveAssetPersonEdgesWithReply:(id)a3
+- (id)updateAndSaveAssetPersonEdgesWithReply:(id)reply
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v30) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v30) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: updateAndSaveAssetPersonEdgesWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v30 + 1);
@@ -1076,10 +1076,10 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
     os_activity_scope_enter(v6, (&v31 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
 
-  v10 = [v9 newShortLivedLibraryWithName:"-[PLAssetsdDebugService updateAndSaveAssetPersonEdgesWithReply:]"];
+  v10 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService updateAndSaveAssetPersonEdgesWithReply:]"];
   v11 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -1103,7 +1103,7 @@ void __98__PLAssetsdDebugService_insertBackgroundResourceJobConfigurationWithBun
   p_buf = &buf;
   v13 = v11;
   v24 = v13;
-  v14 = v4;
+  v14 = replyCopy;
   v25 = v14;
   [v12 performBlock:v22];
   v15 = v25;
@@ -1162,16 +1162,16 @@ void __64__PLAssetsdDebugService_updateAndSaveAssetPersonEdgesWithReply___block_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)restoreComputeCacheWithReply:(id)a3
+- (void)restoreComputeCacheWithReply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: restoreComputeCacheWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v21 + 1);
@@ -1180,15 +1180,15 @@ void __64__PLAssetsdDebugService_updateAndSaveAssetPersonEdgesWithReply___block_
     os_activity_scope_enter(v6, (&v22 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 computeCacheManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  computeCacheManager = [libraryServicesManager computeCacheManager];
 
-  if (v9)
+  if (computeCacheManager)
   {
     v20 = 0;
-    [v9 restoreComputeCacheWithProgress:0 error:&v20];
+    [computeCacheManager restoreComputeCacheWithProgress:0 error:&v20];
     v10 = v20;
-    v4[2](v4, v10);
+    replyCopy[2](replyCopy, v10);
   }
 
   else
@@ -1202,7 +1202,7 @@ void __64__PLAssetsdDebugService_updateAndSaveAssetPersonEdgesWithReply___block_
     v25 = v10;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v15 = [v13 errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v14];
-    v4[2](v4, v15);
+    replyCopy[2](replyCopy, v15);
   }
 
   if (v21 == 1)
@@ -1225,17 +1225,17 @@ void __64__PLAssetsdDebugService_updateAndSaveAssetPersonEdgesWithReply___block_
   }
 }
 
-- (id)runAssetContainmentOnSocialGroup:(id)a3 reply:(id)a4
+- (id)runAssetContainmentOnSocialGroup:(id)group reply:(id)reply
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  replyCopy = reply;
   v32 = 0u;
   *sel = 0u;
   v31 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v31) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v31) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: runAssetContainmentOnSocialGroup:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v31 + 1);
@@ -1244,9 +1244,9 @@ void __64__PLAssetsdDebugService_updateAndSaveAssetPersonEdgesWithReply___block_
     os_activity_scope_enter(v9, (&v32 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
-  v13 = [v12 newShortLivedLibraryWithName:"-[PLAssetsdDebugService runAssetContainmentOnSocialGroup:reply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v13 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService runAssetContainmentOnSocialGroup:reply:]"];
 
   v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   v26[0] = MEMORY[0x1E69E9820];
@@ -1255,9 +1255,9 @@ void __64__PLAssetsdDebugService_updateAndSaveAssetPersonEdgesWithReply___block_
   v26[3] = &unk_1E7573C00;
   v15 = v13;
   v27 = v15;
-  v16 = v6;
+  v16 = groupCopy;
   v28 = v16;
-  v17 = v7;
+  v17 = replyCopy;
   v30 = v17;
   v18 = v14;
   v29 = v18;
@@ -1356,16 +1356,16 @@ LABEL_9:
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)runAssetContainmentOnAllSocialGroups:(id)a3
+- (id)runAssetContainmentOnAllSocialGroups:(id)groups
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupsCopy = groups;
   v28 = 0u;
   *sel = 0u;
   v27 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v27) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v27) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: runAssetContainmentOnAllSocialGroups:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v27 + 1);
@@ -1375,9 +1375,9 @@ LABEL_9:
   }
 
   v8 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v9 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v10 = [v9 databaseContext];
-  v11 = [v10 newShortLivedLibraryWithName:"-[PLAssetsdDebugService runAssetContainmentOnAllSocialGroups:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v11 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService runAssetContainmentOnAllSocialGroups:]"];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -1394,7 +1394,7 @@ LABEL_9:
   v13 = v11;
   v24 = v13;
   p_buf = &buf;
-  v14 = v4;
+  v14 = groupsCopy;
   v25 = v14;
   [v13 performBlock:v22];
   v15 = v25;
@@ -1452,36 +1452,36 @@ uint64_t __62__PLAssetsdDebugService_runAssetContainmentOnAllSocialGroups___bloc
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)coalesceJournalsForManagerName:(id)a3 payloadClassIDs:(id)a4 withChangeJournalOverThreshold:(float)a5 reply:(id)a6
+- (void)coalesceJournalsForManagerName:(id)name payloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  dsCopy = ds;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v20 = 0u;
-  v13 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v20) = v13;
-  if (v13)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v20) = enabled;
+  if (enabled)
   {
     *(&v20 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: coalesceJournalsForManagerName:payloadClassIDs:withChangeJournalOverThreshold:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v20 + 1), (&v22 + 8));
   }
 
-  v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v15 = [v14 journalManagerForName:v10];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  v15 = [libraryServicesManager journalManagerForName:nameCopy];
 
   if (v15)
   {
-    *&v16 = a5;
-    [v15 coalesceJournalsForPayloadClassIDs:v11 withChangeJournalOverThreshold:v12 completionHandler:v16];
+    *&v16 = threshold;
+    [v15 coalesceJournalsForPayloadClassIDs:dsCopy withChangeJournalOverThreshold:replyCopy completionHandler:v16];
   }
 
   else
   {
-    v12[2](v12);
+    replyCopy[2](replyCopy);
   }
 
   if (v21 == 1)
@@ -1503,18 +1503,18 @@ uint64_t __62__PLAssetsdDebugService_runAssetContainmentOnAllSocialGroups___bloc
   }
 }
 
-- (void)snapshotJournalsForManagerName:(id)a3 payloadClassIDs:(id)a4 reply:(id)a5
+- (void)snapshotJournalsForManagerName:(id)name payloadClassIDs:(id)ds reply:(id)reply
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dsCopy = ds;
+  replyCopy = reply;
   v27 = 0u;
   *sel = 0u;
   v26 = 0u;
-  v11 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v26) = v11;
-  if (v11)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v26) = enabled;
+  if (enabled)
   {
     v12 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: snapshotJournalsForManagerName:payloadClassIDs:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v13 = *(&v26 + 1);
@@ -1523,8 +1523,8 @@ uint64_t __62__PLAssetsdDebugService_runAssetContainmentOnAllSocialGroups___bloc
     os_activity_scope_enter(v12, (&v27 + 8));
   }
 
-  v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v15 = [v14 journalManagerForName:v8];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  v15 = [libraryServicesManager journalManagerForName:nameCopy];
 
   if (v15)
   {
@@ -1532,20 +1532,20 @@ uint64_t __62__PLAssetsdDebugService_runAssetContainmentOnAllSocialGroups___bloc
     v24[1] = 3221225472;
     v24[2] = __78__PLAssetsdDebugService_snapshotJournalsForManagerName_payloadClassIDs_reply___block_invoke;
     v24[3] = &unk_1E7577430;
-    v25 = v10;
-    [v15 snapshotJournalsForPayloadClassIDs:v9 withCompletionHandler:v24];
-    v16 = v25;
+    v25 = replyCopy;
+    [v15 snapshotJournalsForPayloadClassIDs:dsCopy withCompletionHandler:v24];
+    nameCopy = v25;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid journal manager for name = %@", v8];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid journal manager for name = %@", nameCopy];
     v17 = MEMORY[0x1E696ABC0];
     v29 = *MEMORY[0x1E696A278];
-    v30 = v16;
+    v30 = nameCopy;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v19 = [v17 errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v18];
-    (*(v10 + 2))(v10, v19);
+    (*(replyCopy + 2))(replyCopy, v19);
   }
 
   if (v26 == 1)
@@ -1568,17 +1568,17 @@ uint64_t __62__PLAssetsdDebugService_runAssetContainmentOnAllSocialGroups___bloc
   }
 }
 
-- (void)privateDownloadCloudPhotoLibraryAsset:(id)a3 resourceType:(unint64_t)a4 highPriority:(BOOL)a5 reply:(id)a6
+- (void)privateDownloadCloudPhotoLibraryAsset:(id)asset resourceType:(unint64_t)type highPriority:(BOOL)priority reply:(id)reply
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  assetCopy = asset;
+  replyCopy = reply;
   v33 = 0u;
   *sel = 0u;
   v32 = 0u;
-  v12 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v32) = v12;
-  if (v12)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v32) = enabled;
+  if (enabled)
   {
     v13 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: privateDownloadCloudPhotoLibraryAsset:resourceType:highPriority:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v14 = *(&v32 + 1);
@@ -1588,10 +1588,10 @@ uint64_t __62__PLAssetsdDebugService_runAssetContainmentOnAllSocialGroups___bloc
   }
 
   v15 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdDebugService privateDownloadCloudPhotoLibraryAsset:resourceType:highPriority:reply:]"];
-  v16 = [v15 managedObjectContext];
-  v17 = [v16 persistentStoreCoordinator];
+  managedObjectContext = [v15 managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
 
-  v18 = [v17 managedObjectIDForURIRepresentation:v10];
+  v18 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:assetCopy];
   v19 = v18;
   if (v18 && ([v18 isTemporaryID] & 1) == 0)
   {
@@ -1601,10 +1601,10 @@ uint64_t __62__PLAssetsdDebugService_runAssetContainmentOnAllSocialGroups___bloc
     v25[3] = &unk_1E7568670;
     v26 = v19;
     v27 = v15;
-    v28 = self;
-    v30 = a4;
-    v31 = a5;
-    v29 = v11;
+    selfCopy = self;
+    typeCopy = type;
+    priorityCopy = priority;
+    v29 = replyCopy;
     [v27 performBlock:v25 withPriority:1];
   }
 
@@ -1617,7 +1617,7 @@ uint64_t __62__PLAssetsdDebugService_runAssetContainmentOnAllSocialGroups___bloc
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "privateDownloadCloudPhotoLibraryAsset: invalid object URI", buf, 2u);
     }
 
-    v11[2](v11);
+    replyCopy[2](replyCopy);
   }
 
   if (v32 == 1)
@@ -1681,17 +1681,17 @@ void __95__PLAssetsdDebugService_privateDownloadCloudPhotoLibraryAsset_resourceT
   }
 }
 
-- (void)clearSensitivityStateForAssetsWithUUIDs:(id)a3 reply:(id)a4
+- (void)clearSensitivityStateForAssetsWithUUIDs:(id)ds reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  replyCopy = reply;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v25) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v25) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: clearSensitivityStateForAssetsWithUUIDs:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v25 + 1);
@@ -1700,19 +1700,19 @@ void __95__PLAssetsdDebugService_privateDownloadCloudPhotoLibraryAsset_resourceT
     os_activity_scope_enter(v9, (&v26 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
-  v13 = [v12 newShortLivedLibraryWithName:"-[PLAssetsdDebugService clearSensitivityStateForAssetsWithUUIDs:reply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v13 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService clearSensitivityStateForAssetsWithUUIDs:reply:]"];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply___block_invoke;
   v21[3] = &unk_1E7576F38;
-  v14 = v6;
+  v14 = dsCopy;
   v22 = v14;
   v15 = v13;
   v23 = v15;
-  v16 = v7;
+  v16 = replyCopy;
   v24 = v16;
   [v15 performBlockAndWait:v21];
   (*(v16 + 2))(v16, 0);
@@ -1806,27 +1806,27 @@ void __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply__
   }
 }
 
-- (void)locationOfInterestUpdateWithReply:(id)a3
+- (void)locationOfInterestUpdateWithReply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: locationOfInterestUpdateWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 momentGenerationDataManager];
-  v8 = [v7 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  [v8 locationOfInterestUpdateWithCompletionBlock:v4];
+  [generator locationOfInterestUpdateWithCompletionBlock:replyCopy];
   if (v13 == 1)
   {
     os_activity_scope_leave((&v14 + 8));
@@ -1846,27 +1846,27 @@ void __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply__
   }
 }
 
-- (void)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithCompletionBlock:(id)a3
+- (void)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithCompletionBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithCompletionBlock:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 momentGenerationDataManager];
-  v8 = [v7 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  [v8 invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithCompletionBlock:v4];
+  [generator invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithCompletionBlock:blockCopy];
   if (v13 == 1)
   {
     os_activity_scope_leave((&v14 + 8));
@@ -1886,27 +1886,27 @@ void __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply__
   }
 }
 
-- (void)cleanupEmptyHighlightsWithReply:(id)a3
+- (void)cleanupEmptyHighlightsWithReply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: cleanupEmptyHighlightsWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 momentGenerationDataManager];
-  v8 = [v7 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  [v8 cleanupEmptyHighlightsWithCompletionBlock:v4];
+  [generator cleanupEmptyHighlightsWithCompletionBlock:replyCopy];
   if (v13 == 1)
   {
     os_activity_scope_leave((&v14 + 8));
@@ -1926,27 +1926,27 @@ void __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply__
   }
 }
 
-- (void)updateHighlightTitlesWithReply:(id)a3
+- (void)updateHighlightTitlesWithReply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: updateHighlightTitlesWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 momentGenerationDataManager];
-  v8 = [v7 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  [v8 updateHighlightTitlesWithCompletionBlock:v4];
+  [generator updateHighlightTitlesWithCompletionBlock:replyCopy];
   if (v13 == 1)
   {
     os_activity_scope_leave((&v14 + 8));
@@ -1966,27 +1966,27 @@ void __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply__
   }
 }
 
-- (void)processUnprocessedMomentLocationsWithReply:(id)a3
+- (void)processUnprocessedMomentLocationsWithReply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: processUnprocessedMomentLocationsWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 momentGenerationDataManager];
-  v8 = [v7 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  [v8 processUnprocessedMomentLocationsWithCompletionBlock:v4];
+  [generator processUnprocessedMomentLocationsWithCompletionBlock:replyCopy];
   if (v13 == 1)
   {
     os_activity_scope_leave((&v14 + 8));
@@ -2006,27 +2006,27 @@ void __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply__
   }
 }
 
-- (void)processRecentHighlightsWithReply:(id)a3
+- (void)processRecentHighlightsWithReply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v14 = 0u;
   *sel = 0u;
   v12 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v12) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v12) = enabled;
+  if (enabled)
   {
     *(&v12 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: processRecentHighlightsWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v12 + 1), (&v14 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 momentGenerationDataManager];
-  v8 = [v7 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  [v8 processRecentHighlightsWithCompletionBlock:v4];
+  [generator processRecentHighlightsWithCompletionBlock:replyCopy];
   if (v13 == 1)
   {
     os_activity_scope_leave((&v14 + 8));
@@ -2046,16 +2046,16 @@ void __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply__
   }
 }
 
-- (void)prefetchResourcesWithMode:(int64_t)a3 reply:(id)a4
+- (void)prefetchResourcesWithMode:(int64_t)mode reply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v21 = 0u;
   *sel = 0u;
   v20 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v20) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v20) = enabled;
+  if (enabled)
   {
     v8 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: prefetchResourcesWithMode:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = *(&v20 + 1);
@@ -2064,16 +2064,16 @@ void __71__PLAssetsdDebugService_clearSensitivityStateForAssetsWithUUIDs_reply__
     os_activity_scope_enter(v8, (&v21 + 8));
   }
 
-  v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v11 = [v10 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __57__PLAssetsdDebugService_prefetchResourcesWithMode_reply___block_invoke;
   v17[3] = &unk_1E7568648;
-  v12 = v6;
+  v12 = replyCopy;
   v18 = v12;
-  v19 = a3;
-  [v11 perform:v17 withName:"-[PLAssetsdDebugService prefetchResourcesWithMode:reply:]"];
+  modeCopy = mode;
+  [databaseContext perform:v17 withName:"-[PLAssetsdDebugService prefetchResourcesWithMode:reply:]"];
 
   if (v20 == 1)
   {
@@ -2266,17 +2266,17 @@ uint64_t __57__PLAssetsdDebugService_prefetchResourcesWithMode_reply___block_inv
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)prefetchResourcesForHighlights:(id)a3 reply:(id)a4
+- (void)prefetchResourcesForHighlights:(id)highlights reply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  highlightsCopy = highlights;
+  replyCopy = reply;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v22) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v22) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: prefetchResourcesForHighlights:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v22 + 1);
@@ -2285,17 +2285,17 @@ uint64_t __57__PLAssetsdDebugService_prefetchResourcesWithMode_reply___block_inv
     os_activity_scope_enter(v9, (&v23 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __62__PLAssetsdDebugService_prefetchResourcesForHighlights_reply___block_invoke;
   v19[3] = &unk_1E7568620;
-  v13 = v6;
+  v13 = highlightsCopy;
   v20 = v13;
-  v14 = v7;
+  v14 = replyCopy;
   v21 = v14;
-  [v12 perform:v19 withName:"-[PLAssetsdDebugService prefetchResourcesForHighlights:reply:]"];
+  [databaseContext perform:v19 withName:"-[PLAssetsdDebugService prefetchResourcesForHighlights:reply:]"];
 
   if (v22 == 1)
   {
@@ -2340,17 +2340,17 @@ void __62__PLAssetsdDebugService_prefetchResourcesForHighlights_reply___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)prefetchResourcesForMemories:(id)a3 reply:(id)a4
+- (void)prefetchResourcesForMemories:(id)memories reply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  memoriesCopy = memories;
+  replyCopy = reply;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v22) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v22) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: prefetchResourcesForMemories:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v22 + 1);
@@ -2359,17 +2359,17 @@ void __62__PLAssetsdDebugService_prefetchResourcesForHighlights_reply___block_in
     os_activity_scope_enter(v9, (&v23 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __60__PLAssetsdDebugService_prefetchResourcesForMemories_reply___block_invoke;
   v19[3] = &unk_1E7568620;
-  v13 = v6;
+  v13 = memoriesCopy;
   v20 = v13;
-  v14 = v7;
+  v14 = replyCopy;
   v21 = v14;
-  [v12 perform:v19 withName:"-[PLAssetsdDebugService prefetchResourcesForMemories:reply:]"];
+  [databaseContext perform:v19 withName:"-[PLAssetsdDebugService prefetchResourcesForMemories:reply:]"];
 
   if (v22 == 1)
   {
@@ -2424,18 +2424,18 @@ void __60__PLAssetsdDebugService_prefetchResourcesForMemories_reply___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pruneAssetsWithUUID:(id)a3 resourceTypes:(id)a4 reply:(id)a5
+- (void)pruneAssetsWithUUID:(id)d resourceTypes:(id)types reply:(id)reply
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  typesCopy = types;
+  replyCopy = reply;
   v32 = 0u;
   *sel = 0u;
   v31 = 0u;
-  v11 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v31) = v11;
-  if (v11)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v31) = enabled;
+  if (enabled)
   {
     v12 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: pruneAssetsWithUUID:resourceTypes:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v13 = *(&v31 + 1);
@@ -2444,23 +2444,23 @@ void __60__PLAssetsdDebugService_prefetchResourcesForMemories_reply___block_invo
     os_activity_scope_enter(v12, (&v32 + 8));
   }
 
-  v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v15 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v16 = [v15 databaseContext];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager2 databaseContext];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __65__PLAssetsdDebugService_pruneAssetsWithUUID_resourceTypes_reply___block_invoke;
   v25[3] = &unk_1E75685F8;
-  v17 = v14;
+  v17 = libraryServicesManager;
   v26 = v17;
-  v18 = v8;
+  v18 = dCopy;
   v27 = v18;
-  v19 = v9;
+  v19 = typesCopy;
   v28 = v19;
-  v29 = self;
-  v20 = v10;
+  selfCopy = self;
+  v20 = replyCopy;
   v30 = v20;
-  [v16 perform:v25 withName:"-[PLAssetsdDebugService pruneAssetsWithUUID:resourceTypes:reply:]"];
+  [databaseContext perform:v25 withName:"-[PLAssetsdDebugService pruneAssetsWithUUID:resourceTypes:reply:]"];
 
   if (v31 == 1)
   {
@@ -2603,17 +2603,17 @@ uint64_t __65__PLAssetsdDebugService_pruneAssetsWithUUID_resourceTypes_reply___b
   return v4;
 }
 
-- (void)debugSidecarURLsWithObjectURI:(id)a3 reply:(id)a4
+- (void)debugSidecarURLsWithObjectURI:(id)i reply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v29 = 0u;
   *sel = 0u;
   v28 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v28) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v28) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: debugSidecarURLsWithObjectURI:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v28 + 1);
@@ -2622,13 +2622,13 @@ uint64_t __65__PLAssetsdDebugService_pruneAssetsWithUUID_resourceTypes_reply___b
     os_activity_scope_enter(v9, (&v29 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
-  v13 = [v12 newShortLivedLibraryWithName:"-[PLAssetsdDebugService debugSidecarURLsWithObjectURI:reply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v13 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService debugSidecarURLsWithObjectURI:reply:]"];
 
-  v14 = [v13 managedObjectContext];
-  v15 = [v14 persistentStoreCoordinator];
-  v16 = [v15 managedObjectIDForURIRepresentation:v6];
+  managedObjectContext = [v13 managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  v16 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:iCopy];
 
   if (v16)
   {
@@ -2636,9 +2636,9 @@ uint64_t __65__PLAssetsdDebugService_pruneAssetsWithUUID_resourceTypes_reply___b
     v24[1] = 3221225472;
     v24[2] = __61__PLAssetsdDebugService_debugSidecarURLsWithObjectURI_reply___block_invoke;
     v24[3] = &unk_1E7576F38;
-    v25 = v14;
+    v25 = managedObjectContext;
     v26 = v16;
-    v27 = v7;
+    v27 = replyCopy;
     [v13 performBlock:v24];
 
     v17 = v25;
@@ -2652,7 +2652,7 @@ uint64_t __65__PLAssetsdDebugService_pruneAssetsWithUUID_resourceTypes_reply___b
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v17 = [v18 errorWithDomain:*MEMORY[0x1E69BFF48] code:41001 userInfo:v19];
 
-    (*(v7 + 2))(v7, 0, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v17);
   }
 
   if (v28 == 1)
@@ -2753,17 +2753,17 @@ uint64_t __61__PLAssetsdDebugService_debugSidecarURLsWithObjectURI_reply___block
   return result;
 }
 
-- (void)revertToOriginalWithObjectURI:(id)a3 reply:(id)a4
+- (void)revertToOriginalWithObjectURI:(id)i reply:(id)reply
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  replyCopy = reply;
   v28 = 0u;
   *sel = 0u;
   v27 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v27) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v27) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: revertToOriginalWithObjectURI:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v27 + 1);
@@ -2772,19 +2772,19 @@ uint64_t __61__PLAssetsdDebugService_debugSidecarURLsWithObjectURI_reply___block
     os_activity_scope_enter(v9, (&v28 + 8));
   }
 
-  v11 = [(PLAssetsdDebugService *)self _persistentStoreCoordinator];
-  v12 = [v11 managedObjectIDForURIRepresentation:v6];
+  _persistentStoreCoordinator = [(PLAssetsdDebugService *)self _persistentStoreCoordinator];
+  v12 = [_persistentStoreCoordinator managedObjectIDForURIRepresentation:iCopy];
   v13 = v12;
   if (v12 && ([v12 isTemporaryID] & 1) == 0)
   {
-    v19 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v20 = [v19 databaseContext];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_invoke;
     v25[3] = &unk_1E75685D0;
     v26 = v13;
-    [v20 performTransactionSync:v25 withName:"-[PLAssetsdDebugService revertToOriginalWithObjectURI:reply:]"];
+    [databaseContext performTransactionSync:v25 withName:"-[PLAssetsdDebugService revertToOriginalWithObjectURI:reply:]"];
 
     v18 = 0;
     v14 = v26;
@@ -2808,7 +2808,7 @@ uint64_t __61__PLAssetsdDebugService_debugSidecarURLsWithObjectURI_reply___block
     v18 = [v16 errorWithDomain:*MEMORY[0x1E69BFF48] code:41001 userInfo:v17];
   }
 
-  v7[2](v7, v18);
+  replyCopy[2](replyCopy, v18);
   if (v27 == 1)
   {
     os_activity_scope_leave((&v28 + 8));
@@ -2850,19 +2850,19 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v3 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v3;
-  if (v3)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: enqueuePrefetch", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v9 + 1), (&v11 + 8));
   }
 
-  v4 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v5 = [v4 cloudPhotoLibraryManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  [v5 startAutomaticPrefetchOrPrune];
+  [cloudPhotoLibraryManager startAutomaticPrefetchOrPrune];
   if (v10 == 1)
   {
     os_activity_scope_leave((&v11 + 8));
@@ -2888,19 +2888,19 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v3 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v3;
-  if (v3)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: clearPrefetchState", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v9 + 1), (&v11 + 8));
   }
 
-  v4 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v5 = [v4 cloudPhotoLibraryManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  [v5 clearPrefetchState];
+  [cloudPhotoLibraryManager clearPrefetchState];
   if (v10 == 1)
   {
     os_activity_scope_leave((&v11 + 8));
@@ -2920,34 +2920,34 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   }
 }
 
-- (void)getCPLStateForDebug:(BOOL)a3 withReply:(id)a4
+- (void)getCPLStateForDebug:(BOOL)debug withReply:(id)reply
 {
-  v4 = a3;
+  debugCopy = debug;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v15 = 0u;
   *sel = 0u;
   v13 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v13) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v13) = enabled;
+  if (enabled)
   {
     *(&v13 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: getCPLStateForDebug:withReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v13 + 1), (&v15 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 cloudPhotoLibraryManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v9)
+  if (cloudPhotoLibraryManager)
   {
-    [v9 getCPLStateForDebug:v4 completionHandler:v6];
+    [cloudPhotoLibraryManager getCPLStateForDebug:debugCopy completionHandler:replyCopy];
   }
 
   else
   {
-    v6[2](v6, @"No CPL manager configured\n");
+    replyCopy[2](replyCopy, @"No CPL manager configured\n");
   }
 
   if (v14 == 1)
@@ -2969,16 +2969,16 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   }
 }
 
-- (void)getTaskConstraintStatusWithReply:(id)a3
+- (void)getTaskConstraintStatusWithReply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  replyCopy = reply;
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: getTaskConstraintStatusWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -2986,7 +2986,7 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   }
 
   v5 = +[PLCameraCaptureTaskConstraintCoordinator taskConstraintStatus];
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, v5);
 
   if (v10 == 1)
   {
@@ -3007,24 +3007,24 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   }
 }
 
-- (void)getXPCTransactionStatusWithReply:(id)a3
+- (void)getXPCTransactionStatusWithReply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  replyCopy = reply;
   v11 = 0u;
   *sel = 0u;
   v9 = 0u;
-  v4 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v9) = v4;
-  if (v4)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v9) = enabled;
+  if (enabled)
   {
     *(&v9 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: getXPCTransactionStatusWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v9 + 1), (&v11 + 8));
   }
 
-  v5 = [MEMORY[0x1E69BF360] openXPCTransactionStatus];
-  v3[2](v3, v5);
+  openXPCTransactionStatus = [MEMORY[0x1E69BF360] openXPCTransactionStatus];
+  replyCopy[2](replyCopy, openXPCTransactionStatus);
 
   if (v10 == 1)
   {
@@ -3045,44 +3045,44 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   }
 }
 
-- (void)rebuildTableThumbsWithReply:(id)a3
+- (void)rebuildTableThumbsWithReply:(id)reply
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v25 = 0u;
   *sel = 0u;
   v23 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v23) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v23) = enabled;
+  if (enabled)
   {
     *(&v23 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: rebuildTableThumbsWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v23 + 1), (&v25 + 8));
   }
 
-  v6 = [(PLAssetsdDebugService *)self _persistentStoreCoordinator];
-  v7 = [v6 persistentStores];
-  v8 = [v7 firstObject];
+  _persistentStoreCoordinator = [(PLAssetsdDebugService *)self _persistentStoreCoordinator];
+  persistentStores = [_persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
 
-  v9 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v10 = [v9 modelMigrator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  modelMigrator = [libraryServicesManager modelMigrator];
 
-  v11 = [v10 _migrationThumbnailManagerWithStore:v8];
-  v12 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v13 = [v12 databaseContext];
-  v14 = [v13 newShortLivedLibraryWithName:"-[PLAssetsdDebugService rebuildTableThumbsWithReply:]"];
+  v11 = [modelMigrator _migrationThumbnailManagerWithStore:firstObject];
+  libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager2 databaseContext];
+  v14 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService rebuildTableThumbsWithReply:]"];
 
-  v15 = [v14 managedObjectContext];
-  [v11 resetThumbnailsWithResetType:1 deferHintChanges:0 inContext:v15];
+  managedObjectContext = [v14 managedObjectContext];
+  [v11 resetThumbnailsWithResetType:1 deferHintChanges:0 inContext:managedObjectContext];
 
   v16 = MEMORY[0x1E69BF310];
-  v17 = [v14 pathManager];
-  v18 = [v16 tableThumbnailFormatsForConfigPhase:1 withPathManager:v17];
+  pathManager = [v14 pathManager];
+  v18 = [v16 tableThumbnailFormatsForConfigPhase:1 withPathManager:pathManager];
 
   v19 = objc_alloc_init(PLTableThumbnailMigrator);
   [(PLTableThumbnailMigrator *)v19 migrateAllAssetsPendingTableThumbRebuildInLibrary:v14 toTableFormats:v18 limit:0];
-  v4[2](v4, @"done");
+  replyCopy[2](replyCopy, @"done");
 
   if (v24 == 1)
   {
@@ -3103,17 +3103,17 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   }
 }
 
-- (void)removeAllThumbnailsForDryRun:(BOOL)a3 reply:(id)a4
+- (void)removeAllThumbnailsForDryRun:(BOOL)run reply:(id)reply
 {
-  v4 = a3;
+  runCopy = run;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v21 = 0u;
   *sel = 0u;
   v19 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v19) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v19) = enabled;
+  if (enabled)
   {
     *(&v19 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: removeAllThumbnailsForDryRun:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -3121,17 +3121,17 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   }
 
   *buf = 0;
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 databaseContext];
-  v10 = [v9 newShortLivedLibraryWithName:"-[PLAssetsdDebugService removeAllThumbnailsForDryRun:reply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v10 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService removeAllThumbnailsForDryRun:reply:]"];
 
-  v11 = [v10 thumbnailManager];
-  v12 = [v10 managedObjectContext];
-  v13 = [v11 removeAllThumbnailsInContextForUrgentCacheDeleteRequest:v12 dryRun:v4 count:buf];
+  thumbnailManager = [v10 thumbnailManager];
+  managedObjectContext = [v10 managedObjectContext];
+  v13 = [thumbnailManager removeAllThumbnailsInContextForUrgentCacheDeleteRequest:managedObjectContext dryRun:runCopy count:buf];
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*buf];
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
-  v6[2](v6, v14, v15);
+  replyCopy[2](replyCopy, v14, v15);
 
   if (v20 == 1)
   {
@@ -3157,22 +3157,22 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   v12 = *MEMORY[0x1E69E9840];
   memset(v11, 0, 32);
   v10 = 0u;
-  v3 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v10) = v3;
-  if (v3)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v10) = enabled;
+  if (enabled)
   {
     *(&v10 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: rebuildAllThumbnails", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v10 + 1), &v11[0].opaque[1]);
   }
 
-  v4 = [(PLAssetsdDebugService *)self _persistentStoreCoordinator];
-  v5 = [v4 persistentStores];
-  v6 = [v5 firstObject];
+  _persistentStoreCoordinator = [(PLAssetsdDebugService *)self _persistentStoreCoordinator];
+  persistentStores = [_persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
 
-  v7 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v8 = [v7 modelMigrator];
-  [v8 debug_resetThumbnailsAndInitiateRebuildRequestInStore:v6];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  modelMigrator = [libraryServicesManager modelMigrator];
+  [modelMigrator debug_resetThumbnailsAndInitiateRebuildRequestInStore:firstObject];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, PLPhotoLibraryForceClientExitNotification, 0, 0, 0);
@@ -3180,28 +3180,28 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   exit(1);
 }
 
-- (void)rebuildCloudFeedWithReply:(id)a3
+- (void)rebuildCloudFeedWithReply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v15 = 0u;
   *sel = 0u;
   v13 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v13) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v13) = enabled;
+  if (enabled)
   {
     *(&v13 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: rebuildCloudFeedWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v13 + 1), (&v15 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 databaseContext];
-  v8 = [v7 newShortLivedLibraryWithName:"-[PLAssetsdDebugService rebuildCloudFeedWithReply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v8 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService rebuildCloudFeedWithReply:]"];
 
   v9 = [[PLCloudFeedEntriesManager alloc] initWithPhotoLibrary:v8];
-  [(PLCloudFeedEntriesManager *)v9 rebuildAllEntries:v4];
+  [(PLCloudFeedEntriesManager *)v9 rebuildAllEntries:replyCopy];
 
   if (v14 == 1)
   {
@@ -3222,22 +3222,22 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   }
 }
 
-- (void)indexAssetsWithUUIDs:(id)a3 reply:(id)a4
+- (void)indexAssetsWithUUIDs:(id)ds reply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 searchIndexingEngine];
+  dsCopy = ds;
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  searchIndexingEngine = [libraryServicesManager searchIndexingEngine];
 
   v10 = PLGatekeeperXPCGetLog();
   v11 = v10;
-  if (v9)
+  if (searchIndexingEngine)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v6;
+      v23 = dsCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Search: Index Assets: %@", buf, 0xCu);
     }
 
@@ -3245,8 +3245,8 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
     v18[1] = 3221225472;
     v18[2] = __52__PLAssetsdDebugService_indexAssetsWithUUIDs_reply___block_invoke;
     v18[3] = &unk_1E7571990;
-    v19 = v7;
-    v12 = [v9 indexAssetsWithUUIDs:v6 partialUpdateMask:3 completion:v18];
+    v19 = replyCopy;
+    v12 = [searchIndexingEngine indexAssetsWithUUIDs:dsCopy partialUpdateMask:3 completion:v18];
     v13 = v19;
   }
 
@@ -3254,11 +3254,11 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+      libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
       *buf = 138412546;
-      v23 = v14;
+      v23 = libraryServicesManager2;
       v24 = 2112;
-      v25 = v6;
+      v25 = dsCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Failed to get IndexingEngine for libraryServicesManager %@. Unable to index assets: %@", buf, 0x16u);
     }
 
@@ -3269,7 +3269,7 @@ void __61__PLAssetsdDebugService_revertToOriginalWithObjectURI_reply___block_inv
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v13 = [v15 errorWithDomain:v16 code:41008 userInfo:v17];
 
-    (*(v7 + 2))(v7, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
   }
 }
 
@@ -3283,17 +3283,17 @@ void __52__PLAssetsdDebugService_indexAssetsWithUUIDs_reply___block_invoke(uint6
   (*(v2 + 16))(v2, v4, v5);
 }
 
-- (void)searchAttributesForAssetWithUUID:(id)a3 redacted:(BOOL)a4 reply:(id)a5
+- (void)searchAttributesForAssetWithUUID:(id)d redacted:(BOOL)redacted reply:(id)reply
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  replyCopy = reply;
   v29 = 0u;
   *sel = 0u;
   v28 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v28) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v28) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: searchAttributesForAssetWithUUID:redacted:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v28 + 1);
@@ -3309,21 +3309,21 @@ void __52__PLAssetsdDebugService_indexAssetsWithUUIDs_reply___block_invoke(uint6
   v34 = __Block_byref_object_dispose__17928;
   v35 = 0;
   v13 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdDebugService searchAttributesForAssetWithUUID:redacted:reply:]"];
-  v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __73__PLAssetsdDebugService_searchAttributesForAssetWithUUID_redacted_reply___block_invoke;
   v22[3] = &unk_1E75765B8;
-  v15 = v8;
+  v15 = dCopy;
   v23 = v15;
   v16 = v13;
   v24 = v16;
-  v17 = v14;
+  v17 = libraryServicesManager;
   v25 = v17;
   p_buf = &buf;
-  v27 = a4;
+  redactedCopy = redacted;
   [v16 performBlockAndWait:v22];
-  v9[2](v9, *(*(&buf + 1) + 40));
+  replyCopy[2](replyCopy, *(*(&buf + 1) + 40));
 
   _Block_object_dispose(&buf, 8);
   if (v28 == 1)
@@ -3364,16 +3364,16 @@ void __73__PLAssetsdDebugService_searchAttributesForAssetWithUUID_redacted_reply
   *(v10 + 40) = v9;
 }
 
-- (void)rebuildSearchIndexWithReply:(id)a3
+- (void)rebuildSearchIndexWithReply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v22) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v22) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: rebuildSearchIndexWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v22 + 1);
@@ -3382,23 +3382,23 @@ void __73__PLAssetsdDebugService_searchAttributesForAssetWithUUID_redacted_reply
     os_activity_scope_enter(v6, (&v23 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 isSearchIndexingEnabled];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  isSearchIndexingEnabled = [libraryServicesManager isSearchIndexingEnabled];
 
-  if (v9)
+  if (isSearchIndexingEnabled)
   {
-    v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v11 = [v10 databaseContext];
-    v12 = [v11 newShortLivedLibraryWithName:"-[PLAssetsdDebugService rebuildSearchIndexWithReply:]"];
+    libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager2 databaseContext];
+    v12 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService rebuildSearchIndexWithReply:]"];
 
-    v13 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v14 = [v13 searchIndexingEngine];
+    libraryServicesManager3 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    searchIndexingEngine = [libraryServicesManager3 searchIndexingEngine];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __53__PLAssetsdDebugService_rebuildSearchIndexWithReply___block_invoke;
     v20[3] = &unk_1E7576AA0;
-    v21 = v4;
-    [v14 resetSearchIndexWithReason:4 library:v12 dropCompletion:v20 completion:0];
+    v21 = replyCopy;
+    [searchIndexingEngine resetSearchIndexWithReason:4 library:v12 dropCompletion:v20 completion:0];
   }
 
   else
@@ -3411,9 +3411,9 @@ void __73__PLAssetsdDebugService_searchAttributesForAssetWithUUID_redacted_reply
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Search index disabled, unable to perform operation %s", buf, 0xCu);
     }
 
-    if (v4)
+    if (replyCopy)
     {
-      v4[2](v4);
+      replyCopy[2](replyCopy);
     }
   }
 
@@ -3437,30 +3437,30 @@ void __73__PLAssetsdDebugService_searchAttributesForAssetWithUUID_redacted_reply
   }
 }
 
-- (void)setSearchIndexPaused:(BOOL)a3 reason:(id)a4 reply:(id)a5
+- (void)setSearchIndexPaused:(BOOL)paused reason:(id)reason reply:(id)reply
 {
-  v6 = a3;
+  pausedCopy = paused;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  replyCopy = reply;
   v20 = 0u;
   *sel = 0u;
   v18 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v18) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v18) = enabled;
+  if (enabled)
   {
     *(&v18 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: setSearchIndexPaused:reason:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v18 + 1), (&v20 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 isSearchIndexingEnabled];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  isSearchIndexingEnabled = [libraryServicesManager isSearchIndexingEnabled];
 
-  if (v12)
+  if (isSearchIndexingEnabled)
   {
-    if (v6)
+    if (pausedCopy)
     {
       v13 = PLGatekeeperXPCGetLog();
       if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -3503,9 +3503,9 @@ void __73__PLAssetsdDebugService_searchAttributesForAssetWithUUID_redacted_reply
   _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, v14, buf, 0xCu);
 LABEL_12:
 
-  if (v9)
+  if (replyCopy)
   {
-    v9[2](v9);
+    replyCopy[2](replyCopy);
   }
 
   if (v19 == 1)
@@ -3527,16 +3527,16 @@ LABEL_12:
   }
 }
 
-- (void)closeSearchIndexWithReply:(id)a3
+- (void)closeSearchIndexWithReply:(id)reply
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v20 = 0u;
   *sel = 0u;
   v19 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v19) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v19) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: closeSearchIndexWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v19 + 1);
@@ -3545,10 +3545,10 @@ LABEL_12:
     os_activity_scope_enter(v6, (&v20 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 isSearchIndexingEnabled];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  isSearchIndexingEnabled = [libraryServicesManager isSearchIndexingEnabled];
 
-  if (v9)
+  if (isSearchIndexingEnabled)
   {
     v10 = +[PLConcurrencyLimiter sharedLimiter];
     v17[0] = MEMORY[0x1E69E9820];
@@ -3556,7 +3556,7 @@ LABEL_12:
     v17[2] = __51__PLAssetsdDebugService_closeSearchIndexWithReply___block_invoke;
     v17[3] = &unk_1E7577C08;
     v17[4] = self;
-    v18 = v4;
+    v18 = replyCopy;
     [v10 sync:v17 identifyingBlock:0 library:0];
   }
 
@@ -3570,10 +3570,10 @@ LABEL_12:
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Search index disabled, unable to perform operation %s", buf, 0xCu);
     }
 
-    if (v4)
+    if (replyCopy)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46309 userInfo:0];
-      (*(v4 + 2))(v4, 0, v12);
+      (*(replyCopy + 2))(replyCopy, 0, v12);
     }
   }
 
@@ -3608,16 +3608,16 @@ uint64_t __51__PLAssetsdDebugService_closeSearchIndexWithReply___block_invoke(ui
   return v4();
 }
 
-- (void)dropSearchIndexWithReply:(id)a3
+- (void)dropSearchIndexWithReply:(id)reply
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v22 = 0u;
   *sel = 0u;
   v21 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v21) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v21) = enabled;
+  if (enabled)
   {
     v6 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: dropSearchIndexWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v7 = *(&v21 + 1);
@@ -3626,20 +3626,20 @@ uint64_t __51__PLAssetsdDebugService_closeSearchIndexWithReply___block_invoke(ui
     os_activity_scope_enter(v6, (&v22 + 8));
   }
 
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 isSearchIndexingEnabled];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  isSearchIndexingEnabled = [libraryServicesManager isSearchIndexingEnabled];
 
-  if (v9)
+  if (isSearchIndexingEnabled)
   {
-    v10 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v11 = [v10 searchIndexingEngine];
+    libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    searchIndexingEngine = [libraryServicesManager2 searchIndexingEngine];
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[PLAssetsdDebugService dropSearchIndexWithReply:]"];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke;
     v19[3] = &unk_1E7571990;
-    v20 = v4;
-    [v11 dropSearchIndexWithSourceName:v12 completion:v19];
+    v20 = replyCopy;
+    [searchIndexingEngine dropSearchIndexWithSourceName:v12 completion:v19];
 
     v13 = v20;
 LABEL_9:
@@ -3655,10 +3655,10 @@ LABEL_9:
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Search index disabled, unable to perform operation %s", buf, 0xCu);
   }
 
-  if (v4)
+  if (replyCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46309 userInfo:0];
-    (*(v4 + 2))(v4, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
     goto LABEL_9;
   }
 
@@ -3693,17 +3693,17 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   (*(v2 + 16))(v2, v4, v5);
 }
 
-- (void)dumpMomentsMetadataToPath:(id)a3 reply:(id)a4
+- (void)dumpMomentsMetadataToPath:(id)path reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  replyCopy = reply;
   v17 = 0u;
   *sel = 0u;
   v16 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v16) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v16) = enabled;
+  if (enabled)
   {
     *(&v16 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: dumpMomentsMetadataToPath:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -3712,11 +3712,11 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
 
   if (MEMORY[0x19EAEE230]())
   {
-    v9 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v10 = [v9 momentGenerationDataManager];
-    v11 = [v10 generator];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+    generator = [momentGenerationDataManager generator];
 
-    v12 = [v11 allMomentsMetadataWriteToFile:v6];
+    v12 = [generator allMomentsMetadataWriteToFile:pathCopy];
   }
 
   else
@@ -3724,7 +3724,7 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v12 = 0;
   }
 
-  v7[2](v7, v12);
+  replyCopy[2](replyCopy, v12);
 
   if (v16 == 1)
   {
@@ -3745,17 +3745,17 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   }
 }
 
-- (void)dumpMetadataForMomentsToPath:(id)a3 reply:(id)a4
+- (void)dumpMetadataForMomentsToPath:(id)path reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  replyCopy = reply;
   v17 = 0u;
   *sel = 0u;
   v16 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v16) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v16) = enabled;
+  if (enabled)
   {
     *(&v16 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: dumpMetadataForMomentsToPath:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -3764,11 +3764,11 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
 
   if (MEMORY[0x19EAEE230]())
   {
-    v9 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v10 = [v9 momentGenerationDataManager];
-    v11 = [v10 generator];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+    generator = [momentGenerationDataManager generator];
 
-    v12 = [v11 allAssetMetadataWriteToFile:v6];
+    v12 = [generator allAssetMetadataWriteToFile:pathCopy];
   }
 
   else
@@ -3776,7 +3776,7 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v12 = 0;
   }
 
-  v7[2](v7, v12);
+  replyCopy[2](replyCopy, v12);
 
   if (v16 == 1)
   {
@@ -3797,17 +3797,17 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   }
 }
 
-- (void)rebuildHighlightsDeletingExistingHighlights:(BOOL)a3 reply:(id)a4
+- (void)rebuildHighlightsDeletingExistingHighlights:(BOOL)highlights reply:(id)reply
 {
-  v4 = a3;
+  highlightsCopy = highlights;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v25 = 0u;
   *sel = 0u;
   v24 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v24) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v24) = enabled;
+  if (enabled)
   {
     v8 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: rebuildHighlightsDeletingExistingHighlights:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = *(&v24 + 1);
@@ -3817,14 +3817,14 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 momentGenerationDataManager];
-  v13 = [v12 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  if (v13)
+  if (generator)
   {
     v29 = PLMomentGenerationShouldDeleteAllHighlightsKey;
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:highlightsCopy];
     v30 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
@@ -3832,8 +3832,8 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v22[1] = 3221225472;
     v22[2] = __75__PLAssetsdDebugService_rebuildHighlightsDeletingExistingHighlights_reply___block_invoke;
     v22[3] = &unk_1E7576AA0;
-    v23 = v6;
-    [v13 rebuildAllHighlightsWithOptions:v15 completionHandler:v22];
+    v23 = replyCopy;
+    [generator rebuildAllHighlightsWithOptions:v15 completionHandler:v22];
   }
 
   else
@@ -3844,7 +3844,7 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v15 = [v16 errorWithDomain:*MEMORY[0x1E69BFF48] code:41001 userInfo:v17];
 
-    (*(v6 + 2))(v6, v15);
+    (*(replyCopy + 2))(replyCopy, v15);
   }
 
   objc_autoreleasePoolPop(v10);
@@ -3868,17 +3868,17 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   }
 }
 
-- (void)rebuildMomentsDeletingExistingMoments:(BOOL)a3 reply:(id)a4
+- (void)rebuildMomentsDeletingExistingMoments:(BOOL)moments reply:(id)reply
 {
-  v4 = a3;
+  momentsCopy = moments;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v25 = 0u;
   *sel = 0u;
   v24 = 0u;
-  v7 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v24) = v7;
-  if (v7)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v24) = enabled;
+  if (enabled)
   {
     v8 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: rebuildMomentsDeletingExistingMoments:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = *(&v24 + 1);
@@ -3888,14 +3888,14 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 momentGenerationDataManager];
-  v13 = [v12 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  if (v13)
+  if (generator)
   {
     v29 = PLMomentGenerationShouldDeleteAllMomentsKey;
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:momentsCopy];
     v30 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
@@ -3903,8 +3903,8 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v22[1] = 3221225472;
     v22[2] = __69__PLAssetsdDebugService_rebuildMomentsDeletingExistingMoments_reply___block_invoke;
     v22[3] = &unk_1E7576AA0;
-    v23 = v6;
-    [v13 rebuildAllMomentsWithOptions:v15 completionHandler:v22];
+    v23 = replyCopy;
+    [generator rebuildAllMomentsWithOptions:v15 completionHandler:v22];
   }
 
   else
@@ -3915,7 +3915,7 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v15 = [v16 errorWithDomain:*MEMORY[0x1E69BFF48] code:41001 userInfo:v17];
 
-    (*(v6 + 2))(v6, v15);
+    (*(replyCopy + 2))(replyCopy, v15);
   }
 
   objc_autoreleasePoolPop(v10);
@@ -3939,28 +3939,28 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   }
 }
 
-- (void)momentGenerationStatusWithReply:(id)a3
+- (void)momentGenerationStatusWithReply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v15 = 0u;
   *sel = 0u;
   v13 = 0u;
-  v5 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v13) = v5;
-  if (v5)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v13) = enabled;
+  if (enabled)
   {
     *(&v13 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: momentGenerationStatusWithReply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v13 + 1), (&v15 + 8));
   }
 
-  v6 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v7 = [v6 momentGenerationDataManager];
-  v8 = [v7 generator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
+  generator = [momentGenerationDataManager generator];
 
-  v9 = [v8 momentGenerationStatus];
-  v4[2](v4, v9);
+  momentGenerationStatus = [generator momentGenerationStatus];
+  replyCopy[2](replyCopy, momentGenerationStatus);
 
   if (v14 == 1)
   {
@@ -3987,26 +3987,26 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   v15 = 0u;
   *sel = 0u;
   v13 = 0u;
-  v3 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v13) = v3;
-  if (v3)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v13) = enabled;
+  if (enabled)
   {
     *(&v13 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: recoverAssetsInInconsistentCloudState", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v13 + 1), (&v15 + 8));
   }
 
-  v4 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v5 = [v4 cloudPhotoLibraryManager];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v5)
+  if (cloudPhotoLibraryManager)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69BF360]);
     v7 = [PLManagedAssetRecoveryManager alloc];
-    v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v9 = [(PLManagedAssetRecoveryManager *)v7 initWithLibraryServicesManager:v8];
+    libraryServicesManager2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    v9 = [(PLManagedAssetRecoveryManager *)v7 initWithLibraryServicesManager:libraryServicesManager2];
 
-    [(PLManagedAssetRecoveryManager *)v9 startRecoveryUsingCloudPhotoLibraryManager:v5 transaction:v6 shouldIdentifyInconsistentAssets:0];
+    [(PLManagedAssetRecoveryManager *)v9 startRecoveryUsingCloudPhotoLibraryManager:cloudPhotoLibraryManager transaction:v6 shouldIdentifyInconsistentAssets:0];
   }
 
   if (v14 == 1)
@@ -4034,9 +4034,9 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   v11 = 0u;
   *sel = 0u;
   v10 = 0u;
-  v3 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v10) = v3;
-  if (v3)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v10) = enabled;
+  if (enabled)
   {
     *(&v10 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: identifyAssetsWithInconsistentCloudState", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
@@ -4044,8 +4044,8 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   }
 
   v4 = [PLManagedAssetRecoveryManager alloc];
-  v5 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v6 = [(PLManagedAssetRecoveryManager *)v4 initWithLibraryServicesManager:v5];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  v6 = [(PLManagedAssetRecoveryManager *)v4 initWithLibraryServicesManager:libraryServicesManager];
 
   [(PLManagedAssetRecoveryManager *)v6 identifyAssetsWithInconsistentCloudState];
   if (v10 == 1)
@@ -4067,17 +4067,17 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   }
 }
 
-- (void)asynchronousUnloadImageFilesForAssetWithObjectURI:(id)a3 minimumFormat:(unsigned __int16)a4 reply:(id)a5
+- (void)asynchronousUnloadImageFilesForAssetWithObjectURI:(id)i minimumFormat:(unsigned __int16)format reply:(id)reply
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  iCopy = i;
+  replyCopy = reply;
   v44 = 0u;
   *sel = 0u;
   v43 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v43) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v43) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: asynchronousUnloadImageFilesForAssetWithObjectURI:minimumFormat:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v43 + 1);
@@ -4098,14 +4098,14 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
   v52 = 0;
   if (MEMORY[0x19EAEE230]())
   {
-    v13 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-    v14 = [v13 databaseContext];
-    v15 = [v14 newShortLivedLibraryWithName:"-[PLAssetsdDebugService asynchronousUnloadImageFilesForAssetWithObjectURI:minimumFormat:reply:]"];
+    libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
+    v15 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdDebugService asynchronousUnloadImageFilesForAssetWithObjectURI:minimumFormat:reply:]"];
 
-    v16 = [v15 managedObjectContext];
-    v17 = [v16 persistentStoreCoordinator];
+    managedObjectContext = [v15 managedObjectContext];
+    persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
 
-    v18 = [v17 managedObjectIDForURIRepresentation:v8];
+    v18 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:iCopy];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __95__PLAssetsdDebugService_asynchronousUnloadImageFilesForAssetWithObjectURI_minimumFormat_reply___block_invoke;
@@ -4113,7 +4113,7 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v19 = v18;
     v34 = v19;
     v20 = v15;
-    v38 = a4;
+    formatCopy = format;
     v35 = v20;
     v36 = &v39;
     p_buf = &buf;
@@ -4121,7 +4121,7 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v29[1] = 3221225472;
     v29[2] = __95__PLAssetsdDebugService_asynchronousUnloadImageFilesForAssetWithObjectURI_minimumFormat_reply___block_invoke_8;
     v29[3] = &unk_1E7575F50;
-    v30 = v9;
+    v30 = replyCopy;
     v31 = &v39;
     v32 = &buf;
     [v20 performTransaction:v33 completionHandler:v29];
@@ -4137,7 +4137,7 @@ void __50__PLAssetsdDebugService_dropSearchIndexWithReply___block_invoke(uint64_
     v24 = *(*(&buf + 1) + 40);
     *(*(&buf + 1) + 40) = v23;
 
-    (*(v9 + 2))(v9, *(v40 + 24), *(*(&buf + 1) + 40));
+    (*(replyCopy + 2))(replyCopy, *(v40 + 24), *(*(&buf + 1) + 40));
   }
 
   _Block_object_dispose(&buf, 8);
@@ -4543,20 +4543,20 @@ void __95__PLAssetsdDebugService_asynchronousUnloadImageFilesForAssetWithObjectU
   [*(a1 + 32) setEffectiveThumbnailIndex:0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (PLAssetsdDebugService)initWithLibraryServicesManager:(id)a3 resourceDownloader:(id)a4 bundleController:(id)a5 connectionAuthorization:(id)a6
+- (PLAssetsdDebugService)initWithLibraryServicesManager:(id)manager resourceDownloader:(id)downloader bundleController:(id)controller connectionAuthorization:(id)authorization
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  downloaderCopy = downloader;
+  controllerCopy = controller;
+  authorizationCopy = authorization;
   v17.receiver = self;
   v17.super_class = PLAssetsdDebugService;
-  v14 = [(PLAbstractLibraryServicesManagerService *)&v17 initWithLibraryServicesManager:a3];
+  v14 = [(PLAbstractLibraryServicesManagerService *)&v17 initWithLibraryServicesManager:manager];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_resourceDownloader, a4);
-    objc_storeStrong(&v15->_bundleController, a5);
-    objc_storeStrong(&v15->_connectionAuthorization, a6);
+    objc_storeStrong(&v14->_resourceDownloader, downloader);
+    objc_storeStrong(&v15->_bundleController, controller);
+    objc_storeStrong(&v15->_connectionAuthorization, authorization);
   }
 
   return v15;
@@ -4564,10 +4564,10 @@ void __95__PLAssetsdDebugService_asynchronousUnloadImageFilesForAssetWithObjectU
 
 - (id)_persistentStoreCoordinator
 {
-  v2 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v3 = [v2 persistentStoreCoordinator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  persistentStoreCoordinator = [libraryServicesManager persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 @end

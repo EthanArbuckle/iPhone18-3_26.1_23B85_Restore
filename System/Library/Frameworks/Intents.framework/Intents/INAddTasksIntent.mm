@@ -14,37 +14,37 @@
 - (id)_redactedDictionaryRepresentation;
 - (id)_typedBackingStore;
 - (int64_t)taskReference;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setContactEventTrigger:(id)a3;
-- (void)setContactEventTriggers:(id)a3;
-- (void)setIntent:(id)a3;
-- (void)setPriority:(int64_t)a3;
-- (void)setSpatialEventTrigger:(id)a3;
-- (void)setTargetTaskList:(id)a3;
-- (void)setTargetTaskListMembers:(id)a3;
-- (void)setTaskReference:(int64_t)a3;
-- (void)setTaskTitles:(id)a3;
-- (void)setTemporalEventTrigger:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setContactEventTrigger:(id)trigger;
+- (void)setContactEventTriggers:(id)triggers;
+- (void)setIntent:(id)intent;
+- (void)setPriority:(int64_t)priority;
+- (void)setSpatialEventTrigger:(id)trigger;
+- (void)setTargetTaskList:(id)list;
+- (void)setTargetTaskListMembers:(id)members;
+- (void)setTaskReference:(int64_t)reference;
+- (void)setTaskTitles:(id)titles;
+- (void)setTemporalEventTrigger:(id)trigger;
 @end
 
 @implementation INAddTasksIntent
 
-- (void)setContactEventTriggers:(id)a3
+- (void)setContactEventTriggers:(id)triggers
 {
-  v4 = [a3 firstObject];
-  [(INAddTasksIntent *)self setContactEventTrigger:v4];
+  firstObject = [triggers firstObject];
+  [(INAddTasksIntent *)self setContactEventTrigger:firstObject];
 }
 
 - (NSArray)contactEventTriggers
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(INAddTasksIntent *)self contactEventTrigger];
+  contactEventTrigger = [(INAddTasksIntent *)self contactEventTrigger];
 
-  if (v3)
+  if (contactEventTrigger)
   {
-    v4 = [(INAddTasksIntent *)self contactEventTrigger];
-    v8[0] = v4;
+    contactEventTrigger2 = [(INAddTasksIntent *)self contactEventTrigger];
+    v8[0] = contactEventTrigger2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
@@ -58,9 +58,9 @@
   return v5;
 }
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INAddTasksIntent *)self _typedBackingStore:a3];
+  v6 = [(INAddTasksIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -69,50 +69,50 @@
 {
   v18[5] = *MEMORY[0x1E69E9840];
   v17[0] = @"targetTaskList";
-  v3 = [(INAddTasksIntent *)self targetTaskList];
-  v4 = v3;
-  if (!v3)
+  targetTaskList = [(INAddTasksIntent *)self targetTaskList];
+  null = targetTaskList;
+  if (!targetTaskList)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v4;
+  v18[0] = null;
   v17[1] = @"taskTitles";
-  v5 = [(INAddTasksIntent *)self taskTitles];
-  v6 = v5;
-  if (!v5)
+  taskTitles = [(INAddTasksIntent *)self taskTitles];
+  null2 = taskTitles;
+  if (!taskTitles)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v6;
+  v18[1] = null2;
   v17[2] = @"spatialEventTrigger";
-  v7 = [(INAddTasksIntent *)self spatialEventTrigger];
-  v8 = v7;
-  if (!v7)
+  spatialEventTrigger = [(INAddTasksIntent *)self spatialEventTrigger];
+  null3 = spatialEventTrigger;
+  if (!spatialEventTrigger)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v8;
+  v18[2] = null3;
   v17[3] = @"temporalEventTrigger";
-  v9 = [(INAddTasksIntent *)self temporalEventTrigger];
-  v10 = v9;
-  if (!v9)
+  temporalEventTrigger = [(INAddTasksIntent *)self temporalEventTrigger];
+  null4 = temporalEventTrigger;
+  if (!temporalEventTrigger)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v10;
+  v18[3] = null4;
   v17[4] = @"priority";
-  v11 = [(INAddTasksIntent *)self priority];
+  priority = [(INAddTasksIntent *)self priority];
   v12 = @"unknown";
-  if (v11 == INTaskPriorityFlagged)
+  if (priority == INTaskPriorityFlagged)
   {
     v12 = @"flagged";
   }
 
-  if (v11 == INTaskPriorityNotFlagged)
+  if (priority == INTaskPriorityNotFlagged)
   {
     v12 = @"notFlagged";
   }
@@ -121,19 +121,19 @@
   v18[4] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
 
-  if (!v9)
+  if (!temporalEventTrigger)
   {
   }
 
-  if (!v7)
+  if (!spatialEventTrigger)
   {
   }
 
-  if (!v5)
+  if (!taskTitles)
   {
   }
 
-  if (!v3)
+  if (!targetTaskList)
   {
   }
 
@@ -144,78 +144,78 @@
 
 - (id)_redactedDictionaryRepresentation
 {
-  v2 = [(INAddTasksIntent *)self _dictionaryRepresentation];
-  v3 = [v2 mutableCopy];
+  _dictionaryRepresentation = [(INAddTasksIntent *)self _dictionaryRepresentation];
+  v3 = [_dictionaryRepresentation mutableCopy];
 
   [v3 setObject:@"<redacted>" forKey:@"taskTitles"];
 
   return v3;
 }
 
-- (void)setIntent:(id)a3
+- (void)setIntent:(id)intent
 {
-  v4 = a3;
-  v6 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToIntent(v4);
+  intentCopy = intent;
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToIntent(intentCopy);
 
-  [v6 setIntent:v5];
+  [_typedBackingStore setIntent:v5];
 }
 
 - (INIntent)intent
 {
-  v2 = [(INAddTasksIntent *)self _typedBackingStore];
-  v3 = [v2 intent];
-  v4 = INIntentSlotValueTransformFromIntent(v3);
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  intent = [_typedBackingStore intent];
+  v4 = INIntentSlotValueTransformFromIntent(intent);
 
   return v4;
 }
 
-- (void)setContactEventTrigger:(id)a3
+- (void)setContactEventTrigger:(id)trigger
 {
-  v4 = a3;
-  v6 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContactEventTrigger(v4);
+  triggerCopy = trigger;
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContactEventTrigger(triggerCopy);
 
-  [v6 setContactEventTrigger:v5];
+  [_typedBackingStore setContactEventTrigger:v5];
 }
 
 - (INContactEventTrigger)contactEventTrigger
 {
-  v2 = [(INAddTasksIntent *)self _typedBackingStore];
-  v3 = [v2 contactEventTrigger];
-  v4 = INIntentSlotValueTransformFromContactEventTrigger(v3);
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  contactEventTrigger = [_typedBackingStore contactEventTrigger];
+  v4 = INIntentSlotValueTransformFromContactEventTrigger(contactEventTrigger);
 
   return v4;
 }
 
-- (void)setPriority:(int64_t)a3
+- (void)setPriority:(int64_t)priority
 {
-  v4 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 > 2)
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (priority > 2)
   {
-    [v4 setHasPriority:0];
+    [_typedBackingStore setHasPriority:0];
   }
 
   else
   {
-    [v4 setPriority:a3];
+    [_typedBackingStore setPriority:priority];
   }
 }
 
 - (INTaskPriority)priority
 {
-  v3 = [(INAddTasksIntent *)self _typedBackingStore];
-  v4 = [v3 hasPriority];
-  v5 = [(INAddTasksIntent *)self _typedBackingStore];
-  v6 = [v5 priority];
-  v7 = v6 == 1;
-  if (v6 == 2)
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  hasPriority = [_typedBackingStore hasPriority];
+  _typedBackingStore2 = [(INAddTasksIntent *)self _typedBackingStore];
+  priority = [_typedBackingStore2 priority];
+  v7 = priority == 1;
+  if (priority == 2)
   {
     v7 = 2;
   }
 
-  if (v4)
+  if (hasPriority)
   {
     v8 = v7;
   }
@@ -228,117 +228,117 @@
   return v8;
 }
 
-- (void)setTemporalEventTrigger:(id)a3
+- (void)setTemporalEventTrigger:(id)trigger
 {
-  v4 = a3;
-  v6 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToTemporalEventTrigger(v4);
+  triggerCopy = trigger;
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToTemporalEventTrigger(triggerCopy);
 
-  [v6 setTemporalEventTrigger:v5];
+  [_typedBackingStore setTemporalEventTrigger:v5];
 }
 
 - (INTemporalEventTrigger)temporalEventTrigger
 {
-  v2 = [(INAddTasksIntent *)self _typedBackingStore];
-  v3 = [v2 temporalEventTrigger];
-  v4 = INIntentSlotValueTransformFromTemporalEventTrigger(v3);
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  temporalEventTrigger = [_typedBackingStore temporalEventTrigger];
+  v4 = INIntentSlotValueTransformFromTemporalEventTrigger(temporalEventTrigger);
 
   return v4;
 }
 
-- (void)setSpatialEventTrigger:(id)a3
+- (void)setSpatialEventTrigger:(id)trigger
 {
-  v4 = a3;
-  v6 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToSpatialEventTrigger(v4);
+  triggerCopy = trigger;
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToSpatialEventTrigger(triggerCopy);
 
-  [v6 setSpatialEventTrigger:v5];
+  [_typedBackingStore setSpatialEventTrigger:v5];
 }
 
 - (INSpatialEventTrigger)spatialEventTrigger
 {
-  v2 = [(INAddTasksIntent *)self _typedBackingStore];
-  v3 = [v2 spatialEventTrigger];
-  v4 = INIntentSlotValueTransformFromSpatialEventTrigger(v3);
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  spatialEventTrigger = [_typedBackingStore spatialEventTrigger];
+  v4 = INIntentSlotValueTransformFromSpatialEventTrigger(spatialEventTrigger);
 
   return v4;
 }
 
-- (void)setTaskTitles:(id)a3
+- (void)setTaskTitles:(id)titles
 {
-  v4 = a3;
-  v6 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataStrings(v4);
+  titlesCopy = titles;
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataStrings(titlesCopy);
 
-  [v6 setTaskTitles:v5];
+  [_typedBackingStore setTaskTitles:v5];
 }
 
 - (NSArray)taskTitles
 {
-  v2 = [(INAddTasksIntent *)self _typedBackingStore];
-  v3 = [v2 taskTitles];
-  v4 = INIntentSlotValueTransformFromDataStrings(v3);
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  taskTitles = [_typedBackingStore taskTitles];
+  v4 = INIntentSlotValueTransformFromDataStrings(taskTitles);
 
   return v4;
 }
 
-- (void)setTargetTaskList:(id)a3
+- (void)setTargetTaskList:(id)list
 {
-  v4 = a3;
-  v6 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToTaskList(v4);
+  listCopy = list;
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToTaskList(listCopy);
 
-  [v6 setTargetTaskList:v5];
+  [_typedBackingStore setTargetTaskList:v5];
 }
 
 - (INTaskList)targetTaskList
 {
-  v2 = [(INAddTasksIntent *)self _typedBackingStore];
-  v3 = [v2 targetTaskList];
-  v4 = INIntentSlotValueTransformFromTaskList(v3);
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  targetTaskList = [_typedBackingStore targetTaskList];
+  v4 = INIntentSlotValueTransformFromTaskList(targetTaskList);
 
   return v4;
 }
 
-- (void)setTargetTaskListMembers:(id)a3
+- (void)setTargetTaskListMembers:(id)members
 {
-  v4 = a3;
-  v6 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContacts(v4);
+  membersCopy = members;
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContacts(membersCopy);
 
-  [v6 setTargetTaskListMembers:v5];
+  [_typedBackingStore setTargetTaskListMembers:v5];
 }
 
 - (NSArray)targetTaskListMembers
 {
-  v2 = [(INAddTasksIntent *)self _typedBackingStore];
-  v3 = [v2 targetTaskListMembers];
-  v4 = INIntentSlotValueTransformFromContacts(v3);
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  targetTaskListMembers = [_typedBackingStore targetTaskListMembers];
+  v4 = INIntentSlotValueTransformFromContacts(targetTaskListMembers);
 
   return v4;
 }
 
-- (void)setTaskReference:(int64_t)a3
+- (void)setTaskReference:(int64_t)reference
 {
-  v4 = [(INAddTasksIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 == 1)
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (reference == 1)
   {
-    [v4 setTaskReference:0];
+    [_typedBackingStore setTaskReference:0];
   }
 
   else
   {
-    [v4 setHasTaskReference:0];
+    [_typedBackingStore setHasTaskReference:0];
   }
 }
 
 - (int64_t)taskReference
 {
-  v3 = [(INAddTasksIntent *)self _typedBackingStore];
-  LODWORD(v4) = [v3 hasTaskReference];
-  v5 = [(INAddTasksIntent *)self _typedBackingStore];
-  if ([v5 taskReference])
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  LODWORD(v4) = [_typedBackingStore hasTaskReference];
+  _typedBackingStore2 = [(INAddTasksIntent *)self _typedBackingStore];
+  if ([_typedBackingStore2 taskReference])
   {
     v4 = 0;
   }
@@ -373,28 +373,28 @@
   return v17;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INAddTasksIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INAddTasksIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INAddTasksIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

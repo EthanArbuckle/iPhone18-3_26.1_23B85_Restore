@@ -31,7 +31,7 @@
     v22 = v21 - v13;
     [(CIVector *)self->inputCenter Y];
     v24 = v23 - v13;
-    v25 = [(CITorusLensDistortion *)self _CITorusRefraction];
+    _CITorusRefraction = [(CITorusLensDistortion *)self _CITorusRefraction];
     [(CIImage *)self->inputImage extent];
     v43.origin.x = v22;
     v43.origin.y = v24;
@@ -61,7 +61,7 @@
     inputWidth = self->inputWidth;
     v39[5] = v34;
     v39[6] = inputWidth;
-    return [v25 applyWithExtent:v38 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 7), x, y, width, height}];
+    return [_CITorusRefraction applyWithExtent:v38 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 7), x, y, width, height}];
   }
 
   else

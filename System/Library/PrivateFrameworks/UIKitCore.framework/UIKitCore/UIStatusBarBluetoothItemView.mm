@@ -1,24 +1,24 @@
 @interface UIStatusBarBluetoothItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
-- (double)alphaForConnected:(BOOL)a3;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
+- (double)alphaForConnected:(BOOL)connected;
 - (id)accessibilityHUDRepresentation;
 - (void)performPendedActions;
-- (void)setVisible:(BOOL)a3;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation UIStatusBarBluetoothItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v4 = a4;
-  v6 = *([a3 rawData] + 2529) & 1;
+  actionsCopy = actions;
+  v6 = *([data rawData] + 2529) & 1;
   if (v6 != self->_connected)
   {
     self->_connected = v6;
     [(UIStatusBarBluetoothItemView *)self setVisible:[(UIStatusBarItemView *)self isVisible]];
   }
 
-  if ((v4 & 2) != 0)
+  if ((actionsCopy & 2) != 0)
   {
     self->_shouldAnimateConnection = 1;
   }
@@ -67,14 +67,14 @@ uint64_t __52__UIStatusBarBluetoothItemView_performPendedActions__block_invoke_2
   return [v1 setAlpha:?];
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v6.receiver = self;
   v6.super_class = UIStatusBarBluetoothItemView;
   [(UIStatusBarItemView *)&v6 setVisible:?];
   v5 = 0.0;
-  if (v3)
+  if (visibleCopy)
   {
     [(UIStatusBarBluetoothItemView *)self alphaForConnected:self->_connected, 0.0];
   }
@@ -82,10 +82,10 @@ uint64_t __52__UIStatusBarBluetoothItemView_performPendedActions__block_invoke_2
   [(UIView *)self setAlpha:v5];
 }
 
-- (double)alphaForConnected:(BOOL)a3
+- (double)alphaForConnected:(BOOL)connected
 {
   result = 0.4;
-  if (a3)
+  if (connected)
   {
     return 1.0;
   }
@@ -96,8 +96,8 @@ uint64_t __52__UIStatusBarBluetoothItemView_performPendedActions__block_invoke_2
 - (id)accessibilityHUDRepresentation
 {
   v3 = [UIAccessibilityHUDItem alloc];
-  v4 = [(UIStatusBarItemView *)self foregroundStyle];
-  v5 = [v4 accessibilityHUDImageNamed:@"Bluetooth"];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v5 = [foregroundStyle accessibilityHUDImageNamed:@"Bluetooth"];
   v6 = [(UIAccessibilityHUDItem *)v3 initWithTitle:0 image:v5 imageInsets:1 scaleImage:0.0, 0.0, 0.0, 0.0];
 
   [(UIAccessibilityHUDItem *)v6 setDisabledAppearance:!self->_connected];

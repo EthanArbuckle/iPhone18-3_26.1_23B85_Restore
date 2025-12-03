@@ -1,6 +1,6 @@
 @interface NTKUpNextStocksSampleDataSource
 - (id)supportedSections;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 @end
 
 @implementation NTKUpNextStocksSampleDataSource
@@ -14,19 +14,19 @@
   return v2;
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v24 = a4;
+  handlerCopy = handler;
   v4 = objc_opt_new();
   [v4 setNumberStyle:3];
   [v4 setMaximumFractionDigits:2];
   [v4 setMaximumIntegerDigits:1];
   [v4 setPercentSymbol:&stru_284110E98];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v4 plusSign];
+  plusSign = [v4 plusSign];
   v7 = [v4 stringFromNumber:&unk_2841884D8];
-  v8 = [v5 localizedStringWithFormat:@"%@%@", v6, v7];
+  v8 = [v5 localizedStringWithFormat:@"%@%@", plusSign, v7];
 
   [v4 setNumberStyle:2];
   [v4 setMaximumIntegerDigits:4];
@@ -60,7 +60,7 @@
 
   v25 = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-  v24[2](v24, v22);
+  handlerCopy[2](handlerCopy, v22);
 }
 
 @end

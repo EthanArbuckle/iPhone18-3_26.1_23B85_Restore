@@ -3,7 +3,7 @@
 - (NSNumber)announcementDestinations;
 - (NSNumber)announcementId;
 - (NSNumber)announcementType;
-- (id)contextValueForKey:(id)a3;
+- (id)contextValueForKey:(id)key;
 - (int64_t)type;
 @end
 
@@ -11,19 +11,19 @@
 
 - (BOOL)shouldShowIfAppInForeground
 {
-  v3 = [(UNNotificationRequest *)self type];
+  type = [(UNNotificationRequest *)self type];
   result = 0;
-  if (v3 != 1)
+  if (type != 1)
   {
-    if (v3 != 3)
+    if (type != 3)
     {
       return 1;
     }
 
-    v4 = [(UNNotificationRequest *)self announcementDestinations];
-    v5 = [v4 integerValue];
+    announcementDestinations = [(UNNotificationRequest *)self announcementDestinations];
+    integerValue = [announcementDestinations integerValue];
 
-    if ((v5 & 2) == 0)
+    if ((integerValue & 2) == 0)
     {
       return 1;
     }
@@ -91,36 +91,36 @@
 
 - (int64_t)type
 {
-  v2 = [(UNNotificationRequest *)self content];
-  v3 = [v2 userInfo];
+  content = [(UNNotificationRequest *)self content];
+  userInfo = [content userInfo];
 
-  if (v3)
+  if (userInfo)
   {
-    v4 = [v3 objectForKeyedSubscript:@"MapsNotificationType"];
-    v5 = [v4 unsignedIntValue];
+    v4 = [userInfo objectForKeyedSubscript:@"MapsNotificationType"];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v5;
+  return unsignedIntValue;
 }
 
-- (id)contextValueForKey:(id)a3
+- (id)contextValueForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(UNNotificationRequest *)self content];
-    v6 = [v5 userInfo];
+    content = [(UNNotificationRequest *)self content];
+    userInfo = [content userInfo];
 
-    if (v6)
+    if (userInfo)
     {
-      v7 = [(UNNotificationRequest *)self content];
-      v8 = [v7 userInfo];
-      v9 = [v8 objectForKeyedSubscript:v4];
+      content2 = [(UNNotificationRequest *)self content];
+      userInfo2 = [content2 userInfo];
+      v9 = [userInfo2 objectForKeyedSubscript:keyCopy];
 
       goto LABEL_10;
     }
@@ -129,7 +129,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = keyCopy;
       v11 = "Request userInfo empty - no value for key %@";
       v12 = v10;
       v13 = OS_LOG_TYPE_DEBUG;

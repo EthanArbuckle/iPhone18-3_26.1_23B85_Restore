@@ -1,23 +1,23 @@
 @interface CRKWiProxTrackerScanner
-- (CRKWiProxTrackerScanner)initWithDelegate:(id)a3;
+- (CRKWiProxTrackerScanner)initWithDelegate:(id)delegate;
 - (CRKWiProxTrackerScannerDelegate)delegate;
 - (int64_t)deviceScannerState;
 - (int64_t)zoneTrackerState;
 - (void)dealloc;
-- (void)deviceScannerDidUpdateState:(id)a3;
+- (void)deviceScannerDidUpdateState:(id)state;
 - (void)invalidate;
-- (void)registerForDevicesMatching:(id)a3 options:(id)a4;
-- (void)registerForZoneChangesMatching:(id)a3;
-- (void)scanner:(id)a3 didFailToRegisterDevices:(id)a4 withError:(id)a5;
-- (void)scanner:(id)a3 foundDevice:(id)a4 withData:(id)a5;
-- (void)scanner:(id)a3 foundRequestedDevices:(id)a4;
+- (void)registerForDevicesMatching:(id)matching options:(id)options;
+- (void)registerForZoneChangesMatching:(id)matching;
+- (void)scanner:(id)scanner didFailToRegisterDevices:(id)devices withError:(id)error;
+- (void)scanner:(id)scanner foundDevice:(id)device withData:(id)data;
+- (void)scanner:(id)scanner foundRequestedDevices:(id)devices;
 - (void)unregisterAllDeviceChanges;
 - (void)unregisterAllZoneChanges;
-- (void)unregisterForZoneChanges:(id)a3;
-- (void)zoneTracker:(id)a3 didFailToRegisterZones:(id)a4 withError:(id)a5;
-- (void)zoneTracker:(id)a3 enteredZone:(id)a4;
-- (void)zoneTracker:(id)a3 exitedZone:(id)a4;
-- (void)zoneTrackerDidUpdateState:(id)a3;
+- (void)unregisterForZoneChanges:(id)changes;
+- (void)zoneTracker:(id)tracker didFailToRegisterZones:(id)zones withError:(id)error;
+- (void)zoneTracker:(id)tracker enteredZone:(id)zone;
+- (void)zoneTracker:(id)tracker exitedZone:(id)zone;
+- (void)zoneTrackerDidUpdateState:(id)state;
 @end
 
 @implementation CRKWiProxTrackerScanner
@@ -30,9 +30,9 @@
   [(CRKWiProxTrackerScanner *)&v3 dealloc];
 }
 
-- (CRKWiProxTrackerScanner)initWithDelegate:(id)a3
+- (CRKWiProxTrackerScanner)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = CRKWiProxTrackerScanner;
   v5 = [(CRKWiProxTrackerScanner *)&v13 init];
@@ -48,7 +48,7 @@
     deviceScanner = v5->_deviceScanner;
     v5->_deviceScanner = v10;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
@@ -56,25 +56,25 @@
 
 - (void)invalidate
 {
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   OUTLINED_FUNCTION_1_3();
   OUTLINED_FUNCTION_0_6(&dword_243550000, v2, v3, "entered %{public}@", v4, v5, v6, v7, v8);
 }
 
 - (int64_t)zoneTrackerState
 {
-  v2 = [(CRKWiProxTrackerScanner *)self zoneTracker];
-  v3 = [v2 state];
+  zoneTracker = [(CRKWiProxTrackerScanner *)self zoneTracker];
+  state = [zoneTracker state];
 
-  return v3;
+  return state;
 }
 
 - (int64_t)deviceScannerState
 {
-  v2 = [(CRKWiProxTrackerScanner *)self deviceScanner];
-  v3 = [v2 state];
+  deviceScanner = [(CRKWiProxTrackerScanner *)self deviceScanner];
+  state = [deviceScanner state];
 
-  return v3;
+  return state;
 }
 
 - (void)unregisterAllZoneChanges
@@ -85,13 +85,13 @@
     [(CRKWiProxTrackerScanner *)a2 invalidate];
   }
 
-  v5 = [(CRKWiProxTrackerScanner *)self zoneTracker];
-  [v5 unregisterAllZoneChanges];
+  zoneTracker = [(CRKWiProxTrackerScanner *)self zoneTracker];
+  [zoneTracker unregisterAllZoneChanges];
 }
 
-- (void)unregisterForZoneChanges:(id)a3
+- (void)unregisterForZoneChanges:(id)changes
 {
-  v5 = a3;
+  changesCopy = changes;
   v6 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -104,13 +104,13 @@
     [CRKWiProxTrackerScanner unregisterForZoneChanges:];
   }
 
-  v8 = [(CRKWiProxTrackerScanner *)self zoneTracker];
-  [v8 unregisterForZoneChanges:v5];
+  zoneTracker = [(CRKWiProxTrackerScanner *)self zoneTracker];
+  [zoneTracker unregisterForZoneChanges:changesCopy];
 }
 
-- (void)registerForZoneChangesMatching:(id)a3
+- (void)registerForZoneChangesMatching:(id)matching
 {
-  v5 = a3;
+  matchingCopy = matching;
   v6 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -123,8 +123,8 @@
     [CRKWiProxTrackerScanner unregisterForZoneChanges:];
   }
 
-  v8 = [(CRKWiProxTrackerScanner *)self zoneTracker];
-  [v8 registerForZoneChangesMatching:v5];
+  zoneTracker = [(CRKWiProxTrackerScanner *)self zoneTracker];
+  [zoneTracker registerForZoneChangesMatching:matchingCopy];
 }
 
 - (void)unregisterAllDeviceChanges
@@ -135,14 +135,14 @@
     [(CRKWiProxTrackerScanner *)a2 invalidate];
   }
 
-  v5 = [(CRKWiProxTrackerScanner *)self deviceScanner];
-  [v5 unregisterAllDeviceChanges];
+  deviceScanner = [(CRKWiProxTrackerScanner *)self deviceScanner];
+  [deviceScanner unregisterAllDeviceChanges];
 }
 
-- (void)registerForDevicesMatching:(id)a3 options:(id)a4
+- (void)registerForDevicesMatching:(id)matching options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  matchingCopy = matching;
+  optionsCopy = options;
   v9 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -161,13 +161,13 @@
     [CRKWiProxTrackerScanner registerForDevicesMatching:options:];
   }
 
-  v12 = [(CRKWiProxTrackerScanner *)self deviceScanner];
-  [v12 registerForDevicesMatching:v7 options:v8];
+  deviceScanner = [(CRKWiProxTrackerScanner *)self deviceScanner];
+  [deviceScanner registerForDevicesMatching:matchingCopy options:optionsCopy];
 }
 
-- (void)zoneTrackerDidUpdateState:(id)a3
+- (void)zoneTrackerDidUpdateState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v6 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -177,17 +177,17 @@
   v7 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [CRKWiProxTrackerScanner zoneTrackerDidUpdateState:v5];
+    [CRKWiProxTrackerScanner zoneTrackerDidUpdateState:stateCopy];
   }
 
-  v8 = [(CRKWiProxTrackerScanner *)self delegate];
-  [v8 trackerScanner:self didUpdateZoneTrackerState:v5];
+  delegate = [(CRKWiProxTrackerScanner *)self delegate];
+  [delegate trackerScanner:self didUpdateZoneTrackerState:stateCopy];
 }
 
-- (void)zoneTracker:(id)a3 enteredZone:(id)a4
+- (void)zoneTracker:(id)tracker enteredZone:(id)zone
 {
-  v7 = a4;
-  v8 = a3;
+  zoneCopy = zone;
+  trackerCopy = tracker;
   v9 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -200,14 +200,14 @@
     [CRKWiProxTrackerScanner zoneTracker:enteredZone:];
   }
 
-  v11 = [(CRKWiProxTrackerScanner *)self delegate];
-  [v11 trackerScanner:self zoneTracker:v8 enteredZone:v7];
+  delegate = [(CRKWiProxTrackerScanner *)self delegate];
+  [delegate trackerScanner:self zoneTracker:trackerCopy enteredZone:zoneCopy];
 }
 
-- (void)zoneTracker:(id)a3 exitedZone:(id)a4
+- (void)zoneTracker:(id)tracker exitedZone:(id)zone
 {
-  v7 = a4;
-  v8 = a3;
+  zoneCopy = zone;
+  trackerCopy = tracker;
   v9 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -220,28 +220,28 @@
     [CRKWiProxTrackerScanner zoneTracker:enteredZone:];
   }
 
-  v11 = [(CRKWiProxTrackerScanner *)self delegate];
-  [v11 trackerScanner:self zoneTracker:v8 exitedZone:v7];
+  delegate = [(CRKWiProxTrackerScanner *)self delegate];
+  [delegate trackerScanner:self zoneTracker:trackerCopy exitedZone:zoneCopy];
 }
 
-- (void)zoneTracker:(id)a3 didFailToRegisterZones:(id)a4 withError:(id)a5
+- (void)zoneTracker:(id)tracker didFailToRegisterZones:(id)zones withError:(id)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  errorCopy = error;
+  zonesCopy = zones;
+  trackerCopy = tracker;
   v12 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [(CRKWiProxTrackerScanner *)a2 invalidate];
   }
 
-  v13 = [(CRKWiProxTrackerScanner *)self delegate];
-  [v13 trackerScanner:self zoneTracker:v11 didFailToRegisterZones:v10 withError:v9];
+  delegate = [(CRKWiProxTrackerScanner *)self delegate];
+  [delegate trackerScanner:self zoneTracker:trackerCopy didFailToRegisterZones:zonesCopy withError:errorCopy];
 }
 
-- (void)deviceScannerDidUpdateState:(id)a3
+- (void)deviceScannerDidUpdateState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v6 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -251,17 +251,17 @@
   v7 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [CRKWiProxTrackerScanner zoneTrackerDidUpdateState:v5];
+    [CRKWiProxTrackerScanner zoneTrackerDidUpdateState:stateCopy];
   }
 
-  v8 = [(CRKWiProxTrackerScanner *)self delegate];
-  [v8 trackerScanner:self didUpdateDeviceScannerState:v5];
+  delegate = [(CRKWiProxTrackerScanner *)self delegate];
+  [delegate trackerScanner:self didUpdateDeviceScannerState:stateCopy];
 }
 
-- (void)scanner:(id)a3 foundRequestedDevices:(id)a4
+- (void)scanner:(id)scanner foundRequestedDevices:(id)devices
 {
-  v7 = a4;
-  v8 = a3;
+  devicesCopy = devices;
+  scannerCopy = scanner;
   v9 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -274,15 +274,15 @@
     [CRKWiProxTrackerScanner registerForDevicesMatching:options:];
   }
 
-  v11 = [(CRKWiProxTrackerScanner *)self delegate];
-  [v11 trackerScanner:self scanner:v8 foundRequestedDevices:v7];
+  delegate = [(CRKWiProxTrackerScanner *)self delegate];
+  [delegate trackerScanner:self scanner:scannerCopy foundRequestedDevices:devicesCopy];
 }
 
-- (void)scanner:(id)a3 foundDevice:(id)a4 withData:(id)a5
+- (void)scanner:(id)scanner foundDevice:(id)device withData:(id)data
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  deviceCopy = device;
+  dataCopy = data;
+  scannerCopy = scanner;
   v12 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -295,23 +295,23 @@
     [CRKWiProxTrackerScanner scanner:foundDevice:withData:];
   }
 
-  v14 = [(CRKWiProxTrackerScanner *)self delegate];
-  [v14 trackerScanner:self scanner:v11 foundDevice:v9 withData:v10];
+  delegate = [(CRKWiProxTrackerScanner *)self delegate];
+  [delegate trackerScanner:self scanner:scannerCopy foundDevice:deviceCopy withData:dataCopy];
 }
 
-- (void)scanner:(id)a3 didFailToRegisterDevices:(id)a4 withError:(id)a5
+- (void)scanner:(id)scanner didFailToRegisterDevices:(id)devices withError:(id)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  errorCopy = error;
+  devicesCopy = devices;
+  scannerCopy = scanner;
   v12 = _CRKLogBluetooth_0();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [(CRKWiProxTrackerScanner *)a2 invalidate];
   }
 
-  v13 = [(CRKWiProxTrackerScanner *)self delegate];
-  [v13 trackerScanner:self scanner:v11 didFailToRegisterDevices:v10 withError:v9];
+  delegate = [(CRKWiProxTrackerScanner *)self delegate];
+  [delegate trackerScanner:self scanner:scannerCopy didFailToRegisterDevices:devicesCopy withError:errorCopy];
 }
 
 - (CRKWiProxTrackerScannerDelegate)delegate

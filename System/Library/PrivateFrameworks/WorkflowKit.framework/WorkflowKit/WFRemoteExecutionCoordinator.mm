@@ -1,48 +1,48 @@
 @interface WFRemoteExecutionCoordinator
 + (id)sharedCoordinator;
 - (BOOL)hasPairedDevice;
-- (BOOL)messageCameFromPairedDevice:(id)a3;
-- (BOOL)sendStopRequest:(id)a3 error:(id *)a4;
-- (BOOL)shouldDropMessageDueToStaleness:(id)a3;
+- (BOOL)messageCameFromPairedDevice:(id)device;
+- (BOOL)sendStopRequest:(id)request error:(id *)error;
+- (BOOL)shouldDropMessageDueToStaleness:(id)staleness;
 - (IDSService)service;
 - (NSString)pairedDeviceModelIdentifier;
 - (id)defaultIDSOptions;
-- (id)initAndAllowRunRequests:(BOOL)a3;
+- (id)initAndAllowRunRequests:(BOOL)requests;
 - (id)pairedDevice;
-- (id)sessionFromRequestIdentifier:(id)a3;
-- (id)sessionsOfClass:(Class)a3;
+- (id)sessionFromRequestIdentifier:(id)identifier;
+- (id)sessionsOfClass:(Class)class;
 - (id)unknownRequestError;
-- (id)unknownRequestMessageWithIdentifier:(id)a3;
+- (id)unknownRequestMessageWithIdentifier:(id)identifier;
 - (void)cancelAllSessions;
 - (void)cancelPendingFileTransfers;
-- (void)cancelRequest:(id)a3;
-- (void)cancelSessions:(id)a3;
-- (void)finishSessionWithRequest:(id)a3;
-- (void)handleAceCommandResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleAlertRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleAlertRequestResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleAskWhenRunRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleAskWhenRunRequestResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleDialogRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleDialogRequestResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleIncomingAceCommand:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleRunRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleRunRequestResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleStopRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)handleUnknownRequestMessage:(id)a3;
+- (void)cancelRequest:(id)request;
+- (void)cancelSessions:(id)sessions;
+- (void)finishSessionWithRequest:(id)request;
+- (void)handleAceCommandResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleAlertRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleAlertRequestResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleAskWhenRunRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleAskWhenRunRequestResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleDialogRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleDialogRequestResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleIncomingAceCommand:(id)command service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleRunRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleRunRequestResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleStopRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)handleUnknownRequestMessage:(id)message;
 - (void)mapSelectorsForIncomingProtobuf;
-- (void)sendAceCommandDictionary:(id)a3 completion:(id)a4;
-- (void)sendAlertRequest:(id)a3 completion:(id)a4;
-- (void)sendAskWhenRunRequest:(id)a3 completion:(id)a4;
-- (void)sendDialogRequest:(id)a3 completion:(id)a4;
-- (void)sendFileAtURL:(id)a3 transferIdentifier:(id)a4 requestIdentifier:(id)a5 error:(id *)a6;
-- (void)sendRunRequest:(id)a3 userInterface:(id)a4 parameterInputProvider:(id)a5 completionHandler:(id)a6;
-- (void)sendRunRequestResponse:(id)a3 completion:(id)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)sessionDidFinish:(id)a3;
+- (void)sendAceCommandDictionary:(id)dictionary completion:(id)completion;
+- (void)sendAlertRequest:(id)request completion:(id)completion;
+- (void)sendAskWhenRunRequest:(id)request completion:(id)completion;
+- (void)sendDialogRequest:(id)request completion:(id)completion;
+- (void)sendFileAtURL:(id)l transferIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier error:(id *)error;
+- (void)sendRunRequest:(id)request userInterface:(id)interface parameterInputProvider:(id)provider completionHandler:(id)handler;
+- (void)sendRunRequestResponse:(id)response completion:(id)completion;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)sessionDidFinish:(id)finish;
 @end
 
 @implementation WFRemoteExecutionCoordinator
@@ -63,8 +63,8 @@
   {
     [(WFRemoteExecutionCoordinator *)self mapSelectorsForIncomingProtobuf];
     v6 = self->_service;
-    v7 = [(WFRemoteExecutionCoordinator *)self queue];
-    [(IDSService *)v6 addDelegate:self queue:v7];
+    queue = [(WFRemoteExecutionCoordinator *)self queue];
+    [(IDSService *)v6 addDelegate:self queue:queue];
 
     service = self->_service;
 LABEL_4:
@@ -81,32 +81,32 @@ LABEL_5:
 - (void)mapSelectorsForIncomingProtobuf
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(WFRemoteExecutionCoordinator *)self service];
-  [v3 setProtobufAction:sel_handleRunRequestResponse_service_account_fromID_context_ forIncomingRequestsOfType:2];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  [service setProtobufAction:sel_handleRunRequestResponse_service_account_fromID_context_ forIncomingRequestsOfType:2];
 
-  v4 = [(WFRemoteExecutionCoordinator *)self service];
-  [v4 setProtobufAction:sel_handleAlertRequest_service_account_fromID_context_ forIncomingRequestsOfType:3];
+  service2 = [(WFRemoteExecutionCoordinator *)self service];
+  [service2 setProtobufAction:sel_handleAlertRequest_service_account_fromID_context_ forIncomingRequestsOfType:3];
 
-  v5 = [(WFRemoteExecutionCoordinator *)self service];
-  [v5 setProtobufAction:sel_handleAlertRequestResponse_service_account_fromID_context_ forIncomingRequestsOfType:4];
+  service3 = [(WFRemoteExecutionCoordinator *)self service];
+  [service3 setProtobufAction:sel_handleAlertRequestResponse_service_account_fromID_context_ forIncomingRequestsOfType:4];
 
-  v6 = [(WFRemoteExecutionCoordinator *)self service];
-  [v6 setProtobufAction:sel_handleAskWhenRunRequest_service_account_fromID_context_ forIncomingRequestsOfType:5];
+  service4 = [(WFRemoteExecutionCoordinator *)self service];
+  [service4 setProtobufAction:sel_handleAskWhenRunRequest_service_account_fromID_context_ forIncomingRequestsOfType:5];
 
-  v7 = [(WFRemoteExecutionCoordinator *)self service];
-  [v7 setProtobufAction:sel_handleAskWhenRunRequestResponse_service_account_fromID_context_ forIncomingRequestsOfType:6];
+  service5 = [(WFRemoteExecutionCoordinator *)self service];
+  [service5 setProtobufAction:sel_handleAskWhenRunRequestResponse_service_account_fromID_context_ forIncomingRequestsOfType:6];
 
-  v8 = [(WFRemoteExecutionCoordinator *)self service];
-  [v8 setProtobufAction:sel_handleAceCommandResponse_service_account_fromID_context_ forIncomingRequestsOfType:9];
+  service6 = [(WFRemoteExecutionCoordinator *)self service];
+  [service6 setProtobufAction:sel_handleAceCommandResponse_service_account_fromID_context_ forIncomingRequestsOfType:9];
 
-  v9 = [(WFRemoteExecutionCoordinator *)self service];
-  [v9 setProtobufAction:sel_handleStopRequest_service_account_fromID_context_ forIncomingRequestsOfType:7];
+  service7 = [(WFRemoteExecutionCoordinator *)self service];
+  [service7 setProtobufAction:sel_handleStopRequest_service_account_fromID_context_ forIncomingRequestsOfType:7];
 
-  v10 = [(WFRemoteExecutionCoordinator *)self service];
-  [v10 setProtobufAction:sel_handleDialogRequest_service_account_fromID_context_ forIncomingRequestsOfType:10];
+  service8 = [(WFRemoteExecutionCoordinator *)self service];
+  [service8 setProtobufAction:sel_handleDialogRequest_service_account_fromID_context_ forIncomingRequestsOfType:10];
 
-  v11 = [(WFRemoteExecutionCoordinator *)self service];
-  [v11 setProtobufAction:sel_handleDialogRequestResponse_service_account_fromID_context_ forIncomingRequestsOfType:11];
+  service9 = [(WFRemoteExecutionCoordinator *)self service];
+  [service9 setProtobufAction:sel_handleDialogRequestResponse_service_account_fromID_context_ forIncomingRequestsOfType:11];
 
   if ([(WFRemoteExecutionCoordinator *)self allowRunRequests])
   {
@@ -118,11 +118,11 @@ LABEL_5:
       _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_INFO, "%s Started listening for run requests", &v16, 0xCu);
     }
 
-    v13 = [(WFRemoteExecutionCoordinator *)self service];
-    [v13 setProtobufAction:sel_handleRunRequest_service_account_fromID_context_ forIncomingRequestsOfType:1];
+    service10 = [(WFRemoteExecutionCoordinator *)self service];
+    [service10 setProtobufAction:sel_handleRunRequest_service_account_fromID_context_ forIncomingRequestsOfType:1];
 
-    v14 = [(WFRemoteExecutionCoordinator *)self service];
-    [v14 setProtobufAction:sel_handleIncomingAceCommand_service_account_fromID_context_ forIncomingRequestsOfType:8];
+    service11 = [(WFRemoteExecutionCoordinator *)self service];
+    [service11 setProtobufAction:sel_handleIncomingAceCommand_service_account_fromID_context_ forIncomingRequestsOfType:8];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -142,27 +142,27 @@ LABEL_5:
   return v3;
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v42 = "[WFRemoteExecutionCoordinator service:account:identifier:didSendWithSuccess:error:]";
     v43 = 2114;
-    v44 = v10;
+    v44 = identifierCopy;
     v45 = 1024;
-    v46 = v8;
+    v46 = successCopy;
     v47 = 2114;
-    v48 = v11;
+    v48 = errorCopy;
     _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_INFO, "%s <%{public}@> Sent with success: %i, %{public}@", buf, 0x26u);
   }
 
-  if (v8)
+  if (successCopy)
   {
     v13 = [(WFRemoteExecutionCoordinator *)self sessionsOfClass:objc_opt_class()];
     v31 = 0u;
@@ -184,12 +184,12 @@ LABEL_5:
           }
 
           v18 = *(*(&v31 + 1) + 8 * i);
-          v19 = [v18 idsIdentifier];
-          v20 = [v10 isEqualToString:v19];
+          idsIdentifier = [v18 idsIdentifier];
+          v20 = [identifierCopy isEqualToString:idsIdentifier];
 
           if (v20)
           {
-            [v18 fileSentWithSuccess:1 error:v11];
+            [v18 fileSentWithSuccess:1 error:errorCopy];
           }
         }
 
@@ -202,8 +202,8 @@ LABEL_5:
 
   else
   {
-    v21 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-    v22 = [v21 copy];
+    activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+    v22 = [activeSessions copy];
 
     v37 = 0u;
     v38 = 0u;
@@ -225,12 +225,12 @@ LABEL_5:
           }
 
           v27 = *(*(&v35 + 1) + 8 * j);
-          v28 = [v27 idsIdentifier];
-          v29 = [v28 isEqualToString:v10];
+          idsIdentifier2 = [v27 idsIdentifier];
+          v29 = [idsIdentifier2 isEqualToString:identifierCopy];
 
           if (v29)
           {
-            [v27 finishWithError:v11];
+            [v27 finishWithError:errorCopy];
           }
         }
 
@@ -251,33 +251,33 @@ LABEL_5:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(WFRemoteExecutionCoordinator *)self service];
-  v3 = [v2 devices];
-  v4 = [v3 reverseObjectEnumerator];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  devices = [service devices];
+  reverseObjectEnumerator = [devices reverseObjectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
-  if (v5)
+  modelIdentifier = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (modelIdentifier)
   {
     v6 = *v12;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != modelIdentifier; i = i + 1)
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if ([v8 isLocallyPaired] && (objc_msgSend(v8, "isActive") & 1) != 0)
         {
-          v5 = [v8 modelIdentifier];
+          modelIdentifier = [v8 modelIdentifier];
           goto LABEL_12;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
-      if (v5)
+      modelIdentifier = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
+      if (modelIdentifier)
       {
         continue;
       }
@@ -290,7 +290,7 @@ LABEL_12:
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return modelIdentifier;
 }
 
 - (id)pairedDevice
@@ -300,10 +300,10 @@ LABEL_12:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(WFRemoteExecutionCoordinator *)self service];
-  v3 = [v2 devices];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  devices = [service devices];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -315,7 +315,7 @@ LABEL_12:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -329,7 +329,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -347,25 +347,25 @@ LABEL_12:
 
 - (BOOL)hasPairedDevice
 {
-  v2 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v3 = [v2 count] != 0;
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  v3 = [pairedDevice count] != 0;
 
   return v3;
 }
 
-- (BOOL)shouldDropMessageDueToStaleness:(id)a3
+- (BOOL)shouldDropMessageDueToStaleness:(id)staleness
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stalenessCopy = staleness;
   if (shouldDropMessageDueToStaleness__onceToken != -1)
   {
     dispatch_once(&shouldDropMessageDueToStaleness__onceToken, &__block_literal_global_223);
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [shouldDropMessageDueToStaleness__calendar components:64 fromDate:v3 toDate:v4 options:0];
-  v6 = [v5 minute];
-  if (v6 >= 2)
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [shouldDropMessageDueToStaleness__calendar components:64 fromDate:stalenessCopy toDate:date options:0];
+  minute = [v5 minute];
+  if (minute >= 2)
   {
     v7 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -373,15 +373,15 @@ LABEL_12:
       v10 = 136315650;
       v11 = "[WFRemoteExecutionCoordinator shouldDropMessageDueToStaleness:]";
       v12 = 2114;
-      v13 = v3;
+      v13 = stalenessCopy;
       v14 = 2114;
-      v15 = v4;
+      v15 = date;
       _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_INFO, "%s Dropping message because it was sent more than one minute ago. server received message at %{public}@, it is currently: %{public}@", &v10, 0x20u);
     }
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v6 > 1;
+  return minute > 1;
 }
 
 void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_invoke()
@@ -391,12 +391,12 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
   shouldDropMessageDueToStaleness__calendar = v0;
 }
 
-- (BOOL)messageCameFromPairedDevice:(id)a3
+- (BOOL)messageCameFromPairedDevice:(id)device
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFRemoteExecutionCoordinator *)self service];
-  v6 = [v5 deviceForFromID:v4];
+  deviceCopy = device;
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v6 = [service deviceForFromID:deviceCopy];
 
   if ([v6 isLocallyPaired] && (objc_msgSend(v6, "isActive") & 1) != 0)
   {
@@ -420,12 +420,12 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
   return v7;
 }
 
-- (void)finishSessionWithRequest:(id)a3
+- (void)finishSessionWithRequest:(id)request
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  v6 = [v5 copy];
+  requestCopy = request;
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  v6 = [activeSessions copy];
 
   v21 = 0u;
   v22 = 0u;
@@ -447,10 +447,10 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 request];
-        v14 = [v13 identifier];
-        v15 = [v4 identifier];
-        v16 = [v14 isEqualToString:v15];
+        request = [v12 request];
+        identifier = [request identifier];
+        identifier2 = [requestCopy identifier];
+        v16 = [identifier isEqualToString:identifier2];
 
         if (v16)
         {
@@ -477,28 +477,28 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sessionDidFinish:(id)a3
+- (void)sessionDidFinish:(id)finish
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  finishCopy = finish;
   v5 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "[WFRemoteExecutionCoordinator sessionDidFinish:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = finishCopy;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_INFO, "%s %{public}@", &v11, 0x16u);
   }
 
-  v6 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [v6 removeObject:v4];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [activeSessions removeObject:finishCopy];
 
-  v7 = [(WFRemoteExecutionCoordinator *)self completionsForSessions];
-  v8 = [v7 objectForKey:v4];
+  completionsForSessions = [(WFRemoteExecutionCoordinator *)self completionsForSessions];
+  v8 = [completionsForSessions objectForKey:finishCopy];
 
-  v9 = [(WFRemoteExecutionCoordinator *)self completionsForSessions];
-  [v9 removeObjectForKey:v4];
+  completionsForSessions2 = [(WFRemoteExecutionCoordinator *)self completionsForSessions];
+  [completionsForSessions2 removeObjectForKey:finishCopy];
 
   if (v8)
   {
@@ -508,23 +508,23 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sessionsOfClass:(Class)a3
+- (id)sessionsOfClass:(Class)class
 {
-  v4 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  v5 = [v4 objectsMatchingClass:a3];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  v5 = [activeSessions objectsMatchingClass:class];
 
   return v5;
 }
 
-- (void)handleUnknownRequestMessage:(id)a3
+- (void)handleUnknownRequestMessage:(id)message
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKey:@"identifier"];
+  v4 = [message objectForKey:@"identifier"];
   v5 = [(WFRemoteExecutionCoordinator *)self sessionFromRequestIdentifier:v4];
   v6 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v5 request];
+    request = [v5 request];
     v11 = 136315394;
     v12 = "[WFRemoteExecutionCoordinator handleUnknownRequestMessage:]";
     v13 = 2112;
@@ -535,8 +535,8 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(WFRemoteExecutionCoordinator *)self unknownRequestError];
-    [v5 finishWithError:v9];
+    unknownRequestError = [(WFRemoteExecutionCoordinator *)self unknownRequestError];
+    [v5 finishWithError:unknownRequestError];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -557,26 +557,26 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
   return v5;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  v8 = [v9 objectForKey:@"messageType"];
+  messageCopy = message;
+  v8 = [messageCopy objectForKey:@"messageType"];
   if ([v8 isEqualToString:@"unknownRequest"])
   {
-    [(WFRemoteExecutionCoordinator *)self handleUnknownRequestMessage:v9];
+    [(WFRemoteExecutionCoordinator *)self handleUnknownRequestMessage:messageCopy];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
-  if ([v9 type] != 1 && objc_msgSend(v9, "type") != 8)
+  protobufCopy = protobuf;
+  dCopy = d;
+  if ([protobufCopy type] != 1 && objc_msgSend(protobufCopy, "type") != 8)
   {
-    v11 = [v9 data];
+    data = [protobufCopy data];
     v25 = 0;
-    v12 = [WFRemoteExecutionRequest identifierFromData:v11 error:&v25];
+    v12 = [WFRemoteExecutionRequest identifierFromData:data error:&v25];
     v13 = v25;
 
     v14 = getWFRemoteExecutionLogObject();
@@ -585,23 +585,23 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v9 data];
-        v17 = [v9 type];
+        data2 = [protobufCopy data];
+        type = [protobufCopy type];
         *buf = 136315650;
         v27 = "[WFRemoteExecutionCoordinator service:account:incomingUnhandledProtobuf:fromID:context:]";
         v28 = 2114;
-        v29 = v16;
+        v29 = data2;
         v30 = 1024;
-        v31 = v17;
+        v31 = type;
         _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_ERROR, "%s Received unknown request with data: %{public}@, message type: %i", buf, 0x1Cu);
       }
 
       v15 = [(WFRemoteExecutionCoordinator *)self unknownRequestMessageWithIdentifier:v12];
-      v18 = [MEMORY[0x1E695DFD8] setWithObject:v10];
-      v19 = [(WFRemoteExecutionCoordinator *)self service];
-      v20 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+      v18 = [MEMORY[0x1E695DFD8] setWithObject:dCopy];
+      service = [(WFRemoteExecutionCoordinator *)self service];
+      defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
       v24 = 0;
-      v21 = [v19 sendMessage:v15 toDestinations:v18 priority:300 options:v20 identifier:0 error:&v24];
+      v21 = [service sendMessage:v15 toDestinations:v18 priority:300 options:defaultIDSOptions identifier:0 error:&v24];
 
       if ((v21 & 1) == 0)
       {
@@ -628,15 +628,15 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)unknownRequestMessageWithIdentifier:(id)a3
+- (id)unknownRequestMessageWithIdentifier:(id)identifier
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"messageType";
   v8[1] = @"identifier";
   v9[0] = @"unknownRequest";
-  v9[1] = a3;
+  v9[1] = identifier;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -644,14 +644,14 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
   return v5;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v65 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v12 objectForKey:@"transferIdentifier"];
-  v15 = [v12 objectForKey:@"requestIdentifier"];
+  lCopy = l;
+  metadataCopy = metadata;
+  dCopy = d;
+  v14 = [metadataCopy objectForKey:@"transferIdentifier"];
+  v15 = [metadataCopy objectForKey:@"requestIdentifier"];
   v16 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -664,16 +664,16 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
     _os_log_impl(&dword_1CA256000, v16, OS_LOG_TYPE_INFO, "%s <%{public}@> Received file with id: %{public}@", buf, 0x20u);
   }
 
-  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v13])
+  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy])
   {
     v45 = v15;
-    v44 = [v11 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
     v17 = [MEMORY[0x1E6996F68] proposedSharedTemporaryFileURLForFilename:?];
-    v18 = [v17 URLByDeletingLastPathComponent];
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
+    uRLByDeletingLastPathComponent = [v17 URLByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v56 = 0;
-    v43 = v18;
-    [v19 createDirectoryAtURL:v18 withIntermediateDirectories:1 attributes:0 error:&v56];
+    v43 = uRLByDeletingLastPathComponent;
+    [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v56];
     v20 = v56;
 
     if (v20)
@@ -689,7 +689,7 @@ void __64__WFRemoteExecutionCoordinator_shouldDropMessageDueToStaleness___block_
         v63 = 2114;
         v64 = v20;
         _os_log_impl(&dword_1CA256000, v21, OS_LOG_TYPE_FAULT, "%s Unable to create directory at URL: %{public}@ for incoming file. error: %{public}@", buf, 0x20u);
-        v23 = v44;
+        v23 = lastPathComponent;
 LABEL_26:
 
         goto LABEL_27;
@@ -698,9 +698,9 @@ LABEL_26:
 
     else
     {
-      v24 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v55 = 0;
-      [v24 copyItemAtURL:v11 toURL:v17 error:&v55];
+      [defaultManager2 copyItemAtURL:lCopy toURL:v17 error:&v55];
       v20 = v55;
 
       if (v20)
@@ -720,9 +720,9 @@ LABEL_26:
       {
         v46 = v17;
         v25 = v14;
-        v26 = v12;
-        v41 = v13;
-        v42 = v11;
+        v26 = metadataCopy;
+        v41 = dCopy;
+        v42 = lCopy;
         v21 = [(WFRemoteExecutionCoordinator *)self sessionsOfClass:objc_opt_class()];
         v51 = 0u;
         v52 = 0u;
@@ -745,8 +745,8 @@ LABEL_26:
 
               v32 = *(*(&v51 + 1) + 8 * i);
               v33 = [(WFRemoteExecutionCoordinator *)self pairedDevice:v41];
-              v34 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-              [v32 handleIncomingFileForRemoteExecutionWithURL:v46 withIdentifier:v25 metadata:v26 destinations:v33 options:v34];
+              defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+              [v32 handleIncomingFileForRemoteExecutionWithURL:v46 withIdentifier:v25 metadata:v26 destinations:v33 options:defaultIDSOptions];
             }
 
             v21 = v30;
@@ -762,9 +762,9 @@ LABEL_26:
         v49 = 0u;
         v50 = 0u;
         v36 = [v35 countByEnumeratingWithState:&v47 objects:v57 count:16];
-        v13 = v41;
-        v11 = v42;
-        v12 = v26;
+        dCopy = v41;
+        lCopy = v42;
+        metadataCopy = v26;
         v14 = v25;
         v17 = v46;
         if (v36)
@@ -780,7 +780,7 @@ LABEL_26:
                 objc_enumerationMutation(v35);
               }
 
-              [*(*(&v47 + 1) + 8 * j) handleIncomingFileForRemoteExecutionWithURL:v46 withIdentifier:v14 metadata:{v12, v41, v42}];
+              [*(*(&v47 + 1) + 8 * j) handleIncomingFileForRemoteExecutionWithURL:v46 withIdentifier:v14 metadata:{metadataCopy, v41, v42}];
             }
 
             v37 = [v35 countByEnumeratingWithState:&v47 objects:v57 count:16];
@@ -793,7 +793,7 @@ LABEL_26:
       }
     }
 
-    v23 = v44;
+    v23 = lastPathComponent;
     v15 = v45;
     v22 = v43;
     goto LABEL_26;
@@ -804,27 +804,27 @@ LABEL_27:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendFileAtURL:(id)a3 transferIdentifier:(id)a4 requestIdentifier:(id)a5 error:(id *)a6
+- (void)sendFileAtURL:(id)l transferIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  requestIdentifierCopy = requestIdentifier;
+  identifierCopy = identifier;
+  lCopy = l;
   v13 = [WFRemoteExecutionOutgoingFileSession alloc];
-  v14 = [(WFRemoteExecutionCoordinator *)self service];
-  v17 = [(WFRemoteExecutionOutgoingFileSession *)v13 initWithService:v14 fileURL:v12 transferIdentifier:v11 requestIdentifier:v10];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v17 = [(WFRemoteExecutionOutgoingFileSession *)v13 initWithService:service fileURL:lCopy transferIdentifier:identifierCopy requestIdentifier:requestIdentifierCopy];
 
   [(WFRemoteExecutionSession *)v17 setDelegate:self];
-  v15 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v16 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-  [(WFRemoteExecutionOutgoingFileSession *)v17 sendToDestinations:v15 options:v16 error:a6];
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+  [(WFRemoteExecutionOutgoingFileSession *)v17 sendToDestinations:pairedDevice options:defaultIDSOptions error:error];
 }
 
-- (void)handleDialogRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleDialogRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a7;
-  v12 = a6;
+  requestCopy = request;
+  contextCopy = context;
+  dCopy = d;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -833,38 +833,38 @@ LABEL_27:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming dialog request", &v25, 0xCu);
   }
 
-  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v12];
+  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy];
   if (v14)
   {
-    v15 = [v11 serverReceivedTime];
-    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v15];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v16)
     {
       v17 = [WFRemoteExecutionIncomingDialogRequestSession alloc];
-      v18 = [(WFRemoteExecutionCoordinator *)self service];
-      v19 = [(WFRemoteExecutionSession *)v17 initWithService:v18];
+      service = [(WFRemoteExecutionCoordinator *)self service];
+      v19 = [(WFRemoteExecutionSession *)v17 initWithService:service];
 
       [(WFRemoteExecutionSession *)v19 setDelegate:self];
       v20 = [(WFRemoteExecutionCoordinator *)self sessionsOfClass:objc_opt_class()];
-      v21 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-      v22 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-      [(WFRemoteExecutionIncomingDialogRequestSession *)v19 handleIncomingProtobuf:v10 currentlyActiveSessions:v20 destinations:v21 options:v22];
+      pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+      defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+      [(WFRemoteExecutionIncomingDialogRequestSession *)v19 handleIncomingProtobuf:requestCopy currentlyActiveSessions:v20 destinations:pairedDevice options:defaultIDSOptions];
 
-      v23 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-      [v23 addObject:v19];
+      activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+      [activeSessions addObject:v19];
     }
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIncomingAceCommand:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleIncomingAceCommand:(id)command service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a7;
-  v12 = a6;
+  commandCopy = command;
+  contextCopy = context;
+  dCopy = d;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -873,37 +873,37 @@ LABEL_27:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming ace command", &v24, 0xCu);
   }
 
-  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v12];
+  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy];
   if (v14)
   {
-    v15 = [v11 serverReceivedTime];
-    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v15];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v16)
     {
       v17 = [WFRemoteExecutionIncomingAceCommandSession alloc];
-      v18 = [(WFRemoteExecutionCoordinator *)self service];
-      v19 = [(WFRemoteExecutionSession *)v17 initWithService:v18];
+      service = [(WFRemoteExecutionCoordinator *)self service];
+      v19 = [(WFRemoteExecutionSession *)v17 initWithService:service];
 
       [(WFRemoteExecutionSession *)v19 setDelegate:self];
-      v20 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-      v21 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-      [(WFRemoteExecutionIncomingAceCommandSession *)v19 handleIncomingProtobuf:v10 destinations:v20 options:v21];
+      pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+      defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+      [(WFRemoteExecutionIncomingAceCommandSession *)v19 handleIncomingProtobuf:commandCopy destinations:pairedDevice options:defaultIDSOptions];
 
-      v22 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-      [v22 addObject:v19];
+      activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+      [activeSessions addObject:v19];
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAskWhenRunRequestResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleAskWhenRunRequestResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
+  responseCopy = response;
+  dCopy = d;
+  contextCopy = context;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -912,10 +912,10 @@ LABEL_27:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming ask each time response", buf, 0xCu);
   }
 
-  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v11])
+  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy])
   {
-    v14 = [v12 serverReceivedTime];
-    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v14];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v15)
     {
@@ -950,7 +950,7 @@ LABEL_27:
               objc_enumerationMutation(v18);
             }
 
-            [*(*(&v24 + 1) + 8 * v22++) handleIncomingProtobuf:{v10, v24}];
+            [*(*(&v24 + 1) + 8 * v22++) handleIncomingProtobuf:{responseCopy, v24}];
           }
 
           while (v20 != v22);
@@ -965,29 +965,29 @@ LABEL_27:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendAskWhenRunRequest:(id)a3 completion:(id)a4
+- (void)sendAskWhenRunRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = [WFRemoteExecutionOutgoingAskEachTimeSession alloc];
-  v9 = [(WFRemoteExecutionCoordinator *)self service];
-  v13 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)v8 initWithService:v9 request:v7 completion:v6];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v13 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)v8 initWithService:service request:requestCopy completion:completionCopy];
 
   [(WFRemoteExecutionSession *)v13 setDelegate:self];
-  v10 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v11 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-  [(WFRemoteExecutionOutgoingAskEachTimeSession *)v13 sendToDestinations:v10 options:v11];
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+  [(WFRemoteExecutionOutgoingAskEachTimeSession *)v13 sendToDestinations:pairedDevice options:defaultIDSOptions];
 
-  v12 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [v12 addObject:v13];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [activeSessions addObject:v13];
 }
 
-- (void)handleStopRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleStopRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a7;
-  v12 = a6;
+  requestCopy = request;
+  contextCopy = context;
+  dCopy = d;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -996,32 +996,32 @@ LABEL_27:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming stop request", &v22, 0xCu);
   }
 
-  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v12];
+  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy];
   if (v14)
   {
-    v15 = [v11 serverReceivedTime];
-    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v15];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v16)
     {
       v17 = [WFRemoteExecutionIncomingStopSession alloc];
-      v18 = [(WFRemoteExecutionCoordinator *)self service];
-      v19 = [(WFRemoteExecutionSession *)v17 initWithService:v18];
+      service = [(WFRemoteExecutionCoordinator *)self service];
+      v19 = [(WFRemoteExecutionSession *)v17 initWithService:service];
 
-      v20 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-      [(WFRemoteExecutionIncomingStopSession *)v19 handleIncomingProtobuf:v10 currentlyActiveSessions:v20];
+      activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+      [(WFRemoteExecutionIncomingStopSession *)v19 handleIncomingProtobuf:requestCopy currentlyActiveSessions:activeSessions];
     }
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAlertRequestResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleAlertRequestResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
+  responseCopy = response;
+  dCopy = d;
+  contextCopy = context;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1030,10 +1030,10 @@ LABEL_27:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming alert response", buf, 0xCu);
   }
 
-  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v11])
+  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy])
   {
-    v14 = [v12 serverReceivedTime];
-    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v14];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v15)
     {
@@ -1068,7 +1068,7 @@ LABEL_27:
               objc_enumerationMutation(v18);
             }
 
-            [*(*(&v24 + 1) + 8 * v22++) handleIncomingProtobuf:{v10, v24}];
+            [*(*(&v24 + 1) + 8 * v22++) handleIncomingProtobuf:{responseCopy, v24}];
           }
 
           while (v20 != v22);
@@ -1083,53 +1083,53 @@ LABEL_27:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendAlertRequest:(id)a3 completion:(id)a4
+- (void)sendAlertRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = [WFRemoteExecutionOutgoingAlertSession alloc];
-  v9 = [(WFRemoteExecutionCoordinator *)self service];
-  v13 = [(WFRemoteExecutionOutgoingAlertSession *)v8 initWithService:v9 request:v7 completion:v6];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v13 = [(WFRemoteExecutionOutgoingAlertSession *)v8 initWithService:service request:requestCopy completion:completionCopy];
 
   [(WFRemoteExecutionSession *)v13 setDelegate:self];
-  v10 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v11 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-  [(WFRemoteExecutionOutgoingAlertSession *)v13 sendToDestinations:v10 options:v11];
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+  [(WFRemoteExecutionOutgoingAlertSession *)v13 sendToDestinations:pairedDevice options:defaultIDSOptions];
 
-  v12 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [v12 addObject:v13];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [activeSessions addObject:v13];
 }
 
-- (void)sendRunRequestResponse:(id)a3 completion:(id)a4
+- (void)sendRunRequestResponse:(id)response completion:(id)completion
 {
-  aBlock = a4;
-  v6 = a3;
+  aBlock = completion;
+  responseCopy = response;
   v7 = [WFRemoteExecutionOutgoingRunRequestResponseSession alloc];
-  v8 = [(WFRemoteExecutionCoordinator *)self service];
-  v9 = [(WFRemoteExecutionOutgoingRunRequestResponseSession *)v7 initWithService:v8 responseData:v6];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v9 = [(WFRemoteExecutionOutgoingRunRequestResponseSession *)v7 initWithService:service responseData:responseCopy];
 
   [(WFRemoteExecutionSession *)v9 setDelegate:self];
-  v10 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v11 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-  [(WFRemoteExecutionOutgoingRunRequestResponseSession *)v9 sendToDestinations:v10 options:v11];
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+  [(WFRemoteExecutionOutgoingRunRequestResponseSession *)v9 sendToDestinations:pairedDevice options:defaultIDSOptions];
 
-  v12 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [v12 addObject:v9];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [activeSessions addObject:v9];
 
   if (aBlock)
   {
-    v13 = [(WFRemoteExecutionCoordinator *)self completionsForSessions];
+    completionsForSessions = [(WFRemoteExecutionCoordinator *)self completionsForSessions];
     v14 = _Block_copy(aBlock);
-    [v13 setObject:v14 forKey:v9];
+    [completionsForSessions setObject:v14 forKey:v9];
   }
 }
 
-- (void)handleRunRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleRunRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
+  requestCopy = request;
+  dCopy = d;
+  contextCopy = context;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1138,33 +1138,33 @@ LABEL_27:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming run request", buf, 0xCu);
   }
 
-  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v11])
+  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy])
   {
-    v14 = [v12 serverReceivedTime];
-    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v14];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v15)
     {
-      v39 = v12;
+      v39 = contextCopy;
       v16 = [WFRemoteExecutionRunRequest alloc];
-      v17 = [v10 data];
-      v18 = [(WFRemoteExecutionRunRequest *)v16 initWithData:v17 error:0];
+      data = [requestCopy data];
+      v18 = [(WFRemoteExecutionRunRequest *)v16 initWithData:data error:0];
 
       v40 = v18;
       if (v18)
       {
-        v19 = [(WFRemoteExecutionRequest *)v18 identifier];
+        identifier = [(WFRemoteExecutionRequest *)v18 identifier];
 
-        if (v19)
+        if (identifier)
         {
-          v37 = v11;
-          v38 = v10;
+          v37 = dCopy;
+          v38 = requestCopy;
           [(WFRemoteExecutionCoordinator *)self sessionsOfClass:objc_opt_class()];
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v20 = v44 = 0u;
-          v21 = [(WFRemoteExecutionIncomingRunRequestSession *)v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
+          activeSessions = v44 = 0u;
+          v21 = [(WFRemoteExecutionIncomingRunRequestSession *)activeSessions countByEnumeratingWithState:&v41 objects:v49 count:16];
           if (v21)
           {
             v22 = v21;
@@ -1175,14 +1175,14 @@ LABEL_27:
               {
                 if (*v42 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(activeSessions);
                 }
 
                 v25 = *(*(&v41 + 1) + 8 * i);
-                v26 = [v25 request];
-                v27 = [v26 identifier];
-                v28 = [(WFRemoteExecutionRequest *)v40 identifier];
-                v29 = [v27 isEqualToString:v28];
+                request = [v25 request];
+                identifier2 = [request identifier];
+                identifier3 = [(WFRemoteExecutionRequest *)v40 identifier];
+                v29 = [identifier2 isEqualToString:identifier3];
 
                 if (v29)
                 {
@@ -1196,14 +1196,14 @@ LABEL_27:
                     _os_log_impl(&dword_1CA256000, v35, OS_LOG_TYPE_DEFAULT, "%s Received an incoming run request, however, there is an existing session with the same identifier (%@). Dropping this request.", buf, 0x16u);
                   }
 
-                  v32 = v20;
-                  v11 = v37;
-                  v10 = v38;
+                  v32 = activeSessions;
+                  dCopy = v37;
+                  requestCopy = v38;
                   goto LABEL_20;
                 }
               }
 
-              v22 = [(WFRemoteExecutionIncomingRunRequestSession *)v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
+              v22 = [(WFRemoteExecutionIncomingRunRequestSession *)activeSessions countByEnumeratingWithState:&v41 objects:v49 count:16];
               if (v22)
               {
                 continue;
@@ -1213,36 +1213,36 @@ LABEL_27:
             }
           }
 
-          v11 = v37;
-          v10 = v38;
+          dCopy = v37;
+          requestCopy = v38;
         }
       }
 
       v30 = [WFRemoteExecutionIncomingRunRequestSession alloc];
-      v31 = [(WFRemoteExecutionCoordinator *)self service];
-      v32 = [(WFRemoteExecutionSession *)v30 initWithService:v31];
+      service = [(WFRemoteExecutionCoordinator *)self service];
+      v32 = [(WFRemoteExecutionSession *)v30 initWithService:service];
 
       [(WFRemoteExecutionSession *)v32 setDelegate:self];
-      v33 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-      v34 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-      [(WFRemoteExecutionIncomingRunRequestSession *)v32 handleIncomingProtobuf:v10 destinations:v33 options:v34];
+      pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+      defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+      [(WFRemoteExecutionIncomingRunRequestSession *)v32 handleIncomingProtobuf:requestCopy destinations:pairedDevice options:defaultIDSOptions];
 
-      v20 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-      [(WFRemoteExecutionIncomingRunRequestSession *)v20 addObject:v32];
+      activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+      [(WFRemoteExecutionIncomingRunRequestSession *)activeSessions addObject:v32];
 LABEL_20:
-      v12 = v39;
+      contextCopy = v39;
     }
   }
 
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDialogRequestResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleDialogRequestResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
+  responseCopy = response;
+  dCopy = d;
+  contextCopy = context;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1251,10 +1251,10 @@ LABEL_20:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming dialog request response", buf, 0xCu);
   }
 
-  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v11])
+  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy])
   {
-    v14 = [v12 serverReceivedTime];
-    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v14];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v15)
     {
@@ -1300,7 +1300,7 @@ LABEL_20:
               objc_enumerationMutation(v19);
             }
 
-            [*(*(&v25 + 1) + 8 * v23++) handleIncomingProtobuf:{v10, v25}];
+            [*(*(&v25 + 1) + 8 * v23++) handleIncomingProtobuf:{responseCopy, v25}];
           }
 
           while (v21 != v23);
@@ -1315,29 +1315,29 @@ LABEL_20:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendDialogRequest:(id)a3 completion:(id)a4
+- (void)sendDialogRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = [WFRemoteExecutionOutgoingDialogRequestSession alloc];
-  v9 = [(WFRemoteExecutionCoordinator *)self service];
-  v13 = [(WFRemoteExecutionOutgoingDialogRequestSession *)v8 initWithService:v9 request:v7 completion:v6];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v13 = [(WFRemoteExecutionOutgoingDialogRequestSession *)v8 initWithService:service request:requestCopy completion:completionCopy];
 
   [(WFRemoteExecutionSession *)v13 setDelegate:self];
-  v10 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v11 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-  [(WFRemoteExecutionOutgoingDialogRequestSession *)v13 sendToDestinations:v10 options:v11];
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+  [(WFRemoteExecutionOutgoingDialogRequestSession *)v13 sendToDestinations:pairedDevice options:defaultIDSOptions];
 
-  v12 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [v12 addObject:v13];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [activeSessions addObject:v13];
 }
 
-- (void)handleAceCommandResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleAceCommandResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
+  responseCopy = response;
+  dCopy = d;
+  contextCopy = context;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1346,10 +1346,10 @@ LABEL_20:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming ace command response", buf, 0xCu);
   }
 
-  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v11])
+  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy])
   {
-    v14 = [v12 serverReceivedTime];
-    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v14];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v15)
     {
@@ -1395,7 +1395,7 @@ LABEL_20:
               objc_enumerationMutation(v19);
             }
 
-            [*(*(&v25 + 1) + 8 * v23++) handleIncomingProtobuf:{v10, v25}];
+            [*(*(&v25 + 1) + 8 * v23++) handleIncomingProtobuf:{responseCopy, v25}];
           }
 
           while (v21 != v23);
@@ -1410,31 +1410,31 @@ LABEL_20:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendAceCommandDictionary:(id)a3 completion:(id)a4
+- (void)sendAceCommandDictionary:(id)dictionary completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v14 = [[WFRemoteExecutionAceCommandRequest alloc] initWithAceCommandDictionary:v7];
+  completionCopy = completion;
+  dictionaryCopy = dictionary;
+  v14 = [[WFRemoteExecutionAceCommandRequest alloc] initWithAceCommandDictionary:dictionaryCopy];
 
   v8 = [WFRemoteExecutionOutgoingAceCommandSession alloc];
-  v9 = [(WFRemoteExecutionCoordinator *)self service];
-  v10 = [(WFRemoteExecutionOutgoingAceCommandSession *)v8 initWithService:v9 request:v14 completion:v6];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v10 = [(WFRemoteExecutionOutgoingAceCommandSession *)v8 initWithService:service request:v14 completion:completionCopy];
 
   [(WFRemoteExecutionSession *)v10 setDelegate:self];
-  v11 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v12 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-  [(WFRemoteExecutionOutgoingAceCommandSession *)v10 sendToDestinations:v11 options:v12];
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+  [(WFRemoteExecutionOutgoingAceCommandSession *)v10 sendToDestinations:pairedDevice options:defaultIDSOptions];
 
-  v13 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [v13 addObject:v10];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [activeSessions addObject:v10];
 }
 
-- (void)handleAskWhenRunRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleAskWhenRunRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a7;
-  v12 = a6;
+  requestCopy = request;
+  contextCopy = context;
+  dCopy = d;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1443,56 +1443,56 @@ LABEL_20:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming ask each time to display", &v25, 0xCu);
   }
 
-  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v12];
+  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy];
   if (v14)
   {
-    v15 = [v11 serverReceivedTime];
-    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v15];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v16)
     {
       v17 = [WFRemoteExecutionIncomingAskEachTimeSession alloc];
-      v18 = [(WFRemoteExecutionCoordinator *)self service];
-      v19 = [(WFRemoteExecutionSession *)v17 initWithService:v18];
+      service = [(WFRemoteExecutionCoordinator *)self service];
+      v19 = [(WFRemoteExecutionSession *)v17 initWithService:service];
 
       [(WFRemoteExecutionSession *)v19 setDelegate:self];
       v20 = [(WFRemoteExecutionCoordinator *)self sessionsOfClass:objc_opt_class()];
-      v21 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-      v22 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-      [(WFRemoteExecutionIncomingAskEachTimeSession *)v19 handleIncomingProtobuf:v10 currentlyActiveSessions:v20 responseDestinations:v21 responseOptions:v22];
+      pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+      defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+      [(WFRemoteExecutionIncomingAskEachTimeSession *)v19 handleIncomingProtobuf:requestCopy currentlyActiveSessions:v20 responseDestinations:pairedDevice responseOptions:defaultIDSOptions];
 
-      v23 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-      [v23 addObject:v19];
+      activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+      [activeSessions addObject:v19];
     }
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)sendStopRequest:(id)a3 error:(id *)a4
+- (BOOL)sendStopRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = [WFRemoteExecutionOutgoingStopSession alloc];
-  v8 = [(WFRemoteExecutionCoordinator *)self service];
-  v9 = [(WFRemoteExecutionOutgoingStopSession *)v7 initWithService:v8 request:v6];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v9 = [(WFRemoteExecutionOutgoingStopSession *)v7 initWithService:service request:requestCopy];
 
   [(WFRemoteExecutionSession *)v9 setDelegate:self];
-  v10 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v11 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-  LOBYTE(a4) = [(WFRemoteExecutionOutgoingStopSession *)v9 sendToDestinations:v10 options:v11 error:a4];
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+  LOBYTE(error) = [(WFRemoteExecutionOutgoingStopSession *)v9 sendToDestinations:pairedDevice options:defaultIDSOptions error:error];
 
-  v12 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [v12 addObject:v9];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [activeSessions addObject:v9];
 
-  return a4;
+  return error;
 }
 
-- (void)handleAlertRequest:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleAlertRequest:(id)request service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a7;
-  v12 = a6;
+  requestCopy = request;
+  contextCopy = context;
+  dCopy = d;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1501,38 +1501,38 @@ LABEL_20:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming alert to display", &v25, 0xCu);
   }
 
-  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v12];
+  v14 = [(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy];
   if (v14)
   {
-    v15 = [v11 serverReceivedTime];
-    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v15];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v16 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v16)
     {
       v17 = [WFRemoteExecutionIncomingAlertSession alloc];
-      v18 = [(WFRemoteExecutionCoordinator *)self service];
-      v19 = [(WFRemoteExecutionSession *)v17 initWithService:v18];
+      service = [(WFRemoteExecutionCoordinator *)self service];
+      v19 = [(WFRemoteExecutionSession *)v17 initWithService:service];
 
       [(WFRemoteExecutionSession *)v19 setDelegate:self];
       v20 = [(WFRemoteExecutionCoordinator *)self sessionsOfClass:objc_opt_class()];
-      v21 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-      v22 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-      [(WFRemoteExecutionIncomingAlertSession *)v19 handleIncomingProtobuf:v10 currentlyActiveSessions:v20 responseDestinations:v21 options:v22];
+      pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+      defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+      [(WFRemoteExecutionIncomingAlertSession *)v19 handleIncomingProtobuf:requestCopy currentlyActiveSessions:v20 responseDestinations:pairedDevice options:defaultIDSOptions];
 
-      v23 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-      [v23 addObject:v19];
+      activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+      [activeSessions addObject:v19];
     }
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRunRequestResponse:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)handleRunRequestResponse:(id)response service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
+  responseCopy = response;
+  dCopy = d;
+  contextCopy = context;
   v13 = getWFRemoteExecutionLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1541,10 +1541,10 @@ LABEL_20:
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_INFO, "%s Received incoming run request response", buf, 0xCu);
   }
 
-  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:v11])
+  if ([(WFRemoteExecutionCoordinator *)self messageCameFromPairedDevice:dCopy])
   {
-    v14 = [v12 serverReceivedTime];
-    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:v14];
+    serverReceivedTime = [contextCopy serverReceivedTime];
+    v15 = [(WFRemoteExecutionCoordinator *)self shouldDropMessageDueToStaleness:serverReceivedTime];
 
     if (!v15)
     {
@@ -1590,7 +1590,7 @@ LABEL_20:
               objc_enumerationMutation(v19);
             }
 
-            [*(*(&v25 + 1) + 8 * v23++) handleIncomingProtobuf:{v10, v25}];
+            [*(*(&v25 + 1) + 8 * v23++) handleIncomingProtobuf:{responseCopy, v25}];
           }
 
           while (v21 != v23);
@@ -1605,31 +1605,31 @@ LABEL_20:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendRunRequest:(id)a3 userInterface:(id)a4 parameterInputProvider:(id)a5 completionHandler:(id)a6
+- (void)sendRunRequest:(id)request userInterface:(id)interface parameterInputProvider:(id)provider completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  providerCopy = provider;
+  interfaceCopy = interface;
+  requestCopy = request;
   v14 = [WFRemoteExecutionOutgoingRunRequestSession alloc];
-  v15 = [(WFRemoteExecutionCoordinator *)self service];
-  v19 = [(WFRemoteExecutionOutgoingRunRequestSession *)v14 initWithService:v15 request:v13 userInterface:v12 parameterInputProvider:v11 coordinator:self completion:v10];
+  service = [(WFRemoteExecutionCoordinator *)self service];
+  v19 = [(WFRemoteExecutionOutgoingRunRequestSession *)v14 initWithService:service request:requestCopy userInterface:interfaceCopy parameterInputProvider:providerCopy coordinator:self completion:handlerCopy];
 
   [(WFRemoteExecutionSession *)v19 setDelegate:self];
-  v16 = [(WFRemoteExecutionCoordinator *)self pairedDevice];
-  v17 = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
-  [(WFRemoteExecutionOutgoingRunRequestSession *)v19 sendToDestinations:v16 options:v17];
+  pairedDevice = [(WFRemoteExecutionCoordinator *)self pairedDevice];
+  defaultIDSOptions = [(WFRemoteExecutionCoordinator *)self defaultIDSOptions];
+  [(WFRemoteExecutionOutgoingRunRequestSession *)v19 sendToDestinations:pairedDevice options:defaultIDSOptions];
 
-  v18 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [v18 addObject:v19];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [activeSessions addObject:v19];
 }
 
-- (id)sessionFromRequestIdentifier:(id)a3
+- (id)sessionFromRequestIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  v6 = [v5 copy];
+  identifierCopy = identifier;
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  v6 = [activeSessions copy];
 
   v22 = 0u;
   v23 = 0u;
@@ -1652,9 +1652,9 @@ LABEL_20:
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 request];
-        v15 = [v14 identifier];
-        v16 = [v15 isEqualToString:v4];
+        request = [v13 request];
+        identifier = [request identifier];
+        v16 = [identifier isEqualToString:identifierCopy];
 
         if (v16)
         {
@@ -1680,13 +1680,13 @@ LABEL_20:
   return v10;
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (request)
   {
-    v4 = [a3 identifier];
-    v5 = [(WFRemoteExecutionCoordinator *)self sessionFromRequestIdentifier:v4];
+    identifier = [request identifier];
+    v5 = [(WFRemoteExecutionCoordinator *)self sessionFromRequestIdentifier:identifier];
 
     if (v5)
     {
@@ -1699,15 +1699,15 @@ LABEL_20:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelSessions:(id)a3
+- (void)cancelSessions:(id)sessions
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionsCopy = sessions;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  v5 = [sessionsCopy countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v5)
   {
     v7 = v5;
@@ -1721,17 +1721,17 @@ LABEL_20:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sessionsCopy);
         }
 
         v10 = *(*(&v20 + 1) + 8 * v9);
-        v11 = [(WFRemoteExecutionCoordinator *)self completionsForSessions];
-        [v11 removeObjectForKey:v10];
+        completionsForSessions = [(WFRemoteExecutionCoordinator *)self completionsForSessions];
+        [completionsForSessions removeObjectForKey:v10];
 
-        v12 = [(WFRemoteExecutionCoordinator *)self service];
-        v13 = [v10 idsIdentifier];
+        service = [(WFRemoteExecutionCoordinator *)self service];
+        idsIdentifier = [v10 idsIdentifier];
         v19 = 0;
-        v14 = [v12 cancelIdentifier:v13 error:&v19];
+        v14 = [service cancelIdentifier:idsIdentifier error:&v19];
         v15 = v19;
 
         if ((v14 & 1) == 0)
@@ -1755,7 +1755,7 @@ LABEL_20:
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v20 objects:v30 count:16];
+      v7 = [sessionsCopy countByEnumeratingWithState:&v20 objects:v30 count:16];
     }
 
     while (v7);
@@ -1772,11 +1772,11 @@ LABEL_20:
 
 - (void)cancelAllSessions
 {
-  v3 = [(WFRemoteExecutionCoordinator *)self activeSessions];
-  [(WFRemoteExecutionCoordinator *)self cancelSessions:v3];
+  activeSessions = [(WFRemoteExecutionCoordinator *)self activeSessions];
+  [(WFRemoteExecutionCoordinator *)self cancelSessions:activeSessions];
 }
 
-- (id)initAndAllowRunRequests:(BOOL)a3
+- (id)initAndAllowRunRequests:(BOOL)requests
 {
   v17.receiver = self;
   v17.super_class = WFRemoteExecutionCoordinator;
@@ -1784,7 +1784,7 @@ LABEL_20:
   v5 = v4;
   if (v4)
   {
-    v4->_allowRunRequests = a3;
+    v4->_allowRunRequests = requests;
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_attr_make_with_qos_class(v6, QOS_CLASS_USER_INITIATED, 0);
 
@@ -1796,11 +1796,11 @@ LABEL_20:
     activeSessions = v5->_activeSessions;
     v5->_activeSessions = v10;
 
-    v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     completionsForSessions = v5->_completionsForSessions;
-    v5->_completionsForSessions = v12;
+    v5->_completionsForSessions = strongToStrongObjectsMapTable;
 
-    v14 = [(WFRemoteExecutionCoordinator *)v5 service];
+    service = [(WFRemoteExecutionCoordinator *)v5 service];
     v15 = v5;
   }
 

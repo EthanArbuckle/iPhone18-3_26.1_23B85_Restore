@@ -14,17 +14,17 @@
 - (NSString)resolvedName;
 - (double)pointSize;
 - (double)resolvedBorderWidth;
-- (id)_colorForIFSystemColor:(int64_t)a3;
+- (id)_colorForIFSystemColor:(int64_t)color;
 - (id)_debugDynamicGraphicIconColor;
 - (id)_defaultEnclosureColor;
 - (id)_defaultSymbolColor;
-- (id)_resolvedColorsForColors:(id)a3 defaultColor:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_resolvedColorsForColors:(id)colors defaultColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)enclosureEffect;
 - (int64_t)fill;
 - (int64_t)resolvedFill;
-- (int64_t)resolvedRenderingModeFromSuggestedMode:(int64_t)a3;
+- (int64_t)resolvedRenderingModeFromSuggestedMode:(int64_t)mode;
 - (int64_t)resolvedShape;
 - (int64_t)shape;
 - (int64_t)symbolEffect;
@@ -32,8 +32,8 @@
 - (unint64_t)symbolSize;
 - (void)checkForSymbolOverride;
 - (void)pointSize;
-- (void)setName:(id)a3;
-- (void)setResolvedName:(id)a3;
+- (void)setName:(id)name;
+- (void)setResolvedName:(id)name;
 - (void)symbolOffset;
 - (void)symbolSize;
 - (void)symbolWeight;
@@ -69,11 +69,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = IFGraphicSymbolDescriptor;
-  v4 = [(IFSymbolImageDescriptor *)&v12 copyWithZone:a3];
+  v4 = [(IFSymbolImageDescriptor *)&v12 copyWithZone:zone];
   v4[17] = self->_size;
   v5 = [(NSArray *)self->_enclosureColors copy];
   v6 = *(v4 + 10);
@@ -118,24 +118,24 @@ uint64_t __58__IFGraphicSymbolDescriptor__debugDynamicGraphicIconColor__block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_colorForIFSystemColor:(int64_t)a3
+- (id)_colorForIFSystemColor:(int64_t)color
 {
-  v3 = [[IFColor alloc] initWithSystemColor:a3 appearance:[(IFGraphicSymbolDescriptor *)self appearance] contrast:[(IFGraphicSymbolDescriptor *)self contrast] vibrancy:[(IFGraphicSymbolDescriptor *)self vibrancy]];
+  v3 = [[IFColor alloc] initWithSystemColor:color appearance:[(IFGraphicSymbolDescriptor *)self appearance] contrast:[(IFGraphicSymbolDescriptor *)self contrast] vibrancy:[(IFGraphicSymbolDescriptor *)self vibrancy]];
 
   return v3;
 }
 
-- (id)_resolvedColorsForColors:(id)a3 defaultColor:(id)a4
+- (id)_resolvedColorsForColors:(id)colors defaultColor:(id)color
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  colorsCopy = colors;
+  colorCopy = color;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v5;
+  v8 = colorsCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v9)
   {
@@ -178,7 +178,7 @@ uint64_t __58__IFGraphicSymbolDescriptor__debugDynamicGraphicIconColor__block_in
               _os_log_debug_impl(&dword_1B9DEC000, v16, OS_LOG_TYPE_DEBUG, "Unexpected color %@", buf, 0xCu);
             }
 
-            v15 = v6[2](v6);
+            v15 = colorCopy[2](colorCopy);
           }
         }
 
@@ -204,16 +204,16 @@ uint64_t __58__IFGraphicSymbolDescriptor__debugDynamicGraphicIconColor__block_in
   if (enclosureColors && [(NSArray *)enclosureColors count])
   {
     v4 = +[IFGraphicSymbolDefaults sharedInstance];
-    v5 = [v4 symbolColorAlternate];
+    symbolColorAlternate = [v4 symbolColorAlternate];
   }
 
   else
   {
     v4 = +[IFGraphicSymbolDefaults sharedInstance];
-    v5 = [v4 symbolColor];
+    symbolColorAlternate = [v4 symbolColor];
   }
 
-  v6 = [(IFGraphicSymbolDescriptor *)self _colorForIFSystemColor:v5];
+  v6 = [(IFGraphicSymbolDescriptor *)self _colorForIFSystemColor:symbolColorAlternate];
 
   return v6;
 }
@@ -224,16 +224,16 @@ uint64_t __58__IFGraphicSymbolDescriptor__debugDynamicGraphicIconColor__block_in
   if (symbolColors && [(NSArray *)symbolColors count])
   {
     v4 = +[IFGraphicSymbolDefaults sharedInstance];
-    v5 = [v4 enclosureColorAlternate];
+    enclosureColorAlternate = [v4 enclosureColorAlternate];
   }
 
   else
   {
     v4 = +[IFGraphicSymbolDefaults sharedInstance];
-    v5 = [v4 enclosureColor];
+    enclosureColorAlternate = [v4 enclosureColor];
   }
 
-  v6 = [(IFGraphicSymbolDescriptor *)self _colorForIFSystemColor:v5];
+  v6 = [(IFGraphicSymbolDescriptor *)self _colorForIFSystemColor:enclosureColorAlternate];
 
   return v6;
 }
@@ -255,8 +255,8 @@ uint64_t __58__IFGraphicSymbolDescriptor__debugDynamicGraphicIconColor__block_in
 
   else
   {
-    v6 = [(IFGraphicSymbolDescriptor *)self _defaultSymbolColor];
-    v9[0] = v6;
+    _defaultSymbolColor = [(IFGraphicSymbolDescriptor *)self _defaultSymbolColor];
+    v9[0] = _defaultSymbolColor;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -280,8 +280,8 @@ uint64_t __58__IFGraphicSymbolDescriptor__debugDynamicGraphicIconColor__block_in
 
   else
   {
-    v6 = [(IFGraphicSymbolDescriptor *)self _defaultEnclosureColor];
-    v9[0] = v6;
+    _defaultEnclosureColor = [(IFGraphicSymbolDescriptor *)self _defaultEnclosureColor];
+    v9[0] = _defaultEnclosureColor;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -295,20 +295,20 @@ uint64_t __58__IFGraphicSymbolDescriptor__debugDynamicGraphicIconColor__block_in
   {
     if ([(IFGraphicSymbolDescriptor *)self appearance]== 1)
     {
-      v3 = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
-      if ([v3 count] == 1)
+      _processedEnclosureColors = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
+      if ([_processedEnclosureColors count] == 1)
       {
-        v4 = [v3 objectAtIndexedSubscript:0];
+        v4 = [_processedEnclosureColors objectAtIndexedSubscript:0];
         v5 = +[IFColor white];
         if ([v4 isEqual:v5])
         {
 
 LABEL_14:
-          v8 = [(IFGraphicSymbolDescriptor *)self _processedSymbolColors];
+          _processedSymbolColors = [(IFGraphicSymbolDescriptor *)self _processedSymbolColors];
           goto LABEL_16;
         }
 
-        v10 = [v3 objectAtIndexedSubscript:0];
+        v10 = [_processedEnclosureColors objectAtIndexedSubscript:0];
         v11 = +[IFColor black];
         v12 = [v10 isEqual:v11];
 
@@ -318,18 +318,18 @@ LABEL_14:
         }
       }
 
-      v8 = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
+      _processedSymbolColors = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
       goto LABEL_16;
     }
 
     if ([(IFGraphicSymbolDescriptor *)self appearance]== 2)
     {
-      v9 = [(IFSymbolImageDescriptor *)self tintColor];
+      tintColor = [(IFSymbolImageDescriptor *)self tintColor];
 
-      if (v9)
+      if (tintColor)
       {
-        v3 = [(IFSymbolImageDescriptor *)self tintColor];
-        v18[0] = v3;
+        _processedEnclosureColors = [(IFSymbolImageDescriptor *)self tintColor];
+        v18[0] = _processedEnclosureColors;
         v6 = MEMORY[0x1E695DEC8];
         v7 = v18;
         goto LABEL_9;
@@ -346,22 +346,22 @@ LABEL_14:
 
   else if ([(IFGraphicSymbolDescriptor *)self appearanceVariant]== 3 || [(IFGraphicSymbolDescriptor *)self appearanceVariant]== 2)
   {
-    v3 = +[IFColor white];
-    v17 = v3;
+    _processedEnclosureColors = +[IFColor white];
+    v17 = _processedEnclosureColors;
     v6 = MEMORY[0x1E695DEC8];
     v7 = &v17;
 LABEL_9:
-    v8 = [v6 arrayWithObjects:v7 count:1];
+    _processedSymbolColors = [v6 arrayWithObjects:v7 count:1];
 LABEL_16:
-    v13 = v8;
+    _processedSymbolColors2 = _processedSymbolColors;
 
     goto LABEL_21;
   }
 
-  v13 = [(IFGraphicSymbolDescriptor *)self _processedSymbolColors];
+  _processedSymbolColors2 = [(IFGraphicSymbolDescriptor *)self _processedSymbolColors];
 LABEL_21:
 
-  return v13;
+  return _processedSymbolColors2;
 }
 
 - (NSArray)resolvedEnclosureColors
@@ -373,28 +373,28 @@ LABEL_21:
     v4 = [[IFColor alloc] initWithRed:0.0784 green:0.0784 blue:0.0784 alpha:1.0];
     v7[0] = v3;
     v7[1] = v4;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
+    _processedEnclosureColors = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
   }
 
   else
   {
-    v5 = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
+    _processedEnclosureColors = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
   }
 
-  return v5;
+  return _processedEnclosureColors;
 }
 
-- (int64_t)resolvedRenderingModeFromSuggestedMode:(int64_t)a3
+- (int64_t)resolvedRenderingModeFromSuggestedMode:(int64_t)mode
 {
-  v5 = [(IFGraphicSymbolDescriptor *)self renderingMode];
-  if (v5 <= 3)
+  renderingMode = [(IFGraphicSymbolDescriptor *)self renderingMode];
+  if (renderingMode <= 3)
   {
-    if (v5 == 2)
+    if (renderingMode == 2)
     {
       return 3;
     }
 
-    if (v5 == 3)
+    if (renderingMode == 3)
     {
       return 1;
     }
@@ -402,22 +402,22 @@ LABEL_21:
     goto LABEL_8;
   }
 
-  if (v5 != 4)
+  if (renderingMode != 4)
   {
-    if (v5 == 5)
+    if (renderingMode == 5)
     {
       return 4;
     }
 
 LABEL_8:
-    if ((a3 - 1) >= 3)
+    if ((mode - 1) >= 3)
     {
       return 1;
     }
 
     else
     {
-      return a3;
+      return mode;
     }
   }
 
@@ -437,38 +437,38 @@ LABEL_8:
 
 - (int64_t)resolvedShape
 {
-  v2 = [(IFGraphicSymbolDescriptor *)self shape];
-  if (v2 == 3)
+  shape = [(IFGraphicSymbolDescriptor *)self shape];
+  if (shape == 3)
   {
     return 2;
   }
 
   else
   {
-    return v2 == 2;
+    return shape == 2;
   }
 }
 
 - (CUIEncapsulationShape)encapsulationShape
 {
-  v2 = [(IFGraphicSymbolDescriptor *)self shape];
-  switch(v2)
+  shape = [(IFGraphicSymbolDescriptor *)self shape];
+  switch(shape)
   {
     case 3:
-      v3 = [MEMORY[0x1E6999380] newCapsule];
+      newCapsule = [MEMORY[0x1E6999380] newCapsule];
       break;
     case 2:
-      v3 = [MEMORY[0x1E6999380] newCircle];
+      newCapsule = [MEMORY[0x1E6999380] newCircle];
       break;
     case 1:
-      v3 = [MEMORY[0x1E6999380] newRoundedRect];
+      newCapsule = [MEMORY[0x1E6999380] newRoundedRect];
       break;
     default:
-      v3 = 0;
+      newCapsule = 0;
       break;
   }
 
-  return v3;
+  return newCapsule;
 }
 
 - (int64_t)fill
@@ -483,10 +483,10 @@ LABEL_8:
     else
     {
       v5 = +[IFDefaults sharedInstance];
-      v6 = [v5 iconStackAppIconsAllowed];
+      iconStackAppIconsAllowed = [v5 iconStackAppIconsAllowed];
 
       v3 = 1;
-      if (v6)
+      if (iconStackAppIconsAllowed)
       {
         v3 = 2;
       }
@@ -508,15 +508,15 @@ LABEL_8:
 
 - (int64_t)resolvedFill
 {
-  v2 = [(IFGraphicSymbolDescriptor *)self fill];
-  if ((v2 - 2) >= 3)
+  fill = [(IFGraphicSymbolDescriptor *)self fill];
+  if ((fill - 2) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return v2 - 1;
+    return fill - 1;
   }
 }
 
@@ -542,16 +542,16 @@ LABEL_8:
   return result;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  objc_storeStrong(&self->_name, a3);
+  objc_storeStrong(&self->_name, name);
 
   [(IFGraphicSymbolDescriptor *)self checkForSymbolOverride];
 }
 
-- (void)setResolvedName:(id)a3
+- (void)setResolvedName:(id)name
 {
-  objc_storeStrong(&self->_resolvedName, a3);
+  objc_storeStrong(&self->_resolvedName, name);
 
   [(IFGraphicSymbolDescriptor *)self checkForSymbolOverride];
 }
@@ -561,15 +561,15 @@ LABEL_8:
   resolvedName = self->_resolvedName;
   if (resolvedName)
   {
-    v3 = resolvedName;
+    name = resolvedName;
   }
 
   else
   {
-    v3 = [(IFGraphicSymbolDescriptor *)self name];
+    name = [(IFGraphicSymbolDescriptor *)self name];
   }
 
-  return v3;
+  return name;
 }
 
 - (BOOL)_addLightModeBorder
@@ -577,8 +577,8 @@ LABEL_8:
   result = 0;
   if (([(IFGraphicSymbolDescriptor *)self platform]& 0x3C) != 0 && [(IFGraphicSymbolDescriptor *)self fill]== 1 && ![(IFGraphicSymbolDescriptor *)self appearance])
   {
-    v3 = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
-    v4 = [v3 objectAtIndexedSubscript:0];
+    _processedEnclosureColors = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
+    v4 = [_processedEnclosureColors objectAtIndexedSubscript:0];
     v5 = +[IFColor white];
     v6 = [v4 isEqual:v5];
 
@@ -598,8 +598,8 @@ LABEL_8:
   {
     if ([(IFGraphicSymbolDescriptor *)self fill]== 1 && [(IFGraphicSymbolDescriptor *)self appearance]== 1)
     {
-      v3 = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
-      v4 = [v3 objectAtIndexedSubscript:0];
+      _processedEnclosureColors = [(IFGraphicSymbolDescriptor *)self _processedEnclosureColors];
+      v4 = [_processedEnclosureColors objectAtIndexedSubscript:0];
       v5 = +[IFColor black];
       v6 = [v4 isEqual:v5];
 
@@ -672,7 +672,7 @@ LABEL_8:
 
 - (void)checkForSymbolOverride
 {
-  v1 = [a1 symbolOverride];
+  symbolOverride = [self symbolOverride];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x20u);
@@ -680,8 +680,8 @@ LABEL_8:
 
 - (double)pointSize
 {
-  v3 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
-  [v3 pointSizeAdjuster];
+  symbolOverride = [(IFGraphicSymbolDescriptor *)self symbolOverride];
+  [symbolOverride pointSizeAdjuster];
   v5 = v4;
 
   if (v5 <= 0.0)
@@ -699,8 +699,8 @@ LABEL_8:
 
     [(IFGraphicSymbolDescriptor *)self size];
     v8 = v13;
-    v9 = +[IFGraphicSymbolDefaults sharedInstance];
-    [v9 enclosureSizeMultiplier];
+    symbolOverride2 = +[IFGraphicSymbolDefaults sharedInstance];
+    [symbolOverride2 enclosureSizeMultiplier];
   }
 
   else
@@ -713,8 +713,8 @@ LABEL_8:
 
     [(IFGraphicSymbolDescriptor *)self size];
     v8 = v7;
-    v9 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
-    [v9 pointSizeAdjuster];
+    symbolOverride2 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
+    [symbolOverride2 pointSizeAdjuster];
     v11 = v10;
   }
 
@@ -725,10 +725,10 @@ LABEL_8:
 
 - (unint64_t)symbolSize
 {
-  v3 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
-  v4 = [v3 symbolSize];
+  symbolOverride = [(IFGraphicSymbolDescriptor *)self symbolOverride];
+  symbolSize = [symbolOverride symbolSize];
 
-  if (v4)
+  if (symbolSize)
   {
     v5 = IFDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -736,8 +736,8 @@ LABEL_8:
       [(IFGraphicSymbolDescriptor *)self symbolSize];
     }
 
-    v6 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
-    v7 = [v6 symbolSize];
+    symbolOverride2 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
+    symbolSize2 = [symbolOverride2 symbolSize];
   }
 
   else
@@ -747,15 +747,15 @@ LABEL_8:
     return [(IFSymbolImageDescriptor *)&v9 symbolSize];
   }
 
-  return v7;
+  return symbolSize2;
 }
 
 - (int64_t)symbolWeight
 {
-  v3 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
-  v4 = [v3 symbolWeight];
+  symbolOverride = [(IFGraphicSymbolDescriptor *)self symbolOverride];
+  symbolWeight = [symbolOverride symbolWeight];
 
-  if (v4)
+  if (symbolWeight)
   {
     v5 = IFDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -763,8 +763,8 @@ LABEL_8:
       [(IFGraphicSymbolDescriptor *)self symbolWeight];
     }
 
-    v6 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
-    v7 = [v6 symbolWeight];
+    symbolOverride2 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
+    symbolWeight2 = [symbolOverride2 symbolWeight];
   }
 
   else
@@ -774,14 +774,14 @@ LABEL_8:
     return [(IFSymbolImageDescriptor *)&v9 symbolWeight];
   }
 
-  return v7;
+  return symbolWeight2;
 }
 
 - (CGSize)symbolOffset
 {
-  v3 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
+  symbolOverride = [(IFGraphicSymbolDescriptor *)self symbolOverride];
 
-  if (v3)
+  if (symbolOverride)
   {
     v4 = IFDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -789,14 +789,14 @@ LABEL_8:
       [(IFGraphicSymbolDescriptor *)self symbolOffset];
     }
 
-    v5 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
-    [v5 offset];
+    symbolOverride2 = [(IFGraphicSymbolDescriptor *)self symbolOverride];
+    [symbolOverride2 offset];
     v7 = v6;
     height = v8;
 
-    v10 = [(IFGraphicSymbolDescriptor *)self flipXOffsetOverride];
+    flipXOffsetOverride = [(IFGraphicSymbolDescriptor *)self flipXOffsetOverride];
     width = -v7;
-    if (!v10)
+    if (!flipXOffsetOverride)
     {
       width = v7;
     }
@@ -821,20 +821,20 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v3 = [(IFGraphicSymbolDescriptor *)self appearance];
-  if (v3 != 1)
+  appearance = [(IFGraphicSymbolDescriptor *)self appearance];
+  if (appearance != 1)
   {
     if ([(IFGraphicSymbolDescriptor *)self appearance]== 2)
     {
-      LOBYTE(v3) = 1;
-      return v3;
+      LOBYTE(appearance) = 1;
+      return appearance;
     }
 
 LABEL_5:
-    LOBYTE(v3) = 0;
+    LOBYTE(appearance) = 0;
   }
 
-  return v3;
+  return appearance;
 }
 
 - (id)description
@@ -864,7 +864,7 @@ LABEL_5:
 
 - (void)pointSize
 {
-  v1 = [a1 name];
+  name = [self name];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -872,7 +872,7 @@ LABEL_5:
 
 - (void)symbolSize
 {
-  v1 = [a1 name];
+  name = [self name];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -880,7 +880,7 @@ LABEL_5:
 
 - (void)symbolWeight
 {
-  v1 = [a1 name];
+  name = [self name];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -888,7 +888,7 @@ LABEL_5:
 
 - (void)symbolOffset
 {
-  v1 = [a1 name];
+  name = [self name];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);

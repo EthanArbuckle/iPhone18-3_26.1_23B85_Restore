@@ -1,42 +1,42 @@
 @interface _CDCacheCandidate
-- (BOOL)isEqual:(id)a3;
-- (_CDCacheCandidate)initWithDomainId:(id)a3 derivedIntentId:(id)a4 bundleId:(id)a5 recipientsId:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (_CDCacheCandidate)initWithDomainId:(id)id derivedIntentId:(id)intentId bundleId:(id)bundleId recipientsId:(id)recipientsId;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _CDCacheCandidate
 
-- (_CDCacheCandidate)initWithDomainId:(id)a3 derivedIntentId:(id)a4 bundleId:(id)a5 recipientsId:(id)a6
+- (_CDCacheCandidate)initWithDomainId:(id)id derivedIntentId:(id)intentId bundleId:(id)bundleId recipientsId:(id)recipientsId
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  idCopy = id;
+  intentIdCopy = intentId;
+  bundleIdCopy = bundleId;
+  recipientsIdCopy = recipientsId;
   v18.receiver = self;
   v18.super_class = _CDCacheCandidate;
   v15 = [(_CDCacheCandidate *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_domainId, a3);
-    objc_storeStrong(&v16->_derivedIntentId, a4);
-    objc_storeStrong(&v16->_bundleId, a5);
-    objc_storeStrong(&v16->_recipientsId, a6);
+    objc_storeStrong(&v15->_domainId, id);
+    objc_storeStrong(&v16->_derivedIntentId, intentId);
+    objc_storeStrong(&v16->_bundleId, bundleId);
+    objc_storeStrong(&v16->_recipientsId, recipientsId);
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_domainId;
       v7 = v6;
       if (v6 == v5[1])

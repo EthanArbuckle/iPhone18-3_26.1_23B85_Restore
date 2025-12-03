@@ -1,7 +1,7 @@
 @interface ShortcutsRowCellModel
 - (GEOObserverHashTable)observers;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ShortcutsRowCellModel
@@ -21,18 +21,18 @@
   return observers;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ShortcutsRowCellModel *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(ShortcutsRowCellModel *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ShortcutsRowCellModel *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(ShortcutsRowCellModel *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 @end

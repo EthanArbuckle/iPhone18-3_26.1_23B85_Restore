@@ -1,23 +1,23 @@
 @interface FigCoreTelephony
-- (FigCoreTelephony)initWithError:(id *)a3;
+- (FigCoreTelephony)initWithError:(id *)error;
 - (id)getLatestCellStats;
 - (void)dealloc;
 - (void)saveCarrierName;
-- (void)updateCellStatsWithLatestSignalStrengthInfo:(id)a3;
-- (void)withCellStatsLock:(id)a3;
+- (void)updateCellStatsWithLatestSignalStrengthInfo:(id)info;
+- (void)withCellStatsLock:(id)lock;
 @end
 
 @implementation FigCoreTelephony
 
-- (void)withCellStatsLock:(id)a3
+- (void)withCellStatsLock:(id)lock
 {
-  v3 = a3;
+  lockCopy = lock;
   if (FigSimpleMutexLock())
   {
     [FigCoreTelephony withCellStatsLock:];
   }
 
-  v3[2]();
+  lockCopy[2]();
   if (FigSimpleMutexUnlock())
   {
     [FigCoreTelephony withCellStatsLock:];
@@ -45,7 +45,7 @@
   return v2;
 }
 
-- (FigCoreTelephony)initWithError:(id *)a3
+- (FigCoreTelephony)initWithError:(id *)error
 {
   v17.receiver = self;
   v17.super_class = FigCoreTelephony;
@@ -55,7 +55,7 @@
     [FigCoreWiFi initWithError:?];
     v12 = 0;
     v13 = v18;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -75,11 +75,11 @@
 
   v12 = v11;
   v13 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_5:
     v13 = v13;
-    *a3 = v13;
+    *error = v13;
   }
 
 LABEL_6:
@@ -154,9 +154,9 @@ void __35__FigCoreTelephony_saveCarrierName__block_invoke(void *a1)
   [(FigCoreTelephony *)&v3 dealloc];
 }
 
-- (void)updateCellStatsWithLatestSignalStrengthInfo:(id)a3
+- (void)updateCellStatsWithLatestSignalStrengthInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self->carrierName)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -183,22 +183,22 @@ void __35__FigCoreTelephony_saveCarrierName__block_invoke(void *a1)
         goto LABEL_7;
       }
 
-      v12 = [v10 rssi];
+      rssi = [v10 rssi];
       OUTLINED_FUNCTION_12_51();
 
-      v13 = [v10 rsrp];
+      rsrp = [v10 rsrp];
       OUTLINED_FUNCTION_12_51();
 
-      v14 = [v10 rscp];
+      rscp = [v10 rscp];
       OUTLINED_FUNCTION_12_51();
 
-      v15 = [v10 rsrq];
+      rsrq = [v10 rsrq];
       OUTLINED_FUNCTION_12_51();
 
       v16 = [v10 snr];
       OUTLINED_FUNCTION_12_51();
 
-      v17 = [v4 bars];
+      bars = [infoCopy bars];
       OUTLINED_FUNCTION_12_51();
 
       [v5 setValue:self->carrierName forKey:@"carrier"];

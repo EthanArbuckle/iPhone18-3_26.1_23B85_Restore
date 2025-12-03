@@ -3,34 +3,34 @@
 - (BOOL)isDiscovering;
 - (CUBonjourBrowser)browser;
 - (HAP2AccessoryServerDiscoveryBonjourLegacy)init;
-- (HAP2AccessoryServerDiscoveryBonjourLegacy)initWithServiceType:(id)a3 domain:(id)a4;
+- (HAP2AccessoryServerDiscoveryBonjourLegacy)initWithServiceType:(id)type domain:(id)domain;
 - (HAP2AccessoryServerDiscoveryDelegate)delegate;
-- (void)_handleBrowserStopped:(id)a3;
-- (void)_handleDeviceFoundOrChanged:(id)a3;
-- (void)_handleDeviceLost:(id)a3;
-- (void)_reconfirmAccessory:(id)a3;
+- (void)_handleBrowserStopped:(id)stopped;
+- (void)_handleDeviceFoundOrChanged:(id)changed;
+- (void)_handleDeviceLost:(id)lost;
+- (void)_reconfirmAccessory:(id)accessory;
 - (void)_startBrowser;
 - (void)_startDiscovering;
 - (void)_stopBrowser;
 - (void)_stopDiscovering;
 - (void)dealloc;
-- (void)reconfirmAccessory:(id)a3;
-- (void)setBrowser:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDiscovering:(BOOL)a3;
+- (void)reconfirmAccessory:(id)accessory;
+- (void)setBrowser:(id)browser;
+- (void)setDelegate:(id)delegate;
+- (void)setDiscovering:(BOOL)discovering;
 - (void)startDiscovering;
 - (void)stopDiscovering;
 @end
 
 @implementation HAP2AccessoryServerDiscoveryBonjourLegacy
 
-- (void)_handleBrowserStopped:(id)a3
+- (void)_handleBrowserStopped:(id)stopped
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  stoppedCopy = stopped;
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self browser];
+  browser = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self browser];
 
   if (hap2LogInitialize_onceToken != -1)
   {
@@ -38,7 +38,7 @@
   }
 
   v7 = hap2Log_browser;
-  if (v6 == v4)
+  if (browser == stoppedCopy)
   {
     if (os_log_type_enabled(hap2Log_browser, OS_LOG_TYPE_ERROR))
     {
@@ -62,36 +62,36 @@
   }
 
   [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self setDiscovering:0];
-  v9 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegate];
+  delegate = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegateQueue];
+    delegateQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__HAP2AccessoryServerDiscoveryBonjourLegacy__handleBrowserStopped___block_invoke;
     block[3] = &unk_2786D7078;
-    v12 = v9;
-    v13 = self;
+    v12 = delegate;
+    selfCopy = self;
     v14 = v8;
-    dispatch_async(v10, block);
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)_handleDeviceLost:(id)a3
+- (void)_handleDeviceLost:(id)lost
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  lostCopy = lost;
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HAP2AccessoryServerDiscoveryBonjourLegacy *)self isDiscovering])
   {
-    v6 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegate];
-    if (v6)
+    delegate = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegate];
+    if (delegate)
     {
-      v7 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
-      v8 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self domain];
-      v9 = accessoryInfoForBonjourDevice(v4, v7, v8);
+      type = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
+      domain = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self domain];
+      v9 = accessoryInfoForBonjourDevice(lostCopy, type, domain);
 
       if (v9)
       {
@@ -104,23 +104,23 @@
         if (os_log_type_enabled(hap2Log_browser, OS_LOG_TYPE_DEFAULT))
         {
           v11 = v10;
-          v12 = [v9 rawDiscoveryInfo];
-          v13 = [v12 objectForKeyedSubscript:@"bonjourServiceName"];
-          v14 = [v9 rawDiscoveryInfo];
-          v15 = [v14 objectForKeyedSubscript:@"bonjourServiceType"];
-          v16 = [v9 deviceID];
+          rawDiscoveryInfo = [v9 rawDiscoveryInfo];
+          v13 = [rawDiscoveryInfo objectForKeyedSubscript:@"bonjourServiceName"];
+          rawDiscoveryInfo2 = [v9 rawDiscoveryInfo];
+          v15 = [rawDiscoveryInfo2 objectForKeyedSubscript:@"bonjourServiceType"];
+          deviceID = [v9 deviceID];
           v19 = 138478339;
           v20 = v13;
           v21 = 2112;
           v22 = v15;
           v23 = 2112;
-          v24 = v16;
+          v24 = deviceID;
           _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_DEFAULT, "Lost accessory: %{private}@.%@: %@", &v19, 0x20u);
         }
 
         if (objc_opt_respondsToSelector())
         {
-          [v6 discovery:self didLoseAccessory:v9 error:0];
+          [delegate discovery:self didLoseAccessory:v9 error:0];
         }
       }
     }
@@ -144,21 +144,21 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeviceFoundOrChanged:(id)a3
+- (void)_handleDeviceFoundOrChanged:(id)changed
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HAP2AccessoryServerDiscoveryBonjourLegacy *)self isDiscovering])
   {
-    v6 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegate];
-    if (v6)
+    delegate = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegate];
+    if (delegate)
     {
-      v7 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
-      v8 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self domain];
-      v9 = accessoryInfoForBonjourDevice(v4, v7, v8);
+      type = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
+      domain = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self domain];
+      v9 = accessoryInfoForBonjourDevice(changedCopy, type, domain);
 
       if (v9)
       {
@@ -171,21 +171,21 @@
         if (os_log_type_enabled(hap2Log_browser, OS_LOG_TYPE_DEFAULT))
         {
           v11 = v10;
-          v12 = [v9 rawDiscoveryInfo];
-          v13 = [v12 objectForKeyedSubscript:@"bonjourServiceName"];
-          v14 = [v9 rawDiscoveryInfo];
-          v15 = [v14 objectForKeyedSubscript:@"bonjourServiceType"];
-          v16 = [v9 deviceID];
+          rawDiscoveryInfo = [v9 rawDiscoveryInfo];
+          v13 = [rawDiscoveryInfo objectForKeyedSubscript:@"bonjourServiceName"];
+          rawDiscoveryInfo2 = [v9 rawDiscoveryInfo];
+          v15 = [rawDiscoveryInfo2 objectForKeyedSubscript:@"bonjourServiceType"];
+          deviceID = [v9 deviceID];
           v19 = 138478339;
           v20 = v13;
           v21 = 2112;
           v22 = v15;
           v23 = 2112;
-          v24 = v16;
+          v24 = deviceID;
           _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_DEFAULT, "Found accessory: %{private}@.%@: %@", &v19, 0x20u);
         }
 
-        [v6 discovery:self didDiscoverAccessory:v9];
+        [delegate discovery:self didDiscoverAccessory:v9];
       }
     }
   }
@@ -210,35 +210,35 @@
 
 - (void)_stopBrowser
 {
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self browser];
+  browser = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self browser];
   [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self setBrowser:0];
-  [v4 invalidate];
+  [browser invalidate];
 }
 
 - (void)_startBrowser
 {
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_alloc_init(MEMORY[0x277D02848]);
   [v4 setBrowseFlags:0x800000000000000];
   [v4 setChangeFlags:0xFFFFFFFFLL];
   [v4 setControlFlags:1];
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  [v4 setDispatchQueue:v5];
+  workQueue2 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  [v4 setDispatchQueue:workQueue2];
 
-  v6 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self domain];
-  [v4 setDomain:v6];
+  domain = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self domain];
+  [v4 setDomain:domain];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [v4 setLabel:v8];
 
-  v9 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
-  [v4 setServiceType:v9];
+  type = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
+  [v4 setServiceType:type];
 
   objc_initWeak(&location, self);
   v22[0] = MEMORY[0x277D85DD0];
@@ -399,16 +399,16 @@ void __58__HAP2AccessoryServerDiscoveryBonjourLegacy__startBrowser__block_invoke
   }
 }
 
-- (void)_reconfirmAccessory:(id)a3
+- (void)_reconfirmAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  accessoryCopy = accessory;
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HAP2AccessoryServerDiscoveryBonjourLegacy *)self isDiscovering])
   {
-    v6 = [v4 deviceID];
+    deviceID = [accessoryCopy deviceID];
     if (hap2LogInitialize_onceToken != -1)
     {
       dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
@@ -418,12 +418,12 @@ void __58__HAP2AccessoryServerDiscoveryBonjourLegacy__startBrowser__block_invoke
     if (os_log_type_enabled(hap2Log_browser, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = deviceID;
       _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to reconfirm accessory '%@'", &buf, 0xCu);
     }
 
-    v8 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self browser];
-    v9 = [v8 devices];
+    browser = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self browser];
+    devices = [browser devices];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -433,10 +433,10 @@ void __58__HAP2AccessoryServerDiscoveryBonjourLegacy__startBrowser__block_invoke
     v14[1] = 3221225472;
     v14[2] = __65__HAP2AccessoryServerDiscoveryBonjourLegacy__reconfirmAccessory___block_invoke;
     v14[3] = &unk_2786D49C8;
-    v10 = v6;
+    v10 = deviceID;
     v15 = v10;
     p_buf = &buf;
-    [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
+    [devices hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
     if ((*(*(&buf + 1) + 24) & 1) == 0)
     {
       if (hap2LogInitialize_onceToken != -1)
@@ -547,24 +547,24 @@ void __65__HAP2AccessoryServerDiscoveryBonjourLegacy__reconfirmAccessory___block
 - (void)_stopDiscovering
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self isDiscovering];
+  isDiscovering = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self isDiscovering];
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
   }
 
   v5 = hap2Log_browser;
-  if (v4)
+  if (isDiscovering)
   {
     if (os_log_type_enabled(hap2Log_browser, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
+      type = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
       v9 = 138412290;
-      v10 = v7;
+      v10 = type;
       _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_DEFAULT, "Stopping discovery of services with type '%@'", &v9, 0xCu);
     }
 
@@ -584,17 +584,17 @@ void __65__HAP2AccessoryServerDiscoveryBonjourLegacy__reconfirmAccessory___block
 - (void)_startDiscovering
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self isDiscovering];
+  isDiscovering = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self isDiscovering];
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
   }
 
   v5 = hap2Log_browser;
-  if (v4)
+  if (isDiscovering)
   {
     if (os_log_type_enabled(hap2Log_browser, OS_LOG_TYPE_INFO))
     {
@@ -608,25 +608,25 @@ void __65__HAP2AccessoryServerDiscoveryBonjourLegacy__reconfirmAccessory___block
     if (os_log_type_enabled(hap2Log_browser, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
+      type = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self type];
       *buf = 138412290;
-      v19 = v7;
+      v19 = type;
       _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_DEFAULT, "Starting to discover services with type '%@'", buf, 0xCu);
     }
 
     [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self _startBrowser];
     [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self setDiscovering:1];
-    v8 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegate];
+    delegate = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegateQueue];
+      delegateQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self delegateQueue];
       v12 = MEMORY[0x277D85DD0];
       v13 = 3221225472;
       v14 = __62__HAP2AccessoryServerDiscoveryBonjourLegacy__startDiscovering__block_invoke;
       v15 = &unk_2786D7050;
-      v16 = v8;
-      v17 = self;
-      dispatch_async(v9, &v12);
+      v16 = delegate;
+      selfCopy = self;
+      dispatch_async(delegateQueue, &v12);
     }
 
     v10 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue:v12];
@@ -651,107 +651,107 @@ void __62__HAP2AccessoryServerDiscoveryBonjourLegacy__startDiscovering__block_in
   }
 }
 
-- (void)reconfirmAccessory:(id)a3
+- (void)reconfirmAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  accessoryCopy = accessory;
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HAP2AccessoryServerDiscoveryBonjourLegacy_reconfirmAccessory___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (void)stopDiscovering
 {
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__HAP2AccessoryServerDiscoveryBonjourLegacy_stopDiscovering__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)startDiscovering
 {
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__HAP2AccessoryServerDiscoveryBonjourLegacy_startDiscovering__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)setBrowser:(id)a3
+- (void)setBrowser:(id)browser
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  browserCopy = browser;
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   browser = self->_browser;
-  self->_browser = v4;
+  self->_browser = browserCopy;
 }
 
 - (CUBonjourBrowser)browser
 {
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   browser = self->_browser;
 
   return browser;
 }
 
-- (void)setDiscovering:(BOOL)a3
+- (void)setDiscovering:(BOOL)discovering
 {
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__HAP2AccessoryServerDiscoveryBonjourLegacy_setDiscovering___block_invoke;
   v6[3] = &unk_2786D6768;
   v6[4] = self;
-  v7 = a3;
-  [v5 performWritingBlock:v6];
+  discoveringCopy = discovering;
+  [propertyLock performWritingBlock:v6];
 }
 
 - (BOOL)isDiscovering
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self propertyLock];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__HAP2AccessoryServerDiscoveryBonjourLegacy_isDiscovering__block_invoke;
   v5[3] = &unk_2786D6E60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performReadingBlock:v5];
+  [propertyLock performReadingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self propertyLock];
+  delegateCopy = delegate;
+  propertyLock = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HAP2AccessoryServerDiscoveryBonjourLegacy_setDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (HAP2AccessoryServerDiscoveryDelegate)delegate
@@ -762,14 +762,14 @@ void __62__HAP2AccessoryServerDiscoveryBonjourLegacy__startDiscovering__block_in
   v10 = __Block_byref_object_copy__11841;
   v11 = __Block_byref_object_dispose__11842;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__HAP2AccessoryServerDiscoveryBonjourLegacy_delegate__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -800,10 +800,10 @@ uint64_t __53__HAP2AccessoryServerDiscoveryBonjourLegacy_delegate__block_invoke(
   [(HAP2AccessoryServerDiscoveryBonjourLegacy *)&v4 dealloc];
 }
 
-- (HAP2AccessoryServerDiscoveryBonjourLegacy)initWithServiceType:(id)a3 domain:(id)a4
+- (HAP2AccessoryServerDiscoveryBonjourLegacy)initWithServiceType:(id)type domain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  domainCopy = domain;
   v18.receiver = self;
   v18.super_class = HAP2AccessoryServerDiscoveryBonjourLegacy;
   v9 = [(HAP2AccessoryServerDiscoveryBonjourLegacy *)&v18 init];
@@ -820,8 +820,8 @@ uint64_t __53__HAP2AccessoryServerDiscoveryBonjourLegacy_delegate__block_invoke(
     propertyLock = v10->_propertyLock;
     v10->_propertyLock = v15;
 
-    objc_storeStrong(&v10->_type, a3);
-    objc_storeStrong(&v10->_domain, a4);
+    objc_storeStrong(&v10->_type, type);
+    objc_storeStrong(&v10->_domain, domain);
   }
 
   return v10;

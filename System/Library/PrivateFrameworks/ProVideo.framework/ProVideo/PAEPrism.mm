@@ -1,21 +1,21 @@
 @interface PAEPrism
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAEPrism)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAEPrism)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEPrism
 
-- (PAEPrism)initWithAPIManager:(id)a3
+- (PAEPrism)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEPrism;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -34,13 +34,13 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"MayRemapTime", v4, @"SupportsLargeRenderScale", v5, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (!v6)
   {
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"Unable to retrieve FxParameterRetrievalAPI object", *MEMORY[0x277CCA450], 0}];
-    if (a4)
+    if (error)
     {
       v13 = v17;
       v14 = MEMORY[0x277CCA9B8];
@@ -55,10 +55,10 @@
   v7 = v6;
   v20 = 0;
   v19 = 0.0;
-  if (![v6 getBoolValue:&v20 fromParm:3 atFxTime:a3.var1] || (objc_msgSend(v7, "getFloatValue:fromParm:atFxTime:", &v19, 1, a3.var1) & 1) == 0)
+  if (![v6 getBoolValue:&v20 fromParm:3 atFxTime:time.var1] || (objc_msgSend(v7, "getFloatValue:fromParm:atFxTime:", &v19, 1, time.var1) & 1) == 0)
   {
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"Unable to retrieve a parameter in [-PAEPrism dynamicPropertiesAtTime:withError:]", *MEMORY[0x277CCA450], 0}];
-    if (a4)
+    if (error)
     {
       v13 = v12;
       v14 = MEMORY[0x277CCA9B8];
@@ -67,7 +67,7 @@
 LABEL_12:
       v18 = [v14 errorWithDomain:v15 code:v16 userInfo:v13];
       result = 0;
-      *a4 = v18;
+      *error = v18;
       return result;
     }
 
@@ -120,23 +120,23 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B780];
   v11 = v10;
   if (v10)
   {
     v18 = 0.0;
-    [v10 getFloatValue:&v18 fromParm:1 atFxTime:a6->var0.var1];
+    [v10 getFloatValue:&v18 fromParm:1 atFxTime:info->var0.var1];
     v17 = 0;
-    [v11 getBoolValue:&v17 fromParm:3 atFxTime:a6->var0.var1];
-    var0 = a5->var0;
-    var1 = a5->var1;
+    [v11 getBoolValue:&v17 fromParm:3 atFxTime:info->var0.var1];
+    var0 = input->var0;
+    var1 = input->var1;
     if (v17 == 1)
     {
-      if (a3)
+      if (width)
       {
-        *a3 = var0;
+        *width = var0;
       }
     }
 
@@ -144,49 +144,49 @@ LABEL_12:
     {
       v14 = v18 + v18;
       v15 = (2 * vcvtps_s32_f32(v14));
-      if (a3)
+      if (width)
       {
-        *a3 = var0 + v15;
+        *width = var0 + v15;
       }
 
       var1 += v15;
     }
 
-    if (a4)
+    if (height)
     {
-      *a4 = var1;
+      *height = var1;
     }
   }
 
   return v11 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B780];
   if (v9)
   {
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
     v20[0] = 0.0;
-    [v9 getFloatValue:v20 fromParm:1 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:v20 fromParm:1 atFxTime:info->var0.var1];
     v20[0] = v20[0] * 0.5;
     v19 = 0.0;
-    [v9 getFloatValue:&v19 fromParm:2 atFxTime:a5->var0.var1];
-    if ([a4 origin] == 2)
+    [v9 getFloatValue:&v19 fromParm:2 atFxTime:info->var0.var1];
+    if ([input origin] == 2)
     {
       v19 = -v19;
     }
 
     v18 = 0;
-    [v9 getBoolValue:&v18 fromParm:3 atFxTime:a5->var0.var1];
-    v10 = [a4 imageType];
-    if ([(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1]&& v10 == 3)
+    [v9 getBoolValue:&v18 fromParm:3 atFxTime:info->var0.var1];
+    imageType = [input imageType];
+    if ([(PAESharedDefaultBase *)self getRenderMode:info->var0.var1]&& imageType == 3)
     {
       if (v20[0] == 0.0)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -194,7 +194,7 @@ LABEL_12:
           v16.f64[0] = 0.0;
         }
 
-        [a3 setHeliumRef:&v16];
+        [output setHeliumRef:&v16];
         if (*&v16.f64[0])
         {
           (*(**&v16.f64[0] + 24))(*&v16.f64[0]);
@@ -203,9 +203,9 @@ LABEL_12:
 
       else
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -227,10 +227,10 @@ LABEL_12:
         (*(*v11 + 16))(v11);
         if (v18 == 1)
         {
-          [(PAESharedDefaultBase *)self crop:&v16 fromImage:a4 toImage:a3];
+          [(PAESharedDefaultBase *)self crop:&v16 fromImage:input toImage:output];
         }
 
-        [a3 setHeliumRef:&v16];
+        [output setHeliumRef:&v16];
         if (*&v16.f64[0])
         {
           (*(**&v16.f64[0] + 24))(*&v16.f64[0]);
@@ -248,15 +248,15 @@ LABEL_12:
   return v9 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

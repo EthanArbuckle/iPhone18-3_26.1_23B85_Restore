@@ -1,23 +1,23 @@
 @interface THGlossaryIndexSection
 - (NSArray)entries;
-- (THGlossaryIndexSection)initWithSectionTitle:(id)a3 andEntry:(id)a4;
-- (id)entryAtIndex:(int64_t)a3;
-- (int64_t)compare:(id)a3;
-- (int64_t)indexForEntry:(id)a3;
+- (THGlossaryIndexSection)initWithSectionTitle:(id)title andEntry:(id)entry;
+- (id)entryAtIndex:(int64_t)index;
+- (int64_t)compare:(id)compare;
+- (int64_t)indexForEntry:(id)entry;
 - (void)dealloc;
 @end
 
 @implementation THGlossaryIndexSection
 
-- (THGlossaryIndexSection)initWithSectionTitle:(id)a3 andEntry:(id)a4
+- (THGlossaryIndexSection)initWithSectionTitle:(id)title andEntry:(id)entry
 {
   v8.receiver = self;
   v8.super_class = THGlossaryIndexSection;
   v6 = [(THGlossaryIndexSection *)&v8 init];
   if (v6)
   {
-    v6->mSectionTitle = [a3 copy];
-    v6->mEntries = [[NSMutableArray alloc] initWithObjects:{a4, 0}];
+    v6->mSectionTitle = [title copy];
+    v6->mEntries = [[NSMutableArray alloc] initWithObjects:{entry, 0}];
     v6->mEntriesNeedSorting = 0;
   }
 
@@ -34,15 +34,15 @@
   [(THGlossaryIndexSection *)&v3 dealloc];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   mSectionTitle = self->mSectionTitle;
-  v4 = [a3 sectionTitle];
+  sectionTitle = [compare sectionTitle];
 
-  return [(NSString *)mSectionTitle localizedCaseInsensitiveCompare:v4];
+  return [(NSString *)mSectionTitle localizedCaseInsensitiveCompare:sectionTitle];
 }
 
-- (id)entryAtIndex:(int64_t)a3
+- (id)entryAtIndex:(int64_t)index
 {
   if (self->mEntriesNeedSorting)
   {
@@ -52,10 +52,10 @@
 
   mEntries = self->mEntries;
 
-  return [(NSMutableArray *)mEntries objectAtIndex:a3];
+  return [(NSMutableArray *)mEntries objectAtIndex:index];
 }
 
-- (int64_t)indexForEntry:(id)a3
+- (int64_t)indexForEntry:(id)entry
 {
   v12 = 0u;
   v13 = 0u;
@@ -82,7 +82,7 @@ LABEL_3:
       objc_enumerationMutation(mEntries);
     }
 
-    if (*(*(&v12 + 1) + 8 * v9) == a3)
+    if (*(*(&v12 + 1) + 8 * v9) == entry)
     {
       return v10;
     }

@@ -1,13 +1,13 @@
 @interface VKFootprint
-- (BOOL)containsGroundPoint:(const void *)a3;
-- (BOOL)rejectsRect:(const void *)a3;
+- (BOOL)containsGroundPoint:(const void *)point;
+- (BOOL)rejectsRect:(const void *)rect;
 - (Box<double,)_expandedBoundingRect;
 - (Box<double,)boundingRect;
 - (Matrix<double,)furthestGroundPoint;
 - (Matrix<double,)nearestGroundPoint;
 - (id)annotationCoordinateTest;
 - (id)annotationRectTest;
-- (void)computeFromCamera:(id)a3;
+- (void)computeFromCamera:(id)camera;
 @end
 
 @implementation VKFootprint
@@ -204,13 +204,13 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
   return result;
 }
 
-- (BOOL)containsGroundPoint:(const void *)a3
+- (BOOL)containsGroundPoint:(const void *)point
 {
   v4 = 0;
-  v5 = *a3;
-  v6 = *(a3 + 1);
+  v5 = *point;
+  v6 = *(point + 1);
   v7 = 1;
-  v8 = *a3;
+  v8 = *point;
   do
   {
     if (v8 < self->_boundingRect._minimum._e[v4] || v8 >= self->_boundingRect._maximum._e[v4])
@@ -220,13 +220,13 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
 
     v9 = v7;
     v7 = 0;
-    v8 = *(a3 + 1);
+    v8 = *(point + 1);
     v4 = 1;
   }
 
   while ((v9 & 1) != 0);
   memcpy(__dst, &self->_convexHull, sizeof(__dst));
-  v10 = *(a3 + 2);
+  v10 = *(point + 2);
   *v25 = v5;
   v25[1] = v6;
   v25[2] = v10;
@@ -279,14 +279,14 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
   return v13;
 }
 
-- (BOOL)rejectsRect:(const void *)a3
+- (BOOL)rejectsRect:(const void *)rect
 {
   v3 = 0;
-  v4 = a3 + 16;
+  v4 = rect + 16;
   v5 = 1;
   do
   {
-    if (*&v4[v3] <= self->_boundingRect._minimum._e[v3] || *(a3 + v3) >= self->_boundingRect._maximum._e[v3])
+    if (*&v4[v3] <= self->_boundingRect._minimum._e[v3] || *(rect + v3) >= self->_boundingRect._maximum._e[v3])
     {
       return 1;
     }
@@ -301,7 +301,7 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
   edgeCount = self->_convexHull.edgeCount;
   if (edgeCount <= 0)
   {
-    v12 = *a3;
+    v12 = *rect;
   }
 
   else
@@ -309,7 +309,7 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
     v9 = 0;
     edgeOrigin = self->_convexHull.edgeOrigin;
     edgeNormal = self->_convexHull.edgeNormal;
-    v12 = *a3;
+    v12 = *rect;
     v13 = 1;
     do
     {
@@ -328,7 +328,7 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
 
       if (*(&v25 + 1) < 0.0)
       {
-        *(&v23 + 1) = *(a3 + 3);
+        *(&v23 + 1) = *(rect + 3);
       }
 
       for (i = 0; i != 24; i += 8)
@@ -361,7 +361,7 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
   }
 
   v22 = v12;
-  v19 = *(a3 + 3);
+  v19 = *(rect + 3);
   *&v29 = v12;
   *(&v29 + 1) = v19;
   v30 = 0.0;
@@ -401,19 +401,19 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
   return edgeRejectsConvexHull(&v27, &v29, p_convexHull);
 }
 
-- (void)computeFromCamera:(id)a3
+- (void)computeFromCamera:(id)camera
 {
   v75 = *MEMORY[0x1E69E9840];
-  v63 = a3;
-  v4 = [v63 viewVolume];
-  v5 = [v63 position];
-  v74 = *v5;
-  v6 = *(v5 + 16);
-  [v63 forwardVector];
+  cameraCopy = camera;
+  viewVolume = [cameraCopy viewVolume];
+  position = [cameraCopy position];
+  v74 = *position;
+  v6 = *(position + 16);
+  [cameraCopy forwardVector];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 corners];
+  corners = [viewVolume corners];
   v14 = 0;
   v15 = 0;
   self->_cornerGroundPointsCount = 0;
@@ -423,10 +423,10 @@ BOOL __39__VKFootprint_annotationCoordinateTest__block_invoke(uint64_t a1, doubl
     v17 = (&[VKFootprint computeFromCamera:]::edgeList + 8 * v15);
     v18 = *v17;
     LODWORD(v17) = v17[1];
-    v19 = v13 + 24 * v18;
+    v19 = corners + 24 * v18;
     v71 = *(v19 + 16);
     v70 = *v19;
-    v20 = v13 + 24 * v17;
+    v20 = corners + 24 * v17;
     v69 = *(v20 + 16);
     v68 = *v20;
     if (v71 != v69)

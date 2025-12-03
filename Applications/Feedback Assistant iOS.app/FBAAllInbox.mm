@@ -1,11 +1,11 @@
 @interface FBAAllInbox
-- (id)predicateForTeam:(id)a3;
+- (id)predicateForTeam:(id)team;
 - (uint64_t)unreadCountForTeam:;
 @end
 
 @implementation FBAAllInbox
 
-- (id)predicateForTeam:(id)a3
+- (id)predicateForTeam:(id)team
 {
   v3 = [objc_opt_self() predicateWithValue:1];
 
@@ -14,17 +14,17 @@
 
 - (uint64_t)unreadCountForTeam:
 {
-  v0 = [objc_opt_self() sharedInstance];
-  v1 = [v0 currentUser];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  currentUser = [sharedInstance currentUser];
 
-  if (!v1)
+  if (!currentUser)
   {
     return 0;
   }
 
-  v2 = [v1 contentItems];
+  contentItems = [currentUser contentItems];
 
-  if (!v2)
+  if (!contentItems)
   {
     return 0;
   }

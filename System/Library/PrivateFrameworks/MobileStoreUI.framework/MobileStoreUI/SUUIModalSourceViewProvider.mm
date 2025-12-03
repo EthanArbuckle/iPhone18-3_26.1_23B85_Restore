@@ -1,17 +1,17 @@
 @interface SUUIModalSourceViewProvider
 - (SUUIModalSourceViewProviderDelegate)delegate;
 - (id)animationView;
-- (void)setOriginalSourceView:(id)a3;
+- (void)setOriginalSourceView:(id)view;
 @end
 
 @implementation SUUIModalSourceViewProvider
 
 - (id)animationView
 {
-  v3 = [(SUUIModalSourceViewProvider *)self delegate];
+  delegate = [(SUUIModalSourceViewProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 animationViewForModalSourceViewProvider:self];
+    v4 = [delegate animationViewForModalSourceViewProvider:self];
   }
 
   else
@@ -22,19 +22,19 @@
   return v4;
 }
 
-- (void)setOriginalSourceView:(id)a3
+- (void)setOriginalSourceView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_originalSourceView = &self->_originalSourceView;
-  if (self->_originalSourceView != v5)
+  if (self->_originalSourceView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_originalSourceView, a3);
+    v7 = viewCopy;
+    objc_storeStrong(p_originalSourceView, view);
     p_originalSourceView = [(UIView *)self->_originalSourceView setHidden:self->_hideOriginalSourceView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_originalSourceView, v5);
+  MEMORY[0x2821F96F8](p_originalSourceView, viewCopy);
 }
 
 - (SUUIModalSourceViewProviderDelegate)delegate

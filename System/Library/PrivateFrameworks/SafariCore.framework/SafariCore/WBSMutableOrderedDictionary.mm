@@ -1,15 +1,15 @@
 @interface WBSMutableOrderedDictionary
 - (NSArray)orderedValues;
-- (WBSMutableOrderedDictionary)initWithMaximumCount:(unint64_t)a3;
-- (id)objectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (WBSMutableOrderedDictionary)initWithMaximumCount:(unint64_t)count;
+- (id)objectForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation WBSMutableOrderedDictionary
 
-- (WBSMutableOrderedDictionary)initWithMaximumCount:(unint64_t)a3
+- (WBSMutableOrderedDictionary)initWithMaximumCount:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = WBSMutableOrderedDictionary;
@@ -17,27 +17,27 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maximumCount = a3;
+    v4->_maximumCount = count;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   mutableOrderedSetOfKeys = self->_mutableOrderedSetOfKeys;
-  v5 = a3;
-  [(WBSMutableOrderedSet *)mutableOrderedSetOfKeys markObjectAsRecentlyUsed:v5];
-  v6 = [(NSMutableDictionary *)self->_mutableDictionary objectForKeyedSubscript:v5];
+  keyCopy = key;
+  [(WBSMutableOrderedSet *)mutableOrderedSetOfKeys markObjectAsRecentlyUsed:keyCopy];
+  v6 = [(NSMutableDictionary *)self->_mutableDictionary objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (!self->_mutableOrderedSetOfKeys)
   {
     v7 = [[WBSMutableOrderedSet alloc] initWithMaximumCount:self->_maximumCount];
@@ -56,7 +56,7 @@
   {
     if ([(NSMutableDictionary *)self->_mutableDictionary count]>= self->_maximumCount)
     {
-      v11 = [(NSMutableDictionary *)self->_mutableDictionary objectForKeyedSubscript:v6];
+      v11 = [(NSMutableDictionary *)self->_mutableDictionary objectForKeyedSubscript:keyCopy];
 
       if (!v11)
       {
@@ -67,38 +67,38 @@
     }
   }
 
-  [(WBSMutableOrderedSet *)self->_mutableOrderedSetOfKeys addObject:v6];
-  [(NSMutableDictionary *)self->_mutableDictionary setObject:v13 forKeyedSubscript:v6];
+  [(WBSMutableOrderedSet *)self->_mutableOrderedSetOfKeys addObject:keyCopy];
+  [(NSMutableDictionary *)self->_mutableDictionary setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   mutableOrderedSetOfKeys = self->_mutableOrderedSetOfKeys;
-  v5 = a3;
-  [(WBSMutableOrderedSet *)mutableOrderedSetOfKeys removeObject:v5];
-  [(NSMutableDictionary *)self->_mutableDictionary removeObjectForKey:v5];
+  keyCopy = key;
+  [(WBSMutableOrderedSet *)mutableOrderedSetOfKeys removeObject:keyCopy];
+  [(NSMutableDictionary *)self->_mutableDictionary removeObjectForKey:keyCopy];
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
   mutableOrderedSetOfKeys = self->_mutableOrderedSetOfKeys;
-  v5 = a3;
-  [(WBSMutableOrderedSet *)mutableOrderedSetOfKeys removeObjectsInArray:v5];
-  [(NSMutableDictionary *)self->_mutableDictionary removeObjectsForKeys:v5];
+  keysCopy = keys;
+  [(WBSMutableOrderedSet *)mutableOrderedSetOfKeys removeObjectsInArray:keysCopy];
+  [(NSMutableDictionary *)self->_mutableDictionary removeObjectsForKeys:keysCopy];
 }
 
 - (NSArray)orderedValues
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(WBSMutableOrderedSet *)self->_mutableOrderedSetOfKeys array];
+  array = [(WBSMutableOrderedSet *)self->_mutableOrderedSetOfKeys array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__WBSMutableOrderedDictionary_orderedValues__block_invoke;
   v8[3] = &unk_1E7CF2450;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  [v4 enumerateObjectsUsingBlock:v8];
+  selfCopy = self;
+  [array enumerateObjectsUsingBlock:v8];
 
   v6 = v5;
   return v5;

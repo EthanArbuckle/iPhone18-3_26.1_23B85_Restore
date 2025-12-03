@@ -1,29 +1,29 @@
 @interface CRXFCorePrescriptionServiceClient
-- (CRXFCorePrescriptionServiceClient)initWithServer:(unint64_t)a3 serverVersion:(id)a4 timeout:(double)a5;
-- (id)crxfAppClipCodeForAppClipCodePayload:(id)a3;
-- (id)crxfCalibrationDataForFactoryCalibrationData:(id)a3;
-- (id)eyePrescriptionForCRXFEyePrescription:(id)a3;
-- (int64_t)lensTypeForCRXFLensType:(unint64_t)a3;
-- (unint64_t)addDownloadWithCompletionQueue:(id)a3 completion:(id)a4;
-- (unint64_t)crxfClampingStatusForClampingStatus:(int64_t)a3;
-- (unint64_t)crxfLensTypeForLensType:(int64_t)a3;
+- (CRXFCorePrescriptionServiceClient)initWithServer:(unint64_t)server serverVersion:(id)version timeout:(double)timeout;
+- (id)crxfAppClipCodeForAppClipCodePayload:(id)payload;
+- (id)crxfCalibrationDataForFactoryCalibrationData:(id)data;
+- (id)eyePrescriptionForCRXFEyePrescription:(id)prescription;
+- (int64_t)lensTypeForCRXFLensType:(unint64_t)type;
+- (unint64_t)addDownloadWithCompletionQueue:(id)queue completion:(id)completion;
+- (unint64_t)crxfClampingStatusForClampingStatus:(int64_t)status;
+- (unint64_t)crxfLensTypeForLensType:(int64_t)type;
 - (void)dealloc;
-- (void)downloadCalibrationDataForACCPayload:(id)a3 orASAKey:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)dumpDataStoreToFileHandle:(id)a3 table:(id)a4 options:(unint64_t)a5 withCompletionQueue:(id)a6 completion:(id)a7;
-- (void)fetchPrescriptionRecordsWithTimeout:(double)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)fetchSystemStatusWithCompletionQueue:(id)a3 completion:(id)a4;
-- (void)fetchUserInfoWithCompletionQueue:(id)a3 completion:(id)a4;
-- (void)finishDownloadWithID:(unint64_t)a3 data:(id)a4 error:(id)a5;
-- (void)generateAppClipCodeWithVersion:(unint64_t)a3 lensType:(unint64_t)a4 leftRX:(id)a5 rightRX:(id)a6 colorCode:(unint64_t)a7 secret:(id)a8 completionQueue:(id)a9 completion:(id)a10;
-- (void)purgeDataWithOptions:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)validateAndApplySharedLensEnrollmentAssetsWithCompletionQueue:(id)a3 completion:(id)a4;
+- (void)downloadCalibrationDataForACCPayload:(id)payload orASAKey:(id)key completionQueue:(id)queue completion:(id)completion;
+- (void)dumpDataStoreToFileHandle:(id)handle table:(id)table options:(unint64_t)options withCompletionQueue:(id)queue completion:(id)completion;
+- (void)fetchPrescriptionRecordsWithTimeout:(double)timeout completionQueue:(id)queue completion:(id)completion;
+- (void)fetchSystemStatusWithCompletionQueue:(id)queue completion:(id)completion;
+- (void)fetchUserInfoWithCompletionQueue:(id)queue completion:(id)completion;
+- (void)finishDownloadWithID:(unint64_t)d data:(id)data error:(id)error;
+- (void)generateAppClipCodeWithVersion:(unint64_t)version lensType:(unint64_t)type leftRX:(id)x rightRX:(id)rX colorCode:(unint64_t)code secret:(id)secret completionQueue:(id)queue completion:(id)self0;
+- (void)purgeDataWithOptions:(unint64_t)options completionQueue:(id)queue completion:(id)completion;
+- (void)validateAndApplySharedLensEnrollmentAssetsWithCompletionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation CRXFCorePrescriptionServiceClient
 
-- (CRXFCorePrescriptionServiceClient)initWithServer:(unint64_t)a3 serverVersion:(id)a4 timeout:(double)a5
+- (CRXFCorePrescriptionServiceClient)initWithServer:(unint64_t)server serverVersion:(id)version timeout:(double)timeout
 {
-  v8 = a4;
+  versionCopy = version;
   v27.receiver = self;
   v27.super_class = CRXFCorePrescriptionServiceClient;
   v9 = [(CRXFAbstractServiceClient *)&v27 initWithProtocol:&unk_28593B6C8];
@@ -36,36 +36,36 @@
   log = v9->_log;
   v9->_log = v10;
 
-  v9->_timeout = a5;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
+  v9->_timeout = timeout;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   downloads = v9->_downloads;
-  v9->_downloads = v12;
+  v9->_downloads = dictionary;
 
   v14 = [CRXFServiceConnection alloc];
-  v15 = [(CRXFAbstractServiceClient *)v9 xpcInterface];
-  v16 = [(CRXFServiceConnection *)v14 initWithServiceName:@"com.apple.CorePrescription.CalibrationDataFetcher" xpcInterface:v15];
+  xpcInterface = [(CRXFAbstractServiceClient *)v9 xpcInterface];
+  v16 = [(CRXFServiceConnection *)v14 initWithServiceName:@"com.apple.CorePrescription.CalibrationDataFetcher" xpcInterface:xpcInterface];
   connection = v9->_connection;
   v9->_connection = v16;
 
   v9->_nextDownloadID = 0;
-  v18 = [MEMORY[0x277CBEB38] dictionary];
-  v19 = v18;
-  if (a3 == 1)
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  v19 = dictionary2;
+  if (server == 1)
   {
     v20 = &unk_285933B78;
     goto LABEL_6;
   }
 
-  if (a3 == 2)
+  if (server == 2)
   {
     v20 = &unk_285933B90;
 LABEL_6:
-    [v18 setObject:v20 forKeyedSubscript:@"environment"];
+    [dictionary2 setObject:v20 forKeyedSubscript:@"environment"];
   }
 
-  if (v8)
+  if (versionCopy)
   {
-    v21 = [v8 copy];
+    v21 = [versionCopy copy];
     [v19 setObject:v21 forKeyedSubscript:@"version"];
   }
 
@@ -97,22 +97,22 @@ LABEL_10:
   [(CRXFCorePrescriptionServiceClient *)&v3 dealloc];
 }
 
-- (void)downloadCalibrationDataForACCPayload:(id)a3 orASAKey:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)downloadCalibrationDataForACCPayload:(id)payload orASAKey:(id)key completionQueue:(id)queue completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  payloadCopy = payload;
+  keyCopy = key;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v12 = +[CRXUDispatchQueue main];
+    queueCopy = +[CRXUDispatchQueue main];
   }
 
   if ([(CRXUNetworkReachability *)self->_networkReachability isConnected])
   {
     v14 = +[CRXFAppClipCodeTranscoder sharedInstance];
-    v15 = v10;
+    v15 = payloadCopy;
     if (v15)
     {
       v16 = [v14 deriveCanonicalPayloadFromPayload:v15];
@@ -125,42 +125,42 @@ LABEL_10:
         v42[2] = __110__CRXFCorePrescriptionServiceClient_downloadCalibrationDataForACCPayload_orASAKey_completionQueue_completion___block_invoke_2;
         v42[3] = &unk_278E9FCB8;
         v43 = v29;
-        v44 = v13;
+        v44 = completionCopy;
         v18 = v29;
-        [v12 dispatchAsync:v42];
+        [queueCopy dispatchAsync:v42];
 
-        v20 = v44;
+        activate = v44;
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v32 = v11;
+      v32 = keyCopy;
     }
 
     else
     {
-      v32 = v11;
+      v32 = keyCopy;
       v16 = 0;
     }
 
-    v31 = v13;
-    v19 = [(CRXFCorePrescriptionServiceClient *)self addDownloadWithCompletionQueue:v12 completion:v13];
+    v31 = completionCopy;
+    v19 = [(CRXFCorePrescriptionServiceClient *)self addDownloadWithCompletionQueue:queueCopy completion:completionCopy];
     kdebug_trace();
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
       [CRXFCorePrescriptionServiceClient downloadCalibrationDataForACCPayload:orASAKey:completionQueue:completion:];
     }
 
-    v33 = v10;
-    v20 = [(CRXFServiceConnection *)self->_connection activate];
+    v33 = payloadCopy;
+    activate = [(CRXFServiceConnection *)self->_connection activate];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __110__CRXFCorePrescriptionServiceClient_downloadCalibrationDataForACCPayload_orASAKey_completionQueue_completion___block_invoke_179;
     v41[3] = &unk_278E9FCE0;
     v41[4] = self;
     v41[5] = v19;
-    v21 = [v20 remoteObjectProxyWithErrorHandler:v41];
+    v21 = [activate remoteObjectProxyWithErrorHandler:v41];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
@@ -188,18 +188,18 @@ LABEL_17:
     v34[2] = __110__CRXFCorePrescriptionServiceClient_downloadCalibrationDataForACCPayload_orASAKey_completionQueue_completion___block_invoke_182;
     v34[3] = &unk_278E9FD30;
     v35 = v16;
-    v36 = self;
+    selfCopy = self;
     v40 = v19;
     v37 = v14;
     v38 = v21;
-    v11 = v32;
+    keyCopy = v32;
     v39 = v32;
     v28 = v21;
     v18 = v16;
     [v28 fetchCalibrationDataForACC:v18 orASAKey:v39 options:fetchOptions completionHandler:v34];
 
-    v10 = v33;
-    v13 = v31;
+    payloadCopy = v33;
+    completionCopy = v31;
     goto LABEL_17;
   }
 
@@ -209,9 +209,9 @@ LABEL_17:
   v45[2] = __110__CRXFCorePrescriptionServiceClient_downloadCalibrationDataForACCPayload_orASAKey_completionQueue_completion___block_invoke;
   v45[3] = &unk_278E9FCB8;
   v46 = v17;
-  v47 = v13;
+  v47 = completionCopy;
   v14 = v17;
-  [v12 dispatchAsync:v45];
+  [queueCopy dispatchAsync:v45];
 
   v18 = v47;
 LABEL_18:
@@ -324,19 +324,19 @@ void __110__CRXFCorePrescriptionServiceClient_downloadCalibrationDataForACCPaylo
   [*(a1 + 32) finishDownloadWithID:*(a1 + 40) data:v6 error:v5];
 }
 
-- (void)fetchUserInfoWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)fetchUserInfoWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = [CRXFServiceRequest alloc];
   timeout = self->_timeout;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__CRXFCorePrescriptionServiceClient_fetchUserInfoWithCompletionQueue_completion___block_invoke;
   v16[3] = &unk_278E9FD58;
-  v17 = v6;
-  v10 = v6;
-  v11 = [(CRXFServiceRequest *)v8 initWithTimeout:v7 completionQueue:v16 completion:timeout];
+  v17 = completionCopy;
+  v10 = completionCopy;
+  v11 = [(CRXFServiceRequest *)v8 initWithTimeout:queueCopy completionQueue:v16 completion:timeout];
 
   v12 = [(CRXFServiceRequest *)v11 createProxyOnConnection:self->_connection];
   v14[0] = MEMORY[0x277D85DD0];
@@ -370,19 +370,19 @@ void __81__CRXFCorePrescriptionServiceClient_fetchUserInfoWithCompletionQueue_co
   [*(a1 + 32) finishWithResult:v9 error:v8];
 }
 
-- (void)fetchPrescriptionRecordsWithTimeout:(double)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)fetchPrescriptionRecordsWithTimeout:(double)timeout completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v10 = [CRXFServiceRequest alloc];
   timeout = self->_timeout;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __100__CRXFCorePrescriptionServiceClient_fetchPrescriptionRecordsWithTimeout_completionQueue_completion___block_invoke;
   v18[3] = &unk_278E9FDA8;
-  v19 = v8;
-  v12 = v8;
-  v13 = [(CRXFServiceRequest *)v10 initWithTimeout:v9 completionQueue:v18 completion:timeout];
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = [(CRXFServiceRequest *)v10 initWithTimeout:queueCopy completionQueue:v18 completion:timeout];
 
   v14 = [(CRXFServiceRequest *)v13 createProxyOnConnection:self->_connection];
   v16[0] = MEMORY[0x277D85DD0];
@@ -391,7 +391,7 @@ void __81__CRXFCorePrescriptionServiceClient_fetchUserInfoWithCompletionQueue_co
   v16[3] = &unk_278E9FDD0;
   v17 = v13;
   v15 = v13;
-  [v14 fetchPrescriptionRecordsWithTimeout:v16 completionHandler:a3];
+  [v14 fetchPrescriptionRecordsWithTimeout:v16 completionHandler:timeout];
 }
 
 void __100__CRXFCorePrescriptionServiceClient_fetchPrescriptionRecordsWithTimeout_completionQueue_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -468,19 +468,19 @@ void __100__CRXFCorePrescriptionServiceClient_fetchPrescriptionRecordsWithTimeou
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)purgeDataWithOptions:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)purgeDataWithOptions:(unint64_t)options completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v10 = [CRXFServiceRequest alloc];
   timeout = self->_timeout;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __85__CRXFCorePrescriptionServiceClient_purgeDataWithOptions_completionQueue_completion___block_invoke;
   v18[3] = &unk_278E9FDF8;
-  v19 = v8;
-  v12 = v8;
-  v13 = [(CRXFServiceRequest *)v10 initWithTimeout:v9 completionQueue:v18 completion:timeout];
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = [(CRXFServiceRequest *)v10 initWithTimeout:queueCopy completionQueue:v18 completion:timeout];
 
   v14 = [(CRXFServiceRequest *)v13 createProxyOnConnection:self->_connection];
   v16[0] = MEMORY[0x277D85DD0];
@@ -489,22 +489,22 @@ void __100__CRXFCorePrescriptionServiceClient_fetchPrescriptionRecordsWithTimeou
   v16[3] = &unk_278E9FE20;
   v17 = v13;
   v15 = v13;
-  [v14 purgeDataWithOptions:a3 completionHandler:v16];
+  [v14 purgeDataWithOptions:options completionHandler:v16];
 }
 
-- (void)validateAndApplySharedLensEnrollmentAssetsWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)validateAndApplySharedLensEnrollmentAssetsWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = [CRXFServiceRequest alloc];
   timeout = self->_timeout;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __110__CRXFCorePrescriptionServiceClient_validateAndApplySharedLensEnrollmentAssetsWithCompletionQueue_completion___block_invoke;
   v16[3] = &unk_278E9FDA8;
-  v17 = v6;
-  v10 = v6;
-  v11 = [(CRXFServiceRequest *)v8 initWithTimeout:v7 completionQueue:v16 completion:timeout];
+  v17 = completionCopy;
+  v10 = completionCopy;
+  v11 = [(CRXFServiceRequest *)v8 initWithTimeout:queueCopy completionQueue:v16 completion:timeout];
 
   v12 = [(CRXFServiceRequest *)v11 createProxyOnConnection:self->_connection];
   v14[0] = MEMORY[0x277D85DD0];
@@ -583,21 +583,21 @@ void __110__CRXFCorePrescriptionServiceClient_validateAndApplySharedLensEnrollme
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpDataStoreToFileHandle:(id)a3 table:(id)a4 options:(unint64_t)a5 withCompletionQueue:(id)a6 completion:(id)a7
+- (void)dumpDataStoreToFileHandle:(id)handle table:(id)table options:(unint64_t)options withCompletionQueue:(id)queue completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  tableCopy = table;
+  handleCopy = handle;
   v16 = [CRXFServiceRequest alloc];
   timeout = self->_timeout;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __108__CRXFCorePrescriptionServiceClient_dumpDataStoreToFileHandle_table_options_withCompletionQueue_completion___block_invoke;
   v24[3] = &unk_278E9FDF8;
-  v25 = v12;
-  v18 = v12;
-  v19 = [(CRXFServiceRequest *)v16 initWithTimeout:v13 completionQueue:v24 completion:timeout];
+  v25 = completionCopy;
+  v18 = completionCopy;
+  v19 = [(CRXFServiceRequest *)v16 initWithTimeout:queueCopy completionQueue:v24 completion:timeout];
 
   v20 = [(CRXFServiceRequest *)v19 createProxyOnConnection:self->_connection];
   v22[0] = MEMORY[0x277D85DD0];
@@ -606,7 +606,7 @@ void __110__CRXFCorePrescriptionServiceClient_validateAndApplySharedLensEnrollme
   v22[3] = &unk_278E9FE20;
   v23 = v19;
   v21 = v19;
-  [v20 dumpDataStoreToFileHandle:v15 table:v14 options:a5 completionHandler:v22];
+  [v20 dumpDataStoreToFileHandle:handleCopy table:tableCopy options:options completionHandler:v22];
 }
 
 void __112__CRXFCorePrescriptionServiceClient_decodeAppClipCodePayload_allowUnsupportedRX_withCompletionQueue_completion___block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
@@ -617,29 +617,29 @@ void __112__CRXFCorePrescriptionServiceClient_decodeAppClipCodePayload_allowUnsu
   [*(a1 + 40) finishWithResult:v7 error:v6];
 }
 
-- (void)generateAppClipCodeWithVersion:(unint64_t)a3 lensType:(unint64_t)a4 leftRX:(id)a5 rightRX:(id)a6 colorCode:(unint64_t)a7 secret:(id)a8 completionQueue:(id)a9 completion:(id)a10
+- (void)generateAppClipCodeWithVersion:(unint64_t)version lensType:(unint64_t)type leftRX:(id)x rightRX:(id)rX colorCode:(unint64_t)code secret:(id)secret completionQueue:(id)queue completion:(id)self0
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = a10;
-  v18 = a9;
+  xCopy = x;
+  rXCopy = rX;
+  secretCopy = secret;
+  completionCopy = completion;
+  queueCopy = queue;
   v19 = [CRXFServiceRequest alloc];
   timeout = self->_timeout;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __136__CRXFCorePrescriptionServiceClient_generateAppClipCodeWithVersion_lensType_leftRX_rightRX_colorCode_secret_completionQueue_completion___block_invoke;
   v32[3] = &unk_278E9FE98;
-  v21 = v17;
+  v21 = completionCopy;
   v33 = v21;
-  v22 = [(CRXFServiceRequest *)v19 initWithTimeout:v18 completionQueue:v32 completion:timeout];
+  v22 = [(CRXFServiceRequest *)v19 initWithTimeout:queueCopy completionQueue:v32 completion:timeout];
 
   v23 = [(CRXFServiceRequest *)v22 createProxyOnConnection:self->_connection];
-  v24 = [(CRXFCorePrescriptionServiceClient *)self lensTypeForCRXFLensType:a4];
-  if (!v15)
+  v24 = [(CRXFCorePrescriptionServiceClient *)self lensTypeForCRXFLensType:type];
+  if (!rXCopy)
   {
     v25 = 0;
-    if (v14)
+    if (xCopy)
     {
       goto LABEL_3;
     }
@@ -649,14 +649,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v25 = [(CRXFCorePrescriptionServiceClient *)self eyePrescriptionForCRXFEyePrescription:v15];
-  if (!v14)
+  v25 = [(CRXFCorePrescriptionServiceClient *)self eyePrescriptionForCRXFEyePrescription:rXCopy];
+  if (!xCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v26 = [(CRXFCorePrescriptionServiceClient *)self eyePrescriptionForCRXFEyePrescription:v14];
+  v26 = [(CRXFCorePrescriptionServiceClient *)self eyePrescriptionForCRXFEyePrescription:xCopy];
 LABEL_6:
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -664,22 +664,22 @@ LABEL_6:
   v30[3] = &unk_278E9FEC0;
   v31 = v22;
   v27 = v22;
-  [v23 generateAppClipCodePayloadWithVersion:a3 lensType:v24 odRX:v25 osRX:v26 colorCode:a7 secret:v16 completionHandler:v30];
+  [v23 generateAppClipCodePayloadWithVersion:version lensType:v24 odRX:v25 osRX:v26 colorCode:code secret:secretCopy completionHandler:v30];
 }
 
-- (void)fetchSystemStatusWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)fetchSystemStatusWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = [CRXFServiceRequest alloc];
   timeout = self->_timeout;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueue_completion___block_invoke;
   v16[3] = &unk_278E9FEE8;
-  v17 = v6;
-  v10 = v6;
-  v11 = [(CRXFServiceRequest *)v8 initWithTimeout:v7 completionQueue:v16 completion:timeout];
+  v17 = completionCopy;
+  v10 = completionCopy;
+  v11 = [(CRXFServiceRequest *)v8 initWithTimeout:queueCopy completionQueue:v16 completion:timeout];
 
   v12 = [(CRXFServiceRequest *)v11 createProxyOnConnection:self->_connection];
   v14[0] = MEMORY[0x277D85DD0];
@@ -758,19 +758,19 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)addDownloadWithCompletionQueue:(id)a3 completion:(id)a4
+- (unint64_t)addDownloadWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = [CRXFServiceRequest alloc];
   timeout = self->_timeout;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__CRXFCorePrescriptionServiceClient_addDownloadWithCompletionQueue_completion___block_invoke;
   v17[3] = &unk_278E9FF38;
-  v10 = v7;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = [(CRXFServiceRequest *)v8 initWithTimeout:v6 completionQueue:v17 completion:timeout];
+  v11 = [(CRXFServiceRequest *)v8 initWithTimeout:queueCopy completionQueue:v17 completion:timeout];
   v12 = self->_downloads;
   objc_sync_enter(v12);
   v13 = self->_nextDownloadID + 1;
@@ -783,21 +783,21 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
   return v13;
 }
 
-- (void)finishDownloadWithID:(unint64_t)a3 data:(id)a4 error:(id)a5
+- (void)finishDownloadWithID:(unint64_t)d data:(id)data error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  errorCopy = error;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     [CRXFCorePrescriptionServiceClient finishDownloadWithID:data:error:];
   }
 
-  v10 = [v9 domain];
-  v11 = [v10 isEqualToString:@"CorePrescription.CorePrescriptionServiceError"];
+  domain = [errorCopy domain];
+  v11 = [domain isEqualToString:@"CorePrescription.CorePrescriptionServiceError"];
 
   if (v11)
   {
-    if ([v9 code] == 3)
+    if ([errorCopy code] == 3)
     {
       v12 = MEMORY[0x277CCA9B8];
       v13 = MEMORY[0x277CBEC10];
@@ -805,7 +805,7 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
       v15 = 1417;
     }
 
-    else if ([v9 code] == 1)
+    else if ([errorCopy code] == 1)
     {
       v12 = MEMORY[0x277CCA9B8];
       v13 = MEMORY[0x277CBEC10];
@@ -815,10 +815,10 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
 
     else
     {
-      v16 = [v9 code];
+      code = [errorCopy code];
       v12 = MEMORY[0x277CCA9B8];
       v13 = MEMORY[0x277CBEC10];
-      if (v16 == 4)
+      if (code == 4)
       {
         v14 = 21;
         v15 = 1421;
@@ -833,19 +833,19 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
 
     v17 = [v12 crxf_errorWithCode:v14 file:"/Library/Caches/com.apple.xbs/Sources/CorePrescription/CorePrescription/ServiceClient/CRXFCorePrescriptionServiceClient.m" line:v15 userInfo:v13];
 
-    v9 = v17;
+    errorCopy = v17;
   }
 
   v18 = self->_downloads;
   objc_sync_enter(v18);
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
   v20 = [(NSMutableDictionary *)self->_downloads objectForKeyedSubscript:v19];
   [(NSMutableDictionary *)self->_downloads removeObjectForKey:v19];
 
   objc_sync_exit(v18);
   if (v20)
   {
-    [v20 finishWithResult:v8 error:v9];
+    [v20 finishWithResult:dataCopy error:errorCopy];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
@@ -854,89 +854,89 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
   }
 }
 
-- (id)crxfAppClipCodeForAppClipCodePayload:(id)a3
+- (id)crxfAppClipCodeForAppClipCodePayload:(id)payload
 {
-  v4 = a3;
-  v84 = -[CRXFCorePrescriptionServiceClient crxfLensTypeForLensType:](self, "crxfLensTypeForLensType:", [v4 lensType]);
-  v5 = [v4 left];
-  v81 = -[CRXFCorePrescriptionServiceClient crxfClampingStatusForClampingStatus:](self, "crxfClampingStatusForClampingStatus:", [v5 clampingStatus]);
+  payloadCopy = payload;
+  v84 = -[CRXFCorePrescriptionServiceClient crxfLensTypeForLensType:](self, "crxfLensTypeForLensType:", [payloadCopy lensType]);
+  left = [payloadCopy left];
+  v81 = -[CRXFCorePrescriptionServiceClient crxfClampingStatusForClampingStatus:](self, "crxfClampingStatusForClampingStatus:", [left clampingStatus]);
 
-  v6 = [v4 right];
-  v70 = -[CRXFCorePrescriptionServiceClient crxfClampingStatusForClampingStatus:](self, "crxfClampingStatusForClampingStatus:", [v6 clampingStatus]);
+  right = [payloadCopy right];
+  v70 = -[CRXFCorePrescriptionServiceClient crxfClampingStatusForClampingStatus:](self, "crxfClampingStatusForClampingStatus:", [right clampingStatus]);
 
   v77 = [CRXFAppClipCode alloc];
-  v76 = [v4 version];
-  v92 = [v4 left];
-  v75 = [v92 cylinderSignFlipped];
-  v91 = [v4 right];
-  v73 = [v91 cylinderSignFlipped];
-  v90 = [v4 left];
-  v71 = [v90 rxID];
-  v89 = [v4 left];
-  v69 = [v89 calibratedRXID];
-  v88 = [v4 left];
-  v87 = [v88 displayValues];
-  [v87 sphere];
+  version = [payloadCopy version];
+  left2 = [payloadCopy left];
+  cylinderSignFlipped = [left2 cylinderSignFlipped];
+  right2 = [payloadCopy right];
+  cylinderSignFlipped2 = [right2 cylinderSignFlipped];
+  left3 = [payloadCopy left];
+  rxID = [left3 rxID];
+  left4 = [payloadCopy left];
+  calibratedRXID = [left4 calibratedRXID];
+  left5 = [payloadCopy left];
+  displayValues = [left5 displayValues];
+  [displayValues sphere];
   v66 = v7;
-  v86 = [v4 left];
-  v85 = [v86 displayValues];
-  [v85 cylinder];
+  left6 = [payloadCopy left];
+  displayValues2 = [left6 displayValues];
+  [displayValues2 cylinder];
   v63 = v8;
-  v83 = [v4 left];
-  v82 = [v83 calibrationValues];
-  [v82 sphere];
+  left7 = [payloadCopy left];
+  calibrationValues = [left7 calibrationValues];
+  [calibrationValues sphere];
   v10 = v9;
-  v80 = [v4 left];
-  v79 = [v80 calibrationValues];
-  [v79 cylinder];
+  left8 = [payloadCopy left];
+  calibrationValues2 = [left8 calibrationValues];
+  [calibrationValues2 cylinder];
   v12 = v11;
-  v78 = [v4 left];
-  v74 = [v78 displayValues];
-  [v74 vrAdd];
+  left9 = [payloadCopy left];
+  displayValues3 = [left9 displayValues];
+  [displayValues3 vrAdd];
   v14 = v13;
-  v72 = [v4 left];
-  v58 = [v72 axisID];
-  v68 = [v4 left];
-  v67 = [v68 displayValues];
-  v55 = [v67 axis];
-  v65 = [v4 left];
-  v64 = [v65 calibrationValues];
-  v53 = [v64 axis];
-  v62 = [v4 right];
-  v51 = [v62 rxID];
-  v61 = [v4 right];
-  v48 = [v61 calibratedRXID];
-  v60 = [v4 right];
-  v59 = [v60 displayValues];
-  [v59 sphere];
+  left10 = [payloadCopy left];
+  axisID = [left10 axisID];
+  left11 = [payloadCopy left];
+  displayValues4 = [left11 displayValues];
+  axis = [displayValues4 axis];
+  left12 = [payloadCopy left];
+  calibrationValues3 = [left12 calibrationValues];
+  axis2 = [calibrationValues3 axis];
+  right3 = [payloadCopy right];
+  rxID2 = [right3 rxID];
+  right4 = [payloadCopy right];
+  calibratedRXID2 = [right4 calibratedRXID];
+  right5 = [payloadCopy right];
+  displayValues5 = [right5 displayValues];
+  [displayValues5 sphere];
   v16 = v15;
-  v57 = [v4 right];
-  v56 = [v57 displayValues];
-  [v56 cylinder];
+  right6 = [payloadCopy right];
+  displayValues6 = [right6 displayValues];
+  [displayValues6 cylinder];
   v18 = v17;
-  v54 = [v4 right];
-  v52 = [v54 calibrationValues];
-  [v52 sphere];
+  right7 = [payloadCopy right];
+  calibrationValues4 = [right7 calibrationValues];
+  [calibrationValues4 sphere];
   v20 = v19;
-  v50 = [v4 right];
-  v49 = [v50 calibrationValues];
-  [v49 cylinder];
+  right8 = [payloadCopy right];
+  calibrationValues5 = [right8 calibrationValues];
+  [calibrationValues5 cylinder];
   v22 = v21;
-  v47 = [v4 right];
-  v46 = [v47 displayValues];
-  [v46 vrAdd];
+  right9 = [payloadCopy right];
+  displayValues7 = [right9 displayValues];
+  [displayValues7 vrAdd];
   v24 = v23;
-  v45 = [v4 right];
-  v25 = [v45 axisID];
-  v44 = [v4 right];
-  v26 = [v44 displayValues];
-  v27 = [v26 axis];
-  v28 = [v4 right];
-  v29 = [v28 calibrationValues];
-  v30 = [v29 axis];
-  v31 = [v4 lensColorCode];
-  v32 = [v4 secret];
-  v33 = [v4 randomBits];
+  right10 = [payloadCopy right];
+  axisID2 = [right10 axisID];
+  right11 = [payloadCopy right];
+  displayValues8 = [right11 displayValues];
+  axis3 = [displayValues8 axis];
+  right12 = [payloadCopy right];
+  calibrationValues6 = [right12 calibrationValues];
+  axis4 = [calibrationValues6 axis];
+  lensColorCode = [payloadCopy lensColorCode];
+  secret = [payloadCopy secret];
+  randomBits = [payloadCopy randomBits];
 
   LODWORD(v43) = 0;
   LODWORD(v42) = 0;
@@ -946,61 +946,61 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
   LODWORD(v37) = v12;
   LODWORD(v38) = v14;
   LODWORD(v39) = v16;
-  v40 = [(CRXFAppClipCode *)v77 initWithVersion:v76 lensType:v84 cylLeftSignFlipped:v75 cylRightSignFlipped:v73 leftRXID:v71 leftCalibrationRXID:v69 leftDisplaySphere:v34 leftDisplayCylinder:v35 leftCalibrationSphere:v36 leftCalibrationCylinder:v37 leftAddVR:v38 leftAxisID:0.0 leftDisplayAxis:0.0 leftCalibrationAxis:v39 leftClamping:v58 leftHorizPrismBaseDirection:v55 leftHorizPrism:v53 leftVertPrismBaseDirection:v81 leftVertPrism:2 rightRXID:2 rightCalibrationRXID:v51 rightDisplaySphere:v48 rightDisplayCylinder:__PAIR64__(v20 rightCalibrationSphere:v18) rightCalibrationCylinder:__PAIR64__(v24 rightAddVR:v22) rightAxisID:v25 rightDisplayAxis:v27 rightCalibrationAxis:v30 rightClamping:v70 rightHorizPrismBaseDirection:2 rightHorizPrism:v42 rightVertPrismBaseDirection:2 rightVertPrism:v43 identifyingColor:v31 secret:v32 randomBits:v33];
+  v40 = [(CRXFAppClipCode *)v77 initWithVersion:version lensType:v84 cylLeftSignFlipped:cylinderSignFlipped cylRightSignFlipped:cylinderSignFlipped2 leftRXID:rxID leftCalibrationRXID:calibratedRXID leftDisplaySphere:v34 leftDisplayCylinder:v35 leftCalibrationSphere:v36 leftCalibrationCylinder:v37 leftAddVR:v38 leftAxisID:0.0 leftDisplayAxis:0.0 leftCalibrationAxis:v39 leftClamping:axisID leftHorizPrismBaseDirection:axis leftHorizPrism:axis2 leftVertPrismBaseDirection:v81 leftVertPrism:2 rightRXID:2 rightCalibrationRXID:rxID2 rightDisplaySphere:calibratedRXID2 rightDisplayCylinder:__PAIR64__(v20 rightCalibrationSphere:v18) rightCalibrationCylinder:__PAIR64__(v24 rightAddVR:v22) rightAxisID:axisID2 rightDisplayAxis:axis3 rightCalibrationAxis:axis4 rightClamping:v70 rightHorizPrismBaseDirection:2 rightHorizPrism:v42 rightVertPrismBaseDirection:2 rightVertPrism:v43 identifyingColor:lensColorCode secret:secret randomBits:randomBits];
 
   return v40;
 }
 
-- (unint64_t)crxfLensTypeForLensType:(int64_t)a3
+- (unint64_t)crxfLensTypeForLensType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (int64_t)lensTypeForCRXFLensType:(unint64_t)a3
+- (int64_t)lensTypeForCRXFLensType:(unint64_t)type
 {
-  if (a3 - 1 >= 3)
+  if (type - 1 >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (unint64_t)crxfClampingStatusForClampingStatus:(int64_t)a3
+- (unint64_t)crxfClampingStatusForClampingStatus:(int64_t)status
 {
-  if ((a3 - 1) >= 3)
+  if ((status - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 
-- (id)crxfCalibrationDataForFactoryCalibrationData:(id)a3
+- (id)crxfCalibrationDataForFactoryCalibrationData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 left];
-  v5 = [v4 length];
+  dataCopy = data;
+  left = [dataCopy left];
+  v5 = [left length];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCACA8]);
-    v7 = [v3 left];
-    v8 = [v6 initWithData:v7 encoding:4];
+    left2 = [dataCopy left];
+    v8 = [v6 initWithData:left2 encoding:4];
   }
 
   else
@@ -1008,14 +1008,14 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
     v8 = 0;
   }
 
-  v9 = [v3 right];
-  v10 = [v9 length];
+  right = [dataCopy right];
+  v10 = [right length];
 
   if (v10)
   {
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
-    v12 = [v3 right];
-    v13 = [v11 initWithData:v12 encoding:4];
+    right2 = [dataCopy right];
+    v13 = [v11 initWithData:right2 encoding:4];
   }
 
   else
@@ -1024,28 +1024,28 @@ void __85__CRXFCorePrescriptionServiceClient_fetchSystemStatusWithCompletionQueu
   }
 
   v14 = [CRXFCalibrationData alloc];
-  v15 = [v3 acc];
+  v15 = [dataCopy acc];
   v16 = [(CRXFCalibrationData *)v14 initWithACCPayload:v15 leftCalibrationData:v8 rightCalibrationData:v13];
 
   return v16;
 }
 
-- (id)eyePrescriptionForCRXFEyePrescription:(id)a3
+- (id)eyePrescriptionForCRXFEyePrescription:(id)prescription
 {
-  v3 = a3;
+  prescriptionCopy = prescription;
   v4 = [CRXCEyePrescription alloc];
-  [v3 sphere];
+  [prescriptionCopy sphere];
   v6 = v5;
-  [v3 cylinder];
+  [prescriptionCopy cylinder];
   v8 = v7;
-  v9 = [v3 axis];
-  [v3 add];
+  axis = [prescriptionCopy axis];
+  [prescriptionCopy add];
   v11 = v10;
 
   LODWORD(v12) = v6;
   LODWORD(v13) = v8;
   LODWORD(v14) = v11;
-  v15 = [(CRXCEyePrescription *)v4 initWithSphere:v9 cylinder:v12 axis:v13 vrAdd:v14];
+  v15 = [(CRXCEyePrescription *)v4 initWithSphere:axis cylinder:v12 axis:v13 vrAdd:v14];
 
   return v15;
 }

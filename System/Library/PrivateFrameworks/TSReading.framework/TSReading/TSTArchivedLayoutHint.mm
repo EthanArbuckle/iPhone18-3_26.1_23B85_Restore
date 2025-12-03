@@ -1,7 +1,7 @@
 @interface TSTArchivedLayoutHint
-- (TSTArchivedLayoutHint)initWithContext:(id)a3 hint:(id)a4;
+- (TSTArchivedLayoutHint)initWithContext:(id)context hint:(id)hint;
 - (void)dealloc;
-- (void)setHint:(id)a3;
+- (void)setHint:(id)hint;
 @end
 
 @implementation TSTArchivedLayoutHint
@@ -13,24 +13,24 @@
   [(TSTArchivedLayoutHint *)&v3 dealloc];
 }
 
-- (void)setHint:(id)a3
+- (void)setHint:(id)hint
 {
-  if (self->mHint != a3)
+  if (self->mHint != hint)
   {
     [(TSPObject *)self willModify];
 
-    self->mHint = a3;
+    self->mHint = hint;
   }
 }
 
-- (TSTArchivedLayoutHint)initWithContext:(id)a3 hint:(id)a4
+- (TSTArchivedLayoutHint)initWithContext:(id)context hint:(id)hint
 {
   v7.receiver = self;
   v7.super_class = TSTArchivedLayoutHint;
-  v5 = [(TSPObject *)&v7 initWithContext:a3];
+  v5 = [(TSPObject *)&v7 initWithContext:context];
   if (v5)
   {
-    v5->mHint = a4;
+    v5->mHint = hint;
   }
 
   return v5;

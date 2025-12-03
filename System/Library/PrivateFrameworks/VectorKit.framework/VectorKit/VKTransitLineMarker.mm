@@ -1,8 +1,8 @@
 @interface VKTransitLineMarker
-+ (id)markerWithFeature:(void *)a3 transitLink:(const void *)a4;
++ (id)markerWithFeature:(void *)feature transitLink:(const void *)link;
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)shieldColor;
-- (VKTransitLineMarker)initWithFeature:(void *)a3 transitLink:(const void *)a4;
-- (VKTransitLineMarker)initWithIdentifier:(id)a3;
+- (VKTransitLineMarker)initWithFeature:(void *)feature transitLink:(const void *)link;
+- (VKTransitLineMarker)initWithIdentifier:(id)identifier;
 @end
 
 @implementation VKTransitLineMarker
@@ -20,22 +20,22 @@
   return result;
 }
 
-- (VKTransitLineMarker)initWithIdentifier:(id)a3
+- (VKTransitLineMarker)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = VKTransitLineMarker;
   v6 = [(VKTransitLineMarker *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (VKTransitLineMarker)initWithFeature:(void *)a3 transitLink:(const void *)a4
+- (VKTransitLineMarker)initWithFeature:(void *)feature transitLink:(const void *)link
 {
   v36.receiver = self;
   v36.super_class = VKTransitLineMarker;
@@ -43,22 +43,22 @@
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E69A21C0]);
-    v8 = *(a3 + 5);
+    v8 = *(feature + 5);
     v9 = -180.0;
-    if (a4)
+    if (link)
     {
-      Point = geo::codec::transitLinkFirstPoint(a4);
+      Point = geo::codec::transitLinkFirstPoint(link);
       v11 = -180.0;
       if (Point)
       {
-        v12 = *(a4 + 1);
+        v12 = *(link + 1);
         if (v12)
         {
           v12 = std::__shared_weak_count::lock(v12);
           v13 = v12;
           if (v12)
           {
-            v12 = *a4;
+            v12 = *link;
           }
         }
 
@@ -95,12 +95,12 @@
     v20 = *(v6 + 1);
     *(v6 + 1) = v19;
 
-    *(v6 + 9) = a4;
-    if (geo::codec::featureGetNativeShieldCount(a3))
+    *(v6 + 9) = link;
+    if (geo::codec::featureGetNativeShieldCount(feature))
     {
       v37[0] = 0;
       v38 = 0;
-      geo::codec::featureGetNativeShield(a3, 0, v37, v6 + 4, &v38);
+      geo::codec::featureGetNativeShield(feature, 0, v37, v6 + 4, &v38);
       if (v37[0])
       {
         v21 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -118,11 +118,11 @@
       }
     }
 
-    if (geo::codec::featureGetNativeLabelCount(a3))
+    if (geo::codec::featureGetNativeLabelCount(feature))
     {
       v37[0] = 0;
       v38 = 0;
-      geo::codec::featureGetNativeLabel(a3, 0, v37, &v38);
+      geo::codec::featureGetNativeLabel(feature, 0, v37, &v38);
       if (v37[0])
       {
         v28 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -140,7 +140,7 @@
       }
     }
 
-    v27.i32[0] = *(a3 + 19);
+    v27.i32[0] = *(feature + 19);
     *(v6 + 40) = vmulq_f32(vcvtq_f32_u32(vmovl_u16(*&vmovl_u8(v27))), vdupq_n_s32(0x3B808081u));
     v34 = v6;
   }
@@ -148,9 +148,9 @@
   return v6;
 }
 
-+ (id)markerWithFeature:(void *)a3 transitLink:(const void *)a4
++ (id)markerWithFeature:(void *)feature transitLink:(const void *)link
 {
-  v4 = [[VKTransitLineMarker alloc] initWithFeature:a3 transitLink:a4];
+  v4 = [[VKTransitLineMarker alloc] initWithFeature:feature transitLink:link];
 
   return v4;
 }

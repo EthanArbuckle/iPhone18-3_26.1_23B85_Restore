@@ -2,27 +2,27 @@
 + (id)getPathOfFallbackDevicesFile;
 + (id)readFallbackDevicesFromDisk;
 + (void)checkAvailableCameraModules;
-+ (void)getAvailableFallbackDevicesWithCompletion:(id)a3;
++ (void)getAvailableFallbackDevicesWithCompletion:(id)completion;
 @end
 
 @implementation CAMFallbackConfiguration
 
-+ (void)getAvailableFallbackDevicesWithCompletion:(id)a3
++ (void)getAvailableFallbackDevicesWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = MEMORY[0x1E69870A8];
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 getSupportedCameraModules];
-  v7 = [v4 discoverySessionWithDeviceTypes:v6 mediaType:0 position:1];
+  getSupportedCameraModules = [v5 getSupportedCameraModules];
+  v7 = [v4 discoverySessionWithDeviceTypes:getSupportedCameraModules mediaType:0 position:1];
 
   v8 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v7 devices];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  devices = [v7 devices];
+  v10 = [devices countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -34,24 +34,24 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(devices);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) deviceType];
-        [v8 addObject:v14];
+        deviceType = [*(*(&v16 + 1) + 8 * v13) deviceType];
+        [v8 addObject:deviceType];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [devices countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [v8 allObjects];
-  v3[2](v3, v15);
+  allObjects = [v8 allObjects];
+  completionCopy[2](completionCopy, allObjects);
 }
 
 + (id)readFallbackDevicesFromDisk
@@ -59,16 +59,16 @@
   v20 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DEC8];
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [objc_opt_class() getPathOfFallbackDevicesFile];
-  v5 = [v3 fileURLWithPath:v4];
+  getPathOfFallbackDevicesFile = [objc_opt_class() getPathOfFallbackDevicesFile];
+  v5 = [v3 fileURLWithPath:getPathOfFallbackDevicesFile];
   v15 = 0;
   v6 = [v2 arrayWithContentsOfURL:v5 error:&v15];
   v7 = v15;
 
-  v8 = [v7 code];
+  code = [v7 code];
   v9 = os_log_create("com.apple.camera", "Camera");
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8 == 260)
+  if (code == 260)
   {
     if (!v10)
     {

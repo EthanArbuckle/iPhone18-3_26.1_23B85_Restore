@@ -6,7 +6,7 @@
 
 - (id)getLocationAuthorizationStatus
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3D225FC();
 
   v3 = sub_1E4205ED4();

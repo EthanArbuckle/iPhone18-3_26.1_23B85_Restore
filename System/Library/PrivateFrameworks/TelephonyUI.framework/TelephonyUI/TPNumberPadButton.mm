@@ -6,22 +6,22 @@
 + (double)horizontalPadding;
 + (double)outerCircleDiameter;
 + (double)verticalPadding;
-+ (id)disabledImageForCharacter:(int64_t)a3;
-+ (id)imageForCharacter:(int64_t)a3 highlighted:(BOOL)a4 whiteVersion:(BOOL)a5;
-+ (id)localizedLettersForCharacter:(int64_t)a3;
-+ (id)localizedLettersForCharacter:(int64_t)a3 featureFlags:(id)a4;
++ (id)disabledImageForCharacter:(int64_t)character;
++ (id)imageForCharacter:(int64_t)character highlighted:(BOOL)highlighted whiteVersion:(BOOL)version;
++ (id)localizedLettersForCharacter:(int64_t)character;
++ (id)localizedLettersForCharacter:(int64_t)character featureFlags:(id)flags;
 + (id)scriptKey;
 + (void)loadNumberPadKeyPrototypeView;
 + (void)resetLocale;
 + (void)resetLocaleIfNeeded;
-+ (void)updatePrototypeView:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)initForCharacter:(int64_t)a3 style:(int64_t)a4;
-- (void)highlightCircleView:(BOOL)a3 animated:(BOOL)a4;
++ (void)updatePrototypeView:(id)view;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)initForCharacter:(int64_t)character style:(int64_t)style;
+- (void)highlightCircleView:(BOOL)view animated:(BOOL)animated;
 - (void)reloadImagesForCurrentCharacter;
-- (void)setColor:(id)a3;
-- (void)setGreyedOut:(BOOL)a3;
-- (void)updateBackgroundMaterial:(id)a3;
+- (void)setColor:(id)color;
+- (void)setGreyedOut:(BOOL)out;
+- (void)updateBackgroundMaterial:(id)material;
 @end
 
 @implementation TPNumberPadButton
@@ -52,31 +52,31 @@
 
 - (void)reloadImagesForCurrentCharacter
 {
-  v3 = [(TPNumberPadButton *)self glyphLayer];
+  glyphLayer = [(TPNumberPadButton *)self glyphLayer];
 
-  if (v3)
+  if (glyphLayer)
   {
-    v4 = [(TPNumberPadButton *)self glyphLayer];
-    [v4 removeFromSuperlayer];
+    glyphLayer2 = [(TPNumberPadButton *)self glyphLayer];
+    [glyphLayer2 removeFromSuperlayer];
   }
 
-  v5 = [(TPNumberPadButton *)self highlightedGlyphLayer];
+  highlightedGlyphLayer = [(TPNumberPadButton *)self highlightedGlyphLayer];
 
-  if (v5)
+  if (highlightedGlyphLayer)
   {
-    v6 = [(TPNumberPadButton *)self highlightedGlyphLayer];
-    [v6 removeFromSuperlayer];
+    highlightedGlyphLayer2 = [(TPNumberPadButton *)self highlightedGlyphLayer];
+    [highlightedGlyphLayer2 removeFromSuperlayer];
   }
 
   v51 = [objc_opt_class() imageForCharacter:{-[TPNumberPadButton character](self, "character")}];
-  v7 = [MEMORY[0x1E6979398] layer];
-  [v7 setOpaque:0];
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 scale];
-  [v7 setContentsScale:?];
+  layer = [MEMORY[0x1E6979398] layer];
+  [layer setOpaque:0];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  [layer setContentsScale:?];
 
   v9 = v51;
-  [v7 setContents:{objc_msgSend(v51, "CGImage")}];
+  [layer setContents:{objc_msgSend(v51, "CGImage")}];
   [v51 size];
   v11 = v10;
   v13 = v12;
@@ -89,38 +89,38 @@
   v19 = v18;
   [v51 size];
   v21 = (v19 - v20) * 0.5;
-  [v7 setFrame:{v17, roundf(v21), v11, v13}];
+  [layer setFrame:{v17, roundf(v21), v11, v13}];
   if ([objc_opt_class() isUsingGlass])
   {
-    v22 = [(TPNumberPadButton *)self circleView];
-    v23 = [v22 layer];
-    [v23 addSublayer:v7];
+    circleView = [(TPNumberPadButton *)self circleView];
+    layer2 = [circleView layer];
+    [layer2 addSublayer:layer];
 
-    v24 = [(TPNumberPadButton *)self circleView];
-    v25 = [v24 layer];
-    [v25 bounds];
+    circleView2 = [(TPNumberPadButton *)self circleView];
+    layer3 = [circleView2 layer];
+    [layer3 bounds];
     MidX = CGRectGetMidX(v53);
-    v27 = [(TPNumberPadButton *)self circleView];
-    v28 = [v27 layer];
-    [v28 bounds];
-    [v7 setPosition:{MidX, CGRectGetMidY(v54)}];
+    circleView3 = [(TPNumberPadButton *)self circleView];
+    layer4 = [circleView3 layer];
+    [layer4 bounds];
+    [layer setPosition:{MidX, CGRectGetMidY(v54)}];
   }
 
   else
   {
-    v24 = [(TPNumberPadButton *)self layer];
-    [v24 addSublayer:v7];
+    circleView2 = [(TPNumberPadButton *)self layer];
+    [circleView2 addSublayer:layer];
   }
 
-  [(TPNumberPadButton *)self setGlyphLayer:v7];
+  [(TPNumberPadButton *)self setGlyphLayer:layer];
   v29 = [objc_opt_class() imageForCharacter:-[TPNumberPadButton character](self highlighted:{"character"), 1}];
-  v30 = [MEMORY[0x1E6979398] layer];
-  [v30 setOpaque:0];
-  v31 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v31 scale];
-  [v30 setContentsScale:?];
+  layer5 = [MEMORY[0x1E6979398] layer];
+  [layer5 setOpaque:0];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 scale];
+  [layer5 setContentsScale:?];
 
-  [v30 setContents:{objc_msgSend(v29, "CGImage")}];
+  [layer5 setContents:{objc_msgSend(v29, "CGImage")}];
   [v51 size];
   v33 = v32;
   v35 = v34;
@@ -133,31 +133,31 @@
   v41 = v40;
   [v29 size];
   v43 = (v41 - v42) * 0.5;
-  [v30 setFrame:{v39, roundf(v43), v33, v35}];
-  [v30 setOpacity:0.0];
+  [layer5 setFrame:{v39, roundf(v43), v33, v35}];
+  [layer5 setOpacity:0.0];
   if ([objc_opt_class() isUsingGlass])
   {
-    v44 = [(TPNumberPadButton *)self circleView];
-    v45 = [v44 layer];
-    [v45 addSublayer:v30];
+    circleView4 = [(TPNumberPadButton *)self circleView];
+    layer6 = [circleView4 layer];
+    [layer6 addSublayer:layer5];
 
-    v46 = [(TPNumberPadButton *)self circleView];
-    v47 = [v46 layer];
-    [v47 bounds];
+    circleView5 = [(TPNumberPadButton *)self circleView];
+    layer7 = [circleView5 layer];
+    [layer7 bounds];
     v48 = CGRectGetMidX(v55);
-    v49 = [(TPNumberPadButton *)self circleView];
-    v50 = [v49 layer];
-    [v50 bounds];
-    [v30 setPosition:{v48, CGRectGetMidY(v56)}];
+    circleView6 = [(TPNumberPadButton *)self circleView];
+    layer8 = [circleView6 layer];
+    [layer8 bounds];
+    [layer5 setPosition:{v48, CGRectGetMidY(v56)}];
   }
 
   else
   {
-    v46 = [(TPNumberPadButton *)self layer];
-    [v46 addSublayer:v30];
+    circleView5 = [(TPNumberPadButton *)self layer];
+    [circleView5 addSublayer:layer5];
   }
 
-  [(TPNumberPadButton *)self setHighlightedGlyphLayer:v30];
+  [(TPNumberPadButton *)self setHighlightedGlyphLayer:layer5];
   [(TPNumberPadButton *)self setNeedsLayout];
 }
 
@@ -196,40 +196,40 @@ void __50__TPNumberPadButton_loadNumberPadKeyPrototypeView__block_invoke()
 
 + (void)resetLocale
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  [numberFormatter setLocale:v2];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [numberFormatter setLocale:currentLocale];
 
   TPNumberPadKeyResetLocale();
-  v3 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v9 = [v3 firstObject];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  if ([v9 hasPrefix:@"ar"])
+  if ([firstObject hasPrefix:@"ar"])
   {
     v4 = 0;
 LABEL_11:
-    v5 = v9;
+    v5 = firstObject;
     goto LABEL_12;
   }
 
-  if ([v9 hasPrefix:@"bg"])
+  if ([firstObject hasPrefix:@"bg"])
   {
     v4 = 4;
     goto LABEL_11;
   }
 
-  if ([v9 hasPrefix:@"he"])
+  if ([firstObject hasPrefix:@"he"])
   {
     v4 = 2;
     goto LABEL_11;
   }
 
-  if ([v9 hasPrefix:@"kk"])
+  if ([firstObject hasPrefix:@"kk"])
   {
     v4 = 5;
     goto LABEL_11;
   }
 
-  if ([v9 hasPrefix:@"ru"])
+  if ([firstObject hasPrefix:@"ru"])
   {
     v4 = 3;
     goto LABEL_11;
@@ -238,7 +238,7 @@ LABEL_11:
   v6 = objc_alloc_init(MEMORY[0x1E69D8BE8]);
   if ([v6 smartDialerLocalizationEnabled])
   {
-    v7 = [v9 hasPrefix:@"uk"];
+    v7 = [firstObject hasPrefix:@"uk"];
 
     if (v7)
     {
@@ -251,8 +251,8 @@ LABEL_11:
   {
   }
 
-  v8 = [v9 hasPrefix:@"en"] == 0;
-  v5 = v9;
+  v8 = [firstObject hasPrefix:@"en"] == 0;
+  v5 = firstObject;
   v4 = 7;
   if (!v8)
   {
@@ -267,10 +267,10 @@ LABEL_12:
 {
   if (numberFormatter)
   {
-    v2 = [MEMORY[0x1E695DF58] currentLocale];
-    v3 = [numberFormatter locale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    locale = [numberFormatter locale];
 
-    if (v2 != v3)
+    if (currentLocale != locale)
     {
 
       +[TPNumberPadButton resetLocale];
@@ -309,25 +309,25 @@ LABEL_12:
 
 + (double)verticalPadding
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v3 = [v2 screenSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  screenSizeCategory = [mainScreen screenSizeCategory];
 
   result = 0.0;
-  if (v3 > 5)
+  if (screenSizeCategory > 5)
   {
-    if (v3 > 8)
+    if (screenSizeCategory > 8)
     {
-      if (v3 == 9)
+      if (screenSizeCategory == 9)
       {
         goto LABEL_18;
       }
 
-      if (v3 == 10)
+      if (screenSizeCategory == 10)
       {
         return 10.0;
       }
 
-      if (v3 != 11)
+      if (screenSizeCategory != 11)
       {
         return result;
       }
@@ -335,9 +335,9 @@ LABEL_12:
       return 8.0;
     }
 
-    if (v3 != 6)
+    if (screenSizeCategory != 6)
     {
-      if (v3 != 7)
+      if (screenSizeCategory != 7)
       {
 LABEL_18:
         v7 = _UISolariumEnabled();
@@ -356,11 +356,11 @@ LABEL_18:
     return 7.5;
   }
 
-  if (v3 > 2)
+  if (screenSizeCategory > 2)
   {
-    if (v3 != 3)
+    if (screenSizeCategory != 3)
     {
-      if (v3 != 4)
+      if (screenSizeCategory != 4)
       {
         return 9.0;
       }
@@ -371,18 +371,18 @@ LABEL_18:
     return 7.5;
   }
 
-  if (v3 == 1)
+  if (screenSizeCategory == 1)
   {
     goto LABEL_18;
   }
 
-  if (v3 == 2)
+  if (screenSizeCategory == 2)
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v6 = [v5 isUserInterfaceIdiomPad];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    isUserInterfaceIdiomPad = [mainScreen2 isUserInterfaceIdiomPad];
 
     result = 5.5;
-    if ((v6 & 1) == 0)
+    if ((isUserInterfaceIdiomPad & 1) == 0)
     {
       return 7.5;
     }
@@ -393,15 +393,15 @@ LABEL_18:
 
 + (double)outerCircleDiameter
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v3 = [v2 screenSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  screenSizeCategory = [mainScreen screenSizeCategory];
 
   result = 0.0;
-  if (v3 > 5)
+  if (screenSizeCategory > 5)
   {
-    if (v3 <= 8)
+    if (screenSizeCategory <= 8)
     {
-      if (v3 == 6)
+      if (screenSizeCategory == 6)
       {
         return 85.0;
       }
@@ -409,7 +409,7 @@ LABEL_18:
       return 75.0;
     }
 
-    switch(v3)
+    switch(screenSizeCategory)
     {
       case 9:
         return 75.0;
@@ -422,9 +422,9 @@ LABEL_18:
 
   else
   {
-    if (v3 <= 2)
+    if (screenSizeCategory <= 2)
     {
-      if (v3 >= 3)
+      if (screenSizeCategory >= 3)
       {
         return result;
       }
@@ -432,9 +432,9 @@ LABEL_18:
       return 75.0;
     }
 
-    if (v3 != 3)
+    if (screenSizeCategory != 3)
     {
-      if (v3 != 4)
+      if (screenSizeCategory != 4)
       {
         return 78.0;
       }
@@ -442,11 +442,11 @@ LABEL_18:
       return 75.0;
     }
 
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v6 = [v5 isUserInterfaceIdiomPad];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    isUserInterfaceIdiomPad = [mainScreen2 isUserInterfaceIdiomPad];
 
     result = 85.0;
-    if (v6)
+    if (isUserInterfaceIdiomPad)
     {
       return 83.3000031;
     }
@@ -475,11 +475,11 @@ LABEL_18:
   return result;
 }
 
-+ (void)updatePrototypeView:(id)a3
++ (void)updatePrototypeView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   objc_sync_enter(@"lock");
-  objc_storeStrong(&numberPadKeyPrototypeView, a3);
+  objc_storeStrong(&numberPadKeyPrototypeView, view);
   [numberPadKeyPrototypeView systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE098], *(MEMORY[0x1E69DE098] + 8)}];
   prototypeViewSideDimension = v4;
   v5 = objc_opt_new();
@@ -490,30 +490,30 @@ LABEL_18:
   objc_sync_exit(@"lock");
 }
 
-+ (id)localizedLettersForCharacter:(int64_t)a3
++ (id)localizedLettersForCharacter:(int64_t)character
 {
   v5 = objc_alloc_init(MEMORY[0x1E69D8BE8]);
-  v6 = [a1 localizedLettersForCharacter:a3 featureFlags:v5];
+  v6 = [self localizedLettersForCharacter:character featureFlags:v5];
 
   return v6;
 }
 
-+ (id)localizedLettersForCharacter:(int64_t)a3 featureFlags:(id)a4
++ (id)localizedLettersForCharacter:(int64_t)character featureFlags:(id)flags
 {
-  if (![a4 smartDialerLocalizationEnabled])
+  if (![flags smartDialerLocalizationEnabled])
   {
     v5 = &stru_1F2CA8008;
-    if (a3 > 4)
+    if (character > 4)
     {
-      if (a3 > 6)
+      if (character > 6)
       {
-        if (a3 == 8)
+        if (character == 8)
         {
           v10 = uiLanguage;
           goto LABEL_35;
         }
 
-        if (a3 != 7)
+        if (character != 7)
         {
           goto LABEL_38;
         }
@@ -538,7 +538,7 @@ LABEL_35:
         goto LABEL_37;
       }
 
-      if (a3 != 5)
+      if (character != 5)
       {
         v10 = uiLanguage;
         if ((uiLanguage - 3) < 2)
@@ -588,9 +588,9 @@ LABEL_57:
       goto LABEL_61;
     }
 
-    if (a3 > 2)
+    if (character > 2)
     {
-      if (a3 != 3)
+      if (character != 3)
       {
         v10 = uiLanguage;
         if ((uiLanguage - 3) < 2)
@@ -626,7 +626,7 @@ LABEL_53:
 
     else
     {
-      if (a3 == 1)
+      if (character == 1)
       {
         v10 = uiLanguage;
         if ((uiLanguage - 3) < 2)
@@ -651,7 +651,7 @@ LABEL_53:
 
       else
       {
-        if (a3 != 2)
+        if (character != 2)
         {
           goto LABEL_38;
         }
@@ -697,8 +697,8 @@ LABEL_53:
   v5 = &stru_1F2CA8008;
   if (uiLanguage != 1 && uiLanguage != 7)
   {
-    v7 = TPStringForNumberPadCharacter(a3);
-    v8 = [numberFormatter locale];
+    v7 = TPStringForNumberPadCharacter(character);
+    locale = [numberFormatter locale];
     v9 = TINumberPadGetDisplayStringForDigit();
     if (v9)
     {
@@ -711,20 +711,20 @@ LABEL_38:
   return v5;
 }
 
-+ (id)imageForCharacter:(int64_t)a3 highlighted:(BOOL)a4 whiteVersion:(BOOL)a5
++ (id)imageForCharacter:(int64_t)character highlighted:(BOOL)highlighted whiteVersion:(BOOL)version
 {
-  v5 = a5;
-  v6 = a4;
+  versionCopy = version;
+  highlightedCopy = highlighted;
   +[TPNumberPadButton loadNumberPadKeyPrototypeView];
   +[TPNumberPadButton resetLocaleIfNeeded];
   v8 = 0;
   v9 = &stru_1F2CA8008;
   v10 = 1;
-  if (a3 <= 5)
+  if (character <= 5)
   {
-    if (a3 > 2)
+    if (character > 2)
     {
-      if (a3 == 3)
+      if (character == 3)
       {
         v11 = [numberFormatter stringFromNumber:&unk_1F2CB10D8];
         v8 = 0;
@@ -732,7 +732,7 @@ LABEL_38:
         v9 = @"G H I";
       }
 
-      else if (a3 == 4)
+      else if (character == 4)
       {
         v11 = [numberFormatter stringFromNumber:&unk_1F2CB10F0];
         v8 = 0;
@@ -751,9 +751,9 @@ LABEL_38:
       goto LABEL_30;
     }
 
-    if (a3)
+    if (character)
     {
-      if (a3 == 1)
+      if (character == 1)
       {
         v11 = [numberFormatter stringFromNumber:&unk_1F2CB10A8];
         v8 = 0;
@@ -764,7 +764,7 @@ LABEL_38:
       else
       {
         v11 = &stru_1F2CA8008;
-        if (a3 == 2)
+        if (character == 2)
         {
           v11 = [numberFormatter stringFromNumber:&unk_1F2CB10C0];
           v8 = 0;
@@ -784,9 +784,9 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (a3 <= 8)
+  if (character <= 8)
   {
-    if (a3 == 6)
+    if (character == 6)
     {
       v11 = [numberFormatter stringFromNumber:&unk_1F2CB1120];
       v8 = 0;
@@ -794,7 +794,7 @@ LABEL_29:
       v9 = @"P Q R S";
     }
 
-    else if (a3 == 7)
+    else if (character == 7)
     {
       v11 = [numberFormatter stringFromNumber:&unk_1F2CB1138];
       v8 = 0;
@@ -813,7 +813,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (a3 == 9)
+  if (character == 9)
   {
     v11 = @"*";
 LABEL_28:
@@ -821,20 +821,20 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a3 == 11)
+  if (character == 11)
   {
     v11 = @"#";
     goto LABEL_28;
   }
 
   v11 = &stru_1F2CA8008;
-  if (a3 == 10)
+  if (character == 10)
   {
     v11 = [numberFormatter stringFromNumber:&unk_1F2CB1078];
-    v12 = [a1 usesTelephonyGlyphsWhereAvailable];
+    usesTelephonyGlyphsWhereAvailable = [self usesTelephonyGlyphsWhereAvailable];
     v10 = 0;
-    v8 = v12 ^ 1;
-    if (v12)
+    v8 = usesTelephonyGlyphsWhereAvailable ^ 1;
+    if (usesTelephonyGlyphsWhereAvailable)
     {
       v9 = @"+";
     }
@@ -851,7 +851,7 @@ LABEL_30:
   v44 = v11;
   v13 = MEMORY[0x1E696AEC0];
   v14 = +[TPNumberPadButton scriptKey];
-  if (v6)
+  if (highlightedCopy)
   {
     v15 = @"hi";
   }
@@ -861,7 +861,7 @@ LABEL_30:
     v15 = &stru_1F2CA8008;
   }
 
-  if (v5)
+  if (versionCopy)
   {
     v16 = @"white";
   }
@@ -871,8 +871,8 @@ LABEL_30:
     v16 = @"mask";
   }
 
-  v17 = v5;
-  if ([a1 usesBoldAssets])
+  v17 = versionCopy;
+  if ([self usesBoldAssets])
   {
     v18 = @"-bold";
   }
@@ -882,9 +882,9 @@ LABEL_30:
     v18 = &stru_1F2CA8008;
   }
 
-  v19 = [a1 isCarPlay];
+  isCarPlay = [self isCarPlay];
   v20 = @"-carplay";
-  if (!v19)
+  if (!isCarPlay)
   {
     v20 = &stru_1F2CA8008;
   }
@@ -903,13 +903,13 @@ LABEL_30:
 
   else
   {
-    v39 = v6;
-    v26 = [a1 localizedLettersForCharacter:1];
+    v39 = highlightedCopy;
+    v26 = [self localizedLettersForCharacter:1];
     v27 = v41 & ([v26 isEqualToString:&stru_1F2CA8008] ^ 1);
 
     if (v27 == 1)
     {
-      v28 = [a1 localizedLettersForCharacter:a3];
+      v28 = [self localizedLettersForCharacter:character];
       v29 = v9;
     }
 
@@ -926,16 +926,16 @@ LABEL_30:
     v31 = uiLanguage;
     [objc_opt_class() defaultSize];
     v33 = v32;
-    v34 = [a1 isCarPlay];
-    v35 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v30 setFontStylesForHighlightState:v39 language:v31 showLocalizedLetters:v27 shouldCenterDigit:v40 fontColor:v17 circleDiameter:v34 isCarPlay:v33 screenSizeCategory:{objc_msgSend(v35, "screenSizeCategory")}];
+    isCarPlay2 = [self isCarPlay];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [v30 setFontStylesForHighlightState:v39 language:v31 showLocalizedLetters:v27 shouldCenterDigit:v40 fontColor:v17 circleDiameter:isCarPlay2 isCarPlay:v33 screenSizeCategory:{objc_msgSend(mainScreen, "screenSizeCategory")}];
 
     [numberPadKeyPrototypeView doLayoutNow];
     *&v46.width = prototypeViewSideDimension;
     *&v46.height = prototypeViewSideDimension;
     UIGraphicsBeginImageContextWithOptions(v46, 0, 0.0);
-    v36 = [numberPadKeyPrototypeView layer];
-    [v36 renderInContext:UIGraphicsGetCurrentContext()];
+    layer = [numberPadKeyPrototypeView layer];
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
 
     v25 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -951,21 +951,21 @@ LABEL_30:
 
 + (double)horizontalPadding
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v3 = [v2 screenSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  screenSizeCategory = [mainScreen screenSizeCategory];
 
   v4 = 0.0;
-  if (v3 <= 5)
+  if (screenSizeCategory <= 5)
   {
-    if (v3 > 2)
+    if (screenSizeCategory > 2)
     {
-      if (v3 == 3)
+      if (screenSizeCategory == 3)
       {
 LABEL_22:
-        v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-        v7 = [v6 isUserInterfaceIdiomPad];
+        mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+        isUserInterfaceIdiomPad = [mainScreen2 isUserInterfaceIdiomPad];
 
-        if (v7)
+        if (isUserInterfaceIdiomPad)
         {
           return 13.6000004;
         }
@@ -976,7 +976,7 @@ LABEL_22:
         }
       }
 
-      if (v3 == 4)
+      if (screenSizeCategory == 4)
       {
         return 13.6000004;
       }
@@ -984,12 +984,12 @@ LABEL_22:
       return 12.0;
     }
 
-    if (v3 != 1)
+    if (screenSizeCategory != 1)
     {
-      if (v3 == 2)
+      if (screenSizeCategory == 2)
       {
-        v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-        if ([v5 isUserInterfaceIdiomPad])
+        mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+        if ([mainScreen3 isUserInterfaceIdiomPad])
         {
           v4 = 10.0;
         }
@@ -1006,11 +1006,11 @@ LABEL_22:
     return 10.0;
   }
 
-  if (v3 <= 8)
+  if (screenSizeCategory <= 8)
   {
-    if (v3 != 6)
+    if (screenSizeCategory != 6)
     {
-      if (v3 != 7)
+      if (screenSizeCategory != 7)
       {
         return 10.0;
       }
@@ -1021,7 +1021,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  switch(v3)
+  switch(screenSizeCategory)
   {
     case 9:
       return 10.0;
@@ -1047,16 +1047,16 @@ LABEL_22:
   return result;
 }
 
-+ (id)disabledImageForCharacter:(int64_t)a3
++ (id)disabledImageForCharacter:(int64_t)character
 {
-  v3 = [objc_opt_class() imageForCharacter:a3 highlighted:0 whiteVersion:0];
-  v4 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v5 = [v3 _flatImageWithColor:v4];
+  v3 = [objc_opt_class() imageForCharacter:character highlighted:0 whiteVersion:0];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  v5 = [v3 _flatImageWithColor:systemGrayColor];
 
   return v5;
 }
 
-- (id)initForCharacter:(int64_t)a3 style:(int64_t)a4
+- (id)initForCharacter:(int64_t)character style:(int64_t)style
 {
   v55[1] = *MEMORY[0x1E69E9840];
   [objc_opt_class() defaultSize];
@@ -1066,11 +1066,11 @@ LABEL_22:
   p_isa = &v8->super.super.super.super.isa;
   if (v8)
   {
-    [(TPNumberPadButton *)v8 setCharacter:a3];
-    if (a3 == 13)
+    [(TPNumberPadButton *)v8 setCharacter:character];
+    if (character == 13)
     {
-      v10 = [p_isa defaultColor];
-      [p_isa setBackgroundColor:v10];
+      defaultColor = [p_isa defaultColor];
+      [p_isa setBackgroundColor:defaultColor];
 
       goto LABEL_27;
     }
@@ -1084,27 +1084,27 @@ LABEL_22:
     [p_isa[61] setProxyControl:p_isa];
     [p_isa[61] frame];
     v15 = v14 * 0.5;
-    v16 = [p_isa[61] layer];
-    [v16 setCornerRadius:v15];
+    layer = [p_isa[61] layer];
+    [layer setCornerRadius:v15];
 
-    v17 = [p_isa buttonColor];
-    [p_isa setColor:v17];
+    buttonColor = [p_isa buttonColor];
+    [p_isa setColor:buttonColor];
 
     [objc_opt_class() unhighlightedCircleViewAlpha];
     v19 = v18;
-    v20 = [p_isa circleView];
-    [v20 setAlpha:v19];
+    circleView = [p_isa circleView];
+    [circleView setAlpha:v19];
 
     if ([objc_opt_class() isUsingGlass])
     {
-      v21 = [p_isa color];
-      v22 = [MEMORY[0x1E69DC888] clearColor];
+      color = [p_isa color];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
 
-      v23 = [objc_opt_class() isUsingClearGlass];
-      if (v21 == v22)
+      isUsingClearGlass = [objc_opt_class() isUsingClearGlass];
+      if (color == clearColor)
       {
         v33 = p_isa[61];
-        if (v23)
+        if (isUsingClearGlass)
         {
           [p_isa[61] tuui_applyFlexibleSmallGlassBackground];
         }
@@ -1117,26 +1117,26 @@ LABEL_22:
         goto LABEL_26;
       }
 
-      if (v23)
+      if (isUsingClearGlass)
       {
         v24 = p_isa[61];
-        v25 = [p_isa color];
-        [v24 tuui_applyFlexibleClearGlassBackgroundWithTintColor:v25];
+        color2 = [p_isa color];
+        [v24 tuui_applyFlexibleClearGlassBackgroundWithTintColor:color2];
       }
 
       else
       {
-        v34 = [p_isa color];
+        color3 = [p_isa color];
 
         v35 = p_isa[61];
-        if (!v34)
+        if (!color3)
         {
           [p_isa[61] tuui_applyFlexibleClearGlassWithShadowBackground];
           goto LABEL_26;
         }
 
-        v25 = [p_isa color];
-        [v35 tuui_applyFlexibleRegularGlassBackgroundWithTintColor:v25];
+        color2 = [p_isa color];
+        [v35 tuui_applyFlexibleRegularGlassBackgroundWithTintColor:color2];
       }
 
 LABEL_26:
@@ -1202,11 +1202,11 @@ LABEL_26:
 
       [p_isa[61] frame];
       [v28 setFrame:?];
-      v39 = [p_isa[61] layer];
-      [v39 cornerRadius];
+      layer2 = [p_isa[61] layer];
+      [layer2 cornerRadius];
       v41 = v40;
-      v42 = [v28 layer];
-      [v42 setCornerRadius:v41];
+      layer3 = [v28 layer];
+      [layer3 setCornerRadius:v41];
 
       [v28 setClipsToBounds:1];
       [p_isa setBackDropVisualEffectView:v28];
@@ -1231,14 +1231,14 @@ LABEL_26:
 
       [p_isa[61] frame];
       [v29 setFrame:?];
-      v31 = [p_isa[61] layer];
-      [v31 cornerRadius];
+      layer4 = [p_isa[61] layer];
+      [layer4 cornerRadius];
       [v29 setCornerRadius:?];
 
       [v29 setScale:0.5];
       [v29 setGroupName:@"TPNumberPadButton"];
-      v32 = [v27 layer];
-      [v32 addSublayer:v29];
+      layer5 = [v27 layer];
+      [layer5 addSublayer:v29];
 
       [p_isa addSubview:v27];
     }
@@ -1247,80 +1247,80 @@ LABEL_26:
   }
 
 LABEL_27:
-  v43 = TPStringForNumberPadCharacter(a3);
+  v43 = TPStringForNumberPadCharacter(character);
   [p_isa setAccessibilityLabel:v43];
 
   v44 = *MEMORY[0x1E69E9840];
   return p_isa;
 }
 
-- (void)updateBackgroundMaterial:(id)a3
+- (void)updateBackgroundMaterial:(id)material
 {
-  v8 = a3;
-  v4 = [(TPNumberPadButton *)self backDropVisualEffectView];
-  if (v4)
+  materialCopy = material;
+  backDropVisualEffectView = [(TPNumberPadButton *)self backDropVisualEffectView];
+  if (backDropVisualEffectView)
   {
-    v5 = v4;
-    v6 = [objc_opt_class() isUsingGlass];
+    v5 = backDropVisualEffectView;
+    isUsingGlass = [objc_opt_class() isUsingGlass];
 
-    if ((v6 & 1) == 0)
+    if ((isUsingGlass & 1) == 0)
     {
-      v7 = [(TPNumberPadButton *)self backDropVisualEffectView];
-      [v7 setBackgroundEffects:v8];
+      backDropVisualEffectView2 = [(TPNumberPadButton *)self backDropVisualEffectView];
+      [backDropVisualEffectView2 setBackgroundEffects:materialCopy];
     }
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v9 = a3;
-  objc_storeStrong(&self->_color, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_color, color);
   if ([(TPNumberPadButton *)self character]!= 13)
   {
-    v5 = [(TPNumberPadButton *)self circleView];
-    [v5 setBackgroundColor:v9];
+    circleView = [(TPNumberPadButton *)self circleView];
+    [circleView setBackgroundColor:colorCopy];
 
     [objc_opt_class() unhighlightedCircleViewAlpha];
     v7 = v6;
-    v8 = [(TPNumberPadButton *)self circleView];
-    [v8 setAlpha:v7];
+    circleView2 = [(TPNumberPadButton *)self circleView];
+    [circleView2 setAlpha:v7];
   }
 }
 
-- (void)setGreyedOut:(BOOL)a3
+- (void)setGreyedOut:(BOOL)out
 {
-  v5 = [(TPNumberPadButton *)self glyphLayer];
+  glyphLayer = [(TPNumberPadButton *)self glyphLayer];
 
-  if (v5)
+  if (glyphLayer)
   {
-    v6 = [(TPNumberPadButton *)self glyphLayer];
-    [v6 removeFromSuperlayer];
+    glyphLayer2 = [(TPNumberPadButton *)self glyphLayer];
+    [glyphLayer2 removeFromSuperlayer];
 
     [(TPNumberPadButton *)self setGlyphLayer:0];
   }
 
-  v7 = [(TPNumberPadButton *)self character];
+  character = [(TPNumberPadButton *)self character];
   v8 = objc_opt_class();
-  if (a3)
+  if (out)
   {
-    [v8 disabledImageForCharacter:v7];
+    [v8 disabledImageForCharacter:character];
   }
 
   else
   {
-    [v8 imageForCharacter:v7];
+    [v8 imageForCharacter:character];
   }
   v24 = ;
-  v9 = [MEMORY[0x1E6979398] layer];
-  [v9 setOpaque:0];
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 scale];
-  [v9 setContentsScale:?];
+  layer = [MEMORY[0x1E6979398] layer];
+  [layer setOpaque:0];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  [layer setContentsScale:?];
 
   v11 = v24;
-  [v9 setContents:{objc_msgSend(v24, "CGImage")}];
+  [layer setContents:{objc_msgSend(v24, "CGImage")}];
   [v24 size];
-  [v9 setFrame:{0.0, 0.0, v12, v13}];
+  [layer setFrame:{0.0, 0.0, v12, v13}];
   [(TPNumberPadButton *)self frame];
   v23 = v14;
   [(TPNumberPadButton *)self frame];
@@ -1328,17 +1328,17 @@ LABEL_27:
   v15.f64[1] = v16;
   __asm { FMOV            V0.2D, #0.5 }
 
-  [v9 setPosition:{vcvtq_f64_f32(vrnda_f32(vcvt_f32_f64(vmulq_f64(v15, _Q0))))}];
-  v22 = [(TPNumberPadButton *)self layer];
-  [v22 addSublayer:v9];
+  [layer setPosition:{vcvtq_f64_f32(vrnda_f32(vcvt_f32_f64(vmulq_f64(v15, _Q0))))}];
+  layer2 = [(TPNumberPadButton *)self layer];
+  [layer2 addSublayer:layer];
 
-  [(TPNumberPadButton *)self setGlyphLayer:v9];
+  [(TPNumberPadButton *)self setGlyphLayer:layer];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(TPNumberPadButton *)self bounds];
   v10.x = x;
   v10.y = y;
@@ -1355,21 +1355,21 @@ LABEL_27:
   return v7;
 }
 
-- (void)highlightCircleView:(BOOL)a3 animated:(BOOL)a4
+- (void)highlightCircleView:(BOOL)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__TPNumberPadButton_highlightCircleView_animated___block_invoke;
   v10[3] = &unk_1E7C0C070;
   v10[4] = self;
-  v11 = a3;
+  viewCopy2 = view;
   v6 = _Block_copy(v10);
   v7 = v6;
-  if (v4)
+  if (animatedCopy)
   {
-    if (v5)
+    if (viewCopy)
     {
       v8 = 0.0;
     }

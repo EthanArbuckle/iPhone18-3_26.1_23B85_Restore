@@ -1,13 +1,13 @@
 @interface ISComponentIdentifier
 - (ISComponentIdentifier)init;
-- (ISComponentIdentifier)initWithName:(int)a3 uuid:(id)a4;
+- (ISComponentIdentifier)initWithName:(int)name uuid:(id)uuid;
 - (NSUUID)uuid;
 - (int)componentName;
 @end
 
 @implementation ISComponentIdentifier
 
-- (ISComponentIdentifier)initWithName:(int)a3 uuid:(id)a4
+- (ISComponentIdentifier)initWithName:(int)name uuid:(id)uuid
 {
   v5 = sub_23C870B74();
   v6 = *(v5 - 8);
@@ -31,7 +31,7 @@
 - (int)componentName
 {
   v2 = *(&self->super.isa + OBJC_IVAR___ISComponentIdentifier_componentIdentifier);
-  v3 = self;
+  selfCopy = self;
   LODWORD(v2) = sub_23C870DF4();
 
   return v2;
@@ -45,7 +45,7 @@
   MEMORY[0x28223BE20](v3);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(&self->super.isa + OBJC_IVAR___ISComponentIdentifier_componentIdentifier);
-  v9 = self;
+  selfCopy = self;
   sub_23C870E24();
 
   v10 = sub_23C870B24();

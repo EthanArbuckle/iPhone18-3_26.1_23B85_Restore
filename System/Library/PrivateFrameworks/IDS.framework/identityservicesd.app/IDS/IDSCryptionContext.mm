@@ -1,69 +1,69 @@
 @interface IDSCryptionContext
-- (BOOL)isEqual:(id)a3;
-- (IDSCryptionContext)initWithGuid:(id)a3 sendingURI:(id)a4 sendingPushToken:(id)a5 receivingURI:(id)a6 receivingPushToken:(id)a7 service:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (IDSCryptionContext)initWithGuid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken service:(id)service;
 - (id)description;
 @end
 
 @implementation IDSCryptionContext
 
-- (IDSCryptionContext)initWithGuid:(id)a3 sendingURI:(id)a4 sendingPushToken:(id)a5 receivingURI:(id)a6 receivingPushToken:(id)a7 service:(id)a8
+- (IDSCryptionContext)initWithGuid:(id)guid sendingURI:(id)i sendingPushToken:(id)token receivingURI:(id)rI receivingPushToken:(id)pushToken service:(id)service
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  guidCopy = guid;
+  iCopy = i;
+  tokenCopy = token;
+  rICopy = rI;
+  pushTokenCopy = pushToken;
+  serviceCopy = service;
   v24.receiver = self;
   v24.super_class = IDSCryptionContext;
   v18 = [(IDSCryptionContext *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_guid, a3);
-    objc_storeStrong(&v19->_sendingURI, a4);
-    objc_storeStrong(&v19->_sendingPushToken, a5);
-    objc_storeStrong(&v19->_receivingURI, a6);
-    objc_storeStrong(&v19->_receivingPushToken, a7);
-    objc_storeStrong(&v19->_service, a8);
+    objc_storeStrong(&v18->_guid, guid);
+    objc_storeStrong(&v19->_sendingURI, i);
+    objc_storeStrong(&v19->_sendingPushToken, token);
+    objc_storeStrong(&v19->_receivingURI, rI);
+    objc_storeStrong(&v19->_receivingPushToken, pushToken);
+    objc_storeStrong(&v19->_service, service);
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 guid];
-    v7 = [(IDSCryptionContext *)self guid];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    guid = [v5 guid];
+    guid2 = [(IDSCryptionContext *)self guid];
+    if ([guid isEqualToString:guid2])
     {
-      v8 = [v5 sendingURI];
-      v9 = [(IDSCryptionContext *)self sendingURI];
-      if ([v8 isEqual:v9])
+      sendingURI = [v5 sendingURI];
+      sendingURI2 = [(IDSCryptionContext *)self sendingURI];
+      if ([sendingURI isEqual:sendingURI2])
       {
-        v10 = [v5 sendingPushToken];
-        v11 = [(IDSCryptionContext *)self sendingPushToken];
-        if ([v10 isEqual:v11])
+        sendingPushToken = [v5 sendingPushToken];
+        sendingPushToken2 = [(IDSCryptionContext *)self sendingPushToken];
+        if ([sendingPushToken isEqual:sendingPushToken2])
         {
-          v12 = [v5 receivingURI];
-          v22 = [(IDSCryptionContext *)self receivingURI];
-          v23 = v12;
-          if ([v12 isEqual:v22])
+          receivingURI = [v5 receivingURI];
+          receivingURI2 = [(IDSCryptionContext *)self receivingURI];
+          v23 = receivingURI;
+          if ([receivingURI isEqual:receivingURI2])
           {
-            v13 = [v5 receivingPushToken];
-            v14 = [(IDSCryptionContext *)self receivingPushToken];
-            v21 = v13;
-            v15 = v13;
-            v16 = v14;
-            if ([v15 isEqual:v14])
+            receivingPushToken = [v5 receivingPushToken];
+            receivingPushToken2 = [(IDSCryptionContext *)self receivingPushToken];
+            v21 = receivingPushToken;
+            v15 = receivingPushToken;
+            v16 = receivingPushToken2;
+            if ([v15 isEqual:receivingPushToken2])
             {
-              v20 = [v5 service];
-              v19 = [(IDSCryptionContext *)self service];
-              v17 = [v20 isEqualToString:v19];
+              service = [v5 service];
+              service2 = [(IDSCryptionContext *)self service];
+              v17 = [service isEqualToString:service2];
             }
 
             else
@@ -107,13 +107,13 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSCryptionContext *)self guid];
-  v5 = [(IDSCryptionContext *)self sendingURI];
-  v6 = [(IDSCryptionContext *)self sendingPushToken];
-  v7 = [(IDSCryptionContext *)self receivingURI];
-  v8 = [(IDSCryptionContext *)self receivingPushToken];
-  v9 = [(IDSCryptionContext *)self service];
-  v10 = [NSString stringWithFormat:@"<%@: %p { guid: %@, sendingURI: %@, sendingPushToken: %@, receivingURI: %@, receivingPushToken: %@ service: %@ }>", v3, self, v4, v5, v6, v7, v8, v9];
+  guid = [(IDSCryptionContext *)self guid];
+  sendingURI = [(IDSCryptionContext *)self sendingURI];
+  sendingPushToken = [(IDSCryptionContext *)self sendingPushToken];
+  receivingURI = [(IDSCryptionContext *)self receivingURI];
+  receivingPushToken = [(IDSCryptionContext *)self receivingPushToken];
+  service = [(IDSCryptionContext *)self service];
+  v10 = [NSString stringWithFormat:@"<%@: %p { guid: %@, sendingURI: %@, sendingPushToken: %@, receivingURI: %@, receivingPushToken: %@ service: %@ }>", v3, self, guid, sendingURI, sendingPushToken, receivingURI, receivingPushToken, service];
 
   return v10;
 }

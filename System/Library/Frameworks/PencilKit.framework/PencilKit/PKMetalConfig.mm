@@ -42,77 +42,77 @@
 
 - (id)device
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     os_unfair_lock_lock(&lock);
-    if (!*(v2 + 4))
+    if (!*(selfCopy + 4))
     {
       v3 = +[PKMetalUtility defaultDevice];
-      v4 = *(v2 + 4);
-      *(v2 + 4) = v3;
+      v4 = *(selfCopy + 4);
+      *(selfCopy + 4) = v3;
     }
 
     os_unfair_lock_unlock(&lock);
-    a1 = *(v2 + 4);
+    self = *(selfCopy + 4);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)renderQueue
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     os_unfair_lock_lock(&lock);
-    if (!*(v2 + 3))
+    if (!*(selfCopy + 3))
     {
       v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v4 = dispatch_queue_attr_make_with_qos_class(v3, QOS_CLASS_USER_INTERACTIVE, 0);
 
       v5 = dispatch_queue_create("com.apple.pencilkit.renderer", v4);
-      v6 = *(v2 + 3);
-      *(v2 + 3) = v5;
+      v6 = *(selfCopy + 3);
+      *(selfCopy + 3) = v5;
     }
 
     os_unfair_lock_unlock(&lock);
-    a1 = *(v2 + 3);
+    self = *(selfCopy + 3);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)resourceHandler
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(PKMetalConfig *)a1 device];
+    device = [(PKMetalConfig *)self device];
     os_unfair_lock_lock(&lock);
-    if (!*(v1 + 2))
+    if (!*(selfCopy + 2))
     {
-      if (*(v1 + 8))
+      if (*(selfCopy + 8))
       {
-        v3 = [[PKMetalResourceHandler alloc] initWithDevice:v2];
+        v3 = [[PKMetalResourceHandler alloc] initWithDevice:device];
       }
 
       else
       {
-        v3 = [PKMetalResourceHandler sharedResourceHandlerWithDevice:v2];
+        v3 = [PKMetalResourceHandler sharedResourceHandlerWithDevice:device];
       }
 
-      v4 = *(v1 + 2);
-      *(v1 + 2) = v3;
+      v4 = *(selfCopy + 2);
+      *(selfCopy + 2) = v3;
     }
 
     os_unfair_lock_unlock(&lock);
-    v1 = *(v1 + 2);
+    selfCopy = *(selfCopy + 2);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

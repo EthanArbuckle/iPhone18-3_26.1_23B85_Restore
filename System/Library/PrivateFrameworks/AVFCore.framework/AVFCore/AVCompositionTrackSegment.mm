@@ -2,16 +2,16 @@
 + (AVCompositionTrackSegment)compositionTrackSegmentWithTimeRange:(CMTimeRange *)timeRange;
 + (AVCompositionTrackSegment)compositionTrackSegmentWithURL:(NSURL *)URL trackID:(CMPersistentTrackID)trackID sourceTimeRange:(CMTimeRange *)sourceTimeRange targetTimeRange:(CMTimeRange *)targetTimeRange;
 - (AVCompositionTrackSegment)init;
-- (AVCompositionTrackSegment)initWithCoder:(id)a3;
+- (AVCompositionTrackSegment)initWithCoder:(id)coder;
 - (AVCompositionTrackSegment)initWithTimeRange:(CMTimeRange *)timeRange;
 - (AVCompositionTrackSegment)initWithURL:(NSURL *)URL trackID:(CMPersistentTrackID)trackID sourceTimeRange:(CMTimeRange *)sourceTimeRange targetTimeRange:(CMTimeRange *)targetTimeRange;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithTimeMapping:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithTimeMapping:(id *)mapping;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCompositionTrackSegment
@@ -50,18 +50,18 @@
   return [(AVCompositionTrackSegment *)self initWithTimeRange:v4];
 }
 
-- (id)_initWithTimeMapping:(id *)a3
+- (id)_initWithTimeMapping:(id *)mapping
 {
   v8.receiver = self;
   v8.super_class = AVCompositionTrackSegment;
-  v3 = *&a3->var1.var0.var0;
-  v7[2] = *&a3->var0.var1.var1;
+  v3 = *&mapping->var1.var0.var0;
+  v7[2] = *&mapping->var0.var1.var1;
   v7[3] = v3;
-  v4 = *&a3->var1.var1.var1;
-  v7[4] = *&a3->var1.var0.var3;
+  v4 = *&mapping->var1.var1.var1;
+  v7[4] = *&mapping->var1.var0.var3;
   v7[5] = v4;
-  v5 = *&a3->var0.var0.var3;
-  v7[0] = *&a3->var0.var0.var0;
+  v5 = *&mapping->var0.var0.var3;
+  v7[0] = *&mapping->var0.var0.var0;
   v7[1] = v5;
   return [(AVAssetTrackSegment *)&v8 _initWithTimeMapping:v7];
 }
@@ -172,25 +172,25 @@
   return [(AVAssetTrackSegment *)&v3 isEmpty];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = AVCompositionTrackSegment;
   v5 = [(AVAssetTrackSegment *)&v9 isEqual:?];
   if (v5)
   {
-    v6 = [(AVCompositionTrackSegment *)self sourceTrackID];
-    if (v6 == [a3 sourceTrackID])
+    sourceTrackID = [(AVCompositionTrackSegment *)self sourceTrackID];
+    if (sourceTrackID == [equal sourceTrackID])
     {
-      v7 = [(AVCompositionTrackSegment *)self sourceURL];
-      if (v7 == [a3 sourceURL])
+      sourceURL = [(AVCompositionTrackSegment *)self sourceURL];
+      if (sourceURL == [equal sourceURL])
       {
         LOBYTE(v5) = 1;
       }
 
       else
       {
-        LOBYTE(v5) = -[NSURL isEqual:](-[AVCompositionTrackSegment sourceURL](self, "sourceURL"), "isEqual:", [a3 sourceURL]);
+        LOBYTE(v5) = -[NSURL isEqual:](-[AVCompositionTrackSegment sourceURL](self, "sourceURL"), "isEqual:", [equal sourceURL]);
       }
     }
 
@@ -212,13 +212,13 @@
   return v4 ^ [(AVCompositionTrackSegment *)self sourceTrackID]^ v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AVCompositionTrackSegment;
   [(AVAssetTrackSegment *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:-[AVCompositionTrackSegment sourceURL](self forKey:{"sourceURL"), @"sourceURL"}];
-  [a3 encodeInt32:-[AVCompositionTrackSegment sourceTrackID](self forKey:{"sourceTrackID"), @"sourceTrackID"}];
+  [coder encodeObject:-[AVCompositionTrackSegment sourceURL](self forKey:{"sourceURL"), @"sourceURL"}];
+  [coder encodeInt32:-[AVCompositionTrackSegment sourceTrackID](self forKey:{"sourceTrackID"), @"sourceTrackID"}];
 }
 
 - (AVCompositionTrackSegment)initWithTimeRange:(CMTimeRange *)timeRange
@@ -251,15 +251,15 @@
   return v6;
 }
 
-- (AVCompositionTrackSegment)initWithCoder:(id)a3
+- (AVCompositionTrackSegment)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = AVCompositionTrackSegment;
   v4 = [(AVAssetTrackSegment *)&v8 initWithCoder:?];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceURL"];
-    Ivars = AVCompositionTrackSegmentCreateIvars(v5, [a3 decodeInt32ForKey:@"sourceTrackID"]);
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sourceURL"];
+    Ivars = AVCompositionTrackSegmentCreateIvars(v5, [coder decodeInt32ForKey:@"sourceTrackID"]);
     v4->_priv = Ivars;
     if (!Ivars)
     {

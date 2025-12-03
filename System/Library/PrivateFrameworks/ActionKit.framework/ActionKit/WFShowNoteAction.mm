@@ -1,15 +1,15 @@
 @interface WFShowNoteAction
-- (id)localizedKeywordsWithContext:(id)a3;
+- (id)localizedKeywordsWithContext:(id)context;
 - (id)serializationKeysByParameter;
 @end
 
 @implementation WFShowNoteAction
 
-- (id)localizedKeywordsWithContext:(id)a3
+- (id)localizedKeywordsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"show|apple", @"show|apple");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   v6 = [v5 componentsSeparatedByString:@"|"];
 

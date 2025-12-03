@@ -1,5 +1,5 @@
 @interface ApplePCIeAnalytics
-+ (id)_getProp:(__CFString *)a3 fromReg:(unsigned int)a4 withType:(Class)a5;
++ (id)_getProp:(__CFString *)prop fromReg:(unsigned int)reg withType:(Class)type;
 - (ApplePCIeAnalytics)init;
 - (BOOL)_startEventMonitoring;
 - (void)_startEventMonitoring;
@@ -197,9 +197,9 @@ void __26__ApplePCIeAnalytics_stop__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)_getProp:(__CFString *)a3 fromReg:(unsigned int)a4 withType:(Class)a5
++ (id)_getProp:(__CFString *)prop fromReg:(unsigned int)reg withType:(Class)type
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a4, a3, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(reg, prop, kCFAllocatorDefault, 0);
   if (!CFProperty || (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -241,8 +241,8 @@ void __26__ApplePCIeAnalytics_stop__block_invoke_cold_1(uint64_t *a1, void *a2)
 
 - (void)_startEventMonitoring
 {
-  v3 = *a1;
-  if (os_log_type_enabled(*a1, OS_LOG_TYPE_ERROR))
+  v3 = *self;
+  if (os_log_type_enabled(*self, OS_LOG_TYPE_ERROR))
   {
     v4[0] = 67109120;
     v4[1] = a2;

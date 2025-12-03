@@ -1,42 +1,42 @@
 @interface _UIIdleModeController
-- (BOOL)_recordLayoutAttributesStartingAtView:(id)a3;
-- (_UIIdleModeController)initWithScreen:(id)a3;
-- (double)_dimmingOverlayWhiteValueForUserInterfaceStyle:(int64_t)a3;
+- (BOOL)_recordLayoutAttributesStartingAtView:(id)view;
+- (_UIIdleModeController)initWithScreen:(id)screen;
+- (double)_dimmingOverlayWhiteValueForUserInterfaceStyle:(int64_t)style;
 - (double)_dismissalAnimationDuration;
 - (double)_presentationAnimationDuration;
-- (double)_vignetteAlphaForUserInterfaceStyle:(int64_t)a3;
-- (id)_originalAttributesForView:(id)a3 comparedToIdleModeAttributes:(id)a4;
-- (id)_vignetteImageAroundFocusedFrame:(CGRect)a3;
+- (double)_vignetteAlphaForUserInterfaceStyle:(int64_t)style;
+- (id)_originalAttributesForView:(id)view comparedToIdleModeAttributes:(id)attributes;
+- (id)_vignetteImageAroundFocusedFrame:(CGRect)frame;
 - (void)_animateDismissal;
 - (void)_animatePresentation;
 - (void)_applyDismissalLayoutAttributesToViews;
-- (void)_applyLayoutAttributes:(id)a3 toView:(id)a4;
+- (void)_applyLayoutAttributes:(id)attributes toView:(id)view;
 - (void)_applyPresentationLayoutAttributesToViews;
 - (void)_completeDismissal;
 - (void)_enterIdleMode;
-- (void)_enterIdleModeWithOptions:(unint64_t)a3;
+- (void)_enterIdleModeWithOptions:(unint64_t)options;
 - (void)_exitIdleMode;
-- (void)_exitIdleModeWithOptions:(unint64_t)a3;
+- (void)_exitIdleModeWithOptions:(unint64_t)options;
 - (void)_postWillEnterNotification;
 - (void)_postWillExitNotification;
-- (void)_prepareForPresentationWithKeyWindow:(id)a3 focusedView:(id)a4;
+- (void)_prepareForPresentationWithKeyWindow:(id)window focusedView:(id)view;
 - (void)dealloc;
-- (void)setIdleModeEnabled:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setIdleModeEnabled:(BOOL)enabled;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation _UIIdleModeController
 
-- (_UIIdleModeController)initWithScreen:(id)a3
+- (_UIIdleModeController)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v9.receiver = self;
   v9.super_class = _UIIdleModeController;
   v6 = [(_UIIdleModeController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_screen, a3);
+    objc_storeStrong(&v6->_screen, screen);
     v7->_style = 0;
   }
 
@@ -51,23 +51,23 @@
   [(_UIIdleModeController *)&v3 dealloc];
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    if (a3 == 1 && self->_idleModeEnabled)
+    self->_style = style;
+    if (style == 1 && self->_idleModeEnabled)
     {
       [(_UIIdleModeController *)self _exitIdleModeWithOptions:1];
     }
   }
 }
 
-- (void)setIdleModeEnabled:(BOOL)a3
+- (void)setIdleModeEnabled:(BOOL)enabled
 {
-  if (self->_idleModeEnabled != a3)
+  if (self->_idleModeEnabled != enabled)
   {
-    if (a3)
+    if (enabled)
     {
       [(_UIIdleModeController *)self _enterIdleMode];
     }
@@ -77,7 +77,7 @@
       [(_UIIdleModeController *)self _exitIdleMode];
     }
 
-    self->_idleModeEnabled = a3;
+    self->_idleModeEnabled = enabled;
   }
 }
 
@@ -107,13 +107,13 @@
   }
 }
 
-- (void)_enterIdleModeWithOptions:(unint64_t)a3
+- (void)_enterIdleModeWithOptions:(unint64_t)options
 {
   [(_UIIdleModeController *)self _completeDismissal];
   v5 = +[UIWindow _applicationKeyWindow];
-  v6 = [v5 _focusSystem];
-  v7 = [v6 focusedItem];
-  v8 = _UIFocusEnvironmentContainingView(v7);
+  _focusSystem = [v5 _focusSystem];
+  focusedItem = [_focusSystem focusedItem];
+  v8 = _UIFocusEnvironmentContainingView(focusedItem);
 
   if ([(_UIIdleModeController *)self _recordLayoutAttributesStartingAtView:v8])
   {
@@ -125,7 +125,7 @@
     v9[2] = __51___UIIdleModeController__enterIdleModeWithOptions___block_invoke;
     v9[3] = &unk_1E70F32F0;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = options;
     [UIView animateWithDuration:"animateWithDuration:delay:options:animations:completion:" delay:327686 options:v9 animations:0 completion:?];
   }
 
@@ -135,7 +135,7 @@
   }
 }
 
-- (void)_exitIdleModeWithOptions:(unint64_t)a3
+- (void)_exitIdleModeWithOptions:(unint64_t)options
 {
   if (self->_didApplyVisualEffects)
   {
@@ -148,7 +148,7 @@
     v10[2] = __50___UIIdleModeController__exitIdleModeWithOptions___block_invoke;
     v10[3] = &unk_1E70F32F0;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = options;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __50___UIIdleModeController__exitIdleModeWithOptions___block_invoke_2;
@@ -163,14 +163,14 @@
 
 - (void)_postWillEnterNotification
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"_UIApplicationWillEnterIdleModeNotification" object:UIApp];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIApplicationWillEnterIdleModeNotification" object:UIApp];
 }
 
 - (void)_postWillExitNotification
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"_UIApplicationWillExitIdleModeNotification" object:UIApp];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIApplicationWillExitIdleModeNotification" object:UIApp];
 }
 
 - (double)_presentationAnimationDuration
@@ -197,9 +197,9 @@
   return result;
 }
 
-- (double)_vignetteAlphaForUserInterfaceStyle:(int64_t)a3
+- (double)_vignetteAlphaForUserInterfaceStyle:(int64_t)style
 {
-  v3 = a3 == 1000 || a3 == 2;
+  v3 = style == 1000 || style == 2;
   result = 0.35;
   if (v3)
   {
@@ -209,9 +209,9 @@
   return result;
 }
 
-- (double)_dimmingOverlayWhiteValueForUserInterfaceStyle:(int64_t)a3
+- (double)_dimmingOverlayWhiteValueForUserInterfaceStyle:(int64_t)style
 {
-  v3 = a3 == 1000 || a3 == 2;
+  v3 = style == 1000 || style == 2;
   result = 0.55;
   if (v3)
   {
@@ -221,14 +221,14 @@
   return result;
 }
 
-- (id)_vignetteImageAroundFocusedFrame:(CGRect)a3
+- (id)_vignetteImageAroundFocusedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIScreen *)self->_screen traitCollection];
-  v9 = [(_UIIdleModeController *)self _imageForTraitCollection:v8];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  traitCollection = [(UIScreen *)self->_screen traitCollection];
+  v9 = [(_UIIdleModeController *)self _imageForTraitCollection:traitCollection];
 
   [v9 size];
   v11 = v10;
@@ -249,20 +249,20 @@
   return v20;
 }
 
-- (void)_applyLayoutAttributes:(id)a3 toView:(id)a4
+- (void)_applyLayoutAttributes:(id)attributes toView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  attributesCopy = attributes;
+  viewCopy = view;
+  v7 = viewCopy;
   memset(&v21, 0, sizeof(v21));
-  if (v6)
+  if (viewCopy)
   {
-    [v6 transform];
+    [viewCopy transform];
   }
 
-  if (v5)
+  if (attributesCopy)
   {
-    [v5 transform];
+    [attributesCopy transform];
   }
 
   else
@@ -276,14 +276,14 @@
   [v7 setTransform:&t2];
   [v7 alpha];
   v9 = v8;
-  [v5 alphaOffset];
+  [attributesCopy alphaOffset];
   [v7 setAlpha:v9 + v10];
   [v7 center];
   v12 = v11;
   v14 = v13;
-  [v5 centerOffset];
+  [attributesCopy centerOffset];
   v16 = v12 + v15;
-  [v5 centerOffset];
+  [attributesCopy centerOffset];
   [v7 setCenter:{v16, v14 + v17}];
 }
 
@@ -309,13 +309,13 @@
   [UIView conditionallyAnimate:v3 withAnimation:&__block_literal_global_11_1 layout:v4 completion:0];
 }
 
-- (id)_originalAttributesForView:(id)a3 comparedToIdleModeAttributes:(id)a4
+- (id)_originalAttributesForView:(id)view comparedToIdleModeAttributes:(id)attributes
 {
-  v4 = a4;
+  attributesCopy = attributes;
   v5 = objc_alloc_init(_UIIdleModeLayoutAttributes);
-  if (v4)
+  if (attributesCopy)
   {
-    [v4 transform];
+    [attributesCopy transform];
   }
 
   else
@@ -326,36 +326,36 @@
   CGAffineTransformInvert(&v12, &v11);
   v11 = v12;
   [(_UIIdleModeLayoutAttributes *)v5 setTransform:&v11];
-  [v4 alphaOffset];
+  [attributesCopy alphaOffset];
   [(_UIIdleModeLayoutAttributes *)v5 setAlphaOffset:-v6];
-  [v4 centerOffset];
+  [attributesCopy centerOffset];
   v8 = -v7;
-  [v4 centerOffset];
+  [attributesCopy centerOffset];
   [(_UIIdleModeLayoutAttributes *)v5 setCenterOffset:v8, -v9];
 
   return v5;
 }
 
-- (BOOL)_recordLayoutAttributesStartingAtView:(id)a3
+- (BOOL)_recordLayoutAttributesStartingAtView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
     v26 = 0;
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     viewsToCAFilters = self->_viewsToCAFilters;
-    self->_viewsToCAFilters = v5;
+    self->_viewsToCAFilters = strongToStrongObjectsMapTable;
 
-    v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     viewsToAttributes = self->_viewsToAttributes;
-    self->_viewsToAttributes = v7;
+    self->_viewsToAttributes = strongToStrongObjectsMapTable2;
 
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     viewsToOriginalAttributes = self->_viewsToOriginalAttributes;
-    self->_viewsToOriginalAttributes = v9;
+    self->_viewsToOriginalAttributes = strongToStrongObjectsMapTable3;
 
     v11 = [_UIViewBlockVisitor alloc];
     v20[0] = MEMORY[0x1E69E9820];
@@ -363,12 +363,12 @@
     v20[2] = __63___UIIdleModeController__recordLayoutAttributesStartingAtView___block_invoke;
     v20[3] = &unk_1E710D778;
     v20[4] = self;
-    v12 = v4;
+    v12 = viewCopy;
     v21 = v12;
     v22 = &v23;
     v13 = [(_UIViewBlockVisitor *)v11 initWithTraversalDirection:2 visitorBlock:v20];
-    v14 = [v12 window];
-    [v14 _receiveVisitor:v13];
+    window = [v12 window];
+    [window _receiveVisitor:v13];
 
     if (v24[3])
     {
@@ -400,42 +400,42 @@
   return v15 & 1;
 }
 
-- (void)_prepareForPresentationWithKeyWindow:(id)a3 focusedView:(id)a4
+- (void)_prepareForPresentationWithKeyWindow:(id)window focusedView:(id)view
 {
-  v34 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_keyWindow, a3);
-  v8 = [(UIView *)self->_keyWindow layer];
-  self->_keyWindowAllowedGroupBlending = [v8 allowsGroupBlending];
+  windowCopy = window;
+  viewCopy = view;
+  objc_storeStrong(&self->_keyWindow, window);
+  layer = [(UIView *)self->_keyWindow layer];
+  self->_keyWindowAllowedGroupBlending = [layer allowsGroupBlending];
 
-  v9 = [(UIView *)self->_keyWindow layer];
-  [v9 setAllowsGroupBlending:0];
+  layer2 = [(UIView *)self->_keyWindow layer];
+  [layer2 setAllowsGroupBlending:0];
 
   v10 = objc_alloc_init(UIWindow);
   backgroundWindow = self->_backgroundWindow;
   self->_backgroundWindow = v10;
 
-  v12 = [v34 windowScene];
-  v13 = v12;
-  if (v12)
+  windowScene = [windowCopy windowScene];
+  v13 = windowScene;
+  if (windowScene)
   {
-    v14 = v12;
+    v14 = windowScene;
   }
 
   else
   {
-    v15 = [v7 _window];
-    v16 = [v15 windowScene];
-    v17 = v16;
-    if (v16)
+    _window = [viewCopy _window];
+    windowScene2 = [_window windowScene];
+    v17 = windowScene2;
+    if (windowScene2)
     {
-      v14 = v16;
+      v14 = windowScene2;
     }
 
     else
     {
-      v18 = [UIApp _defaultSceneIfExists];
-      v14 = [(UIScene *)UIWindowScene _sceneForFBSScene:v18];
+      _defaultSceneIfExists = [UIApp _defaultSceneIfExists];
+      v14 = [(UIScene *)UIWindowScene _sceneForFBSScene:_defaultSceneIfExists];
     }
   }
 
@@ -448,12 +448,12 @@
   [(UIWindow *)self->_backgroundWindow setWindowLevel:-10.0];
   [(UIView *)self->_backgroundWindow setUserInteractionEnabled:0];
   [(UIWindow *)self->_backgroundWindow setHidden:0];
-  v20 = [(UIView *)self->_backgroundWindow layer];
-  [v20 setAllowsGroupBlending:0];
+  layer3 = [(UIView *)self->_backgroundWindow layer];
+  [layer3 setAllowsGroupBlending:0];
 
   v21 = self->_backgroundWindow;
-  [v7 bounds];
-  [(UIView *)v21 convertRect:v7 fromView:?];
+  [viewCopy bounds];
+  [(UIView *)v21 convertRect:viewCopy fromView:?];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -472,25 +472,25 @@
 {
   v29 = *MEMORY[0x1E69E9840];
   [(_UIIdleModeController *)self _applyPresentationLayoutAttributesToViews];
-  v3 = [(UIView *)self->_vignetteView traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIView *)self->_vignetteView traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  [(_UIIdleModeController *)self _vignetteAlphaForUserInterfaceStyle:v4];
+  [(_UIIdleModeController *)self _vignetteAlphaForUserInterfaceStyle:userInterfaceStyle];
   [(UIView *)self->_vignetteView setAlpha:?];
   v5 = [UIColor colorWithWhite:1.0 alpha:1.0];
-  v22 = [v5 CGColor];
+  cGColor = [v5 CGColor];
 
-  [(_UIIdleModeController *)self _dimmingOverlayWhiteValueForUserInterfaceStyle:v4];
+  [(_UIIdleModeController *)self _dimmingOverlayWhiteValueForUserInterfaceStyle:userInterfaceStyle];
   v6 = [UIColor colorWithWhite:"colorWithWhite:alpha:" alpha:?];
-  v7 = [v6 CGColor];
+  cGColor2 = [v6 CGColor];
 
   v8 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
-  [v8 setValue:v7 forKey:@"inputColor"];
+  [v8 setValue:cGColor2 forKey:@"inputColor"];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = self;
+  selfCopy = self;
   obj = self->_viewsToCAFilters;
   v10 = [(NSMapTable *)obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v10)
@@ -508,21 +508,21 @@
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 layer];
+        layer = [v15 layer];
         v27 = v8;
         v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
-        [v16 setFilters:v17];
+        [layer setFilters:v17];
 
         v18 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.multiplyColor.inputColor"];
         v19 = [MEMORY[0x1E69793D0] functionWithName:v13];
         [v18 setTimingFunction:v19];
 
-        [v18 setFromValue:v22];
-        [v18 setToValue:v7];
-        [(_UIIdleModeController *)v9 _presentationAnimationDuration];
+        [v18 setFromValue:cGColor];
+        [v18 setToValue:cGColor2];
+        [(_UIIdleModeController *)selfCopy _presentationAnimationDuration];
         [v18 setDuration:?];
-        v20 = [v15 layer];
-        [v20 addAnimation:v18 forKey:0];
+        layer2 = [v15 layer];
+        [layer2 addAnimation:v18 forKey:0];
       }
 
       v11 = [(NSMapTable *)obj countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -542,7 +542,7 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v17 = self;
+  selfCopy = self;
   obj = self->_viewsToCAFilters;
   v5 = [(NSMapTable *)obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
@@ -562,19 +562,19 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * v11) layer];
+        layer = [*(*(&v19 + 1) + 8 * v11) layer];
         v13 = [UIColor colorWithWhite:1.0 alpha:1.0];
-        v14 = [v13 CGColor];
+        cGColor = [v13 CGColor];
 
         v15 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.multiplyColor.inputColor"];
         v16 = [MEMORY[0x1E69793D0] functionWithName:v9];
         [v15 setTimingFunction:v16];
 
-        [v15 setToValue:v14];
+        [v15 setToValue:cGColor];
         [v15 setDuration:v7];
         [v15 setFillMode:v10];
         [v15 setRemovedOnCompletion:0];
-        [v12 addAnimation:v15 forKey:@"_UIIdleModeDismissal"];
+        [layer addAnimation:v15 forKey:@"_UIIdleModeDismissal"];
 
         ++v11;
       }
@@ -586,7 +586,7 @@
     while (v6);
   }
 
-  [(_UIIdleModeController *)v17 _applyDismissalLayoutAttributesToViews];
+  [(_UIIdleModeController *)selfCopy _applyDismissalLayoutAttributesToViews];
 }
 
 - (void)_completeDismissal
@@ -616,9 +616,9 @@
 
           v9 = *(*(&v20 + 1) + 8 * i);
           v10 = [(NSMapTable *)self->_viewsToCAFilters objectForKey:v9, v20];
-          v11 = [v9 layer];
-          [v11 removeAnimationForKey:@"_UIIdleModeDismissal"];
-          [v11 setFilters:v10];
+          layer = [v9 layer];
+          [layer removeAnimationForKey:@"_UIIdleModeDismissal"];
+          [layer setFilters:v10];
         }
 
         v6 = [(NSMapTable *)v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -628,8 +628,8 @@
     }
 
     keyWindowAllowedGroupBlending = self->_keyWindowAllowedGroupBlending;
-    v13 = [(UIView *)self->_keyWindow layer];
-    [v13 setAllowsGroupBlending:keyWindowAllowedGroupBlending];
+    layer2 = [(UIView *)self->_keyWindow layer];
+    [layer2 setAllowsGroupBlending:keyWindowAllowedGroupBlending];
 
     keyWindow = self->_keyWindow;
     self->_keyWindow = 0;

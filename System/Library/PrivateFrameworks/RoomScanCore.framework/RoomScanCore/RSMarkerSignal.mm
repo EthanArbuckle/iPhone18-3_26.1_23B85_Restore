@@ -1,6 +1,6 @@
 @interface RSMarkerSignal
 - (RSMarkerSignal)init;
-- (RSMarkerSignal)initWithDictionary:(id)a3;
+- (RSMarkerSignal)initWithDictionary:(id)dictionary;
 - (id)dictionaryRepresentation;
 @end
 
@@ -45,21 +45,21 @@
   return v4;
 }
 
-- (RSMarkerSignal)initWithDictionary:(id)a3
+- (RSMarkerSignal)initWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = RSMarkerSignal;
   v6 = [(RSMarkerSignal *)&v33 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"markers");
+    v7 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"markers");
     v8 = v7 == 0;
 
     if (!v8)
     {
-      v10 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"markers");
+      v10 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v9, @"markers");
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {

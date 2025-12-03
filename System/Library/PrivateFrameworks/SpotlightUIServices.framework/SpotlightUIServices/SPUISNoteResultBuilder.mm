@@ -1,5 +1,5 @@
 @interface SPUISNoteResultBuilder
-- (SPUISNoteResultBuilder)initWithResult:(id)a3;
+- (SPUISNoteResultBuilder)initWithResult:(id)result;
 - (id)buildCompactCardSection;
 - (id)buildInlineCardSection;
 - (id)buildTitle;
@@ -7,29 +7,29 @@
 
 @implementation SPUISNoteResultBuilder
 
-- (SPUISNoteResultBuilder)initWithResult:(id)a3
+- (SPUISNoteResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v17.receiver = self;
   v17.super_class = SPUISNoteResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v17 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v17 initWithResult:resultCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     v8 = [v6 whiteSpaceCondensedStringForString:v7];
     [(SPUISNoteResultBuilder *)v5 setTitle:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC2DF0] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC2DF0] withType:objc_opt_class()];
     -[SPUISNoteResultBuilder setIsShared:](v5, "setIsShared:", [v9 BOOLValue]);
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC2DE8] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC2DE8] withType:objc_opt_class()];
     -[SPUISNoteResultBuilder setIsLocked:](v5, "setIsLocked:", [v10 BOOLValue]);
 
-    v11 = [v4 valueForAttribute:*MEMORY[0x277CC2660] withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:*MEMORY[0x277CC2660] withType:objc_opt_class()];
     [(SPUISNoteResultBuilder *)v5 setModificationDate:v11];
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x277CC3118] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x277CC3118] withType:objc_opt_class()];
     if (v12)
     {
       [(SPUISNoteResultBuilder *)v5 setFormattedBody:v12];
@@ -37,14 +37,14 @@
 
     else
     {
-      v13 = [v4 valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
+      v13 = [resultCopy valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
       [(SPUISNoteResultBuilder *)v5 setFormattedBody:v13];
     }
 
-    v14 = [v4 valueForAttribute:*MEMORY[0x277CC2DE0] withType:objc_opt_class()];
+    v14 = [resultCopy valueForAttribute:*MEMORY[0x277CC2DE0] withType:objc_opt_class()];
     [(SPUISNoteResultBuilder *)v5 setFolder:v14];
 
-    v15 = [v4 valueForAttribute:*MEMORY[0x277CC2DD8] withType:objc_opt_class()];
+    v15 = [resultCopy valueForAttribute:*MEMORY[0x277CC2DD8] withType:objc_opt_class()];
     [(SPUISNoteResultBuilder *)v5 setAccount:v15];
   }
 
@@ -58,14 +58,14 @@
   if ([(SPUISNoteResultBuilder *)self isLocked])
   {
     v4 = MEMORY[0x277D4C598];
-    v5 = [SPUISUtilities localizedStringForKey:@"LOCKED"];
-    v83 = [v4 textWithString:v5];
+    title = [SPUISUtilities localizedStringForKey:@"LOCKED"];
+    v83 = [v4 textWithString:title];
   }
 
   else
   {
-    v5 = [(SPUISNoteResultBuilder *)self title];
-    v6 = [(SPUISResultBuilder *)self buildHighlightedMatchedTextWithTitle:v5 headTruncation:1];
+    title = [(SPUISNoteResultBuilder *)self title];
+    v6 = [(SPUISResultBuilder *)self buildHighlightedMatchedTextWithTitle:title headTruncation:1];
     v7 = v6;
     if (v6)
     {
@@ -75,8 +75,8 @@
     else
     {
       v9 = MEMORY[0x277D4C598];
-      v10 = [(SPUISNoteResultBuilder *)self formattedBody];
-      v8 = [v9 textWithString:v10];
+      formattedBody = [(SPUISNoteResultBuilder *)self formattedBody];
+      v8 = [v9 textWithString:formattedBody];
     }
 
     v83 = v8;
@@ -84,41 +84,41 @@
 
   v88.receiver = self;
   v88.super_class = SPUISNoteResultBuilder;
-  v11 = [(SPUISResultBuilder *)&v88 buildInlineCardSection];
+  buildInlineCardSection = [(SPUISResultBuilder *)&v88 buildInlineCardSection];
   v12 = objc_opt_new();
-  v13 = [(SPUISNoteResultBuilder *)self modificationDate];
+  modificationDate = [(SPUISNoteResultBuilder *)self modificationDate];
 
-  if (v13)
+  if (modificationDate)
   {
     v14 = MEMORY[0x277D4C3A0];
     v15 = MEMORY[0x277CCACA8];
-    v16 = [(SPUISNoteResultBuilder *)self modificationDate];
-    v17 = [SPUISDateFormatManager dynamicCompactStringFromDate:v16];
+    modificationDate2 = [(SPUISNoteResultBuilder *)self modificationDate];
+    v17 = [SPUISDateFormatManager dynamicCompactStringFromDate:modificationDate2];
     v18 = [v15 stringWithFormat:@"%@  ", v17];
     v19 = [v14 textWithString:v18];
     [v12 addObject:v19];
   }
 
-  v20 = [(SPUISResultBuilder *)self result];
-  v21 = [v20 formattedSnippet];
+  result = [(SPUISResultBuilder *)self result];
+  formattedSnippet = [result formattedSnippet];
   v22 = 0x277CBE000uLL;
-  if (v21)
+  if (formattedSnippet)
   {
-    v23 = v21;
-    v24 = [(SPUISResultBuilder *)self result];
-    v25 = [v24 formattedSnippet];
-    v26 = [v25 formattedTextPieces];
-    v27 = [v26 count];
+    v23 = formattedSnippet;
+    result2 = [(SPUISResultBuilder *)self result];
+    formattedSnippet2 = [result2 formattedSnippet];
+    formattedTextPieces = [formattedSnippet2 formattedTextPieces];
+    v27 = [formattedTextPieces count];
 
     v3 = 0x277D4C000;
     v22 = 0x277CBE000;
 
     if (v27)
     {
-      v28 = [(SPUISResultBuilder *)self result];
-      v29 = [v28 formattedSnippet];
-      v30 = [v29 formattedTextPieces];
-      [v12 addObjectsFromArray:v30];
+      result3 = [(SPUISResultBuilder *)self result];
+      formattedSnippet3 = [result3 formattedSnippet];
+      formattedTextPieces2 = [formattedSnippet3 formattedTextPieces];
+      [v12 addObjectsFromArray:formattedTextPieces2];
 
       goto LABEL_16;
     }
@@ -128,17 +128,17 @@
   {
   }
 
-  v28 = [v83 formattedTextPieces];
-  if (v28)
+  result3 = [v83 formattedTextPieces];
+  if (result3)
   {
-    [v12 addObjectsFromArray:v28];
+    [v12 addObjectsFromArray:result3];
   }
 
   else
   {
     v31 = MEMORY[0x277D4C3A0];
-    v32 = [v83 text];
-    v33 = [v31 textWithString:v32];
+    text = [v83 text];
+    v33 = [v31 textWithString:text];
     v91[0] = v33;
     [*(v22 + 2656) arrayWithObjects:v91 count:1];
     v35 = v34 = v22;
@@ -154,47 +154,47 @@ LABEL_16:
   [v37 setFormattedTextPieces:v12];
   v90 = v37;
   v38 = [*(v22 + 2656) arrayWithObjects:&v90 count:1];
-  [v11 setDescriptions:v38];
+  [buildInlineCardSection setDescriptions:v38];
 
   v39 = +[SPUISUtilities isMacOS];
   v40 = objc_opt_new();
-  v41 = [(SPUISNoteResultBuilder *)self folder];
-  v42 = [v41 length];
+  folder = [(SPUISNoteResultBuilder *)self folder];
+  v42 = [folder length];
 
   if (v39)
   {
     if (v42)
     {
-      v43 = [(SPUISNoteResultBuilder *)self folder];
-      [v40 addObject:v43];
+      folder2 = [(SPUISNoteResultBuilder *)self folder];
+      [v40 addObject:folder2];
     }
 
-    v44 = [(SPUISNoteResultBuilder *)self account];
-    v45 = [v44 length];
+    account = [(SPUISNoteResultBuilder *)self account];
+    v45 = [account length];
 
     if (v45)
     {
-      v46 = [(SPUISNoteResultBuilder *)self account];
-      [v40 addObject:v46];
+      account2 = [(SPUISNoteResultBuilder *)self account];
+      [v40 addObject:account2];
     }
 
-    v47 = [v40 componentsJoinedByString:@" · "];
-    if ([v47 length])
+    footnote = [v40 componentsJoinedByString:@" · "];
+    if ([footnote length])
     {
       v48 = objc_opt_new();
-      v49 = [MEMORY[0x277CCACA8] stringWithFormat:@" — %@", v47];
+      v49 = [MEMORY[0x277CCACA8] stringWithFormat:@" — %@", footnote];
       [v48 setText:v49];
 
-      v50 = [v11 title];
-      v51 = [v50 formattedTextPieces];
-      v52 = [v51 arrayByAddingObject:v48];
-      v53 = [v11 title];
-      [v53 setFormattedTextPieces:v52];
+      title2 = [buildInlineCardSection title];
+      formattedTextPieces3 = [title2 formattedTextPieces];
+      v52 = [formattedTextPieces3 arrayByAddingObject:v48];
+      title3 = [buildInlineCardSection title];
+      [title3 setFormattedTextPieces:v52];
 
-      v54 = [v11 title];
-      v55 = [v54 formattedTextPieces];
-      v56 = [v55 firstObject];
-      [v56 setIsEmphasized:1];
+      title4 = [buildInlineCardSection title];
+      formattedTextPieces4 = [title4 formattedTextPieces];
+      firstObject = [formattedTextPieces4 firstObject];
+      [firstObject setIsEmphasized:1];
     }
   }
 
@@ -210,21 +210,21 @@ LABEL_16:
       [v40 addObject:v58];
       v59 = MEMORY[0x277D4C3A0];
       v60 = MEMORY[0x277CCACA8];
-      v61 = [(SPUISNoteResultBuilder *)self folder];
-      v62 = [v60 stringWithFormat:@" %@", v61];
+      folder3 = [(SPUISNoteResultBuilder *)self folder];
+      v62 = [v60 stringWithFormat:@" %@", folder3];
       v63 = [v59 textWithString:v62];
       [v40 addObject:v63];
     }
 
-    v64 = [(SPUISNoteResultBuilder *)self account];
-    v65 = [v64 length];
+    account3 = [(SPUISNoteResultBuilder *)self account];
+    v65 = [account3 length];
 
     if (v65)
     {
       v66 = MEMORY[0x277D4C3A0];
       v67 = MEMORY[0x277CCACA8];
-      v68 = [(SPUISNoteResultBuilder *)self folder];
-      if ([v68 length])
+      folder4 = [(SPUISNoteResultBuilder *)self folder];
+      if ([folder4 length])
       {
         v69 = @" — ";
       }
@@ -234,8 +234,8 @@ LABEL_16:
         v69 = &stru_287C50EE8;
       }
 
-      v70 = [(SPUISNoteResultBuilder *)self account];
-      v71 = [v67 stringWithFormat:@"%@%@", v69, v70];
+      account4 = [(SPUISNoteResultBuilder *)self account];
+      v71 = [v67 stringWithFormat:@"%@%@", v69, account4];
       v72 = [v66 textWithString:v71];
       [v40 addObject:v72];
     }
@@ -274,11 +274,11 @@ LABEL_16:
       v79 = [v73 copy];
       [v78 setFormattedTextPieces:v79];
 
-      [v11 setFootnote:v78];
+      [buildInlineCardSection setFootnote:v78];
     }
 
-    v47 = [v11 footnote];
-    if (v47)
+    footnote = [buildInlineCardSection footnote];
+    if (footnote)
     {
       v80 = 1;
     }
@@ -293,15 +293,15 @@ LABEL_16:
 
   v81 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return buildInlineCardSection;
 }
 
 - (id)buildTitle
 {
   v3 = objc_opt_new();
   v4 = MEMORY[0x277D4C3A0];
-  v5 = [(SPUISNoteResultBuilder *)self title];
-  v6 = [v4 textWithString:v5];
+  title = [(SPUISNoteResultBuilder *)self title];
+  v6 = [v4 textWithString:title];
 
   [v6 setIsEmphasized:1];
   [v3 addObject:v6];
@@ -320,8 +320,8 @@ LABEL_16:
     v7 = @"lock.fill";
   }
 
-  v8 = [v6 text];
-  v9 = [v8 stringByAppendingString:@" "];
+  text = [v6 text];
+  v9 = [text stringByAppendingString:@" "];
   [v6 setText:v9];
 
   v10 = objc_opt_new();
@@ -342,29 +342,29 @@ LABEL_6:
 - (id)buildCompactCardSection
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISNoteResultBuilder *)self modificationDate];
+  modificationDate = [(SPUISNoteResultBuilder *)self modificationDate];
 
-  if (v4)
+  if (modificationDate)
   {
-    v5 = [(SPUISNoteResultBuilder *)self modificationDate];
-    v6 = [SPUISDateFormatManager dynamicDateTimeStringsFromDate:v5];
+    modificationDate2 = [(SPUISNoteResultBuilder *)self modificationDate];
+    v6 = [SPUISDateFormatManager dynamicDateTimeStringsFromDate:modificationDate2];
     [v3 addObjectsFromArray:v6];
   }
 
-  v7 = [(SPUISNoteResultBuilder *)self formattedBody];
-  if (v7)
+  formattedBody = [(SPUISNoteResultBuilder *)self formattedBody];
+  if (formattedBody)
   {
-    v8 = [objc_opt_class() whiteSpaceCondensedStringForString:v7];
+    v8 = [objc_opt_class() whiteSpaceCondensedStringForString:formattedBody];
     [v3 addObject:v8];
   }
 
   v12.receiver = self;
   v12.super_class = SPUISNoteResultBuilder;
-  v9 = [(SPUISResultBuilder *)&v12 buildCompactCardSection];
+  buildCompactCardSection = [(SPUISResultBuilder *)&v12 buildCompactCardSection];
   v10 = [objc_opt_class() richTextsFromStrings:v3];
-  [v9 setDescriptions:v10];
+  [buildCompactCardSection setDescriptions:v10];
 
-  return v9;
+  return buildCompactCardSection;
 }
 
 @end

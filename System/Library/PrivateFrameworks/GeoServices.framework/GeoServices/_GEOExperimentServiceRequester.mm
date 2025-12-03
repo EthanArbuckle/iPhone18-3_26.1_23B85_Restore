@@ -1,17 +1,17 @@
 @interface _GEOExperimentServiceRequester
 + (id)sharedInstance;
-- (void)startWithRequest:(id)a3 traits:(id)a4 completionHandler:(id)a5;
+- (void)startWithRequest:(id)request traits:(id)traits completionHandler:(id)handler;
 @end
 
 @implementation _GEOExperimentServiceRequester
 
-- (void)startWithRequest:(id)a3 traits:(id)a4 completionHandler:(id)a5
+- (void)startWithRequest:(id)request traits:(id)traits completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
+  traitsCopy = traits;
   v11 = GEOGreenTeaGetLog();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO) && [v8 hasGreenTeaWithValue:1])
+  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO) && [requestCopy hasGreenTeaWithValue:1])
   {
     GEOGreenTeaLog();
   }
@@ -22,9 +22,9 @@
   v15[1] = 3221225472;
   v15[2] = sub_100007384;
   v15[3] = &unk_100082278;
-  v16 = v9;
-  v14 = v9;
-  [(_GEOExperimentServiceRequester *)self _startWithRequest:v8 traits:v10 auditToken:v12 config:v13 throttleToken:0 options:0 completionHandler:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [(_GEOExperimentServiceRequester *)self _startWithRequest:requestCopy traits:traitsCopy auditToken:v12 config:v13 throttleToken:0 options:0 completionHandler:v15];
 }
 
 + (id)sharedInstance

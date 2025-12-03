@@ -1,11 +1,11 @@
 @interface GAXStyleProvider_Phone
-- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)a3;
+- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)orientation;
 - (UIOffset)featureViewToggleOffset;
 @end
 
 @implementation GAXStyleProvider_Phone
 
-- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)a3
+- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)orientation
 {
   v3 = 17.0;
   v4 = 0.0;

@@ -2,43 +2,43 @@
 - (BOOL)_shouldScan;
 - (CUBLEScanner)init;
 - (id)_scanParameters;
-- (id)_scanParametersSummary:(id)a3;
+- (id)_scanParametersSummary:(id)summary;
 - (int)rssiThreshold;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_stopScanIfNeededWithReason:(const char *)a3;
+- (void)_stopScanIfNeededWithReason:(const char *)reason;
 - (void)_update;
-- (void)_updateIfNeededWithBlock:(id)a3;
-- (void)_updateScanRules:(id *)a3 payloadType:(unsigned __int8)a4 rssiThreshold:(int)a5;
+- (void)_updateIfNeededWithBlock:(id)block;
+- (void)_updateScanRules:(id *)rules payloadType:(unsigned __int8)type rssiThreshold:(int)threshold;
 - (void)activate;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setChangeFlags:(unsigned int)a3;
-- (void)setLabel:(id)a3;
-- (void)setRssiThreshold:(int)a3;
-- (void)setScanFlags:(unsigned int)a3;
-- (void)setScanRate:(int)a3;
+- (void)setChangeFlags:(unsigned int)flags;
+- (void)setLabel:(id)label;
+- (void)setRssiThreshold:(int)threshold;
+- (void)setScanFlags:(unsigned int)flags;
+- (void)setScanRate:(int)rate;
 @end
 
 @implementation CUBLEScanner
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 identifier];
-  v37 = [v14 UUIDString];
+  iCopy = i;
+  dataCopy = data;
+  peripheralCopy = peripheral;
+  managerCopy = manager;
+  identifier = [peripheralCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  v15 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v37];
+  v15 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:uUIDString];
   v16 = objc_alloc_init(CUBLEDevice);
-  [(CUBLEDevice *)v16 setIdentifier:v37];
-  v17 = [v10 intValue];
+  [(CUBLEDevice *)v16 setIdentifier:uUIDString];
+  intValue = [iCopy intValue];
 
-  v18 = [(CUBLEDevice *)v16 updateWithAdvertisementData:v11 rssi:v17 oldDevice:v15];
+  v18 = [(CUBLEDevice *)v16 updateWithAdvertisementData:dataCopy rssi:intValue oldDevice:v15];
   v19 = v18 | 0x18;
   if (v15)
   {
@@ -51,9 +51,9 @@
   }
 
   [(CUBLEDevice *)v16 setChangeFlags:v20];
-  v21 = [v13 sharedPairingAgent];
+  sharedPairingAgent = [managerCopy sharedPairingAgent];
 
-  v22 = [v21 isPeerPaired:v12];
+  v22 = [sharedPairingAgent isPeerPaired:peripheralCopy];
   [(CUBLEDevice *)v16 setDeviceFlags:v22];
   scanFlags = self->_scanFlags;
   if ((scanFlags & 0xFE) != 0 && ([(CUBLEDevice *)v16 scanFlags]& scanFlags & 0xFE) == 0)
@@ -101,7 +101,7 @@ LABEL_12:
     devices = self->_devices;
   }
 
-  [(NSMutableDictionary *)devices setObject:v16 forKeyedSubscript:v37];
+  [(NSMutableDictionary *)devices setObject:v16 forKeyedSubscript:uUIDString];
   if (!v15)
   {
     goto LABEL_20;
@@ -136,12 +136,12 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(dispatchQueue);
-  v6 = [v5 state];
+  state = [stateCopy state];
 
   ucat = self->_ucat;
   if (ucat->var0 > 30)
@@ -159,26 +159,26 @@ LABEL_23:
     ucat = self->_ucat;
   }
 
-  if (v6 > 0xA)
+  if (state > 0xA)
   {
     v12 = "?";
   }
 
   else
   {
-    v12 = off_1E73A3018[v6];
+    v12 = off_1E73A3018[state];
   }
 
   LogPrintF(ucat, "[CUBLEScanner centralManagerDidUpdateState:]", 0x1Eu, "Bluetooth scanner state changed: %s\n", v7, v8, v9, v10, v12);
 LABEL_9:
-  if ((v6 - 1) > 9)
+  if ((state - 1) > 9)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = dword_191FF9B50[v6 - 1];
+    v13 = dword_191FF9B50[state - 1];
   }
 
   self->_bluetoothState = v13;
@@ -189,41 +189,41 @@ LABEL_9:
     (*(v14 + 2))(v14);
   }
 
-  if (v6 > 4)
+  if (state > 4)
   {
-    if (v6 == 10 || v6 == 5)
+    if (state == 10 || state == 5)
     {
 
       [(CUBLEScanner *)self _update];
     }
   }
 
-  else if (v6 == 1 || v6 == 4)
+  else if (state == 1 || state == 4)
   {
     self->_scannerStartCalled = 0;
   }
 }
 
-- (void)_updateScanRules:(id *)a3 payloadType:(unsigned __int8)a4 rssiThreshold:(int)a5
+- (void)_updateScanRules:(id *)rules payloadType:(unsigned __int8)type rssiThreshold:(int)threshold
 {
-  v6 = a4;
+  typeCopy = type;
   v23[2] = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v6];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:typeCopy];
   v10 = getCBCentralManagerScanOptionMatchingRuleTypeKey();
   [v8 setObject:v9 forKeyedSubscript:v10];
 
-  if (a5)
+  if (threshold)
   {
-    v11 = a5;
+    thresholdCopy = threshold;
   }
 
   else
   {
-    v11 = 4294967216;
+    thresholdCopy = 4294967216;
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInt:v11];
+  v12 = [MEMORY[0x1E696AD98] numberWithInt:thresholdCopy];
   v13 = getCBCentralManagerScanOptionMatchingRuleRSSIKey();
   [v8 setObject:v12 forKeyedSubscript:v13];
 
@@ -241,18 +241,18 @@ LABEL_9:
   v17 = getCBCentralManagerScanOptionMatchingRuleMaskKey();
   [v8 setObject:v15 forKeyedSubscript:v17];
 
-  v18 = *a3;
+  v18 = *rules;
   if (!v18)
   {
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v19 = *a3;
-    *a3 = v18;
+    v19 = *rules;
+    *rules = v18;
   }
 
   [v18 addObject:v8];
 }
 
-- (void)_stopScanIfNeededWithReason:(const char *)a3
+- (void)_stopScanIfNeededWithReason:(const char *)reason
 {
   if (self->_scannerStartCalled)
   {
@@ -269,7 +269,7 @@ LABEL_9:
         ucat = self->_ucat;
       }
 
-      LogPrintF(ucat, "[CUBLEScanner _stopScanIfNeededWithReason:]", 0x1Eu, "Scanner stop (%s)\n", v3, v4, v5, v6, a3);
+      LogPrintF(ucat, "[CUBLEScanner _stopScanIfNeededWithReason:]", 0x1Eu, "Scanner stop (%s)\n", v3, v4, v5, v6, reason);
     }
 
 LABEL_6:
@@ -305,20 +305,20 @@ LABEL_6:
   return v2;
 }
 
-- (id)_scanParametersSummary:(id)a3
+- (id)_scanParametersSummary:(id)summary
 {
   v77 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  summaryCopy = summary;
   CBCentralManagerScanOptionScanInterval = getCBCentralManagerScanOptionScanInterval();
-  CFDictionaryGetInt64Ranged(v3, CBCentralManagerScanOptionScanInterval, 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
+  CFDictionaryGetInt64Ranged(summaryCopy, CBCentralManagerScanOptionScanInterval, 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
   CBCentralManagerScanOptionScanWindow = getCBCentralManagerScanOptionScanWindow();
-  Int64Ranged = CFDictionaryGetInt64Ranged(v3, CBCentralManagerScanOptionScanWindow, 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
+  Int64Ranged = CFDictionaryGetInt64Ranged(summaryCopy, CBCentralManagerScanOptionScanWindow, 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
   v75 = 0;
   NSAppendPrintF(&v75, "%d/%d ms (%d%%)", v7, v8, v9, v10, v11, v12, Int64Ranged);
   v13 = v75;
   CBCentralManagerScanOptionMatchingRuleKey = getCBCentralManagerScanOptionMatchingRuleKey();
   TypeID = CFArrayGetTypeID();
-  v16 = CFDictionaryGetTypedValue(v3, CBCentralManagerScanOptionMatchingRuleKey, TypeID, 0);
+  v16 = CFDictionaryGetTypedValue(summaryCopy, CBCentralManagerScanOptionMatchingRuleKey, TypeID, 0);
   if ([v16 count])
   {
     v74 = v13;
@@ -389,7 +389,7 @@ LABEL_6:
   }
 
   CBCentralManagerScanOptionAllowDuplicatesKey = getCBCentralManagerScanOptionAllowDuplicatesKey();
-  if (CFDictionaryGetInt64(v3, CBCentralManagerScanOptionAllowDuplicatesKey, 0))
+  if (CFDictionaryGetInt64(summaryCopy, CBCentralManagerScanOptionAllowDuplicatesKey, 0))
   {
     v66 = v13;
     NSAppendPrintF(&v66, ", Dups", v54, v55, v56, v57, v58, v59, v64);
@@ -415,12 +415,12 @@ LABEL_6:
 
 - (id)_scanParameters
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  scanFlags = v2->_scanFlags;
-  v4 = v2->_changeFlags & 0x18;
-  rssiThreshold = v2->_rssiThreshold;
-  scanRate = v2->_scanRate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  scanFlags = selfCopy->_scanFlags;
+  v4 = selfCopy->_changeFlags & 0x18;
+  rssiThreshold = selfCopy->_rssiThreshold;
+  scanRate = selfCopy->_scanRate;
   if (scanRate == 60)
   {
     v7 = 30;
@@ -466,7 +466,7 @@ LABEL_6:
     v10 = v8;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ((scanFlags & 0x40) != 0)
@@ -495,22 +495,22 @@ LABEL_6:
   v23 = 0;
   if ((scanFlags & 2) != 0)
   {
-    [(CUBLEScanner *)v2 _updateScanRules:&v23 payloadType:15 rssiThreshold:rssiThreshold];
+    [(CUBLEScanner *)selfCopy _updateScanRules:&v23 payloadType:15 rssiThreshold:rssiThreshold];
   }
 
   if ((scanFlags & 4) != 0)
   {
-    [(CUBLEScanner *)v2 _updateScanRules:&v23 payloadType:16 rssiThreshold:rssiThreshold];
+    [(CUBLEScanner *)selfCopy _updateScanRules:&v23 payloadType:16 rssiThreshold:rssiThreshold];
   }
 
   if ((scanFlags & 0x90) != 0)
   {
-    [(CUBLEScanner *)v2 _updateScanRules:&v23 payloadType:7 rssiThreshold:rssiThreshold];
+    [(CUBLEScanner *)selfCopy _updateScanRules:&v23 payloadType:7 rssiThreshold:rssiThreshold];
   }
 
   if ((scanFlags & 0x20) != 0)
   {
-    [(CUBLEScanner *)v2 _updateScanRules:&v23 payloadType:18 rssiThreshold:rssiThreshold];
+    [(CUBLEScanner *)selfCopy _updateScanRules:&v23 payloadType:18 rssiThreshold:rssiThreshold];
   }
 
   v19 = v23;
@@ -579,8 +579,8 @@ LABEL_35:
     }
   }
 
-  v15 = [(CBCentralManager *)v4 state];
-  if (v15 == 5 || v15 == 10)
+  state = [(CBCentralManager *)v4 state];
+  if (state == 5 || state == 10)
   {
     if ((self->_scanFlags & 1) == 0 && !self->_systemMonitor)
     {
@@ -604,29 +604,29 @@ LABEL_35:
       [(CUSystemMonitor *)v19 activateWithCompletion:v54];
     }
 
-    v20 = self;
-    objc_sync_enter(v20);
-    changesPending = v20->_changesPending;
-    v20->_changesPending = 0;
-    objc_sync_exit(v20);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    changesPending = selfCopy->_changesPending;
+    selfCopy->_changesPending = 0;
+    objc_sync_exit(selfCopy);
 
-    if (![(CUBLEScanner *)v20 _shouldScan])
+    if (![(CUBLEScanner *)selfCopy _shouldScan])
     {
-      [(CUBLEScanner *)v20 _stopScanIfNeededWithReason:"criteria"];
+      [(CUBLEScanner *)selfCopy _stopScanIfNeededWithReason:"criteria"];
       return;
     }
 
-    if (v20->_scannerStartCalled)
+    if (selfCopy->_scannerStartCalled)
     {
       if (!changesPending)
       {
         return;
       }
 
-      v22 = [(CUBLEScanner *)v20 _scanParameters];
-      p_scanParametersCurrent = &v20->_scanParametersCurrent;
-      scanParametersCurrent = v20->_scanParametersCurrent;
-      v25 = v22;
+      _scanParameters = [(CUBLEScanner *)selfCopy _scanParameters];
+      p_scanParametersCurrent = &selfCopy->_scanParametersCurrent;
+      scanParametersCurrent = selfCopy->_scanParametersCurrent;
+      v25 = _scanParameters;
       v26 = scanParametersCurrent;
       v27 = v26;
       if (v25 == v26)
@@ -646,31 +646,31 @@ LABEL_35:
         if ((v28 & 1) == 0)
         {
 LABEL_48:
-          v47 = v20->_ucat;
+          v47 = selfCopy->_ucat;
           if (v47->var0 <= 30)
           {
             if (v47->var0 == -1)
             {
-              if (!_LogCategory_Initialize(v20->_ucat, 0x1Eu))
+              if (!_LogCategory_Initialize(selfCopy->_ucat, 0x1Eu))
               {
                 goto LABEL_54;
               }
 
-              v47 = v20->_ucat;
+              v47 = selfCopy->_ucat;
             }
 
-            v48 = [(CUBLEScanner *)v20 _scanParametersSummary:v25];
+            v48 = [(CUBLEScanner *)selfCopy _scanParametersSummary:v25];
             LogPrintF(v47, "[CUBLEScanner _update]", 0x1Eu, "Scanner update: %@\n", v49, v50, v51, v52, v48);
           }
 
 LABEL_54:
-          objc_storeStrong(p_scanParametersCurrent, v22);
+          objc_storeStrong(p_scanParametersCurrent, _scanParameters);
           [(CBCentralManager *)self->_centralManager stopScan];
           goto LABEL_42;
         }
       }
 
-      v45 = v20->_ucat;
+      v45 = selfCopy->_ucat;
       if (v45->var0 <= 10)
       {
         if (v45->var0 == -1)
@@ -680,7 +680,7 @@ LABEL_54:
             goto LABEL_43;
           }
 
-          v45 = v20->_ucat;
+          v45 = selfCopy->_ucat;
         }
 
         LogPrintF(v45, "[CUBLEScanner _update]", 0xAu, "Scanner no changes\n", v29, v30, v31, v32, v53);
@@ -691,30 +691,30 @@ LABEL_43:
       return;
     }
 
-    v36 = [(CUBLEScanner *)v20 _scanParameters];
-    v37 = v20->_ucat;
+    _scanParameters2 = [(CUBLEScanner *)selfCopy _scanParameters];
+    v37 = selfCopy->_ucat;
     if (v37->var0 <= 30)
     {
       if (v37->var0 == -1)
       {
-        if (!_LogCategory_Initialize(v20->_ucat, 0x1Eu))
+        if (!_LogCategory_Initialize(selfCopy->_ucat, 0x1Eu))
         {
           goto LABEL_41;
         }
 
-        v37 = v20->_ucat;
+        v37 = selfCopy->_ucat;
       }
 
-      v38 = [(CUBLEScanner *)v20 _scanParametersSummary:v36];
+      v38 = [(CUBLEScanner *)selfCopy _scanParametersSummary:_scanParameters2];
       LogPrintF(v37, "[CUBLEScanner _update]", 0x1Eu, "Scanner start: %@\n", v39, v40, v41, v42, v38);
     }
 
 LABEL_41:
-    v46 = v20->_scanParametersCurrent;
-    v20->_scanParametersCurrent = v36;
-    v25 = v36;
+    v46 = selfCopy->_scanParametersCurrent;
+    selfCopy->_scanParametersCurrent = _scanParameters2;
+    v25 = _scanParameters2;
 
-    v20->_scannerStartCalled = 1;
+    selfCopy->_scannerStartCalled = 1;
 LABEL_42:
     [(CBCentralManager *)self->_centralManager scanForPeripheralsWithServices:0 options:v25];
     goto LABEL_43;
@@ -722,7 +722,7 @@ LABEL_42:
 
   if (centralManager)
   {
-    v33 = v15;
+    v33 = state;
     ucat = self->_ucat;
     if (ucat->var0 <= 30)
     {
@@ -754,24 +754,24 @@ LABEL_23:
   }
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ((v4[2](v4) & 1) != 0 && v5->_activateCalled && !v5->_changesPending)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((blockCopy[2](blockCopy) & 1) != 0 && selfCopy->_activateCalled && !selfCopy->_changesPending)
   {
-    v5->_changesPending = 1;
-    dispatchQueue = v5->_dispatchQueue;
+    selfCopy->_changesPending = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__CUBLEScanner__updateIfNeededWithBlock___block_invoke;
     block[3] = &unk_1E73A4F68;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_invalidated
@@ -869,17 +869,17 @@ LABEL_6:
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_activateCalled = 1;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __24__CUBLEScanner_activate__block_invoke;
   block[3] = &unk_1E73A4F68;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __24__CUBLEScanner_activate__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -910,13 +910,13 @@ LABEL_5:
   return [v9 _update];
 }
 
-- (void)setScanRate:(int)a3
+- (void)setScanRate:(int)rate
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __28__CUBLEScanner_setScanRate___block_invoke;
   v3[3] = &unk_1E73A3100;
-  v4 = a3;
+  rateCopy = rate;
   v3[4] = self;
   [(CUBLEScanner *)self _updateIfNeededWithBlock:v3];
 }
@@ -934,13 +934,13 @@ BOOL __28__CUBLEScanner_setScanRate___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setScanFlags:(unsigned int)a3
+- (void)setScanFlags:(unsigned int)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __29__CUBLEScanner_setScanFlags___block_invoke;
   v3[3] = &unk_1E73A3100;
-  v4 = a3;
+  flagsCopy = flags;
   v3[4] = self;
   [(CUBLEScanner *)self _updateIfNeededWithBlock:v3];
 }
@@ -958,13 +958,13 @@ BOOL __29__CUBLEScanner_setScanFlags___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setRssiThreshold:(int)a3
+- (void)setRssiThreshold:(int)threshold
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __33__CUBLEScanner_setRssiThreshold___block_invoke;
   v3[3] = &unk_1E73A3100;
-  v4 = a3;
+  thresholdCopy = threshold;
   v3[4] = self;
   [(CUBLEScanner *)self _updateIfNeededWithBlock:v3];
 }
@@ -984,31 +984,31 @@ BOOL __33__CUBLEScanner_setRssiThreshold___block_invoke(uint64_t a1)
 
 - (int)rssiThreshold
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  rssiThreshold = v2->_rssiThreshold;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rssiThreshold = selfCopy->_rssiThreshold;
+  objc_sync_exit(selfCopy);
 
   return rssiThreshold;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9288;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
-- (void)setChangeFlags:(unsigned int)a3
+- (void)setChangeFlags:(unsigned int)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __31__CUBLEScanner_setChangeFlags___block_invoke;
   v3[3] = &unk_1E73A3100;
-  v4 = a3;
+  flagsCopy = flags;
   v3[4] = self;
   [(CUBLEScanner *)self _updateIfNeededWithBlock:v3];
 }

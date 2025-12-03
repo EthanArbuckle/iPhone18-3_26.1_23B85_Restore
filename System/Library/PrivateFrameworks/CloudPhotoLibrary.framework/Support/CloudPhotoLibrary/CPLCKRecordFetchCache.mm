@@ -1,9 +1,9 @@
 @interface CPLCKRecordFetchCache
 - (CPLCKRecordFetchCache)init;
-- (id)cachedRecordWithID:(id)a3;
+- (id)cachedRecordWithID:(id)d;
 - (id)description;
-- (void)didFetchRecordWithID:(id)a3 record:(id)a4;
-- (void)didModifyRecordWithID:(id)a3;
+- (void)didFetchRecordWithID:(id)d record:(id)record;
+- (void)didModifyRecordWithID:(id)d;
 @end
 
 @implementation CPLCKRecordFetchCache
@@ -23,16 +23,16 @@
   return v2;
 }
 
-- (void)didFetchRecordWithID:(id)a3 record:(id)a4
+- (void)didFetchRecordWithID:(id)d record:(id)record
 {
-  v6 = a3;
-  v7 = [a4 copy];
-  [(NSMutableDictionary *)self->_mapping setObject:v7 forKeyedSubscript:v6];
+  dCopy = d;
+  v7 = [record copy];
+  [(NSMutableDictionary *)self->_mapping setObject:v7 forKeyedSubscript:dCopy];
 }
 
-- (id)cachedRecordWithID:(id)a3
+- (id)cachedRecordWithID:(id)d
 {
-  v4 = [(NSMutableDictionary *)self->_mapping objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_mapping objectForKeyedSubscript:d];
   v5 = v4;
   v6 = 24;
   if (!v4)
@@ -46,12 +46,12 @@
   return v7;
 }
 
-- (void)didModifyRecordWithID:(id)a3
+- (void)didModifyRecordWithID:(id)d
 {
   mapping = self->_mapping;
-  v5 = a3;
+  dCopy = d;
   v6 = [(NSMutableDictionary *)mapping count];
-  [(NSMutableDictionary *)self->_mapping removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_mapping removeObjectForKey:dCopy];
 
   if ([(NSMutableDictionary *)self->_mapping count]!= v6)
   {

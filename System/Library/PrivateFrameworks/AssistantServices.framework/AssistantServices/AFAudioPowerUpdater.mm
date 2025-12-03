@@ -1,23 +1,23 @@
 @interface AFAudioPowerUpdater
-- (AFAudioPowerUpdater)initWithProvider:(id)a3 queue:(id)a4 frequency:(int64_t)a5 delegate:(id)a6;
+- (AFAudioPowerUpdater)initWithProvider:(id)provider queue:(id)queue frequency:(int64_t)frequency delegate:(id)delegate;
 - (BOOL)_createSharedMemory;
 - (float)_unsafeAveragePower;
 - (float)_unsafePeakPower;
 - (id)_createNewXPCWrapper;
 - (id)_createSharedMemoryXPCObject;
 - (void)_beginUpdate;
-- (void)_createNewXPCWrapperWithCompletion:(id)a3;
+- (void)_createNewXPCWrapperWithCompletion:(id)completion;
 - (void)_destroySharedMemory;
 - (void)_endUpdate;
-- (void)_getPowerWithCompletion:(id)a3;
+- (void)_getPowerWithCompletion:(id)completion;
 - (void)_invalidate;
-- (void)_updatePowerWithAveragePower:(float)a3 andPeakPower:(float)a4;
-- (void)_writeSharedMemoryWithAveragePower:(float)a3 peakPower:(float)a4;
+- (void)_updatePowerWithAveragePower:(float)power andPeakPower:(float)peakPower;
+- (void)_writeSharedMemoryWithAveragePower:(float)power peakPower:(float)peakPower;
 - (void)beginUpdate;
-- (void)createNewXPCWrapperWithCompletion:(id)a3;
+- (void)createNewXPCWrapperWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)endUpdate;
-- (void)getPowerWithCompletion:(id)a3;
+- (void)getPowerWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -57,10 +57,10 @@ void __35__AFAudioPowerUpdater__beginUpdate__block_invoke(uint64_t a1)
 
 - (id)_createNewXPCWrapper
 {
-  v2 = [(AFAudioPowerUpdater *)self _createSharedMemoryXPCObject];
-  if (v2)
+  _createSharedMemoryXPCObject = [(AFAudioPowerUpdater *)self _createSharedMemoryXPCObject];
+  if (_createSharedMemoryXPCObject)
   {
-    v3 = [[AFXPCWrapper alloc] initWithXPCObject:v2];
+    v3 = [[AFXPCWrapper alloc] initWithXPCObject:_createSharedMemoryXPCObject];
   }
 
   else
@@ -71,13 +71,13 @@ void __35__AFAudioPowerUpdater__beginUpdate__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_createNewXPCWrapperWithCompletion:(id)a3
+- (void)_createNewXPCWrapperWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    v6 = [(AFAudioPowerUpdater *)self _createNewXPCWrapper];
-    (*(a3 + 2))(v5, v6);
+    completionCopy = completion;
+    _createNewXPCWrapper = [(AFAudioPowerUpdater *)self _createNewXPCWrapper];
+    (*(completion + 2))(completionCopy, _createNewXPCWrapper);
   }
 }
 
@@ -91,13 +91,13 @@ void __35__AFAudioPowerUpdater__beginUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_writeSharedMemoryWithAveragePower:(float)a3 peakPower:(float)a4
+- (void)_writeSharedMemoryWithAveragePower:(float)power peakPower:(float)peakPower
 {
   sharedMemory = self->_sharedMemory;
   if (sharedMemory)
   {
-    *sharedMemory = a3;
-    sharedMemory[1] = a4;
+    *sharedMemory = power;
+    sharedMemory[1] = peakPower;
   }
 }
 
@@ -138,26 +138,26 @@ void __35__AFAudioPowerUpdater__beginUpdate__block_invoke(uint64_t a1)
   *&self->_averagePower = 0;
 }
 
-- (void)_updatePowerWithAveragePower:(float)a3 andPeakPower:(float)a4
+- (void)_updatePowerWithAveragePower:(float)power andPeakPower:(float)peakPower
 {
-  self->_averagePower = a3;
-  self->_peakPower = a4;
+  self->_averagePower = power;
+  self->_peakPower = peakPower;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    *&v9 = a3;
-    *&v10 = a4;
+    *&v9 = power;
+    *&v10 = peakPower;
     [v11 audioPowerUpdaterDidUpdate:self averagePower:v9 peakPower:v10];
   }
 }
 
-- (void)_getPowerWithCompletion:(id)a3
+- (void)_getPowerWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v12 = 0;
   if ([(AFAudioPowerProviding *)self->_provider getAveragePower:&v12 + 4 andPeakPower:&v12])
   {
@@ -167,7 +167,7 @@ void __35__AFAudioPowerUpdater__beginUpdate__block_invoke(uint64_t a1)
     LODWORD(v7) = HIDWORD(v12);
     LODWORD(v8) = v12;
     [(AFAudioPowerUpdater *)self _writeSharedMemoryWithAveragePower:v7 peakPower:v8];
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
@@ -184,7 +184,7 @@ void __35__AFAudioPowerUpdater__beginUpdate__block_invoke(uint64_t a1)
     v15 = 2112;
     v16 = provider;
     _os_log_error_impl(&dword_1912FE000, v9, OS_LOG_TYPE_ERROR, "%s Unable to get average power and peak power from audio power provider %@.", buf, 0x16u);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
@@ -192,10 +192,10 @@ void __35__AFAudioPowerUpdater__beginUpdate__block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_6:
-    v4[2](v4, self->_averagePower, self->_peakPower);
+    completionCopy[2](completionCopy, self->_averagePower, self->_peakPower);
   }
 
 LABEL_7:
@@ -244,17 +244,17 @@ LABEL_7:
   }
 }
 
-- (void)createNewXPCWrapperWithCompletion:(id)a3
+- (void)createNewXPCWrapperWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__AFAudioPowerUpdater_createNewXPCWrapperWithCompletion___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -280,17 +280,17 @@ LABEL_7:
   dispatch_async(queue, block);
 }
 
-- (void)getPowerWithCompletion:(id)a3
+- (void)getPowerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__AFAudioPowerUpdater_getPowerWithCompletion___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -313,21 +313,21 @@ LABEL_7:
   [(AFAudioPowerUpdater *)&v3 dealloc];
 }
 
-- (AFAudioPowerUpdater)initWithProvider:(id)a3 queue:(id)a4 frequency:(int64_t)a5 delegate:(id)a6
+- (AFAudioPowerUpdater)initWithProvider:(id)provider queue:(id)queue frequency:(int64_t)frequency delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  providerCopy = provider;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = AFAudioPowerUpdater;
   v14 = [(AFAudioPowerUpdater *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_provider, a3);
-    objc_storeStrong(&v15->_queue, a4);
-    v15->_frequency = a5;
-    objc_storeWeak(&v15->_delegate, v13);
+    objc_storeStrong(&v14->_provider, provider);
+    objc_storeStrong(&v15->_queue, queue);
+    v15->_frequency = frequency;
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v15->_sharedMemory = 0;
   }
 

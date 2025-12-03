@@ -1,13 +1,13 @@
 @interface PXTranscriptBubbleViewController
-- (BOOL)_requiresResizeForCurrentSize:(CGSize)a3;
-- (CGSize)_contentViewSizeThatFits:(CGSize)a3;
-- (CGSize)contentSizeThatFits:(CGSize)a3;
+- (BOOL)_requiresResizeForCurrentSize:(CGSize)size;
+- (CGSize)_contentViewSizeThatFits:(CGSize)fits;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
 - (PXTranscriptBubbleDelegate)delegate;
-- (void)_resizeTimeoutForRequestID:(int64_t)a3;
+- (void)_resizeTimeoutForRequestID:(int64_t)d;
 - (void)_scheduleContentViewUpdate;
 - (void)_switchToPendingTargetViewIfNecessary;
-- (void)setTargetContentView:(id)a3;
-- (void)transitionToContentView:(id)a3;
+- (void)setTargetContentView:(id)view;
+- (void)transitionToContentView:(id)view;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -27,13 +27,13 @@
   v6.receiver = self;
   v6.super_class = PXTranscriptBubbleViewController;
   [(PXTranscriptBubbleViewController *)&v6 viewDidLoad];
-  v3 = [(PXTranscriptBubbleViewController *)self contentView];
+  contentView = [(PXTranscriptBubbleViewController *)self contentView];
 
-  if (v3)
+  if (contentView)
   {
-    v4 = [(PXTranscriptBubbleViewController *)self view];
-    v5 = [(PXTranscriptBubbleViewController *)self contentView];
-    [v4 addSubview:v5];
+    view = [(PXTranscriptBubbleViewController *)self view];
+    contentView2 = [(PXTranscriptBubbleViewController *)self contentView];
+    [view addSubview:contentView2];
   }
 }
 
@@ -42,18 +42,18 @@
   v7.receiver = self;
   v7.super_class = PXTranscriptBubbleViewController;
   [(PXTranscriptBubbleViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(PXTranscriptBubbleViewController *)self contentView];
-  if (v3)
+  contentView = [(PXTranscriptBubbleViewController *)self contentView];
+  if (contentView)
   {
     isReadyForDisplay = self->_isReadyForDisplay;
 
     if (!isReadyForDisplay)
     {
-      v5 = [(PXTranscriptBubbleViewController *)self px_screen];
-      [v5 bounds];
+      px_screen = [(PXTranscriptBubbleViewController *)self px_screen];
+      [px_screen bounds];
 
-      v6 = [(PXTranscriptBubbleViewController *)self view];
-      [v6 bounds];
+      view = [(PXTranscriptBubbleViewController *)self view];
+      [view bounds];
 
       PXSizeApproximatelyEqualToSize();
     }
@@ -100,28 +100,28 @@ void __57__PXTranscriptBubbleViewController_viewDidLayoutSubviews__block_invoke_
   [(PXTranscriptBubbleViewController *)&v13 viewWillLayoutSubviews];
   if (!self->_transitionInProgress)
   {
-    v3 = [(PXTranscriptBubbleViewController *)self view];
-    [v3 bounds];
+    view = [(PXTranscriptBubbleViewController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(PXTranscriptBubbleViewController *)self contentView];
-    [v12 setFrame:{v5, v7, v9, v11}];
+    contentView = [(PXTranscriptBubbleViewController *)self contentView];
+    [contentView setFrame:{v5, v7, v9, v11}];
   }
 }
 
 - (void)_switchToPendingTargetViewIfNecessary
 {
-  v3 = [(PXTranscriptBubbleViewController *)self targetContentView];
-  if (v3)
+  targetContentView = [(PXTranscriptBubbleViewController *)self targetContentView];
+  if (targetContentView)
   {
-    v4 = [(PXTranscriptBubbleViewController *)self contentView];
+    contentView = [(PXTranscriptBubbleViewController *)self contentView];
     [(PXTranscriptBubbleViewController *)self setTargetContentView:0];
-    [v3 setFrame:{0.0, 0.0, self->_lastRequestedSize.width, self->_lastRequestedSize.height}];
-    [v3 setAlpha:0.0];
-    v5 = [(PXTranscriptBubbleViewController *)self view];
-    [v5 addSubview:v3];
+    [targetContentView setFrame:{0.0, 0.0, self->_lastRequestedSize.width, self->_lastRequestedSize.height}];
+    [targetContentView setAlpha:0.0];
+    view = [(PXTranscriptBubbleViewController *)self view];
+    [view addSubview:targetContentView];
 
     self->_transitionInProgress = 1;
     v6 = MEMORY[0x1E69DD250];
@@ -129,8 +129,8 @@ void __57__PXTranscriptBubbleViewController_viewDidLayoutSubviews__block_invoke_
     v11[1] = 3221225472;
     v11[2] = __73__PXTranscriptBubbleViewController__switchToPendingTargetViewIfNecessary__block_invoke;
     v11[3] = &unk_1E774C620;
-    v12 = v4;
-    v13 = v3;
+    v12 = contentView;
+    v13 = targetContentView;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __73__PXTranscriptBubbleViewController__switchToPendingTargetViewIfNecessary__block_invoke_2;
@@ -167,15 +167,15 @@ void __73__PXTranscriptBubbleViewController__switchToPendingTargetViewIfNecessar
   }
 }
 
-- (void)_resizeTimeoutForRequestID:(int64_t)a3
+- (void)_resizeTimeoutForRequestID:(int64_t)d
 {
-  if (self->_lastResizeRequestID == a3)
+  if (self->_lastResizeRequestID == d)
   {
     v9 = v3;
     v10 = v4;
-    v6 = [(PXTranscriptBubbleViewController *)self targetContentView];
+    targetContentView = [(PXTranscriptBubbleViewController *)self targetContentView];
 
-    if (v6)
+    if (targetContentView)
     {
       v7 = PLUIGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -192,12 +192,12 @@ void __73__PXTranscriptBubbleViewController__switchToPendingTargetViewIfNecessar
 - (void)_scheduleContentViewUpdate
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PXTranscriptBubbleViewController *)self targetContentView];
+  targetContentView = [(PXTranscriptBubbleViewController *)self targetContentView];
 
-  if (v3)
+  if (targetContentView)
   {
-    v4 = [(PXTranscriptBubbleViewController *)self view];
-    [v4 bounds];
+    view = [(PXTranscriptBubbleViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
 
@@ -209,14 +209,14 @@ void __73__PXTranscriptBubbleViewController__switchToPendingTargetViewIfNecessar
       if (v11)
       {
         *buf = 138412290;
-        v19 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "Requesting resize on content view change for %@", buf, 0xCu);
       }
 
       v12 = (self->_lastResizeRequestID + 1);
       self->_lastResizeRequestID = v12;
-      v13 = [(PXTranscriptBubbleViewController *)self delegate];
-      [v13 requestResizeForBubble:self];
+      delegate = [(PXTranscriptBubbleViewController *)self delegate];
+      [delegate requestResizeForBubble:self];
 
       objc_initWeak(buf, self);
       v14 = dispatch_time(0, 3000000000);
@@ -236,7 +236,7 @@ void __73__PXTranscriptBubbleViewController__switchToPendingTargetViewIfNecessar
       if (v11)
       {
         *buf = 138412290;
-        v19 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "Skipping resize on content view change for %@", buf, 0xCu);
       }
 
@@ -258,14 +258,14 @@ void __62__PXTranscriptBubbleViewController__scheduleContentViewUpdate__block_in
   [WeakRetained _resizeTimeoutForRequestID:*(a1 + 40)];
 }
 
-- (void)transitionToContentView:(id)a3
+- (void)transitionToContentView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v5 = [(PXTranscriptBubbleViewController *)self targetContentView];
+    targetContentView = [(PXTranscriptBubbleViewController *)self targetContentView];
 
-    if (v5)
+    if (targetContentView)
     {
       v6 = PLUIGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -282,38 +282,38 @@ void __62__PXTranscriptBubbleViewController__scheduleContentViewUpdate__block_in
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "PXTranscriptBubbleViewController: Transitioning to new content view", v10, 2u);
     }
 
-    v8 = [(PXTranscriptBubbleViewController *)self contentView];
+    contentView = [(PXTranscriptBubbleViewController *)self contentView];
 
-    if (v8)
+    if (contentView)
     {
-      [(PXTranscriptBubbleViewController *)self setTargetContentView:v4];
+      [(PXTranscriptBubbleViewController *)self setTargetContentView:viewCopy];
     }
 
     else
     {
-      [(PXTranscriptBubbleViewController *)self setContentView:v4];
-      v9 = [(PXTranscriptBubbleViewController *)self viewIfLoaded];
-      [v9 addSubview:v4];
+      [(PXTranscriptBubbleViewController *)self setContentView:viewCopy];
+      viewIfLoaded = [(PXTranscriptBubbleViewController *)self viewIfLoaded];
+      [viewIfLoaded addSubview:viewCopy];
     }
   }
 }
 
-- (void)setTargetContentView:(id)a3
+- (void)setTargetContentView:(id)view
 {
-  v5 = a3;
-  if (self->_targetContentView != v5)
+  viewCopy = view;
+  if (self->_targetContentView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_targetContentView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_targetContentView, view);
     [(PXTranscriptBubbleViewController *)self _scheduleContentViewUpdate];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (BOOL)_requiresResizeForCurrentSize:(CGSize)a3
+- (BOOL)_requiresResizeForCurrentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v24 = *MEMORY[0x1E69E9840];
   [(PXTranscriptBubbleViewController *)self _contentViewSizeThatFits:?];
   v7 = v6;
@@ -341,7 +341,7 @@ void __62__PXTranscriptBubbleViewController__scheduleContentViewUpdate__block_in
     v16 = 138413058;
     v17 = v12;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v13;
     v22 = 2112;
@@ -352,18 +352,18 @@ void __62__PXTranscriptBubbleViewController__scheduleContentViewUpdate__block_in
   return v10;
 }
 
-- (CGSize)_contentViewSizeThatFits:(CGSize)a3
+- (CGSize)_contentViewSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PXTranscriptBubbleViewController *)self targetContentView];
+  height = fits.height;
+  width = fits.width;
+  targetContentView = [(PXTranscriptBubbleViewController *)self targetContentView];
 
-  if (v6)
+  if (targetContentView)
   {
-    v7 = [(PXTranscriptBubbleViewController *)self targetContentView];
+    targetContentView2 = [(PXTranscriptBubbleViewController *)self targetContentView];
 LABEL_5:
-    v9 = v7;
-    [v7 sizeThatFits:{width, height}];
+    v9 = targetContentView2;
+    [targetContentView2 sizeThatFits:{width, height}];
     v11 = v10;
     v13 = v12;
 
@@ -372,11 +372,11 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v8 = [(PXTranscriptBubbleViewController *)self contentView];
+  contentView = [(PXTranscriptBubbleViewController *)self contentView];
 
-  if (v8)
+  if (contentView)
   {
-    v7 = [(PXTranscriptBubbleViewController *)self contentView];
+    targetContentView2 = [(PXTranscriptBubbleViewController *)self contentView];
     goto LABEL_5;
   }
 
@@ -394,9 +394,9 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  [(PXTranscriptBubbleViewController *)self _contentViewSizeThatFits:a3.width, a3.height];
+  [(PXTranscriptBubbleViewController *)self _contentViewSizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   self->_lastRequestedSize.width = v4;

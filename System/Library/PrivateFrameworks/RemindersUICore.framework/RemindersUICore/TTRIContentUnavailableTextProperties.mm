@@ -1,40 +1,40 @@
 @interface TTRIContentUnavailableTextProperties
 - (UIColor)color;
 - (UIFont)font;
-- (void)setColor:(id)a3;
-- (void)setFont:(id)a3;
+- (void)setColor:(id)color;
+- (void)setFont:(id)font;
 @end
 
 @implementation TTRIContentUnavailableTextProperties
 
 - (UIFont)font
 {
-  v2 = [(TTRIContentUnavailableTextProperties *)self asUIKit];
-  v3 = [v2 font];
+  asUIKit = [(TTRIContentUnavailableTextProperties *)self asUIKit];
+  font = [asUIKit font];
 
-  return v3;
+  return font;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(TTRIContentUnavailableTextProperties *)self asUIKit];
-  [v5 setFont:v4];
+  fontCopy = font;
+  asUIKit = [(TTRIContentUnavailableTextProperties *)self asUIKit];
+  [asUIKit setFont:fontCopy];
 }
 
 - (UIColor)color
 {
-  v2 = [(TTRIContentUnavailableTextProperties *)self asUIKit];
-  v3 = [v2 color];
+  asUIKit = [(TTRIContentUnavailableTextProperties *)self asUIKit];
+  color = [asUIKit color];
 
-  return v3;
+  return color;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
-  v5 = [(TTRIContentUnavailableTextProperties *)self asUIKit];
-  [v5 setColor:v4];
+  colorCopy = color;
+  asUIKit = [(TTRIContentUnavailableTextProperties *)self asUIKit];
+  [asUIKit setColor:colorCopy];
 }
 
 @end

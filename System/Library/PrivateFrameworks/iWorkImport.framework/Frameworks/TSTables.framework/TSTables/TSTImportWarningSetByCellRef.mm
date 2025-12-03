@@ -1,17 +1,17 @@
 @interface TSTImportWarningSetByCellRef
-- (TSCECellRef)cellRefForIndex:(SEL)a3;
+- (TSCECellRef)cellRefForIndex:(SEL)index;
 - (id).cxx_construct;
-- (id)initFromArchive:(const void *)a3;
-- (id)warningSetAtCellRef:(const TSCECellRef *)a3;
-- (void)addWarning:(id)a3 atCellRef:(const TSCECellRef *)a4;
-- (void)saveToArchive:(void *)a3;
+- (id)initFromArchive:(const void *)archive;
+- (id)warningSetAtCellRef:(const TSCECellRef *)ref;
+- (void)addWarning:(id)warning atCellRef:(const TSCECellRef *)ref;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TSTImportWarningSetByCellRef
 
-- (void)addWarning:(id)a3 atCellRef:(const TSCECellRef *)a4
+- (void)addWarning:(id)warning atCellRef:(const TSCECellRef *)ref
 {
-  v7 = a3;
+  warningCopy = warning;
   end = self->_coordinates.__end_;
   cap = self->_coordinates.__cap_;
   if (end >= cap)
@@ -46,8 +46,8 @@
     }
 
     v17 = 24 * v13;
-    v18 = *&a4->coordinate.row;
-    *(v17 + 16) = a4->_tableUID._upper;
+    v18 = *&ref->coordinate.row;
+    *(v17 + 16) = ref->_tableUID._upper;
     *v17 = v18;
     v11 = (24 * v13 + 24);
     v19 = self->_coordinates.__begin_;
@@ -66,21 +66,21 @@
 
   else
   {
-    v10 = *&a4->coordinate.row;
-    end->_tableUID._upper = a4->_tableUID._upper;
+    v10 = *&ref->coordinate.row;
+    end->_tableUID._upper = ref->_tableUID._upper;
     *&end->coordinate.row = v10;
     v11 = end + 1;
   }
 
   self->_coordinates.__end_ = v11;
-  if (v7)
+  if (warningCopy)
   {
-    v23 = sub_2215930C4(&self->_warningSetForCoordinate.__table_.__bucket_list_.__ptr_, a4);
-    objc_storeStrong(v23 + 5, a3);
+    v23 = sub_2215930C4(&self->_warningSetForCoordinate.__table_.__bucket_list_.__ptr_, ref);
+    objc_storeStrong(v23 + 5, warning);
   }
 }
 
-- (TSCECellRef)cellRefForIndex:(SEL)a3
+- (TSCECellRef)cellRefForIndex:(SEL)index
 {
   retstr->_tableUID._lower = 0;
   retstr->_tableUID._upper = 0;
@@ -94,9 +94,9 @@
   return self;
 }
 
-- (id)warningSetAtCellRef:(const TSCECellRef *)a3
+- (id)warningSetAtCellRef:(const TSCECellRef *)ref
 {
-  v3 = sub_221244B44(&self->_warningSetForCoordinate.__table_.__bucket_list_.__ptr_, a3);
+  v3 = sub_221244B44(&self->_warningSetForCoordinate.__table_.__bucket_list_.__ptr_, ref);
   if (v3)
   {
     v3 = v3[5];
@@ -105,20 +105,20 @@
   return v3;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
   v23.receiver = self;
   v23.super_class = TSTImportWarningSetByCellRef;
   v4 = [(TSTImportWarningSetByCellRef *)&v23 init];
   if (v4)
   {
-    v5 = *(a3 + 6);
+    v5 = *(archive + 6);
     if (v5 >= 1)
     {
       v6 = 8;
       do
       {
-        TST::CellRefImportWarningSetPairArchive::CellRefImportWarningSetPairArchive(v20, *(*(a3 + 4) + v6));
+        TST::CellRefImportWarningSetPairArchive::CellRefImportWarningSetPairArchive(v20, *(*(archive + 4) + v6));
         if (v21)
         {
           v7 = v21;
@@ -164,9 +164,9 @@
   return v4;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  v7 = objc_msgSend_count(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_count(self, a2, archive, v3, v4);
   if (v7)
   {
     v11 = v7;
@@ -175,20 +175,20 @@
     {
       objc_msgSend_cellRefForIndex_(self, v8, v12, v9, v10);
       v16 = objc_msgSend_warningSetAtCellRef_(self, v13, v30, v14, v15);
-      v17 = *(a3 + 4);
+      v17 = *(archive + 4);
       if (!v17)
       {
         goto LABEL_8;
       }
 
-      v18 = *(a3 + 6);
+      v18 = *(archive + 6);
       v19 = *v17;
       if (v18 >= *v17)
       {
         break;
       }
 
-      *(a3 + 6) = v18 + 1;
+      *(archive + 6) = v18 + 1;
       v20 = *&v17[2 * v18 + 2];
 LABEL_10:
       *(v20 + 16) |= 1u;
@@ -231,19 +231,19 @@ LABEL_10:
       }
     }
 
-    if (v19 == *(a3 + 7))
+    if (v19 == *(archive + 7))
     {
 LABEL_8:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-      v17 = *(a3 + 4);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+      v17 = *(archive + 4);
       v19 = *v17;
     }
 
     *v17 = v19 + 1;
-    v20 = google::protobuf::Arena::CreateMaybeMessage<TST::CellRefImportWarningSetPairArchive>(*(a3 + 2));
-    v21 = *(a3 + 6);
-    v22 = *(a3 + 4) + 8 * v21;
-    *(a3 + 6) = v21 + 1;
+    v20 = google::protobuf::Arena::CreateMaybeMessage<TST::CellRefImportWarningSetPairArchive>(*(archive + 2));
+    v21 = *(archive + 6);
+    v22 = *(archive + 4) + 8 * v21;
+    *(archive + 6) = v21 + 1;
     *(v22 + 8) = v20;
     goto LABEL_10;
   }

@@ -1,119 +1,119 @@
 @interface WFFontDescriptor
-+ (id)descriptorWithSerializedRepresentation:(id)a3;
-- (WFFontDescriptor)initWithCoder:(id)a3;
-- (WFFontDescriptor)initWithFontAttributes:(id)a3;
-- (WFFontDescriptor)initWithPrivateRepresentation:(id)a3;
++ (id)descriptorWithSerializedRepresentation:(id)representation;
+- (WFFontDescriptor)initWithCoder:(id)coder;
+- (WFFontDescriptor)initWithFontAttributes:(id)attributes;
+- (WFFontDescriptor)initWithPrivateRepresentation:(id)representation;
 - (id)displayName;
 - (id)face;
 - (id)family;
-- (id)fontWithSize:(double)a3;
+- (id)fontWithSize:(double)size;
 - (id)name;
 - (id)serializedRepresentation;
 - (id)visibleName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFontDescriptor
 
-- (id)fontWithSize:(double)a3
+- (id)fontWithSize:(double)size
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(WFFontDescriptor *)self family];
+  family = [(WFFontDescriptor *)self family];
 
-  if (v6)
+  if (family)
   {
-    v7 = [(WFFontDescriptor *)self family];
+    family2 = [(WFFontDescriptor *)self family];
     v8 = getUIFontDescriptorFamilyAttribute();
-    [v5 setObject:v7 forKeyedSubscript:v8];
+    [v5 setObject:family2 forKeyedSubscript:v8];
   }
 
-  v9 = [(WFFontDescriptor *)self name];
+  name = [(WFFontDescriptor *)self name];
 
-  if (v9)
+  if (name)
   {
-    v10 = [(WFFontDescriptor *)self name];
+    name2 = [(WFFontDescriptor *)self name];
     v11 = getUIFontDescriptorNameAttribute();
-    [v5 setObject:v10 forKeyedSubscript:v11];
+    [v5 setObject:name2 forKeyedSubscript:v11];
   }
 
-  v12 = [(WFFontDescriptor *)self face];
+  face = [(WFFontDescriptor *)self face];
 
-  if (v12)
+  if (face)
   {
-    v13 = [(WFFontDescriptor *)self face];
+    face2 = [(WFFontDescriptor *)self face];
     v14 = getUIFontDescriptorFaceAttribute();
-    [v5 setObject:v13 forKeyedSubscript:v14];
+    [v5 setObject:face2 forKeyedSubscript:v14];
   }
 
-  v15 = [(WFFontDescriptor *)self visibleName];
+  visibleName = [(WFFontDescriptor *)self visibleName];
 
-  if (v15)
+  if (visibleName)
   {
-    v16 = [(WFFontDescriptor *)self visibleName];
+    visibleName2 = [(WFFontDescriptor *)self visibleName];
     v17 = getUIFontDescriptorVisibleNameAttribute();
-    [v5 setObject:v16 forKeyedSubscript:v17];
+    [v5 setObject:visibleName2 forKeyedSubscript:v17];
   }
 
   v18 = [objc_alloc(getUIFontDescriptorClass()) initWithFontAttributes:v5];
-  v19 = [(objc_class *)getUIFontClass() fontWithDescriptor:v18 size:a3];
+  v19 = [(objc_class *)getUIFontClass() fontWithDescriptor:v18 size:size];
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFFontDescriptor *)self attributes];
-  [v4 encodeObject:v5 forKey:@"attributes"];
+  coderCopy = coder;
+  attributes = [(WFFontDescriptor *)self attributes];
+  [coderCopy encodeObject:attributes forKey:@"attributes"];
 }
 
-- (WFFontDescriptor)initWithCoder:(id)a3
+- (WFFontDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributes"];
 
   if (v5)
   {
     self = [(WFFontDescriptor *)self initWithPrivateRepresentation:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)visibleName
 {
-  v2 = [(WFFontDescriptor *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"WFFontDescriptorVisibleName"];
+  attributes = [(WFFontDescriptor *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"WFFontDescriptorVisibleName"];
 
   return v3;
 }
 
 - (id)face
 {
-  v2 = [(WFFontDescriptor *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"WFFontDescriptorFace"];
+  attributes = [(WFFontDescriptor *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"WFFontDescriptorFace"];
 
   return v3;
 }
 
 - (id)name
 {
-  v2 = [(WFFontDescriptor *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"WFFontDescriptorName"];
+  attributes = [(WFFontDescriptor *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"WFFontDescriptorName"];
 
   return v3;
 }
 
 - (id)family
 {
-  v2 = [(WFFontDescriptor *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"WFFontDescriptorFamily"];
+  attributes = [(WFFontDescriptor *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"WFFontDescriptorFamily"];
 
   return v3;
 }
@@ -133,18 +133,18 @@
   return v2;
 }
 
-- (WFFontDescriptor)initWithPrivateRepresentation:(id)a3
+- (WFFontDescriptor)initWithPrivateRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v16.receiver = self;
   v16.super_class = WFFontDescriptor;
   v5 = [(WFFontDescriptor *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"WFFontDescriptorFamily"];
-    v7 = [v4 objectForKey:@"WFFontDescriptorName"];
-    v8 = [v4 objectForKey:@"WFFontDescriptorFace"];
-    v9 = [v4 objectForKey:@"WFFontDescriptorVisibleName"];
+    v6 = [representationCopy objectForKey:@"WFFontDescriptorFamily"];
+    v7 = [representationCopy objectForKey:@"WFFontDescriptorName"];
+    v8 = [representationCopy objectForKey:@"WFFontDescriptorFace"];
+    v9 = [representationCopy objectForKey:@"WFFontDescriptorVisibleName"];
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11 = v10;
     if (v6)
@@ -177,21 +177,21 @@
   return v5;
 }
 
-- (WFFontDescriptor)initWithFontAttributes:(id)a3
+- (WFFontDescriptor)initWithFontAttributes:(id)attributes
 {
   v4 = getUIFontDescriptorFamilyAttribute;
-  v5 = a3;
+  attributesCopy = attributes;
   v6 = v4();
-  v7 = [v5 objectForKey:v6];
+  v7 = [attributesCopy objectForKey:v6];
 
   v8 = getUIFontDescriptorNameAttribute();
-  v9 = [v5 objectForKey:v8];
+  v9 = [attributesCopy objectForKey:v8];
 
   v10 = getUIFontDescriptorFaceAttribute();
-  v11 = [v5 objectForKey:v10];
+  v11 = [attributesCopy objectForKey:v10];
 
   v12 = getUIFontDescriptorVisibleNameAttribute();
-  v13 = [v5 objectForKey:v12];
+  v13 = [attributesCopy objectForKey:v12];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v15 = v14;
@@ -221,15 +221,15 @@
   return v17;
 }
 
-+ (id)descriptorWithSerializedRepresentation:(id)a3
++ (id)descriptorWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  if (v4)
+  representationCopy = representation;
+  if (representationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = representationCopy;
     }
 
     else
@@ -244,7 +244,7 @@
   }
 
   v6 = v5;
-  v7 = [[a1 alloc] initWithPrivateRepresentation:v6];
+  v7 = [[self alloc] initWithPrivateRepresentation:v6];
 
   return v7;
 }

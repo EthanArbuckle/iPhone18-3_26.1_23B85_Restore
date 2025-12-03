@@ -1,41 +1,41 @@
 @interface CSHostPowerStateMonitorImplDarwin
 + (id)sharedInstance;
 - (CSHostPowerStateMonitorImplDarwin)init;
-- (int)_fetchHostStateWithService:(unsigned int)a3;
-- (void)_didReceiveDarwinHostStateChangeNotification:(int64_t)a3;
-- (void)_notifyObserver:(id)a3 withDarwinHostState:(int64_t)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (int)_fetchHostStateWithService:(unsigned int)service;
+- (void)_didReceiveDarwinHostStateChangeNotification:(int64_t)notification;
+- (void)_notifyObserver:(id)observer withDarwinHostState:(int64_t)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSHostPowerStateMonitorImplDarwin
 
-- (void)_notifyObserver:(id)a3 withDarwinHostState:(int64_t)a4
+- (void)_notifyObserver:(id)observer withDarwinHostState:(int64_t)state
 {
-  v6 = a3;
-  [(CSHostPowerStateMonitorImplDarwin *)self notifyObserver:v6];
+  observerCopy = observer;
+  [(CSHostPowerStateMonitorImplDarwin *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 CSHostPowerStateMonitor:self didReceiveDarwinHostStateChange:a4];
+    [observerCopy CSHostPowerStateMonitor:self didReceiveDarwinHostStateChange:state];
   }
 }
 
-- (void)_didReceiveDarwinHostStateChangeNotification:(int64_t)a3
+- (void)_didReceiveDarwinHostStateChangeNotification:(int64_t)notification
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10011CFEC;
   v3[3] = &unk_1002539B8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = notification;
   [(CSHostPowerStateMonitorImplDarwin *)self enumerateObserversInQueue:v3];
 }
 
-- (int)_fetchHostStateWithService:(unsigned int)a3
+- (int)_fetchHostStateWithService:(unsigned int)service
 {
   v4 = -1;
   valuePtr = -1;
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"HostState", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(service, @"HostState", kCFAllocatorDefault, 0);
   if (CFProperty)
   {
     v6 = CFProperty;
@@ -74,7 +74,7 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v4 = IONotificationPortCreate(kIOMainPortDefault);
   self->_notificationPort = v4;

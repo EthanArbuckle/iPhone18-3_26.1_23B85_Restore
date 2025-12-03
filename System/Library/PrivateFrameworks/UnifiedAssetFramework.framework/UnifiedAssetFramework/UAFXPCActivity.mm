@@ -1,14 +1,14 @@
 @interface UAFXPCActivity
-+ (void)maintenanceTaskWithCompletion:(id)a3;
-+ (void)registerOnBootUAFActivityWithLockAssertion:(BOOL)a3;
++ (void)maintenanceTaskWithCompletion:(id)completion;
++ (void)registerOnBootUAFActivityWithLockAssertion:(BOOL)assertion;
 @end
 
 @implementation UAFXPCActivity
 
-+ (void)maintenanceTaskWithCompletion:(id)a3
++ (void)maintenanceTaskWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = UAFGetLogCategory(&UAFLogContextXPCActivity);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -52,9 +52,9 @@
   }
 
   +[UAFInstrumentationProvider logAvailableAssetDailyStatus];
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 
   v12 = UAFGetLogCategory(&UAFLogContextXPCActivity);
@@ -68,7 +68,7 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)registerOnBootUAFActivityWithLockAssertion:(BOOL)a3
++ (void)registerOnBootUAFActivityWithLockAssertion:(BOOL)assertion
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E9C50];
@@ -84,7 +84,7 @@
   *(&v8 + 1) = 3221225472;
   v9 = ___RegisterOnBootUAFActivity_block_invoke_2;
   v10 = &__block_descriptor_33_e42_v24__0__NSObject_OS_xpc_object__8___v___16l;
-  v11 = a3;
+  assertionCopy = assertion;
   v6 = MEMORY[0x1BFB33950](&v8);
   _RegisterXPCActivity("com.apple.siri.xpc_activity.uaf-on-boot", v4, &__block_literal_global, v6);
 

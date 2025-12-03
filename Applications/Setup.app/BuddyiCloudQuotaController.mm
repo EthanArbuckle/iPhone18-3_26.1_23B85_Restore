@@ -3,12 +3,12 @@
 - (BOOL)controllerNeedsToRun;
 - (void)cancelHostedPresentation;
 - (void)controllerWasPopped;
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)presentHostedViewControllerOnNavigationController:(id)a3 completion:(id)a4;
-- (void)upgradeFlowManager:(id)a3 didPresentViewController:(id)a4;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)manager:(id)manager loadDidFailWithError:(id)error;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)presentHostedViewControllerOnNavigationController:(id)controller completion:(id)completion;
+- (void)upgradeFlowManager:(id)manager didPresentViewController:(id)controller;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation BuddyiCloudQuotaController
@@ -21,12 +21,12 @@
   return v3 & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = sub_1000973E4();
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
@@ -39,29 +39,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentHostedViewControllerOnNavigationController:(id)a3 completion:(id)a4
+- (void)presentHostedViewControllerOnNavigationController:(id)controller completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v5 = [sub_1000978D0() sharedOfferManager];
-  v15 = [v5 currentOffer];
+  objc_storeStrong(&v16, completion);
+  sharedOfferManager = [sub_1000978D0() sharedOfferManager];
+  currentOffer = [sharedOfferManager currentOffer];
 
-  if (v15)
+  if (currentOffer)
   {
     v6 = [v16 copy];
-    pushCompletion = v18->_pushCompletion;
-    v18->_pushCompletion = v6;
+    pushCompletion = selfCopy->_pushCompletion;
+    selfCopy->_pushCompletion = v6;
 
-    v8 = [objc_alloc(sub_1000973E4()) initWithOffer:v15];
-    flowManager = v18->_flowManager;
-    v18->_flowManager = v8;
+    v8 = [objc_alloc(sub_1000973E4()) initWithOffer:currentOffer];
+    flowManager = selfCopy->_flowManager;
+    selfCopy->_flowManager = v8;
 
-    [(ICQUpgradeFlowManager *)v18->_flowManager setDelegate:v18];
-    [(ICQUpgradeFlowManager *)v18->_flowManager presentFlowHostedInNavigationController:location[0]];
+    [(ICQUpgradeFlowManager *)selfCopy->_flowManager setDelegate:selfCopy];
+    [(ICQUpgradeFlowManager *)selfCopy->_flowManager presentFlowHostedInNavigationController:location[0]];
   }
 
   else if (v16)
@@ -80,14 +80,14 @@
     (*(v16 + 2))(v16, 0);
   }
 
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&currentOffer, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)cancelHostedPresentation
 {
-  v8 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -100,13 +100,13 @@
   }
 
   objc_storeStrong(oslog, 0);
-  pushCompletion = v8->_pushCompletion;
-  v8->_pushCompletion = 0;
+  pushCompletion = selfCopy->_pushCompletion;
+  selfCopy->_pushCompletion = 0;
 
-  [(ICQUpgradeFlowManager *)v8->_flowManager setHostingNavigationController:0];
-  [(ICQUpgradeFlowManager *)v8->_flowManager _cancelFlow];
-  [(ICQUpgradeFlowManager *)v8->_flowManager setDelegate:0];
-  objc_storeStrong(&v8->_flowManager, 0);
+  [(ICQUpgradeFlowManager *)selfCopy->_flowManager setHostingNavigationController:0];
+  [(ICQUpgradeFlowManager *)selfCopy->_flowManager _cancelFlow];
+  [(ICQUpgradeFlowManager *)selfCopy->_flowManager setDelegate:0];
+  objc_storeStrong(&selfCopy->_flowManager, 0);
 }
 
 - (void)controllerWasPopped
@@ -115,34 +115,34 @@
   [(BYPreferencesController *)v2 removeObjectForKey:@"iCloudQuotaPresented"];
 }
 
-- (void)upgradeFlowManager:(id)a3 didPresentViewController:(id)a4
+- (void)upgradeFlowManager:(id)manager didPresentViewController:(id)controller
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   obj = 0;
-  objc_storeStrong(&obj, a4);
-  if (v8->_pushCompletion)
+  objc_storeStrong(&obj, controller);
+  if (selfCopy->_pushCompletion)
   {
-    objc_storeStrong(&v8->_viewController, obj);
-    (*(v8->_pushCompletion + 2))();
-    pushCompletion = v8->_pushCompletion;
-    v8->_pushCompletion = 0;
+    objc_storeStrong(&selfCopy->_viewController, obj);
+    (*(selfCopy->_pushCompletion + 2))();
+    pushCompletion = selfCopy->_pushCompletion;
+    selfCopy->_pushCompletion = 0;
   }
 
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4
+- (void)manager:(id)manager loadDidFailWithError:(id)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, error);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -151,23 +151,23 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v9->_pushCompletion)
+  if (selfCopy->_pushCompletion)
   {
-    (*(v9->_pushCompletion + 2))();
-    pushCompletion = v9->_pushCompletion;
-    v9->_pushCompletion = 0;
+    (*(selfCopy->_pushCompletion + 2))();
+    pushCompletion = selfCopy->_pushCompletion;
+    selfCopy->_pushCompletion = 0;
   }
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cancel);
   oslog = _BYLoggingFacility();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -179,21 +179,21 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = [(BuddyiCloudQuotaController *)v11 buddyPreferences];
-  [(BYPreferencesController *)v5 setObject:&__kCFBooleanTrue forKey:@"iCloudQuotaPresented"];
+  buddyPreferences = [(BuddyiCloudQuotaController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"iCloudQuotaPresented"];
 
-  v6 = [(BuddyiCloudQuotaController *)v11 delegate];
-  [(BFFFlowItemDelegate *)v6 flowItemDone:v11];
+  delegate = [(BuddyiCloudQuotaController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, complete);
   oslog = _BYLoggingFacility();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -205,11 +205,11 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = [(BuddyiCloudQuotaController *)v11 buddyPreferences];
-  [(BYPreferencesController *)v5 setObject:&__kCFBooleanTrue forKey:@"iCloudQuotaPresented"];
+  buddyPreferences = [(BuddyiCloudQuotaController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"iCloudQuotaPresented"];
 
-  v6 = [(BuddyiCloudQuotaController *)v11 delegate];
-  [(BFFFlowItemDelegate *)v6 flowItemDone:v11];
+  delegate = [(BuddyiCloudQuotaController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }

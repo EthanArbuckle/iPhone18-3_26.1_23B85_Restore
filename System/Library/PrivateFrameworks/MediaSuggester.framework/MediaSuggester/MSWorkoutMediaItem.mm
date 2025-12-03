@@ -1,12 +1,12 @@
 @interface MSWorkoutMediaItem
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation MSWorkoutMediaItem
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_22C9ED170(v6);
 
   sub_22C9D05CC(v6, v6[3]);

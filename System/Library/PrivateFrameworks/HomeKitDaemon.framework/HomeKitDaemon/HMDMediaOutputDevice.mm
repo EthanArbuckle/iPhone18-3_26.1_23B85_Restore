@@ -1,10 +1,10 @@
 @interface HMDMediaOutputDevice
 - (AVOutputDevice)av_OutputDevice;
 - (BOOL)isAppleMediaAccessory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsHAP;
 - (BOOL)supportsWHA;
-- (HMDMediaOutputDevice)initWithOutputDevice:(id)a3;
+- (HMDMediaOutputDevice)initWithOutputDevice:(id)device;
 - (NSString)modelID;
 - (id)description;
 - (unsigned)deviceSubtype;
@@ -14,7 +14,7 @@
 
 - (AVOutputDevice)av_OutputDevice
 {
-  v2 = [(HMDMediaOutputDevice *)self outputDevice];
+  outputDevice = [(HMDMediaOutputDevice *)self outputDevice];
   v3 = MRAVOutputDeviceGetAVOutputDevice();
 
   return v3;
@@ -22,7 +22,7 @@
 
 - (BOOL)isAppleMediaAccessory
 {
-  v2 = [(HMDMediaOutputDevice *)self modelID];
+  modelID = [(HMDMediaOutputDevice *)self modelID];
   v3 = HMFProductClassFromString();
 
   return (v3 & 0xFFFFFFFFFFFFFFFDLL) == 4;
@@ -31,17 +31,17 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDMediaOutputDevice *)self uniqueIdentifier];
-  v5 = [(HMDMediaOutputDevice *)self outputDevice];
-  v6 = [v3 stringWithFormat:@"Output device(%@/%@)", v4, v5];
+  uniqueIdentifier = [(HMDMediaOutputDevice *)self uniqueIdentifier];
+  outputDevice = [(HMDMediaOutputDevice *)self outputDevice];
+  v6 = [v3 stringWithFormat:@"Output device(%@/%@)", uniqueIdentifier, outputDevice];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -51,7 +51,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -62,9 +62,9 @@
     v6 = v5;
     if (v6 && (-[HMDMediaOutputDevice uniqueIdentifier](self, "uniqueIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), -[HMDMediaOutputDevice uniqueIdentifier](v6, "uniqueIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqual:v8], v8, v7, (v9 & 1) == 0))
     {
-      v11 = [(HMDMediaOutputDevice *)self outputDevice];
-      v12 = [(HMDMediaOutputDevice *)v6 outputDevice];
-      v10 = v11 == v12;
+      outputDevice = [(HMDMediaOutputDevice *)self outputDevice];
+      outputDevice2 = [(HMDMediaOutputDevice *)v6 outputDevice];
+      v10 = outputDevice == outputDevice2;
     }
 
     else
@@ -78,57 +78,57 @@
 
 - (BOOL)supportsHAP
 {
-  v2 = [(HMDMediaOutputDevice *)self outputDevice];
-  v3 = [v2 supportsHAP];
+  outputDevice = [(HMDMediaOutputDevice *)self outputDevice];
+  supportsHAP = [outputDevice supportsHAP];
 
-  return v3;
+  return supportsHAP;
 }
 
 - (BOOL)supportsWHA
 {
-  v2 = [(HMDMediaOutputDevice *)self outputDevice];
-  v3 = [v2 supportsBufferedAirPlay];
+  outputDevice = [(HMDMediaOutputDevice *)self outputDevice];
+  supportsBufferedAirPlay = [outputDevice supportsBufferedAirPlay];
 
-  return v3;
+  return supportsBufferedAirPlay;
 }
 
 - (NSString)modelID
 {
-  v2 = [(HMDMediaOutputDevice *)self outputDevice];
-  v3 = [v2 modelID];
-  v4 = [v3 copy];
+  outputDevice = [(HMDMediaOutputDevice *)self outputDevice];
+  modelID = [outputDevice modelID];
+  v4 = [modelID copy];
 
   return v4;
 }
 
 - (unsigned)deviceSubtype
 {
-  v2 = [(HMDMediaOutputDevice *)self outputDevice];
-  v3 = [v2 deviceSubtype];
+  outputDevice = [(HMDMediaOutputDevice *)self outputDevice];
+  deviceSubtype = [outputDevice deviceSubtype];
 
-  return v3;
+  return deviceSubtype;
 }
 
-- (HMDMediaOutputDevice)initWithOutputDevice:(id)a3
+- (HMDMediaOutputDevice)initWithOutputDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = HMDMediaOutputDevice;
   v6 = [(HMDMediaOutputDevice *)&v15 init];
   if (v6)
   {
-    if (!v5)
+    if (!deviceCopy)
     {
       goto LABEL_7;
     }
 
-    v7 = [v5 uid];
+    v7 = [deviceCopy uid];
     v8 = [v7 copy];
     uniqueIdentifier = v6->_uniqueIdentifier;
     v6->_uniqueIdentifier = v8;
 
-    v10 = [v5 name];
-    v11 = [v10 copy];
+    name = [deviceCopy name];
+    v11 = [name copy];
     name = v6->_name;
     v6->_name = v11;
 
@@ -139,7 +139,7 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    objc_storeStrong(&v6->_outputDevice, a3);
+    objc_storeStrong(&v6->_outputDevice, device);
   }
 
   v13 = v6;

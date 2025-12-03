@@ -1,5 +1,5 @@
 @interface _UIWindowRotationAnimationController
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 - (void)dealloc;
 @end
 
@@ -13,28 +13,28 @@
   [(_UIWindowRotationAnimationController *)&v3 dealloc];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  [(_UIWindowRotationAnimationController *)self transitionDuration:v4];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  [(_UIWindowRotationAnimationController *)self transitionDuration:transitionCopy];
   v7 = v6;
-  v8 = [(_UIWindowRotationAnimationController *)self skipCallbacks];
-  v9 = [(_UIWindowRotationAnimationController *)self updateStatusBarIfNecessary];
-  v10 = [v5 _toWindowOrientation];
-  v11 = [UIApp _safeInterfaceOrientationForWindowIfExists:v5];
+  skipCallbacks = [(_UIWindowRotationAnimationController *)self skipCallbacks];
+  updateStatusBarIfNecessary = [(_UIWindowRotationAnimationController *)self updateStatusBarIfNecessary];
+  _toWindowOrientation = [containerView _toWindowOrientation];
+  v11 = [UIApp _safeInterfaceOrientationForWindowIfExists:containerView];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58___UIWindowRotationAnimationController_animateTransition___block_invoke;
   aBlock[3] = &unk_1E7104CD0;
   aBlock[4] = self;
-  v26 = v4;
-  v12 = v5;
-  v32 = v8;
+  v26 = transitionCopy;
+  v12 = containerView;
+  v32 = skipCallbacks;
   v27 = v12;
-  v29 = v10;
+  v29 = _toWindowOrientation;
   v30 = v11;
-  v33 = v9;
+  v33 = updateStatusBarIfNecessary;
   v13 = v26;
   v28 = v13;
   v31 = v7;

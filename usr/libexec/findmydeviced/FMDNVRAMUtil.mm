@@ -1,10 +1,10 @@
 @interface FMDNVRAMUtil
 + (id)sharedInstance;
-- (id)dataValueForKey:(id)a3;
-- (id)stringValueForKey:(id)a3;
-- (void)clearPropertyWithKey:(id)a3;
-- (void)setDataPropertyWithKey:(id)a3 value:(id)a4;
-- (void)setStringPropertyWithKey:(id)a3 value:(id)a4;
+- (id)dataValueForKey:(id)key;
+- (id)stringValueForKey:(id)key;
+- (void)clearPropertyWithKey:(id)key;
+- (void)setDataPropertyWithKey:(id)key value:(id)value;
+- (void)setStringPropertyWithKey:(id)key value:(id)value;
 @end
 
 @implementation FMDNVRAMUtil
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (void)setStringPropertyWithKey:(id)a3 value:(id)a4
+- (void)setStringPropertyWithKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  keyCopy = key;
+  valueCopy = value;
+  v8 = valueCopy;
+  if (keyCopy && valueCopy)
   {
-    v9 = [v7 dataUsingEncoding:4];
-    [(FMDNVRAMUtil *)self setDataPropertyWithKey:v6 value:v9];
+    v9 = [valueCopy dataUsingEncoding:4];
+    [(FMDNVRAMUtil *)self setDataPropertyWithKey:keyCopy value:v9];
   }
 
   else
@@ -38,7 +38,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = keyCopy;
       v13 = 2112;
       v14 = v8;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#nvram - Cannot save NULL to NVRAM key %@ value %@", &v11, 0x16u);
@@ -46,12 +46,12 @@
   }
 }
 
-- (id)stringValueForKey:(id)a3
+- (id)stringValueForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(FMDNVRAMUtil *)self dataValueForKey:v4];
+    v5 = [(FMDNVRAMUtil *)self dataValueForKey:keyCopy];
     if (v5)
     {
       v6 = [[NSString alloc] initWithData:v5 encoding:4];
@@ -61,7 +61,7 @@
         v9 = 138412546;
         v10 = v6;
         v11 = 2112;
-        v12 = v4;
+        v12 = keyCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#nvram - retrieved string value %@ for key %@", &v9, 0x16u);
       }
     }
@@ -80,13 +80,13 @@
   return v6;
 }
 
-- (void)clearPropertyWithKey:(id)a3
+- (void)clearPropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = +[NSData data];
-    v5 = sub_100167298(v3, v4);
+    v5 = sub_100167298(keyCopy, v4);
 
     if (v5)
     {
@@ -99,12 +99,12 @@
   }
 }
 
-- (void)setDataPropertyWithKey:(id)a3 value:(id)a4
+- (void)setDataPropertyWithKey:(id)key value:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || !v6)
+  keyCopy = key;
+  valueCopy = value;
+  v7 = valueCopy;
+  if (!keyCopy || !valueCopy)
   {
     v8 = sub_100002880();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -116,26 +116,26 @@
     goto LABEL_8;
   }
 
-  if (sub_100167298(v5, v6))
+  if (sub_100167298(keyCopy, valueCopy))
   {
     v8 = sub_100002880();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100228F1C(v5, v7, v8);
+      sub_100228F1C(keyCopy, v7, v8);
     }
 
 LABEL_8:
   }
 }
 
-- (id)dataValueForKey:(id)a3
+- (id)dataValueForKey:(id)key
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  keyCopy = key;
+  v4 = keyCopy;
+  if (keyCopy)
   {
     v13 = 0;
-    v5 = sub_1001673C0(v3, &v13);
+    v5 = sub_1001673C0(keyCopy, &v13);
     if (v5)
     {
       v6 = v5;

@@ -48,23 +48,23 @@ LABEL_8:
   v3 = MEMORY[0x277D01160];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 locationLatitude];
-  [v6 doubleValue];
+  locationLatitude = [v4 locationLatitude];
+  [locationLatitude doubleValue];
   v8 = v7;
-  v9 = [v4 locationLongitude];
-  [v9 doubleValue];
+  locationLongitude = [v4 locationLongitude];
+  [locationLongitude doubleValue];
   v11 = [v5 initWithLatitude:0 longitude:v8 horizontalUncertainty:v10 date:-1.0];
 
   v12 = objc_alloc(MEMORY[0x277D011F0]);
-  v13 = [v4 identifier];
-  v14 = [v4 applePaySupport];
-  v15 = [v4 filtered];
-  v16 = [v4 fullyCoversTile];
-  v17 = [v4 muid];
-  v18 = [v17 unsignedIntegerValue];
-  v19 = [v4 polygon];
+  identifier = [v4 identifier];
+  applePaySupport = [v4 applePaySupport];
+  filtered = [v4 filtered];
+  fullyCoversTile = [v4 fullyCoversTile];
+  muid = [v4 muid];
+  unsignedIntegerValue = [muid unsignedIntegerValue];
+  polygon = [v4 polygon];
 
-  v20 = [v12 initWithIdentifier:v13 applePaySupport:v14 filtered:v15 fullyCoversTile:v16 location:v11 muid:v18 polygon:v19];
+  v20 = [v12 initWithIdentifier:identifier applePaySupport:applePaySupport filtered:filtered fullyCoversTile:fullyCoversTile location:v11 muid:unsignedIntegerValue polygon:polygon];
 
   return v20;
 }
@@ -73,7 +73,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTPointOfInterestMO managedObjectWithPointOfInterest:a1 inManagedObjectContext:a3];
+    v3 = [RTPointOfInterestMO managedObjectWithPointOfInterest:self inManagedObjectContext:a3];
   }
 
   else

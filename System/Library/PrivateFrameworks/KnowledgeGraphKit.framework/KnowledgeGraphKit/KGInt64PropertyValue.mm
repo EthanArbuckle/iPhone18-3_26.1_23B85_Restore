@@ -1,6 +1,6 @@
 @interface KGInt64PropertyValue
-- (BOOL)isEqual:(id)a3;
-- (KGInt64PropertyValue)initWithValue:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (KGInt64PropertyValue)initWithValue:(int64_t)value;
 - (unint64_t)hash;
 @end
 
@@ -14,10 +14,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -28,7 +28,7 @@
     if (objc_opt_isKindOfClass())
     {
       value = self->_value;
-      v6 = value == [(KGInt64PropertyValue *)v4 value];
+      v6 = value == [(KGInt64PropertyValue *)equalCopy value];
     }
 
     else
@@ -40,14 +40,14 @@
   return v6;
 }
 
-- (KGInt64PropertyValue)initWithValue:(int64_t)a3
+- (KGInt64PropertyValue)initWithValue:(int64_t)value
 {
   v5.receiver = self;
   v5.super_class = KGInt64PropertyValue;
   result = [(KGPropertyValue *)&v5 initForSubclasses];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;

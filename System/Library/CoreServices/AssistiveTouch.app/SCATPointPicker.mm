@@ -1,62 +1,62 @@
 @interface SCATPointPicker
-+ (SCATPointPicker)pointPickerWithMode:(int64_t)a3 menu:(id)a4;
-+ (id)mostSuitablePointPickerWithMenu:(id)a3;
++ (SCATPointPicker)pointPickerWithMode:(int64_t)mode menu:(id)menu;
++ (id)mostSuitablePointPickerWithMenu:(id)menu;
 - (BOOL)hasPickedPoint;
 - (CGPoint)lastReceivedPoint;
 - (CGPoint)pickedPoint;
 - (CGPoint)pickedPointInDeviceCoordinates;
 - (SCATMenu)menu;
 - (SCATPointPickerDelegate)delegate;
-- (id)_initWithMenu:(id)a3;
+- (id)_initWithMenu:(id)menu;
 - (id)description;
-- (void)_savePoint:(CGPoint)a3 andNotifyDelegate:(BOOL)a4;
-- (void)didFetchElements:(id)a3 foundNewElements:(BOOL)a4 currentFocusContext:(id)a5 didChangeActiveElementManager:(BOOL)a6;
+- (void)_savePoint:(CGPoint)point andNotifyDelegate:(BOOL)delegate;
+- (void)didFetchElements:(id)elements foundNewElements:(BOOL)newElements currentFocusContext:(id)context didChangeActiveElementManager:(BOOL)manager;
 - (void)refineSelectedPoint;
 @end
 
 @implementation SCATPointPicker
 
-+ (id)mostSuitablePointPickerWithMenu:(id)a3
++ (id)mostSuitablePointPickerWithMenu:(id)menu
 {
-  v3 = a3;
+  menuCopy = menu;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchPreferredPointPicker];
+  assistiveTouchPreferredPointPicker = [v4 assistiveTouchPreferredPointPicker];
   [v4 switchControlUseCameraForPointMode];
-  v6 = [SCATPointPicker pointPickerWithMode:v5 menu:v3];
+  v6 = [SCATPointPicker pointPickerWithMode:assistiveTouchPreferredPointPicker menu:menuCopy];
 
   return v6;
 }
 
-+ (SCATPointPicker)pointPickerWithMode:(int64_t)a3 menu:(id)a4
++ (SCATPointPicker)pointPickerWithMode:(int64_t)mode menu:(id)menu
 {
-  v5 = a4;
+  menuCopy = menu;
   v6 = off_1001D1A48;
   v7 = off_1001D1A18;
-  if (a3)
+  if (mode)
   {
     v7 = &off_1001D1A50;
   }
 
-  if (a3 != 2)
+  if (mode != 2)
   {
     v6 = v7;
   }
 
-  v8 = [objc_alloc(*v6) _initWithMenu:v5];
+  v8 = [objc_alloc(*v6) _initWithMenu:menuCopy];
 
   return v8;
 }
 
-- (id)_initWithMenu:(id)a3
+- (id)_initWithMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v8.receiver = self;
   v8.super_class = SCATPointPicker;
   v5 = [(SCATPointPicker *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_menu, v4);
+    objc_storeWeak(&v5->_menu, menuCopy);
     v6->_currentDisplayID = 1;
   }
 
@@ -78,30 +78,30 @@
   return v9;
 }
 
-- (void)_savePoint:(CGPoint)a3 andNotifyDelegate:(BOOL)a4
+- (void)_savePoint:(CGPoint)point andNotifyDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v6 = [NSValue valueWithCGPoint:a3.x, a3.y];
+  delegateCopy = delegate;
+  v6 = [NSValue valueWithCGPoint:point.x, point.y];
   [(SCATPointPicker *)self setRealPickedPoint:v6];
 
-  if (v4)
+  if (delegateCopy)
   {
-    v7 = [(SCATPointPicker *)self delegate];
+    delegate = [(SCATPointPicker *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(SCATPointPicker *)self delegate];
+      delegate2 = [(SCATPointPicker *)self delegate];
       [(SCATPointPicker *)self pickedPoint];
-      [v9 pointPicker:self didPickPoint:?];
+      [delegate2 pointPicker:self didPickPoint:?];
     }
   }
 }
 
 - (BOOL)hasPickedPoint
 {
-  v2 = [(SCATPointPicker *)self realPickedPoint];
-  v3 = v2 != 0;
+  realPickedPoint = [(SCATPointPicker *)self realPickedPoint];
+  v3 = realPickedPoint != 0;
 
   return v3;
 }
@@ -112,8 +112,8 @@
   v4 = 0.0;
   if ([(SCATPointPicker *)self hasPickedPoint])
   {
-    v5 = [(SCATPointPicker *)self realPickedPoint];
-    [v5 CGPointValue];
+    realPickedPoint = [(SCATPointPicker *)self realPickedPoint];
+    [realPickedPoint CGPointValue];
     v3 = v6;
     v4 = v7;
   }
@@ -152,11 +152,11 @@
   ++self->_refinementCount;
 }
 
-- (void)didFetchElements:(id)a3 foundNewElements:(BOOL)a4 currentFocusContext:(id)a5 didChangeActiveElementManager:(BOOL)a6
+- (void)didFetchElements:(id)elements foundNewElements:(BOOL)newElements currentFocusContext:(id)context didChangeActiveElementManager:(BOOL)manager
 {
-  if (a6)
+  if (manager)
   {
-    [a3 beginScanningWithFocusContext:{0, a4, a5}];
+    [elements beginScanningWithFocusContext:{0, newElements, context}];
   }
 }
 

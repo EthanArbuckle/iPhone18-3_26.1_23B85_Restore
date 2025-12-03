@@ -6,7 +6,7 @@
 
 - (uint64_t)resolvedStyle
 {
-  [a1 style];
+  [self style];
 
   return _UIStatusBarResolvedStyleFromStyle();
 }

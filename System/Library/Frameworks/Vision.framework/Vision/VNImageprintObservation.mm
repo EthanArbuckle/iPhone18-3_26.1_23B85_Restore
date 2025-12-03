@@ -1,23 +1,23 @@
 @interface VNImageprintObservation
-+ (id)observationWithImageprint:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (VNImageprintObservation)initWithCoder:(id)a3;
-- (float)calculateDistanceFromImageprintObservation:(id)a3;
++ (id)observationWithImageprint:(id)imageprint error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (VNImageprintObservation)initWithCoder:(id)coder;
+- (float)calculateDistanceFromImageprintObservation:(id)observation;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNImageprintObservation
 
-- (float)calculateDistanceFromImageprintObservation:(id)a3
+- (float)calculateDistanceFromImageprintObservation:(id)observation
 {
-  v4 = a3;
-  if (v4)
+  observationCopy = observation;
+  if (observationCopy)
   {
-    v5 = [(VNImageprintObservation *)self imageprint];
-    v6 = [v4 imageprint];
-    v7 = [v5 distanceToImageprint:v6 error:0];
+    imageprint = [(VNImageprintObservation *)self imageprint];
+    imageprint2 = [observationCopy imageprint];
+    v7 = [imageprint distanceToImageprint:imageprint2 error:0];
 
     [v7 floatValue];
     v9 = v8;
@@ -31,10 +31,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -43,11 +43,11 @@
   {
     v10.receiver = self;
     v10.super_class = VNImageprintObservation;
-    if ([(VNObservation *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNObservation *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(VNImageprintObservation *)self imageprint];
-      v7 = [(VNImageprintObservation *)v5 imageprint];
+      v5 = equalCopy;
+      imageprint = [(VNImageprintObservation *)self imageprint];
+      imageprint2 = [(VNImageprintObservation *)v5 imageprint];
       v8 = VisionCoreEqualOrNilObjects();
     }
 
@@ -65,8 +65,8 @@
   v7.receiver = self;
   v7.super_class = VNImageprintObservation;
   v3 = [(VNObservation *)&v7 hash];
-  v4 = [(VNImageprintObservation *)self imageprint];
-  v5 = [v4 hash] ^ __ROR8__(v3, 51);
+  imageprint = [(VNImageprintObservation *)self imageprint];
+  v5 = [imageprint hash] ^ __ROR8__(v3, 51);
 
   return v5;
 }
@@ -75,35 +75,35 @@
 {
   v6.receiver = self;
   v6.super_class = VNImageprintObservation;
-  v3 = [(VNObservation *)&v6 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v6 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(VNImageprint *)self->_imageprint copy];
-    [v3 setImageprint:v4];
+    [vn_cloneObject setImageprint:v4];
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNImageprintObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encodeCodingVersion:0 forKey:@"VNImageprintObservation"];
-  [v4 encodeObject:self->_imageprint forKey:@"VNImageprint"];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodeCodingVersion:0 forKey:@"VNImageprintObservation"];
+  [coderCopy encodeObject:self->_imageprint forKey:@"VNImageprint"];
 }
 
-- (VNImageprintObservation)initWithCoder:(id)a3
+- (VNImageprintObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = VNImageprintObservation;
-  v5 = [(VNObservation *)&v17 initWithCoder:v4];
-  if (v5 && ![v4 vn_decodeCodingVersionForKey:@"VNImageprintObservation"])
+  v5 = [(VNObservation *)&v17 initWithCoder:coderCopy];
+  if (v5 && ![coderCopy vn_decodeCodingVersionForKey:@"VNImageprintObservation"])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VNImageprint"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VNImageprint"];
     if (v7)
     {
       objc_storeStrong(&v5->_imageprint, v7);
@@ -114,7 +114,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
     v9 = objc_opt_class();
     v16 = 0;
     v10 = +[VNRequestSpecifier specifierForRequestClass:revision:error:](VNRequestSpecifier, "specifierForRequestClass:revision:error:", v9, [v9 currentRevision], &v16);
@@ -134,7 +134,7 @@ LABEL_12:
 
     else
     {
-      [v4 failWithError:v11];
+      [coderCopy failWithError:v11];
     }
 
     v6 = 0;
@@ -147,20 +147,20 @@ LABEL_13:
   return v6;
 }
 
-+ (id)observationWithImageprint:(id)a3 error:(id *)a4
++ (id)observationWithImageprint:(id)imageprint error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  imageprintCopy = imageprint;
+  if (imageprintCopy)
   {
-    v6 = -[VNObservation initWithRequestRevision:]([VNImageprintObservation alloc], "initWithRequestRevision:", [v5 requestRevision]);
+    v6 = -[VNObservation initWithRequestRevision:]([VNImageprintObservation alloc], "initWithRequestRevision:", [imageprintCopy requestRevision]);
     v7 = v6;
     if (v6)
     {
-      [(VNImageprintObservation *)v6 setImageprint:v5];
+      [(VNImageprintObservation *)v6 setImageprint:imageprintCopy];
       v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v9 = [v5 descriptor];
-      v10 = [v9 externalImageId];
-      v11 = [v8 initWithUUIDString:v10];
+      descriptor = [imageprintCopy descriptor];
+      externalImageId = [descriptor externalImageId];
+      v11 = [v8 initWithUUIDString:externalImageId];
 
       if (v11)
       {
@@ -170,16 +170,16 @@ LABEL_13:
       v12 = v7;
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [VNError errorWithCode:5 message:@"Failed creating a new VNImageprintObservation object"];
+      *error = [VNError errorWithCode:5 message:@"Failed creating a new VNImageprintObservation object"];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorWithCode:5 message:@"nil imageprint supplied"];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

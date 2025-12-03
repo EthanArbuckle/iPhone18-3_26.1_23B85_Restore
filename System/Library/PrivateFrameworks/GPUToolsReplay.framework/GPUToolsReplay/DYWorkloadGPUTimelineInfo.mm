@@ -1,29 +1,29 @@
 @interface DYWorkloadGPUTimelineInfo
 - (DYWorkloadGPUTimelineInfo)init;
-- (DYWorkloadGPUTimelineInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DYWorkloadGPUTimelineInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createCounterGroup;
-- (id)mGPUTimelineInfoAtIndex:(unint64_t)a3;
-- (unint64_t)metalFXCallDuration:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mGPUTimelineInfoAtIndex:(unint64_t)index;
+- (unint64_t)metalFXCallDuration:(unint64_t)duration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DYWorkloadGPUTimelineInfo
 
-- (unint64_t)metalFXCallDuration:(unint64_t)a3
+- (unint64_t)metalFXCallDuration:(unint64_t)duration
 {
-  v5 = [(DYGPUTimelineInfo *)self->_aggregatedGPUTimelineInfo metalFXTimelineInfo];
+  metalFXTimelineInfo = [(DYGPUTimelineInfo *)self->_aggregatedGPUTimelineInfo metalFXTimelineInfo];
 
-  if (!v5)
+  if (!metalFXTimelineInfo)
   {
     return 0;
   }
 
-  v6 = [(DYGPUTimelineInfo *)self->_aggregatedGPUTimelineInfo metalFXTimelineInfo];
-  v7 = [v6 bytes];
+  metalFXTimelineInfo2 = [(DYGPUTimelineInfo *)self->_aggregatedGPUTimelineInfo metalFXTimelineInfo];
+  bytes = [metalFXTimelineInfo2 bytes];
 
-  v8 = [(DYGPUTimelineInfo *)self->_aggregatedGPUTimelineInfo metalFXTimelineInfo];
-  v9 = [v8 length];
+  metalFXTimelineInfo3 = [(DYGPUTimelineInfo *)self->_aggregatedGPUTimelineInfo metalFXTimelineInfo];
+  v9 = [metalFXTimelineInfo3 length];
 
   if (v9 < 0x10)
   {
@@ -31,12 +31,12 @@
   }
 
   v10 = 0;
-  v11 = v7;
+  v11 = bytes;
   while (1)
   {
     v12 = *v11;
     v11 += 2;
-    if (v12 == a3)
+    if (v12 == duration)
     {
       break;
     }
@@ -47,7 +47,7 @@
     }
   }
 
-  return *(v7 + 16 * v10 + 8);
+  return *(bytes + 16 * v10 + 8);
 }
 
 - (id)createCounterGroup
@@ -58,9 +58,9 @@
   return v3;
 }
 
-- (id)mGPUTimelineInfoAtIndex:(unint64_t)a3
+- (id)mGPUTimelineInfoAtIndex:(unint64_t)index
 {
-  while ([(NSMutableArray *)self->_mGPUTimelineInfos count]<= a3)
+  while ([(NSMutableArray *)self->_mGPUTimelineInfos count]<= index)
   {
     mGPUTimelineInfos = self->_mGPUTimelineInfos;
     v6 = objc_opt_new();
@@ -69,7 +69,7 @@
 
   v7 = self->_mGPUTimelineInfos;
 
-  return [(NSMutableArray *)v7 objectAtIndexedSubscript:a3];
+  return [(NSMutableArray *)v7 objectAtIndexedSubscript:index];
 }
 
 - (DYWorkloadGPUTimelineInfo)init
@@ -99,12 +99,12 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   self->_version = 8;
-  v5 = v4;
-  [v4 encodeInt:8 forKey:@"version"];
+  v5 = coderCopy;
+  [coderCopy encodeInt:8 forKey:@"version"];
   [v5 encodeInt:self->_timeBaseNumerator forKey:@"timeBaseNumerator"];
   [v5 encodeInt:self->_timeBaseDenominator forKey:@"timeBaseDenominator"];
   [v5 encodeObject:self->_mGPUTimelineInfos forKey:@"mGPUTimelineInfos"];
@@ -119,25 +119,25 @@
   [v5 encodeObject:self->_counterGroups forKey:@"counterGroups"];
 }
 
-- (DYWorkloadGPUTimelineInfo)initWithCoder:(id)a3
+- (DYWorkloadGPUTimelineInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v54.receiver = self;
   v54.super_class = DYWorkloadGPUTimelineInfo;
   v5 = [(DYWorkloadGPUTimelineInfo *)&v54 init];
   if (v5)
   {
-    v5->_version = [v4 decodeIntForKey:@"version"];
+    v5->_version = [coderCopy decodeIntForKey:@"version"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"mGPUTimelineInfos"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"mGPUTimelineInfos"];
     mGPUTimelineInfos = v5->_mGPUTimelineInfos;
     v5->_mGPUTimelineInfos = v10;
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"aggregatedGPUTimelineInfo"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"aggregatedGPUTimelineInfo"];
     aggregatedGPUTimelineInfo = v5->_aggregatedGPUTimelineInfo;
     v5->_aggregatedGPUTimelineInfo = v13;
 
@@ -146,7 +146,7 @@
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v15 setWithObjects:{v16, v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"perRingSampledDerivedCounters"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"perRingSampledDerivedCounters"];
     perRingSampledDerivedCounters = v5->_perRingSampledDerivedCounters;
     v5->_perRingSampledDerivedCounters = v20;
 
@@ -154,7 +154,7 @@
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v22 setWithObjects:{v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"coreCounts"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"coreCounts"];
     coreCounts = v5->_coreCounts;
     v5->_coreCounts = v26;
 
@@ -165,24 +165,24 @@
 
     else
     {
-      v5->_timeBaseNumerator = [v4 decodeIntForKey:@"timeBaseNumerator"];
-      v5->_timeBaseDenominator = [v4 decodeIntForKey:@"timeBaseDenominator"];
+      v5->_timeBaseNumerator = [coderCopy decodeIntForKey:@"timeBaseNumerator"];
+      v5->_timeBaseDenominator = [coderCopy decodeIntForKey:@"timeBaseDenominator"];
       v28 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v29 = [v4 decodeObjectOfClasses:v28 forKey:@"derivedEncoderCounterInfo"];
+      v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"derivedEncoderCounterInfo"];
       derivedEncoderCounterInfo = v5->_derivedEncoderCounterInfo;
       v5->_derivedEncoderCounterInfo = v29;
 
       if (v5->_version >= 3)
       {
-        v5->_profiledState = [v4 decodeIntForKey:@"profiledState"];
-        v5->_consistentStateAchieved = [v4 decodeBoolForKey:@"consistentStateAchieved"];
+        v5->_profiledState = [coderCopy decodeIntForKey:@"profiledState"];
+        v5->_consistentStateAchieved = [coderCopy decodeBoolForKey:@"consistentStateAchieved"];
         if (v5->_version >= 4)
         {
           v31 = MEMORY[0x277CBEB98];
           v32 = objc_opt_class();
           v33 = objc_opt_class();
           v34 = [v31 setWithObjects:{v32, v33, objc_opt_class(), 0}];
-          v35 = [v4 decodeObjectOfClasses:v34 forKey:@"restoreTimestamps"];
+          v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"restoreTimestamps"];
           restoreTimestamps = v5->_restoreTimestamps;
           v5->_restoreTimestamps = v35;
 
@@ -194,7 +194,7 @@
             v39 = objc_opt_class();
             v40 = objc_opt_class();
             v41 = [v53 setWithObjects:{v37, v38, v39, v40, objc_opt_class(), 0}];
-            v42 = [v4 decodeObjectOfClasses:v41 forKey:@"coalescedEncoderInfo"];
+            v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"coalescedEncoderInfo"];
             coalescedEncoderInfo = v5->_coalescedEncoderInfo;
             v5->_coalescedEncoderInfo = v42;
 
@@ -205,7 +205,7 @@
               v46 = objc_opt_class();
               v47 = objc_opt_class();
               v48 = [v44 setWithObjects:{v45, v46, v47, objc_opt_class(), 0}];
-              v49 = [v4 decodeObjectOfClasses:v48 forKey:@"counterGroups"];
+              v49 = [coderCopy decodeObjectOfClasses:v48 forKey:@"counterGroups"];
               counterGroups = v5->_counterGroups;
               v5->_counterGroups = v49;
             }
@@ -220,23 +220,23 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(DYWorkloadGPUTimelineInfo *)self mGPUTimelineInfos];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  mGPUTimelineInfos = [(DYWorkloadGPUTimelineInfo *)self mGPUTimelineInfos];
+  v6 = [mGPUTimelineInfos copy];
   [v4 setMGPUTimelineInfos:v6];
 
-  v7 = [(DYWorkloadGPUTimelineInfo *)self aggregatedGPUTimelineInfo];
-  v8 = [v7 copy];
+  aggregatedGPUTimelineInfo = [(DYWorkloadGPUTimelineInfo *)self aggregatedGPUTimelineInfo];
+  v8 = [aggregatedGPUTimelineInfo copy];
   [v4 setAggregatedGPUTimelineInfo:v8];
 
-  v9 = [(DYWorkloadGPUTimelineInfo *)self perRingSampledDerivedCounters];
-  v10 = [v9 copy];
+  perRingSampledDerivedCounters = [(DYWorkloadGPUTimelineInfo *)self perRingSampledDerivedCounters];
+  v10 = [perRingSampledDerivedCounters copy];
   [v4 setPerRingSampledDerivedCounters:v10];
 
-  v11 = [(DYWorkloadGPUTimelineInfo *)self coreCounts];
-  v12 = [v11 copy];
+  coreCounts = [(DYWorkloadGPUTimelineInfo *)self coreCounts];
+  v12 = [coreCounts copy];
   [v4 setCoreCounts:v12];
 
   return v4;

@@ -1,15 +1,15 @@
 @interface ServiceTermsPageViewController
-- (BOOL)_checkEntitlementsWithError:(id *)a3;
+- (BOOL)_checkEntitlementsWithError:(id *)error;
 - (id)_remoteViewControllerProxy;
 - (void)_dismiss;
 - (void)_dismissClientViewController;
-- (void)_dismissWithAcceptance:(BOOL)a3;
-- (void)_showViewControllerForAlertProxy:(id)a3;
-- (void)_willAppearInRemoteViewController:(id)a3;
-- (void)alertProxyDidCancel:(id)a3;
+- (void)_dismissWithAcceptance:(BOOL)acceptance;
+- (void)_showViewControllerForAlertProxy:(id)proxy;
+- (void)_willAppearInRemoteViewController:(id)controller;
+- (void)alertProxyDidCancel:(id)cancel;
 - (void)dealloc;
 - (void)viewDidLoad;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation ServiceTermsPageViewController
@@ -25,32 +25,32 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(ServiceTermsPageViewController *)self view];
+  view = [(ServiceTermsPageViewController *)self view];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5.receiver = self;
   v5.super_class = ServiceTermsPageViewController;
   [(ServiceTermsPageViewController *)&v5 viewDidLoad];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = +[SSLogConfig sharedConfig];
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 = v7;
   }
@@ -66,13 +66,13 @@
   }
 
   v12 = 138412290;
-  v13 = v4;
+  v13 = errorCopy;
   LODWORD(v11) = 12;
   v10 = _os_log_send_and_compose_impl();
 
   if (v10)
   {
-    v8 = [NSString stringWithCString:v10 encoding:4, &v12, v11];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v12, v11];
     free(v10);
     SSFileLog();
 LABEL_10:
@@ -81,33 +81,33 @@ LABEL_10:
   [(ServiceTermsPageViewController *)self _dismissClientViewController];
 }
 
-- (void)_willAppearInRemoteViewController:(id)a3
+- (void)_willAppearInRemoteViewController:(id)controller
 {
-  v4 = a3;
-  [v4 setAllowsAlertStacking:1];
-  [v4 setAllowsMenuButtonDismissal:1];
-  [v4 setShouldDismissOnUILock:1];
+  controllerCopy = controller;
+  [controllerCopy setAllowsAlertStacking:1];
+  [controllerCopy setAllowsMenuButtonDismissal:1];
+  [controllerCopy setShouldDismissOnUILock:1];
   v5.receiver = self;
   v5.super_class = ServiceTermsPageViewController;
-  [(ServiceTermsPageViewController *)&v5 _willAppearInRemoteViewController:v4];
+  [(ServiceTermsPageViewController *)&v5 _willAppearInRemoteViewController:controllerCopy];
 }
 
-- (void)alertProxyDidCancel:(id)a3
+- (void)alertProxyDidCancel:(id)cancel
 {
   v4 = +[SSLogConfig sharedConfig];
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v6 &= 2u;
   }
@@ -125,7 +125,7 @@ LABEL_10:
 
   if (v9)
   {
-    v7 = [NSString stringWithCString:v9 encoding:4, &v11, v10, v11];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v11, v10, v11];
     free(v9);
     SSFileLog();
 LABEL_9:
@@ -134,7 +134,7 @@ LABEL_9:
   [(ServiceTermsPageViewController *)self _dismissClientViewController];
 }
 
-- (BOOL)_checkEntitlementsWithError:(id *)a3
+- (BOOL)_checkEntitlementsWithError:(id *)error
 {
   v9 = 0u;
   v10 = 0u;
@@ -150,11 +150,11 @@ LABEL_9:
   else
   {
     v4 = SSError();
-    if (a3)
+    if (error)
     {
       v4 = v4;
       v5 = 0;
-      *a3 = v4;
+      *error = v4;
     }
 
     else
@@ -172,12 +172,12 @@ LABEL_9:
   remoteAlertProxy = self->_remoteAlertProxy;
   self->_remoteAlertProxy = 0;
 
-  v6 = [(ServiceTermsPageViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(ServiceTermsPageViewController *)self _remoteViewControllerProxy];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v6 setIdleTimerDisabled:0 forReason:v5];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:v5];
 
-  [v6 dismiss];
+  [_remoteViewControllerProxy dismiss];
 }
 
 - (void)_dismissClientViewController
@@ -193,10 +193,10 @@ LABEL_9:
   }
 }
 
-- (void)_dismissWithAcceptance:(BOOL)a3
+- (void)_dismissWithAcceptance:(BOOL)acceptance
 {
   v5 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_BOOL(v5, "1", a3);
+  xpc_dictionary_set_BOOL(v5, "1", acceptance);
   [(ServiceAlertProxy *)self->_remoteAlertProxy finishWithResponse:v5];
   [(ServiceTermsPageViewController *)self _dismiss];
 }
@@ -205,17 +205,17 @@ LABEL_9:
 {
   v4.receiver = self;
   v4.super_class = ServiceTermsPageViewController;
-  v2 = [(ServiceTermsPageViewController *)&v4 _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(ServiceTermsPageViewController *)&v4 _remoteViewControllerProxy];
 
-  return v2;
+  return _remoteViewControllerProxy;
 }
 
-- (void)_showViewControllerForAlertProxy:(id)a3
+- (void)_showViewControllerForAlertProxy:(id)proxy
 {
-  v5 = a3;
-  objc_storeStrong(&self->_remoteAlertProxy, a3);
+  proxyCopy = proxy;
+  objc_storeStrong(&self->_remoteAlertProxy, proxy);
   [(ServiceAlertProxy *)self->_remoteAlertProxy setDelegate:self];
-  v6 = [v5 options];
+  options = [proxyCopy options];
   v7 = SSXPCCreateCFObjectFromXPCObject();
 
   objc_opt_class();
@@ -255,19 +255,19 @@ LABEL_26:
     }
 
     v21 = +[SSLogConfig sharedConfig];
-    v22 = [v21 shouldLog];
+    shouldLog = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog;
     }
 
-    v24 = [v21 OSLogObject];
-    if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v21 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v23 &= 2u;
     }
@@ -289,9 +289,9 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v24 = [NSString stringWithCString:v27 encoding:4, &v31, v29];
+      oSLogObject = [NSString stringWithCString:v27 encoding:4, &v31, v29];
       free(v27);
-      v28 = v24;
+      v28 = oSLogObject;
       SSFileLog();
     }
 
@@ -299,19 +299,19 @@ LABEL_25:
   }
 
   v15 = +[SSLogConfig sharedConfig];
-  v16 = [v15 shouldLog];
+  shouldLog2 = [v15 shouldLog];
   if ([v15 shouldLogToDisk])
   {
-    v17 = v16 | 2;
+    v17 = shouldLog2 | 2;
   }
 
   else
   {
-    v17 = v16;
+    v17 = shouldLog2;
   }
 
-  v18 = [v15 OSLogObject];
-  if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v15 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v17 &= 2u;
   }
@@ -329,7 +329,7 @@ LABEL_25:
 
   if (v20)
   {
-    v18 = [NSString stringWithCString:v20 encoding:4, &v31, v29];
+    oSLogObject2 = [NSString stringWithCString:v20 encoding:4, &v31, v29];
     free(v20);
     SSFileLog();
 LABEL_14:

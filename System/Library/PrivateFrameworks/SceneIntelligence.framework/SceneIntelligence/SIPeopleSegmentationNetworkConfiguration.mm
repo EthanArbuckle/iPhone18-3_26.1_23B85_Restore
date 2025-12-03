@@ -1,7 +1,7 @@
 @interface SIPeopleSegmentationNetworkConfiguration
 - (SIPeopleSegmentationNetworkConfiguration)init;
-- (void)setModelConfig:(int64_t)a3;
-- (void)setNetworkModeEnum:(int64_t)a3;
+- (void)setModelConfig:(int64_t)config;
+- (void)setNetworkModeEnum:(int64_t)enum;
 @end
 
 @implementation SIPeopleSegmentationNetworkConfiguration
@@ -29,26 +29,26 @@
   return v3;
 }
 
-- (void)setNetworkModeEnum:(int64_t)a3
+- (void)setNetworkModeEnum:(int64_t)enum
 {
   networkMode = self->super._networkMode;
   v6 = @"landscape";
-  if (a3 == 1)
+  if (enum == 1)
   {
     v6 = @"portrait";
   }
 
   self->super._networkMode = &v6->isa;
 
-  self->_networkModeEnum = a3;
+  self->_networkModeEnum = enum;
 }
 
-- (void)setModelConfig:(int64_t)a3
+- (void)setModelConfig:(int64_t)config
 {
   networkName = self->super._networkName;
   self->super._networkName = @"PersonSegmentation";
 
-  self->_modelConfig = a3;
+  self->_modelConfig = config;
 }
 
 @end

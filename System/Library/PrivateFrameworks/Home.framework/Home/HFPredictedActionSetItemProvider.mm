@@ -1,9 +1,9 @@
 @interface HFPredictedActionSetItemProvider
 - (HFCharacteristicValueSource)valueSource;
 - (HFPredictedActionSetItemProvider)init;
-- (HFPredictedActionSetItemProvider)initWithHome:(id)a3 predictionsManagerDelegate:(id)a4 itemCount:(unint64_t)a5;
+- (HFPredictedActionSetItemProvider)initWithHome:(id)home predictionsManagerDelegate:(id)delegate itemCount:(unint64_t)count;
 - (NSArray)orderedItems;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fetchUserActionPredictions;
 - (id)invalidationReasons;
 - (id)reloadItems;
@@ -14,32 +14,32 @@
 
 - (HFPredictedActionSetItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_predictionsManager_itemLimit_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFPredictedActionSetItemProvider.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HFPredictedActionSetItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPredictedActionSetItemProvider.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HFPredictedActionSetItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFPredictedActionSetItemProvider)initWithHome:(id)a3 predictionsManagerDelegate:(id)a4 itemCount:(unint64_t)a5
+- (HFPredictedActionSetItemProvider)initWithHome:(id)home predictionsManagerDelegate:(id)delegate itemCount:(unint64_t)count
 {
-  v9 = a3;
-  v10 = a4;
+  homeCopy = home;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = HFPredictedActionSetItemProvider;
   v11 = [(HFItemProvider *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_home, a3);
+    objc_storeStrong(&v11->_home, home);
     v13 = [MEMORY[0x277CBEB58] set];
     allItems = v12->_allItems;
     v12->_allItems = v13;
 
-    v12->_itemCount = a5;
+    v12->_itemCount = count;
     v15 = [HFPredictionsManager alloc];
-    v16 = [v9 userActionPredictionController];
-    v17 = [(HFPredictionsManager *)v15 initWithHome:v9 predictionsController:v16 delegate:v10 predictionLimit:a5 filterTypes:&unk_2825256C0];
+    userActionPredictionController = [homeCopy userActionPredictionController];
+    v17 = [(HFPredictionsManager *)v15 initWithHome:homeCopy predictionsController:userActionPredictionController delegate:delegateCopy predictionLimit:count filterTypes:&unk_2825256C0];
     predictionsManager = v12->_predictionsManager;
     v12->_predictionsManager = v17;
   }
@@ -47,44 +47,44 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFPredictedActionSetItemProvider *)self home];
-  v6 = [(HFPredictedActionSetItemProvider *)self predictionsManager];
-  v7 = [v6 delegate];
-  v8 = [v4 initWithHome:v5 predictionsManagerDelegate:v7 itemCount:{-[HFPredictedActionSetItemProvider itemCount](self, "itemCount")}];
+  home = [(HFPredictedActionSetItemProvider *)self home];
+  predictionsManager = [(HFPredictedActionSetItemProvider *)self predictionsManager];
+  delegate = [predictionsManager delegate];
+  v8 = [v4 initWithHome:home predictionsManagerDelegate:delegate itemCount:{-[HFPredictedActionSetItemProvider itemCount](self, "itemCount")}];
 
   return v8;
 }
 
 - (HFCharacteristicValueSource)valueSource
 {
-  v3 = [(HFPredictedActionSetItemProvider *)self overrideValueSource];
+  overrideValueSource = [(HFPredictedActionSetItemProvider *)self overrideValueSource];
 
-  if (v3)
+  if (overrideValueSource)
   {
-    v4 = [(HFPredictedActionSetItemProvider *)self overrideValueSource];
+    overrideValueSource2 = [(HFPredictedActionSetItemProvider *)self overrideValueSource];
   }
 
   else
   {
-    v5 = [(HFPredictedActionSetItemProvider *)self home];
-    v4 = [v5 hf_characteristicValueManager];
+    home = [(HFPredictedActionSetItemProvider *)self home];
+    overrideValueSource2 = [home hf_characteristicValueManager];
   }
 
-  return v4;
+  return overrideValueSource2;
 }
 
 - (NSArray)orderedItems
 {
-  v3 = [(HFPredictedActionSetItemProvider *)self predictions];
+  predictions = [(HFPredictedActionSetItemProvider *)self predictions];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__HFPredictedActionSetItemProvider_orderedItems__block_invoke;
   v6[3] = &unk_277DF6938;
   v6[4] = self;
-  v4 = [v3 na_map:v6];
+  v4 = [predictions na_map:v6];
 
   return v4;
 }
@@ -123,7 +123,7 @@ uint64_t __48__HFPredictedActionSetItemProvider_orderedItems__block_invoke_2(uin
   aBlock[3] = &unk_277DF5228;
   objc_copyWeak(&v12, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HFPredictedActionSetItemProvider *)self fetchUserActionPredictions];
+  fetchUserActionPredictions = [(HFPredictedActionSetItemProvider *)self fetchUserActionPredictions];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__HFPredictedActionSetItemProvider_reloadItems__block_invoke_2;
@@ -131,7 +131,7 @@ uint64_t __48__HFPredictedActionSetItemProvider_orderedItems__block_invoke_2(uin
   objc_copyWeak(&v10, &location);
   v5 = v3;
   v9 = v5;
-  v6 = [v4 flatMap:v8];
+  v6 = [fetchUserActionPredictions flatMap:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -212,11 +212,11 @@ id __47__HFPredictedActionSetItemProvider_reloadItems__block_invoke_3(uint64_t a
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFPredictedActionSetItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"actionSet";
   v8[1] = @"home";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -225,16 +225,16 @@ id __47__HFPredictedActionSetItemProvider_reloadItems__block_invoke_3(uint64_t a
 
 - (void)invalidatePredictions
 {
-  v3 = [(HFPredictedActionSetItemProvider *)self predictionsManager];
-  [v3 invalidateUserActionPredictions];
+  predictionsManager = [(HFPredictedActionSetItemProvider *)self predictionsManager];
+  [predictionsManager invalidateUserActionPredictions];
 
-  v4 = [(HFPredictedActionSetItemProvider *)self fetchUserActionPredictions];
+  fetchUserActionPredictions = [(HFPredictedActionSetItemProvider *)self fetchUserActionPredictions];
 }
 
 - (id)fetchUserActionPredictions
 {
-  v3 = [(HFPredictedActionSetItemProvider *)self predictionsManager];
-  v4 = [v3 fetchUserActionPredictions];
+  predictionsManager = [(HFPredictedActionSetItemProvider *)self predictionsManager];
+  fetchUserActionPredictions = [predictionsManager fetchUserActionPredictions];
 
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
@@ -242,7 +242,7 @@ id __47__HFPredictedActionSetItemProvider_reloadItems__block_invoke_3(uint64_t a
   v7[2] = __62__HFPredictedActionSetItemProvider_fetchUserActionPredictions__block_invoke;
   v7[3] = &unk_277DF52E0;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 flatMap:v7];
+  v5 = [fetchUserActionPredictions flatMap:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 

@@ -1,31 +1,31 @@
 @interface WFAppProtectionAccessResource
 - (NSString)associatedAppIdentifier;
-- (WFAppProtectionAccessResource)initWithDefinition:(id)a3;
-- (WFAppProtectionAccessResource)initWithDefinition:(id)a3 enableDistributedNotifications:(BOOL)a4;
-- (id)localizedErrorReasonForStatus:(unint64_t)a3;
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3;
+- (WFAppProtectionAccessResource)initWithDefinition:(id)definition;
+- (WFAppProtectionAccessResource)initWithDefinition:(id)definition enableDistributedNotifications:(BOOL)notifications;
+- (id)localizedErrorReasonForStatus:(unint64_t)status;
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status;
 - (unint64_t)status;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4;
-- (void)makeAvailableWithUserInterface:(WFUserInterfaceHost *)a3 completionHandler:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change;
+- (void)makeAvailableWithUserInterface:(WFUserInterfaceHost *)interface completionHandler:(id)handler;
 @end
 
 @implementation WFAppProtectionAccessResource
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   sub_1CA94D018();
   v5 = sub_1CA94C658();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1CA4DC358(v5);
   swift_unknownObjectRelease();
 }
 
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change
 {
-  v5 = a3;
-  v6 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1CA4DC64C();
 }
 
@@ -47,16 +47,16 @@
 
 - (unint64_t)status
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA4DCB3C();
 
   return v3;
 }
 
-- (id)localizedErrorReasonForStatus:(unint64_t)a3
+- (id)localizedErrorReasonForStatus:(unint64_t)status
 {
-  v4 = self;
-  sub_1CA4DCB94(a3);
+  selfCopy = self;
+  sub_1CA4DCB94(status);
   v6 = v5;
 
   if (v6)
@@ -72,10 +72,10 @@
   return v7;
 }
 
-- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)a3
+- (id)localizedErrorRecoveryOptionsForStatus:(unint64_t)status
 {
-  v4 = self;
-  v5 = sub_1CA4DCFC0(a3);
+  selfCopy = self;
+  v5 = sub_1CA4DCFC0(status);
 
   if (v5)
   {
@@ -90,22 +90,22 @@
   return v6;
 }
 
-- (void)makeAvailableWithUserInterface:(WFUserInterfaceHost *)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(WFUserInterfaceHost *)interface completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = interface;
   v7[3] = v6;
   v7[4] = self;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   sub_1CA67052C(&unk_1CA9891A8, v7);
 }
 
-- (WFAppProtectionAccessResource)initWithDefinition:(id)a3 enableDistributedNotifications:(BOOL)a4
+- (WFAppProtectionAccessResource)initWithDefinition:(id)definition enableDistributedNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (definition)
   {
     sub_1CA94C1C8();
   }
@@ -113,9 +113,9 @@
   sub_1CA4DD9BC();
 }
 
-- (WFAppProtectionAccessResource)initWithDefinition:(id)a3
+- (WFAppProtectionAccessResource)initWithDefinition:(id)definition
 {
-  if (a3)
+  if (definition)
   {
     sub_1CA94C1C8();
   }

@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (DSDeviceListDelegate)delegate;
 - (DSDeviceManager)init;
-- (void)_setRemoteDeviceList:(id)a3;
+- (void)_setRemoteDeviceList:(id)list;
 - (void)appDidLaunch;
 - (void)refresh;
 - (void)refreshRemoteDeviceList;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __33__DSDeviceManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -52,8 +52,8 @@ uint64_t __33__DSDeviceManager_sharedInstance__block_invoke(uint64_t a1)
     [(DSDeviceManager *)v2 setWorkQueue:v6];
 
     v7 = objc_alloc(MEMORY[0x277CED1D0]);
-    v8 = [MEMORY[0x277CB8F48] defaultStore];
-    v9 = [v7 initWithAccountStore:v8];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v9 = [v7 initWithAccountStore:defaultStore];
     [(DSDeviceManager *)v2 setAccountManager:v9];
 
     v10 = objc_alloc_init(MEMORY[0x277CF0178]);
@@ -77,22 +77,22 @@ uint64_t __33__DSDeviceManager_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)refresh
 {
-  v3 = [(DSDeviceManager *)self workQueue];
+  workQueue = [(DSDeviceManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__DSDeviceManager_refresh__block_invoke;
   block[3] = &unk_278F75408;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)refreshRemoteDeviceList
 {
   v3 = objc_opt_new();
-  v4 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
   v5 = objc_alloc_init(MEMORY[0x277CF0220]);
-  v6 = [v4 aa_altDSID];
-  [v5 setAltDSID:v6];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+  [v5 setAltDSID:aa_altDSID];
 
   v7 = objc_alloc_init(MEMORY[0x277CF0178]);
   v8[0] = MEMORY[0x277D85DD0];
@@ -136,23 +136,23 @@ void __42__DSDeviceManager_refreshRemoteDeviceList__block_invoke(uint64_t a1, vo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setRemoteDeviceList:(id)a3
+- (void)_setRemoteDeviceList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v6 = self->_remoteDevices;
-  objc_storeStrong(&self->_remoteDevices, a3);
-  if (v5 || !v6)
+  objc_storeStrong(&self->_remoteDevices, list);
+  if (listCopy || !v6)
   {
-    v7 = [(DSDeviceManager *)self delegate];
+    delegate = [(DSDeviceManager *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __40__DSDeviceManager__setRemoteDeviceList___block_invoke;
       v8[3] = &unk_278F75650;
       v8[4] = self;
-      v9 = v5;
+      v9 = listCopy;
       dispatch_async(MEMORY[0x277D85CD0], v8);
     }
   }

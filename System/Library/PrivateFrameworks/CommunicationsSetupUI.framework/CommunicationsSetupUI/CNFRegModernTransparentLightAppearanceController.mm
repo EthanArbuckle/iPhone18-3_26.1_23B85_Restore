@@ -30,8 +30,8 @@
   if (!tableCellCheckmarkImageDisabled_sTintedImage_2)
   {
     v3 = [MEMORY[0x277D755B8] kitImageNamed:@"UIPreferencesBlueCheck.png"];
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    v5 = [v3 _flatImageWithColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v5 = [v3 _flatImageWithColor:whiteColor];
     v6 = tableCellCheckmarkImageDisabled_sTintedImage_2;
     tableCellCheckmarkImageDisabled_sTintedImage_2 = v5;
 

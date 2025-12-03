@@ -7,7 +7,7 @@
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_34033C();
 }
 

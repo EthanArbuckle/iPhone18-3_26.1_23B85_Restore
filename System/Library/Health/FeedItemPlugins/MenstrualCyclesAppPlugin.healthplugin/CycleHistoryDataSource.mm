@@ -1,21 +1,21 @@
 @interface CycleHistoryDataSource
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
-- (void)significantTimeChangeDidOccur:(id)a3;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
+- (void)significantTimeChangeDidOccur:(id)occur;
 @end
 
 @implementation CycleHistoryDataSource
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
   v4 = *self->analysis;
-  *self->analysis = a4;
-  v5 = a4;
+  *self->analysis = analysis;
+  analysisCopy = analysis;
 
-  v6 = v5;
+  v6 = analysisCopy;
   sub_29E2987F8(v6);
 }
 
-- (void)significantTimeChangeDidOccur:(id)a3
+- (void)significantTimeChangeDidOccur:(id)occur
 {
   v3 = sub_29E2BC3F4();
   v4 = *(v3 - 8);

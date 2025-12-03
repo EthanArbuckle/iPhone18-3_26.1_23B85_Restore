@@ -1,7 +1,7 @@
 @interface AudioManager
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 - (void)dealloc;
-- (void)handleAudioSessionInterruptionWithNotification:(id)a3;
+- (void)handleAudioSessionInterruptionWithNotification:(id)notification;
 @end
 
 @implementation AudioManager
@@ -9,18 +9,18 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
   v6 = *MEMORY[0x277CB8068];
-  v7 = [objc_opt_self() sharedInstance];
-  [v5 removeObserver:v4 name:v6 object:v7];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  [defaultCenter removeObserver:selfCopy name:v6 object:sharedInstance];
 
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for AudioManager();
   [(AudioManager *)&v8 dealloc];
 }
 
-- (void)handleAudioSessionInterruptionWithNotification:(id)a3
+- (void)handleAudioSessionInterruptionWithNotification:(id)notification
 {
   v4 = sub_25AEA0BB8();
   v5 = *(v4 - 8);
@@ -28,17 +28,17 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_25AEA0B98();
-  v9 = self;
+  selfCopy = self;
   sub_25AE51E84();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v6 = a3;
-  v7 = self;
-  sub_25AE530F4(a4);
+  playingCopy = playing;
+  selfCopy = self;
+  sub_25AE530F4(successfully);
 }
 
 @end

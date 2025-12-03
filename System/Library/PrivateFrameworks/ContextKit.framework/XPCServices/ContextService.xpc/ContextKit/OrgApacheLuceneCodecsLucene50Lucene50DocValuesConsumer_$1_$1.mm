@@ -25,20 +25,20 @@
     goto LABEL_17;
   }
 
-  v4 = [(JavaUtilIterator *)v3 next];
-  if (!v4)
+  next = [(JavaUtilIterator *)v3 next];
+  if (!next)
   {
     goto LABEL_17;
   }
 
-  v5 = [v4 intValue];
+  intValue = [next intValue];
   v6 = self->val$docValues_;
   if (!v6)
   {
     goto LABEL_17;
   }
 
-  v6->length_ = v5;
+  v6->length_ = intValue;
   if (self->val$docValues_->length_ >= 1)
   {
     v7 = 0;
@@ -50,20 +50,20 @@
         break;
       }
 
-      v9 = [(JavaUtilIterator *)v8 next];
-      if (!v9)
+      next2 = [(JavaUtilIterator *)v8 next];
+      if (!next2)
       {
         break;
       }
 
-      v10 = [v9 longLongValue];
+      longLongValue = [next2 longLongValue];
       longs = self->val$docValues_->longs_;
       if (!longs)
       {
         break;
       }
 
-      v12 = v10;
+      v12 = longLongValue;
       size = longs->super.size_;
       if (v7 >= size)
       {

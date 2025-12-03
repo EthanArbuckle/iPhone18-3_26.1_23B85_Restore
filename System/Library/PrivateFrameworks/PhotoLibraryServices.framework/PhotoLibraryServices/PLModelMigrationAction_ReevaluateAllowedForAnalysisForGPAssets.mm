@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_ReevaluateAllowedForAnalysisForGPAssets
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ReevaluateAllowedForAnalysisForGPAssets
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v102[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -42,7 +42,7 @@
   v49[1] = 3221225472;
   v49[2] = __110__PLModelMigrationAction_ReevaluateAllowedForAnalysisForGPAssets_performActionWithManagedObjectContext_error___block_invoke;
   v49[3] = &unk_1E7575B30;
-  v15 = v6;
+  v15 = contextCopy;
   v50 = v15;
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
@@ -74,8 +74,8 @@
       goto LABEL_16;
     }
 
-    v21 = [(PLModelMigrationActionCore *)self logger];
-    v22 = v21 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v22 = logger == 0;
 
     if (!v22)
     {
@@ -112,9 +112,9 @@
       memset(buf, 0, sizeof(buf));
       v23 = PLMigrationGetLog();
       os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-      v24 = [v52[5] totalUnitCount];
+      totalUnitCount = [v52[5] totalUnitCount];
       v67 = 134217984;
-      v68 = v24;
+      v68 = totalUnitCount;
       LODWORD(v45) = 12;
       v25 = _os_log_send_and_compose_impl();
 
@@ -127,9 +127,9 @@
     v36 = PLMigrationGetLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v52[5] totalUnitCount];
+      totalUnitCount2 = [v52[5] totalUnitCount];
       *buf = 134217984;
-      *&buf[4] = v37;
+      *&buf[4] = totalUnitCount2;
       _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "Updated allowedForAnalysis for %lld GP assets", buf, 0xCu);
     }
 
@@ -147,8 +147,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v29 = [(PLModelMigrationActionCore *)self logger];
-  v30 = v29 == 0;
+  logger2 = [(PLModelMigrationActionCore *)self logger];
+  v30 = logger2 == 0;
 
   if (v30)
   {
@@ -223,10 +223,10 @@ LABEL_8:
 LABEL_16:
   v41 = v64[3];
   v42 = v58[5];
-  if (v41 != 1 && a4)
+  if (v41 != 1 && error)
   {
     v42 = v42;
-    *a4 = v42;
+    *error = v42;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

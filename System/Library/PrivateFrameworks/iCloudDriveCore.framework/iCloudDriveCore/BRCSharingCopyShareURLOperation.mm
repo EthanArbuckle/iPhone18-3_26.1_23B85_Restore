@@ -1,24 +1,24 @@
 @interface BRCSharingCopyShareURLOperation
-- (BRCSharingCopyShareURLOperation)initWithShare:(id)a3 zone:(id)a4 sessionContext:(id)a5;
+- (BRCSharingCopyShareURLOperation)initWithShare:(id)share zone:(id)zone sessionContext:(id)context;
 - (id)createActivity;
-- (void)_completedWithURL:(id)a3 error:(id)a4;
+- (void)_completedWithURL:(id)l error:(id)error;
 - (void)main;
 @end
 
 @implementation BRCSharingCopyShareURLOperation
 
-- (BRCSharingCopyShareURLOperation)initWithShare:(id)a3 zone:(id)a4 sessionContext:(id)a5
+- (BRCSharingCopyShareURLOperation)initWithShare:(id)share zone:(id)zone sessionContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 recordID];
-  v12 = [v11 recordName];
-  v13 = [@"sharing/copy-shareURL" stringByAppendingPathComponent:v12];
+  contextCopy = context;
+  zoneCopy = zone;
+  shareCopy = share;
+  recordID = [shareCopy recordID];
+  recordName = [recordID recordName];
+  v13 = [@"sharing/copy-shareURL" stringByAppendingPathComponent:recordName];
 
   v16.receiver = self;
   v16.super_class = BRCSharingCopyShareURLOperation;
-  v14 = [(BRCSharingModifyShareOperation *)&v16 initWithName:v13 zone:v9 share:v10 sessionContext:v8];
+  v14 = [(BRCSharingModifyShareOperation *)&v16 initWithName:v13 zone:zoneCopy share:shareCopy sessionContext:contextCopy];
 
   return v14;
 }
@@ -30,11 +30,11 @@
   return v2;
 }
 
-- (void)_completedWithURL:(id)a3 error:(id)a4
+- (void)_completedWithURL:(id)l error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  errorCopy = error;
   v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
   v9 = brc_bread_crumbs();
   v10 = brc_default_log();
@@ -42,19 +42,19 @@
   {
     share = self->super._share;
     v14 = 138413058;
-    v15 = v6;
+    v15 = lCopy;
     v16 = 2112;
     v17 = share;
     v18 = 2112;
-    v19 = v7;
+    v19 = errorCopy;
     v20 = 2112;
     v21 = v9;
     _os_log_debug_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] Finished copying URL %@ for share %@ error %@%@", &v14, 0x2Au);
   }
 
-  if (v6)
+  if (lCopy)
   {
-    [v8 setObject:v6 forKeyedSubscript:@"url"];
+    [v8 setObject:lCopy forKeyedSubscript:@"url"];
   }
 
   v11 = self->super._share;
@@ -63,7 +63,7 @@
     [v8 setObject:v11 forKeyedSubscript:@"share"];
   }
 
-  [(_BRCOperation *)self completedWithResult:v8 error:v7];
+  [(_BRCOperation *)self completedWithResult:v8 error:errorCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }

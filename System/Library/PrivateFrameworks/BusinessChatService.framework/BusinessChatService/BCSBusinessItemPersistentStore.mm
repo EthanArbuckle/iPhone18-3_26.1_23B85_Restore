@@ -1,15 +1,15 @@
 @interface BCSBusinessItemPersistentStore
-- (BCSPersistentBusinessItemObject)_executeFetchPersistentBusinessItemObjectSQLQuery:(void *)a1;
-- (BOOL)_executeDeleteBusinessItemSQLQuery:(void *)a1;
-- (BOOL)deleteBusinessItem:(id)a3;
-- (BOOL)deleteBusinessItemWithBizID:(id)a3;
-- (BOOL)deleteBusinessItemWithPhoneNumber:(id)a3;
-- (BOOL)insertOrReplaceBusinessItem:(id)a3 withTTL:(double)a4;
-- (BOOL)updateLastRetrievedDateForBusinessItem:(id)a3;
-- (BOOL)updateTTL:(double)a3 forBusinessItem:(id)a4;
+- (BCSPersistentBusinessItemObject)_executeFetchPersistentBusinessItemObjectSQLQuery:(void *)query;
+- (BOOL)_executeDeleteBusinessItemSQLQuery:(void *)query;
+- (BOOL)deleteBusinessItem:(id)item;
+- (BOOL)deleteBusinessItemWithBizID:(id)d;
+- (BOOL)deleteBusinessItemWithPhoneNumber:(id)number;
+- (BOOL)insertOrReplaceBusinessItem:(id)item withTTL:(double)l;
+- (BOOL)updateLastRetrievedDateForBusinessItem:(id)item;
+- (BOOL)updateTTL:(double)l forBusinessItem:(id)item;
 - (id)databasePath;
-- (id)fetchPersistentBusinessItemObjectWithBizID:(id)a3;
-- (id)fetchPersistentBusinessItemObjectWithPhoneNumber:(id)a3;
+- (id)fetchPersistentBusinessItemObjectWithBizID:(id)d;
+- (id)fetchPersistentBusinessItemObjectWithPhoneNumber:(id)number;
 @end
 
 @implementation BCSBusinessItemPersistentStore
@@ -21,10 +21,10 @@
     if (![_databasePath_databasePath_0 length])
     {
       v3 = +[BCSPathProvider sharedInstance];
-      v4 = [v3 documentsURL];
-      v5 = [v4 path];
+      documentsURL = [v3 documentsURL];
+      path = [documentsURL path];
 
-      v6 = [v5 stringByAppendingPathComponent:@"business_items.db"];
+      v6 = [path stringByAppendingPathComponent:@"business_items.db"];
       v7 = _databasePath_databasePath_0;
       _databasePath_databasePath_0 = v6;
     }
@@ -36,7 +36,7 @@
   return self;
 }
 
-- (BOOL)insertOrReplaceBusinessItem:(id)a3 withTTL:(double)a4
+- (BOOL)insertOrReplaceBusinessItem:(id)item withTTL:(double)l
 {
   v54 = *MEMORY[0x277D85DE8];
   if (!self)
@@ -45,27 +45,27 @@
     goto LABEL_9;
   }
 
-  v6 = a3;
+  itemCopy = item;
   [(BCSPersistentStore *)self beginBatch];
-  [(BCSBusinessItemPersistentStore *)self deleteBusinessItem:v6];
-  v7 = v6;
+  [(BCSBusinessItemPersistentStore *)self deleteBusinessItem:itemCopy];
+  v7 = itemCopy;
   [(BCSPersistentStore *)self beginBatch];
   ppStmt = 0;
   v8 = MEMORY[0x277CCAAB0];
-  v9 = [v7 messagingOpenHours];
-  v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+  messagingOpenHours = [v7 messagingOpenHours];
+  v10 = [v8 archivedDataWithRootObject:messagingOpenHours requiringSecureCoding:1 error:0];
 
   v11 = MEMORY[0x277CCAAB0];
-  v12 = [v7 callingOpenHours];
-  v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
+  callingOpenHours = [v7 callingOpenHours];
+  v13 = [v11 archivedDataWithRootObject:callingOpenHours requiringSecureCoding:1 error:0];
 
   v14 = MEMORY[0x277CCAAB0];
-  v15 = [v7 callToActions];
-  v16 = [v14 archivedDataWithRootObject:v15 requiringSecureCoding:1 error:0];
+  callToActions = [v7 callToActions];
+  v16 = [v14 archivedDataWithRootObject:callToActions requiringSecureCoding:1 error:0];
 
   v17 = MEMORY[0x277CCAAB0];
-  v18 = [v7 visibilityItems];
-  v19 = [v17 archivedDataWithRootObject:v18 requiringSecureCoding:1 error:0];
+  visibilityItems = [v7 visibilityItems];
+  v19 = [v17 archivedDataWithRootObject:visibilityItems requiringSecureCoding:1 error:0];
 
   if (sqlite3_prepare_v2(-[BCSPersistentStore openedDatabase](self, "openedDatabase"), [@""insert into business_items (biz_id phone_number], -1, &ppStmt, 0)
   {
@@ -73,28 +73,28 @@
   }
 
   v20 = ppStmt;
-  v21 = [v7 bizID];
+  bizID = [v7 bizID];
   v22 = 1;
-  sqlite3_bind_text(v20, 1, [v21 UTF8String], -1, 0);
+  sqlite3_bind_text(v20, 1, [bizID UTF8String], -1, 0);
 
   v23 = ppStmt;
-  v24 = [v7 phoneNumber];
-  sqlite3_bind_text(v23, 2, [v24 UTF8String], -1, 0);
+  phoneNumber = [v7 phoneNumber];
+  sqlite3_bind_text(v23, 2, [phoneNumber UTF8String], -1, 0);
 
   v25 = ppStmt;
-  v26 = [v7 name];
-  sqlite3_bind_text(v25, 3, [v26 UTF8String], -1, 0);
+  name = [v7 name];
+  sqlite3_bind_text(v25, 3, [name UTF8String], -1, 0);
 
   sqlite3_bind_int64(ppStmt, 4, [v7 phoneHash]);
   v27 = ppStmt;
-  v28 = [v7 squareLogoURL];
-  v29 = [v28 absoluteString];
-  sqlite3_bind_text(v27, 5, [v29 UTF8String], -1, 0);
+  squareLogoURL = [v7 squareLogoURL];
+  absoluteString = [squareLogoURL absoluteString];
+  sqlite3_bind_text(v27, 5, [absoluteString UTF8String], -1, 0);
 
   v30 = ppStmt;
-  v31 = [v7 wideLogoURL];
-  v32 = [v31 absoluteString];
-  sqlite3_bind_text(v30, 6, [v32 UTF8String], -1, 0);
+  wideLogoURL = [v7 wideLogoURL];
+  absoluteString2 = [wideLogoURL absoluteString];
+  sqlite3_bind_text(v30, 6, [absoluteString2 UTF8String], -1, 0);
 
   sqlite3_bind_int(ppStmt, 7, [v7 tintColor]);
   sqlite3_bind_int(ppStmt, 8, [v7 backgroundColor]);
@@ -103,23 +103,23 @@
   sqlite3_bind_blob(ppStmt, 11, [v10 bytes], objc_msgSend(v10, "length"), 0xFFFFFFFFFFFFFFFFLL);
   sqlite3_bind_blob(ppStmt, 12, [v13 bytes], objc_msgSend(v13, "length"), 0xFFFFFFFFFFFFFFFFLL);
   v33 = ppStmt;
-  v34 = [MEMORY[0x277CBEAA8] date];
-  [v34 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   sqlite3_bind_int(v33, 13, v35);
 
   v36 = ppStmt;
-  v37 = [MEMORY[0x277CBEAA8] date];
-  v38 = [v37 dateByAddingTimeInterval:a4];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v38 = [date2 dateByAddingTimeInterval:l];
   [v38 timeIntervalSince1970];
   sqlite3_bind_double(v36, 14, v39);
 
   v40 = ppStmt;
-  v41 = [v7 intentID];
-  sqlite3_bind_text(v40, 15, [v41 UTF8String], -1, 0);
+  intentID = [v7 intentID];
+  sqlite3_bind_text(v40, 15, [intentID UTF8String], -1, 0);
 
   v42 = ppStmt;
-  v43 = [v7 groupID];
-  sqlite3_bind_text(v42, 16, [v43 UTF8String], -1, 0);
+  groupID = [v7 groupID];
+  sqlite3_bind_text(v42, 16, [groupID UTF8String], -1, 0);
 
   sqlite3_bind_blob(ppStmt, 17, [v19 bytes], objc_msgSend(v19, "length"), 0xFFFFFFFFFFFFFFFFLL);
   v44 = sqlite3_step(ppStmt);
@@ -149,43 +149,43 @@ LABEL_9:
   return v22;
 }
 
-- (BOOL)updateTTL:(double)a3 forBusinessItem:(id)a4
+- (BOOL)updateTTL:(double)l forBusinessItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   [(BCSPersistentStore *)self beginBatch];
   ppStmt = 0;
   v7 = MEMORY[0x277CCACA8];
-  v21 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v21 dateByAddingTimeInterval:a3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [date dateByAddingTimeInterval:l];
   [v8 timeIntervalSince1970];
   v10 = v9;
-  v11 = [v6 bizID];
-  v12 = [v11 length];
-  v22 = self;
+  bizID = [itemCopy bizID];
+  v12 = [bizID length];
+  selfCopy = self;
   if (v12)
   {
-    v13 = [v6 bizID];
+    bizID2 = [itemCopy bizID];
   }
 
   else
   {
-    v13 = &stru_28544C2A0;
+    bizID2 = &stru_28544C2A0;
   }
 
-  v14 = [v6 phoneNumber];
-  v15 = [v14 length];
+  phoneNumber = [itemCopy phoneNumber];
+  v15 = [phoneNumber length];
   if (v15)
   {
-    v16 = [v6 phoneNumber];
+    phoneNumber2 = [itemCopy phoneNumber];
   }
 
   else
   {
-    v16 = &stru_28544C2A0;
+    phoneNumber2 = &stru_28544C2A0;
   }
 
-  v17 = [v7 stringWithFormat:@"UPDATE business_items SET time_to_live_date = %u WHERE biz_id = %@ OR phone_number = %@", v10, v13, v16];
-  v18 = [v17 UTF8String];
+  v17 = [v7 stringWithFormat:@"UPDATE business_items SET time_to_live_date = %u WHERE biz_id = %@ OR phone_number = %@", v10, bizID2, phoneNumber2];
+  uTF8String = [v17 UTF8String];
 
   if (v15)
   {
@@ -195,7 +195,7 @@ LABEL_9:
   {
   }
 
-  if (sqlite3_prepare_v2([(BCSPersistentStore *)v22 openedDatabase], v18, -1, &ppStmt, 0) || sqlite3_step(ppStmt) != 101)
+  if (sqlite3_prepare_v2([(BCSPersistentStore *)selfCopy openedDatabase], uTF8String, -1, &ppStmt, 0) || sqlite3_step(ppStmt) != 101)
   {
     v19 = 0;
   }
@@ -206,64 +206,64 @@ LABEL_9:
     v19 = 1;
   }
 
-  [(BCSPersistentStore *)v22 endBatch];
+  [(BCSPersistentStore *)selfCopy endBatch];
 
   return v19;
 }
 
-- (BOOL)updateLastRetrievedDateForBusinessItem:(id)a3
+- (BOOL)updateLastRetrievedDateForBusinessItem:(id)item
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = v5;
+  itemCopy = item;
+  date = [v4 date];
+  v7 = itemCopy;
   if (self)
   {
-    v8 = v6;
+    v8 = date;
     [(BCSPersistentStore *)self beginBatch];
     ppStmt = 0;
     v9 = MEMORY[0x277CCACA8];
     [v8 timeIntervalSince1970];
     v11 = v10;
 
-    v12 = [v7 bizID];
-    v13 = [v12 length];
-    v22 = v6;
+    bizID = [v7 bizID];
+    v13 = [bizID length];
+    v22 = date;
     if (v13)
     {
-      v14 = [v7 bizID];
+      bizID2 = [v7 bizID];
     }
 
     else
     {
-      v14 = &stru_28544C2A0;
+      bizID2 = &stru_28544C2A0;
     }
 
-    v15 = [v7 phoneNumber];
-    v16 = [v15 length];
+    phoneNumber = [v7 phoneNumber];
+    v16 = [phoneNumber length];
     if (v16)
     {
-      v17 = [v7 phoneNumber];
+      phoneNumber2 = [v7 phoneNumber];
     }
 
     else
     {
-      v17 = &stru_28544C2A0;
+      phoneNumber2 = &stru_28544C2A0;
     }
 
-    v18 = [v9 stringWithFormat:@"UPDATE business_items SET last_retrieved_date = %u WHERE biz_id = %@ OR phone_number = %@", v11, v14, v17];
-    v19 = [v18 UTF8String];
+    v18 = [v9 stringWithFormat:@"UPDATE business_items SET last_retrieved_date = %u WHERE biz_id = %@ OR phone_number = %@", v11, bizID2, phoneNumber2];
+    uTF8String = [v18 UTF8String];
 
     if (v16)
     {
     }
 
-    v6 = v22;
+    date = v22;
     if (v13)
     {
     }
 
-    if (sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], v19, -1, &ppStmt, 0) || sqlite3_step(ppStmt) != 101)
+    if (sqlite3_prepare_v2([(BCSPersistentStore *)self openedDatabase], uTF8String, -1, &ppStmt, 0) || sqlite3_step(ppStmt) != 101)
     {
       v20 = 0;
     }
@@ -285,22 +285,22 @@ LABEL_9:
   return v20;
 }
 
-- (id)fetchPersistentBusinessItemObjectWithBizID:(id)a3
+- (id)fetchPersistentBusinessItemObjectWithBizID:(id)d
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"select * from business_items where biz_id=%@", a3];
-  v5 = [v4 UTF8String];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"select * from business_items where biz_id=%@", d];
+  uTF8String = [v4 UTF8String];
 
-  return [(BCSBusinessItemPersistentStore *)self _executeFetchPersistentBusinessItemObjectSQLQuery:v5];
+  return [(BCSBusinessItemPersistentStore *)self _executeFetchPersistentBusinessItemObjectSQLQuery:uTF8String];
 }
 
-- (BCSPersistentBusinessItemObject)_executeFetchPersistentBusinessItemObjectSQLQuery:(void *)a1
+- (BCSPersistentBusinessItemObject)_executeFetchPersistentBusinessItemObjectSQLQuery:(void *)query
 {
   v94 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (query)
   {
-    [a1 beginBatch];
+    [query beginBatch];
     ppStmt = 0;
-    if (sqlite3_prepare_v2([a1 openedDatabase], a2, -1, &ppStmt, 0) || sqlite3_step(ppStmt) != 100)
+    if (sqlite3_prepare_v2([query openedDatabase], a2, -1, &ppStmt, 0) || sqlite3_step(ppStmt) != 100)
     {
       v5 = 0;
     }
@@ -412,7 +412,7 @@ LABEL_9:
         v28 = ABSLogCommon();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          v59 = sqlite3_errmsg([a1 openedDatabase]);
+          v59 = sqlite3_errmsg([query openedDatabase]);
           *buf = 134218242;
           v91 = v27;
           v92 = 2080;
@@ -439,7 +439,7 @@ LABEL_9:
         v37 = ABSLogCommon();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
-          v60 = sqlite3_errmsg([a1 openedDatabase]);
+          v60 = sqlite3_errmsg([query openedDatabase]);
           *buf = 134218242;
           v91 = v36;
           v92 = 2080;
@@ -465,7 +465,7 @@ LABEL_9:
         v47 = ABSLogCommon();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
         {
-          v61 = sqlite3_errmsg([a1 openedDatabase]);
+          v61 = sqlite3_errmsg([query openedDatabase]);
           *buf = 134218242;
           v91 = v46;
           v92 = 2080;
@@ -493,7 +493,7 @@ LABEL_9:
         v57 = ABSLogCommon();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
         {
-          v62 = sqlite3_errmsg([a1 openedDatabase]);
+          v62 = sqlite3_errmsg([query openedDatabase]);
           *buf = 134218242;
           v91 = v56;
           v92 = 2080;
@@ -508,7 +508,7 @@ LABEL_9:
       v5 = [[BCSPersistentBusinessItemObject alloc] initWithBusinessItem:v58 lastRetrievedDate:v78 TTLDate:v77];
     }
 
-    [a1 endBatch];
+    [query endBatch];
   }
 
   else
@@ -521,46 +521,46 @@ LABEL_9:
   return v5;
 }
 
-- (id)fetchPersistentBusinessItemObjectWithPhoneNumber:(id)a3
+- (id)fetchPersistentBusinessItemObjectWithPhoneNumber:(id)number
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"select * from business_items where phone_number=%@", a3];
-  v5 = [v4 UTF8String];
+  number = [MEMORY[0x277CCACA8] stringWithFormat:@"select * from business_items where phone_number=%@", number];
+  uTF8String = [number UTF8String];
 
-  return [(BCSBusinessItemPersistentStore *)self _executeFetchPersistentBusinessItemObjectSQLQuery:v5];
+  return [(BCSBusinessItemPersistentStore *)self _executeFetchPersistentBusinessItemObjectSQLQuery:uTF8String];
 }
 
-- (BOOL)deleteBusinessItem:(id)a3
+- (BOOL)deleteBusinessItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(BCSPersistentStore *)self beginBatch];
-  v5 = [v4 bizID];
-  v6 = [(BCSBusinessItemPersistentStore *)self deleteBusinessItemWithBizID:v5];
+  bizID = [itemCopy bizID];
+  v6 = [(BCSBusinessItemPersistentStore *)self deleteBusinessItemWithBizID:bizID];
 
-  v7 = [v4 phoneNumber];
+  phoneNumber = [itemCopy phoneNumber];
 
-  LOBYTE(v4) = [(BCSBusinessItemPersistentStore *)self deleteBusinessItemWithPhoneNumber:v7];
+  LOBYTE(itemCopy) = [(BCSBusinessItemPersistentStore *)self deleteBusinessItemWithPhoneNumber:phoneNumber];
   [(BCSPersistentStore *)self endBatch];
-  return (v6 | v4) & 1;
+  return (v6 | itemCopy) & 1;
 }
 
-- (BOOL)deleteBusinessItemWithBizID:(id)a3
+- (BOOL)deleteBusinessItemWithBizID:(id)d
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"delete from business_items where biz_id=%@", a3];
-  v5 = [v4 UTF8String];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"delete from business_items where biz_id=%@", d];
+  uTF8String = [v4 UTF8String];
 
-  return [(BCSBusinessItemPersistentStore *)self _executeDeleteBusinessItemSQLQuery:v5];
+  return [(BCSBusinessItemPersistentStore *)self _executeDeleteBusinessItemSQLQuery:uTF8String];
 }
 
-- (BOOL)_executeDeleteBusinessItemSQLQuery:(void *)a1
+- (BOOL)_executeDeleteBusinessItemSQLQuery:(void *)query
 {
-  if (!a1)
+  if (!query)
   {
     return 0;
   }
 
-  [a1 beginBatch];
+  [query beginBatch];
   ppStmt = 0;
-  if (sqlite3_prepare_v2([a1 openedDatabase], a2, -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2([query openedDatabase], a2, -1, &ppStmt, 0))
   {
     v4 = 0;
   }
@@ -570,16 +570,16 @@ LABEL_9:
     v4 = sqlite3_step(ppStmt) == 101;
   }
 
-  [a1 endBatch];
+  [query endBatch];
   return v4;
 }
 
-- (BOOL)deleteBusinessItemWithPhoneNumber:(id)a3
+- (BOOL)deleteBusinessItemWithPhoneNumber:(id)number
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"delete from business_items where phone_number=%@", a3];
-  v5 = [v4 UTF8String];
+  number = [MEMORY[0x277CCACA8] stringWithFormat:@"delete from business_items where phone_number=%@", number];
+  uTF8String = [number UTF8String];
 
-  return [(BCSBusinessItemPersistentStore *)self _executeDeleteBusinessItemSQLQuery:v5];
+  return [(BCSBusinessItemPersistentStore *)self _executeDeleteBusinessItemSQLQuery:uTF8String];
 }
 
 @end

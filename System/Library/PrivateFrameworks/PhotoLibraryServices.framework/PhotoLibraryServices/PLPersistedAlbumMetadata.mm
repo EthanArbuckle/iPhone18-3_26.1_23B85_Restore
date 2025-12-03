@@ -1,16 +1,16 @@
 @interface PLPersistedAlbumMetadata
-+ (BOOL)isValidPath:(id)a3;
++ (BOOL)isValidPath:(id)path;
 - (BOOL)_readMetadata;
 - (PLPersistedAlbumMetadata)init;
-- (PLPersistedAlbumMetadata)initWithPLGenericAlbum:(id)a3 pathManager:(id)a4;
-- (PLPersistedAlbumMetadata)initWithPersistedDataAtURL:(id)a3;
-- (PLPersistedAlbumMetadata)initWithTitle:(id)a3 uuid:(id)a4 cloudGUID:(id)a5 kind:(id)a6 assetUUIDs:(id)a7 persistedAlbumDataDirectory:(id)a8;
+- (PLPersistedAlbumMetadata)initWithPLGenericAlbum:(id)album pathManager:(id)manager;
+- (PLPersistedAlbumMetadata)initWithPersistedDataAtURL:(id)l;
+- (PLPersistedAlbumMetadata)initWithTitle:(id)title uuid:(id)uuid cloudGUID:(id)d kind:(id)kind assetUUIDs:(id)ds persistedAlbumDataDirectory:(id)directory;
 - (id)_fetchChildUUIDs;
 - (id)description;
-- (id)insertAlbumFromDataInManagedObjectContext:(id)a3;
+- (id)insertAlbumFromDataInManagedObjectContext:(id)context;
 - (void)_saveMetadata;
 - (void)removePersistedAlbumData;
-- (void)updateChildrenOrderingInAlbum:(id)a3 includePendingAssetChanges:(BOOL)a4;
+- (void)updateChildrenOrderingInAlbum:(id)album includePendingAssetChanges:(BOOL)changes;
 @end
 
 @implementation PLPersistedAlbumMetadata
@@ -33,71 +33,71 @@
       genericAlbum = self;
     }
 
-    v9 = [genericAlbum title];
-    if (v9)
+    title = [genericAlbum title];
+    if (title)
     {
-      [v7 encodeObject:v9 forKey:@"title"];
+      [v7 encodeObject:title forKey:@"title"];
     }
 
     if (self->_genericAlbum)
     {
-      v10 = self->_genericAlbum;
+      selfCopy = self->_genericAlbum;
     }
 
     else
     {
-      v10 = self;
+      selfCopy = self;
     }
 
-    v11 = [v10 kind];
-    if (v11)
+    kind = [selfCopy kind];
+    if (kind)
     {
-      [v7 encodeObject:v11 forKey:@"kind"];
+      [v7 encodeObject:kind forKey:@"kind"];
     }
 
     if (self->_genericAlbum)
     {
-      v12 = self->_genericAlbum;
+      selfCopy2 = self->_genericAlbum;
     }
 
     else
     {
-      v12 = self;
+      selfCopy2 = self;
     }
 
-    v13 = [v12 uuid];
-    if (v13)
+    uuid = [selfCopy2 uuid];
+    if (uuid)
     {
-      [v7 encodeObject:v13 forKey:@"uuid"];
+      [v7 encodeObject:uuid forKey:@"uuid"];
     }
 
     if (self->_genericAlbum)
     {
-      v14 = self->_genericAlbum;
+      selfCopy3 = self->_genericAlbum;
     }
 
     else
     {
-      v14 = self;
+      selfCopy3 = self;
     }
 
-    v15 = [v14 cloudGUID];
-    if (v15)
+    cloudGUID = [selfCopy3 cloudGUID];
+    if (cloudGUID)
     {
-      [v7 encodeObject:v15 forKey:@"cloudGUID"];
+      [v7 encodeObject:cloudGUID forKey:@"cloudGUID"];
     }
 
     if (self->_genericAlbum)
     {
-      v16 = self->_genericAlbum;
+      selfCopy4 = self->_genericAlbum;
     }
 
     else
     {
-      v16 = self;
+      selfCopy4 = self;
     }
 
-    v17 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v16, "isPinned")}];
+    v17 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(selfCopy4, "isPinned")}];
     if (v17)
     {
       [v7 encodeObject:v17 forKey:@"isPinned"];
@@ -106,15 +106,15 @@
     v82 = v17;
     if (self->_genericAlbum)
     {
-      v18 = self->_genericAlbum;
+      selfCopy5 = self->_genericAlbum;
     }
 
     else
     {
-      v18 = self;
+      selfCopy5 = self;
     }
 
-    v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v18, "isPrototype")}];
+    v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(selfCopy5, "isPrototype")}];
     if (v19)
     {
       [v7 encodeObject:v19 forKey:@"isPrototype"];
@@ -123,15 +123,15 @@
     v81 = v19;
     if (self->_genericAlbum)
     {
-      v20 = self->_genericAlbum;
+      selfCopy6 = self->_genericAlbum;
     }
 
     else
     {
-      v20 = self;
+      selfCopy6 = self;
     }
 
-    v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v20, "isInTrash")}];
+    v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(selfCopy6, "isInTrash")}];
     if (v21)
     {
       [v7 encodeObject:v21 forKey:@"isInTrash"];
@@ -140,15 +140,15 @@
     v80 = v21;
     if (self->_genericAlbum)
     {
-      v22 = self->_genericAlbum;
+      selfCopy7 = self->_genericAlbum;
     }
 
     else
     {
-      v22 = self;
+      selfCopy7 = self;
     }
 
-    v23 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v22, "customSortAscending")}];
+    v23 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(selfCopy7, "customSortAscending")}];
     if (v23)
     {
       [v7 encodeObject:v23 forKey:@"customSortAscending"];
@@ -157,15 +157,15 @@
     v79 = v23;
     if (self->_genericAlbum)
     {
-      v24 = self->_genericAlbum;
+      selfCopy8 = self->_genericAlbum;
     }
 
     else
     {
-      v24 = self;
+      selfCopy8 = self;
     }
 
-    v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v24, "customSortKey")}];
+    v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(selfCopy8, "customSortKey")}];
     if (v25)
     {
       [v7 encodeObject:v25 forKey:@"customSortKey"];
@@ -174,89 +174,89 @@
     v26 = self->_genericAlbum;
     if (v26)
     {
-      v27 = [(PLGenericAlbum *)v26 customKeyAsset];
-      v28 = [v27 uuid];
+      customKeyAsset = [(PLGenericAlbum *)v26 customKeyAsset];
+      uuid2 = [customKeyAsset uuid];
 
-      v29 = v28;
-      if (!v28)
+      customKeyAssetUUID = uuid2;
+      if (!uuid2)
       {
 LABEL_51:
         if (self->_genericAlbum)
         {
-          v30 = self->_genericAlbum;
+          selfCopy9 = self->_genericAlbum;
         }
 
         else
         {
-          v30 = self;
+          selfCopy9 = self;
         }
 
-        v31 = [v30 lastModifiedDate];
-        if (v31)
+        lastModifiedDate = [selfCopy9 lastModifiedDate];
+        if (lastModifiedDate)
         {
-          [v7 encodeObject:v31 forKey:@"lastModifiedDate"];
+          [v7 encodeObject:lastModifiedDate forKey:@"lastModifiedDate"];
         }
 
         if (self->_genericAlbum)
         {
-          v32 = self->_genericAlbum;
+          selfCopy10 = self->_genericAlbum;
         }
 
         else
         {
-          v32 = self;
+          selfCopy10 = self;
         }
 
-        v33 = [v32 importSessionID];
-        if (v33)
+        importSessionID = [selfCopy10 importSessionID];
+        if (importSessionID)
         {
-          [v7 encodeObject:v33 forKey:@"importSessionID"];
+          [v7 encodeObject:importSessionID forKey:@"importSessionID"];
         }
 
-        v75 = v33;
-        v77 = v29;
+        v75 = importSessionID;
+        v77 = customKeyAssetUUID;
         if (self->_genericAlbum)
         {
-          v34 = self->_genericAlbum;
+          selfCopy11 = self->_genericAlbum;
         }
 
         else
         {
-          v34 = self;
+          selfCopy11 = self;
         }
 
-        v35 = [v34 importedByBundleIdentifier];
-        if (v35)
+        importedByBundleIdentifier = [selfCopy11 importedByBundleIdentifier];
+        if (importedByBundleIdentifier)
         {
-          [v7 encodeObject:v35 forKey:@"importedByBundleIdentifier"];
+          [v7 encodeObject:importedByBundleIdentifier forKey:@"importedByBundleIdentifier"];
         }
 
         v36 = self->_genericAlbum;
         v78 = v25;
-        v76 = v31;
+        v76 = lastModifiedDate;
         if (!v36)
         {
           goto LABEL_83;
         }
 
-        v37 = [(PLGenericAlbum *)v36 userQueryData];
+        userQueryData = [(PLGenericAlbum *)v36 userQueryData];
 
         v38 = self->_genericAlbum;
-        if (v37)
+        if (userQueryData)
         {
-          v39 = [(PLGenericAlbum *)v38 userQueryData];
-          [v7 encodeObject:v39 forKey:@"userQueryData"];
+          userQueryData2 = [(PLGenericAlbum *)v38 userQueryData];
+          [v7 encodeObject:userQueryData2 forKey:@"userQueryData"];
 
 LABEL_89:
           v62 = MEMORY[0x1E69BF230];
-          v63 = [v7 encodedData];
-          v64 = [(PLPersistedAlbumMetadata *)self metadataURL];
-          [v62 persistMetadata:v63 fileURL:v64];
+          encodedData = [v7 encodedData];
+          metadataURL = [(PLPersistedAlbumMetadata *)self metadataURL];
+          [v62 persistMetadata:encodedData fileURL:metadataURL];
 
           v65 = MEMORY[0x1E69BF238];
-          v66 = [(PLPersistedAlbumMetadata *)self metadataURL];
-          v67 = [v66 path];
-          [v65 changeFileOwnerToMobileAtPath:v67 error:0];
+          metadataURL2 = [(PLPersistedAlbumMetadata *)self metadataURL];
+          path = [metadataURL2 path];
+          [v65 changeFileOwnerToMobileAtPath:path error:0];
 
           objc_autoreleasePoolPop(context);
           return;
@@ -264,19 +264,19 @@ LABEL_89:
 
         if (v38)
         {
-          v40 = [(PLPersistedAlbumMetadata *)self _fetchChildUUIDs];
-          if (!v40)
+          _fetchChildUUIDs = [(PLPersistedAlbumMetadata *)self _fetchChildUUIDs];
+          if (!_fetchChildUUIDs)
           {
             goto LABEL_89;
           }
 
-          v41 = v40;
+          v41 = _fetchChildUUIDs;
           v69 = v7;
-          v70 = v15;
-          v72 = v11;
-          v74 = v35;
-          v68 = v9;
-          v42 = [v40 count];
+          v70 = cloudGUID;
+          v72 = kind;
+          v74 = importedByBundleIdentifier;
+          v68 = title;
+          v42 = [_fetchChildUUIDs count];
           v43 = malloc_type_malloc(16 * v42, 0xCC167836uLL);
           v84 = 0u;
           v85 = 0u;
@@ -316,11 +316,11 @@ LABEL_89:
 
           if (v42 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v9 = v68;
+            title = v68;
             v7 = v69;
-            v11 = v72;
-            v15 = v70;
-            v35 = v74;
+            kind = v72;
+            cloudGUID = v70;
+            importedByBundleIdentifier = v74;
             if (v43)
             {
               free(v43);
@@ -329,17 +329,17 @@ LABEL_89:
             goto LABEL_89;
           }
 
-          v9 = v68;
-          v11 = v72;
-          v15 = v70;
+          title = v68;
+          kind = v72;
+          cloudGUID = v70;
         }
 
         else
         {
 LABEL_83:
-          v74 = v35;
-          v52 = [(PLPersistedAlbumMetadata *)self assetUUIDs];
-          v42 = [v52 count];
+          v74 = importedByBundleIdentifier;
+          assetUUIDs = [(PLPersistedAlbumMetadata *)self assetUUIDs];
+          v42 = [assetUUIDs count];
 
           v53 = malloc_type_malloc(16 * v42, 0x7ED28B99uLL);
           v43 = v53;
@@ -349,22 +349,22 @@ LABEL_88:
             v61 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v43 length:16 * v42 freeWhenDone:1];
             [v7 encodeObject:v61 forKey:@"assetUUIDs"];
 
-            v35 = v74;
+            importedByBundleIdentifier = v74;
             goto LABEL_89;
           }
 
           v69 = v7;
-          v71 = v15;
-          v73 = v11;
-          v54 = v9;
+          v71 = cloudGUID;
+          v73 = kind;
+          v54 = title;
           v55 = 0;
           v56 = v53;
           v57 = v53;
           do
           {
             v58 = MEMORY[0x1E69BF320];
-            v59 = [(PLPersistedAlbumMetadata *)self assetUUIDs];
-            v60 = [v59 objectAtIndex:v55];
+            assetUUIDs2 = [(PLPersistedAlbumMetadata *)self assetUUIDs];
+            v60 = [assetUUIDs2 objectAtIndex:v55];
             [v58 parseUUIDString:v60 uuidBuffer:v57];
 
             ++v55;
@@ -372,9 +372,9 @@ LABEL_88:
           }
 
           while (v42 != v55);
-          v9 = v54;
-          v11 = v73;
-          v15 = v71;
+          title = v54;
+          kind = v73;
+          cloudGUID = v71;
           v43 = v56;
         }
 
@@ -385,14 +385,14 @@ LABEL_88:
 
     else
     {
-      v29 = [(PLPersistedAlbumMetadata *)self customKeyAssetUUID];
-      if (!v29)
+      customKeyAssetUUID = [(PLPersistedAlbumMetadata *)self customKeyAssetUUID];
+      if (!customKeyAssetUUID)
       {
         goto LABEL_51;
       }
     }
 
-    [v7 encodeObject:v29 forKey:@"customKeyAssetUUID"];
+    [v7 encodeObject:customKeyAssetUUID forKey:@"customKeyAssetUUID"];
     goto LABEL_51;
   }
 }
@@ -400,27 +400,27 @@ LABEL_88:
 - (id)_fetchChildUUIDs
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PLGenericAlbum *)self->_genericAlbum managedObjectContext];
+  managedObjectContext = [(PLGenericAlbum *)self->_genericAlbum managedObjectContext];
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLManagedAsset entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
 
   v8 = MEMORY[0x1E695D5B8];
   v9 = +[PLManagedAlbum entityName];
-  v10 = [v8 entityForName:v9 inManagedObjectContext:v4];
+  v10 = [v8 entityForName:v9 inManagedObjectContext:managedObjectContext];
 
   v11 = MEMORY[0x1E695D5B8];
   v12 = +[PLImportSession entityName];
-  v13 = [v11 entityForName:v12 inManagedObjectContext:v4];
+  v13 = [v11 entityForName:v12 inManagedObjectContext:managedObjectContext];
 
-  v14 = [(PLGenericAlbum *)self->_genericAlbum entity];
-  v15 = [v14 isKindOfEntity:v10];
+  entity = [(PLGenericAlbum *)self->_genericAlbum entity];
+  v15 = [entity isKindOfEntity:v10];
 
   if (v15)
   {
     v16 = MEMORY[0x1E696AE18];
-    v17 = [(PLGenericAlbum *)self->_genericAlbum objectID];
-    v18 = [v16 predicateWithFormat:@"%K CONTAINS %@", @"albums", v17];
+    objectID = [(PLGenericAlbum *)self->_genericAlbum objectID];
+    v18 = [v16 predicateWithFormat:@"%K CONTAINS %@", @"albums", objectID];
     [v7 setPredicate:v18];
 
     v19 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"albums" ascending:1];
@@ -431,22 +431,22 @@ LABEL_88:
 
   else
   {
-    v21 = [(PLGenericAlbum *)self->_genericAlbum entity];
-    v22 = [v21 isKindOfEntity:v13];
+    entity2 = [(PLGenericAlbum *)self->_genericAlbum entity];
+    v22 = [entity2 isKindOfEntity:v13];
 
     if (v22)
     {
       v23 = MEMORY[0x1E696AE18];
-      v24 = [(PLGenericAlbum *)self->_genericAlbum objectID];
-      v25 = [v23 predicateWithFormat:@"%K == %@", @"importSession", v24];
+      objectID2 = [(PLGenericAlbum *)self->_genericAlbum objectID];
+      v25 = [v23 predicateWithFormat:@"%K == %@", @"importSession", objectID2];
       [v7 setPredicate:v25];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      v26 = [(PLGenericAlbum *)self->_genericAlbum entity];
-      [v24 handleFailureInMethod:a2 object:self file:@"PLPersistedAlbumMetadata.m" lineNumber:433 description:{@"Unsupported entity type: %@", v26}];
+      objectID2 = [MEMORY[0x1E696AAA8] currentHandler];
+      entity3 = [(PLGenericAlbum *)self->_genericAlbum entity];
+      [objectID2 handleFailureInMethod:a2 object:self file:@"PLPersistedAlbumMetadata.m" lineNumber:433 description:{@"Unsupported entity type: %@", entity3}];
     }
   }
 
@@ -456,9 +456,9 @@ LABEL_88:
   [v7 setPropertiesToFetch:v27];
 
   [v7 setAllocationType:2];
-  v28 = [(PLGenericAlbum *)self->_genericAlbum managedObjectContext];
+  managedObjectContext2 = [(PLGenericAlbum *)self->_genericAlbum managedObjectContext];
   v35 = 0;
-  v29 = [v28 executeFetchRequest:v7 error:&v35];
+  v29 = [managedObjectContext2 executeFetchRequest:v7 error:&v35];
   v30 = v35;
 
   if (v29)
@@ -471,9 +471,9 @@ LABEL_88:
     v32 = PLBackendGetLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v33 = [(PLGenericAlbum *)self->_genericAlbum objectID];
+      objectID3 = [(PLGenericAlbum *)self->_genericAlbum objectID];
       *buf = 138543618;
-      v37 = v33;
+      v37 = objectID3;
       v38 = 2112;
       v39 = v30;
       _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "Failed to fetch uuids in album ID: %{public}@, error: %@", buf, 0x16u);
@@ -489,8 +489,8 @@ LABEL_88:
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DEF0];
-  v4 = [(PLPersistedAlbumMetadata *)self metadataURL];
-  v5 = [v3 dataWithContentsOfURL:v4];
+  metadataURL = [(PLPersistedAlbumMetadata *)self metadataURL];
+  v5 = [v3 dataWithContentsOfURL:metadataURL];
 
   if (v5)
   {
@@ -539,9 +539,9 @@ LABEL_88:
 
       v21 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"userQueryData"];
       [(PLPersistedAlbumMetadata *)self setUserQueryData:v21];
-      v22 = [(PLPersistedAlbumMetadata *)self userQueryData];
+      userQueryData = [(PLPersistedAlbumMetadata *)self userQueryData];
 
-      if (!v22)
+      if (!userQueryData)
       {
         v23 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"assetUUIDs"];
         v24 = [v23 length];
@@ -549,10 +549,10 @@ LABEL_88:
         v26 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:v24 >> 4];
         [(PLPersistedAlbumMetadata *)self setAssetUUIDs:v26];
 
-        v27 = [v23 bytes];
+        bytes = [v23 bytes];
         if (v24 >= 0x10)
         {
-          v28 = v27;
+          v28 = bytes;
           v29 = 0;
           v30 = 1;
           do
@@ -583,161 +583,161 @@ LABEL_88:
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_genericAlbum)
   {
     self = self->_genericAlbum;
   }
 
-  v37 = [(PLPersistedAlbumMetadata *)self title];
-  if (v2->_genericAlbum)
+  title = [(PLPersistedAlbumMetadata *)self title];
+  if (selfCopy->_genericAlbum)
   {
-    genericAlbum = v2->_genericAlbum;
+    genericAlbum = selfCopy->_genericAlbum;
   }
 
   else
   {
-    genericAlbum = v2;
+    genericAlbum = selfCopy;
   }
 
-  v38 = [genericAlbum kind];
-  if (v2->_genericAlbum)
+  kind = [genericAlbum kind];
+  if (selfCopy->_genericAlbum)
   {
-    v4 = v2->_genericAlbum;
-  }
-
-  else
-  {
-    v4 = v2;
-  }
-
-  v5 = [v4 uuid];
-  if (v2->_genericAlbum)
-  {
-    v6 = v2->_genericAlbum;
+    v4 = selfCopy->_genericAlbum;
   }
 
   else
   {
-    v6 = v2;
+    v4 = selfCopy;
   }
 
-  v7 = [v6 cloudGUID];
-  if (v2->_genericAlbum)
+  uuid = [v4 uuid];
+  if (selfCopy->_genericAlbum)
   {
-    v8 = v2->_genericAlbum;
-  }
-
-  else
-  {
-    v8 = v2;
-  }
-
-  v34 = [v8 isPinned];
-  if (v2->_genericAlbum)
-  {
-    v9 = v2->_genericAlbum;
+    v6 = selfCopy->_genericAlbum;
   }
 
   else
   {
-    v9 = v2;
+    v6 = selfCopy;
   }
 
-  v33 = [v9 isPrototype];
-  if (v2->_genericAlbum)
+  cloudGUID = [v6 cloudGUID];
+  if (selfCopy->_genericAlbum)
   {
-    v10 = v2->_genericAlbum;
-  }
-
-  else
-  {
-    v10 = v2;
-  }
-
-  v32 = [v10 isInTrash];
-  if (v2->_genericAlbum)
-  {
-    v11 = v2->_genericAlbum;
+    v8 = selfCopy->_genericAlbum;
   }
 
   else
   {
-    v11 = v2;
+    v8 = selfCopy;
   }
 
-  v31 = [v11 customSortAscending];
-  if (v2->_genericAlbum)
+  isPinned = [v8 isPinned];
+  if (selfCopy->_genericAlbum)
   {
-    v12 = v2->_genericAlbum;
+    v9 = selfCopy->_genericAlbum;
   }
 
   else
   {
-    v12 = v2;
+    v9 = selfCopy;
+  }
+
+  isPrototype = [v9 isPrototype];
+  if (selfCopy->_genericAlbum)
+  {
+    v10 = selfCopy->_genericAlbum;
+  }
+
+  else
+  {
+    v10 = selfCopy;
+  }
+
+  isInTrash = [v10 isInTrash];
+  if (selfCopy->_genericAlbum)
+  {
+    v11 = selfCopy->_genericAlbum;
+  }
+
+  else
+  {
+    v11 = selfCopy;
+  }
+
+  customSortAscending = [v11 customSortAscending];
+  if (selfCopy->_genericAlbum)
+  {
+    v12 = selfCopy->_genericAlbum;
+  }
+
+  else
+  {
+    v12 = selfCopy;
   }
 
   v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v12, "customSortKey")}];
-  v13 = v2->_genericAlbum;
+  v13 = selfCopy->_genericAlbum;
   if (v13)
   {
-    v14 = [(PLGenericAlbum *)v13 customKeyAsset];
-    v15 = [v14 uuid];
+    customKeyAsset = [(PLGenericAlbum *)v13 customKeyAsset];
+    uuid2 = [customKeyAsset uuid];
   }
 
   else
   {
-    v15 = [(PLPersistedAlbumMetadata *)v2 customKeyAssetUUID];
+    uuid2 = [(PLPersistedAlbumMetadata *)selfCopy customKeyAssetUUID];
   }
 
-  if (v2->_genericAlbum)
+  if (selfCopy->_genericAlbum)
   {
-    v16 = v2->_genericAlbum;
+    v16 = selfCopy->_genericAlbum;
   }
 
   else
   {
-    v16 = v2;
+    v16 = selfCopy;
   }
 
-  v17 = [v16 importSessionID];
-  if (v2->_genericAlbum)
+  importSessionID = [v16 importSessionID];
+  if (selfCopy->_genericAlbum)
   {
-    v18 = v2->_genericAlbum;
+    v18 = selfCopy->_genericAlbum;
   }
 
   else
   {
-    v18 = v2;
+    v18 = selfCopy;
   }
 
-  v19 = [v18 importedByBundleIdentifier];
-  if (v2->_genericAlbum)
+  importedByBundleIdentifier = [v18 importedByBundleIdentifier];
+  if (selfCopy->_genericAlbum)
   {
-    v20 = v2->_genericAlbum;
+    v20 = selfCopy->_genericAlbum;
   }
 
   else
   {
-    v20 = v2;
+    v20 = selfCopy;
   }
 
-  v21 = [v20 lastModifiedDate];
-  if (v2->_genericAlbum)
+  lastModifiedDate = [v20 lastModifiedDate];
+  if (selfCopy->_genericAlbum)
   {
-    v22 = v2->_genericAlbum;
+    v22 = selfCopy->_genericAlbum;
   }
 
   else
   {
-    v22 = v2;
+    v22 = selfCopy;
   }
 
-  v30 = [v22 userQueryData];
-  v23 = [objc_alloc(MEMORY[0x1E69BF2B8]) initWithData:v30];
+  userQueryData = [v22 userQueryData];
+  v23 = [objc_alloc(MEMORY[0x1E69BF2B8]) initWithData:userQueryData];
   if (v23)
   {
-    v24 = v2->_genericAlbum;
+    v24 = selfCopy->_genericAlbum;
     if (v24)
     {
       [(PLGenericAlbum *)v24 assets];
@@ -745,7 +745,7 @@ LABEL_88:
 
     else
     {
-      [(PLPersistedAlbumMetadata *)v2 assetUUIDs];
+      [(PLPersistedAlbumMetadata *)selfCopy assetUUIDs];
     }
     v26 = ;
     v25 = [v26 count];
@@ -756,25 +756,25 @@ LABEL_88:
     v25 = 0;
   }
 
-  v39.receiver = v2;
+  v39.receiver = selfCopy;
   v39.super_class = PLPersistedAlbumMetadata;
   v27 = [(PLPersistedAlbumMetadata *)&v39 description];
-  v28 = [(PLGenericAlbum *)v2->_genericAlbum objectID];
-  v35 = [v27 stringByAppendingFormat:@" album %@ : title:%@, uuid:%@, cloudGUID:%@, importSessionID:%@, kind:%@, pin:%d, prototype:%d, trash:%d, sort:%d, asc:%@, lastModifiedDate:%@, keyAsset:%@, childCount:%lu, userQuery:%@ importedByBundleIdentifier:%@", v28, v37, v5, v7, v17, v38, v34, v33, v32, v31, v36, v21, v15, v25, v23, v19];
+  objectID = [(PLGenericAlbum *)selfCopy->_genericAlbum objectID];
+  v35 = [v27 stringByAppendingFormat:@" album %@ : title:%@, uuid:%@, cloudGUID:%@, importSessionID:%@, kind:%@, pin:%d, prototype:%d, trash:%d, sort:%d, asc:%@, lastModifiedDate:%@, keyAsset:%@, childCount:%lu, userQuery:%@ importedByBundleIdentifier:%@", objectID, title, uuid, cloudGUID, importSessionID, kind, isPinned, isPrototype, isInTrash, customSortAscending, v36, lastModifiedDate, uuid2, v25, v23, importedByBundleIdentifier];
 
   return v35;
 }
 
-- (void)updateChildrenOrderingInAlbum:(id)a3 includePendingAssetChanges:(BOOL)a4
+- (void)updateChildrenOrderingInAlbum:(id)album includePendingAssetChanges:(BOOL)changes
 {
-  v4 = a4;
+  changesCopy = changes;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLPersistedAlbumMetadata *)self assetUUIDs];
-  v8 = [v6 assets];
-  v9 = [v8 valueForKey:@"uuid"];
+  albumCopy = album;
+  assetUUIDs = [(PLPersistedAlbumMetadata *)self assetUUIDs];
+  assets = [albumCopy assets];
+  v9 = [assets valueForKey:@"uuid"];
 
-  v10 = [v7 isEqual:v9];
+  v10 = [assetUUIDs isEqual:v9];
   v11 = PLMigrationGetLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (v10)
@@ -782,11 +782,11 @@ LABEL_88:
     if (v12)
     {
       v13 = [v9 count];
-      v14 = [v6 uuid];
+      uuid = [albumCopy uuid];
       *buf = 67109378;
       *v25 = v13;
       *&v25[4] = 2112;
-      *&v25[6] = v14;
+      *&v25[6] = uuid;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Persisted asset UUIDs (%d total) match database ordering for album %@", buf, 0x12u);
     }
   }
@@ -795,29 +795,29 @@ LABEL_88:
   {
     if (v12)
     {
-      v15 = [v6 uuid];
-      v16 = [(PLPersistedAlbumMetadata *)self metadataURL];
-      v17 = [v16 path];
+      uuid2 = [albumCopy uuid];
+      metadataURL = [(PLPersistedAlbumMetadata *)self metadataURL];
+      path = [metadataURL path];
       *buf = 138412546;
-      *v25 = v15;
+      *v25 = uuid2;
       *&v25[8] = 2112;
-      *&v25[10] = v17;
+      *&v25[10] = path;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Updating assets in album %@ to match persisted UUID ordering from %@", buf, 0x16u);
     }
 
-    v18 = [v7 array];
-    v19 = [v6 photoLibrary];
-    v20 = [PLManagedAsset assetsWithUUIDs:v18 options:v4 inLibrary:v19];
+    array = [assetUUIDs array];
+    photoLibrary = [albumCopy photoLibrary];
+    v20 = [PLManagedAsset assetsWithUUIDs:array options:changesCopy inLibrary:photoLibrary];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __85__PLPersistedAlbumMetadata_updateChildrenOrderingInAlbum_includePendingAssetChanges___block_invoke;
     v22[3] = &unk_1E756EF00;
-    v23 = v7;
+    v23 = assetUUIDs;
     v11 = [v20 sortedArrayUsingComparator:v22];
 
-    v21 = [v6 mutableAssets];
-    [v21 addObjectsFromArray:v11];
+    mutableAssets = [albumCopy mutableAssets];
+    [mutableAssets addObjectsFromArray:v11];
   }
 }
 
@@ -843,16 +843,16 @@ uint64_t __85__PLPersistedAlbumMetadata_updateChildrenOrderingInAlbum_includePen
   }
 }
 
-- (id)insertAlbumFromDataInManagedObjectContext:(id)a3
+- (id)insertAlbumFromDataInManagedObjectContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSNumber *)self->_kind intValue];
+  contextCopy = context;
+  intValue = [(NSNumber *)self->_kind intValue];
   v6 = 0;
-  if (v5 > 1599)
+  if (intValue > 1599)
   {
-    v7 = (v5 - 1600) > 0x2A || ((1 << (v5 - 64)) & 0x7BDFFFFFFFFLL) == 0;
-    if (v7 && (v5 - 3998) >= 9 && (v5 - 3571) >= 3)
+    v7 = (intValue - 1600) > 0x2A || ((1 << (intValue - 64)) & 0x7BDFFFFFFFFLL) == 0;
+    if (v7 && (intValue - 3998) >= 9 && (intValue - 3571) >= 3)
     {
       goto LABEL_43;
     }
@@ -860,11 +860,11 @@ uint64_t __85__PLPersistedAlbumMetadata_updateChildrenOrderingInAlbum_includePen
     goto LABEL_6;
   }
 
-  if (v5 <= 1504)
+  if (intValue <= 1504)
   {
-    if (v5 > 1099)
+    if (intValue > 1099)
     {
-      if ((v5 - 1500) >= 4 && v5 != 1100)
+      if ((intValue - 1500) >= 4 && intValue != 1100)
       {
         goto LABEL_43;
       }
@@ -872,8 +872,8 @@ uint64_t __85__PLPersistedAlbumMetadata_updateChildrenOrderingInAlbum_includePen
 
     else
     {
-      v13 = v5 > 0x10 || ((1 << v5) & 0x19004) == 0;
-      if (v13 && v5 != 1000)
+      v13 = intValue > 0x10 || ((1 << intValue) & 0x19004) == 0;
+      if (v13 && intValue != 1000)
       {
         goto LABEL_43;
       }
@@ -882,16 +882,16 @@ uint64_t __85__PLPersistedAlbumMetadata_updateChildrenOrderingInAlbum_includePen
     goto LABEL_6;
   }
 
-  v14 = v5 + 29;
-  if ((v5 - 1507) <= 0x2E)
+  v14 = intValue + 29;
+  if ((intValue - 1507) <= 0x2E)
   {
     if (((1 << v14) & 0x780000000002) != 0)
     {
 LABEL_6:
-      v8 = [(NSNumber *)self->_kind intValue];
+      intValue2 = [(NSNumber *)self->_kind intValue];
       title = self->_title;
-      v10 = [v4 photoLibrary];
-      v6 = [PLGenericAlbum insertNewAlbumWithKind:v8 title:title intoLibrary:v10];
+      photoLibrary = [contextCopy photoLibrary];
+      v6 = [PLGenericAlbum insertNewAlbumWithKind:intValue2 title:title intoLibrary:photoLibrary];
 
       goto LABEL_7;
     }
@@ -899,13 +899,13 @@ LABEL_6:
     if (((1 << v14) & 0xC) != 0)
     {
       v15 = MEMORY[0x1E696AEC0];
-      v16 = PLStringFromPLAlbumKind(v5);
+      v16 = PLStringFromPLAlbumKind(intValue);
       v6 = [v15 stringWithFormat:@"%@ Album is not supported for persistence", v16];
 
       goto LABEL_43;
     }
 
-    if (v5 == 1507)
+    if (intValue == 1507)
     {
       if (!self->_userQueryData)
       {
@@ -913,20 +913,20 @@ LABEL_6:
         goto LABEL_43;
       }
 
-      v20 = [v4 photoLibrary];
-      v6 = [PLGenericAlbum insertNewSmartAlbumIntoLibrary:v20];
+      photoLibrary2 = [contextCopy photoLibrary];
+      v6 = [PLGenericAlbum insertNewSmartAlbumIntoLibrary:photoLibrary2];
 
       [(__CFString *)v6 setTitle:self->_title];
       goto LABEL_7;
     }
   }
 
-  if (v5 == 1505)
+  if (intValue == 1505)
   {
     goto LABEL_6;
   }
 
-  if (v5 != 1506)
+  if (intValue != 1506)
   {
     goto LABEL_43;
   }
@@ -938,7 +938,7 @@ LABEL_6:
     goto LABEL_43;
   }
 
-  v6 = [PLImportSession insertNewImportSessionAlbumWithImportSessionID:importSessionID inManagedObjectContext:v4];
+  v6 = [PLImportSession insertNewImportSessionAlbumWithImportSessionID:importSessionID inManagedObjectContext:contextCopy];
 LABEL_7:
   if (!v6)
   {
@@ -984,7 +984,7 @@ LABEL_43:
   customKeyAssetUUID = self->_customKeyAssetUUID;
   if (customKeyAssetUUID)
   {
-    v12 = [PLManagedAsset assetWithUUID:customKeyAssetUUID inManagedObjectContext:v4];
+    v12 = [PLManagedAsset assetWithUUID:customKeyAssetUUID inManagedObjectContext:contextCopy];
     if (v12)
     {
       [(__CFString *)v6 setCustomKeyAsset:v12];
@@ -1013,18 +1013,18 @@ LABEL_46:
 
 - (void)removePersistedAlbumData
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  [v3 removeItemAtURL:self->_metadataURL error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtURL:self->_metadataURL error:0];
 }
 
-- (PLPersistedAlbumMetadata)initWithTitle:(id)a3 uuid:(id)a4 cloudGUID:(id)a5 kind:(id)a6 assetUUIDs:(id)a7 persistedAlbumDataDirectory:(id)a8
+- (PLPersistedAlbumMetadata)initWithTitle:(id)title uuid:(id)uuid cloudGUID:(id)d kind:(id)kind assetUUIDs:(id)ds persistedAlbumDataDirectory:(id)directory
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  titleCopy = title;
+  uuidCopy = uuid;
+  dCopy = d;
+  kindCopy = kind;
+  dsCopy = ds;
+  directoryCopy = directory;
   v26.receiver = self;
   v26.super_class = PLPersistedAlbumMetadata;
   v20 = [(PLPersistedAlbumMetadata *)&v26 init];
@@ -1032,33 +1032,33 @@ LABEL_46:
   if (v20)
   {
     [(PLPersistedAlbumMetadata *)v20 setAllowsOverwrite:1];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v15, PLPersistedAlbumExtension];
-    v23 = [v19 URLByAppendingPathComponent:v22];
+    pLPersistedAlbumExtension = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", uuidCopy, PLPersistedAlbumExtension];
+    v23 = [directoryCopy URLByAppendingPathComponent:pLPersistedAlbumExtension];
     [(PLPersistedAlbumMetadata *)v21 setMetadataURL:v23];
 
-    [(PLPersistedAlbumMetadata *)v21 setTitle:v14];
-    [(PLPersistedAlbumMetadata *)v21 setUuid:v15];
-    if (v16)
+    [(PLPersistedAlbumMetadata *)v21 setTitle:titleCopy];
+    [(PLPersistedAlbumMetadata *)v21 setUuid:uuidCopy];
+    if (dCopy)
     {
-      [(PLPersistedAlbumMetadata *)v21 setCloudGUID:v16];
+      [(PLPersistedAlbumMetadata *)v21 setCloudGUID:dCopy];
     }
 
-    [(PLPersistedAlbumMetadata *)v21 setKind:v17];
-    v24 = [MEMORY[0x1E695DFA0] orderedSetWithArray:v18];
+    [(PLPersistedAlbumMetadata *)v21 setKind:kindCopy];
+    v24 = [MEMORY[0x1E695DFA0] orderedSetWithArray:dsCopy];
     [(PLPersistedAlbumMetadata *)v21 setAssetUUIDs:v24];
   }
 
   return v21;
 }
 
-- (PLPersistedAlbumMetadata)initWithPersistedDataAtURL:(id)a3
+- (PLPersistedAlbumMetadata)initWithPersistedDataAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PLPersistedAlbumMetadata;
   v5 = [(PLPersistedAlbumMetadata *)&v9 init];
   v6 = v5;
-  if (v5 && ([(PLPersistedAlbumMetadata *)v5 setAllowsOverwrite:1], [(PLPersistedAlbumMetadata *)v6 setMetadataURL:v4], ![(PLPersistedAlbumMetadata *)v6 _readMetadata]))
+  if (v5 && ([(PLPersistedAlbumMetadata *)v5 setAllowsOverwrite:1], [(PLPersistedAlbumMetadata *)v6 setMetadataURL:lCopy], ![(PLPersistedAlbumMetadata *)v6 _readMetadata]))
   {
     v7 = 0;
   }
@@ -1071,30 +1071,30 @@ LABEL_46:
   return v7;
 }
 
-- (PLPersistedAlbumMetadata)initWithPLGenericAlbum:(id)a3 pathManager:(id)a4
+- (PLPersistedAlbumMetadata)initWithPLGenericAlbum:(id)album pathManager:(id)manager
 {
-  v6 = a3;
+  albumCopy = album;
   v19.receiver = self;
   v19.super_class = PLPersistedAlbumMetadata;
   v7 = [(PLPersistedAlbumMetadata *)&v19 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_genericAlbum, a3);
+    objc_storeStrong(&v7->_genericAlbum, album);
     [(PLPersistedAlbumMetadata *)v8 setAllowsOverwrite:1];
     [(PLPersistedAlbumMetadata *)v8 setInTrash:0];
-    v9 = [v6 managedObjectContext];
-    v10 = [v9 pathManager];
+    managedObjectContext = [albumCopy managedObjectContext];
+    pathManager = [managedObjectContext pathManager];
 
     v11 = MEMORY[0x1E695DFF8];
-    v12 = [v10 privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
+    v12 = [pathManager privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
     v13 = [v11 fileURLWithPath:v12 isDirectory:1];
 
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [(PLGenericAlbum *)v8->_genericAlbum uuid];
-    v16 = [v14 stringWithFormat:@"%@.%@", v15, PLPersistedAlbumExtension];
+    uuid = [(PLGenericAlbum *)v8->_genericAlbum uuid];
+    pLPersistedAlbumExtension = [v14 stringWithFormat:@"%@.%@", uuid, PLPersistedAlbumExtension];
 
-    v17 = [v13 URLByAppendingPathComponent:v16];
+    v17 = [v13 URLByAppendingPathComponent:pLPersistedAlbumExtension];
     [(PLPersistedAlbumMetadata *)v8 setMetadataURL:v17];
   }
 
@@ -1103,16 +1103,16 @@ LABEL_46:
 
 - (PLPersistedAlbumMetadata)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLPersistedAlbumMetadata.m" lineNumber:88 description:@"Can't initialize a PLPersistedAlbumMetadata object using -init."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistedAlbumMetadata.m" lineNumber:88 description:@"Can't initialize a PLPersistedAlbumMetadata object using -init."];
 
   return 0;
 }
 
-+ (BOOL)isValidPath:(id)a3
++ (BOOL)isValidPath:(id)path
 {
-  v3 = [a3 pathExtension];
-  v4 = [v3 isEqualToString:PLPersistedAlbumExtension];
+  pathExtension = [path pathExtension];
+  v4 = [pathExtension isEqualToString:PLPersistedAlbumExtension];
 
   return v4;
 }

@@ -1,8 +1,8 @@
 @interface PKLocalStrokeTracker
 + (id)sharedInstance;
-- (BOOL)isRecentlyCreatedLocalStroke:(uint64_t)a1;
+- (BOOL)isRecentlyCreatedLocalStroke:(uint64_t)stroke;
 - (PKLocalStrokeTracker)init;
-- (void)addStroke:(uint64_t)a1;
+- (void)addStroke:(uint64_t)stroke;
 @end
 
 @implementation PKLocalStrokeTracker
@@ -48,26 +48,26 @@ void __38__PKLocalStrokeTracker_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addStroke:(uint64_t)a1
+- (void)addStroke:(uint64_t)stroke
 {
-  if (a1)
+  if (stroke)
   {
-    v2 = *(a1 + 8);
-    v3 = [a2 _strokeUUID];
-    [(PKLRUCache *)v2 setObject:v3 forKey:1uLL cost:?];
+    v2 = *(stroke + 8);
+    _strokeUUID = [a2 _strokeUUID];
+    [(PKLRUCache *)v2 setObject:_strokeUUID forKey:1uLL cost:?];
   }
 }
 
-- (BOOL)isRecentlyCreatedLocalStroke:(uint64_t)a1
+- (BOOL)isRecentlyCreatedLocalStroke:(uint64_t)stroke
 {
-  if (!a1)
+  if (!stroke)
   {
     return 0;
   }
 
-  v2 = *(a1 + 8);
-  v3 = [a2 _strokeUUID];
-  v4 = [(PKLRUCache *)v2 checkObjectForKey:v3];
+  v2 = *(stroke + 8);
+  _strokeUUID = [a2 _strokeUUID];
+  v4 = [(PKLRUCache *)v2 checkObjectForKey:_strokeUUID];
   v5 = v4 != 0;
 
   return v5;

@@ -1,61 +1,61 @@
 @interface BCCFI
-+ (BCCFI)cfiWithString:(id)a3 error:(id *)a4;
-+ (BOOL)isFragmentEpubCFIFunction:(id)a3;
-+ (id)_cfiLocationFromHeadOf:(id)a3 toTailOf:(id)a4;
-+ (id)_cfiLocationFromTailOf:(id)a3 toHeadOf:(id)a4;
-+ (id)deserializeCFIFromDictionary:(id)a3;
++ (BCCFI)cfiWithString:(id)string error:(id *)error;
++ (BOOL)isFragmentEpubCFIFunction:(id)function;
++ (id)_cfiLocationFromHeadOf:(id)of toTailOf:(id)tailOf;
++ (id)_cfiLocationFromTailOf:(id)of toHeadOf:(id)headOf;
++ (id)deserializeCFIFromDictionary:(id)dictionary;
 + (id)maximumCFI;
 + (id)minimumCFI;
-+ (id)pageLocationForString:(id)a3 error:(id *)a4;
-+ (id)stringByEscapingString:(id)a3;
-+ (id)substringByUnescapingString:(id)a3 inRange:(_NSRange)a4;
++ (id)pageLocationForString:(id)string error:(id *)error;
++ (id)stringByEscapingString:(id)string;
++ (id)substringByUnescapingString:(id)string inRange:(_NSRange)range;
 + (id)unknownCFI;
 + (id)upsellCFI;
-- (BCCFI)cfiWithAdjustedSpineIndex:(int64_t)a3 error:(id *)a4;
-- (BCCFI)cfiWithSpineIndexAdjustedUsingAssertionBlock:(id)a3;
-- (BCCFI)initWithCFI:(id)a3 error:(id *)a4;
-- (BCCFI)initWithCoder:(id)a3;
-- (BCCFI)initWithLocationDictionary:(id)a3;
-- (BCCFI)initWithSteps:(BCCFIStep *)a3 startStepsPtr:(BCCFIStep *)a4 endStepsPtr:(BCCFIStep *)a5 stepsEnd:(BCCFIStep *)a6;
-- (BOOL)_subtractStep:(const BCCFIStep *)a3 fromStep:(BCCFIStep *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BCCFI)cfiWithAdjustedSpineIndex:(int64_t)index error:(id *)error;
+- (BCCFI)cfiWithSpineIndexAdjustedUsingAssertionBlock:(id)block;
+- (BCCFI)initWithCFI:(id)i error:(id *)error;
+- (BCCFI)initWithCoder:(id)coder;
+- (BCCFI)initWithLocationDictionary:(id)dictionary;
+- (BCCFI)initWithSteps:(BCCFIStep *)steps startStepsPtr:(BCCFIStep *)ptr endStepsPtr:(BCCFIStep *)stepsPtr stepsEnd:(BCCFIStep *)end;
+- (BOOL)_subtractStep:(const BCCFIStep *)step fromStep:(BCCFIStep *)fromStep;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPageCFI;
-- (BOOL)parseCFI:(id)a3 error:(id *)a4;
-- (BOOL)rangeIntersectsCFI:(id)a3;
+- (BOOL)parseCFI:(id)i error:(id *)error;
+- (BOOL)rangeIntersectsCFI:(id)i;
 - (NSString)manifestId;
 - (NSString)redactedString;
-- (const)endStepAtIndex:(unint64_t)a3;
+- (const)endStepAtIndex:(unint64_t)index;
 - (id)_simplifiedVersion;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)ensureRange;
 - (id)generateCFI;
 - (id)headCFI;
-- (id)intersectWithRangeFromHeadOf:(id)a3 toTailOf:(id)a4;
-- (id)rangeToCFI:(id)a3;
-- (id)rebaseCFIWithHead:(id)a3;
+- (id)intersectWithRangeFromHeadOf:(id)of toTailOf:(id)tailOf;
+- (id)rangeToCFI:(id)i;
+- (id)rebaseCFIWithHead:(id)head;
 - (id)serializeLocationToDictionary;
 - (id)tailCFI;
-- (id)unionWithCFI:(id)a3;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareCFI:(id)a3;
+- (id)unionWithCFI:(id)i;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareCFI:(id)i;
 - (unint64_t)characterCountIfComputable;
 - (unint64_t)hash;
 - (unint64_t)spineIndex;
-- (void)_copyInto:(id)a3;
+- (void)_copyInto:(id)into;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCCFI
 
 - (NSString)redactedString
 {
-  v2 = [(BCCFI *)self string];
-  v3 = [v2 bc_redactedCFIString];
+  string = [(BCCFI *)self string];
+  bc_redactedCFIString = [string bc_redactedCFIString];
 
-  return v3;
+  return bc_redactedCFIString;
 }
 
 - (BOOL)isPageCFI
@@ -71,29 +71,29 @@
   }
 }
 
-+ (id)pageLocationForString:(id)a3 error:(id *)a4
++ (id)pageLocationForString:(id)string error:(id *)error
 {
-  v4 = [BCCFI cfiWithString:a3 error:a4];
+  v4 = [BCCFI cfiWithString:string error:error];
   [v4 _setPageIndexOffset:0];
 
   return v4;
 }
 
-+ (BCCFI)cfiWithString:(id)a3 error:(id *)a4
++ (BCCFI)cfiWithString:(id)string error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithCFI:v6 error:a4];
+  stringCopy = string;
+  v7 = [[self alloc] initWithCFI:stringCopy error:error];
 
   return v7;
 }
 
-+ (id)deserializeCFIFromDictionary:(id)a3
++ (id)deserializeCFIFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"class"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"class"];
   if ([v4 isEqualToString:@"BKEpubCFILocation"])
   {
-    v5 = [[BCCFI alloc] initWithLocationDictionary:v3];
+    v5 = [[BCCFI alloc] initWithLocationDictionary:dictionaryCopy];
   }
 
   else
@@ -152,9 +152,9 @@
   return v3;
 }
 
-- (BCCFI)initWithCFI:(id)a3 error:(id *)a4
+- (BCCFI)initWithCFI:(id)i error:(id *)error
 {
-  v6 = a3;
+  iCopy = i;
   v12.receiver = self;
   v12.super_class = BCCFI;
   v7 = [(BCCFI *)&v12 init];
@@ -164,7 +164,7 @@
     goto LABEL_4;
   }
 
-  if ([(BCCFI *)v7 parseCFI:v6 error:a4])
+  if ([(BCCFI *)v7 parseCFI:iCopy error:error])
   {
     v8->_pageIndexOffset = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_4:
@@ -175,7 +175,7 @@ LABEL_4:
   v10 = BCReadingStatisticsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_1E8E50(v6, v10);
+    sub_1E8E50(iCopy, v10);
   }
 
   v9 = 0;
@@ -184,29 +184,29 @@ LABEL_8:
   return v9;
 }
 
-- (BCCFI)initWithLocationDictionary:(id)a3
+- (BCCFI)initWithLocationDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:@"cfi"];
+  v4 = [dictionary objectForKey:@"cfi"];
   v5 = [(BCCFI *)self initWithCFI:v4 error:0];
 
   return v5;
 }
 
-- (BCCFI)initWithCoder:(id)a3
+- (BCCFI)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cfi"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cfi"];
   v6 = [(BCCFI *)self initWithCFI:v5 error:0];
 
-  if (v6 && [v4 containsValueForKey:@"pageIndexOffset"])
+  if (v6 && [coderCopy containsValueForKey:@"pageIndexOffset"])
   {
-    v6->_pageIndexOffset = [v4 decodeIntegerForKey:@"pageIndexOffset"];
+    v6->_pageIndexOffset = [coderCopy decodeIntegerForKey:@"pageIndexOffset"];
   }
 
   return v6;
 }
 
-- (BCCFI)initWithSteps:(BCCFIStep *)a3 startStepsPtr:(BCCFIStep *)a4 endStepsPtr:(BCCFIStep *)a5 stepsEnd:(BCCFIStep *)a6
+- (BCCFI)initWithSteps:(BCCFIStep *)steps startStepsPtr:(BCCFIStep *)ptr endStepsPtr:(BCCFIStep *)stepsPtr stepsEnd:(BCCFIStep *)end
 {
   v15.receiver = self;
   v15.super_class = BCCFI;
@@ -214,14 +214,14 @@ LABEL_8:
   v11 = v10;
   if (v10)
   {
-    v10->_steps = a3;
-    v10->_startStepsPtr = a4;
-    v10->_endStepsPtr = a5;
-    v10->_stepsEnd = a6;
+    v10->_steps = steps;
+    v10->_startStepsPtr = ptr;
+    v10->_endStepsPtr = stepsPtr;
+    v10->_stepsEnd = end;
     v10->_pageIndexOffset = 0x7FFFFFFFFFFFFFFFLL;
-    v12 = [(BCCFI *)v10 generateCFI];
+    generateCFI = [(BCCFI *)v10 generateCFI];
     string = v11->_string;
-    v11->_string = v12;
+    v11->_string = generateCFI;
   }
 
   return v11;
@@ -251,9 +251,9 @@ LABEL_8:
   [(BCCFI *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(BCCFI *)self _copyInto:v4];
   return v4;
 }
@@ -262,11 +262,11 @@ LABEL_8:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BCCFI *)self string];
-  v6 = v5;
+  string = [(BCCFI *)self string];
+  v6 = string;
   if (self->_pageIndexOffset == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [NSString stringWithFormat:@"<%@: %p '%@'%@>", v4, self, v5, &stru_2D2930];
+    v7 = [NSString stringWithFormat:@"<%@: %p '%@'%@>", v4, self, string, &stru_2D2930];
   }
 
   else
@@ -280,23 +280,23 @@ LABEL_8:
 
 - (id)debugDescription
 {
-  v3 = [(BCCFI *)self generateCFI];
-  v4 = [(BCCFI *)self string];
-  v5 = [v4 isEqualToString:v3];
+  generateCFI = [(BCCFI *)self generateCFI];
+  string = [(BCCFI *)self string];
+  v5 = [string isEqualToString:generateCFI];
 
   v6 = &stru_2D2930;
   if ((v5 & 1) == 0)
   {
-    v6 = [NSString stringWithFormat:@" (generated: '%@')", v3];
+    v6 = [NSString stringWithFormat:@" (generated: '%@')", generateCFI];
   }
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(BCCFI *)self string];
-  v10 = v9;
+  string2 = [(BCCFI *)self string];
+  v10 = string2;
   if (self->_pageIndexOffset == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [NSString stringWithFormat:@"<%@: %p '%@'%@%@>", v8, self, v9, v6, &stru_2D2930];
+    v11 = [NSString stringWithFormat:@"<%@: %p '%@'%@%@>", v8, self, string2, v6, &stru_2D2930];
   }
 
   else
@@ -310,33 +310,33 @@ LABEL_8:
 
 - (id)serializeLocationToDictionary
 {
-  v2 = [(BCCFI *)self string];
-  v3 = [NSDictionary dictionaryWithObjectsAndKeys:@"BCCFI", @"class", v2, @"cfi", 0];
+  string = [(BCCFI *)self string];
+  v3 = [NSDictionary dictionaryWithObjectsAndKeys:@"BCCFI", @"class", string, @"cfi", 0];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(BCCFI *)self string];
-  [v5 encodeObject:v4 forKey:@"cfi"];
+  coderCopy = coder;
+  string = [(BCCFI *)self string];
+  [coderCopy encodeObject:string forKey:@"cfi"];
 
   if (self->_pageIndexOffset != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v5 encodeInteger:-[BCCFI pageIndexOffset](self forKey:{"pageIndexOffset"), @"pageIndexOffset"}];
+    [coderCopy encodeInteger:-[BCCFI pageIndexOffset](self forKey:{"pageIndexOffset"), @"pageIndexOffset"}];
   }
 }
 
 - (unint64_t)spineIndex
 {
-  v3 = [(BCCFI *)self numberOfStartSteps];
-  if (v3 < 2)
+  numberOfStartSteps = [(BCCFI *)self numberOfStartSteps];
+  if (numberOfStartSteps < 2)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = v3;
+  v4 = numberOfStartSteps;
   v5 = 1;
   while (1)
   {
@@ -366,8 +366,8 @@ LABEL_8:
 
 - (NSString)manifestId
 {
-  v3 = [(BCCFI *)self numberOfStartSteps];
-  if (v3 < 2)
+  numberOfStartSteps = [(BCCFI *)self numberOfStartSteps];
+  if (numberOfStartSteps < 2)
   {
 LABEL_5:
     v7 = 0;
@@ -375,7 +375,7 @@ LABEL_5:
 
   else
   {
-    v4 = v3;
+    v4 = numberOfStartSteps;
     v5 = 1;
     while (1)
     {
@@ -397,24 +397,24 @@ LABEL_5:
   return v7;
 }
 
-- (const)endStepAtIndex:(unint64_t)a3
+- (const)endStepAtIndex:(unint64_t)index
 {
   startStepsPtr = self->_startStepsPtr;
-  result = &self->_steps[a3];
+  result = &self->_steps[index];
   if (result >= startStepsPtr)
   {
-    return &self->_endStepsPtr[a3 - [(BCCFI *)self numberOfCommonSteps]];
+    return &self->_endStepsPtr[index - [(BCCFI *)self numberOfCommonSteps]];
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(BCCFI *)self compare:v4]== 0;
+    v5 = [(BCCFI *)self compare:equalCopy]== 0;
   }
 
   else
@@ -460,25 +460,25 @@ LABEL_5:
   return pageIndexOffset ^ v4;
 }
 
-- (int64_t)compareCFI:(id)a3
+- (int64_t)compareCFI:(id)i
 {
-  v4 = a3;
-  v5 = sub_A4734(self, v4, 1, 1, 0, 0);
+  iCopy = i;
+  v5 = sub_A4734(self, iCopy, 1, 1, 0, 0);
   if (!v5)
   {
-    v5 = sub_A4734(self, v4, 0, 0, 0, 0);
+    v5 = sub_A4734(self, iCopy, 0, 0, 0, 0);
   }
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(BCCFI *)self compareCFI:v4];
+  compareCopy = compare;
+  v5 = [(BCCFI *)self compareCFI:compareCopy];
   if (!v5)
   {
-    if (-[BCCFI pageIndexOffset](self, "pageIndexOffset") == 0x7FFFFFFFFFFFFFFFLL && [v4 pageIndexOffset] == 0x7FFFFFFFFFFFFFFFLL)
+    if (-[BCCFI pageIndexOffset](self, "pageIndexOffset") == 0x7FFFFFFFFFFFFFFFLL && [compareCopy pageIndexOffset] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v5 = 0;
     }
@@ -487,32 +487,32 @@ LABEL_5:
     {
       if ([(BCCFI *)self pageIndexOffset]== 0x7FFFFFFFFFFFFFFFLL)
       {
-        v6 = 0;
+        pageIndexOffset = 0;
       }
 
       else
       {
-        v6 = [(BCCFI *)self pageIndexOffset];
+        pageIndexOffset = [(BCCFI *)self pageIndexOffset];
       }
 
-      if ([v4 pageIndexOffset] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([compareCopy pageIndexOffset] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v7 = 0;
+        pageIndexOffset2 = 0;
       }
 
       else
       {
-        v7 = [v4 pageIndexOffset];
+        pageIndexOffset2 = [compareCopy pageIndexOffset];
       }
 
-      if (v6 < v7)
+      if (pageIndexOffset < pageIndexOffset2)
       {
         v5 = -1;
       }
 
       else
       {
-        v5 = v6 > v7;
+        v5 = pageIndexOffset > pageIndexOffset2;
       }
     }
   }
@@ -520,12 +520,12 @@ LABEL_5:
   return v5;
 }
 
-- (id)intersectWithRangeFromHeadOf:(id)a3 toTailOf:(id)a4
+- (id)intersectWithRangeFromHeadOf:(id)of toTailOf:(id)tailOf
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_A4734(self, v6, 0, 1, 0, 0);
-  v9 = sub_A4734(self, v7, 1, 0, 0, 0);
+  ofCopy = of;
+  tailOfCopy = tailOf;
+  v8 = sub_A4734(self, ofCopy, 0, 1, 0, 0);
+  v9 = sub_A4734(self, tailOfCopy, 1, 0, 0, 0);
   v10 = 0;
   if (v8 != -1)
   {
@@ -538,26 +538,26 @@ LABEL_5:
         {
 LABEL_17:
           v15 = objc_opt_class();
-          v16 = self;
+          selfCopy = self;
           goto LABEL_18;
         }
 
-        v12 = sub_A4734(self, v6, 1, 1, 0, 0);
-        v13 = sub_A4734(self, v7, 0, 0, 0, 0);
+        v12 = sub_A4734(self, ofCopy, 1, 1, 0, 0);
+        v13 = sub_A4734(self, tailOfCopy, 0, 0, 0, 0);
         if (v12 <= 1 && (v13 + 1) <= 1)
         {
-          v14 = [(BCCFI *)self copy];
+          selfCopy3 = [(BCCFI *)self copy];
 LABEL_20:
-          v10 = v14;
+          v10 = selfCopy3;
           goto LABEL_21;
         }
 
         if (v12 == -1 && v13 == 1)
         {
           v15 = objc_opt_class();
-          v16 = v6;
+          selfCopy = ofCopy;
 LABEL_18:
-          v18 = v7;
+          selfCopy4 = tailOfCopy;
           goto LABEL_19;
         }
 
@@ -569,15 +569,15 @@ LABEL_18:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
               v20 = 138412802;
-              v21 = self;
+              selfCopy2 = self;
               v22 = 2112;
-              v23 = v6;
+              v23 = ofCopy;
               v24 = 2112;
-              v25 = v7;
+              v25 = tailOfCopy;
               _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Failure to intersect range. Case missing. %@ %@ %@", &v20, 0x20u);
             }
 
-            v14 = self;
+            selfCopy3 = self;
             goto LABEL_20;
           }
 
@@ -586,10 +586,10 @@ LABEL_18:
       }
 
       v15 = objc_opt_class();
-      v16 = v6;
-      v18 = self;
+      selfCopy = ofCopy;
+      selfCopy4 = self;
 LABEL_19:
-      v14 = [v15 _cfiLocationFromHeadOf:v16 toTailOf:v18];
+      selfCopy3 = [v15 _cfiLocationFromHeadOf:selfCopy toTailOf:selfCopy4];
       goto LABEL_20;
     }
   }
@@ -599,64 +599,64 @@ LABEL_21:
   return v10;
 }
 
-- (id)unionWithCFI:(id)a3
+- (id)unionWithCFI:(id)i
 {
-  v4 = a3;
-  if (sub_A4734(self, v4, 1, 1, 0, 0) == -1)
+  iCopy = i;
+  if (sub_A4734(self, iCopy, 1, 1, 0, 0) == -1)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = v4;
+    selfCopy = iCopy;
   }
 
-  v6 = v5;
-  if (sub_A4734(self, v4, 0, 0, 0, 0) == -1)
+  v6 = selfCopy;
+  if (sub_A4734(self, iCopy, 0, 0, 0, 0) == -1)
   {
-    v7 = v4;
+    selfCopy2 = iCopy;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy2;
   v9 = [objc_opt_class() _cfiLocationFromHeadOf:v6 toTailOf:v8];
 
   return v9;
 }
 
-- (id)rangeToCFI:(id)a3
+- (id)rangeToCFI:(id)i
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _cfiLocationFromTailOf:self toHeadOf:v4];
+  iCopy = i;
+  v5 = [objc_opt_class() _cfiLocationFromTailOf:self toHeadOf:iCopy];
 
   return v5;
 }
 
-- (BOOL)rangeIntersectsCFI:(id)a3
+- (BOOL)rangeIntersectsCFI:(id)i
 {
-  v4 = a3;
-  v5 = [(BCCFI *)self isRange];
+  iCopy = i;
+  isRange = [(BCCFI *)self isRange];
   v6 = 0;
-  if (v4 && v5)
+  if (iCopy && isRange)
   {
-    v7 = [(BCCFI *)self intersectWithCFI:v4];
+    v7 = [(BCCFI *)self intersectWithCFI:iCopy];
     v6 = v7 != 0;
   }
 
   return v6;
 }
 
-+ (BOOL)isFragmentEpubCFIFunction:(id)a3
++ (BOOL)isFragmentEpubCFIFunction:(id)function
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"epubcfi("]
+  functionCopy = function;
+  if ([functionCopy hasPrefix:@"epubcfi("]
   {
-    v4 = [v3 hasSuffix:@""]);
+    v4 = [functionCopy hasSuffix:@""]);
   }
 
   else
@@ -667,15 +667,15 @@ LABEL_21:
   return v4;
 }
 
-- (BOOL)parseCFI:(id)a3 error:(id *)a4
+- (BOOL)parseCFI:(id)i error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BCCFI *)self string];
+  iCopy = i;
+  string = [(BCCFI *)self string];
 
-  if (v7)
+  if (string)
   {
     sub_1E8EC8(v8, v9, v10, v11, v12, v13, v14, v15);
-    if (v6)
+    if (iCopy)
     {
       goto LABEL_3;
     }
@@ -685,27 +685,27 @@ LABEL_200:
     return 0;
   }
 
-  if (!v6)
+  if (!iCopy)
   {
     goto LABEL_200;
   }
 
 LABEL_3:
-  if ([v6 isEqualToString:@"epubcfi_unknownlocation"] || objc_msgSend(v6, "isEqualToString:", @"epubcfi_upselllocation"))
+  if ([iCopy isEqualToString:@"epubcfi_unknownlocation"] || objc_msgSend(iCopy, "isEqualToString:", @"epubcfi_upselllocation"))
   {
-    [(BCCFI *)self setString:v6];
+    [(BCCFI *)self setString:iCopy];
 
     return 1;
   }
 
-  if (([objc_opt_class() isFragmentEpubCFIFunction:v6] & 1) == 0)
+  if (([objc_opt_class() isFragmentEpubCFIFunction:iCopy] & 1) == 0)
   {
-    sub_A60BC(a4, -1, @"CFI was not of the form epubCFI(...)", v18, v19, v20, v21, v22, v153);
+    sub_A60BC(error, -1, @"CFI was not of the form epubCFI(...)", v18, v19, v20, v21, v22, v153);
 
     return 0;
   }
 
-  v23 = [v6 substringWithRange:{8, objc_msgSend(v6, "length") - 9}];
+  v23 = [iCopy substringWithRange:{8, objc_msgSend(iCopy, "length") - 9}];
   v24 = [NSScanner scannerWithString:v23];
 
   [v24 setCharactersToBeSkipped:0];
@@ -725,8 +725,8 @@ LABEL_3:
         break;
       }
 
-      v60 = [v24 string];
-      v61 = [v60 characterAtIndex:{objc_msgSend(v24, "scanLocation")}];
+      string2 = [v24 string];
+      v61 = [string2 characterAtIndex:{objc_msgSend(v24, "scanLocation")}];
 
       [v24 setScanLocation:{objc_msgSend(v24, "scanLocation") + 1}];
       if (v61 <= 90)
@@ -780,8 +780,8 @@ LABEL_3:
               break;
             }
 
-            v62 = [v24 string];
-            v63 = [v62 characterAtIndex:{objc_msgSend(v24, "scanLocation")}];
+            string3 = [v24 string];
+            v63 = [string3 characterAtIndex:{objc_msgSend(v24, "scanLocation")}];
 
             [v24 setScanLocation:{objc_msgSend(v24, "scanLocation") + 1}];
             if (v63 != 94)
@@ -826,7 +826,7 @@ LABEL_3:
   v178 = 0;
   v30 = [NSCharacterSet characterSetWithCharactersInString:@"^[](), ="];;
 
-  v31 = [v24 scanLocation];
+  scanLocation = [v24 scanLocation];
   if (([v24 scanString:@"/" intoString:0] & 1) == 0 || (objc_msgSend(v24, "scanInteger:", &v178) & 1) == 0)
   {
     goto LABEL_185;
@@ -835,10 +835,10 @@ LABEL_3:
   if (v178 < 2 || (v178 & 1) != 0)
   {
     v64 = @"First child must be a node";
-    v65 = a4;
-    v66 = v31;
+    errorCopy2 = error;
+    v66 = scanLocation;
 LABEL_65:
-    sub_A60BC(v65, v66, v64, v32, v33, v34, v35, v36, v153);
+    sub_A60BC(errorCopy2, v66, v64, v32, v33, v34, v35, v36, v153);
     goto LABEL_187;
   }
 
@@ -866,10 +866,10 @@ LABEL_65:
   v172 = 1;
   v168 = 1;
 LABEL_67:
-  v68 = [v24 string];
-  v69 = [v68 characterAtIndex:{objc_msgSend(v24, "scanLocation")}];
+  string4 = [v24 string];
+  v69 = [string4 characterAtIndex:{objc_msgSend(v24, "scanLocation")}];
 
-  v70 = [v24 scanLocation];
+  scanLocation2 = [v24 scanLocation];
   [v24 setScanLocation:{objc_msgSend(v24, "scanLocation") + 1}];
   if (v69 == 44)
   {
@@ -877,7 +877,7 @@ LABEL_67:
     {
       if (self->_endStepsPtr)
       {
-        sub_A61DC(v24, -1, a4);
+        sub_A61DC(v24, -1, error);
       }
 
       else
@@ -1016,7 +1016,7 @@ LABEL_185:
     v148 = v24;
     v149 = 0;
 LABEL_186:
-    sub_A61DC(v148, v149, a4);
+    sub_A61DC(v148, v149, error);
     goto LABEL_187;
   }
 
@@ -1026,8 +1026,8 @@ LABEL_186:
     {
       v64 = @"Spatial offset terminating step only allowed after child node step or temporal offset terminating step";
 LABEL_218:
-      v65 = a4;
-      v66 = v70;
+      errorCopy2 = error;
+      v66 = scanLocation2;
       goto LABEL_65;
     }
 
@@ -1057,10 +1057,10 @@ LABEL_218:
       v30 = v164;
       if (!v127)
       {
-        v95 = [v24 scanLocation];
+        scanLocation3 = [v24 scanLocation];
         if ([v24 scanString:@":" intoString:0] & 1) != 0 && (objc_msgSend(v24, "scanDecimal:", &v176))
         {
-          v96 = v95;
+          v96 = scanLocation3;
           v174 = v176;
           v175 = v177;
           v97 = [NSDecimalNumber decimalNumberWithDecimal:&v174];
@@ -1094,19 +1094,19 @@ LABEL_180:
             }
           }
 
-          sub_A60BC(a4, v96, @"Temporal offset parameter must be a number between 0 and 100", v101, v102, v103, v104, v105, v153);
+          sub_A60BC(error, v96, @"Temporal offset parameter must be a number between 0 and 100", v101, v102, v103, v104, v105, v153);
 
           goto LABEL_187;
         }
 
-        sub_A61DC(v24, 0, a4);
+        sub_A61DC(v24, 0, error);
 LABEL_210:
 
         goto LABEL_187;
       }
     }
 
-    sub_A60BC(a4, v70, @"Temporal offset parameter must be a number between 0 and 100", v90, v91, v92, v93, v94, v153);
+    sub_A60BC(error, scanLocation2, @"Temporal offset parameter must be a number between 0 and 100", v90, v91, v92, v93, v94, v153);
     goto LABEL_210;
   }
 
@@ -1129,7 +1129,7 @@ LABEL_210:
 
     v155 = v67;
     v158 = v39;
-    v111 = [v24 scanLocation];
+    scanLocation4 = [v24 scanLocation];
     v156 = 0;
     v160 = 0;
     v161 = 0;
@@ -1148,8 +1148,8 @@ LABEL_210:
         goto LABEL_159;
       }
 
-      v117 = [v24 string];
-      v118 = [v117 characterAtIndex:{objc_msgSend(v24, "scanLocation")}];
+      string5 = [v24 string];
+      v118 = [string5 characterAtIndex:{objc_msgSend(v24, "scanLocation")}];
 
       [v24 setScanLocation:{objc_msgSend(v24, "scanLocation") + 1}];
       if (v118 == 94)
@@ -1167,23 +1167,23 @@ LABEL_210:
             goto LABEL_183;
           }
 
-          v131 = [v24 scanLocation];
-          v132 = [v24 string];
-          v133 = [v132 rangeOfString:@" " options:0 range:{v111, &v131[~v111]}];
+          scanLocation5 = [v24 scanLocation];
+          string6 = [v24 string];
+          v133 = [string6 rangeOfString:@" " options:0 range:{scanLocation4, &scanLocation5[~scanLocation4]}];
 
           if (v133 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            sub_A60BC(a4, v133, @"Unexpected space found in key of assertion parameter list", v134, v135, v136, v137, v138, v153);
+            sub_A60BC(error, v133, @"Unexpected space found in key of assertion parameter list", v134, v135, v136, v137, v138, v153);
 
             v119 = 1;
             v30 = v164;
             goto LABEL_165;
           }
 
-          v139 = [v24 string];
-          v140 = [BCCFI substringByUnescapingString:v139 inRange:v111, &v131[~v111]];
+          string7 = [v24 string];
+          v140 = [BCCFI substringByUnescapingString:string7 inRange:scanLocation4, &scanLocation5[~scanLocation4]];
 
-          v111 = [v24 scanLocation];
+          scanLocation4 = [v24 scanLocation];
           v119 = 0;
           v159 = v140;
           v30 = v164;
@@ -1193,14 +1193,14 @@ LABEL_210:
         if (v118 == 93)
         {
 LABEL_128:
-          v120 = [v24 string];
-          v121 = +[BCCFI substringByUnescapingString:inRange:](BCCFI, "substringByUnescapingString:inRange:", v120, v111, [v24 scanLocation] + ~v111);
+          string8 = [v24 string];
+          v121 = +[BCCFI substringByUnescapingString:inRange:](BCCFI, "substringByUnescapingString:inRange:", string8, scanLocation4, [v24 scanLocation] + ~scanLocation4);
 
           if (v161)
           {
             if (!v159)
             {
-              sub_A60BC(a4, v111, @"Assertion found with keyless value", v122, v123, v124, v125, v126, v153);
+              sub_A60BC(error, scanLocation4, @"Assertion found with keyless value", v122, v123, v124, v125, v126, v153);
               v159 = 0;
               v119 = 1;
               v30 = v164;
@@ -1256,7 +1256,7 @@ LABEL_152:
 
           v161 = +[NSMutableDictionary dictionary];
 LABEL_157:
-          v111 = [v24 scanLocation];
+          scanLocation4 = [v24 scanLocation];
 
 LABEL_121:
           v119 = 0;
@@ -1272,15 +1272,15 @@ LABEL_121:
           if (!v161 && (v128 & 1) == 0)
           {
 LABEL_183:
-            sub_A61DC(v24, -1, a4);
+            sub_A61DC(v24, -1, error);
             v119 = 1;
             goto LABEL_165;
           }
 
-          v129 = [v24 string];
-          v130 = +[BCCFI substringByUnescapingString:inRange:](BCCFI, "substringByUnescapingString:inRange:", v129, v111, [v24 scanLocation] + ~v111);
+          string9 = [v24 string];
+          v130 = +[BCCFI substringByUnescapingString:inRange:](BCCFI, "substringByUnescapingString:inRange:", string9, scanLocation4, [v24 scanLocation] + ~scanLocation4);
 
-          v111 = [v24 scanLocation];
+          scanLocation4 = [v24 scanLocation];
           v119 = 0;
           v160 = v130;
           goto LABEL_154;
@@ -1374,7 +1374,7 @@ LABEL_159:
 
         else
         {
-          sub_A60BC(a4, -1, @"Encountered end of string while parsing CFI assertion", v112, v113, v114, v115, v116, v153);
+          sub_A60BC(error, -1, @"Encountered end of string while parsing CFI assertion", v112, v113, v114, v115, v116, v153);
 
           v119 = 1;
         }
@@ -1506,12 +1506,12 @@ LABEL_18:
 
             self->_steps = v46;
             self->_startStepsPtr = v151;
-            v152 = [(BCCFI *)self generateCFI];
+            generateCFI = [(BCCFI *)self generateCFI];
 
-            v6 = v152;
+            iCopy = generateCFI;
           }
 
-          [(BCCFI *)self setString:v6];
+          [(BCCFI *)self setString:iCopy];
           v16 = 1;
           goto LABEL_188;
         }
@@ -1567,7 +1567,7 @@ LABEL_18:
     goto LABEL_181;
   }
 
-  sub_A60BC(a4, v70, @"Temporal offset must be a non-negative number", v76, v77, v78, v79, v80, v153);
+  sub_A60BC(error, scanLocation2, @"Temporal offset must be a non-negative number", v76, v77, v78, v79, v80, v153);
 
   v16 = 0;
   v30 = v164;
@@ -1593,26 +1593,26 @@ LABEL_188:
   return v3;
 }
 
-+ (id)stringByEscapingString:(id)a3
++ (id)stringByEscapingString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     v4 = [NSCharacterSet characterSetWithCharactersInString:@"^[](), ="];;
-    v5 = [v3 rangeOfCharacterFromSet:v4 options:2];
+    v5 = [stringCopy rangeOfCharacterFromSet:v4 options:2];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = v3;
+      v7 = stringCopy;
     }
 
     else
     {
       v8 = v5;
       v9 = v6;
-      v10 = malloc_type_malloc(4 * ([v3 length] - (v8 + v6)) + 2 * v8, 0x1000040BDFB0063uLL);
+      v10 = malloc_type_malloc(4 * ([stringCopy length] - (v8 + v6)) + 2 * v8, 0x1000040BDFB0063uLL);
       if (v8)
       {
-        [v3 getCharacters:v10 range:{0, v8}];
+        [stringCopy getCharacters:v10 range:{0, v8}];
       }
 
       v11 = v8;
@@ -1620,8 +1620,8 @@ LABEL_188:
       {
         v12 = v11 + 1;
         v10[v11] = 94;
-        v13 = [v3 length];
-        v14 = [v3 rangeOfCharacterFromSet:v4 options:2 range:{v8 + v9, objc_msgSend(v3, "length") - (v8 + v9)}];
+        v13 = [stringCopy length];
+        v14 = [stringCopy rangeOfCharacterFromSet:v4 options:2 range:{v8 + v9, objc_msgSend(stringCopy, "length") - (v8 + v9)}];
         v15 = v14;
         v9 = v16;
         if (v14 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1635,7 +1635,7 @@ LABEL_188:
         }
 
         v18 = v17 - v8;
-        [v3 getCharacters:&v10[v12] range:{v8, v17 - v8}];
+        [stringCopy getCharacters:&v10[v12] range:{v8, v17 - v8}];
         v11 = (v18 + v12);
         v8 = v15;
       }
@@ -1657,13 +1657,13 @@ LABEL_188:
   return v7;
 }
 
-+ (id)substringByUnescapingString:(id)a3 inRange:(_NSRange)a4
++ (id)substringByUnescapingString:(id)string inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (stringCopy)
   {
     v33 = 0u;
     v34 = 0u;
@@ -1673,10 +1673,10 @@ LABEL_188:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    theString = v6;
+    theString = stringCopy;
     v38 = location;
     v39 = length;
-    CharactersPtr = CFStringGetCharactersPtr(v6);
+    CharactersPtr = CFStringGetCharactersPtr(stringCopy);
     if (CharactersPtr)
     {
       CStringPtr = 0;
@@ -1792,19 +1792,19 @@ LABEL_33:
   return v9;
 }
 
-- (id)rebaseCFIWithHead:(id)a3
+- (id)rebaseCFIWithHead:(id)head
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v5;
-  if (v4)
+  headCopy = head;
+  selfCopy = self;
+  v6 = selfCopy;
+  if (headCopy)
   {
-    p_isa = [(BCCFI *)v5 _simplifiedVersion];
-    v8 = [v4 _simplifiedVersion];
+    p_isa = [(BCCFI *)selfCopy _simplifiedVersion];
+    _simplifiedVersion = [headCopy _simplifiedVersion];
     v28 = 0x7FFFFFFFFFFFFFFFLL;
     v29 = 0x7FFFFFFFFFFFFFFFLL;
-    sub_A4734(p_isa, v8, 1, 1, &v29, 0);
-    sub_A4734(p_isa, v8, 0, 1, &v28, 0);
+    sub_A4734(p_isa, _simplifiedVersion, 1, 1, &v29, 0);
+    sub_A4734(p_isa, _simplifiedVersion, 0, 1, &v28, 0);
     v9 = 0;
     v10 = p_isa[1];
     if (v10 < p_isa[3])
@@ -1813,11 +1813,11 @@ LABEL_33:
       v9 = 0;
       v12 = 0;
       v13 = 0;
-      v14 = v8[1];
+      v14 = _simplifiedVersion[1];
       v15 = v29;
       do
       {
-        if (v14 >= v8[3] || v12 > v15)
+        if (v14 >= _simplifiedVersion[3] || v12 > v15)
         {
           break;
         }
@@ -1850,7 +1850,7 @@ LABEL_33:
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v31 = v8;
+                v31 = _simplifiedVersion;
                 v32 = 2112;
                 v33 = p_isa;
                 _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Failed to subtract %@ from %@.", buf, 0x16u);
@@ -1896,10 +1896,10 @@ LABEL_33:
       v19 = 0;
       v20 = 0;
       v21 = 0;
-      v22 = v8[1];
+      v22 = _simplifiedVersion[1];
       do
       {
-        if (v22 >= v8[3] || v20 > v28)
+        if (v22 >= _simplifiedVersion[3] || v20 > v28)
         {
           break;
         }
@@ -1951,7 +1951,7 @@ LABEL_46:
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v31 = v8;
+                v31 = _simplifiedVersion;
                 v32 = 2112;
                 v33 = p_isa;
                 _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "Failed to subtract %@ from %@.", buf, 0x16u);
@@ -1981,19 +1981,19 @@ LABEL_54:
       while (v17 < v18);
     }
 
-    v24 = [p_isa generateCFI];
-    [p_isa setString:v24];
+    generateCFI = [p_isa generateCFI];
+    [p_isa setString:generateCFI];
   }
 
   else
   {
-    p_isa = &v5->super.isa;
+    p_isa = &selfCopy->super.isa;
   }
 
   return p_isa;
 }
 
-- (BCCFI)cfiWithAdjustedSpineIndex:(int64_t)a3 error:(id *)a4
+- (BCCFI)cfiWithAdjustedSpineIndex:(int64_t)index error:(id *)error
 {
   v7 = [(BCCFI *)self copy];
   v8 = v7;
@@ -2009,24 +2009,24 @@ LABEL_54:
         v12 = *(v9 + 8);
         if ((v12 & 1) == 0 && ++v11 == 2)
         {
-          if (v12 + a3 < 0)
+          if (v12 + index < 0)
           {
 
-            if (a4)
+            if (error)
             {
               v21 = NSLocalizedDescriptionKey;
-              v17 = [(BCCFI *)self string];
-              v18 = [NSString stringWithFormat:@"Invalid offset. Offsetting {%@} by %ld would produce a negative spine index.", v17, a3];
-              v22 = v18;
+              string = [(BCCFI *)self string];
+              index = [NSString stringWithFormat:@"Invalid offset. Offsetting {%@} by %ld would produce a negative spine index.", string, index];
+              v22 = index;
               v19 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-              *a4 = [NSError errorWithDomain:@"BKEpubCFIErrorDomain" code:2 userInfo:v19];
+              *error = [NSError errorWithDomain:@"BKEpubCFIErrorDomain" code:2 userInfo:v19];
             }
 
             v8 = 0;
             break;
           }
 
-          *(v9 + 8) = v12 + 2 * a3;
+          *(v9 + 8) = v12 + 2 * index;
           v10 = v7[2];
           v11 = 2;
         }
@@ -2052,18 +2052,18 @@ LABEL_54:
 
   v8 = 0;
 LABEL_14:
-  v14 = [v8 generateCFI];
-  v15 = [BCCFI cfiWithString:v14 error:a4];
+  generateCFI = [v8 generateCFI];
+  v15 = [BCCFI cfiWithString:generateCFI error:error];
 
   return v15;
 }
 
-- (BCCFI)cfiWithSpineIndexAdjustedUsingAssertionBlock:(id)a3
+- (BCCFI)cfiWithSpineIndexAdjustedUsingAssertionBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  stepsEnd = v5->_stepsEnd;
-  v7 = &v5->_steps[1];
+  blockCopy = block;
+  selfCopy = self;
+  stepsEnd = selfCopy->_stepsEnd;
+  v7 = &selfCopy->_steps[1];
   while (v7 < stepsEnd)
   {
     v8 = *v7;
@@ -2073,12 +2073,12 @@ LABEL_14:
       if (v7 < stepsEnd && *v7 == 2)
       {
         v9 = *(v7 - 24);
-        v10 = v4[2](v4, v9, *(v7 + 8));
+        v10 = blockCopy[2](blockCopy, v9, *(v7 + 8));
         if (v10 != 0x7FFFFFFFFFFFFFFFLL && v9 != v10)
         {
-          v12 = [(BCCFI *)v5 cfiWithAdjustedSpineIndex:v10 error:0];
+          v12 = [(BCCFI *)selfCopy cfiWithAdjustedSpineIndex:v10 error:0];
 
-          v5 = v12;
+          selfCopy = v12;
         }
       }
 
@@ -2086,7 +2086,7 @@ LABEL_14:
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)headCFI
@@ -2172,16 +2172,16 @@ LABEL_14:
 
 - (id)ensureRange
 {
-  v2 = self;
-  if ([(BCCFI *)v2 isRange])
+  selfCopy = self;
+  if ([(BCCFI *)selfCopy isRange])
   {
     goto LABEL_17;
   }
 
   v3 = +[NSMutableString stringWithString:](NSMutableString, "stringWithString:", @"epubcfi(");
-  steps = v2->_steps;
+  steps = selfCopy->_steps;
   v5 = @"/1,:0,:1";
-  if (steps >= v2->_startStepsPtr)
+  if (steps >= selfCopy->_startStepsPtr)
   {
     goto LABEL_15;
   }
@@ -2211,7 +2211,7 @@ LABEL_9:
     sub_A6FDC(v3, steps);
 LABEL_12:
     steps += 32;
-    if (steps >= v2->_startStepsPtr)
+    if (steps >= selfCopy->_startStepsPtr)
     {
       if (v6)
       {
@@ -2252,10 +2252,10 @@ LABEL_16:
   [v3 appendString:@""]);
   v8 = [BCCFI cfiWithString:v3 error:0];
 
-  v2 = v8;
+  selfCopy = v8;
 LABEL_17:
 
-  return v2;
+  return selfCopy;
 }
 
 - (unint64_t)characterCountIfComputable
@@ -2336,22 +2336,22 @@ LABEL_17:
   return result;
 }
 
-- (void)_copyInto:(id)a3
+- (void)_copyInto:(id)into
 {
-  v15 = a3;
-  v4 = [(BCCFI *)self string];
-  [v15 setString:v4];
+  intoCopy = into;
+  string = [(BCCFI *)self string];
+  [intoCopy setString:string];
 
   v5 = self->_stepsEnd - self->_steps;
   v6 = malloc_type_malloc(v5, 0x10E204035D40BE2uLL);
-  v15[1] = v6;
-  v15[2] = &v6[(self->_startStepsPtr - self->_steps)];
-  v15[3] = &v6[(self->_endStepsPtr - self->_steps)];
-  v15[4] = &v6[(self->_stepsEnd - self->_steps)];
-  v15[6] = self->_pageIndexOffset;
+  intoCopy[1] = v6;
+  intoCopy[2] = &v6[(self->_startStepsPtr - self->_steps)];
+  intoCopy[3] = &v6[(self->_endStepsPtr - self->_steps)];
+  intoCopy[4] = &v6[(self->_stepsEnd - self->_steps)];
+  intoCopy[6] = self->_pageIndexOffset;
   memmove(v6, self->_steps, v5);
-  v7 = v15[1];
-  v8 = v15[4];
+  v7 = intoCopy[1];
+  v8 = intoCopy[4];
   while (v7 < v8)
   {
     v9 = *v7;
@@ -2433,10 +2433,10 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_subtractStep:(const BCCFIStep *)a3 fromStep:(BCCFIStep *)a4
+- (BOOL)_subtractStep:(const BCCFIStep *)step fromStep:(BCCFIStep *)fromStep
 {
-  var0 = a4->var0;
-  if (a4->var0 != a3->var0)
+  var0 = fromStep->var0;
+  if (fromStep->var0 != step->var0)
   {
     v13 = BCReadingStatisticsLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2460,8 +2460,8 @@ LABEL_22:
 
   if (var0 == 5)
   {
-    v18 = a4->var1.var0.var0;
-    v19 = a3->var1.var0.var0;
+    v18 = fromStep->var1.var0.var0;
+    v19 = step->var1.var0.var0;
     if (v19 > v18)
     {
       v20 = BCReadingStatisticsLog();
@@ -2497,8 +2497,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v8 = a4->var1.var0.var0;
-  v9 = a3->var1.var0.var0;
+  v8 = fromStep->var1.var0.var0;
+  v9 = step->var1.var0.var0;
   if (v9 > v8)
   {
     v10 = BCReadingStatisticsLog();
@@ -2512,11 +2512,11 @@ LABEL_22:
   }
 
   v11 = v8 - v9;
-  a4->var1.var0.var0 = v11;
-  if (a3->var0 == 1)
+  fromStep->var1.var0.var0 = v11;
+  if (step->var0 == 1)
   {
     v12 = 1;
-    if ((a3->var1.var0.var0 & 1) == 0)
+    if ((step->var1.var0.var0 & 1) == 0)
     {
       v12 = 2;
     }
@@ -2529,20 +2529,20 @@ LABEL_22:
 
   v21 = v12 + v11;
 LABEL_25:
-  a4->var1.var0.var0 = v21;
+  fromStep->var1.var0.var0 = v21;
   return 1;
 }
 
-+ (id)_cfiLocationFromHeadOf:(id)a3 toTailOf:(id)a4
++ (id)_cfiLocationFromHeadOf:(id)of toTailOf:(id)tailOf
 {
-  v5 = a3;
-  v6 = a4;
+  ofCopy = of;
+  tailOfCopy = tailOf;
   v29 = 0;
   v30 = 0;
-  sub_A4734(v5, v6, 1, 0, &v30, &v29);
+  sub_A4734(ofCopy, tailOfCopy, 1, 0, &v30, &v29);
   v7 = +[NSMutableString stringWithString:](NSMutableString, "stringWithString:", @"epubcfi(");
-  v9 = v5[1];
-  v8 = v5[2];
+  v9 = ofCopy[1];
+  v8 = ofCopy[2];
   v10 = 0;
   if (v9 < v8 && v30 != 0)
   {
@@ -2551,19 +2551,19 @@ LABEL_25:
       sub_A6FDC(v7, v9);
       ++v10;
       v9 += 32;
-      v8 = v5[2];
+      v8 = ofCopy[2];
     }
 
     while (v9 < v8 && v10 < v30);
   }
 
-  v13 = v5[3];
+  v13 = ofCopy[3];
   while (v8 < v13)
   {
     if (v10 < v30)
     {
       sub_A6FDC(v7, v8);
-      v13 = v5[3];
+      v13 = ofCopy[3];
     }
 
     ++v10;
@@ -2571,8 +2571,8 @@ LABEL_25:
   }
 
   [v7 appendString:{@", "}];
-  v15 = v5[1];
-  v14 = v5[2];
+  v15 = ofCopy[1];
+  v14 = ofCopy[2];
   if (v15 >= v14)
   {
     v16 = 0;
@@ -2586,7 +2586,7 @@ LABEL_25:
       if (v16 >= v30)
       {
         sub_A6FDC(v7, v15);
-        v14 = v5[2];
+        v14 = ofCopy[2];
       }
 
       ++v16;
@@ -2596,13 +2596,13 @@ LABEL_25:
     while (v15 < v14);
   }
 
-  v17 = v5[3];
+  v17 = ofCopy[3];
   while (v14 < v17)
   {
     if (v16 >= v30)
     {
       sub_A6FDC(v7, v14);
-      v17 = v5[3];
+      v17 = ofCopy[3];
     }
 
     ++v16;
@@ -2610,8 +2610,8 @@ LABEL_25:
   }
 
   [v7 appendString:{@", "}];
-  v19 = v6[1];
-  v18 = v6[2];
+  v19 = tailOfCopy[1];
+  v18 = tailOfCopy[2];
   if (v19 >= v18)
   {
     v20 = 0;
@@ -2625,7 +2625,7 @@ LABEL_25:
       if (v20 >= v29)
       {
         sub_A6FDC(v7, v19);
-        v18 = v6[2];
+        v18 = tailOfCopy[2];
       }
 
       ++v20;
@@ -2635,14 +2635,14 @@ LABEL_25:
     while (v19 < v18);
   }
 
-  v22 = v6[3];
-  v21 = v6[4];
+  v22 = tailOfCopy[3];
+  v21 = tailOfCopy[4];
   while (v22 < v21)
   {
     if (v20 >= v29)
     {
       sub_A6FDC(v7, v22);
-      v21 = v6[4];
+      v21 = tailOfCopy[4];
     }
 
     ++v20;
@@ -2670,9 +2670,9 @@ LABEL_25:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v32 = v5;
+      v32 = ofCopy;
       v33 = 2112;
-      v34 = v6;
+      v34 = tailOfCopy;
       _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Failed to create CFI from %@ to %@", buf, 0x16u);
     }
   }
@@ -2680,19 +2680,19 @@ LABEL_25:
   return v23;
 }
 
-+ (id)_cfiLocationFromTailOf:(id)a3 toHeadOf:(id)a4
++ (id)_cfiLocationFromTailOf:(id)of toHeadOf:(id)headOf
 {
-  v5 = a3;
-  v6 = a4;
+  ofCopy = of;
+  headOfCopy = headOf;
   v29 = 0;
   v30 = 0;
   v7 = 0;
-  if (sub_A4734(v5, v6, 0, 1, &v30, &v29) != 1)
+  if (sub_A4734(ofCopy, headOfCopy, 0, 1, &v30, &v29) != 1)
   {
     v8 = +[NSMutableString stringWithString:](NSMutableString, "stringWithString:", @"epubcfi(");
-    v9 = v5[1];
+    v9 = ofCopy[1];
     v10 = 0;
-    if (v9 < v5[2] && v30 != 0)
+    if (v9 < ofCopy[2] && v30 != 0)
     {
       do
       {
@@ -2701,17 +2701,17 @@ LABEL_25:
         v9 += 32;
       }
 
-      while (v9 < v5[2] && v10 < v30);
+      while (v9 < ofCopy[2] && v10 < v30);
     }
 
-    v14 = v5[3];
-    v13 = v5[4];
+    v14 = ofCopy[3];
+    v13 = ofCopy[4];
     while (v14 < v13)
     {
       if (v10 < v30)
       {
         sub_A6FDC(v8, v14);
-        v13 = v5[4];
+        v13 = ofCopy[4];
       }
 
       ++v10;
@@ -2719,8 +2719,8 @@ LABEL_25:
     }
 
     [v8 appendString:{@", "}];
-    v16 = v5[1];
-    v15 = v5[2];
+    v16 = ofCopy[1];
+    v15 = ofCopy[2];
     if (v16 >= v15)
     {
       v17 = 0;
@@ -2734,7 +2734,7 @@ LABEL_25:
         if (v17 >= v30)
         {
           sub_A6FDC(v8, v16);
-          v15 = v5[2];
+          v15 = ofCopy[2];
         }
 
         ++v17;
@@ -2744,14 +2744,14 @@ LABEL_25:
       while (v16 < v15);
     }
 
-    v19 = v5[3];
-    v18 = v5[4];
+    v19 = ofCopy[3];
+    v18 = ofCopy[4];
     while (v19 < v18)
     {
       if (v17 >= v30)
       {
         sub_A6FDC(v8, v19);
-        v18 = v5[4];
+        v18 = ofCopy[4];
       }
 
       ++v17;
@@ -2759,8 +2759,8 @@ LABEL_25:
     }
 
     [v8 appendString:{@", "}];
-    v21 = v6[1];
-    v20 = v6[2];
+    v21 = headOfCopy[1];
+    v20 = headOfCopy[2];
     if (v21 >= v20)
     {
       v22 = 0;
@@ -2774,7 +2774,7 @@ LABEL_25:
         if (v22 >= v29)
         {
           sub_A6FDC(v8, v21);
-          v20 = v6[2];
+          v20 = headOfCopy[2];
         }
 
         ++v22;
@@ -2784,13 +2784,13 @@ LABEL_25:
       while (v21 < v20);
     }
 
-    v23 = v6[3];
+    v23 = headOfCopy[3];
     while (v20 < v23)
     {
       if (v22 >= v29)
       {
         sub_A6FDC(v8, v20);
-        v23 = v6[3];
+        v23 = headOfCopy[3];
       }
 
       ++v22;
@@ -2818,9 +2818,9 @@ LABEL_25:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v32 = v5;
+        v32 = ofCopy;
         v33 = 2112;
-        v34 = v6;
+        v34 = headOfCopy;
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Failed to create CFI from %@ to %@", buf, 0x16u);
       }
     }

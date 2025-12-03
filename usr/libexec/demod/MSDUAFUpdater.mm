@@ -2,10 +2,10 @@
 + (id)collectAllSubscribersRequiredForAppleIntelligence;
 + (id)sharedInstance;
 - (BOOL)checkSiriAssetsAvailable;
-- (MSDUAFUpdater)initWithAssetSetManager:(id)a3;
-- (void)downloadAllAssetsFromUAFWithCompletion:(id)a3;
-- (void)downloadAssetsFromUAFForSubscribers:(id)a3 withCompletion:(id)a4;
-- (void)downloadSiriAssetsFromUAFWithCompletion:(id)a3;
+- (MSDUAFUpdater)initWithAssetSetManager:(id)manager;
+- (void)downloadAllAssetsFromUAFWithCompletion:(id)completion;
+- (void)downloadAssetsFromUAFForSubscribers:(id)subscribers withCompletion:(id)completion;
+- (void)downloadSiriAssetsFromUAFWithCompletion:(id)completion;
 @end
 
 @implementation MSDUAFUpdater
@@ -22,16 +22,16 @@
   return v3;
 }
 
-- (MSDUAFUpdater)initWithAssetSetManager:(id)a3
+- (MSDUAFUpdater)initWithAssetSetManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = MSDUAFUpdater;
   v5 = [(MSDUAFUpdater *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(MSDUAFUpdater *)v5 setUAFAssetSetManager:v4];
+    [(MSDUAFUpdater *)v5 setUAFAssetSetManager:managerCopy];
     v7 = dispatch_queue_create("com.apple.MobileStoreDemo.UAFDownloadQueue", 0);
     [(MSDUAFUpdater *)v6 setUafDownloadQueue:v7];
 
@@ -43,15 +43,15 @@
 
 + (id)collectAllSubscribersRequiredForAppleIntelligence
 {
-  v2 = [a1 collectAllSubscribersRequiredForSiri];
-  v3 = [&off_10017BF88 arrayByAddingObjectsFromArray:v2];
+  collectAllSubscribersRequiredForSiri = [self collectAllSubscribersRequiredForSiri];
+  v3 = [&off_10017BF88 arrayByAddingObjectsFromArray:collectAllSubscribersRequiredForSiri];
 
   return v3;
 }
 
-- (void)downloadAllAssetsFromUAFWithCompletion:(id)a3
+- (void)downloadAllAssetsFromUAFWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -61,12 +61,12 @@
   }
 
   v6 = +[MSDUAFUpdater collectAllSubscribersRequiredForAppleIntelligence];
-  [(MSDUAFUpdater *)self downloadAssetsFromUAFForSubscribers:v6 withCompletion:v4];
+  [(MSDUAFUpdater *)self downloadAssetsFromUAFForSubscribers:v6 withCompletion:completionCopy];
 }
 
-- (void)downloadSiriAssetsFromUAFWithCompletion:(id)a3
+- (void)downloadSiriAssetsFromUAFWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -76,13 +76,13 @@
   }
 
   v6 = +[MSDUAFUpdater collectAllSubscribersRequiredForSiri];
-  [(MSDUAFUpdater *)self downloadAssetsFromUAFForSubscribers:v6 withCompletion:v4];
+  [(MSDUAFUpdater *)self downloadAssetsFromUAFForSubscribers:v6 withCompletion:completionCopy];
 }
 
-- (void)downloadAssetsFromUAFForSubscribers:(id)a3 withCompletion:(id)a4
+- (void)downloadAssetsFromUAFForSubscribers:(id)subscribers withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  subscribersCopy = subscribers;
+  completionCopy = completion;
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -96,7 +96,7 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v6;
+  v10 = subscribersCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -123,16 +123,16 @@
     while (v12);
   }
 
-  v15 = [(MSDUAFUpdater *)self UAFAssetSetManager];
+  uAFAssetSetManager = [(MSDUAFUpdater *)self UAFAssetSetManager];
   v16 = [v9 copy];
-  v17 = [(MSDUAFUpdater *)self uafDownloadQueue];
+  uafDownloadQueue = [(MSDUAFUpdater *)self uafDownloadQueue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100095154;
   v19[3] = &unk_10016BC10;
-  v20 = v7;
-  v18 = v7;
-  [v15 updateAssetsForSubscribers:v16 policies:0 queue:v17 detailedProgress:&stru_10016BBE8 completion:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [uAFAssetSetManager updateAssetsForSubscribers:v16 policies:0 queue:uafDownloadQueue detailedProgress:&stru_10016BBE8 completion:v19];
 }
 
 - (BOOL)checkSiriAssetsAvailable

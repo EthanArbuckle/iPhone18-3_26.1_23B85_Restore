@@ -1,18 +1,18 @@
 @interface MKMapCameraBoundary
 - ($9433BFB5400FDC760880D1BFD6845728)_clampedMapRectForMapRect:(id)result;
 - (BOOL)_isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMapCameraBoundary:(id)a3;
-- (BOOL)isValidCoordinateRegion:(id *)a3;
-- (BOOL)isValidMapRect:(id)a3;
-- (CLLocationCoordinate2D)_clampedCoordinateForCoordinate:(CLLocationCoordinate2D)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMapCameraBoundary:(id)boundary;
+- (BOOL)isValidCoordinateRegion:(id *)region;
+- (BOOL)isValidMapRect:(id)rect;
+- (CLLocationCoordinate2D)_clampedCoordinateForCoordinate:(CLLocationCoordinate2D)coordinate;
 - (MKCoordinateRegion)region;
 - (MKMapCameraBoundary)initWithCoder:(NSCoder *)coder;
 - (MKMapCameraBoundary)initWithCoordinateRegion:(MKCoordinateRegion)region;
 - (MKMapCameraBoundary)initWithMapRect:(MKMapRect)mapRect;
 - (MKMapRect)mapRect;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKMapCameraBoundary
@@ -43,9 +43,9 @@
   return result;
 }
 
-- (CLLocationCoordinate2D)_clampedCoordinateForCoordinate:(CLLocationCoordinate2D)a3
+- (CLLocationCoordinate2D)_clampedCoordinateForCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  [(VKCameraRegionRestriction *)self->_vkRestriction clampedCoordinate:a3.latitude, a3.longitude];
+  [(VKCameraRegionRestriction *)self->_vkRestriction clampedCoordinate:coordinate.latitude, coordinate.longitude];
 
   v7 = CLLocationCoordinate2DMake(v3, v4);
   longitude = v7.longitude;
@@ -116,18 +116,18 @@ LABEL_6:
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   vkRestriction = self->_vkRestriction;
-  v6 = v4;
+  v6 = coderCopy;
   if (vkRestriction)
   {
-    [v4 encodeObject:vkRestriction forKey:@"MKMapCameraBoundaryVKRestriction"];
-    v4 = v6;
+    [coderCopy encodeObject:vkRestriction forKey:@"MKMapCameraBoundaryVKRestriction"];
+    coderCopy = v6;
   }
 
-  [v4 encodeDouble:@"MKMapCameraBoundaryRegionLatitude" forKey:self->_region.center.latitude];
+  [coderCopy encodeDouble:@"MKMapCameraBoundaryRegionLatitude" forKey:self->_region.center.latitude];
   [v6 encodeDouble:@"MKMapCameraBoundaryRegionLongitude" forKey:self->_region.center.longitude];
   [v6 encodeDouble:@"MKMapCameraBoundaryRegionLatitudeSpan" forKey:self->_region.span.latitudeDelta];
   [v6 encodeDouble:@"MKMapCameraBoundaryRegionLongitudeSpan" forKey:self->_region.span.longitudeDelta];
@@ -137,9 +137,9 @@ LABEL_6:
   [v6 encodeDouble:@"MKMapCameraBoundaryMapRectHeight" forKey:self->_mapRect.size.height];
 }
 
-- (BOOL)isEqualToMapCameraBoundary:(id)a3
+- (BOOL)isEqualToMapCameraBoundary:(id)boundary
 {
-  [a3 mapRect];
+  [boundary mapRect];
   if (self->_mapRect.origin.x != v7 || self->_mapRect.origin.y != v4)
   {
     return 0;
@@ -153,11 +153,11 @@ LABEL_6:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKMapCameraBoundary *)self isEqualToMapCameraBoundary:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKMapCameraBoundary *)self isEqualToMapCameraBoundary:equalCopy];
 
   return v5;
 }
@@ -198,7 +198,7 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isValidCoordinateRegion:(id *)a3
+- (BOOL)isValidCoordinateRegion:(id *)region
 {
   result = 0;
   if (fabs(v4) <= 180.0)
@@ -209,11 +209,11 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isValidMapRect:(id)a3
+- (BOOL)isValidMapRect:(id)rect
 {
-  v3 = a3.var0.var0 == INFINITY && a3.var0.var1 == INFINITY;
+  v3 = rect.var0.var0 == INFINITY && rect.var0.var1 == INFINITY;
   result = 1;
-  if (v3 && a3.var1.var1 == 0.0 && a3.var1.var0 == 0.0)
+  if (v3 && rect.var1.var1 == 0.0 && rect.var1.var0 == 0.0)
   {
     return 0;
   }
@@ -221,7 +221,7 @@ LABEL_6:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   x = self->_mapRect.origin.x;

@@ -3,8 +3,8 @@
 - (HFSynchronizedTimer)init;
 - (void)_timerDidFire;
 - (void)_updateTimerState;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation HFSynchronizedTimer
@@ -35,19 +35,19 @@ void __37__HFSynchronizedTimer_sharedInstance__block_invoke_2()
   v2 = [(HFSynchronizedTimer *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFSynchronizedTimer *)self observers];
-  v6 = [v5 objectForKey:v4];
+  observerCopy = observer;
+  observers = [(HFSynchronizedTimer *)self observers];
+  v6 = [observers objectForKey:observerCopy];
 
   if (!v6)
   {
@@ -58,9 +58,9 @@ void __37__HFSynchronizedTimer_sharedInstance__block_invoke_2()
     v12 = __35__HFSynchronizedTimer_addObserver___block_invoke;
     v13 = &unk_277DFF118;
     objc_copyWeak(&v14, &location);
-    v8 = [v7 initWithTargetObject:v4 finalizer:&v10];
+    v8 = [v7 initWithTargetObject:observerCopy finalizer:&v10];
     v9 = [(HFSynchronizedTimer *)self observers:v10];
-    [v9 setObject:v8 forKey:v4];
+    [v9 setObject:v8 forKey:observerCopy];
 
     [(HFSynchronizedTimer *)self _updateTimerState];
     objc_destroyWeak(&v14);
@@ -74,22 +74,22 @@ void __35__HFSynchronizedTimer_addObserver___block_invoke(uint64_t a1, uint64_t 
   [WeakRetained removeObserver:a2];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFSynchronizedTimer *)self observers];
-  [v5 removeObjectForKey:v4];
+  observerCopy = observer;
+  observers = [(HFSynchronizedTimer *)self observers];
+  [observers removeObjectForKey:observerCopy];
 
   [(HFSynchronizedTimer *)self _updateTimerState];
 }
 
 - (void)_updateTimerState
 {
-  v3 = [(HFSynchronizedTimer *)self observers];
-  v4 = [v3 count];
+  observers = [(HFSynchronizedTimer *)self observers];
+  v4 = [observers count];
 
-  v5 = [(HFSynchronizedTimer *)self activeTimer];
-  v6 = v5;
+  activeTimer = [(HFSynchronizedTimer *)self activeTimer];
+  v6 = activeTimer;
   if (v4)
   {
 
@@ -112,7 +112,7 @@ void __35__HFSynchronizedTimer_addObserver___block_invoke(uint64_t a1, uint64_t 
 
   else
   {
-    [v5 invalidate];
+    [activeTimer invalidate];
 
     [(HFSynchronizedTimer *)self setActiveTimer:0];
   }
@@ -131,8 +131,8 @@ void __40__HFSynchronizedTimer__updateTimerState__block_invoke(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(HFSynchronizedTimer *)self observers];
-  v4 = [v3 copy];
+  observers = [(HFSynchronizedTimer *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)

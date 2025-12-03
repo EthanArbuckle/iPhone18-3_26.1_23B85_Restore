@@ -1,47 +1,47 @@
 @interface CADUpcomingEventsPredicate
-- (CADUpcomingEventsPredicate)initWithCoder:(id)a3;
-- (CADUpcomingEventsPredicate)initWithLimit:(int)a3;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (CADUpcomingEventsPredicate)initWithCoder:(id)coder;
+- (CADUpcomingEventsPredicate)initWithLimit:(int)limit;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADUpcomingEventsPredicate
 
-- (CADUpcomingEventsPredicate)initWithLimit:(int)a3
+- (CADUpcomingEventsPredicate)initWithLimit:(int)limit
 {
   v5.receiver = self;
   v5.super_class = CADUpcomingEventsPredicate;
   result = [(CADUpcomingEventsPredicate *)&v5 init];
   if (result)
   {
-    result->_limit = a3;
+    result->_limit = limit;
   }
 
   return result;
 }
 
-- (CADUpcomingEventsPredicate)initWithCoder:(id)a3
+- (CADUpcomingEventsPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CADUpcomingEventsPredicate;
-  v5 = [(CADUpcomingEventsPredicate *)&v7 initWithCoder:v4];
+  v5 = [(CADUpcomingEventsPredicate *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_limit = [v4 decodeIntForKey:@"limit"];
+    v5->_limit = [coderCopy decodeIntForKey:@"limit"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CADUpcomingEventsPredicate;
-  v4 = a3;
-  [(CADUpcomingEventsPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:self->_limit forKey:{@"limit", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CADUpcomingEventsPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:self->_limit forKey:{@"limit", v5.receiver, v5.super_class}];
 }
 
 - (id)predicateFormat
@@ -54,7 +54,7 @@
   return v6;
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = CalFilterCreateWithDatabaseShowingAll();
@@ -65,8 +65,8 @@
     if (v6)
     {
       v7 = v6;
-      v8 = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
-      [v8 timeIntervalSinceReferenceDate];
+      calSimulatedDateForNow = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
+      [calSimulatedDateForNow timeIntervalSinceReferenceDate];
       [(CADUpcomingEventsPredicate *)self limit];
       v9 = CalEventOccurrenceCacheCopyEventOccurrencesAfterDate();
       v10 = CADLogHandle;
@@ -79,7 +79,7 @@
         v17 = 138412802;
         v18 = v13;
         v19 = 2112;
-        v20 = v8;
+        v20 = calSimulatedDateForNow;
         v21 = 2112;
         v22 = v14;
         _os_log_impl(&dword_22430B000, v12, OS_LOG_TYPE_DEBUG, "Gathered [%@] upcoming event occurrences after date [%@] and up to limit [%@]", &v17, 0x20u);

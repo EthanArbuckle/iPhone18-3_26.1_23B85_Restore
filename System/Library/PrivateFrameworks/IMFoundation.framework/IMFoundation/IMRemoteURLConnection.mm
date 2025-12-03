@@ -1,6 +1,6 @@
 @interface IMRemoteURLConnection
-- (IMRemoteURLConnection)initWithURLRequest:(id)a3 completionBlock:(id)a4;
-- (IMRemoteURLConnection)initWithURLRequest:(id)a3 completionBlockWithTimingData:(id)a4;
+- (IMRemoteURLConnection)initWithURLRequest:(id)request completionBlock:(id)block;
+- (IMRemoteURLConnection)initWithURLRequest:(id)request completionBlockWithTimingData:(id)data;
 - (void)_direct_cancel;
 - (void)_direct_load;
 - (void)cancel;
@@ -239,43 +239,43 @@
   v126 = *MEMORY[0x1E69E9840];
 }
 
-- (IMRemoteURLConnection)initWithURLRequest:(id)a3 completionBlock:(id)a4
+- (IMRemoteURLConnection)initWithURLRequest:(id)request completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1959C9900;
   v11[3] = &unk_1E74398E0;
-  v12 = v6;
-  v7 = v6;
-  v9 = objc_msgSend_initWithURLRequest_completionBlockWithTimingData_(self, v8, a3, v11);
+  v12 = blockCopy;
+  v7 = blockCopy;
+  v9 = objc_msgSend_initWithURLRequest_completionBlockWithTimingData_(self, v8, request, v11);
 
   return v9;
 }
 
-- (IMRemoteURLConnection)initWithURLRequest:(id)a3 completionBlockWithTimingData:(id)a4
+- (IMRemoteURLConnection)initWithURLRequest:(id)request completionBlockWithTimingData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = IMRemoteURLConnection;
   v9 = [(IMRemoteURLConnection *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
+    objc_storeStrong(&v9->_request, request);
     v13 = objc_msgSend_URLLoading(IMIDSLog, v11, v12);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v22 = v7;
+      v22 = requestCopy;
       v23 = 2048;
       v24 = v10;
       _os_log_impl(&dword_195988000, v13, OS_LOG_TYPE_DEFAULT, "Init with URL request: %@  (%p)", buf, 0x16u);
     }
 
-    v16 = objc_msgSend_copy(v8, v14, v15);
+    v16 = objc_msgSend_copy(dataCopy, v14, v15);
     block = v10->_block;
     v10->_block = v16;
   }
@@ -294,7 +294,7 @@
     *buf = 138412546;
     v9 = request;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_195988000, v4, OS_LOG_TYPE_DEFAULT, "Released URL request: %@  (%p)", buf, 0x16u);
   }
 
@@ -314,7 +314,7 @@
     v10 = 138412546;
     v11 = request;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_195988000, v4, OS_LOG_TYPE_DEFAULT, "Cancelling URL request: %@  (%p)", &v10, 0x16u);
   }
 

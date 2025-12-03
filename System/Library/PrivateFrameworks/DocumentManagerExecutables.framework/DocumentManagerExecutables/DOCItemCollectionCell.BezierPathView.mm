@@ -1,8 +1,8 @@
 @interface DOCItemCollectionCell.BezierPathView
 - (_TtCC26DocumentManagerExecutables21DOCItemCollectionCell14BezierPathView)init;
-- (_TtCC26DocumentManagerExecutables21DOCItemCollectionCell14BezierPathView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setBackgroundColor:(id)a3;
+- (_TtCC26DocumentManagerExecutables21DOCItemCollectionCell14BezierPathView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation DOCItemCollectionCell.BezierPathView
@@ -19,21 +19,21 @@
   return v4;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  if (a3)
+  if (color)
   {
     __break(1u);
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v9.origin.x = x;
   v9.origin.y = y;
   v9.size.width = width;
@@ -41,7 +41,7 @@
   DOCItemCollectionCell.BezierPathView.draw(_:)(v9);
 }
 
-- (_TtCC26DocumentManagerExecutables21DOCItemCollectionCell14BezierPathView)initWithFrame:(CGRect)a3
+- (_TtCC26DocumentManagerExecutables21DOCItemCollectionCell14BezierPathView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

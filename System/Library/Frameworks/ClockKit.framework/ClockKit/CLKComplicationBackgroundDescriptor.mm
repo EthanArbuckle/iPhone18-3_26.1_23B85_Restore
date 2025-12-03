@@ -1,7 +1,7 @@
 @interface CLKComplicationBackgroundDescriptor
-- (CLKComplicationBackgroundDescriptor)initWithBackgroundColor:(id)a3;
+- (CLKComplicationBackgroundDescriptor)initWithBackgroundColor:(id)color;
 - (CLKComplicationBackgroundDescriptor)initWithClearBackground;
-- (CLKComplicationBackgroundDescriptor)initWithGradientBackgroundColors:(id)a3 locations:(id)a4;
+- (CLKComplicationBackgroundDescriptor)initWithGradientBackgroundColors:(id)colors locations:(id)locations;
 - (CLKComplicationBackgroundDescriptor)initWithMaterialBackground;
 @end
 
@@ -47,20 +47,20 @@
   return v3;
 }
 
-- (CLKComplicationBackgroundDescriptor)initWithGradientBackgroundColors:(id)a3 locations:(id)a4
+- (CLKComplicationBackgroundDescriptor)initWithGradientBackgroundColors:(id)colors locations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  colorsCopy = colors;
+  locationsCopy = locations;
   v14.receiver = self;
   v14.super_class = CLKComplicationBackgroundDescriptor;
   v8 = [(CLKComplicationBackgroundDescriptor *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [colorsCopy copy];
     backgroundColors = v8->_backgroundColors;
     v8->_backgroundColors = v9;
 
-    v11 = [v7 copy];
+    v11 = [locationsCopy copy];
     backgroundLocations = v8->_backgroundLocations;
     v8->_backgroundLocations = v11;
 
@@ -70,13 +70,13 @@
   return v8;
 }
 
-- (CLKComplicationBackgroundDescriptor)initWithBackgroundColor:(id)a3
+- (CLKComplicationBackgroundDescriptor)initWithBackgroundColor:(id)color
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v9[0] = a3;
-  v9[1] = a3;
+  v9[0] = color;
+  v9[1] = color;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  colorCopy = color;
   v6 = [v4 arrayWithObjects:v9 count:2];
 
   v7 = [(CLKComplicationBackgroundDescriptor *)self initWithGradientBackgroundColors:v6];

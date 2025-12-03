@@ -3,20 +3,20 @@
 - (void)dealloc;
 - (void)purge;
 - (void)purgeWithLock;
-- (void)setResourceArgs:(const IOAccelNewResourceArgs *)a3 resourceArgsSize:(unsigned int)a4;
+- (void)setResourceArgs:(const IOAccelNewResourceArgs *)args resourceArgsSize:(unsigned int)size;
 @end
 
 @implementation MTLIOAccelResourcePool
 
-- (void)setResourceArgs:(const IOAccelNewResourceArgs *)a3 resourceArgsSize:(unsigned int)a4
+- (void)setResourceArgs:(const IOAccelNewResourceArgs *)args resourceArgsSize:(unsigned int)size
 {
   os_unfair_lock_lock(&self->_priv.lock);
   [(MTLIOAccelResourcePool *)self purgeWithLock];
   free(self->_resourceArgs);
-  self->_resourceArgsSize = a4;
-  v7 = malloc_type_malloc(a4, 0x10000407488EC78uLL);
+  self->_resourceArgsSize = size;
+  v7 = malloc_type_malloc(size, 0x10000407488EC78uLL);
   self->_resourceArgs = v7;
-  memcpy(v7, a3, self->_resourceArgsSize);
+  memcpy(v7, args, self->_resourceArgsSize);
   ++self->generation;
 
   os_unfair_lock_unlock(&self->_priv.lock);

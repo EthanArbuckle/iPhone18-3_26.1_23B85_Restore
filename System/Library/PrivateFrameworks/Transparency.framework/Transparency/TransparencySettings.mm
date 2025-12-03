@@ -1,6 +1,6 @@
 @interface TransparencySettings
 + (BOOL)enableSelfValidationXPCActivity;
-+ (BOOL)getBool:(id)a3 defaultValue:(BOOL)a4;
++ (BOOL)getBool:(id)bool defaultValue:(BOOL)value;
 + (BOOL)isAccountsInQA;
 + (double)backgroundFollowupDelayPeriod;
 + (double)defaultQueryCacheTimeout;
@@ -14,9 +14,9 @@
 + (id)devicePlatform;
 + (id)deviceUserAgent;
 + (id)getIMEnvironmentName;
-+ (id)getOverride:(id)a3;
-+ (id)jsonArrayFromPlistArray:(id)a3;
-+ (id)jsonDictFromPlistDict:(id)a3;
++ (id)getOverride:(id)override;
++ (id)jsonArrayFromPlistArray:(id)array;
++ (id)jsonDictFromPlistDict:(id)dict;
 + (unint64_t)backgroundFollowupFailureCount;
 + (unint64_t)getEnvironment;
 - (double)atBackgroundFollowupDelayPeriod;
@@ -90,10 +90,10 @@ void __38__TransparencySettings_isAccountsInQA__block_invoke()
   isAccountsInQA_sIMIsAccountsInQA = [v2 fileExistsAtPath:v3];
 }
 
-+ (BOOL)getBool:(id)a3 defaultValue:(BOOL)a4
++ (BOOL)getBool:(id)bool defaultValue:(BOOL)value
 {
   keyExistsAndHasValidFormat = 0;
-  v5 = CFPreferencesGetAppBooleanValue(a3, @"com.apple.transparencyd", &keyExistsAndHasValidFormat) != 0;
+  v5 = CFPreferencesGetAppBooleanValue(bool, @"com.apple.transparencyd", &keyExistsAndHasValidFormat) != 0;
   if (keyExistsAndHasValidFormat)
   {
     return v5;
@@ -101,7 +101,7 @@ void __38__TransparencySettings_isAccountsInQA__block_invoke()
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
@@ -242,113 +242,113 @@ LABEL_14:
 + (double)defaultQueryCacheTimeout
 {
   v2 = [TransparencySettings getOverride:@"overrideDefaultQueryCacheTimeout"];
-  v3 = 86400.0;
+  unsignedIntegerValue = 86400.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 unsignedIntegerValue];
+      unsignedIntegerValue = [v2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (double)queryCacheHardTimeout
 {
   v2 = [TransparencySettings getOverride:@"overrideQueryCacheHardTimeout"];
-  v3 = 604800.0;
+  unsignedIntegerValue = 604800.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 unsignedIntegerValue];
+      unsignedIntegerValue = [v2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (double)queryJustMadeTimeout
 {
   v2 = [TransparencySettings getOverride:@"overrideQueryJustMadeTimeout"];
-  v3 = 3.0;
+  unsignedIntegerValue = 3.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 unsignedIntegerValue];
+      unsignedIntegerValue = [v2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (double)dismissFailureAfterSeenPeriod
 {
   v2 = [TransparencySettings getOverride:@"overrideFailureDismissAfterSeenSeconds"];
-  v3 = 3600.0;
+  unsignedIntegerValue = 3600.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 unsignedIntegerValue];
+      unsignedIntegerValue = [v2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (double)failureIgnorePeriod
 {
   v2 = [TransparencySettings getOverride:@"overrideFailureIgnorePeriod"];
-  v3 = 86400.0;
+  unsignedIntegerValue = 86400.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 unsignedIntegerValue];
+      unsignedIntegerValue = [v2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (double)defaultSelfFollowupTicketLifetime
 {
   v2 = [TransparencySettings getOverride:@"overrideSelfValidationTicketExpiry"];
-  v3 = 86400.0;
+  unsignedIntegerValue = 86400.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 unsignedIntegerValue];
+      unsignedIntegerValue = [v2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (double)backgroundFollowupDelayPeriod
 {
   v2 = [TransparencySettings getOverride:@"overrideBackgroundFollowupDelayPeriod"];
-  v3 = 172800.0;
+  unsignedIntegerValue = 172800.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 unsignedIntegerValue];
+      unsignedIntegerValue = [v2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (unint64_t)backgroundFollowupFailureCount
@@ -356,31 +356,31 @@ LABEL_14:
   v2 = [TransparencySettings getOverride:@"overrideBackgroundFollowupFailureCount"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 6;
+    unsignedIntegerValue = 6;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)atBackgroundFollowupDelayPeriod
 {
   v2 = [TransparencySettings getOverride:@"overrideATBackgroundFollowupDelayPeriod"];
-  v3 = 604800.0;
+  unsignedIntegerValue = 604800.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 unsignedIntegerValue];
+      unsignedIntegerValue = [v2 unsignedIntegerValue];
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 + (BOOL)enableSelfValidationXPCActivity
@@ -393,15 +393,15 @@ LABEL_14:
   v2 = [TransparencySettings getOverride:@"enableSelfValidationXPCActivity"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 + (id)deviceUserAgent
@@ -442,8 +442,8 @@ void __39__TransparencySettings_deviceUserAgent__block_invoke()
     +[TransparencySettings devicePlatform];
   }
 
-  v2 = [devicePlatform_deviceClass lowercaseString];
-  v3 = [v2 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5BF95A8];
+  lowercaseString = [devicePlatform_deviceClass lowercaseString];
+  v3 = [lowercaseString stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5BF95A8];
 
   return v3;
 }
@@ -491,15 +491,15 @@ uint64_t __44__TransparencySettings_automatedDeviceGroup__block_invoke()
   v3 = [(TransparencySettings *)self getOverride:@"overrideSignaturePolicy"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (void)clearKTSignaturePolicy
@@ -511,25 +511,25 @@ uint64_t __44__TransparencySettings_automatedDeviceGroup__block_invoke()
   }
 }
 
-+ (id)getOverride:(id)a3
++ (id)getOverride:(id)override
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.transparencyd");
+  v3 = CFPreferencesCopyAppValue(override, @"com.apple.transparencyd");
 
   return v3;
 }
 
-+ (id)jsonArrayFromPlistArray:(id)a3
++ (id)jsonArrayFromPlistArray:(id)array
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  arrayCopy = array;
+  array = [v3 array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__TransparencySettings_jsonArrayFromPlistArray___block_invoke;
   v8[3] = &unk_1E8701C18;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [arrayCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -607,18 +607,18 @@ uint64_t __48__TransparencySettings_jsonArrayFromPlistArray___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)jsonDictFromPlistDict:(id)a3
++ (id)jsonDictFromPlistDict:(id)dict
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dictCopy = dict;
+  dictionary = [v3 dictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__TransparencySettings_jsonDictFromPlistDict___block_invoke;
   v8[3] = &unk_1E8701C40;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }

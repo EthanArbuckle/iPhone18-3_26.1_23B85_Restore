@@ -31,25 +31,25 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 userInfo];
-  v9 = v8;
-  if (v8)
+  userInfo = [self userInfo];
+  v9 = userInfo;
+  if (userInfo)
   {
-    v10 = [v8 mutableCopy];
+    v10 = [userInfo mutableCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEAC0] dictionary];
-    v10 = [v11 mutableCopy];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    v10 = [dictionary mutableCopy];
   }
 
   [v10 na_safeSetObject:v7 forKey:@"HFErrorUserInfoOperationKey"];
   [v10 na_safeSetObject:v6 forKey:@"HFErrorUserInfoOptionsKey"];
 
   v12 = MEMORY[0x277CCA9B8];
-  v13 = [a1 domain];
-  v14 = [v12 errorWithDomain:v13 code:objc_msgSend(a1 userInfo:{"code"), v10}];
+  domain = [self domain];
+  v14 = [v12 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v10}];
 
   return v14;
 }
@@ -66,13 +66,13 @@
     v8 = MEMORY[0x277CBEAC0];
     v9 = a3;
     v10 = [v8 dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    v11 = [a1 hf_errorWithOperationType:v9 options:v10];
+    v11 = [self hf_errorWithOperationType:v9 options:v10];
   }
 
   else
   {
     v12 = a3;
-    v11 = [a1 hf_errorWithOperationType:v12 options:0];
+    v11 = [self hf_errorWithOperationType:v12 options:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];

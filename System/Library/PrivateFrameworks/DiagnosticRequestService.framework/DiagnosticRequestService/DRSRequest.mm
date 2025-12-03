@@ -1,36 +1,36 @@
 @interface DRSRequest
-+ (BOOL)_requestMOHasRequiredFields_ON_MOC_QUEUE:(id)a3;
-+ (BOOL)cleanRequestRecordsFromPersistentContainer:(id)a3 removeFiles:(BOOL)a4 removeRecord:(BOOL)a5 matchingPredicate:(id)a6 errorOut:(id *)a7;
-+ (BOOL)cullOldRequestRecordsFromPersistentContainer:(id)a3 currentDate:(id)a4 errorOut:(id *)a5;
-+ (BOOL)isExpeditedTeamID:(id)a3 issueCategory:(id)a4;
-+ (BOOL)unblockStrandedUploadingRecordsFromPersistentContainer:(id)a3 errorOut:(id *)a4;
-+ (id)_requestWithRequestMO_ON_MOC_QUEUE:(id)a3;
++ (BOOL)_requestMOHasRequiredFields_ON_MOC_QUEUE:(id)e;
++ (BOOL)cleanRequestRecordsFromPersistentContainer:(id)container removeFiles:(BOOL)files removeRecord:(BOOL)record matchingPredicate:(id)predicate errorOut:(id *)out;
++ (BOOL)cullOldRequestRecordsFromPersistentContainer:(id)container currentDate:(id)date errorOut:(id *)out;
++ (BOOL)isExpeditedTeamID:(id)d issueCategory:(id)category;
++ (BOOL)unblockStrandedUploadingRecordsFromPersistentContainer:(id)container errorOut:(id *)out;
++ (id)_requestWithRequestMO_ON_MOC_QUEUE:(id)e;
 + (id)leastRecentDateFirstSortDescriptor;
-+ (id)migrateRequestDataStoreAtPath:(id)a3 errorOut:(id *)a4;
++ (id)migrateRequestDataStoreAtPath:(id)path errorOut:(id *)out;
 + (id)mostRecentDateFirstSortDescriptor;
-+ (id)requestForMessage:(id)a3;
-+ (id)requestsForFilterPredicate:(id)a3 context:(id)a4 sortDescriptors:(id)a5 fetchLimit:(unint64_t)a6 errorOut:(id *)a7;
-+ (id)unreportedTerminalRequestsFromContext:(id)a3 sortDescriptors:(id)a4 fetchLimit:(unint64_t)a5 errorOut:(id *)a6;
-+ (id)uploadedBytesSinceDate:(id)a3 context:(id)a4 errorOut:(id *)a5;
-+ (unint64_t)requestCountForFilterPredicate:(id)a3 context:(id)a4 fetchLimit:(unint64_t)a5 errorOut:(id *)a6;
-- (BOOL)_addContextMetadataKey:(id)a3 value:(id)a4 expectedClass:(Class)a5 errorOut:(id *)a6;
++ (id)requestForMessage:(id)message;
++ (id)requestsForFilterPredicate:(id)predicate context:(id)context sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out;
++ (id)unreportedTerminalRequestsFromContext:(id)context sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out;
++ (id)uploadedBytesSinceDate:(id)date context:(id)context errorOut:(id *)out;
++ (unint64_t)requestCountForFilterPredicate:(id)predicate context:(id)context fetchLimit:(unint64_t)limit errorOut:(id *)out;
+- (BOOL)_addContextMetadataKey:(id)key value:(id)value expectedClass:(Class)class errorOut:(id *)out;
 - (BOOL)_deleteLogs;
-- (BOOL)_markLogsAsPurgeableWithUrgencyWithDeleteFallback:(unint64_t)a3;
-- (BOOL)_performPostClientLogWork:(id)a3 dampeningOutcome:(unint64_t)a4 isLogUploadEnabled:(BOOL)a5;
-- (BOOL)_populateLogsArray_ON_MOC_QUEUE:(id)a3;
-- (BOOL)_updateLogFileStateForTransitionFromPreviousState:(unint64_t)a3;
-- (BOOL)_updateLogStateToExpectedState:(unsigned __int8)a3;
-- (BOOL)addContextMetadataKey:(id)a3 numberValue:(id)a4 errorOut:(id *)a5;
-- (BOOL)addContextMetadataKey:(id)a3 stringValue:(id)a4 errorOut:(id *)a5;
+- (BOOL)_markLogsAsPurgeableWithUrgencyWithDeleteFallback:(unint64_t)fallback;
+- (BOOL)_performPostClientLogWork:(id)work dampeningOutcome:(unint64_t)outcome isLogUploadEnabled:(BOOL)enabled;
+- (BOOL)_populateLogsArray_ON_MOC_QUEUE:(id)e;
+- (BOOL)_updateLogFileStateForTransitionFromPreviousState:(unint64_t)state;
+- (BOOL)_updateLogStateToExpectedState:(unsigned __int8)state;
+- (BOOL)addContextMetadataKey:(id)key numberValue:(id)value errorOut:(id *)out;
+- (BOOL)addContextMetadataKey:(id)key stringValue:(id)value errorOut:(id *)out;
 - (BOOL)hasUploadableContent;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRequest:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRequest:(id)request;
 - (BOOL)isNonPurgeableInFlightUntilUploadAttempt;
-- (BOOL)performOnReceiptWork:(id)a3 dampeningOutcome:(unint64_t)a4;
-- (BOOL)updateToState:(unint64_t)a3 errorDescription:(id)a4 errorOut:(id *)a5;
+- (BOOL)performOnReceiptWork:(id)work dampeningOutcome:(unint64_t)outcome;
+- (BOOL)updateToState:(unint64_t)state errorDescription:(id)description errorOut:(id *)out;
 - (BOOL)uploadStarted;
 - (DRSDecisionServerBatchRequest)pbBatchInstance;
-- (DRSRequest)initWithXPCDict:(id)a3;
+- (DRSRequest)initWithXPCDict:(id)dict;
 - (NSDictionary)metadataDictionary;
 - (NSNumber)isLikeCarryDevice;
 - (NSString)automatedDeviceGroup;
@@ -39,16 +39,16 @@
 - (NSString)hwModel;
 - (NSString)requestOutcomeString;
 - (NSString)requestStateString;
-- (id)_initWithRequestMO_ON_MOC_QUEUE:(id)a3;
+- (id)_initWithRequestMO_ON_MOC_QUEUE:(id)e;
 - (id)_logsDescription;
-- (id)_processSubmittedLogInfo:(id)a3 workingDirectory:(id)a4;
+- (id)_processSubmittedLogInfo:(id)info workingDirectory:(id)directory;
 - (id)fileAssets;
 - (id)fileNames;
 - (id)filePaths;
 - (id)fileURLs;
-- (id)jsonCompatibleDictionaryRepresentationVerbose:(BOOL)a3;
+- (id)jsonCompatibleDictionaryRepresentationVerbose:(BOOL)verbose;
 - (id)logPath;
-- (id)newRequestMOInContext_ON_MOC_QUEUE:(id)a3;
+- (id)newRequestMOInContext_ON_MOC_QUEUE:(id)e;
 - (id)protoFileDescriptions;
 - (id)protoRequestDescription;
 - (id)recordRepresentation;
@@ -56,39 +56,39 @@
 - (unint64_t)logSizeLimitBytes;
 - (unint64_t)totalLogSizeBytes;
 - (unsigned)requestOutcome;
-- (void)_addLogMOs:(id)a3;
-- (void)_configureRequestMO:(id)a3;
+- (void)_addLogMOs:(id)os;
+- (void)_configureRequestMO:(id)o;
 - (void)addAutomatedDeviceGroupContext;
 - (void)addHWModelContextMetadata;
 - (void)addIsLikelyCarryContextMetadata;
 - (void)makeTerminalDueToMissingLog;
-- (void)updateContextWithRequest_ON_MOC_QUEUE:(id)a3;
+- (void)updateContextWithRequest_ON_MOC_QUEUE:(id)e;
 - (void)uploadAbortedDueToLogSize;
-- (void)uploadCompleteWithError:(id)a3 ckOperationID:(id)a4 ckRecordID:(id)a5;
-- (void)uploadDeniedByDecisionServerWithReason:(id)a3;
-- (void)uploadFailedDueToReason:(id)a3 ckOperationID:(id)a4;
+- (void)uploadCompleteWithError:(id)error ckOperationID:(id)d ckRecordID:(id)iD;
+- (void)uploadDeniedByDecisionServerWithReason:(id)reason;
+- (void)uploadFailedDueToReason:(id)reason ckOperationID:(id)d;
 @end
 
 @implementation DRSRequest
 
 - (id)logPath
 {
-  v3 = [(DRSRequest *)self logs];
-  v4 = [v3 count];
+  logs = [(DRSRequest *)self logs];
+  v4 = [logs count];
 
   if (v4 == 1)
   {
-    v5 = [(DRSRequest *)self logs];
-    v6 = [v5 firstObject];
-    v7 = [v6 path];
+    logs2 = [(DRSRequest *)self logs];
+    firstObject = [logs2 firstObject];
+    path = [firstObject path];
   }
 
   else
   {
-    v7 = 0;
+    path = 0;
   }
 
-  return v7;
+  return path;
 }
 
 - (unint64_t)totalLogSizeBytes
@@ -98,8 +98,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(DRSRequest *)self logs];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  logs = [(DRSRequest *)self logs];
+  v3 = [logs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -111,13 +111,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(logs);
         }
 
         v5 += [*(*(&v10 + 1) + 8 * i) size];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [logs countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -135,33 +135,33 @@
 - (unint64_t)logSizeLimitBytes
 {
   v2 = +[DRSSystemProfile sharedInstance];
-  v3 = [v2 uploadSessionUploadCapBytes];
+  uploadSessionUploadCapBytes = [v2 uploadSessionUploadCapBytes];
 
-  return v3;
+  return uploadSessionUploadCapBytes;
 }
 
 - (NSString)decisionServerDecisionString
 {
-  v2 = [(DRSRequest *)self decisionServerDecision];
-  if (v2 > 2)
+  decisionServerDecision = [(DRSRequest *)self decisionServerDecision];
+  if (decisionServerDecision > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return &off_27899EE50[v2]->isa;
+    return &off_27899EE50[decisionServerDecision]->isa;
   }
 }
 
 - (unsigned)requestOutcome
 {
-  v2 = [(DRSRequest *)self requestState];
+  requestState = [(DRSRequest *)self requestState];
 
-  return DRSRequestOutcomeForState(v2);
+  return DRSRequestOutcomeForState(requestState);
 }
 
-- (BOOL)_markLogsAsPurgeableWithUrgencyWithDeleteFallback:(unint64_t)a3
+- (BOOL)_markLogsAsPurgeableWithUrgencyWithDeleteFallback:(unint64_t)fallback
 {
   v55 = *MEMORY[0x277D85DE8];
   if ([(DRSRequest *)self hasUploadableContent])
@@ -169,9 +169,9 @@
     v4 = DPLogHandle_LogManagement();
     if (os_signpost_enabled(v4))
     {
-      v5 = [(DRSRequest *)self requestID];
-      v6 = v5;
-      switch(a3)
+      requestID = [(DRSRequest *)self requestID];
+      v6 = requestID;
+      switch(fallback)
       {
         case 0x200uLL:
           v7 = @"Low";
@@ -188,7 +188,7 @@
       }
 
       *buf = 138543618;
-      v47 = v5;
+      v47 = requestID;
       v48 = 2114;
       v49 = v7;
       _os_signpost_emit_with_name_impl(&dword_232906000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "MarkingCasePurgeability", "Request %{public}@: Marking files as purgeable with urgency %{public}@", buf, 0x16u);
@@ -198,8 +198,8 @@
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v9 = [(DRSRequest *)self logs];
-    v10 = [v9 countByEnumeratingWithState:&v42 objects:v54 count:16];
+    logs = [(DRSRequest *)self logs];
+    v10 = [logs countByEnumeratingWithState:&v42 objects:v54 count:16];
     if (v10)
     {
       v12 = v10;
@@ -212,13 +212,13 @@ LABEL_14:
       {
         if (*v43 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(logs);
         }
 
-        v15 = [*(*(&v42 + 1) + 8 * v14) path];
+        path = [*(*(&v42 + 1) + 8 * v14) path];
         v41 = 0;
-        v16 = [MEMORY[0x277CCAA00] defaultManager];
-        v17 = [v16 fileExistsAtPath:v15 isDirectory:&v41];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v17 = [defaultManager fileExistsAtPath:path isDirectory:&v41];
 
         if (v17)
         {
@@ -227,11 +227,11 @@ LABEL_14:
             v18 = DPLogHandle_LogManagementError();
             if (os_signpost_enabled(v18))
             {
-              v19 = [(DRSRequest *)self requestID];
+              requestID2 = [(DRSRequest *)self requestID];
               *buf = 138543618;
-              v47 = v19;
+              v47 = requestID2;
               v48 = 2114;
-              v49 = v15;
+              v49 = path;
               _os_signpost_emit_with_name_impl(&dword_232906000, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "PurgeabilityFailure", "%{public}@: File %{public}@ is a directory", buf, 0x16u);
             }
 
@@ -241,20 +241,20 @@ LABEL_14:
               goto LABEL_41;
             }
 
-            v21 = [(DRSRequest *)self requestID];
+            requestID3 = [(DRSRequest *)self requestID];
             *buf = 138543618;
-            v47 = v21;
+            v47 = requestID3;
             v48 = 2114;
-            v49 = v15;
+            v49 = path;
             _os_log_fault_impl(&dword_232906000, v20, OS_LOG_TYPE_FAULT, "ERROR: %{public}@: File %{public}@ is a directory", buf, 0x16u);
             goto LABEL_40;
           }
 
-          v26 = open([(__CFString *)v15 UTF8String], 0);
+          v26 = open([(__CFString *)path UTF8String], 0);
           if ((v26 & 0x80000000) == 0)
           {
             v27 = v26;
-            v40 = a3 | 0x10005;
+            v40 = fallback | 0x10005;
             v28 = ffsctl(v26, 0xC0084A44uLL, &v40, 0);
             close(v27);
             if (v28)
@@ -262,8 +262,8 @@ LABEL_14:
               v31 = DPLogHandle_RequestError();
               if (os_signpost_enabled(v31))
               {
-                v32 = [(DRSRequest *)self requestID];
-                switch(a3)
+                requestID4 = [(DRSRequest *)self requestID];
+                switch(fallback)
                 {
                   case 0x200uLL:
                     v33 = @"Low";
@@ -282,9 +282,9 @@ LABEL_14:
                 v34 = __error();
                 v35 = strerror(*v34);
                 *buf = 138544130;
-                v47 = v32;
+                v47 = requestID4;
                 v48 = 2114;
-                v49 = v15;
+                v49 = path;
                 v50 = 2114;
                 v51 = v33;
                 v52 = 2082;
@@ -303,9 +303,9 @@ LABEL_14:
               goto LABEL_41;
             }
 
-            v29 = [(DRSRequest *)self requestID];
-            v21 = v29;
-            switch(a3)
+            requestID5 = [(DRSRequest *)self requestID];
+            requestID3 = requestID5;
+            switch(fallback)
             {
               case 0x200uLL:
                 v30 = @"Low";
@@ -322,9 +322,9 @@ LABEL_14:
             }
 
             *buf = v38;
-            v47 = v29;
+            v47 = requestID5;
             v48 = 2114;
-            v49 = v15;
+            v49 = path;
             v50 = 2114;
             v51 = v30;
             v22 = v20;
@@ -337,11 +337,11 @@ LABEL_14:
           v20 = DPLogHandle_RequestError();
           if (os_signpost_enabled(v20))
           {
-            v21 = [(DRSRequest *)self requestID];
+            requestID3 = [(DRSRequest *)self requestID];
             *buf = 138543618;
-            v47 = v21;
+            v47 = requestID3;
             v48 = 2114;
-            v49 = v15;
+            v49 = path;
             v22 = v20;
             v23 = "OpenFileFailure";
             v24 = "Request %{public}@: Failed to open file with path %{public}@ to tag it as purgeable";
@@ -358,11 +358,11 @@ LABEL_40:
           v20 = DPLogHandle_LogManagementError();
           if (os_signpost_enabled(v20))
           {
-            v21 = [(DRSRequest *)self requestID];
+            requestID3 = [(DRSRequest *)self requestID];
             *buf = 138543618;
-            v47 = v21;
+            v47 = requestID3;
             v48 = 2114;
-            v49 = v15;
+            v49 = path;
             v22 = v20;
             v23 = "PurgeabilityFailure";
             v24 = "%{public}@: File %{public}@ does not exist";
@@ -374,7 +374,7 @@ LABEL_41:
 
         if (v12 == ++v14)
         {
-          v12 = [v9 countByEnumeratingWithState:&v42 objects:v54 count:16];
+          v12 = [logs countByEnumeratingWithState:&v42 objects:v54 count:16];
           if (v12)
           {
             goto LABEL_14;
@@ -401,8 +401,8 @@ LABEL_54:
 - (id)_logsDescription
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(DRSRequest *)self logs];
-  v4 = [v3 count];
+  logs = [(DRSRequest *)self logs];
+  v4 = [logs count];
 
   if (v4)
   {
@@ -411,8 +411,8 @@ LABEL_54:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(DRSRequest *)self logs];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    logs2 = [(DRSRequest *)self logs];
+    v7 = [logs2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -424,7 +424,7 @@ LABEL_54:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(logs2);
           }
 
           v12 = [*(*(&v16 + 1) + 8 * i) debugDescription];
@@ -442,7 +442,7 @@ LABEL_54:
           v10 = 0;
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [logs2 countByEnumeratingWithState:&v16 objects:v20 count:16];
         v10 = 0;
       }
 
@@ -463,10 +463,10 @@ LABEL_54:
 - (NSString)debugDescription
 {
   v32 = objc_autoreleasePoolPush();
-  v3 = [(DRSRequest *)self totalLogSizeBytes];
-  if (v3)
+  totalLogSizeBytes = [(DRSRequest *)self totalLogSizeBytes];
+  if (totalLogSizeBytes)
   {
-    v36 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%zuB", v3];
+    v36 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%zuB", totalLogSizeBytes];
   }
 
   else
@@ -475,15 +475,15 @@ LABEL_54:
   }
 
   v28 = objc_alloc(MEMORY[0x277CCACA8]);
-  v35 = [(DRSRequest *)self build];
-  v31 = [(DRSRequest *)self requestID];
-  v34 = [v31 UUIDString];
-  v30 = [(DRSRequest *)self ckRecordID];
-  if (v30)
+  build = [(DRSRequest *)self build];
+  requestID = [(DRSRequest *)self requestID];
+  uUIDString = [requestID UUIDString];
+  ckRecordID = [(DRSRequest *)self ckRecordID];
+  if (ckRecordID)
   {
     v4 = MEMORY[0x277CCACA8];
-    v21 = [(DRSRequest *)self ckRecordID];
-    v33 = [v4 stringWithFormat:@"CKRecordID: %@", v21];
+    ckRecordID2 = [(DRSRequest *)self ckRecordID];
+    v33 = [v4 stringWithFormat:@"CKRecordID: %@", ckRecordID2];
   }
 
   else
@@ -491,27 +491,27 @@ LABEL_54:
     v33 = @"-";
   }
 
-  v26 = [(DRSRequest *)self requestStateString];
-  v5 = [(DRSRequest *)self errorDescription];
-  v27 = v5;
+  requestStateString = [(DRSRequest *)self requestStateString];
+  errorDescription = [(DRSRequest *)self errorDescription];
+  v27 = errorDescription;
   v6 = @"<No error>";
-  if (v5)
+  if (errorDescription)
   {
-    v6 = v5;
+    v6 = errorDescription;
   }
 
   v25 = v6;
-  v24 = [(DRSRequest *)self requestType];
-  v23 = [(DRSRequest *)self uploadAttemptCount];
-  v7 = [(DRSRequest *)self hasBeenCountedByTelemetry];
+  requestType = [(DRSRequest *)self requestType];
+  uploadAttemptCount = [(DRSRequest *)self uploadAttemptCount];
+  hasBeenCountedByTelemetry = [(DRSRequest *)self hasBeenCountedByTelemetry];
   v8 = &stru_2847F1D58;
-  if (v7)
+  if (hasBeenCountedByTelemetry)
   {
     v8 = @"(Reported to telemetry)";
   }
 
   v22 = v8;
-  v9 = [(DRSRequest *)self decisionServerDecisionString];
+  decisionServerDecisionString = [(DRSRequest *)self decisionServerDecisionString];
   if ([(DRSRequest *)self isExpedited])
   {
     v10 = @"ExpeditedUpload";
@@ -522,13 +522,13 @@ LABEL_54:
     v10 = @"NormalUpload";
   }
 
-  v11 = [(DRSRequest *)self teamID];
-  v12 = [(DRSRequest *)self issueCategory];
-  v13 = [(DRSRequest *)self issueDescription];
-  v14 = [(DRSRequest *)self _logsDescription];
-  v15 = [(DRSRequest *)self logType];
-  v16 = [(DRSRequest *)self contextDictionary];
-  v17 = [v16 debugDescription];
+  teamID = [(DRSRequest *)self teamID];
+  issueCategory = [(DRSRequest *)self issueCategory];
+  issueDescription = [(DRSRequest *)self issueDescription];
+  _logsDescription = [(DRSRequest *)self _logsDescription];
+  logType = [(DRSRequest *)self logType];
+  contextDictionary = [(DRSRequest *)self contextDictionary];
+  v17 = [contextDictionary debugDescription];
   v18 = v17;
   if (v17)
   {
@@ -540,9 +540,9 @@ LABEL_54:
     v19 = @"-";
   }
 
-  v29 = [v28 initWithFormat:@"%@ %@ %@ (%@, %@) %@ %u %@ %@ %@ %@/%@ %@ %@(%@, %@) %@", v35, v34, v33, v26, v25, v24, v23, v22, v9, v10, v11, v12, v13, v14, v15, v36, v19];
+  v29 = [v28 initWithFormat:@"%@ %@ %@ (%@, %@) %@ %u %@ %@ %@ %@/%@ %@ %@(%@, %@) %@", build, uUIDString, v33, requestStateString, v25, requestType, uploadAttemptCount, v22, decisionServerDecisionString, v10, teamID, issueCategory, issueDescription, _logsDescription, logType, v36, v19];
 
-  if (v30)
+  if (ckRecordID)
   {
   }
 
@@ -551,42 +551,42 @@ LABEL_54:
   return v29;
 }
 
-- (id)jsonCompatibleDictionaryRepresentationVerbose:(BOOL)a3
+- (id)jsonCompatibleDictionaryRepresentationVerbose:(BOOL)verbose
 {
-  v3 = a3;
+  verboseCopy = verbose;
   v75 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(MEMORY[0x277CCAA68]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [(DRSRequest *)self build];
-  [v7 setObject:v8 forKeyedSubscript:@"build"];
+  build = [(DRSRequest *)self build];
+  [v7 setObject:build forKeyedSubscript:@"build"];
 
-  v9 = [(DRSRequest *)self requestDate];
-  v10 = [v6 stringFromDate:v9];
+  requestDate = [(DRSRequest *)self requestDate];
+  v10 = [v6 stringFromDate:requestDate];
   [v7 setObject:v10 forKeyedSubscript:@"date"];
 
-  v11 = [(DRSRequest *)self teamID];
-  [v7 setObject:v11 forKeyedSubscript:@"teamID"];
+  teamID = [(DRSRequest *)self teamID];
+  [v7 setObject:teamID forKeyedSubscript:@"teamID"];
 
-  v12 = [(DRSRequest *)self issueCategory];
-  [v7 setObject:v12 forKeyedSubscript:@"issueCategory"];
+  issueCategory = [(DRSRequest *)self issueCategory];
+  [v7 setObject:issueCategory forKeyedSubscript:@"issueCategory"];
 
-  v13 = [(DRSRequest *)self issueDescription];
-  [v7 setObject:v13 forKeyedSubscript:@"issueDescription"];
+  issueDescription = [(DRSRequest *)self issueDescription];
+  [v7 setObject:issueDescription forKeyedSubscript:@"issueDescription"];
 
-  v14 = [(DRSRequest *)self logType];
-  [v7 setObject:v14 forKeyedSubscript:@"logType"];
+  logType = [(DRSRequest *)self logType];
+  [v7 setObject:logType forKeyedSubscript:@"logType"];
 
   v15 = 0x277CCA000uLL;
   v16 = [MEMORY[0x277CCABB0] numberWithBool:{-[DRSRequest isExpedited](self, "isExpedited")}];
   [v7 setObject:v16 forKeyedSubscript:@"isExpedited"];
 
-  v17 = [(DRSRequest *)self contextDictionary];
+  contextDictionary = [(DRSRequest *)self contextDictionary];
 
-  if (!v17)
+  if (!contextDictionary)
   {
 LABEL_4:
-    if (!v3)
+    if (!verboseCopy)
     {
       goto LABEL_26;
     }
@@ -595,13 +595,13 @@ LABEL_4:
   }
 
   v18 = MEMORY[0x277CCAAA0];
-  v19 = [(DRSRequest *)self contextDictionary];
-  LODWORD(v18) = [v18 isValidJSONObject:v19];
+  contextDictionary2 = [(DRSRequest *)self contextDictionary];
+  LODWORD(v18) = [v18 isValidJSONObject:contextDictionary2];
 
   if (v18)
   {
-    v20 = [(DRSRequest *)self contextDictionary];
-    [v7 setObject:v20 forKeyedSubscript:@"contextDictionary"];
+    contextDictionary3 = [(DRSRequest *)self contextDictionary];
+    [v7 setObject:contextDictionary3 forKeyedSubscript:@"contextDictionary"];
 
     goto LABEL_4;
   }
@@ -616,68 +616,68 @@ LABEL_4:
   }
 
   [v7 setObject:@"<Could not serialize>" forKeyedSubscript:@"contextDictionary"];
-  if (v3)
+  if (verboseCopy)
   {
 LABEL_9:
-    v23 = [(DRSRequest *)self requestID];
-    v24 = [v23 UUIDString];
-    [v7 setObject:v24 forKeyedSubscript:@"requestID"];
+    requestID = [(DRSRequest *)self requestID];
+    uUIDString = [requestID UUIDString];
+    [v7 setObject:uUIDString forKeyedSubscript:@"requestID"];
 
-    v25 = [(DRSRequest *)self ckRecordID];
+    ckRecordID = [(DRSRequest *)self ckRecordID];
 
-    if (v25)
+    if (ckRecordID)
     {
-      v26 = [(DRSRequest *)self ckRecordID];
-      [v7 setObject:v26 forKeyedSubscript:@"ckRecordID"];
+      ckRecordID2 = [(DRSRequest *)self ckRecordID];
+      [v7 setObject:ckRecordID2 forKeyedSubscript:@"ckRecordID"];
     }
 
-    v27 = [(DRSRequest *)self requestStateString];
-    [v7 setObject:v27 forKeyedSubscript:@"requestState"];
+    requestStateString = [(DRSRequest *)self requestStateString];
+    [v7 setObject:requestStateString forKeyedSubscript:@"requestState"];
 
-    v28 = [(DRSRequest *)self errorDescription];
+    errorDescription = [(DRSRequest *)self errorDescription];
 
-    if (v28)
+    if (errorDescription)
     {
-      v29 = [(DRSRequest *)self errorDescription];
-      [v7 setObject:v29 forKeyedSubscript:@"errorDescription"];
+      errorDescription2 = [(DRSRequest *)self errorDescription];
+      [v7 setObject:errorDescription2 forKeyedSubscript:@"errorDescription"];
     }
 
-    v30 = [(DRSRequest *)self requestType];
-    [v7 setObject:v30 forKeyedSubscript:@"requestType"];
+    requestType = [(DRSRequest *)self requestType];
+    [v7 setObject:requestType forKeyedSubscript:@"requestType"];
 
     v31 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[DRSRequest uploadAttemptCount](self, "uploadAttemptCount")}];
     [v7 setObject:v31 forKeyedSubscript:@"uploadAttemptCount"];
 
-    v32 = [(DRSRequest *)self decisionServerDecisionString];
-    [v7 setObject:v32 forKeyedSubscript:@"decisionServerDecision"];
+    decisionServerDecisionString = [(DRSRequest *)self decisionServerDecisionString];
+    [v7 setObject:decisionServerDecisionString forKeyedSubscript:@"decisionServerDecision"];
 
-    v33 = [(DRSRequest *)self logs];
-    v34 = [v33 count];
+    logs = [(DRSRequest *)self logs];
+    v34 = [logs count];
 
-    v35 = [(DRSRequest *)self logs];
-    v36 = v35;
+    logs2 = [(DRSRequest *)self logs];
+    v36 = logs2;
     if (v34 == 1)
     {
-      v37 = [v35 firstObject];
-      v38 = [v37 path];
-      [v7 setObject:v38 forKeyedSubscript:@"logPath"];
+      firstObject = [logs2 firstObject];
+      path = [firstObject path];
+      [v7 setObject:path forKeyedSubscript:@"logPath"];
 
       v39 = MEMORY[0x277CCABB0];
-      v40 = [(DRSRequest *)self logs];
-      v41 = [v40 firstObject];
-      v42 = [v39 numberWithUnsignedLong:{objc_msgSend(v41, "size")}];
+      logs3 = [(DRSRequest *)self logs];
+      firstObject2 = [logs3 firstObject];
+      v42 = [v39 numberWithUnsignedLong:{objc_msgSend(firstObject2, "size")}];
       [v7 setObject:v42 forKeyedSubscript:@"logSizeBytes"];
 
       v43 = MEMORY[0x277CCABB0];
-      v44 = [(DRSRequest *)self logs];
-      v45 = [v44 firstObject];
-      v46 = [v43 numberWithBool:{objc_msgSend(v45, "isAvailableOnDisk")}];
+      logs4 = [(DRSRequest *)self logs];
+      firstObject3 = [logs4 firstObject];
+      v46 = [v43 numberWithBool:{objc_msgSend(firstObject3, "isAvailableOnDisk")}];
       [v7 setObject:v46 forKeyedSubscript:@"logAvailableOnDiskPath"];
     }
 
     else
     {
-      v47 = [v35 count];
+      v47 = [logs2 count];
 
       if (v47)
       {
@@ -688,7 +688,7 @@ LABEL_9:
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
-        v62 = self;
+        selfCopy = self;
         obj = [(DRSRequest *)self logs];
         v49 = [obj countByEnumeratingWithState:&v66 objects:v72 count:16];
         if (v49)
@@ -706,8 +706,8 @@ LABEL_9:
 
               v53 = *(*(&v66 + 1) + 8 * i);
               v70[0] = @"logPath";
-              v54 = [v53 path];
-              v71[0] = v54;
+              path2 = [v53 path];
+              v71[0] = path2;
               v70[1] = @"logAvailableOnDiskPath";
               v55 = [*(v15 + 2992) numberWithBool:{objc_msgSend(v53, "isAvailableOnDisk")}];
               v71[1] = v55;
@@ -730,7 +730,7 @@ LABEL_9:
         v7 = v64;
         [v64 setObject:v48 forKeyedSubscript:@"logsArray"];
 
-        self = v62;
+        self = selfCopy;
         v6 = v63;
       }
 
@@ -754,16 +754,16 @@ LABEL_26:
   return v7;
 }
 
-- (void)_addLogMOs:(id)a3
+- (void)_addLogMOs:(id)os
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  osCopy = os;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(DRSRequest *)self logs];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  logs = [(DRSRequest *)self logs];
+  v6 = [logs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -775,22 +775,22 @@ LABEL_26:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(logs);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         v11 = [DRSLogMO alloc];
-        v12 = [v4 managedObjectContext];
-        v13 = [(DRSLogMO *)v11 initWithContext:v12];
+        managedObjectContext = [osCopy managedObjectContext];
+        v13 = [(DRSLogMO *)v11 initWithContext:managedObjectContext];
 
         [v10 _configureLogMO:v13];
-        [v4 addLogsObject:v13];
+        [osCopy addLogsObject:v13];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [logs countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -799,61 +799,61 @@ LABEL_26:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configureRequestMO:(id)a3
+- (void)_configureRequestMO:(id)o
 {
-  v18 = a3;
-  v4 = [(DRSRequest *)self teamID];
-  [v18 setTeamID:v4];
+  oCopy = o;
+  teamID = [(DRSRequest *)self teamID];
+  [oCopy setTeamID:teamID];
 
-  v5 = [(DRSRequest *)self issueCategory];
-  [v18 setIssueCategory:v5];
+  issueCategory = [(DRSRequest *)self issueCategory];
+  [oCopy setIssueCategory:issueCategory];
 
-  v6 = [(DRSRequest *)self issueDescription];
-  [v18 setIssueDescription:v6];
+  issueDescription = [(DRSRequest *)self issueDescription];
+  [oCopy setIssueDescription:issueDescription];
 
-  v7 = [(DRSRequest *)self contextDictionaryData];
-  [v18 setContextDictionaryData:v7];
+  contextDictionaryData = [(DRSRequest *)self contextDictionaryData];
+  [oCopy setContextDictionaryData:contextDictionaryData];
 
-  v8 = [(DRSRequest *)self requestDate];
-  [v18 setRequestDate:v8];
+  requestDate = [(DRSRequest *)self requestDate];
+  [oCopy setRequestDate:requestDate];
 
-  v9 = [(DRSRequest *)self requestID];
-  [v18 setRequestID:v9];
+  requestID = [(DRSRequest *)self requestID];
+  [oCopy setRequestID:requestID];
 
-  [v18 setRequestMCT:{-[DRSRequest requestMCT](self, "requestMCT")}];
-  [v18 setRequestState:{-[DRSRequest requestState](self, "requestState")}];
-  v10 = [(DRSRequest *)self errorDescription];
-  [v18 setErrorDescription:v10];
+  [oCopy setRequestMCT:{-[DRSRequest requestMCT](self, "requestMCT")}];
+  [oCopy setRequestState:{-[DRSRequest requestState](self, "requestState")}];
+  errorDescription = [(DRSRequest *)self errorDescription];
+  [oCopy setErrorDescription:errorDescription];
 
-  v11 = [(DRSRequest *)self build];
-  [v18 setBuild:v11];
+  build = [(DRSRequest *)self build];
+  [oCopy setBuild:build];
 
-  [v18 setUploadAttemptCount:{-[DRSRequest uploadAttemptCount](self, "uploadAttemptCount")}];
-  [v18 setDecisionServerDecision:{-[DRSRequest decisionServerDecision](self, "decisionServerDecision")}];
-  [v18 setHasBeenCountedByTelemetry:{-[DRSRequest hasBeenCountedByTelemetry](self, "hasBeenCountedByTelemetry")}];
-  [v18 setIsExpedited:{-[DRSRequest isExpedited](self, "isExpedited")}];
-  v12 = [(DRSRequest *)self ckRecordID];
-  [v18 setCkRecordID:v12];
+  [oCopy setUploadAttemptCount:{-[DRSRequest uploadAttemptCount](self, "uploadAttemptCount")}];
+  [oCopy setDecisionServerDecision:{-[DRSRequest decisionServerDecision](self, "decisionServerDecision")}];
+  [oCopy setHasBeenCountedByTelemetry:{-[DRSRequest hasBeenCountedByTelemetry](self, "hasBeenCountedByTelemetry")}];
+  [oCopy setIsExpedited:{-[DRSRequest isExpedited](self, "isExpedited")}];
+  ckRecordID = [(DRSRequest *)self ckRecordID];
+  [oCopy setCkRecordID:ckRecordID];
 
-  v13 = [v18 logs];
-  v14 = [v13 count];
-  v15 = [(DRSRequest *)self logs];
-  v16 = [v15 count];
+  logs = [oCopy logs];
+  v14 = [logs count];
+  logs2 = [(DRSRequest *)self logs];
+  v16 = [logs2 count];
 
   if (v14 != v16)
   {
-    v17 = [v18 logs];
-    [v18 removeLogs:v17];
+    logs3 = [oCopy logs];
+    [oCopy removeLogs:logs3];
 
-    [(DRSRequest *)self _addLogMOs:v18];
+    [(DRSRequest *)self _addLogMOs:oCopy];
   }
 }
 
 - (NSString)requestStateString
 {
-  v2 = [(DRSRequest *)self requestState];
+  requestState = [(DRSRequest *)self requestState];
 
-  return DRRequestStateWithOutcomeStringForState(v2);
+  return DRRequestStateWithOutcomeStringForState(requestState);
 }
 
 - (NSString)requestOutcomeString
@@ -870,31 +870,31 @@ LABEL_26:
   }
 }
 
-- (id)newRequestMOInContext_ON_MOC_QUEUE:(id)a3
+- (id)newRequestMOInContext_ON_MOC_QUEUE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   v5 = [objc_alloc(objc_msgSend(objc_opt_class() "_moClass"))];
 
   [(DRSRequest *)self _configureRequestMO:v5];
   return v5;
 }
 
-- (void)updateContextWithRequest_ON_MOC_QUEUE:(id)a3
+- (void)updateContextWithRequest_ON_MOC_QUEUE:(id)e
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eCopy = e;
   v5 = MEMORY[0x277CCAC30];
-  v6 = [(DRSRequest *)self requestID];
-  v7 = [v5 predicateWithFormat:@"requestID == %@", v6];
+  requestID = [(DRSRequest *)self requestID];
+  v7 = [v5 predicateWithFormat:@"requestID == %@", requestID];
 
   v8 = MEMORY[0x277CBE428];
-  v9 = [objc_opt_class() entityName];
-  v10 = [v8 fetchRequestWithEntityName:v9];
+  entityName = [objc_opt_class() entityName];
+  v10 = [v8 fetchRequestWithEntityName:entityName];
 
   [v10 setFetchLimit:1];
   [v10 setPredicate:v7];
   v20 = 0;
-  v11 = [v4 executeFetchRequest:v10 error:&v20];
+  v11 = [eCopy executeFetchRequest:v10 error:&v20];
   v12 = v20;
   if (!v11 || ![v11 count])
   {
@@ -903,17 +903,17 @@ LABEL_26:
       v14 = DPLogHandle_CoreDataError();
       if (os_signpost_enabled(v14))
       {
-        v15 = [(DRSRequest *)self debugDescription];
-        v16 = [v12 localizedDescription];
-        v17 = v16;
+        requestID2 = [(DRSRequest *)self debugDescription];
+        localizedDescription = [v12 localizedDescription];
+        v17 = localizedDescription;
         v18 = @"Unknown";
-        if (v16)
+        if (localizedDescription)
         {
-          v18 = v16;
+          v18 = localizedDescription;
         }
 
         *buf = 138543618;
-        v22 = v15;
+        v22 = requestID2;
         v23 = 2114;
         v24 = v18;
         _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RequestMangedObjectFetchFailure", "Failed to fetch a request object for %{public}@ due to error: %{public}@", buf, 0x16u);
@@ -927,32 +927,32 @@ LABEL_26:
       v14 = DPLogHandle_Request();
       if (os_signpost_enabled(v14))
       {
-        v15 = [(DRSRequest *)self requestID];
+        requestID2 = [(DRSRequest *)self requestID];
         *buf = 138543362;
-        v22 = v15;
+        v22 = requestID2;
         _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RequestMangedObjectFetchMiss", "No cached request with ID %{public}@", buf, 0xCu);
 LABEL_11:
       }
     }
 
-    v12 = [(DRSRequest *)self newRequestMOInContext_ON_MOC_QUEUE:v4];
+    v12 = [(DRSRequest *)self newRequestMOInContext_ON_MOC_QUEUE:eCopy];
     goto LABEL_13;
   }
 
-  v13 = [v11 firstObject];
-  [(DRSRequest *)self _configureRequestMO:v13];
+  firstObject = [v11 firstObject];
+  [(DRSRequest *)self _configureRequestMO:firstObject];
 
 LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)requestForMessage:(id)a3
++ (id)requestForMessage:(id)message
 {
-  v3 = a3;
-  v4 = xpc_dictionary_get_uint64(v3, "ClientMessageType") - 1;
+  messageCopy = message;
+  v4 = xpc_dictionary_get_uint64(messageCopy, "ClientMessageType") - 1;
   if (v4 <= 4 && ((0x1Bu >> v4) & 1) != 0)
   {
-    v5 = [objc_alloc(*off_27899EE80[v4]) initWithXPCDict:v3];
+    v5 = [objc_alloc(*off_27899EE80[v4]) initWithXPCDict:messageCopy];
   }
 
   else
@@ -967,25 +967,25 @@ LABEL_13:
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [v3 automatedDeviceGroup];
+  automatedDeviceGroup = [v3 automatedDeviceGroup];
 
-  if (v4)
+  if (automatedDeviceGroup)
   {
     v14 = 0;
-    v5 = [(DRSRequest *)self addContextMetadataKey:@"ADG" stringValue:v4 errorOut:&v14];
+    v5 = [(DRSRequest *)self addContextMetadataKey:@"ADG" stringValue:automatedDeviceGroup errorOut:&v14];
     v6 = v14;
-    v7 = DPLogHandle_Request();
-    v8 = os_signpost_enabled(v7);
+    requestID2 = DPLogHandle_Request();
+    v8 = os_signpost_enabled(requestID2);
     if (v5)
     {
       if (v8)
       {
-        v9 = [(DRSRequest *)self requestID];
-        v10 = [(__CFString *)v9 UUIDString];
+        requestID = [(DRSRequest *)self requestID];
+        uUIDString = [(__CFString *)requestID UUIDString];
         v15 = 138543618;
-        v16 = v4;
+        v16 = automatedDeviceGroup;
         v17 = 2114;
-        v18 = v10;
+        v18 = uUIDString;
         _os_signpost_emit_unreliably_with_name_impl();
 
 LABEL_12:
@@ -1001,12 +1001,12 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    v11 = [v6 localizedDescription];
-    v9 = v11;
+    localizedDescription = [v6 localizedDescription];
+    requestID = localizedDescription;
     v12 = @"Unknown error";
-    if (v11)
+    if (localizedDescription)
     {
-      v12 = v11;
+      v12 = localizedDescription;
     }
 
     v15 = 138543362;
@@ -1019,10 +1019,10 @@ LABEL_11:
   v6 = DPLogHandle_Request();
   if (os_signpost_enabled(v6))
   {
-    v7 = [(DRSRequest *)self requestID];
-    v9 = [v7 UUIDString];
+    requestID2 = [(DRSRequest *)self requestID];
+    requestID = [requestID2 UUIDString];
     v15 = 138543362;
-    v16 = v9;
+    v16 = requestID;
     goto LABEL_11;
   }
 
@@ -1033,32 +1033,32 @@ LABEL_14:
 
 - (NSDictionary)metadataDictionary
 {
-  v2 = [(DRSRequest *)self contextDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"__DPMD__"];
+  contextDictionary = [(DRSRequest *)self contextDictionary];
+  v3 = [contextDictionary objectForKeyedSubscript:@"__DPMD__"];
 
   return v3;
 }
 
 - (NSString)hwModel
 {
-  v2 = [(DRSRequest *)self metadataDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"HWModel"];
+  metadataDictionary = [(DRSRequest *)self metadataDictionary];
+  v3 = [metadataDictionary objectForKeyedSubscript:@"HWModel"];
 
   return v3;
 }
 
 - (NSNumber)isLikeCarryDevice
 {
-  v2 = [(DRSRequest *)self metadataDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"LikelyCarry"];
+  metadataDictionary = [(DRSRequest *)self metadataDictionary];
+  v3 = [metadataDictionary objectForKeyedSubscript:@"LikelyCarry"];
 
   return v3;
 }
 
 - (NSString)automatedDeviceGroup
 {
-  v2 = [(DRSRequest *)self metadataDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"ADG"];
+  metadataDictionary = [(DRSRequest *)self metadataDictionary];
+  v3 = [metadataDictionary objectForKeyedSubscript:@"ADG"];
 
   return v3;
 }
@@ -1067,17 +1067,17 @@ LABEL_14:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     v5 = +[DRSSystemProfile sharedInstance];
-    v6 = [v5 hwModel];
+    hwModel = [v5 hwModel];
 
-    if (v6)
+    if (hwModel)
     {
       v15 = 0;
-      v7 = [(DRSRequest *)self addContextMetadataKey:@"HWModel" stringValue:v6 errorOut:&v15];
+      v7 = [(DRSRequest *)self addContextMetadataKey:@"HWModel" stringValue:hwModel errorOut:&v15];
       v8 = v15;
       v9 = DPLogHandle_Request();
       v10 = os_signpost_enabled(v9);
@@ -1086,19 +1086,19 @@ LABEL_14:
         if (v10)
         {
           v16 = 138543362;
-          v17 = v6;
+          v17 = hwModel;
           _os_signpost_emit_unreliably_with_name_impl();
         }
       }
 
       else if (v10)
       {
-        v11 = [v8 localizedDescription];
-        v12 = v11;
+        localizedDescription = [v8 localizedDescription];
+        v12 = localizedDescription;
         v13 = @"Unknown error";
-        if (v11)
+        if (localizedDescription)
         {
-          v13 = v11;
+          v13 = localizedDescription;
         }
 
         v16 = 138543362;
@@ -1120,8 +1120,8 @@ LABEL_14:
 
   else
   {
-    v6 = DPLogHandle_Request();
-    if (os_signpost_enabled(v6))
+    hwModel = DPLogHandle_Request();
+    if (os_signpost_enabled(hwModel))
     {
       LOWORD(v16) = 0;
       _os_signpost_emit_unreliably_with_name_impl();
@@ -1135,17 +1135,17 @@ LABEL_14:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = +[DRSSystemProfile sharedInstance];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     v5 = +[DRSSystemProfile sharedInstance];
-    v6 = [v5 isLikelyCarryGroupNum];
+    isLikelyCarryGroupNum = [v5 isLikelyCarryGroupNum];
 
-    if (v6)
+    if (isLikelyCarryGroupNum)
     {
       v15 = 0;
-      v7 = [(DRSRequest *)self addContextMetadataKey:@"LikelyCarry" numberValue:v6 errorOut:&v15];
+      v7 = [(DRSRequest *)self addContextMetadataKey:@"LikelyCarry" numberValue:isLikelyCarryGroupNum errorOut:&v15];
       v8 = v15;
       v9 = DPLogHandle_Request();
       v10 = os_signpost_enabled(v9);
@@ -1154,19 +1154,19 @@ LABEL_14:
         if (v10)
         {
           v16 = 138543362;
-          v17 = v6;
+          v17 = isLikelyCarryGroupNum;
           _os_signpost_emit_unreliably_with_name_impl();
         }
       }
 
       else if (v10)
       {
-        v11 = [v8 localizedDescription];
-        v12 = v11;
+        localizedDescription = [v8 localizedDescription];
+        v12 = localizedDescription;
         v13 = @"Unknown error";
-        if (v11)
+        if (localizedDescription)
         {
-          v13 = v11;
+          v13 = localizedDescription;
         }
 
         v16 = 138543362;
@@ -1188,8 +1188,8 @@ LABEL_14:
 
   else
   {
-    v6 = DPLogHandle_Request();
-    if (os_signpost_enabled(v6))
+    isLikelyCarryGroupNum = DPLogHandle_Request();
+    if (os_signpost_enabled(isLikelyCarryGroupNum))
     {
       LOWORD(v16) = 0;
       _os_signpost_emit_unreliably_with_name_impl();
@@ -1199,19 +1199,19 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_addContextMetadataKey:(id)a3 value:(id)a4 expectedClass:(Class)a5 errorOut:(id *)a6
+- (BOOL)_addContextMetadataKey:(id)key value:(id)value expectedClass:(Class)class errorOut:(id *)out
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  keyCopy = key;
+  valueCopy = value;
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(DRSRequest *)self contextDictionary];
+    contextDictionary = [(DRSRequest *)self contextDictionary];
 
-    if (v11)
+    if (contextDictionary)
     {
-      v12 = [(DRSRequest *)self contextDictionary];
-      v13 = [v12 mutableCopy];
+      contextDictionary2 = [(DRSRequest *)self contextDictionary];
+      v13 = [contextDictionary2 mutableCopy];
     }
 
     else
@@ -1233,7 +1233,7 @@ LABEL_14:
 
     v22 = v21;
 
-    v23 = [v22 objectForKeyedSubscript:v9];
+    v23 = [v22 objectForKeyedSubscript:keyCopy];
 
     if (v23)
     {
@@ -1241,12 +1241,12 @@ LABEL_14:
       if (os_signpost_enabled(v24))
       {
         v45 = 138543362;
-        v46 = v9;
+        v46 = keyCopy;
         _os_signpost_emit_unreliably_with_name_impl();
       }
     }
 
-    [v22 setObject:v10 forKeyedSubscript:v9];
+    [v22 setObject:valueCopy forKeyedSubscript:keyCopy];
     [v13 setObject:v22 forKeyedSubscript:@"__DPMD__"];
     v16 = v13;
     objc_opt_class();
@@ -1261,12 +1261,12 @@ LABEL_14:
         if (os_signpost_enabled(v27))
         {
           [v26 localizedDescription];
-          v28 = v39 = a6;
+          v28 = v39 = out;
           v45 = 138543362;
           v46 = v28;
           _os_signpost_emit_unreliably_with_name_impl();
 
-          a6 = v39;
+          out = v39;
         }
 
         v29 = 0;
@@ -1301,7 +1301,7 @@ LABEL_14:
       if (os_signpost_enabled(v31))
       {
         v45 = 138543362;
-        v46 = v9;
+        v46 = keyCopy;
         _os_signpost_emit_unreliably_with_name_impl();
       }
     }
@@ -1312,16 +1312,16 @@ LABEL_14:
       if (os_signpost_enabled(v32))
       {
         v45 = 138543362;
-        v46 = v9;
+        v46 = keyCopy;
         _os_signpost_emit_unreliably_with_name_impl();
       }
 
-      if (!a6)
+      if (!out)
       {
         goto LABEL_33;
       }
 
-      v33 = a6;
+      outCopy = out;
       v34 = MEMORY[0x277CCA9B8];
       v41 = *MEMORY[0x277CCA450];
       v42 = @"Could not serialized updated context as plist";
@@ -1329,14 +1329,14 @@ LABEL_14:
       v31 = [v34 errorWithDomain:@"DRSRequestContextMetadataError" code:0 userInfo:v35];
 
       v36 = v31;
-      *v33 = v31;
+      *outCopy = v31;
     }
 
 LABEL_33:
     goto LABEL_34;
   }
 
-  if (a6)
+  if (out)
   {
     v14 = MEMORY[0x277CCA9B8];
     v43 = *MEMORY[0x277CCA450];
@@ -1346,7 +1346,7 @@ LABEL_33:
 
     v17 = v16;
     v18 = 0;
-    *a6 = v16;
+    *out = v16;
 LABEL_34:
 
     goto LABEL_35;
@@ -1359,259 +1359,259 @@ LABEL_35:
   return v18;
 }
 
-- (BOOL)addContextMetadataKey:(id)a3 numberValue:(id)a4 errorOut:(id *)a5
+- (BOOL)addContextMetadataKey:(id)key numberValue:(id)value errorOut:(id *)out
 {
-  v8 = a4;
-  v9 = a3;
-  LOBYTE(a5) = [(DRSRequest *)self _addContextMetadataKey:v9 value:v8 expectedClass:objc_opt_class() errorOut:a5];
+  valueCopy = value;
+  keyCopy = key;
+  LOBYTE(out) = [(DRSRequest *)self _addContextMetadataKey:keyCopy value:valueCopy expectedClass:objc_opt_class() errorOut:out];
 
-  return a5;
+  return out;
 }
 
-- (BOOL)addContextMetadataKey:(id)a3 stringValue:(id)a4 errorOut:(id *)a5
+- (BOOL)addContextMetadataKey:(id)key stringValue:(id)value errorOut:(id *)out
 {
-  v8 = a4;
-  v9 = a3;
-  LOBYTE(a5) = [(DRSRequest *)self _addContextMetadataKey:v9 value:v8 expectedClass:objc_opt_class() errorOut:a5];
+  valueCopy = value;
+  keyCopy = key;
+  LOBYTE(out) = [(DRSRequest *)self _addContextMetadataKey:keyCopy value:valueCopy expectedClass:objc_opt_class() errorOut:out];
 
-  return a5;
+  return out;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(DRSRequest *)self isEqualToRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(DRSRequest *)self isEqualToRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRequest:(id)a3
+- (BOOL)isEqualToRequest:(id)request
 {
-  v4 = a3;
-  if (self == v4)
+  requestCopy = request;
+  if (self == requestCopy)
   {
     goto LABEL_40;
   }
 
-  v5 = [(DRSRequest *)self requestMCT];
-  if (v5 == [(DRSRequest *)v4 requestMCT])
+  requestMCT = [(DRSRequest *)self requestMCT];
+  if (requestMCT == [(DRSRequest *)requestCopy requestMCT])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(DRSRequest *)self teamID];
-      v7 = [(DRSRequest *)v4 teamID];
-      v8 = [v6 isEqualToString:v7];
+      teamID = [(DRSRequest *)self teamID];
+      teamID2 = [(DRSRequest *)requestCopy teamID];
+      v8 = [teamID isEqualToString:teamID2];
 
       if (v8)
       {
-        v9 = [(DRSRequest *)self build];
-        v10 = [(DRSRequest *)v4 build];
-        v11 = [v9 isEqualToString:v10];
+        build = [(DRSRequest *)self build];
+        build2 = [(DRSRequest *)requestCopy build];
+        v11 = [build isEqualToString:build2];
 
         if (v11)
         {
-          v12 = [(DRSRequest *)self issueCategory];
-          v13 = [(DRSRequest *)v4 issueCategory];
-          v14 = [v12 isEqualToString:v13];
+          issueCategory = [(DRSRequest *)self issueCategory];
+          issueCategory2 = [(DRSRequest *)requestCopy issueCategory];
+          v14 = [issueCategory isEqualToString:issueCategory2];
 
           if (v14)
           {
-            v15 = [(DRSRequest *)self issueDescription];
-            v16 = [(DRSRequest *)v4 issueDescription];
-            v17 = [v15 isEqualToString:v16];
+            issueDescription = [(DRSRequest *)self issueDescription];
+            issueDescription2 = [(DRSRequest *)requestCopy issueDescription];
+            v17 = [issueDescription isEqualToString:issueDescription2];
 
             if (v17)
             {
-              v18 = [(DRSRequest *)self teamID];
-              v19 = [(DRSRequest *)v4 teamID];
-              v20 = [v18 isEqualToString:v19];
+              teamID3 = [(DRSRequest *)self teamID];
+              teamID4 = [(DRSRequest *)requestCopy teamID];
+              v20 = [teamID3 isEqualToString:teamID4];
 
               if (v20)
               {
-                v21 = [(DRSRequest *)self logType];
-                v22 = [(DRSRequest *)v4 logType];
-                v23 = [v21 isEqualToString:v22];
+                logType = [(DRSRequest *)self logType];
+                logType2 = [(DRSRequest *)requestCopy logType];
+                v23 = [logType isEqualToString:logType2];
 
                 if (v23)
                 {
-                  v24 = [(DRSRequest *)self logPath];
-                  v25 = [(DRSRequest *)v4 logPath];
-                  IsNil = _oneIsNil(v24, v25);
+                  logPath = [(DRSRequest *)self logPath];
+                  logPath2 = [(DRSRequest *)requestCopy logPath];
+                  IsNil = _oneIsNil(logPath, logPath2);
 
                   if ((IsNil & 1) == 0)
                   {
-                    v27 = [(DRSRequest *)self logPath];
-                    if (!v27)
+                    logPath3 = [(DRSRequest *)self logPath];
+                    if (!logPath3)
                     {
                       goto LABEL_13;
                     }
 
-                    v28 = v27;
-                    v29 = [(DRSRequest *)self logPath];
-                    v30 = [(DRSRequest *)v4 logPath];
-                    v31 = [v29 isEqualToString:v30];
+                    v28 = logPath3;
+                    logPath4 = [(DRSRequest *)self logPath];
+                    logPath5 = [(DRSRequest *)requestCopy logPath];
+                    v31 = [logPath4 isEqualToString:logPath5];
 
                     if (v31)
                     {
 LABEL_13:
-                      v32 = [(DRSRequest *)self contextDictionary];
-                      v33 = [(DRSRequest *)v4 contextDictionary];
-                      v34 = _oneIsNil(v32, v33);
+                      contextDictionary = [(DRSRequest *)self contextDictionary];
+                      contextDictionary2 = [(DRSRequest *)requestCopy contextDictionary];
+                      v34 = _oneIsNil(contextDictionary, contextDictionary2);
 
                       if ((v34 & 1) == 0)
                       {
-                        v35 = [(DRSRequest *)self contextDictionary];
-                        if (!v35)
+                        contextDictionary3 = [(DRSRequest *)self contextDictionary];
+                        if (!contextDictionary3)
                         {
                           goto LABEL_44;
                         }
 
-                        v36 = v35;
-                        v37 = [(DRSRequest *)self contextDictionary];
-                        v38 = [(DRSRequest *)v4 contextDictionary];
-                        v39 = [v37 isEqualToDictionary:v38];
+                        v36 = contextDictionary3;
+                        contextDictionary4 = [(DRSRequest *)self contextDictionary];
+                        contextDictionary5 = [(DRSRequest *)requestCopy contextDictionary];
+                        v39 = [contextDictionary4 isEqualToDictionary:contextDictionary5];
 
                         if (v39)
                         {
 LABEL_44:
-                          v40 = [(DRSRequest *)self contextDictionaryData];
-                          v41 = [(DRSRequest *)v4 contextDictionaryData];
-                          v42 = _oneIsNil(v40, v41);
+                          contextDictionaryData = [(DRSRequest *)self contextDictionaryData];
+                          contextDictionaryData2 = [(DRSRequest *)requestCopy contextDictionaryData];
+                          v42 = _oneIsNil(contextDictionaryData, contextDictionaryData2);
 
                           if ((v42 & 1) == 0)
                           {
-                            v43 = [(DRSRequest *)self contextDictionaryData];
-                            if (!v43)
+                            contextDictionaryData3 = [(DRSRequest *)self contextDictionaryData];
+                            if (!contextDictionaryData3)
                             {
                               goto LABEL_45;
                             }
 
-                            v44 = v43;
-                            v45 = [(DRSRequest *)self contextDictionaryData];
-                            v46 = [(DRSRequest *)v4 contextDictionaryData];
-                            v47 = [v45 isEqualToData:v46];
+                            v44 = contextDictionaryData3;
+                            contextDictionaryData4 = [(DRSRequest *)self contextDictionaryData];
+                            contextDictionaryData5 = [(DRSRequest *)requestCopy contextDictionaryData];
+                            v47 = [contextDictionaryData4 isEqualToData:contextDictionaryData5];
 
                             if (v47)
                             {
 LABEL_45:
-                              v48 = [(DRSRequest *)self requestDate];
-                              v49 = [(DRSRequest *)v4 requestDate];
-                              v50 = _oneIsNil(v48, v49);
+                              requestDate = [(DRSRequest *)self requestDate];
+                              requestDate2 = [(DRSRequest *)requestCopy requestDate];
+                              v50 = _oneIsNil(requestDate, requestDate2);
 
                               if ((v50 & 1) == 0)
                               {
-                                v51 = [(DRSRequest *)self requestDate];
-                                if (!v51)
+                                requestDate3 = [(DRSRequest *)self requestDate];
+                                if (!requestDate3)
                                 {
                                   goto LABEL_46;
                                 }
 
-                                v52 = v51;
-                                v53 = [(DRSRequest *)self requestDate];
-                                v54 = [(DRSRequest *)v4 requestDate];
-                                v55 = [v53 isEqualToDate:v54];
+                                v52 = requestDate3;
+                                requestDate4 = [(DRSRequest *)self requestDate];
+                                requestDate5 = [(DRSRequest *)requestCopy requestDate];
+                                v55 = [requestDate4 isEqualToDate:requestDate5];
 
                                 if (v55)
                                 {
 LABEL_46:
-                                  v56 = [(DRSRequest *)self requestID];
-                                  v57 = [(DRSRequest *)v4 requestID];
-                                  v58 = _oneIsNil(v56, v57);
+                                  requestID = [(DRSRequest *)self requestID];
+                                  requestID2 = [(DRSRequest *)requestCopy requestID];
+                                  v58 = _oneIsNil(requestID, requestID2);
 
                                   if ((v58 & 1) == 0)
                                   {
-                                    v59 = [(DRSRequest *)self requestID];
-                                    if (!v59)
+                                    requestID3 = [(DRSRequest *)self requestID];
+                                    if (!requestID3)
                                     {
                                       goto LABEL_47;
                                     }
 
-                                    v60 = v59;
-                                    v61 = [(DRSRequest *)self requestID];
-                                    v62 = [(DRSRequest *)v4 requestID];
-                                    v63 = [v61 isEqual:v62];
+                                    v60 = requestID3;
+                                    requestID4 = [(DRSRequest *)self requestID];
+                                    requestID5 = [(DRSRequest *)requestCopy requestID];
+                                    v63 = [requestID4 isEqual:requestID5];
 
                                     if (v63)
                                     {
 LABEL_47:
-                                      v64 = [(DRSRequest *)self ckRecordID];
-                                      v65 = [(DRSRequest *)v4 ckRecordID];
-                                      v66 = _oneIsNil(v64, v65);
+                                      ckRecordID = [(DRSRequest *)self ckRecordID];
+                                      ckRecordID2 = [(DRSRequest *)requestCopy ckRecordID];
+                                      v66 = _oneIsNil(ckRecordID, ckRecordID2);
 
                                       if ((v66 & 1) == 0)
                                       {
-                                        v67 = [(DRSRequest *)self ckRecordID];
-                                        if (!v67)
+                                        ckRecordID3 = [(DRSRequest *)self ckRecordID];
+                                        if (!ckRecordID3)
                                         {
                                           goto LABEL_48;
                                         }
 
-                                        v68 = v67;
-                                        v69 = [(DRSRequest *)self ckRecordID];
-                                        v70 = [(DRSRequest *)v4 ckRecordID];
-                                        v71 = [v69 isEqualToString:v70];
+                                        v68 = ckRecordID3;
+                                        ckRecordID4 = [(DRSRequest *)self ckRecordID];
+                                        ckRecordID5 = [(DRSRequest *)requestCopy ckRecordID];
+                                        v71 = [ckRecordID4 isEqualToString:ckRecordID5];
 
                                         if (v71)
                                         {
 LABEL_48:
-                                          v72 = [(DRSRequest *)self requestState];
-                                          if (v72 == [(DRSRequest *)v4 requestState])
+                                          requestState = [(DRSRequest *)self requestState];
+                                          if (requestState == [(DRSRequest *)requestCopy requestState])
                                           {
-                                            v73 = [(DRSRequest *)self uploadAttemptCount];
-                                            if (v73 == [(DRSRequest *)v4 uploadAttemptCount])
+                                            uploadAttemptCount = [(DRSRequest *)self uploadAttemptCount];
+                                            if (uploadAttemptCount == [(DRSRequest *)requestCopy uploadAttemptCount])
                                             {
-                                              v74 = [(DRSRequest *)self decisionServerDecision];
-                                              if (v74 == [(DRSRequest *)v4 decisionServerDecision])
+                                              decisionServerDecision = [(DRSRequest *)self decisionServerDecision];
+                                              if (decisionServerDecision == [(DRSRequest *)requestCopy decisionServerDecision])
                                               {
-                                                v75 = [(DRSRequest *)self hasBeenCountedByTelemetry];
-                                                if (v75 == [(DRSRequest *)v4 hasBeenCountedByTelemetry])
+                                                hasBeenCountedByTelemetry = [(DRSRequest *)self hasBeenCountedByTelemetry];
+                                                if (hasBeenCountedByTelemetry == [(DRSRequest *)requestCopy hasBeenCountedByTelemetry])
                                                 {
-                                                  v76 = [(DRSRequest *)self isExpedited];
-                                                  if (v76 == [(DRSRequest *)v4 isExpedited])
+                                                  isExpedited = [(DRSRequest *)self isExpedited];
+                                                  if (isExpedited == [(DRSRequest *)requestCopy isExpedited])
                                                   {
-                                                    v77 = [(DRSRequest *)self errorDescription];
-                                                    v78 = [(DRSRequest *)v4 errorDescription];
-                                                    v79 = _oneIsNil(v77, v78);
+                                                    errorDescription = [(DRSRequest *)self errorDescription];
+                                                    errorDescription2 = [(DRSRequest *)requestCopy errorDescription];
+                                                    v79 = _oneIsNil(errorDescription, errorDescription2);
 
                                                     if ((v79 & 1) == 0)
                                                     {
-                                                      v80 = [(DRSRequest *)self errorDescription];
-                                                      if (!v80)
+                                                      errorDescription3 = [(DRSRequest *)self errorDescription];
+                                                      if (!errorDescription3)
                                                       {
                                                         goto LABEL_49;
                                                       }
 
-                                                      v81 = v80;
-                                                      v82 = [(DRSRequest *)self errorDescription];
-                                                      v83 = [(DRSRequest *)v4 errorDescription];
-                                                      v84 = [v82 isEqualToString:v83];
+                                                      v81 = errorDescription3;
+                                                      errorDescription4 = [(DRSRequest *)self errorDescription];
+                                                      errorDescription5 = [(DRSRequest *)requestCopy errorDescription];
+                                                      v84 = [errorDescription4 isEqualToString:errorDescription5];
 
                                                       if (v84)
                                                       {
 LABEL_49:
-                                                        v85 = [(DRSRequest *)self logs];
-                                                        v86 = [(DRSRequest *)v4 logs];
-                                                        v87 = _oneIsNil(v85, v86);
+                                                        logs = [(DRSRequest *)self logs];
+                                                        logs2 = [(DRSRequest *)requestCopy logs];
+                                                        v87 = _oneIsNil(logs, logs2);
 
                                                         if ((v87 & 1) == 0)
                                                         {
-                                                          v89 = [(DRSRequest *)self logs];
-                                                          if (v89)
+                                                          logs3 = [(DRSRequest *)self logs];
+                                                          if (logs3)
                                                           {
-                                                            v90 = v89;
-                                                            v91 = [(DRSRequest *)self logs];
-                                                            v92 = [(DRSRequest *)v4 logs];
-                                                            v88 = [v91 isEqualToArray:v92];
+                                                            v90 = logs3;
+                                                            logs4 = [(DRSRequest *)self logs];
+                                                            logs5 = [(DRSRequest *)requestCopy logs];
+                                                            v88 = [logs4 isEqualToArray:logs5];
 
                                                             goto LABEL_41;
                                                           }
@@ -1654,18 +1654,18 @@ LABEL_41:
   return v88 & 1;
 }
 
-+ (BOOL)isExpeditedTeamID:(id)a3 issueCategory:(id)a4
++ (BOOL)isExpeditedTeamID:(id)d issueCategory:(id)category
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:kDRSDMRapidTeamID[0]] && (objc_msgSend(v6, "isEqualToString:", kDRSDMRapidMicroDiagnosticIssueCategory[0]) & 1) != 0)
+  dCopy = d;
+  categoryCopy = category;
+  if ([dCopy isEqualToString:kDRSDMRapidTeamID[0]] && (objc_msgSend(categoryCopy, "isEqualToString:", kDRSDMRapidMicroDiagnosticIssueCategory[0]) & 1) != 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [v5 isEqualToString:kDRSDMPPSTeamID[0]];
+    v7 = [dCopy isEqualToString:kDRSDMPPSTeamID[0]];
   }
 
   return v7;
@@ -1673,23 +1673,23 @@ LABEL_41:
 
 - (BOOL)isNonPurgeableInFlightUntilUploadAttempt
 {
-  v2 = [(DRSRequest *)self teamID];
-  v3 = [v2 isEqualToString:kDRSDMNandTeamID[0]];
+  teamID = [(DRSRequest *)self teamID];
+  v3 = [teamID isEqualToString:kDRSDMNandTeamID[0]];
 
   return v3;
 }
 
-- (DRSRequest)initWithXPCDict:(id)a3
+- (DRSRequest)initWithXPCDict:(id)dict
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_value(v4, "ClientMessageType");
+  dictCopy = dict;
+  v5 = xpc_dictionary_get_value(dictCopy, "ClientMessageType");
 
   if (!v5)
   {
     goto LABEL_19;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v4, "ClientMessageType");
+  uint64 = xpc_dictionary_get_uint64(dictCopy, "ClientMessageType");
   if (uint64 != [(DRSRequest *)self expectedType])
   {
     goto LABEL_19;
@@ -1700,7 +1700,7 @@ LABEL_41:
   self = [(DRSRequest *)&v45 init];
   if (self)
   {
-    string = xpc_dictionary_get_string(v4, "TeamID");
+    string = xpc_dictionary_get_string(dictCopy, "TeamID");
     if (!string)
     {
       goto LABEL_19;
@@ -1710,7 +1710,7 @@ LABEL_41:
     teamID = self->_teamID;
     self->_teamID = v8;
 
-    v10 = xpc_dictionary_get_string(v4, "Category");
+    v10 = xpc_dictionary_get_string(dictCopy, "Category");
     if (!v10)
     {
       goto LABEL_19;
@@ -1720,7 +1720,7 @@ LABEL_41:
     issueCategory = self->_issueCategory;
     self->_issueCategory = v11;
 
-    v13 = xpc_dictionary_get_string(v4, "Description");
+    v13 = xpc_dictionary_get_string(dictCopy, "Description");
     if (!v13)
     {
       goto LABEL_19;
@@ -1730,7 +1730,7 @@ LABEL_41:
     issueDescription = self->_issueDescription;
     self->_issueDescription = v14;
 
-    v16 = xpc_dictionary_get_string(v4, "LogType");
+    v16 = xpc_dictionary_get_string(dictCopy, "LogType");
     if (!v16)
     {
       goto LABEL_19;
@@ -1741,50 +1741,50 @@ LABEL_41:
     self->_logType = v17;
 
     v44 = 0;
-    v19 = xpc_dictionary_get_array(v4, "LogArray");
-    v20 = xpc_dictionary_get_array(v4, "SandboxExtensions");
-    v21 = xpc_dictionary_get_array(v4, "TransferOwnership");
+    v19 = xpc_dictionary_get_array(dictCopy, "LogArray");
+    v20 = xpc_dictionary_get_array(dictCopy, "SandboxExtensions");
+    v21 = xpc_dictionary_get_array(dictCopy, "TransferOwnership");
     v22 = [DRSSubmittedLogInfo submittedLogInfosFromPaths:v19 sandboxExtensions:v20 transferOwnerships:v21 successOut:&v44];
     submittedLogInfos = self->_submittedLogInfos;
     self->_submittedLogInfos = v22;
 
     if (v44)
     {
-      v24 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       requestID = self->_requestID;
-      self->_requestID = v24;
+      self->_requestID = uUID;
 
-      v26 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       requestDate = self->_requestDate;
-      self->_requestDate = v26;
+      self->_requestDate = date;
 
       self->_requestState = 0;
       v28 = +[DRSSystemProfile sharedInstance];
-      v29 = [v28 build];
+      build = [v28 build];
       build = self->_build;
-      self->_build = v29;
+      self->_build = build;
 
       self->_uploadAttemptCount = 0;
       self->_decisionServerDecision = 0;
       v43 = 0;
-      data = xpc_dictionary_get_data(v4, "ContextDict", &v43);
+      data = xpc_dictionary_get_data(dictCopy, "ContextDict", &v43);
       if (!data || !v43)
       {
 LABEL_13:
-        v38 = xpc_dictionary_get_value(v4, "RequestMCT");
+        v38 = xpc_dictionary_get_value(dictCopy, "RequestMCT");
 
         if (v38)
         {
-          self->_requestMCT = xpc_dictionary_get_uint64(v4, "RequestMCT");
-          v39 = [(DRSRequest *)self teamID];
-          v40 = [(DRSRequest *)self issueCategory];
-          self->_isExpedited = [DRSRequest isExpeditedTeamID:v39 issueCategory:v40];
+          self->_requestMCT = xpc_dictionary_get_uint64(dictCopy, "RequestMCT");
+          teamID = [(DRSRequest *)self teamID];
+          issueCategory = [(DRSRequest *)self issueCategory];
+          self->_isExpedited = [DRSRequest isExpeditedTeamID:teamID issueCategory:issueCategory];
 
           goto LABEL_15;
         }
 
 LABEL_19:
-        v41 = 0;
+        selfCopy = 0;
         goto LABEL_20;
       }
 
@@ -1819,76 +1819,76 @@ LABEL_19:
 
 LABEL_15:
   self = self;
-  v41 = self;
+  selfCopy = self;
 LABEL_20:
 
-  return v41;
+  return selfCopy;
 }
 
-- (id)_processSubmittedLogInfo:(id)a3 workingDirectory:(id)a4
+- (id)_processSubmittedLogInfo:(id)info workingDirectory:(id)directory
 {
   v135 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 path];
-  v9 = [v6 sandboxExtension];
+  infoCopy = info;
+  directoryCopy = directory;
+  path = [infoCopy path];
+  sandboxExtension = [infoCopy sandboxExtension];
   v118 = 0;
-  v10 = [[DRSSandboxExtensionHelper alloc] initWithSandboxExtensionToken:v9 logPath:v8 errorOut:&v118];
+  v10 = [[DRSSandboxExtensionHelper alloc] initWithSandboxExtensionToken:sandboxExtension logPath:path errorOut:&v118];
   v11 = v118;
   if (!v10)
   {
     v23 = objc_alloc(MEMORY[0x277CCACA8]);
-    v24 = [v11 localizedDescription];
-    v12 = v24;
+    localizedDescription = [v11 localizedDescription];
+    defaultManager = localizedDescription;
     v25 = @"Unknown";
-    if (v24)
+    if (localizedDescription)
     {
-      v25 = v24;
+      v25 = localizedDescription;
     }
 
-    v22 = [v23 initWithFormat:@"Failed to consume sandbox extension for file at '%@' due to error: %@", v8, v25];
+    v22 = [v23 initWithFormat:@"Failed to consume sandbox extension for file at '%@' due to error: %@", path, v25];
     goto LABEL_13;
   }
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v117 = 0;
-  if (([v12 fileExistsAtPath:v8 isDirectory:&v117] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:path isDirectory:&v117] & 1) == 0)
   {
     v26 = DPLogHandle_SubmitLogError();
     if (os_signpost_enabled(v26))
     {
       [(DRSRequest *)self requestID];
-      v27 = v112 = v12;
-      v28 = [(DRSRequest *)self teamID];
+      v27 = v112 = defaultManager;
+      teamID = [(DRSRequest *)self teamID];
       [(DRSRequest *)self issueCategory];
-      v109 = v6;
+      v109 = infoCopy;
       v29 = v11;
       v30 = v10;
-      v31 = v9;
-      v33 = v32 = v7;
-      v34 = [(DRSRequest *)self issueDescription];
+      v31 = sandboxExtension;
+      v33 = v32 = directoryCopy;
+      issueDescription = [(DRSRequest *)self issueDescription];
       *buf = 138544386;
       v122 = v27;
       v123 = 2114;
-      v124 = v8;
+      v124 = path;
       v125 = 2114;
-      v126 = v28;
+      v126 = teamID;
       v127 = 2114;
       v128 = v33;
       v129 = 2114;
-      v130 = v34;
+      v130 = issueDescription;
       _os_signpost_emit_with_name_impl(&dword_232906000, v26, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SubmittedLogMissing", "%{public, name=requestID}@: Log with path %{public}@ submitted by %{public}@/%{public}@/%{public}@ missing", buf, 0x34u);
 
-      v7 = v32;
-      v9 = v31;
+      directoryCopy = v32;
+      sandboxExtension = v31;
       v10 = v30;
       v11 = v29;
-      v6 = v109;
+      infoCopy = v109;
 
-      v12 = v112;
+      defaultManager = v112;
     }
 
-    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Specified file path '%@' missing", v8, v94];
+    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Specified file path '%@' missing", path, v94];
     goto LABEL_13;
   }
 
@@ -1898,58 +1898,58 @@ LABEL_20:
     if (os_signpost_enabled(v13))
     {
       [(DRSRequest *)self requestID];
-      v14 = v111 = v12;
-      v15 = [(DRSRequest *)self teamID];
+      v14 = v111 = defaultManager;
+      teamID2 = [(DRSRequest *)self teamID];
       [(DRSRequest *)self issueCategory];
-      v108 = v6;
+      v108 = infoCopy;
       v16 = v11;
       v17 = v10;
-      v18 = v9;
-      v20 = v19 = v7;
-      v21 = [(DRSRequest *)self issueDescription];
+      v18 = sandboxExtension;
+      v20 = v19 = directoryCopy;
+      issueDescription2 = [(DRSRequest *)self issueDescription];
       *buf = 138544386;
       v122 = v14;
       v123 = 2114;
-      v124 = v8;
+      v124 = path;
       v125 = 2114;
-      v126 = v15;
+      v126 = teamID2;
       v127 = 2114;
       v128 = v20;
       v129 = 2114;
-      v130 = v21;
+      v130 = issueDescription2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SubmittedLogIsDirectory", "%{public, name=requestID}@: Log with path %{public}@ submitted by %{public}@/%{public}@/%{public}@ is a directory rather than a file", buf, 0x34u);
 
-      v7 = v19;
-      v9 = v18;
+      directoryCopy = v19;
+      sandboxExtension = v18;
       v10 = v17;
       v11 = v16;
-      v6 = v108;
+      infoCopy = v108;
 
-      v12 = v111;
+      defaultManager = v111;
     }
 
-    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Specified file path '%@' is a directory not a file", v8, v94];
+    v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Specified file path '%@' is a directory not a file", path, v94];
 LABEL_13:
     v35 = v22;
     goto LABEL_14;
   }
 
-  v113 = v12;
+  v113 = defaultManager;
   v38 = objc_alloc(MEMORY[0x277CCACA8]);
   [(DRSRequest *)self requestID];
-  v39 = v110 = v7;
-  v40 = [v39 UUIDString];
-  v41 = [v8 lastPathComponent];
-  v42 = [v38 initWithFormat:@"submitLog%@_%@", v40, v41];
+  v39 = v110 = directoryCopy;
+  uUIDString = [v39 UUIDString];
+  lastPathComponent = [path lastPathComponent];
+  v42 = [v38 initWithFormat:@"submitLog%@_%@", uUIDString, lastPathComponent];
 
-  v7 = v110;
+  directoryCopy = v110;
   v106 = v42;
   v43 = [v110 stringByAppendingPathComponent:v42];
   v107 = v43;
-  if ([v6 transferOwnership])
+  if ([infoCopy transferOwnership])
   {
     v116 = 0;
-    v44 = [v113 moveItemAtPath:v8 toPath:v43 error:&v116];
+    v44 = [v113 moveItemAtPath:path toPath:v43 error:&v116];
     v45 = v116;
     v46 = v45;
     if (v44)
@@ -1961,22 +1961,22 @@ LABEL_13:
         goto LABEL_25;
       }
 
-      v99 = [(DRSRequest *)self requestID];
-      v48 = [(DRSRequest *)self teamID];
-      v49 = [(DRSRequest *)self issueCategory];
-      v50 = [(DRSRequest *)self issueDescription];
+      requestID = [(DRSRequest *)self requestID];
+      teamID3 = [(DRSRequest *)self teamID];
+      issueCategory = [(DRSRequest *)self issueCategory];
+      issueDescription3 = [(DRSRequest *)self issueDescription];
       *buf = 138544642;
-      v122 = v99;
+      v122 = requestID;
       v123 = 2114;
-      v124 = v8;
+      v124 = path;
       v125 = 2114;
-      v126 = v48;
+      v126 = teamID3;
       v127 = 2114;
-      v128 = v49;
-      v51 = v49;
+      v128 = issueCategory;
+      v51 = issueCategory;
       v129 = 2114;
-      v130 = v50;
-      v52 = v50;
+      v130 = issueDescription3;
+      v52 = issueDescription3;
       v131 = 2114;
       v132 = v107;
       v53 = "LogMove";
@@ -1987,50 +1987,50 @@ LABEL_13:
     v67 = DPLogHandle_SubmitLogError();
     if (os_signpost_enabled(v67))
     {
-      v100 = [(DRSRequest *)self requestID];
-      v96 = [(DRSRequest *)self teamID];
+      requestID2 = [(DRSRequest *)self requestID];
+      teamID4 = [(DRSRequest *)self teamID];
       [(DRSRequest *)self issueCategory];
       v68 = v104 = v46;
-      v69 = [(DRSRequest *)self issueDescription];
-      v70 = [v104 localizedDescription];
+      issueDescription4 = [(DRSRequest *)self issueDescription];
+      localizedDescription2 = [v104 localizedDescription];
       *buf = 138544898;
-      v122 = v100;
+      v122 = requestID2;
       v123 = 2114;
-      v124 = v8;
+      v124 = path;
       v125 = 2114;
-      v126 = v96;
+      v126 = teamID4;
       v127 = 2114;
       v128 = v68;
       v129 = 2114;
-      v130 = v69;
+      v130 = issueDescription4;
       v131 = 2114;
       v132 = v107;
       v133 = 2114;
-      v134 = v70;
+      v134 = localizedDescription2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v67, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LogMoveFailed", "%{public, name=requestID}@: Attempt to move %{public}@ submitted by %{public}@/%{public}@/%{public}@ to %{public}@ failed due to error: %{public}@", buf, 0x48u);
 
-      v7 = v110;
+      directoryCopy = v110;
       v46 = v104;
     }
 
     v71 = objc_alloc(MEMORY[0x277CCACA8]);
-    v72 = [v46 localizedDescription];
+    localizedDescription3 = [v46 localizedDescription];
     v73 = v46;
-    v63 = v72;
+    v63 = localizedDescription3;
     v74 = @"Unknown";
-    if (v72)
+    if (localizedDescription3)
     {
-      v74 = v72;
+      v74 = localizedDescription3;
     }
 
     v43 = v107;
-    v75 = [v71 initWithFormat:@"Moving '%@' to '%@' failed due to error: %@", v8, v107, v74];
+    v75 = [v71 initWithFormat:@"Moving '%@' to '%@' failed due to error: %@", path, v107, v74];
   }
 
   else
   {
     v115 = 0;
-    v55 = [v113 copyItemAtPath:v8 toPath:v43 error:&v115];
+    v55 = [v113 copyItemAtPath:path toPath:v43 error:&v115];
     v56 = v115;
     v57 = v56;
     if (v55)
@@ -2042,22 +2042,22 @@ LABEL_13:
         goto LABEL_25;
       }
 
-      v99 = [(DRSRequest *)self requestID];
-      v48 = [(DRSRequest *)self teamID];
-      v58 = [(DRSRequest *)self issueCategory];
-      v59 = [(DRSRequest *)self issueDescription];
+      requestID = [(DRSRequest *)self requestID];
+      teamID3 = [(DRSRequest *)self teamID];
+      issueCategory2 = [(DRSRequest *)self issueCategory];
+      issueDescription5 = [(DRSRequest *)self issueDescription];
       *buf = 138544642;
-      v122 = v99;
+      v122 = requestID;
       v123 = 2114;
-      v124 = v8;
+      v124 = path;
       v125 = 2114;
-      v126 = v48;
+      v126 = teamID3;
       v127 = 2114;
-      v128 = v58;
-      v51 = v58;
+      v128 = issueCategory2;
+      v51 = issueCategory2;
       v129 = 2114;
-      v130 = v59;
-      v52 = v59;
+      v130 = issueDescription5;
+      v52 = issueDescription5;
       v131 = 2114;
       v132 = v107;
       v53 = "LogCopy";
@@ -2065,7 +2065,7 @@ LABEL_13:
 LABEL_24:
       _os_signpost_emit_with_name_impl(&dword_232906000, v47, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, v53, v54, buf, 0x3Eu);
 
-      v7 = v110;
+      directoryCopy = v110;
       v43 = v107;
 
 LABEL_25:
@@ -2078,19 +2078,19 @@ LABEL_25:
       if (v61)
       {
 
-        v63 = -[DRSLog _initWithLogPath:transferOwnership:]([DRSLog alloc], "_initWithLogPath:transferOwnership:", v43, [v6 transferOwnership]);
+        v63 = -[DRSLog _initWithLogPath:transferOwnership:]([DRSLog alloc], "_initWithLogPath:transferOwnership:", v43, [infoCopy transferOwnership]);
         if (v63)
         {
-          v64 = [(DRSRequest *)self logs];
+          logs = [(DRSRequest *)self logs];
 
-          if (!v64)
+          if (!logs)
           {
             v65 = objc_alloc_init(MEMORY[0x277CBEB18]);
             [(DRSRequest *)self setLogs:v65];
           }
 
-          v66 = [(DRSRequest *)self logs];
-          [v66 addObject:v63];
+          logs2 = [(DRSRequest *)self logs];
+          [logs2 addObject:v63];
 
           v35 = 0;
         }
@@ -2100,14 +2100,14 @@ LABEL_25:
           v92 = DPLogHandle_SubmitLogError();
           if (os_signpost_enabled(v92))
           {
-            v93 = [(DRSRequest *)self requestID];
+            requestID3 = [(DRSRequest *)self requestID];
             *buf = 138543618;
-            v122 = v93;
+            v122 = requestID3;
             v123 = 2114;
             v124 = v43;
             _os_signpost_emit_with_name_impl(&dword_232906000, v92, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LogSizeLookupFailed", "%{public, name=requestID}@: Attempt to lookup log size for %{public}@ failed", buf, 0x16u);
 
-            v7 = v110;
+            directoryCopy = v110;
           }
 
           v35 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Size lookup on '%@' failed", v43];
@@ -2123,42 +2123,42 @@ LABEL_25:
         v83 = DPLogHandle_SubmitLogError();
         if (os_signpost_enabled(v83))
         {
-          v95 = [(DRSRequest *)self requestID];
-          v84 = [(DRSRequest *)self teamID];
-          v85 = [(DRSRequest *)self issueCategory];
-          v86 = [(DRSRequest *)self issueDescription];
-          v87 = [v102 localizedDescription];
+          requestID4 = [(DRSRequest *)self requestID];
+          teamID5 = [(DRSRequest *)self teamID];
+          issueCategory3 = [(DRSRequest *)self issueCategory];
+          issueDescription6 = [(DRSRequest *)self issueDescription];
+          localizedDescription4 = [v102 localizedDescription];
           *buf = 138544898;
-          v122 = v95;
+          v122 = requestID4;
           v123 = 2114;
-          v124 = v8;
+          v124 = path;
           v125 = 2114;
-          v126 = v84;
+          v126 = teamID5;
           v127 = 2114;
-          v128 = v85;
+          v128 = issueCategory3;
           v129 = 2114;
-          v130 = v86;
+          v130 = issueDescription6;
           v131 = 2114;
           v132 = v107;
           v133 = 2112;
-          v134 = v87;
+          v134 = localizedDescription4;
           _os_signpost_emit_with_name_impl(&dword_232906000, v83, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LogPermissionsUpdateFailed", "%{public, name=requestID}@: Attempt to set permissions to '600' on %{public}@ submitted by %{public}@/%{public}@/%{public}@ to %{public}@ failed due to error: %@{public}", buf, 0x48u);
         }
 
         v88 = objc_alloc(MEMORY[0x277CCACA8]);
         v73 = v103;
-        v89 = [v103 localizedDescription];
-        v90 = v89;
+        localizedDescription5 = [v103 localizedDescription];
+        v90 = localizedDescription5;
         v91 = @"Unknown";
-        if (v89)
+        if (localizedDescription5)
         {
-          v91 = v89;
+          v91 = localizedDescription5;
         }
 
         v43 = v107;
         v35 = [v88 initWithFormat:@"Updating permissions on '%@' failed due to error: %@", v107, v91];
 
-        v7 = v110;
+        directoryCopy = v110;
         v63 = v98;
       }
 
@@ -2168,50 +2168,50 @@ LABEL_25:
     v76 = DPLogHandle_SubmitLogError();
     if (os_signpost_enabled(v76))
     {
-      v101 = [(DRSRequest *)self requestID];
-      v97 = [(DRSRequest *)self teamID];
+      requestID5 = [(DRSRequest *)self requestID];
+      teamID6 = [(DRSRequest *)self teamID];
       [(DRSRequest *)self issueCategory];
       v77 = v105 = v57;
-      v78 = [(DRSRequest *)self issueDescription];
-      v79 = [v105 localizedDescription];
+      issueDescription7 = [(DRSRequest *)self issueDescription];
+      localizedDescription6 = [v105 localizedDescription];
       *buf = 138544898;
-      v122 = v101;
+      v122 = requestID5;
       v123 = 2114;
-      v124 = v8;
+      v124 = path;
       v125 = 2114;
-      v126 = v97;
+      v126 = teamID6;
       v127 = 2114;
       v128 = v77;
       v129 = 2114;
-      v130 = v78;
+      v130 = issueDescription7;
       v131 = 2114;
       v132 = v107;
       v133 = 2112;
-      v134 = v79;
+      v134 = localizedDescription6;
       _os_signpost_emit_with_name_impl(&dword_232906000, v76, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LogCopyFailed", "%{public, name=requestID}@: Attempt to copy %{public}@ submitted by %{public}@/%{public}@/%{public}@ to %{public}@ failed due to error: %@{public}", buf, 0x48u);
 
-      v7 = v110;
+      directoryCopy = v110;
       v57 = v105;
     }
 
     v80 = objc_alloc(MEMORY[0x277CCACA8]);
-    v81 = [v57 localizedDescription];
+    localizedDescription7 = [v57 localizedDescription];
     v73 = v57;
-    v63 = v81;
+    v63 = localizedDescription7;
     v82 = @"Unknown";
-    if (v81)
+    if (localizedDescription7)
     {
-      v82 = v81;
+      v82 = localizedDescription7;
     }
 
     v43 = v107;
-    v75 = [v80 initWithFormat:@"Copying '%@' to '%@' failed due to error: %@", v8, v107, v82];
+    v75 = [v80 initWithFormat:@"Copying '%@' to '%@' failed due to error: %@", path, v107, v82];
   }
 
   v35 = v75;
 LABEL_50:
 
-  v12 = v113;
+  defaultManager = v113;
 LABEL_14:
 
   v36 = *MEMORY[0x277D85DE8];
@@ -2219,19 +2219,19 @@ LABEL_14:
   return v35;
 }
 
-- (BOOL)performOnReceiptWork:(id)a3 dampeningOutcome:(unint64_t)a4
+- (BOOL)performOnReceiptWork:(id)work dampeningOutcome:(unint64_t)outcome
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  workCopy = work;
   v7 = +[DRSSystemProfile sharedInstance];
-  v8 = [v7 isLogUploadEnabled];
+  isLogUploadEnabled = [v7 isLogUploadEnabled];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v9 = [(DRSRequest *)self submittedLogInfos];
-  v10 = [v9 countByEnumeratingWithState:&v47 objects:v53 count:16];
+  submittedLogInfos = [(DRSRequest *)self submittedLogInfos];
+  v10 = [submittedLogInfos countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2242,7 +2242,7 @@ LABEL_14:
       {
         if (*v48 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(submittedLogInfos);
         }
 
         if ([*(*(&v47 + 1) + 8 * i) transferOwnership])
@@ -2252,7 +2252,7 @@ LABEL_14:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v47 objects:v53 count:16];
+      v11 = [submittedLogInfos countByEnumeratingWithState:&v47 objects:v53 count:16];
       if (v11)
       {
         continue;
@@ -2262,10 +2262,10 @@ LABEL_14:
     }
   }
 
-  if (((a4 == 0) & v8) != 0)
+  if (((outcome == 0) & isLogUploadEnabled) != 0)
   {
 LABEL_13:
-    v15 = [(DRSRequest *)self submittedLogInfos];
+    submittedLogInfos2 = [(DRSRequest *)self submittedLogInfos];
     submittedLogInfos = self->_submittedLogInfos;
     self->_submittedLogInfos = 0;
 
@@ -2274,7 +2274,7 @@ LABEL_13:
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v18 = v15;
+    v18 = submittedLogInfos2;
     v19 = [v18 countByEnumeratingWithState:&v43 objects:v52 count:16];
     if (v19)
     {
@@ -2289,7 +2289,7 @@ LABEL_13:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [(DRSRequest *)self _processSubmittedLogInfo:*(*(&v43 + 1) + 8 * j) workingDirectory:v6];
+          v23 = [(DRSRequest *)self _processSubmittedLogInfo:*(*(&v43 + 1) + 8 * j) workingDirectory:workCopy];
           if (v23)
           {
             [v17 addObject:v23];
@@ -2350,16 +2350,16 @@ LABEL_13:
 
     else
     {
-      v33 = [(DRSRequest *)self totalLogSizeBytes];
-      v34 = [(DRSRequest *)self totalLogSizeBytes];
-      if (v34 <= [(DRSRequest *)self logSizeLimitBytes])
+      totalLogSizeBytes = [(DRSRequest *)self totalLogSizeBytes];
+      totalLogSizeBytes2 = [(DRSRequest *)self totalLogSizeBytes];
+      if (totalLogSizeBytes2 <= [(DRSRequest *)self logSizeLimitBytes])
       {
-        v32 = [(DRSRequest *)self _performPostClientLogWork:v6 dampeningOutcome:a4 isLogUploadEnabled:v8];
+        v32 = [(DRSRequest *)self _performPostClientLogWork:workCopy dampeningOutcome:outcome isLogUploadEnabled:isLogUploadEnabled];
       }
 
       else
       {
-        v35 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Log(s) exceed size cap. Submitted size %zuB vs. cap %lluB", v33, -[DRSRequest logSizeLimitBytes](self, "logSizeLimitBytes")];
+        v35 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Log(s) exceed size cap. Submitted size %zuB vs. cap %lluB", totalLogSizeBytes, -[DRSRequest logSizeLimitBytes](self, "logSizeLimitBytes")];
         [(DRSRequest *)self updateToState:4357 errorDescription:v35 errorOut:0];
 
         v32 = 0;
@@ -2369,9 +2369,9 @@ LABEL_13:
 
   else
   {
-    if (a4)
+    if (outcome)
     {
-      v14 = DRSRequestStateForDampeningOutcome(a4);
+      v14 = DRSRequestStateForDampeningOutcome(outcome);
     }
 
     else
@@ -2386,20 +2386,20 @@ LABEL_13:
   return v32;
 }
 
-- (BOOL)_performPostClientLogWork:(id)a3 dampeningOutcome:(unint64_t)a4 isLogUploadEnabled:(BOOL)a5
+- (BOOL)_performPostClientLogWork:(id)work dampeningOutcome:(unint64_t)outcome isLogUploadEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v8 = a3;
-  if (a4)
+  enabledCopy = enabled;
+  workCopy = work;
+  if (outcome)
   {
-    v9 = DRSRequestStateForDampeningOutcome(a4);
+    v9 = DRSRequestStateForDampeningOutcome(outcome);
     v10 = @"Request denied due to dampening";
-    v11 = self;
+    selfCopy3 = self;
   }
 
-  else if (v5)
+  else if (enabledCopy)
   {
-    v11 = self;
+    selfCopy3 = self;
     v9 = 1;
     v10 = 0;
   }
@@ -2407,11 +2407,11 @@ LABEL_13:
   else
   {
     v10 = @"Log upload is disabled";
-    v11 = self;
+    selfCopy3 = self;
     v9 = 4103;
   }
 
-  v12 = [(DRSRequest *)v11 updateToState:v9 errorDescription:v10 errorOut:0];
+  v12 = [(DRSRequest *)selfCopy3 updateToState:v9 errorDescription:v10 errorOut:0];
 
   return v12;
 }
@@ -2419,8 +2419,8 @@ LABEL_13:
 - (BOOL)hasUploadableContent
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(DRSRequest *)self logs];
-  v4 = [v3 count];
+  logs = [(DRSRequest *)self logs];
+  v4 = [logs count];
 
   if (v4)
   {
@@ -2428,8 +2428,8 @@ LABEL_13:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(DRSRequest *)self logs];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    logs2 = [(DRSRequest *)self logs];
+    v6 = [logs2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2440,7 +2440,7 @@ LABEL_13:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(logs2);
           }
 
           if (![*(*(&v13 + 1) + 8 * i) isAvailableOnDisk])
@@ -2450,7 +2450,7 @@ LABEL_13:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [logs2 countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           continue;
@@ -2473,14 +2473,14 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)_updateLogStateToExpectedState:(unsigned __int8)a3
+- (BOOL)_updateLogStateToExpectedState:(unsigned __int8)state
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         v4 = *MEMORY[0x277D85DE8];
         v5 = 1024;
@@ -2505,14 +2505,14 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v11 = *MEMORY[0x277D85DE8];
     v5 = 512;
     goto LABEL_15;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
 LABEL_13:
     v10 = *MEMORY[0x277D85DE8];
@@ -2530,12 +2530,12 @@ LABEL_13:
   v3 = DPLogHandle_LogManagement();
   if (os_signpost_enabled(v3))
   {
-    v4 = [(DRSRequest *)self requestID];
-    v5 = [(DRSRequest *)self logs];
+    requestID = [(DRSRequest *)self requestID];
+    logs = [(DRSRequest *)self logs];
     *buf = 138543618;
-    v21 = v4;
+    v21 = requestID;
     v22 = 2048;
-    v23 = [v5 count];
+    v23 = [logs count];
     _os_signpost_emit_with_name_impl(&dword_232906000, v3, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LogDelete", "Request ID %{public}@: Deleting %lu logs", buf, 0x16u);
   }
 
@@ -2543,8 +2543,8 @@ LABEL_13:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(DRSRequest *)self logs];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  logs2 = [(DRSRequest *)self logs];
+  v7 = [logs2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2557,14 +2557,14 @@ LABEL_13:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(logs2);
         }
 
         v9 |= [*(*(&v15 + 1) + 8 * v11++) _deleteOnDiskLog] ^ 1;
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [logs2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -2580,9 +2580,9 @@ LABEL_13:
   return v12 & 1;
 }
 
-- (BOOL)_updateLogFileStateForTransitionFromPreviousState:(unint64_t)a3
+- (BOOL)_updateLogFileStateForTransitionFromPreviousState:(unint64_t)state
 {
-  v4 = DRSRequestExpectedLogStateForState(a3, [(DRSRequest *)self isNonPurgeableInFlightUntilUploadAttempt], [(DRSRequest *)self uploadAttemptCount]);
+  v4 = DRSRequestExpectedLogStateForState(state, [(DRSRequest *)self isNonPurgeableInFlightUntilUploadAttempt], [(DRSRequest *)self uploadAttemptCount]);
   v5 = DRSRequestExpectedLogStateForState([(DRSRequest *)self requestState], [(DRSRequest *)self isNonPurgeableInFlightUntilUploadAttempt], [(DRSRequest *)self uploadAttemptCount]);
   if ([(DRSRequest *)self isNonPurgeableInFlightUntilUploadAttempt]&& v4 == 1 && !v5)
   {
@@ -2603,12 +2603,12 @@ LABEL_13:
 
   self->_requestState = 4359;
   v8 = objc_alloc(MEMORY[0x277CCACA8]);
-  v9 = [(DRSRequest *)self logPath];
-  v10 = v9;
+  logPath = [(DRSRequest *)self logPath];
+  v10 = logPath;
   v11 = @"<Missing path>";
-  if (v9)
+  if (logPath)
   {
-    v11 = v9;
+    v11 = logPath;
   }
 
   v12 = [v8 initWithFormat:@"Failed to update log purgeability state or failed to delete file: %@", v11];
@@ -2618,16 +2618,16 @@ LABEL_13:
   return 0;
 }
 
-- (BOOL)updateToState:(unint64_t)a3 errorDescription:(id)a4 errorOut:(id *)a5
+- (BOOL)updateToState:(unint64_t)state errorDescription:(id)description errorOut:(id *)out
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = [(DRSRequest *)self requestState];
+  descriptionCopy = description;
+  requestState = [(DRSRequest *)self requestState];
   v11 = DPLogHandle_Request();
   if (os_signpost_enabled(v11))
   {
-    v12 = DRRequestStateWithoutOutcomeStringForState(v10);
-    v13 = DRRequestStateWithoutOutcomeStringForState(a3);
+    v12 = DRRequestStateWithoutOutcomeStringForState(requestState);
+    v13 = DRRequestStateWithoutOutcomeStringForState(state);
     v14 = [(DRSRequest *)self debugDescription];
     *buf = 138543874;
     v41 = v12;
@@ -2640,34 +2640,34 @@ LABEL_13:
 
   if (!DRSRequestOutcomeForState([(DRSRequest *)self requestState]))
   {
-    if (a3 != 2 || v10 == 1)
+    if (state != 2 || requestState == 1)
     {
-      self->_requestState = a3;
-      objc_storeStrong(&self->_errorDescription, a4);
+      self->_requestState = state;
+      objc_storeStrong(&self->_errorDescription, description);
       if ([(DRSRequest *)self requestState]!= 4352)
       {
 LABEL_20:
-        v23 = [(DRSRequest *)self _updateLogFileStateForTransitionFromPreviousState:v10];
+        v23 = [(DRSRequest *)self _updateLogFileStateForTransitionFromPreviousState:requestState];
         goto LABEL_21;
       }
 
-      v30 = DPLogHandle_RequestError();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
+      requestStateString = DPLogHandle_RequestError();
+      if (os_log_type_enabled(requestStateString, OS_LOG_TYPE_FAULT))
       {
-        [DRSRequest updateToState:v9 errorDescription:v30 errorOut:?];
+        [DRSRequest updateToState:descriptionCopy errorDescription:requestStateString errorOut:?];
       }
     }
 
     else
     {
-      if (a5)
+      if (out)
       {
         v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Cannot start upload if not awaiting upload"];
         v25 = MEMORY[0x277CCA9B8];
         v36 = *MEMORY[0x277CCA450];
         v37 = v24;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-        *a5 = [v25 errorWithDomain:@"DRSRequestStateTransitionError" code:0 userInfo:v26];
+        *out = [v25 errorWithDomain:@"DRSRequestStateTransitionError" code:0 userInfo:v26];
       }
 
       v27 = DPLogHandle_RequestError();
@@ -2681,9 +2681,9 @@ LABEL_20:
 
       self->_requestState = 4358;
       v29 = objc_alloc(MEMORY[0x277CCACA8]);
-      v30 = [(DRSRequest *)self requestStateString];
+      requestStateString = [(DRSRequest *)self requestStateString];
       v31 = DRRequestStateWithOutcomeStringForState(2);
-      v32 = [v29 initWithFormat:@"Invalid state transition: %@ (%#llx) -> %@ (%#llx)", v30, v10, v31, 2];
+      v32 = [v29 initWithFormat:@"Invalid state transition: %@ (%#llx) -> %@ (%#llx)", requestStateString, requestState, v31, 2];
       errorDescription = self->_errorDescription;
       self->_errorDescription = v32;
     }
@@ -2691,28 +2691,28 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a5)
+  if (out)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
-    v16 = [(DRSRequest *)self requestStateString];
-    v17 = [v15 initWithFormat:@"Cannot transition out of terminal state %@ (%#llx)", v16, -[DRSRequest requestState](self, "requestState")];
+    requestStateString2 = [(DRSRequest *)self requestStateString];
+    v17 = [v15 initWithFormat:@"Cannot transition out of terminal state %@ (%#llx)", requestStateString2, -[DRSRequest requestState](self, "requestState")];
 
     v18 = MEMORY[0x277CCA9B8];
     v38 = *MEMORY[0x277CCA450];
     v39 = v17;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-    *a5 = [v18 errorWithDomain:@"DRSRequestStateTransitionError" code:0 userInfo:v19];
+    *out = [v18 errorWithDomain:@"DRSRequestStateTransitionError" code:0 userInfo:v19];
   }
 
   v20 = DPLogHandle_RequestError();
   if (os_signpost_enabled(v20))
   {
-    v21 = [(DRSRequest *)self requestStateString];
+    requestStateString3 = [(DRSRequest *)self requestStateString];
     v22 = [(DRSRequest *)self debugDescription];
     *buf = 138543874;
-    v41 = v21;
+    v41 = requestStateString3;
     v42 = 2048;
-    v43 = v10;
+    v43 = requestState;
     v44 = 2114;
     v45 = v22;
     _os_signpost_emit_with_name_impl(&dword_232906000, v20, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RequestStateTransitionError", "Cannot transition out of terminal state %{public}@ (%#llx) for request: %{public}@", buf, 0x20u);
@@ -2733,9 +2733,9 @@ LABEL_21:
     v3 = DPLogHandle_RequestError();
     if (os_signpost_enabled(v3))
     {
-      v4 = [(DRSRequest *)self requestID];
+      requestID = [(DRSRequest *)self requestID];
       *buf = 138543362;
-      v17 = v4;
+      v17 = requestID;
       _os_signpost_emit_with_name_impl(&dword_232906000, v3, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidUploadID", "Request ID %{public}@: Trying to start an upload when we already have an upload ID", buf, 0xCu);
     }
 
@@ -2751,24 +2751,24 @@ LABEL_21:
     if (v5)
     {
       v6 = DPLogHandle_CKRecordUpload();
-      v7 = [(DRSRequest *)self uploadID];
-      if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      uploadID = [(DRSRequest *)self uploadID];
+      if (uploadID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v8 = v7;
+        v8 = uploadID;
         if (os_signpost_enabled(v6))
         {
-          v9 = [(DRSRequest *)self requestID];
-          v10 = [(DRSRequest *)self teamID];
-          v11 = [(DRSRequest *)self issueCategory];
-          v12 = [(DRSRequest *)self issueDescription];
+          requestID2 = [(DRSRequest *)self requestID];
+          teamID = [(DRSRequest *)self teamID];
+          issueCategory = [(DRSRequest *)self issueCategory];
+          issueDescription = [(DRSRequest *)self issueDescription];
           *buf = 138413058;
-          v17 = v9;
+          v17 = requestID2;
           v18 = 2114;
-          v19 = v10;
+          v19 = teamID;
           v20 = 2114;
-          v21 = v11;
+          v21 = issueCategory;
           v22 = 2114;
-          v23 = v12;
+          v23 = issueDescription;
           _os_signpost_emit_with_name_impl(&dword_232906000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v8, "LogUpload", "Began upload of log with request ID %@, %{public, name=teamID}@/%{public, name=issueCategory}@/%{public, name=issueDescription}@", buf, 0x2Au);
         }
       }
@@ -2781,14 +2781,14 @@ LABEL_21:
   return v5;
 }
 
-- (void)uploadFailedDueToReason:(id)a3 ckOperationID:(id)a4
+- (void)uploadFailedDueToReason:(id)reason ckOperationID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  reasonCopy = reason;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = v7;
+    v8 = dCopy;
   }
 
   else
@@ -2796,24 +2796,24 @@ LABEL_21:
     v8 = @"-";
   }
 
-  v9 = [(DRSRequest *)self uploadAttemptCount];
-  v10 = [objc_opt_class() maxUploadAttemptCount];
+  uploadAttemptCount = [(DRSRequest *)self uploadAttemptCount];
+  maxUploadAttemptCount = [objc_opt_class() maxUploadAttemptCount];
   v11 = DPLogHandle_CKRecordUpload();
-  v12 = [(DRSRequest *)self uploadID];
-  v13 = v12 - 1;
-  if (v9 >= v10)
+  uploadID = [(DRSRequest *)self uploadID];
+  v13 = uploadID - 1;
+  if (uploadAttemptCount >= maxUploadAttemptCount)
   {
     if (v13 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       *buf = 138543618;
       v17 = v8;
       v18 = 2114;
-      v19 = v6;
-      _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_INTERVAL_END, v12, "LogUpload", "Upload failure. CKOperationID: %{public}@, Error: %{public}@", buf, 0x16u);
+      v19 = reasonCopy;
+      _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_INTERVAL_END, uploadID, "LogUpload", "Upload failure. CKOperationID: %{public}@, Error: %{public}@", buf, 0x16u);
     }
 
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Stopped trying to upload after %u attempts. Upload error: %@", -[DRSRequest uploadAttemptCount](self, "uploadAttemptCount"), v6];
-    [(DRSRequest *)self updateToState:4355 errorDescription:v14 errorOut:0];
+    reasonCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Stopped trying to upload after %u attempts. Upload error: %@", -[DRSRequest uploadAttemptCount](self, "uploadAttemptCount"), reasonCopy];
+    [(DRSRequest *)self updateToState:4355 errorDescription:reasonCopy errorOut:0];
   }
 
   else
@@ -2823,8 +2823,8 @@ LABEL_21:
       *buf = 138543618;
       v17 = v8;
       v18 = 2114;
-      v19 = v6;
-      _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_INTERVAL_END, v12, "LogUpload", "Upload failed. Will retry. CKOperationID: %{public}@, Error: %{public}@", buf, 0x16u);
+      v19 = reasonCopy;
+      _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_INTERVAL_END, uploadID, "LogUpload", "Upload failed. Will retry. CKOperationID: %{public}@, Error: %{public}@", buf, 0x16u);
     }
 
     [(DRSRequest *)self updateToState:1 errorDescription:0 errorOut:0];
@@ -2833,18 +2833,18 @@ LABEL_21:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uploadCompleteWithError:(id)a3 ckOperationID:(id)a4 ckRecordID:(id)a5
+- (void)uploadCompleteWithError:(id)error ckOperationID:(id)d ckRecordID:(id)iD
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (a3)
+  dCopy = d;
+  iDCopy = iD;
+  if (error)
   {
-    v10 = [a3 localizedDescription];
-    v11 = v10;
-    if (v10)
+    localizedDescription = [error localizedDescription];
+    v11 = localizedDescription;
+    if (localizedDescription)
     {
-      v12 = v10;
+      v12 = localizedDescription;
     }
 
     else
@@ -2852,23 +2852,23 @@ LABEL_21:
       v12 = @"Unknown";
     }
 
-    [(DRSRequest *)self uploadFailedDueToReason:v12 ckOperationID:v8];
+    [(DRSRequest *)self uploadFailedDueToReason:v12 ckOperationID:dCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_ckRecordID, a5);
+    objc_storeStrong(&self->_ckRecordID, iD);
     v13 = DPLogHandle_CKRecordUpload();
-    v14 = [(DRSRequest *)self uploadID];
-    if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    uploadID = [(DRSRequest *)self uploadID];
+    if (uploadID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v15 = v14;
+      v15 = uploadID;
       if (os_signpost_enabled(v13))
       {
         v17[0] = 67240450;
         v17[1] = 1;
         v18 = 2114;
-        v19 = v9;
+        v19 = iDCopy;
         _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_INTERVAL_END, v15, "LogUpload", "Upload success. %{public, name=uploadSuccess}u CK Record ID: %{public}@", v17, 0x12u);
       }
     }
@@ -2883,26 +2883,26 @@ LABEL_21:
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = DPLogHandle_CKRecordUpload();
-  v4 = [(DRSRequest *)self uploadID];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  uploadID = [(DRSRequest *)self uploadID];
+  if (uploadID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = v4;
+    v5 = uploadID;
     if (os_signpost_enabled(v3))
     {
-      v6 = [(DRSRequest *)self requestID];
+      requestID = [(DRSRequest *)self requestID];
       *buf = 138543362;
-      v14 = v6;
+      v14 = requestID;
       _os_signpost_emit_with_name_impl(&dword_232906000, v3, OS_SIGNPOST_EVENT, v5, "MakingTerminalDueToLogsMissing", "Moving %{public}@ to terminal state due to missing uploadable content", buf, 0xCu);
     }
   }
 
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
-  v8 = [(DRSRequest *)self logPath];
-  v9 = v8;
+  logPath = [(DRSRequest *)self logPath];
+  v9 = logPath;
   v10 = @"Unknown";
-  if (v8)
+  if (logPath)
   {
-    v10 = v8;
+    v10 = logPath;
   }
 
   v11 = [v7 initWithFormat:@"Log file is missing (path: %@)", v10];
@@ -2915,15 +2915,15 @@ LABEL_21:
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = DPLogHandle_CKRecordUpload();
-  v4 = [(DRSRequest *)self uploadID];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  uploadID = [(DRSRequest *)self uploadID];
+  if (uploadID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = v4;
+    v5 = uploadID;
     if (os_signpost_enabled(v3))
     {
-      v6 = [(DRSRequest *)self requestID];
+      requestID = [(DRSRequest *)self requestID];
       v8 = 138543362;
-      v9 = v6;
+      v9 = requestID;
       _os_signpost_emit_with_name_impl(&dword_232906000, v3, OS_SIGNPOST_INTERVAL_END, v5, "LogUpload", "Log size for %{public}@ exceeds cap", &v8, 0xCu);
     }
   }
@@ -2932,20 +2932,20 @@ LABEL_21:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uploadDeniedByDecisionServerWithReason:(id)a3
+- (void)uploadDeniedByDecisionServerWithReason:(id)reason
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = DPLogHandle_CKRecordUpload();
-  v6 = [(DRSRequest *)self uploadID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  uploadID = [(DRSRequest *)self uploadID];
+  if (uploadID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = uploadID;
     if (os_signpost_enabled(v5))
     {
-      if (v4)
+      if (reasonCopy)
       {
-        v8 = v4;
+        v8 = reasonCopy;
       }
 
       else
@@ -2959,9 +2959,9 @@ LABEL_21:
     }
   }
 
-  if (v4)
+  if (reasonCopy)
   {
-    v9 = v4;
+    v9 = reasonCopy;
   }
 
   else
@@ -2974,33 +2974,33 @@ LABEL_21:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_requestWithRequestMO_ON_MOC_QUEUE:(id)a3
++ (id)_requestWithRequestMO_ON_MOC_QUEUE:(id)e
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  eCopy = e;
+  if ([eCopy isMemberOfClass:objc_opt_class()])
   {
-    v4 = [[DRSTailspinRequest alloc] _initWithTailspinRequestMO_ON_MOC_QUEUE:v3];
+    v4 = [[DRSTailspinRequest alloc] _initWithTailspinRequestMO_ON_MOC_QUEUE:eCopy];
 LABEL_9:
     v5 = v4;
     goto LABEL_10;
   }
 
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  if ([eCopy isMemberOfClass:objc_opt_class()])
   {
-    v4 = [[DRSSubmitLogRequest alloc] _initWithSubmitLogRequestMO_ON_MOC_QUEUE:v3];
+    v4 = [[DRSSubmitLogRequest alloc] _initWithSubmitLogRequestMO_ON_MOC_QUEUE:eCopy];
     goto LABEL_9;
   }
 
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  if ([eCopy isMemberOfClass:objc_opt_class()])
   {
-    v4 = [[DRSSubmitLogToCKContainerRequest alloc] _initWithSubmitLogToCKContainerRequestMO_ON_MOC_QUEUE:v3];
+    v4 = [[DRSSubmitLogToCKContainerRequest alloc] _initWithSubmitLogToCKContainerRequestMO_ON_MOC_QUEUE:eCopy];
     goto LABEL_9;
   }
 
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  if ([eCopy isMemberOfClass:objc_opt_class()])
   {
-    v4 = [[DRSSubmitRapidLogRequest alloc] _initWithSubmitRapidLogRequestMO_ON_MOC_QUEUE:v3];
+    v4 = [[DRSSubmitRapidLogRequest alloc] _initWithSubmitRapidLogRequestMO_ON_MOC_QUEUE:eCopy];
     goto LABEL_9;
   }
 
@@ -3022,21 +3022,21 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)_populateLogsArray_ON_MOC_QUEUE:(id)a3
+- (BOOL)_populateLogsArray_ON_MOC_QUEUE:(id)e
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 logs];
-  v6 = [v5 count];
+  eCopy = e;
+  logs = [eCopy logs];
+  v6 = [logs count];
 
   if (v6)
   {
-    v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    managedObjectModel = objc_alloc_init(MEMORY[0x277CBEB18]);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    logs = [v4 logs];
+    logs = [eCopy logs];
     v9 = [logs countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v9)
     {
@@ -3058,10 +3058,10 @@ LABEL_10:
             v17 = DPLogHandle_CoreDataError();
             if (os_signpost_enabled(v17))
             {
-              v18 = [v13 path];
+              path = [v13 path];
               v19 = [v13 size];
               *buf = 138412546;
-              v37 = v18;
+              v37 = path;
               v38 = 2048;
               v39 = v19;
               _os_signpost_emit_with_name_impl(&dword_232906000, v17, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DRSLogCreationFailure", "Failed to create a DRSLog from a DRSLogMO: Path: %@ Size: %llu", buf, 0x16u);
@@ -3072,7 +3072,7 @@ LABEL_10:
           }
 
           v15 = v14;
-          [(NSArray *)v7 addObject:v14];
+          [(NSArray *)managedObjectModel addObject:v14];
         }
 
         v10 = [logs countByEnumeratingWithState:&v31 objects:v40 count:16];
@@ -3085,25 +3085,25 @@ LABEL_10:
       }
     }
 
-    v7 = v7;
+    managedObjectModel = managedObjectModel;
     logs = self->_logs;
-    self->_logs = v7;
+    self->_logs = managedObjectModel;
     v16 = 1;
     goto LABEL_34;
   }
 
-  v20 = [v4 managedObjectContext];
-  v21 = [v20 persistentStoreCoordinator];
-  v7 = [v21 managedObjectModel];
+  managedObjectContext = [eCopy managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
 
-  v22 = [(NSArray *)v7 versionIdentifiers];
-  LOBYTE(v21) = [v22 containsObject:@"3"];
+  versionIdentifiers = [(NSArray *)managedObjectModel versionIdentifiers];
+  LOBYTE(persistentStoreCoordinator) = [versionIdentifiers containsObject:@"3"];
 
-  if ((v21 & 1) == 0)
+  if ((persistentStoreCoordinator & 1) == 0)
   {
-    logs = [v4 valueForKey:@"logPath"];
-    v23 = [v4 valueForKey:@"cachedLogSize"];
-    v24 = [v4 valueForKey:@"transferOwnership"];
+    logs = [eCopy valueForKey:@"logPath"];
+    v23 = [eCopy valueForKey:@"cachedLogSize"];
+    v24 = [eCopy valueForKey:@"transferOwnership"];
     if (!logs)
     {
       v16 = 1;
@@ -3185,30 +3185,30 @@ LABEL_35:
   return v16;
 }
 
-+ (BOOL)_requestMOHasRequiredFields_ON_MOC_QUEUE:(id)a3
++ (BOOL)_requestMOHasRequiredFields_ON_MOC_QUEUE:(id)e
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  eCopy = e;
+  v4 = eCopy;
+  if (eCopy)
   {
-    v5 = [v3 issueCategory];
+    issueCategory = [eCopy issueCategory];
 
-    if (v5)
+    if (issueCategory)
     {
-      v5 = [v4 issueDescription];
+      issueCategory = [v4 issueDescription];
 
-      if (v5)
+      if (issueCategory)
       {
-        v5 = [v4 requestDate];
+        issueCategory = [v4 requestDate];
 
-        if (v5)
+        if (issueCategory)
         {
-          v5 = [v4 requestID];
+          issueCategory = [v4 requestID];
 
-          if (v5)
+          if (issueCategory)
           {
-            v6 = [v4 teamID];
-            LOBYTE(v5) = v6 != 0;
+            teamID = [v4 teamID];
+            LOBYTE(issueCategory) = teamID != 0;
           }
         }
       }
@@ -3217,16 +3217,16 @@ LABEL_35:
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(issueCategory) = 0;
   }
 
-  return v5;
+  return issueCategory;
 }
 
-- (id)_initWithRequestMO_ON_MOC_QUEUE:(id)a3
+- (id)_initWithRequestMO_ON_MOC_QUEUE:(id)e
 {
-  v4 = a3;
-  if (![objc_opt_class() _requestMOHasRequiredFields_ON_MOC_QUEUE:v4])
+  eCopy = e;
+  if (![objc_opt_class() _requestMOHasRequiredFields_ON_MOC_QUEUE:eCopy])
   {
     goto LABEL_13;
   }
@@ -3239,43 +3239,43 @@ LABEL_35:
   {
 LABEL_12:
     self = self;
-    v23 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
-  if (![(DRSRequest *)v5 _populateLogsArray_ON_MOC_QUEUE:v4])
+  if (![(DRSRequest *)v5 _populateLogsArray_ON_MOC_QUEUE:eCopy])
   {
 LABEL_13:
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v6 = [v4 teamID];
+  teamID = [eCopy teamID];
   teamID = self->_teamID;
-  self->_teamID = v6;
+  self->_teamID = teamID;
 
-  v8 = [v4 issueCategory];
+  issueCategory = [eCopy issueCategory];
   issueCategory = self->_issueCategory;
-  self->_issueCategory = v8;
+  self->_issueCategory = issueCategory;
 
-  v10 = [v4 issueDescription];
+  issueDescription = [eCopy issueDescription];
   issueDescription = self->_issueDescription;
-  self->_issueDescription = v10;
+  self->_issueDescription = issueDescription;
 
-  self->_requestMCT = [v4 requestMCT];
-  v12 = [v4 contextDictionaryData];
+  self->_requestMCT = [eCopy requestMCT];
+  contextDictionaryData = [eCopy contextDictionaryData];
   contextDictionaryData = self->_contextDictionaryData;
-  self->_contextDictionaryData = v12;
+  self->_contextDictionaryData = contextDictionaryData;
 
-  v14 = [v4 requestDate];
+  requestDate = [eCopy requestDate];
   requestDate = self->_requestDate;
-  self->_requestDate = v14;
+  self->_requestDate = requestDate;
 
-  v16 = [v4 build];
-  v17 = v16;
-  if (v16)
+  build = [eCopy build];
+  v17 = build;
+  if (build)
   {
-    v18 = v16;
+    v18 = build;
   }
 
   else
@@ -3285,59 +3285,59 @@ LABEL_13:
 
   objc_storeStrong(&self->_build, v18);
 
-  self->_uploadAttemptCount = [v4 uploadAttemptCount];
-  self->_hasBeenCountedByTelemetry = [v4 hasBeenCountedByTelemetry];
-  self->_decisionServerDecision = [v4 decisionServerDecision];
-  v19 = [(DRSRequest *)self contextDictionaryData];
+  self->_uploadAttemptCount = [eCopy uploadAttemptCount];
+  self->_hasBeenCountedByTelemetry = [eCopy hasBeenCountedByTelemetry];
+  self->_decisionServerDecision = [eCopy decisionServerDecision];
+  contextDictionaryData2 = [(DRSRequest *)self contextDictionaryData];
 
-  if (!v19)
+  if (!contextDictionaryData2)
   {
     goto LABEL_9;
   }
 
-  v20 = [(DRSRequest *)self contextDictionaryData];
-  v21 = DRSDictionaryForData(v20);
+  contextDictionaryData3 = [(DRSRequest *)self contextDictionaryData];
+  v21 = DRSDictionaryForData(contextDictionaryData3);
   contextDictionary = self->_contextDictionary;
   self->_contextDictionary = v21;
 
-  v23 = [(DRSRequest *)self contextDictionary];
+  selfCopy = [(DRSRequest *)self contextDictionary];
 
-  if (v23)
+  if (selfCopy)
   {
 LABEL_9:
-    v24 = [v4 requestID];
+    requestID = [eCopy requestID];
     requestID = self->_requestID;
-    self->_requestID = v24;
+    self->_requestID = requestID;
 
-    self->_requestState = [v4 requestState];
+    self->_requestState = [eCopy requestState];
     if ([(DRSRequest *)self requestState]== 4353)
     {
       self->_decisionServerDecision = 1;
     }
 
-    v26 = [v4 errorDescription];
+    errorDescription = [eCopy errorDescription];
     errorDescription = self->_errorDescription;
-    self->_errorDescription = v26;
+    self->_errorDescription = errorDescription;
 
-    self->_isExpedited = [v4 isExpedited];
-    v28 = [v4 ckRecordID];
+    self->_isExpedited = [eCopy isExpedited];
+    ckRecordID = [eCopy ckRecordID];
     ckRecordID = self->_ckRecordID;
-    self->_ckRecordID = v28;
+    self->_ckRecordID = ckRecordID;
 
     goto LABEL_12;
   }
 
 LABEL_14:
 
-  return v23;
+  return selfCopy;
 }
 
-+ (id)requestsForFilterPredicate:(id)a3 context:(id)a4 sortDescriptors:(id)a5 fetchLimit:(unint64_t)a6 errorOut:(id *)a7
++ (id)requestsForFilterPredicate:(id)predicate context:(id)context sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out
 {
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  predicateCopy = predicate;
+  contextCopy = context;
+  descriptorsCopy = descriptors;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -3349,13 +3349,13 @@ LABEL_14:
   v26[1] = 3221225472;
   v26[2] = __85__DRSRequest_requestsForFilterPredicate_context_sortDescriptors_fetchLimit_errorOut___block_invoke;
   v26[3] = &unk_27899ECE8;
-  v32 = a1;
-  v16 = v12;
+  selfCopy = self;
+  v16 = predicateCopy;
   v27 = v16;
-  v17 = v14;
+  v17 = descriptorsCopy;
   v28 = v17;
-  v33 = a6;
-  v18 = v13;
+  limitCopy = limit;
+  v18 = contextCopy;
   v29 = v18;
   v31 = &v34;
   v19 = v15;
@@ -3367,18 +3367,18 @@ LABEL_14:
     v20 = DPLogHandle_CoreDataError();
     if (os_signpost_enabled(v20))
     {
-      v21 = [v35[5] localizedDescription];
+      localizedDescription = [v35[5] localizedDescription];
       *buf = 138543362;
-      v41 = v21;
+      v41 = localizedDescription;
       _os_signpost_emit_with_name_impl(&dword_232906000, v20, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RequestFetchFailure", "Failed to fetch requests due to error: %{public}@", buf, 0xCu);
     }
 
     v19 = 0;
   }
 
-  if (a7)
+  if (out)
   {
-    *a7 = v35[5];
+    *out = v35[5];
   }
 
   v22 = v30;
@@ -3482,26 +3482,26 @@ LABEL_18:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)unreportedTerminalRequestsFromContext:(id)a3 sortDescriptors:(id)a4 fetchLimit:(unint64_t)a5 errorOut:(id *)a6
++ (id)unreportedTerminalRequestsFromContext:(id)context sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out
 {
   v9 = MEMORY[0x277CCAC30];
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 predicateWithFormat:@"(requestState >= %llu) AND (hasBeenCountedByTelemetry == NO)", 4096];
-  v13 = [DRSRequest requestsForFilterPredicate:v12 context:v11 sortDescriptors:v10 fetchLimit:a5 errorOut:a6];
+  descriptorsCopy = descriptors;
+  contextCopy = context;
+  4096 = [v9 predicateWithFormat:@"(requestState >= %llu) AND (hasBeenCountedByTelemetry == NO)", 4096];
+  v13 = [DRSRequest requestsForFilterPredicate:4096 context:contextCopy sortDescriptors:descriptorsCopy fetchLimit:limit errorOut:out];
 
   return v13;
 }
 
-+ (id)uploadedBytesSinceDate:(id)a3 context:(id)a4 errorOut:(id *)a5
++ (id)uploadedBytesSinceDate:(id)date context:(id)context errorOut:(id *)out
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(requestDate >= %@) AND (requestState == %llu)", a3, 0x2000];
-  v9 = [DRSRequest requestsForFilterPredicate:v8 context:v7 sortDescriptors:0 fetchLimit:0 errorOut:a5];
+  contextCopy = context;
+  0x2000 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(requestDate >= %@) AND (requestState == %llu)", date, 0x2000];
+  v9 = [DRSRequest requestsForFilterPredicate:0x2000 context:contextCopy sortDescriptors:0 fetchLimit:0 errorOut:out];
   v10 = v9;
   v11 = 0;
-  if (!*a5)
+  if (!*out)
   {
     if ([v9 count])
     {
@@ -3553,20 +3553,20 @@ LABEL_18:
   return v11;
 }
 
-+ (unint64_t)requestCountForFilterPredicate:(id)a3 context:(id)a4 fetchLimit:(unint64_t)a5 errorOut:(id *)a6
++ (unint64_t)requestCountForFilterPredicate:(id)predicate context:(id)context fetchLimit:(unint64_t)limit errorOut:(id *)out
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  predicateCopy = predicate;
+  contextCopy = context;
   v12 = MEMORY[0x277CBE428];
-  v13 = [a1 entityName];
-  v14 = [v12 fetchRequestWithEntityName:v13];
+  entityName = [self entityName];
+  v14 = [v12 fetchRequestWithEntityName:entityName];
 
-  [v14 setPredicate:v10];
+  [v14 setPredicate:predicateCopy];
   [v14 setResultType:4];
-  if (a5)
+  if (limit)
   {
-    [v14 setFetchLimit:a5];
+    [v14 setFetchLimit:limit];
   }
 
   v38 = 0;
@@ -3584,15 +3584,15 @@ LABEL_18:
   v26 = __73__DRSRequest_requestCountForFilterPredicate_context_fetchLimit_errorOut___block_invoke;
   v27 = &unk_27899ED10;
   v30 = &v38;
-  v15 = v11;
+  v15 = contextCopy;
   v28 = v15;
   v16 = v14;
   v29 = v16;
   v31 = &v32;
   [v15 performBlockAndWait:&v24];
-  if (a6)
+  if (out)
   {
-    *a6 = v33[5];
+    *out = v33[5];
   }
 
   if (v33[5])
@@ -3600,12 +3600,12 @@ LABEL_18:
     v17 = DPLogHandle_CoreDataError();
     if (os_signpost_enabled(v17))
     {
-      v18 = [v33[5] localizedDescription];
-      v19 = v18;
+      localizedDescription = [v33[5] localizedDescription];
+      v19 = localizedDescription;
       v20 = @"Unknown";
-      if (v18)
+      if (localizedDescription)
       {
-        v20 = v18;
+        v20 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -3677,19 +3677,19 @@ void __47__DRSRequest_mostRecentDateFirstSortDescriptor__block_invoke()
   mostRecentDateFirstSortDescriptor_mostRecentDateSortDescriptor = v0;
 }
 
-+ (BOOL)cleanRequestRecordsFromPersistentContainer:(id)a3 removeFiles:(BOOL)a4 removeRecord:(BOOL)a5 matchingPredicate:(id)a6 errorOut:(id *)a7
++ (BOOL)cleanRequestRecordsFromPersistentContainer:(id)container removeFiles:(BOOL)files removeRecord:(BOOL)record matchingPredicate:(id)predicate errorOut:(id *)out
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a6;
-  if (a4 || v9)
+  recordCopy = record;
+  containerCopy = container;
+  predicateCopy = predicate;
+  if (files || recordCopy)
   {
-    v15 = [v12 newBackgroundContext];
+    newBackgroundContext = [containerCopy newBackgroundContext];
     v16 = MEMORY[0x277CBE428];
-    v17 = [a1 entityName];
-    v18 = [v16 fetchRequestWithEntityName:v17];
+    entityName = [self entityName];
+    v18 = [v16 fetchRequestWithEntityName:entityName];
 
-    [v18 setPredicate:v13];
+    [v18 setPredicate:predicateCopy];
     v28 = 0;
     v29 = &v28;
     v30 = 0x3032000000;
@@ -3700,17 +3700,17 @@ void __47__DRSRequest_mostRecentDateFirstSortDescriptor__block_invoke()
     v22[1] = 3221225472;
     v22[2] = __109__DRSRequest_cleanRequestRecordsFromPersistentContainer_removeFiles_removeRecord_matchingPredicate_errorOut___block_invoke;
     v22[3] = &unk_27899ED58;
-    v19 = v15;
+    v19 = newBackgroundContext;
     v23 = v19;
     v20 = v18;
     v24 = v20;
     v25 = &v28;
-    v26 = a4;
-    v27 = v9;
+    filesCopy = files;
+    v27 = recordCopy;
     [v19 performBlockAndWait:v22];
-    if (a7)
+    if (out)
     {
-      *a7 = v29[5];
+      *out = v29[5];
     }
 
     v14 = v29[5] == 0;
@@ -3916,14 +3916,14 @@ void __109__DRSRequest_cleanRequestRecordsFromPersistentContainer_removeFiles_re
   v40 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)unblockStrandedUploadingRecordsFromPersistentContainer:(id)a3 errorOut:(id *)a4
++ (BOOL)unblockStrandedUploadingRecordsFromPersistentContainer:(id)container errorOut:(id *)out
 {
-  v6 = a3;
+  containerCopy = container;
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"requestState == %llu", 2];
-  v8 = [v6 newBackgroundContext];
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v9 = MEMORY[0x277CBE428];
-  v10 = [a1 entityName];
-  v11 = [v9 fetchRequestWithEntityName:v10];
+  entityName = [self entityName];
+  v11 = [v9 fetchRequestWithEntityName:entityName];
 
   [v11 setPredicate:v7];
   v22 = 0;
@@ -3940,16 +3940,16 @@ void __109__DRSRequest_cleanRequestRecordsFromPersistentContainer_removeFiles_re
   v16[1] = 3221225472;
   v16[2] = __78__DRSRequest_unblockStrandedUploadingRecordsFromPersistentContainer_errorOut___block_invoke;
   v16[3] = &unk_27899ED80;
-  v12 = v8;
+  v12 = newBackgroundContext;
   v17 = v12;
   v13 = v11;
   v18 = v13;
   v19 = &v22;
   v20 = v21;
   [v12 performBlockAndWait:v16];
-  if (a4)
+  if (out)
   {
-    *a4 = v23[5];
+    *out = v23[5];
   }
 
   v14 = v23[5] == 0;
@@ -4104,30 +4104,30 @@ void __78__DRSRequest_unblockStrandedUploadingRecordsFromPersistentContainer_err
   v37 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)cullOldRequestRecordsFromPersistentContainer:(id)a3 currentDate:(id)a4 errorOut:(id *)a5
++ (BOOL)cullOldRequestRecordsFromPersistentContainer:(id)container currentDate:(id)date errorOut:(id *)out
 {
   v43[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  containerCopy = container;
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a4;
-  v10 = [[v8 alloc] initWithTimeInterval:v9 sinceDate:-259200.0];
-  v11 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:v9 sinceDate:-864000.0];
-  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:v9 sinceDate:-2592000.0];
-  v13 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:v9 sinceDate:-5184000.0];
+  dateCopy = date;
+  v10 = [[v8 alloc] initWithTimeInterval:dateCopy sinceDate:-259200.0];
+  v11 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:dateCopy sinceDate:-864000.0];
+  v12 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:dateCopy sinceDate:-2592000.0];
+  v13 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:dateCopy sinceDate:-5184000.0];
 
-  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"requestDate < %@ AND requestState >= %llu", v11, 0x2000];
-  v15 = [DRSRequest cleanRequestRecordsFromPersistentContainer:v7 removeFiles:1 removeRecord:0 matchingPredicate:v14 errorOut:a5];
+  0x2000 = [MEMORY[0x277CCAC30] predicateWithFormat:@"requestDate < %@ AND requestState >= %llu", v11, 0x2000];
+  v15 = [DRSRequest cleanRequestRecordsFromPersistentContainer:containerCopy removeFiles:1 removeRecord:0 matchingPredicate:0x2000 errorOut:out];
 
   if (v15)
   {
     v38 = v13;
-    v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"requestState >= %llu AND requestState < %llu", 4096, 0x2000];
+    0x20002 = [MEMORY[0x277CCAC30] predicateWithFormat:@"requestState >= %llu AND requestState < %llu", 4096, 0x2000];
     v40 = v10;
     [MEMORY[0x277CCAC30] predicateWithFormat:@"hasBeenCountedByTelemetry == YES AND requestDate < %@", v10];
-    v17 = v37 = a5;
+    v17 = v37 = out;
     v39 = v11;
     [MEMORY[0x277CCAC30] predicateWithFormat:@"hasBeenCountedByTelemetry == YES AND requestDate < %@", v11];
-    v18 = v7;
+    v18 = containerCopy;
     v20 = v19 = v12;
     v21 = MEMORY[0x277CCA920];
     v43[0] = v17;
@@ -4136,13 +4136,13 @@ void __78__DRSRequest_unblockStrandedUploadingRecordsFromPersistentContainer_err
     v23 = [v21 orPredicateWithSubpredicates:v22];
 
     v24 = MEMORY[0x277CCA920];
-    v42[0] = v16;
+    v42[0] = 0x20002;
     v42[1] = v23;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
     v26 = [v24 andPredicateWithSubpredicates:v25];
 
     v12 = v19;
-    v7 = v18;
+    containerCopy = v18;
 
     v27 = [MEMORY[0x277CCAC30] predicateWithFormat:@"requestState >= %llu AND requestDate < %@", 0x2000, v12];
     v28 = MEMORY[0x277CCA920];
@@ -4180,21 +4180,21 @@ void __78__DRSRequest_unblockStrandedUploadingRecordsFromPersistentContainer_err
   return v34;
 }
 
-+ (id)migrateRequestDataStoreAtPath:(id)a3 errorOut:(id *)a4
++ (id)migrateRequestDataStoreAtPath:(id)path errorOut:(id *)out
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = DRSRequestPersistentContainerForVersion(2, v6, 0, 1, a4);
+  pathCopy = path;
+  v7 = DRSRequestPersistentContainerForVersion(2, pathCopy, 0, 1, out);
   v8 = v7;
   if (!v7)
   {
     goto LABEL_11;
   }
 
-  v9 = [v7 newBackgroundContext];
+  newBackgroundContext = [v7 newBackgroundContext];
   v10 = MEMORY[0x277CBE428];
-  v11 = [a1 entityName];
-  v12 = [v10 fetchRequestWithEntityName:v11];
+  entityName = [self entityName];
+  v12 = [v10 fetchRequestWithEntityName:entityName];
 
   *v33 = 0;
   *&v33[8] = v33;
@@ -4206,7 +4206,7 @@ void __78__DRSRequest_unblockStrandedUploadingRecordsFromPersistentContainer_err
   v25[1] = 3221225472;
   v25[2] = __53__DRSRequest_migrateRequestDataStoreAtPath_errorOut___block_invoke;
   v25[3] = &unk_27899EDA8;
-  v13 = v9;
+  v13 = newBackgroundContext;
   v26 = v13;
   v14 = v12;
   v27 = v14;
@@ -4215,25 +4215,25 @@ void __78__DRSRequest_unblockStrandedUploadingRecordsFromPersistentContainer_err
   v15 = *(*&v33[8] + 40);
   if (v15)
   {
-    if (a4)
+    if (out)
     {
       v16 = v15;
-      *a4 = v15;
+      *out = v15;
     }
 
     v17 = DPLogHandle_CoreDataError();
     if (os_signpost_enabled(v17))
     {
-      v18 = [*(*&v33[8] + 40) localizedDescription];
-      v19 = v18;
+      localizedDescription = [*(*&v33[8] + 40) localizedDescription];
+      v19 = localizedDescription;
       v20 = @"Unknown error";
-      if (v18)
+      if (localizedDescription)
       {
-        v20 = v18;
+        v20 = localizedDescription;
       }
 
       *buf = 138543618;
-      v30 = v6;
+      v30 = pathCopy;
       v31 = 2112;
       v32 = v20;
       _os_signpost_emit_with_name_impl(&dword_232906000, v17, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "MigrationFailed", "Migration of '%{public}@' failed. Encountered error: %@", buf, 0x16u);
@@ -4243,12 +4243,12 @@ void __78__DRSRequest_unblockStrandedUploadingRecordsFromPersistentContainer_err
   _Block_object_dispose(v33, 8);
   if (!v15)
   {
-    v21 = DRSRequestPersistentContainerForVersion(3, v6, 0, 1, a4);
+    v21 = DRSRequestPersistentContainerForVersion(3, pathCopy, 0, 1, out);
     v22 = DPLogHandle_CoreData();
     if (os_signpost_enabled(v22))
     {
       *v33 = 138543618;
-      *&v33[4] = v6;
+      *&v33[4] = pathCopy;
       *&v33[12] = 1024;
       *&v33[14] = 3;
       _os_signpost_emit_with_name_impl(&dword_232906000, v22, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "MigrationSucceeded", "Migration of '%{public}@' to version %hu succeeded", v33, 0x12u);
@@ -4350,8 +4350,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(DRSRequest *)self filePaths];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  filePaths = [(DRSRequest *)self filePaths];
+  v5 = [filePaths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4362,14 +4362,14 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filePaths);
         }
 
         v9 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:*(*(&v12 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [filePaths countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -4388,8 +4388,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(DRSRequest *)self filePaths];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  filePaths = [(DRSRequest *)self filePaths];
+  v5 = [filePaths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4400,14 +4400,14 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filePaths);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) lastPathComponent];
-        [v3 addObject:v9];
+        lastPathComponent = [*(*(&v12 + 1) + 8 * i) lastPathComponent];
+        [v3 addObject:lastPathComponent];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [filePaths countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -4426,8 +4426,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(DRSRequest *)self logs];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  logs = [(DRSRequest *)self logs];
+  v5 = [logs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4438,14 +4438,14 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(logs);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) path];
-        [v3 addObject:v9];
+        path = [*(*(&v12 + 1) + 8 * i) path];
+        [v3 addObject:path];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [logs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -4464,8 +4464,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(DRSRequest *)self fileURLs];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  fileURLs = [(DRSRequest *)self fileURLs];
+  v5 = [fileURLs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4476,14 +4476,14 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fileURLs);
         }
 
         v9 = [objc_alloc(MEMORY[0x277CBC190]) initWithFileURL:*(*(&v12 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [fileURLs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -4497,70 +4497,70 @@ LABEL_12:
 - (id)recordRepresentation
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(DRSRequest *)self logs];
-  v4 = [v3 count];
+  logs = [(DRSRequest *)self logs];
+  v4 = [logs count];
 
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"DPLog"];
     v6 = +[DRSSystemProfile sharedInstance];
-    v7 = [v6 buildVariant];
-    [v5 setObject:v7 forKeyedSubscript:@"buildVariant"];
+    buildVariant = [v6 buildVariant];
+    [v5 setObject:buildVariant forKeyedSubscript:@"buildVariant"];
 
-    v8 = [v6 deviceCategory];
-    [v5 setObject:v8 forKeyedSubscript:@"deviceCategory"];
+    deviceCategory = [v6 deviceCategory];
+    [v5 setObject:deviceCategory forKeyedSubscript:@"deviceCategory"];
 
-    v9 = [v6 deviceModel];
-    [v5 setObject:v9 forKeyedSubscript:@"deviceModel"];
+    deviceModel = [v6 deviceModel];
+    [v5 setObject:deviceModel forKeyedSubscript:@"deviceModel"];
 
-    v10 = [v6 platformString];
-    [v5 setObject:v10 forKeyedSubscript:@"platform"];
+    platformString = [v6 platformString];
+    [v5 setObject:platformString forKeyedSubscript:@"platform"];
 
-    v11 = [(DRSRequest *)self build];
-    [v5 setObject:v11 forKeyedSubscript:@"build"];
+    build = [(DRSRequest *)self build];
+    [v5 setObject:build forKeyedSubscript:@"build"];
 
-    v12 = [(DRSRequest *)self teamID];
-    [v5 setObject:v12 forKeyedSubscript:@"teamID"];
+    teamID = [(DRSRequest *)self teamID];
+    [v5 setObject:teamID forKeyedSubscript:@"teamID"];
 
-    v13 = [(DRSRequest *)self issueCategory];
-    [v5 setObject:v13 forKeyedSubscript:@"issueCategory"];
+    issueCategory = [(DRSRequest *)self issueCategory];
+    [v5 setObject:issueCategory forKeyedSubscript:@"issueCategory"];
 
-    v14 = [(DRSRequest *)self issueDescription];
-    [v5 setObject:v14 forKeyedSubscript:@"issueDescription"];
+    issueDescription = [(DRSRequest *)self issueDescription];
+    [v5 setObject:issueDescription forKeyedSubscript:@"issueDescription"];
 
-    v15 = [(DRSRequest *)self logType];
-    [v5 setObject:v15 forKeyedSubscript:@"logType"];
+    logType = [(DRSRequest *)self logType];
+    [v5 setObject:logType forKeyedSubscript:@"logType"];
 
-    v16 = [(DRSRequest *)self requestDate];
-    [v5 setObject:v16 forKeyedSubscript:@"requestDate"];
+    requestDate = [(DRSRequest *)self requestDate];
+    [v5 setObject:requestDate forKeyedSubscript:@"requestDate"];
 
-    v17 = [(DRSRequest *)self contextDictionaryData];
+    contextDictionaryData = [(DRSRequest *)self contextDictionaryData];
 
-    if (v17)
+    if (contextDictionaryData)
     {
-      v18 = [(DRSRequest *)self contextDictionaryData];
-      [v5 setObject:v18 forKeyedSubscript:@"contextDictionaryData"];
+      contextDictionaryData2 = [(DRSRequest *)self contextDictionaryData];
+      [v5 setObject:contextDictionaryData2 forKeyedSubscript:@"contextDictionaryData"];
     }
 
-    v19 = [(DRSRequest *)self fileAssets];
-    [v5 setObject:v19 forKeyedSubscript:@"fileAssets"];
+    fileAssets = [(DRSRequest *)self fileAssets];
+    [v5 setObject:fileAssets forKeyedSubscript:@"fileAssets"];
 
-    v20 = [(DRSRequest *)self fileNames];
-    [v5 setObject:v20 forKeyedSubscript:@"fileNames"];
+    fileNames = [(DRSRequest *)self fileNames];
+    [v5 setObject:fileNames forKeyedSubscript:@"fileNames"];
 
-    v21 = [(DRSRequest *)self requestID];
-    v22 = [v21 UUIDString];
-    [v5 setObject:v22 forKeyedSubscript:@"requestID"];
+    requestID = [(DRSRequest *)self requestID];
+    uUIDString = [requestID UUIDString];
+    [v5 setObject:uUIDString forKeyedSubscript:@"requestID"];
 
     v23 = DPLogHandle_CKRecord();
     if (os_signpost_enabled(v23))
     {
-      v24 = [(DRSRequest *)self requestID];
-      v25 = [(DRSRequest *)self requestType];
+      requestID2 = [(DRSRequest *)self requestID];
+      requestType = [(DRSRequest *)self requestType];
       v28 = 138543618;
-      v29 = v24;
+      v29 = requestID2;
       v30 = 2114;
-      v31 = v25;
+      v31 = requestType;
       _os_signpost_emit_with_name_impl(&dword_232906000, v23, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CKRecordCreation", "%{public, name=requestID}@ %{public, name=requestType}@", &v28, 0x16u);
     }
   }
@@ -4585,21 +4585,21 @@ LABEL_12:
 - (id)protoRequestDescription
 {
   v3 = objc_alloc_init(DRSProtoRequestDescription);
-  v4 = [(DRSRequest *)self teamID];
-  [(DRSProtoRequestDescription *)v3 setTeamId:v4];
+  teamID = [(DRSRequest *)self teamID];
+  [(DRSProtoRequestDescription *)v3 setTeamId:teamID];
 
-  v5 = [(DRSRequest *)self issueCategory];
-  [(DRSProtoRequestDescription *)v3 setIssueCategory:v5];
+  issueCategory = [(DRSRequest *)self issueCategory];
+  [(DRSProtoRequestDescription *)v3 setIssueCategory:issueCategory];
 
-  v6 = [(DRSRequest *)self contextDictionaryData];
-  [(DRSProtoRequestDescription *)v3 setContextDictionaryData:v6];
+  contextDictionaryData = [(DRSRequest *)self contextDictionaryData];
+  [(DRSProtoRequestDescription *)v3 setContextDictionaryData:contextDictionaryData];
 
-  v7 = [(DRSRequest *)self requestDate];
-  [v7 timeIntervalSince1970];
+  requestDate = [(DRSRequest *)self requestDate];
+  [requestDate timeIntervalSince1970];
   [(DRSProtoRequestDescription *)v3 setRequestTime:v8];
 
-  v9 = [(DRSRequest *)self build];
-  [(DRSProtoRequestDescription *)v3 setBuild:v9];
+  build = [(DRSRequest *)self build];
+  [(DRSProtoRequestDescription *)v3 setBuild:build];
 
   return v3;
 }
@@ -4612,8 +4612,8 @@ LABEL_12:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(DRSRequest *)self logs];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  logs = [(DRSRequest *)self logs];
+  v5 = [logs countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v5)
   {
     v7 = v5;
@@ -4626,14 +4626,14 @@ LABEL_12:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(logs);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 fileDescription];
-        if (v11)
+        fileDescription = [v10 fileDescription];
+        if (fileDescription)
         {
-          [v3 addObject:v11];
+          [v3 addObject:fileDescription];
         }
 
         else
@@ -4641,18 +4641,18 @@ LABEL_12:
           v12 = DPLogHandle_CKRecord();
           if (os_signpost_enabled(v12))
           {
-            v13 = [(DRSRequest *)self requestID];
-            v14 = [v10 path];
+            requestID = [(DRSRequest *)self requestID];
+            path = [v10 path];
             *buf = v17;
-            v23 = v13;
+            v23 = requestID;
             v24 = 2114;
-            v25 = v14;
+            v25 = path;
             _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ProtoFileDescriptionFailure", "%{public, name=requestID}@ Failed to create description for path '%{public}@'", buf, 0x16u);
           }
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v7 = [logs countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v7);
@@ -4684,8 +4684,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v3 = [(DRSRequest *)self logs];
-  v4 = [v3 count];
+  logs = [(DRSRequest *)self logs];
+  v4 = [logs count];
 
   if (!v4)
   {
@@ -4704,14 +4704,14 @@ LABEL_11:
 
   if ([(DRSRequest *)self totalLogSizeBytes])
   {
-    v5 = [(DRSRequest *)self protoRequestDescription];
+    protoRequestDescription = [(DRSRequest *)self protoRequestDescription];
     v6 = objc_alloc_init(DRSProtoDiagnosticUploadRequest);
-    [(DRSProtoDiagnosticUploadRequest *)v6 setRequestDescription:v5];
-    v7 = [(DRSRequest *)self issueDescription];
-    [(DRSProtoDiagnosticUploadRequest *)v6 setIssueDescription:v7];
+    [(DRSProtoDiagnosticUploadRequest *)v6 setRequestDescription:protoRequestDescription];
+    issueDescription = [(DRSRequest *)self issueDescription];
+    [(DRSProtoDiagnosticUploadRequest *)v6 setIssueDescription:issueDescription];
 
-    v8 = [(DRSRequest *)self protoFileDescriptions];
-    [(DRSProtoDiagnosticUploadRequest *)v6 setLogs:v8];
+    protoFileDescriptions = [(DRSRequest *)self protoFileDescriptions];
+    [(DRSProtoDiagnosticUploadRequest *)v6 setLogs:protoFileDescriptions];
 
     goto LABEL_13;
   }

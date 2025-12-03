@@ -1,49 +1,49 @@
 @interface CHFitnessAppDelegate
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (id)application:(id)a3 handlerForIntent:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (id)application:(id)application handlerForIntent:(id)intent;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation CHFitnessAppDelegate
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  applicationCopy = application;
+  selfCopy = self;
   LOBYTE(self) = sub_10045D82C(v7, v9, v10);
 
   return self & 1;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100540F4C(a3);
+  selfCopy = self;
+  sub_100540F4C(builder);
   swift_unknownObjectRelease();
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_10054180C(v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_10054180C(sessionCopy);
 
   return v12;
 }
 
-- (id)application:(id)a3 handlerForIntent:(id)a4
+- (id)application:(id)application handlerForIntent:(id)intent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100541270(v7, v17);
+  applicationCopy = application;
+  intentCopy = intent;
+  selfCopy = self;
+  sub_100541270(intentCopy, v17);
 
   v9 = v18;
   if (v18)

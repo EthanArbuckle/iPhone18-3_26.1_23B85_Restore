@@ -1,20 +1,20 @@
 @interface PKGreenTicketDetailViewController
-- (PKGreenTicketDetailViewController)initWithFelicaProperty:(id)a3;
-- (id)transitTicketDetailTitleForRow:(unint64_t)a3 leg:(unint64_t)a4;
-- (id)transitTicketDetailValueForRow:(unint64_t)a3 leg:(unint64_t)a4;
+- (PKGreenTicketDetailViewController)initWithFelicaProperty:(id)property;
+- (id)transitTicketDetailTitleForRow:(unint64_t)row leg:(unint64_t)leg;
+- (id)transitTicketDetailValueForRow:(unint64_t)row leg:(unint64_t)leg;
 @end
 
 @implementation PKGreenTicketDetailViewController
 
-- (PKGreenTicketDetailViewController)initWithFelicaProperty:(id)a3
+- (PKGreenTicketDetailViewController)initWithFelicaProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v9.receiver = self;
   v9.super_class = PKGreenTicketDetailViewController;
   v5 = [(PKTransitTicketDetailViewController *)&v9 initWithTransitTicketDetailDataSource:self];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertyCopy copy];
     properties = v5->_properties;
     v5->_properties = v6;
   }
@@ -22,41 +22,41 @@
   return v5;
 }
 
-- (id)transitTicketDetailTitleForRow:(unint64_t)a3 leg:(unint64_t)a4
+- (id)transitTicketDetailTitleForRow:(unint64_t)row leg:(unint64_t)leg
 {
-  if (a3 > 2)
+  if (row > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = PKLocalizedPaymentString(&off_1E8013C38[a3]->isa);
+    v5 = PKLocalizedPaymentString(&off_1E8013C38[row]->isa);
   }
 
   return v5;
 }
 
-- (id)transitTicketDetailValueForRow:(unint64_t)a3 leg:(unint64_t)a4
+- (id)transitTicketDetailValueForRow:(unint64_t)row leg:(unint64_t)leg
 {
-  v6 = [(PKGreenTicketDetailViewController *)self properties:a3];
-  v7 = [v6 greenCarValidityStartDate];
-  v8 = [v7 date];
+  v6 = [(PKGreenTicketDetailViewController *)self properties:row];
+  greenCarValidityStartDate = [v6 greenCarValidityStartDate];
+  date = [greenCarValidityStartDate date];
 
-  switch(a3)
+  switch(row)
   {
     case 2uLL:
-      v11 = [MEMORY[0x1E696AB78] localizedStringFromDate:v8 dateStyle:3 timeStyle:0];
+      v11 = [MEMORY[0x1E696AB78] localizedStringFromDate:date dateStyle:3 timeStyle:0];
       break;
     case 1uLL:
-      v9 = [(PKGreenTicketDetailViewController *)self properties];
-      v10 = [v9 greenCarDestinationStation];
+      properties = [(PKGreenTicketDetailViewController *)self properties];
+      greenCarDestinationStation = [properties greenCarDestinationStation];
       goto LABEL_6;
     case 0uLL:
-      v9 = [(PKGreenTicketDetailViewController *)self properties];
-      v10 = [v9 greenCarOriginStation];
+      properties = [(PKGreenTicketDetailViewController *)self properties];
+      greenCarDestinationStation = [properties greenCarOriginStation];
 LABEL_6:
-      v11 = v10;
+      v11 = greenCarDestinationStation;
 
       break;
     default:

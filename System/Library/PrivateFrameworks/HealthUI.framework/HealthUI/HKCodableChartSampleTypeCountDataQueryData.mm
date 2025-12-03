@@ -1,32 +1,32 @@
 @interface HKCodableChartSampleTypeCountDataQueryData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addTimePeriodToCount:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTimePeriodToCount:(id)count;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableChartSampleTypeCountDataQueryData
 
-- (void)addTimePeriodToCount:(id)a3
+- (void)addTimePeriodToCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   timePeriodToCounts = self->_timePeriodToCounts;
-  v8 = v4;
+  v8 = countCopy;
   if (!timePeriodToCounts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_timePeriodToCounts;
     self->_timePeriodToCounts = v6;
 
-    v4 = v8;
+    countCopy = v8;
     timePeriodToCounts = self->_timePeriodToCounts;
   }
 
-  [(NSMutableArray *)timePeriodToCounts addObject:v4];
+  [(NSMutableArray *)timePeriodToCounts addObject:countCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableChartSampleTypeCountDataQueryData;
   v4 = [(HKCodableChartSampleTypeCountDataQueryData *)&v8 description];
-  v5 = [(HKCodableChartSampleTypeCountDataQueryData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableChartSampleTypeCountDataQueryData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_timePeriodToCounts count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_timePeriodToCounts, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -77,16 +77,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"timePeriodToCount"];
+    [dictionary setObject:v4 forKey:@"timePeriodToCount"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -119,29 +119,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HKCodableChartSampleTypeCountDataQueryData *)self timePeriodToCountsCount])
   {
-    [v8 clearTimePeriodToCounts];
-    v4 = [(HKCodableChartSampleTypeCountDataQueryData *)self timePeriodToCountsCount];
-    if (v4)
+    [toCopy clearTimePeriodToCounts];
+    timePeriodToCountsCount = [(HKCodableChartSampleTypeCountDataQueryData *)self timePeriodToCountsCount];
+    if (timePeriodToCountsCount)
     {
-      v5 = v4;
+      v5 = timePeriodToCountsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableChartSampleTypeCountDataQueryData *)self timePeriodToCountAtIndex:i];
-        [v8 addTimePeriodToCount:v7];
+        [toCopy addTimePeriodToCount:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -162,7 +162,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addTimePeriodToCount:v11];
 
         ++v10;
@@ -178,13 +178,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timePeriodToCounts = self->_timePeriodToCounts;
-    if (timePeriodToCounts | v4[1])
+    if (timePeriodToCounts | equalCopy[1])
     {
       v6 = [(NSMutableArray *)timePeriodToCounts isEqual:?];
     }
@@ -203,14 +203,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

@@ -4,17 +4,17 @@
 - (CGRect)bounds;
 - (CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (_TtC12SiriSharedUI32SiriSharedUIDropletContainerView)initWithFrame:(CGRect)a3;
+- (_TtC12SiriSharedUI32SiriSharedUIDropletContainerView)initWithFrame:(CGRect)frame;
 - (double)alpha;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
-- (void)setAlpha:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setContentView:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSuggestionFocused:(BOOL)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setContentView:(id)view;
+- (void)setFrame:(CGRect)frame;
+- (void)setSuggestionFocused:(BOOL)focused;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation SiriSharedUIDropletContainerView
@@ -38,12 +38,12 @@
   return result;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUIDropletContainerView_contentView);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUIDropletContainerView_contentView) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12SiriSharedUI32SiriSharedUIDropletContainerView_contentView) = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_21E4D442C(v6);
 }
 
@@ -55,10 +55,10 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v4 = self;
-  sub_21E4D6DC4(a3);
+  selfCopy = self;
+  sub_21E4D6DC4(alpha);
 }
 
 - (CGRect)frame
@@ -71,12 +71,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = type metadata accessor for SiriSharedUIDropletContainerView();
   v7 = v12.receiver;
@@ -95,12 +95,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SiriSharedUIDropletContainerView();
   v7 = v8.receiver;
@@ -118,11 +118,11 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = center.y;
+  x = center.x;
+  selfCopy = self;
   sub_21E4D72EC(x, y);
 }
 
@@ -139,35 +139,35 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v5[0] = *&a3->a;
+  v3 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v3;
-  v5[2] = *&a3->tx;
-  v4 = self;
+  v5[2] = *&transform->tx;
+  selfCopy = self;
   sub_21E4D7488(v5);
 }
 
 - (void)removeFromSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E4D75B8();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E4D76B8();
 }
 
-- (void)setSuggestionFocused:(BOOL)a3
+- (void)setSuggestionFocused:(BOOL)focused
 {
-  v4 = self;
-  sub_21E4D9210(a3);
+  selfCopy = self;
+  sub_21E4D9210(focused);
 }
 
-- (_TtC12SiriSharedUI32SiriSharedUIDropletContainerView)initWithFrame:(CGRect)a3
+- (_TtC12SiriSharedUI32SiriSharedUIDropletContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

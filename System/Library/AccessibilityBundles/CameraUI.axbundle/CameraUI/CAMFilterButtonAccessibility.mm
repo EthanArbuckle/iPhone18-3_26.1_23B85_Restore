@@ -1,18 +1,18 @@
 @interface CAMFilterButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation CAMFilterButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMFilterButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"CAMViewfinderView"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_effectFilterTypeForMode:" withFullSignature:{"q", "q", 0}];
-  [v3 validateClass:@"CAMEffectFilterManager" hasClassMethod:@"displayNameForType:" withFullSignature:{"@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMFilterButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"CAMViewfinderView"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_effectFilterTypeForMode:" withFullSignature:{"q", "q", 0}];
+  [validationsCopy validateClass:@"CAMEffectFilterManager" hasClassMethod:@"displayNameForType:" withFullSignature:{"@", "q", 0}];
 }
 
 - (id)accessibilityValue

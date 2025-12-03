@@ -2,8 +2,8 @@
 - (AmbientLightSensorComponent)init;
 - (BOOL)synchContext;
 - (__CFArray)copySensorArray;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
 - (void)initHIDServices;
 @end
 
@@ -54,11 +54,11 @@
         v7 = self->_hidEventSystem;
         IOHIDEventSystemClientScheduleWithRunLoop();
         CFRelease(v5);
-        v8 = [(AmbientLightSensorComponent *)self copySensorArray];
-        if (v8)
+        copySensorArray = [(AmbientLightSensorComponent *)self copySensorArray];
+        if (copySensorArray)
         {
-          v9 = v8;
-          if (CFArrayGetCount(v8) >= 1)
+          v9 = copySensorArray;
+          if (CFArrayGetCount(copySensorArray) >= 1)
           {
             ValueAtIndex = CFArrayGetValueAtIndex(v9, 0);
             self->_service = ValueAtIndex;
@@ -243,29 +243,29 @@ LABEL_21:
   return 0;
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1000852D0[a3];
+    return off_1000852D0[index];
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
     return 0;
   }
 
   else
   {
-    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%d", *(&self->super.super.isa + *off_1000852E8[a3]));
+    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%d", *(&self->super.super.isa + *off_1000852E8[index]));
   }
 }
 

@@ -1,27 +1,27 @@
 @interface KTChangeOptInStateOperation
-- (KTChangeOptInStateOperation)initWithDependenics:(id)a3 intendedState:(id)a4 errorState:(id)a5 optinStates:(id)a6;
-- (void)evalCurrentOptInState:(BOOL)a3 optInStateError:(id)a4;
+- (KTChangeOptInStateOperation)initWithDependenics:(id)dependenics intendedState:(id)state errorState:(id)errorState optinStates:(id)states;
+- (void)evalCurrentOptInState:(BOOL)state optInStateError:(id)error;
 - (void)groupStart;
 @end
 
 @implementation KTChangeOptInStateOperation
 
-- (KTChangeOptInStateOperation)initWithDependenics:(id)a3 intendedState:(id)a4 errorState:(id)a5 optinStates:(id)a6
+- (KTChangeOptInStateOperation)initWithDependenics:(id)dependenics intendedState:(id)state errorState:(id)errorState optinStates:(id)states
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dependenicsCopy = dependenics;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  statesCopy = states;
   v18.receiver = self;
   v18.super_class = KTChangeOptInStateOperation;
   v14 = [(KTGroupOperation *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    [(KTChangeOptInStateOperation *)v14 setDeps:v10];
-    [(KTChangeOptInStateOperation *)v15 setOptInStates:v13];
-    [(KTChangeOptInStateOperation *)v15 setIntendedState:v11];
-    [(KTChangeOptInStateOperation *)v15 setErrorState:v12];
+    [(KTChangeOptInStateOperation *)v14 setDeps:dependenicsCopy];
+    [(KTChangeOptInStateOperation *)v15 setOptInStates:statesCopy];
+    [(KTChangeOptInStateOperation *)v15 setIntendedState:stateCopy];
+    [(KTChangeOptInStateOperation *)v15 setErrorState:errorStateCopy];
     v16 = v15;
   }
 
@@ -39,28 +39,28 @@
   if (os_log_type_enabled(qword_10039CE30, OS_LOG_TYPE_DEBUG))
   {
     v4 = v3;
-    v5 = [(KTChangeOptInStateOperation *)self optInStates];
-    v6 = [v5 targetOptInStates];
-    v7 = [v6 count];
-    v8 = [(KTChangeOptInStateOperation *)self optInStates];
-    v9 = [v8 currentTarget];
+    optInStates = [(KTChangeOptInStateOperation *)self optInStates];
+    targetOptInStates = [optInStates targetOptInStates];
+    v7 = [targetOptInStates count];
+    optInStates2 = [(KTChangeOptInStateOperation *)self optInStates];
+    currentTarget = [optInStates2 currentTarget];
     *buf = 67109378;
     v36 = v7;
     v37 = 2112;
-    v38 = v9;
+    v38 = currentTarget;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "KTChangeOptInStateOperation: start %d/%@", buf, 0x12u);
   }
 
-  v10 = [(KTChangeOptInStateOperation *)self optInStates];
-  v11 = [v10 targetOptInStates];
-  v12 = [v11 count];
+  optInStates3 = [(KTChangeOptInStateOperation *)self optInStates];
+  targetOptInStates2 = [optInStates3 targetOptInStates];
+  v12 = [targetOptInStates2 count];
 
   if (v12)
   {
-    v13 = [(KTChangeOptInStateOperation *)self optInStates];
-    v14 = [v13 currentTarget];
+    optInStates4 = [(KTChangeOptInStateOperation *)self optInStates];
+    currentTarget2 = [optInStates4 currentTarget];
 
-    if (v14)
+    if (currentTarget2)
     {
       if (qword_10039CE28 != -1)
       {
@@ -75,60 +75,60 @@
       }
     }
 
-    v16 = [(KTChangeOptInStateOperation *)self optInStates];
-    v17 = [v16 targetOptInStates];
-    v18 = [v17 allKeys];
-    v19 = [v18 firstObject];
-    v20 = [(KTChangeOptInStateOperation *)self optInStates];
-    [v20 setCurrentTarget:v19];
+    optInStates5 = [(KTChangeOptInStateOperation *)self optInStates];
+    targetOptInStates3 = [optInStates5 targetOptInStates];
+    allKeys = [targetOptInStates3 allKeys];
+    firstObject = [allKeys firstObject];
+    optInStates6 = [(KTChangeOptInStateOperation *)self optInStates];
+    [optInStates6 setCurrentTarget:firstObject];
 
     v21 = objc_alloc_init(NSOperation);
     [(KTChangeOptInStateOperation *)self setFinishedOp:v21];
 
-    v22 = [(KTChangeOptInStateOperation *)self finishedOp];
-    [(KTGroupOperation *)self dependOnBeforeGroupFinished:v22];
+    finishedOp = [(KTChangeOptInStateOperation *)self finishedOp];
+    [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
-    v23 = [(KTChangeOptInStateOperation *)self deps];
-    v24 = [v23 cloudRecords];
-    LODWORD(v18) = [v24 enforceCKOptInRecords];
+    deps = [(KTChangeOptInStateOperation *)self deps];
+    cloudRecords = [deps cloudRecords];
+    LODWORD(allKeys) = [cloudRecords enforceCKOptInRecords];
 
-    if (v18)
+    if (allKeys)
     {
-      v25 = [(KTChangeOptInStateOperation *)self deps];
-      v26 = [v25 cloudRecords];
-      v27 = [(KTChangeOptInStateOperation *)self optInStates];
-      v28 = [v27 currentTarget];
-      v29 = [v26 getAggregateOptInStateForApplication:v28];
+      deps2 = [(KTChangeOptInStateOperation *)self deps];
+      cloudRecords2 = [deps2 cloudRecords];
+      optInStates7 = [(KTChangeOptInStateOperation *)self optInStates];
+      currentTarget3 = [optInStates7 currentTarget];
+      v29 = [cloudRecords2 getAggregateOptInStateForApplication:currentTarget3];
 
       -[KTChangeOptInStateOperation evalCurrentOptInState:optInStateError:](self, "evalCurrentOptInState:optInStateError:", [v29 state] == 1, 0);
     }
 
     else
     {
-      v30 = [(KTChangeOptInStateOperation *)self optInStates];
-      v31 = [v30 currentTarget];
-      v32 = [(KTChangeOptInStateOperation *)self deps];
-      v33 = [v32 kvs];
+      optInStates8 = [(KTChangeOptInStateOperation *)self optInStates];
+      currentTarget4 = [optInStates8 currentTarget];
+      deps3 = [(KTChangeOptInStateOperation *)self deps];
+      v33 = [deps3 kvs];
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
       v34[2] = sub_100232C34;
       v34[3] = &unk_10031BF98;
       v34[4] = self;
-      [KTOptInManagerServer optInManagerOptInState:v31 sync:1 store:v33 complete:v34];
+      [KTOptInManagerServer optInManagerOptInState:currentTarget4 sync:1 store:v33 complete:v34];
     }
   }
 }
 
-- (void)evalCurrentOptInState:(BOOL)a3 optInStateError:(id)a4
+- (void)evalCurrentOptInState:(BOOL)state optInStateError:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(KTChangeOptInStateOperation *)self optInStates];
-  v8 = [v7 currentTarget];
+  stateCopy = state;
+  errorCopy = error;
+  optInStates = [(KTChangeOptInStateOperation *)self optInStates];
+  currentTarget = [optInStates currentTarget];
 
-  v9 = [(KTChangeOptInStateOperation *)self optInStates];
-  v10 = [v9 targetOptInStates];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  optInStates2 = [(KTChangeOptInStateOperation *)self optInStates];
+  targetOptInStates = [optInStates2 targetOptInStates];
+  v11 = [targetOptInStates objectForKeyedSubscript:currentTarget];
 
   if (!v11)
   {
@@ -141,15 +141,15 @@
     if (os_log_type_enabled(qword_10039CE30, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *v50 = v8;
+      *v50 = currentTarget;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Warning: no target application available: %@", buf, 0xCu);
     }
 
-    v18 = [(KTChangeOptInStateOperation *)self optInStates];
-    [v18 setCurrentTarget:0];
+    optInStates3 = [(KTChangeOptInStateOperation *)self optInStates];
+    [optInStates3 setCurrentTarget:0];
 
-    v16 = [(KTChangeOptInStateOperation *)self errorState];
-    [(KTChangeOptInStateOperation *)self setNextState:v16];
+    errorState = [(KTChangeOptInStateOperation *)self errorState];
+    [(KTChangeOptInStateOperation *)self setNextState:errorState];
     goto LABEL_18;
   }
 
@@ -165,13 +165,13 @@
     *buf = 67109634;
     *v50 = [v11 targetState];
     *&v50[4] = 2112;
-    *&v50[6] = v8;
+    *&v50[6] = currentTarget;
     v51 = 1024;
-    v52 = v4;
+    v52 = stateCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Changing state %d for application: %@ (current state: %d)", buf, 0x18u);
   }
 
-  if (v6)
+  if (errorCopy)
   {
     if (qword_10039CE28 != -1)
     {
@@ -182,30 +182,30 @@
     if (os_log_type_enabled(qword_10039CE30, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *v50 = v6;
+      *v50 = errorCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Warning: changing state despite error in getOptInState: %@", buf, 0xCu);
     }
 
-    v15 = [(KTChangeOptInStateOperation *)self errorState];
-    [(KTChangeOptInStateOperation *)self setNextState:v15];
+    errorState2 = [(KTChangeOptInStateOperation *)self errorState];
+    [(KTChangeOptInStateOperation *)self setNextState:errorState2];
 
-    [v11 setError:v6];
+    [v11 setError:errorCopy];
 LABEL_12:
-    v16 = [(KTChangeOptInStateOperation *)self optInStates];
-    [v16 completedCurrentTarget];
+    errorState = [(KTChangeOptInStateOperation *)self optInStates];
+    [errorState completedCurrentTarget];
 LABEL_18:
 
 LABEL_19:
-    v19 = [(KTGroupOperation *)self operationQueue];
-    v20 = [(KTChangeOptInStateOperation *)self finishedOp];
-    [v19 addOperation:v20];
+    operationQueue = [(KTGroupOperation *)self operationQueue];
+    finishedOp = [(KTChangeOptInStateOperation *)self finishedOp];
+    [operationQueue addOperation:finishedOp];
     goto LABEL_20;
   }
 
-  v21 = [v11 targetState];
-  if (v21 == 3 || v21 == 1)
+  targetState = [v11 targetState];
+  if (targetState == 3 || targetState == 1)
   {
-    if (v4)
+    if (stateCopy)
     {
 LABEL_25:
       if (qword_10039CE28 != -1)
@@ -217,25 +217,25 @@ LABEL_25:
       if (os_log_type_enabled(qword_10039CE30, OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [(KTChangeOptInStateOperation *)self optInStates];
-        v25 = [v24 currentTarget];
+        optInStates4 = [(KTChangeOptInStateOperation *)self optInStates];
+        currentTarget2 = [optInStates4 currentTarget];
         *buf = 138543362;
-        *v50 = v25;
+        *v50 = currentTarget2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "State target accomplished state, change for %{public}@", buf, 0xCu);
       }
 
-      v26 = [(KTChangeOptInStateOperation *)self deps];
-      v27 = [v26 stateMonitor];
-      [v27 setOptInState:v4 everOptIn:1];
+      deps = [(KTChangeOptInStateOperation *)self deps];
+      stateMonitor = [deps stateMonitor];
+      [stateMonitor setOptInState:stateCopy everOptIn:1];
 
-      v28 = [(KTChangeOptInStateOperation *)self intendedState];
-      [(KTChangeOptInStateOperation *)self setNextState:v28];
+      intendedState = [(KTChangeOptInStateOperation *)self intendedState];
+      [(KTChangeOptInStateOperation *)self setNextState:intendedState];
 
       goto LABEL_12;
     }
   }
 
-  else if (!v21 && !v4)
+  else if (!targetState && !stateCopy)
   {
     goto LABEL_25;
   }
@@ -246,64 +246,64 @@ LABEL_25:
     goto LABEL_19;
   }
 
-  v29 = [(KTChangeOptInStateOperation *)self deps];
-  v30 = [v29 accountOperations];
+  deps2 = [(KTChangeOptInStateOperation *)self deps];
+  accountOperations = [deps2 accountOperations];
   v48 = 0;
-  v20 = [v30 primaryAccount:&v48];
-  v19 = v48;
+  finishedOp = [accountOperations primaryAccount:&v48];
+  operationQueue = v48;
 
-  if (v20)
+  if (finishedOp)
   {
-    v31 = [(KTChangeOptInStateOperation *)self deps];
-    v32 = [v31 accountOperations];
-    v33 = [v32 eligibleForOptIn:v20];
+    deps3 = [(KTChangeOptInStateOperation *)self deps];
+    accountOperations2 = [deps3 accountOperations];
+    v33 = [accountOperations2 eligibleForOptIn:finishedOp];
 
     if (v33)
     {
-      v34 = [(KTChangeOptInStateOperation *)self deps];
-      v35 = [v34 idsOperations];
+      deps4 = [(KTChangeOptInStateOperation *)self deps];
+      idsOperations = [deps4 idsOperations];
       v44[0] = _NSConcreteStackBlock;
       v44[1] = 3221225472;
       v44[2] = sub_1002333A8;
       v44[3] = &unk_10032C208;
-      v45 = v8;
+      v45 = currentTarget;
       v46 = v11;
-      v47 = self;
-      [v35 getKeyTransparencyOptInEligiblityForApplication:v45 withCompletion:v44];
+      selfCopy = self;
+      [idsOperations getKeyTransparencyOptInEligiblityForApplication:v45 withCompletion:v44];
 
-      v36 = v45;
+      operationQueue3 = v45;
     }
 
     else
     {
-      v36 = [TransparencyError errorWithDomain:kTransparencyErrorAccount code:-160 description:@"Account is not eligble to opt-in"];
-      [(KTResultOperation *)self setError:v36];
-      [v11 setError:v36];
-      v40 = [(KTChangeOptInStateOperation *)self errorState];
-      [(KTChangeOptInStateOperation *)self setNextState:v40];
+      operationQueue3 = [TransparencyError errorWithDomain:kTransparencyErrorAccount code:-160 description:@"Account is not eligble to opt-in"];
+      [(KTResultOperation *)self setError:operationQueue3];
+      [v11 setError:operationQueue3];
+      errorState3 = [(KTChangeOptInStateOperation *)self errorState];
+      [(KTChangeOptInStateOperation *)self setNextState:errorState3];
 
-      v41 = [(KTChangeOptInStateOperation *)self optInStates];
-      [v41 completedCurrentTarget];
+      optInStates5 = [(KTChangeOptInStateOperation *)self optInStates];
+      [optInStates5 completedCurrentTarget];
 
-      v42 = [(KTGroupOperation *)self operationQueue];
-      v43 = [(KTChangeOptInStateOperation *)self finishedOp];
-      [v42 addOperation:v43];
+      operationQueue2 = [(KTGroupOperation *)self operationQueue];
+      finishedOp2 = [(KTChangeOptInStateOperation *)self finishedOp];
+      [operationQueue2 addOperation:finishedOp2];
     }
   }
 
   else
   {
-    [(KTResultOperation *)self setError:v19];
-    [v11 setError:v19];
-    v37 = [(KTChangeOptInStateOperation *)self errorState];
-    [(KTChangeOptInStateOperation *)self setNextState:v37];
+    [(KTResultOperation *)self setError:operationQueue];
+    [v11 setError:operationQueue];
+    errorState4 = [(KTChangeOptInStateOperation *)self errorState];
+    [(KTChangeOptInStateOperation *)self setNextState:errorState4];
 
-    v38 = [(KTChangeOptInStateOperation *)self optInStates];
-    [v38 completedCurrentTarget];
+    optInStates6 = [(KTChangeOptInStateOperation *)self optInStates];
+    [optInStates6 completedCurrentTarget];
 
-    v36 = [(KTGroupOperation *)self operationQueue];
-    v39 = [(KTChangeOptInStateOperation *)self finishedOp];
-    [v36 addOperation:v39];
+    operationQueue3 = [(KTGroupOperation *)self operationQueue];
+    finishedOp3 = [(KTChangeOptInStateOperation *)self finishedOp];
+    [operationQueue3 addOperation:finishedOp3];
   }
 
 LABEL_20:

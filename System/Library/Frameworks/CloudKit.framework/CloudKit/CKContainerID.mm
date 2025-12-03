@@ -1,16 +1,16 @@
 @interface CKContainerID
-- (BOOL)isEqual:(id)a3;
-- (CKContainerID)initWithCoder:(id)a3;
-- (CKContainerID)initWithContainerIdentifier:(id)a3 environment:(int64_t)a4;
-- (CKContainerID)initWithSqliteRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKContainerID)initWithCoder:(id)coder;
+- (CKContainerID)initWithContainerIdentifier:(id)identifier environment:(int64_t)environment;
+- (CKContainerID)initWithSqliteRepresentation:(id)representation;
 - (id)equivalencyProperties;
 - (id)representativeDataclass;
 - (id)sqliteRepresentation;
 - (int64_t)c2ContainerType;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)ck_bindInStatement:(id)a3 atIndex:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)ck_bindInStatement:(id)statement atIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKContainerID
@@ -66,19 +66,19 @@
   return 1;
 }
 
-- (void)ck_bindInStatement:(id)a3 atIndex:(unint64_t)a4
+- (void)ck_bindInStatement:(id)statement atIndex:(unint64_t)index
 {
-  v6 = a3;
+  statementCopy = statement;
   v10 = objc_msgSend_sqliteRepresentation(self, v7, v8);
-  objc_msgSend_bindText_atIndex_(v6, v9, v10, a4);
+  objc_msgSend_bindText_atIndex_(statementCopy, v9, v10, index);
 }
 
-- (CKContainerID)initWithContainerIdentifier:(id)a3 environment:(int64_t)a4
+- (CKContainerID)initWithContainerIdentifier:(id)identifier environment:(int64_t)environment
 {
   v134 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v108 = 0;
-  v7 = _CKCheckArgument("containerIdentifier", v6, 0, 0, 0, &v108);
+  v7 = _CKCheckArgument("containerIdentifier", identifierCopy, 0, 0, 0, &v108);
   v8 = v108;
   v9 = v8;
   if ((v7 & 1) == 0)
@@ -92,7 +92,7 @@
     goto LABEL_63;
   }
 
-  if ((a4 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((environment - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v94 = [CKException alloc];
     v96 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v95, @"CKErrorDomain", 12, @"environment can not be 0");
@@ -111,11 +111,11 @@ LABEL_63:
   v12 = [(CKContainerID *)&v107 init];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v6, v10, v11);
+    v13 = objc_msgSend_copy(identifierCopy, v10, v11);
     containerIdentifier = v12->_containerIdentifier;
     v12->_containerIdentifier = v13;
 
-    v12->_environment = a4;
+    v12->_environment = environment;
     if (qword_1ED4B60B8 != -1)
     {
       dispatch_once(&qword_1ED4B60B8, &unk_1EFA306B0);
@@ -374,12 +374,12 @@ LABEL_38:
   return v12;
 }
 
-- (CKContainerID)initWithSqliteRepresentation:(id)a3
+- (CKContainerID)initWithSqliteRepresentation:(id)representation
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  representationCopy = representation;
+  if (objc_msgSend_length(representationCopy, v5, v6))
   {
-    v8 = objc_msgSend_componentsSeparatedByString_(v4, v7, @"~");
+    v8 = objc_msgSend_componentsSeparatedByString_(representationCopy, v7, @"~");
     if (objc_msgSend_count(v8, v9, v10) == 2)
     {
       v12 = objc_msgSend_objectAtIndexedSubscript_(v8, v11, 0);
@@ -387,21 +387,21 @@ LABEL_38:
       v17 = objc_msgSend_integerValue(v14, v15, v16);
 
       self = objc_msgSend_initWithContainerIdentifier_environment_(self, v18, v12, v17);
-      v19 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v19 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 - (id)equivalencyProperties
@@ -415,11 +415,11 @@ LABEL_38:
   return v10;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v13 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_containerIdentifier(self, v4, v5);
-  objc_msgSend_addProperty_value_shouldRedact_(v13, v7, @"containerIdentifier", v6, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v7, @"containerIdentifier", v6, 0);
 
   v10 = objc_msgSend_environment(self, v8, v9);
   v12 = @"UNKNOWN ENVIRONMENT";
@@ -430,19 +430,19 @@ LABEL_38:
 
   if (v10 == 1)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v13, v11, @"environment", @"Production", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v11, @"environment", @"Production", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v13, v11, @"environment", v12, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v11, @"environment", v12, 0);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
@@ -452,7 +452,7 @@ LABEL_38:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_containerIdentifier(self, v6, v7);
       v11 = objc_msgSend_containerIdentifier(v5, v9, v10);
       v14 = v11;
@@ -488,28 +488,28 @@ LABEL_11:
   return v23;
 }
 
-- (CKContainerID)initWithCoder:(id)a3
+- (CKContainerID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_class();
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"ContainerIdentifier");
-  v10 = objc_msgSend_decodeInt64ForKey_(v4, v9, @"Environment");
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"ContainerIdentifier");
+  v10 = objc_msgSend_decodeInt64ForKey_(coderCopy, v9, @"Environment");
   objc_autoreleasePoolPop(v5);
   v12 = objc_msgSend_initWithContainerIdentifier_environment_(self, v11, v8, v10);
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_containerIdentifier(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v13, v8, v7, @"ContainerIdentifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"ContainerIdentifier");
 
   v11 = objc_msgSend_environment(self, v9, v10);
-  objc_msgSend_encodeInt64_forKey_(v13, v12, v11, @"Environment");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v12, v11, @"Environment");
   objc_autoreleasePoolPop(v4);
 }
 

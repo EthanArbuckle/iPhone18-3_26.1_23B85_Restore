@@ -6,10 +6,10 @@
 
 - (id)codings
 {
-  v1 = [a1 medicationCodingCollection];
-  v2 = [v1 codings];
+  medicationCodingCollection = [self medicationCodingCollection];
+  codings = [medicationCodingCollection codings];
 
-  return v2;
+  return codings;
 }
 
 @end

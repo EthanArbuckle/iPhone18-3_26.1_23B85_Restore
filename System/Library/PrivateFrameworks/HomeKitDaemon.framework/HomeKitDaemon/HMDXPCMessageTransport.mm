@@ -2,20 +2,20 @@
 + (HMDXPCMessageTransport)accessorySetupTransport;
 + (HMDXPCMessageTransport)defaultTransport;
 + (id)logCategory;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (HMDXPCMessageTransport)initWithConfiguration:(id)a3;
-- (HMDXPCMessageTransport)initWithConfiguration:(id)a3 listener:(id)a4 processMonitor:(id)a5 appProtectionGuard:(id)a6;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (HMDXPCMessageTransport)initWithConfiguration:(id)configuration;
+- (HMDXPCMessageTransport)initWithConfiguration:(id)configuration listener:(id)listener processMonitor:(id)monitor appProtectionGuard:(id)guard;
 - (NSArray)connections;
 - (NSDictionary)stateDump;
 - (OS_dispatch_queue)queue;
 - (id)logIdentifier;
-- (void)connectionDidActivate:(id)a3;
-- (void)connectionDidDeactivate:(id)a3;
-- (void)connectionDidInvalidate:(id)a3;
-- (void)connectionDidStart:(id)a3;
-- (void)handleProcessStateDidChangeNotification:(id)a3;
-- (void)messageTransport:(id)a3 didReceiveMessage:(id)a4;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
+- (void)connectionDidActivate:(id)activate;
+- (void)connectionDidDeactivate:(id)deactivate;
+- (void)connectionDidInvalidate:(id)invalidate;
+- (void)connectionDidStart:(id)start;
+- (void)handleProcessStateDidChangeNotification:(id)notification;
+- (void)messageTransport:(id)transport didReceiveMessage:(id)message;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
@@ -68,20 +68,20 @@
   }
 
   v4 = mutableConnections;
-  v5 = [(NSMutableSet *)v4 allObjects];
+  allObjects = [(NSMutableSet *)v4 allObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v5;
+  return allObjects;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v53 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -89,18 +89,18 @@
     *buf = 138543618;
     *&buf[4] = v10;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = connectionCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@New XPC connection requested: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDXPCMessageTransport *)v8 clientConnectionFactory];
-  v12 = [(HMDXPCMessageTransport *)v8 queue];
-  v13 = (v11)[2](v11, v6, v12);
+  clientConnectionFactory = [(HMDXPCMessageTransport *)selfCopy clientConnectionFactory];
+  queue = [(HMDXPCMessageTransport *)selfCopy queue];
+  v13 = (clientConnectionFactory)[2](clientConnectionFactory, connectionCopy, queue);
 
-  if (v8)
+  if (selfCopy)
   {
-    configuration = v8->_configuration;
+    configuration = selfCopy->_configuration;
   }
 
   else
@@ -108,18 +108,18 @@
     configuration = 0;
   }
 
-  v15 = [(HMXPCMessageTransportConfiguration *)configuration requiredEntitlements];
-  v16 = [v13 entitlements];
-  v17 = v16 & v15;
-  if ((v16 & v15) != v15)
+  requiredEntitlements = [(HMXPCMessageTransportConfiguration *)configuration requiredEntitlements];
+  entitlements = [v13 entitlements];
+  v17 = entitlements & requiredEntitlements;
+  if ((entitlements & requiredEntitlements) != requiredEntitlements)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v8;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = HMXPCClientEntitlementsToComponents(v17 ^ v15);
+      v25 = HMXPCClientEntitlementsToComponents(v17 ^ requiredEntitlements);
       *buf = 138543874;
       *&buf[4] = v24;
       *&buf[12] = 2112;
@@ -132,9 +132,9 @@
     goto LABEL_16;
   }
 
-  if (v8)
+  if (selfCopy)
   {
-    v18 = v8->_configuration;
+    v18 = selfCopy->_configuration;
   }
 
   else
@@ -150,7 +150,7 @@
   if (([v13 isAuthorizedForHomeDataAccess] & 1) == 0)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v8;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -170,9 +170,9 @@ LABEL_16:
     goto LABEL_29;
   }
 
-  if (v8)
+  if (selfCopy)
   {
-    appProtectionGuard = v8->_appProtectionGuard;
+    appProtectionGuard = selfCopy->_appProtectionGuard;
   }
 
   else
@@ -181,9 +181,9 @@ LABEL_16:
   }
 
   v20 = appProtectionGuard;
-  if (v6)
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -196,34 +196,34 @@ LABEL_16:
   v50[1] = 3221225472;
   v50[2] = __61__HMDXPCMessageTransport_listener_shouldAcceptNewConnection___block_invoke;
   v50[3] = &unk_27867CBC8;
-  v50[4] = v8;
+  v50[4] = selfCopy;
   v51 = v13;
   [(HMDAppProtectionGuard *)v20 initiateAuthenticationForApplicationWithBundleIdentifier:v29 onBehalfOfProcessWithAuditToken:buf completion:v50];
 
 LABEL_22:
-  [v13 setDelegate:v8];
-  [v6 setExportedObject:v13];
-  if (v8)
+  [v13 setDelegate:selfCopy];
+  [connectionCopy setExportedObject:v13];
+  if (selfCopy)
   {
-    [v6 setExportedInterface:v8->_exportedInterface];
-    remoteObjectInterface = v8->_remoteObjectInterface;
+    [connectionCopy setExportedInterface:selfCopy->_exportedInterface];
+    remoteObjectInterface = selfCopy->_remoteObjectInterface;
   }
 
   else
   {
-    [v6 setExportedInterface:0];
+    [connectionCopy setExportedInterface:0];
     remoteObjectInterface = 0;
   }
 
-  [v6 setRemoteObjectInterface:remoteObjectInterface];
-  v31 = [(HMDXPCMessageTransport *)v8 processMonitor];
-  v32 = [v31 processInfoForXPCConnection:v6];
+  [connectionCopy setRemoteObjectInterface:remoteObjectInterface];
+  processMonitor = [(HMDXPCMessageTransport *)selfCopy processMonitor];
+  v32 = [processMonitor processInfoForXPCConnection:connectionCopy];
 
   [v13 setProcessInfo:v32];
   os_unfair_lock_lock_with_options();
-  if (v8)
+  if (selfCopy)
   {
-    mutableConnections = v8->_mutableConnections;
+    mutableConnections = selfCopy->_mutableConnections;
   }
 
   else
@@ -234,8 +234,8 @@ LABEL_22:
   v34 = mutableConnections;
   [(NSMutableSet *)v34 addObject:v13];
 
-  os_unfair_lock_unlock(&v8->_lock);
-  objc_initWeak(&location, v8);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  objc_initWeak(&location, selfCopy);
   objc_initWeak(&from, v13);
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -243,16 +243,16 @@ LABEL_22:
   v45[3] = &unk_278681288;
   objc_copyWeak(&v46, &location);
   objc_copyWeak(&v47, &from);
-  [v6 setInterruptionHandler:v45];
+  [connectionCopy setInterruptionHandler:v45];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __61__HMDXPCMessageTransport_listener_shouldAcceptNewConnection___block_invoke_121;
   v42[3] = &unk_278681288;
   objc_copyWeak(&v43, &location);
   objc_copyWeak(&v44, &from);
-  [v6 setInvalidationHandler:v42];
+  [connectionCopy setInvalidationHandler:v42];
   v35 = objc_autoreleasePoolPush();
-  v36 = v8;
+  v36 = selfCopy;
   v37 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
   {
@@ -265,7 +265,7 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v35);
-  [v6 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v44);
   objc_destroyWeak(&v43);
   objc_destroyWeak(&v47);
@@ -408,87 +408,87 @@ BOOL __61__HMDXPCMessageTransport_listener_shouldAcceptNewConnection___block_inv
   return v6;
 }
 
-- (void)connectionDidInvalidate:(id)a3
+- (void)connectionDidInvalidate:(id)invalidate
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDXPCMessageTransport *)self queue];
-  dispatch_assert_queue_V2(v5);
+  invalidateCopy = invalidate;
+  queue = [(HMDXPCMessageTransport *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = @"connection";
-  v10[0] = v4;
+  v10[0] = invalidateCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  [v6 postNotificationName:@"HMDXPCClientConnectionDidInvalidateNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"HMDXPCClientConnectionDidInvalidateNotification" object:self userInfo:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionDidDeactivate:(id)a3
+- (void)connectionDidDeactivate:(id)deactivate
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDXPCMessageTransport *)self queue];
-  dispatch_assert_queue_V2(v5);
+  deactivateCopy = deactivate;
+  queue = [(HMDXPCMessageTransport *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = @"connection";
-  v10[0] = v4;
+  v10[0] = deactivateCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  [v6 postNotificationName:@"HMDXPCClientConnectionDidDeactivateNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"HMDXPCClientConnectionDidDeactivateNotification" object:self userInfo:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionDidActivate:(id)a3
+- (void)connectionDidActivate:(id)activate
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDXPCMessageTransport *)self queue];
-  dispatch_assert_queue_V2(v5);
+  activateCopy = activate;
+  queue = [(HMDXPCMessageTransport *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = @"connection";
-  v10[0] = v4;
+  v10[0] = activateCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  [v6 postNotificationName:@"HMDXPCClientConnectionDidActivateNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"HMDXPCClientConnectionDidActivateNotification" object:self userInfo:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionDidStart:(id)a3
+- (void)connectionDidStart:(id)start
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDXPCMessageTransport *)self queue];
-  dispatch_assert_queue_V2(v5);
+  startCopy = start;
+  queue = [(HMDXPCMessageTransport *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = @"connection";
-  v10[0] = v4;
+  v10[0] = startCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  [v6 postNotificationName:@"HMDXPCClientConnectionDidStartNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"HMDXPCClientConnectionDidStartNotification" object:self userInfo:v7];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageTransport:(id)a3 didReceiveMessage:(id)a4
+- (void)messageTransport:(id)transport didReceiveMessage:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMFMessageTransport *)self delegate];
-  [v8 messageTransport:v7 didReceiveMessage:v6];
+  messageCopy = message;
+  transportCopy = transport;
+  delegate = [(HMFMessageTransport *)self delegate];
+  [delegate messageTransport:transportCopy didReceiveMessage:messageCopy];
 }
 
-- (void)handleProcessStateDidChangeNotification:(id)a3
+- (void)handleProcessStateDidChangeNotification:(id)notification
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDXPCMessageTransport *)self queue];
-  dispatch_assert_queue_V2(v5);
+  notificationCopy = notification;
+  queue = [(HMDXPCMessageTransport *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"processInfo"];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"processInfo"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -507,8 +507,8 @@ BOOL __61__HMDXPCMessageTransport_listener_shouldAcceptNewConnection___block_inv
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(HMDXPCMessageTransport *)self connections];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  connections = [(HMDXPCMessageTransport *)self connections];
+  v11 = [connections countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -519,13 +519,13 @@ LABEL_6:
     {
       if (*v19 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(connections);
       }
 
       v15 = *(*(&v18 + 1) + 8 * v14);
-      v16 = [v15 processInfo];
+      processInfo = [v15 processInfo];
 
-      if (v16 != v9)
+      if (processInfo != v9)
       {
         break;
       }
@@ -533,7 +533,7 @@ LABEL_6:
       [v15 handleProcessStateDidChange];
       if (v12 == ++v14)
       {
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [connections countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v12)
         {
           goto LABEL_6;
@@ -547,21 +547,21 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
   v88 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(HMDXPCMessageTransport *)self connections];
-  v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  connections = [(HMDXPCMessageTransport *)self connections];
+  v10 = [v8 arrayWithCapacity:{objc_msgSend(connections, "count")}];
 
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v11 = [(HMDXPCMessageTransport *)self connections];
-  v12 = [v11 countByEnumeratingWithState:&v67 objects:v87 count:16];
+  connections2 = [(HMDXPCMessageTransport *)self connections];
+  v12 = [connections2 countByEnumeratingWithState:&v67 objects:v87 count:16];
   if (v12)
   {
     v13 = v12;
@@ -573,23 +573,23 @@ LABEL_6:
       {
         if (*v68 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(connections2);
         }
 
         v17 = *(*(&v67 + 1) + 8 * i);
-        if ([v17 sendMessage:v6 error:0])
+        if ([v17 sendMessage:messageCopy error:0])
         {
           ++v14;
         }
 
         else
         {
-          v18 = [v17 shortDescription];
-          [v10 addObject:v18];
+          shortDescription = [v17 shortDescription];
+          [v10 addObject:shortDescription];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v67 objects:v87 count:16];
+      v13 = [connections2 countByEnumeratingWithState:&v67 objects:v87 count:16];
     }
 
     while (v13);
@@ -597,21 +597,21 @@ LABEL_6:
     if (v14)
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
-      v66 = v7;
+      v66 = handlerCopy;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v64 = HMFGetLogIdentifier();
-        v63 = [v6 name];
+        name = [messageCopy name];
         *buf = 0;
         *&buf[8] = 0;
-        v22 = [v6 identifier];
+        identifier = [messageCopy identifier];
 
-        if (v22)
+        if (identifier)
         {
-          v23 = [v6 identifier];
-          [v23 getUUIDBytes:buf];
+          identifier2 = [messageCopy identifier];
+          [identifier2 getUUIDBytes:buf];
         }
 
         else
@@ -622,14 +622,14 @@ LABEL_6:
         v75 = *buf;
         *buf = 0;
         *&buf[8] = 0;
-        v39 = [v6 destination];
-        v40 = [v39 target];
+        destination = [messageCopy destination];
+        target = [destination target];
 
-        if (v40)
+        if (target)
         {
-          v41 = [v6 destination];
-          v42 = [v41 target];
-          [v42 getUUIDBytes:buf];
+          destination2 = [messageCopy destination];
+          target2 = [destination2 target];
+          [target2 getUUIDBytes:buf];
         }
 
         else
@@ -638,13 +638,13 @@ LABEL_6:
         }
 
         v74 = *buf;
-        v43 = [(HMDXPCMessageTransport *)v20 connections];
-        v44 = [v43 count];
-        v45 = [v6 sendPolicy];
+        connections3 = [(HMDXPCMessageTransport *)selfCopy connections];
+        v44 = [connections3 count];
+        sendPolicy = [messageCopy sendPolicy];
         *buf = 138545410;
         *&buf[4] = v64;
         *&buf[12] = 2114;
-        *&buf[14] = v63;
+        *&buf[14] = name;
         v77 = 1042;
         *v78 = 16;
         *&v78[4] = 2098;
@@ -658,22 +658,22 @@ LABEL_6:
         v83 = 2050;
         v84 = v44;
         v85 = 2114;
-        v86 = v45;
+        v86 = sendPolicy;
         _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Sent message %{public}@(%{public,uuid_t}.16P) with target %{uuid_t}.16P to %{public}lu/%{public}lu clients with message send policy %{public}@", buf, 0x54u);
 
-        v7 = v66;
+        handlerCopy = v66;
         v19 = v62;
       }
 
       objc_autoreleasePoolPop(v19);
       v46 = objc_autoreleasePoolPush();
-      v47 = v20;
+      v47 = selfCopy;
       v48 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
       {
         v49 = HMFGetLogIdentifier();
-        v50 = [v6 shortDescription];
-        v51 = [v6 messagePayload];
+        shortDescription2 = [messageCopy shortDescription];
+        messagePayload = [messageCopy messagePayload];
         v52 = MEMORY[0x277CBEB98];
         v53 = *MEMORY[0x277CD1FD8];
         v73[0] = @"kAuthorizationDataKey";
@@ -696,23 +696,23 @@ LABEL_6:
         [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:14];
         v57 = v65 = v46;
         v58 = [v52 setWithArray:v57];
-        v59 = [v51 secureDescriptionWithBlacklistKeys:v58];
+        v59 = [messagePayload secureDescriptionWithBlacklistKeys:v58];
         *buf = 138544130;
         *&buf[4] = v49;
         *&buf[12] = 2114;
-        *&buf[14] = v50;
+        *&buf[14] = shortDescription2;
         v77 = 2114;
         *v78 = v59;
         *&v78[8] = 2114;
         *&v78[10] = v10;
         _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_DEBUG, "%{public}@Sent message %{public}@ with payload: %{public}@ (skipped ineligible clients: %{public}@)", buf, 0x2Au);
 
-        v7 = v66;
+        handlerCopy = v66;
         v46 = v65;
       }
 
       objc_autoreleasePoolPop(v46);
-      v60 = _Block_copy(v7);
+      v60 = _Block_copy(handlerCopy);
       v36 = v60;
       if (v60)
       {
@@ -728,20 +728,20 @@ LABEL_6:
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy2 = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
     v27 = HMFGetLogIdentifier();
-    v28 = [v6 name];
+    name2 = [messageCopy name];
     *buf = 0;
     *&buf[8] = 0;
-    v29 = [v6 identifier];
+    identifier3 = [messageCopy identifier];
 
-    if (v29)
+    if (identifier3)
     {
-      v30 = [v6 identifier];
-      [v30 getUUIDBytes:buf];
+      identifier4 = [messageCopy identifier];
+      [identifier4 getUUIDBytes:buf];
     }
 
     else
@@ -752,14 +752,14 @@ LABEL_6:
     v72 = *buf;
     *buf = 0;
     *&buf[8] = 0;
-    v31 = [v6 destination];
-    v32 = [v31 target];
+    destination3 = [messageCopy destination];
+    target3 = [destination3 target];
 
-    if (v32)
+    if (target3)
     {
-      v33 = [v6 destination];
-      v34 = [v33 target];
-      [v34 getUUIDBytes:buf];
+      destination4 = [messageCopy destination];
+      target4 = [destination4 target];
+      [target4 getUUIDBytes:buf];
     }
 
     else
@@ -768,11 +768,11 @@ LABEL_6:
     }
 
     v71 = *buf;
-    v35 = [v6 sendPolicy];
+    sendPolicy2 = [messageCopy sendPolicy];
     *buf = 138544898;
     *&buf[4] = v27;
     *&buf[12] = 2114;
-    *&buf[14] = v28;
+    *&buf[14] = name2;
     v77 = 1042;
     *v78 = 16;
     *&v78[4] = 2098;
@@ -782,13 +782,13 @@ LABEL_6:
     v79 = 2096;
     v80 = &v71;
     v81 = 2114;
-    v82 = v35;
+    v82 = sendPolicy2;
     _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Not sending message %{public}@(%{public,uuid_t}.16P) with target %{uuid_t}.16P because no clients are eligible for send policy: %{public}@", buf, 0x40u);
   }
 
   objc_autoreleasePoolPop(v24);
   v36 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54 description:@"Failed to send message." reason:@"No eligible clients" suggestion:0];
-  v37 = _Block_copy(v7);
+  v37 = _Block_copy(handlerCopy);
   v38 = v37;
   if (v37)
   {
@@ -802,8 +802,8 @@ LABEL_36:
 - (NSDictionary)stateDump
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HMDXPCMessageTransport *)self connections];
-  v3 = [v2 na_map:&__block_literal_global_97];
+  connections = [(HMDXPCMessageTransport *)self connections];
+  v3 = [connections na_map:&__block_literal_global_97];
 
   v7 = @"Connections";
   v8[0] = v3;
@@ -818,7 +818,7 @@ LABEL_36:
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -829,9 +829,9 @@ LABEL_36:
   }
 
   objc_autoreleasePoolPop(v3);
-  if (v4)
+  if (selfCopy)
   {
-    listener = v4->_listener;
+    listener = selfCopy->_listener;
   }
 
   else
@@ -847,7 +847,7 @@ LABEL_36:
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -858,14 +858,14 @@ LABEL_36:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = HMDProcessMonitorProcessStateDidChangeNotification;
-  v9 = [(HMDXPCMessageTransport *)v4 processMonitor];
-  [v7 addObserver:v4 selector:sel_handleProcessStateDidChangeNotification_ name:v8 object:v9];
+  processMonitor = [(HMDXPCMessageTransport *)selfCopy processMonitor];
+  [defaultCenter addObserver:selfCopy selector:sel_handleProcessStateDidChangeNotification_ name:v8 object:processMonitor];
 
-  if (v4)
+  if (selfCopy)
   {
-    listener = v4->_listener;
+    listener = selfCopy->_listener;
   }
 
   else
@@ -873,45 +873,45 @@ LABEL_36:
     listener = 0;
   }
 
-  [(HMDXPCListener *)listener setDelegate:v4];
-  v11 = [(HMDXPCMessageTransport *)v4 queue];
-  if (v4)
+  [(HMDXPCListener *)listener setDelegate:selfCopy];
+  queue = [(HMDXPCMessageTransport *)selfCopy queue];
+  if (selfCopy)
   {
-    [(HMDXPCListener *)v4->_listener setQueue:v11];
+    [(HMDXPCListener *)selfCopy->_listener setQueue:queue];
 
-    [(HMDXPCListener *)v4->_listener start];
-    configuration = v4->_configuration;
+    [(HMDXPCListener *)selfCopy->_listener start];
+    configuration = selfCopy->_configuration;
   }
 
   else
   {
-    [0 setQueue:v11];
+    [0 setQueue:queue];
 
     [0 start];
     configuration = 0;
   }
 
-  v13 = [(HMXPCMessageTransportConfiguration *)configuration serverStartNotification];
-  notify_post([v13 UTF8String]);
+  serverStartNotification = [(HMXPCMessageTransportConfiguration *)configuration serverStartNotification];
+  notify_post([serverStartNotification UTF8String]);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDXPCMessageTransport)initWithConfiguration:(id)a3
+- (HMDXPCMessageTransport)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v5 = v4;
+    v5 = configurationCopy;
     v6 = [HMDXPCListener alloc];
     v7 = objc_alloc(MEMORY[0x277CCAE98]);
-    v8 = [v5 machServiceName];
-    v9 = [v7 initWithMachServiceName:v8];
+    machServiceName = [v5 machServiceName];
+    v9 = [v7 initWithMachServiceName:machServiceName];
     v10 = [(HMDXPCListener *)v6 initWithXPCListener:v9];
 
     v11 = [HMDProcessMonitor alloc];
-    v12 = [v5 queue];
-    v13 = [(HMDProcessMonitor *)v11 initWithQueue:v12];
+    queue = [v5 queue];
+    v13 = [(HMDProcessMonitor *)v11 initWithQueue:queue];
 
     v14 = objc_alloc_init(HMDAppProtectionGuard);
     v15 = [(HMDXPCMessageTransport *)self initWithConfiguration:v5 listener:v10 processMonitor:v13 appProtectionGuard:v14];
@@ -926,34 +926,34 @@ LABEL_36:
   }
 }
 
-- (HMDXPCMessageTransport)initWithConfiguration:(id)a3 listener:(id)a4 processMonitor:(id)a5 appProtectionGuard:(id)a6
+- (HMDXPCMessageTransport)initWithConfiguration:(id)configuration listener:(id)listener processMonitor:(id)monitor appProtectionGuard:(id)guard
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  configurationCopy = configuration;
+  listenerCopy = listener;
+  monitorCopy = monitor;
+  guardCopy = guard;
+  if (!configurationCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!listenerCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!monitorCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = guardCopy;
+  if (!guardCopy)
   {
 LABEL_11:
     v26 = _HMFPreconditionFailure();
@@ -965,13 +965,13 @@ LABEL_11:
   v15 = [(HMDXPCMessageTransport *)&v27 init];
   if (v15)
   {
-    v16 = [v10 copy];
+    v16 = [configurationCopy copy];
     configuration = v15->_configuration;
     v15->_configuration = v16;
 
-    objc_storeStrong(&v15->_listener, a4);
-    objc_storeStrong(&v15->_processMonitor, a5);
-    objc_storeStrong(&v15->_appProtectionGuard, a6);
+    objc_storeStrong(&v15->_listener, listener);
+    objc_storeStrong(&v15->_processMonitor, monitor);
+    objc_storeStrong(&v15->_appProtectionGuard, guard);
     v18 = objc_alloc_init(MEMORY[0x277CBEB58]);
     mutableConnections = v15->_mutableConnections;
     v15->_mutableConnections = v18;

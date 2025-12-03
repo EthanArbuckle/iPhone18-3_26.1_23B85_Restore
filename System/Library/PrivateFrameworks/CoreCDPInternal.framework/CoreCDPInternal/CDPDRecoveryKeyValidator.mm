@@ -1,28 +1,28 @@
 @interface CDPDRecoveryKeyValidator
-- (void)_validateRecoveryKey:(id)a3 completion:(id)a4;
-- (void)validateRecoveryKey:(id)a3 withCompletion:(id)a4;
+- (void)_validateRecoveryKey:(id)key completion:(id)completion;
+- (void)validateRecoveryKey:(id)key withCompletion:(id)completion;
 @end
 
 @implementation CDPDRecoveryKeyValidator
 
-- (void)_validateRecoveryKey:(id)a3 completion:(id)a4
+- (void)_validateRecoveryKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  keyCopy = key;
   v8 = objc_alloc_init(CDPDSecureBackupContext);
-  [(CDPDSecureBackupContext *)v8 setRecoveryKey:v7];
+  [(CDPDSecureBackupContext *)v8 setRecoveryKey:keyCopy];
 
-  v9 = [(CDPDDeviceSecretValidator *)self delegate];
+  delegate = [(CDPDDeviceSecretValidator *)self delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [(CDPDDeviceSecretValidator *)self delegate];
+    delegate2 = [(CDPDDeviceSecretValidator *)self delegate];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __60__CDPDRecoveryKeyValidator__validateRecoveryKey_completion___block_invoke;
     v13[3] = &unk_278E247D0;
-    v14 = v6;
-    [v10 secretValidator:self validateRecoveryKeyWithContext:v8 completion:v13];
+    v14 = completionCopy;
+    [delegate2 secretValidator:self validateRecoveryKeyWithContext:v8 completion:v13];
 
     v11 = v14;
 LABEL_7:
@@ -36,10 +36,10 @@ LABEL_7:
     [CDPDRecoveryKeyValidator _validateRecoveryKey:v12 completion:?];
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v11 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:0];
-    (*(v6 + 2))(v6, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
     goto LABEL_7;
   }
 
@@ -75,16 +75,16 @@ void __60__CDPDRecoveryKeyValidator__validateRecoveryKey_completion___block_invo
 LABEL_7:
 }
 
-- (void)validateRecoveryKey:(id)a3 withCompletion:(id)a4
+- (void)validateRecoveryKey:(id)key withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__CDPDRecoveryKeyValidator_validateRecoveryKey_withCompletion___block_invoke;
   v8[3] = &unk_278E247D0;
-  v9 = v6;
-  v7 = v6;
-  [(CDPDRecoveryKeyValidator *)self _validateRecoveryKey:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(CDPDRecoveryKeyValidator *)self _validateRecoveryKey:key completion:v8];
 }
 
 void __63__CDPDRecoveryKeyValidator_validateRecoveryKey_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3)

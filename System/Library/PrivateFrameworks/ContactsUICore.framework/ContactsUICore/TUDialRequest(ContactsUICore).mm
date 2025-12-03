@@ -8,20 +8,20 @@
 
 - (id)cn_initWithProvider:()ContactsUICore
 {
-  v4 = a1;
-  v5 = [v4 initWithProvider:a3];
-  [v4 cn_configureForUserActions:v5];
+  selfCopy = self;
+  v5 = [selfCopy initWithProvider:a3];
+  [selfCopy cn_configureForUserActions:v5];
 
   return v5;
 }
 
 - (id)cn_initWithURL:()ContactsUICore
 {
-  v4 = a1;
-  v5 = [v4 initWithURL:a3];
+  selfCopy = self;
+  v5 = [selfCopy initWithURL:a3];
   if (v5)
   {
-    [v4 cn_configureForUserActions:v5];
+    [selfCopy cn_configureForUserActions:v5];
     v6 = v5;
   }
 
@@ -31,10 +31,10 @@
 - (void)cn_configureForUserActions:()ContactsUICore
 {
   v5 = a3;
-  v3 = [v5 provider];
-  v4 = [v3 isTelephonyProvider];
+  provider = [v5 provider];
+  isTelephonyProvider = [provider isTelephonyProvider];
 
-  if (v4)
+  if (isTelephonyProvider)
   {
     [v5 setPreferDefaultApp:0];
   }

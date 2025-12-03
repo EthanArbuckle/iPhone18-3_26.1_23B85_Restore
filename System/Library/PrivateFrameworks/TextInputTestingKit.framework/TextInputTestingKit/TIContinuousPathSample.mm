@@ -1,11 +1,11 @@
 @interface TIContinuousPathSample
 - (CGPoint)point;
-- (TIContinuousPathSample)initWithCoder:(id)a3;
-- (TIContinuousPathSample)initWithJsonDictionary:(id)a3;
-- (TIContinuousPathSample)initWithPoint:(CGPoint)a3 timeStamp:(double)a4 force:(double)a5 radius:(double)a6 stage:(int)a7 pathIndex:(int64_t)a8;
+- (TIContinuousPathSample)initWithCoder:(id)coder;
+- (TIContinuousPathSample)initWithJsonDictionary:(id)dictionary;
+- (TIContinuousPathSample)initWithPoint:(CGPoint)point timeStamp:(double)stamp force:(double)force radius:(double)radius stage:(int)stage pathIndex:(int64_t)index;
 - (id)description;
 - (id)toJsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIContinuousPathSample
@@ -41,94 +41,94 @@
 
 - (id)toJsonDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   x = self->_point.x;
   *&x = x;
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:x];
-  [v3 setObject:v5 forKeyedSubscript:@"x"];
+  [dictionary setObject:v5 forKeyedSubscript:@"x"];
 
   y = self->_point.y;
   *&y = y;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:y];
-  [v3 setObject:v7 forKeyedSubscript:@"y"];
+  [dictionary setObject:v7 forKeyedSubscript:@"y"];
 
   timeStamp = self->_timeStamp;
   *&timeStamp = timeStamp;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:timeStamp];
-  [v3 setObject:v9 forKeyedSubscript:@"t"];
+  [dictionary setObject:v9 forKeyedSubscript:@"t"];
 
   force = self->_force;
   *&force = force;
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:force];
-  [v3 setObject:v11 forKeyedSubscript:@"force"];
+  [dictionary setObject:v11 forKeyedSubscript:@"force"];
 
   radius = self->_radius;
   *&radius = radius;
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:radius];
-  [v3 setObject:v13 forKeyedSubscript:@"radius"];
+  [dictionary setObject:v13 forKeyedSubscript:@"radius"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_stage];
-  [v3 setObject:v14 forKeyedSubscript:@"stage"];
+  [dictionary setObject:v14 forKeyedSubscript:@"stage"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithInt:LODWORD(self->_pathIndex)];
-  [v3 setObject:v15 forKeyedSubscript:@"path_index"];
+  [dictionary setObject:v15 forKeyedSubscript:@"path_index"];
 
-  return v3;
+  return dictionary;
 }
 
-- (TIContinuousPathSample)initWithJsonDictionary:(id)a3
+- (TIContinuousPathSample)initWithJsonDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = TIContinuousPathSample;
   v5 = [(TIContinuousPathSample *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"x"];
+    v6 = [dictionaryCopy objectForKey:@"x"];
     [v6 floatValue];
     v8 = v7;
 
-    v9 = [v4 objectForKey:@"y"];
+    v9 = [dictionaryCopy objectForKey:@"y"];
     [v9 floatValue];
     v11 = v10;
 
     v5->_point.x = v8;
     v5->_point.y = v11;
-    v12 = [v4 objectForKey:@"t"];
+    v12 = [dictionaryCopy objectForKey:@"t"];
     [v12 floatValue];
     v5->_timeStamp = v13;
 
-    v14 = [v4 objectForKey:@"force"];
+    v14 = [dictionaryCopy objectForKey:@"force"];
     [v14 floatValue];
     v5->_force = v15;
 
-    v16 = [v4 objectForKey:@"stage"];
+    v16 = [dictionaryCopy objectForKey:@"stage"];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 intValue];
+      intValue = [v16 intValue];
     }
 
     else
     {
-      v18 = 7;
+      intValue = 7;
     }
 
-    v5->_stage = v18;
-    v19 = [v4 objectForKey:@"path_index"];
+    v5->_stage = intValue;
+    v19 = [dictionaryCopy objectForKey:@"path_index"];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 intValue];
+      intValue2 = [v19 intValue];
     }
 
     else
     {
-      v21 = -1;
+      intValue2 = -1;
     }
 
-    v5->_pathIndex = v21;
-    v22 = [v4 objectForKey:@"radius"];
+    v5->_pathIndex = intValue2;
+    v22 = [dictionaryCopy objectForKey:@"radius"];
     v23 = v22;
     if (v22)
     {
@@ -140,10 +140,10 @@
   return v5;
 }
 
-- (TIContinuousPathSample)initWithPoint:(CGPoint)a3 timeStamp:(double)a4 force:(double)a5 radius:(double)a6 stage:(int)a7 pathIndex:(int64_t)a8
+- (TIContinuousPathSample)initWithPoint:(CGPoint)point timeStamp:(double)stamp force:(double)force radius:(double)radius stage:(int)stage pathIndex:(int64_t)index
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v16.receiver = self;
   v16.super_class = TIContinuousPathSample;
   result = [(TIContinuousPathSample *)&v16 init];
@@ -151,50 +151,50 @@
   {
     result->_point.x = x;
     result->_point.y = y;
-    result->_timeStamp = a4;
-    result->_force = a5;
-    result->_radius = a6;
-    result->_stage = a7;
-    result->_pathIndex = a8;
+    result->_timeStamp = stamp;
+    result->_force = force;
+    result->_radius = radius;
+    result->_stage = stage;
+    result->_pathIndex = index;
   }
 
   return result;
 }
 
-- (TIContinuousPathSample)initWithCoder:(id)a3
+- (TIContinuousPathSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TIContinuousPathSample;
   v5 = [(TIContinuousPathSample *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"point"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"point"];
     [v6 getValue:&v5->_point size:16];
-    [v4 decodeDoubleForKey:@"timeStamp"];
+    [coderCopy decodeDoubleForKey:@"timeStamp"];
     v5->_timeStamp = v7;
-    [v4 decodeDoubleForKey:@"force"];
+    [coderCopy decodeDoubleForKey:@"force"];
     v5->_force = v8;
-    [v4 decodeDoubleForKey:@"radius"];
+    [coderCopy decodeDoubleForKey:@"radius"];
     v5->_radius = v9;
-    v5->_stage = [v4 decodeIntegerForKey:@"stage"];
-    v5->_pathIndex = [v4 decodeIntegerForKey:@"path_index"];
+    v5->_stage = [coderCopy decodeIntegerForKey:@"stage"];
+    v5->_pathIndex = [coderCopy decodeIntegerForKey:@"path_index"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCAE60];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 value:&self->_point withObjCType:"{CGPoint=dd}"];
-  [v5 encodeObject:v6 forKey:@"point"];
-  [v5 encodeDouble:@"timeStamp" forKey:self->_timeStamp];
-  [v5 encodeDouble:@"force" forKey:self->_force];
-  [v5 encodeDouble:@"radius" forKey:self->_radius];
-  [v5 encodeInteger:self->_stage forKey:@"stage"];
-  [v5 encodeInteger:self->_pathIndex forKey:@"path_index"];
+  [coderCopy encodeObject:v6 forKey:@"point"];
+  [coderCopy encodeDouble:@"timeStamp" forKey:self->_timeStamp];
+  [coderCopy encodeDouble:@"force" forKey:self->_force];
+  [coderCopy encodeDouble:@"radius" forKey:self->_radius];
+  [coderCopy encodeInteger:self->_stage forKey:@"stage"];
+  [coderCopy encodeInteger:self->_pathIndex forKey:@"path_index"];
 }
 
 @end

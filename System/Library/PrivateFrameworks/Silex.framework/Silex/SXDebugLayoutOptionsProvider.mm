@@ -1,21 +1,21 @@
 @interface SXDebugLayoutOptionsProvider
 - (SXDebugLayoutOptionsProvider)init;
-- (int64_t)overrideBundleSubscriptionStatus:(int64_t)a3;
-- (int64_t)overrideChannelSubscriptionStatus:(int64_t)a3;
-- (int64_t)overrideNewsletterSubscriptionStatus:(unint64_t)a3;
-- (int64_t)overrideOfferUpsellScenario:(int64_t)a3;
-- (int64_t)overrideSubscriptionActivationEligibility:(int64_t)a3;
-- (unint64_t)overrideViewingLocation:(unint64_t)a3;
-- (void)addObserver:(id)a3;
+- (int64_t)overrideBundleSubscriptionStatus:(int64_t)status;
+- (int64_t)overrideChannelSubscriptionStatus:(int64_t)status;
+- (int64_t)overrideNewsletterSubscriptionStatus:(unint64_t)status;
+- (int64_t)overrideOfferUpsellScenario:(int64_t)scenario;
+- (int64_t)overrideSubscriptionActivationEligibility:(int64_t)eligibility;
+- (unint64_t)overrideViewingLocation:(unint64_t)location;
+- (void)addObserver:(id)observer;
 - (void)notifyObservers;
-- (void)removeObserver:(id)a3;
-- (void)setBundleSubscriptionStatus:(int64_t)a3;
-- (void)setChannelSubscriptionStatus:(int64_t)a3;
-- (void)setNewsletterSubscriptionStatus:(unint64_t)a3;
-- (void)setOfferIdentifier:(id)a3;
-- (void)setOfferUpsellScenario:(int64_t)a3;
-- (void)setSubscriptionActivationEligibility:(int64_t)a3;
-- (void)setViewingLocation:(unint64_t)a3;
+- (void)removeObserver:(id)observer;
+- (void)setBundleSubscriptionStatus:(int64_t)status;
+- (void)setChannelSubscriptionStatus:(int64_t)status;
+- (void)setNewsletterSubscriptionStatus:(unint64_t)status;
+- (void)setOfferIdentifier:(id)identifier;
+- (void)setOfferUpsellScenario:(int64_t)scenario;
+- (void)setSubscriptionActivationEligibility:(int64_t)eligibility;
+- (void)setViewingLocation:(unint64_t)location;
 @end
 
 @implementation SXDebugLayoutOptionsProvider
@@ -27,9 +27,9 @@
   v2 = [(SXDebugLayoutOptionsProvider *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v4 = *(v2 + 8);
-    *(v2 + 8) = v3;
+    *(v2 + 8) = weakObjectsHashTable;
 
     v5.f64[0] = NAN;
     v5.f64[1] = NAN;
@@ -42,11 +42,11 @@
   return v2;
 }
 
-- (unint64_t)overrideViewingLocation:(unint64_t)a3
+- (unint64_t)overrideViewingLocation:(unint64_t)location
 {
   if (self->_viewingLocation == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return location;
   }
 
   else
@@ -55,11 +55,11 @@
   }
 }
 
-- (int64_t)overrideBundleSubscriptionStatus:(int64_t)a3
+- (int64_t)overrideBundleSubscriptionStatus:(int64_t)status
 {
   if (self->_bundleSubscriptionStatus == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return status;
   }
 
   else
@@ -68,11 +68,11 @@
   }
 }
 
-- (int64_t)overrideChannelSubscriptionStatus:(int64_t)a3
+- (int64_t)overrideChannelSubscriptionStatus:(int64_t)status
 {
   if (self->_channelSubscriptionStatus == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return status;
   }
 
   else
@@ -81,11 +81,11 @@
   }
 }
 
-- (int64_t)overrideNewsletterSubscriptionStatus:(unint64_t)a3
+- (int64_t)overrideNewsletterSubscriptionStatus:(unint64_t)status
 {
   if (self->_newsletterSubscriptionStatus == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return status;
   }
 
   else
@@ -94,11 +94,11 @@
   }
 }
 
-- (int64_t)overrideOfferUpsellScenario:(int64_t)a3
+- (int64_t)overrideOfferUpsellScenario:(int64_t)scenario
 {
   if (self->_offerUpsellScenario == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return scenario;
   }
 
   else
@@ -107,11 +107,11 @@
   }
 }
 
-- (int64_t)overrideSubscriptionActivationEligibility:(int64_t)a3
+- (int64_t)overrideSubscriptionActivationEligibility:(int64_t)eligibility
 {
   if (self->_subscriptionActivationEligibility == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return eligibility;
   }
 
   else
@@ -120,87 +120,87 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SXDebugLayoutOptionsProvider *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(SXDebugLayoutOptionsProvider *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SXDebugLayoutOptionsProvider *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(SXDebugLayoutOptionsProvider *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)setViewingLocation:(unint64_t)a3
+- (void)setViewingLocation:(unint64_t)location
 {
-  if (self->_viewingLocation != a3)
+  if (self->_viewingLocation != location)
   {
-    self->_viewingLocation = a3;
+    self->_viewingLocation = location;
     [(SXDebugLayoutOptionsProvider *)self notifyObservers];
   }
 }
 
-- (void)setBundleSubscriptionStatus:(int64_t)a3
+- (void)setBundleSubscriptionStatus:(int64_t)status
 {
-  if (self->_bundleSubscriptionStatus != a3)
+  if (self->_bundleSubscriptionStatus != status)
   {
-    self->_bundleSubscriptionStatus = a3;
+    self->_bundleSubscriptionStatus = status;
     [(SXDebugLayoutOptionsProvider *)self notifyObservers];
   }
 }
 
-- (void)setChannelSubscriptionStatus:(int64_t)a3
+- (void)setChannelSubscriptionStatus:(int64_t)status
 {
-  if (self->_channelSubscriptionStatus != a3)
+  if (self->_channelSubscriptionStatus != status)
   {
-    self->_channelSubscriptionStatus = a3;
+    self->_channelSubscriptionStatus = status;
     [(SXDebugLayoutOptionsProvider *)self notifyObservers];
   }
 }
 
-- (void)setNewsletterSubscriptionStatus:(unint64_t)a3
+- (void)setNewsletterSubscriptionStatus:(unint64_t)status
 {
-  if (self->_newsletterSubscriptionStatus != a3)
+  if (self->_newsletterSubscriptionStatus != status)
   {
-    self->_newsletterSubscriptionStatus = a3;
+    self->_newsletterSubscriptionStatus = status;
     [(SXDebugLayoutOptionsProvider *)self notifyObservers];
   }
 }
 
-- (void)setOfferUpsellScenario:(int64_t)a3
+- (void)setOfferUpsellScenario:(int64_t)scenario
 {
-  if (self->_offerUpsellScenario != a3)
+  if (self->_offerUpsellScenario != scenario)
   {
-    self->_offerUpsellScenario = a3;
+    self->_offerUpsellScenario = scenario;
     [(SXDebugLayoutOptionsProvider *)self notifyObservers];
   }
 }
 
-- (void)setSubscriptionActivationEligibility:(int64_t)a3
+- (void)setSubscriptionActivationEligibility:(int64_t)eligibility
 {
-  if (self->_subscriptionActivationEligibility != a3)
+  if (self->_subscriptionActivationEligibility != eligibility)
   {
-    self->_subscriptionActivationEligibility = a3;
+    self->_subscriptionActivationEligibility = eligibility;
     [(SXDebugLayoutOptionsProvider *)self notifyObservers];
   }
 }
 
-- (void)setOfferIdentifier:(id)a3
+- (void)setOfferIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   p_offerIdentifier = &self->_offerIdentifier;
-  if (self->_offerIdentifier != v5)
+  if (self->_offerIdentifier != identifierCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_offerIdentifier, a3);
+    v7 = identifierCopy;
+    objc_storeStrong(p_offerIdentifier, identifier);
     p_offerIdentifier = [(SXDebugLayoutOptionsProvider *)self notifyObservers];
-    v5 = v7;
+    identifierCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_offerIdentifier, v5);
+  MEMORY[0x1EEE66BB8](p_offerIdentifier, identifierCopy);
 }
 
 - (void)notifyObservers
@@ -210,8 +210,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SXDebugLayoutOptionsProvider *)self observers];
-  v4 = [v3 copy];
+  observers = [(SXDebugLayoutOptionsProvider *)self observers];
+  v4 = [observers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)

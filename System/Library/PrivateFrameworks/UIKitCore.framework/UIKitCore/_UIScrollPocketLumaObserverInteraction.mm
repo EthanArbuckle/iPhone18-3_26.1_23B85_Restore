@@ -4,16 +4,16 @@
 - (UIView)view;
 - (_UIScrollPocketLumaObserver)observer;
 - (_UIScrollPocketLumaObserverInteraction)init;
-- (_UIScrollPocketLumaObserverInteraction)initWithCollectorInteraction:(id)a3;
+- (_UIScrollPocketLumaObserverInteraction)initWithCollectorInteraction:(id)interaction;
 - (void)_updateProperties;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation _UIScrollPocketLumaObserverInteraction
 
 - (void)_updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DCE620();
 }
 
@@ -24,23 +24,23 @@
   return Strong;
 }
 
-- (_UIScrollPocketLumaObserverInteraction)initWithCollectorInteraction:(id)a3
+- (_UIScrollPocketLumaObserverInteraction)initWithCollectorInteraction:(id)interaction
 {
   *(self + OBJC_IVAR____UIScrollPocketLumaObserverInteraction_lumaValues) = MEMORY[0x1E69E7CC8];
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR____UIScrollPocketLumaObserverInteraction_collectorInteraction) = a3;
+  *(self + OBJC_IVAR____UIScrollPocketLumaObserverInteraction_collectorInteraction) = interaction;
   v7.receiver = self;
   v7.super_class = _UIScrollPocketLumaObserverInteraction;
-  v5 = a3;
+  interactionCopy = interaction;
   return [(_UIScrollPocketLumaObserverInteraction *)&v7 init];
 }
 
 - (UIView)view
 {
-  v2 = [(_UIScrollPocketLumaObserverInteraction *)self _view];
+  _view = [(_UIScrollPocketLumaObserverInteraction *)self _view];
 
-  return v2;
+  return _view;
 }
 
 - (UIView)_view
@@ -53,22 +53,22 @@
 - (NSString)description
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 descriptionForRootObject_];
-  if (!v5)
+  selfCopy = self;
+  descriptionForRootObject_ = [v3 descriptionForRootObject_];
+  if (!descriptionForRootObject_)
   {
     sub_18A4A7288();
-    v5 = sub_18A4A7258();
+    descriptionForRootObject_ = sub_18A4A7258();
   }
 
-  return v5;
+  return descriptionForRootObject_;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = self;
-  sub_188F2A64C(v4);
+  streamCopy = stream;
+  selfCopy = self;
+  sub_188F2A64C(streamCopy);
 }
 
 - (_UIScrollPocketLumaObserverInteraction)init

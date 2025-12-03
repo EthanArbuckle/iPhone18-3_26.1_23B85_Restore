@@ -1,40 +1,40 @@
 @interface RouteStepLabelListView
-+ (double)heightForWidth:(double)a3 route:(id)a4 step:(id)a5 idiom:(int64_t)a6;
-+ (id)_spacingForNumberOfStrings:(unint64_t)a3 isEVStep:(BOOL)a4;
-+ (id)colorsForStrings:(id)a3 route:(id)a4 step:(id)a5 tableMode:(BOOL)a6;
-+ (id)fontsForStrings:(id)a3 route:(id)a4 step:(id)a5 tableMode:(BOOL)a6;
-- (RouteStepLabelListView)initWithRoute:(id)a3 step:(id)a4 tableMode:(BOOL)a5;
-- (id)attributedStringForString:(id)a3 inStrings:(id)a4 forStep:(id)a5 font:(id)a6;
-- (void)layoutToFitSize:(CGSize)a3;
-- (void)setRoute:(id)a3 step:(id)a4 tableMode:(BOOL)a5;
++ (double)heightForWidth:(double)width route:(id)route step:(id)step idiom:(int64_t)idiom;
++ (id)_spacingForNumberOfStrings:(unint64_t)strings isEVStep:(BOOL)step;
++ (id)colorsForStrings:(id)strings route:(id)route step:(id)step tableMode:(BOOL)mode;
++ (id)fontsForStrings:(id)strings route:(id)route step:(id)step tableMode:(BOOL)mode;
+- (RouteStepLabelListView)initWithRoute:(id)route step:(id)step tableMode:(BOOL)mode;
+- (id)attributedStringForString:(id)string inStrings:(id)strings forStep:(id)step font:(id)font;
+- (void)layoutToFitSize:(CGSize)size;
+- (void)setRoute:(id)route step:(id)step tableMode:(BOOL)mode;
 @end
 
 @implementation RouteStepLabelListView
 
-- (void)layoutToFitSize:(CGSize)a3
+- (void)layoutToFitSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [objc_opt_class() _spacingForNumberOfStrings:-[NSMutableArray count](self->super._labels isEVStep:{"count"), self->_isEVStep}];
   v7.receiver = self;
   v7.super_class = RouteStepLabelListView;
   [(LabelListView *)&v7 layoutToFitSize:v6 spacings:width, height];
 }
 
-- (void)setRoute:(id)a3 step:(id)a4 tableMode:(BOOL)a5
+- (void)setRoute:(id)route step:(id)step tableMode:(BOOL)mode
 {
-  v5 = a5;
-  v38 = a3;
-  v8 = a4;
-  self->_isEVStep = [v8 isEVChargerStep];
-  [(RouteStepLabelListView *)self setTableMode:v5];
+  modeCopy = mode;
+  routeCopy = route;
+  stepCopy = step;
+  self->_isEVStep = [stepCopy isEVChargerStep];
+  [(RouteStepLabelListView *)self setTableMode:modeCopy];
   v9 = [(NSMutableArray *)self->super._labels count];
   v10 = objc_opt_class();
-  v11 = [v10 stringsForRoute:v38 step:v8 tableMode:v5];
-  v37 = [v10 voiceOverStringsForRoute:v38 step:v8 tableMode:v5];
-  v12 = [v10 fontsForStrings:v11 route:v38 step:v8 tableMode:v5];
-  v39 = v8;
-  v40 = [v10 colorsForStrings:v11 route:v38 step:v8 tableMode:v5];
+  v11 = [v10 stringsForRoute:routeCopy step:stepCopy tableMode:modeCopy];
+  v37 = [v10 voiceOverStringsForRoute:routeCopy step:stepCopy tableMode:modeCopy];
+  v12 = [v10 fontsForStrings:v11 route:routeCopy step:stepCopy tableMode:modeCopy];
+  v39 = stepCopy;
+  v40 = [v10 colorsForStrings:v11 route:routeCopy step:stepCopy tableMode:modeCopy];
   v13 = [v11 count];
   v14 = v13;
   v41 = v12;
@@ -80,8 +80,8 @@
   {
     do
     {
-      v15 = [(NSMutableArray *)self->super._labels lastObject];
-      [v15 removeFromSuperview];
+      lastObject = [(NSMutableArray *)self->super._labels lastObject];
+      [lastObject removeFromSuperview];
       [(NSMutableArray *)self->super._labels removeLastObject];
 
       --v9;
@@ -131,11 +131,11 @@
   }
 }
 
-- (RouteStepLabelListView)initWithRoute:(id)a3 step:(id)a4 tableMode:(BOOL)a5
+- (RouteStepLabelListView)initWithRoute:(id)route step:(id)step tableMode:(BOOL)mode
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  modeCopy = mode;
+  routeCopy = route;
+  stepCopy = step;
   v31.receiver = self;
   v31.super_class = RouteStepLabelListView;
   v10 = [(LabelListView *)&v31 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -143,15 +143,15 @@
   if (v10)
   {
     [(RouteStepLabelListView *)v10 setAccessibilityIdentifier:@"RouteStepLabelList"];
-    v11->_isEVStep = [v9 isEVChargerStep];
+    v11->_isEVStep = [stepCopy isEVChargerStep];
     v12 = objc_opt_class();
     v30 = v11;
-    [(RouteStepLabelListView *)v11 setTableMode:v5];
-    v13 = [v12 stringsForRoute:v8 step:v9 tableMode:v5];
-    v29 = [v12 voiceOverStringsForRoute:v8 step:v9 tableMode:v5];
-    v28 = [v12 fontsForStrings:v13 route:v8 step:v9 tableMode:v5];
-    v26 = v8;
-    v27 = [v12 colorsForStrings:v13 route:v8 step:v9 tableMode:v5];
+    [(RouteStepLabelListView *)v11 setTableMode:modeCopy];
+    v13 = [v12 stringsForRoute:routeCopy step:stepCopy tableMode:modeCopy];
+    v29 = [v12 voiceOverStringsForRoute:routeCopy step:stepCopy tableMode:modeCopy];
+    v28 = [v12 fontsForStrings:v13 route:routeCopy step:stepCopy tableMode:modeCopy];
+    v26 = routeCopy;
+    v27 = [v12 colorsForStrings:v13 route:routeCopy step:stepCopy tableMode:modeCopy];
     v14 = [v13 count];
     if (v14)
     {
@@ -163,15 +163,15 @@
         if (objc_opt_isKindOfClass())
         {
           v18 = [v28 objectAtIndexedSubscript:i];
-          v19 = [(RouteStepLabelListView *)v30 attributedStringForString:v17 inStrings:v13 forStep:v9 font:v18];
+          v19 = [(RouteStepLabelListView *)v30 attributedStringForString:v17 inStrings:v13 forStep:stepCopy font:v18];
 
           v20 = [v29 objectAtIndexedSubscript:i];
           [v28 objectAtIndexedSubscript:i];
-          v22 = v21 = v9;
+          v22 = v21 = stepCopy;
           v23 = [v27 objectAtIndexedSubscript:i];
           [(LabelListView *)v30 addLabelWithText:v17 attributedText:v19 accessibilityText:v20 font:v22 color:v23];
 
-          v9 = v21;
+          stepCopy = v21;
         }
       }
     }
@@ -179,21 +179,21 @@
     v11 = v30;
     v24 = v30;
 
-    v8 = v26;
+    routeCopy = v26;
   }
 
   return v11;
 }
 
-- (id)attributedStringForString:(id)a3 inStrings:(id)a4 forStep:(id)a5 font:(id)a6
+- (id)attributedStringForString:(id)string inStrings:(id)strings forStep:(id)step font:(id)font
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([a5 isEVChargerStep] && (objc_msgSend(v10, "lastObject"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v9, "isEqualToString:", v12), v12, v13))
+  stringCopy = string;
+  stringsCopy = strings;
+  fontCopy = font;
+  if ([step isEVChargerStep] && (objc_msgSend(stringsCopy, "lastObject"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(stringCopy, "isEqualToString:", v12), v12, v13))
   {
     v14 = [UIImage systemImageNamed:@"bolt.circle.fill"];
-    [v11 pointSize];
+    [fontCopy pointSize];
     v15 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:2 scale:?];
     v16 = [v14 imageWithConfiguration:v15];
 
@@ -205,7 +205,7 @@
     {
       v20 = objc_alloc_init(NSTextAttachment);
       [v20 setImage:v19];
-      [v11 capHeight];
+      [fontCopy capHeight];
       v22 = v21;
       [v19 size];
       v24 = (v22 - v23) * 0.5;
@@ -219,7 +219,7 @@
 
       v31 = [[NSAttributedString alloc] initWithString:@" "];
       [v30 appendAttributedString:v31];
-      v32 = [[NSAttributedString alloc] initWithString:v9];
+      v32 = [[NSAttributedString alloc] initWithString:stringCopy];
       [v30 appendAttributedString:v32];
       v33 = [v30 copy];
     }
@@ -238,12 +238,12 @@
   return v33;
 }
 
-+ (id)_spacingForNumberOfStrings:(unint64_t)a3 isEVStep:(BOOL)a4
++ (id)_spacingForNumberOfStrings:(unint64_t)strings isEVStep:(BOOL)step
 {
-  v4 = a4;
-  v5 = [a1 spacingForNumberOfStrings:a3];
+  stepCopy = step;
+  v5 = [self spacingForNumberOfStrings:strings];
   v6 = v5;
-  if (v4 && [v5 count])
+  if (stepCopy && [v5 count])
   {
     v7 = [v6 mutableCopy];
     [v7 replaceObjectAtIndex:objc_msgSend(v7 withObject:{"count") - 1, &off_1016E6608}];
@@ -258,26 +258,26 @@
   return v8;
 }
 
-+ (double)heightForWidth:(double)a3 route:(id)a4 step:(id)a5 idiom:(int64_t)a6
++ (double)heightForWidth:(double)width route:(id)route step:(id)step idiom:(int64_t)idiom
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = [a1 stringsForRoute:v10 step:v9 tableMode:0];
-  v12 = [a1 fontsForStrings:v11 route:v10 step:v9 tableMode:0];
+  stepCopy = step;
+  routeCopy = route;
+  v11 = [self stringsForRoute:routeCopy step:stepCopy tableMode:0];
+  v12 = [self fontsForStrings:v11 route:routeCopy step:stepCopy tableMode:0];
 
   v13 = [v11 count];
-  v14 = [v9 isEVChargerStep];
+  isEVChargerStep = [stepCopy isEVChargerStep];
 
-  v15 = [a1 _spacingForNumberOfStrings:v13 isEVStep:v14];
-  [a1 heightForWidth:v11 strings:v12 fonts:v15 spacings:a3];
+  v15 = [self _spacingForNumberOfStrings:v13 isEVStep:isEVChargerStep];
+  [self heightForWidth:v11 strings:v12 fonts:v15 spacings:width];
   v17 = v16;
 
   return v17;
 }
 
-+ (id)colorsForStrings:(id)a3 route:(id)a4 step:(id)a5 tableMode:(BOOL)a6
++ (id)colorsForStrings:(id)strings route:(id)route step:(id)step tableMode:(BOOL)mode
 {
-  v6 = [a3 count];
+  v6 = [strings count];
   if (v6)
   {
     v7 = v6;
@@ -308,17 +308,17 @@
   return v8;
 }
 
-+ (id)fontsForStrings:(id)a3 route:(id)a4 step:(id)a5 tableMode:(BOOL)a6
++ (id)fontsForStrings:(id)strings route:(id)route step:(id)step tableMode:(BOOL)mode
 {
-  v6 = [a3 count];
+  v6 = [strings count];
   if (v6)
   {
     v7 = v6;
     v8 = [NSMutableArray arrayWithCapacity:v6];
     v9 = +[UIDevice currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-    if (v10 == 5)
+    if (userInterfaceIdiom == 5)
     {
       do
       {

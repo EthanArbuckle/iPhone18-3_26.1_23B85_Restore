@@ -1,12 +1,12 @@
 @interface PFFairPlayKeyLoader
 - (PFFairPlayKeyLoader)init;
-- (void)createSessionWithAsset:(id)a3 completion:(id)a4;
-- (void)renewKeyRequestWithAsset:(id)a3 completion:(id)a4;
-- (void)renewKeyRequestsWithAssets:(id)a3 completion:(id)a4;
-- (void)renewKeyWithSession:(id)a3;
-- (void)startKeyRequestWithSession:(id)a3 completion:(id)a4;
-- (void)stopKeyRequestWithAsset:(id)a3 completion:(id)a4;
-- (void)stopKeyRequestWithSession:(id)a3 completion:(id)a4;
+- (void)createSessionWithAsset:(id)asset completion:(id)completion;
+- (void)renewKeyRequestWithAsset:(id)asset completion:(id)completion;
+- (void)renewKeyRequestsWithAssets:(id)assets completion:(id)completion;
+- (void)renewKeyWithSession:(id)session;
+- (void)startKeyRequestWithSession:(id)session completion:(id)completion;
+- (void)stopKeyRequestWithAsset:(id)asset completion:(id)completion;
+- (void)stopKeyRequestWithSession:(id)session completion:(id)completion;
 @end
 
 @implementation PFFairPlayKeyLoader
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (void)createSessionWithAsset:(id)a3 completion:(id)a4
+- (void)createSessionWithAsset:(id)asset completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -39,15 +39,15 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  FairPlayKeyLoader.createSession(asset:completion:)(v8, v6, v7);
+  assetCopy = asset;
+  selfCopy = self;
+  FairPlayKeyLoader.createSession(asset:completion:)(assetCopy, v6, v7);
   sub_1D8D15664(v6);
 }
 
-- (void)startKeyRequestWithSession:(id)a3 completion:(id)a4
+- (void)startKeyRequestWithSession:(id)session completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -61,15 +61,15 @@
   }
 
   swift_unknownObjectRetain();
-  v8 = self;
-  FairPlayKeyLoader.startKeyRequest(session:completion:)(a3, v6, v7);
+  selfCopy = self;
+  FairPlayKeyLoader.startKeyRequest(session:completion:)(session, v6, v7);
   sub_1D8D15664(v6);
   swift_unknownObjectRelease();
 }
 
-- (void)renewKeyRequestWithAsset:(id)a3 completion:(id)a4
+- (void)renewKeyRequestWithAsset:(id)asset completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -82,15 +82,15 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  FairPlayKeyLoader.renewKeyRequest(asset:completion:)(v8, v6, v7);
+  assetCopy = asset;
+  selfCopy = self;
+  FairPlayKeyLoader.renewKeyRequest(asset:completion:)(assetCopy, v6, v7);
   sub_1D8D15664(v6);
 }
 
-- (void)renewKeyRequestsWithAssets:(id)a3 completion:(id)a4
+- (void)renewKeyRequestsWithAssets:(id)assets completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for FairPlayAsset();
   v6 = sub_1D91785FC();
   if (v5)
@@ -105,22 +105,22 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   FairPlayKeyLoader.renewKeyRequests(assets:completion:)(v6, v5, v7);
   sub_1D8D15664(v5);
 }
 
-- (void)renewKeyWithSession:(id)a3
+- (void)renewKeyWithSession:(id)session
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  FairPlayKeyLoader.renewKey(session:)(a3);
+  selfCopy = self;
+  FairPlayKeyLoader.renewKey(session:)(session);
   swift_unknownObjectRelease();
 }
 
-- (void)stopKeyRequestWithAsset:(id)a3 completion:(id)a4
+- (void)stopKeyRequestWithAsset:(id)asset completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -133,15 +133,15 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  FairPlayKeyLoader.stopKeyRequest(asset:completion:)(v8, v6, v7);
+  assetCopy = asset;
+  selfCopy = self;
+  FairPlayKeyLoader.stopKeyRequest(asset:completion:)(assetCopy, v6, v7);
   sub_1D8D15664(v6);
 }
 
-- (void)stopKeyRequestWithSession:(id)a3 completion:(id)a4
+- (void)stopKeyRequestWithSession:(id)session completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -155,8 +155,8 @@
   }
 
   swift_unknownObjectRetain();
-  v8 = self;
-  FairPlayKeyLoader.stopKeyRequest(session:completion:)(a3, v6, v7);
+  selfCopy = self;
+  FairPlayKeyLoader.stopKeyRequest(session:completion:)(session, v6, v7);
   sub_1D8D15664(v6);
   swift_unknownObjectRelease();
 }

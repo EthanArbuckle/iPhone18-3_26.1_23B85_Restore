@@ -1,22 +1,22 @@
 @interface HMDCompositeSettingMetadata
-- (HMDCompositeSettingMetadata)initWithKeyPath:(id)a3 constraint:(id)a4 privileges:(id)a5;
+- (HMDCompositeSettingMetadata)initWithKeyPath:(id)path constraint:(id)constraint privileges:(id)privileges;
 @end
 
 @implementation HMDCompositeSettingMetadata
 
-- (HMDCompositeSettingMetadata)initWithKeyPath:(id)a3 constraint:(id)a4 privileges:(id)a5
+- (HMDCompositeSettingMetadata)initWithKeyPath:(id)path constraint:(id)constraint privileges:(id)privileges
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  pathCopy = path;
+  constraintCopy = constraint;
+  privilegesCopy = privileges;
+  if (!pathCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = privilegesCopy;
+  if (!privilegesCopy)
   {
 LABEL_7:
     v16 = _HMFPreconditionFailure();
@@ -29,12 +29,12 @@ LABEL_7:
   v12 = [(HMDCompositeSettingMetadata *)&v18 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [pathCopy copy];
     keyPath = v12->_keyPath;
     v12->_keyPath = v13;
 
-    objc_storeStrong(&v12->_constraint, a4);
-    objc_storeStrong(&v12->_privileges, a5);
+    objc_storeStrong(&v12->_constraint, constraint);
+    objc_storeStrong(&v12->_privileges, privileges);
   }
 
   return v12;

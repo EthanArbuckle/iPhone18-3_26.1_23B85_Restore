@@ -1,16 +1,16 @@
 @interface WRDiagnostic
-+ (id)diagnosticsForWorkflowName:(void *)a3 signpostName:(void *)a4 diagnosticDicts:(int)a5 diagnosticsEnabled:(int)a6 checkForOverrides:(uint64_t *)a7 error:;
-+ (id)diagnosticsWithDict:(void *)a3 backupName:(uint64_t *)a4 error:;
++ (id)diagnosticsForWorkflowName:(void *)name signpostName:(void *)signpostName diagnosticDicts:(int)dicts diagnosticsEnabled:(int)enabled checkForOverrides:(uint64_t *)overrides error:;
++ (id)diagnosticsWithDict:(void *)dict backupName:(uint64_t *)name error:;
 - (BOOL)hasAnySpindumpReports;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)encodedDict;
-- (id)initWithDict:(void *)a3 backupName:(uint64_t *)a4 error:;
+- (id)initWithDict:(void *)dict backupName:(uint64_t *)name error:;
 - (id)isValidForSignpost;
 - (id)isValidForWorkflow;
 - (id)validate;
-- (uint64_t)applyDict:(uint64_t *)a3 error:;
+- (uint64_t)applyDict:(uint64_t *)dict error:;
 - (unint64_t)hash;
 @end
 
@@ -19,8 +19,8 @@
 - (id)encodedDict
 {
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
-  v4 = [(WRDiagnostic *)self name];
-  v5 = [v3 initWithObjectsAndKeys:{v4, @"name", 0}];
+  name = [(WRDiagnostic *)self name];
+  v5 = [v3 initWithObjectsAndKeys:{name, @"name", 0}];
 
   if ([(WRDiagnostic *)self hasTriggerThresholdCount])
   {
@@ -72,12 +72,12 @@
     [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"report_spindump_this_thread"];
   }
 
-  v13 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
+  reportSpindumpForThreadWithName = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
 
-  if (v13)
+  if (reportSpindumpForThreadWithName)
   {
-    v14 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
-    [v5 setObject:v14 forKeyedSubscript:@"report_spindump_thread_name"];
+    reportSpindumpForThreadWithName2 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
+    [v5 setObject:reportSpindumpForThreadWithName2 forKeyedSubscript:@"report_spindump_thread_name"];
   }
 
   if ([(WRDiagnostic *)self reportSpindumpForMainThread])
@@ -90,28 +90,28 @@
     [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"report_spindump_this_dispatchqueue"];
   }
 
-  v15 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
+  reportSpindumpForDispatchQueueWithLabel = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
 
-  if (v15)
+  if (reportSpindumpForDispatchQueueWithLabel)
   {
-    v16 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
-    [v5 setObject:v16 forKeyedSubscript:@"report_spindump_dispatchqueue_label"];
+    reportSpindumpForDispatchQueueWithLabel2 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
+    [v5 setObject:reportSpindumpForDispatchQueueWithLabel2 forKeyedSubscript:@"report_spindump_dispatchqueue_label"];
   }
 
-  v17 = [(WRDiagnostic *)self reportOtherSignpostWithName];
+  reportOtherSignpostWithName = [(WRDiagnostic *)self reportOtherSignpostWithName];
 
-  if (v17)
+  if (reportOtherSignpostWithName)
   {
-    v18 = [(WRDiagnostic *)self reportOtherSignpostWithName];
-    [v5 setObject:v18 forKeyedSubscript:@"option_report_other_signpost"];
+    reportOtherSignpostWithName2 = [(WRDiagnostic *)self reportOtherSignpostWithName];
+    [v5 setObject:reportOtherSignpostWithName2 forKeyedSubscript:@"option_report_other_signpost"];
   }
 
-  v19 = [(WRDiagnostic *)self reportProcessesWithName];
+  reportProcessesWithName = [(WRDiagnostic *)self reportProcessesWithName];
 
-  if (v19)
+  if (reportProcessesWithName)
   {
-    v20 = [(WRDiagnostic *)self reportProcessesWithName];
-    [v5 setObject:v20 forKeyedSubscript:@"option_report_other_processes"];
+    reportProcessesWithName2 = [(WRDiagnostic *)self reportProcessesWithName];
+    [v5 setObject:reportProcessesWithName2 forKeyedSubscript:@"option_report_other_processes"];
   }
 
   if ([(WRDiagnostic *)self reportOmittingNetworkBoundIntervals])
@@ -131,45 +131,45 @@
     return 1;
   }
 
-  v4 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
-  if (v4 || [(WRDiagnostic *)self reportSpindumpForMainThread]|| [(WRDiagnostic *)self reportSpindumpForThisDispatchQueue])
+  reportSpindumpForThreadWithName = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
+  if (reportSpindumpForThreadWithName || [(WRDiagnostic *)self reportSpindumpForMainThread]|| [(WRDiagnostic *)self reportSpindumpForThisDispatchQueue])
   {
     v3 = 1;
   }
 
   else
   {
-    v6 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
-    v3 = v6 != 0;
+    reportSpindumpForDispatchQueueWithLabel = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
+    v3 = reportSpindumpForDispatchQueueWithLabel != 0;
   }
 
   return v3;
 }
 
-+ (id)diagnosticsForWorkflowName:(void *)a3 signpostName:(void *)a4 diagnosticDicts:(int)a5 diagnosticsEnabled:(int)a6 checkForOverrides:(uint64_t *)a7 error:
++ (id)diagnosticsForWorkflowName:(void *)name signpostName:(void *)signpostName diagnosticDicts:(int)dicts diagnosticsEnabled:(int)enabled checkForOverrides:(uint64_t *)overrides error:
 {
   v168 = *MEMORY[0x277D85DE8];
   v140 = a2;
-  v12 = a3;
-  v13 = a4;
+  nameCopy = name;
+  signpostNameCopy = signpostName;
   objc_opt_self();
   v155 = 0;
-  if (a7)
+  if (overrides)
   {
-    *a7 = 0;
+    *overrides = 0;
   }
 
   else
   {
-    a7 = &v155;
+    overrides = &v155;
   }
 
-  if ([v13 count] == 1)
+  if ([signpostNameCopy count] == 1)
   {
     v14 = v140;
-    if (v12)
+    if (nameCopy)
     {
-      v14 = v12;
+      v14 = nameCopy;
     }
 
     v15 = v14;
@@ -185,7 +185,7 @@
   v152 = 0u;
   v153 = 0u;
   v154 = 0u;
-  v17 = v13;
+  v17 = signpostNameCopy;
   v18 = [v17 countByEnumeratingWithState:&v151 objects:v167 count:16];
   v138 = v15;
   v139 = v16;
@@ -209,14 +209,14 @@
         }
 
         v136 = v22;
-        v24 = [(WRDiagnostic *)*(v20 + 104) diagnosticsWithDict:v15 backupName:a7 error:?];
+        v24 = [(WRDiagnostic *)*(v20 + 104) diagnosticsWithDict:v15 backupName:overrides error:?];
         v25 = v24;
         if (!v24)
         {
           goto LABEL_112;
         }
 
-        if (v12)
+        if (nameCopy)
         {
           [(WRDiagnostic *)v24 isValidForSignpost];
         }
@@ -226,15 +226,15 @@
           [(WRDiagnostic *)v24 isValidForWorkflow];
         }
         v26 = ;
-        *a7 = v26;
+        *overrides = v26;
         if (v26)
         {
           goto LABEL_112;
         }
 
         v130 = v19;
-        v135 = a5;
-        v132 = a6;
+        dictsCopy = dicts;
+        enabledCopy = enabled;
         v149 = 0u;
         v150 = 0u;
         v147 = 0u;
@@ -257,14 +257,14 @@
               objc_enumerationMutation(v27);
             }
 
-            v32 = [*(*(&v147 + 1) + 8 * i) name];
-            v33 = [v25 name];
-            v34 = [v32 isEqualToString:v33];
+            name = [*(*(&v147 + 1) + 8 * i) name];
+            name2 = [v25 name];
+            v34 = [name isEqualToString:name2];
 
             if (v34)
             {
-              v116 = [v25 name];
-              *a7 = WRMakeError(8, @"Multiple diagnostics with name %@", v117, v118, v119, v120, v121, v122, v116);
+              name3 = [v25 name];
+              *overrides = WRMakeError(8, @"Multiple diagnostics with name %@", v117, v118, v119, v120, v121, v122, name3);
 
               v15 = v138;
               v16 = v139;
@@ -282,11 +282,11 @@ LABEL_112:
         while (v29);
 LABEL_27:
 
-        a6 = v132;
-        if (!v132)
+        enabled = enabledCopy;
+        if (!enabledCopy)
         {
 LABEL_36:
-          if ((v135 & 1) == 0)
+          if ((dictsCopy & 1) == 0)
           {
 
             v25 = 0;
@@ -299,19 +299,19 @@ LABEL_36:
           goto LABEL_38;
         }
 
-        v35 = [v25 name];
-        if (v12)
+        name4 = [v25 name];
+        if (nameCopy)
         {
           v146 = 0;
           v36 = &v146;
-          WROverrideDiagnosticForSignpost(v140, v12, v35, &v146);
+          WROverrideDiagnosticForSignpost(v140, nameCopy, name4, &v146);
         }
 
         else
         {
           v145 = 0;
           v36 = &v145;
-          WROverrideDiagnosticForWorkflow(v140, v35, &v145);
+          WROverrideDiagnosticForWorkflow(v140, name4, &v145);
         }
         v37 = ;
         v38 = *v36;
@@ -326,11 +326,11 @@ LABEL_36:
           if (!v49)
           {
             v128 = v50;
-            v51 = v12;
+            v51 = nameCopy;
             v52 = *__error();
             v53 = _wrlog();
             v54 = os_log_type_enabled(v53, OS_LOG_TYPE_FAULT);
-            if (v12)
+            if (nameCopy)
             {
               if (v54)
               {
@@ -340,7 +340,7 @@ LABEL_36:
                 *buf = 138544386;
                 v157 = v140;
                 v158 = 2114;
-                v159 = v12;
+                v159 = nameCopy;
                 v160 = 2114;
                 v161 = v55;
                 v162 = 2114;
@@ -373,7 +373,7 @@ LABEL_36:
 LABEL_68:
               _os_log_fault_impl(&dword_2746E5000, v57, OS_LOG_TYPE_FAULT, v58, buf, v59);
 
-              a6 = v132;
+              enabled = enabledCopy;
               v48 = v126;
             }
 
@@ -394,27 +394,27 @@ LABEL_38:
             goto LABEL_44;
           }
 
-          if (v12)
+          if (nameCopy)
           {
-            v61 = [(WRDiagnostic *)v48 isValidForSignpost];
+            isValidForSignpost = [(WRDiagnostic *)v48 isValidForSignpost];
 
-            if (!v61)
+            if (!isValidForSignpost)
             {
               v62 = v48;
-              v90 = v12;
+              v90 = nameCopy;
               v129 = *__error();
               v63 = _wrlog();
               if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
               {
-                v64 = [v25 name];
+                name5 = [v25 name];
                 v65 = [v25 debugDescription];
                 v66 = [v62 debugDescription];
                 *buf = 138544386;
                 v157 = v140;
                 v158 = 2114;
-                v159 = v12;
+                v159 = nameCopy;
                 v160 = 2114;
-                v161 = v64;
+                v161 = name5;
                 v162 = 2114;
                 v163 = v65;
                 v164 = 2114;
@@ -432,29 +432,29 @@ LABEL_76:
               v48 = v62;
               v60 = v62;
               v38 = 0;
-              a6 = v132;
+              enabled = enabledCopy;
               goto LABEL_53;
             }
           }
 
           else
           {
-            v61 = [(WRDiagnostic *)v48 isValidForWorkflow];
+            isValidForSignpost = [(WRDiagnostic *)v48 isValidForWorkflow];
 
-            if (!v61)
+            if (!isValidForSignpost)
             {
               v62 = v48;
               v129 = *__error();
               v63 = _wrlog();
               if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
               {
-                v64 = [v25 name];
+                name5 = [v25 name];
                 v65 = [v25 debugDescription];
                 v66 = [v62 debugDescription];
                 *buf = 138544130;
                 v157 = v140;
                 v158 = 2114;
-                v159 = v64;
+                v159 = name5;
                 v160 = 2114;
                 v161 = v65;
                 v162 = 2114;
@@ -469,19 +469,19 @@ LABEL_76:
             }
           }
 
-          v70 = v61;
-          v71 = [v61 domain];
+          v70 = isValidForSignpost;
+          domain = [isValidForSignpost domain];
           v128 = v70;
-          if (![v71 isEqualToString:@"WorkflowResponsivenessError"])
+          if (![domain isEqualToString:@"WorkflowResponsivenessError"])
           {
 
             goto LABEL_70;
           }
 
           v72 = v48;
-          v73 = [v70 code];
+          code = [v70 code];
 
-          v74 = v73 == 3;
+          v74 = code == 3;
           v48 = v72;
           if (!v74)
           {
@@ -489,7 +489,7 @@ LABEL_70:
             v82 = *__error();
             v83 = _wrlog();
             v84 = os_log_type_enabled(v83, OS_LOG_TYPE_FAULT);
-            if (v12)
+            if (nameCopy)
             {
               if (v84)
               {
@@ -499,7 +499,7 @@ LABEL_70:
                 *buf = 138544386;
                 v157 = v140;
                 v158 = 2114;
-                v159 = v12;
+                v159 = nameCopy;
                 v160 = 2114;
                 v161 = v85;
                 v162 = 2114;
@@ -543,17 +543,17 @@ LABEL_84:
           v75 = *__error();
           v76 = _wrlog();
           v77 = os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT);
-          if (v12)
+          if (nameCopy)
           {
             if (v77)
             {
-              v78 = [v25 name];
+              name6 = [v25 name];
               *buf = 138543874;
               v157 = v140;
               v158 = 2114;
-              v159 = v12;
+              v159 = nameCopy;
               v160 = 2114;
-              v161 = v78;
+              v161 = name6;
               v79 = v76;
               v80 = "%{public}@: %{public}@: diagnostic %{public}@: disabled via override";
               v81 = 32;
@@ -563,11 +563,11 @@ LABEL_84:
 
           else if (v77)
           {
-            v78 = [v25 name];
+            name6 = [v25 name];
             *buf = 138543618;
             v157 = v140;
             v158 = 2114;
-            v159 = v78;
+            v159 = name6;
             v79 = v76;
             v80 = "%{public}@: diagnostic %{public}@: disabled via override";
             v81 = 22;
@@ -577,7 +577,7 @@ LABEL_81:
 
           v60 = 0;
           *__error() = v75;
-          a6 = v132;
+          enabled = enabledCopy;
           v48 = v72;
           goto LABEL_52;
         }
@@ -587,22 +587,22 @@ LABEL_81:
           goto LABEL_36;
         }
 
-        v39 = v12;
+        v39 = nameCopy;
         v40 = *__error();
         v41 = _wrlog();
         v42 = os_log_type_enabled(v41, OS_LOG_TYPE_FAULT);
-        if (v12)
+        if (nameCopy)
         {
           if (v42)
           {
-            v43 = [v25 name];
+            name7 = [v25 name];
             v44 = [v38 description];
             *buf = 138544130;
             v157 = v140;
             v158 = 2114;
-            v159 = v12;
+            v159 = nameCopy;
             v160 = 2114;
-            v161 = v43;
+            v161 = name7;
             v162 = 2114;
             v163 = v44;
             v45 = v41;
@@ -614,12 +614,12 @@ LABEL_81:
 
         else if (v42)
         {
-          v43 = [v25 name];
+          name7 = [v25 name];
           v44 = [v38 description];
           *buf = 138543874;
           v157 = v140;
           v158 = 2114;
-          v159 = v43;
+          v159 = name7;
           v160 = 2114;
           v161 = v44;
           v45 = v41;
@@ -628,7 +628,7 @@ LABEL_81:
 LABEL_55:
           _os_log_fault_impl(&dword_2746E5000, v45, OS_LOG_TYPE_FAULT, v46, buf, v47);
 
-          a6 = v132;
+          enabled = enabledCopy;
         }
 
         *__error() = v40;
@@ -642,7 +642,7 @@ LABEL_44:
         v15 = v138;
         v16 = v139;
         v17 = v137;
-        a5 = v135;
+        dicts = dictsCopy;
         v20 = 0x279EE3000;
         v21 = v134;
       }
@@ -655,7 +655,7 @@ LABEL_44:
     while (v91);
   }
 
-  if (!a6)
+  if (!enabled)
   {
     goto LABEL_114;
   }
@@ -665,11 +665,11 @@ LABEL_44:
   while (1)
   {
     v94 = [objc_alloc(*(v93 + 3240)) initWithFormat:@"%u", v92];
-    if (v12)
+    if (nameCopy)
     {
       v143 = 0;
       v95 = &v143;
-      WROverrideDiagnosticForSignpost(v140, v12, v94, &v143);
+      WROverrideDiagnosticForSignpost(v140, nameCopy, v94, &v143);
     }
 
     else
@@ -693,11 +693,11 @@ LABEL_44:
     if (!v99)
     {
       v109 = v93;
-      v133 = v12;
+      v133 = nameCopy;
       v110 = *__error();
       v111 = _wrlog();
       v112 = os_log_type_enabled(v111, OS_LOG_TYPE_FAULT);
-      if (v12)
+      if (nameCopy)
       {
         if (v112)
         {
@@ -705,7 +705,7 @@ LABEL_44:
           *buf = 138544386;
           v157 = v140;
           v158 = 2114;
-          v159 = v12;
+          v159 = nameCopy;
           v160 = 2114;
           v161 = v94;
           v162 = 2114;
@@ -754,11 +754,11 @@ LABEL_98:
 
   if (v97)
   {
-    v99 = v12;
+    v99 = nameCopy;
     v100 = *__error();
     v101 = _wrlog();
     v102 = os_log_type_enabled(v101, OS_LOG_TYPE_FAULT);
-    if (v12)
+    if (nameCopy)
     {
       if (v102)
       {
@@ -767,7 +767,7 @@ LABEL_98:
         *buf = 138544130;
         v157 = v140;
         v158 = 2114;
-        v159 = v12;
+        v159 = nameCopy;
         v160 = 2114;
         v161 = v94;
         v162 = 2114;
@@ -835,7 +835,7 @@ uint64_t __115__WRDiagnostic_diagnosticsForWorkflowName_signpostName_diagnosticD
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WRDiagnostic allocWithZone:?]];
   v5 = [(NSString *)self->_name copy];
@@ -879,10 +879,10 @@ uint64_t __115__WRDiagnostic_diagnosticsForWorkflowName_signpostName_diagnosticD
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v25 = 1;
     goto LABEL_18;
@@ -895,7 +895,7 @@ uint64_t __115__WRDiagnostic_diagnosticsForWorkflowName_signpostName_diagnosticD
     goto LABEL_18;
   }
 
-  v7 = v6;
+  v7 = equalCopy;
   [(WRDiagnostic *)self triggerThresholdDurationSum];
   v9 = v8;
   [(WRDiagnostic *)v7 triggerThresholdDurationSum];
@@ -911,33 +911,33 @@ uint64_t __115__WRDiagnostic_diagnosticsForWorkflowName_signpostName_diagnosticD
       [(WRDiagnostic *)v7 triggerThresholdDurationSingle];
       if (v15 == v16)
       {
-        v17 = [(WRDiagnostic *)self triggerThresholdCount];
-        if (v17 == [(WRDiagnostic *)v7 triggerThresholdCount])
+        triggerThresholdCount = [(WRDiagnostic *)self triggerThresholdCount];
+        if (triggerThresholdCount == [(WRDiagnostic *)v7 triggerThresholdCount])
         {
-          v18 = [(WRDiagnostic *)self triggerEventTimeout];
-          if (v18 == [(WRDiagnostic *)v7 triggerEventTimeout])
+          triggerEventTimeout = [(WRDiagnostic *)self triggerEventTimeout];
+          if (triggerEventTimeout == [(WRDiagnostic *)v7 triggerEventTimeout])
           {
-            v19 = [(WRDiagnostic *)self gatherTailspin];
-            if (v19 == [(WRDiagnostic *)v7 gatherTailspin])
+            gatherTailspin = [(WRDiagnostic *)self gatherTailspin];
+            if (gatherTailspin == [(WRDiagnostic *)v7 gatherTailspin])
             {
-              v20 = [(WRDiagnostic *)self tailspinIncludeOSLogs];
-              if (v20 == [(WRDiagnostic *)v7 tailspinIncludeOSLogs])
+              tailspinIncludeOSLogs = [(WRDiagnostic *)self tailspinIncludeOSLogs];
+              if (tailspinIncludeOSLogs == [(WRDiagnostic *)v7 tailspinIncludeOSLogs])
               {
-                v21 = [(WRDiagnostic *)self reportSpindumpForThisThread];
-                if (v21 == [(WRDiagnostic *)v7 reportSpindumpForThisThread])
+                reportSpindumpForThisThread = [(WRDiagnostic *)self reportSpindumpForThisThread];
+                if (reportSpindumpForThisThread == [(WRDiagnostic *)v7 reportSpindumpForThisThread])
                 {
-                  v22 = [(WRDiagnostic *)self reportSpindumpForMainThread];
-                  if (v22 == [(WRDiagnostic *)v7 reportSpindumpForMainThread])
+                  reportSpindumpForMainThread = [(WRDiagnostic *)self reportSpindumpForMainThread];
+                  if (reportSpindumpForMainThread == [(WRDiagnostic *)v7 reportSpindumpForMainThread])
                   {
-                    v23 = [(WRDiagnostic *)self reportSpindumpForThisDispatchQueue];
-                    if (v23 == [(WRDiagnostic *)v7 reportSpindumpForThisDispatchQueue])
+                    reportSpindumpForThisDispatchQueue = [(WRDiagnostic *)self reportSpindumpForThisDispatchQueue];
+                    if (reportSpindumpForThisDispatchQueue == [(WRDiagnostic *)v7 reportSpindumpForThisDispatchQueue])
                     {
-                      v24 = [(WRDiagnostic *)self reportOmittingNetworkBoundIntervals];
-                      if (v24 == [(WRDiagnostic *)v7 reportOmittingNetworkBoundIntervals])
+                      reportOmittingNetworkBoundIntervals = [(WRDiagnostic *)self reportOmittingNetworkBoundIntervals];
+                      if (reportOmittingNetworkBoundIntervals == [(WRDiagnostic *)v7 reportOmittingNetworkBoundIntervals])
                       {
-                        v27 = [(WRDiagnostic *)self name];
-                        v28 = [(WRDiagnostic *)v7 name];
-                        if (![v27 isEqualToString:v28])
+                        name = [(WRDiagnostic *)self name];
+                        name2 = [(WRDiagnostic *)v7 name];
+                        if (![name isEqualToString:name2])
                         {
                           v25 = 0;
 LABEL_68:
@@ -945,29 +945,29 @@ LABEL_68:
                           goto LABEL_15;
                         }
 
-                        v29 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
-                        if (v29 || ([(WRDiagnostic *)v7 reportSpindumpForThreadWithName], (v61 = objc_claimAutoreleasedReturnValue()) != 0))
+                        reportSpindumpForThreadWithName = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
+                        if (reportSpindumpForThreadWithName || ([(WRDiagnostic *)v7 reportSpindumpForThreadWithName], (v61 = objc_claimAutoreleasedReturnValue()) != 0))
                         {
-                          v30 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
-                          if (!v30)
+                          reportSpindumpForThreadWithName2 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
+                          if (!reportSpindumpForThreadWithName2)
                           {
                             goto LABEL_64;
                           }
 
-                          v3 = v30;
-                          v31 = [(WRDiagnostic *)v7 reportSpindumpForThreadWithName];
-                          if (!v31)
+                          v3 = reportSpindumpForThreadWithName2;
+                          reportSpindumpForThreadWithName3 = [(WRDiagnostic *)v7 reportSpindumpForThreadWithName];
+                          if (!reportSpindumpForThreadWithName3)
                           {
 LABEL_63:
 
                             goto LABEL_64;
                           }
 
-                          v4 = v31;
-                          v32 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
-                          v59 = [(WRDiagnostic *)v7 reportSpindumpForThreadWithName];
-                          v60 = v32;
-                          if (([v32 isEqualToString:?] & 1) == 0)
+                          v4 = reportSpindumpForThreadWithName3;
+                          reportSpindumpForThreadWithName4 = [(WRDiagnostic *)self reportSpindumpForThreadWithName];
+                          reportSpindumpForThreadWithName5 = [(WRDiagnostic *)v7 reportSpindumpForThreadWithName];
+                          v60 = reportSpindumpForThreadWithName4;
+                          if (([reportSpindumpForThreadWithName4 isEqualToString:?] & 1) == 0)
                           {
 LABEL_62:
 
@@ -983,15 +983,15 @@ LABEL_62:
                           v58 = 0;
                         }
 
-                        v33 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
-                        if (v33 || ([(WRDiagnostic *)v7 reportSpindumpForDispatchQueueWithLabel], (v56 = objc_claimAutoreleasedReturnValue()) != 0))
+                        reportSpindumpForDispatchQueueWithLabel = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
+                        if (reportSpindumpForDispatchQueueWithLabel || ([(WRDiagnostic *)v7 reportSpindumpForDispatchQueueWithLabel], (v56 = objc_claimAutoreleasedReturnValue()) != 0))
                         {
-                          v57 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
-                          if (!v57)
+                          reportSpindumpForDispatchQueueWithLabel2 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
+                          if (!reportSpindumpForDispatchQueueWithLabel2)
                           {
                             v25 = 0;
 LABEL_83:
-                            if (!v33)
+                            if (!reportSpindumpForDispatchQueueWithLabel)
                             {
                             }
 
@@ -1002,20 +1002,20 @@ LABEL_83:
                             goto LABEL_65;
                           }
 
-                          v54 = [(WRDiagnostic *)v7 reportSpindumpForDispatchQueueWithLabel];
-                          if (v54)
+                          reportSpindumpForDispatchQueueWithLabel3 = [(WRDiagnostic *)v7 reportSpindumpForDispatchQueueWithLabel];
+                          if (reportSpindumpForDispatchQueueWithLabel3)
                           {
-                            v34 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
-                            v52 = [(WRDiagnostic *)v7 reportSpindumpForDispatchQueueWithLabel];
-                            v53 = v34;
-                            if ([v34 isEqualToString:?])
+                            reportSpindumpForDispatchQueueWithLabel4 = [(WRDiagnostic *)self reportSpindumpForDispatchQueueWithLabel];
+                            reportSpindumpForDispatchQueueWithLabel5 = [(WRDiagnostic *)v7 reportSpindumpForDispatchQueueWithLabel];
+                            v53 = reportSpindumpForDispatchQueueWithLabel4;
+                            if ([reportSpindumpForDispatchQueueWithLabel4 isEqualToString:?])
                             {
                               v51 = 1;
                               goto LABEL_39;
                             }
                           }
 
-                          if (!v33)
+                          if (!reportSpindumpForDispatchQueueWithLabel)
                           {
 
                             goto LABEL_61;
@@ -1032,7 +1032,7 @@ LABEL_61:
 LABEL_64:
                           v25 = 0;
 LABEL_65:
-                          if (!v29)
+                          if (!reportSpindumpForThreadWithName)
                           {
                           }
 
@@ -1042,56 +1042,56 @@ LABEL_65:
                         v56 = 0;
                         v51 = 0;
 LABEL_39:
-                        v55 = [(WRDiagnostic *)self reportOtherSignpostWithName];
-                        if (!v55)
+                        reportOtherSignpostWithName = [(WRDiagnostic *)self reportOtherSignpostWithName];
+                        if (!reportOtherSignpostWithName)
                         {
-                          v48 = [(WRDiagnostic *)v7 reportOtherSignpostWithName];
-                          if (!v48)
+                          reportOtherSignpostWithName2 = [(WRDiagnostic *)v7 reportOtherSignpostWithName];
+                          if (!reportOtherSignpostWithName2)
                           {
-                            v48 = 0;
+                            reportOtherSignpostWithName2 = 0;
                             v44 = 0;
                             goto LABEL_50;
                           }
                         }
 
-                        v50 = [(WRDiagnostic *)self reportOtherSignpostWithName];
-                        if (!v50)
+                        reportOtherSignpostWithName3 = [(WRDiagnostic *)self reportOtherSignpostWithName];
+                        if (!reportOtherSignpostWithName3)
                         {
                           v25 = 0;
                           goto LABEL_77;
                         }
 
-                        v49 = [(WRDiagnostic *)v7 reportOtherSignpostWithName];
-                        if (v49)
+                        reportOtherSignpostWithName4 = [(WRDiagnostic *)v7 reportOtherSignpostWithName];
+                        if (reportOtherSignpostWithName4)
                         {
-                          v35 = [(WRDiagnostic *)self reportOtherSignpostWithName];
-                          v45 = [(WRDiagnostic *)v7 reportOtherSignpostWithName];
-                          v46 = v35;
-                          if ([v35 isEqualToString:?])
+                          reportOtherSignpostWithName5 = [(WRDiagnostic *)self reportOtherSignpostWithName];
+                          reportOtherSignpostWithName6 = [(WRDiagnostic *)v7 reportOtherSignpostWithName];
+                          v46 = reportOtherSignpostWithName5;
+                          if ([reportOtherSignpostWithName5 isEqualToString:?])
                           {
                             v44 = 1;
 LABEL_50:
-                            v47 = [(WRDiagnostic *)self reportProcessesWithName];
-                            if (!v47)
+                            reportProcessesWithName = [(WRDiagnostic *)self reportProcessesWithName];
+                            if (!reportProcessesWithName)
                             {
-                              v42 = [(WRDiagnostic *)v7 reportProcessesWithName];
-                              if (!v42)
+                              reportProcessesWithName2 = [(WRDiagnostic *)v7 reportProcessesWithName];
+                              if (!reportProcessesWithName2)
                               {
-                                v42 = 0;
+                                reportProcessesWithName2 = 0;
                                 v25 = 1;
                                 goto LABEL_74;
                               }
                             }
 
-                            v43 = [(WRDiagnostic *)self reportProcessesWithName];
-                            if (v43)
+                            reportProcessesWithName3 = [(WRDiagnostic *)self reportProcessesWithName];
+                            if (reportProcessesWithName3)
                             {
-                              v41 = [(WRDiagnostic *)v7 reportProcessesWithName];
-                              if (v41)
+                              reportProcessesWithName4 = [(WRDiagnostic *)v7 reportProcessesWithName];
+                              if (reportProcessesWithName4)
                               {
-                                v40 = [(WRDiagnostic *)self reportProcessesWithName];
-                                v37 = [(WRDiagnostic *)v7 reportProcessesWithName];
-                                v25 = [v40 isEqualToString:v37];
+                                reportProcessesWithName5 = [(WRDiagnostic *)self reportProcessesWithName];
+                                reportProcessesWithName6 = [(WRDiagnostic *)v7 reportProcessesWithName];
+                                v25 = [reportProcessesWithName5 isEqualToString:reportProcessesWithName6];
 
                                 goto LABEL_71;
                               }
@@ -1099,16 +1099,16 @@ LABEL_50:
 
                             v25 = 0;
 LABEL_71:
-                            if (v47)
+                            if (reportProcessesWithName)
                             {
-                              v38 = v47;
+                              v38 = reportProcessesWithName;
 LABEL_75:
 
                               if ((v44 & 1) == 0)
                               {
-                                if (!v55)
+                                if (!reportOtherSignpostWithName)
                                 {
-                                  v39 = v48;
+                                  v39 = reportOtherSignpostWithName2;
 LABEL_81:
 
                                   if (v51)
@@ -1119,12 +1119,12 @@ LABEL_81:
                                 }
 
 LABEL_80:
-                                v39 = v55;
+                                v39 = reportOtherSignpostWithName;
                                 goto LABEL_81;
                               }
 
 LABEL_77:
-                              if (!v55)
+                              if (!reportOtherSignpostWithName)
                               {
                               }
 
@@ -1132,26 +1132,26 @@ LABEL_77:
                             }
 
 LABEL_74:
-                            v38 = v42;
+                            v38 = reportProcessesWithName2;
                             goto LABEL_75;
                           }
                         }
 
-                        if (v55)
+                        if (reportOtherSignpostWithName)
                         {
-                          v36 = v55;
+                          v36 = reportOtherSignpostWithName;
                         }
 
                         else
                         {
-                          v36 = v48;
+                          v36 = reportOtherSignpostWithName2;
                         }
 
                         if (v51)
                         {
                         }
 
-                        if (!v33)
+                        if (!reportSpindumpForDispatchQueueWithLabel)
                         {
                         }
 
@@ -1177,46 +1177,46 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v2 = [(WRDiagnostic *)self name];
-  v3 = [v2 hash];
+  name = [(WRDiagnostic *)self name];
+  v3 = [name hash];
 
   return v3;
 }
 
-- (id)initWithDict:(void *)a3 backupName:(uint64_t *)a4 error:
+- (id)initWithDict:(void *)dict backupName:(uint64_t *)name error:
 {
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  dictCopy = dict;
+  if (!self)
   {
     v25 = 0;
     goto LABEL_13;
   }
 
   v30 = 0;
-  if (a4)
+  if (name)
   {
-    *a4 = 0;
+    *name = 0;
   }
 
   else
   {
-    a4 = &v30;
+    name = &v30;
   }
 
-  v29.receiver = a1;
+  v29.receiver = self;
   v29.super_class = WRDiagnostic;
   v15 = objc_msgSendSuper2(&v29, sel_init);
   if (!v15)
   {
     WRMakeError(2, @"Unable to init", v9, v10, v11, v12, v13, v14, v28);
 LABEL_11:
-    *a4 = v25 = 0;
+    *name = v25 = 0;
     goto LABEL_12;
   }
 
   v16 = WRCheckForBadDiagnosticDict(v7);
-  *a4 = v16;
+  *name = v16;
   if (!v16)
   {
     v17 = [v7 objectForKeyedSubscript:@"name"];
@@ -1225,25 +1225,25 @@ LABEL_11:
 
     if (!v15[3])
     {
-      if (*a4)
+      if (*name)
       {
         goto LABEL_9;
       }
 
-      if (!v8)
+      if (!dictCopy)
       {
         WRMakeError(7, @"Mutiple diagnostic dictionaries in array, but no name: %@", v19, v20, v21, v22, v23, v24, v7);
         goto LABEL_11;
       }
 
-      objc_storeStrong(v15 + 3, a3);
+      objc_storeStrong(v15 + 3, dict);
     }
 
-    if ([(WRDiagnostic *)v15 applyDict:v7 error:a4])
+    if ([(WRDiagnostic *)v15 applyDict:v7 error:name])
     {
-      v27 = [(WRDiagnostic *)v15 validate];
-      *a4 = v27;
-      if (!v27)
+      validate = [(WRDiagnostic *)v15 validate];
+      *name = validate;
+      if (!validate)
       {
         v25 = v15;
         goto LABEL_12;
@@ -1259,20 +1259,20 @@ LABEL_13:
   return v25;
 }
 
-- (uint64_t)applyDict:(uint64_t *)a3 error:
+- (uint64_t)applyDict:(uint64_t *)dict error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v104 = 0;
-    if (a3)
+    if (dict)
     {
-      *a3 = 0;
+      *dict = 0;
     }
 
     else
     {
-      a3 = &v104;
+      dict = &v104;
     }
 
     v6 = @"trigger_threshold_duration_sum";
@@ -1287,10 +1287,10 @@ LABEL_13:
         goto LABEL_15;
       }
 
-      *(a1 + 40) = v18;
+      *(self + 40) = v18;
     }
 
-    else if (*a3)
+    else if (*dict)
     {
       goto LABEL_86;
     }
@@ -1301,7 +1301,7 @@ LABEL_13:
     v11 = v22;
     if (!v22)
     {
-      if (*a3)
+      if (*dict)
       {
         goto LABEL_86;
       }
@@ -1320,10 +1320,10 @@ LABEL_13:
           goto LABEL_15;
         }
 
-        *(a1 + 32) = v28;
+        *(self + 32) = v28;
       }
 
-      else if (*a3)
+      else if (*dict)
       {
         goto LABEL_86;
       }
@@ -1333,10 +1333,10 @@ LABEL_13:
       v33 = v32;
       if (v32)
       {
-        *(a1 + 16) = [v32 unsignedIntValue];
+        *(self + 16) = [v32 unsignedIntValue];
       }
 
-      else if (*a3)
+      else if (*dict)
       {
         goto LABEL_27;
       }
@@ -1352,10 +1352,10 @@ LABEL_13:
           goto LABEL_59;
         }
 
-        *(a1 + 8) = [v11 BOOLValue];
+        *(self + 8) = [v11 BOOLValue];
       }
 
-      else if (*a3)
+      else if (*dict)
       {
         goto LABEL_86;
       }
@@ -1371,10 +1371,10 @@ LABEL_13:
           goto LABEL_59;
         }
 
-        *(a1 + 9) = [v11 BOOLValue];
+        *(self + 9) = [v11 BOOLValue];
       }
 
-      else if (*a3)
+      else if (*dict)
       {
         goto LABEL_86;
       }
@@ -1390,10 +1390,10 @@ LABEL_13:
           goto LABEL_59;
         }
 
-        *(a1 + 10) = [v11 BOOLValue];
+        *(self + 10) = [v11 BOOLValue];
       }
 
-      else if (*a3)
+      else if (*dict)
       {
         goto LABEL_86;
       }
@@ -1409,10 +1409,10 @@ LABEL_13:
           goto LABEL_59;
         }
 
-        *(a1 + 11) = [v11 BOOLValue];
+        *(self + 11) = [v11 BOOLValue];
       }
 
-      else if (*a3)
+      else if (*dict)
       {
         goto LABEL_86;
       }
@@ -1428,11 +1428,11 @@ LABEL_13:
           v56 = v55;
         }
 
-        v57 = *(a1 + 56);
-        *(a1 + 56) = v56;
+        v57 = *(self + 56);
+        *(self + 56) = v56;
       }
 
-      else if (*a3)
+      else if (*dict)
       {
         goto LABEL_27;
       }
@@ -1448,10 +1448,10 @@ LABEL_13:
           goto LABEL_59;
         }
 
-        *(a1 + 12) = [v11 BOOLValue];
+        *(self + 12) = [v11 BOOLValue];
       }
 
-      else if (*a3)
+      else if (*dict)
       {
         goto LABEL_86;
       }
@@ -1462,7 +1462,7 @@ LABEL_13:
       v11 = v65;
       if (!v65)
       {
-        if (*a3)
+        if (*dict)
         {
           goto LABEL_86;
         }
@@ -1472,7 +1472,7 @@ LABEL_13:
 
       if (![v65 intValue] || objc_msgSend(v11, "intValue") == 1)
       {
-        *(a1 + 13) = [v11 BOOLValue];
+        *(self + 13) = [v11 BOOLValue];
 LABEL_61:
 
         v72 = OUTLINED_FUNCTION_49();
@@ -1486,11 +1486,11 @@ LABEL_61:
             v77 = v76;
           }
 
-          v78 = *(a1 + 64);
-          *(a1 + 64) = v77;
+          v78 = *(self + 64);
+          *(self + 64) = v77;
         }
 
-        else if (*a3)
+        else if (*dict)
         {
           goto LABEL_27;
         }
@@ -1506,13 +1506,13 @@ LABEL_61:
             v84 = v83;
           }
 
-          v85 = *(a1 + 72);
-          *(a1 + 72) = v84;
+          v85 = *(self + 72);
+          *(self + 72) = v84;
 
           goto LABEL_69;
         }
 
-        if (!*a3)
+        if (!*dict)
         {
 LABEL_69:
 
@@ -1527,8 +1527,8 @@ LABEL_69:
               v91 = v90;
             }
 
-            v92 = *(a1 + 80);
-            *(a1 + 80) = v91;
+            v92 = *(self + 80);
+            *(self + 80) = v91;
 
 LABEL_73:
             v93 = OUTLINED_FUNCTION_0_0();
@@ -1538,34 +1538,34 @@ LABEL_73:
             {
               if (![v96 intValue] || objc_msgSend(v11, "intValue") == 1)
               {
-                *(a1 + 14) = [v11 BOOLValue];
+                *(self + 14) = [v11 BOOLValue];
 LABEL_84:
-                a1 = 1;
+                self = 1;
                 goto LABEL_87;
               }
 
               [v11 intValue];
-              *a3 = WRMakeError(8, @"Bad BOOL for %@: %d", v97, v98, v99, v100, v101, v102, @"option_report_omit_network_bound_intervals");
+              *dict = WRMakeError(8, @"Bad BOOL for %@: %d", v97, v98, v99, v100, v101, v102, @"option_report_omit_network_bound_intervals");
             }
 
-            else if (!*a3)
+            else if (!*dict)
             {
               goto LABEL_84;
             }
 
 LABEL_86:
-            a1 = 0;
+            self = 0;
             goto LABEL_87;
           }
 
-          if (!*a3)
+          if (!*dict)
           {
             goto LABEL_73;
           }
         }
 
 LABEL_27:
-        a1 = 0;
+        self = 0;
         goto LABEL_88;
       }
 
@@ -1578,31 +1578,31 @@ LABEL_59:
     [v22 doubleValue];
     if (v23 >= 0.0)
     {
-      *(a1 + 48) = v23;
+      *(self + 48) = v23;
       goto LABEL_13;
     }
 
 LABEL_15:
     WRMakeError(8, @"Bad num for %@: %f", v12, v13, v14, v15, v16, v17, v6);
 LABEL_16:
-    *a3 = a1 = 0;
+    *dict = self = 0;
 LABEL_87:
   }
 
 LABEL_88:
 
-  return a1;
+  return self;
 }
 
 - (id)validate
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 reportSpindumpForThisThread];
-    v3 = [v1 reportSpindumpForThreadWithName];
+    reportSpindumpForThisThread = [self reportSpindumpForThisThread];
+    reportSpindumpForThreadWithName = [selfCopy reportSpindumpForThreadWithName];
 
-    if (v2)
+    if (reportSpindumpForThisThread)
     {
       v4 = 2;
     }
@@ -1612,21 +1612,21 @@ LABEL_88:
       v4 = 1;
     }
 
-    if (v3)
+    if (reportSpindumpForThreadWithName)
     {
       v5 = v4;
     }
 
     else
     {
-      v5 = v2;
+      v5 = reportSpindumpForThisThread;
     }
 
-    v6 = [v1 reportSpindumpForMainThread];
-    v7 = v5 + v6 + [v1 reportSpindumpForThisDispatchQueue];
-    v8 = [v1 reportSpindumpForDispatchQueueWithLabel];
+    reportSpindumpForMainThread = [selfCopy reportSpindumpForMainThread];
+    v7 = v5 + reportSpindumpForMainThread + [selfCopy reportSpindumpForThisDispatchQueue];
+    reportSpindumpForDispatchQueueWithLabel = [selfCopy reportSpindumpForDispatchQueueWithLabel];
 
-    if (v8)
+    if (reportSpindumpForDispatchQueueWithLabel)
     {
       v9 = v7 + 1;
     }
@@ -1638,98 +1638,98 @@ LABEL_88:
 
     if (v9 >= 2)
     {
-      v10 = [v1 name];
-      WRMakeError(8, @"reporting multiple spindumps from a single diagnostic %@", v11, v12, v13, v14, v15, v16, v10);
-      v1 = LABEL_13:;
+      name = [selfCopy name];
+      WRMakeError(8, @"reporting multiple spindumps from a single diagnostic %@", v11, v12, v13, v14, v15, v16, name);
+      selfCopy = LABEL_13:;
 LABEL_45:
 
       goto LABEL_46;
     }
 
-    if (v9 == 1 && ([v1 gatherTailspin] & 1) == 0)
+    if (v9 == 1 && ([selfCopy gatherTailspin] & 1) == 0)
     {
-      v10 = [v1 name];
-      WRMakeError(8, @"reporting spindump, but not gathering tailspin in diagnostic %@", v25, v26, v27, v28, v29, v30, v10);
+      name = [selfCopy name];
+      WRMakeError(8, @"reporting spindump, but not gathering tailspin in diagnostic %@", v25, v26, v27, v28, v29, v30, name);
       goto LABEL_13;
     }
 
-    v17 = [v1 reportProcessesWithName];
+    reportProcessesWithName = [selfCopy reportProcessesWithName];
 
-    if (v17)
+    if (reportProcessesWithName)
     {
-      if ([v1 reportSpindumpForThisThread])
+      if ([selfCopy reportSpindumpForThisThread])
       {
-        v10 = [v1 reportProcessesWithName];
-        v18 = [v1 name];
-        WRMakeError(8, @"Cannot report spindump for this thread, but in a specified process %@ in diagnostic %@", v19, v20, v21, v22, v23, v24, v10);
-        v1 = LABEL_22:;
+        name = [selfCopy reportProcessesWithName];
+        name2 = [selfCopy name];
+        WRMakeError(8, @"Cannot report spindump for this thread, but in a specified process %@ in diagnostic %@", v19, v20, v21, v22, v23, v24, name);
+        selfCopy = LABEL_22:;
 LABEL_44:
 
         goto LABEL_45;
       }
 
-      if ([v1 reportSpindumpForThisDispatchQueue])
+      if ([selfCopy reportSpindumpForThisDispatchQueue])
       {
-        v10 = [v1 reportProcessesWithName];
-        v18 = [v1 name];
-        WRMakeError(8, @"Cannot report spindump for this dispatch queue, but in a specified process %@ in diagnostic %@", v31, v32, v33, v34, v35, v36, v10);
+        name = [selfCopy reportProcessesWithName];
+        name2 = [selfCopy name];
+        WRMakeError(8, @"Cannot report spindump for this dispatch queue, but in a specified process %@ in diagnostic %@", v31, v32, v33, v34, v35, v36, name);
         goto LABEL_22;
       }
     }
 
-    v37 = [v1 reportSpindumpForThreadWithName];
-    v10 = v37;
-    if (v37 && [v37 hasPrefix:@"^"] && objc_msgSend(v10, "hasSuffix:", @"$"))
+    reportSpindumpForThreadWithName2 = [selfCopy reportSpindumpForThreadWithName];
+    name = reportSpindumpForThreadWithName2;
+    if (reportSpindumpForThreadWithName2 && [reportSpindumpForThreadWithName2 hasPrefix:@"^"] && objc_msgSend(name, "hasSuffix:", @"$"))
     {
       v65 = 0;
-      v38 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:v10 options:0 error:&v65];
-      v18 = v65;
+      v38 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:name options:0 error:&v65];
+      name2 = v65;
       if (!v38)
       {
-        v41 = [v1 name];
-        WRMakeError(8, @"Invalid thread name regex %@: %@ in diagnostic %@", v50, v51, v52, v53, v54, v55, v10);
+        name3 = [selfCopy name];
+        WRMakeError(8, @"Invalid thread name regex %@: %@ in diagnostic %@", v50, v51, v52, v53, v54, v55, name);
         goto LABEL_42;
       }
     }
 
-    v39 = [v1 reportSpindumpForDispatchQueueWithLabel];
-    v18 = v39;
-    if (v39 && [v39 hasPrefix:@"^"] && objc_msgSend(v18, "hasSuffix:", @"$"))
+    reportSpindumpForDispatchQueueWithLabel2 = [selfCopy reportSpindumpForDispatchQueueWithLabel];
+    name2 = reportSpindumpForDispatchQueueWithLabel2;
+    if (reportSpindumpForDispatchQueueWithLabel2 && [reportSpindumpForDispatchQueueWithLabel2 hasPrefix:@"^"] && objc_msgSend(name2, "hasSuffix:", @"$"))
     {
       v64 = 0;
-      v40 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:v18 options:0 error:&v64];
-      v41 = v64;
+      v40 = [objc_alloc(MEMORY[0x277CCAC68]) initWithPattern:name2 options:0 error:&v64];
+      name3 = v64;
       if (!v40)
       {
-        v63 = [v1 name];
-        v1 = WRMakeError(8, @"Invalid dispatch queue label regex %@: %@ in diagnostic %@", v56, v57, v58, v59, v60, v61, v18);
+        name4 = [selfCopy name];
+        selfCopy = WRMakeError(8, @"Invalid dispatch queue label regex %@: %@ in diagnostic %@", v56, v57, v58, v59, v60, v61, name2);
 
         goto LABEL_43;
       }
     }
 
-    if ([v1 gatherTailspin])
+    if ([selfCopy gatherTailspin])
     {
-      if ([v1 hasTriggerThresholdDurationSum] & 1) != 0 || (objc_msgSend(v1, "hasTriggerThresholdDurationUnion") & 1) != 0 || (objc_msgSend(v1, "hasTriggerThresholdDurationSingle") & 1) != 0 || (objc_msgSend(v1, "hasTriggerThresholdCount") & 1) != 0 || (objc_msgSend(v1, "triggerEventTimeout"))
+      if ([selfCopy hasTriggerThresholdDurationSum] & 1) != 0 || (objc_msgSend(selfCopy, "hasTriggerThresholdDurationUnion") & 1) != 0 || (objc_msgSend(selfCopy, "hasTriggerThresholdDurationSingle") & 1) != 0 || (objc_msgSend(selfCopy, "hasTriggerThresholdCount") & 1) != 0 || (objc_msgSend(selfCopy, "triggerEventTimeout"))
       {
-        v1 = 0;
+        selfCopy = 0;
         goto LABEL_44;
       }
 
-      v41 = [v1 name];
-      v62 = v41;
+      name3 = [selfCopy name];
+      v62 = name3;
       v48 = @"no threshold for diagnostic %@";
     }
 
     else
     {
-      v41 = [v1 name];
-      v62 = v41;
+      name3 = [selfCopy name];
+      v62 = name3;
       v48 = @"no diagnostics enabled in diagnostic %@";
     }
 
     WRMakeError(3, v48, v42, v43, v44, v45, v46, v47, v62);
-    v1 = LABEL_42:;
+    selfCopy = LABEL_42:;
 LABEL_43:
 
     goto LABEL_44;
@@ -1737,80 +1737,80 @@ LABEL_43:
 
 LABEL_46:
 
-  return v1;
+  return selfCopy;
 }
 
-+ (id)diagnosticsWithDict:(void *)a3 backupName:(uint64_t *)a4 error:
++ (id)diagnosticsWithDict:(void *)dict backupName:(uint64_t *)name error:
 {
-  v6 = a3;
+  dictCopy = dict;
   v7 = a2;
   objc_opt_self();
-  v8 = [[WRDiagnostic alloc] initWithDict:v7 backupName:v6 error:a4];
+  v8 = [[WRDiagnostic alloc] initWithDict:v7 backupName:dictCopy error:name];
 
   return v8;
 }
 
 - (id)isValidForWorkflow
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([a1 hasTriggerThresholdCount])
+    selfCopy = self;
+    if ([self hasTriggerThresholdCount])
     {
       v9 = @"diagnostic count threshold is invalid for the workflow";
     }
 
-    else if ([v2 hasTriggerThresholdDurationSum])
+    else if ([selfCopy hasTriggerThresholdDurationSum])
     {
       v9 = @"diagnostic interval sum threshold is invalid for the workflow";
     }
 
     else
     {
-      if (![v2 hasTriggerThresholdDurationUnion])
+      if (![selfCopy hasTriggerThresholdDurationUnion])
       {
-        a1 = [(WRDiagnostic *)v2 validate];
+        self = [(WRDiagnostic *)selfCopy validate];
         goto LABEL_9;
       }
 
       v9 = @"diagnostic interval union threshold is invalid for the workflow";
     }
 
-    a1 = WRMakeError(8, v9, v3, v4, v5, v6, v7, v8, v11);
+    self = WRMakeError(8, v9, v3, v4, v5, v6, v7, v8, v11);
 LABEL_9:
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)isValidForSignpost
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([a1 triggerEventTimeout])
+    selfCopy = self;
+    if ([self triggerEventTimeout])
     {
       v9 = @"diagnostic event timeout threshold is invalid for signposts";
     }
 
     else
     {
-      if (![v2 reportOmittingNetworkBoundIntervals])
+      if (![selfCopy reportOmittingNetworkBoundIntervals])
       {
-        a1 = [(WRDiagnostic *)v2 validate];
+        self = [(WRDiagnostic *)selfCopy validate];
         goto LABEL_7;
       }
 
       v9 = @"omitting network bound intervals is invalid for signposts";
     }
 
-    a1 = WRMakeError(8, v9, v3, v4, v5, v6, v7, v8, v11);
+    self = WRMakeError(8, v9, v3, v4, v5, v6, v7, v8, v11);
 LABEL_7:
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

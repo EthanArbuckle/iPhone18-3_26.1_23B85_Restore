@@ -2,48 +2,48 @@
 - (AVSystemController)mediaServerController;
 - (BOOL)nowPlayingApplicationIsInterrupted;
 - (BOOL)nowPlayingApplicationIsPlaying;
-- (BOOL)shouldSendCommand:(id)a3;
+- (BOOL)shouldSendCommand:(id)command;
 - (MRDMediaServerNowPlayingDataSource)init;
 - (NSDictionary)nowPlayingApplications;
 - (NSDictionary)nowPlayingAudioFormatContentInfos;
 - (NSDictionary)nowPlayingSessions;
 - (NSString)nowPlayingApplicationDisplayID;
-- (id)audioFormatContentInfoForApplication:(id)a3 cachedAudioFormatContentInfo:(id)a4;
-- (id)bestAvailableContentForConsolidatedSourceContentInfo:(id)a3;
-- (id)contentInfoForConsolidatedSourceContentInfo:(id)a3;
+- (id)audioFormatContentInfoForApplication:(id)application cachedAudioFormatContentInfo:(id)info;
+- (id)bestAvailableContentForConsolidatedSourceContentInfo:(id)info;
+- (id)contentInfoForConsolidatedSourceContentInfo:(id)info;
 - (id)description;
-- (id)nowPlayingApplicationsFromSessionsArray:(id)a3;
-- (id)nowPlayingAudioFormatContentInfosFromNowPlayingApplications:(id)a3;
+- (id)nowPlayingApplicationsFromSessionsArray:(id)array;
+- (id)nowPlayingAudioFormatContentInfosFromNowPlayingApplications:(id)applications;
 - (id)topOfNowPlayingAppStack;
 - (int)nowPlayingApplicationPID;
-- (void)_avSessionMediaServicesResetNotification:(id)a3;
-- (void)_nowPlayingAppDidChangeNotification:(id)a3;
-- (void)_nowPlayingAppIsPlayingDidChangeNotification:(id)a3;
+- (void)_avSessionMediaServicesResetNotification:(id)notification;
+- (void)_nowPlayingAppDidChangeNotification:(id)notification;
+- (void)_nowPlayingAppIsPlayingDidChangeNotification:(id)notification;
 - (void)_popNowPlayingAppStack;
-- (void)_renderingModeChangeNotification:(id)a3;
-- (void)_someSessionIsPlayingDidChangeNotification:(id)a3;
-- (void)_sourceFormatInfoDidChangeNotification:(id)a3;
+- (void)_renderingModeChangeNotification:(id)notification;
+- (void)_someSessionIsPlayingDidChangeNotification:(id)notification;
+- (void)_sourceFormatInfoDidChangeNotification:(id)notification;
 - (void)_updateNowPlayingAudioFormatContentInfo;
 - (void)dealloc;
 - (void)loadMediaServerState;
-- (void)loadMediaServerStateWithController:(id)a3;
+- (void)loadMediaServerStateWithController:(id)controller;
 - (void)resetMediaServerState;
-- (void)setMediaServerController:(id)a3;
-- (void)setNowPlayingApplicationDisplayID:(id)a3;
-- (void)setNowPlayingApplicationIsPlaying:(BOOL)a3;
-- (void)setNowPlayingApplications:(id)a3;
-- (void)setNowPlayingAudioFormatContentInfos:(id)a3;
-- (void)setNowPlayingSessions:(id)a3;
+- (void)setMediaServerController:(id)controller;
+- (void)setNowPlayingApplicationDisplayID:(id)d;
+- (void)setNowPlayingApplicationIsPlaying:(BOOL)playing;
+- (void)setNowPlayingApplications:(id)applications;
+- (void)setNowPlayingAudioFormatContentInfos:(id)infos;
+- (void)setNowPlayingSessions:(id)sessions;
 @end
 
 @implementation MRDMediaServerNowPlayingDataSource
 
 - (NSString)nowPlayingApplicationDisplayID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_cachedNowPlayingAppDisplayID;
-  if ([(NSString *)v2->_cachedNowPlayingAppDisplayID isEqualToString:@"AirMusic"]|| [(NSString *)v2->_cachedNowPlayingAppDisplayID isEqualToString:@"com.apple.AirMusic"])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_cachedNowPlayingAppDisplayID;
+  if ([(NSString *)selfCopy->_cachedNowPlayingAppDisplayID isEqualToString:@"AirMusic"]|| [(NSString *)selfCopy->_cachedNowPlayingAppDisplayID isEqualToString:@"com.apple.AirMusic"])
   {
     v4 = @"com.apple.Music";
 LABEL_4:
@@ -52,7 +52,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if ([(NSString *)v2->_cachedNowPlayingAppDisplayID isEqualToString:@"AirPodcasts"]|| [(NSString *)v2->_cachedNowPlayingAppDisplayID isEqualToString:@"com.apple.AirPodcasts"])
+  if ([(NSString *)selfCopy->_cachedNowPlayingAppDisplayID isEqualToString:@"AirPodcasts"]|| [(NSString *)selfCopy->_cachedNowPlayingAppDisplayID isEqualToString:@"com.apple.AirPodcasts"])
   {
     v4 = @"com.apple.podcasts";
     goto LABEL_4;
@@ -61,35 +61,35 @@ LABEL_4:
 LABEL_5:
   v5 = [(__CFString *)v3 copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (int)nowPlayingApplicationPID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedNowPlayingAppPID = v2->_cachedNowPlayingAppPID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedNowPlayingAppPID = selfCopy->_cachedNowPlayingAppPID;
+  objc_sync_exit(selfCopy);
 
   return cachedNowPlayingAppPID;
 }
 
 - (void)_updateNowPlayingAudioFormatContentInfo
 {
-  v3 = [(MRDMediaServerNowPlayingDataSource *)self nowPlayingApplications];
-  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
-  v5 = [(MRDMediaServerNowPlayingDataSource *)self nowPlayingAudioFormatContentInfos];
-  if ([v3 count])
+  nowPlayingApplications = [(MRDMediaServerNowPlayingDataSource *)self nowPlayingApplications];
+  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [nowPlayingApplications count]);
+  nowPlayingAudioFormatContentInfos = [(MRDMediaServerNowPlayingDataSource *)self nowPlayingAudioFormatContentInfos];
+  if ([nowPlayingApplications count])
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v25 = v3;
-    v6 = [v3 allValues];
-    v7 = [v6 countByEnumeratingWithState:&v30 objects:v39 count:16];
+    v25 = nowPlayingApplications;
+    allValues = [nowPlayingApplications allValues];
+    v7 = [allValues countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v7)
     {
       v8 = v7;
@@ -100,19 +100,19 @@ LABEL_5:
         {
           if (*v31 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v30 + 1) + 8 * i);
-          v12 = [v11 audioSessionID];
-          v13 = [v5 objectForKeyedSubscript:v12];
+          audioSessionID = [v11 audioSessionID];
+          v13 = [nowPlayingAudioFormatContentInfos objectForKeyedSubscript:audioSessionID];
 
           v14 = [(MRDMediaServerNowPlayingDataSource *)self audioFormatContentInfoForApplication:v11 cachedAudioFormatContentInfo:v13];
-          v15 = [v11 audioSessionID];
-          [v4 setObject:v14 forKeyedSubscript:v15];
+          audioSessionID2 = [v11 audioSessionID];
+          [v4 setObject:v14 forKeyedSubscript:audioSessionID2];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v30 objects:v39 count:16];
       }
 
       while (v8);
@@ -154,7 +154,7 @@ LABEL_5:
       }
     }
 
-    v3 = v25;
+    nowPlayingApplications = v25;
   }
 
   else
@@ -175,39 +175,39 @@ LABEL_5:
 
 - (NSDictionary)nowPlayingApplications
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_cachedNowPlayingApplications copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_cachedNowPlayingApplications copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSDictionary)nowPlayingAudioFormatContentInfos
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_cachedAudioFormatContentInfos copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_cachedAudioFormatContentInfos copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)nowPlayingApplicationIsInterrupted
 {
-  v2 = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
-  v3 = [v2 attributeForKey:AVSystemController_NowPlayingAppIsInterruptedAttribute];
-  v4 = [v3 BOOLValue];
+  mediaServerController = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
+  v3 = [mediaServerController attributeForKey:AVSystemController_NowPlayingAppIsInterruptedAttribute];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)nowPlayingApplicationIsPlaying
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedNowPlayingAppIsPlaying = v2->_cachedNowPlayingAppIsPlaying;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedNowPlayingAppIsPlaying = selfCopy->_cachedNowPlayingAppIsPlaying;
+  objc_sync_exit(selfCopy);
 
   return cachedNowPlayingAppIsPlaying;
 }
@@ -268,14 +268,14 @@ LABEL_5:
   [(MRDMediaServerNowPlayingDataSource *)&v4 dealloc];
 }
 
-- (void)setNowPlayingApplications:(id)a3
+- (void)setNowPlayingApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 allValues];
+    allValues = [applicationsCopy allValues];
     v8 = MRCreateIndentedDebugDescriptionFromArray();
     v12 = 138543874;
     v13 = v6;
@@ -286,33 +286,33 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", &v12, 0x20u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [v4 copy];
-  cachedNowPlayingApplications = v9->_cachedNowPlayingApplications;
-  v9->_cachedNowPlayingApplications = v10;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = [applicationsCopy copy];
+  cachedNowPlayingApplications = selfCopy->_cachedNowPlayingApplications;
+  selfCopy->_cachedNowPlayingApplications = v10;
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDictionary)nowPlayingSessions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_cachedNowPlayingSessions copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_cachedNowPlayingSessions copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setNowPlayingSessions:(id)a3
+- (void)setNowPlayingSessions:(id)sessions
 {
-  v4 = a3;
+  sessionsCopy = sessions;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 allValues];
+    allValues = [sessionsCopy allValues];
     v8 = MRCreateIndentedDebugDescriptionFromArray();
     v12 = 138543874;
     v13 = v6;
@@ -323,23 +323,23 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", &v12, 0x20u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [v4 copy];
-  cachedNowPlayingSessions = v9->_cachedNowPlayingSessions;
-  v9->_cachedNowPlayingSessions = v10;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = [sessionsCopy copy];
+  cachedNowPlayingSessions = selfCopy->_cachedNowPlayingSessions;
+  selfCopy->_cachedNowPlayingSessions = v10;
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setNowPlayingAudioFormatContentInfos:(id)a3
+- (void)setNowPlayingAudioFormatContentInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 allValues];
+    allValues = [infosCopy allValues];
     v8 = MRCreateIndentedDebugDescriptionFromArray();
     v12 = 138543874;
     v13 = v6;
@@ -350,18 +350,18 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", &v12, 0x20u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [v4 copy];
-  cachedAudioFormatContentInfos = v9->_cachedAudioFormatContentInfos;
-  v9->_cachedAudioFormatContentInfos = v10;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = [infosCopy copy];
+  cachedAudioFormatContentInfos = selfCopy->_cachedAudioFormatContentInfos;
+  selfCopy->_cachedAudioFormatContentInfos = v10;
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setNowPlayingApplicationDisplayID:(id)a3
+- (void)setNowPlayingApplicationDisplayID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -370,28 +370,28 @@ LABEL_5:
     v11 = 2114;
     v12 = @"nowPlayingApplicationDisplayID";
     v13 = 2112;
-    v14 = v4;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", &v9, 0x20u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [v4 copy];
-  cachedNowPlayingAppDisplayID = v6->_cachedNowPlayingAppDisplayID;
-  v6->_cachedNowPlayingAppDisplayID = v7;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [dCopy copy];
+  cachedNowPlayingAppDisplayID = selfCopy->_cachedNowPlayingAppDisplayID;
+  selfCopy->_cachedNowPlayingAppDisplayID = v7;
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setNowPlayingApplicationIsPlaying:(BOOL)a3
+- (void)setNowPlayingApplicationIsPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = @"NO";
-    if (v3)
+    if (playingCopy)
     {
       v7 = @"YES";
     }
@@ -405,18 +405,18 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", &v9, 0x20u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v8->_cachedNowPlayingAppIsPlaying = v3;
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_cachedNowPlayingAppIsPlaying = playingCopy;
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)shouldSendCommand:(id)a3
+- (BOOL)shouldSendCommand:(id)command
 {
-  if ([a3 originatedFromAccessory])
+  if ([command originatedFromAccessory])
   {
-    v4 = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
-    v5 = [v4 attributeForKey:AVSystemController_ShouldIgnorePlayCommandsFromAccessoryAttribute];
+    mediaServerController = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
+    v5 = [mediaServerController attributeForKey:AVSystemController_ShouldIgnorePlayCommandsFromAccessoryAttribute];
 
     if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -448,10 +448,10 @@ LABEL_5:
 
 - (id)topOfNowPlayingAppStack
 {
-  v2 = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
-  v3 = [v2 topOfNowPlayingAppStack];
+  mediaServerController = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
+  topOfNowPlayingAppStack = [mediaServerController topOfNowPlayingAppStack];
 
-  return v3;
+  return topOfNowPlayingAppStack;
 }
 
 - (void)_popNowPlayingAppStack
@@ -463,31 +463,31 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MediaServerNowPlayingDataSource] Popping nowPlayingAppStack..", v5, 2u);
   }
 
-  v4 = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
-  [v4 popNowPlayingAppStack];
+  mediaServerController = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
+  [mediaServerController popNowPlayingAppStack];
 }
 
-- (void)_nowPlayingAppDidChangeNotification:(id)a3
+- (void)_nowPlayingAppDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
-  v6 = [v5 attributeForKey:AVSystemController_NowPlayingAppDisplayIDAttribute];
+  notificationCopy = notification;
+  mediaServerController = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
+  v6 = [mediaServerController attributeForKey:AVSystemController_NowPlayingAppDisplayIDAttribute];
   v7 = [v6 copy];
 
-  v8 = [v5 attributeForKey:AVSystemController_NowPlayingAppIsPlayingAttribute];
-  v9 = [v8 BOOLValue];
+  v8 = [mediaServerController attributeForKey:AVSystemController_NowPlayingAppIsPlayingAttribute];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v5 attributeForKey:AVSystemController_NowPlayingAppPIDAttribute];
-  v11 = [v10 intValue];
+  v10 = [mediaServerController attributeForKey:AVSystemController_NowPlayingAppPIDAttribute];
+  intValue = [v10 intValue];
 
-  v12 = self;
-  objc_sync_enter(v12);
-  [(MRDMediaServerNowPlayingDataSource *)v12 setNowPlayingApplicationDisplayID:v7];
-  [(MRDMediaServerNowPlayingDataSource *)v12 setNowPlayingApplicationPID:v11];
-  [(MRDMediaServerNowPlayingDataSource *)v12 setNowPlayingApplicationIsPlaying:v9];
-  objc_sync_exit(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingApplicationDisplayID:v7];
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingApplicationPID:intValue];
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingApplicationIsPlaying:bOOLValue];
+  objc_sync_exit(selfCopy);
 
-  v13 = [(MRDNowPlayingDataSource *)v12 observersForSelector:"nowPlayingDataSourceNowPlayingApplicationDidChange:"];
+  v13 = [(MRDNowPlayingDataSource *)selfCopy observersForSelector:"nowPlayingDataSourceNowPlayingApplicationDidChange:"];
   if ([v13 count])
   {
     v20 = 0u;
@@ -509,7 +509,7 @@ LABEL_5:
             objc_enumerationMutation(v14);
           }
 
-          [*(*(&v18 + 1) + 8 * v17) nowPlayingDataSourceNowPlayingApplicationDidChange:{v12, v18}];
+          [*(*(&v18 + 1) + 8 * v17) nowPlayingDataSourceNowPlayingApplicationDidChange:{selfCopy, v18}];
           v17 = v17 + 1;
         }
 
@@ -522,10 +522,10 @@ LABEL_5:
   }
 }
 
-- (void)_nowPlayingAppIsPlayingDidChangeNotification:(id)a3
+- (void)_nowPlayingAppIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
-  v5 = [v4 attributeForKey:AVSystemController_NowPlayingAppIsPlayingAttribute];
+  mediaServerController = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
+  v5 = [mediaServerController attributeForKey:AVSystemController_NowPlayingAppIsPlayingAttribute];
   -[MRDMediaServerNowPlayingDataSource setNowPlayingApplicationIsPlaying:](self, "setNowPlayingApplicationIsPlaying:", [v5 BOOLValue]);
 
   v6 = [(MRDNowPlayingDataSource *)self observersForSelector:"nowPlayingDataSourceNowPlayingApplicationPlaybackStateDidChange:"];
@@ -564,10 +564,10 @@ LABEL_5:
   }
 }
 
-- (void)_someSessionIsPlayingDidChangeNotification:(id)a3
+- (void)_someSessionIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
-  v5 = [v4 attributeForKey:AVSystemController_PlayingSessionsDescriptionAttribute];
+  mediaServerController = [(MRDMediaServerNowPlayingDataSource *)self mediaServerController];
+  v5 = [mediaServerController attributeForKey:AVSystemController_PlayingSessionsDescriptionAttribute];
 
   if (v5)
   {
@@ -611,53 +611,53 @@ LABEL_5:
   }
 }
 
-- (void)_sourceFormatInfoDidChangeNotification:(id)a3
+- (void)_sourceFormatInfoDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
     v8 = objc_opt_class();
     v9 = 2112;
-    v10 = v4;
+    v10 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MediaServerNowPlayingDataSource] %@ Handling %@", &v7, 0x16u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(MRDMediaServerNowPlayingDataSource *)v6 _updateNowPlayingAudioFormatContentInfo];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy _updateNowPlayingAudioFormatContentInfo];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_renderingModeChangeNotification:(id)a3
+- (void)_renderingModeChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
     v8 = objc_opt_class();
     v9 = 2112;
-    v10 = v4;
+    v10 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ Handling %@", &v7, 0x16u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(MRDMediaServerNowPlayingDataSource *)v6 _updateNowPlayingAudioFormatContentInfo];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy _updateNowPlayingAudioFormatContentInfo];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_avSessionMediaServicesResetNotification:(id)a3
+- (void)_avSessionMediaServicesResetNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 object];
+    object = [notificationCopy object];
     v7 = 138412290;
-    v8 = v6;
+    v8 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MediaServerNowPlayingDataSource] AVAudioSessionMediaServicesWereReset notification received %@", &v7, 0xCu);
   }
 
@@ -665,15 +665,15 @@ LABEL_5:
   [(MRDMediaServerNowPlayingDataSource *)self loadMediaServerState];
 }
 
-- (void)setMediaServerController:(id)a3
+- (void)setMediaServerController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = @"YES";
-    if (!v4)
+    if (!controllerCopy)
     {
       v7 = @"NO";
     }
@@ -692,27 +692,27 @@ LABEL_5:
   v11 = 3221225472;
   v12 = sub_10016D604;
   v13 = &unk_1004B68F0;
-  v14 = self;
-  v15 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v15 = controllerCopy;
+  v9 = controllerCopy;
   dispatch_barrier_sync(mediaServerControllerLock, &v10);
-  [(MRDMediaServerNowPlayingDataSource *)self loadMediaServerStateWithController:v9, v10, v11, v12, v13, v14];
+  [(MRDMediaServerNowPlayingDataSource *)self loadMediaServerStateWithController:v9, v10, v11, v12, v13, selfCopy];
 }
 
 - (void)loadMediaServerState
 {
-  v3 = [(MRDMediaServerNowPlayingDataSource *)self _createMediaServerController];
-  [(MRDMediaServerNowPlayingDataSource *)self setMediaServerController:v3];
+  _createMediaServerController = [(MRDMediaServerNowPlayingDataSource *)self _createMediaServerController];
+  [(MRDMediaServerNowPlayingDataSource *)self setMediaServerController:_createMediaServerController];
 }
 
-- (void)loadMediaServerStateWithController:(id)a3
+- (void)loadMediaServerStateWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v83 = v4;
+    v83 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MediaServerNowPlayingDataSource] loadMediaServerState: %@", buf, 0xCu);
   }
 
@@ -720,73 +720,73 @@ LABEL_5:
   {
     v81 = AVSystemController_ServerConnectionDiedNotification;
     v6 = [NSArray arrayWithObjects:&v81 count:1];
-    [v4 setAttribute:v6 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
+    [controllerCopy setAttribute:v6 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
 
     v7 = +[NSNotificationCenter defaultCenter];
-    [v7 addObserver:self selector:"_avSessionMediaServicesResetNotification:" name:AVSystemController_ServerConnectionDiedNotification object:v4];
+    [v7 addObserver:self selector:"_avSessionMediaServicesResetNotification:" name:AVSystemController_ServerConnectionDiedNotification object:controllerCopy];
   }
 
   if (AVSystemController_NowPlayingAppPIDDidChangeNotification)
   {
     v80 = AVSystemController_NowPlayingAppPIDDidChangeNotification;
     v8 = [NSArray arrayWithObjects:&v80 count:1];
-    [v4 setAttribute:v8 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
+    [controllerCopy setAttribute:v8 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
 
     v9 = +[NSNotificationCenter defaultCenter];
-    [v9 addObserver:self selector:"_nowPlayingAppDidChangeNotification:" name:AVSystemController_NowPlayingAppPIDDidChangeNotification object:v4];
+    [v9 addObserver:self selector:"_nowPlayingAppDidChangeNotification:" name:AVSystemController_NowPlayingAppPIDDidChangeNotification object:controllerCopy];
   }
 
   if (AVSystemController_NowPlayingAppIsPlayingDidChangeNotification)
   {
     v79 = AVSystemController_NowPlayingAppIsPlayingDidChangeNotification;
     v10 = [NSArray arrayWithObjects:&v79 count:1];
-    [v4 setAttribute:v10 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
+    [controllerCopy setAttribute:v10 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
 
     v11 = +[NSNotificationCenter defaultCenter];
-    [v11 addObserver:self selector:"_nowPlayingAppIsPlayingDidChangeNotification:" name:AVSystemController_NowPlayingAppIsPlayingDidChangeNotification object:v4];
+    [v11 addObserver:self selector:"_nowPlayingAppIsPlayingDidChangeNotification:" name:AVSystemController_NowPlayingAppIsPlayingDidChangeNotification object:controllerCopy];
   }
 
   v12 = +[MRUserSettings currentSettings];
-  v13 = [v12 needsMXApplications];
+  needsMXApplications = [v12 needsMXApplications];
 
-  if (v13)
+  if (needsMXApplications)
   {
     if (AVSystemController_SomeSessionIsPlayingDidChangeNotification)
     {
       v78 = AVSystemController_SomeSessionIsPlayingDidChangeNotification;
       v14 = [NSArray arrayWithObjects:&v78 count:1];
-      [v4 setAttribute:v14 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
+      [controllerCopy setAttribute:v14 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
 
       v15 = +[NSNotificationCenter defaultCenter];
-      [v15 addObserver:self selector:"_someSessionIsPlayingDidChangeNotification:" name:AVSystemController_SomeSessionIsPlayingDidChangeNotification object:v4];
+      [v15 addObserver:self selector:"_someSessionIsPlayingDidChangeNotification:" name:AVSystemController_SomeSessionIsPlayingDidChangeNotification object:controllerCopy];
     }
 
     if (AVSystemController_SourceFormatInfoDidChangeNotification)
     {
       v77 = AVSystemController_SourceFormatInfoDidChangeNotification;
       v16 = [NSArray arrayWithObjects:&v77 count:1];
-      [v4 setAttribute:v16 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
+      [controllerCopy setAttribute:v16 forKey:AVSystemController_SubscribeToNotificationsAttribute error:0];
 
       v17 = +[NSNotificationCenter defaultCenter];
-      [v17 addObserver:self selector:"_sourceFormatInfoDidChangeNotification:" name:AVSystemController_SourceFormatInfoDidChangeNotification object:v4];
+      [v17 addObserver:self selector:"_sourceFormatInfoDidChangeNotification:" name:AVSystemController_SourceFormatInfoDidChangeNotification object:controllerCopy];
     }
   }
 
-  v18 = [v4 attributeForKey:AVSystemController_NowPlayingAppDisplayIDAttribute];
+  v18 = [controllerCopy attributeForKey:AVSystemController_NowPlayingAppDisplayIDAttribute];
   v19 = [v18 copy];
 
-  v20 = [v4 attributeForKey:AVSystemController_NowPlayingAppIsPlayingAttribute];
-  v21 = [v20 BOOLValue];
+  v20 = [controllerCopy attributeForKey:AVSystemController_NowPlayingAppIsPlayingAttribute];
+  bOOLValue = [v20 BOOLValue];
 
-  v22 = [v4 attributeForKey:AVSystemController_NowPlayingAppPIDAttribute];
-  v23 = [v22 intValue];
+  v22 = [controllerCopy attributeForKey:AVSystemController_NowPlayingAppPIDAttribute];
+  intValue = [v22 intValue];
 
   v24 = +[MRUserSettings currentSettings];
-  v25 = [v24 needsMXApplications];
+  needsMXApplications2 = [v24 needsMXApplications];
 
-  if (v25)
+  if (needsMXApplications2)
   {
-    v26 = [v4 attributeForKey:AVSystemController_PlayingSessionsDescriptionAttribute];
+    v26 = [controllerCopy attributeForKey:AVSystemController_PlayingSessionsDescriptionAttribute];
     v27 = [(MRDMediaServerNowPlayingDataSource *)self nowPlayingApplicationsFromSessionsArray:v26];
 
     v28 = [(MRDMediaServerNowPlayingDataSource *)self nowPlayingAudioFormatContentInfosFromNowPlayingApplications:v27];
@@ -798,21 +798,21 @@ LABEL_5:
     v28 = 0;
   }
 
-  v29 = self;
-  objc_sync_enter(v29);
-  [(MRDMediaServerNowPlayingDataSource *)v29 setNowPlayingApplicationDisplayID:v19];
-  [(MRDMediaServerNowPlayingDataSource *)v29 setNowPlayingApplicationIsPlaying:v21];
-  [(MRDMediaServerNowPlayingDataSource *)v29 setNowPlayingApplicationPID:v23];
-  [(MRDMediaServerNowPlayingDataSource *)v29 setNowPlayingSessions:0];
-  [(MRDMediaServerNowPlayingDataSource *)v29 setNowPlayingApplications:v27];
-  [(MRDMediaServerNowPlayingDataSource *)v29 setNowPlayingAudioFormatContentInfos:v28];
-  objc_sync_exit(v29);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingApplicationDisplayID:v19];
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingApplicationIsPlaying:bOOLValue];
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingApplicationPID:intValue];
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingSessions:0];
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingApplications:v27];
+  [(MRDMediaServerNowPlayingDataSource *)selfCopy setNowPlayingAudioFormatContentInfos:v28];
+  objc_sync_exit(selfCopy);
 
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v30 = [(MRDNowPlayingDataSource *)v29 observersForSelector:"nowPlayingDataSourceNowPlayingApplicationDidChange:"];
+  v30 = [(MRDNowPlayingDataSource *)selfCopy observersForSelector:"nowPlayingDataSourceNowPlayingApplicationDidChange:"];
   v31 = [v30 countByEnumeratingWithState:&v68 objects:v76 count:16];
   if (v31)
   {
@@ -827,7 +827,7 @@ LABEL_5:
           objc_enumerationMutation(v30);
         }
 
-        [*(*(&v68 + 1) + 8 * v33) nowPlayingDataSourceNowPlayingApplicationDidChange:v29];
+        [*(*(&v68 + 1) + 8 * v33) nowPlayingDataSourceNowPlayingApplicationDidChange:selfCopy];
         v33 = v33 + 1;
       }
 
@@ -842,7 +842,7 @@ LABEL_5:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v34 = [(MRDNowPlayingDataSource *)v29 observersForSelector:"nowPlayingDataSourceNowPlayingApplicationPlaybackStateDidChange:"];
+  v34 = [(MRDNowPlayingDataSource *)selfCopy observersForSelector:"nowPlayingDataSourceNowPlayingApplicationPlaybackStateDidChange:"];
   v35 = [v34 countByEnumeratingWithState:&v64 objects:v75 count:16];
   if (v35)
   {
@@ -857,7 +857,7 @@ LABEL_5:
           objc_enumerationMutation(v34);
         }
 
-        [*(*(&v64 + 1) + 8 * v37) nowPlayingDataSourceNowPlayingApplicationPlaybackStateDidChange:v29];
+        [*(*(&v64 + 1) + 8 * v37) nowPlayingDataSourceNowPlayingApplicationPlaybackStateDidChange:selfCopy];
         v37 = v37 + 1;
       }
 
@@ -872,7 +872,7 @@ LABEL_5:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v38 = [(MRDNowPlayingDataSource *)v29 observersForSelector:"nowPlayingDataSourceNowPlayingSessionsPlaybackStateDidChange:"];
+  v38 = [(MRDNowPlayingDataSource *)selfCopy observersForSelector:"nowPlayingDataSourceNowPlayingSessionsPlaybackStateDidChange:"];
   v39 = [v38 countByEnumeratingWithState:&v60 objects:v74 count:16];
   if (v39)
   {
@@ -887,7 +887,7 @@ LABEL_5:
           objc_enumerationMutation(v38);
         }
 
-        [*(*(&v60 + 1) + 8 * v41) nowPlayingDataSourceNowPlayingSessionsPlaybackStateDidChange:v29];
+        [*(*(&v60 + 1) + 8 * v41) nowPlayingDataSourceNowPlayingSessionsPlaybackStateDidChange:selfCopy];
         v41 = v41 + 1;
       }
 
@@ -899,15 +899,15 @@ LABEL_5:
   }
 
   v42 = +[MRUserSettings currentSettings];
-  v43 = [v42 needsMXApplications];
+  needsMXApplications3 = [v42 needsMXApplications];
 
-  if (v43)
+  if (needsMXApplications3)
   {
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v44 = [(MRDNowPlayingDataSource *)v29 observersForSelector:"nowPlayingDataSourceNowPlayingApplicationsPlaybackStateDidChange:"];
+    v44 = [(MRDNowPlayingDataSource *)selfCopy observersForSelector:"nowPlayingDataSourceNowPlayingApplicationsPlaybackStateDidChange:"];
     v45 = [v44 countByEnumeratingWithState:&v56 objects:v73 count:16];
     if (v45)
     {
@@ -922,7 +922,7 @@ LABEL_5:
             objc_enumerationMutation(v44);
           }
 
-          [*(*(&v56 + 1) + 8 * v47) nowPlayingDataSourceNowPlayingApplicationsPlaybackStateDidChange:v29];
+          [*(*(&v56 + 1) + 8 * v47) nowPlayingDataSourceNowPlayingApplicationsPlaybackStateDidChange:selfCopy];
           v47 = v47 + 1;
         }
 
@@ -937,7 +937,7 @@ LABEL_5:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v48 = [(MRDNowPlayingDataSource *)v29 observersForSelector:"nowPlayingDataSourceNowPlayingAudioFormatContentInfosDidChange:", 0];
+    v48 = [(MRDNowPlayingDataSource *)selfCopy observersForSelector:"nowPlayingDataSourceNowPlayingAudioFormatContentInfosDidChange:", 0];
     v49 = [v48 countByEnumeratingWithState:&v52 objects:v72 count:16];
     if (v49)
     {
@@ -952,7 +952,7 @@ LABEL_5:
             objc_enumerationMutation(v48);
           }
 
-          [*(*(&v52 + 1) + 8 * v51) nowPlayingDataSourceNowPlayingAudioFormatContentInfosDidChange:v29];
+          [*(*(&v52 + 1) + 8 * v51) nowPlayingDataSourceNowPlayingAudioFormatContentInfosDidChange:selfCopy];
           v51 = v51 + 1;
         }
 
@@ -982,15 +982,15 @@ LABEL_5:
   [v4 removeObserver:self name:AVSystemController_SourceFormatInfoDidChangeNotification object:0];
 }
 
-- (id)nowPlayingApplicationsFromSessionsArray:(id)a3
+- (id)nowPlayingApplicationsFromSessionsArray:(id)array
 {
-  v3 = a3;
-  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
+  arrayCopy = array;
+  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [arrayCopy count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v3;
+  obj = arrayCopy;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -1027,16 +1027,16 @@ LABEL_5:
   return v16;
 }
 
-- (id)nowPlayingAudioFormatContentInfosFromNowPlayingApplications:(id)a3
+- (id)nowPlayingAudioFormatContentInfosFromNowPlayingApplications:(id)applications
 {
-  v4 = a3;
-  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  applicationsCopy = applications;
+  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [applicationsCopy count]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 allValues];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [applicationsCopy allValues];
+  v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1047,16 +1047,16 @@ LABEL_5:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [(MRDMediaServerNowPlayingDataSource *)self audioFormatContentInfoForApplication:v11 cachedAudioFormatContentInfo:0];
-        v13 = [v11 audioSessionID];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        audioSessionID = [v11 audioSessionID];
+        [v5 setObject:v12 forKeyedSubscript:audioSessionID];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1065,26 +1065,26 @@ LABEL_5:
   return v5;
 }
 
-- (id)audioFormatContentInfoForApplication:(id)a3 cachedAudioFormatContentInfo:(id)a4
+- (id)audioFormatContentInfoForApplication:(id)application cachedAudioFormatContentInfo:(id)info
 {
-  v6 = a3;
-  v48 = a4;
-  v7 = [v6 audioSessionID];
+  applicationCopy = application;
+  infoCopy = info;
+  audioSessionID = [applicationCopy audioSessionID];
 
-  if (!v7)
+  if (!audioSessionID)
   {
     v16 = 0;
     goto LABEL_32;
   }
 
-  v8 = [v6 audioSessionID];
-  v9 = [v8 unsignedIntValue];
+  audioSessionID2 = [applicationCopy audioSessionID];
+  unsignedIntValue = [audioSessionID2 unsignedIntValue];
 
-  v46 = sub_10000AD28([v6 pid]);
-  v10 = self;
-  objc_sync_enter(v10);
-  cachedAudioSessions = v10->_cachedAudioSessions;
-  v12 = [NSNumber numberWithUnsignedInt:v9];
+  v46 = sub_10000AD28([applicationCopy pid]);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedAudioSessions = selfCopy->_cachedAudioSessions;
+  v12 = [NSNumber numberWithUnsignedInt:unsignedIntValue];
   v13 = [(MSVLRUDictionary *)cachedAudioSessions objectForKeyedSubscript:v12];
 
   if (!v13)
@@ -1105,7 +1105,7 @@ LABEL_5:
     v17 = [AVAudioSession alloc];
     *buf = *v50;
     *&buf[16] = *&v50[16];
-    v13 = [v17 initSiblingSession:v9 auditToken:buf clientIdentifier:@"MediaRemote" autoReconnect:0];
+    v13 = [v17 initSiblingSession:unsignedIntValue auditToken:buf clientIdentifier:@"MediaRemote" autoReconnect:0];
     v18 = _MRLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -1113,16 +1113,16 @@ LABEL_5:
       *buf = 138543874;
       *&buf[4] = v19;
       *&buf[12] = 1024;
-      *&buf[14] = v9;
+      *&buf[14] = unsignedIntValue;
       *&buf[18] = 2114;
       *&buf[20] = v13;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ getting sibling audio session for: %u | session: %{public}@", buf, 0x1Cu);
     }
 
-    [(MRDMediaServerNowPlayingDataSource *)v10 addCachedAudioSession:v13 forID:v9];
+    [(MRDMediaServerNowPlayingDataSource *)selfCopy addCachedAudioSession:v13 forID:unsignedIntValue];
     if (!v13)
     {
-      v20 = [AVAudioSession retrieveSessionWithID:v9];
+      v20 = [AVAudioSession retrieveSessionWithID:unsignedIntValue];
       v21 = _MRLogForCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
@@ -1130,27 +1130,27 @@ LABEL_5:
         *v50 = 138543874;
         *&v50[4] = v22;
         *&v50[12] = 1024;
-        *&v50[14] = v9;
+        *&v50[14] = unsignedIntValue;
         *&v50[18] = 2114;
         *&v50[20] = v20;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ falling back to retrieve audio session for: %u | session: %{public}@", v50, 0x1Cu);
       }
 
       v13 = v20;
-      [(MRDMediaServerNowPlayingDataSource *)v10 addCachedAudioSession:v20 forID:v9];
+      [(MRDMediaServerNowPlayingDataSource *)selfCopy addCachedAudioSession:v20 forID:unsignedIntValue];
     }
   }
 
   v45 = v13;
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  v47 = [v13 consolidatedSourceContentInfo];
+  consolidatedSourceContentInfo = [v13 consolidatedSourceContentInfo];
   v23 = _MRLogForCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v24 = objc_opt_class();
-    v25 = [v6 pid];
-    v26 = [v6 audioSessionID];
+    v25 = [applicationCopy pid];
+    audioSessionID3 = [applicationCopy audioSessionID];
     *v50 = 138544386;
     *&v50[4] = v24;
     *&v50[12] = 1024;
@@ -1158,51 +1158,51 @@ LABEL_5:
     *&v50[18] = 2114;
     *&v50[20] = v46;
     *&v50[28] = 2114;
-    *&v50[30] = v26;
+    *&v50[30] = audioSessionID3;
     v51 = 2114;
-    v52 = v47;
+    v52 = consolidatedSourceContentInfo;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ pid: %i | bundle id: %{public}@ | session id: %{public}@ | consolidated info: %{public}@", v50, 0x30u);
   }
 
-  v27 = [(MRDMediaServerNowPlayingDataSource *)v10 contentInfoForConsolidatedSourceContentInfo:v47];
-  v49 = [(MRDMediaServerNowPlayingDataSource *)v10 bestAvailableContentForConsolidatedSourceContentInfo:v47];
-  v28 = [v27 objectForKeyedSubscript:AVAudioSessionSourceContentCurrentlyPlayingFormatKey];
-  v29 = [v27 objectForKeyedSubscript:AVAudioSessionSourceContentCurrentlyPlayingChannelCountKey];
+  v27 = [(MRDMediaServerNowPlayingDataSource *)selfCopy contentInfoForConsolidatedSourceContentInfo:consolidatedSourceContentInfo];
+  bestAvailableContent = [(MRDMediaServerNowPlayingDataSource *)selfCopy bestAvailableContentForConsolidatedSourceContentInfo:consolidatedSourceContentInfo];
+  audioFormat = [v27 objectForKeyedSubscript:AVAudioSessionSourceContentCurrentlyPlayingFormatKey];
+  channelCount = [v27 objectForKeyedSubscript:AVAudioSessionSourceContentCurrentlyPlayingChannelCountKey];
   v30 = [v27 objectForKeyedSubscript:AVAudioSessionSourceContentCurrentlyPlayingIsEligibleForSpatializationKey];
   v31 = [v27 objectForKeyedSubscript:AVAudioSessionSourceContentCurrentlyPlayingIsSpatializedKey];
-  v44 = [v45 renderingMode];
+  renderingMode = [v45 renderingMode];
   v32 = _MRLogForCategory();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
     v33 = objc_opt_class();
-    v34 = [v6 audioSessionID];
-    v35 = [v6 pid];
+    audioSessionID4 = [applicationCopy audioSessionID];
+    v35 = [applicationCopy pid];
     *v50 = 138545666;
     *&v50[4] = v33;
     *&v50[12] = 2114;
-    *&v50[14] = v34;
+    *&v50[14] = audioSessionID4;
     *&v50[22] = 1024;
     *&v50[24] = v35;
     *&v50[28] = 2114;
     *&v50[30] = v46;
     v51 = 2114;
-    v52 = v28;
+    v52 = audioFormat;
     v53 = 2114;
-    v54 = v29;
+    v54 = channelCount;
     v55 = 2114;
-    v56 = v49;
+    v56 = bestAvailableContent;
     v57 = 2114;
     v58 = v30;
     v59 = 2114;
     v60 = v31;
     v61 = 2048;
-    v62 = v44;
+    v62 = renderingMode;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ selected audio format info | session id: %{public}@ | pid: %i | bundle id: %{public}@ | audio format: %{public}@ | channel #: %{public}@ | available: %{public}@ | eligible: %{public}@ | active: %{public}@ | rendering mode: %ld", v50, 0x62u);
   }
 
-  if (v28)
+  if (audioFormat)
   {
-    if (v29)
+    if (channelCount)
     {
       goto LABEL_22;
     }
@@ -1210,18 +1210,18 @@ LABEL_5:
 
   else
   {
-    v28 = [v48 audioFormat];
-    if (v29)
+    audioFormat = [infoCopy audioFormat];
+    if (channelCount)
     {
       goto LABEL_22;
     }
   }
 
-  v29 = [v48 channelCount];
+  channelCount = [infoCopy channelCount];
 LABEL_22:
-  if (!v49)
+  if (!bestAvailableContent)
   {
-    v49 = [v48 bestAvailableContent];
+    bestAvailableContent = [infoCopy bestAvailableContent];
   }
 
   if (v30)
@@ -1234,40 +1234,40 @@ LABEL_22:
 
   else
   {
-    v30 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v48 isEligibleForSpatialization]);
+    v30 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [infoCopy isEligibleForSpatialization]);
     if (!v31)
     {
 LABEL_28:
-      v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v48 isSpatialized]);
+      v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [infoCopy isSpatialized]);
     }
   }
 
   v36 = [MRNowPlayingAudioFormatContentInfo alloc];
-  v37 = [v6 pid];
-  v38 = [v6 audioSessionID];
-  v16 = [v36 initWithPid:v37 bundleID:v46 audioSessionID:v38 audioFormat:v28 channelCount:v29 bestAvailableContent:v49 isEligibleForSpatialization:v30 isSpatialized:v31];
+  v37 = [applicationCopy pid];
+  audioSessionID5 = [applicationCopy audioSessionID];
+  v16 = [v36 initWithPid:v37 bundleID:v46 audioSessionID:audioSessionID5 audioFormat:audioFormat channelCount:channelCount bestAvailableContent:bestAvailableContent isEligibleForSpatialization:v30 isSpatialized:v31];
 
-  [v16 setRenderingMode:v44];
+  [v16 setRenderingMode:renderingMode];
   v39 = _MRLogForCategory();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
     v40 = objc_opt_class();
-    v41 = [v6 audioSessionID];
-    v42 = [v6 pid];
+    audioSessionID6 = [applicationCopy audioSessionID];
+    v42 = [applicationCopy pid];
     *v50 = 138545410;
     *&v50[4] = v40;
     *&v50[12] = 2114;
-    *&v50[14] = v41;
+    *&v50[14] = audioSessionID6;
     *&v50[22] = 1024;
     *&v50[24] = v42;
     *&v50[28] = 2114;
     *&v50[30] = v46;
     v51 = 2114;
-    v52 = v28;
+    v52 = audioFormat;
     v53 = 2114;
-    v54 = v29;
+    v54 = channelCount;
     v55 = 2114;
-    v56 = v49;
+    v56 = bestAvailableContent;
     v57 = 2114;
     v58 = v30;
     v59 = 2114;
@@ -1280,15 +1280,15 @@ LABEL_32:
   return v16;
 }
 
-- (id)contentInfoForConsolidatedSourceContentInfo:(id)a3
+- (id)contentInfoForConsolidatedSourceContentInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
+  infoCopy = info;
+  firstObject = [infoCopy firstObject];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = infoCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -1309,18 +1309,18 @@ LABEL_32:
 
         v11 = *(*(&v21 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:v19];
-        v13 = [v12 unsignedIntValue];
+        unsignedIntValue = [v12 unsignedIntValue];
 
         v14 = [v11 objectForKeyedSubscript:v9];
-        v15 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
 
-        if (v13 > v8 || (v15 & ~v7 & 1) != 0 && v13 == v8)
+        if (unsignedIntValue > v8 || (bOOLValue & ~v7 & 1) != 0 && unsignedIntValue == v8)
         {
           v16 = v11;
 
-          v7 = v15;
-          v8 = v13;
-          v4 = v16;
+          v7 = bOOLValue;
+          v8 = unsignedIntValue;
+          firstObject = v16;
         }
       }
 
@@ -1330,18 +1330,18 @@ LABEL_32:
     while (v6);
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (id)bestAvailableContentForConsolidatedSourceContentInfo:(id)a3
+- (id)bestAvailableContentForConsolidatedSourceContentInfo:(id)info
 {
-  v3 = a3;
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  infoCopy = info;
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [infoCopy count]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = infoCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -1374,38 +1374,38 @@ LABEL_32:
   v13 = kMXSession_SourceFormatInfoKey_BestAvailableContentType_Multichannel;
   if ([v4 containsObject:v12])
   {
-    v14 = v12;
+    anyObject = v12;
   }
 
   else if ([v4 containsObject:v13])
   {
-    v14 = v13;
+    anyObject = v13;
   }
 
   else
   {
-    v14 = [v4 anyObject];
+    anyObject = [v4 anyObject];
   }
 
-  v15 = v14;
+  v15 = anyObject;
 
   return v15;
 }
 
 - (id)description
 {
-  v3 = [(MRDMediaServerNowPlayingDataSource *)self _createMediaServerController];
-  v4 = self;
-  objc_sync_enter(v4);
+  _createMediaServerController = [(MRDMediaServerNowPlayingDataSource *)self _createMediaServerController];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_opt_class();
   v23 = NSStringFromClass(v5);
-  mediaServerController = v4->_mediaServerController;
-  cachedNowPlayingAppPID = v4->_cachedNowPlayingAppPID;
-  v25 = [v3 attributeForKey:AVSystemController_NowPlayingAppPIDAttribute];
-  v19 = [v25 intValue];
-  cachedNowPlayingAppDisplayID = v4->_cachedNowPlayingAppDisplayID;
-  v22 = [v3 attributeForKey:AVSystemController_NowPlayingAppDisplayIDAttribute];
-  if (v4->_cachedNowPlayingAppIsPlaying)
+  mediaServerController = selfCopy->_mediaServerController;
+  cachedNowPlayingAppPID = selfCopy->_cachedNowPlayingAppPID;
+  v25 = [_createMediaServerController attributeForKey:AVSystemController_NowPlayingAppPIDAttribute];
+  intValue = [v25 intValue];
+  cachedNowPlayingAppDisplayID = selfCopy->_cachedNowPlayingAppDisplayID;
+  v22 = [_createMediaServerController attributeForKey:AVSystemController_NowPlayingAppDisplayIDAttribute];
+  if (selfCopy->_cachedNowPlayingAppIsPlaying)
   {
     v6 = @"true";
   }
@@ -1416,7 +1416,7 @@ LABEL_32:
   }
 
   v17 = v6;
-  v24 = [v3 attributeForKey:AVSystemController_NowPlayingAppIsPlayingAttribute];
+  v24 = [_createMediaServerController attributeForKey:AVSystemController_NowPlayingAppIsPlayingAttribute];
   if ([v24 BOOLValue])
   {
     v7 = @"true";
@@ -1427,16 +1427,16 @@ LABEL_32:
     v7 = @"false";
   }
 
-  v8 = [(NSDictionary *)v4->_cachedNowPlayingApplications allValues];
+  allValues = [(NSDictionary *)selfCopy->_cachedNowPlayingApplications allValues];
   v9 = MRCreateIndentedDebugDescriptionFromArray();
-  v10 = [v3 attributeForKey:AVSystemController_PlayingSessionsDescriptionAttribute];
-  v11 = [(NSDictionary *)v4->_cachedAudioFormatContentInfos allValues];
+  v10 = [_createMediaServerController attributeForKey:AVSystemController_PlayingSessionsDescriptionAttribute];
+  allValues2 = [(NSDictionary *)selfCopy->_cachedAudioFormatContentInfos allValues];
   v12 = MRCreateIndentedDebugDescriptionFromArray();
-  v13 = [(MSVLRUDictionary *)v4->_cachedAudioSessions count];
-  v14 = [v3 topOfNowPlayingAppStack];
-  v15 = [NSString stringWithFormat:@"%@ %p {\n  %@ vs %@\n  cachedPID %d vs coreMedia %d\n  cachedDisplayID %@ vs CoreMedia %@\n  cachedIsPlaying %@ vs CoreMedia %@\n  cachedApplications %@ vs CoreMedia %@\n  cachedAudioFormatContentInfo = %@\n  audioSessions = %ld\n  topOfNowPlayingAppStack = %@\n}", v23, v4, mediaServerController, v3, cachedNowPlayingAppPID, v19, cachedNowPlayingAppDisplayID, v22, v17, v7, v9, v10, v12, v13, v14];
+  v13 = [(MSVLRUDictionary *)selfCopy->_cachedAudioSessions count];
+  topOfNowPlayingAppStack = [_createMediaServerController topOfNowPlayingAppStack];
+  v15 = [NSString stringWithFormat:@"%@ %p {\n  %@ vs %@\n  cachedPID %d vs coreMedia %d\n  cachedDisplayID %@ vs CoreMedia %@\n  cachedIsPlaying %@ vs CoreMedia %@\n  cachedApplications %@ vs CoreMedia %@\n  cachedAudioFormatContentInfo = %@\n  audioSessions = %ld\n  topOfNowPlayingAppStack = %@\n}", v23, selfCopy, mediaServerController, _createMediaServerController, cachedNowPlayingAppPID, intValue, cachedNowPlayingAppDisplayID, v22, v17, v7, v9, v10, v12, v13, topOfNowPlayingAppStack];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }

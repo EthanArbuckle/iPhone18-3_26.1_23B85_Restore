@@ -4,8 +4,8 @@
 - (BOOL)showRouteLabel;
 - (MPAVOutputDevicePlaybackDataSource)playbackDataSource;
 - (MRUArtworkView)artworkView;
-- (MRUNowPlayingViewController)initWithController:(id)a3 routeControlsPresentation:(int64_t)a4;
-- (MRUNowPlayingViewController)initWithRouteUID:(id)a3 client:(id)a4 player:(id)a5;
+- (MRUNowPlayingViewController)initWithController:(id)controller routeControlsPresentation:(int64_t)presentation;
+- (MRUNowPlayingViewController)initWithRouteUID:(id)d client:(id)client player:(id)player;
 - (MRUNowPlayingViewControllerDelegate)delegate;
 - (NSArray)restrictedRects;
 - (NSString)description;
@@ -16,68 +16,68 @@
 - (void)createRoutingViewController;
 - (void)createSuggestionsViewController;
 - (void)dealloc;
-- (void)didSelectArtworkView:(id)a3;
-- (void)didSelectQuickControl:(id)a3;
+- (void)didSelectArtworkView:(id)view;
+- (void)didSelectQuickControl:(id)control;
 - (void)launchNowPlayingApp;
 - (void)loadView;
-- (void)mediaSuggestionsViewController:(id)a3 didSelectSuggestion:(id)a4 completion:(id)a5;
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeBundleID:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeNowPlayingInfo:(id)a5;
-- (void)nowPlayingController:(id)a3 queueHandoffCoordinator:(id)a4 didChangeState:(int64_t)a5;
-- (void)nowPlayingController:(id)a3 tvRemoteController:(id)a4 didChangeShowTVRemote:(BOOL)a5;
-- (void)presentRoutingControlsFromSourceView:(id)a3;
-- (void)routingViewController:(id)a3 didSelectRoutingViewItem:(id)a4;
-- (void)routingViewControllerDidUpdateItems:(id)a3;
-- (void)setConfigureRoutingButton:(id)a3;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setContext:(int64_t)a3;
-- (void)setController:(id)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setPlaybackDataSource:(id)a3;
-- (void)setRoutingViewController:(id)a3;
-- (void)setShowArtworkView:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setSupportsHorizontalLayout:(BOOL)a3;
+- (void)mediaSuggestionsViewController:(id)controller didSelectSuggestion:(id)suggestion completion:(id)completion;
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeBundleID:(id)d;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeNowPlayingInfo:(id)info;
+- (void)nowPlayingController:(id)controller queueHandoffCoordinator:(id)coordinator didChangeState:(int64_t)state;
+- (void)nowPlayingController:(id)controller tvRemoteController:(id)remoteController didChangeShowTVRemote:(BOOL)remote;
+- (void)presentRoutingControlsFromSourceView:(id)view;
+- (void)routingViewController:(id)controller didSelectRoutingViewItem:(id)item;
+- (void)routingViewControllerDidUpdateItems:(id)items;
+- (void)setConfigureRoutingButton:(id)button;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setContext:(int64_t)context;
+- (void)setController:(id)controller;
+- (void)setLayout:(int64_t)layout;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setPlaybackDataSource:(id)source;
+- (void)setRoutingViewController:(id)controller;
+- (void)setShowArtworkView:(BOOL)view;
+- (void)setStylingProvider:(id)provider;
+- (void)setSupportsHorizontalLayout:(BOOL)layout;
 - (void)trackStartedShowingMediaSuggestions;
-- (void)trackSuggestionSelected:(id)a3 atIndex:(unint64_t)a4 error:(id)a5;
-- (void)trackSuggestionsDisplayed:(id)a3;
-- (void)transportControlsView:(id)a3 didSelectTVRemoteButton:(id)a4;
+- (void)trackSuggestionSelected:(id)selected atIndex:(unint64_t)index error:(id)error;
+- (void)trackSuggestionsDisplayed:(id)displayed;
+- (void)transportControlsView:(id)view didSelectTVRemoteButton:(id)button;
 - (void)updateArtwork;
-- (void)updateContentAnimated:(id)a3 completion:(id)a4;
+- (void)updateContentAnimated:(id)animated completion:(id)completion;
 - (void)updateLayout;
 - (void)updateNowPlayingInfo;
 - (void)updateQuickControl;
 - (void)updateRouteLabel;
-- (void)updateRoutingButtonAnimated:(BOOL)a3;
+- (void)updateRoutingButtonAnimated:(BOOL)animated;
 - (void)updateRoutingContentEdgeInsets;
 - (void)updateRoutingDiscoveryMode;
 - (void)updateSuggestionContext;
 - (void)updateSuggestions;
-- (void)updateTimeControlsForPresentationInterval:(id)a3;
+- (void)updateTimeControlsForPresentationInterval:(id)interval;
 - (void)updateTransportControls;
 - (void)updateVisibility;
 - (void)updateVolumeControls;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MRUNowPlayingViewController
 
-- (void)trackSuggestionsDisplayed:(id)a3
+- (void)trackSuggestionsDisplayed:(id)displayed
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  displayedCopy = displayed;
   v4 = objc_alloc_init(MEMORY[0x1E696AB50]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = v3;
+  v5 = displayedCopy;
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v6)
   {
@@ -92,11 +92,11 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v32 + 1) + 8 * i) bundleID];
-        v11 = v10;
-        if (v10)
+        bundleID = [*(*(&v32 + 1) + 8 * i) bundleID];
+        v11 = bundleID;
+        if (bundleID)
         {
-          v12 = v10;
+          v12 = bundleID;
         }
 
         else
@@ -150,7 +150,7 @@
         v23[4] = v19;
         v20 = v14;
         v24 = v20;
-        v25 = self;
+        selfCopy = self;
         [MRUAnalytics sendEvent:@"com.apple.mediaremote.suggestion-provider-displayed" withError:0 payload:v23];
       }
 
@@ -205,18 +205,18 @@ id __68__MRUNowPlayingViewController_Analytics__trackSuggestionsDisplayed___bloc
   return v6;
 }
 
-- (void)trackSuggestionSelected:(id)a3 atIndex:(unint64_t)a4 error:(id)a5
+- (void)trackSuggestionSelected:(id)selected atIndex:(unint64_t)index error:(id)error
 {
-  v8 = a3;
+  selectedCopy = selected;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__MRUNowPlayingViewController_Analytics__trackSuggestionSelected_atIndex_error___block_invoke;
   v10[3] = &unk_1E7663870;
   v10[4] = self;
-  v11 = v8;
-  v12 = a4;
-  v9 = v8;
-  [MRUAnalytics sendEvent:@"com.apple.mediaremote.suggestion-selected" withError:a5 payload:v10];
+  v11 = selectedCopy;
+  indexCopy = index;
+  v9 = selectedCopy;
+  [MRUAnalytics sendEvent:@"com.apple.mediaremote.suggestion-selected" withError:error payload:v10];
 }
 
 id __80__MRUNowPlayingViewController_Analytics__trackSuggestionSelected_atIndex_error___block_invoke(uint64_t a1)
@@ -250,32 +250,32 @@ id __80__MRUNowPlayingViewController_Analytics__trackSuggestionSelected_atIndex_
 
 - (id)contextString
 {
-  v2 = [(MRUNowPlayingViewController *)self context];
+  context = [(MRUNowPlayingViewController *)self context];
 
-  return MRUNowPlayingContextDescription(v2);
+  return MRUNowPlayingContextDescription(context);
 }
 
 - (id)destination
 {
-  v2 = [(MRUNowPlayingViewController *)self controller];
-  v3 = [v2 endpointController];
-  v4 = [v3 route];
-  v5 = [v4 endpoint];
+  controller = [(MRUNowPlayingViewController *)self controller];
+  endpointController = [controller endpointController];
+  route = [endpointController route];
+  endpoint = [route endpoint];
 
-  return v5;
+  return endpoint;
 }
 
-- (MRUNowPlayingViewController)initWithController:(id)a3 routeControlsPresentation:(int64_t)a4
+- (MRUNowPlayingViewController)initWithController:(id)controller routeControlsPresentation:(int64_t)presentation
 {
-  v7 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = MRUNowPlayingViewController;
   v8 = [(MRUNowPlayingViewController *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    v8->_routeControlsPresentation = a4;
-    objc_storeStrong(&v8->_controller, a3);
+    v8->_routeControlsPresentation = presentation;
+    objc_storeStrong(&v8->_controller, controller);
     v10 = objc_alloc_init(MRUVisualStylingProvider);
     stylingProvider = v9->_stylingProvider;
     v9->_stylingProvider = v10;
@@ -336,25 +336,25 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
   return v4;
 }
 
-- (MRUNowPlayingViewController)initWithRouteUID:(id)a3 client:(id)a4 player:(id)a5
+- (MRUNowPlayingViewController)initWithRouteUID:(id)d client:(id)client player:(id)player
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [[MRUEndpointController alloc] initWithRouteUID:v8 client:v10 player:v9];
+  dCopy = d;
+  playerCopy = player;
+  clientCopy = client;
+  v11 = [[MRUEndpointController alloc] initWithRouteUID:dCopy client:clientCopy player:playerCopy];
 
   v12 = [[MRUNowPlayingController alloc] initWithEndpointController:v11];
   v13 = [(MRUNowPlayingViewController *)self initWithController:v12 routeControlsPresentation:2];
   if (v13)
   {
-    v14 = v8;
-    if (!v8)
+    localDeviceUID = dCopy;
+    if (!dCopy)
     {
-      v14 = [MEMORY[0x1E69B09A8] localDeviceUID];
+      localDeviceUID = [MEMORY[0x1E69B09A8] localDeviceUID];
     }
 
-    objc_storeStrong(&v13->_routeUID, v14);
-    if (!v8)
+    objc_storeStrong(&v13->_routeUID, localDeviceUID);
+    if (!dCopy)
     {
     }
   }
@@ -374,49 +374,49 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
   v29.super_class = MRUNowPlayingViewController;
   [(MRUNowPlayingViewController *)&v29 viewDidLoad];
   layout = self->_layout;
-  v4 = [(MRUNowPlayingViewController *)self view];
-  [v4 setLayout:layout];
+  view = [(MRUNowPlayingViewController *)self view];
+  [view setLayout:layout];
 
   context = self->_context;
-  v6 = [(MRUNowPlayingViewController *)self view];
-  [v6 setContext:context];
+  view2 = [(MRUNowPlayingViewController *)self view];
+  [view2 setContext:context];
 
   supportsHorizontalLayout = self->_supportsHorizontalLayout;
-  v8 = [(MRUNowPlayingViewController *)self view];
-  [v8 setSupportsHorizontalLayout:supportsHorizontalLayout];
+  view3 = [(MRUNowPlayingViewController *)self view];
+  [view3 setSupportsHorizontalLayout:supportsHorizontalLayout];
 
   top = self->_contentEdgeInsets.top;
   left = self->_contentEdgeInsets.left;
   bottom = self->_contentEdgeInsets.bottom;
   right = self->_contentEdgeInsets.right;
-  v13 = [(MRUNowPlayingViewController *)self view];
-  [v13 setContentEdgeInsets:{top, left, bottom, right}];
+  view4 = [(MRUNowPlayingViewController *)self view];
+  [view4 setContentEdgeInsets:{top, left, bottom, right}];
 
   stylingProvider = self->_stylingProvider;
-  v15 = [(MRUNowPlayingViewController *)self view];
-  [v15 setStylingProvider:stylingProvider];
+  view5 = [(MRUNowPlayingViewController *)self view];
+  [view5 setStylingProvider:stylingProvider];
 
-  v16 = [(MRUNowPlayingViewController *)self view];
-  v17 = [v16 artworkView];
-  [v17 addTarget:self action:sel_didSelectArtworkView_ forControlEvents:64];
+  view6 = [(MRUNowPlayingViewController *)self view];
+  artworkView = [view6 artworkView];
+  [artworkView addTarget:self action:sel_didSelectArtworkView_ forControlEvents:64];
 
-  v18 = [(MRUNowPlayingViewController *)self view];
-  v19 = [v18 headerView];
-  v20 = [v19 labelView];
-  [v20 addTarget:self action:sel_didSelectLabelView_ forControlEvents:64];
+  view7 = [(MRUNowPlayingViewController *)self view];
+  headerView = [view7 headerView];
+  labelView = [headerView labelView];
+  [labelView addTarget:self action:sel_didSelectLabelView_ forControlEvents:64];
 
-  v21 = [(MRUNowPlayingViewController *)self view];
-  v22 = [v21 headerView];
-  v23 = [v22 routingButton];
-  [v23 addTarget:self action:sel_didSelectRoutingButton_ forControlEvents:64];
+  view8 = [(MRUNowPlayingViewController *)self view];
+  headerView2 = [view8 headerView];
+  routingButton = [headerView2 routingButton];
+  [routingButton addTarget:self action:sel_didSelectRoutingButton_ forControlEvents:64];
 
-  v24 = [(MRUNowPlayingViewController *)self view];
-  v25 = [v24 transportControlsView];
-  [v25 setDelegate:self];
+  view9 = [(MRUNowPlayingViewController *)self view];
+  transportControlsView = [view9 transportControlsView];
+  [transportControlsView setDelegate:self];
 
-  v26 = [(MRUNowPlayingViewController *)self view];
-  v27 = [v26 volumeControlsView];
-  [v27 setDelegate:self];
+  view10 = [(MRUNowPlayingViewController *)self view];
+  volumeControlsView = [view10 volumeControlsView];
+  [volumeControlsView setDelegate:self];
 
   [(MRUNowPlayingController *)self->_controller addObserver:self];
   v28 = +[MRUCallMonitor sharedMonitor];
@@ -434,61 +434,61 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
   [(MRUNowPlayingViewController *)self updateVisibility];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = MRUNowPlayingViewController;
   [(MRUNowPlayingViewController *)&v7 viewWillAppear:?];
   [(MRUNowPlayingViewController *)self setOnScreen:1];
-  v5 = [(MRUNowPlayingViewController *)self view];
-  v6 = [v5 showSuggestionsView];
+  view = [(MRUNowPlayingViewController *)self view];
+  showSuggestionsView = [view showSuggestionsView];
 
-  if (v6)
+  if (showSuggestionsView)
   {
-    [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController beginAppearanceTransition:1 animated:v3];
+    [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController beginAppearanceTransition:1 animated:appearCopy];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MRUNowPlayingViewController;
-  [(MRUNowPlayingViewController *)&v6 viewDidAppear:a3];
-  v4 = [(MRUNowPlayingViewController *)self view];
-  v5 = [v4 showSuggestionsView];
+  [(MRUNowPlayingViewController *)&v6 viewDidAppear:appear];
+  view = [(MRUNowPlayingViewController *)self view];
+  showSuggestionsView = [view showSuggestionsView];
 
-  if (v5)
+  if (showSuggestionsView)
   {
     [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController endAppearanceTransition];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = MRUNowPlayingViewController;
   [(MRUNowPlayingViewController *)&v7 viewWillDisappear:?];
   [(MRUNowPlayingViewController *)self setOnScreen:0];
-  v5 = [(MRUNowPlayingViewController *)self view];
-  v6 = [v5 showSuggestionsView];
+  view = [(MRUNowPlayingViewController *)self view];
+  showSuggestionsView = [view showSuggestionsView];
 
-  if (v6)
+  if (showSuggestionsView)
   {
-    [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController beginAppearanceTransition:0 animated:v3];
+    [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController beginAppearanceTransition:0 animated:disappearCopy];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MRUNowPlayingViewController;
-  [(MRUNowPlayingViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(MRUNowPlayingViewController *)self view];
-  v5 = [v4 showSuggestionsView];
+  [(MRUNowPlayingViewController *)&v6 viewDidDisappear:disappear];
+  view = [(MRUNowPlayingViewController *)self view];
+  showSuggestionsView = [view showSuggestionsView];
 
-  if (v5)
+  if (showSuggestionsView)
   {
     [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController endAppearanceTransition];
   }
@@ -507,22 +507,22 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRUNowPlayingViewController *)self controller];
-  v6 = [v5 endpointController];
-  v7 = [v6 route];
-  v8 = [v3 stringWithFormat:@"<%@: %p route: %@", v4, self, v7];
+  controller = [(MRUNowPlayingViewController *)self controller];
+  endpointController = [controller endpointController];
+  route = [endpointController route];
+  v8 = [v3 stringWithFormat:@"<%@: %p route: %@", v4, self, route];
 
   return v8;
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    v3 = a3;
-    self->_onScreen = a3;
-    v5 = [(MRUNowPlayingViewController *)self controller];
-    [v5 updateAutomaticResponseLoading];
+    screenCopy = screen;
+    self->_onScreen = screen;
+    controller = [(MRUNowPlayingViewController *)self controller];
+    [controller updateAutomaticResponseLoading];
 
     [(MRUNowPlayingViewController *)self updateRoutingButton];
     [(MRUNowPlayingViewController *)self updateRouteLabel];
@@ -536,40 +536,40 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
     [(MRUNowPlayingViewController *)self updateTimeControls];
     [(MRUNowPlayingViewController *)self updateVolumeControls];
     [(MRUNowPlayingViewController *)self updateVisibility];
-    if (v3)
+    if (screenCopy)
     {
-      v7 = [(MRUNowPlayingViewController *)self controller];
-      v6 = [v7 mediaSuggestionsController];
-      [v6 refreshMediaSuggestions];
+      controller2 = [(MRUNowPlayingViewController *)self controller];
+      mediaSuggestionsController = [controller2 mediaSuggestionsController];
+      [mediaSuggestionsController refreshMediaSuggestions];
     }
   }
 }
 
 - (MRUArtworkView)artworkView
 {
-  v2 = [(MRUNowPlayingViewController *)self view];
-  v3 = [v2 artworkView];
+  view = [(MRUNowPlayingViewController *)self view];
+  artworkView = [view artworkView];
 
-  return v3;
+  return artworkView;
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(MRUNowPlayingController *)self->_controller removeObserver:self];
   controller = self->_controller;
-  self->_controller = v4;
-  v6 = v4;
+  self->_controller = controllerCopy;
+  v6 = controllerCopy;
 
   [(MRUNowPlayingController *)self->_controller addObserver:self];
-  v7 = [(MRUNowPlayingViewController *)self context];
-  v8 = [(MRUNowPlayingController *)v6 tvRemoteController];
+  context = [(MRUNowPlayingViewController *)self context];
+  tvRemoteController = [(MRUNowPlayingController *)v6 tvRemoteController];
 
-  [v8 setContext:v7];
+  [tvRemoteController setContext:context];
   [(MRUNowPlayingViewController *)self createRoutingViewController];
-  v9 = [(MRUNowPlayingViewController *)self controller];
-  v10 = [v9 mediaSuggestionsController];
-  [v10 refreshMediaSuggestions];
+  controller = [(MRUNowPlayingViewController *)self controller];
+  mediaSuggestionsController = [controller mediaSuggestionsController];
+  [mediaSuggestionsController refreshMediaSuggestions];
 
   [(MRUNowPlayingViewController *)self updateRoutingButton];
   [(MRUNowPlayingViewController *)self updateRouteLabel];
@@ -586,17 +586,17 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
   [(MRUNowPlayingViewController *)self trackStartedShowingMediaSuggestions];
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
   layout = self->_layout;
-  if (layout != a3)
+  if (layout != layout)
   {
-    self->_layout = a3;
-    v6 = [(MRUNowPlayingViewController *)self viewIfLoaded];
-    [v6 setLayout:a3];
+    self->_layout = layout;
+    viewIfLoaded = [(MRUNowPlayingViewController *)self viewIfLoaded];
+    [viewIfLoaded setLayout:layout];
 
-    v7 = [(MRUNowPlayingViewController *)self suggestionsViewController];
-    [v7 setLayout:a3 == 4];
+    suggestionsViewController = [(MRUNowPlayingViewController *)self suggestionsViewController];
+    [suggestionsViewController setLayout:layout == 4];
 
     [(MRUNowPlayingViewController *)self updateRoutingContentEdgeInsets];
     [(MRUNowPlayingViewController *)self updateArtwork];
@@ -607,9 +607,9 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
     [(MRUNowPlayingViewController *)self updateRoutingDiscoveryMode];
     [(MRUNowPlayingViewController *)self updateSuggestions];
     [(MRUNowPlayingViewController *)self updateVisibility];
-    v8 = a3 != 1 || layout == 1;
+    v8 = layout != 1 || layout == 1;
     v9 = !v8;
-    if (!v8 || a3 != 1 && layout == 1)
+    if (!v8 || layout != 1 && layout == 1)
     {
       [(MRURoutingViewController *)self->_routingViewController beginAppearanceTransition:v9 animated:1];
       routingViewController = self->_routingViewController;
@@ -619,17 +619,17 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
   }
 }
 
-- (void)setContext:(int64_t)a3
+- (void)setContext:(int64_t)context
 {
-  if (self->_context != a3)
+  if (self->_context != context)
   {
-    self->_context = a3;
-    v6 = [(MRUNowPlayingViewController *)self viewIfLoaded];
-    [v6 setContext:a3];
+    self->_context = context;
+    viewIfLoaded = [(MRUNowPlayingViewController *)self viewIfLoaded];
+    [viewIfLoaded setContext:context];
 
-    v7 = [(MRUNowPlayingViewController *)self controller];
-    v8 = [v7 tvRemoteController];
-    [v8 setContext:a3];
+    controller = [(MRUNowPlayingViewController *)self controller];
+    tvRemoteController = [controller tvRemoteController];
+    [tvRemoteController setContext:context];
 
     [(MRUNowPlayingViewController *)self updateSuggestionContext];
 
@@ -637,89 +637,89 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
   }
 }
 
-- (void)setSupportsHorizontalLayout:(BOOL)a3
+- (void)setSupportsHorizontalLayout:(BOOL)layout
 {
-  if (self->_supportsHorizontalLayout != a3)
+  if (self->_supportsHorizontalLayout != layout)
   {
-    v4 = a3;
-    self->_supportsHorizontalLayout = a3;
-    v6 = [(MRUNowPlayingViewController *)self viewIfLoaded];
-    [v6 setSupportsHorizontalLayout:v4];
+    layoutCopy = layout;
+    self->_supportsHorizontalLayout = layout;
+    viewIfLoaded = [(MRUNowPlayingViewController *)self viewIfLoaded];
+    [viewIfLoaded setSupportsHorizontalLayout:layoutCopy];
 
-    v7 = [(MRUNowPlayingViewController *)self suggestionsViewController];
-    [v7 setSupportsHorizontalLayout:v4];
+    suggestionsViewController = [(MRUNowPlayingViewController *)self suggestionsViewController];
+    [suggestionsViewController setSupportsHorizontalLayout:layoutCopy];
   }
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentEdgeInsets.top, v3), vceqq_f64(*&self->_contentEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentEdgeInsets = a3;
-    right = a3.right;
-    left = a3.left;
-    bottom = a3.bottom;
-    top = a3.top;
-    v6 = [(MRUNowPlayingViewController *)self viewIfLoaded];
-    [v6 setContentEdgeInsets:{top, left, bottom, right}];
+    self->_contentEdgeInsets = insets;
+    right = insets.right;
+    left = insets.left;
+    bottom = insets.bottom;
+    top = insets.top;
+    viewIfLoaded = [(MRUNowPlayingViewController *)self viewIfLoaded];
+    [viewIfLoaded setContentEdgeInsets:{top, left, bottom, right}];
 
-    v7 = [(MRUNowPlayingViewController *)self suggestionsViewController];
-    [v7 setContentEdgeInsets:{top, left, bottom, right}];
+    suggestionsViewController = [(MRUNowPlayingViewController *)self suggestionsViewController];
+    [suggestionsViewController setContentEdgeInsets:{top, left, bottom, right}];
 
     [(MRUNowPlayingViewController *)self updateRoutingContentEdgeInsets];
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
-    v6 = [(MRUNowPlayingViewController *)self viewIfLoaded];
-    [v6 setStylingProvider:v9];
+    v9 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
+    viewIfLoaded = [(MRUNowPlayingViewController *)self viewIfLoaded];
+    [viewIfLoaded setStylingProvider:v9];
 
-    v7 = [(MRUNowPlayingViewController *)self suggestionsViewController];
-    [v7 setStylingProvider:v9];
+    suggestionsViewController = [(MRUNowPlayingViewController *)self suggestionsViewController];
+    [suggestionsViewController setStylingProvider:v9];
 
-    v8 = [(MRUNowPlayingViewController *)self routingViewController];
-    [v8 setStylingProvider:v9];
+    routingViewController = [(MRUNowPlayingViewController *)self routingViewController];
+    [routingViewController setStylingProvider:v9];
 
-    v5 = v9;
+    providerCopy = v9;
   }
 }
 
-- (void)setPlaybackDataSource:(id)a3
+- (void)setPlaybackDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_playbackDataSource);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_playbackDataSource, obj);
-    v5 = [(MRUNowPlayingViewController *)self routingViewController];
-    v6 = [v5 routingController];
-    [v6 setPlaybackDataSource:obj];
+    routingViewController = [(MRUNowPlayingViewController *)self routingViewController];
+    routingController = [routingViewController routingController];
+    [routingController setPlaybackDataSource:obj];
   }
 }
 
-- (void)setConfigureRoutingButton:(id)a3
+- (void)setConfigureRoutingButton:(id)button
 {
-  v4 = [a3 copy];
+  v4 = [button copy];
   configureRoutingButton = self->_configureRoutingButton;
   self->_configureRoutingButton = v4;
 
   [(MRUNowPlayingViewController *)self updateRoutingButton];
 }
 
-- (void)setRoutingViewController:(id)a3
+- (void)setRoutingViewController:(id)controller
 {
-  v9 = a3;
+  controllerCopy = controller;
   [(MRURoutingViewController *)self->_routingViewController setDelegate:0];
   if (self->_layout == 1)
   {
@@ -729,22 +729,22 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
 
   [(MRURoutingViewController *)self->_routingViewController willMoveToParentViewController:0];
   [(MRURoutingViewController *)self->_routingViewController removeFromParentViewController];
-  objc_storeStrong(&self->_routingViewController, a3);
-  v5 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v6 = [v5 route];
-  [(MRURoutingViewController *)self->_routingViewController setEndpointRoute:v6];
+  objc_storeStrong(&self->_routingViewController, controller);
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
+  [(MRURoutingViewController *)self->_routingViewController setEndpointRoute:route];
 
   [(MRURoutingViewController *)self->_routingViewController setDelegate:self];
   [(MRURoutingViewController *)self->_routingViewController setVolumeGroupCoordinator:self->_volumeGroupCoordinator];
   [(MRURoutingViewController *)self->_routingViewController setStylingProvider:self->_stylingProvider];
   [(MRUNowPlayingViewController *)self updateRoutingContentEdgeInsets];
   [(MRUNowPlayingViewController *)self updateRoutingDiscoveryMode];
-  [(MRUNowPlayingViewController *)self addChildViewController:v9];
-  v7 = [v9 view];
-  v8 = [(MRUNowPlayingViewController *)self view];
-  [v8 setContentView:v7];
+  [(MRUNowPlayingViewController *)self addChildViewController:controllerCopy];
+  view = [controllerCopy view];
+  view2 = [(MRUNowPlayingViewController *)self view];
+  [view2 setContentView:view];
 
-  [v9 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
   if (self->_layout == 1)
   {
     [(MRURoutingViewController *)self->_routingViewController beginAppearanceTransition:1 animated:0];
@@ -752,20 +752,20 @@ id __76__MRUNowPlayingViewController_initWithController_routeControlsPresentatio
   }
 }
 
-- (void)setShowArtworkView:(BOOL)a3
+- (void)setShowArtworkView:(BOOL)view
 {
-  if (self->_showArtworkView != a3)
+  if (self->_showArtworkView != view)
   {
     v9 = v3;
     v10 = v4;
-    self->_showArtworkView = a3;
+    self->_showArtworkView = view;
     [(MRUNowPlayingViewController *)self updateArtwork];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __50__MRUNowPlayingViewController_setShowArtworkView___block_invoke;
     v7[3] = &unk_1E7663F38;
     v7[4] = self;
-    v8 = a3;
+    viewCopy = view;
     [(MRUNowPlayingViewController *)self updateContentAnimated:v7 completion:0];
   }
 }
@@ -780,38 +780,38 @@ void __50__MRUNowPlayingViewController_setShowArtworkView___block_invoke(uint64_
 - (NSArray)restrictedRects
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
-  v4 = [(MRUNowPlayingViewController *)self view];
-  if ([v4 showSuggestionsView])
+  view = [(MRUNowPlayingViewController *)self view];
+  if ([view showSuggestionsView])
   {
-    v5 = [(MRUNowPlayingViewController *)self view];
-    v6 = [v5 suggestionsView];
+    view2 = [(MRUNowPlayingViewController *)self view];
+    suggestionsView = [view2 suggestionsView];
 
-    if (!v6)
+    if (!suggestionsView)
     {
       goto LABEL_5;
     }
 
-    v7 = [(MRUNowPlayingViewController *)self view];
-    v8 = [v7 suggestionsView];
-    [v8 frame];
+    view3 = [(MRUNowPlayingViewController *)self view];
+    suggestionsView2 = [view3 suggestionsView];
+    [suggestionsView2 frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v4 = [MEMORY[0x1E696B098] valueWithRect:{v10, v12, v14, v16}];
-    [v3 addObject:v4];
+    view = [MEMORY[0x1E696B098] valueWithRect:{v10, v12, v14, v16}];
+    [v3 addObject:view];
   }
 
 LABEL_5:
-  v17 = [(MRUNowPlayingViewController *)self view];
-  v18 = [v17 showArtworkView];
+  view4 = [(MRUNowPlayingViewController *)self view];
+  showArtworkView = [view4 showArtworkView];
 
-  if (v18)
+  if (showArtworkView)
   {
-    v19 = [(MRUNowPlayingViewController *)self view];
-    v20 = [v19 artworkView];
-    [v20 frame];
+    view5 = [(MRUNowPlayingViewController *)self view];
+    artworkView = [view5 artworkView];
+    [artworkView frame];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -821,9 +821,9 @@ LABEL_5:
     [v3 addObject:v29];
   }
 
-  v30 = [(MRUNowPlayingViewController *)self view];
-  v31 = [v30 headerView];
-  [v31 frame];
+  view6 = [(MRUNowPlayingViewController *)self view];
+  headerView = [view6 headerView];
+  [headerView frame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
@@ -832,42 +832,42 @@ LABEL_5:
   v40 = [MEMORY[0x1E696B098] valueWithRect:{v33, v35, v37, v39}];
   [v3 addObject:v40];
 
-  v41 = [(MRUNowPlayingViewController *)self view];
-  LODWORD(v31) = [v41 showTimeControlsView];
+  view7 = [(MRUNowPlayingViewController *)self view];
+  LODWORD(headerView) = [view7 showTimeControlsView];
 
-  if (v31)
+  if (headerView)
   {
-    v42 = [(MRUNowPlayingViewController *)self view];
-    v43 = [v42 timeControlsView];
-    [v43 frame];
+    view8 = [(MRUNowPlayingViewController *)self view];
+    timeControlsView = [view8 timeControlsView];
+    [timeControlsView frame];
 
     UIRectInset();
     v44 = [MEMORY[0x1E696B098] valueWithRect:?];
     [v3 addObject:v44];
   }
 
-  v45 = [(MRUNowPlayingViewController *)self view];
-  v46 = [v45 showTransportControlsView];
+  view9 = [(MRUNowPlayingViewController *)self view];
+  showTransportControlsView = [view9 showTransportControlsView];
 
-  if (v46)
+  if (showTransportControlsView)
   {
-    v47 = [(MRUNowPlayingViewController *)self view];
-    v48 = [v47 transportControlsView];
-    [v48 frame];
+    view10 = [(MRUNowPlayingViewController *)self view];
+    transportControlsView = [view10 transportControlsView];
+    [transportControlsView frame];
 
     UIRectInset();
     v49 = [MEMORY[0x1E696B098] valueWithRect:?];
     [v3 addObject:v49];
   }
 
-  v50 = [(MRUNowPlayingViewController *)self view];
-  v51 = [v50 showVolumeControlsView];
+  view11 = [(MRUNowPlayingViewController *)self view];
+  showVolumeControlsView = [view11 showVolumeControlsView];
 
-  if (v51)
+  if (showVolumeControlsView)
   {
-    v52 = [(MRUNowPlayingViewController *)self view];
-    v53 = [v52 volumeControlsView];
-    [v53 frame];
+    view12 = [(MRUNowPlayingViewController *)self view];
+    volumeControlsView = [view12 volumeControlsView];
+    [volumeControlsView frame];
 
     UIRectInset();
     v54 = [MEMORY[0x1E696B098] valueWithRect:?];
@@ -879,9 +879,9 @@ LABEL_5:
   return v55;
 }
 
-- (void)didSelectArtworkView:(id)a3
+- (void)didSelectArtworkView:(id)view
 {
-  v4 = [(MRUNowPlayingViewController *)self delegate];
+  delegate = [(MRUNowPlayingViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0 || (-[MRUNowPlayingViewController delegate](self, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 nowPlayingViewControllerDidSelectArtworkView:self], v6, (v7 & 1) == 0))
@@ -891,121 +891,121 @@ LABEL_5:
   }
 }
 
-- (void)didSelectQuickControl:(id)a3
+- (void)didSelectQuickControl:(id)control
 {
-  v3 = [(MRUNowPlayingController *)self->_controller quickControlItem];
-  v5 = [v3 mainAction];
+  quickControlItem = [(MRUNowPlayingController *)self->_controller quickControlItem];
+  mainAction = [quickControlItem mainAction];
 
-  v4 = v5;
-  if (v5)
+  v4 = mainAction;
+  if (mainAction)
   {
-    (*(v5 + 16))(v5);
-    v4 = v5;
+    (*(mainAction + 16))(mainAction);
+    v4 = mainAction;
   }
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeBundleID:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeBundleID:(id)d
 {
-  [(MRUNowPlayingViewController *)self updateRoutingButton:a3];
+  [(MRUNowPlayingViewController *)self updateRoutingButton:controller];
 
   [(MRUNowPlayingViewController *)self updateNowPlayingInfo];
 }
 
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route
 {
-  [(MRUNowPlayingViewController *)self updateRouteLabel:a3];
+  [(MRUNowPlayingViewController *)self updateRouteLabel:controller];
   [(MRUNowPlayingViewController *)self updateVolumeControls];
   [(MRUNowPlayingViewController *)self updateRoutingButtonAnimated:1];
 
   [(MRUNowPlayingViewController *)self updateLayout];
 }
 
-- (void)nowPlayingController:(id)a3 tvRemoteController:(id)a4 didChangeShowTVRemote:(BOOL)a5
+- (void)nowPlayingController:(id)controller tvRemoteController:(id)remoteController didChangeShowTVRemote:(BOOL)remote
 {
-  v6 = [a4 showTVRemote];
-  v8 = [(MRUNowPlayingViewController *)self view];
-  v7 = [v8 transportControlsView];
-  [v7 setShowTVRemoteButton:v6];
+  showTVRemote = [remoteController showTVRemote];
+  view = [(MRUNowPlayingViewController *)self view];
+  transportControlsView = [view transportControlsView];
+  [transportControlsView setShowTVRemoteButton:showTVRemote];
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeNowPlayingInfo:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeNowPlayingInfo:(id)info
 {
-  self->_playing = [a5 isPlaying];
+  self->_playing = [info isPlaying];
 
   [(MRUNowPlayingViewController *)self updateNowPlayingInfo];
 }
 
-- (void)nowPlayingController:(id)a3 queueHandoffCoordinator:(id)a4 didChangeState:(int64_t)a5
+- (void)nowPlayingController:(id)controller queueHandoffCoordinator:(id)coordinator didChangeState:(int64_t)state
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5 == 4)
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  v9 = coordinatorCopy;
+  if (state == 4)
   {
-    v19 = [(MRUNowPlayingViewController *)self artworkView];
-    v24 = [v19 layer];
-    [v24 removeAllAnimations];
+    artworkView = [(MRUNowPlayingViewController *)self artworkView];
+    layer = [artworkView layer];
+    [layer removeAllAnimations];
   }
 
   else
   {
-    if (a5 == 2)
+    if (state == 2)
     {
       v21 = *MEMORY[0x1E695F060];
       v22 = *(MEMORY[0x1E695F060] + 8);
-      v23 = [(MRUNowPlayingViewController *)self view];
-      [v23 setArtworkOverrideSize:{v21, v22}];
+      view = [(MRUNowPlayingViewController *)self view];
+      [view setArtworkOverrideSize:{v21, v22}];
 
-      v18 = [(MRUNowPlayingViewController *)self view];
-      v19 = v18;
+      view2 = [(MRUNowPlayingViewController *)self view];
+      artworkView = view2;
       v20 = 0;
     }
 
     else
     {
-      if (a5 != 1)
+      if (state != 1)
       {
         goto LABEL_12;
       }
 
-      [v8 artworkSize];
+      [coordinatorCopy artworkSize];
       v11 = v10;
       v13 = v12;
-      v14 = [(MRUNowPlayingViewController *)self view];
-      [v14 setArtworkOverrideSize:{v11, v13}];
+      view3 = [(MRUNowPlayingViewController *)self view];
+      [view3 setArtworkOverrideSize:{v11, v13}];
 
       [v9 artworkSize];
       v17 = v16 != *(MEMORY[0x1E695F060] + 8) || v15 != *MEMORY[0x1E695F060];
-      v18 = [(MRUNowPlayingViewController *)self view];
-      v19 = v18;
+      view2 = [(MRUNowPlayingViewController *)self view];
+      artworkView = view2;
       v20 = v17;
     }
 
-    [v18 setUseArtworkOverrideSize:v20];
+    [view2 setUseArtworkOverrideSize:v20];
   }
 
 LABEL_12:
 }
 
-- (void)mediaSuggestionsViewController:(id)a3 didSelectSuggestion:(id)a4 completion:(id)a5
+- (void)mediaSuggestionsViewController:(id)controller didSelectSuggestion:(id)suggestion completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 mediaSuggestions];
-  v11 = [v10 indexOfObject:v8];
+  suggestionCopy = suggestion;
+  completionCopy = completion;
+  mediaSuggestions = [controller mediaSuggestions];
+  v11 = [mediaSuggestions indexOfObject:suggestionCopy];
 
-  v12 = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
+  mediaSuggestionsController = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__MRUNowPlayingViewController_mediaSuggestionsViewController_didSelectSuggestion_completion___block_invoke;
   v15[3] = &unk_1E76656A0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
+  v16 = suggestionCopy;
+  v17 = completionCopy;
   v18 = v11;
-  v13 = v9;
-  v14 = v8;
-  [v12 playSuggestion:v14 completion:v15];
+  v13 = completionCopy;
+  v14 = suggestionCopy;
+  [mediaSuggestionsController playSuggestion:v14 completion:v15];
 }
 
 uint64_t __93__MRUNowPlayingViewController_mediaSuggestionsViewController_didSelectSuggestion_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1016,14 +1016,14 @@ uint64_t __93__MRUNowPlayingViewController_mediaSuggestionsViewController_didSel
   return v3();
 }
 
-- (void)routingViewController:(id)a3 didSelectRoutingViewItem:(id)a4
+- (void)routingViewController:(id)controller didSelectRoutingViewItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 actionIdentifier];
-  if ([v8 isEqualToString:*MEMORY[0x1E696F8A8]])
+  controllerCopy = controller;
+  itemCopy = item;
+  actionIdentifier = [itemCopy actionIdentifier];
+  if ([actionIdentifier isEqualToString:*MEMORY[0x1E696F8A8]])
   {
-    v9 = [(MRUNowPlayingViewController *)self delegate];
+    delegate = [(MRUNowPlayingViewController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
@@ -1083,7 +1083,7 @@ void __78__MRUNowPlayingViewController_routingViewController_didSelectRoutingVie
   [v10 nowPlayingViewController:*(a1 + 32) showViewController:0];
 }
 
-- (void)routingViewControllerDidUpdateItems:(id)a3
+- (void)routingViewControllerDidUpdateItems:(id)items
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
@@ -1100,14 +1100,14 @@ void __78__MRUNowPlayingViewController_routingViewController_didSelectRoutingVie
   }
 }
 
-- (void)transportControlsView:(id)a3 didSelectTVRemoteButton:(id)a4
+- (void)transportControlsView:(id)view didSelectTVRemoteButton:(id)button
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  buttonCopy = button;
   if (self->_coordinatedDismissalBlock)
   {
-    v8 = [(MRUNowPlayingController *)self->_controller tvRemoteController];
-    objc_initWeak(&location, v8);
+    tvRemoteController = [(MRUNowPlayingController *)self->_controller tvRemoteController];
+    objc_initWeak(&location, tvRemoteController);
 
     coordinatedDismissalBlock = self->_coordinatedDismissalBlock;
     v11[0] = MEMORY[0x1E69E9820];
@@ -1122,8 +1122,8 @@ void __78__MRUNowPlayingViewController_routingViewController_didSelectRoutingVie
 
   else
   {
-    v10 = [(MRUNowPlayingController *)self->_controller tvRemoteController];
-    [v10 presentTVRemoteUsingApp:0];
+    tvRemoteController2 = [(MRUNowPlayingController *)self->_controller tvRemoteController];
+    [tvRemoteController2 presentTVRemoteUsingApp:0];
   }
 }
 
@@ -1206,26 +1206,26 @@ void __58__MRUNowPlayingViewController_createRoutingViewController__block_invoke
 
 - (void)createSuggestionsViewController
 {
-  v3 = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
-  v10 = [v3 mediaSuggestions];
+  mediaSuggestionsController = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
+  mediaSuggestions = [mediaSuggestionsController mediaSuggestions];
 
-  v4 = [[MRUMediaSuggestionsViewController alloc] initWithMediaSuggestions:v10];
+  v4 = [[MRUMediaSuggestionsViewController alloc] initWithMediaSuggestions:mediaSuggestions];
   suggestionsViewController = self->_suggestionsViewController;
   self->_suggestionsViewController = v4;
 
   [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setDelegate:self];
-  v6 = [(MRUNowPlayingViewController *)self view];
-  -[MRUMediaSuggestionsViewController setLayout:](self->_suggestionsViewController, "setLayout:", [v6 layout] == 4);
+  view = [(MRUNowPlayingViewController *)self view];
+  -[MRUMediaSuggestionsViewController setLayout:](self->_suggestionsViewController, "setLayout:", [view layout] == 4);
 
-  v7 = [(MRUNowPlayingViewController *)self stylingProvider];
-  [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setStylingProvider:v7];
+  stylingProvider = [(MRUNowPlayingViewController *)self stylingProvider];
+  [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setStylingProvider:stylingProvider];
 
   [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setSupportsHorizontalLayout:self->_supportsHorizontalLayout];
   [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setContentEdgeInsets:self->_contentEdgeInsets.top, self->_contentEdgeInsets.left, self->_contentEdgeInsets.bottom, self->_contentEdgeInsets.right];
   [(MRUNowPlayingViewController *)self addChildViewController:self->_suggestionsViewController];
-  v8 = [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController view];
-  v9 = [(MRUNowPlayingViewController *)self view];
-  [v9 setSuggestionsView:v8];
+  view2 = [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController view];
+  view3 = [(MRUNowPlayingViewController *)self view];
+  [view3 setSuggestionsView:view2];
 
   [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController didMoveToParentViewController:self];
 }
@@ -1280,98 +1280,98 @@ void __58__MRUNowPlayingViewController_createRoutingViewController__block_invoke
 {
   if ([(MRUNowPlayingViewController *)self showArtworkView])
   {
-    v3 = [(MRUNowPlayingController *)self->_controller metadataController];
-    v6 = [v3 artwork];
+    metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+    artwork = [metadataController artwork];
 
-    v4 = [(MRUNowPlayingViewController *)self view];
-    v5 = [v4 artworkView];
+    view = [(MRUNowPlayingViewController *)self view];
+    artworkView = [view artworkView];
 
-    [v5 setArtwork:v6];
+    [artworkView setArtwork:artwork];
   }
 }
 
 - (void)updateRouteLabel
 {
-  v3 = [(MRUNowPlayingViewController *)self view];
-  v4 = [v3 artworkView];
+  view = [(MRUNowPlayingViewController *)self view];
+  artworkView = [view artworkView];
 
-  v5 = [(MRUNowPlayingViewController *)self view];
-  v6 = [v5 headerView];
-  v7 = [v6 labelView];
+  view2 = [(MRUNowPlayingViewController *)self view];
+  headerView = [view2 headerView];
+  labelView = [headerView labelView];
 
-  v8 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v9 = [v8 route];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
 
   v10 = MEMORY[0x1E69DCAB8];
-  v11 = [(MRUNowPlayingController *)self->_controller deviceSymbolName];
-  v12 = [v10 _systemImageNamed:v11];
-  [v4 setPlaceholderImage:v12];
+  deviceSymbolName = [(MRUNowPlayingController *)self->_controller deviceSymbolName];
+  v12 = [v10 _systemImageNamed:deviceSymbolName];
+  [artworkView setPlaceholderImage:v12];
 
-  [v7 setRoute:v9];
-  v13 = [(MRUNowPlayingViewController *)self showRouteLabel];
-  if (v13 != [v7 showRoute])
+  [labelView setRoute:route];
+  showRouteLabel = [(MRUNowPlayingViewController *)self showRouteLabel];
+  if (showRouteLabel != [labelView showRoute])
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __47__MRUNowPlayingViewController_updateRouteLabel__block_invoke;
     v14[3] = &unk_1E7663F38;
-    v15 = v7;
-    v16 = v13;
+    v15 = labelView;
+    v16 = showRouteLabel;
     [(MRUNowPlayingViewController *)self updateContentAnimated:v14 completion:0];
   }
 }
 
 - (void)updateNowPlayingInfo
 {
-  v3 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v4 = [v3 nowPlayingInfo];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  nowPlayingInfo = [metadataController nowPlayingInfo];
 
-  v5 = [(MRUNowPlayingViewController *)self view];
-  v6 = [v5 headerView];
-  v7 = [v6 labelView];
+  view = [(MRUNowPlayingViewController *)self view];
+  headerView = [view headerView];
+  labelView = [headerView labelView];
 
-  v8 = [(MRUNowPlayingController *)self->_controller endpointController];
-  if (([v8 isEndpointDiscovered] & 1) != 0 || -[MRUNowPlayingViewController context](self, "context") != 3)
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  if (([endpointController isEndpointDiscovered] & 1) != 0 || -[MRUNowPlayingViewController context](self, "context") != 3)
   {
-    v9 = [v4 placeholder];
+    placeholder = [nowPlayingInfo placeholder];
   }
 
   else
   {
-    v9 = +[MRUStringsProvider controlsUnavailable];
+    placeholder = +[MRUStringsProvider controlsUnavailable];
   }
 
-  v10 = v9;
-  [v7 setPlaceholder:v9];
+  v10 = placeholder;
+  [labelView setPlaceholder:placeholder];
 
-  v11 = [v4 stringForComponents:1];
-  v12 = [v4 stringForComponents:58];
+  v11 = [nowPlayingInfo stringForComponents:1];
+  v12 = [nowPlayingInfo stringForComponents:58];
   if (v11 | v12)
   {
-    [v7 setTitle:v11];
+    [labelView setTitle:v11];
     v13 = v12;
   }
 
   else
   {
-    v14 = [(MRUNowPlayingController *)self->_controller metadataController];
-    v15 = [v14 bundleName];
-    [v7 setTitle:v15];
+    metadataController2 = [(MRUNowPlayingController *)self->_controller metadataController];
+    bundleName = [metadataController2 bundleName];
+    [labelView setTitle:bundleName];
 
     v13 = 0;
   }
 
-  [v7 setSubtitle:v13];
+  [labelView setSubtitle:v13];
   v16 = self->_layout != 3 || self->_context == 3;
-  v17 = [v4 showPlaceholder];
-  if (v17 != [v7 showPlaceholder] || v16 != objc_msgSend(v7, "showSubtitle"))
+  showPlaceholder = [nowPlayingInfo showPlaceholder];
+  if (showPlaceholder != [labelView showPlaceholder] || v16 != objc_msgSend(labelView, "showSubtitle"))
   {
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __51__MRUNowPlayingViewController_updateNowPlayingInfo__block_invoke;
     v22 = &unk_1E76656C8;
-    v23 = v7;
-    v24 = v17;
+    v23 = labelView;
+    v24 = showPlaceholder;
     v25 = v16;
     [(MRUNowPlayingViewController *)self updateContentAnimated:&v19 completion:0];
   }
@@ -1389,134 +1389,134 @@ uint64_t __51__MRUNowPlayingViewController_updateNowPlayingInfo__block_invoke(ui
   return [v3 setShowSubtitle:v2];
 }
 
-- (void)updateTimeControlsForPresentationInterval:(id)a3
+- (void)updateTimeControlsForPresentationInterval:(id)interval
 {
   controller = self->_controller;
-  v5 = a3;
-  v6 = [(MRUNowPlayingController *)controller metadataController];
-  v9 = [v6 timeControls];
+  intervalCopy = interval;
+  metadataController = [(MRUNowPlayingController *)controller metadataController];
+  timeControls = [metadataController timeControls];
 
-  v7 = [(MRUNowPlayingViewController *)self view];
-  v8 = [v7 timeControlsView];
+  view = [(MRUNowPlayingViewController *)self view];
+  timeControlsView = [view timeControlsView];
 
-  [v8 setTimeControls:v9 forPresentationInterval:v5];
+  [timeControlsView setTimeControls:timeControls forPresentationInterval:intervalCopy];
 }
 
 - (void)updateTransportControls
 {
-  v3 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v7 = [v3 transportControls];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  transportControls = [metadataController transportControls];
 
-  v4 = [(MRUNowPlayingViewController *)self view];
-  v5 = [v4 transportControlsView];
+  view = [(MRUNowPlayingViewController *)self view];
+  transportControlsView = [view transportControlsView];
 
-  [v5 setTransportControls:v7];
-  v6 = [(MRUNowPlayingController *)self->_controller tvRemoteController];
-  [v5 setShowTVRemoteButton:{objc_msgSend(v6, "showTVRemote")}];
+  [transportControlsView setTransportControls:transportControls];
+  tvRemoteController = [(MRUNowPlayingController *)self->_controller tvRemoteController];
+  [transportControlsView setShowTVRemoteButton:{objc_msgSend(tvRemoteController, "showTVRemote")}];
 }
 
 - (void)updateQuickControl
 {
-  v3 = [(MRUNowPlayingViewController *)self view];
-  v7 = [v3 headerView];
+  view = [(MRUNowPlayingViewController *)self view];
+  headerView = [view headerView];
 
-  v4 = [(MRUNowPlayingController *)self->_controller quickControlItem];
-  [v7 setShowTransportButton:{objc_msgSend(v4, "isEnabled")}];
-  v5 = [v7 transportButton];
-  v6 = [v4 asset];
-  [v5 setAsset:v6];
+  quickControlItem = [(MRUNowPlayingController *)self->_controller quickControlItem];
+  [headerView setShowTransportButton:{objc_msgSend(quickControlItem, "isEnabled")}];
+  transportButton = [headerView transportButton];
+  asset = [quickControlItem asset];
+  [transportButton setAsset:asset];
 }
 
 - (void)updateVolumeControls
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUNowPlayingViewController *)self view];
-  v4 = [v3 volumeControlsView];
+  view = [(MRUNowPlayingViewController *)self view];
+  volumeControlsView = [view volumeControlsView];
 
-  v5 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v6 = [v5 route];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
 
-  v7 = [v4 volumeController];
-  v8 = [v7 dataSource];
+  volumeController = [volumeControlsView volumeController];
+  dataSource = [volumeController dataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 volumeController];
-    v10 = [v9 dataSource];
+    volumeController2 = [volumeControlsView volumeController];
+    dataSource2 = [volumeController2 dataSource];
   }
 
   else
   {
-    v10 = 0;
+    dataSource2 = 0;
   }
 
-  v11 = [v4 volumeController];
+  volumeController3 = [volumeControlsView volumeController];
 
-  if (!v11)
+  if (!volumeController3)
   {
-    v14 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:v6 outputDeviceRoute:0];
+    v14 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:route outputDeviceRoute:0];
 
     v15 = [(MPVolumeController *)[MRUVolumeController alloc] initWithDataSource:v14];
-    [v4 setVolumeController:v15];
+    [volumeControlsView setVolumeController:v15];
 
     goto LABEL_8;
   }
 
-  v12 = [v10 groupRoute];
-  v13 = [v12 isEqual:v6];
+  groupRoute = [dataSource2 groupRoute];
+  v13 = [groupRoute isEqual:route];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:v6 outputDeviceRoute:0];
+    v14 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:route outputDeviceRoute:0];
 
-    [v4 setDataSource:v14];
+    [volumeControlsView setDataSource:v14];
 LABEL_8:
-    v10 = v14;
+    dataSource2 = v14;
   }
 
   if (!self->_volumeGroupCoordinator && !self->_routeControlsPresentation)
   {
     v16 = [MRUVolumeGroupCoordinator alloc];
-    v17 = [v4 volumeController];
-    v18 = [(MRUVolumeGroupCoordinator *)v16 initWithMainVolumeController:v17];
+    volumeController4 = [volumeControlsView volumeController];
+    v18 = [(MRUVolumeGroupCoordinator *)v16 initWithMainVolumeController:volumeController4];
     volumeGroupCoordinator = self->_volumeGroupCoordinator;
     self->_volumeGroupCoordinator = v18;
 
-    [v4 setVolumeGroupCoordinator:self->_volumeGroupCoordinator];
+    [volumeControlsView setVolumeGroupCoordinator:self->_volumeGroupCoordinator];
     [(MRURoutingViewController *)self->_routingViewController setVolumeGroupCoordinator:self->_volumeGroupCoordinator];
   }
 
   if ([(MRUNowPlayingViewController *)self context]== 2 || [(MRUNowPlayingViewController *)self context]== 8)
   {
-    v20 = [(MRUNowPlayingController *)self->_controller endpointController];
-    if ([v20 isDeviceSystemRoute])
+    endpointController2 = [(MRUNowPlayingController *)self->_controller endpointController];
+    if ([endpointController2 isDeviceSystemRoute])
     {
-      v21 = [(MRUNowPlayingController *)self->_controller endpointController];
-      if ([v21 isAirPlaying])
+      endpointController3 = [(MRUNowPlayingController *)self->_controller endpointController];
+      if ([endpointController3 isAirPlaying])
       {
-        v22 = 1;
+        alwaysShowVolumeControls = 1;
       }
 
       else
       {
-        v23 = [MEMORY[0x1E69B0B28] currentSettings];
-        v22 = [v23 alwaysShowVolumeControls];
+        currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+        alwaysShowVolumeControls = [currentSettings alwaysShowVolumeControls];
       }
     }
 
     else
     {
-      v22 = 1;
+      alwaysShowVolumeControls = 1;
     }
   }
 
   else
   {
-    v22 = 1;
+    alwaysShowVolumeControls = 1;
   }
 
   v24 = 0;
-  if (self->_onScreen && v22)
+  if (self->_onScreen && alwaysShowVolumeControls)
   {
     layout = self->_layout;
     if (layout)
@@ -1533,23 +1533,23 @@ LABEL_8:
   }
 
   v27 = +[MRUCallMonitor sharedMonitor];
-  v28 = [v27 isOnCall];
+  isOnCall = [v27 isOnCall];
 
-  v29 = [v10 volumeControlCapabilities];
+  volumeControlCapabilities = [dataSource2 volumeControlCapabilities];
   if (+[MRUFeatureFlagProvider isAutobahnEnabled])
   {
     [(MRUNowPlayingViewController *)self view];
-    v31 = v30 = v6;
+    v31 = v30 = route;
     [v31 volumeControlsView];
-    v33 = v32 = v4;
+    v33 = v32 = volumeControlsView;
     [v33 setOnScreen:v24];
 
-    v34 = [(MRUNowPlayingViewController *)self view];
-    LODWORD(v33) = [v34 showVolumeControlsView];
+    view2 = [(MRUNowPlayingViewController *)self view];
+    LODWORD(v33) = [view2 showVolumeControlsView];
 
-    v6 = v30;
-    v26 = v22 == v33;
-    v4 = v32;
+    route = v30;
+    v26 = alwaysShowVolumeControls == v33;
+    volumeControlsView = v32;
     if (!v26)
     {
       v53[0] = MEMORY[0x1E69E9820];
@@ -1557,12 +1557,12 @@ LABEL_8:
       v53[2] = __51__MRUNowPlayingViewController_updateVolumeControls__block_invoke;
       v53[3] = &unk_1E7663F38;
       v53[4] = self;
-      v54 = v22;
+      v54 = alwaysShowVolumeControls;
       [(MRUNowPlayingViewController *)self updateContentAnimated:v53 completion:0];
     }
   }
 
-  if (!(v28 & 1 | ((v24 & 1) == 0)) && ([v6 isDeviceRoute] & 1) == 0 && (v29 & 3) != 0)
+  if (!(isOnCall & 1 | ((v24 & 1) == 0)) && ([route isDeviceRoute] & 1) == 0 && (volumeControlCapabilities & 3) != 0)
   {
     v42 = MCLogCategoryVolume();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -1570,13 +1570,13 @@ LABEL_8:
       v43 = objc_opt_class();
       v44 = MRUNowPlayingLayoutDescription(self->_layout);
       MRUNowPlayingContextDescription(self->_context);
-      v46 = v45 = v6;
+      v46 = v45 = route;
       *buf = 138545154;
       v56 = v43;
       v57 = 1024;
       v58 = 1;
       v59 = 1024;
-      v60 = v22;
+      v60 = alwaysShowVolumeControls;
       v61 = 1024;
       v62 = 0;
       v63 = 1024;
@@ -1589,13 +1589,13 @@ LABEL_8:
       *&v64[26] = v45;
       _os_log_impl(&dword_1A20FC000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ taking hardware assertion: on screen: %{BOOL}u | show: %{BOOL}u | call: %{BOOL}u | control: %{BOOL}u | layout: %{public}@ | context: %{public}@ | route: %{public}@", buf, 0x42u);
 
-      v6 = v45;
+      route = v45;
     }
 
     v41 = +[MRUHardwareVolumeController sharedInstance];
     v47 = objc_opt_class();
     v48 = NSStringFromClass(v47);
-    v49 = [v41 requestControlsForVolumeDataSource:v10 reason:v48];
+    v49 = [v41 requestControlsForVolumeDataSource:dataSource2 reason:v48];
     hardwareVolumeControlAssertion = self->_hardwareVolumeControlAssertion;
     self->_hardwareVolumeControlAssertion = v49;
 
@@ -1608,32 +1608,32 @@ LABEL_43:
     v35 = MCLogCategoryVolume();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v51 = v22;
-      v36 = v10;
-      v37 = v6;
+      v51 = alwaysShowVolumeControls;
+      v36 = dataSource2;
+      v37 = route;
       v38 = objc_opt_class();
       MRUNowPlayingLayoutDescription(self->_layout);
-      v39 = v52 = v4;
+      v39 = v52 = volumeControlsView;
       v40 = MRUNowPlayingContextDescription(self->_context);
       *buf = 138544898;
       v56 = v38;
-      v6 = v37;
-      v10 = v36;
+      route = v37;
+      dataSource2 = v36;
       v57 = 1024;
       v58 = v24;
       v59 = 1024;
       v60 = v51;
       v61 = 1024;
-      v62 = v28;
+      v62 = isOnCall;
       v63 = 2114;
       *v64 = v39;
       *&v64[8] = 2114;
       *&v64[10] = v40;
       *&v64[18] = 2114;
-      *&v64[20] = v6;
+      *&v64[20] = route;
       _os_log_impl(&dword_1A20FC000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@ removing hardware assertion: on screen: %{BOOL}u | show: %{BOOL}u | call: %{BOOL}u | layout: %{public}@ | context: %{public}@ | route: %{public}@", buf, 0x3Cu);
 
-      v4 = v52;
+      volumeControlsView = v52;
     }
 
     v41 = self->_hardwareVolumeControlAssertion;
@@ -1651,32 +1651,32 @@ void __51__MRUNowPlayingViewController_updateVolumeControls__block_invoke(uint64
   [v2 setShowVolumeControlsView:v1];
 }
 
-- (void)updateRoutingButtonAnimated:(BOOL)a3
+- (void)updateRoutingButtonAnimated:(BOOL)animated
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v5 = [(MRUNowPlayingViewController *)self view];
-  v6 = [v5 headerView];
+  view = [(MRUNowPlayingViewController *)self view];
+  headerView = [view headerView];
 
-  v7 = [(MRUNowPlayingViewController *)self view];
-  v8 = [v7 transportControlsView];
+  view2 = [(MRUNowPlayingViewController *)self view];
+  transportControlsView = [view2 transportControlsView];
 
-  v9 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v10 = [v9 route];
-  v11 = [v10 canModifyGroupMembership];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
+  canModifyGroupMembership = [route canModifyGroupMembership];
 
-  v12 = v11 && self->_context == 3 && self->_layout == 3;
-  [v6 setShowRoutingButton:v12];
-  [v8 setShowRoutingButton:v11];
-  v13 = [v8 routingButton];
-  v25[0] = v13;
-  v14 = [v6 routingButton];
-  v25[1] = v14;
+  v12 = canModifyGroupMembership && self->_context == 3 && self->_layout == 3;
+  [headerView setShowRoutingButton:v12];
+  [transportControlsView setShowRoutingButton:canModifyGroupMembership];
+  routingButton = [transportControlsView routingButton];
+  v25[0] = routingButton;
+  routingButton2 = [headerView routingButton];
+  v25[1] = routingButton2;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
 
   configureRoutingButton = self->_configureRoutingButton;
   if (configureRoutingButton)
   {
-    v17 = configureRoutingButton[2](configureRoutingButton, v11);
+    v17 = configureRoutingButton[2](configureRoutingButton, canModifyGroupMembership);
     v18 = [v15 arrayByAddingObject:v17];
 
     v15 = v18;
@@ -1688,8 +1688,8 @@ void __51__MRUNowPlayingViewController_updateVolumeControls__block_invoke(uint64
   v21[2] = __59__MRUNowPlayingViewController_updateRoutingButtonAnimated___block_invoke;
   v21[3] = &unk_1E76656F0;
   v22 = v15;
-  v23 = self;
-  v24 = a3;
+  selfCopy = self;
+  animatedCopy = animated;
   v20 = v15;
   [(MRUNowPlayingController *)controller routingDeviceImage:v21];
 }
@@ -1756,36 +1756,36 @@ void __59__MRUNowPlayingViewController_updateRoutingButtonAnimated___block_invok
     return 1;
   }
 
-  v4 = [(MRUNowPlayingController *)self->_controller endpointController];
-  if ([v4 isDeviceSystemRoute])
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  if ([endpointController isDeviceSystemRoute])
   {
-    v5 = [(MRUNowPlayingController *)self->_controller endpointController];
-    v6 = [v5 isAirPlaying];
+    endpointController2 = [(MRUNowPlayingController *)self->_controller endpointController];
+    isAirPlaying = [endpointController2 isAirPlaying];
   }
 
   else
   {
-    v6 = 1;
+    isAirPlaying = 1;
   }
 
-  return v6;
+  return isAirPlaying;
 }
 
 - (void)updateLayout
 {
   if ([(MRUNowPlayingViewController *)self isViewLoaded])
   {
-    v5 = [(MRUNowPlayingController *)self->_controller endpointController];
-    v3 = [v5 route];
-    if ([v3 canModifyGroupMembership])
+    endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+    route = [endpointController route];
+    if ([route canModifyGroupMembership])
     {
     }
 
     else
     {
-      v4 = [(MRUNowPlayingViewController *)self layout];
+      layout = [(MRUNowPlayingViewController *)self layout];
 
-      if (v4 == 1)
+      if (layout == 1)
       {
 
         [(MRUNowPlayingViewController *)self setLayout:2];
@@ -1797,8 +1797,8 @@ void __59__MRUNowPlayingViewController_updateRoutingButtonAnimated___block_invok
 - (void)updateVisibility
 {
   onScreen = self->_onScreen;
-  v4 = [(MRUNowPlayingViewController *)self view];
-  [v4 setOnScreen:onScreen];
+  view = [(MRUNowPlayingViewController *)self view];
+  [view setOnScreen:onScreen];
 
   layout = self->_layout;
   if (layout)
@@ -1812,9 +1812,9 @@ void __59__MRUNowPlayingViewController_updateRoutingButtonAnimated___block_invok
   }
 
   v7 = !v6;
-  v8 = [(MRUNowPlayingViewController *)self view];
-  v9 = [v8 artworkView];
-  [v9 setEnabled:v7];
+  view2 = [(MRUNowPlayingViewController *)self view];
+  artworkView = [view2 artworkView];
+  [artworkView setEnabled:v7];
 
   v10 = self->_layout;
   if (v10)
@@ -1828,15 +1828,15 @@ void __59__MRUNowPlayingViewController_updateRoutingButtonAnimated___block_invok
   }
 
   v12 = !v11;
-  v13 = [(MRUNowPlayingViewController *)self view];
-  v14 = [v13 headerView];
-  v15 = [v14 labelView];
-  [v15 setEnabled:v12];
+  view3 = [(MRUNowPlayingViewController *)self view];
+  headerView = [view3 headerView];
+  labelView = [headerView labelView];
+  [labelView setEnabled:v12];
 
   v16 = self->_layout == 3;
-  v18 = [(MRUNowPlayingViewController *)self view];
-  v17 = [v18 artworkView];
-  [v17 setShowPlaceholder:v16];
+  view4 = [(MRUNowPlayingViewController *)self view];
+  artworkView2 = [view4 artworkView];
+  [artworkView2 setShowPlaceholder:v16];
 }
 
 - (void)updateSuggestionContext
@@ -1844,29 +1844,29 @@ void __59__MRUNowPlayingViewController_updateRoutingButtonAnimated___block_invok
   if ([(MRUNowPlayingViewController *)self context]== 3)
   {
     v3 = *MEMORY[0x1E69B0970];
-    v4 = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
-    [v4 setContext:v3];
+    mediaSuggestionsController = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
+    [mediaSuggestionsController setContext:v3];
   }
 
   v5 = *MEMORY[0x1E69B0978];
-  v6 = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
-  [v6 setContext:v5];
+  mediaSuggestionsController2 = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
+  [mediaSuggestionsController2 setContext:v5];
 }
 
 - (void)updateSuggestions
 {
-  v3 = [(MRUNowPlayingViewController *)self shouldShowMediaSuggestions];
+  shouldShowMediaSuggestions = [(MRUNowPlayingViewController *)self shouldShowMediaSuggestions];
   objc_initWeak(&location, self);
-  v4 = [(MRUNowPlayingViewController *)self view];
-  v5 = [v4 showSuggestionsView];
+  view = [(MRUNowPlayingViewController *)self view];
+  showSuggestionsView = [view showSuggestionsView];
 
-  if (v3 == v5)
+  if (shouldShowMediaSuggestions == showSuggestionsView)
   {
-    if (v3)
+    if (shouldShowMediaSuggestions)
     {
-      v6 = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
-      v7 = [v6 mediaSuggestions];
-      [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setMediaSuggestions:v7];
+      mediaSuggestionsController = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
+      mediaSuggestions = [mediaSuggestionsController mediaSuggestions];
+      [(MRUMediaSuggestionsViewController *)self->_suggestionsViewController setMediaSuggestions:mediaSuggestions];
     }
   }
 
@@ -1877,13 +1877,13 @@ void __59__MRUNowPlayingViewController_updateRoutingButtonAnimated___block_invok
     v11[2] = __48__MRUNowPlayingViewController_updateSuggestions__block_invoke;
     v11[3] = &unk_1E7665718;
     objc_copyWeak(&v12, &location);
-    v13 = v3;
+    v13 = shouldShowMediaSuggestions;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __48__MRUNowPlayingViewController_updateSuggestions__block_invoke_2;
     v8[3] = &unk_1E7665718;
     objc_copyWeak(&v9, &location);
-    v10 = v3;
+    v10 = shouldShowMediaSuggestions;
     [(MRUNowPlayingViewController *)self updateContentAnimated:v11 completion:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&v12);
@@ -1938,9 +1938,9 @@ void __48__MRUNowPlayingViewController_updateSuggestions__block_invoke_2(uint64_
   v3 = layout == 4 || layout == 2;
   if (v3 && self->_context != 7)
   {
-    v6 = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
-    v7 = [v6 mediaSuggestions];
-    if (v7)
+    mediaSuggestionsController = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
+    mediaSuggestions = [mediaSuggestionsController mediaSuggestions];
+    if (mediaSuggestions)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v5 = objc_opt_respondsToSelector();
@@ -1962,35 +1962,35 @@ void __48__MRUNowPlayingViewController_updateSuggestions__block_invoke_2(uint64_
 
 - (BOOL)isShowingMediaSuggestions
 {
-  v2 = [(MRUNowPlayingViewController *)self view];
-  v3 = [v2 showSuggestionsView];
+  view = [(MRUNowPlayingViewController *)self view];
+  showSuggestionsView = [view showSuggestionsView];
 
-  return v3;
+  return showSuggestionsView;
 }
 
 - (void)trackStartedShowingMediaSuggestions
 {
   if ([(MRUNowPlayingViewController *)self shouldShowMediaSuggestions]&& [(MRUNowPlayingViewController *)self isOnScreen])
   {
-    v3 = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
-    v4 = [v3 mediaSuggestions];
+    mediaSuggestionsController = [(MRUNowPlayingController *)self->_controller mediaSuggestionsController];
+    mediaSuggestions = [mediaSuggestionsController mediaSuggestions];
 
-    [(MRUNowPlayingViewController *)self trackSuggestionsDisplayed:v4];
+    [(MRUNowPlayingViewController *)self trackSuggestionsDisplayed:mediaSuggestions];
   }
 }
 
-- (void)presentRoutingControlsFromSourceView:(id)a3
+- (void)presentRoutingControlsFromSourceView:(id)view
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   if (self->_routeControlsPresentation)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69705B8]);
     if (!+[MRUFeatureFlagProvider isCayenneEnabled])
     {
-      v6 = [MEMORY[0x1E696AAE8] mainBundle];
-      v7 = [v6 bundleIdentifier];
-      [v5 setPresentingAppBundleID:v7];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      [v5 setPresentingAppBundleID:bundleIdentifier];
     }
 
     [v5 setStyle:2];
@@ -2033,9 +2033,9 @@ void __48__MRUNowPlayingViewController_updateSuggestions__block_invoke_2(uint64_
 
       else
       {
-        v17 = [(MRUNowPlayingController *)self->_controller endpointController];
-        v18 = [v17 routeUID];
-        [v5 setRouteUID:v18];
+        endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+        routeUID = [endpointController routeUID];
+        [v5 setRouteUID:routeUID];
       }
     }
 
@@ -2067,12 +2067,12 @@ void __48__MRUNowPlayingViewController_updateSuggestions__block_invoke_2(uint64_
       mediaControls = self->_mediaControls;
       self->_mediaControls = v21;
 
-      v23 = [MEMORY[0x1E69DC938] currentDevice];
-      v24 = [v23 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v24 & 0xFFFFFFFFFFFFFFFBLL) == 1 && [(MRUNowPlayingViewController *)self context]!= 2)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && [(MRUNowPlayingViewController *)self context]!= 2)
       {
-        [(MPMediaControls *)self->_mediaControls setSourceView:v4];
+        [(MPMediaControls *)self->_mediaControls setSourceView:viewCopy];
       }
 
       v25[0] = MEMORY[0x1E69E9820];
@@ -2090,11 +2090,11 @@ void __48__MRUNowPlayingViewController_updateSuggestions__block_invoke_2(uint64_
 
   else
   {
-    v10 = [(MRUNowPlayingViewController *)self layout];
+    layout = [(MRUNowPlayingViewController *)self layout];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      if (v10 == 1)
+      if (layout == 1)
       {
         v12 = 2;
       }
@@ -2121,22 +2121,22 @@ void __68__MRUNowPlayingViewController_presentRoutingControlsFromSourceView___bl
   [WeakRetained setMediaControls:0];
 }
 
-- (void)updateContentAnimated:(id)a3 completion:(id)a4
+- (void)updateContentAnimated:(id)animated completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__MRUNowPlayingViewController_updateContentAnimated_completion___block_invoke;
   aBlock[3] = &unk_1E7664490;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = animatedCopy;
   v16 = v8;
   v9 = _Block_copy(aBlock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained nowPlayingViewController:self didChangeSizeWithAnimations:v9 completion:v7];
+    [WeakRetained nowPlayingViewController:self didChangeSizeWithAnimations:v9 completion:completionCopy];
   }
 
   else
@@ -2147,7 +2147,7 @@ void __68__MRUNowPlayingViewController_presentRoutingControlsFromSourceView___bl
     v12[2] = __64__MRUNowPlayingViewController_updateContentAnimated_completion___block_invoke_3;
     v12[3] = &unk_1E7665740;
     v13 = v9;
-    v14 = v7;
+    v14 = completionCopy;
     [v11 mru_animateUsingType:0 animations:v12];
   }
 }
@@ -2218,8 +2218,8 @@ uint64_t __64__MRUNowPlayingViewController_updateContentAnimated_completion___bl
 {
   if (self->_coordinatedDismissalBlock)
   {
-    v3 = [(MRUNowPlayingController *)self->_controller endpointController];
-    objc_initWeak(&location, v3);
+    endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+    objc_initWeak(&location, endpointController);
 
     coordinatedDismissalBlock = self->_coordinatedDismissalBlock;
     v6[0] = MEMORY[0x1E69E9820];
@@ -2234,8 +2234,8 @@ uint64_t __64__MRUNowPlayingViewController_updateContentAnimated_completion___bl
 
   else
   {
-    v5 = [(MRUNowPlayingController *)self->_controller endpointController];
-    [v5 launchNowPlayingApp];
+    endpointController2 = [(MRUNowPlayingController *)self->_controller endpointController];
+    [endpointController2 launchNowPlayingApp];
   }
 }
 
@@ -2291,11 +2291,11 @@ void __50__MRUNowPlayingViewController_launchNowPlayingApp__block_invoke(uint64_
 
   v25[2] = v11;
   v24[3] = @"endpointController";
-  v12 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v13 = v12;
-  if (v12)
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  v13 = endpointController;
+  if (endpointController)
   {
-    v14 = v12;
+    v14 = endpointController;
   }
 
   else
@@ -2329,12 +2329,12 @@ void __50__MRUNowPlayingViewController_launchNowPlayingApp__block_invoke(uint64_
   v25[6] = mediaControls;
   v24[6] = @"mediaControls";
   v24[7] = @"window";
-  v18 = [(MRUNowPlayingViewController *)self view];
-  v19 = [v18 window];
-  v20 = v19;
-  if (v19)
+  view = [(MRUNowPlayingViewController *)self view];
+  window = [view window];
+  v20 = window;
+  if (window)
   {
-    v21 = v19;
+    v21 = window;
   }
 
   else

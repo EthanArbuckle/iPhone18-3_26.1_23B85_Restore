@@ -1,16 +1,16 @@
 @interface CHRecentCall
 + (id)predicateForFilteringOutFaceTimeAudioCalls;
-+ (id)recentCallJunkIdentificationCategoryString:(int64_t)a3;
-- (CHRecentCall)initWithConversation:(id)a3 startDate:(id)a4 avMode:(unint64_t)a5;
-- (id)initWithCall:(id)a3;
++ (id)recentCallJunkIdentificationCategoryString:(int64_t)string;
+- (CHRecentCall)initWithConversation:(id)conversation startDate:(id)date avMode:(unint64_t)mode;
+- (id)initWithCall:(id)call;
 - (id)provider;
 @end
 
 @implementation CHRecentCall
 
-- (id)initWithCall:(id)a3
+- (id)initWithCall:(id)call
 {
-  v5 = a3;
+  callCopy = call;
   v6 = [(CHRecentCall *)self init];
 
   if (!v6)
@@ -18,37 +18,37 @@
     goto LABEL_112;
   }
 
-  v7 = [v5 callHistoryIdentifier];
+  callHistoryIdentifier = [callCopy callHistoryIdentifier];
 
-  if (!v7)
+  if (!callHistoryIdentifier)
   {
     v8 = [NSString stringWithFormat:@"This call's call history identifier is nil"];
     NSLog(@"** TUAssertion failure: %@", v8);
 
     if (_TUAssertShouldCrashApplication())
     {
-      v9 = [v5 callHistoryIdentifier];
+      callHistoryIdentifier2 = [callCopy callHistoryIdentifier];
 
-      if (!v9)
+      if (!callHistoryIdentifier2)
       {
         sub_100478CA0(a2, v6);
       }
     }
   }
 
-  v10 = [v5 localSenderIdentityAccountUUID];
+  localSenderIdentityAccountUUID = [callCopy localSenderIdentityAccountUUID];
   v123 = v6;
-  [(CHRecentCall *)v6 setLocalParticipantUUID:v10];
+  [(CHRecentCall *)v6 setLocalParticipantUUID:localSenderIdentityAccountUUID];
 
-  v122 = v5;
-  v11 = v5;
-  v12 = [v11 remoteParticipantHandles];
-  v13 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v12 count]);
+  v122 = callCopy;
+  v11 = callCopy;
+  remoteParticipantHandles = [v11 remoteParticipantHandles];
+  v13 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [remoteParticipantHandles count]);
 
   v14 = v11;
-  v15 = [v14 remoteParticipantHandles];
-  v16 = [v14 callCenter];
-  v17 = [v16 activeConversationForCall:v14 backedByGroupSession:1];
+  remoteParticipantHandles2 = [v14 remoteParticipantHandles];
+  callCenter = [v14 callCenter];
+  v17 = [callCenter activeConversationForCall:v14 backedByGroupSession:1];
 
   v125 = v14;
   if (v17)
@@ -58,8 +58,8 @@
     v131 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v19 = [v17 mergedRemoteMembers];
-    v20 = [v19 countByEnumeratingWithState:&v130 objects:v135 count:16];
+    mergedRemoteMembers = [v17 mergedRemoteMembers];
+    v20 = [mergedRemoteMembers countByEnumeratingWithState:&v130 objects:v135 count:16];
     if (v20)
     {
       v21 = v20;
@@ -70,14 +70,14 @@
         {
           if (*v131 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(mergedRemoteMembers);
           }
 
-          v24 = [*(*(&v130 + 1) + 8 * i) handle];
-          [v18 addObject:v24];
+          handle = [*(*(&v130 + 1) + 8 * i) handle];
+          [v18 addObject:handle];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v130 objects:v135 count:16];
+        v21 = [mergedRemoteMembers countByEnumeratingWithState:&v130 objects:v135 count:16];
       }
 
       while (v21);
@@ -87,7 +87,7 @@
     {
       v25 = [v18 copy];
 
-      v15 = v25;
+      remoteParticipantHandles2 = v25;
     }
 
     v14 = v125;
@@ -95,16 +95,16 @@
 
   else
   {
-    v26 = [v15 bs_filter:&stru_10061D5F0];
+    v26 = [remoteParticipantHandles2 bs_filter:&stru_10061D5F0];
 
-    v15 = v26;
+    remoteParticipantHandles2 = v26;
   }
 
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
-  v27 = v15;
+  v27 = remoteParticipantHandles2;
   v28 = [v27 countByEnumeratingWithState:&v130 objects:v135 count:16];
   if (v28)
   {
@@ -120,8 +120,8 @@
         }
 
         v32 = *(*(&v130 + 1) + 8 * j);
-        v33 = [v125 isoCountryCode];
-        v34 = [CHHandle normalizedHandleWithTUHandle:v32 andISOCountryCode:v33];
+        isoCountryCode = [v125 isoCountryCode];
+        v34 = [CHHandle normalizedHandleWithTUHandle:v32 andISOCountryCode:isoCountryCode];
 
         if (v34)
         {
@@ -138,20 +138,20 @@
   v35 = [v13 copy];
   [(CHRecentCall *)v123 setRemoteParticipantHandles:v35];
 
-  v36 = [v125 initiator];
-  v37 = [CHHandle handleWithTUHandle:v36];
+  initiator = [v125 initiator];
+  v37 = [CHHandle handleWithTUHandle:initiator];
   [(CHRecentCall *)v123 setInitiator:v37];
 
   v38 = [NSMutableSet alloc];
-  v39 = [v125 emergencyMediaItems];
-  v124 = [v38 initWithCapacity:{objc_msgSend(v39, "count")}];
+  emergencyMediaItems = [v125 emergencyMediaItems];
+  v124 = [v38 initWithCapacity:{objc_msgSend(emergencyMediaItems, "count")}];
 
   v128 = 0u;
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v40 = [v125 emergencyMediaItems];
-  v41 = [v40 countByEnumeratingWithState:&v126 objects:v134 count:16];
+  emergencyMediaItems2 = [v125 emergencyMediaItems];
+  v41 = [emergencyMediaItems2 countByEnumeratingWithState:&v126 objects:v134 count:16];
   if (v41)
   {
     v42 = v41;
@@ -162,18 +162,18 @@
       {
         if (*v127 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(emergencyMediaItems2);
         }
 
         v45 = *(*(&v126 + 1) + 8 * k);
         v46 = [CHEmergencyMediaItem alloc];
-        v47 = [v45 assetId];
-        v48 = [v46 initWithAssetId:v47 mediaType:{+[CHRecentCall toCHEmergencyMediaType:](CHRecentCall, "toCHEmergencyMediaType:", objc_msgSend(v45, "emergencyMediaType"))}];
+        assetId = [v45 assetId];
+        v48 = [v46 initWithAssetId:assetId mediaType:{+[CHRecentCall toCHEmergencyMediaType:](CHRecentCall, "toCHEmergencyMediaType:", objc_msgSend(v45, "emergencyMediaType"))}];
 
         [v124 addObject:v48];
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v126 objects:v134 count:16];
+      v42 = [emergencyMediaItems2 countByEnumeratingWithState:&v126 objects:v134 count:16];
     }
 
     while (v42);
@@ -183,12 +183,12 @@
   [(CHRecentCall *)v123 setEmergencyMediaItems:v124];
   -[CHRecentCall setUsedEmergencyVideoStreaming:](v123, "setUsedEmergencyVideoStreaming:", [v125 hasEmergencyVideoStream]);
   -[CHRecentCall setWasEmergencyCall:](v123, "setWasEmergencyCall:", [v125 isEmergency]);
-  v49 = [v125 handle];
-  v50 = [v49 value];
-  [(CHRecentCall *)v123 setCallerId:v50];
+  handle2 = [v125 handle];
+  value = [handle2 value];
+  [(CHRecentCall *)v123 setCallerId:value];
 
-  v51 = [v125 handle];
-  [(CHRecentCall *)v123 setHandleType:[CHHandle handleTypeForTUHandle:v51]];
+  handle3 = [v125 handle];
+  [(CHRecentCall *)v123 setHandleType:[CHHandle handleTypeForTUHandle:handle3]];
 
   if ([v125 isJunk])
   {
@@ -197,52 +197,52 @@
 
   else
   {
-    v52 = [v125 callerNameFromNetwork];
-    [(CHRecentCall *)v123 setName:v52];
+    callerNameFromNetwork = [v125 callerNameFromNetwork];
+    [(CHRecentCall *)v123 setName:callerNameFromNetwork];
   }
 
-  v53 = [v125 callDirectoryName];
+  callDirectoryName = [v125 callDirectoryName];
 
-  if (v53)
+  if (callDirectoryName)
   {
-    v54 = [v125 callDirectoryName];
-    [(CHRecentCall *)v123 setName:v54];
+    callDirectoryName2 = [v125 callDirectoryName];
+    [(CHRecentCall *)v123 setName:callDirectoryName2];
   }
 
-  v55 = [v125 imageURL];
-  if (v55)
+  imageURL = [v125 imageURL];
+  if (imageURL)
   {
-    v56 = v55;
-    v57 = [v125 callDirectoryName];
+    v56 = imageURL;
+    callDirectoryName3 = [v125 callDirectoryName];
 
-    if (!v57)
+    if (!callDirectoryName3)
     {
       v58 = [NSURL fileURLWithPath:@"/stock" isDirectory:0];
       [(CHRecentCall *)v123 setImageURL:v58];
 
-      v59 = [v125 companyName];
+      companyName = [v125 companyName];
 
-      if (v59)
+      if (companyName)
       {
-        v60 = [v125 companyName];
-        [(CHRecentCall *)v123 setName:v60];
+        companyName2 = [v125 companyName];
+        [(CHRecentCall *)v123 setName:companyName2];
       }
     }
   }
 
-  v61 = [v125 callHistoryIdentifier];
-  [(CHRecentCall *)v123 setUniqueId:v61];
+  callHistoryIdentifier3 = [v125 callHistoryIdentifier];
+  [(CHRecentCall *)v123 setUniqueId:callHistoryIdentifier3];
 
-  v62 = [v125 isoCountryCode];
-  [(CHRecentCall *)v123 setIsoCountryCode:v62];
+  isoCountryCode2 = [v125 isoCountryCode];
+  [(CHRecentCall *)v123 setIsoCountryCode:isoCountryCode2];
 
   [v125 callDuration];
   v64 = [NSDate dateWithTimeIntervalSinceNow:-v63];
   [(CHRecentCall *)v123 setDate:v64];
 
-  v65 = [v125 isScreening];
+  isScreening = [v125 isScreening];
   v66 = 0.0;
-  if ((v65 & 1) == 0)
+  if ((isScreening & 1) == 0)
   {
     [v125 callDuration];
   }
@@ -265,36 +265,36 @@
   }
 
   [(CHRecentCall *)v123 setMediaType:v68];
-  v69 = [v67 ttyType];
-  if (v69 == 1)
+  ttyType = [v67 ttyType];
+  if (ttyType == 1)
   {
     v70 = 1;
   }
 
   else
   {
-    v70 = 2 * (v69 == 2);
+    v70 = 2 * (ttyType == 2);
   }
 
   [(CHRecentCall *)v123 setTtyType:v70];
   v71 = v67;
-  v72 = [v71 provider];
-  v73 = [v72 identifier];
+  provider = [v71 provider];
+  identifier = [provider identifier];
 
-  v74 = [v71 provider];
-  v75 = [v74 isTelephonyProvider];
+  provider2 = [v71 provider];
+  isTelephonyProvider = [provider2 isTelephonyProvider];
 
-  if (v75)
+  if (isTelephonyProvider)
   {
     v76 = &kCHServiceProviderTelephony;
   }
 
   else
   {
-    v77 = [v71 provider];
-    v78 = [v77 isFaceTimeProvider];
+    provider3 = [v71 provider];
+    isFaceTimeProvider = [provider3 isFaceTimeProvider];
 
-    if (!v78)
+    if (!isFaceTimeProvider)
     {
       goto LABEL_58;
     }
@@ -304,10 +304,10 @@
 
   v79 = *v76;
 
-  v73 = v79;
+  identifier = v79;
 LABEL_58:
 
-  [(CHRecentCall *)v123 setServiceProvider:v73];
+  [(CHRecentCall *)v123 setServiceProvider:identifier];
   if ([v71 bytesOfDataUsed] >= 1)
   {
     v80 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v71 bytesOfDataUsed]);
@@ -326,24 +326,24 @@ LABEL_58:
 
   if ([v71 disconnectedReason] == 1 || (objc_msgSend(v71, "wasDeclined") & 1) != 0)
   {
-    v82 = 1;
+    isOutgoing = 1;
   }
 
   else
   {
-    v82 = [v71 isOutgoing];
-    if (((v82 | v81) & 1) == 0)
+    isOutgoing = [v71 isOutgoing];
+    if (((isOutgoing | v81) & 1) == 0)
     {
       [v71 callDuration];
-      v82 = v88 > 0.0;
+      isOutgoing = v88 > 0.0;
     }
   }
 
-  [(CHRecentCall *)v123 setRead:v82];
-  v83 = [v71 verificationStatus];
-  if (v83 <= 4)
+  [(CHRecentCall *)v123 setRead:isOutgoing];
+  verificationStatus = [v71 verificationStatus];
+  if (verificationStatus <= 4)
   {
-    [(CHRecentCall *)v123 setVerificationStatus:v83];
+    [(CHRecentCall *)v123 setVerificationStatus:verificationStatus];
   }
 
   v84 = v71;
@@ -388,30 +388,30 @@ LABEL_58:
   v90 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v84 disconnectedReason]);
   [(CHRecentCall *)v123 setDisconnectedCause:v90];
 
-  v5 = v122;
+  callCopy = v122;
   if (([v84 isScreening] & 1) != 0 || (objc_msgSend(v84, "wasScreened") & 1) == 0)
   {
-    v91 = [v84 blockedByExtension];
+    blockedByExtension = [v84 blockedByExtension];
 
-    if (v91)
+    if (blockedByExtension)
     {
-      v92 = [v84 blockedByExtension];
-      [(CHRecentCall *)v123 setBlockedByExtension:v92];
+      blockedByExtension2 = [v84 blockedByExtension];
+      [(CHRecentCall *)v123 setBlockedByExtension:blockedByExtension2];
 
-      v93 = [(CHRecentCall *)v123 blockedByExtension];
-      v94 = [NSExtension extensionWithIdentifier:v93 error:0];
+      blockedByExtension3 = [(CHRecentCall *)v123 blockedByExtension];
+      v94 = [NSExtension extensionWithIdentifier:blockedByExtension3 error:0];
 
       if (v94)
       {
-        v95 = [v94 _plugIn];
-        v96 = [v95 localizedContainingName];
-        [(CHRecentCall *)v123 setBlockedByExtensionName:v96];
+        _plugIn = [v94 _plugIn];
+        localizedContainingName = [_plugIn localizedContainingName];
+        [(CHRecentCall *)v123 setBlockedByExtensionName:localizedContainingName];
       }
 
       else
       {
-        v95 = [(CHRecentCall *)v123 blockedByExtension];
-        [(CHRecentCall *)v123 setBlockedByExtensionName:v95];
+        _plugIn = [(CHRecentCall *)v123 blockedByExtension];
+        [(CHRecentCall *)v123 setBlockedByExtensionName:_plugIn];
       }
     }
 
@@ -426,23 +426,23 @@ LABEL_58:
 
   else
   {
-    v98 = [v84 handle];
-    v99 = [v98 value];
-    -[CHRecentCall setCallerIdAvailability:](v123, "setCallerIdAvailability:", 2 * ([v99 length] == 0));
+    handle4 = [v84 handle];
+    value2 = [handle4 value];
+    -[CHRecentCall setCallerIdAvailability:](v123, "setCallerIdAvailability:", 2 * ([value2 length] == 0));
   }
 
   v100 = v84;
   if ([v100 isJunk])
   {
-    v101 = [v100 junkConfidence];
-    if ((v101 - 1) >= 3)
+    junkConfidence = [v100 junkConfidence];
+    if ((junkConfidence - 1) >= 3)
     {
       v102 = 0;
     }
 
     else
     {
-      v102 = v101;
+      v102 = junkConfidence;
     }
   }
 
@@ -475,60 +475,60 @@ LABEL_58:
   }
 
   [(CHRecentCall *)v123 setCommunicationTrustScore:v105];
-  v106 = [v100 conversationID];
-  [(CHRecentCall *)v123 setConversationID:v106];
+  conversationID = [v100 conversationID];
+  [(CHRecentCall *)v123 setConversationID:conversationID];
 
-  v107 = [v100 callDirectoryIdentityType];
-  if (v107 == 2)
+  callDirectoryIdentityType = [v100 callDirectoryIdentityType];
+  if (callDirectoryIdentityType == 2)
   {
     v108 = 2;
   }
 
   else
   {
-    v108 = v107 == 1;
+    v108 = callDirectoryIdentityType == 1;
   }
 
   [(CHRecentCall *)v123 setCallDirectoryIdentityType:v108];
-  v109 = [v100 callDirectoryIdentityExtension];
-  [(CHRecentCall *)v123 setIdentityExtension:v109];
+  callDirectoryIdentityExtension = [v100 callDirectoryIdentityExtension];
+  [(CHRecentCall *)v123 setIdentityExtension:callDirectoryIdentityExtension];
 
-  v110 = [v100 dateConnected];
+  dateConnected = [v100 dateConnected];
 
-  if (v110)
+  if (dateConnected)
   {
-    v111 = [v100 dateConnected];
+    dateConnected2 = [v100 dateConnected];
 LABEL_108:
-    v113 = v111;
-    v114 = [v100 dateCreated];
-    [v113 timeIntervalSinceDate:v114];
+    v113 = dateConnected2;
+    dateCreated = [v100 dateCreated];
+    [v113 timeIntervalSinceDate:dateCreated];
     v115 = [NSNumber numberWithDouble:?];
     [(CHRecentCall *)v123 setTimeToEstablish:v115];
 
     goto LABEL_109;
   }
 
-  v112 = [v100 dateEnded];
+  dateEnded = [v100 dateEnded];
 
-  if (v112)
+  if (dateEnded)
   {
-    v111 = [v100 dateEnded];
+    dateConnected2 = [v100 dateEnded];
     goto LABEL_108;
   }
 
 LABEL_109:
-  v116 = [v100 provider];
-  v117 = [v116 isFaceTimeProvider];
+  provider4 = [v100 provider];
+  isFaceTimeProvider2 = [provider4 isFaceTimeProvider];
 
-  if (v117)
+  if (isFaceTimeProvider2)
   {
-    v118 = [v100 callGroupUUID];
-    [(CHRecentCall *)v123 setParticipantGroupUUID:v118];
+    callGroupUUID = [v100 callGroupUUID];
+    [(CHRecentCall *)v123 setParticipantGroupUUID:callGroupUUID];
   }
 
   -[CHRecentCall setScreenSharingType:](v123, "setScreenSharingType:", [v100 screenSharingType] & 3);
-  v119 = [v100 reminderUUID];
-  [(CHRecentCall *)v123 setReminderUUID:v119];
+  reminderUUID = [v100 reminderUUID];
+  [(CHRecentCall *)v123 setReminderUUID:reminderUUID];
 
 LABEL_112:
   [(CHRecentCall *)v6 setLocation];
@@ -537,25 +537,25 @@ LABEL_112:
   return v120;
 }
 
-- (CHRecentCall)initWithConversation:(id)a3 startDate:(id)a4 avMode:(unint64_t)a5
+- (CHRecentCall)initWithConversation:(id)conversation startDate:(id)date avMode:(unint64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
+  conversationCopy = conversation;
+  dateCopy = date;
   v10 = [(CHRecentCall *)self init];
   if (v10)
   {
-    v33 = v9;
-    v34 = v8;
-    v11 = v8;
-    v12 = [v11 remoteMembers];
-    v13 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v12 count]);
+    v33 = dateCopy;
+    v34 = conversationCopy;
+    v11 = conversationCopy;
+    remoteMembers = [v11 remoteMembers];
+    v13 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [remoteMembers count]);
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v14 = [v11 mergedRemoteMembers];
-    v15 = [v14 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    mergedRemoteMembers = [v11 mergedRemoteMembers];
+    v15 = [mergedRemoteMembers countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v15)
     {
       v16 = v15;
@@ -566,15 +566,15 @@ LABEL_112:
         {
           if (*v36 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(mergedRemoteMembers);
           }
 
-          v19 = [*(*(&v35 + 1) + 8 * i) handle];
-          v20 = [CHHandle handleWithTUHandle:v19];
+          handle = [*(*(&v35 + 1) + 8 * i) handle];
+          v20 = [CHHandle handleWithTUHandle:handle];
           [v13 addObject:v20];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v16 = [mergedRemoteMembers countByEnumeratingWithState:&v35 objects:v39 count:16];
       }
 
       while (v16);
@@ -583,15 +583,15 @@ LABEL_112:
     v21 = [v13 copy];
     [(CHRecentCall *)v10 setRemoteParticipantHandles:v21];
 
-    v22 = [v11 initiator];
-    v23 = [CHHandle handleWithTUHandle:v22];
+    initiator = [v11 initiator];
+    v23 = [CHHandle handleWithTUHandle:initiator];
     [(CHRecentCall *)v10 setInitiator:v23];
 
-    v24 = [v11 UUID];
-    v25 = [v24 UUIDString];
-    [(CHRecentCall *)v10 setUniqueId:v25];
+    uUID = [v11 UUID];
+    uUIDString = [uUID UUIDString];
+    [(CHRecentCall *)v10 setUniqueId:uUIDString];
 
-    v9 = v33;
+    dateCopy = v33;
     [(CHRecentCall *)v10 setDate:v33];
     v26 = +[NSDate date];
     [v26 timeIntervalSinceDate:v33];
@@ -599,7 +599,7 @@ LABEL_112:
 
     [(CHRecentCall *)v10 setTtyType:0];
     [(CHRecentCall *)v10 setServiceProvider:kCHServiceProviderFaceTime];
-    if (a5 == 1)
+    if (mode == 1)
     {
       v27 = 1;
     }
@@ -623,11 +623,11 @@ LABEL_112:
     v30 = [CHRecentCall recentCallJunkIdentificationCategoryString:0];
     [(CHRecentCall *)v10 setJunkIdentificationCategory:v30];
 
-    v31 = [v11 groupUUID];
-    [(CHRecentCall *)v10 setParticipantGroupUUID:v31];
+    groupUUID = [v11 groupUUID];
+    [(CHRecentCall *)v10 setParticipantGroupUUID:groupUUID];
 
     -[CHRecentCall setScreenSharingType:](v10, "setScreenSharingType:", [v11 screenSharingType] & 3);
-    v8 = v34;
+    conversationCopy = v34;
   }
 
   return v10;
@@ -636,8 +636,8 @@ LABEL_112:
 - (id)provider
 {
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 providerManager];
-  v5 = [v4 providerForRecentCall:self];
+  providerManager = [v3 providerManager];
+  v5 = [providerManager providerForRecentCall:self];
 
   return v5;
 }
@@ -645,21 +645,21 @@ LABEL_112:
 + (id)predicateForFilteringOutFaceTimeAudioCalls
 {
   v2 = [NSNumber numberWithUnsignedInt:kCHCallCategoryAudio];
-  v3 = [NSPredicate predicateWithFormat:@"!(call_category == %@ && service_provider == %@)", v2, kCHServiceProviderFaceTime];
+  kCHServiceProviderFaceTime = [NSPredicate predicateWithFormat:@"!(call_category == %@ && service_provider == %@)", v2, kCHServiceProviderFaceTime];
 
-  return v3;
+  return kCHServiceProviderFaceTime;
 }
 
-+ (id)recentCallJunkIdentificationCategoryString:(int64_t)a3
++ (id)recentCallJunkIdentificationCategoryString:(int64_t)string
 {
-  if ((a3 - 1) > 0x14)
+  if ((string - 1) > 0x14)
   {
     return 0;
   }
 
   else
   {
-    return off_10061D610[a3 - 1];
+    return off_10061D610[string - 1];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface SUScriptPurchaseManager
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (SUScriptPurchaseManager)init;
-- (id)isPurchasedItemIdentifier:(id)a3;
-- (id)isPurchasingItemIdentifier:(id)a3;
+- (id)isPurchasedItemIdentifier:(id)identifier;
+- (id)isPurchasingItemIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
@@ -30,7 +30,7 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (id)isPurchasedItemIdentifier:(id)a3
+- (id)isPurchasedItemIdentifier:(id)identifier
 {
   v4 = SSGetUnsignedLongLongFromValue();
   if (v4)
@@ -51,7 +51,7 @@
   return *v6;
 }
 
-- (id)isPurchasingItemIdentifier:(id)a3
+- (id)isPurchasingItemIdentifier:(id)identifier
 {
   v4 = SSGetUnsignedLongLongFromValue();
   if (v4)
@@ -72,14 +72,14 @@
   return *v6;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_44, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_44, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptPurchaseManager;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -87,7 +87,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_44 = sel_isPurchasedItemIdentifier_;
     unk_1EBF3B5D0 = @"isPurchasedItemIdentifier";

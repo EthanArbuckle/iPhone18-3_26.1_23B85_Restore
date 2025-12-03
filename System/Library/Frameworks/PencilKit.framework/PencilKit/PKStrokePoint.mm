@@ -1,14 +1,14 @@
 @interface PKStrokePoint
 + (shared_ptr<PKStrokePathPointsShared>)_sharedConstantData;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGFloat)secondaryScale;
 - (CGPoint)location;
 - (CGSize)size;
 - (NSTimeInterval)timeOffset;
-- (PKStrokePoint)initWithLocation:(CGPoint)a3 timeOffset:(double)a4 size:(CGSize)a5 opacity:(double)a6 force:(double)a7 azimuth:(double)a8 altitude:(double)a9 edgeWidth:(double)a10 radius2:(double)a11;
-- (PKStrokePoint)initWithLocation:(CGPoint)a3 timeOffset:(double)a4 size:(CGSize)a5 opacity:(double)a6 force:(double)a7 azimuth:(double)a8 altitude:(double)a9 edgeWidth:(double)a10 radius2:(double)a11 threshold:(double)a12;
-- (PKStrokePoint)initWithLocation:(CGPoint)a3 timeOffset:(double)a4 size:(CGSize)a5 opacity:(double)a6 force:(double)a7 azimuth:(double)a8 altitude:(double)a9 secondaryScale:(double)a10 threshold:(double)a11;
-- (PKStrokePoint)initWithSlice:(void *)a3 index:(int64_t)a4;
+- (PKStrokePoint)initWithLocation:(CGPoint)location timeOffset:(double)offset size:(CGSize)size opacity:(double)opacity force:(double)force azimuth:(double)azimuth altitude:(double)altitude edgeWidth:(double)self0 radius2:(double)self1;
+- (PKStrokePoint)initWithLocation:(CGPoint)location timeOffset:(double)offset size:(CGSize)size opacity:(double)opacity force:(double)force azimuth:(double)azimuth altitude:(double)altitude edgeWidth:(double)self0 radius2:(double)self1 threshold:(double)self2;
+- (PKStrokePoint)initWithLocation:(CGPoint)location timeOffset:(double)offset size:(CGSize)size opacity:(double)opacity force:(double)force azimuth:(double)azimuth altitude:(double)altitude secondaryScale:(double)self0 threshold:(double)self1;
+- (PKStrokePoint)initWithSlice:(void *)slice index:(int64_t)index;
 - (double)_radius2;
 - (id).cxx_construct;
 - (id)description;
@@ -17,12 +17,12 @@
 
 @implementation PKStrokePoint
 
-- (PKStrokePoint)initWithLocation:(CGPoint)a3 timeOffset:(double)a4 size:(CGSize)a5 opacity:(double)a6 force:(double)a7 azimuth:(double)a8 altitude:(double)a9 secondaryScale:(double)a10 threshold:(double)a11
+- (PKStrokePoint)initWithLocation:(CGPoint)location timeOffset:(double)offset size:(CGSize)size opacity:(double)opacity force:(double)force azimuth:(double)azimuth altitude:(double)altitude secondaryScale:(double)self0 threshold:(double)self1
 {
-  height = a5.height;
-  width = a5.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = location.y;
+  x = location.x;
   v42.receiver = self;
   v42.super_class = PKStrokePoint;
   v19 = [(PKStrokePoint *)&v42 init];
@@ -63,8 +63,8 @@
     {
       if ((*(ptr + 32) & 2) != 0)
       {
-        v28 = a4;
-        *&v24[*(ptr + 93)] = v28;
+        offsetCopy = offset;
+        *&v24[*(ptr + 93)] = offsetCopy;
       }
 
       if ((*(ptr + 32) & 4) != 0)
@@ -94,10 +94,10 @@
     }
   }
 
-  PKStrokePathPointsPrivate::setForce(&v19->_strokeDataPointsPrivate, a7, 0);
-  PKStrokePathPointsPrivate::setAzimuth(&v19->_strokeDataPointsPrivate, a8 + -3.14159265, 0);
-  PKStrokePathPointsPrivate::setAltitude(&v19->_strokeDataPointsPrivate, 1.57079633 - a9, 0);
-  PKStrokePathPointsPrivate::setOpacity(&v19->_strokeDataPointsPrivate, a6, 0);
+  PKStrokePathPointsPrivate::setForce(&v19->_strokeDataPointsPrivate, force, 0);
+  PKStrokePathPointsPrivate::setAzimuth(&v19->_strokeDataPointsPrivate, azimuth + -3.14159265, 0);
+  PKStrokePathPointsPrivate::setAltitude(&v19->_strokeDataPointsPrivate, 1.57079633 - altitude, 0);
+  PKStrokePathPointsPrivate::setOpacity(&v19->_strokeDataPointsPrivate, opacity, 0);
   v35 = v19->_strokeDataPointsPrivate.pointsData.__begin_;
   v36 = v19->_strokeDataPointsPrivate.pointsData.__end_;
   v37 = v36 - v35;
@@ -106,18 +106,18 @@
     v38 = p_strokeDataPointsPrivate->constants.__ptr_;
     if (*(p_strokeDataPointsPrivate->constants.__ptr_ + 6) <= v37 && (*(v38 + 33) & 2) != 0)
     {
-      v39 = width * a10;
+      v39 = width * scale;
       *&v35[*(v38 + 101)] = v39;
     }
   }
 
-  PKStrokePathPointsPrivate::setThreshold(&v19->_strokeDataPointsPrivate, a11, 0);
+  PKStrokePathPointsPrivate::setThreshold(&v19->_strokeDataPointsPrivate, threshold, 0);
   return v19;
 }
 
-- (PKStrokePoint)initWithLocation:(CGPoint)a3 timeOffset:(double)a4 size:(CGSize)a5 opacity:(double)a6 force:(double)a7 azimuth:(double)a8 altitude:(double)a9 edgeWidth:(double)a10 radius2:(double)a11
+- (PKStrokePoint)initWithLocation:(CGPoint)location timeOffset:(double)offset size:(CGSize)size opacity:(double)opacity force:(double)force azimuth:(double)azimuth altitude:(double)altitude edgeWidth:(double)self0 radius2:(double)self1
 {
-  v11 = [(PKStrokePoint *)self initWithLocation:a3.x timeOffset:a3.y size:a4 opacity:a5.width force:a5.height azimuth:a6 altitude:a7, a8, *&a9];
+  v11 = [(PKStrokePoint *)self initWithLocation:location.x timeOffset:location.y size:offset opacity:size.width force:size.height azimuth:opacity altitude:force, azimuth, *&altitude];
   v12 = v11;
   begin = v11->_strokeDataPointsPrivate.pointsData.__begin_;
   end = v11->_strokeDataPointsPrivate.pointsData.__end_;
@@ -127,18 +127,18 @@
     ptr = v11->_strokeDataPointsPrivate.constants.__ptr_;
     if (*(ptr + 6) <= v15 && (*(ptr + 33) & 2) != 0)
     {
-      v17 = a11;
-      *&begin[*(ptr + 101)] = v17;
+      radius2Copy = radius2;
+      *&begin[*(ptr + 101)] = radius2Copy;
     }
   }
 
-  PKStrokePathPointsPrivate::setEdgeWidth(&v11->_strokeDataPointsPrivate, a10, 0);
+  PKStrokePathPointsPrivate::setEdgeWidth(&v11->_strokeDataPointsPrivate, width, 0);
   return v12;
 }
 
-- (PKStrokePoint)initWithLocation:(CGPoint)a3 timeOffset:(double)a4 size:(CGSize)a5 opacity:(double)a6 force:(double)a7 azimuth:(double)a8 altitude:(double)a9 edgeWidth:(double)a10 radius2:(double)a11 threshold:(double)a12
+- (PKStrokePoint)initWithLocation:(CGPoint)location timeOffset:(double)offset size:(CGSize)size opacity:(double)opacity force:(double)force azimuth:(double)azimuth altitude:(double)altitude edgeWidth:(double)self0 radius2:(double)self1 threshold:(double)self2
 {
-  v12 = [(PKStrokePoint *)self initWithLocation:a3.x timeOffset:a3.y size:a4 opacity:a5.width force:a5.height azimuth:a6 altitude:a7, a8, *&a9];
+  v12 = [(PKStrokePoint *)self initWithLocation:location.x timeOffset:location.y size:offset opacity:size.width force:size.height azimuth:opacity altitude:force, azimuth, *&altitude];
   v13 = v12;
   v14 = v12;
   begin = v12->_strokeDataPointsPrivate.pointsData.__begin_;
@@ -149,39 +149,39 @@
     ptr = v12->_strokeDataPointsPrivate.constants.__ptr_;
     if (*(ptr + 6) <= v17 && (*(ptr + 33) & 2) != 0)
     {
-      v19 = a11;
-      *&begin[*(ptr + 101)] = v19;
+      radius2Copy = radius2;
+      *&begin[*(ptr + 101)] = radius2Copy;
     }
   }
 
-  PKStrokePathPointsPrivate::setEdgeWidth(&v12->_strokeDataPointsPrivate, a10, 0);
-  PKStrokePathPointsPrivate::setThreshold(&v13->_strokeDataPointsPrivate, a12, 0);
+  PKStrokePathPointsPrivate::setEdgeWidth(&v12->_strokeDataPointsPrivate, width, 0);
+  PKStrokePathPointsPrivate::setThreshold(&v13->_strokeDataPointsPrivate, threshold, 0);
   return v14;
 }
 
-- (PKStrokePoint)initWithSlice:(void *)a3 index:(int64_t)a4
+- (PKStrokePoint)initWithSlice:(void *)slice index:(int64_t)index
 {
   v8.receiver = self;
   v8.super_class = PKStrokePoint;
   v6 = [(PKStrokePoint *)&v8 init];
-  v9.location = a4;
+  v9.location = index;
   v9.length = 1;
-  PKStrokePathPointsPrivate::slice(a3, v9, &v6->_strokeDataPointsPrivate);
+  PKStrokePathPointsPrivate::slice(slice, v9, &v6->_strokeDataPointsPrivate);
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
 
   else
   {
-    v15 = v4 && (v6 = objc_opt_class(), v6 == objc_opt_class()) && (ptr = self->_strokeDataPointsPrivate.constants.__ptr_, v8 = v5->_strokeDataPointsPrivate.constants.__ptr_, *ptr == *v8) && *(ptr + 4) == *(v8 + 4) && *(ptr + 5) == *(v8 + 5) && (begin = self->_strokeDataPointsPrivate.pointsData.__begin_, v10 = v5->_strokeDataPointsPrivate.pointsData.__begin_, v11 = (self->_strokeDataPointsPrivate.pointsData.__end_ - begin), v11 == (v5->_strokeDataPointsPrivate.pointsData.__end_ - v10)) && !memcmp(begin, v10, v11) && (v12 = *(ptr + 1), v13 = *(v8 + 1), v14 = *(ptr + 2) - v12, v14 == *(v8 + 2) - v13) && memcmp(v12, v13, v14) == 0;
+    v15 = equalCopy && (v6 = objc_opt_class(), v6 == objc_opt_class()) && (ptr = self->_strokeDataPointsPrivate.constants.__ptr_, v8 = v5->_strokeDataPointsPrivate.constants.__ptr_, *ptr == *v8) && *(ptr + 4) == *(v8 + 4) && *(ptr + 5) == *(v8 + 5) && (begin = self->_strokeDataPointsPrivate.pointsData.__begin_, v10 = v5->_strokeDataPointsPrivate.pointsData.__begin_, v11 = (self->_strokeDataPointsPrivate.pointsData.__end_ - begin), v11 == (v5->_strokeDataPointsPrivate.pointsData.__end_ - v10)) && !memcmp(begin, v10, v11) && (v12 = *(ptr + 1), v13 = *(v8 + 1), v14 = *(ptr + 2) - v12, v14 == *(v8 + 2) - v13) && memcmp(v12, v13, v14) == 0;
   }
 
   return v15;
@@ -216,8 +216,8 @@
   v3 = v2;
   if ((atomic_load_explicit(&qword_1ED6A5058, memory_order_acquire) & 1) == 0)
   {
-    a1 = __cxa_guard_acquire(&qword_1ED6A5058);
-    if (a1)
+    self = __cxa_guard_acquire(&qword_1ED6A5058);
+    if (self)
     {
       __cxa_atexit(std::shared_ptr<PKStrokePathPointsShared>::~shared_ptr[abi:ne200100], &xmmword_1ED6A5060, &dword_1C7CCA000);
       __cxa_guard_release(&qword_1ED6A5058);
@@ -237,7 +237,7 @@
   }
 
   result.__cntrl_ = a2;
-  result.__ptr_ = a1;
+  result.__ptr_ = self;
   return result;
 }
 

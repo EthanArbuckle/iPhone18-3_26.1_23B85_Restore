@@ -1,7 +1,7 @@
 @interface GKCollectionViewLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GKCollectionViewLayoutAttributes)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = GKCollectionViewLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v7 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -142,18 +142,18 @@ LABEL_16:
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v26.receiver = self;
     v26.super_class = GKCollectionViewLayoutAttributes;
-    v5 = [(UICollectionViewLayoutAttributes *)&v26 isEqual:v4];
-    v6 = v4;
-    v7 = [(GKCollectionViewLayoutAttributes *)self maxTotalItemCount];
-    if (v7 == [v6 maxTotalItemCount])
+    v5 = [(UICollectionViewLayoutAttributes *)&v26 isEqual:equalCopy];
+    v6 = equalCopy;
+    maxTotalItemCount = [(GKCollectionViewLayoutAttributes *)self maxTotalItemCount];
+    if (maxTotalItemCount == [v6 maxTotalItemCount])
     {
       v8 = v5;
     }
@@ -163,14 +163,14 @@ LABEL_16:
       v8 = 0;
     }
 
-    v9 = [(GKCollectionViewLayoutAttributes *)self currentVisibleItemCount];
-    if (v9 != [v6 currentVisibleItemCount])
+    currentVisibleItemCount = [(GKCollectionViewLayoutAttributes *)self currentVisibleItemCount];
+    if (currentVisibleItemCount != [v6 currentVisibleItemCount])
     {
       v8 = 0;
     }
 
-    v10 = [(GKCollectionViewLayoutAttributes *)self currentTotalItemCount];
-    if (v10 == [v6 currentTotalItemCount])
+    currentTotalItemCount = [(GKCollectionViewLayoutAttributes *)self currentTotalItemCount];
+    if (currentTotalItemCount == [v6 currentTotalItemCount])
     {
       v11 = v8;
     }
@@ -201,12 +201,12 @@ LABEL_16:
       v18 = 0;
     }
 
-    v19 = [(GKCollectionViewLayoutAttributes *)self sectionMetrics];
-    [v19 calculatedItemHeight];
+    sectionMetrics = [(GKCollectionViewLayoutAttributes *)self sectionMetrics];
+    [sectionMetrics calculatedItemHeight];
     v21 = v20;
-    v22 = [v6 sectionMetrics];
+    sectionMetrics2 = [v6 sectionMetrics];
 
-    [v22 calculatedItemHeight];
+    [sectionMetrics2 calculatedItemHeight];
     v24 = v21 == v23 && v18;
   }
 

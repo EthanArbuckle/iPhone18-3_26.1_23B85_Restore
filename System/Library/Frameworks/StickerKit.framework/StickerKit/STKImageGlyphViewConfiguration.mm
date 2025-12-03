@@ -8,14 +8,14 @@
 - (double)keyboardWidth;
 - (double)scale;
 - (double)screenToNativeScaleRatio;
-- (void)setDoesSupportImageGlyph:(BOOL)a3;
-- (void)setDoesSupportStickersApp:(BOOL)a3;
-- (void)setIsInPopover:(BOOL)a3;
-- (void)setIsKeyboardMinorEdgeWidth:(BOOL)a3;
-- (void)setIsRunningInGenmoji:(BOOL)a3;
-- (void)setKeyboardWidth:(double)a3;
-- (void)setScale:(double)a3;
-- (void)setScreenToNativeScaleRatio:(double)a3;
+- (void)setDoesSupportImageGlyph:(BOOL)glyph;
+- (void)setDoesSupportStickersApp:(BOOL)app;
+- (void)setIsInPopover:(BOOL)popover;
+- (void)setIsKeyboardMinorEdgeWidth:(BOOL)width;
+- (void)setIsRunningInGenmoji:(BOOL)genmoji;
+- (void)setKeyboardWidth:(double)width;
+- (void)setScale:(double)scale;
+- (void)setScreenToNativeScaleRatio:(double)ratio;
 @end
 
 @implementation STKImageGlyphViewConfiguration
@@ -27,11 +27,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setKeyboardWidth:(double)a3
+- (void)setKeyboardWidth:(double)width
 {
   v5 = OBJC_IVAR___STKImageGlyphViewConfiguration_keyboardWidth;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = width;
 }
 
 - (BOOL)isKeyboardMinorEdgeWidth
@@ -41,11 +41,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsKeyboardMinorEdgeWidth:(BOOL)a3
+- (void)setIsKeyboardMinorEdgeWidth:(BOOL)width
 {
   v5 = OBJC_IVAR___STKImageGlyphViewConfiguration_isKeyboardMinorEdgeWidth;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = width;
 }
 
 - (BOOL)isInPopover
@@ -55,11 +55,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsInPopover:(BOOL)a3
+- (void)setIsInPopover:(BOOL)popover
 {
   v5 = OBJC_IVAR___STKImageGlyphViewConfiguration_isInPopover;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = popover;
 }
 
 - (BOOL)doesSupportImageGlyph
@@ -69,11 +69,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDoesSupportImageGlyph:(BOOL)a3
+- (void)setDoesSupportImageGlyph:(BOOL)glyph
 {
   v5 = OBJC_IVAR___STKImageGlyphViewConfiguration_doesSupportImageGlyph;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = glyph;
 }
 
 - (double)scale
@@ -83,11 +83,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   v5 = OBJC_IVAR___STKImageGlyphViewConfiguration_scale;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = scale;
 }
 
 - (double)screenToNativeScaleRatio
@@ -97,11 +97,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setScreenToNativeScaleRatio:(double)a3
+- (void)setScreenToNativeScaleRatio:(double)ratio
 {
   v5 = OBJC_IVAR___STKImageGlyphViewConfiguration_screenToNativeScaleRatio;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = ratio;
 }
 
 - (BOOL)doesSupportStickersApp
@@ -111,11 +111,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDoesSupportStickersApp:(BOOL)a3
+- (void)setDoesSupportStickersApp:(BOOL)app
 {
   v5 = OBJC_IVAR___STKImageGlyphViewConfiguration_doesSupportStickersApp;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = app;
 }
 
 - (BOOL)isRunningInGenmoji
@@ -125,11 +125,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsRunningInGenmoji:(BOOL)a3
+- (void)setIsRunningInGenmoji:(BOOL)genmoji
 {
   v5 = OBJC_IVAR___STKImageGlyphViewConfiguration_isRunningInGenmoji;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = genmoji;
 }
 
 - (STKImageGlyphViewConfiguration)init

@@ -3,14 +3,14 @@
 - (NSString)mostRecentDeviceUID;
 - (id)decodeEntries;
 - (id)encodeEntries;
-- (void)_addEntry:(id)a3;
-- (void)_handleLocalPlaybackBeganNotification:(id)a3;
-- (void)_handleSetNearbyDevicesToRemoteControlMessage:(id)a3 fromClient:(id)a4;
-- (void)_maybeMostRecentlyPlayedDeviceChanged:(id)a3;
+- (void)_addEntry:(id)entry;
+- (void)_handleLocalPlaybackBeganNotification:(id)notification;
+- (void)_handleSetNearbyDevicesToRemoteControlMessage:(id)message fromClient:(id)client;
+- (void)_maybeMostRecentlyPlayedDeviceChanged:(id)changed;
 - (void)_maybeSendPlaybackStateMessageToCompanion;
 - (void)_registerCompanionLinkHandlers;
 - (void)_registerNotifications;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
 @end
 
 @implementation MRDExternalDeviceHomeServer
@@ -26,9 +26,9 @@
     userDefaults = v2->_userDefaults;
     v2->_userDefaults = v3;
 
-    v5 = [(MRDExternalDeviceHomeServer *)v2 decodeEntries];
+    decodeEntries = [(MRDExternalDeviceHomeServer *)v2 decodeEntries];
     entries = v2->_entries;
-    v2->_entries = v5;
+    v2->_entries = decodeEntries;
 
     [(MRDExternalDeviceHomeServer *)v2 _registerNotifications];
     [(MRDExternalDeviceHomeServer *)v2 _registerCompanionLinkHandlers];
@@ -39,24 +39,24 @@
 
 - (NSString)mostRecentDeviceUID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_entries lastObject];
-  v4 = [v3 deviceInfo];
-  v5 = [v4 deviceUID];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastObject = [(NSMutableArray *)selfCopy->_entries lastObject];
+  deviceInfo = [lastObject deviceInfo];
+  deviceUID = [deviceInfo deviceUID];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return deviceUID;
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = message;
+  clientCopy = client;
   if (xpc_dictionary_get_uint64(xdict, "MRXPC_MESSAGE_ID_KEY") == 0x300000000000022)
   {
-    [(MRDExternalDeviceHomeServer *)self _handleSetNearbyDevicesToRemoteControlMessage:xdict fromClient:v6];
+    [(MRDExternalDeviceHomeServer *)self _handleSetNearbyDevicesToRemoteControlMessage:xdict fromClient:clientCopy];
   }
 }
 
@@ -107,30 +107,30 @@
   [v9 addObserver:self selector:"_maybeMostRecentlyPlayedDeviceChanged:" name:kMRDeviceInfoDidChangeNotification object:0];
 }
 
-- (void)_handleLocalPlaybackBeganNotification:(id)a3
+- (void)_handleLocalPlaybackBeganNotification:(id)notification
 {
-  v16 = a3;
+  notificationCopy = notification;
   v4 = +[MRUserSettings currentSettings];
-  v5 = [v4 notifyDevicesInHomeThatPlaybackStarted];
+  notifyDevicesInHomeThatPlaybackStarted = [v4 notifyDevicesInHomeThatPlaybackStarted];
 
-  v6 = v16;
-  if (v5)
+  v6 = notificationCopy;
+  if (notifyDevicesInHomeThatPlaybackStarted)
   {
-    v7 = [v16 userInfo];
+    userInfo = [notificationCopy userInfo];
     v8 = MRGetOriginFromUserInfo();
 
     if ([v8 isLocal])
     {
-      v9 = [v16 userInfo];
-      v10 = [v9 objectForKeyedSubscript:kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey];
-      v11 = [v10 BOOLValue];
+      userInfo2 = [notificationCopy userInfo];
+      v10 = [userInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey];
+      bOOLValue = [v10 BOOLValue];
 
-      if (v11)
+      if (bOOLValue)
       {
         if ([(MRDExternalDeviceHomeServer *)self _shouldSendCompanionLinkMessage])
         {
           v12 = objc_alloc_init(NSMutableDictionary);
-          v13 = [v16 userInfo];
+          userInfo3 = [notificationCopy userInfo];
           v14 = MRGetPlayerPathFromUserInfo();
           MRAddPlayerPathToUserInfo();
 
@@ -140,13 +140,13 @@
       }
     }
 
-    v6 = v16;
+    v6 = notificationCopy;
   }
 }
 
-- (void)_maybeMostRecentlyPlayedDeviceChanged:(id)a3
+- (void)_maybeMostRecentlyPlayedDeviceChanged:(id)changed
 {
-  v4 = [a3 userInfo];
+  userInfo = [changed userInfo];
   v5 = MRGetOriginFromUserInfo();
 
   if ([v5 isLocal])
@@ -160,20 +160,20 @@
   }
 }
 
-- (void)_handleSetNearbyDevicesToRemoteControlMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetNearbyDevicesToRemoteControlMessage:(id)message fromClient:(id)client
 {
   v4 = MRCreateStringFromXPCMessage();
   if (v4)
   {
     v5 = +[MRDeviceInfoRequest localDeviceInfo];
-    v6 = [v5 deviceUID];
+    deviceUID = [v5 deviceUID];
 
-    if (v6)
+    if (deviceUID)
     {
       v7 = +[MRCompanionLinkClient sharedCompanionLinkClient];
       v8 = MRCompanionLinkClientEventUpdateActiveSystemEndpoint;
       v10 = MRCompanionLinkClientActiveSystemEndpointUIDUserInfoKey;
-      v11 = v6;
+      v11 = deviceUID;
       v9 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
       [v7 sendEvent:v8 toDevicesOfHomeUser:v4 userInfo:v9];
     }
@@ -183,22 +183,22 @@
 - (void)_maybeSendPlaybackStateMessageToCompanion
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 supportLastPlayingDevice];
+  supportLastPlayingDevice = [v2 supportLastPlayingDevice];
 
-  if (v3 && [(MRDExternalDeviceHomeServer *)self _shouldSendCompanionLinkMessage])
+  if (supportLastPlayingDevice && [(MRDExternalDeviceHomeServer *)self _shouldSendCompanionLinkMessage])
   {
     v4 = +[MRDMediaRemoteServer server];
-    v5 = [v4 nowPlayingServer];
-    v35 = [v5 localOriginClient];
+    nowPlayingServer = [v4 nowPlayingServer];
+    localOriginClient = [nowPlayingServer localOriginClient];
 
-    v6 = [v35 activeNowPlayingClient];
-    v37 = [v6 activePlayerClient];
+    activeNowPlayingClient = [localOriginClient activeNowPlayingClient];
+    activePlayerClient = [activeNowPlayingClient activePlayerClient];
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = [v37 supportedRemoteControlCommands];
+    obj = [activePlayerClient supportedRemoteControlCommands];
     v7 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v7)
     {
@@ -221,14 +221,14 @@
           v14 = *(*(&v41 + 1) + 8 * i);
           if ([v14 command] == 133)
           {
-            v15 = [v14 options];
-            v16 = [v15 objectForKeyedSubscript:v38];
+            options = [v14 options];
+            v16 = [options objectForKeyedSubscript:v38];
 
-            v17 = [v14 options];
-            v18 = [v17 objectForKeyedSubscript:v11];
+            options2 = [v14 options];
+            v18 = [options2 objectForKeyedSubscript:v11];
 
-            v19 = [v14 options];
-            v20 = [v19 objectForKeyedSubscript:v12];
+            options3 = [v14 options];
+            v20 = [options3 objectForKeyedSubscript:v12];
 
             v40 = v20;
             v8 = v18;
@@ -253,37 +253,37 @@
     [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setCurrentPlaybackSessionTypes:v9];
     [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setSupportedPlaybackSessionTypes:v8];
     [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setCurrentPlaybackSessionIdentifier:v40];
-    -[MRDExternalDeviceHomeServerRecentlyPlayedEntry setIsPlaying:](v21, "setIsPlaying:", [v37 isPlaying]);
-    v22 = [v37 snapshotForIsPlaying:1];
-    v23 = [v22 date];
-    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setLastPlayingDate:v23];
+    -[MRDExternalDeviceHomeServerRecentlyPlayedEntry setIsPlaying:](v21, "setIsPlaying:", [activePlayerClient isPlaying]);
+    v22 = [activePlayerClient snapshotForIsPlaying:1];
+    date = [v22 date];
+    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setLastPlayingDate:date];
 
-    v24 = [v37 snapshotForIsPlaying:0];
-    v25 = [v24 date];
-    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setLastNotPlayingDate:v25];
+    v24 = [activePlayerClient snapshotForIsPlaying:0];
+    date2 = [v24 date];
+    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setLastNotPlayingDate:date2];
 
-    v26 = [v37 nowPlayingContentItem];
-    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setContentItem:v26];
+    nowPlayingContentItem = [activePlayerClient nowPlayingContentItem];
+    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setContentItem:nowPlayingContentItem];
 
-    v27 = [v37 playerPath];
-    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setPlayerPath:v27];
+    playerPath = [activePlayerClient playerPath];
+    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setPlayerPath:playerPath];
 
-    v28 = [v35 deviceInfo];
-    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setDeviceInfo:v28];
+    deviceInfo = [localOriginClient deviceInfo];
+    [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 setDeviceInfo:deviceInfo];
 
-    v29 = self;
-    objc_sync_enter(v29);
-    if (![(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v29->_lastSentEntry isEqual:v21])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (![(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)selfCopy->_lastSentEntry isEqual:v21])
     {
       v30 = objc_alloc_init(NSMutableDictionary);
-      v31 = [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 dictionaryRepresentation];
-      [v30 addEntriesFromDictionary:v31];
+      dictionaryRepresentation = [(MRDExternalDeviceHomeServerRecentlyPlayedEntry *)v21 dictionaryRepresentation];
+      [v30 addEntriesFromDictionary:dictionaryRepresentation];
 
       v32 = +[MRUserSettings currentSettings];
-      v33 = [v32 sendLastPlayingDeviceToHome];
+      sendLastPlayingDeviceToHome = [v32 sendLastPlayingDeviceToHome];
 
       +[MRCompanionLinkClient sharedIDSCompanionLinkClient];
-      if (v33)
+      if (sendLastPlayingDeviceToHome)
         v34 = {;
         [v34 sendEventToHome:MRCompanionLinkClientEventPlaybackSessionChanged userInfo:v30];
       }
@@ -293,20 +293,20 @@
         [v34 sendEventToCompanion:MRCompanionLinkClientEventPlaybackSessionChanged userInfo:v30];
       }
 
-      objc_storeStrong(&v29->_lastSentEntry, v21);
+      objc_storeStrong(&selfCopy->_lastSentEntry, v21);
     }
 
-    objc_sync_exit(v29);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_addEntry:(id)a3
+- (void)_addEntry:(id)entry
 {
-  v27 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v24 = v4;
-  v5 = [(NSMutableArray *)v4->_entries copy];
+  entryCopy = entry;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v24 = selfCopy;
+  v5 = [(NSMutableArray *)selfCopy->_entries copy];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -327,12 +327,12 @@
         }
 
         v28 = *(*(&v29 + 1) + 8 * i);
-        v8 = [v28 deviceInfo];
-        v9 = [v8 deviceUID];
-        v10 = [v27 deviceInfo];
-        v11 = [v10 deviceUID];
-        v12 = v11;
-        if (v9 == v11)
+        deviceInfo = [v28 deviceInfo];
+        deviceUID = [deviceInfo deviceUID];
+        deviceInfo2 = [entryCopy deviceInfo];
+        deviceUID2 = [deviceInfo2 deviceUID];
+        v12 = deviceUID2;
+        if (deviceUID == deviceUID2)
         {
 
 LABEL_10:
@@ -340,11 +340,11 @@ LABEL_10:
           continue;
         }
 
-        v13 = [v28 deviceInfo];
-        v14 = [v13 deviceUID];
-        v15 = [v27 deviceInfo];
-        v16 = [v15 deviceUID];
-        v17 = [v14 isEqualToString:v16];
+        deviceInfo3 = [v28 deviceInfo];
+        deviceUID3 = [deviceInfo3 deviceUID];
+        deviceInfo4 = [entryCopy deviceInfo];
+        deviceUID4 = [deviceInfo4 deviceUID];
+        v17 = [deviceUID3 isEqualToString:deviceUID4];
 
         if (v17)
         {
@@ -368,24 +368,24 @@ LABEL_10:
     entries = v24->_entries;
   }
 
-  [(NSMutableArray *)entries addObject:v27];
+  [(NSMutableArray *)entries addObject:entryCopy];
   userDefaults = v24->_userDefaults;
-  v22 = [(MRDExternalDeviceHomeServer *)v24 encodeEntries];
-  [(NSUserDefaults *)userDefaults setObject:v22 forKey:@"RecentlyPlayedEntries"];
+  encodeEntries = [(MRDExternalDeviceHomeServer *)v24 encodeEntries];
+  [(NSUserDefaults *)userDefaults setObject:encodeEntries forKey:@"RecentlyPlayedEntries"];
 
   objc_sync_exit(v24);
 }
 
 - (id)encodeEntries
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v2->_entries;
+  v4 = selfCopy->_entries;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -399,7 +399,7 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) dictionaryRepresentation];
+        dictionaryRepresentation = [*(*(&v11 + 1) + 8 * i) dictionaryRepresentation];
         v9 = MRCreateEncodedUserInfo();
 
         [v3 addObject:v9];
@@ -411,7 +411,7 @@ LABEL_10:
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

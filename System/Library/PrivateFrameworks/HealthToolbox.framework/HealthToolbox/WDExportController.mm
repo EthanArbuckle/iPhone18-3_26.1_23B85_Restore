@@ -1,22 +1,22 @@
 @interface WDExportController
-- (WDExportController)initWithProfile:(id)a3;
+- (WDExportController)initWithProfile:(id)profile;
 - (void)_beginExport;
 - (void)_cleanUpExport;
 - (void)_shareExportFileAndCleanUp;
-- (void)verifyExportWithPresentingViewController:(id)a3 shareSheetSourceView:(id)a4;
+- (void)verifyExportWithPresentingViewController:(id)controller shareSheetSourceView:(id)view;
 @end
 
 @implementation WDExportController
 
-- (WDExportController)initWithProfile:(id)a3
+- (WDExportController)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v9.receiver = self;
   v9.super_class = WDExportController;
   v5 = [(WDExportController *)&v9 init];
   if (v5)
   {
-    v6 = [[WDExportManager alloc] initWithProfile:v4];
+    v6 = [[WDExportManager alloc] initWithProfile:profileCopy];
     exportManager = v5->_exportManager;
     v5->_exportManager = v6;
   }
@@ -24,11 +24,11 @@
   return v5;
 }
 
-- (void)verifyExportWithPresentingViewController:(id)a3 shareSheetSourceView:(id)a4
+- (void)verifyExportWithPresentingViewController:(id)controller shareSheetSourceView:(id)view
 {
   v6 = MEMORY[0x277D75110];
-  obj = a4;
-  v7 = a3;
+  obj = view;
+  controllerCopy = controller;
   v8 = WDBundle();
   v9 = [v8 localizedStringForKey:@"EXPORT_TITLE" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
   v10 = WDBundle();
@@ -59,8 +59,8 @@
   [v12 addAction:v20];
   objc_storeWeak(&self->_exportSourceView, obj);
 
-  v21 = objc_storeWeak(&self->_exportPresentingViewController, v7);
-  [v7 presentViewController:v12 animated:1 completion:0];
+  v21 = objc_storeWeak(&self->_exportPresentingViewController, controllerCopy);
+  [controllerCopy presentViewController:v12 animated:1 completion:0];
 }
 
 id __84__WDExportController_verifyExportWithPresentingViewController_shareSheetSourceView___block_invoke(uint64_t a1)
@@ -96,15 +96,15 @@ id __84__WDExportController_verifyExportWithPresentingViewController_shareSheetS
   [WeakRetained presentViewController:v8 animated:1 completion:0];
 
   objc_initWeak(&location, self);
-  v14 = [(WDExportController *)self applicationProvider];
-  v15 = [v14 application];
+  applicationProvider = [(WDExportController *)self applicationProvider];
+  application = [applicationProvider application];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __34__WDExportController__beginExport__block_invoke_2;
   v18[3] = &unk_2796E6DE0;
   objc_copyWeak(&v19, &location);
   v18[4] = self;
-  self->_backgroundTask = [v15 beginBackgroundTaskWithName:@"Export" expirationHandler:v18];
+  self->_backgroundTask = [application beginBackgroundTaskWithName:@"Export" expirationHandler:v18];
 
   exportManager = self->_exportManager;
   v17[0] = MEMORY[0x277D85DD0];
@@ -234,9 +234,9 @@ LABEL_6:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
     v8 = [v6 initWithActivityItems:v7 applicationActivities:0];
 
-    v9 = [v8 popoverPresentationController];
+    popoverPresentationController = [v8 popoverPresentationController];
     WeakRetained = objc_loadWeakRetained(&self->_exportSourceView);
-    [v9 setSourceView:WeakRetained];
+    [popoverPresentationController setSourceView:WeakRetained];
 
     v11 = *MEMORY[0x277D54748];
     v31[0] = @"com.apple.Health.ShareExtension";
@@ -316,9 +316,9 @@ id __48__WDExportController__shareExportFileAndCleanUp__block_invoke_2(uint64_t 
   self->_exportResult = 0;
   self->_exportFileURL = 0;
 
-  v4 = [(WDExportController *)self applicationProvider];
-  v5 = [v4 application];
-  [v5 endBackgroundTask:self->_backgroundTask];
+  applicationProvider = [(WDExportController *)self applicationProvider];
+  application = [applicationProvider application];
+  [application endBackgroundTask:self->_backgroundTask];
 
   self->_backgroundTask = *MEMORY[0x277D767B0];
   exportManager = self->_exportManager;

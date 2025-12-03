@@ -1,46 +1,46 @@
 @interface GPBMessage
-+ (BOOL)resolveClassMethod:(SEL)a3;
-+ (BOOL)resolveInstanceMethod:(SEL)a3;
-+ (GPBMessage)allocWithZone:(_NSZone *)a3;
++ (BOOL)resolveClassMethod:(SEL)method;
++ (BOOL)resolveInstanceMethod:(SEL)method;
++ (GPBMessage)allocWithZone:(_NSZone *)zone;
 + (id)descriptor;
 + (id)message;
-+ (id)parseDelimitedFromCodedInputStream:(id)a3 extensionRegistry:(id)a4 error:(id *)a5;
-+ (id)parseFromCodedInputStream:(id)a3 extensionRegistry:(id)a4 error:(id *)a5;
-+ (id)parseFromData:(id)a3 extensionRegistry:(id)a4 error:(id *)a5;
++ (id)parseDelimitedFromCodedInputStream:(id)stream extensionRegistry:(id)registry error:(id *)error;
++ (id)parseFromCodedInputStream:(id)stream extensionRegistry:(id)registry error:(id *)error;
++ (id)parseFromData:(id)data extensionRegistry:(id)registry error:(id *)error;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInitialized;
 - (GPBMessage)init;
-- (GPBMessage)initWithCodedInputStream:(id)a3 extensionRegistry:(id)a4 error:(id *)a5;
-- (GPBMessage)initWithCoder:(id)a3;
-- (GPBMessage)initWithData:(id)a3 extensionRegistry:(id)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GPBMessage)initWithCodedInputStream:(id)stream extensionRegistry:(id)registry error:(id *)error;
+- (GPBMessage)initWithCoder:(id)coder;
+- (GPBMessage)initWithData:(id)data extensionRegistry:(id)registry error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
 - (id)delimitedData;
 - (id)descriptor;
-- (id)getExtension:(id)a3;
+- (id)getExtension:(id)extension;
 - (unint64_t)hash;
 - (unint64_t)serializedSize;
-- (void)addExtension:(id)a3 value:(id)a4;
-- (void)clearExtension:(id)a3;
-- (void)copyFieldsInto:(id)a3 zone:(_NSZone *)a4 descriptor:(id)a5;
+- (void)addExtension:(id)extension value:(id)value;
+- (void)clearExtension:(id)extension;
+- (void)copyFieldsInto:(id)into zone:(_NSZone *)zone descriptor:(id)descriptor;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)internalClear:(BOOL)a3;
-- (void)mergeDelimitedFromCodedInputStream:(id)a3 extensionRegistry:(id)a4;
-- (void)mergeFrom:(id)a3;
-- (void)mergeFromCodedInputStream:(id)a3 extensionRegistry:(id)a4;
-- (void)mergeFromData:(id)a3 extensionRegistry:(id)a4;
-- (void)parseMessageSet:(id)a3 extensionRegistry:(id)a4;
-- (void)setExtension:(id)a3 index:(unint64_t)a4 value:(id)a5;
-- (void)setExtension:(id)a3 value:(id)a4;
-- (void)setUnknownFields:(id)a3;
-- (void)writeDelimitedToCodedOutputStream:(id)a3;
-- (void)writeDelimitedToOutputStream:(id)a3;
-- (void)writeExtensionsToCodedOutputStream:(id)a3 range:(GPBExtensionRange)a4 sortedExtensions:(id)a5;
-- (void)writeField:(id)a3 toCodedOutputStream:(id)a4;
-- (void)writeToCodedOutputStream:(id)a3;
-- (void)writeToOutputStream:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)internalClear:(BOOL)clear;
+- (void)mergeDelimitedFromCodedInputStream:(id)stream extensionRegistry:(id)registry;
+- (void)mergeFrom:(id)from;
+- (void)mergeFromCodedInputStream:(id)stream extensionRegistry:(id)registry;
+- (void)mergeFromData:(id)data extensionRegistry:(id)registry;
+- (void)parseMessageSet:(id)set extensionRegistry:(id)registry;
+- (void)setExtension:(id)extension index:(unint64_t)index value:(id)value;
+- (void)setExtension:(id)extension value:(id)value;
+- (void)setUnknownFields:(id)fields;
+- (void)writeDelimitedToCodedOutputStream:(id)stream;
+- (void)writeDelimitedToOutputStream:(id)stream;
+- (void)writeExtensionsToCodedOutputStream:(id)stream range:(GPBExtensionRange)range sortedExtensions:(id)extensions;
+- (void)writeField:(id)field toCodedOutputStream:(id)stream;
+- (void)writeToCodedOutputStream:(id)stream;
+- (void)writeToOutputStream:(id)stream;
 @end
 
 @implementation GPBMessage
@@ -50,23 +50,23 @@
   v3 = objc_opt_class();
   if (objc_opt_class() == v3)
   {
-    [a1 descriptor];
+    [self descriptor];
 
     objc_opt_class();
   }
 
-  else if ([a1 superclass] == v3)
+  else if ([self superclass] == v3)
   {
 
-    [a1 descriptor];
+    [self descriptor];
   }
 }
 
-+ (GPBMessage)allocWithZone:(_NSZone *)a3
++ (GPBMessage)allocWithZone:(_NSZone *)zone
 {
-  v5 = *([a1 descriptor] + 6);
+  v5 = *([self descriptor] + 6);
 
-  return NSAllocateObject(a1, v5, a3);
+  return NSAllocateObject(self, v5, zone);
 }
 
 + (id)descriptor
@@ -85,7 +85,7 @@
 
 + (id)message
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -104,32 +104,32 @@
   return v2;
 }
 
-- (GPBMessage)initWithData:(id)a3 extensionRegistry:(id)a4 error:(id *)a5
+- (GPBMessage)initWithData:(id)data extensionRegistry:(id)registry error:(id *)error
 {
   v8 = [(GPBMessage *)self init];
   v9 = v8;
   if (v8)
   {
-    [(GPBMessage *)v8 mergeFromData:a3 extensionRegistry:a4];
-    if (a5)
+    [(GPBMessage *)v8 mergeFromData:data extensionRegistry:registry];
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
   return v9;
 }
 
-- (GPBMessage)initWithCodedInputStream:(id)a3 extensionRegistry:(id)a4 error:(id *)a5
+- (GPBMessage)initWithCodedInputStream:(id)stream extensionRegistry:(id)registry error:(id *)error
 {
   v8 = [(GPBMessage *)self init];
   v9 = v8;
   if (v8)
   {
-    [(GPBMessage *)v8 mergeFromCodedInputStream:a3 extensionRegistry:a4];
-    if (a5)
+    [(GPBMessage *)v8 mergeFromCodedInputStream:stream extensionRegistry:registry];
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
@@ -155,23 +155,23 @@
   [(GPBMessage *)&v5 dealloc];
 }
 
-- (void)copyFieldsInto:(id)a3 zone:(_NSZone *)a4 descriptor:(id)a5
+- (void)copyFieldsInto:(id)into zone:(_NSZone *)zone descriptor:(id)descriptor
 {
-  v7 = a3;
-  memcpy(*(a3 + 8), self->messageStorage_, *(a5 + 6));
+  intoCopy = into;
+  memcpy(*(into + 8), self->messageStorage_, *(descriptor + 6));
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v9 = *(a5 + 1);
-  v10 = self;
+  v9 = *(descriptor + 1);
+  selfCopy = self;
   v11 = [v9 countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v44;
-    v34 = self;
-    v35 = v7;
+    selfCopy2 = self;
+    v35 = intoCopy;
     v36 = v9;
     do
     {
@@ -188,7 +188,7 @@
         v16 = v15[1];
         if ((*(v16 + 28) & 0xF02) != 0)
         {
-          v17 = GPBGetObjectIvarWithFieldNoAutocreate(v10, *(*(&v43 + 1) + 8 * v14));
+          v17 = GPBGetObjectIvarWithFieldNoAutocreate(selfCopy, *(*(&v43 + 1) + 8 * v14));
           if (!v17)
           {
             goto LABEL_37;
@@ -197,10 +197,10 @@
           v18 = v17;
           v19 = v13;
           v20 = *(v15[1] + 30) - 15;
-          v21 = [v15 fieldType];
+          fieldType = [v15 fieldType];
           if (v20 <= 1)
           {
-            if (v21 == 1)
+            if (fieldType == 1)
             {
               v22 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v18, "count")}];
               v39 = 0u;
@@ -221,7 +221,7 @@
                       objc_enumerationMutation(v18);
                     }
 
-                    v27 = [*(*(&v39 + 1) + 8 * i) copyWithZone:a4];
+                    v27 = [*(*(&v39 + 1) + 8 * i) copyWithZone:zone];
                     [v22 addObject:v27];
                   }
 
@@ -229,8 +229,8 @@
                 }
 
                 while (v24);
-                v10 = v34;
-                v7 = v35;
+                selfCopy = selfCopy2;
+                intoCopy = v35;
               }
 
               v9 = v36;
@@ -247,28 +247,28 @@
               v38[2] = sub_10030ED94;
               v38[3] = &unk_100435068;
               v38[4] = v22;
-              v38[5] = a4;
+              v38[5] = zone;
               [v18 enumerateKeysAndObjectsUsingBlock:v38];
 LABEL_36:
               v12 = v37;
               v33 = v18;
-              GPBSetRetainedObjectIvarWithFieldPrivate(v7, v15, v22);
+              GPBSetRetainedObjectIvarWithFieldPrivate(intoCopy, v15, v22);
               goto LABEL_37;
             }
 
-            v32 = [v18 deepCopyWithZone:a4];
+            v32 = [v18 deepCopyWithZone:zone];
 LABEL_35:
             v22 = v32;
             goto LABEL_36;
           }
 
-          if (v21 == 1)
+          if (fieldType == 1)
           {
             v13 = v19;
             if (*(v15[1] + 30) - 13 > 3)
             {
 LABEL_33:
-              v32 = [v18 copyWithZone:a4];
+              v32 = [v18 copyWithZone:zone];
               goto LABEL_35;
             }
           }
@@ -282,28 +282,28 @@ LABEL_33:
             }
           }
 
-          v32 = [v18 mutableCopyWithZone:a4];
+          v32 = [v18 mutableCopyWithZone:zone];
           goto LABEL_35;
         }
 
         v28 = *(v16 + 30);
         if ((v28 - 15) <= 1)
         {
-          if (!GPBGetHasIvar(v10, *(v16 + 20), *(v16 + 16)))
+          if (!GPBGetHasIvar(selfCopy, *(v16 + 20), *(v16 + 16)))
           {
-            *(v7[8] + *(v15[1] + 24)) = 0;
+            *(intoCopy[8] + *(v15[1] + 24)) = 0;
             goto LABEL_37;
           }
 
 LABEL_27:
-          v29 = GPBGetObjectIvarWithFieldNoAutocreate(v10, v15);
-          v30 = [v29 copyWithZone:a4];
+          v29 = GPBGetObjectIvarWithFieldNoAutocreate(selfCopy, v15);
+          v30 = [v29 copyWithZone:zone];
           v31 = v29;
-          GPBSetRetainedObjectIvarWithFieldPrivate(v7, v15, v30);
+          GPBSetRetainedObjectIvarWithFieldPrivate(intoCopy, v15, v30);
           goto LABEL_37;
         }
 
-        if ((v28 - 13) <= 3 && GPBGetHasIvar(v10, *(v16 + 20), *(v16 + 16)))
+        if ((v28 - 13) <= 3 && GPBGetHasIvar(selfCopy, *(v16 + 20), *(v16 + 16)))
         {
           goto LABEL_27;
         }
@@ -320,25 +320,25 @@ LABEL_37:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(GPBMessage *)self descriptor];
-  v6 = [objc_msgSend(objc_msgSend(v5 "messageClass")];
-  [(GPBMessage *)self copyFieldsInto:v6 zone:a3 descriptor:v5];
-  v6[1] = [(GPBUnknownFieldSet *)self->unknownFields_ copyWithZone:a3];
-  v6[2] = sub_10030EE78(self->extensionMap_, a3);
+  descriptor = [(GPBMessage *)self descriptor];
+  v6 = [objc_msgSend(objc_msgSend(descriptor "messageClass")];
+  [(GPBMessage *)self copyFieldsInto:v6 zone:zone descriptor:descriptor];
+  v6[1] = [(GPBUnknownFieldSet *)self->unknownFields_ copyWithZone:zone];
+  v6[2] = sub_10030EE78(self->extensionMap_, zone);
   return v6;
 }
 
-- (void)internalClear:(BOOL)a3
+- (void)internalClear:(BOOL)clear
 {
-  v25 = a3;
+  clearCopy = clear;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v24 = [(GPBMessage *)self descriptor];
-  v4 = v24[1];
+  descriptor = [(GPBMessage *)self descriptor];
+  v4 = descriptor[1];
   v5 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v5)
   {
@@ -434,14 +434,14 @@ LABEL_14:
     while (v6);
   }
 
-  v18 = [(NSMutableDictionary *)self->autocreatedExtensionMap_ allValues];
+  allValues = [(NSMutableDictionary *)self->autocreatedExtensionMap_ allValues];
 
   self->autocreatedExtensionMap_ = 0;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v19 = [allValues countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v19)
   {
     v20 = v19;
@@ -452,7 +452,7 @@ LABEL_14:
       {
         if (*v27 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allValues);
         }
 
         v23 = *(*(&v26 + 1) + 8 * j);
@@ -464,7 +464,7 @@ LABEL_14:
         GPBClearMessageAutocreator(v23);
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v20 = [allValues countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v20);
@@ -472,9 +472,9 @@ LABEL_14:
 
   self->extensionMap_ = 0;
   self->unknownFields_ = 0;
-  if (v25)
+  if (clearCopy)
   {
-    bzero(self->messageStorage_, *(v24 + 6));
+    bzero(self->messageStorage_, *(descriptor + 6));
   }
 }
 
@@ -509,8 +509,8 @@ LABEL_3:
         goto LABEL_33;
       }
 
-      v8 = [v7 fieldType];
-      if (v8 == 1)
+      fieldType = [v7 fieldType];
+      if (fieldType == 1)
       {
         v9 = GPBGetObjectIvarWithFieldNoAutocreate(self, v7);
         v27 = 0u;
@@ -555,7 +555,7 @@ LABEL_36:
         goto LABEL_33;
       }
 
-      if (v8)
+      if (fieldType)
       {
         v13 = [v7 mapKeyDataType] == 14;
         v14 = GPBGetObjectIvarWithFieldNoAutocreate(self, v7);
@@ -648,28 +648,28 @@ LABEL_33:
 
 - (id)delimitedData
 {
-  v3 = [(GPBMessage *)self serializedSize];
-  v4 = [NSMutableData dataWithLength:GPBComputeRawVarint32SizeForInteger(v3) + v3];
+  serializedSize = [(GPBMessage *)self serializedSize];
+  v4 = [NSMutableData dataWithLength:GPBComputeRawVarint32SizeForInteger(serializedSize) + serializedSize];
   v5 = [[GPBCodedOutputStream alloc] initWithData:v4];
   [(GPBMessage *)self writeDelimitedToCodedOutputStream:v5];
 
   return v4;
 }
 
-- (void)writeToOutputStream:(id)a3
+- (void)writeToOutputStream:(id)stream
 {
-  v4 = [[GPBCodedOutputStream alloc] initWithOutputStream:a3];
+  v4 = [[GPBCodedOutputStream alloc] initWithOutputStream:stream];
   [(GPBMessage *)self writeToCodedOutputStream:v4];
 }
 
-- (void)writeToCodedOutputStream:(id)a3
+- (void)writeToCodedOutputStream:(id)stream
 {
-  v5 = [(GPBMessage *)self descriptor];
-  v6 = v5[1];
+  descriptor = [(GPBMessage *)self descriptor];
+  v6 = descriptor[1];
   v7 = [v6 count];
-  v8 = [v5 extensionRanges];
-  v19 = v5;
-  v9 = [v5 extensionRangesCount];
+  extensionRanges = [descriptor extensionRanges];
+  v19 = descriptor;
+  extensionRangesCount = [descriptor extensionRangesCount];
   v10 = [-[NSMutableDictionary allKeys](self->extensionMap_ "allKeys")];
   if (v7)
   {
@@ -678,7 +678,7 @@ LABEL_33:
 
   else
   {
-    v11 = v9 == 0;
+    v11 = extensionRangesCount == 0;
   }
 
   if (!v11)
@@ -690,69 +690,69 @@ LABEL_33:
     {
       if (v14 == v7)
       {
-        [(GPBMessage *)self writeExtensionsToCodedOutputStream:a3 range:v8[v13] sortedExtensions:v12];
+        [(GPBMessage *)self writeExtensionsToCodedOutputStream:stream range:extensionRanges[v13] sortedExtensions:v12];
         v14 = v7;
         ++v13;
       }
 
-      else if (v13 == v9 || (v15 = [v6 objectAtIndexedSubscript:v14], v16 = &v8[v13], *(v15[1] + 16) < *v16))
+      else if (v13 == extensionRangesCount || (v15 = [v6 objectAtIndexedSubscript:v14], v16 = &extensionRanges[v13], *(v15[1] + 16) < *v16))
       {
-        -[GPBMessage writeField:toCodedOutputStream:](self, "writeField:toCodedOutputStream:", [v6 objectAtIndexedSubscript:v14++], a3);
+        -[GPBMessage writeField:toCodedOutputStream:](self, "writeField:toCodedOutputStream:", [v6 objectAtIndexedSubscript:v14++], stream);
       }
 
       else
       {
         ++v13;
-        [(GPBMessage *)self writeExtensionsToCodedOutputStream:a3 range:*v16 sortedExtensions:v12];
+        [(GPBMessage *)self writeExtensionsToCodedOutputStream:stream range:*v16 sortedExtensions:v12];
       }
     }
 
-    while (v14 < v7 || v13 < v9);
+    while (v14 < v7 || v13 < extensionRangesCount);
   }
 
-  v17 = [v19 isWireFormat];
+  isWireFormat = [v19 isWireFormat];
   unknownFields = self->unknownFields_;
-  if (v17)
+  if (isWireFormat)
   {
 
-    [(GPBUnknownFieldSet *)unknownFields writeAsMessageSetTo:a3];
+    [(GPBUnknownFieldSet *)unknownFields writeAsMessageSetTo:stream];
   }
 
   else
   {
 
-    [(GPBUnknownFieldSet *)unknownFields writeToCodedOutputStream:a3];
+    [(GPBUnknownFieldSet *)unknownFields writeToCodedOutputStream:stream];
   }
 }
 
-- (void)writeDelimitedToOutputStream:(id)a3
+- (void)writeDelimitedToOutputStream:(id)stream
 {
-  v4 = [[GPBCodedOutputStream alloc] initWithOutputStream:a3];
+  v4 = [[GPBCodedOutputStream alloc] initWithOutputStream:stream];
   [(GPBMessage *)self writeDelimitedToCodedOutputStream:v4];
 }
 
-- (void)writeDelimitedToCodedOutputStream:(id)a3
+- (void)writeDelimitedToCodedOutputStream:(id)stream
 {
-  [a3 writeRawVarintSizeTAs32:{-[GPBMessage serializedSize](self, "serializedSize")}];
+  [stream writeRawVarintSizeTAs32:{-[GPBMessage serializedSize](self, "serializedSize")}];
 
-  [(GPBMessage *)self writeToCodedOutputStream:a3];
+  [(GPBMessage *)self writeToCodedOutputStream:stream];
 }
 
-- (void)writeField:(id)a3 toCodedOutputStream:(id)a4
+- (void)writeField:(id)field toCodedOutputStream:(id)stream
 {
-  v7 = [a3 fieldType];
-  if (v7 || GPBGetHasIvar(self, *(*(a3 + 1) + 20), *(*(a3 + 1) + 16)))
+  fieldType = [field fieldType];
+  if (fieldType || GPBGetHasIvar(self, *(*(field + 1) + 20), *(*(field + 1) + 16)))
   {
-    v8 = *(a3 + 1);
+    v8 = *(field + 1);
     v9 = *(v8 + 16);
     switch(*(v8 + 30))
     {
       case 0:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v10 = GPBFieldTag(a3);
+            v10 = GPBFieldTag(field);
           }
 
           else
@@ -760,30 +760,30 @@ LABEL_33:
             v10 = 0;
           }
 
-          v61 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v61 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeBoolArray:v9 values:v61 tag:v10];
+          [stream writeBoolArray:v9 values:v61 tag:v10];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v42 = GPBGetMessageBoolField(self, a3);
+          v42 = GPBGetMessageBoolField(self, field);
 
-          [a4 writeBool:v9 value:v42];
+          [stream writeBool:v9 value:v42];
         }
 
         break;
       case 1:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v22 = GPBFieldTag(a3);
+            v22 = GPBFieldTag(field);
           }
 
           else
@@ -791,30 +791,30 @@ LABEL_33:
             v22 = 0;
           }
 
-          v62 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v62 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeFixed32Array:v9 values:v62 tag:v22];
+          [stream writeFixed32Array:v9 values:v62 tag:v22];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v43 = GPBGetMessageUInt32Field(self, a3);
+          v43 = GPBGetMessageUInt32Field(self, field);
 
-          [a4 writeFixed32:v9 value:{v43, v44}];
+          [stream writeFixed32:v9 value:{v43, v44}];
         }
 
         break;
       case 2:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v18 = GPBFieldTag(a3);
+            v18 = GPBFieldTag(field);
           }
 
           else
@@ -822,30 +822,30 @@ LABEL_33:
             v18 = 0;
           }
 
-          v58 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v58 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeSFixed32Array:v9 values:v58 tag:v18];
+          [stream writeSFixed32Array:v9 values:v58 tag:v18];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v36 = GPBGetMessageInt32Field(self, a3);
+          v36 = GPBGetMessageInt32Field(self, field);
 
-          [a4 writeSFixed32:v9 value:{v36, v37}];
+          [stream writeSFixed32:v9 value:{v36, v37}];
         }
 
         break;
       case 3:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v20 = GPBFieldTag(a3);
+            v20 = GPBFieldTag(field);
           }
 
           else
@@ -853,30 +853,30 @@ LABEL_33:
             v20 = 0;
           }
 
-          v59 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v59 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeFloatArray:v9 values:v59 tag:v20];
+          [stream writeFloatArray:v9 values:v59 tag:v20];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          GPBGetMessageFloatField(self, a3);
+          GPBGetMessageFloatField(self, field);
 
-          [a4 writeFloat:v9 value:{v38, v39}];
+          [stream writeFloat:v9 value:{v38, v39}];
         }
 
         break;
       case 4:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v15 = GPBFieldTag(a3);
+            v15 = GPBFieldTag(field);
           }
 
           else
@@ -884,30 +884,30 @@ LABEL_33:
             v15 = 0;
           }
 
-          v55 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v55 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeFixed64Array:v9 values:v55 tag:v15];
+          [stream writeFixed64Array:v9 values:v55 tag:v15];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v30 = GPBGetMessageUInt64Field(self, a3);
+          v30 = GPBGetMessageUInt64Field(self, field);
 
-          [a4 writeFixed64:v9 value:{v30, v31}];
+          [stream writeFixed64:v9 value:{v30, v31}];
         }
 
         break;
       case 5:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v24 = GPBFieldTag(a3);
+            v24 = GPBFieldTag(field);
           }
 
           else
@@ -915,30 +915,30 @@ LABEL_33:
             v24 = 0;
           }
 
-          v64 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v64 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeSFixed64Array:v9 values:v64 tag:v24];
+          [stream writeSFixed64Array:v9 values:v64 tag:v24];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v46 = GPBGetMessageInt64Field(self, a3);
+          v46 = GPBGetMessageInt64Field(self, field);
 
-          [a4 writeSFixed64:v9 value:{v46, v47}];
+          [stream writeSFixed64:v9 value:{v46, v47}];
         }
 
         break;
       case 6:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v25 = GPBFieldTag(a3);
+            v25 = GPBFieldTag(field);
           }
 
           else
@@ -946,30 +946,30 @@ LABEL_33:
             v25 = 0;
           }
 
-          v65 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v65 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeDoubleArray:v9 values:v65 tag:v25];
+          [stream writeDoubleArray:v9 values:v65 tag:v25];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          GPBGetMessageDoubleField(self, a3);
+          GPBGetMessageDoubleField(self, field);
 
-          [a4 writeDouble:v9 value:{v50, v51}];
+          [stream writeDouble:v9 value:{v50, v51}];
         }
 
         break;
       case 7:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v21 = GPBFieldTag(a3);
+            v21 = GPBFieldTag(field);
           }
 
           else
@@ -977,30 +977,30 @@ LABEL_33:
             v21 = 0;
           }
 
-          v60 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v60 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeInt32Array:v9 values:v60 tag:v21];
+          [stream writeInt32Array:v9 values:v60 tag:v21];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v40 = GPBGetMessageInt32Field(self, a3);
+          v40 = GPBGetMessageInt32Field(self, field);
 
-          [a4 writeInt32:v9 value:{v40, v41}];
+          [stream writeInt32:v9 value:{v40, v41}];
         }
 
         break;
       case 8:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v27 = GPBFieldTag(a3);
+            v27 = GPBFieldTag(field);
           }
 
           else
@@ -1008,30 +1008,30 @@ LABEL_33:
             v27 = 0;
           }
 
-          v67 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v67 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeInt64Array:v9 values:v67 tag:v27];
+          [stream writeInt64Array:v9 values:v67 tag:v27];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v68 = GPBGetMessageInt64Field(self, a3);
+          v68 = GPBGetMessageInt64Field(self, field);
 
-          [a4 writeInt64:v9 value:{v68, v69}];
+          [stream writeInt64:v9 value:{v68, v69}];
         }
 
         break;
       case 9:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v17 = GPBFieldTag(a3);
+            v17 = GPBFieldTag(field);
           }
 
           else
@@ -1039,30 +1039,30 @@ LABEL_33:
             v17 = 0;
           }
 
-          v57 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v57 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeSInt32Array:v9 values:v57 tag:v17];
+          [stream writeSInt32Array:v9 values:v57 tag:v17];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v34 = GPBGetMessageInt32Field(self, a3);
+          v34 = GPBGetMessageInt32Field(self, field);
 
-          [a4 writeSInt32:v9 value:{v34, v35}];
+          [stream writeSInt32:v9 value:{v34, v35}];
         }
 
         break;
       case 0xA:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v26 = GPBFieldTag(a3);
+            v26 = GPBFieldTag(field);
           }
 
           else
@@ -1070,30 +1070,30 @@ LABEL_33:
             v26 = 0;
           }
 
-          v66 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v66 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeSInt64Array:v9 values:v66 tag:v26];
+          [stream writeSInt64Array:v9 values:v66 tag:v26];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v52 = GPBGetMessageInt64Field(self, a3);
+          v52 = GPBGetMessageInt64Field(self, field);
 
-          [a4 writeSInt64:v9 value:{v52, v53}];
+          [stream writeSInt64:v9 value:{v52, v53}];
         }
 
         break;
       case 0xB:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v14 = GPBFieldTag(a3);
+            v14 = GPBFieldTag(field);
           }
 
           else
@@ -1101,30 +1101,30 @@ LABEL_33:
             v14 = 0;
           }
 
-          v54 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v54 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeUInt32Array:v9 values:v54 tag:v14];
+          [stream writeUInt32Array:v9 values:v54 tag:v14];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v28 = GPBGetMessageUInt32Field(self, a3);
+          v28 = GPBGetMessageUInt32Field(self, field);
 
-          [a4 writeUInt32:v9 value:{v28, v29}];
+          [stream writeUInt32:v9 value:{v28, v29}];
         }
 
         break;
       case 0xC:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v16 = GPBFieldTag(a3);
+            v16 = GPBFieldTag(field);
           }
 
           else
@@ -1132,114 +1132,114 @@ LABEL_33:
             v16 = 0;
           }
 
-          v56 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v56 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeUInt64Array:v9 values:v56 tag:v16];
+          [stream writeUInt64Array:v9 values:v56 tag:v16];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_134;
           }
 
-          v32 = GPBGetMessageUInt64Field(self, a3);
+          v32 = GPBGetMessageUInt64Field(self, field);
 
-          [a4 writeUInt64:v9 value:{v32, v33}];
+          [stream writeUInt64:v9 value:{v32, v33}];
         }
 
         break;
       case 0xD:
-        v12 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
-        if (v7 == 1)
+        v12 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
+        if (fieldType == 1)
         {
 
-          [a4 writeBytesArray:v9 values:v12];
+          [stream writeBytesArray:v9 values:v12];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_120;
           }
 
-          [a4 writeBytes:v9 value:v12];
+          [stream writeBytes:v9 value:v12];
         }
 
         break;
       case 0xE:
-        v12 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
-        if (v7 == 1)
+        v12 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
+        if (fieldType == 1)
         {
 
-          [a4 writeStringArray:v9 values:{v12, v13}];
+          [stream writeStringArray:v9 values:{v12, v13}];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_120;
           }
 
-          [a4 writeString:v9 value:v12];
+          [stream writeString:v9 value:v12];
         }
 
         break;
       case 0xF:
-        v12 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
-        if (v7 == 1)
+        v12 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
+        if (fieldType == 1)
         {
 
-          [a4 writeMessageArray:v9 values:{v12, v19}];
+          [stream writeMessageArray:v9 values:{v12, v19}];
         }
 
         else
         {
-          if (v7)
+          if (fieldType)
           {
             goto LABEL_120;
           }
 
-          [a4 writeMessage:v9 value:v12];
+          [stream writeMessage:v9 value:v12];
         }
 
         break;
       case 0x10:
-        v12 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
-        if (v7 == 1)
+        v12 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
+        if (fieldType == 1)
         {
 
-          [a4 writeGroupArray:v9 values:{v12, v11}];
+          [stream writeGroupArray:v9 values:{v12, v11}];
         }
 
-        else if (v7)
+        else if (fieldType)
         {
 LABEL_120:
-          if ([a3 mapKeyDataType] != 14)
+          if ([field mapKeyDataType] != 14)
           {
             v49 = v12;
             goto LABEL_135;
           }
 
-          GPBDictionaryWriteToStreamInternalHelper(a4, v12, a3);
+          GPBDictionaryWriteToStreamInternalHelper(stream, v12, field);
         }
 
         else
         {
 
-          [a4 writeGroup:v9 value:v12];
+          [stream writeGroup:v9 value:v12];
         }
 
         break;
       case 0x11:
-        if (v7 == 1)
+        if (fieldType == 1)
         {
-          if ([a3 isPackable])
+          if ([field isPackable])
           {
-            v23 = GPBFieldTag(a3);
+            v23 = GPBFieldTag(field);
           }
 
           else
@@ -1247,25 +1247,25 @@ LABEL_120:
             v23 = 0;
           }
 
-          v63 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v63 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 
-          [a4 writeEnumArray:v9 values:v63 tag:v23];
+          [stream writeEnumArray:v9 values:v63 tag:v23];
         }
 
-        else if (v7)
+        else if (fieldType)
         {
 LABEL_134:
-          v49 = GPBGetObjectIvarWithFieldNoAutocreate(self, a3);
+          v49 = GPBGetObjectIvarWithFieldNoAutocreate(self, field);
 LABEL_135:
 
-          [v49 writeToCodedOutputStream:a4 asField:{a3, v48}];
+          [v49 writeToCodedOutputStream:stream asField:{field, v48}];
         }
 
         else
         {
-          v45 = GPBGetMessageInt32Field(self, a3);
+          v45 = GPBGetMessageInt32Field(self, field);
 
-          [a4 writeEnum:v9 value:v45];
+          [stream writeEnum:v9 value:v45];
         }
 
         break;
@@ -1275,31 +1275,31 @@ LABEL_135:
   }
 }
 
-- (id)getExtension:(id)a3
+- (id)getExtension:(id)extension
 {
-  sub_100310C10(self, a3);
-  v5 = [(NSMutableDictionary *)self->extensionMap_ objectForKey:a3];
+  sub_100310C10(self, extension);
+  v5 = [(NSMutableDictionary *)self->extensionMap_ objectForKey:extension];
   if (v5)
   {
     return v5;
   }
 
-  if ([a3 isRepeated])
+  if ([extension isRepeated])
   {
     return 0;
   }
 
-  if (*(*(a3 + 1) + 44) - 15 < 2)
+  if (*(*(extension + 1) + 44) - 15 < 2)
   {
     GPBPrepareReadOnlySemaphore(self);
     v6 = atomic_load(&self->readOnlySemaphore_);
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-    v5 = [(NSMutableDictionary *)self->autocreatedExtensionMap_ objectForKey:a3];
+    v5 = [(NSMutableDictionary *)self->autocreatedExtensionMap_ objectForKey:extension];
     if (!v5)
     {
-      v5 = objc_alloc_init([a3 msgClass]);
+      v5 = objc_alloc_init([extension msgClass]);
       v5[4] = self;
-      v5[6] = a3;
+      v5[6] = extension;
       autocreatedExtensionMap = self->autocreatedExtensionMap_;
       if (!autocreatedExtensionMap)
       {
@@ -1307,7 +1307,7 @@ LABEL_135:
         self->autocreatedExtensionMap_ = autocreatedExtensionMap;
       }
 
-      [(NSMutableDictionary *)autocreatedExtensionMap setObject:v5 forKey:a3];
+      [(NSMutableDictionary *)autocreatedExtensionMap setObject:v5 forKey:extension];
     }
 
     v8 = atomic_load(&self->readOnlySemaphore_);
@@ -1315,16 +1315,16 @@ LABEL_135:
     return v5;
   }
 
-  return [a3 defaultValue];
+  return [extension defaultValue];
 }
 
-- (void)writeExtensionsToCodedOutputStream:(id)a3 range:(GPBExtensionRange)a4 sortedExtensions:(id)a5
+- (void)writeExtensionsToCodedOutputStream:(id)stream range:(GPBExtensionRange)range sortedExtensions:(id)extensions
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [a5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [extensions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1335,35 +1335,35 @@ LABEL_135:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(extensions);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        v14 = [v13 fieldNumber];
-        if (v14 >= a4.var0)
+        fieldNumber = [v13 fieldNumber];
+        if (fieldNumber >= range.var0)
         {
-          if (v14 >= a4.var1)
+          if (fieldNumber >= range.var1)
           {
             return;
           }
 
-          GPBWriteExtensionValueToOutputStream(v13, [(NSMutableDictionary *)self->extensionMap_ objectForKey:v13], a3);
+          GPBWriteExtensionValueToOutputStream(v13, [(NSMutableDictionary *)self->extensionMap_ objectForKey:v13], stream);
         }
       }
 
-      v10 = [a5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [extensions countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)setExtension:(id)a3 value:(id)a4
+- (void)setExtension:(id)extension value:(id)value
 {
-  if (a4)
+  if (value)
   {
-    sub_100310C10(self, a3);
-    if ([a3 isRepeated])
+    sub_100310C10(self, extension);
+    if ([extension isRepeated])
     {
       [NSException raise:NSInvalidArgumentException format:@"Must call addExtension() for repeated types."];
     }
@@ -1375,11 +1375,11 @@ LABEL_135:
       self->extensionMap_ = extensionMap;
     }
 
-    [(NSMutableDictionary *)extensionMap setObject:a4 forKey:a3];
-    if (*(*(a3 + 1) + 44) - 15 <= 1 && ([a3 isRepeated] & 1) == 0)
+    [(NSMutableDictionary *)extensionMap setObject:value forKey:extension];
+    if (*(*(extension + 1) + 44) - 15 <= 1 && ([extension isRepeated] & 1) == 0)
     {
-      v8 = [(NSMutableDictionary *)self->autocreatedExtensionMap_ objectForKey:a3];
-      [(NSMutableDictionary *)self->autocreatedExtensionMap_ removeObjectForKey:a3];
+      v8 = [(NSMutableDictionary *)self->autocreatedExtensionMap_ objectForKey:extension];
+      [(NSMutableDictionary *)self->autocreatedExtensionMap_ removeObjectForKey:extension];
       GPBClearMessageAutocreator(v8);
     }
 
@@ -1393,10 +1393,10 @@ LABEL_135:
   }
 }
 
-- (void)addExtension:(id)a3 value:(id)a4
+- (void)addExtension:(id)extension value:(id)value
 {
-  sub_100310C10(self, a3);
-  if (([a3 isRepeated] & 1) == 0)
+  sub_100310C10(self, extension);
+  if (([extension isRepeated] & 1) == 0)
   {
     [NSException raise:NSInvalidArgumentException format:@"Must call setExtension() for singular types."];
   }
@@ -1408,22 +1408,22 @@ LABEL_135:
     self->extensionMap_ = extensionMap;
   }
 
-  v8 = [(NSMutableDictionary *)extensionMap objectForKey:a3];
+  v8 = [(NSMutableDictionary *)extensionMap objectForKey:extension];
   if (!v8)
   {
     v8 = +[NSMutableArray array];
-    [(NSMutableDictionary *)self->extensionMap_ setObject:v8 forKey:a3];
+    [(NSMutableDictionary *)self->extensionMap_ setObject:v8 forKey:extension];
   }
 
-  [v8 addObject:a4];
+  [v8 addObject:value];
 
   GPBBecomeVisibleToAutocreator(self);
 }
 
-- (void)setExtension:(id)a3 index:(unint64_t)a4 value:(id)a5
+- (void)setExtension:(id)extension index:(unint64_t)index value:(id)value
 {
-  sub_100310C10(self, a3);
-  if (([a3 isRepeated] & 1) == 0)
+  sub_100310C10(self, extension);
+  if (([extension isRepeated] & 1) == 0)
   {
     [NSException raise:NSInvalidArgumentException format:@"Must call setExtension() for singular types."];
   }
@@ -1435,83 +1435,83 @@ LABEL_135:
     self->extensionMap_ = extensionMap;
   }
 
-  [-[NSMutableDictionary objectForKey:](extensionMap objectForKey:{a3), "replaceObjectAtIndex:withObject:", a4, a5}];
+  [-[NSMutableDictionary objectForKey:](extensionMap objectForKey:{extension), "replaceObjectAtIndex:withObject:", index, value}];
 
   GPBBecomeVisibleToAutocreator(self);
 }
 
-- (void)clearExtension:(id)a3
+- (void)clearExtension:(id)extension
 {
-  sub_100310C10(self, a3);
-  if ([(NSMutableDictionary *)self->extensionMap_ objectForKey:a3])
+  sub_100310C10(self, extension);
+  if ([(NSMutableDictionary *)self->extensionMap_ objectForKey:extension])
   {
-    [(NSMutableDictionary *)self->extensionMap_ removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->extensionMap_ removeObjectForKey:extension];
 
     GPBBecomeVisibleToAutocreator(self);
   }
 }
 
-- (void)mergeFromData:(id)a3 extensionRegistry:(id)a4
+- (void)mergeFromData:(id)data extensionRegistry:(id)registry
 {
-  v6 = [[GPBCodedInputStream alloc] initWithData:a3];
-  [(GPBMessage *)self mergeFromCodedInputStream:v6 extensionRegistry:a4];
+  v6 = [[GPBCodedInputStream alloc] initWithData:data];
+  [(GPBMessage *)self mergeFromCodedInputStream:v6 extensionRegistry:registry];
   [(GPBCodedInputStream *)v6 checkLastTagWas:0];
 }
 
-- (void)mergeDelimitedFromCodedInputStream:(id)a3 extensionRegistry:(id)a4
+- (void)mergeDelimitedFromCodedInputStream:(id)stream extensionRegistry:(id)registry
 {
-  if (!GPBCodedInputStreamIsAtEnd(a3 + 1))
+  if (!GPBCodedInputStreamIsAtEnd(stream + 1))
   {
-    RetainedBytesNoCopy = GPBCodedInputStreamReadRetainedBytesNoCopy(a3 + 1);
+    RetainedBytesNoCopy = GPBCodedInputStreamReadRetainedBytesNoCopy(stream + 1);
     if (RetainedBytesNoCopy)
     {
       v8 = RetainedBytesNoCopy;
-      [(GPBMessage *)self mergeFromData:RetainedBytesNoCopy extensionRegistry:a4];
+      [(GPBMessage *)self mergeFromData:RetainedBytesNoCopy extensionRegistry:registry];
     }
   }
 }
 
-+ (id)parseFromData:(id)a3 extensionRegistry:(id)a4 error:(id *)a5
++ (id)parseFromData:(id)data extensionRegistry:(id)registry error:(id *)error
 {
-  v5 = [[a1 alloc] initWithData:a3 extensionRegistry:a4 error:a5];
+  v5 = [[self alloc] initWithData:data extensionRegistry:registry error:error];
 
   return v5;
 }
 
-+ (id)parseFromCodedInputStream:(id)a3 extensionRegistry:(id)a4 error:(id *)a5
++ (id)parseFromCodedInputStream:(id)stream extensionRegistry:(id)registry error:(id *)error
 {
-  v5 = [[a1 alloc] initWithCodedInputStream:a3 extensionRegistry:a4 error:a5];
+  v5 = [[self alloc] initWithCodedInputStream:stream extensionRegistry:registry error:error];
 
   return v5;
 }
 
-+ (id)parseDelimitedFromCodedInputStream:(id)a3 extensionRegistry:(id)a4 error:(id *)a5
++ (id)parseDelimitedFromCodedInputStream:(id)stream extensionRegistry:(id)registry error:(id *)error
 {
-  v8 = objc_alloc_init(a1);
-  [v8 mergeDelimitedFromCodedInputStream:a3 extensionRegistry:a4];
-  if (a5)
+  v8 = objc_alloc_init(self);
+  [v8 mergeDelimitedFromCodedInputStream:stream extensionRegistry:registry];
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return v8;
 }
 
-- (void)setUnknownFields:(id)a3
+- (void)setUnknownFields:(id)fields
 {
   unknownFields = self->unknownFields_;
-  if (unknownFields != a3)
+  if (unknownFields != fields)
   {
 
-    self->unknownFields_ = [a3 copy];
+    self->unknownFields_ = [fields copy];
 
     GPBBecomeVisibleToAutocreator(self);
   }
 }
 
-- (void)parseMessageSet:(id)a3 extensionRegistry:(id)a4
+- (void)parseMessageSet:(id)set extensionRegistry:(id)registry
 {
-  Tag = GPBCodedInputStreamReadTag(a3 + 8);
+  Tag = GPBCodedInputStreamReadTag(set + 8);
   if (Tag)
   {
     v8 = Tag;
@@ -1523,24 +1523,24 @@ LABEL_135:
     {
       if (v8 == v9)
       {
-        UInt32 = GPBCodedInputStreamReadUInt32(a3 + 1);
+        UInt32 = GPBCodedInputStreamReadUInt32(set + 1);
         if (UInt32)
         {
-          v12 = [a4 extensionForDescriptor:-[GPBMessage descriptor](self fieldNumber:{"descriptor"), UInt32}];
+          v12 = [registry extensionForDescriptor:-[GPBMessage descriptor](self fieldNumber:{"descriptor"), UInt32}];
         }
       }
 
       else if (v8 == GPBWireFormatMakeTag(3, 2))
       {
-        v11 = GPBCodedInputStreamReadRetainedBytesNoCopy(a3 + 1);
+        v11 = GPBCodedInputStreamReadRetainedBytesNoCopy(set + 1);
       }
 
-      else if (![a3 skipField:v8])
+      else if (![set skipField:v8])
       {
         break;
       }
 
-      v8 = GPBCodedInputStreamReadTag(a3 + 8);
+      v8 = GPBCodedInputStreamReadTag(set + 8);
     }
 
     while (v8);
@@ -1553,13 +1553,13 @@ LABEL_135:
     UInt32 = 0;
   }
 
-  [a3 checkLastTagWas:{GPBWireFormatMakeTag(1, 4)}];
+  [set checkLastTagWas:{GPBWireFormatMakeTag(1, 4)}];
   if (v11 && UInt32)
   {
     if (v12)
     {
       v15 = [[GPBCodedInputStream alloc] initWithData:v11];
-      GPBExtensionMergeFromInputStream(v12, [v12 isPackable], v15, a4, self);
+      GPBExtensionMergeFromInputStream(v12, [v12 isPackable], v15, registry, self);
     }
 
     else
@@ -1572,13 +1572,13 @@ LABEL_135:
   }
 }
 
-- (void)mergeFromCodedInputStream:(id)a3 extensionRegistry:(id)a4
+- (void)mergeFromCodedInputStream:(id)stream extensionRegistry:(id)registry
 {
-  v6 = [(GPBMessage *)self descriptor];
-  v33 = [objc_msgSend(v6 "file")];
-  v7 = v6[1];
+  descriptor = [(GPBMessage *)self descriptor];
+  v33 = [objc_msgSend(descriptor "file")];
+  v7 = descriptor[1];
   v8 = [v7 count];
-  Tag = GPBCodedInputStreamReadTag(a3 + 8);
+  Tag = GPBCodedInputStreamReadTag(stream + 8);
   if (!Tag)
   {
     return;
@@ -1591,7 +1591,7 @@ LABEL_135:
     if (!v8)
     {
 LABEL_16:
-      if ([(GPBMessage *)self parseUnknownField:a3 extensionRegistry:a4 tag:v10])
+      if ([(GPBMessage *)self parseUnknownField:stream extensionRegistry:registry tag:v10])
       {
         goto LABEL_28;
       }
@@ -1610,8 +1610,8 @@ LABEL_16:
       v13 = [v7 objectAtIndexedSubscript:v11];
       if (GPBFieldTag(v13) == v10)
       {
-        v15 = [v13 fieldType];
-        if (v15 == 1)
+        fieldType = [v13 fieldType];
+        if (fieldType == 1)
         {
           if (![v13 isPackable])
           {
@@ -1619,14 +1619,14 @@ LABEL_16:
           }
 
 LABEL_23:
-          sub_100311D60(self, v13, v33, a3);
+          sub_100311D60(self, v13, v33, stream);
         }
 
         else
         {
-          if (v15)
+          if (fieldType)
           {
-            [a3 readMapEntry:GPBGetMessageMapField_0(self extensionRegistry:v13) field:a4 parentMessage:{v13, self}];
+            [stream readMapEntry:GPBGetMessageMapField_0(self extensionRegistry:v13) field:registry parentMessage:{v13, self}];
             goto LABEL_28;
           }
 
@@ -1634,105 +1634,105 @@ LABEL_23:
           switch(*(v16 + 30))
           {
             case 0:
-              Bool = GPBCodedInputStreamReadBool(a3 + 1);
+              Bool = GPBCodedInputStreamReadBool(stream + 1);
               GPBSetBoolIvarWithFieldPrivate(self, v13, Bool);
               break;
             case 1:
-              Fixed32 = GPBCodedInputStreamReadFixed32(a3 + 1);
+              Fixed32 = GPBCodedInputStreamReadFixed32(stream + 1);
               goto LABEL_46;
             case 2:
-              SFixed32 = GPBCodedInputStreamReadSFixed32(a3 + 1);
+              SFixed32 = GPBCodedInputStreamReadSFixed32(stream + 1);
               goto LABEL_43;
             case 3:
-              Float = GPBCodedInputStreamReadFloat(a3 + 1);
+              Float = GPBCodedInputStreamReadFloat(stream + 1);
               GPBSetFloatIvarWithFieldPrivate(self, v13, Float);
               break;
             case 4:
-              Fixed64 = GPBCodedInputStreamReadFixed64(a3 + 1);
+              Fixed64 = GPBCodedInputStreamReadFixed64(stream + 1);
               goto LABEL_36;
             case 5:
-              SFixed64 = GPBCodedInputStreamReadSFixed64(a3 + 1);
+              SFixed64 = GPBCodedInputStreamReadSFixed64(stream + 1);
               goto LABEL_56;
             case 6:
-              Double = GPBCodedInputStreamReadDouble(a3 + 1);
+              Double = GPBCodedInputStreamReadDouble(stream + 1);
               GPBSetDoubleIvarWithFieldPrivate(self, v13, Double);
               break;
             case 7:
-              SFixed32 = GPBCodedInputStreamReadInt32(a3 + 1);
+              SFixed32 = GPBCodedInputStreamReadInt32(stream + 1);
               goto LABEL_43;
             case 8:
-              SFixed64 = GPBCodedInputStreamReadInt64(a3 + 1);
+              SFixed64 = GPBCodedInputStreamReadInt64(stream + 1);
               goto LABEL_56;
             case 9:
-              SFixed32 = GPBCodedInputStreamReadSInt32(a3 + 1);
+              SFixed32 = GPBCodedInputStreamReadSInt32(stream + 1);
 LABEL_43:
               v23 = SFixed32;
-              v24 = self;
+              selfCopy4 = self;
               v25 = v13;
               goto LABEL_44;
             case 0xA:
-              SFixed64 = GPBCodedInputStreamReadSInt64(a3 + 1);
+              SFixed64 = GPBCodedInputStreamReadSInt64(stream + 1);
 LABEL_56:
               GPBSetInt64IvarWithFieldPrivate(self, v13, SFixed64);
               break;
             case 0xB:
-              Fixed32 = GPBCodedInputStreamReadUInt32(a3 + 1);
+              Fixed32 = GPBCodedInputStreamReadUInt32(stream + 1);
 LABEL_46:
               GPBSetUInt32IvarWithFieldPrivate(self, v13, Fixed32);
               break;
             case 0xC:
-              Fixed64 = GPBCodedInputStreamReadUInt64(a3 + 8);
+              Fixed64 = GPBCodedInputStreamReadUInt64(stream + 8);
 LABEL_36:
               GPBSetUInt64IvarWithFieldPrivate(self, v13, Fixed64);
               break;
             case 0xD:
-              RetainedBytes = GPBCodedInputStreamReadRetainedBytes(a3 + 1);
+              RetainedBytes = GPBCodedInputStreamReadRetainedBytes(stream + 1);
               goto LABEL_52;
             case 0xE:
-              RetainedBytes = GPBCodedInputStreamReadRetainedString(a3 + 1);
+              RetainedBytes = GPBCodedInputStreamReadRetainedString(stream + 1);
 LABEL_52:
               v28 = RetainedBytes;
-              v29 = self;
+              selfCopy3 = self;
               v30 = v13;
               goto LABEL_60;
             case 0xF:
               if (GPBGetHasIvar(self, *(v16 + 20), *(v16 + 16)))
               {
-                [a3 readMessage:GPBGetObjectIvarWithFieldNoAutocreate(self extensionRegistry:{v13), a4}];
+                [stream readMessage:GPBGetObjectIvarWithFieldNoAutocreate(self extensionRegistry:{v13), registry}];
                 break;
               }
 
               v32 = objc_alloc_init([v13 msgClass]);
-              [a3 readMessage:v32 extensionRegistry:a4];
+              [stream readMessage:v32 extensionRegistry:registry];
               goto LABEL_59;
             case 0x10:
               if (GPBGetHasIvar(self, *(v16 + 20), *(v16 + 16)))
               {
-                [a3 readGroup:*(v13[1] + 16) message:GPBGetObjectIvarWithFieldNoAutocreate(self extensionRegistry:{v13), a4}];
+                [stream readGroup:*(v13[1] + 16) message:GPBGetObjectIvarWithFieldNoAutocreate(self extensionRegistry:{v13), registry}];
               }
 
               else
               {
                 v32 = objc_alloc_init([v13 msgClass]);
-                [a3 readGroup:*(v13[1] + 16) message:v32 extensionRegistry:a4];
+                [stream readGroup:*(v13[1] + 16) message:v32 extensionRegistry:registry];
 LABEL_59:
-                v29 = self;
+                selfCopy3 = self;
                 v30 = v13;
                 v28 = v32;
 LABEL_60:
-                GPBSetRetainedObjectIvarWithFieldPrivate(v29, v30, v28);
+                GPBSetRetainedObjectIvarWithFieldPrivate(selfCopy3, v30, v28);
               }
 
               break;
             case 0x11:
-              Enum = GPBCodedInputStreamReadEnum(a3 + 1);
+              Enum = GPBCodedInputStreamReadEnum(stream + 1);
               if (v33 == 3 || [v13 isValidEnumValue:Enum])
               {
-                v24 = self;
+                selfCopy4 = self;
                 v25 = v13;
                 v23 = Enum;
 LABEL_44:
-                GPBSetInt32IvarWithFieldPrivate(v24, v25, v23);
+                GPBSetInt32IvarWithFieldPrivate(selfCopy4, v25, v23);
               }
 
               else
@@ -1782,15 +1782,15 @@ LABEL_44:
     }
 
 LABEL_27:
-    sub_100312010(self, v13, v33, a3, a4);
+    sub_100312010(self, v13, v33, stream, registry);
 LABEL_28:
-    v10 = GPBCodedInputStreamReadTag(a3 + 8);
+    v10 = GPBCodedInputStreamReadTag(stream + 8);
   }
 
   while (v10);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v5 = objc_opt_class();
   v6 = objc_opt_class();
@@ -1820,10 +1820,10 @@ LABEL_28:
         }
 
         v12 = *(*(&v66 + 1) + 8 * i);
-        v13 = [v12 fieldType];
-        if (v13 == 1)
+        fieldType = [v12 fieldType];
+        if (fieldType == 1)
         {
-          v18 = GPBGetObjectIvarWithFieldNoAutocreate(a3, v12);
+          v18 = GPBGetObjectIvarWithFieldNoAutocreate(from, v12);
           if (v18)
           {
             v19 = v18;
@@ -1849,18 +1849,18 @@ LABEL_28:
           }
         }
 
-        else if (v13)
+        else if (fieldType)
         {
-          v21 = GPBGetObjectIvarWithFieldNoAutocreate(a3, v12);
+          v21 = GPBGetObjectIvarWithFieldNoAutocreate(from, v12);
           if (!v21)
           {
             continue;
           }
 
           v22 = v21;
-          v23 = [v12 mapKeyDataType];
+          mapKeyDataType = [v12 mapKeyDataType];
           v24 = *(v12[1] + 30);
-          if (v23 - 13 > 3 || (v24 - 13) > 3)
+          if (mapKeyDataType - 13 > 3 || (v24 - 13) > 3)
           {
             v27 = GPBGetMessageMapField_0(self, v12);
             if (v24 == 17)
@@ -1883,53 +1883,53 @@ LABEL_28:
           v14 = v12[1];
           v16 = *(v14 + 16);
           v15 = *(v14 + 20);
-          if (GPBGetHasIvar(a3, v15, v16))
+          if (GPBGetHasIvar(from, v15, v16))
           {
             switch(*(v12[1] + 30))
             {
               case 0:
-                v32 = GPBGetMessageBoolField(a3, v12);
+                v32 = GPBGetMessageBoolField(from, v12);
                 GPBSetBoolIvarWithFieldPrivate(self, v12, v32);
                 break;
               case 1:
               case 0xB:
-                v31 = GPBGetMessageUInt32Field(a3, v12);
+                v31 = GPBGetMessageUInt32Field(from, v12);
                 GPBSetUInt32IvarWithFieldPrivate(self, v12, v31);
                 break;
               case 2:
               case 7:
               case 9:
               case 0x11:
-                v17 = GPBGetMessageInt32Field(a3, v12);
+                v17 = GPBGetMessageInt32Field(from, v12);
                 GPBSetInt32IvarWithFieldPrivate(self, v12, v17);
                 break;
               case 3:
-                v33 = GPBGetMessageFloatField(a3, v12);
+                v33 = GPBGetMessageFloatField(from, v12);
                 GPBSetFloatIvarWithFieldPrivate(self, v12, v33);
                 break;
               case 4:
               case 0xC:
-                v29 = GPBGetMessageUInt64Field(a3, v12);
+                v29 = GPBGetMessageUInt64Field(from, v12);
                 GPBSetUInt64IvarWithFieldPrivate(self, v12, v29);
                 break;
               case 5:
               case 8:
               case 0xA:
-                v28 = GPBGetMessageInt64Field(a3, v12);
+                v28 = GPBGetMessageInt64Field(from, v12);
                 GPBSetInt64IvarWithFieldPrivate(self, v12, v28);
                 break;
               case 6:
-                v34 = GPBGetMessageDoubleField(a3, v12);
+                v34 = GPBGetMessageDoubleField(from, v12);
                 GPBSetDoubleIvarWithFieldPrivate(self, v12, v34);
                 break;
               case 0xD:
               case 0xE:
-                v30 = GPBGetObjectIvarWithFieldNoAutocreate(a3, v12);
+                v30 = GPBGetObjectIvarWithFieldNoAutocreate(from, v12);
                 GPBSetObjectIvarWithFieldPrivate(self, v12, v30);
                 break;
               case 0xF:
               case 0x10:
-                obj = GPBGetObjectIvarWithFieldNoAutocreate(a3, v12);
+                obj = GPBGetObjectIvarWithFieldNoAutocreate(from, v12);
                 if (GPBGetHasIvar(self, v15, v16))
                 {
                   [GPBGetObjectIvarWithFieldNoAutocreate(self v12)];
@@ -1955,22 +1955,22 @@ LABEL_28:
   }
 
   unknownFields = self->unknownFields_;
-  v36 = [a3 unknownFields];
+  unknownFields = [from unknownFields];
   if (unknownFields)
   {
-    [(GPBUnknownFieldSet *)unknownFields mergeUnknownFields:v36];
+    [(GPBUnknownFieldSet *)unknownFields mergeUnknownFields:unknownFields];
   }
 
   else
   {
-    [(GPBMessage *)self setUnknownFields:v36];
+    [(GPBMessage *)self setUnknownFields:unknownFields];
   }
 
-  if ([*(a3 + 2) count])
+  if ([*(from + 2) count])
   {
     if (!self->extensionMap_)
     {
-      v52 = *(a3 + 2);
+      v52 = *(from + 2);
       v53 = NSZoneFromPointer(self);
       self->extensionMap_ = sub_10030EE78(v52, v53);
       return;
@@ -1980,7 +1980,7 @@ LABEL_28:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    obja = *(a3 + 2);
+    obja = *(from + 2);
     v37 = [obja countByEnumeratingWithState:&v62 objects:v71 count:16];
     if (!v37)
     {
@@ -2002,7 +2002,7 @@ LABEL_28:
         }
 
         v41 = *(*(&v62 + 1) + 8 * v40);
-        v42 = [*(a3 + 2) objectForKey:v41];
+        v42 = [*(from + 2) objectForKey:v41];
         v43 = [(NSMutableDictionary *)self->extensionMap_ objectForKey:v41];
         v44 = *(v41[1] + 44) - 15;
         if ([v41 isRepeated])
@@ -2089,9 +2089,9 @@ LABEL_71:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_43;
   }
@@ -2104,7 +2104,7 @@ LABEL_4:
     return v6;
   }
 
-  v30 = *(a3 + 8);
+  v30 = *(equal + 8);
   messageStorage = self->messageStorage_;
   v33 = 0u;
   v34 = 0u;
@@ -2134,7 +2134,7 @@ LABEL_4:
       if ((*(v12 + 28) & 0xF02) != 0)
       {
         v13 = GPBGetObjectIvarWithFieldNoAutocreate(self, *(*(&v33 + 1) + 8 * v10));
-        v14 = GPBGetObjectIvarWithFieldNoAutocreate(a3, v11);
+        v14 = GPBGetObjectIvarWithFieldNoAutocreate(equal, v11);
         if (![v13 count] && !objc_msgSend(v14, "count"))
         {
           goto LABEL_29;
@@ -2148,7 +2148,7 @@ LABEL_4:
       v18 = *(v12 + 16);
       v17 = *(v12 + 20);
       HasIvar = GPBGetHasIvar(self, v17, v18);
-      v20 = GPBGetHasIvar(a3, v17, v18);
+      v20 = GPBGetHasIvar(equal, v17, v18);
       if (HasIvar)
       {
         v21 = v20 == 0;
@@ -2212,7 +2212,7 @@ LABEL_14:
       if (!v23)
       {
         v26 = GPBGetHasIvar(self, v24, 0);
-        if (v26 != GPBGetHasIvar(a3, v24, 0))
+        if (v26 != GPBGetHasIvar(equal, v24, 0))
         {
           goto LABEL_4;
         }
@@ -2229,9 +2229,9 @@ LABEL_29:
 
   while (v27);
 LABEL_37:
-  if (!-[NSMutableDictionary count](self->extensionMap_, "count") && ![*(a3 + 2) count] || (v6 = -[NSMutableDictionary isEqual:](self->extensionMap_, "isEqual:", *(a3 + 2))) != 0)
+  if (!-[NSMutableDictionary count](self->extensionMap_, "count") && ![*(equal + 2) count] || (v6 = -[NSMutableDictionary isEqual:](self->extensionMap_, "isEqual:", *(equal + 2))) != 0)
   {
-    if ((v28 = *(a3 + 1), !-[GPBUnknownFieldSet countOfFields](self->unknownFields_, "countOfFields")) && ![v28 countOfFields] || (v6 = -[GPBUnknownFieldSet isEqual:](self->unknownFields_, "isEqual:", v28)) != 0)
+    if ((v28 = *(equal + 1), !-[GPBUnknownFieldSet countOfFields](self->unknownFields_, "countOfFields")) && ![v28 countOfFields] || (v6 = -[GPBUnknownFieldSet isEqual:](self->unknownFields_, "isEqual:", v28)) != 0)
     {
 LABEL_43:
       LOBYTE(v6) = 1;
@@ -2243,13 +2243,13 @@ LABEL_43:
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() descriptor];
+  descriptor = [objc_opt_class() descriptor];
   messageStorage = self->messageStorage_;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = *(v3 + 8);
+  v4 = *(descriptor + 8);
   v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -2271,7 +2271,7 @@ LABEL_43:
           v11 = [GPBGetObjectIvarWithFieldNoAutocreate(self *(*(&v20 + 1) + 8 * i))];
           if (v11)
           {
-            v3 = v11 + 361 * v3 + 19 * *(*(v9 + 8) + 16);
+            descriptor = v11 + 361 * descriptor + 19 * *(*(v9 + 8) + 16);
           }
         }
 
@@ -2303,7 +2303,7 @@ LABEL_28:
                   v17 = *(messageStorage + v14);
                 }
 
-                v3 = v17 + 19 * v3;
+                descriptor = v17 + 19 * descriptor;
                 continue;
               }
 
@@ -2322,17 +2322,17 @@ LABEL_28:
             {
               if (v13 - 13 < 2)
               {
-                v16 = [*(messageStorage + v14) hash];
+                descriptor2 = [*(messageStorage + v14) hash];
                 goto LABEL_30;
               }
 
               if (v13 - 15 < 2)
               {
-                v3 = *(v12 + 16) + 19 * v3;
+                descriptor = *(v12 + 16) + 19 * descriptor;
                 v15 = *(messageStorage + v14);
-                v16 = [objc_opt_class() descriptor];
+                descriptor2 = [objc_opt_class() descriptor];
 LABEL_30:
-                v3 = v16 + 19 * v3;
+                descriptor = descriptor2 + 19 * descriptor;
                 continue;
               }
 
@@ -2352,7 +2352,7 @@ LABEL_30:
 
             if (!*(v12 + 30))
             {
-              v3 = 19 * v3 + GPBGetHasIvar(self, v14, 0);
+              descriptor = 19 * descriptor + GPBGetHasIvar(self, v14, 0);
             }
           }
 
@@ -2382,7 +2382,7 @@ LABEL_30:
     while (v6);
   }
 
-  return v3;
+  return descriptor;
 }
 
 - (unint64_t)serializedSize
@@ -2391,8 +2391,8 @@ LABEL_30:
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v60 = [objc_opt_class() descriptor];
-  v3 = v60[1];
+  descriptor = [objc_opt_class() descriptor];
+  v3 = descriptor[1];
   v4 = 0;
   v5 = [v3 countByEnumeratingWithState:&v102 objects:v111 count:16];
   if (!v5)
@@ -2415,10 +2415,10 @@ LABEL_30:
       }
 
       v8 = *(*(&v102 + 1) + 8 * v7);
-      v9 = [v8 fieldType];
+      fieldType = [v8 fieldType];
       v10 = v8[1];
       v11 = *(v10 + 30);
-      if (v9 == 1)
+      if (fieldType == 1)
       {
         v14 = GPBGetObjectIvarWithFieldNoAutocreate(self, v8);
         v15 = [v14 count];
@@ -2664,11 +2664,11 @@ LABEL_30:
 
           v33 = v99[3];
           v34 = GPBComputeTagSize(*(v8[1] + 16));
-          v35 = [v8 isPackable];
+          isPackable = [v8 isPackable];
           v36 = v33 + v4;
           v37 = v34 << (v11 == 16);
           v6 = v61;
-          if (v35)
+          if (isPackable)
           {
             v4 = v37 + v36 + GPBComputeSizeTSizeAsInt32NoTag(v99[3]);
           }
@@ -2684,7 +2684,7 @@ LABEL_30:
         }
       }
 
-      else if (v9)
+      else if (fieldType)
       {
         if ((v11 - 13) <= 3 && [v8 mapKeyDataType] == 14)
         {
@@ -2799,19 +2799,19 @@ LABEL_69:
 
   while (v49);
 LABEL_89:
-  v50 = [v60 isWireFormat];
+  isWireFormat = [descriptor isWireFormat];
   unknownFields = self->unknownFields_;
-  if (v50)
+  if (isWireFormat)
   {
-    v52 = [(GPBUnknownFieldSet *)unknownFields serializedSizeAsMessageSet];
+    serializedSizeAsMessageSet = [(GPBUnknownFieldSet *)unknownFields serializedSizeAsMessageSet];
   }
 
   else
   {
-    v52 = [(GPBUnknownFieldSet *)unknownFields serializedSize];
+    serializedSizeAsMessageSet = [(GPBUnknownFieldSet *)unknownFields serializedSize];
   }
 
-  v53 = v52;
+  v53 = serializedSizeAsMessageSet;
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
@@ -2843,35 +2843,35 @@ LABEL_89:
   return v56;
 }
 
-+ (BOOL)resolveInstanceMethod:(SEL)a3
++ (BOOL)resolveInstanceMethod:(SEL)method
 {
-  v4 = a1;
-  v5 = [a1 descriptor];
-  if (!v5)
+  selfCopy = self;
+  descriptor = [self descriptor];
+  if (!descriptor)
   {
-    v58.receiver = v4;
+    v58.receiver = selfCopy;
     v58.super_class = &OBJC_METACLASS___GPBMessage;
-    return objc_msgSendSuper2(&v58, "resolveInstanceMethod:", a3);
+    return objc_msgSendSuper2(&v58, "resolveInstanceMethod:", method);
   }
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v43 = v5;
-  v6 = *(v5 + 1);
+  v43 = descriptor;
+  v6 = *(descriptor + 1);
   v7 = [v6 countByEnumeratingWithState:&v54 objects:v64 count:16];
   if (!v7)
   {
 LABEL_90:
-    v45.receiver = v4;
+    v45.receiver = selfCopy;
     v45.super_class = &OBJC_METACLASS___GPBMessage;
-    return objc_msgSendSuper2(&v45, "resolveInstanceMethod:", a3);
+    return objc_msgSendSuper2(&v45, "resolveInstanceMethod:", method);
   }
 
   v8 = v7;
   v9 = *v55;
-  v44 = v4;
+  v44 = selfCopy;
 LABEL_4:
   v10 = 0;
   while (1)
@@ -2894,7 +2894,7 @@ LABEL_4:
       v14 = v11[3];
     }
 
-    if (v13 == a3)
+    if (v13 == method)
     {
       if ([v11 fieldType] == 1)
       {
@@ -2912,7 +2912,7 @@ LABEL_4:
         v31 = sub_100315654;
       }
 
-      v4 = v44;
+      selfCopy = v44;
       v30[2] = v31;
       v30[3] = &unk_100435228;
       v30[4] = v11;
@@ -2932,7 +2932,7 @@ LABEL_4:
       v16 = v11[4];
     }
 
-    if (v15 == a3)
+    if (v15 == method)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -2950,7 +2950,7 @@ LABEL_4:
       v18 = v11[5];
     }
 
-    if (v17 == a3)
+    if (v17 == method)
     {
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
@@ -2966,7 +2966,7 @@ LABEL_34:
     if (v8 == ++v10)
     {
       v8 = [v6 countByEnumeratingWithState:&v54 objects:v64 count:16];
-      v4 = v44;
+      selfCopy = v44;
       if (v8)
       {
         goto LABEL_4;
@@ -2981,7 +2981,7 @@ LABEL_34:
     v19 = v11[3];
   }
 
-  if (v13 != a3)
+  if (v13 != method)
   {
     v20 = v11[4];
     if (v20)
@@ -2989,9 +2989,9 @@ LABEL_34:
       v21 = v11[4];
     }
 
-    if (v20 == a3)
+    if (v20 == method)
     {
-      v4 = v44;
+      selfCopy = v44;
       switch(v12[3].i8[6])
       {
         case 0:
@@ -3131,7 +3131,7 @@ LABEL_34:
       v23 = v11[5];
     }
 
-    if (v22 == a3)
+    if (v22 == method)
     {
       v53[0] = _NSConcreteStackBlock;
       v53[1] = 3221225472;
@@ -3151,7 +3151,7 @@ LABEL_34:
         v25 = v11[6];
       }
 
-      if (v24 == a3)
+      if (v24 == method)
       {
         v52[0] = _NSConcreteStackBlock;
         v52[1] = 3221225472;
@@ -3176,7 +3176,7 @@ LABEL_34:
           v28 = *(v26 + 24);
         }
 
-        if (v27 != a3)
+        if (v27 != method)
         {
           goto LABEL_34;
         }
@@ -3193,7 +3193,7 @@ LABEL_34:
     }
 
 LABEL_51:
-    v4 = v44;
+    selfCopy = v44;
     if (!v32)
     {
       goto LABEL_90;
@@ -3202,7 +3202,7 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  v4 = v44;
+  selfCopy = v44;
   switch(v12[3].i8[6])
   {
     case 0:
@@ -3352,33 +3352,33 @@ LABEL_89:
 LABEL_52:
   v39 = 1;
   v40 = GPBMessageEncodingForSelector(v33, 1);
-  v41 = [v43 messageClass];
-  if (class_addMethod(v41, a3, v32, v40))
+  messageClass = [v43 messageClass];
+  if (class_addMethod(messageClass, method, v32, v40))
   {
     return v39;
   }
 
-  return GPBClassHasSel(v41, a3);
+  return GPBClassHasSel(messageClass, method);
 }
 
-+ (BOOL)resolveClassMethod:(SEL)a3
++ (BOOL)resolveClassMethod:(SEL)method
 {
-  if (GPBResolveExtensionClassMethod(a1, a3))
+  if (GPBResolveExtensionClassMethod(self, method))
   {
     return 1;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___GPBMessage;
-  return objc_msgSendSuper2(&v6, "resolveClassMethod:", a3);
+  return objc_msgSendSuper2(&v6, "resolveClassMethod:", method);
 }
 
-- (GPBMessage)initWithCoder:(id)a3
+- (GPBMessage)initWithCoder:(id)coder
 {
   v4 = [(GPBMessage *)self init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"GPBData"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"GPBData"];
     if ([v5 length])
     {
       [(GPBMessage *)v4 mergeFromData:v5 extensionRegistry:0];
@@ -3388,13 +3388,13 @@ LABEL_52:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(GPBMessage *)self data];
-  if ([v4 length])
+  data = [(GPBMessage *)self data];
+  if ([data length])
   {
 
-    [a3 encodeObject:v4 forKey:@"GPBData"];
+    [coder encodeObject:data forKey:@"GPBData"];
   }
 }
 

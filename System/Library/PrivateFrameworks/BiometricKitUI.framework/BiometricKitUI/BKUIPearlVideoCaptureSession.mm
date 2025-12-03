@@ -3,14 +3,14 @@
 - (BKUIVideoCaptureSesssionDelegate)delegate;
 - (BOOL)_synchronizedCaptureSessionInterrupted;
 - (id)_frontCamera;
-- (void)_captureSessionInterrupted:(id)a3;
-- (void)_captureSessionStarted:(id)a3;
-- (void)_captureSessionStopped:(id)a3;
+- (void)_captureSessionInterrupted:(id)interrupted;
+- (void)_captureSessionStarted:(id)started;
+- (void)_captureSessionStopped:(id)stopped;
 - (void)_setupCaptureStack;
 - (void)_stopSessionAndTearDown;
 - (void)dealloc;
 - (void)endCapture;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startCapture;
 - (void)supportMultitaskingCameraAccess;
 @end
@@ -54,12 +54,12 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v4 = [v2 discoverySessionWithDeviceTypes:v3 mediaType:*MEMORY[0x277CE5EA8] position:2];
 
-  v5 = [v4 devices];
-  v6 = [v5 firstObject];
+  devices = [v4 devices];
+  firstObject = [devices firstObject];
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return firstObject;
 }
 
 - (void)endCapture
@@ -154,11 +154,11 @@ uint64_t __44__BKUIPearlVideoCaptureSession_startCapture__block_invoke(uint64_t 
   previewLayer = self->_previewLayer;
   self->_previewLayer = v7;
 
-  v9 = [(BKUIPearlVideoCaptureSession *)self previewLayer];
-  [v9 setVideoGravity:*MEMORY[0x277CE5DD8]];
+  previewLayer = [(BKUIPearlVideoCaptureSession *)self previewLayer];
+  [previewLayer setVideoGravity:*MEMORY[0x277CE5DD8]];
 
-  v10 = [(BKUIPearlVideoCaptureSession *)self previewLayer];
-  [v10 setOpacity:0.0];
+  previewLayer2 = [(BKUIPearlVideoCaptureSession *)self previewLayer];
+  [previewLayer2 setOpacity:0.0];
 
   v11 = _BKUILoggingFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -447,11 +447,11 @@ LABEL_6:
   }
 }
 
-- (void)_captureSessionStarted:(id)a3
+- (void)_captureSessionStarted:(id)started
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  startedCopy = started;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = _BKUILoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -459,15 +459,15 @@ LABEL_6:
     _os_log_impl(&dword_241B0A000, v6, OS_LOG_TYPE_DEFAULT, "Capture session started", v7, 2u);
   }
 
-  v5->_captureSessionInterrupted = 0;
-  objc_sync_exit(v5);
+  selfCopy->_captureSessionInterrupted = 0;
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_captureSessionStopped:(id)a3
+- (void)_captureSessionStopped:(id)stopped
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  stoppedCopy = stopped;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = _BKUILoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -475,15 +475,15 @@ LABEL_6:
     _os_log_impl(&dword_241B0A000, v6, OS_LOG_TYPE_DEFAULT, "Capture session stopped", v7, 2u);
   }
 
-  v5->_captureSessionInterrupted = 0;
-  objc_sync_exit(v5);
+  selfCopy->_captureSessionInterrupted = 0;
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_captureSessionInterrupted:(id)a3
+- (void)_captureSessionInterrupted:(id)interrupted
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  interruptedCopy = interrupted;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = _BKUILoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -491,15 +491,15 @@ LABEL_6:
     _os_log_impl(&dword_241B0A000, v6, OS_LOG_TYPE_DEFAULT, "Capture session interrupted", v7, 2u);
   }
 
-  v5->_captureSessionInterrupted = 1;
-  objc_sync_exit(v5);
+  selfCopy->_captureSessionInterrupted = 1;
+  objc_sync_exit(selfCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"PSCaptureSessionActiveContext")
+  if (context == @"PSCaptureSessionActiveContext")
   {
-    if ([a3 isEqualToString:{@"running", a4, a5}])
+    if ([path isEqualToString:{@"running", object, change}])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v8 = WeakRetained;
@@ -538,16 +538,16 @@ LABEL_6:
   {
     v12.receiver = self;
     v12.super_class = BKUIPearlVideoCaptureSession;
-    [(BKUIPearlVideoCaptureSession *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BKUIPearlVideoCaptureSession *)&v12 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (BOOL)_synchronizedCaptureSessionInterrupted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  captureSessionInterrupted = v2->_captureSessionInterrupted;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  captureSessionInterrupted = selfCopy->_captureSessionInterrupted;
+  objc_sync_exit(selfCopy);
 
   return captureSessionInterrupted;
 }

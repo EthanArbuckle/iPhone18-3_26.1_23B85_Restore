@@ -1,35 +1,35 @@
 @interface SUUIItemArtworkContext
-+ (id)lockupContextWithSize:(int64_t)a3;
++ (id)lockupContextWithSize:(int64_t)size;
 + (id)roomContext;
 + (id)wishlistContext;
-- (CGSize)imageSizeForItem:(id)a3;
-- (CGSize)largestImageSizeForItems:(id)a3;
-- (CGSize)largestImageSizeForLockups:(id)a3;
-- (id)URLForItem:(id)a3;
-- (id)artworkForItem:(id)a3;
-- (id)dataConsumerForItem:(id)a3;
-- (id)placeholderImageForItem:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setGeneralConsumer:(id)a3;
-- (void)setIconConsumer:(id)a3;
-- (void)setLetterboxConsumer:(id)a3;
-- (void)setNewsstandConsumer:(id)a3;
-- (void)setPosterConsumer:(id)a3;
+- (CGSize)imageSizeForItem:(id)item;
+- (CGSize)largestImageSizeForItems:(id)items;
+- (CGSize)largestImageSizeForLockups:(id)lockups;
+- (id)URLForItem:(id)item;
+- (id)artworkForItem:(id)item;
+- (id)dataConsumerForItem:(id)item;
+- (id)placeholderImageForItem:(id)item;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setGeneralConsumer:(id)consumer;
+- (void)setIconConsumer:(id)consumer;
+- (void)setLetterboxConsumer:(id)consumer;
+- (void)setNewsstandConsumer:(id)consumer;
+- (void)setPosterConsumer:(id)consumer;
 @end
 
 @implementation SUUIItemArtworkContext
 
-+ (id)lockupContextWithSize:(int64_t)a3
++ (id)lockupContextWithSize:(int64_t)size
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [SUUIProductImageDataConsumer lockupConsumerWithSize:a3 itemKind:12];
+  v5 = [SUUIProductImageDataConsumer lockupConsumerWithSize:size itemKind:12];
   [v4 setGeneralConsumer:v5];
 
-  v6 = [SUUIStyledImageDataConsumer lockupIconConsumerWithSize:a3];
+  v6 = [SUUIStyledImageDataConsumer lockupIconConsumerWithSize:size];
   [v4 setIconConsumer:v6];
 
-  v7 = [SUUIStyledImageDataConsumer lockupProductImageConsumerWithSize:a3];
+  v7 = [SUUIStyledImageDataConsumer lockupProductImageConsumerWithSize:size];
   [v4 setNewsstandConsumer:v7];
 
   return v4;
@@ -65,34 +65,34 @@
   return v2;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
+  schemeCopy = scheme;
   p_colorScheme = &self->_colorScheme;
-  if (self->_colorScheme != v5)
+  if (self->_colorScheme != schemeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_colorScheme, a3);
+    v8 = schemeCopy;
+    objc_storeStrong(p_colorScheme, scheme);
     [(SUUIProductImageDataConsumer *)self->_generalImageConsumer setColorScheme:self->_colorScheme];
     [(SUUIProductImageDataConsumer *)self->_letterboxConsumer setColorScheme:self->_colorScheme];
     [(SUUIProductImageDataConsumer *)self->_posterConsumer setColorScheme:self->_colorScheme];
     placeholders = self->_placeholders;
     self->_placeholders = 0;
 
-    v5 = v8;
+    schemeCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_colorScheme, v5);
+  MEMORY[0x2821F96F8](p_colorScheme, schemeCopy);
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   p_backgroundColor = &self->_backgroundColor;
-  if (self->_backgroundColor != v5)
+  if (self->_backgroundColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_backgroundColor, a3);
+    v8 = colorCopy;
+    objc_storeStrong(p_backgroundColor, color);
     [(SUUIProductImageDataConsumer *)self->_generalImageConsumer setBackgroundColor:self->_backgroundColor];
     [(SUUIStyledImageDataConsumer *)self->_iconConsumer setBackgroundColor:self->_backgroundColor];
     [(SUUIProductImageDataConsumer *)self->_letterboxConsumer setBackgroundColor:self->_backgroundColor];
@@ -101,125 +101,125 @@
     placeholders = self->_placeholders;
     self->_placeholders = 0;
 
-    v5 = v8;
+    colorCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_backgroundColor, v5);
+  MEMORY[0x2821F96F8](p_backgroundColor, colorCopy);
 }
 
-- (void)setGeneralConsumer:(id)a3
+- (void)setGeneralConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   p_generalImageConsumer = &self->_generalImageConsumer;
-  if (self->_generalImageConsumer != v5)
+  if (self->_generalImageConsumer != consumerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_generalImageConsumer, a3);
+    v8 = consumerCopy;
+    objc_storeStrong(p_generalImageConsumer, consumer);
     [(SUUIProductImageDataConsumer *)self->_generalImageConsumer setColorScheme:self->_colorScheme];
     [(SUUIProductImageDataConsumer *)self->_generalImageConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
     self->_placeholders = 0;
 
-    v5 = v8;
+    consumerCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_generalImageConsumer, v5);
+  MEMORY[0x2821F96F8](p_generalImageConsumer, consumerCopy);
 }
 
-- (void)setIconConsumer:(id)a3
+- (void)setIconConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   p_iconConsumer = &self->_iconConsumer;
-  if (self->_iconConsumer != v5)
+  if (self->_iconConsumer != consumerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_iconConsumer, a3);
+    v8 = consumerCopy;
+    objc_storeStrong(p_iconConsumer, consumer);
     [(SUUIStyledImageDataConsumer *)self->_iconConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
     self->_placeholders = 0;
 
-    v5 = v8;
+    consumerCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_iconConsumer, v5);
+  MEMORY[0x2821F96F8](p_iconConsumer, consumerCopy);
 }
 
-- (void)setLetterboxConsumer:(id)a3
+- (void)setLetterboxConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   p_letterboxConsumer = &self->_letterboxConsumer;
-  if (self->_letterboxConsumer != v5)
+  if (self->_letterboxConsumer != consumerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_letterboxConsumer, a3);
+    v8 = consumerCopy;
+    objc_storeStrong(p_letterboxConsumer, consumer);
     [(SUUIProductImageDataConsumer *)self->_letterboxConsumer setColorScheme:self->_colorScheme];
     [(SUUIProductImageDataConsumer *)self->_letterboxConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
     self->_placeholders = 0;
 
-    v5 = v8;
+    consumerCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_letterboxConsumer, v5);
+  MEMORY[0x2821F96F8](p_letterboxConsumer, consumerCopy);
 }
 
-- (void)setNewsstandConsumer:(id)a3
+- (void)setNewsstandConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   p_newsstandConsumer = &self->_newsstandConsumer;
-  if (self->_newsstandConsumer != v5)
+  if (self->_newsstandConsumer != consumerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_newsstandConsumer, a3);
+    v8 = consumerCopy;
+    objc_storeStrong(p_newsstandConsumer, consumer);
     [(SUUIStyledImageDataConsumer *)self->_newsstandConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
     self->_placeholders = 0;
 
-    v5 = v8;
+    consumerCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_newsstandConsumer, v5);
+  MEMORY[0x2821F96F8](p_newsstandConsumer, consumerCopy);
 }
 
-- (void)setPosterConsumer:(id)a3
+- (void)setPosterConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   p_posterConsumer = &self->_posterConsumer;
-  if (self->_posterConsumer != v5)
+  if (self->_posterConsumer != consumerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_posterConsumer, a3);
+    v8 = consumerCopy;
+    objc_storeStrong(p_posterConsumer, consumer);
     [(SUUIProductImageDataConsumer *)self->_posterConsumer setColorScheme:self->_colorScheme];
     [(SUUIProductImageDataConsumer *)self->_posterConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
     self->_placeholders = 0;
 
-    v5 = v8;
+    consumerCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_posterConsumer, v5);
+  MEMORY[0x2821F96F8](p_posterConsumer, consumerCopy);
 }
 
-- (id)dataConsumerForItem:(id)a3
+- (id)dataConsumerForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 itemKind];
-  if (v5 > 0x11)
+  itemCopy = item;
+  itemKind = [itemCopy itemKind];
+  if (itemKind > 0x11)
   {
 LABEL_14:
     v6 = 24;
     goto LABEL_15;
   }
 
-  if (((1 << v5) & 0x21020) == 0)
+  if (((1 << itemKind) & 0x21020) == 0)
   {
-    if (((1 << v5) & 0x44) != 0)
+    if (((1 << itemKind) & 0x44) != 0)
     {
       v6 = 64;
       goto LABEL_15;
     }
 
-    if (v5 == 8)
+    if (itemKind == 8)
     {
       v6 = 40;
       goto LABEL_15;
@@ -228,12 +228,12 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ([v4 isNewsstandApp] && (objc_msgSend(v4, "newsstandArtworks"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if ([itemCopy isNewsstandApp] && (objc_msgSend(itemCopy, "newsstandArtworks"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v6 = 48;
   }
 
-  else if ([v4 isHiddenFromSpringBoard] && (objc_msgSend(v4, "hasMessagesExtension") & 1) != 0)
+  else if ([itemCopy isHiddenFromSpringBoard] && (objc_msgSend(itemCopy, "hasMessagesExtension") & 1) != 0)
   {
     v6 = 72;
   }
@@ -259,16 +259,16 @@ LABEL_15:
   return v8;
 }
 
-- (CGSize)imageSizeForItem:(id)a3
+- (CGSize)imageSizeForItem:(id)item
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v6 = [v4 itemKind];
+    itemKind = [itemCopy itemKind];
     v7 = 0;
-    if (v6 <= 0x11 && ((1 << v6) & 0x21020) != 0)
+    if (itemKind <= 0x11 && ((1 << itemKind) & 0x21020) != 0)
     {
       v7 = [v5 isNewsstandApp] ^ 1;
     }
@@ -280,11 +280,11 @@ LABEL_15:
 
     if ((v7 & 1) == 0)
     {
-      v13 = [v5 artworksProvider];
-      v14 = v13;
-      if (v13)
+      artworksProvider = [v5 artworksProvider];
+      v14 = artworksProvider;
+      if (artworksProvider)
       {
-        v15 = [v13 bestArtworkForScaledSize:{v10, v12}];
+        v15 = [artworksProvider bestArtworkForScaledSize:{v10, v12}];
         [v15 size];
         v17 = v16;
         v19 = v18;
@@ -351,11 +351,11 @@ LABEL_15:
   return result;
 }
 
-- (CGSize)largestImageSizeForItems:(id)a3
+- (CGSize)largestImageSizeForItems:(id)items
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v5 = *MEMORY[0x277CBF3A8];
     v6 = *(MEMORY[0x277CBF3A8] + 8);
@@ -363,7 +363,7 @@ LABEL_15:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v4;
+    v7 = itemsCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -415,17 +415,17 @@ LABEL_15:
   return result;
 }
 
-- (CGSize)largestImageSizeForLockups:(id)a3
+- (CGSize)largestImageSizeForLockups:(id)lockups
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lockupsCopy = lockups;
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [lockupsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   v8 = v6;
   v9 = v5;
   if (v7)
@@ -441,13 +441,13 @@ LABEL_15:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(lockupsCopy);
         }
 
-        v13 = [*(*(&v21 + 1) + 8 * v12) item];
-        if (v13)
+        item = [*(*(&v21 + 1) + 8 * v12) item];
+        if (item)
         {
-          [(SUUIItemArtworkContext *)self imageSizeForItem:v13];
+          [(SUUIItemArtworkContext *)self imageSizeForItem:item];
           if (v8 < v15)
           {
             v8 = v15;
@@ -463,7 +463,7 @@ LABEL_15:
       }
 
       while (v10 != v12);
-      v10 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [lockupsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -483,13 +483,13 @@ LABEL_15:
   return result;
 }
 
-- (id)placeholderImageForItem:(id)a3
+- (id)placeholderImageForItem:(id)item
 {
-  v4 = a3;
-  [(SUUIItemArtworkContext *)self imageSizeForItem:v4];
+  itemCopy = item;
+  [(SUUIItemArtworkContext *)self imageSizeForItem:itemCopy];
   v6 = v5;
   v8 = v7;
-  v9 = [(SUUIItemArtworkContext *)self dataConsumerForItem:v4];
+  v9 = [(SUUIItemArtworkContext *)self dataConsumerForItem:itemCopy];
 
   if (v9 == self->_iconConsumer)
   {
@@ -578,25 +578,25 @@ LABEL_15:
   return v21;
 }
 
-- (id)URLForItem:(id)a3
+- (id)URLForItem:(id)item
 {
-  v3 = [(SUUIItemArtworkContext *)self artworkForItem:a3];
+  v3 = [(SUUIItemArtworkContext *)self artworkForItem:item];
   v4 = [v3 URL];
 
   return v4;
 }
 
-- (id)artworkForItem:(id)a3
+- (id)artworkForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SUUIItemArtworkContext *)self dataConsumerForItem:v4];
+  itemCopy = item;
+  v5 = [(SUUIItemArtworkContext *)self dataConsumerForItem:itemCopy];
   [v5 imageSize];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 artworksProvider];
+  artworksProvider = [itemCopy artworksProvider];
 
-  v11 = [v10 bestArtworkForScaledSize:{v7, v9}];
+  v11 = [artworksProvider bestArtworkForScaledSize:{v7, v9}];
 
   return v11;
 }

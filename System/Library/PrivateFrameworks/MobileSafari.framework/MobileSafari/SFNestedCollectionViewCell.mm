@@ -1,20 +1,20 @@
 @interface SFNestedCollectionViewCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)_setUpCollectionViewIfNeeded;
 @end
 
 @implementation SFNestedCollectionViewCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v17.receiver = self;
   v17.super_class = SFNestedCollectionViewCell;
-  v4 = [(SFNestedCollectionViewCell *)&v17 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(SFNestedCollectionViewCell *)&v17 preferredLayoutAttributesFittingAttributes:attributes];
   collectionView = self->_collectionView;
   if (collectionView)
   {
-    v6 = [(UICollectionView *)collectionView superview];
-    if (!v6 || ([(SFNestedCollectionViewCell *)self contentView], v7 = objc_claimAutoreleasedReturnValue(), v7, v6 == v7))
+    superview = [(UICollectionView *)collectionView superview];
+    if (!superview || ([(SFNestedCollectionViewCell *)self contentView], v7 = objc_claimAutoreleasedReturnValue(), v7, superview == v7))
     {
       [(SFNestedCollectionViewCell *)self _setUpCollectionViewIfNeeded];
       [v4 size];
@@ -24,8 +24,8 @@
       do
       {
         v13 = v11;
-        v14 = [(SFNestedCollectionViewCell *)self contentView];
-        [v14 bounds];
+        contentView = [(SFNestedCollectionViewCell *)self contentView];
+        [contentView bounds];
         [(UICollectionView *)self->_collectionView setFrame:0.0, 0.0, CGRectGetWidth(v19), v11];
 
         [(UICollectionView *)self->_collectionView layoutIfNeeded];
@@ -50,36 +50,36 @@
 
 - (void)_setUpCollectionViewIfNeeded
 {
-  v3 = [(SFNestedCollectionViewCell *)self contentView];
+  contentView = [(SFNestedCollectionViewCell *)self contentView];
   collectionView = self->_collectionView;
   if (collectionView)
   {
-    v9 = v3;
-    v5 = [(UICollectionView *)collectionView superview];
+    v9 = contentView;
+    superview = [(UICollectionView *)collectionView superview];
 
-    v3 = v9;
-    if (v5 != v9)
+    contentView = v9;
+    if (superview != v9)
     {
-      v6 = [(UICollectionView *)self->_collectionView superview];
+      superview2 = [(UICollectionView *)self->_collectionView superview];
 
-      if (v6)
+      if (superview2)
       {
         [(UICollectionView *)self->_collectionView removeFromSuperview];
       }
 
       [(UICollectionView *)self->_collectionView setAutoresizingMask:0];
-      v7 = [MEMORY[0x1E69DC888] clearColor];
-      [(UICollectionView *)self->_collectionView setBackgroundColor:v7];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
       [v9 bounds];
       [(UICollectionView *)self->_collectionView setFrame:?];
       [(UICollectionView *)self->_collectionView setScrollEnabled:0];
       [(UICollectionView *)self->_collectionView setScrollsToTop:0];
       [v9 addSubview:self->_collectionView];
-      v8 = [MEMORY[0x1E69DC6E8] _listInsetGroupedCellConfiguration];
-      [(SFNestedCollectionViewCell *)self setBackgroundConfiguration:v8];
+      _listInsetGroupedCellConfiguration = [MEMORY[0x1E69DC6E8] _listInsetGroupedCellConfiguration];
+      [(SFNestedCollectionViewCell *)self setBackgroundConfiguration:_listInsetGroupedCellConfiguration];
 
-      v3 = v9;
+      contentView = v9;
     }
   }
 }

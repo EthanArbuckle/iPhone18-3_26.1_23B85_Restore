@@ -11,8 +11,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(SRFaceMetrics *)self wholeFaceExpressions];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  wholeFaceExpressions = [(SRFaceMetrics *)self wholeFaceExpressions];
+  v5 = [(NSArray *)wholeFaceExpressions countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,7 +24,7 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(wholeFaceExpressions);
         }
 
         -[NSMutableArray addObject:](v3, "addObject:", [*(*(&v20 + 1) + 8 * v8) sr_dictionaryRepresentation]);
@@ -32,7 +32,7 @@
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      v6 = [(NSArray *)wholeFaceExpressions countByEnumeratingWithState:&v20 objects:v27 count:16];
     }
 
     while (v6);
@@ -43,8 +43,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(SRFaceMetrics *)self partialFaceExpressions];
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v16 objects:v26 count:16];
+  partialFaceExpressions = [(SRFaceMetrics *)self partialFaceExpressions];
+  v11 = [(NSArray *)partialFaceExpressions countByEnumeratingWithState:&v16 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -56,7 +56,7 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(partialFaceExpressions);
         }
 
         -[NSMutableArray addObject:](v9, "addObject:", [*(*(&v16 + 1) + 8 * v14) sr_dictionaryRepresentation]);
@@ -64,7 +64,7 @@
       }
 
       while (v12 != v14);
-      v12 = [(NSArray *)v10 countByEnumeratingWithState:&v16 objects:v26 count:16];
+      v12 = [(NSArray *)partialFaceExpressions countByEnumeratingWithState:&v16 objects:v26 count:16];
     }
 
     while (v12);

@@ -1,20 +1,20 @@
 @interface SGMultiHeadEspressoModelCache
 + (id)sharedInstance;
-- (BOOL)setCachedEspressoClassifierWithFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5;
+- (BOOL)setCachedEspressoClassifierWithFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality;
 - (SGMultiHeadEspressoModelCache)init;
-- (id)headDimensionalityWithFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5;
-- (id)predict:(id)a3 heads:(id)a4 withFile:(id)a5 inputName:(id)a6 headDimensionality:(id)a7;
-- (id)predict:(id)a3 withFile:(id)a4 inputName:(id)a5 headDimensionality:(id)a6;
-- (unint64_t)inputNumParametersWithFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5;
+- (id)headDimensionalityWithFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality;
+- (id)predict:(id)predict heads:(id)heads withFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality;
+- (id)predict:(id)predict withFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality;
+- (unint64_t)inputNumParametersWithFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality;
 @end
 
 @implementation SGMultiHeadEspressoModelCache
 
-- (id)headDimensionalityWithFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5
+- (id)headDimensionalityWithFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -27,11 +27,11 @@
   v17[2] = __89__SGMultiHeadEspressoModelCache_headDimensionalityWithFile_inputName_headDimensionality___block_invoke;
   v17[3] = &unk_278EB84D8;
   v17[4] = self;
-  v12 = v8;
+  v12 = fileCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = nameCopy;
   v19 = v13;
-  v14 = v10;
+  v14 = dimensionalityCopy;
   v20 = v14;
   v21 = &v22;
   [(_PASLock *)currentModel runWithLockAcquired:v17];
@@ -56,11 +56,11 @@ void __89__SGMultiHeadEspressoModelCache_headDimensionalityWithFile_inputName_he
   }
 }
 
-- (unint64_t)inputNumParametersWithFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5
+- (unint64_t)inputNumParametersWithFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -71,11 +71,11 @@ void __89__SGMultiHeadEspressoModelCache_headDimensionalityWithFile_inputName_he
   v17[2] = __89__SGMultiHeadEspressoModelCache_inputNumParametersWithFile_inputName_headDimensionality___block_invoke;
   v17[3] = &unk_278EB84D8;
   v17[4] = self;
-  v12 = v8;
+  v12 = fileCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = nameCopy;
   v19 = v13;
-  v14 = v10;
+  v14 = dimensionalityCopy;
   v20 = v14;
   v21 = &v22;
   [(_PASLock *)currentModel runWithLockAcquired:v17];
@@ -96,13 +96,13 @@ void __89__SGMultiHeadEspressoModelCache_inputNumParametersWithFile_inputName_he
   }
 }
 
-- (id)predict:(id)a3 heads:(id)a4 withFile:(id)a5 inputName:(id)a6 headDimensionality:(id)a7
+- (id)predict:(id)predict heads:(id)heads withFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  predictCopy = predict;
+  headsCopy = heads;
+  fileCopy = file;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -115,16 +115,16 @@ void __89__SGMultiHeadEspressoModelCache_inputNumParametersWithFile_inputName_he
   v25[2] = __85__SGMultiHeadEspressoModelCache_predict_heads_withFile_inputName_headDimensionality___block_invoke;
   v25[3] = &unk_278EB84B0;
   v25[4] = self;
-  v18 = v14;
+  v18 = fileCopy;
   v26 = v18;
-  v19 = v15;
+  v19 = nameCopy;
   v27 = v19;
-  v20 = v16;
+  v20 = dimensionalityCopy;
   v28 = v20;
   v31 = &v32;
-  v21 = v12;
+  v21 = predictCopy;
   v29 = v21;
-  v22 = v13;
+  v22 = headsCopy;
   v30 = v22;
   [(_PASLock *)currentModel runWithLockAcquired:v25];
   v23 = v33[5];
@@ -148,12 +148,12 @@ void __85__SGMultiHeadEspressoModelCache_predict_heads_withFile_inputName_headDi
   }
 }
 
-- (id)predict:(id)a3 withFile:(id)a4 inputName:(id)a5 headDimensionality:(id)a6
+- (id)predict:(id)predict withFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  predictCopy = predict;
+  fileCopy = file;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -166,14 +166,14 @@ void __85__SGMultiHeadEspressoModelCache_predict_heads_withFile_inputName_headDi
   v21[2] = __79__SGMultiHeadEspressoModelCache_predict_withFile_inputName_headDimensionality___block_invoke;
   v21[3] = &unk_278EB8488;
   v21[4] = self;
-  v15 = v11;
+  v15 = fileCopy;
   v22 = v15;
-  v16 = v12;
+  v16 = nameCopy;
   v23 = v16;
-  v17 = v13;
+  v17 = dimensionalityCopy;
   v24 = v17;
   v26 = &v27;
-  v18 = v10;
+  v18 = predictCopy;
   v25 = v18;
   [(_PASLock *)currentModel runWithLockAcquired:v21];
   v19 = v28[5];
@@ -197,11 +197,11 @@ void __79__SGMultiHeadEspressoModelCache_predict_withFile_inputName_headDimensio
   }
 }
 
-- (BOOL)setCachedEspressoClassifierWithFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5
+- (BOOL)setCachedEspressoClassifierWithFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -211,18 +211,18 @@ void __79__SGMultiHeadEspressoModelCache_predict_withFile_inputName_headDimensio
   v16[1] = 3221225472;
   v16[2] = __98__SGMultiHeadEspressoModelCache_setCachedEspressoClassifierWithFile_inputName_headDimensionality___block_invoke;
   v16[3] = &unk_278EB8460;
-  v12 = v8;
+  v12 = fileCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = nameCopy;
   v18 = v13;
-  v14 = v10;
+  v14 = dimensionalityCopy;
   v19 = v14;
   v20 = &v21;
   [(_PASLock *)currentModel runWithLockAcquired:v16];
-  LOBYTE(v8) = *(v22 + 24);
+  LOBYTE(fileCopy) = *(v22 + 24);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return fileCopy;
 }
 
 void __98__SGMultiHeadEspressoModelCache_setCachedEspressoClassifierWithFile_inputName_headDimensionality___block_invoke(uint64_t a1, void *a2)

@@ -1,15 +1,15 @@
 @interface _UILabelAttributedStringContent
-- (BOOL)_isContentEqualToContent:(id)a3;
-- (BOOL)isAttribute:(id)a3 uniformlyEqualToValue:(id)a4;
+- (BOOL)_isContentEqualToContent:(id)content;
+- (BOOL)isAttribute:(id)attribute uniformlyEqualToValue:(id)value;
 - (BOOL)isAttributed;
-- (BOOL)isEqualToContent:(id)a3 byAttribute:(id)a4;
-- (BOOL)isEqualToString:(id)a3;
-- (_UILabelAttributedStringContent)contentWithAttributedString:(id)a3;
-- (_UILabelAttributedStringContent)contentWithString:(id)a3;
-- (_UILabelAttributedStringContent)initWithAttributedString:(id)a3 defaultAttributes:(id)a4;
-- (id)contentByApplyingAttribute:(id)a3 value:(id)a4 toRange:(_NSRange)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)defaultValueForAttribute:(id)a3;
+- (BOOL)isEqualToContent:(id)content byAttribute:(id)attribute;
+- (BOOL)isEqualToString:(id)string;
+- (_UILabelAttributedStringContent)contentWithAttributedString:(id)string;
+- (_UILabelAttributedStringContent)contentWithString:(id)string;
+- (_UILabelAttributedStringContent)initWithAttributedString:(id)string defaultAttributes:(id)attributes;
+- (id)contentByApplyingAttribute:(id)attribute value:(id)value toRange:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)defaultValueForAttribute:(id)attribute;
 - (id)intelligenceLightAttributedStrings;
 - (id)labelViewTextAttachments;
 - (unint64_t)hash;
@@ -19,16 +19,16 @@
 
 - (BOOL)isAttributed
 {
-  v3 = [(_UILabelAttributedStringContent *)self string];
-  if (v3)
+  string = [(_UILabelAttributedStringContent *)self string];
+  if (string)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_UILabelAttributedStringContent *)self attributedString];
-    v4 = v5 != 0;
+    attributedString = [(_UILabelAttributedStringContent *)self attributedString];
+    v4 = attributedString != 0;
   }
 
   return v4;
@@ -36,7 +36,7 @@
 
 - (id)labelViewTextAttachments
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   attributedString = self->_attributedString;
   v5 = *off_1E70EC8C8;
   v6 = [(NSAttributedString *)attributedString length];
@@ -44,7 +44,7 @@
   v10[1] = 3221225472;
   v10[2] = __59___UILabelAttributedStringContent_labelViewTextAttachments__block_invoke;
   v10[3] = &unk_1E70F3050;
-  v7 = v3;
+  v7 = array;
   v11 = v7;
   [(NSAttributedString *)attributedString enumerateAttribute:v5 inRange:0 options:v6 usingBlock:0, v10];
   if ([v7 count])
@@ -60,29 +60,29 @@
   return v8;
 }
 
-- (_UILabelAttributedStringContent)initWithAttributedString:(id)a3 defaultAttributes:(id)a4
+- (_UILabelAttributedStringContent)initWithAttributedString:(id)string defaultAttributes:(id)attributes
 {
-  v6 = a3;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v7 = v6;
+    v7 = stringCopy;
     v16.receiver = self;
     v16.super_class = _UILabelAttributedStringContent;
-    v8 = a4;
-    v9 = [(_UILabelContent *)&v16 initWithDefaultAttributes:v8];
+    attributesCopy = attributes;
+    v9 = [(_UILabelContent *)&v16 initWithDefaultAttributes:attributesCopy];
 
     if (v9)
     {
-      v10 = [(_NSAttributedStringIntentResolver *)_UIAttributedStringIntentResolver attributedStringByResolvingString:v7, v16.receiver, v16.super_class];
+      attributesCopy2 = [(_NSAttributedStringIntentResolver *)_UIAttributedStringIntentResolver attributedStringByResolvingString:v7, v16.receiver, v16.super_class];
 
       if (dyld_program_sdk_at_least())
       {
-        v11 = [v10 copy];
+        v11 = [attributesCopy2 copy];
       }
 
       else
       {
-        v11 = [v10 mutableCopy];
+        v11 = [attributesCopy2 mutableCopy];
       }
 
       attributedString = v9->_attributedString;
@@ -91,7 +91,7 @@
 
     else
     {
-      v10 = v7;
+      attributesCopy2 = v7;
     }
 
     v12 = v9;
@@ -100,8 +100,8 @@
 
   else
   {
-    v10 = a4;
-    v12 = [[_UILabelContent alloc] initWithDefaultAttributes:v10];
+    attributesCopy2 = attributes;
+    v12 = [[_UILabelContent alloc] initWithDefaultAttributes:attributesCopy2];
   }
 
   v14 = v12;
@@ -109,9 +109,9 @@
   return v14;
 }
 
-- (_UILabelAttributedStringContent)contentWithString:(id)a3
+- (_UILabelAttributedStringContent)contentWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = self->super._defaultAttributes;
   v6 = [(_UILabelAttributedStringContent *)self length];
   if (v6 >= 1)
@@ -157,9 +157,9 @@
     }
   }
 
-  if (v4)
+  if (stringCopy)
   {
-    v21 = [[_UILabelStringContent alloc] initWithString:v4 defaultAttributes:v5];
+    v21 = [[_UILabelStringContent alloc] initWithString:stringCopy defaultAttributes:v5];
   }
 
   else
@@ -172,11 +172,11 @@
   return v22;
 }
 
-- (_UILabelAttributedStringContent)contentWithAttributedString:(id)a3
+- (_UILabelAttributedStringContent)contentWithAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = self->_attributedString;
-  v6 = v4;
+  v6 = stringCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -194,30 +194,30 @@
     }
 
 LABEL_7:
-    v9 = self;
+    selfCopy = self;
     goto LABEL_11;
   }
 
   if (v7)
   {
 LABEL_9:
-    v9 = [[_UILabelAttributedStringContent alloc] initWithAttributedString:v7 defaultAttributes:self->super._defaultAttributes];
+    selfCopy = [[_UILabelAttributedStringContent alloc] initWithAttributedString:v7 defaultAttributes:self->super._defaultAttributes];
     goto LABEL_11;
   }
 
-  v9 = [[_UILabelContent alloc] initWithDefaultAttributes:self->super._defaultAttributes];
+  selfCopy = [[_UILabelContent alloc] initWithDefaultAttributes:self->super._defaultAttributes];
 LABEL_11:
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }
 
-- (id)contentByApplyingAttribute:(id)a3 value:(id)a4 toRange:(_NSRange)a5
+- (id)contentByApplyingAttribute:(id)attribute value:(id)value toRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3;
-  v10 = a4;
+  length = range.length;
+  location = range.location;
+  attributeCopy = attribute;
+  valueCopy = value;
   if (location >= [(_UILabelAttributedStringContent *)self length])
   {
     goto LABEL_31;
@@ -228,25 +228,25 @@ LABEL_11:
     length = [(_UILabelAttributedStringContent *)self length]- location;
   }
 
-  if (!v9 || !length)
+  if (!attributeCopy || !length)
   {
     goto LABEL_31;
   }
 
   v29 = 0;
   v30 = 0;
-  v11 = [(NSAttributedString *)self->_attributedString attribute:v9 atIndex:location effectiveRange:&v29];
+  v11 = [(NSAttributedString *)self->_attributedString attribute:attributeCopy atIndex:location effectiveRange:&v29];
   v12 = v11;
   if (v29 == location && v30 == length)
   {
     v13 = v11;
-    v14 = v10;
+    v14 = valueCopy;
     v15 = v14;
     if (v13 == v14)
     {
 
 LABEL_14:
-      v18 = self;
+      selfCopy = self;
 LABEL_15:
 
       goto LABEL_32;
@@ -260,7 +260,7 @@ LABEL_15:
       {
         v17 = [(NSAttributedString *)self->_attributedString mutableCopy];
 LABEL_27:
-        [v17 addAttribute:v9 value:v10 range:{location, length}];
+        [v17 addAttribute:attributeCopy value:valueCopy range:{location, length}];
         goto LABEL_29;
       }
 
@@ -269,7 +269,7 @@ LABEL_27:
 
     if (!v13)
     {
-      v19 = [(NSDictionary *)self->super._defaultAttributes objectForKeyedSubscript:v9];
+      v19 = [(NSDictionary *)self->super._defaultAttributes objectForKeyedSubscript:attributeCopy];
       v20 = v15;
       if (v19 == v20)
       {
@@ -293,7 +293,7 @@ LABEL_25:
         }
       }
 
-      v22 = self;
+      selfCopy2 = self;
 
       goto LABEL_15;
     }
@@ -302,12 +302,12 @@ LABEL_25:
 LABEL_26:
   v23 = [(NSAttributedString *)self->_attributedString mutableCopy];
   v17 = v23;
-  if (v10)
+  if (valueCopy)
   {
     goto LABEL_27;
   }
 
-  [v23 removeAttribute:v9 range:{location, length}];
+  [v23 removeAttribute:attributeCopy range:{location, length}];
 LABEL_29:
   if ([v17 isEqualToAttributedString:self->_attributedString])
   {
@@ -315,13 +315,13 @@ LABEL_29:
 LABEL_31:
     v27.receiver = self;
     v27.super_class = _UILabelAttributedStringContent;
-    self = [(_UILabelContent *)&v27 contentByApplyingAttribute:v9 value:v10 toRange:location, length];
+    self = [(_UILabelContent *)&v27 contentByApplyingAttribute:attributeCopy value:valueCopy toRange:location, length];
     goto LABEL_32;
   }
 
   v28.receiver = self;
   v28.super_class = _UILabelAttributedStringContent;
-  v25 = [(_UILabelContent *)&v28 contentByApplyingAttribute:v9 value:v10 toRange:location, length];
+  v25 = [(_UILabelContent *)&v28 contentByApplyingAttribute:attributeCopy value:valueCopy toRange:location, length];
   self = [v25 contentWithAttributedString:v17];
 
 LABEL_32:
@@ -329,18 +329,18 @@ LABEL_32:
   return self;
 }
 
-- (BOOL)isAttribute:(id)a3 uniformlyEqualToValue:(id)a4
+- (BOOL)isAttribute:(id)attribute uniformlyEqualToValue:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   attributedString = self->_attributedString;
-  v8 = a3;
+  attributeCopy = attribute;
   v9 = [(NSAttributedString *)attributedString length];
   if (v9)
   {
     v10 = v9;
     v16 = 0;
     v17 = 0;
-    v11 = [(NSAttributedString *)self->_attributedString attribute:v8 atIndex:0 longestEffectiveRange:&v16 inRange:0, v9];
+    v11 = [(NSAttributedString *)self->_attributedString attribute:attributeCopy atIndex:0 longestEffectiveRange:&v16 inRange:0, v9];
 
     if (v10 != v17)
     {
@@ -351,11 +351,11 @@ LABEL_32:
 
   else
   {
-    v11 = [(NSDictionary *)self->super._defaultAttributes objectForKeyedSubscript:v8];
+    v11 = [(NSDictionary *)self->super._defaultAttributes objectForKeyedSubscript:attributeCopy];
   }
 
   v11 = v11;
-  v13 = v6;
+  v13 = valueCopy;
   v14 = v13;
   if (v11 == v13)
   {
@@ -375,25 +375,25 @@ LABEL_11:
   return v12;
 }
 
-- (id)defaultValueForAttribute:(id)a3
+- (id)defaultValueForAttribute:(id)attribute
 {
-  v4 = a3;
-  if ([(_UILabelAttributedStringContent *)self length]< 1 || ([(NSAttributedString *)self->_attributedString attribute:v4 atIndex:0 effectiveRange:0], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  attributeCopy = attribute;
+  if ([(_UILabelAttributedStringContent *)self length]< 1 || ([(NSAttributedString *)self->_attributedString attribute:attributeCopy atIndex:0 effectiveRange:0], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(NSDictionary *)self->super._defaultAttributes objectForKeyedSubscript:v4];
+    v5 = [(NSDictionary *)self->super._defaultAttributes objectForKeyedSubscript:attributeCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   attributedString = self->_attributedString;
-  if (v4 | attributedString)
+  if (stringCopy | attributedString)
   {
-    v7 = [(NSAttributedString *)attributedString string];
-    v6 = [v7 isEqualToString:v4];
+    string = [(NSAttributedString *)attributedString string];
+    v6 = [string isEqualToString:stringCopy];
   }
 
   else
@@ -404,20 +404,20 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqualToContent:(id)a3 byAttribute:(id)a4
+- (BOOL)isEqualToContent:(id)content byAttribute:(id)attribute
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  attributeCopy = attribute;
   v14.receiver = self;
   v14.super_class = _UILabelAttributedStringContent;
-  if (![(_UILabelContent *)&v14 isEqualToContent:v6 byAttribute:v7])
+  if (![(_UILabelContent *)&v14 isEqualToContent:contentCopy byAttribute:attributeCopy])
   {
     goto LABEL_5;
   }
 
   v12 = 0;
   v13 = 0;
-  v8 = [(NSAttributedString *)self->_attributedString attribute:v7 atIndex:0 effectiveRange:&v12];
+  v8 = [(NSAttributedString *)self->_attributedString attribute:attributeCopy atIndex:0 effectiveRange:&v12];
   v9 = v13;
   if (v9 != [(_UILabelAttributedStringContent *)self length])
   {
@@ -427,20 +427,20 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v10 = [v6 isAttribute:v7 uniformlyEqualToValue:v8];
+  v10 = [contentCopy isAttribute:attributeCopy uniformlyEqualToValue:v8];
 
 LABEL_6:
   return v10;
 }
 
-- (BOOL)_isContentEqualToContent:(id)a3
+- (BOOL)_isContentEqualToContent:(id)content
 {
-  v4 = a3;
-  if ([v4 isEqualToAttributedString:self->_attributedString])
+  contentCopy = content;
+  if ([contentCopy isEqualToAttributedString:self->_attributedString])
   {
     v7.receiver = self;
     v7.super_class = _UILabelAttributedStringContent;
-    v5 = [(_UILabelContent *)&v7 _isContentEqualToContent:v4];
+    v5 = [(_UILabelContent *)&v7 _isContentEqualToContent:contentCopy];
   }
 
   else
@@ -459,7 +459,7 @@ LABEL_6:
   return [(_UILabelContent *)&v5 hash]+ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UILabelAttributedStringContent alloc];
   attributedString = self->_attributedString;
@@ -472,7 +472,7 @@ LABEL_6:
 {
   if ([(NSAttributedString *)self->_attributedString length])
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = [(NSAttributedString *)self->_attributedString mutableCopy];
     v5 = [(NSAttributedString *)self->_attributedString mutableCopy];
     v6 = [v5 length];

@@ -1,41 +1,41 @@
 @interface PrintdRPCService
 - (IPPSession)ippNetworkingSession;
-- (PrintdRPCService)initWithXPCConnection:(id)a3;
-- (id)_ippNetworkingSession:(BOOL)a3;
+- (PrintdRPCService)initWithXPCConnection:(id)connection;
+- (id)_ippNetworkingSession:(BOOL)session;
 - (id)ippNetworkingSessionForStreaming;
-- (void)_checkAccessState:(id)a3 reply:(id)a4;
+- (void)_checkAccessState:(id)state reply:(id)reply;
 - (void)_commonInvalidation;
-- (void)_endpointResolve:(id)a3 timeout:(double)a4 reply:(id)a5;
-- (void)_getPrinterDescription:(id)a3 assertReachability:(BOOL)a4 reply:(id)a5;
-- (void)_identifyPrinter:(id)a3 message:(id)a4 actions:(id)a5;
+- (void)_endpointResolve:(id)resolve timeout:(double)timeout reply:(id)reply;
+- (void)_getPrinterDescription:(id)description assertReachability:(BOOL)reachability reply:(id)reply;
+- (void)_identifyPrinter:(id)printer message:(id)message actions:(id)actions;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_queryPrinter:(id)a3 attributes:(id)a4 reply:(id)a5;
-- (void)_realPathForTmpReply:(id)a3;
-- (void)_removeKeychainItem:(id)a3;
-- (void)addPrinterToiCloudWithInfo:(id)a3;
-- (void)browseInfoForPrinter:(id)a3 timeout:(double)a4 reply:(id)a5;
-- (void)finishRequestWithCancel:(BOOL)a3 reply:(id)a4;
-- (void)getLastUsedPrintersForCurrentNetworkReply:(id)a3;
-- (void)getRecentJobsReply:(id)a3;
-- (void)getiCloudPrintersReply:(id)a3;
-- (void)logiCloudPrintersReply:(id)a3;
-- (void)removePrinterFromiCloudWithInfo:(id)a3;
+- (void)_queryPrinter:(id)printer attributes:(id)attributes reply:(id)reply;
+- (void)_realPathForTmpReply:(id)reply;
+- (void)_removeKeychainItem:(id)item;
+- (void)addPrinterToiCloudWithInfo:(id)info;
+- (void)browseInfoForPrinter:(id)printer timeout:(double)timeout reply:(id)reply;
+- (void)finishRequestWithCancel:(BOOL)cancel reply:(id)reply;
+- (void)getLastUsedPrintersForCurrentNetworkReply:(id)reply;
+- (void)getRecentJobsReply:(id)reply;
+- (void)getiCloudPrintersReply:(id)reply;
+- (void)logiCloudPrintersReply:(id)reply;
+- (void)removePrinterFromiCloudWithInfo:(id)info;
 - (void)resetPKCloudData;
-- (void)setLastUsedPrintersForCurrentNetwork:(id)a3;
-- (void)setiCloudPrinters:(id)a3;
-- (void)startBrowsing:(id)a3 provenance:(unint64_t)a4;
-- (void)startStreamingRequest:(id)a3 printSettings:(id)a4 reply:(id)a5;
-- (void)startStreamingRequestWithPrinter:(id)a3 printSettings:(id)a4 completionHandler:(id)a5;
-- (void)translationsForPrinter:(id)a3 languageCode:(id)a4 reply:(id)a5;
-- (void)updateiCloudPrinterInfo:(id)a3 withNewInfo:(id)a4 forInfoKey:(id)a5;
+- (void)setLastUsedPrintersForCurrentNetwork:(id)network;
+- (void)setiCloudPrinters:(id)printers;
+- (void)startBrowsing:(id)browsing provenance:(unint64_t)provenance;
+- (void)startStreamingRequest:(id)request printSettings:(id)settings reply:(id)reply;
+- (void)startStreamingRequestWithPrinter:(id)printer printSettings:(id)settings completionHandler:(id)handler;
+- (void)translationsForPrinter:(id)printer languageCode:(id)code reply:(id)reply;
+- (void)updateiCloudPrinterInfo:(id)info withNewInfo:(id)newInfo forInfoKey:(id)key;
 @end
 
 @implementation PrintdRPCService
 
-- (PrintdRPCService)initWithXPCConnection:(id)a3
+- (PrintdRPCService)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v25.receiver = self;
   v25.super_class = PrintdRPCService;
   v6 = [(PrintdRPCService *)&v25 init];
@@ -47,7 +47,7 @@
     v6->_clientID = v8;
     objc_sync_exit(v7);
 
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     objc_initWeak(&location, v6);
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -62,9 +62,9 @@
     objc_copyWeak(&v21, &location);
     [(NSXPCConnection *)v6->_connection setInvalidationHandler:&v17];
     clientID = v6->_clientID;
-    v10 = [(NSXPCConnection *)v6->_connection processIdentifier];
-    v11 = [(NSXPCConnection *)v6->_connection effectiveUserIdentifier];
-    v12 = [NSString stringWithFormat:@"<xpc %d from %d/%d>", clientID, v10, v11, v17, v18, v19, v20];
+    processIdentifier = [(NSXPCConnection *)v6->_connection processIdentifier];
+    effectiveUserIdentifier = [(NSXPCConnection *)v6->_connection effectiveUserIdentifier];
+    v12 = [NSString stringWithFormat:@"<xpc %d from %d/%d>", clientID, processIdentifier, effectiveUserIdentifier, v17, v18, v19, v20];
     logLeader = v6->_logLeader;
     v6->_logLeader = v12;
 
@@ -73,7 +73,7 @@
     {
       connection = v6->_connection;
       *buf = 138543362;
-      v27 = connection;
+      connectionCopy2 = connection;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Accepted incoming connection from %{public}@", buf, 0xCu);
     }
 
@@ -193,9 +193,9 @@
   return streamingSession;
 }
 
-- (id)_ippNetworkingSession:(BOOL)a3
+- (id)_ippNetworkingSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   connection = self->_connection;
   if (connection)
   {
@@ -212,7 +212,7 @@
     if (v8)
     {
       v9 = &off_100094C58;
-      if (!v3)
+      if (!sessionCopy)
       {
         v9 = off_100094C50;
       }
@@ -258,19 +258,19 @@ LABEL_14:
   return v11;
 }
 
-- (void)startStreamingRequestWithPrinter:(id)a3 printSettings:(id)a4 completionHandler:(id)a5
+- (void)startStreamingRequestWithPrinter:(id)printer printSettings:(id)settings completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[job_spool_client_t alloc] initWithClientID:self->_clientID printer:v8 printSettings:v9];
+  printerCopy = printer;
+  settingsCopy = settings;
+  handlerCopy = handler;
+  v11 = [[job_spool_client_t alloc] initWithClientID:self->_clientID printer:printerCopy printSettings:settingsCopy];
   spoolClient = self->_spoolClient;
   self->_spoolClient = v11;
 
   v13 = self->_spoolClient;
   if (v13)
   {
-    [(job_spool_client_t *)v13 startStreamingCompletionHandler:v10];
+    [(job_spool_client_t *)v13 startStreamingCompletionHandler:handlerCopy];
   }
 
   else
@@ -278,23 +278,23 @@ LABEL_14:
     v14 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v9 debugDescription];
+      v15 = [settingsCopy debugDescription];
       v16 = 138543618;
-      v17 = v8;
+      v17 = printerCopy;
       v18 = 2114;
       v19 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Could not create spool for printer %{public}@ and print settings %{public}@", &v16, 0x16u);
     }
 
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)startStreamingRequest:(id)a3 printSettings:(id)a4 reply:(id)a5
+- (void)startStreamingRequest:(id)request printSettings:(id)settings reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  settingsCopy = settings;
+  replyCopy = reply;
   v11 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -311,22 +311,22 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Only one spool client allowed at a time", buf, 2u);
     }
 
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
     objc_initWeak(buf, self);
-    v13 = [(PrintdRPCService *)self ippNetworkingSessionForStreaming];
-    v14 = [v13 ippEndpoint:v8];
+    ippNetworkingSessionForStreaming = [(PrintdRPCService *)self ippNetworkingSessionForStreaming];
+    v14 = [ippNetworkingSessionForStreaming ippEndpoint:requestCopy];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10004A308;
     v15[3] = &unk_1000A3520;
     objc_copyWeak(&v19, buf);
-    v16 = v9;
-    v18 = v10;
-    v17 = v8;
+    v16 = settingsCopy;
+    v18 = replyCopy;
+    v17 = requestCopy;
     [lite_printer_t withLitePrinterForSessionEndpoint:v14 completionHandler:v15];
 
     objc_destroyWeak(&v19);
@@ -334,9 +334,9 @@ LABEL_14:
   }
 }
 
-- (void)finishRequestWithCancel:(BOOL)a3 reply:(id)a4
+- (void)finishRequestWithCancel:(BOOL)cancel reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -351,30 +351,30 @@ LABEL_14:
     v10 = self->_spoolClient;
     self->_spoolClient = 0;
 
-    if (a3)
+    if (cancel)
     {
       [(job_spool_client_t *)v9 invalidate];
-      v6[2](v6, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
     else
     {
-      v11 = [(PrintdRPCService *)self ippNetworkingSessionForStreaming];
-      [(job_spool_client_t *)v9 submitRequestWithSession:v11 completionHandler:v6];
+      ippNetworkingSessionForStreaming = [(PrintdRPCService *)self ippNetworkingSessionForStreaming];
+      [(job_spool_client_t *)v9 submitRequestWithSession:ippNetworkingSessionForStreaming completionHandler:replyCopy];
     }
   }
 
   else
   {
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)translationsForPrinter:(id)a3 languageCode:(id)a4 reply:(id)a5
+- (void)translationsForPrinter:(id)printer languageCode:(id)code reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  printerCopy = printer;
+  codeCopy = code;
+  replyCopy = reply;
   v11 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -383,15 +383,15 @@ LABEL_14:
   }
 
   [(PrintdRPCService *)self ippNetworkingSession];
-  v12 = [objc_claimAutoreleasedReturnValue() ippURL:v8];
-  v13 = v9;
-  v14 = v10;
+  v12 = [objc_claimAutoreleasedReturnValue() ippURL:printerCopy];
+  v13 = codeCopy;
+  v14 = replyCopy;
   sub_100010D5C(buf, 0xBu, @"translationsForPrinter");
 }
 
-- (void)getRecentJobsReply:(id)a3
+- (void)getRecentJobsReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -400,11 +400,11 @@ LABEL_14:
   }
 
   v6 = [(NSXPCConnection *)self->_connection valueForEntitlement:@"com.apple.printing.getjoblist"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    [lite_job_t getAllJobsCompletionHandler:v4];
+    [lite_job_t getAllJobsCompletionHandler:replyCopy];
   }
 
   else
@@ -418,13 +418,13 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Client %{public}@ doesn't have getjoblist entitlement", &v10, 0xCu);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 }
 
-- (void)startBrowsing:(id)a3 provenance:(unint64_t)a4
+- (void)startBrowsing:(id)browsing provenance:(unint64_t)provenance
 {
-  v6 = a3;
+  browsingCopy = browsing;
   v7 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -436,33 +436,33 @@ LABEL_14:
   [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v8];
 
   v9 = [BrowseService alloc];
-  v10 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  v11 = [(PrintdRPCService *)self ippNetworkingSession];
-  v12 = [(BrowseService *)v9 initWithProxy:v10 session:v11];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  ippNetworkingSession = [(PrintdRPCService *)self ippNetworkingSession];
+  v12 = [(BrowseService *)v9 initWithProxy:remoteObjectProxy session:ippNetworkingSession];
   browser = self->_browser;
   self->_browser = v12;
 
-  [(BrowseService *)self->_browser startBrowsing:v6 provenance:a4];
+  [(BrowseService *)self->_browser startBrowsing:browsingCopy provenance:provenance];
 }
 
-- (void)browseInfoForPrinter:(id)a3 timeout:(double)a4 reply:(id)a5
+- (void)browseInfoForPrinter:(id)printer timeout:(double)timeout reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  printerCopy = printer;
+  replyCopy = reply;
   v9 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v7;
+    v16 = printerCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "browseInfoForPrinter: %{public}@", buf, 0xCu);
   }
 
-  v10 = [lite_printer_t existingPrinterWithEndpoint:v7];
+  v10 = [lite_printer_t existingPrinterWithEndpoint:printerCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 browseInfo];
-    v8[2](v8, v12);
+    browseInfo = [v10 browseInfo];
+    replyCopy[2](replyCopy, browseInfo);
   }
 
   else
@@ -471,30 +471,30 @@ LABEL_14:
     v13[1] = 3221225472;
     v13[2] = sub_10004B1A0;
     v13[3] = &unk_1000A3548;
-    v14 = v8;
-    [v7 resolveWithinPrinterToolWithTimeout:v13 completionHandler:a4];
-    v12 = v14;
+    v14 = replyCopy;
+    [printerCopy resolveWithinPrinterToolWithTimeout:v13 completionHandler:timeout];
+    browseInfo = v14;
   }
 }
 
-- (void)_endpointResolve:(id)a3 timeout:(double)a4 reply:(id)a5
+- (void)_endpointResolve:(id)resolve timeout:(double)timeout reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  resolveCopy = resolve;
+  replyCopy = reply;
   v9 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v7;
+    v11 = resolveCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "_endpointResolve: %{public}@", &v10, 0xCu);
   }
 
-  [PKPrinterBonjourEndpoint resolveEndpoint:v7 timeout:v8 completionHandler:a4];
+  [PKPrinterBonjourEndpoint resolveEndpoint:resolveCopy timeout:replyCopy completionHandler:timeout];
 }
 
-- (void)getLastUsedPrintersForCurrentNetworkReply:(id)a3
+- (void)getLastUsedPrintersForCurrentNetworkReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -503,14 +503,14 @@ LABEL_14:
   }
 
   v5 = liteGetPrintersForCurrentNetwork();
-  v6 = [v5 networkName];
-  v7 = [v5 printers];
-  v3[2](v3, v6, v7);
+  networkName = [v5 networkName];
+  printers = [v5 printers];
+  replyCopy[2](replyCopy, networkName, printers);
 }
 
-- (void)setLastUsedPrintersForCurrentNetwork:(id)a3
+- (void)setLastUsedPrintersForCurrentNetwork:(id)network
 {
-  v3 = a3;
+  networkCopy = network;
   v4 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -518,12 +518,12 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "setLastUsedPrintersForCurrentNetwork", v5, 2u);
   }
 
-  liteAddPrinterForCurrentNetwork(v3);
+  liteAddPrinterForCurrentNetwork(networkCopy);
 }
 
-- (void)getiCloudPrintersReply:(id)a3
+- (void)getiCloudPrintersReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -532,12 +532,12 @@ LABEL_14:
   }
 
   v5 = liteGetiCloudPrinters();
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, v5);
 }
 
-- (void)setiCloudPrinters:(id)a3
+- (void)setiCloudPrinters:(id)printers
 {
-  v3 = a3;
+  printersCopy = printers;
   v4 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -545,12 +545,12 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "setiCloudPrinters", v5, 2u);
   }
 
-  liteSetiCloudPrinters(v3);
+  liteSetiCloudPrinters(printersCopy);
 }
 
-- (void)addPrinterToiCloudWithInfo:(id)a3
+- (void)addPrinterToiCloudWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -558,12 +558,12 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "addPrinterToiCloudWithInfo", v5, 2u);
   }
 
-  liteAddPrinterToiCloudWithInfo(v3);
+  liteAddPrinterToiCloudWithInfo(infoCopy);
 }
 
-- (void)removePrinterFromiCloudWithInfo:(id)a3
+- (void)removePrinterFromiCloudWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -571,14 +571,14 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "addPrinterToiCloudWithInfo", v5, 2u);
   }
 
-  liteRemovePrinterFromiCloudWithInfo(v3);
+  liteRemovePrinterFromiCloudWithInfo(infoCopy);
 }
 
-- (void)updateiCloudPrinterInfo:(id)a3 withNewInfo:(id)a4 forInfoKey:(id)a5
+- (void)updateiCloudPrinterInfo:(id)info withNewInfo:(id)newInfo forInfoKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  newInfoCopy = newInfo;
+  keyCopy = key;
   v10 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -586,7 +586,7 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "updateiCloudPrinterInfo", v11, 2u);
   }
 
-  liteUpdateiCloudPrinterInfo(v7, v8, v9);
+  liteUpdateiCloudPrinterInfo(infoCopy, newInfoCopy, keyCopy);
 }
 
 - (void)resetPKCloudData
@@ -601,9 +601,9 @@ LABEL_14:
   liteResetPKCloudData();
 }
 
-- (void)logiCloudPrintersReply:(id)a3
+- (void)logiCloudPrintersReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -612,90 +612,90 @@ LABEL_14:
   }
 
   v5 = liteLogiCloudPrinters();
-  v3[2](v3, v5);
+  replyCopy[2](replyCopy, v5);
 }
 
-- (void)_checkAccessState:(id)a3 reply:(id)a4
+- (void)_checkAccessState:(id)state reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  replyCopy = reply;
   v8 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = stateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "_checkAccessState: %{public}@", buf, 0xCu);
   }
 
-  v9 = [(PrintdRPCService *)self ippNetworkingSession];
-  v10 = [v9 ippEndpoint:v6];
+  ippNetworkingSession = [(PrintdRPCService *)self ippNetworkingSession];
+  v10 = [ippNetworkingSession ippEndpoint:stateCopy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10004BB88;
   v12[3] = &unk_1000A3570;
-  v11 = v7;
+  v11 = replyCopy;
   v12[4] = self;
   v13 = v11;
   [lite_printer_t withLitePrinterForSessionEndpoint:v10 completionHandler:v12];
 }
 
-- (void)_identifyPrinter:(id)a3 message:(id)a4 actions:(id)a5
+- (void)_identifyPrinter:(id)printer message:(id)message actions:(id)actions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  printerCopy = printer;
+  messageCopy = message;
+  actionsCopy = actions;
   v11 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = v8;
+    v20 = printerCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "_identifyPrinter: %{public}@", buf, 0xCu);
   }
 
-  v12 = [(PrintdRPCService *)self ippNetworkingSession];
-  v13 = [v12 ippEndpoint:v8];
+  ippNetworkingSession = [(PrintdRPCService *)self ippNetworkingSession];
+  v13 = [ippNetworkingSession ippEndpoint:printerCopy];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10004BE1C;
   v16[3] = &unk_1000A3598;
   v16[4] = self;
-  v14 = v9;
+  v14 = messageCopy;
   v17 = v14;
-  v15 = v10;
+  v15 = actionsCopy;
   v18 = v15;
   [lite_printer_t withLitePrinterForSessionEndpoint:v13 completionHandler:v16];
 }
 
-- (void)_getPrinterDescription:(id)a3 assertReachability:(BOOL)a4 reply:(id)a5
+- (void)_getPrinterDescription:(id)description assertReachability:(BOOL)reachability reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  descriptionCopy = description;
+  replyCopy = reply;
   v10 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v8;
+    v18 = descriptionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "_getPrinterDescription: %{public}@", buf, 0xCu);
   }
 
-  v11 = [(PrintdRPCService *)self ippNetworkingSession];
-  v12 = [v11 ippEndpoint:v8];
+  ippNetworkingSession = [(PrintdRPCService *)self ippNetworkingSession];
+  v12 = [ippNetworkingSession ippEndpoint:descriptionCopy];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10004C068;
   v14[3] = &unk_1000A35C0;
-  v13 = v9;
-  v16 = a4;
+  v13 = replyCopy;
+  reachabilityCopy = reachability;
   v14[4] = self;
   v15 = v13;
   [lite_printer_t withLitePrinterForSessionEndpoint:v12 completionHandler:v14];
 }
 
-- (void)_queryPrinter:(id)a3 attributes:(id)a4 reply:(id)a5
+- (void)_queryPrinter:(id)printer attributes:(id)attributes reply:(id)reply
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
+  printerCopy = printer;
+  attributesCopy = attributes;
+  replyCopy = reply;
   v10 = [NSString stringWithFormat:@"_queryPrinter(%@)", self->_logLeader];
   v11 = [NSString stringWithFormat:@"%s:%d/%@", "[PrintdRPCService _queryPrinter:attributes:reply:]", 580, v10];
 
@@ -707,34 +707,34 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v13 = [(PrintdRPCService *)self ippNetworkingSession];
-  v14 = [v13 ippEndpoint:v18];
+  ippNetworkingSession = [(PrintdRPCService *)self ippNetworkingSession];
+  v14 = [ippNetworkingSession ippEndpoint:printerCopy];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10004C3E0;
   v19[3] = &unk_1000A3610;
-  v15 = v9;
+  v15 = replyCopy;
   v23 = v15;
   v16 = v11;
   v20 = v16;
-  v17 = v8;
+  v17 = attributesCopy;
   v21 = v17;
-  v22 = self;
+  selfCopy = self;
   [lite_printer_t withLitePrinterForSessionEndpoint:v14 completionHandler:v19];
 }
 
-- (void)_removeKeychainItem:(id)a3
+- (void)_removeKeychainItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v3;
+    v8 = itemCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_removeKeychainItem: %{public}@", &v7, 0xCu);
   }
 
-  v5 = [lite_printer_t existingPrinterWithEndpoint:v3];
+  v5 = [lite_printer_t existingPrinterWithEndpoint:itemCopy];
   v6 = v5;
   if (v5)
   {
@@ -742,12 +742,12 @@ LABEL_14:
   }
 }
 
-- (void)_realPathForTmpReply:(id)a3
+- (void)_realPathForTmpReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v3 = NSTemporaryDirectory();
   v4 = [NSURL fileURLWithPath:v3];
-  v5[2](v5, v4);
+  replyCopy[2](replyCopy, v4);
 }
 
 @end

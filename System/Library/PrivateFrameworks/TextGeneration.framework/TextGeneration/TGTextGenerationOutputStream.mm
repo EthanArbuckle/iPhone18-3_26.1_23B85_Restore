@@ -2,7 +2,7 @@
 - (NSString)mostRecentTextUpdate;
 - (NSString)text;
 - (TGTextGenerationOutputStream)init;
-- (void)addOutput:(id)a3;
+- (void)addOutput:(id)output;
 @end
 
 @implementation TGTextGenerationOutputStream
@@ -14,9 +14,9 @@
   v2 = [(TGTextGenerationOutputStream *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     textFragments = v2->_textFragments;
-    v2->_textFragments = v3;
+    v2->_textFragments = array;
 
     v2->_lock._os_unfair_lock_opaque = 0;
   }
@@ -24,16 +24,16 @@
   return v2;
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
-  v4 = a3;
+  outputCopy = output;
   os_unfair_lock_lock(&self->_lock);
-  [v4 score];
+  [outputCopy score];
   [(TGTextGenerationOutputStream *)self setScore:?];
-  v5 = [(TGTextGenerationOutputStream *)self textFragments];
-  v6 = [v4 text];
+  textFragments = [(TGTextGenerationOutputStream *)self textFragments];
+  text = [outputCopy text];
 
-  [v5 addObject:v6];
+  [textFragments addObject:text];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -41,36 +41,36 @@
 - (NSString)mostRecentTextUpdate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(TGTextGenerationOutputStream *)self textFragments];
-  v4 = [v3 count];
+  textFragments = [(TGTextGenerationOutputStream *)self textFragments];
+  v4 = [textFragments count];
 
   if (v4)
   {
-    v5 = [(TGTextGenerationOutputStream *)self textFragments];
-    v6 = [v5 lastObject];
+    textFragments2 = [(TGTextGenerationOutputStream *)self textFragments];
+    lastObject = [textFragments2 lastObject];
   }
 
   else
   {
-    v6 = 0;
+    lastObject = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return lastObject;
 }
 
 - (NSString)text
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   os_unfair_lock_lock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(TGTextGenerationOutputStream *)self textFragments];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  textFragments = [(TGTextGenerationOutputStream *)self textFragments];
+  v5 = [textFragments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -81,13 +81,13 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(textFragments);
         }
 
-        [v3 appendString:*(*(&v11 + 1) + 8 * i)];
+        [string appendString:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [textFragments countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -96,7 +96,7 @@
   os_unfair_lock_unlock(&self->_lock);
   v9 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
 @end

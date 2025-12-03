@@ -7,13 +7,13 @@
 + (id)if_currentCalendarWithLanguageCode:()IntentsFoundation
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = v4;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = currentCalendar;
   if (v3)
   {
     v6 = *MEMORY[0x277CBECE8];
-    v7 = [v4 locale];
-    ComponentsFromLocaleIdentifier = CFLocaleCreateComponentsFromLocaleIdentifier(v6, [v7 localeIdentifier]);
+    locale = [currentCalendar locale];
+    ComponentsFromLocaleIdentifier = CFLocaleCreateComponentsFromLocaleIdentifier(v6, [locale localeIdentifier]);
 
     v9 = CFDictionaryGetValue(ComponentsFromLocaleIdentifier, @"numbers");
     CFRelease(ComponentsFromLocaleIdentifier);

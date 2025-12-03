@@ -1,17 +1,17 @@
 @interface CLLocationGroup
-+ (vector<std::string,)stringVectorFromNSArray:(id)a2;
-+ (void)storeAverage:(id)a3 ofVertices:(id)a4;
-- (BOOL)allowCellularDownload:(unint64_t)a3;
++ (vector<std::string,)stringVectorFromNSArray:(id)array;
++ (void)storeAverage:(id)average ofVertices:(id)vertices;
+- (BOOL)allowCellularDownload:(unint64_t)download;
 - (CLLocationGroup)init;
-- (CLLocationGroup)initWithGroupId:(id)a3 locationIds:(id)a4 center:(id)a5 wifiOnlyDownloadLocIdxs:(const void *)a6 locationContext:(int64_t)a7 andTolerance:(double)a8;
+- (CLLocationGroup)initWithGroupId:(id)id locationIds:(id)ids center:(id)center wifiOnlyDownloadLocIdxs:(const void *)idxs locationContext:(int64_t)context andTolerance:(double)tolerance;
 - (basic_string<char,)getGroupId;
-- (double)distance:(id)a3;
+- (double)distance:(id)distance;
 - (id).cxx_construct;
 @end
 
 @implementation CLLocationGroup
 
-+ (vector<std::string,)stringVectorFromNSArray:(id)a2
++ (vector<std::string,)stringVectorFromNSArray:(id)array
 {
   v5 = a4;
   retstr->__end_ = 0;
@@ -53,9 +53,9 @@
         v12 = *(*(&v25 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
         v14 = v12;
-        v15 = [v12 UTF8String];
-        v16 = v15;
-        v24 = v15;
+        uTF8String = [v12 UTF8String];
+        v16 = uTF8String;
+        v24 = uTF8String;
         v17 = retstr->__end_;
         if (v17 >= retstr->__cap_)
         {
@@ -64,7 +64,7 @@
 
         else
         {
-          v18 = strlen(v15);
+          v18 = strlen(uTF8String);
           if (v18 >= 0x7FFFFFFFFFFFFFF8)
           {
             sub_10000D39C();
@@ -105,8 +105,8 @@
 
 - (basic_string<char,)getGroupId
 {
-  v3 = [*(v1 + 16) UTF8String];
-  result = strlen(v3);
+  uTF8String = [*(v1 + 16) UTF8String];
+  result = strlen(uTF8String);
   if (result >= 0x7FFFFFFFFFFFFFF8)
   {
     sub_10000D39C();
@@ -121,7 +121,7 @@
   *(&retstr->__rep_.__l + 23) = result;
   if (result)
   {
-    result = memmove(retstr, v3, result);
+    result = memmove(retstr, uTF8String, result);
     v5->__rep_.__s.__data_[retstr] = 0;
   }
 
@@ -133,18 +133,18 @@
   return result;
 }
 
-+ (void)storeAverage:(id)a3 ofVertices:(id)a4
++ (void)storeAverage:(id)average ofVertices:(id)vertices
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  averageCopy = average;
+  verticesCopy = vertices;
+  v7 = [verticesCopy count];
   if (v7)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v6;
+    v8 = verticesCopy;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
@@ -185,15 +185,15 @@
       v13 = 0.0;
     }
 
-    [v5 setFromX:v11 / v7 y:v12 / v7 z:v13 / v7];
+    [averageCopy setFromX:v11 / v7 y:v12 / v7 z:v13 / v7];
   }
 }
 
-- (CLLocationGroup)initWithGroupId:(id)a3 locationIds:(id)a4 center:(id)a5 wifiOnlyDownloadLocIdxs:(const void *)a6 locationContext:(int64_t)a7 andTolerance:(double)a8
+- (CLLocationGroup)initWithGroupId:(id)id locationIds:(id)ids center:(id)center wifiOnlyDownloadLocIdxs:(const void *)idxs locationContext:(int64_t)context andTolerance:(double)tolerance
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  idCopy = id;
+  idsCopy = ids;
+  centerCopy = center;
   v39.receiver = self;
   v39.super_class = CLLocationGroup;
   v18 = [(CLLocationGroup *)&v39 init];
@@ -201,8 +201,8 @@
   v20 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_groupId, a3);
-    [CLLocationGroup stringVectorFromNSArray:v16];
+    objc_storeStrong(&v18->_groupId, id);
+    [CLLocationGroup stringVectorFromNSArray:idsCopy];
     p_begin = &v20->_locationIds.__begin_;
     begin = v20->_locationIds.__begin_;
     if (begin)
@@ -235,11 +235,11 @@
     *&v20->_locationIds.__begin_ = v37;
     v20->_locationIds.__cap_ = v38;
     v26 = [ECEFCoordinate alloc];
-    [v17 x];
+    [centerCopy x];
     v28 = v27;
-    [v17 y];
+    [centerCopy y];
     v30 = v29;
-    [v17 z];
+    [centerCopy z];
     v32 = [(ECEFCoordinate *)v26 initWithX:v28 y:v30 z:v31];
     centerECEF = v20->_centerECEF;
     v20->_centerECEF = v32;
@@ -248,13 +248,13 @@
     centerLatLon = v20->_centerLatLon;
     v20->_centerLatLon = v34;
 
-    v20->_tolerance = a8;
-    if (&v19->_wifiOnlyDownloadLocIdxs != a6)
+    v20->_tolerance = tolerance;
+    if (&v19->_wifiOnlyDownloadLocIdxs != idxs)
     {
-      sub_10016CF48(&v19->_wifiOnlyDownloadLocIdxs.__tree_.__begin_node_, *a6, a6 + 1);
+      sub_10016CF48(&v19->_wifiOnlyDownloadLocIdxs.__tree_.__begin_node_, *idxs, idxs + 1);
     }
 
-    v20->_locationContext = a7;
+    v20->_locationContext = context;
     operator new();
   }
 
@@ -274,10 +274,10 @@
   return v5;
 }
 
-- (double)distance:(id)a3
+- (double)distance:(id)distance
 {
-  v4 = a3;
-  v5 = [ENUCoordinate fromLatLonOrigin:self->_centerLatLon andEcefOrigin:self->_centerECEF andEcefPoint:v4];
+  distanceCopy = distance;
+  v5 = [ENUCoordinate fromLatLonOrigin:self->_centerLatLon andEcefOrigin:self->_centerECEF andEcefPoint:distanceCopy];
   [v5 east];
   v7 = v6;
   [v5 north];
@@ -313,7 +313,7 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)allowCellularDownload:(unint64_t)a3
+- (BOOL)allowCellularDownload:(unint64_t)download
 {
   left = self->_wifiOnlyDownloadLocIdxs.__tree_.__end_node_.__left_;
   p_end_node = &self->_wifiOnlyDownloadLocIdxs.__tree_.__end_node_;
@@ -327,8 +327,8 @@ LABEL_6:
   do
   {
     v7 = *(v4 + 4);
-    v8 = v7 >= a3;
-    v9 = v7 < a3;
+    v8 = v7 >= download;
+    v9 = v7 < download;
     if (v8)
     {
       v6 = v4;
@@ -338,7 +338,7 @@ LABEL_6:
   }
 
   while (v4);
-  if (v6 == p_end_node || v6[4].__left_ > a3)
+  if (v6 == p_end_node || v6[4].__left_ > download)
   {
 LABEL_9:
     v6 = p_end_node;

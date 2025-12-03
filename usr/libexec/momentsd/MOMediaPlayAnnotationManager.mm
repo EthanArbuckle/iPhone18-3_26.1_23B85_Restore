@@ -1,28 +1,28 @@
 @interface MOMediaPlayAnnotationManager
-+ (id)renderTypeFrom:(unint64_t)a3 isFirstPartyApp:(BOOL)a4;
-- (MOMediaPlayAnnotationManager)initWithUniverse:(id)a3;
-- (id)_annotateEvents:(id)a3 isFirstParty:(BOOL)a4;
-- (id)_createBundlesFromEvents:(id)a3;
-- (id)_getBaseEvents:(id)a3;
-- (id)_getEventBasedOnTime:(id)a3 category:(unint64_t)a4 startTime:(id)a5 endTime:(id)a6;
-- (id)_getEventsBasedOnTypes:(id)a3 isFirstPartyApp:(unsigned __int8)a4;
-- (id)_groupBaseEvents:(id)a3 category:(unint64_t)a4;
-- (id)_groupBaseEventsByDay:(id)a3 category:(unint64_t)a4;
-- (id)_groupEventsByApps:(id)a3;
-- (id)_sortEventGroupsBasedOnRepetions:(id)a3;
-- (id)getMediaOnRepeatLabelHeaderFromMediaType:(unint64_t)a3;
-- (unsigned)_isFirstPartyApp:(id)a3;
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
++ (id)renderTypeFrom:(unint64_t)from isFirstPartyApp:(BOOL)app;
+- (MOMediaPlayAnnotationManager)initWithUniverse:(id)universe;
+- (id)_annotateEvents:(id)events isFirstParty:(BOOL)party;
+- (id)_createBundlesFromEvents:(id)events;
+- (id)_getBaseEvents:(id)events;
+- (id)_getEventBasedOnTime:(id)time category:(unint64_t)category startTime:(id)startTime endTime:(id)endTime;
+- (id)_getEventsBasedOnTypes:(id)types isFirstPartyApp:(unsigned __int8)app;
+- (id)_groupBaseEvents:(id)events category:(unint64_t)category;
+- (id)_groupBaseEventsByDay:(id)day category:(unint64_t)category;
+- (id)_groupEventsByApps:(id)apps;
+- (id)_sortEventGroupsBasedOnRepetions:(id)repetions;
+- (id)getMediaOnRepeatLabelHeaderFromMediaType:(unint64_t)type;
+- (unsigned)_isFirstPartyApp:(id)app;
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
 @end
 
 @implementation MOMediaPlayAnnotationManager
 
-- (MOMediaPlayAnnotationManager)initWithUniverse:(id)a3
+- (MOMediaPlayAnnotationManager)initWithUniverse:(id)universe
 {
   v8.receiver = self;
   v8.super_class = MOMediaPlayAnnotationManager;
-  v3 = [(MOAnnotationManager *)&v8 initWithUniverse:a3];
+  v3 = [(MOAnnotationManager *)&v8 initWithUniverse:universe];
   if (v3)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -34,32 +34,32 @@
   return v3;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOMediaPlayAnnotationManager *)self queue];
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  handlerCopy = handler;
+  queue = [(MOMediaPlayAnnotationManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __86__MOMediaPlayAnnotationManager_performAnnotationWithEvents_withPatternEvents_handler___block_invoke;
   v15[3] = &unk_1003361C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = eventsCopy;
+  v17 = patternEventsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = patternEventsCopy;
+  v14 = eventsCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
+  handlerCopy = handler;
+  eventsCopy = events;
   v9 = objc_opt_new();
-  v10 = [(MOMediaPlayAnnotationManager *)self _createBundlesFromEvents:v8];
+  v10 = [(MOMediaPlayAnnotationManager *)self _createBundlesFromEvents:eventsCopy];
 
   [v9 addObjectsFromArray:v10];
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
@@ -72,17 +72,17 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s, annotated media played bundle count, %lu", &v12, 0x16u);
   }
 
-  v7[2](v7, v9, 0);
+  handlerCopy[2](handlerCopy, v9, 0);
 }
 
-- (id)_createBundlesFromEvents:(id)a3
+- (id)_createBundlesFromEvents:(id)events
 {
-  v4 = a3;
-  if ([v4 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v5 = objc_opt_new();
-    v22 = v4;
-    v6 = [(MOMediaPlayAnnotationManager *)self _groupBaseEventsByDay:v4 category:4];
+    v22 = eventsCopy;
+    v6 = [(MOMediaPlayAnnotationManager *)self _groupBaseEventsByDay:eventsCopy category:4];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -124,8 +124,8 @@
             v32 = 0u;
             v33 = 0u;
             v27 = v14;
-            v15 = [v14 allValues];
-            v16 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+            allValues = [v14 allValues];
+            v16 = [allValues countByEnumeratingWithState:&v30 objects:v38 count:16];
             if (v16)
             {
               v17 = v16;
@@ -138,7 +138,7 @@
                 {
                   if (*v31 != v18)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(allValues);
                   }
 
                   v13 = [(MOMediaPlayAnnotationManager *)self _annotateEvents:*(*(&v30 + 1) + 8 * v19) isFirstParty:0];
@@ -153,7 +153,7 @@
                 }
 
                 while (v17 != v19);
-                v17 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+                v17 = [allValues countByEnumeratingWithState:&v30 objects:v38 count:16];
               }
 
               while (v17);
@@ -174,7 +174,7 @@
       while (v8);
     }
 
-    v4 = v22;
+    eventsCopy = v22;
   }
 
   else
@@ -185,17 +185,17 @@
   return v5;
 }
 
-- (id)_groupBaseEventsByDay:(id)a3 category:(unint64_t)a4
+- (id)_groupBaseEventsByDay:(id)day category:(unint64_t)category
 {
-  v5 = a3;
+  dayCopy = day;
   v6 = objc_alloc_init(NSMutableDictionary);
-  if ([v5 count])
+  if ([dayCopy count])
   {
     v32 = v6;
     v7 = +[NSCalendar currentCalendar];
-    v8 = [v5 getDurationOfMOEventArray];
-    v9 = [v8 startDate];
-    v10 = [v7 components:28 fromDate:v9];
+    getDurationOfMOEventArray = [dayCopy getDurationOfMOEventArray];
+    startDate = [getDurationOfMOEventArray startDate];
+    v10 = [v7 components:28 fromDate:startDate];
 
     v31 = v10;
     v11 = [v7 dateFromComponents:v10];
@@ -204,8 +204,8 @@
     [v13 setCalendar:v7];
     v33 = v13;
     [v13 setDateFormat:@"yyyy-MM-dd"];
-    v14 = [v8 endDate];
-    v15 = [v11 compare:v14];
+    endDate = [getDurationOfMOEventArray endDate];
+    v15 = [v11 compare:endDate];
 
     if (v15 == -1)
     {
@@ -213,13 +213,13 @@
       v30 = v16;
       do
       {
-        v20 = [(MOMediaPlayAnnotationManager *)self _getEventBasedOnTime:v5 category:a4 startTime:v11 endTime:v12, v30];
+        v20 = [(MOMediaPlayAnnotationManager *)self _getEventBasedOnTime:dayCopy category:category startTime:v11 endTime:v12, v30];
         v21 = v20;
         if (v20 && [v20 count])
         {
-          v22 = [v21 firstObject];
-          v23 = [v22 startDate];
-          v24 = [v33 stringFromDate:v23];
+          firstObject = [v21 firstObject];
+          startDate2 = [firstObject startDate];
+          v24 = [v33 stringFromDate:startDate2];
 
           if (v24)
           {
@@ -243,8 +243,8 @@
 
         v17 = [v7 dateByAddingUnit:16 value:1 toDate:v12 options:0];
 
-        v27 = [v8 endDate];
-        v28 = [v18 compare:v27];
+        endDate2 = [getDurationOfMOEventArray endDate];
+        v28 = [v18 compare:endDate2];
 
         v11 = v18;
         v12 = v17;
@@ -278,17 +278,17 @@
   return v19;
 }
 
-- (id)_getEventBasedOnTime:(id)a3 category:(unint64_t)a4 startTime:(id)a5 endTime:(id)a6
+- (id)_getEventBasedOnTime:(id)time category:(unint64_t)category startTime:(id)startTime endTime:(id)endTime
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  timeCopy = time;
+  startTimeCopy = startTime;
+  endTimeCopy = endTime;
   v21 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v8;
+  v11 = timeCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -304,23 +304,23 @@
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = [v16 startDate];
-        if (([v17 isAfterDate:v9] & 1) == 0)
+        startDate = [v16 startDate];
+        if (([startDate isAfterDate:startTimeCopy] & 1) == 0)
         {
           goto LABEL_11;
         }
 
-        v18 = [v16 startDate];
-        if (([v18 isBeforeDate:v10] & 1) == 0)
+        startDate2 = [v16 startDate];
+        if (([startDate2 isBeforeDate:endTimeCopy] & 1) == 0)
         {
 
 LABEL_11:
           continue;
         }
 
-        v19 = [v16 category];
+        category = [v16 category];
 
-        if (v19 == a4)
+        if (category == category)
         {
           [v21 addObject:v16];
         }
@@ -335,10 +335,10 @@ LABEL_11:
   return v21;
 }
 
-- (id)_sortEventGroupsBasedOnRepetions:(id)a3
+- (id)_sortEventGroupsBasedOnRepetions:(id)repetions
 {
-  v3 = a3;
-  if ([v3 count])
+  repetionsCopy = repetions;
+  if ([repetionsCopy count])
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -346,7 +346,7 @@ LABEL_11:
     v7[3] = &unk_1003373F0;
     v8 = objc_opt_new();
     v4 = v8;
-    [v3 enumerateKeysAndObjectsUsingBlock:v7];
+    [repetionsCopy enumerateKeysAndObjectsUsingBlock:v7];
     v5 = [v4 keysSortedByValueUsingComparator:&__block_literal_global_6];
   }
 
@@ -400,9 +400,9 @@ void __65__MOMediaPlayAnnotationManager__sortEventGroupsBasedOnRepetions___block
   *(*(*(a1 + 32) + 8) + 24) += [v3 unsignedLongValue];
 }
 
-- (id)_getBaseEvents:(id)a3
+- (id)_getBaseEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 3];
   v15[0] = v4;
   v5 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 4];
@@ -410,7 +410,7 @@ void __65__MOMediaPlayAnnotationManager__sortEventGroupsBasedOnRepetions___block
   v6 = [NSArray arrayWithObjects:v15 count:2];
   v7 = [NSCompoundPredicate orPredicateWithSubpredicates:v6];
 
-  v8 = [v3 filteredArrayUsingPredicate:v7];
+  v8 = [eventsCopy filteredArrayUsingPredicate:v7];
 
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -443,15 +443,15 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
   }
 }
 
-- (id)_groupBaseEvents:(id)a3 category:(unint64_t)a4
+- (id)_groupBaseEvents:(id)events category:(unint64_t)category
 {
-  v5 = a3;
+  eventsCopy = events;
   v6 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v5;
+  obj = eventsCopy;
   v7 = [obj countByEnumeratingWithState:&v35 objects:v46 count:16];
   if (v7)
   {
@@ -467,20 +467,20 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
         }
 
         v11 = *(*(&v35 + 1) + 8 * i);
-        if ([v11 category] == a4)
+        if ([v11 category] == category)
         {
-          v12 = [v11 mediaTitle];
-          if ([v12 length])
+          mediaTitle = [v11 mediaTitle];
+          if ([mediaTitle length])
           {
-            v13 = [v6 objectForKey:v12];
+            v13 = [v6 objectForKey:mediaTitle];
 
             if (!v13)
             {
               v14 = objc_opt_new();
-              [v6 setObject:v14 forKey:v12];
+              [v6 setObject:v14 forKey:mediaTitle];
             }
 
-            v15 = [v6 objectForKey:v12];
+            v15 = [v6 objectForKey:mediaTitle];
             [v15 addObject:v11];
           }
         }
@@ -499,7 +499,7 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
     *buf = 136315650;
     v41 = "[MOMediaPlayAnnotationManager _groupBaseEvents:category:]";
     v42 = 2048;
-    v43 = a4;
+    categoryCopy = category;
     v44 = 2048;
     v45 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s, category, %lu, event group count, %lu", buf, 0x20u);
@@ -535,7 +535,7 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
           *buf = 136315650;
           v41 = "[MOMediaPlayAnnotationManager _groupBaseEvents:category:]";
           v42 = 2112;
-          v43 = v26;
+          categoryCopy = v26;
           v44 = 2048;
           v45 = v28;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s, media title, %@, event count, %lu", buf, 0x20u);
@@ -553,21 +553,21 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
   return v18;
 }
 
-+ (id)renderTypeFrom:(unint64_t)a3 isFirstPartyApp:(BOOL)a4
++ (id)renderTypeFrom:(unint64_t)from isFirstPartyApp:(BOOL)app
 {
   v4 = MOMediaPlayMetaDataKeyPlayerMediaTypeSong;
   v5 = MOMediaPlayMetaDataKeyPlayerMediaTypePodcastEpisode;
-  if (a3 != 2)
+  if (from != 2)
   {
     v5 = MOMediaPlayMetaDataKeyPlayerMediaTypeUnknown;
   }
 
-  if (a3 != 1)
+  if (from != 1)
   {
     v4 = v5;
   }
 
-  if (!a4)
+  if (!app)
   {
     v4 = MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMedia;
   }
@@ -575,16 +575,16 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
   return *v4;
 }
 
-- (id)_annotateEvents:(id)a3 isFirstParty:(BOOL)a4
+- (id)_annotateEvents:(id)events isFirstParty:(BOOL)party
 {
-  v103 = a4;
-  v5 = a3;
-  if ([v5 count])
+  partyCopy = party;
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v6 = [NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:0];
     v168 = v6;
     v7 = [NSArray arrayWithObjects:&v168 count:1];
-    v8 = v5;
+    v8 = eventsCopy;
     v9 = v7;
     v91 = v8;
     v10 = [v8 sortedArrayUsingDescriptors:v7];
@@ -610,10 +610,10 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
           }
 
           v16 = *(*(&v150 + 1) + 8 * i);
-          v17 = [v16 mediaEvent];
-          v18 = [v17 mediaTitle];
+          mediaEvent = [v16 mediaEvent];
+          mediaTitle = [mediaEvent mediaTitle];
 
-          if (v18)
+          if (mediaTitle)
           {
             [v11 addObject:v16];
           }
@@ -634,47 +634,47 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
       [(MOEventBundle *)v21 setInterfaceType:5];
       [(MOEventBundle *)v21 setBundleSuperType:4];
       [(MOEventBundle *)v21 setBundleSubType:406];
-      v22 = [(MOEventBundle *)v21 endDate];
-      v23 = [(MOAnnotationManager *)self timeZoneManager];
-      v24 = [MOTime timeForDate:v22 timeZoneManager:v23];
+      endDate = [(MOEventBundle *)v21 endDate];
+      timeZoneManager = [(MOAnnotationManager *)self timeZoneManager];
+      v24 = [MOTime timeForDate:endDate timeZoneManager:timeZoneManager];
       [(MOEventBundle *)v21 setTime:v24];
 
-      v25 = [v11 firstObject];
-      v26 = [v11 firstObject];
-      v27 = [v26 category];
+      firstObject = [v11 firstObject];
+      firstObject2 = [v11 firstObject];
+      category = [firstObject2 category];
 
-      if (v27 == 4)
+      if (category == 4)
       {
         v28 = [[MOAction alloc] initWithActionName:@"played_media_sessions" actionType:1 actionSubtype:6];
         [(MOEventBundle *)v21 setAction:v28];
 
-        v29 = [obj firstObject];
-        v30 = [v29 eventIdentifier];
-        v31 = [(MOEventBundle *)v21 action];
-        [v31 setSourceEventIdentifier:v30];
+        firstObject3 = [obj firstObject];
+        eventIdentifier = [firstObject3 eventIdentifier];
+        action = [(MOEventBundle *)v21 action];
+        [action setSourceEventIdentifier:eventIdentifier];
 
-        v32 = [v25 mediaAlbum];
+        mediaAlbum = [firstObject mediaAlbum];
 
-        v33 = [(MOEventBundle *)v21 action];
-        v34 = [v33 actionName];
-        v101 = v25;
-        if (v32)
+        action2 = [(MOEventBundle *)v21 action];
+        actionName = [action2 actionName];
+        v101 = firstObject;
+        if (mediaAlbum)
         {
-          v35 = [v25 mediaAlbum];
-          v36 = [(MOEventBundle *)v21 resources];
-          v37 = [v36 firstObject];
-          v38 = [v37 name];
-          v39 = [NSString stringWithFormat:@"%@: %@ - %@", v34, v35, v38];
+          mediaAlbum2 = [firstObject mediaAlbum];
+          resources = [(MOEventBundle *)v21 resources];
+          firstObject4 = [resources firstObject];
+          name = [firstObject4 name];
+          v39 = [NSString stringWithFormat:@"%@: %@ - %@", actionName, mediaAlbum2, name];
           [(MOEventBundle *)v21 setPromptLanguage:v39];
         }
 
         else
         {
-          v35 = [(MOEventBundle *)v21 resources];
-          v36 = [v35 firstObject];
-          v37 = [v36 name];
-          v38 = [NSString stringWithFormat:@"%@: %@", v34, v37];
-          [(MOEventBundle *)v21 setPromptLanguage:v38];
+          mediaAlbum2 = [(MOEventBundle *)v21 resources];
+          resources = [mediaAlbum2 firstObject];
+          firstObject4 = [resources name];
+          name = [NSString stringWithFormat:@"%@: %@", actionName, firstObject4];
+          [(MOEventBundle *)v21 setPromptLanguage:name];
         }
 
         v102 = objc_alloc_init(NSMutableArray);
@@ -683,9 +683,9 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
         v148 = 0u;
         v149 = 0u;
         v90 = v21;
-        v92 = [(MOEventBundle *)v21 events];
-        v25 = v101;
-        v104 = [v92 countByEnumeratingWithState:&v146 objects:v166 count:16];
+        events = [(MOEventBundle *)v21 events];
+        firstObject = v101;
+        v104 = [events countByEnumeratingWithState:&v146 objects:v166 count:16];
         if (v104)
         {
           v99 = *v147;
@@ -697,7 +697,7 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
             {
               if (*v147 != v99)
               {
-                objc_enumerationMutation(v92);
+                objc_enumerationMutation(events);
               }
 
               v145 = v41;
@@ -706,11 +706,11 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
               {
                 v80 = [v91 count];
-                v81 = [v42 mediaEvent];
-                v82 = [v81 mediaTitle];
-                v83 = [MOMediaPlaySession redactString:v82];
-                v84 = [v42 startDate];
-                v85 = [v42 endDate];
+                mediaEvent2 = [v42 mediaEvent];
+                mediaTitle2 = [mediaEvent2 mediaTitle];
+                v83 = [MOMediaPlaySession redactString:mediaTitle2];
+                startDate = [v42 startDate];
+                endDate2 = [v42 endDate];
                 *buf = 136316162;
                 v157 = "[MOMediaPlayAnnotationManager _annotateEvents:isFirstParty:]";
                 v158 = 2048;
@@ -718,27 +718,27 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
                 v160 = 2112;
                 v161 = v83;
                 v162 = 2112;
-                v163 = v84;
+                v163 = startDate;
                 v164 = 2112;
-                v165 = v85;
+                v165 = endDate2;
                 _os_log_debug_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEBUG, "%s, media annotation event count, %lu, media title, %@, start, %@, end, %@", buf, 0x34u);
               }
 
-              v44 = [v42 mediaEvent];
-              v45 = [v44 mediaType];
-              v46 = [v42 mediaEvent];
-              v47 = [v46 mediaPlayerBundleId];
-              v48 = [MOMediaPlaySession getMOPlaySessionMediaType:v45 bundleId:v47];
-              v49 = [v48 unsignedIntValue];
+              mediaEvent3 = [v42 mediaEvent];
+              mediaType = [mediaEvent3 mediaType];
+              mediaEvent4 = [v42 mediaEvent];
+              mediaPlayerBundleId = [mediaEvent4 mediaPlayerBundleId];
+              v48 = [MOMediaPlaySession getMOPlaySessionMediaType:mediaType bundleId:mediaPlayerBundleId];
+              unsignedIntValue = [v48 unsignedIntValue];
 
               v154[0] = @"MOMediaPlayMetaDataKeyPlayerTitle";
-              v144 = [v42 mediaEvent];
-              v143 = [v144 mediaTitle];
-              if (v143)
+              mediaEvent5 = [v42 mediaEvent];
+              mediaTitle3 = [mediaEvent5 mediaTitle];
+              if (mediaTitle3)
               {
-                v108 = [v42 mediaEvent];
-                v109 = [v108 mediaTitle];
-                v50 = v109;
+                mediaEvent6 = [v42 mediaEvent];
+                mediaTitle4 = [mediaEvent6 mediaTitle];
+                v50 = mediaTitle4;
               }
 
               else
@@ -748,13 +748,13 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
 
               v155[0] = v50;
               v154[1] = @"MOMediaPlayMetaDataKeyPlayerArtist";
-              v142 = [v42 mediaEvent];
-              v51 = [v142 mediaArtist];
-              if (v51)
+              mediaEvent7 = [v42 mediaEvent];
+              mediaArtist = [mediaEvent7 mediaArtist];
+              if (mediaArtist)
               {
-                v121 = [v42 mediaEvent];
-                v117 = [v121 mediaArtist];
-                v52 = v117;
+                mediaEvent8 = [v42 mediaEvent];
+                mediaArtist2 = [mediaEvent8 mediaArtist];
+                v52 = mediaArtist2;
               }
 
               else
@@ -764,13 +764,13 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
 
               v155[1] = v52;
               v154[2] = @"MOMediaPlayMetaDataKeyPlayerTrackID";
-              v140 = [v42 mediaEvent];
-              v53 = [v140 mediaProductId];
-              if (v53)
+              mediaEvent9 = [v42 mediaEvent];
+              mediaProductId = [mediaEvent9 mediaProductId];
+              if (mediaProductId)
               {
-                v120 = [v42 mediaEvent];
-                v115 = [v120 mediaProductId];
-                v54 = v115;
+                mediaEvent10 = [v42 mediaEvent];
+                mediaProductId2 = [mediaEvent10 mediaProductId];
+                v54 = mediaProductId2;
               }
 
               else
@@ -780,13 +780,13 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
 
               v155[2] = v54;
               v154[3] = @"MOMediaPlayMetaDataKeyPlayerAlbumName";
-              v138 = [v42 mediaEvent];
-              v55 = [v138 mediaAlbum];
-              if (v55)
+              mediaEvent11 = [v42 mediaEvent];
+              mediaAlbum3 = [mediaEvent11 mediaAlbum];
+              if (mediaAlbum3)
               {
-                v119 = [v42 mediaEvent];
-                v113 = [v119 mediaAlbum];
-                v56 = v113;
+                mediaEvent12 = [v42 mediaEvent];
+                mediaAlbum4 = [mediaEvent12 mediaAlbum];
+                v56 = mediaAlbum4;
               }
 
               else
@@ -796,15 +796,15 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
 
               v155[3] = v56;
               v154[4] = @"MOMediaPlayMetaDataKeyPlayerBundleID";
-              v136 = [v42 mediaEvent];
-              v57 = [v136 mediaPlayerBundleId];
-              v141 = v51;
-              v139 = v53;
-              if (v57)
+              mediaEvent13 = [v42 mediaEvent];
+              mediaPlayerBundleId2 = [mediaEvent13 mediaPlayerBundleId];
+              v141 = mediaArtist;
+              v139 = mediaProductId;
+              if (mediaPlayerBundleId2)
               {
-                v118 = [v42 mediaEvent];
-                v112 = [v118 mediaPlayerBundleId];
-                v58 = v112;
+                mediaEvent14 = [v42 mediaEvent];
+                mediaPlayerBundleId3 = [mediaEvent14 mediaPlayerBundleId];
+                v58 = mediaPlayerBundleId3;
               }
 
               else
@@ -814,27 +814,27 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
 
               v155[4] = v58;
               v154[5] = @"MOMediaPlayMetaDataKeyPlayerDuration";
-              v134 = [v42 mediaEvent];
-              v133 = [v134 mediaPlaySessions];
-              v132 = [v133 firstObject];
-              v131 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v132 duration]);
+              mediaEvent15 = [v42 mediaEvent];
+              mediaPlaySessions = [mediaEvent15 mediaPlaySessions];
+              firstObject5 = [mediaPlaySessions firstObject];
+              v131 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [firstObject5 duration]);
               v155[5] = v131;
               v154[6] = @"MOMediaPlayMetaDataKeyPlayerSumPlaytime";
-              v130 = [v42 mediaEvent];
-              v129 = [v130 mediaSumTimePlayed];
-              v155[6] = v129;
+              mediaEvent16 = [v42 mediaEvent];
+              mediaSumTimePlayed = [mediaEvent16 mediaSumTimePlayed];
+              v155[6] = mediaSumTimePlayed;
               v154[7] = @"media_type";
-              v128 = [NSNumber numberWithUnsignedInteger:v49];
+              v128 = [NSNumber numberWithUnsignedInteger:unsignedIntValue];
               v155[7] = v128;
               v154[8] = @"MOMediaPlayMetaDataKeyPlayerFirstPartyRatio";
-              v127 = [v42 mediaEvent];
-              v59 = [v127 mediaFirstPartyTimePlayedRatio];
-              v137 = v55;
-              if (v59)
+              mediaEvent17 = [v42 mediaEvent];
+              mediaFirstPartyTimePlayedRatio = [mediaEvent17 mediaFirstPartyTimePlayedRatio];
+              v137 = mediaAlbum3;
+              if (mediaFirstPartyTimePlayedRatio)
               {
-                v116 = [v42 mediaEvent];
-                v111 = [v116 mediaFirstPartyTimePlayedRatio];
-                v60 = v111;
+                mediaEvent18 = [v42 mediaEvent];
+                mediaFirstPartyTimePlayedRatio2 = [mediaEvent18 mediaFirstPartyTimePlayedRatio];
+                v60 = mediaFirstPartyTimePlayedRatio2;
               }
 
               else
@@ -844,37 +844,37 @@ void __47__MOMediaPlayAnnotationManager__getBaseEvents___block_invoke(id a1, MOE
 
               v155[8] = v60;
               v154[9] = @"MOMediaPlayMetaDataKeyPlayerMediaTypeKey";
-              v125 = [MOMediaPlayAnnotationManager renderTypeFrom:v49 isFirstPartyApp:v103];
+              v125 = [MOMediaPlayAnnotationManager renderTypeFrom:unsignedIntValue isFirstPartyApp:partyCopy];
               v155[9] = v125;
               v154[10] = @"media_album";
-              v124 = [v42 mediaEvent];
-              v61 = [v124 mediaAlbum];
-              v135 = v57;
-              if (!v61)
+              mediaEvent19 = [v42 mediaEvent];
+              mediaAlbum5 = [mediaEvent19 mediaAlbum];
+              v135 = mediaPlayerBundleId2;
+              if (!mediaAlbum5)
               {
                 goto LABEL_49;
               }
 
-              v114 = [v42 mediaEvent];
-              v122 = [v114 mediaTitle];
-              if (!v122)
+              mediaEvent20 = [v42 mediaEvent];
+              mediaTitle5 = [mediaEvent20 mediaTitle];
+              if (!mediaTitle5)
               {
-                v122 = 0;
+                mediaTitle5 = 0;
 LABEL_49:
                 v63 = 0;
                 v64 = 0;
                 goto LABEL_51;
               }
 
-              v98 = [v42 mediaEvent];
-              v62 = [v98 mediaAlbum];
-              v96 = [v42 mediaEvent];
-              [v96 mediaTitle];
-              v95 = v97 = v62;
-              if ([v62 rangeOfString:?] == 0x7FFFFFFFFFFFFFFFLL)
+              mediaEvent21 = [v42 mediaEvent];
+              mediaAlbum6 = [mediaEvent21 mediaAlbum];
+              mediaEvent22 = [v42 mediaEvent];
+              [mediaEvent22 mediaTitle];
+              v95 = v97 = mediaAlbum6;
+              if ([mediaAlbum6 rangeOfString:?] == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v94 = [v42 mediaEvent];
-                [v94 mediaAlbum];
+                mediaEvent23 = [v42 mediaEvent];
+                [mediaEvent23 mediaAlbum];
                 v63 = 1;
                 v93 = v64 = 1;
                 v65 = v93;
@@ -888,17 +888,17 @@ LABEL_51:
 LABEL_52:
               v155[10] = v65;
               v154[11] = @"MOMediaPlayMetaDataKeyPlayerBgColor";
-              v66 = [v42 mediaEvent];
-              v67 = [v66 mediaPlaySessions];
-              v68 = [v67 firstObject];
-              v69 = [v68 bgColor];
-              if (v69)
+              mediaEvent24 = [v42 mediaEvent];
+              mediaPlaySessions2 = [mediaEvent24 mediaPlaySessions];
+              firstObject6 = [mediaPlaySessions2 firstObject];
+              bgColor = [firstObject6 bgColor];
+              if (bgColor)
               {
-                v110 = [v42 mediaEvent];
-                v107 = [v110 mediaPlaySessions];
-                v106 = [v107 firstObject];
-                v105 = [v106 bgColor];
-                v70 = v105;
+                mediaEvent25 = [v42 mediaEvent];
+                mediaPlaySessions3 = [mediaEvent25 mediaPlaySessions];
+                firstObject7 = [mediaPlaySessions3 firstObject];
+                bgColor2 = [firstObject7 bgColor];
+                v70 = bgColor2;
               }
 
               else
@@ -910,11 +910,11 @@ LABEL_52:
               v71 = [NSDictionary dictionaryWithObjects:v155 forKeys:v154 count:12];
               v126 = [v71 mutableCopy];
 
-              if (v69)
+              if (bgColor)
               {
               }
 
-              v25 = v101;
+              firstObject = v101;
               if (v64)
               {
               }
@@ -923,12 +923,12 @@ LABEL_52:
               {
               }
 
-              if (v61)
+              if (mediaAlbum5)
               {
               }
 
               v11 = v100;
-              if (v59)
+              if (mediaFirstPartyTimePlayedRatio)
               {
               }
 
@@ -948,34 +948,34 @@ LABEL_52:
               {
               }
 
-              if (v143)
+              if (mediaTitle3)
               {
               }
 
-              v72 = [v42 startDate];
+              startDate2 = [v42 startDate];
 
-              if (v72)
+              if (startDate2)
               {
-                v73 = [v42 startDate];
-                [v73 timeIntervalSinceReferenceDate];
+                startDate3 = [v42 startDate];
+                [startDate3 timeIntervalSinceReferenceDate];
                 v74 = [NSNumber numberWithDouble:?];
                 [v126 setObject:v74 forKeyedSubscript:@"MOMediaPlayMetaDataKeyPlayerStartDate"];
               }
 
               v75 = [MOResource alloc];
-              v76 = [v42 mediaEvent];
-              v77 = [v76 mediaTitle];
-              v78 = [(MOResource *)v75 initWithName:v77 type:3 dict:v126 value:0.0];
+              mediaEvent26 = [v42 mediaEvent];
+              mediaTitle6 = [mediaEvent26 mediaTitle];
+              v78 = [(MOResource *)v75 initWithName:mediaTitle6 type:3 dict:v126 value:0.0];
 
-              v79 = [v42 eventIdentifier];
-              [(MOResource *)v78 setSourceEventIdentifier:v79];
+              eventIdentifier2 = [v42 eventIdentifier];
+              [(MOResource *)v78 setSourceEventIdentifier:eventIdentifier2];
 
               [v102 addObject:v78];
               v41 = v145 + 1;
             }
 
             while (v104 != (v145 + 1));
-            v104 = [v92 countByEnumeratingWithState:&v146 objects:v166 count:16];
+            v104 = [events countByEnumeratingWithState:&v146 objects:v166 count:16];
           }
 
           while (v104);
@@ -984,17 +984,17 @@ LABEL_52:
         v21 = v90;
         [(MOEventBundle *)v90 setResources:v102];
         v86 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
-        v5 = v91;
+        eventsCopy = v91;
         if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
         {
-          v87 = [v91 firstObject];
-          v88 = [v87 category];
+          firstObject8 = [v91 firstObject];
+          category2 = [firstObject8 category];
           *buf = 136315650;
           v157 = "[MOMediaPlayAnnotationManager _annotateEvents:isFirstParty:]";
           v158 = 2112;
           v159 = v90;
           v160 = 2048;
-          v161 = v88;
+          v161 = category2;
           _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_INFO, "%s, bundle, %@, event category, %lu", buf, 0x20u);
         }
 
@@ -1004,14 +1004,14 @@ LABEL_52:
       else
       {
         v40 = 0;
-        v5 = v91;
+        eventsCopy = v91;
       }
     }
 
     else
     {
       v40 = 0;
-      v5 = v91;
+      eventsCopy = v91;
     }
   }
 
@@ -1023,15 +1023,15 @@ LABEL_52:
   return v40;
 }
 
-- (id)_groupEventsByApps:(id)a3
+- (id)_groupEventsByApps:(id)apps
 {
-  v3 = a3;
+  appsCopy = apps;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = appsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -1047,16 +1047,16 @@ LABEL_52:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 mediaEvent];
-        v12 = [v11 mediaPlayerBundleId];
+        mediaEvent = [v10 mediaEvent];
+        mediaPlayerBundleId = [mediaEvent mediaPlayerBundleId];
 
-        if (v12)
+        if (mediaPlayerBundleId)
         {
-          v13 = [v4 objectForKey:v12];
+          v13 = [v4 objectForKey:mediaPlayerBundleId];
 
           if (v13)
           {
-            v14 = [v4 objectForKey:v12];
+            v14 = [v4 objectForKey:mediaPlayerBundleId];
           }
 
           else
@@ -1066,7 +1066,7 @@ LABEL_52:
 
           v15 = v14;
           [v14 addObject:v10];
-          [v4 setObject:v15 forKey:v12];
+          [v4 setObject:v15 forKey:mediaPlayerBundleId];
         }
       }
 
@@ -1079,16 +1079,16 @@ LABEL_52:
   return v4;
 }
 
-- (id)_getEventsBasedOnTypes:(id)a3 isFirstPartyApp:(unsigned __int8)a4
+- (id)_getEventsBasedOnTypes:(id)types isFirstPartyApp:(unsigned __int8)app
 {
-  v4 = a4;
-  v6 = a3;
+  appCopy = app;
+  typesCopy = types;
   v7 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -1104,7 +1104,7 @@ LABEL_52:
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if ([(MOMediaPlayAnnotationManager *)self _isFirstPartyApp:v13, v15]== v4)
+        if ([(MOMediaPlayAnnotationManager *)self _isFirstPartyApp:v13, v15]== appCopy)
         {
           [v7 addObject:v13];
         }
@@ -1119,25 +1119,25 @@ LABEL_52:
   return v7;
 }
 
-- (unsigned)_isFirstPartyApp:(id)a3
+- (unsigned)_isFirstPartyApp:(id)app
 {
-  v3 = [a3 mediaEvent];
-  v4 = [v3 mediaPlayerBundleId];
+  mediaEvent = [app mediaEvent];
+  mediaPlayerBundleId = [mediaEvent mediaPlayerBundleId];
 
-  v5 = v4 && ([v4 hasPrefix:@"com.apple."] & 1) != 0;
+  v5 = mediaPlayerBundleId && ([mediaPlayerBundleId hasPrefix:@"com.apple."] & 1) != 0;
   return v5;
 }
 
-- (id)getMediaOnRepeatLabelHeaderFromMediaType:(unint64_t)a3
+- (id)getMediaOnRepeatLabelHeaderFromMediaType:(unint64_t)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     return @"media_on_repeat";
   }
 
   else
   {
-    return *(&off_100337470 + a3 - 1);
+    return *(&off_100337470 + type - 1);
   }
 }
 

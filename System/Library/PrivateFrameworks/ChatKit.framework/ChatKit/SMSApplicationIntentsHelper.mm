@@ -1,15 +1,15 @@
 @interface SMSApplicationIntentsHelper
-+ (BOOL)continueWithSendMessageInteraction:(id)a3 chatRegistry:(id)a4 navigationProvider:(id)a5 conversationList:(id)a6 chatController:(id)a7;
-+ (BOOL)isSendMessageInteraction:(id)a3;
++ (BOOL)continueWithSendMessageInteraction:(id)interaction chatRegistry:(id)registry navigationProvider:(id)provider conversationList:(id)list chatController:(id)controller;
++ (BOOL)isSendMessageInteraction:(id)interaction;
 @end
 
 @implementation SMSApplicationIntentsHelper
 
-+ (BOOL)isSendMessageInteraction:(id)a3
++ (BOOL)isSendMessageInteraction:(id)interaction
 {
-  if (a3)
+  if (interaction)
   {
-    v3 = [a3 intent];
+    intent = [interaction intent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -22,22 +22,22 @@
   return isKindOfClass & 1;
 }
 
-+ (BOOL)continueWithSendMessageInteraction:(id)a3 chatRegistry:(id)a4 navigationProvider:(id)a5 conversationList:(id)a6 chatController:(id)a7
++ (BOOL)continueWithSendMessageInteraction:(id)interaction chatRegistry:(id)registry navigationProvider:(id)provider conversationList:(id)list chatController:(id)controller
 {
   v87 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v73 = a4;
-  v67 = a5;
-  v70 = a6;
-  v69 = a7;
-  v71 = v11;
-  [v11 intent];
+  interactionCopy = interaction;
+  registryCopy = registry;
+  providerCopy = provider;
+  listCopy = list;
+  controllerCopy = controller;
+  v71 = interactionCopy;
+  [interactionCopy intent];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v72 = v84 = 0u;
-  v12 = [v72 attachments];
-  v13 = [v12 countByEnumeratingWithState:&v81 objects:v86 count:16];
+  attachments = [v72 attachments];
+  v13 = [attachments countByEnumeratingWithState:&v81 objects:v86 count:16];
   v14 = 0x1E696A000uLL;
   if (!v13)
   {
@@ -47,7 +47,7 @@
 
   v15 = v13;
   v16 = 0;
-  v74 = v12;
+  v74 = attachments;
   v75 = *v82;
   do
   {
@@ -55,21 +55,21 @@
     {
       if (*v82 != v75)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(attachments);
       }
 
       v18 = *(*(&v81 + 1) + 8 * i);
-      v19 = [v18 sharedLink];
+      sharedLink = [v18 sharedLink];
 
-      if (v19)
+      if (sharedLink)
       {
         v20 = objc_alloc(*(v14 + 2736));
-        v21 = [v18 sharedLink];
-        v22 = [v21 absoluteString];
-        v23 = [v20 initWithString:v22 attributes:0];
+        sharedLink2 = [v18 sharedLink];
+        absoluteString = [sharedLink2 absoluteString];
+        v23 = [v20 initWithString:absoluteString attributes:0];
 
         v24 = [[CKComposition alloc] initWithText:v23 subject:0];
-        v25 = v24;
+        defaultHFSFileManager = v24;
         if (v16)
         {
           v26 = [(CKComposition *)v16 compositionByAppendingComposition:v24];
@@ -79,32 +79,32 @@
 
         else
         {
-          v25 = v24;
-          v16 = v25;
+          defaultHFSFileManager = v24;
+          v16 = defaultHFSFileManager;
         }
       }
 
       else
       {
-        v27 = [v18 file];
+        file = [v18 file];
 
-        if (!v27)
+        if (!file)
         {
           continue;
         }
 
-        v28 = [v18 file];
-        v29 = [v28 typeIdentifier];
-        if ([v29 isEqual:@"com.apple.live-photo"])
+        file2 = [v18 file];
+        typeIdentifier = [file2 typeIdentifier];
+        if ([typeIdentifier isEqual:@"com.apple.live-photo"])
         {
-          v30 = [v18 file];
-          v31 = [v30 fileURL];
-          v32 = [v31 pathExtension];
-          v33 = [v32 isEqualToIgnoringCase:@"mov"];
+          file3 = [v18 file];
+          fileURL = [file3 fileURL];
+          pathExtension = [fileURL pathExtension];
+          v33 = [pathExtension isEqualToIgnoringCase:@"mov"];
 
           if (v33)
           {
-            v12 = v74;
+            attachments = v74;
             v14 = 0x1E696A000;
             continue;
           }
@@ -114,17 +114,17 @@
         {
         }
 
-        v25 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
-        v34 = [v18 file];
-        v35 = [v34 fileURL];
+        defaultHFSFileManager = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
+        file4 = [v18 file];
+        fileURL2 = [file4 fileURL];
 
-        v36 = [v35 lastPathComponent];
-        v37 = [(CKComposition *)v25 im_randomTemporaryFileURLWithFileName:v36];
+        lastPathComponent = [fileURL2 lastPathComponent];
+        v37 = [(CKComposition *)defaultHFSFileManager im_randomTemporaryFileURLWithFileName:lastPathComponent];
 
         v80 = 0;
-        LODWORD(v36) = [(CKComposition *)v25 im_copySecurityScopedResourceAtURL:v35 toDestination:v37 error:&v80];
+        LODWORD(lastPathComponent) = [(CKComposition *)defaultHFSFileManager im_copySecurityScopedResourceAtURL:fileURL2 toDestination:v37 error:&v80];
         v23 = v80;
-        if (v36)
+        if (lastPathComponent)
         {
           v38 = +[CKMediaObjectManager sharedInstance];
           v39 = [v38 mediaObjectWithFileURL:v37 filename:0 transcoderUserInfo:0];
@@ -142,27 +142,27 @@
             v16 = [CKComposition compositionWithMediaObject:v39 subject:0];
           }
 
-          v12 = v74;
+          attachments = v74;
         }
 
         else
         {
-          v12 = v74;
+          attachments = v74;
           v14 = 0x1E696A000;
         }
       }
     }
 
-    v15 = [v12 countByEnumeratingWithState:&v81 objects:v86 count:16];
+    v15 = [attachments countByEnumeratingWithState:&v81 objects:v86 count:16];
   }
 
   while (v15);
 LABEL_27:
 
-  v41 = [v72 content];
-  if ([v41 length])
+  content = [v72 content];
+  if ([content length])
   {
-    v42 = [objc_alloc(*(v14 + 2736)) initWithString:v41 attributes:0];
+    v42 = [objc_alloc(*(v14 + 2736)) initWithString:content attributes:0];
     if (v16)
     {
       v43 = [(CKComposition *)v16 compositionByAppendingText:v42];
@@ -176,31 +176,31 @@ LABEL_27:
     }
   }
 
-  v44 = [v72 conversationIdentifier];
-  v45 = [v73 existingChatWithGUID:v44];
+  conversationIdentifier = [v72 conversationIdentifier];
+  v45 = [registryCopy existingChatWithGUID:conversationIdentifier];
 
-  v46 = [v72 speakableGroupName];
-  v47 = v46;
-  if (!v45 && v46)
+  speakableGroupName = [v72 speakableGroupName];
+  v47 = speakableGroupName;
+  if (!v45 && speakableGroupName)
   {
-    v48 = [v46 vocabularyIdentifier];
-    v45 = [v73 existingChatWithGUID:v48];
+    vocabularyIdentifier = [speakableGroupName vocabularyIdentifier];
+    v45 = [registryCopy existingChatWithGUID:vocabularyIdentifier];
   }
 
   if (!v45 && v47)
   {
-    v49 = [v47 spokenPhrase];
-    v45 = [v73 existingChatWithDisplayName:v49];
+    spokenPhrase = [v47 spokenPhrase];
+    v45 = [registryCopy existingChatWithDisplayName:spokenPhrase];
   }
 
   if (v45)
   {
 LABEL_51:
-    v51 = [v70 conversationForExistingChat:v45];
-    v59 = v69;
-    v60 = [v71 intentHandlingStatus];
-    v61 = [v59 conversation];
-    if ([v61 isEqual:v51])
+    array = [listCopy conversationForExistingChat:v45];
+    v59 = controllerCopy;
+    intentHandlingStatus = [v71 intentHandlingStatus];
+    conversation = [v59 conversation];
+    if ([conversation isEqual:array])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -209,7 +209,7 @@ LABEL_51:
       {
         v63 = v59;
         v64 = v63;
-        if (v60 != 3)
+        if (intentHandlingStatus != 3)
         {
           [v63 setComposition:v16];
           [v64 showKeyboardForReply];
@@ -226,18 +226,18 @@ LABEL_60:
     {
     }
 
-    if (v60 != 3)
+    if (intentHandlingStatus != 3)
     {
-      [v51 setUnsentComposition:v16];
+      [array setUnsentComposition:v16];
     }
 
     v65 = v68;
-    [v68 showConversation:v51 animate:1];
+    [v68 showConversation:array animate:1];
     goto LABEL_60;
   }
 
   v50 = [v72 valueForKeyPath:@"recipients.personHandle.value"];
-  v51 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
@@ -263,7 +263,7 @@ LABEL_60:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v51 addObject:v56];
+            [array addObject:v56];
           }
         }
       }
@@ -274,8 +274,8 @@ LABEL_60:
     while (v53);
   }
 
-  v57 = [v51 copy];
-  v58 = [v73 existingChatWithAddresses:v57 allowAlternativeService:0 bestHandles:0];
+  v57 = [array copy];
+  v58 = [registryCopy existingChatWithAddresses:v57 allowAlternativeService:0 bestHandles:0];
 
   if (v58)
   {

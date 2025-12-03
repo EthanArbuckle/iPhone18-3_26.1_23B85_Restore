@@ -1,28 +1,28 @@
 @interface CNContactSubsetCalculator
-+ (BOOL)_isLabel:(id)a3 subsumableIntoLabel:(id)a4 equivalencies:(id)a5;
-+ (BOOL)_isLabeledValue:(id)a3 availableInLabeledValues:(id)a4 claimedIndices:(id)a5 forMultiValueProperty:(id)a6;
-+ (BOOL)isContact:(id)a3 subsetOfContact:(id)a4 forMultiValueProperty:(id)a5;
-+ (BOOL)isContact:(id)a3 subsetOfContact:(id)a4 forSingleValueProperty:(id)a5;
-+ (BOOL)isContact:(id)a3 subsetOfContact:(id)a4 ignoringProperties:(id)a5;
++ (BOOL)_isLabel:(id)label subsumableIntoLabel:(id)intoLabel equivalencies:(id)equivalencies;
++ (BOOL)_isLabeledValue:(id)value availableInLabeledValues:(id)values claimedIndices:(id)indices forMultiValueProperty:(id)property;
++ (BOOL)isContact:(id)contact subsetOfContact:(id)ofContact forMultiValueProperty:(id)property;
++ (BOOL)isContact:(id)contact subsetOfContact:(id)ofContact forSingleValueProperty:(id)property;
++ (BOOL)isContact:(id)contact subsetOfContact:(id)ofContact ignoringProperties:(id)properties;
 @end
 
 @implementation CNContactSubsetCalculator
 
-+ (BOOL)isContact:(id)a3 subsetOfContact:(id)a4 ignoringProperties:(id)a5
++ (BOOL)isContact:(id)contact subsetOfContact:(id)ofContact ignoringProperties:(id)properties
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v27 = v9;
-  if (v7 == v8)
+  contactCopy = contact;
+  ofContactCopy = ofContact;
+  propertiesCopy = properties;
+  v27 = propertiesCopy;
+  if (contactCopy == ofContactCopy)
   {
     v24 = 1;
   }
 
   else
   {
-    v10 = v9;
+    v10 = propertiesCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -64,14 +64,14 @@ LABEL_21:
         }
       }
 
-      if (v7)
+      if (contactCopy)
       {
         v18 = [v15 key];
         v34 = v18;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-        v20 = [v7 areKeysAvailable:v19];
+        v20 = [contactCopy areKeysAvailable:v19];
 
-        if (v8)
+        if (ofContactCopy)
         {
           goto LABEL_10;
         }
@@ -80,15 +80,15 @@ LABEL_21:
       else
       {
         v20 = 1;
-        if (v8)
+        if (ofContactCopy)
         {
 LABEL_10:
           v21 = [v15 key];
           v33 = v21;
           v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
-          v23 = [v8 areKeysAvailable:v22];
+          v23 = [ofContactCopy areKeysAvailable:v22];
 
-          if (v7)
+          if (contactCopy)
           {
             v10 = v27;
             if ((v20 ^ v23))
@@ -107,13 +107,13 @@ LABEL_16:
           {
             if ([v15 isMultiValue])
             {
-              if (([a1 isContact:v7 subsetOfContact:v8 forMultiValueProperty:v15] & 1) == 0)
+              if (([self isContact:contactCopy subsetOfContact:ofContactCopy forMultiValueProperty:v15] & 1) == 0)
               {
                 goto LABEL_25;
               }
             }
 
-            else if (![a1 isContact:v7 subsetOfContact:v8 forSingleValueProperty:v15])
+            else if (![self isContact:contactCopy subsetOfContact:ofContactCopy forSingleValueProperty:v15])
             {
 LABEL_25:
               v24 = 0;
@@ -137,35 +137,35 @@ LABEL_26:
   return v24;
 }
 
-+ (BOOL)isContact:(id)a3 subsetOfContact:(id)a4 forSingleValueProperty:(id)a5
++ (BOOL)isContact:(id)contact subsetOfContact:(id)ofContact forSingleValueProperty:(id)property
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v8 CNValueForContact:v7];
-  v11 = [v8 CNValueForContact:v9];
+  contactCopy = contact;
+  propertyCopy = property;
+  ofContactCopy = ofContact;
+  v10 = [propertyCopy CNValueForContact:contactCopy];
+  v11 = [propertyCopy CNValueForContact:ofContactCopy];
 
-  if ([v8 canUnifyValue:v10 withValue:v11] & 1) != 0 || (+[CNContact emptyContact](CNContact, "emptyContact"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v8, "isEqualIgnoringIdentifiersForContact:other:", v7, v12), v12, (v13))
+  if ([propertyCopy canUnifyValue:v10 withValue:v11] & 1) != 0 || (+[CNContact emptyContact](CNContact, "emptyContact"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(propertyCopy, "isEqualIgnoringIdentifiersForContact:other:", contactCopy, v12), v12, (v13))
   {
     v14 = 1;
   }
 
   else
   {
-    v15 = [v8 CNValueForContact:v7];
+    v15 = [propertyCopy CNValueForContact:contactCopy];
     v14 = v15 == 0;
   }
 
   return v14;
 }
 
-+ (BOOL)isContact:(id)a3 subsetOfContact:(id)a4 forMultiValueProperty:(id)a5
++ (BOOL)isContact:(id)contact subsetOfContact:(id)ofContact forMultiValueProperty:(id)property
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 CNValueForContact:a3];
-  v11 = [v9 CNValueForContact:v8];
+  ofContactCopy = ofContact;
+  propertyCopy = property;
+  v10 = [propertyCopy CNValueForContact:contact];
+  v11 = [propertyCopy CNValueForContact:ofContactCopy];
   v12 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
@@ -186,7 +186,7 @@ LABEL_26:
           objc_enumerationMutation(v13);
         }
 
-        if (![a1 _isLabeledValue:*(*(&v20 + 1) + 8 * i) availableInLabeledValues:v11 claimedIndices:v12 forMultiValueProperty:{v9, v20}])
+        if (![self _isLabeledValue:*(*(&v20 + 1) + 8 * i) availableInLabeledValues:v11 claimedIndices:v12 forMultiValueProperty:{propertyCopy, v20}])
         {
           v18 = 0;
           goto LABEL_11;
@@ -209,39 +209,39 @@ LABEL_11:
   return v18;
 }
 
-+ (BOOL)_isLabeledValue:(id)a3 availableInLabeledValues:(id)a4 claimedIndices:(id)a5 forMultiValueProperty:(id)a6
++ (BOOL)_isLabeledValue:(id)value availableInLabeledValues:(id)values claimedIndices:(id)indices forMultiValueProperty:(id)property
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 equivalentLabelSets];
+  valueCopy = value;
+  valuesCopy = values;
+  indicesCopy = indices;
+  propertyCopy = property;
+  equivalentLabelSets = [propertyCopy equivalentLabelSets];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v15 = [v10 label];
+  label = [valueCopy label];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __107__CNContactSubsetCalculator__isLabeledValue_availableInLabeledValues_claimedIndices_forMultiValueProperty___block_invoke;
   v22[3] = &unk_1E7416110;
-  v16 = v12;
+  v16 = indicesCopy;
   v23 = v16;
-  v29 = a1;
-  v17 = v15;
+  selfCopy = self;
+  v17 = label;
   v24 = v17;
-  v18 = v14;
+  v18 = equivalentLabelSets;
   v25 = v18;
-  v19 = v13;
+  v19 = propertyCopy;
   v26 = v19;
-  v20 = v10;
+  v20 = valueCopy;
   v27 = v20;
   v28 = &v30;
-  [v11 enumerateObjectsUsingBlock:v22];
-  LOBYTE(v14) = *(v31 + 24);
+  [valuesCopy enumerateObjectsUsingBlock:v22];
+  LOBYTE(equivalentLabelSets) = *(v31 + 24);
 
   _Block_object_dispose(&v30, 8);
-  return v14;
+  return equivalentLabelSets;
 }
 
 uint64_t __107__CNContactSubsetCalculator__isLabeledValue_availableInLabeledValues_claimedIndices_forMultiValueProperty___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -273,21 +273,21 @@ uint64_t __107__CNContactSubsetCalculator__isLabeledValue_availableInLabeledValu
   return MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-+ (BOOL)_isLabel:(id)a3 subsumableIntoLabel:(id)a4 equivalencies:(id)a5
++ (BOOL)_isLabel:(id)label subsumableIntoLabel:(id)intoLabel equivalencies:(id)equivalencies
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ((*(*MEMORY[0x1E6996568] + 16))() & 1) != 0 || ([v7 isEqual:v8])
+  labelCopy = label;
+  intoLabelCopy = intoLabel;
+  equivalenciesCopy = equivalencies;
+  if ((*(*MEMORY[0x1E6996568] + 16))() & 1) != 0 || ([labelCopy isEqual:intoLabelCopy])
   {
     LOBYTE(v10) = 1;
   }
 
   else
   {
-    v11 = [CNLabeledValue localizedStringForLabel:v7];
-    v12 = [CNLabeledValue localizedStringForLabel:v8];
+    v11 = [CNLabeledValue localizedStringForLabel:labelCopy];
+    v12 = [CNLabeledValue localizedStringForLabel:intoLabelCopy];
     if ([v11 isEqual:v12])
     {
       LOBYTE(v10) = 1;
@@ -299,7 +299,7 @@ uint64_t __107__CNContactSubsetCalculator__isLabeledValue_availableInLabeledValu
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v13 = v9;
+      v13 = equivalenciesCopy;
       v10 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
@@ -314,7 +314,7 @@ uint64_t __107__CNContactSubsetCalculator__isLabeledValue_availableInLabeledValu
             }
 
             v16 = *(*(&v18 + 1) + 8 * i);
-            if ([v16 containsObject:{v7, v18}] && (objc_msgSend(v16, "containsObject:", v8) & 1) != 0)
+            if ([v16 containsObject:{labelCopy, v18}] && (objc_msgSend(v16, "containsObject:", intoLabelCopy) & 1) != 0)
             {
               LOBYTE(v10) = 1;
               goto LABEL_17;

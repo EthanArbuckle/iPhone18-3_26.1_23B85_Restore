@@ -1,19 +1,19 @@
 @interface PSUITurnOffCellularSpecifier
 - (PSListController)hostController;
-- (PSUITurnOffCellularSpecifier)initWithContext:(id)a3 callCache:(id)a4 hostController:(id)a5;
+- (PSUITurnOffCellularSpecifier)initWithContext:(id)context callCache:(id)cache hostController:(id)controller;
 - (void)_showPopup;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
-- (void)setCellularOff:(id)a3 specifier:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
+- (void)setCellularOff:(id)off specifier:(id)specifier;
 - (void)setSwitchEnabled;
 @end
 
 @implementation PSUITurnOffCellularSpecifier
 
-- (PSUITurnOffCellularSpecifier)initWithContext:(id)a3 callCache:(id)a4 hostController:(id)a5
+- (PSUITurnOffCellularSpecifier)initWithContext:(id)context callCache:(id)cache hostController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  cacheCopy = cache;
+  controllerCopy = controller;
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"TURN_OFF_CELLULAR" value:&stru_287733598 table:@"Cellular"];
   v22.receiver = self;
@@ -22,9 +22,9 @@
 
   if (v14)
   {
-    objc_storeWeak(&v14->_hostController, v11);
-    objc_storeStrong(&v14->_subscriptionContext, a3);
-    objc_storeStrong(&v14->_callCache, a4);
+    objc_storeWeak(&v14->_hostController, controllerCopy);
+    objc_storeStrong(&v14->_subscriptionContext, context);
+    objc_storeStrong(&v14->_callCache, cache);
     v15 = objc_alloc_init(MEMORY[0x277CBAF70]);
     callObserver = v14->_callObserver;
     v14->_callObserver = v15;
@@ -33,7 +33,7 @@
     [(PSUITurnOffCellularSpecifier *)v14 setSwitchEnabled];
     v17 = MEMORY[0x277CCABB0];
     v18 = +[PSUICoreTelephonyCapabilitiesCache sharedInstance];
-    v19 = [v17 numberWithBool:{objc_msgSend(v18, "getTurnOffCellular:", v9)}];
+    v19 = [v17 numberWithBool:{objc_msgSend(v18, "getTurnOffCellular:", contextCopy)}];
     cellularOff = v14->_cellularOff;
     v14->_cellularOff = v19;
   }
@@ -43,9 +43,9 @@
 
 - (void)setSwitchEnabled
 {
-  v3 = [(PSUICoreTelephonyCallCache *)self->_callCache isAnyCallActive];
+  isAnyCallActive = [(PSUICoreTelephonyCallCache *)self->_callCache isAnyCallActive];
   v4 = *MEMORY[0x277D3FF38];
-  if (v3)
+  if (isAnyCallActive)
   {
     v5 = MEMORY[0x277CBEC28];
   }
@@ -58,20 +58,20 @@
   [(PSUITurnOffCellularSpecifier *)self setProperty:v5 forKey:v4];
 }
 
-- (void)setCellularOff:(id)a3 specifier:(id)a4
+- (void)setCellularOff:(id)off specifier:(id)specifier
 {
-  v10 = a4;
-  v6 = [a3 BOOLValue];
-  v7 = [(PSUITurnOffCellularSpecifier *)self cellularOff];
-  v8 = [v7 BOOLValue];
+  specifierCopy = specifier;
+  bOOLValue = [off BOOLValue];
+  cellularOff = [(PSUITurnOffCellularSpecifier *)self cellularOff];
+  bOOLValue2 = [cellularOff BOOLValue];
 
-  if (v6 == v8)
+  if (bOOLValue == bOOLValue2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_hostController);
-    [WeakRetained reloadSpecifier:v10];
+    [WeakRetained reloadSpecifier:specifierCopy];
   }
 
-  else if (v6)
+  else if (bOOLValue)
   {
     [(PSUITurnOffCellularSpecifier *)self _showPopup];
   }
@@ -82,7 +82,7 @@
   }
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

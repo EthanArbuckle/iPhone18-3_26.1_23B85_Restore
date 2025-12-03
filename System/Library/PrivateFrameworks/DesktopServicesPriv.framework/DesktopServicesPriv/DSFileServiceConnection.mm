@@ -1,11 +1,11 @@
 @interface DSFileServiceConnection
-- (BOOL)_addOperationForProgress:(id)a3;
+- (BOOL)_addOperationForProgress:(id)progress;
 - (DSFileServiceConnection)init;
 - (void)_reloadCurrentOperations;
-- (void)_removeOperationForProgress:(id)a3;
-- (void)_subscribeToProgressIfNeeded:(id)a3;
+- (void)_removeOperationForProgress:(id)progress;
+- (void)_subscribeToProgressIfNeeded:(id)needed;
 - (void)dealloc;
-- (void)requestInProgressOperationsWithResponseBlock:(id)a3;
+- (void)requestInProgressOperationsWithResponseBlock:(id)block;
 @end
 
 @implementation DSFileServiceConnection
@@ -69,19 +69,19 @@ void __31__DSFileServiceConnection_init__block_invoke(uint64_t a1)
   [(DSFileServiceConnection *)&v4 dealloc];
 }
 
-- (void)requestInProgressOperationsWithResponseBlock:(id)a3
+- (void)requestInProgressOperationsWithResponseBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = [(NSMutableArray *)self->_fileOperations copy];
-  v5[2](v5, v4, 0);
+  blockCopy[2](blockCopy, v4, 0);
 }
 
-- (BOOL)_addOperationForProgress:(id)a3
+- (BOOL)_addOperationForProgress:(id)progress
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"DSFileOperationUUID"];
+  progressCopy = progress;
+  userInfo = [progressCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"DSFileOperationUUID"];
 
   if (v6)
   {
@@ -97,12 +97,12 @@ void __31__DSFileServiceConnection_init__block_invoke(uint64_t a1)
     v9 = [[DSFileOperationID alloc] initWithUUID:v6];
     [v7 setOperationID:v9];
 
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"DSFileOperationDateStarted"];
+    userInfo2 = [progressCopy userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:@"DSFileOperationDateStarted"];
     [v7 setDateStarted:v11];
 
-    v12 = [v4 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"DSFileOperationIconUTTypeIdentifier"];
+    userInfo3 = [progressCopy userInfo];
+    v13 = [userInfo3 objectForKeyedSubscript:@"DSFileOperationIconUTTypeIdentifier"];
     v14 = static_objc_cast<NSString,objc_object * {__strong}>(v13);
 
     if (!v14)
@@ -121,8 +121,8 @@ void __31__DSFileServiceConnection_init__block_invoke(uint64_t a1)
       v17 = LogObj(2);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v4 userInfo];
-        v19 = [v18 objectForKeyedSubscript:@"DSFileOperationIconUTTypeIdentifier"];
+        userInfo4 = [progressCopy userInfo];
+        v19 = [userInfo4 objectForKeyedSubscript:@"DSFileOperationIconUTTypeIdentifier"];
         v22 = 138543362;
         v23 = v19;
         _os_log_impl(&dword_1E5674000, v17, OS_LOG_TYPE_ERROR, "Unable to find UTType for identifier '%{public}@', will use generic item type", &v22, 0xCu);
@@ -132,7 +132,7 @@ void __31__DSFileServiceConnection_init__block_invoke(uint64_t a1)
     }
 
     [v7 setUtType:v16];
-    [v7 setProgress:v4];
+    [v7 setProgress:progressCopy];
     [(NSMutableArray *)self->_fileOperations addObject:v7];
   }
 
@@ -140,13 +140,13 @@ void __31__DSFileServiceConnection_init__block_invoke(uint64_t a1)
   return v6 != 0;
 }
 
-- (void)_removeOperationForProgress:(id)a3
+- (void)_removeOperationForProgress:(id)progress
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  progressCopy = progress;
   v5 = [DSFileOperationID alloc];
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"DSFileOperationUUID"];
+  userInfo = [progressCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"DSFileOperationUUID"];
   v8 = [(DSFileOperationID *)v5 initWithUUID:v7];
 
   v9 = objc_opt_new();
@@ -154,8 +154,8 @@ void __31__DSFileServiceConnection_init__block_invoke(uint64_t a1)
   v10 = LogObj(2);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"DSFileOperationUUID"];
+    userInfo2 = [progressCopy userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:@"DSFileOperationUUID"];
     v14 = 138543362;
     v15 = v12;
     _os_log_impl(&dword_1E5674000, v10, OS_LOG_TYPE_INFO, "Removing operation for progress %{public}@", &v14, 0xCu);
@@ -165,18 +165,18 @@ void __31__DSFileServiceConnection_init__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_subscribeToProgressIfNeeded:(id)a3
+- (void)_subscribeToProgressIfNeeded:(id)needed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_progressTokenMap objectForKeyedSubscript:v4];
+  neededCopy = needed;
+  v5 = [(NSMutableDictionary *)self->_progressTokenMap objectForKeyedSubscript:neededCopy];
 
   if (v5)
   {
     v6 = LogObj(2);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = SanitizedURL(v4);
+      v7 = SanitizedURL(neededCopy);
       *buf = 138543362;
       v19 = v7;
       _os_log_impl(&dword_1E5674000, v6, OS_LOG_TYPE_DEBUG, "Already subscribed to progress for %{public}@", buf, 0xCu);
@@ -191,7 +191,7 @@ void __31__DSFileServiceConnection_init__block_invoke(uint64_t a1)
     v14 = __56__DSFileServiceConnection__subscribeToProgressIfNeeded___block_invoke;
     v15 = &unk_1E877EDE0;
     objc_copyWeak(&v17, buf);
-    v8 = v4;
+    v8 = neededCopy;
     v16 = v8;
     v9 = MEMORY[0x1E692D6D0](&v12);
     if ([(NSURL *)v8 startAccessingSecurityScopedResource:v12])

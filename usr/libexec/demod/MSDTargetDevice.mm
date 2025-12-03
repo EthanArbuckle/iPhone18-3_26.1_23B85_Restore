@@ -3,7 +3,7 @@
 - (BOOL)allowAccountSetup;
 - (BOOL)allowSnapshotMode;
 - (BOOL)allowSnapshotRevertTimer;
-- (BOOL)applyStagedDevicePreferences:(id *)a3;
+- (BOOL)applyStagedDevicePreferences:(id *)preferences;
 - (BOOL)backgroundDownloadActive;
 - (BOOL)cachedBundleInstallAttempted;
 - (BOOL)canRunCleanUpForBetterTogetherDevice;
@@ -17,11 +17,11 @@
 - (BOOL)dcotaOfflineModeDevice;
 - (BOOL)deactivateDevice;
 - (BOOL)deleteConfigurationApp;
-- (BOOL)deleteNVRam:(id)a3;
+- (BOOL)deleteNVRam:(id)ram;
 - (BOOL)deleteOperationRequest;
 - (BOOL)deleteOperationRequestAndQuitHelper;
 - (BOOL)deleteOperationResponse;
-- (BOOL)demoModeValueForKey:(id)a3;
+- (BOOL)demoModeValueForKey:(id)key;
 - (BOOL)demoSetup;
 - (BOOL)holdPowerAssertion;
 - (BOOL)iCloudAccountSyncNeeded;
@@ -39,24 +39,24 @@
 - (BOOL)migrateCellularSupportFlag;
 - (BOOL)migrateDemoDeviceToDemoVolume;
 - (BOOL)migratePreferenceAndWifiSettingsToDemoVolume;
-- (BOOL)moveFilesToFinalDst:(id)a3 finalPath:(id)a4;
+- (BOOL)moveFilesToFinalDst:(id)dst finalPath:(id)path;
 - (BOOL)proceeded;
-- (BOOL)removeKeyFromPreferenceFile:(id)a3;
+- (BOOL)removeKeyFromPreferenceFile:(id)file;
 - (BOOL)removePerHubInfoFromPreferencesForMigration;
 - (BOOL)removeTemporaryPasscodeIfNeeded;
 - (BOOL)revertSnapshot;
 - (BOOL)runCleanUpForBetterTogetherDevice;
 - (BOOL)saveCurrentiOSBuild;
-- (BOOL)saveHubCertificateIdentifer:(id)a3;
-- (BOOL)saveHubHostNameList:(id)a3;
-- (BOOL)saveHubSuppliedSettings:(id)a3;
-- (BOOL)saveOperationError:(id)a3;
-- (BOOL)sendIconStateToSB:(id)a3;
+- (BOOL)saveHubCertificateIdentifer:(id)identifer;
+- (BOOL)saveHubHostNameList:(id)list;
+- (BOOL)saveHubSuppliedSettings:(id)settings;
+- (BOOL)saveOperationError:(id)error;
+- (BOOL)sendIconStateToSB:(id)b;
 - (BOOL)setDemoDeviceFlag;
-- (BOOL)setDemoEnrollmentFlag:(id)a3;
-- (BOOL)setLowPowerMode:(int64_t)a3;
+- (BOOL)setDemoEnrollmentFlag:(id)flag;
+- (BOOL)setLowPowerMode:(int64_t)mode;
 - (BOOL)setPOSDeviceFlag;
-- (BOOL)setSEPDemoMode:(BOOL)a3;
+- (BOOL)setSEPDemoMode:(BOOL)mode;
 - (BOOL)setupDemoDeviceMetadataFolder;
 - (BOOL)setupDummyPreferenceFile;
 - (BOOL)setupFactoryDemoDeviceMetadataFolder;
@@ -66,7 +66,7 @@
 - (BOOL)turnOnDemoMode;
 - (BOOL)turnOnPressDemoMode;
 - (BOOL)turnOnStoreDemoMode;
-- (BOOL)updateDeviceOptions:(id)a3 skipImutableKeys:(BOOL)a4;
+- (BOOL)updateDeviceOptions:(id)options skipImutableKeys:(BOOL)keys;
 - (BOOL)waitingForCommand;
 - (MSDTargetDevice)init;
 - (NSData)certificateHash;
@@ -89,8 +89,8 @@
 - (NSString)serialNumber;
 - (NSString)udid;
 - (id)cloudPairedDevices;
-- (id)decodeComponentIdx:(int)a3 forSavedString:(id)a4;
-- (id)deviceInformation:(id)a3 appendPingInfo:(BOOL)a4;
+- (id)decodeComponentIdx:(int)idx forSavedString:(id)string;
+- (id)deviceInformation:(id)information appendPingInfo:(BOOL)info;
 - (id)getCachingHubFailureEventForPing;
 - (id)getDemoEnrollmentFlag;
 - (id)getDesiredIconStateFromSB;
@@ -113,7 +113,7 @@
 - (id)minOSVersionAvailable;
 - (id)pathForDummyPreferenceFile;
 - (id)previousiOSBuild;
-- (id)readNVRam:(id)a3;
+- (id)readNVRam:(id)ram;
 - (id)requiredDeletableSystemApps;
 - (id)retrieveSignedManifest;
 - (int)activationConfigurationFlags;
@@ -128,9 +128,9 @@
 - (unint64_t)fetchActiveNetworkInterface;
 - (unint64_t)typeOfDemoDevice;
 - (void)acquireDeviceKeybagAssertionIfNeeded;
-- (void)backToVirgin:(int)a3;
-- (void)caLogsUploadTimerHandler:(id)a3;
-- (void)cleanUpBackgroundState:(BOOL)a3;
+- (void)backToVirgin:(int)virgin;
+- (void)caLogsUploadTimerHandler:(id)handler;
+- (void)cleanUpBackgroundState:(BOOL)state;
 - (void)cleanupDummyPreferenceFile;
 - (void)clearMinOSVersionAvailable;
 - (void)clearOSUpdateRequest;
@@ -139,69 +139,69 @@
 - (void)clearUpNvramIfNeeded;
 - (void)configApplePencilToEnterSleepModeIfPaired;
 - (void)configureGreyMatterAutoUpdate;
-- (void)configureLowPowerModeForTime:(id)a3;
+- (void)configureLowPowerModeForTime:(id)time;
 - (void)configureNetworkInterface;
 - (void)delayRebootForTesting;
 - (void)destroyWorkFolderForBootTask;
 - (void)disableLaunchdServicesIfNeededForWatch;
 - (void)disableSUAutoDownloadForWatch;
-- (void)enableSnapshotMode:(BOOL)a3;
+- (void)enableSnapshotMode:(BOOL)mode;
 - (void)forceSwitchToDemoModeIfNeeded;
 - (void)installAndWaitForSystemApps;
 - (void)kickOffCachedBundleInstall;
-- (void)manageDataVolume:(id)a3;
-- (void)manageDemoVolume:(id)a3;
-- (void)manageDeviceSnapshot:(id)a3;
-- (void)manageUserVolume:(id)a3;
-- (void)manualUpdateMode:(BOOL *)a3 allowChange:(BOOL *)a4;
+- (void)manageDataVolume:(id)volume;
+- (void)manageDemoVolume:(id)volume;
+- (void)manageDeviceSnapshot:(id)snapshot;
+- (void)manageUserVolume:(id)volume;
+- (void)manualUpdateMode:(BOOL *)mode allowChange:(BOOL *)change;
 - (void)markContentInstallingInstalled;
 - (void)migrateNvramToDemoVolume;
 - (void)notifyCleanEnergyChargingToggled;
-- (void)obliterateDeviceWithAdminCredential:(id)a3;
-- (void)patchBackupFolderInStaging:(id)a3;
-- (void)processNewFeatureFlags:(id)a3 oldFeatureFlags:(id)a4;
-- (void)refreshStoreHoursManagerUsingSettingsAndTime:(id)a3;
+- (void)obliterateDeviceWithAdminCredential:(id)credential;
+- (void)patchBackupFolderInStaging:(id)staging;
+- (void)processNewFeatureFlags:(id)flags oldFeatureFlags:(id)featureFlags;
+- (void)refreshStoreHoursManagerUsingSettingsAndTime:(id)time;
 - (void)registerCAHearbeatActivity;
 - (void)resetSystemTimeCache;
-- (void)saveDeviceOptions:(id)a3;
-- (void)saveFindMyHubRetryAtTime:(int64_t)a3;
-- (void)saveHubLastOnlineTime:(int64_t)a3;
-- (void)saveLastSettingsUpdatedTime:(id)a3;
-- (void)saveLastShallowRefreshTime:(id)a3;
-- (void)saveLastSnapshotRevertTime:(id)a3;
-- (void)saveMinOSVersionAvailable:(id)a3;
-- (void)saveOSPreferencesRequest:(id)a3;
-- (void)saveOSUpdateRequest:(id)a3;
+- (void)saveDeviceOptions:(id)options;
+- (void)saveFindMyHubRetryAtTime:(int64_t)time;
+- (void)saveHubLastOnlineTime:(int64_t)time;
+- (void)saveLastSettingsUpdatedTime:(id)time;
+- (void)saveLastShallowRefreshTime:(id)time;
+- (void)saveLastSnapshotRevertTime:(id)time;
+- (void)saveMinOSVersionAvailable:(id)available;
+- (void)saveOSPreferencesRequest:(id)request;
+- (void)saveOSUpdateRequest:(id)request;
 - (void)saveRequiredDeletableSystemApps;
-- (void)saveSnapshotRevertFlagged:(BOOL)a3;
-- (void)saveiCloudAccountRecoveryKey:(id)a3;
-- (void)saveiCloudAccountSyncNeeded:(BOOL)a3;
-- (void)setBackgroundDownloadActive:(BOOL)a3;
-- (void)setBackgroundDownloadState:(unint64_t)a3;
-- (void)setCachedBundleInstallState:(id)a3;
-- (void)setHubHostName:(id)a3;
-- (void)setHubPort:(id)a3;
-- (void)setHubProtocolVersion:(id)a3;
-- (void)setInstalledFactoryBundleID:(id)a3;
-- (void)setPreferredStoreID:(id)a3;
-- (void)setProceeded:(BOOL)a3;
-- (void)setRequest:(id)a3;
-- (void)setResponse:(id)a3;
-- (void)setWaitingForCommand:(BOOL)a3;
-- (void)setWifiSettings:(id)a3;
+- (void)saveSnapshotRevertFlagged:(BOOL)flagged;
+- (void)saveiCloudAccountRecoveryKey:(id)key;
+- (void)saveiCloudAccountSyncNeeded:(BOOL)needed;
+- (void)setBackgroundDownloadActive:(BOOL)active;
+- (void)setBackgroundDownloadState:(unint64_t)state;
+- (void)setCachedBundleInstallState:(id)state;
+- (void)setHubHostName:(id)name;
+- (void)setHubPort:(id)port;
+- (void)setHubProtocolVersion:(id)version;
+- (void)setInstalledFactoryBundleID:(id)d;
+- (void)setPreferredStoreID:(id)d;
+- (void)setProceeded:(BOOL)proceeded;
+- (void)setRequest:(id)request;
+- (void)setResponse:(id)response;
+- (void)setWaitingForCommand:(BOOL)command;
+- (void)setWifiSettings:(id)settings;
 - (void)setupCoreAnalyticsLogsUploadTimer;
 - (void)setupSnapshotRevertTimer;
 - (void)setupStoreHoursManager;
 - (void)setupWorkFolderForBootTask;
 - (void)shutdown;
-- (void)snapshotRevertTimerHandler:(id)a3;
-- (void)stageNewOSPreferences:(id)a3;
+- (void)snapshotRevertTimerHandler:(id)handler;
+- (void)stageNewOSPreferences:(id)preferences;
 - (void)startWaitingForCommandTimer;
 - (void)terminateConfigurationApp;
 - (void)unlockDeviceKeybagIfNeeded;
-- (void)waitForBuddy:(id)a3 updateStatus:(BOOL)a4;
+- (void)waitForBuddy:(id)buddy updateStatus:(BOOL)status;
 - (void)waitForBuddyWithTimeout;
-- (void)waitForNetworkReachabilityWithTimeout:(unint64_t)a3;
+- (void)waitForNetworkReachabilityWithTimeout:(unint64_t)timeout;
 @end
 
 @implementation MSDTargetDevice
@@ -244,21 +244,21 @@
 - (NSString)udid
 {
   v2 = +[MSDPlatform sharedInstance];
-  v3 = [v2 macOS];
+  macOS = [v2 macOS];
 
-  if (v3)
+  if (macOS)
   {
     v4 = MGCopyAnswer();
     v5 = [v4 stringByPaddingToLength:25 withString:@"0" startingAtIndex:0];
-    v6 = [v5 uppercaseString];
+    uppercaseString = [v5 uppercaseString];
   }
 
   else
   {
-    v6 = MGCopyAnswer();
+    uppercaseString = MGCopyAnswer();
   }
 
-  return v6;
+  return uppercaseString;
 }
 
 - (NSString)serialNumber
@@ -275,15 +275,15 @@
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)typeOfDemoDevice
@@ -327,11 +327,11 @@
   }
 }
 
-- (BOOL)removeKeyFromPreferenceFile:(id)a3
+- (BOOL)removeKeyFromPreferenceFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[MSDPreferencesFile sharedInstance];
-  v5 = [v4 removeObjectForKey:v3];
+  v5 = [v4 removeObjectForKey:fileCopy];
 
   if ((v5 & 1) == 0)
   {
@@ -349,11 +349,11 @@
   return v3;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"msd-request"];
+  [v4 setObject:requestCopy forKey:@"msd-request"];
 }
 
 - (NSString)response
@@ -364,17 +364,17 @@
   return v3;
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"msd-response"];
+  [v4 setObject:responseCopy forKey:@"msd-response"];
 }
 
 - (void)forceSwitchToDemoModeIfNeeded
 {
-  v3 = [(MSDTargetDevice *)self modeLock];
-  objc_sync_enter(v3);
+  modeLock = [(MSDTargetDevice *)self modeLock];
+  objc_sync_enter(modeLock);
   v4 = +[MSDKeychainManager sharedInstance];
   v5 = [v4 getItemForKey:@"com.apple.mobilestoredemo.keychainItemID"];
 
@@ -407,8 +407,8 @@
       [v9 switchToBackupFolder];
 
       v10 = +[MSDProgressUpdater sharedInstance];
-      v11 = [v10 bundleInProgress];
-      [v11 stopBundleUpdateTimer];
+      bundleInProgress = [v10 bundleInProgress];
+      [bundleInProgress stopBundleUpdateTimer];
     }
 
     if ([(MSDTargetDevice *)self mode]== 7)
@@ -419,7 +419,7 @@
     v12 = +[MSDProgressUpdater sharedInstance];
     [v12 updateStage:7];
 
-    v13 = [(MSDTargetDevice *)self getSavedFlag];
+    getSavedFlag = [(MSDTargetDevice *)self getSavedFlag];
     v14 = +[MSDPlatform sharedInstance];
     if (([v14 macOS] & 1) == 0)
     {
@@ -428,8 +428,8 @@
       {
 
 LABEL_22:
-        v17 = [(MSDTargetDevice *)self helperAgent];
-        [v17 clearStagedDeviceAfterUpdateProcess];
+        helperAgent = [(MSDTargetDevice *)self helperAgent];
+        [helperAgent clearStagedDeviceAfterUpdateProcess];
 
         [(MSDTargetDevice *)self setMode:5];
         [(MSDTargetDevice *)self enableSnapshotMode:1];
@@ -437,7 +437,7 @@ LABEL_22:
       }
     }
 
-    if ((v13 & 2) != 0)
+    if ((getSavedFlag & 2) != 0)
     {
       [(MSDTargetDevice *)self waitForPricing:60 forReboot:1];
     }
@@ -453,7 +453,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  objc_sync_exit(v3);
+  objc_sync_exit(modeLock);
 }
 
 - (BOOL)setDemoDeviceFlag
@@ -484,11 +484,11 @@ LABEL_23:
   return v4;
 }
 
-- (void)setPreferredStoreID:(id)a3
+- (void)setPreferredStoreID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"PreferredStoreID"];
+  [v4 setObject:dCopy forKey:@"PreferredStoreID"];
 }
 
 - (NSString)preferredStoreID
@@ -499,7 +499,7 @@ LABEL_23:
   return v3;
 }
 
-- (void)obliterateDeviceWithAdminCredential:(id)a3
+- (void)obliterateDeviceWithAdminCredential:(id)credential
 {
   v3 = objc_alloc_init(DDRResetOptions);
   v4 = +[MSDPreferencesFile sharedInstance];
@@ -523,10 +523,10 @@ LABEL_23:
   [v8 resetWithRequest:v7 completion:&stru_10016AD78];
 }
 
-- (void)backToVirgin:(int)a3
+- (void)backToVirgin:(int)virgin
 {
   v5 = dispatch_semaphore_create(0);
-  v6 = [(MSDTargetDevice *)self mode];
+  mode = [(MSDTargetDevice *)self mode];
   v7 = +[MSDDemoUpdateTimeKeeper sharedInstance];
   v26 = 0;
   v8 = [v7 shouldCleanUp:&v26];
@@ -539,35 +539,35 @@ LABEL_23:
 
   v11 = sub_100063A54();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v6 == 5 || v8)
+  if (mode == 5 || v8)
   {
     if (v12)
     {
       *buf = 67109376;
-      LODWORD(v28[0]) = v6;
+      LODWORD(v28[0]) = mode;
       WORD2(v28[0]) = 1024;
       *(v28 + 6) = v8;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "mode = %d, canceling is %d, need an extra reboot to complete the operation.", buf, 0xEu);
     }
 
-    if (a3 == 9)
+    if (virgin == 9)
     {
-      v19 = self;
+      selfCopy2 = self;
       v20 = 8;
     }
 
     else
     {
-      if (a3)
+      if (virgin)
       {
         goto LABEL_23;
       }
 
-      v19 = self;
+      selfCopy2 = self;
       v20 = 6;
     }
 
-    [(MSDTargetDevice *)v19 switchModeImmediately:v20];
+    [(MSDTargetDevice *)selfCopy2 switchModeImmediately:v20];
     goto LABEL_23;
   }
 
@@ -603,7 +603,7 @@ LABEL_23:
 
   [(MSDTargetDevice *)self manageDemoVolume:@"Delete"];
   [(MSDTargetDevice *)self unregisterCAHeartbeatActivity];
-  if (a3 == 9)
+  if (virgin == 9)
   {
     [(MSDTargetDevice *)self obliterateDeviceWithAdminCredential:0];
     dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
@@ -618,9 +618,9 @@ LABEL_23:
     v22 = +[MSDAppPrivacyPermissionsHelper sharedInstance];
     [v22 revokePrivacyPermissionsForAllApps];
 
-    v23 = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
+    pathForDummyPreferenceFile = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
     v24 = +[NSFileManager defaultManager];
-    [v24 removeItemAtPath:v23 error:0];
+    [v24 removeItemAtPath:pathForDummyPreferenceFile error:0];
 
     v25 = +[MSDKeychainManager sharedInstance];
     [v25 deleteItemForKey:@"com.apple.mobilestoredemo.keychainItemID"];
@@ -705,17 +705,17 @@ LABEL_23:
 
 - (BOOL)migrateDemoDeviceToDemoVolume
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSDTargetDevice *)v2 migratePreferenceAndWifiSettingsToDemoVolume];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  migratePreferenceAndWifiSettingsToDemoVolume = [(MSDTargetDevice *)selfCopy migratePreferenceAndWifiSettingsToDemoVolume];
+  if (migratePreferenceAndWifiSettingsToDemoVolume)
   {
-    [(MSDTargetDevice *)v2 migrateNvramToDemoVolume];
+    [(MSDTargetDevice *)selfCopy migrateNvramToDemoVolume];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return migratePreferenceAndWifiSettingsToDemoVolume;
 }
 
 - (BOOL)migratePreferenceAndWifiSettingsToDemoVolume
@@ -724,8 +724,8 @@ LABEL_23:
   [(MSDTargetDevice *)self manageDemoVolume:@"Setup"];
   if (+[MSDPreferencesFile preferencesFileExists])
   {
-    v4 = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
-    v5 = [v3 fileExistsAtPath:v4];
+    pathForDummyPreferenceFile = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
+    v5 = [v3 fileExistsAtPath:pathForDummyPreferenceFile];
 
     if (v5)
     {
@@ -766,10 +766,10 @@ LABEL_23:
 
   v8 = [NSDictionary dictionaryWithContentsOfFile:@"/private/var/mnt/com.apple.mobilestoredemo.storage/Preferences/com.apple.MobileStoreDemo.WiFiSetting.plist"];
   [(MSDTargetDevice *)self manageDemoVolume:@"Delete"];
-  v13 = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
+  pathForDummyPreferenceFile2 = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
   v14 = +[MSDPreferencesFile preferencesFilePath];
   v20 = 0;
-  v15 = [v3 moveItemAtPath:v13 toPath:v14 error:&v20];
+  v15 = [v3 moveItemAtPath:pathForDummyPreferenceFile2 toPath:v14 error:&v20];
   v7 = v20;
 
   if ((v15 & 1) == 0)
@@ -788,8 +788,8 @@ LABEL_23:
     [(MSDTargetDevice *)self setWifiSettings:v8];
   }
 
-  v16 = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
-  v17 = [v3 createFileAtPath:v16 contents:0 attributes:0];
+  pathForDummyPreferenceFile3 = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
+  v17 = [v3 createFileAtPath:pathForDummyPreferenceFile3 contents:0 attributes:0];
 
   if ((v17 & 1) == 0)
   {
@@ -874,11 +874,11 @@ LABEL_20:
 
 - (BOOL)setupDemoDeviceMetadataFolder
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[NSFileManager defaultManager];
-  [(MSDTargetDevice *)v2 manageDemoVolume:@"Setup"];
-  if (![(MSDTargetDevice *)v2 createMobileStoreDemoCache])
+  [(MSDTargetDevice *)selfCopy manageDemoVolume:@"Setup"];
+  if (![(MSDTargetDevice *)selfCopy createMobileStoreDemoCache])
   {
     v8 = sub_100063B64();
     sub_1000D2850(v8, v11);
@@ -889,16 +889,16 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  v4 = [(MSDTargetDevice *)v2 pathForDummyPreferenceFile];
-  v5 = [v3 createFileAtPath:v4 contents:0 attributes:0];
+  pathForDummyPreferenceFile = [(MSDTargetDevice *)selfCopy pathForDummyPreferenceFile];
+  v5 = [v3 createFileAtPath:pathForDummyPreferenceFile contents:0 attributes:0];
 
   if ((v5 & 1) == 0)
   {
     v9 = sub_100063B64();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(MSDTargetDevice *)v2 pathForDummyPreferenceFile];
-      sub_1000D28B8(v10, v11, v9);
+      pathForDummyPreferenceFile2 = [(MSDTargetDevice *)selfCopy pathForDummyPreferenceFile];
+      sub_1000D28B8(pathForDummyPreferenceFile2, v11, v9);
     }
 
     goto LABEL_8;
@@ -907,14 +907,14 @@ LABEL_8:
   v6 = 1;
 LABEL_4:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v6;
 }
 
 - (BOOL)setupFactoryDemoDeviceMetadataFolder
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -925,7 +925,7 @@ LABEL_4:
   v4 = +[MSDHelperAgent sharedInstance];
   v5 = [v4 prepareWorkDirectory:@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata" writableByNonRoot:1];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
@@ -939,8 +939,8 @@ LABEL_4:
 
 - (BOOL)setupDummyPreferenceFile
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -949,20 +949,20 @@ LABEL_4:
   }
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [(MSDTargetDevice *)v2 pathForDummyPreferenceFile];
-  v6 = [v4 createFileAtPath:v5 contents:0 attributes:0];
+  pathForDummyPreferenceFile = [(MSDTargetDevice *)selfCopy pathForDummyPreferenceFile];
+  v6 = [v4 createFileAtPath:pathForDummyPreferenceFile contents:0 attributes:0];
 
   if ((v6 & 1) == 0)
   {
     v8 = sub_100063A54();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(MSDTargetDevice *)v2 pathForDummyPreferenceFile];
-      sub_1000D28B8(v9, v10, v8);
+      pathForDummyPreferenceFile2 = [(MSDTargetDevice *)selfCopy pathForDummyPreferenceFile];
+      sub_1000D28B8(pathForDummyPreferenceFile2, v10, v8);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v6;
 }
 
@@ -976,16 +976,16 @@ LABEL_4:
   }
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
-  [v4 removeItemAtPath:v5 error:0];
+  pathForDummyPreferenceFile = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
+  [v4 removeItemAtPath:pathForDummyPreferenceFile error:0];
 }
 
-- (BOOL)moveFilesToFinalDst:(id)a3 finalPath:(id)a4
+- (BOOL)moveFilesToFinalDst:(id)dst finalPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSDTargetDevice *)self helperAgent];
-  v9 = [v8 moveStagingToFinal:v6 finalPath:v7];
+  dstCopy = dst;
+  pathCopy = path;
+  helperAgent = [(MSDTargetDevice *)self helperAgent];
+  v9 = [helperAgent moveStagingToFinal:dstCopy finalPath:pathCopy];
 
   if ((v9 & 1) == 0)
   {
@@ -995,17 +995,17 @@ LABEL_4:
   return v9;
 }
 
-- (void)patchBackupFolderInStaging:(id)a3
+- (void)patchBackupFolderInStaging:(id)staging
 {
-  v4 = a3;
+  stagingCopy = staging;
   v5 = +[NSFileManager defaultManager];
-  v33[0] = v4;
+  v33[0] = stagingCopy;
   v33[1] = @"/var/mobile/Library/Mobile Documents";
   v6 = [NSArray arrayWithObjects:v33 count:2];
   v7 = [NSString pathWithComponents:v6];
 
-  v8 = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
-  v9 = [v4 stringByAppendingPathComponent:v8];
+  pathForDummyPreferenceFile = [(MSDTargetDevice *)self pathForDummyPreferenceFile];
+  v9 = [stagingCopy stringByAppendingPathComponent:pathForDummyPreferenceFile];
   if ([v5 fileExistsAtPath:v9])
   {
     v10 = sub_100063A54();
@@ -1027,7 +1027,7 @@ LABEL_4:
         sub_1000D29C0();
       }
 
-      v15 = 0;
+      stringByDeletingLastPathComponent = 0;
       goto LABEL_18;
     }
 
@@ -1039,11 +1039,11 @@ LABEL_4:
     v14 = 0;
   }
 
-  v15 = [v9 stringByDeletingLastPathComponent];
-  if (([v5 fileExistsAtPath:v15] & 1) == 0)
+  stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+  if (([v5 fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
   {
     v25 = v14;
-    v16 = [v5 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v25];
+    v16 = [v5 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
     v13 = v25;
 
     if ((v16 & 1) == 0)
@@ -1061,7 +1061,7 @@ LABEL_4:
   }
 
   v24 = v14;
-  v17 = [v5 copyItemAtPath:v8 toPath:v9 error:&v24];
+  v17 = [v5 copyItemAtPath:pathForDummyPreferenceFile toPath:v9 error:&v24];
   v13 = v24;
 
   if ((v17 & 1) == 0)
@@ -1069,13 +1069,13 @@ LABEL_4:
     v21 = sub_100063A54();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v13 localizedDescription];
+      localizedDescription = [v13 localizedDescription];
       *buf = 138543874;
-      v28 = v8;
+      v28 = pathForDummyPreferenceFile;
       v29 = 2114;
       v30 = v9;
       v31 = 2114;
-      v32 = v22;
+      v32 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Cannot copy preference file to backup path (from %{public}@ to %{public}@ - %{public}@)", buf, 0x20u);
     }
 
@@ -1142,16 +1142,16 @@ LABEL_18:
   [v2 setDispatchQueue:&_dispatch_main_q];
   [v2 open];
   [v2 activate];
-  v4 = [v2 devices];
-  if ([v4 count] == 1)
+  devices = [v2 devices];
+  if ([devices count] == 1)
   {
     buf[2] = 1;
     *buf = 676;
-    v5 = [v4 firstObject];
-    [v5 open];
-    [v5 activate];
+    firstObject = [devices firstObject];
+    [firstObject open];
+    [firstObject activate];
     v12 = 0;
-    v6 = [v5 setReport:buf reportLength:3 withIdentifier:164 forType:2 error:&v12];
+    v6 = [firstObject setReport:buf reportLength:3 withIdentifier:164 forType:2 error:&v12];
     v7 = v12;
     v8 = sub_100063A54();
     v9 = v8;
@@ -1169,39 +1169,39 @@ LABEL_18:
       sub_1000D2AF0(v7);
     }
 
-    [v5 close];
+    [firstObject close];
   }
 
   else
   {
-    v5 = sub_100063A54();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    firstObject = sub_100063A54();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 count];
+      v10 = [devices count];
       *buf = 134217984;
       v14 = v10;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "No or multiple matching Apple Pencil device(s) found: %lu", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "No or multiple matching Apple Pencil device(s) found: %lu", buf, 0xCu);
     }
   }
 
   [v2 close];
 }
 
-- (void)manualUpdateMode:(BOOL *)a3 allowChange:(BOOL *)a4
+- (void)manualUpdateMode:(BOOL *)mode allowChange:(BOOL *)change
 {
-  if (a3 && a4)
+  if (mode && change)
   {
-    v7 = [(MSDTargetDevice *)self mode];
-    if (v7 >= 2)
+    mode = [(MSDTargetDevice *)self mode];
+    if (mode >= 2)
     {
-      *a3 = 0;
-      *a4 = v7 == 5;
+      *mode = 0;
+      *change = mode == 5;
     }
 
     else
     {
-      *a3 = 1;
-      *a4 = [(MSDTargetDevice *)self allowEnteringDemoMode];
+      *mode = 1;
+      *change = [(MSDTargetDevice *)self allowEnteringDemoMode];
     }
   }
 
@@ -1211,10 +1211,10 @@ LABEL_18:
   }
 }
 
-- (id)deviceInformation:(id)a3 appendPingInfo:(BOOL)a4
+- (id)deviceInformation:(id)information appendPingInfo:(BOOL)info
 {
-  v4 = a4;
-  v6 = a3;
+  infoCopy = info;
+  informationCopy = information;
   [NSMutableDictionary dictionaryWithCapacity:0];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
@@ -1222,13 +1222,13 @@ LABEL_18:
   v16 = &unk_10016ADA0;
   v7 = v17 = self;
   v18 = v7;
-  [v6 enumerateObjectsUsingBlock:&v13];
+  [informationCopy enumerateObjectsUsingBlock:&v13];
 
-  if (v4)
+  if (infoCopy)
   {
     v8 = [MSDAccountManager sharedInstance:v13];
-    v9 = [v8 existingAccounts];
-    v10 = [v9 mutableCopy];
+    existingAccounts = [v8 existingAccounts];
+    v10 = [existingAccounts mutableCopy];
 
     if (v10)
     {
@@ -1259,21 +1259,21 @@ LABEL_18:
 
   else
   {
-    v5 = [(MSDTargetDevice *)self localHubFailureReason];
+    localHubFailureReason = [(MSDTargetDevice *)self localHubFailureReason];
 
-    if (v5)
+    if (localHubFailureReason)
     {
-      v6 = [(MSDTargetDevice *)self localHubFailureReason];
+      localHubFailureReason2 = [(MSDTargetDevice *)self localHubFailureReason];
     }
 
     else
     {
-      v6 = @"Default:Local Hub Not Reachable";
+      localHubFailureReason2 = @"Default:Local Hub Not Reachable";
     }
 
-    v7 = [NSDictionary dictionaryWithObjectsAndKeys:@"CACHING_HUB_FAILURE", @"error", v6, @"reason", 0];
-    v8 = [(MSDTargetDevice *)self udid];
-    v9 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v8, @"UniqueDeviceID", v7, @"MSDCachingHubEvent", 0];
+    v7 = [NSDictionary dictionaryWithObjectsAndKeys:@"CACHING_HUB_FAILURE", @"error", localHubFailureReason2, @"reason", 0];
+    udid = [(MSDTargetDevice *)self udid];
+    v9 = [NSMutableDictionary dictionaryWithObjectsAndKeys:udid, @"UniqueDeviceID", v7, @"MSDCachingHubEvent", 0];
 
     byte_1001A5780 = 1;
     v10 = sub_100063A54();
@@ -1294,21 +1294,21 @@ LABEL_18:
 - (id)getS3ServerFailureEventForPing
 {
   v3 = [NSMutableDictionary dictionaryWithCapacity:0];
-  v4 = [(MSDTargetDevice *)self s3ServerFailureReason];
+  s3ServerFailureReason = [(MSDTargetDevice *)self s3ServerFailureReason];
 
-  if (v4)
+  if (s3ServerFailureReason)
   {
-    v5 = [(MSDTargetDevice *)self s3ServerFailureReason];
+    s3ServerFailureReason2 = [(MSDTargetDevice *)self s3ServerFailureReason];
   }
 
   else
   {
-    v5 = @"Default:S3 Server Not Reachable";
+    s3ServerFailureReason2 = @"Default:S3 Server Not Reachable";
   }
 
-  v6 = [NSDictionary dictionaryWithObjectsAndKeys:@"S3_SERVER_FAILURE", @"error", v5, @"reason", 0];
-  v7 = [(MSDTargetDevice *)self udid];
-  v8 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v7, @"UniqueDeviceID", v6, @"MSDS3ServerEvent", 0];
+  v6 = [NSDictionary dictionaryWithObjectsAndKeys:@"S3_SERVER_FAILURE", @"error", s3ServerFailureReason2, @"reason", 0];
+  udid = [(MSDTargetDevice *)self udid];
+  v8 = [NSMutableDictionary dictionaryWithObjectsAndKeys:udid, @"UniqueDeviceID", v6, @"MSDS3ServerEvent", 0];
 
   v9 = sub_100063A54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1325,32 +1325,32 @@ LABEL_18:
 {
   v2 = +[MSDPreferencesFile sharedInstance];
   v3 = [v2 objectForKey:@"criticalContentUpdateOnly"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)saveOperationError:(id)a3
+- (BOOL)saveOperationError:(id)error
 {
-  v4 = a3;
-  v5 = [(MSDTargetDevice *)self getSavedRequest];
-  if (v5)
+  errorCopy = error;
+  getSavedRequest = [(MSDTargetDevice *)self getSavedRequest];
+  if (getSavedRequest)
   {
-    v6 = [v4 localizedFailureReason];
+    localizedFailureReason = [errorCopy localizedFailureReason];
 
-    v7 = [v4 domain];
-    v8 = [v4 code];
-    v9 = [v4 localizedDescription];
-    v10 = v9;
-    if (v6)
+    domain = [errorCopy domain];
+    code = [errorCopy code];
+    localizedDescription = [errorCopy localizedDescription];
+    v10 = localizedDescription;
+    if (localizedFailureReason)
     {
-      v11 = [v4 localizedFailureReason];
-      v12 = [NSString stringWithFormat:@"demoUpdateFailed: %@:0x%lx: %@ - %@", v7, v8, v10, v11];
+      localizedFailureReason2 = [errorCopy localizedFailureReason];
+      v12 = [NSString stringWithFormat:@"demoUpdateFailed: %@:0x%lx: %@ - %@", domain, code, v10, localizedFailureReason2];
     }
 
     else
     {
-      v12 = [NSString stringWithFormat:@"demoUpdateFailed: %@:0x%lx: %@", v7, v8, v9];
+      v12 = [NSString stringWithFormat:@"demoUpdateFailed: %@:0x%lx: %@", domain, code, localizedDescription];
     }
 
     v13 = sub_100063A54();
@@ -1361,10 +1361,10 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Saving error message: %{public}@", buf, 0xCu);
     }
 
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%08lX", [v4 code]);
-    v15 = [v4 domain];
-    v16 = [v4 localizedDescription];
-    v17 = [NSString stringWithFormat:@"%@:%@:%@", v14, v15, v16];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%08lX", [errorCopy code]);
+    domain2 = [errorCopy domain];
+    localizedDescription2 = [errorCopy localizedDescription];
+    v17 = [NSString stringWithFormat:@"%@:%@:%@", v14, domain2, localizedDescription2];
     [(MSDTargetDevice *)self setResponse:v17];
   }
 
@@ -1377,14 +1377,14 @@ LABEL_18:
     }
   }
 
-  return v5 != 0;
+  return getSavedRequest != 0;
 }
 
 - (BOOL)deleteOperationResponse
 {
-  v3 = [(MSDTargetDevice *)self response];
+  response = [(MSDTargetDevice *)self response];
 
-  if (!v3)
+  if (!response)
   {
     return 1;
   }
@@ -1392,28 +1392,28 @@ LABEL_18:
   return [(MSDTargetDevice *)self removeKeyFromPreferenceFile:@"msd-response"];
 }
 
-- (id)decodeComponentIdx:(int)a3 forSavedString:(id)a4
+- (id)decodeComponentIdx:(int)idx forSavedString:(id)string
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (stringCopy)
   {
-    v7 = [v5 componentsSeparatedByString:@":"];
+    v7 = [stringCopy componentsSeparatedByString:@":"];
     v8 = sub_100063A54();
-    v9 = a3;
+    idxCopy = idx;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 objectAtIndexedSubscript:a3];
+      v10 = [v7 objectAtIndexedSubscript:idx];
       v15[0] = 67109378;
-      v15[1] = a3;
+      v15[1] = idx;
       v16 = 2114;
       v17 = v10;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "components[%d] = %{public}@", v15, 0x12u);
     }
 
-    if ([v7 count] > a3 && (objc_msgSend(v7, "objectAtIndexedSubscript:", a3), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v13))
+    if ([v7 count] > idx && (objc_msgSend(v7, "objectAtIndexedSubscript:", idx), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v13))
     {
-      v11 = [v7 objectAtIndexedSubscript:v9];
+      v11 = [v7 objectAtIndexedSubscript:idxCopy];
     }
 
     else
@@ -1432,58 +1432,58 @@ LABEL_18:
 
 - (id)getSavedRequest
 {
-  v3 = [(MSDTargetDevice *)self request];
-  v4 = [(MSDTargetDevice *)self decodeComponentIdx:0 forSavedString:v3];
+  request = [(MSDTargetDevice *)self request];
+  v4 = [(MSDTargetDevice *)self decodeComponentIdx:0 forSavedString:request];
 
   return v4;
 }
 
 - (int)getSavedFlag
 {
-  v3 = [(MSDTargetDevice *)self request];
-  v4 = [(MSDTargetDevice *)self decodeComponentIdx:3 forSavedString:v3];
+  request = [(MSDTargetDevice *)self request];
+  v4 = [(MSDTargetDevice *)self decodeComponentIdx:3 forSavedString:request];
 
   if (v4)
   {
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  return v5;
+  return intValue;
 }
 
 - (int)getSavedCompleteByInterval
 {
-  v3 = [(MSDTargetDevice *)self request];
-  v4 = [(MSDTargetDevice *)self decodeComponentIdx:4 forSavedString:v3];
+  request = [(MSDTargetDevice *)self request];
+  v4 = [(MSDTargetDevice *)self decodeComponentIdx:4 forSavedString:request];
 
   if (v4)
   {
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v5 = 0;
+    intValue = 0;
   }
 
-  return v5;
+  return intValue;
 }
 
 - (id)getSavedError
 {
-  v3 = [(MSDTargetDevice *)self response];
-  v4 = [(MSDTargetDevice *)self decodeComponentIdx:0 forSavedString:v3];
+  response = [(MSDTargetDevice *)self response];
+  v4 = [(MSDTargetDevice *)self decodeComponentIdx:0 forSavedString:response];
 
-  v5 = [(MSDTargetDevice *)self response];
-  v6 = [(MSDTargetDevice *)self decodeComponentIdx:1 forSavedString:v5];
+  response2 = [(MSDTargetDevice *)self response];
+  v6 = [(MSDTargetDevice *)self decodeComponentIdx:1 forSavedString:response2];
 
-  v7 = [(MSDTargetDevice *)self response];
-  v8 = [(MSDTargetDevice *)self decodeComponentIdx:2 forSavedString:v7];
+  response3 = [(MSDTargetDevice *)self response];
+  v8 = [(MSDTargetDevice *)self decodeComponentIdx:2 forSavedString:response3];
 
   v15 = 0;
   v9 = [NSScanner scannerWithString:v4];
@@ -1657,9 +1657,9 @@ LABEL_7:
 - (int64_t)batteryCapacity
 {
   v2 = MGCopyAnswer();
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)demoSetup
@@ -1669,9 +1669,9 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(MSDTargetDevice *)self request];
+  request = [(MSDTargetDevice *)self request];
 
-  return v4 != 0;
+  return request != 0;
 }
 
 - (int)activationConfigurationFlags
@@ -1698,15 +1698,15 @@ LABEL_7:
     }
 
 LABEL_9:
-    v5 = 0;
+    intValue = 0;
     goto LABEL_4;
   }
 
   v4 = [v2 objectForKeyedSubscript:@"DeviceConfigurationFlags"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 LABEL_4:
 
-  return v5;
+  return intValue;
 }
 
 - (BOOL)isVerifiedDemoDevice
@@ -1735,11 +1735,11 @@ LABEL_4:
 {
   if (!+[MSDOSFeatureFlags isPressDemoModeEnabled])
   {
-    v4 = [(MSDTargetDevice *)self hubSuppliedSettings];
-    v5 = v4;
-    if (v4)
+    hubSuppliedSettings = [(MSDTargetDevice *)self hubSuppliedSettings];
+    v5 = hubSuppliedSettings;
+    if (hubSuppliedSettings)
     {
-      v6 = [v4 objectForKey:@"DemoMode"];
+      v6 = [hubSuppliedSettings objectForKey:@"DemoMode"];
       if (v6)
       {
         objc_opt_class();
@@ -1753,11 +1753,11 @@ LABEL_15:
       }
     }
 
-    v7 = [(MSDTargetDevice *)self getDeviceOptions];
-    v6 = v7;
-    if (v7)
+    getDeviceOptions = [(MSDTargetDevice *)self getDeviceOptions];
+    v6 = getDeviceOptions;
+    if (getDeviceOptions)
     {
-      v8 = [v7 objectForKey:@"demo_mode"];
+      v8 = [getDeviceOptions objectForKey:@"demo_mode"];
       if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v3 = [v8 isEqualToString:@"press"];
@@ -1792,29 +1792,29 @@ LABEL_15:
 
 - (BOOL)isBetterTogetherDemo
 {
-  v2 = [(MSDTargetDevice *)self getDeviceOptions];
-  v3 = v2;
-  if (v2)
+  getDeviceOptions = [(MSDTargetDevice *)self getDeviceOptions];
+  v3 = getDeviceOptions;
+  if (getDeviceOptions)
   {
-    v4 = [v2 objectForKey:@"enable_better_together"];
+    v4 = [getDeviceOptions objectForKey:@"enable_better_together"];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)deactivateDevice
@@ -1850,24 +1850,24 @@ LABEL_15:
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isOfflineMode
 {
-  v3 = [(MSDTargetDevice *)self typeOfDemoDevice];
-  v4 = [(MSDTargetDevice *)self getDemoEnrollmentFlag];
-  v5 = [v4 isEqualToString:@"enrollmentSuccess"];
+  typeOfDemoDevice = [(MSDTargetDevice *)self typeOfDemoDevice];
+  getDemoEnrollmentFlag = [(MSDTargetDevice *)self getDemoEnrollmentFlag];
+  v5 = [getDemoEnrollmentFlag isEqualToString:@"enrollmentSuccess"];
 
-  if (![(MSDTargetDevice *)self mode]&& (v3 == 5 || v3 == 3))
+  if (![(MSDTargetDevice *)self mode]&& (typeOfDemoDevice == 5 || typeOfDemoDevice == 3))
   {
     return v5 ^ 1;
   }
@@ -1880,12 +1880,12 @@ LABEL_15:
 
 - (BOOL)dcotaOfflineModeDevice
 {
-  v3 = [(MSDTargetDevice *)self isDemoEligible];
-  v4 = [(MSDTargetDevice *)self typeOfDemoDevice];
-  v5 = [(MSDTargetDevice *)self isOfflineMode];
-  if (v4 == 5)
+  isDemoEligible = [(MSDTargetDevice *)self isDemoEligible];
+  typeOfDemoDevice = [(MSDTargetDevice *)self typeOfDemoDevice];
+  isOfflineMode = [(MSDTargetDevice *)self isOfflineMode];
+  if (typeOfDemoDevice == 5)
   {
-    v6 = v5;
+    v6 = isOfflineMode;
   }
 
   else
@@ -1893,7 +1893,7 @@ LABEL_15:
     v6 = 0;
   }
 
-  return v6 & v3;
+  return v6 & isDemoEligible;
 }
 
 - (BOOL)cachedBundleInstallAttempted
@@ -1913,11 +1913,11 @@ LABEL_15:
   return v3;
 }
 
-- (void)setCachedBundleInstallState:(id)a3
+- (void)setCachedBundleInstallState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"CachedBundleInstallState"];
+  [v4 setObject:stateCopy forKey:@"CachedBundleInstallState"];
 }
 
 - (NSString)installedFactoryBundleID
@@ -1953,20 +1953,20 @@ LABEL_6:
   return v5;
 }
 
-- (void)setInstalledFactoryBundleID:(id)a3
+- (void)setInstalledFactoryBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"InstalledFactoryBundleID"];
+  [v4 setObject:dCopy forKey:@"InstalledFactoryBundleID"];
 }
 
 - (void)kickOffCachedBundleInstall
 {
   v22 = 0;
-  v3 = [(MSDTargetDevice *)self isOfflineMode];
-  v4 = [(MSDTargetDevice *)self isVerifiedDemoDevice];
-  v5 = [(MSDTargetDevice *)self dcotaOfflineModeDevice];
-  v6 = [(MSDTargetDevice *)self getDemoEnrollmentFlag];
+  isOfflineMode = [(MSDTargetDevice *)self isOfflineMode];
+  isVerifiedDemoDevice = [(MSDTargetDevice *)self isVerifiedDemoDevice];
+  dcotaOfflineModeDevice = [(MSDTargetDevice *)self dcotaOfflineModeDevice];
+  getDemoEnrollmentFlag = [(MSDTargetDevice *)self getDemoEnrollmentFlag];
 
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1976,9 +1976,9 @@ LABEL_6:
   }
 
   v8 = os_transaction_create();
-  if (!v6)
+  if (!getDemoEnrollmentFlag)
   {
-    if (v4)
+    if (isVerifiedDemoDevice)
     {
       v9 = sub_100063A54();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1990,7 +1990,7 @@ LABEL_6:
       [(MSDTargetDevice *)self setupDemoDeviceMetadataFolder];
     }
 
-    else if (v3)
+    else if (isOfflineMode)
     {
       v10 = sub_100063A54();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2014,9 +2014,9 @@ LABEL_6:
   v12 = +[MSDDemoUpdateController sharedInstance];
   [v12 installCachedContentForCurrentLocale:&v22];
 
-  if (v5)
+  if (dcotaOfflineModeDevice)
   {
-    if (!v6)
+    if (!getDemoEnrollmentFlag)
     {
       v13 = sub_100063A54();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2058,16 +2058,16 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)saveHubCertificateIdentifer:(id)a3
+- (BOOL)saveHubCertificateIdentifer:(id)identifer
 {
-  v3 = a3;
+  identiferCopy = identifer;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"HubCertificateIdentifier"];
+  [v4 setObject:identiferCopy forKey:@"HubCertificateIdentifier"];
 
   v5 = +[MSDPreferencesFile sharedInstance];
-  LOBYTE(v3) = [v5 removeObjectsForKeys:&off_10017BD60];
+  LOBYTE(identiferCopy) = [v5 removeObjectsForKeys:&off_10017BD60];
 
-  return v3;
+  return identiferCopy;
 }
 
 - (NSString)hubHostName
@@ -2078,21 +2078,21 @@ LABEL_6:
   return v3;
 }
 
-- (void)setHubHostName:(id)a3
+- (void)setHubHostName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (+[MSDPreferencesFile preferencesFileExists])
   {
     v4 = sub_100063A54();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v3;
+      v7 = nameCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Saving hub host name: %{public}@", &v6, 0xCu);
     }
 
     v5 = +[MSDPreferencesFile sharedInstance];
-    [v5 setObject:v3 forKey:@"HubHostName"];
+    [v5 setObject:nameCopy forKey:@"HubHostName"];
   }
 }
 
@@ -2103,10 +2103,10 @@ LABEL_6:
 
   if (!v4)
   {
-    v5 = [(MSDTargetDevice *)self hubHostName];
-    if (v5)
+    hubHostName = [(MSDTargetDevice *)self hubHostName];
+    if (hubHostName)
     {
-      [NSArray arrayWithObject:v5];
+      [NSArray arrayWithObject:hubHostName];
     }
 
     else
@@ -2120,16 +2120,16 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)saveHubHostNameList:(id)a3
+- (BOOL)saveHubHostNameList:(id)list
 {
-  v3 = a3;
-  if (!v3)
+  listCopy = list;
+  if (!listCopy)
   {
-    v3 = +[NSArray array];
+    listCopy = +[NSArray array];
   }
 
   v4 = +[MSDPreferencesFile sharedInstance];
-  v5 = [v4 setObject:v3 forKey:@"HubHostNameList"];
+  v5 = [v4 setObject:listCopy forKey:@"HubHostNameList"];
 
   return v5;
 }
@@ -2142,51 +2142,51 @@ LABEL_6:
   return v3;
 }
 
-- (void)setHubPort:(id)a3
+- (void)setHubPort:(id)port
 {
-  v3 = a3;
+  portCopy = port;
   if (+[MSDPreferencesFile preferencesFileExists])
   {
     v4 = sub_100063A54();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v3;
+      v7 = portCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Saving hub port: %{public}@", &v6, 0xCu);
     }
 
     v5 = +[MSDPreferencesFile sharedInstance];
-    [v5 setObject:v3 forKey:@"HubPort"];
+    [v5 setObject:portCopy forKey:@"HubPort"];
   }
 }
 
-- (void)saveFindMyHubRetryAtTime:(int64_t)a3
+- (void)saveFindMyHubRetryAtTime:(int64_t)time
 {
   v5 = +[MSDPreferencesFile sharedInstance];
-  if (a3 <= 0)
+  if (time <= 0)
   {
     [v5 removeObjectForKey:@"FMHRetryAtTime"];
   }
 
   else
   {
-    v4 = [NSNumber numberWithInteger:a3];
+    v4 = [NSNumber numberWithInteger:time];
     [v5 setObject:v4 forKey:@"FMHRetryAtTime"];
   }
 }
 
-- (void)saveHubLastOnlineTime:(int64_t)a3
+- (void)saveHubLastOnlineTime:(int64_t)time
 {
   v5 = +[MSDPreferencesFile sharedInstance];
-  if (a3 <= 0)
+  if (time <= 0)
   {
     [v5 removeObjectForKey:@"HubLastOnlineTime"];
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"%ld", a3];
-    [v5 setObject:v4 forKey:@"HubLastOnlineTime"];
+    time = [NSString stringWithFormat:@"%ld", time];
+    [v5 setObject:time forKey:@"HubLastOnlineTime"];
   }
 }
 
@@ -2210,14 +2210,14 @@ LABEL_6:
   return v5;
 }
 
-- (void)saveLastSnapshotRevertTime:(id)a3
+- (void)saveLastSnapshotRevertTime:(id)time
 {
-  v5 = a3;
+  timeCopy = time;
   v3 = +[MSDPreferencesFile sharedInstance];
   v4 = v3;
-  if (v5)
+  if (timeCopy)
   {
-    [v3 setObject:v5 forKey:@"LastSnapshotRevertTime"];
+    [v3 setObject:timeCopy forKey:@"LastSnapshotRevertTime"];
   }
 
   else
@@ -2226,11 +2226,11 @@ LABEL_6:
   }
 }
 
-- (void)saveSnapshotRevertFlagged:(BOOL)a3
+- (void)saveSnapshotRevertFlagged:(BOOL)flagged
 {
   v4 = +[MSDPreferencesFile sharedInstance];
   v5 = v4;
-  if (a3)
+  if (flagged)
   {
     [v4 setObject:&__kCFBooleanTrue forKey:@"SnapshotRevertFlagged"];
   }
@@ -2261,14 +2261,14 @@ LABEL_6:
   return v5;
 }
 
-- (void)saveLastShallowRefreshTime:(id)a3
+- (void)saveLastShallowRefreshTime:(id)time
 {
-  v5 = a3;
+  timeCopy = time;
   v3 = +[MSDPreferencesFile sharedInstance];
   v4 = v3;
-  if (v5)
+  if (timeCopy)
   {
-    [v3 setObject:v5 forKey:@"LastShallowRefreshTime"];
+    [v3 setObject:timeCopy forKey:@"LastShallowRefreshTime"];
   }
 
   else
@@ -2297,14 +2297,14 @@ LABEL_6:
   return v5;
 }
 
-- (void)saveLastSettingsUpdatedTime:(id)a3
+- (void)saveLastSettingsUpdatedTime:(id)time
 {
-  v5 = a3;
+  timeCopy = time;
   v3 = +[MSDPreferencesFile sharedInstance];
   v4 = v3;
-  if (v5)
+  if (timeCopy)
   {
-    [v3 setObject:v5 forKey:@"LastSettingsUpdatedTime"];
+    [v3 setObject:timeCopy forKey:@"LastSettingsUpdatedTime"];
   }
 
   else
@@ -2327,9 +2327,9 @@ LABEL_6:
 - (id)cloudPairedDevices
 {
   v2 = +[MSDAccountManager sharedInstance];
-  v3 = [v2 cloudPairedDevices];
+  cloudPairedDevices = [v2 cloudPairedDevices];
 
-  return v3;
+  return cloudPairedDevices;
 }
 
 - (id)iCloudAccountRecoveryKey
@@ -2340,14 +2340,14 @@ LABEL_6:
   return v3;
 }
 
-- (void)saveiCloudAccountRecoveryKey:(id)a3
+- (void)saveiCloudAccountRecoveryKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v3 = +[MSDPreferencesFile sharedInstance];
   v4 = v3;
-  if (v5)
+  if (keyCopy)
   {
-    [v3 setObject:v5 forKey:@"iCloudAccountRecoveryKey"];
+    [v3 setObject:keyCopy forKey:@"iCloudAccountRecoveryKey"];
   }
 
   else
@@ -2363,22 +2363,22 @@ LABEL_6:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)saveiCloudAccountSyncNeeded:(BOOL)a3
+- (void)saveiCloudAccountSyncNeeded:(BOOL)needed
 {
   v4 = +[MSDPreferencesFile sharedInstance];
   v5 = v4;
-  if (a3)
+  if (needed)
   {
     [v4 setObject:&__kCFBooleanTrue forKey:@"iCloudAccountSyncNeeded"];
   }
@@ -2397,11 +2397,11 @@ LABEL_6:
   return v3;
 }
 
-- (void)saveOSPreferencesRequest:(id)a3
+- (void)saveOSPreferencesRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"OSPreferences"];
+  [v4 setObject:requestCopy forKey:@"OSPreferences"];
 }
 
 - (id)getStagedOSPreferencesRequest
@@ -2412,30 +2412,30 @@ LABEL_6:
   return v3;
 }
 
-- (void)stageNewOSPreferences:(id)a3
+- (void)stageNewOSPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"StagedOSPreferences"];
+  [v4 setObject:preferencesCopy forKey:@"StagedOSPreferences"];
 }
 
-- (BOOL)applyStagedDevicePreferences:(id *)a3
+- (BOOL)applyStagedDevicePreferences:(id *)preferences
 {
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(MSDTargetDevice *)self getStagedOSPreferencesRequest];
+  getStagedOSPreferencesRequest = [(MSDTargetDevice *)self getStagedOSPreferencesRequest];
   v7 = sub_100063A54();
   v8 = v7;
-  if (v6)
+  if (getStagedOSPreferencesRequest)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v6;
+      v25 = getStagedOSPreferencesRequest;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Applying staged OS Preferences:\n%{public}@", buf, 0xCu);
     }
 
-    v8 = [v6 objectForKey:@"SystemLanguage"];
-    v9 = [v6 objectForKey:@"SystemRegion"];
+    v8 = [getStagedOSPreferencesRequest objectForKey:@"SystemLanguage"];
+    v9 = [getStagedOSPreferencesRequest objectForKey:@"SystemRegion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2453,9 +2453,9 @@ LABEL_6:
       }
     }
 
-    v12 = [v6 objectForKey:@"SystemSiriLanguage"];
+    v12 = [getStagedOSPreferencesRequest objectForKey:@"SystemSiriLanguage"];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (+[MSDLanguageAndRegionManager sharedInstance](MSDLanguageAndRegionManager, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), [v6 objectForKey:@"SystemSiriLanguage"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "setSiriLanguage:", v14), v14, v13, v15))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (+[MSDLanguageAndRegionManager sharedInstance](MSDLanguageAndRegionManager, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), [getStagedOSPreferencesRequest objectForKey:@"SystemSiriLanguage"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "setSiriLanguage:", v14), v14, v13, v15))
     {
       [v5 setObject:v12 forKey:@"SystemSiriLanguage"];
       v16 = +[MSDAssetUpdater sharedInstance];
@@ -2489,9 +2489,9 @@ LABEL_16:
     v21 = +[MSDPreferencesFile sharedInstance];
     [v21 removeObjectForKey:@"StagedOSPreferences"];
 
-    if (a3)
+    if (preferences)
     {
-      *a3 = [v5 allKeys];
+      *preferences = [v5 allKeys];
     }
 
     goto LABEL_22;
@@ -2535,8 +2535,8 @@ LABEL_22:
 - (id)installedDeletableSystemApps
 {
   v3 = +[LSApplicationWorkspace defaultWorkspace];
-  v4 = [(MSDTargetDevice *)self requiredDeletableSystemApps];
-  v5 = [v4 mutableCopy];
+  requiredDeletableSystemApps = [(MSDTargetDevice *)self requiredDeletableSystemApps];
+  v5 = [requiredDeletableSystemApps mutableCopy];
 
   [NSMutableArray arrayWithCapacity:0];
   v10 = _NSConcreteStackBlock;
@@ -2555,8 +2555,8 @@ LABEL_22:
 - (void)installAndWaitForSystemApps
 {
   v3 = +[LSApplicationWorkspace defaultWorkspace];
-  v4 = [(MSDTargetDevice *)self requiredDeletableSystemApps];
-  v5 = [v4 mutableCopy];
+  requiredDeletableSystemApps = [(MSDTargetDevice *)self requiredDeletableSystemApps];
+  v5 = [requiredDeletableSystemApps mutableCopy];
 
   v24 = 0;
   v25 = &v24;
@@ -2565,16 +2565,16 @@ LABEL_22:
   if (os_variant_has_internal_content())
   {
     v7 = +[MSDTestPreferences sharedInstance];
-    v8 = [v7 systemAppTimeoutInterval];
+    systemAppTimeoutInterval = [v7 systemAppTimeoutInterval];
 
-    if (v8)
+    if (systemAppTimeoutInterval)
     {
       v9 = sub_100063A54();
-      v10 = v8;
+      v10 = systemAppTimeoutInterval;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v29 = v8;
+        v29 = systemAppTimeoutInterval;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Override system app timeout interval: %lu", buf, 0xCu);
       }
     }
@@ -2585,28 +2585,28 @@ LABEL_22:
     }
 
     v12 = +[MSDTestPreferences sharedInstance];
-    v11 = [v12 systemAppPollingInterval];
+    systemAppPollingInterval = [v12 systemAppPollingInterval];
 
-    if (v11)
+    if (systemAppPollingInterval)
     {
       v13 = sub_100063A54();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v29 = v11;
+        v29 = systemAppPollingInterval;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Override system app polling interval: %lu", buf, 0xCu);
       }
     }
 
     else
     {
-      v11 = 30;
+      systemAppPollingInterval = 30;
     }
   }
 
   else
   {
-    v11 = 30;
+    systemAppPollingInterval = 30;
     v10 = 1800;
   }
 
@@ -2658,8 +2658,8 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    sleep(v11);
-    v25[3] += v11;
+    sleep(systemAppPollingInterval);
+    v25[3] += systemAppPollingInterval;
     v15 = sub_100063A54();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -2675,9 +2675,9 @@ LABEL_24:
 - (BOOL)isPasscodeModificationAllowed
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isPasscodeModificationAllowed];
+  isPasscodeModificationAllowed = [v2 isPasscodeModificationAllowed];
 
-  return v3;
+  return isPasscodeModificationAllowed;
 }
 
 - (BOOL)createTemporaryPasscodeIfNeeded
@@ -2692,8 +2692,8 @@ LABEL_24:
 
   if (([v3 isPasscodeSet] & 1) == 0)
   {
-    v7 = [(MSDTargetDevice *)self isPasscodeModificationAllowed];
-    if (v7)
+    isPasscodeModificationAllowed = [(MSDTargetDevice *)self isPasscodeModificationAllowed];
+    if (isPasscodeModificationAllowed)
     {
       goto LABEL_9;
     }
@@ -2714,7 +2714,7 @@ LABEL_9:
       v5 = v9;
       if (v6)
       {
-        if (v7)
+        if (isPasscodeModificationAllowed)
         {
           goto LABEL_12;
         }
@@ -2723,7 +2723,7 @@ LABEL_9:
       else
       {
         sub_1000D30EC(v9);
-        if (v7)
+        if (isPasscodeModificationAllowed)
         {
           goto LABEL_12;
         }
@@ -2764,8 +2764,8 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v5 = [(MSDTargetDevice *)self isPasscodeModificationAllowed];
-  if ((v5 & 1) == 0)
+  isPasscodeModificationAllowed = [(MSDTargetDevice *)self isPasscodeModificationAllowed];
+  if ((isPasscodeModificationAllowed & 1) == 0)
   {
     v6 = sub_100063A54();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2788,7 +2788,7 @@ LABEL_12:
   if (v7)
   {
     v9 = 1;
-    if ((v5 & 1) == 0)
+    if ((isPasscodeModificationAllowed & 1) == 0)
     {
 LABEL_10:
       [(MSDTargetDevice *)self setPasscodeModificationAllowed:0];
@@ -2852,9 +2852,9 @@ LABEL_9:
   return v6;
 }
 
-- (id)readNVRam:(id)a3
+- (id)readNVRam:(id)ram
 {
-  v3 = a3;
+  ramCopy = ram;
   mainPort = 0;
   if (IOMasterPort(bootstrap_port, &mainPort))
   {
@@ -2867,7 +2867,7 @@ LABEL_9:
     if (v4)
     {
       v5 = v4;
-      CFProperty = IORegistryEntryCreateCFProperty(v4, v3, kCFAllocatorDefault, 0);
+      CFProperty = IORegistryEntryCreateCFProperty(v4, ramCopy, kCFAllocatorDefault, 0);
       IOObjectRelease(v5);
       goto LABEL_4;
     }
@@ -2881,23 +2881,23 @@ LABEL_4:
   return CFProperty;
 }
 
-- (BOOL)deleteNVRam:(id)a3
+- (BOOL)deleteNVRam:(id)ram
 {
-  v4 = a3;
-  v5 = [(MSDTargetDevice *)self helperAgent];
-  v6 = [v5 deleteNvram:v4];
+  ramCopy = ram;
+  helperAgent = [(MSDTargetDevice *)self helperAgent];
+  v6 = [helperAgent deleteNvram:ramCopy];
 
   return v6;
 }
 
-- (BOOL)setSEPDemoMode:(BOOL)a3
+- (BOOL)setSEPDemoMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v3;
+    v8[1] = modeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Setting SEP demo mode to: %{BOOL}d", v8, 8u);
   }
 
@@ -2916,9 +2916,9 @@ LABEL_4:
 
 - (BOOL)toggleSEPDemoModeOnManagedPreferencesChange
 {
-  v3 = [(MSDTargetDevice *)self managedStoreDemoMode];
+  managedStoreDemoMode = [(MSDTargetDevice *)self managedStoreDemoMode];
 
-  return [(MSDTargetDevice *)self setSEPDemoMode:v3];
+  return [(MSDTargetDevice *)self setSEPDemoMode:managedStoreDemoMode];
 }
 
 - (BOOL)turnOnDemoMode
@@ -3001,11 +3001,11 @@ LABEL_4:
   return IsForced;
 }
 
-- (BOOL)demoModeValueForKey:(id)a3
+- (BOOL)demoModeValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.demo-settings"];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
   if (!v5)
   {
     goto LABEL_5;
@@ -3016,76 +3016,76 @@ LABEL_4:
   {
     sub_1000D34B0();
 LABEL_5:
-    v6 = 0;
+    bOOLValue = 0;
     goto LABEL_6;
   }
 
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_6:
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)enableSnapshotMode:(BOOL)a3
+- (void)enableSnapshotMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if (![(MSDTargetDevice *)self allowSnapshotMode])
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 27;
     goto LABEL_5;
   }
 
-  if (v3)
+  if (modeCopy)
   {
     [(MSDTargetDevice *)self removeTemporaryPasscodeIfNeeded];
     [(MSDTargetDevice *)self manageDeviceSnapshot:@"CreateSnapshot"];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 8;
 LABEL_5:
 
-    [(MSDTargetDevice *)v5 rebootForStage:v6];
+    [(MSDTargetDevice *)selfCopy2 rebootForStage:v6];
     return;
   }
 
   [(MSDTargetDevice *)self rebootWithSnapshotRevertForStage:0];
 }
 
-- (void)manageDeviceSnapshot:(id)a3
+- (void)manageDeviceSnapshot:(id)snapshot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"UnmountSnapshot"])
+  snapshotCopy = snapshot;
+  if ([snapshotCopy isEqualToString:@"UnmountSnapshot"])
   {
-    [(MSDTargetDevice *)self manageUserVolume:v4];
-    [(MSDTargetDevice *)self manageDataVolume:v4];
+    [(MSDTargetDevice *)self manageUserVolume:snapshotCopy];
+    [(MSDTargetDevice *)self manageDataVolume:snapshotCopy];
   }
 
   else
   {
-    [(MSDTargetDevice *)self manageDataVolume:v4];
-    [(MSDTargetDevice *)self manageUserVolume:v4];
+    [(MSDTargetDevice *)self manageDataVolume:snapshotCopy];
+    [(MSDTargetDevice *)self manageUserVolume:snapshotCopy];
   }
 }
 
-- (void)manageDataVolume:(id)a3
+- (void)manageDataVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(MSDTargetDevice *)self helperAgent];
-  [v5 manageDataVolume:v4];
+  volumeCopy = volume;
+  helperAgent = [(MSDTargetDevice *)self helperAgent];
+  [helperAgent manageDataVolume:volumeCopy];
 }
 
-- (void)manageDemoVolume:(id)a3
+- (void)manageDemoVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(MSDTargetDevice *)self helperAgent];
-  [v5 manageDemoVolume:v4];
+  volumeCopy = volume;
+  helperAgent = [(MSDTargetDevice *)self helperAgent];
+  [helperAgent manageDemoVolume:volumeCopy];
 }
 
-- (void)manageUserVolume:(id)a3
+- (void)manageUserVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(MSDTargetDevice *)self helperAgent];
-  [v5 manageUserVolume:v4 forUser:@"mobile"];
+  volumeCopy = volume;
+  helperAgent = [(MSDTargetDevice *)self helperAgent];
+  [helperAgent manageUserVolume:volumeCopy forUser:@"mobile"];
 }
 
 - (void)disableLaunchdServicesIfNeededForWatch
@@ -3093,8 +3093,8 @@ LABEL_5:
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.demo-settings"];
   if ([v4 integerForKey:@"FProgramNumber"] != 300)
   {
-    v3 = [(MSDTargetDevice *)self helperAgent];
-    [v3 disableLaunchdServicesForWatch];
+    helperAgent = [(MSDTargetDevice *)self helperAgent];
+    [helperAgent disableLaunchdServicesForWatch];
   }
 }
 
@@ -3108,31 +3108,31 @@ LABEL_5:
 
 - (void)setupWorkFolderForBootTask
 {
-  v3 = [(MSDTargetDevice *)self helperAgent];
-  [v3 prepareWorkDirectory:@"/private/var/demo_backup" writableByNonRoot:0];
+  helperAgent = [(MSDTargetDevice *)self helperAgent];
+  [helperAgent prepareWorkDirectory:@"/private/var/demo_backup" writableByNonRoot:0];
 
   v4 = +[MSDPlatform sharedInstance];
-  v5 = [v4 macOS];
+  macOS = [v4 macOS];
 
-  if (v5)
+  if (macOS)
   {
-    v6 = [(MSDTargetDevice *)self helperAgent];
-    [v6 prepareWorkDirectory:@"/private/var/dekota" writableByNonRoot:0];
+    helperAgent2 = [(MSDTargetDevice *)self helperAgent];
+    [helperAgent2 prepareWorkDirectory:@"/private/var/dekota" writableByNonRoot:0];
   }
 }
 
 - (void)destroyWorkFolderForBootTask
 {
-  v3 = [(MSDTargetDevice *)self helperAgent];
-  [v3 removeWorkDirectory:@"/private/var/demo_backup"];
+  helperAgent = [(MSDTargetDevice *)self helperAgent];
+  [helperAgent removeWorkDirectory:@"/private/var/demo_backup"];
 
   v4 = +[MSDPlatform sharedInstance];
-  v5 = [v4 macOS];
+  macOS = [v4 macOS];
 
-  if (v5)
+  if (macOS)
   {
-    v6 = [(MSDTargetDevice *)self helperAgent];
-    [v6 removeWorkDirectory:@"/private/var/dekota"];
+    helperAgent2 = [(MSDTargetDevice *)self helperAgent];
+    [helperAgent2 removeWorkDirectory:@"/private/var/dekota"];
   }
 }
 
@@ -3311,16 +3311,16 @@ LABEL_6:
   }
 }
 
-- (void)refreshStoreHoursManagerUsingSettingsAndTime:(id)a3
+- (void)refreshStoreHoursManagerUsingSettingsAndTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v8 = +[MSDStoreHoursManager sharedInstance];
-  v5 = [(MSDTargetDevice *)self hubSuppliedSettings];
-  v6 = [v5 objectForKey:@"StoreHours"];
+  hubSuppliedSettings = [(MSDTargetDevice *)self hubSuppliedSettings];
+  v6 = [hubSuppliedSettings objectForKey:@"StoreHours"];
 
-  v7 = [(MSDTargetDevice *)self lastSettingsUpdatedTime];
-  [v8 updateStoreHours:v6 lastSettingsUpdatedDate:v7];
-  [(MSDTargetDevice *)self configureLowPowerModeForTime:v4];
+  lastSettingsUpdatedTime = [(MSDTargetDevice *)self lastSettingsUpdatedTime];
+  [v8 updateStoreHours:v6 lastSettingsUpdatedDate:lastSettingsUpdatedTime];
+  [(MSDTargetDevice *)self configureLowPowerModeForTime:timeCopy];
 
   [v8 setupStoreOpenCloseTimers];
 }
@@ -3364,7 +3364,7 @@ LABEL_6:
   [(MSDTargetDevice *)self refreshStoreHoursManagerUsingSettingsAndTime:0];
 }
 
-- (void)caLogsUploadTimerHandler:(id)a3
+- (void)caLogsUploadTimerHandler:(id)handler
 {
   v3 = dispatch_get_global_queue(9, 0);
   dispatch_async(v3, &stru_10016AE38);
@@ -3383,18 +3383,18 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)snapshotRevertTimerHandler:(id)a3
+- (void)snapshotRevertTimerHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = +[MSDWorkQueueSet sharedInstance];
-  v6 = [v5 messageQueue];
+  messageQueue = [v5 messageQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005016C;
   v7[3] = &unk_100169C78;
   objc_copyWeak(&v8, &location);
-  dispatch_async(v6, v7);
+  dispatch_async(messageQueue, v7);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -3500,9 +3500,9 @@ LABEL_6:
     if (os_variant_has_internal_content())
     {
       v6 = +[MSDTestPreferences sharedInstance];
-      v7 = [v6 enableAIModelAutoUpdate];
+      enableAIModelAutoUpdate = [v6 enableAIModelAutoUpdate];
 
-      if (v7)
+      if (enableAIModelAutoUpdate)
       {
         v8 = sub_100063A54();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -3558,8 +3558,8 @@ LABEL_6:
 - (BOOL)saveCurrentiOSBuild
 {
   v3 = +[MSDPreferencesFile sharedInstance];
-  v4 = [(MSDTargetDevice *)self OSBuild];
-  v5 = [v3 setObject:v4 forKey:@"PreviousOSBuild"];
+  oSBuild = [(MSDTargetDevice *)self OSBuild];
+  v5 = [v3 setObject:oSBuild forKey:@"PreviousOSBuild"];
 
   return v5;
 }
@@ -3580,11 +3580,11 @@ LABEL_6:
   return v3;
 }
 
-- (void)saveMinOSVersionAvailable:(id)a3
+- (void)saveMinOSVersionAvailable:(id)available
 {
-  v3 = a3;
+  availableCopy = available;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"MinOSVersionAvailable"];
+  [v4 setObject:availableCopy forKey:@"MinOSVersionAvailable"];
 }
 
 - (void)clearMinOSVersionAvailable
@@ -3593,11 +3593,11 @@ LABEL_6:
   [v2 removeObjectForKey:@"MinOSVersionAvailable"];
 }
 
-- (void)saveOSUpdateRequest:(id)a3
+- (void)saveOSUpdateRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"OSUpdateRequest"];
+  [v4 setObject:requestCopy forKey:@"OSUpdateRequest"];
 }
 
 - (id)getOSUpdateRequest
@@ -3608,15 +3608,15 @@ LABEL_6:
   }
 
   v2 = +[MSDTestPreferences sharedInstance];
-  v3 = [v2 mockOSUpdateRequestFile];
+  mockOSUpdateRequestFile = [v2 mockOSUpdateRequestFile];
 
-  if (!v3)
+  if (!mockOSUpdateRequestFile)
   {
 LABEL_12:
 
 LABEL_13:
-    v3 = +[MSDPreferencesFile sharedInstance];
-    v5 = [v3 objectForKey:@"OSUpdateRequest"];
+    mockOSUpdateRequestFile = +[MSDPreferencesFile sharedInstance];
+    v5 = [mockOSUpdateRequestFile objectForKey:@"OSUpdateRequest"];
     goto LABEL_14;
   }
 
@@ -3624,11 +3624,11 @@ LABEL_13:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v3;
+    v10 = mockOSUpdateRequestFile;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Loading mock OS update request from file: %{public}@", &v9, 0xCu);
   }
 
-  v5 = [[NSDictionary alloc] initWithContentsOfFile:v3];
+  v5 = [[NSDictionary alloc] initWithContentsOfFile:mockOSUpdateRequestFile];
   v6 = sub_100063A54();
   v7 = v6;
   if (!v5)
@@ -3659,14 +3659,14 @@ LABEL_14:
   [v2 removeObjectForKey:@"OSUpdateRequest"];
 }
 
-- (void)setWaitingForCommand:(BOOL)a3
+- (void)setWaitingForCommand:(BOOL)command
 {
-  v3 = a3;
-  if ([(MSDTargetDevice *)self waitingForCommand]!= a3)
+  commandCopy = command;
+  if ([(MSDTargetDevice *)self waitingForCommand]!= command)
   {
     v5 = +[MSDPreferencesFile sharedInstance];
     v6 = v5;
-    if (v3)
+    if (commandCopy)
     {
       [v5 setObject:&__kCFBooleanTrue forKey:@"WaitingForCommand"];
 
@@ -3697,15 +3697,15 @@ LABEL_14:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)waitForBuddy:(id)a3 updateStatus:(BOOL)a4
+- (void)waitForBuddy:(id)buddy updateStatus:(BOOL)status
 {
-  v4 = a4;
-  v6 = a3;
+  statusCopy = status;
+  buddyCopy = buddy;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   if (DarwinNotifyCenter)
   {
     v8 = DarwinNotifyCenter;
-    [(MSDTargetDevice *)self setBuddyCompletionHandler:v6];
+    [(MSDTargetDevice *)self setBuddyCompletionHandler:buddyCopy];
     CFNotificationCenterAddObserver(v8, 0, sub_100046E78, @"com.apple.purplebuddy.setupdone", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     v9 = BYSetupAssistantNeedsToRun();
     v10 = sub_100063A54();
@@ -3718,7 +3718,7 @@ LABEL_14:
 
     if (v9)
     {
-      if (v4)
+      if (statusCopy)
       {
         v11 = +[MSDProgressUpdater sharedInstance];
         [v11 updateStage:16];
@@ -3771,10 +3771,10 @@ LABEL_14:
 
   if (v3)
   {
-    v5 = [v3 currentState];
-    v6 = [v5 taskState];
+    currentState = [v3 currentState];
+    taskState = [currentState taskState];
 
-    v7 = v6 > 1;
+    v7 = taskState > 1;
     if (!v4)
     {
       goto LABEL_9;
@@ -3815,10 +3815,10 @@ LABEL_9:
     v11 = 11;
     while (1)
     {
-      v12 = [v3 currentState];
-      v13 = [v12 taskState];
+      currentState2 = [v3 currentState];
+      taskState2 = [currentState2 taskState];
 
-      if (v13 < 2)
+      if (taskState2 < 2)
       {
         break;
       }
@@ -3847,7 +3847,7 @@ LABEL_9:
     }
 
     *buf = 67109120;
-    v20 = v13;
+    v20 = taskState2;
     v15 = "Configuration app terminated with state == %d";
     v16 = v14;
     v17 = 8;
@@ -3859,8 +3859,8 @@ LABEL_20:
 
 - (BOOL)allowSnapshotMode
 {
-  v2 = [(MSDTargetDevice *)self getDeviceOptions];
-  v3 = [v2 objectForKey:@"disable_snapshot_mode"];
+  getDeviceOptions = [(MSDTargetDevice *)self getDeviceOptions];
+  v3 = [getDeviceOptions objectForKey:@"disable_snapshot_mode"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v3 BOOLValue])
   {
@@ -3921,24 +3921,24 @@ LABEL_20:
   v3 = MGCopyAnswer();
   if ([v3 BOOLValue])
   {
-    v4 = 0;
+    isDemoModeOn = 0;
   }
 
   else
   {
-    v4 = [(MSDTargetDevice *)self isDemoModeOn];
+    isDemoModeOn = [(MSDTargetDevice *)self isDemoModeOn];
   }
 
-  return v4;
+  return isDemoModeOn;
 }
 
 - (void)configureNetworkInterface
 {
   v3 = +[MSDWiFiHelper sharedInstance];
   [v3 enableWiFi:1];
-  v4 = [v3 getPersistentWiFiSsid];
+  getPersistentWiFiSsid = [v3 getPersistentWiFiSsid];
 
-  if (v4)
+  if (getPersistentWiFiSsid)
   {
     [v3 configureWiFiWithPersistentSettings];
   }
@@ -3962,9 +3962,9 @@ LABEL_20:
   }
 }
 
-- (void)waitForNetworkReachabilityWithTimeout:(unint64_t)a3
+- (void)waitForNetworkReachabilityWithTimeout:(unint64_t)timeout
 {
-  v5 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v5 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -3980,7 +3980,7 @@ LABEL_20:
   v14[2] = 0x3032000000;
   v14[3] = sub_100052090;
   v14[4] = sub_1000520A0;
-  v15 = self;
+  selfCopy = self;
   v6 = sub_100063A54();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -4012,7 +4012,7 @@ LABEL_20:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v27 = a3;
+          timeoutCopy = timeout;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Timeout waiting %lus for desired network interface to come up.", buf, 0xCu);
         }
 
@@ -4035,7 +4035,7 @@ LABEL_20:
   {
     v11 = v17[3] != 0;
     *buf = 67109120;
-    LODWORD(v27) = v11;
+    LODWORD(timeoutCopy) = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Network reachability after wait: %{BOOL}d", buf, 8u);
   }
 
@@ -4069,8 +4069,8 @@ LABEL_20:
 
 - (BOOL)migrateCellularSupportFlag
 {
-  v3 = [(MSDTargetDevice *)self getDeviceOptions];
-  v4 = [v3 objectForKey:@"enable_cellular_support"];
+  getDeviceOptions = [(MSDTargetDevice *)self getDeviceOptions];
+  v4 = [getDeviceOptions objectForKey:@"enable_cellular_support"];
   if ([v4 BOOLValue])
   {
     v5 = sub_100063A54();
@@ -4079,14 +4079,14 @@ LABEL_20:
       v9 = 138543618;
       v10 = @"enable_cellular_support";
       v11 = 1024;
-      v12 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@=%{BOOL}d; disconnecting & forgetting all wifi SSID...", &v9, 0x12u);
     }
 
     v6 = +[MSDWiFiHelper sharedInstance];
     [v6 disassociateAndForgetWiFi];
 
-    v7 = [(MSDTargetDevice *)self updateDeviceOptions:v3 skipImutableKeys:1];
+    v7 = [(MSDTargetDevice *)self updateDeviceOptions:getDeviceOptions skipImutableKeys:1];
   }
 
   else
@@ -4135,10 +4135,10 @@ LABEL_20:
   }
 }
 
-- (BOOL)updateDeviceOptions:(id)a3 skipImutableKeys:(BOOL)a4
+- (BOOL)updateDeviceOptions:(id)options skipImutableKeys:(BOOL)keys
 {
-  v4 = a4;
-  v5 = a3;
+  keysCopy = keys;
+  optionsCopy = options;
   v6 = sub_100063A54();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -4154,7 +4154,7 @@ LABEL_20:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v10 = v5;
+  v10 = optionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v42 objects:v50 count:16];
   v40 = v8;
   if (v11)
@@ -4176,7 +4176,7 @@ LABEL_20:
         v15 = *(*(&v42 + 1) + 8 * v14);
         if (([v15 isEqualToString:@"disable_snapshot_mode"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"enable_better_together"))
         {
-          if (v4)
+          if (keysCopy)
           {
             v16 = [v8 objectForKey:v15];
 
@@ -4231,10 +4231,10 @@ LABEL_31:
           }
 
           v20 = [v10 objectForKey:v15];
-          v21 = [v20 BOOLValue];
+          bOOLValue = [v20 BOOLValue];
 
           v8 = v40;
-          if (!v21)
+          if (!bOOLValue)
           {
             goto LABEL_31;
           }
@@ -4381,11 +4381,11 @@ LABEL_51:
   return v34;
 }
 
-- (void)saveDeviceOptions:(id)a3
+- (void)saveDeviceOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[MSDPreferencesFile sharedInstance];
-  [v4 setObject:v3 forKey:@"device_options"];
+  [v4 setObject:optionsCopy forKey:@"device_options"];
 }
 
 - (id)getDeviceOptions
@@ -4402,9 +4402,9 @@ LABEL_51:
   }
 
   v6 = +[MSDNPIMaskValues sharedInstance];
-  v7 = [v6 isNPIDevice];
+  isNPIDevice = [v6 isNPIDevice];
 
-  if (v7)
+  if (isNPIDevice)
   {
     v8 = +[MSDNPIMaskValues sharedInstance];
     v9 = [v8 getMaskValueForKey:@"ProductType"];
@@ -4459,9 +4459,9 @@ LABEL_51:
   if (os_variant_has_internal_content())
   {
     v14 = +[MSDTestPreferences sharedInstance];
-    v15 = [v14 mockForBetterTogetherDemo];
+    mockForBetterTogetherDemo = [v14 mockForBetterTogetherDemo];
 
-    if (v15)
+    if (mockForBetterTogetherDemo)
     {
       [v4 setObject:&__kCFBooleanTrue forKey:@"enable_better_together"];
     }
@@ -4470,10 +4470,10 @@ LABEL_51:
   return v4;
 }
 
-- (void)processNewFeatureFlags:(id)a3 oldFeatureFlags:(id)a4
+- (void)processNewFeatureFlags:(id)flags oldFeatureFlags:(id)featureFlags
 {
-  v6 = a3;
-  v7 = a4;
+  flagsCopy = flags;
+  featureFlagsCopy = featureFlags;
   +[MSDHubFeatureFlags supportedFeatureFlags];
   v22 = 0u;
   v23 = 0u;
@@ -4496,13 +4496,13 @@ LABEL_51:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v7 objectForKey:{v13, v20}];
-        v15 = [v14 BOOLValue];
+        v14 = [featureFlagsCopy objectForKey:{v13, v20}];
+        bOOLValue = [v14 BOOLValue];
 
-        v16 = [v6 objectForKey:v13];
-        v17 = [v16 BOOLValue];
+        v16 = [flagsCopy objectForKey:v13];
+        bOOLValue2 = [v16 BOOLValue];
 
-        if (v15 != v17)
+        if (bOOLValue != bOOLValue2)
         {
           v18 = sub_100063A54();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -4510,9 +4510,9 @@ LABEL_51:
             *buf = v20;
             v27 = v13;
             v28 = 1024;
-            v29 = v15;
+            v29 = bOOLValue;
             v30 = 1024;
-            v31 = v17;
+            v31 = bOOLValue2;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Feature flag '%{public}@' has new value set: %{BOOL}d -> %{BOOL}d", buf, 0x18u);
           }
 
@@ -4552,11 +4552,11 @@ LABEL_51:
   }
 }
 
-- (BOOL)setDemoEnrollmentFlag:(id)a3
+- (BOOL)setDemoEnrollmentFlag:(id)flag
 {
-  v3 = a3;
+  flagCopy = flag;
   v4 = +[MSDPreferencesFile sharedInstance];
-  v5 = [v4 setObject:v3 forKey:@"enrollmentFlag"];
+  v5 = [v4 setObject:flagCopy forKey:@"enrollmentFlag"];
 
   return v5;
 }
@@ -4578,13 +4578,13 @@ LABEL_51:
 
 - (BOOL)runCleanUpForBetterTogetherDevice
 {
-  v3 = [(MSDTargetDevice *)self hubHostName];
-  if (v3)
+  hubHostName = [(MSDTargetDevice *)self hubHostName];
+  if (hubHostName)
   {
-    v4 = v3;
-    v5 = [(MSDTargetDevice *)self hubPort];
+    v4 = hubHostName;
+    hubPort = [(MSDTargetDevice *)self hubPort];
 
-    if (v5)
+    if (hubPort)
     {
       v6 = objc_alloc_init(MSDUnEnrollRequest);
       [(MSDUnEnrollRequest *)v6 setObliterate:1];
@@ -4599,24 +4599,24 @@ LABEL_51:
 
 - (BOOL)canStartContentUpdate
 {
-  v3 = [(MSDTargetDevice *)self mode];
-  if (v3 != 1)
+  mode = [(MSDTargetDevice *)self mode];
+  if (mode != 1)
   {
-    LOBYTE(v3) = [(MSDTargetDevice *)self mode]== 5;
+    LOBYTE(mode) = [(MSDTargetDevice *)self mode]== 5;
   }
 
-  return v3;
+  return mode;
 }
 
 - (BOOL)canStartOSUpdate
 {
-  v3 = [(MSDTargetDevice *)self mode];
-  if (v3 != 1)
+  mode = [(MSDTargetDevice *)self mode];
+  if (mode != 1)
   {
-    LOBYTE(v3) = [(MSDTargetDevice *)self mode]== 5;
+    LOBYTE(mode) = [(MSDTargetDevice *)self mode]== 5;
   }
 
-  return v3;
+  return mode;
 }
 
 - (BOOL)canRunCleanUpForBetterTogetherDevice
@@ -4624,49 +4624,49 @@ LABEL_51:
   v3 = +[MSDPlatform sharedInstance];
   if ([v3 watchOS])
   {
-    v4 = [(MSDTargetDevice *)self isBetterTogetherDemo];
+    isBetterTogetherDemo = [(MSDTargetDevice *)self isBetterTogetherDemo];
   }
 
   else
   {
-    v4 = 0;
+    isBetterTogetherDemo = 0;
   }
 
-  return v4;
+  return isBetterTogetherDemo;
 }
 
 - (BOOL)shouldForgetKnownNetworkUponUnlock
 {
   v2 = +[MSDPreferencesFile sharedInstance];
   v3 = [v2 objectForKey:@"ForgetKnownNetworkUponUnlock"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)backgroundDownloadActive
 {
   v2 = +[MSDPreferencesFile sharedInstance];
   v3 = [v2 objectForKey:@"BackgroundDownloadActive"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setBackgroundDownloadActive:(BOOL)a3
+- (void)setBackgroundDownloadActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v11[0] = 67109120;
-    v11[1] = v3;
+    v11[1] = activeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Setting bg:%d", v11, 8u);
   }
 
   v5 = +[MSDPreferencesFile sharedInstance];
   v6 = v5;
-  if (v3)
+  if (activeCopy)
   {
     v7 = [NSNumber numberWithBool:1];
     v8 = [v6 setObject:v7 forKey:@"BackgroundDownloadActive"];
@@ -4700,39 +4700,39 @@ LABEL_11:
   }
 }
 
-- (void)setBackgroundDownloadState:(unint64_t)a3
+- (void)setBackgroundDownloadState:(unint64_t)state
 {
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setting background download state:%lu", &v8, 0xCu);
   }
 
   v6 = +[MSDProgressUpdater sharedInstance];
-  v7 = [v6 backgroundBundle];
-  [v7 setBundleStateAs:a3];
+  backgroundBundle = [v6 backgroundBundle];
+  [backgroundBundle setBundleStateAs:state];
 
-  if (a3 - 3 <= 1)
+  if (state - 3 <= 1)
   {
     [(MSDTargetDevice *)self setBackgroundDownloadActive:0];
   }
 }
 
-- (void)setHubProtocolVersion:(id)a3
+- (void)setHubProtocolVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = versionCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Setting hub proto version:%{public}@", &v6, 0xCu);
   }
 
   v5 = +[MSDPreferencesFile sharedInstance];
-  [v5 setObject:v3 forKey:@"HubProtocolVersion"];
+  [v5 setObject:versionCopy forKey:@"HubProtocolVersion"];
 }
 
 - (NSString)hubProtocolVersion
@@ -4761,23 +4761,23 @@ LABEL_11:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setProceeded:(BOOL)a3
+- (void)setProceeded:(BOOL)proceeded
 {
-  v3 = a3;
+  proceededCopy = proceeded;
   v4 = +[MSDPreferencesFile sharedInstance];
   v5 = v4;
-  if (v3)
+  if (proceededCopy)
   {
     v6 = [NSNumber numberWithBool:1];
     v7 = [v5 setObject:v6 forKey:@"Proceeded"];
@@ -4799,9 +4799,9 @@ LABEL_3:
   }
 }
 
-- (void)cleanUpBackgroundState:(BOOL)a3
+- (void)cleanUpBackgroundState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v4 = +[MSDPreferencesFile sharedInstance];
     [v4 removeObjectsForKeys:&off_10017BD78];
@@ -4822,14 +4822,14 @@ LABEL_3:
   return v3;
 }
 
-- (void)setWifiSettings:(id)a3
+- (void)setWifiSettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v4 = +[MSDPreferencesFile sharedInstance];
   v5 = v4;
-  if (v3)
+  if (settingsCopy)
   {
-    v6 = [v4 setObject:v3 forKey:@"WiFiSettings"];
+    v6 = [v4 setObject:settingsCopy forKey:@"WiFiSettings"];
   }
 
   else
@@ -4860,11 +4860,11 @@ LABEL_3:
   return 0;
 }
 
-- (BOOL)sendIconStateToSB:(id)a3
+- (BOOL)sendIconStateToSB:(id)b
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  bCopy = b;
+  v4 = bCopy;
+  if (bCopy && [bCopy length])
   {
     SBSSpringBoardBlockableServerPort();
     [v4 bytes];
@@ -4897,9 +4897,9 @@ LABEL_3:
 {
   v2 = +[NSFileManager defaultManager];
   v3 = +[MSDTestPreferences sharedInstance];
-  v4 = [v3 rebootDelayForStaging];
+  rebootDelayForStaging = [v3 rebootDelayForStaging];
 
-  if (v4)
+  if (rebootDelayForStaging)
   {
     if (([v2 fileExistsAtPath:@"/tmp/rebootDelayEntered"] & 1) == 0)
     {
@@ -4910,21 +4910,21 @@ LABEL_3:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v4;
+      v6[1] = rebootDelayForStaging;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Waiting for %u seconds to run test.", v6, 8u);
     }
 
-    sleep(v4);
+    sleep(rebootDelayForStaging);
   }
 }
 
-- (void)configureLowPowerModeForTime:(id)a3
+- (void)configureLowPowerModeForTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = +[MSDStoreHoursManager sharedInstance];
   v6 = +[MSDPreferencesFile sharedInstance];
   v7 = [v6 objectForKey:@"LowPowerModeConfigured"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = sub_100063A54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -4942,7 +4942,7 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Nightly low power mode is disabled by feature flag!", v11, 2u);
     }
 
-    if (v8)
+    if (bOOLValue)
     {
       [(MSDTargetDevice *)self setLowPowerMode:0];
       [v6 removeObjectForKey:@"LowPowerModeConfigured"];
@@ -4951,9 +4951,9 @@ LABEL_3:
 
   else
   {
-    if (v4)
+    if (timeCopy)
     {
-      [v5 evaluateStoreStatusAgainstPointInTime:v4];
+      [v5 evaluateStoreStatusAgainstPointInTime:timeCopy];
     }
 
     else
@@ -4966,19 +4966,19 @@ LABEL_3:
   }
 }
 
-- (BOOL)setLowPowerMode:(int64_t)a3
+- (BOOL)setLowPowerMode:(int64_t)mode
 {
   v4 = +[_PMLowPowerMode sharedInstance];
-  v5 = [v4 getPowerMode];
+  getPowerMode = [v4 getPowerMode];
 
-  v6 = v5 == a3;
-  if (v5 == a3)
+  v6 = getPowerMode == mode;
+  if (getPowerMode == mode)
   {
     v7 = sub_100063A54();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = a3;
+      modeCopy = mode;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Low power mode already set to: %ld", &v11, 0xCu);
     }
 
@@ -4986,7 +4986,7 @@ LABEL_3:
   }
 
   v8 = +[_PMLowPowerMode sharedInstance];
-  v9 = [v8 setPowerMode:a3 fromSource:@"MobileStoreDemo"];
+  v9 = [v8 setPowerMode:mode fromSource:@"MobileStoreDemo"];
 
   if ((v9 & 1) == 0)
   {
@@ -5017,32 +5017,32 @@ LABEL_9:
   v5 = [v4 fileExistsAtPath:@"/var/MSDWorkContainer/.MSD_cache_manifest"];
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [(MSDTargetDevice *)self manifestPath];
-  v8 = [v6 fileExistsAtPath:v7];
+  manifestPath = [(MSDTargetDevice *)self manifestPath];
+  v8 = [v6 fileExistsAtPath:manifestPath];
 
   if (!v8 || ([(MSDTargetDevice *)self manifestPath], v9 = objc_claimAutoreleasedReturnValue(), [MSDSignedManifestFactory createSignedManifestFromManifestFile:v9], v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
     v11 = objc_alloc_init(MSDDownloadManifestRequest);
-    v12 = [v3 manifestInfo];
-    [(MSDDownloadManifestRequest *)v11 setManifestInfo:v12];
+    manifestInfo = [v3 manifestInfo];
+    [(MSDDownloadManifestRequest *)v11 setManifestInfo:manifestInfo];
 
-    v13 = [(MSDTargetDevice *)self manifestPath];
-    [(MSDServerRequest *)v11 setSavePath:v13];
+    manifestPath2 = [(MSDTargetDevice *)self manifestPath];
+    [(MSDServerRequest *)v11 setSavePath:manifestPath2];
 
     v14 = +[MSDServerRequestHandler sharedInstance];
     v15 = [v14 handleRequestSync:v11];
 
-    v16 = [v15 error];
+    error = [v15 error];
 
-    if (v16)
+    if (error)
     {
       v40 = 0;
     }
 
     else
     {
-      v17 = [(MSDTargetDevice *)self manifestPath];
-      v10 = [MSDSignedManifestFactory createSignedManifestFromManifestFile:v17];
+      manifestPath3 = [(MSDTargetDevice *)self manifestPath];
+      v10 = [MSDSignedManifestFactory createSignedManifestFromManifestFile:manifestPath3];
 
       if (v10)
       {
@@ -5069,10 +5069,10 @@ LABEL_26:
   }
 
 LABEL_6:
-  v18 = [(MSDTargetDevice *)self helperAgent];
-  v19 = [v18 updateSignedManifest];
+  helperAgent = [(MSDTargetDevice *)self helperAgent];
+  updateSignedManifest = [helperAgent updateSignedManifest];
 
-  if ((v19 & 1) == 0)
+  if ((updateSignedManifest & 1) == 0)
   {
     v11 = sub_100063A54();
     if (os_log_type_enabled(&v11->super.super.super.super, OS_LOG_TYPE_ERROR))
@@ -5088,13 +5088,13 @@ LABEL_6:
   v20 = +[MSDPreferencesFile sharedInstance];
   v21 = [v20 objectForKey:@"MSDCacheManifestVersion"];
 
-  v22 = [v10 getInfo];
-  v23 = [v22 objectForKey:@"PartNumber"];
-  v24 = [v10 getInfo];
-  v25 = [v24 objectForKey:@"Revision"];
+  getInfo = [v10 getInfo];
+  v23 = [getInfo objectForKey:@"PartNumber"];
+  getInfo2 = [v10 getInfo];
+  v25 = [getInfo2 objectForKey:@"Revision"];
   v42 = v3;
-  v26 = [v3 manifestInfo];
-  v27 = [v26 objectForKey:@"SigningKey"];
+  manifestInfo2 = [v3 manifestInfo];
+  v27 = [manifestInfo2 objectForKey:@"SigningKey"];
   v28 = [NSString stringWithFormat:@"%@_%@_%@", v23, v25, v27];
 
   v29 = v21;
@@ -5109,8 +5109,8 @@ LABEL_6:
     }
 
     v35 = +[MSDContentCacheManager sharedInstance];
-    v36 = [v10 getAllFileHash];
-    [v35 clearCacheExceptFileHashes:v36];
+    getAllFileHash = [v10 getAllFileHash];
+    [v35 clearCacheExceptFileHashes:getAllFileHash];
 
     [(MSDTargetDevice *)self cleanUpBackgroundState:1];
     v3 = v42;
@@ -5131,13 +5131,13 @@ LABEL_6:
       }
 
       v32 = +[MSDContentCacheManager sharedInstance];
-      v33 = [v10 getAllFileHash];
-      [v32 clearCacheExceptFileHashes:v33];
+      getAllFileHash2 = [v10 getAllFileHash];
+      [v32 clearCacheExceptFileHashes:getAllFileHash2];
     }
   }
 
-  v37 = [p_superclass + 189 sharedInstance];
-  [v37 setObject:v28 forKey:@"MSDCacheManifestVersion"];
+  sharedInstance = [p_superclass + 189 sharedInstance];
+  [sharedInstance setObject:v28 forKey:@"MSDCacheManifestVersion"];
 
   v10 = v10;
   v38 = v10;
@@ -5181,14 +5181,14 @@ LABEL_17:
   }
 
   v7 = [LSApplicationProxy applicationProxyForIdentifier:@"com.apple.mobilesafari"];
-  v8 = [v7 dataContainerURL];
-  v9 = [v8 path];
+  dataContainerURL = [v7 dataContainerURL];
+  path = [dataContainerURL path];
 
-  v37 = [v9 stringByAppendingPathComponent:@"Library/Caches"];
-  v43 = [v9 stringByAppendingPathComponent:@"Library/Cookies"];
-  v35 = [v9 stringByAppendingPathComponent:@"Library/WebKit/WebsiteData"];
-  v41 = v9;
-  v42 = [v9 stringByAppendingPathComponent:@"Library/Caches/WebKit"];
+  v37 = [path stringByAppendingPathComponent:@"Library/Caches"];
+  v43 = [path stringByAppendingPathComponent:@"Library/Cookies"];
+  v35 = [path stringByAppendingPathComponent:@"Library/WebKit/WebsiteData"];
+  v41 = path;
+  v42 = [path stringByAppendingPathComponent:@"Library/Caches/WebKit"];
   v40 = NSHomeDirectory();
   v33 = [v40 stringByAppendingPathComponent:@"Library/Safari/History.db"];
   v39 = NSHomeDirectory();
@@ -5279,13 +5279,13 @@ LABEL_23:
 
 - (BOOL)deleteOperationRequest
 {
-  v3 = [(MSDTargetDevice *)self request];
+  request = [(MSDTargetDevice *)self request];
 
-  if (!v3 || (+[MSDPreferencesFile sharedInstance](MSDPreferencesFile, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), [v4 removeObjectForKey:@"criticalContentUpdateOnly"], v4, v5 = -[MSDTargetDevice removeKeyFromPreferenceFile:](self, "removeKeyFromPreferenceFile:", @"msd-request")))
+  if (!request || (+[MSDPreferencesFile sharedInstance](MSDPreferencesFile, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), [v4 removeObjectForKey:@"criticalContentUpdateOnly"], v4, v5 = -[MSDTargetDevice removeKeyFromPreferenceFile:](self, "removeKeyFromPreferenceFile:", @"msd-request")))
   {
-    v6 = [(MSDTargetDevice *)self response];
+    response = [(MSDTargetDevice *)self response];
 
-    if (v6)
+    if (response)
     {
 
       LOBYTE(v5) = [(MSDTargetDevice *)self removeKeyFromPreferenceFile:@"msd-response"];
@@ -5302,16 +5302,16 @@ LABEL_23:
 
 - (BOOL)deleteOperationRequestAndQuitHelper
 {
-  v3 = [(MSDTargetDevice *)self deleteOperationRequest];
-  if (v3)
+  deleteOperationRequest = [(MSDTargetDevice *)self deleteOperationRequest];
+  if (deleteOperationRequest)
   {
-    v4 = [(MSDTargetDevice *)self helperAgent];
-    v5 = [v4 quitHelper];
+    helperAgent = [(MSDTargetDevice *)self helperAgent];
+    quitHelper = [helperAgent quitHelper];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(deleteOperationRequest) = quitHelper;
   }
 
-  return v3;
+  return deleteOperationRequest;
 }
 
 - (int64_t)findMyHubRetryAtTime
@@ -5321,15 +5321,15 @@ LABEL_23:
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)hubLastOnlineTime
@@ -5339,15 +5339,15 @@ LABEL_23:
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)snapshotRevertFlagged
@@ -5357,15 +5357,15 @@ LABEL_23:
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)hubSuppliedSettings
@@ -5402,10 +5402,10 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)saveHubSuppliedSettings:(id)a3
+- (BOOL)saveHubSuppliedSettings:(id)settings
 {
-  v4 = a3;
-  if (!v4)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     goto LABEL_10;
   }
@@ -5416,7 +5416,7 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  v5 = [v4 objectForKey:@"SettingsID"];
+  v5 = [settingsCopy objectForKey:@"SettingsID"];
 
   if (!v5)
   {
@@ -5432,7 +5432,7 @@ LABEL_5:
   }
 
   v6 = +[MSDPreferencesFile sharedInstance];
-  v7 = [v6 setObject:v4 forKey:@"HubSuppliedSettings"];
+  v7 = [v6 setObject:settingsCopy forKey:@"HubSuppliedSettings"];
 
   if (!v7)
   {
@@ -5460,33 +5460,33 @@ LABEL_6:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)backgroundDownloadState
 {
   v2 = +[MSDProgressUpdater sharedInstance];
-  v3 = [v2 backgroundBundle];
+  backgroundBundle = [v2 backgroundBundle];
 
-  if (v3)
+  if (backgroundBundle)
   {
-    v4 = [v3 bundleState];
+    bundleState = [backgroundBundle bundleState];
   }
 
   else
   {
-    v4 = 0;
+    bundleState = 0;
   }
 
-  return v4;
+  return bundleState;
 }
 
 @end

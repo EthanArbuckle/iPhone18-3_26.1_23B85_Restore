@@ -3,13 +3,13 @@
 - (NSArray)itemProvidersForActivityItemsConfiguration;
 - (PXMediaProvider)imagePreviewMediaProvider;
 - (PXSectionedSelectionManager)selectionManager;
-- (id)activityItemsConfigurationMetadataForItemAtIndex:(int64_t)a3 key:(id)a4;
-- (id)activityItemsConfigurationMetadataForKey:(id)a3;
-- (id)activityItemsConfigurationPreviewForItemAtIndex:(int64_t)a3 intent:(id)a4 suggestedSize:(CGSize)a5;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAssets:(id)a3;
-- (void)setImagePreviewMediaProvider:(id)a3;
-- (void)setSelectionManager:(id)a3;
+- (id)activityItemsConfigurationMetadataForItemAtIndex:(int64_t)index key:(id)key;
+- (id)activityItemsConfigurationMetadataForKey:(id)key;
+- (id)activityItemsConfigurationPreviewForItemAtIndex:(int64_t)index intent:(id)intent suggestedSize:(CGSize)size;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAssets:(id)assets;
+- (void)setImagePreviewMediaProvider:(id)provider;
+- (void)setSelectionManager:(id)manager;
 @end
 
 @implementation PXBoopableItemsProvider_Swift
@@ -21,16 +21,16 @@
   return *(self + v3);
 }
 
-- (void)setSelectionManager:(id)a3
+- (void)setSelectionManager:(id)manager
 {
-  v5 = a3;
-  v6 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_1A49245D8();
   v7 = OBJC_IVAR___PXBoopableItemsProvider_Swift_selectionManager;
   swift_beginAccess();
-  v8 = *(v6 + v7);
-  *(v6 + v7) = a3;
-  v9 = v5;
+  v8 = *(selfCopy + v7);
+  *(selfCopy + v7) = manager;
+  v9 = managerCopy;
 
   sub_1A492150C();
 }
@@ -42,15 +42,15 @@
   _s12PhotosUICore13SpriteBuilderV11buildEither5firstSayAA0C13Configuration_pGAG_tFZ_0();
 }
 
-- (void)setAssets:(id)a3
+- (void)setAssets:(id)assets
 {
   sub_1A3C52C70(0, &qword_1EB126660);
   v4 = sub_1A524CA34();
-  v5 = self;
+  selfCopy = self;
   sub_1A4921A98(v4);
   v6 = OBJC_IVAR___PXBoopableItemsProvider_Swift_assets;
   swift_beginAccess();
-  *(v5 + v6) = v4;
+  *(selfCopy + v6) = v4;
 }
 
 - (PXMediaProvider)imagePreviewMediaProvider
@@ -60,18 +60,18 @@
   return *(self + v3);
 }
 
-- (void)setImagePreviewMediaProvider:(id)a3
+- (void)setImagePreviewMediaProvider:(id)provider
 {
   v5 = OBJC_IVAR___PXBoopableItemsProvider_Swift_imagePreviewMediaProvider;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = provider;
+  providerCopy = provider;
 }
 
 - (NSArray)itemProvidersForActivityItemsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A4922444();
 
   sub_1A3C52C70(0, &qword_1EB120AD0);
@@ -80,19 +80,19 @@
   return v3;
 }
 
-- (id)activityItemsConfigurationMetadataForKey:(id)a3
+- (id)activityItemsConfigurationMetadataForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
+  keyCopy = key;
+  selfCopy = self;
   sub_1A4922A38();
 }
 
-- (id)activityItemsConfigurationMetadataForItemAtIndex:(int64_t)a3 key:(id)a4
+- (id)activityItemsConfigurationMetadataForItemAtIndex:(int64_t)index key:(id)key
 {
   v5 = *((*MEMORY[0x1E69E7D40] & *self) + 0xC0);
-  v6 = a4;
-  v7 = self;
-  v5(v16, v6);
+  keyCopy = key;
+  selfCopy = self;
+  v5(v16, keyCopy);
 
   v8 = v17;
   if (v17)
@@ -115,28 +115,28 @@
   return v14;
 }
 
-- (id)activityItemsConfigurationPreviewForItemAtIndex:(int64_t)a3 intent:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityItemsConfigurationPreviewForItemAtIndex:(int64_t)index intent:(id)intent suggestedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_1A492479C(a3, width, height);
+  height = size.height;
+  width = size.width;
+  intentCopy = intent;
+  selfCopy = self;
+  v11 = sub_1A492479C(index, width, height);
 
   return v11;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v5 = a4;
+  changeCopy = change;
   objc_opt_self();
   v8 = swift_dynamicCastObjCClass();
   if (v8)
   {
-    if (v5)
+    if (changeCopy)
     {
       v9 = v8;
-      v10 = a3;
+      observableCopy = observable;
       self;
       sub_1A4923284([v9 selectionSnapshot]);
     }

@@ -1,22 +1,22 @@
 @interface SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   requestId = self->_requestId;
-  v6 = v4[5];
-  v15 = v4;
+  v6 = fromCopy[5];
+  v15 = fromCopy;
   if (requestId)
   {
     if (!v6)
@@ -37,10 +37,10 @@
     [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)self setRequestId:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_7:
   nluRequestId = self->_nluRequestId;
-  v8 = v4[4];
+  v8 = fromCopy[4];
   if (nluRequestId)
   {
     if (!v8)
@@ -61,22 +61,22 @@ LABEL_7:
     [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)self setNluRequestId:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_13:
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)self setResultCandidateId:?];
-    v4 = v15;
+    fromCopy = v15;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)self setUtterance:?];
-    v4 = v15;
+    fromCopy = v15;
   }
 
   tokenChain = self->_tokenChain;
-  v10 = v4[7];
+  v10 = fromCopy[7];
   if (tokenChain)
   {
     if (!v10)
@@ -97,10 +97,10 @@ LABEL_13:
     [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)self setTokenChain:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_23:
   embeddingTensor = self->_embeddingTensor;
-  v12 = v4[3];
+  v12 = fromCopy[3];
   if (embeddingTensor)
   {
     if (!v12)
@@ -121,16 +121,16 @@ LABEL_23:
     [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)self setEmbeddingTensor:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_29:
-  if (v4[9])
+  if (fromCopy[9])
   {
-    self->_maxCandidates = v4[1];
+    self->_maxCandidates = fromCopy[1];
     *&self->_has |= 1u;
   }
 
   cdmRequestId = self->_cdmRequestId;
-  v14 = v4[2];
+  v14 = fromCopy[2];
   if (cdmRequestId)
   {
     if (v14)
@@ -168,16 +168,16 @@ LABEL_29:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ [(SIRINLUEXTERNALRequestID *)self->_cdmRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   requestId = self->_requestId;
-  if (requestId | *(v4 + 5))
+  if (requestId | *(equalCopy + 5))
   {
     if (![(SIRINLUEXTERNALUUID *)requestId isEqual:?])
     {
@@ -186,7 +186,7 @@ LABEL_29:
   }
 
   nluRequestId = self->_nluRequestId;
-  if (nluRequestId | *(v4 + 4))
+  if (nluRequestId | *(equalCopy + 4))
   {
     if (![(SIRINLUEXTERNALUUID *)nluRequestId isEqual:?])
     {
@@ -195,7 +195,7 @@ LABEL_29:
   }
 
   resultCandidateId = self->_resultCandidateId;
-  if (resultCandidateId | *(v4 + 6))
+  if (resultCandidateId | *(equalCopy + 6))
   {
     if (![(NSString *)resultCandidateId isEqual:?])
     {
@@ -204,7 +204,7 @@ LABEL_29:
   }
 
   utterance = self->_utterance;
-  if (utterance | *(v4 + 8))
+  if (utterance | *(equalCopy + 8))
   {
     if (![(NSString *)utterance isEqual:?])
     {
@@ -213,7 +213,7 @@ LABEL_29:
   }
 
   tokenChain = self->_tokenChain;
-  if (tokenChain | *(v4 + 7))
+  if (tokenChain | *(equalCopy + 7))
   {
     if (![(SIRINLUINTERNALTokenChain *)tokenChain isEqual:?])
     {
@@ -222,7 +222,7 @@ LABEL_29:
   }
 
   embeddingTensor = self->_embeddingTensor;
-  if (embeddingTensor | *(v4 + 3))
+  if (embeddingTensor | *(equalCopy + 3))
   {
     if (![(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddingTensor isEqual:?])
     {
@@ -230,16 +230,16 @@ LABEL_29:
     }
   }
 
-  v11 = *(v4 + 72);
+  v11 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_maxCandidates != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_maxCandidates != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_21:
     v13 = 0;
@@ -247,7 +247,7 @@ LABEL_21:
   }
 
   cdmRequestId = self->_cdmRequestId;
-  if (cdmRequestId | *(v4 + 2))
+  if (cdmRequestId | *(equalCopy + 2))
   {
     v13 = [(SIRINLUEXTERNALRequestID *)cdmRequestId isEqual:?];
   }
@@ -262,30 +262,30 @@ LABEL_22:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(SIRINLUEXTERNALUUID *)self->_nluRequestId copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALUUID *)self->_nluRequestId copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_resultCandidateId copyWithZone:a3];
+  v10 = [(NSString *)self->_resultCandidateId copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_utterance copyWithZone:a3];
+  v12 = [(NSString *)self->_utterance copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
-  v14 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:a3];
+  v14 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
-  v16 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self->_embeddingTensor copyWithZone:a3];
+  v16 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)self->_embeddingTensor copyWithZone:zone];
   v17 = *(v5 + 24);
   *(v5 + 24) = v16;
 
@@ -295,177 +295,177 @@ LABEL_22:
     *(v5 + 72) |= 1u;
   }
 
-  v18 = [(SIRINLUEXTERNALRequestID *)self->_cdmRequestId copyWithZone:a3];
+  v18 = [(SIRINLUEXTERNALRequestID *)self->_cdmRequestId copyWithZone:zone];
   v19 = *(v5 + 16);
   *(v5 + 16) = v18;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestId)
   {
-    [v4 setRequestId:?];
-    v4 = v5;
+    [toCopy setRequestId:?];
+    toCopy = v5;
   }
 
   if (self->_nluRequestId)
   {
     [v5 setNluRequestId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_resultCandidateId)
   {
     [v5 setResultCandidateId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_utterance)
   {
     [v5 setUtterance:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tokenChain)
   {
     [v5 setTokenChain:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_embeddingTensor)
   {
     [v5 setEmbeddingTensor:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_maxCandidates;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = self->_maxCandidates;
+    *(toCopy + 72) |= 1u;
   }
 
   if (self->_cdmRequestId)
   {
     [v5 setCdmRequestId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_requestId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_nluRequestId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_resultCandidateId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_utterance)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_tokenChain)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_embeddingTensor)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     maxCandidates = self->_maxCandidates;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_cdmRequestId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestId = self->_requestId;
   if (requestId)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_id"];
   }
 
   nluRequestId = self->_nluRequestId;
   if (nluRequestId)
   {
-    v7 = [(SIRINLUEXTERNALUUID *)nluRequestId dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"nlu_request_id"];
+    dictionaryRepresentation2 = [(SIRINLUEXTERNALUUID *)nluRequestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"nlu_request_id"];
   }
 
   resultCandidateId = self->_resultCandidateId;
   if (resultCandidateId)
   {
-    [v3 setObject:resultCandidateId forKey:@"result_candidate_id"];
+    [dictionary setObject:resultCandidateId forKey:@"result_candidate_id"];
   }
 
   utterance = self->_utterance;
   if (utterance)
   {
-    [v3 setObject:utterance forKey:@"utterance"];
+    [dictionary setObject:utterance forKey:@"utterance"];
   }
 
   tokenChain = self->_tokenChain;
   if (tokenChain)
   {
-    v11 = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"token_chain"];
+    dictionaryRepresentation3 = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"token_chain"];
   }
 
   embeddingTensor = self->_embeddingTensor;
   if (embeddingTensor)
   {
-    v13 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddingTensor dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"embedding_tensor"];
+    dictionaryRepresentation4 = [(SIRINLUINTERNALNLv4EmbeddingTensor *)embeddingTensor dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"embedding_tensor"];
   }
 
   if (*&self->_has)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_maxCandidates];
-    [v3 setObject:v14 forKey:@"max_candidates"];
+    [dictionary setObject:v14 forKey:@"max_candidates"];
   }
 
   cdmRequestId = self->_cdmRequestId;
   if (cdmRequestId)
   {
-    v16 = [(SIRINLUEXTERNALRequestID *)cdmRequestId dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"cdm_request_id"];
+    dictionaryRepresentation5 = [(SIRINLUEXTERNALRequestID *)cdmRequestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"cdm_request_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -474,8 +474,8 @@ LABEL_22:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest;
   v4 = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)&v8 description];
-  v5 = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALMENTION_DETECTORMentionDetectorRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

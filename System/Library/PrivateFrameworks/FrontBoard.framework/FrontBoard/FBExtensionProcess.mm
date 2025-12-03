@@ -8,7 +8,7 @@
 
 - (void)_finishInit
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot initialize FBExtensionProcess without an extension identity (%@)", a1];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot initialize FBExtensionProcess without an extension identity (%@)", self];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6 = NSStringFromSelector(a2);
@@ -66,11 +66,11 @@
 {
   v7.receiver = self;
   v7.super_class = FBExtensionProcess;
-  v3 = [(FBProcess *)&v7 succinctDescriptionBuilder];
-  v4 = [(FBSExtensionInfo *)self->_extensionInfo typeIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"typeID" skipIfNil:1];
+  succinctDescriptionBuilder = [(FBProcess *)&v7 succinctDescriptionBuilder];
+  typeIdentifier = [(FBSExtensionInfo *)self->_extensionInfo typeIdentifier];
+  v5 = [succinctDescriptionBuilder appendObject:typeIdentifier withName:@"typeID" skipIfNil:1];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 @end

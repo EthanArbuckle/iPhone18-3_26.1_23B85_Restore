@@ -7,7 +7,7 @@
 - (void)fiui_incrementValueForKey:()FIUIUtilities byValue:
 {
   v6 = a4;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   v10 = v7;
   if (v7)
   {
@@ -16,7 +16,7 @@
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:a2];
-  [a1 setObject:v9 forKey:v6];
+  [self setObject:v9 forKey:v6];
 }
 
 @end

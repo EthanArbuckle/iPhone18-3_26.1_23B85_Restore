@@ -1,33 +1,33 @@
 @interface DODMLASRSchemaDODMLASRPersonalizationExperimentStarted
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRPersonalizationExperimentStarted)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRPersonalizationExperimentStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRPersonalizationExperimentStarted)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRPersonalizationExperimentStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDeviceThermalState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDeviceThermalState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRPersonalizationExperimentStarted
 
-- (DODMLASRSchemaDODMLASRPersonalizationExperimentStarted)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRPersonalizationExperimentStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = DODMLASRSchemaDODMLASRPersonalizationExperimentStarted;
   v5 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentStarted *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRPersonalizationExperimentStarted setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"deviceThermalState"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"deviceThermalState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRPersonalizationExperimentStarted)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRPersonalizationExperimentStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRPersonalizationExperimentStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRPersonalizationExperimentStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRPersonalizationExperimentStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,7 +76,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -91,19 +91,19 @@
       v6 = off_1E78D4230[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"deviceThermalState"];
+    [dictionary setObject:v6 forKeyedSubscript:@"deviceThermalState"];
     has = self->_has;
   }
 
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[DODMLASRSchemaDODMLASRPersonalizationExperimentStarted exists](self, "exists")}];
-    [v3 setObject:v7 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v7 forKeyedSubscript:@"exists"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -132,16 +132,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -150,7 +150,7 @@ LABEL_3:
   if (*&has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
 LABEL_10:
       v10 = 0;
@@ -158,7 +158,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -170,7 +170,7 @@ LABEL_10:
   if (v8)
   {
     deviceThermalState = self->_deviceThermalState;
-    if (deviceThermalState != [v4 deviceThermalState])
+    if (deviceThermalState != [equalCopy deviceThermalState])
     {
       goto LABEL_10;
     }
@@ -182,28 +182,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasDeviceThermalState:(BOOL)a3
+- (void)setHasDeviceThermalState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }

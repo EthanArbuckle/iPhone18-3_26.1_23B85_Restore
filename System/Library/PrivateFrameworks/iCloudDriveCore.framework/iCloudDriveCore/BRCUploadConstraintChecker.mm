@@ -2,21 +2,21 @@
 + (id)defaultChecker;
 - (BOOL)_areConstraintsOverriden;
 - (BOOL)_hasRejectedItemsDueToSize;
-- (BOOL)_removeItemIDFromRejectedItemsWithItemID:(id)a3 shouldSendNotification:(BOOL *)a4;
+- (BOOL)_removeItemIDFromRejectedItemsWithItemID:(id)d shouldSendNotification:(BOOL *)notification;
 - (BOOL)_resetAvailableSizeAndDateIfNeeded;
-- (BOOL)canUploadItemWithSize:(unint64_t)a3 itemScope:(unsigned __int8)a4 itemID:(id)a5 withError:(id *)a6;
+- (BOOL)canUploadItemWithSize:(unint64_t)size itemScope:(unsigned __int8)scope itemID:(id)d withError:(id *)error;
 - (id)_init;
 - (id)availableSizeForUpload;
-- (void)_addItemIDToRejectedItemsWithItemID:(id)a3;
-- (void)_rescheduleAndResetAvailableSizeAndDateIfNeededWithDidReset:(BOOL *)a3;
-- (void)_scheduleNoSpaceExecutionBlocksWithAvailableSpace:(int64_t)a3;
-- (void)addNoSpaceExecutionBlock:(id)a3 forPersonaID:(id)a4;
-- (void)addRescheduleSuspendedJobsBlock:(id)a3 forPersonaID:(id)a4;
+- (void)_addItemIDToRejectedItemsWithItemID:(id)d;
+- (void)_rescheduleAndResetAvailableSizeAndDateIfNeededWithDidReset:(BOOL *)reset;
+- (void)_scheduleNoSpaceExecutionBlocksWithAvailableSpace:(int64_t)space;
+- (void)addNoSpaceExecutionBlock:(id)block forPersonaID:(id)d;
+- (void)addRescheduleSuspendedJobsBlock:(id)block forPersonaID:(id)d;
 - (void)overrideConstraints;
-- (void)removeItemWithItemID:(id)a3;
+- (void)removeItemWithItemID:(id)d;
 - (void)rescheduleUploadsAndSendNotificationIfNeeded;
 - (void)sendCellularConstraintNotification;
-- (void)updateWithUploadedBytesSize:(unint64_t)a3 forItemID:(id)a4;
+- (void)updateWithUploadedBytesSize:(unint64_t)size forItemID:(id)d;
 @end
 
 @implementation BRCUploadConstraintChecker
@@ -34,9 +34,9 @@
     maxBytesForSingleItemUploadOnCellular = v2->_maxBytesForSingleItemUploadOnCellular;
     v2->_maxBytesForSingleItemUploadOnCellular = v4;
 
-    v6 = [MEMORY[0x277CBEAA8] getLastMidnightDate];
+    getLastMidnightDate = [MEMORY[0x277CBEAA8] getLastMidnightDate];
     lastMidnightDate = v2->_lastMidnightDate;
-    v2->_lastMidnightDate = v6;
+    v2->_lastMidnightDate = getLastMidnightDate;
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     personaIDToRescheduleSuspendedJobsBlock = v2->_personaIDToRescheduleSuspendedJobsBlock;
@@ -47,8 +47,8 @@
     v2->_personaIDToNoSpaceExecutionBlock = v10;
 
     v12 = objc_alloc_init(BRCDeviceConfiguration);
-    v13 = [(BRCDeviceConfiguration *)v12 getConfiguration];
-    v14 = [v13 objectForKeyedSubscript:@"SYNC_BUBBLE"];
+    getConfiguration = [(BRCDeviceConfiguration *)v12 getConfiguration];
+    v14 = [getConfiguration objectForKeyedSubscript:@"SYNC_BUBBLE"];
     isInSyncBubble = v2->_isInSyncBubble;
     v2->_isInSyncBubble = v14;
 
@@ -88,13 +88,13 @@ uint64_t __44__BRCUploadConstraintChecker_defaultChecker__block_invoke()
 
 - (BOOL)_areConstraintsOverriden
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lastOverrideDate = v2->_lastOverrideDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lastOverrideDate = selfCopy->_lastOverrideDate;
   if (lastOverrideDate)
   {
     [(NSDate *)lastOverrideDate timeIntervalSinceNow];
-    v5 = v2->_overrideUploadsOnCellularForTimeLimit >= -v4;
+    v5 = selfCopy->_overrideUploadsOnCellularForTimeLimit >= -v4;
   }
 
   else
@@ -102,24 +102,24 @@ uint64_t __44__BRCUploadConstraintChecker_defaultChecker__block_invoke()
     v5 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (BOOL)_resetAvailableSizeAndDateIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEAA8] getLastMidnightDate];
-  v4 = v3;
-  if (v2->_lastMidnightDate && ([v3 timeIntervalSinceDate:?], v6 = v5, +[BRCUserDefaults defaultsForMangledID:](BRCUserDefaults, "defaultsForMangledID:", 0), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "refreshRateForUploadOnCellular"), v9 = v8, v7, v6 >= v9))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  getLastMidnightDate = [MEMORY[0x277CBEAA8] getLastMidnightDate];
+  v4 = getLastMidnightDate;
+  if (selfCopy->_lastMidnightDate && ([getLastMidnightDate timeIntervalSinceDate:?], v6 = v5, +[BRCUserDefaults defaultsForMangledID:](BRCUserDefaults, "defaultsForMangledID:", 0), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "refreshRateForUploadOnCellular"), v9 = v8, v7, v6 >= v9))
   {
-    objc_storeStrong(&v2->_lastMidnightDate, v4);
+    objc_storeStrong(&selfCopy->_lastMidnightDate, v4);
     v11 = [BRCUserDefaults defaultsForMangledID:0];
-    v2->_availableSizeForUpload = [v11 maxBytesForUploadOnCellular];
+    selfCopy->_availableSizeForUpload = [v11 maxBytesForUploadOnCellular];
 
-    [(BRCUploadConstraintChecker *)v2 sendCellularConstraintNotification];
+    [(BRCUploadConstraintChecker *)selfCopy sendCellularConstraintNotification];
     v10 = 1;
   }
 
@@ -128,32 +128,32 @@ uint64_t __44__BRCUploadConstraintChecker_defaultChecker__block_invoke()
     v10 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 
 - (id)availableSizeForUpload
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CCABB0] numberWithLongLong:v2->_availableSizeForUpload];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x277CCABB0] numberWithLongLong:selfCopy->_availableSizeForUpload];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_scheduleNoSpaceExecutionBlocksWithAvailableSpace:(int64_t)a3
+- (void)_scheduleNoSpaceExecutionBlocksWithAvailableSpace:(int64_t)space
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_personaIDToNoSpaceExecutionBlock copy];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_personaIDToNoSpaceExecutionBlock copy];
+  objc_sync_exit(selfCopy);
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __80__BRCUploadConstraintChecker__scheduleNoSpaceExecutionBlocksWithAvailableSpace___block_invoke;
   v6[3] = &__block_descriptor_40_e31_v32__0__NSString_8___v___16_B24l;
-  v6[4] = a3;
+  v6[4] = space;
   [v5 enumerateKeysAndObjectsUsingBlock:v6];
 }
 
@@ -275,74 +275,74 @@ void __80__BRCUploadConstraintChecker__scheduleNoSpaceExecutionBlocksWithAvailab
   _block_invoke___personalPersona_4 = v0;
 }
 
-- (BOOL)_removeItemIDFromRejectedItemsWithItemID:(id)a3 shouldSendNotification:(BOOL *)a4
+- (BOOL)_removeItemIDFromRejectedItemsWithItemID:(id)d shouldSendNotification:(BOOL *)notification
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableSet *)v7->_rejectedItemsDueToSize containsObject:v6];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableSet *)selfCopy->_rejectedItemsDueToSize containsObject:dCopy];
   if (v8)
   {
-    [(NSMutableSet *)v7->_rejectedItemsDueToSize removeObject:v6];
-    *a4 = [(NSMutableSet *)v7->_rejectedItemsDueToSize count]== 0;
+    [(NSMutableSet *)selfCopy->_rejectedItemsDueToSize removeObject:dCopy];
+    *notification = [(NSMutableSet *)selfCopy->_rejectedItemsDueToSize count]== 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)_addItemIDToRejectedItemsWithItemID:(id)a3
+- (void)_addItemIDToRejectedItemsWithItemID:(id)d
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_rejectedItemsDueToSize addObject:v5];
-  objc_sync_exit(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_rejectedItemsDueToSize addObject:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)_hasRejectedItemsDueToSize
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableSet *)v2->_rejectedItemsDueToSize count]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableSet *)selfCopy->_rejectedItemsDueToSize count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)updateWithUploadedBytesSize:(unint64_t)a3 forItemID:(id)a4
+- (void)updateWithUploadedBytesSize:(unint64_t)size forItemID:(id)d
 {
-  v10 = a4;
+  dCopy = d;
   [(BRCUploadConstraintChecker *)self removeItemWithItemID:?];
   [(BRCUploadConstraintChecker *)self _resetAvailableSizeAndDateIfNeeded];
-  v6 = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
-  v7 = [v6 isCellularNetwork];
+  mEMORY[0x277CFAEA0] = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
+  isCellularNetwork = [mEMORY[0x277CFAEA0] isCellularNetwork];
 
-  if (v7)
+  if (isCellularNetwork)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = v8->_availableSizeForUpload - a3;
-    v8->_availableSizeForUpload = v9;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = selfCopy->_availableSizeForUpload - size;
+    selfCopy->_availableSizeForUpload = v9;
     if (v9 <= 0)
     {
-      [(BRCUploadConstraintChecker *)v8 _scheduleNoSpaceExecutionBlocksWithAvailableSpace:?];
+      [(BRCUploadConstraintChecker *)selfCopy _scheduleNoSpaceExecutionBlocksWithAvailableSpace:?];
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_rescheduleAndResetAvailableSizeAndDateIfNeededWithDidReset:(BOOL *)a3
+- (void)_rescheduleAndResetAvailableSizeAndDateIfNeededWithDidReset:(BOOL *)reset
 {
-  v5 = [(BRCUploadConstraintChecker *)self _resetAvailableSizeAndDateIfNeeded];
-  if (v5 || -[BRCUploadConstraintChecker _areConstraintsOverriden](self, "_areConstraintsOverriden") || (+[BRCContainerCellularSettings containerCellularSettings](BRCContainerCellularSettings, "containerCellularSettings"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isUnlimitedCellularUpdatesEnabled], v6, v7))
+  _resetAvailableSizeAndDateIfNeeded = [(BRCUploadConstraintChecker *)self _resetAvailableSizeAndDateIfNeeded];
+  if (_resetAvailableSizeAndDateIfNeeded || -[BRCUploadConstraintChecker _areConstraintsOverriden](self, "_areConstraintsOverriden") || (+[BRCContainerCellularSettings containerCellularSettings](BRCContainerCellularSettings, "containerCellularSettings"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isUnlimitedCellularUpdatesEnabled], v6, v7))
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(NSMutableDictionary *)v8->_personaIDToRescheduleSuspendedJobsBlock copy];
-    objc_sync_exit(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [(NSMutableDictionary *)selfCopy->_personaIDToRescheduleSuspendedJobsBlock copy];
+    objc_sync_exit(selfCopy);
 
     if (v9)
     {
@@ -350,9 +350,9 @@ void __80__BRCUploadConstraintChecker__scheduleNoSpaceExecutionBlocksWithAvailab
     }
   }
 
-  if (a3)
+  if (reset)
   {
-    *a3 = v5;
+    *reset = _resetAvailableSizeAndDateIfNeeded;
   }
 }
 
@@ -474,12 +474,12 @@ void __90__BRCUploadConstraintChecker__rescheduleAndResetAvailableSizeAndDateIfN
   _block_invoke_2___personalPersona_1 = v0;
 }
 
-- (BOOL)canUploadItemWithSize:(unint64_t)a3 itemScope:(unsigned __int8)a4 itemID:(id)a5 withError:(id *)a6
+- (BOOL)canUploadItemWithSize:(unint64_t)size itemScope:(unsigned __int8)scope itemID:(id)d withError:(id *)error
 {
-  v7 = a4;
-  v10 = a5;
+  scopeCopy = scope;
+  dCopy = d;
   v11 = +[BRCSystemResourcesManager manager];
-  v12 = [v11 isNetworkAvailableForDriveWithError:a6];
+  v12 = [v11 isNetworkAvailableForDriveWithError:error];
 
   if ((v12 & 1) == 0)
   {
@@ -493,30 +493,30 @@ void __90__BRCUploadConstraintChecker__rescheduleAndResetAvailableSizeAndDateIfN
     goto LABEL_13;
   }
 
-  v13 = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
-  v14 = [v13 isCellularNetwork];
+  mEMORY[0x277CFAEA0] = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
+  isCellularNetwork = [mEMORY[0x277CFAEA0] isCellularNetwork];
 
-  if (v7 != 1)
+  if (scopeCopy != 1)
   {
-    if (v14)
+    if (isCellularNetwork)
     {
       if (![(NSNumber *)self->_isInSyncBubble BOOLValue]&& ![(BRCUploadConstraintChecker *)self _areConstraintsOverriden])
       {
         v15 = +[BRCContainerCellularSettings containerCellularSettings];
-        v16 = [v15 isUnlimitedCellularUpdatesEnabled];
+        isUnlimitedCellularUpdatesEnabled = [v15 isUnlimitedCellularUpdatesEnabled];
 
-        if (!v16)
+        if (!isUnlimitedCellularUpdatesEnabled)
         {
-          v21 = self;
-          objc_sync_enter(v21);
-          if (v21->_availableSizeForUpload >= 1)
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          if (selfCopy->_availableSizeForUpload >= 1)
           {
-            if ([(NSNumber *)v21->_maxBytesForSingleItemUploadOnCellular unsignedLongLongValue]>= a3)
+            if ([(NSNumber *)selfCopy->_maxBytesForSingleItemUploadOnCellular unsignedLongLongValue]>= size)
             {
-              objc_sync_exit(v21);
+              objc_sync_exit(selfCopy);
 
               v24 = 0;
-              [(BRCUploadConstraintChecker *)v21 _rescheduleAndResetAvailableSizeAndDateIfNeededWithDidReset:&v24];
+              [(BRCUploadConstraintChecker *)selfCopy _rescheduleAndResetAvailableSizeAndDateIfNeededWithDidReset:&v24];
               if (v24)
               {
                 goto LABEL_9;
@@ -525,12 +525,12 @@ void __90__BRCUploadConstraintChecker__rescheduleAndResetAvailableSizeAndDateIfN
               goto LABEL_8;
             }
 
-            [(BRCUploadConstraintChecker *)v21 _addItemIDToRejectedItemsWithItemID:v10];
+            [(BRCUploadConstraintChecker *)selfCopy _addItemIDToRejectedItemsWithItemID:dCopy];
           }
 
-          objc_sync_exit(v21);
+          objc_sync_exit(selfCopy);
 
-          [(BRCUploadConstraintChecker *)v21 sendCellularConstraintNotification];
+          [(BRCUploadConstraintChecker *)selfCopy sendCellularConstraintNotification];
           v22 = brc_bread_crumbs();
           v23 = brc_default_log();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -538,10 +538,10 @@ void __90__BRCUploadConstraintChecker__rescheduleAndResetAvailableSizeAndDateIfN
             [BRCUploadConstraintChecker canUploadItemWithSize:itemScope:itemID:withError:];
           }
 
-          if (a6)
+          if (error)
           {
             [MEMORY[0x277CCA9B8] brc_errorNetworkUnreachableDueToCellularConstraint];
-            *a6 = v17 = 0;
+            *error = v17 = 0;
             goto LABEL_14;
           }
 
@@ -553,14 +553,14 @@ LABEL_13:
     }
   }
 
-  if ((([(BRCUploadConstraintChecker *)self _resetAvailableSizeAndDateIfNeeded]| v14) & 1) == 0)
+  if ((([(BRCUploadConstraintChecker *)self _resetAvailableSizeAndDateIfNeeded]| isCellularNetwork) & 1) == 0)
   {
 LABEL_8:
     [(BRCUploadConstraintChecker *)self sendCellularConstraintNotification];
   }
 
 LABEL_9:
-  [(BRCUploadConstraintChecker *)self removeItemWithItemID:v10];
+  [(BRCUploadConstraintChecker *)self removeItemWithItemID:dCopy];
   v17 = 1;
 LABEL_14:
 
@@ -569,94 +569,94 @@ LABEL_14:
 
 - (void)sendCellularConstraintNotification
 {
-  v3 = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
-  v4 = [v3 isCellularNetwork];
+  mEMORY[0x277CFAEA0] = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
+  isCellularNetwork = [mEMORY[0x277CFAEA0] isCellularNetwork];
 
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = +[BRCContainerCellularSettings containerCellularSettings];
-  if (([v6 isUnlimitedCellularUpdatesEnabled] & 1) != 0 || -[BRCUploadConstraintChecker _areConstraintsOverriden](v5, "_areConstraintsOverriden"))
+  if (([v6 isUnlimitedCellularUpdatesEnabled] & 1) != 0 || -[BRCUploadConstraintChecker _areConstraintsOverriden](selfCopy, "_areConstraintsOverriden"))
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v5->_availableSizeForUpload < 1 || [(BRCUploadConstraintChecker *)v5 _hasRejectedItemsDueToSize];
+    v7 = selfCopy->_availableSizeForUpload < 1 || [(BRCUploadConstraintChecker *)selfCopy _hasRejectedItemsDueToSize];
   }
 
-  objc_sync_exit(v5);
-  cellularConstraintsNotifier = v5->_cellularConstraintsNotifier;
+  objc_sync_exit(selfCopy);
+  cellularConstraintsNotifier = selfCopy->_cellularConstraintsNotifier;
 
-  [(BRDarwinNotifySender *)cellularConstraintsNotifier notifyChangedState:v4 & v7];
+  [(BRDarwinNotifySender *)cellularConstraintsNotifier notifyChangedState:isCellularNetwork & v7];
 }
 
-- (void)addRescheduleSuspendedJobsBlock:(id)a3 forPersonaID:(id)a4
+- (void)addRescheduleSuspendedJobsBlock:(id)block forPersonaID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && v6)
+  blockCopy = block;
+  dCopy = d;
+  if (blockCopy && dCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(NSMutableDictionary *)v7->_personaIDToRescheduleSuspendedJobsBlock objectForKeyedSubscript:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [(NSMutableDictionary *)selfCopy->_personaIDToRescheduleSuspendedJobsBlock objectForKeyedSubscript:dCopy];
 
     if (!v8)
     {
-      v9 = MEMORY[0x22AA4A310](v10);
-      [(NSMutableDictionary *)v7->_personaIDToRescheduleSuspendedJobsBlock setObject:v9 forKeyedSubscript:v6];
+      v9 = MEMORY[0x22AA4A310](blockCopy);
+      [(NSMutableDictionary *)selfCopy->_personaIDToRescheduleSuspendedJobsBlock setObject:v9 forKeyedSubscript:dCopy];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addNoSpaceExecutionBlock:(id)a3 forPersonaID:(id)a4
+- (void)addNoSpaceExecutionBlock:(id)block forPersonaID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && v6)
+  blockCopy = block;
+  dCopy = d;
+  if (blockCopy && dCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(NSMutableDictionary *)v7->_personaIDToNoSpaceExecutionBlock objectForKeyedSubscript:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [(NSMutableDictionary *)selfCopy->_personaIDToNoSpaceExecutionBlock objectForKeyedSubscript:dCopy];
 
     if (!v8)
     {
-      v9 = MEMORY[0x22AA4A310](v10);
-      [(NSMutableDictionary *)v7->_personaIDToNoSpaceExecutionBlock setObject:v9 forKeyedSubscript:v6];
+      v9 = MEMORY[0x22AA4A310](blockCopy);
+      [(NSMutableDictionary *)selfCopy->_personaIDToNoSpaceExecutionBlock setObject:v9 forKeyedSubscript:dCopy];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (void)overrideConstraints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(BRCUploadConstraintChecker *)v2 _areConstraintsOverriden])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(BRCUploadConstraintChecker *)selfCopy _areConstraintsOverriden])
   {
     v3 = [MEMORY[0x277CBEAA8] now];
-    lastOverrideDate = v2->_lastOverrideDate;
-    v2->_lastOverrideDate = v3;
+    lastOverrideDate = selfCopy->_lastOverrideDate;
+    selfCopy->_lastOverrideDate = v3;
 
-    [(NSMutableSet *)v2->_rejectedItemsDueToSize removeAllObjects];
+    [(NSMutableSet *)selfCopy->_rejectedItemsDueToSize removeAllObjects];
     v5 = 0;
-    [(BRCUploadConstraintChecker *)v2 _rescheduleAndResetAvailableSizeAndDateIfNeededWithDidReset:&v5];
+    [(BRCUploadConstraintChecker *)selfCopy _rescheduleAndResetAvailableSizeAndDateIfNeededWithDidReset:&v5];
     if ((v5 & 1) == 0)
     {
-      [(BRCUploadConstraintChecker *)v2 sendCellularConstraintNotification];
+      [(BRCUploadConstraintChecker *)selfCopy sendCellularConstraintNotification];
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeItemWithItemID:(id)a3
+- (void)removeItemWithItemID:(id)d
 {
   v4 = 0;
-  if ([(BRCUploadConstraintChecker *)self _removeItemIDFromRejectedItemsWithItemID:a3 shouldSendNotification:&v4])
+  if ([(BRCUploadConstraintChecker *)self _removeItemIDFromRejectedItemsWithItemID:d shouldSendNotification:&v4])
   {
     if (v4 == 1)
     {

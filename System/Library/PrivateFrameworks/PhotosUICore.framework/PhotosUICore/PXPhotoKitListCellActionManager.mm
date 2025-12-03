@@ -1,51 +1,51 @@
 @interface PXPhotoKitListCellActionManager
-- (PXPhotoKitListCellActionManager)initWithCollectionList:(id)a3;
-- (id)actionPerformerForActionType:(id)a3 parameters:(id)a4;
-- (id)actionTypeForGenericType:(id)a3;
+- (PXPhotoKitListCellActionManager)initWithCollectionList:(id)list;
+- (id)actionPerformerForActionType:(id)type parameters:(id)parameters;
+- (id)actionTypeForGenericType:(id)type;
 @end
 
 @implementation PXPhotoKitListCellActionManager
 
-- (id)actionPerformerForActionType:(id)a3 parameters:(id)a4
+- (id)actionPerformerForActionType:(id)type parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotoKitListCellActionManager *)self performerClassByType];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  typeCopy = type;
+  parametersCopy = parameters;
+  performerClassByType = [(PXPhotoKitListCellActionManager *)self performerClassByType];
+  v9 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   if (v9)
   {
     v10 = [v9 alloc];
-    v11 = [(PXPhotoKitListCellActionManager *)self collectionList];
-    v9 = [v10 initWithActionType:v6 collectionList:v11 parameters:v7];
+    collectionList = [(PXPhotoKitListCellActionManager *)self collectionList];
+    v9 = [v10 initWithActionType:typeCopy collectionList:collectionList parameters:parametersCopy];
 
-    v12 = [(PXActionManager *)self performerDelegate];
-    [(objc_class *)v9 setDelegate:v12];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [(objc_class *)v9 setDelegate:performerDelegate];
   }
 
   return v9;
 }
 
-- (id)actionTypeForGenericType:(id)a3
+- (id)actionTypeForGenericType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitListCellActionManager *)self mediaTypeActionTypeByGenericType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  mediaTypeActionTypeByGenericType = [(PXPhotoKitListCellActionManager *)self mediaTypeActionTypeByGenericType];
+  v6 = [mediaTypeActionTypeByGenericType objectForKeyedSubscript:typeCopy];
 
   return v6;
 }
 
-- (PXPhotoKitListCellActionManager)initWithCollectionList:(id)a3
+- (PXPhotoKitListCellActionManager)initWithCollectionList:(id)list
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  listCopy = list;
   v13.receiver = self;
   v13.super_class = PXPhotoKitListCellActionManager;
   v6 = [(PXPhotoKitListCellActionManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionList, a3);
+    objc_storeStrong(&v6->_collectionList, list);
     v16 = @"PXPhotosListCellActionTypeReorder";
     v17[0] = objc_opt_class();
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];

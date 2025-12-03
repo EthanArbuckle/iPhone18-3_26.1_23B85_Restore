@@ -1,30 +1,30 @@
 @interface SBLockScreenPluginManager
-- (BOOL)_handlePluginDisabled:(id)a3 withContext:(id)a4;
-- (BOOL)_loadLockScreenPluginWithContext:(id)a3;
-- (BOOL)_sendEventToPlugin:(id)a3;
-- (BOOL)disableLockScreenPluginWithContext:(id)a3;
-- (BOOL)enableLockScreenPluginWithContext:(id)a3;
-- (BOOL)handleEvent:(int64_t)a3;
-- (BOOL)pluginController:(id)a3 sendAction:(id)a4;
+- (BOOL)_handlePluginDisabled:(id)disabled withContext:(id)context;
+- (BOOL)_loadLockScreenPluginWithContext:(id)context;
+- (BOOL)_sendEventToPlugin:(id)plugin;
+- (BOOL)disableLockScreenPluginWithContext:(id)context;
+- (BOOL)enableLockScreenPluginWithContext:(id)context;
+- (BOOL)handleEvent:(int64_t)event;
+- (BOOL)pluginController:(id)controller sendAction:(id)action;
 - (SBLockScreenPluginManager)init;
 - (SBLockScreenPluginManagerDelegate)delegate;
-- (id)_highestPriorityPluginIgnoringViewDisplay:(BOOL)a3;
-- (id)_pluginForPluginController:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_highestPriorityPluginIgnoringViewDisplay:(BOOL)display;
+- (id)_pluginForPluginController:(id)controller;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)lockScreenActionContext;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_handleUIRelock;
 - (void)_refreshLockScreenPlugin;
-- (void)_setActivePlugin:(id)a3 displayedPlugin:(id)a4;
-- (void)activatePluginController:(id)a3;
-- (void)deactivatePluginController:(id)a3;
+- (void)_setActivePlugin:(id)plugin displayedPlugin:(id)displayedPlugin;
+- (void)activatePluginController:(id)controller;
+- (void)deactivatePluginController:(id)controller;
 - (void)dealloc;
-- (void)pluginController:(id)a3 updateAppearance:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)pluginController:(id)controller updateAppearance:(id)appearance;
+- (void)setDelegate:(id)delegate;
+- (void)setEnabled:(BOOL)enabled;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBLockScreenPluginManager
@@ -32,8 +32,8 @@
 - (id)lockScreenActionContext
 {
   v3 = +[SBLockScreenActionContextFactory sharedInstance];
-  v4 = [(SBLockScreenPluginManager *)self activePlugin];
-  v5 = [v3 lockScreenActionContextForPlugin:v4];
+  activePlugin = [(SBLockScreenPluginManager *)self activePlugin];
+  v5 = [v3 lockScreenActionContextForPlugin:activePlugin];
 
   return v5;
 }
@@ -56,12 +56,12 @@
     plugins = v2->_plugins;
     v2->_plugins = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleUIRelock name:@"SBLockScreenUIRelockedNotification" object:0];
-    v6 = [MEMORY[0x277D02C20] rootSettings];
-    v7 = [v6 testPluginSettings];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleUIRelock name:@"SBLockScreenUIRelockedNotification" object:0];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    testPluginSettings = [rootSettings testPluginSettings];
     testSettings = v2->_testSettings;
-    v2->_testSettings = v7;
+    v2->_testSettings = testPluginSettings;
 
     [(CSLockScreenTestPluginSettings *)v2->_testSettings addKeyObserver:v2];
   }
@@ -73,8 +73,8 @@
 {
   [(NSMutableDictionary *)self->_plugins enumerateKeysAndObjectsUsingBlock:&__block_literal_global_286];
   [(CSLockScreenTestPluginSettings *)self->_testSettings removeKeyObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBLockScreenPluginManager;
@@ -88,9 +88,9 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
   [v3 removeFromSuperview];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -101,27 +101,27 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(SBLockScreenPluginManager *)self _refreshLockScreenPlugin];
   }
 }
 
-- (BOOL)enableLockScreenPluginWithContext:(id)a3
+- (BOOL)enableLockScreenPluginWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SBLockScreenPluginManager *)self _loadLockScreenPluginWithContext:v4];
+  contextCopy = context;
+  v5 = [(SBLockScreenPluginManager *)self _loadLockScreenPluginWithContext:contextCopy];
   if (v5)
   {
     plugins = self->_plugins;
-    v7 = [v4 name];
-    v8 = [(NSMutableDictionary *)plugins objectForKey:v7];
+    name = [contextCopy name];
+    v8 = [(NSMutableDictionary *)plugins objectForKey:name];
 
-    v9 = [v4 auxiliaryAnimation];
-    [v8 setAuxiliaryActivationAnimationBlock:v9];
+    auxiliaryAnimation = [contextCopy auxiliaryAnimation];
+    [v8 setAuxiliaryActivationAnimationBlock:auxiliaryAnimation];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained pluginManager:self didLoadPlugin:v8];
@@ -132,14 +132,14 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
   return v5;
 }
 
-- (BOOL)disableLockScreenPluginWithContext:(id)a3
+- (BOOL)disableLockScreenPluginWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if (v5)
+  contextCopy = context;
+  name = [contextCopy name];
+  if (name)
   {
-    v6 = [(NSMutableDictionary *)self->_plugins objectForKey:v5];
-    v7 = [(SBLockScreenPluginManager *)self _handlePluginDisabled:v6 withContext:v4];
+    v6 = [(NSMutableDictionary *)self->_plugins objectForKey:name];
+    v7 = [(SBLockScreenPluginManager *)self _handlePluginDisabled:v6 withContext:contextCopy];
   }
 
   else
@@ -150,7 +150,7 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
   return v7;
 }
 
-- (BOOL)handleEvent:(int64_t)a3
+- (BOOL)handleEvent:(int64_t)event
 {
   if ([(SBLockScreenPluginManager *)self isEnabled])
   {
@@ -158,7 +158,7 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
     v7[1] = 3221225472;
     v7[2] = __41__SBLockScreenPluginManager_handleEvent___block_invoke;
     v7[3] = &__block_descriptor_40_e28_B16__0__SBLockScreenPlugin_8l;
-    v7[4] = a3;
+    v7[4] = event;
     return [(SBLockScreenPluginManager *)self _sendEventToPlugin:v7];
   }
 
@@ -167,17 +167,17 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(SBLockScreenPluginManager *)a3 handleEvent:v6];
+      [(SBLockScreenPluginManager *)event handleEvent:v6];
     }
 
     return 0;
   }
 }
 
-- (BOOL)_sendEventToPlugin:(id)a3
+- (BOOL)_sendEventToPlugin:(id)plugin
 {
-  v4 = a3;
-  if ((v4[2])(v4, self->_activePlugin))
+  pluginCopy = plugin;
+  if ((pluginCopy[2])(pluginCopy, self->_activePlugin))
   {
     v5 = 1;
   }
@@ -189,7 +189,7 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
 
   else
   {
-    v5 = v4[2](v4);
+    v5 = pluginCopy[2](pluginCopy);
   }
 
   return v5;
@@ -204,7 +204,7 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (id)_highestPriorityPluginIgnoringViewDisplay:(BOOL)a3
+- (id)_highestPriorityPluginIgnoringViewDisplay:(BOOL)display
 {
   v23 = *MEMORY[0x277D85DE8];
   if (![(SBLockScreenPluginManager *)self isEnabled])
@@ -217,8 +217,8 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NSMutableDictionary *)self->_plugins allValues];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allValues = [(NSMutableDictionary *)self->_plugins allValues];
+  v6 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v6)
   {
     v8 = 0;
@@ -228,21 +228,21 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
   v7 = v6;
   v8 = 0;
   v9 = *v19;
-  v10 = 0x8000000000000000;
+  pluginPriority2 = 0x8000000000000000;
   do
   {
     for (i = 0; i != v7; ++i)
     {
       if (*v19 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v12 = *(*(&v18 + 1) + 8 * i);
-      v13 = [v12 pluginPriority];
-      if (v13 < v10 || a3)
+      pluginPriority = [v12 pluginPriority];
+      if (pluginPriority < pluginPriority2 || display)
       {
-        if (v13 < v10)
+        if (pluginPriority < pluginPriority2)
         {
           continue;
         }
@@ -250,21 +250,21 @@ void __36__SBLockScreenPluginManager_dealloc__block_invoke(uint64_t a1, uint64_t
 LABEL_12:
         v16 = v12;
 
-        v10 = [v16 pluginPriority];
+        pluginPriority2 = [v16 pluginPriority];
         v8 = v16;
         continue;
       }
 
-      v14 = [v12 appearance];
-      v15 = [v14 isHidden];
+      appearance = [v12 appearance];
+      isHidden = [appearance isHidden];
 
-      if ((v15 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v7 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   }
 
   while (v7);
@@ -275,52 +275,52 @@ LABEL_19:
   return v8;
 }
 
-- (void)_setActivePlugin:(id)a3 displayedPlugin:(id)a4
+- (void)_setActivePlugin:(id)plugin displayedPlugin:(id)displayedPlugin
 {
-  v14 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  displayedPluginCopy = displayedPlugin;
   activePlugin = self->_activePlugin;
-  if (activePlugin != v14)
+  if (activePlugin != pluginCopy)
   {
-    objc_storeStrong(&self->_activePlugin, a3);
+    objc_storeStrong(&self->_activePlugin, plugin);
   }
 
   displayedPlugin = self->_displayedPlugin;
-  if (displayedPlugin == v7)
+  if (displayedPlugin == displayedPluginCopy)
   {
-    v10 = 0;
+    displayedPluginCopy2 = 0;
   }
 
   else
   {
-    v10 = displayedPlugin;
-    objc_storeStrong(&self->_displayedPlugin, a4);
-    v11 = [(SBLockScreenPlugin *)v10 viewController];
-    v12 = [v11 viewIfLoaded];
+    displayedPluginCopy2 = displayedPlugin;
+    objc_storeStrong(&self->_displayedPlugin, displayedPlugin);
+    viewController = [(SBLockScreenPlugin *)displayedPluginCopy2 viewController];
+    viewIfLoaded = [viewController viewIfLoaded];
 
-    if (v12)
+    if (viewIfLoaded)
     {
-      [v12 removeFromSuperview];
+      [viewIfLoaded removeFromSuperview];
     }
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (activePlugin != v14)
+  if (activePlugin != pluginCopy)
   {
     [WeakRetained pluginManager:self activePluginDidChange:self->_activePlugin];
   }
 
-  if (displayedPlugin != v7)
+  if (displayedPlugin != displayedPluginCopy)
   {
-    [WeakRetained pluginManager:self displayedPluginDidChangeFromPlugin:v10 toPlugin:self->_displayedPlugin];
+    [WeakRetained pluginManager:self displayedPluginDidChangeFromPlugin:displayedPluginCopy2 toPlugin:self->_displayedPlugin];
   }
 }
 
-- (BOOL)_loadLockScreenPluginWithContext:(id)a3
+- (BOOL)_loadLockScreenPluginWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   NSClassFromString(&cfstr_Sblockscreenpl_3.isa);
-  if (!v5)
+  if (!contextCopy)
   {
     [SBLockScreenPluginManager _loadLockScreenPluginWithContext:a2];
   }
@@ -330,8 +330,8 @@ LABEL_19:
     [SBLockScreenPluginManager _loadLockScreenPluginWithContext:a2];
   }
 
-  v6 = [v5 name];
-  v7 = [(NSMutableDictionary *)self->_plugins objectForKey:v6];
+  name = [contextCopy name];
+  v7 = [(NSMutableDictionary *)self->_plugins objectForKey:name];
 
   if (v7)
   {
@@ -340,19 +340,19 @@ LABEL_19:
 
   else
   {
-    v9 = [SBLockScreenPlugin pluginWithName:v6 activationContext:v5];
+    v9 = [SBLockScreenPlugin pluginWithName:name activationContext:contextCopy];
     v8 = v9 != 0;
     if (v9)
     {
-      [(NSMutableDictionary *)self->_plugins setObject:v9 forKey:v6];
-      [v9 pluginWillActivateWithContext:v5];
+      [(NSMutableDictionary *)self->_plugins setObject:v9 forKey:name];
+      [v9 pluginWillActivateWithContext:contextCopy];
       [v9 setPluginAgent:self];
-      v10 = [v5 observer];
+      observer = [contextCopy observer];
 
-      if (v10)
+      if (observer)
       {
-        v11 = [v5 observer];
-        [v9 addLifecycleObserver:v11];
+        observer2 = [contextCopy observer];
+        [v9 addLifecycleObserver:observer2];
       }
     }
   }
@@ -360,12 +360,12 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)_handlePluginDisabled:(id)a3 withContext:(id)a4
+- (BOOL)_handlePluginDisabled:(id)disabled withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  disabledCopy = disabled;
+  contextCopy = context;
   NSClassFromString(&cfstr_Sblockscreenpl_3.isa);
-  if (!v8)
+  if (!contextCopy)
   {
     [SBLockScreenPluginManager _handlePluginDisabled:a2 withContext:?];
   }
@@ -375,24 +375,24 @@ LABEL_19:
     [SBLockScreenPluginManager _handlePluginDisabled:a2 withContext:?];
   }
 
-  if (v7 && (v9 = self->_plugins, [v7 name], v10 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v9, "objectForKey:", v10), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11 == v7))
+  if (disabledCopy && (v9 = self->_plugins, [disabledCopy name], v10 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v9, "objectForKey:", v10), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11 == disabledCopy))
   {
     plugins = self->_plugins;
-    v14 = [v7 name];
-    [(NSMutableDictionary *)plugins removeObjectForKey:v14];
+    name = [disabledCopy name];
+    [(NSMutableDictionary *)plugins removeObjectForKey:name];
 
-    v15 = [v8 auxiliaryAnimation];
-    [v7 setAuxiliaryDeactivationAnimationBlock:v15];
+    auxiliaryAnimation = [contextCopy auxiliaryAnimation];
+    [disabledCopy setAuxiliaryDeactivationAnimationBlock:auxiliaryAnimation];
 
     [(SBLockScreenPluginManager *)self _refreshLockScreenPlugin];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 postNotificationName:@"SBLockScreenPluginWasDisabledNotification" object:v7];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBLockScreenPluginWasDisabledNotification" object:disabledCopy];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained pluginManager:self willUnloadPlugin:v7];
+    [WeakRetained pluginManager:self willUnloadPlugin:disabledCopy];
 
-    [v7 setPluginAgent:0];
-    [v7 pluginDidDeactivateWithContext:v8];
+    [disabledCopy setPluginAgent:0];
+    [disabledCopy pluginDidDeactivateWithContext:contextCopy];
     v12 = 1;
   }
 
@@ -404,9 +404,9 @@ LABEL_19:
   return v12;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = [(CSLockScreenTestPluginSettings *)self->_testSettings enablePlugin:a3];
+  v5 = [(CSLockScreenTestPluginSettings *)self->_testSettings enablePlugin:settings];
   v6 = [MEMORY[0x277D67958] contextWithName:@"LockScreenTestPlugin"];
   if (v5)
   {
@@ -418,9 +418,9 @@ LABEL_19:
     [(SBLockScreenPluginManager *)self disableLockScreenPluginWithContext:v6];
   }
 
-  v7 = [(CSLockScreenTestPluginSettings *)self->_testSettings enableLostModePlugin];
+  enableLostModePlugin = [(CSLockScreenTestPluginSettings *)self->_testSettings enableLostModePlugin];
   v8 = [MEMORY[0x277D67958] contextWithName:@"FindMyiPhoneLockScreen"];
-  if (v7)
+  if (enableLostModePlugin)
   {
     [(SBLockScreenPluginManager *)self enableLockScreenPluginWithContext:v8];
   }
@@ -431,9 +431,9 @@ LABEL_19:
   }
 }
 
-- (id)_pluginForPluginController:(id)a3
+- (id)_pluginForPluginController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -445,7 +445,7 @@ LABEL_19:
   v9[1] = 3221225472;
   v9[2] = __56__SBLockScreenPluginManager__pluginForPluginController___block_invoke;
   v9[3] = &unk_2783BDDF0;
-  v6 = v4;
+  v6 = controllerCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)plugins enumerateKeysAndObjectsUsingBlock:v9];
@@ -468,9 +468,9 @@ void __56__SBLockScreenPluginManager__pluginForPluginController___block_invoke(u
   }
 }
 
-- (void)activatePluginController:(id)a3
+- (void)activatePluginController:(id)controller
 {
-  v4 = [(SBLockScreenPluginManager *)self _pluginForPluginController:a3];
+  v4 = [(SBLockScreenPluginManager *)self _pluginForPluginController:controller];
   if (v4)
   {
     v5 = v4;
@@ -479,44 +479,44 @@ void __56__SBLockScreenPluginManager__pluginForPluginController___block_invoke(u
   }
 }
 
-- (void)deactivatePluginController:(id)a3
+- (void)deactivatePluginController:(id)controller
 {
-  v4 = [(SBLockScreenPluginManager *)self _pluginForPluginController:a3];
+  v4 = [(SBLockScreenPluginManager *)self _pluginForPluginController:controller];
   if (v4)
   {
     v5 = MEMORY[0x277D67958];
     v8 = v4;
-    v6 = [v4 name];
-    v7 = [v5 contextWithName:v6];
+    name = [v4 name];
+    v7 = [v5 contextWithName:name];
 
     [(SBLockScreenPluginManager *)self _handlePluginDisabled:v8 withContext:v7];
     v4 = v8;
   }
 }
 
-- (void)pluginController:(id)a3 updateAppearance:(id)a4
+- (void)pluginController:(id)controller updateAppearance:(id)appearance
 {
-  v5 = a3;
+  controllerCopy = controller;
   [(SBLockScreenPluginManager *)self _refreshLockScreenPlugin];
   displayedPlugin = self->_displayedPlugin;
 
-  if (displayedPlugin == v5)
+  if (displayedPlugin == controllerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained pluginManager:self displayedPluginDidUpdateAppearance:self->_displayedPlugin];
   }
 }
 
-- (BOOL)pluginController:(id)a3 sendAction:(id)a4
+- (BOOL)pluginController:(id)controller sendAction:(id)action
 {
-  v6 = a4;
-  v7 = [(SBLockScreenPluginManager *)self _pluginForPluginController:a3];
+  actionCopy = action;
+  v7 = [(SBLockScreenPluginManager *)self _pluginForPluginController:controller];
   v8 = v7;
   v9 = 0;
-  if (v6 && v7)
+  if (actionCopy && v7)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [WeakRetained pluginManager:self plugin:v8 handleAction:v6];
+    v9 = [WeakRetained pluginManager:self plugin:v8 handleAction:actionCopy];
   }
 
   return v9;
@@ -524,10 +524,10 @@ void __56__SBLockScreenPluginManager__pluginForPluginController___block_invoke(u
 
 - (id)succinctDescription
 {
-  v2 = [(SBLockScreenPluginManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLockScreenPluginManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -539,26 +539,26 @@ void __56__SBLockScreenPluginManager__pluginForPluginController___block_invoke(u
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLockScreenPluginManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLockScreenPluginManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBLockScreenPluginManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBLockScreenPluginManager *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__SBLockScreenPluginManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

@@ -1,22 +1,22 @@
 @interface MXSessionMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsUserInterfaceIdiom:(id)a3;
+- (int)StringAsUserInterfaceIdiom:(id)idiom;
 - (int)userInterfaceIdiom;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDataSharingOptInStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDataSharingOptInStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXSessionMetadata
 
-- (void)setHasDataSharingOptInStatus:(BOOL)a3
+- (void)setHasDataSharingOptInStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -42,45 +42,45 @@
   }
 }
 
-- (int)StringAsUserInterfaceIdiom:(id)a3
+- (int)StringAsUserInterfaceIdiom:(id)idiom
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"USER_INTERFACE_IDIOM_UNKNOWN"])
+  idiomCopy = idiom;
+  if ([idiomCopy isEqualToString:@"USER_INTERFACE_IDIOM_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PHONE"])
+  else if ([idiomCopy isEqualToString:@"PHONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PAD"])
+  else if ([idiomCopy isEqualToString:@"PAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CAR"])
+  else if ([idiomCopy isEqualToString:@"CAR"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ZEUS"])
+  else if ([idiomCopy isEqualToString:@"ZEUS"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"WATCH"])
+  else if ([idiomCopy isEqualToString:@"WATCH"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"HORSEMAN"])
+  else if ([idiomCopy isEqualToString:@"HORSEMAN"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CAMEO"])
+  else if ([idiomCopy isEqualToString:@"CAMEO"])
   {
     v4 = 7;
   }
@@ -99,27 +99,27 @@
   v8.receiver = self;
   v8.super_class = MXSessionMetadata;
   v4 = [(MXSessionMetadata *)&v8 description];
-  v5 = [(MXSessionMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXSessionMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   deviceInfo = self->_deviceInfo;
   if (deviceInfo)
   {
-    v5 = [(MXDeviceInfo *)deviceInfo dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"device_info"];
+    dictionaryRepresentation = [(MXDeviceInfo *)deviceInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"device_info"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_dataSharingOptInStatus];
-    [v3 setObject:v7 forKey:@"data_sharing_opt_in_status"];
+    [dictionary setObject:v7 forKey:@"data_sharing_opt_in_status"];
 
     has = self->_has;
   }
@@ -137,26 +137,26 @@
       v9 = off_27991BD38[userInterfaceIdiom];
     }
 
-    [v3 setObject:v9 forKey:@"user_interface_idiom"];
+    [dictionary setObject:v9 forKey:@"user_interface_idiom"];
   }
 
   language = self->_language;
   if (language)
   {
-    [v3 setObject:language forKey:@"language"];
+    [dictionary setObject:language forKey:@"language"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_deviceInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -164,7 +164,7 @@
   {
     dataSharingOptInStatus = self->_dataSharingOptInStatus;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -172,51 +172,51 @@
   {
     userInterfaceIdiom = self->_userInterfaceIdiom;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_language)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_deviceInfo)
   {
-    [v4 setDeviceInfo:?];
-    v4 = v6;
+    [toCopy setDeviceInfo:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 28) = self->_dataSharingOptInStatus;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 28) = self->_dataSharingOptInStatus;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 6) = self->_userInterfaceIdiom;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 6) = self->_userInterfaceIdiom;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_language)
   {
     [v6 setLanguage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MXDeviceInfo *)self->_deviceInfo copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MXDeviceInfo *)self->_deviceInfo copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -234,23 +234,23 @@
     *(v5 + 32) |= 1u;
   }
 
-  v9 = [(NSString *)self->_language copyWithZone:a3];
+  v9 = [(NSString *)self->_language copyWithZone:zone];
   v10 = *(v5 + 16);
   *(v5 + 16) = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   deviceInfo = self->_deviceInfo;
-  if (deviceInfo | *(v4 + 1))
+  if (deviceInfo | *(equalCopy + 1))
   {
     if (![(MXDeviceInfo *)deviceInfo isEqual:?])
     {
@@ -258,10 +258,10 @@
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 32) & 2) == 0)
+    if ((*(equalCopy + 32) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -271,21 +271,21 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((*(v4 + 32) & 2) == 0)
+  if ((*(equalCopy + 32) & 2) == 0)
   {
     goto LABEL_18;
   }
 
-  v7 = *(v4 + 28);
+  v7 = *(equalCopy + 28);
   if (self->_dataSharingOptInStatus)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_18;
   }
@@ -293,19 +293,19 @@ LABEL_18:
 LABEL_6:
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_userInterfaceIdiom != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_userInterfaceIdiom != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_18;
   }
 
   language = self->_language;
-  if (language | *(v4 + 2))
+  if (language | *(equalCopy + 2))
   {
     v9 = [(NSString *)language isEqual:?];
   }
@@ -347,12 +347,12 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_language hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   deviceInfo = self->_deviceInfo;
-  v6 = *(v4 + 1);
-  v8 = v4;
+  v6 = *(fromCopy + 1);
+  v8 = fromCopy;
   if (deviceInfo)
   {
     if (!v6)
@@ -373,23 +373,23 @@ LABEL_3:
     [(MXSessionMetadata *)self setDeviceInfo:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 2) != 0)
   {
-    self->_dataSharingOptInStatus = *(v4 + 28);
+    self->_dataSharingOptInStatus = *(fromCopy + 28);
     *&self->_has |= 2u;
-    v7 = *(v4 + 32);
+    v7 = *(fromCopy + 32);
   }
 
   if (v7)
   {
-    self->_userInterfaceIdiom = *(v4 + 6);
+    self->_userInterfaceIdiom = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(MXSessionMetadata *)self setLanguage:?];
   }

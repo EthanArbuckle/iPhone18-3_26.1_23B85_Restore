@@ -1,7 +1,7 @@
 @interface WFRecurrenceRuleContentItem
 + (id)coercions;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 - (LNRecurrenceRuleBridge)recurrenceRule;
 @end
@@ -15,20 +15,20 @@
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Recurrence Rules (multiple)", @"Recurrence Rules");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Recurrence Rule (singular)", @"Recurrence Rule");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -65,8 +65,8 @@ id __52__WFRecurrenceRuleContentItem_stringCoercionHandler__block_invoke(uint64_
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [a1 stringCoercionHandler];
-  v5 = [WFCoercion coercionToClass:v3 handler:v4];
+  stringCoercionHandler = [self stringCoercionHandler];
+  v5 = [WFCoercion coercionToClass:v3 handler:stringCoercionHandler];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 

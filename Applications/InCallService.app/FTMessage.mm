@@ -5,7 +5,7 @@
 - (BOOL)isRead;
 - (BOOL)isSensitive;
 - (BOOL)isTranscriptionAvailable;
-- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)a3;
+- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)time;
 - (BOOL)transcriptionAttempted;
 - (MPMessageID)identifier;
 - (MPTranscriptMessage)transcript;
@@ -14,13 +14,13 @@
 - (TUHandle)senderHandle;
 - (_TtC20FaceTimeMessageStore7Message)ftMessage;
 - (double)duration;
-- (id)contactUsingContactStore:(id)a3 withKeysToFetch:(id)a4;
-- (id)displayNameUsingContactStore:(id)a3;
+- (id)contactUsingContactStore:(id)store withKeysToFetch:(id)fetch;
+- (id)displayNameUsingContactStore:(id)store;
 - (int64_t)folder;
 - (int64_t)messageType;
-- (void)setFolder:(int64_t)a3;
-- (void)setIsDeleted:(BOOL)a3;
-- (void)setIsRead:(BOOL)a3;
+- (void)setFolder:(int64_t)folder;
+- (void)setIsDeleted:(BOOL)deleted;
+- (void)setIsRead:(BOOL)read;
 @end
 
 @implementation FTMessage
@@ -34,7 +34,7 @@
 
 - (MPMessageID)identifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001B9C08();
 
   return v3;
@@ -45,7 +45,7 @@
   v3 = sub_10014EA98(&qword_1003AAB40);
   __chkstk_darwin(v3 - 8, v4);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1001B9E78(v6);
 
   v8 = type metadata accessor for UUID();
@@ -61,7 +61,7 @@
 
 - (int64_t)messageType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001B9F08();
 
   return v3;
@@ -69,7 +69,7 @@
 
 - (TUHandle)senderHandle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BA078();
 
   return v3;
@@ -77,30 +77,30 @@
 
 - (int64_t)folder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BA430();
 
   return v3;
 }
 
-- (void)setFolder:(int64_t)a3
+- (void)setFolder:(int64_t)folder
 {
-  v4 = self;
-  sub_1001BA504(a3);
+  selfCopy = self;
+  sub_1001BA504(folder);
 }
 
 - (BOOL)isRead
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BA588();
 
   return v3 & 1;
 }
 
-- (void)setIsRead:(BOOL)a3
+- (void)setIsRead:(BOOL)read
 {
-  v4 = self;
-  sub_1001BA644(a3);
+  selfCopy = self;
+  sub_1001BA644(read);
 }
 
 - (NSDate)date
@@ -109,7 +109,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3, v5);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_1001BA788();
 
   v9.super.isa = Date._bridgeToObjectiveC()().super.isa;
@@ -120,7 +120,7 @@
 
 - (BOOL)isTranscriptionAvailable
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001BA7E8();
   v4 = v3;
 
@@ -129,7 +129,7 @@
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001BAC7C();
   v4 = v3;
 
@@ -138,7 +138,7 @@
 
 - (BOOL)transcriptionAttempted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BACEC();
 
   return v3;
@@ -146,22 +146,22 @@
 
 - (BOOL)isDeleted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BADA8();
 
   return v3 & 1;
 }
 
-- (void)setIsDeleted:(BOOL)a3
+- (void)setIsDeleted:(BOOL)deleted
 {
-  v3 = a3;
-  v4 = self;
-  sub_1001BAE14(v3);
+  deletedCopy = deleted;
+  selfCopy = self;
+  sub_1001BAE14(deletedCopy);
 }
 
 - (BOOL)isSensitive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BAE5C();
 
   return v3 & 1;
@@ -169,7 +169,7 @@
 
 - (BOOL)isRTT
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BABE4();
 
   return v3 & 1;
@@ -177,7 +177,7 @@
 
 - (BOOL)isDataAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BB824();
 
   return v3 & 1;
@@ -185,36 +185,36 @@
 
 - (MPTranscriptMessage)transcript
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001BAC14();
 
   return v3;
 }
 
-- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)a3
+- (BOOL)shouldMarkAsReadForPlaybackCurrentTime:(double)time
 {
-  v4 = self;
-  v5 = sub_1001BCACC(a3);
+  selfCopy = self;
+  v5 = sub_1001BCACC(time);
 
   return v5;
 }
 
-- (id)contactUsingContactStore:(id)a3 withKeysToFetch:(id)a4
+- (id)contactUsingContactStore:(id)store withKeysToFetch:(id)fetch
 {
   sub_10014EA98(&qword_1003AAF80);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1001BCB7C(v6);
+  storeCopy = store;
+  selfCopy = self;
+  v8 = sub_1001BCB7C(storeCopy);
 
   return v8;
 }
 
-- (id)displayNameUsingContactStore:(id)a3
+- (id)displayNameUsingContactStore:(id)store
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001BCCF4(v4);
+  storeCopy = store;
+  selfCopy = self;
+  sub_1001BCCF4(storeCopy);
   v7 = v6;
 
   if (v7)

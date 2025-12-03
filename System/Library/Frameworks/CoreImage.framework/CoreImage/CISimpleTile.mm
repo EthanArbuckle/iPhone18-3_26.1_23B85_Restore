@@ -40,25 +40,25 @@
 
     else
     {
-      v9 = [(CIImage *)inputImage imageByClampingToExtent];
+      imageByClampingToExtent = [(CIImage *)inputImage imageByClampingToExtent];
       v10 = [CIVector vectorWithCGPoint:x, y];
-      v11 = [CIVector vectorWithX:width Y:height Z:1.0 / width W:1.0 / height];
+      height = [CIVector vectorWithX:width Y:height Z:1.0 / width W:1.0 / height];
       v12.f64[0] = x;
       v12.f64[1] = y;
       v13 = vcvt_f32_f64(v12);
-      [(CIVector *)v11 X];
+      [(CIVector *)height X];
       v27 = v14;
-      [(CIVector *)v11 Y];
+      [(CIVector *)height Y];
       v26 = v15;
-      [(CIVector *)v11 Z];
+      [(CIVector *)height Z];
       v25 = v16;
-      [(CIVector *)v11 W];
+      [(CIVector *)height W];
       v17.f64[0] = v25;
       v17.f64[1] = v18;
       v19.f64[0] = v27;
       v19.f64[1] = v26;
       v28 = vcvt_hight_f32_f64(vcvt_f32_f64(v19), v17);
-      v20 = [(CISimpleTile *)self _kernel];
+      _kernel = [(CISimpleTile *)self _kernel];
       v21 = *MEMORY[0x1E695F040];
       v22 = *(MEMORY[0x1E695F040] + 8);
       v23 = *(MEMORY[0x1E695F040] + 16);
@@ -74,8 +74,8 @@
       v37 = v13;
       v32 = v28;
       v38[0] = v10;
-      v38[1] = v11;
-      return [v20 applyWithExtent:v31 roiCallback:v9 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v38, 2), v21, v22, v23, v24}];
+      v38[1] = height;
+      return [_kernel applyWithExtent:v31 roiCallback:imageByClampingToExtent inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v38, 2), v21, v22, v23, v24}];
     }
   }
 

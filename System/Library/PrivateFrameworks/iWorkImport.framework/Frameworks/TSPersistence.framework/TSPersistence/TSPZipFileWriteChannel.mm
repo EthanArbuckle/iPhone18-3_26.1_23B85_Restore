@@ -1,8 +1,8 @@
 @interface TSPZipFileWriteChannel
 - (TSPZipFileWriteChannel)init;
-- (TSPZipFileWriteChannel)initWithArchiveWriter:(id)a3;
-- (void)flushWithCompletion:(id)a3;
-- (void)writeData:(id)a3 handler:(id)a4;
+- (TSPZipFileWriteChannel)initWithArchiveWriter:(id)writer;
+- (void)flushWithCompletion:(id)completion;
+- (void)writeData:(id)data handler:(id)handler;
 @end
 
 @implementation TSPZipFileWriteChannel
@@ -28,16 +28,16 @@
   objc_exception_throw(v18);
 }
 
-- (TSPZipFileWriteChannel)initWithArchiveWriter:(id)a3
+- (TSPZipFileWriteChannel)initWithArchiveWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   v12.receiver = self;
   v12.super_class = TSPZipFileWriteChannel;
   v6 = [(TSPZipFileWriteChannel *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archiveWriter, a3);
+    objc_storeStrong(&v6->_archiveWriter, writer);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("TSPZipFileWriteChannel.Writer", v8);
     writerQueue = v7->_writerQueue;
@@ -47,10 +47,10 @@
   return v7;
 }
 
-- (void)writeData:(id)a3 handler:(id)a4
+- (void)writeData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = atomic_load(&self->_isClosed);
   if (v8)
   {
@@ -64,9 +64,9 @@
     abort();
   }
 
-  if (v6)
+  if (dataCopy)
   {
-    size = dispatch_data_get_size(v6);
+    size = dispatch_data_get_size(dataCopy);
   }
 
   else
@@ -80,15 +80,15 @@
   v20[1] = 3221225472;
   v20[2] = sub_276A46D00;
   v20[3] = &unk_27A6E4B18;
-  v12 = v7;
+  v12 = handlerCopy;
   v21 = v12;
   v22 = size;
-  objc_msgSend_addData_queue_completion_(archiveWriter, v13, v6, writerQueue, v20);
+  objc_msgSend_addData_queue_completion_(archiveWriter, v13, dataCopy, writerQueue, v20);
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPZipFileWriteChannel flushWithCompletion:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPZipFileWriteChannel.mm");
@@ -99,7 +99,7 @@
   v15[1] = 3221225472;
   v15[2] = sub_276A46EEC;
   v15[3] = &unk_27A6E3480;
-  v13 = v4;
+  v13 = completionCopy;
   v16 = v13;
   objc_msgSend_addBarrier_(self, v14, v15);
 }

@@ -12,8 +12,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(AXMMLElementGroup *)self subfeatures];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subfeatures = [(AXMMLElementGroup *)self subfeatures];
+  v3 = [subfeatures countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -25,7 +25,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subfeatures);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -45,7 +45,7 @@
         v5 = v10;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [subfeatures countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -90,41 +90,41 @@
       }
 
       v5 = *(*(&v45 + 1) + 8 * i);
-      v6 = [v5 feature];
-      v7 = [v6 value];
-      v8 = [*(v3 + 4016) null];
-      if ([v7 isEqual:v8])
+      feature = [v5 feature];
+      value = [feature value];
+      null = [*(v3 + 4016) null];
+      if ([value isEqual:null])
       {
         goto LABEL_14;
       }
 
-      v9 = [v5 feature];
-      v10 = [v9 value];
-      if (![v10 length])
+      feature2 = [v5 feature];
+      value2 = [feature2 value];
+      if (![value2 length])
       {
 
         goto LABEL_14;
       }
 
-      v11 = [v5 feature];
-      if ([v11 uiClass] == 11)
+      feature3 = [v5 feature];
+      if ([feature3 uiClass] == 11)
       {
 
 LABEL_13:
-        v6 = [v5 feature];
-        v7 = [v6 value];
-        v8 = v42;
-        v42 = __AXMStringForVariables(v42, v15, v16, v17, v18, v19, v20, v21, v7);
+        feature = [v5 feature];
+        value = [feature value];
+        null = v42;
+        v42 = __AXMStringForVariables(v42, v15, v16, v17, v18, v19, v20, v21, value);
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v12 = [v5 feature];
-      v13 = [v12 uiClass];
+      feature4 = [v5 feature];
+      uiClass = [feature4 uiClass];
 
       v2 = v40;
-      v14 = v13 == 17;
+      v14 = uiClass == 17;
       v3 = 0x1E695D000uLL;
       if (v14)
       {
@@ -132,41 +132,41 @@ LABEL_14:
       }
 
 LABEL_15:
-      v22 = [v5 feature];
-      v23 = [v22 value];
-      v24 = [*(v3 + 4016) null];
-      if ([v23 isEqual:v24])
+      feature5 = [v5 feature];
+      value3 = [feature5 value];
+      null2 = [*(v3 + 4016) null];
+      if ([value3 isEqual:null2])
       {
         goto LABEL_23;
       }
 
-      v25 = [v5 feature];
-      v26 = [v25 value];
-      if (![v26 length])
+      feature6 = [v5 feature];
+      value4 = [feature6 value];
+      if (![value4 length])
       {
 
         goto LABEL_23;
       }
 
-      v27 = [v5 feature];
-      if ([v27 uiClass] == 5)
+      feature7 = [v5 feature];
+      if ([feature7 uiClass] == 5)
       {
 
 LABEL_22:
-        v22 = [v5 feature];
-        v23 = [v22 value];
-        v24 = v41;
-        v41 = __AXMStringForVariables(v41, v30, v31, v32, v33, v34, v35, v36, v23);
+        feature5 = [v5 feature];
+        value3 = [feature5 value];
+        null2 = v41;
+        v41 = __AXMStringForVariables(v41, v30, v31, v32, v33, v34, v35, v36, value3);
 LABEL_23:
 
         continue;
       }
 
-      v28 = [v5 feature];
-      v29 = [v28 uiClass];
+      feature8 = [v5 feature];
+      uiClass2 = [feature8 uiClass];
 
       v2 = v40;
-      v14 = v29 == 16;
+      v14 = uiClass2 == 16;
       v3 = 0x1E695D000;
       if (v14)
       {

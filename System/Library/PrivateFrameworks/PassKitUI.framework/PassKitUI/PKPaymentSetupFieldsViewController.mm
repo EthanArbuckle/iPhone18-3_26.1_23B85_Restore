@@ -1,107 +1,107 @@
 @interface PKPaymentSetupFieldsViewController
 - (BOOL)_allFieldsComplete;
-- (BOOL)fieldCellEditableTextFieldShouldBeginEditing:(id)a3;
-- (BOOL)fieldCellEditableTextFieldShouldReturn:(id)a3;
+- (BOOL)fieldCellEditableTextFieldShouldBeginEditing:(id)editing;
+- (BOOL)fieldCellEditableTextFieldShouldReturn:(id)return;
 - (BOOL)isComplete;
 - (BOOL)isEmpty;
 - (BOOL)shouldAppearWithFirstEmptyFieldAsFirstResponder;
-- (PKPaymentSetupFieldsViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
+- (PKPaymentSetupFieldsViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_contextSpecificStringForAggDKey:(id)a3;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_contextSpecificStringForAggDKey:(id)key;
 - (id)_footerTextForValidationError;
 - (id)allCells;
-- (id)cellForIdentifier:(id)a3;
+- (id)cellForIdentifier:(id)identifier;
 - (id)displayedFooterField;
 - (id)firstEmptyCell;
 - (id)firstEmptyField;
 - (id)firstEmptySetupField;
 - (id)firstResponderCell;
 - (id)footerHyperlinkView;
-- (id)footerViewForIdentifier:(id)a3;
+- (id)footerViewForIdentifier:(id)identifier;
 - (id)headerView;
-- (id)identifierForIndexPath:(id)a3;
-- (id)nextResponderCellForCurrentIdentifier:(id)a3;
+- (id)identifierForIndexPath:(id)path;
+- (id)nextResponderCellForCurrentIdentifier:(id)identifier;
 - (id)readonlyFieldIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)visibleFieldIdentifiers;
-- (id)visibleFieldIdentifiersForSection:(unint64_t)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)visibleFieldIdentifiersForSection:(unint64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_configurePrimaryButton;
-- (void)_continueNextActionLoop:(BOOL)a3;
-- (void)_destroyNavigationBarButtonItemsAnimated:(BOOL)a3;
-- (void)_fieldLabelDidTapButton:(id)a3;
-- (void)_handleNextButtonTapped:(id)a3;
-- (void)_noteFieldIdentifiersChangedUpdateHeaders:(BOOL)a3;
-- (void)_setActivityIndicatorActive:(BOOL)a3 title:(id)a4 subtitle:(id)a5 animated:(BOOL)a6;
-- (void)_setCellsEnabled:(BOOL)a3;
-- (void)_setIdleTimerDisabled:(BOOL)a3 title:(id)a4 subtitle:(id)a5;
-- (void)_setLeftBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)_setNavigationBarEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setRightBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)_triggerNextActionLoop:(BOOL)a3;
+- (void)_continueNextActionLoop:(BOOL)loop;
+- (void)_destroyNavigationBarButtonItemsAnimated:(BOOL)animated;
+- (void)_fieldLabelDidTapButton:(id)button;
+- (void)_handleNextButtonTapped:(id)tapped;
+- (void)_noteFieldIdentifiersChangedUpdateHeaders:(BOOL)headers;
+- (void)_setActivityIndicatorActive:(BOOL)active title:(id)title subtitle:(id)subtitle animated:(BOOL)animated;
+- (void)_setCellsEnabled:(BOOL)enabled;
+- (void)_setIdleTimerDisabled:(BOOL)disabled title:(id)title subtitle:(id)subtitle;
+- (void)_setLeftBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)_setNavigationBarEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)_setRightBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)_triggerNextActionLoop:(BOOL)loop;
 - (void)_updateErrorFooterIfNeeded;
-- (void)_updateNavigationItemAnimated:(BOOL)a3;
+- (void)_updateNavigationItemAnimated:(BOOL)animated;
 - (void)_updatePrimaryButtonState;
 - (void)endUserInteraction;
-- (void)fieldCell:(id)a3 didTapKeyboardAccessory:(unint64_t)a4;
-- (void)fieldCellDidTapButton:(id)a3;
-- (void)fieldCellEditableTextFieldDidBeginEditing:(id)a3;
-- (void)fieldCellEditableTextFieldDidEndEditing:(id)a3;
-- (void)fieldCellEditableTextFieldValueDidChange:(id)a3;
-- (void)fieldTextValueDidChangeForField:(id)a3;
+- (void)fieldCell:(id)cell didTapKeyboardAccessory:(unint64_t)accessory;
+- (void)fieldCellDidTapButton:(id)button;
+- (void)fieldCellEditableTextFieldDidBeginEditing:(id)editing;
+- (void)fieldCellEditableTextFieldDidEndEditing:(id)editing;
+- (void)fieldCellEditableTextFieldValueDidChange:(id)change;
+- (void)fieldTextValueDidChangeForField:(id)field;
 - (void)hideActivitySpinner;
 - (void)loadView;
-- (void)logAnalyticsContextSpecificCheckpointForKey:(id)a3;
+- (void)logAnalyticsContextSpecificCheckpointForKey:(id)key;
 - (void)reloadHeaderView;
 - (void)resetCellStyling;
-- (void)setHeaderViewTitle:(id)a3 subtitle:(id)a4;
-- (void)setPreferPrimaryButtonInNavigationBar:(BOOL)a3;
-- (void)setPrimaryButtonTitleText:(id)a3;
-- (void)setSectionIdentifiers:(id)a3;
-- (void)setShowPrimaryButton:(BOOL)a3;
-- (void)showCheckmarkAnimated:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setHeaderViewTitle:(id)title subtitle:(id)subtitle;
+- (void)setPreferPrimaryButtonInNavigationBar:(BOOL)bar;
+- (void)setPrimaryButtonTitleText:(id)text;
+- (void)setSectionIdentifiers:(id)identifiers;
+- (void)setShowPrimaryButton:(BOOL)button;
+- (void)showCheckmarkAnimated:(BOOL)animated;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPaymentSetupFieldsViewController
 
-- (PKPaymentSetupFieldsViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (PKPaymentSetupFieldsViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  delegateCopy = delegate;
+  modelCopy = model;
   v20.receiver = self;
   v20.super_class = PKPaymentSetupFieldsViewController;
-  v14 = [(PKPaymentSetupTableViewController *)&v20 initWithContext:a4];
+  v14 = [(PKPaymentSetupTableViewController *)&v20 initWithContext:context];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_webService, a3);
-    objc_storeWeak(&v15->_setupDelegate, v12);
-    v16 = v13;
-    if (!v13)
+    objc_storeStrong(&v14->_webService, service);
+    objc_storeWeak(&v15->_setupDelegate, delegateCopy);
+    v16 = modelCopy;
+    if (!modelCopy)
     {
       v16 = objc_alloc_init(MEMORY[0x1E69B8E38]);
     }
 
     objc_storeStrong(&v15->_fieldsModel, v16);
-    if (!v13)
+    if (!modelCopy)
     {
     }
 
-    v17 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     fieldIdentifierToCellMap = v15->_fieldIdentifierToCellMap;
-    v15->_fieldIdentifierToCellMap = v17;
+    v15->_fieldIdentifierToCellMap = strongToStrongObjectsMapTable;
 
     v15->_navigationEnabled = 1;
     v15->_primaryButtonEnabled = 0;
@@ -127,101 +127,101 @@
   v10.receiver = self;
   v10.super_class = PKPaymentSetupFieldsViewController;
   [(PKPaymentSetupFieldsViewController *)&v10 viewDidLoad];
-  v3 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel visiblePaymentSetupFields];
-  v4 = [v3 count];
+  visiblePaymentSetupFields = [(PKPaymentSetupFieldsModel *)self->_fieldsModel visiblePaymentSetupFields];
+  v4 = [visiblePaymentSetupFields count];
 
   if (!v4)
   {
     fieldsModel = self->_fieldsModel;
-    v6 = [(PKPaymentSetupFieldsViewController *)self defaultFields];
-    [(PKPaymentSetupFieldsModel *)fieldsModel updateWithPaymentSetupFields:v6];
+    defaultFields = [(PKPaymentSetupFieldsViewController *)self defaultFields];
+    [(PKPaymentSetupFieldsModel *)fieldsModel updateWithPaymentSetupFields:defaultFields];
   }
 
-  v7 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9A78]];
-  v8 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  [v7 setTableHeaderView:v8];
-  v9 = [(PKPaymentSetupFieldsViewController *)self footerView];
-  [v7 setTableFooterView:v9];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView setAccessibilityIdentifier:*MEMORY[0x1E69B9A78]];
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
+  [tableView setTableHeaderView:headerView];
+  footerView = [(PKPaymentSetupFieldsViewController *)self footerView];
+  [tableView setTableFooterView:footerView];
   [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:0];
-  [v7 setSectionHeaderHeight:12.0];
+  [tableView setSectionHeaderHeight:12.0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKPaymentSetupFieldsViewController;
-  [(PKPaymentSetupTableViewController *)&v10 viewWillAppear:a3];
+  [(PKPaymentSetupTableViewController *)&v10 viewWillAppear:appear];
   [(PKPaymentSetupFieldsViewController *)self noteFieldIdentifiersChangedAndUpdateHeaders];
   [(PKPaymentSetupFieldsViewController *)self _setPrimaryButtonEnabled:[(PKPaymentSetupFieldsViewController *)self isComplete]];
   if ((!_UISolariumFeatureFlagEnabled() || self->_preferPrimaryButtonInNavigationBar) && [(PKPaymentSetupFieldsViewController *)self shouldAppearWithFirstEmptyFieldAsFirstResponder])
   {
-    v4 = [(PKPaymentSetupFieldsViewController *)self firstEmptyField];
-    v5 = [v4 window];
-    if (v5)
+    firstEmptyField = [(PKPaymentSetupFieldsViewController *)self firstEmptyField];
+    window = [firstEmptyField window];
+    if (window)
     {
-      v6 = v5;
-      v7 = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
-      v8 = [v7 becomeFirstResponder];
+      v6 = window;
+      firstEmptyCell = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
+      becomeFirstResponder = [firstEmptyCell becomeFirstResponder];
 
-      if (v8)
+      if (becomeFirstResponder)
       {
         return;
       }
 
-      v4 = PKLogFacilityTypeGetObject();
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+      firstEmptyField = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(firstEmptyField, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
+        firstEmptyCell2 = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
         *buf = 138412290;
-        v12 = v9;
-        _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "[%@ becomeFirstResponder]; failed.", buf, 0xCu);
+        v12 = firstEmptyCell2;
+        _os_log_impl(&dword_1BD026000, firstEmptyField, OS_LOG_TYPE_DEFAULT, "[%@ becomeFirstResponder]; failed.", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKPaymentSetupFieldsViewController;
-  [(PKPaymentSetupTableViewController *)&v10 viewDidAppear:a3];
+  [(PKPaymentSetupTableViewController *)&v10 viewDidAppear:appear];
   if ((!_UISolariumFeatureFlagEnabled() || self->_preferPrimaryButtonInNavigationBar) && [(PKPaymentSetupFieldsViewController *)self shouldAppearWithFirstEmptyFieldAsFirstResponder])
   {
-    v4 = [(PKPaymentSetupFieldsViewController *)self firstEmptyField];
-    v5 = [v4 window];
-    if (v5)
+    firstEmptyField = [(PKPaymentSetupFieldsViewController *)self firstEmptyField];
+    window = [firstEmptyField window];
+    if (window)
     {
-      v6 = v5;
-      v7 = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
-      v8 = [v7 becomeFirstResponder];
+      v6 = window;
+      firstEmptyCell = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
+      becomeFirstResponder = [firstEmptyCell becomeFirstResponder];
 
-      if (v8)
+      if (becomeFirstResponder)
       {
         return;
       }
 
-      v4 = PKLogFacilityTypeGetObject();
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+      firstEmptyField = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(firstEmptyField, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
+        firstEmptyCell2 = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
         *buf = 138412290;
-        v12 = v9;
-        _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "[%@ becomeFirstResponder]; failed.", buf, 0xCu);
+        v12 = firstEmptyCell2;
+        _os_log_impl(&dword_1BD026000, firstEmptyField, OS_LOG_TYPE_DEFAULT, "[%@ becomeFirstResponder]; failed.", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKPaymentSetupFieldsViewController;
-  [(PKPaymentSetupTableViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v4 resignFirstResponder];
+  [(PKPaymentSetupTableViewController *)&v5 viewWillDisappear:disappear];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView resignFirstResponder];
 
   [(PKPaymentSetupFieldCell *)self->_activeEditingCell resignFirstResponder];
 }
@@ -231,31 +231,31 @@
   v9.receiver = self;
   v9.super_class = PKPaymentSetupFieldsViewController;
   [(PKPaymentSetupFieldsViewController *)&v9 viewDidLayoutSubviews];
-  v3 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  [v3 sizeToFit];
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
+  [headerView sizeToFit];
 
-  v4 = [(PKPaymentSetupTableViewController *)self tableView];
-  v5 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  [v5 bounds];
-  [v4 _tableHeaderHeightDidChangeToHeight:CGRectGetHeight(v10)];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  headerView2 = [(PKPaymentSetupFieldsViewController *)self headerView];
+  [headerView2 bounds];
+  [tableView _tableHeaderHeightDidChangeToHeight:CGRectGetHeight(v10)];
 
-  v6 = [(PKPaymentSetupFieldsViewController *)self footerView];
-  [v6 sizeToFit];
+  footerView = [(PKPaymentSetupFieldsViewController *)self footerView];
+  [footerView sizeToFit];
 
-  v7 = [(PKPaymentSetupTableViewController *)self tableView];
-  v8 = [(PKPaymentSetupFieldsViewController *)self footerView];
-  [v8 bounds];
-  [v7 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v11)];
+  tableView2 = [(PKPaymentSetupTableViewController *)self tableView];
+  footerView2 = [(PKPaymentSetupFieldsViewController *)self footerView];
+  [footerView2 bounds];
+  [tableView2 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v11)];
 }
 
 - (BOOL)shouldAppearWithFirstEmptyFieldAsFirstResponder
 {
-  v3 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v3 contentSize];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView contentSize];
   v5 = v4;
 
-  v6 = [(PKPaymentSetupFieldsViewController *)self view];
-  [v6 safeAreaInsets];
+  view = [(PKPaymentSetupFieldsViewController *)self view];
+  [view safeAreaInsets];
   v8 = v7;
   v9 = PKUIGetMinScreenType();
   v10 = (&unk_1BE115DE8 + 8 * v9);
@@ -267,14 +267,14 @@
   v11 = *v10;
   [MEMORY[0x1E69DCBB8] defaultSizeForInterfaceOrientation:1];
   v13 = v12;
-  v14 = [(PKPaymentSetupFieldsViewController *)self firstEmptySetupField];
-  v15 = [v14 isOptional];
+  firstEmptySetupField = [(PKPaymentSetupFieldsViewController *)self firstEmptySetupField];
+  isOptional = [firstEmptySetupField isOptional];
 
-  v16 = [(PKPaymentSetupTableViewController *)self footerAttributedText];
-  v17 = [v16 length];
+  footerAttributedText = [(PKPaymentSetupTableViewController *)self footerAttributedText];
+  v17 = [footerAttributedText length];
 
   v18 = 0;
-  if ((v15 & 1) == 0 && !v17 && v8 + v5 + v13 < v11)
+  if ((isOptional & 1) == 0 && !v17 && v8 + v5 + v13 < v11)
   {
     v18 = !self->_showingActivitySpinner;
   }
@@ -303,10 +303,10 @@
 
 - (void)reloadHeaderView
 {
-  v13 = [(PKPaymentSetupFieldsViewController *)self defaultHeaderViewTitle];
-  v3 = [(PKPaymentSetupFieldsViewController *)self defaultHeaderViewSubTitle];
+  defaultHeaderViewTitle = [(PKPaymentSetupFieldsViewController *)self defaultHeaderViewTitle];
+  defaultHeaderViewSubTitle = [(PKPaymentSetupFieldsViewController *)self defaultHeaderViewSubTitle];
   headerView = self->_headerView;
-  if (v13 | v3)
+  if (defaultHeaderViewTitle | defaultHeaderViewSubTitle)
   {
     [(PKTableHeaderView *)headerView setTopPadding:20.0];
   }
@@ -317,15 +317,15 @@
     [(PKTableHeaderView *)self->_headerView setBottomPadding:0.0];
   }
 
-  v5 = [(PKTableHeaderView *)self->_headerView titleLabel];
-  [v5 setText:v13];
+  titleLabel = [(PKTableHeaderView *)self->_headerView titleLabel];
+  [titleLabel setText:defaultHeaderViewTitle];
 
-  v6 = [(PKTableHeaderView *)self->_headerView subtitleLabel];
-  [v6 setText:v3];
+  subtitleLabel = [(PKTableHeaderView *)self->_headerView subtitleLabel];
+  [subtitleLabel setText:defaultHeaderViewSubTitle];
 
   v7 = self->_headerView;
-  v8 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v8 bounds];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView bounds];
   [(PKTableHeaderView *)v7 sizeThatFits:CGRectGetWidth(v15), 3.40282347e38];
   v10 = v9;
   v12 = v11;
@@ -340,8 +340,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  visibleFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
+  v4 = [visibleFieldIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -353,25 +353,25 @@
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleFieldIdentifiers);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = [(PKPaymentSetupFieldsViewController *)self fieldForIdentifier:v9];
-        v11 = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
-        v12 = [v11 containsObject:v9];
+        readonlyFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
+        v12 = [readonlyFieldIdentifiers containsObject:v9];
 
-        LODWORD(v11) = [v10 isOptional];
-        v13 = [v10 submissionStringMeetsAllRequirements];
-        v14 = [v10 submissionStringMeetsValidationRegex];
-        if (v11)
+        LODWORD(readonlyFieldIdentifiers) = [v10 isOptional];
+        submissionStringMeetsAllRequirements = [v10 submissionStringMeetsAllRequirements];
+        submissionStringMeetsValidationRegex = [v10 submissionStringMeetsValidationRegex];
+        if (readonlyFieldIdentifiers)
         {
-          v15 = v14;
+          v15 = submissionStringMeetsValidationRegex;
         }
 
         else
         {
-          v15 = v13;
+          v15 = submissionStringMeetsAllRequirements;
         }
 
         v16 = v15 & v7;
@@ -381,7 +381,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [visibleFieldIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -402,8 +402,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  visibleFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
+  v4 = [visibleFieldIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -414,23 +414,23 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleFieldIdentifiers);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = [(PKPaymentSetupFieldsViewController *)self fieldForIdentifier:v8];
-        v10 = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
-        v11 = [v10 containsObject:v8];
+        readonlyFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
+        v11 = [readonlyFieldIdentifiers containsObject:v8];
 
-        v12 = [v9 submissionStringMeetsAllRequirements];
-        if ((v11 & 1) == 0 && !v12)
+        submissionStringMeetsAllRequirements = [v9 submissionStringMeetsAllRequirements];
+        if ((v11 & 1) == 0 && !submissionStringMeetsAllRequirements)
         {
           v13 = 0;
           goto LABEL_12;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [visibleFieldIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -453,18 +453,18 @@ LABEL_12:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
-  if (v4)
+  visibleFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
+  codeOnError = [visibleFieldIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (codeOnError)
   {
     v5 = *v14;
     while (2)
     {
-      for (i = 0; i != v4; ++i)
+      for (i = 0; i != codeOnError; ++i)
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleFieldIdentifiers);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
@@ -472,15 +472,15 @@ LABEL_12:
         if ([v8 isShowingError])
         {
           v9 = [(PKPaymentSetupFieldsViewController *)self fieldForIdentifier:v7];
-          v10 = [v9 textFieldObject];
+          textFieldObject = [v9 textFieldObject];
 
-          v4 = [v10 codeOnError];
+          codeOnError = [textFieldObject codeOnError];
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
-      if (v4)
+      codeOnError = [visibleFieldIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (codeOnError)
       {
         continue;
       }
@@ -491,34 +491,34 @@ LABEL_12:
 
 LABEL_11:
 
-  if (self->_validationErrorCode != v4 && !self->_sectionIdentifiers)
+  if (self->_validationErrorCode != codeOnError && !self->_sectionIdentifiers)
   {
-    self->_validationErrorCode = v4;
-    v11 = [(PKPaymentSetupTableViewController *)self tableView];
+    self->_validationErrorCode = codeOnError;
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
     v12 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
-    [v11 _reloadSectionHeaderFooters:v12 withRowAnimation:5];
+    [tableView _reloadSectionHeaderFooters:v12 withRowAnimation:5];
   }
 }
 
-- (void)fieldTextValueDidChangeForField:(id)a3
+- (void)fieldTextValueDidChangeForField:(id)field
 {
   [(PKPaymentSetupFieldsViewController *)self _setPrimaryButtonEnabled:[(PKPaymentSetupFieldsViewController *)self isComplete]];
 
   [(PKPaymentSetupFieldsViewController *)self _updateErrorFooterIfNeeded];
 }
 
-- (void)setSectionIdentifiers:(id)a3
+- (void)setSectionIdentifiers:(id)identifiers
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_sectionIdentifiers, a3);
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&self->_sectionIdentifiers, identifiers);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     fieldIdentifierToFooterViewMap = self->_fieldIdentifierToFooterViewMap;
-    self->_fieldIdentifierToFooterViewMap = v5;
+    self->_fieldIdentifierToFooterViewMap = strongToStrongObjectsMapTable;
 
-    v7 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v7 reloadData];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -527,20 +527,20 @@ LABEL_11:
   v12[1] = *MEMORY[0x1E69E9840];
   if ([(PKPaymentSetupFieldsViewController *)self shouldDisplayFooterField])
   {
-    v3 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel footerPaymentSetupField];
-    v4 = [v3 copy];
+    footerPaymentSetupField = [(PKPaymentSetupFieldsModel *)self->_fieldsModel footerPaymentSetupField];
+    v4 = [footerPaymentSetupField copy];
 
     if (v4 && self->_validationErrorCode)
     {
-      v5 = [(PKPaymentSetupFieldsViewController *)self _footerTextForValidationError];
-      if (v5)
+      _footerTextForValidationError = [(PKPaymentSetupFieldsViewController *)self _footerTextForValidationError];
+      if (_footerTextForValidationError)
       {
         v6 = objc_alloc(MEMORY[0x1E696AAB0]);
         v11 = *MEMORY[0x1E69DB650];
-        v7 = [MEMORY[0x1E69DC888] systemRedColor];
-        v12[0] = v7;
+        systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+        v12[0] = systemRedColor;
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-        v9 = [v6 initWithString:v5 attributes:v8];
+        v9 = [v6 initWithString:_footerTextForValidationError attributes:v8];
 
         [v4 setBody:v9];
       }
@@ -571,7 +571,7 @@ LABEL_11:
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   sectionIdentifiers = self->_sectionIdentifiers;
   if (!sectionIdentifiers)
@@ -579,47 +579,47 @@ LABEL_11:
     return *MEMORY[0x1E69DE3D0];
   }
 
-  v6 = [(NSArray *)sectionIdentifiers objectAtIndexedSubscript:a4];
-  v7 = [v6 firstObject];
+  v6 = [(NSArray *)sectionIdentifiers objectAtIndexedSubscript:section];
+  firstObject = [v6 firstObject];
 
-  v8 = [(PKPaymentSetupFieldsViewController *)self footerViewForIdentifier:v7];
+  v8 = [(PKPaymentSetupFieldsViewController *)self footerViewForIdentifier:firstObject];
   [v8 frame];
   v10 = v9;
 
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   sectionIdentifiers = self->_sectionIdentifiers;
   if (sectionIdentifiers)
   {
-    v6 = [(NSArray *)sectionIdentifiers objectAtIndexedSubscript:a4];
-    v7 = [v6 firstObject];
+    v6 = [(NSArray *)sectionIdentifiers objectAtIndexedSubscript:section];
+    firstObject = [v6 firstObject];
 
-    v8 = [(PKPaymentSetupFieldsViewController *)self footerViewForIdentifier:v7];
+    footerHyperlinkView = [(PKPaymentSetupFieldsViewController *)self footerViewForIdentifier:firstObject];
   }
 
   else
   {
-    v7 = [(PKPaymentSetupFieldsViewController *)self displayedFooterField:a3];
-    if (v7 && [(PKPaymentSetupFieldsViewController *)self shouldDisplayFooterFieldInline:v7])
+    firstObject = [(PKPaymentSetupFieldsViewController *)self displayedFooterField:view];
+    if (firstObject && [(PKPaymentSetupFieldsViewController *)self shouldDisplayFooterFieldInline:firstObject])
     {
-      v8 = [(PKPaymentSetupFieldsViewController *)self footerHyperlinkView];
-      v9 = [v7 body];
-      [v8 setAttributedText:v9];
+      footerHyperlinkView = [(PKPaymentSetupFieldsViewController *)self footerHyperlinkView];
+      body = [firstObject body];
+      [footerHyperlinkView setAttributedText:body];
     }
 
     else
     {
-      v8 = 0;
+      footerHyperlinkView = 0;
     }
   }
 
-  return v8;
+  return footerHyperlinkView;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   sectionIdentifiers = self->_sectionIdentifiers;
   if (sectionIdentifiers)
@@ -633,16 +633,16 @@ LABEL_11:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_sectionIdentifiers)
   {
-    [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:a4];
+    [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:section];
   }
 
   else
   {
-    [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers:a3];
+    [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers:view];
   }
   v4 = ;
   v5 = [v4 count];
@@ -650,13 +650,13 @@ LABEL_11:
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [(PKPaymentSetupFieldsViewController *)self identifierForIndexPath:a4];
+  v5 = [(PKPaymentSetupFieldsViewController *)self identifierForIndexPath:path];
   v6 = [(PKPaymentSetupFieldsViewController *)self cellForIdentifier:v5];
   [v6 setDelegate:self];
-  v7 = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
-  v8 = [v7 containsObject:v5];
+  readonlyFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
+  v8 = [readonlyFieldIdentifiers containsObject:v5];
 
   if (self->_cellsAreEnabled)
   {
@@ -666,12 +666,12 @@ LABEL_11:
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(PKPaymentSetupFieldsViewController *)self identifierForIndexPath:a4];
+  viewCopy = view;
+  v7 = [(PKPaymentSetupFieldsViewController *)self identifierForIndexPath:path];
   v8 = [(PKPaymentSetupFieldsViewController *)self cellForIdentifier:v7];
-  [v6 bounds];
+  [viewCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -687,20 +687,20 @@ LABEL_11:
   return v18;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v25.receiver = self;
   v25.super_class = PKPaymentSetupFieldsViewController;
-  [(PKPaymentSetupTableViewController *)&v25 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:v9];
-  v10 = -[PKPaymentSetupFieldsViewController visibleFieldIdentifiersForSection:](self, "visibleFieldIdentifiersForSection:", [v9 section]);
-  v11 = [v8 textLabel];
-  v12 = [v11 font];
-  v13 = v12;
-  if (v12)
+  [(PKPaymentSetupTableViewController *)&v25 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:pathCopy];
+  v10 = -[PKPaymentSetupFieldsViewController visibleFieldIdentifiersForSection:](self, "visibleFieldIdentifiersForSection:", [pathCopy section]);
+  textLabel = [cellCopy textLabel];
+  font = [textLabel font];
+  v13 = font;
+  if (font)
   {
-    v14 = v12;
+    v14 = font;
   }
 
   else
@@ -712,15 +712,15 @@ LABEL_11:
 
   [(PKPaymentSetupFieldsModel *)self->_fieldsModel minimumRequiredWidthForFieldIdentifiers:v10 withFont:v15];
   PKFloatCeilToPixel(v16, v17);
-  [v8 setMinimumTextLabelWidth:?];
-  v18 = [v10 objectAtIndex:{objc_msgSend(v9, "row")}];
+  [cellCopy setMinimumTextLabelWidth:?];
+  v18 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
   v19 = [(PKPaymentSetupFieldsViewController *)self fieldForIdentifier:v18];
-  v20 = [v9 row] + 1;
+  v20 = [pathCopy row] + 1;
   if (v20 >= [v10 count])
   {
-    v23 = [v19 isFieldTypeLabel] ^ 1;
+    isFieldTypeLabel = [v19 isFieldTypeLabel] ^ 1;
 LABEL_12:
-    v24 = v23;
+    v24 = isFieldTypeLabel;
     goto LABEL_18;
   }
 
@@ -739,47 +739,47 @@ LABEL_12:
   {
     if (!v22)
     {
-      v23 = 0;
+      isFieldTypeLabel = 0;
       v24 = 0;
       goto LABEL_18;
     }
 
-    v23 = [v22 isFieldTypeLabel] ^ 1;
+    isFieldTypeLabel = [v22 isFieldTypeLabel] ^ 1;
 
     goto LABEL_12;
   }
 
   if (v22)
   {
-    v23 = [v22 isFieldTypeLabel];
+    isFieldTypeLabel = [v22 isFieldTypeLabel];
   }
 
   else
   {
-    v23 = 1;
+    isFieldTypeLabel = 1;
   }
 
   v24 = 1;
 LABEL_18:
-  [v8 setShouldDrawSeperator:v24];
-  [v8 setShouldDrawFullWidthSeperator:v23];
+  [cellCopy setShouldDrawSeperator:v24];
+  [cellCopy setShouldDrawFullWidthSeperator:isFieldTypeLabel];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = PKPaymentSetupFieldsViewController;
-  v5 = a4;
-  v6 = a3;
-  [(PKPaymentSetupTableViewController *)&v8 tableView:v6 didSelectRowAtIndexPath:v5];
-  v7 = [v6 cellForRowAtIndexPath:{v5, v8.receiver, v8.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(PKPaymentSetupTableViewController *)&v8 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v7 = [viewCopy cellForRowAtIndexPath:{pathCopy, v8.receiver, v8.super_class}];
 
   [v7 becomeFirstResponder];
 }
 
-- (BOOL)fieldCellEditableTextFieldShouldBeginEditing:(id)a3
+- (BOOL)fieldCellEditableTextFieldShouldBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   if (!self->_hasScrolledToShowFields)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -791,7 +791,7 @@ LABEL_18:
     self->_hasScrolledToShowFields = 1;
   }
 
-  PKPaymentSetupApplyContextAppearance([(PKPaymentSetupTableViewController *)self context], v4);
+  PKPaymentSetupApplyContextAppearance([(PKPaymentSetupTableViewController *)self context], editingCopy);
 
   return 1;
 }
@@ -803,24 +803,24 @@ void __83__PKPaymentSetupFieldsViewController_fieldCellEditableTextFieldShouldBe
   [v2 scrollToRowAtIndexPath:v1 atScrollPosition:2 animated:1];
 }
 
-- (void)fieldCellEditableTextFieldDidBeginEditing:(id)a3
+- (void)fieldCellEditableTextFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  if ([(PKPaymentSetupFieldCell *)v4 usesCustomInputView])
+  editingCopy = editing;
+  if ([(PKPaymentSetupFieldCell *)editingCopy usesCustomInputView])
   {
-    [(PKPaymentSetupFieldsViewController *)self fieldCellEditableTextFieldValueDidChange:v4];
+    [(PKPaymentSetupFieldsViewController *)self fieldCellEditableTextFieldValueDidChange:editingCopy];
   }
 
   activeEditingCell = self->_activeEditingCell;
-  self->_activeEditingCell = v4;
+  self->_activeEditingCell = editingCopy;
 }
 
-- (void)fieldCellEditableTextFieldDidEndEditing:(id)a3
+- (void)fieldCellEditableTextFieldDidEndEditing:(id)editing
 {
-  v5 = a3;
-  if ([v5 usesCustomInputView])
+  editingCopy = editing;
+  if ([editingCopy usesCustomInputView])
   {
-    [(PKPaymentSetupFieldsViewController *)self fieldCellEditableTextFieldValueDidChange:v5];
+    [(PKPaymentSetupFieldsViewController *)self fieldCellEditableTextFieldValueDidChange:editingCopy];
   }
 
   [(PKPaymentSetupFieldsViewController *)self _updateErrorFooterIfNeeded];
@@ -828,23 +828,23 @@ void __83__PKPaymentSetupFieldsViewController_fieldCellEditableTextFieldShouldBe
   self->_activeEditingCell = 0;
 }
 
-- (void)fieldCellEditableTextFieldValueDidChange:(id)a3
+- (void)fieldCellEditableTextFieldValueDidChange:(id)change
 {
-  v4 = [a3 paymentSetupField];
-  [(PKPaymentSetupFieldsViewController *)self fieldTextValueDidChangeForField:v4];
+  paymentSetupField = [change paymentSetupField];
+  [(PKPaymentSetupFieldsViewController *)self fieldTextValueDidChangeForField:paymentSetupField];
 }
 
-- (BOOL)fieldCellEditableTextFieldShouldReturn:(id)a3
+- (BOOL)fieldCellEditableTextFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 editableTextField];
-  v6 = [v5 hasText];
+  returnCopy = return;
+  editableTextField = [returnCopy editableTextField];
+  hasText = [editableTextField hasText];
 
-  if (v6)
+  if (hasText)
   {
-    v7 = [v4 paymentSetupField];
-    v8 = [v7 identifier];
-    v9 = [(PKPaymentSetupFieldsViewController *)self nextResponderCellForCurrentIdentifier:v8];
+    paymentSetupField = [returnCopy paymentSetupField];
+    identifier = [paymentSetupField identifier];
+    v9 = [(PKPaymentSetupFieldsViewController *)self nextResponderCellForCurrentIdentifier:identifier];
 
     if (v9)
     {
@@ -860,30 +860,30 @@ void __83__PKPaymentSetupFieldsViewController_fieldCellEditableTextFieldShouldBe
   return 0;
 }
 
-- (void)fieldCellDidTapButton:(id)a3
+- (void)fieldCellDidTapButton:(id)button
 {
-  v8 = a3;
-  v4 = [v8 paymentSetupField];
-  v5 = [v4 isFieldTypeLabel];
+  buttonCopy = button;
+  paymentSetupField = [buttonCopy paymentSetupField];
+  isFieldTypeLabel = [paymentSetupField isFieldTypeLabel];
 
-  if (v5)
+  if (isFieldTypeLabel)
   {
-    v6 = [v8 paymentSetupField];
-    v7 = [v6 labelFieldObject];
+    paymentSetupField2 = [buttonCopy paymentSetupField];
+    labelFieldObject = [paymentSetupField2 labelFieldObject];
 
-    [(PKPaymentSetupFieldsViewController *)self _fieldLabelDidTapButton:v7];
+    [(PKPaymentSetupFieldsViewController *)self _fieldLabelDidTapButton:labelFieldObject];
   }
 }
 
-- (void)fieldCell:(id)a3 didTapKeyboardAccessory:(unint64_t)a4
+- (void)fieldCell:(id)cell didTapKeyboardAccessory:(unint64_t)accessory
 {
-  v6 = a3;
-  if (a4 == 1)
+  cellCopy = cell;
+  if (accessory == 1)
   {
-    v10 = v6;
-    v7 = [v6 paymentSetupField];
-    v8 = [v7 identifier];
-    v9 = [(PKPaymentSetupFieldsViewController *)self nextResponderCellForCurrentIdentifier:v8];
+    v10 = cellCopy;
+    paymentSetupField = [cellCopy paymentSetupField];
+    identifier = [paymentSetupField identifier];
+    v9 = [(PKPaymentSetupFieldsViewController *)self nextResponderCellForCurrentIdentifier:identifier];
 
     if (v9)
     {
@@ -900,74 +900,74 @@ void __83__PKPaymentSetupFieldsViewController_fieldCellEditableTextFieldShouldBe
       [v10 resignFirstResponder];
     }
 
-    v6 = v10;
+    cellCopy = v10;
   }
 }
 
-- (void)_fieldLabelDidTapButton:(id)a3
+- (void)_fieldLabelDidTapButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v13 = [[PKPaymentMoreInformationViewController alloc] initWithContext:[(PKPaymentSetupTableViewController *)self context]];
-  v5 = [v4 detailTitle];
-  [(PKPaymentMoreInformationViewController *)v13 setDetailTitle:v5];
+  detailTitle = [buttonCopy detailTitle];
+  [(PKPaymentMoreInformationViewController *)v13 setDetailTitle:detailTitle];
 
-  v6 = [v4 detailSubtitle];
-  [(PKPaymentMoreInformationViewController *)v13 setDetailSubtitle:v6];
+  detailSubtitle = [buttonCopy detailSubtitle];
+  [(PKPaymentMoreInformationViewController *)v13 setDetailSubtitle:detailSubtitle];
 
-  v7 = [v4 detailBody];
-  [(PKPaymentMoreInformationViewController *)v13 setDetailBody:v7];
+  detailBody = [buttonCopy detailBody];
+  [(PKPaymentMoreInformationViewController *)v13 setDetailBody:detailBody];
 
-  v8 = [v4 businessChatIntentName];
-  [(PKPaymentMoreInformationViewController *)v13 setBusinessChatIntentName:v8];
+  businessChatIntentName = [buttonCopy businessChatIntentName];
+  [(PKPaymentMoreInformationViewController *)v13 setBusinessChatIntentName:businessChatIntentName];
 
-  v9 = [v4 businessChatButtonTitle];
-  [(PKPaymentMoreInformationViewController *)v13 setBusinessChatButtonTitle:v9];
+  businessChatButtonTitle = [buttonCopy businessChatButtonTitle];
+  [(PKPaymentMoreInformationViewController *)v13 setBusinessChatButtonTitle:businessChatButtonTitle];
 
-  v10 = [v4 businessChatIdentifier];
+  businessChatIdentifier = [buttonCopy businessChatIdentifier];
 
-  [(PKPaymentMoreInformationViewController *)v13 setBusinessChatIdentifier:v10];
+  [(PKPaymentMoreInformationViewController *)v13 setBusinessChatIdentifier:businessChatIdentifier];
   v11 = [[PKNavigationController alloc] initWithRootViewController:v13];
-  v12 = [(PKPaymentSetupFieldsViewController *)self navigationController];
-  [v12 presentModalViewController:v11 withPaymentSetupContext:{-[PKPaymentSetupTableViewController context](self, "context")}];
+  navigationController = [(PKPaymentSetupFieldsViewController *)self navigationController];
+  [navigationController presentModalViewController:v11 withPaymentSetupContext:{-[PKPaymentSetupTableViewController context](self, "context")}];
 }
 
-- (void)_handleNextButtonTapped:(id)a3
+- (void)_handleNextButtonTapped:(id)tapped
 {
   if (self->_primaryButtonEnabled)
   {
-    v5 = a3;
-    v6 = [(PKPaymentSetupTableViewController *)self tableView];
-    v7 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v7 safeAreaInsets];
-    [v6 setContentOffset:1 animated:{0.0, -v8}];
+    tappedCopy = tapped;
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    tableView2 = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView2 safeAreaInsets];
+    [tableView setContentOffset:1 animated:{0.0, -v8}];
 
-    v9 = [(PKPaymentSetupFieldsViewController *)self navigationController];
-    v10 = [v9 navigationBar];
-    [v10 setUserInteractionEnabled:0];
+    navigationController = [(PKPaymentSetupFieldsViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setUserInteractionEnabled:0];
 
-    v11 = [(PKPaymentSetupTableViewController *)self tableView];
-    v12 = [v11 firstResponder];
-    [v12 resignFirstResponder];
+    tableView3 = [(PKPaymentSetupTableViewController *)self tableView];
+    firstResponder = [tableView3 firstResponder];
+    [firstResponder resignFirstResponder];
 
-    [(PKPaymentSetupFieldsViewController *)self handleNextButtonTapped:v5];
-    v14 = [(PKPaymentSetupFieldsViewController *)self navigationController];
-    v13 = [v14 navigationBar];
-    [v13 setUserInteractionEnabled:1];
+    [(PKPaymentSetupFieldsViewController *)self handleNextButtonTapped:tappedCopy];
+    navigationController2 = [(PKPaymentSetupFieldsViewController *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 setUserInteractionEnabled:1];
   }
 }
 
-- (void)_triggerNextActionLoop:(BOOL)a3
+- (void)_triggerNextActionLoop:(BOOL)loop
 {
   if (!self->_performingNextActionLoop)
   {
     self->_performingNextActionLoop = 1;
-    [(PKPaymentSetupFieldsViewController *)self _continueNextActionLoop:a3];
+    [(PKPaymentSetupFieldsViewController *)self _continueNextActionLoop:loop];
   }
 }
 
-- (void)_continueNextActionLoop:(BOOL)a3
+- (void)_continueNextActionLoop:(BOOL)loop
 {
-  v3 = a3;
+  loopCopy = loop;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -981,7 +981,7 @@ void __83__PKPaymentSetupFieldsViewController_fieldCellEditableTextFieldShouldBe
   currentNextActionBlock = self->_currentNextActionBlock;
   self->_currentNextActionBlock = v7;
 
-  if (v3)
+  if (loopCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -1069,193 +1069,193 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
 
 - (void)hideActivitySpinner
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self defaultHeaderViewSubTitle];
-  [(PKPaymentSetupFieldsViewController *)self hideActivitySpinnerWithTitle:0 subtitle:v3 animated:1];
+  defaultHeaderViewSubTitle = [(PKPaymentSetupFieldsViewController *)self defaultHeaderViewSubTitle];
+  [(PKPaymentSetupFieldsViewController *)self hideActivitySpinnerWithTitle:0 subtitle:defaultHeaderViewSubTitle animated:1];
 }
 
-- (void)_setActivityIndicatorActive:(BOOL)a3 title:(id)a4 subtitle:(id)a5 animated:(BOOL)a6
+- (void)_setActivityIndicatorActive:(BOOL)active title:(id)title subtitle:(id)subtitle animated:(BOOL)animated
 {
-  v6 = a6;
-  v8 = a3;
-  self->_showingActivitySpinner = a3;
-  v10 = a5;
-  v11 = a4;
-  v19 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  v12 = [v19 activityIndicator];
-  v13 = [(PKPaymentSetupTableViewController *)self dockView];
-  v14 = [v13 hasPrimaryButton];
-  v15 = [(PKPaymentSetupFieldsViewController *)self view];
-  [v15 setUserInteractionEnabled:v8 ^ 1];
+  animatedCopy = animated;
+  activeCopy = active;
+  self->_showingActivitySpinner = active;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
+  activityIndicator = [headerView activityIndicator];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  hasPrimaryButton = [dockView hasPrimaryButton];
+  view = [(PKPaymentSetupFieldsViewController *)self view];
+  [view setUserInteractionEnabled:activeCopy ^ 1];
 
-  v16 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v16 resignFirstResponder];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView resignFirstResponder];
 
-  [(PKPaymentSetupFieldsViewController *)self _setNavigationBarEnabled:v8 ^ 1 animated:v6];
-  [v13 setButtonsEnabled:v8 ^ 1];
-  [v19 setButtonsEnabled:v8 ^ 1];
-  if (!_UISolariumFeatureFlagEnabled() || self->_preferPrimaryButtonInNavigationBar || ((v14 ^ 1) & 1) != 0)
+  [(PKPaymentSetupFieldsViewController *)self _setNavigationBarEnabled:activeCopy ^ 1 animated:animatedCopy];
+  [dockView setButtonsEnabled:activeCopy ^ 1];
+  [headerView setButtonsEnabled:activeCopy ^ 1];
+  if (!_UISolariumFeatureFlagEnabled() || self->_preferPrimaryButtonInNavigationBar || ((hasPrimaryButton ^ 1) & 1) != 0)
   {
-    if (v8)
+    if (activeCopy)
     {
-      if (([v12 isAnimating] & 1) == 0)
+      if (([activityIndicator isAnimating] & 1) == 0)
       {
-        [v12 startAnimating];
+        [activityIndicator startAnimating];
       }
     }
 
     else
     {
-      [v12 stopAnimating];
+      [activityIndicator stopAnimating];
     }
 
-    if (v14)
+    if (hasPrimaryButton)
     {
-      v18 = [v13 primaryButton];
-      [v18 setShowSpinner:0];
+      primaryButton = [dockView primaryButton];
+      [primaryButton setShowSpinner:0];
     }
   }
 
   else
   {
-    v17 = [v13 primaryButton];
-    [v17 setShowSpinner:v8];
+    primaryButton2 = [dockView primaryButton];
+    [primaryButton2 setShowSpinner:activeCopy];
 
-    [v12 stopAnimating];
+    [activityIndicator stopAnimating];
   }
 
-  [(PKPaymentSetupFieldsViewController *)self setHeaderViewTitle:v11 subtitle:v10];
-  [(PKPaymentSetupFieldsViewController *)self _setIdleTimerDisabled:v8 title:v11 subtitle:v10];
+  [(PKPaymentSetupFieldsViewController *)self setHeaderViewTitle:titleCopy subtitle:subtitleCopy];
+  [(PKPaymentSetupFieldsViewController *)self _setIdleTimerDisabled:activeCopy title:titleCopy subtitle:subtitleCopy];
 }
 
-- (void)setHeaderViewTitle:(id)a3 subtitle:(id)a4
+- (void)setHeaderViewTitle:(id)title subtitle:(id)subtitle
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  v8 = v17;
-  if (!v17)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
+  defaultHeaderViewTitle = titleCopy;
+  if (!titleCopy)
   {
-    v8 = [(PKPaymentSetupFieldsViewController *)self defaultHeaderViewTitle];
+    defaultHeaderViewTitle = [(PKPaymentSetupFieldsViewController *)self defaultHeaderViewTitle];
   }
 
-  v18 = v8;
-  v9 = [v7 titleLabel];
-  [v9 setText:v18];
+  v18 = defaultHeaderViewTitle;
+  titleLabel = [headerView titleLabel];
+  [titleLabel setText:v18];
 
-  if (v6)
+  if (subtitleCopy)
   {
-    v10 = [v7 subtitleLabel];
-    [v10 setText:v6];
+    subtitleLabel = [headerView subtitleLabel];
+    [subtitleLabel setText:subtitleCopy];
   }
 
-  v11 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v7 frame];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [headerView frame];
   v13 = v12;
-  [v11 bounds];
-  [v7 sizeThatFits:{v14, 1.79769313e308}];
+  [tableView bounds];
+  [headerView sizeThatFits:{v14, 1.79769313e308}];
   if (v15 > v13)
   {
     v16 = v15;
-    [v11 _rectForTableHeaderView];
-    [v7 setFrame:?];
-    [v11 _tableHeaderHeightDidChangeToHeight:v16];
+    [tableView _rectForTableHeaderView];
+    [headerView setFrame:?];
+    [tableView _tableHeaderHeightDidChangeToHeight:v16];
   }
 
-  [v7 setNeedsLayout];
+  [headerView setNeedsLayout];
 }
 
-- (void)_setIdleTimerDisabled:(BOOL)a3 title:(id)a4 subtitle:(id)a5
+- (void)_setIdleTimerDisabled:(BOOL)disabled title:(id)title subtitle:(id)subtitle
 {
-  v6 = a3;
+  disabledCopy = disabled;
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"enabled";
     v12 = 138413058;
-    if (v6)
+    if (disabledCopy)
     {
       v10 = @"disabled";
     }
 
     v13 = v10;
     v14 = 2112;
-    v15 = v7;
+    v15 = titleCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = subtitleCopy;
     v18 = 2112;
     v19 = @"PaymentCardVerification";
     _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Payment Setup has %@ the Idle Timer. (For: %@ - %@) - %@.", &v12, 0x2Au);
   }
 
-  v11 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v11 _setIdleTimerDisabled:v6 forReason:@"PaymentCardVerification"];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _setIdleTimerDisabled:disabledCopy forReason:@"PaymentCardVerification"];
 }
 
-- (void)showCheckmarkAnimated:(BOOL)a3
+- (void)showCheckmarkAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  [v4 showCheckmark:1 animated:v3];
-  [v4 setNeedsLayout];
+  animatedCopy = animated;
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
+  [headerView showCheckmark:1 animated:animatedCopy];
+  [headerView setNeedsLayout];
 }
 
 - (void)endUserInteraction
 {
   [(PKPaymentSetupFieldsViewController *)self _setNavigationBarEnabled:0 animated:0];
   [(PKPaymentSetupFieldsViewController *)self _destroyNavigationBarButtonItemsAnimated:0];
-  v3 = [(PKPaymentSetupFieldsViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(PKPaymentSetupFieldsViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [(PKPaymentSetupFieldsViewController *)self footerView];
-  [v4 setButtonsEnabled:0];
+  footerView = [(PKPaymentSetupFieldsViewController *)self footerView];
+  [footerView setButtonsEnabled:0];
 
-  v5 = [(PKPaymentSetupTableViewController *)self dockView];
-  [v5 setButtonsEnabled:0];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  [dockView setButtonsEnabled:0];
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)_setNavigationBarEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_navigationEnabled != a3)
+  if (self->_navigationEnabled != enabled)
   {
-    v4 = a4;
-    self->_navigationEnabled = a3;
-    v8 = [(PKPaymentSetupFieldsViewController *)self navigationController];
-    v6 = [v8 navigationBar];
-    [v6 setUserInteractionEnabled:self->_navigationEnabled];
+    animatedCopy = animated;
+    self->_navigationEnabled = enabled;
+    navigationController = [(PKPaymentSetupFieldsViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setUserInteractionEnabled:self->_navigationEnabled];
 
-    v7 = [v8 interactivePopGestureRecognizer];
-    [v7 setEnabled:self->_navigationEnabled];
+    interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+    [interactivePopGestureRecognizer setEnabled:self->_navigationEnabled];
 
-    [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:v4];
+    [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:animatedCopy];
   }
 }
 
-- (void)_setLeftBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)_setLeftBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [a3 copy];
+  animatedCopy = animated;
+  v6 = [items copy];
   leftBarButtonItems = self->_leftBarButtonItems;
   self->_leftBarButtonItems = v6;
 
-  [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:v4];
+  [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:animatedCopy];
 }
 
-- (void)_setRightBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)_setRightBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [a3 copy];
+  animatedCopy = animated;
+  v6 = [items copy];
   rightBarButtonItems = self->_rightBarButtonItems;
   self->_rightBarButtonItems = v6;
 
-  [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:v4];
+  [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:animatedCopy];
 }
 
-- (void)_destroyNavigationBarButtonItemsAnimated:(BOOL)a3
+- (void)_destroyNavigationBarButtonItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   leftBarButtonItems = self->_leftBarButtonItems;
   if (leftBarButtonItems)
   {
@@ -1276,26 +1276,26 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   if (v6)
   {
 
-    [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:v3];
+    [(PKPaymentSetupFieldsViewController *)self _updateNavigationItemAnimated:animatedCopy];
   }
 }
 
-- (void)_updateNavigationItemAnimated:(BOOL)a3
+- (void)_updateNavigationItemAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKPaymentSetupFieldsViewController *)self navigationItem];
-  v15 = v5;
+  animatedCopy = animated;
+  navigationItem = [(PKPaymentSetupFieldsViewController *)self navigationItem];
+  v15 = navigationItem;
   if (self->_hidesBackButton)
   {
-    [v5 setHidesBackButton:1 animated:v3];
+    [navigationItem setHidesBackButton:1 animated:animatedCopy];
   }
 
   else
   {
     navigationEnabled = self->_navigationEnabled;
-    if ([v5 hidesBackButton] == navigationEnabled)
+    if ([navigationItem hidesBackButton] == navigationEnabled)
     {
-      [v15 setHidesBackButton:navigationEnabled ^ 1u animated:v3];
+      [v15 setHidesBackButton:navigationEnabled ^ 1u animated:animatedCopy];
     }
   }
 
@@ -1310,12 +1310,12 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   }
 
   v8 = leftBarButtonItems;
-  v9 = [v15 leftBarButtonItems];
+  leftBarButtonItems = [v15 leftBarButtonItems];
   v10 = PKEqualObjects();
 
   if ((v10 & 1) == 0)
   {
-    [v15 setLeftBarButtonItems:v8 animated:v3];
+    [v15 setLeftBarButtonItems:v8 animated:animatedCopy];
   }
 
   if (self->_navigationEnabled)
@@ -1330,12 +1330,12 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
 
   v12 = rightBarButtonItems;
 
-  v13 = [v15 rightBarButtonItems];
+  rightBarButtonItems = [v15 rightBarButtonItems];
   v14 = PKEqualObjects();
 
   if ((v14 & 1) == 0)
   {
-    [v15 setRightBarButtonItems:v12 animated:v3];
+    [v15 setRightBarButtonItems:v12 animated:animatedCopy];
   }
 
   [(PKPaymentSetupFieldsViewController *)self _updatePrimaryButtonState];
@@ -1355,52 +1355,52 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
 
     else
     {
-      v6 = [(PKPaymentSetupTableViewController *)self dockView];
-      if ([v6 hasPrimaryButton])
+      dockView = [(PKPaymentSetupTableViewController *)self dockView];
+      if ([dockView hasPrimaryButton])
       {
-        v5 = [v6 primaryButton];
-        [v5 setEnabled:self->_primaryButtonEnabled];
+        primaryButton = [dockView primaryButton];
+        [primaryButton setEnabled:self->_primaryButtonEnabled];
       }
     }
   }
 }
 
-- (void)setShowPrimaryButton:(BOOL)a3
+- (void)setShowPrimaryButton:(BOOL)button
 {
-  if (self->_showPrimaryButton == !a3)
+  if (self->_showPrimaryButton == !button)
   {
-    self->_showPrimaryButton = a3;
+    self->_showPrimaryButton = button;
     [(PKPaymentSetupFieldsViewController *)self _configurePrimaryButton];
   }
 }
 
-- (void)setPreferPrimaryButtonInNavigationBar:(BOOL)a3
+- (void)setPreferPrimaryButtonInNavigationBar:(BOOL)bar
 {
-  if (self->_preferPrimaryButtonInNavigationBar == !a3)
+  if (self->_preferPrimaryButtonInNavigationBar == !bar)
   {
-    self->_preferPrimaryButtonInNavigationBar = a3;
+    self->_preferPrimaryButtonInNavigationBar = bar;
     [(PKPaymentSetupFieldsViewController *)self _configurePrimaryButton];
   }
 }
 
-- (void)setPrimaryButtonTitleText:(id)a3
+- (void)setPrimaryButtonTitleText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if (self->_preferPrimaryButtonInNavigationBar)
   {
-    [(UIBarButtonItem *)self->_rightBarButton setTitle:v4];
+    [(UIBarButtonItem *)self->_rightBarButton setTitle:textCopy];
   }
 
   else
   {
-    v5 = [(PKPaymentSetupTableViewController *)self dockView];
-    v6 = [v5 primaryButton];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    primaryButton = [dockView primaryButton];
 
-    [v6 setTitle:v4 forState:0];
+    [primaryButton setTitle:textCopy forState:0];
   }
 
   primaryButtonTitleText = self->_primaryButtonTitleText;
-  self->_primaryButtonTitleText = v4;
+  self->_primaryButtonTitleText = textCopy;
 }
 
 - (void)_configurePrimaryButton
@@ -1408,8 +1408,8 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   v17[1] = *MEMORY[0x1E69E9840];
   if ([(PKPaymentSetupFieldsViewController *)self isViewLoaded])
   {
-    v3 = [(PKPaymentSetupTableViewController *)self dockView];
-    [v3 setPrimaryButton:0];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    [dockView setPrimaryButton:0];
 
     rightBarButtonItems = self->_rightBarButtonItems;
     v16[0] = MEMORY[0x1E69E9820];
@@ -1437,7 +1437,7 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
           v8 = PKLocalizedPaymentString(&cfstr_Next.isa);
         }
 
-        v9 = v8;
+        dockView2 = v8;
         v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v8 style:2 target:self action:sel__handleNextButtonTapped_];
         v15 = self->_rightBarButton;
         self->_rightBarButton = v14;
@@ -1450,18 +1450,18 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
 
       else
       {
-        v9 = [(PKPaymentSetupTableViewController *)self dockView];
-        v10 = [v9 primaryButton];
-        v11 = v10;
+        dockView2 = [(PKPaymentSetupTableViewController *)self dockView];
+        primaryButton = [dockView2 primaryButton];
+        v11 = primaryButton;
         v12 = self->_primaryButtonTitleText;
         if (v12)
         {
-          [v10 setTitle:v12 forState:0];
+          [primaryButton setTitle:v12 forState:0];
         }
 
         [v11 addTarget:self action:sel__handleNextButtonTapped_ forControlEvents:0x2000];
-        v13 = [(PKPaymentSetupFieldsViewController *)self view];
-        [v13 setNeedsLayout];
+        view = [(PKPaymentSetupFieldsViewController *)self view];
+        [view setNeedsLayout];
       }
 
       [(PKPaymentSetupFieldsViewController *)self _updatePrimaryButtonState];
@@ -1469,53 +1469,53 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   }
 }
 
-- (id)visibleFieldIdentifiersForSection:(unint64_t)a3
+- (id)visibleFieldIdentifiersForSection:(unint64_t)section
 {
   sectionIdentifiers = self->_sectionIdentifiers;
-  if (sectionIdentifiers && [(NSArray *)sectionIdentifiers count]> a3)
+  if (sectionIdentifiers && [(NSArray *)sectionIdentifiers count]> section)
   {
-    v6 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:a3];
+    visibleFieldIdentifiers = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:section];
   }
 
   else
   {
-    v6 = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
+    visibleFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
   }
 
-  return v6;
+  return visibleFieldIdentifiers;
 }
 
 - (id)visibleFieldIdentifiers
 {
-  v2 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  v3 = [v2 visibleSetupFieldIdentifiers];
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  visibleSetupFieldIdentifiers = [fieldsModel visibleSetupFieldIdentifiers];
 
-  return v3;
+  return visibleSetupFieldIdentifiers;
 }
 
 - (id)readonlyFieldIdentifiers
 {
-  v2 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  v3 = [v2 readonlySetupFieldIdentifiers];
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  readonlySetupFieldIdentifiers = [fieldsModel readonlySetupFieldIdentifiers];
 
-  return v3;
+  return readonlySetupFieldIdentifiers;
 }
 
-- (void)_noteFieldIdentifiersChangedUpdateHeaders:(BOOL)a3
+- (void)_noteFieldIdentifiersChangedUpdateHeaders:(BOOL)headers
 {
-  v3 = a3;
+  headersCopy = headers;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(PKPaymentSetupFieldsViewController *)self firstResponderCell];
-  v6 = v5;
-  if (v5)
+  firstResponderCell = [(PKPaymentSetupFieldsViewController *)self firstResponderCell];
+  v6 = firstResponderCell;
+  if (firstResponderCell)
   {
-    [v5 setCanResignFirstResponder:0];
+    [firstResponderCell setCanResignFirstResponder:0];
   }
 
-  v7 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView reloadData];
 
-  if (v3)
+  if (headersCopy)
   {
     [(PKPaymentSetupFieldsViewController *)self reloadHeaderView];
   }
@@ -1532,11 +1532,11 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
     dispatch_after(v8, MEMORY[0x1E69E96A0], block);
   }
 
-  v10 = [(PKPaymentSetupFieldsViewController *)self displayedFooterField];
-  if (v10 && ![(PKPaymentSetupFieldsViewController *)self shouldDisplayFooterFieldInline:v10])
+  displayedFooterField = [(PKPaymentSetupFieldsViewController *)self displayedFooterField];
+  if (displayedFooterField && ![(PKPaymentSetupFieldsViewController *)self shouldDisplayFooterFieldInline:displayedFooterField])
   {
-    v11 = [v10 body];
-    [(PKPaymentSetupTableViewController *)self setFooterAttributedText:v11];
+    body = [displayedFooterField body];
+    [(PKPaymentSetupTableViewController *)self setFooterAttributedText:body];
   }
 
   else
@@ -1546,9 +1546,9 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
 
   if (self->_preferPrimaryButtonInNavigationBar)
   {
-    v12 = [(PKPaymentSetupFieldsViewController *)self navigationItem];
-    v13 = [v12 rightBarButtonItem];
-    [v13 setEnabled:{-[PKPaymentSetupFieldsViewController isComplete](self, "isComplete")}];
+    navigationItem = [(PKPaymentSetupFieldsViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:{-[PKPaymentSetupFieldsViewController isComplete](self, "isComplete")}];
   }
 }
 
@@ -1562,9 +1562,9 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
     self->_footerHyperlinkView = v4;
 
     v6 = PKGenericOnboardingPresenter(self, 0);
-    v7 = [(PKPaymentSetupTableViewController *)self context];
-    v8 = [(PKPaymentSetupFieldsViewController *)self navigationController];
-    v9 = PKOpenURLModallyHyperlinkAction(v7, v8);
+    context = [(PKPaymentSetupTableViewController *)self context];
+    navigationController = [(PKPaymentSetupFieldsViewController *)self navigationController];
+    v9 = PKOpenURLModallyHyperlinkAction(context, navigationController);
     v10 = PKGenericHyperlinkAction(v6, v9);
     [(PKFooterHyperlinkView *)self->_footerHyperlinkView setAction:v10];
 
@@ -1574,13 +1574,13 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   return footerHyperlinkView;
 }
 
-- (id)footerViewForIdentifier:(id)a3
+- (id)footerViewForIdentifier:(id)identifier
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_fieldIdentifierToFooterViewMap objectForKey:v4];
-  v6 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  v7 = [v6 footerFieldForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMapTable *)self->_fieldIdentifierToFooterViewMap objectForKey:identifierCopy];
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  v7 = [fieldsModel footerFieldForIdentifier:identifierCopy];
 
   if (v5)
   {
@@ -1595,13 +1595,13 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   if (!v8)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v9 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v9 bounds];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView bounds];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v14 _sectionContentInset];
+    tableView2 = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView2 _sectionContentInset];
     v16 = v15;
     v18 = v17;
 
@@ -1650,7 +1650,7 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
     }
 
     [v5 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v19, v24}];
-    [(NSMapTable *)self->_fieldIdentifierToFooterViewMap setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_fieldIdentifierToFooterViewMap setObject:v5 forKey:identifierCopy];
     v7 = v33;
   }
 
@@ -1659,14 +1659,14 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   return v5;
 }
 
-- (id)identifierForIndexPath:(id)a3
+- (id)identifierForIndexPath:(id)path
 {
   sectionIdentifiers = self->_sectionIdentifiers;
-  v5 = a3;
-  v6 = v5;
+  pathCopy = path;
+  v6 = pathCopy;
   if (sectionIdentifiers)
   {
-    -[NSArray objectAtIndexedSubscript:](sectionIdentifiers, "objectAtIndexedSubscript:", [v5 section]);
+    -[NSArray objectAtIndexedSubscript:](sectionIdentifiers, "objectAtIndexedSubscript:", [pathCopy section]);
   }
 
   else
@@ -1681,18 +1681,18 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   return v9;
 }
 
-- (void)_setCellsEnabled:(BOOL)a3
+- (void)_setCellsEnabled:(BOOL)enabled
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_cellsAreEnabled == !a3)
+  if (self->_cellsAreEnabled == !enabled)
   {
-    v3 = a3;
-    v5 = [(PKPaymentSetupFieldsViewController *)self allCells];
+    enabledCopy = enabled;
+    allCells = [(PKPaymentSetupFieldsViewController *)self allCells];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [allCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1704,28 +1704,28 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allCells);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setUserInteractionEnabled:v3];
+          [*(*(&v10 + 1) + 8 * v9++) setUserInteractionEnabled:enabledCopy];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [allCells countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
     }
 
-    self->_cellsAreEnabled = v3;
+    self->_cellsAreEnabled = enabledCopy;
   }
 }
 
-- (id)cellForIdentifier:(id)a3
+- (id)cellForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_fieldIdentifierToCellMap objectForKey:v4];
-  v6 = [(PKPaymentSetupFieldsViewController *)self fieldForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMapTable *)self->_fieldIdentifierToCellMap objectForKey:identifierCopy];
+  v6 = [(PKPaymentSetupFieldsViewController *)self fieldForIdentifier:identifierCopy];
   v7 = v6;
   if (v5)
   {
@@ -1742,7 +1742,7 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
     v5 = [PKPaymentSetupFieldCell paymentSetupFieldCellForField:v6 fromTableView:0];
     if (v5)
     {
-      [(NSMapTable *)self->_fieldIdentifierToCellMap setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_fieldIdentifierToCellMap setObject:v5 forKey:identifierCopy];
       [v5 setEnabled:self->_cellsAreEnabled];
     }
   }
@@ -1752,14 +1752,14 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   return v5;
 }
 
-- (id)nextResponderCellForCurrentIdentifier:(id)a3
+- (id)nextResponderCellForCurrentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
-  v6 = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
-  v7 = [v5 pk_arrayByRemovingObjectsInArray:v6];
+  identifierCopy = identifier;
+  visibleFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
+  readonlyFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
+  v7 = [visibleFieldIdentifiers pk_arrayByRemovingObjectsInArray:readonlyFieldIdentifiers];
 
-  v8 = [v7 indexOfObject:v4];
+  v8 = [v7 indexOfObject:identifierCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || (v9 = v8 + 1, v9 >= [v7 count]))
   {
     v11 = 0;
@@ -1776,12 +1776,12 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
 
 - (id)firstEmptyCell
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self firstEmptySetupField];
-  v4 = v3;
-  if (v3)
+  firstEmptySetupField = [(PKPaymentSetupFieldsViewController *)self firstEmptySetupField];
+  v4 = firstEmptySetupField;
+  if (firstEmptySetupField)
   {
-    v5 = [v3 identifier];
-    v6 = [(PKPaymentSetupFieldsViewController *)self cellForIdentifier:v5];
+    identifier = [firstEmptySetupField identifier];
+    v6 = [(PKPaymentSetupFieldsViewController *)self cellForIdentifier:identifier];
   }
 
   else
@@ -1799,8 +1799,8 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  visibleFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
+  v4 = [visibleFieldIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1811,22 +1811,22 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleFieldIdentifiers);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:v8];
         if (([v9 isFieldTypeLabel] & 1) == 0)
         {
-          v10 = [v9 submissionString];
-          if ([v10 length])
+          submissionString = [v9 submissionString];
+          if ([submissionString length])
           {
           }
 
           else
           {
-            v11 = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
-            v12 = [v11 containsObject:v8];
+            readonlyFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
+            v12 = [readonlyFieldIdentifiers containsObject:v8];
 
             if (!v12)
             {
@@ -1836,7 +1836,7 @@ void __62__PKPaymentSetupFieldsViewController__continueNextActionLoop___block_in
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [visibleFieldIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -1851,9 +1851,9 @@ LABEL_13:
 - (id)firstResponderCell
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
-  v4 = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
-  v5 = [v3 pk_arrayByRemovingObjectsInArray:v4];
+  visibleFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
+  readonlyFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self readonlyFieldIdentifiers];
+  v5 = [visibleFieldIdentifiers pk_arrayByRemovingObjectsInArray:readonlyFieldIdentifiers];
 
   v17 = 0u;
   v18 = 0u;
@@ -1880,10 +1880,10 @@ LABEL_3:
         break;
       }
 
-      v12 = [v11 editableTextField];
-      v13 = [v12 isFirstResponder];
+      editableTextField = [v11 editableTextField];
+      isFirstResponder = [editableTextField isFirstResponder];
 
-      if (v13)
+      if (isFirstResponder)
       {
         break;
       }
@@ -1913,13 +1913,13 @@ LABEL_3:
 - (id)allCells
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMapTable *)self->_fieldIdentifierToCellMap objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_fieldIdentifierToCellMap objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1930,29 +1930,29 @@ LABEL_3:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v3 addObject:*(*(&v11 + 1) + 8 * i)];
+        [array addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
+  v9 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v9;
 }
 
 - (id)firstEmptyField
 {
-  v2 = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
-  v3 = [v2 editableTextField];
+  firstEmptyCell = [(PKPaymentSetupFieldsViewController *)self firstEmptyCell];
+  editableTextField = [firstEmptyCell editableTextField];
 
-  return v3;
+  return editableTextField;
 }
 
 - (BOOL)isEmpty
@@ -1963,8 +1963,8 @@ LABEL_3:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  visibleFieldIdentifiers = [(PKPaymentSetupFieldsViewController *)self visibleFieldIdentifiers];
+  v5 = [visibleFieldIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1975,20 +1975,20 @@ LABEL_3:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleFieldIdentifiers);
         }
 
         v9 = [(PKPaymentSetupFieldsModel *)self->_fieldsModel paymentSetupFieldWithIdentifier:*(*(&v13 + 1) + 8 * i)];
         if (([v9 isFieldTypeLabel] & 1) == 0)
         {
-          v10 = [v9 submissionString];
-          v11 = [v10 length] == 0;
+          submissionString = [v9 submissionString];
+          v11 = [submissionString length] == 0;
 
           LOBYTE(v3) = v11 & v3;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [visibleFieldIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2004,8 +2004,8 @@ LABEL_3:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(PKPaymentSetupFieldsViewController *)self allCells];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allCells = [(PKPaymentSetupFieldsViewController *)self allCells];
+  v3 = [allCells countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2017,32 +2017,32 @@ LABEL_3:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allCells);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) resetTextFieldStyling];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allCells countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)_contextSpecificStringForAggDKey:(id)a3
+- (id)_contextSpecificStringForAggDKey:(id)key
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v4 stringWithFormat:@"%@.%ld", v5, -[PKPaymentSetupTableViewController context](self, "context")];
+  keyCopy = key;
+  v6 = [v4 stringWithFormat:@"%@.%ld", keyCopy, -[PKPaymentSetupTableViewController context](self, "context")];
 
   return v6;
 }
 
-- (void)logAnalyticsContextSpecificCheckpointForKey:(id)a3
+- (void)logAnalyticsContextSpecificCheckpointForKey:(id)key
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self _contextSpecificStringForAggDKey:a3];
+  v3 = [(PKPaymentSetupFieldsViewController *)self _contextSpecificStringForAggDKey:key];
   MEMORY[0x1BFB41980](v3, 0);
 }
 

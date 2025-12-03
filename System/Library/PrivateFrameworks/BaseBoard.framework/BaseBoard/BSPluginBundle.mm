@@ -1,25 +1,25 @@
 @interface BSPluginBundle
-+ (void)bundleWithPath:(void *)a3 availableSpecifications:;
-- (BOOL)loadPlugin:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (void)bundleWithPath:(void *)path availableSpecifications:;
+- (BOOL)loadPlugin:(id)plugin;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation BSPluginBundle
 
-+ (void)bundleWithPath:(void *)a3 availableSpecifications:
++ (void)bundleWithPath:(void *)path availableSpecifications:
 {
   v87 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v69 = a3;
+  pathCopy = path;
   v5 = objc_opt_self();
   v82 = 0;
-  v67 = [v4 pathExtension];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v68 = v6;
-  if ([v67 length] && objc_msgSend(v6, "fileExistsAtPath:isDirectory:", v4, &v82) && v82 == 1)
+  pathExtension = [v4 pathExtension];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v68 = defaultManager;
+  if ([pathExtension length] && objc_msgSend(defaultManager, "fileExistsAtPath:isDirectory:", v4, &v82) && v82 == 1)
   {
     v7 = [MEMORY[0x1E696AAE8] bundleWithPath:v4];
     v8 = v7;
@@ -37,38 +37,38 @@
         if (v11)
         {
           objc_storeStrong(v11 + 1, obj);
-          v13 = [v10 bundlePath];
-          v14 = [v10 infoDictionary];
-          v65 = [v14 bs_safeObjectForKey:@"BSPluginSpecification" ofType:objc_opt_class()];
-          v15 = [v65 bs_safeObjectForKey:@"BSPluginName" ofType:objc_opt_class()];
-          if (!v15)
+          bundlePath = [v10 bundlePath];
+          infoDictionary = [v10 infoDictionary];
+          v65 = [infoDictionary bs_safeObjectForKey:@"BSPluginSpecification" ofType:objc_opt_class()];
+          stringByDeletingPathExtension = [v65 bs_safeObjectForKey:@"BSPluginName" ofType:objc_opt_class()];
+          if (!stringByDeletingPathExtension)
           {
-            v16 = [v13 lastPathComponent];
-            v15 = [v16 stringByDeletingPathExtension];
+            lastPathComponent = [bundlePath lastPathComponent];
+            stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
           }
 
-          v17 = [v65 bs_safeObjectForKey:@"BSPluginType" ofType:objc_opt_class()];
-          if (!v17)
+          pathExtension2 = [v65 bs_safeObjectForKey:@"BSPluginType" ofType:objc_opt_class()];
+          if (!pathExtension2)
           {
-            v17 = [v13 pathExtension];
+            pathExtension2 = [bundlePath pathExtension];
           }
 
           v18 = [v65 bs_safeObjectForKey:@"BSPluginControllerClass" ofType:objc_opt_class()];
           if (!v18)
           {
-            v18 = [v14 bs_safeObjectForKey:@"NSPrincipalClass" ofType:objc_opt_class()];
+            v18 = [infoDictionary bs_safeObjectForKey:@"NSPrincipalClass" ofType:objc_opt_class()];
           }
 
-          v19 = [v10 bundleIdentifier];
-          v20 = [v19 copy];
+          bundleIdentifier = [v10 bundleIdentifier];
+          v20 = [bundleIdentifier copy];
           v21 = v12[4];
           v12[4] = v20;
 
-          v22 = [v15 copy];
+          v22 = [stringByDeletingPathExtension copy];
           v23 = v12[5];
           v12[5] = v22;
 
-          v24 = [v17 copy];
+          v24 = [pathExtension2 copy];
           v25 = v12[6];
           v12[6] = v24;
 
@@ -83,8 +83,8 @@
         v12 = 0;
       }
 
-      v66 = [v10 infoDictionary];
-      [v66 bs_safeObjectForKey:@"UIRequiredDeviceCapabilities" ofType:objc_opt_class()];
+      infoDictionary2 = [v10 infoDictionary];
+      [infoDictionary2 bs_safeObjectForKey:@"UIRequiredDeviceCapabilities" ofType:objc_opt_class()];
       v80 = 0u;
       v81 = 0u;
       v78 = 0u;
@@ -145,9 +145,9 @@
                 v39 = v38;
                 if (v38)
                 {
-                  v40 = [v38 BOOLValue];
+                  bOOLValue = [v38 BOOLValue];
 
-                  if (v40)
+                  if (bOOLValue)
                   {
                     continue;
                   }
@@ -189,7 +189,7 @@ LABEL_42:
         v41 = 0;
       }
 
-      v43 = [v66 objectForKey:@"UIDeviceFamily"];
+      v43 = [infoDictionary2 objectForKey:@"UIDeviceFamily"];
       if (v43)
       {
         objc_opt_class();
@@ -233,7 +233,7 @@ LABEL_42:
         v73 = 0u;
         v70 = 0u;
         v71 = 0u;
-        v51 = v69;
+        v51 = pathCopy;
         v52 = [v51 countByEnumeratingWithState:&v70 objects:v83 count:16];
         if (v52)
         {
@@ -327,10 +327,10 @@ LABEL_74:
   return v12;
 }
 
-- (BOOL)loadPlugin:(id)a3
+- (BOOL)loadPlugin:(id)plugin
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pluginCopy = plugin;
   bundle = self->_bundle;
   if (bundle)
   {
@@ -469,24 +469,24 @@ LABEL_26:
   }
 
 LABEL_13:
-  if (v4)
+  if (pluginCopy)
   {
     v17 = objc_autoreleasePoolPush();
-    v4[2](v4, self->_principalClass);
+    pluginCopy[2](pluginCopy, self->_principalClass);
     objc_autoreleasePoolPop(v17);
   }
 
-  v18 = [(BSPluginBundle *)self isLoaded];
+  isLoaded = [(BSPluginBundle *)self isLoaded];
 
-  return v18;
+  return isLoaded;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BSPluginBundle *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSPluginBundle *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -502,19 +502,19 @@ LABEL_13:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSPluginBundle *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSPluginBundle *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSPluginBundle *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BSPluginBundle *)self succinctDescriptionBuilder];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 @end

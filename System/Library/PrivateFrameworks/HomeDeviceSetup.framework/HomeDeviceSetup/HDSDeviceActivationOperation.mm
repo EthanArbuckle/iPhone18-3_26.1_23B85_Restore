@@ -1,13 +1,13 @@
 @interface HDSDeviceActivationOperation
 + (OS_os_log)signpostLog;
 - (unint64_t)signpostID;
-- (void)_beginActivationWithCompletion:(id)a3;
-- (void)_checkActivationStateWithCompletion:(id)a3;
-- (void)_continueActivationWithSessionData:(id)a3 completion:(id)a4;
-- (void)_finishActivation:(id)a3 responseHeader:(id)a4 completion:(id)a5;
-- (void)_finishWithResult:(int64_t)a3 error:(id)a4;
-- (void)_performActivationWithCompletion:(id)a3;
-- (void)_sendActivationURLRequest:(id)a3 retries:(int)a4 completion:(id)a5;
+- (void)_beginActivationWithCompletion:(id)completion;
+- (void)_checkActivationStateWithCompletion:(id)completion;
+- (void)_continueActivationWithSessionData:(id)data completion:(id)completion;
+- (void)_finishActivation:(id)activation responseHeader:(id)header completion:(id)completion;
+- (void)_finishWithResult:(int64_t)result error:(id)error;
+- (void)_performActivationWithCompletion:(id)completion;
+- (void)_sendActivationURLRequest:(id)request retries:(int)retries completion:(id)completion;
 - (void)activate;
 @end
 
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __43__HDSDeviceActivationOperation_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_1 != -1)
   {
     dispatch_once(&signpostLog_onceToken_1, block);
@@ -41,8 +41,8 @@ void __43__HDSDeviceActivationOperation_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -143,9 +143,9 @@ uint64_t __40__HDSDeviceActivationOperation_activate__block_invoke_3(uint64_t a1
   return [v3 _finishWithResult:v4 error:v5];
 }
 
-- (void)_finishWithResult:(int64_t)a3 error:(id)a4
+- (void)_finishWithResult:(int64_t)result error:(id)error
 {
-  v9 = a4;
+  errorCopy = error;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivationOperation _finishWithResult:error:];
@@ -157,7 +157,7 @@ uint64_t __40__HDSDeviceActivationOperation_activate__block_invoke_3(uint64_t a1
   self->_metricTotalSeconds = v7;
   if (gLogCategory_HDSDeviceActivation <= 40 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
-    [(HDSDeviceActivationOperation *)self _finishWithResult:a3 error:&self->_metricTotalSeconds];
+    [(HDSDeviceActivationOperation *)self _finishWithResult:result error:&self->_metricTotalSeconds];
   }
 
   (*(self->_completionHandler + 2))();
@@ -165,23 +165,23 @@ uint64_t __40__HDSDeviceActivationOperation_activate__block_invoke_3(uint64_t a1
   self->_completionHandler = 0;
 }
 
-- (void)_checkActivationStateWithCompletion:(id)a3
+- (void)_checkActivationStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivationOperation _checkActivationStateWithCompletion:];
   }
 
-  v5 = [objc_opt_class() signpostLog];
-  v6 = [(HDSDeviceActivationOperation *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostLog = [objc_opt_class() signpostLog];
+  signpostID = [(HDSDeviceActivationOperation *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
-    if (os_signpost_enabled(v5))
+    v7 = signpostID;
+    if (os_signpost_enabled(signpostLog))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_252F78000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "DeviceActivationStepCheckState", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_252F78000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v7, "DeviceActivationStepCheckState", "", buf, 2u);
     }
   }
 
@@ -193,8 +193,8 @@ uint64_t __40__HDSDeviceActivationOperation_activate__block_invoke_3(uint64_t a1
   v11[2] = __68__HDSDeviceActivationOperation__checkActivationStateWithCompletion___block_invoke;
   v11[3] = &unk_279714C98;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(SFSession *)sfSession sendRequestID:@"_dA" options:&unk_2864E7DE8 request:v8 responseHandler:v11];
 }
 
@@ -219,9 +219,9 @@ void __68__HDSDeviceActivationOperation__checkActivationStateWithCompletion___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_performActivationWithCompletion:(id)a3
+- (void)_performActivationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivationOperation _performActivationWithCompletion:];
@@ -232,8 +232,8 @@ void __68__HDSDeviceActivationOperation__checkActivationStateWithCompletion___bl
   v6[2] = __65__HDSDeviceActivationOperation__performActivationWithCompletion___block_invoke;
   v6[3] = &unk_279714D10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HDSDeviceActivationOperation *)self _beginActivationWithCompletion:v6];
 }
 
@@ -334,23 +334,23 @@ void __65__HDSDeviceActivationOperation__performActivationWithCompletion___block
   }
 }
 
-- (void)_beginActivationWithCompletion:(id)a3
+- (void)_beginActivationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivationOperation _beginActivationWithCompletion:];
   }
 
-  v5 = [objc_opt_class() signpostLog];
-  v6 = [(HDSDeviceActivationOperation *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostLog = [objc_opt_class() signpostLog];
+  signpostID = [(HDSDeviceActivationOperation *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
-    if (os_signpost_enabled(v5))
+    v7 = signpostID;
+    if (os_signpost_enabled(signpostLog))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_252F78000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "DeviceActivationStepCreateSession", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_252F78000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v7, "DeviceActivationStepCreateSession", "", buf, 2u);
     }
   }
 
@@ -362,8 +362,8 @@ void __65__HDSDeviceActivationOperation__performActivationWithCompletion___block
   v11[2] = __63__HDSDeviceActivationOperation__beginActivationWithCompletion___block_invoke;
   v11[3] = &unk_279714C98;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(SFSession *)sfSession sendRequestID:@"_dA" options:&unk_2864E7E10 request:v8 responseHandler:v11];
 }
 
@@ -389,38 +389,38 @@ void __63__HDSDeviceActivationOperation__beginActivationWithCompletion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_continueActivationWithSessionData:(id)a3 completion:(id)a4
+- (void)_continueActivationWithSessionData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivationOperation _continueActivationWithSessionData:completion:];
   }
 
-  v8 = [objc_opt_class() signpostLog];
-  v9 = [(HDSDeviceActivationOperation *)self signpostID];
-  if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostLog = [objc_opt_class() signpostLog];
+  signpostID = [(HDSDeviceActivationOperation *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v10 = v9;
-    if (os_signpost_enabled(v8))
+    v10 = signpostID;
+    if (os_signpost_enabled(signpostLog))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_252F78000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v10, "DeviceActivationStepCreateActivation", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_252F78000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v10, "DeviceActivationStepCreateActivation", "", buf, 2u);
     }
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v11 setObject:&unk_2864E8120 forKeyedSubscript:@"s"];
-  [v11 setObject:v6 forKeyedSubscript:@"d"];
+  [v11 setObject:dataCopy forKeyedSubscript:@"d"];
   sfSession = self->_sfSession;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__HDSDeviceActivationOperation__continueActivationWithSessionData_completion___block_invoke;
   v14[3] = &unk_279714C98;
   v14[4] = self;
-  v15 = v7;
-  v13 = v7;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(SFSession *)sfSession sendRequestID:@"_dA" options:&unk_2864E7E38 request:v11 responseHandler:v14];
 }
 
@@ -446,40 +446,40 @@ void __78__HDSDeviceActivationOperation__continueActivationWithSessionData_compl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_finishActivation:(id)a3 responseHeader:(id)a4 completion:(id)a5
+- (void)_finishActivation:(id)activation responseHeader:(id)header completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activationCopy = activation;
+  headerCopy = header;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivationOperation _finishActivation:responseHeader:completion:];
   }
 
-  v11 = [objc_opt_class() signpostLog];
-  v12 = [(HDSDeviceActivationOperation *)self signpostID];
-  if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostLog = [objc_opt_class() signpostLog];
+  signpostID = [(HDSDeviceActivationOperation *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v13 = v12;
-    if (os_signpost_enabled(v11))
+    v13 = signpostID;
+    if (os_signpost_enabled(signpostLog))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_252F78000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v13, "DeviceActivationStepActivate", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_252F78000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v13, "DeviceActivationStepActivate", "", buf, 2u);
     }
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v14 setObject:&unk_2864E8138 forKeyedSubscript:@"s"];
-  [v14 setObject:v8 forKeyedSubscript:@"d"];
-  [v14 setObject:v9 forKeyedSubscript:@"h"];
+  [v14 setObject:activationCopy forKeyedSubscript:@"d"];
+  [v14 setObject:headerCopy forKeyedSubscript:@"h"];
   sfSession = self->_sfSession;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __76__HDSDeviceActivationOperation__finishActivation_responseHeader_completion___block_invoke;
   v17[3] = &unk_279714C98;
   v17[4] = self;
-  v18 = v10;
-  v16 = v10;
+  v18 = completionCopy;
+  v16 = completionCopy;
   [(SFSession *)sfSession sendRequestID:@"_dA" options:&unk_2864E7E60 request:v14 responseHandler:v17];
 }
 
@@ -504,43 +504,43 @@ void __76__HDSDeviceActivationOperation__finishActivation_responseHeader_complet
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_sendActivationURLRequest:(id)a3 retries:(int)a4 completion:(id)a5
+- (void)_sendActivationURLRequest:(id)request retries:(int)retries completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 40 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivationOperation _sendActivationURLRequest:retries:completion:];
   }
 
-  v10 = [objc_opt_class() signpostLog];
-  v11 = [(HDSDeviceActivationOperation *)self signpostID];
-  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostLog = [objc_opt_class() signpostLog];
+  signpostID = [(HDSDeviceActivationOperation *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v12 = v11;
-    if (os_signpost_enabled(v10))
+    v12 = signpostID;
+    if (os_signpost_enabled(signpostLog))
     {
       LOWORD(buf[0]) = 0;
-      _os_signpost_emit_with_name_impl(&dword_252F78000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v12, "DeviceActivationServerRequest", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_252F78000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v12, "DeviceActivationServerRequest", "", buf, 2u);
     }
   }
 
-  v13 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-  [v13 setTimeoutIntervalForResource:30.0];
-  [v13 setWaitsForConnectivity:1];
-  v14 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v13];
+  ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+  [ephemeralSessionConfiguration setTimeoutIntervalForResource:30.0];
+  [ephemeralSessionConfiguration setWaitsForConnectivity:1];
+  v14 = [MEMORY[0x277CCAD30] sessionWithConfiguration:ephemeralSessionConfiguration];
   Current = CFAbsoluteTimeGetCurrent();
   objc_initWeak(buf, self);
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __77__HDSDeviceActivationOperation__sendActivationURLRequest_retries_completion___block_invoke;
   v22 = &unk_279714D38;
-  v23 = self;
-  v27 = a4;
+  selfCopy = self;
+  retriesCopy = retries;
   objc_copyWeak(v26, buf);
-  v16 = v8;
+  v16 = requestCopy;
   v24 = v16;
-  v17 = v9;
+  v17 = completionCopy;
   v25 = v17;
   v26[1] = *&Current;
   v18 = [v14 dataTaskWithRequest:v16 completionHandler:&v19];

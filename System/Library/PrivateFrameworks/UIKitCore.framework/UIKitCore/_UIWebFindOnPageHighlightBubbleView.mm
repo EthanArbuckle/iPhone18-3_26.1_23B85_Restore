@@ -1,14 +1,14 @@
 @interface _UIWebFindOnPageHighlightBubbleView
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setHighlightedContent:(CGImage *)a3 withOrigin:(CGPoint)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)setHighlightedContent:(CGImage *)content withOrigin:(CGPoint)origin;
 @end
 
 @implementation _UIWebFindOnPageHighlightBubbleView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
   v14 = CGRectInset(v13, 6.0, 6.0);
   v15 = CGRectInset(v14, -3.5, -1.5);
   v11 = [UIBezierPath bezierPathWithRoundedRect:v15.origin.x cornerRadius:v15.origin.y, v15.size.width, v15.size.height, 3.0];
@@ -31,8 +31,8 @@
   CGContextRestoreGState(v5);
   if (self->_highlightedContent)
   {
-    v7 = [objc_opt_self() mainScreen];
-    [v7 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v9 = 1.0 / v8;
 
     v10 = round(v9 * CGImageGetWidth(self->_highlightedContent));
@@ -44,20 +44,20 @@
   }
 }
 
-- (void)setHighlightedContent:(CGImage *)a3 withOrigin:(CGPoint)a4
+- (void)setHighlightedContent:(CGImage *)content withOrigin:(CGPoint)origin
 {
-  y = a4.y;
-  x = a4.x;
+  y = origin.y;
+  x = origin.x;
   highlightedContent = self->_highlightedContent;
   if (highlightedContent)
   {
     CFRelease(highlightedContent);
   }
 
-  self->_highlightedContent = a3;
-  if (a3)
+  self->_highlightedContent = content;
+  if (content)
   {
-    CFRetain(a3);
+    CFRetain(content);
   }
 
   self->_highlightedContentOrigin.x = x;

@@ -1,13 +1,13 @@
 @interface CAStateTransition
-+ (void)CAMLParserStartElement:(id)a3;
++ (void)CAMLParserStartElement:(id)element;
 - (CAStateTransition)init;
-- (CAStateTransition)initWithCoder:(id)a3;
+- (CAStateTransition)initWithCoder:(id)coder;
 - (double)duration;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)CAMLTypeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAStateTransition
@@ -53,11 +53,11 @@
         objc_enumerationMutation(elements);
       }
 
-      v8 = [*(*(&v23 + 1) + 8 * i) animation];
-      if (v8)
+      animation = [*(*(&v23 + 1) + 8 * i) animation];
+      if (animation)
       {
-        v9 = v8;
-        [v8 beginTime];
+        v9 = animation;
+        [animation beginTime];
         v11 = v10;
         [v9 duration];
         if ((*&v12 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
@@ -130,7 +130,7 @@
   [(CAStateTransition *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CAStateTransition);
   [(CAStateTransition *)v4 setFromState:self->_fromState];
@@ -139,7 +139,7 @@
   return v4;
 }
 
-- (CAStateTransition)initWithCoder:(id)a3
+- (CAStateTransition)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -147,36 +147,36 @@
   v4 = [(CAStateTransition *)&v6 init];
   if (v4)
   {
-    v4->_fromState = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"fromState", "copy"}];
-    v4->_toState = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"toState", "copy"}];
-    v4->_elements = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"elements", "copy"}];
+    v4->_fromState = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"fromState", "copy"}];
+    v4->_toState = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"toState", "copy"}];
+    v4->_elements = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"elements", "copy"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fromState = self->_fromState;
   if (fromState)
   {
-    [a3 encodeObject:fromState forKey:@"fromState"];
+    [coder encodeObject:fromState forKey:@"fromState"];
   }
 
   toState = self->_toState;
   if (toState)
   {
-    [a3 encodeObject:toState forKey:@"toState"];
+    [coder encodeObject:toState forKey:@"toState"];
   }
 
   if (self->_elements)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
   v4 = [CAStateTransition CAMLTypeForKey:]::dict;
   if (![CAStateTransition CAMLTypeForKey:]::dict)
@@ -185,36 +185,36 @@
     [CAStateTransition CAMLTypeForKey:]::dict = v4;
   }
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:key];
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   fromState = self->_fromState;
   if (fromState)
   {
-    [a3 setElementAttribute:fromState forKey:@"fromState"];
+    [writer setElementAttribute:fromState forKey:@"fromState"];
   }
 
   toState = self->_toState;
   if (toState)
   {
-    [a3 setElementAttribute:toState forKey:@"toState"];
+    [writer setElementAttribute:toState forKey:@"toState"];
   }
 
   if (self->_elements)
   {
-    [a3 beginPropertyElement:@"elements"];
-    [a3 encodeObject:self->_elements];
+    [writer beginPropertyElement:@"elements"];
+    [writer encodeObject:self->_elements];
 
-    [a3 endElement];
+    [writer endElement];
   }
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = objc_alloc_init(a1);
-  [a3 setElementValue:v4];
+  v4 = objc_alloc_init(self);
+  [element setElementValue:v4];
 }
 
 @end

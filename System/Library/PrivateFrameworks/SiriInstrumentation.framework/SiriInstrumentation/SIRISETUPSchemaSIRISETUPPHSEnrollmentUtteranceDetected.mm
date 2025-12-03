@@ -1,36 +1,36 @@
 @interface SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected)initWithDictionary:(id)a3;
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected)initWithDictionary:(id)dictionary;
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEnrollmentDate:(BOOL)a3;
-- (void)setHasTriggerPhrase:(BOOL)a3;
-- (void)setHasUtteranceEnrollSuccess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEnrollmentDate:(BOOL)date;
+- (void)setHasTriggerPhrase:(BOOL)phrase;
+- (void)setHasUtteranceEnrollSuccess:(BOOL)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected
 
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected)initWithDictionary:(id)a3
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected;
   v5 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pageNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pageNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected setPageNumber:](v5, "setPageNumber:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"audioId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"audioId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,14 +38,14 @@
       [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)v5 setAudioId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"triggerPhrase"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"triggerPhrase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected setTriggerPhrase:](v5, "setTriggerPhrase:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"siriInputLocale"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,14 +53,14 @@
       [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)v5 setSiriInputLocale:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"enrollmentDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected setEnrollmentDate:](v5, "setEnrollmentDate:", [v12 unsignedLongLongValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"utteranceEnrollSuccess"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"utteranceEnrollSuccess"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected)initWithJSON:(id)a3
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,20 +109,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_audioId)
   {
-    v4 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    audioId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
+    dictionaryRepresentation = [audioId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"audioId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"audioId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioId"];
     }
   }
 
@@ -130,7 +130,7 @@
   if ((v7 & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected enrollmentDate](self, "enrollmentDate")}];
-    [v3 setObject:v8 forKeyedSubscript:@"enrollmentDate"];
+    [dictionary setObject:v8 forKeyedSubscript:@"enrollmentDate"];
 
     v7 = *(&self->_utteranceEnrollSuccess + 1);
   }
@@ -138,36 +138,36 @@
   if (v7)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected pageNumber](self, "pageNumber")}];
-    [v3 setObject:v9 forKeyedSubscript:@"pageNumber"];
+    [dictionary setObject:v9 forKeyedSubscript:@"pageNumber"];
   }
 
   if (self->_siriInputLocale)
   {
-    v10 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    siriInputLocale = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
+    dictionaryRepresentation2 = [siriInputLocale dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"siriInputLocale"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"siriInputLocale"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"siriInputLocale"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"siriInputLocale"];
     }
   }
 
   v13 = *(&self->_utteranceEnrollSuccess + 1);
   if ((v13 & 2) != 0)
   {
-    v14 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self triggerPhrase];
+    triggerPhrase = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self triggerPhrase];
     v15 = @"TRIGGERPHRASE_UNKNOWN";
-    if (v14 == 1)
+    if (triggerPhrase == 1)
     {
       v15 = @"TRIGGERPHRASE_HEY_SIRI";
     }
 
-    if (v14 == 2)
+    if (triggerPhrase == 2)
     {
       v16 = @"TRIGGERPHRASE_SIRI";
     }
@@ -177,19 +177,19 @@
       v16 = v15;
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"triggerPhrase"];
+    [dictionary setObject:v16 forKeyedSubscript:@"triggerPhrase"];
     v13 = *(&self->_utteranceEnrollSuccess + 1);
   }
 
   if ((v13 & 8) != 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected utteranceEnrollSuccess](self, "utteranceEnrollSuccess")}];
-    [v3 setObject:v17 forKeyedSubscript:@"utteranceEnrollSuccess"];
+    [dictionary setObject:v17 forKeyedSubscript:@"utteranceEnrollSuccess"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -240,15 +240,15 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if (*(&self->_utteranceEnrollSuccess + 1) != (v4[49] & 1))
+  if (*(&self->_utteranceEnrollSuccess + 1) != (equalCopy[49] & 1))
   {
     goto LABEL_18;
   }
@@ -256,26 +256,26 @@ LABEL_9:
   if (*(&self->_utteranceEnrollSuccess + 1))
   {
     pageNumber = self->_pageNumber;
-    if (pageNumber != [v4 pageNumber])
+    if (pageNumber != [equalCopy pageNumber])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
-  v7 = [v4 audioId];
-  if ((v6 != 0) == (v7 == 0))
+  audioId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
+  audioId2 = [equalCopy audioId];
+  if ((audioId != 0) == (audioId2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
-  if (v8)
+  audioId3 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
+  if (audioId3)
   {
-    v9 = v8;
-    v10 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
-    v11 = [v4 audioId];
-    v12 = [v10 isEqual:v11];
+    v9 = audioId3;
+    audioId4 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
+    audioId5 = [equalCopy audioId];
+    v12 = [audioId4 isEqual:audioId5];
 
     if (!v12)
     {
@@ -288,7 +288,7 @@ LABEL_9:
   }
 
   v13 = (*(&self->_utteranceEnrollSuccess + 1) >> 1) & 1;
-  if (v13 != ((v4[49] >> 1) & 1))
+  if (v13 != ((equalCopy[49] >> 1) & 1))
   {
     goto LABEL_18;
   }
@@ -296,28 +296,28 @@ LABEL_9:
   if (v13)
   {
     triggerPhrase = self->_triggerPhrase;
-    if (triggerPhrase != [v4 triggerPhrase])
+    if (triggerPhrase != [equalCopy triggerPhrase])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
-  v7 = [v4 siriInputLocale];
-  if ((v6 != 0) == (v7 == 0))
+  audioId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
+  audioId2 = [equalCopy siriInputLocale];
+  if ((audioId != 0) == (audioId2 == 0))
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v15 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
-  if (v15)
+  siriInputLocale = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
+  if (siriInputLocale)
   {
-    v16 = v15;
-    v17 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
-    v18 = [v4 siriInputLocale];
-    v19 = [v17 isEqual:v18];
+    v16 = siriInputLocale;
+    siriInputLocale2 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
+    siriInputLocale3 = [equalCopy siriInputLocale];
+    v19 = [siriInputLocale2 isEqual:siriInputLocale3];
 
     if (!v19)
     {
@@ -331,25 +331,25 @@ LABEL_17:
 
   v22 = *(&self->_utteranceEnrollSuccess + 1);
   v23 = (v22 >> 2) & 1;
-  v24 = v4[49];
+  v24 = equalCopy[49];
   if (v23 == ((v24 >> 2) & 1))
   {
     if (v23)
     {
       enrollmentDate = self->_enrollmentDate;
-      if (enrollmentDate != [v4 enrollmentDate])
+      if (enrollmentDate != [equalCopy enrollmentDate])
       {
         goto LABEL_18;
       }
 
       v22 = *(&self->_utteranceEnrollSuccess + 1);
-      v24 = v4[49];
+      v24 = equalCopy[49];
     }
 
     v26 = (v22 >> 3) & 1;
     if (v26 == ((v24 >> 3) & 1))
     {
-      if (!v26 || (utteranceEnrollSuccess = self->_utteranceEnrollSuccess, utteranceEnrollSuccess == [v4 utteranceEnrollSuccess]))
+      if (!v26 || (utteranceEnrollSuccess = self->_utteranceEnrollSuccess, utteranceEnrollSuccess == [equalCopy utteranceEnrollSuccess]))
       {
         v20 = 1;
         goto LABEL_19;
@@ -364,19 +364,19 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*(&self->_utteranceEnrollSuccess + 1))
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v4 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
+  audioId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
 
-  if (v4)
+  if (audioId)
   {
-    v5 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
+    audioId2 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -385,11 +385,11 @@ LABEL_19:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
+  siriInputLocale = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
 
-  if (v6)
+  if (siriInputLocale)
   {
-    v7 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
+    siriInputLocale2 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
     PBDataWriterWriteSubmessage();
   }
 
@@ -406,9 +406,9 @@ LABEL_19:
   }
 }
 
-- (void)setHasUtteranceEnrollSuccess:(BOOL)a3
+- (void)setHasUtteranceEnrollSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 8;
   }
@@ -421,9 +421,9 @@ LABEL_19:
   *(&self->_utteranceEnrollSuccess + 1) = *(&self->_utteranceEnrollSuccess + 1) & 0xF7 | v3;
 }
 
-- (void)setHasEnrollmentDate:(BOOL)a3
+- (void)setHasEnrollmentDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -436,9 +436,9 @@ LABEL_19:
   *(&self->_utteranceEnrollSuccess + 1) = *(&self->_utteranceEnrollSuccess + 1) & 0xFB | v3;
 }
 
-- (void)setHasTriggerPhrase:(BOOL)a3
+- (void)setHasTriggerPhrase:(BOOL)phrase
 {
-  if (a3)
+  if (phrase)
   {
     v3 = 2;
   }
@@ -451,26 +451,26 @@ LABEL_19:
   *(&self->_utteranceEnrollSuccess + 1) = *(&self->_utteranceEnrollSuccess + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  audioId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self audioId];
+  v7 = [audioId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self deleteAudioId];
   }
 
-  v9 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  siriInputLocale = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self siriInputLocale];
+  v10 = [siriInputLocale applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SIRISETUPSchemaSIRISETUPPHSEnrollmentUtteranceDetected *)self deleteSiriInputLocale];
   }

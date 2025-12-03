@@ -1,28 +1,28 @@
 @interface TipTileForLoggingHeaderViewCell
-- (_TtC6Health31TipTileForLoggingHeaderViewCell)initWithCoder:(id)a3;
-- (_TtC6Health31TipTileForLoggingHeaderViewCell)initWithFrame:(CGRect)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC6Health31TipTileForLoggingHeaderViewCell)initWithCoder:(id)coder;
+- (_TtC6Health31TipTileForLoggingHeaderViewCell)initWithFrame:(CGRect)frame;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation TipTileForLoggingHeaderViewCell
 
-- (_TtC6Health31TipTileForLoggingHeaderViewCell)initWithFrame:(CGRect)a3
+- (_TtC6Health31TipTileForLoggingHeaderViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC6Health31TipTileForLoggingHeaderViewCell__model) = 0;
   ObservationRegistrar.init()();
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(TipTileForLoggingHeaderViewCell *)&v11 initWithFrame:x, y, width, height];
-  [(TipTileForLoggingHeaderViewCell *)v9 setAutomaticallyUpdatesContentConfiguration:0];
-  return v9;
+  height = [(TipTileForLoggingHeaderViewCell *)&v11 initWithFrame:x, y, width, height];
+  [(TipTileForLoggingHeaderViewCell *)height setAutomaticallyUpdatesContentConfiguration:0];
+  return height;
 }
 
-- (_TtC6Health31TipTileForLoggingHeaderViewCell)initWithCoder:(id)a3
+- (_TtC6Health31TipTileForLoggingHeaderViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC6Health31TipTileForLoggingHeaderViewCell__model) = 0;
   ObservationRegistrar.init()();
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
@@ -39,7 +39,7 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_1000216B8();
 
   (*(v5 + 8))(v8, v4);

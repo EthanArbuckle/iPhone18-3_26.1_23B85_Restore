@@ -1,36 +1,36 @@
 @interface CSPersistentConfiguration
-+ (id)configBaseKey:(const char *)a3 forFeatureMode:(unsigned __int8)a4;
++ (id)configBaseKey:(const char *)key forFeatureMode:(unsigned __int8)mode;
 + (id)sharedConfiguration;
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)BOOLForKey:(id)a3 withFallback:(BOOL)a4;
-- (BOOL)algorithmBoolNumber:(unint64_t)a3 inArrayForKey:(id)a4 defaultValue:(BOOL)a5;
-- (BOOL)isKeyInServerDefaults:(id)a3;
-- (BOOL)isKeyInUserDefaults:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)BOOLForKey:(id)key withFallback:(BOOL)fallback;
+- (BOOL)algorithmBoolNumber:(unint64_t)number inArrayForKey:(id)key defaultValue:(BOOL)value;
+- (BOOL)isKeyInServerDefaults:(id)defaults;
+- (BOOL)isKeyInUserDefaults:(id)defaults;
 - (CSPersistentConfiguration)init;
-- (double)doubleForKey:(id)a3;
-- (float)algorithmThresholdNumber:(unint64_t)a3 inArrayForKey:(id)a4 withMinValue:(float)a5 maxValue:(float)a6 defaultValue:(float)a7;
-- (float)floatForKey:(id)a3;
-- (float)floatThreshold:(const CSSafetyDefault *)a3 forKey:(id)a4;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)isKeyInServerDefaultsWithVersion:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)serverConfigurationToUse:(id)a3;
-- (id)stringDictionaryForKey:(id)a3;
-- (int)algorithmIntegerNumber:(unint64_t)a3 inArrayForKey:(id)a4 withMinValue:(int)a5 maxValue:(int)a6 defaultValue:(int)a7;
-- (int64_t)integerForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3 withFallback:(int64_t)a4;
-- (optional<BOOL>)getBooleanDefault:(id)a3;
-- (optional<float>)getFloatDefault:(id)a3;
-- (optional<int>)getIntegerDefault:(id)a3;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)onConfigurationUpdate:(id)a3;
+- (double)doubleForKey:(id)key;
+- (float)algorithmThresholdNumber:(unint64_t)number inArrayForKey:(id)key withMinValue:(float)value maxValue:(float)maxValue defaultValue:(float)defaultValue;
+- (float)floatForKey:(id)key;
+- (float)floatThreshold:(const CSSafetyDefault *)threshold forKey:(id)key;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)isKeyInServerDefaultsWithVersion:(id)version;
+- (id)objectForKey:(id)key;
+- (id)serverConfigurationToUse:(id)use;
+- (id)stringDictionaryForKey:(id)key;
+- (int)algorithmIntegerNumber:(unint64_t)number inArrayForKey:(id)key withMinValue:(int)value maxValue:(int)maxValue defaultValue:(int)defaultValue;
+- (int64_t)integerForKey:(id)key;
+- (int64_t)integerForKey:(id)key withFallback:(int64_t)fallback;
+- (optional<BOOL>)getBooleanDefault:(id)default;
+- (optional<float>)getFloatDefault:(id)default;
+- (optional<int>)getIntegerDefault:(id)default;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)onConfigurationUpdate:(id)update;
 - (void)runAllConfigurationUpdateCallbacks;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setFloat:(float)a3 forKey:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setFloat:(float)float forKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)stopRecurringDownload;
 @end
 
@@ -69,12 +69,12 @@
   return v3;
 }
 
-+ (id)configBaseKey:(const char *)a3 forFeatureMode:(unsigned __int8)a4
++ (id)configBaseKey:(const char *)key forFeatureMode:(unsigned __int8)mode
 {
-  if (a4 != 1)
+  if (mode != 1)
   {
-    v5 = a4;
-    if (a4 == 2)
+    modeCopy = mode;
+    if (mode == 2)
     {
       v6 = @"Marty";
       goto LABEL_9;
@@ -89,14 +89,14 @@
     if (os_log_type_enabled(qword_100456800, OS_LOG_TYPE_ERROR))
     {
       v11[0] = 67109120;
-      v11[1] = v5;
+      v11[1] = modeCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Missing config prefix for %d", v11, 8u);
     }
   }
 
   v6 = &stru_100436548;
 LABEL_9:
-  v8 = [[NSString alloc] initWithCString:a3 encoding:1];
+  v8 = [[NSString alloc] initWithCString:key encoding:1];
   v9 = [(__CFString *)v6 stringByAppendingString:v8];
 
   return v9;
@@ -109,10 +109,10 @@ LABEL_9:
   self->_recurrentDownloadPeriod = 0;
 }
 
-- (void)onConfigurationUpdate:(id)a3
+- (void)onConfigurationUpdate:(id)update
 {
   configurationUpdateCallbacks = self->_configurationUpdateCallbacks;
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(update);
   [(NSMutableArray *)configurationUpdateCallbacks addObject:?];
 }
 
@@ -149,11 +149,11 @@ LABEL_9:
   }
 }
 
-- (id)isKeyInServerDefaultsWithVersion:(id)a3
+- (id)isKeyInServerDefaultsWithVersion:(id)version
 {
   v3 = +[CSPlatformInfo sharedInstance];
-  v4 = [v3 getSystemVersionDescriptionNoBuild];
-  v5 = [v4 mutableCopy];
+  getSystemVersionDescriptionNoBuild = [v3 getSystemVersionDescriptionNoBuild];
+  v5 = [getSystemVersionDescriptionNoBuild mutableCopy];
 
   [v5 replaceOccurrencesOfString:@" " withString:&stru_100436548 options:0 range:{0, objc_msgSend(v5, "length")}];
   v6 = +[NSUserDefaults standardUserDefaults];
@@ -222,90 +222,90 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)isKeyInServerDefaults:(id)a3
+- (BOOL)isKeyInServerDefaults:(id)defaults
 {
-  v3 = a3;
+  defaultsCopy = defaults;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 dictionaryForKey:@"CLPersistentConfigurationServerDefaults"];
 
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:defaultsCopy];
   LOBYTE(v4) = v6 != 0;
 
   return v4;
 }
 
-- (BOOL)isKeyInUserDefaults:(id)a3
+- (BOOL)isKeyInUserDefaults:(id)defaults
 {
-  v3 = a3;
+  defaultsCopy = defaults;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:defaultsCopy];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v7 = +[NSUserDefaults standardUserDefaults];
-  [v7 setObject:v8 forKey:v6];
+  [v7 setObject:objectCopy forKey:keyCopy];
 
   [(CSPersistentConfiguration *)self runAllConfigurationUpdateCallbacks];
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
-  v7 = a4;
+  keyCopy = key;
   v6 = +[NSUserDefaults standardUserDefaults];
-  [v6 setInteger:a3 forKey:v7];
+  [v6 setInteger:integer forKey:keyCopy];
 
   [(CSPersistentConfiguration *)self runAllConfigurationUpdateCallbacks];
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
-  v7 = a4;
+  keyCopy = key;
   v6 = +[NSUserDefaults standardUserDefaults];
-  [v6 setDouble:v7 forKey:a3];
+  [v6 setDouble:keyCopy forKey:double];
 
   [(CSPersistentConfiguration *)self runAllConfigurationUpdateCallbacks];
 }
 
-- (void)setFloat:(float)a3 forKey:(id)a4
+- (void)setFloat:(float)float forKey:(id)key
 {
-  v8 = a4;
+  keyCopy = key;
   v6 = +[NSUserDefaults standardUserDefaults];
-  *&v7 = a3;
-  [v6 setFloat:v8 forKey:v7];
+  *&v7 = float;
+  [v6 setFloat:keyCopy forKey:v7];
 
   [(CSPersistentConfiguration *)self runAllConfigurationUpdateCallbacks];
 }
 
-- (id)serverConfigurationToUse:(id)a3
+- (id)serverConfigurationToUse:(id)use
 {
-  v3 = [(CSPersistentConfiguration *)self isKeyInServerDefaultsWithVersion:a3];
+  v3 = [(CSPersistentConfiguration *)self isKeyInServerDefaultsWithVersion:use];
 
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v4])
+  keyCopy = key;
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:keyCopy])
   {
     v5 = +[NSUserDefaults standardUserDefaults];
-    v6 = [v5 objectForKey:v4];
+    v6 = [v5 objectForKey:keyCopy];
 LABEL_5:
     v8 = v6;
     goto LABEL_6;
   }
 
-  v7 = [(CSPersistentConfiguration *)self serverConfigurationToUse:v4];
+  v7 = [(CSPersistentConfiguration *)self serverConfigurationToUse:keyCopy];
   v5 = v7;
   if (v7)
   {
-    v6 = [v7 objectForKey:v4];
+    v6 = [v7 objectForKey:keyCopy];
     goto LABEL_5;
   }
 
@@ -315,78 +315,78 @@ LABEL_6:
   return v8;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v4])
+  keyCopy = key;
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:keyCopy])
   {
     v5 = +[NSUserDefaults standardUserDefaults];
-    v6 = [v5 integerForKey:v4];
+    integerValue = [v5 integerForKey:keyCopy];
   }
 
   else
   {
-    v7 = [(CSPersistentConfiguration *)self serverConfigurationToUse:v4];
+    v7 = [(CSPersistentConfiguration *)self serverConfigurationToUse:keyCopy];
     v5 = v7;
     if (v7)
     {
-      v8 = [v7 objectForKey:v4];
-      v6 = [v8 integerValue];
+      v8 = [v7 objectForKey:keyCopy];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v6 = 0;
+      integerValue = 0;
     }
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (int64_t)integerForKey:(id)a3 withFallback:(int64_t)a4
+- (int64_t)integerForKey:(id)key withFallback:(int64_t)fallback
 {
-  v6 = a3;
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v6])
+  keyCopy = key;
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:keyCopy])
   {
     v7 = +[NSUserDefaults standardUserDefaults];
-    a4 = [v7 integerForKey:v6];
+    fallback = [v7 integerForKey:keyCopy];
   }
 
   else
   {
-    v8 = [(CSPersistentConfiguration *)self serverConfigurationToUse:v6];
+    v8 = [(CSPersistentConfiguration *)self serverConfigurationToUse:keyCopy];
     v7 = v8;
     if (v8)
     {
-      v9 = [v8 objectForKey:v6];
+      v9 = [v8 objectForKey:keyCopy];
       v10 = v9;
       if (v9)
       {
-        a4 = [v9 integerValue];
+        fallback = [v9 integerValue];
       }
     }
   }
 
-  return a4;
+  return fallback;
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v4 = a3;
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v4])
+  keyCopy = key;
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:keyCopy])
   {
     v5 = +[NSUserDefaults standardUserDefaults];
-    [v5 doubleForKey:v4];
+    [v5 doubleForKey:keyCopy];
     v7 = v6;
   }
 
   else
   {
-    v8 = [(CSPersistentConfiguration *)self serverConfigurationToUse:v4];
+    v8 = [(CSPersistentConfiguration *)self serverConfigurationToUse:keyCopy];
     v5 = v8;
     if (v8)
     {
-      v9 = [v8 objectForKey:v4];
+      v9 = [v8 objectForKey:keyCopy];
       [v9 doubleValue];
       v7 = v10;
     }
@@ -400,23 +400,23 @@ LABEL_6:
   return v7;
 }
 
-- (float)floatForKey:(id)a3
+- (float)floatForKey:(id)key
 {
-  v4 = a3;
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v4])
+  keyCopy = key;
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:keyCopy])
   {
     v5 = +[NSUserDefaults standardUserDefaults];
-    [v5 floatForKey:v4];
+    [v5 floatForKey:keyCopy];
     v7 = v6;
   }
 
   else
   {
-    v8 = [(CSPersistentConfiguration *)self serverConfigurationToUse:v4];
+    v8 = [(CSPersistentConfiguration *)self serverConfigurationToUse:keyCopy];
     v5 = v8;
     if (v8)
     {
-      v9 = [v8 objectForKey:v4];
+      v9 = [v8 objectForKey:keyCopy];
       [v9 floatValue];
       v7 = v10;
     }
@@ -430,64 +430,64 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v4])
+  keyCopy = key;
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:keyCopy])
   {
     v5 = +[NSUserDefaults standardUserDefaults];
-    v6 = [v5 BOOLForKey:v4];
+    bOOLValue = [v5 BOOLForKey:keyCopy];
   }
 
   else
   {
-    v7 = [(CSPersistentConfiguration *)self serverConfigurationToUse:v4];
+    v7 = [(CSPersistentConfiguration *)self serverConfigurationToUse:keyCopy];
     v5 = v7;
     if (v7)
     {
-      v8 = [v7 objectForKey:v4];
-      v6 = [v8 BOOLValue];
+      v8 = [v7 objectForKey:keyCopy];
+      bOOLValue = [v8 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)BOOLForKey:(id)a3 withFallback:(BOOL)a4
+- (BOOL)BOOLForKey:(id)key withFallback:(BOOL)fallback
 {
-  v6 = a3;
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v6])
+  keyCopy = key;
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:keyCopy])
   {
     v7 = +[NSUserDefaults standardUserDefaults];
-    a4 = [v7 BOOLForKey:v6];
+    fallback = [v7 BOOLForKey:keyCopy];
   }
 
   else
   {
-    v8 = [(CSPersistentConfiguration *)self serverConfigurationToUse:v6];
+    v8 = [(CSPersistentConfiguration *)self serverConfigurationToUse:keyCopy];
     v7 = v8;
     if (v8)
     {
-      v9 = [v8 objectForKey:v6];
+      v9 = [v8 objectForKey:keyCopy];
       v10 = v9;
       if (v9)
       {
-        a4 = [v9 BOOLValue];
+        fallback = [v9 BOOLValue];
       }
     }
   }
 
-  return a4;
+  return fallback;
 }
 
-- (id)stringDictionaryForKey:(id)a3
+- (id)stringDictionaryForKey:(id)key
 {
-  v3 = [(CSPersistentConfiguration *)self objectForKey:a3];
+  v3 = [(CSPersistentConfiguration *)self objectForKey:key];
   +[NSMutableDictionary dictionary];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -500,53 +500,53 @@ LABEL_6:
   return v5;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v3 = [(CSPersistentConfiguration *)self objectForKey:a3];
+  v3 = [(CSPersistentConfiguration *)self objectForKey:key];
 
   return v3;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v3 = [(CSPersistentConfiguration *)self objectForKey:a3];
+  v3 = [(CSPersistentConfiguration *)self objectForKey:key];
 
   return v3;
 }
 
-- (float)algorithmThresholdNumber:(unint64_t)a3 inArrayForKey:(id)a4 withMinValue:(float)a5 maxValue:(float)a6 defaultValue:(float)a7
+- (float)algorithmThresholdNumber:(unint64_t)number inArrayForKey:(id)key withMinValue:(float)value maxValue:(float)maxValue defaultValue:(float)defaultValue
 {
-  v12 = a4;
-  v13 = [v12 stringByAppendingFormat:@"%lu", a3];
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v13]&& ([(CSPersistentConfiguration *)self floatForKey:v13], v14 > a5) && ([(CSPersistentConfiguration *)self floatForKey:v13], v15 < a6))
+  keyCopy = key;
+  number = [keyCopy stringByAppendingFormat:@"%lu", number];
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:number]&& ([(CSPersistentConfiguration *)self floatForKey:number], v14 > value) && ([(CSPersistentConfiguration *)self floatForKey:number], v15 < maxValue))
   {
-    [(CSPersistentConfiguration *)self floatForKey:v13];
-    a7 = v16;
+    [(CSPersistentConfiguration *)self floatForKey:number];
+    defaultValue = v16;
   }
 
   else
   {
-    v17 = [(CSPersistentConfiguration *)self arrayForKey:v12];
+    v17 = [(CSPersistentConfiguration *)self arrayForKey:keyCopy];
     if (v17)
     {
-      v18 = [(CSPersistentConfiguration *)self arrayForKey:v12];
+      v18 = [(CSPersistentConfiguration *)self arrayForKey:keyCopy];
       v19 = [v18 count];
 
-      if (v19 > a3)
+      if (v19 > number)
       {
-        v20 = [(CSPersistentConfiguration *)self arrayForKey:v12];
-        v21 = [v20 objectAtIndex:a3];
+        v20 = [(CSPersistentConfiguration *)self arrayForKey:keyCopy];
+        v21 = [v20 objectAtIndex:number];
 
         if (v21)
         {
           [v21 floatValue];
-          if (v22 > a5)
+          if (v22 > value)
           {
             [v21 floatValue];
-            if (v23 < a6)
+            if (v23 < maxValue)
             {
               [v21 floatValue];
-              a7 = v24;
+              defaultValue = v24;
             }
           }
         }
@@ -554,24 +554,24 @@ LABEL_6:
     }
   }
 
-  return a7;
+  return defaultValue;
 }
 
-- (int)algorithmIntegerNumber:(unint64_t)a3 inArrayForKey:(id)a4 withMinValue:(int)a5 maxValue:(int)a6 defaultValue:(int)a7
+- (int)algorithmIntegerNumber:(unint64_t)number inArrayForKey:(id)key withMinValue:(int)value maxValue:(int)maxValue defaultValue:(int)defaultValue
 {
-  v12 = a4;
-  v13 = [v12 stringByAppendingFormat:@"%lu", a3];
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v13]&& [(CSPersistentConfiguration *)self integerForKey:v13]> a5 && [(CSPersistentConfiguration *)self integerForKey:v13]< a6)
+  keyCopy = key;
+  number = [keyCopy stringByAppendingFormat:@"%lu", number];
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:number]&& [(CSPersistentConfiguration *)self integerForKey:number]> value && [(CSPersistentConfiguration *)self integerForKey:number]< maxValue)
   {
-    a7 = [(CSPersistentConfiguration *)self integerForKey:v13];
+    defaultValue = [(CSPersistentConfiguration *)self integerForKey:number];
   }
 
   else
   {
-    *&v14 = a5;
-    *&v15 = a6;
-    *&v16 = a7;
-    [(CSPersistentConfiguration *)self algorithmThresholdNumber:a3 inArrayForKey:v12 withMinValue:v14 maxValue:v15 defaultValue:v16];
+    *&v14 = value;
+    *&v15 = maxValue;
+    *&v16 = defaultValue;
+    [(CSPersistentConfiguration *)self algorithmThresholdNumber:number inArrayForKey:keyCopy withMinValue:v14 maxValue:v15 defaultValue:v16];
     v18 = v17;
     if (modff(v17, &v21) >= 0.1)
     {
@@ -584,35 +584,35 @@ LABEL_6:
       if (os_log_type_enabled(qword_100456930, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v23 = v12;
+        v23 = keyCopy;
         v24 = 2048;
-        v25 = a3;
+        numberCopy = number;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%@ server configuration key has invalid integer at position %lu", buf, 0x16u);
       }
     }
 
     else
     {
-      a7 = llroundf(v18);
+      defaultValue = llroundf(v18);
     }
   }
 
-  return a7;
+  return defaultValue;
 }
 
-- (BOOL)algorithmBoolNumber:(unint64_t)a3 inArrayForKey:(id)a4 defaultValue:(BOOL)a5
+- (BOOL)algorithmBoolNumber:(unint64_t)number inArrayForKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [v8 stringByAppendingFormat:@"%lu", a3];
-  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:v9])
+  valueCopy = value;
+  keyCopy = key;
+  number = [keyCopy stringByAppendingFormat:@"%lu", number];
+  if ([(CSPersistentConfiguration *)self isKeyInUserDefaults:number])
   {
-    v12 = [(CSPersistentConfiguration *)self BOOLForKey:v9];
+    v12 = [(CSPersistentConfiguration *)self BOOLForKey:number];
   }
 
   else
   {
-    if (v5)
+    if (valueCopy)
     {
       *&v11 = 1.0;
     }
@@ -623,29 +623,29 @@ LABEL_6:
     }
 
     LODWORD(v10) = 2.0;
-    [(CSPersistentConfiguration *)self algorithmThresholdNumber:a3 inArrayForKey:v8 withMinValue:COERCE_DOUBLE(COERCE_UNSIGNED_INT(-1.0)) maxValue:v10 defaultValue:v11];
+    [(CSPersistentConfiguration *)self algorithmThresholdNumber:number inArrayForKey:keyCopy withMinValue:COERCE_DOUBLE(COERCE_UNSIGNED_INT(-1.0)) maxValue:v10 defaultValue:v11];
     v12 = v13 != 0.0;
   }
 
   return v12;
 }
 
-- (float)floatThreshold:(const CSSafetyDefault *)a3 forKey:(id)a4
+- (float)floatThreshold:(const CSSafetyDefault *)threshold forKey:(id)key
 {
-  *&v4 = a3->var2;
-  *&v5 = a3->var3;
-  *&v6 = a3->var1;
-  [(CSPersistentConfiguration *)self algorithmThresholdNumber:a3->var0 inArrayForKey:a4 withMinValue:v4 maxValue:v5 defaultValue:v6];
+  *&v4 = threshold->var2;
+  *&v5 = threshold->var3;
+  *&v6 = threshold->var1;
+  [(CSPersistentConfiguration *)self algorithmThresholdNumber:threshold->var0 inArrayForKey:key withMinValue:v4 maxValue:v5 defaultValue:v6];
   return result;
 }
 
-- (optional<int>)getIntegerDefault:(id)a3
+- (optional<int>)getIntegerDefault:(id)default
 {
-  v4 = a3;
-  v5 = [(CSPersistentConfiguration *)self objectForKey:v4];
+  defaultCopy = default;
+  v5 = [(CSPersistentConfiguration *)self objectForKey:defaultCopy];
   if (v5)
   {
-    v6 = [(CSPersistentConfiguration *)self integerForKey:v4];
+    v6 = [(CSPersistentConfiguration *)self integerForKey:defaultCopy];
     v7 = v6 & 0xFFFFFF00;
     v8 = v6;
     v9 = &_mh_execute_header;
@@ -662,7 +662,7 @@ LABEL_6:
     if (os_log_type_enabled(qword_100456930, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = defaultCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "default not found for %@", &v12, 0xCu);
     }
 
@@ -674,13 +674,13 @@ LABEL_6:
   return (v9 | v8 | v7);
 }
 
-- (optional<float>)getFloatDefault:(id)a3
+- (optional<float>)getFloatDefault:(id)default
 {
-  v4 = a3;
-  v5 = [(CSPersistentConfiguration *)self objectForKey:v4];
+  defaultCopy = default;
+  v5 = [(CSPersistentConfiguration *)self objectForKey:defaultCopy];
   if (v5)
   {
-    [(CSPersistentConfiguration *)self floatForKey:v4];
+    [(CSPersistentConfiguration *)self floatForKey:defaultCopy];
     v7 = v6 & 0xFFFFFF00;
     v8 = v6;
     v9 = &_mh_execute_header;
@@ -696,13 +696,13 @@ LABEL_6:
   return (v9 | v7 | v8);
 }
 
-- (optional<BOOL>)getBooleanDefault:(id)a3
+- (optional<BOOL>)getBooleanDefault:(id)default
 {
-  v4 = a3;
-  v5 = [(CSPersistentConfiguration *)self objectForKey:v4];
+  defaultCopy = default;
+  v5 = [(CSPersistentConfiguration *)self objectForKey:defaultCopy];
   if (v5)
   {
-    v6 = [(CSPersistentConfiguration *)self BOOLForKey:v4];
+    v6 = [(CSPersistentConfiguration *)self BOOLForKey:defaultCopy];
     v7 = 1;
   }
 
@@ -715,11 +715,11 @@ LABEL_6:
   return (v6 | (v7 << 8));
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   urlSession = self->_urlSession;
-  if (v6)
+  if (errorCopy)
   {
     [(NSURLSession *)urlSession invalidateAndCancel];
     if (qword_100456928 != -1)
@@ -731,7 +731,7 @@ LABEL_6:
     if (os_log_type_enabled(qword_100456930, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = errorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "completed with error %@", &v10, 0xCu);
     }
   }
@@ -747,10 +747,10 @@ LABEL_6:
   self->_configurationDownloadInProgress = 0;
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v6 = a5;
-  v7 = [NSData dataWithContentsOfURL:v6];
+  lCopy = l;
+  v7 = [NSData dataWithContentsOfURL:lCopy];
   if (v7)
   {
     v22 = 0;
@@ -809,14 +809,14 @@ LABEL_6:
       if (self->_recurrentDownloadEnabled)
       {
         objc_initWeak(buf, self);
-        v17 = [@"com.apple.anomalydetectiond.CSPersistentConfiguration" UTF8String];
+        uTF8String = [@"com.apple.anomalydetectiond.CSPersistentConfiguration" UTF8String];
         handler[0] = _NSConcreteStackBlock;
         handler[1] = 3221225472;
         handler[2] = sub_100355EB0;
         handler[3] = &unk_100436328;
         objc_copyWeak(&v21, buf);
         v20 = v14;
-        xpc_activity_register(v17, XPC_ACTIVITY_CHECK_IN, handler);
+        xpc_activity_register(uTF8String, XPC_ACTIVITY_CHECK_IN, handler);
 
         objc_destroyWeak(&v21);
         objc_destroyWeak(buf);

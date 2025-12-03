@@ -1,79 +1,79 @@
 @interface HDSQLiteDatabase
-+ (id)memoryDatabaseFromURL:(id)a3;
-+ (uint64_t)_copyContentsFromDatabase:(sqlite3 *)a3 toDatabase:;
-- (BOOL)_executeStatementWithError:(id *)a3 statementProvider:(id)a4 bindingHandler:(id)a5 enumerationHandler:(id)a6;
-- (BOOL)columnIsNullable:(id)a3 inTable:(id)a4 error:(id *)a5;
-- (BOOL)enableIncrementalAutovacuumForDatabaseWithName:(id)a3 error:(id *)a4;
-- (BOOL)executeCachedStatementForKey:(const char *)a3 error:(id *)a4 SQLGenerator:(id)a5 bindingHandler:(id)a6 enumerationHandler:(id)a7;
-- (BOOL)executeSQLStatements:(id)a3 error:(id *)a4;
-- (BOOL)foreignKeyExistsFromTable:(id)a3 column:(id)a4 toTable:(id)a5 column:(id)a6 error:(id *)a7;
-- (BOOL)incrementalVacuumDatabaseIfNeeded:(id)a3 error:(id *)a4;
-- (BOOL)performIntegrityCheckOnDatabase:(id)a3 error:(id *)a4 integrityErrorHandler:(id)a5;
-- (BOOL)performTransactionWithType:(int64_t)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)table:(id)a3 hasColumnWithName:(id)a4 error:(id *)a5;
-- (HDSQLiteDatabase)initWithDatabaseURL:(id)a3;
++ (id)memoryDatabaseFromURL:(id)l;
++ (uint64_t)_copyContentsFromDatabase:(sqlite3 *)database toDatabase:;
+- (BOOL)_executeStatementWithError:(id *)error statementProvider:(id)provider bindingHandler:(id)handler enumerationHandler:(id)enumerationHandler;
+- (BOOL)columnIsNullable:(id)nullable inTable:(id)table error:(id *)error;
+- (BOOL)enableIncrementalAutovacuumForDatabaseWithName:(id)name error:(id *)error;
+- (BOOL)executeCachedStatementForKey:(const char *)key error:(id *)error SQLGenerator:(id)generator bindingHandler:(id)handler enumerationHandler:(id)enumerationHandler;
+- (BOOL)executeSQLStatements:(id)statements error:(id *)error;
+- (BOOL)foreignKeyExistsFromTable:(id)table column:(id)column toTable:(id)toTable column:(id)a6 error:(id *)error;
+- (BOOL)incrementalVacuumDatabaseIfNeeded:(id)needed error:(id *)error;
+- (BOOL)performIntegrityCheckOnDatabase:(id)database error:(id *)error integrityErrorHandler:(id)handler;
+- (BOOL)performTransactionWithType:(int64_t)type error:(id *)error usingBlock:(id)block;
+- (BOOL)table:(id)table hasColumnWithName:(id)name error:(id *)error;
+- (HDSQLiteDatabase)initWithDatabaseURL:(id)l;
 - (HDSQLiteDatabaseDelegate)delegate;
-- (HDSQLiteDatabaseSchema)_schemaForDatabaseWithName:(uint64_t)a3 error:;
-- (HDSQLiteDatabaseTableSchema)_schemaForTableWithName:(void *)a3 database:(uint64_t)a4 error:;
+- (HDSQLiteDatabaseSchema)_schemaForDatabaseWithName:(uint64_t)name error:;
+- (HDSQLiteDatabaseTableSchema)_schemaForTableWithName:(void *)name database:(uint64_t)database error:;
 - (NSNumber)lastInsertRowID;
 - (id)_statementCache;
-- (id)_tableNamesForDatabaseWithName:(uint64_t)a3 error:;
-- (id)dumpSchemaWithError:(id *)a3;
-- (id)getLastErrorWithStatement:(sqlite3_stmt *)a3 context:(id)a4;
-- (id)typeOfColumn:(id)a3 inTable:(id)a4 error:(id *)a5;
+- (id)_tableNamesForDatabaseWithName:(uint64_t)name error:;
+- (id)dumpSchemaWithError:(id *)error;
+- (id)getLastErrorWithStatement:(sqlite3_stmt *)statement context:(id)context;
+- (id)typeOfColumn:(id)column inTable:(id)table error:(id *)error;
 - (int)getChangesCount;
-- (int64_t)userVersionWithDatabaseName:(id)a3 error:(id *)a4;
-- (int64_t)validateForeignKeysForTable:(id)a3 databaseName:(id)a4 error:(id *)a5;
-- (uint64_t)_executeSQL:(char)a3 cache:(uint64_t)a4 error:(void *)a5 bindingHandler:(void *)a6 enumerationHandler:;
-- (uint64_t)_executeUncachedSQL:(void *)a3 error:;
-- (uint64_t)_executeUncachedSQL:(void *)a3 error:(int)a4 retryIfBusy:(int)a5 interruptible:;
-- (uint64_t)_handleInterruptionWithError:(uint64_t)a1;
-- (uint64_t)_integerValueForPragma:(void *)a3 databaseName:(uint64_t)a4 value:(uint64_t)a5 error:;
-- (uint64_t)_openForWriting:(int)a3 additionalFlags:(void *)a4 error:;
-- (uint64_t)_setPragma:(uint64_t)a3 integerValue:(void *)a4 withDatabaseName:(void *)a5 error:;
-- (uint64_t)_stepStatement:(_BYTE *)a3 hasRow:(void *)a4 error:;
+- (int64_t)userVersionWithDatabaseName:(id)name error:(id *)error;
+- (int64_t)validateForeignKeysForTable:(id)table databaseName:(id)name error:(id *)error;
+- (uint64_t)_executeSQL:(char)l cache:(uint64_t)cache error:(void *)error bindingHandler:(void *)handler enumerationHandler:;
+- (uint64_t)_executeUncachedSQL:(void *)l error:;
+- (uint64_t)_executeUncachedSQL:(void *)l error:(int)error retryIfBusy:(int)busy interruptible:;
+- (uint64_t)_handleInterruptionWithError:(uint64_t)error;
+- (uint64_t)_integerValueForPragma:(void *)pragma databaseName:(uint64_t)name value:(uint64_t)value error:;
+- (uint64_t)_openForWriting:(int)writing additionalFlags:(void *)flags error:;
+- (uint64_t)_setPragma:(uint64_t)pragma integerValue:(void *)value withDatabaseName:(void *)name error:;
+- (uint64_t)_stepStatement:(_BYTE *)statement hasRow:(void *)row error:;
 - (void)_statementCache;
-- (void)accessDatabaseUsingBlock:(id)a3;
-- (void)beforeCommit:(id)a3;
+- (void)accessDatabaseUsingBlock:(id)block;
+- (void)beforeCommit:(id)commit;
 - (void)close;
 - (void)dealloc;
-- (void)onCommit:(id)a3 orRollback:(id)a4;
+- (void)onCommit:(id)commit orRollback:(id)rollback;
 - (void)requireRollback;
-- (void)setFileProtectionType:(id)a3;
-- (void)setTransactionInterruptRequested:(BOOL)a3;
+- (void)setFileProtectionType:(id)type;
+- (void)setTransactionInterruptRequested:(BOOL)requested;
 @end
 
 @implementation HDSQLiteDatabase
 
 - (void)_statementCache
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1 + 1;
-    if (!a1[1])
+    selfCopy = self;
+    v2 = self + 1;
+    if (!self[1])
     {
-      v4 = [MEMORY[0x277CCA890] currentHandler];
-      [v4 handleFailureInMethod:sel__statementCache object:v1 file:@"HDSQLiteDatabase.mm" lineNumber:1331 description:{@"Invalid parameter not satisfying: %@", @"_db != NULL"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__statementCache object:selfCopy file:@"HDSQLiteDatabase.mm" lineNumber:1331 description:{@"Invalid parameter not satisfying: %@", @"_db != NULL"}];
     }
 
-    [(HDSQLiteDatabase *)v1 _statementCache];
-    a1 = v5;
+    [(HDSQLiteDatabase *)selfCopy _statementCache];
+    self = v5;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_statementCache
 {
-  v5 = *(a1 + 104);
+  v5 = *(self + 104);
   if (!v5)
   {
     v6 = [[HDSQLiteStatementCache alloc] initWithDatabase:*a2];
-    v7 = *(a1 + 104);
-    *(a1 + 104) = v6;
+    v7 = *(self + 104);
+    *(self + 104) = v6;
 
-    v5 = *(a1 + 104);
+    v5 = *(self + 104);
   }
 
   *a3 = v5;
@@ -81,15 +81,15 @@
   return v5;
 }
 
-- (HDSQLiteDatabase)initWithDatabaseURL:(id)a3
+- (HDSQLiteDatabase)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = HDSQLiteDatabase;
   v5 = [(HDSQLiteDatabase *)&v10 init];
   if (v5)
   {
-    if (v4 && ([v4 isFileURL] & 1) == 0)
+    if (lCopy && ([lCopy isFileURL] & 1) == 0)
     {
 
       v6 = 0;
@@ -101,7 +101,7 @@
       v6 = v5;
     }
 
-    v7 = [v4 copy];
+    v7 = [lCopy copy];
     fileURL = v6->_fileURL;
     v6->_fileURL = v7;
 
@@ -116,10 +116,10 @@
   return v6;
 }
 
-+ (uint64_t)_copyContentsFromDatabase:(sqlite3 *)a3 toDatabase:
++ (uint64_t)_copyContentsFromDatabase:(sqlite3 *)database toDatabase:
 {
   objc_opt_self();
-  v5 = sqlite3_backup_init(a3, "main", a2, "main");
+  v5 = sqlite3_backup_init(database, "main", a2, "main");
   if (v5)
   {
     v6 = v5;
@@ -127,13 +127,13 @@
     sqlite3_backup_finish(v6);
   }
 
-  return sqlite3_errcode(a3);
+  return sqlite3_errcode(database);
 }
 
-+ (id)memoryDatabaseFromURL:(id)a3
++ (id)memoryDatabaseFromURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDatabaseURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithDatabaseURL:lCopy];
   v6 = v5;
   if (!v5)
   {
@@ -167,7 +167,7 @@
 
     else
     {
-      if (![(HDSQLiteDatabase *)a1 _copyContentsFromDatabase:v12 toDatabase:?])
+      if (![(HDSQLiteDatabase *)self _copyContentsFromDatabase:v12 toDatabase:?])
       {
         [v6 close];
         v11 = *(v6 + 72);
@@ -196,23 +196,23 @@ LABEL_15:
   return v9;
 }
 
-- (uint64_t)_openForWriting:(int)a3 additionalFlags:(void *)a4 error:
+- (uint64_t)_openForWriting:(int)writing additionalFlags:(void *)flags error:
 {
   v41 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v5 = (a1 + 8);
-    if (!*(a1 + 8))
+    v5 = (self + 8);
+    if (!*(self + 8))
     {
-      v10 = *(a1 + 72);
+      v10 = *(self + 72);
       if (v10)
       {
-        v11 = [v10 path];
+        path = [v10 path];
       }
 
       else
       {
-        v11 = @":memory:";
+        path = @":memory:";
       }
 
       if (a2)
@@ -225,8 +225,8 @@ LABEL_15:
         v12 = 1;
       }
 
-      v14 = (a1 + 80);
-      v13 = *(a1 + 80);
+      v14 = (self + 80);
+      v13 = *(self + 80);
       v15 = MEMORY[0x277CCC2A0];
       if (v13)
       {
@@ -262,10 +262,10 @@ LABEL_15:
         }
       }
 
-      os_unfair_lock_lock((a1 + 64));
-      v18 = v11;
-      busy = sqlite3_open_v2([(__CFString *)v11 fileSystemRepresentation], v5, v12 | a3 & ~(a3 >> 31), 0);
-      os_unfair_lock_unlock((a1 + 64));
+      os_unfair_lock_lock((self + 64));
+      v18 = path;
+      busy = sqlite3_open_v2([(__CFString *)path fileSystemRepresentation], v5, v12 | writing & ~(writing >> 31), 0);
+      os_unfair_lock_unlock((self + 64));
       if (busy)
       {
         v19 = @"opening database";
@@ -289,11 +289,11 @@ LABEL_15:
 
           else
           {
-            v28 = [MEMORY[0x277CCDD30] sharedBehavior];
-            v29 = [v28 features];
-            v30 = [v29 databasePerfTrace];
+            mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+            features = [mEMORY[0x277CCDD30] features];
+            databasePerfTrace = [features databasePerfTrace];
 
-            if (v30)
+            if (databasePerfTrace)
             {
               sqlite3_trace_v2(*v5, 2u, _SqliteEventTrace, *v5);
             }
@@ -345,10 +345,10 @@ LABEL_28:
       v22 = v21;
       if (v21)
       {
-        if (a4)
+        if (flags)
         {
           v23 = v21;
-          *a4 = v22;
+          *flags = v22;
         }
 
         else
@@ -361,19 +361,19 @@ LABEL_28:
       v24 = *v15;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v20 localizedDescription];
+        localizedDescription = [v20 localizedDescription];
         v32 = 138544130;
         v33 = v19;
         v34 = 1024;
         v35 = busy;
         v36 = 2114;
-        v37 = v11;
+        v37 = path;
         v38 = 2112;
-        v39 = v27;
+        v39 = localizedDescription;
         _os_log_error_impl(&dword_25156C000, v24, OS_LOG_TYPE_ERROR, "Error %{public}@: [%d, %{public}@] (%@)", &v32, 0x26u);
       }
 
-      [a1 close];
+      [self close];
       goto LABEL_35;
     }
   }
@@ -388,8 +388,8 @@ LABEL_36:
 {
   if (self->_db)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"_db == NULL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"_db == NULL"}];
 
     if (self->_db)
     {
@@ -419,13 +419,13 @@ LABEL_36:
   os_unfair_lock_unlock(&self->_interruptionLock);
 }
 
-- (void)setTransactionInterruptRequested:(BOOL)a3
+- (void)setTransactionInterruptRequested:(BOOL)requested
 {
-  v3 = a3;
+  requestedCopy = requested;
   os_unfair_lock_lock(&self->_interruptionLock);
-  v5 = !v3;
-  atomic_compare_exchange_strong(&self->_transactionInterruptRequested, &v5, v3);
-  if (v5 == !v3 && v3)
+  v5 = !requestedCopy;
+  atomic_compare_exchange_strong(&self->_transactionInterruptRequested, &v5, requestedCopy);
+  if (v5 == !requestedCopy && requestedCopy)
   {
     db = self->_db;
     if (db)
@@ -437,49 +437,49 @@ LABEL_36:
   os_unfair_lock_unlock(&self->_interruptionLock);
 }
 
-- (void)setFileProtectionType:(id)a3
+- (void)setFileProtectionType:(id)type
 {
-  v10 = a3;
+  typeCopy = type;
   if ([(HDSQLiteDatabase *)self isOpen])
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:431 description:{@"Invalid parameter not satisfying: %@", @"self.open == NO"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:431 description:{@"Invalid parameter not satisfying: %@", @"self.open == NO"}];
   }
 
-  v5 = [(HDSQLiteDatabase *)self fileURL];
+  fileURL = [(HDSQLiteDatabase *)self fileURL];
 
-  if (!v5)
+  if (!fileURL)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:434 description:{@"Invalid parameter not satisfying: %@", @"self.fileURL != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:434 description:{@"Invalid parameter not satisfying: %@", @"self.fileURL != nil"}];
   }
 
-  v6 = [v10 copy];
+  v6 = [typeCopy copy];
   fileProtectionType = self->_fileProtectionType;
   self->_fileProtectionType = v6;
 }
 
-- (void)accessDatabaseUsingBlock:(id)a3
+- (void)accessDatabaseUsingBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (![(HDSQLiteDatabase *)self isOpen])
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:442 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
   }
 
   if (self->_db)
   {
-    v6[2]();
+    blockCopy[2]();
   }
 }
 
-- (uint64_t)_executeUncachedSQL:(void *)a3 error:
+- (uint64_t)_executeUncachedSQL:(void *)l error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [(HDSQLiteDatabase *)a1 _executeUncachedSQL:v5 error:a3 retryIfBusy:0 interruptible:1];
+    v6 = [(HDSQLiteDatabase *)self _executeUncachedSQL:v5 error:l retryIfBusy:0 interruptible:1];
   }
 
   else
@@ -490,62 +490,62 @@ LABEL_36:
   return v6;
 }
 
-- (uint64_t)_executeUncachedSQL:(void *)a3 error:(int)a4 retryIfBusy:(int)a5 interruptible:
+- (uint64_t)_executeUncachedSQL:(void *)l error:(int)error retryIfBusy:(int)busy interruptible:
 {
   v32 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_9;
   }
 
-  if (([a1 isOpen] & 1) == 0)
+  if (([self isOpen] & 1) == 0)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:sel__executeUncachedSQL_error_retryIfBusy_interruptible_ object:a1 file:@"HDSQLiteDatabase.mm" lineNumber:461 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__executeUncachedSQL_error_retryIfBusy_interruptible_ object:self file:@"HDSQLiteDatabase.mm" lineNumber:461 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
   }
 
-  v10 = *(a1 + 8);
+  v10 = *(self + 8);
   if (!v10)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 description:@"Database connection is closed"];
+    [MEMORY[0x277CCA9B8] hk_assignError:l code:3 description:@"Database connection is closed"];
 LABEL_9:
     v12 = 0;
     goto LABEL_25;
   }
 
-  if (a5)
+  if (busy)
   {
-    v11 = atomic_load((a1 + 32));
+    v11 = atomic_load((self + 32));
     if (v11)
     {
-      v12 = [(HDSQLiteDatabase *)a1 _handleInterruptionWithError:a3];
+      v12 = [(HDSQLiteDatabase *)self _handleInterruptionWithError:l];
       goto LABEL_25;
     }
 
-    v10 = *(a1 + 8);
+    v10 = *(self + 8);
   }
 
   v25 = 0;
-  v13 = [v9 UTF8String];
-  if (a4)
+  uTF8String = [v9 UTF8String];
+  if (error)
   {
-    busy = sqlite3_exec_busy_retry(v10, v13, 0, 0, &v25);
+    busy = sqlite3_exec_busy_retry(v10, uTF8String, 0, 0, &v25);
   }
 
   else
   {
-    busy = MEMORY[0x277D82C88](v10, v13, 0, 0, &v25);
+    busy = MEMORY[0x277D82C88](v10, uTF8String, 0, 0, &v25);
   }
 
-  v15 = busy;
+  busyCopy = busy;
   v12 = busy == 0;
   if (busy)
   {
     v16 = v25;
     if (!v25)
     {
-      v16 = sqlite3_errmsg(*(a1 + 8));
+      v16 = sqlite3_errmsg(*(self + 8));
     }
 
     _HKInitializeLogging();
@@ -555,21 +555,21 @@ LABEL_9:
       *buf = 138543874;
       v27 = v9;
       v28 = 1024;
-      v29 = v15;
+      v29 = busyCopy;
       v30 = 2082;
       v31 = v16;
       _os_log_error_impl(&dword_25156C000, v17, OS_LOG_TYPE_ERROR, "Could not execute SQL: %{public}@: [%d, %{public}s]", buf, 0x1Cu);
     }
 
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"_executeUncachedSQL(%@)", v9];
-    v19 = [a1 getLastErrorWithStatement:0 context:v18];
+    v19 = [self getLastErrorWithStatement:0 context:v18];
     v20 = v19;
     if (v19)
     {
-      if (a3)
+      if (l)
       {
         v21 = v19;
-        *a3 = v20;
+        *l = v20;
       }
 
       else
@@ -590,20 +590,20 @@ LABEL_25:
   return v12;
 }
 
-- (uint64_t)_handleInterruptionWithError:(uint64_t)a1
+- (uint64_t)_handleInterruptionWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    os_unfair_lock_lock((a1 + 64));
-    os_unfair_lock_unlock((a1 + 64));
-    *(a1 + 17) = 1;
-    v4 = [MEMORY[0x277CCA9B8] hk_transactionInterruptedError];
-    v5 = v4;
-    if (v4)
+    os_unfair_lock_lock((error + 64));
+    os_unfair_lock_unlock((error + 64));
+    *(error + 17) = 1;
+    hk_transactionInterruptedError = [MEMORY[0x277CCA9B8] hk_transactionInterruptedError];
+    v5 = hk_transactionInterruptedError;
+    if (hk_transactionInterruptedError)
     {
       if (a2)
       {
-        v6 = v4;
+        v6 = hk_transactionInterruptedError;
         *a2 = v5;
       }
 
@@ -617,13 +617,13 @@ LABEL_25:
   return 0;
 }
 
-- (id)getLastErrorWithStatement:(sqlite3_stmt *)a3 context:(id)a4
+- (id)getLastErrorWithStatement:(sqlite3_stmt *)statement context:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   if (![(HDSQLiteDatabase *)self isOpen])
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:492 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
   }
 
   db = self->_db;
@@ -638,7 +638,7 @@ LABEL_25:
 
     else
     {
-      v10 = HDSQLiteErrorFromDatabase(self->_db, a3, v7);
+      v10 = HDSQLiteErrorFromDatabase(self->_db, statement, contextCopy);
       v9 = HDSQLiteDatabaseErrorFromSQLiteError(v10);
     }
   }
@@ -655,8 +655,8 @@ LABEL_25:
 {
   if (![(HDSQLiteDatabase *)self isOpen])
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:506 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:506 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
   }
 
   db = self->_db;
@@ -669,10 +669,10 @@ LABEL_25:
   return db;
 }
 
-- (BOOL)performTransactionWithType:(int64_t)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)performTransactionWithType:(int64_t)type error:(id *)error usingBlock:(id)block
 {
   v95[1] = *MEMORY[0x277D85DE8];
-  v61 = a5;
+  blockCopy = block;
   if ([(HDSQLiteDatabase *)self isOpen])
   {
     if (!self)
@@ -683,8 +683,8 @@ LABEL_25:
 
   else
   {
-    v57 = [MEMORY[0x277CCA890] currentHandler];
-    [v57 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:518 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:518 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
 
     if (!self)
     {
@@ -694,14 +694,14 @@ LABEL_25:
 
   if (self->_db)
   {
-    v8 = [(HDSQLiteDatabase *)self _statementCache];
+    _statementCache = [(HDSQLiteDatabase *)self _statementCache];
     isInTransaction = self->_isInTransaction;
     cacheScope = self->_cacheScope;
     if (isInTransaction)
     {
-      if (self->_transactionType < a3)
+      if (self->_transactionType < type)
       {
-        v10 = HDSQLiteTransactionTypeString(a3);
+        v10 = HDSQLiteTransactionTypeString(type);
         v11 = HDSQLiteTransactionTypeString(self->_transactionType);
         _HKInitializeLogging();
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_FAULT))
@@ -718,18 +718,18 @@ LABEL_25:
       [(HDSQLiteDatabase *)self setTransactionInterruptRequested:0];
       self->_permitWritesInReadTransaction = 0;
       self->_requiresRollback = 0;
-      if (a3 >= 3)
+      if (type >= 3)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = off_2796BE088[a3];
+        v13 = off_2796BE088[type];
       }
 
-      self->_transactionType = a3;
-      v14 = [(HDSQLiteDatabase *)self _executeUncachedSQL:v13 error:a4 retryIfBusy:1 interruptible:1];
+      self->_transactionType = type;
+      v14 = [(HDSQLiteDatabase *)self _executeUncachedSQL:v13 error:error retryIfBusy:1 interruptible:1];
       self->_isInTransaction = v14;
       if ((v14 & 1) == 0)
       {
@@ -738,7 +738,7 @@ LABEL_25:
 
       if (cacheScope == 1)
       {
-        [v8 beginTransaction];
+        [_statementCache beginTransaction];
       }
     }
 
@@ -749,9 +749,9 @@ LABEL_25:
       v82 = 3221225472;
       v83 = __64__HDSQLiteDatabase_performTransactionWithType_error_usingBlock___block_invoke;
       v84 = &unk_2796BDEA8;
-      v85 = self;
-      v86 = v61;
-      v58 = v8;
+      selfCopy = self;
+      v86 = blockCopy;
+      v58 = _statementCache;
       v12 = HKWithAutoreleasePool();
       v15 = 0;
       v16 = v15;
@@ -790,10 +790,10 @@ LABEL_25:
         }
       }
 
-      if (a4)
+      if (error)
       {
         v21 = v16;
-        *a4 = v16;
+        *error = v16;
       }
 
       else
@@ -810,14 +810,14 @@ LABEL_30:
         {
           if (self->_requiresRollback && [(HDSQLiteDatabase *)self transactionInterruptRequested])
           {
-            v22 = [MEMORY[0x277CCA9B8] hk_transactionInterruptedError];
-            v23 = v22;
-            if (v22)
+            hk_transactionInterruptedError = [MEMORY[0x277CCA9B8] hk_transactionInterruptedError];
+            v23 = hk_transactionInterruptedError;
+            if (hk_transactionInterruptedError)
             {
-              if (a4)
+              if (error)
               {
-                v24 = v22;
-                *a4 = v23;
+                v24 = hk_transactionInterruptedError;
+                *error = v23;
               }
 
               else
@@ -888,10 +888,10 @@ LABEL_30:
                     v36 = v35;
                     if (v35)
                     {
-                      if (a4)
+                      if (error)
                       {
                         v37 = v35;
-                        *a4 = v36;
+                        *error = v36;
                       }
 
                       else
@@ -915,7 +915,7 @@ LABEL_30:
             }
           }
 
-          [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 format:@"beforeCommitLoopLimit limit reached in transaction"];
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"beforeCommitLoopLimit limit reached in transaction"];
           _HKInitializeLogging();
           v29 = *MEMORY[0x277CCC2A0];
           if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
@@ -940,7 +940,7 @@ LABEL_61:
 
         if (v38)
         {
-          v40 = [(HDSQLiteDatabase *)self _executeUncachedSQL:a4 error:1 retryIfBusy:0 interruptible:?];
+          v40 = [(HDSQLiteDatabase *)self _executeUncachedSQL:error error:1 retryIfBusy:0 interruptible:?];
           self->_isHandlingTransactionEnd = 1;
           if (v40)
           {
@@ -982,7 +982,7 @@ LABEL_85:
 
             self->_isHandlingTransactionEnd = 0;
             *&self->_isInTransaction = 0;
-            v8 = v58;
+            _statementCache = v58;
             goto LABEL_86;
           }
         }
@@ -1051,7 +1051,7 @@ LABEL_21:
     goto LABEL_86;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"Database connection is closed"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Database connection is closed"];
 LABEL_10:
   LOBYTE(v12) = 0;
 LABEL_87:
@@ -1060,13 +1060,13 @@ LABEL_87:
   return v12;
 }
 
-- (BOOL)_executeStatementWithError:(id *)a3 statementProvider:(id)a4 bindingHandler:(id)a5 enumerationHandler:(id)a6
+- (BOOL)_executeStatementWithError:(id *)error statementProvider:(id)provider bindingHandler:(id)handler enumerationHandler:(id)enumerationHandler
 {
   v53 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v41 = a6;
-  v40 = v11;
+  providerCopy = provider;
+  handlerCopy = handler;
+  enumerationHandlerCopy = enumerationHandler;
+  v40 = providerCopy;
   if ([(HDSQLiteDatabase *)self isOpen])
   {
     if (!self)
@@ -1077,8 +1077,8 @@ LABEL_87:
 
   else
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:691 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:691 description:{@"Invalid parameter not satisfying: %@", @"self.open"}];
 
     if (!self)
     {
@@ -1090,7 +1090,7 @@ LABEL_87:
   {
     if (self->_isHandlingTransactionEnd)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 format:@"Attempt to execute SQL within a commit or rollback block."];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"Attempt to execute SQL within a commit or rollback block."];
       _HKInitializeLogging();
       v38 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -1105,22 +1105,22 @@ LABEL_87:
 
     [(HDSQLiteDatabase *)self _statementCache];
     v38 = v46[0] = 0;
-    v15 = (*(v11 + 2))(v11, v38, v46);
+    v15 = (*(providerCopy + 2))(providerCopy, v38, v46);
     v16 = v46[0];
     v17 = v46[0];
     v18 = v17;
     pStmt = v15;
-    v37 = a3;
+    errorCopy = error;
     if (v15)
     {
       if (!self->_isInTransaction || self->_transactionType || self->_permitWritesInReadTransaction || sqlite3_stmt_readonly(v15))
       {
-        if (v12)
+        if (handlerCopy)
         {
-          v12[2](v12, v15);
+          handlerCopy[2](handlerCopy, v15);
         }
 
-        if (v41)
+        if (enumerationHandlerCopy)
         {
           *buf = &unk_286379B38;
           v49 = 0;
@@ -1144,7 +1144,7 @@ LABEL_87:
 
             v23 = objc_autoreleasePoolPush();
             v43 = v20;
-            v24 = v41[2](v41, buf, &v43);
+            v24 = enumerationHandlerCopy[2](enumerationHandlerCopy, buf, &v43);
             v25 = v43;
 
             objc_autoreleasePoolPop(v23);
@@ -1207,10 +1207,10 @@ LABEL_48:
         v18 = v30;
         if (v30)
         {
-          if (v37)
+          if (errorCopy)
           {
             v31 = v30;
-            *v37 = v18;
+            *errorCopy = v18;
           }
 
           else
@@ -1231,7 +1231,7 @@ LABEL_48:
         [HDSQLiteDatabase _executeStatementWithError:v35 statementProvider:buf bindingHandler:v34 enumerationHandler:?];
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:131 format:{@"Unsafe statement in read-only transaction: %s", sqlite3_sql(pStmt)}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:131 format:{@"Unsafe statement in read-only transaction: %s", sqlite3_sql(pStmt)}];
     }
 
     else
@@ -1250,10 +1250,10 @@ LABEL_48:
       v18 = v26;
       if (v26)
       {
-        if (a3)
+        if (error)
         {
           v27 = v26;
-          *a3 = v18;
+          *error = v18;
         }
 
         else
@@ -1270,7 +1270,7 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 description:@"Database connection is closed"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Database connection is closed"];
 LABEL_9:
   v14 = 0;
 LABEL_51:
@@ -1279,7 +1279,7 @@ LABEL_51:
   return v14 & 1;
 }
 
-- (uint64_t)_stepStatement:(_BYTE *)a3 hasRow:(void *)a4 error:
+- (uint64_t)_stepStatement:(_BYTE *)statement hasRow:(void *)row error:
 {
   v31 = *MEMORY[0x277D85DE8];
   if (!result)
@@ -1288,9 +1288,9 @@ LABEL_51:
   }
 
   v7 = result;
-  if (a3)
+  if (statement)
   {
-    *a3 = 0;
+    *statement = 0;
   }
 
   if (!a2)
@@ -1307,7 +1307,7 @@ LABEL_15:
     {
       v14 = *MEMORY[0x277D85DE8];
 
-      return [(HDSQLiteDatabase *)v7 _handleInterruptionWithError:a4];
+      return [(HDSQLiteDatabase *)v7 _handleInterruptionWithError:row];
     }
 
     v9 = sqlite3_step(a2);
@@ -1406,10 +1406,10 @@ LABEL_33:
           v24 = v23;
           if (v23)
           {
-            if (a4)
+            if (row)
             {
               v25 = v23;
-              *a4 = v24;
+              *row = v24;
             }
 
             else
@@ -1427,9 +1427,9 @@ LABEL_33:
   }
 
   result = 1;
-  if (a3)
+  if (statement)
   {
-    *a3 = 1;
+    *statement = 1;
   }
 
 LABEL_38:
@@ -1437,20 +1437,20 @@ LABEL_38:
   return result;
 }
 
-- (uint64_t)_executeSQL:(char)a3 cache:(uint64_t)a4 error:(void *)a5 bindingHandler:(void *)a6 enumerationHandler:
+- (uint64_t)_executeSQL:(char)l cache:(uint64_t)cache error:(void *)error bindingHandler:(void *)handler enumerationHandler:
 {
   v11 = a2;
-  v12 = a5;
-  v13 = a6;
-  if (a1)
+  errorCopy = error;
+  handlerCopy = handler;
+  if (self)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __78__HDSQLiteDatabase__executeSQL_cache_error_bindingHandler_enumerationHandler___block_invoke;
     v16[3] = &unk_2796BDF28;
     v17 = v11;
-    v18 = a3;
-    v14 = [a1 _executeStatementWithError:a4 statementProvider:v16 bindingHandler:v12 enumerationHandler:v13];
+    lCopy = l;
+    v14 = [self _executeStatementWithError:cache statementProvider:v16 bindingHandler:errorCopy enumerationHandler:handlerCopy];
   }
 
   else
@@ -1461,15 +1461,15 @@ LABEL_38:
   return v14;
 }
 
-- (BOOL)executeSQLStatements:(id)a3 error:(id *)a4
+- (BOOL)executeSQLStatements:(id)statements error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  statementsCopy = statements;
+  v7 = [statementsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -1479,17 +1479,17 @@ LABEL_38:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(statementsCopy);
         }
 
-        if (![(HDSQLiteDatabase *)self executeUncachedSQL:*(*(&v13 + 1) + 8 * i) error:a4 bindingHandler:0 enumerationHandler:0, v13])
+        if (![(HDSQLiteDatabase *)self executeUncachedSQL:*(*(&v13 + 1) + 8 * i) error:error bindingHandler:0 enumerationHandler:0, v13])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [statementsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -1506,33 +1506,33 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)executeCachedStatementForKey:(const char *)a3 error:(id *)a4 SQLGenerator:(id)a5 bindingHandler:(id)a6 enumerationHandler:(id)a7
+- (BOOL)executeCachedStatementForKey:(const char *)key error:(id *)error SQLGenerator:(id)generator bindingHandler:(id)handler enumerationHandler:(id)enumerationHandler
 {
-  v12 = a5;
+  generatorCopy = generator;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __102__HDSQLiteDatabase_executeCachedStatementForKey_error_SQLGenerator_bindingHandler_enumerationHandler___block_invoke;
   v15[3] = &unk_2796BDF00;
-  v16 = v12;
-  v17 = a3;
-  v13 = v12;
-  LOBYTE(a7) = [(HDSQLiteDatabase *)self _executeStatementWithError:a4 statementProvider:v15 bindingHandler:a6 enumerationHandler:a7];
+  v16 = generatorCopy;
+  keyCopy = key;
+  v13 = generatorCopy;
+  LOBYTE(enumerationHandler) = [(HDSQLiteDatabase *)self _executeStatementWithError:error statementProvider:v15 bindingHandler:handler enumerationHandler:enumerationHandler];
 
-  return a7;
+  return enumerationHandler;
 }
 
-- (uint64_t)_setPragma:(uint64_t)a3 integerValue:(void *)a4 withDatabaseName:(void *)a5 error:
+- (uint64_t)_setPragma:(uint64_t)pragma integerValue:(void *)value withDatabaseName:(void *)name error:
 {
   v9 = a2;
-  v10 = a4;
-  v11 = v10;
-  if (a1)
+  valueCopy = value;
+  v11 = valueCopy;
+  if (self)
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = HDSQLiteDatabaseNamePrefix(v10);
-    v14 = [v12 stringWithFormat:@"PRAGMA %@%@=%lld", v13, v9, a3];
+    v13 = HDSQLiteDatabaseNamePrefix(valueCopy);
+    pragma = [v12 stringWithFormat:@"PRAGMA %@%@=%lld", v13, v9, pragma];
 
-    v15 = [(HDSQLiteDatabase *)a1 _executeUncachedSQL:v14 error:a5];
+    v15 = [(HDSQLiteDatabase *)self _executeUncachedSQL:pragma error:name];
   }
 
   else
@@ -1543,22 +1543,22 @@ LABEL_11:
   return v15;
 }
 
-- (int64_t)userVersionWithDatabaseName:(id)a3 error:(id *)a4
+- (int64_t)userVersionWithDatabaseName:(id)name error:(id *)error
 {
   v5 = -1;
-  [(HDSQLiteDatabase *)self _integerValueForPragma:a3 databaseName:&v5 value:a4 error:?];
+  [(HDSQLiteDatabase *)self _integerValueForPragma:name databaseName:&v5 value:error error:?];
   return v5;
 }
 
-- (uint64_t)_integerValueForPragma:(void *)a3 databaseName:(uint64_t)a4 value:(uint64_t)a5 error:
+- (uint64_t)_integerValueForPragma:(void *)pragma databaseName:(uint64_t)name value:(uint64_t)value error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = v10;
-  if (a1)
+  pragmaCopy = pragma;
+  v11 = pragmaCopy;
+  if (self)
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = HDSQLiteDatabaseNamePrefix(v10);
+    v13 = HDSQLiteDatabaseNamePrefix(pragmaCopy);
     v14 = [v12 stringWithFormat:@"PRAGMA %@%@", v13, v9];;
 
     v18 = 0;
@@ -1570,8 +1570,8 @@ LABEL_11:
     v17[2] = __68__HDSQLiteDatabase__integerValueForPragma_databaseName_value_error___block_invoke;
     v17[3] = &unk_2796BDF50;
     v17[4] = &v18;
-    v17[5] = a4;
-    [(HDSQLiteDatabase *)a1 _executeSQL:v14 cache:0 error:a5 bindingHandler:0 enumerationHandler:v17];
+    v17[5] = name;
+    [(HDSQLiteDatabase *)self _executeSQL:v14 cache:0 error:value bindingHandler:0 enumerationHandler:v17];
     v15 = *(v19 + 24);
     _Block_object_dispose(&v18, 8);
   }
@@ -1599,19 +1599,19 @@ uint64_t __68__HDSQLiteDatabase__integerValueForPragma_databaseName_value_error_
   return 0;
 }
 
-- (void)onCommit:(id)a3 orRollback:(id)a4
+- (void)onCommit:(id)commit orRollback:(id)rollback
 {
-  v20 = a3;
-  v7 = a4;
+  commitCopy = commit;
+  rollbackCopy = rollback;
   if (!self->_isInTransaction)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:858 description:{@"Invalid parameter not satisfying: %@", @"_isInTransaction"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:858 description:{@"Invalid parameter not satisfying: %@", @"_isInTransaction"}];
   }
 
   if (!self->_isHandlingTransactionEnd || ([MEMORY[0x277CCA890] currentHandler], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"HDSQLiteDatabase.mm", 859, @"Cannot add new commit or rollback handlers from within a commit or rollback handler."), v19, !self->_isHandlingTransactionEnd))
   {
-    if (v20)
+    if (commitCopy)
     {
       onCommitBlocks = self->_onCommitBlocks;
       if (!onCommitBlocks)
@@ -1623,12 +1623,12 @@ uint64_t __68__HDSQLiteDatabase__integerValueForPragma_databaseName_value_error_
         onCommitBlocks = self->_onCommitBlocks;
       }
 
-      v11 = [v20 copy];
+      v11 = [commitCopy copy];
       v12 = _Block_copy(v11);
       [(NSMutableArray *)onCommitBlocks addObject:v12];
     }
 
-    if (v7)
+    if (rollbackCopy)
     {
       onRollbackBlocks = self->_onRollbackBlocks;
       if (!onRollbackBlocks)
@@ -1640,31 +1640,31 @@ uint64_t __68__HDSQLiteDatabase__integerValueForPragma_databaseName_value_error_
         onRollbackBlocks = self->_onRollbackBlocks;
       }
 
-      v16 = [v7 copy];
+      v16 = [rollbackCopy copy];
       v17 = _Block_copy(v16);
       [(NSMutableArray *)onRollbackBlocks addObject:v17];
     }
   }
 }
 
-- (void)beforeCommit:(id)a3
+- (void)beforeCommit:(id)commit
 {
-  v5 = a3;
-  v13 = v5;
+  commitCopy = commit;
+  v13 = commitCopy;
   if (!self->_isInTransaction)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:881 description:{@"Invalid parameter not satisfying: %@", @"_isInTransaction"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:881 description:{@"Invalid parameter not satisfying: %@", @"_isInTransaction"}];
 
-    v5 = v13;
+    commitCopy = v13;
   }
 
   if (self->_isHandlingTransactionEnd)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:882 description:{@"Invalid parameter not satisfying: %@", @"!_isHandlingTransactionEnd"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:882 description:{@"Invalid parameter not satisfying: %@", @"!_isHandlingTransactionEnd"}];
 
-    v5 = v13;
+    commitCopy = v13;
   }
 
   beforeCommitBlocks = self->_beforeCommitBlocks;
@@ -1675,10 +1675,10 @@ uint64_t __68__HDSQLiteDatabase__integerValueForPragma_databaseName_value_error_
     self->_beforeCommitBlocks = v7;
 
     beforeCommitBlocks = self->_beforeCommitBlocks;
-    v5 = v13;
+    commitCopy = v13;
   }
 
-  v9 = [v5 copy];
+  v9 = [commitCopy copy];
   v10 = _Block_copy(v9);
   [(NSMutableArray *)beforeCommitBlocks addObject:v10];
 }
@@ -1691,21 +1691,21 @@ uint64_t __68__HDSQLiteDatabase__integerValueForPragma_databaseName_value_error_
   }
 }
 
-- (int64_t)validateForeignKeysForTable:(id)a3 databaseName:(id)a4 error:(id *)a5
+- (int64_t)validateForeignKeysForTable:(id)table databaseName:(id)name error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!a5)
+  tableCopy = table;
+  nameCopy = name;
+  if (!error)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:897 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:897 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = HDSQLiteDatabaseNamePrefix(v10);
-  if (v9)
+  v12 = HDSQLiteDatabaseNamePrefix(nameCopy);
+  if (tableCopy)
   {
-    [v11 stringWithFormat:@"PRAGMA %@foreign_key_check(%@)", v12, v9];
+    [v11 stringWithFormat:@"PRAGMA %@foreign_key_check(%@)", v12, tableCopy];
   }
 
   else
@@ -1730,11 +1730,11 @@ uint64_t __68__HDSQLiteDatabase__integerValueForPragma_databaseName_value_error_
   v17[3] = &unk_2796BDF78;
   v17[4] = &v24;
   v17[5] = &v18;
-  if (([(HDSQLiteDatabase *)self _executeSQL:v13 cache:0 error:a5 bindingHandler:0 enumerationHandler:v17]& 1) != 0)
+  if (([(HDSQLiteDatabase *)self _executeSQL:v13 cache:0 error:error bindingHandler:0 enumerationHandler:v17]& 1) != 0)
   {
     if (*(v25 + 24) == 1)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:v19[5]];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:v19[5]];
       v14 = 1;
     }
 
@@ -1749,7 +1749,7 @@ uint64_t __68__HDSQLiteDatabase__integerValueForPragma_databaseName_value_error_
     _HKInitializeLogging();
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
     {
-      [HDSQLiteDatabase validateForeignKeysForTable:a5 databaseName:? error:?];
+      [HDSQLiteDatabase validateForeignKeysForTable:error databaseName:? error:?];
     }
 
     v14 = 2;
@@ -1776,15 +1776,15 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
   return 0;
 }
 
-- (BOOL)table:(id)a3 hasColumnWithName:(id)a4 error:(id *)a5
+- (BOOL)table:(id)table hasColumnWithName:(id)name error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDSQLiteDatabase *)self _schemaForTableWithName:a3 database:0 error:a5];
+  nameCopy = name;
+  v9 = [(HDSQLiteDatabase *)self _schemaForTableWithName:table database:0 error:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 columns];
-    v12 = [v11 objectForKeyedSubscript:v8];
+    columns = [v9 columns];
+    v12 = [columns objectForKeyedSubscript:nameCopy];
 
     v13 = v12 != 0;
   }
@@ -1797,15 +1797,15 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
   return v13;
 }
 
-- (HDSQLiteDatabaseTableSchema)_schemaForTableWithName:(void *)a3 database:(uint64_t)a4 error:
+- (HDSQLiteDatabaseTableSchema)_schemaForTableWithName:(void *)name database:(uint64_t)database error:
 {
   v65 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  v8 = v7;
-  if (a1)
+  nameCopy = name;
+  v8 = nameCopy;
+  if (self)
   {
-    if (!v7)
+    if (!nameCopy)
     {
       v40 = v6;
       v9 = [v6 componentsSeparatedByString:@"."];
@@ -1841,7 +1841,7 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
     v62[3] = &unk_2796BDFC8;
     v38 = v37;
     v63 = v38;
-    if (([(HDSQLiteDatabase *)a1 _executeSQL:v10 cache:0 error:a4 bindingHandler:0 enumerationHandler:v62]& 1) != 0)
+    if (([(HDSQLiteDatabase *)self _executeSQL:v10 cache:0 error:database bindingHandler:0 enumerationHandler:v62]& 1) != 0)
     {
       [(HDSQLiteDatabaseTableSchema *)v39 setColumns:v38];
       if (v8)
@@ -1861,7 +1861,7 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
       v60[3] = &unk_2796BDFC8;
       v13 = v39;
       v61 = v13;
-      if (([(HDSQLiteDatabase *)a1 _executeSQL:v12 cache:0 error:a4 bindingHandler:0 enumerationHandler:v60]& 1) != 0)
+      if (([(HDSQLiteDatabase *)self _executeSQL:v12 cache:0 error:database bindingHandler:0 enumerationHandler:v60]& 1) != 0)
       {
         v34 = v13;
         if (v8)
@@ -1883,7 +1883,7 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
         v16 = v15;
         v59 = v16;
         v35 = v16;
-        if (([(HDSQLiteDatabase *)a1 _executeSQL:v14 cache:0 error:a4 bindingHandler:0 enumerationHandler:v58]& 1) != 0)
+        if (([(HDSQLiteDatabase *)self _executeSQL:v14 cache:0 error:database bindingHandler:0 enumerationHandler:v58]& 1) != 0)
         {
           v56 = 0u;
           v57 = 0u;
@@ -1907,15 +1907,15 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
 
                 v21 = *(*(&v54 + 1) + 8 * v19);
                 v22 = MEMORY[0x277CCACA8];
-                v23 = [v21 name];
+                name = [v21 name];
                 if (v8)
                 {
-                  [v22 stringWithFormat:@"PRAGMA %@.index_info(%@)", v8, v23];
+                  [v22 stringWithFormat:@"PRAGMA %@.index_info(%@)", v8, name];
                 }
 
                 else
                 {
-                  [v22 stringWithFormat:@"PRAGMA index_info(%@)", v23];
+                  [v22 stringWithFormat:@"PRAGMA index_info(%@)", name];
                 }
                 v14 = ;
 
@@ -1926,7 +1926,7 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
                 v52[3] = &unk_2796BDFC8;
                 v25 = v24;
                 v53 = v25;
-                if (([(HDSQLiteDatabase *)a1 _executeSQL:v14 cache:0 error:a4 bindingHandler:0 enumerationHandler:v52]& 1) == 0)
+                if (([(HDSQLiteDatabase *)self _executeSQL:v14 cache:0 error:database bindingHandler:0 enumerationHandler:v52]& 1) == 0)
                 {
 
                   v11 = 0;
@@ -1977,7 +1977,7 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
           v48 = v29;
           obj = v28;
           v49 = obj;
-          if (([(HDSQLiteDatabase *)a1 _executeSQL:v27 cache:0 error:a4 bindingHandler:v50 enumerationHandler:v47]& 1) != 0)
+          if (([(HDSQLiteDatabase *)self _executeSQL:v27 cache:0 error:database bindingHandler:v50 enumerationHandler:v47]& 1) != 0)
           {
             v30 = [MEMORY[0x277CBEB98] setWithArray:obj];
             [(HDSQLiteDatabaseTableSchema *)v34 setTriggers:v30];
@@ -1997,10 +1997,10 @@ uint64_t __67__HDSQLiteDatabase_validateForeignKeysForTable_databaseName_error__
             v43[1] = 3221225472;
             v43[2] = __59__HDSQLiteDatabase__schemaForTableWithName_database_error___block_invoke_7;
             v43[3] = &unk_2796BE040;
-            v45 = a1;
+            selfCopy = self;
             v46 = sel__schemaForTableWithName_database_error_;
             v44 = v38;
-            if (([(HDSQLiteDatabase *)a1 _executeSQL:v31 cache:0 error:a4 bindingHandler:0 enumerationHandler:v43]& 1) != 0)
+            if (([(HDSQLiteDatabase *)self _executeSQL:v31 cache:0 error:database bindingHandler:0 enumerationHandler:v43]& 1) != 0)
             {
               v11 = v34;
             }
@@ -2056,23 +2056,23 @@ LABEL_47:
   return v11;
 }
 
-- (BOOL)foreignKeyExistsFromTable:(id)a3 column:(id)a4 toTable:(id)a5 column:(id)a6 error:(id *)a7
+- (BOOL)foreignKeyExistsFromTable:(id)table column:(id)column toTable:(id)toTable column:(id)a6 error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
+  columnCopy = column;
+  toTableCopy = toTable;
   v14 = a6;
-  v15 = [(HDSQLiteDatabase *)self _schemaForTableWithName:a3 database:0 error:a7];
+  v15 = [(HDSQLiteDatabase *)self _schemaForTableWithName:table database:0 error:error];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 columns];
-    v18 = [v17 objectForKeyedSubscript:v12];
+    columns = [v15 columns];
+    v18 = [columns objectForKeyedSubscript:columnCopy];
 
-    v19 = [v18 foreignKeyTargetTable];
-    if ([v19 isEqualToString:v13])
+    foreignKeyTargetTable = [v18 foreignKeyTargetTable];
+    if ([foreignKeyTargetTable isEqualToString:toTableCopy])
     {
-      v20 = [v18 foreignKeyTargetColumn];
-      v21 = [v20 isEqualToString:v14];
+      foreignKeyTargetColumn = [v18 foreignKeyTargetColumn];
+      v21 = [foreignKeyTargetColumn isEqualToString:v14];
     }
 
     else
@@ -2089,27 +2089,27 @@ LABEL_47:
   return v21;
 }
 
-- (id)typeOfColumn:(id)a3 inTable:(id)a4 error:(id *)a5
+- (id)typeOfColumn:(id)column inTable:(id)table error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!a5)
+  columnCopy = column;
+  tableCopy = table;
+  if (!error)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:952 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:952 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
-  v11 = [(HDSQLiteDatabase *)self _schemaForTableWithName:v10 database:0 error:a5];
+  v11 = [(HDSQLiteDatabase *)self _schemaForTableWithName:tableCopy database:0 error:error];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 columns];
-    v14 = [v13 objectForKeyedSubscript:v9];
+    columns = [v11 columns];
+    v14 = [columns objectForKeyedSubscript:columnCopy];
 
     if (v14)
     {
-      v15 = [v14 type];
+      type = [v14 type];
     }
 
     else
@@ -2118,17 +2118,17 @@ LABEL_47:
       v16 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v12 columns];
+        columns2 = [v12 columns];
         *buf = 138543874;
-        v22 = v10;
+        v22 = tableCopy;
         v23 = 2114;
-        v24 = v9;
+        v24 = columnCopy;
         v25 = 2114;
-        v26 = v19;
+        v26 = columns2;
         _os_log_error_impl(&dword_25156C000, v16, OS_LOG_TYPE_ERROR, "Table '%{public}@' has no column %{public}@: %{public}@", buf, 0x20u);
       }
 
-      v15 = 0;
+      type = 0;
     }
   }
 
@@ -2137,38 +2137,38 @@ LABEL_47:
     _HKInitializeLogging();
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
     {
-      [HDSQLiteDatabase typeOfColumn:v10 inTable:a5 error:?];
+      [HDSQLiteDatabase typeOfColumn:tableCopy inTable:error error:?];
     }
 
-    v15 = 0;
+    type = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return type;
 }
 
-- (BOOL)columnIsNullable:(id)a3 inTable:(id)a4 error:(id *)a5
+- (BOOL)columnIsNullable:(id)nullable inTable:(id)table error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!a5)
+  nullableCopy = nullable;
+  tableCopy = table;
+  if (!error)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:970 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteDatabase.mm" lineNumber:970 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
-  v11 = [(HDSQLiteDatabase *)self _schemaForTableWithName:v10 database:0 error:a5];
+  v11 = [(HDSQLiteDatabase *)self _schemaForTableWithName:tableCopy database:0 error:error];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 columns];
-    v14 = [v13 objectForKeyedSubscript:v9];
+    columns = [v11 columns];
+    v14 = [columns objectForKeyedSubscript:nullableCopy];
 
     if (v14)
     {
-      v15 = [v14 isNullable];
+      isNullable = [v14 isNullable];
     }
 
     else
@@ -2177,17 +2177,17 @@ LABEL_47:
       v16 = *MEMORY[0x277CCC2A0];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v12 columns];
+        columns2 = [v12 columns];
         *buf = 138543874;
-        v22 = v10;
+        v22 = tableCopy;
         v23 = 2114;
-        v24 = v9;
+        v24 = nullableCopy;
         v25 = 2114;
-        v26 = v19;
+        v26 = columns2;
         _os_log_error_impl(&dword_25156C000, v16, OS_LOG_TYPE_ERROR, "Table '%{public}@' has no column %{public}@: %{public}@", buf, 0x20u);
       }
 
-      v15 = 0;
+      isNullable = 0;
     }
   }
 
@@ -2196,21 +2196,21 @@ LABEL_47:
     _HKInitializeLogging();
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
     {
-      [HDSQLiteDatabase typeOfColumn:v10 inTable:a5 error:?];
+      [HDSQLiteDatabase typeOfColumn:tableCopy inTable:error error:?];
     }
 
-    v15 = 0;
+    isNullable = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v15;
+  return isNullable;
 }
 
-- (BOOL)enableIncrementalAutovacuumForDatabaseWithName:(id)a3 error:(id *)a4
+- (BOOL)enableIncrementalAutovacuumForDatabaseWithName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v23 = 0;
-  if (([(HDSQLiteDatabase *)self _integerValueForPragma:v6 databaseName:&v23 value:a4 error:?]& 1) == 0)
+  if (([(HDSQLiteDatabase *)self _integerValueForPragma:nameCopy databaseName:&v23 value:error error:?]& 1) == 0)
   {
     goto LABEL_20;
   }
@@ -2221,7 +2221,7 @@ LABEL_47:
     goto LABEL_21;
   }
 
-  if (![(HDSQLiteDatabase *)self _setPragma:2 integerValue:v6 withDatabaseName:a4 error:?])
+  if (![(HDSQLiteDatabase *)self _setPragma:2 integerValue:nameCopy withDatabaseName:error error:?])
   {
 LABEL_20:
     v7 = 0;
@@ -2230,7 +2230,7 @@ LABEL_20:
 
   v21 = 0;
   v22 = 2500;
-  v8 = [(HDSQLiteDatabase *)self _integerValueForPragma:v6 databaseName:&v22 value:&v21 error:?];
+  v8 = [(HDSQLiteDatabase *)self _integerValueForPragma:nameCopy databaseName:&v22 value:&v21 error:?];
   v9 = v21;
   if ((v8 & 1) == 0)
   {
@@ -2252,7 +2252,7 @@ LABEL_20:
   }
 
   v20 = v9;
-  v11 = [(HDSQLiteDatabase *)self _setPragma:v10 integerValue:v6 withDatabaseName:&v20 error:?];
+  v11 = [(HDSQLiteDatabase *)self _setPragma:v10 integerValue:nameCopy withDatabaseName:&v20 error:?];
   v12 = v20;
 
   if ((v11 & 1) == 0)
@@ -2266,15 +2266,15 @@ LABEL_20:
   }
 
   v14 = &stru_28637B800;
-  if (v6)
+  if (nameCopy)
   {
-    v14 = v6;
+    v14 = nameCopy;
   }
 
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"VACUUM %@", v14];;
-  v7 = [(HDSQLiteDatabase *)self _executeUncachedSQL:v15 error:a4];
+  v7 = [(HDSQLiteDatabase *)self _executeUncachedSQL:v15 error:error];
   v19 = v12;
-  v16 = [(HDSQLiteDatabase *)self _setPragma:v22 integerValue:v6 withDatabaseName:&v19 error:?];
+  v16 = [(HDSQLiteDatabase *)self _setPragma:v22 integerValue:nameCopy withDatabaseName:&v19 error:?];
   v17 = v19;
 
   if ((v16 & 1) == 0)
@@ -2290,11 +2290,11 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)incrementalVacuumDatabaseIfNeeded:(id)a3 error:(id *)a4
+- (BOOL)incrementalVacuumDatabaseIfNeeded:(id)needed error:(id *)error
 {
-  v6 = a3;
+  neededCopy = needed;
   v12 = 0;
-  if (([(HDSQLiteDatabase *)self _integerValueForPragma:v6 databaseName:&v12 value:a4 error:?]& 1) == 0)
+  if (([(HDSQLiteDatabase *)self _integerValueForPragma:neededCopy databaseName:&v12 value:error error:?]& 1) == 0)
   {
     goto LABEL_8;
   }
@@ -2307,7 +2307,7 @@ LABEL_9:
   }
 
   v11 = 0;
-  if (([(HDSQLiteDatabase *)self _integerValueForPragma:v6 databaseName:&v11 value:a4 error:?]& 1) == 0)
+  if (([(HDSQLiteDatabase *)self _integerValueForPragma:neededCopy databaseName:&v11 value:error error:?]& 1) == 0)
   {
 LABEL_8:
     v9 = 0;
@@ -2320,34 +2320,34 @@ LABEL_8:
   }
 
   v7 = @"main";
-  if (v6)
+  if (neededCopy)
   {
-    v7 = v6;
+    v7 = neededCopy;
   }
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA %@.incremental_vacuum(%lld)", v7, v12 - 0x200000 / v11];
-  v9 = [(HDSQLiteDatabase *)self _executeUncachedSQL:v8 error:a4];
+  v9 = [(HDSQLiteDatabase *)self _executeUncachedSQL:v8 error:error];
 
 LABEL_10:
   return v9;
 }
 
-- (BOOL)performIntegrityCheckOnDatabase:(id)a3 error:(id *)a4 integrityErrorHandler:(id)a5
+- (BOOL)performIntegrityCheckOnDatabase:(id)database error:(id *)error integrityErrorHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA %@.INTEGRITY_CHECK", a3];;
+  database = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA %@.INTEGRITY_CHECK", database];;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__HDSQLiteDatabase_performIntegrityCheckOnDatabase_error_integrityErrorHandler___block_invoke;
   v13[3] = &unk_2796BDFA0;
   v15 = &v16;
-  v10 = v8;
+  v10 = handlerCopy;
   v14 = v10;
-  if ([(HDSQLiteDatabase *)self executeUncachedSQL:v9 error:a4 bindingHandler:0 enumerationHandler:v13])
+  if ([(HDSQLiteDatabase *)self executeUncachedSQL:database error:error bindingHandler:0 enumerationHandler:v13])
   {
     if (*(v17 + 24) != 1)
     {
@@ -2355,7 +2355,7 @@ LABEL_10:
       goto LABEL_6;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:102 format:@"Access error during integrity check."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:102 format:@"Access error during integrity check."];
   }
 
   v11 = 0;
@@ -2503,14 +2503,14 @@ LABEL_12:
   return 1;
 }
 
-- (HDSQLiteDatabaseSchema)_schemaForDatabaseWithName:(uint64_t)a3 error:
+- (HDSQLiteDatabaseSchema)_schemaForDatabaseWithName:(uint64_t)name error:
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v16 = objc_alloc_init(HDSQLiteDatabaseSchema);
-    v17 = [(HDSQLiteDatabase *)a1 _tableNamesForDatabaseWithName:v5 error:a3];
+    v17 = [(HDSQLiteDatabase *)self _tableNamesForDatabaseWithName:v5 error:name];
     if (v17)
     {
       v6 = objc_opt_new();
@@ -2533,7 +2533,7 @@ LABEL_12:
             }
 
             v11 = *(*(&v18 + 1) + 8 * i);
-            v12 = [(HDSQLiteDatabase *)a1 _schemaForTableWithName:v11 database:v5 error:a3];
+            v12 = [(HDSQLiteDatabase *)self _schemaForTableWithName:v11 database:v5 error:name];
             if (!v12)
             {
 
@@ -2575,10 +2575,10 @@ LABEL_13:
   return v13;
 }
 
-- (id)_tableNamesForDatabaseWithName:(uint64_t)a3 error:
+- (id)_tableNamesForDatabaseWithName:(uint64_t)name error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = objc_opt_new();
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT name FROM %@.sqlite_master WHERE type='table'", v5];;
@@ -2588,7 +2588,7 @@ LABEL_13:
     v11[3] = &unk_2796BDFC8;
     v8 = v6;
     v12 = v8;
-    if (([(HDSQLiteDatabase *)a1 _executeSQL:v7 cache:0 error:a3 bindingHandler:0 enumerationHandler:v11]& 1) != 0)
+    if (([(HDSQLiteDatabase *)self _executeSQL:v7 cache:0 error:name bindingHandler:0 enumerationHandler:v11]& 1) != 0)
     {
       v9 = v8;
     }
@@ -2616,7 +2616,7 @@ uint64_t __57__HDSQLiteDatabase__tableNamesForDatabaseWithName_error___block_inv
   return 1;
 }
 
-- (id)dumpSchemaWithError:(id *)a3
+- (id)dumpSchemaWithError:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -2626,7 +2626,7 @@ uint64_t __57__HDSQLiteDatabase__tableNamesForDatabaseWithName_error___block_inv
   v21[3] = &unk_2796BDFC8;
   v16 = v5;
   v22 = v16;
-  if (([(HDSQLiteDatabase *)self _executeSQL:0 cache:a3 error:0 bindingHandler:v21 enumerationHandler:?]& 1) != 0)
+  if (([(HDSQLiteDatabase *)self _executeSQL:0 cache:error error:0 bindingHandler:v21 enumerationHandler:?]& 1) != 0)
   {
     v6 = objc_opt_new();
     v19 = 0u;
@@ -2650,7 +2650,7 @@ uint64_t __57__HDSQLiteDatabase__tableNamesForDatabaseWithName_error___block_inv
           v11 = *(*(&v17 + 1) + 8 * i);
           if (([v11 isEqualToString:@"temp"] & 1) == 0)
           {
-            v12 = [(HDSQLiteDatabase *)self _schemaForDatabaseWithName:v11 error:a3];
+            v12 = [(HDSQLiteDatabase *)self _schemaForDatabaseWithName:v11 error:error];
             if (!v12)
             {
 

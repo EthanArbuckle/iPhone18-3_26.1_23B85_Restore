@@ -1,17 +1,17 @@
 @interface PKFrequencySelectionCollectionViewCell
-- (_TtC9PassKitUI38PKFrequencySelectionCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC9PassKitUI38PKFrequencySelectionCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)configureWithOptions:(id)a3 selectedFrequency:(unint64_t)a4 selectedDate:(id)a5 isEditable:(BOOL)a6 titleColor:(id)a7 changeHandler:(id)a8;
+- (_TtC9PassKitUI38PKFrequencySelectionCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC9PassKitUI38PKFrequencySelectionCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)configureWithOptions:(id)options selectedFrequency:(unint64_t)frequency selectedDate:(id)date isEditable:(BOOL)editable titleColor:(id)color changeHandler:(id)handler;
 @end
 
 @implementation PKFrequencySelectionCollectionViewCell
 
-- (void)configureWithOptions:(id)a3 selectedFrequency:(unint64_t)a4 selectedDate:(id)a5 isEditable:(BOOL)a6 titleColor:(id)a7 changeHandler:(id)a8
+- (void)configureWithOptions:(id)options selectedFrequency:(unint64_t)frequency selectedDate:(id)date isEditable:(BOOL)editable titleColor:(id)color changeHandler:(id)handler
 {
-  v36 = a7;
-  v35 = a6;
-  v34 = a4;
-  v32 = self;
+  colorCopy = color;
+  editableCopy = editable;
+  frequencyCopy = frequency;
+  selfCopy = self;
   v9 = sub_1BE04AF64();
   v10 = *(v9 - 8);
   v11 = *(v10 + 64);
@@ -19,7 +19,7 @@
   v13 = &v31 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v14, v15);
   v17 = &v31 - v16;
-  v18 = _Block_copy(a8);
+  v18 = _Block_copy(handler);
   v31 = sub_1BE052744();
   v33 = v17;
   sub_1BE04AEE4();
@@ -34,18 +34,18 @@
   v24 = v31;
   *(v23 + 2) = v20;
   *(v23 + 3) = v24;
-  *(v23 + 4) = v34;
+  *(v23 + 4) = frequencyCopy;
   v25 = v13;
   v26 = v9;
   (*(v10 + 32))(&v23[v21], v25, v9);
-  v23[v22] = v35;
-  v27 = v36;
-  *&v23[(v22 & 0xFFFFFFFFFFFFFFF8) + 8] = v36;
+  v23[v22] = editableCopy;
+  v27 = colorCopy;
+  *&v23[(v22 & 0xFFFFFFFFFFFFFFF8) + 8] = colorCopy;
   v28 = &v23[((v22 & 0xFFFFFFFFFFFFFFF8) + 23) & 0xFFFFFFFFFFFFFFF8];
   *v28 = sub_1BD7CE270;
   v28[1] = v19;
   v29 = v27;
-  v30 = v32;
+  v30 = selfCopy;
   sub_1BE048964();
   sub_1BE048964();
   sub_1BE052E74();
@@ -55,23 +55,23 @@
   (*(v10 + 8))(v33, v26);
 }
 
-- (_TtC9PassKitUI38PKFrequencySelectionCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI38PKFrequencySelectionCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PKFrequencySelectionCollectionViewCell();
   return [(PKFrequencySelectionCollectionViewCell *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9PassKitUI38PKFrequencySelectionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC9PassKitUI38PKFrequencySelectionCollectionViewCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PKFrequencySelectionCollectionViewCell();
-  v4 = a3;
-  v5 = [(PKFrequencySelectionCollectionViewCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PKFrequencySelectionCollectionViewCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

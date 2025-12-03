@@ -1,21 +1,21 @@
 @interface SBCaptureButtonMCProfileRestriction
-- (SBCaptureButtonMCProfileRestriction)initWithCoordinator:(id)a3;
+- (SBCaptureButtonMCProfileRestriction)initWithCoordinator:(id)coordinator;
 - (void)invalidate;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation SBCaptureButtonMCProfileRestriction
 
-- (SBCaptureButtonMCProfileRestriction)initWithCoordinator:(id)a3
+- (SBCaptureButtonMCProfileRestriction)initWithCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = SBCaptureButtonMCProfileRestriction;
-  v3 = [(SBCaptureButtonInternalRestrictionGlue *)&v6 initWithCoordinator:a3];
+  v3 = [(SBCaptureButtonInternalRestrictionGlue *)&v6 initWithCoordinator:coordinator];
   if (v3)
   {
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    [v4 registerObserver:v3];
-    [(SBCaptureButtonMCProfileRestriction *)v3 profileConnectionDidReceiveEffectiveSettingsChangedNotification:v4 userInfo:0];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v3];
+    [(SBCaptureButtonMCProfileRestriction *)v3 profileConnectionDidReceiveEffectiveSettingsChangedNotification:mEMORY[0x277D262A0] userInfo:0];
   }
 
   return v3;
@@ -26,13 +26,13 @@
   v4.receiver = self;
   v4.super_class = SBCaptureButtonMCProfileRestriction;
   [(SBCaptureButtonInternalRestrictionGlue *)&v4 invalidate];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  if ([a3 isCameraAllowed])
+  if ([notification isCameraAllowed])
   {
 
     [(SBCaptureButtonInternalRestrictionGlue *)self relinquishRestriction];

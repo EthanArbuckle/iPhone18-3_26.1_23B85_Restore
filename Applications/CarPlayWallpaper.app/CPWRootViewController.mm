@@ -1,49 +1,49 @@
 @interface CPWRootViewController
-- (CPWRootViewController)initWithWallpaper:(id)a3 assetLibrary:(id)a4 isDimmed:(BOOL)a5 wallpaperProvider:(id)a6 wallpaperCache:(id)a7 isInstrumentCluster:(BOOL)a8;
-- (id)_cacheKeyForWallpaper:(id)a3;
-- (id)createImageFromLayer:(id)a3;
-- (id)resolveWallpaper:(id)a3;
+- (CPWRootViewController)initWithWallpaper:(id)wallpaper assetLibrary:(id)library isDimmed:(BOOL)dimmed wallpaperProvider:(id)provider wallpaperCache:(id)cache isInstrumentCluster:(BOOL)cluster;
+- (id)_cacheKeyForWallpaper:(id)wallpaper;
+- (id)createImageFromLayer:(id)layer;
+- (id)resolveWallpaper:(id)wallpaper;
 - (int64_t)userInterfaceStyle;
 - (unint64_t)_updatedDimStyle;
 - (void)_updateAppearanceTrackingLayer;
 - (void)_updateDimView;
-- (void)_updateOverlayImageViewWithPath:(id)a3;
+- (void)_updateOverlayImageViewWithPath:(id)path;
 - (void)_updateWallpaperImage;
-- (void)createImageOfResolvedWallpaper:(id)a3 completion:(id)a4;
+- (void)createImageOfResolvedWallpaper:(id)wallpaper completion:(id)completion;
 - (void)invalidate;
 - (void)loadView;
-- (void)setCachedWallpaperImage:(id)a3;
-- (void)setShouldHomeScreenWallpaperBeDimmed:(BOOL)a3;
-- (void)setUncachedWallpaperView:(id)a3;
-- (void)setWallpaper:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCachedWallpaperImage:(id)image;
+- (void)setShouldHomeScreenWallpaperBeDimmed:(BOOL)dimmed;
+- (void)setUncachedWallpaperView:(id)view;
+- (void)setWallpaper:(id)wallpaper;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation CPWRootViewController
 
-- (CPWRootViewController)initWithWallpaper:(id)a3 assetLibrary:(id)a4 isDimmed:(BOOL)a5 wallpaperProvider:(id)a6 wallpaperCache:(id)a7 isInstrumentCluster:(BOOL)a8
+- (CPWRootViewController)initWithWallpaper:(id)wallpaper assetLibrary:(id)library isDimmed:(BOOL)dimmed wallpaperProvider:(id)provider wallpaperCache:(id)cache isInstrumentCluster:(BOOL)cluster
 {
-  v21 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  wallpaperCopy = wallpaper;
+  libraryCopy = library;
+  providerCopy = provider;
+  cacheCopy = cache;
   v22.receiver = self;
   v22.super_class = CPWRootViewController;
   v18 = [(CPWRootViewController *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_wallpaper, a3);
-    v19->_isInstrumentCluster = a8;
-    v19->_shouldHomeScreenWallpaperBeDimmed = a5;
-    objc_storeStrong(&v19->_wallpaperProvider, a6);
+    objc_storeStrong(&v18->_wallpaper, wallpaper);
+    v19->_isInstrumentCluster = cluster;
+    v19->_shouldHomeScreenWallpaperBeDimmed = dimmed;
+    objc_storeStrong(&v19->_wallpaperProvider, provider);
     [(CRSUIWallpaperDataProviding *)v19->_wallpaperProvider setDataProviderDelegate:v19];
-    objc_storeStrong(&v19->_wallpaperCache, a7);
+    objc_storeStrong(&v19->_wallpaperCache, cache);
     if (v19->_isInstrumentCluster)
     {
-      objc_storeStrong(&v19->_assetLibrary, a4);
+      objc_storeStrong(&v19->_assetLibrary, library);
       [(CPWAssetLibrary *)v19->_assetLibrary addObserver:v19];
     }
   }
@@ -51,22 +51,22 @@
   return v19;
 }
 
-- (void)setWallpaper:(id)a3
+- (void)setWallpaper:(id)wallpaper
 {
-  v5 = a3;
+  wallpaperCopy = wallpaper;
   if (([(CRWallpaperData *)self->_wallpaper isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_wallpaper, a3);
+    objc_storeStrong(&self->_wallpaper, wallpaper);
     [(CPWRootViewController *)self _updateWallpaperImage];
     [(CPWRootViewController *)self _updateDimView];
   }
 }
 
-- (void)setShouldHomeScreenWallpaperBeDimmed:(BOOL)a3
+- (void)setShouldHomeScreenWallpaperBeDimmed:(BOOL)dimmed
 {
-  if (self->_shouldHomeScreenWallpaperBeDimmed != a3)
+  if (self->_shouldHomeScreenWallpaperBeDimmed != dimmed)
   {
-    self->_shouldHomeScreenWallpaperBeDimmed = a3;
+    self->_shouldHomeScreenWallpaperBeDimmed = dimmed;
     [(CPWRootViewController *)self _updateDimView];
   }
 }
@@ -87,35 +87,35 @@
   v31.super_class = CPWRootViewController;
   [(CPWRootViewController *)&v31 viewDidLoad];
   v3 = +[UIColor tableBackgroundColor];
-  v4 = [(CPWRootViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(CPWRootViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = objc_alloc_init(UIImageView);
   [v5 setContentMode:2];
   [v5 setClipsToBounds:1];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(CPWRootViewController *)self view];
-  [v6 addSubview:v5];
+  view2 = [(CPWRootViewController *)self view];
+  [view2 addSubview:v5];
 
-  v29 = [v5 leadingAnchor];
-  v30 = [(CPWRootViewController *)self view];
-  v28 = [v30 leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  leadingAnchor = [v5 leadingAnchor];
+  view3 = [(CPWRootViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[0] = v27;
-  v25 = [v5 trailingAnchor];
-  v26 = [(CPWRootViewController *)self view];
-  v24 = [v26 trailingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  trailingAnchor = [v5 trailingAnchor];
+  view4 = [(CPWRootViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[1] = v23;
-  v22 = [v5 topAnchor];
-  v7 = [(CPWRootViewController *)self view];
-  v8 = [v7 topAnchor];
-  v9 = [v22 constraintEqualToAnchor:v8];
+  topAnchor = [v5 topAnchor];
+  view5 = [(CPWRootViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[2] = v9;
-  v10 = [v5 bottomAnchor];
-  v11 = [(CPWRootViewController *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor = [v5 bottomAnchor];
+  view6 = [(CPWRootViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[3] = v13;
   v14 = [NSArray arrayWithObjects:v32 count:4];
   [NSLayoutConstraint activateConstraints:v14];
@@ -126,8 +126,8 @@
   [(CPWRootViewController *)self _updateDimView];
   if (self->_isInstrumentCluster)
   {
-    v15 = [(CPWAssetLibrary *)self->_assetLibrary wallpaperOverlayPath];
-    [(CPWRootViewController *)self _updateOverlayImageViewWithPath:v15];
+    wallpaperOverlayPath = [(CPWAssetLibrary *)self->_assetLibrary wallpaperOverlayPath];
+    [(CPWRootViewController *)self _updateOverlayImageViewWithPath:wallpaperOverlayPath];
 
     v16 = objc_alloc_init(CACarPlayRegionLayer);
     trackingLayer = self->_trackingLayer;
@@ -135,16 +135,16 @@
 
     [(CACarPlayRegionLayer *)self->_trackingLayer setIdentifier:@"appearanceTracker:wallpaper"];
     [(CACarPlayRegionLayer *)self->_trackingLayer setFrame:0.0, 0.0, 1.0, 1.0];
-    v18 = [(CPWRootViewController *)self view];
-    v19 = [v18 layer];
-    [v19 addSublayer:self->_trackingLayer];
+    view7 = [(CPWRootViewController *)self view];
+    layer = [view7 layer];
+    [layer addSublayer:self->_trackingLayer];
   }
 
-  v20 = [(CPWRootViewController *)self view];
-  [v20 addSubview:self->_dimView];
+  view8 = [(CPWRootViewController *)self view];
+  [view8 addSubview:self->_dimView];
 
-  v21 = [(CPWRootViewController *)self view];
-  [v21 bringSubviewToFront:self->_dimView];
+  view9 = [(CPWRootViewController *)self view];
+  [view9 bringSubviewToFront:self->_dimView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -153,16 +153,16 @@
   v5.super_class = CPWRootViewController;
   [(CPWRootViewController *)&v5 viewDidLayoutSubviews];
   dimView = self->_dimView;
-  v4 = [(CPWRootViewController *)self view];
-  [v4 bounds];
+  view = [(CPWRootViewController *)self view];
+  [view bounds];
   [(CRSUIWallpaperDimmingView *)dimView setFrame:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CPWRootViewController;
-  [(CPWRootViewController *)&v4 traitCollectionDidChange:a3];
+  [(CPWRootViewController *)&v4 traitCollectionDidChange:change];
   [(CPWRootViewController *)self _updateAppearanceTrackingLayer];
   [(CPWRootViewController *)self _updateWallpaperImage];
   [(CPWRootViewController *)self _updateDimView];
@@ -170,12 +170,12 @@
 
 - (void)_updateAppearanceTrackingLayer
 {
-  v3 = [(CPWRootViewController *)self userInterfaceStyle];
+  userInterfaceStyle = [(CPWRootViewController *)self userInterfaceStyle];
   v4 = sub_100002238(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"light";
-    if (v3 == 2)
+    if (userInterfaceStyle == 2)
     {
       v5 = @"dark";
     }
@@ -188,7 +188,7 @@
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   LODWORD(v6) = 1.0;
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     *&v6 = 0.0;
   }
@@ -199,20 +199,20 @@
 
 - (void)_updateWallpaperImage
 {
-  v3 = [(CPWRootViewController *)self wallpaper];
-  if (v3)
+  wallpaper = [(CPWRootViewController *)self wallpaper];
+  if (wallpaper)
   {
-    v4 = [(CPWRootViewController *)self wallpaperProvider];
-    v5 = [v4 isReady];
+    wallpaperProvider = [(CPWRootViewController *)self wallpaperProvider];
+    isReady = [wallpaperProvider isReady];
 
-    if (v5)
+    if (isReady)
     {
-      v6 = [(CPWRootViewController *)self userInterfaceStyle];
+      userInterfaceStyle = [(CPWRootViewController *)self userInterfaceStyle];
       v7 = sub_100002238(0);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = @"light";
-        if (v6 == 2)
+        if (userInterfaceStyle == 2)
         {
           v8 = @"dark";
         }
@@ -222,23 +222,23 @@
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Current interface style: %{public}@", buf, 0xCu);
       }
 
-      v9 = [(CPWRootViewController *)self wallpaperProvider];
-      v10 = [v9 loadWallpaperFromData:v3];
+      wallpaperProvider2 = [(CPWRootViewController *)self wallpaperProvider];
+      v10 = [wallpaperProvider2 loadWallpaperFromData:wallpaper];
 
       if (v10)
       {
         v11 = [(CPWRootViewController *)self _cacheKeyForWallpaper:v10];
-        v12 = [(CPWRootViewController *)self wallpaperCache];
-        v13 = [v12 imageWithKey:v11];
+        wallpaperCache = [(CPWRootViewController *)self wallpaperCache];
+        v13 = [wallpaperCache imageWithKey:v11];
 
         if (v13)
         {
           v14 = sub_100002238(0);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v3 identifier];
+            identifier = [wallpaper identifier];
             *buf = 138543618;
-            v27 = v15;
+            v27 = identifier;
             v28 = 2114;
             v29 = v11;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Found cached wallpaper image %{public}@ (%{public}@)", buf, 0x16u);
@@ -256,14 +256,14 @@
           {
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v3 identifier];
+              identifier2 = [wallpaper identifier];
               *buf = 138543362;
-              v27 = v19;
+              v27 = identifier2;
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Displaying wallpaper %{public}@", buf, 0xCu);
             }
 
-            v20 = [v16 view];
-            [(CPWRootViewController *)self setUncachedWallpaperView:v20];
+            view = [v16 view];
+            [(CPWRootViewController *)self setUncachedWallpaperView:view];
 
             if (v11)
             {
@@ -275,8 +275,8 @@
               v22[3] = &unk_100014750;
               objc_copyWeak(v25, buf);
               v23 = v11;
-              v24 = v3;
-              v25[1] = v6;
+              v24 = wallpaper;
+              v25[1] = userInterfaceStyle;
               [(CPWRootViewController *)self createImageOfResolvedWallpaper:v21 completion:v22];
 
               objc_destroyWeak(v25);
@@ -288,7 +288,7 @@
           {
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
-              sub_10000A7BC(v3);
+              sub_10000A7BC(wallpaper);
             }
           }
         }
@@ -299,7 +299,7 @@
         v11 = sub_100002238(0);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          sub_10000A850(v3);
+          sub_10000A850(wallpaper);
         }
       }
     }
@@ -329,15 +329,15 @@
   isHomeScreenWallpaperCurrentlyDimmed = self->_isHomeScreenWallpaperCurrentlyDimmed;
   shouldHomeScreenWallpaperBeDimmed = self->_shouldHomeScreenWallpaperBeDimmed;
   homeScreenDimStyle = self->_homeScreenDimStyle;
-  v6 = [(CPWRootViewController *)self _updatedDimStyle];
+  _updatedDimStyle = [(CPWRootViewController *)self _updatedDimStyle];
   if (isHomeScreenWallpaperCurrentlyDimmed == shouldHomeScreenWallpaperBeDimmed)
   {
-    if (homeScreenDimStyle == v6)
+    if (homeScreenDimStyle == _updatedDimStyle)
     {
       return;
     }
 
-    self->_homeScreenDimStyle = v6;
+    self->_homeScreenDimStyle = _updatedDimStyle;
   }
 
   else
@@ -350,32 +350,32 @@
 
 - (unint64_t)_updatedDimStyle
 {
-  v2 = [(CPWRootViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(CPWRootViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v3 == 1;
+  return userInterfaceStyle == 1;
 }
 
-- (id)resolveWallpaper:(id)a3
+- (id)resolveWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  v5 = [(CPWRootViewController *)self wallpaperProvider];
-  v6 = [v5 isReady];
+  wallpaperCopy = wallpaper;
+  wallpaperProvider = [(CPWRootViewController *)self wallpaperProvider];
+  isReady = [wallpaperProvider isReady];
 
   v7 = sub_100002238(0);
-  v8 = v7;
-  if (v6)
+  wallpaperProvider2 = v7;
+  if (isReady)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 identifier];
+      identifier = [wallpaperCopy identifier];
       v12 = 138543362;
-      v13 = v9;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Resolving wallpaper %{public}@", &v12, 0xCu);
+      v13 = identifier;
+      _os_log_impl(&_mh_execute_header, wallpaperProvider2, OS_LOG_TYPE_DEFAULT, "Resolving wallpaper %{public}@", &v12, 0xCu);
     }
 
-    v8 = [(CPWRootViewController *)self wallpaperProvider];
-    v10 = [v8 resolveWallpaper:v4];
+    wallpaperProvider2 = [(CPWRootViewController *)self wallpaperProvider];
+    v10 = [wallpaperProvider2 resolveWallpaper:wallpaperCopy];
   }
 
   else
@@ -393,10 +393,10 @@
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(CPWRootViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(CPWRootViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (!v3)
+  if (!userInterfaceStyle)
   {
     v4 = sub_100002238(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -408,20 +408,20 @@
     return 2;
   }
 
-  return v3;
+  return userInterfaceStyle;
 }
 
-- (id)_cacheKeyForWallpaper:(id)a3
+- (id)_cacheKeyForWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  v5 = [(CPWRootViewController *)self wallpaperProvider];
-  v6 = [v5 isReady];
+  wallpaperCopy = wallpaper;
+  wallpaperProvider = [(CPWRootViewController *)self wallpaperProvider];
+  isReady = [wallpaperProvider isReady];
 
-  if (v6 && ([v4 cacheID], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (isReady && ([wallpaperCopy cacheID], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [(CPWRootViewController *)self userInterfaceStyle];
-    v9 = [v4 cacheID];
-    if (v8 == 2)
+    userInterfaceStyle = [(CPWRootViewController *)self userInterfaceStyle];
+    cacheID = [wallpaperCopy cacheID];
+    if (userInterfaceStyle == 2)
     {
       v10 = @"Dark";
     }
@@ -431,8 +431,8 @@
       v10 = @"Light";
     }
 
-    v11 = [(CPWRootViewController *)self wallpaperProvider];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@-%@-%lu", v9, v10, [v11 version]);
+    wallpaperProvider2 = [(CPWRootViewController *)self wallpaperProvider];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@-%@-%lu", cacheID, v10, [wallpaperProvider2 version]);
   }
 
   else
@@ -443,45 +443,45 @@
   return v12;
 }
 
-- (void)setUncachedWallpaperView:(id)a3
+- (void)setUncachedWallpaperView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   uncachedWallpaperView = self->_uncachedWallpaperView;
-  if (uncachedWallpaperView != v5)
+  if (uncachedWallpaperView != viewCopy)
   {
     [(UIView *)uncachedWallpaperView removeFromSuperview];
-    objc_storeStrong(&self->_uncachedWallpaperView, a3);
-    if (v5)
+    objc_storeStrong(&self->_uncachedWallpaperView, view);
+    if (viewCopy)
     {
-      v7 = [(CPWRootViewController *)self cachedImageView];
-      [v7 setImage:0];
+      cachedImageView = [(CPWRootViewController *)self cachedImageView];
+      [cachedImageView setImage:0];
 
-      [(UIView *)v5 setContentMode:2];
-      [(UIView *)v5 setClipsToBounds:1];
-      [(UIView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v8 = [(CPWRootViewController *)self view];
-      v9 = [(CPWRootViewController *)self cachedImageView];
-      [v8 insertSubview:v5 belowSubview:v9];
+      [(UIView *)viewCopy setContentMode:2];
+      [(UIView *)viewCopy setClipsToBounds:1];
+      [(UIView *)viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(CPWRootViewController *)self view];
+      cachedImageView2 = [(CPWRootViewController *)self cachedImageView];
+      [view insertSubview:viewCopy belowSubview:cachedImageView2];
 
-      v25 = [(UIView *)v5 leadingAnchor];
-      v26 = [(CPWRootViewController *)self view];
-      v24 = [v26 leadingAnchor];
-      v23 = [v25 constraintEqualToAnchor:v24];
+      leadingAnchor = [(UIView *)viewCopy leadingAnchor];
+      view2 = [(CPWRootViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v27[0] = v23;
-      v21 = [(UIView *)v5 trailingAnchor];
-      v22 = [(CPWRootViewController *)self view];
-      v20 = [v22 trailingAnchor];
-      v19 = [v21 constraintEqualToAnchor:v20];
+      trailingAnchor = [(UIView *)viewCopy trailingAnchor];
+      view3 = [(CPWRootViewController *)self view];
+      trailingAnchor2 = [view3 trailingAnchor];
+      v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v27[1] = v19;
-      v10 = [(UIView *)v5 topAnchor];
-      v11 = [(CPWRootViewController *)self view];
-      v12 = [v11 topAnchor];
-      v13 = [v10 constraintEqualToAnchor:v12];
+      topAnchor = [(UIView *)viewCopy topAnchor];
+      view4 = [(CPWRootViewController *)self view];
+      topAnchor2 = [view4 topAnchor];
+      v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v27[2] = v13;
-      v14 = [(UIView *)v5 bottomAnchor];
-      v15 = [(CPWRootViewController *)self view];
-      v16 = [v15 bottomAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16];
+      bottomAnchor = [(UIView *)viewCopy bottomAnchor];
+      view5 = [(CPWRootViewController *)self view];
+      bottomAnchor2 = [view5 bottomAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v27[3] = v17;
       v18 = [NSArray arrayWithObjects:v27 count:4];
       [NSLayoutConstraint activateConstraints:v18];
@@ -489,36 +489,36 @@
   }
 }
 
-- (void)setCachedWallpaperImage:(id)a3
+- (void)setCachedWallpaperImage:(id)image
 {
-  v8 = a3;
-  v4 = [(CPWRootViewController *)self cachedImageView];
-  v5 = [v4 image];
+  imageCopy = image;
+  cachedImageView = [(CPWRootViewController *)self cachedImageView];
+  image = [cachedImageView image];
 
-  if (v5 != v8)
+  if (image != imageCopy)
   {
     [(UIView *)self->_uncachedWallpaperView removeFromSuperview];
     uncachedWallpaperView = self->_uncachedWallpaperView;
     self->_uncachedWallpaperView = 0;
 
-    v7 = [(CPWRootViewController *)self cachedImageView];
-    [v7 setImage:v8];
+    cachedImageView2 = [(CPWRootViewController *)self cachedImageView];
+    [cachedImageView2 setImage:imageCopy];
   }
 }
 
-- (void)_updateOverlayImageViewWithPath:(id)a3
+- (void)_updateOverlayImageViewWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(CPWRootViewController *)self isInstrumentCluster])
   {
-    v5 = [(CPWRootViewController *)self overlayPath];
-    v6 = [v5 isEqualToString:v4];
+    overlayPath = [(CPWRootViewController *)self overlayPath];
+    v6 = [overlayPath isEqualToString:pathCopy];
 
     if ((v6 & 1) == 0)
     {
-      if (v4)
+      if (pathCopy)
       {
-        v7 = [[NSData alloc] initWithContentsOfFile:v4];
+        v7 = [[NSData alloc] initWithContentsOfFile:pathCopy];
         if (v7)
         {
           v8 = [[UIImage alloc] initWithData:v7];
@@ -537,25 +537,25 @@
             [v12 addSubview:self->_overlayImageView];
 
             [(UIImageView *)self->_overlayImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-            v33 = [(UIImageView *)self->_overlayImageView leadingAnchor];
-            v34 = [(CPWRootViewController *)self view];
-            v32 = [v34 leadingAnchor];
-            v31 = [v33 constraintEqualToAnchor:v32];
+            leadingAnchor = [(UIImageView *)self->_overlayImageView leadingAnchor];
+            view = [(CPWRootViewController *)self view];
+            leadingAnchor2 = [view leadingAnchor];
+            v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
             v37[0] = v31;
-            v29 = [(UIImageView *)self->_overlayImageView trailingAnchor];
-            v30 = [(CPWRootViewController *)self view];
-            v28 = [v30 trailingAnchor];
-            v27 = [v29 constraintEqualToAnchor:v28];
+            trailingAnchor = [(UIImageView *)self->_overlayImageView trailingAnchor];
+            view2 = [(CPWRootViewController *)self view];
+            trailingAnchor2 = [view2 trailingAnchor];
+            v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
             v37[1] = v27;
-            v25 = [(UIImageView *)self->_overlayImageView topAnchor];
-            v26 = [(CPWRootViewController *)self view];
-            v24 = [v26 topAnchor];
-            v13 = [v25 constraintEqualToAnchor:v24];
+            topAnchor = [(UIImageView *)self->_overlayImageView topAnchor];
+            view3 = [(CPWRootViewController *)self view];
+            topAnchor2 = [view3 topAnchor];
+            v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
             v37[2] = v13;
-            v14 = [(UIImageView *)self->_overlayImageView bottomAnchor];
-            v15 = [(CPWRootViewController *)self view];
-            v16 = [v15 bottomAnchor];
-            v17 = [v14 constraintEqualToAnchor:v16];
+            bottomAnchor = [(UIImageView *)self->_overlayImageView bottomAnchor];
+            view4 = [(CPWRootViewController *)self view];
+            bottomAnchor2 = [view4 bottomAnchor];
+            v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
             v37[3] = v17;
             v18 = [NSArray arrayWithObjects:v37 count:4];
             [NSLayoutConstraint activateConstraints:v18];
@@ -565,10 +565,10 @@
           }
 
           [(UIImageView *)overlayImageView setImage:v8];
-          v19 = [(CPWRootViewController *)self view];
-          [v19 bringSubviewToFront:self->_overlayImageView];
+          view5 = [(CPWRootViewController *)self view];
+          [view5 bringSubviewToFront:self->_overlayImageView];
 
-          [(CPWRootViewController *)self setOverlayPath:v4];
+          [(CPWRootViewController *)self setOverlayPath:pathCopy];
           v20 = sub_100002238(0);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
@@ -600,8 +600,8 @@
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Wallpaper overlay removed from superview.", buf, 2u);
         }
 
-        v22 = [(CPWRootViewController *)self overlayImageView];
-        [v22 removeFromSuperview];
+        overlayImageView = [(CPWRootViewController *)self overlayImageView];
+        [overlayImageView removeFromSuperview];
 
         [(CPWRootViewController *)self setOverlayImageView:0];
         [(CPWRootViewController *)self setOverlayPath:0];
@@ -610,21 +610,21 @@
   }
 }
 
-- (void)createImageOfResolvedWallpaper:(id)a3 completion:(id)a4
+- (void)createImageOfResolvedWallpaper:(id)wallpaper completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  wallpaperCopy = wallpaper;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    if (v6)
+    if (wallpaperCopy)
     {
-      v9 = [(CPWRootViewController *)self userInterfaceStyle];
-      v10 = [v6 view];
+      userInterfaceStyle = [(CPWRootViewController *)self userInterfaceStyle];
+      view = [wallpaperCopy view];
       v11 = objc_alloc_init(UIWindow);
       v12 = v11;
-      v13 = v9 == 2;
-      if (v9 == 2)
+      v13 = userInterfaceStyle == 2;
+      if (userInterfaceStyle == 2)
       {
         v14 = 2;
       }
@@ -635,16 +635,16 @@
       }
 
       [v11 setOverrideUserInterfaceStyle:v14];
-      [v12 addSubview:v10];
-      [v10 bounds];
+      [v12 addSubview:view];
+      [view bounds];
       if (CGRectIsEmpty(v25))
       {
-        v15 = [(CPWRootViewController *)self view];
-        [v15 frame];
+        view2 = [(CPWRootViewController *)self view];
+        [view2 frame];
         v17 = v16;
-        v18 = [(CPWRootViewController *)self view];
-        [v18 frame];
-        [v10 setFrame:{0.0, 0.0, v17}];
+        view3 = [(CPWRootViewController *)self view];
+        [view3 frame];
+        [view setFrame:{0.0, 0.0, v17}];
       }
 
       v20[0] = _NSConcreteStackBlock;
@@ -652,28 +652,28 @@
       v20[2] = sub_100003FF8;
       v20[3] = &unk_100014778;
       v20[4] = self;
-      v21 = v10;
+      v21 = view;
       v24 = v13;
-      v22 = v6;
+      v22 = wallpaperCopy;
       v23 = v8;
-      v19 = v10;
+      v19 = view;
       [CATransaction bs_performAfterSynchronizedCommit:v20];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (id)createImageFromLayer:(id)a3
+- (id)createImageFromLayer:(id)layer
 {
-  v3 = a3;
+  layerCopy = layer;
   v4 = MTLCreateSystemDefaultDevice();
   if (v4)
   {
-    [v3 bounds];
+    [layerCopy bounds];
     if (v5 != 0.0)
     {
       v7 = v6;
@@ -716,8 +716,8 @@
         [CATransaction begin:v26];
         [CATransaction setDisableActions:1];
         v22 = [CARenderer rendererWithMTLTexture:v19 options:v21];
-        [v22 setLayer:v3];
-        [v3 bounds];
+        [v22 setLayer:layerCopy];
+        [layerCopy bounds];
         [v22 setBounds:?];
         +[CATransaction flush];
         +[CATransaction commit];
@@ -759,8 +759,8 @@ LABEL_10:
 
 - (void)invalidate
 {
-  v2 = [(CPWRootViewController *)self wallpaperProvider];
-  [v2 invalidate];
+  wallpaperProvider = [(CPWRootViewController *)self wallpaperProvider];
+  [wallpaperProvider invalidate];
 }
 
 @end

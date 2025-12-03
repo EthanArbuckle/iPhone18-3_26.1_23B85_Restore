@@ -10,8 +10,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 accessibilityLabel];
-    v5 = [v4 length] != 0;
+    accessibilityLabel = [v2 accessibilityLabel];
+    v5 = [accessibilityLabel length] != 0;
   }
 
   else

@@ -19,8 +19,8 @@
 
 - (void)sendVersionRequestToCompanion
 {
-  v2 = [(NRSystemVersionRequestProxy *)self registryDelegate];
-  [v2 sendVersionRequestToCompanion];
+  registryDelegate = [(NRSystemVersionRequestProxy *)self registryDelegate];
+  [registryDelegate sendVersionRequestToCompanion];
 }
 
 @end

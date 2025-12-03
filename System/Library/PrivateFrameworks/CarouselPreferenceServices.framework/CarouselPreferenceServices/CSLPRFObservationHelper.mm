@@ -1,25 +1,25 @@
 @interface CSLPRFObservationHelper
 - (CSLPRFObservationHelper)init;
 - (unint64_t)observerCount;
-- (void)addObserver:(id)a3;
-- (void)notifyObserversWithBlock:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)notifyObserversWithBlock:(id)block;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CSLPRFObservationHelper
 
-- (void)notifyObserversWithBlock:(id)a3
+- (void)notifyObserversWithBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSHashTable *)self->_lock_observers allObjects];
+  allObjects = [(NSHashTable *)self->_lock_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -35,7 +35,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v10++));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
@@ -48,20 +48,20 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v4];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

@@ -1,31 +1,31 @@
 @interface NPTOLegacyCompanionSyncDeviceController
-- (NPTOLegacyCompanionSyncDeviceController)initWithDevice:(id)a3 service:(id)a4;
+- (NPTOLegacyCompanionSyncDeviceController)initWithDevice:(id)device service:(id)service;
 - (id)_libraryInfo;
 - (id)exportAssetsQueue;
 - (id)sendAssetsQueue;
 - (void)_beginSync;
 - (void)_cancelPendingExportAndSendAssets;
 - (void)_endSync;
-- (void)_exportAsset:(id)a3 forDevice:(id)a4 completionHandler:(id)a5;
-- (void)_handleSyncNeededRequest:(id)a3;
-- (void)_handleSyncResponse:(id)a3;
-- (void)_scheduleExportAndSendAssets:(id)a3 context:(id)a4;
+- (void)_exportAsset:(id)asset forDevice:(id)device completionHandler:(id)handler;
+- (void)_handleSyncNeededRequest:(id)request;
+- (void)_handleSyncResponse:(id)response;
+- (void)_scheduleExportAndSendAssets:(id)assets context:(id)context;
 - (void)_scheduleSync;
-- (void)_sendAssetResourceAtURL:(id)a3 metadata:(id)a4 identifier:(id)a5 completionHandler:(id)a6;
-- (void)controllerDidInvalidateContent:(id)a3;
+- (void)_sendAssetResourceAtURL:(id)l metadata:(id)metadata identifier:(id)identifier completionHandler:(id)handler;
+- (void)controllerDidInvalidateContent:(id)content;
 - (void)pause;
 - (void)resume;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
 @end
 
 @implementation NPTOLegacyCompanionSyncDeviceController
 
-- (NPTOLegacyCompanionSyncDeviceController)initWithDevice:(id)a3 service:(id)a4
+- (NPTOLegacyCompanionSyncDeviceController)initWithDevice:(id)device service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  serviceCopy = service;
   v29.receiver = self;
   v29.super_class = NPTOLegacyCompanionSyncDeviceController;
   v9 = [(NPTOLegacyCompanionSyncDeviceController *)&v29 init];
@@ -43,21 +43,21 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
     }
 
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v9->_service, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v9->_service, service);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.nptocompaniond.sync", v11);
     syncQueue = v9->_syncQueue;
     v9->_syncQueue = v12;
 
-    if ([v7 relationship])
+    if ([deviceCopy relationship])
     {
       v14 = [PSYSyncCoordinator syncCoordinatorWithServiceName:@"com.apple.pairedsync.nptocompaniond"];
       syncCoordinator = v9->_syncCoordinator;
       v9->_syncCoordinator = v14;
     }
 
-    v16 = [[NMSMessageCenter alloc] initWithDevice:v7 service:v8];
+    v16 = [[NMSMessageCenter alloc] initWithDevice:deviceCopy service:serviceCopy];
     messageCenter = v9->_messageCenter;
     v9->_messageCenter = v16;
 
@@ -141,7 +141,7 @@
   self->_resumeFirstUnlockCancellable = 0;
 }
 
-- (void)controllerDidInvalidateContent:(id)a3
+- (void)controllerDidInvalidateContent:(id)content
 {
   v4 = sub_10000268C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -215,13 +215,13 @@
     contentController = self->_contentController;
   }
 
-  v7 = [(NPTOCompanionSyncDeviceContentController *)contentController composeSyncRequest];
+  composeSyncRequest = [(NPTOCompanionSyncDeviceContentController *)contentController composeSyncRequest];
   syncRequest = self->_syncRequest;
-  self->_syncRequest = v7;
+  self->_syncRequest = composeSyncRequest;
 
-  v9 = [(NPTOSyncRequest *)self->_syncRequest npto_libraryCollectionTargetMap];
-  v10 = [(NPTOLegacyCompanionSyncDeviceController *)self _libraryInfo];
-  [v10 setCollectionTargetMap:v9];
+  npto_libraryCollectionTargetMap = [(NPTOSyncRequest *)self->_syncRequest npto_libraryCollectionTargetMap];
+  _libraryInfo = [(NPTOLegacyCompanionSyncDeviceController *)self _libraryInfo];
+  [_libraryInfo setCollectionTargetMap:npto_libraryCollectionTargetMap];
 
   syncCoordinator = self->_syncCoordinator;
   if (syncCoordinator && [(PSYSyncCoordinator *)syncCoordinator syncRestriction])
@@ -270,9 +270,9 @@
   self->_syncTransaction = 0;
 }
 
-- (void)_handleSyncResponse:(id)a3
+- (void)_handleSyncResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = sub_10000268C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -285,12 +285,12 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [(NMSMessageCenter *)self->_messageCenter actionQ];
-  dispatch_assert_queue_V2(v6);
+  actionQ = [(NMSMessageCenter *)self->_messageCenter actionQ];
+  dispatch_assert_queue_V2(actionQ);
 
   v7 = [NPTOTransaction alloc];
-  v8 = [v4 context];
-  v9 = [(NPTOTransaction *)v7 initWithDescription:@"com.apple.nptocompaniond.sync-response" userInfo:0 context:v8];
+  context = [responseCopy context];
+  v9 = [(NPTOTransaction *)v7 initWithDescription:@"com.apple.nptocompaniond.sync-response" userInfo:0 context:context];
 
   syncQueue = self->_syncQueue;
   block[0] = _NSConcreteStackBlock;
@@ -298,16 +298,16 @@
   block[2] = sub_100056D78;
   block[3] = &unk_10008B700;
   block[4] = self;
-  v14 = v4;
+  v14 = responseCopy;
   v15 = v9;
   v11 = v9;
-  v12 = v4;
+  v12 = responseCopy;
   dispatch_async(syncQueue, block);
 }
 
-- (void)_handleSyncNeededRequest:(id)a3
+- (void)_handleSyncNeededRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sub_10000268C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -320,13 +320,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", buf, 0x1Cu);
   }
 
-  v6 = [(NMSMessageCenter *)self->_messageCenter actionQ];
-  dispatch_assert_queue_V2(v6);
+  actionQ = [(NMSMessageCenter *)self->_messageCenter actionQ];
+  dispatch_assert_queue_V2(actionQ);
 
   v7 = [NPTOTransaction alloc];
-  v8 = [v4 context];
+  context = [requestCopy context];
 
-  v9 = [(NPTOTransaction *)v7 initWithDescription:@"com.apple.nptocompaniond.sync-needed-request" userInfo:0 context:v8];
+  v9 = [(NPTOTransaction *)v7 initWithDescription:@"com.apple.nptocompaniond.sync-needed-request" userInfo:0 context:context];
   syncQueue = self->_syncQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -387,23 +387,23 @@
   }
 
   dispatch_assert_queue_V2(self->_syncQueue);
-  v4 = [(NPTOLegacyCompanionSyncDeviceController *)self exportAssetsQueue];
-  [v4 cancelAllOperations];
+  exportAssetsQueue = [(NPTOLegacyCompanionSyncDeviceController *)self exportAssetsQueue];
+  [exportAssetsQueue cancelAllOperations];
 
-  v5 = [(NPTOLegacyCompanionSyncDeviceController *)self sendAssetsQueue];
-  [v5 cancelAllOperations];
+  sendAssetsQueue = [(NPTOLegacyCompanionSyncDeviceController *)self sendAssetsQueue];
+  [sendAssetsQueue cancelAllOperations];
 
-  v6 = [(NPTOLegacyCompanionSyncDeviceController *)self exportAssetsQueue];
-  [v6 waitUntilAllOperationsAreFinished];
+  exportAssetsQueue2 = [(NPTOLegacyCompanionSyncDeviceController *)self exportAssetsQueue];
+  [exportAssetsQueue2 waitUntilAllOperationsAreFinished];
 
-  v7 = [(NPTOLegacyCompanionSyncDeviceController *)self sendAssetsQueue];
-  [v7 waitUntilAllOperationsAreFinished];
+  sendAssetsQueue2 = [(NPTOLegacyCompanionSyncDeviceController *)self sendAssetsQueue];
+  [sendAssetsQueue2 waitUntilAllOperationsAreFinished];
 }
 
-- (void)_scheduleExportAndSendAssets:(id)a3 context:(id)a4
+- (void)_scheduleExportAndSendAssets:(id)assets context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  contextCopy = context;
   v8 = sub_10000268C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -417,7 +417,7 @@
   }
 
   dispatch_assert_queue_V2(self->_syncQueue);
-  v9 = [NSMutableSet setWithArray:v6];
+  v9 = [NSMutableSet setWithArray:assetsCopy];
   v10 = +[NSMutableSet set];
   v11 = +[NSMutableSet set];
   *buf = 0;
@@ -438,7 +438,7 @@
   v34 = buf;
   v14 = v11;
   v32 = v14;
-  v15 = v6;
+  v15 = assetsCopy;
   v33 = v15;
   v16 = objc_retainBlock(v29);
   v17 = +[NRPairedDeviceRegistry sharedInstance];
@@ -448,9 +448,9 @@
   v23[1] = 3221225472;
   v23[2] = sub_100057B38;
   v23[3] = &unk_10008B7F0;
-  v19 = v7;
+  v19 = contextCopy;
   v24 = v19;
-  v25 = self;
+  selfCopy = self;
   v20 = v15;
   v26 = v20;
   v21 = v18;
@@ -462,76 +462,76 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_exportAsset:(id)a3 forDevice:(id)a4 completionHandler:(id)a5
+- (void)_exportAsset:(id)asset forDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  deviceCopy = device;
+  handlerCopy = handler;
   contentController = self->_contentController;
-  v12 = [v8 localIdentifier];
-  v13 = [(NPTOCompanionSyncDeviceContentController *)contentController assetForLocalIdentifier:v12];
+  localIdentifier = [assetCopy localIdentifier];
+  v13 = [(NPTOCompanionSyncDeviceContentController *)contentController assetForLocalIdentifier:localIdentifier];
 
   if (v13)
   {
-    [v13 npto_exportForDevice:v9 isUserInitiated:1 completionHandler:v10];
+    [v13 npto_exportForDevice:deviceCopy isUserInitiated:1 completionHandler:handlerCopy];
   }
 
   else
   {
     v22 = NSLocalizedDescriptionKey;
-    v14 = [v8 localIdentifier];
-    v15 = [NSString stringWithFormat:@"Could not find asset to export %@ %@", v14, v8];
-    v23 = v15;
+    localIdentifier2 = [assetCopy localIdentifier];
+    assetCopy = [NSString stringWithFormat:@"Could not find asset to export %@ %@", localIdentifier2, assetCopy];
+    v23 = assetCopy;
     v16 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v17 = [NSError errorWithDomain:@"NanoPhotosErrorDomain" code:0 userInfo:v16];
 
     v18 = sub_10000268C();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v17 localizedDescription];
+      localizedDescription = [v17 localizedDescription];
       *buf = 138412290;
-      v21 = v19;
+      v21 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 0, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v17);
     }
   }
 }
 
-- (void)_sendAssetResourceAtURL:(id)a3 metadata:(id)a4 identifier:(id)a5 completionHandler:(id)a6
+- (void)_sendAssetResourceAtURL:(id)l metadata:(id)metadata identifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  lCopy = l;
   v14 = objc_alloc_init(NMSOutgoingFile);
   [(NMSOutgoingFile *)v14 setMessageID:9];
-  [(NMSOutgoingFile *)v14 setURL:v13];
+  [(NMSOutgoingFile *)v14 setURL:lCopy];
 
-  [(NMSOutgoingFile *)v14 setMetadata:v12];
-  [(NMSOutgoingFile *)v14 setQueueOneIdentifier:v11];
+  [(NMSOutgoingFile *)v14 setMetadata:metadataCopy];
+  [(NMSOutgoingFile *)v14 setQueueOneIdentifier:identifierCopy];
 
   [(NMSOutgoingFile *)v14 setUnlinkWhenSent:1];
-  [(NMSMessageCenter *)self->_messageCenter sendFile:v14 completionHandler:v10];
+  [(NMSMessageCenter *)self->_messageCenter sendFile:v14 completionHandler:handlerCopy];
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v8 = sub_10000268C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 serviceName];
-    [v7 syncSessionType];
+    serviceName = [coordinatorCopy serviceName];
+    [sessionCopy syncSessionType];
     v10 = NSStringfromPSYSyncSessionType();
-    v11 = [v7 pairedDevice];
-    v12 = [v11 valueForProperty:NRDevicePropertyName];
+    pairedDevice = [sessionCopy pairedDevice];
+    v12 = [pairedDevice valueForProperty:NRDevicePropertyName];
     v13 = 138412802;
-    v14 = v9;
+    v14 = serviceName;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
@@ -542,27 +542,27 @@
   [(NPTOLegacyCompanionSyncDeviceController *)self _scheduleSync];
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v7 = sub_10000268C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 serviceName];
-    v9 = [v6 pairedDevice];
-    v10 = [v9 valueForProperty:NRDevicePropertyName];
+    serviceName = [coordinatorCopy serviceName];
+    pairedDevice = [sessionCopy pairedDevice];
+    v10 = [pairedDevice valueForProperty:NRDevicePropertyName];
     v11 = 138412546;
-    v12 = v8;
+    v12 = serviceName;
     v13 = 2112;
     v14 = v10;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Did receive syncCoordinator:didInvalidateSyncSession: from coordinator with service name: %@ for device: %@", &v11, 0x16u);
   }
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
-  v4 = a3;
+  restrictionCopy = restriction;
   v5 = sub_10000268C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -575,8 +575,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s (%s:%d)", &v7, 0x1Cu);
   }
 
-  v6 = [v4 syncRestriction];
-  if (v6)
+  syncRestriction = [restrictionCopy syncRestriction];
+  if (syncRestriction)
   {
     [(NPTOLegacyCompanionSyncDeviceController *)self _endSync];
   }

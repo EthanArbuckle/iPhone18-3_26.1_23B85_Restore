@@ -1,21 +1,21 @@
 @interface CSDMessagingRoute
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingRoute)initWithTURoute:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingRoute)initWithTURoute:(id)route;
 - (TURoute)tuRoute;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDeviceType:(id)a3;
+- (int)StringAsDeviceType:(id)type;
 - (int)deviceType;
 - (int64_t)tuRouteDeviceType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProtoCurrentlyPicked:(BOOL)a3;
-- (void)setHasProtoGuest:(BOOL)a3;
-- (void)setHasProtoSupportsRelay:(BOOL)a3;
-- (void)setTURouteDeviceType:(int64_t)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProtoCurrentlyPicked:(BOOL)picked;
+- (void)setHasProtoGuest:(BOOL)guest;
+- (void)setHasProtoSupportsRelay:(BOOL)relay;
+- (void)setTURouteDeviceType:(int64_t)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingRoute
@@ -33,190 +33,190 @@
   }
 }
 
-- (int)StringAsDeviceType:(id)a3
+- (int)StringAsDeviceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AirPods"])
+  else if ([typeCopy isEqualToString:@"AirPods"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BeatsSolo"])
+  else if ([typeCopy isEqualToString:@"BeatsSolo"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BeatsX"])
+  else if ([typeCopy isEqualToString:@"BeatsX"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Powerbeats"])
+  else if ([typeCopy isEqualToString:@"Powerbeats"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"BeatsStudio"])
+  else if ([typeCopy isEqualToString:@"BeatsStudio"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"HomePod"])
+  else if ([typeCopy isEqualToString:@"HomePod"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"iPod"])
+  else if ([typeCopy isEqualToString:@"iPod"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"iPad"])
+  else if ([typeCopy isEqualToString:@"iPad"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"iMac"])
+  else if ([typeCopy isEqualToString:@"iMac"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"MacBook"])
+  else if ([typeCopy isEqualToString:@"MacBook"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"MacMini"])
+  else if ([typeCopy isEqualToString:@"MacMini"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"MacPro"])
+  else if ([typeCopy isEqualToString:@"MacPro"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Watch"])
+  else if ([typeCopy isEqualToString:@"Watch"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"HomePodStereoPair"])
+  else if ([typeCopy isEqualToString:@"HomePodStereoPair"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"iPadPro"])
+  else if ([typeCopy isEqualToString:@"iPadPro"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"PowerbeatsPro"])
+  else if ([typeCopy isEqualToString:@"PowerbeatsPro"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"BeatsSoloPro"])
+  else if ([typeCopy isEqualToString:@"BeatsSoloPro"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"AirPodsPro"])
+  else if ([typeCopy isEqualToString:@"AirPodsPro"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Powerbeats4"])
+  else if ([typeCopy isEqualToString:@"Powerbeats4"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"HeadPods"])
+  else if ([typeCopy isEqualToString:@"HeadPods"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"BeatsX2"])
+  else if ([typeCopy isEqualToString:@"BeatsX2"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"HomePodMini"])
+  else if ([typeCopy isEqualToString:@"HomePodMini"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"HomePodMiniStereoPair"])
+  else if ([typeCopy isEqualToString:@"HomePodMiniStereoPair"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"BeatsStudioBuds"])
+  else if ([typeCopy isEqualToString:@"BeatsStudioBuds"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"BeatsFitPro"])
+  else if ([typeCopy isEqualToString:@"BeatsFitPro"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"AirPods3"])
+  else if ([typeCopy isEqualToString:@"AirPods3"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"B620"])
+  else if ([typeCopy isEqualToString:@"B620"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"B620StereoPair"])
+  else if ([typeCopy isEqualToString:@"B620StereoPair"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"B698"])
+  else if ([typeCopy isEqualToString:@"B698"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"B487"])
+  else if ([typeCopy isEqualToString:@"B487"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"B463"])
+  else if ([typeCopy isEqualToString:@"B463"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"B498"])
+  else if ([typeCopy isEqualToString:@"B498"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"B768"])
+  else if ([typeCopy isEqualToString:@"B768"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"VisionPro"])
+  else if ([typeCopy isEqualToString:@"VisionPro"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"B494b"])
+  else if ([typeCopy isEqualToString:@"B494b"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"B788"])
+  else if ([typeCopy isEqualToString:@"B788"])
   {
     v4 = 39;
   }
@@ -229,9 +229,9 @@
   return v4;
 }
 
-- (void)setHasProtoCurrentlyPicked:(BOOL)a3
+- (void)setHasProtoCurrentlyPicked:(BOOL)picked
 {
-  if (a3)
+  if (picked)
   {
     v3 = 2;
   }
@@ -244,9 +244,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasProtoGuest:(BOOL)a3
+- (void)setHasProtoGuest:(BOOL)guest
 {
-  if (a3)
+  if (guest)
   {
     v3 = 4;
   }
@@ -259,9 +259,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasProtoSupportsRelay:(BOOL)a3
+- (void)setHasProtoSupportsRelay:(BOOL)relay
 {
-  if (a3)
+  if (relay)
   {
     v3 = 8;
   }
@@ -279,8 +279,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingRoute;
   v3 = [(CSDMessagingRoute *)&v7 description];
-  v4 = [(CSDMessagingRoute *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingRoute *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -358,20 +358,20 @@ LABEL_15:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_uniqueIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -379,7 +379,7 @@ LABEL_15:
   {
     deviceType = self->_deviceType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -400,7 +400,7 @@ LABEL_7:
 
   protoCurrentlyPicked = self->_protoCurrentlyPicked;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -416,39 +416,39 @@ LABEL_8:
 LABEL_15:
   protoGuest = self->_protoGuest;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
     protoSupportsRelay = self->_protoSupportsRelay;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uniqueIdentifier)
   {
-    [v4 setUniqueIdentifier:?];
-    v4 = v6;
+    [toCopy setUniqueIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_name)
   {
     [v6 setName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_deviceType;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 2) = self->_deviceType;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -467,8 +467,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 32) = self->_protoCurrentlyPicked;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 32) = self->_protoCurrentlyPicked;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -482,26 +482,26 @@ LABEL_8:
   }
 
 LABEL_15:
-  *(v4 + 33) = self->_protoGuest;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 33) = self->_protoGuest;
+  *(toCopy + 36) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
-    *(v4 + 34) = self->_protoSupportsRelay;
-    *(v4 + 36) |= 8u;
+    *(toCopy + 34) = self->_protoSupportsRelay;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueIdentifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_name copyWithZone:a3];
+  v8 = [(NSString *)self->_name copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -555,16 +555,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  if (uniqueIdentifier | *(v4 + 3))
+  if (uniqueIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)uniqueIdentifier isEqual:?])
     {
@@ -573,7 +573,7 @@ LABEL_5:
   }
 
   name = self->_name;
-  if (name | *(v4 + 2))
+  if (name | *(equalCopy + 2))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -583,85 +583,85 @@ LABEL_5:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_deviceType != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_deviceType != *(equalCopy + 2))
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_33;
     }
 
-    v8 = *(v4 + 32);
+    v8 = *(equalCopy + 32);
     if (self->_protoCurrentlyPicked)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_33;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
       goto LABEL_33;
     }
 
-    v9 = *(v4 + 33);
+    v9 = *(equalCopy + 33);
     if (self->_protoGuest)
     {
-      if ((*(v4 + 33) & 1) == 0)
+      if ((*(equalCopy + 33) & 1) == 0)
       {
         goto LABEL_33;
       }
     }
 
-    else if (*(v4 + 33))
+    else if (*(equalCopy + 33))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_33;
   }
 
-  v7 = (*(v4 + 36) & 8) == 0;
+  v7 = (*(equalCopy + 36) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) != 0)
+    if ((*(equalCopy + 36) & 8) != 0)
     {
       if (self->_protoSupportsRelay)
       {
-        if (*(v4 + 34))
+        if (*(equalCopy + 34))
         {
           goto LABEL_35;
         }
       }
 
-      else if (!*(v4 + 34))
+      else if (!*(equalCopy + 34))
       {
 LABEL_35:
         v7 = 1;
@@ -734,28 +734,28 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(CSDMessagingRoute *)self setUniqueIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(CSDMessagingRoute *)self setName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_deviceType = *(v4 + 2);
+    self->_deviceType = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -768,14 +768,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 36) & 2) == 0)
+  else if ((*(fromCopy + 36) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_protoCurrentlyPicked = *(v4 + 32);
+  self->_protoCurrentlyPicked = *(fromCopy + 32);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -788,34 +788,34 @@ LABEL_8:
   }
 
 LABEL_15:
-  self->_protoGuest = *(v4 + 33);
+  self->_protoGuest = *(fromCopy + 33);
   *&self->_has |= 4u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_9:
-    self->_protoSupportsRelay = *(v4 + 34);
+    self->_protoSupportsRelay = *(fromCopy + 34);
     *&self->_has |= 8u;
   }
 
 LABEL_10:
 }
 
-- (CSDMessagingRoute)initWithTURoute:(id)a3
+- (CSDMessagingRoute)initWithTURoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = [(CSDMessagingRoute *)self init];
   if (v5)
   {
-    v6 = [v4 uniqueIdentifier];
-    [(CSDMessagingRoute *)v5 setUniqueIdentifier:v6];
+    uniqueIdentifier = [routeCopy uniqueIdentifier];
+    [(CSDMessagingRoute *)v5 setUniqueIdentifier:uniqueIdentifier];
 
-    v7 = [v4 name];
-    [(CSDMessagingRoute *)v5 setName:v7];
+    name = [routeCopy name];
+    [(CSDMessagingRoute *)v5 setName:name];
 
-    -[CSDMessagingRoute setTURouteDeviceType:](v5, "setTURouteDeviceType:", [v4 deviceType]);
-    -[CSDMessagingRoute setCurrentlyPicked:](v5, "setCurrentlyPicked:", [v4 isCurrentlyPicked]);
-    -[CSDMessagingRoute setGuest:](v5, "setGuest:", [v4 isGuest]);
-    -[CSDMessagingRoute setSupportsRelay:](v5, "setSupportsRelay:", [v4 supportsRelay]);
+    -[CSDMessagingRoute setTURouteDeviceType:](v5, "setTURouteDeviceType:", [routeCopy deviceType]);
+    -[CSDMessagingRoute setCurrentlyPicked:](v5, "setCurrentlyPicked:", [routeCopy isCurrentlyPicked]);
+    -[CSDMessagingRoute setGuest:](v5, "setGuest:", [routeCopy isGuest]);
+    -[CSDMessagingRoute setSupportsRelay:](v5, "setSupportsRelay:", [routeCopy supportsRelay]);
   }
 
   return v5;
@@ -824,9 +824,9 @@ LABEL_10:
 - (TURoute)tuRoute
 {
   v3 = [TUMutableRoute alloc];
-  v4 = [(CSDMessagingRoute *)self uniqueIdentifier];
-  v5 = [(CSDMessagingRoute *)self name];
-  v6 = [v3 initWithUniqueIdentifier:v4 name:v5];
+  uniqueIdentifier = [(CSDMessagingRoute *)self uniqueIdentifier];
+  name = [(CSDMessagingRoute *)self name];
+  v6 = [v3 initWithUniqueIdentifier:uniqueIdentifier name:name];
 
   [v6 setDeviceType:{-[CSDMessagingRoute tuRouteDeviceType](self, "tuRouteDeviceType")}];
   [v6 setCurrentlyPicked:{-[CSDMessagingRoute isCurrentlyPicked](self, "isCurrentlyPicked")}];
@@ -851,10 +851,10 @@ LABEL_10:
   }
 }
 
-- (void)setTURouteDeviceType:(int64_t)a3
+- (void)setTURouteDeviceType:(int64_t)type
 {
   v5 = 1;
-  switch(a3)
+  switch(type)
   {
     case 0:
       if ([(CSDMessagingRoute *)self deviceType])

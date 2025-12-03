@@ -1,7 +1,7 @@
 @interface HMDCHIPAccessoryDataSource
 + (id)logCategory;
 - (BOOL)wedSupport;
-- (HMDCHIPAccessoryDataSource)initWithNodeID:(id)a3 accessory:(id)a4;
+- (HMDCHIPAccessoryDataSource)initWithNodeID:(id)d accessory:(id)accessory;
 - (HMDMatterAccessoryProtocol)accessory;
 - (NSData)attributeDatabase;
 - (NSNumber)productID;
@@ -11,17 +11,17 @@
 - (NSSet)pairings;
 - (NSString)extendedMACAddress;
 - (id)logIdentifier;
-- (void)_updateAccessoryModelWithLabel:(id)a3 completion:(id)a4 block:(id)a5;
-- (void)updateAttributeDatabase:(id)a3 completion:(id)a4;
-- (void)updateExtendedMACAddress:(id)a3 completion:(id)a4;
-- (void)updateNodeID:(id)a3 completion:(id)a4;
-- (void)updatePairings:(id)a3 completion:(id)a4;
-- (void)updateProductID:(id)a3 completion:(id)a4;
-- (void)updateSoftwareVersionNumber:(id)a3 completion:(id)a4;
-- (void)updateSupportedLinkLayerTypes:(id)a3 completion:(id)a4;
-- (void)updateVendorID:(id)a3 completion:(id)a4;
-- (void)updateVendorID:(id)a3 productID:(id)a4 completion:(id)a5;
-- (void)updateWedSupport:(BOOL)a3 completion:(id)a4;
+- (void)_updateAccessoryModelWithLabel:(id)label completion:(id)completion block:(id)block;
+- (void)updateAttributeDatabase:(id)database completion:(id)completion;
+- (void)updateExtendedMACAddress:(id)address completion:(id)completion;
+- (void)updateNodeID:(id)d completion:(id)completion;
+- (void)updatePairings:(id)pairings completion:(id)completion;
+- (void)updateProductID:(id)d completion:(id)completion;
+- (void)updateSoftwareVersionNumber:(id)number completion:(id)completion;
+- (void)updateSupportedLinkLayerTypes:(id)types completion:(id)completion;
+- (void)updateVendorID:(id)d completion:(id)completion;
+- (void)updateVendorID:(id)d productID:(id)iD completion:(id)completion;
+- (void)updateWedSupport:(BOOL)support completion:(id)completion;
 @end
 
 @implementation HMDCHIPAccessoryDataSource
@@ -36,21 +36,21 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v5 = [v4 logIdentifier];
-  v6 = [(HMDCHIPAccessoryDataSource *)self nodeID];
-  v7 = [v3 stringWithFormat:@"%@/%@", v5, v6];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  logIdentifier = [accessory logIdentifier];
+  nodeID = [(HMDCHIPAccessoryDataSource *)self nodeID];
+  v7 = [v3 stringWithFormat:@"%@/%@", logIdentifier, nodeID];
 
   return v7;
 }
 
-- (void)updateSupportedLinkLayerTypes:(id)a3 completion:(id)a4
+- (void)updateSupportedLinkLayerTypes:(id)types completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -58,7 +58,7 @@
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = typesCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating accessory model link layer types to %@", buf, 0x16u);
   }
 
@@ -67,29 +67,29 @@
   v14[1] = 3221225472;
   v14[2] = __71__HMDCHIPAccessoryDataSource_updateSupportedLinkLayerTypes_completion___block_invoke;
   v14[3] = &unk_278675A50;
-  v15 = v6;
-  v12 = v6;
-  [(HMDCHIPAccessoryDataSource *)v9 _updateAccessoryModelWithLabel:@"Update supported link layer types" completion:v7 block:v14];
+  v15 = typesCopy;
+  v12 = typesCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update supported link layer types" completion:completionCopy block:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (NSNumber)supportedLinkLayerTypes
 {
-  v2 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v3 = [v2 chipStorage];
-  v4 = [v3 supportedLinkLayerTypes];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  chipStorage = [accessory chipStorage];
+  supportedLinkLayerTypes = [chipStorage supportedLinkLayerTypes];
 
-  return v4;
+  return supportedLinkLayerTypes;
 }
 
-- (void)updateSoftwareVersionNumber:(id)a3 completion:(id)a4
+- (void)updateSoftwareVersionNumber:(id)number completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -97,7 +97,7 @@
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = numberCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating accessory model software version to %@", buf, 0x16u);
   }
 
@@ -106,28 +106,28 @@
   v14[1] = 3221225472;
   v14[2] = __69__HMDCHIPAccessoryDataSource_updateSoftwareVersionNumber_completion___block_invoke;
   v14[3] = &unk_278675A50;
-  v15 = v6;
-  v12 = v6;
-  [(HMDCHIPAccessoryDataSource *)v9 _updateAccessoryModelWithLabel:@"Update CHIP software version number" completion:v7 block:v14];
+  v15 = numberCopy;
+  v12 = numberCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP software version number" completion:completionCopy block:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (NSNumber)softwareVersionNumber
 {
-  v2 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v3 = [v2 chipStorage];
-  v4 = [v3 softwareVersionNumber];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  chipStorage = [accessory chipStorage];
+  softwareVersionNumber = [chipStorage softwareVersionNumber];
 
-  return v4;
+  return softwareVersionNumber;
 }
 
-- (void)updateWedSupport:(BOOL)a3 completion:(id)a4
+- (void)updateWedSupport:(BOOL)support completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -145,8 +145,8 @@
   v13[1] = 3221225472;
   v13[2] = __58__HMDCHIPAccessoryDataSource_updateWedSupport_completion___block_invoke;
   v13[3] = &__block_descriptor_33_e36_v16__0__HMDHAPAccessoryTransaction_8l;
-  v14 = a3;
-  [(HMDCHIPAccessoryDataSource *)v8 _updateAccessoryModelWithLabel:@"Update CHIP wed support" completion:v6 block:v13];
+  supportCopy = support;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP wed support" completion:completionCopy block:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -162,20 +162,20 @@ void __58__HMDCHIPAccessoryDataSource_updateWedSupport_completion___block_invoke
 
 - (BOOL)wedSupport
 {
-  v2 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v3 = [v2 chipStorage];
-  v4 = [v3 wedSupport];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  chipStorage = [accessory chipStorage];
+  wedSupport = [chipStorage wedSupport];
 
-  return v4;
+  return wedSupport;
 }
 
-- (void)updateExtendedMACAddress:(id)a3 completion:(id)a4
+- (void)updateExtendedMACAddress:(id)address completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -183,7 +183,7 @@ void __58__HMDCHIPAccessoryDataSource_updateWedSupport_completion___block_invoke
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = addressCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating accessory model extended MAC address to %@", buf, 0x16u);
   }
 
@@ -192,29 +192,29 @@ void __58__HMDCHIPAccessoryDataSource_updateWedSupport_completion___block_invoke
   v14[1] = 3221225472;
   v14[2] = __66__HMDCHIPAccessoryDataSource_updateExtendedMACAddress_completion___block_invoke;
   v14[3] = &unk_278675A50;
-  v15 = v6;
-  v12 = v6;
-  [(HMDCHIPAccessoryDataSource *)v9 _updateAccessoryModelWithLabel:@"Update CHIP extended MAC address" completion:v7 block:v14];
+  v15 = addressCopy;
+  v12 = addressCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP extended MAC address" completion:completionCopy block:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (NSString)extendedMACAddress
 {
-  v2 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v3 = [v2 chipStorage];
-  v4 = [v3 extendedMACAddress];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  chipStorage = [accessory chipStorage];
+  extendedMACAddress = [chipStorage extendedMACAddress];
 
-  return v4;
+  return extendedMACAddress;
 }
 
-- (void)updatePairings:(id)a3 completion:(id)a4
+- (void)updatePairings:(id)pairings completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pairingsCopy = pairings;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -222,7 +222,7 @@ void __58__HMDCHIPAccessoryDataSource_updateWedSupport_completion___block_invoke
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = pairingsCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating accessory model pairings to %@", buf, 0x16u);
   }
 
@@ -231,9 +231,9 @@ void __58__HMDCHIPAccessoryDataSource_updateWedSupport_completion___block_invoke
   v14[1] = 3221225472;
   v14[2] = __56__HMDCHIPAccessoryDataSource_updatePairings_completion___block_invoke;
   v14[3] = &unk_278675A50;
-  v15 = v6;
-  v12 = v6;
-  [(HMDCHIPAccessoryDataSource *)v9 _updateAccessoryModelWithLabel:@"Update CHIP pairings" completion:v7 block:v14];
+  v15 = pairingsCopy;
+  v12 = pairingsCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP pairings" completion:completionCopy block:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -257,21 +257,21 @@ id __56__HMDCHIPAccessoryDataSource_updatePairings_completion___block_invoke_2(u
 
 - (NSSet)pairings
 {
-  v2 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v3 = [v2 chipStorage];
-  v4 = [v3 pairings];
-  v5 = [v4 na_map:&__block_literal_global_79018];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  chipStorage = [accessory chipStorage];
+  pairings = [chipStorage pairings];
+  v5 = [pairings na_map:&__block_literal_global_79018];
 
   return v5;
 }
 
-- (void)updateAttributeDatabase:(id)a3 completion:(id)a4
+- (void)updateAttributeDatabase:(id)database completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -279,7 +279,7 @@ id __56__HMDCHIPAccessoryDataSource_updatePairings_completion___block_invoke_2(u
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = databaseCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating accessory model attribute database to %@", buf, 0x16u);
   }
 
@@ -288,30 +288,30 @@ id __56__HMDCHIPAccessoryDataSource_updatePairings_completion___block_invoke_2(u
   v14[1] = 3221225472;
   v14[2] = __65__HMDCHIPAccessoryDataSource_updateAttributeDatabase_completion___block_invoke;
   v14[3] = &unk_278675A50;
-  v15 = v6;
-  v12 = v6;
-  [(HMDCHIPAccessoryDataSource *)v9 _updateAccessoryModelWithLabel:@"Update CHIP attribute database" completion:v7 block:v14];
+  v15 = databaseCopy;
+  v12 = databaseCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP attribute database" completion:completionCopy block:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (NSData)attributeDatabase
 {
-  v2 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v3 = [v2 chipStorage];
-  v4 = [v3 attributeDatabase];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  chipStorage = [accessory chipStorage];
+  attributeDatabase = [chipStorage attributeDatabase];
 
-  return v4;
+  return attributeDatabase;
 }
 
-- (void)updateVendorID:(id)a3 productID:(id)a4 completion:(id)a5
+- (void)updateVendorID:(id)d productID:(id)iD completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -319,9 +319,9 @@ id __56__HMDCHIPAccessoryDataSource_updatePairings_completion___block_invoke_2(u
     *buf = 138543874;
     v22 = v14;
     v23 = 2112;
-    v24 = v8;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = iDCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@updateVendorID:productID: Updating accessory model vendor ID to %@, product ID to %@", buf, 0x20u);
   }
 
@@ -330,11 +330,11 @@ id __56__HMDCHIPAccessoryDataSource_updatePairings_completion___block_invoke_2(u
   v18[1] = 3221225472;
   v18[2] = __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___block_invoke;
   v18[3] = &unk_278675A78;
-  v19 = v8;
-  v20 = v9;
-  v15 = v9;
-  v16 = v8;
-  [(HMDCHIPAccessoryDataSource *)v12 _updateAccessoryModelWithLabel:@"Update CHIP product ID and vendor ID" completion:v10 block:v18];
+  v19 = dCopy;
+  v20 = iDCopy;
+  v15 = iDCopy;
+  v16 = dCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP product ID and vendor ID" completion:completionCopy block:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -347,13 +347,13 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
   [v4 setChipProductID:*(a1 + 40)];
 }
 
-- (void)updateProductID:(id)a3 completion:(id)a4
+- (void)updateProductID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -361,7 +361,7 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating accessory model product ID to %@", buf, 0x16u);
   }
 
@@ -370,28 +370,28 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
   v14[1] = 3221225472;
   v14[2] = __57__HMDCHIPAccessoryDataSource_updateProductID_completion___block_invoke;
   v14[3] = &unk_278675A50;
-  v15 = v6;
-  v12 = v6;
-  [(HMDCHIPAccessoryDataSource *)v9 _updateAccessoryModelWithLabel:@"Update CHIP product ID" completion:v7 block:v14];
+  v15 = dCopy;
+  v12 = dCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP product ID" completion:completionCopy block:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (NSNumber)productID
 {
-  v2 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v3 = [v2 matterProductID];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  matterProductID = [accessory matterProductID];
 
-  return v3;
+  return matterProductID;
 }
 
-- (void)updateVendorID:(id)a3 completion:(id)a4
+- (void)updateVendorID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -399,7 +399,7 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating accessory model vendor ID to %@", buf, 0x16u);
   }
 
@@ -408,28 +408,28 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
   v14[1] = 3221225472;
   v14[2] = __56__HMDCHIPAccessoryDataSource_updateVendorID_completion___block_invoke;
   v14[3] = &unk_278675A50;
-  v15 = v6;
-  v12 = v6;
-  [(HMDCHIPAccessoryDataSource *)v9 _updateAccessoryModelWithLabel:@"Update CHIP vendor ID" completion:v7 block:v14];
+  v15 = dCopy;
+  v12 = dCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP vendor ID" completion:completionCopy block:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (NSNumber)vendorID
 {
-  v2 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v3 = [v2 matterVendorID];
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  matterVendorID = [accessory matterVendorID];
 
-  return v3;
+  return matterVendorID;
 }
 
-- (void)updateNodeID:(id)a3 completion:(id)a4
+- (void)updateNodeID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -437,7 +437,7 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating accessory model node ID to %@", buf, 0x16u);
   }
 
@@ -446,28 +446,28 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
   v14[1] = 3221225472;
   v14[2] = __54__HMDCHIPAccessoryDataSource_updateNodeID_completion___block_invoke;
   v14[3] = &unk_278675A50;
-  v15 = v6;
-  v12 = v6;
-  [(HMDCHIPAccessoryDataSource *)v9 _updateAccessoryModelWithLabel:@"Update CHIP node ID" completion:v7 block:v14];
+  v15 = dCopy;
+  v12 = dCopy;
+  [(HMDCHIPAccessoryDataSource *)selfCopy _updateAccessoryModelWithLabel:@"Update CHIP node ID" completion:completionCopy block:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAccessoryModelWithLabel:(id)a3 completion:(id)a4 block:(id)a5
+- (void)_updateAccessoryModelWithLabel:(id)label completion:(id)completion block:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCHIPAccessoryDataSource *)self accessory];
-  v12 = v11;
-  if (v11)
+  labelCopy = label;
+  completionCopy = completion;
+  blockCopy = block;
+  accessory = [(HMDCHIPAccessoryDataSource *)self accessory];
+  v12 = accessory;
+  if (accessory)
   {
-    v13 = [v11 home];
-    if (!v13)
+    home = [accessory home];
+    if (!home)
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -478,10 +478,10 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
       }
 
       objc_autoreleasePoolPop(v25);
-      v16 = _Block_copy(v9);
+      v16 = _Block_copy(completionCopy);
       if (!v16)
       {
-        v13 = 0;
+        home = 0;
         goto LABEL_22;
       }
 
@@ -506,17 +506,17 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
 
     if (v16)
     {
-      v10[2](v10, v16);
-      v17 = [v13 backingStore];
+      blockCopy[2](blockCopy, v16);
+      backingStore = [home backingStore];
       v18 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-      v19 = [v17 transaction:v8 options:v18];
+      v19 = [backingStore transaction:labelCopy options:v18];
 
       [v19 add:v16];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __78__HMDCHIPAccessoryDataSource__updateAccessoryModelWithLabel_completion_block___block_invoke;
       v34[3] = &unk_278688DD0;
-      v35 = v9;
+      v35 = completionCopy;
       [v19 run:v34];
       v20 = v35;
     }
@@ -524,7 +524,7 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy2 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -535,7 +535,7 @@ void __66__HMDCHIPAccessoryDataSource_updateVendorID_productID_completion___bloc
       }
 
       objc_autoreleasePoolPop(v29);
-      v19 = _Block_copy(v9);
+      v19 = _Block_copy(completionCopy);
       if (!v19)
       {
         v16 = 0;
@@ -551,7 +551,7 @@ LABEL_21:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy3 = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
@@ -562,11 +562,11 @@ LABEL_21:
   }
 
   objc_autoreleasePoolPop(v21);
-  v13 = _Block_copy(v9);
-  if (v13)
+  home = _Block_copy(completionCopy);
+  if (home)
   {
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    v13[2](v13, v16);
+    home[2](home, v16);
 LABEL_22:
   }
 
@@ -584,24 +584,24 @@ void __78__HMDCHIPAccessoryDataSource__updateAccessoryModelWithLabel_completion_
   }
 }
 
-- (HMDCHIPAccessoryDataSource)initWithNodeID:(id)a3 accessory:(id)a4
+- (HMDCHIPAccessoryDataSource)initWithNodeID:(id)d accessory:(id)accessory
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  accessoryCopy = accessory;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v8)
+  if (!accessoryCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v9 = v8;
+  v9 = accessoryCopy;
   v10 = [v9 conformsToProtocol:&unk_283F010C8];
 
   if ((v10 & 1) == 0)
@@ -617,7 +617,7 @@ LABEL_9:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_nodeID, a3);
+    objc_storeStrong(&v11->_nodeID, d);
     objc_storeWeak(&v12->_accessory, v9);
   }
 

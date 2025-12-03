@@ -1,7 +1,7 @@
 @interface FIUIChartViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CGRect)accessibilityFrame:(id)a3;
-- (id)accessibilityLabel:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CGRect)accessibilityFrame:(id)frame;
+- (id)accessibilityLabel:(id)label;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateChartSlices;
 - (void)dealloc;
@@ -10,15 +10,15 @@
 
 @implementation FIUIChartViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FIUIChartView" hasInstanceMethod:@"reloadData" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FIUIChartView" hasInstanceMethod:@"_chartRect" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"FIUIChartView" hasInstanceMethod:@"dateInterval" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FIUIChartView" hasInstanceVariable:@"_containerView" withType:"UIView"];
-  [v3 validateClass:@"FIUIChartView" hasInstanceVariable:@"_chartSeries" withType:"NSArray"];
-  [v3 validateClass:@"FIUIChartView" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FIUIChartView" hasInstanceMethod:@"reloadData" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FIUIChartView" hasInstanceMethod:@"_chartRect" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"FIUIChartView" hasInstanceMethod:@"dateInterval" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FIUIChartView" hasInstanceVariable:@"_containerView" withType:"UIView"];
+  [validationsCopy validateClass:@"FIUIChartView" hasInstanceVariable:@"_chartSeries" withType:"NSArray"];
+  [validationsCopy validateClass:@"FIUIChartView" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
 }
 
 - (void)_axUpdateChartSlices
@@ -27,11 +27,11 @@
   v3 = [(FIUIChartViewAccessibility *)self safeUIViewForKey:@"_containerView"];
   if ([v10 _accessibilityShouldUseSlices])
   {
-    v4 = [v10 _accessibilityNumberOfSlices];
-    if (v4)
+    _accessibilityNumberOfSlices = [v10 _accessibilityNumberOfSlices];
+    if (_accessibilityNumberOfSlices)
     {
-      v5 = v4;
-      v6 = [NSMutableArray arrayWithCapacity:v4];
+      v5 = _accessibilityNumberOfSlices;
+      v6 = [NSMutableArray arrayWithCapacity:_accessibilityNumberOfSlices];
       for (i = 0; i != v5; ++i)
       {
         v8 = [[FIUIChartViewSliceAccessibilityElement alloc] initWithAccessibilityContainer:self];
@@ -61,12 +61,12 @@
 
 - (void)dealloc
 {
-  v3 = [(FIUIChartViewAccessibility *)self _accessibilityChartSlices];
+  _accessibilityChartSlices = [(FIUIChartViewAccessibility *)self _accessibilityChartSlices];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [_accessibilityChartSlices countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -78,7 +78,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_accessibilityChartSlices);
         }
 
         [*(*(&v9 + 1) + 8 * v7) setAccessibilityDelegate:0];
@@ -86,7 +86,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_accessibilityChartSlices countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -97,9 +97,9 @@
   [(FIUIChartViewAccessibility *)&v8 dealloc];
 }
 
-- (CGRect)accessibilityFrame:(id)a3
+- (CGRect)accessibilityFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v5 = [(FIUIChartViewAccessibility *)self safeValueForKey:@"_chartRect"];
   [v5 CGRectValue];
   v7 = v6;
@@ -107,14 +107,14 @@
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 sliceIndex];
+  sliceIndex = [frameCopy sliceIndex];
   v15 = [(FIUIChartViewAccessibility *)self safeValueForKey:@"dataSource"];
-  v16 = [v15 _accessibilityNumberOfSlices];
+  _accessibilityNumberOfSlices = [v15 _accessibilityNumberOfSlices];
   v30.origin.x = v7;
   v30.origin.y = v9;
   v30.size.width = v11;
   v30.size.height = v13;
-  v31.origin.x = v7 + CGRectGetWidth(v30) * v14 / v16;
+  v31.origin.x = v7 + CGRectGetWidth(v30) * sliceIndex / _accessibilityNumberOfSlices;
   v31.origin.y = v9;
   v31.size.width = v11;
   v31.size.height = v13;
@@ -137,27 +137,27 @@
   return result;
 }
 
-- (id)accessibilityLabel:(id)a3
+- (id)accessibilityLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   objc_opt_class();
   v5 = [(FIUIChartViewAccessibility *)self safeValueForKey:@"dateInterval"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 startDate];
+  startDate = [v6 startDate];
 
   v8 = [(FIUIChartViewAccessibility *)self safeValueForKey:@"dataSource"];
   [v8 _accessibilityTimeIntervalPerSlice];
   v10 = v9;
-  v11 = [v7 dateByAddingTimeInterval:{v9 * objc_msgSend(v4, "sliceIndex")}];
-  v12 = [v7 dateByAddingTimeInterval:{v10 * (objc_msgSend(v4, "sliceIndex") + 1)}];
+  v11 = [startDate dateByAddingTimeInterval:{v9 * objc_msgSend(labelCopy, "sliceIndex")}];
+  v12 = [startDate dateByAddingTimeInterval:{v10 * (objc_msgSend(labelCopy, "sliceIndex") + 1)}];
   v13 = accessibilityLocalizedString(@"chart.slice.date.format");
   v14 = AXClockTimeStringForDate();
   v15 = AXClockTimeStringForDate();
   v16 = [NSString stringWithFormat:v13, v14, v15];
 
   v17 = [(FIUIChartViewAccessibility *)self safeValueForKey:@"dataSource"];
-  v20 = [v17 _accessibilityQuantityForSliceAtIndex:{objc_msgSend(v4, "sliceIndex")}];
+  v20 = [v17 _accessibilityQuantityForSliceAtIndex:{objc_msgSend(labelCopy, "sliceIndex")}];
   v18 = __AXStringForVariables();
 
   return v18;

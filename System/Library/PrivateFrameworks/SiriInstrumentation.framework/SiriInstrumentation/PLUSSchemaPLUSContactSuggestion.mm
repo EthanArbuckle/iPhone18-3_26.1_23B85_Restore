@@ -1,29 +1,29 @@
 @interface PLUSSchemaPLUSContactSuggestion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSContactSuggestion)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSContactSuggestion)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSContactSuggestion)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSContactSuggestion)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addContributingGroundTruth:(id)a3;
-- (void)setHasConfidence:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addContributingGroundTruth:(id)truth;
+- (void)setHasConfidence:(BOOL)confidence;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSContactSuggestion
 
-- (PLUSSchemaPLUSContactSuggestion)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSContactSuggestion)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = PLUSSchemaPLUSContactSuggestion;
   v5 = [(PLUSSchemaPLUSContactSuggestion *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"suggestionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"suggestionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,14 +31,14 @@
       [(PLUSSchemaPLUSContactSuggestion *)v5 setSuggestionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"source"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"source"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactSuggestion setSource:](v5, "setSource:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"confidence"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(PLUSSchemaPLUSContactSuggestion *)v5 setConfidence:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"contributingGroundTruth"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"contributingGroundTruth"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,30 +96,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSContactSuggestion)initWithJSON:(id)a3
+- (PLUSSchemaPLUSContactSuggestion)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSContactSuggestion *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSContactSuggestion *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSContactSuggestion *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -133,18 +133,18 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(PLUSSchemaPLUSContactSuggestion *)self confidence];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"confidence"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confidence"];
   }
 
   if ([(NSArray *)self->_contributingGroundTruths count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -164,16 +164,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -183,7 +183,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"contributingGroundTruth"];
+    [dictionary setObject:array forKeyedSubscript:@"contributingGroundTruth"];
   }
 
   if (*&self->_has)
@@ -198,28 +198,28 @@
       v14 = @"PLUSCONTACTSUGGESTIONSOURCE_UNKNOWN";
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"source"];
+    [dictionary setObject:v14 forKeyedSubscript:@"source"];
   }
 
   if (self->_suggestionId)
   {
-    v15 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    suggestionId = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
+    dictionaryRepresentation2 = [suggestionId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"suggestionId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"suggestionId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"suggestionId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"suggestionId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -273,28 +273,28 @@ LABEL_3:
   return v6 ^ v3 ^ v10 ^ [(NSArray *)self->_contributingGroundTruths hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
-  v6 = [v4 suggestionId];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionId = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
+  suggestionId2 = [equalCopy suggestionId];
+  if ((suggestionId != 0) == (suggestionId2 == 0))
   {
     goto LABEL_18;
   }
 
-  v7 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
-  if (v7)
+  suggestionId3 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
+  if (suggestionId3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
-    v10 = [v4 suggestionId];
-    v11 = [v9 isEqual:v10];
+    v8 = suggestionId3;
+    suggestionId4 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
+    suggestionId5 = [equalCopy suggestionId];
+    v11 = [suggestionId4 isEqual:suggestionId5];
 
     if (!v11)
     {
@@ -307,7 +307,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v13 = v4[40];
+  v13 = equalCopy[40];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_19;
@@ -316,13 +316,13 @@ LABEL_3:
   if (*&has)
   {
     source = self->_source;
-    if (source != [v4 source])
+    if (source != [equalCopy source])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -334,24 +334,24 @@ LABEL_3:
   if (v15)
   {
     confidence = self->_confidence;
-    [v4 confidence];
+    [equalCopy confidence];
     if (confidence != v17)
     {
       goto LABEL_19;
     }
   }
 
-  v5 = [(PLUSSchemaPLUSContactSuggestion *)self contributingGroundTruths];
-  v6 = [v4 contributingGroundTruths];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionId = [(PLUSSchemaPLUSContactSuggestion *)self contributingGroundTruths];
+  suggestionId2 = [equalCopy contributingGroundTruths];
+  if ((suggestionId != 0) == (suggestionId2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v18 = [(PLUSSchemaPLUSContactSuggestion *)self contributingGroundTruths];
-  if (!v18)
+  contributingGroundTruths = [(PLUSSchemaPLUSContactSuggestion *)self contributingGroundTruths];
+  if (!contributingGroundTruths)
   {
 
 LABEL_22:
@@ -359,10 +359,10 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v19 = v18;
-  v20 = [(PLUSSchemaPLUSContactSuggestion *)self contributingGroundTruths];
-  v21 = [v4 contributingGroundTruths];
-  v22 = [v20 isEqual:v21];
+  v19 = contributingGroundTruths;
+  contributingGroundTruths2 = [(PLUSSchemaPLUSContactSuggestion *)self contributingGroundTruths];
+  contributingGroundTruths3 = [equalCopy contributingGroundTruths];
+  v22 = [contributingGroundTruths2 isEqual:contributingGroundTruths3];
 
   if (v22)
   {
@@ -376,15 +376,15 @@ LABEL_20:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
+  toCopy = to;
+  suggestionId = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
 
-  if (v5)
+  if (suggestionId)
   {
-    v6 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
+    suggestionId2 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -429,27 +429,27 @@ LABEL_20:
   }
 }
 
-- (void)addContributingGroundTruth:(id)a3
+- (void)addContributingGroundTruth:(id)truth
 {
-  v4 = a3;
+  truthCopy = truth;
   contributingGroundTruths = self->_contributingGroundTruths;
-  v8 = v4;
+  v8 = truthCopy;
   if (!contributingGroundTruths)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contributingGroundTruths;
-    self->_contributingGroundTruths = v6;
+    self->_contributingGroundTruths = array;
 
-    v4 = v8;
+    truthCopy = v8;
     contributingGroundTruths = self->_contributingGroundTruths;
   }
 
-  [(NSArray *)contributingGroundTruths addObject:v4];
+  [(NSArray *)contributingGroundTruths addObject:truthCopy];
 }
 
-- (void)setHasConfidence:(BOOL)a3
+- (void)setHasConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 2;
   }
@@ -462,23 +462,23 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = PLUSSchemaPLUSContactSuggestion;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  suggestionId = [(PLUSSchemaPLUSContactSuggestion *)self suggestionId];
+  v7 = [suggestionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSContactSuggestion *)self deleteSuggestionId];
   }
 
-  v9 = [(PLUSSchemaPLUSContactSuggestion *)self contributingGroundTruths];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  contributingGroundTruths = [(PLUSSchemaPLUSContactSuggestion *)self contributingGroundTruths];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:contributingGroundTruths underConditions:policyCopy];
   [(PLUSSchemaPLUSContactSuggestion *)self setContributingGroundTruths:v10];
 
   return v5;

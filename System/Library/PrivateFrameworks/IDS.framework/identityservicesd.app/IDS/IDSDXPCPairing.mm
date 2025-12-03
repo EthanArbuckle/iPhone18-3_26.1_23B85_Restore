@@ -1,109 +1,109 @@
 @interface IDSDXPCPairing
-- (IDSDXPCPairing)initWithQueue:(id)a3 idsDaemon:(id)a4 serviceController:(id)a5 pairingManager:(id)a6 quickSwitchHelper:(id)a7 accountController:(id)a8 utunController:(id)a9 utunDeliveryController:(id)a10;
+- (IDSDXPCPairing)initWithQueue:(id)queue idsDaemon:(id)daemon serviceController:(id)controller pairingManager:(id)manager quickSwitchHelper:(id)helper accountController:(id)accountController utunController:(id)utunController utunDeliveryController:(id)self0;
 - (id)_pairedDeviceCBUUIDs;
 - (id)_pairingDeviceCBUUIDs;
-- (id)_sortedArrayFromCBUUIDSet:(id)a3;
-- (void)_addPairedDevice:(id)a3 withInfo:(id)a4 completion:(id)a5;
-- (void)_updatePairedDevice:(id)a3 pairingType:(int64_t)a4 completion:(id)a5;
-- (void)addPairedDeviceWithInfo:(id)a3 completion:(id)a4;
-- (void)connectPairedDeviceWithID:(id)a3 completion:(id)a4;
-- (void)deletePairedDeviceWithID:(id)a3 completion:(id)a4;
-- (void)disconnectActivePairedDevice:(id)a3;
-- (void)dropAllMessagesWithoutAnyAllowedClassifierForDevice:(id)a3 completion:(id)a4;
-- (void)forgetDeviceWithID:(id)a3 completion:(id)a4;
-- (void)getPairedDevicesWithCompletion:(id)a3;
-- (void)getPairingDevicesWithCompletion:(id)a3;
-- (void)getPairingRecordsWithCompletion:(id)a3;
-- (void)pairedDevicesInfo:(id)a3;
-- (void)redeliverMessagesForDevice:(id)a3 completion:(id)a4;
-- (void)setAllowedTrafficClassifiersForDevice:(id)a3 classifiers:(id)a4 completion:(id)a5;
-- (void)setupCompletedForPairedDeviceWithID:(id)a3 completion:(id)a4;
-- (void)stopLocalPairingForDeviceWithID:(id)a3 completion:(id)a4;
-- (void)switchActivePairedDeviceWithID:(id)a3 completion:(id)a4;
-- (void)unpairDeviceWithID:(id)a3 completion:(id)a4;
-- (void)unpairStartForDeviceWithID:(id)a3 completion:(id)a4;
-- (void)updatePairedDeviceWithID:(id)a3 supportIPsec:(BOOL)a4 completion:(id)a5;
+- (id)_sortedArrayFromCBUUIDSet:(id)set;
+- (void)_addPairedDevice:(id)device withInfo:(id)info completion:(id)completion;
+- (void)_updatePairedDevice:(id)device pairingType:(int64_t)type completion:(id)completion;
+- (void)addPairedDeviceWithInfo:(id)info completion:(id)completion;
+- (void)connectPairedDeviceWithID:(id)d completion:(id)completion;
+- (void)deletePairedDeviceWithID:(id)d completion:(id)completion;
+- (void)disconnectActivePairedDevice:(id)device;
+- (void)dropAllMessagesWithoutAnyAllowedClassifierForDevice:(id)device completion:(id)completion;
+- (void)forgetDeviceWithID:(id)d completion:(id)completion;
+- (void)getPairedDevicesWithCompletion:(id)completion;
+- (void)getPairingDevicesWithCompletion:(id)completion;
+- (void)getPairingRecordsWithCompletion:(id)completion;
+- (void)pairedDevicesInfo:(id)info;
+- (void)redeliverMessagesForDevice:(id)device completion:(id)completion;
+- (void)setAllowedTrafficClassifiersForDevice:(id)device classifiers:(id)classifiers completion:(id)completion;
+- (void)setupCompletedForPairedDeviceWithID:(id)d completion:(id)completion;
+- (void)stopLocalPairingForDeviceWithID:(id)d completion:(id)completion;
+- (void)switchActivePairedDeviceWithID:(id)d completion:(id)completion;
+- (void)unpairDeviceWithID:(id)d completion:(id)completion;
+- (void)unpairStartForDeviceWithID:(id)d completion:(id)completion;
+- (void)updatePairedDeviceWithID:(id)d supportIPsec:(BOOL)psec completion:(id)completion;
 @end
 
 @implementation IDSDXPCPairing
 
-- (IDSDXPCPairing)initWithQueue:(id)a3 idsDaemon:(id)a4 serviceController:(id)a5 pairingManager:(id)a6 quickSwitchHelper:(id)a7 accountController:(id)a8 utunController:(id)a9 utunDeliveryController:(id)a10
+- (IDSDXPCPairing)initWithQueue:(id)queue idsDaemon:(id)daemon serviceController:(id)controller pairingManager:(id)manager quickSwitchHelper:(id)helper accountController:(id)accountController utunController:(id)utunController utunDeliveryController:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  queueCopy = queue;
+  daemonCopy = daemon;
+  controllerCopy = controller;
+  managerCopy = manager;
+  helperCopy = helper;
+  accountControllerCopy = accountController;
+  utunControllerCopy = utunController;
+  deliveryControllerCopy = deliveryController;
   v28.receiver = self;
   v28.super_class = IDSDXPCPairing;
   v19 = [(IDSDXPCPairing *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_queue, a3);
-    objc_storeStrong(&v20->_idsDaemon, a4);
-    objc_storeStrong(&v20->_serviceController, a5);
-    objc_storeStrong(&v20->_pairingManager, a6);
-    objc_storeStrong(&v20->_quickSwitchHelper, a7);
-    objc_storeStrong(&v20->_accountController, a8);
-    objc_storeStrong(&v20->_utunController, a9);
-    objc_storeStrong(&v20->_utunDeliveryController, a10);
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v20->_idsDaemon, daemon);
+    objc_storeStrong(&v20->_serviceController, controller);
+    objc_storeStrong(&v20->_pairingManager, manager);
+    objc_storeStrong(&v20->_quickSwitchHelper, helper);
+    objc_storeStrong(&v20->_accountController, accountController);
+    objc_storeStrong(&v20->_utunController, utunController);
+    objc_storeStrong(&v20->_utunDeliveryController, deliveryController);
   }
 
   return v20;
 }
 
-- (void)addPairedDeviceWithInfo:(id)a3 completion:(id)a4
+- (void)addPairedDeviceWithInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 cbuuid];
-  [(IDSDXPCPairing *)self _addPairedDevice:v8 withInfo:v7 completion:v6];
+  completionCopy = completion;
+  infoCopy = info;
+  cbuuid = [infoCopy cbuuid];
+  [(IDSDXPCPairing *)self _addPairedDevice:cbuuid withInfo:infoCopy completion:completionCopy];
 }
 
-- (void)connectPairedDeviceWithID:(id)a3 completion:(id)a4
+- (void)connectPairedDeviceWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) connectPairedDevice (cbuuid: %@)", &v11, 0xCu);
   }
 
-  v9 = [(IDSDXPCPairing *)self utunController];
-  v10 = [v6 UUIDString];
-  [v9 connectPairedDevice:v10];
+  utunController = [(IDSDXPCPairing *)self utunController];
+  uUIDString = [dCopy UUIDString];
+  [utunController connectPairedDevice:uUIDString];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)setupCompletedForPairedDeviceWithID:(id)a3 completion:(id)a4
+- (void)setupCompletedForPairedDeviceWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) setupCompletedForPairedDevice (cbuuid: %@)", &v10, 0xCu);
   }
 
-  v9 = [(IDSDXPCPairing *)self utunDeliveryController];
-  [v9 localSetupCompleted];
+  utunDeliveryController = [(IDSDXPCPairing *)self utunDeliveryController];
+  [utunDeliveryController localSetupCompleted];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)getPairingDevicesWithCompletion:(id)a3
+- (void)getPairingDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -111,21 +111,21 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "(Daemon) getPairingDevices", &v8, 2u);
   }
 
-  v6 = [(IDSDXPCPairing *)self _pairingDeviceCBUUIDs];
+  _pairingDeviceCBUUIDs = [(IDSDXPCPairing *)self _pairingDeviceCBUUIDs];
   v7 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v6;
+    v9 = _pairingDeviceCBUUIDs;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(Daemon) getPairingDevices yielded CBUUIDs: %@", &v8, 0xCu);
   }
 
-  v4[2](v4, v6, 0);
+  completionCopy[2](completionCopy, _pairingDeviceCBUUIDs, 0);
 }
 
-- (void)getPairedDevicesWithCompletion:(id)a3
+- (void)getPairedDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -133,42 +133,42 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "(Daemon) getPairedDevices", &v8, 2u);
   }
 
-  v6 = [(IDSDXPCPairing *)self _pairedDeviceCBUUIDs];
+  _pairedDeviceCBUUIDs = [(IDSDXPCPairing *)self _pairedDeviceCBUUIDs];
   v7 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v6;
+    v9 = _pairedDeviceCBUUIDs;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(Daemon) getPairedDevices yielded CBUUIDs: %@", &v8, 0xCu);
   }
 
-  v4[2](v4, v6, 0);
+  completionCopy[2](completionCopy, _pairedDeviceCBUUIDs, 0);
 }
 
-- (void)getPairingRecordsWithCompletion:(id)a3
+- (void)getPairingRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSDXPCPairing *)self pairingManager];
-  v8 = [v5 localDeviceRecord];
+  completionCopy = completion;
+  pairingManager = [(IDSDXPCPairing *)self pairingManager];
+  localDeviceRecord = [pairingManager localDeviceRecord];
 
-  v6 = [(IDSDXPCPairing *)self pairingManager];
-  v7 = [v6 pairedDeviceRecords];
+  pairingManager2 = [(IDSDXPCPairing *)self pairingManager];
+  pairedDeviceRecords = [pairingManager2 pairedDeviceRecords];
 
-  v4[2](v4, v8, v7, 0);
+  completionCopy[2](completionCopy, localDeviceRecord, pairedDeviceRecords, 0);
 }
 
-- (void)pairedDevicesInfo:(id)a3
+- (void)pairedDevicesInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(IDSDXPCPairing *)self pairingManager];
-  v6 = [v5 allPairedDevices];
+  infoCopy = info;
+  pairingManager = [(IDSDXPCPairing *)self pairingManager];
+  allPairedDevices = [pairingManager allPairedDevices];
 
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(allPairedDevices, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v6;
+  v8 = allPairedDevices;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -184,8 +184,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) dictionaryRepresentation];
-        [v7 addObject:v13];
+        dictionaryRepresentation = [*(*(&v14 + 1) + 8 * v12) dictionaryRepresentation];
+        [v7 addObject:dictionaryRepresentation];
 
         v12 = v12 + 1;
       }
@@ -197,37 +197,37 @@
     while (v10);
   }
 
-  v4[2](v4, v7, 0);
+  infoCopy[2](infoCopy, v7, 0);
 }
 
-- (void)updatePairedDeviceWithID:(id)a3 supportIPsec:(BOOL)a4 completion:(id)a5
+- (void)updatePairedDeviceWithID:(id)d supportIPsec:(BOOL)psec completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  psecCopy = psec;
+  dCopy = d;
+  completionCopy = completion;
+  if (dCopy)
   {
-    v33 = v8;
-    v10 = [NSArray arrayWithObjects:&v33 count:1];
+    v33 = dCopy;
+    allObjects = [NSArray arrayWithObjects:&v33 count:1];
   }
 
   else
   {
-    v11 = [(IDSDXPCPairing *)self pairingManager];
-    v12 = [v11 cbuuidsOfPairedDevices];
-    v10 = [v12 allObjects];
+    pairingManager = [(IDSDXPCPairing *)self pairingManager];
+    cbuuidsOfPairedDevices = [pairingManager cbuuidsOfPairedDevices];
+    allObjects = [cbuuidsOfPairedDevices allObjects];
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = v10;
+  v13 = allObjects;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v14)
   {
     v15 = v14;
-    v25 = v8;
+    v25 = dCopy;
     v16 = *v27;
     while (2)
     {
@@ -239,8 +239,8 @@
         }
 
         v18 = *(*(&v26 + 1) + 8 * i);
-        v19 = [(IDSDXPCPairing *)self pairingManager];
-        v20 = [v19 updatePairedDeviceWithCBUUID:v18 supportIPsec:v6];
+        pairingManager2 = [(IDSDXPCPairing *)self pairingManager];
+        v20 = [pairingManager2 updatePairedDeviceWithCBUUID:v18 supportIPsec:psecCopy];
 
         if ((v20 & 1) == 0)
         {
@@ -266,7 +266,7 @@
 
     v21 = 0;
 LABEL_14:
-    v8 = v25;
+    dCopy = v25;
   }
 
   else
@@ -274,119 +274,119 @@ LABEL_14:
     v21 = 0;
   }
 
-  v9[2](v9, v21);
+  completionCopy[2](completionCopy, v21);
 }
 
-- (void)deletePairedDeviceWithID:(id)a3 completion:(id)a4
+- (void)deletePairedDeviceWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) deletePairedDeviceWithID (cbuuid: %@)", &v14, 0xCu);
   }
 
-  v9 = [(IDSDXPCPairing *)self utunController];
-  v10 = [v6 UUIDString];
-  [v9 deletePairedDevice:v10];
+  utunController = [(IDSDXPCPairing *)self utunController];
+  uUIDString = [dCopy UUIDString];
+  [utunController deletePairedDevice:uUIDString];
 
-  v11 = [(IDSDXPCPairing *)self pairingManager];
-  v12 = [v6 UUIDString];
-  [v11 removeLocalPairedDevice:v12];
+  pairingManager = [(IDSDXPCPairing *)self pairingManager];
+  uUIDString2 = [dCopy UUIDString];
+  [pairingManager removeLocalPairedDevice:uUIDString2];
 
   v13 = +[IDSUTunDeliveryController sharedInstance];
   [v13 stopIdsNRDeviceBridgeAndPreferenceHandler];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)unpairStartForDeviceWithID:(id)a3 completion:(id)a4
+- (void)unpairStartForDeviceWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) deletePairedDeviceWithID (cbuuid: %@)", &v10, 0xCu);
   }
 
-  v9 = [(IDSDXPCPairing *)self utunDeliveryController];
-  [v9 defaultPeerUnpairStart];
+  utunDeliveryController = [(IDSDXPCPairing *)self utunDeliveryController];
+  [utunDeliveryController defaultPeerUnpairStart];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)stopLocalPairingForDeviceWithID:(id)a3 completion:(id)a4
+- (void)stopLocalPairingForDeviceWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138477827;
-    v16 = v6;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) stopLocalPairingForDeviceWithID {cbuuid: %{private}@}", &v15, 0xCu);
   }
 
-  v9 = [(IDSDXPCPairing *)self utunController];
-  v10 = [v6 UUIDString];
-  [v9 obliterateConnectionInfoForCBUUID:v10];
+  utunController = [(IDSDXPCPairing *)self utunController];
+  uUIDString = [dCopy UUIDString];
+  [utunController obliterateConnectionInfoForCBUUID:uUIDString];
 
-  v11 = [(IDSDXPCPairing *)self pairingManager];
-  v12 = [v6 UUIDString];
-  [v11 removeLocalPairedDevice:v12];
+  pairingManager = [(IDSDXPCPairing *)self pairingManager];
+  uUIDString2 = [dCopy UUIDString];
+  [pairingManager removeLocalPairedDevice:uUIDString2];
 
   v13 = +[IDSPairingManager sharedInstance];
-  LOBYTE(v12) = [v13 isCurrentDevicePairedOrPairing];
+  LOBYTE(uUIDString2) = [v13 isCurrentDevicePairedOrPairing];
 
-  if ((v12 & 1) == 0)
+  if ((uUIDString2 & 1) == 0)
   {
-    v14 = [(IDSDXPCPairing *)self accountController];
-    [v14 stopLocalSetup];
+    accountController = [(IDSDXPCPairing *)self accountController];
+    [accountController stopLocalSetup];
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)unpairDeviceWithID:(id)a3 completion:(id)a4
+- (void)unpairDeviceWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v6;
+    v22 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) unpairDevice (cbuuid: %@)", &v21, 0xCu);
   }
 
-  v9 = [(IDSDXPCPairing *)self pairingManager];
-  v10 = [v9 cbuuidsOfPairedDevices];
-  v11 = [v10 containsObject:v6];
+  pairingManager = [(IDSDXPCPairing *)self pairingManager];
+  cbuuidsOfPairedDevices = [pairingManager cbuuidsOfPairedDevices];
+  v11 = [cbuuidsOfPairedDevices containsObject:dCopy];
 
   if (v11)
   {
-    v12 = [(IDSDXPCPairing *)self utunController];
-    v13 = [v6 UUIDString];
-    [v12 obliterateConnectionInfoForCBUUID:v13];
+    utunController = [(IDSDXPCPairing *)self utunController];
+    uUIDString = [dCopy UUIDString];
+    [utunController obliterateConnectionInfoForCBUUID:uUIDString];
 
-    v14 = [(IDSDXPCPairing *)self pairingManager];
-    v15 = [v6 UUIDString];
-    [v14 removeLocalPairedDevice:v15];
+    pairingManager2 = [(IDSDXPCPairing *)self pairingManager];
+    uUIDString2 = [dCopy UUIDString];
+    [pairingManager2 removeLocalPairedDevice:uUIDString2];
 
-    v16 = [(IDSDXPCPairing *)self serviceController];
-    v17 = [v16 allServicesWithAdHocServiceType:2];
+    serviceController = [(IDSDXPCPairing *)self serviceController];
+    v17 = [serviceController allServicesWithAdHocServiceType:2];
 
-    v18 = [(IDSDXPCPairing *)self idsDaemon];
-    [v18 dropQueuedBroadcastsForServices:v17];
+    idsDaemon = [(IDSDXPCPairing *)self idsDaemon];
+    [idsDaemon dropQueuedBroadcastsForServices:v17];
 
-    v19 = [(IDSDXPCPairing *)self idsDaemon];
-    [v19 _processMessagesUponUnpairing];
+    idsDaemon2 = [(IDSDXPCPairing *)self idsDaemon];
+    [idsDaemon2 _processMessagesUponUnpairing];
 
     v20 = 0;
   }
@@ -397,48 +397,48 @@ LABEL_14:
     v17 = v20;
   }
 
-  v7[2](v7, v20);
+  completionCopy[2](completionCopy, v20);
 }
 
-- (void)forgetDeviceWithID:(id)a3 completion:(id)a4
+- (void)forgetDeviceWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) forgetDevice (cbuuid: %@)", &v11, 0xCu);
   }
 
-  v9 = [(IDSDXPCPairing *)self pairingManager];
-  v10 = [v6 UUIDString];
-  [v9 removeLocalPairedDevice:v10];
+  pairingManager = [(IDSDXPCPairing *)self pairingManager];
+  uUIDString = [dCopy UUIDString];
+  [pairingManager removeLocalPairedDevice:uUIDString];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)switchActivePairedDeviceWithID:(id)a3 completion:(id)a4
+- (void)switchActivePairedDeviceWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) switchActivePairedDevice (cbuuid: %@)", &v11, 0xCu);
   }
 
-  v9 = [(IDSDXPCPairing *)self quickSwitchHelper];
-  v10 = [v6 UUIDString];
-  [v9 initiateQuickSwitchToDeviceWithCBUUID:v10 force:0 completionBlock:v7];
+  quickSwitchHelper = [(IDSDXPCPairing *)self quickSwitchHelper];
+  uUIDString = [dCopy UUIDString];
+  [quickSwitchHelper initiateQuickSwitchToDeviceWithCBUUID:uUIDString force:0 completionBlock:completionCopy];
 }
 
-- (void)disconnectActivePairedDevice:(id)a3
+- (void)disconnectActivePairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -446,78 +446,78 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "(Daemon) switchToNoActivePairedDevice", v12, 2u);
   }
 
-  v6 = [(IDSDXPCPairing *)self utunController];
-  v7 = [(IDSDXPCPairing *)self pairingManager];
-  v8 = [v7 pairedDeviceUUIDString];
-  [v6 obliterateConnectionInfoForCBUUID:v8];
+  utunController = [(IDSDXPCPairing *)self utunController];
+  pairingManager = [(IDSDXPCPairing *)self pairingManager];
+  pairedDeviceUUIDString = [pairingManager pairedDeviceUUIDString];
+  [utunController obliterateConnectionInfoForCBUUID:pairedDeviceUUIDString];
 
-  v9 = [(IDSDXPCPairing *)self pairingManager];
-  [v9 disconnectActivePairedDevice];
+  pairingManager2 = [(IDSDXPCPairing *)self pairingManager];
+  [pairingManager2 disconnectActivePairedDevice];
 
-  v10 = [(IDSDXPCPairing *)self idsDaemon];
-  v11 = [v10 broadcasterWithMessageContext:0];
+  idsDaemon = [(IDSDXPCPairing *)self idsDaemon];
+  v11 = [idsDaemon broadcasterWithMessageContext:0];
 
   [v11 deactivatePairedDevices];
-  v4[2](v4, 0);
+  deviceCopy[2](deviceCopy, 0);
 }
 
-- (void)redeliverMessagesForDevice:(id)a3 completion:(id)a4
+- (void)redeliverMessagesForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) redeliverMessagesForDevice (device ID: %@)", &v13, 0xCu);
   }
 
   v9 = +[IDSPairingManager sharedInstance];
-  v10 = [v9 pairedDeviceUniqueID];
+  pairedDeviceUniqueID = [v9 pairedDeviceUniqueID];
 
-  if ([v6 isEqualToString:v10])
+  if ([deviceCopy isEqualToString:pairedDeviceUniqueID])
   {
-    v11 = [(IDSDXPCPairing *)self idsDaemon];
-    [v11 launchOnDemandServicesForQueuedBroadcastAttempts];
+    idsDaemon = [(IDSDXPCPairing *)self idsDaemon];
+    [idsDaemon launchOnDemandServicesForQueuedBroadcastAttempts];
 
-    v12 = [(IDSDXPCPairing *)self idsDaemon];
-    [v12 _processStoredMessagesIncludingClassD:1];
+    idsDaemon2 = [(IDSDXPCPairing *)self idsDaemon];
+    [idsDaemon2 _processStoredMessagesIncludingClassD:1];
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)setAllowedTrafficClassifiersForDevice:(id)a3 classifiers:(id)a4 completion:(id)a5
+- (void)setAllowedTrafficClassifiersForDevice:(id)device classifiers:(id)classifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  classifiersCopy = classifiers;
+  completionCopy = completion;
   v11 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v8;
+    v14 = deviceCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = classifiersCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "(Daemon) setAllowedTrafficClassifiersForDevice (device ID: %@)   (classifiers: %@)", &v13, 0x16u);
   }
 
-  v12 = [(IDSDXPCPairing *)self utunDeliveryController];
-  [v12 setAllowedTrafficClasses:v9];
+  utunDeliveryController = [(IDSDXPCPairing *)self utunDeliveryController];
+  [utunDeliveryController setAllowedTrafficClasses:classifiersCopy];
 
-  v10[2](v10, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)dropAllMessagesWithoutAnyAllowedClassifierForDevice:(id)a3 completion:(id)a4
+- (void)dropAllMessagesWithoutAnyAllowedClassifierForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(Daemon) dropAllMessagesWithoutAnyAllowedClassifierForDevice (device ID: %@)", buf, 0xCu);
   }
 
@@ -525,7 +525,7 @@ LABEL_14:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "(Daemon) dropAllMessagesWithoutAnyAllowedClassifierForDevice (device ID: %@)", buf, 0xCu);
   }
 
@@ -533,31 +533,31 @@ LABEL_14:
   {
     if (_IDSShouldLogTransport())
     {
-      v12 = v6;
+      v12 = deviceCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v12 = v6;
+        v12 = deviceCopy;
         _IDSLogV();
       }
     }
   }
 
-  v10 = [(IDSDXPCPairing *)self utunDeliveryController];
-  [v10 defaultPeerDropDisallowedMessages];
+  utunDeliveryController = [(IDSDXPCPairing *)self utunDeliveryController];
+  [utunDeliveryController defaultPeerDropDisallowedMessages];
 
-  v11 = [(IDSDXPCPairing *)self idsDaemon];
-  [v11 _processDisallowedMessages];
+  idsDaemon = [(IDSDXPCPairing *)self idsDaemon];
+  [idsDaemon _processDisallowedMessages];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 - (id)_pairingDeviceCBUUIDs
 {
   v3 = +[IDSPairingManager sharedInstance];
-  v4 = [v3 cbuuidsOfPairingDevices];
+  cbuuidsOfPairingDevices = [v3 cbuuidsOfPairingDevices];
 
-  v5 = [(IDSDXPCPairing *)self _sortedArrayFromCBUUIDSet:v4];
+  v5 = [(IDSDXPCPairing *)self _sortedArrayFromCBUUIDSet:cbuuidsOfPairingDevices];
 
   return v5;
 }
@@ -565,66 +565,66 @@ LABEL_14:
 - (id)_pairedDeviceCBUUIDs
 {
   v3 = +[IDSPairingManager sharedInstance];
-  v4 = [v3 cbuuidsOfPairedDevices];
+  cbuuidsOfPairedDevices = [v3 cbuuidsOfPairedDevices];
 
-  v5 = [(IDSDXPCPairing *)self _sortedArrayFromCBUUIDSet:v4];
+  v5 = [(IDSDXPCPairing *)self _sortedArrayFromCBUUIDSet:cbuuidsOfPairedDevices];
 
   return v5;
 }
 
-- (id)_sortedArrayFromCBUUIDSet:(id)a3
+- (id)_sortedArrayFromCBUUIDSet:(id)set
 {
-  v3 = [a3 allObjects];
-  v4 = [v3 sortedArrayUsingComparator:&stru_100BE52D0];
+  allObjects = [set allObjects];
+  v4 = [allObjects sortedArrayUsingComparator:&stru_100BE52D0];
 
   return v4;
 }
 
-- (void)_updatePairedDevice:(id)a3 pairingType:(int64_t)a4 completion:(id)a5
+- (void)_updatePairedDevice:(id)device pairingType:(int64_t)type completion:(id)completion
 {
-  v11 = a5;
-  v8 = [a3 UUIDString];
-  if ([v8 length])
+  completionCopy = completion;
+  uUIDString = [device UUIDString];
+  if ([uUIDString length])
   {
-    v9 = [(IDSDXPCPairing *)self pairingManager];
-    [v9 updateLocalPairedDevice:v8 pairingType:a4];
+    pairingManager = [(IDSDXPCPairing *)self pairingManager];
+    [pairingManager updateLocalPairedDevice:uUIDString pairingType:type];
 
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
     v10 = [NSError errorWithDomain:IDSLocalPairingErrorDomain code:6 userInfo:0];
-    (v11)[2](v11, v10);
+    (completionCopy)[2](completionCopy, v10);
   }
 }
 
-- (void)_addPairedDevice:(id)a3 withInfo:(id)a4 completion:(id)a5
+- (void)_addPairedDevice:(id)device withInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v34 = [v9 BTOutOfBandKey];
-  v11 = [v9 shouldPairDirectlyOverIPsec];
+  deviceCopy = device;
+  infoCopy = info;
+  completionCopy = completion;
+  bTOutOfBandKey = [infoCopy BTOutOfBandKey];
+  shouldPairDirectlyOverIPsec = [infoCopy shouldPairDirectlyOverIPsec];
   if (+[IMUserDefaults isAlwaysPairAsTinker])
   {
-    v12 = 1;
+    pairingType = 1;
   }
 
   else
   {
-    v12 = [v9 pairingType];
+    pairingType = [infoCopy pairingType];
   }
 
-  v33 = [v9 bluetoothMACAddress];
+  bluetoothMACAddress = [infoCopy bluetoothMACAddress];
   v13 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [IDSLogFormatter descriptionForData:v34 options:2];
-    if (v11)
+    v14 = [IDSLogFormatter descriptionForData:bTOutOfBandKey options:2];
+    if (shouldPairDirectlyOverIPsec)
     {
       v15 = @"YES";
     }
@@ -634,33 +634,33 @@ LABEL_14:
       v15 = @"NO";
     }
 
-    v16 = [IDSLogFormatter descriptionForData:v33 options:2];
+    v16 = [IDSLogFormatter descriptionForData:bluetoothMACAddress options:2];
     *buf = 138478851;
-    v46 = v8;
+    v46 = deviceCopy;
     v47 = 2113;
     v48 = v14;
     v49 = 2114;
     v50 = v15;
     v51 = 2050;
-    v52 = v12;
+    v52 = pairingType;
     v53 = 2113;
     v54 = v16;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(Daemon) _addPairedDevice:BTOutOfBandKey:completion: (cbuuid: %{private}@, btOutOfBandKey.hash: %{private}@, shouldPairDirectlyOverIPsec: %{public}@, pairingType: %{public}ld, bluetoothMACAddress.hash: %{private}@)", buf, 0x34u);
   }
 
-  v17 = [(__CFString *)v8 UUIDString];
-  v18 = [(IDSDXPCPairing *)self pairingManager];
+  uUIDString = [(__CFString *)deviceCopy UUIDString];
+  pairingManager = [(IDSDXPCPairing *)self pairingManager];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_1006BDF8C;
   v43[3] = &unk_100BDA9F0;
-  v19 = v10;
+  v19 = completionCopy;
   v44 = v19;
-  [v18 registerPairedDeviceWithUniqueID:v8 didConnectBlock:v43];
+  [pairingManager registerPairedDeviceWithUniqueID:deviceCopy didConnectBlock:v43];
 
-  if ([v17 length])
+  if ([uUIDString length])
   {
-    if (v11)
+    if (shouldPairDirectlyOverIPsec)
     {
       v20 = 1;
     }
@@ -691,24 +691,24 @@ LABEL_14:
     v42 = v20;
     v40 = v19;
     v35[4] = self;
-    v24 = v17;
+    v24 = uUIDString;
     v36 = v24;
-    v37 = v34;
-    v41 = v12;
-    v38 = v33;
-    v25 = v8;
+    v37 = bTOutOfBandKey;
+    v41 = pairingType;
+    v38 = bluetoothMACAddress;
+    v25 = deviceCopy;
     v39 = v25;
     v26 = objc_retainBlock(v35);
-    v27 = [(IDSDXPCPairing *)self pairingManager];
-    v28 = [v27 pairedDeviceUUIDString];
+    pairingManager2 = [(IDSDXPCPairing *)self pairingManager];
+    pairedDeviceUUIDString = [pairingManager2 pairedDeviceUUIDString];
 
-    if (v28 && ([(__CFString *)v28 isEqualToIgnoringCase:v24]& 1) != 0)
+    if (pairedDeviceUUIDString && ([(__CFString *)pairedDeviceUUIDString isEqualToIgnoringCase:v24]& 1) != 0)
     {
       v29 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138478083;
-        v46 = v28;
+        v46 = pairedDeviceUUIDString;
         v47 = 2113;
         v48 = v24;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "(Daemon) Told to add a paired device but there is no need to reset communication with the currently active paired device. {activeCBUUID: %{private}@, cbuuidString: %{private}@}", buf, 0x16u);
@@ -756,8 +756,8 @@ LABEL_14:
         }
       }
 
-      v31 = [(IDSDXPCPairing *)self quickSwitchHelper];
-      [v31 resetCommunicationStateBeforeQuickSwitchWithCompletionBlock:v26];
+      quickSwitchHelper = [(IDSDXPCPairing *)self quickSwitchHelper];
+      [quickSwitchHelper resetCommunicationStateBeforeQuickSwitchWithCompletionBlock:v26];
     }
 
     v21 = v40;

@@ -1,14 +1,14 @@
 @interface TRIFBCloudKitTreatmentRecordAsset
 - (BOOL)hasCkIndex;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)verifyUTF8Fields;
 - (NSData)treatmentIdAsData;
 - (NSString)treatmentId;
-- (TRIFBCloudKitTreatmentRecordAsset)initWithBufRef:(id)a3 cppPointer:(const CloudKitTreatmentRecordAsset *)a4;
+- (TRIFBCloudKitTreatmentRecordAsset)initWithBufRef:(id)ref cppPointer:(const CloudKitTreatmentRecordAsset *)pointer;
 - (const)treatmentIdAsCString;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 - (unint64_t)hash;
 - (unsigned)assetIndex;
 - (unsigned)container;
@@ -49,8 +49,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:401 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:401 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -91,8 +91,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:407 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:407 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -111,18 +111,18 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:413 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     var0 = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [(AFBBufRef *)self->_br data];
-  v11 = var0 - [v10 bytes];
+  data = [(AFBBufRef *)self->_br data];
+  v11 = var0 - [data bytes];
 
-  v12 = [(AFBBufRef *)self->_br data];
-  v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+  data2 = [(AFBBufRef *)self->_br data];
+  v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
   objc_autoreleasePoolPop(v9);
 
@@ -144,44 +144,44 @@
   }
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(TRIFBCloudKitTreatmentRecordAsset *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(TRIFBCloudKitTreatmentRecordAsset *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:444 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:444 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_6;
   }
 
-  if (v8[10] == 1)
+  if (changesCopy[10] == 1)
   {
-    v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 3)];
+    v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 3)];
   }
 
   else
   {
-    if (!v8[10])
+    if (!changesCopy[10])
     {
 LABEL_6:
       v10 = objc_autoreleasePoolPush();
-      v11 = [(TRIFBCloudKitTreatmentRecordAsset *)self treatmentIdAsCString];
-      if (v11)
+      treatmentIdAsCString = [(TRIFBCloudKitTreatmentRecordAsset *)self treatmentIdAsCString];
+      if (treatmentIdAsCString)
       {
-        v12 = [v7 createStringWithCString:v11];
+        v12 = [builderCopy createStringWithCString:treatmentIdAsCString];
       }
 
       else
@@ -201,12 +201,12 @@ LABEL_12:
   v18[1] = 3221225472;
   v18[2] = __72__TRIFBCloudKitTreatmentRecordAsset_deepCopyUsingBufferBuilder_changes___block_invoke;
   v18[3] = &unk_27885E748;
-  v13 = v8;
+  v13 = changesCopy;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   v21 = v12;
   v14 = v12;
-  v15 = [v7 trifbCreateCloudKitTreatmentRecordAssetUsingBlock:v18];
+  v15 = [builderCopy trifbCreateCloudKitTreatmentRecordAssetUsingBlock:v18];
 
   objc_autoreleasePoolPop(v9);
 
@@ -287,30 +287,30 @@ LABEL_19:
 LABEL_20:
 }
 
-- (TRIFBCloudKitTreatmentRecordAsset)initWithBufRef:(id)a3 cppPointer:(const CloudKitTreatmentRecordAsset *)a4
+- (TRIFBCloudKitTreatmentRecordAsset)initWithBufRef:(id)ref cppPointer:(const CloudKitTreatmentRecordAsset *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = TRIFBCloudKitTreatmentRecordAsset;
   v8 = [(TRIFBCloudKitTreatmentRecordAsset *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -318,13 +318,13 @@ LABEL_20:
     v13 = &emptyCArrayStorage;
   }
 
-  v14 = [v10 length];
+  v14 = [dataCopy length];
   v23 = v13;
   v24 = v14;
   LODWORD(v25) = 0;
-  HIDWORD(v25) = a5;
+  HIDWORD(v25) = depth;
   LODWORD(v26) = 0;
-  HIDWORD(v26) = a6;
+  HIDWORD(v26) = tables;
   v27 = 0;
   LOBYTE(v28) = 1;
   if (v14 >= 0x7FFFFFFF)
@@ -336,24 +336,24 @@ LABEL_20:
   {
     v17 = *v13->var0;
     v18 = objc_alloc(MEMORY[0x277CED178]);
-    v19 = [v18 initWithData:{v10, v23, v24, v25, v26, v27, v28}];
+    v19 = [v18 initWithData:{dataCopy, v23, v24, v25, v26, v27, v28}];
     self = [(TRIFBCloudKitTreatmentRecordAsset *)self initWithBufRef:v19 cppPointer:&v13[v17]];
 
-    v20 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(TRIFBCloudKitTreatmentRecordAsset *)self verifyUTF8Fields])
       {
-        v20 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v20 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v21 = v20;
+    v21 = selfCopy2;
   }
 
   else
@@ -369,9 +369,9 @@ LABEL_20:
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TRIFBCloudKitTreatmentRecordAsset *)self container];
-  v5 = [(TRIFBCloudKitTreatmentRecordAsset *)self treatmentId];
-  v6 = [v5 hash] + 37 * v4;
+  container = [(TRIFBCloudKitTreatmentRecordAsset *)self container];
+  treatmentId = [(TRIFBCloudKitTreatmentRecordAsset *)self treatmentId];
+  v6 = [treatmentId hash] + 37 * container;
 
   v7 = 37 * (37 * v6 + [(TRIFBCloudKitTreatmentRecordAsset *)self assetIndex]);
   v8 = v7 + [(TRIFBCloudKitTreatmentRecordAsset *)self hasCkIndex];
@@ -379,28 +379,28 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [(TRIFBCloudKitTreatmentRecordAsset *)self container];
-      if (v8 != [v6 container])
+      container = [(TRIFBCloudKitTreatmentRecordAsset *)self container];
+      if (container != [v6 container])
       {
         goto LABEL_10;
       }
 
-      v9 = [(TRIFBCloudKitTreatmentRecordAsset *)self treatmentId];
-      v10 = [v6 treatmentId];
-      if (v9 | v10)
+      treatmentId = [(TRIFBCloudKitTreatmentRecordAsset *)self treatmentId];
+      treatmentId2 = [v6 treatmentId];
+      if (treatmentId | treatmentId2)
       {
-        v11 = [v9 isEqual:v10];
+        v11 = [treatmentId isEqual:treatmentId2];
 
         if (!v11)
         {
@@ -408,11 +408,11 @@ LABEL_20:
         }
       }
 
-      v12 = [(TRIFBCloudKitTreatmentRecordAsset *)self assetIndex];
-      if (v12 == [v6 assetIndex])
+      assetIndex = [(TRIFBCloudKitTreatmentRecordAsset *)self assetIndex];
+      if (assetIndex == [v6 assetIndex])
       {
-        v13 = [(TRIFBCloudKitTreatmentRecordAsset *)self hasCkIndex];
-        v14 = v13 ^ [v6 hasCkIndex] ^ 1;
+        hasCkIndex = [(TRIFBCloudKitTreatmentRecordAsset *)self hasCkIndex];
+        v14 = hasCkIndex ^ [v6 hasCkIndex] ^ 1;
       }
 
       else

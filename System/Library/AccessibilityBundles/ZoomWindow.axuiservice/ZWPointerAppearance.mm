@@ -1,5 +1,5 @@
 @interface ZWPointerAppearance
-- (ZWPointerAppearance)initWithZoomRootVC:(id)a3;
+- (ZWPointerAppearance)initWithZoomRootVC:(id)c;
 - (double)_zoomLevelMultiplier;
 - (double)fingerInnerCircleInnerRadius;
 - (double)fingerInnerRadius;
@@ -10,16 +10,16 @@
 
 @implementation ZWPointerAppearance
 
-- (ZWPointerAppearance)initWithZoomRootVC:(id)a3
+- (ZWPointerAppearance)initWithZoomRootVC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v8.receiver = self;
   v8.super_class = ZWPointerAppearance;
   v5 = [(ZWPointerAppearance *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ZWPointerAppearance *)v5 setZoomRootVC:v4];
+    [(ZWPointerAppearance *)v5 setZoomRootVC:cCopy];
   }
 
   return v6;
@@ -32,8 +32,8 @@
     return 1.0;
   }
 
-  v3 = [(ZWPointerAppearance *)self zoomRootVC];
-  [v3 zoomLevel];
+  zoomRootVC = [(ZWPointerAppearance *)self zoomRootVC];
+  [zoomRootVC zoomLevel];
   v5 = v4;
 
   result = 1.0;

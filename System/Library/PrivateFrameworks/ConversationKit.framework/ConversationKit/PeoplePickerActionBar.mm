@@ -1,13 +1,13 @@
 @interface PeoplePickerActionBar
-- (void)addPersonButtonTapped:(id)a3;
-- (void)audioButtonTapped:(id)a3;
-- (void)cancelButtonTapped:(id)a3;
-- (void)createLinkButtonTapped:(id)a3;
-- (void)inviteWithMessagesButtonTapped:(id)a3;
+- (void)addPersonButtonTapped:(id)tapped;
+- (void)audioButtonTapped:(id)tapped;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)createLinkButtonTapped:(id)tapped;
+- (void)inviteWithMessagesButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)messagesButtonTapped:(id)a3;
+- (void)messagesButtonTapped:(id)tapped;
 - (void)rttEnablementDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)videoButtonTapped;
 @end
 
@@ -15,71 +15,71 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PeoplePickerActionBar.layoutSubviews()();
 }
 
 - (void)rttEnablementDidChange
 {
-  v2 = self;
+  selfCopy = self;
   PeoplePickerActionBar.rttEnablementDidChange()();
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  PeoplePickerActionBar.cancelButtonTapped(_:)(v4, 5);
+  tappedCopy = tapped;
+  selfCopy = self;
+  PeoplePickerActionBar.cancelButtonTapped(_:)(tappedCopy, 5);
 }
 
-- (void)audioButtonTapped:(id)a3
+- (void)audioButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   PeoplePickerActionBar.audioButtonTapped(_:)();
 }
 
-- (void)createLinkButtonTapped:(id)a3
+- (void)createLinkButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  PeoplePickerActionBar.createLinkButtonTapped(_:)(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  PeoplePickerActionBar.createLinkButtonTapped(_:)(tappedCopy);
 }
 
 - (void)videoButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   PeoplePickerActionBar.videoButtonTapped()();
 }
 
-- (void)addPersonButtonTapped:(id)a3
+- (void)addPersonButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  PeoplePickerActionBar.cancelButtonTapped(_:)(v4, 2);
+  tappedCopy = tapped;
+  selfCopy = self;
+  PeoplePickerActionBar.cancelButtonTapped(_:)(tappedCopy, 2);
 }
 
-- (void)inviteWithMessagesButtonTapped:(id)a3
+- (void)inviteWithMessagesButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  PeoplePickerActionBar.cancelButtonTapped(_:)(v4, 3);
+  tappedCopy = tapped;
+  selfCopy = self;
+  PeoplePickerActionBar.cancelButtonTapped(_:)(tappedCopy, 3);
 }
 
-- (void)messagesButtonTapped:(id)a3
+- (void)messagesButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  PeoplePickerActionBar.cancelButtonTapped(_:)(v4, 4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  PeoplePickerActionBar.cancelButtonTapped(_:)(tappedCopy, 4);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   PeoplePickerActionBar.traitCollectionDidChange(_:)(v9);
 }
 

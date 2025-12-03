@@ -1,8 +1,8 @@
 @interface SXTextResizer
-- (double)preferredFontSizeForUsage:(void *)a3 contentSizeCategoryName:(uint64_t)a4 fontSize:;
-- (id)initWithColumnLayout:(void *)a3 defaultTextStyle:(char)a4 fontScalingEnabled:;
+- (double)preferredFontSizeForUsage:(void *)usage contentSizeCategoryName:(uint64_t)name fontSize:;
+- (id)initWithColumnLayout:(void *)layout defaultTextStyle:(char)style fontScalingEnabled:;
 - (uint64_t)resizeDropCapNumberOfLines:(uint64_t)result;
-- (uint64_t)resizeTextSize:(void *)a3 fontResizingThreshold:(void *)a4 fontSizeConstant:(double)a5 contentSizeCategory:(double)a6 fontTextStyle:;
+- (uint64_t)resizeTextSize:(void *)size fontResizingThreshold:(void *)threshold fontSizeConstant:(double)constant contentSizeCategory:(double)category fontTextStyle:;
 @end
 
 @implementation SXTextResizer
@@ -16,79 +16,79 @@ uint64_t __76__SXTextResizer_preferredFontSizeForUsage_contentSizeCategoryName_f
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)initWithColumnLayout:(void *)a3 defaultTextStyle:(char)a4 fontScalingEnabled:
+- (id)initWithColumnLayout:(void *)layout defaultTextStyle:(char)style fontScalingEnabled:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  layoutCopy = layout;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = SXTextResizer;
     v10 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 2, a2);
-      objc_storeStrong(a1 + 3, a3);
-      *(a1 + 8) = a4;
+      objc_storeStrong(self + 3, layout);
+      *(self + 8) = style;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)resizeTextSize:(void *)a3 fontResizingThreshold:(void *)a4 fontSizeConstant:(double)a5 contentSizeCategory:(double)a6 fontTextStyle:
+- (uint64_t)resizeTextSize:(void *)size fontResizingThreshold:(void *)threshold fontSizeConstant:(double)constant contentSizeCategory:(double)category fontTextStyle:
 {
-  v11 = a3;
-  v12 = a4;
-  if (a1)
+  sizeCopy = size;
+  thresholdCopy = threshold;
+  if (self)
   {
-    v13 = *(a1 + 24);
+    v13 = *(self + 24);
     if (v13)
     {
-      v15 = *(a1 + 24);
+      v15 = *(self + 24);
       if ([v15 fontSize] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v14 = 18;
+        fontSize = 18;
       }
 
       else
       {
-        v14 = [*(a1 + 24) fontSize];
+        fontSize = [*(self + 24) fontSize];
       }
     }
 
     else
     {
-      v14 = 18;
+      fontSize = 18;
     }
 
     v16 = [SXComponentClassification classificationForComponentWithRole:3];
     v17 = a2;
-    if (*(a1 + 8) == 1 && v14 * a5 < v17)
+    if (*(self + 8) == 1 && fontSize * constant < v17)
     {
-      v19 = *(a1 + 16);
+      v19 = *(self + 16);
       [v19 constrainedViewportSize];
-      v21 = v20 / [*(a1 + 16) layoutWidth];
+      v21 = v20 / [*(self + 16) layoutWidth];
 
-      v22 = (a6 + v21 * (1.0 - a6)) * v17;
+      v22 = (category + v21 * (1.0 - category)) * v17;
       v23 = llroundf(v22);
       v24 = 0.0;
-      if (a5 > 1.0)
+      if (constant > 1.0)
       {
-        v25 = [v16 textRules];
-        [v25 fontResizingTresholdFactor];
+        textRules = [v16 textRules];
+        [textRules fontResizingTresholdFactor];
         v27 = v26;
-        v28 = [v16 textRules];
-        [v28 fontSizeConstant];
+        textRules2 = [v16 textRules];
+        [textRules2 fontSizeConstant];
         v30 = v29;
-        v31 = [v16 textRules];
-        v32 = [v31 fontTextStyle];
-        v24 = [(SXTextResizer *)a1 resizeTextSize:v14 fontResizingThreshold:v11 fontSizeConstant:v32 contentSizeCategory:v27 fontTextStyle:v30];
+        textRules3 = [v16 textRules];
+        fontTextStyle = [textRules3 fontTextStyle];
+        v24 = [(SXTextResizer *)self resizeTextSize:fontSize fontResizingThreshold:sizeCopy fontSizeConstant:fontTextStyle contentSizeCategory:v27 fontTextStyle:v30];
       }
 
-      v33 = v24 * a5;
-      if (v24 * a5 <= v23)
+      v33 = v24 * constant;
+      if (v24 * constant <= v23)
       {
         v33 = v23;
       }
@@ -96,31 +96,31 @@ uint64_t __76__SXTextResizer_preferredFontSizeForUsage_contentSizeCategoryName_f
       a2 = v33;
     }
 
-    v34 = [(SXTextResizer *)a1 preferredFontSizeForUsage:v12 contentSizeCategoryName:v11 fontSize:a2];
-    if (a5 > 1.0 && (*(a1 + 8) & 1) != 0)
+    v34 = [(SXTextResizer *)self preferredFontSizeForUsage:thresholdCopy contentSizeCategoryName:sizeCopy fontSize:a2];
+    if (constant > 1.0 && (*(self + 8) & 1) != 0)
     {
-      v39 = [v16 textRules];
-      [v39 fontResizingTresholdFactor];
+      textRules4 = [v16 textRules];
+      [textRules4 fontResizingTresholdFactor];
       v41 = v40;
-      v42 = [v16 textRules];
-      [v42 fontSizeConstant];
+      textRules5 = [v16 textRules];
+      [textRules5 fontSizeConstant];
       v44 = v43;
-      v45 = [v16 textRules];
-      v46 = [v45 fontTextStyle];
-      v47 = [(SXTextResizer *)a1 resizeTextSize:v14 fontResizingThreshold:v11 fontSizeConstant:v46 contentSizeCategory:v41 fontTextStyle:v44];
+      textRules6 = [v16 textRules];
+      fontTextStyle2 = [textRules6 fontTextStyle];
+      v47 = [(SXTextResizer *)self resizeTextSize:fontSize fontResizingThreshold:sizeCopy fontSizeConstant:fontTextStyle2 contentSizeCategory:v41 fontTextStyle:v44];
 
-      if (v47 * a5 >= v34)
+      if (v47 * constant >= v34)
       {
         v48 = v34;
       }
 
       else
       {
-        v48 = v47 * a5;
+        v48 = v47 * constant;
       }
 
       v35 = v48;
-      if (v47 * a5 <= a2)
+      if (v47 * constant <= a2)
       {
         v35 = a2;
       }
@@ -132,24 +132,24 @@ uint64_t __76__SXTextResizer_preferredFontSizeForUsage_contentSizeCategoryName_f
     }
 
     v36 = v35;
-    [*(a1 + 16) contentScaleFactor];
-    a1 = (v37 * v36);
+    [*(self + 16) contentScaleFactor];
+    self = (v37 * v36);
   }
 
-  return a1;
+  return self;
 }
 
-- (double)preferredFontSizeForUsage:(void *)a3 contentSizeCategoryName:(uint64_t)a4 fontSize:
+- (double)preferredFontSizeForUsage:(void *)usage contentSizeCategoryName:(uint64_t)name fontSize:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  usageCopy = usage;
+  v9 = usageCopy;
+  if (self)
   {
-    v10 = a4;
-    if (UIContentSizeCategoryCompareToCategory(v8, *MEMORY[0x1E69DDC70]))
+    nameCopy = name;
+    if (UIContentSizeCategoryCompareToCategory(usageCopy, *MEMORY[0x1E69DDC70]))
     {
-      v17 = a4;
+      nameCopy2 = name;
       CTFontDescriptorGetTextStyleSize();
       if (qword_1ECA383F8 != -1)
       {
@@ -175,17 +175,17 @@ uint64_t __76__SXTextResizer_preferredFontSizeForUsage_contentSizeCategoryName_f
 
       if (v13 > 0.0)
       {
-        v10 = v17 / v13 * v10;
+        nameCopy = nameCopy2 / v13 * nameCopy;
       }
     }
   }
 
   else
   {
-    v10 = 0.0;
+    nameCopy = 0.0;
   }
 
-  return v10;
+  return nameCopy;
 }
 
 - (uint64_t)resizeDropCapNumberOfLines:(uint64_t)result

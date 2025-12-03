@@ -1,20 +1,20 @@
 @interface CKDBackingAccount
-+ (CKDBackingAccount)accountWithAltDSID:(id)a3;
-+ (CKDBackingAccount)accountWithIdentifier:(id)a3;
++ (CKDBackingAccount)accountWithAltDSID:(id)d;
++ (CKDBackingAccount)accountWithIdentifier:(id)identifier;
 + (id)credentialRenewalDatesBySuspendedAccountID;
-+ (id)mockAccountWithTestAccount:(id)a3 testDevice:(id)a4;
++ (id)mockAccountWithTestAccount:(id)account testDevice:(id)device;
 + (id)primaryAccount;
 - (ACAccount)ckAccount;
 - (BOOL)canSuspendedAccountRenewCredentials;
 - (BOOL)isAccountSuspended;
-- (BOOL)isDataclassEnabled:(id)a3;
-- (BOOL)isDataclassEnabledForCellular:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isDataclassEnabled:(id)enabled;
+- (BOOL)isDataclassEnabledForCellular:(id)cellular;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPrimaryAccount;
 - (BOOL)isPrimaryEmailVerified;
 - (BOOL)isWarmingUp;
 - (CKDBackingAccount)init;
-- (CKDBackingAccount)initWithAppleAccount:(id)a3;
+- (CKDBackingAccount)initWithAppleAccount:(id)account;
 - (CKPersona)persona;
 - (NSPersonNameComponents)fullName;
 - (NSString)altDSID;
@@ -26,17 +26,17 @@
 - (NSString)sharingURLHostname;
 - (NSString)suspendedAccountIdentifier;
 - (NSString)username;
-- (id)_accountCredentialForAccount:(id)a3 withError:(id *)a4;
-- (id)accountPropertiesForDataclass:(id)a3;
-- (id)cloudKitAuthTokenWithError:(id *)a3;
-- (id)iCloudAuthTokenWithError:(id *)a3;
-- (id)urlForDataclass:(id)a3 preferringGateway:(BOOL)a4;
+- (id)_accountCredentialForAccount:(id)account withError:(id *)error;
+- (id)accountPropertiesForDataclass:(id)dataclass;
+- (id)cloudKitAuthTokenWithError:(id *)error;
+- (id)iCloudAuthTokenWithError:(id *)error;
+- (id)urlForDataclass:(id)dataclass preferringGateway:(BOOL)gateway;
 - (int64_t)accountType;
 - (unint64_t)hash;
 - (void)noteSuspendedAccountRenewalDate;
-- (void)renewAuthTokenWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)updateAccountPropertiesAndSaveAccount:(id)a3;
-- (void)validateVettingToken:(id)a3 vettingEmail:(id)a4 vettingPhone:(id)a5 completionHandler:(id)a6;
+- (void)renewAuthTokenWithOptions:(id)options completionHandler:(id)handler;
+- (void)updateAccountPropertiesAndSaveAccount:(id)account;
+- (void)validateVettingToken:(id)token vettingEmail:(id)email vettingPhone:(id)phone completionHandler:(id)handler;
 @end
 
 @implementation CKDBackingAccount
@@ -135,11 +135,11 @@
   return isWarmingUp;
 }
 
-+ (CKDBackingAccount)accountWithIdentifier:(id)a3
++ (CKDBackingAccount)accountWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v6 = objc_msgSend_sharedAccountStore(CKDAccountStore, v4, v5);
-  v8 = objc_msgSend_accountWithIdentifier_(v6, v7, v3);
+  v8 = objc_msgSend_accountWithIdentifier_(v6, v7, identifierCopy);
 
   if (v8)
   {
@@ -155,11 +155,11 @@
   return v11;
 }
 
-+ (CKDBackingAccount)accountWithAltDSID:(id)a3
++ (CKDBackingAccount)accountWithAltDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v6 = objc_msgSend_sharedAccountStore(CKDAccountStore, v4, v5);
-  v8 = objc_msgSend_accountWithAltDSID_(v6, v7, v3);
+  v8 = objc_msgSend_accountWithAltDSID_(v6, v7, dCopy);
 
   if (v8)
   {
@@ -175,12 +175,12 @@
   return v11;
 }
 
-+ (id)mockAccountWithTestAccount:(id)a3 testDevice:(id)a4
++ (id)mockAccountWithTestAccount:(id)account testDevice:(id)device
 {
   v5 = 0;
-  if (a3 && a4)
+  if (account && device)
   {
-    v5 = objc_msgSend_mockAccountWithTestAccount_testDevice_(CKDBackingMockAccount, a2, a3);
+    v5 = objc_msgSend_mockAccountWithTestAccount_testDevice_(CKDBackingMockAccount, a2, account);
     v4 = vars8;
   }
 
@@ -227,9 +227,9 @@
   return result;
 }
 
-- (CKDBackingAccount)initWithAppleAccount:(id)a3
+- (CKDBackingAccount)initWithAppleAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
@@ -254,7 +254,7 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_appleAccount, a3);
+      objc_storeStrong(&v9->_appleAccount, account);
     }
 
     return v10;
@@ -314,28 +314,28 @@
   return v3;
 }
 
-- (BOOL)isDataclassEnabled:(id)a3
+- (BOOL)isDataclassEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v7 = objc_msgSend_appleAccount(self, v5, v6);
-  isEnabledForDataclass = objc_msgSend_isEnabledForDataclass_(v7, v8, v4);
+  isEnabledForDataclass = objc_msgSend_isEnabledForDataclass_(v7, v8, enabledCopy);
 
   return isEnabledForDataclass;
 }
 
-- (BOOL)isDataclassEnabledForCellular:(id)a3
+- (BOOL)isDataclassEnabledForCellular:(id)cellular
 {
-  v4 = a3;
+  cellularCopy = cellular;
   v7 = objc_msgSend_appleAccount(self, v5, v6);
-  v9 = objc_msgSend_aa_useCellularForDataclass_(v7, v8, v4);
+  v9 = objc_msgSend_aa_useCellularForDataclass_(v7, v8, cellularCopy);
 
   return v9;
 }
 
-- (id)_accountCredentialForAccount:(id)a3 withError:(id *)a4
+- (id)_accountCredentialForAccount:(id)account withError:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  accountCopy = account;
+  if (accountCopy)
   {
     if (objc_msgSend_isAccountSuspended(self, v6, v7))
     {
@@ -349,12 +349,12 @@
     else
     {
       v29 = 0;
-      v19 = objc_msgSend_credentialWithError_(v8, v9, &v29);
+      v19 = objc_msgSend_credentialWithError_(accountCopy, v9, &v29);
       v20 = v29;
       if (v19 | v20)
       {
         v18 = v20;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_10;
         }
@@ -364,7 +364,7 @@
 
       v23 = MEMORY[0x277CBC560];
       v24 = *MEMORY[0x277CBC120];
-      v25 = objc_msgSend_ck_identifier(v8, v21, v22);
+      v25 = objc_msgSend_ck_identifier(accountCopy, v21, v22);
       v18 = objc_msgSend_errorWithDomain_code_format_(v23, v26, v24, 1002, @"Didn't get account credentials for account %@ with no error", v25);
     }
   }
@@ -375,7 +375,7 @@
   }
 
   v19 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -384,7 +384,7 @@ LABEL_8:
   if (v18)
   {
     v27 = v18;
-    *a4 = v18;
+    *error = v18;
   }
 
 LABEL_10:
@@ -392,10 +392,10 @@ LABEL_10:
   return v19;
 }
 
-- (id)cloudKitAuthTokenWithError:(id *)a3
+- (id)cloudKitAuthTokenWithError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_ckAccount(self, a2, a3);
+  v5 = objc_msgSend_ckAccount(self, a2, error);
   v18 = 0;
   v7 = objc_msgSend__accountCredentialForAccount_withError_(self, v6, v5, &v18);
   v10 = v18;
@@ -417,10 +417,10 @@ LABEL_10:
 
   if (v10)
   {
-    if (a3)
+    if (error)
     {
       v14 = v10;
-      *a3 = v10;
+      *error = v10;
     }
 
     if (*MEMORY[0x277CBC880] != -1)
@@ -442,10 +442,10 @@ LABEL_10:
   return v12;
 }
 
-- (id)iCloudAuthTokenWithError:(id *)a3
+- (id)iCloudAuthTokenWithError:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_appleAccount(self, a2, a3);
+  v4 = objc_msgSend_appleAccount(self, a2, error);
   v7 = objc_msgSend_aa_authToken(v4, v5, v6);
 
   if (!v7)
@@ -462,13 +462,13 @@ LABEL_10:
       v14 = 138412290;
       v15 = v9;
       _os_log_error_impl(&dword_22506F000, v10, OS_LOG_TYPE_ERROR, "Error getting iCloudAuthToken: %@", &v14, 0xCu);
-      if (!a3)
+      if (!error)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
 LABEL_7:
 
@@ -476,7 +476,7 @@ LABEL_7:
     }
 
     v11 = v9;
-    *a3 = v9;
+    *error = v9;
     goto LABEL_7;
   }
 
@@ -564,19 +564,19 @@ LABEL_8:
   return 0;
 }
 
-- (id)accountPropertiesForDataclass:(id)a3
+- (id)accountPropertiesForDataclass:(id)dataclass
 {
-  v4 = a3;
+  dataclassCopy = dataclass;
   v7 = objc_msgSend_appleAccount(self, v5, v6);
-  v9 = objc_msgSend_propertiesForDataclass_(v7, v8, v4);
+  v9 = objc_msgSend_propertiesForDataclass_(v7, v8, dataclassCopy);
 
   return v9;
 }
 
-- (void)renewAuthTokenWithOptions:(id)a3 completionHandler:(id)a4
+- (void)renewAuthTokenWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v9 = objc_msgSend_CKDeepCopy(a3, v7, v8);
+  handlerCopy = handler;
+  v9 = objc_msgSend_CKDeepCopy(options, v7, v8);
   v12 = objc_msgSend_sharedAccountStore(CKDAccountStore, v10, v11);
   v15 = objc_msgSend_accountStore(v12, v13, v14);
 
@@ -603,7 +603,7 @@ LABEL_8:
     v29[1] = 3221225472;
     v29[2] = sub_2251149EC;
     v29[3] = &unk_278545BC0;
-    v30 = v6;
+    v30 = handlerCopy;
     objc_msgSend_renewCredentialsForAccount_options_completion_(v15, v25, v24, v9, v29);
 
     v26 = v30;
@@ -624,35 +624,35 @@ LABEL_8:
     }
 
     v26 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v28, *MEMORY[0x277CBC120], 1002, @"No account exists");
-    (*(v6 + 2))(v6, 0, v26);
+    (*(handlerCopy + 2))(handlerCopy, 0, v26);
   }
 }
 
-- (void)updateAccountPropertiesAndSaveAccount:(id)a3
+- (void)updateAccountPropertiesAndSaveAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc(MEMORY[0x277CBC360]);
   v5 = objc_opt_class();
   v7 = objc_msgSend_initWithCode_format_(v4, v6, 12, @"This method must be subclassed in class %@", v5);
   objc_exception_throw(v7);
 }
 
-- (void)validateVettingToken:(id)a3 vettingEmail:(id)a4 vettingPhone:(id)a5 completionHandler:(id)a6
+- (void)validateVettingToken:(id)token vettingEmail:(id)email vettingPhone:(id)phone completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  tokenCopy = token;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CF0170];
-  v13 = a5;
-  v14 = a4;
+  phoneCopy = phone;
+  emailCopy = email;
   v15 = objc_alloc_init(v12);
-  if (v14)
+  if (emailCopy)
   {
-    v16 = v14;
+    v16 = emailCopy;
   }
 
   else
   {
-    v16 = v13;
+    v16 = phoneCopy;
   }
 
   v17 = v16;
@@ -677,22 +677,22 @@ LABEL_8:
   v37[2] = sub_225114DE8;
   v37[3] = &unk_278545C10;
   v38 = v32;
-  v39 = v10;
-  v40 = v11;
-  v33 = v11;
-  v34 = v10;
+  v39 = tokenCopy;
+  v40 = handlerCopy;
+  v33 = handlerCopy;
+  v34 = tokenCopy;
   v35 = v32;
   objc_msgSend_authenticateWithContext_completion_(v35, v36, v15, v37);
 }
 
-- (id)urlForDataclass:(id)a3 preferringGateway:(BOOL)a4
+- (id)urlForDataclass:(id)dataclass preferringGateway:(BOOL)gateway
 {
-  v4 = a4;
+  gatewayCopy = gateway;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = objc_msgSend_accountPropertiesForDataclass_(self, v7, v6);
+  dataclassCopy = dataclass;
+  v8 = objc_msgSend_accountPropertiesForDataclass_(self, v7, dataclassCopy);
   v10 = v8;
-  if (v4)
+  if (gatewayCopy)
   {
     objc_msgSend_CKFirstUrlForKeys_(v8, v9, &unk_2838C8C10);
   }
@@ -713,7 +713,7 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       v15 = 138543618;
-      v16 = v6;
+      v16 = dataclassCopy;
       v17 = 2114;
       v18 = v10;
       _os_log_error_impl(&dword_22506F000, v12, OS_LOG_TYPE_ERROR, "Couldn't create url from dataclass %{public}@ with properties %{public}@", &v15, 0x16u);
@@ -766,10 +766,10 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -779,7 +779,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_appleAccount(self, v6, v7);
       v11 = objc_msgSend_appleAccount(v5, v9, v10);
 

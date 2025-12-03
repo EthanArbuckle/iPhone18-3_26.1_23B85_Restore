@@ -1,8 +1,8 @@
 @interface _SFBrowserConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)usesDarkTheme;
 - (UITraitEnvironment)traitEnvironment;
-- (_SFBrowserConfiguration)initWithPrivateBrowsingEnabled:(BOOL)a3 traitEnvironment:(id)a4 controlledByAutomation:(BOOL)a5;
+- (_SFBrowserConfiguration)initWithPrivateBrowsingEnabled:(BOOL)enabled traitEnvironment:(id)environment controlledByAutomation:(BOOL)automation;
 - (id)description;
 - (int64_t)barTintStyle;
 @end
@@ -24,16 +24,16 @@
     goto LABEL_8;
   }
 
-  v6 = [WeakRetained traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [WeakRetained traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v7 >= 3)
+  if (userInterfaceStyle >= 3)
   {
 LABEL_5:
-    v9 = [v4 traitCollection];
-    v7 = [v9 userInterfaceStyle];
+    traitCollection2 = [v4 traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-    if (v7 < 3)
+    if (userInterfaceStyle < 3)
     {
       v8 = &unk_1D47DE708;
       goto LABEL_7;
@@ -46,7 +46,7 @@ LABEL_8:
 
   v8 = &unk_1D47DE6F0;
 LABEL_7:
-  v10 = v8[v7];
+  v10 = v8[userInterfaceStyle];
 LABEL_9:
 
   return v10;
@@ -59,23 +59,23 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (_SFBrowserConfiguration)initWithPrivateBrowsingEnabled:(BOOL)a3 traitEnvironment:(id)a4 controlledByAutomation:(BOOL)a5
+- (_SFBrowserConfiguration)initWithPrivateBrowsingEnabled:(BOOL)enabled traitEnvironment:(id)environment controlledByAutomation:(BOOL)automation
 {
-  v5 = a5;
-  v6 = a3;
+  automationCopy = automation;
+  enabledCopy = enabled;
   v11.receiver = self;
   v11.super_class = _SFBrowserConfiguration;
-  v7 = a4;
+  environmentCopy = environment;
   v8 = [(_SFBrowserConfiguration *)&v11 init];
-  objc_storeWeak(&v8->_traitEnvironment, v7);
+  objc_storeWeak(&v8->_traitEnvironment, environmentCopy);
 
   v9 = 2;
-  if (!v5)
+  if (!automationCopy)
   {
     v9 = 0;
   }
 
-  if (v6)
+  if (enabledCopy)
   {
     v9 = 1;
   }
@@ -84,18 +84,18 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && self->_configuration == v5->_configuration;
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && self->_configuration == v5->_configuration;
   }
 
   return v6;
@@ -127,9 +127,9 @@ LABEL_9:
 
 - (BOOL)usesDarkTheme
 {
-  v2 = [(_SFBrowserConfiguration *)self barTintStyle];
+  barTintStyle = [(_SFBrowserConfiguration *)self barTintStyle];
 
-  return MEMORY[0x1EEE1E558](v2);
+  return MEMORY[0x1EEE1E558](barTintStyle);
 }
 
 @end

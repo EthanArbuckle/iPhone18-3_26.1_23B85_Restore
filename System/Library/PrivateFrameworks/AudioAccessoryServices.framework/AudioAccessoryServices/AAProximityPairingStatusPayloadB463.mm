@@ -8,12 +8,12 @@
 {
   v6.receiver = self;
   v6.super_class = AAProximityPairingStatusPayloadB463;
-  v5 = [(AAProximityPairingStatusPayloadBeatsUntethered *)&v6 describeProperties];
+  describeProperties = [(AAProximityPairingStatusPayloadBeatsUntethered *)&v6 describeProperties];
   [(AAProximityPairingStatusPayloadB463 *)self color];
   NSAppendPrintF_safe();
-  v3 = v5;
+  v3 = describeProperties;
 
-  return v5;
+  return describeProperties;
 }
 
 @end

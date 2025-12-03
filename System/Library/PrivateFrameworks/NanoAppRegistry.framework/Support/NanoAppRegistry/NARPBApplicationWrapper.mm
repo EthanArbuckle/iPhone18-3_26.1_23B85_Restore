@@ -1,25 +1,25 @@
 @interface NARPBApplicationWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAppTags:(id)a3;
-- (void)addITunesPlistKeys:(id)a3;
-- (void)addITunesPlistValues:(id)a3;
-- (void)addInfoPlistLocalizations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSupportsForegroundApplication:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppTags:(id)tags;
+- (void)addITunesPlistKeys:(id)keys;
+- (void)addITunesPlistValues:(id)values;
+- (void)addInfoPlistLocalizations:(id)localizations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSupportsForegroundApplication:(BOOL)application;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NARPBApplicationWrapper
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -32,81 +32,81 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addInfoPlistLocalizations:(id)a3
+- (void)addInfoPlistLocalizations:(id)localizations
 {
-  v4 = a3;
+  localizationsCopy = localizations;
   infoPlistLocalizations = self->_infoPlistLocalizations;
-  v8 = v4;
+  v8 = localizationsCopy;
   if (!infoPlistLocalizations)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_infoPlistLocalizations;
     self->_infoPlistLocalizations = v6;
 
-    v4 = v8;
+    localizationsCopy = v8;
     infoPlistLocalizations = self->_infoPlistLocalizations;
   }
 
-  [(NSMutableArray *)infoPlistLocalizations addObject:v4];
+  [(NSMutableArray *)infoPlistLocalizations addObject:localizationsCopy];
 }
 
-- (void)addITunesPlistKeys:(id)a3
+- (void)addITunesPlistKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   iTunesPlistKeys = self->_iTunesPlistKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!iTunesPlistKeys)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_iTunesPlistKeys;
     self->_iTunesPlistKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     iTunesPlistKeys = self->_iTunesPlistKeys;
   }
 
-  [(NSMutableArray *)iTunesPlistKeys addObject:v4];
+  [(NSMutableArray *)iTunesPlistKeys addObject:keysCopy];
 }
 
-- (void)addITunesPlistValues:(id)a3
+- (void)addITunesPlistValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   iTunesPlistValues = self->_iTunesPlistValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!iTunesPlistValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_iTunesPlistValues;
     self->_iTunesPlistValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     iTunesPlistValues = self->_iTunesPlistValues;
   }
 
-  [(NSMutableArray *)iTunesPlistValues addObject:v4];
+  [(NSMutableArray *)iTunesPlistValues addObject:valuesCopy];
 }
 
-- (void)addAppTags:(id)a3
+- (void)addAppTags:(id)tags
 {
-  v4 = a3;
+  tagsCopy = tags;
   appTags = self->_appTags;
-  v8 = v4;
+  v8 = tagsCopy;
   if (!appTags)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_appTags;
     self->_appTags = v6;
 
-    v4 = v8;
+    tagsCopy = v8;
     appTags = self->_appTags;
   }
 
-  [(NSMutableArray *)appTags addObject:v4];
+  [(NSMutableArray *)appTags addObject:tagsCopy];
 }
 
-- (void)setHasSupportsForegroundApplication:(BOOL)a3
+- (void)setHasSupportsForegroundApplication:(BOOL)application
 {
-  if (a3)
+  if (application)
   {
     v3 = 4;
   }
@@ -124,8 +124,8 @@
   v7.receiver = self;
   v7.super_class = NARPBApplicationWrapper;
   v3 = [(NARPBApplicationWrapper *)&v7 description];
-  v4 = [(NARPBApplicationWrapper *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NARPBApplicationWrapper *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -173,8 +173,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -213,8 +213,8 @@
   appState = self->_appState;
   if (appState)
   {
-    v19 = [(NARPBApplicationStateWrapper *)appState dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"appState"];
+    dictionaryRepresentation2 = [(NARPBApplicationStateWrapper *)appState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"appState"];
   }
 
   appTags = self->_appTags;
@@ -232,9 +232,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     version = self->_version;
@@ -402,19 +402,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[20] = self->_version;
-    *(v4 + 88) |= 2u;
+    toCopy[20] = self->_version;
+    *(toCopy + 88) |= 2u;
   }
 
-  v21 = v4;
+  v21 = toCopy;
   if (self->_syncId)
   {
-    [v4 setSyncId:?];
+    [toCopy setSyncId:?];
   }
 
   if (self->_sparsePlistData)
@@ -425,10 +425,10 @@
   if ([(NARPBApplicationWrapper *)self infoPlistLocalizationsCount])
   {
     [v21 clearInfoPlistLocalizations];
-    v5 = [(NARPBApplicationWrapper *)self infoPlistLocalizationsCount];
-    if (v5)
+    infoPlistLocalizationsCount = [(NARPBApplicationWrapper *)self infoPlistLocalizationsCount];
+    if (infoPlistLocalizationsCount)
     {
-      v6 = v5;
+      v6 = infoPlistLocalizationsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NARPBApplicationWrapper *)self infoPlistLocalizationsAtIndex:i];
@@ -440,10 +440,10 @@
   if ([(NARPBApplicationWrapper *)self iTunesPlistKeysCount])
   {
     [v21 clearITunesPlistKeys];
-    v9 = [(NARPBApplicationWrapper *)self iTunesPlistKeysCount];
-    if (v9)
+    iTunesPlistKeysCount = [(NARPBApplicationWrapper *)self iTunesPlistKeysCount];
+    if (iTunesPlistKeysCount)
     {
-      v10 = v9;
+      v10 = iTunesPlistKeysCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NARPBApplicationWrapper *)self iTunesPlistKeysAtIndex:j];
@@ -455,10 +455,10 @@
   if ([(NARPBApplicationWrapper *)self iTunesPlistValuesCount])
   {
     [v21 clearITunesPlistValues];
-    v13 = [(NARPBApplicationWrapper *)self iTunesPlistValuesCount];
-    if (v13)
+    iTunesPlistValuesCount = [(NARPBApplicationWrapper *)self iTunesPlistValuesCount];
+    if (iTunesPlistValuesCount)
     {
-      v14 = v13;
+      v14 = iTunesPlistValuesCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(NARPBApplicationWrapper *)self iTunesPlistValuesAtIndex:k];
@@ -486,10 +486,10 @@
   if ([(NARPBApplicationWrapper *)self appTagsCount])
   {
     [v21 clearAppTags];
-    v17 = [(NARPBApplicationWrapper *)self appTagsCount];
-    if (v17)
+    appTagsCount = [(NARPBApplicationWrapper *)self appTagsCount];
+    if (appTagsCount)
     {
-      v18 = v17;
+      v18 = appTagsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(NARPBApplicationWrapper *)self appTagsAtIndex:m];
@@ -505,9 +505,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -515,11 +515,11 @@
     *(v5 + 88) |= 2u;
   }
 
-  v7 = [(NSString *)self->_syncId copyWithZone:a3];
+  v7 = [(NSString *)self->_syncId copyWithZone:zone];
   v8 = v6[9];
   v6[9] = v7;
 
-  v9 = [(NSData *)self->_sparsePlistData copyWithZone:a3];
+  v9 = [(NSData *)self->_sparsePlistData copyWithZone:zone];
   v10 = v6[8];
   v6[8] = v9;
 
@@ -543,7 +543,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v52 + 1) + 8 * v15) copyWithZone:a3];
+        v16 = [*(*(&v52 + 1) + 8 * v15) copyWithZone:zone];
         [v6 addInfoPlistLocalizations:v16];
 
         v15 = v15 + 1;
@@ -576,7 +576,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v48 + 1) + 8 * v21) copyWithZone:a3];
+        v22 = [*(*(&v48 + 1) + 8 * v21) copyWithZone:zone];
         [v6 addITunesPlistKeys:v22];
 
         v21 = v21 + 1;
@@ -609,7 +609,7 @@
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v44 + 1) + 8 * v27) copyWithZone:a3];
+        v28 = [*(*(&v44 + 1) + 8 * v27) copyWithZone:zone];
         [v6 addITunesPlistValues:v28];
 
         v27 = v27 + 1;
@@ -628,11 +628,11 @@
     *(v6 + 88) |= 1u;
   }
 
-  v29 = [(NSString *)self->_launchServicesBundleType copyWithZone:a3];
+  v29 = [(NSString *)self->_launchServicesBundleType copyWithZone:zone];
   v30 = v6[6];
   v6[6] = v29;
 
-  v31 = [(NARPBApplicationStateWrapper *)self->_appState copyWithZone:a3];
+  v31 = [(NARPBApplicationStateWrapper *)self->_appState copyWithZone:zone];
   v32 = v6[1];
   v6[1] = v31;
 
@@ -656,7 +656,7 @@
           objc_enumerationMutation(v33);
         }
 
-        v38 = [*(*(&v40 + 1) + 8 * v37) copyWithZone:{a3, v40}];
+        v38 = [*(*(&v40 + 1) + 8 * v37) copyWithZone:{zone, v40}];
         [v6 addAppTags:v38];
 
         v37 = v37 + 1;
@@ -678,36 +678,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(equalCopy + 88);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_version != *(v4 + 20))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_version != *(equalCopy + 20))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_30;
   }
 
   syncId = self->_syncId;
-  if (syncId | *(v4 + 9) && ![(NSString *)syncId isEqual:?])
+  if (syncId | *(equalCopy + 9) && ![(NSString *)syncId isEqual:?])
   {
     goto LABEL_30;
   }
 
   sparsePlistData = self->_sparsePlistData;
-  if (sparsePlistData | *(v4 + 8))
+  if (sparsePlistData | *(equalCopy + 8))
   {
     if (![(NSData *)sparsePlistData isEqual:?])
     {
@@ -716,7 +716,7 @@
   }
 
   infoPlistLocalizations = self->_infoPlistLocalizations;
-  if (infoPlistLocalizations | *(v4 + 5))
+  if (infoPlistLocalizations | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)infoPlistLocalizations isEqual:?])
     {
@@ -725,7 +725,7 @@
   }
 
   iTunesPlistKeys = self->_iTunesPlistKeys;
-  if (iTunesPlistKeys | *(v4 + 3))
+  if (iTunesPlistKeys | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)iTunesPlistKeys isEqual:?])
     {
@@ -734,7 +734,7 @@
   }
 
   iTunesPlistValues = self->_iTunesPlistValues;
-  if (iTunesPlistValues | *(v4 + 4))
+  if (iTunesPlistValues | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)iTunesPlistValues isEqual:?])
     {
@@ -742,28 +742,28 @@
     }
   }
 
-  v11 = *(v4 + 88);
+  v11 = *(equalCopy + 88);
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_sequenceNumber != *(v4 + 14))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_sequenceNumber != *(equalCopy + 14))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_30;
   }
 
   launchServicesBundleType = self->_launchServicesBundleType;
-  if (launchServicesBundleType | *(v4 + 6) && ![(NSString *)launchServicesBundleType isEqual:?])
+  if (launchServicesBundleType | *(equalCopy + 6) && ![(NSString *)launchServicesBundleType isEqual:?])
   {
     goto LABEL_30;
   }
 
   appState = self->_appState;
-  if (appState | *(v4 + 1))
+  if (appState | *(equalCopy + 1))
   {
     if (![(NARPBApplicationStateWrapper *)appState isEqual:?])
     {
@@ -772,7 +772,7 @@
   }
 
   appTags = self->_appTags;
-  if (appTags | *(v4 + 2))
+  if (appTags | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)appTags isEqual:?])
     {
@@ -780,10 +780,10 @@
     }
   }
 
-  v15 = (*(v4 + 88) & 4) == 0;
+  v15 = (*(equalCopy + 88) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 88) & 4) == 0)
+    if ((*(equalCopy + 88) & 4) == 0)
     {
 LABEL_30:
       v15 = 0;
@@ -792,13 +792,13 @@ LABEL_30:
 
     if (self->_supportsForegroundApplication)
     {
-      if ((*(v4 + 84) & 1) == 0)
+      if ((*(equalCopy + 84) & 1) == 0)
       {
         goto LABEL_30;
       }
     }
 
-    else if (*(v4 + 84))
+    else if (*(equalCopy + 84))
     {
       goto LABEL_30;
     }
@@ -854,17 +854,17 @@ LABEL_31:
   return v13 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[22] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[22] & 2) != 0)
   {
-    self->_version = v4[20];
+    self->_version = fromCopy[20];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(NARPBApplicationWrapper *)self setSyncId:?];
   }

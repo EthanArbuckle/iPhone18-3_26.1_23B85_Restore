@@ -1,9 +1,9 @@
 @interface NFLoyaltyAgent
 - (NFLoyaltyAgent)init;
 - (id)getTransactionEvent;
-- (id)handleAPDU:(id)a3;
-- (id)handleSelect:(id)a3;
-- (void)authorize:(id)a3 withToken:(id)a4;
+- (id)handleAPDU:(id)u;
+- (id)handleSelect:(id)select;
+- (void)authorize:(id)authorize withToken:(id)token;
 - (void)handleDeselect;
 @end
 
@@ -37,14 +37,14 @@
   return v5;
 }
 
-- (void)authorize:(id)a3 withToken:(id)a4
+- (void)authorize:(id)authorize withToken:(id)token
 {
-  v11 = a3;
-  v6 = a4;
+  authorizeCopy = authorize;
+  tokenCopy = token;
   sessionData = self->_sessionData;
-  if (v11)
+  if (authorizeCopy)
   {
-    [(NSMutableDictionary *)self->_sessionData setObject:v11 forKey:@"PassData"];
+    [(NSMutableDictionary *)self->_sessionData setObject:authorizeCopy forKey:@"PassData"];
   }
 
   else
@@ -54,9 +54,9 @@
   }
 
   v9 = self->_sessionData;
-  if (v6)
+  if (tokenCopy)
   {
-    [(NSMutableDictionary *)v9 setObject:v6 forKey:@"Token"];
+    [(NSMutableDictionary *)v9 setObject:tokenCopy forKey:@"Token"];
   }
 
   else
@@ -66,14 +66,14 @@
   }
 }
 
-- (id)handleSelect:(id)a3
+- (id)handleSelect:(id)select
 {
-  v4 = a3;
-  if (sub_10006640C(self, v4))
+  selectCopy = select;
+  if (sub_10006640C(self, selectCopy))
   {
     self->_state = 0;
     [NFGeneralStatisticsCALogger updateAnalyticsGeneralTransactionStatistics:&off_1003393C8];
-    v5 = sub_100063A94(self, v4);
+    v5 = sub_100063A94(self, selectCopy);
     v6 = [NFResponseAPDU responseWithData:v5];
   }
 
@@ -85,20 +85,20 @@
   return v6;
 }
 
-- (id)handleAPDU:(id)a3
+- (id)handleAPDU:(id)u
 {
-  v5 = a3;
+  uCopy = u;
   self->_lastStatus = -28672;
-  if (sub_10006640C(self, v5))
+  if (sub_10006640C(self, uCopy))
   {
     self->_state = 0;
-    v6 = sub_100063A94(self, v5);
+    v6 = sub_100063A94(self, uCopy);
     v7 = [NFResponseAPDU responseWithData:v6];
 
     goto LABEL_139;
   }
 
-  if (![v5 isGetVasDataCommand])
+  if (![uCopy isGetVasDataCommand])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -151,7 +151,7 @@
 
   [(NSMutableDictionary *)self->_sessionData removeObjectsForKeys:&off_100338FA0];
   self->_state = 1;
-  v8 = v5;
+  v8 = uCopy;
   v9 = sub_1000643D8(self, v8);
   self->_lastStatus = v9;
   if (v9 != 36864)
@@ -408,8 +408,8 @@
           }
 
           v54 = *(*(&v179 + 1) + 8 * i);
-          v55 = [v54 identifier];
-          v56 = [v24 isEqualToData:v55];
+          identifier = [v54 identifier];
+          v56 = [v24 isEqualToData:identifier];
 
           if (v56)
           {
@@ -471,8 +471,8 @@ LABEL_90:
 
             if ([v177 intValue] == 1)
             {
-              v68 = [v176 intValue];
-              if (v68 == [v54 type])
+              intValue = [v176 intValue];
+              if (intValue == [v54 type])
               {
                 goto LABEL_90;
               }
@@ -485,8 +485,8 @@ LABEL_90:
                 goto LABEL_90;
               }
 
-              v69 = [v176 intValue];
-              if (([v54 type] & v69) != 0)
+              intValue2 = [v176 intValue];
+              if (([v54 type] & intValue2) != 0)
               {
                 goto LABEL_90;
               }
@@ -518,11 +518,11 @@ LABEL_91:
     {
       if (v70)
       {
-        v97 = [v70 userInterventionRequired];
+        userInterventionRequired = [v70 userInterventionRequired];
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v98 = NFLogGetLogger();
         v99 = v98;
-        if (!v97)
+        if (!userInterventionRequired)
         {
           if (v98)
           {
@@ -570,9 +570,9 @@ LABEL_91:
             _os_log_impl(&_mh_execute_header, v139, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Found HostCard for transaction: %{public}@", buf, 0x2Cu);
           }
 
-          v144 = [v70 data];
-          v145 = [v70 token];
-          [(NFLoyaltyAgent *)self authorize:v144 withToken:v145];
+          data = [v70 data];
+          token = [v70 token];
+          [(NFLoyaltyAgent *)self authorize:data withToken:token];
 
           v146 = [(NSMutableDictionary *)self->_sessionData objectForKey:@"PassData"];
           sel = [v146 length];
@@ -582,7 +582,7 @@ LABEL_91:
           v150 = [NFTLV TLVWithTag:40746 value:v149];
           [v148 addObject:v150];
           v151 = [v147 length];
-          v152 = [v147 bytes];
+          bytes = [v147 bytes];
 
           if (v151)
           {
@@ -596,7 +596,7 @@ LABEL_91:
               v153 = v151;
             }
 
-            v154 = [[NSData alloc] initWithBytes:v152 length:v153];
+            v154 = [[NSData alloc] initWithBytes:bytes length:v153];
 
             v155 = [NFTLV TLVWithTag:40743 value:v154];
 
@@ -612,15 +612,15 @@ LABEL_91:
 
           v156 = [NFTLV TLVWithTag:112 children:v148];
 
-          v157 = [v156 asMutableData];
-          v92 = v157;
+          asMutableData = [v156 asMutableData];
+          v92 = asMutableData;
           if (sel == v153)
           {
             v8 = v173;
-            if (v157)
+            if (asMutableData)
             {
               *buf = 144;
-              [v157 appendBytes:buf length:2];
+              [asMutableData appendBytes:buf length:2];
             }
 
             v158 = 3;
@@ -629,10 +629,10 @@ LABEL_91:
           else
           {
             v8 = v173;
-            if (v157)
+            if (asMutableData)
             {
               *buf = __rev16((sel - v153) | 0x6100);
-              [v157 appendBytes:buf length:2];
+              [asMutableData appendBytes:buf length:2];
             }
 
             v158 = 2;
@@ -763,7 +763,7 @@ LABEL_132:
     else
     {
       v110 = [(NSMutableDictionary *)self->_sessionData objectForKey:@"LastRequest"];
-      v111 = [v110 BOOLValue];
+      bOOLValue = [v110 BOOLValue];
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v112 = NFLogGetLogger();
@@ -813,7 +813,7 @@ LABEL_132:
 
       v123 = objc_opt_new();
       v92 = v123;
-      if (v111)
+      if (bOOLValue)
       {
         if (v123)
         {

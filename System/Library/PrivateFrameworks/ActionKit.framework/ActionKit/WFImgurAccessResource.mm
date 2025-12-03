@@ -1,8 +1,8 @@
 @interface WFImgurAccessResource
 - (WFImgurUploadAction)action;
 - (unint64_t)status;
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
-- (void)setAction:(id)a3;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
+- (void)setAction:(id)action;
 @end
 
 @implementation WFImgurAccessResource
@@ -26,19 +26,19 @@
   return [(WFAccountAccessResource *)&v4 status];
 }
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
-  v7 = a3;
-  if ([a4 isEqualToString:@"WFImgurAnonymous"])
+  actionCopy = action;
+  if ([key isEqualToString:@"WFImgurAnonymous"])
   {
-    v6 = [v7 parameterValueForKey:@"WFImgurAnonymous" ofClass:objc_opt_class()];
+    v6 = [actionCopy parameterValueForKey:@"WFImgurAnonymous" ofClass:objc_opt_class()];
     -[WFImgurAccessResource setUsesAccount:](self, "setUsesAccount:", [v6 BOOLValue] ^ 1);
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  obj = a3;
+  obj = action;
   WeakRetained = objc_loadWeakRetained(&self->_action);
   [WeakRetained removeEventObserver:self];
 

@@ -1,12 +1,12 @@
 @interface MKLinkPreviewMetadata
 + (double)displayScale;
-- (MKLinkPreviewMetadata)initWithActionType:(int64_t)a3 mapType:(unint64_t)a4;
-- (void)setCoordinateRegion:(id *)a3;
+- (MKLinkPreviewMetadata)initWithActionType:(int64_t)type mapType:(unint64_t)mapType;
+- (void)setCoordinateRegion:(id *)region;
 @end
 
 @implementation MKLinkPreviewMetadata
 
-- (void)setCoordinateRegion:(id *)a3
+- (void)setCoordinateRegion:(id *)region
 {
   self->_coordinateRegion.center.latitude = v3;
   self->_coordinateRegion.center.longitude = v4;
@@ -14,15 +14,15 @@
   self->_coordinateRegion.span.longitudeDelta = v6;
 }
 
-- (MKLinkPreviewMetadata)initWithActionType:(int64_t)a3 mapType:(unint64_t)a4
+- (MKLinkPreviewMetadata)initWithActionType:(int64_t)type mapType:(unint64_t)mapType
 {
   v7.receiver = self;
   v7.super_class = MKLinkPreviewMetadata;
   result = [(MKLinkPreviewMetadata *)&v7 init];
   if (result)
   {
-    result->_actionType = a3;
-    result->_mapType = a4;
+    result->_actionType = type;
+    result->_mapType = mapType;
     result->_coordinateRegion.center = MKCoordinateRegionInvalid;
     result->_coordinateRegion.span = unk_1A30F7F60;
   }

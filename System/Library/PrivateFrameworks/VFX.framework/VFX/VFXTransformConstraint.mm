@@ -1,17 +1,17 @@
 @interface VFXTransformConstraint
-+ (id)orientationConstraintInWorldSpace:(BOOL)a3 withBlock:(id)a4;
-+ (id)positionConstraintInWorldSpace:(BOOL)a3 withBlock:(id)a4;
-+ (id)transformConstraintInWorldSpace:(BOOL)a3 withBlock:(id)a4;
-- (VFXTransformConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initOrientationInWorldSpace:(BOOL)a3 withBlock:(id)a4;
-- (id)initPositionInWorld:(BOOL)a3 withBlock:(id)a4;
-- (id)initTransformInWorld:(BOOL)a3 withBlock:(id)a4;
++ (id)orientationConstraintInWorldSpace:(BOOL)space withBlock:(id)block;
++ (id)positionConstraintInWorldSpace:(BOOL)space withBlock:(id)block;
++ (id)transformConstraintInWorldSpace:(BOOL)space withBlock:(id)block;
+- (VFXTransformConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initOrientationInWorldSpace:(BOOL)space withBlock:(id)block;
+- (id)initPositionInWorld:(BOOL)world withBlock:(id)block;
+- (id)initTransformInWorld:(BOOL)world withBlock:(id)block;
 @end
 
 @implementation VFXTransformConstraint
 
-- (id)initTransformInWorld:(BOOL)a3 withBlock:(id)a4
+- (id)initTransformInWorld:(BOOL)world withBlock:(id)block
 {
   v13.receiver = self;
   v13.super_class = VFXTransformConstraint;
@@ -22,8 +22,8 @@
     v11[1] = 3221225472;
     v11[2] = sub_1AF2BD170;
     v11[3] = &unk_1E7A7E618;
-    v12 = a3;
-    v11[4] = a4;
+    worldCopy = world;
+    v11[4] = block;
     v6->super._constraintRef = sub_1AF1523B8(v11, @"transform");
     objc_msgSend_didInitConstraintRef(v6, v7, v8, v9);
   }
@@ -31,7 +31,7 @@
   return v6;
 }
 
-- (id)initPositionInWorld:(BOOL)a3 withBlock:(id)a4
+- (id)initPositionInWorld:(BOOL)world withBlock:(id)block
 {
   v13.receiver = self;
   v13.super_class = VFXTransformConstraint;
@@ -42,8 +42,8 @@
     v11[1] = 3221225472;
     v11[2] = sub_1AF2BD79C;
     v11[3] = &unk_1E7A7E618;
-    v12 = a3;
-    v11[4] = a4;
+    worldCopy = world;
+    v11[4] = block;
     v6->super._constraintRef = sub_1AF1523B8(v11, @"translation");
     objc_msgSend_didInitConstraintRef(v6, v7, v8, v9);
   }
@@ -51,7 +51,7 @@
   return v6;
 }
 
-- (id)initOrientationInWorldSpace:(BOOL)a3 withBlock:(id)a4
+- (id)initOrientationInWorldSpace:(BOOL)space withBlock:(id)block
 {
   v13.receiver = self;
   v13.super_class = VFXTransformConstraint;
@@ -62,8 +62,8 @@
     v11[1] = 3221225472;
     v11[2] = sub_1AF2BD9A8;
     v11[3] = &unk_1E7A7E618;
-    v12 = a3;
-    v11[4] = a4;
+    spaceCopy = space;
+    v11[4] = block;
     v6->super._constraintRef = sub_1AF1523B8(v11, @"quaternion");
     objc_msgSend_didInitConstraintRef(v6, v7, v8, v9);
   }
@@ -71,34 +71,34 @@
   return v6;
 }
 
-+ (id)transformConstraintInWorldSpace:(BOOL)a3 withBlock:(id)a4
++ (id)transformConstraintInWorldSpace:(BOOL)space withBlock:(id)block
 {
-  v5 = a3;
+  spaceCopy = space;
   v6 = [VFXTransformConstraint alloc];
-  inited = objc_msgSend_initTransformInWorld_withBlock_(v6, v7, v5, a4);
+  inited = objc_msgSend_initTransformInWorld_withBlock_(v6, v7, spaceCopy, block);
 
   return inited;
 }
 
-+ (id)positionConstraintInWorldSpace:(BOOL)a3 withBlock:(id)a4
++ (id)positionConstraintInWorldSpace:(BOOL)space withBlock:(id)block
 {
-  v5 = a3;
+  spaceCopy = space;
   v6 = [VFXTransformConstraint alloc];
-  inited = objc_msgSend_initPositionInWorld_withBlock_(v6, v7, v5, a4);
+  inited = objc_msgSend_initPositionInWorld_withBlock_(v6, v7, spaceCopy, block);
 
   return inited;
 }
 
-+ (id)orientationConstraintInWorldSpace:(BOOL)a3 withBlock:(id)a4
++ (id)orientationConstraintInWorldSpace:(BOOL)space withBlock:(id)block
 {
-  v5 = a3;
+  spaceCopy = space;
   v6 = [VFXTransformConstraint alloc];
-  inited = objc_msgSend_initOrientationInWorldSpace_withBlock_(v6, v7, v5, a4);
+  inited = objc_msgSend_initOrientationInWorldSpace_withBlock_(v6, v7, spaceCopy, block);
 
   return inited;
 }
 
-- (VFXTransformConstraint)initWithCoder:(id)a3
+- (VFXTransformConstraint)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = VFXTransformConstraint;
@@ -106,13 +106,13 @@
   if (v4)
   {
     v4->super._constraintRef = sub_1AF1523B8(&unk_1F24EBFD8, @"transform");
-    objc_msgSend_finalizeDecodeConstraint_(v4, v5, a3, v6);
+    objc_msgSend_finalizeDecodeConstraint_(v4, v5, coder, v6);
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = sub_1AF15249C(self->super._constraintRef);

@@ -1,15 +1,15 @@
 @interface VoiceOverBrailleUIController
-- (id)openToLastPositionEnabled:(id)a3;
-- (id)readListItemsEnabled:(id)a3;
-- (id)showsBackButton:(id)a3;
+- (id)openToLastPositionEnabled:(id)enabled;
+- (id)readListItemsEnabled:(id)enabled;
+- (id)showsBackButton:(id)button;
 - (id)specifiers;
-- (id)typingSpeechFeedbackEnabled:(id)a3;
-- (id)visualsEnabled:(id)a3;
-- (void)setOpenToLastPositionEnabled:(id)a3 specifier:(id)a4;
-- (void)setReadListItemsEnabled:(id)a3 specifier:(id)a4;
-- (void)setShowsBackButton:(id)a3 specifier:(id)a4;
-- (void)setTypingSpeechFeedbackEnabled:(id)a3 specifier:(id)a4;
-- (void)setVisualsEnabled:(id)a3 specifier:(id)a4;
+- (id)typingSpeechFeedbackEnabled:(id)enabled;
+- (id)visualsEnabled:(id)enabled;
+- (void)setOpenToLastPositionEnabled:(id)enabled specifier:(id)specifier;
+- (void)setReadListItemsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShowsBackButton:(id)button specifier:(id)specifier;
+- (void)setTypingSpeechFeedbackEnabled:(id)enabled specifier:(id)specifier;
+- (void)setVisualsEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation VoiceOverBrailleUIController
@@ -123,14 +123,14 @@
   return v3;
 }
 
-- (void)setOpenToLastPositionEnabled:(id)a3 specifier:(id)a4
+- (void)setOpenToLastPositionEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleUIShouldReopenViewsWhenRestart:v4];
+  [v5 setVoiceOverTouchBrailleUIShouldReopenViewsWhenRestart:bOOLValue];
 }
 
-- (id)openToLastPositionEnabled:(id)a3
+- (id)openToLastPositionEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleUIShouldReopenViewsWhenRestart]);
@@ -138,14 +138,14 @@
   return v4;
 }
 
-- (void)setTypingSpeechFeedbackEnabled:(id)a3 specifier:(id)a4
+- (void)setTypingSpeechFeedbackEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleUITypingSpeechFeedbackEnabled:v4];
+  [v5 setVoiceOverTouchBrailleUITypingSpeechFeedbackEnabled:bOOLValue];
 }
 
-- (id)typingSpeechFeedbackEnabled:(id)a3
+- (id)typingSpeechFeedbackEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleUITypingSpeechFeedbackEnabled]);
@@ -153,14 +153,14 @@
   return v4;
 }
 
-- (void)setReadListItemsEnabled:(id)a3 specifier:(id)a4
+- (void)setReadListItemsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleUIReadListItemsEnabled:v4];
+  [v5 setVoiceOverTouchBrailleUIReadListItemsEnabled:bOOLValue];
 }
 
-- (id)readListItemsEnabled:(id)a3
+- (id)readListItemsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleUIReadListItemsEnabled]);
@@ -168,14 +168,14 @@
   return v4;
 }
 
-- (void)setVisualsEnabled:(id)a3 specifier:(id)a4
+- (void)setVisualsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleUIVisualsEnabled:v4];
+  [v5 setVoiceOverTouchBrailleUIVisualsEnabled:bOOLValue];
 }
 
-- (id)visualsEnabled:(id)a3
+- (id)visualsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleUIVisualsEnabled]);
@@ -183,14 +183,14 @@
   return v4;
 }
 
-- (void)setShowsBackButton:(id)a3 specifier:(id)a4
+- (void)setShowsBackButton:(id)button specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [button BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleUIShowsBackButton:v4];
+  [v5 setVoiceOverTouchBrailleUIShowsBackButton:bOOLValue];
 }
 
-- (id)showsBackButton:(id)a3
+- (id)showsBackButton:(id)button
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleUIShowsBackButton]);

@@ -1,21 +1,21 @@
 @interface ICNoteEditorActivityItemsConfigurationProvider
-- (ICNoteEditorActivityItemsConfigurationProvider)initWithDelegate:(id)a3;
+- (ICNoteEditorActivityItemsConfigurationProvider)initWithDelegate:(id)delegate;
 - (ICNoteEditorActivityItemsConfigurationProviderDelegate)delegate;
 - (id)activityItemsConfiguration;
 @end
 
 @implementation ICNoteEditorActivityItemsConfigurationProvider
 
-- (ICNoteEditorActivityItemsConfigurationProvider)initWithDelegate:(id)a3
+- (ICNoteEditorActivityItemsConfigurationProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = ICNoteEditorActivityItemsConfigurationProvider;
   v5 = [(ICNoteEditorActivityItemsConfigurationProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -24,17 +24,17 @@
 - (id)activityItemsConfiguration
 {
   objc_opt_class();
-  v3 = [(ICNoteEditorActivityItemsConfigurationProvider *)self delegate];
-  v4 = [v3 noteForActivityItemsConfiguration];
+  delegate = [(ICNoteEditorActivityItemsConfigurationProvider *)self delegate];
+  noteForActivityItemsConfiguration = [delegate noteForActivityItemsConfiguration];
   v5 = ICDynamicCast();
 
   if ([v5 canBeSharedViaICloud])
   {
-    v6 = [v5 sharedRootObject];
-    v7 = v6;
-    if (v6)
+    sharedRootObject = [v5 sharedRootObject];
+    v7 = sharedRootObject;
+    if (sharedRootObject)
     {
-      v8 = v6;
+      v8 = sharedRootObject;
     }
 
     else
@@ -57,13 +57,13 @@
       v17 = &ICTagSelectionMenuReplacementSubstring_ptr;
       if (v13)
       {
-        v18 = [v13 title];
-        [v12 setTitle:v18];
+        title = [v13 title];
+        [v12 setTitle:title];
 
-        v19 = [(ICNoteEditorActivityItemsConfigurationProvider *)self delegate];
-        v20 = [v19 isDarkModeForActivityItemsConfiguration];
+        delegate2 = [(ICNoteEditorActivityItemsConfigurationProvider *)self delegate];
+        isDarkModeForActivityItemsConfiguration = [delegate2 isDarkModeForActivityItemsConfiguration];
 
-        v21 = [ICAppearanceInfo appearanceInfoWithType:v20];
+        v21 = [ICAppearanceInfo appearanceInfoWithType:isDarkModeForActivityItemsConfiguration];
         v22 = [[ICThumbnailConfiguration alloc] initForSharePreviewThumbnailWithNote:v13 appearanceInfo:v21];
         v23 = objc_alloc_init(NSItemProvider);
         v42[0] = _NSConcreteStackBlock;
@@ -81,8 +81,8 @@
 
       else if (v14)
       {
-        v26 = [v14 title];
-        [v12 setTitle:v26];
+        title2 = [v14 title];
+        [v12 setTitle:title2];
 
         sub_1004E9F80(v27);
         v29 = objc_alloc(*(v28 + 40));
@@ -92,8 +92,8 @@
       }
 
       v32 = objc_alloc_init(v17[279]);
-      v33 = [v16[27] sharedInstance];
-      [v33 registerShareForObject:v9 itemProvider:v32 generateThumbnails:0];
+      sharedInstance = [v16[27] sharedInstance];
+      [sharedInstance registerShareForObject:v9 itemProvider:v32 generateThumbnails:0];
 
       v34 = [UIActivityItemsConfiguration alloc];
       v44 = v32;
@@ -102,8 +102,8 @@
 
       v36 = +[NSMutableDictionary dictionary];
       [v36 ic_setNonNilObject:v12 forNonNilKey:UIActivityItemsConfigurationMetadataKeyLinkPresentationMetadata];
-      v37 = [v12 title];
-      [v36 ic_setNonNilObject:v37 forNonNilKey:UIActivityItemsConfigurationMetadataKeyTitle];
+      title3 = [v12 title];
+      [v36 ic_setNonNilObject:title3 forNonNilKey:UIActivityItemsConfigurationMetadataKeyTitle];
 
       v40[0] = _NSConcreteStackBlock;
       v40[1] = 3221225472;

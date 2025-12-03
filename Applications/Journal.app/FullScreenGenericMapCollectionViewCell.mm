@@ -1,11 +1,11 @@
 @interface FullScreenGenericMapCollectionViewCell
-- (_TtC7Journal38FullScreenGenericMapCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC7Journal38FullScreenGenericMapCollectionViewCell)initWithCoder:(id)coder;
 - (void)updateConstraints;
 @end
 
 @implementation FullScreenGenericMapCollectionViewCell
 
-- (_TtC7Journal38FullScreenGenericMapCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal38FullScreenGenericMapCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal38FullScreenGenericMapCollectionViewCell_mapView;
   type metadata accessor for GenericMapAssetView();
@@ -18,7 +18,7 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_10072F4E8();
 }
 

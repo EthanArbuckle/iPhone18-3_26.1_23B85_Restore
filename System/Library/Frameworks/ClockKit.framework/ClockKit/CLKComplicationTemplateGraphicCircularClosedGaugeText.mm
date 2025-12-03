@@ -11,11 +11,11 @@
   v7 = centerTextProvider;
   v11.receiver = self;
   v11.super_class = CLKComplicationTemplateGraphicCircularClosedGaugeText;
-  v8 = [(CLKComplicationTemplate *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKComplicationTemplate *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicCircularClosedGaugeText *)v8 setGaugeProvider:v6];
+    [(CLKComplicationTemplateGraphicCircularClosedGaugeText *)initPrivate setGaugeProvider:v6];
     [(CLKComplicationTemplateGraphicCircularClosedGaugeText *)v9 setCenterTextProvider:v7];
   }
 
@@ -26,7 +26,7 @@
 {
   v6 = centerTextProvider;
   v7 = gaugeProvider;
-  v8 = [[a1 alloc] initWithGaugeProvider:v7 centerTextProvider:v6];
+  v8 = [[self alloc] initWithGaugeProvider:v7 centerTextProvider:v6];
 
   return v8;
 }

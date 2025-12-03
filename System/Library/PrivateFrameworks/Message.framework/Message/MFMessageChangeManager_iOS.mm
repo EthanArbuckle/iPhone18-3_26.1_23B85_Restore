@@ -1,107 +1,107 @@
 @interface MFMessageChangeManager_iOS
-- (BOOL)_mailboxIsGmail:(id)a3;
-- (BOOL)haveCompleteMIMEForMessage:(id)a3;
-- (BOOL)mailboxIsAllMail:(id)a3;
-- (BOOL)mailboxIsTrash:(id)a3;
-- (BOOL)mailboxPartOfAllMail:(id)a3;
-- (BOOL)persistNewMessages:(id)a3 mailboxURL:(id)a4 oldMessagesByNewMessage:(id)a5 fromSyncing:(BOOL)a6;
+- (BOOL)_mailboxIsGmail:(id)gmail;
+- (BOOL)haveCompleteMIMEForMessage:(id)message;
+- (BOOL)mailboxIsAllMail:(id)mail;
+- (BOOL)mailboxIsTrash:(id)trash;
+- (BOOL)mailboxPartOfAllMail:(id)mail;
+- (BOOL)persistNewMessages:(id)messages mailboxURL:(id)l oldMessagesByNewMessage:(id)message fromSyncing:(BOOL)syncing;
 - (MFMailMessageLibrary)library;
-- (MFMessageChangeManager_iOS)initWithLibrary:(id)a3 database:(id)a4 localActionPersistence:(id)a5 messagePersistence:(id)a6 serverMessagePersistenceFactory:(id)a7 readLaterPersistence:(id)a8 categoryPersistence:(id)a9 bimiManager:(id)a10 hookResponder:(id)a11 hookRegistry:(id)a12;
-- (id)accountForMailboxURL:(id)a3;
-- (id)applyFlagChange:(id)a3 toMessagesInDatabase:(id)a4;
-- (id)iterateMessagesInMailboxURLs:(id)a3 excludingMessages:(id)a4 batchSize:(unint64_t)a5 returnMessagesForFlagChange:(id)a6 handler:(id)a7;
-- (id)messageForDatabaseID:(int64_t)a3;
-- (id)messagesForRemoteIDs:(id)a3 mailboxURL:(id)a4;
-- (id)messagesToJournalForMessages:(id)a3 inMailbox:(id)a4;
-- (id)reflectNewMessages:(id)a3 mailboxURL:(id)a4;
-- (int64_t)mailboxDatabaseIDForURL:(id)a3;
-- (void)_recordFrecencyEventWithMailboxURL:(id)a3;
-- (void)actionHasChangedAccount:(id)a3;
-- (void)applyVIPStatus:(BOOL)a3 toMessagesInDatabase:(id)a4;
-- (void)checkForNewActionsInMailboxID:(int64_t)a3;
-- (void)deletePersistedMessages:(id)a3;
-- (void)didFinishPersistenceDidAddMessages:(id)a3;
-- (void)didReflectNewMessages:(id)a3;
-- (void)messageWasAppended:(id)a3;
-- (void)resetStatusCountsForMailboxWithURL:(id)a3;
-- (void)setData:(id)a3 onMessage:(id)a4;
-- (void)setRemoteID:(id)a3 onMessageWithDatabaseID:(int64_t)a4;
-- (void)willStartPersistenceDidAddMessages:(id)a3;
+- (MFMessageChangeManager_iOS)initWithLibrary:(id)library database:(id)database localActionPersistence:(id)persistence messagePersistence:(id)messagePersistence serverMessagePersistenceFactory:(id)factory readLaterPersistence:(id)laterPersistence categoryPersistence:(id)categoryPersistence bimiManager:(id)self0 hookResponder:(id)self1 hookRegistry:(id)self2;
+- (id)accountForMailboxURL:(id)l;
+- (id)applyFlagChange:(id)change toMessagesInDatabase:(id)database;
+- (id)iterateMessagesInMailboxURLs:(id)ls excludingMessages:(id)messages batchSize:(unint64_t)size returnMessagesForFlagChange:(id)change handler:(id)handler;
+- (id)messageForDatabaseID:(int64_t)d;
+- (id)messagesForRemoteIDs:(id)ds mailboxURL:(id)l;
+- (id)messagesToJournalForMessages:(id)messages inMailbox:(id)mailbox;
+- (id)reflectNewMessages:(id)messages mailboxURL:(id)l;
+- (int64_t)mailboxDatabaseIDForURL:(id)l;
+- (void)_recordFrecencyEventWithMailboxURL:(id)l;
+- (void)actionHasChangedAccount:(id)account;
+- (void)applyVIPStatus:(BOOL)status toMessagesInDatabase:(id)database;
+- (void)checkForNewActionsInMailboxID:(int64_t)d;
+- (void)deletePersistedMessages:(id)messages;
+- (void)didFinishPersistenceDidAddMessages:(id)messages;
+- (void)didReflectNewMessages:(id)messages;
+- (void)messageWasAppended:(id)appended;
+- (void)resetStatusCountsForMailboxWithURL:(id)l;
+- (void)setData:(id)data onMessage:(id)message;
+- (void)setRemoteID:(id)d onMessageWithDatabaseID:(int64_t)iD;
+- (void)willStartPersistenceDidAddMessages:(id)messages;
 @end
 
 @implementation MFMessageChangeManager_iOS
 
-- (MFMessageChangeManager_iOS)initWithLibrary:(id)a3 database:(id)a4 localActionPersistence:(id)a5 messagePersistence:(id)a6 serverMessagePersistenceFactory:(id)a7 readLaterPersistence:(id)a8 categoryPersistence:(id)a9 bimiManager:(id)a10 hookResponder:(id)a11 hookRegistry:(id)a12
+- (MFMessageChangeManager_iOS)initWithLibrary:(id)library database:(id)database localActionPersistence:(id)persistence messagePersistence:(id)messagePersistence serverMessagePersistenceFactory:(id)factory readLaterPersistence:(id)laterPersistence categoryPersistence:(id)categoryPersistence bimiManager:(id)self0 hookResponder:(id)self1 hookRegistry:(id)self2
 {
-  obj = a3;
-  v18 = a4;
-  v32 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  obj = library;
+  databaseCopy = database;
+  persistenceCopy = persistence;
+  messagePersistenceCopy = messagePersistence;
+  factoryCopy = factory;
+  laterPersistenceCopy = laterPersistence;
+  categoryPersistenceCopy = categoryPersistence;
+  managerCopy = manager;
+  responderCopy = responder;
+  registryCopy = registry;
   v35.receiver = self;
   v35.super_class = MFMessageChangeManager_iOS;
-  v33 = v20;
-  v26 = [(EDMessageChangeManager *)&v35 initWithDatabase:v18 localActionPersistence:v32 messagePersistence:v19 serverMessagePersistenceFactory:v20 readLaterPersistence:v21 categoryPersistence:v22 bimiManager:v23 hookResponder:v24 hookRegistry:v25];
+  v33 = factoryCopy;
+  v26 = [(EDMessageChangeManager *)&v35 initWithDatabase:databaseCopy localActionPersistence:persistenceCopy messagePersistence:messagePersistenceCopy serverMessagePersistenceFactory:factoryCopy readLaterPersistence:laterPersistenceCopy categoryPersistence:categoryPersistenceCopy bimiManager:managerCopy hookResponder:responderCopy hookRegistry:registryCopy];
   v27 = v26;
   if (v26)
   {
     objc_storeWeak(&v26->_library, obj);
-    v28 = [v22 analyticsLogger];
-    v29 = [v28 biomeCollector];
+    analyticsLogger = [categoryPersistenceCopy analyticsLogger];
+    biomeCollector = [analyticsLogger biomeCollector];
     biomeCollector = v27->_biomeCollector;
-    v27->_biomeCollector = v29;
+    v27->_biomeCollector = biomeCollector;
   }
 
   return v27;
 }
 
-- (void)_recordFrecencyEventWithMailboxURL:(id)a3
+- (void)_recordFrecencyEventWithMailboxURL:(id)l
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E699AD20]) initWithURL:v4];
+    v5 = [objc_alloc(MEMORY[0x1E699AD20]) initWithURL:lCopy];
     if (v5)
     {
-      v6 = [(MFMessageChangeManager_iOS *)self library];
-      v7 = [v6 mailboxFrecencyController];
+      library = [(MFMessageChangeManager_iOS *)self library];
+      mailboxFrecencyController = [library mailboxFrecencyController];
       v10[0] = v5;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-      [v7 recordEventWithMailboxIDs:v8];
+      [mailboxFrecencyController recordEventWithMailboxIDs:v8];
     }
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)reflectNewMessages:(id)a3 mailboxURL:(id)a4
+- (id)reflectNewMessages:(id)messages mailboxURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = MFMessageChangeManager_iOS;
-  v4 = [(EDMessageChangeManager *)&v6 reflectNewMessages:a3 mailboxURL:a4];
+  v4 = [(EDMessageChangeManager *)&v6 reflectNewMessages:messages mailboxURL:l];
 
   return v4;
 }
 
-- (id)messagesToJournalForMessages:(id)a3 inMailbox:(id)a4
+- (id)messagesToJournalForMessages:(id)messages inMailbox:(id)mailbox
 {
-  v5 = a3;
-  v6 = [MailAccount accountWithURL:a4];
+  messagesCopy = messages;
+  v6 = [MailAccount accountWithURL:mailbox];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 ef_filter:&__block_literal_global_44];
+    v7 = [messagesCopy ef_filter:&__block_literal_global_44];
   }
 
   else
   {
-    v7 = v5;
+    v7 = messagesCopy;
   }
 
   v8 = v7;
@@ -109,26 +109,26 @@
   return v8;
 }
 
-- (BOOL)persistNewMessages:(id)a3 mailboxURL:(id)a4 oldMessagesByNewMessage:(id)a5 fromSyncing:(BOOL)a6
+- (BOOL)persistNewMessages:(id)messages mailboxURL:(id)l oldMessagesByNewMessage:(id)message fromSyncing:(BOOL)syncing
 {
-  v11 = a3;
-  v12 = a4;
-  v33 = a5;
-  v13 = [v11 firstObject];
+  messagesCopy = messages;
+  lCopy = l;
+  messageCopy = message;
+  firstObject = [messagesCopy firstObject];
   objc_opt_class();
-  LOBYTE(a5) = objc_opt_isKindOfClass();
+  LOBYTE(message) = objc_opt_isKindOfClass();
 
-  if ((a5 & 1) == 0)
+  if ((message & 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"MFMessageChangeManager_iOS.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"[messages.firstObject isKindOfClass:[MFMessage class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFMessageChangeManager_iOS.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"[messages.firstObject isKindOfClass:[MFMessage class]]"}];
   }
 
-  v14 = v11;
-  v15 = [v12 absoluteString];
-  v16 = [MailAccount mailboxUidFromActiveAccountsForURL:v15];
+  v14 = messagesCopy;
+  absoluteString = [lCopy absoluteString];
+  v16 = [MailAccount mailboxUidFromActiveAccountsForURL:absoluteString];
 
-  if (a6)
+  if (syncing)
   {
     i = 0;
   }
@@ -138,20 +138,20 @@
     v18 = [v14 count];
     for (i = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v18]; v18; --v18)
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [i addObject:v19];
+      null = [MEMORY[0x1E695DFB0] null];
+      [i addObject:null];
     }
   }
 
-  v20 = [(EDMessageChangeManager *)self mailboxURLIsInRemoteAccount:v12];
+  v20 = [(EDMessageChangeManager *)self mailboxURLIsInRemoteAccount:lCopy];
   v21 = [v16 mailboxType] == 6;
-  v22 = [v14 firstObject];
-  v23 = [v22 mailbox];
-  v24 = [v23 URL];
+  firstObject2 = [v14 firstObject];
+  mailbox = [firstObject2 mailbox];
+  v24 = [mailbox URL];
 
   if (v20)
   {
-    v25 = ![(EDMessageChangeManager *)self mailboxURL:v24 isInSameAccountAsMailboxURL:v12];
+    v25 = ![(EDMessageChangeManager *)self mailboxURL:v24 isInSameAccountAsMailboxURL:lCopy];
   }
 
   else
@@ -160,35 +160,35 @@
   }
 
   v26 = objc_opt_new();
-  v27 = [(MFMessageChangeManager_iOS *)self library];
-  v28 = [v27 addMessages:v14 withMailbox:v16 newMessagesByOldMessage:v26 remoteIDs:i setFlags:0 addPOPUIDs:0 dataSectionsByMessage:0 generationWindow:0];
+  library = [(MFMessageChangeManager_iOS *)self library];
+  v28 = [library addMessages:v14 withMailbox:v16 newMessagesByOldMessage:v26 remoteIDs:i setFlags:0 addPOPUIDs:0 dataSectionsByMessage:0 generationWindow:0];
 
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __96__MFMessageChangeManager_iOS_persistNewMessages_mailboxURL_oldMessagesByNewMessage_fromSyncing___block_invoke;
   v34[3] = &unk_1E7AA6740;
-  v29 = v33;
+  v29 = messageCopy;
   v37 = v25;
   v38 = v21;
   v35 = v29;
-  v36 = self;
+  selfCopy = self;
   [v26 enumerateKeysAndObjectsUsingBlock:v34];
   v30 = [v26 count] != 0;
 
   return v30;
 }
 
-- (void)deletePersistedMessages:(id)a3
+- (void)deletePersistedMessages:(id)messages
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 ef_objectsPassingTest:&__block_literal_global_37];
+  messagesCopy = messages;
+  v5 = [messagesCopy ef_objectsPassingTest:&__block_literal_global_37];
   if ([v5 count])
   {
     if (_os_feature_enabled_impl())
     {
-      v6 = [(MFMessageChangeManager_iOS *)self biomeCollector];
-      [v6 deleteEventsForMessages:v5];
+      biomeCollector = [(MFMessageChangeManager_iOS *)self biomeCollector];
+      [biomeCollector deleteEventsForMessages:v5];
     }
 
     v7 = [MEMORY[0x1E699B5A8] log];
@@ -199,13 +199,13 @@
       _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_DEFAULT, "Deleting persisted messages: %@", buf, 0xCu);
     }
 
-    v8 = [(MFMessageChangeManager_iOS *)self library];
-    [v8 compactMessages:v5 permanently:1 notifyPersistence:0];
+    library = [(MFMessageChangeManager_iOS *)self library];
+    [library compactMessages:v5 permanently:1 notifyPersistence:0];
 
     v9 = [v5 ef_groupBy:&__block_literal_global_45];
-    v10 = [(MFMessageChangeManager_iOS *)self library];
-    v11 = [v9 allKeys];
-    v24 = [v10 mailboxURLsForIDs:v11];
+    library2 = [(MFMessageChangeManager_iOS *)self library];
+    allKeys = [v9 allKeys];
+    v24 = [library2 mailboxURLsForIDs:allKeys];
 
     v12 = [MEMORY[0x1E699B5A8] log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -234,30 +234,30 @@
     if ([v15 count])
     {
       v16 = objc_alloc(MEMORY[0x1E695DF70]);
-      v17 = [MEMORY[0x1E695E000] em_userDefaults];
+      em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
       v18 = *MEMORY[0x1E699ABA0];
-      v19 = [v17 objectForKey:*MEMORY[0x1E699ABA0]];
+      v19 = [em_userDefaults objectForKey:*MEMORY[0x1E699ABA0]];
       v20 = [v16 initWithArray:v19];
 
       [v20 addObject:v15];
-      v21 = [MEMORY[0x1E695E000] em_userDefaults];
+      em_userDefaults2 = [MEMORY[0x1E695E000] em_userDefaults];
       v22 = [v20 copy];
-      [v21 setValue:v22 forKey:v18];
+      [em_userDefaults2 setValue:v22 forKey:v18];
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)haveCompleteMIMEForMessage:(id)a3
+- (BOOL)haveCompleteMIMEForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = 0;
-    v5 = [(MFMessageChangeManager_iOS *)self library];
-    v6 = [v5 areMessageContentsLocallyAvailable:v4 fullContentsAvailble:&v9];
+    library = [(MFMessageChangeManager_iOS *)self library];
+    v6 = [library areMessageContentsLocallyAvailable:messageCopy fullContentsAvailble:&v9];
 
     v7 = v6 & v9;
   }
@@ -270,97 +270,97 @@
   return v7;
 }
 
-- (int64_t)mailboxDatabaseIDForURL:(id)a3
+- (int64_t)mailboxDatabaseIDForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MFMessageChangeManager_iOS *)self library];
-  v6 = [v4 absoluteString];
-  v7 = [v5 mailboxIDForURLString:v6 createIfNecessary:1];
+  lCopy = l;
+  library = [(MFMessageChangeManager_iOS *)self library];
+  absoluteString = [lCopy absoluteString];
+  v7 = [library mailboxIDForURLString:absoluteString createIfNecessary:1];
 
   return v7;
 }
 
-- (void)setRemoteID:(id)a3 onMessageWithDatabaseID:(int64_t)a4
+- (void)setRemoteID:(id)d onMessageWithDatabaseID:(int64_t)iD
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MFMessageChangeManager_iOS *)self library];
-  v8 = [v7 messageWithLibraryID:a4 options:7346239 inMailbox:0];
+  dCopy = d;
+  library = [(MFMessageChangeManager_iOS *)self library];
+  v8 = [library messageWithLibraryID:iD options:7346239 inMailbox:0];
 
   v9 = [MEMORY[0x1E699B5A8] log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 ef_publicDescription];
+    ef_publicDescription = [v8 ef_publicDescription];
     v12 = 138543618;
-    v13 = v6;
+    v13 = dCopy;
     v14 = 2114;
-    v15 = v10;
+    v15 = ef_publicDescription;
     _os_log_impl(&dword_1B0389000, v9, OS_LOG_TYPE_DEFAULT, "Setting remote ID to %{public}@ on message %{public}@", &v12, 0x16u);
   }
 
-  [v8 setRemoteID:v6];
+  [v8 setRemoteID:dCopy];
   [v8 commit];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setData:(id)a3 onMessage:(id)a4
+- (void)setData:(id)data onMessage:(id)message
 {
-  v13 = a3;
-  v7 = a4;
+  dataCopy = data;
+  messageCopy = message;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MFMessageChangeManager_iOS.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"[message isKindOfClass:[MFLibraryMessage class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFMessageChangeManager_iOS.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"[message isKindOfClass:[MFLibraryMessage class]]"}];
   }
 
-  v8 = [v7 mailbox];
-  v9 = [v8 URL];
+  mailbox = [messageCopy mailbox];
+  v9 = [mailbox URL];
   v10 = [(EDMessageChangeManager *)self mailboxURLIsInRemoteAccount:v9];
 
-  v11 = [(MFMessageChangeManager_iOS *)self library];
+  library = [(MFMessageChangeManager_iOS *)self library];
   if (v10)
   {
-    [v11 setData:v13 forMessageToAppend:v7];
+    [library setData:dataCopy forMessageToAppend:messageCopy];
   }
 
   else
   {
-    [v11 setData:v13 forMessage:v7 isPartial:0];
+    [library setData:dataCopy forMessage:messageCopy isPartial:0];
   }
 }
 
-- (void)checkForNewActionsInMailboxID:(int64_t)a3
+- (void)checkForNewActionsInMailboxID:(int64_t)d
 {
-  v4 = [(MFMessageChangeManager_iOS *)self library];
-  v6 = [v4 urlForMailboxID:a3];
+  library = [(MFMessageChangeManager_iOS *)self library];
+  v6 = [library urlForMailboxID:d];
 
   v5 = [MailAccount accountWithURLString:v6];
   [v5 newActionsAdded];
 }
 
-- (void)actionHasChangedAccount:(id)a3
+- (void)actionHasChangedAccount:(id)account
 {
-  v5 = a3;
-  v3 = [v5 mailboxURL];
-  v4 = [MailAccount accountWithURL:v3];
+  accountCopy = account;
+  mailboxURL = [accountCopy mailboxURL];
+  v4 = [MailAccount accountWithURL:mailboxURL];
 
-  [v4 addNewAction:v5];
+  [v4 addNewAction:accountCopy];
 }
 
-- (void)didReflectNewMessages:(id)a3
+- (void)didReflectNewMessages:(id)messages
 {
   v44 = *MEMORY[0x1E69E9840];
   v41.receiver = self;
   v41.super_class = MFMessageChangeManager_iOS;
-  v26 = a3;
-  [(EDMessageChangeManager *)&v41 didReflectNewMessages:v26];
+  messagesCopy = messages;
+  [(EDMessageChangeManager *)&v41 didReflectNewMessages:messagesCopy];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v26;
+  obj = messagesCopy;
   v29 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v29)
   {
@@ -378,21 +378,21 @@
         if ([v3 updateSubjectFromEncryptedContent])
         {
           WeakRetained = objc_loadWeakRetained(&self->_library);
-          v5 = [v3 subject];
-          v6 = [v5 subjectWithoutPrefix];
-          [WeakRetained updateUnprefixedSubjectTo:v6 forMessage:v3];
+          subject = [v3 subject];
+          subjectWithoutPrefix = [subject subjectWithoutPrefix];
+          [WeakRetained updateUnprefixedSubjectTo:subjectWithoutPrefix forMessage:v3];
         }
 
-        v7 = [v3 signatureInfo];
-        if (v7)
+        signatureInfo = [v3 signatureInfo];
+        if (signatureInfo)
         {
           v8 = objc_alloc(MEMORY[0x1E699AC08]);
-          v9 = [v7 smimeCapabilities];
-          v30 = v7;
-          v10 = [v7 signingDate];
-          if (v9)
+          smimeCapabilities = [signatureInfo smimeCapabilities];
+          v30 = signatureInfo;
+          signingDate = [signatureInfo signingDate];
+          if (smimeCapabilities)
           {
-            v11 = v9;
+            v11 = smimeCapabilities;
           }
 
           else
@@ -400,14 +400,14 @@
             v11 = MEMORY[0x1E695E0F0];
           }
 
-          v12 = [v8 initWithCapabilities:v11 date:v10];
+          v12 = [v8 initWithCapabilities:v11 date:signingDate];
 
           v35 = 0u;
           v36 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v13 = [v30 addresses];
-          v14 = [v13 countByEnumeratingWithState:&v33 objects:v42 count:16];
+          addresses = [v30 addresses];
+          v14 = [addresses countByEnumeratingWithState:&v33 objects:v42 count:16];
           if (v14)
           {
             v15 = *v34;
@@ -417,37 +417,37 @@
               {
                 if (*v34 != v15)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(addresses);
                 }
 
                 v17 = *(*(&v33 + 1) + 8 * j);
-                v18 = [(EDMessageChangeManager *)self messagePersistence];
+                messagePersistence = [(EDMessageChangeManager *)self messagePersistence];
                 v19 = v17;
-                v20 = [v19 emailAddressValue];
-                v21 = [v20 simpleAddress];
-                v22 = v21;
-                if (v21)
+                emailAddressValue = [v19 emailAddressValue];
+                simpleAddress = [emailAddressValue simpleAddress];
+                v22 = simpleAddress;
+                if (simpleAddress)
                 {
-                  v23 = v21;
+                  stringValue = simpleAddress;
                 }
 
                 else
                 {
-                  v23 = [v19 stringValue];
+                  stringValue = [v19 stringValue];
                 }
 
-                v24 = v23;
+                v24 = stringValue;
 
-                [v18 setMetadata:v12 forAddress:v24];
+                [messagePersistence setMetadata:v12 forAddress:v24];
               }
 
-              v14 = [v13 countByEnumeratingWithState:&v33 objects:v42 count:16];
+              v14 = [addresses countByEnumeratingWithState:&v33 objects:v42 count:16];
             }
 
             while (v14);
           }
 
-          v7 = v30;
+          signatureInfo = v30;
         }
       }
 
@@ -460,95 +460,95 @@
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)messageWasAppended:(id)a3
+- (void)messageWasAppended:(id)appended
 {
-  v5 = a3;
-  v4 = [(MFMessageChangeManager_iOS *)self library];
-  [v4 increaseProtectionOnFileForMessage:v5];
+  appendedCopy = appended;
+  library = [(MFMessageChangeManager_iOS *)self library];
+  [library increaseProtectionOnFileForMessage:appendedCopy];
 }
 
-- (void)resetStatusCountsForMailboxWithURL:(id)a3
+- (void)resetStatusCountsForMailboxWithURL:(id)l
 {
-  v6 = [a3 absoluteString];
+  absoluteString = [l absoluteString];
   v4 = [MailAccount mailboxUidFromActiveAccountsForURL:?];
   if (([v4 shouldUseNonDeletedForUnreadCount] & 1) == 0)
   {
-    v5 = [(MFMessageChangeManager_iOS *)self library];
-    [v5 setLastSyncAndMostRecentStatusCount:*MEMORY[0x1E699A770] forMailbox:v6];
+    library = [(MFMessageChangeManager_iOS *)self library];
+    [library setLastSyncAndMostRecentStatusCount:*MEMORY[0x1E699A770] forMailbox:absoluteString];
   }
 }
 
-- (id)applyFlagChange:(id)a3 toMessagesInDatabase:(id)a4
+- (id)applyFlagChange:(id)change toMessagesInDatabase:(id)database
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 firstObject];
-  v8 = [v7 messageStore];
+  changeCopy = change;
+  databaseCopy = database;
+  firstObject = [databaseCopy firstObject];
+  messageStore = [firstObject messageStore];
 
-  v9 = MFFlagChangeDictionaryForFlagChange(v5);
-  v10 = [v8 setFlagsLocallyFromDictionary:v9 forMessages:v6];
+  v9 = MFFlagChangeDictionaryForFlagChange(changeCopy);
+  v10 = [messageStore setFlagsLocallyFromDictionary:v9 forMessages:databaseCopy];
 
   return v10;
 }
 
-- (void)applyVIPStatus:(BOOL)a3 toMessagesInDatabase:(id)a4
+- (void)applyVIPStatus:(BOOL)status toMessagesInDatabase:(id)database
 {
-  v4 = a3;
+  statusCopy = status;
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(MFMessageChangeManager_iOS *)self library];
+  databaseCopy = database;
+  library = [(MFMessageChangeManager_iOS *)self library];
   v12 = @"MessageSenderIsVIP";
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:statusCopy];
   v13[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v10 = [v7 setFlagsFromDictionary:v9 forMessages:v6];
+  v10 = [library setFlagsFromDictionary:v9 forMessages:databaseCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)messageForDatabaseID:(int64_t)a3
+- (id)messageForDatabaseID:(int64_t)d
 {
-  v4 = [(MFMessageChangeManager_iOS *)self library];
-  v5 = [v4 messageWithLibraryID:a3 options:7346239 inMailbox:0];
+  library = [(MFMessageChangeManager_iOS *)self library];
+  v5 = [library messageWithLibraryID:d options:7346239 inMailbox:0];
 
   return v5;
 }
 
-- (id)messagesForRemoteIDs:(id)a3 mailboxURL:(id)a4
+- (id)messagesForRemoteIDs:(id)ds mailboxURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMessageChangeManager_iOS *)self library];
-  v9 = [MEMORY[0x1E695DFD8] setWithArray:v6];
-  v10 = [v7 absoluteString];
-  v11 = [v8 copyMessagesWithRemoteIDs:v9 options:7346239 inRemoteMailbox:v10];
+  dsCopy = ds;
+  lCopy = l;
+  library = [(MFMessageChangeManager_iOS *)self library];
+  v9 = [MEMORY[0x1E695DFD8] setWithArray:dsCopy];
+  absoluteString = [lCopy absoluteString];
+  v11 = [library copyMessagesWithRemoteIDs:v9 options:7346239 inRemoteMailbox:absoluteString];
 
   return v11;
 }
 
-- (id)iterateMessagesInMailboxURLs:(id)a3 excludingMessages:(id)a4 batchSize:(unint64_t)a5 returnMessagesForFlagChange:(id)a6 handler:(id)a7
+- (id)iterateMessagesInMailboxURLs:(id)ls excludingMessages:(id)messages batchSize:(unint64_t)size returnMessagesForFlagChange:(id)change handler:(id)handler
 {
   v67 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v49 = a4;
-  v52 = a6;
-  v50 = a7;
+  lsCopy = ls;
+  messagesCopy = messages;
+  changeCopy = change;
+  handlerCopy = handler;
   v51 = objc_opt_new();
-  if ([v10 count] == 1)
+  if ([lsCopy count] == 1)
   {
-    v11 = [v10 firstObject];
-    v12 = [v11 absoluteString];
-    v13 = [MFMessageCriterion criterionForMailboxURL:v12];
+    firstObject = [lsCopy firstObject];
+    absoluteString = [firstObject absoluteString];
+    v13 = [MFMessageCriterion criterionForMailboxURL:absoluteString];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v15 = v10;
+    v15 = lsCopy;
     v16 = [v15 countByEnumeratingWithState:&v59 objects:v66 count:16];
     if (v16)
     {
@@ -563,12 +563,12 @@
           }
 
           v19 = *(*(&v59 + 1) + 8 * i);
-          v20 = [v19 absoluteString];
-          v21 = [MFMessageCriterion criterionForMailboxURL:v20];
+          absoluteString2 = [v19 absoluteString];
+          v21 = [MFMessageCriterion criterionForMailboxURL:absoluteString2];
 
           if (v21)
           {
-            [v14 addObject:v21];
+            [array addObject:v21];
           }
 
           else
@@ -588,11 +588,11 @@
       while (v16);
     }
 
-    v13 = [MFMessageCriterion orCompoundCriterionWithCriteria:v14];
+    v13 = [MFMessageCriterion orCompoundCriterionWithCriteria:array];
   }
 
-  v24 = [MEMORY[0x1E699B300] setRead];
-  v25 = [v52 isEqual:v24];
+  setRead = [MEMORY[0x1E699B300] setRead];
+  v25 = [changeCopy isEqual:setRead];
 
   if (v25)
   {
@@ -601,18 +601,18 @@
 
   else
   {
-    v27 = [MEMORY[0x1E699B300] clearRead];
-    v28 = [v52 isEqual:v27];
+    clearRead = [MEMORY[0x1E699B300] clearRead];
+    v28 = [changeCopy isEqual:clearRead];
 
     if ((v28 & 1) == 0)
     {
-      v29 = [MEMORY[0x1E699B300] clearRead];
-      v30 = [v52 isEqual:v29];
+      clearRead2 = [MEMORY[0x1E699B300] clearRead];
+      v30 = [changeCopy isEqual:clearRead2];
 
       if ((v30 & 1) == 0)
       {
-        v31 = [MEMORY[0x1E699B300] clearRead];
-        v32 = [v52 isEqual:v31];
+        clearRead3 = [MEMORY[0x1E699B300] clearRead];
+        v32 = [changeCopy isEqual:clearRead3];
 
         if (!v32)
         {
@@ -638,21 +638,21 @@
 
 LABEL_24:
   v36 = objc_opt_new();
-  v37 = [(MFMessageChangeManager_iOS *)self library];
+  library = [(MFMessageChangeManager_iOS *)self library];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __123__MFMessageChangeManager_iOS_iterateMessagesInMailboxURLs_excludingMessages_batchSize_returnMessagesForFlagChange_handler___block_invoke;
   v53[3] = &unk_1E7AA67D8;
-  v38 = v49;
+  v38 = messagesCopy;
   v54 = v38;
   v39 = v51;
   v55 = v39;
   v40 = v36;
   v56 = v40;
-  v58 = a5;
-  v41 = v50;
+  sizeCopy = size;
+  v41 = handlerCopy;
   v57 = v41;
-  [v37 iterateMessagesMatchingCriterion:v13 options:7346367 handler:v53];
+  [library iterateMessagesMatchingCriterion:v13 options:7346367 handler:v53];
 
   if ([v40 count])
   {
@@ -666,22 +666,22 @@ LABEL_24:
   return v39;
 }
 
-- (id)accountForMailboxURL:(id)a3
+- (id)accountForMailboxURL:(id)l
 {
-  v3 = [a3 absoluteString];
-  v4 = [MailAccount accountWithURLString:v3];
+  absoluteString = [l absoluteString];
+  v4 = [MailAccount accountWithURLString:absoluteString];
 
   return v4;
 }
 
-- (BOOL)mailboxIsAllMail:(id)a3
+- (BOOL)mailboxIsAllMail:(id)mail
 {
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  v5 = [MailAccount accountWithURL:v3];
-  v6 = [MailAccount mailboxUidFromActiveAccountsForURL:v4];
-  v7 = [v5 baseAccount];
-  if ([v7 isGmailAccount])
+  mailCopy = mail;
+  absoluteString = [mailCopy absoluteString];
+  v5 = [MailAccount accountWithURL:mailCopy];
+  v6 = [MailAccount mailboxUidFromActiveAccountsForURL:absoluteString];
+  baseAccount = [v5 baseAccount];
+  if ([baseAccount isGmailAccount])
   {
     v8 = [v6 type] == 2;
   }
@@ -694,64 +694,64 @@ LABEL_24:
   return v8;
 }
 
-- (BOOL)mailboxPartOfAllMail:(id)a3
+- (BOOL)mailboxPartOfAllMail:(id)mail
 {
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  v5 = [MailAccount accountWithURL:v3];
-  v6 = [MailAccount mailboxUidFromActiveAccountsForURL:v4];
-  v7 = [v6 type];
-  v8 = [v5 baseAccount];
-  v9 = [v8 isGmailAccount];
-  if (v7 == 2 || (v7 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  mailCopy = mail;
+  absoluteString = [mailCopy absoluteString];
+  v5 = [MailAccount accountWithURL:mailCopy];
+  v6 = [MailAccount mailboxUidFromActiveAccountsForURL:absoluteString];
+  type = [v6 type];
+  baseAccount = [v5 baseAccount];
+  isGmailAccount = [baseAccount isGmailAccount];
+  if (type == 2 || (type & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = v9;
+    v11 = isGmailAccount;
   }
 
   return v11;
 }
 
-- (BOOL)_mailboxIsGmail:(id)a3
+- (BOOL)_mailboxIsGmail:(id)gmail
 {
-  v3 = [MailAccount accountWithURL:a3];
-  v4 = [v3 baseAccount];
-  v5 = [v4 isGmailAccount];
+  v3 = [MailAccount accountWithURL:gmail];
+  baseAccount = [v3 baseAccount];
+  isGmailAccount = [baseAccount isGmailAccount];
 
-  return v5;
+  return isGmailAccount;
 }
 
-- (BOOL)mailboxIsTrash:(id)a3
+- (BOOL)mailboxIsTrash:(id)trash
 {
-  v3 = [a3 absoluteString];
-  v4 = [MailAccount mailboxUidFromActiveAccountsForURL:v3];
+  absoluteString = [trash absoluteString];
+  v4 = [MailAccount mailboxUidFromActiveAccountsForURL:absoluteString];
   v5 = [v4 type] == 3;
 
   return v5;
 }
 
-- (void)willStartPersistenceDidAddMessages:(id)a3
+- (void)willStartPersistenceDidAddMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v6.receiver = self;
   v6.super_class = MFMessageChangeManager_iOS;
-  [(EDMessageChangeManager *)&v6 willStartPersistenceDidAddMessages:v4];
-  v5 = [(MFMessageChangeManager_iOS *)self library];
-  [v5 willStartPersistenceDidAddMessages:v4];
+  [(EDMessageChangeManager *)&v6 willStartPersistenceDidAddMessages:messagesCopy];
+  library = [(MFMessageChangeManager_iOS *)self library];
+  [library willStartPersistenceDidAddMessages:messagesCopy];
 }
 
-- (void)didFinishPersistenceDidAddMessages:(id)a3
+- (void)didFinishPersistenceDidAddMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v6.receiver = self;
   v6.super_class = MFMessageChangeManager_iOS;
-  [(EDMessageChangeManager *)&v6 didFinishPersistenceDidAddMessages:v4];
-  v5 = [(MFMessageChangeManager_iOS *)self library];
-  [v5 didFinishPersistenceDidAddMessages:v4];
+  [(EDMessageChangeManager *)&v6 didFinishPersistenceDidAddMessages:messagesCopy];
+  library = [(MFMessageChangeManager_iOS *)self library];
+  [library didFinishPersistenceDidAddMessages:messagesCopy];
 }
 
 - (MFMailMessageLibrary)library

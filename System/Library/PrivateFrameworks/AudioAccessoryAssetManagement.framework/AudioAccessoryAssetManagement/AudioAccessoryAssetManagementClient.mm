@@ -1,6 +1,6 @@
 @interface AudioAccessoryAssetManagementClient
 - (AudioAccessoryAssetManagementClient)init;
-- (AudioAccessoryAssetManagementClient)initWithCoder:(id)a3;
+- (AudioAccessoryAssetManagementClient)initWithCoder:(id)coder;
 - (id)_ensureAADXPCStarted;
 - (id)_ensureXPCStarted;
 - (uint64_t)_takeXPCServiceAssertion;
@@ -8,18 +8,18 @@
 - (void)_invalidateXPCServiceAssertion;
 - (void)_invalidated;
 - (void)_takeXPCServiceAssertion;
-- (void)downloadTranslationAssets:(id)a3 useCellular:(BOOL)a4 showDownloadCompleteNotification:(BOOL)a5 completion:(id)a6;
+- (void)downloadTranslationAssets:(id)assets useCellular:(BOOL)cellular showDownloadCompleteNotification:(BOOL)notification completion:(id)completion;
 - (void)getTranslationAssets;
-- (void)getTranslationAssets:(id)a3 error:(id)a4;
-- (void)getTranslationAssetsDownloadSize:(id)a3 completion:(id)a4;
+- (void)getTranslationAssets:(id)assets error:(id)error;
+- (void)getTranslationAssetsDownloadSize:(id)size completion:(id)completion;
 - (void)invalidate;
-- (void)pidOfDownloadTranslationAssetsXPCService:(int)a3;
-- (void)showDownloadLanguagesNotification:(id)a3;
+- (void)pidOfDownloadTranslationAssetsXPCService:(int)service;
+- (void)showDownloadLanguagesNotification:(id)notification;
 @end
 
 @implementation AudioAccessoryAssetManagementClient
 
-- (AudioAccessoryAssetManagementClient)initWithCoder:(id)a3
+- (AudioAccessoryAssetManagementClient)initWithCoder:(id)coder
 {
   v3 = [(AudioAccessoryAssetManagementClient *)self init];
   v4 = v3;
@@ -40,8 +40,8 @@
   if (v2)
   {
     objc_storeStrong(&v2->_dispatchQueue, MEMORY[0x277D85CD0]);
-    v4 = [(AudioAccessoryAssetManagementClient *)v3 _ensureXPCStarted];
-    if (v4)
+    _ensureXPCStarted = [(AudioAccessoryAssetManagementClient *)v3 _ensureXPCStarted];
+    if (_ensureXPCStarted)
     {
       [(AudioAccessoryAssetManagementClient *)v3 invalidate];
     }
@@ -53,22 +53,22 @@
   return v3;
 }
 
-- (void)downloadTranslationAssets:(id)a3 useCellular:(BOOL)a4 showDownloadCompleteNotification:(BOOL)a5 completion:(id)a6
+- (void)downloadTranslationAssets:(id)assets useCellular:(BOOL)cellular showDownloadCompleteNotification:(BOOL)notification completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  assetsCopy = assets;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __121__AudioAccessoryAssetManagementClient_downloadTranslationAssets_useCellular_showDownloadCompleteNotification_completion___block_invoke;
   v15[3] = &unk_278CDCF70;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v19 = a4;
-  v20 = a5;
-  v13 = v11;
-  v14 = v10;
+  v16 = assetsCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  cellularCopy = cellular;
+  notificationCopy = notification;
+  v13 = completionCopy;
+  v14 = assetsCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -188,20 +188,20 @@ void __121__AudioAccessoryAssetManagementClient_downloadTranslationAssets_useCel
   }
 }
 
-- (void)getTranslationAssetsDownloadSize:(id)a3 completion:(id)a4
+- (void)getTranslationAssetsDownloadSize:(id)size completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sizeCopy = size;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__AudioAccessoryAssetManagementClient_getTranslationAssetsDownloadSize_completion___block_invoke;
   block[3] = &unk_278CDCFB8;
-  v12 = v6;
-  v13 = v7;
+  v12 = sizeCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = sizeCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -347,17 +347,17 @@ uint64_t __59__AudioAccessoryAssetManagementClient_getTranslationAssets__block_i
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)showDownloadLanguagesNotification:(id)a3
+- (void)showDownloadLanguagesNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__AudioAccessoryAssetManagementClient_showDownloadLanguagesNotification___block_invoke;
   v7[3] = &unk_278CDD008;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -478,8 +478,8 @@ uint64_t __73__AudioAccessoryAssetManagementClient_showDownloadLanguagesNotifica
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285330830];
     [(NSXPCConnection *)self->_xpcCnx setRemoteObjectInterface:v10];
 
-    v11 = [(NSXPCConnection *)self->_xpcCnx remoteObjectInterface];
-    [v11 setClasses:v7 forSelector:sel_getTranslationAssetsDownloadSize_localeIdentifiers_completion_ argumentIndex:0 ofReply:0];
+    remoteObjectInterface = [(NSXPCConnection *)self->_xpcCnx remoteObjectInterface];
+    [remoteObjectInterface setClasses:v7 forSelector:sel_getTranslationAssetsDownloadSize_localeIdentifiers_completion_ argumentIndex:0 ofReply:0];
 
     [(NSXPCConnection *)self->_xpcCnx resume];
   }
@@ -640,21 +640,21 @@ uint64_t __49__AudioAccessoryAssetManagementClient_invalidate__block_invoke(uint
   }
 }
 
-- (void)getTranslationAssets:(id)a3 error:(id)a4
+- (void)getTranslationAssets:(id)assets error:(id)error
 {
-  v10 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v8 = self;
-  objc_sync_enter(v8);
-  objc_storeStrong(&v8->_translationAssets, a3);
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_translationAssets, assets);
+  objc_sync_exit(selfCopy);
 
-  [v10 enumerateObjectsUsingBlock:&__block_literal_global_156];
-  translationAssetsInfoHandler = v8->_translationAssetsInfoHandler;
+  [assetsCopy enumerateObjectsUsingBlock:&__block_literal_global_156];
+  translationAssetsInfoHandler = selfCopy->_translationAssetsInfoHandler;
   if (translationAssetsInfoHandler)
   {
-    translationAssetsInfoHandler[2](translationAssetsInfoHandler, v8->_translationAssets, v7);
+    translationAssetsInfoHandler[2](translationAssetsInfoHandler, selfCopy->_translationAssets, errorCopy);
   }
 }
 
@@ -675,14 +675,14 @@ uint64_t __66__AudioAccessoryAssetManagementClient_getTranslationAssets_error___
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)pidOfDownloadTranslationAssetsXPCService:(int)a3
+- (void)pidOfDownloadTranslationAssetsXPCService:(int)service
 {
   if (gLogCategory_AudioAccessoryAssetManagementClient <= 30 && (gLogCategory_AudioAccessoryAssetManagementClient != -1 || _LogCategory_Initialize()))
   {
     [AudioAccessoryAssetManagementClient pidOfDownloadTranslationAssetsXPCService:];
   }
 
-  self->_downloadTranslationAssetsPid = a3;
+  self->_downloadTranslationAssetsPid = service;
 }
 
 uint64_t __121__AudioAccessoryAssetManagementClient_downloadTranslationAssets_useCellular_showDownloadCompleteNotification_completion___block_invoke_cold_1(uint64_t *a1, uint64_t a2)

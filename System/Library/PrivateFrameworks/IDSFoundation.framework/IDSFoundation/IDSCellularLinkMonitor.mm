@@ -1,41 +1,41 @@
 @interface IDSCellularLinkMonitor
 + (id)sharedInstance;
-- (BOOL)_dataContextUsable:(id)a3 dataStatus:(id)a4;
-- (BOOL)_updateCellularDataInterface:(BOOL)a3;
-- (BOOL)_updateCellularDataInterfaceNameByConnectionState:(int)a3 isStateActiveRequired:(BOOL)a4 interfaceName:(id)a5;
+- (BOOL)_dataContextUsable:(id)usable dataStatus:(id)status;
+- (BOOL)_updateCellularDataInterface:(BOOL)interface;
+- (BOOL)_updateCellularDataInterfaceNameByConnectionState:(int)state isStateActiveRequired:(BOOL)required interfaceName:(id)name;
 - (BOOL)_updateCellularMTU;
 - (BOOL)_updateDataBearerSoMask;
-- (BOOL)_updateDataBearerSoMaskWithCTDataStatus:(id)a3;
+- (BOOL)_updateDataBearerSoMaskWithCTDataStatus:(id)status;
 - (BOOL)_updateRadioAccessTechnology;
-- (BOOL)_updateRadioAccessTechnologyWithCTDataStatus:(id)a3;
+- (BOOL)_updateRadioAccessTechnologyWithCTDataStatus:(id)status;
 - (BOOL)dataUsable;
-- (BOOL)dropIPPackets:(id)a3 localAddress:(sockaddr *)a4 remoteAddress:(sockaddr *)a5 isRelay:(BOOL)a6 channelNumberMSB:(unsigned __int8)a7 ifname:(id)a8;
-- (BOOL)isSlicedCellularInterfaceActive:(id)a3;
-- (BOOL)setPacketNotificationFilter:(const sockaddr *)a3 remote:(const sockaddr *)a4 uniqueTag:(unsigned int)a5 callType:(unsigned __int8)a6 ifname:(id)a7;
+- (BOOL)dropIPPackets:(id)packets localAddress:(sockaddr *)address remoteAddress:(sockaddr *)remoteAddress isRelay:(BOOL)relay channelNumberMSB:(unsigned __int8)b ifname:(id)ifname;
+- (BOOL)isSlicedCellularInterfaceActive:(id)active;
+- (BOOL)setPacketNotificationFilter:(const sockaddr *)filter remote:(const sockaddr *)remote uniqueTag:(unsigned int)tag callType:(unsigned __int8)type ifname:(id)ifname;
 - (IDSCellularLinkMonitor)init;
 - (NSString)cellularDataInterfaceName;
 - (id)_getCTXPCServiceSubscriptionContext;
-- (id)_getCurrentDataSimContext:(id)a3 inContextArray:(id)a4;
+- (id)_getCurrentDataSimContext:(id)context inContextArray:(id)array;
 - (id)_getDataStatus;
 - (unsigned)cellularMTU;
 - (unsigned)dataSoMaskBits;
 - (unsigned)radioAccessTechnology;
-- (void)_notifyClientDataBearerSoMask:(id)a3;
+- (void)_notifyClientDataBearerSoMask:(id)mask;
 - (void)_setupCTServerConnection;
 - (void)_updateDataStatus;
-- (void)addCellularLinkDelegate:(id)a3;
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5;
-- (void)currentCellularSignalStrength:(int *)a3 signalStrength:(int *)a4 signalGrade:(int *)a5;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)addCellularLinkDelegate:(id)delegate;
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info;
+- (void)currentCellularSignalStrength:(int *)strength signalStrength:(int *)signalStrength signalGrade:(int *)grade;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
-- (void)preferredDataSimChanged:(id)a3;
-- (void)processCTConnectionStateChangeNotification:(id)a3 connectionStatus:(id)a4;
-- (void)registerCellularDataStatusNotification:(BOOL)a3;
-- (void)removeCellularLinkDelegate:(id)a3;
+- (void)preferredDataSimChanged:(id)changed;
+- (void)processCTConnectionStateChangeNotification:(id)notification connectionStatus:(id)status;
+- (void)registerCellularDataStatusNotification:(BOOL)notification;
+- (void)removeCellularLinkDelegate:(id)delegate;
 - (void)removePacketNotificationFilter;
 - (void)reset;
-- (void)setRemoteDeviceVersion:(unsigned int)a3;
-- (void)updateProtocolQualityOfService:(BOOL)a3 localAddress:(sockaddr *)a4;
+- (void)setRemoteDeviceVersion:(unsigned int)version;
+- (void)updateProtocolQualityOfService:(BOOL)service localAddress:(sockaddr *)address;
 @end
 
 @implementation IDSCellularLinkMonitor
@@ -122,34 +122,34 @@
   [(IDSCellularLinkMonitor *)&v5 dealloc];
 }
 
-- (void)addCellularLinkDelegate:(id)a3
+- (void)addCellularLinkDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_1A7B55A04;
     v6[3] = &unk_1E77E0250;
     v6[4] = self;
-    v7 = v4;
+    v7 = delegateCopy;
     IDSTransportThreadAddBlock(v6);
   }
 }
 
-- (void)removeCellularLinkDelegate:(id)a3
+- (void)removeCellularLinkDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_1A7B55C1C;
     v6[3] = &unk_1E77E0250;
-    v7 = v4;
-    v8 = self;
+    v7 = delegateCopy;
+    selfCopy = self;
     IDSTransportThreadAddBlock(v6);
   }
 }
@@ -188,16 +188,16 @@
   }
 }
 
-- (id)_getCurrentDataSimContext:(id)a3 inContextArray:(id)a4
+- (id)_getCurrentDataSimContext:(id)context inContextArray:(id)array
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  arrayCopy = array;
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v5;
+    v24 = contextCopy;
     _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "currentDataSimContext: %@", buf, 0xCu);
   }
 
@@ -205,23 +205,23 @@
   {
     if (_IDSShouldLogTransport())
     {
-      v17 = v5;
+      v17 = contextCopy;
       _IDSLogTransport(@"GL", @"IDS", @"currentDataSimContext: %@");
       if (_IDSShouldLog())
       {
-        v17 = v5;
+        v17 = contextCopy;
         _IDSLogV(0, @"IDSFoundation", @"GL", @"currentDataSimContext: %@");
       }
     }
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v6;
+    v9 = arrayCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -236,8 +236,8 @@
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 userDataPreferred];
-          v15 = [v14 intValue] == 0;
+          userDataPreferred = [v13 userDataPreferred];
+          v15 = [userDataPreferred intValue] == 0;
 
           if (!v15)
           {
@@ -258,7 +258,7 @@
     }
   }
 
-  v8 = v5;
+  v8 = contextCopy;
 LABEL_19:
 
   return v8;
@@ -271,13 +271,13 @@ LABEL_19:
   v15 = 0;
   v4 = [(CoreTelephonyClient *)ctClient getSubscriptionInfoWithError:&v15];
   v5 = v15;
-  v6 = [v4 subscriptions];
+  subscriptions = [v4 subscriptions];
 
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = subscriptions;
     _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "getCTXPCServiceSubscriptionContext: %@", buf, 0xCu);
   }
 
@@ -285,11 +285,11 @@ LABEL_19:
   {
     if (_IDSShouldLogTransport())
     {
-      v13 = v6;
+      v13 = subscriptions;
       _IDSLogTransport(@"GL", @"IDS", @"getCTXPCServiceSubscriptionContext: %@");
       if (_IDSShouldLog())
       {
-        v13 = v6;
+        v13 = subscriptions;
         _IDSLogV(0, @"IDSFoundation", @"GL", @"getCTXPCServiceSubscriptionContext: %@");
       }
     }
@@ -300,17 +300,17 @@ LABEL_19:
   v9 = [(CoreTelephonyClient *)v8 getCurrentDataSubscriptionContextSync:&v14, v13];
   v10 = v14;
 
-  v11 = [(IDSCellularLinkMonitor *)self _getCurrentDataSimContext:v9 inContextArray:v6];
+  v11 = [(IDSCellularLinkMonitor *)self _getCurrentDataSimContext:v9 inContextArray:subscriptions];
 
   return v11;
 }
 
-- (BOOL)_updateCellularDataInterfaceNameByConnectionState:(int)a3 isStateActiveRequired:(BOOL)a4 interfaceName:(id)a5
+- (BOOL)_updateCellularDataInterfaceNameByConnectionState:(int)state isStateActiveRequired:(BOOL)required interfaceName:(id)name
 {
-  v6 = a4;
+  requiredCopy = required;
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (!a3 && v6)
+  nameCopy = name;
+  if (!state && requiredCopy)
   {
     v10 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -340,7 +340,7 @@ LABEL_16:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v9;
+    v20 = nameCopy;
     _os_log_impl(&dword_1A7AD9000, v11, OS_LOG_TYPE_DEFAULT, "newCelularDataInterfaceName: %@", buf, 0xCu);
   }
 
@@ -348,11 +348,11 @@ LABEL_16:
   {
     if (_IDSShouldLogTransport())
     {
-      v18 = v9;
+      v18 = nameCopy;
       _IDSLogTransport(@"GL", @"IDS", @"newCelularDataInterfaceName: %@");
       if (_IDSShouldLog())
       {
-        v18 = v9;
+        v18 = nameCopy;
         _IDSLogV(0, @"IDSFoundation", @"GL", @"newCelularDataInterfaceName: %@");
       }
     }
@@ -360,7 +360,7 @@ LABEL_16:
 
   cellularDataInterfaceName = self->_cellularDataInterfaceName;
   p_cellularDataInterfaceName = &self->_cellularDataInterfaceName;
-  if (([(NSString *)cellularDataInterfaceName isEqualToIgnoringCase:v9, v18]& 1) != 0)
+  if (([(NSString *)cellularDataInterfaceName isEqualToIgnoringCase:nameCopy, v18]& 1) != 0)
   {
     goto LABEL_16;
   }
@@ -372,7 +372,7 @@ LABEL_16:
     *buf = 138412546;
     v20 = v16;
     v21 = 2112;
-    v22 = v9;
+    v22 = nameCopy;
     _os_log_impl(&dword_1A7AD9000, v15, OS_LOG_TYPE_DEFAULT, "update cellular data interface name [%@->%@].", buf, 0x16u);
   }
 
@@ -388,25 +388,25 @@ LABEL_16:
     }
   }
 
-  objc_storeStrong(p_cellularDataInterfaceName, a5);
+  objc_storeStrong(p_cellularDataInterfaceName, name);
   v14 = 1;
 LABEL_24:
 
   return v14;
 }
 
-- (BOOL)_updateCellularDataInterface:(BOOL)a3
+- (BOOL)_updateCellularDataInterface:(BOOL)interface
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self->_ctServerConnection)
   {
-    v3 = a3;
-    v5 = [(IDSCellularLinkMonitor *)self _getCTXPCServiceSubscriptionContext];
-    if (v5)
+    interfaceCopy = interface;
+    _getCTXPCServiceSubscriptionContext = [(IDSCellularLinkMonitor *)self _getCTXPCServiceSubscriptionContext];
+    if (_getCTXPCServiceSubscriptionContext)
     {
       ctClient = self->_ctClient;
       v17 = 0;
-      v7 = [(CoreTelephonyClient *)ctClient getConnectionState:v5 connectionType:0 error:&v17];
+      v7 = [(CoreTelephonyClient *)ctClient getConnectionState:_getCTXPCServiceSubscriptionContext connectionType:0 error:&v17];
       v8 = v17;
       v9 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -430,9 +430,9 @@ LABEL_24:
 
       if (v7)
       {
-        v10 = [v7 state];
-        v11 = [v7 interfaceName];
-        v12 = [(IDSCellularLinkMonitor *)self _updateCellularDataInterfaceNameByConnectionState:v10 isStateActiveRequired:v3 interfaceName:v11];
+        state = [v7 state];
+        interfaceName = [v7 interfaceName];
+        v12 = [(IDSCellularLinkMonitor *)self _updateCellularDataInterfaceNameByConnectionState:state isStateActiveRequired:interfaceCopy interfaceName:interfaceName];
       }
 
       else
@@ -443,7 +443,7 @@ LABEL_24:
           *buf = 138412546;
           v19 = v8;
           v20 = 2112;
-          v21 = v5;
+          v21 = _getCTXPCServiceSubscriptionContext;
           _os_log_impl(&dword_1A7AD9000, v15, OS_LOG_TYPE_DEFAULT, "getConnectionState failed: %@ %@", buf, 0x16u);
         }
 
@@ -521,12 +521,12 @@ LABEL_24:
   v17 = *MEMORY[0x1E69E9840];
   if (self->_ctServerConnection)
   {
-    v3 = [(IDSCellularLinkMonitor *)self _getCTXPCServiceSubscriptionContext];
-    if (v3)
+    _getCTXPCServiceSubscriptionContext = [(IDSCellularLinkMonitor *)self _getCTXPCServiceSubscriptionContext];
+    if (_getCTXPCServiceSubscriptionContext)
     {
       ctClient = self->_ctClient;
       v12 = 0;
-      v5 = [(CoreTelephonyClient *)ctClient getDataStatus:v3 error:&v12];
+      v5 = [(CoreTelephonyClient *)ctClient getDataStatus:_getCTXPCServiceSubscriptionContext error:&v12];
       v6 = v12;
       if (v5)
       {
@@ -541,7 +541,7 @@ LABEL_24:
           *buf = 138412546;
           v14 = v6;
           v15 = 2112;
-          v16 = v3;
+          v16 = _getCTXPCServiceSubscriptionContext;
           _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "getDataStatus failed: %@ %@", buf, 0x16u);
         }
 
@@ -613,10 +613,10 @@ LABEL_24:
 
 - (BOOL)_updateRadioAccessTechnology
 {
-  v3 = [(IDSCellularLinkMonitor *)self _getDataStatus];
-  if (v3)
+  _getDataStatus = [(IDSCellularLinkMonitor *)self _getDataStatus];
+  if (_getDataStatus)
   {
-    v4 = [(IDSCellularLinkMonitor *)self _updateRadioAccessTechnologyWithCTDataStatus:v3];
+    v4 = [(IDSCellularLinkMonitor *)self _updateRadioAccessTechnologyWithCTDataStatus:_getDataStatus];
   }
 
   else
@@ -646,22 +646,22 @@ LABEL_24:
   return v4;
 }
 
-- (BOOL)_updateRadioAccessTechnologyWithCTDataStatus:(id)a3
+- (BOOL)_updateRadioAccessTechnologyWithCTDataStatus:(id)status
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 indicator];
-  v6 = [v4 radioTechnology];
+  statusCopy = status;
+  indicator = [statusCopy indicator];
+  radioTechnology = [statusCopy radioTechnology];
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     remoteDeviceVersion = self->_remoteDeviceVersion;
     *buf = 67109890;
-    *v18 = v6;
+    *v18 = radioTechnology;
     *&v18[4] = 1024;
-    *&v18[6] = v5;
+    *&v18[6] = indicator;
     *v19 = 2112;
-    *&v19[2] = v4;
+    *&v19[2] = statusCopy;
     v20 = 1024;
     v21 = remoteDeviceVersion;
     _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "_updateRadioAccessTechnology: radioAccessTech: %d, data indicator: %d, data status: %@, _remoteDeviceVersion: %u", buf, 0x1Eu);
@@ -679,17 +679,17 @@ LABEL_24:
     }
   }
 
-  if (v6 > 6)
+  if (radioTechnology > 6)
   {
-    if ((v6 - 7) >= 2)
+    if ((radioTechnology - 7) >= 2)
     {
-      if (v6 == 9)
+      if (radioTechnology == 9)
       {
         v9 = 7;
         goto LABEL_39;
       }
 
-      if (v6 != 10)
+      if (radioTechnology != 10)
       {
         goto LABEL_31;
       }
@@ -724,9 +724,9 @@ LABEL_24:
     goto LABEL_39;
   }
 
-  if (v6 > 3)
+  if (radioTechnology > 3)
   {
-    if ((v6 - 4) < 2)
+    if ((radioTechnology - 4) < 2)
     {
       v9 = 3;
       goto LABEL_39;
@@ -735,13 +735,13 @@ LABEL_24:
 
   else
   {
-    switch(v6)
+    switch(radioTechnology)
     {
       case 0:
         v9 = 2;
         goto LABEL_39;
       case 2:
-        if ((v5 - 3) >= 3)
+        if ((indicator - 3) >= 3)
         {
           v9 = 1;
         }
@@ -763,7 +763,7 @@ LABEL_31:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *v18 = v6;
+    *v18 = radioTechnology;
     _os_log_impl(&dword_1A7AD9000, v11, OS_LOG_TYPE_DEFAULT, "receive unknown RAT: %d.", buf, 8u);
   }
 
@@ -820,10 +820,10 @@ LABEL_39:
 
 - (BOOL)_updateDataBearerSoMask
 {
-  v3 = [(IDSCellularLinkMonitor *)self _getDataStatus];
-  if (v3)
+  _getDataStatus = [(IDSCellularLinkMonitor *)self _getDataStatus];
+  if (_getDataStatus)
   {
-    v4 = [(IDSCellularLinkMonitor *)self _updateDataBearerSoMaskWithCTDataStatus:v3];
+    v4 = [(IDSCellularLinkMonitor *)self _updateDataBearerSoMaskWithCTDataStatus:_getDataStatus];
   }
 
   else
@@ -853,12 +853,12 @@ LABEL_39:
   return v4;
 }
 
-- (BOOL)_updateDataBearerSoMaskWithCTDataStatus:(id)a3
+- (BOOL)_updateDataBearerSoMaskWithCTDataStatus:(id)status
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  statusCopy = status;
+  v5 = statusCopy;
+  if (!statusCopy)
   {
     v12 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -882,19 +882,19 @@ LABEL_39:
     goto LABEL_16;
   }
 
-  v6 = [v4 indicator];
-  v7 = [v5 radioTechnology];
-  v8 = [v5 dataBearerSoMask];
+  indicator = [statusCopy indicator];
+  radioTechnology = [v5 radioTechnology];
+  dataBearerSoMask = [v5 dataBearerSoMask];
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     dataSoMaskBits = self->_dataSoMaskBits;
     *buf = 67110146;
-    v15 = v7;
+    v15 = radioTechnology;
     v16 = 1024;
-    v17 = v6;
+    v17 = indicator;
     v18 = 1024;
-    v19 = v8;
+    v19 = dataBearerSoMask;
     v20 = 1024;
     v21 = dataSoMaskBits;
     v22 = 2112;
@@ -914,14 +914,14 @@ LABEL_39:
     }
   }
 
-  if (v8 == self->_dataSoMaskBits)
+  if (dataBearerSoMask == self->_dataSoMaskBits)
   {
 LABEL_16:
     v11 = 0;
     goto LABEL_17;
   }
 
-  self->_dataSoMaskBits = v8;
+  self->_dataSoMaskBits = dataBearerSoMask;
   v11 = 1;
 LABEL_17:
 
@@ -999,20 +999,20 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)_dataContextUsable:(id)a3 dataStatus:(id)a4
+- (BOOL)_dataContextUsable:(id)usable dataStatus:(id)status
 {
   result = 0;
-  if (a3 && a4)
+  if (usable && status)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [v6 cellularDataPossible];
-    v9 = [v7 state];
+    statusCopy = status;
+    usableCopy = usable;
+    cellularDataPossible = [statusCopy cellularDataPossible];
+    state = [usableCopy state];
 
-    LODWORD(v7) = [v6 indicator];
-    if (v7)
+    LODWORD(usableCopy) = [statusCopy indicator];
+    if (usableCopy)
     {
-      v10 = v9 == 2;
+      v10 = state == 2;
     }
 
     else
@@ -1021,7 +1021,7 @@ LABEL_15:
     }
 
     v11 = v10;
-    return v11 & v8;
+    return v11 & cellularDataPossible;
   }
 
   return result;
@@ -1030,19 +1030,19 @@ LABEL_15:
 - (void)_updateDataStatus
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(IDSCellularLinkMonitor *)self _getCTXPCServiceSubscriptionContext];
-  if (v3)
+  _getCTXPCServiceSubscriptionContext = [(IDSCellularLinkMonitor *)self _getCTXPCServiceSubscriptionContext];
+  if (_getCTXPCServiceSubscriptionContext)
   {
     ctClient = self->_ctClient;
     v16 = 0;
-    v5 = [(CoreTelephonyClient *)ctClient getConnectionState:v3 connectionType:0 error:&v16];
+    v5 = [(CoreTelephonyClient *)ctClient getConnectionState:_getCTXPCServiceSubscriptionContext connectionType:0 error:&v16];
     v6 = v16;
     if (v5)
     {
-      v7 = [(IDSCellularLinkMonitor *)self _getDataStatus];
-      if (v7)
+      _getDataStatus = [(IDSCellularLinkMonitor *)self _getDataStatus];
+      if (_getDataStatus)
       {
-        v8 = [(IDSCellularLinkMonitor *)self _dataContextUsable:v5 dataStatus:v7];
+        v8 = [(IDSCellularLinkMonitor *)self _dataContextUsable:v5 dataStatus:_getDataStatus];
         v9 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
@@ -1054,7 +1054,7 @@ LABEL_15:
           *v19 = 2112;
           *&v19[2] = v5;
           v20 = 2112;
-          v21 = v7;
+          v21 = _getDataStatus;
           _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "_updateDataStatus: %d %d, connection status: %@, data status: %@", buf, 0x22u);
         }
 
@@ -1132,7 +1132,7 @@ LABEL_15:
         *buf = 138412546;
         *v18 = v6;
         *&v18[8] = 2112;
-        *v19 = v3;
+        *v19 = _getCTXPCServiceSubscriptionContext;
         _os_log_impl(&dword_1A7AD9000, v14, OS_LOG_TYPE_DEFAULT, "getConnectionState failed: %@ %@", buf, 0x16u);
       }
 
@@ -1175,14 +1175,14 @@ LABEL_15:
   }
 }
 
-- (void)processCTConnectionStateChangeNotification:(id)a3 connectionStatus:(id)a4
+- (void)processCTConnectionStateChangeNotification:(id)notification connectionStatus:(id)status
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  statusCopy = status;
   ctClient = self->_ctClient;
   v45 = 0;
-  v9 = [(CoreTelephonyClient *)ctClient getDataStatus:v6 error:&v45];
+  v9 = [(CoreTelephonyClient *)ctClient getDataStatus:notificationCopy error:&v45];
   v40 = v45;
   if (v9)
   {
@@ -1190,7 +1190,7 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v48 = v7;
+      v48 = statusCopy;
       v49 = 2112;
       *v50 = v9;
       _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "processCTConnectionStateChangeNotification: %@ %@", buf, 0x16u);
@@ -1200,20 +1200,20 @@ LABEL_15:
     {
       if (_IDSShouldLogTransport())
       {
-        v33 = v7;
+        v33 = statusCopy;
         v35 = v9;
         _IDSLogTransport(@"GL", @"IDS", @"processCTConnectionStateChangeNotification: %@ %@");
         if (_IDSShouldLog())
         {
-          v33 = v7;
+          v33 = statusCopy;
           v35 = v9;
           _IDSLogV(0, @"IDSFoundation", @"GL", @"processCTConnectionStateChangeNotification: %@ %@");
         }
       }
     }
 
-    v11 = [v9 indicator];
-    v12 = [(IDSCellularLinkMonitor *)self _dataContextUsable:v7 dataStatus:v9];
+    indicator = [v9 indicator];
+    v12 = [(IDSCellularLinkMonitor *)self _dataContextUsable:statusCopy dataStatus:v9];
     v13 = v12;
     dataUsable = self->_dataUsable;
     if (dataUsable != v12)
@@ -1223,8 +1223,8 @@ LABEL_15:
 
     v15 = dataUsable != v12;
     v16 = [(IDSCellularLinkMonitor *)self _updateCellularDataInterface:0];
-    v17 = [(IDSCellularLinkMonitor *)self _updateCellularMTU];
-    if ([(IDSCellularLinkMonitor *)self _updateRadioAccessTechnologyWithCTDataStatus:v9]|| v17 || v15 || v16)
+    _updateCellularMTU = [(IDSCellularLinkMonitor *)self _updateCellularMTU];
+    if ([(IDSCellularLinkMonitor *)self _updateRadioAccessTechnologyWithCTDataStatus:v9]|| _updateCellularMTU || v15 || v16)
     {
       v18 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1241,7 +1241,7 @@ LABEL_15:
 
         v48 = v22;
         v49 = 1024;
-        *v50 = v11;
+        *v50 = indicator;
         *&v50[4] = 2112;
         *&v50[6] = cellularDataInterfaceName;
         v51 = 1024;
@@ -1257,7 +1257,7 @@ LABEL_15:
         v24 = self->_cellularDataInterfaceName;
         v38 = self->_cellularMTU;
         v39 = IDSRadioAccessTechnologyToString(self->_radioAccessTechnology);
-        v36 = v11;
+        v36 = indicator;
         v37 = v24;
         v34 = v23;
         _IDSLogTransport(@"GL", @"IDS", @"cellular data usable: %@ (indicator:%d, if:[%@], mtu:%u, RAT:[%s]).");
@@ -1266,7 +1266,7 @@ LABEL_15:
           v25 = self->_cellularDataInterfaceName;
           v38 = self->_cellularMTU;
           v39 = IDSRadioAccessTechnologyToString(self->_radioAccessTechnology);
-          v36 = v11;
+          v36 = indicator;
           v37 = v25;
           v34 = v23;
           _IDSLogV(0, @"IDSFoundation", @"GL", @"cellular data usable: %@ (indicator:%d, if:[%@], mtu:%u, RAT:[%s]).");
@@ -1313,7 +1313,7 @@ LABEL_15:
       *buf = 138412546;
       v48 = v40;
       v49 = 2112;
-      *v50 = v6;
+      *v50 = notificationCopy;
       _os_log_impl(&dword_1A7AD9000, v32, OS_LOG_TYPE_DEFAULT, "getDataStatus failed: %@ %@", buf, 0x16u);
     }
 
@@ -1338,7 +1338,7 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A7AD9000, v3, OS_LOG_TYPE_DEFAULT, "reset cellular link monitor %@.", buf, 0xCu);
   }
 
@@ -1459,11 +1459,11 @@ LABEL_15:
   }
 }
 
-- (BOOL)setPacketNotificationFilter:(const sockaddr *)a3 remote:(const sockaddr *)a4 uniqueTag:(unsigned int)a5 callType:(unsigned __int8)a6 ifname:(id)a7
+- (BOOL)setPacketNotificationFilter:(const sockaddr *)filter remote:(const sockaddr *)remote uniqueTag:(unsigned int)tag callType:(unsigned __int8)type ifname:(id)ifname
 {
-  v7 = a6;
+  typeCopy = type;
   *&v38[5] = *MEMORY[0x1E69E9840];
-  v12 = a7;
+  ifnameCopy = ifname;
   if (!self->_ctServerConnection)
   {
     v24 = OSLogHandleForTransportCategory();
@@ -1488,7 +1488,7 @@ LABEL_15:
     goto LABEL_34;
   }
 
-  if (a3->sa_family != a4->sa_family)
+  if (filter->sa_family != remote->sa_family)
   {
     v25 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1522,26 +1522,26 @@ LABEL_34:
     self->_notificationRegInfo = Mutable;
   }
 
-  if (v12)
+  if (ifnameCopy)
   {
-    CFDictionarySetValue(self->_notificationRegInfo, *MEMORY[0x1E6965278], v12);
+    CFDictionarySetValue(self->_notificationRegInfo, *MEMORY[0x1E6965278], ifnameCopy);
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v7];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:typeCopy];
   if (v16)
   {
     CFDictionarySetValue(v15, *MEMORY[0x1E69652F0], v16);
   }
 
-  v17 = [MEMORY[0x1E696AD98] numberWithInt:bswap32(a5)];
+  v17 = [MEMORY[0x1E696AD98] numberWithInt:bswap32(tag)];
   if (v17)
   {
     CFDictionarySetValue(v15, *MEMORY[0x1E6965368], v17);
   }
 
-  v18 = *a3->sa_data;
-  if (a3->sa_family == 2)
+  v18 = *filter->sa_data;
+  if (filter->sa_family == 2)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithShort:v18];
     if (v19)
@@ -1549,19 +1549,19 @@ LABEL_34:
       CFDictionarySetValue(v15, *MEMORY[0x1E6965300], v19);
     }
 
-    v20 = [MEMORY[0x1E695DEF0] dataWithBytes:&a3->sa_data[2] length:4];
+    v20 = [MEMORY[0x1E695DEF0] dataWithBytes:&filter->sa_data[2] length:4];
     if (v20)
     {
       CFDictionarySetValue(v15, *MEMORY[0x1E69652F8], v20);
     }
 
-    v21 = [MEMORY[0x1E696AD98] numberWithShort:*a4->sa_data];
+    v21 = [MEMORY[0x1E696AD98] numberWithShort:*remote->sa_data];
     if (v21)
     {
       CFDictionarySetValue(v15, *MEMORY[0x1E6965350], v21);
     }
 
-    v22 = [MEMORY[0x1E695DEF0] dataWithBytes:&a4->sa_data[2] length:4];
+    v22 = [MEMORY[0x1E695DEF0] dataWithBytes:&remote->sa_data[2] length:4];
 
     if (v22)
     {
@@ -1584,19 +1584,19 @@ LABEL_34:
       CFDictionarySetValue(v15, *MEMORY[0x1E6965300], v27);
     }
 
-    v28 = [MEMORY[0x1E695DEF0] dataWithBytes:&a3->sa_data[6] length:16];
+    v28 = [MEMORY[0x1E695DEF0] dataWithBytes:&filter->sa_data[6] length:16];
     if (v28)
     {
       CFDictionarySetValue(v15, *MEMORY[0x1E69652F8], v28);
     }
 
-    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:*a4->sa_data];
+    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:*remote->sa_data];
     if (v29)
     {
       CFDictionarySetValue(v15, *MEMORY[0x1E6965350], v29);
     }
 
-    v22 = [MEMORY[0x1E695DEF0] dataWithBytes:&a4->sa_data[6] length:16];
+    v22 = [MEMORY[0x1E695DEF0] dataWithBytes:&remote->sa_data[6] length:16];
 
     if (v22)
     {
@@ -1670,14 +1670,14 @@ LABEL_60:
   return v26;
 }
 
-- (void)setRemoteDeviceVersion:(unsigned int)a3
+- (void)setRemoteDeviceVersion:(unsigned int)version
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v7 = a3;
+    versionCopy = version;
     _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "CellularLinkMonitor: set remote device version: %u", buf, 8u);
   }
 
@@ -1693,17 +1693,17 @@ LABEL_60:
     }
   }
 
-  self->_remoteDeviceVersion = a3;
+  self->_remoteDeviceVersion = version;
 }
 
-- (BOOL)dropIPPackets:(id)a3 localAddress:(sockaddr *)a4 remoteAddress:(sockaddr *)a5 isRelay:(BOOL)a6 channelNumberMSB:(unsigned __int8)a7 ifname:(id)a8
+- (BOOL)dropIPPackets:(id)packets localAddress:(sockaddr *)address remoteAddress:(sockaddr *)remoteAddress isRelay:(BOOL)relay channelNumberMSB:(unsigned __int8)b ifname:(id)ifname
 {
-  v9 = a7;
-  v10 = a6;
+  bCopy = b;
+  relayCopy = relay;
   v77 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  value = a8;
-  v53 = v14;
+  packetsCopy = packets;
+  value = ifname;
+  v53 = packetsCopy;
   if (!self->_ctServerConnection)
   {
     v43 = OSLogHandleForTransportCategory();
@@ -1728,7 +1728,7 @@ LABEL_60:
     goto LABEL_98;
   }
 
-  if (!a4 || !a5)
+  if (!address || !remoteAddress)
   {
     v44 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -1754,7 +1754,7 @@ LABEL_98:
     goto LABEL_123;
   }
 
-  if (a4->sa_family == 2)
+  if (address->sa_family == 2)
   {
     v15 = 28;
   }
@@ -1764,7 +1764,7 @@ LABEL_98:
     v15 = 48;
   }
 
-  if (a4->sa_family == 2)
+  if (address->sa_family == 2)
   {
     v16 = 1;
   }
@@ -1774,14 +1774,14 @@ LABEL_98:
     v16 = 2;
   }
 
-  v65 = *a4->sa_data;
+  v65 = *address->sa_data;
   v66 = v15;
-  v64 = *a5->sa_data;
+  v64 = *remoteAddress->sa_data;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v14;
+  obj = packetsCopy;
   v17 = [obj countByEnumeratingWithState:&v69 objects:v76 count:16];
   if (!v17)
   {
@@ -1791,7 +1791,7 @@ LABEL_98:
 
   v18 = 0;
   v19 = 0;
-  if (v10)
+  if (relayCopy)
   {
     v20 = 4;
   }
@@ -1820,7 +1820,7 @@ LABEL_98:
 
     v22 = *(*(&v69 + 1) + 8 * v19);
     v23 = v66;
-    if (!v9)
+    if (!bCopy)
     {
       if (v22)
       {
@@ -1906,9 +1906,9 @@ LABEL_98:
       _os_log_error_impl(&dword_1A7AD9000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "REQUIRED_ATTRIBUTE - Warning, missing %@ to add to %s", buf, 0x16u);
     }
 
-    if (v9)
+    if (bCopy)
     {
-      v31 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v9];
+      v31 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:bCopy];
       if (v31)
       {
         CFDictionarySetValue(v26, v55, v31);
@@ -1945,8 +1945,8 @@ LABEL_98:
       v34 = CFDictionaryGetValue(v22, @"qos-family-transaction-id");
     }
 
-    v35 = [v34 unsignedShortValue];
-    v36 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:__rev16(v35)];
+    unsignedShortValue = [v34 unsignedShortValue];
+    v36 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:__rev16(unsignedShortValue)];
     if (v36)
     {
       CFDictionarySetValue(v26, v58, v36);
@@ -1962,8 +1962,8 @@ LABEL_98:
     }
 
     v37 = v22 != 0 && @"qos-family-timestamp-value" != 0 ? CFDictionaryGetValue(v22, @"qos-family-timestamp-value") : 0;
-    v38 = [v37 unsignedIntValue];
-    v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(v38)];
+    unsignedIntValue = [v37 unsignedIntValue];
+    v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(unsignedIntValue)];
     if (v39)
     {
       CFDictionarySetValue(v26, v57, v39);
@@ -1979,8 +1979,8 @@ LABEL_98:
     }
 
     v40 = v22 != 0 && @"qos-family-drop-operation" != 0 ? CFDictionaryGetValue(v22, @"qos-family-drop-operation") : 0;
-    v41 = [v40 unsignedShortValue];
-    v42 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:__rev16(v41)];
+    unsignedShortValue2 = [v40 unsignedShortValue];
+    v42 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:__rev16(unsignedShortValue2)];
     if (v42)
     {
       CFDictionarySetValue(v26, v56, v42);
@@ -2111,15 +2111,15 @@ LABEL_123:
   return v45;
 }
 
-- (void)updateProtocolQualityOfService:(BOOL)a3 localAddress:(sockaddr *)a4
+- (void)updateProtocolQualityOfService:(BOOL)service localAddress:(sockaddr *)address
 {
   v17 = *MEMORY[0x1E69E9840];
   if (self->_ctServerConnection)
   {
-    if (a4)
+    if (address)
     {
-      v4 = a3;
-      if (a4->sa_family == 30)
+      serviceCopy = service;
+      if (address->sa_family == 30)
       {
         v5 = 2;
       }
@@ -2160,7 +2160,7 @@ LABEL_123:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v13 = @"NO";
-          if (v4)
+          if (serviceCopy)
           {
             v13 = @"YES";
           }
@@ -2232,32 +2232,32 @@ LABEL_123:
   }
 }
 
-- (void)currentCellularSignalStrength:(int *)a3 signalStrength:(int *)a4 signalGrade:(int *)a5
+- (void)currentCellularSignalStrength:(int *)strength signalStrength:(int *)signalStrength signalGrade:(int *)grade
 {
   v25 = *MEMORY[0x1E69E9840];
   if (self->_ctServerConnection)
   {
-    *a3 = 0;
-    *a4 = 100;
-    *a5 = 0;
-    v9 = [(IDSCellularLinkMonitor *)self _getCTXPCServiceSubscriptionContext];
-    if (v9)
+    *strength = 0;
+    *signalStrength = 100;
+    *grade = 0;
+    _getCTXPCServiceSubscriptionContext = [(IDSCellularLinkMonitor *)self _getCTXPCServiceSubscriptionContext];
+    if (_getCTXPCServiceSubscriptionContext)
     {
       ctClient = self->_ctClient;
       v21 = 0;
-      v11 = [(CoreTelephonyClient *)ctClient getSignalStrengthInfo:v9 error:&v21];
+      v11 = [(CoreTelephonyClient *)ctClient getSignalStrengthInfo:_getCTXPCServiceSubscriptionContext error:&v21];
       v12 = v21;
       if (v11)
       {
-        v13 = [v11 bars];
-        *a5 = [v13 intValue];
+        bars = [v11 bars];
+        *grade = [bars intValue];
 
         v14 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = *a3;
-          v16 = *a4;
-          v17 = *a5;
+          v15 = *strength;
+          v16 = *signalStrength;
+          v17 = *grade;
           *buf = 67109632;
           *v23 = v15;
           *&v23[4] = 1024;
@@ -2285,7 +2285,7 @@ LABEL_123:
           *buf = 138412546;
           *v23 = v12;
           *&v23[8] = 2112;
-          v24 = v9;
+          v24 = _getCTXPCServiceSubscriptionContext;
           _os_log_impl(&dword_1A7AD9000, v20, OS_LOG_TYPE_DEFAULT, "getSignalStrengthInfo failed: %@ %@", buf, 0x16u);
         }
 
@@ -2349,17 +2349,17 @@ LABEL_123:
   }
 }
 
-- (void)registerCellularDataStatusNotification:(BOOL)a3
+- (void)registerCellularDataStatusNotification:(BOOL)notification
 {
   v11 = *MEMORY[0x1E69E9840];
   if (self->_ctServerConnection)
   {
-    v3 = a3;
+    notificationCopy = notification;
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (notificationCopy)
       {
         v6 = @"YES";
       }
@@ -2382,7 +2382,7 @@ LABEL_123:
     }
 
     ctClient = self->_ctClient;
-    if (v3)
+    if (notificationCopy)
     {
       [(CoreTelephonyClient *)ctClient setDelegate:self];
     }
@@ -2416,16 +2416,16 @@ LABEL_123:
   }
 }
 
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  changedCopy = changed;
+  infoCopy = info;
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v14 = a4;
+    connectionCopy = connection;
     _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "connectionStateChanged, connection type: %d", buf, 8u);
   }
 
@@ -2441,35 +2441,35 @@ LABEL_123:
     }
   }
 
-  if (!a4)
+  if (!connection)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1A7B5ADA4;
     v10[3] = &unk_1E77E0250;
-    v11 = v7;
-    v12 = v8;
+    v11 = changedCopy;
+    v12 = infoCopy;
     IDSTransportThreadAddBlock(v10);
   }
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  infoCopy = info;
   ctClient = self->_ctClient;
   v14 = 0;
   v9 = [(CoreTelephonyClient *)ctClient getPreferredDataSubscriptionContextSync:&v14];
   v10 = v14;
-  v11 = [v9 isEqual:v6];
+  v11 = [v9 isEqual:statusCopy];
 
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = @"NO";
     *buf = 138412802;
-    v16 = v6;
+    v16 = statusCopy;
     v17 = 2112;
     if (v11)
     {
@@ -2478,7 +2478,7 @@ LABEL_123:
 
     v18 = v13;
     v19 = 2112;
-    v20 = v7;
+    v20 = infoCopy;
     _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_DEFAULT, "Received CT data status changed callback { context: %@, isRelevant: %@, dataStatus: %@ }", buf, 0x20u);
   }
 
@@ -2496,15 +2496,15 @@ LABEL_123:
 
   if (v11)
   {
-    [(IDSCellularLinkMonitor *)self _notifyClientDataBearerSoMask:v7];
+    [(IDSCellularLinkMonitor *)self _notifyClientDataBearerSoMask:infoCopy];
   }
 }
 
-- (void)_notifyClientDataBearerSoMask:(id)a3
+- (void)_notifyClientDataBearerSoMask:(id)mask
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(IDSCellularLinkMonitor *)self _updateDataBearerSoMaskWithCTDataStatus:v4])
+  maskCopy = mask;
+  if ([(IDSCellularLinkMonitor *)self _updateDataBearerSoMaskWithCTDataStatus:maskCopy])
   {
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2529,8 +2529,8 @@ LABEL_123:
       }
     }
 
-    v7 = [(NSHashTable *)self->_cellularLinkDelegates allObjects];
-    v8 = [v7 copy];
+    allObjects = [(NSHashTable *)self->_cellularLinkDelegates allObjects];
+    v8 = [allObjects copy];
 
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2586,15 +2586,15 @@ LABEL_123:
   }
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changedCopy = changed;
   v4 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = v3;
+    v6 = changedCopy;
     _os_log_impl(&dword_1A7AD9000, v4, OS_LOG_TYPE_DEFAULT, "preferredDataSimChanged %@", buf, 0xCu);
   }
 
@@ -2611,11 +2611,11 @@ LABEL_123:
   }
 }
 
-- (BOOL)isSlicedCellularInterfaceActive:(id)a3
+- (BOOL)isSlicedCellularInterfaceActive:(id)active
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  activeCopy = active;
+  v5 = activeCopy;
+  if (activeCopy && [activeCopy length])
   {
     v6 = [(CoreTelephonyClient *)self->_ctClient getPreferredDataSubscriptionContextSync:0];
     if (v6)
@@ -2627,8 +2627,8 @@ LABEL_123:
         if (v8)
         {
           v9 = v8;
-          v10 = [v8 interfaceName];
-          v11 = [v10 isEqualToIgnoringCase:v5];
+          interfaceName = [v8 interfaceName];
+          v11 = [interfaceName isEqualToIgnoringCase:v5];
 
           if (v11)
           {

@@ -1,30 +1,30 @@
 @interface MPAVRoutingTableViewCell
-- (BOOL)_shouldShowSeparateBatteryPercentagesForBatteryLevel:(id)a3;
-- (MPAVRoutingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)_shouldShowSeparateBatteryPercentagesForBatteryLevel:(id)level;
+- (MPAVRoutingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (MPAVRoutingTableViewCellDelegate)delegate;
-- (id)_batteryTextForRoute:(id)a3;
+- (id)_batteryTextForRoute:(id)route;
 - (id)_checkmarkAccessibilityLabelForSmartAudio;
 - (id)_checkmarkImageForSmartAudio;
 - (id)_checkmarkImageNameForSmartAudio;
-- (id)_pairedDeviceTextForRoute:(id)a3;
+- (id)_pairedDeviceTextForRoute:(id)route;
 - (void)_animateSubtitleLabelToNextAvailableText;
-- (void)_configureDetailLabel:(id)a3;
-- (void)_configureLabel:(id)a3;
+- (void)_configureDetailLabel:(id)label;
+- (void)_configureLabel:(id)label;
 - (void)_updateAccessory;
 - (void)_updateSpinnerColor;
-- (void)_updateSubtitleTextLabelForRouteItem:(id)a3;
+- (void)_updateSubtitleTextLabelForRouteItem:(id)item;
 - (void)dealloc;
 - (void)didTapToExpand;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessoryType:(int64_t)a3;
-- (void)setIconStyle:(unint64_t)a3;
-- (void)setPendingSelection:(BOOL)a3;
-- (void)setShowingVolumeSlider:(BOOL)a3;
-- (void)setTintColor:(id)a3;
-- (void)setUseSmartAudioCheckmarkStyle:(BOOL)a3;
-- (void)setVolumeSlider:(id)a3;
-- (void)updateForEndpoint:(id)a3 routeItem:(id)a4 inferLocalizedModelName:(BOOL)a5;
+- (void)setAccessoryType:(int64_t)type;
+- (void)setIconStyle:(unint64_t)style;
+- (void)setPendingSelection:(BOOL)selection;
+- (void)setShowingVolumeSlider:(BOOL)slider;
+- (void)setTintColor:(id)color;
+- (void)setUseSmartAudioCheckmarkStyle:(BOOL)style;
+- (void)setVolumeSlider:(id)slider;
+- (void)updateForEndpoint:(id)endpoint routeItem:(id)item inferLocalizedModelName:(BOOL)name;
 @end
 
 @implementation MPAVRoutingTableViewCell
@@ -38,10 +38,10 @@
 
 - (void)didTapToExpand
 {
-  v3 = [(MPAVRoutingTableViewCell *)self delegate];
+  delegate = [(MPAVRoutingTableViewCell *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 routingCellDidTapToExpand:self];
+    [delegate routingCellDidTapToExpand:self];
   }
 }
 
@@ -104,51 +104,51 @@ uint64_t __68__MPAVRoutingTableViewCell__animateSubtitleLabelToNextAvailableText
 {
   if (self->_iconStyle == 1)
   {
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v3 = 0;
+    whiteColor = 0;
   }
 
-  v4 = v3;
-  [(UIActivityIndicatorView *)self->_spinnerView setColor:v3];
+  v4 = whiteColor;
+  [(UIActivityIndicatorView *)self->_spinnerView setColor:whiteColor];
 }
 
-- (void)_updateSubtitleTextLabelForRouteItem:(id)a3
+- (void)_updateSubtitleTextLabelForRouteItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 leader];
-  v6 = v5;
-  if (v5)
+  itemCopy = item;
+  leader = [itemCopy leader];
+  v6 = leader;
+  if (leader)
   {
-    v7 = v5;
+    firstObject = leader;
   }
 
   else
   {
-    v8 = [v4 routes];
-    v7 = [v8 firstObject];
+    routes = [itemCopy routes];
+    firstObject = [routes firstObject];
   }
 
-  v9 = [(MPAVRoutingTableViewCell *)self _batteryTextForRoute:v7];
+  v9 = [(MPAVRoutingTableViewCell *)self _batteryTextForRoute:firstObject];
   [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState setBatteryText:v9];
 
-  v10 = [(MPAVRoutingTableViewCell *)self _pairedDeviceTextForRoute:v7];
+  v10 = [(MPAVRoutingTableViewCell *)self _pairedDeviceTextForRoute:firstObject];
   [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState setPairedDeviceText:v10];
 
-  v11 = [v4 localizedSubtitle];
-  [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState setLocalizedSubtitle:v11];
+  localizedSubtitle = [itemCopy localizedSubtitle];
+  [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState setLocalizedSubtitle:localizedSubtitle];
 
-  v12 = [v7 routeUID];
-  v13 = [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState routeUID];
-  v14 = v13;
-  if (v12 == v13)
+  routeUID = [firstObject routeUID];
+  routeUID2 = [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState routeUID];
+  v14 = routeUID2;
+  if (routeUID == routeUID2)
   {
-    v15 = [v4 type];
+    type = [itemCopy type];
 
-    if (v15 != 2)
+    if (type != 2)
     {
       goto LABEL_10;
     }
@@ -158,14 +158,14 @@ uint64_t __68__MPAVRoutingTableViewCell__animateSubtitleLabelToNextAvailableText
   {
   }
 
-  v16 = [v7 routeUID];
-  [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState setRouteUID:v16];
+  routeUID3 = [firstObject routeUID];
+  [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState setRouteUID:routeUID3];
 
   [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState resetForNewRoute];
   if ([(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState isAnimating])
   {
-    v17 = [(UILabel *)self->_subtitleTextLabel layer];
-    [v17 removeAllAnimations];
+    layer = [(UILabel *)self->_subtitleTextLabel layer];
+    [layer removeAllAnimations];
 
     [(UILabel *)self->_subtitleTextLabel setAlpha:self->_subtitleViewAlpha];
   }
@@ -175,8 +175,8 @@ uint64_t __68__MPAVRoutingTableViewCell__animateSubtitleLabelToNextAvailableText
   self->_subtitleTextUpdateTimer = 0;
 
 LABEL_10:
-  v19 = [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState stringForCurrentVisibleTextType];
-  [(UILabel *)self->_subtitleTextLabel setText:v19];
+  stringForCurrentVisibleTextType = [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState stringForCurrentVisibleTextType];
+  [(UILabel *)self->_subtitleTextLabel setText:stringForCurrentVisibleTextType];
 
   if (!self->_subtitleTextUpdateTimer && [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState hasVisibleTextTypeToShow]&& [(MPAVRoutingTableViewCellSubtitleTextState *)self->_subtitleTextState hasVisibleTextTypeToTransitionTo])
   {
@@ -220,55 +220,55 @@ void __65__MPAVRoutingTableViewCell__updateSubtitleTextLabelForRouteItem___block
 
   if ([(MPAVRoutingTableViewCell *)self useSmartAudioCheckmarkStyle])
   {
-    v4 = [(MPAVRoutingTableViewCell *)self _checkmarkImageForSmartAudio];
+    _checkmarkImageForSmartAudio = [(MPAVRoutingTableViewCell *)self _checkmarkImageForSmartAudio];
     v5 = 1136;
-    [(UIImageView *)self->_smartAudioImageView setImage:v4];
+    [(UIImageView *)self->_smartAudioImageView setImage:_checkmarkImageForSmartAudio];
 
-    v6 = [(MPAVRoutingTableViewCell *)self _checkmarkAccessibilityLabelForSmartAudio];
-    [(UIImageView *)self->_smartAudioImageView setAccessibilityLabel:v6];
+    _checkmarkAccessibilityLabelForSmartAudio = [(MPAVRoutingTableViewCell *)self _checkmarkAccessibilityLabelForSmartAudio];
+    [(UIImageView *)self->_smartAudioImageView setAccessibilityLabel:_checkmarkAccessibilityLabelForSmartAudio];
   }
 
   else
   {
     if ([(MPAVRoutingTableViewCell *)self accessoryType]!= 3)
     {
-      v8 = self;
+      selfCopy2 = self;
       v7 = 0;
       goto LABEL_11;
     }
 
-    v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark"];
+    _checkmarkAccessibilityLabelForSmartAudio = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark"];
     v5 = 1144;
-    [(UIImageView *)self->_checkmarkImageView setImage:v6];
+    [(UIImageView *)self->_checkmarkImageView setImage:_checkmarkAccessibilityLabelForSmartAudio];
   }
 
   [*(&self->super.super.super.super.super.isa + v5) sizeToFit];
   v7 = *(&self->super.super.super.super.super.isa + v5);
-  v8 = self;
+  selfCopy2 = self;
 LABEL_11:
 
-  [(MPAVClippingTableViewCell *)v8 setAccessoryView:v7];
+  [(MPAVClippingTableViewCell *)selfCopy2 setAccessoryView:v7];
 }
 
 - (id)_checkmarkImageForSmartAudio
 {
   v2 = MEMORY[0x1E69DCAB8];
-  v3 = [(MPAVRoutingTableViewCell *)self _checkmarkImageNameForSmartAudio];
-  v4 = [v2 systemImageNamed:v3];
+  _checkmarkImageNameForSmartAudio = [(MPAVRoutingTableViewCell *)self _checkmarkImageNameForSmartAudio];
+  v4 = [v2 systemImageNamed:_checkmarkImageNameForSmartAudio];
 
   return v4;
 }
 
 - (id)_checkmarkAccessibilityLabelForSmartAudio
 {
-  v2 = [(MPAVRoutingTableViewCell *)self accessoryType];
+  accessoryType = [(MPAVRoutingTableViewCell *)self accessoryType];
   v3 = @"circle";
-  if (v2)
+  if (accessoryType)
   {
     v3 = 0;
   }
 
-  if (v2 == 3)
+  if (accessoryType == 3)
   {
     return @"checkmark.circle.fill";
   }
@@ -281,14 +281,14 @@ LABEL_11:
 
 - (id)_checkmarkImageNameForSmartAudio
 {
-  v2 = [(MPAVRoutingTableViewCell *)self accessoryType];
+  accessoryType = [(MPAVRoutingTableViewCell *)self accessoryType];
   v3 = @"circle";
-  if (v2)
+  if (accessoryType)
   {
     v3 = 0;
   }
 
-  if (v2 == 3)
+  if (accessoryType == 3)
   {
     return @"checkmark.circle.fill";
   }
@@ -299,11 +299,11 @@ LABEL_11:
   }
 }
 
-- (id)_pairedDeviceTextForRoute:(id)a3
+- (id)_pairedDeviceTextForRoute:(id)route
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 isPickedOnPairedDevice])
+  routeCopy = route;
+  if (![routeCopy isPickedOnPairedDevice])
   {
     v12 = 0;
     goto LABEL_18;
@@ -313,8 +313,8 @@ LABEL_11:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 auxiliaryDevices];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  auxiliaryDevices = [routeCopy auxiliaryDevices];
+  v5 = [auxiliaryDevices countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v5)
   {
 
@@ -331,7 +331,7 @@ LABEL_4:
   {
     if (*v18 != v8)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(auxiliaryDevices);
     }
 
     v7 = *(*(&v17 + 1) + 8 * v9);
@@ -345,7 +345,7 @@ LABEL_4:
     v10 = v7;
     if (v6 == v9)
     {
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [auxiliaryDevices countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v6)
       {
         goto LABEL_4;
@@ -358,8 +358,8 @@ LABEL_4:
   if (!v7)
   {
 LABEL_15:
-    v11 = [v3 playingPairedDeviceName];
-    if (!v11)
+    playingPairedDeviceName = [routeCopy playingPairedDeviceName];
+    if (!playingPairedDeviceName)
     {
       goto LABEL_12;
     }
@@ -368,14 +368,14 @@ LABEL_16:
     v13 = MEMORY[0x1E696AEC0];
     v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
     v15 = [v14 localizedStringForKey:@"AIRPLAY_IN_USE_ON_PAIRED_DEVICE_%@" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-    v12 = [v13 stringWithFormat:v15, v11];
+    v12 = [v13 stringWithFormat:v15, playingPairedDeviceName];
 
     goto LABEL_17;
   }
 
-  v11 = [v7 deviceName];
+  playingPairedDeviceName = [v7 deviceName];
 
-  if (v11)
+  if (playingPairedDeviceName)
   {
     goto LABEL_16;
   }
@@ -389,43 +389,43 @@ LABEL_18:
   return v12;
 }
 
-- (id)_batteryTextForRoute:(id)a3
+- (id)_batteryTextForRoute:(id)route
 {
-  v4 = [a3 batteryLevel];
+  batteryLevel = [route batteryLevel];
   v5 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v5 setNumberStyle:3];
   [v5 setUsesSignificantDigits:0];
   [v5 setUsesGroupingSeparator:0];
-  v6 = [v4 leftPercentage];
-  if (!v6 || (v7 = v6, [v4 rightPercentage], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  leftPercentage = [batteryLevel leftPercentage];
+  if (!leftPercentage || (v7 = leftPercentage, [batteryLevel rightPercentage], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
-    v17 = [v4 leftPercentage];
+    leftPercentage2 = [batteryLevel leftPercentage];
 
-    if (v17)
+    if (leftPercentage2)
     {
       v18 = MEMORY[0x1E696AEC0];
       v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
       v11 = [v10 localizedStringForKey:@"AIRPLAY_DEVICE_BATTERY_LEVEL_LEFT_FORMAT_%@" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-      v19 = [v4 leftPercentage];
+      leftPercentage3 = [batteryLevel leftPercentage];
     }
 
     else
     {
-      v20 = [v4 rightPercentage];
+      rightPercentage = [batteryLevel rightPercentage];
 
-      if (v20)
+      if (rightPercentage)
       {
         v18 = MEMORY[0x1E696AEC0];
         v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
         v11 = [v10 localizedStringForKey:@"AIRPLAY_DEVICE_BATTERY_LEVEL_RIGHT_FORMAT_%@" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-        v19 = [v4 rightPercentage];
+        leftPercentage3 = [batteryLevel rightPercentage];
       }
 
       else
       {
-        v27 = [v4 singlePercentage];
+        singlePercentage = [batteryLevel singlePercentage];
 
-        if (!v27)
+        if (!singlePercentage)
         {
           v16 = 0;
           goto LABEL_18;
@@ -434,39 +434,39 @@ LABEL_18:
         v18 = MEMORY[0x1E696AEC0];
         v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
         v11 = [v10 localizedStringForKey:@"AIRPLAY_DEVICE_BATTERY_LEVEL_SINGLE_FORMAT_%@" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-        v19 = [v4 singlePercentage];
+        leftPercentage3 = [batteryLevel singlePercentage];
       }
     }
 
-    v12 = v19;
-    v13 = [v5 stringFromNumber:v19];
+    leftPercentage5 = leftPercentage3;
+    v13 = [v5 stringFromNumber:leftPercentage3];
     [v18 stringWithFormat:v11, v13];
     goto LABEL_16;
   }
 
-  if (![(MPAVRoutingTableViewCell *)self _shouldShowSeparateBatteryPercentagesForBatteryLevel:v4])
+  if (![(MPAVRoutingTableViewCell *)self _shouldShowSeparateBatteryPercentagesForBatteryLevel:batteryLevel])
   {
-    v21 = [v4 leftPercentage];
-    [v21 floatValue];
+    leftPercentage4 = [batteryLevel leftPercentage];
+    [leftPercentage4 floatValue];
     v23 = v22;
-    v24 = [v4 rightPercentage];
-    [v24 floatValue];
+    rightPercentage2 = [batteryLevel rightPercentage];
+    [rightPercentage2 floatValue];
     if (v23 < v25)
     {
-      [v4 leftPercentage];
+      [batteryLevel leftPercentage];
     }
 
     else
     {
-      [v4 rightPercentage];
+      [batteryLevel rightPercentage];
     }
     v10 = ;
 
     v26 = MEMORY[0x1E696AEC0];
     v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
-    v12 = [v11 localizedStringForKey:@"AIRPLAY_DEVICE_BATTERY_LEVEL_SINGLE_FORMAT_%@" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+    leftPercentage5 = [v11 localizedStringForKey:@"AIRPLAY_DEVICE_BATTERY_LEVEL_SINGLE_FORMAT_%@" value:&stru_1F149ECA8 table:@"MediaPlayer"];
     v13 = [v5 stringFromNumber:v10];
-    [v26 stringWithFormat:v12, v13];
+    [v26 stringWithFormat:leftPercentage5, v13];
     v16 = LABEL_16:;
     goto LABEL_17;
   }
@@ -474,19 +474,19 @@ LABEL_18:
   v9 = MEMORY[0x1E696AEC0];
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
   v11 = [v10 localizedStringForKey:@"AIRPLAY_DEVICE_BATTERY_LEVEL_COMBINED_FORMAT_%@_%@" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-  v12 = [v4 leftPercentage];
-  v13 = [v5 stringFromNumber:v12];
-  v14 = [v4 rightPercentage];
-  v15 = [v5 stringFromNumber:v14];
+  leftPercentage5 = [batteryLevel leftPercentage];
+  v13 = [v5 stringFromNumber:leftPercentage5];
+  rightPercentage3 = [batteryLevel rightPercentage];
+  v15 = [v5 stringFromNumber:rightPercentage3];
   v16 = [v9 stringWithFormat:v11, v13, v15];
 
 LABEL_17:
 LABEL_18:
-  v28 = [v4 casePercentage];
+  casePercentage = [batteryLevel casePercentage];
 
-  if (v28 && (v29 = MEMORY[0x1E696AEC0], [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "localizedStringForKey:value:table:", @"AIRPLAY_DEVICE_BATTERY_LEVEL_CASE_%@", &stru_1F149ECA8, @"MediaPlayer"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "casePercentage"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "stringFromNumber:", v32), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "stringWithFormat:", v31, v33), v28 = objc_claimAutoreleasedReturnValue(), v33, v32, v31, v30, v16) && v28)
+  if (casePercentage && (v29 = MEMORY[0x1E696AEC0], [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "localizedStringForKey:value:table:", @"AIRPLAY_DEVICE_BATTERY_LEVEL_CASE_%@", &stru_1F149ECA8, @"MediaPlayer"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(batteryLevel, "casePercentage"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "stringFromNumber:", v32), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "stringWithFormat:", v31, v33), casePercentage = objc_claimAutoreleasedReturnValue(), v33, v32, v31, v30, v16) && casePercentage)
   {
-    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  %@", v16, v28];
+    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  %@", v16, casePercentage];
   }
 
   else
@@ -499,20 +499,20 @@ LABEL_18:
   return v35;
 }
 
-- (BOOL)_shouldShowSeparateBatteryPercentagesForBatteryLevel:(id)a3
+- (BOOL)_shouldShowSeparateBatteryPercentagesForBatteryLevel:(id)level
 {
-  v3 = a3;
-  v4 = [v3 leftPercentage];
-  if (v4)
+  levelCopy = level;
+  leftPercentage = [levelCopy leftPercentage];
+  if (leftPercentage)
   {
-    v5 = [v3 rightPercentage];
-    if (v5)
+    rightPercentage = [levelCopy rightPercentage];
+    if (rightPercentage)
     {
-      v6 = [v3 leftPercentage];
-      [v6 floatValue];
+      leftPercentage2 = [levelCopy leftPercentage];
+      [leftPercentage2 floatValue];
       v8 = v7;
-      v9 = [v3 rightPercentage];
-      [v9 floatValue];
+      rightPercentage2 = [levelCopy rightPercentage];
+      [rightPercentage2 floatValue];
       v11 = vabds_f32(v8, v10) >= 0.1;
     }
 
@@ -530,53 +530,53 @@ LABEL_18:
   return v11;
 }
 
-- (void)_configureDetailLabel:(id)a3
+- (void)_configureDetailLabel:(id)label
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
-  v5 = [v3 whiteColor];
-  [v4 setHighlightedTextColor:v5];
+  labelCopy = label;
+  whiteColor = [v3 whiteColor];
+  [labelCopy setHighlightedTextColor:whiteColor];
 
-  [v4 setTextAlignment:4];
-  v6 = [MEMORY[0x1E69DC888] lightGrayColor];
-  [v4 setTextColor:v6];
+  [labelCopy setTextAlignment:4];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  [labelCopy setTextColor:lightGrayColor];
 }
 
-- (void)_configureLabel:(id)a3
+- (void)_configureLabel:(id)label
 {
   v3 = MEMORY[0x1E69DC888];
-  v6 = a3;
-  v4 = [v3 whiteColor];
-  [v6 setHighlightedTextColor:v4];
+  labelCopy = label;
+  whiteColor = [v3 whiteColor];
+  [labelCopy setHighlightedTextColor:whiteColor];
 
-  [v6 setTextAlignment:4];
-  v5 = [MEMORY[0x1E69DC888] blackColor];
-  [v6 setTextColor:v5];
+  [labelCopy setTextAlignment:4];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [labelCopy setTextColor:blackColor];
 
-  [v6 _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
+  [labelCopy _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
   v4.receiver = self;
   v4.super_class = MPAVRoutingTableViewCell;
-  [(MPAVRoutingTableViewCell *)&v4 setAccessoryType:a3];
+  [(MPAVRoutingTableViewCell *)&v4 setAccessoryType:type];
   [(MPAVRoutingTableViewCell *)self _updateAccessory];
 }
 
-- (void)setIconStyle:(unint64_t)a3
+- (void)setIconStyle:(unint64_t)style
 {
-  if (self->_iconStyle == a3)
+  if (self->_iconStyle == style)
   {
     return;
   }
 
-  self->_iconStyle = a3;
+  self->_iconStyle = style;
   [(MPAVRoutingTableViewCell *)self _updateSpinnerColor];
   iconStyle = self->_iconStyle;
   if (iconStyle == 1)
   {
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
@@ -587,35 +587,35 @@ LABEL_18:
       goto LABEL_8;
     }
 
-    v5 = [MEMORY[0x1E69DC888] blackColor];
+    whiteColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  v6 = v5;
+  v6 = whiteColor;
 LABEL_8:
   v7 = v6;
   [(UIImageView *)self->_iconImageView setTintColor:v6];
   [(UIImageView *)self->_chevronImageView setTintColor:v7];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v11.receiver = self;
   v11.super_class = MPAVRoutingTableViewCell;
-  [(MPAVRoutingTableViewCell *)&v11 setTintColor:v4];
-  if (v4)
+  [(MPAVRoutingTableViewCell *)&v11 setTintColor:colorCopy];
+  if (colorCopy)
   {
-    [(UILabel *)self->_routeNameLabel setTextColor:v4];
+    [(UILabel *)self->_routeNameLabel setTextColor:colorCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    [(UILabel *)self->_routeNameLabel setTextColor:v5];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UILabel *)self->_routeNameLabel setTextColor:blackColor];
   }
 
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  v7 = [v4 isEqual:v6];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  v7 = [colorCopy isEqual:blackColor2];
 
   if (v7)
   {
@@ -625,8 +625,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  v10 = [v4 isEqual:v9];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v10 = [colorCopy isEqual:whiteColor];
 
   if (v10)
   {
@@ -643,22 +643,22 @@ LABEL_9:
   v123.receiver = self;
   v123.super_class = MPAVRoutingTableViewCell;
   [(MPAVClippingTableViewCell *)&v123 layoutSubviews];
-  v3 = [(MPAVRoutingTableViewCell *)self accessoryView];
-  if (!v3)
+  accessoryView = [(MPAVRoutingTableViewCell *)self accessoryView];
+  if (!accessoryView)
   {
-    v3 = [(MPAVRoutingTableViewCell *)self _defaultAccessoryView];
+    accessoryView = [(MPAVRoutingTableViewCell *)self _defaultAccessoryView];
   }
 
-  [v3 setAlpha:1.0];
-  v4 = [(MPAVRoutingTableViewCell *)self contentView];
-  [v4 bounds];
+  [accessoryView setAlpha:1.0];
+  contentView = [(MPAVRoutingTableViewCell *)self contentView];
+  [contentView bounds];
   v115 = v6;
   v116 = v5;
   v114 = v7;
   v9 = v8;
 
-  v10 = [(MPAVRoutingTableViewCell *)self traitCollection];
-  [v10 displayScale];
+  traitCollection = [(MPAVRoutingTableViewCell *)self traitCollection];
+  [traitCollection displayScale];
 
   UIRoundToScale();
   UIRoundToScale();
@@ -670,10 +670,10 @@ LABEL_9:
   v122 = v14;
   v121 = *(MEMORY[0x1E695F058] + 8);
   v113 = v121;
-  if (v3)
+  if (accessoryView)
   {
     v15 = v11;
-    [v3 frame];
+    [accessoryView frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -704,7 +704,7 @@ LABEL_9:
       Width = v37;
     }
 
-    [v3 frame];
+    [accessoryView frame];
     v38 = v12 + (Width - CGRectGetWidth(v127)) * -0.5;
     if (v38 >= 0.0)
     {
@@ -721,14 +721,14 @@ LABEL_9:
   v111 = v13;
   if ([(MPAVRoutingTableViewCell *)self accessoryType]== 3)
   {
-    v39 = [(MPAVRoutingTableViewCell *)self useSmartAudioCheckmarkStyle];
+    useSmartAudioCheckmarkStyle = [(MPAVRoutingTableViewCell *)self useSmartAudioCheckmarkStyle];
     v40 = v12 + -3.0;
     if (v12 + -3.0 < 0.0)
     {
       v40 = 0.0;
     }
 
-    if (!v39)
+    if (!useSmartAudioCheckmarkStyle)
     {
       v12 = v40;
     }
@@ -762,11 +762,11 @@ LABEL_9:
   [(UILabel *)self->_subtitleTextLabel setHidden:v53];
   [(UILabel *)self->_routeNameLabel sizeThatFits:v49, v51];
   v117 = v54;
-  v55 = [(MPAVRoutingTableViewCell *)self traitCollection];
-  v56 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] compatibleWithTraitCollection:v55];
+  traitCollection2 = [(MPAVRoutingTableViewCell *)self traitCollection];
+  v56 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] compatibleWithTraitCollection:traitCollection2];
   [(UILabel *)self->_routeNameLabel setFont:v56];
 
-  v57 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD08] compatibleWithTraitCollection:v55];
+  v57 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD08] compatibleWithTraitCollection:traitCollection2];
   [(UILabel *)self->_subtitleTextLabel setFont:v57];
 
   [(UILabel *)self->_routeNameLabel _baselineOffsetFromBottom];
@@ -778,8 +778,8 @@ LABEL_9:
       v104 = v47 + -1.0;
       v105 = v49 + -3.0;
       v106 = v51 - (v117 + 0.0);
-      v60 = [(MPAVRoutingTableViewCell *)self traitCollection];
-      [v60 displayScale];
+      traitCollection3 = [(MPAVRoutingTableViewCell *)self traitCollection];
+      [traitCollection3 displayScale];
       UIRoundToScale();
       v62 = v117 + v61;
 
@@ -824,23 +824,23 @@ LABEL_9:
   }
 
   [(MPAVRoutingTableViewCell *)self bounds];
-  [v3 setFrame:{MPRectByApplyingUserInterfaceLayoutDirectionInRect(v12, v113, v110, v111, v66, v67, v68, v69)}];
-  [v3 center];
+  [accessoryView setFrame:{MPRectByApplyingUserInterfaceLayoutDirectionInRect(v12, v113, v110, v111, v66, v67, v68, v69)}];
+  [accessoryView center];
   v71 = v70;
-  [v3 frame];
+  [accessoryView frame];
   [(MPAVRoutingTableViewCell *)self bounds];
   UIRectCenteredYInRect();
-  [v3 setFrame:?];
-  [v3 center];
+  [accessoryView setFrame:?];
+  [accessoryView center];
   v73 = v71 - v72;
-  v74 = [v3 maskView];
-  [v74 center];
+  maskView = [accessoryView maskView];
+  [maskView center];
   v76 = v75;
-  v77 = [v3 maskView];
-  [v77 center];
+  maskView2 = [accessoryView maskView];
+  [maskView2 center];
   v79 = v73 + v78;
-  v80 = [v3 maskView];
-  [v80 setCenter:{v76, v79}];
+  maskView3 = [accessoryView maskView];
+  [maskView3 setCenter:{v76, v79}];
 
   UIRectInset();
   v82 = v81;
@@ -870,50 +870,50 @@ LABEL_9:
   [(MPVolumeSlider *)self->_volumeSlider setFrame:MPRectByApplyingUserInterfaceLayoutDirectionInRect(v104, v103, v105, v106, v116, v115, v114, v112)];
 }
 
-- (void)setShowingVolumeSlider:(BOOL)a3
+- (void)setShowingVolumeSlider:(BOOL)slider
 {
-  if (self->_showingVolumeSlider != a3)
+  if (self->_showingVolumeSlider != slider)
   {
-    self->_showingVolumeSlider = a3;
-    [(MPVolumeSlider *)self->_volumeSlider setHidden:!a3];
+    self->_showingVolumeSlider = slider;
+    [(MPVolumeSlider *)self->_volumeSlider setHidden:!slider];
 
     [(MPAVRoutingTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setVolumeSlider:(id)a3
+- (void)setVolumeSlider:(id)slider
 {
-  v5 = a3;
+  sliderCopy = slider;
   volumeSlider = self->_volumeSlider;
-  v14 = v5;
-  if (volumeSlider == v5)
+  v14 = sliderCopy;
+  if (volumeSlider == sliderCopy)
   {
-    v10 = [(MPVolumeSlider *)v5 superview];
-    v11 = [(MPAVRoutingTableViewCell *)self contentView];
+    superview = [(MPVolumeSlider *)sliderCopy superview];
+    contentView = [(MPAVRoutingTableViewCell *)self contentView];
 
     v12 = v14;
-    if (v10 == v11)
+    if (superview == contentView)
     {
       goto LABEL_8;
     }
 
-    v13 = [(MPAVRoutingTableViewCell *)self contentView];
-    [v13 addSubview:v14];
+    contentView2 = [(MPAVRoutingTableViewCell *)self contentView];
+    [contentView2 addSubview:v14];
   }
 
   else
   {
-    v7 = [(MPVolumeSlider *)volumeSlider superview];
-    v8 = [(MPAVRoutingTableViewCell *)self contentView];
+    superview2 = [(MPVolumeSlider *)volumeSlider superview];
+    contentView3 = [(MPAVRoutingTableViewCell *)self contentView];
 
-    if (v7 == v8)
+    if (superview2 == contentView3)
     {
       [(MPVolumeSlider *)self->_volumeSlider removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_volumeSlider, a3);
-    v9 = [(MPAVRoutingTableViewCell *)self contentView];
-    [v9 addSubview:self->_volumeSlider];
+    objc_storeStrong(&self->_volumeSlider, slider);
+    contentView4 = [(MPAVRoutingTableViewCell *)self contentView];
+    [contentView4 addSubview:self->_volumeSlider];
 
     [(MPVolumeSlider *)self->_volumeSlider setHidden:!self->_showingVolumeSlider];
     [(MPAVRoutingTableViewCell *)self setNeedsLayout];
@@ -923,12 +923,12 @@ LABEL_9:
 LABEL_8:
 }
 
-- (void)setUseSmartAudioCheckmarkStyle:(BOOL)a3
+- (void)setUseSmartAudioCheckmarkStyle:(BOOL)style
 {
-  if (self->_useSmartAudioCheckmarkStyle != a3)
+  if (self->_useSmartAudioCheckmarkStyle != style)
   {
-    self->_useSmartAudioCheckmarkStyle = a3;
-    if (a3 && !self->_smartAudioImageView)
+    self->_useSmartAudioCheckmarkStyle = style;
+    if (style && !self->_smartAudioImageView)
     {
       v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -943,14 +943,14 @@ LABEL_8:
   }
 }
 
-- (void)setPendingSelection:(BOOL)a3
+- (void)setPendingSelection:(BOOL)selection
 {
-  if (self->_pendingSelection == a3)
+  if (self->_pendingSelection == selection)
   {
     return;
   }
 
-  self->_pendingSelection = a3;
+  self->_pendingSelection = selection;
   spinnerView = self->_spinnerView;
   if (!spinnerView)
   {
@@ -970,7 +970,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!selection)
   {
     goto LABEL_6;
   }
@@ -982,73 +982,73 @@ LABEL_7:
   [(MPAVRoutingTableViewCell *)self _updateAccessory];
 }
 
-- (void)updateForEndpoint:(id)a3 routeItem:(id)a4 inferLocalizedModelName:(BOOL)a5
+- (void)updateForEndpoint:(id)endpoint routeItem:(id)item inferLocalizedModelName:(BOOL)name
 {
-  v5 = a5;
+  nameCopy = name;
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [v7 leader];
-  v9 = v8;
-  if (v8)
+  itemCopy = item;
+  leader = [itemCopy leader];
+  v9 = leader;
+  if (leader)
   {
-    v10 = v8;
+    firstObject = leader;
   }
 
   else
   {
-    v11 = [v7 routes];
-    v10 = [v11 firstObject];
+    routes = [itemCopy routes];
+    firstObject = [routes firstObject];
   }
 
   v12 = os_log_create("com.apple.amp.mediaplayer", "Routing");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v21 = 134218242;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v10;
+    v24 = firstObject;
     _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_INFO, "routingTableView %p updateForEndpoint: routeUpdate: %@", &v21, 0x16u);
   }
 
-  if (v5 && ([v10 routeSubtype] == 1 || objc_msgSend(v10, "routeSubtype") == 3))
+  if (nameCopy && ([firstObject routeSubtype] == 1 || objc_msgSend(firstObject, "routeSubtype") == 3))
   {
-    v13 = MSVCopyLocalizedModelName();
+    localizedTitle = MSVCopyLocalizedModelName();
   }
 
   else
   {
-    v13 = [v7 localizedTitle];
+    localizedTitle = [itemCopy localizedTitle];
   }
 
-  v14 = v13;
-  [(UILabel *)self->_routeNameLabel setText:v13];
-  v15 = [v7 image];
+  v14 = localizedTitle;
+  [(UILabel *)self->_routeNameLabel setText:localizedTitle];
+  image = [itemCopy image];
 
-  if (v15 || !v10)
+  if (image || !firstObject)
   {
-    v18 = [v7 image];
+    image2 = [itemCopy image];
   }
 
   else
   {
-    if ([v7 type] == 1)
+    if ([itemCopy type] == 1)
     {
-      v16 = [v7 routes];
-      v17 = [(MPAVRoutingTableViewCell *)self _iconImageForRoutes:v16];
+      routes2 = [itemCopy routes];
+      v17 = [(MPAVRoutingTableViewCell *)self _iconImageForRoutes:routes2];
       [(UIImageView *)self->_iconImageView setImage:v17];
 
       goto LABEL_18;
     }
 
-    v18 = [(MPAVRoutingTableViewCell *)self _iconImageForRoute:v10];
+    image2 = [(MPAVRoutingTableViewCell *)self _iconImageForRoute:firstObject];
   }
 
-  v16 = v18;
-  [(UIImageView *)self->_iconImageView setImage:v18];
+  routes2 = image2;
+  [(UIImageView *)self->_iconImageView setImage:image2];
 LABEL_18:
 
-  v19 = [(UIImageView *)self->_iconImageView image];
-  if ([v19 isSymbolImage])
+  image3 = [(UIImageView *)self->_iconImageView image];
+  if ([image3 isSymbolImage])
   {
     v20 = 4;
   }
@@ -1060,9 +1060,9 @@ LABEL_18:
 
   [(UIImageView *)self->_iconImageView setContentMode:v20];
 
-  -[UIImageView setHidden:](self->_chevronImageView, "setHidden:", [v7 type] != 1);
-  [(MPAVRoutingTableViewCell *)self _updateSubtitleTextLabelForRouteItem:v7];
-  -[MPAVRoutingTableViewCell setEnabled:](self, "setEnabled:", [v7 enabled]);
+  -[UIImageView setHidden:](self->_chevronImageView, "setHidden:", [itemCopy type] != 1);
+  [(MPAVRoutingTableViewCell *)self _updateSubtitleTextLabelForRouteItem:itemCopy];
+  -[MPAVRoutingTableViewCell setEnabled:](self, "setEnabled:", [itemCopy enabled]);
   [(MPAVRoutingTableViewCell *)self setNeedsLayout];
 }
 
@@ -1084,11 +1084,11 @@ LABEL_18:
   [(MPAVClippingTableViewCell *)&v4 dealloc];
 }
 
-- (MPAVRoutingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MPAVRoutingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v45.receiver = self;
   v45.super_class = MPAVRoutingTableViewCell;
-  v4 = [(MPAVClippingTableViewCell *)&v45 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MPAVClippingTableViewCell *)&v45 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -1096,24 +1096,24 @@ LABEL_18:
     [v5 setBackgroundColor:v6];
 
     [(MPAVRoutingTableViewCell *)v4 setSelectedBackgroundView:v5];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(MPAVRoutingTableViewCell *)v4 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MPAVRoutingTableViewCell *)v4 setBackgroundColor:clearColor];
 
     v8 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     iconImageView = v4->_iconImageView;
     v4->_iconImageView = v8;
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)v4->_iconImageView setBackgroundColor:v10];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)v4->_iconImageView setBackgroundColor:clearColor2];
 
     v11 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:3 scale:17.0];
     [(UIImageView *)v4->_iconImageView setPreferredSymbolConfiguration:v11];
 
-    v12 = [(MPAVRoutingTableViewCell *)v4 contentView];
-    [v12 addSubview:v4->_iconImageView];
+    contentView = [(MPAVRoutingTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_iconImageView];
 
-    v13 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIImageView *)v4->_iconImageView setTintColor:v13];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIImageView *)v4->_iconImageView setTintColor:blackColor];
 
     v14 = objc_opt_new();
     chevronImageView = v4->_chevronImageView;
@@ -1123,43 +1123,43 @@ LABEL_18:
     [(UIImageView *)v4->_chevronImageView setImage:v16];
 
     [(UIImageView *)v4->_chevronImageView setContentMode:4];
-    v17 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIImageView *)v4->_chevronImageView setTintColor:v17];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIImageView *)v4->_chevronImageView setTintColor:blackColor2];
 
     [(UIImageView *)v4->_chevronImageView setAlpha:0.7];
-    v18 = [(MPAVRoutingTableViewCell *)v4 contentView];
-    [v18 addSubview:v4->_chevronImageView];
+    contentView2 = [(MPAVRoutingTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_chevronImageView];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v4 selector:sel__handleContentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__handleContentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
     v20 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     routeNameLabel = v4->_routeNameLabel;
     v4->_routeNameLabel = v20;
 
-    v22 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v4->_routeNameLabel setHighlightedTextColor:v22];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v4->_routeNameLabel setHighlightedTextColor:whiteColor];
 
     [(UILabel *)v4->_routeNameLabel setTextAlignment:4];
-    v23 = [MEMORY[0x1E69DC888] blackColor];
-    [(UILabel *)v4->_routeNameLabel setTextColor:v23];
+    blackColor3 = [MEMORY[0x1E69DC888] blackColor];
+    [(UILabel *)v4->_routeNameLabel setTextColor:blackColor3];
 
     [(UILabel *)v4->_routeNameLabel _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
-    v24 = [(MPAVRoutingTableViewCell *)v4 contentView];
-    [v24 addSubview:v4->_routeNameLabel];
+    contentView3 = [(MPAVRoutingTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_routeNameLabel];
 
     v25 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     subtitleTextLabel = v4->_subtitleTextLabel;
     v4->_subtitleTextLabel = v25;
 
-    v27 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v4->_subtitleTextLabel setHighlightedTextColor:v27];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v4->_subtitleTextLabel setHighlightedTextColor:whiteColor2];
 
     [(UILabel *)v4->_subtitleTextLabel setTextAlignment:4];
-    v28 = [MEMORY[0x1E69DC888] darkGrayColor];
-    [(UILabel *)v4->_subtitleTextLabel setTextColor:v28];
+    darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+    [(UILabel *)v4->_subtitleTextLabel setTextColor:darkGrayColor];
 
-    v29 = [(MPAVRoutingTableViewCell *)v4 contentView];
-    [v29 addSubview:v4->_subtitleTextLabel];
+    contentView4 = [(MPAVRoutingTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_subtitleTextLabel];
 
     [(UILabel *)v4->_subtitleTextLabel setHidden:1];
     v30 = objc_alloc_init(MPAVRoutingTableViewCellSubtitleTextState);
@@ -1188,8 +1188,8 @@ LABEL_18:
     v4->_expandTargetView = v41;
 
     [(UIView *)v4->_expandTargetView addGestureRecognizer:v40];
-    v43 = [(MPAVRoutingTableViewCell *)v4 contentView];
-    [v43 addSubview:v4->_expandTargetView];
+    contentView5 = [(MPAVRoutingTableViewCell *)v4 contentView];
+    [contentView5 addSubview:v4->_expandTargetView];
   }
 
   return v4;

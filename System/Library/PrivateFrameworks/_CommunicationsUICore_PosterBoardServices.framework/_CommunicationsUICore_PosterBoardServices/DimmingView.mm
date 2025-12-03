@@ -1,18 +1,18 @@
 @interface DimmingView
 + (Class)layerClass;
-- (_TtC41_CommunicationsUICore_PosterBoardServices11DimmingView)initWithCoder:(id)a3;
-- (_TtC41_CommunicationsUICore_PosterBoardServices11DimmingView)initWithFrame:(CGRect)a3;
+- (_TtC41_CommunicationsUICore_PosterBoardServices11DimmingView)initWithCoder:(id)coder;
+- (_TtC41_CommunicationsUICore_PosterBoardServices11DimmingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DimmingView
 
-- (_TtC41_CommunicationsUICore_PosterBoardServices11DimmingView)initWithFrame:(CGRect)a3
+- (_TtC41_CommunicationsUICore_PosterBoardServices11DimmingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC41_CommunicationsUICore_PosterBoardServices11DimmingView_dimmingGradients) = MEMORY[0x277D84F90];
   v9 = OBJC_IVAR____TtC41_CommunicationsUICore_PosterBoardServices11DimmingView_gradientLayer;
@@ -22,7 +22,7 @@
   return [(DimmingView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC41_CommunicationsUICore_PosterBoardServices11DimmingView)initWithCoder:(id)a3
+- (_TtC41_CommunicationsUICore_PosterBoardServices11DimmingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC41_CommunicationsUICore_PosterBoardServices11DimmingView_dimmingGradients) = MEMORY[0x277D84F90];
   v3 = OBJC_IVAR____TtC41_CommunicationsUICore_PosterBoardServices11DimmingView_gradientLayer;
@@ -41,7 +41,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DimmingView.layoutSubviews()();
 }
 

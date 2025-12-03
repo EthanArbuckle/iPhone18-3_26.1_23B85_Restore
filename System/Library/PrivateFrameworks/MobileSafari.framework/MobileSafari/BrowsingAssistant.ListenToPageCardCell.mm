@@ -6,7 +6,7 @@
 
 - (void)playOrPause
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BABB1F4();
 }
 

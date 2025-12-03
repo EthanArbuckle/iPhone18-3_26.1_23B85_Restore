@@ -1,13 +1,13 @@
 @interface AVCCaptionsResult
-- (AVCCaptionsResult)initWithCapacity:(int64_t)a3 utteranceComplete:(BOOL)a4 utteranceNumber:(unsigned int)a5 updateNumber:(unsigned int)a6 utteranceStartTimestamp:(double)a7 utteranceDuration:(double)a8;
-- (BOOL)addTokenWithString:(id)a3 confidence:(double)a4 range:(_NSRange)a5;
+- (AVCCaptionsResult)initWithCapacity:(int64_t)capacity utteranceComplete:(BOOL)complete utteranceNumber:(unsigned int)number updateNumber:(unsigned int)updateNumber utteranceStartTimestamp:(double)timestamp utteranceDuration:(double)duration;
+- (BOOL)addTokenWithString:(id)string confidence:(double)confidence range:(_NSRange)range;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVCCaptionsResult
 
-- (AVCCaptionsResult)initWithCapacity:(int64_t)a3 utteranceComplete:(BOOL)a4 utteranceNumber:(unsigned int)a5 updateNumber:(unsigned int)a6 utteranceStartTimestamp:(double)a7 utteranceDuration:(double)a8
+- (AVCCaptionsResult)initWithCapacity:(int64_t)capacity utteranceComplete:(BOOL)complete utteranceNumber:(unsigned int)number updateNumber:(unsigned int)updateNumber utteranceStartTimestamp:(double)timestamp utteranceDuration:(double)duration
 {
   v19 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -15,15 +15,15 @@
   v14 = [(AVCCaptionsResult *)&v18 init];
   if (v14)
   {
-    v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
     v14->_tokens = v15;
     if (v15)
     {
-      v14->_utteranceComplete = a4;
-      v14->_utteranceNumber = a5;
-      v14->_updateNumber = a6;
-      v14->_utteranceStartTimestamp = a7;
-      v14->_utteranceDuration = a8;
+      v14->_utteranceComplete = complete;
+      v14->_utteranceNumber = number;
+      v14->_updateNumber = updateNumber;
+      v14->_utteranceStartTimestamp = timestamp;
+      v14->_utteranceDuration = duration;
     }
 
     else
@@ -44,15 +44,15 @@
   return v14;
 }
 
-- (BOOL)addTokenWithString:(id)a3 confidence:(double)a4 range:(_NSRange)a5
+- (BOOL)addTokenWithString:(id)string confidence:(double)confidence range:(_NSRange)range
 {
-  v6 = [[AVCCaptionsToken alloc] initWithText:a3 confidence:a5.location range:a5.length, a4];
-  if (v6)
+  confidence = [[AVCCaptionsToken alloc] initWithText:string confidence:range.location range:range.length, confidence];
+  if (confidence)
   {
-    [(NSMutableArray *)self->_tokens addObject:v6];
+    [(NSMutableArray *)self->_tokens addObject:confidence];
   }
 
-  return v6 != 0;
+  return confidence != 0;
 }
 
 - (void)dealloc

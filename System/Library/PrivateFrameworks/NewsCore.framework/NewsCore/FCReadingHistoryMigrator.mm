@@ -1,17 +1,17 @@
 @interface FCReadingHistoryMigrator
-- (id)keyValueStore:(id)a3 migrateObject:(id)a4 forKey:(id)a5 fromVersion:(unint64_t)a6;
+- (id)keyValueStore:(id)store migrateObject:(id)object forKey:(id)key fromVersion:(unint64_t)version;
 @end
 
 @implementation FCReadingHistoryMigrator
 
-- (id)keyValueStore:(id)a3 migrateObject:(id)a4 forKey:(id)a5 fromVersion:(unint64_t)a6
+- (id)keyValueStore:(id)store migrateObject:(id)object forKey:(id)key fromVersion:(unint64_t)version
 {
-  v7 = a4;
-  v8 = [(FCPrivateDataController *)FCReadingHistory isLocalStoreKeyInternal:a5];
-  v9 = v7;
+  objectCopy = object;
+  v8 = [(FCPrivateDataController *)FCReadingHistory isLocalStoreKeyInternal:key];
+  v9 = objectCopy;
   if (!v8)
   {
-    v10 = v7;
+    v10 = objectCopy;
     v9 = objc_alloc_init(MEMORY[0x1E69B6F78]);
     v11 = [v10 objectForKeyedSubscript:@"articleID"];
     [v9 setArticleID:v11];
@@ -72,9 +72,9 @@
     [v9 setPruningDisabled:{objc_msgSend(v29, "BOOLValue")}];
 
     v30 = [v10 objectForKeyedSubscript:@"liked"];
-    v31 = [v30 BOOLValue];
+    bOOLValue = [v30 BOOLValue];
 
-    if (v31)
+    if (bOOLValue)
     {
       v32 = 1;
     }
@@ -82,9 +82,9 @@
     else
     {
       v33 = [v10 objectForKeyedSubscript:@"disliked"];
-      v34 = [v33 BOOLValue];
+      bOOLValue2 = [v33 BOOLValue];
 
-      if (!v34)
+      if (!bOOLValue2)
       {
 LABEL_7:
 

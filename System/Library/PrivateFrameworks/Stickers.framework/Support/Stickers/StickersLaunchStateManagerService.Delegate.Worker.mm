@@ -1,21 +1,21 @@
 @interface StickersLaunchStateManagerService.Delegate.Worker
 - (_TtCCV9stickersd33StickersLaunchStateManagerService8Delegate6Worker)init;
-- (void)launchConfigurationWithReply:(id)a3;
-- (void)updateCurrentConfigurationWithSection:(id)a3 identifier:(id)a4 withReply:(id)a5;
-- (void)upperCaseString:(id)a3 withReply:(id)a4;
+- (void)launchConfigurationWithReply:(id)reply;
+- (void)updateCurrentConfigurationWithSection:(id)section identifier:(id)identifier withReply:(id)reply;
+- (void)upperCaseString:(id)string withReply:(id)reply;
 @end
 
 @implementation StickersLaunchStateManagerService.Delegate.Worker
 
-- (void)updateCurrentConfigurationWithSection:(id)a3 identifier:(id)a4 withReply:(id)a5
+- (void)updateCurrentConfigurationWithSection:(id)section identifier:(id)identifier withReply:(id)reply
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(reply);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (a4)
+  if (identifier)
   {
     v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v12;
+    identifier = v12;
   }
 
   else
@@ -24,21 +24,21 @@
   }
 
   _Block_copy(v7);
-  v13 = self;
-  sub_100004A90(v8, v10, v11, a4, v13, v7);
+  selfCopy = self;
+  sub_100004A90(v8, v10, v11, identifier, selfCopy, v7);
   _Block_release(v7);
   _Block_release(v7);
 }
 
-- (void)launchConfigurationWithReply:(id)a3
+- (void)launchConfigurationWithReply:(id)reply
 {
   v5 = type metadata accessor for StickerSectionType();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   __chkstk_darwin(v5);
   v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a3);
-  v11 = self;
+  v10 = _Block_copy(reply);
+  selfCopy = self;
   v12 = sub_100003C34();
   v13 = dispatch thunk of LaunchStateManager.launchConfiguration.getter();
 
@@ -64,13 +64,13 @@
   _Block_release(v10);
 }
 
-- (void)upperCaseString:(id)a3 withReply:(id)a4
+- (void)upperCaseString:(id)string withReply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
+  selfCopy = self;
   sub_100004EBC(v6, v8, v5);
   _Block_release(v5);
   _Block_release(v5);

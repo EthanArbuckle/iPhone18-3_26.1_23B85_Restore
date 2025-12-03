@@ -1,18 +1,18 @@
 @interface NSFileWatcherObservations
-- (NSFileWatcherObservations)initWithPath:(id)a3;
+- (NSFileWatcherObservations)initWithPath:(id)path;
 - (id)description;
-- (void)addAnnouncedMoveToPath:(id)a3;
+- (void)addAnnouncedMoveToPath:(id)path;
 - (void)addAttributeChange;
 - (void)addContentsChange;
 - (void)addDeletion;
-- (void)addDetectedMoveToPath:(id)a3;
+- (void)addDetectedMoveToPath:(id)path;
 - (void)dealloc;
-- (void)notifyObserver:(id)a3;
+- (void)notifyObserver:(id)observer;
 @end
 
 @implementation NSFileWatcherObservations
 
-- (NSFileWatcherObservations)initWithPath:(id)a3
+- (NSFileWatcherObservations)initWithPath:(id)path
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -20,7 +20,7 @@
   v4 = [(NSFileWatcherObservations *)&v6 init];
   if (v4)
   {
-    v4->_path = [a3 copy];
+    v4->_path = [path copy];
   }
 
   return v4;
@@ -80,7 +80,7 @@
   self->_deleted = 1;
 }
 
-- (void)addDetectedMoveToPath:(id)a3
+- (void)addDetectedMoveToPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = _NSFCFSEventsLog();
@@ -88,22 +88,22 @@
   {
     path = self->_path;
     v8 = 138478083;
-    v9 = path;
+    pathCopy = path;
     v10 = 2113;
-    v11 = a3;
+    pathCopy2 = path;
     _os_log_debug_impl(&dword_18075C000, v5, OS_LOG_TYPE_DEBUG, "Detected move of %{private}@ to %{private}@", &v8, 0x16u);
   }
 
   self->_moved = 1;
   lastObservedPath = self->_lastObservedPath;
-  if (lastObservedPath != a3)
+  if (lastObservedPath != path)
   {
 
-    self->_lastObservedPath = [a3 copy];
+    self->_lastObservedPath = [path copy];
   }
 }
 
-- (void)addAnnouncedMoveToPath:(id)a3
+- (void)addAnnouncedMoveToPath:(id)path
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = _NSFCFSEventsLog();
@@ -111,15 +111,15 @@
   {
     path = self->_path;
     v7 = 138478083;
-    v8 = path;
+    pathCopy = path;
     v9 = 2113;
-    v10 = a3;
+    pathCopy2 = path;
     _os_log_debug_impl(&dword_18075C000, v5, OS_LOG_TYPE_DEBUG, "Announced move of %{private}@ to %{private}@", &v7, 0x16u);
   }
 
   self->_didResetPath = 1;
 
-  self->_path = [a3 copy];
+  self->_path = [path copy];
 }
 
 - (id)description
@@ -130,7 +130,7 @@
   return [NSString stringWithFormat:@"%@ attrib: %d cont: %d del: %d mov: %d last-path: %@ res: %d path: %@", [(NSFileWatcherObservations *)&v3 description], self->_attributesChanged, self->_contentsChanged, self->_deleted, self->_moved, self->_lastObservedPath, self->_didResetPath, self->_path];
 }
 
-- (void)notifyObserver:(id)a3
+- (void)notifyObserver:(id)observer
 {
   v22 = *MEMORY[0x1E69E9840];
   if (!self->_deleted && !self->_moved && !self->_didResetPath)
@@ -158,8 +158,8 @@
     goto LABEL_31;
   }
 
-  v5 = [(NSString *)self->_path fileSystemRepresentation];
-  v6 = open(v5, 2129920);
+  fileSystemRepresentation = [(NSString *)self->_path fileSystemRepresentation];
+  v6 = open(fileSystemRepresentation, 2129920);
   if (v6 == -1)
   {
     if (self->_deleted || !self->_moved || self->_didResetPath)
@@ -197,7 +197,7 @@
   else
   {
     v7 = v6;
-    if (!self->_didResetPath || !self->_moved || self->_deleted || (memset(&v21, 0, sizeof(v21)), fstat(v6, &v21)) || (memset(&v20, 0, sizeof(v20)), lstat(v5, &v20)) || v21.st_dev != v20.st_dev)
+    if (!self->_didResetPath || !self->_moved || self->_deleted || (memset(&v21, 0, sizeof(v21)), fstat(v6, &v21)) || (memset(&v20, 0, sizeof(v20)), lstat(fileSystemRepresentation, &v20)) || v21.st_dev != v20.st_dev)
     {
       close(v7);
     }
@@ -261,7 +261,7 @@
   }
 
 LABEL_31:
-  (*(a3 + 2))(a3, v12, v11, self->_path);
+  (*(observer + 2))(observer, v12, v11, self->_path);
 }
 
 @end

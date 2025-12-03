@@ -1,30 +1,30 @@
 @interface OSChargingPredictorSignalsOnly
-- (BOOL)areEntryConditionsMetWithLog:(id)a3;
-- (OSChargingPredictorSignalsOnly)initWithDefaultsDomain:(id)a3 withContextStore:(id)a4 withTrialManager:(id)a5;
-- (id)chargingDecisionWithLog:(id)a3;
+- (BOOL)areEntryConditionsMetWithLog:(id)log;
+- (OSChargingPredictorSignalsOnly)initWithDefaultsDomain:(id)domain withContextStore:(id)store withTrialManager:(id)manager;
+- (id)chargingDecisionWithLog:(id)log;
 @end
 
 @implementation OSChargingPredictorSignalsOnly
 
-- (OSChargingPredictorSignalsOnly)initWithDefaultsDomain:(id)a3 withContextStore:(id)a4 withTrialManager:(id)a5
+- (OSChargingPredictorSignalsOnly)initWithDefaultsDomain:(id)domain withContextStore:(id)store withTrialManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  storeCopy = store;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = OSChargingPredictorSignalsOnly;
   v11 = [(OSChargingPredictorSignalsOnly *)&v21 init];
   defaultsDomain = v11->_defaultsDomain;
-  v11->_defaultsDomain = v8;
-  v13 = v8;
+  v11->_defaultsDomain = domainCopy;
+  v13 = domainCopy;
 
   context = v11->_context;
-  v11->_context = v9;
-  v15 = v9;
+  v11->_context = storeCopy;
+  v15 = storeCopy;
 
   trialManager = v11->_trialManager;
-  v11->_trialManager = v10;
-  v17 = v10;
+  v11->_trialManager = managerCopy;
+  v17 = managerCopy;
 
   v18 = +[OSChargingSignals sharedInstance];
   chargingSignals = v11->_chargingSignals;
@@ -33,12 +33,12 @@
   return v11;
 }
 
-- (id)chargingDecisionWithLog:(id)a3
+- (id)chargingDecisionWithLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v5 = objc_alloc_init(_OSChargingPredictorOutput);
-  v6 = [(OSChargingPredictorSignalsOnly *)self areEntryConditionsMetWithLog:v4];
-  v7 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+  v6 = [(OSChargingPredictorSignalsOnly *)self areEntryConditionsMetWithLog:logCopy];
+  v7 = os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT);
   if (v6)
   {
     v8 = 1.0;
@@ -65,7 +65,7 @@
     v10 = &v12;
   }
 
-  _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, v9, v10, 2u);
+  _os_log_impl(&_mh_execute_header, logCopy, OS_LOG_TYPE_DEFAULT, v9, v10, 2u);
 LABEL_7:
   [v5 setConfidence:{v8, v12}];
   [v5 setMeetsSystemConfidenceThreshold:v6];
@@ -74,32 +74,32 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)areEntryConditionsMetWithLog:(id)a3
+- (BOOL)areEntryConditionsMetWithLog:(id)log
 {
-  v4 = a3;
-  v5 = [(OSChargingPredictorSignalsOnly *)self chargingSignals];
-  v6 = [v5 walletMonitor];
-  v7 = [v6 relevantEventDeadline];
+  logCopy = log;
+  chargingSignals = [(OSChargingPredictorSignalsOnly *)self chargingSignals];
+  walletMonitor = [chargingSignals walletMonitor];
+  relevantEventDeadline = [walletMonitor relevantEventDeadline];
 
   v8 = +[NSDate distantFuture];
-  LOBYTE(v6) = [v7 isEqualToDate:v8];
+  LOBYTE(walletMonitor) = [relevantEventDeadline isEqualToDate:v8];
 
-  if (v6)
+  if (walletMonitor)
   {
-    v9 = [(OSChargingPredictorSignalsOnly *)self chargingSignals];
-    v10 = [v9 calendarMonitor];
-    v11 = [v10 relevantEventDeadline];
+    chargingSignals2 = [(OSChargingPredictorSignalsOnly *)self chargingSignals];
+    calendarMonitor = [chargingSignals2 calendarMonitor];
+    relevantEventDeadline2 = [calendarMonitor relevantEventDeadline];
 
     v12 = +[NSDate distantFuture];
-    LOBYTE(v10) = [v11 isEqualToDate:v12];
+    LOBYTE(calendarMonitor) = [relevantEventDeadline2 isEqualToDate:v12];
 
-    if (v10)
+    if (calendarMonitor)
     {
-      v13 = [(OSChargingPredictorSignalsOnly *)self chargingSignals];
-      v14 = [v13 locationMonitor];
-      v15 = [v14 inTypicalLocation];
+      chargingSignals3 = [(OSChargingPredictorSignalsOnly *)self chargingSignals];
+      locationMonitor = [chargingSignals3 locationMonitor];
+      inTypicalLocation = [locationMonitor inTypicalLocation];
 
-      if (v15)
+      if (inTypicalLocation)
       {
         v16 = 1;
 LABEL_13:
@@ -107,7 +107,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 0;
         v17 = "Not in typical location. Returning NO";
@@ -116,13 +116,13 @@ LABEL_13:
       }
     }
 
-    else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    else if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 0;
       v17 = "Found calendar event. Returning NO";
       v18 = &v21;
 LABEL_11:
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, v17, v18, 2u);
+      _os_log_impl(&_mh_execute_header, logCopy, OS_LOG_TYPE_DEFAULT, v17, v18, 2u);
     }
 
     v16 = 0;
@@ -130,10 +130,10 @@ LABEL_11:
   }
 
   v16 = 0;
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Found wallet event. Returning NO", buf, 2u);
+    _os_log_impl(&_mh_execute_header, logCopy, OS_LOG_TYPE_DEFAULT, "Found wallet event. Returning NO", buf, 2u);
     v16 = 0;
   }
 

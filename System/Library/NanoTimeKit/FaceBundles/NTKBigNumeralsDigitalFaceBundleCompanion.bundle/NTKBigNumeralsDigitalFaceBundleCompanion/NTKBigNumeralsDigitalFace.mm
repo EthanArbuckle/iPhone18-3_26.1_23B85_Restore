@@ -1,74 +1,74 @@
 @interface NTKBigNumeralsDigitalFace
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKBigNumeralsDigitalFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKBigNumeralsDigitalFace *)self _faceDescriptionKey];
-  v3 = [NTKBigNumeralsDigitalFaceBundle localizedStringForKey:v2 comment:@"Numerals Duo Description"];
+  _faceDescriptionKey = [(NTKBigNumeralsDigitalFace *)self _faceDescriptionKey];
+  v3 = [NTKBigNumeralsDigitalFaceBundle localizedStringForKey:_faceDescriptionKey comment:@"Numerals Duo Description"];
 
   return v3;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 10)
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v11 = [(NTKBigNumeralsDigitalFace *)self device];
-    v12 = [v11 collectionType];
+    device = [(NTKBigNumeralsDigitalFace *)self device];
+    collectionType = [device collectionType];
 
-    if (v12 == &dword_4 + 1)
+    if (collectionType == &dword_4 + 1)
     {
-      v7 = [(NTKBigNumeralsDigitalFace *)self device];
+      device2 = [(NTKBigNumeralsDigitalFace *)self device];
       v13 = 102;
     }
 
     else
     {
-      v14 = [(NTKBigNumeralsDigitalFace *)self device];
-      v15 = [v14 collectionType];
+      device3 = [(NTKBigNumeralsDigitalFace *)self device];
+      collectionType2 = [device3 collectionType];
 
-      v7 = [(NTKBigNumeralsDigitalFace *)self device];
-      if (v15 != &dword_4 + 2)
+      device2 = [(NTKBigNumeralsDigitalFace *)self device];
+      if (collectionType2 != &dword_4 + 2)
       {
-        v10 = [NTKBigNumeralsDigitalColorEditOption optionWithColor:3005 forDevice:v7];
+        v10 = [NTKBigNumeralsDigitalColorEditOption optionWithColor:3005 forDevice:device2];
         goto LABEL_13;
       }
 
       v13 = 103;
     }
 
-    v10 = [NTKBigNumeralsDigitalColorEditOption optionWithFaceColor:v13 forDevice:v7];
+    v10 = [NTKBigNumeralsDigitalColorEditOption optionWithFaceColor:v13 forDevice:device2];
 LABEL_13:
     v9 = v10;
     goto LABEL_14;
   }
 
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v7 = [(NTKBigNumeralsDigitalFace *)self device];
-    v10 = [NTKBigNumeralsDigitalStyleEditOption optionWithStyle:0 forDevice:v7];
+    device2 = [(NTKBigNumeralsDigitalFace *)self device];
+    v10 = [NTKBigNumeralsDigitalStyleEditOption optionWithStyle:0 forDevice:device2];
     goto LABEL_13;
   }
 
-  if (a3 != 13)
+  if (mode != 13)
   {
     v9 = 0;
     goto LABEL_15;
   }
 
-  v7 = +[NSLocale currentLocale];
-  v8 = [(NTKBigNumeralsDigitalFace *)self device];
-  v9 = [NTKBigNumeralsDigitalTypefaceEditOption defaultOptionForLocale:v7 device:v8];
+  device2 = +[NSLocale currentLocale];
+  device4 = [(NTKBigNumeralsDigitalFace *)self device];
+  v9 = [NTKBigNumeralsDigitalTypefaceEditOption defaultOptionForLocale:device2 device:device4];
 
 LABEL_14:
 LABEL_15:
@@ -76,37 +76,37 @@ LABEL_15:
   return v9;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKBigNumeralsDigitalFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKBigNumeralsDigitalFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKBigNumeralsDigitalFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKBigNumeralsDigitalFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKBigNumeralsDigitalFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKBigNumeralsDigitalFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKBigNumeralsDigitalFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKBigNumeralsDigitalFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKBigNumeralsDigitalFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKBigNumeralsDigitalFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKBigNumeralsDigitalFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKBigNumeralsDigitalFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 10:
       v4 = off_C1D0;
@@ -128,12 +128,12 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v6 = a4;
-  if (a3 == 13)
+  deviceCopy = device;
+  if (mode == 13)
   {
-    if (_os_feature_enabled_impl() && ([v6 supportsPDRCapability:270936181] & 1) != 0)
+    if (_os_feature_enabled_impl() && ([deviceCopy supportsPDRCapability:270936181] & 1) != 0)
     {
       v7 = @"EDIT_MODE_LABEL_NUMERALS";
     }
@@ -149,9 +149,9 @@ LABEL_7:
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___NTKBigNumeralsDigitalFace;
-    v8 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, v6);
+    v8 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, deviceCopy);
   }
 
   return v8;

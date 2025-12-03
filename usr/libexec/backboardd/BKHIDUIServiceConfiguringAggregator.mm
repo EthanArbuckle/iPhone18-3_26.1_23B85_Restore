@@ -1,9 +1,9 @@
 @interface BKHIDUIServiceConfiguringAggregator
 - (BOOL)supportsProximityLPAEventTransitions;
-- (void)applyUIMode:(id)a3;
+- (void)applyUIMode:(id)mode;
 - (void)proximityDidUnoccludeAfterScreenWake;
 - (void)resetCalibration;
-- (void)updateCharacteristics:(id)a3;
+- (void)updateCharacteristics:(id)characteristics;
 @end
 
 @implementation BKHIDUIServiceConfiguringAggregator
@@ -50,9 +50,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)updateCharacteristics:(id)a3
+- (void)updateCharacteristics:(id)characteristics
 {
-  v4 = a3;
+  characteristicsCopy = characteristics;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -73,7 +73,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) updateCharacteristics:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) updateCharacteristics:{characteristicsCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -85,9 +85,9 @@ LABEL_11:
   }
 }
 
-- (void)applyUIMode:(id)a3
+- (void)applyUIMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -108,7 +108,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) applyUIMode:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) applyUIMode:{modeCopy, v10}];
         v9 = v9 + 1;
       }
 

@@ -1,109 +1,109 @@
 @interface AppSceneDelegate
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)stateRestorationActivityForScene:(id)a3;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setWindow:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)stateRestorationActivityForScene:(id)scene;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)setWindow:(id)window;
 @end
 
 @implementation AppSceneDelegate
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v4 = self;
-  LOBYTE(a3) = AppSceneDelegate.responds(to:)(a3);
+  selfCopy = self;
+  LOBYTE(selector) = AppSceneDelegate.responds(to:)(selector);
 
-  return a3 & 1;
+  return selector & 1;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  AppSceneDelegate.scene(_:willConnectTo:options:)(v8, v9, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  AppSceneDelegate.scene(_:willConnectTo:options:)(sceneCopy, sessionCopy, optionsCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  AppSceneDelegate.sceneWillEnterForeground(_:)(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  AppSceneDelegate.sceneWillEnterForeground(_:)(foregroundCopy);
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
-  v4 = a3;
-  v5 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   v6 = specialized AppSceneDelegate.stateRestorationActivity(for:)();
 
   return v6;
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  AppSceneDelegate.sceneDidBecomeActive(_:)(v4);
+  activeCopy = active;
+  selfCopy = self;
+  AppSceneDelegate.sceneDidBecomeActive(_:)(activeCopy);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  AppSceneDelegate.sceneWillResignActive(_:)(v4);
+  activeCopy = active;
+  selfCopy = self;
+  AppSceneDelegate.sceneWillResignActive(_:)(activeCopy);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI16AppSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI16AppSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI16AppSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  AppSceneDelegate.sceneDidDisconnect(_:)(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  AppSceneDelegate.sceneDidDisconnect(_:)(disconnectCopy);
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  AppSceneDelegate.scene(_:continue:)(v6, v7);
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
+  AppSceneDelegate.scene(_:continue:)(sceneCopy, activityCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   type metadata accessor for NSObject(0, &lazy cache variable for type metadata for UIOpenURLContext);
   lazy protocol witness table accessor for type UIScene and conformance NSObject(&lazy protocol witness table cache variable for type UIOpenURLContext and conformance NSObject, &lazy cache variable for type metadata for UIOpenURLContext);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  AppSceneDelegate.scene(_:openURLContexts:)(v7, v6);
+  sceneCopy = scene;
+  selfCopy = self;
+  AppSceneDelegate.scene(_:openURLContexts:)(sceneCopy, v6);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  AppSceneDelegate.sceneDidEnterBackground(_:)(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  AppSceneDelegate.sceneDidEnterBackground(_:)(backgroundCopy);
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v3 = self;
+  selfCopy = self;
   AppSceneDelegate.forwardingTarget(for:)(v12);
 
   v4 = v13;

@@ -1,9 +1,9 @@
 @interface HKGlassesPrescription
-+ (BOOL)_validatePrism:(id)a3 error:(id *)a4;
++ (BOOL)_validatePrism:(id)prism error:(id *)error;
 + (HKGlassesPrescription)prescriptionWithRightEyeSpecification:(HKGlassesLensSpecification *)rightEyeSpecification leftEyeSpecification:(HKGlassesLensSpecification *)leftEyeSpecification dateIssued:(NSDate *)dateIssued expirationDate:(NSDate *)expirationDate device:(HKDevice *)device metadata:(NSDictionary *)metadata;
-- (BOOL)_validateGlassesFieldsWithError:(id *)a3;
-- (HKGlassesPrescription)initWithCoder:(id)a3;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (BOOL)_validateGlassesFieldsWithError:(id *)error;
+- (HKGlassesPrescription)initWithCoder:(id)coder;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)description;
 - (id)leftAddPower;
 - (id)leftAxis;
@@ -13,9 +13,9 @@
 - (id)rightAxis;
 - (id)rightCylinder;
 - (id)rightSphere;
-- (void)_setLeftEyeSpecification:(id)a3;
-- (void)_setRightEyeSpecification:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setLeftEyeSpecification:(id)specification;
+- (void)_setRightEyeSpecification:(id)specification;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKGlassesPrescription
@@ -27,9 +27,9 @@
   v16 = expirationDate;
   v17 = metadata;
   v18 = device;
-  v19 = dateIssued;
+  distantFuture = dateIssued;
   v20 = +[HKObjectType visionPrescriptionType];
-  [(NSDate *)v19 timeIntervalSinceReferenceDate];
+  [(NSDate *)distantFuture timeIntervalSinceReferenceDate];
   v22 = v21;
 
   if (v16)
@@ -39,8 +39,8 @@
 
   else
   {
-    v19 = [MEMORY[0x1E695DF00] distantFuture];
-    [(NSDate *)v19 timeIntervalSinceReferenceDate];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [(NSDate *)distantFuture timeIntervalSinceReferenceDate];
   }
 
   v24 = v23;
@@ -50,7 +50,7 @@
   v30[3] = &unk_1E7381858;
   v31 = v14;
   v32 = v15;
-  v29.receiver = a1;
+  v29.receiver = self;
   v29.super_class = &OBJC_METACLASS___HKGlassesPrescription;
   v25 = v15;
   v26 = v14;
@@ -89,18 +89,18 @@ void __126__HKGlassesPrescription_prescriptionWithRightEyeSpecification_leftEyeS
   return v7;
 }
 
-- (void)_setRightEyeSpecification:(id)a3
+- (void)_setRightEyeSpecification:(id)specification
 {
-  v4 = [a3 copy];
+  v4 = [specification copy];
   rightEye = self->_rightEye;
   self->_rightEye = v4;
 
   MEMORY[0x1EEE66BB8](v4, rightEye);
 }
 
-- (void)_setLeftEyeSpecification:(id)a3
+- (void)_setLeftEyeSpecification:(id)specification
 {
-  v4 = [a3 copy];
+  v4 = [specification copy];
   leftEye = self->_leftEye;
   self->_leftEye = v4;
 
@@ -109,91 +109,91 @@ void __126__HKGlassesPrescription_prescriptionWithRightEyeSpecification_leftEyeS
 
 - (id)leftSphere
 {
-  v2 = [(HKGlassesPrescription *)self leftEye];
-  v3 = [v2 sphere];
+  leftEye = [(HKGlassesPrescription *)self leftEye];
+  sphere = [leftEye sphere];
 
-  return v3;
+  return sphere;
 }
 
 - (id)rightSphere
 {
-  v2 = [(HKGlassesPrescription *)self rightEye];
-  v3 = [v2 sphere];
+  rightEye = [(HKGlassesPrescription *)self rightEye];
+  sphere = [rightEye sphere];
 
-  return v3;
+  return sphere;
 }
 
 - (id)leftCylinder
 {
-  v2 = [(HKGlassesPrescription *)self leftEye];
-  v3 = [v2 cylinder];
+  leftEye = [(HKGlassesPrescription *)self leftEye];
+  cylinder = [leftEye cylinder];
 
-  return v3;
+  return cylinder;
 }
 
 - (id)rightCylinder
 {
-  v2 = [(HKGlassesPrescription *)self rightEye];
-  v3 = [v2 cylinder];
+  rightEye = [(HKGlassesPrescription *)self rightEye];
+  cylinder = [rightEye cylinder];
 
-  return v3;
+  return cylinder;
 }
 
 - (id)leftAxis
 {
-  v2 = [(HKGlassesPrescription *)self leftEye];
-  v3 = [v2 axis];
+  leftEye = [(HKGlassesPrescription *)self leftEye];
+  axis = [leftEye axis];
 
-  return v3;
+  return axis;
 }
 
 - (id)rightAxis
 {
-  v2 = [(HKGlassesPrescription *)self rightEye];
-  v3 = [v2 axis];
+  rightEye = [(HKGlassesPrescription *)self rightEye];
+  axis = [rightEye axis];
 
-  return v3;
+  return axis;
 }
 
 - (id)leftAddPower
 {
-  v2 = [(HKGlassesPrescription *)self leftEye];
-  v3 = [v2 addPower];
+  leftEye = [(HKGlassesPrescription *)self leftEye];
+  addPower = [leftEye addPower];
 
-  return v3;
+  return addPower;
 }
 
 - (id)rightAddPower
 {
-  v2 = [(HKGlassesPrescription *)self rightEye];
-  v3 = [v2 addPower];
+  rightEye = [(HKGlassesPrescription *)self rightEye];
+  addPower = [rightEye addPower];
 
-  return v3;
+  return addPower;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKGlassesPrescription;
-  v4 = a3;
-  [(HKVisionPrescription *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_leftEye forKey:{@"LeftEye", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_rightEye forKey:@"RightEye"];
+  coderCopy = coder;
+  [(HKVisionPrescription *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_leftEye forKey:{@"LeftEye", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_rightEye forKey:@"RightEye"];
 }
 
-- (HKGlassesPrescription)initWithCoder:(id)a3
+- (HKGlassesPrescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKGlassesPrescription;
-  v5 = [(HKVisionPrescription *)&v11 initWithCoder:v4];
+  v5 = [(HKVisionPrescription *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LeftEye"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LeftEye"];
     leftEye = v5->_leftEye;
     v5->_leftEye = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RightEye"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RightEye"];
     rightEye = v5->_rightEye;
     v5->_rightEye = v8;
   }
@@ -201,11 +201,11 @@ void __126__HKGlassesPrescription_prescriptionWithRightEyeSpecification_leftEyeS
   return v5;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v9.receiver = self;
   v9.super_class = HKGlassesPrescription;
-  v4 = [(HKVisionPrescription *)&v9 _validateWithConfiguration:a3.var0, a3.var1];
+  v4 = [(HKVisionPrescription *)&v9 _validateWithConfiguration:configuration.var0, configuration.var1];
   if (v4 || (v8 = 0, v5 = [(HKGlassesPrescription *)self _validateGlassesFieldsWithError:&v8], v4 = v8, v6 = 0, !v5))
   {
     v4 = v4;
@@ -215,29 +215,29 @@ void __126__HKGlassesPrescription_prescriptionWithRightEyeSpecification_leftEyeS
   return v6;
 }
 
-- (BOOL)_validateGlassesFieldsWithError:(id *)a3
+- (BOOL)_validateGlassesFieldsWithError:(id *)error
 {
-  v6 = [(HKGlassesPrescription *)self leftSphere];
-  if (v6)
+  leftSphere = [(HKGlassesPrescription *)self leftSphere];
+  if (leftSphere)
   {
   }
 
   else
   {
-    v7 = [(HKGlassesPrescription *)self rightSphere];
+    rightSphere = [(HKGlassesPrescription *)self rightSphere];
 
-    if (!v7)
+    if (!rightSphere)
     {
       v40 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Requires atleast one sphere value for left or right eye"];
-      v13 = v40;
+      vertexDistance2 = v40;
       v33 = v40 == 0;
       if (v40)
       {
-        if (a3)
+        if (error)
         {
           v41 = v40;
           v33 = 0;
-          *a3 = v13;
+          *error = vertexDistance2;
         }
 
         else
@@ -247,20 +247,20 @@ void __126__HKGlassesPrescription_prescriptionWithRightEyeSpecification_leftEyeS
         }
       }
 
-      v9 = v13;
+      vertexDistance = vertexDistance2;
       goto LABEL_34;
     }
   }
 
-  v8 = [(HKGlassesPrescription *)self leftEye];
-  v9 = [v8 vertexDistance];
+  leftEye = [(HKGlassesPrescription *)self leftEye];
+  vertexDistance = [leftEye vertexDistance];
 
-  if (!v9 || (+[HKUnit meterUnit](HKUnit, "meterUnit"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 isCompatibleWithUnit:v10], v10, (v11 & 1) != 0))
+  if (!vertexDistance || (+[HKUnit meterUnit](HKUnit, "meterUnit"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [vertexDistance isCompatibleWithUnit:v10], v10, (v11 & 1) != 0))
   {
-    v12 = [(HKGlassesPrescription *)self rightEye];
-    v13 = [v12 vertexDistance];
+    rightEye = [(HKGlassesPrescription *)self rightEye];
+    vertexDistance2 = [rightEye vertexDistance];
 
-    if (v13 && (+[HKUnit meterUnit](HKUnit, "meterUnit"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v13 isCompatibleWithUnit:v14], v14, (v15 & 1) == 0))
+    if (vertexDistance2 && (+[HKUnit meterUnit](HKUnit, "meterUnit"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [vertexDistance2 isCompatibleWithUnit:v14], v14, (v15 & 1) == 0))
     {
       v36 = MEMORY[0x1E696ABC0];
       v37 = objc_opt_class();
@@ -270,32 +270,32 @@ void __126__HKGlassesPrescription_prescriptionWithRightEyeSpecification_leftEyeS
 
     else
     {
-      v16 = [(HKGlassesPrescription *)self leftEye];
-      v17 = [v16 prism];
+      leftEye2 = [(HKGlassesPrescription *)self leftEye];
+      prism = [leftEye2 prism];
 
-      if (!v17)
+      if (!prism)
       {
 LABEL_11:
-        v24 = [(HKGlassesPrescription *)self rightEye];
-        v25 = [v24 prism];
+        rightEye2 = [(HKGlassesPrescription *)self rightEye];
+        prism2 = [rightEye2 prism];
 
-        if (!v25)
+        if (!prism2)
         {
 LABEL_14:
           v33 = 1;
           goto LABEL_34;
         }
 
-        v26 = [(HKGlassesPrescription *)self rightEye];
-        v27 = [v26 prism];
-        v28 = [v27 eye];
+        rightEye3 = [(HKGlassesPrescription *)self rightEye];
+        prism3 = [rightEye3 prism];
+        v28 = [prism3 eye];
 
         if (v28 == 2)
         {
           v29 = objc_opt_class();
-          v30 = [(HKGlassesPrescription *)self rightEye];
-          v31 = [v30 prism];
-          v32 = [v29 _validatePrism:v31 error:a3];
+          rightEye4 = [(HKGlassesPrescription *)self rightEye];
+          prism4 = [rightEye4 prism];
+          v32 = [v29 _validatePrism:prism4 error:error];
 
           if (v32)
           {
@@ -314,16 +314,16 @@ LABEL_23:
         goto LABEL_25;
       }
 
-      v18 = [(HKGlassesPrescription *)self leftEye];
-      v19 = [v18 prism];
-      v20 = [v19 eye];
+      leftEye3 = [(HKGlassesPrescription *)self leftEye];
+      prism5 = [leftEye3 prism];
+      v20 = [prism5 eye];
 
       if (v20 == 1)
       {
         v21 = objc_opt_class();
-        v22 = [(HKGlassesPrescription *)self leftEye];
-        v23 = [v22 prism];
-        LODWORD(v21) = [v21 _validatePrism:v23 error:a3];
+        leftEye4 = [(HKGlassesPrescription *)self leftEye];
+        prism6 = [leftEye4 prism];
+        LODWORD(v21) = [v21 _validatePrism:prism6 error:error];
 
         if (!v21)
         {
@@ -345,10 +345,10 @@ LABEL_25:
     v33 = v42 == 0;
     if (v42)
     {
-      if (a3)
+      if (error)
       {
         v44 = v42;
-        *a3 = v43;
+        *error = v43;
       }
 
       else
@@ -361,14 +361,14 @@ LABEL_25:
   }
 
   v34 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"leftVertexDistance" class:objc_opt_class() selector:a2 format:@"Left vertex distance must be a meter quantity"];
-  v13 = v34;
+  vertexDistance2 = v34;
   v33 = v34 == 0;
   if (v34)
   {
-    if (a3)
+    if (error)
     {
       v35 = v34;
-      *a3 = v13;
+      *error = vertexDistance2;
     }
 
     else
@@ -381,30 +381,30 @@ LABEL_34:
   return v33;
 }
 
-+ (BOOL)_validatePrism:(id)a3 error:(id *)a4
++ (BOOL)_validatePrism:(id)prism error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 amount];
+  prismCopy = prism;
+  amount = [prismCopy amount];
   v8 = +[HKUnit prismDiopterUnit];
-  v9 = [v7 isCompatibleWithUnit:v8];
+  v9 = [amount isCompatibleWithUnit:v8];
 
   if (v9)
   {
-    v10 = [v6 angle];
+    angle = [prismCopy angle];
     v11 = +[HKUnit radianAngleUnit];
-    v12 = [v10 isCompatibleWithUnit:v11];
+    v12 = [angle isCompatibleWithUnit:v11];
 
     if (v12)
     {
-      v13 = [v6 verticalAmount];
+      verticalAmount = [prismCopy verticalAmount];
       v14 = +[HKUnit prismDiopterUnit];
-      v15 = [v13 isCompatibleWithUnit:v14];
+      v15 = [verticalAmount isCompatibleWithUnit:v14];
 
       if (v15)
       {
-        v16 = [v6 horizontalAmount];
+        horizontalAmount = [prismCopy horizontalAmount];
         v17 = +[HKUnit prismDiopterUnit];
-        v18 = [v16 isCompatibleWithUnit:v17];
+        v18 = [horizontalAmount isCompatibleWithUnit:v17];
 
         if (v18)
         {
@@ -449,11 +449,11 @@ LABEL_34:
   v19 = v24 == 0;
   if (v24)
   {
-    if (a4)
+    if (error)
     {
       v26 = v24;
       v19 = 0;
-      *a4 = v25;
+      *error = v25;
     }
 
     else

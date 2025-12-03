@@ -1,44 +1,44 @@
 @interface FARemoteViewController
-+ (id)requestViewControllerWithCompletion:(id)a3;
++ (id)requestViewControllerWithCompletion:(id)completion;
 - (FARemoteViewControllerDelegate)delegate;
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (void)_notifyPresentationCompletion;
-- (void)dismissAlertProxyWithCompletion:(id)a3;
-- (void)operationFinishedWithResponse:(id)a3;
-- (void)presentAlertProxyWithCompletion:(id)a3;
-- (void)presentWithRUIModalPresentationStyle:(unint64_t)a3 completion:(id)a4;
-- (void)replaceModalRUIControllerWithStyle:(unint64_t)a3 byController:(unint64_t)a4 completion:(id)a5;
-- (void)startFlowWithContext:(id)a3 viewController:(id)a4 completion:(id)a5;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)dismissAlertProxyWithCompletion:(id)completion;
+- (void)operationFinishedWithResponse:(id)response;
+- (void)presentAlertProxyWithCompletion:(id)completion;
+- (void)presentWithRUIModalPresentationStyle:(unint64_t)style completion:(id)completion;
+- (void)replaceModalRUIControllerWithStyle:(unint64_t)style byController:(unint64_t)controller completion:(id)completion;
+- (void)startFlowWithContext:(id)context viewController:(id)controller completion:(id)completion;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation FARemoteViewController
 
-+ (id)requestViewControllerWithCompletion:(id)a3
++ (id)requestViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D08128];
   v6 = *MEMORY[0x277D08120];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__FARemoteViewController_requestViewControllerWithCompletion___block_invoke;
   v10[3] = &unk_2782F3E80;
-  v11 = v4;
-  v7 = v4;
-  v8 = [a1 requestViewController:v5 fromServiceWithBundleIdentifier:v6 connectionHandler:v10];
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = [self requestViewController:v5 fromServiceWithBundleIdentifier:v6 connectionHandler:v10];
 
   return v8;
 }
 
-- (void)startFlowWithContext:(id)a3 viewController:(id)a4 completion:(id)a5
+- (void)startFlowWithContext:(id)context viewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = _Block_copy(a5);
+  contextCopy = context;
+  controllerCopy = controller;
+  v10 = _Block_copy(completion);
   completion = self->_completion;
   self->_completion = v10;
 
-  objc_storeWeak(&self->_hostViewController, v9);
+  objc_storeWeak(&self->_hostViewController, controllerCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__FARemoteViewController_startFlowWithContext_viewController_completion___block_invoke;
@@ -48,13 +48,13 @@
   presentationCompletion = self->_presentationCompletion;
   self->_presentationCompletion = v12;
 
-  if ([v8 activityIndicatorStyle] == 1)
+  if ([contextCopy activityIndicatorStyle] == 1)
   {
     [(FARemoteViewController *)self presentWithRUIModalPresentationStyle:0 completion:&__block_literal_global_14];
   }
 
-  v14 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v14 startFlowWithContext:v8];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy startFlowWithContext:contextCopy];
 }
 
 void __73__FARemoteViewController_startFlowWithContext_viewController_completion___block_invoke(uint64_t a1)
@@ -63,26 +63,26 @@ void __73__FARemoteViewController_startFlowWithContext_viewController_completion
   [v2 remoteViewControllerDidStartFlow:*(a1 + 32)];
 }
 
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v7 = MEMORY[0x277D461D8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [[v7 alloc] initWithPresentedViewController:v9 presentingViewController:v8 modalPresentationStyle:self->_ruiPresentationStyle];
+  presentingControllerCopy = presentingController;
+  controllerCopy = controller;
+  v10 = [[v7 alloc] initWithPresentedViewController:controllerCopy presentingViewController:presentingControllerCopy modalPresentationStyle:self->_ruiPresentationStyle];
 
   return v10;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (([(FARemoteViewController *)self isBeingDismissed]& 1) == 0)
   {
-    v5 = [(FARemoteViewController *)self presentingViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(FARemoteViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277D08230]) initWithLoadSuccess:v4 == 0 error:v4 userInfo:0];
+  v6 = [objc_alloc(MEMORY[0x277D08230]) initWithLoadSuccess:errorCopy == 0 error:errorCopy userInfo:0];
 
   [(FARemoteViewController *)self operationFinishedWithResponse:v6];
   presentationCompletion = self->_presentationCompletion;
@@ -100,14 +100,14 @@ void __73__FARemoteViewController_startFlowWithContext_viewController_completion
   }
 }
 
-- (void)presentWithRUIModalPresentationStyle:(unint64_t)a3 completion:(id)a4
+- (void)presentWithRUIModalPresentationStyle:(unint64_t)style completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(FARemoteViewController *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(FARemoteViewController *)self presentingViewController];
 
-  if (!v7)
+  if (!presentingViewController)
   {
-    self->_ruiPresentationStyle = a3;
+    self->_ruiPresentationStyle = style;
     [(FARemoteViewController *)self setModalPresentationStyle:4];
     WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
     v9[0] = MEMORY[0x277D85DD0];
@@ -115,7 +115,7 @@ void __73__FARemoteViewController_startFlowWithContext_viewController_completion
     v9[2] = __74__FARemoteViewController_presentWithRUIModalPresentationStyle_completion___block_invoke;
     v9[3] = &unk_2782F3088;
     v9[4] = self;
-    v10 = v6;
+    v10 = completionCopy;
     [WeakRetained presentViewController:self animated:1 completion:v9];
   }
 }
@@ -128,17 +128,17 @@ uint64_t __74__FARemoteViewController_presentWithRUIModalPresentationStyle_compl
   return v2();
 }
 
-- (void)replaceModalRUIControllerWithStyle:(unint64_t)a3 byController:(unint64_t)a4 completion:(id)a5
+- (void)replaceModalRUIControllerWithStyle:(unint64_t)style byController:(unint64_t)controller completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __85__FARemoteViewController_replaceModalRUIControllerWithStyle_byController_completion___block_invoke;
   v9[3] = &unk_2782F3EA8;
   v9[4] = self;
-  v10 = v7;
-  v11 = a4;
-  v8 = v7;
+  v10 = completionCopy;
+  controllerCopy = controller;
+  v8 = completionCopy;
   [(FARemoteViewController *)self dismissViewControllerAnimated:1 completion:v9];
 }
 
@@ -151,37 +151,37 @@ uint64_t __85__FARemoteViewController_replaceModalRUIControllerWithStyle_byContr
   return [v2 presentWithRUIModalPresentationStyle:v3 completion:&__block_literal_global_4];
 }
 
-- (void)operationFinishedWithResponse:(id)a3
+- (void)operationFinishedWithResponse:(id)response
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a3);
+    completion[2](completion, response);
     v5 = self->_completion;
     self->_completion = 0;
   }
 }
 
-- (void)presentAlertProxyWithCompletion:(id)a3
+- (void)presentAlertProxyWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(FARemoteViewController *)self setModalPresentationStyle:6];
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
   [WeakRetained presentViewController:self animated:0 completion:0];
 
-  v5[2]();
+  completionCopy[2]();
 }
 
-- (void)dismissAlertProxyWithCompletion:(id)a3
+- (void)dismissAlertProxyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__FARemoteViewController_dismissAlertProxyWithCompletion___block_invoke;
   v6[3] = &unk_2782F3088;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(FARemoteViewController *)self dismissViewControllerAnimated:1 completion:v6];
 }
 

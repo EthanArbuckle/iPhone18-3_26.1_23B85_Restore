@@ -2,16 +2,16 @@
 - (NSError)error;
 - (PUMergedLivePhotosVideo)mergedVideo;
 - (PUMergedLivePhotosVideoRequest)init;
-- (PUMergedLivePhotosVideoRequest)initWithAssetReference:(id)a3 dataSource:(id)a4 dataCache:(id)a5;
+- (PUMergedLivePhotosVideoRequest)initWithAssetReference:(id)reference dataSource:(id)source dataCache:(id)cache;
 - (id)_workQueue_fetchMergeableAssets;
 - (int64_t)state;
 - (void)_stateQueue_signalStateChange;
-- (void)_workQueue_finishWithMergedVideo:(id)a3 error:(id)a4;
-- (void)_workQueue_generateVideoUsingAssets:(id)a3;
+- (void)_workQueue_finishWithMergedVideo:(id)video error:(id)error;
+- (void)_workQueue_generateVideoUsingAssets:(id)assets;
 - (void)_workQueue_handleGeneratorDidChangeState;
 - (void)_workQueue_start;
 - (void)cancel;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)start;
 @end
 
@@ -19,8 +19,8 @@
 
 - (PUMergedLivePhotosVideoRequest)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUMergedLivePhotosVideoRequest.m" lineNumber:223 description:{@"%s is not available as initializer", "-[PUMergedLivePhotosVideoRequest init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUMergedLivePhotosVideoRequest.m" lineNumber:223 description:{@"%s is not available as initializer", "-[PUMergedLivePhotosVideoRequest init]"}];
 
   abort();
 }
@@ -46,20 +46,20 @@ uint64_t __63__PUMergedLivePhotosVideoRequest__stateQueue_signalStateChange__blo
   return [v1 performChanges:v3];
 }
 
-- (void)_workQueue_finishWithMergedVideo:(id)a3 error:(id)a4
+- (void)_workQueue_finishWithMergedVideo:(id)video error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  videoCopy = video;
+  errorCopy = error;
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__PUMergedLivePhotosVideoRequest__workQueue_finishWithMergedVideo_error___block_invoke;
   block[3] = &unk_1E7B809F0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = videoCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = videoCopy;
   dispatch_barrier_async(stateQueue, block);
 }
 
@@ -98,20 +98,20 @@ uint64_t __73__PUMergedLivePhotosVideoRequest__workQueue_finishWithMergedVideo_e
   v5 = self->_workQueue_generator;
   if ([(PUCompositeVideoGenerator *)v5 state]== 2)
   {
-    v3 = [(PUCompositeVideoGenerator *)v5 playbackVideo];
-    v4 = [(PUCompositeVideoGenerator *)v5 error];
-    [(PUMergedLivePhotosVideoRequest *)self _workQueue_finishWithMergedVideo:v3 error:v4];
+    playbackVideo = [(PUCompositeVideoGenerator *)v5 playbackVideo];
+    error = [(PUCompositeVideoGenerator *)v5 error];
+    [(PUMergedLivePhotosVideoRequest *)self _workQueue_finishWithMergedVideo:playbackVideo error:error];
   }
 }
 
-- (void)_workQueue_generateVideoUsingAssets:(id)a3
+- (void)_workQueue_generateVideoUsingAssets:(id)assets
 {
-  v6 = a3;
+  assetsCopy = assets;
   if ([(PUMergedLivePhotosVideoRequest *)self state]== 1)
   {
-    if ([v6 count])
+    if ([assetsCopy count])
     {
-      v4 = [[PUCompositeVideoGenerator alloc] initWithAssets:v6 outputType:0 onlyAllowOverlappingAssets:1 dataCache:self->_dataCache];
+      v4 = [[PUCompositeVideoGenerator alloc] initWithAssets:assetsCopy outputType:0 onlyAllowOverlappingAssets:1 dataCache:self->_dataCache];
       [(PUCompositeVideoGenerator *)v4 registerChangeObserver:self context:GeneratorContext];
       [(PUCompositeVideoGenerator *)v4 start];
       workQueue_generator = self->_workQueue_generator;
@@ -128,39 +128,39 @@ uint64_t __73__PUMergedLivePhotosVideoRequest__workQueue_finishWithMergedVideo_e
 - (id)_workQueue_fetchMergeableAssets
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(PUMergedLivePhotosVideoRequest *)self assetsDataSource];
-  v4 = [(PUMergedLivePhotosVideoRequest *)self assetReference];
-  v5 = [v4 asset];
-  if ([v5 playbackStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  assetsDataSource = [(PUMergedLivePhotosVideoRequest *)self assetsDataSource];
+  assetReference = [(PUMergedLivePhotosVideoRequest *)self assetReference];
+  asset = [assetReference asset];
+  if ([asset playbackStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v4 asset];
-    [v6 fetchPropertySetsIfNeeded];
+    asset2 = [assetReference asset];
+    [asset2 fetchPropertySetsIfNeeded];
     v7 = PLLivePhotoPlaybackGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v6 localIdentifier];
+      localIdentifier = [asset2 localIdentifier];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = localIdentifier;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEBUG, "Determining mergeable assets from %@", &buf, 0xCu);
     }
 
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v6, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{asset2, 0}];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v19 = 0x3032000000;
     v20 = __Block_byref_object_copy_;
     v21 = __Block_byref_object_dispose_;
     v22 = 0;
-    v10 = [v4 indexPath];
+    indexPath = [assetReference indexPath];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __65__PUMergedLivePhotosVideoRequest__workQueue_fetchMergeableAssets__block_invoke;
     v14[3] = &unk_1E7B73E90;
-    v15 = v3;
+    v15 = assetsDataSource;
     p_buf = &buf;
     v11 = v9;
     v16 = v11;
-    [v15 enumerateIndexPathsStartingAtIndexPath:v10 reverseDirection:0 usingBlock:v14];
+    [v15 enumerateIndexPathsStartingAtIndexPath:indexPath reverseDirection:0 usingBlock:v14];
 
     v12 = [v11 copy];
     _Block_object_dispose(&buf, 8);
@@ -227,14 +227,14 @@ void __65__PUMergedLivePhotosVideoRequest__workQueue_fetchMergeableAssets__block
 {
   if ([(PUMergedLivePhotosVideoRequest *)self state]== 1)
   {
-    v3 = [(PUMergedLivePhotosVideoRequest *)self _workQueue_fetchMergeableAssets];
-    [(PUMergedLivePhotosVideoRequest *)self _workQueue_generateVideoUsingAssets:v3];
+    _workQueue_fetchMergeableAssets = [(PUMergedLivePhotosVideoRequest *)self _workQueue_fetchMergeableAssets];
+    [(PUMergedLivePhotosVideoRequest *)self _workQueue_generateVideoUsingAssets:_workQueue_fetchMergeableAssets];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && GeneratorContext == a5)
+  if ((change & 1) != 0 && GeneratorContext == context)
   {
     v11[3] = v5;
     v11[4] = v6;
@@ -403,24 +403,24 @@ void __39__PUMergedLivePhotosVideoRequest_start__block_invoke_201(uint64_t a1)
   [WeakRetained _workQueue_start];
 }
 
-- (PUMergedLivePhotosVideoRequest)initWithAssetReference:(id)a3 dataSource:(id)a4 dataCache:(id)a5
+- (PUMergedLivePhotosVideoRequest)initWithAssetReference:(id)reference dataSource:(id)source dataCache:(id)cache
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  referenceCopy = reference;
+  sourceCopy = source;
+  cacheCopy = cache;
   v26.receiver = self;
   v26.super_class = PUMergedLivePhotosVideoRequest;
   v13 = [(PUMergedLivePhotosVideoRequest *)&v26 init];
   if (v13)
   {
-    if (v10)
+    if (referenceCopy)
     {
-      if (v11)
+      if (sourceCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v13->_assetReference, a3);
-        objc_storeStrong(&v13->_assetsDataSource, a4);
-        objc_storeStrong(&v13->_dataCache, a5);
+        objc_storeStrong(&v13->_assetReference, reference);
+        objc_storeStrong(&v13->_assetsDataSource, source);
+        objc_storeStrong(&v13->_dataCache, cache);
         v14 = PLLivePhotoPlaybackGetLog();
         v13->_requestLogID = os_signpost_id_generate(v14);
 
@@ -447,17 +447,17 @@ LABEL_4:
 
     else
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v13 file:@"PUMergedLivePhotosVideoRequest.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"assetReference"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"PUMergedLivePhotosVideoRequest.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"assetReference"}];
 
-      if (v11)
+      if (sourceCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:v13 file:@"PUMergedLivePhotosVideoRequest.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v13 file:@"PUMergedLivePhotosVideoRequest.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
 
     goto LABEL_4;
   }

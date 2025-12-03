@@ -1,41 +1,41 @@
 @interface OAITOrientedBounds
-+ (CGAffineTransform)transformFromBounds:(SEL)a3 toOrientedBounds:(CGRect)a4;
-+ (CGRect)axisParallelBoundsOfOrientedBounds:(id)a3;
-+ (float)scaleFactorFromLength:(float)a3 toLength:(float)a4;
-+ (id)absoluteOrientedBoundsOfDrawable:(id)a3;
-+ (id)absoluteOrientedBoundsWithRelativeOrientedBounds:(id)a3 parentOrientedBounds:(id)a4 parentLogicalBounds:(CGRect)a5;
-+ (id)adjustedOrientedBoundsWithOrientedBounds:(id)a3;
-+ (id)adjustedOrientedBoundsWithOrientedBounds:(id)a3 logicalBounds:(CGRect)a4;
-+ (id)relativeOrientedBoundsOfDrawable:(id)a3;
-+ (id)relativeOrientedBoundsWithAbsoluteOrientedBounds:(id)a3 parentOrientedBounds:(id)a4 parentLogicalBounds:(CGRect)a5;
++ (CGAffineTransform)transformFromBounds:(SEL)bounds toOrientedBounds:(CGRect)orientedBounds;
++ (CGRect)axisParallelBoundsOfOrientedBounds:(id)bounds;
++ (float)scaleFactorFromLength:(float)length toLength:(float)toLength;
++ (id)absoluteOrientedBoundsOfDrawable:(id)drawable;
++ (id)absoluteOrientedBoundsWithRelativeOrientedBounds:(id)bounds parentOrientedBounds:(id)orientedBounds parentLogicalBounds:(CGRect)logicalBounds;
++ (id)adjustedOrientedBoundsWithOrientedBounds:(id)bounds;
++ (id)adjustedOrientedBoundsWithOrientedBounds:(id)bounds logicalBounds:(CGRect)logicalBounds;
++ (id)relativeOrientedBoundsOfDrawable:(id)drawable;
++ (id)relativeOrientedBoundsWithAbsoluteOrientedBounds:(id)bounds parentOrientedBounds:(id)orientedBounds parentLogicalBounds:(CGRect)logicalBounds;
 @end
 
 @implementation OAITOrientedBounds
 
-+ (float)scaleFactorFromLength:(float)a3 toLength:(float)a4
++ (float)scaleFactorFromLength:(float)length toLength:(float)toLength
 {
-  if (a3 != 0.0)
+  if (length != 0.0)
   {
-    return a4 / a3;
+    return toLength / length;
   }
 
   v4 = 1.0;
-  if (a4 != 0.0)
+  if (toLength != 0.0)
   {
-    return a4 / a3;
+    return toLength / length;
   }
 
   return v4;
 }
 
-+ (id)adjustedOrientedBoundsWithOrientedBounds:(id)a3 logicalBounds:(CGRect)a4
++ (id)adjustedOrientedBoundsWithOrientedBounds:(id)bounds logicalBounds:(CGRect)logicalBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  [v8 bounds];
+  height = logicalBounds.size.height;
+  width = logicalBounds.size.width;
+  y = logicalBounds.origin.y;
+  x = logicalBounds.origin.x;
+  boundsCopy = bounds;
+  [boundsCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -72,7 +72,7 @@
     }
   }
 
-  [v8 bounds];
+  [boundsCopy bounds];
   v36.origin.x = v17;
   v36.origin.y = v18;
   v36.size.width = v19;
@@ -83,18 +83,18 @@
   v35.size.height = v16;
   if (CGRectEqualToRect(v35, v36))
   {
-    v21 = v8;
+    v21 = boundsCopy;
   }
 
   else
   {
     v22 = [OADOrientedBounds alloc];
-    [v8 rotation];
+    [boundsCopy rotation];
     v24 = v23;
-    v25 = [v8 flipX];
-    v26 = [v8 flipY];
+    flipX = [boundsCopy flipX];
+    flipY = [boundsCopy flipY];
     LODWORD(v27) = v24;
-    v21 = [(OADOrientedBounds *)v22 initWithBounds:v25 rotation:v26 flipX:v10 flipY:v12, v14, v16, v27];
+    v21 = [(OADOrientedBounds *)v22 initWithBounds:flipX rotation:flipY flipX:v10 flipY:v12, v14, v16, v27];
   }
 
   v28 = v21;
@@ -102,20 +102,20 @@
   return v28;
 }
 
-+ (id)absoluteOrientedBoundsOfDrawable:(id)a3
++ (id)absoluteOrientedBoundsOfDrawable:(id)drawable
 {
-  v4 = a3;
-  v5 = [a1 relativeOrientedBoundsOfDrawable:v4];
-  v6 = [v4 parent];
-  v7 = v6;
-  if (v6)
+  drawableCopy = drawable;
+  v5 = [self relativeOrientedBoundsOfDrawable:drawableCopy];
+  parent = [drawableCopy parent];
+  v7 = parent;
+  if (parent)
   {
-    [v6 logicalBounds];
+    [parent logicalBounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [a1 absoluteOrientedBoundsOfDrawable:v7];
+    v16 = [self absoluteOrientedBoundsOfDrawable:v7];
   }
 
   else
@@ -127,15 +127,15 @@
     v15 = 1.0;
   }
 
-  v17 = [a1 absoluteOrientedBoundsWithRelativeOrientedBounds:v5 parentOrientedBounds:v16 parentLogicalBounds:{v9, v11, v13, v15}];
+  v17 = [self absoluteOrientedBoundsWithRelativeOrientedBounds:v5 parentOrientedBounds:v16 parentLogicalBounds:{v9, v11, v13, v15}];
 
   return v17;
 }
 
-+ (id)adjustedOrientedBoundsWithOrientedBounds:(id)a3
++ (id)adjustedOrientedBoundsWithOrientedBounds:(id)bounds
 {
-  v3 = a3;
-  [v3 bounds];
+  boundsCopy = bounds;
+  [boundsCopy bounds];
   x = v27.origin.x;
   y = v27.origin.y;
   width = v27.size.width;
@@ -150,7 +150,7 @@
   v28.size.width = width;
   v28.size.height = height;
   v8 = CGRectGetHeight(v28);
-  [v3 bounds];
+  [boundsCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -166,18 +166,18 @@
   v29.size.height = height;
   if (CGRectEqualToRect(v29, *&v10))
   {
-    v17 = v3;
+    v17 = boundsCopy;
   }
 
   else
   {
     v18 = [OADOrientedBounds alloc];
-    [v3 rotation];
+    [boundsCopy rotation];
     v20 = v19;
-    v21 = [v3 flipX];
-    v22 = [v3 flipY];
+    flipX = [boundsCopy flipX];
+    flipY = [boundsCopy flipY];
     LODWORD(v23) = v20;
-    v17 = [(OADOrientedBounds *)v18 initWithBounds:v21 rotation:v22 flipX:x flipY:y, width, height, v23];
+    v17 = [(OADOrientedBounds *)v18 initWithBounds:flipX rotation:flipY flipX:x flipY:y, width, height, v23];
   }
 
   v24 = v17;
@@ -185,12 +185,12 @@
   return v24;
 }
 
-+ (CGAffineTransform)transformFromBounds:(SEL)a3 toOrientedBounds:(CGRect)a4
++ (CGAffineTransform)transformFromBounds:(SEL)bounds toOrientedBounds:(CGRect)orientedBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = orientedBounds.size.height;
+  width = orientedBounds.size.width;
+  y = orientedBounds.origin.y;
+  x = orientedBounds.origin.x;
   v11 = a5;
   v52.origin.x = x;
   v52.origin.y = y;
@@ -259,7 +259,7 @@
   *&t2.c = v41;
   *&t2.tx = *&retstr->tx;
   LODWORD(a2) = [v11 flipX];
-  v42 = [v11 flipY];
+  flipY = [v11 flipY];
   v43 = 1.0;
   if (a2)
   {
@@ -271,7 +271,7 @@
     v44 = 1.0;
   }
 
-  if (v42)
+  if (flipY)
   {
     v43 = -1.0;
   }
@@ -296,23 +296,23 @@
   return result;
 }
 
-+ (id)absoluteOrientedBoundsWithRelativeOrientedBounds:(id)a3 parentOrientedBounds:(id)a4 parentLogicalBounds:(CGRect)a5
++ (id)absoluteOrientedBoundsWithRelativeOrientedBounds:(id)bounds parentOrientedBounds:(id)orientedBounds parentLogicalBounds:(CGRect)logicalBounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [a1 adjustedOrientedBoundsWithOrientedBounds:v12 logicalBounds:{x, y, width, height}];
+  height = logicalBounds.size.height;
+  width = logicalBounds.size.width;
+  y = logicalBounds.origin.y;
+  x = logicalBounds.origin.x;
+  boundsCopy = bounds;
+  orientedBoundsCopy = orientedBounds;
+  v13 = [self adjustedOrientedBoundsWithOrientedBounds:orientedBoundsCopy logicalBounds:{x, y, width, height}];
 
-  [a1 transformFromBounds:v13 toOrientedBounds:{x, y, width, height}];
-  [v11 bounds];
+  [self transformFromBounds:v13 toOrientedBounds:{x, y, width, height}];
+  [boundsCopy bounds];
   v18 = TSUCenterOfRect(v14, v15, v16, v17);
   v20 = v19;
-  [v11 bounds];
+  [boundsCopy bounds];
   v57 = CGRectGetWidth(v59);
-  [v11 bounds];
+  [boundsCopy bounds];
   CGRectGetHeight(v60);
   v61.origin.x = x;
   v61.origin.y = y;
@@ -324,7 +324,7 @@
   v23 = v21;
   *&v24 = v22;
   *&v22 = v23;
-  [a1 scaleFactorFromLength:v22 toLength:v24];
+  [self scaleFactorFromLength:v22 toLength:v24];
   v26 = v25;
   v63.origin.x = x;
   v63.origin.y = y;
@@ -336,9 +336,9 @@
   v29 = v27;
   *&v30 = v28;
   *&v28 = v29;
-  [a1 scaleFactorFromLength:v28 toLength:v30];
+  [self scaleFactorFromLength:v28 toLength:v30];
   v32 = v31;
-  [v11 rotation];
+  [boundsCopy rotation];
   if ([OADOrientedBounds directionCloserToVerticalThanToHorizontal:?])
   {
     v34 = v32;
@@ -354,18 +354,18 @@
   v37 = v36;
   v39 = v38;
   v41 = v40;
-  v42 = [v13 flipX];
-  v43 = [v11 flipX];
-  v44 = [v13 flipY];
-  v45 = [v11 flipY];
-  v46 = [v11 flipX];
-  v47 = [v11 flipY];
-  [v11 rotation];
+  flipX = [v13 flipX];
+  flipX2 = [boundsCopy flipX];
+  flipY = [v13 flipY];
+  flipY2 = [boundsCopy flipY];
+  flipX3 = [boundsCopy flipX];
+  flipY3 = [boundsCopy flipY];
+  [boundsCopy rotation];
   v49 = v48;
   [v13 rotation];
   v51 = v50;
   v52 = [OADOrientedBounds alloc];
-  if (v47)
+  if (flipY3)
   {
     v54 = -1;
   }
@@ -375,28 +375,28 @@
     v54 = 1;
   }
 
-  if (v46)
+  if (flipX3)
   {
     v54 = -v54;
   }
 
   *&v53 = v49 + (v54 * v51);
-  v55 = [(OADOrientedBounds *)v52 initWithBounds:v42 ^ v43 rotation:v44 ^ v45 flipX:v35 flipY:v37, v39, v41, v53];
+  v55 = [(OADOrientedBounds *)v52 initWithBounds:flipX ^ flipX2 rotation:flipY ^ flipY2 flipX:v35 flipY:v37, v39, v41, v53];
 
   return v55;
 }
 
-+ (id)relativeOrientedBoundsWithAbsoluteOrientedBounds:(id)a3 parentOrientedBounds:(id)a4 parentLogicalBounds:(CGRect)a5
++ (id)relativeOrientedBoundsWithAbsoluteOrientedBounds:(id)bounds parentOrientedBounds:(id)orientedBounds parentLogicalBounds:(CGRect)logicalBounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
+  height = logicalBounds.size.height;
+  width = logicalBounds.size.width;
+  y = logicalBounds.origin.y;
+  x = logicalBounds.origin.x;
+  boundsCopy = bounds;
+  orientedBoundsCopy = orientedBounds;
   memset(&v79, 0, sizeof(v79));
-  [OAITOrientedBounds transformFromBounds:v12 toOrientedBounds:x, y, width, height];
-  [v11 bounds];
+  [OAITOrientedBounds transformFromBounds:orientedBoundsCopy toOrientedBounds:x, y, width, height];
+  [boundsCopy bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -412,20 +412,20 @@
   rect_16 = v78.c;
   rect_24 = v78.ty;
   d = v78.d;
-  v23 = [v12 flipX];
-  v24 = [v11 flipX];
-  v25 = [v12 flipY];
-  v26 = [v11 flipY];
+  flipX = [orientedBoundsCopy flipX];
+  flipX2 = [boundsCopy flipX];
+  flipY = [orientedBoundsCopy flipY];
+  flipY2 = [boundsCopy flipY];
   v63 = v20;
   v64 = v18;
   v65 = v16;
   v66 = v14;
-  [v11 rotation];
+  [boundsCopy rotation];
   v67 = v27;
-  [v12 rotation];
+  [orientedBoundsCopy rotation];
   v62 = v28;
-  v29 = v23 ^ v24;
-  v30 = v25 ^ v26;
+  v29 = flipX ^ flipX2;
+  v30 = flipY ^ flipY2;
   if (v30)
   {
     v31 = -1;
@@ -446,7 +446,7 @@
     v32 = v31;
   }
 
-  [v12 bounds];
+  [orientedBoundsCopy bounds];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -468,7 +468,7 @@
   v46 = v44;
   *&v47 = v45;
   *&v45 = v46;
-  [a1 scaleFactorFromLength:v45 toLength:v47];
+  [self scaleFactorFromLength:v45 toLength:v47];
   v49 = v48;
   v83.origin.x = rect;
   v83.origin.y = v41;
@@ -483,7 +483,7 @@
   v52 = v50;
   *&v53 = v51;
   *&v51 = v52;
-  [a1 scaleFactorFromLength:v51 toLength:v53];
+  [self scaleFactorFromLength:v51 toLength:v53];
   v55 = v54;
   *&v56 = v67 - (v32 * v62);
   if ([OADOrientedBounds directionCloserToVerticalThanToHorizontal:v56])
@@ -512,55 +512,55 @@
   return v60;
 }
 
-+ (id)relativeOrientedBoundsOfDrawable:(id)a3
++ (id)relativeOrientedBoundsOfDrawable:(id)drawable
 {
-  v3 = a3;
-  v4 = [v3 drawableProperties];
-  if ([v4 hasOrientedBounds])
+  drawableCopy = drawable;
+  drawableProperties = [drawableCopy drawableProperties];
+  if ([drawableProperties hasOrientedBounds])
   {
-    v5 = [v4 orientedBounds];
+    orientedBounds = [drawableProperties orientedBounds];
   }
 
   else
   {
-    v5 = 0;
+    orientedBounds = 0;
   }
 
-  v6 = [v3 clientData];
-  v7 = [v3 parent];
-  if (v7)
+  clientData = [drawableCopy clientData];
+  parent = [drawableCopy parent];
+  if (parent)
   {
   }
 
-  else if ([v6 hasBounds])
+  else if ([clientData hasBounds])
   {
-    [v6 bounds];
+    [clientData bounds];
     x = v14.origin.x;
     y = v14.origin.y;
     width = v14.size.width;
     height = v14.size.height;
     if (!CGRectEqualToRect(v14, *MEMORY[0x277CBF3A0]))
     {
-      if (!v5)
+      if (!orientedBounds)
       {
-        v5 = [[OADOrientedBounds alloc] initWithBounds:x, y, width, height];
-        [v4 setOrientedBounds:v5];
+        orientedBounds = [[OADOrientedBounds alloc] initWithBounds:x, y, width, height];
+        [drawableProperties setOrientedBounds:orientedBounds];
       }
 
-      [(OADOrientedBounds *)v5 setBounds:x, y, width, height];
+      [(OADOrientedBounds *)orientedBounds setBounds:x, y, width, height];
     }
   }
 
-  return v5;
+  return orientedBounds;
 }
 
-+ (CGRect)axisParallelBoundsOfOrientedBounds:(id)a3
++ (CGRect)axisParallelBoundsOfOrientedBounds:(id)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   memset(&v45, 0, sizeof(v45));
-  [v3 rotation];
+  [boundsCopy rotation];
   CGAffineTransformMakeRotation(&v45, v4 * 3.14159265 / 180.0);
-  [v3 bounds];
+  [boundsCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;

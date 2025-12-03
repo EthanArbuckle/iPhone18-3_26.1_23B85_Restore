@@ -1,18 +1,18 @@
 @interface FCOfflineIssueList
-- (BOOL)containsIssueID:(id)a3;
-- (BOOL)everContainedIssueID:(id)a3;
+- (BOOL)containsIssueID:(id)d;
+- (BOOL)everContainedIssueID:(id)d;
 - (FCOfflineIssueList)init;
-- (FCOfflineIssueList)initWithStoreDirectoryFileURL:(id)a3 appActivityMonitor:(id)a4 backgroundTaskable:(id)a5;
+- (FCOfflineIssueList)initWithStoreDirectoryFileURL:(id)l appActivityMonitor:(id)monitor backgroundTaskable:(id)taskable;
 - (NSArray)issueIDs;
 - (NSArray)sortedIssueIDs;
-- (id)dateAddedForIssueID:(id)a3;
-- (id)dateRemovedForIssueID:(id)a3;
-- (int64_t)sourceForIssueID:(id)a3;
-- (void)addIssueID:(id)a3 source:(int64_t)a4;
-- (void)addObserver:(id)a3;
+- (id)dateAddedForIssueID:(id)d;
+- (id)dateRemovedForIssueID:(id)d;
+- (int64_t)sourceForIssueID:(id)d;
+- (void)addIssueID:(id)d source:(int64_t)source;
+- (void)addObserver:(id)observer;
 - (void)removeAllIssues;
-- (void)removeIssueIDs:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)removeIssueIDs:(id)ds;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FCOfflineIssueList
@@ -25,13 +25,13 @@
   return v4;
 }
 
-- (FCOfflineIssueList)initWithStoreDirectoryFileURL:(id)a3 appActivityMonitor:(id)a4 backgroundTaskable:(id)a5
+- (FCOfflineIssueList)initWithStoreDirectoryFileURL:(id)l appActivityMonitor:(id)monitor backgroundTaskable:(id)taskable
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  monitorCopy = monitor;
+  taskableCopy = taskable;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "storeDirectoryFileURL != nil"];
     *buf = 136315906;
@@ -51,15 +51,15 @@
   if (v11)
   {
     v12 = +[FCKeyValueStoreSavePolicy defaultPolicy];
-    if (v9 && v10)
+    if (monitorCopy && taskableCopy)
     {
-      v13 = [FCKeyValueStoreSavePolicy appBackgroundPolicyWithActivityMonitor:v9 backgroundTaskable:v10];
+      v13 = [FCKeyValueStoreSavePolicy appBackgroundPolicyWithActivityMonitor:monitorCopy backgroundTaskable:taskableCopy];
 
       v12 = v13;
     }
 
-    v14 = [v8 path];
-    v15 = [[FCKeyValueStore alloc] initWithName:@"offline-issue-list" directory:v14 version:2 options:8 classRegistry:0 migrator:0 savePolicy:v12];
+    path = [lCopy path];
+    v15 = [[FCKeyValueStore alloc] initWithName:@"offline-issue-list" directory:path version:2 options:8 classRegistry:0 migrator:0 savePolicy:v12];
     localStore = v11->_localStore;
     v11->_localStore = v15;
 
@@ -72,18 +72,18 @@
   return v11;
 }
 
-- (void)addIssueID:(id)a3 source:(int64_t)a4
+- (void)addIssueID:(id)d source:(int64_t)source
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    if (a4 == 2)
+    if (source == 2)
     {
       v7 = @"auto";
     }
 
-    else if (a4)
+    else if (source)
     {
       v7 = @"manual";
     }
@@ -117,25 +117,25 @@
       localStore = 0;
     }
 
-    v9 = [(FCKeyValueStore *)localStore objectForKey:v6];
+    v9 = [(FCKeyValueStore *)localStore objectForKey:dCopy];
     v10 = [v9 mutableCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      dictionary = v10;
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v13 = v12;
+    v13 = dictionary;
 
-    [v13 setObject:v6 forKeyedSubscript:@"issueID"];
+    [v13 setObject:dCopy forKeyedSubscript:@"issueID"];
     [v13 setObject:v7 forKeyedSubscript:@"source"];
-    v14 = [MEMORY[0x1E695DF00] date];
-    [v13 setObject:v14 forKeyedSubscript:@"dateAdded"];
+    date = [MEMORY[0x1E695DF00] date];
+    [v13 setObject:date forKeyedSubscript:@"dateAdded"];
 
     if (self)
     {
@@ -147,13 +147,13 @@
       v15 = 0;
     }
 
-    [(FCKeyValueStore *)v15 setObject:v13 forKey:v6];
+    [(FCKeyValueStore *)v15 setObject:v13 forKey:dCopy];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __40__FCOfflineIssueList_addIssueID_source___block_invoke_36;
     v18[3] = &unk_1E7C36C58;
     v18[4] = self;
-    v19 = v6;
+    v19 = dCopy;
     FCPerformBlockOnMainThread(v18);
   }
 
@@ -210,14 +210,14 @@ void __40__FCOfflineIssueList_addIssueID_source___block_invoke_36(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)containsIssueID:(id)a3
+- (BOOL)containsIssueID:(id)d
 {
   if (self)
   {
     self = self->_localStore;
   }
 
-  v3 = [(FCOfflineIssueList *)self objectForKey:a3];
+  v3 = [(FCOfflineIssueList *)self objectForKey:d];
   v4 = v3;
   if (v3)
   {
@@ -243,24 +243,24 @@ void __40__FCOfflineIssueList_addIssueID_source___block_invoke_36(uint64_t a1)
   return v8;
 }
 
-- (BOOL)everContainedIssueID:(id)a3
+- (BOOL)everContainedIssueID:(id)d
 {
   if (self)
   {
     self = self->_localStore;
   }
 
-  return [(FCOfflineIssueList *)self containsObjectForKey:a3];
+  return [(FCOfflineIssueList *)self containsObjectForKey:d];
 }
 
-- (int64_t)sourceForIssueID:(id)a3
+- (int64_t)sourceForIssueID:(id)d
 {
   if (self)
   {
     self = self->_localStore;
   }
 
-  v3 = [(FCOfflineIssueList *)self objectForKey:a3];
+  v3 = [(FCOfflineIssueList *)self objectForKey:d];
   v4 = [v3 objectForKeyedSubscript:@"source"];
   if ([v4 isEqualToString:@"manual"])
   {
@@ -280,27 +280,27 @@ void __40__FCOfflineIssueList_addIssueID_source___block_invoke_36(uint64_t a1)
   return v5;
 }
 
-- (id)dateAddedForIssueID:(id)a3
+- (id)dateAddedForIssueID:(id)d
 {
   if (self)
   {
     self = self->_localStore;
   }
 
-  v3 = [(FCOfflineIssueList *)self objectForKey:a3];
+  v3 = [(FCOfflineIssueList *)self objectForKey:d];
   v4 = [v3 objectForKeyedSubscript:@"dateAdded"];
 
   return v4;
 }
 
-- (id)dateRemovedForIssueID:(id)a3
+- (id)dateRemovedForIssueID:(id)d
 {
   if (self)
   {
     self = self->_localStore;
   }
 
-  v3 = [(FCOfflineIssueList *)self objectForKey:a3];
+  v3 = [(FCOfflineIssueList *)self objectForKey:d];
   v4 = [v3 objectForKeyedSubscript:@"dateRemoved"];
 
   return v4;
@@ -314,9 +314,9 @@ void __40__FCOfflineIssueList_addIssueID_source___block_invoke_36(uint64_t a1)
   }
 
   v2 = [(FCOfflineIssueList *)self keysOfEntriesPassingTest:&__block_literal_global_40_1];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 uint64_t __30__FCOfflineIssueList_issueIDs__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -345,8 +345,8 @@ uint64_t __30__FCOfflineIssueList_issueIDs__block_invoke(uint64_t a1, uint64_t a
     self = self->_localStore;
   }
 
-  v2 = [(FCOfflineIssueList *)self allObjects];
-  v3 = [v2 fc_arrayOfObjectsPassingTest:&__block_literal_global_43_3];
+  allObjects = [(FCOfflineIssueList *)self allObjects];
+  v3 = [allObjects fc_arrayOfObjectsPassingTest:&__block_literal_global_43_3];
 
   v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_46_1];
   v5 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_49_3];
@@ -383,9 +383,9 @@ uint64_t __36__FCOfflineIssueList_sortedIssueIDs__block_invoke_2(uint64_t a1, vo
   return v7;
 }
 
-- (void)removeIssueIDs:(id)a3
+- (void)removeIssueIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (self)
   {
     localStore = self->_localStore;
@@ -396,14 +396,14 @@ uint64_t __36__FCOfflineIssueList_sortedIssueIDs__block_invoke_2(uint64_t a1, vo
     localStore = 0;
   }
 
-  [(FCKeyValueStore *)localStore updateObjectsForKeys:v4 withBlock:&__block_literal_global_52_0];
+  [(FCKeyValueStore *)localStore updateObjectsForKeys:dsCopy withBlock:&__block_literal_global_52_0];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__FCOfflineIssueList_removeIssueIDs___block_invoke_2;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dsCopy;
+  v6 = dsCopy;
   FCPerformBlockOnMainThread(v7);
 }
 
@@ -464,15 +464,15 @@ void __37__FCOfflineIssueList_removeIssueIDs___block_invoke_2(uint64_t a1)
 
 - (void)removeAllIssues
 {
-  v3 = [(FCOfflineIssueList *)self issueIDs];
-  [(FCOfflineIssueList *)self removeIssueIDs:v3];
+  issueIDs = [(FCOfflineIssueList *)self issueIDs];
+  [(FCOfflineIssueList *)self removeIssueIDs:issueIDs];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __37__FCOfflineIssueList_removeAllIssues__block_invoke;
   v5[3] = &unk_1E7C36C58;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = issueIDs;
+  v4 = issueIDs;
   FCPerformBlockOnMainThread(v5);
 }
 
@@ -522,12 +522,12 @@ void __37__FCOfflineIssueList_removeAllIssues__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
     if (self)
     {
@@ -539,9 +539,9 @@ void __37__FCOfflineIssueList_removeAllIssues__block_invoke(uint64_t a1)
       observers = 0;
     }
 
-    if ([(NSHashTable *)observers containsObject:v4]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if ([(NSHashTable *)observers containsObject:observerCopy]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already an observer", v4];
+      observerCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already an observer", observerCopy];
       *buf = 136315906;
       v11 = "[FCOfflineIssueList addObserver:]";
       v12 = 2080;
@@ -549,7 +549,7 @@ void __37__FCOfflineIssueList_removeAllIssues__block_invoke(uint64_t a1)
       v14 = 1024;
       v15 = 227;
       v16 = 2114;
-      v17 = v9;
+      v17 = observerCopy;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
       if (self)
@@ -563,7 +563,7 @@ void __37__FCOfflineIssueList_removeAllIssues__block_invoke(uint64_t a1)
 LABEL_7:
       v6 = self->_observers;
 LABEL_8:
-      [(NSHashTable *)v6 addObject:v4];
+      [(NSHashTable *)v6 addObject:observerCopy];
       goto LABEL_11;
     }
 
@@ -590,12 +590,12 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
     if (self)
     {
@@ -607,7 +607,7 @@ LABEL_11:
       observers = 0;
     }
 
-    [(NSHashTable *)observers removeObject:v4];
+    [(NSHashTable *)observers removeObject:observerCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))

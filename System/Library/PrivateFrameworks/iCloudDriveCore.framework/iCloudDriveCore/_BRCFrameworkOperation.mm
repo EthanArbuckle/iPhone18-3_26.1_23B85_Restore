@@ -1,28 +1,28 @@
 @interface _BRCFrameworkOperation
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)invalidate;
-- (void)setRemoteClientProxy:(id)a3;
+- (void)setRemoteClientProxy:(id)proxy;
 - (void)start;
 @end
 
 @implementation _BRCFrameworkOperation
 
-- (void)setRemoteClientProxy:(id)a3
+- (void)setRemoteClientProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  proxyCopy = proxy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47___BRCFrameworkOperation_setRemoteClientProxy___block_invoke;
   v8[3] = &unk_2784FF540;
-  v8[4] = v5;
-  v6 = [v4 remoteObjectProxyWithErrorHandler:v8];
-  remoteClientProxy = v5->_remoteClientProxy;
-  v5->_remoteClientProxy = v6;
+  v8[4] = selfCopy;
+  v6 = [proxyCopy remoteObjectProxyWithErrorHandler:v8];
+  remoteClientProxy = selfCopy->_remoteClientProxy;
+  selfCopy->_remoteClientProxy = v6;
 
-  [(BROperationClient *)v5->_remoteClientProxy setRemoteOperationProxy:v5 userInfo:0];
-  objc_sync_exit(v5);
+  [(BROperationClient *)selfCopy->_remoteClientProxy setRemoteOperationProxy:selfCopy userInfo:0];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidate
@@ -51,12 +51,12 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   self->_startedFinish = 1;
   v5.receiver = self;
   v5.super_class = _BRCFrameworkOperation;
-  [(_BRCOperation *)&v5 finishWithResult:a3 error:a4];
+  [(_BRCOperation *)&v5 finishWithResult:result error:error];
   [(_BRCFrameworkOperation *)self setRemoteClientProxy:0];
 }
 

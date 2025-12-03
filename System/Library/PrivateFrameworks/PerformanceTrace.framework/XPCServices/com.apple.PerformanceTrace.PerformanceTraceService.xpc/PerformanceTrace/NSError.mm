@@ -1,45 +1,45 @@
 @interface NSError
-+ (id)error:(int64_t)a3 description:(id)a4;
-+ (id)error:(int64_t)a3 description:(id)a4 underlyingError:(id)a5;
-+ (id)passiveTraceError:(int64_t)a3 description:(id)a4;
++ (id)error:(int64_t)error description:(id)description;
++ (id)error:(int64_t)error description:(id)description underlyingError:(id)underlyingError;
++ (id)passiveTraceError:(int64_t)error description:(id)description;
 @end
 
 @implementation NSError
 
-+ (id)error:(int64_t)a3 description:(id)a4
++ (id)error:(int64_t)error description:(id)description
 {
-  v4 = @"Unknown Error (description cannot be nil)";
-  if (a4)
+  descriptionCopy = @"Unknown Error (description cannot be nil)";
+  if (description)
   {
-    v4 = a4;
+    descriptionCopy = description;
   }
 
   else
   {
-    a3 = 0;
+    error = 0;
   }
 
-  v6 = [NSDictionary dictionaryWithObject:v4 forKey:NSLocalizedDescriptionKey];
-  v7 = [NSError errorWithDomain:@"PerformanceTraceError" code:a3 userInfo:v6];
+  v6 = [NSDictionary dictionaryWithObject:descriptionCopy forKey:NSLocalizedDescriptionKey];
+  v7 = [NSError errorWithDomain:@"PerformanceTraceError" code:error userInfo:v6];
 
   return v7;
 }
 
-+ (id)error:(int64_t)a3 description:(id)a4 underlyingError:(id)a5
++ (id)error:(int64_t)error description:(id)description underlyingError:(id)underlyingError
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  descriptionCopy = description;
+  underlyingErrorCopy = underlyingError;
+  v9 = underlyingErrorCopy;
+  if (descriptionCopy)
   {
-    if (v8)
+    if (underlyingErrorCopy)
     {
       v16[0] = NSLocalizedDescriptionKey;
       v16[1] = NSUnderlyingErrorKey;
-      v17[0] = v7;
-      v17[1] = v8;
+      v17[0] = descriptionCopy;
+      v17[1] = underlyingErrorCopy;
       v10 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
-      v11 = a3;
+      errorCopy = error;
       goto LABEL_7;
     }
 
@@ -54,28 +54,28 @@
   }
 
   v10 = [NSDictionary dictionaryWithObject:v13 forKey:v12];
-  v11 = 0;
+  errorCopy = 0;
 LABEL_7:
-  v14 = [NSError errorWithDomain:@"PerformanceTraceError" code:v11 userInfo:v10];
+  v14 = [NSError errorWithDomain:@"PerformanceTraceError" code:errorCopy userInfo:v10];
 
   return v14;
 }
 
-+ (id)passiveTraceError:(int64_t)a3 description:(id)a4
++ (id)passiveTraceError:(int64_t)error description:(id)description
 {
-  v4 = @"Unknown Error (description cannot be nil)";
-  if (a4)
+  descriptionCopy = @"Unknown Error (description cannot be nil)";
+  if (description)
   {
-    v4 = a4;
+    descriptionCopy = description;
   }
 
   else
   {
-    a3 = 0;
+    error = 0;
   }
 
-  v6 = [NSDictionary dictionaryWithObject:v4 forKey:NSLocalizedDescriptionKey];
-  v7 = [NSError errorWithDomain:@"PerformanceTraceError" code:a3 userInfo:v6];
+  v6 = [NSDictionary dictionaryWithObject:descriptionCopy forKey:NSLocalizedDescriptionKey];
+  v7 = [NSError errorWithDomain:@"PerformanceTraceError" code:error userInfo:v6];
 
   return v7;
 }

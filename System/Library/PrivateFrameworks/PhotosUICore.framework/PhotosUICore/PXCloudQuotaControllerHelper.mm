@@ -2,9 +2,9 @@
 - (BOOL)hasAnyInformationViews;
 - (PXCloudQuotaControllerHelperDelegate)delegate;
 - (UIView)informationView;
-- (id)initForDismissibleOffers:(BOOL)a3;
-- (id)presentingViewControllerForCloudQuotaController:(id)a3;
-- (void)cloudQuotaController:(id)a3 informationViewDidChange:(id)a4;
+- (id)initForDismissibleOffers:(BOOL)offers;
+- (id)presentingViewControllerForCloudQuotaController:(id)controller;
+- (void)cloudQuotaController:(id)controller informationViewDidChange:(id)change;
 @end
 
 @implementation PXCloudQuotaControllerHelper
@@ -16,28 +16,28 @@
   return WeakRetained;
 }
 
-- (id)presentingViewControllerForCloudQuotaController:(id)a3
+- (id)presentingViewControllerForCloudQuotaController:(id)controller
 {
-  v4 = [(PXCloudQuotaControllerHelper *)self delegate];
-  v5 = [v4 presentingViewControllerForCloudQuotaControllerHelper:self];
+  delegate = [(PXCloudQuotaControllerHelper *)self delegate];
+  v5 = [delegate presentingViewControllerForCloudQuotaControllerHelper:self];
 
   return v5;
 }
 
-- (void)cloudQuotaController:(id)a3 informationViewDidChange:(id)a4
+- (void)cloudQuotaController:(id)controller informationViewDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(PXCloudQuotaControllerHelper *)self delegate];
-  [v6 cloudQuotaControllerHelper:self informationViewDidChange:v5];
+  changeCopy = change;
+  delegate = [(PXCloudQuotaControllerHelper *)self delegate];
+  [delegate cloudQuotaControllerHelper:self informationViewDidChange:changeCopy];
 }
 
 - (UIView)informationView
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCloudQuotaController *)self->_offerController informationView];
-  v4 = [(PXCloudQuotaControllerHelper *)self premiumInformationView];
+  informationView = [(PXCloudQuotaController *)self->_offerController informationView];
+  premiumInformationView = [(PXCloudQuotaControllerHelper *)self premiumInformationView];
 
-  if (v4 && v3)
+  if (premiumInformationView && informationView)
   {
     v5 = PLUserStatusUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -45,37 +45,37 @@
       v8 = 138543618;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v6 = v9;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "<%{public}@:%p> Both offer and premium offer available. Will only use premium offer", &v8, 0x16u);
     }
 
-    v3 = 0;
+    informationView = 0;
   }
 
-  return v3;
+  return informationView;
 }
 
 - (BOOL)hasAnyInformationViews
 {
-  v3 = [(PXCloudQuotaController *)self->_offerController informationView];
-  if (v3)
+  informationView = [(PXCloudQuotaController *)self->_offerController informationView];
+  if (informationView)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PXCloudQuotaController *)self->_premiumOfferController informationView];
-    v4 = v5 != 0;
+    informationView2 = [(PXCloudQuotaController *)self->_premiumOfferController informationView];
+    v4 = informationView2 != 0;
   }
 
   return v4;
 }
 
-- (id)initForDismissibleOffers:(BOOL)a3
+- (id)initForDismissibleOffers:(BOOL)offers
 {
-  v3 = a3;
+  offersCopy = offers;
   v22 = *MEMORY[0x1E69E9840];
   v5 = PLUserStatusUIGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -84,13 +84,13 @@
     v7 = @"non-dismissible";
     *buf = 138543874;
     v17 = v6;
-    if (v3)
+    if (offersCopy)
     {
       v7 = @"dismissible";
     }
 
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v7;
     v8 = v6;
@@ -102,7 +102,7 @@
   v9 = [(PXCloudQuotaControllerHelper *)&v15 init];
   if (v9)
   {
-    v10 = [[PXCloudQuotaOfferController alloc] initForDismissibleOffers:v3];
+    v10 = [[PXCloudQuotaOfferController alloc] initForDismissibleOffers:offersCopy];
     offerController = v9->_offerController;
     v9->_offerController = v10;
 
@@ -112,7 +112,7 @@
     v9->_premiumOfferController = v12;
 
     [(PXCloudQuotaController *)v9->_premiumOfferController setDelegate:v9];
-    v9->_dismissibleOffers = v3;
+    v9->_dismissibleOffers = offersCopy;
   }
 
   return v9;

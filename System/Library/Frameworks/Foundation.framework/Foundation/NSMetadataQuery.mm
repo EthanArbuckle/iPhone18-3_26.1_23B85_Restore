@@ -1,10 +1,10 @@
 @interface NSMetadataQuery
 + (Class)_stitchingClass;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-+ (id)willBeginPossibleCreationOfItemAtURL:(id)a3;
-+ (id)willBeginPossibleDeletionOfItemAtURL:(id)a3;
-+ (id)willBeginPossibleMoveOfItemAtURL:(id)a3 toURL:(id)a4;
-+ (void)didEndPossibleFileOperation:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
++ (id)willBeginPossibleCreationOfItemAtURL:(id)l;
++ (id)willBeginPossibleDeletionOfItemAtURL:(id)l;
++ (id)willBeginPossibleMoveOfItemAtURL:(id)l toURL:(id)rL;
++ (void)didEndPossibleFileOperation:(id)operation;
 - (BOOL)_canModifyQueryOrObserversInCurrentContext;
 - (BOOL)startQuery;
 - (NSArray)groupedResults;
@@ -19,32 +19,32 @@
 - (NSUInteger)indexOfResult:(id)result;
 - (NSUInteger)resultCount;
 - (id)_allAttributes;
-- (id)_pendingChangeNotificationsArrayForKey:(id)a3 create:(BOOL)a4;
+- (id)_pendingChangeNotificationsArrayForKey:(id)key create:(BOOL)create;
 - (id)_sortingAttributes;
 - (id)resultAtIndex:(NSUInteger)idx;
 - (id)valueOfAttribute:(NSString *)attrName forResultAtIndex:(NSUInteger)idx;
 - (void)_disableAutoUpdates;
 - (void)_enableAutoUpdates;
-- (void)_inOriginalContextInvokeBlock:(id)a3;
-- (void)_noteNote1:(id)a3;
-- (void)_noteNote2:(id)a3;
-- (void)_noteNote3:(id)a3;
-- (void)_noteNote4:(id)a3;
-- (void)_postNotificationName:(id)a3 userInfo:(id)a4;
+- (void)_inOriginalContextInvokeBlock:(id)block;
+- (void)_noteNote1:(id)note1;
+- (void)_noteNote2:(id)note2;
+- (void)_noteNote3:(id)note3;
+- (void)_noteNote4:(id)note4;
+- (void)_postNotificationName:(id)name userInfo:(id)info;
 - (void)_recreateQuery;
 - (void)_resetQueryState;
 - (void)_setBatchingParams;
-- (void)_setExternalDocumentsBundleIdentifier:(id)a3;
+- (void)_setExternalDocumentsBundleIdentifier:(id)identifier;
 - (void)_update;
 - (void)_validateInvocationContext;
-- (void)_validatePredicate:(id)a3 withScopes:(id)a4;
-- (void)_zapResultArrayIfIdenticalTo:(id)a3;
+- (void)_validatePredicate:(id)predicate withScopes:(id)scopes;
+- (void)_zapResultArrayIfIdenticalTo:(id)to;
 - (void)dealloc;
 - (void)disableUpdates;
 - (void)enableUpdates;
 - (void)enumerateResultsUsingBlock:(void *)block;
 - (void)enumerateResultsWithOptions:(NSEnumerationOptions)opts usingBlock:(void *)block;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4;
+- (void)removeObserver:(id)observer forKeyPath:(id)path;
 - (void)setDelegate:(id)delegate;
 - (void)setGroupingAttributes:(NSArray *)groupingAttributes;
 - (void)setNotificationBatchingInterval:(NSTimeInterval)notificationBatchingInterval;
@@ -81,18 +81,18 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
   return result;
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DFA8] set];
-  if (([a3 isEqualToString:@"resultCount"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"valueLists") & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"groupedResults"))
+  if (([key isEqualToString:@"resultCount"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"valueLists") & 1) != 0 || objc_msgSend(key, "isEqualToString:", @"groupedResults"))
   {
     [v5 addObject:@"results"];
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___NSMetadataQuery;
-  [v5 unionSet:{objc_msgSendSuper2(&v7, sel_keyPathsForValuesAffectingValueForKey_, a3)}];
+  [v5 unionSet:{objc_msgSendSuper2(&v7, sel_keyPathsForValuesAffectingValueForKey_, key)}];
   return v5;
 }
 
@@ -156,10 +156,10 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
       }
     }
 
-    v6 = [self->_private[5] resultCount];
-    if (v6 >= 1)
+    resultCount = [self->_private[5] resultCount];
+    if (resultCount >= 1)
     {
-      v7 = v6;
+      v7 = resultCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [self->_private[5] resultAtIndex:i];
@@ -255,12 +255,12 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
   return v2;
 }
 
-- (void)_validatePredicate:(id)a3 withScopes:(id)a4
+- (void)_validatePredicate:(id)predicate withScopes:(id)scopes
 {
-  if (a3 && [a4 count])
+  if (predicate && [scopes count])
   {
 
-    [a3 _validateForMetadataQueryScopes:a4];
+    [predicate _validateForMetadataQueryScopes:scopes];
   }
 }
 
@@ -356,7 +356,7 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
 - (id)_sortingAttributes
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -377,7 +377,7 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
           objc_enumerationMutation(v4);
         }
 
-        [v3 addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "key")}];
+        [array addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "key")}];
       }
 
       while (v6 != v8);
@@ -387,23 +387,23 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_allAttributes
 {
-  v3 = [(NSMetadataQuery *)self valueListAttributes];
-  v4 = [(NSMetadataQuery *)self groupingAttributes];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = v5;
-  if (v3)
+  valueListAttributes = [(NSMetadataQuery *)self valueListAttributes];
+  groupingAttributes = [(NSMetadataQuery *)self groupingAttributes];
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = array;
+  if (valueListAttributes)
   {
-    [v5 addObjectsFromArray:v3];
+    [array addObjectsFromArray:valueListAttributes];
   }
 
-  if (v4)
+  if (groupingAttributes)
   {
-    [v6 addObjectsFromArray:v4];
+    [v6 addObjectsFromArray:groupingAttributes];
   }
 
   [v6 addObjectsFromArray:{-[NSMetadataQuery _sortingAttributes](self, "_sortingAttributes")}];
@@ -488,10 +488,10 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
   }
 }
 
-- (void)_setExternalDocumentsBundleIdentifier:(id)a3
+- (void)_setExternalDocumentsBundleIdentifier:(id)identifier
 {
   [(NSMetadataQuery *)self _validateInvocationContext];
-  objc_setAssociatedObject(self, sel__externalDocumentsBundleIdentifier, a3, 0x301);
+  objc_setAssociatedObject(self, sel__externalDocumentsBundleIdentifier, identifier, 0x301);
   if ((self->_flags & 3) == 1)
   {
 
@@ -515,15 +515,15 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
   }
 }
 
-- (void)_postNotificationName:(id)a3 userInfo:(id)a4
+- (void)_postNotificationName:(id)name userInfo:(id)info
 {
   [(NSMetadataQuery *)self operationQueue];
   v7 = +[NSNotificationCenter defaultCenter];
 
-  [(NSNotificationCenter *)v7 postNotificationName:a3 object:self userInfo:a4];
+  [(NSNotificationCenter *)v7 postNotificationName:name object:self userInfo:info];
 }
 
-- (void)_noteNote1:(id)a3
+- (void)_noteNote1:(id)note1
 {
   flags = self->_flags;
   if ((flags & 0x80) == 0)
@@ -535,27 +535,27 @@ uint64_t __55__NSMetadataQuery_NSMetadataStitching___stitchingClass__block_invok
   LODWORD(self->_flags) = flags | 0x80;
 }
 
-- (void)_noteNote2:(id)a3
+- (void)_noteNote2:(id)note2
 {
   LODWORD(self->_flags) &= ~0x80u;
   [(NSMetadataQuery *)self didChangeValueForKey:@"results"];
-  v5 = [a3 userInfo];
+  userInfo = [note2 userInfo];
 
-  [(NSMetadataQuery *)self _postNotificationName:@"NSMetadataQueryGatheringProgressNotification" userInfo:v5];
+  [(NSMetadataQuery *)self _postNotificationName:@"NSMetadataQueryGatheringProgressNotification" userInfo:userInfo];
 }
 
-- (void)_noteNote3:(id)a3
+- (void)_noteNote3:(id)note3
 {
   LODWORD(self->_flags) &= ~0x80u;
   [(NSMetadataQuery *)self didChangeValueForKey:@"results"];
-  v5 = [a3 userInfo];
+  userInfo = [note3 userInfo];
 
-  [(NSMetadataQuery *)self _postNotificationName:@"NSMetadataQueryDidUpdateNotification" userInfo:v5];
+  [(NSMetadataQuery *)self _postNotificationName:@"NSMetadataQueryDidUpdateNotification" userInfo:userInfo];
 }
 
-- (void)_noteNote4:(id)a3
+- (void)_noteNote4:(id)note4
 {
-  v3 = self;
+  selfCopy = self;
   flags = self->_flags;
   if ((flags & 0x80) != 0)
   {
@@ -669,10 +669,10 @@ LABEL_7:
   }
 
   v22 = v8;
-  v9 = [(NSMetadataQuery *)self searchItems];
-  if (v9)
+  searchItems = [(NSMetadataQuery *)self searchItems];
+  if (searchItems)
   {
-    v10 = v9;
+    v10 = searchItems;
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v26 = 0u;
     v27 = 0u;
@@ -698,12 +698,12 @@ LABEL_7:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [objc_alloc(objc_lookUpClass("BRItem")) initWithURL:v15];
+          _item = [objc_alloc(objc_lookUpClass("BRItem")) initWithURL:v15];
         }
 
         else if (_NSIsNSString())
         {
-          v16 = [objc_alloc(objc_lookUpClass("BRItem")) initWithURL:{objc_msgSend(MEMORY[0x1E695DFF8], "fileURLWithPath:", v15)}];
+          _item = [objc_alloc(objc_lookUpClass("BRItem")) initWithURL:{objc_msgSend(MEMORY[0x1E695DFF8], "fileURLWithPath:", v15)}];
         }
 
         else
@@ -713,13 +713,13 @@ LABEL_7:
             continue;
           }
 
-          v16 = [v15 _item];
+          _item = [v15 _item];
         }
 
-        v17 = v16;
-        if (v16)
+        v17 = _item;
+        if (_item)
         {
-          [v11 addObject:v16];
+          [v11 addObject:_item];
         }
       }
 
@@ -765,10 +765,10 @@ LABEL_29:
     [self->_private[5] setSearchScope:self->_private[10] withOptions:0];
   }
 
-  v19 = [(NSMetadataQuery *)self operationQueue];
-  if (v19)
+  operationQueue = [(NSMetadataQuery *)self operationQueue];
+  if (operationQueue)
   {
-    [self->_private[5] setQueryQueue:v19];
+    [self->_private[5] setQueryQueue:operationQueue];
   }
 
   [(NSMetadataQuery *)self _setBatchingParams];
@@ -780,10 +780,10 @@ LABEL_29:
   if ([self->_private[10] containsObject:@"NSMetadataQueryExternalDocumentsScope"])
   {
     v20 = self->_private[5];
-    v21 = [(NSMetadataQuery *)self _externalDocumentsBundleIdentifier];
+    _externalDocumentsBundleIdentifier = [(NSMetadataQuery *)self _externalDocumentsBundleIdentifier];
     if (objc_opt_respondsToSelector())
     {
-      [v20 performSelector:sel_setExternalDocumentsBundleIdentifier_ withObject:v21];
+      [v20 performSelector:sel_setExternalDocumentsBundleIdentifier_ withObject:_externalDocumentsBundleIdentifier];
     }
   }
 
@@ -795,7 +795,7 @@ LABEL_29:
   self->_private[9] = 0;
   if ([self->_private[5] executeWithOptions:0])
   {
-    if (!v19)
+    if (!operationQueue)
     {
       self->_private[9] = [MEMORY[0x1E695DFD0] currentRunLoop];
     }
@@ -855,16 +855,16 @@ LABEL_29:
   return 1;
 }
 
-- (void)_inOriginalContextInvokeBlock:(id)a3
+- (void)_inOriginalContextInvokeBlock:(id)block
 {
   if ([(NSMetadataQuery *)self operationQueue])
   {
     v5 = +[NSOperationQueue currentQueue];
     if (v5 != [(NSMetadataQuery *)self operationQueue])
     {
-      v6 = [(NSMetadataQuery *)self operationQueue];
+      operationQueue = [(NSMetadataQuery *)self operationQueue];
 
-      [(NSOperationQueue *)v6 addOperationWithBlock:a3];
+      [(NSOperationQueue *)operationQueue addOperationWithBlock:block];
       return;
     }
 
@@ -874,16 +874,16 @@ LABEL_29:
   if (!self->_private[9] || (v7 = [MEMORY[0x1E695DFD0] currentRunLoop], v8 = self->_private[9], v7 == v8))
   {
 LABEL_11:
-    v10 = *(a3 + 2);
+    v10 = *(block + 2);
 
-    v10(a3);
+    v10(block);
     return;
   }
 
-  v9 = [v8 getCFRunLoop];
-  CFRunLoopPerformBlock(v9, *MEMORY[0x1E695E8E0], a3);
+  getCFRunLoop = [v8 getCFRunLoop];
+  CFRunLoopPerformBlock(getCFRunLoop, *MEMORY[0x1E695E8E0], block);
 
-  CFRunLoopWakeUp(v9);
+  CFRunLoopWakeUp(getCFRunLoop);
 }
 
 - (void)stopQuery
@@ -1077,9 +1077,9 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
   [(NSMetadataQuery *)self enableUpdates];
 }
 
-- (void)_zapResultArrayIfIdenticalTo:(id)a3
+- (void)_zapResultArrayIfIdenticalTo:(id)to
 {
-  if (*(self->_reserved + 1) == a3)
+  if (*(self->_reserved + 1) == to)
   {
     [(NSMetadataQuery *)self _disableAutoUpdates];
     *(self->_reserved + 1) = 0;
@@ -1144,7 +1144,7 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
   v33 = *MEMORY[0x1E69E9840];
   if (self->_private[5])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -1166,7 +1166,7 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
 
           v22 = v3;
           v4 = *(*(&v29 + 1) + 8 * v3);
-          v5 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v6 = [objc_msgSend(self->_private[5] valuesOfAttribute:{v4), "copy"}];
           v24 = 0u;
           v25 = 0u;
@@ -1187,7 +1187,7 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
                 }
 
                 v11 = -[NSMetadataQueryAttributeValueTuple _init:attribute:value:count:]([NSMetadataQueryAttributeValueTuple alloc], "_init:attribute:value:count:", self, v4, *(*(&v24 + 1) + 8 * i), [self->_private[5] countOfResultsForAttributeName:v4 value:*(*(&v24 + 1) + 8 * i)]);
-                [v5 addObject:v11];
+                [array2 addObject:v11];
               }
 
               v8 = [v6 countByEnumeratingWithState:&v24 objects:v23 count:16];
@@ -1207,10 +1207,10 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
             v13 = v12;
             v14 = [NSMetadataQueryAttributeValueTuple alloc];
             v15 = -[NSMetadataQueryAttributeValueTuple _init:attribute:value:count:](v14, "_init:attribute:value:count:", self, v4, [MEMORY[0x1E695DFB0] null], v13);
-            [v5 addObject:v15];
+            [array2 addObject:v15];
           }
 
-          [v20 addObject:v5];
+          [array addObject:array2];
           v3 = v22 + 1;
         }
 
@@ -1221,7 +1221,7 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
       while (v21);
     }
 
-    return [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:self->_private[2]];
+    return [MEMORY[0x1E695DF20] dictionaryWithObjects:array forKeys:self->_private[2]];
   }
 
   else
@@ -1236,32 +1236,32 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
 {
   if (self->_private[5] && [self->_private[3] count])
   {
-    v3 = [(NSMetadataQuery *)self resultCount];
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    resultCount = [(NSMetadataQuery *)self resultCount];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = [self->_private[3] objectAtIndex:0];
-    if (v3 >= 1)
+    if (resultCount >= 1)
     {
       v6 = v5;
-      for (i = 0; i != v3; ++i)
+      for (i = 0; i != resultCount; ++i)
       {
-        v8 = [(NSMetadataQuery *)self valueOfAttribute:v6 forResultAtIndex:i];
-        if (!v8)
+        null = [(NSMetadataQuery *)self valueOfAttribute:v6 forResultAtIndex:i];
+        if (!null)
         {
-          v8 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        v9 = [v4 objectForKey:v8];
+        v9 = [dictionary objectForKey:null];
         if (!v9)
         {
-          v9 = [[NSMetadataQueryResultGroup alloc] _init:self attributes:self->_private[3] index:0 value:v8];
-          [v4 setObject:v9 forKey:v8];
+          v9 = [[NSMetadataQueryResultGroup alloc] _init:self attributes:self->_private[3] index:0 value:null];
+          [dictionary setObject:v9 forKey:null];
         }
 
         [v9 _addResult:i];
       }
     }
 
-    return [v4 allValues];
+    return [dictionary allValues];
   }
 
   else
@@ -1303,11 +1303,11 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_pendingChangeNotificationsArrayForKey:(id)a3 create:(BOOL)a4
+- (id)_pendingChangeNotificationsArrayForKey:(id)key create:(BOOL)create
 {
-  v4 = a4;
+  createCopy = create;
   v10 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"results"] && -[NSMetadataQuery operationQueue](self, "operationQueue"))
+  if ([key isEqualToString:@"results"] && -[NSMetadataQuery operationQueue](self, "operationQueue"))
   {
     result = *(self->_reserved + 2);
     if (result)
@@ -1317,7 +1317,7 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
 
     else
     {
-      v8 = !v4;
+      v8 = !createCopy;
     }
 
     if (!v8)
@@ -1331,44 +1331,44 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
   {
     v9.receiver = self;
     v9.super_class = NSMetadataQuery;
-    return [(NSMetadataQuery *)&v9 _pendingChangeNotificationsArrayForKey:a3 create:v4];
+    return [(NSMetadataQuery *)&v9 _pendingChangeNotificationsArrayForKey:key create:createCopy];
   }
 
   return result;
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4
+- (void)removeObserver:(id)observer forKeyPath:(id)path
 {
   v11 = *MEMORY[0x1E69E9840];
-  if ([a4 isEqualToString:@"results"] && !-[NSMetadataQuery _canModifyQueryOrObserversInCurrentContext](self, "_canModifyQueryOrObserversInCurrentContext"))
+  if ([path isEqualToString:@"results"] && !-[NSMetadataQuery _canModifyQueryOrObserversInCurrentContext](self, "_canModifyQueryOrObserversInCurrentContext"))
   {
     if ([(NSMetadataQuery *)self operationQueue])
     {
       v7 = +[NSOperationQueue currentQueue];
-      v8 = [(NSOperationQueue *)v7 name];
-      if (![(NSString *)v8 length])
+      name = [(NSOperationQueue *)v7 name];
+      if (![(NSString *)name length])
       {
         label = dispatch_queue_get_label(0);
         if (label)
         {
-          v8 = [NSString stringWithUTF8String:label];
+          name = [NSString stringWithUTF8String:label];
         }
       }
 
-      if (![(NSString *)v8 length])
+      if (![(NSString *)name length])
       {
         if (v7)
         {
-          v8 = [(NSOperationQueue *)v7 description];
+          name = [(NSOperationQueue *)v7 description];
         }
 
         else
         {
-          v8 = @"an unknown queue";
+          name = @"an unknown queue";
         }
       }
 
-      NSLog(@"%@: A Key-Value Observer of NSMetadataQuery.results for this instance was removed, while the query was still running, on %@ instead of NSMetadataQuery.operationQueue, which is %@. To avoid race conditions, you should either ensure the query is stopped before removing observers, or remove them on the NSMetadataQuery.operationQueue", self, v8, [(NSMetadataQuery *)self operationQueue]);
+      NSLog(@"%@: A Key-Value Observer of NSMetadataQuery.results for this instance was removed, while the query was still running, on %@ instead of NSMetadataQuery.operationQueue, which is %@. To avoid race conditions, you should either ensure the query is stopped before removing observers, or remove them on the NSMetadataQuery.operationQueue", self, name, [(NSMetadataQuery *)self operationQueue]);
     }
 
     else
@@ -1379,35 +1379,35 @@ uint64_t __28__NSMetadataQuery_stopQuery__block_invoke(uint64_t a1)
 
   v10.receiver = self;
   v10.super_class = NSMetadataQuery;
-  [(NSMetadataQuery *)&v10 removeObserver:a3 forKeyPath:a4];
+  [(NSMetadataQuery *)&v10 removeObserver:observer forKeyPath:path];
 }
 
-+ (id)willBeginPossibleMoveOfItemAtURL:(id)a3 toURL:(id)a4
++ (id)willBeginPossibleMoveOfItemAtURL:(id)l toURL:(id)rL
 {
-  v6 = [a1 _stitchingClass];
+  _stitchingClass = [self _stitchingClass];
 
-  return [v6 willBeginPossibleMoveOfItemAtURL:a3 toURL:a4];
+  return [_stitchingClass willBeginPossibleMoveOfItemAtURL:l toURL:rL];
 }
 
-+ (id)willBeginPossibleDeletionOfItemAtURL:(id)a3
++ (id)willBeginPossibleDeletionOfItemAtURL:(id)l
 {
-  v4 = [a1 _stitchingClass];
+  _stitchingClass = [self _stitchingClass];
 
-  return [v4 willBeginPossibleDeletionOfItemAtURL:a3];
+  return [_stitchingClass willBeginPossibleDeletionOfItemAtURL:l];
 }
 
-+ (id)willBeginPossibleCreationOfItemAtURL:(id)a3
++ (id)willBeginPossibleCreationOfItemAtURL:(id)l
 {
-  v4 = [a1 _stitchingClass];
+  _stitchingClass = [self _stitchingClass];
 
-  return [v4 willBeginPossibleCreationOfItemAtURL:a3];
+  return [_stitchingClass willBeginPossibleCreationOfItemAtURL:l];
 }
 
-+ (void)didEndPossibleFileOperation:(id)a3
++ (void)didEndPossibleFileOperation:(id)operation
 {
-  v4 = [a1 _stitchingClass];
+  _stitchingClass = [self _stitchingClass];
 
-  [v4 didEndPossibleFileOperation:a3];
+  [_stitchingClass didEndPossibleFileOperation:operation];
 }
 
 @end

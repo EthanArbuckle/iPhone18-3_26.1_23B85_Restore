@@ -1,20 +1,20 @@
 @interface NWPBHostEndpoint
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NWPBHostEndpoint
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((hostname = self->_hostname, !(hostname | v4[1])) || -[NSString isEqual:](hostname, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((hostname = self->_hostname, !(hostname | equalCopy[1])) || -[NSString isEqual:](hostname, "isEqual:")))
   {
     port = self->_port;
-    if (port | v4[2])
+    if (port | equalCopy[2])
     {
       v7 = [(NSString *)port isEqual:?];
     }
@@ -33,45 +33,45 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_hostname copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_hostname copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_port copyWithZone:a3];
+  v8 = [(NSString *)self->_port copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_hostname)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_port)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   hostname = self->_hostname;
   if (hostname)
   {
-    [v3 setObject:hostname forKey:@"hostname"];
+    [dictionary setObject:hostname forKey:@"hostname"];
   }
 
   port = self->_port;
@@ -89,8 +89,8 @@
   v8.receiver = self;
   v8.super_class = NWPBHostEndpoint;
   v4 = [(NWPBHostEndpoint *)&v8 description];
-  v5 = [(NWPBHostEndpoint *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NWPBHostEndpoint *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

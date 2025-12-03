@@ -1,7 +1,7 @@
 @interface AVPictureInPictureVideoCallViewController
 - (AVPictureInPictureController)pictureInPictureController;
 - (AVPictureInPictureControllerContentSource)contentSource;
-- (AVPictureInPictureVideoCallViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AVPictureInPictureVideoCallViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (AVPictureInPictureViewController)pictureInPictureViewController;
 - (AVVideoCallPlayerController)videoCallPlayerController;
 - (BOOL)avkit_isVisible;
@@ -11,10 +11,10 @@
 - (id)avkit_pictureInPictureViewController;
 - (void)_observeSourceView;
 - (void)_removeFromParent;
-- (void)_setLastKnownIsVisible:(BOOL)a3 videoRectInWindow:(CGRect)a4;
-- (void)avkit_startRoutingVideoToPictureInPictureViewController:(id)a3;
-- (void)avkit_stopRoutingVideoToPictureInPictureViewController:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)_setLastKnownIsVisible:(BOOL)visible videoRectInWindow:(CGRect)window;
+- (void)avkit_startRoutingVideoToPictureInPictureViewController:(id)controller;
+- (void)avkit_stopRoutingVideoToPictureInPictureViewController:(id)controller;
+- (void)setPreferredContentSize:(CGSize)size;
 - (void)startObservingSourceView;
 - (void)stopObservingSourceView;
 @end
@@ -58,20 +58,20 @@
 - (void)_removeFromParent
 {
   [(AVPictureInPictureVideoCallViewController *)self willMoveToParentViewController:0];
-  v3 = [(AVPictureInPictureVideoCallViewController *)self view];
-  [v3 removeFromSuperview];
+  view = [(AVPictureInPictureVideoCallViewController *)self view];
+  [view removeFromSuperview];
 
   [(AVPictureInPictureVideoCallViewController *)self removeFromParentViewController];
 }
 
-- (void)_setLastKnownIsVisible:(BOOL)a3 videoRectInWindow:(CGRect)a4
+- (void)_setLastKnownIsVisible:(BOOL)visible videoRectInWindow:(CGRect)window
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  if ([(AVPictureInPictureVideoCallViewController *)self lastKnownIsVisible]== a3)
+  height = window.size.height;
+  width = window.size.width;
+  y = window.origin.y;
+  x = window.origin.x;
+  visibleCopy = visible;
+  if ([(AVPictureInPictureVideoCallViewController *)self lastKnownIsVisible]== visible)
   {
     [(AVPictureInPictureVideoCallViewController *)self lastKnownVideoRectInWindow];
     v18.origin.x = v10;
@@ -83,7 +83,7 @@
     v17.size.width = width;
     v17.size.height = height;
     v14 = CGRectEqualToRect(v17, v18);
-    [(AVPictureInPictureVideoCallViewController *)self setLastKnownIsVisible:v8];
+    [(AVPictureInPictureVideoCallViewController *)self setLastKnownIsVisible:visibleCopy];
     [(AVPictureInPictureVideoCallViewController *)self setLastKnownVideoRectInWindow:x, y, width, height];
     if (v14)
     {
@@ -93,74 +93,74 @@
 
   else
   {
-    [(AVPictureInPictureVideoCallViewController *)self setLastKnownIsVisible:v8];
+    [(AVPictureInPictureVideoCallViewController *)self setLastKnownIsVisible:visibleCopy];
     [(AVPictureInPictureVideoCallViewController *)self setLastKnownVideoRectInWindow:x, y, width, height];
   }
 
-  v15 = [(AVPictureInPictureVideoCallViewController *)self pictureInPictureController];
-  [v15 contentSourceVideoRectInWindowChanged];
+  pictureInPictureController = [(AVPictureInPictureVideoCallViewController *)self pictureInPictureController];
+  [pictureInPictureController contentSourceVideoRectInWindowChanged];
 }
 
 - (void)_observeSourceView
 {
-  v3 = [(AVPictureInPictureVideoCallViewController *)self avkit_isVisible];
+  avkit_isVisible = [(AVPictureInPictureVideoCallViewController *)self avkit_isVisible];
   [(AVPictureInPictureVideoCallViewController *)self avkit_videoRectInWindow];
 
-  [(AVPictureInPictureVideoCallViewController *)self _setLastKnownIsVisible:v3 videoRectInWindow:?];
+  [(AVPictureInPictureVideoCallViewController *)self _setLastKnownIsVisible:avkit_isVisible videoRectInWindow:?];
 }
 
-- (void)avkit_stopRoutingVideoToPictureInPictureViewController:(id)a3
+- (void)avkit_stopRoutingVideoToPictureInPictureViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AVPictureInPictureVideoCallViewController *)self parentViewController];
+  controllerCopy = controller;
+  parentViewController = [(AVPictureInPictureVideoCallViewController *)self parentViewController];
 
-  if (v5 == v4)
+  if (parentViewController == controllerCopy)
   {
 
     [(AVPictureInPictureVideoCallViewController *)self _removeFromParent];
   }
 }
 
-- (void)avkit_startRoutingVideoToPictureInPictureViewController:(id)a3
+- (void)avkit_startRoutingVideoToPictureInPictureViewController:(id)controller
 {
-  v18 = a3;
-  v4 = [(AVPictureInPictureVideoCallViewController *)self parentViewController];
+  controllerCopy = controller;
+  parentViewController = [(AVPictureInPictureVideoCallViewController *)self parentViewController];
 
-  if (v4)
+  if (parentViewController)
   {
     [(AVPictureInPictureVideoCallViewController *)self _removeFromParent];
   }
 
-  [v18 addChildViewController:self];
-  v5 = [v18 view];
-  [v5 bounds];
+  [controllerCopy addChildViewController:self];
+  view = [controllerCopy view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(AVPictureInPictureVideoCallViewController *)self view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view2 = [(AVPictureInPictureVideoCallViewController *)self view];
+  [view2 setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(AVPictureInPictureVideoCallViewController *)self view];
-  [v15 setAutoresizingMask:18];
+  view3 = [(AVPictureInPictureVideoCallViewController *)self view];
+  [view3 setAutoresizingMask:18];
 
-  v16 = [v18 view];
-  v17 = [(AVPictureInPictureVideoCallViewController *)self view];
-  [v16 addSubview:v17];
+  view4 = [controllerCopy view];
+  view5 = [(AVPictureInPictureVideoCallViewController *)self view];
+  [view4 addSubview:view5];
 
-  [(AVPictureInPictureVideoCallViewController *)self didMoveToParentViewController:v18];
+  [(AVPictureInPictureVideoCallViewController *)self didMoveToParentViewController:controllerCopy];
 }
 
 - (id)avkit_pictureInPictureViewController
 {
-  v3 = [(AVPictureInPictureVideoCallViewController *)self pictureInPictureViewController];
-  if (!v3)
+  pictureInPictureViewController = [(AVPictureInPictureVideoCallViewController *)self pictureInPictureViewController];
+  if (!pictureInPictureViewController)
   {
-    v3 = objc_alloc_init(AVPictureInPictureViewController);
-    [(AVPictureInPictureVideoCallViewController *)self setPictureInPictureViewController:v3];
+    pictureInPictureViewController = objc_alloc_init(AVPictureInPictureViewController);
+    [(AVPictureInPictureVideoCallViewController *)self setPictureInPictureViewController:pictureInPictureViewController];
   }
 
-  return v3;
+  return pictureInPictureViewController;
 }
 
 - (AVVideoCallPlayerController)videoCallPlayerController
@@ -169,8 +169,8 @@
   if (!v3)
   {
     v3 = objc_alloc_init(AVVideoCallPlayerController);
-    v4 = [(AVPictureInPictureVideoCallViewController *)self contentSource];
-    [(AVVideoCallPlayerController *)v3 setContentSource:v4];
+    contentSource = [(AVPictureInPictureVideoCallViewController *)self contentSource];
+    [(AVVideoCallPlayerController *)v3 setContentSource:contentSource];
 
     [(AVPictureInPictureVideoCallViewController *)self preferredContentSize];
     [(AVVideoCallPlayerController *)v3 setContentDimensions:?];
@@ -183,48 +183,48 @@
 
 - (UIWindow)avkit_window
 {
-  v2 = [(AVPictureInPictureVideoCallViewController *)self contentSource];
-  v3 = [v2 activeVideoCallSourceView];
-  v4 = [v3 window];
+  contentSource = [(AVPictureInPictureVideoCallViewController *)self contentSource];
+  activeVideoCallSourceView = [contentSource activeVideoCallSourceView];
+  window = [activeVideoCallSourceView window];
 
-  return v4;
+  return window;
 }
 
 - (BOOL)avkit_isVisible
 {
-  v2 = [(AVPictureInPictureVideoCallViewController *)self contentSource];
-  v3 = [v2 activeVideoCallSourceView];
-  v4 = [v3 avkit_isInAWindowAndVisible];
+  contentSource = [(AVPictureInPictureVideoCallViewController *)self contentSource];
+  activeVideoCallSourceView = [contentSource activeVideoCallSourceView];
+  avkit_isInAWindowAndVisible = [activeVideoCallSourceView avkit_isInAWindowAndVisible];
 
-  return v4;
+  return avkit_isInAWindowAndVisible;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7.receiver = self;
   v7.super_class = AVPictureInPictureVideoCallViewController;
   [(AVPictureInPictureVideoCallViewController *)&v7 setPreferredContentSize:?];
-  v6 = [(AVPictureInPictureVideoCallViewController *)self videoCallPlayerController];
-  [v6 setContentDimensions:{width, height}];
+  videoCallPlayerController = [(AVPictureInPictureVideoCallViewController *)self videoCallPlayerController];
+  [videoCallPlayerController setContentDimensions:{width, height}];
 }
 
 - (CGRect)avkit_videoRectInWindow
 {
-  v3 = [(AVPictureInPictureVideoCallViewController *)self contentSource];
-  v4 = [v3 activeVideoCallSourceView];
-  v5 = [v4 window];
-  v6 = [(AVPictureInPictureVideoCallViewController *)self contentSource];
-  v7 = [v6 activeVideoCallSourceView];
-  [v7 bounds];
+  contentSource = [(AVPictureInPictureVideoCallViewController *)self contentSource];
+  activeVideoCallSourceView = [contentSource activeVideoCallSourceView];
+  window = [activeVideoCallSourceView window];
+  contentSource2 = [(AVPictureInPictureVideoCallViewController *)self contentSource];
+  activeVideoCallSourceView2 = [contentSource2 activeVideoCallSourceView];
+  [activeVideoCallSourceView2 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(AVPictureInPictureVideoCallViewController *)self contentSource];
-  v17 = [v16 activeVideoCallSourceView];
-  [v5 convertRect:v17 fromView:{v9, v11, v13, v15}];
+  contentSource3 = [(AVPictureInPictureVideoCallViewController *)self contentSource];
+  activeVideoCallSourceView3 = [contentSource3 activeVideoCallSourceView];
+  [window convertRect:activeVideoCallSourceView3 fromView:{v9, v11, v13, v15}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -243,12 +243,12 @@
 
 - (void)stopObservingSourceView
 {
-  v3 = [(AVPictureInPictureVideoCallViewController *)self observeSourceViewTimer];
-  [v3 invalidate];
+  observeSourceViewTimer = [(AVPictureInPictureVideoCallViewController *)self observeSourceViewTimer];
+  [observeSourceViewTimer invalidate];
 
   [(AVPictureInPictureVideoCallViewController *)self setObserveSourceViewTimer:0];
-  v4 = [(AVPictureInPictureVideoCallViewController *)self videoCallPlayerController];
-  [v4 setPictureInPicturePossible:0];
+  videoCallPlayerController = [(AVPictureInPictureVideoCallViewController *)self videoCallPlayerController];
+  [videoCallPlayerController setPictureInPicturePossible:0];
 }
 
 - (void)startObservingSourceView
@@ -301,11 +301,11 @@ void __69__AVPictureInPictureVideoCallViewController_startObservingSourceView__b
   }
 }
 
-- (AVPictureInPictureVideoCallViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AVPictureInPictureVideoCallViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AVPictureInPictureVideoCallViewController;
-  v4 = [(AVPictureInPictureVideoCallViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(AVPictureInPictureVideoCallViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {

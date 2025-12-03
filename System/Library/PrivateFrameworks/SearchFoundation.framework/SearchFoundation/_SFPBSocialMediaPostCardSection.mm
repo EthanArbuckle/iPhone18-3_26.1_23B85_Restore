@@ -1,34 +1,34 @@
 @interface _SFPBSocialMediaPostCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSocialMediaPostCardSection)initWithDictionary:(id)a3;
-- (_SFPBSocialMediaPostCardSection)initWithFacade:(id)a3;
-- (_SFPBSocialMediaPostCardSection)initWithJSON:(id)a3;
+- (_SFPBSocialMediaPostCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBSocialMediaPostCardSection)initWithFacade:(id)facade;
+- (_SFPBSocialMediaPostCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPunchoutOptions:(id)a3;
-- (void)setFootnote:(id)a3;
-- (void)setHandle:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPunchoutOptions:(id)a3;
-- (void)setPunchoutPickerDismissText:(id)a3;
-- (void)setPunchoutPickerTitle:(id)a3;
-- (void)setTimestamp:(id)a3;
-- (void)setType:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPunchoutOptions:(id)options;
+- (void)setFootnote:(id)footnote;
+- (void)setHandle:(id)handle;
+- (void)setName:(id)name;
+- (void)setPunchoutOptions:(id)options;
+- (void)setPunchoutPickerDismissText:(id)text;
+- (void)setPunchoutPickerTitle:(id)title;
+- (void)setTimestamp:(id)timestamp;
+- (void)setType:(id)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSocialMediaPostCardSection
 
-- (_SFPBSocialMediaPostCardSection)initWithFacade:(id)a3
+- (_SFPBSocialMediaPostCardSection)initWithFacade:(id)facade
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSocialMediaPostCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [facadeCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -42,8 +42,8 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v53 objects:v57 count:16];
+    punchoutOptions2 = [facadeCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v53 objects:v57 count:16];
     if (v9)
     {
       v10 = v9;
@@ -54,7 +54,7 @@
         {
           if (*v54 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v53 + 1) + 8 * i)];
@@ -64,150 +64,150 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v53 objects:v57 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v53 objects:v57 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBSocialMediaPostCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [facadeCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(_SFPBSocialMediaPostCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [facadeCopy punchoutPickerTitle];
+      [(_SFPBSocialMediaPostCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [facadeCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(_SFPBSocialMediaPostCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [facadeCopy punchoutPickerDismissText];
+      [(_SFPBSocialMediaPostCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 hasCanBeHidden])
+    if ([facadeCopy hasCanBeHidden])
     {
-      -[_SFPBSocialMediaPostCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[_SFPBSocialMediaPostCardSection setCanBeHidden:](v5, "setCanBeHidden:", [facadeCopy canBeHidden]);
     }
 
-    if ([v4 hasHasTopPadding])
+    if ([facadeCopy hasHasTopPadding])
     {
-      -[_SFPBSocialMediaPostCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[_SFPBSocialMediaPostCardSection setHasTopPadding:](v5, "setHasTopPadding:", [facadeCopy hasTopPadding]);
     }
 
-    if ([v4 hasHasBottomPadding])
+    if ([facadeCopy hasHasBottomPadding])
     {
-      -[_SFPBSocialMediaPostCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[_SFPBSocialMediaPostCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [facadeCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [facadeCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(_SFPBSocialMediaPostCardSection *)v5 setType:v19];
+      type2 = [facadeCopy type];
+      [(_SFPBSocialMediaPostCardSection *)v5 setType:type2];
     }
 
-    if ([v4 hasSeparatorStyle])
+    if ([facadeCopy hasSeparatorStyle])
     {
-      -[_SFPBSocialMediaPostCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[_SFPBSocialMediaPostCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [facadeCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [facadeCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [_SFPBColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(_SFPBColor *)v21 initWithFacade:v22];
+      backgroundColor2 = [facadeCopy backgroundColor];
+      v23 = [(_SFPBColor *)v21 initWithFacade:backgroundColor2];
       [(_SFPBSocialMediaPostCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 name];
+    name = [facadeCopy name];
 
-    if (v24)
+    if (name)
     {
-      v25 = [v4 name];
-      [(_SFPBSocialMediaPostCardSection *)v5 setName:v25];
+      name2 = [facadeCopy name];
+      [(_SFPBSocialMediaPostCardSection *)v5 setName:name2];
     }
 
-    if ([v4 hasNameNoWrap])
+    if ([facadeCopy hasNameNoWrap])
     {
-      -[_SFPBSocialMediaPostCardSection setNameNoWrap:](v5, "setNameNoWrap:", [v4 nameNoWrap]);
+      -[_SFPBSocialMediaPostCardSection setNameNoWrap:](v5, "setNameNoWrap:", [facadeCopy nameNoWrap]);
     }
 
-    v26 = [v4 nameMaxLines];
+    nameMaxLines = [facadeCopy nameMaxLines];
 
-    if (v26)
+    if (nameMaxLines)
     {
-      v27 = [v4 nameMaxLines];
-      -[_SFPBSocialMediaPostCardSection setNameMaxLines:](v5, "setNameMaxLines:", [v27 intValue]);
+      nameMaxLines2 = [facadeCopy nameMaxLines];
+      -[_SFPBSocialMediaPostCardSection setNameMaxLines:](v5, "setNameMaxLines:", [nameMaxLines2 intValue]);
     }
 
-    v28 = [v4 handle];
+    handle = [facadeCopy handle];
 
-    if (v28)
+    if (handle)
     {
-      v29 = [v4 handle];
-      [(_SFPBSocialMediaPostCardSection *)v5 setHandle:v29];
+      handle2 = [facadeCopy handle];
+      [(_SFPBSocialMediaPostCardSection *)v5 setHandle:handle2];
     }
 
-    v30 = [v4 verifiedGlyph];
+    verifiedGlyph = [facadeCopy verifiedGlyph];
 
-    if (v30)
+    if (verifiedGlyph)
     {
       v31 = [_SFPBImage alloc];
-      v32 = [v4 verifiedGlyph];
-      v33 = [(_SFPBImage *)v31 initWithFacade:v32];
+      verifiedGlyph2 = [facadeCopy verifiedGlyph];
+      v33 = [(_SFPBImage *)v31 initWithFacade:verifiedGlyph2];
       [(_SFPBSocialMediaPostCardSection *)v5 setVerifiedGlyph:v33];
     }
 
-    v34 = [v4 profilePicture];
+    profilePicture = [facadeCopy profilePicture];
 
-    if (v34)
+    if (profilePicture)
     {
       v35 = [_SFPBImage alloc];
-      v36 = [v4 profilePicture];
-      v37 = [(_SFPBImage *)v35 initWithFacade:v36];
+      profilePicture2 = [facadeCopy profilePicture];
+      v37 = [(_SFPBImage *)v35 initWithFacade:profilePicture2];
       [(_SFPBSocialMediaPostCardSection *)v5 setProfilePicture:v37];
     }
 
-    v38 = [v4 post];
+    post = [facadeCopy post];
 
-    if (v38)
+    if (post)
     {
       v39 = [_SFPBRichText alloc];
-      v40 = [v4 post];
-      v41 = [(_SFPBRichText *)v39 initWithFacade:v40];
+      post2 = [facadeCopy post];
+      v41 = [(_SFPBRichText *)v39 initWithFacade:post2];
       [(_SFPBSocialMediaPostCardSection *)v5 setPost:v41];
     }
 
-    v42 = [v4 picture];
+    picture = [facadeCopy picture];
 
-    if (v42)
+    if (picture)
     {
       v43 = [_SFPBImage alloc];
-      v44 = [v4 picture];
-      v45 = [(_SFPBImage *)v43 initWithFacade:v44];
+      picture2 = [facadeCopy picture];
+      v45 = [(_SFPBImage *)v43 initWithFacade:picture2];
       [(_SFPBSocialMediaPostCardSection *)v5 setPicture:v45];
     }
 
-    v46 = [v4 timestamp];
+    timestamp = [facadeCopy timestamp];
 
-    if (v46)
+    if (timestamp)
     {
-      v47 = [v4 timestamp];
-      [(_SFPBSocialMediaPostCardSection *)v5 setTimestamp:v47];
+      timestamp2 = [facadeCopy timestamp];
+      [(_SFPBSocialMediaPostCardSection *)v5 setTimestamp:timestamp2];
     }
 
-    v48 = [v4 footnote];
+    footnote = [facadeCopy footnote];
 
-    if (v48)
+    if (footnote)
     {
-      v49 = [v4 footnote];
-      [(_SFPBSocialMediaPostCardSection *)v5 setFootnote:v49];
+      footnote2 = [facadeCopy footnote];
+      [(_SFPBSocialMediaPostCardSection *)v5 setFootnote:footnote2];
     }
 
     v50 = v5;
@@ -217,16 +217,16 @@
   return v5;
 }
 
-- (_SFPBSocialMediaPostCardSection)initWithDictionary:(id)a3
+- (_SFPBSocialMediaPostCardSection)initWithDictionary:(id)dictionary
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v63.receiver = self;
   v63.super_class = _SFPBSocialMediaPostCardSection;
   v5 = [(_SFPBSocialMediaPostCardSection *)&v63 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"punchoutOptions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"punchoutOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -265,7 +265,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"punchoutPickerTitle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -274,7 +274,7 @@
     }
 
     v53 = v14;
-    v16 = [v4 objectForKeyedSubscript:@"punchoutPickerDismissText"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerDismissText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -283,28 +283,28 @@
     }
 
     v52 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"canBeHidden"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"canBeHidden"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSocialMediaPostCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"hasTopPadding"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasTopPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSocialMediaPostCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasBottomPadding"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasBottomPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSocialMediaPostCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"type"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     v58 = v21;
     if (objc_opt_isKindOfClass())
@@ -313,7 +313,7 @@
       [(_SFPBSocialMediaPostCardSection *)v5 setType:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"separatorStyle"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"separatorStyle"];
     objc_opt_class();
     v57 = v23;
     if (objc_opt_isKindOfClass())
@@ -321,7 +321,7 @@
       -[_SFPBSocialMediaPostCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     v56 = v24;
     if (objc_opt_isKindOfClass())
@@ -330,7 +330,7 @@
       [(_SFPBSocialMediaPostCardSection *)v5 setBackgroundColor:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"name"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     v55 = v26;
     if (objc_opt_isKindOfClass())
@@ -339,7 +339,7 @@
       [(_SFPBSocialMediaPostCardSection *)v5 setName:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"nameNoWrap"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"nameNoWrap"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -348,14 +348,14 @@
 
     v48 = v28;
     v50 = v19;
-    v29 = [v4 objectForKeyedSubscript:@"nameMaxLines"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"nameMaxLines"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSocialMediaPostCardSection setNameMaxLines:](v5, "setNameMaxLines:", [v29 intValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:{@"handle", v29}];
+    v30 = [dictionaryCopy objectForKeyedSubscript:{@"handle", v29}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -364,7 +364,7 @@
     }
 
     v49 = v20;
-    v32 = [v4 objectForKeyedSubscript:@"verifiedGlyph"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"verifiedGlyph"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -373,7 +373,7 @@
     }
 
     v54 = v6;
-    v34 = [v4 objectForKeyedSubscript:@"profilePicture"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"profilePicture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -381,7 +381,7 @@
       [(_SFPBSocialMediaPostCardSection *)v5 setProfilePicture:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"post"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"post"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -390,7 +390,7 @@
     }
 
     v51 = v18;
-    v38 = [v4 objectForKeyedSubscript:@"picture"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"picture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -398,7 +398,7 @@
       [(_SFPBSocialMediaPostCardSection *)v5 setPicture:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -406,7 +406,7 @@
       [(_SFPBSocialMediaPostCardSection *)v5 setTimestamp:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"footnote"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"footnote"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -421,30 +421,30 @@
   return v5;
 }
 
-- (_SFPBSocialMediaPostCardSection)initWithJSON:(id)a3
+- (_SFPBSocialMediaPostCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSocialMediaPostCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSocialMediaPostCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSocialMediaPostCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -458,125 +458,125 @@
 - (id)dictionaryRepresentation
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundColor)
   {
-    v4 = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    backgroundColor = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
+    dictionaryRepresentation = [backgroundColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_canBeHidden)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBSocialMediaPostCardSection canBeHidden](self, "canBeHidden")}];
-    [v3 setObject:v7 forKeyedSubscript:@"canBeHidden"];
+    [dictionary setObject:v7 forKeyedSubscript:@"canBeHidden"];
   }
 
   if (self->_footnote)
   {
-    v8 = [(_SFPBSocialMediaPostCardSection *)self footnote];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"footnote"];
+    footnote = [(_SFPBSocialMediaPostCardSection *)self footnote];
+    v9 = [footnote copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"footnote"];
   }
 
   if (self->_handle)
   {
-    v10 = [(_SFPBSocialMediaPostCardSection *)self handle];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"handle"];
+    handle = [(_SFPBSocialMediaPostCardSection *)self handle];
+    v11 = [handle copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"handle"];
   }
 
   if (self->_hasBottomPadding)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBSocialMediaPostCardSection hasBottomPadding](self, "hasBottomPadding")}];
-    [v3 setObject:v12 forKeyedSubscript:@"hasBottomPadding"];
+    [dictionary setObject:v12 forKeyedSubscript:@"hasBottomPadding"];
   }
 
   if (self->_hasTopPadding)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBSocialMediaPostCardSection hasTopPadding](self, "hasTopPadding")}];
-    [v3 setObject:v13 forKeyedSubscript:@"hasTopPadding"];
+    [dictionary setObject:v13 forKeyedSubscript:@"hasTopPadding"];
   }
 
   if (self->_name)
   {
-    v14 = [(_SFPBSocialMediaPostCardSection *)self name];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"name"];
+    name = [(_SFPBSocialMediaPostCardSection *)self name];
+    v15 = [name copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"name"];
   }
 
   if (self->_nameMaxLines)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBSocialMediaPostCardSection nameMaxLines](self, "nameMaxLines")}];
-    [v3 setObject:v16 forKeyedSubscript:@"nameMaxLines"];
+    [dictionary setObject:v16 forKeyedSubscript:@"nameMaxLines"];
   }
 
   if (self->_nameNoWrap)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBSocialMediaPostCardSection nameNoWrap](self, "nameNoWrap")}];
-    [v3 setObject:v17 forKeyedSubscript:@"nameNoWrap"];
+    [dictionary setObject:v17 forKeyedSubscript:@"nameNoWrap"];
   }
 
   if (self->_picture)
   {
-    v18 = [(_SFPBSocialMediaPostCardSection *)self picture];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    picture = [(_SFPBSocialMediaPostCardSection *)self picture];
+    dictionaryRepresentation2 = [picture dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"picture"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"picture"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"picture"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"picture"];
     }
   }
 
   if (self->_post)
   {
-    v21 = [(_SFPBSocialMediaPostCardSection *)self post];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    post = [(_SFPBSocialMediaPostCardSection *)self post];
+    dictionaryRepresentation3 = [post dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"post"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"post"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"post"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"post"];
     }
   }
 
   if (self->_profilePicture)
   {
-    v24 = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    profilePicture = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
+    dictionaryRepresentation4 = [profilePicture dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"profilePicture"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"profilePicture"];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v26 forKeyedSubscript:@"profilePicture"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"profilePicture"];
     }
   }
 
   if ([(NSArray *)self->_punchoutOptions count])
   {
-    v27 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -596,16 +596,16 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
-          if (v33)
+          dictionaryRepresentation5 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation5)
           {
-            [v27 addObject:v33];
+            [array addObject:dictionaryRepresentation5];
           }
 
           else
           {
-            v34 = [MEMORY[0x1E695DFB0] null];
-            [v27 addObject:v34];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null5];
           }
         }
 
@@ -615,72 +615,72 @@
       while (v30);
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"punchoutOptions"];
+    [dictionary setObject:array forKeyedSubscript:@"punchoutOptions"];
   }
 
   if (self->_punchoutPickerDismissText)
   {
-    v35 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
-    v36 = [v35 copy];
-    [v3 setObject:v36 forKeyedSubscript:@"punchoutPickerDismissText"];
+    punchoutPickerDismissText = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
+    v36 = [punchoutPickerDismissText copy];
+    [dictionary setObject:v36 forKeyedSubscript:@"punchoutPickerDismissText"];
   }
 
   if (self->_punchoutPickerTitle)
   {
-    v37 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
-    v38 = [v37 copy];
-    [v3 setObject:v38 forKeyedSubscript:@"punchoutPickerTitle"];
+    punchoutPickerTitle = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
+    v38 = [punchoutPickerTitle copy];
+    [dictionary setObject:v38 forKeyedSubscript:@"punchoutPickerTitle"];
   }
 
   if (self->_separatorStyle)
   {
-    v39 = [(_SFPBSocialMediaPostCardSection *)self separatorStyle];
-    if (v39 >= 6)
+    separatorStyle = [(_SFPBSocialMediaPostCardSection *)self separatorStyle];
+    if (separatorStyle >= 6)
     {
-      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v39];
+      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", separatorStyle];
     }
 
     else
     {
-      v40 = off_1E7ACE580[v39];
+      v40 = off_1E7ACE580[separatorStyle];
     }
 
-    [v3 setObject:v40 forKeyedSubscript:@"separatorStyle"];
+    [dictionary setObject:v40 forKeyedSubscript:@"separatorStyle"];
   }
 
   if (self->_timestamp)
   {
-    v41 = [(_SFPBSocialMediaPostCardSection *)self timestamp];
-    v42 = [v41 copy];
-    [v3 setObject:v42 forKeyedSubscript:@"timestamp"];
+    timestamp = [(_SFPBSocialMediaPostCardSection *)self timestamp];
+    v42 = [timestamp copy];
+    [dictionary setObject:v42 forKeyedSubscript:@"timestamp"];
   }
 
   if (self->_type)
   {
-    v43 = [(_SFPBSocialMediaPostCardSection *)self type];
-    v44 = [v43 copy];
-    [v3 setObject:v44 forKeyedSubscript:@"type"];
+    type = [(_SFPBSocialMediaPostCardSection *)self type];
+    v44 = [type copy];
+    [dictionary setObject:v44 forKeyedSubscript:@"type"];
   }
 
   if (self->_verifiedGlyph)
   {
-    v45 = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
-    v46 = [v45 dictionaryRepresentation];
-    if (v46)
+    verifiedGlyph = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
+    dictionaryRepresentation6 = [verifiedGlyph dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v46 forKeyedSubscript:@"verifiedGlyph"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"verifiedGlyph"];
     }
 
     else
     {
-      v47 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v47 forKeyedSubscript:@"verifiedGlyph"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"verifiedGlyph"];
     }
   }
 
   v48 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -742,28 +742,28 @@
   return v13 ^ v19 ^ [(NSString *)self->_footnote hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_73;
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self punchoutOptions];
-  v6 = [v4 punchoutOptions];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self punchoutOptions];
+  punchoutOptions2 = [equalCopy punchoutOptions];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v7 = [(_SFPBSocialMediaPostCardSection *)self punchoutOptions];
-  if (v7)
+  punchoutOptions3 = [(_SFPBSocialMediaPostCardSection *)self punchoutOptions];
+  if (punchoutOptions3)
   {
-    v8 = v7;
-    v9 = [(_SFPBSocialMediaPostCardSection *)self punchoutOptions];
-    v10 = [v4 punchoutOptions];
-    v11 = [v9 isEqual:v10];
+    v8 = punchoutOptions3;
+    punchoutOptions4 = [(_SFPBSocialMediaPostCardSection *)self punchoutOptions];
+    punchoutOptions5 = [equalCopy punchoutOptions];
+    v11 = [punchoutOptions4 isEqual:punchoutOptions5];
 
     if (!v11)
     {
@@ -775,20 +775,20 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
-  v6 = [v4 punchoutPickerTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
+  punchoutOptions2 = [equalCopy punchoutPickerTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v12 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
-  if (v12)
+  punchoutPickerTitle = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
-    v15 = [v4 punchoutPickerTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = punchoutPickerTitle;
+    punchoutPickerTitle2 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle3 = [equalCopy punchoutPickerTitle];
+    v16 = [punchoutPickerTitle2 isEqual:punchoutPickerTitle3];
 
     if (!v16)
     {
@@ -800,20 +800,20 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
-  v6 = [v4 punchoutPickerDismissText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
+  punchoutOptions2 = [equalCopy punchoutPickerDismissText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v17 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
-  if (v17)
+  punchoutPickerDismissText = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
-    v18 = v17;
-    v19 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
-    v20 = [v4 punchoutPickerDismissText];
-    v21 = [v19 isEqual:v20];
+    v18 = punchoutPickerDismissText;
+    punchoutPickerDismissText2 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
+    punchoutPickerDismissText3 = [equalCopy punchoutPickerDismissText];
+    v21 = [punchoutPickerDismissText2 isEqual:punchoutPickerDismissText3];
 
     if (!v21)
     {
@@ -826,37 +826,37 @@
   }
 
   canBeHidden = self->_canBeHidden;
-  if (canBeHidden != [v4 canBeHidden])
+  if (canBeHidden != [equalCopy canBeHidden])
   {
     goto LABEL_73;
   }
 
   hasTopPadding = self->_hasTopPadding;
-  if (hasTopPadding != [v4 hasTopPadding])
+  if (hasTopPadding != [equalCopy hasTopPadding])
   {
     goto LABEL_73;
   }
 
   hasBottomPadding = self->_hasBottomPadding;
-  if (hasBottomPadding != [v4 hasBottomPadding])
+  if (hasBottomPadding != [equalCopy hasBottomPadding])
   {
     goto LABEL_73;
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self type];
-  v6 = [v4 type];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self type];
+  punchoutOptions2 = [equalCopy type];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v25 = [(_SFPBSocialMediaPostCardSection *)self type];
-  if (v25)
+  type = [(_SFPBSocialMediaPostCardSection *)self type];
+  if (type)
   {
-    v26 = v25;
-    v27 = [(_SFPBSocialMediaPostCardSection *)self type];
-    v28 = [v4 type];
-    v29 = [v27 isEqual:v28];
+    v26 = type;
+    type2 = [(_SFPBSocialMediaPostCardSection *)self type];
+    type3 = [equalCopy type];
+    v29 = [type2 isEqual:type3];
 
     if (!v29)
     {
@@ -869,25 +869,25 @@
   }
 
   separatorStyle = self->_separatorStyle;
-  if (separatorStyle != [v4 separatorStyle])
+  if (separatorStyle != [equalCopy separatorStyle])
   {
     goto LABEL_73;
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
-  v6 = [v4 backgroundColor];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
+  punchoutOptions2 = [equalCopy backgroundColor];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v31 = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
-  if (v31)
+  backgroundColor = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
-    v32 = v31;
-    v33 = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
-    v34 = [v4 backgroundColor];
-    v35 = [v33 isEqual:v34];
+    v32 = backgroundColor;
+    backgroundColor2 = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
+    backgroundColor3 = [equalCopy backgroundColor];
+    v35 = [backgroundColor2 isEqual:backgroundColor3];
 
     if (!v35)
     {
@@ -899,20 +899,20 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self name];
+  punchoutOptions2 = [equalCopy name];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v36 = [(_SFPBSocialMediaPostCardSection *)self name];
-  if (v36)
+  name = [(_SFPBSocialMediaPostCardSection *)self name];
+  if (name)
   {
-    v37 = v36;
-    v38 = [(_SFPBSocialMediaPostCardSection *)self name];
-    v39 = [v4 name];
-    v40 = [v38 isEqual:v39];
+    v37 = name;
+    name2 = [(_SFPBSocialMediaPostCardSection *)self name];
+    name3 = [equalCopy name];
+    v40 = [name2 isEqual:name3];
 
     if (!v40)
     {
@@ -925,31 +925,31 @@
   }
 
   nameNoWrap = self->_nameNoWrap;
-  if (nameNoWrap != [v4 nameNoWrap])
+  if (nameNoWrap != [equalCopy nameNoWrap])
   {
     goto LABEL_73;
   }
 
   nameMaxLines = self->_nameMaxLines;
-  if (nameMaxLines != [v4 nameMaxLines])
+  if (nameMaxLines != [equalCopy nameMaxLines])
   {
     goto LABEL_73;
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self handle];
-  v6 = [v4 handle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self handle];
+  punchoutOptions2 = [equalCopy handle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v43 = [(_SFPBSocialMediaPostCardSection *)self handle];
-  if (v43)
+  handle = [(_SFPBSocialMediaPostCardSection *)self handle];
+  if (handle)
   {
-    v44 = v43;
-    v45 = [(_SFPBSocialMediaPostCardSection *)self handle];
-    v46 = [v4 handle];
-    v47 = [v45 isEqual:v46];
+    v44 = handle;
+    handle2 = [(_SFPBSocialMediaPostCardSection *)self handle];
+    handle3 = [equalCopy handle];
+    v47 = [handle2 isEqual:handle3];
 
     if (!v47)
     {
@@ -961,20 +961,20 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
-  v6 = [v4 verifiedGlyph];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
+  punchoutOptions2 = [equalCopy verifiedGlyph];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v48 = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
-  if (v48)
+  verifiedGlyph = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
+  if (verifiedGlyph)
   {
-    v49 = v48;
-    v50 = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
-    v51 = [v4 verifiedGlyph];
-    v52 = [v50 isEqual:v51];
+    v49 = verifiedGlyph;
+    verifiedGlyph2 = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
+    verifiedGlyph3 = [equalCopy verifiedGlyph];
+    v52 = [verifiedGlyph2 isEqual:verifiedGlyph3];
 
     if (!v52)
     {
@@ -986,20 +986,20 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
-  v6 = [v4 profilePicture];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
+  punchoutOptions2 = [equalCopy profilePicture];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v53 = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
-  if (v53)
+  profilePicture = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
+  if (profilePicture)
   {
-    v54 = v53;
-    v55 = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
-    v56 = [v4 profilePicture];
-    v57 = [v55 isEqual:v56];
+    v54 = profilePicture;
+    profilePicture2 = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
+    profilePicture3 = [equalCopy profilePicture];
+    v57 = [profilePicture2 isEqual:profilePicture3];
 
     if (!v57)
     {
@@ -1011,20 +1011,20 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self post];
-  v6 = [v4 post];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self post];
+  punchoutOptions2 = [equalCopy post];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v58 = [(_SFPBSocialMediaPostCardSection *)self post];
-  if (v58)
+  post = [(_SFPBSocialMediaPostCardSection *)self post];
+  if (post)
   {
-    v59 = v58;
-    v60 = [(_SFPBSocialMediaPostCardSection *)self post];
-    v61 = [v4 post];
-    v62 = [v60 isEqual:v61];
+    v59 = post;
+    post2 = [(_SFPBSocialMediaPostCardSection *)self post];
+    post3 = [equalCopy post];
+    v62 = [post2 isEqual:post3];
 
     if (!v62)
     {
@@ -1036,20 +1036,20 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self picture];
-  v6 = [v4 picture];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self picture];
+  punchoutOptions2 = [equalCopy picture];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v63 = [(_SFPBSocialMediaPostCardSection *)self picture];
-  if (v63)
+  picture = [(_SFPBSocialMediaPostCardSection *)self picture];
+  if (picture)
   {
-    v64 = v63;
-    v65 = [(_SFPBSocialMediaPostCardSection *)self picture];
-    v66 = [v4 picture];
-    v67 = [v65 isEqual:v66];
+    v64 = picture;
+    picture2 = [(_SFPBSocialMediaPostCardSection *)self picture];
+    picture3 = [equalCopy picture];
+    v67 = [picture2 isEqual:picture3];
 
     if (!v67)
     {
@@ -1061,20 +1061,20 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self timestamp];
-  v6 = [v4 timestamp];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self timestamp];
+  punchoutOptions2 = [equalCopy timestamp];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_72;
   }
 
-  v68 = [(_SFPBSocialMediaPostCardSection *)self timestamp];
-  if (v68)
+  timestamp = [(_SFPBSocialMediaPostCardSection *)self timestamp];
+  if (timestamp)
   {
-    v69 = v68;
-    v70 = [(_SFPBSocialMediaPostCardSection *)self timestamp];
-    v71 = [v4 timestamp];
-    v72 = [v70 isEqual:v71];
+    v69 = timestamp;
+    timestamp2 = [(_SFPBSocialMediaPostCardSection *)self timestamp];
+    timestamp3 = [equalCopy timestamp];
+    v72 = [timestamp2 isEqual:timestamp3];
 
     if (!v72)
     {
@@ -1086,17 +1086,17 @@
   {
   }
 
-  v5 = [(_SFPBSocialMediaPostCardSection *)self footnote];
-  v6 = [v4 footnote];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self footnote];
+  punchoutOptions2 = [equalCopy footnote];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
 LABEL_72:
 
     goto LABEL_73;
   }
 
-  v73 = [(_SFPBSocialMediaPostCardSection *)self footnote];
-  if (!v73)
+  footnote = [(_SFPBSocialMediaPostCardSection *)self footnote];
+  if (!footnote)
   {
 
 LABEL_76:
@@ -1104,10 +1104,10 @@ LABEL_76:
     goto LABEL_74;
   }
 
-  v74 = v73;
-  v75 = [(_SFPBSocialMediaPostCardSection *)self footnote];
-  v76 = [v4 footnote];
-  v77 = [v75 isEqual:v76];
+  v74 = footnote;
+  footnote2 = [(_SFPBSocialMediaPostCardSection *)self footnote];
+  footnote3 = [equalCopy footnote];
+  v77 = [footnote2 isEqual:footnote3];
 
   if (v77)
   {
@@ -1121,16 +1121,16 @@ LABEL_74:
   return v78;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBSocialMediaPostCardSection *)self punchoutOptions];
+  toCopy = to;
+  punchoutOptions = [(_SFPBSocialMediaPostCardSection *)self punchoutOptions];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v6 = [punchoutOptions countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1142,7 +1142,7 @@ LABEL_74:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(punchoutOptions);
         }
 
         v10 = *(*(&v24 + 1) + 8 * v9);
@@ -1151,20 +1151,20 @@ LABEL_74:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v7 = [punchoutOptions countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
-  if (v11)
+  punchoutPickerTitle = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
-  if (v12)
+  punchoutPickerDismissText = [(_SFPBSocialMediaPostCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
     PBDataWriterWriteStringField();
   }
@@ -1184,8 +1184,8 @@ LABEL_74:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_SFPBSocialMediaPostCardSection *)self type];
-  if (v13)
+  type = [(_SFPBSocialMediaPostCardSection *)self type];
+  if (type)
   {
     PBDataWriterWriteStringField();
   }
@@ -1195,14 +1195,14 @@ LABEL_74:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
-  if (v14)
+  backgroundColor = [(_SFPBSocialMediaPostCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBSocialMediaPostCardSection *)self name];
-  if (v15)
+  name = [(_SFPBSocialMediaPostCardSection *)self name];
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
@@ -1217,44 +1217,44 @@ LABEL_74:
     PBDataWriterWriteInt32Field();
   }
 
-  v16 = [(_SFPBSocialMediaPostCardSection *)self handle];
-  if (v16)
+  handle = [(_SFPBSocialMediaPostCardSection *)self handle];
+  if (handle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v17 = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
-  if (v17)
+  verifiedGlyph = [(_SFPBSocialMediaPostCardSection *)self verifiedGlyph];
+  if (verifiedGlyph)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
-  if (v18)
+  profilePicture = [(_SFPBSocialMediaPostCardSection *)self profilePicture];
+  if (profilePicture)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_SFPBSocialMediaPostCardSection *)self post];
-  if (v19)
+  post = [(_SFPBSocialMediaPostCardSection *)self post];
+  if (post)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_SFPBSocialMediaPostCardSection *)self picture];
-  if (v20)
+  picture = [(_SFPBSocialMediaPostCardSection *)self picture];
+  if (picture)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_SFPBSocialMediaPostCardSection *)self timestamp];
-  if (v21)
+  timestamp = [(_SFPBSocialMediaPostCardSection *)self timestamp];
+  if (timestamp)
   {
     PBDataWriterWriteStringField();
   }
 
-  v22 = [(_SFPBSocialMediaPostCardSection *)self footnote];
-  if (v22)
+  footnote = [(_SFPBSocialMediaPostCardSection *)self footnote];
+  if (footnote)
   {
     PBDataWriterWriteStringField();
   }
@@ -1262,90 +1262,90 @@ LABEL_74:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFootnote:(id)a3
+- (void)setFootnote:(id)footnote
 {
-  v4 = [a3 copy];
+  v4 = [footnote copy];
   footnote = self->_footnote;
   self->_footnote = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTimestamp:(id)a3
+- (void)setTimestamp:(id)timestamp
 {
-  v4 = [a3 copy];
+  v4 = [timestamp copy];
   timestamp = self->_timestamp;
   self->_timestamp = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
-  v4 = [a3 copy];
+  v4 = [handle copy];
   handle = self->_handle;
   self->_handle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   type = self->_type;
   self->_type = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerDismissText:(id)a3
+- (void)setPunchoutPickerDismissText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   punchoutPickerDismissText = self->_punchoutPickerDismissText;
   self->_punchoutPickerDismissText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerTitle:(id)a3
+- (void)setPunchoutPickerTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   punchoutPickerTitle = self->_punchoutPickerTitle;
   self->_punchoutPickerTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPunchoutOptions:(id)a3
+- (void)addPunchoutOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   punchoutOptions = self->_punchoutOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!punchoutOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_punchoutOptions;
-    self->_punchoutOptions = v6;
+    self->_punchoutOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     punchoutOptions = self->_punchoutOptions;
   }
 
-  [(NSArray *)punchoutOptions addObject:v4];
+  [(NSArray *)punchoutOptions addObject:optionsCopy];
 }
 
-- (void)setPunchoutOptions:(id)a3
+- (void)setPunchoutOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   punchoutOptions = self->_punchoutOptions;
   self->_punchoutOptions = v4;
 

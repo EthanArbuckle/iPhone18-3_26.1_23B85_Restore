@@ -1,24 +1,24 @@
 @interface JavaNioCharsetUnsupportedCharsetException
-- (JavaNioCharsetUnsupportedCharsetException)initWithNSString:(id)a3;
+- (JavaNioCharsetUnsupportedCharsetException)initWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation JavaNioCharsetUnsupportedCharsetException
 
-- (JavaNioCharsetUnsupportedCharsetException)initWithNSString:(id)a3
+- (JavaNioCharsetUnsupportedCharsetException)initWithNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v5 = a3;
+    stringCopy = string;
   }
 
   else
   {
-    v5 = @"null";
+    stringCopy = @"null";
   }
 
-  JavaLangIllegalArgumentException_initWithNSString_(self, v5);
-  JreStrongAssign(&self->charsetName_, a3);
+  JavaLangIllegalArgumentException_initWithNSString_(self, stringCopy);
+  JreStrongAssign(&self->charsetName_, string);
   return self;
 }
 

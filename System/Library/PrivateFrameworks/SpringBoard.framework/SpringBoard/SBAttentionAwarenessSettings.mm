@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   [MEMORY[0x277CEF768] cancelNotification:self->_attentionAwarenessToken];
   v4.receiver = self;
@@ -53,8 +53,8 @@
 {
   self->_supportsAttentionSensor = [objc_opt_class() attentionSensorSupported];
   self->_shouldUseAttentionSensor = 1;
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [(SBAttentionAwarenessSettings *)self profileConnectionDidReceiveEffectiveSettingsChangedNotification:v3 userInfo:0];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [(SBAttentionAwarenessSettings *)self profileConnectionDidReceiveEffectiveSettingsChangedNotification:mEMORY[0x277D262A0] userInfo:0];
 
   if (!self->_isObservingDataSources)
   {
@@ -64,8 +64,8 @@
     v5[3] = &unk_2783A8C18;
     v5[4] = self;
     self->_attentionAwarenessToken = [MEMORY[0x277CEF768] notifySupportedEventsChangedWithQueue:MEMORY[0x277D85CD0] block:v5];
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    [v4 registerObserver:self];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0]2 registerObserver:self];
 
     self->_isObservingDataSources = 1;
   }

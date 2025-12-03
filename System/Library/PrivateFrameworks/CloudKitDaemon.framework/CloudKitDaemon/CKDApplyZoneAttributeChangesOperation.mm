@@ -1,7 +1,7 @@
 @interface CKDApplyZoneAttributeChangesOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDApplyZoneAttributeChangesOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDApplyZoneAttributeChangesOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)relevantZoneIDs;
 - (void)decryptPCSs;
 - (void)removePCSKeys;
@@ -11,34 +11,34 @@
 
 @implementation CKDApplyZoneAttributeChangesOperation
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 4)
+  if (state - 2 >= 4)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDApplyZoneAttributeChangesOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_27854ACD8[a3 - 2];
+    v5 = off_27854ACD8[state - 2];
   }
 
   return v5;
 }
 
-- (CKDApplyZoneAttributeChangesOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDApplyZoneAttributeChangesOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKDApplyZoneAttributeChangesOperation;
-  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_zone(v6, v7, v8);
+    v10 = objc_msgSend_zone(infoCopy, v7, v8);
     zone = v9->_zone;
     v9->_zone = v10;
 

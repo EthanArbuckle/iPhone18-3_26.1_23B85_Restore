@@ -76,10 +76,10 @@
 - (id)availableOutputDevicesForEndpoint:()MPAVOutputDeviceRoutingDataSource
 {
   v4 = a3;
-  v5 = [a1 availableOutputDevices];
-  v6 = [v4 resolvedOutputDevices];
+  availableOutputDevices = [self availableOutputDevices];
+  resolvedOutputDevices = [v4 resolvedOutputDevices];
 
-  v7 = [a1 _replaceOutputDevices:v5 withOutputDevices:v6];
+  v7 = [self _replaceOutputDevices:availableOutputDevices withOutputDevices:resolvedOutputDevices];
 
   return v7;
 }

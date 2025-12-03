@@ -1,6 +1,6 @@
 @interface MIOMutableModel
 - (MIOModelDescription)modelDescription;
-- (void)setModelDescription:(id)a3;
+- (void)setModelDescription:(id)description;
 @end
 
 @implementation MIOMutableModel
@@ -9,16 +9,16 @@
 {
   v4.receiver = self;
   v4.super_class = MIOMutableModel;
-  v2 = [(MIOModel *)&v4 modelDescription];
+  modelDescription = [(MIOModel *)&v4 modelDescription];
 
-  return v2;
+  return modelDescription;
 }
 
-- (void)setModelDescription:(id)a3
+- (void)setModelDescription:(id)description
 {
   v3.receiver = self;
   v3.super_class = MIOMutableModel;
-  [(MIOModel *)&v3 setModelDescription:a3];
+  [(MIOModel *)&v3 setModelDescription:description];
 }
 
 @end

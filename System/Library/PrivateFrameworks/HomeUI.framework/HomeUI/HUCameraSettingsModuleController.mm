@@ -1,22 +1,22 @@
 @interface HUCameraSettingsModuleController
-- (BOOL)canSelectDisabledItem:(id)a3;
-- (BOOL)canSelectItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUCameraSettingsModuleController)initWithModule:(id)a3;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setHost:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (BOOL)canSelectDisabledItem:(id)item;
+- (BOOL)canSelectItem:(id)item;
+- (Class)cellClassForItem:(id)item;
+- (HUCameraSettingsModuleController)initWithModule:(id)module;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setHost:(id)host;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 - (void)viewSizeDidChanged;
 @end
 
 @implementation HUCameraSettingsModuleController
 
-- (HUCameraSettingsModuleController)initWithModule:(id)a3
+- (HUCameraSettingsModuleController)initWithModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = moduleCopy;
   if (!v6)
   {
     goto LABEL_7;
@@ -35,9 +35,9 @@
   v8 = v6;
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
 LABEL_7:
     v8 = 0;
@@ -61,10 +61,10 @@ LABEL_7:
     v6 = v13;
     if (!v14)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
       v19 = NSStringFromProtocol(v11);
-      [v17 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v19}];
+      [currentHandler2 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v19}];
 
       v6 = 0;
     }
@@ -77,17 +77,17 @@ LABEL_7:
   return v15;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
   v24 = *MEMORY[0x277D85DE8];
   v22.receiver = self;
   v22.super_class = HUCameraSettingsModuleController;
-  [(HUItemModuleController *)&v22 setHost:a3];
+  [(HUItemModuleController *)&v22 setHost:host];
   objc_opt_class();
-  v4 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = module;
   }
 
   else
@@ -102,8 +102,8 @@ LABEL_7:
   v18 = 0u;
   v19 = 0u;
   v17 = v6;
-  v7 = [v6 presenceModules];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  presenceModules = [v6 presenceModules];
+  v8 = [presenceModules countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -115,19 +115,19 @@ LABEL_7:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(presenceModules);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [(HUItemModuleController *)self host];
+          host = [(HUItemModuleController *)self host];
           v14 = objc_opt_respondsToSelector();
 
           if (v14)
           {
-            v15 = [(HUItemModuleController *)self host];
-            v16 = [v15 presentingViewControllerForModuleController:self];
+            host2 = [(HUItemModuleController *)self host];
+            v16 = [host2 presentingViewControllerForModuleController:self];
             [v12 setPresentingViewController:v16];
           }
         }
@@ -136,31 +136,31 @@ LABEL_7:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v9 = [presenceModules countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v9);
   }
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 isItemHeader:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module isItemHeader:itemCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(HUItemModuleController *)self module];
-    v8 = [v7 isOptionItem:v4];
+    module2 = [(HUItemModuleController *)self module];
+    v8 = [module2 isOptionItem:itemCopy];
 
     if ((v8 & 1) == 0)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v9 = [v4 latestResults];
-        v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13EB0]];
+        latestResults = [itemCopy latestResults];
+        v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EB0]];
         [v10 BOOLValue];
       }
     }
@@ -171,30 +171,30 @@ LABEL_7:
   return v11;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v29.receiver = self;
   v29.super_class = HUCameraSettingsModuleController;
-  [(HUItemModuleController *)&v29 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v29 setupCell:cellCopy forItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setValueColorFollowsTintColor:1];
+    [cellCopy setValueColorFollowsTintColor:1];
     if ([(HUCameraSettingsModuleController *)self useProxSetupPresentationStyle])
     {
-      [v6 setUseVerticalLayoutOnly:1];
+      [cellCopy setUseVerticalLayoutOnly:1];
     }
   }
 
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 isItemHeader:v7];
+  module = [(HUItemModuleController *)self module];
+  v9 = [module isItemHeader:itemCopy];
 
   if (v9)
   {
     objc_opt_class();
-    v10 = v6;
+    v10 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -209,13 +209,13 @@ LABEL_7:
 
     if (v12)
     {
-      v13 = [v12 messageTextView];
-      [v13 setDelegate:self];
+      messageTextView = [v12 messageTextView];
+      [messageTextView setDelegate:self];
     }
   }
 
-  v14 = [(HUItemModuleController *)self module];
-  if (([v14 isItemHeader:v7] & 1) == 0)
+  module2 = [(HUItemModuleController *)self module];
+  if (([module2 isItemHeader:itemCopy] & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -226,7 +226,7 @@ LABEL_7:
     }
 
     objc_opt_class();
-    v16 = v6;
+    v16 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v17 = v16;
@@ -237,9 +237,9 @@ LABEL_7:
       v17 = 0;
     }
 
-    v14 = v17;
+    module2 = v17;
 
-    [v14 setHideIcon:1];
+    [module2 setHideIcon:1];
   }
 
 LABEL_18:
@@ -247,10 +247,10 @@ LABEL_18:
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v18 = [(HUItemModuleController *)self module];
+    module3 = [(HUItemModuleController *)self module];
     if (objc_opt_isKindOfClass())
     {
-      v19 = v18;
+      v19 = module3;
     }
 
     else
@@ -261,40 +261,40 @@ LABEL_18:
     v20 = v19;
 
     v21 = [HUDynamicAlignmentTitleValueCellLayoutOptions alloc];
-    v22 = [v20 longestCameraUsageOptionItemTitle];
-    v23 = [v20 longestCameraPresenceItemTitle];
-    v24 = [(HUDynamicAlignmentTitleValueCellLayoutOptions *)v21 initWithCellSizeSubclass:1 longestPossibleValueText:v22 longestPossibleTitleText:v23];
+    longestCameraUsageOptionItemTitle = [v20 longestCameraUsageOptionItemTitle];
+    longestCameraPresenceItemTitle = [v20 longestCameraPresenceItemTitle];
+    v24 = [(HUDynamicAlignmentTitleValueCellLayoutOptions *)v21 initWithCellSizeSubclass:1 longestPossibleValueText:longestCameraUsageOptionItemTitle longestPossibleTitleText:longestCameraPresenceItemTitle];
 
-    [v6 setLayoutOptions:v24];
+    [cellCopy setLayoutOptions:v24];
   }
 
   if ([(HUCameraSettingsModuleController *)self useProxSetupPresentationStyle])
   {
-    v25 = [(HUItemModuleController *)self module];
-    v26 = [v25 isItemHeader:v7];
+    module4 = [(HUItemModuleController *)self module];
+    v26 = [module4 isItemHeader:itemCopy];
 
     if ((v26 & 1) == 0)
     {
-      v27 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-      v28 = [v6 contentView];
-      [v28 setBackgroundColor:v27];
+      secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+      contentView = [cellCopy contentView];
+      [contentView setBackgroundColor:secondarySystemBackgroundColor];
     }
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v54.receiver = self;
   v54.super_class = HUCameraSettingsModuleController;
-  [(HUItemModuleController *)&v54 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v54 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = module;
   }
 
   else
@@ -304,7 +304,7 @@ LABEL_18:
 
   v12 = v11;
 
-  v13 = [v12 isOptionItem:v9];
+  v13 = [v12 isOptionItem:itemCopy];
   v14 = MEMORY[0x277D13F60];
   if (!v13)
   {
@@ -312,7 +312,7 @@ LABEL_18:
   }
 
   v15 = objc_opt_class();
-  v16 = v8;
+  v16 = cellCopy;
   if (v16)
   {
     if (objc_opt_isKindOfClass())
@@ -331,24 +331,24 @@ LABEL_18:
       goto LABEL_12;
     }
 
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v19 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v15, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v15, objc_opt_class()}];
   }
 
   v18 = 0;
 LABEL_12:
 
-  v21 = [v9 latestResults];
-  v22 = [v21 objectForKeyedSubscript:*v14];
+  latestResults = [itemCopy latestResults];
+  v22 = [latestResults objectForKeyedSubscript:*v14];
   [v18 setTitleText:v22];
 
-  v23 = [v9 latestResults];
-  v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  latestResults2 = [itemCopy latestResults];
+  v24 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
   [v18 setDescriptionText:v24];
 
   objc_opt_class();
-  v25 = v9;
+  v25 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v26 = v25;
@@ -368,17 +368,17 @@ LABEL_12:
 
   else
   {
-    v28 = [v25 latestResults];
-    v29 = [v28 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
-    v30 = [v29 BOOLValue];
+    latestResults3 = [v25 latestResults];
+    v29 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+    bOOLValue = [v29 BOOLValue];
 
     [v18 setAnimating:0];
-    [v18 setChecked:v30];
+    [v18 setChecked:bOOLValue];
   }
 
 LABEL_19:
   objc_opt_class();
-  v31 = v9;
+  v31 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v32 = v31;
@@ -394,7 +394,7 @@ LABEL_19:
   if (v33)
   {
     v34 = objc_opt_class();
-    v35 = v8;
+    v35 = cellCopy;
     if (v35)
     {
       if (objc_opt_isKindOfClass())
@@ -413,40 +413,40 @@ LABEL_19:
         goto LABEL_30;
       }
 
-      v38 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v38 handleFailureInFunction:v39 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v34, objc_opt_class()}];
+      [currentHandler2 handleFailureInFunction:v39 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v34, objc_opt_class()}];
     }
 
     v37 = 0;
 LABEL_30:
 
-    v40 = [v33 home];
-    v41 = [v33 user];
-    v42 = [v40 hf_handleForUser:v41];
+    home = [v33 home];
+    user = [v33 user];
+    v42 = [home hf_handleForUser:user];
     [v37 setUserHandle:v42];
 
-    v43 = [MEMORY[0x277D756E0] valueCellConfiguration];
-    v44 = [v33 latestResults];
-    v45 = [v44 objectForKeyedSubscript:*v14];
-    [v43 setText:v45];
+    valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+    latestResults4 = [v33 latestResults];
+    v45 = [latestResults4 objectForKeyedSubscript:*v14];
+    [valueCellConfiguration setText:v45];
 
-    v46 = [v31 latestResults];
-    v47 = [v46 objectForKeyedSubscript:*MEMORY[0x277D14118]];
-    [v43 setSecondaryText:v47];
+    latestResults5 = [v31 latestResults];
+    v47 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D14118]];
+    [valueCellConfiguration setSecondaryText:v47];
 
-    v48 = [MEMORY[0x277D75348] hf_keyColor];
-    v49 = [v43 secondaryTextProperties];
-    [v49 setColor:v48];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties setColor:hf_keyColor];
 
-    [v37 setContentConfiguration:v43];
+    [v37 setContentConfiguration:valueCellConfiguration];
   }
 
   objc_opt_class();
-  v50 = [(HUItemModuleController *)self module];
+  module2 = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v51 = v50;
+    v51 = module2;
   }
 
   else
@@ -456,18 +456,18 @@ LABEL_30:
 
   v52 = v51;
 
-  v53 = [v52 recordingOptionsItem];
+  recordingOptionsItem = [v52 recordingOptionsItem];
 
-  [v8 setAccessoryType:v53 == v31];
+  [cellCopy setAccessoryType:recordingOptionsItem == v31];
 }
 
 - (void)viewSizeDidChanged
 {
   objc_opt_class();
-  v3 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = module;
   }
 
   else
@@ -477,29 +477,29 @@ LABEL_30:
 
   v5 = v4;
 
-  v7 = [(HUItemModuleController *)self host];
-  v6 = [v5 cameraPresenceItems];
+  host = [(HUItemModuleController *)self host];
+  cameraPresenceItems = [v5 cameraPresenceItems];
 
-  [v7 updateCellForItems:v6];
+  [host updateCellForItems:cameraPresenceItems];
 }
 
-- (BOOL)canSelectItem:(id)a3
+- (BOOL)canSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 isItemHeader:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module isItemHeader:itemCopy];
 
   return v6 ^ 1;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -509,13 +509,13 @@ LABEL_30:
 
   v7 = v6;
 
-  if ([v7 isShowOptionsItem:v4])
+  if ([v7 isShowOptionsItem:itemCopy])
   {
-    [v7 setModuleExpanded:objc_msgSend(v7 forItem:{"shouldExpandModuleForShowOptionsItem:", v4) ^ 1, v4}];
+    [v7 setModuleExpanded:objc_msgSend(v7 forItem:{"shouldExpandModuleForShowOptionsItem:", itemCopy) ^ 1, itemCopy}];
   }
 
   objc_opt_class();
-  v8 = v4;
+  v8 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -530,15 +530,15 @@ LABEL_30:
 
   if (v10)
   {
-    v11 = [v10 cameraProfiles];
-    v12 = [v11 anyObject];
+    cameraProfiles = [v10 cameraProfiles];
+    anyObject = [cameraProfiles anyObject];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __50__HUCameraSettingsModuleController_didSelectItem___block_invoke;
     aBlock[3] = &unk_277DB9F78;
-    v29 = v12;
-    v13 = v12;
+    v29 = anyObject;
+    v13 = anyObject;
     v14 = _Block_copy(aBlock);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -547,23 +547,23 @@ LABEL_30:
     v27[4] = self;
     v15 = _Block_copy(v27);
     v16 = [(HUSimpleItemModuleTableViewController *)[HUCameraSmartOptionsTableViewController alloc] initWithTableViewStyle:1 moduleCreator:v14 moduleControllerBuilder:v15];
-    v17 = [v8 latestResults];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    latestResults = [v8 latestResults];
+    v18 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     [(HUCameraSmartOptionsTableViewController *)v16 setTitle:v18];
 
     v19 = [HUViewControllerPresentationRequest requestWithViewController:v16];
     [v19 setPreferredPresentationType:1];
-    v20 = [(HUItemModuleController *)self host];
-    v21 = [v20 moduleController:self presentViewControllerForRequest:v19];
+    host = [(HUItemModuleController *)self host];
+    v21 = [host moduleController:self presentViewControllerForRequest:v19];
   }
 
-  v22 = [(HUItemModuleController *)self module];
+  module2 = [(HUItemModuleController *)self module];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(HUItemModuleController *)self module];
-    v25 = [v24 didSelectItem:v8];
+    module3 = [(HUItemModuleController *)self module];
+    v25 = [module3 didSelectItem:v8];
   }
 
   return 0;
@@ -594,11 +594,11 @@ HUCameraRecordingOptionsModuleController *__50__HUCameraSettingsModuleController
   return v4;
 }
 
-- (BOOL)canSelectDisabledItem:(id)a3
+- (BOOL)canSelectDisabledItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;

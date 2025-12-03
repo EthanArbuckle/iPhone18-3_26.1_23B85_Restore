@@ -1,8 +1,8 @@
 @interface CAMLLoader
 - (CAMLLoader)init;
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4;
-- (id)CAMLParser:(id)a3 resourceForURL:(id)a4;
-- (id)loadCAMLFile:(id)a3;
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name;
+- (id)CAMLParser:(id)parser resourceForURL:(id)l;
+- (id)loadCAMLFile:(id)file;
 @end
 
 @implementation CAMLLoader
@@ -24,45 +24,45 @@
   return v2;
 }
 
-- (id)loadCAMLFile:(id)a3
+- (id)loadCAMLFile:(id)file
 {
   v4 = MEMORY[0x1E695DEF0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContentsOfURL:v5 options:1 error:0];
+  fileCopy = file;
+  v6 = [[v4 alloc] initWithContentsOfURL:fileCopy options:1 error:0];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] activateBackground:{objc_msgSend(MEMORY[0x1E696AF00], "isMainThread") ^ 1}];
   v7 = objc_alloc_init(MEMORY[0x1E69793B0]);
   [v7 setDelegate:self];
-  v8 = [v5 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [fileCopy URLByDeletingLastPathComponent];
 
-  v9 = [v8 URLByDeletingLastPathComponent];
-  [v7 setBaseURL:v9];
+  v8URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
+  [v7 setBaseURL:v8URLByDeletingLastPathComponent];
 
   [v7 parseData:v6];
-  v10 = [v7 result];
+  result = [v7 result];
   [MEMORY[0x1E6979518] commit];
 
-  return v10;
+  return result;
 }
 
-- (id)CAMLParser:(id)a3 resourceForURL:(id)a4
+- (id)CAMLParser:(id)parser resourceForURL:(id)l
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(NSCache *)self->_resourceCache objectForKey:v5];
+  lCopy = l;
+  v6 = [(NSCache *)self->_resourceCache objectForKey:lCopy];
   if (!v6)
   {
-    v7 = [v5 path];
-    v8 = [v7 hasSuffix:@".heic"];
+    path = [lCopy path];
+    v8 = [path hasSuffix:@".heic"];
 
     if (v8)
     {
-      v9 = [v5 lastPathComponent];
-      v10 = [v9 stringByDeletingPathExtension];
+      lastPathComponent = [lCopy lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
       v11 = WUBundle();
-      v12 = [v5 pathExtension];
-      v13 = [v11 URLForResource:v10 withExtension:v12 subdirectory:@"Mica"];
+      pathExtension = [lCopy pathExtension];
+      v13 = [v11 URLForResource:stringByDeletingPathExtension withExtension:pathExtension subdirectory:@"Mica"];
 
       v14 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v13];
       v15 = CGImageSourceCreateWithData(v14, 0);
@@ -73,14 +73,14 @@
       v6 = ImageAtIndex;
       if (v6)
       {
-        [(NSCache *)self->_resourceCache setObject:v6 forKey:v5];
+        [(NSCache *)self->_resourceCache setObject:v6 forKey:lCopy];
       }
 
       else
       {
         v17 = MEMORY[0x1E696AEC0];
-        v18 = [v5 path];
-        v19 = [v17 stringWithFormat:@"Asset is missing: %@", v18];
+        path2 = [lCopy path];
+        v19 = [v17 stringWithFormat:@"Asset is missing: %@", path2];
       }
 
       CGImageRelease(v6);
@@ -95,9 +95,9 @@
   return v6;
 }
 
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name
 {
-  v4 = a4;
+  nameCopy = name;
   v5 = ClassSubstitutions___classSubstitutions;
   if (!ClassSubstitutions___classSubstitutions)
   {
@@ -119,7 +119,7 @@
     v5 = ClassSubstitutions___classSubstitutions;
   }
 
-  v16 = [v5 objectForKey:v4];
+  v16 = [v5 objectForKey:nameCopy];
 
   return v16;
 }

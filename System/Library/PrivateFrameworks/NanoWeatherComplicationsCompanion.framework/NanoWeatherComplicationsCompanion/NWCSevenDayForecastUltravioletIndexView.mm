@@ -1,51 +1,51 @@
 @interface NWCSevenDayForecastUltravioletIndexView
-- (id)_setupViewBuilderForDevice:(id)a3;
-- (void)processSimpleEntryModel:(id)a3;
+- (id)_setupViewBuilderForDevice:(id)device;
+- (void)processSimpleEntryModel:(id)model;
 @end
 
 @implementation NWCSevenDayForecastUltravioletIndexView
 
-- (void)processSimpleEntryModel:(id)a3
+- (void)processSimpleEntryModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (processSimpleEntryModel__onceToken != -1)
   {
     [NWCSevenDayForecastUltravioletIndexView processSimpleEntryModel:];
   }
 
-  v5 = [v4 hourlyEntryModels];
-  v6 = [v5 firstObject];
-  v7 = [v6 timeZone];
+  hourlyEntryModels = [modelCopy hourlyEntryModels];
+  firstObject = [hourlyEntryModels firstObject];
+  timeZone = [firstObject timeZone];
 
-  if (v7)
+  if (timeZone)
   {
-    [processSimpleEntryModel__WeekdayFormatter setTimeZone:v7];
+    [processSimpleEntryModel__WeekdayFormatter setTimeZone:timeZone];
     v8 = [processSimpleEntryModel__RangeFormatter stringFromNumber:&unk_286D01FC0];
-    v9 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
-    v10 = [v9 highLabel];
-    [v10 setText:v8];
+    dailyForecastRangeView = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
+    highLabel = [dailyForecastRangeView highLabel];
+    [highLabel setText:v8];
 
     v11 = [processSimpleEntryModel__RangeFormatter stringFromNumber:&unk_286D01FD0];
-    v12 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
-    v13 = [v12 lowLabel];
-    [v13 setText:v11];
+    dailyForecastRangeView2 = [(NWCSevenDayForecastView *)self dailyForecastRangeView];
+    lowLabel = [dailyForecastRangeView2 lowLabel];
+    [lowLabel setText:v11];
 
-    v14 = [MEMORY[0x277CBEA80] currentCalendar];
-    [v14 setTimeZone:v7];
-    v15 = [(NWCSevenDayForecastView *)self dailyForecastViews];
-    v16 = [v15 count];
-    v17 = [v4 hourlyEntryModels];
-    v18 = [v17 count];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    [currentCalendar setTimeZone:timeZone];
+    dailyForecastViews = [(NWCSevenDayForecastView *)self dailyForecastViews];
+    v16 = [dailyForecastViews count];
+    hourlyEntryModels2 = [modelCopy hourlyEntryModels];
+    v18 = [hourlyEntryModels2 count];
 
     if (v16 == v18)
     {
-      v19 = [(NWCSevenDayForecastView *)self dailyForecastViews];
+      dailyForecastViews2 = [(NWCSevenDayForecastView *)self dailyForecastViews];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __67__NWCSevenDayForecastUltravioletIndexView_processSimpleEntryModel___block_invoke_14;
       v20[3] = &unk_279962288;
-      v21 = v4;
-      [v19 enumerateObjectsUsingBlock:v20];
+      v21 = modelCopy;
+      [dailyForecastViews2 enumerateObjectsUsingBlock:v20];
     }
   }
 }
@@ -165,10 +165,10 @@ void __67__NWCSevenDayForecastUltravioletIndexView_processSimpleEntryModel___blo
   [v33 setText:v32];
 }
 
-- (id)_setupViewBuilderForDevice:(id)a3
+- (id)_setupViewBuilderForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NWCDailyForecastUltravioletIndexViewBuilder alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[NWCDailyForecastUltravioletIndexViewBuilder alloc] initWithDevice:deviceCopy];
 
   return v4;
 }

@@ -5,10 +5,10 @@
 + (double)estimatedHeight;
 + (id)_averageHeartRateSymptomsBoldFont;
 + (id)_averageHeartRateSymptomsFont;
-+ (id)_averageHeartRateSymptomsFontForElectrocardiogram:(id)a3;
++ (id)_averageHeartRateSymptomsFontForElectrocardiogram:(id)electrocardiogram;
 - (BOOL)_isLayingOutForAccessibility;
 - (HKDateCache)dateCache;
-- (HKElectrocardiogramCardView)initWithSample:(id)a3 dateCache:(id)a4 onboarding:(BOOL)a5 activeAlgorithmVersion:(int64_t)a6 isSampleInteractive:(BOOL)a7;
+- (HKElectrocardiogramCardView)initWithSample:(id)sample dateCache:(id)cache onboarding:(BOOL)onboarding activeAlgorithmVersion:(int64_t)version isSampleInteractive:(BOOL)interactive;
 - (id)_cardBackgroundColor;
 - (id)_cardHeaderColor;
 - (id)_chevronColor;
@@ -19,31 +19,31 @@
 - (void)_updateForCurrentSizeCategory;
 - (void)_updateGraphTopConstraint;
 - (void)_updateTextConstraints;
-- (void)dateCacheDidUpdate:(id)a3 onNotification:(id)a4;
+- (void)dateCacheDidUpdate:(id)update onNotification:(id)notification;
 - (void)dealloc;
-- (void)setSample:(id)a3;
+- (void)setSample:(id)sample;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateUI;
 @end
 
 @implementation HKElectrocardiogramCardView
 
-- (HKElectrocardiogramCardView)initWithSample:(id)a3 dateCache:(id)a4 onboarding:(BOOL)a5 activeAlgorithmVersion:(int64_t)a6 isSampleInteractive:(BOOL)a7
+- (HKElectrocardiogramCardView)initWithSample:(id)sample dateCache:(id)cache onboarding:(BOOL)onboarding activeAlgorithmVersion:(int64_t)version isSampleInteractive:(BOOL)interactive
 {
-  v13 = a3;
-  v14 = a4;
+  sampleCopy = sample;
+  cacheCopy = cache;
   v18.receiver = self;
   v18.super_class = HKElectrocardiogramCardView;
   v15 = [(HKElectrocardiogramCardView *)&v18 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sample, a3);
-    objc_storeWeak(&v16->_dateCache, v14);
-    v16->_onboarding = a5;
-    v16->_activeAlgorithmVersion = a6;
-    v16->_isSampleInteractive = a7;
+    objc_storeStrong(&v15->_sample, sample);
+    objc_storeWeak(&v16->_dateCache, cacheCopy);
+    v16->_onboarding = onboarding;
+    v16->_activeAlgorithmVersion = version;
+    v16->_isSampleInteractive = interactive;
     [(HKElectrocardiogramCardView *)v16 _setupUI];
     [(HKElectrocardiogramCardView *)v16 _setupConstraints];
     [(HKElectrocardiogramCardView *)v16 updateUI];
@@ -53,9 +53,9 @@
   return v16;
 }
 
-- (void)setSample:(id)a3
+- (void)setSample:(id)sample
 {
-  objc_storeStrong(&self->_sample, a3);
+  objc_storeStrong(&self->_sample, sample);
   [(HKElectrocardiogramCardView *)self updateUI];
 
   [(HKElectrocardiogramCardView *)self _setUpGraph];
@@ -75,18 +75,18 @@
   return v9 + v10;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = HKElectrocardiogramCardView;
-  [(HKElectrocardiogramCardView *)&v11 traitCollectionDidChange:v4];
-  v5 = [(HKElectrocardiogramCardView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
-  v8 = [v6 isEqualToString:v7];
+  [(HKElectrocardiogramCardView *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(HKElectrocardiogramCardView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
-  if (!v8 || (-[HKElectrocardiogramCardView traitCollection](self, "traitCollection"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hasDifferentColorAppearanceComparedToTraitCollection:v4], v9, v10))
+  if (!v8 || (-[HKElectrocardiogramCardView traitCollection](self, "traitCollection"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hasDifferentColorAppearanceComparedToTraitCollection:changeCopy], v9, v10))
   {
     [(HKElectrocardiogramCardView *)self updateUI];
   }
@@ -102,8 +102,8 @@
 
 - (void)dealloc
 {
-  v3 = [(HKElectrocardiogramCardView *)self dateCache];
-  [v3 unregisterObserver:self];
+  dateCache = [(HKElectrocardiogramCardView *)self dateCache];
+  [dateCache unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = HKElectrocardiogramCardView;
@@ -113,131 +113,131 @@
 - (void)_setupUI
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(HKElectrocardiogramCardView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(HKElectrocardiogramCardView *)self setBackgroundColor:clearColor];
 
   [(HKElectrocardiogramCardView *)self setClipsToBounds:1];
-  v4 = [(HKElectrocardiogramCardView *)self layer];
-  [v4 setCornerRadius:26.0];
+  layer = [(HKElectrocardiogramCardView *)self layer];
+  [layer setCornerRadius:26.0];
 
   v5 = [HKRoundedHeaderView alloc];
-  v6 = [(HKElectrocardiogramCardView *)self _cardHeaderColor];
-  v7 = [(HKRoundedHeaderView *)v5 initWithColor:v6 isInteractive:self->_isSampleInteractive];
+  _cardHeaderColor = [(HKElectrocardiogramCardView *)self _cardHeaderColor];
+  v7 = [(HKRoundedHeaderView *)v5 initWithColor:_cardHeaderColor isInteractive:self->_isSampleInteractive];
   [(HKElectrocardiogramCardView *)self setHeaderView:v7];
 
-  v8 = [(HKElectrocardiogramCardView *)self headerView];
-  [v8 setClipsToBounds:1];
+  headerView = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView setClipsToBounds:1];
 
-  v9 = [(HKElectrocardiogramCardView *)self headerView];
-  [v9 setOpaque:1];
+  headerView2 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView2 setOpaque:1];
 
-  v10 = [(HKElectrocardiogramCardView *)self headerView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerView3 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v11 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:1 suffix:@"Card.Header"];
-  v12 = [(HKElectrocardiogramCardView *)self headerView];
-  [v12 setAccessibilityIdentifier:v11];
+  headerView4 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView4 setAccessibilityIdentifier:v11];
 
-  v13 = [(HKElectrocardiogramCardView *)self headerView];
-  [(HKElectrocardiogramCardView *)self addSubview:v13];
+  headerView5 = [(HKElectrocardiogramCardView *)self headerView];
+  [(HKElectrocardiogramCardView *)self addSubview:headerView5];
 
   v14 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [(HKElectrocardiogramCardView *)self setCellBackgroundView:v14];
 
-  v15 = [(HKElectrocardiogramCardView *)self _cardBackgroundColor];
-  v16 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  [v16 setBackgroundColor:v15];
+  _cardBackgroundColor = [(HKElectrocardiogramCardView *)self _cardBackgroundColor];
+  cellBackgroundView = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  [cellBackgroundView setBackgroundColor:_cardBackgroundColor];
 
-  v17 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  [v17 setClipsToBounds:1];
+  cellBackgroundView2 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  [cellBackgroundView2 setClipsToBounds:1];
 
-  v18 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  v19 = [v18 layer];
-  [v19 setCornerRadius:26.0];
+  cellBackgroundView3 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  layer2 = [cellBackgroundView3 layer];
+  [layer2 setCornerRadius:26.0];
 
-  v20 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  v21 = [v20 layer];
-  [v21 setMaskedCorners:12];
+  cellBackgroundView4 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  layer3 = [cellBackgroundView4 layer];
+  [layer3 setMaskedCorners:12];
 
-  v22 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cellBackgroundView5 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  [cellBackgroundView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v23 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  [(HKElectrocardiogramCardView *)self addSubview:v23];
+  cellBackgroundView6 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  [(HKElectrocardiogramCardView *)self addSubview:cellBackgroundView6];
 
   v24 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [(HKElectrocardiogramCardView *)self setHeartImageView:v24];
 
   v25 = MEMORY[0x1E69DCAD8];
-  v26 = [objc_opt_class() _averageHeartRateSymptomsFont];
-  v27 = [v25 configurationWithFont:v26];
-  v28 = [(HKElectrocardiogramCardView *)self heartImageView];
-  [v28 setPreferredSymbolConfiguration:v27];
+  _averageHeartRateSymptomsFont = [objc_opt_class() _averageHeartRateSymptomsFont];
+  v27 = [v25 configurationWithFont:_averageHeartRateSymptomsFont];
+  heartImageView = [(HKElectrocardiogramCardView *)self heartImageView];
+  [heartImageView setPreferredSymbolConfiguration:v27];
 
   v29 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"heart.fill"];
-  v30 = [(HKElectrocardiogramCardView *)self heartImageView];
-  [v30 setImage:v29];
+  heartImageView2 = [(HKElectrocardiogramCardView *)self heartImageView];
+  [heartImageView2 setImage:v29];
 
-  v31 = [(HKElectrocardiogramCardView *)self heartImageView];
-  [v31 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
+  heartImageView3 = [(HKElectrocardiogramCardView *)self heartImageView];
+  [heartImageView3 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
 
-  v32 = [(HKElectrocardiogramCardView *)self heartImageView];
-  [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+  heartImageView4 = [(HKElectrocardiogramCardView *)self heartImageView];
+  [heartImageView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v33 = [HKDisplayCategory categoryWithID:11];
-  v34 = [v33 color];
-  v35 = [(HKElectrocardiogramCardView *)self heartImageView];
-  [v35 setTintColor:v34];
+  color = [v33 color];
+  heartImageView5 = [(HKElectrocardiogramCardView *)self heartImageView];
+  [heartImageView5 setTintColor:color];
 
-  v36 = [(HKElectrocardiogramCardView *)self heartImageView];
-  [(HKElectrocardiogramCardView *)self addSubview:v36];
+  heartImageView6 = [(HKElectrocardiogramCardView *)self heartImageView];
+  [(HKElectrocardiogramCardView *)self addSubview:heartImageView6];
 
   v37 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(HKElectrocardiogramCardView *)self setAverageHeartRateLabel:v37];
 
-  v38 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  [v38 setNumberOfLines:0];
+  averageHeartRateLabel = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  [averageHeartRateLabel setNumberOfLines:0];
 
-  v39 = [objc_opt_class() _averageHeartRateSymptomsFont];
-  v40 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  [v40 setFont:v39];
+  _averageHeartRateSymptomsFont2 = [objc_opt_class() _averageHeartRateSymptomsFont];
+  averageHeartRateLabel2 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  [averageHeartRateLabel2 setFont:_averageHeartRateSymptomsFont2];
 
-  v41 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v42 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:v41];
-  v43 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  [v43 setTextColor:v42];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  v42 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:systemGrayColor];
+  averageHeartRateLabel3 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  [averageHeartRateLabel3 setTextColor:v42];
 
-  v44 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+  averageHeartRateLabel4 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  [averageHeartRateLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v45 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  [v45 setAdjustsFontForContentSizeCategory:1];
+  averageHeartRateLabel5 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  [averageHeartRateLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v46 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  [(HKElectrocardiogramCardView *)self addSubview:v46];
+  averageHeartRateLabel6 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  [(HKElectrocardiogramCardView *)self addSubview:averageHeartRateLabel6];
 
   v47 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(HKElectrocardiogramCardView *)self setSymptomsLabel:v47];
 
-  v48 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  [v48 setNumberOfLines:1];
+  symptomsLabel = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  [symptomsLabel setNumberOfLines:1];
 
-  v49 = [objc_opt_class() _averageHeartRateSymptomsFont];
-  v50 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  [v50 setFont:v49];
+  _averageHeartRateSymptomsFont3 = [objc_opt_class() _averageHeartRateSymptomsFont];
+  symptomsLabel2 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  [symptomsLabel2 setFont:_averageHeartRateSymptomsFont3];
 
-  v51 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  [v51 setTranslatesAutoresizingMaskIntoConstraints:0];
+  symptomsLabel3 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  [symptomsLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v52 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  [v52 setAdjustsFontForContentSizeCategory:1];
+  symptomsLabel4 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  [symptomsLabel4 setAdjustsFontForContentSizeCategory:1];
 
-  v53 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  [(HKElectrocardiogramCardView *)self addSubview:v53];
+  symptomsLabel5 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  [(HKElectrocardiogramCardView *)self addSubview:symptomsLabel5];
 
   v54 = [HKElectrocardiogramGridOptions alloc];
-  v55 = [MEMORY[0x1E69DC888] systemGray3Color];
-  v56 = [(HKElectrocardiogramGridOptions *)v54 initWithUnitMultiple:(1.0 / 0.04) axis:2 lineColor:v55 lineWidth:HKUIFloorToScreenScale(0.5)];
+  systemGray3Color = [MEMORY[0x1E69DC888] systemGray3Color];
+  v56 = [(HKElectrocardiogramGridOptions *)v54 initWithUnitMultiple:(1.0 / 0.04) axis:2 lineColor:systemGray3Color lineWidth:HKUIFloorToScreenScale(0.5)];
 
   v57 = [HKElectrocardiogramChartView alloc];
   v73[0] = v56;
@@ -245,226 +245,226 @@
   v59 = [(HKElectrocardiogramChartView *)v57 initWithGridSize:v58 gridOptions:4.0, 4.0];
   [(HKElectrocardiogramCardView *)self setGraphView:v59];
 
-  v60 = [v33 color];
-  v61 = [(HKElectrocardiogramCardView *)self graphView];
-  [v61 setTintColor:v60];
+  color2 = [v33 color];
+  graphView = [(HKElectrocardiogramCardView *)self graphView];
+  [graphView setTintColor:color2];
 
-  v62 = [(HKElectrocardiogramCardView *)self graphView];
-  [v62 setEdgeMaskEnabled:1];
+  graphView2 = [(HKElectrocardiogramCardView *)self graphView];
+  [graphView2 setEdgeMaskEnabled:1];
 
-  v63 = [(HKElectrocardiogramCardView *)self graphView];
-  [v63 setTranslatesAutoresizingMaskIntoConstraints:0];
+  graphView3 = [(HKElectrocardiogramCardView *)self graphView];
+  [graphView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v64 = [(HKElectrocardiogramCardView *)self graphView];
-  v65 = [v64 layer];
-  [v65 setCornerRadius:26.0 * 0.5];
+  graphView4 = [(HKElectrocardiogramCardView *)self graphView];
+  layer4 = [graphView4 layer];
+  [layer4 setCornerRadius:26.0 * 0.5];
 
-  v66 = [(HKElectrocardiogramCardView *)self graphView];
-  v67 = [v66 layer];
-  [v67 setMasksToBounds:1];
+  graphView5 = [(HKElectrocardiogramCardView *)self graphView];
+  layer5 = [graphView5 layer];
+  [layer5 setMasksToBounds:1];
 
   v68 = HKUICeilToScreenScale(0.5);
-  v69 = [(HKElectrocardiogramCardView *)self graphView];
-  v70 = [v69 layer];
-  [v70 setBorderWidth:v68];
+  graphView6 = [(HKElectrocardiogramCardView *)self graphView];
+  layer6 = [graphView6 layer];
+  [layer6 setBorderWidth:v68];
 
-  v71 = [(HKElectrocardiogramCardView *)self graphView];
-  [(HKElectrocardiogramCardView *)self addSubview:v71];
+  graphView7 = [(HKElectrocardiogramCardView *)self graphView];
+  [(HKElectrocardiogramCardView *)self addSubview:graphView7];
 
-  v72 = [(HKElectrocardiogramCardView *)self dateCache];
-  [v72 registerObserver:self];
+  dateCache = [(HKElectrocardiogramCardView *)self dateCache];
+  [dateCache registerObserver:self];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(HKElectrocardiogramCardView *)self headerView];
-  [v3 hk_alignHorizontalConstraintsWithView:self margin:0.0];
+  headerView = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView hk_alignHorizontalConstraintsWithView:self margin:0.0];
 
-  v4 = [(HKElectrocardiogramCardView *)self headerView];
-  v5 = [v4 topAnchor];
-  v6 = [(HKElectrocardiogramCardView *)self topAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  headerView2 = [(HKElectrocardiogramCardView *)self headerView];
+  topAnchor = [headerView2 topAnchor];
+  topAnchor2 = [(HKElectrocardiogramCardView *)self topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v7 setActive:1];
 
-  v8 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  v9 = [(HKElectrocardiogramCardView *)self headerView];
-  [v8 hk_alignHorizontalConstraintsWithView:v9 margin:0.0];
+  cellBackgroundView = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  headerView3 = [(HKElectrocardiogramCardView *)self headerView];
+  [cellBackgroundView hk_alignHorizontalConstraintsWithView:headerView3 margin:0.0];
 
-  v10 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  v11 = [v10 topAnchor];
-  v12 = [(HKElectrocardiogramCardView *)self headerView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  cellBackgroundView2 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  topAnchor3 = [cellBackgroundView2 topAnchor];
+  headerView4 = [(HKElectrocardiogramCardView *)self headerView];
+  bottomAnchor = [headerView4 bottomAnchor];
+  v14 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   [v14 setActive:1];
 
-  v15 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  v16 = [v15 bottomAnchor];
-  v17 = [(HKElectrocardiogramCardView *)self graphView];
-  v18 = [v17 bottomAnchor];
+  cellBackgroundView3 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  bottomAnchor2 = [cellBackgroundView3 bottomAnchor];
+  graphView = [(HKElectrocardiogramCardView *)self graphView];
+  bottomAnchor3 = [graphView bottomAnchor];
   [objc_opt_class() _graphBottomToCardBottom];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:?];
+  v19 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:?];
   [v19 setActive:1];
 
-  v20 = [(HKElectrocardiogramCardView *)self heartImageView];
-  v21 = [v20 leadingAnchor];
-  v22 = [(HKElectrocardiogramCardView *)self headerView];
-  v23 = [v22 leadingAnchor];
-  v24 = [(HKElectrocardiogramCardView *)self headerView];
-  [v24 textHorizontalInset];
-  v25 = [v21 constraintEqualToAnchor:v23 constant:?];
+  heartImageView = [(HKElectrocardiogramCardView *)self heartImageView];
+  leadingAnchor = [heartImageView leadingAnchor];
+  headerView5 = [(HKElectrocardiogramCardView *)self headerView];
+  leadingAnchor2 = [headerView5 leadingAnchor];
+  headerView6 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView6 textHorizontalInset];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   [v25 setActive:1];
 
-  v26 = [(HKElectrocardiogramCardView *)self heartImageView];
-  v27 = [v26 centerYAnchor];
-  v28 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v29 = [v28 centerYAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  heartImageView2 = [(HKElectrocardiogramCardView *)self heartImageView];
+  centerYAnchor = [heartImageView2 centerYAnchor];
+  averageHeartRateLabel = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  centerYAnchor2 = [averageHeartRateLabel centerYAnchor];
+  v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v30 setActive:1];
 
-  v31 = [(HKElectrocardiogramCardView *)self heartImageView];
-  v32 = [v31 heightAnchor];
-  v33 = [objc_opt_class() _averageHeartRateSymptomsFont];
-  [v33 lineHeight];
-  v34 = [v32 constraintEqualToConstant:?];
+  heartImageView3 = [(HKElectrocardiogramCardView *)self heartImageView];
+  heightAnchor = [heartImageView3 heightAnchor];
+  _averageHeartRateSymptomsFont = [objc_opt_class() _averageHeartRateSymptomsFont];
+  [_averageHeartRateSymptomsFont lineHeight];
+  v34 = [heightAnchor constraintEqualToConstant:?];
   [(HKElectrocardiogramCardView *)self setHeartImageViewHeightConstraint:v34];
 
-  v35 = [(HKElectrocardiogramCardView *)self heartImageViewHeightConstraint];
-  [v35 setActive:1];
+  heartImageViewHeightConstraint = [(HKElectrocardiogramCardView *)self heartImageViewHeightConstraint];
+  [heartImageViewHeightConstraint setActive:1];
 
-  v36 = [(HKElectrocardiogramCardView *)self heartImageView];
-  v37 = [v36 widthAnchor];
-  v38 = [(HKElectrocardiogramCardView *)self heartImageView];
-  v39 = [v38 heightAnchor];
-  v125 = [v37 constraintEqualToAnchor:v39];
+  heartImageView4 = [(HKElectrocardiogramCardView *)self heartImageView];
+  widthAnchor = [heartImageView4 widthAnchor];
+  heartImageView5 = [(HKElectrocardiogramCardView *)self heartImageView];
+  heightAnchor2 = [heartImageView5 heightAnchor];
+  v125 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
 
   LODWORD(v40) = 1148846080;
   [v125 setPriority:v40];
   [v125 setActive:1];
-  v41 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v42 = [v41 leadingAnchor];
-  v43 = [(HKElectrocardiogramCardView *)self heartImageView];
-  v44 = [v43 trailingAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44 constant:6.0];
+  averageHeartRateLabel2 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  leadingAnchor3 = [averageHeartRateLabel2 leadingAnchor];
+  heartImageView6 = [(HKElectrocardiogramCardView *)self heartImageView];
+  trailingAnchor = [heartImageView6 trailingAnchor];
+  v45 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:6.0];
   [v45 setActive:1];
 
-  v46 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v47 = [v46 firstBaselineAnchor];
-  v48 = [(HKElectrocardiogramCardView *)self headerView];
-  v49 = [v48 bottomAnchor];
-  v50 = [v47 constraintEqualToAnchor:v49];
+  averageHeartRateLabel3 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  firstBaselineAnchor = [averageHeartRateLabel3 firstBaselineAnchor];
+  headerView7 = [(HKElectrocardiogramCardView *)self headerView];
+  bottomAnchor4 = [headerView7 bottomAnchor];
+  v50 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor4];
   [(HKElectrocardiogramCardView *)self setAverageHeartRateLabelFirstBaselineConstraint:v50];
 
-  v51 = [(HKElectrocardiogramCardView *)self averageHeartRateLabelFirstBaselineConstraint];
-  [v51 setActive:1];
+  averageHeartRateLabelFirstBaselineConstraint = [(HKElectrocardiogramCardView *)self averageHeartRateLabelFirstBaselineConstraint];
+  [averageHeartRateLabelFirstBaselineConstraint setActive:1];
 
-  v52 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v53 = [v52 widthAnchor];
-  v54 = [(HKElectrocardiogramCardView *)self widthAnchor];
-  v55 = [v53 constraintLessThanOrEqualToAnchor:v54 multiplier:0.34];
+  averageHeartRateLabel4 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  widthAnchor2 = [averageHeartRateLabel4 widthAnchor];
+  widthAnchor3 = [(HKElectrocardiogramCardView *)self widthAnchor];
+  v55 = [widthAnchor2 constraintLessThanOrEqualToAnchor:widthAnchor3 multiplier:0.34];
   [(HKElectrocardiogramCardView *)self setAverageHeartRateLabelWidthConstraint:v55];
 
-  v56 = [(HKElectrocardiogramCardView *)self averageHeartRateLabelWidthConstraint];
+  averageHeartRateLabelWidthConstraint = [(HKElectrocardiogramCardView *)self averageHeartRateLabelWidthConstraint];
   LODWORD(v57) = 1144750080;
-  [v56 setPriority:v57];
+  [averageHeartRateLabelWidthConstraint setPriority:v57];
 
-  v58 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  symptomsLabel = [(HKElectrocardiogramCardView *)self symptomsLabel];
   LODWORD(v59) = 1148846080;
-  [v58 setContentCompressionResistancePriority:0 forAxis:v59];
+  [symptomsLabel setContentCompressionResistancePriority:0 forAxis:v59];
 
   v60 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v61 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  v62 = [v61 leadingAnchor];
-  v63 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v64 = [v63 trailingAnchor];
-  v65 = [v62 constraintGreaterThanOrEqualToAnchor:v64 constant:16.0];
+  symptomsLabel2 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  leadingAnchor4 = [symptomsLabel2 leadingAnchor];
+  averageHeartRateLabel5 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  trailingAnchor2 = [averageHeartRateLabel5 trailingAnchor];
+  v65 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:16.0];
   [v60 addObject:v65];
 
-  v66 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  v67 = [v66 trailingAnchor];
-  v68 = [(HKElectrocardiogramCardView *)self headerView];
-  v69 = [v68 trailingAnchor];
-  v70 = [(HKElectrocardiogramCardView *)self headerView];
-  [v70 textHorizontalInset];
-  v72 = [v67 constraintEqualToAnchor:v69 constant:-v71];
+  symptomsLabel3 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  trailingAnchor3 = [symptomsLabel3 trailingAnchor];
+  headerView8 = [(HKElectrocardiogramCardView *)self headerView];
+  trailingAnchor4 = [headerView8 trailingAnchor];
+  headerView9 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView9 textHorizontalInset];
+  v72 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v71];
   [v60 addObject:v72];
 
-  v73 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  v74 = [v73 firstBaselineAnchor];
-  v75 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v76 = [v75 lastBaselineAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76];
+  symptomsLabel4 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  firstBaselineAnchor2 = [symptomsLabel4 firstBaselineAnchor];
+  averageHeartRateLabel6 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  lastBaselineAnchor = [averageHeartRateLabel6 lastBaselineAnchor];
+  v77 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
   [v60 addObject:v77];
 
   v78 = [v60 copy];
   [(HKElectrocardiogramCardView *)self setRegularConstraints:v78];
 
   v79 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v80 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v81 = [v80 trailingAnchor];
-  v82 = [(HKElectrocardiogramCardView *)self headerView];
-  v83 = [v82 trailingAnchor];
-  v84 = [(HKElectrocardiogramCardView *)self headerView];
-  [v84 textHorizontalInset];
-  v86 = [v81 constraintEqualToAnchor:v83 constant:-v85];
+  averageHeartRateLabel7 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  trailingAnchor5 = [averageHeartRateLabel7 trailingAnchor];
+  headerView10 = [(HKElectrocardiogramCardView *)self headerView];
+  trailingAnchor6 = [headerView10 trailingAnchor];
+  headerView11 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView11 textHorizontalInset];
+  v86 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v85];
   [v79 addObject:v86];
 
-  v87 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  v88 = [v87 leadingAnchor];
-  v89 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v90 = [v89 leadingAnchor];
-  v91 = [v88 constraintEqualToAnchor:v90];
+  symptomsLabel5 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  leadingAnchor5 = [symptomsLabel5 leadingAnchor];
+  averageHeartRateLabel8 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  leadingAnchor6 = [averageHeartRateLabel8 leadingAnchor];
+  v91 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v79 addObject:v91];
 
-  v92 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  v93 = [v92 trailingAnchor];
-  v94 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v95 = [v94 trailingAnchor];
-  v96 = [v93 constraintEqualToAnchor:v95];
+  symptomsLabel6 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  trailingAnchor7 = [symptomsLabel6 trailingAnchor];
+  averageHeartRateLabel9 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  trailingAnchor8 = [averageHeartRateLabel9 trailingAnchor];
+  v96 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   [v79 addObject:v96];
 
-  v97 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  v98 = [v97 firstBaselineAnchor];
-  v99 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  v100 = [v99 lastBaselineAnchor];
-  v101 = [v98 constraintEqualToAnchor:v100];
+  symptomsLabel7 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  firstBaselineAnchor3 = [symptomsLabel7 firstBaselineAnchor];
+  averageHeartRateLabel10 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  lastBaselineAnchor2 = [averageHeartRateLabel10 lastBaselineAnchor];
+  v101 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor2];
   [(HKElectrocardiogramCardView *)self setSymptomsLabelFirstBaselineConstraint:v101];
 
-  v102 = [(HKElectrocardiogramCardView *)self symptomsLabelFirstBaselineConstraint];
-  [v79 addObject:v102];
+  symptomsLabelFirstBaselineConstraint = [(HKElectrocardiogramCardView *)self symptomsLabelFirstBaselineConstraint];
+  [v79 addObject:symptomsLabelFirstBaselineConstraint];
 
   v103 = [v79 copy];
   [(HKElectrocardiogramCardView *)self setLargeTextConstraints:v103];
 
-  v104 = [(HKElectrocardiogramCardView *)self graphView];
-  v105 = [v104 leftAnchor];
-  v106 = [(HKElectrocardiogramCardView *)self headerView];
-  v107 = [v106 leftAnchor];
-  v108 = [(HKElectrocardiogramCardView *)self headerView];
-  [v108 textHorizontalInset];
-  v109 = [v105 constraintEqualToAnchor:v107 constant:?];
+  graphView2 = [(HKElectrocardiogramCardView *)self graphView];
+  leftAnchor = [graphView2 leftAnchor];
+  headerView12 = [(HKElectrocardiogramCardView *)self headerView];
+  leftAnchor2 = [headerView12 leftAnchor];
+  headerView13 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView13 textHorizontalInset];
+  v109 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:?];
   [v109 setActive:1];
 
-  v110 = [(HKElectrocardiogramCardView *)self graphView];
-  v111 = [v110 rightAnchor];
-  v112 = [(HKElectrocardiogramCardView *)self headerView];
-  v113 = [v112 rightAnchor];
-  v114 = [(HKElectrocardiogramCardView *)self headerView];
-  [v114 textHorizontalInset];
-  v116 = [v111 constraintEqualToAnchor:v113 constant:-v115];
+  graphView3 = [(HKElectrocardiogramCardView *)self graphView];
+  rightAnchor = [graphView3 rightAnchor];
+  headerView14 = [(HKElectrocardiogramCardView *)self headerView];
+  rightAnchor2 = [headerView14 rightAnchor];
+  headerView15 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView15 textHorizontalInset];
+  v116 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-v115];
   [v116 setActive:1];
 
-  v117 = [(HKElectrocardiogramCardView *)self graphView];
-  v118 = [v117 heightAnchor];
+  graphView4 = [(HKElectrocardiogramCardView *)self graphView];
+  heightAnchor3 = [graphView4 heightAnchor];
   [objc_opt_class() _graphHeight];
-  v119 = [v118 constraintEqualToConstant:?];
+  v119 = [heightAnchor3 constraintEqualToConstant:?];
 
   LODWORD(v120) = 1144750080;
   [v119 setPriority:v120];
   [v119 setActive:1];
-  v121 = [(HKElectrocardiogramCardView *)self bottomAnchor];
-  v122 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-  v123 = [v122 bottomAnchor];
-  v124 = [v121 constraintEqualToAnchor:v123];
+  bottomAnchor5 = [(HKElectrocardiogramCardView *)self bottomAnchor];
+  cellBackgroundView4 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+  bottomAnchor6 = [cellBackgroundView4 bottomAnchor];
+  v124 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   [v124 setActive:1];
 
   [(HKElectrocardiogramCardView *)self _updateForCurrentSizeCategory];
@@ -472,19 +472,19 @@
 
 - (void)_setUpGraph
 {
-  v4 = [(HKElectrocardiogramCardView *)self graphView];
-  v3 = [(HKElectrocardiogramCardView *)self sample];
-  [v4 displayElectrocardiogram:v3 allowsScrolling:0];
+  graphView = [(HKElectrocardiogramCardView *)self graphView];
+  sample = [(HKElectrocardiogramCardView *)self sample];
+  [graphView displayElectrocardiogram:sample allowsScrolling:0];
 }
 
 - (void)updateUI
 {
-  v3 = [(HKElectrocardiogramCardView *)self sample];
+  sample = [(HKElectrocardiogramCardView *)self sample];
 
-  if (v3)
+  if (sample)
   {
-    v4 = [(HKElectrocardiogramCardView *)self sample];
-    v5 = [v4 _localizedClassificationWithActiveAlgorithmVersion:{-[HKElectrocardiogramCardView activeAlgorithmVersion](self, "activeAlgorithmVersion")}];
+    sample2 = [(HKElectrocardiogramCardView *)self sample];
+    v5 = [sample2 _localizedClassificationWithActiveAlgorithmVersion:{-[HKElectrocardiogramCardView activeAlgorithmVersion](self, "activeAlgorithmVersion")}];
 
     if (v5)
     {
@@ -497,63 +497,63 @@
     }
 
     v7 = v5;
-    v8 = [(HKElectrocardiogramCardView *)self headerView];
-    [v8 setText:v6];
+    headerView = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView setText:v6];
 
-    v9 = [(HKElectrocardiogramCardView *)self _cardHeaderColor];
-    v10 = [(HKElectrocardiogramCardView *)self headerView];
-    [v10 setColor:v9];
+    _cardHeaderColor = [(HKElectrocardiogramCardView *)self _cardHeaderColor];
+    headerView2 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView2 setColor:_cardHeaderColor];
 
-    v11 = [(HKElectrocardiogramCardView *)self sample];
-    v12 = [v11 endDate];
-    v13 = [(HKElectrocardiogramCardView *)self dateCache];
-    v14 = HKLastUpdatedText(v12, v13);
-    v15 = [(HKElectrocardiogramCardView *)self headerView];
-    [v15 setDetailText:v14];
+    sample3 = [(HKElectrocardiogramCardView *)self sample];
+    endDate = [sample3 endDate];
+    dateCache = [(HKElectrocardiogramCardView *)self dateCache];
+    v14 = HKLastUpdatedText(endDate, dateCache);
+    headerView3 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView3 setDetailText:v14];
 
-    v16 = [(HKElectrocardiogramCardView *)self sample];
-    v17 = [v16 hk_classificationTextColor];
-    v18 = [(HKElectrocardiogramCardView *)self headerView];
-    [v18 setTextColor:v17];
+    sample4 = [(HKElectrocardiogramCardView *)self sample];
+    hk_classificationTextColor = [sample4 hk_classificationTextColor];
+    headerView4 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView4 setTextColor:hk_classificationTextColor];
 
-    v19 = [(HKElectrocardiogramCardView *)self sample];
-    v20 = [v19 hk_timeStampTextColor];
-    v21 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:v20];
-    v22 = [(HKElectrocardiogramCardView *)self headerView];
-    [v22 setDetailTextColor:v21];
+    sample5 = [(HKElectrocardiogramCardView *)self sample];
+    hk_timeStampTextColor = [sample5 hk_timeStampTextColor];
+    v21 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:hk_timeStampTextColor];
+    headerView5 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView5 setDetailTextColor:v21];
 
-    v23 = [(HKElectrocardiogramCardView *)self sample];
-    v24 = [v23 hk_timeStampCompositingFilter];
-    v25 = [(HKElectrocardiogramCardView *)self headerView];
-    [v25 setDetailTextCompositingFilter:v24];
+    sample6 = [(HKElectrocardiogramCardView *)self sample];
+    hk_timeStampCompositingFilter = [sample6 hk_timeStampCompositingFilter];
+    headerView6 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView6 setDetailTextCompositingFilter:hk_timeStampCompositingFilter];
 
-    v26 = [(HKElectrocardiogramCardView *)self sample];
-    v27 = [v26 hk_localizedAverageBPM];
-    v28 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-    [v28 setText:v27];
+    sample7 = [(HKElectrocardiogramCardView *)self sample];
+    hk_localizedAverageBPM = [sample7 hk_localizedAverageBPM];
+    averageHeartRateLabel = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+    [averageHeartRateLabel setText:hk_localizedAverageBPM];
 
-    v29 = [(HKElectrocardiogramCardView *)self sample];
-    v30 = [v29 hk_BPMTextColor];
-    v31 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:v30];
-    v32 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-    [v32 setTextColor:v31];
+    sample8 = [(HKElectrocardiogramCardView *)self sample];
+    hk_BPMTextColor = [sample8 hk_BPMTextColor];
+    v31 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:hk_BPMTextColor];
+    averageHeartRateLabel2 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+    [averageHeartRateLabel2 setTextColor:v31];
 
     v33 = objc_opt_class();
-    v34 = [(HKElectrocardiogramCardView *)self sample];
-    v35 = [v33 _averageHeartRateSymptomsFontForElectrocardiogram:v34];
-    v36 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-    [v36 setFont:v35];
+    sample9 = [(HKElectrocardiogramCardView *)self sample];
+    v35 = [v33 _averageHeartRateSymptomsFontForElectrocardiogram:sample9];
+    averageHeartRateLabel3 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+    [averageHeartRateLabel3 setFont:v35];
 
-    v37 = [(HKElectrocardiogramCardView *)self sample];
-    v38 = [v37 hk_localizedUppercaseNumSymptoms];
-    v39 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-    [v39 setText:v38];
+    sample10 = [(HKElectrocardiogramCardView *)self sample];
+    hk_localizedUppercaseNumSymptoms = [sample10 hk_localizedUppercaseNumSymptoms];
+    symptomsLabel = [(HKElectrocardiogramCardView *)self symptomsLabel];
+    [symptomsLabel setText:hk_localizedUppercaseNumSymptoms];
 
-    v40 = [(HKElectrocardiogramCardView *)self sample];
-    v41 = [v40 hk_numSymptomsTextColor];
-    v42 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:v41];
-    v43 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-    [v43 setTextColor:v42];
+    sample11 = [(HKElectrocardiogramCardView *)self sample];
+    hk_numSymptomsTextColor = [sample11 hk_numSymptomsTextColor];
+    symptomsLabel4 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:hk_numSymptomsTextColor];
+    symptomsLabel2 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+    [symptomsLabel2 setTextColor:symptomsLabel4];
   }
 
   else
@@ -563,71 +563,71 @@
     v46 = HKConditionallyRedactedHeartRhythmString();
 
     v7 = v46;
-    v47 = [(HKElectrocardiogramCardView *)self headerView];
-    [v47 setText:v7];
+    headerView7 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView7 setText:v7];
 
-    v48 = [(HKElectrocardiogramCardView *)self headerView];
-    [v48 setDetailText:@" "];
+    headerView8 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView8 setDetailText:@" "];
 
-    v49 = [MEMORY[0x1E696C128] hk_defaultCardHeaderColor];
-    v50 = [(HKElectrocardiogramCardView *)self headerView];
-    [v50 setColor:v49];
+    hk_defaultCardHeaderColor = [MEMORY[0x1E696C128] hk_defaultCardHeaderColor];
+    headerView9 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView9 setColor:hk_defaultCardHeaderColor];
 
-    v51 = [MEMORY[0x1E696C128] hk_defaultClassificationTextColor];
-    v52 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:v51];
-    v53 = [(HKElectrocardiogramCardView *)self headerView];
-    [v53 setTextColor:v52];
+    hk_defaultClassificationTextColor = [MEMORY[0x1E696C128] hk_defaultClassificationTextColor];
+    v52 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:hk_defaultClassificationTextColor];
+    headerView10 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView10 setTextColor:v52];
 
-    v54 = [MEMORY[0x1E696C128] hk_defaultTimeStampTextColor];
-    v55 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:v54];
-    v56 = [(HKElectrocardiogramCardView *)self headerView];
-    [v56 setDetailTextColor:v55];
+    hk_defaultTimeStampTextColor = [MEMORY[0x1E696C128] hk_defaultTimeStampTextColor];
+    v55 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:hk_defaultTimeStampTextColor];
+    headerView11 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView11 setDetailTextColor:v55];
 
-    v57 = [MEMORY[0x1E696C128] hk_defaultTimeStampCompositingFilter];
-    v58 = [(HKElectrocardiogramCardView *)self headerView];
-    [v58 setDetailTextCompositingFilter:v57];
+    hk_defaultTimeStampCompositingFilter = [MEMORY[0x1E696C128] hk_defaultTimeStampCompositingFilter];
+    headerView12 = [(HKElectrocardiogramCardView *)self headerView];
+    [headerView12 setDetailTextCompositingFilter:hk_defaultTimeStampCompositingFilter];
 
     v59 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v60 = [v59 localizedStringForKey:@"NO_AVERAGE_BEATS_PER_MINUTE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Cinnamon"];
     v61 = HKConditionallyRedactedHeartRhythmString();
-    v62 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-    [v62 setText:v61];
+    averageHeartRateLabel4 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+    [averageHeartRateLabel4 setText:v61];
 
-    v63 = [MEMORY[0x1E696C128] hk_defaultBPMTextColor];
-    v64 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:v63];
-    v65 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-    [v65 setTextColor:v64];
+    hk_defaultBPMTextColor = [MEMORY[0x1E696C128] hk_defaultBPMTextColor];
+    v64 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:hk_defaultBPMTextColor];
+    averageHeartRateLabel5 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+    [averageHeartRateLabel5 setTextColor:v64];
 
-    v66 = [objc_opt_class() _averageHeartRateSymptomsFont];
-    v67 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-    [v67 setFont:v66];
+    _averageHeartRateSymptomsFont = [objc_opt_class() _averageHeartRateSymptomsFont];
+    averageHeartRateLabel6 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+    [averageHeartRateLabel6 setFont:_averageHeartRateSymptomsFont];
 
-    v68 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-    [v68 setText:@" "];
+    symptomsLabel3 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+    [symptomsLabel3 setText:@" "];
 
-    v40 = [MEMORY[0x1E696C128] hk_defaultNumSymptomsTextColor];
-    v41 = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:v40];
-    v42 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-    [v42 setTextColor:v41];
+    sample11 = [MEMORY[0x1E696C128] hk_defaultNumSymptomsTextColor];
+    hk_numSymptomsTextColor = [(HKElectrocardiogramCardView *)self _accessibilityHigherContrastTintColorForColor:sample11];
+    symptomsLabel4 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+    [symptomsLabel4 setTextColor:hk_numSymptomsTextColor];
   }
 
   v69 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:1 suffix:@"Card.AverageBPM"];
-  v70 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
-  [v70 setAccessibilityIdentifier:v69];
+  averageHeartRateLabel7 = [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
+  [averageHeartRateLabel7 setAccessibilityIdentifier:v69];
 
-  v71 = [(HKElectrocardiogramCardView *)self _chevronColor];
-  v72 = [(HKElectrocardiogramCardView *)self headerView];
-  [v72 setChevronColor:v71];
+  _chevronColor = [(HKElectrocardiogramCardView *)self _chevronColor];
+  headerView13 = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView13 setChevronColor:_chevronColor];
 
-  v73 = [MEMORY[0x1E69DC888] systemGray2Color];
-  v74 = [v73 CGColor];
-  v75 = [(HKElectrocardiogramCardView *)self graphView];
-  v76 = [v75 layer];
-  [v76 setBorderColor:v74];
+  systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+  cGColor = [systemGray2Color CGColor];
+  graphView = [(HKElectrocardiogramCardView *)self graphView];
+  layer = [graphView layer];
+  [layer setBorderColor:cGColor];
 
-  v77 = [(HKElectrocardiogramCardView *)self _graphBackgroundColor];
-  v78 = [(HKElectrocardiogramCardView *)self graphView];
-  [v78 setBackgroundColor:v77];
+  _graphBackgroundColor = [(HKElectrocardiogramCardView *)self _graphBackgroundColor];
+  graphView2 = [(HKElectrocardiogramCardView *)self graphView];
+  [graphView2 setBackgroundColor:_graphBackgroundColor];
 
   v79 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:1 suffix:@"Card"];
   if (v7)
@@ -646,33 +646,33 @@
 
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v82 = [(HKElectrocardiogramCardView *)self layer];
-    [v82 setMaskedCorners:15];
+    layer2 = [(HKElectrocardiogramCardView *)self layer];
+    [layer2 setMaskedCorners:15];
 
-    v83 = [MEMORY[0x1E69DC888] hk_electrocardiogramChartBorderColor];
-    v84 = [v83 CGColor];
-    v85 = [(HKElectrocardiogramCardView *)self layer];
-    [v85 setBorderColor:v84];
+    hk_electrocardiogramChartBorderColor = [MEMORY[0x1E69DC888] hk_electrocardiogramChartBorderColor];
+    cGColor2 = [hk_electrocardiogramChartBorderColor CGColor];
+    layer3 = [(HKElectrocardiogramCardView *)self layer];
+    [layer3 setBorderColor:cGColor2];
 
     v86 = HKUICeilToScreenScale(0.5);
-    v87 = [(HKElectrocardiogramCardView *)self layer];
-    [v87 setBorderWidth:v86];
+    layer4 = [(HKElectrocardiogramCardView *)self layer];
+    [layer4 setBorderWidth:v86];
 
-    v88 = [(HKElectrocardiogramCardView *)self layer];
-    [v88 setCornerRadius:26.0 + 2.0];
+    layer5 = [(HKElectrocardiogramCardView *)self layer];
+    [layer5 setCornerRadius:26.0 + 2.0];
   }
 
   else
   {
-    v89 = [(HKElectrocardiogramCardView *)self cellBackgroundView];
-    v90 = [v89 layer];
-    [v90 setMaskedCorners:12];
+    cellBackgroundView = [(HKElectrocardiogramCardView *)self cellBackgroundView];
+    layer6 = [cellBackgroundView layer];
+    [layer6 setMaskedCorners:12];
 
-    v91 = [(HKElectrocardiogramCardView *)self layer];
-    [v91 setBorderColor:0];
+    layer7 = [(HKElectrocardiogramCardView *)self layer];
+    [layer7 setBorderColor:0];
 
-    v88 = [(HKElectrocardiogramCardView *)self layer];
-    [v88 setBorderWidth:0.0];
+    layer5 = [(HKElectrocardiogramCardView *)self layer];
+    [layer5 setBorderWidth:0.0];
   }
 
   [(HKElectrocardiogramCardView *)self _updateForCurrentSizeCategory];
@@ -680,12 +680,12 @@
 
 - (void)_updateTextConstraints
 {
-  v3 = [(HKElectrocardiogramCardView *)self _isLayingOutForAccessibility];
-  v4 = [(HKElectrocardiogramCardView *)self averageHeartRateLabelWidthConstraint];
-  v5 = v4;
-  if (v3)
+  _isLayingOutForAccessibility = [(HKElectrocardiogramCardView *)self _isLayingOutForAccessibility];
+  averageHeartRateLabelWidthConstraint = [(HKElectrocardiogramCardView *)self averageHeartRateLabelWidthConstraint];
+  v5 = averageHeartRateLabelWidthConstraint;
+  if (_isLayingOutForAccessibility)
   {
-    [v4 setActive:0];
+    [averageHeartRateLabelWidthConstraint setActive:0];
 
     [objc_opt_class() _averageHeartRateBaselineToSymptomBaseline];
     v7 = v6;
@@ -695,50 +695,50 @@
   else
   {
     v8 = 1;
-    [v4 setActive:1];
+    [averageHeartRateLabelWidthConstraint setActive:1];
 
     v7 = 0.0;
   }
 
-  v9 = [(HKElectrocardiogramCardView *)self symptomsLabelFirstBaselineConstraint];
-  [v9 setConstant:v7];
+  symptomsLabelFirstBaselineConstraint = [(HKElectrocardiogramCardView *)self symptomsLabelFirstBaselineConstraint];
+  [symptomsLabelFirstBaselineConstraint setConstant:v7];
 
-  v10 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  [v10 setNumberOfLines:v8];
+  symptomsLabel = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  [symptomsLabel setNumberOfLines:v8];
 
-  v11 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  v12 = [v11 text];
-  v13 = [v12 hk_copyNonEmptyString];
+  symptomsLabel2 = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  text = [symptomsLabel2 text];
+  hk_copyNonEmptyString = [text hk_copyNonEmptyString];
 
-  if (!v13)
+  if (!hk_copyNonEmptyString)
   {
-    v14 = [(HKElectrocardiogramCardView *)self averageHeartRateLabelWidthConstraint];
-    [v14 setActive:0];
+    averageHeartRateLabelWidthConstraint2 = [(HKElectrocardiogramCardView *)self averageHeartRateLabelWidthConstraint];
+    [averageHeartRateLabelWidthConstraint2 setActive:0];
   }
 
   [objc_opt_class() _headerBottomToAverageHeartRateBaseline];
   v16 = v15;
-  v17 = [(HKElectrocardiogramCardView *)self averageHeartRateLabelFirstBaselineConstraint];
-  [v17 setConstant:v16];
+  averageHeartRateLabelFirstBaselineConstraint = [(HKElectrocardiogramCardView *)self averageHeartRateLabelFirstBaselineConstraint];
+  [averageHeartRateLabelFirstBaselineConstraint setConstant:v16];
 }
 
 - (void)_updateGraphTopConstraint
 {
-  v3 = [(HKElectrocardiogramCardView *)self sample];
-  v4 = [v3 hk_localizedUppercaseNumSymptoms];
-  v5 = [v4 hk_copyNonEmptyString];
+  sample = [(HKElectrocardiogramCardView *)self sample];
+  hk_localizedUppercaseNumSymptoms = [sample hk_localizedUppercaseNumSymptoms];
+  hk_copyNonEmptyString = [hk_localizedUppercaseNumSymptoms hk_copyNonEmptyString];
 
-  v6 = [(HKElectrocardiogramCardView *)self graphTopConstraint];
+  graphTopConstraint = [(HKElectrocardiogramCardView *)self graphTopConstraint];
 
-  if (v6)
+  if (graphTopConstraint)
   {
-    v7 = [(HKElectrocardiogramCardView *)self graphTopConstraint];
-    [v7 setActive:0];
+    graphTopConstraint2 = [(HKElectrocardiogramCardView *)self graphTopConstraint];
+    [graphTopConstraint2 setActive:0];
 
     [(HKElectrocardiogramCardView *)self setGraphTopConstraint:0];
   }
 
-  if (v5)
+  if (hk_copyNonEmptyString)
   {
     [(HKElectrocardiogramCardView *)self symptomsLabel];
   }
@@ -748,7 +748,7 @@
     [(HKElectrocardiogramCardView *)self averageHeartRateLabel];
   }
   v8 = ;
-  v20 = [v8 lastBaselineAnchor];
+  lastBaselineAnchor = [v8 lastBaselineAnchor];
 
   [objc_opt_class() _averageHeartRateBaselineToGraphTop];
   v10 = v9;
@@ -766,30 +766,30 @@
   }
 
   v15 = v14;
-  v16 = [(HKElectrocardiogramCardView *)self graphView];
-  v17 = [v16 topAnchor];
-  v18 = [v17 constraintEqualToAnchor:v20 constant:v15];
+  graphView = [(HKElectrocardiogramCardView *)self graphView];
+  topAnchor = [graphView topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:lastBaselineAnchor constant:v15];
   [(HKElectrocardiogramCardView *)self setGraphTopConstraint:v18];
 
-  v19 = [(HKElectrocardiogramCardView *)self graphTopConstraint];
-  [v19 setActive:1];
+  graphTopConstraint3 = [(HKElectrocardiogramCardView *)self graphTopConstraint];
+  [graphTopConstraint3 setActive:1];
 }
 
 - (void)_updateForCurrentSizeCategory
 {
   [(HKElectrocardiogramCardView *)self _updateTextConstraints];
   [(HKElectrocardiogramCardView *)self _updateGraphTopConstraint];
-  v3 = [objc_opt_class() _accessibilityContentSizeCategory];
-  v4 = [(UIView *)self hk_trailingTextAlignmentAtOrBelowSizeCategory:v3];
-  v5 = [(HKElectrocardiogramCardView *)self symptomsLabel];
-  [v5 setTextAlignment:v4];
+  _accessibilityContentSizeCategory = [objc_opt_class() _accessibilityContentSizeCategory];
+  v4 = [(UIView *)self hk_trailingTextAlignmentAtOrBelowSizeCategory:_accessibilityContentSizeCategory];
+  symptomsLabel = [(HKElectrocardiogramCardView *)self symptomsLabel];
+  [symptomsLabel setTextAlignment:v4];
 
-  v6 = [(HKElectrocardiogramCardView *)self _isLayingOutForAccessibility];
+  _isLayingOutForAccessibility = [(HKElectrocardiogramCardView *)self _isLayingOutForAccessibility];
   v7 = MEMORY[0x1E696ACD8];
-  if (v6)
+  if (_isLayingOutForAccessibility)
   {
-    v8 = [(HKElectrocardiogramCardView *)self regularConstraints];
-    [v7 deactivateConstraints:v8];
+    regularConstraints = [(HKElectrocardiogramCardView *)self regularConstraints];
+    [v7 deactivateConstraints:regularConstraints];
 
     v9 = MEMORY[0x1E696ACD8];
     [(HKElectrocardiogramCardView *)self largeTextConstraints];
@@ -797,8 +797,8 @@
 
   else
   {
-    v10 = [(HKElectrocardiogramCardView *)self largeTextConstraints];
-    [v7 deactivateConstraints:v10];
+    largeTextConstraints = [(HKElectrocardiogramCardView *)self largeTextConstraints];
+    [v7 deactivateConstraints:largeTextConstraints];
 
     v9 = MEMORY[0x1E696ACD8];
     [(HKElectrocardiogramCardView *)self regularConstraints];
@@ -806,20 +806,20 @@
   v11 = ;
   [v9 activateConstraints:v11];
 
-  v15 = [objc_opt_class() _averageHeartRateSymptomsFont];
-  [v15 lineHeight];
+  _averageHeartRateSymptomsFont = [objc_opt_class() _averageHeartRateSymptomsFont];
+  [_averageHeartRateSymptomsFont lineHeight];
   v13 = v12;
-  v14 = [(HKElectrocardiogramCardView *)self heartImageViewHeightConstraint];
-  [v14 setConstant:v13];
+  heartImageViewHeightConstraint = [(HKElectrocardiogramCardView *)self heartImageViewHeightConstraint];
+  [heartImageViewHeightConstraint setConstant:v13];
 }
 
 - (BOOL)_isLayingOutForAccessibility
 {
-  v3 = [objc_opt_class() _accessibilityContentSizeCategory];
-  if (HKUIApplicationContentSizeCategoryIsLargerThanSizeCategory(v3))
+  _accessibilityContentSizeCategory = [objc_opt_class() _accessibilityContentSizeCategory];
+  if (HKUIApplicationContentSizeCategoryIsLargerThanSizeCategory(_accessibilityContentSizeCategory))
   {
-    v4 = [(HKElectrocardiogramCardView *)self traitCollection];
-    v5 = [v4 horizontalSizeClass] == 1;
+    traitCollection = [(HKElectrocardiogramCardView *)self traitCollection];
+    v5 = [traitCollection horizontalSizeClass] == 1;
   }
 
   else
@@ -833,8 +833,8 @@
 + (id)_averageHeartRateSymptomsFont
 {
   v2 = MEMORY[0x1E69DB878];
-  v3 = [objc_opt_class() _averageHeartRateSymptomsTextStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3];
+  _averageHeartRateSymptomsTextStyle = [objc_opt_class() _averageHeartRateSymptomsTextStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_averageHeartRateSymptomsTextStyle];
 
   return v4;
 }
@@ -842,17 +842,17 @@
 + (id)_averageHeartRateSymptomsBoldFont
 {
   v2 = MEMORY[0x1E69DB878];
-  v3 = [objc_opt_class() _averageHeartRateSymptomsTextStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3 symbolicTraits:2];
+  _averageHeartRateSymptomsTextStyle = [objc_opt_class() _averageHeartRateSymptomsTextStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_averageHeartRateSymptomsTextStyle symbolicTraits:2];
 
   return v4;
 }
 
-+ (id)_averageHeartRateSymptomsFontForElectrocardiogram:(id)a3
++ (id)_averageHeartRateSymptomsFontForElectrocardiogram:(id)electrocardiogram
 {
-  v3 = [a3 hk_isBPMTextBold];
+  hk_isBPMTextBold = [electrocardiogram hk_isBPMTextBold];
   v4 = objc_opt_class();
-  if (v3)
+  if (hk_isBPMTextBold)
   {
     [v4 _averageHeartRateSymptomsBoldFont];
   }
@@ -868,8 +868,8 @@
 
 + (double)_headerBottomToAverageHeartRateBaseline
 {
-  v2 = [objc_opt_class() _averageHeartRateSymptomsFont];
-  [v2 _scaledValueForValue:24.0];
+  _averageHeartRateSymptomsFont = [objc_opt_class() _averageHeartRateSymptomsFont];
+  [_averageHeartRateSymptomsFont _scaledValueForValue:24.0];
   v4 = v3;
 
   return v4;
@@ -877,8 +877,8 @@
 
 + (double)_averageHeartRateBaselineToSymptomBaseline
 {
-  v2 = [objc_opt_class() _averageHeartRateSymptomsFont];
-  [v2 _scaledValueForValue:20.0];
+  _averageHeartRateSymptomsFont = [objc_opt_class() _averageHeartRateSymptomsFont];
+  [_averageHeartRateSymptomsFont _scaledValueForValue:20.0];
   v4 = v3;
 
   return v4;
@@ -886,58 +886,58 @@
 
 + (double)_averageHeartRateBaselineToGraphTop
 {
-  v2 = [objc_opt_class() _averageHeartRateSymptomsFont];
-  [v2 _scaledValueForValue:12.0];
+  _averageHeartRateSymptomsFont = [objc_opt_class() _averageHeartRateSymptomsFont];
+  [_averageHeartRateSymptomsFont _scaledValueForValue:12.0];
   v4 = v3;
 
   return v4;
 }
 
-- (void)dateCacheDidUpdate:(id)a3 onNotification:(id)a4
+- (void)dateCacheDidUpdate:(id)update onNotification:(id)notification
 {
-  v9 = [(HKElectrocardiogramCardView *)self sample:a3];
-  v5 = [v9 endDate];
-  v6 = [(HKElectrocardiogramCardView *)self dateCache];
-  v7 = HKLastUpdatedText(v5, v6);
-  v8 = [(HKElectrocardiogramCardView *)self headerView];
-  [v8 setDetailText:v7];
+  v9 = [(HKElectrocardiogramCardView *)self sample:update];
+  endDate = [v9 endDate];
+  dateCache = [(HKElectrocardiogramCardView *)self dateCache];
+  v7 = HKLastUpdatedText(endDate, dateCache);
+  headerView = [(HKElectrocardiogramCardView *)self headerView];
+  [headerView setDetailText:v7];
 }
 
 - (id)_cardHeaderColor
 {
-  v3 = [(HKElectrocardiogramCardView *)self sample];
-  v4 = [v3 hk_cardHeaderColor];
-  v5 = [MEMORY[0x1E696C128] hk_abnormalCardHeaderColor];
-  v6 = [v4 isEqual:v5];
+  sample = [(HKElectrocardiogramCardView *)self sample];
+  hk_cardHeaderColor = [sample hk_cardHeaderColor];
+  hk_abnormalCardHeaderColor = [MEMORY[0x1E696C128] hk_abnormalCardHeaderColor];
+  v6 = [hk_cardHeaderColor isEqual:hk_abnormalCardHeaderColor];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E696C128] hk_abnormalCardHeaderColor];
+    hk_abnormalCardHeaderColor2 = [MEMORY[0x1E696C128] hk_abnormalCardHeaderColor];
 LABEL_5:
-    v8 = v7;
+    hk_cardHeaderColor2 = hk_abnormalCardHeaderColor2;
     goto LABEL_7;
   }
 
   if ([(HKElectrocardiogramCardView *)self isOnboarding])
   {
-    v7 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+    hk_abnormalCardHeaderColor2 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
     goto LABEL_5;
   }
 
-  v9 = [(HKElectrocardiogramCardView *)self sample];
-  v8 = [v9 hk_cardHeaderColor];
+  sample2 = [(HKElectrocardiogramCardView *)self sample];
+  hk_cardHeaderColor2 = [sample2 hk_cardHeaderColor];
 
 LABEL_7:
 
-  return v8;
+  return hk_cardHeaderColor2;
 }
 
 - (id)_chevronColor
 {
-  v2 = [(HKElectrocardiogramCardView *)self sample];
-  v3 = [v2 hk_cardHeaderColor];
-  v4 = [MEMORY[0x1E696C128] hk_abnormalCardHeaderColor];
-  v5 = [v3 isEqual:v4];
+  sample = [(HKElectrocardiogramCardView *)self sample];
+  hk_cardHeaderColor = [sample hk_cardHeaderColor];
+  hk_abnormalCardHeaderColor = [MEMORY[0x1E696C128] hk_abnormalCardHeaderColor];
+  v5 = [hk_cardHeaderColor isEqual:hk_abnormalCardHeaderColor];
 
   if (v5)
   {
@@ -957,28 +957,28 @@ LABEL_7:
 {
   if ([(HKElectrocardiogramCardView *)self isOnboarding])
   {
-    v3 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
   }
 
   else
   {
-    v4 = [(HKElectrocardiogramCardView *)self sample];
-    v5 = [v4 hk_cardBackgroundColor];
-    v6 = v5;
-    if (v5)
+    sample = [(HKElectrocardiogramCardView *)self sample];
+    hk_cardBackgroundColor = [sample hk_cardBackgroundColor];
+    v6 = hk_cardBackgroundColor;
+    if (hk_cardBackgroundColor)
     {
-      v7 = v5;
+      hk_defaultCardBackgroundColor = hk_cardBackgroundColor;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696C128] hk_defaultCardBackgroundColor];
+      hk_defaultCardBackgroundColor = [MEMORY[0x1E696C128] hk_defaultCardBackgroundColor];
     }
 
-    v3 = v7;
+    secondarySystemBackgroundColor = hk_defaultCardBackgroundColor;
   }
 
-  return v3;
+  return secondarySystemBackgroundColor;
 }
 
 - (id)_graphBackgroundColor

@@ -1,30 +1,30 @@
 @interface TilePreloadingTask
 - (RouteCollection)currentRouteCollection;
-- (TilePreloadingTask)initWithNavigationService:(id)a3 carDisplayController:(id)a4;
+- (TilePreloadingTask)initWithNavigationService:(id)service carDisplayController:(id)controller;
 - (id)traitsForPreloadingSession;
 - (void)_clearPreloadingIfNecessary;
 - (void)_updateNavServiceWithCurrentRouteCollectionInSession;
 - (void)_updateRoutePreloadingAndNavService;
 - (void)_updateRoutePreloadingSessionWithCurrentRouteCollectionInSession;
 - (void)dealloc;
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setObservedNavigationSession:(id)a3;
-- (void)setObservedRoutePlanningSession:(id)a3;
-- (void)setTileLoadingSession:(id)a3;
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setObservedNavigationSession:(id)session;
+- (void)setObservedRoutePlanningSession:(id)session;
+- (void)setTileLoadingSession:(id)session;
 @end
 
 @implementation TilePreloadingTask
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = NSStringFromSelector("state");
-  if (![v10 isEqualToString:v13])
+  if (![pathCopy isEqualToString:v13])
   {
 
     goto LABEL_5;
@@ -32,12 +32,12 @@
 
   carDisplayController = self->_carDisplayController;
 
-  if (carDisplayController != v11)
+  if (carDisplayController != objectCopy)
   {
 LABEL_5:
     v15.receiver = self;
     v15.super_class = TilePreloadingTask;
-    [(TilePreloadingTask *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(TilePreloadingTask *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_6;
   }
 
@@ -47,30 +47,30 @@ LABEL_6:
 
 - (id)traitsForPreloadingSession
 {
-  v3 = [(TilePreloadingTask *)self observedRoutePlanningSession];
-  v4 = [v3 configuration];
-  v5 = [v4 traits];
-  v6 = v5;
-  if (v5)
+  observedRoutePlanningSession = [(TilePreloadingTask *)self observedRoutePlanningSession];
+  configuration = [observedRoutePlanningSession configuration];
+  traits = [configuration traits];
+  v6 = traits;
+  if (traits)
   {
-    v7 = v5;
+    traits2 = traits;
   }
 
   else
   {
-    v8 = [(TilePreloadingTask *)self observedNavigationSession];
-    v9 = [v8 configuration];
-    v7 = [v9 traits];
+    observedNavigationSession = [(TilePreloadingTask *)self observedNavigationSession];
+    configuration2 = [observedNavigationSession configuration];
+    traits2 = [configuration2 traits];
   }
 
-  return v7;
+  return traits2;
 }
 
 - (RouteCollection)currentRouteCollection
 {
-  v3 = [(TilePreloadingTask *)self observedRoutePlanningSession];
+  observedRoutePlanningSession = [(TilePreloadingTask *)self observedRoutePlanningSession];
 
-  if (v3)
+  if (observedRoutePlanningSession)
   {
     [(TilePreloadingTask *)self observedRoutePlanningSession];
   }
@@ -80,59 +80,59 @@ LABEL_6:
     [(TilePreloadingTask *)self observedNavigationSession];
   }
   v4 = ;
-  v5 = [v4 currentRouteCollection];
+  currentRouteCollection = [v4 currentRouteCollection];
 
-  return v5;
+  return currentRouteCollection;
 }
 
 - (void)_updateNavServiceWithCurrentRouteCollectionInSession
 {
-  v3 = [(TilePreloadingTask *)self currentRouteCollection];
-  v7 = v3;
-  if (v3)
+  currentRouteCollection = [(TilePreloadingTask *)self currentRouteCollection];
+  v7 = currentRouteCollection;
+  if (currentRouteCollection)
   {
-    v4 = [v3 currentRouteIndex];
+    currentRouteIndex = [currentRouteCollection currentRouteIndex];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    currentRouteIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(TilePreloadingTask *)self navigationService];
-  v6 = [v7 routes];
-  [v5 setRoutesForPreview:v6 selectedRouteIndex:v4];
+  navigationService = [(TilePreloadingTask *)self navigationService];
+  routes = [v7 routes];
+  [navigationService setRoutesForPreview:routes selectedRouteIndex:currentRouteIndex];
 }
 
 - (void)_updateRoutePreloadingSessionWithCurrentRouteCollectionInSession
 {
-  v3 = [(TilePreloadingTask *)self currentRouteCollection];
-  v18 = [v3 currentRoute];
+  currentRouteCollection = [(TilePreloadingTask *)self currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
 
-  if (!v18)
+  if (!currentRoute)
   {
     goto LABEL_10;
   }
 
-  v4 = [v18 origin];
-  if (([v4 isCurrentLocation] & 1) == 0)
+  origin = [currentRoute origin];
+  if (([origin isCurrentLocation] & 1) == 0)
   {
 
     goto LABEL_10;
   }
 
-  v5 = [v18 isOfflineRoute];
+  isOfflineRoute = [currentRoute isOfflineRoute];
 
-  if (v5)
+  if (isOfflineRoute)
   {
 LABEL_10:
     [(TilePreloadingTask *)self setTileLoadingSession:0];
     goto LABEL_11;
   }
 
-  v6 = [(TilePreloadingTask *)self tileLoadingSession];
-  v7 = [v6 route];
-  v8 = [v18 isEqual:v7];
+  tileLoadingSession = [(TilePreloadingTask *)self tileLoadingSession];
+  route = [tileLoadingSession route];
+  v8 = [currentRoute isEqual:route];
 
   if ((GEOConfigGetBOOL() & 1) == 0 && [(CarDisplayController *)self->_carDisplayController state]== 2 || GEOConfigGetBOOL())
   {
@@ -150,23 +150,23 @@ LABEL_10:
     {
 LABEL_17:
       v14 = [RouteTileLoadingSession alloc];
-      v15 = [(TilePreloadingTask *)self overlayManager];
-      v16 = [(TilePreloadingTask *)self traitsForPreloadingSession];
-      v17 = [(RouteTileLoadingSession *)v14 initWithRoute:v18 overlayManager:v15 traits:v16 options:v9];
+      overlayManager = [(TilePreloadingTask *)self overlayManager];
+      traitsForPreloadingSession = [(TilePreloadingTask *)self traitsForPreloadingSession];
+      v17 = [(RouteTileLoadingSession *)v14 initWithRoute:currentRoute overlayManager:overlayManager traits:traitsForPreloadingSession options:v9];
       [(TilePreloadingTask *)self setTileLoadingSession:v17];
 
       goto LABEL_11;
     }
   }
 
-  v10 = [(TilePreloadingTask *)self tileLoadingSession];
-  if (v10)
+  tileLoadingSession2 = [(TilePreloadingTask *)self tileLoadingSession];
+  if (tileLoadingSession2)
   {
-    v11 = v10;
-    v12 = [(TilePreloadingTask *)self tileLoadingSession];
-    v13 = [v12 options];
+    v11 = tileLoadingSession2;
+    tileLoadingSession3 = [(TilePreloadingTask *)self tileLoadingSession];
+    options = [tileLoadingSession3 options];
 
-    if (v9 != v13)
+    if (v9 != options)
     {
       goto LABEL_17;
     }
@@ -182,12 +182,12 @@ LABEL_11:
   [(TilePreloadingTask *)self _updateRoutePreloadingSessionWithCurrentRouteCollectionInSession];
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v7 = a3;
-  v8 = [(TilePreloadingTask *)self observedRoutePlanningSession];
+  sessionCopy = session;
+  observedRoutePlanningSession = [(TilePreloadingTask *)self observedRoutePlanningSession];
 
-  if (v8 != v7)
+  if (observedRoutePlanningSession != sessionCopy)
   {
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -216,88 +216,88 @@ LABEL_11:
     }
   }
 
-  if ([v7 currentTransportType] == a5)
+  if ([sessionCopy currentTransportType] == type)
   {
     [(TilePreloadingTask *)self _updateRoutePreloadingAndNavService];
   }
 }
 
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state
 {
-  if (a4 == 1)
+  if (state == 1)
   {
     [(TilePreloadingTask *)self _updateRoutePreloadingAndNavService];
   }
 }
 
-- (void)setTileLoadingSession:(id)a3
+- (void)setTileLoadingSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   tileLoadingSession = self->_tileLoadingSession;
   p_tileLoadingSession = &self->_tileLoadingSession;
   v6 = tileLoadingSession;
-  if (tileLoadingSession != v5)
+  if (tileLoadingSession != sessionCopy)
   {
-    v9 = v5;
+    v9 = sessionCopy;
     [(RouteTileLoadingSession *)v6 stop];
-    objc_storeStrong(p_tileLoadingSession, a3);
+    objc_storeStrong(p_tileLoadingSession, session);
     [(RouteTileLoadingSession *)*p_tileLoadingSession start];
-    v5 = v9;
+    sessionCopy = v9;
   }
 }
 
-- (void)setObservedNavigationSession:(id)a3
+- (void)setObservedNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   observedNavigationSession = self->_observedNavigationSession;
-  if (observedNavigationSession != v5)
+  if (observedNavigationSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [observedNavigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_observedNavigationSession, a3);
+    objc_storeStrong(&self->_observedNavigationSession, session);
     [self->_observedNavigationSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)setObservedRoutePlanningSession:(id)a3
+- (void)setObservedRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   observedRoutePlanningSession = self->_observedRoutePlanningSession;
-  if (observedRoutePlanningSession != v5)
+  if (observedRoutePlanningSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [observedRoutePlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_observedRoutePlanningSession, a3);
+    objc_storeStrong(&self->_observedRoutePlanningSession, session);
     [self->_observedRoutePlanningSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
 - (void)_clearPreloadingIfNecessary
 {
-  v3 = [(TilePreloadingTask *)self observedRoutePlanningSession];
-  if (v3)
+  observedRoutePlanningSession = [(TilePreloadingTask *)self observedRoutePlanningSession];
+  if (observedRoutePlanningSession)
   {
   }
 
   else
   {
-    v4 = [(TilePreloadingTask *)self observedNavigationSession];
+    observedNavigationSession = [(TilePreloadingTask *)self observedNavigationSession];
 
-    if (!v4)
+    if (!observedNavigationSession)
     {
-      v5 = [(TilePreloadingTask *)self navigationService];
-      [v5 setRoutesForPreview:0 selectedRouteIndex:0x7FFFFFFFFFFFFFFFLL];
+      navigationService = [(TilePreloadingTask *)self navigationService];
+      [navigationService setRoutesForPreview:0 selectedRouteIndex:0x7FFFFFFFFFFFFFFFLL];
 
       v6 = +[UIApplication sharedMapsDelegate];
-      v7 = [v6 appSessionController];
-      v8 = [v7 currentlyNavigatingPlatformController];
+      appSessionController = [v6 appSessionController];
+      currentlyNavigatingPlatformController = [appSessionController currentlyNavigatingPlatformController];
 
-      if (!v8)
+      if (!currentlyNavigatingPlatformController)
       {
-        v9 = [(TilePreloadingTask *)self navigationService];
-        [v9 stopNavigationWithReason:2];
+        navigationService2 = [(TilePreloadingTask *)self navigationService];
+        [navigationService2 stopNavigationWithReason:2];
       }
 
       [(TilePreloadingTask *)self setTileLoadingSession:0];
@@ -305,13 +305,13 @@ LABEL_11:
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = toSessionCopy;
   }
 
   else
@@ -322,7 +322,7 @@ LABEL_11:
   v8 = v7;
   [(TilePreloadingTask *)self setObservedRoutePlanningSession:v8];
 
-  v17 = v6;
+  v17 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -337,10 +337,10 @@ LABEL_11:
   v10 = v9;
 
   [(TilePreloadingTask *)self setObservedNavigationSession:v10];
-  v11 = [v17 platformController];
-  v12 = [v11 chromeViewController];
+  platformController = [v17 platformController];
+  chromeViewController = [platformController chromeViewController];
 
-  v13 = v12;
+  v13 = chromeViewController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -354,9 +354,9 @@ LABEL_11:
 
   v15 = v14;
 
-  v16 = [v15 overlayManager];
+  overlayManager = [v15 overlayManager];
 
-  [(TilePreloadingTask *)self setOverlayManager:v16];
+  [(TilePreloadingTask *)self setOverlayManager:overlayManager];
   [(TilePreloadingTask *)self _clearPreloadingIfNecessary];
 }
 
@@ -372,11 +372,11 @@ LABEL_11:
   [(TilePreloadingTask *)&v5 dealloc];
 }
 
-- (TilePreloadingTask)initWithNavigationService:(id)a3 carDisplayController:(id)a4
+- (TilePreloadingTask)initWithNavigationService:(id)service carDisplayController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  serviceCopy = service;
+  controllerCopy = controller;
+  if (!serviceCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -411,8 +411,8 @@ LABEL_11:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_carDisplayController, a4);
-    objc_storeStrong(&v10->_navigationService, a3);
+    objc_storeStrong(&v9->_carDisplayController, controller);
+    objc_storeStrong(&v10->_navigationService, service);
     [(MNNavigationService *)v10->_navigationService openForClient:v10];
     carDisplayController = v10->_carDisplayController;
     v12 = NSStringFromSelector("state");

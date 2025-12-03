@@ -1,52 +1,52 @@
 @interface BKStyleManager
-+ (id)styleManagerWithLanguage:(id)a3;
++ (id)styleManagerWithLanguage:(id)language;
 + (void)initialize;
-- (BKStyleManager)initWithLanguage:(id)a3;
+- (BKStyleManager)initWithLanguage:(id)language;
 - (BOOL)canDecreaseFontSize;
 - (BOOL)canIncreaseFontSize;
-- (BOOL)isFontAvailable:(id)a3;
-- (BOOL)isFontPreregistered:(id)a3;
+- (BOOL)isFontAvailable:(id)available;
+- (BOOL)isFontPreregistered:(id)preregistered;
 - (BOOL)languageIsSimplifiedChinese;
 - (NSString)font;
 - (float)fontSize;
-- (float)fontSizeForFont:(id)a3 category:(id)a4;
-- (float)fontSizeForFont:(id)a3 presetIndex:(int64_t)a4;
+- (float)fontSizeForFont:(id)font category:(id)category;
+- (float)fontSizeForFont:(id)font presetIndex:(int64_t)index;
 - (float)lineHeight;
 - (id)_defaultFontName;
-- (id)_detailsForFont:(id)a3;
-- (id)_presetsForFontName:(id)a3;
-- (id)defaultStyleWithOriginalFonts:(BOOL)a3;
-- (id)fallbackFontFamiliesForFontFamily:(id)a3;
+- (id)_detailsForFont:(id)font;
+- (id)_presetsForFontName:(id)name;
+- (id)defaultStyleWithOriginalFonts:(BOOL)fonts;
+- (id)fallbackFontFamiliesForFontFamily:(id)family;
 - (id)fontFaceMappings;
-- (id)fontForFontFamily:(id)a3;
+- (id)fontForFontFamily:(id)family;
 - (id)fonts;
 - (id)presets;
-- (id)styleForFont:(id)a3 presetIndex:(int64_t)a4;
-- (int64_t)_maxFontStepsForFont:(id)a3;
-- (void)coordinator:(id)a3 observerDidDecreaseFontSize:(id)a4;
-- (void)coordinator:(id)a3 observerDidIncreaseFontSize:(id)a4;
+- (id)styleForFont:(id)font presetIndex:(int64_t)index;
+- (int64_t)_maxFontStepsForFont:(id)font;
+- (void)coordinator:(id)coordinator observerDidDecreaseFontSize:(id)size;
+- (void)coordinator:(id)coordinator observerDidIncreaseFontSize:(id)size;
 - (void)dealloc;
-- (void)decreaseFontSizeNotifyingCoordinator:(BOOL)a3;
-- (void)fontStateChanged:(id)a3;
-- (void)increaseFontSizeNotifyingCoordinator:(BOOL)a3;
+- (void)decreaseFontSizeNotifyingCoordinator:(BOOL)coordinator;
+- (void)fontStateChanged:(id)changed;
+- (void)increaseFontSizeNotifyingCoordinator:(BOOL)coordinator;
 - (void)notifyStyleChanged;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reloadCurrentStyle;
-- (void)setAutoHyphenation:(BOOL)a3;
+- (void)setAutoHyphenation:(BOOL)hyphenation;
 - (void)setDefaultFontSize;
-- (void)setFont:(id)a3;
-- (void)setFontSize:(float)a3;
-- (void)setLineHeight:(float)a3;
-- (void)setOptimizeLegibility:(BOOL)a3;
-- (void)setStyle:(id)a3;
-- (void)storeDefaultStyle:(id)a3;
+- (void)setFont:(id)font;
+- (void)setFontSize:(float)size;
+- (void)setLineHeight:(float)height;
+- (void)setOptimizeLegibility:(BOOL)legibility;
+- (void)setStyle:(id)style;
+- (void)storeDefaultStyle:(id)style;
 @end
 
 @implementation BKStyleManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     v5[0] = BKAutoHyphenation[0];
@@ -64,23 +64,23 @@
   }
 }
 
-+ (id)styleManagerWithLanguage:(id)a3
++ (id)styleManagerWithLanguage:(id)language
 {
-  v3 = a3;
-  v4 = [[BKStyleManager alloc] initWithLanguage:v3];
+  languageCopy = language;
+  v4 = [[BKStyleManager alloc] initWithLanguage:languageCopy];
 
   return v4;
 }
 
-- (BKStyleManager)initWithLanguage:(id)a3
+- (BKStyleManager)initWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v24.receiver = self;
   v24.super_class = BKStyleManager;
   v5 = [(BKStyleManager *)&v24 init];
   if (v5)
   {
-    if (![(__CFString *)v4 length])
+    if (![(__CFString *)languageCopy length])
     {
       v6 = +[NSLocale preferredLanguages];
       v7 = [v6 objectAtIndexedSubscript:0];
@@ -88,21 +88,21 @@
       if (v7 && ([NSLocale localeWithLocaleIdentifier:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v9 = v8;
-        v10 = [(__CFString *)v8 languageCode];
+        languageCode = [(__CFString *)v8 languageCode];
 
-        v4 = v9;
+        languageCopy = v9;
       }
 
       else
       {
-        v10 = @"en";
+        languageCode = @"en";
       }
 
-      v4 = v10;
+      languageCopy = languageCode;
     }
 
-    objc_storeStrong(&v5->_language, v4);
-    v11 = [BKStyleManager suffixForLanguage:v4];
+    objc_storeStrong(&v5->_language, languageCopy);
+    v11 = [BKStyleManager suffixForLanguage:languageCopy];
     if ([v11 length])
     {
       v12 = [NSString stringWithFormat:@"-%@", v11];
@@ -117,7 +117,7 @@
     v5->_languageSuffix = &v12->isa;
 
     v14 = +[BKFontCache sharedInstance];
-    [v14 prewarmFontsForLanguage:v4 completion:0];
+    [v14 prewarmFontsForLanguage:languageCopy completion:0];
 
     v15 = +[NSUserDefaults standardUserDefaults];
     v5->_autoHyphenation = [v15 BOOLForKey:BKAutoHyphenation[0]];
@@ -166,45 +166,45 @@
 
 - (BOOL)languageIsSimplifiedChinese
 {
-  v2 = [(BKStyleManager *)self language];
-  v3 = [BKStyleManager languageIsSimplifiedChinese:v2];
+  language = [(BKStyleManager *)self language];
+  v3 = [BKStyleManager languageIsSimplifiedChinese:language];
 
   return v3;
 }
 
-- (id)fallbackFontFamiliesForFontFamily:(id)a3
+- (id)fallbackFontFamiliesForFontFamily:(id)family
 {
-  v4 = a3;
-  v5 = [(BKStyleManager *)self language];
-  v6 = [BKFontFallbackProvider fallbacksForFontFamily:v4 language:v5];
+  familyCopy = family;
+  language = [(BKStyleManager *)self language];
+  v6 = [BKFontFallbackProvider fallbacksForFontFamily:familyCopy language:language];
 
   return v6;
 }
 
-- (void)setAutoHyphenation:(BOOL)a3
+- (void)setAutoHyphenation:(BOOL)hyphenation
 {
-  if (self->_autoHyphenation != a3)
+  if (self->_autoHyphenation != hyphenation)
   {
-    v4 = a3;
-    self->_autoHyphenation = a3;
-    v6 = [(BKStyleManager *)self style];
-    v7 = [v6 copy];
+    hyphenationCopy = hyphenation;
+    self->_autoHyphenation = hyphenation;
+    style = [(BKStyleManager *)self style];
+    v7 = [style copy];
 
-    [v7 setAutoHyphenate:v4];
+    [v7 setAutoHyphenate:hyphenationCopy];
     [(BKStyleManager *)self setStyle:v7];
   }
 }
 
-- (void)setOptimizeLegibility:(BOOL)a3
+- (void)setOptimizeLegibility:(BOOL)legibility
 {
-  if (self->_legibility != a3)
+  if (self->_legibility != legibility)
   {
-    v4 = a3;
-    self->_legibility = a3;
-    v6 = [(BKStyleManager *)self style];
-    v7 = [v6 copy];
+    legibilityCopy = legibility;
+    self->_legibility = legibility;
+    style = [(BKStyleManager *)self style];
+    v7 = [style copy];
 
-    [v7 setOptimizeLegibility:v4];
+    [v7 setOptimizeLegibility:legibilityCopy];
     [(BKStyleManager *)self setStyle:v7];
   }
 }
@@ -212,20 +212,20 @@
 - (id)presets
 {
   v3 = +[BKFontCache sharedInstance];
-  v4 = [(BKStyleManager *)self language];
-  v5 = [v3 presetsForLanguage:v4];
+  language = [(BKStyleManager *)self language];
+  v5 = [v3 presetsForLanguage:language];
 
   return v5;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   if (![(ContentStyle *)self->_style isEqual:?])
   {
     style = self->_style;
-    objc_storeStrong(&self->_style, a3);
-    [(BKStyleManager *)self storeDefaultStyle:v6];
+    objc_storeStrong(&self->_style, style);
+    [(BKStyleManager *)self storeDefaultStyle:styleCopy];
     if (style)
     {
       [(BKStyleManager *)self notifyStyleChanged];
@@ -236,38 +236,38 @@
 - (id)_defaultFontName
 {
   v3 = +[BKFontCache sharedInstance];
-  v4 = [(BKStyleManager *)self language];
-  v5 = [v3 defaultFontNameForLanguage:v4];
+  language = [(BKStyleManager *)self language];
+  v5 = [v3 defaultFontNameForLanguage:language];
 
   return v5;
 }
 
-- (id)_presetsForFontName:(id)a3
+- (id)_presetsForFontName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[BKFontCache sharedInstance];
-  v6 = [(BKStyleManager *)self language];
-  v7 = [v5 presetSettingsForFontFamily:v4 language:v6];
+  language = [(BKStyleManager *)self language];
+  v7 = [v5 presetSettingsForFontFamily:nameCopy language:language];
 
   return v7;
 }
 
-- (id)styleForFont:(id)a3 presetIndex:(int64_t)a4
+- (id)styleForFont:(id)font presetIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(BKStyleManager *)self _presetsForFontName:v6];
+  fontCopy = font;
+  v7 = [(BKStyleManager *)self _presetsForFontName:fontCopy];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 count];
-    v10 = a4;
-    if (v9 <= a4)
+    indexCopy = index;
+    if (v9 <= index)
     {
-      v10 = [v8 count] - 1;
+      indexCopy = [v8 count] - 1;
     }
 
-    v11 = [v8 objectAtIndex:v10];
-    v12 = [[ContentStyle alloc] initWithFontFamily:v6 andDetails:v11];
+    v11 = [v8 objectAtIndex:indexCopy];
+    v12 = [[ContentStyle alloc] initWithFontFamily:fontCopy andDetails:v11];
     [(ContentStyle *)v12 setAutoHyphenate:[(BKStyleManager *)self autoHyphenation]];
     [(ContentStyle *)v12 setOptimizeLegibility:[(BKStyleManager *)self optimizeLegibility]];
     v13 = +[NSUserDefaults standardUserDefaults];
@@ -275,14 +275,14 @@
 
     if ((v14 & 1) == 0)
     {
-      if (a4 >= 0xE)
+      if (index >= 0xE)
       {
-        v15 = 14;
+        indexCopy2 = 14;
       }
 
       else
       {
-        v15 = a4;
+        indexCopy2 = index;
       }
 
       v16 = +[UIScreen mainScreen];
@@ -330,7 +330,7 @@
       }
 
 LABEL_18:
-      v30 = dbl_193480[v27] * dbl_1933E8[v15];
+      v30 = dbl_193480[v27] * dbl_1933E8[indexCopy2];
       *&v30 = v30;
       [(ContentStyle *)v12 setFontSize:v30];
       LODWORD(v31) = 1.0;
@@ -346,27 +346,27 @@ LABEL_18:
   return v12;
 }
 
-- (float)fontSizeForFont:(id)a3 category:(id)a4
+- (float)fontSizeForFont:(id)font category:(id)category
 {
   v6 = qword_22D098;
-  v7 = a4;
-  v8 = a3;
+  categoryCopy = category;
+  fontCopy = font;
   if (v6 != -1)
   {
     sub_138468();
   }
 
-  v9 = [qword_22D090 indexOfObject:v7];
+  v9 = [qword_22D090 indexOfObject:categoryCopy];
 
-  [(BKStyleManager *)self fontSizeForFont:v8 presetIndex:v9];
+  [(BKStyleManager *)self fontSizeForFont:fontCopy presetIndex:v9];
   v11 = v10;
 
   return v11;
 }
 
-- (float)fontSizeForFont:(id)a3 presetIndex:(int64_t)a4
+- (float)fontSizeForFont:(id)font presetIndex:(int64_t)index
 {
-  v4 = [(BKStyleManager *)self styleForFont:a3 presetIndex:a4];
+  v4 = [(BKStyleManager *)self styleForFont:font presetIndex:index];
   v5 = v4;
   if (v4)
   {
@@ -385,18 +385,18 @@ LABEL_18:
 - (id)fonts
 {
   v3 = +[BKFontCache sharedInstance];
-  v4 = [(BKStyleManager *)self language];
-  v5 = [v3 fontsForLanguage:v4];
+  language = [(BKStyleManager *)self language];
+  v5 = [v3 fontsForLanguage:language];
 
   return v5;
 }
 
-- (id)fontForFontFamily:(id)a3
+- (id)fontForFontFamily:(id)family
 {
-  v4 = a3;
+  familyCopy = family;
   v5 = +[BKFontCache sharedInstance];
-  v6 = [(BKStyleManager *)self language];
-  v7 = [v5 fontFromFamilyName:v4 language:v6];
+  language = [(BKStyleManager *)self language];
+  v7 = [v5 fontFromFamilyName:familyCopy language:language];
 
   return v7;
 }
@@ -404,20 +404,20 @@ LABEL_18:
 - (id)fontFaceMappings
 {
   v3 = +[BKFontCache sharedInstance];
-  v4 = [(BKStyleManager *)self language];
-  v5 = [v3 presetPostscriptsLookupForLanguage:v4];
+  language = [(BKStyleManager *)self language];
+  v5 = [v3 presetPostscriptsLookupForLanguage:language];
 
   return v5;
 }
 
 - (NSString)font
 {
-  v2 = [(BKStyleManager *)self style];
-  v3 = [v2 fontFamily];
+  style = [(BKStyleManager *)self style];
+  fontFamily = [style fontFamily];
 
-  if (v3)
+  if (fontFamily)
   {
-    v4 = v3;
+    v4 = fontFamily;
   }
 
   else
@@ -428,15 +428,15 @@ LABEL_18:
   return v4;
 }
 
-- (id)_detailsForFont:(id)a3
+- (id)_detailsForFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(BKStyleManager *)self fonts];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  fonts = [(BKStyleManager *)self fonts];
+  v6 = [fonts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -446,12 +446,12 @@ LABEL_18:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(fonts);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 familyName];
-        v11 = [v10 isEqualToString:v4];
+        familyName = [v9 familyName];
+        v11 = [familyName isEqualToString:fontCopy];
 
         if (v11)
         {
@@ -460,7 +460,7 @@ LABEL_18:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [fonts countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -475,9 +475,9 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isFontPreregistered:(id)a3
+- (BOOL)isFontPreregistered:(id)preregistered
 {
-  v3 = [(BKStyleManager *)self _detailsForFont:a3];
+  v3 = [(BKStyleManager *)self _detailsForFont:preregistered];
   v4 = v3;
   if (v3)
   {
@@ -492,50 +492,50 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isFontAvailable:(id)a3
+- (BOOL)isFontAvailable:(id)available
 {
-  v3 = [(BKStyleManager *)self _detailsForFont:a3];
-  v4 = [v3 isAvailable];
+  v3 = [(BKStyleManager *)self _detailsForFont:available];
+  isAvailable = [v3 isAvailable];
 
-  return v4;
+  return isAvailable;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v10 = a3;
-  v4 = [(BKStyleManager *)self font];
-  v5 = [v10 isEqualToString:v4];
+  fontCopy = font;
+  font = [(BKStyleManager *)self font];
+  v5 = [fontCopy isEqualToString:font];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(BKStyleManager *)self styleForFont:v10 presetIndex:self->_index];
+    v6 = [(BKStyleManager *)self styleForFont:fontCopy presetIndex:self->_index];
     [(BKStyleManager *)self setStyle:v6];
 
     v7 = +[BCThemeCoordinator shared];
-    v8 = [(BKStyleManager *)self style];
-    v9 = [v8 fontFamily];
-    [v7 observer:self didChangeFont:v9];
+    style = [(BKStyleManager *)self style];
+    fontFamily = [style fontFamily];
+    [v7 observer:self didChangeFont:fontFamily];
   }
 }
 
 - (float)fontSize
 {
-  v2 = [(BKStyleManager *)self style];
-  [v2 fontSize];
+  style = [(BKStyleManager *)self style];
+  [style fontSize];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setFontSize:(float)a3
+- (void)setFontSize:(float)size
 {
   [(BKStyleManager *)self fontSize];
-  if (v5 != a3)
+  if (v5 != size)
   {
-    v6 = [(BKStyleManager *)self style];
-    v8 = [v6 copy];
+    style = [(BKStyleManager *)self style];
+    v8 = [style copy];
 
-    *&v7 = a3;
+    *&v7 = size;
     [v8 setFontSize:v7];
     [(BKStyleManager *)self setStyle:v8];
   }
@@ -543,41 +543,41 @@ LABEL_11:
 
 - (void)reloadCurrentStyle
 {
-  v4 = [(BKStyleManager *)self font];
-  v3 = [(BKStyleManager *)self styleForFont:v4 presetIndex:self->_index];
+  font = [(BKStyleManager *)self font];
+  v3 = [(BKStyleManager *)self styleForFont:font presetIndex:self->_index];
   [(BKStyleManager *)self setStyle:v3];
 }
 
 - (float)lineHeight
 {
-  v2 = [(BKStyleManager *)self style];
-  [v2 lineHeight];
+  style = [(BKStyleManager *)self style];
+  [style lineHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLineHeight:(float)a3
+- (void)setLineHeight:(float)height
 {
   [(BKStyleManager *)self lineHeight];
-  if (v5 != a3)
+  if (v5 != height)
   {
-    v6 = [(BKStyleManager *)self style];
-    v8 = [v6 copy];
+    style = [(BKStyleManager *)self style];
+    v8 = [style copy];
 
-    *&v7 = a3;
+    *&v7 = height;
     [v8 setLineHeight:v7];
     [(BKStyleManager *)self setStyle:v8];
   }
 }
 
-- (int64_t)_maxFontStepsForFont:(id)a3
+- (int64_t)_maxFontStepsForFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 BOOLForKey:@"BKUseOldFontStepsAndSpacing"];
 
-  v7 = [(BKStyleManager *)self _presetsForFontName:v4];
+  v7 = [(BKStyleManager *)self _presetsForFontName:fontCopy];
 
   v8 = [v7 count];
   v9 = 15;
@@ -601,24 +601,24 @@ LABEL_11:
 
 - (BOOL)canIncreaseFontSize
 {
-  v3 = [(BKStyleManager *)self font];
+  font = [(BKStyleManager *)self font];
 
-  if (!v3)
+  if (!font)
   {
     return 0;
   }
 
-  v4 = [(BKStyleManager *)self font];
-  v5 = [(BKStyleManager *)self _maxFontStepsForFont:v4];
+  font2 = [(BKStyleManager *)self font];
+  v5 = [(BKStyleManager *)self _maxFontStepsForFont:font2];
 
   return self->_index < v5 - 1;
 }
 
 - (BOOL)canDecreaseFontSize
 {
-  v3 = [(BKStyleManager *)self font];
+  font = [(BKStyleManager *)self font];
 
-  if (!v3)
+  if (!font)
   {
     return 0;
   }
@@ -649,13 +649,13 @@ LABEL_11:
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 integerForKey:BKStyleManagerLastStyleIndexKey];
 
-  v5 = [objc_opt_class() defaultFontSizeIndex];
-  if (v4 != v5)
+  defaultFontSizeIndex = [objc_opt_class() defaultFontSizeIndex];
+  if (v4 != defaultFontSizeIndex)
   {
-    v6 = v5;
-    self->_index = v5;
-    v7 = [(BKStyleManager *)self font];
-    v8 = [(BKStyleManager *)self styleForFont:v7 presetIndex:self->_index];
+    v6 = defaultFontSizeIndex;
+    self->_index = defaultFontSizeIndex;
+    font = [(BKStyleManager *)self font];
+    v8 = [(BKStyleManager *)self styleForFont:font presetIndex:self->_index];
     [(BKStyleManager *)self setStyle:v8];
 
     v9 = +[NSUserDefaults standardUserDefaults];
@@ -675,11 +675,11 @@ LABEL_11:
   }
 }
 
-- (void)increaseFontSizeNotifyingCoordinator:(BOOL)a3
+- (void)increaseFontSizeNotifyingCoordinator:(BOOL)coordinator
 {
-  v3 = a3;
-  v5 = [(BKStyleManager *)self font];
-  v12 = [(BKStyleManager *)self _presetsForFontName:v5];
+  coordinatorCopy = coordinator;
+  font = [(BKStyleManager *)self font];
+  v12 = [(BKStyleManager *)self _presetsForFontName:font];
 
   index = self->_index;
   v7 = [v12 count] - 1;
@@ -689,23 +689,23 @@ LABEL_11:
   }
 
   self->_index = v7;
-  v8 = [(BKStyleManager *)self font];
-  v9 = [(BKStyleManager *)self styleForFont:v8 presetIndex:self->_index];
+  font2 = [(BKStyleManager *)self font];
+  v9 = [(BKStyleManager *)self styleForFont:font2 presetIndex:self->_index];
   [(BKStyleManager *)self setStyle:v9];
 
   v10 = +[NSUserDefaults standardUserDefaults];
   [v10 setInteger:self->_index forKey:BKStyleManagerLastStyleIndexKey];
 
-  if (v3)
+  if (coordinatorCopy)
   {
     v11 = +[BCThemeCoordinator shared];
     [v11 observerDidIncreaseFontSize:self];
   }
 }
 
-- (void)decreaseFontSizeNotifyingCoordinator:(BOOL)a3
+- (void)decreaseFontSizeNotifyingCoordinator:(BOOL)coordinator
 {
-  v3 = a3;
+  coordinatorCopy = coordinator;
   if (isPad())
   {
     v5 = 0;
@@ -730,14 +730,14 @@ LABEL_11:
   }
 
   self->_index = v5;
-  v9 = [(BKStyleManager *)self font];
-  v10 = [(BKStyleManager *)self styleForFont:v9 presetIndex:self->_index];
+  font = [(BKStyleManager *)self font];
+  v10 = [(BKStyleManager *)self styleForFont:font presetIndex:self->_index];
   [(BKStyleManager *)self setStyle:v10];
 
   v11 = +[NSUserDefaults standardUserDefaults];
   [v11 setInteger:self->_index forKey:BKStyleManagerLastStyleIndexKey];
 
-  if (v3)
+  if (coordinatorCopy)
   {
     v12 = +[BCThemeCoordinator shared];
     [v12 observerDidDecreaseFontSize:self];
@@ -747,8 +747,8 @@ LABEL_11:
 - (void)notifyStyleChanged
 {
   v7 = objc_opt_new();
-  v3 = [(BKStyleManager *)self style];
-  [v7 setObject:v3 forKeyedSubscript:BKStyleManagerNewStyleUserInfoKey[0]];
+  style = [(BKStyleManager *)self style];
+  [v7 setObject:style forKeyedSubscript:BKStyleManagerNewStyleUserInfoKey[0]];
 
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = BKStyleManagerDidChangeStyleNotification[0];
@@ -756,14 +756,14 @@ LABEL_11:
   [v4 postNotificationName:v5 object:self userInfo:v6];
 }
 
-- (id)defaultStyleWithOriginalFonts:(BOOL)a3
+- (id)defaultStyleWithOriginalFonts:(BOOL)fonts
 {
-  v3 = a3;
-  v5 = [(BKStyleManager *)self languageSuffix];
+  fontsCopy = fonts;
+  languageSuffix = [(BKStyleManager *)self languageSuffix];
   v6 = +[NSUserDefaults standardUserDefaults];
   v7 = [v6 integerForKey:BKStyleManagerLastStyleIndexKey];
 
-  if (v3)
+  if (fontsCopy)
   {
     v8 = [(BKStyleManager *)self styleForFont:&stru_1E7188 presetIndex:v7];
     if (v8)
@@ -772,7 +772,7 @@ LABEL_11:
     }
   }
 
-  v9 = [NSString stringWithFormat:@"%@%@", BKStyleManagerLastFontKey, v5];
+  v9 = [NSString stringWithFormat:@"%@%@", BKStyleManagerLastFontKey, languageSuffix];
   v10 = +[NSUserDefaults standardUserDefaults];
   v11 = [v10 stringForKey:v9];
 
@@ -784,7 +784,7 @@ LABEL_11:
     [v12 setObject:@"-apple-system" forKey:v9];
   }
 
-  if (!-[__CFString length](v11, "length") && ![v5 length])
+  if (!-[__CFString length](v11, "length") && ![languageSuffix length])
   {
     v13 = +[NSUserDefaults standardUserDefaults];
     v14 = [v13 objectForKey:BKStyleManagerLastStyleKey];
@@ -840,16 +840,16 @@ LABEL_16:
 LABEL_20:
   if (![(__CFString *)v11 length])
   {
-    v20 = [(BKStyleManager *)self _defaultFontName];
+    _defaultFontName = [(BKStyleManager *)self _defaultFontName];
 
-    v11 = v20;
+    v11 = _defaultFontName;
   }
 
   v8 = [(BKStyleManager *)self styleForFont:v11 presetIndex:v7];
   if (!v8)
   {
-    v21 = [(BKStyleManager *)self _defaultFontName];
-    v8 = [(BKStyleManager *)self styleForFont:v21 presetIndex:v7];
+    _defaultFontName2 = [(BKStyleManager *)self _defaultFontName];
+    v8 = [(BKStyleManager *)self styleForFont:_defaultFontName2 presetIndex:v7];
   }
 
 LABEL_25:
@@ -859,38 +859,38 @@ LABEL_25:
   return v8;
 }
 
-- (void)storeDefaultStyle:(id)a3
+- (void)storeDefaultStyle:(id)style
 {
-  v11 = a3;
-  v4 = [v11 fontFamily];
-  v5 = [v4 length];
+  styleCopy = style;
+  fontFamily = [styleCopy fontFamily];
+  v5 = [fontFamily length];
 
   if (v5)
   {
     v6 = BKStyleManagerLastFontKey;
-    v7 = [(BKStyleManager *)self languageSuffix];
-    v8 = [NSString stringWithFormat:@"%@%@", v6, v7];
+    languageSuffix = [(BKStyleManager *)self languageSuffix];
+    v8 = [NSString stringWithFormat:@"%@%@", v6, languageSuffix];
 
     v9 = +[NSUserDefaults standardUserDefaults];
-    v10 = [v11 fontFamily];
-    [v9 setObject:v10 forKey:v8];
+    fontFamily2 = [styleCopy fontFamily];
+    [v9 setObject:fontFamily2 forKey:v8];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_22BB28 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_22BB28 == context)
   {
     objc_initWeak(&location, self);
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_AAC4C;
     v18[3] = &unk_1E5118;
-    v19 = v12;
-    v20 = v10;
+    v19 = changeCopy;
+    v20 = pathCopy;
     objc_copyWeak(&v21, &location);
     v13 = objc_retainBlock(v18);
     v14 = objc_retainBlock(v13);
@@ -920,35 +920,35 @@ LABEL_25:
   {
     v15.receiver = self;
     v15.super_class = BKStyleManager;
-    [(BKStyleManager *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKStyleManager *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)fontStateChanged:(id)a3
+- (void)fontStateChanged:(id)changed
 {
-  v4 = [a3 object];
+  object = [changed object];
   v5 = _AEBookPluginsFontCacheLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = object;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "StateChanged for font: %@", &v12, 0xCu);
   }
 
-  v6 = [v4 familyName];
-  v7 = [(BKStyleManager *)self font];
-  v8 = [v6 isEqualToString:v7];
+  familyName = [object familyName];
+  font = [(BKStyleManager *)self font];
+  v8 = [familyName isEqualToString:font];
 
-  if (v8 && ([v4 state] == 2 || objc_msgSend(v4, "state") == 4))
+  if (v8 && ([object state] == 2 || objc_msgSend(object, "state") == 4))
   {
-    v9 = [(BKStyleManager *)self _defaultFontName];
-    v10 = [(BKStyleManager *)self styleForFont:v9 presetIndex:0];
+    _defaultFontName = [(BKStyleManager *)self _defaultFontName];
+    v10 = [(BKStyleManager *)self styleForFont:_defaultFontName presetIndex:0];
 
     v11 = _AEBookPluginsFontCacheLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v4;
+      v13 = object;
       v14 = 2112;
       v15 = v10;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Setting fallback style for font: %@ to %@", &v12, 0x16u);
@@ -958,18 +958,18 @@ LABEL_25:
   }
 }
 
-- (void)coordinator:(id)a3 observerDidIncreaseFontSize:(id)a4
+- (void)coordinator:(id)coordinator observerDidIncreaseFontSize:(id)size
 {
-  if ([(BKStyleManager *)self canIncreaseFontSize:a3])
+  if ([(BKStyleManager *)self canIncreaseFontSize:coordinator])
   {
 
     [(BKStyleManager *)self increaseFontSizeNotifyingCoordinator:0];
   }
 }
 
-- (void)coordinator:(id)a3 observerDidDecreaseFontSize:(id)a4
+- (void)coordinator:(id)coordinator observerDidDecreaseFontSize:(id)size
 {
-  if ([(BKStyleManager *)self canDecreaseFontSize:a3])
+  if ([(BKStyleManager *)self canDecreaseFontSize:coordinator])
   {
 
     [(BKStyleManager *)self decreaseFontSizeNotifyingCoordinator:0];

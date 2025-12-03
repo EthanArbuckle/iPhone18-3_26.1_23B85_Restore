@@ -2,33 +2,33 @@
 + (id)_defaultTitleAttributes;
 - (BOOL)shouldSuppressPointerSpecularFilter;
 - (CGPoint)menuAnchorPoint;
-- (id)_constraintsForButton:(id)a3 withButtonItem:(id)a4;
+- (id)_constraintsForButton:(id)button withButtonItem:(id)item;
 - (id)_defaultTitleAttributes;
-- (id)_newButtonForType:(int64_t)a3;
+- (id)_newButtonForType:(int64_t)type;
 - (id)buttonContextMenuInteractionConfiguration;
-- (id)buttonContextMenuStyleFromDefaultStyle:(id)a3;
-- (id)pointerShapeInContainer:(id)a3;
-- (void)_configureImageOrTitleFromBarItem:(id)a3;
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5;
-- (void)enableSecureButton:(BOOL)a3;
-- (void)updateButton:(id)a3 forEnabledState:(BOOL)a4;
-- (void)updateButton:(id)a3 forHighlightedState:(BOOL)a4;
+- (id)buttonContextMenuStyleFromDefaultStyle:(id)style;
+- (id)pointerShapeInContainer:(id)container;
+- (void)_configureImageOrTitleFromBarItem:(id)item;
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item;
+- (void)enableSecureButton:(BOOL)button;
+- (void)updateButton:(id)button forEnabledState:(BOOL)state;
+- (void)updateButton:(id)button forHighlightedState:(BOOL)state;
 - (void)updateMenu;
 - (void)updateSecureButton;
 @end
 
 @implementation _UIUCBBarButtonVisualProviderIOS
 
-- (void)updateButton:(id)a3 forHighlightedState:(BOOL)a4
+- (void)updateButton:(id)button forHighlightedState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   contentButton = self->_contentButton;
-  v7 = a3;
-  [(UIButton *)contentButton setHighlighted:v4];
-  v8 = [v7 traitCollection];
+  buttonCopy = button;
+  [(UIButton *)contentButton setHighlighted:stateCopy];
+  traitCollection = [buttonCopy traitCollection];
 
-  v9 = [v8 userInterfaceStyle] == 2;
-  if (v4)
+  v9 = [traitCollection userInterfaceStyle] == 2;
+  if (stateCopy)
   {
     v10 = dbl_18A674F10[v9];
   }
@@ -42,21 +42,21 @@
   [WeakRetained setAlpha:v10];
 }
 
-- (void)updateButton:(id)a3 forEnabledState:(BOOL)a4
+- (void)updateButton:(id)button forEnabledState:(BOOL)state
 {
-  v4 = a4;
-  [(UIButton *)self->_contentButton setEnabled:a4];
+  stateCopy = state;
+  [(UIButton *)self->_contentButton setEnabled:state];
   if (self->_slotViewHasRemoteContent)
   {
 
-    [(_UIUCBBarButtonVisualProviderIOS *)self enableSecureButton:v4];
+    [(_UIUCBBarButtonVisualProviderIOS *)self enableSecureButton:stateCopy];
   }
 }
 
-- (id)_newButtonForType:(int64_t)a3
+- (id)_newButtonForType:(int64_t)type
 {
   v4 = objc_opt_class();
-  if (a3 == 1 || a3 == 3)
+  if (type == 1 || type == 3)
   {
     v4 = objc_opt_class();
   }
@@ -88,22 +88,22 @@
   return [v2 _defaultTitleAttributes];
 }
 
-- (void)_configureImageOrTitleFromBarItem:(id)a3
+- (void)_configureImageOrTitleFromBarItem:(id)item
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasImage] & 1) != 0 || (objc_msgSend(v4, "hasTitle"))
+  itemCopy = item;
+  if ([itemCopy hasImage] & 1) != 0 || (objc_msgSend(itemCopy, "hasTitle"))
   {
-    v5 = [v4 action];
-    v6 = [v4 action];
-    v7 = [v4 action];
+    action = [itemCopy action];
+    action2 = [itemCopy action];
+    action3 = [itemCopy action];
     if (!self->_contentButton)
     {
       goto LABEL_7;
     }
 
     objc_opt_class();
-    if ((v5 == sel_assistantPaste_forEvent_) != (objc_opt_isKindOfClass() & 1))
+    if ((action == sel_assistantPaste_forEvent_) != (objc_opt_isKindOfClass() & 1))
     {
       [(UIView *)self->_contentButton removeFromSuperview];
       contentButton = self->_contentButton;
@@ -114,18 +114,18 @@
     {
 LABEL_7:
       v9 = 3;
-      if (v7 != sel_assistantDictationMicOn)
+      if (action3 != sel_assistantDictationMicOn)
       {
         v9 = 0;
       }
 
       v10 = 2;
-      if (v6 != sel_assistantDictation)
+      if (action2 != sel_assistantDictation)
       {
         v10 = v9;
       }
 
-      if (v5 == sel_assistantPaste_forEvent_)
+      if (action == sel_assistantPaste_forEvent_)
       {
         v11 = 1;
       }
@@ -140,13 +140,13 @@ LABEL_7:
       self->_contentButton = v12;
     }
 
-    if ([v4 hasImage])
+    if ([itemCopy hasImage])
     {
-      v14 = [v4 _imageForState:0 compact:0 type:5];
-      v15 = [(_UIUCBBarButtonVisualProviderIOS *)self imageSymbolConfiguration];
-      if (v15)
+      v14 = [itemCopy _imageForState:0 compact:0 type:5];
+      imageSymbolConfiguration = [(_UIUCBBarButtonVisualProviderIOS *)self imageSymbolConfiguration];
+      if (imageSymbolConfiguration)
       {
-        v16 = [v14 imageWithConfiguration:v15];
+        v16 = [v14 imageWithConfiguration:imageSymbolConfiguration];
 
         v34 = 0;
         v35 = 0;
@@ -164,10 +164,10 @@ LABEL_7:
 
     else
     {
-      v15 = [(_UIUCBBarButtonVisualProviderIOS *)self _defaultTitleAttributes];
-      v33 = [v4 _attributedTitleForState:0 withDefaultAttributes:v15];
-      v34 = [v4 _attributedTitleForState:1 withDefaultAttributes:v15];
-      v35 = [v4 _attributedTitleForState:2 withDefaultAttributes:v15];
+      imageSymbolConfiguration = [(_UIUCBBarButtonVisualProviderIOS *)self _defaultTitleAttributes];
+      v33 = [itemCopy _attributedTitleForState:0 withDefaultAttributes:imageSymbolConfiguration];
+      v34 = [itemCopy _attributedTitleForState:1 withDefaultAttributes:imageSymbolConfiguration];
+      v35 = [itemCopy _attributedTitleForState:2 withDefaultAttributes:imageSymbolConfiguration];
       v14 = 0;
     }
 
@@ -182,19 +182,19 @@ LABEL_7:
     [(UIButton *)self->_contentButton setAttributedTitle:v33 forState:0];
     [(UIButton *)self->_contentButton setAttributedTitle:v34 forState:1];
     [(UIButton *)self->_contentButton setAttributedTitle:v35 forState:2];
-    if ([v4 isKeyboardItem] && ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl()))
+    if ([itemCopy isKeyboardItem] && ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl()))
     {
       v19 = +[UIDevice currentDevice];
-      v20 = [v19 userInterfaceIdiom];
+      userInterfaceIdiom = [v19 userInterfaceIdiom];
 
-      if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         [(UIView *)self->_contentButton setAlpha:0.8];
       }
     }
 
-    v21 = [v4 _gestureRecognizers];
-    v22 = [v21 count];
+    _gestureRecognizers = [itemCopy _gestureRecognizers];
+    v22 = [_gestureRecognizers count];
 
     if (v22)
     {
@@ -202,8 +202,8 @@ LABEL_7:
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v23 = [v4 _gestureRecognizers];
-      v24 = [v23 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      _gestureRecognizers2 = [itemCopy _gestureRecognizers];
+      v24 = [_gestureRecognizers2 countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v24)
       {
         v25 = *v43;
@@ -213,13 +213,13 @@ LABEL_7:
           {
             if (*v43 != v25)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(_gestureRecognizers2);
             }
 
             [(UIView *)self->_contentButton addGestureRecognizer:*(*(&v42 + 1) + 8 * i)];
           }
 
-          v24 = [v23 countByEnumeratingWithState:&v42 objects:v46 count:16];
+          v24 = [_gestureRecognizers2 countByEnumeratingWithState:&v42 objects:v46 count:16];
         }
 
         while (v24);
@@ -228,7 +228,7 @@ LABEL_7:
       [(UIView *)self->_contentButton setUserInteractionEnabled:1];
     }
 
-    if (v5 == sel_assistantPaste_forEvent_)
+    if (action == sel_assistantPaste_forEvent_)
     {
       WeakRetained = objc_loadWeakRetained(&self->_securePasteButtonSlotView);
       v28 = WeakRetained == 0;
@@ -287,19 +287,19 @@ LABEL_7:
 - (void)updateSecureButton
 {
   self->_slotViewHasRemoteContent = 1;
-  v3 = [(UIControl *)self->super._button isEnabled];
+  isEnabled = [(UIControl *)self->super._button isEnabled];
 
-  [(_UIUCBBarButtonVisualProviderIOS *)self enableSecureButton:v3];
+  [(_UIUCBBarButtonVisualProviderIOS *)self enableSecureButton:isEnabled];
 }
 
-- (void)enableSecureButton:(BOOL)a3
+- (void)enableSecureButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   WeakRetained = objc_loadWeakRetained(&self->_securePasteButtonSlotView);
-  [WeakRetained setHidden:!v3];
+  [WeakRetained setHidden:!buttonCopy];
 
   contentButton = self->_contentButton;
-  if (v3)
+  if (buttonCopy)
   {
     v7 = +[UIColor clearColor];
     [(UIButton *)contentButton _setImageColor:v7 forState:0];
@@ -312,18 +312,18 @@ LABEL_7:
   }
 }
 
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item
 {
-  v14 = a3;
-  v7 = a5;
-  [v14 setPointerInteractionEnabled:1];
-  v8 = [v14 layer];
-  [v8 setHitTestsAsOpaque:1];
+  buttonCopy = button;
+  itemCopy = item;
+  [buttonCopy setPointerInteractionEnabled:1];
+  layer = [buttonCopy layer];
+  [layer setHitTestsAsOpaque:1];
 
   v9 = self->_contentButton;
-  [(_UIUCBBarButtonVisualProviderIOS *)self _configureImageOrTitleFromBarItem:v7];
+  [(_UIUCBBarButtonVisualProviderIOS *)self _configureImageOrTitleFromBarItem:itemCopy];
 
-  [v14 addSubview:self->_contentButton];
+  [buttonCopy addSubview:self->_contentButton];
   contentButton = self->_contentButton;
   if (v9 != contentButton && contentButton != 0)
   {
@@ -335,38 +335,38 @@ LABEL_7:
   [(_UIUCBBarButtonVisualProviderIOS *)self updateMenu];
 }
 
-- (id)_constraintsForButton:(id)a3 withButtonItem:(id)a4
+- (id)_constraintsForButton:(id)button withButtonItem:(id)item
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v20 = [v6 leadingAnchor];
-  v19 = [v5 leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  itemCopy = item;
+  buttonCopy = button;
+  leadingAnchor = [buttonCopy leadingAnchor];
+  leadingAnchor2 = [itemCopy leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v18;
-  v7 = [v6 trailingAnchor];
-  v8 = [v5 trailingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  trailingAnchor = [buttonCopy trailingAnchor];
+  trailingAnchor2 = [itemCopy trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v9;
-  v10 = [v6 topAnchor];
-  v11 = [v5 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [buttonCopy topAnchor];
+  topAnchor2 = [itemCopy topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v12;
-  v13 = [v6 bottomAnchor];
+  bottomAnchor = [buttonCopy bottomAnchor];
 
-  v14 = [v5 bottomAnchor];
+  bottomAnchor2 = [itemCopy bottomAnchor];
 
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
 
   return v16;
 }
 
-- (id)pointerShapeInContainer:(id)a3
+- (id)pointerShapeInContainer:(id)container
 {
   button = self->super._button;
-  v5 = a3;
+  containerCopy = container;
   [(_UIButtonBarButton *)button _buttonBarHitRect];
   v10 = v6 - (48.0 - v8) * 0.5;
   if (v8 < 48.0)
@@ -375,7 +375,7 @@ LABEL_7:
     v6 = v10;
   }
 
-  [(UIView *)self->super._button convertRect:v5 toView:v6, v7 + (v9 + -37.0) * 0.5, v8, 37.0];
+  [(UIView *)self->super._button convertRect:containerCopy toView:v6, v7 + (v9 + -37.0) * 0.5, v8, 37.0];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -399,17 +399,17 @@ LABEL_7:
   return v3;
 }
 
-- (id)buttonContextMenuStyleFromDefaultStyle:(id)a3
+- (id)buttonContextMenuStyleFromDefaultStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   [(_UIUCBBarButtonVisualProviderIOS *)self menuAnchorPoint];
   v6 = v5;
   v8 = v7;
   button = self->super._button;
-  v10 = [(_UIUCBBarButtonVisualProviderIOS *)self buttonContextMenuTargetedPreview];
-  _UIControlMenuSupportUpdateStyleForBarButtons(v4, button, v10, 0, v6, v8);
+  buttonContextMenuTargetedPreview = [(_UIUCBBarButtonVisualProviderIOS *)self buttonContextMenuTargetedPreview];
+  _UIControlMenuSupportUpdateStyleForBarButtons(styleCopy, button, buttonContextMenuTargetedPreview, 0, v6, v8);
 
-  return v4;
+  return styleCopy;
 }
 
 - (CGPoint)menuAnchorPoint
@@ -420,15 +420,15 @@ LABEL_7:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIView *)self->super._button window];
-  [(UIView *)button convertRect:v12 toView:v5, v7, v9, v11];
+  window = [(UIView *)self->super._button window];
+  [(UIView *)button convertRect:window toView:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(UIView *)self->super._button window];
-  v22 = _UIControlMenuAttachmentPointForRectInContainer(v21, v14, v16, v18, v20);
+  window2 = [(UIView *)self->super._button window];
+  v22 = _UIControlMenuAttachmentPointForRectInContainer(window2, v14, v16, v18, v20);
   v24 = v23;
 
   v25 = v22;
@@ -441,18 +441,18 @@ LABEL_7:
 - (void)updateMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->super._barButtonItem);
-  v4 = [WeakRetained menu];
+  menu = [WeakRetained menu];
 
   v5 = objc_loadWeakRetained(&self->super._barButtonItem);
-  v6 = [v5 _menuIsPrimary];
+  _menuIsPrimary = [v5 _menuIsPrimary];
 
   v7 = objc_loadWeakRetained(&self->super._barButtonItem);
-  v8 = [v7 _secondaryActionsProvider];
+  _secondaryActionsProvider = [v7 _secondaryActionsProvider];
 
-  if (v8)
+  if (_secondaryActionsProvider)
   {
     objc_copyWeak(&to, &self->super._barButtonItem);
-    if (v6)
+    if (_menuIsPrimary)
     {
       v9 = &v25;
       v10 = v24;
@@ -472,7 +472,7 @@ LABEL_7:
 
     v10[2] = v11;
     v10[3] = &unk_1E70F7478;
-    v10[4] = v8;
+    v10[4] = _secondaryActionsProvider;
     objc_copyWeak(v9, &to);
     v15 = _Block_copy(v10);
     menuProvider = self->_menuProvider;
@@ -484,13 +484,13 @@ LABEL_7:
 
   else
   {
-    if (v4)
+    if (menu)
     {
       v17 = MEMORY[0x1E69E9820];
       v18 = 3221225472;
       v19 = __46___UIUCBBarButtonVisualProviderIOS_updateMenu__block_invoke_3;
       v20 = &unk_1E70F6A70;
-      v21 = v4;
+      v21 = menu;
       v12 = _Block_copy(&v17);
       v13 = self->_menuProvider;
       self->_menuProvider = v12;
@@ -506,7 +506,7 @@ LABEL_7:
   }
 
   [(UIControl *)self->super._button setContextMenuInteractionEnabled:self->_menuProvider != 0, v17, v18, v19, v20];
-  [(UIControl *)self->super._button setShowsMenuAsPrimaryAction:v6];
+  [(UIControl *)self->super._button setShowsMenuAsPrimaryAction:_menuIsPrimary];
 }
 
 @end

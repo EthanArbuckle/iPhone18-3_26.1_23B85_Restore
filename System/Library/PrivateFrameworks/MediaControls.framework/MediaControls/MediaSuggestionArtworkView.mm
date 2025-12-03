@@ -1,11 +1,11 @@
 @interface MediaSuggestionArtworkView
-- (_TtC13MediaControls26MediaSuggestionArtworkView)initWithCoder:(id)a3;
+- (_TtC13MediaControls26MediaSuggestionArtworkView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation MediaSuggestionArtworkView
 
-- (_TtC13MediaControls26MediaSuggestionArtworkView)initWithCoder:(id)a3
+- (_TtC13MediaControls26MediaSuggestionArtworkView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC13MediaControls26MediaSuggestionArtworkView_iconView;
   type metadata accessor for ArtworkView();
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A22CDA00();
 }
 

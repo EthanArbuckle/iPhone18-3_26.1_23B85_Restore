@@ -1,36 +1,36 @@
 @interface SyncManager
 - (SyncManager)init;
-- (SyncManager)initWithTransactionManager:(id)a3 dbHandle:(id)a4;
+- (SyncManager)initWithTransactionManager:(id)manager dbHandle:(id)handle;
 - (double)timerIncoming;
 - (double)timerLifetime;
 - (double)timerOutgoing;
-- (id)archiveCallObject:(id)a3;
-- (id)bundleIDToServiceProvider:(id)a3;
+- (id)archiveCallObject:(id)object;
+- (id)bundleIDToServiceProvider:(id)provider;
 - (id)fetchAllObjects;
-- (id)fetchCallIdentifiersWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5 limit:(unint64_t)a6 offset:(unint64_t)a7 batchSize:(unint64_t)a8;
-- (id)fetchCallsWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5 limit:(unint64_t)a6 offset:(unint64_t)a7 batchSize:(unint64_t)a8;
-- (id)fetchCoalescedCallsWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5 limit:(unint64_t)a6 offset:(unint64_t)a7 batchSize:(unint64_t)a8;
-- (id)fetchObjectWithUniqueId:(id)a3;
-- (id)fetchObjectsWithLimits:(id)a3;
-- (id)predicateForCallKind:(id)a3;
-- (id)predicateForCallKinds:(id)a3;
-- (id)predicateForLimits:(id)a3;
-- (id)updatedPredicate:(id)a3 withLimits:(id)a4;
-- (int64_t)deleteCallsWithPredicate:(id)a3 withTransaction:(BOOL)a4 error:(id *)a5;
-- (unint64_t)fetchCallCountWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5;
-- (unint64_t)fetchCoalescedCallCountWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5;
-- (void)addUpdateTransactions:(id)a3;
+- (id)fetchCallIdentifiersWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)fetchCallsWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)fetchCoalescedCallsWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size;
+- (id)fetchObjectWithUniqueId:(id)id;
+- (id)fetchObjectsWithLimits:(id)limits;
+- (id)predicateForCallKind:(id)kind;
+- (id)predicateForCallKinds:(id)kinds;
+- (id)predicateForLimits:(id)limits;
+- (id)updatedPredicate:(id)predicate withLimits:(id)limits;
+- (int64_t)deleteCallsWithPredicate:(id)predicate withTransaction:(BOOL)transaction error:(id *)error;
+- (unint64_t)fetchCallCountWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary;
+- (unint64_t)fetchCoalescedCallCountWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary;
+- (void)addUpdateTransactions:(id)transactions;
 - (void)deleteAllObjects;
-- (void)deleteObjectsWithLimits:(id)a3;
-- (void)deleteObjectsWithUniqueIds:(id)a3 withTransaction:(BOOL)a4;
+- (void)deleteObjectsWithLimits:(id)limits;
+- (void)deleteObjectsWithUniqueIds:(id)ids withTransaction:(BOOL)transaction;
 - (void)initDBHandle;
-- (void)insert:(id)a3 withTransaction:(BOOL)a4;
-- (void)insertRecords:(id)a3;
-- (void)insertRecordsWithoutTransactions:(id)a3;
+- (void)insert:(id)insert withTransaction:(BOOL)transaction;
+- (void)insertRecords:(id)records;
+- (void)insertRecordsWithoutTransactions:(id)transactions;
 - (void)resetTimers;
-- (void)updateAllObjects:(id)a3;
-- (void)updateObjects:(id)a3;
-- (void)updateObjectsWithCalls:(id)a3 withTransactions:(BOOL)a4;
+- (void)updateAllObjects:(id)objects;
+- (void)updateObjects:(id)objects;
+- (void)updateObjectsWithCalls:(id)calls withTransactions:(BOOL)transactions;
 @end
 
 @implementation SyncManager
@@ -39,28 +39,28 @@
 {
   v3 = +[TransactionManager instance];
   v4 = +[CHDatabaseClientHandleManager sharedInstance];
-  v5 = [v4 databaseClientHandle];
-  v6 = [(SyncManager *)self initWithTransactionManager:v3 dbHandle:v5];
+  databaseClientHandle = [v4 databaseClientHandle];
+  v6 = [(SyncManager *)self initWithTransactionManager:v3 dbHandle:databaseClientHandle];
 
   return v6;
 }
 
-- (SyncManager)initWithTransactionManager:(id)a3 dbHandle:(id)a4
+- (SyncManager)initWithTransactionManager:(id)manager dbHandle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  handleCopy = handle;
   v14.receiver = self;
   v14.super_class = SyncManager;
   v9 = [(CHLogger *)&v14 initWithDomain:"SyncManager"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transactionManager, a3);
+    objc_storeStrong(&v9->_transactionManager, manager);
     v11 = objc_alloc_init(CHFeatureFlags);
     featureFlags = v10->_featureFlags;
     v10->_featureFlags = v11;
 
-    objc_storeStrong(&v10->_dbHandle, a4);
+    objc_storeStrong(&v10->_dbHandle, handle);
   }
 
   return v10;
@@ -69,89 +69,89 @@
 - (void)initDBHandle
 {
   v5 = +[CHDatabaseClientHandleManager sharedInstance];
-  v3 = [v5 databaseClientHandle];
+  databaseClientHandle = [v5 databaseClientHandle];
   dbHandle = self->_dbHandle;
-  self->_dbHandle = v3;
+  self->_dbHandle = databaseClientHandle;
 }
 
-- (void)insert:(id)a3 withTransaction:(BOOL)a4
+- (void)insert:(id)insert withTransaction:(BOOL)transaction
 {
-  v4 = a4;
+  transactionCopy = transaction;
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SyncManager *)self dbHandle];
-  v8 = [CHCallFingerprint matchCallWithFingerprint:v6 usingDatabase:v7];
+  insertCopy = insert;
+  dbHandle = [(SyncManager *)self dbHandle];
+  v8 = [CHCallFingerprint matchCallWithFingerprint:insertCopy usingDatabase:dbHandle];
 
   if (v8)
   {
-    if ([CHCallFingerprint shouldCall:v6 updateMatchingCall:v8])
+    if ([CHCallFingerprint shouldCall:insertCopy updateMatchingCall:v8])
     {
-      v9 = [CHCallFingerprint updateCall:v6 withFingerprintedCall:v8 areBothCallsLocal:1];
+      v9 = [CHCallFingerprint updateCall:insertCopy withFingerprintedCall:v8 areBothCallsLocal:1];
 
-      v10 = [(CHLogger *)self logHandle];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      logHandle = [(CHLogger *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
         v31 = v8;
         v32 = 2114;
         v33 = v9;
-        _os_log_impl(&dword_1C3E90000, v10, OS_LOG_TYPE_DEFAULT, "Updating %{public}@ with %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Updating %{public}@ with %{public}@", buf, 0x16u);
       }
 
-      v11 = [v8 uniqueId];
-      v28 = v11;
+      uniqueId = [v8 uniqueId];
+      v28 = uniqueId;
       v29 = v9;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
       [(SyncManager *)self updateObjectsWithCalls:v12 withTransactions:0];
-      v6 = v9;
+      insertCopy = v9;
       goto LABEL_20;
     }
 
-    v13 = [(CHLogger *)self logHandle];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(CHLogger *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v31 = v8;
       v32 = 2112;
-      v33 = v6;
-      _os_log_impl(&dword_1C3E90000, v13, OS_LOG_TYPE_DEFAULT, "Not updating matching call %@ with new call %@", buf, 0x16u);
+      v33 = insertCopy;
+      _os_log_impl(&dword_1C3E90000, logHandle2, OS_LOG_TYPE_DEFAULT, "Not updating matching call %@ with new call %@", buf, 0x16u);
     }
   }
 
   v14 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v15 = [v6 uniqueId];
-  v16 = [v14 initWithUUIDString:v15];
+  uniqueId2 = [insertCopy uniqueId];
+  v16 = [v14 initWithUUIDString:uniqueId2];
 
   if (!v16)
   {
     v17 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-    v18 = [v17 UUIDString];
-    [v6 setUniqueId:v18];
+    uUIDString = [v17 UUIDString];
+    [insertCopy setUniqueId:uUIDString];
   }
 
-  v19 = [(CHLogger *)self logHandle];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  logHandle3 = [(CHLogger *)self logHandle];
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v6 uniqueId];
+    uniqueId3 = [insertCopy uniqueId];
     *buf = 138543362;
-    v31 = v20;
-    _os_log_impl(&dword_1C3E90000, v19, OS_LOG_TYPE_DEFAULT, "Inserting call with UUID %{public}@", buf, 0xCu);
+    v31 = uniqueId3;
+    _os_log_impl(&dword_1C3E90000, logHandle3, OS_LOG_TYPE_DEFAULT, "Inserting call with UUID %{public}@", buf, 0xCu);
   }
 
-  v21 = [(SyncManager *)self dbHandle];
-  [v21 createCallRecord:v6];
+  dbHandle2 = [(SyncManager *)self dbHandle];
+  [dbHandle2 createCallRecord:insertCopy];
 
-  if (v4)
+  if (transactionCopy)
   {
     v27 = 0;
-    v12 = [v6 archivedDataWithError:&v27];
+    v12 = [insertCopy archivedDataWithError:&v27];
     v22 = v27;
-    v11 = v22;
+    uniqueId = v22;
     if (v12)
     {
-      v23 = [[CHTransaction alloc] initWithType:0 andRecord:v12];
+      logHandle4 = [[CHTransaction alloc] initWithType:0 andRecord:v12];
       transactionManager = self->_transactionManager;
-      v25 = [MEMORY[0x1E695DEC8] arrayWithObject:v23];
+      v25 = [MEMORY[0x1E695DEC8] arrayWithObject:logHandle4];
       [(TransactionManagerProtocol *)transactionManager appendTransactions:v25];
     }
 
@@ -164,8 +164,8 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v23 = [(CHLogger *)self logHandle];
-      if (os_log_type_enabled(&v23->super, OS_LOG_TYPE_ERROR))
+      logHandle4 = [(CHLogger *)self logHandle];
+      if (os_log_type_enabled(&logHandle4->super, OS_LOG_TYPE_ERROR))
       {
         [SyncManager insert:withTransaction:];
       }
@@ -179,18 +179,18 @@ LABEL_21:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertRecords:(id)a3
+- (void)insertRecords:(id)records
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v21 = self;
-  [(SyncManager *)self insertRecordsWithoutTransactions:v4];
+  recordsCopy = records;
+  selfCopy = self;
+  [(SyncManager *)self insertRecordsWithoutTransactions:recordsCopy];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = recordsCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v7)
   {
@@ -215,8 +215,8 @@ LABEL_21:
         v15 = v14;
         if (v13)
         {
-          v16 = [[CHTransaction alloc] initWithType:0 andRecord:v13];
-          [v5 addObject:v16];
+          logHandle = [[CHTransaction alloc] initWithType:0 andRecord:v13];
+          [v5 addObject:logHandle];
         }
 
         else
@@ -226,14 +226,14 @@ LABEL_21:
             goto LABEL_12;
           }
 
-          v16 = [(CHLogger *)v21 logHandle];
-          if (os_log_type_enabled(&v16->super, OS_LOG_TYPE_ERROR))
+          logHandle = [(CHLogger *)selfCopy logHandle];
+          if (os_log_type_enabled(&logHandle->super, OS_LOG_TYPE_ERROR))
           {
             *buf = v20;
             v28 = v12;
             v29 = 2114;
             v30 = v15;
-            _os_log_error_impl(&dword_1C3E90000, &v16->super, OS_LOG_TYPE_ERROR, "Attempt to archive %@ failed with error %{public}@", buf, 0x16u);
+            _os_log_error_impl(&dword_1C3E90000, &logHandle->super, OS_LOG_TYPE_ERROR, "Attempt to archive %@ failed with error %{public}@", buf, 0x16u);
           }
         }
 
@@ -250,7 +250,7 @@ LABEL_12:
 
   if ([v5 count])
   {
-    transactionManager = v21->_transactionManager;
+    transactionManager = selfCopy->_transactionManager;
     v18 = [v5 copy];
     [(TransactionManagerProtocol *)transactionManager appendTransactions:v18];
   }
@@ -258,23 +258,23 @@ LABEL_12:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertRecordsWithoutTransactions:(id)a3
+- (void)insertRecordsWithoutTransactions:(id)transactions
 {
-  v4 = a3;
-  v5 = [(SyncManager *)self dbHandle];
-  [v5 createCallRecords:v4];
+  transactionsCopy = transactions;
+  dbHandle = [(SyncManager *)self dbHandle];
+  [dbHandle createCallRecords:transactionsCopy];
 }
 
-- (int64_t)deleteCallsWithPredicate:(id)a3 withTransaction:(BOOL)a4 error:(id *)a5
+- (int64_t)deleteCallsWithPredicate:(id)predicate withTransaction:(BOOL)transaction error:(id *)error
 {
-  v6 = a4;
+  transactionCopy = transaction;
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  predicateCopy = predicate;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v6)
+  if (transactionCopy)
   {
-    v10 = [(SyncManager *)self dbHandle];
-    v11 = [v10 fetchObjectsWithPredicate:v8];
+    dbHandle = [(SyncManager *)self dbHandle];
+    v11 = [dbHandle fetchObjectsWithPredicate:predicateCopy];
 
     if (![v11 count])
     {
@@ -283,7 +283,7 @@ LABEL_12:
       goto LABEL_16;
     }
 
-    v25 = a5;
+    errorCopy = error;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
@@ -318,16 +318,16 @@ LABEL_12:
       while (v14);
     }
 
-    a5 = v25;
+    error = errorCopy;
   }
 
-  v19 = [(SyncManager *)self dbHandle];
-  v20 = [v19 deleteCallsWithPredicate:v8];
+  dbHandle2 = [(SyncManager *)self dbHandle];
+  v20 = [dbHandle2 deleteCallsWithPredicate:predicateCopy];
 
   if (v20 >= 1)
   {
-    v21 = [(SyncManager *)self dbHandle];
-    v22 = [v21 saveDatabase:a5];
+    dbHandle3 = [(SyncManager *)self dbHandle];
+    v22 = [dbHandle3 saveDatabase:error];
 
     if (v22)
     {
@@ -346,78 +346,78 @@ LABEL_16:
   return v20;
 }
 
-- (unint64_t)fetchCallCountWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5
+- (unint64_t)fetchCallCountWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary
 {
-  v8 = a4;
-  v9 = [(SyncManager *)self updatedPredicate:a3 withLimits:a5];
-  v10 = [(SyncManager *)self dbHandle];
-  v11 = [v10 fetchCallCountWithPredicate:v9 sortDescriptors:v8];
+  descriptorsCopy = descriptors;
+  v9 = [(SyncManager *)self updatedPredicate:predicate withLimits:dictionary];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v11 = [dbHandle fetchCallCountWithPredicate:v9 sortDescriptors:descriptorsCopy];
 
   return v11;
 }
 
-- (id)fetchCallsWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5 limit:(unint64_t)a6 offset:(unint64_t)a7 batchSize:(unint64_t)a8
+- (id)fetchCallsWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
-  v14 = a4;
-  v15 = [(SyncManager *)self updatedPredicate:a3 withLimits:a5];
-  v16 = [(SyncManager *)self dbHandle];
-  v17 = [v16 fetchCallsWithPredicate:v15 sortDescriptors:v14 limit:a6 offset:a7 batchSize:a8];
+  descriptorsCopy = descriptors;
+  v15 = [(SyncManager *)self updatedPredicate:predicate withLimits:dictionary];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v17 = [dbHandle fetchCallsWithPredicate:v15 sortDescriptors:descriptorsCopy limit:limit offset:offset batchSize:size];
 
   return v17;
 }
 
-- (id)fetchCallIdentifiersWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5 limit:(unint64_t)a6 offset:(unint64_t)a7 batchSize:(unint64_t)a8
+- (id)fetchCallIdentifiersWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
-  v14 = a4;
-  v15 = [(SyncManager *)self updatedPredicate:a3 withLimits:a5];
-  v16 = [(SyncManager *)self dbHandle];
-  v17 = [v16 fetchCallIdentifiersWithPredicate:v15 sortDescriptors:v14 limit:a6 offset:a7 batchSize:a8];
+  descriptorsCopy = descriptors;
+  v15 = [(SyncManager *)self updatedPredicate:predicate withLimits:dictionary];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v17 = [dbHandle fetchCallIdentifiersWithPredicate:v15 sortDescriptors:descriptorsCopy limit:limit offset:offset batchSize:size];
 
   return v17;
 }
 
-- (unint64_t)fetchCoalescedCallCountWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5
+- (unint64_t)fetchCoalescedCallCountWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary
 {
-  v8 = a4;
-  v9 = [(SyncManager *)self updatedPredicate:a3 withLimits:a5];
-  v10 = [(SyncManager *)self dbHandle];
-  v11 = [v10 fetchCoalescedCallCountWithPredicate:v9 sortDescriptors:v8];
+  descriptorsCopy = descriptors;
+  v9 = [(SyncManager *)self updatedPredicate:predicate withLimits:dictionary];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v11 = [dbHandle fetchCoalescedCallCountWithPredicate:v9 sortDescriptors:descriptorsCopy];
 
   return v11;
 }
 
-- (id)fetchCoalescedCallsWithPredicate:(id)a3 sortDescriptors:(id)a4 limitsDictionary:(id)a5 limit:(unint64_t)a6 offset:(unint64_t)a7 batchSize:(unint64_t)a8
+- (id)fetchCoalescedCallsWithPredicate:(id)predicate sortDescriptors:(id)descriptors limitsDictionary:(id)dictionary limit:(unint64_t)limit offset:(unint64_t)offset batchSize:(unint64_t)size
 {
-  v14 = a4;
-  v15 = [(SyncManager *)self updatedPredicate:a3 withLimits:a5];
-  v16 = [(SyncManager *)self dbHandle];
-  v17 = [v16 fetchCoalescedCallsWithPredicate:v15 sortDescriptors:v14 limit:a6 offset:a7 batchSize:a8];
+  descriptorsCopy = descriptors;
+  v15 = [(SyncManager *)self updatedPredicate:predicate withLimits:dictionary];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v17 = [dbHandle fetchCoalescedCallsWithPredicate:v15 sortDescriptors:descriptorsCopy limit:limit offset:offset batchSize:size];
 
   return v17;
 }
 
 - (id)fetchAllObjects
 {
-  v2 = [(SyncManager *)self dbHandle];
-  v3 = [v2 fetchAll];
+  dbHandle = [(SyncManager *)self dbHandle];
+  fetchAll = [dbHandle fetchAll];
 
-  return v3;
+  return fetchAll;
 }
 
-- (id)fetchObjectWithUniqueId:(id)a3
+- (id)fetchObjectWithUniqueId:(id)id
 {
-  v4 = a3;
-  v5 = [(SyncManager *)self dbHandle];
-  v6 = [v5 fetchObjectWithUniqueId:v4];
+  idCopy = id;
+  dbHandle = [(SyncManager *)self dbHandle];
+  v6 = [dbHandle fetchObjectWithUniqueId:idCopy];
 
   return v6;
 }
 
-- (id)predicateForCallKind:(id)a3
+- (id)predicateForCallKind:(id)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 objectForKeyedSubscript:@"kCHMediaTypeKey"];
+  v5 = [kindCopy objectForKeyedSubscript:@"kCHMediaTypeKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -425,7 +425,7 @@ LABEL_16:
     [v4 addObject:v6];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"kCHTTYTypeKey"];
+  v7 = [kindCopy objectForKeyedSubscript:@"kCHTTYTypeKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -434,7 +434,7 @@ LABEL_16:
     [v4 addObject:v8];
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"kCHServiceProviderKey"];
+  v9 = [kindCopy objectForKeyedSubscript:@"kCHServiceProviderKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -449,15 +449,15 @@ LABEL_16:
 
   if ([v4 count] >= 2)
   {
-    v12 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v4];
+    firstObject = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v4];
 LABEL_13:
-    v13 = v12;
+    v13 = firstObject;
     goto LABEL_15;
   }
 
   if ([v4 count] == 1)
   {
-    v12 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     goto LABEL_13;
   }
 
@@ -467,16 +467,16 @@ LABEL_15:
   return v13;
 }
 
-- (id)predicateForCallKinds:(id)a3
+- (id)predicateForCallKinds:(id)kinds
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  kindsCopy = kinds;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = kindsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -519,16 +519,16 @@ LABEL_15:
   return v12;
 }
 
-- (id)updatedPredicate:(id)a3 withLimits:(id)a4
+- (id)updatedPredicate:(id)predicate withLimits:(id)limits
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SyncManager *)self predicateForLimits:a4];
+  predicateCopy = predicate;
+  v7 = [(SyncManager *)self predicateForLimits:limits];
   v8 = v7;
-  if (v6)
+  if (predicateCopy)
   {
     v9 = MEMORY[0x1E696AB28];
-    v14[0] = v6;
+    v14[0] = predicateCopy;
     v14[1] = v7;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     v11 = [v9 andPredicateWithSubpredicates:v10];
@@ -544,11 +544,11 @@ LABEL_15:
   return v11;
 }
 
-- (id)predicateForLimits:(id)a3
+- (id)predicateForLimits:(id)limits
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"kCHLimitCallKindsKey"];
+  limitsCopy = limits;
+  v5 = [limitsCopy objectForKey:@"kCHLimitCallKindsKey"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = [(SyncManager *)self predicateForCallKinds:v5];
   if (v7)
@@ -557,43 +557,43 @@ LABEL_15:
   }
 
   v35 = v7;
-  v8 = [v4 objectForKeyedSubscript:@"kCHLimitStartDateKey"];
+  v8 = [limitsCopy objectForKeyedSubscript:@"kCHLimitStartDateKey"];
 
   if (v8)
   {
     v9 = MEMORY[0x1E696AE18];
-    v10 = [v4 objectForKeyedSubscript:@"kCHLimitStartDateKey"];
+    v10 = [limitsCopy objectForKeyedSubscript:@"kCHLimitStartDateKey"];
     v11 = [v9 predicateWithFormat:@"%K >= %@", @"date", v10];
 
     [v6 addObject:v11];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"kCHLimitEndDateKey"];
+  v12 = [limitsCopy objectForKeyedSubscript:@"kCHLimitEndDateKey"];
 
   if (v12)
   {
     v13 = MEMORY[0x1E696AE18];
-    v14 = [v4 objectForKeyedSubscript:@"kCHLimitEndDateKey"];
+    v14 = [limitsCopy objectForKeyedSubscript:@"kCHLimitEndDateKey"];
     v15 = [v13 predicateWithFormat:@"%K <= %@", @"date", v14];
 
     [v6 addObject:v15];
   }
 
-  v16 = [v4 objectForKeyedSubscript:@"kCHLimitProtectedBundleIDsKey"];
+  v16 = [limitsCopy objectForKeyedSubscript:@"kCHLimitProtectedBundleIDsKey"];
   if (v16)
   {
     v17 = v16;
-    v18 = [(SyncManager *)self featureFlags];
-    v19 = [v18 protectedAppsEnabled];
+    featureFlags = [(SyncManager *)self featureFlags];
+    protectedAppsEnabled = [featureFlags protectedAppsEnabled];
 
-    if (v19)
+    if (protectedAppsEnabled)
     {
-      v20 = [v4 objectForKeyedSubscript:@"kCHLimitProtectedBundleIDsKey"];
+      v20 = [limitsCopy objectForKeyedSubscript:@"kCHLimitProtectedBundleIDsKey"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v33 = v5;
-        v34 = v4;
+        v34 = limitsCopy;
         v21 = v20;
         v36 = 0u;
         v37 = 0u;
@@ -618,10 +618,10 @@ LABEL_15:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v27 = [(SyncManager *)self bundleIDToServiceProvider:v26];
-                if ([v27 length])
+                logHandle = [(SyncManager *)self bundleIDToServiceProvider:v26];
+                if ([logHandle length])
                 {
-                  v28 = [CHRecentCall predicateForCallsContainingServiceProvider:v27];
+                  v28 = [CHRecentCall predicateForCallsContainingServiceProvider:logHandle];
                   v29 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v28];
 
                   [v6 addObject:v29];
@@ -630,12 +630,12 @@ LABEL_15:
 
               else
               {
-                v27 = [(CHLogger *)self logHandle];
-                if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+                logHandle = [(CHLogger *)self logHandle];
+                if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543362;
                   v41 = v26;
-                  _os_log_error_impl(&dword_1C3E90000, v27, OS_LOG_TYPE_ERROR, "Invalid bundleID %{public}@", buf, 0xCu);
+                  _os_log_error_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_ERROR, "Invalid bundleID %{public}@", buf, 0xCu);
                 }
               }
 
@@ -650,7 +650,7 @@ LABEL_15:
         }
 
         v5 = v33;
-        v4 = v34;
+        limitsCopy = v34;
       }
     }
   }
@@ -662,15 +662,15 @@ LABEL_15:
   return v30;
 }
 
-- (id)bundleIDToServiceProvider:(id)a3
+- (id)bundleIDToServiceProvider:(id)provider
 {
-  v3 = a3;
-  if ([(__CFString *)v3 caseInsensitiveCompare:@"com.apple.mobilephone"])
+  providerCopy = provider;
+  if ([(__CFString *)providerCopy caseInsensitiveCompare:@"com.apple.mobilephone"])
   {
     v4 = @"com.apple.FaceTime";
-    if ([(__CFString *)v3 caseInsensitiveCompare:@"com.apple.FaceTime"])
+    if ([(__CFString *)providerCopy caseInsensitiveCompare:@"com.apple.FaceTime"])
     {
-      v4 = v3;
+      v4 = providerCopy;
     }
   }
 
@@ -684,51 +684,51 @@ LABEL_15:
   return v4;
 }
 
-- (id)fetchObjectsWithLimits:(id)a3
+- (id)fetchObjectsWithLimits:(id)limits
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [(SyncManager *)self predicateForLimits:a3];
-  v5 = [(CHLogger *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  v4 = [(SyncManager *)self predicateForLimits:limits];
+  logHandle = [(CHLogger *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 predicateFormat];
+    predicateFormat = [v4 predicateFormat];
     v11 = 138412290;
-    v12 = v6;
-    _os_log_impl(&dword_1C3E90000, v5, OS_LOG_TYPE_DEFAULT, "fetching with predicate: %@", &v11, 0xCu);
+    v12 = predicateFormat;
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "fetching with predicate: %@", &v11, 0xCu);
   }
 
-  v7 = [(SyncManager *)self dbHandle];
-  v8 = [v7 fetchObjectsWithPredicate:v4];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v8 = [dbHandle fetchObjectsWithPredicate:v4];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (void)deleteObjectsWithUniqueIds:(id)a3 withTransaction:(BOOL)a4
+- (void)deleteObjectsWithUniqueIds:(id)ids withTransaction:(BOOL)transaction
 {
-  v4 = a4;
+  transactionCopy = transaction;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SyncManager *)self dbHandle];
-  v8 = [v7 fetchObjectsWithUniqueIds:v6];
+  idsCopy = ids;
+  dbHandle = [(SyncManager *)self dbHandle];
+  v8 = [dbHandle fetchObjectsWithUniqueIds:idsCopy];
 
   v9 = [v8 count];
-  v10 = [(CHLogger *)self logHandle];
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+  logHandle = [(CHLogger *)self logHandle];
+  v11 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT);
   if (v9)
   {
     if (v11)
     {
       *buf = 134217984;
       v29 = [v8 count];
-      _os_log_impl(&dword_1C3E90000, v10, OS_LOG_TYPE_DEFAULT, "Deleting all %lu objects", buf, 0xCu);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Deleting all %lu objects", buf, 0xCu);
     }
 
-    v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v4)
+    logHandle = objc_alloc_init(MEMORY[0x1E695DF70]);
+    if (transactionCopy)
     {
-      v22 = v6;
+      v22 = idsCopy;
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
@@ -751,7 +751,7 @@ LABEL_15:
 
             v17 = [(SyncManager *)self archiveCallObject:*(*(&v23 + 1) + 8 * v16)];
             v18 = [[CHTransaction alloc] initWithType:2 andRecord:v17];
-            [v10 addObject:v18];
+            [logHandle addObject:v18];
 
             ++v16;
           }
@@ -763,17 +763,17 @@ LABEL_15:
         while (v14);
       }
 
-      v19 = [(SyncManager *)self dbHandle];
-      v6 = v22;
-      [v19 deleteObjectsWithUniqueIds:v22];
+      dbHandle2 = [(SyncManager *)self dbHandle];
+      idsCopy = v22;
+      [dbHandle2 deleteObjectsWithUniqueIds:v22];
 
-      [(TransactionManagerProtocol *)self->_transactionManager appendTransactions:v10];
+      [(TransactionManagerProtocol *)self->_transactionManager appendTransactions:logHandle];
     }
 
     else
     {
-      v20 = [(SyncManager *)self dbHandle];
-      [v20 deleteObjectsWithUniqueIds:v6];
+      dbHandle3 = [(SyncManager *)self dbHandle];
+      [dbHandle3 deleteObjectsWithUniqueIds:idsCopy];
     }
 
     notify_post("com.apple.callhistory.RecentDeletedNotification");
@@ -782,7 +782,7 @@ LABEL_15:
   else if (v11)
   {
     *buf = 0;
-    _os_log_impl(&dword_1C3E90000, v10, OS_LOG_TYPE_DEFAULT, "No Call Records found", buf, 2u);
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "No Call Records found", buf, 2u);
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -792,30 +792,30 @@ LABEL_15:
 {
   v44 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(SyncManager *)self dbHandle];
-  v5 = [v4 fetchAllNoLimit];
+  dbHandle = [(SyncManager *)self dbHandle];
+  fetchAllNoLimit = [dbHandle fetchAllNoLimit];
 
-  v6 = [v5 count];
+  v6 = [fetchAllNoLimit count];
   if (v6)
   {
     v7 = v6;
     v31 = v3;
-    v32 = self;
-    v8 = [(CHLogger *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    selfCopy = self;
+    logHandle = [(CHLogger *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
       v40 = v7;
-      _os_log_impl(&dword_1C3E90000, v8, OS_LOG_TYPE_DEFAULT, "Deleting %lu calls", buf, 0xCu);
+      _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Deleting %lu calls", buf, 0xCu);
     }
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v29 = v5;
-    v10 = v5;
+    v29 = fetchAllNoLimit;
+    v10 = fetchAllNoLimit;
     v11 = [v10 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v11)
     {
@@ -838,8 +838,8 @@ LABEL_15:
           v18 = v17;
           if (v16)
           {
-            v19 = [[CHTransaction alloc] initWithType:2 andRecord:v16];
-            [v9 addObject:v19];
+            logHandle2 = [[CHTransaction alloc] initWithType:2 andRecord:v16];
+            [array addObject:logHandle2];
           }
 
           else
@@ -849,14 +849,14 @@ LABEL_15:
               goto LABEL_15;
             }
 
-            v19 = [(CHLogger *)v32 logHandle];
-            if (os_log_type_enabled(&v19->super, OS_LOG_TYPE_ERROR))
+            logHandle2 = [(CHLogger *)selfCopy logHandle];
+            if (os_log_type_enabled(&logHandle2->super, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
               v40 = v15;
               v41 = 2114;
               v42 = v18;
-              _os_log_error_impl(&dword_1C3E90000, &v19->super, OS_LOG_TYPE_ERROR, "Attempt to archive %@ failed with error %{public}@", buf, 0x16u);
+              _os_log_error_impl(&dword_1C3E90000, &logHandle2->super, OS_LOG_TYPE_ERROR, "Attempt to archive %@ failed with error %{public}@", buf, 0x16u);
             }
           }
 
@@ -881,31 +881,31 @@ LABEL_15:
     v24 = v23;
     if (v22)
     {
-      v25 = [[CHTransaction alloc] initWithType:3 andRecord:v22];
-      [v9 addObject:v25];
+      logHandle3 = [[CHTransaction alloc] initWithType:3 andRecord:v22];
+      [array addObject:logHandle3];
       v3 = v31;
-      p_isa = &v32->super.super.isa;
+      p_isa = &selfCopy->super.super.isa;
     }
 
     else
     {
       v3 = v31;
-      p_isa = &v32->super.super.isa;
+      p_isa = &selfCopy->super.super.isa;
       if (!v23)
       {
 LABEL_23:
-        v27 = [p_isa dbHandle];
-        [v27 deleteAll];
+        dbHandle2 = [p_isa dbHandle];
+        [dbHandle2 deleteAll];
 
-        [p_isa[4] appendTransactions:v9];
+        [p_isa[4] appendTransactions:array];
         notify_post("com.apple.callhistory.RecentsClearedNotification");
 
-        v5 = v30;
+        fetchAllNoLimit = v30;
         goto LABEL_24;
       }
 
-      v25 = [(CHLogger *)v32 logHandle];
-      if (os_log_type_enabled(&v25->super, OS_LOG_TYPE_ERROR))
+      logHandle3 = [(CHLogger *)selfCopy logHandle];
+      if (os_log_type_enabled(&logHandle3->super, OS_LOG_TYPE_ERROR))
       {
         [SyncManager insert:withTransaction:];
       }
@@ -920,19 +920,19 @@ LABEL_24:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteObjectsWithLimits:(id)a3
+- (void)deleteObjectsWithLimits:(id)limits
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  limitsCopy = limits;
   context = objc_autoreleasePoolPush();
-  v21 = v4;
-  v5 = [(SyncManager *)self fetchObjectsWithLimits:v4];
-  v6 = [(CHLogger *)self logHandle];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  v21 = limitsCopy;
+  v5 = [(SyncManager *)self fetchObjectsWithLimits:limitsCopy];
+  logHandle = [(CHLogger *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
     LODWORD(v30) = [v5 count];
-    _os_log_impl(&dword_1C3E90000, v6, OS_LOG_TYPE_DEFAULT, "Deleting %d objects", buf, 8u);
+    _os_log_impl(&dword_1C3E90000, logHandle, OS_LOG_TYPE_DEFAULT, "Deleting %d objects", buf, 8u);
   }
 
   v24 = objc_opt_new();
@@ -957,35 +957,35 @@ LABEL_24:
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 uniqueId];
+        uniqueId = [v11 uniqueId];
 
-        if (v12)
+        if (uniqueId)
         {
-          v13 = [(SyncManager *)self archiveCallObject:v11];
-          v14 = [[CHTransaction alloc] initWithType:2 andRecord:v13];
+          logHandle2 = [(SyncManager *)self archiveCallObject:v11];
+          v14 = [[CHTransaction alloc] initWithType:2 andRecord:logHandle2];
           [v24 addObject:v14];
-          v15 = [v11 uniqueId];
-          [v23 addObject:v15];
+          uniqueId2 = [v11 uniqueId];
+          [v23 addObject:uniqueId2];
         }
 
         else
         {
-          v13 = [(CHLogger *)self logHandle];
-          if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          logHandle2 = [(CHLogger *)self logHandle];
+          if (!os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_13;
           }
 
           v14 = +[CHRecentCall callMediaTypeAsString:](CHRecentCall, "callMediaTypeAsString:", [v11 mediaType]);
           v16 = +[CHRecentCall callTTYTypeAsString:](CHRecentCall, "callTTYTypeAsString:", [v11 ttyType]);
-          v17 = [v11 date];
+          date = [v11 date];
           *buf = 138543874;
           v30 = v14;
           v31 = 2114;
           v32 = v16;
           v33 = 2114;
-          v34 = v17;
-          _os_log_impl(&dword_1C3E90000, v13, OS_LOG_TYPE_DEFAULT, "Cannot delete call with mediaType %{public}@ and ttyType %{public}@ placed on %{public}@ with nil unique ID", buf, 0x20u);
+          v34 = date;
+          _os_log_impl(&dword_1C3E90000, logHandle2, OS_LOG_TYPE_DEFAULT, "Cannot delete call with mediaType %{public}@ and ttyType %{public}@ placed on %{public}@ with nil unique ID", buf, 0x20u);
         }
 
 LABEL_13:
@@ -997,8 +997,8 @@ LABEL_13:
     while (v8);
   }
 
-  v18 = [(SyncManager *)self dbHandle];
-  [v18 deleteObjectsWithUniqueIds:v23];
+  dbHandle = [(SyncManager *)self dbHandle];
+  [dbHandle deleteObjectsWithUniqueIds:v23];
 
   [(TransactionManagerProtocol *)self->_transactionManager appendTransactions:v24];
   objc_autoreleasePoolPop(context);
@@ -1006,15 +1006,15 @@ LABEL_13:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateObjectsWithCalls:(id)a3 withTransactions:(BOOL)a4
+- (void)updateObjectsWithCalls:(id)calls withTransactions:(BOOL)transactions
 {
-  v4 = a4;
-  v9 = a3;
+  transactionsCopy = transactions;
+  callsCopy = calls;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(SyncManager *)self dbHandle];
-  v8 = [v7 updateCallRecordsWithCalls:v9 error:0 save:1];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v8 = [dbHandle updateCallRecordsWithCalls:callsCopy error:0 save:1];
 
-  if (v4)
+  if (transactionsCopy)
   {
     [(SyncManager *)self addUpdateTransactions:v8];
   }
@@ -1022,38 +1022,38 @@ LABEL_13:
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)updateObjects:(id)a3
+- (void)updateObjects:(id)objects
 {
-  v7 = a3;
+  objectsCopy = objects;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(SyncManager *)self dbHandle];
-  v6 = [v5 updateCallRecords:v7];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v6 = [dbHandle updateCallRecords:objectsCopy];
   [(SyncManager *)self addUpdateTransactions:v6];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)updateAllObjects:(id)a3
+- (void)updateAllObjects:(id)objects
 {
-  v7 = a3;
+  objectsCopy = objects;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(SyncManager *)self dbHandle];
-  v6 = [v5 updateAllCallRecords:v7];
+  dbHandle = [(SyncManager *)self dbHandle];
+  v6 = [dbHandle updateAllCallRecords:objectsCopy];
   [(SyncManager *)self addUpdateTransactions:v6];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)addUpdateTransactions:(id)a3
+- (void)addUpdateTransactions:(id)transactions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  transactionsCopy = transactions;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(transactionsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = transactionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1092,9 +1092,9 @@ LABEL_13:
 
 - (double)timerLifetime
 {
-  v2 = [(SyncManager *)self dbHandle];
-  v3 = [v2 timerLifetime];
-  [v3 doubleValue];
+  dbHandle = [(SyncManager *)self dbHandle];
+  timerLifetime = [dbHandle timerLifetime];
+  [timerLifetime doubleValue];
   v5 = v4;
 
   return v5;
@@ -1102,9 +1102,9 @@ LABEL_13:
 
 - (double)timerIncoming
 {
-  v2 = [(SyncManager *)self dbHandle];
-  v3 = [v2 timerIncoming];
-  [v3 doubleValue];
+  dbHandle = [(SyncManager *)self dbHandle];
+  timerIncoming = [dbHandle timerIncoming];
+  [timerIncoming doubleValue];
   v5 = v4;
 
   return v5;
@@ -1112,9 +1112,9 @@ LABEL_13:
 
 - (double)timerOutgoing
 {
-  v2 = [(SyncManager *)self dbHandle];
-  v3 = [v2 timerOutgoing];
-  [v3 doubleValue];
+  dbHandle = [(SyncManager *)self dbHandle];
+  timerOutgoing = [dbHandle timerOutgoing];
+  [timerOutgoing doubleValue];
   v5 = v4;
 
   return v5;
@@ -1122,21 +1122,21 @@ LABEL_13:
 
 - (void)resetTimers
 {
-  v2 = [(SyncManager *)self dbHandle];
-  [v2 resetTimers];
+  dbHandle = [(SyncManager *)self dbHandle];
+  [dbHandle resetTimers];
 }
 
-- (id)archiveCallObject:(id)a3
+- (id)archiveCallObject:(id)object
 {
   v3 = MEMORY[0x1E696ACC8];
-  v4 = a3;
+  objectCopy = object;
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
   [v5 setOutputFormat:200];
-  [v5 encodeObject:v4 forKey:*MEMORY[0x1E696A508]];
+  [v5 encodeObject:objectCopy forKey:*MEMORY[0x1E696A508]];
 
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
 - (void)insert:withTransaction:.cold.1()

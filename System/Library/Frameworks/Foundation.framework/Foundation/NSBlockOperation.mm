@@ -2,7 +2,7 @@
 + (NSBlockOperation)blockOperationWithBlock:(void *)block;
 - (NSArray)executionBlocks;
 - (NSBlockOperation)init;
-- (NSBlockOperation)initWithBlock:(id)a3;
+- (NSBlockOperation)initWithBlock:(id)block;
 - (void)addExecutionBlock:(void *)block;
 - (void)dealloc;
 - (void)main;
@@ -71,24 +71,24 @@ LABEL_8:
   [(NSOperation *)&v4 dealloc];
 }
 
-- (NSBlockOperation)initWithBlock:(id)a3
+- (NSBlockOperation)initWithBlock:(id)block
 {
   v5 = [(NSBlockOperation *)self init];
   v6 = v5;
-  if (!a3)
+  if (!block)
   {
     v8 = [NSString stringWithFormat:@"%@: block is nil", _NSMethodExceptionProem(v5, a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v8 userInfo:0]);
   }
 
-  v5->_block = _Block_copy(a3);
+  v5->_block = _Block_copy(block);
   return v6;
 }
 
 + (NSBlockOperation)blockOperationWithBlock:(void *)block
 {
-  v3 = [[a1 alloc] initWithBlock:block];
+  v3 = [[self alloc] initWithBlock:block];
 
   return v3;
 }

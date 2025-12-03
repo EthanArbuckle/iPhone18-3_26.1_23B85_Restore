@@ -1,10 +1,10 @@
 @interface APRKStreamRenderer
-- (APRKStreamRenderer)initWithUniqueID:(id)a3 clientName:(id)a4 UIController:(OpaqueAPReceiverUIController *)a5 useCALayerForMirroring:(BOOL)a6;
+- (APRKStreamRenderer)initWithUniqueID:(id)d clientName:(id)name UIController:(OpaqueAPReceiverUIController *)controller useCALayerForMirroring:(BOOL)mirroring;
 - (APRKStreamRendererDelegate)delegate;
-- (BOOL)_performStartRecordingWithOutputURL:(id)a3;
+- (BOOL)_performStartRecordingWithOutputURL:(id)l;
 - (BOOL)_performStopRecording;
 - (BOOL)_receiverSupportsMirroring;
-- (BOOL)_sampleBufferRepresentsKeyFrame:(opaqueCMSampleBuffer *)a3;
+- (BOOL)_sampleBufferRepresentsKeyFrame:(opaqueCMSampleBuffer *)frame;
 - (BOOL)canRecord;
 - (BOOL)isActive;
 - (BOOL)isMirroringVideoStreamPaused;
@@ -13,20 +13,20 @@
 - (BOOL)isProtectedMirroring;
 - (BOOL)isRecording;
 - (BOOL)isWiredLink;
-- (BOOL)processAudioSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (BOOL)processStopAudioSessionRequestWithSessionID:(unsigned int)a3;
-- (BOOL)processStopScreenPresentationWithSessionID:(unsigned int)a3;
-- (BOOL)processStopVideoPlaybackRequestWithSessionID:(unsigned int)a3;
-- (BOOL)processVideoSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (BOOL)startRecordingWithOutputURL:(id)a3;
+- (BOOL)processAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (BOOL)processStopAudioSessionRequestWithSessionID:(unsigned int)d;
+- (BOOL)processStopScreenPresentationWithSessionID:(unsigned int)d;
+- (BOOL)processStopVideoPlaybackRequestWithSessionID:(unsigned int)d;
+- (BOOL)processVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (BOOL)startRecordingWithOutputURL:(id)l;
 - (BOOL)stopRecording;
 - (CGSize)videoFrameSize;
 - (id)demoDeviceInfo;
 - (id)ensembleInfo;
 - (id)sampleBufferDelegate;
 - (id)videoQueuePerformanceDictionary;
-- (int)_enqueueSampleBufferForRecording:(opaqueCMSampleBuffer *)a3 isAudioSBuf:(BOOL)a4;
-- (int)_enqueueVideoFrameForRendering:(opaqueCMSampleBuffer *)a3;
+- (int)_enqueueSampleBufferForRecording:(opaqueCMSampleBuffer *)recording isAudioSBuf:(BOOL)buf;
+- (int)_enqueueVideoFrameForRendering:(opaqueCMSampleBuffer *)rendering;
 - (signed)_ensureFigVideoQueue;
 - (unint64_t)currentVideoPlaybackVersion;
 - (unsigned)audioSessionCount;
@@ -35,40 +35,40 @@
 - (unsigned)videoSessionCount;
 - (void)_cleanupInternalPlayer;
 - (void)_cleanupPreviousRecordingIfExisting;
-- (void)_ensureInternalPlayerFor:(int)a3;
-- (void)_performUIControllerActionWithBlock:(id)a3;
+- (void)_ensureInternalPlayerFor:(int)for;
+- (void)_performUIControllerActionWithBlock:(id)block;
 - (void)_registerForFigVideoQueueNotifications;
 - (void)_unregisterForFigVideoQueueNotifications;
 - (void)_updateStreamingMode;
 - (void)dealloc;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)makeNowPlayingRenderer;
-- (void)mediaPlayer:(id)a3 didGenerateFPSSecureStopRecordPayload:(id)a4;
-- (void)mediaPlayer:(id)a3 wantsToPostNotification:(id)a4 withPayload:(id)a5;
-- (void)mediaPlayer:(id)a3 wantsToSendUpstreamMessageWithDictionary:(id)a4;
-- (void)mediaPlayerNeedsTLSInfo:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)postVideoV1EventWithType:(const char *)a3 params:(__CFDictionary *)a4;
+- (void)mediaPlayer:(id)player didGenerateFPSSecureStopRecordPayload:(id)payload;
+- (void)mediaPlayer:(id)player wantsToPostNotification:(id)notification withPayload:(id)payload;
+- (void)mediaPlayer:(id)player wantsToSendUpstreamMessageWithDictionary:(id)dictionary;
+- (void)mediaPlayerNeedsTLSInfo:(id)info;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)postVideoV1EventWithType:(const char *)type params:(__CFDictionary *)params;
 - (void)processHidePasscodePromptRequest;
-- (void)processSenderUIEvent:(id)a3;
-- (void)processShowPasscodePromptRequest:(id)a3;
-- (void)processStartAudioSessionRequestWithSessionID:(unsigned int)a3 isScreenAudio:(BOOL)a4;
-- (void)processStartScreenPresentationWithSessionID:(unsigned int)a3;
-- (void)processStartVideoPlaybackRequestWithWithSessionID:(unsigned int)a3 version:(unint64_t)a4;
-- (void)setCanRecord:(BOOL)a3;
-- (void)setDeferLayerRendering:(BOOL)a3;
-- (void)setDemoDeviceInfo:(id)a3;
-- (void)setEnsembleInfo:(id)a3;
-- (void)setIsMirroringAudioStreamPaused:(BOOL)a3;
-- (void)setIsMirroringVideoStreamPaused:(BOOL)a3;
-- (void)setIsP2PWiFi:(BOOL)a3;
-- (void)setIsPaused:(BOOL)a3;
-- (void)setIsProtectedMirroring:(BOOL)a3;
-- (void)setIsWiredLink:(BOOL)a3;
-- (void)setReceiverNetworkClock:(OpaqueAPSNetworkClock *)a3;
-- (void)setSampleBufferDelegate:(id)a3;
-- (void)setSessionReceiverAddress:(OpaqueAPSNetworkAddress *)a3;
-- (void)setVideoV1Delegate:(id)a3 withDelegateQueue:(id)a4;
+- (void)processSenderUIEvent:(id)event;
+- (void)processShowPasscodePromptRequest:(id)request;
+- (void)processStartAudioSessionRequestWithSessionID:(unsigned int)d isScreenAudio:(BOOL)audio;
+- (void)processStartScreenPresentationWithSessionID:(unsigned int)d;
+- (void)processStartVideoPlaybackRequestWithWithSessionID:(unsigned int)d version:(unint64_t)version;
+- (void)setCanRecord:(BOOL)record;
+- (void)setDeferLayerRendering:(BOOL)rendering;
+- (void)setDemoDeviceInfo:(id)info;
+- (void)setEnsembleInfo:(id)info;
+- (void)setIsMirroringAudioStreamPaused:(BOOL)paused;
+- (void)setIsMirroringVideoStreamPaused:(BOOL)paused;
+- (void)setIsP2PWiFi:(BOOL)fi;
+- (void)setIsPaused:(BOOL)paused;
+- (void)setIsProtectedMirroring:(BOOL)mirroring;
+- (void)setIsWiredLink:(BOOL)link;
+- (void)setReceiverNetworkClock:(OpaqueAPSNetworkClock *)clock;
+- (void)setSampleBufferDelegate:(id)delegate;
+- (void)setSessionReceiverAddress:(OpaqueAPSNetworkAddress *)address;
+- (void)setVideoV1Delegate:(id)delegate withDelegateQueue:(id)queue;
 - (void)stop;
 - (void)updateDisplayInfo;
 @end
@@ -170,16 +170,16 @@ uint64_t __26__APRKStreamRenderer_stop__block_invoke(uint64_t result)
   return result;
 }
 
-- (BOOL)startRecordingWithOutputURL:(id)a3
+- (BOOL)startRecordingWithOutputURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   if (gLogCategory_AirPlayReceiverKit <= 50 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
-    [v4 absoluteString];
+    [lCopy absoluteString];
     v9 = v8 = self;
     LogPrintF();
   }
@@ -193,7 +193,7 @@ uint64_t __26__APRKStreamRenderer_stop__block_invoke(uint64_t result)
     block[3] = &unk_278C627D8;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = lCopy;
     dispatch_sync(rendererVideoBufferQueue, block);
 
     v6 = *(v14 + 24);
@@ -356,7 +356,7 @@ __n128 __36__APRKStreamRenderer_videoFrameSize__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setIsPaused:(BOOL)a3
+- (void)setIsPaused:(BOOL)paused
 {
   rendererVideoBufferQueue = self->_rendererVideoBufferQueue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -364,9 +364,9 @@ __n128 __36__APRKStreamRenderer_videoFrameSize__block_invoke(uint64_t a1)
   v6[2] = __34__APRKStreamRenderer_setIsPaused___block_invoke;
   v6[3] = &unk_278C62A00;
   v6[4] = self;
-  v7 = a3;
+  pausedCopy = paused;
   dispatch_async(rendererVideoBufferQueue, v6);
-  self->_isMirroringAudioStreamPaused = a3;
+  self->_isMirroringAudioStreamPaused = paused;
 }
 
 - (BOOL)isPaused
@@ -388,7 +388,7 @@ __n128 __36__APRKStreamRenderer_videoFrameSize__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setIsMirroringVideoStreamPaused:(BOOL)a3
+- (void)setIsMirroringVideoStreamPaused:(BOOL)paused
 {
   rendererVideoBufferQueue = self->_rendererVideoBufferQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -396,7 +396,7 @@ __n128 __36__APRKStreamRenderer_videoFrameSize__block_invoke(uint64_t a1)
   v4[2] = __54__APRKStreamRenderer_setIsMirroringVideoStreamPaused___block_invoke;
   v4[3] = &unk_278C62A00;
   v4[4] = self;
-  v5 = a3;
+  pausedCopy = paused;
   dispatch_async(rendererVideoBufferQueue, v4);
 }
 
@@ -453,7 +453,7 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringVideoStreamPaused___block_invoke
   return v3;
 }
 
-- (void)setIsMirroringAudioStreamPaused:(BOOL)a3
+- (void)setIsMirroringAudioStreamPaused:(BOOL)paused
 {
   rendererVideoBufferQueue = self->_rendererVideoBufferQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -461,7 +461,7 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringVideoStreamPaused___block_invoke
   v4[2] = __54__APRKStreamRenderer_setIsMirroringAudioStreamPaused___block_invoke;
   v4[3] = &unk_278C62A00;
   v4[4] = self;
-  v5 = a3;
+  pausedCopy = paused;
   dispatch_async(rendererVideoBufferQueue, v4);
 }
 
@@ -485,9 +485,9 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringAudioStreamPaused___block_invoke
   return result;
 }
 
-- (void)setSampleBufferDelegate:(id)a3
+- (void)setSampleBufferDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     [APRKStreamRenderer setSampleBufferDelegate:];
@@ -499,19 +499,19 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringAudioStreamPaused___block_invoke
   v7[2] = __46__APRKStreamRenderer_setSampleBufferDelegate___block_invoke;
   v7[3] = &unk_278C62788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(rendererVideoBufferQueue, v7);
 }
 
-- (void)postVideoV1EventWithType:(const char *)a3 params:(__CFDictionary *)a4
+- (void)postVideoV1EventWithType:(const char *)type params:(__CFDictionary *)params
 {
-  if (a3)
+  if (type)
   {
     if (gLogCategory_AirPlayReceiverKit <= 10 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
     {
-      v7 = a3;
-      v8 = a4;
+      typeCopy = type;
+      paramsCopy = params;
       LogPrintF();
     }
 
@@ -519,9 +519,9 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringAudioStreamPaused___block_invoke
     v9[1] = 3221225472;
     v9[2] = __54__APRKStreamRenderer_postVideoV1EventWithType_params___block_invoke;
     v9[3] = &__block_descriptor_48_e39_v16__0__OpaqueAPReceiverUIController__8l;
-    v9[4] = a3;
-    v9[5] = a4;
-    [(APRKStreamRenderer *)self _performUIControllerActionWithBlock:v9, v7, v8];
+    v9[4] = type;
+    v9[5] = params;
+    [(APRKStreamRenderer *)self _performUIControllerActionWithBlock:v9, typeCopy, paramsCopy];
   }
 
   else if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
@@ -530,12 +530,12 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringAudioStreamPaused___block_invoke
   }
 }
 
-- (void)setVideoV1Delegate:(id)a3 withDelegateQueue:(id)a4
+- (void)setVideoV1Delegate:(id)delegate withDelegateQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (delegateCopy && queueCopy)
   {
     if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
     {
@@ -546,7 +546,7 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringAudioStreamPaused___block_invoke
     v9[1] = 3221225472;
     v9[2] = __59__APRKStreamRenderer_setVideoV1Delegate_withDelegateQueue___block_invoke;
     v9[3] = &unk_278C62A48;
-    v10 = v6;
+    v10 = delegateCopy;
     v11 = v8;
     [(APRKStreamRenderer *)self _performUIControllerActionWithBlock:v9];
   }
@@ -557,7 +557,7 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringAudioStreamPaused___block_invoke
   }
 }
 
-- (void)setIsWiredLink:(BOOL)a3
+- (void)setIsWiredLink:(BOOL)link
 {
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
@@ -570,7 +570,7 @@ uint64_t __54__APRKStreamRenderer_setIsMirroringAudioStreamPaused___block_invoke
   block[2] = __37__APRKStreamRenderer_setIsWiredLink___block_invoke;
   block[3] = &unk_278C62A00;
   block[4] = self;
-  v7 = a3;
+  linkCopy = link;
   dispatch_sync(rendererStateUpdateQueue, block);
 }
 
@@ -601,7 +601,7 @@ uint64_t __37__APRKStreamRenderer_setIsWiredLink___block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)setIsP2PWiFi:(BOOL)a3
+- (void)setIsP2PWiFi:(BOOL)fi
 {
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
@@ -614,7 +614,7 @@ uint64_t __37__APRKStreamRenderer_setIsWiredLink___block_invoke(uint64_t result)
   block[2] = __35__APRKStreamRenderer_setIsP2PWiFi___block_invoke;
   block[3] = &unk_278C62A00;
   block[4] = self;
-  v7 = a3;
+  fiCopy = fi;
   dispatch_sync(rendererStateUpdateQueue, block);
 }
 
@@ -637,7 +637,7 @@ uint64_t __37__APRKStreamRenderer_setIsWiredLink___block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)setCanRecord:(BOOL)a3
+- (void)setCanRecord:(BOOL)record
 {
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
@@ -650,7 +650,7 @@ uint64_t __37__APRKStreamRenderer_setIsWiredLink___block_invoke(uint64_t result)
   block[2] = __35__APRKStreamRenderer_setCanRecord___block_invoke;
   block[3] = &unk_278C62A00;
   block[4] = self;
-  v7 = a3;
+  recordCopy = record;
   dispatch_sync(rendererStateUpdateQueue, block);
 }
 
@@ -773,7 +773,7 @@ uint64_t __42__APRKStreamRenderer_sampleBufferDelegate__block_invoke(uint64_t a1
   return v3;
 }
 
-- (void)setIsProtectedMirroring:(BOOL)a3
+- (void)setIsProtectedMirroring:(BOOL)mirroring
 {
   if (gLogCategory_AirPlayReceiverKit <= 30 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
@@ -786,7 +786,7 @@ uint64_t __42__APRKStreamRenderer_sampleBufferDelegate__block_invoke(uint64_t a1
   block[2] = __46__APRKStreamRenderer_setIsProtectedMirroring___block_invoke;
   block[3] = &unk_278C62A00;
   block[4] = self;
-  v7 = a3;
+  mirroringCopy = mirroring;
   dispatch_sync(rendererStateUpdateQueue, block);
 }
 
@@ -821,10 +821,10 @@ uint64_t __46__APRKStreamRenderer_setIsProtectedMirroring___block_invoke(uint64_
   return v3;
 }
 
-- (APRKStreamRenderer)initWithUniqueID:(id)a3 clientName:(id)a4 UIController:(OpaqueAPReceiverUIController *)a5 useCALayerForMirroring:(BOOL)a6
+- (APRKStreamRenderer)initWithUniqueID:(id)d clientName:(id)name UIController:(OpaqueAPReceiverUIController *)controller useCALayerForMirroring:(BOOL)mirroring
 {
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  nameCopy = name;
   v38.receiver = self;
   v38.super_class = APRKStreamRenderer;
   v13 = [(APRKStreamRenderer *)&v38 init];
@@ -835,10 +835,10 @@ uint64_t __46__APRKStreamRenderer_setIsProtectedMirroring___block_invoke(uint64_
       LogPrintF();
     }
 
-    objc_storeStrong(v13 + 44, a3);
+    objc_storeStrong(v13 + 44, d);
     *(v13 + 10) = 0;
     *(v13 + 4) = 0;
-    v14 = [v12 copy];
+    v14 = [nameCopy copy];
     v15 = *(v13 + 45);
     *(v13 + 45) = v14;
 
@@ -847,7 +847,7 @@ uint64_t __46__APRKStreamRenderer_setIsProtectedMirroring___block_invoke(uint64_
     v16 = *(v13 + 11);
     *(v13 + 11) = 0;
 
-    v13[20] = a6;
+    v13[20] = mirroring;
     *(v13 + 21) = 0;
     *(v13 + 6) = 0x1000000;
     v13[344] = 1;
@@ -870,9 +870,9 @@ uint64_t __46__APRKStreamRenderer_setIsProtectedMirroring___block_invoke(uint64_
     *(v13 + 19) = v23;
 
     v25 = +[APRKStreamRenderingManager sharedInstance];
-    v26 = [v25 delegateQueue];
+    delegateQueue = [v25 delegateQueue];
     v27 = *(v13 + 20);
-    *(v13 + 20) = v26;
+    *(v13 + 20) = delegateQueue;
 
     v28 = MEMORY[0x277CC0898];
     v29 = *MEMORY[0x277CC0898];
@@ -881,7 +881,7 @@ uint64_t __46__APRKStreamRenderer_setIsProtectedMirroring___block_invoke(uint64_
     *(v13 + 8) = v30;
     *(v13 + 232) = v29;
     *(v13 + 31) = v30;
-    if (a5)
+    if (controller)
     {
       v31 = FigCFWeakReferenceHolderCreateWithReferencedObject();
       *(v13 + 1) = v31;
@@ -1046,7 +1046,7 @@ uint64_t __30__APRKStreamRenderer_isActive__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setDeferLayerRendering:(BOOL)a3
+- (void)setDeferLayerRendering:(BOOL)rendering
 {
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1054,11 +1054,11 @@ uint64_t __30__APRKStreamRenderer_isActive__block_invoke(uint64_t result)
   v4[2] = __45__APRKStreamRenderer_setDeferLayerRendering___block_invoke;
   v4[3] = &unk_278C62A00;
   v4[4] = self;
-  v5 = a3;
+  renderingCopy = rendering;
   dispatch_async(rendererStateUpdateQueue, v4);
 }
 
-- (void)setSessionReceiverAddress:(OpaqueAPSNetworkAddress *)a3
+- (void)setSessionReceiverAddress:(OpaqueAPSNetworkAddress *)address
 {
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1066,7 +1066,7 @@ uint64_t __30__APRKStreamRenderer_isActive__block_invoke(uint64_t result)
   v4[2] = __48__APRKStreamRenderer_setSessionReceiverAddress___block_invoke;
   v4[3] = &unk_278C62A70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = address;
   dispatch_sync(rendererStateUpdateQueue, v4);
 }
 
@@ -1088,7 +1088,7 @@ void __48__APRKStreamRenderer_setSessionReceiverAddress___block_invoke(uint64_t 
   }
 }
 
-- (void)setReceiverNetworkClock:(OpaqueAPSNetworkClock *)a3
+- (void)setReceiverNetworkClock:(OpaqueAPSNetworkClock *)clock
 {
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1096,7 +1096,7 @@ void __48__APRKStreamRenderer_setSessionReceiverAddress___block_invoke(uint64_t 
   v4[2] = __46__APRKStreamRenderer_setReceiverNetworkClock___block_invoke;
   v4[3] = &unk_278C62A70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = clock;
   dispatch_sync(rendererStateUpdateQueue, v4);
 }
 
@@ -1118,45 +1118,45 @@ void __46__APRKStreamRenderer_setReceiverNetworkClock___block_invoke(uint64_t a1
   }
 }
 
-- (void)setEnsembleInfo:(id)a3
+- (void)setEnsembleInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__APRKStreamRenderer_setEnsembleInfo___block_invoke;
   v7[3] = &unk_278C62788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(rendererStateUpdateQueue, v7);
 }
 
-- (void)setDemoDeviceInfo:(id)a3
+- (void)setDemoDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__APRKStreamRenderer_setDemoDeviceInfo___block_invoke;
   v7[3] = &unk_278C62788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(rendererStateUpdateQueue, v7);
 }
 
-- (void)processShowPasscodePromptRequest:(id)a3
+- (void)processShowPasscodePromptRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__APRKStreamRenderer_processShowPasscodePromptRequest___block_invoke;
   v7[3] = &unk_278C62788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(delegateQueue, v7);
 }
 
@@ -1212,7 +1212,7 @@ void __54__APRKStreamRenderer_processHidePasscodePromptRequest__block_invoke(uin
   }
 }
 
-- (void)processStartScreenPresentationWithSessionID:(unsigned int)a3
+- (void)processStartScreenPresentationWithSessionID:(unsigned int)d
 {
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1220,7 +1220,7 @@ void __54__APRKStreamRenderer_processHidePasscodePromptRequest__block_invoke(uin
   v4[2] = __66__APRKStreamRenderer_processStartScreenPresentationWithSessionID___block_invoke;
   v4[3] = &unk_278C62940;
   v4[4] = self;
-  v5 = a3;
+  dCopy = d;
   dispatch_sync(rendererStateUpdateQueue, v4);
 }
 
@@ -1302,7 +1302,7 @@ uint64_t __66__APRKStreamRenderer_processStartScreenPresentationWithSessionID___
   return result;
 }
 
-- (BOOL)processStopScreenPresentationWithSessionID:(unsigned int)a3
+- (BOOL)processStopScreenPresentationWithSessionID:(unsigned int)d
 {
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1372,9 +1372,9 @@ void __65__APRKStreamRenderer_processStopScreenPresentationWithSessionID___block
   CFRelease(v5);
 }
 
-- (void)processStartVideoPlaybackRequestWithWithSessionID:(unsigned int)a3 version:(unint64_t)a4
+- (void)processStartVideoPlaybackRequestWithWithSessionID:(unsigned int)d version:(unint64_t)version
 {
-  v5 = *&a3;
+  v5 = *&d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1388,7 +1388,7 @@ void __65__APRKStreamRenderer_processStopScreenPresentationWithSessionID___block
   block[1] = 3221225472;
   block[2] = __80__APRKStreamRenderer_processStartVideoPlaybackRequestWithWithSessionID_version___block_invoke;
   block[3] = &unk_278C62AB8;
-  v12 = a3;
+  dCopy = d;
   block[4] = self;
   block[5] = &v17;
   dispatch_sync(rendererStateUpdateQueue, block);
@@ -1404,7 +1404,7 @@ void __65__APRKStreamRenderer_processStopScreenPresentationWithSessionID___block
   v9[3] = &unk_278C62AE0;
   v10 = v5;
   v9[5] = &v13;
-  v9[6] = a4;
+  v9[6] = version;
   v9[4] = self;
   dispatch_sync(v8, v9);
   if (*(v14 + 24) == 1)
@@ -1463,7 +1463,7 @@ uint64_t __80__APRKStreamRenderer_processStartVideoPlaybackRequestWithWithSessio
   return result;
 }
 
-- (BOOL)processStopVideoPlaybackRequestWithSessionID:(unsigned int)a3
+- (BOOL)processStopVideoPlaybackRequestWithSessionID:(unsigned int)d
 {
   v13 = 0;
   v14 = &v13;
@@ -1478,7 +1478,7 @@ uint64_t __80__APRKStreamRenderer_processStartVideoPlaybackRequestWithWithSessio
   v7[1] = 3221225472;
   v7[2] = __67__APRKStreamRenderer_processStopVideoPlaybackRequestWithSessionID___block_invoke;
   v7[3] = &unk_278C62B08;
-  v8 = a3;
+  dCopy = d;
   v7[4] = self;
   v7[5] = &v13;
   v7[6] = &v9;
@@ -1548,7 +1548,7 @@ uint64_t __67__APRKStreamRenderer_processStopVideoPlaybackRequestWithSessionID__
   return result;
 }
 
-- (void)processStartAudioSessionRequestWithSessionID:(unsigned int)a3 isScreenAudio:(BOOL)a4
+- (void)processStartAudioSessionRequestWithSessionID:(unsigned int)d isScreenAudio:(BOOL)audio
 {
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1556,8 +1556,8 @@ uint64_t __67__APRKStreamRenderer_processStopVideoPlaybackRequestWithSessionID__
   v5[2] = __81__APRKStreamRenderer_processStartAudioSessionRequestWithSessionID_isScreenAudio___block_invoke;
   v5[3] = &unk_278C62B30;
   v5[4] = self;
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  audioCopy = audio;
   dispatch_async(rendererStateUpdateQueue, v5);
 }
 
@@ -1618,7 +1618,7 @@ uint64_t __81__APRKStreamRenderer_processStartAudioSessionRequestWithSessionID_i
   return [v9 addRenderer:v10];
 }
 
-- (BOOL)processStopAudioSessionRequestWithSessionID:(unsigned int)a3
+- (BOOL)processStopAudioSessionRequestWithSessionID:(unsigned int)d
 {
   rendererStateUpdateQueue = self->_rendererStateUpdateQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1626,7 +1626,7 @@ uint64_t __81__APRKStreamRenderer_processStartAudioSessionRequestWithSessionID_i
   v5[2] = __66__APRKStreamRenderer_processStopAudioSessionRequestWithSessionID___block_invoke;
   v5[3] = &unk_278C62940;
   v5[4] = self;
-  v6 = a3;
+  dCopy = d;
   dispatch_async(rendererStateUpdateQueue, v5);
   return 1;
 }
@@ -1681,7 +1681,7 @@ void __66__APRKStreamRenderer_processStopAudioSessionRequestWithSessionID___bloc
   }
 }
 
-- (BOOL)processVideoSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (BOOL)processVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v7 = 0;
   v8 = &v7;
@@ -1693,7 +1693,7 @@ void __66__APRKStreamRenderer_processStopAudioSessionRequestWithSessionID___bloc
   block[2] = __47__APRKStreamRenderer_processVideoSampleBuffer___block_invoke;
   block[3] = &unk_278C62B78;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = buffer;
   block[4] = self;
   dispatch_sync(rendererVideoBufferQueue, block);
   v4 = *(v8 + 6) == 0;
@@ -1756,15 +1756,15 @@ uint64_t __47__APRKStreamRenderer_processVideoSampleBuffer___block_invoke_5(uint
   return [v2 commit];
 }
 
-- (BOOL)processAudioSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (BOOL)processAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  if (a3)
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   rendererAudioBufferQueue = self->_rendererAudioBufferQueue;
@@ -1773,12 +1773,12 @@ uint64_t __47__APRKStreamRenderer_processVideoSampleBuffer___block_invoke_5(uint
   block[2] = __47__APRKStreamRenderer_processAudioSampleBuffer___block_invoke;
   block[3] = &unk_278C62BA0;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = buffer;
   block[4] = self;
   dispatch_sync(rendererAudioBufferQueue, block);
-  if (a3)
+  if (buffer)
   {
-    CFRelease(a3);
+    CFRelease(buffer);
   }
 
   v6 = *(v10 + 6) == 0;
@@ -1799,8 +1799,8 @@ uint64_t __47__APRKStreamRenderer_processVideoSampleBuffer___block_invoke_5(uint
       v10 = &unk_278C62BC8;
       objc_copyWeak(&v11, &location);
       v3 = _Block_copy(&v7);
-      v4 = [MEMORY[0x277CCAB98] defaultCenter];
-      v5 = [v4 addObserverForName:*MEMORY[0x277CD64E0] object:self->_figVideoQueue queue:0 usingBlock:v3];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      v5 = [defaultCenter addObserverForName:*MEMORY[0x277CD64E0] object:self->_figVideoQueue queue:0 usingBlock:v3];
       figVideoQueueNotifObserver = self->_figVideoQueueNotifObserver;
       self->_figVideoQueueNotifObserver = v5;
 
@@ -1825,19 +1825,19 @@ void __60__APRKStreamRenderer__registerForFigVideoQueueNotifications__block_invo
 {
   if (self->_figVideoQueueNotifObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_figVideoQueueNotifObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_figVideoQueueNotifObserver];
 
     figVideoQueueNotifObserver = self->_figVideoQueueNotifObserver;
     self->_figVideoQueueNotifObserver = 0;
   }
 }
 
-- (void)_ensureInternalPlayerFor:(int)a3
+- (void)_ensureInternalPlayerFor:(int)for
 {
   if (!self->_player)
   {
-    v5 = [[APRKMediaPlayer alloc] initWithP2PWiFiSupport:self->_isP2PWiFiSession isInterstitialPlayer:0 playerSessionID:*&a3];
+    v5 = [[APRKMediaPlayer alloc] initWithP2PWiFiSupport:self->_isP2PWiFiSession isInterstitialPlayer:0 playerSessionID:*&for];
     player = self->_player;
     self->_player = v5;
 
@@ -1867,16 +1867,16 @@ void __60__APRKStreamRenderer__registerForFigVideoQueueNotifications__block_invo
   [(APRKMediaPlayer *)v5 stopWithCompletionBlock:v6];
 }
 
-- (int)_enqueueSampleBufferForRecording:(opaqueCMSampleBuffer *)a3 isAudioSBuf:(BOOL)a4
+- (int)_enqueueSampleBufferForRecording:(opaqueCMSampleBuffer *)recording isAudioSBuf:(BOOL)buf
 {
-  if (a3)
+  if (recording)
   {
-    CFRetain(a3);
+    CFRetain(recording);
   }
 
-  if (!a4)
+  if (!buf)
   {
-    FormatDescription = CMSampleBufferGetFormatDescription(a3);
+    FormatDescription = CMSampleBufferGetFormatDescription(recording);
     Dimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
     v9 = Dimensions;
     v10 = HIDWORD(Dimensions);
@@ -1907,7 +1907,7 @@ void __60__APRKStreamRenderer__registerForFigVideoQueueNotifications__block_invo
       self->_lastVideoSampleBufferSize.height = v10;
     }
 
-    self->_recorderNeedsKeyFrame = ![(APRKStreamRenderer *)self _sampleBufferRepresentsKeyFrame:a3];
+    self->_recorderNeedsKeyFrame = ![(APRKStreamRenderer *)self _sampleBufferRepresentsKeyFrame:recording];
   }
 
 LABEL_13:
@@ -1928,7 +1928,7 @@ LABEL_13:
     {
       v16 = v14;
       [(APRKStreamRenderer *)v14 _enqueueSampleBufferForRecording:v22 isAudioSBuf:?];
-      if (!a3)
+      if (!recording)
       {
         return v16;
       }
@@ -1940,22 +1940,22 @@ LABEL_13:
   if (!self->_recorderNeedsKeyFrame)
   {
     v15 = self->_recorder;
-    if (a4)
+    if (buf)
     {
-      [(APRKStreamRecorder *)v15 recordAudioSampleBuffer:a3];
+      [(APRKStreamRecorder *)v15 recordAudioSampleBuffer:recording];
     }
 
     else
     {
-      [(APRKStreamRecorder *)v15 recordVideoSampleBuffer:a3];
+      [(APRKStreamRecorder *)v15 recordVideoSampleBuffer:recording];
     }
   }
 
   v16 = 0;
-  if (a3)
+  if (recording)
   {
 LABEL_24:
-    CFRelease(a3);
+    CFRelease(recording);
   }
 
   return v16;
@@ -1973,9 +1973,9 @@ void __67__APRKStreamRenderer__enqueueSampleBufferForRecording_isAudioSBuf___blo
   }
 }
 
-- (BOOL)_sampleBufferRepresentsKeyFrame:(opaqueCMSampleBuffer *)a3
+- (BOOL)_sampleBufferRepresentsKeyFrame:(opaqueCMSampleBuffer *)frame
 {
-  SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(a3, 0);
+  SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(frame, 0);
   if (!SampleAttachmentsArray)
   {
     return 1;
@@ -2003,17 +2003,17 @@ void __67__APRKStreamRenderer__enqueueSampleBufferForRecording_isAudioSBuf___blo
   return 1;
 }
 
-- (BOOL)_performStartRecordingWithOutputURL:(id)a3
+- (BOOL)_performStartRecordingWithOutputURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (self->_recorder)
   {
     [(APRKStreamRenderer *)self _performStopRecording];
   }
 
   currentRecordingURL = self->_currentRecordingURL;
-  self->_currentRecordingURL = v4;
-  v6 = v4;
+  self->_currentRecordingURL = lCopy;
+  v6 = lCopy;
 
   self->_recorderNeedsKeyFrame = 1;
   self->_shouldRecordFrames = 1;
@@ -2090,11 +2090,11 @@ void __58__APRKStreamRenderer__performStartRecordingWithOutputURL___block_invoke
 
     self->_recorderNeedsKeyFrame = 0;
     self->_shouldRecordFrames = 0;
-    v4 = [(APRKStreamRecorder *)self->_recorder finalizeRecording];
+    finalizeRecording = [(APRKStreamRecorder *)self->_recorder finalizeRecording];
     recorder = self->_recorder;
     self->_recorder = 0;
 
-    return !v4;
+    return !finalizeRecording;
   }
 
   else
@@ -2111,19 +2111,19 @@ void __58__APRKStreamRenderer__performStartRecordingWithOutputURL___block_invoke
 - (void)_cleanupPreviousRecordingIfExisting
 {
   v10 = 0;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSURL *)self->_currentRecordingURL path];
-  v5 = [v3 fileExistsAtPath:v4 isDirectory:&v10];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->_currentRecordingURL path];
+  v5 = [defaultManager fileExistsAtPath:path isDirectory:&v10];
 
   v6 = 0;
   if ((v10 & 1) == 0)
   {
     if (v5)
     {
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
-      v8 = [(NSURL *)self->_currentRecordingURL path];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      path2 = [(NSURL *)self->_currentRecordingURL path];
       v9 = 0;
-      [v7 removeItemAtPath:v8 error:&v9];
+      [defaultManager2 removeItemAtPath:path2 error:&v9];
       v6 = v9;
 
       if (v6)
@@ -2208,23 +2208,23 @@ void __42__APRKStreamRenderer__updateStreamingMode__block_invoke_2(uint64_t a1)
 - (BOOL)_receiverSupportsMirroring
 {
   v2 = +[APRKStreamRenderingManager sharedInstance];
-  v3 = [v2 supportedModesMask];
+  supportedModesMask = [v2 supportedModesMask];
 
-  return v3 & 1;
+  return supportedModesMask & 1;
 }
 
-- (void)_performUIControllerActionWithBlock:(id)a3
+- (void)_performUIControllerActionWithBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (self->_backingUIControllerWeakRef)
   {
     v4 = FigCFWeakReferenceHolderCopyReferencedObject();
     if (v4)
     {
       v5 = v4;
-      if (v6)
+      if (blockCopy)
       {
-        v6[2]();
+        blockCopy[2]();
       }
 
       CFRelease(v5);
@@ -2242,14 +2242,14 @@ void __42__APRKStreamRenderer__updateStreamingMode__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (VideoRenderingLayerContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (VideoRenderingLayerContext == context)
   {
-    if (![v10 isEqualToString:@"bounds"])
+    if (![pathCopy isEqualToString:@"bounds"])
     {
       goto LABEL_8;
     }
@@ -2266,7 +2266,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (APRKMediaPlayerContext == a6)
+  if (APRKMediaPlayerContext == context)
   {
     delegateQueue = self->_delegateQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -2280,7 +2280,7 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = APRKStreamRenderer;
-  [(APRKStreamRenderer *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(APRKStreamRenderer *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_8:
 }
 
@@ -2302,39 +2302,39 @@ void __69__APRKStreamRenderer_observeValueForKeyPath_ofObject_change_context___b
   }
 }
 
-- (void)mediaPlayer:(id)a3 wantsToSendUpstreamMessageWithDictionary:(id)a4
+- (void)mediaPlayer:(id)player wantsToSendUpstreamMessageWithDictionary:(id)dictionary
 {
-  v5 = a4;
+  dictionaryCopy = dictionary;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__APRKStreamRenderer_mediaPlayer_wantsToSendUpstreamMessageWithDictionary___block_invoke;
   v7[3] = &unk_278C62BF0;
-  v8 = v5;
-  v6 = v5;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   [(APRKStreamRenderer *)self _performUIControllerActionWithBlock:v7];
 }
 
-- (void)mediaPlayer:(id)a3 didGenerateFPSSecureStopRecordPayload:(id)a4
+- (void)mediaPlayer:(id)player didGenerateFPSSecureStopRecordPayload:(id)payload
 {
-  v5 = a4;
+  payloadCopy = payload;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__APRKStreamRenderer_mediaPlayer_didGenerateFPSSecureStopRecordPayload___block_invoke;
   v7[3] = &unk_278C62BF0;
-  v8 = v5;
-  v6 = v5;
+  v8 = payloadCopy;
+  v6 = payloadCopy;
   [(APRKStreamRenderer *)self _performUIControllerActionWithBlock:v7];
 }
 
-- (void)mediaPlayerNeedsTLSInfo:(id)a3
+- (void)mediaPlayerNeedsTLSInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__APRKStreamRenderer_mediaPlayerNeedsTLSInfo___block_invoke;
   v6[3] = &unk_278C62BF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [(APRKStreamRenderer *)self _performUIControllerActionWithBlock:v6];
 }
 
@@ -2344,18 +2344,18 @@ void __46__APRKStreamRenderer_mediaPlayerNeedsTLSInfo___block_invoke(uint64_t a1
   [*(a1 + 32) processTLSInfoDictionary:v2];
 }
 
-- (void)mediaPlayer:(id)a3 wantsToPostNotification:(id)a4 withPayload:(id)a5
+- (void)mediaPlayer:(id)player wantsToPostNotification:(id)notification withPayload:(id)payload
 {
-  v7 = a4;
-  v8 = a5;
+  notificationCopy = notification;
+  payloadCopy = payload;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__APRKStreamRenderer_mediaPlayer_wantsToPostNotification_withPayload___block_invoke;
   v11[3] = &unk_278C62A48;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = notificationCopy;
+  v13 = payloadCopy;
+  v9 = payloadCopy;
+  v10 = notificationCopy;
   [(APRKStreamRenderer *)self _performUIControllerActionWithBlock:v11];
 }
 
@@ -2366,17 +2366,17 @@ uint64_t __70__APRKStreamRenderer_mediaPlayer_wantsToPostNotification_withPayloa
   return CMNotificationCenterPostNotification();
 }
 
-- (void)processSenderUIEvent:(id)a3
+- (void)processSenderUIEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__APRKStreamRenderer_processSenderUIEvent___block_invoke;
   v7[3] = &unk_278C62788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(delegateQueue, v7);
 }
 
@@ -2398,7 +2398,7 @@ void __43__APRKStreamRenderer_processSenderUIEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   if (self->_presentationVideoSize.width != *MEMORY[0x277CBF3A8] || self->_presentationVideoSize.height != *(MEMORY[0x277CBF3A8] + 8))
   {
@@ -2413,11 +2413,11 @@ void __43__APRKStreamRenderer_processSenderUIEvent___block_invoke(uint64_t a1)
     v49 = v3;
     v50 = v4;
     v15 = MEMORY[0x277CD9FF0];
-    v16 = a3;
+    layerCopy = layer;
     [v15 begin];
     v17 = 1;
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    [v16 bounds];
+    [layerCopy bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -2463,15 +2463,15 @@ void __43__APRKStreamRenderer_processSenderUIEvent___block_invoke(uint64_t a1)
     a = v40;
     b = v39;
     CATransform3DConcat(&v38, &a, &b);
-    v31 = [(APRKStreamRenderer *)self mirroringLayer];
+    mirroringLayer = [(APRKStreamRenderer *)self mirroringLayer];
     a = v38;
-    [v31 setSublayerTransform:&a];
+    [mirroringLayer setSublayerTransform:&a];
 
-    v32 = [(APRKStreamRenderer *)self mirroringLayer];
-    [v32 setPosition:{MidX, MidY}];
+    mirroringLayer2 = [(APRKStreamRenderer *)self mirroringLayer];
+    [mirroringLayer2 setPosition:{MidX, MidY}];
 
-    v33 = [(APRKStreamRenderer *)self mirroringLayer];
-    [v33 setBounds:{v19, v21, v23, v25}];
+    mirroringLayer3 = [(APRKStreamRenderer *)self mirroringLayer];
+    [mirroringLayer3 setBounds:{v19, v21, v23, v25}];
 
     [MEMORY[0x277CD9FF0] commit];
   }
@@ -2893,10 +2893,10 @@ LABEL_16:
   return v18;
 }
 
-- (int)_enqueueVideoFrameForRendering:(opaqueCMSampleBuffer *)a3
+- (int)_enqueueVideoFrameForRendering:(opaqueCMSampleBuffer *)rendering
 {
-  v17 = a3;
-  if (!a3)
+  renderingCopy = rendering;
+  if (!rendering)
   {
     if (!self->_figVideoQueue)
     {
@@ -2913,7 +2913,7 @@ LABEL_16:
     sampleTimingArray.decodeTimeStamp = **&MEMORY[0x277CC0898];
     *&sampleTimingArray.duration.value = *MEMORY[0x277CC08F0];
     sampleTimingArray.duration.epoch = *(MEMORY[0x277CC08F0] + 16);
-    v7 = CMSampleBufferCreate(*MEMORY[0x277CBECE8], 0, 1u, 0, 0, formatDesc, 0, 1, &sampleTimingArray, 0, 0, &v17);
+    v7 = CMSampleBufferCreate(*MEMORY[0x277CBECE8], 0, 1u, 0, 0, formatDesc, 0, 1, &sampleTimingArray, 0, 0, &renderingCopy);
     if (v7)
     {
       v14 = v7;
@@ -2923,7 +2923,7 @@ LABEL_12:
     }
 
     figVideoQueue = self->_figVideoQueue;
-    v4 = v17;
+    renderingCopy2 = renderingCopy;
 LABEL_8:
     x = self->_sourceRect.origin.x;
     y = self->_sourceRect.origin.y;
@@ -2933,7 +2933,7 @@ LABEL_8:
     v13 = *(*(CMBaseObjectGetVTable() + 16) + 16);
     if (v13)
     {
-      v14 = v13(figVideoQueue, v4, transform, x, y, width, height, x, y, width, height);
+      v14 = v13(figVideoQueue, renderingCopy2, transform, x, y, width, height, x, y, width, height);
       if (!v14)
       {
         goto LABEL_13;
@@ -2948,8 +2948,8 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v4 = a3;
-  CFRetain(a3);
+  renderingCopy2 = rendering;
+  CFRetain(rendering);
   figVideoQueue = self->_figVideoQueue;
   if (figVideoQueue)
   {
@@ -2959,9 +2959,9 @@ LABEL_8:
 LABEL_22:
   v14 = 0;
 LABEL_13:
-  if (v17)
+  if (renderingCopy)
   {
-    CFRelease(v17);
+    CFRelease(renderingCopy);
   }
 
   if (v14)

@@ -1,18 +1,18 @@
 @interface ATXPBProactiveSuggestionLayoutConfig
-- (BOOL)isEqual:(id)a3;
-- (__CFString)applicableLayoutTypeAsString:(__CFString *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)applicableLayoutTypeAsString:(__CFString *)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)StringAsApplicableLayoutType:(uint64_t)a1;
+- (uint64_t)StringAsApplicableLayoutType:(uint64_t)type;
 - (uint64_t)applicableLayoutType;
 - (uint64_t)hasApplicableLayoutType;
 - (uint64_t)setApplicableLayoutType:(uint64_t)result;
 - (uint64_t)setHasApplicableLayoutType:(uint64_t)result;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBProactiveSuggestionLayoutConfig
@@ -41,15 +41,15 @@
   v8.receiver = self;
   v8.super_class = ATXPBProactiveSuggestionLayoutConfig;
   v4 = [(ATXPBProactiveSuggestionLayoutConfig *)&v8 description];
-  v5 = [(ATXPBProactiveSuggestionLayoutConfig *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBProactiveSuggestionLayoutConfig *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     applicableLayoutType = self->_applicableLayoutType;
@@ -63,13 +63,13 @@
       v5 = off_1E86A3EC8[applicableLayoutType];
     }
 
-    [v3 setObject:v5 forKey:@"applicableLayoutType"];
+    [dictionary setObject:v5 forKey:@"applicableLayoutType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -78,9 +78,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_applicableLayoutType;
@@ -90,18 +90,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_applicableLayoutType == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_applicableLayoutType == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -160,31 +160,31 @@ LABEL_7:
   return result;
 }
 
-- (__CFString)applicableLayoutTypeAsString:(__CFString *)a1
+- (__CFString)applicableLayoutTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 9)
   {
-    a1 = off_1E86A3EC8[a2];
+    string = off_1E86A3EC8[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsApplicableLayoutType:(uint64_t)a1
+- (uint64_t)StringAsApplicableLayoutType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Unknown"])
@@ -246,23 +246,23 @@ LABEL_4:
   return v6;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1 && (*(a1 + 12) & 1) != 0)
+  if (to && (*(to + 12) & 1) != 0)
   {
-    v3[2] = *(a1 + 8);
+    v3[2] = *(to + 8);
     *(v3 + 12) |= 1u;
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1 && (v3[3] & 1) != 0)
+  if (from && (v3[3] & 1) != 0)
   {
-    *(a1 + 8) = v3[2];
-    *(a1 + 12) |= 1u;
+    *(from + 8) = v3[2];
+    *(from + 12) |= 1u;
   }
 }
 

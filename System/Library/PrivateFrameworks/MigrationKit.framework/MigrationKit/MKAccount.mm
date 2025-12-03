@@ -1,20 +1,20 @@
 @interface MKAccount
-- (MKAccount)initWithData:(id)a3;
+- (MKAccount)initWithData:(id)data;
 @end
 
 @implementation MKAccount
 
-- (MKAccount)initWithData:(id)a3
+- (MKAccount)initWithData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = MKAccount;
   v5 = [(MKAccount *)&v18 init];
   if (v5)
   {
     v17 = 0;
-    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v17];
+    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v17];
     v7 = v17;
     if (v7)
     {

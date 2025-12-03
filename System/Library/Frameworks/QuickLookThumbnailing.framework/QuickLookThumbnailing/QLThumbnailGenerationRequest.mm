@@ -1,9 +1,9 @@
 @interface QLThumbnailGenerationRequest
-+ (QLThumbnailGenerationRequest)requestWithThumbnailRequest:(id)a3;
-+ (id)_basicFileIdentifierForURL:(id)a3 error:(id *)a4;
-+ (id)_fileProviderFileIdentifierForFPItem:(id)a3;
++ (QLThumbnailGenerationRequest)requestWithThumbnailRequest:(id)request;
++ (id)_basicFileIdentifierForURL:(id)l error:(id *)error;
++ (id)_fileProviderFileIdentifierForFPItem:(id)item;
 + (id)customExtensionCommunicationEncodedClasses;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFileBased;
 - (BOOL)isUbiquitous;
 - (BOOL)isValid;
@@ -14,32 +14,32 @@
 - (CGSize)size;
 - (NSString)contentTypeUTI;
 - (NSURL)fileURL;
-- (QLThumbnailGenerationRequest)initWithCoder:(id)a3;
-- (QLThumbnailGenerationRequest)initWithData:(id)a3 contentType:(id)a4 size:(CGSize)a5 scale:(double)a6 representationTypes:(unint64_t)a7;
-- (QLThumbnailGenerationRequest)initWithFPItem:(id)a3 size:(CGSize)a4 scale:(double)a5 representationTypes:(unint64_t)a6;
+- (QLThumbnailGenerationRequest)initWithCoder:(id)coder;
+- (QLThumbnailGenerationRequest)initWithData:(id)data contentType:(id)type size:(CGSize)size scale:(double)scale representationTypes:(unint64_t)types;
+- (QLThumbnailGenerationRequest)initWithFPItem:(id)item size:(CGSize)size scale:(double)scale representationTypes:(unint64_t)types;
 - (QLThumbnailGenerationRequest)initWithFileAtURL:(NSURL *)url size:(CGSize)size scale:(CGFloat)scale representationTypes:(QLThumbnailGenerationRequestRepresentationTypes)representationTypes;
-- (QLThumbnailGenerationRequest)initWithSearchResultIdentifier:(id)a3 domainIdentifier:(id)a4 contentType:(id)a5 size:(CGSize)a6 scale:(double)a7 representationTypes:(unint64_t)a8;
+- (QLThumbnailGenerationRequest)initWithSearchResultIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier contentType:(id)type size:(CGSize)size scale:(double)scale representationTypes:(unint64_t)types;
 - (UTType)contentType;
 - (float)maximumPixelSize;
 - (id)_stateDescription;
-- (id)copyWithSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)equivalentFPItemRequestWithItem:(id)a3 representationTypes:(unint64_t)a4;
+- (id)equivalentFPItemRequestWithItem:(id)item representationTypes:(unint64_t)types;
 - (id)fileIdentifier;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)requestedMostRepresentativeType;
 - (unint64_t)externalThumbnailGeneratorDataHash;
 - (unint64_t)hash;
 - (void)contentType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)markDidBegin;
 - (void)prepareForSending;
 - (void)setContentType:(UTType *)contentType;
-- (void)setContentTypeUTI:(id)a3;
-- (void)setFileURL:(id)a3;
-- (void)setSaveURL:(id)a3;
-- (void)setSaveURLContentType:(id)a3;
+- (void)setContentTypeUTI:(id)i;
+- (void)setFileURL:(id)l;
+- (void)setSaveURL:(id)l;
+- (void)setSaveURLContentType:(id)type;
 @end
 
 @implementation QLThumbnailGenerationRequest
@@ -61,17 +61,17 @@
     v59[2] = __Block_byref_object_copy_;
     v59[3] = __Block_byref_object_dispose_;
     v60 = 0;
-    v6 = [(QLThumbnailGenerationRequest *)self fileURL];
-    v7 = v6;
-    if (v6)
+    fileURL = [(QLThumbnailGenerationRequest *)self fileURL];
+    v7 = fileURL;
+    if (fileURL)
     {
       v57 = 0;
-      v8 = [v6 checkResourceIsReachableAndReturnError:&v57];
+      v8 = [fileURL checkResourceIsReachableAndReturnError:&v57];
       v9 = v57;
       if (v8)
       {
-        v10 = [v7 ql_realpathURL];
-        [(QLThumbnailGenerationRequest *)self setFileURL:v10];
+        ql_realpathURL = [v7 ql_realpathURL];
+        [(QLThumbnailGenerationRequest *)self setFileURL:ql_realpathURL];
         if (_CFURLIsItemPromiseAtURL())
         {
           v56 = 0;
@@ -86,14 +86,14 @@
           }
 
           v14 = v62[5];
-          v62[5] = v10;
+          v62[5] = ql_realpathURL;
         }
 
         else
         {
-          objc_storeStrong((v59[0] + 40), v10);
+          objc_storeStrong((v59[0] + 40), ql_realpathURL);
           v22 = v62[5];
-          v62[5] = v10;
+          v62[5] = ql_realpathURL;
         }
       }
 
@@ -287,10 +287,10 @@ LABEL_4:
 
   else
   {
-    v6 = [(QLThumbnailGenerationRequest *)self contentTypeUTI];
-    if (v6)
+    contentTypeUTI = [(QLThumbnailGenerationRequest *)self contentTypeUTI];
+    if (contentTypeUTI)
     {
-      v7 = [MEMORY[0x1E6982C40] typeWithIdentifier:v6];
+      v7 = [MEMORY[0x1E6982C40] typeWithIdentifier:contentTypeUTI];
       contentType = self->_contentType;
       self->_contentType = v7;
 
@@ -341,33 +341,33 @@ LABEL_4:
       item = self->_item;
       if (item)
       {
-        v8 = [(FPItem *)item contentType];
+        contentType = [(FPItem *)item contentType];
 
-        if (v8)
+        if (contentType)
         {
-          v9 = [(FPItem *)self->_item contentType];
+          contentType2 = [(FPItem *)self->_item contentType];
           contentType = self->_contentType;
-          self->_contentType = v9;
+          self->_contentType = contentType2;
 
           overriddenContentType = self->_contentType;
 LABEL_3:
-          v4 = [(UTType *)overriddenContentType identifier];
+          identifier = [(UTType *)overriddenContentType identifier];
           goto LABEL_4;
         }
 
         goto LABEL_22;
       }
 
-      v11 = [(QLThumbnailGenerationRequest *)self fileURL];
-      if (v11)
+      fileURL = [(QLThumbnailGenerationRequest *)self fileURL];
+      if (fileURL)
       {
-        v12 = v11;
+        v12 = fileURL;
       }
 
       else
       {
-        v13 = [(QLThumbnailGenerationRequest *)self genericSandboxWrapper];
-        v12 = [v13 url];
+        genericSandboxWrapper = [(QLThumbnailGenerationRequest *)self genericSandboxWrapper];
+        v12 = [genericSandboxWrapper url];
 
         if (!v12)
         {
@@ -408,10 +408,10 @@ LABEL_22:
   }
 
 LABEL_23:
-  v4 = overriddenContentTypeIdentifier;
+  identifier = overriddenContentTypeIdentifier;
 LABEL_4:
 
-  return v4;
+  return identifier;
 }
 
 - (BOOL)isValid
@@ -421,33 +421,33 @@ LABEL_4:
     return 1;
   }
 
-  v4 = [(QLThumbnailGenerationRequest *)self quicklookSandboxWrapper];
-  if (v4)
+  quicklookSandboxWrapper = [(QLThumbnailGenerationRequest *)self quicklookSandboxWrapper];
+  if (quicklookSandboxWrapper)
   {
-    v3 = 1;
+    isDataBased = 1;
   }
 
   else
   {
-    v5 = [(QLThumbnailGenerationRequest *)self genericSandboxWrapper];
-    if (v5)
+    genericSandboxWrapper = [(QLThumbnailGenerationRequest *)self genericSandboxWrapper];
+    if (genericSandboxWrapper)
     {
-      v3 = 1;
+      isDataBased = 1;
     }
 
     else
     {
-      v3 = [(QLThumbnailGenerationRequest *)self isDataBased];
+      isDataBased = [(QLThumbnailGenerationRequest *)self isDataBased];
     }
   }
 
-  return v3;
+  return isDataBased;
 }
 
 - (BOOL)isUbiquitous
 {
-  v2 = [(QLThumbnailGenerationRequest *)self item];
-  v3 = v2 != 0;
+  item = [(QLThumbnailGenerationRequest *)self item];
+  v3 = item != 0;
 
   return v3;
 }
@@ -478,8 +478,8 @@ LABEL_4:
 
 - (void)markDidBegin
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(QLThumbnailGenerationRequest *)self setBeginDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(QLThumbnailGenerationRequest *)self setBeginDate:date];
 }
 
 - (BOOL)provideGenericIcon
@@ -523,16 +523,16 @@ LABEL_4:
 
 - (BOOL)resultShouldBeSavedToDisk
 {
-  v3 = [(QLThumbnailGenerationRequest *)self saveURL];
-  if (v3)
+  saveURL = [(QLThumbnailGenerationRequest *)self saveURL];
+  if (saveURL)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(QLThumbnailGenerationRequest *)self saveFileHandle];
-    v4 = v5 != 0;
+    saveFileHandle = [(QLThumbnailGenerationRequest *)self saveFileHandle];
+    v4 = saveFileHandle != 0;
   }
 
   return v4;
@@ -557,8 +557,8 @@ LABEL_4:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSDictionary *)externalThumbnailGeneratorData allValues];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allValues = [(NSDictionary *)externalThumbnailGeneratorData allValues];
+    v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -570,7 +570,7 @@ LABEL_4:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
@@ -583,7 +583,7 @@ LABEL_4:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -606,8 +606,8 @@ LABEL_4:
     [v12 raise];
   }
 
-  v13 = [(QLThumbnailGenerationRequest *)self initWithSize:representationTypes scale:width representationTypes:height, scale];
-  if (v13)
+  scale = [(QLThumbnailGenerationRequest *)self initWithSize:representationTypes scale:width representationTypes:height, scale];
+  if (scale)
   {
     v16 = 0;
     [(NSURL *)v11 getResourceValue:&v16 forKey:@"FPUnflattenedPackageURL" error:0];
@@ -621,28 +621,28 @@ LABEL_4:
       v14 = v11;
     }
 
-    objc_storeStrong(&v13->_fileURL, v14);
+    objc_storeStrong(&scale->_fileURL, v14);
   }
 
-  return v13;
+  return scale;
 }
 
-- (QLThumbnailGenerationRequest)initWithFPItem:(id)a3 size:(CGSize)a4 scale:(double)a5 representationTypes:(unint64_t)a6
+- (QLThumbnailGenerationRequest)initWithFPItem:(id)item size:(CGSize)size scale:(double)scale representationTypes:(unint64_t)types
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  if (!v12)
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  if (!itemCopy)
   {
     [QLThumbnailGenerationRequest initWithFPItem:size:scale:representationTypes:];
   }
 
-  v13 = v12;
-  v14 = [(QLThumbnailGenerationRequest *)self initWithSize:a6 scale:width representationTypes:height, a5];
-  v15 = v14;
-  if (v14)
+  v13 = itemCopy;
+  scale = [(QLThumbnailGenerationRequest *)self initWithSize:types scale:width representationTypes:height, scale];
+  v15 = scale;
+  if (scale)
   {
-    objc_storeStrong(&v14->_item, a3);
+    objc_storeStrong(&scale->_item, item);
     v16 = [objc_opt_class() _fileProviderFileIdentifierForFPItem:v13];
     fileProviderFileIdentifier = v15->_fileProviderFileIdentifier;
     v15->_fileProviderFileIdentifier = v16;
@@ -651,72 +651,72 @@ LABEL_4:
   return v15;
 }
 
-- (QLThumbnailGenerationRequest)initWithSearchResultIdentifier:(id)a3 domainIdentifier:(id)a4 contentType:(id)a5 size:(CGSize)a6 scale:(double)a7 representationTypes:(unint64_t)a8
+- (QLThumbnailGenerationRequest)initWithSearchResultIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier contentType:(id)type size:(CGSize)size scale:(double)scale representationTypes:(unint64_t)types
 {
-  height = a6.height;
-  width = a6.width;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = [(QLThumbnailGenerationRequest *)self initWithSize:1 scale:width representationTypes:height, a7];
-  v19 = v18;
-  if (v18)
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
+  typeCopy = type;
+  scale = [(QLThumbnailGenerationRequest *)self initWithSize:1 scale:width representationTypes:height, scale];
+  v19 = scale;
+  if (scale)
   {
-    objc_storeStrong(&v18->_searchResultIdentifier, a3);
-    objc_storeStrong(&v19->_domainIdentifier, a4);
-    objc_storeStrong(&v19->_contentType, a5);
+    objc_storeStrong(&scale->_searchResultIdentifier, identifier);
+    objc_storeStrong(&v19->_domainIdentifier, domainIdentifier);
+    objc_storeStrong(&v19->_contentType, type);
   }
 
   return v19;
 }
 
-- (QLThumbnailGenerationRequest)initWithData:(id)a3 contentType:(id)a4 size:(CGSize)a5 scale:(double)a6 representationTypes:(unint64_t)a7
+- (QLThumbnailGenerationRequest)initWithData:(id)data contentType:(id)type size:(CGSize)size scale:(double)scale representationTypes:(unint64_t)types
 {
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v15 = a4;
-  if (!v14 || (v16 = v15) == 0)
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  typeCopy = type;
+  if (!dataCopy || (v16 = typeCopy) == 0)
   {
     [QLThumbnailGenerationRequest initWithData:contentType:size:scale:representationTypes:];
   }
 
-  v17 = [(QLThumbnailGenerationRequest *)self initWithSize:a7 scale:width representationTypes:height, a6];
-  v18 = v17;
-  if (v17)
+  scale = [(QLThumbnailGenerationRequest *)self initWithSize:types scale:width representationTypes:height, scale];
+  v18 = scale;
+  if (scale)
   {
-    objc_storeStrong(&v17->_data, a3);
+    objc_storeStrong(&scale->_data, data);
     [(QLThumbnailGenerationRequest *)v18 setContentTypeUTI:v16];
   }
 
   return v18;
 }
 
-+ (QLThumbnailGenerationRequest)requestWithThumbnailRequest:(id)a3
++ (QLThumbnailGenerationRequest)requestWithThumbnailRequest:(id)request
 {
-  v3 = a3;
-  if (v3)
+  requestCopy = request;
+  if (requestCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v5 = v3;
+    v5 = requestCopy;
     v6 = [QLThumbnailGenerationRequest alloc];
     if (isKindOfClass)
     {
-      v7 = [v5 item];
+      item = [v5 item];
       [v5 size];
       v9 = v8;
       v11 = v10;
       [v5 scale];
       v13 = v12;
 
-      v14 = [(QLThumbnailGenerationRequest *)v6 initWithFPItem:v7 size:-1 scale:v9 representationTypes:v11, v13];
+      v14 = [(QLThumbnailGenerationRequest *)v6 initWithFPItem:item size:-1 scale:v9 representationTypes:v11, v13];
     }
 
     else
     {
-      v7 = [v5 genericSandboxWrapper];
-      v15 = [v7 url];
+      item = [v5 genericSandboxWrapper];
+      v15 = [item url];
       [v5 size];
       v17 = v16;
       v19 = v18;
@@ -741,13 +741,13 @@ LABEL_4:
   return v14;
 }
 
-- (void)setSaveURL:(id)a3
+- (void)setSaveURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   FPSandboxingURLWrapperClass = getFPSandboxingURLWrapperClass();
   v6 = *MEMORY[0x1E69E9BB0];
   v12 = 0;
-  v7 = [FPSandboxingURLWrapperClass wrapperWithURL:v4 extensionClass:v6 error:&v12];
+  v7 = [FPSandboxingURLWrapperClass wrapperWithURL:lCopy extensionClass:v6 error:&v12];
   v8 = v12;
   v9 = v12;
   saveURLSandboxWrapper = self->_saveURLSandboxWrapper;
@@ -765,20 +765,20 @@ LABEL_4:
   }
 }
 
-- (void)setSaveURLContentType:(id)a3
+- (void)setSaveURLContentType:(id)type
 {
-  v10 = a3;
+  typeCopy = type;
   v4 = CGImageDestinationCopyTypeIdentifiers();
-  if (v10 && ([v10 identifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = -[__CFArray containsObject:](v4, "containsObject:", v5), v5, (v6 & 1) == 0))
+  if (typeCopy && ([typeCopy identifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = -[__CFArray containsObject:](v4, "containsObject:", v5), v5, (v6 & 1) == 0))
   {
-    saveURLContentType = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a supported image type", v10];
+    saveURLContentType = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a supported image type", typeCopy];
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:@"QLThumbnailGeneratorInvalidContentType" reason:saveURLContentType userInfo:0];
     [v9 raise];
   }
 
   else
   {
-    v7 = v10;
+    v7 = typeCopy;
     saveURLContentType = self->_saveURLContentType;
     self->_saveURLContentType = v7;
   }
@@ -798,15 +798,15 @@ LABEL_4:
   self->_contentTypeUTI = 0;
 }
 
-- (void)setContentTypeUTI:(id)a3
+- (void)setContentTypeUTI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   overriddenContentType = self->_overriddenContentType;
   self->_overriddenContentType = 0;
 
   overriddenContentTypeIdentifier = self->_overriddenContentTypeIdentifier;
-  self->_overriddenContentTypeIdentifier = v4;
-  v9 = v4;
+  self->_overriddenContentTypeIdentifier = iCopy;
+  v9 = iCopy;
 
   contentType = self->_contentType;
   self->_contentType = 0;
@@ -833,23 +833,23 @@ LABEL_4:
 
     else
     {
-      v6 = [(QLThumbnailGenerationRequest *)self fileURL];
-      v4 = v6 != 0;
+      fileURL = [(QLThumbnailGenerationRequest *)self fileURL];
+      v4 = fileURL != 0;
     }
   }
 
   return v4;
 }
 
-- (id)equivalentFPItemRequestWithItem:(id)a3 representationTypes:(unint64_t)a4
+- (id)equivalentFPItemRequestWithItem:(id)item representationTypes:(unint64_t)types
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = [QLThumbnailGenerationRequest alloc];
   [(QLThumbnailGenerationRequest *)self size];
   v9 = v8;
   v11 = v10;
   [(QLThumbnailGenerationRequest *)self scale];
-  v13 = [(QLThumbnailGenerationRequest *)v7 initWithFPItem:v6 size:a4 scale:v9 representationTypes:v11, v12];
+  v13 = [(QLThumbnailGenerationRequest *)v7 initWithFPItem:itemCopy size:types scale:v9 representationTypes:v11, v12];
 
   [(QLThumbnailGenerationRequest *)v13 setIconMode:[(QLThumbnailGenerationRequest *)self iconMode]];
   [(QLThumbnailGenerationRequest *)v13 setIconVariant:[(QLThumbnailGenerationRequest *)self iconVariant]];
@@ -857,14 +857,14 @@ LABEL_4:
   [(QLThumbnailGenerationRequest *)self minimumDimension];
   [(QLThumbnailGenerationRequest *)v13 setMinimumDimension:?];
   [(QLThumbnailGenerationRequest *)v13 setBadgeType:[(QLThumbnailGenerationRequest *)self badgeType]];
-  v14 = [(QLThumbnailGenerationRequest *)self saveURLSandboxWrapper];
-  [(QLThumbnailGenerationRequest *)v13 setSaveURLSandboxWrapper:v14];
+  saveURLSandboxWrapper = [(QLThumbnailGenerationRequest *)self saveURLSandboxWrapper];
+  [(QLThumbnailGenerationRequest *)v13 setSaveURLSandboxWrapper:saveURLSandboxWrapper];
 
-  v15 = [(QLThumbnailGenerationRequest *)self saveFileHandle];
-  [(QLThumbnailGenerationRequest *)v13 setSaveFileHandle:v15];
+  saveFileHandle = [(QLThumbnailGenerationRequest *)self saveFileHandle];
+  [(QLThumbnailGenerationRequest *)v13 setSaveFileHandle:saveFileHandle];
 
-  v16 = [(QLThumbnailGenerationRequest *)self saveURLContentType];
-  [(QLThumbnailGenerationRequest *)v13 setSaveURLContentType:v16];
+  saveURLContentType = [(QLThumbnailGenerationRequest *)self saveURLContentType];
+  [(QLThumbnailGenerationRequest *)v13 setSaveURLContentType:saveURLContentType];
 
   [(QLThumbnailGenerationRequest *)v13 setDownloadingAllowed:[(QLThumbnailGenerationRequest *)self isDownloadingAllowed]];
   [(QLThumbnailGenerationRequest *)v13 setShouldUseRestrictedExtension:[(QLThumbnailGenerationRequest *)self shouldUseRestrictedExtension]];
@@ -872,26 +872,26 @@ LABEL_4:
   return v13;
 }
 
-+ (id)_fileProviderFileIdentifierForFPItem:(id)a3
++ (id)_fileProviderFileIdentifierForFPItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [QLCacheFileProviderFileIdentifier alloc];
-  v5 = [v3 itemID];
-  v6 = [(QLCacheFileProviderFileIdentifier *)v4 initWithItemID:v5];
+  itemID = [itemCopy itemID];
+  v6 = [(QLCacheFileProviderFileIdentifier *)v4 initWithItemID:itemID];
 
-  v7 = [[QLThumbnailVersion alloc] initWithFPItem:v3 automaticallyGenerated:1];
+  v7 = [[QLThumbnailVersion alloc] initWithFPItem:itemCopy automaticallyGenerated:1];
   v8 = [[QLCacheFileProviderVersionedFileIdentifier alloc] initWithFileIdentifier:v6 version:v7];
 
   return v8;
 }
 
-+ (id)_basicFileIdentifierForURL:(id)a3 error:(id *)a4
++ (id)_basicFileIdentifierForURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [[QLCacheBasicFileIdentifier alloc] initWithFileURL:v5 error:a4];
+  lCopy = l;
+  v6 = [[QLCacheBasicFileIdentifier alloc] initWithFileURL:lCopy error:error];
   if (v6)
   {
-    v7 = [[QLThumbnailVersion alloc] initWithFileURL:v5 automaticallyGenerated:1];
+    v7 = [[QLThumbnailVersion alloc] initWithFileURL:lCopy automaticallyGenerated:1];
     v8 = [[QLCacheBasicVersionedFileIdentifier alloc] initWithFileIdentifier:v6 version:v7];
   }
 
@@ -903,28 +903,28 @@ LABEL_4:
   return v8;
 }
 
-- (QLThumbnailGenerationRequest)initWithCoder:(id)a3
+- (QLThumbnailGenerationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"si"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"si"];
   v30 = 0.0;
   v31 = 0.0;
   [v5 getValue:&v30 size:16];
   v6 = [QLThumbnailGenerationRequest alloc];
-  [v4 decodeDoubleForKey:@"sc"];
+  [coderCopy decodeDoubleForKey:@"sc"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"rt"];
+  v9 = [coderCopy decodeIntegerForKey:@"rt"];
   v10 = [(QLThumbnailGenerationRequest *)v6 initWithSize:v9 scale:v30 representationTypes:v31, v8];
   getFPSandboxingURLWrapperClass();
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quicklookSandboxWrapper"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quicklookSandboxWrapper"];
   [(QLThumbnailGenerationRequest *)v10 setQuicklookSandboxWrapper:v11];
 
   getFPSandboxingURLWrapperClass();
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"genericSandboxWrapper"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"genericSandboxWrapper"];
   [(QLThumbnailGenerationRequest *)v10 setGenericSandboxWrapper:v12];
 
   getFPSandboxingURLWrapperClass();
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentDirSandboxWrapper"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentDirSandboxWrapper"];
   [(QLThumbnailGenerationRequest *)v10 setParentDirectorySandboxWrapper:v13];
 
   v33 = 0;
@@ -945,66 +945,66 @@ LABEL_4:
 
   v15 = v14;
   _Block_object_dispose(&v33, 8);
-  v16 = [v4 decodeObjectOfClass:v14 forKey:@"it"];
+  v16 = [coderCopy decodeObjectOfClass:v14 forKey:@"it"];
   [(QLThumbnailGenerationRequest *)v10 setItem:v16];
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpfi"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpfi"];
   [(QLThumbnailGenerationRequest *)v10 setFileProviderFileIdentifier:v17];
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bfi"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bfi"];
   [(QLThumbnailGenerationRequest *)v10 setBasicFileIdentifier:v18];
 
-  -[QLThumbnailGenerationRequest setIconMode:](v10, "setIconMode:", [v4 decodeBoolForKey:@"i"]);
-  -[QLThumbnailGenerationRequest setIconVariant:](v10, "setIconVariant:", [v4 decodeIntegerForKey:@"iv"]);
-  -[QLThumbnailGenerationRequest setWantsBaseline:](v10, "setWantsBaseline:", [v4 decodeBoolForKey:@"baseline"]);
-  [v4 decodeDoubleForKey:@"ms"];
+  -[QLThumbnailGenerationRequest setIconMode:](v10, "setIconMode:", [coderCopy decodeBoolForKey:@"i"]);
+  -[QLThumbnailGenerationRequest setIconVariant:](v10, "setIconVariant:", [coderCopy decodeIntegerForKey:@"iv"]);
+  -[QLThumbnailGenerationRequest setWantsBaseline:](v10, "setWantsBaseline:", [coderCopy decodeBoolForKey:@"baseline"]);
+  [coderCopy decodeDoubleForKey:@"ms"];
   [(QLThumbnailGenerationRequest *)v10 setMinimumDimension:?];
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   [(QLThumbnailGenerationRequest *)v10 setUuid:v19];
 
-  -[QLThumbnailGenerationRequest setBadgeType:](v10, "setBadgeType:", [v4 decodeIntegerForKey:@"bt"]);
-  -[QLThumbnailGenerationRequest setGenerationBehavior:](v10, "setGenerationBehavior:", [v4 decodeIntegerForKey:@"generationBehavior"]);
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oCT"];
+  -[QLThumbnailGenerationRequest setBadgeType:](v10, "setBadgeType:", [coderCopy decodeIntegerForKey:@"bt"]);
+  -[QLThumbnailGenerationRequest setGenerationBehavior:](v10, "setGenerationBehavior:", [coderCopy decodeIntegerForKey:@"generationBehavior"]);
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oCT"];
   [(QLThumbnailGenerationRequest *)v10 setOverriddenContentType:v20];
 
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oCTI"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oCTI"];
   [(QLThumbnailGenerationRequest *)v10 setOverriddenContentTypeIdentifier:v21];
 
-  -[QLThumbnailGenerationRequest setInterpolationQuality:](v10, "setInterpolationQuality:", [v4 decodeIntegerForKey:@"interpolationQuality"]);
-  -[QLThumbnailGenerationRequest setDownloadingAllowed:](v10, "setDownloadingAllowed:", [v4 decodeBoolForKey:@"downloadingAllowed"]);
+  -[QLThumbnailGenerationRequest setInterpolationQuality:](v10, "setInterpolationQuality:", [coderCopy decodeIntegerForKey:@"interpolationQuality"]);
+  -[QLThumbnailGenerationRequest setDownloadingAllowed:](v10, "setDownloadingAllowed:", [coderCopy decodeBoolForKey:@"downloadingAllowed"]);
   getFPSandboxingURLWrapperClass();
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saveURLSandboxWrapper"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saveURLSandboxWrapper"];
   [(QLThumbnailGenerationRequest *)v10 setSaveURLSandboxWrapper:v22];
 
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saveFileHandle"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saveFileHandle"];
   [(QLThumbnailGenerationRequest *)v10 setSaveFileHandle:v23];
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saveURLContentType"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saveURLContentType"];
   [(QLThumbnailGenerationRequest *)v10 setSaveURLContentType:v24];
 
   v25 = +[QLThumbnailGenerationRequest customExtensionCommunicationEncodedClasses];
-  v26 = [v4 decodeObjectOfClasses:v25 forKey:@"etgd"];
+  v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"etgd"];
   [(QLThumbnailGenerationRequest *)v10 setExternalThumbnailGeneratorData:v26];
 
-  -[QLThumbnailGenerationRequest setShouldUseRestrictedExtension:](v10, "setShouldUseRestrictedExtension:", [v4 decodeBoolForKey:@"shouldUseRestrictedExtension"]);
-  v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  -[QLThumbnailGenerationRequest setShouldUseRestrictedExtension:](v10, "setShouldUseRestrictedExtension:", [coderCopy decodeBoolForKey:@"shouldUseRestrictedExtension"]);
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   [(QLThumbnailGenerationRequest *)v10 setData:v27];
 
-  -[QLThumbnailGenerationRequest setThirdPartyVideoDecodersAllowed:](v10, "setThirdPartyVideoDecodersAllowed:", [v4 decodeBoolForKey:@"thirdPartyVideo"]);
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+  -[QLThumbnailGenerationRequest setThirdPartyVideoDecodersAllowed:](v10, "setThirdPartyVideoDecodersAllowed:", [coderCopy decodeBoolForKey:@"thirdPartyVideo"]);
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
   [(QLThumbnailGenerationRequest *)v10 setTintColor:v28];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   quicklookSandboxWrapper = self->_quicklookSandboxWrapper;
-  v17 = v4;
+  v17 = coderCopy;
   if (quicklookSandboxWrapper)
   {
-    [v4 encodeObject:quicklookSandboxWrapper forKey:@"quicklookSandboxWrapper"];
+    [coderCopy encodeObject:quicklookSandboxWrapper forKey:@"quicklookSandboxWrapper"];
   }
 
   genericSandboxWrapper = self->_genericSandboxWrapper;
@@ -1102,48 +1102,48 @@ uint64_t __74__QLThumbnailGenerationRequest_customExtensionCommunicationEncodedC
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(QLThumbnailGenerationRequest *)self iconMode];
-  v6 = [v4 iconMode];
-  if (!v5 && (v6 & 1) != 0)
+  compareCopy = compare;
+  iconMode = [(QLThumbnailGenerationRequest *)self iconMode];
+  iconMode2 = [compareCopy iconMode];
+  if (!iconMode && (iconMode2 & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if (((!v5 | v6) & 1) == 0)
+  if (((!iconMode | iconMode2) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v8 = [(QLThumbnailGenerationRequest *)self badgeType];
-  v9 = [v4 badgeType];
-  if (!v8 && v9)
+  badgeType = [(QLThumbnailGenerationRequest *)self badgeType];
+  badgeType2 = [compareCopy badgeType];
+  if (!badgeType && badgeType2)
   {
 LABEL_3:
     v7 = -1;
     goto LABEL_10;
   }
 
-  if (v8 && !v9)
+  if (badgeType && !badgeType2)
   {
 LABEL_9:
     v7 = 1;
     goto LABEL_10;
   }
 
-  v11 = [(QLThumbnailGenerationRequest *)self iconVariant];
-  if (v11 == [v4 iconVariant])
+  iconVariant = [(QLThumbnailGenerationRequest *)self iconVariant];
+  if (iconVariant == [compareCopy iconVariant])
   {
     [(QLThumbnailGenerationRequest *)self maximumPixelSize];
     v13 = v12;
-    [v4 maximumPixelSize];
+    [compareCopy maximumPixelSize];
     if (v13 >= v14)
     {
       [(QLThumbnailGenerationRequest *)self maximumPixelSize];
       v24 = v23;
-      [v4 maximumPixelSize];
+      [compareCopy maximumPixelSize];
       if (v24 > v25)
       {
         goto LABEL_9;
@@ -1154,12 +1154,12 @@ LABEL_9:
     {
       [(QLThumbnailGenerationRequest *)self minimumDimension];
       v16 = v15;
-      [v4 minimumDimension];
+      [compareCopy minimumDimension];
       if (v16 != v17)
       {
         [(QLThumbnailGenerationRequest *)self minimumDimension];
         v19 = v18;
-        [v4 minimumDimension];
+        [compareCopy minimumDimension];
         if (v19 > v20)
         {
           v7 = 1;
@@ -1174,21 +1174,21 @@ LABEL_9:
       }
     }
 
-    v26 = [(QLThumbnailGenerationRequest *)self interpolationQuality];
-    if (v26 == [v4 interpolationQuality])
+    interpolationQuality = [(QLThumbnailGenerationRequest *)self interpolationQuality];
+    if (interpolationQuality == [compareCopy interpolationQuality])
     {
       v7 = 0;
       goto LABEL_10;
     }
 
-    v27 = [(QLThumbnailGenerationRequest *)self interpolationQuality];
-    v22 = v27 < [v4 interpolationQuality];
+    interpolationQuality2 = [(QLThumbnailGenerationRequest *)self interpolationQuality];
+    v22 = interpolationQuality2 < [compareCopy interpolationQuality];
   }
 
   else
   {
-    v21 = [(QLThumbnailGenerationRequest *)self iconVariant];
-    v22 = v21 < [v4 iconVariant];
+    iconVariant2 = [(QLThumbnailGenerationRequest *)self iconVariant];
+    v22 = iconVariant2 < [compareCopy iconVariant];
   }
 
   if (v22)
@@ -1206,7 +1206,7 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithSize:self->_representationTypes scale:self->_size.width representationTypes:{self->_size.height, self->_scale}];
   [v4 setQuicklookSandboxWrapper:self->_quicklookSandboxWrapper];
@@ -1237,19 +1237,19 @@ LABEL_10:
   return v4;
 }
 
-- (id)copyWithSize:(CGSize)a3
+- (id)copyWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = [(QLThumbnailGenerationRequest *)self copy];
   [v5 setSize:{width, height}];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -1259,19 +1259,19 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(QLThumbnailGenerationRequest *)self fileIdentifier];
-      v7 = [(QLThumbnailGenerationRequest *)v5 fileIdentifier];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      fileIdentifier = [(QLThumbnailGenerationRequest *)self fileIdentifier];
+      fileIdentifier2 = [(QLThumbnailGenerationRequest *)v5 fileIdentifier];
+      v8 = fileIdentifier2;
+      if (fileIdentifier == fileIdentifier2)
       {
       }
 
       else
       {
-        v9 = [(QLThumbnailGenerationRequest *)self fileIdentifier];
-        v10 = [(QLThumbnailGenerationRequest *)v5 fileIdentifier];
-        v11 = [v9 isEqual:v10];
+        fileIdentifier3 = [(QLThumbnailGenerationRequest *)self fileIdentifier];
+        fileIdentifier4 = [(QLThumbnailGenerationRequest *)v5 fileIdentifier];
+        v11 = [fileIdentifier3 isEqual:fileIdentifier4];
 
         if (!v11)
         {
@@ -1283,8 +1283,8 @@ LABEL_25:
       }
 
       uuid = self->_uuid;
-      v14 = [(QLThumbnailGenerationRequest *)v5 uuid];
-      if (![(NSUUID *)uuid isEqual:v14])
+      uuid = [(QLThumbnailGenerationRequest *)v5 uuid];
+      if (![(NSUUID *)uuid isEqual:uuid])
       {
         goto LABEL_23;
       }
@@ -1314,23 +1314,23 @@ LABEL_24:
       }
 
       externalThumbnailGeneratorData = self->_externalThumbnailGeneratorData;
-      v28 = [(QLThumbnailGenerationRequest *)v5 externalThumbnailGeneratorData];
-      if (externalThumbnailGeneratorData != v28)
+      externalThumbnailGeneratorData = [(QLThumbnailGenerationRequest *)v5 externalThumbnailGeneratorData];
+      if (externalThumbnailGeneratorData != externalThumbnailGeneratorData)
       {
         v29 = self->_externalThumbnailGeneratorData;
-        v30 = [(QLThumbnailGenerationRequest *)v5 externalThumbnailGeneratorData];
-        if (![(NSDictionary *)v29 isEqual:v30])
+        externalThumbnailGeneratorData2 = [(QLThumbnailGenerationRequest *)v5 externalThumbnailGeneratorData];
+        if (![(NSDictionary *)v29 isEqual:externalThumbnailGeneratorData2])
         {
           v12 = 0;
           goto LABEL_39;
         }
 
-        v42 = v30;
+        v42 = externalThumbnailGeneratorData2;
       }
 
       overriddenContentType = self->_overriddenContentType;
-      v33 = [(QLThumbnailGenerationRequest *)v5 overriddenContentType];
-      if (overriddenContentType == v33)
+      overriddenContentType = [(QLThumbnailGenerationRequest *)v5 overriddenContentType];
+      if (overriddenContentType == overriddenContentType)
       {
         v41 = externalThumbnailGeneratorData;
       }
@@ -1338,11 +1338,11 @@ LABEL_24:
       else
       {
         v34 = self->_overriddenContentType;
-        v40 = [(QLThumbnailGenerationRequest *)v5 overriddenContentType];
+        overriddenContentType2 = [(QLThumbnailGenerationRequest *)v5 overriddenContentType];
         if (![(UTType *)v34 isEqual:?])
         {
           v12 = 0;
-          v30 = v42;
+          externalThumbnailGeneratorData2 = v42;
           goto LABEL_37;
         }
 
@@ -1350,9 +1350,9 @@ LABEL_24:
       }
 
       overriddenContentTypeIdentifier = self->_overriddenContentTypeIdentifier;
-      v36 = [(QLThumbnailGenerationRequest *)v5 overriddenContentTypeIdentifier];
-      v37 = v36;
-      if (overriddenContentTypeIdentifier == v36)
+      overriddenContentTypeIdentifier = [(QLThumbnailGenerationRequest *)v5 overriddenContentTypeIdentifier];
+      v37 = overriddenContentTypeIdentifier;
+      if (overriddenContentTypeIdentifier == overriddenContentTypeIdentifier)
       {
 
         v12 = 1;
@@ -1361,17 +1361,17 @@ LABEL_24:
       else
       {
         v38 = self->_overriddenContentTypeIdentifier;
-        v39 = [(QLThumbnailGenerationRequest *)v5 overriddenContentTypeIdentifier];
-        v12 = [(NSString *)v38 isEqual:v39];
+        overriddenContentTypeIdentifier2 = [(QLThumbnailGenerationRequest *)v5 overriddenContentTypeIdentifier];
+        v12 = [(NSString *)v38 isEqual:overriddenContentTypeIdentifier2];
       }
 
       externalThumbnailGeneratorData = v41;
-      v30 = v42;
-      if (overriddenContentType == v33)
+      externalThumbnailGeneratorData2 = v42;
+      if (overriddenContentType == overriddenContentType)
       {
 LABEL_38:
 
-        if (externalThumbnailGeneratorData == v28)
+        if (externalThumbnailGeneratorData == externalThumbnailGeneratorData)
         {
 LABEL_40:
 
@@ -1398,8 +1398,8 @@ LABEL_26:
 
 - (unint64_t)hash
 {
-  v3 = [(QLThumbnailGenerationRequest *)self fileIdentifier];
-  v4 = [v3 hash];
+  fileIdentifier = [(QLThumbnailGenerationRequest *)self fileIdentifier];
+  v4 = [fileIdentifier hash];
   width = self->_size.width;
   v6 = v4 ^ [(NSUUID *)self->_uuid hash];
 
@@ -1434,70 +1434,70 @@ LABEL_26:
     v45 = objc_alloc(MEMORY[0x1E696AEC0]);
     v5 = objc_opt_class();
     v44 = NSStringFromClass(v5);
-    v6 = [(QLThumbnailGenerationRequest *)self uuid];
-    v7 = [(QLThumbnailGenerationRequest *)self genericSandboxWrapper];
-    v8 = [v7 url];
-    v9 = [v8 lastPathComponent];
+    uuid = [(QLThumbnailGenerationRequest *)self uuid];
+    genericSandboxWrapper = [(QLThumbnailGenerationRequest *)self genericSandboxWrapper];
+    itemIdentifier = [genericSandboxWrapper url];
+    lastPathComponent = [itemIdentifier lastPathComponent];
     [(QLThumbnailGenerationRequest *)self fileIdentifier];
     v11 = v10 = v3;
-    v12 = [(QLThumbnailGenerationRequest *)self representationTypes];
+    representationTypes = [(QLThumbnailGenerationRequest *)self representationTypes];
     [(QLThumbnailGenerationRequest *)self size];
     v14 = v13;
     [(QLThumbnailGenerationRequest *)self size];
     v16 = v15;
-    v17 = [(QLThumbnailGenerationRequest *)self _stateDescription];
+    _stateDescription = [(QLThumbnailGenerationRequest *)self _stateDescription];
     v18 = v47;
-    v42 = v12;
-    v19 = v6;
+    v42 = representationTypes;
+    v19 = uuid;
     v20 = v44;
-    v21 = [v45 initWithFormat:@"<%@:%p uuid:%@ %@ (fi:%@) (rt:%lu) {%g, %g} %@ %@ - %@>", v44, self, v19, v9, v11, v42, v14, v16, v10, v47, v17];
+    v21 = [v45 initWithFormat:@"<%@:%p uuid:%@ %@ (fi:%@) (rt:%lu) {%g, %g} %@ %@ - %@>", v44, self, v19, lastPathComponent, v11, v42, v14, v16, v10, v47, _stateDescription];
 
     v3 = v10;
   }
 
   else
   {
-    v22 = [(QLThumbnailGenerationRequest *)self isUbiquitous];
+    isUbiquitous = [(QLThumbnailGenerationRequest *)self isUbiquitous];
     v46 = objc_alloc(MEMORY[0x1E696AEC0]);
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    v25 = [(QLThumbnailGenerationRequest *)self uuid];
-    if (v22)
+    uuid2 = [(QLThumbnailGenerationRequest *)self uuid];
+    if (isUbiquitous)
     {
-      v7 = [(FPItem *)self->_item providerDomainID];
-      v8 = [(FPItem *)self->_item itemIdentifier];
-      v9 = [(FPItem *)self->_item displayName];
-      v26 = [(QLThumbnailGenerationRequest *)self representationTypes];
+      genericSandboxWrapper = [(FPItem *)self->_item providerDomainID];
+      itemIdentifier = [(FPItem *)self->_item itemIdentifier];
+      lastPathComponent = [(FPItem *)self->_item displayName];
+      representationTypes2 = [(QLThumbnailGenerationRequest *)self representationTypes];
       [(QLThumbnailGenerationRequest *)self size];
       v28 = v27;
       [(QLThumbnailGenerationRequest *)self size];
       v30 = v29;
-      v31 = [(QLThumbnailGenerationRequest *)self _stateDescription];
+      _stateDescription2 = [(QLThumbnailGenerationRequest *)self _stateDescription];
       v18 = v47;
-      v43 = v26;
-      v19 = v25;
-      v39 = v25;
+      v43 = representationTypes2;
+      v19 = uuid2;
+      v39 = uuid2;
       v20 = v24;
-      v21 = [v46 initWithFormat:@"<%@:%p uuid:%@ %@/%@ (%@) (rt:%lu) {%g, %g} %@ %@ - %@>", v24, self, v39, v7, v8, v9, v43, v28, v30, v3, v47, v31];
+      v21 = [v46 initWithFormat:@"<%@:%p uuid:%@ %@/%@ (%@) (rt:%lu) {%g, %g} %@ %@ - %@>", v24, self, v39, genericSandboxWrapper, itemIdentifier, lastPathComponent, v43, v28, v30, v3, v47, _stateDescription2];
     }
 
     else
     {
-      v7 = [(QLThumbnailGenerationRequest *)self data];
-      v32 = [v7 length];
-      v8 = [(QLThumbnailGenerationRequest *)self contentTypeUTI];
-      v33 = [(QLThumbnailGenerationRequest *)self representationTypes];
+      genericSandboxWrapper = [(QLThumbnailGenerationRequest *)self data];
+      v32 = [genericSandboxWrapper length];
+      itemIdentifier = [(QLThumbnailGenerationRequest *)self contentTypeUTI];
+      representationTypes3 = [(QLThumbnailGenerationRequest *)self representationTypes];
       [(QLThumbnailGenerationRequest *)self size];
       v35 = v34;
       [(QLThumbnailGenerationRequest *)self size];
       v37 = v36;
-      v9 = [(QLThumbnailGenerationRequest *)self _stateDescription];
+      lastPathComponent = [(QLThumbnailGenerationRequest *)self _stateDescription];
       v18 = v47;
-      v40 = v25;
+      v40 = uuid2;
       v41 = v32;
-      v19 = v25;
+      v19 = uuid2;
       v20 = v24;
-      v21 = [v46 initWithFormat:@"<%@:%p uuid:%@ (data request, l: %lu, %@) (rt:%lu) {%g, %g} %@ %@ - %@>", v24, self, v40, v41, v8, v33, v35, v37, v3, v47, v9];
+      v21 = [v46 initWithFormat:@"<%@:%p uuid:%@ (data request, l: %lu, %@) (rt:%lu) {%g, %g} %@ %@ - %@>", v24, self, v40, v41, itemIdentifier, representationTypes3, v35, v37, v3, v47, lastPathComponent];
     }
   }
 
@@ -1516,9 +1516,9 @@ LABEL_26:
     return @"Finished";
   }
 
-  v4 = [(QLThumbnailGenerationRequest *)self beginDate];
+  beginDate = [(QLThumbnailGenerationRequest *)self beginDate];
 
-  if (v4)
+  if (beginDate)
   {
     return @"Running";
   }
@@ -1552,12 +1552,12 @@ void __49__QLThumbnailGenerationRequest_prepareForSending__block_invoke(uint64_t
   return v3;
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_urlLock);
   fileURL = self->_fileURL;
-  self->_fileURL = v4;
+  self->_fileURL = lCopy;
 
   os_unfair_lock_unlock(&self->_urlLock);
 }
@@ -1581,7 +1581,7 @@ void __49__QLThumbnailGenerationRequest_prepareForSending__block_invoke(uint64_t
 - (void)prepareForSending
 {
   *v4 = 138412546;
-  *&v4[4] = *(*a1 + 40);
+  *&v4[4] = *(*self + 40);
   *&v4[12] = 2112;
   *&v4[14] = a2;
   OUTLINED_FUNCTION_1(&dword_1CA1E7000, a2, a3, "Could not create FPSandboxingURLWrapper with url: %@, error: %@", *v4, *&v4[8], *&v4[16], *MEMORY[0x1E69E9840]);

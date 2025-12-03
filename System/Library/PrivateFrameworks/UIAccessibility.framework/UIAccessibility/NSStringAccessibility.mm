@@ -1,69 +1,69 @@
 @interface NSStringAccessibility
-- (NSStringAccessibility)initWithString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)lowercaseStringWithLocale:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)stringByReplacingOccurrencesOfString:(id)a3 withString:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6;
-- (id)uppercaseStringWithLocale:(id)a3;
+- (NSStringAccessibility)initWithString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)lowercaseStringWithLocale:(id)locale;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)stringByReplacingOccurrencesOfString:(id)string withString:(id)withString options:(unint64_t)options range:(_NSRange)range;
+- (id)uppercaseStringWithLocale:(id)locale;
 @end
 
 @implementation NSStringAccessibility
 
-- (NSStringAccessibility)initWithString:(id)a3
+- (NSStringAccessibility)initWithString:(id)string
 {
   v6.receiver = self;
   v6.super_class = NSStringAccessibility;
-  v3 = a3;
-  v4 = [(NSStringAccessibility *)&v6 initWithString:v3];
-  AXApplyAttributedLocalizedStringToCopy(v3, v4);
+  stringCopy = string;
+  v4 = [(NSStringAccessibility *)&v6 initWithString:stringCopy];
+  AXApplyAttributedLocalizedStringToCopy(stringCopy, v4);
 
   return v4;
 }
 
-- (id)lowercaseStringWithLocale:(id)a3
+- (id)lowercaseStringWithLocale:(id)locale
 {
   v6.receiver = self;
   v6.super_class = NSStringAccessibility;
-  v4 = [(NSStringAccessibility *)&v6 lowercaseStringWithLocale:a3];
+  v4 = [(NSStringAccessibility *)&v6 lowercaseStringWithLocale:locale];
   AXApplyAttributedLocalizedStringToCopy(self, v4);
 
   return v4;
 }
 
-- (id)stringByReplacingOccurrencesOfString:(id)a3 withString:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6
+- (id)stringByReplacingOccurrencesOfString:(id)string withString:(id)withString options:(unint64_t)options range:(_NSRange)range
 {
   v9.receiver = self;
   v9.super_class = NSStringAccessibility;
-  v7 = [(NSStringAccessibility *)&v9 stringByReplacingOccurrencesOfString:a3 withString:a4 options:a5 range:a6.location, a6.length];
+  v7 = [(NSStringAccessibility *)&v9 stringByReplacingOccurrencesOfString:string withString:withString options:options range:range.location, range.length];
   AXApplyAttributedLocalizedStringToCopy(self, v7);
 
   return v7;
 }
 
-- (id)uppercaseStringWithLocale:(id)a3
+- (id)uppercaseStringWithLocale:(id)locale
 {
   v6.receiver = self;
   v6.super_class = NSStringAccessibility;
-  v4 = [(NSStringAccessibility *)&v6 uppercaseStringWithLocale:a3];
+  v4 = [(NSStringAccessibility *)&v6 uppercaseStringWithLocale:locale];
   AXApplyAttributedLocalizedStringToCopy(self, v4);
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSStringAccessibility;
-  v4 = [(NSStringAccessibility *)&v6 copyWithZone:a3];
+  v4 = [(NSStringAccessibility *)&v6 copyWithZone:zone];
   AXApplyAttributedLocalizedStringToCopy(self, v4);
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSStringAccessibility;
-  v4 = [(NSStringAccessibility *)&v6 mutableCopyWithZone:a3];
+  v4 = [(NSStringAccessibility *)&v6 mutableCopyWithZone:zone];
   AXApplyAttributedLocalizedStringToCopy(self, v4);
   return v4;
 }

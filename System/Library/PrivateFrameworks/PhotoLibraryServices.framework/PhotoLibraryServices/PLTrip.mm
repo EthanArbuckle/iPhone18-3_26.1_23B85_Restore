@@ -1,5 +1,5 @@
 @interface PLTrip
-- (PLTrip)initWithItems:(id)a3 type:(unint64_t)a4;
+- (PLTrip)initWithItems:(id)items type:(unint64_t)type;
 - (double)duration;
 - (id)description;
 - (id)typeDescription;
@@ -9,15 +9,15 @@
 
 - (double)duration
 {
-  v3 = [(PLTrip *)self items];
-  v4 = [v3 firstObject];
+  items = [(PLTrip *)self items];
+  firstObject = [items firstObject];
 
-  v5 = [(PLTrip *)self items];
-  v6 = [v5 lastObject];
+  items2 = [(PLTrip *)self items];
+  lastObject = [items2 lastObject];
 
-  v7 = [v6 pl_endDate];
-  v8 = [v4 pl_startDate];
-  [v7 timeIntervalSinceDate:v8];
+  pl_endDate = [lastObject pl_endDate];
+  pl_startDate = [firstObject pl_startDate];
+  [pl_endDate timeIntervalSinceDate:pl_startDate];
   v10 = v9;
 
   return v10;
@@ -49,29 +49,29 @@
   v14.receiver = self;
   v14.super_class = PLTrip;
   v4 = [(PLTrip *)&v14 description];
-  v5 = [(PLTrip *)self items];
-  v6 = [v5 firstObject];
-  v7 = [v6 pl_startDate];
-  v8 = [(PLTrip *)self items];
-  v9 = [v8 lastObject];
-  v10 = [v9 pl_endDate];
-  v11 = [(PLTrip *)self typeDescription];
-  v12 = [v3 stringWithFormat:@"%@ %@ - %@, %@, %lu moments", v4, v7, v10, v11, -[NSArray count](self->_items, "count")];
+  items = [(PLTrip *)self items];
+  firstObject = [items firstObject];
+  pl_startDate = [firstObject pl_startDate];
+  items2 = [(PLTrip *)self items];
+  lastObject = [items2 lastObject];
+  pl_endDate = [lastObject pl_endDate];
+  typeDescription = [(PLTrip *)self typeDescription];
+  v12 = [v3 stringWithFormat:@"%@ %@ - %@, %@, %lu moments", v4, pl_startDate, pl_endDate, typeDescription, -[NSArray count](self->_items, "count")];
 
   return v12;
 }
 
-- (PLTrip)initWithItems:(id)a3 type:(unint64_t)a4
+- (PLTrip)initWithItems:(id)items type:(unint64_t)type
 {
-  v6 = a3;
+  itemsCopy = items;
   v12.receiver = self;
   v12.super_class = PLTrip;
   v7 = [(PLTrip *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a4;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [itemsCopy copy];
     items = v8->_items;
     v8->_items = v9;
   }

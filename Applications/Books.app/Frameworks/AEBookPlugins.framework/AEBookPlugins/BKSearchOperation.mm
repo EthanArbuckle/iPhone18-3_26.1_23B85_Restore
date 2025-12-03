@@ -2,12 +2,12 @@
 - (AEBookInfo)searchBook;
 - (BKSearchOperation)init;
 - (BKSearchOperationDelegate)delegate;
-- (void)_postSearch:(id)a3;
+- (void)_postSearch:(id)search;
 - (void)_search;
 - (void)cancel;
 - (void)dealloc;
 - (void)main;
-- (void)setSearchBook:(id)a3;
+- (void)setSearchBook:(id)book;
 @end
 
 @implementation BKSearchOperation
@@ -35,21 +35,21 @@
   [(BKSearchOperation *)&v3 dealloc];
 }
 
-- (void)setSearchBook:(id)a3
+- (void)setSearchBook:(id)book
 {
-  obj = a3;
+  obj = book;
   v4 = [obj url];
   [(BKSearchOperation *)self setBookURL:v4];
 
   objc_storeWeak(&self->_book, obj);
 }
 
-- (void)_postSearch:(id)a3
+- (void)_postSearch:(id)search
 {
-  if ([a3 BOOLValue])
+  if ([search BOOLValue])
   {
-    v5 = [(BKSearchOperation *)self delegate];
-    [v5 searchDidTimeOut:self];
+    delegate = [(BKSearchOperation *)self delegate];
+    [delegate searchDidTimeOut:self];
 LABEL_5:
 
     return;
@@ -57,15 +57,15 @@ LABEL_5:
 
   if ([(BKSearchOperation *)self isCancelled])
   {
-    v5 = [(BKSearchOperation *)self delegate];
-    [v5 searchWasCancelled:self];
+    delegate = [(BKSearchOperation *)self delegate];
+    [delegate searchWasCancelled:self];
     goto LABEL_5;
   }
 
   if (self->_isDone && [(BKSearchOperation *)self isPastLimit])
   {
-    v5 = [(BKSearchOperation *)self delegate];
-    [v5 searchLimitHit:self];
+    delegate = [(BKSearchOperation *)self delegate];
+    [delegate searchLimitHit:self];
     goto LABEL_5;
   }
 
@@ -76,13 +76,13 @@ LABEL_5:
       return;
     }
 
-    v5 = [(BKSearchOperation *)self delegate];
-    [v5 searchDidFinish:self];
+    delegate = [(BKSearchOperation *)self delegate];
+    [delegate searchDidFinish:self];
     goto LABEL_5;
   }
 
-  v4 = [(BKSearchOperation *)self delegate];
-  [v4 searchHasPartialResults:self];
+  delegate2 = [(BKSearchOperation *)self delegate];
+  [delegate2 searchHasPartialResults:self];
 
   [(NSMutableArray *)self->_results removeAllObjects];
 
@@ -112,18 +112,18 @@ LABEL_5:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 67109376;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1024;
-    v13 = [(BKSearchOperation *)self ordinal];
+    ordinal = [(BKSearchOperation *)self ordinal];
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "START main %x for ordinal: %d", &v10, 0xEu);
   }
 
   [(BKSearchOperation *)self desiredSleepTime];
   v5 = v4;
-  v6 = [(BKSearchOperation *)self requiresMainThread];
+  requiresMainThread = [(BKSearchOperation *)self requiresMainThread];
   if (!self->_isDone)
   {
-    v7 = v6;
+    v7 = requiresMainThread;
     do
     {
       if (([(BKSearchOperation *)self isCancelled]& 1) != 0)
@@ -153,11 +153,11 @@ LABEL_5:
   v8 = _AESearchLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(BKSearchOperation *)self ordinal];
+    ordinal2 = [(BKSearchOperation *)self ordinal];
     v10 = 67109376;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1024;
-    v13 = v9;
+    ordinal = ordinal2;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "FINISH main %x for ordinal: %d", &v10, 0xEu);
   }
 }
@@ -169,8 +169,8 @@ LABEL_5:
   [(BKSearchOperation *)&v4 cancel];
   if (!self->_isDone)
   {
-    v3 = [(BKSearchOperation *)self delegate];
-    [v3 searchWasCancelled:self];
+    delegate = [(BKSearchOperation *)self delegate];
+    [delegate searchWasCancelled:self];
   }
 
   [(BKSearchOperation *)self setDelegate:0];

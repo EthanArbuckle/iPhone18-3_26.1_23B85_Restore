@@ -1,42 +1,42 @@
 @interface VCCellularAudioTap
-+ (BOOL)validateAsynchronousActionContext:(const tagVCAsynchronousActionContext *)a3 withError:(id *)a4;
-+ (const)cStringFromTapType:(unsigned int)a3;
-+ (id)stringFromTapType:(unsigned int)a3;
-+ (unsigned)audioIOTypeFromTapType:(unsigned int)a3;
-- (BOOL)actionDidFinishForContext:(const tagVCAsynchronousActionContext *)a3 withError:(id *)a4;
-- (BOOL)actionWillBeginForContext:(const tagVCAsynchronousActionContext *)a3 withError:(id *)a4;
-- (BOOL)addAudioTapForStreamToken:(int64_t)a3 tapType:(unsigned int)a4 enableAsyncTapStart:(BOOL)a5 error:(id *)a6;
-- (BOOL)removeAudioTapForStreamToken:(int64_t)a3 error:(id *)a4;
++ (BOOL)validateAsynchronousActionContext:(const tagVCAsynchronousActionContext *)context withError:(id *)error;
++ (const)cStringFromTapType:(unsigned int)type;
++ (id)stringFromTapType:(unsigned int)type;
++ (unsigned)audioIOTypeFromTapType:(unsigned int)type;
+- (BOOL)actionDidFinishForContext:(const tagVCAsynchronousActionContext *)context withError:(id *)error;
+- (BOOL)actionWillBeginForContext:(const tagVCAsynchronousActionContext *)context withError:(id *)error;
+- (BOOL)addAudioTapForStreamToken:(int64_t)token tapType:(unsigned int)type enableAsyncTapStart:(BOOL)start error:(id *)error;
+- (BOOL)removeAudioTapForStreamToken:(int64_t)token error:(id *)error;
 - (BOOL)setUpAudioMachineLearningCoordinator;
 - (BOOL)setUpCallRecordingComponents;
-- (BOOL)setUpDelegateQueue:(id)a3;
+- (BOOL)setUpDelegateQueue:(id)queue;
 - (BOOL)setUpMediaRecorder;
 - (BOOL)setUpReportingAgent;
-- (VCCellularAudioTap)initWithProcessId:(int)a3 delegate:(id)a4 delegateQueue:(id)a5;
+- (VCCellularAudioTap)initWithProcessId:(int)id delegate:(id)delegate delegateQueue:(id)queue;
 - (__CFDictionary)clientSpecificUserInfo;
-- (id)initializeAudioTapIOForStreamToken:(int64_t)a3 enableAsyncTapStart:(BOOL)a4;
-- (id)startAudioForStreamToken:(id)a3 isInitialization:(BOOL)a4;
-- (id)stopAudioForStreamToken:(id)a3 isDeinitialization:(BOOL)a4;
-- (int)makeAudioIOForAudioTapIO:(id)a3;
-- (int)registerAudioTapForStreamToken:(int64_t)a3 tapType:(unsigned int)a4;
-- (int)validateAddAudioTapForStreamToken:(int64_t)a3;
-- (tagVCAudioIOConfiguration)audioIOConfigWithAudioType:(SEL)a3 sinkDelegateContext:(unsigned int)a4;
-- (tagVCAudioIODelegateContext)sinkDelegateContextWithTapType:(SEL)a3 realtimeContext:(unsigned int)a4;
+- (id)initializeAudioTapIOForStreamToken:(int64_t)token enableAsyncTapStart:(BOOL)start;
+- (id)startAudioForStreamToken:(id)token isInitialization:(BOOL)initialization;
+- (id)stopAudioForStreamToken:(id)token isDeinitialization:(BOOL)deinitialization;
+- (int)makeAudioIOForAudioTapIO:(id)o;
+- (int)registerAudioTapForStreamToken:(int64_t)token tapType:(unsigned int)type;
+- (int)validateAddAudioTapForStreamToken:(int64_t)token;
+- (tagVCAudioIOConfiguration)audioIOConfigWithAudioType:(SEL)type sinkDelegateContext:(unsigned int)context;
+- (tagVCAudioIODelegateContext)sinkDelegateContextWithTapType:(SEL)type realtimeContext:(unsigned int)context;
 - (void)cleanUpAudioMachineLearningCoordinator;
 - (void)cleanUpMediaRecorder;
 - (void)cleanUpPeriodicReporting;
 - (void)dealloc;
-- (void)didChangeThermalLevel:(int)a3;
+- (void)didChangeThermalLevel:(int)level;
 - (void)invalidate;
 - (void)printAudioTapHealth;
 - (void)serverDidDie;
-- (void)setAudioTapIO:(id)a3 forStreamToken:(int64_t)a4;
+- (void)setAudioTapIO:(id)o forStreamToken:(int64_t)token;
 - (void)setUpAudioMachineLearningCoordinator;
 - (void)setUpMediaRecorder;
 - (void)setUpPeriodicReporting;
 - (void)setUpReportingAgent;
-- (void)terminateProcessFromAssertionOverflow:(BOOL)a3 onAudioTapIO:(id)a4;
-- (void)unregisterAudioTapForStreamToken:(int64_t)a3;
+- (void)terminateProcessFromAssertionOverflow:(BOOL)overflow onAudioTapIO:(id)o;
+- (void)unregisterAudioTapForStreamToken:(int64_t)token;
 @end
 
 @implementation VCCellularAudioTap
@@ -199,14 +199,14 @@ void __41__VCCellularAudioTap_setUpReportingAgent__block_invoke(uint64_t a1, voi
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
 }
 
-+ (const)cStringFromTapType:(unsigned int)a3
++ (const)cStringFromTapType:(unsigned int)type
 {
-  if (!a3)
+  if (!type)
   {
     return "VCPowerSpectrumCellularTapTypeUplink";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return "VCPowerSpectrumCellularTapTypeDownlink";
   }
@@ -223,10 +223,10 @@ void __41__VCCellularAudioTap_setUpReportingAgent__block_invoke(uint64_t a1, voi
   return "Unknown";
 }
 
-+ (id)stringFromTapType:(unsigned int)a3
++ (id)stringFromTapType:(unsigned int)type
 {
-  v3 = *&a3;
-  v4 = [a1 cStringFromTapType:?];
+  v3 = *&type;
+  v4 = [self cStringFromTapType:?];
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s(%u)", v4, v3];
 }
 
@@ -405,7 +405,7 @@ uint64_t __44__VCCellularAudioTap_setUpPeriodicReporting__block_invoke(uint64_t 
         v30 = 2048;
         v31 = audioMachineLearningCoordinatorUplink;
         v32 = 2048;
-        v33 = audioMachineLearningCoordinatorDownlink;
+        selfCopy2 = audioMachineLearningCoordinatorDownlink;
         v11 = " [%s] %s:%d Audio machine learning coordinators uplink=%p, downlink=%p";
         v12 = v8;
         v13 = 48;
@@ -446,7 +446,7 @@ uint64_t __44__VCCellularAudioTap_setUpPeriodicReporting__block_invoke(uint64_t 
         v30 = 2112;
         v31 = v6;
         v32 = 2048;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2048;
         v35 = v16;
         v36 = 2048;
@@ -508,7 +508,7 @@ LABEL_14:
         v30 = 2112;
         v31 = v19;
         v32 = 2048;
-        v33 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate downlink audio machine learning coordinator", &v24, 0x30u);
       }
     }
@@ -535,13 +535,13 @@ LABEL_14:
   self->_audioMachineLearningCoordinatorDownlink = 0;
 }
 
-- (BOOL)setUpDelegateQueue:(id)a3
+- (BOOL)setUpDelegateQueue:(id)queue
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
-    self->_delegateQueue = a3;
+    dispatch_retain(queue);
+    self->_delegateQueue = queue;
 LABEL_4:
     LOBYTE(v7) = 1;
     return v7;
@@ -601,7 +601,7 @@ LABEL_4:
       v18 = 2112;
       v19 = v8;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
       v23 = 0;
       _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate the delegateQueue=%@", &v12, 0x3Au);
@@ -612,7 +612,7 @@ LABEL_4:
   return v7;
 }
 
-- (VCCellularAudioTap)initWithProcessId:(int)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (VCCellularAudioTap)initWithProcessId:(int)id delegate:(id)delegate delegateQueue:(id)queue
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -628,12 +628,12 @@ LABEL_4:
       goto LABEL_6;
     }
 
-    if (![(VCCellularAudioTap *)v8 setUpDelegateQueue:a5])
+    if (![(VCCellularAudioTap *)v8 setUpDelegateQueue:queue])
     {
       goto LABEL_6;
     }
 
-    [(VCCellularAudioTap *)v8 setDelegate:a4];
+    [(VCCellularAudioTap *)v8 setDelegate:delegate];
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v11 = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCCellularAudioTap.stateQueue", 0, CustomRootQueue);
     v8->_stateQueue = v11;
@@ -644,7 +644,7 @@ LABEL_4:
     }
 
     v8->_callbackCounter = 0;
-    v8->_processId = a3;
+    v8->_processId = id;
     v8->_tapToken = VCUniqueIDGenerator_GenerateID();
     if (![(VCCellularAudioTap *)v8 setUpCallRecordingComponents])
     {
@@ -674,8 +674,8 @@ LABEL_6:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_audioTapIOMap allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  allKeys = [(NSMutableDictionary *)self->_audioTapIOMap allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v4)
   {
     v5 = v4;
@@ -687,14 +687,14 @@ LABEL_6:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         -[VCCellularAudioTap removeAudioTapForStreamToken:error:](self, "removeAudioTapForStreamToken:error:", [*(*(&v12 + 1) + 8 * v7++) unsignedIntValue], 0);
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v5);
@@ -722,12 +722,12 @@ LABEL_6:
   [(VCObject *)&v10 dealloc];
 }
 
-- (void)terminateProcessFromAssertionOverflow:(BOOL)a3 onAudioTapIO:(id)a4
+- (void)terminateProcessFromAssertionOverflow:(BOOL)overflow onAudioTapIO:(id)o
 {
-  v4 = a3;
+  overflowCopy = overflow;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = [a4 realtimeContext];
-  if (v4)
+  realtimeContext = [o realtimeContext];
+  if (overflowCopy)
   {
     v7 = "overflow";
   }
@@ -787,7 +787,7 @@ LABEL_6:
           v23 = 2112;
           v24 = v8;
           v25 = 2048;
-          v26 = self;
+          selfCopy2 = self;
           v27 = 2080;
           v28 = v7;
           _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Assertion counter %s! We've leaked the audio assertions. Terminating...", buf, 0x3Au);
@@ -805,7 +805,7 @@ LABEL_6:
         v23 = 2112;
         v24 = v8;
         v25 = 2048;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2080;
         v28 = v7;
         _os_log_fault_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_FAULT, " [%s] %s:%d %@(%p) Assertion counter %s! We've leaked the audio assertions. Terminating...", buf, 0x3Au);
@@ -817,9 +817,9 @@ LABEL_6:
   v13 = MEMORY[0x1E696AEC0];
   v14 = objc_opt_class();
   Name = class_getName(v14);
-  if (v6)
+  if (realtimeContext)
   {
-    v16 = *(v6 + 8);
+    v16 = *(realtimeContext + 8);
   }
 
   else
@@ -830,12 +830,12 @@ LABEL_6:
   VCTerminateProcess(v12, [v13 stringWithFormat:@"%s tapType=%u", Name, v16], -[VCObject reportingAgent](self, "reportingAgent"));
 }
 
-- (int)validateAddAudioTapForStreamToken:(int64_t)a3
+- (int)validateAddAudioTapForStreamToken:(int64_t)token
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (token)
   {
-    v4 = a3;
+    tokenCopy = token;
     if (-[NSMutableDictionary objectForKeyedSubscript:](self->_audioTapIOMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:?]))
     {
       if (objc_opt_class() == self)
@@ -879,9 +879,9 @@ LABEL_6:
             v16 = 2112;
             v17 = v7;
             v18 = 2048;
-            v19 = self;
+            selfCopy = self;
             v20 = 1024;
-            v21 = v4;
+            v21 = tokenCopy;
             _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Audio tap already registered for streamToken=%u", &v10, 0x36u);
           }
         }
@@ -903,12 +903,12 @@ LABEL_6:
   return v5;
 }
 
-- (id)initializeAudioTapIOForStreamToken:(int64_t)a3 enableAsyncTapStart:(BOOL)a4
+- (id)initializeAudioTapIOForStreamToken:(int64_t)token enableAsyncTapStart:(BOOL)start
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [-[NSMutableDictionary objectForKeyedSubscript:](self->_audioTapIOMap objectForKeyedSubscript:{v6), "setEnableAsyncTapStart:", v4}];
-  if (v4)
+  startCopy = start;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:token];
+  [-[NSMutableDictionary objectForKeyedSubscript:](self->_audioTapIOMap objectForKeyedSubscript:{v6), "setEnableAsyncTapStart:", startCopy}];
+  if (startCopy)
   {
     return 0;
   }
@@ -916,7 +916,7 @@ LABEL_6:
   return [(VCCellularAudioTap *)self startAudioForStreamToken:v6 isInitialization:1];
 }
 
-- (BOOL)addAudioTapForStreamToken:(int64_t)a3 tapType:(unsigned int)a4 enableAsyncTapStart:(BOOL)a5 error:(id *)a6
+- (BOOL)addAudioTapForStreamToken:(int64_t)token tapType:(unsigned int)type enableAsyncTapStart:(BOOL)start error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0;
@@ -928,19 +928,19 @@ LABEL_6:
   v9[1] = 3221225472;
   v9[2] = __82__VCCellularAudioTap_addAudioTapForStreamToken_tapType_enableAsyncTapStart_error___block_invoke;
   v9[3] = &unk_1E85F8210;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  startCopy = start;
   v9[4] = self;
   v9[5] = &v12;
-  v9[6] = a3;
-  v9[7] = a6;
+  v9[6] = token;
+  v9[7] = error;
   dispatch_sync(stateQueue, v9);
   v7 = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
   return v7;
 }
 
-- (BOOL)removeAudioTapForStreamToken:(int64_t)a3 error:(id *)a4
+- (BOOL)removeAudioTapForStreamToken:(int64_t)token error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -957,8 +957,8 @@ LABEL_6:
   block[3] = &unk_1E85F8238;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
-  block[7] = a4;
+  block[6] = token;
+  block[7] = error;
   dispatch_sync(stateQueue, block);
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -977,9 +977,9 @@ LABEL_6:
   dispatch_async(delegateQueue, v3);
 }
 
-+ (unsigned)audioIOTypeFromTapType:(unsigned int)a3
++ (unsigned)audioIOTypeFromTapType:(unsigned int)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 4;
   }
@@ -989,7 +989,7 @@ LABEL_6:
     v3 = -1;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -1000,11 +1000,11 @@ LABEL_6:
   }
 }
 
-- (tagVCAudioIODelegateContext)sinkDelegateContextWithTapType:(SEL)a3 realtimeContext:(unsigned int)a4
+- (tagVCAudioIODelegateContext)sinkDelegateContextWithTapType:(SEL)type realtimeContext:(unsigned int)context
 {
-  if (a4)
+  if (context)
   {
-    if (a4 != 1)
+    if (context != 1)
     {
       v6 = 0;
       streamToken = 0;
@@ -1043,21 +1043,21 @@ LABEL_9:
   return self;
 }
 
-- (int)makeAudioIOForAudioTapIO:(id)a3
+- (int)makeAudioIOForAudioTapIO:(id)o
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [a3 realtimeContext];
-  if (!v5)
+  realtimeContext = [o realtimeContext];
+  if (!realtimeContext)
   {
-    [(VCCellularAudioTap *)a3 makeAudioIOForAudioTapIO:&v20];
+    [(VCCellularAudioTap *)o makeAudioIOForAudioTapIO:&v20];
 LABEL_10:
     v12 = v19;
     v13 = v20;
     goto LABEL_7;
   }
 
-  v6 = v5;
-  v7 = *(v5 + 8);
+  v6 = realtimeContext;
+  v7 = *(realtimeContext + 8);
   v8 = [VCCellularAudioTap audioIOTypeFromTapType:v7];
   *&v9 = 0xAAAAAAAAAAAAAAAALL;
   *(&v9 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -1087,14 +1087,14 @@ LABEL_10:
   }
 
   v12 = v11;
-  [a3 setAudioIO:v11];
+  [o setAudioIO:v11];
   v13 = 0;
 LABEL_7:
 
   return v13;
 }
 
-- (void)setAudioTapIO:(id)a3 forStreamToken:(int64_t)a4
+- (void)setAudioTapIO:(id)o forStreamToken:(int64_t)token
 {
   dispatch_assert_queue_V2(self->_stateQueue);
   if (![(NSMutableDictionary *)self->_audioTapIOMap count])
@@ -1104,28 +1104,28 @@ LABEL_7:
   }
 
   audioTapIOMap = self->_audioTapIOMap;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:token];
 
-  [(NSMutableDictionary *)audioTapIOMap setObject:a3 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)audioTapIOMap setObject:o forKeyedSubscript:v8];
 }
 
-- (void)unregisterAudioTapForStreamToken:(int64_t)a3
+- (void)unregisterAudioTapForStreamToken:(int64_t)token
 {
   v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_audioTapIOMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:?]);
   v6 = +[VCAudioPowerSpectrumManager sharedInstance];
   -[VCAudioPowerSpectrumManager unregisterAudioPowerSpectrumSourceForStreamToken:](v6, "unregisterAudioPowerSpectrumSourceForStreamToken:", [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "streamToken")}]);
   audioTapIOMap = self->_audioTapIOMap;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:token];
 
   [(NSMutableDictionary *)audioTapIOMap setObject:0 forKeyedSubscript:v8];
 }
 
-- (tagVCAudioIOConfiguration)audioIOConfigWithAudioType:(SEL)a3 sinkDelegateContext:(unsigned int)a4
+- (tagVCAudioIOConfiguration)audioIOConfigWithAudioType:(SEL)type sinkDelegateContext:(unsigned int)context
 {
   retstr->var0 = self->_tapToken;
   *&retstr->var1 = 0x200000000;
   retstr->var3 = 0;
-  retstr->var4 = a4;
+  retstr->var4 = context;
   *&retstr->var5 = 2;
   retstr->var7 = self;
   retstr->var8 = self->_processId;
@@ -1156,7 +1156,7 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)actionWillBeginForContext:(const tagVCAsynchronousActionContext *)a3 withError:(id *)a4
+- (BOOL)actionWillBeginForContext:(const tagVCAsynchronousActionContext *)context withError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   if (![VCCellularAudioTap validateAsynchronousActionContext:"validateAsynchronousActionContext:withError:" withError:?])
@@ -1167,10 +1167,10 @@ LABEL_7:
   if ((atomic_fetch_add(&self->_callbackCounter, 1u) & 0x80000000) != 0)
   {
     atomic_fetch_add(&self->_callbackCounter, 0xFFFFFFFF);
-    if (a4)
+    if (error)
     {
       v10 = 0;
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCellularAudioTap" code:-2142830530 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCellularAudioTap" code:-2142830530 userInfo:0];
       return v10;
     }
 
@@ -1184,7 +1184,7 @@ LABEL_7:
   v17 = __Block_byref_object_dispose__23;
   v18 = 0;
   stateQueue = self->_stateQueue;
-  v8 = *a3->var1;
+  v8 = *context->var1;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__VCCellularAudioTap_actionWillBeginForContext_withError___block_invoke;
@@ -1194,9 +1194,9 @@ LABEL_7:
   v12[4] = self;
   dispatch_sync(stateQueue, v12);
   v9 = v14[5];
-  if (a4)
+  if (error)
   {
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;
@@ -1261,7 +1261,7 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)actionDidFinishForContext:(const tagVCAsynchronousActionContext *)a3 withError:(id *)a4
+- (BOOL)actionDidFinishForContext:(const tagVCAsynchronousActionContext *)context withError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   if (![VCCellularAudioTap validateAsynchronousActionContext:"validateAsynchronousActionContext:withError:" withError:?])
@@ -1272,10 +1272,10 @@ LABEL_4:
   if ((atomic_fetch_add(&self->_callbackCounter, 1u) & 0x80000000) != 0)
   {
     atomic_fetch_add(&self->_callbackCounter, 0xFFFFFFFF);
-    if (a4)
+    if (error)
     {
       v10 = 0;
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCellularAudioTap" code:-2142830530 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCellularAudioTap" code:-2142830530 userInfo:0];
       return v10;
     }
 
@@ -1289,7 +1289,7 @@ LABEL_4:
   v17 = __Block_byref_object_dispose__23;
   v18 = 0;
   stateQueue = self->_stateQueue;
-  v8 = *a3->var1;
+  v8 = *context->var1;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__VCCellularAudioTap_actionDidFinishForContext_withError___block_invoke;
@@ -1299,9 +1299,9 @@ LABEL_4:
   v12[4] = self;
   dispatch_sync(stateQueue, v12);
   v9 = v14[5];
-  if (a4)
+  if (error)
   {
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;
@@ -1374,11 +1374,11 @@ uint64_t __58__VCCellularAudioTap_actionDidFinishForContext_withError___block_in
   return result;
 }
 
-- (void)didChangeThermalLevel:(int)a3
+- (void)didChangeThermalLevel:(int)level
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"Thermal";
-  v5[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v5[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&level];
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   [(VCObject *)self reportingAgent];
   reportingGenericEvent();
@@ -1440,35 +1440,35 @@ uint64_t __58__VCCellularAudioTap_actionDidFinishForContext_withError___block_in
 
     _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, v5, v10, v7);
 LABEL_16:
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(setUpReportingAgent) = 1;
+    return setUpReportingAgent;
   }
 
   self->_uuid = [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
-  v3 = [(VCCellularAudioTap *)self setUpReportingAgent];
-  if (v3)
+  setUpReportingAgent = [(VCCellularAudioTap *)self setUpReportingAgent];
+  if (setUpReportingAgent)
   {
-    v3 = [(VCCellularAudioTap *)self setUpMediaRecorder];
-    if (v3)
+    setUpReportingAgent = [(VCCellularAudioTap *)self setUpMediaRecorder];
+    if (setUpReportingAgent)
     {
       if (![(VCCellularAudioTap *)self setUpAudioMachineLearningCoordinator])
       {
-        LOBYTE(v3) = 0;
-        return v3;
+        LOBYTE(setUpReportingAgent) = 0;
+        return setUpReportingAgent;
       }
 
       goto LABEL_16;
     }
   }
 
-  return v3;
+  return setUpReportingAgent;
 }
 
-- (id)startAudioForStreamToken:(id)a3 isInitialization:(BOOL)a4
+- (id)startAudioForStreamToken:(id)token isInitialization:(BOOL)initialization
 {
   *&v58[3] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
-  v7 = [(NSMutableDictionary *)self->_audioTapIOMap objectForKeyedSubscript:a3];
+  v7 = [(NSMutableDictionary *)self->_audioTapIOMap objectForKeyedSubscript:token];
   if (!v7)
   {
     if (objc_opt_class() == self)
@@ -1489,7 +1489,7 @@ LABEL_16:
       OUTLINED_FUNCTION_6_5();
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_29();
-      v53 = a3;
+      tokenCopy5 = token;
       OUTLINED_FUNCTION_2();
       v33 = 38;
     }
@@ -1521,7 +1521,7 @@ LABEL_16:
       WORD6(v52) = v51;
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_29();
-      v53 = v24;
+      tokenCopy5 = v24;
       OUTLINED_FUNCTION_27_1();
       OUTLINED_FUNCTION_17_0();
       v33 = 58;
@@ -1532,9 +1532,9 @@ LABEL_16:
   }
 
   v8 = v7;
-  v9 = [v7 enableAsyncTapStart];
-  v10 = v9;
-  if (!a4 && (v9 & 1) == 0)
+  enableAsyncTapStart = [v7 enableAsyncTapStart];
+  v10 = enableAsyncTapStart;
+  if (!initialization && (enableAsyncTapStart & 1) == 0)
   {
     if (objc_opt_class() == self)
     {
@@ -1555,7 +1555,7 @@ LABEL_16:
       OUTLINED_FUNCTION_6_5();
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_9_9();
-      v53 = a3;
+      tokenCopy5 = token;
       v54 = v36;
       *v55 = 0;
       *&v55[4] = v36;
@@ -1592,11 +1592,11 @@ LABEL_16:
       OUTLINED_FUNCTION_8();
       OUTLINED_FUNCTION_0();
       OUTLINED_FUNCTION_9_9();
-      v53 = v25;
+      tokenCopy5 = v25;
       v54 = 2048;
       *v55 = self;
       *&v55[8] = v38;
-      v56 = a3;
+      tokenCopy3 = token;
       v57 = v39;
       v58[0] = 0;
       LOWORD(v58[1]) = v39;
@@ -1611,34 +1611,34 @@ LABEL_20:
     return 0;
   }
 
-  v11 = [v8 audioAssertionCounter];
-  v12 = v11;
-  if (a4 || !v11)
+  audioAssertionCounter = [v8 audioAssertionCounter];
+  v12 = audioAssertionCounter;
+  if (initialization || !audioAssertionCounter)
   {
     v13 = [objc_msgSend(v8 "audioIO")];
     if (v13)
     {
-      v14 = v13;
+      audioAssertionCounter2 = v13;
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 3)
         {
-          return v14;
+          return audioAssertionCounter2;
         }
 
         VRTraceErrorLogLevelToCSTR();
         if (!OUTLINED_FUNCTION_28())
         {
-          return v14;
+          return audioAssertionCounter2;
         }
 
         OUTLINED_FUNCTION_10();
         WORD6(v52) = v40;
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_29();
-        v53 = a3;
+        tokenCopy5 = token;
         v54 = v41;
-        *v55 = v14;
+        *v55 = audioAssertionCounter2;
         OUTLINED_FUNCTION_2();
         v47 = 48;
       }
@@ -1657,14 +1657,14 @@ LABEL_20:
 
         if (VRTraceGetErrorLogLevelForModule() < 3)
         {
-          return v14;
+          return audioAssertionCounter2;
         }
 
         v48 = VRTraceErrorLogLevelToCSTR();
         v49 = *MEMORY[0x1E6986650];
         if (!os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          return v14;
+          return audioAssertionCounter2;
         }
 
         LODWORD(v52) = 136316674;
@@ -1672,10 +1672,10 @@ LABEL_20:
         OUTLINED_FUNCTION_6_5();
         OUTLINED_FUNCTION_6();
         OUTLINED_FUNCTION_29();
-        v53 = v26;
+        tokenCopy5 = v26;
         OUTLINED_FUNCTION_27_1();
         v57 = v50;
-        *v58 = v14;
+        *v58 = audioAssertionCounter2;
         v42 = &dword_1DB56E000;
         v45 = " [%s] %s:%d %@(%p) Failed to register start the audioIO for streamToken=%@. error=%@";
         v46 = &v52;
@@ -1685,7 +1685,7 @@ LABEL_20:
       }
 
       _os_log_error_impl(v42, v43, v44, v45, v46, v47);
-      return v14;
+      return audioAssertionCounter2;
     }
   }
 
@@ -1695,8 +1695,8 @@ LABEL_20:
   }
 
   [v8 setAudioAssertionCounter:v12 + 1];
-  v14 = [v8 audioAssertionCounter];
-  if (v14)
+  audioAssertionCounter2 = [v8 audioAssertionCounter];
+  if (audioAssertionCounter2)
   {
     if (objc_opt_class() == self)
     {
@@ -1715,9 +1715,9 @@ LABEL_20:
       OUTLINED_FUNCTION_10();
       OUTLINED_FUNCTION_0();
       OUTLINED_FUNCTION_29();
-      v53 = a3;
+      tokenCopy5 = token;
       v54 = 2048;
-      *v55 = v14;
+      *v55 = audioAssertionCounter2;
       v17 = " [%s] %s:%d Adding new assertion for token=%@, audioAssertionCounter=%llu";
       v18 = v16;
       v19 = 48;
@@ -1752,10 +1752,10 @@ LABEL_20:
       OUTLINED_FUNCTION_6_5();
       OUTLINED_FUNCTION_6();
       OUTLINED_FUNCTION_29();
-      v53 = v15;
+      tokenCopy5 = v15;
       OUTLINED_FUNCTION_27_1();
       v57 = v22;
-      *v58 = v14;
+      *v58 = audioAssertionCounter2;
       v17 = " [%s] %s:%d %@(%p) Adding new assertion for token=%@, audioAssertionCounter=%llu";
       v18 = v21;
       v19 = 68;
@@ -1765,32 +1765,32 @@ LABEL_20:
   }
 
   [(VCCellularAudioTap *)self terminateProcessFromAssertionOverflow:1 onAudioTapIO:v8];
-  return v14;
+  return audioAssertionCounter2;
 }
 
-- (id)stopAudioForStreamToken:(id)a3 isDeinitialization:(BOOL)a4
+- (id)stopAudioForStreamToken:(id)token isDeinitialization:(BOOL)deinitialization
 {
-  v4 = a4;
+  deinitializationCopy = deinitialization;
   v75 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
-  v7 = [(NSMutableDictionary *)self->_audioTapIOMap objectForKeyedSubscript:a3];
-  v8 = [v7 enableAsyncTapStart];
-  v9 = [v7 audioIO];
-  v10 = [v9 state];
-  v11 = [v7 audioAssertionCounter];
-  v12 = v11;
+  v7 = [(NSMutableDictionary *)self->_audioTapIOMap objectForKeyedSubscript:token];
+  enableAsyncTapStart = [v7 enableAsyncTapStart];
+  audioIO = [v7 audioIO];
+  state = [audioIO state];
+  audioAssertionCounter = [v7 audioAssertionCounter];
+  v12 = audioAssertionCounter;
   if (v7)
   {
-    v13 = v10 - 1;
-    if (((v4 | v8) & 1) != 0 && v13 < 2)
+    v13 = state - 1;
+    if (((deinitializationCopy | enableAsyncTapStart) & 1) != 0 && v13 < 2)
     {
-      if (!v4 && v11 != 1)
+      if (!deinitializationCopy && audioAssertionCounter != 1)
       {
         goto LABEL_16;
       }
 
-      v14 = [v9 stop];
-      if (!v14)
+      stop = [audioIO stop];
+      if (!stop)
       {
         goto LABEL_17;
       }
@@ -1814,9 +1814,9 @@ LABEL_20:
         OUTLINED_FUNCTION_22_3();
         OUTLINED_FUNCTION_6_20();
         OUTLINED_FUNCTION_9_21();
-        v62 = a3;
+        tokenCopy5 = token;
         v63 = v18;
-        v64 = v14;
+        selfCopy = stop;
         v19 = " [%s] %s:%d Failed to stop the audioIO for streamToken=%@. error=%@";
         v20 = v17;
         v21 = 48;
@@ -1851,10 +1851,10 @@ LABEL_20:
         OUTLINED_FUNCTION_22_3();
         OUTLINED_FUNCTION_6_20();
         OUTLINED_FUNCTION_9_21();
-        v62 = v15;
+        tokenCopy5 = v15;
         OUTLINED_FUNCTION_13_12();
         *&v66[8] = v37;
-        v67 = v14;
+        tokenCopy3 = stop;
         v19 = " [%s] %s:%d %@(%p) Failed to stop the audioIO for streamToken=%@. error=%@";
         v20 = v23;
         v21 = 68;
@@ -1886,17 +1886,17 @@ LABEL_20:
         v59 = 1024;
         v60 = 399;
         v61 = 2112;
-        v62 = v9;
+        tokenCopy5 = audioIO;
         v63 = 2112;
-        v64 = a3;
+        selfCopy = token;
         v65 = 1024;
-        *v66 = v4;
+        *v66 = deinitializationCopy;
         *&v66[4] = 1024;
-        *&v66[6] = v8;
-        LOWORD(v67) = 1024;
-        *(&v67 + 2) = v13 < 2;
-        HIWORD(v67) = 1024;
-        *v68 = v10;
+        *&v66[6] = enableAsyncTapStart;
+        LOWORD(tokenCopy3) = 1024;
+        *(&tokenCopy3 + 2) = v13 < 2;
+        HIWORD(tokenCopy3) = 1024;
+        *v68 = state;
         v44 = " [%s] %s:%d Ignoring call to stop audioIO=%@ for token=%@ because isDeinitialization=%{BOOL}d tapStateManagementIsAsync=%{BOOL}d audioIOIsRunning=%{BOOL}d audioIOState=%u";
         v45 = v54;
         v46 = 72;
@@ -1933,21 +1933,21 @@ LABEL_20:
         v59 = 1024;
         v60 = 399;
         v61 = 2112;
-        v62 = v53;
+        tokenCopy5 = v53;
         v63 = 2048;
-        v64 = self;
+        selfCopy = self;
         v65 = 2112;
-        *v66 = v9;
+        *v66 = audioIO;
         *&v66[8] = 2112;
-        v67 = a3;
+        tokenCopy3 = token;
         *v68 = 1024;
-        *&v68[2] = v4;
+        *&v68[2] = deinitializationCopy;
         v69 = 1024;
-        v70 = v8;
+        v70 = enableAsyncTapStart;
         v71 = 1024;
         v72 = v49;
         v73 = 1024;
-        v74 = v10;
+        v74 = state;
         v44 = " [%s] %s:%d %@(%p) Ignoring call to stop audioIO=%@ for token=%@ because isDeinitialization=%{BOOL}d tapStateManagementIsAsync=%{BOOL}d audioIOIsRunning=%{BOOL}d audioIOState=%u";
         v45 = loga;
         v46 = 92;
@@ -1957,11 +1957,11 @@ LABEL_20:
     }
 
 LABEL_16:
-    v14 = 0;
+    stop = 0;
     goto LABEL_17;
   }
 
-  v14 = -2142830570;
+  stop = -2142830570;
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
@@ -1981,7 +1981,7 @@ LABEL_16:
     OUTLINED_FUNCTION_22_3();
     OUTLINED_FUNCTION_6_20();
     OUTLINED_FUNCTION_9_21();
-    v62 = a3;
+    tokenCopy5 = token;
     v41 = " [%s] %s:%d Audio tap not found. streamToken=%@";
     v42 = v40;
     v43 = 38;
@@ -2009,7 +2009,7 @@ LABEL_16:
       OUTLINED_FUNCTION_22_3();
       OUTLINED_FUNCTION_6_20();
       OUTLINED_FUNCTION_9_21();
-      v62 = v38;
+      tokenCopy5 = v38;
       OUTLINED_FUNCTION_13_12();
       v41 = " [%s] %s:%d %@(%p) Audio tap not found. streamToken=%@";
       v42 = v48;
@@ -2020,17 +2020,17 @@ LABEL_55:
   }
 
 LABEL_17:
-  if (v4)
+  if (deinitializationCopy)
   {
-    v24 = 0;
+    enableAsyncTapStart2 = 0;
   }
 
   else
   {
-    v24 = [v7 enableAsyncTapStart];
+    enableAsyncTapStart2 = [v7 enableAsyncTapStart];
   }
 
-  [v7 setEnableAsyncTapStart:v24];
+  [v7 setEnableAsyncTapStart:enableAsyncTapStart2];
   if ([v7 enableAsyncTapStart])
   {
     [v7 setAudioAssertionCounter:v12 - 1];
@@ -2060,9 +2060,9 @@ LABEL_17:
       OUTLINED_FUNCTION_22_3();
       OUTLINED_FUNCTION_6_20();
       OUTLINED_FUNCTION_9_21();
-      v62 = a3;
+      tokenCopy5 = token;
       v63 = 2048;
-      v64 = v28;
+      selfCopy = v28;
       v29 = " [%s] %s:%d Removing assertion for token=%@, audioAssertionCounter=%llu";
       v30 = v27;
       v31 = 48;
@@ -2091,10 +2091,10 @@ LABEL_17:
         OUTLINED_FUNCTION_22_3();
         OUTLINED_FUNCTION_6_20();
         OUTLINED_FUNCTION_9_21();
-        v62 = v25;
+        tokenCopy5 = v25;
         OUTLINED_FUNCTION_13_12();
         *&v66[8] = v34;
-        v67 = v35;
+        tokenCopy3 = v35;
         v29 = " [%s] %s:%d %@(%p) Removing assertion for token=%@, audioAssertionCounter=%llu";
         v30 = v33;
         v31 = 68;
@@ -2112,7 +2112,7 @@ LABEL_34:
 
   else
   {
-    return [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCellularAudioTap" code:v14 userInfo:0];
+    return [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCellularAudioTap" code:stop userInfo:0];
   }
 }
 
@@ -2327,10 +2327,10 @@ LABEL_6:
   return result;
 }
 
-- (int)registerAudioTapForStreamToken:(int64_t)a3 tapType:(unsigned int)a4
+- (int)registerAudioTapForStreamToken:(int64_t)token tapType:(unsigned int)type
 {
-  v4 = *&a4;
-  if ([VCCellularAudioTap audioIOTypeFromTapType:*&a4]== -1)
+  v4 = *&type;
+  if ([VCCellularAudioTap audioIOTypeFromTapType:*&type]== -1)
   {
     v11 = -2142830591;
     if (VRTraceGetErrorLogLevelForModule() < 3)
@@ -2356,7 +2356,7 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  v7 = [[VCAudioPowerSpectrumSource alloc] initWithStreamToken:a3 delegate:self];
+  v7 = [[VCAudioPowerSpectrumSource alloc] initWithStreamToken:token delegate:self];
   if (!v7)
   {
     v11 = -2142830590;
@@ -2375,7 +2375,7 @@ LABEL_12:
   }
 
   v8 = v7;
-  v9 = [[VCCellularAudioTapIO alloc] initWithStreamToken:a3 powerSpectrumSource:v7 tapType:v4];
+  v9 = [[VCCellularAudioTapIO alloc] initWithStreamToken:token powerSpectrumSource:v7 tapType:v4];
   if (v9)
   {
     v10 = v9;
@@ -2383,7 +2383,7 @@ LABEL_12:
     v11 = [(VCCellularAudioTap *)self makeAudioIOForAudioTapIO:v10];
     if ((v11 & 0x80000000) == 0)
     {
-      [(VCCellularAudioTap *)self setAudioTapIO:v10 forStreamToken:a3];
+      [(VCCellularAudioTap *)self setAudioTapIO:v10 forStreamToken:token];
       [+[VCAudioPowerSpectrumManager sharedInstance](VCAudioPowerSpectrumManager registerAudioPowerMeterSource:"registerAudioPowerMeterSource:", v8];
     }
   }
@@ -2412,15 +2412,15 @@ LABEL_6:
   return v11;
 }
 
-+ (BOOL)validateAsynchronousActionContext:(const tagVCAsynchronousActionContext *)a3 withError:(id *)a4
++ (BOOL)validateAsynchronousActionContext:(const tagVCAsynchronousActionContext *)context withError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a3 && a3->var0 == 1 && a3->var1)
+  if (context && context->var0 == 1 && context->var1)
   {
     return 1;
   }
 
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -2440,7 +2440,7 @@ LABEL_6:
     v31 = "+[VCCellularAudioTap validateAsynchronousActionContext:withError:]";
     OUTLINED_FUNCTION_24_8();
     v32 = 2048;
-    v33 = a3;
+    contextCopy = context;
     v34 = v20;
     *v35 = v21;
     *&v35[4] = 2048;
@@ -2450,7 +2450,7 @@ LABEL_6:
     v25 = 54;
 LABEL_18:
     _os_log_error_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_ERROR, v23, buf, v25);
-    if (a4)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -2460,7 +2460,7 @@ LABEL_18:
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a1 performSelector:sel_logPrefix];
+    v8 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -2480,11 +2480,11 @@ LABEL_18:
       v31 = "+[VCCellularAudioTap validateAsynchronousActionContext:withError:]";
       OUTLINED_FUNCTION_24_8();
       v32 = 2112;
-      v33 = v8;
+      contextCopy = v8;
       v34 = 2048;
-      *v35 = a1;
+      *v35 = self;
       *&v35[8] = 2048;
-      *&v35[10] = a3;
+      *&v35[10] = context;
       v36 = v17;
       v37 = v18;
       v38 = 2048;
@@ -2497,7 +2497,7 @@ LABEL_18:
   }
 
 LABEL_14:
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
@@ -2510,7 +2510,7 @@ LABEL_15:
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCCellularAudioTap" code:-2142830591 userInfo:v15];
   result = 0;
-  *a4 = v16;
+  *error = v16;
   return result;
 }
 
@@ -2550,7 +2550,7 @@ void __41__VCCellularAudioTap_setUpReportingAgent__block_invoke_cold_1(uint64_t 
 
 - (void)setUpMediaRecorder
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -2593,7 +2593,7 @@ LABEL_11:
 
 - (void)setUpAudioMachineLearningCoordinator
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {

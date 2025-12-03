@@ -1,48 +1,48 @@
 @interface MRDSendCommandToOutputDevicesRequest
-- (BOOL)_doesRequestContainLocalDeviceUID:(id)a3;
-- (BOOL)_isRequestForCompanionOrigin:(id)a3;
-- (BOOL)_isRequestForCurrentCongifuration:(id)a3;
-- (BOOL)_isRequestForLocalOrigin:(id)a3;
-- (void)_sendCommand:(unsigned int)a3 withOptions:(id)a4 toEachEndpointContainingOutputDeviceUIDs:(id)a5 timeout:(double)a6 details:(id)a7 completion:(id)a8;
-- (void)_sendCommand:(unsigned int)a3 withOptions:(id)a4 toNewEndpointContainingOutputDeviceUIDs:(id)a5 playerPath:(id)a6 timeout:(double)a7 details:(id)a8 completion:(id)a9;
+- (BOOL)_doesRequestContainLocalDeviceUID:(id)d;
+- (BOOL)_isRequestForCompanionOrigin:(id)origin;
+- (BOOL)_isRequestForCurrentCongifuration:(id)congifuration;
+- (BOOL)_isRequestForLocalOrigin:(id)origin;
+- (void)_sendCommand:(unsigned int)command withOptions:(id)options toEachEndpointContainingOutputDeviceUIDs:(id)ds timeout:(double)timeout details:(id)details completion:(id)completion;
+- (void)_sendCommand:(unsigned int)command withOptions:(id)options toNewEndpointContainingOutputDeviceUIDs:(id)ds playerPath:(id)path timeout:(double)timeout details:(id)details completion:(id)completion;
 @end
 
 @implementation MRDSendCommandToOutputDevicesRequest
 
-- (void)_sendCommand:(unsigned int)a3 withOptions:(id)a4 toNewEndpointContainingOutputDeviceUIDs:(id)a5 playerPath:(id)a6 timeout:(double)a7 details:(id)a8 completion:(id)a9
+- (void)_sendCommand:(unsigned int)command withOptions:(id)options toNewEndpointContainingOutputDeviceUIDs:(id)ds playerPath:(id)path timeout:(double)timeout details:(id)details completion:(id)completion
 {
-  v68 = a4;
-  v15 = a5;
-  v66 = a6;
-  v16 = a8;
-  v17 = a9;
+  optionsCopy = options;
+  dsCopy = ds;
+  pathCopy = path;
+  detailsCopy = details;
+  completionCopy = completion;
   v18 = [MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics alloc];
   v19 = +[MRDMediaRemoteServer server];
-  v20 = [v19 deviceInfo];
-  v21 = -[MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics initWithDetails:deviceInfo:numberOfRequestedOutputDeviceUIDs:timeout:](v18, "initWithDetails:deviceInfo:numberOfRequestedOutputDeviceUIDs:timeout:", v16, v20, [v15 count], a7);
+  deviceInfo = [v19 deviceInfo];
+  v21 = -[MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics initWithDetails:deviceInfo:numberOfRequestedOutputDeviceUIDs:timeout:](v18, "initWithDetails:deviceInfo:numberOfRequestedOutputDeviceUIDs:timeout:", detailsCopy, deviceInfo, [dsCopy count], timeout);
 
   v22 = MRMediaRemoteCopyCommandDescription();
   [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v21 setCommandString:v22];
 
-  v74 = a3;
-  [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v21 setCommand:a3];
+  commandCopy = command;
+  [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v21 setCommand:command];
   v23 = +[NSDate now];
   v24 = [NSMutableString alloc];
-  v25 = [v16 requestID];
-  v26 = [v24 initWithFormat:@"%@<%@>", @"sendCommandToNewEndpointContainingOutputDeviceUIDs", v25];
+  requestID = [detailsCopy requestID];
+  v26 = [v24 initWithFormat:@"%@<%@>", @"sendCommandToNewEndpointContainingOutputDeviceUIDs", requestID];
 
-  v75 = v15;
-  if (v15)
+  v75 = dsCopy;
+  if (dsCopy)
   {
-    [v26 appendFormat:@" for %@", v15];
+    [v26 appendFormat:@" for %@", dsCopy];
   }
 
-  v27 = [v16 reason];
+  reason = [detailsCopy reason];
 
-  if (v27)
+  if (reason)
   {
-    v28 = [v16 reason];
-    [v26 appendFormat:@" because %@", v28];
+    reason2 = [detailsCopy reason];
+    [v26 appendFormat:@" because %@", reason2];
   }
 
   v29 = _MRLogForCategory();
@@ -58,31 +58,31 @@
   v110[2] = sub_1001A34C0;
   v110[3] = &unk_1004C0DD8;
   v111 = @"sendCommandToNewEndpointContainingOutputDeviceUIDs";
-  v30 = v16;
+  v30 = detailsCopy;
   v112 = v30;
   v73 = v23;
   v113 = v73;
   v31 = v21;
   v114 = v31;
-  v72 = v17;
+  v72 = completionCopy;
   v115 = v72;
   v32 = objc_retainBlock(v110);
   v33 = +[MRDMediaRemoteServer server];
-  v34 = [v33 deviceInfo];
-  v35 = [v34 resolveOutputDeviceUIDs:v15];
+  deviceInfo2 = [v33 deviceInfo];
+  v35 = [deviceInfo2 resolveOutputDeviceUIDs:dsCopy];
 
-  if (v35 != v15 && ([v35 isEqual:v15] & 1) == 0)
+  if (v35 != dsCopy && ([v35 isEqual:dsCopy] & 1) == 0)
   {
     v36 = [[NSString alloc] initWithFormat:@"Resolving to outputDeviceUIDs: %@", v35];
     v37 = _MRLogForCategory();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [v30 name];
-      v39 = [v30 requestID];
+      name = [v30 name];
+      requestID2 = [v30 requestID];
       *buf = 138543874;
-      v117 = v38;
+      v117 = name;
       v118 = 2114;
-      v119 = v39;
+      v119 = requestID2;
       v120 = 2112;
       v121 = v36;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
@@ -90,7 +90,7 @@
   }
 
   v40 = [MRBlockGuard alloc];
-  v41 = [v30 requestReasonID];
+  requestReasonID = [v30 requestReasonID];
   v42 = qos_class_self();
   v43 = dispatch_get_global_queue(v42, 0);
   v108[0] = _NSConcreteStackBlock;
@@ -99,7 +99,7 @@
   v108[3] = &unk_1004B6FE8;
   v44 = v32;
   v109 = v44;
-  v45 = [v40 initWithTimeout:v41 reason:v43 queue:v108 handler:a7];
+  v45 = [v40 initWithTimeout:requestReasonID reason:v43 queue:v108 handler:timeout];
 
   v105[0] = _NSConcreteStackBlock;
   v105[1] = 3221225472;
@@ -124,10 +124,10 @@
   v97 = v48;
   v49 = v30;
   v98 = v49;
-  v50 = v66;
+  v50 = pathCopy;
   v99 = v50;
-  v102 = v74;
-  v51 = v68;
+  v102 = commandCopy;
+  v51 = optionsCopy;
   v100 = v51;
   v69 = v47;
   v101 = v69;
@@ -145,8 +145,8 @@
   v54 = (v64[2])();
   if (v54)
   {
-    v55 = [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 sendCommand];
-    [v55 start];
+    sendCommand = [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 sendCommand];
+    [sendCommand start];
 
     v56 = [[MRNowPlayingRequest alloc] initWithOrigin:v54];
     v57 = qos_class_self();
@@ -157,7 +157,7 @@
     v90[3] = &unk_1004B78B0;
     v91 = v53;
     v92 = v46;
-    [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v56 sendCommand:v74 options:v51 queue:v58 completion:v90];
+    [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v56 sendCommand:commandCopy options:v51 queue:v58 completion:v90];
 
     v60 = v67;
     v59 = v69;
@@ -165,14 +165,14 @@
 
   else
   {
-    v61 = [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 createPartialEndpoint];
-    [v61 start];
+    createPartialEndpoint = [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 createPartialEndpoint];
+    [createPartialEndpoint start];
 
     if ([(MRDSendCommandToOutputDevicesRequest *)self _isRequestForCurrentCongifuration:v52])
     {
       [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 setRequestForCurrentConfiguration:1];
-      v62 = [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 createEndpointWithCurrentTopology];
-      [v62 start];
+      createEndpointWithCurrentTopology = [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 createEndpointWithCurrentTopology];
+      [createEndpointWithCurrentTopology start];
 
       v86[0] = _NSConcreteStackBlock;
       v86[1] = 3221225472;
@@ -189,7 +189,7 @@
       v84 = v87;
       v59 = v69;
       v85 = v69;
-      [MRDCreateEndpointFromCurrentTopologyRequest createEndpointWithCurrentTopologyWithTimeout:v49 details:v86 previewCallback:v83 completion:a7];
+      [MRDCreateEndpointFromCurrentTopologyRequest createEndpointWithCurrentTopologyWithTimeout:v49 details:v86 previewCallback:v83 completion:timeout];
 
       v56 = v87;
     }
@@ -197,8 +197,8 @@
     else
     {
       [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 setRequestContainsLocalDeviceUID:[(MRDSendCommandToOutputDevicesRequest *)self _doesRequestContainLocalDeviceUID:v52]];
-      v63 = [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 createOptimizedEndpoint];
-      [v63 start];
+      createOptimizedEndpoint = [(MRDSendCommandToEndpointWithOutputDevicesRequestAnalytics *)v53 createOptimizedEndpoint];
+      [createOptimizedEndpoint start];
 
       v79[0] = _NSConcreteStackBlock;
       v79[1] = 3221225472;
@@ -215,7 +215,7 @@
       v77 = v80;
       v59 = v69;
       v78 = v69;
-      [MRDCreateOptimizedEndpointRequest createOptimizedEndpointWithOutputDeviceUIDs:v52 timeout:v49 details:v79 previewCallback:v76 completion:a7];
+      [MRDCreateOptimizedEndpointRequest createOptimizedEndpointWithOutputDeviceUIDs:v52 timeout:v49 details:v79 previewCallback:v76 completion:timeout];
 
       v56 = v80;
     }
@@ -224,38 +224,38 @@
   }
 }
 
-- (void)_sendCommand:(unsigned int)a3 withOptions:(id)a4 toEachEndpointContainingOutputDeviceUIDs:(id)a5 timeout:(double)a6 details:(id)a7 completion:(id)a8
+- (void)_sendCommand:(unsigned int)command withOptions:(id)options toEachEndpointContainingOutputDeviceUIDs:(id)ds timeout:(double)timeout details:(id)details completion:(id)completion
 {
-  v73 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a8;
+  optionsCopy = options;
+  dsCopy = ds;
+  detailsCopy = details;
+  completionCopy = completion;
   v16 = [MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics alloc];
   v17 = +[MRDMediaRemoteServer server];
-  v18 = [v17 deviceInfo];
-  v19 = -[MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics initWithDetails:deviceInfo:numberOfRequestedOutputDeviceUIDs:timeout:](v16, "initWithDetails:deviceInfo:numberOfRequestedOutputDeviceUIDs:timeout:", v14, v18, [v13 count], a6);
+  deviceInfo = [v17 deviceInfo];
+  v19 = -[MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics initWithDetails:deviceInfo:numberOfRequestedOutputDeviceUIDs:timeout:](v16, "initWithDetails:deviceInfo:numberOfRequestedOutputDeviceUIDs:timeout:", detailsCopy, deviceInfo, [dsCopy count], timeout);
 
   v20 = MRMediaRemoteCopyCommandDescription();
   [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v19 setCommandString:v20];
 
-  v68 = a3;
-  [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v19 setCommand:a3];
+  commandCopy = command;
+  [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v19 setCommand:command];
   v21 = +[NSDate now];
   v22 = [NSMutableString alloc];
-  v23 = [v14 requestID];
-  v24 = [v22 initWithFormat:@"%@<%@>", @"sendCommandToEachEndpointContainingOutputDeviceUIDs", v23];
+  requestID = [detailsCopy requestID];
+  v24 = [v22 initWithFormat:@"%@<%@>", @"sendCommandToEachEndpointContainingOutputDeviceUIDs", requestID];
 
-  if (v13)
+  if (dsCopy)
   {
-    [v24 appendFormat:@" for %@", v13];
+    [v24 appendFormat:@" for %@", dsCopy];
   }
 
-  v25 = [v14 reason];
+  reason = [detailsCopy reason];
 
-  if (v25)
+  if (reason)
   {
-    v26 = [v14 reason];
-    [v24 appendFormat:@" because %@", v26];
+    reason2 = [detailsCopy reason];
+    [v24 appendFormat:@" because %@", reason2];
   }
 
   v27 = _MRLogForCategory();
@@ -271,41 +271,41 @@
   v100[2] = sub_1001A4C48;
   v100[3] = &unk_1004C0F68;
   v101 = @"sendCommandToEachEndpointContainingOutputDeviceUIDs";
-  v28 = v14;
+  v28 = detailsCopy;
   v102 = v28;
   v70 = v21;
   v103 = v70;
   v29 = v19;
   v104 = v29;
-  v69 = v15;
+  v69 = completionCopy;
   v105 = v69;
   v30 = objc_retainBlock(v100);
   v31 = +[MRDMediaRemoteServer server];
-  v32 = [v31 deviceInfo];
-  v33 = [v32 resolveOutputDeviceUIDs:v13];
+  deviceInfo2 = [v31 deviceInfo];
+  v33 = [deviceInfo2 resolveOutputDeviceUIDs:dsCopy];
 
-  if (v33 != v13 && ([v33 isEqual:v13] & 1) == 0)
+  if (v33 != dsCopy && ([v33 isEqual:dsCopy] & 1) == 0)
   {
     v34 = [[NSString alloc] initWithFormat:@"Resolving to outputDeviceUIDs: %@", v33];
     v35 = _MRLogForCategory();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v28 name];
-      v37 = [v28 requestID];
+      name = [v28 name];
+      requestID2 = [v28 requestID];
       *buf = 138543874;
-      v107 = v36;
+      v107 = name;
       v108 = 2114;
-      v109 = v37;
+      v109 = requestID2;
       v110 = 2112;
       v111 = v34;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
     }
   }
 
-  v71 = v13;
+  v71 = dsCopy;
   v38 = objc_alloc_init(NSMutableArray);
   v39 = [MRBlockGuard alloc];
-  v40 = [v28 requestReasonID];
+  requestReasonID = [v28 requestReasonID];
   v41 = qos_class_self();
   v42 = dispatch_get_global_queue(v41, 0);
   v97[0] = _NSConcreteStackBlock;
@@ -316,7 +316,7 @@
   v98 = v43;
   v44 = v30;
   v99 = v44;
-  v45 = [v39 initWithTimeout:v40 reason:v42 queue:v97 handler:a6];
+  v45 = [v39 initWithTimeout:requestReasonID reason:v42 queue:v97 handler:timeout];
 
   v94[0] = _NSConcreteStackBlock;
   v94[1] = 3221225472;
@@ -335,8 +335,8 @@
   v88 = v47;
   v48 = v28;
   v89 = v48;
-  v93 = v68;
-  v74 = v73;
+  v93 = commandCopy;
+  v74 = optionsCopy;
   v90 = v74;
   v64 = v43;
   v91 = v64;
@@ -358,8 +358,8 @@
   if (v53)
   {
     [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v51 setNumberOfEndpoints:1];
-    v54 = [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v51 sendCommands];
-    [v54 start];
+    sendCommands = [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v51 sendCommands];
+    [sendCommands start];
 
     v55 = [[MRNowPlayingRequest alloc] initWithOrigin:v53];
     v56 = qos_class_self();
@@ -372,7 +372,7 @@
     v82 = v51;
     v59 = &v83;
     v83 = v49;
-    [v55 sendCommand:v68 options:v74 queue:v57 completion:v81];
+    [v55 sendCommand:commandCopy options:v74 queue:v57 completion:v81];
     v60 = v71;
   }
 
@@ -382,8 +382,8 @@
     [v55 setShouldWaitForUnanimousEndpoints:0];
     [v55 setReturnPartialResults:1];
     [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v51 setRequestContainsLocalDeviceUID:[(MRDSendCommandToOutputDevicesRequest *)self _doesRequestContainLocalDeviceUID:v50]];
-    v61 = [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v51 discoverOutputDevices];
-    [v61 start];
+    discoverOutputDevices = [(MRDSendCommandToEndpointsWithOutputDevicesRequestAnalytics *)v51 discoverOutputDevices];
+    [discoverOutputDevices start];
 
     v62 = v48;
     v75[0] = _NSConcreteStackBlock;
@@ -404,16 +404,16 @@
   }
 }
 
-- (BOOL)_isRequestForCurrentCongifuration:(id)a3
+- (BOOL)_isRequestForCurrentCongifuration:(id)congifuration
 {
-  v3 = a3;
-  if ([v3 count])
+  congifurationCopy = congifuration;
+  if ([congifurationCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = congifurationCopy;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -453,18 +453,18 @@
   return v10;
 }
 
-- (BOOL)_isRequestForLocalOrigin:(id)a3
+- (BOOL)_isRequestForLocalOrigin:(id)origin
 {
-  v3 = a3;
+  originCopy = origin;
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 deviceInfo];
+  deviceInfo = [v4 deviceInfo];
 
-  v6 = [v5 deviceUID];
+  deviceUID = [deviceInfo deviceUID];
 
   v7 = 0;
-  if (!v6)
+  if (!deviceUID)
   {
-    v8 = [v3 msv_firstWhere:&stru_1004C1080];
+    v8 = [originCopy msv_firstWhere:&stru_1004C1080];
 
     if (v8)
     {
@@ -475,39 +475,39 @@
   return v7;
 }
 
-- (BOOL)_isRequestForCompanionOrigin:(id)a3
+- (BOOL)_isRequestForCompanionOrigin:(id)origin
 {
-  v3 = a3;
+  originCopy = origin;
   v4 = [[MROrigin alloc] initWithIdentifier:1129140302 type:1 displayName:&stru_1004D2058];
   v5 = +[MRDMediaRemoteServer server];
-  v6 = [v5 nowPlayingServer];
-  v7 = [v6 originClientForOrigin:v4];
-  v8 = [v7 deviceInfo];
+  nowPlayingServer = [v5 nowPlayingServer];
+  v7 = [nowPlayingServer originClientForOrigin:v4];
+  deviceInfo = [v7 deviceInfo];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001A616C;
   v12[3] = &unk_1004B90C8;
-  v13 = v8;
-  v9 = v8;
-  v10 = [v3 msv_firstWhere:v12];
+  v13 = deviceInfo;
+  v9 = deviceInfo;
+  v10 = [originCopy msv_firstWhere:v12];
 
   return v10 != 0;
 }
 
-- (BOOL)_doesRequestContainLocalDeviceUID:(id)a3
+- (BOOL)_doesRequestContainLocalDeviceUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 deviceInfo];
+  deviceInfo = [v4 deviceInfo];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001A62C0;
   v9[3] = &unk_1004B90C8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [v3 msv_firstWhere:v9];
+  v10 = deviceInfo;
+  v6 = deviceInfo;
+  v7 = [dCopy msv_firstWhere:v9];
 
   return v7 != 0;
 }

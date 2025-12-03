@@ -1,21 +1,21 @@
 @interface _NFLoyaltyAndPaymentSession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (BOOL)readyForVAS;
 - (BOOL)useFilteredApplets;
-- (id)handleAPDU:(id)a3;
-- (id)handleSelect:(id)a3;
+- (id)handleAPDU:(id)u;
+- (id)handleSelect:(id)select;
 - (id)hostCardEmulationLog;
-- (void)didEndSession:(id)a3;
+- (void)didEndSession:(id)session;
 - (void)handleDeselect;
-- (void)handleHostCardReaderDetected:(id)a3;
-- (void)setHostCards:(id)a3;
+- (void)handleHostCardReaderDetected:(id)detected;
+- (void)setHostCards:(id)cards;
 @end
 
 @implementation _NFLoyaltyAndPaymentSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 cardModeAccess])
+  if ([entitlements cardModeAccess])
   {
     v5 = 0;
   }
@@ -27,9 +27,9 @@
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -44,7 +44,7 @@
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -58,7 +58,7 @@
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -86,9 +86,9 @@
   return v5;
 }
 
-- (void)didEndSession:(id)a3
+- (void)didEndSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (![(_NFSession *)self didEnd])
   {
     v5 = *(&self->_loyaltyAgent + 4);
@@ -110,16 +110,16 @@
 
   v9.receiver = self;
   v9.super_class = _NFLoyaltyAndPaymentSession;
-  [(_NFContactlessPaymentSession *)&v9 didEndSession:v4];
+  [(_NFContactlessPaymentSession *)&v9 didEndSession:sessionCopy];
 }
 
 - (BOOL)useFilteredApplets
 {
-  v4 = [(_NFXPCSession *)self connection];
-  v5 = [v4 NF_whitelistChecker];
+  connection = [(_NFXPCSession *)self connection];
+  nF_whitelistChecker = [connection NF_whitelistChecker];
 
-  v6 = [v5 useUnfilteredApplets];
-  if (v6)
+  useUnfilteredApplets = [nF_whitelistChecker useUnfilteredApplets];
+  if (useUnfilteredApplets)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -166,24 +166,24 @@
     }
   }
 
-  return v6 ^ 1;
+  return useUnfilteredApplets ^ 1;
 }
 
-- (void)setHostCards:(id)a3
+- (void)setHostCards:(id)cards
 {
-  v5 = a3;
+  cardsCopy = cards;
   v11.receiver = self;
   v11.super_class = _NFLoyaltyAndPaymentSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A2B88;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = cardsCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = cardsCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (id)hostCardEmulationLog
@@ -239,33 +239,33 @@
 
 - (BOOL)readyForVAS
 {
-  v2 = [*(&self->_emulationActive + 4) hostCards];
-  v3 = [v2 count] != 0;
+  hostCards = [*(&self->_emulationActive + 4) hostCards];
+  v3 = [hostCards count] != 0;
 
   return v3;
 }
 
-- (id)handleSelect:(id)a3
+- (id)handleSelect:(id)select
 {
-  v4 = [*(&self->_emulationActive + 4) handleSelect:a3];
+  v4 = [*(&self->_emulationActive + 4) handleSelect:select];
   if (v4)
   {
     [*(&self->_hceManager + 4) removeAllObjects];
-    v5 = [(_NFXPCSession *)self remoteObject];
-    [v5 didSelectValueAddedService:1];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didSelectValueAddedService:1];
   }
 
   return v4;
 }
 
-- (id)handleAPDU:(id)a3
+- (id)handleAPDU:(id)u
 {
-  v4 = [*(&self->_emulationActive + 4) handleAPDU:a3];
+  v4 = [*(&self->_emulationActive + 4) handleAPDU:u];
   if (([*(&self->_emulationActive + 4) isComplete] & 1) != 0 || objc_msgSend(*(&self->_emulationActive + 4), "hasError"))
   {
     v5 = *(&self->_hceManager + 4);
-    v6 = [*(&self->_emulationActive + 4) getTransactionEvent];
-    [v5 addObject:v6];
+    getTransactionEvent = [*(&self->_emulationActive + 4) getTransactionEvent];
+    [v5 addObject:getTransactionEvent];
   }
 
   return v4;
@@ -275,8 +275,8 @@
 {
   if ([*(&self->_hceManager + 4) count])
   {
-    v3 = [(_NFXPCSession *)self remoteObject];
-    [v3 didPerformValueAddedServiceTransactions:*(&self->_hceManager + 4)];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didPerformValueAddedServiceTransactions:*(&self->_hceManager + 4)];
   }
 
   v4 = *(&self->_emulationActive + 4);
@@ -284,16 +284,16 @@
   [v4 handleDeselect];
 }
 
-- (void)handleHostCardReaderDetected:(id)a3
+- (void)handleHostCardReaderDetected:(id)detected
 {
   v4 = *(&self->_loyaltyAgent + 4);
-  v5 = a3;
+  detectedCopy = detected;
   if ((sub_10002A270(v4, self) & 1) == 0)
   {
     sub_10002A1E4(*(&self->_loyaltyAgent + 4), self);
   }
 
-  sub_10002A770(*(&self->_loyaltyAgent + 4), v5, [(_NFContactlessPaymentSession *)self readyForPayment]);
+  sub_10002A770(*(&self->_loyaltyAgent + 4), detectedCopy, [(_NFContactlessPaymentSession *)self readyForPayment]);
 }
 
 @end

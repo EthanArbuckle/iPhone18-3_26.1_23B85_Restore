@@ -1,30 +1,30 @@
 @interface FMDCommandContext
-+ (id)intentContextKeyForAccessory:(id)a3;
-+ (id)pendingActionKeyForAccessory:(id)a3;
++ (id)intentContextKeyForAccessory:(id)accessory;
++ (id)pendingActionKeyForAccessory:(id)accessory;
 - (BOOL)pendingAction;
-- (FMDCommandContext)initWithAccessory:(id)a3;
+- (FMDCommandContext)initWithAccessory:(id)accessory;
 - (FMDInternalAccessory)accessory;
 - (NSDictionary)lastCompletedIntentDictionary;
 - (NSUUID)pendingActionUUID;
 - (id)description;
 - (void)cleanupContexts;
-- (void)setActionCompleted:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setPendingActionIntent:(id)a3;
+- (void)setActionCompleted:(id)completed;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setPendingActionIntent:(id)intent;
 @end
 
 @implementation FMDCommandContext
 
-- (FMDCommandContext)initWithAccessory:(id)a3
+- (FMDCommandContext)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v8.receiver = self;
   v8.super_class = FMDCommandContext;
   v5 = [(FMDCommandContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(FMDCommandContext *)v5 setAccessory:v4];
+    [(FMDCommandContext *)v5 setAccessory:accessoryCopy];
   }
 
   return v6;
@@ -33,18 +33,18 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(FMDCommandContext *)self accessory];
-  v5 = [NSString stringWithFormat:@"%@(0x%p) with accessory(0x%p) ", v3, self, v4];
+  accessory = [(FMDCommandContext *)self accessory];
+  v5 = [NSString stringWithFormat:@"%@(0x%p) with accessory(0x%p) ", v3, self, accessory];
 
   return v5;
 }
 
 - (void)cleanupContexts
 {
-  v2 = [(FMDCommandContext *)self accessory];
-  if (v2)
+  accessory = [(FMDCommandContext *)self accessory];
+  if (accessory)
   {
-    v7 = v2;
+    v7 = accessory;
     v3 = +[FMDProtectedContextManager sharedManager];
     v4 = [objc_opt_class() intentContextKeyForAccessory:v7];
     [v3 cleanupAllContextsForKey:v4];
@@ -57,40 +57,40 @@
   _objc_release_x1();
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v5 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v6 = +[FMDProtectedContextManager sharedManager];
-  [v6 cleanupAllContextsForKey:v5];
+  [v6 cleanupAllContextsForKey:keyCopy];
 
   v7 = +[FMDProtectedContextManager sharedManager];
-  v8 = [v7 saveContext:v9 forContextKey:v5 dataProtectionClass:4];
+  v8 = [v7 saveContext:objectCopy forContextKey:keyCopy dataProtectionClass:4];
 }
 
-+ (id)intentContextKeyForAccessory:(id)a3
++ (id)intentContextKeyForAccessory:(id)accessory
 {
-  v3 = [a3 accessoryIdentifier];
-  v4 = [NSString stringWithFormat:@"AccessoryIntent:%@", v3];
+  accessoryIdentifier = [accessory accessoryIdentifier];
+  v4 = [NSString stringWithFormat:@"AccessoryIntent:%@", accessoryIdentifier];
 
   return v4;
 }
 
-+ (id)pendingActionKeyForAccessory:(id)a3
++ (id)pendingActionKeyForAccessory:(id)accessory
 {
-  v3 = [a3 accessoryIdentifier];
-  v4 = [NSString stringWithFormat:@"AccessoryActionPending:%@", v3];
+  accessoryIdentifier = [accessory accessoryIdentifier];
+  v4 = [NSString stringWithFormat:@"AccessoryActionPending:%@", accessoryIdentifier];
 
   return v4;
 }
 
 - (NSDictionary)lastCompletedIntentDictionary
 {
-  v2 = [(FMDCommandContext *)self accessory];
-  if (v2)
+  accessory = [(FMDCommandContext *)self accessory];
+  if (accessory)
   {
     v3 = +[FMDProtectedContextManager sharedManager];
-    v4 = [objc_opt_class() intentContextKeyForAccessory:v2];
+    v4 = [objc_opt_class() intentContextKeyForAccessory:accessory];
     v5 = [v3 contextForKey:v4 contextUUID:0 error:0];
 
     objc_opt_class();
@@ -111,11 +111,11 @@
 
 - (NSUUID)pendingActionUUID
 {
-  v2 = [(FMDCommandContext *)self accessory];
-  if (v2)
+  accessory = [(FMDCommandContext *)self accessory];
+  if (accessory)
   {
     v3 = +[FMDProtectedContextManager sharedManager];
-    v4 = [objc_opt_class() pendingActionKeyForAccessory:v2];
+    v4 = [objc_opt_class() pendingActionKeyForAccessory:accessory];
     v8 = 0;
     v5 = [v3 contextForKey:v4 contextUUID:&v8 error:0];
     v6 = v8;
@@ -129,45 +129,45 @@
   return v6;
 }
 
-- (void)setPendingActionIntent:(id)a3
+- (void)setPendingActionIntent:(id)intent
 {
-  v6 = a3;
-  v4 = [(FMDCommandContext *)self accessory];
-  if (v4)
+  intentCopy = intent;
+  accessory = [(FMDCommandContext *)self accessory];
+  if (accessory)
   {
-    v5 = [objc_opt_class() pendingActionKeyForAccessory:v4];
-    [(FMDCommandContext *)self setObject:v6 forKey:v5];
+    v5 = [objc_opt_class() pendingActionKeyForAccessory:accessory];
+    [(FMDCommandContext *)self setObject:intentCopy forKey:v5];
   }
 }
 
-- (void)setActionCompleted:(id)a3
+- (void)setActionCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [(FMDCommandContext *)self accessory];
-  if (v5)
+  completedCopy = completed;
+  accessory = [(FMDCommandContext *)self accessory];
+  if (accessory)
   {
-    v6 = [objc_opt_class() pendingActionKeyForAccessory:v5];
+    v6 = [objc_opt_class() pendingActionKeyForAccessory:accessory];
     v7 = +[FMDProtectedContextManager sharedManager];
     v13 = 0;
     v8 = [v7 contextForKey:v6 contextUUID:&v13 error:0];
     v9 = v13;
 
-    v10 = [v5 connectionState];
-    if (v4 && v10 == 1 && [v9 isEqual:v4])
+    connectionState = [accessory connectionState];
+    if (completedCopy && connectionState == 1 && [v9 isEqual:completedCopy])
     {
-      v11 = [objc_opt_class() intentContextKeyForAccessory:v5];
+      v11 = [objc_opt_class() intentContextKeyForAccessory:accessory];
       [(FMDCommandContext *)self setObject:v8 forKey:v11];
 
       v12 = +[FMDProtectedContextManager sharedManager];
-      [v12 cleanupContextsForKey:v6 contextUUID:v4];
+      [v12 cleanupContextsForKey:v6 contextUUID:completedCopy];
     }
   }
 }
 
 - (BOOL)pendingAction
 {
-  v2 = [(FMDCommandContext *)self pendingActionUUID];
-  v3 = v2 != 0;
+  pendingActionUUID = [(FMDCommandContext *)self pendingActionUUID];
+  v3 = pendingActionUUID != 0;
 
   return v3;
 }

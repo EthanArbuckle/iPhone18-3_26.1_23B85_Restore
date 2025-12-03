@@ -1,18 +1,18 @@
 @interface CESRContextualEntityConfig
-- (BOOL)_parseJsonObject:(id)a3;
-- (CESRContextualEntityConfig)initWithJsonObject:(id)a3;
+- (BOOL)_parseJsonObject:(id)object;
+- (CESRContextualEntityConfig)initWithJsonObject:(id)object;
 @end
 
 @implementation CESRContextualEntityConfig
 
-- (BOOL)_parseJsonObject:(id)a3
+- (BOOL)_parseJsonObject:(id)object
 {
   v97 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKeyedSubscript:@"contextualEntityRetrieval"];
+    v5 = [objectCopy objectForKeyedSubscript:@"contextualEntityRetrieval"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,14 +26,14 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 BOOLValue];
+          bOOLValue = [v9 BOOLValue];
           v11 = [v8 objectForKeyedSubscript:@"shouldEnroll"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v79 = v9;
             v75 = v11;
-            v12 = -[CESRContextualEntityEnablementConfig initWithShouldRetrieve:shouldEnroll:]([CESRContextualEntityEnablementConfig alloc], "initWithShouldRetrieve:shouldEnroll:", v10, [v11 BOOLValue]);
+            v12 = -[CESRContextualEntityEnablementConfig initWithShouldRetrieve:shouldEnroll:]([CESRContextualEntityEnablementConfig alloc], "initWithShouldRetrieve:shouldEnroll:", bOOLValue, [v11 BOOLValue]);
             enablementConfig = self->_enablementConfig;
             self->_enablementConfig = v12;
 
@@ -49,7 +49,7 @@
               if (objc_opt_isKindOfClass())
               {
                 v71 = v14;
-                v65 = [v16 integerValue];
+                integerValue = [v16 integerValue];
                 v17 = [v15 objectForKeyedSubscript:@"retrievalTimeout"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
@@ -62,22 +62,22 @@
                   v63 = v20;
                   if (objc_opt_isKindOfClass())
                   {
-                    v60 = [v20 integerValue];
+                    integerValue2 = [v20 integerValue];
                     v62 = [v15 objectForKeyedSubscript:@"maxEntityWords"];
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v21 = [v62 integerValue];
+                      integerValue3 = [v62 integerValue];
                       v22 = [v15 objectForKeyedSubscript:@"rejectedContextTypes"];
                       objc_opt_class();
                       v59 = v22;
                       if (objc_opt_isKindOfClass())
                       {
-                        v56 = v21;
+                        v56 = integerValue3;
                         v57 = v8;
                         v58 = v6;
                         v23 = v22;
-                        v80 = [MEMORY[0x277CBEB18] array];
+                        array = [MEMORY[0x277CBEB18] array];
                         v90 = 0u;
                         v91 = 0u;
                         v92 = 0u;
@@ -101,7 +101,7 @@
                               objc_opt_class();
                               if ((objc_opt_isKindOfClass() & 1) != 0 && [v28 length])
                               {
-                                [v80 addObject:v28];
+                                [array addObject:v28];
                               }
                             }
 
@@ -118,7 +118,7 @@
                           v54 = v7;
                           v55 = v29;
                           v30 = v29;
-                          v66 = [MEMORY[0x277CBEB38] dictionary];
+                          dictionary = [MEMORY[0x277CBEB38] dictionary];
                           v86 = 0u;
                           v87 = 0u;
                           v88 = 0u;
@@ -156,20 +156,20 @@
                                     if ((objc_opt_isKindOfClass() & 1) != 0 && [v39 length])
                                     {
                                       v69 = v39;
-                                      v40 = [v66 objectForKeyedSubscript:?];
+                                      v40 = [dictionary objectForKeyedSubscript:?];
                                       v67 = v40;
                                       if (v40)
                                       {
-                                        [v66 setObject:v40 forKeyedSubscript:v38];
+                                        [dictionary setObject:v40 forKeyedSubscript:v38];
                                       }
 
                                       else
                                       {
                                         v61 = [MEMORY[0x277CBEB58] set];
-                                        [v66 setObject:v61 forKeyedSubscript:v38];
+                                        [dictionary setObject:v61 forKeyedSubscript:v38];
                                       }
 
-                                      v68 = [v66 objectForKeyedSubscript:v38];
+                                      v68 = [dictionary objectForKeyedSubscript:v38];
                                       [v68 addObject:v69];
                                     }
 
@@ -197,7 +197,7 @@
                           {
                             v70 = v41;
                             v43 = v41;
-                            v72 = [MEMORY[0x277CBEB18] array];
+                            array2 = [MEMORY[0x277CBEB18] array];
                             v82 = 0u;
                             v83 = 0u;
                             v84 = 0u;
@@ -221,7 +221,7 @@
                                   objc_opt_class();
                                   if ((objc_opt_isKindOfClass() & 1) != 0 && [v48 length])
                                   {
-                                    [v72 addObject:v48];
+                                    [array2 addObject:v48];
                                   }
                                 }
 
@@ -231,7 +231,7 @@
                               while (v45);
                             }
 
-                            v49 = [[CESRContextualEntityRetrievalConfig alloc] initWithMaxNumEnrolled:v65 retrievalTimeout:v60 maxEntityChars:v56 maxEntityWords:obj rejectedContextTypes:v66 rejectedBundleTypes:v77 enabledTasks:v19];
+                            v49 = [[CESRContextualEntityRetrievalConfig alloc] initWithMaxNumEnrolled:integerValue retrievalTimeout:integerValue2 maxEntityChars:v56 maxEntityWords:obj rejectedContextTypes:dictionary rejectedBundleTypes:v77 enabledTasks:v19];
                             retrievalConfig = self->_retrievalConfig;
                             self->_retrievalConfig = v49;
 
@@ -339,10 +339,10 @@
   return isKindOfClass & 1;
 }
 
-- (CESRContextualEntityConfig)initWithJsonObject:(id)a3
+- (CESRContextualEntityConfig)initWithJsonObject:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = CESRContextualEntityConfig;
   v5 = [(CESRContextualEntityConfig *)&v15 init];
@@ -354,7 +354,7 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v7 = [(CESRContextualEntityConfig *)v5 _parseJsonObject:v4];
+  v7 = [(CESRContextualEntityConfig *)v5 _parseJsonObject:objectCopy];
   v8 = MEMORY[0x277CEF0E8];
   v9 = *MEMORY[0x277CEF0E8];
   if (v7)

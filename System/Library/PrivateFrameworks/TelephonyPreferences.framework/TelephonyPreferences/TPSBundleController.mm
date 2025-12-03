@@ -3,31 +3,31 @@
 - (BOOL)isSubscriptionListHidden;
 - (NSOrderedSet)subscriptions;
 - (PSListController)parentListController;
-- (TPSBundleController)initWithParentListController:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
-- (id)subscriptionContextForSpecifier:(id)a3;
-- (void)telephonyController:(id)a3 didChangeActiveSubscriptions:(id)a4;
-- (void)telephonyController:(id)a3 didChangeSubscriptions:(id)a4;
+- (TPSBundleController)initWithParentListController:(id)controller;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (id)subscriptionContextForSpecifier:(id)specifier;
+- (void)telephonyController:(id)controller didChangeActiveSubscriptions:(id)subscriptions;
+- (void)telephonyController:(id)controller didChangeSubscriptions:(id)subscriptions;
 @end
 
 @implementation TPSBundleController
 
-- (TPSBundleController)initWithParentListController:(id)a3
+- (TPSBundleController)initWithParentListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = TPSBundleController;
-  v5 = [(TPSBundleController *)&v12 initWithParentListController:v4];
+  v5 = [(TPSBundleController *)&v12 initWithParentListController:controllerCopy];
   if (v5)
   {
     v6 = objc_alloc_init(TPSTelephonyController);
     telephonyController = v5->_telephonyController;
     v5->_telephonyController = v6;
 
-    v8 = [v4 specifier];
-    if (v8)
+    specifier = [controllerCopy specifier];
+    if (specifier)
     {
-      v9 = [(TPSBundleController *)v5 subscriptionContextForSpecifier:v8];
+      v9 = [(TPSBundleController *)v5 subscriptionContextForSpecifier:specifier];
       subscriptionContext = v5->_subscriptionContext;
       v5->_subscriptionContext = v9;
     }
@@ -38,16 +38,16 @@
 
 - (BOOL)isHidden
 {
-  v2 = [(TPSBundleController *)self supportedSubscriptions];
-  v3 = [v2 count] == 0;
+  supportedSubscriptions = [(TPSBundleController *)self supportedSubscriptions];
+  v3 = [supportedSubscriptions count] == 0;
 
   return v3;
 }
 
 - (BOOL)isSubscriptionListHidden
 {
-  v2 = [(TPSBundleController *)self subscriptionContext];
-  v3 = v2 != 0;
+  subscriptionContext = [(TPSBundleController *)self subscriptionContext];
+  v3 = subscriptionContext != 0;
 
   return v3;
 }
@@ -61,27 +61,27 @@
 
 - (NSOrderedSet)subscriptions
 {
-  v3 = [(TPSBundleController *)self supportsDisabledSubscriptions];
-  v4 = [(TPSBundleController *)self telephonyController];
-  v5 = v4;
-  if (v3)
+  supportsDisabledSubscriptions = [(TPSBundleController *)self supportsDisabledSubscriptions];
+  telephonyController = [(TPSBundleController *)self telephonyController];
+  v5 = telephonyController;
+  if (supportsDisabledSubscriptions)
   {
-    [v4 subscriptions];
+    [telephonyController subscriptions];
   }
 
   else
   {
-    [v4 activeSubscriptions];
+    [telephonyController activeSubscriptions];
   }
   v6 = ;
 
-  v7 = [(TPSBundleController *)self subscriptionContext];
-  v8 = v7;
-  if (v7)
+  subscriptionContext = [(TPSBundleController *)self subscriptionContext];
+  v8 = subscriptionContext;
+  if (subscriptionContext)
   {
     v9 = MEMORY[0x277CCAC30];
-    v10 = [v7 uuid];
-    v11 = [v9 predicateWithFormat:@"uuid == %@", v10];
+    uuid = [subscriptionContext uuid];
+    v11 = [v9 predicateWithFormat:@"uuid == %@", uuid];
 
     v12 = [v6 filteredOrderedSetUsingPredicate:v11];
 
@@ -91,7 +91,7 @@
   return v6;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v39 = *MEMORY[0x277D85DE8];
   if ([(TPSBundleController *)self isHidden])
@@ -101,15 +101,15 @@
 
   else
   {
-    v5 = [(TPSBundleController *)self specifiers];
+    specifiers = [(TPSBundleController *)self specifiers];
     if ([(TPSBundleController *)self isSubscriptionListHidden])
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v6 = v5;
-      v7 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      array = specifiers;
+      v7 = [array countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v7)
       {
         v8 = v7;
@@ -121,34 +121,34 @@
           {
             if (*v30 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(array);
             }
 
             v12 = *(*(&v29 + 1) + 8 * i);
-            v13 = [(TPSBundleController *)self subscriptionContext];
-            [v12 setProperty:v13 forKey:v10];
+            subscriptionContext = [(TPSBundleController *)self subscriptionContext];
+            [v12 setProperty:subscriptionContext forKey:v10];
 
-            v14 = [(TPSBundleController *)self supportedSubscriptions];
-            [v12 setProperty:v14 forKey:@"TPSSpecifierSubscriptionsKey"];
+            supportedSubscriptions = [(TPSBundleController *)self supportedSubscriptions];
+            [v12 setProperty:supportedSubscriptions forKey:@"TPSSpecifierSubscriptionsKey"];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          v8 = [array countByEnumeratingWithState:&v29 objects:v37 count:16];
         }
 
         while (v8);
       }
 
-      v4 = v6;
+      v4 = array;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v4 = v5;
+      v4 = specifiers;
       v15 = [v4 countByEnumeratingWithState:&v33 objects:v38 count:16];
       obj = v4;
       if (v15)
@@ -168,18 +168,18 @@
 
             v19 = *(*(&v33 + 1) + 8 * v17);
             v20 = MEMORY[0x277D3FAD8];
-            v21 = [v19 name];
-            v22 = [v20 preferenceSpecifierNamed:v21 target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+            name = [v19 name];
+            v22 = [v20 preferenceSpecifierNamed:name target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
             [v22 setProperty:objc_msgSend(v19 forKey:{"detailControllerClass"), @"TPSSpecifierSubscriptionDetailControllerKey"}];
-            v23 = [(TPSBundleController *)self supportedSubscriptions];
-            [v22 setProperty:v23 forKey:@"TPSSpecifierSubscriptionsKey"];
+            supportedSubscriptions2 = [(TPSBundleController *)self supportedSubscriptions];
+            [v22 setProperty:supportedSubscriptions2 forKey:@"TPSSpecifierSubscriptionsKey"];
 
-            v24 = [v19 identifier];
-            [v22 setIdentifier:v24];
+            identifier = [v19 identifier];
+            [v22 setIdentifier:identifier];
 
-            [v6 addObject:v22];
-            v4 = [v6 copy];
+            [array addObject:v22];
+            v4 = [array copy];
 
             ++v17;
             v18 = v4;
@@ -199,39 +199,39 @@
   return v4;
 }
 
-- (id)subscriptionContextForSpecifier:(id)a3
+- (id)subscriptionContextForSpecifier:(id)specifier
 {
-  v4 = [a3 tps_subscriptionContext];
-  if (!v4)
+  tps_subscriptionContext = [specifier tps_subscriptionContext];
+  if (!tps_subscriptionContext)
   {
     v5 = +[TPSPreferences sharedInstance];
-    v6 = [v5 showSubscriptionList];
+    showSubscriptionList = [v5 showSubscriptionList];
 
-    if (v6)
+    if (showSubscriptionList)
     {
-      v4 = 0;
+      tps_subscriptionContext = 0;
     }
 
     else
     {
-      v7 = [(TPSBundleController *)self supportedSubscriptions];
-      if ([v7 count] == 1 && (v8 = objc_msgSend(v7, "count"), -[TPSBundleController subscriptions](self, "subscriptions"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8 == v10))
+      supportedSubscriptions = [(TPSBundleController *)self supportedSubscriptions];
+      if ([supportedSubscriptions count] == 1 && (v8 = objc_msgSend(supportedSubscriptions, "count"), -[TPSBundleController subscriptions](self, "subscriptions"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8 == v10))
       {
-        v11 = [v7 firstObject];
-        v4 = [v11 context];
+        firstObject = [supportedSubscriptions firstObject];
+        tps_subscriptionContext = [firstObject context];
       }
 
       else
       {
-        v4 = 0;
+        tps_subscriptionContext = 0;
       }
     }
   }
 
-  return v4;
+  return tps_subscriptionContext;
 }
 
-- (void)telephonyController:(id)a3 didChangeActiveSubscriptions:(id)a4
+- (void)telephonyController:(id)controller didChangeActiveSubscriptions:(id)subscriptions
 {
   v4 = TPSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -241,7 +241,7 @@
   }
 }
 
-- (void)telephonyController:(id)a3 didChangeSubscriptions:(id)a4
+- (void)telephonyController:(id)controller didChangeSubscriptions:(id)subscriptions
 {
   v4 = TPSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

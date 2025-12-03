@@ -1,30 +1,30 @@
 @interface MTLGPUDebugIntersectionFunctionTable
-- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 device:(id)a4 descriptor:(id)a5;
-- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 device:(id)a4 descriptor:(id)a5 computePipelineState:(id)a6;
-- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 device:(id)a4 descriptor:(id)a5 renderPipelineState:(id)a6 stage:(unint64_t)a7;
+- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table device:(id)device descriptor:(id)descriptor;
+- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table device:(id)device descriptor:(id)descriptor computePipelineState:(id)state;
+- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table device:(id)device descriptor:(id)descriptor renderPipelineState:(id)state stage:(unint64_t)stage;
 - (void)_initHandleBuffer;
 - (void)_setupIdentifier;
 - (void)dealloc;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)useWithComputeEncoder:(id)a3 usage:(unint64_t)a4;
-- (void)useWithRenderEncoder:(id)a3 usage:(unint64_t)a4 stages:(optional<unsigned long>)a5;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFunction:(id)function atIndex:(unint64_t)index;
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)useWithComputeEncoder:(id)encoder usage:(unint64_t)usage;
+- (void)useWithRenderEncoder:(id)encoder usage:(unint64_t)usage stages:(optional<unsigned long>)stages;
 @end
 
 @implementation MTLGPUDebugIntersectionFunctionTable
 
-- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 device:(id)a4 descriptor:(id)a5
+- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table device:(id)device descriptor:(id)descriptor
 {
   v8.receiver = self;
   v8.super_class = MTLGPUDebugIntersectionFunctionTable;
-  v6 = [(MTLToolsResource *)&v8 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTLToolsResource *)&v8 initWithBaseObject:table parent:device];
   if (v6)
   {
-    v6->_functionCount = [a5 functionCount];
+    v6->_functionCount = [descriptor functionCount];
     v6->_handleBuffer = [-[MTLToolsObject baseObject](v6->super.super.super._device "baseObject")];
     [(MTLGPUDebugIntersectionFunctionTable *)v6 _setupIdentifier];
     [(MTLGPUDebugIntersectionFunctionTable *)v6 _initHandleBuffer];
@@ -33,15 +33,15 @@
   return v6;
 }
 
-- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 device:(id)a4 descriptor:(id)a5 computePipelineState:(id)a6
+- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table device:(id)device descriptor:(id)descriptor computePipelineState:(id)state
 {
   v10.receiver = self;
   v10.super_class = MTLGPUDebugIntersectionFunctionTable;
-  v8 = [(MTLToolsResource *)&v10 initWithBaseObject:a3 parent:a4];
+  v8 = [(MTLToolsResource *)&v10 initWithBaseObject:table parent:device];
   if (v8)
   {
-    v8->_functionCount = [a5 functionCount];
-    v8->_computePipelineState = a6;
+    v8->_functionCount = [descriptor functionCount];
+    v8->_computePipelineState = state;
     v8->_handleBuffer = [-[MTLToolsObject baseObject](v8->super.super.super._device "baseObject")];
     [(MTLGPUDebugIntersectionFunctionTable *)v8 _setupIdentifier];
     [(MTLGPUDebugIntersectionFunctionTable *)v8 _initHandleBuffer];
@@ -50,17 +50,17 @@
   return v8;
 }
 
-- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)a3 device:(id)a4 descriptor:(id)a5 renderPipelineState:(id)a6 stage:(unint64_t)a7
+- (MTLGPUDebugIntersectionFunctionTable)initWithIntersectionFunctionTable:(id)table device:(id)device descriptor:(id)descriptor renderPipelineState:(id)state stage:(unint64_t)stage
 {
   v12.receiver = self;
   v12.super_class = MTLGPUDebugIntersectionFunctionTable;
-  v10 = [(MTLToolsResource *)&v12 initWithBaseObject:a3 parent:a4];
+  v10 = [(MTLToolsResource *)&v12 initWithBaseObject:table parent:device];
   if (v10)
   {
-    v10->_functionCount = [a5 functionCount];
-    v10->_renderPipelineState = a6;
+    v10->_functionCount = [descriptor functionCount];
+    v10->_renderPipelineState = state;
     v10->_handleBuffer = [-[MTLToolsObject baseObject](v10->super.super.super._device "baseObject")];
-    v10->_stage = a7;
+    v10->_stage = stage;
     [(MTLGPUDebugIntersectionFunctionTable *)v10 _setupIdentifier];
     [(MTLGPUDebugIntersectionFunctionTable *)v10 _initHandleBuffer];
   }
@@ -85,9 +85,9 @@
   v3 = objc_opt_new();
   [v3 setDataType:116];
   [v3 setIndex:0];
-  v4 = [(MTLToolsObject *)self->super.super.super._device originalObject];
+  originalObject = [(MTLToolsObject *)self->super.super.super._device originalObject];
   v8[0] = v3;
-  v5 = [v4 newArgumentEncoderWithArguments:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v8, 1)}];
+  v5 = [originalObject newArgumentEncoderWithArguments:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v8, 1)}];
 
   v6 = [-[MTLToolsObject originalObject](self->super.super.super._device "originalObject")];
   [v5 setArgumentBuffer:v6 offset:0];
@@ -97,44 +97,44 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)useWithComputeEncoder:(id)a3 usage:(unint64_t)a4
+- (void)useWithComputeEncoder:(id)encoder usage:(unint64_t)usage
 {
-  [a3 useResourceInternal:self->super.super.super._baseObject usage:?];
+  [encoder useResourceInternal:self->super.super.super._baseObject usage:?];
   handleBuffer = self->_handleBuffer;
 
-  [a3 useResourceInternal:handleBuffer usage:a4];
+  [encoder useResourceInternal:handleBuffer usage:usage];
 }
 
-- (void)useWithRenderEncoder:(id)a3 usage:(unint64_t)a4 stages:(optional<unsigned long>)a5
+- (void)useWithRenderEncoder:(id)encoder usage:(unint64_t)usage stages:(optional<unsigned long>)stages
 {
-  v5 = *&a5.var1;
-  var1 = a5.var0.var1;
-  [a3 useResourceInternal:self->super.super.super._baseObject usage:? stages:?];
+  v5 = *&stages.var1;
+  var1 = stages.var0.var1;
+  [encoder useResourceInternal:self->super.super.super._baseObject usage:? stages:?];
   handleBuffer = self->_handleBuffer;
 
-  [a3 useResourceInternal:handleBuffer usage:a4 stages:{var1, v5}];
+  [encoder useResourceInternal:handleBuffer usage:usage stages:{var1, v5}];
 }
 
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4
+- (void)setFunction:(id)function atIndex:(unint64_t)index
 {
-  if (a3)
+  if (function)
   {
     baseObject = self->super.super.super._baseObject;
-    v6 = [a3 baseObject];
+    baseObject = [function baseObject];
 
-    [(MTLToolsObject *)baseObject setFunction:v6 atIndex:a4];
+    [(MTLToolsObject *)baseObject setFunction:baseObject atIndex:index];
   }
 }
 
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *functions++;
       [(MTLGPUDebugIntersectionFunctionTable *)self setFunction:v8 atIndex:location++];
       --length;
     }
@@ -143,47 +143,47 @@
   }
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v7 = [a3 handleForOffset:a4];
-  *([(MTLBuffer *)self->_handleBuffer contents]+ 8 * a5) = v7;
+  v7 = [buffer handleForOffset:offset];
+  *([(MTLBuffer *)self->_handleBuffer contents]+ 8 * index) = v7;
   baseObject = self->super.super.super._baseObject;
   handleBuffer = self->_handleBuffer;
 
-  [(MTLToolsObject *)baseObject setBuffer:handleBuffer offset:8 * a5 atIndex:a5];
+  [(MTLToolsObject *)baseObject setBuffer:handleBuffer offset:8 * index atIndex:index];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
+    length = range.length;
     for (i = 0; i != length; ++i)
     {
-      [(MTLGPUDebugIntersectionFunctionTable *)self setBuffer:a3[i] offset:a4[i] atIndex:i];
+      [(MTLGPUDebugIntersectionFunctionTable *)self setBuffer:buffers[i] offset:offsets[i] atIndex:i];
     }
   }
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = [a3 gpuResourceID];
-  *([(MTLBuffer *)self->_handleBuffer contents]+ 8 * a4) = v6;
+  gpuResourceID = [table gpuResourceID];
+  *([(MTLBuffer *)self->_handleBuffer contents]+ 8 * index) = gpuResourceID;
   baseObject = self->super.super.super._baseObject;
   handleBuffer = self->_handleBuffer;
 
-  [(MTLToolsObject *)baseObject setBuffer:handleBuffer offset:8 * a4 atIndex:a4];
+  [(MTLToolsObject *)baseObject setBuffer:handleBuffer offset:8 * index atIndex:index];
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugIntersectionFunctionTable *)self setVisibleFunctionTable:v8 atBufferIndex:location++];
       --length;
     }

@@ -1,40 +1,40 @@
 @interface WBSHistoryTag
-- (BOOL)isEqual:(id)a3;
-- (WBSHistoryTag)initWithTitle:(id)a3 identifier:(id)a4 databaseID:(int64_t)a5 modificationTimestamp:(double)a6 level:(int64_t)a7;
+- (BOOL)isEqual:(id)equal;
+- (WBSHistoryTag)initWithTitle:(id)title identifier:(id)identifier databaseID:(int64_t)d modificationTimestamp:(double)timestamp level:(int64_t)level;
 @end
 
 @implementation WBSHistoryTag
 
-- (WBSHistoryTag)initWithTitle:(id)a3 identifier:(id)a4 databaseID:(int64_t)a5 modificationTimestamp:(double)a6 level:(int64_t)a7
+- (WBSHistoryTag)initWithTitle:(id)title identifier:(id)identifier databaseID:(int64_t)d modificationTimestamp:(double)timestamp level:(int64_t)level
 {
-  v12 = a3;
-  v13 = a4;
+  titleCopy = title;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = WBSHistoryTag;
   v14 = [(WBSHistoryTag *)&v21 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v15;
 
-    v17 = [v13 copy];
+    v17 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v17;
 
-    v14->_databaseID = a5;
-    v14->_modificationTimestamp = a6;
-    v14->_level = a7;
+    v14->_databaseID = d;
+    v14->_modificationTimestamp = timestamp;
+    v14->_level = level;
     v19 = v14;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -44,8 +44,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WBSHistoryTag *)v4 identifier];
-      v6 = [v5 isEqualToString:self->_identifier];
+      identifier = [(WBSHistoryTag *)equalCopy identifier];
+      v6 = [identifier isEqualToString:self->_identifier];
     }
 
     else

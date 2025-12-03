@@ -1,11 +1,11 @@
 @interface _SwiftDriverManager
 + (id)sharedManager;
-- (id)driverApprovalStatesForThirdPartyApp:(id)a3;
+- (id)driverApprovalStatesForThirdPartyApp:(id)app;
 - (int64_t)driverCount;
-- (int64_t)driverCountForAppID:(id)a3;
+- (int64_t)driverCountForAppID:(id)d;
 - (int64_t)thirdPartyDriverCount;
 - (void)refresh;
-- (void)setDriverState:(id)a3 approved:(BOOL)a4;
+- (void)setDriverState:(id)state approved:(BOOL)approved;
 @end
 
 @implementation _SwiftDriverManager
@@ -36,7 +36,7 @@
 
 - (int64_t)driverCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DriverManager.driverCount()();
 
   return v3;
@@ -44,17 +44,17 @@
 
 - (int64_t)thirdPartyDriverCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DriverManager.thirdPartyDriverCount()();
 
   return v3;
 }
 
-- (int64_t)driverCountForAppID:(id)a3
+- (int64_t)driverCountForAppID:(id)d
 {
   v4 = sub_21C58206C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   v9 = DriverManager.driverCount(forAppID:)(v8);
@@ -64,16 +64,16 @@
 
 - (void)refresh
 {
-  v2 = self;
+  selfCopy = self;
   DriverManager.refresh()();
 }
 
-- (void)setDriverState:(id)a3 approved:(BOOL)a4
+- (void)setDriverState:(id)state approved:(BOOL)approved
 {
-  v4 = a4;
-  v6 = a3;
-  v8 = self;
-  if (v4)
+  approvedCopy = approved;
+  stateCopy = state;
+  selfCopy = self;
+  if (approvedCopy)
   {
     v7 = 1;
   }
@@ -83,14 +83,14 @@
     v7 = 2;
   }
 
-  DriverManager.setDriverState(driverApprovalState:state:)(v6, v7);
+  DriverManager.setDriverState(driverApprovalState:state:)(stateCopy, v7);
 }
 
-- (id)driverApprovalStatesForThirdPartyApp:(id)a3
+- (id)driverApprovalStatesForThirdPartyApp:(id)app
 {
   v4 = sub_21C58206C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   DriverManager.driverApprovalStatesForThirdPartyApp(_:)(v4, v6);
 
   type metadata accessor for DriverApprovalState();

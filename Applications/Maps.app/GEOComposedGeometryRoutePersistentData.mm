@@ -1,10 +1,10 @@
 @interface GEOComposedGeometryRoutePersistentData
 - (MapDataSubscriptionInfo)_maps_existingOfflineSubscription;
 - (id)addressString;
-- (id)addressStringWithAttributes:(id)a3;
-- (id)distanceAndElevationDescriptionStringWithAttributes:(id)a3;
+- (id)addressStringWithAttributes:(id)attributes;
+- (id)distanceAndElevationDescriptionStringWithAttributes:(id)attributes;
 - (id)distanceAndElevationString;
-- (id)distanceStringWithAttributes:(id)a3;
+- (id)distanceStringWithAttributes:(id)attributes;
 - (id)titleString;
 - (void)prepareForSaving;
 @end
@@ -13,8 +13,8 @@
 
 - (MapDataSubscriptionInfo)_maps_existingOfflineSubscription
 {
-  v2 = [(GEOComposedGeometryRoutePersistentData *)self boundingMapRegion];
-  v3 = [GEOMapRegion _maps_offlineCoverageRegionForRouteBounds:v2];
+  boundingMapRegion = [(GEOComposedGeometryRoutePersistentData *)self boundingMapRegion];
+  v3 = [GEOMapRegion _maps_offlineCoverageRegionForRouteBounds:boundingMapRegion];
 
   if (v3)
   {
@@ -36,8 +36,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(GEOComposedGeometryRoutePersistentData *)self anchorPoints];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  anchorPoints = [(GEOComposedGeometryRoutePersistentData *)self anchorPoints];
+  v3 = [anchorPoints countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -48,7 +48,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(anchorPoints);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -58,54 +58,54 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [anchorPoints countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)distanceStringWithAttributes:(id)a3
+- (id)distanceStringWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   [(GEOComposedGeometryRoutePersistentData *)self distance];
-  v5 = sub_100C86B78(v4);
+  v5 = sub_100C86B78(attributesCopy);
 
   return v5;
 }
 
-- (id)distanceAndElevationDescriptionStringWithAttributes:(id)a3
+- (id)distanceAndElevationDescriptionStringWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   [(GEOComposedGeometryRoutePersistentData *)self distance];
-  v5 = [(GEOComposedGeometryRoutePersistentData *)self elevationProfile];
-  v6 = sub_100C86C80(v5, v4);
+  elevationProfile = [(GEOComposedGeometryRoutePersistentData *)self elevationProfile];
+  v6 = sub_100C86C80(elevationProfile, attributesCopy);
 
   return v6;
 }
 
-- (id)addressStringWithAttributes:(id)a3
+- (id)addressStringWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if ([(GEOComposedGeometryRoutePersistentData *)self isAvailableForCurrentCountry])
   {
-    v5 = [(GEOComposedGeometryRoutePersistentData *)self address];
-    if (v5)
+    address = [(GEOComposedGeometryRoutePersistentData *)self address];
+    if (address)
     {
-      v6 = v4;
-      v7 = [v5 cityAndAboveNoCurrentCountryWithFallback:1];
+      v6 = attributesCopy;
+      v7 = [address cityAndAboveNoCurrentCountryWithFallback:1];
       v8 = v7;
       if (v7)
       {
-        v9 = v7;
+        name = v7;
       }
 
       else
       {
-        v9 = [v5 name];
+        name = [address name];
       }
 
-      v11 = v9;
+      v11 = name;
 
       v10 = [[NSAttributedString alloc] initWithString:v11 attributes:v6];
     }
@@ -127,8 +127,8 @@
 - (id)distanceAndElevationString
 {
   [(GEOComposedGeometryRoutePersistentData *)self distance];
-  v3 = [(GEOComposedGeometryRoutePersistentData *)self elevationProfile];
-  v4 = sub_100C86990(v3);
+  elevationProfile = [(GEOComposedGeometryRoutePersistentData *)self elevationProfile];
+  v4 = sub_100C86990(elevationProfile);
 
   return v4;
 }
@@ -137,8 +137,8 @@
 {
   if ([(GEOComposedGeometryRoutePersistentData *)self isAvailableForCurrentCountry])
   {
-    v3 = [(GEOComposedGeometryRoutePersistentData *)self address];
-    v4 = [v3 cityAndAboveNoCurrentCountryWithFallback:1];
+    address = [(GEOComposedGeometryRoutePersistentData *)self address];
+    v4 = [address cityAndAboveNoCurrentCountryWithFallback:1];
     v5 = v4;
     if (v4)
     {
@@ -147,13 +147,13 @@
 
     else
     {
-      v7 = [(GEOComposedGeometryRoutePersistentData *)self address];
-      v8 = [v7 name];
-      v9 = v8;
+      address2 = [(GEOComposedGeometryRoutePersistentData *)self address];
+      name = [address2 name];
+      v9 = name;
       v10 = &stru_1016631F0;
-      if (v8)
+      if (name)
       {
-        v10 = v8;
+        v10 = name;
       }
 
       v6 = v10;
@@ -170,26 +170,26 @@
 
 - (id)titleString
 {
-  v3 = [(GEOComposedGeometryRoutePersistentData *)self userProvidedName];
-  if ([v3 length])
+  userProvidedName = [(GEOComposedGeometryRoutePersistentData *)self userProvidedName];
+  if ([userProvidedName length])
   {
-    v4 = [(GEOComposedGeometryRoutePersistentData *)self userProvidedName];
+    userProvidedName2 = [(GEOComposedGeometryRoutePersistentData *)self userProvidedName];
   }
 
   else
   {
-    v5 = [(GEOComposedGeometryRoutePersistentData *)self routeName];
-    v6 = v5;
+    routeName = [(GEOComposedGeometryRoutePersistentData *)self routeName];
+    v6 = routeName;
     v7 = &stru_1016631F0;
-    if (v5)
+    if (routeName)
     {
-      v7 = v5;
+      v7 = routeName;
     }
 
-    v4 = v7;
+    userProvidedName2 = v7;
   }
 
-  return v4;
+  return userProvidedName2;
 }
 
 @end

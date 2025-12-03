@@ -9,18 +9,18 @@
 - (_TtC21DocumentUnderstanding32DUCategoryClassificationResponse)documentCategories;
 - (_TtC21DocumentUnderstanding34DUFoundInEventClassificationResult)foundInEventClassificationResult;
 - (_TtC21DocumentUnderstanding36DUUserInterfaceUnderstandingResponse)userInterfaceUnderstandingResults;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDocumentCategories:(id)a3;
-- (void)setFoundInEventClassificationResult:(id)a3;
-- (void)setFoundInEventResult:(id)a3;
-- (void)setLanguageTags:(id)a3;
-- (void)setPoem:(id)a3;
-- (void)setPosTags:(id)a3;
-- (void)setResponseDebugInfo:(id)a3;
-- (void)setStructuredEntities:(id)a3;
-- (void)setTopics:(id)a3;
-- (void)setUserInterfaceUnderstandingResults:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDocumentCategories:(id)categories;
+- (void)setFoundInEventClassificationResult:(id)result;
+- (void)setFoundInEventResult:(id)result;
+- (void)setLanguageTags:(id)tags;
+- (void)setPoem:(id)poem;
+- (void)setPosTags:(id)tags;
+- (void)setResponseDebugInfo:(id)info;
+- (void)setStructuredEntities:(id)entities;
+- (void)setTopics:(id)topics;
+- (void)setUserInterfaceUnderstandingResults:(id)results;
 @end
 
 @implementation DUResponse
@@ -32,10 +32,10 @@
   return v2;
 }
 
-- (void)setTopics:(id)a3
+- (void)setTopics:(id)topics
 {
-  v4 = a3;
-  v5 = self;
+  topicsCopy = topics;
+  selfCopy = self;
   sub_232BF7618();
 }
 
@@ -46,10 +46,10 @@
   return v2;
 }
 
-- (void)setStructuredEntities:(id)a3
+- (void)setStructuredEntities:(id)entities
 {
-  v4 = a3;
-  v5 = self;
+  entitiesCopy = entities;
+  selfCopy = self;
   sub_232BF77A0();
 }
 
@@ -60,10 +60,10 @@
   return v2;
 }
 
-- (void)setLanguageTags:(id)a3
+- (void)setLanguageTags:(id)tags
 {
-  v4 = a3;
-  v5 = self;
+  tagsCopy = tags;
+  selfCopy = self;
   sub_232BF7928();
 }
 
@@ -74,10 +74,10 @@
   return v2;
 }
 
-- (void)setUserInterfaceUnderstandingResults:(id)a3
+- (void)setUserInterfaceUnderstandingResults:(id)results
 {
-  v4 = a3;
-  v5 = self;
+  resultsCopy = results;
+  selfCopy = self;
   sub_232BF7AB0();
 }
 
@@ -88,10 +88,10 @@
   return v2;
 }
 
-- (void)setDocumentCategories:(id)a3
+- (void)setDocumentCategories:(id)categories
 {
-  v4 = a3;
-  v5 = self;
+  categoriesCopy = categories;
+  selfCopy = self;
   sub_232BF7C38();
 }
 
@@ -102,10 +102,10 @@
   return v2;
 }
 
-- (void)setFoundInEventResult:(id)a3
+- (void)setFoundInEventResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
+  resultCopy = result;
+  selfCopy = self;
   sub_232BF7DC0();
 }
 
@@ -116,10 +116,10 @@
   return v2;
 }
 
-- (void)setFoundInEventClassificationResult:(id)a3
+- (void)setFoundInEventClassificationResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
+  resultCopy = result;
+  selfCopy = self;
   sub_232BF7F48();
 }
 
@@ -139,17 +139,17 @@
   return v2;
 }
 
-- (void)setPoem:(id)a3
+- (void)setPoem:(id)poem
 {
-  v3 = a3;
-  if (a3)
+  poemCopy = poem;
+  if (poem)
   {
     sub_232BA4DEC(0, &qword_27DDC7908, 0x277CF1680);
-    v3 = sub_232CE9FE0();
+    poemCopy = sub_232CE9FE0();
   }
 
-  v5 = self;
-  sub_232BF810C(v3);
+  selfCopy = self;
+  sub_232BF810C(poemCopy);
 }
 
 - (NSArray)posTags
@@ -168,17 +168,17 @@
   return v2;
 }
 
-- (void)setPosTags:(id)a3
+- (void)setPosTags:(id)tags
 {
-  v3 = a3;
-  if (a3)
+  tagsCopy = tags;
+  if (tags)
   {
     type metadata accessor for PosTaggingResult();
-    v3 = sub_232CE9FE0();
+    tagsCopy = sub_232CE9FE0();
   }
 
-  v5 = self;
-  sub_232BF8278(v3);
+  selfCopy = self;
+  sub_232BF8278(tagsCopy);
 }
 
 - (_TtC21DocumentUnderstanding11DUDebugInfo)responseDebugInfo
@@ -188,16 +188,16 @@
   return v2;
 }
 
-- (void)setResponseDebugInfo:(id)a3
+- (void)setResponseDebugInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
+  infoCopy = info;
+  selfCopy = self;
   sub_232BF83C8();
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232BFE75C(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -206,10 +206,10 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_232BFE850();
 }
 

@@ -1,38 +1,38 @@
 @interface WCSessionUserInfoTransfer
-- (BOOL)isEqual:(id)a3;
-- (BOOL)updateUserInfo:(id)a3 error:(id *)a4;
-- (BOOL)updateUserInfoData:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)updateUserInfo:(id)info error:(id *)error;
+- (BOOL)updateUserInfoData:(id)data error:(id *)error;
 - (BOOL)verifyUserInfo;
 - (NSData)userInfoData;
 - (NSDictionary)userInfo;
 - (WCSessionUserInfoTransfer)init;
-- (WCSessionUserInfoTransfer)initWithCoder:(id)a3;
-- (WCSessionUserInfoTransfer)initWithComplicationTransferIdentifier:(id)a3;
-- (WCSessionUserInfoTransfer)initWithProtoBufFileURL:(id)a3;
-- (WCSessionUserInfoTransfer)initWithTranferIdentifier:(id)a3 complicationTransferIdentifier:(id)a4 currentComplication:(BOOL)a5;
+- (WCSessionUserInfoTransfer)initWithCoder:(id)coder;
+- (WCSessionUserInfoTransfer)initWithComplicationTransferIdentifier:(id)identifier;
+- (WCSessionUserInfoTransfer)initWithProtoBufFileURL:(id)l;
+- (WCSessionUserInfoTransfer)initWithTranferIdentifier:(id)identifier complicationTransferIdentifier:(id)transferIdentifier currentComplication:(BOOL)complication;
 - (id)description;
 - (id)protobufData;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 - (void)cancel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WCSessionUserInfoTransfer
 
-- (WCSessionUserInfoTransfer)initWithComplicationTransferIdentifier:(id)a3
+- (WCSessionUserInfoTransfer)initWithComplicationTransferIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = WCTransferIdentifierFromComplicationIdentifier(v4);
-  v6 = [(WCSessionUserInfoTransfer *)self initWithTranferIdentifier:v5 complicationTransferIdentifier:v4 currentComplication:1];
+  identifierCopy = identifier;
+  v5 = WCTransferIdentifierFromComplicationIdentifier(identifierCopy);
+  v6 = [(WCSessionUserInfoTransfer *)self initWithTranferIdentifier:v5 complicationTransferIdentifier:identifierCopy currentComplication:1];
 
   return v6;
 }
 
-- (WCSessionUserInfoTransfer)initWithTranferIdentifier:(id)a3 complicationTransferIdentifier:(id)a4 currentComplication:(BOOL)a5
+- (WCSessionUserInfoTransfer)initWithTranferIdentifier:(id)identifier complicationTransferIdentifier:(id)transferIdentifier currentComplication:(BOOL)complication
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  transferIdentifierCopy = transferIdentifier;
   v19.receiver = self;
   v19.super_class = WCSessionUserInfoTransfer;
   v11 = [(WCSessionUserInfoTransfer *)&v19 init];
@@ -47,9 +47,9 @@
     creationDate = v12->_creationDate;
     v12->_creationDate = v14;
 
-    objc_storeStrong(&v12->_transferIdentifier, a3);
-    v12->_currentComplicationInfo = a5;
-    objc_storeStrong(&v12->_complicationTransferIdentifier, a4);
+    objc_storeStrong(&v12->_transferIdentifier, identifier);
+    v12->_currentComplicationInfo = complication;
+    objc_storeStrong(&v12->_complicationTransferIdentifier, transferIdentifier);
     v16 = objc_alloc_init(WCUserInfo);
     userInfoStorage = v12->_userInfoStorage;
     v12->_userInfoStorage = v16;
@@ -58,12 +58,12 @@
   return v12;
 }
 
-- (WCSessionUserInfoTransfer)initWithProtoBufFileURL:(id)a3
+- (WCSessionUserInfoTransfer)initWithProtoBufFileURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v11 = 0;
-    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3 options:0 error:&v11];
+    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l options:0 error:&v11];
     v5 = v11;
     if (v4)
     {
@@ -71,11 +71,11 @@
       p_super = &v6->super.super;
       if (v6 && [(WCDProtoUserInfoTransfer *)v6 hasTransferIdentifier]&& [p_super hasClientData])
       {
-        v8 = [p_super transferIdentifier];
-        self = [(WCSessionUserInfoTransfer *)self initWithTranferIdentifier:v8 complicationTransferIdentifier:0 currentComplication:0];
+        transferIdentifier = [p_super transferIdentifier];
+        self = [(WCSessionUserInfoTransfer *)self initWithTranferIdentifier:transferIdentifier complicationTransferIdentifier:0 currentComplication:0];
 
-        v9 = [p_super clientData];
-        [(WCSessionUserInfoTransfer *)self updateUserInfoData:v9 error:0];
+        clientData = [p_super clientData];
+        [(WCSessionUserInfoTransfer *)self updateUserInfoData:clientData error:0];
       }
     }
 
@@ -95,52 +95,52 @@
 - (WCSessionUserInfoTransfer)init
 {
   v3 = objc_opt_new();
-  v4 = [v3 UUIDString];
-  v5 = [(WCSessionUserInfoTransfer *)self initWithTranferIdentifier:v4 complicationTransferIdentifier:0 currentComplication:0];
+  uUIDString = [v3 UUIDString];
+  v5 = [(WCSessionUserInfoTransfer *)self initWithTranferIdentifier:uUIDString complicationTransferIdentifier:0 currentComplication:0];
 
   return v5;
 }
 
 - (NSDictionary)userInfo
 {
-  v2 = [(WCSessionUserInfoTransfer *)self userInfoStorage];
-  v3 = [v2 userInfo];
+  userInfoStorage = [(WCSessionUserInfoTransfer *)self userInfoStorage];
+  userInfo = [userInfoStorage userInfo];
 
-  return v3;
+  return userInfo;
 }
 
 - (NSData)userInfoData
 {
-  v2 = [(WCSessionUserInfoTransfer *)self userInfoStorage];
-  v3 = [v2 userInfoData];
+  userInfoStorage = [(WCSessionUserInfoTransfer *)self userInfoStorage];
+  userInfoData = [userInfoStorage userInfoData];
 
-  return v3;
+  return userInfoData;
 }
 
-- (BOOL)updateUserInfo:(id)a3 error:(id *)a4
+- (BOOL)updateUserInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WCSessionUserInfoTransfer *)self userInfoStorage];
-  LOBYTE(a4) = [v7 updateUserInfo:v6 error:a4];
+  infoCopy = info;
+  userInfoStorage = [(WCSessionUserInfoTransfer *)self userInfoStorage];
+  LOBYTE(error) = [userInfoStorage updateUserInfo:infoCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)updateUserInfoData:(id)a3 error:(id *)a4
+- (BOOL)updateUserInfoData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WCSessionUserInfoTransfer *)self userInfoStorage];
-  LOBYTE(a4) = [v7 updateUserInfoData:v6 error:a4];
+  dataCopy = data;
+  userInfoStorage = [(WCSessionUserInfoTransfer *)self userInfoStorage];
+  LOBYTE(error) = [userInfoStorage updateUserInfoData:dataCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (BOOL)verifyUserInfo
 {
-  v2 = [(WCSessionUserInfoTransfer *)self userInfoStorage];
-  v3 = [v2 verifyUserInfo];
+  userInfoStorage = [(WCSessionUserInfoTransfer *)self userInfoStorage];
+  verifyUserInfo = [userInfoStorage verifyUserInfo];
 
-  return v3;
+  return verifyUserInfo;
 }
 
 - (void)cancel
@@ -149,13 +149,13 @@
   [v3 cancelUserInfo:self];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WCSessionUserInfoTransfer *)self creationDate];
-  v6 = [v4 creationDate];
+  compareCopy = compare;
+  creationDate = [(WCSessionUserInfoTransfer *)self creationDate];
+  creationDate2 = [compareCopy creationDate];
 
-  v7 = [v5 compare:v6];
+  v7 = [creationDate compare:creationDate2];
   return v7;
 }
 
@@ -184,8 +184,8 @@
     v7 = "NO";
   }
 
-  v8 = [(WCSessionUserInfoTransfer *)self userInfoData];
-  if (v8)
+  userInfoData = [(WCSessionUserInfoTransfer *)self userInfoData];
+  if (userInfoData)
   {
     v9 = "YES";
   }
@@ -200,10 +200,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -213,11 +213,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WCSessionUserInfoTransfer *)self transferIdentifier];
-      v7 = [(WCSessionUserInfoTransfer *)v5 transferIdentifier];
+      v5 = equalCopy;
+      transferIdentifier = [(WCSessionUserInfoTransfer *)self transferIdentifier];
+      transferIdentifier2 = [(WCSessionUserInfoTransfer *)v5 transferIdentifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [transferIdentifier isEqual:transferIdentifier2];
     }
 
     else
@@ -231,48 +231,48 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WCSessionUserInfoTransfer *)self transferIdentifier];
-  v3 = [v2 hash];
+  transferIdentifier = [(WCSessionUserInfoTransfer *)self transferIdentifier];
+  v3 = [transferIdentifier hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   currentComplicationInfo = self->_currentComplicationInfo;
-  v5 = a3;
-  [v5 encodeBool:currentComplicationInfo forKey:@"currentComplicationInfo"];
-  [v5 encodeBool:self->_transferring forKey:@"transferring"];
-  [v5 encodeObject:self->_transferIdentifier forKey:@"transferIdentifier"];
-  [v5 encodeObject:self->_userInfoStorage forKey:@"userInfoStorage"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_complicationTransferIdentifier forKey:@"complicationTransferIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeBool:currentComplicationInfo forKey:@"currentComplicationInfo"];
+  [coderCopy encodeBool:self->_transferring forKey:@"transferring"];
+  [coderCopy encodeObject:self->_transferIdentifier forKey:@"transferIdentifier"];
+  [coderCopy encodeObject:self->_userInfoStorage forKey:@"userInfoStorage"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_complicationTransferIdentifier forKey:@"complicationTransferIdentifier"];
 }
 
-- (WCSessionUserInfoTransfer)initWithCoder:(id)a3
+- (WCSessionUserInfoTransfer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = WCSessionUserInfoTransfer;
   v5 = [(WCSessionUserInfoTransfer *)&v17 init];
   if (v5)
   {
-    v5->_currentComplicationInfo = [v4 decodeBoolForKey:@"currentComplicationInfo"];
-    v5->_transferring = [v4 decodeBoolForKey:@"transferring"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferIdentifier"];
+    v5->_currentComplicationInfo = [coderCopy decodeBoolForKey:@"currentComplicationInfo"];
+    v5->_transferring = [coderCopy decodeBoolForKey:@"transferring"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferIdentifier"];
     v7 = [v6 copy];
     transferIdentifier = v5->_transferIdentifier;
     v5->_transferIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userInfoStorage"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userInfoStorage"];
     userInfoStorage = v5->_userInfoStorage;
     v5->_userInfoStorage = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"complicationTransferIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"complicationTransferIdentifier"];
     v14 = [v13 copy];
     complicationTransferIdentifier = v5->_complicationTransferIdentifier;
     v5->_complicationTransferIdentifier = v14;
@@ -285,15 +285,15 @@
 {
   v3 = objc_opt_new();
   [v3 setVersion:1];
-  v4 = [(WCSessionUserInfoTransfer *)self userInfoData];
-  [v3 setClientData:v4];
+  userInfoData = [(WCSessionUserInfoTransfer *)self userInfoData];
+  [v3 setClientData:userInfoData];
 
-  v5 = [(WCSessionUserInfoTransfer *)self transferIdentifier];
-  [v3 setTransferIdentifier:v5];
+  transferIdentifier = [(WCSessionUserInfoTransfer *)self transferIdentifier];
+  [v3 setTransferIdentifier:transferIdentifier];
 
-  v6 = [v3 data];
+  data = [v3 data];
 
-  return v6;
+  return data;
 }
 
 - (void)initWithProtoBufFileURL:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

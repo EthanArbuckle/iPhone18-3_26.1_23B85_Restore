@@ -1,60 +1,60 @@
 @interface TIKBUserModel
-+ (TIKBUserModel)userModelWithInputMode:(id)a3 userModelDataStore:(id)a4 metricDescriptorRegistry:(id)a5 fromDate:(id)a6;
-- (TIKBUserModel)initWithInputMode:(id)a3 userModelDataStore:(id)a4 metricDescriptorRegistry:(id)a5 fromDate:(id)a6;
++ (TIKBUserModel)userModelWithInputMode:(id)mode userModelDataStore:(id)store metricDescriptorRegistry:(id)registry fromDate:(id)date;
+- (TIKBUserModel)initWithInputMode:(id)mode userModelDataStore:(id)store metricDescriptorRegistry:(id)registry fromDate:(id)date;
 - (id)dictForPowerLog;
 - (id)durableCounterKeys;
 - (id)settingsDictionary;
-- (id)valueForMetricWithName:(id)a3 withContext:(id)a4;
-- (id)valuesByBucketedWordLengthForMetricWithName:(id)a3 withContext:(id)a4;
-- (void)addDescriptor:(id)a3 toWeeklyMetricKeys:(id)a4;
-- (void)addMetric:(id)a3 toWeeklyMetricKeys:(id)a4;
-- (void)dispatchFeedbackAnalyzers:(id)a3 aligned:(id)a4 revisionRateAnalysisSummary:(id)a5;
+- (id)valueForMetricWithName:(id)name withContext:(id)context;
+- (id)valuesByBucketedWordLengthForMetricWithName:(id)name withContext:(id)context;
+- (void)addDescriptor:(id)descriptor toWeeklyMetricKeys:(id)keys;
+- (void)addMetric:(id)metric toWeeklyMetricKeys:(id)keys;
+- (void)dispatchFeedbackAnalyzers:(id)analyzers aligned:(id)aligned revisionRateAnalysisSummary:(id)summary;
 - (void)doLoad;
-- (void)sessionDidEnd:(id)a3 aligned:(id)a4;
+- (void)sessionDidEnd:(id)end aligned:(id)aligned;
 - (void)trackPowerLogIfNecessary;
 @end
 
 @implementation TIKBUserModel
 
-- (id)valuesByBucketedWordLengthForMetricWithName:(id)a3 withContext:(id)a4
+- (id)valuesByBucketedWordLengthForMetricWithName:(id)name withContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  nameCopy = name;
   [(TIUserModel *)self loadIfNecessary];
-  v8 = [(TIUserModel *)self valuesFromContext:v6];
+  v8 = [(TIUserModel *)self valuesFromContext:contextCopy];
 
-  v9 = [v8 metricValuesByWordLength:v7 userModel:self forNumberOfDays:*MEMORY[0x277D6FD20]];
+  v9 = [v8 metricValuesByWordLength:nameCopy userModel:self forNumberOfDays:*MEMORY[0x277D6FD20]];
 
   return v9;
 }
 
-- (id)valueForMetricWithName:(id)a3 withContext:(id)a4
+- (id)valueForMetricWithName:(id)name withContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  nameCopy = name;
   [(TIUserModel *)self loadIfNecessary];
-  v8 = [(TIUserModel *)self valuesFromContext:v6];
+  v8 = [(TIUserModel *)self valuesFromContext:contextCopy];
 
-  v9 = [v8 metricValue:v7 userModel:self forNumberOfDays:*MEMORY[0x277D6FD20]];
+  v9 = [v8 metricValue:nameCopy userModel:self forNumberOfDays:*MEMORY[0x277D6FD20]];
 
   return v9;
 }
 
-- (void)addDescriptor:(id)a3 toWeeklyMetricKeys:(id)a4
+- (void)addDescriptor:(id)descriptor toWeeklyMetricKeys:(id)keys
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 calculationExpression];
+  descriptorCopy = descriptor;
+  keysCopy = keys;
+  calculationExpression = [descriptorCopy calculationExpression];
 
-  if (v8)
+  if (calculationExpression)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v6 calculationDependencies];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    calculationDependencies = [descriptorCopy calculationDependencies];
+    v10 = [calculationDependencies countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -66,14 +66,14 @@
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(calculationDependencies);
           }
 
-          [(TIKBUserModel *)self addMetric:*(*(&v16 + 1) + 8 * v13++) toWeeklyMetricKeys:v7];
+          [(TIKBUserModel *)self addMetric:*(*(&v16 + 1) + 8 * v13++) toWeeklyMetricKeys:keysCopy];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [calculationDependencies countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -82,20 +82,20 @@
 
   else
   {
-    v14 = [v6 metricName];
-    [v7 addObject:v14];
+    metricName = [descriptorCopy metricName];
+    [keysCopy addObject:metricName];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMetric:(id)a3 toWeeklyMetricKeys:(id)a4
+- (void)addMetric:(id)metric toWeeklyMetricKeys:(id)keys
 {
-  v7 = a4;
-  v6 = [(TIMetricDescriptorRegistry *)self->_metricDescriptorRegistry metricDescriptorWithName:a3];
+  keysCopy = keys;
+  v6 = [(TIMetricDescriptorRegistry *)self->_metricDescriptorRegistry metricDescriptorWithName:metric];
   if (v6 && [v6 isMemberOfClass:objc_opt_class()])
   {
-    [(TIKBUserModel *)self addDescriptor:v6 toWeeklyMetricKeys:v7];
+    [(TIKBUserModel *)self addDescriptor:v6 toWeeklyMetricKeys:keysCopy];
   }
 }
 
@@ -109,9 +109,9 @@
     self->_metricDescriptorRegistry = v3;
   }
 
-  v5 = [(TIUserModel *)self weeklyMetricKeys];
+  weeklyMetricKeys = [(TIUserModel *)self weeklyMetricKeys];
 
-  if (!v5)
+  if (!weeklyMetricKeys)
   {
     v6 = objc_opt_new();
     [v6 addObject:kFeatureCounterWithWordLenWordsTypedOnFloatingKeyboard];
@@ -129,8 +129,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(TIMetricDescriptorRegistry *)self->_metricDescriptorRegistry allMetricDescriptors];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allMetricDescriptors = [(TIMetricDescriptorRegistry *)self->_metricDescriptorRegistry allMetricDescriptors];
+    v8 = [allMetricDescriptors countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -142,7 +142,7 @@
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allMetricDescriptors);
           }
 
           v12 = *(*(&v16 + 1) + 8 * v11);
@@ -155,14 +155,14 @@
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [allMetricDescriptors countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
     }
 
-    v13 = [v6 allObjects];
-    [(TIUserModel *)self setWeeklyMetricKeys:v13];
+    allObjects = [v6 allObjects];
+    [(TIUserModel *)self setWeeklyMetricKeys:allObjects];
   }
 
   v15.receiver = self;
@@ -171,20 +171,20 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchFeedbackAnalyzers:(id)a3 aligned:(id)a4 revisionRateAnalysisSummary:(id)a5
+- (void)dispatchFeedbackAnalyzers:(id)analyzers aligned:(id)aligned revisionRateAnalysisSummary:(id)summary
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [TIAutocorrectionFeedbackAnalyzer analyzerForUserModel:self revisionRateAnalysisSummary:a5];
-  [v10 analyzeSession:v9 alignedSession:v8 withConfidence:{objc_msgSend(v10, "evaluateConfidenceInSession:alignedSession:", v9, v8)}];
+  alignedCopy = aligned;
+  analyzersCopy = analyzers;
+  v10 = [TIAutocorrectionFeedbackAnalyzer analyzerForUserModel:self revisionRateAnalysisSummary:summary];
+  [v10 analyzeSession:analyzersCopy alignedSession:alignedCopy withConfidence:{objc_msgSend(v10, "evaluateConfidenceInSession:alignedSession:", analyzersCopy, alignedCopy)}];
 }
 
-- (void)sessionDidEnd:(id)a3 aligned:(id)a4
+- (void)sessionDidEnd:(id)end aligned:(id)aligned
 {
-  v6 = a4;
-  v7 = a3;
+  alignedCopy = aligned;
+  endCopy = end;
   v8 = [TIFavoniusTypingSessionAnalyzer favoniusTypingSessionAnalyzerForUserModel:self];
-  [v8 analyzeSession:v7 alignedSession:v6 withConfidence:{objc_msgSend(v8, "evaluateConfidenceInSession:alignedSession:", v7, v6)}];
+  [v8 analyzeSession:endCopy alignedSession:alignedCopy withConfidence:{objc_msgSend(v8, "evaluateConfidenceInSession:alignedSession:", endCopy, alignedCopy)}];
 }
 
 - (id)dictForPowerLog
@@ -216,86 +216,86 @@
 
         v9 = [(TIUserModel *)self valuesFromContext:*(*(&v55 + 1) + 8 * i)];
         v10 = [v9 getTransientCounterForKey:kFeatureValueWithWordLenPathEligibleWordsTapped];
-        v11 = [v10 currentCounts];
+        currentCounts = [v10 currentCounts];
 
-        if ([v11 count])
+        if ([currentCounts count])
         {
           v12 = 0;
           do
           {
-            v13 = [v11 objectAtIndex:v12];
-            v14 = [v13 intValue];
+            v13 = [currentCounts objectAtIndex:v12];
+            intValue = [v13 intValue];
 
-            v5 = (v14 + v5);
-            v4 = (v4 + v14 * (v12++ + 2));
+            v5 = (intValue + v5);
+            v4 = (v4 + intValue * (v12++ + 2));
           }
 
-          while (v12 != [v11 count]);
+          while (v12 != [currentCounts count]);
         }
 
         v15 = [v9 getTransientCounterForKey:kFeatureValueWithWordLenPathIneligibleWordsTapped];
-        v16 = [v15 currentCounts];
+        currentCounts2 = [v15 currentCounts];
 
-        if ([v16 count])
+        if ([currentCounts2 count])
         {
           v17 = 0;
           do
           {
-            v18 = [v16 objectAtIndex:v17];
-            v19 = [v18 intValue];
+            v18 = [currentCounts2 objectAtIndex:v17];
+            intValue2 = [v18 intValue];
 
-            v5 = (v19 + v5);
-            v4 = (v4 + v19 * (v17++ + 2));
+            v5 = (intValue2 + v5);
+            v4 = (v4 + intValue2 * (v17++ + 2));
           }
 
-          while (v17 != [v16 count]);
+          while (v17 != [currentCounts2 count]);
         }
 
         v20 = [v9 getTransientCounterForKey:kFeatureValueWithWordLenWholeWordsPathed];
-        v21 = [v20 currentCounts];
+        currentCounts3 = [v20 currentCounts];
 
-        if ([v21 count])
+        if ([currentCounts3 count])
         {
           v22 = 0;
           do
           {
-            v23 = [v21 objectAtIndex:v22];
-            v24 = [v23 intValue];
+            v23 = [currentCounts3 objectAtIndex:v22];
+            intValue3 = [v23 intValue];
 
-            v3 = (v24 + v3);
-            v2 = (v2 + v24 * (v22++ + 2));
+            v3 = (intValue3 + v3);
+            v2 = (v2 + intValue3 * (v22++ + 2));
           }
 
-          while (v22 != [v21 count]);
+          while (v22 != [currentCounts3 count]);
         }
 
         v25 = [v9 getTransientCounterForKey:kFeatureValueWithWordLenWordCompletionsPathed];
-        v26 = [v25 currentCounts];
+        currentCounts4 = [v25 currentCounts];
 
-        if ([v26 count])
+        if ([currentCounts4 count])
         {
           v27 = 0;
           do
           {
-            v28 = [v26 objectAtIndex:v27];
-            v29 = [v28 intValue];
+            v28 = [currentCounts4 objectAtIndex:v27];
+            intValue4 = [v28 intValue];
 
-            v3 = (v29 + v3);
-            v2 = (v2 + v29 * (v27++ + 2));
+            v3 = (intValue4 + v3);
+            v2 = (v2 + intValue4 * (v27++ + 2));
           }
 
-          while (v27 != [v26 count]);
+          while (v27 != [currentCounts4 count]);
         }
 
         v30 = [v9 getTransientCounterForKey:kFeatureCounterDurationTappedWords];
-        v31 = [v30 currentCounts];
+        currentCounts5 = [v30 currentCounts];
 
-        if ([v31 count])
+        if ([currentCounts5 count])
         {
           v32 = 0;
           do
           {
-            v33 = [v31 objectAtIndex:v32];
+            v33 = [currentCounts5 objectAtIndex:v32];
             [v33 doubleValue];
             v35 = v34;
 
@@ -303,18 +303,18 @@
             ++v32;
           }
 
-          while (v32 != [v31 count]);
+          while (v32 != [currentCounts5 count]);
         }
 
         v36 = [v9 getTransientCounterForKey:kFeatureCounterDurationPathedWords];
-        v37 = [v36 currentCounts];
+        currentCounts6 = [v36 currentCounts];
 
-        if ([v37 count])
+        if ([currentCounts6 count])
         {
           v38 = 0;
           do
           {
-            v39 = [v37 objectAtIndex:v38];
+            v39 = [currentCounts6 objectAtIndex:v38];
             [v39 doubleValue];
             v41 = v40;
 
@@ -322,7 +322,7 @@
             ++v38;
           }
 
-          while (v38 != [v37 count]);
+          while (v38 != [currentCounts6 count]);
         }
       }
 
@@ -385,8 +385,8 @@
 - (id)settingsDictionary
 {
   v22[6] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
   v4 = *MEMORY[0x277D6F830];
   v22[0] = *MEMORY[0x277D6F848];
   v22[1] = v4;
@@ -416,9 +416,9 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v3 BOOLForPreferenceKey:{v12, v17}];
+        v13 = [mEMORY[0x277D6F470] BOOLForPreferenceKey:{v12, v17}];
         v14 = [MEMORY[0x277CCABB0] numberWithBool:v13];
-        [v2 setObject:v14 forKey:v12];
+        [dictionary setObject:v14 forKey:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -429,7 +429,7 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return dictionary;
 }
 
 - (id)durableCounterKeys
@@ -451,29 +451,29 @@
   return v2;
 }
 
-- (TIKBUserModel)initWithInputMode:(id)a3 userModelDataStore:(id)a4 metricDescriptorRegistry:(id)a5 fromDate:(id)a6
+- (TIKBUserModel)initWithInputMode:(id)mode userModelDataStore:(id)store metricDescriptorRegistry:(id)registry fromDate:(id)date
 {
-  v11 = a5;
+  registryCopy = registry;
   v15.receiver = self;
   v15.super_class = TIKBUserModel;
-  v12 = [(TIUserModel *)&v15 initWithInputMode:a3 userModelDataStore:a4 weeklyMetricKeys:0 fromDate:a6 explicitTearDown:1];
+  v12 = [(TIUserModel *)&v15 initWithInputMode:mode userModelDataStore:store weeklyMetricKeys:0 fromDate:date explicitTearDown:1];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_metricDescriptorRegistry, a5);
+    objc_storeStrong(&v12->_metricDescriptorRegistry, registry);
     [(TIUserModel *)v13 setConfigurationDelegate:v13];
   }
 
   return v13;
 }
 
-+ (TIKBUserModel)userModelWithInputMode:(id)a3 userModelDataStore:(id)a4 metricDescriptorRegistry:(id)a5 fromDate:(id)a6
++ (TIKBUserModel)userModelWithInputMode:(id)mode userModelDataStore:(id)store metricDescriptorRegistry:(id)registry fromDate:(id)date
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[TIKBUserModel alloc] initWithInputMode:v12 userModelDataStore:v11 metricDescriptorRegistry:v10 fromDate:v9];
+  dateCopy = date;
+  registryCopy = registry;
+  storeCopy = store;
+  modeCopy = mode;
+  v13 = [[TIKBUserModel alloc] initWithInputMode:modeCopy userModelDataStore:storeCopy metricDescriptorRegistry:registryCopy fromDate:dateCopy];
 
   return v13;
 }

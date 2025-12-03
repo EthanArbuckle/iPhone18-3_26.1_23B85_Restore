@@ -1,15 +1,15 @@
 @interface HKSummarySharingEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSummarySharingEntry)init;
-- (HKSummarySharingEntry)initWithCoder:(id)a3;
-- (HKSummarySharingEntry)initWithUUID:(id)a3 primaryContactIdentifier:(id)a4 allContactIdentifiers:(id)a5 firstName:(id)a6 lastName:(id)a7 userWheelchairMode:(int64_t)a8 type:(int64_t)a9 status:(int64_t)a10 notificationStatus:(int64_t)a11 direction:(unint64_t)a12 modificationDate:(id)a13 dateAccepted:(id)a14 dateInvited:(id)a15 profileIdentifier:(id)a16 CNContactIdentifier:(id)a17 isPaused:(BOOL)a18;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HKSummarySharingEntry)initWithCoder:(id)coder;
+- (HKSummarySharingEntry)initWithUUID:(id)d primaryContactIdentifier:(id)identifier allContactIdentifiers:(id)identifiers firstName:(id)name lastName:(id)lastName userWheelchairMode:(int64_t)mode type:(int64_t)type status:(int64_t)self0 notificationStatus:(int64_t)self1 direction:(unint64_t)self2 modificationDate:(id)self3 dateAccepted:(id)self4 dateInvited:(id)self5 profileIdentifier:(id)self6 CNContactIdentifier:(id)self7 isPaused:(BOOL)self8;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_setCNContactIdentifier:(id)a3;
-- (void)_setDateAccepted:(id)a3;
-- (void)_setDateInvited:(id)a3;
-- (void)_setProfileIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setCNContactIdentifier:(id)identifier;
+- (void)_setDateAccepted:(id)accepted;
+- (void)_setDateInvited:(id)invited;
+- (void)_setProfileIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSummarySharingEntry
@@ -24,70 +24,70 @@
   return 0;
 }
 
-- (HKSummarySharingEntry)initWithUUID:(id)a3 primaryContactIdentifier:(id)a4 allContactIdentifiers:(id)a5 firstName:(id)a6 lastName:(id)a7 userWheelchairMode:(int64_t)a8 type:(int64_t)a9 status:(int64_t)a10 notificationStatus:(int64_t)a11 direction:(unint64_t)a12 modificationDate:(id)a13 dateAccepted:(id)a14 dateInvited:(id)a15 profileIdentifier:(id)a16 CNContactIdentifier:(id)a17 isPaused:(BOOL)a18
+- (HKSummarySharingEntry)initWithUUID:(id)d primaryContactIdentifier:(id)identifier allContactIdentifiers:(id)identifiers firstName:(id)name lastName:(id)lastName userWheelchairMode:(int64_t)mode type:(int64_t)type status:(int64_t)self0 notificationStatus:(int64_t)self1 direction:(unint64_t)self2 modificationDate:(id)self3 dateAccepted:(id)self4 dateInvited:(id)self5 profileIdentifier:(id)self6 CNContactIdentifier:(id)self7 isPaused:(BOOL)self8
 {
-  v51 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
-  v29 = a16;
-  v30 = a17;
+  dCopy = d;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  dateCopy = date;
+  acceptedCopy = accepted;
+  invitedCopy = invited;
+  profileIdentifierCopy = profileIdentifier;
+  contactIdentifierCopy = contactIdentifier;
   v52.receiver = self;
   v52.super_class = HKSummarySharingEntry;
   v31 = [(HKSummarySharingEntry *)&v52 init];
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_UUID, a3);
-    v33 = [v22 copy];
+    objc_storeStrong(&v31->_UUID, d);
+    v33 = [identifierCopy copy];
     primaryContactIdentifier = v32->_primaryContactIdentifier;
     v32->_primaryContactIdentifier = v33;
 
-    v35 = [v23 copy];
+    v35 = [identifiersCopy copy];
     allContactIdentifiers = v32->_allContactIdentifiers;
     v32->_allContactIdentifiers = v35;
 
-    v37 = [v24 copy];
+    v37 = [nameCopy copy];
     firstName = v32->_firstName;
     v32->_firstName = v37;
 
-    v39 = [v25 copy];
+    v39 = [lastNameCopy copy];
     lastName = v32->_lastName;
     v32->_lastName = v39;
 
-    v32->_userWheelchairMode = a8;
-    v32->_type = a9;
-    v32->_status = a10;
-    v32->_direction = a12;
-    v32->_notificationStatus = a11;
-    if (v26)
+    v32->_userWheelchairMode = mode;
+    v32->_type = type;
+    v32->_status = status;
+    v32->_direction = direction;
+    v32->_notificationStatus = notificationStatus;
+    if (dateCopy)
     {
-      v41 = v26;
+      date = dateCopy;
     }
 
     else
     {
-      v41 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
     modificationDate = v32->_modificationDate;
-    v32->_modificationDate = v41;
+    v32->_modificationDate = date;
 
-    objc_storeStrong(&v32->_dateAccepted, a14);
-    objc_storeStrong(&v32->_dateInvited, a15);
-    v43 = [v29 copy];
+    objc_storeStrong(&v32->_dateAccepted, accepted);
+    objc_storeStrong(&v32->_dateInvited, invited);
+    v43 = [profileIdentifierCopy copy];
     profileIdentifier = v32->_profileIdentifier;
     v32->_profileIdentifier = v43;
 
-    v45 = [v30 copy];
+    v45 = [contactIdentifierCopy copy];
     CNContactIdentifier = v32->_CNContactIdentifier;
     v32->_CNContactIdentifier = v45;
 
-    v32->_isPaused = a18;
+    v32->_isPaused = paused;
   }
 
   return v32;
@@ -112,46 +112,46 @@
   return v13;
 }
 
-- (void)_setProfileIdentifier:(id)a3
+- (void)_setProfileIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   profileIdentifier = self->_profileIdentifier;
   self->_profileIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, profileIdentifier);
 }
 
-- (void)_setCNContactIdentifier:(id)a3
+- (void)_setCNContactIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   CNContactIdentifier = self->_CNContactIdentifier;
   self->_CNContactIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, CNContactIdentifier);
 }
 
-- (void)_setDateAccepted:(id)a3
+- (void)_setDateAccepted:(id)accepted
 {
-  v4 = [a3 copy];
+  v4 = [accepted copy];
   dateAccepted = self->_dateAccepted;
   self->_dateAccepted = v4;
 
   MEMORY[0x1EEE66BB8](v4, dateAccepted);
 }
 
-- (void)_setDateInvited:(id)a3
+- (void)_setDateInvited:(id)invited
 {
-  v4 = [a3 copy];
+  v4 = [invited copy];
   dateInvited = self->_dateInvited;
   self->_dateInvited = v4;
 
   MEMORY[0x1EEE66BB8](v4, dateInvited);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -161,10 +161,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       UUID = self->_UUID;
-      v7 = [(HKSummarySharingEntry *)v5 UUID];
-      LODWORD(UUID) = [(NSUUID *)UUID isEqual:v7];
+      uUID = [(HKSummarySharingEntry *)v5 UUID];
+      LODWORD(UUID) = [(NSUUID *)UUID isEqual:uUID];
 
       if (!UUID)
       {
@@ -172,24 +172,24 @@
       }
 
       primaryContactIdentifier = self->_primaryContactIdentifier;
-      v9 = [(HKSummarySharingEntry *)v5 primaryContactIdentifier];
-      v10 = v9;
-      if (primaryContactIdentifier == v9)
+      primaryContactIdentifier = [(HKSummarySharingEntry *)v5 primaryContactIdentifier];
+      v10 = primaryContactIdentifier;
+      if (primaryContactIdentifier == primaryContactIdentifier)
       {
       }
 
       else
       {
-        v11 = [(HKSummarySharingEntry *)v5 primaryContactIdentifier];
-        if (!v11)
+        primaryContactIdentifier2 = [(HKSummarySharingEntry *)v5 primaryContactIdentifier];
+        if (!primaryContactIdentifier2)
         {
           goto LABEL_38;
         }
 
-        v12 = v11;
+        v12 = primaryContactIdentifier2;
         v13 = self->_primaryContactIdentifier;
-        v14 = [(HKSummarySharingEntry *)v5 primaryContactIdentifier];
-        LODWORD(v13) = [(NSString *)v13 isEqualToString:v14];
+        primaryContactIdentifier3 = [(HKSummarySharingEntry *)v5 primaryContactIdentifier];
+        LODWORD(v13) = [(NSString *)v13 isEqualToString:primaryContactIdentifier3];
 
         if (!v13)
         {
@@ -198,24 +198,24 @@
       }
 
       allContactIdentifiers = self->_allContactIdentifiers;
-      v17 = [(HKSummarySharingEntry *)v5 allContactIdentifiers];
-      v10 = v17;
-      if (allContactIdentifiers == v17)
+      allContactIdentifiers = [(HKSummarySharingEntry *)v5 allContactIdentifiers];
+      v10 = allContactIdentifiers;
+      if (allContactIdentifiers == allContactIdentifiers)
       {
       }
 
       else
       {
-        v18 = [(HKSummarySharingEntry *)v5 allContactIdentifiers];
-        if (!v18)
+        allContactIdentifiers2 = [(HKSummarySharingEntry *)v5 allContactIdentifiers];
+        if (!allContactIdentifiers2)
         {
           goto LABEL_38;
         }
 
-        v19 = v18;
+        v19 = allContactIdentifiers2;
         v20 = self->_allContactIdentifiers;
-        v21 = [(HKSummarySharingEntry *)v5 allContactIdentifiers];
-        LODWORD(v20) = [(NSArray *)v20 isEqualToArray:v21];
+        allContactIdentifiers3 = [(HKSummarySharingEntry *)v5 allContactIdentifiers];
+        LODWORD(v20) = [(NSArray *)v20 isEqualToArray:allContactIdentifiers3];
 
         if (!v20)
         {
@@ -224,24 +224,24 @@
       }
 
       firstName = self->_firstName;
-      v23 = [(HKSummarySharingEntry *)v5 firstName];
-      v10 = v23;
-      if (firstName == v23)
+      firstName = [(HKSummarySharingEntry *)v5 firstName];
+      v10 = firstName;
+      if (firstName == firstName)
       {
       }
 
       else
       {
-        v24 = [(HKSummarySharingEntry *)v5 firstName];
-        if (!v24)
+        firstName2 = [(HKSummarySharingEntry *)v5 firstName];
+        if (!firstName2)
         {
           goto LABEL_38;
         }
 
-        v25 = v24;
+        v25 = firstName2;
         v26 = self->_firstName;
-        v27 = [(HKSummarySharingEntry *)v5 firstName];
-        LODWORD(v26) = [(NSString *)v26 isEqualToString:v27];
+        firstName3 = [(HKSummarySharingEntry *)v5 firstName];
+        LODWORD(v26) = [(NSString *)v26 isEqualToString:firstName3];
 
         if (!v26)
         {
@@ -250,24 +250,24 @@
       }
 
       lastName = self->_lastName;
-      v29 = [(HKSummarySharingEntry *)v5 lastName];
-      v10 = v29;
-      if (lastName == v29)
+      lastName = [(HKSummarySharingEntry *)v5 lastName];
+      v10 = lastName;
+      if (lastName == lastName)
       {
       }
 
       else
       {
-        v30 = [(HKSummarySharingEntry *)v5 lastName];
-        if (!v30)
+        lastName2 = [(HKSummarySharingEntry *)v5 lastName];
+        if (!lastName2)
         {
           goto LABEL_38;
         }
 
-        v31 = v30;
+        v31 = lastName2;
         v32 = self->_lastName;
-        v33 = [(HKSummarySharingEntry *)v5 lastName];
-        LODWORD(v32) = [(NSString *)v32 isEqualToString:v33];
+        lastName3 = [(HKSummarySharingEntry *)v5 lastName];
+        LODWORD(v32) = [(NSString *)v32 isEqualToString:lastName3];
 
         if (!v32)
         {
@@ -306,33 +306,33 @@
       }
 
       modificationDate = self->_modificationDate;
-      v40 = [(HKSummarySharingEntry *)v5 modificationDate];
+      modificationDate = [(HKSummarySharingEntry *)v5 modificationDate];
 
-      if (modificationDate != v40)
+      if (modificationDate != modificationDate)
       {
         goto LABEL_39;
       }
 
       dateAccepted = self->_dateAccepted;
-      v42 = [(HKSummarySharingEntry *)v5 dateAccepted];
+      dateAccepted = [(HKSummarySharingEntry *)v5 dateAccepted];
 
-      if (dateAccepted != v42)
+      if (dateAccepted != dateAccepted)
       {
         goto LABEL_39;
       }
 
       profileIdentifier = self->_profileIdentifier;
-      v44 = [(HKSummarySharingEntry *)v5 profileIdentifier];
+      profileIdentifier = [(HKSummarySharingEntry *)v5 profileIdentifier];
 
-      if (profileIdentifier != v44)
+      if (profileIdentifier != profileIdentifier)
       {
         goto LABEL_39;
       }
 
       CNContactIdentifier = self->_CNContactIdentifier;
-      v46 = [(HKSummarySharingEntry *)v5 CNContactIdentifier];
-      v10 = v46;
-      if (CNContactIdentifier == v46)
+      cNContactIdentifier = [(HKSummarySharingEntry *)v5 CNContactIdentifier];
+      v10 = cNContactIdentifier;
+      if (CNContactIdentifier == cNContactIdentifier)
       {
 
 LABEL_43:
@@ -341,13 +341,13 @@ LABEL_43:
         goto LABEL_40;
       }
 
-      v47 = [(HKSummarySharingEntry *)v5 CNContactIdentifier];
-      if (v47)
+      cNContactIdentifier2 = [(HKSummarySharingEntry *)v5 CNContactIdentifier];
+      if (cNContactIdentifier2)
       {
-        v48 = v47;
+        v48 = cNContactIdentifier2;
         v49 = self->_CNContactIdentifier;
-        v50 = [(HKSummarySharingEntry *)v5 CNContactIdentifier];
-        LODWORD(v49) = [(NSString *)v49 isEqualToString:v50];
+        cNContactIdentifier3 = [(HKSummarySharingEntry *)v5 CNContactIdentifier];
+        LODWORD(v49) = [(NSString *)v49 isEqualToString:cNContactIdentifier3];
 
         if (v49)
         {
@@ -374,54 +374,54 @@ LABEL_41:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HKSummarySharingEntry allocWithZone:a3];
+  v4 = [HKSummarySharingEntry allocWithZone:zone];
   LOBYTE(v6) = self->_isPaused;
   return [(HKSummarySharingEntry *)v4 initWithUUID:self->_UUID primaryContactIdentifier:self->_primaryContactIdentifier allContactIdentifiers:self->_allContactIdentifiers firstName:self->_firstName lastName:self->_lastName userWheelchairMode:self->_userWheelchairMode type:self->_type status:self->_status notificationStatus:self->_notificationStatus direction:self->_direction modificationDate:self->_modificationDate dateAccepted:self->_dateAccepted dateInvited:self->_dateInvited profileIdentifier:self->_profileIdentifier CNContactIdentifier:self->_CNContactIdentifier isPaused:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_primaryContactIdentifier forKey:@"PrimaryContactIdentifier"];
-  [v5 encodeObject:self->_allContactIdentifiers forKey:@"AllContactIdentifiersKey"];
-  [v5 encodeObject:self->_firstName forKey:@"FirstName"];
-  [v5 encodeObject:self->_lastName forKey:@"LastName"];
-  [v5 encodeInteger:self->_userWheelchairMode forKey:@"UserWheelchairModeKey"];
-  [v5 encodeInteger:self->_type forKey:@"Type"];
-  [v5 encodeInteger:self->_status forKey:@"Status"];
-  [v5 encodeInteger:self->_notificationStatus forKey:@"NotificationStatus"];
-  [v5 encodeInteger:self->_direction forKey:@"Direction"];
-  [v5 encodeObject:self->_modificationDate forKey:@"ModificationDate"];
-  [v5 encodeObject:self->_dateAccepted forKey:@"DateAccepted"];
-  [v5 encodeObject:self->_dateInvited forKey:@"DateInvited"];
-  [v5 encodeObject:self->_profileIdentifier forKey:@"ProfileIdentifier"];
-  [v5 encodeObject:self->_CNContactIdentifier forKey:@"CNContactIdentifierKey"];
-  [v5 encodeBool:self->_isPaused forKey:@"IsPaused"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_primaryContactIdentifier forKey:@"PrimaryContactIdentifier"];
+  [coderCopy encodeObject:self->_allContactIdentifiers forKey:@"AllContactIdentifiersKey"];
+  [coderCopy encodeObject:self->_firstName forKey:@"FirstName"];
+  [coderCopy encodeObject:self->_lastName forKey:@"LastName"];
+  [coderCopy encodeInteger:self->_userWheelchairMode forKey:@"UserWheelchairModeKey"];
+  [coderCopy encodeInteger:self->_type forKey:@"Type"];
+  [coderCopy encodeInteger:self->_status forKey:@"Status"];
+  [coderCopy encodeInteger:self->_notificationStatus forKey:@"NotificationStatus"];
+  [coderCopy encodeInteger:self->_direction forKey:@"Direction"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"ModificationDate"];
+  [coderCopy encodeObject:self->_dateAccepted forKey:@"DateAccepted"];
+  [coderCopy encodeObject:self->_dateInvited forKey:@"DateInvited"];
+  [coderCopy encodeObject:self->_profileIdentifier forKey:@"ProfileIdentifier"];
+  [coderCopy encodeObject:self->_CNContactIdentifier forKey:@"CNContactIdentifierKey"];
+  [coderCopy encodeBool:self->_isPaused forKey:@"IsPaused"];
 }
 
-- (HKSummarySharingEntry)initWithCoder:(id)a3
+- (HKSummarySharingEntry)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryContactIdentifier"];
-  v14 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AllContactIdentifiersKey"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"FirstName"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"LastName"];
-  v18 = [v3 decodeIntegerForKey:@"UserWheelchairModeKey"];
-  v17 = [v3 decodeIntegerForKey:@"Type"];
-  v15 = [v3 decodeIntegerForKey:@"Status"];
-  v4 = [v3 decodeIntegerForKey:@"NotificationStatus"];
-  v5 = [v3 decodeIntegerForKey:@"Direction"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"DateAccepted"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"DateInvited"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ProfileIdentifier"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CNContactIdentifierKey"];
-  v11 = [v3 decodeBoolForKey:@"IsPaused"];
+  coderCopy = coder;
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryContactIdentifier"];
+  v14 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AllContactIdentifiersKey"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FirstName"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastName"];
+  v18 = [coderCopy decodeIntegerForKey:@"UserWheelchairModeKey"];
+  v17 = [coderCopy decodeIntegerForKey:@"Type"];
+  v15 = [coderCopy decodeIntegerForKey:@"Status"];
+  v4 = [coderCopy decodeIntegerForKey:@"NotificationStatus"];
+  v5 = [coderCopy decodeIntegerForKey:@"Direction"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ModificationDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateAccepted"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateInvited"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProfileIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CNContactIdentifierKey"];
+  v11 = [coderCopy decodeBoolForKey:@"IsPaused"];
 
   LOBYTE(v13) = v11;
   v23 = [(HKSummarySharingEntry *)self initWithUUID:v21 primaryContactIdentifier:v16 allContactIdentifiers:v14 firstName:v20 lastName:v19 userWheelchairMode:v18 type:v17 status:v15 notificationStatus:v4 direction:v5 modificationDate:v6 dateAccepted:v7 dateInvited:v8 profileIdentifier:v9 CNContactIdentifier:v10 isPaused:v13];

@@ -1,137 +1,137 @@
 @interface MOVStreamIOUtility
-+ (BOOL)attachmentsContainTopLeftChromaLocations:(id)a3;
-+ (BOOL)attachmentsContainsRec2020orRec2100ColorMatrices:(id)a3;
-+ (BOOL)attachmentsContainsRec2020orRec2100ColorPrimaries:(id)a3;
-+ (BOOL)attachmentsRepresentInterlacedFields:(id)a3;
-+ (BOOL)dictionary:(id)a3 BOOLeanValueForKey:(id)a4;
-+ (BOOL)formatDescriptionRepresentsVideoRange:(id)a3;
-+ (BOOL)isEncoderAvailableForEncoderType:(int)a3;
-+ (BOOL)isEncoderAvailableWithEncoderName:(id)a3;
-+ (BOOL)isKeyFrame:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-+ (BOOL)isMOVStreamIOMovMetadataIdentifier:(id)a3;
-+ (BOOL)isSlimXEncodedTrack:(id)a3;
-+ (BOOL)isValidJSONObject:(id)a3 path:(id)a4;
-+ (BOOL)key:(id)a3 hasUnspecifiedValue:(id)a4;
-+ (BOOL)pixelFormatIs420Sampled:(unsigned int)a3;
-+ (BOOL)pixelFormatIs422Sampled:(unsigned int)a3;
-+ (BOOL)saveSessionStartTime:(id *)a3 toMovieAtURL:(id)a4 error:(id *)a5;
-+ (BOOL)verifyExactBytesPerRow:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(unsigned int)a6;
-+ (CVSMPTETime)advanceTimeCode:(SEL)a3 frameQuanta:(CVSMPTETime *)a4 dropFrame:(int64_t)a5;
-+ (CVSMPTETime)timeCodeFromString:(SEL)a3 isDropFrame:(id)a4;
-+ (CVSMPTETime)timecode32ForSampleBuffer:(SEL)a3 dropFrame:(opaqueCMSampleBuffer *)a4;
-+ (CVSMPTETime)timecodeForFrameNumber32:(SEL)a3 formatDescription:(int)a4;
-+ (double)bytesPerPixelForFormat:(unsigned int)a3;
++ (BOOL)attachmentsContainTopLeftChromaLocations:(id)locations;
++ (BOOL)attachmentsContainsRec2020orRec2100ColorMatrices:(id)matrices;
++ (BOOL)attachmentsContainsRec2020orRec2100ColorPrimaries:(id)primaries;
++ (BOOL)attachmentsRepresentInterlacedFields:(id)fields;
++ (BOOL)dictionary:(id)dictionary BOOLeanValueForKey:(id)key;
++ (BOOL)formatDescriptionRepresentsVideoRange:(id)range;
++ (BOOL)isEncoderAvailableForEncoderType:(int)type;
++ (BOOL)isEncoderAvailableWithEncoderName:(id)name;
++ (BOOL)isKeyFrame:(opaqueCMSampleBuffer *)frame error:(id *)error;
++ (BOOL)isMOVStreamIOMovMetadataIdentifier:(id)identifier;
++ (BOOL)isSlimXEncodedTrack:(id)track;
++ (BOOL)isValidJSONObject:(id)object path:(id)path;
++ (BOOL)key:(id)key hasUnspecifiedValue:(id)value;
++ (BOOL)pixelFormatIs420Sampled:(unsigned int)sampled;
++ (BOOL)pixelFormatIs422Sampled:(unsigned int)sampled;
++ (BOOL)saveSessionStartTime:(id *)time toMovieAtURL:(id)l error:(id *)error;
++ (BOOL)verifyExactBytesPerRow:(id)row width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format;
++ (CVSMPTETime)advanceTimeCode:(SEL)code frameQuanta:(CVSMPTETime *)quanta dropFrame:(int64_t)frame;
++ (CVSMPTETime)timeCodeFromString:(SEL)string isDropFrame:(id)frame;
++ (CVSMPTETime)timecode32ForSampleBuffer:(SEL)buffer dropFrame:(opaqueCMSampleBuffer *)frame;
++ (CVSMPTETime)timecodeForFrameNumber32:(SEL)number32 formatDescription:(int)description;
++ (double)bytesPerPixelForFormat:(unsigned int)format;
 + (double)clampedQuality:(double)result;
-+ (double)cmQualityFromMIOHEVCQuality:(int64_t)a3;
-+ (double)deriveMaxKeyFrameIntervalFromFps:(double)a3;
-+ (double)transformAngleFromVideoOrientation:(int)a3;
++ (double)cmQualityFromMIOHEVCQuality:(int64_t)quality;
++ (double)deriveMaxKeyFrameIntervalFromFps:(double)fps;
++ (double)transformAngleFromVideoOrientation:(int)orientation;
 + (id)AVEProfileLevel10BitMonochrome;
-+ (id)addEncodingQuality:(double)a3 toConfiguration:(id)a4;
-+ (id)addTrackTypeInfo:(unint64_t)a3 toConfiguration:(id)a4;
-+ (id)addTransform:(CGAffineTransform *)a3 toConfiguration:(id)a4;
++ (id)addEncodingQuality:(double)quality toConfiguration:(id)configuration;
++ (id)addTrackTypeInfo:(unint64_t)info toConfiguration:(id)configuration;
++ (id)addTransform:(CGAffineTransform *)transform toConfiguration:(id)configuration;
 + (id)audioNoneEncoderConfig;
 + (id)color8bitHEVCWithAlphaEncoderConfig;
-+ (id)color8bitHEVCWithAlphaEncoderConfigWithBitrate:(unint64_t)a3;
++ (id)color8bitHEVCWithAlphaEncoderConfigWithBitrate:(unint64_t)bitrate;
 + (id)colorH264EncoderConfig;
-+ (id)colorH264EncoderConfigWithBitrate:(unint64_t)a3;
++ (id)colorH264EncoderConfigWithBitrate:(unint64_t)bitrate;
 + (id)colorHEVCEncoderConfig;
-+ (id)colorHEVCEncoderConfigWithBitrate:(unint64_t)a3;
-+ (id)colorHEVCEncoderConfigWithQuality:(double)a3;
++ (id)colorHEVCEncoderConfigWithBitrate:(unint64_t)bitrate;
++ (id)colorHEVCEncoderConfigWithQuality:(double)quality;
 + (id)colorHEVCLosslessEncoderConfig;
-+ (id)colorRecordingConfigBitDepth:(unint64_t)a3 bitrate:(unint64_t)a4 chromaSampling:(int64_t)a5 error:(id *)a6;
-+ (id)colorRecordingConfigBitDepth:(unint64_t)a3 chromaSampling:(int64_t)a4 error:(id *)a5;
-+ (id)colorRecordingConfigBitDepth:(unint64_t)a3 lossless:(BOOL)a4 chromaSampling:(int64_t)a5 error:(id *)a6;
-+ (id)colorRecordingConfigBitDepth:(unint64_t)a3 quality:(double)a4 chromaSampling:(int64_t)a5 error:(id *)a6;
++ (id)colorRecordingConfigBitDepth:(unint64_t)depth bitrate:(unint64_t)bitrate chromaSampling:(int64_t)sampling error:(id *)error;
++ (id)colorRecordingConfigBitDepth:(unint64_t)depth chromaSampling:(int64_t)sampling error:(id *)error;
++ (id)colorRecordingConfigBitDepth:(unint64_t)depth lossless:(BOOL)lossless chromaSampling:(int64_t)sampling error:(id *)error;
++ (id)colorRecordingConfigBitDepth:(unint64_t)depth quality:(double)quality chromaSampling:(int64_t)sampling error:(id *)error;
 + (id)colorWithAlphaLossless8bitHEVCEncoderConfig;
-+ (id)colorimetricWarningsForColorPixelBufferAttachments:(id)a3 pixelFormat:(unsigned int)a4;
-+ (id)colorimetricWarningsForGrayscalePixelBufferAttachments:(id)a3 pixelFormat:(unsigned int)a4;
-+ (id)colorimetricWarningsForPixelBufferAttachments:(id)a3 pixelFormat:(unsigned int)a4;
-+ (id)configWithEncoderType:(int)a3;
-+ (id)customConfigWithOutputSettings:(id)a3;
++ (id)colorimetricWarningsForColorPixelBufferAttachments:(id)attachments pixelFormat:(unsigned int)format;
++ (id)colorimetricWarningsForGrayscalePixelBufferAttachments:(id)attachments pixelFormat:(unsigned int)format;
++ (id)colorimetricWarningsForPixelBufferAttachments:(id)attachments pixelFormat:(unsigned int)format;
++ (id)configWithEncoderType:(int)type;
++ (id)customConfigWithOutputSettings:(id)settings;
 + (id)customEncoderConfig;
-+ (id)customEncoderConfigWithEmbeddedConfiguration:(id)a3;
-+ (id)defaultVCPRecordingConfigWithBitrate:(unint64_t)a3 frameRate:(double)a4;
-+ (id)dictionary:(id)a3 numberValueForKey:(id)a4;
-+ (id)dictionary:(id)a3 stringValueForKey:(id)a4;
-+ (id)getCustomAssociatedMetadataStreamIdFromTrack:(id)a3;
-+ (id)getJsonFriendlyCopy:(id)a3;
-+ (id)getPlistFriendlyCopyOf:(id)a3;
-+ (id)hevc10bitQuality:(int64_t)a3 chromaSampling:(int64_t)a4;
-+ (id)hevc8bitQuality:(int64_t)a3 chromaSampling:(int64_t)a4;
++ (id)customEncoderConfigWithEmbeddedConfiguration:(id)configuration;
++ (id)defaultVCPRecordingConfigWithBitrate:(unint64_t)bitrate frameRate:(double)rate;
++ (id)dictionary:(id)dictionary numberValueForKey:(id)key;
++ (id)dictionary:(id)dictionary stringValueForKey:(id)key;
++ (id)getCustomAssociatedMetadataStreamIdFromTrack:(id)track;
++ (id)getJsonFriendlyCopy:(id)copy;
++ (id)getPlistFriendlyCopyOf:(id)of;
++ (id)hevc10bitQuality:(int64_t)quality chromaSampling:(int64_t)sampling;
++ (id)hevc8bitQuality:(int64_t)quality chromaSampling:(int64_t)sampling;
 + (id)jpegEncoderConfig;
-+ (id)jpegEncoderConfigWithQuality:(double)a3;
-+ (id)jsonFriendlyCopy:(id)a3;
++ (id)jpegEncoderConfigWithQuality:(double)quality;
++ (id)jsonFriendlyCopy:(id)copy;
 + (id)monochrome10bitHEVCEncoderConfig;
-+ (id)monochrome10bitHEVCEncoderConfigWithBitrate:(unint64_t)a3;
-+ (id)monochrome10bitHEVCEncoderConfigWithQuality:(double)a3;
++ (id)monochrome10bitHEVCEncoderConfigWithBitrate:(unint64_t)bitrate;
++ (id)monochrome10bitHEVCEncoderConfigWithQuality:(double)quality;
 + (id)monochrome10bitHEVCLosslessEncoderConfig;
-+ (id)monochrome10bitHEVCLosslessEncoderConfigAllowFrameReordering:(BOOL)a3;
++ (id)monochrome10bitHEVCLosslessEncoderConfigAllowFrameReordering:(BOOL)reordering;
 + (id)monochrome8bitHEVCEncoderConfig;
-+ (id)monochrome8bitHEVCEncoderConfigWithBitrate:(unint64_t)a3;
-+ (id)monochrome8bitHEVCEncoderConfigWithQuality:(double)a3;
++ (id)monochrome8bitHEVCEncoderConfigWithBitrate:(unint64_t)bitrate;
++ (id)monochrome8bitHEVCEncoderConfigWithQuality:(double)quality;
 + (id)monochrome8bitHEVCLosslessEncoderConfig;
-+ (id)monochrome8bitHEVCLosslessEncoderConfigAllowFrameReordering:(BOOL)a3;
-+ (id)nonMIOTrackMetadataItemsInMetadataItems:(id)a3;
++ (id)monochrome8bitHEVCLosslessEncoderConfigAllowFrameReordering:(BOOL)reordering;
++ (id)nonMIOTrackMetadataItemsInMetadataItems:(id)items;
 + (id)noneEncoderConfig;
-+ (id)plistDeserializedObject:(id)a3 error:(id *)a4;
-+ (id)plistFriendlyCopyOf:(id)a3;
-+ (id)plistSerializedObject:(id)a3 error:(id *)a4;
++ (id)plistDeserializedObject:(id)object error:(id *)error;
++ (id)plistFriendlyCopyOf:(id)of;
++ (id)plistSerializedObject:(id)object error:(id *)error;
 + (id)proRes422EncoderConfig;
-+ (id)proRes422EncoderConfigWithQuality:(int64_t)a3;
++ (id)proRes422EncoderConfigWithQuality:(int64_t)quality;
 + (id)proRes4444EncoderConfig;
 + (id)proRes4444EncoderConfigWithHighQuality;
-+ (id)qtTrackNameForAssociatedAttachmentsTrack:(id)a3;
-+ (id)qtTrackNameForAssociatedTimeCodeTrack:(id)a3;
++ (id)qtTrackNameForAssociatedAttachmentsTrack:(id)track;
++ (id)qtTrackNameForAssociatedTimeCodeTrack:(id)track;
 + (id)reservedMIOTrackMetadataKeys;
-+ (id)sampleBufferConfigWithPixelFormat:(unsigned int)a3;
++ (id)sampleBufferConfigWithPixelFormat:(unsigned int)format;
 + (id)slimEncoderConfig;
 + (id)slimXEncoderConfig;
-+ (id)stereoConfigurationWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 frameRate:(double)a6 additionalCompressionProperties:(id)a7;
-+ (id)stereoConfigurationWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 frameRate:(double)a6 leftAndRightViewIDs:(id)a7 additionalCompressionProperties:(id)a8;
-+ (id)stringFromTimeCode:(CVSMPTETime *)a3 dropFrame:(BOOL)a4;
-+ (id)stringFromTimeCode:(CVSMPTETime *)a3 dropFrame:(BOOL)a4 addSubframes:(BOOL)a5;
-+ (int)frameNumber32ForTimecode:(CVSMPTETime *)a3 usingFormatDescription:(opaqueCMFormatDescription *)a4;
-+ (int64_t)chromaSamplingForTrack:(id)a3;
-+ (int64_t)chromaSamplingFromMediaFormatDescription:(opaqueCMFormatDescription *)a3;
-+ (int64_t)frameNumber64ForTimecode:(CVSMPTETime *)a3 usingFormatDescription:(opaqueCMFormatDescription *)a4;
-+ (opaqueCMFormatDescription)createFormatDescriptionFromPixelBuffer:(__CVBuffer *)a3;
-+ (opaqueCMFormatDescription)createL008FormatDescriptionFromCompandedRawBayerFormatDescription:(opaqueCMFormatDescription *)a3;
-+ (opaqueCMFormatDescription)createL008FormatDescriptionFromNonPlanarFormatDescription:(opaqueCMFormatDescription *)a3;
-+ (opaqueCMFormatDescription)createL010FormatDescriptionFromL016FormatDescription:(opaqueCMFormatDescription *)a3;
-+ (opaqueCMFormatDescription)createL010FormatDescriptionFromRawBayerFormatDescription:(opaqueCMFormatDescription *)a3;
-+ (opaqueCMFormatDescription)createTimeCode32FormatDescriptionWithFrameRate:(double)a3 dropFrame:(BOOL)a4 error:(id *)a5;
-+ (opaqueCMFormatDescription)createTimeCode32FormatDescriptionWithFrameRate:(double)a3 tcDropFrame:(BOOL)a4 error:(id *)a5;
-+ (opaqueCMFormatDescription)createTimeCode64FormatDescriptionWithFrameRate:(double)a3 dropFrame:(BOOL)a4 error:(id *)a5;
-+ (opaqueCMFormatDescription)createTimeCodeFormatDescriptionWithFrameRate:(double)a3 error:(id *)a4;
-+ (opaqueCMFormatDescription)createxf20FormatDescriptionFromRawBayerFormatDescription:(opaqueCMFormatDescription *)a3 usingFirstPlaneOnly:(BOOL)a4;
-+ (opaqueCMFormatDescription)formatForPixelBuffer:(__CVBuffer *)a3;
-+ (opaqueCMFormatDescription)newFormatDescriptionFromPixelBuffer:(__CVBuffer *)a3;
-+ (opaqueCMSampleBuffer)createTimecode32SampleBufferWithSMPTETime:(CVSMPTETime *)a3 formatDescription:(opaqueCMFormatDescription *)a4 pts:(id *)a5 error:(id *)a6;
-+ (opaqueCMSampleBuffer)createTimecode64SampleBufferWithSMPTETime:(CVSMPTETime *)a3 formatDescription:(opaqueCMFormatDescription *)a4 pts:(id *)a5 error:(id *)a6;
-+ (opaqueCMSampleBuffer)createTimecodeSampleBufferWithSMPTETime:(CVSMPTETime *)a3 formatDescription:(opaqueCMFormatDescription *)a4 pts:(id *)a5 error:(id *)a6;
++ (id)stereoConfigurationWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format frameRate:(double)rate additionalCompressionProperties:(id)properties;
++ (id)stereoConfigurationWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format frameRate:(double)rate leftAndRightViewIDs:(id)ds additionalCompressionProperties:(id)properties;
++ (id)stringFromTimeCode:(CVSMPTETime *)code dropFrame:(BOOL)frame;
++ (id)stringFromTimeCode:(CVSMPTETime *)code dropFrame:(BOOL)frame addSubframes:(BOOL)subframes;
++ (int)frameNumber32ForTimecode:(CVSMPTETime *)timecode usingFormatDescription:(opaqueCMFormatDescription *)description;
++ (int64_t)chromaSamplingForTrack:(id)track;
++ (int64_t)chromaSamplingFromMediaFormatDescription:(opaqueCMFormatDescription *)description;
++ (int64_t)frameNumber64ForTimecode:(CVSMPTETime *)timecode usingFormatDescription:(opaqueCMFormatDescription *)description;
++ (opaqueCMFormatDescription)createFormatDescriptionFromPixelBuffer:(__CVBuffer *)buffer;
++ (opaqueCMFormatDescription)createL008FormatDescriptionFromCompandedRawBayerFormatDescription:(opaqueCMFormatDescription *)description;
++ (opaqueCMFormatDescription)createL008FormatDescriptionFromNonPlanarFormatDescription:(opaqueCMFormatDescription *)description;
++ (opaqueCMFormatDescription)createL010FormatDescriptionFromL016FormatDescription:(opaqueCMFormatDescription *)description;
++ (opaqueCMFormatDescription)createL010FormatDescriptionFromRawBayerFormatDescription:(opaqueCMFormatDescription *)description;
++ (opaqueCMFormatDescription)createTimeCode32FormatDescriptionWithFrameRate:(double)rate dropFrame:(BOOL)frame error:(id *)error;
++ (opaqueCMFormatDescription)createTimeCode32FormatDescriptionWithFrameRate:(double)rate tcDropFrame:(BOOL)frame error:(id *)error;
++ (opaqueCMFormatDescription)createTimeCode64FormatDescriptionWithFrameRate:(double)rate dropFrame:(BOOL)frame error:(id *)error;
++ (opaqueCMFormatDescription)createTimeCodeFormatDescriptionWithFrameRate:(double)rate error:(id *)error;
++ (opaqueCMFormatDescription)createxf20FormatDescriptionFromRawBayerFormatDescription:(opaqueCMFormatDescription *)description usingFirstPlaneOnly:(BOOL)only;
++ (opaqueCMFormatDescription)formatForPixelBuffer:(__CVBuffer *)buffer;
++ (opaqueCMFormatDescription)newFormatDescriptionFromPixelBuffer:(__CVBuffer *)buffer;
++ (opaqueCMSampleBuffer)createTimecode32SampleBufferWithSMPTETime:(CVSMPTETime *)time formatDescription:(opaqueCMFormatDescription *)description pts:(id *)pts error:(id *)error;
++ (opaqueCMSampleBuffer)createTimecode64SampleBufferWithSMPTETime:(CVSMPTETime *)time formatDescription:(opaqueCMFormatDescription *)description pts:(id *)pts error:(id *)error;
++ (opaqueCMSampleBuffer)createTimecodeSampleBufferWithSMPTETime:(CVSMPTETime *)time formatDescription:(opaqueCMFormatDescription *)description pts:(id *)pts error:(id *)error;
 + (unint64_t)getPreferredBytesPerRowAlignmentSize;
 + (unint64_t)getPreferredPlaneAlignmentSize;
-+ (unsigned)detectPixelFormatForAsset:(id)a3 videoTrackId:(int)a4 error:(id *)a5;
-+ (unsigned)guessPixelFormatForTrack:(id)a3;
-+ (unsigned)guessPixelFormatFromFormatDescription:(opaqueCMFormatDescription *)a3;
++ (unsigned)detectPixelFormatForAsset:(id)asset videoTrackId:(int)id error:(id *)error;
++ (unsigned)guessPixelFormatForTrack:(id)track;
++ (unsigned)guessPixelFormatFromFormatDescription:(opaqueCMFormatDescription *)description;
 @end
 
 @implementation MOVStreamIOUtility
 
-+ (id)stringFromTimeCode:(CVSMPTETime *)a3 dropFrame:(BOOL)a4
++ (id)stringFromTimeCode:(CVSMPTETime *)code dropFrame:(BOOL)frame
 {
-  v6 = *a3;
-  v4 = [MOVStreamIOUtility stringFromTimeCode:&v6 dropFrame:a4 addSubframes:0];
+  v6 = *code;
+  v4 = [MOVStreamIOUtility stringFromTimeCode:&v6 dropFrame:frame addSubframes:0];
 
   return v4;
 }
 
-+ (id)stringFromTimeCode:(CVSMPTETime *)a3 dropFrame:(BOOL)a4 addSubframes:(BOOL)a5
++ (id)stringFromTimeCode:(CVSMPTETime *)code dropFrame:(BOOL)frame addSubframes:(BOOL)subframes
 {
-  hours = a3->hours;
-  minutes = a3->minutes;
-  seconds = a3->seconds;
-  if (a4)
+  hours = code->hours;
+  minutes = code->minutes;
+  seconds = code->seconds;
+  if (frame)
   {
     v8 = 59;
   }
@@ -141,23 +141,23 @@
     v8 = 58;
   }
 
-  if (a5)
+  if (subframes)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%02d:%02d:%02d%c%02d.%03d", hours, minutes, seconds, v8, a3->frames, a3->subframes];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%02d:%02d:%02d%c%02d.%03d", hours, minutes, seconds, v8, code->frames, code->subframes];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%02d:%02d:%02d%c%02d", hours, minutes, seconds, v8, a3->frames, v11];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%02d:%02d:%02d%c%02d", hours, minutes, seconds, v8, code->frames, v11];
   }
   v9 = ;
 
   return v9;
 }
 
-+ (CVSMPTETime)timeCodeFromString:(SEL)a3 isDropFrame:(id)a4
++ (CVSMPTETime)timeCodeFromString:(SEL)string isDropFrame:(id)frame
 {
-  v7 = a4;
+  frameCopy = frame;
   if (a5)
   {
     *a5 = 0;
@@ -166,8 +166,8 @@
   *&retstr->subframes = 0;
   *&retstr->type = 0;
   *&retstr->hours = 0;
-  v26 = v7;
-  v8 = [v7 componentsSeparatedByString:@":"];
+  v26 = frameCopy;
+  v8 = [frameCopy componentsSeparatedByString:@":"];
   if ([v8 count] >= 3)
   {
     v9 = [v8 objectAtIndexedSubscript:0];
@@ -248,49 +248,49 @@
   return result;
 }
 
-+ (double)transformAngleFromVideoOrientation:(int)a3
++ (double)transformAngleFromVideoOrientation:(int)orientation
 {
   result = 0.0;
-  if (a3 <= 4)
+  if (orientation <= 4)
   {
-    return dbl_25792B440[a3];
+    return dbl_25792B440[orientation];
   }
 
   return result;
 }
 
-+ (id)jsonFriendlyCopy:(id)a3
++ (id)jsonFriendlyCopy:(id)copy
 {
-  v3 = [a1 getJsonFriendlyCopy:a3];
+  v3 = [self getJsonFriendlyCopy:copy];
 
   return v3;
 }
 
-+ (id)plistFriendlyCopyOf:(id)a3
++ (id)plistFriendlyCopyOf:(id)of
 {
-  v3 = [a1 getPlistFriendlyCopyOf:a3];
+  v3 = [self getPlistFriendlyCopyOf:of];
 
   return v3;
 }
 
-+ (opaqueCMFormatDescription)formatForPixelBuffer:(__CVBuffer *)a3
++ (opaqueCMFormatDescription)formatForPixelBuffer:(__CVBuffer *)buffer
 {
   formatDescriptionOut = 0;
-  CMVideoFormatDescriptionCreateForImageBuffer(*MEMORY[0x277CBECE8], a3, &formatDescriptionOut);
+  CMVideoFormatDescriptionCreateForImageBuffer(*MEMORY[0x277CBECE8], buffer, &formatDescriptionOut);
   return formatDescriptionOut;
 }
 
-+ (opaqueCMFormatDescription)createFormatDescriptionFromPixelBuffer:(__CVBuffer *)a3
++ (opaqueCMFormatDescription)createFormatDescriptionFromPixelBuffer:(__CVBuffer *)buffer
 {
   formatDescriptionOut = 0;
-  CMVideoFormatDescriptionCreateForImageBuffer(*MEMORY[0x277CBECE8], a3, &formatDescriptionOut);
+  CMVideoFormatDescriptionCreateForImageBuffer(*MEMORY[0x277CBECE8], buffer, &formatDescriptionOut);
   return formatDescriptionOut;
 }
 
-+ (opaqueCMFormatDescription)newFormatDescriptionFromPixelBuffer:(__CVBuffer *)a3
++ (opaqueCMFormatDescription)newFormatDescriptionFromPixelBuffer:(__CVBuffer *)buffer
 {
   formatDescriptionOut = 0;
-  CMVideoFormatDescriptionCreateForImageBuffer(*MEMORY[0x277CBECE8], a3, &formatDescriptionOut);
+  CMVideoFormatDescriptionCreateForImageBuffer(*MEMORY[0x277CBECE8], buffer, &formatDescriptionOut);
   return formatDescriptionOut;
 }
 
@@ -310,20 +310,20 @@
   return v4;
 }
 
-+ (BOOL)pixelFormatIs420Sampled:(unsigned int)a3
++ (BOOL)pixelFormatIs420Sampled:(unsigned int)sampled
 {
   result = 1;
-  if (a3 <= 1563981359)
+  if (sampled <= 1563981359)
   {
-    if (a3 > 762865199)
+    if (sampled > 762865199)
     {
-      if (a3 > 875704437)
+      if (sampled > 875704437)
       {
-        if (a3 > 1534359087)
+        if (sampled > 1534359087)
         {
-          if (a3 > 1534621231)
+          if (sampled > 1534621231)
           {
-            if (a3 == 1534621232)
+            if (sampled == 1534621232)
             {
               return result;
             }
@@ -333,7 +333,7 @@
 
           else
           {
-            if (a3 == 1534359088)
+            if (sampled == 1534359088)
             {
               return result;
             }
@@ -342,9 +342,9 @@
           }
         }
 
-        else if (a3 > 1530426927)
+        else if (sampled > 1530426927)
         {
-          if (a3 == 1530426928)
+          if (sampled == 1530426928)
           {
             return result;
           }
@@ -354,7 +354,7 @@
 
         else
         {
-          if (a3 == 875704438)
+          if (sampled == 875704438)
           {
             return result;
           }
@@ -363,11 +363,11 @@
         }
       }
 
-      else if (a3 > 795371055)
+      else if (sampled > 795371055)
       {
-        if (a3 > 796423727)
+        if (sampled > 796423727)
         {
-          if (a3 == 796423728)
+          if (sampled == 796423728)
           {
             return result;
           }
@@ -377,7 +377,7 @@
 
         else
         {
-          if (a3 == 795371056)
+          if (sampled == 795371056)
           {
             return result;
           }
@@ -386,9 +386,9 @@
         }
       }
 
-      else if (a3 > 792225327)
+      else if (sampled > 792225327)
       {
-        if (a3 == 792225328)
+        if (sampled == 792225328)
         {
           return result;
         }
@@ -398,7 +398,7 @@
 
       else
       {
-        if (a3 == 762865200)
+        if (sampled == 762865200)
         {
           return result;
         }
@@ -407,13 +407,13 @@
       }
     }
 
-    else if (a3 > 645166639)
+    else if (sampled > 645166639)
     {
-      if (a3 > 645429039)
+      if (sampled > 645429039)
       {
-        if (a3 > 758674991)
+        if (sampled > 758674991)
         {
-          if (a3 == 758674992)
+          if (sampled == 758674992)
           {
             return result;
           }
@@ -423,7 +423,7 @@
 
         else
         {
-          if (a3 == 645429040)
+          if (sampled == 645429040)
           {
             return result;
           }
@@ -432,9 +432,9 @@
         }
       }
 
-      else if (a3 > 645424687)
+      else if (sampled > 645424687)
       {
-        if (a3 == 645424688)
+        if (sampled == 645424688)
         {
           return result;
         }
@@ -444,7 +444,7 @@
 
       else
       {
-        if (a3 == 645166640)
+        if (sampled == 645166640)
         {
           return result;
         }
@@ -453,11 +453,11 @@
       }
     }
 
-    else if (a3 > 644376111)
+    else if (sampled > 644376111)
     {
-      if (a3 > 645101103)
+      if (sampled > 645101103)
       {
-        if (a3 == 645101104)
+        if (sampled == 645101104)
         {
           return result;
         }
@@ -467,7 +467,7 @@
 
       else
       {
-        if (a3 == 644376112)
+        if (sampled == 644376112)
         {
           return result;
         }
@@ -476,9 +476,9 @@
       }
     }
 
-    else if (a3 > 641230383)
+    else if (sampled > 641230383)
     {
-      if (a3 == 641230384)
+      if (sampled == 641230384)
       {
         return result;
       }
@@ -488,7 +488,7 @@
 
     else
     {
-      if (a3 == 590898736)
+      if (sampled == 590898736)
       {
         return result;
       }
@@ -499,15 +499,15 @@
     goto LABEL_98;
   }
 
-  if (a3 > 1982882103)
+  if (sampled > 1982882103)
   {
-    if (a3 > 2087216687)
+    if (sampled > 2087216687)
     {
-      if (a3 > 2100852271)
+      if (sampled > 2100852271)
       {
-        if (a3 > 2105046575)
+        if (sampled > 2105046575)
         {
-          if (a3 == 2105046576)
+          if (sampled == 2105046576)
           {
             return result;
           }
@@ -517,7 +517,7 @@
 
         else
         {
-          if (a3 == 2100852272)
+          if (sampled == 2100852272)
           {
             return result;
           }
@@ -528,9 +528,9 @@
         v4 = v6 | 0x7D780000;
       }
 
-      else if (a3 > 2088269359)
+      else if (sampled > 2088269359)
       {
-        if (a3 == 2088269360)
+        if (sampled == 2088269360)
         {
           return result;
         }
@@ -540,7 +540,7 @@
 
       else
       {
-        if (a3 == 2087216688)
+        if (sampled == 2087216688)
         {
           return result;
         }
@@ -549,11 +549,11 @@
       }
     }
 
-    else if (a3 > 2021077551)
+    else if (sampled > 2021077551)
     {
-      if (a3 > 2084070959)
+      if (sampled > 2084070959)
       {
-        if (a3 == 2084070960)
+        if (sampled == 2084070960)
         {
           return result;
         }
@@ -563,7 +563,7 @@
 
       else
       {
-        if (a3 == 2021077552)
+        if (sampled == 2021077552)
         {
           return result;
         }
@@ -572,9 +572,9 @@
       }
     }
 
-    else if (a3 > 2016686639)
+    else if (sampled > 2016686639)
     {
-      if (a3 == 2016686640)
+      if (sampled == 2016686640)
       {
         return result;
       }
@@ -584,7 +584,7 @@
 
     else
     {
-      if (a3 == 1982882104)
+      if (sampled == 1982882104)
       {
         return result;
       }
@@ -595,13 +595,13 @@
 
   else
   {
-    if (a3 > 1886680623)
+    if (sampled > 1886680623)
     {
-      if (a3 > 1937125935)
+      if (sampled > 1937125935)
       {
-        if (a3 > 1953903151)
+        if (sampled > 1953903151)
         {
-          if (a3 == 1953903152)
+          if (sampled == 1953903152)
           {
             return result;
           }
@@ -611,7 +611,7 @@
 
         else
         {
-          if (a3 == 1937125936)
+          if (sampled == 1937125936)
           {
             return result;
           }
@@ -622,9 +622,9 @@
         goto LABEL_98;
       }
 
-      if (a3 > 1886859823)
+      if (sampled > 1886859823)
       {
-        if (a3 == 1886859824)
+        if (sampled == 1886859824)
         {
           return result;
         }
@@ -633,7 +633,7 @@
         goto LABEL_98;
       }
 
-      if (a3 == 1886680624)
+      if (sampled == 1886680624)
       {
         return result;
       }
@@ -643,11 +643,11 @@
 
     else
     {
-      if (a3 <= 1751527983)
+      if (sampled <= 1751527983)
       {
-        if (a3 > 1568175663)
+        if (sampled > 1568175663)
         {
-          if (a3 == 1568175664)
+          if (sampled == 1568175664)
           {
             return result;
           }
@@ -657,7 +657,7 @@
 
         else
         {
-          if (a3 == 1563981360)
+          if (sampled == 1563981360)
           {
             return result;
           }
@@ -668,9 +668,9 @@
         goto LABEL_98;
       }
 
-      if (a3 <= 1885745711)
+      if (sampled <= 1885745711)
       {
-        if (a3 == 1751527984)
+        if (sampled == 1751527984)
         {
           return result;
         }
@@ -679,7 +679,7 @@
         goto LABEL_98;
       }
 
-      if (a3 == 1885745712)
+      if (sampled == 1885745712)
       {
         return result;
       }
@@ -691,7 +691,7 @@
   }
 
 LABEL_98:
-  if (a3 != v4)
+  if (sampled != v4)
   {
     return 0;
   }
@@ -699,20 +699,20 @@ LABEL_98:
   return result;
 }
 
-+ (BOOL)pixelFormatIs422Sampled:(unsigned int)a3
++ (BOOL)pixelFormatIs422Sampled:(unsigned int)sampled
 {
   result = 1;
-  if (a3 <= 1568175665)
+  if (sampled <= 1568175665)
   {
-    if (a3 <= 762865201)
+    if (sampled <= 762865201)
     {
-      if (a3 > 645166641)
+      if (sampled > 645166641)
       {
-        if (a3 > 645428785)
+        if (sampled > 645428785)
         {
-          if (a3 > 645494117)
+          if (sampled > 645494117)
           {
-            if (a3 == 645494118)
+            if (sampled == 645494118)
             {
               return result;
             }
@@ -721,7 +721,7 @@ LABEL_98:
             goto LABEL_103;
           }
 
-          if (a3 == 645428786)
+          if (sampled == 645428786)
           {
             return result;
           }
@@ -731,9 +731,9 @@ LABEL_98:
 
         else
         {
-          if (a3 <= 645411442)
+          if (sampled <= 645411442)
           {
-            if (a3 == 645166642)
+            if (sampled == 645166642)
             {
               return result;
             }
@@ -742,7 +742,7 @@ LABEL_98:
             goto LABEL_103;
           }
 
-          if (a3 == 645411443)
+          if (sampled == 645411443)
           {
             return result;
           }
@@ -755,11 +755,11 @@ LABEL_98:
 
       else
       {
-        if (a3 > 645097009)
+        if (sampled > 645097009)
         {
-          if (a3 > 645149298)
+          if (sampled > 645149298)
           {
-            if (a3 == 645149299)
+            if (sampled == 645149299)
             {
               return result;
             }
@@ -768,7 +768,7 @@ LABEL_98:
             goto LABEL_103;
           }
 
-          if (a3 == 645097010)
+          if (sampled == 645097010)
           {
             return result;
           }
@@ -778,9 +778,9 @@ LABEL_98:
 
         else
         {
-          if (a3 <= 644376113)
+          if (sampled <= 644376113)
           {
-            if (a3 == 641230386)
+            if (sampled == 641230386)
             {
               return result;
             }
@@ -789,7 +789,7 @@ LABEL_98:
             goto LABEL_103;
           }
 
-          if (a3 == 644376114)
+          if (sampled == 644376114)
           {
             return result;
           }
@@ -801,7 +801,7 @@ LABEL_98:
       }
 
 LABEL_103:
-      if (a3 != v5)
+      if (sampled != v5)
       {
         return 0;
       }
@@ -809,13 +809,13 @@ LABEL_103:
       return result;
     }
 
-    if (a3 <= 1530422833)
+    if (sampled <= 1530422833)
     {
-      if (a3 > 846624101)
+      if (sampled > 846624101)
       {
-        if (a3 > 875704933)
+        if (sampled > 875704933)
         {
-          if (a3 == 875704934)
+          if (sampled == 875704934)
           {
             return result;
           }
@@ -825,7 +825,7 @@ LABEL_103:
 
         else
         {
-          if (a3 == 846624102)
+          if (sampled == 846624102)
           {
             return result;
           }
@@ -834,9 +834,9 @@ LABEL_103:
         }
       }
 
-      else if (a3 > 796419633)
+      else if (sampled > 796419633)
       {
-        if (a3 == 796419634)
+        if (sampled == 796419634)
         {
           return result;
         }
@@ -846,7 +846,7 @@ LABEL_103:
 
       else
       {
-        if (a3 == 762865202)
+        if (sampled == 762865202)
         {
           return result;
         }
@@ -857,11 +857,11 @@ LABEL_103:
       goto LABEL_103;
     }
 
-    if (a3 <= 1534617137)
+    if (sampled <= 1534617137)
     {
-      if (a3 > 1534354993)
+      if (sampled > 1534354993)
       {
-        if (a3 == 1534354994)
+        if (sampled == 1534354994)
         {
           return result;
         }
@@ -871,7 +871,7 @@ LABEL_103:
 
       else
       {
-        if (a3 == 1530422834)
+        if (sampled == 1530422834)
         {
           return result;
         }
@@ -882,9 +882,9 @@ LABEL_103:
       goto LABEL_103;
     }
 
-    if (a3 <= 1563977265)
+    if (sampled <= 1563977265)
     {
-      if (a3 == 1534617138)
+      if (sampled == 1534617138)
       {
         return result;
       }
@@ -893,22 +893,22 @@ LABEL_103:
       goto LABEL_103;
     }
 
-    if (a3 != 1563977266 && a3 != 1563981362)
+    if (sampled != 1563977266 && sampled != 1563981362)
     {
       v5 = 1568171570;
       goto LABEL_103;
     }
   }
 
-  else if (a3 > 1983000885)
+  else if (sampled > 1983000885)
   {
-    if (a3 <= 2037741157)
+    if (sampled <= 2037741157)
     {
-      if (a3 > 2016686641)
+      if (sampled > 2016686641)
       {
-        if (a3 > 2019963503)
+        if (sampled > 2019963503)
         {
-          if (a3 == 2019963504)
+          if (sampled == 2019963504)
           {
             return result;
           }
@@ -918,7 +918,7 @@ LABEL_103:
 
         else
         {
-          if (a3 == 2016686642)
+          if (sampled == 2016686642)
           {
             return result;
           }
@@ -929,9 +929,9 @@ LABEL_103:
         goto LABEL_103;
       }
 
-      if (a3 > 2016555631)
+      if (sampled > 2016555631)
       {
-        if (a3 == 2016555632)
+        if (sampled == 2016555632)
         {
           return result;
         }
@@ -940,7 +940,7 @@ LABEL_103:
         goto LABEL_103;
       }
 
-      if (a3 == 1983000886)
+      if (sampled == 1983000886)
       {
         return result;
       }
@@ -949,11 +949,11 @@ LABEL_103:
       goto LABEL_39;
     }
 
-    if (a3 <= 2100848177)
+    if (sampled <= 2100848177)
     {
-      if (a3 > 2088265265)
+      if (sampled > 2088265265)
       {
-        if (a3 == 2088265266)
+        if (sampled == 2088265266)
         {
           return result;
         }
@@ -963,7 +963,7 @@ LABEL_103:
 
       else
       {
-        if (a3 == 2037741158)
+        if (sampled == 2037741158)
         {
           return result;
         }
@@ -974,9 +974,9 @@ LABEL_103:
       goto LABEL_103;
     }
 
-    if (a3 <= 2105042481)
+    if (sampled <= 2105042481)
     {
-      if (a3 == 2100848178)
+      if (sampled == 2100848178)
       {
         return result;
       }
@@ -985,7 +985,7 @@ LABEL_103:
       goto LABEL_103;
     }
 
-    if (a3 != 2105042482 && a3 != 2105046578)
+    if (sampled != 2105042482 && sampled != 2105046578)
     {
       v5 = 2105046834;
       goto LABEL_103;
@@ -994,13 +994,13 @@ LABEL_103:
 
   else
   {
-    if (a3 <= 1886859825)
+    if (sampled <= 1886859825)
     {
-      if (a3 > 1885745713)
+      if (sampled > 1885745713)
       {
-        if (a3 > 1886680625)
+        if (sampled > 1886680625)
         {
-          if (a3 == 1886680626)
+          if (sampled == 1886680626)
           {
             return result;
           }
@@ -1010,7 +1010,7 @@ LABEL_103:
 
         else
         {
-          if (a3 == 1885745714)
+          if (sampled == 1885745714)
           {
             return result;
           }
@@ -1021,9 +1021,9 @@ LABEL_103:
         v5 = v6 | 0x70740000;
       }
 
-      else if (a3 > 1751527985)
+      else if (sampled > 1751527985)
       {
-        if (a3 == 1751527986)
+        if (sampled == 1751527986)
         {
           return result;
         }
@@ -1033,7 +1033,7 @@ LABEL_103:
 
       else
       {
-        if (a3 == 1568175666)
+        if (sampled == 1568175666)
         {
           return result;
         }
@@ -1044,11 +1044,11 @@ LABEL_103:
       goto LABEL_103;
     }
 
-    if (a3 <= 1949458802)
+    if (sampled <= 1949458802)
     {
-      if (a3 > 1936077361)
+      if (sampled > 1936077361)
       {
-        if (a3 == 1936077362)
+        if (sampled == 1936077362)
         {
           return result;
         }
@@ -1058,7 +1058,7 @@ LABEL_103:
 
       else
       {
-        if (a3 == 1886859826)
+        if (sampled == 1886859826)
         {
           return result;
         }
@@ -1069,9 +1069,9 @@ LABEL_103:
       goto LABEL_103;
     }
 
-    if (a3 <= 1953903153)
+    if (sampled <= 1953903153)
     {
-      if (a3 == 1949458803)
+      if (sampled == 1949458803)
       {
         return result;
       }
@@ -1080,7 +1080,7 @@ LABEL_103:
       goto LABEL_103;
     }
 
-    if (a3 != 1953903154 && a3 != 1953968690)
+    if (sampled != 1953903154 && sampled != 1953968690)
     {
       v4 = 12592;
 LABEL_39:
@@ -1092,13 +1092,13 @@ LABEL_39:
   return result;
 }
 
-+ (id)dictionary:(id)a3 numberValueForKey:(id)a4
++ (id)dictionary:(id)dictionary numberValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -1109,13 +1109,13 @@ LABEL_39:
   return v7;
 }
 
-+ (id)dictionary:(id)a3 stringValueForKey:(id)a4
++ (id)dictionary:(id)dictionary stringValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -1126,13 +1126,13 @@ LABEL_39:
   return v7;
 }
 
-+ (BOOL)dictionary:(id)a3 BOOLeanValueForKey:(id)a4
++ (BOOL)dictionary:(id)dictionary BOOLeanValueForKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -1140,31 +1140,31 @@ LABEL_39:
     v7 = 0;
   }
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (BOOL)formatDescriptionRepresentsVideoRange:(id)a3
++ (BOOL)formatDescriptionRepresentsVideoRange:(id)range
 {
-  v3 = [a1 dictionary:a3 stringValueForKey:*MEMORY[0x277CC4EF8]];
+  v3 = [self dictionary:range stringValueForKey:*MEMORY[0x277CC4EF8]];
   v4 = [v3 isEqualToString:*MEMORY[0x277CC4F08]];
 
   return v4;
 }
 
-+ (BOOL)attachmentsContainsRec2020orRec2100ColorPrimaries:(id)a3
++ (BOOL)attachmentsContainsRec2020orRec2100ColorPrimaries:(id)primaries
 {
-  v3 = [a1 dictionary:a3 stringValueForKey:*MEMORY[0x277CC4C00]];
+  v3 = [self dictionary:primaries stringValueForKey:*MEMORY[0x277CC4C00]];
   v4 = [v3 isEqualToString:*MEMORY[0x277CC4C18]];
 
   return v4;
 }
 
-+ (BOOL)attachmentsContainsRec2020orRec2100ColorMatrices:(id)a3
++ (BOOL)attachmentsContainsRec2020orRec2100ColorMatrices:(id)matrices
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [a1 dictionary:a3 stringValueForKey:*MEMORY[0x277CC4D10]];
+  v3 = [self dictionary:matrices stringValueForKey:*MEMORY[0x277CC4D10]];
   if (v3 && (v12 = 0u, v13 = 0u, v10 = 0u, v11 = 0u, (v4 = [&unk_2868E3BB8 countByEnumeratingWithState:&v10 objects:v14 count:16]) != 0))
   {
     v5 = *v11;
@@ -1207,9 +1207,9 @@ LABEL_14:
   return v8;
 }
 
-+ (BOOL)attachmentsRepresentInterlacedFields:(id)a3
++ (BOOL)attachmentsRepresentInterlacedFields:(id)fields
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CC4C40]];
+  v3 = [fields objectForKeyedSubscript:*MEMORY[0x277CC4C40]];
   v4 = v3;
   if (v3)
   {
@@ -1224,10 +1224,10 @@ LABEL_14:
   return v5;
 }
 
-+ (BOOL)attachmentsContainTopLeftChromaLocations:(id)a3
++ (BOOL)attachmentsContainTopLeftChromaLocations:(id)locations
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  locationsCopy = locations;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1250,7 +1250,7 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [v3 objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i)];
+        v10 = [locationsCopy objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i)];
         v11 = v10;
         if (v10 && ([v10 isEqualToString:v8] & 1) == 0)
         {
@@ -1276,10 +1276,10 @@ LABEL_12:
   return v12;
 }
 
-+ (id)colorimetricWarningsForPixelBufferAttachments:(id)a3 pixelFormat:(unsigned int)a4
++ (id)colorimetricWarningsForPixelBufferAttachments:(id)attachments pixelFormat:(unsigned int)format
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&format;
+  attachmentsCopy = attachments;
   if (+[MOVStreamIOUtility colorimetricWarningsForPixelBufferAttachments:pixelFormat:]::once != -1)
   {
     +[MOVStreamIOUtility colorimetricWarningsForPixelBufferAttachments:pixelFormat:];
@@ -1299,7 +1299,7 @@ LABEL_12:
   [v8 getValue:&v12];
   if (!HIDWORD(v12))
   {
-    v9 = [MOVStreamIOUtility colorimetricWarningsForGrayscalePixelBufferAttachments:v5 pixelFormat:v4];
+    v9 = [MOVStreamIOUtility colorimetricWarningsForGrayscalePixelBufferAttachments:attachmentsCopy pixelFormat:v4];
     goto LABEL_9;
   }
 
@@ -1310,7 +1310,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v9 = [MOVStreamIOUtility colorimetricWarningsForColorPixelBufferAttachments:v5 pixelFormat:v4];
+  v9 = [MOVStreamIOUtility colorimetricWarningsForColorPixelBufferAttachments:attachmentsCopy pixelFormat:v4];
 LABEL_9:
   v10 = v9;
 LABEL_10:
@@ -1355,17 +1355,17 @@ void __80__MOVStreamIOUtility_colorimetricWarningsForPixelBufferAttachments_pixe
   +[MOVStreamIOUtility colorimetricWarningsForPixelBufferAttachments:pixelFormat:]::s_PixelFormatInfoDictionary = v7;
 }
 
-+ (id)colorimetricWarningsForColorPixelBufferAttachments:(id)a3 pixelFormat:(unsigned int)a4
++ (id)colorimetricWarningsForColorPixelBufferAttachments:(id)attachments pixelFormat:(unsigned int)format
 {
   v121[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v76 = a4;
-  v78 = CVPixelFormatDescriptionCreateWithPixelFormatType(0, a4);
+  attachmentsCopy = attachments;
+  formatCopy = format;
+  v78 = CVPixelFormatDescriptionCreateWithPixelFormatType(0, format);
   v77 = *MEMORY[0x277CC0370];
-  v6 = [v5 objectForKey:?];
+  v6 = [attachmentsCopy objectForKey:?];
 
   v7 = 0;
-  if (v5 && v78)
+  if (attachmentsCopy && v78)
   {
     v72 = *MEMORY[0x277CC4C00];
     if (v6)
@@ -1413,7 +1413,7 @@ void __80__MOVStreamIOUtility_colorimetricWarningsForPixelBufferAttachments_pixe
           }
 
           v15 = *(*(&v105 + 1) + 8 * i);
-          v16 = [v5 objectForKeyedSubscript:v15];
+          v16 = [attachmentsCopy objectForKeyedSubscript:v15];
           v17 = v16 == 0;
 
           if (v17)
@@ -1429,7 +1429,7 @@ void __80__MOVStreamIOUtility_colorimetricWarningsForPixelBufferAttachments_pixe
       while (v12);
     }
 
-    if ([a1 formatDescriptionRepresentsYCbCr:v78])
+    if ([self formatDescriptionRepresentsYCbCr:v78])
     {
       v103 = 0u;
       v104 = 0u;
@@ -1450,7 +1450,7 @@ void __80__MOVStreamIOUtility_colorimetricWarningsForPixelBufferAttachments_pixe
             }
 
             v23 = *(*(&v101 + 1) + 8 * j);
-            v24 = [v5 objectForKeyedSubscript:v23];
+            v24 = [attachmentsCopy objectForKeyedSubscript:v23];
             v25 = v24 == 0;
 
             if (v25)
@@ -1467,8 +1467,8 @@ void __80__MOVStreamIOUtility_colorimetricWarningsForPixelBufferAttachments_pixe
       }
     }
 
-    v83 = [objc_opt_class() pixelFormatIs420Sampled:v76];
-    if (v83 && ([a1 formatDescriptionRepresentsYCbCr:v78] & 1) == 0)
+    v83 = [objc_opt_class() pixelFormatIs420Sampled:formatCopy];
+    if (v83 && ([self formatDescriptionRepresentsYCbCr:v78] & 1) == 0)
     {
       __assert_rtn("+[MOVStreamIOUtility colorimetricWarningsForColorPixelBufferAttachments:pixelFormat:]", "MOVStreamIOUtility.mm", 643, "false");
     }
@@ -1494,7 +1494,7 @@ void __80__MOVStreamIOUtility_colorimetricWarningsForPixelBufferAttachments_pixe
           }
 
           v32 = *(*(&v97 + 1) + 8 * k);
-          v33 = [v5 objectForKeyedSubscript:v32];
+          v33 = [attachmentsCopy objectForKeyedSubscript:v32];
           v34 = v33;
           if (v83)
           {
@@ -1515,7 +1515,7 @@ void __80__MOVStreamIOUtility_colorimetricWarningsForPixelBufferAttachments_pixe
 
             if ([v32 isEqualToString:v80])
             {
-              v37 = [v5 objectForKeyedSubscript:v30];
+              v37 = [attachmentsCopy objectForKeyedSubscript:v30];
               v38 = v37 == 0;
 
               if (!v38)
@@ -1536,7 +1536,7 @@ LABEL_41:
       while (v27);
     }
 
-    v39 = [objc_opt_class() attachmentsRepresentInterlacedFields:v5];
+    v39 = [objc_opt_class() attachmentsRepresentInterlacedFields:attachmentsCopy];
     v95 = 0u;
     v96 = 0u;
     v93 = 0u;
@@ -1558,7 +1558,7 @@ LABEL_41:
           }
 
           v44 = *(*(&v93 + 1) + 8 * m);
-          v45 = [v5 objectForKeyedSubscript:v44];
+          v45 = [attachmentsCopy objectForKeyedSubscript:v44];
           if (v45)
           {
             v46 = 0;
@@ -1582,8 +1582,8 @@ LABEL_41:
       while (v41);
     }
 
-    v48 = [objc_opt_class() pixelFormatIs422Sampled:v76];
-    if (v48 && ([a1 formatDescriptionRepresentsYCbCr:v78] & 1) == 0)
+    v48 = [objc_opt_class() pixelFormatIs422Sampled:formatCopy];
+    if (v48 && ([self formatDescriptionRepresentsYCbCr:v78] & 1) == 0)
     {
       __assert_rtn("+[MOVStreamIOUtility colorimetricWarningsForColorPixelBufferAttachments:pixelFormat:]", "MOVStreamIOUtility.mm", 706, "false");
     }
@@ -1607,7 +1607,7 @@ LABEL_41:
           }
 
           v53 = *(*(&v89 + 1) + 8 * n);
-          v54 = [v5 objectForKeyedSubscript:v53];
+          v54 = [attachmentsCopy objectForKeyedSubscript:v53];
           if (v54)
           {
             v55 = v48;
@@ -1631,9 +1631,9 @@ LABEL_41:
       while (v50);
     }
 
-    if ([a1 attachmentsContainsRec2020orRec2100ColorPrimaries:v5])
+    if ([self attachmentsContainsRec2020orRec2100ColorPrimaries:attachmentsCopy])
     {
-      if (([a1 formatDescriptionRepresentsVideoRange:v78] & 1) == 0)
+      if (([self formatDescriptionRepresentsVideoRange:v78] & 1) == 0)
       {
         v57 = [v84 objectForKeyedSubscript:v72];
         v58 = v57 == 0;
@@ -1644,7 +1644,7 @@ LABEL_41:
         }
       }
 
-      if (([a1 attachmentsContainsRec2020orRec2100ColorMatrices:v5] & 1) == 0)
+      if (([self attachmentsContainsRec2020orRec2100ColorMatrices:attachmentsCopy] & 1) == 0)
       {
         v59 = [v84 objectForKeyedSubscript:v71];
         v60 = v59 == 0;
@@ -1655,7 +1655,7 @@ LABEL_41:
         }
       }
 
-      if (v83 && ([a1 attachmentsContainTopLeftChromaLocations:v5] & 1) == 0)
+      if (v83 && ([self attachmentsContainTopLeftChromaLocations:attachmentsCopy] & 1) == 0)
       {
         v87 = 0u;
         v88 = 0u;
@@ -1685,7 +1685,7 @@ LABEL_41:
 
               else
               {
-                v67 = [v5 objectForKeyedSubscript:v65];
+                v67 = [attachmentsCopy objectForKeyedSubscript:v65];
                 v68 = v67 == 0;
 
                 if (!v68)
@@ -1709,11 +1709,11 @@ LABEL_41:
   return v7;
 }
 
-+ (id)colorimetricWarningsForGrayscalePixelBufferAttachments:(id)a3 pixelFormat:(unsigned int)a4
++ (id)colorimetricWarningsForGrayscalePixelBufferAttachments:(id)attachments pixelFormat:(unsigned int)format
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  attachmentsCopy = attachments;
+  if (attachmentsCopy)
   {
     v39[0] = *MEMORY[0x277CC4CC0];
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
@@ -1745,7 +1745,7 @@ LABEL_41:
           }
 
           v12 = *(*(&v32 + 1) + 8 * i);
-          v13 = [v5 objectForKeyedSubscript:v12];
+          v13 = [attachmentsCopy objectForKeyedSubscript:v12];
           v14 = v13 == 0;
 
           if (v14)
@@ -1780,8 +1780,8 @@ LABEL_41:
           }
 
           v20 = *(*(&v28 + 1) + 8 * j);
-          v21 = [v5 objectForKeyedSubscript:v20];
-          if (v21 && ([a1 key:v20 hasUnspecifiedValue:v21] & 1) == 0)
+          v21 = [attachmentsCopy objectForKeyedSubscript:v20];
+          if (v21 && ([self key:v20 hasUnspecifiedValue:v21] & 1) == 0)
           {
             v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ attachment is unexpectedly present for a grayscale pixel format", v20];
             [v8 setObject:v22 forKeyedSubscript:v20];
@@ -1805,27 +1805,27 @@ LABEL_41:
   return v23;
 }
 
-+ (BOOL)key:(id)a3 hasUnspecifiedValue:(id)a4
++ (BOOL)key:(id)key hasUnspecifiedValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
+  keyCopy = key;
+  valueCopy = value;
+  v7 = [keyCopy length];
   v8 = 1;
-  if (v6 && v7)
+  if (valueCopy && v7)
   {
-    if ([v5 isEqualToString:*MEMORY[0x277CC4C00]])
+    if ([keyCopy isEqualToString:*MEMORY[0x277CC4C00]])
     {
       v9 = CVColorPrimariesGetStringForIntegerCodePoint(2);
     }
 
-    else if ([v5 isEqualToString:*MEMORY[0x277CC4CC0]])
+    else if ([keyCopy isEqualToString:*MEMORY[0x277CC4CC0]])
     {
       v9 = CVTransferFunctionGetStringForIntegerCodePoint(2);
     }
 
     else
     {
-      if (![v5 isEqualToString:*MEMORY[0x277CC4D10]])
+      if (![keyCopy isEqualToString:*MEMORY[0x277CC4D10]])
       {
         v10 = 0;
         goto LABEL_10;
@@ -1836,27 +1836,27 @@ LABEL_41:
 
     v10 = v9;
 LABEL_10:
-    v8 = [v10 isEqualToString:v6];
+    v8 = [v10 isEqualToString:valueCopy];
   }
 
   return v8;
 }
 
-+ (BOOL)isEncoderAvailableForEncoderType:(int)a3
++ (BOOL)isEncoderAvailableForEncoderType:(int)type
 {
-  if (a3 <= 8)
+  if (type <= 8)
   {
-    if (!a3)
+    if (!type)
     {
       return 0;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
-      v3 = [MEMORY[0x277CCAC38] processInfo];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
       v6 = xmmword_25792B428;
       v7 = 0;
-      v4 = [v3 isOperatingSystemAtLeastVersion:&v6];
+      v4 = [processInfo isOperatingSystemAtLeastVersion:&v6];
 
       return v4;
     }
@@ -1864,7 +1864,7 @@ LABEL_10:
     return 1;
   }
 
-  if (a3 != 9 && a3 != 12)
+  if (type != 9 && type != 12)
   {
     return 1;
   }
@@ -1872,10 +1872,10 @@ LABEL_10:
   return [MOVStreamIOUtility isEncoderAvailableWithEncoderName:@"hvc1"];
 }
 
-+ (BOOL)isEncoderAvailableWithEncoderName:(id)a3
++ (BOOL)isEncoderAvailableWithEncoderName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   listOfVideoEncodersOut = 0;
   v4 = VTCopyVideoEncoderList(0, &listOfVideoEncodersOut);
   if (v4)
@@ -1908,7 +1908,7 @@ LABEL_10:
         }
 
         v10 = [*(*(&v17 + 1) + 8 * i) objectForKey:v8];
-        if ([v10 isEqualToString:v3])
+        if ([v10 isEqualToString:nameCopy])
         {
           CFRelease(listOfVideoEncodersOut);
 
@@ -1934,13 +1934,13 @@ LABEL_12:
   return v11;
 }
 
-+ (id)addTransform:(CGAffineTransform *)a3 toConfiguration:(id)a4
++ (id)addTransform:(CGAffineTransform *)transform toConfiguration:(id)configuration
 {
-  v5 = [a4 mutableCopy];
-  v6 = *&a3->c;
-  v10[0] = *&a3->a;
+  v5 = [configuration mutableCopy];
+  v6 = *&transform->c;
+  v10[0] = *&transform->a;
   v10[1] = v6;
-  v10[2] = *&a3->tx;
+  v10[2] = *&transform->tx;
   v7 = [MOVStreamIOUtility valueWithCGAffineTransform:v10];
   [v5 setObject:v7 forKey:@"VideoTransform"];
 
@@ -1949,10 +1949,10 @@ LABEL_12:
   return v8;
 }
 
-+ (id)addTrackTypeInfo:(unint64_t)a3 toConfiguration:(id)a4
++ (id)addTrackTypeInfo:(unint64_t)info toConfiguration:(id)configuration
 {
-  v5 = [a4 mutableCopy];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v5 = [configuration mutableCopy];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:info];
   [v5 setObject:v6 forKey:@"VideoTrackTypeInfo"];
 
   v7 = [v5 copy];
@@ -1960,11 +1960,11 @@ LABEL_12:
   return v7;
 }
 
-+ (id)addEncodingQuality:(double)a3 toConfiguration:(id)a4
++ (id)addEncodingQuality:(double)quality toConfiguration:(id)configuration
 {
-  v5 = [a4 mutableCopy];
+  v5 = [configuration mutableCopy];
   v6 = MEMORY[0x277CCABB0];
-  [MOVStreamIOUtility clampedQuality:a3];
+  [MOVStreamIOUtility clampedQuality:quality];
   v7 = [v6 numberWithDouble:?];
   [v5 setObject:v7 forKey:@"EncodingQuality"];
 
@@ -1983,13 +1983,13 @@ LABEL_12:
   return v2;
 }
 
-+ (id)monochrome10bitHEVCLosslessEncoderConfigAllowFrameReordering:(BOOL)a3
++ (id)monochrome10bitHEVCLosslessEncoderConfigAllowFrameReordering:(BOOL)reordering
 {
-  v3 = a3;
-  v4 = [objc_opt_class() monochrome10bitHEVCLosslessEncoderConfig];
-  v5 = [v4 mutableCopy];
+  reorderingCopy = reordering;
+  monochrome10bitHEVCLosslessEncoderConfig = [objc_opt_class() monochrome10bitHEVCLosslessEncoderConfig];
+  v5 = [monochrome10bitHEVCLosslessEncoderConfig mutableCopy];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:reorderingCopy];
   [v5 setObject:v6 forKey:@"AllowFrameReordering"];
 
   v7 = [v5 copy];
@@ -2007,13 +2007,13 @@ LABEL_12:
   return v2;
 }
 
-+ (id)monochrome8bitHEVCLosslessEncoderConfigAllowFrameReordering:(BOOL)a3
++ (id)monochrome8bitHEVCLosslessEncoderConfigAllowFrameReordering:(BOOL)reordering
 {
-  v3 = a3;
-  v4 = [objc_opt_class() monochrome8bitHEVCLosslessEncoderConfig];
-  v5 = [v4 mutableCopy];
+  reorderingCopy = reordering;
+  monochrome8bitHEVCLosslessEncoderConfig = [objc_opt_class() monochrome8bitHEVCLosslessEncoderConfig];
+  v5 = [monochrome8bitHEVCLosslessEncoderConfig mutableCopy];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:reorderingCopy];
   [v5 setObject:v6 forKey:@"AllowFrameReordering"];
 
   v7 = [v5 copy];
@@ -2031,52 +2031,52 @@ LABEL_12:
   return v2;
 }
 
-+ (id)monochrome8bitHEVCEncoderConfigWithBitrate:(unint64_t)a3
++ (id)monochrome8bitHEVCEncoderConfigWithBitrate:(unint64_t)bitrate
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"ColorStreamBitrate";
   v7[0] = &unk_2868E3468;
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:bitrate];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-+ (id)monochrome10bitHEVCEncoderConfigWithQuality:(double)a3
++ (id)monochrome10bitHEVCEncoderConfigWithQuality:(double)quality
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"EncodingQuality";
   v7[0] = &unk_2868E3480;
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:quality];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-+ (id)monochrome8bitHEVCEncoderConfigWithQuality:(double)a3
++ (id)monochrome8bitHEVCEncoderConfigWithQuality:(double)quality
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"EncodingQuality";
   v7[0] = &unk_2868E3468;
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:quality];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-+ (id)colorHEVCEncoderConfigWithQuality:(double)a3
++ (id)colorHEVCEncoderConfigWithQuality:(double)quality
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"EncodingQuality";
   v7[0] = &unk_2868E3498;
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:quality];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
@@ -2093,13 +2093,13 @@ LABEL_12:
   return v2;
 }
 
-+ (id)color8bitHEVCWithAlphaEncoderConfigWithBitrate:(unint64_t)a3
++ (id)color8bitHEVCWithAlphaEncoderConfigWithBitrate:(unint64_t)bitrate
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"ColorStreamBitrate";
   v7[0] = &unk_2868E34B0;
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:bitrate];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
@@ -2146,26 +2146,26 @@ LABEL_12:
   return v2;
 }
 
-+ (id)colorHEVCEncoderConfigWithBitrate:(unint64_t)a3
++ (id)colorHEVCEncoderConfigWithBitrate:(unint64_t)bitrate
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"ColorStreamBitrate";
   v7[0] = &unk_2868E3498;
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:bitrate];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-+ (id)colorH264EncoderConfigWithBitrate:(unint64_t)a3
++ (id)colorH264EncoderConfigWithBitrate:(unint64_t)bitrate
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"ColorStreamBitrate";
   v7[0] = &unk_2868E34F8;
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:bitrate];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
@@ -2204,24 +2204,24 @@ LABEL_12:
   return v2;
 }
 
-+ (id)jpegEncoderConfigWithQuality:(double)a3
++ (id)jpegEncoderConfigWithQuality:(double)quality
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"EncodingQuality";
   v7[0] = &unk_2868E3528;
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:quality];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-+ (id)configWithEncoderType:(int)a3
++ (id)configWithEncoderType:(int)type
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"StreamEncoderType";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&type];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
@@ -2238,13 +2238,13 @@ LABEL_12:
   return v2;
 }
 
-+ (id)sampleBufferConfigWithPixelFormat:(unsigned int)a3
++ (id)sampleBufferConfigWithPixelFormat:(unsigned int)format
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"PixelFormat";
   v7[0] = &unk_2868E3540;
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&format];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
@@ -2271,12 +2271,12 @@ LABEL_12:
   return v2;
 }
 
-+ (id)customConfigWithOutputSettings:(id)a3
++ (id)customConfigWithOutputSettings:(id)settings
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  settingsCopy = settings;
+  v4 = settingsCopy;
+  if (!settingsCopy)
   {
     v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"outputSettings must not be nil." userInfo:0];
     objc_exception_throw(v7);
@@ -2285,18 +2285,18 @@ LABEL_12:
   v8[0] = @"StreamEncoderType";
   v8[1] = @"CustomOutputSettings";
   v9[0] = &unk_2868E3588;
-  v9[1] = v3;
+  v9[1] = settingsCopy;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v5;
 }
 
-+ (id)customEncoderConfigWithEmbeddedConfiguration:(id)a3
++ (id)customEncoderConfigWithEmbeddedConfiguration:(id)configuration
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  configurationCopy = configuration;
+  v4 = configurationCopy;
+  if (!configurationCopy)
   {
     v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Embedded configuration must not be nil." userInfo:0];
     objc_exception_throw(v7);
@@ -2305,45 +2305,45 @@ LABEL_12:
   v8[0] = @"StreamEncoderType";
   v8[1] = @"CustomEncoderConfig";
   v9[0] = &unk_2868E3570;
-  v9[1] = v3;
+  v9[1] = configurationCopy;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v5;
 }
 
-+ (id)stereoConfigurationWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 frameRate:(double)a6 additionalCompressionProperties:(id)a7
++ (id)stereoConfigurationWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format frameRate:(double)rate additionalCompressionProperties:(id)properties
 {
-  v7 = [MOVStreamIOUtility stereoConfigurationWidth:a3 height:a4 pixelFormat:*&a5 frameRate:0 leftAndRightViewIDs:a7 additionalCompressionProperties:a6];
+  v7 = [MOVStreamIOUtility stereoConfigurationWidth:width height:height pixelFormat:*&format frameRate:0 leftAndRightViewIDs:properties additionalCompressionProperties:rate];
 
   return v7;
 }
 
-+ (id)stereoConfigurationWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 frameRate:(double)a6 leftAndRightViewIDs:(id)a7 additionalCompressionProperties:(id)a8
++ (id)stereoConfigurationWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format frameRate:(double)rate leftAndRightViewIDs:(id)ds additionalCompressionProperties:(id)properties
 {
-  v10 = *&a5;
+  v10 = *&format;
   v39[2] = *MEMORY[0x277D85DE8];
-  v31 = a7;
-  v13 = a8;
+  dsCopy = ds;
+  propertiesCopy = properties;
   v14 = objc_alloc(MEMORY[0x277CBEB38]);
   v15 = *MEMORY[0x277CE2548];
   v38[0] = *MEMORY[0x277CE2580];
   v38[1] = v15;
   v39[0] = &unk_2868E3BD0;
-  v16 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+  v16 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v39[1] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v18 = [v14 initWithDictionary:v17];
 
-  if (v31 && [v31 count] == 2)
+  if (dsCopy && [dsCopy count] == 2)
   {
     [v18 setObject:&unk_2868E3BD0 forKey:*MEMORY[0x277CE2588]];
-    [v18 setObject:v31 forKey:*MEMORY[0x277CE2578]];
+    [v18 setObject:dsCopy forKey:*MEMORY[0x277CE2578]];
   }
 
   v19 = MEMORY[0x277CBEC10];
-  if (!v13)
+  if (!propertiesCopy)
   {
-    v13 = MEMORY[0x277CBEC10];
+    propertiesCopy = MEMORY[0x277CBEC10];
   }
 
   v20 = *MEMORY[0x277CE62C8];
@@ -2351,10 +2351,10 @@ LABEL_12:
   v21 = *MEMORY[0x277CE63C0];
   v36[0] = v20;
   v36[1] = v21;
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:width];
   v37[1] = v22;
   v36[2] = *MEMORY[0x277CE6360];
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:height];
   v36[3] = *MEMORY[0x277CE6330];
   v37[2] = v23;
   v37[3] = v18;
@@ -2364,10 +2364,10 @@ LABEL_12:
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v10];
   v35[0] = v25;
   v34[1] = *MEMORY[0x277CC4EC8];
-  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:width];
   v35[1] = v26;
   v34[2] = *MEMORY[0x277CC4DD8];
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:height];
   v34[3] = *MEMORY[0x277CC4DE8];
   v35[2] = v27;
   v35[3] = v19;
@@ -2379,7 +2379,7 @@ LABEL_12:
   v33[1] = v24;
   v32[2] = @"AdditionalCompressionProperties";
   v32[3] = @"TaggedPixelBufferGroupAdaptorPixelBufferAttributes";
-  v33[2] = v13;
+  v33[2] = propertiesCopy;
   v33[3] = v28;
   v32[4] = @"StereoVideoEncoding";
   v33[4] = MEMORY[0x277CBEC38];
@@ -2398,13 +2398,13 @@ LABEL_12:
   return v2;
 }
 
-+ (id)monochrome10bitHEVCEncoderConfigWithBitrate:(unint64_t)a3
++ (id)monochrome10bitHEVCEncoderConfigWithBitrate:(unint64_t)bitrate
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"ColorStreamBitrate";
   v7[0] = &unk_2868E3480;
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:bitrate];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
@@ -2431,13 +2431,13 @@ LABEL_12:
   return v2;
 }
 
-+ (id)proRes422EncoderConfigWithQuality:(int64_t)a3
++ (id)proRes422EncoderConfigWithQuality:(int64_t)quality
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"StreamEncoderType";
   v6[1] = @"ProResEncodingQuality";
   v7[0] = &unk_2868E35E8;
-  v3 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithInteger:quality];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
@@ -2456,7 +2456,7 @@ LABEL_12:
   return v2;
 }
 
-+ (id)defaultVCPRecordingConfigWithBitrate:(unint64_t)a3 frameRate:(double)a4
++ (id)defaultVCPRecordingConfigWithBitrate:(unint64_t)bitrate frameRate:(double)rate
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v16[0] = *MEMORY[0x277CE25F0];
@@ -2465,10 +2465,10 @@ LABEL_12:
   v17[1] = &unk_2868E3618;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v14[0] = *MEMORY[0x277CE2518];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:bitrate];
   v15[0] = v7;
   v14[1] = *MEMORY[0x277CE2548];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v15[1] = v8;
   v15[2] = &unk_2868E3630;
   v14[2] = @"EncoderUsage";
@@ -2491,123 +2491,123 @@ LABEL_12:
   return v10;
 }
 
-+ (id)colorRecordingConfigBitDepth:(unint64_t)a3 lossless:(BOOL)a4 chromaSampling:(int64_t)a5 error:(id *)a6
++ (id)colorRecordingConfigBitDepth:(unint64_t)depth lossless:(BOOL)lossless chromaSampling:(int64_t)sampling error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 8)
+  if ((depth & 0xFFFFFFFFFFFFFFFDLL) == 8)
   {
-    if (a5 == 2)
+    if (sampling == 2)
     {
-      if (a3 == 8)
+      if (depth == 8)
       {
-        if (a4)
+        if (lossless)
         {
           v16 = @"StreamEncoderType";
           v17 = &unk_2868E3720;
-          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:{1, a6}];
+          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:{1, error}];
         }
 
         else
         {
           v14 = @"StreamEncoderType";
           v15 = &unk_2868E3738;
-          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:{1, a6}];
+          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:{1, error}];
         }
       }
 
-      else if (a4)
+      else if (lossless)
       {
         v12 = @"StreamEncoderType";
         v13 = &unk_2868E3750;
-        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v13 forKeys:&v12 count:{1, a6}];
+        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v13 forKeys:&v12 count:{1, error}];
       }
 
       else
       {
         v10 = @"StreamEncoderType";
         v11 = &unk_2868E3768;
-        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:{1, a6}];
+        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:{1, error}];
       }
     }
 
-    else if (a5 == 1)
+    else if (sampling == 1)
     {
-      if (a3 == 8)
+      if (depth == 8)
       {
-        if (a4)
+        if (lossless)
         {
           v24 = @"StreamEncoderType";
           v25 = &unk_2868E36C0;
-          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:{1, a6}];
+          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:{1, error}];
         }
 
         else
         {
           v22 = @"StreamEncoderType";
           v23 = &unk_2868E36D8;
-          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:{1, a6}];
+          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:{1, error}];
         }
       }
 
-      else if (a4)
+      else if (lossless)
       {
         v20 = @"StreamEncoderType";
         v21 = &unk_2868E36F0;
-        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:{1, a6}];
+        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:{1, error}];
       }
 
       else
       {
         v18 = @"StreamEncoderType";
         v19 = &unk_2868E3708;
-        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:{1, a6}];
+        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:{1, error}];
       }
     }
 
     else
     {
-      if (a5)
+      if (sampling)
       {
         +[MOVStreamIOUtility colorRecordingConfigBitDepth:lossless:chromaSampling:error:];
       }
 
-      if (a3 == 8)
+      if (depth == 8)
       {
-        if (a4)
+        if (lossless)
         {
           v32 = @"StreamEncoderType";
           v33[0] = &unk_2868E34C8;
-          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:{1, a6}];
+          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:{1, error}];
         }
 
         else
         {
           v30 = @"StreamEncoderType";
           v31 = &unk_2868E3498;
-          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:{1, a6}];
+          v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:{1, error}];
         }
       }
 
-      else if (a4)
+      else if (lossless)
       {
         v28 = @"StreamEncoderType";
         v29 = &unk_2868E3690;
-        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:{1, a6}];
+        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:{1, error}];
       }
 
       else
       {
         v26 = @"StreamEncoderType";
         v27 = &unk_2868E36A8;
-        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:{1, a6}];
+        v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:{1, error}];
       }
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported bit depth (%zu).", a4, a5, a3];
-    [MEMORY[0x277CCA9B8] populateStreamError:a6 message:v8 code:28];
+    depth = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported bit depth (%zu).", lossless, sampling, depth];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:depth code:28];
 
     v6 = 0;
   }
@@ -2615,63 +2615,63 @@ LABEL_12:
   return v6;
 }
 
-+ (id)colorRecordingConfigBitDepth:(unint64_t)a3 bitrate:(unint64_t)a4 chromaSampling:(int64_t)a5 error:(id *)a6
++ (id)colorRecordingConfigBitDepth:(unint64_t)depth bitrate:(unint64_t)bitrate chromaSampling:(int64_t)sampling error:(id *)error
 {
-  v7 = [objc_opt_class() colorRecordingConfigBitDepth:a3 lossless:0 chromaSampling:a5 error:a6];
+  v7 = [objc_opt_class() colorRecordingConfigBitDepth:depth lossless:0 chromaSampling:sampling error:error];
   v8 = [v7 mutableCopy];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:bitrate];
   [v8 setObject:v9 forKey:@"ColorStreamBitrate"];
 
   return v8;
 }
 
-+ (id)colorRecordingConfigBitDepth:(unint64_t)a3 quality:(double)a4 chromaSampling:(int64_t)a5 error:(id *)a6
++ (id)colorRecordingConfigBitDepth:(unint64_t)depth quality:(double)quality chromaSampling:(int64_t)sampling error:(id *)error
 {
-  v7 = [objc_opt_class() colorRecordingConfigBitDepth:a3 lossless:0 chromaSampling:a5 error:a6];
+  v7 = [objc_opt_class() colorRecordingConfigBitDepth:depth lossless:0 chromaSampling:sampling error:error];
   v8 = [v7 mutableCopy];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:quality];
   [v8 setObject:v9 forKey:@"EncodingQuality"];
 
   return v8;
 }
 
-+ (id)colorRecordingConfigBitDepth:(unint64_t)a3 chromaSampling:(int64_t)a4 error:(id *)a5
++ (id)colorRecordingConfigBitDepth:(unint64_t)depth chromaSampling:(int64_t)sampling error:(id *)error
 {
   v8 = objc_opt_class();
 
-  return [v8 colorRecordingConfigBitDepth:a3 lossless:0 chromaSampling:a4 error:a5];
+  return [v8 colorRecordingConfigBitDepth:depth lossless:0 chromaSampling:sampling error:error];
 }
 
-+ (double)cmQualityFromMIOHEVCQuality:(int64_t)a3
++ (double)cmQualityFromMIOHEVCQuality:(int64_t)quality
 {
   result = 1.0;
-  if ((a3 - 1) <= 3)
+  if ((quality - 1) <= 3)
   {
-    return dbl_25792B468[a3 - 1];
+    return dbl_25792B468[quality - 1];
   }
 
   return result;
 }
 
-+ (id)hevc10bitQuality:(int64_t)a3 chromaSampling:(int64_t)a4
++ (id)hevc10bitQuality:(int64_t)quality chromaSampling:(int64_t)sampling
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  [objc_opt_class() cmQualityFromMIOHEVCQuality:a3];
-  if (a4 == 3)
+  [objc_opt_class() cmQualityFromMIOHEVCQuality:quality];
+  if (sampling == 3)
   {
     [MOVStreamIOUtility monochrome10bitHEVCEncoderConfigWithQuality:?];
   }
 
   else
   {
-    [MOVStreamIOUtility colorRecordingConfigBitDepth:10 quality:a4 chromaSampling:0 error:?];
+    [MOVStreamIOUtility colorRecordingConfigBitDepth:10 quality:sampling chromaSampling:0 error:?];
   }
   v6 = ;
   v7 = [v6 mutableCopy];
 
-  if (a3)
+  if (quality)
   {
     v11 = *MEMORY[0x277CE6368];
     v12[0] = &unk_2868E3618;
@@ -2684,23 +2684,23 @@ LABEL_12:
   return v9;
 }
 
-+ (id)hevc8bitQuality:(int64_t)a3 chromaSampling:(int64_t)a4
++ (id)hevc8bitQuality:(int64_t)quality chromaSampling:(int64_t)sampling
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  [objc_opt_class() cmQualityFromMIOHEVCQuality:a3];
-  if (a4 == 3)
+  [objc_opt_class() cmQualityFromMIOHEVCQuality:quality];
+  if (sampling == 3)
   {
     [MOVStreamIOUtility monochrome8bitHEVCEncoderConfigWithQuality:?];
   }
 
   else
   {
-    [MOVStreamIOUtility colorRecordingConfigBitDepth:8 quality:a4 chromaSampling:0 error:?];
+    [MOVStreamIOUtility colorRecordingConfigBitDepth:8 quality:sampling chromaSampling:0 error:?];
   }
   v6 = ;
   v7 = [v6 mutableCopy];
 
-  if (a3)
+  if (quality)
   {
     v11 = *MEMORY[0x277CE6368];
     v12[0] = &unk_2868E3618;
@@ -2713,18 +2713,18 @@ LABEL_12:
   return v9;
 }
 
-+ (BOOL)isKeyFrame:(opaqueCMSampleBuffer *)a3 error:(id *)a4
++ (BOOL)isKeyFrame:(opaqueCMSampleBuffer *)frame error:(id *)error
 {
-  if (CMSampleBufferGetImageBuffer(a3))
+  if (CMSampleBufferGetImageBuffer(frame))
   {
     v6 = MEMORY[0x277CCA9B8];
     v7 = @"decoding is set up for this sample buffer. Cannot tell whether it's a key frame or not";
 LABEL_3:
-    [v6 populateStreamError:a4 message:v7 code:0];
+    [v6 populateStreamError:error message:v7 code:0];
     return 0;
   }
 
-  SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(a3, 1u);
+  SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(frame, 1u);
   ValueAtIndex = CFArrayGetValueAtIndex(SampleAttachmentsArray, 0);
   value = 0;
   if (!ValueAtIndex)
@@ -2737,15 +2737,15 @@ LABEL_3:
   return !CFDictionaryGetValueIfPresent(ValueAtIndex, *MEMORY[0x277CC0698], &value) || value == *MEMORY[0x277CBED10];
 }
 
-+ (BOOL)isSlimXEncodedTrack:(id)a3
++ (BOOL)isSlimXEncodedTrack:(id)track
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 formatDescriptions];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  formatDescriptions = [track formatDescriptions];
+  v4 = [formatDescriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -2756,7 +2756,7 @@ LABEL_3:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(formatDescriptions);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -2774,7 +2774,7 @@ LABEL_3:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [formatDescriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -2790,9 +2790,9 @@ LABEL_13:
   return v10;
 }
 
-+ (int64_t)chromaSamplingFromMediaFormatDescription:(opaqueCMFormatDescription *)a3
++ (int64_t)chromaSamplingFromMediaFormatDescription:(opaqueCMFormatDescription *)description
 {
-  if (CMFormatDescriptionGetMediaSubType(a3) == 1752589105 && (Extension = CMFormatDescriptionGetExtension(a3, *MEMORY[0x277CC03B8])) != 0 && CFDictionaryGetValue(Extension, @"hvcC") && !FigHEVCBridge_GetHEVCParameterSetAtIndex() && !FigHEVCBridge_GetSPSChromaFormatAndBitDepths())
+  if (CMFormatDescriptionGetMediaSubType(description) == 1752589105 && (Extension = CMFormatDescriptionGetExtension(description, *MEMORY[0x277CC03B8])) != 0 && CFDictionaryGetValue(Extension, @"hvcC") && !FigHEVCBridge_GetHEVCParameterSetAtIndex() && !FigHEVCBridge_GetSPSChromaFormatAndBitDepths())
   {
     return 3;
   }
@@ -2803,15 +2803,15 @@ LABEL_13:
   }
 }
 
-+ (int64_t)chromaSamplingForTrack:(id)a3
++ (int64_t)chromaSamplingForTrack:(id)track
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 formatDescriptions];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  formatDescriptions = [track formatDescriptions];
+  v4 = [formatDescriptions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -2821,7 +2821,7 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(formatDescriptions);
       }
 
       v7 = [objc_opt_class() chromaSamplingFromMediaFormatDescription:*(*(&v9 + 1) + 8 * v6)];
@@ -2832,7 +2832,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [formatDescriptions countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -2852,11 +2852,11 @@ LABEL_9:
   return v7;
 }
 
-+ (opaqueCMFormatDescription)createTimeCode64FormatDescriptionWithFrameRate:(double)a3 dropFrame:(BOOL)a4 error:(id *)a5
++ (opaqueCMFormatDescription)createTimeCode64FormatDescriptionWithFrameRate:(double)rate dropFrame:(BOOL)frame error:(id *)error
 {
-  v6 = a4;
+  frameCopy = frame;
   formatDescriptionOut = 0;
-  if (a4)
+  if (frame)
   {
     v8 = 3;
   }
@@ -2867,33 +2867,33 @@ LABEL_9:
   }
 
   v9 = *MEMORY[0x277CBECE8];
-  CMTimeMake(&frameDuration, 100, (a3 * 100.0));
-  v10 = CMTimeCodeFormatDescriptionCreate(v9, 0x74633634u, &frameDuration, vcvtpd_u64_f64(a3), v8, 0, &formatDescriptionOut);
+  CMTimeMake(&frameDuration, 100, (rate * 100.0));
+  v10 = CMTimeCodeFormatDescriptionCreate(v9, 0x74633634u, &frameDuration, vcvtpd_u64_f64(rate), v8, 0, &formatDescriptionOut);
   if (!v10)
   {
     return formatDescriptionOut;
   }
 
-  if (a5)
+  if (error)
   {
     v11 = @"NO";
-    if (v6)
+    if (frameCopy)
     {
       v11 = @"YES";
     }
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create TimeCode64 FormatDescription with fps %f drop frame %@. Error: %d", *&a3, v11, v10];
-    *a5 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v12 code:8];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create TimeCode64 FormatDescription with fps %f drop frame %@. Error: %d", *&rate, v11, v10];
+    *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v12 code:8];
   }
 
   return 0;
 }
 
-+ (opaqueCMFormatDescription)createTimeCode32FormatDescriptionWithFrameRate:(double)a3 dropFrame:(BOOL)a4 error:(id *)a5
++ (opaqueCMFormatDescription)createTimeCode32FormatDescriptionWithFrameRate:(double)rate dropFrame:(BOOL)frame error:(id *)error
 {
-  v6 = a4;
+  frameCopy = frame;
   formatDescriptionOut = 0;
-  if (a4)
+  if (frame)
   {
     v8 = 3;
   }
@@ -2904,64 +2904,64 @@ LABEL_9:
   }
 
   v9 = *MEMORY[0x277CBECE8];
-  CMTimeMake(&frameDuration, 100, (a3 * 100.0));
-  v10 = CMTimeCodeFormatDescriptionCreate(v9, 0x746D6364u, &frameDuration, vcvtpd_u64_f64(a3), v8, 0, &formatDescriptionOut);
+  CMTimeMake(&frameDuration, 100, (rate * 100.0));
+  v10 = CMTimeCodeFormatDescriptionCreate(v9, 0x746D6364u, &frameDuration, vcvtpd_u64_f64(rate), v8, 0, &formatDescriptionOut);
   if (!v10)
   {
     return formatDescriptionOut;
   }
 
-  if (a5)
+  if (error)
   {
     v11 = @"NO";
-    if (v6)
+    if (frameCopy)
     {
       v11 = @"YES";
     }
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create TimeCode32 FormatDescription with fps %f drop frame %@. Error: %d", *&a3, v11, v10];
-    *a5 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v12 code:8];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create TimeCode32 FormatDescription with fps %f drop frame %@. Error: %d", *&rate, v11, v10];
+    *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v12 code:8];
   }
 
   return 0;
 }
 
-+ (opaqueCMSampleBuffer)createTimecodeSampleBufferWithSMPTETime:(CVSMPTETime *)a3 formatDescription:(opaqueCMFormatDescription *)a4 pts:(id *)a5 error:(id *)a6
++ (opaqueCMSampleBuffer)createTimecodeSampleBufferWithSMPTETime:(CVSMPTETime *)time formatDescription:(opaqueCMFormatDescription *)description pts:(id *)pts error:(id *)error
 {
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a4);
+  MediaSubType = CMFormatDescriptionGetMediaSubType(description);
   if (MediaSubType == 1952658996)
   {
-    v15 = *&a3->subframes;
-    v16 = *&a3->hours;
-    v13 = *&a5->var0;
-    var3 = a5->var3;
-    return [MOVStreamIOUtility createTimecode64SampleBufferWithSMPTETime:&v15 formatDescription:a4 pts:&v13 error:a6];
+    v15 = *&time->subframes;
+    v16 = *&time->hours;
+    v13 = *&pts->var0;
+    var3 = pts->var3;
+    return [MOVStreamIOUtility createTimecode64SampleBufferWithSMPTETime:&v15 formatDescription:description pts:&v13 error:error];
   }
 
   else if (MediaSubType == 1953325924)
   {
-    v15 = *&a3->subframes;
-    v16 = *&a3->hours;
-    v13 = *&a5->var0;
-    var3 = a5->var3;
-    return [MOVStreamIOUtility createTimecode32SampleBufferWithSMPTETime:&v15 formatDescription:a4 pts:&v13 error:a6];
+    v15 = *&time->subframes;
+    v16 = *&time->hours;
+    v13 = *&pts->var0;
+    var3 = pts->var3;
+    return [MOVStreamIOUtility createTimecode32SampleBufferWithSMPTETime:&v15 formatDescription:description pts:&v13 error:error];
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"TimeCode format (%d) not supported.", MediaSubType];
-    [MEMORY[0x277CCA9B8] populateReaderError:a6 message:v12 code:12];
+    mediaSubType = [MEMORY[0x277CCACA8] stringWithFormat:@"TimeCode format (%d) not supported.", MediaSubType];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:mediaSubType code:12];
 
     return 0;
   }
 }
 
-+ (opaqueCMSampleBuffer)createTimecode32SampleBufferWithSMPTETime:(CVSMPTETime *)a3 formatDescription:(opaqueCMFormatDescription *)a4 pts:(id *)a5 error:(id *)a6
++ (opaqueCMSampleBuffer)createTimecode32SampleBufferWithSMPTETime:(CVSMPTETime *)time formatDescription:(opaqueCMFormatDescription *)description pts:(id *)pts error:(id *)error
 {
   blockBufferOut = 0;
   v22 = 0;
-  v19.duration = *a3;
-  sourceBytes = [MOVStreamIOUtility frameNumber32ForTimecode:&v19 usingFormatDescription:a4, a5, a6];
+  v19.duration = *time;
+  sourceBytes = [MOVStreamIOUtility frameNumber32ForTimecode:&v19 usingFormatDescription:description, pts, error];
   v8 = *MEMORY[0x277CBECE8];
   v9 = CMBlockBufferCreateWithMemoryBlock(*MEMORY[0x277CBECE8], 0, 4uLL, *MEMORY[0x277CBECE8], 0, 0, 4uLL, 1u, &blockBufferOut);
   v10 = blockBufferOut;
@@ -2993,14 +2993,14 @@ LABEL_9:
   v14 = *(MEMORY[0x277CC0920] + 16);
   *&v19.duration.value = *MEMORY[0x277CC0920];
   *&v19.duration.epoch = v14;
-  *&v19.presentationTimeStamp.value = *&a5->var0;
-  var3 = a5->var3;
+  *&v19.presentationTimeStamp.value = *&pts->var0;
+  var3 = pts->var3;
   v19.decodeTimeStamp.epoch = v13;
   v19.presentationTimeStamp.epoch = var3;
-  FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(a4);
-  CMTimeMake(&v19.duration, (1.0 / FrameQuanta * a5->var1), a5->var1);
+  FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(description);
+  CMTimeMake(&v19.duration, (1.0 / FrameQuanta * pts->var1), pts->var1);
   sampleSizeArray = 4;
-  if (CMSampleBufferCreate(v8, blockBufferOut, 1u, 0, 0, a4, 1, 1, &v19, 1, &sampleSizeArray, &v22) || !v22)
+  if (CMSampleBufferCreate(v8, blockBufferOut, 1u, 0, 0, description, 1, 1, &v19, 1, &sampleSizeArray, &v22) || !v22)
   {
     NSLog(&cfstr_CouldNotCreate.isa);
   }
@@ -3009,12 +3009,12 @@ LABEL_9:
   return v22;
 }
 
-+ (opaqueCMSampleBuffer)createTimecode64SampleBufferWithSMPTETime:(CVSMPTETime *)a3 formatDescription:(opaqueCMFormatDescription *)a4 pts:(id *)a5 error:(id *)a6
++ (opaqueCMSampleBuffer)createTimecode64SampleBufferWithSMPTETime:(CVSMPTETime *)time formatDescription:(opaqueCMFormatDescription *)description pts:(id *)pts error:(id *)error
 {
   blockBufferOut = 0;
   v22 = 0;
-  v19.duration = *a3;
-  sourceBytes = [MOVStreamIOUtility frameNumber64ForTimecode:&v19 usingFormatDescription:a4, a5, a6];
+  v19.duration = *time;
+  sourceBytes = [MOVStreamIOUtility frameNumber64ForTimecode:&v19 usingFormatDescription:description, pts, error];
   v8 = *MEMORY[0x277CBECE8];
   v9 = CMBlockBufferCreateWithMemoryBlock(*MEMORY[0x277CBECE8], 0, 8uLL, *MEMORY[0x277CBECE8], 0, 0, 8uLL, 1u, &blockBufferOut);
   v10 = blockBufferOut;
@@ -3046,14 +3046,14 @@ LABEL_9:
   v14 = *(MEMORY[0x277CC0920] + 16);
   *&v19.duration.value = *MEMORY[0x277CC0920];
   *&v19.duration.epoch = v14;
-  *&v19.presentationTimeStamp.value = *&a5->var0;
-  var3 = a5->var3;
+  *&v19.presentationTimeStamp.value = *&pts->var0;
+  var3 = pts->var3;
   v19.decodeTimeStamp.epoch = v13;
   v19.presentationTimeStamp.epoch = var3;
-  FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(a4);
-  CMTimeMake(&v19.duration, (1.0 / FrameQuanta * a5->var1), a5->var1);
+  FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(description);
+  CMTimeMake(&v19.duration, (1.0 / FrameQuanta * pts->var1), pts->var1);
   sampleSizeArray = 8;
-  if (CMSampleBufferCreate(v8, blockBufferOut, 1u, 0, 0, a4, 1, 1, &v19, 1, &sampleSizeArray, &v22) || !v22)
+  if (CMSampleBufferCreate(v8, blockBufferOut, 1u, 0, 0, description, 1, 1, &v19, 1, &sampleSizeArray, &v22) || !v22)
   {
     NSLog(&cfstr_CouldNotCreate.isa);
   }
@@ -3062,10 +3062,10 @@ LABEL_9:
   return v22;
 }
 
-+ (CVSMPTETime)timecode32ForSampleBuffer:(SEL)a3 dropFrame:(opaqueCMSampleBuffer *)a4
++ (CVSMPTETime)timecode32ForSampleBuffer:(SEL)buffer dropFrame:(opaqueCMSampleBuffer *)frame
 {
-  DataBuffer = CMSampleBufferGetDataBuffer(a4);
-  result = CMSampleBufferGetFormatDescription(a4);
+  DataBuffer = CMSampleBufferGetDataBuffer(frame);
+  result = CMSampleBufferGetFormatDescription(frame);
   if (!DataBuffer)
   {
     goto LABEL_8;
@@ -3110,24 +3110,24 @@ LABEL_8:
   return result;
 }
 
-+ (id)qtTrackNameForAssociatedAttachmentsTrack:(id)a3
++ (id)qtTrackNameForAssociatedAttachmentsTrack:(id)track
 {
-  v3 = [a3 stringByAppendingString:@"-attachments"];
+  v3 = [track stringByAppendingString:@"-attachments"];
 
   return v3;
 }
 
-+ (id)qtTrackNameForAssociatedTimeCodeTrack:(id)a3
++ (id)qtTrackNameForAssociatedTimeCodeTrack:(id)track
 {
-  v3 = [a3 stringByAppendingString:@"-timecode"];
+  v3 = [track stringByAppendingString:@"-timecode"];
 
   return v3;
 }
 
-+ (opaqueCMFormatDescription)createL010FormatDescriptionFromL016FormatDescription:(opaqueCMFormatDescription *)a3
++ (opaqueCMFormatDescription)createL010FormatDescriptionFromL016FormatDescription:(opaqueCMFormatDescription *)description
 {
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
-  v5 = CMFormatDescriptionGetExtensions(a3);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
+  v5 = CMFormatDescriptionGetExtensions(description);
   v6 = [v5 objectForKey:@"CVBytesPerRow"];
   v7 = +[MIOPixelBufferUtility createRawPixelBufferWithWidth:height:extendedRows:extendedPixelsPerRow:pixelFormat:bytesPerRowAlignment:planeAlignment:bufferCacheMode:](MIOPixelBufferUtility, "createRawPixelBufferWithWidth:height:extendedRows:extendedPixelsPerRow:pixelFormat:bytesPerRowAlignment:planeAlignment:bufferCacheMode:", Dimensions, HIDWORD(*&Dimensions), 0, ([v6 intValue] / 2 - Dimensions.width), 1278226736, 1, 1);
   CVBufferSetAttachment(v7, *MEMORY[0x277CC4CC0], [v5 objectForKey:*MEMORY[0x277CC4CC0]], kCVAttachmentMode_ShouldPropagate);
@@ -3143,10 +3143,10 @@ LABEL_8:
   return v8;
 }
 
-+ (opaqueCMFormatDescription)createL010FormatDescriptionFromRawBayerFormatDescription:(opaqueCMFormatDescription *)a3
++ (opaqueCMFormatDescription)createL010FormatDescriptionFromRawBayerFormatDescription:(opaqueCMFormatDescription *)description
 {
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
-  v5 = CMFormatDescriptionGetExtensions(a3);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
+  v5 = CMFormatDescriptionGetExtensions(description);
   v6 = [v5 objectForKey:@"CVBytesPerRow"];
   v7 = +[MOVStreamIOUtility getPreferredBytesPerRowAlignmentSize];
   v8 = +[MIOPixelBufferUtility createRawPixelBufferWithWidth:height:extendedRows:extendedPixelsPerRow:pixelFormat:bytesPerRowAlignment:planeAlignment:bufferCacheMode:](MIOPixelBufferUtility, "createRawPixelBufferWithWidth:height:extendedRows:extendedPixelsPerRow:pixelFormat:bytesPerRowAlignment:planeAlignment:bufferCacheMode:", Dimensions, HIDWORD(*&Dimensions), 0, ([v6 intValue] % v7) >> 1, 1278226736, v7, +[MOVStreamIOUtility getPreferredPlaneAlignmentSize](MOVStreamIOUtility, "getPreferredPlaneAlignmentSize"));
@@ -3158,11 +3158,11 @@ LABEL_8:
   return v9;
 }
 
-+ (opaqueCMFormatDescription)createxf20FormatDescriptionFromRawBayerFormatDescription:(opaqueCMFormatDescription *)a3 usingFirstPlaneOnly:(BOOL)a4
++ (opaqueCMFormatDescription)createxf20FormatDescriptionFromRawBayerFormatDescription:(opaqueCMFormatDescription *)description usingFirstPlaneOnly:(BOOL)only
 {
-  v4 = a4;
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
-  if (v4)
+  onlyCopy = only;
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
+  if (onlyCopy)
   {
     height = Dimensions.height;
   }
@@ -3172,7 +3172,7 @@ LABEL_8:
     height = (Dimensions.height / 2);
   }
 
-  v8 = CMFormatDescriptionGetExtensions(a3);
+  v8 = CMFormatDescriptionGetExtensions(description);
   v9 = [v8 objectForKey:@"CVBytesPerRow"];
   v10 = +[MOVStreamIOUtility getPreferredBytesPerRowAlignmentSize];
   v11 = +[MIOPixelBufferUtility createRawPixelBufferWithWidth:height:extendedRows:extendedPixelsPerRow:pixelFormat:bytesPerRowAlignment:planeAlignment:bufferCacheMode:](MIOPixelBufferUtility, "createRawPixelBufferWithWidth:height:extendedRows:extendedPixelsPerRow:pixelFormat:bytesPerRowAlignment:planeAlignment:bufferCacheMode:", Dimensions, height, 0, ([v9 intValue] % v10) >> 1, 2019963440, v10, +[MOVStreamIOUtility getPreferredPlaneAlignmentSize](MOVStreamIOUtility, "getPreferredPlaneAlignmentSize"));
@@ -3184,14 +3184,14 @@ LABEL_8:
   return v12;
 }
 
-+ (double)bytesPerPixelForFormat:(unsigned int)a3
++ (double)bytesPerPixelForFormat:(unsigned int)format
 {
   v11[1] = *MEMORY[0x277D85DE8];
   pixelBufferOut = 0;
   v10 = *MEMORY[0x277CC4DE8];
   v11[0] = MEMORY[0x277CBEC10];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  CVPixelBufferCreate(*MEMORY[0x277CBECE8], 0x400uLL, 0x300uLL, a3, v4, &pixelBufferOut);
+  CVPixelBufferCreate(*MEMORY[0x277CBECE8], 0x400uLL, 0x300uLL, format, v4, &pixelBufferOut);
   if (CVPixelBufferIsPlanar(pixelBufferOut))
   {
     v5 = +[MIOLog defaultLog];
@@ -3214,11 +3214,11 @@ LABEL_8:
   return BytesPerPixel;
 }
 
-+ (opaqueCMFormatDescription)createL008FormatDescriptionFromNonPlanarFormatDescription:(opaqueCMFormatDescription *)a3
++ (opaqueCMFormatDescription)createL008FormatDescriptionFromNonPlanarFormatDescription:(opaqueCMFormatDescription *)description
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
+  MediaSubType = CMFormatDescriptionGetMediaSubType(description);
   BytesPerPixelOfPlaneForFormat = MIOCVPixelBufferGetBytesPerPixelOfPlaneForFormat(MediaSubType, 0);
   pixelBufferOut = 0;
   v15 = *MEMORY[0x277CC4DE8];
@@ -3236,10 +3236,10 @@ LABEL_8:
   return v11;
 }
 
-+ (opaqueCMFormatDescription)createL008FormatDescriptionFromCompandedRawBayerFormatDescription:(opaqueCMFormatDescription *)a3
++ (opaqueCMFormatDescription)createL008FormatDescriptionFromCompandedRawBayerFormatDescription:(opaqueCMFormatDescription *)description
 {
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
-  v5 = CMFormatDescriptionGetExtensions(a3);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
+  v5 = CMFormatDescriptionGetExtensions(description);
   v6 = [v5 objectForKey:@"CVBytesPerRow"];
   v7 = +[MIOPixelBufferUtility createRawPixelBufferWithWidth:height:extendedRows:extendedPixelsPerRow:pixelFormat:bytesPerRowAlignment:planeAlignment:bufferCacheMode:](MIOPixelBufferUtility, "createRawPixelBufferWithWidth:height:extendedRows:extendedPixelsPerRow:pixelFormat:bytesPerRowAlignment:planeAlignment:bufferCacheMode:", Dimensions, HIDWORD(*&Dimensions), 0, 0, 1278226488, [v6 integerValue], 1);
   formatDescriptionOut = 0;
@@ -3250,14 +3250,14 @@ LABEL_8:
   return v8;
 }
 
-+ (id)getJsonFriendlyCopy:(id)a3
++ (id)getJsonFriendlyCopy:(id)copy
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  copyCopy = copy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v3;
+    v18 = copyCopy;
     v4 = objc_opt_new();
     v21 = 0u;
     v22 = 0u;
@@ -3299,7 +3299,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = copyCopy;
       v12 = [MEMORY[0x277CCAAA0] isValidJSONObject:v5];
       if (v12)
       {
@@ -3327,11 +3327,11 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v3 doubleValue];
+        [copyCopy doubleValue];
         v15 = fabs(v14);
         if (v15 == INFINITY)
         {
-          v5 = v3;
+          v5 = copyCopy;
         }
 
         else
@@ -3346,7 +3346,7 @@ LABEL_8:
 
         else
         {
-          v4 = v3;
+          v4 = copyCopy;
         }
       }
 
@@ -3356,7 +3356,7 @@ LABEL_8:
         if (objc_opt_isKindOfClass())
         {
           v5 = 0;
-          v4 = v3;
+          v4 = copyCopy;
         }
 
         else
@@ -3370,12 +3370,12 @@ LABEL_8:
 
           else
           {
-            v5 = v3;
+            v5 = copyCopy;
           }
 
           if (isKindOfClass)
           {
-            v4 = v3;
+            v4 = copyCopy;
           }
 
           else
@@ -3390,15 +3390,15 @@ LABEL_8:
   return v4;
 }
 
-+ (BOOL)isValidJSONObject:(id)a3 path:(id)a4
++ (BOOL)isValidJSONObject:(id)object path:(id)path
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v23 = a4;
+  objectCopy = object;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = v5;
+    v22 = objectCopy;
     if (([MEMORY[0x277CCAAA0] isValidJSONObject:?] & 1) == 0)
     {
       v26 = 0u;
@@ -3420,7 +3420,7 @@ LABEL_8:
             }
 
             v10 = *(*(&v24 + 1) + 8 * i);
-            v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v23, v10];
+            v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", pathCopy, v10];
             v12 = [v6 objectForKeyedSubscript:v10];
             v13 = [MOVStreamIOUtility isValidJSONObject:v12 path:v11];
 
@@ -3448,13 +3448,13 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v5;
+    v14 = objectCopy;
     if (([MEMORY[0x277CCAAA0] isValidJSONObject:v14] & 1) == 0)
     {
       v16 = 0;
       while ([v14 count] > v16)
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@[%d]", v23, v16];
+        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@[%d]", pathCopy, v16];
         v18 = [v14 objectAtIndexedSubscript:v16];
         v19 = [MOVStreamIOUtility isValidJSONObject:v18 path:v17];
 
@@ -3470,7 +3470,7 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v5])
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:objectCopy])
   {
 LABEL_17:
     v15 = 1;
@@ -3481,7 +3481,7 @@ LABEL_17:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v29 = v23;
+    v29 = pathCopy;
     _os_log_impl(&dword_257883000, v20, OS_LOG_TYPE_ERROR, "Can't serialize object as JSON: %{public}@", buf, 0xCu);
   }
 
@@ -3492,14 +3492,14 @@ LABEL_27:
   return v15;
 }
 
-+ (id)getPlistFriendlyCopyOf:(id)a3
++ (id)getPlistFriendlyCopyOf:(id)of
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  ofCopy = of;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = v3;
+    v19 = ofCopy;
     v4 = objc_opt_new();
     v26 = 0u;
     v27 = 0u;
@@ -3541,7 +3541,7 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v3;
+      v12 = ofCopy;
       v4 = objc_opt_new();
       v22 = 0u;
       v23 = 0u;
@@ -3581,7 +3581,7 @@ LABEL_27:
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
         v5 = 0;
-        v4 = v3;
+        v4 = ofCopy;
       }
 
       else
@@ -3595,12 +3595,12 @@ LABEL_27:
 
         else
         {
-          v5 = v3;
+          v5 = ofCopy;
         }
 
         if (isKindOfClass)
         {
-          v4 = v3;
+          v4 = ofCopy;
         }
 
         else
@@ -3614,15 +3614,15 @@ LABEL_27:
   return v4;
 }
 
-+ (BOOL)verifyExactBytesPerRow:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(unsigned int)a6
++ (BOOL)verifyExactBytesPerRow:(id)row width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format
 {
-  v6 = *&a6;
+  v6 = *&format;
   v34[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  rowCopy = row;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34[0] = v9;
+    v34[0] = rowCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
     goto LABEL_5;
   }
@@ -3630,7 +3630,7 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = rowCopy;
 LABEL_5:
     v11 = v10;
     *pixelBufferOut = 0;
@@ -3639,7 +3639,7 @@ LABEL_5:
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v13 = *MEMORY[0x277CBECE8];
     v30 = v12;
-    CVPixelBufferCreate(*MEMORY[0x277CBECE8], a4, a5, v6, v12, pixelBufferOut);
+    CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, v6, v12, pixelBufferOut);
     PlaneCount = CVPixelBufferGetPlaneCount(*pixelBufferOut);
     if (PlaneCount)
     {
@@ -3658,9 +3658,9 @@ LABEL_5:
         v12 = v30;
       }
 
-      v19 = [MIOPixelBufferUtility createPixelBufferAttributesWithWidth:a4 height:a5 pixelFormat:v6 bytesPerRows:v11];
+      v19 = [MIOPixelBufferUtility createPixelBufferAttributesWithWidth:width height:height pixelFormat:v6 bytesPerRows:v11];
       CVPixelBufferRelease(*pixelBufferOut);
-      CVPixelBufferCreate(v13, a4, a5, v6, v19, pixelBufferOut);
+      CVPixelBufferCreate(v13, width, height, v6, v19, pixelBufferOut);
       CFRelease(v19);
       if (*pixelBufferOut)
       {
@@ -3691,15 +3691,15 @@ LABEL_5:
     {
       CVPixelBufferRelease(*pixelBufferOut);
       v25 = [v11 objectAtIndexedSubscript:0];
-      v26 = [v25 unsignedLongValue];
+      unsignedLongValue = [v25 unsignedLongValue];
 
-      v27 = [MIOPixelBufferUtility createRawPixelBufferWithWidth:a4 height:a5 pixelFormat:v6 bytesPerRow:v26];
+      v27 = [MIOPixelBufferUtility createRawPixelBufferWithWidth:width height:height pixelFormat:v6 bytesPerRow:unsignedLongValue];
       *pixelBufferOut = v27;
       if (v27)
       {
         BytesPerRow = CVPixelBufferGetBytesPerRow(v27);
         CVPixelBufferRelease(*pixelBufferOut);
-        v21 = BytesPerRow == v26;
+        v21 = BytesPerRow == unsignedLongValue;
 LABEL_18:
 
         goto LABEL_22;
@@ -3714,7 +3714,7 @@ LABEL_18:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *pixelBufferOut = 138543362;
-    *&pixelBufferOut[4] = v9;
+    *&pixelBufferOut[4] = rowCopy;
     _os_log_impl(&dword_257883000, v11, OS_LOG_TYPE_ERROR, "Invalid ExactBytesPerRow value type: %{public}@", pixelBufferOut, 0xCu);
   }
 
@@ -3724,39 +3724,39 @@ LABEL_22:
   return v21;
 }
 
-+ (id)plistSerializedObject:(id)a3 error:(id *)a4
++ (id)plistSerializedObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_opt_class() plistFriendlyCopyOf:v5];
+  objectCopy = object;
+  v6 = [objc_opt_class() plistFriendlyCopyOf:objectCopy];
   if (v6)
   {
-    a4 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:200 options:0 error:a4];
+    error = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:200 options:0 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported data type, cannot serialize object %@.", v5];
-    *a4 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v7 code:8];
+    objectCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported data type, cannot serialize object %@.", objectCopy];
+    *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:objectCopy code:8];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)plistDeserializedObject:(id)a3 error:(id *)a4
++ (id)plistDeserializedObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  if ([MEMORY[0x277CCAC58] propertyList:v5 isValidForFormat:200])
+  objectCopy = object;
+  if ([MEMORY[0x277CCAC58] propertyList:objectCopy isValidForFormat:200])
   {
     v8 = 0;
-    v6 = [MEMORY[0x277CCAC58] propertyListWithData:v5 options:0 format:&v8 error:a4];
+    v6 = [MEMORY[0x277CCAC58] propertyListWithData:objectCopy options:0 format:&v8 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] internalErrorWithMessage:@"Unsupported raw data format code:{cannot deserialize object.", 8}];
-    *a4 = v6 = 0;
+    *error = v6 = 0;
   }
 
   else
@@ -3767,22 +3767,22 @@ LABEL_22:
   return v6;
 }
 
-+ (unsigned)guessPixelFormatForTrack:(id)a3
++ (unsigned)guessPixelFormatForTrack:(id)track
 {
-  v3 = a3;
+  trackCopy = track;
   v4 = 0;
   while (1)
   {
-    v5 = [v3 formatDescriptions];
-    v6 = [v5 count];
+    formatDescriptions = [trackCopy formatDescriptions];
+    v6 = [formatDescriptions count];
 
     if (v6 <= v4)
     {
       break;
     }
 
-    v7 = [v3 formatDescriptions];
-    v8 = [v7 objectAtIndexedSubscript:v4];
+    formatDescriptions2 = [trackCopy formatDescriptions];
+    v8 = [formatDescriptions2 objectAtIndexedSubscript:v4];
     v9 = [MOVStreamIOUtility guessPixelFormatFromFormatDescription:v8];
 
     ++v4;
@@ -3798,21 +3798,21 @@ LABEL_6:
   return v9;
 }
 
-+ (unsigned)guessPixelFormatFromFormatDescription:(opaqueCMFormatDescription *)a3
++ (unsigned)guessPixelFormatFromFormatDescription:(opaqueCMFormatDescription *)description
 {
-  v3 = a3;
-  if (a3)
+  descriptionCopy = description;
+  if (description)
   {
-    v4 = CMFormatDescriptionGetExtensions(a3);
+    v4 = CMFormatDescriptionGetExtensions(description);
     if ([v4 count])
     {
-      v5 = [MOVStreamIOUtility chromaSamplingFromMediaFormatDescription:v3];
+      v5 = [MOVStreamIOUtility chromaSamplingFromMediaFormatDescription:descriptionCopy];
       v6 = [v4 objectForKey:@"BitsPerComponent"];
-      v7 = [v6 integerValue];
+      integerValue = [v6 integerValue];
 
       v8 = [v4 objectForKey:@"FullRangeVideo"];
-      v9 = [v8 integerValue];
-      LODWORD(v3) = 875704438;
+      integerValue2 = [v8 integerValue];
+      LODWORD(descriptionCopy) = 875704438;
 
       if (v5 > 1)
       {
@@ -3822,16 +3822,16 @@ LABEL_6:
           {
             v10 = 1278226488;
             v12 = 1278226736;
-            v11 = v7 == 10;
+            v11 = integerValue == 10;
 LABEL_19:
             if (v11)
             {
-              LODWORD(v3) = v12;
+              LODWORD(descriptionCopy) = v12;
             }
 
             else
             {
-              LODWORD(v3) = v10;
+              LODWORD(descriptionCopy) = v10;
             }
 
             goto LABEL_30;
@@ -3845,26 +3845,26 @@ LABEL_19:
           goto LABEL_13;
         }
 
-        if (v7 == 10)
+        if (integerValue == 10)
         {
           v10 = 2016687156;
           v12 = 2019963956;
 LABEL_17:
-          v11 = v9 == 1;
+          v11 = integerValue2 == 1;
           goto LABEL_19;
         }
 
         v13 = 875836518;
         v14 = 875836534;
 LABEL_27:
-        if (v9 == 1)
+        if (integerValue2 == 1)
         {
-          LODWORD(v3) = v13;
+          LODWORD(descriptionCopy) = v13;
         }
 
         else
         {
-          LODWORD(v3) = v14;
+          LODWORD(descriptionCopy) = v14;
         }
 
         goto LABEL_30;
@@ -3873,16 +3873,16 @@ LABEL_27:
       if (!v5)
       {
 LABEL_13:
-        if (v7 != 10)
+        if (integerValue != 10)
         {
-          if (v9 == 1)
+          if (integerValue2 == 1)
           {
-            LODWORD(v3) = 875704422;
+            LODWORD(descriptionCopy) = 875704422;
           }
 
           else
           {
-            LODWORD(v3) = 875704438;
+            LODWORD(descriptionCopy) = 875704438;
           }
 
           goto LABEL_30;
@@ -3895,10 +3895,10 @@ LABEL_13:
 
       if (v5 == 1)
       {
-        if (v7 == 10)
+        if (integerValue == 10)
         {
           v10 = 2016686642;
-          v11 = v9 == 1;
+          v11 = integerValue2 == 1;
           v12 = 2019963442;
           goto LABEL_19;
         }
@@ -3911,31 +3911,31 @@ LABEL_13:
 
     else
     {
-      LODWORD(v3) = 0;
+      LODWORD(descriptionCopy) = 0;
     }
 
 LABEL_30:
   }
 
-  return v3;
+  return descriptionCopy;
 }
 
-+ (unsigned)detectPixelFormatForAsset:(id)a3 videoTrackId:(int)a4 error:(id *)a5
++ (unsigned)detectPixelFormatForAsset:(id)asset videoTrackId:(int)id error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&id;
   v37[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 trackWithTrackID:v6];
+  assetCopy = asset;
+  v8 = [assetCopy trackWithTrackID:v6];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 formatDescriptions];
-    v11 = [v10 count];
+    formatDescriptions = [v8 formatDescriptions];
+    v11 = [formatDescriptions count];
 
     if (v11)
     {
-      v12 = [v9 formatDescriptions];
-      v13 = [v12 objectAtIndexedSubscript:0];
+      formatDescriptions2 = [v9 formatDescriptions];
+      v13 = [formatDescriptions2 objectAtIndexedSubscript:0];
 
       Dimensions = CMVideoFormatDescriptionGetDimensions(v13);
       v36[0] = *MEMORY[0x277CC4EC8];
@@ -3947,7 +3947,7 @@ LABEL_30:
       v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
       v17 = [MEMORY[0x277CE6430] assetReaderTrackOutputWithTrack:v9 outputSettings:v33];
-      v18 = [MEMORY[0x277CE6410] assetReaderWithAsset:v7 error:a5];
+      v18 = [MEMORY[0x277CE6410] assetReaderWithAsset:assetCopy error:error];
       v19 = v18;
       if (!v18)
       {
@@ -3962,11 +3962,11 @@ LABEL_22:
         [v19 addOutput:v17];
         if ([v19 startReading])
         {
-          v20 = [v17 copyNextSampleBuffer];
-          v21 = v20;
-          if (v20)
+          copyNextSampleBuffer = [v17 copyNextSampleBuffer];
+          v21 = copyNextSampleBuffer;
+          if (copyNextSampleBuffer)
           {
-            ImageBuffer = CMSampleBufferGetImageBuffer(v20);
+            ImageBuffer = CMSampleBufferGetImageBuffer(copyNextSampleBuffer);
             v23 = ImageBuffer;
             if (ImageBuffer)
             {
@@ -4009,28 +4009,28 @@ LABEL_22:
             }
 
             CFRelease(v21);
-            v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"No pixel buffer in track (%d) in '%@'.", v6, v7];
-            [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v31 code:26];
+            assetCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No pixel buffer in track (%d) in '%@'.", v6, assetCopy];
+            [MEMORY[0x277CCA9B8] populateReaderError:error message:assetCopy code:26];
           }
 
           else
           {
-            v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"No sample buffer in track (%d) in '%@'.", v6, v7];
-            [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v30 code:26];
+            assetCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"No sample buffer in track (%d) in '%@'.", v6, assetCopy];
+            [MEMORY[0x277CCA9B8] populateReaderError:error message:assetCopy2 code:26];
           }
         }
 
         else
         {
-          v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot read from track (%d) in '%@'.", v6, v7];
-          [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v29 code:26];
+          assetCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot read from track (%d) in '%@'.", v6, assetCopy];
+          [MEMORY[0x277CCA9B8] populateReaderError:error message:assetCopy3 code:26];
         }
       }
 
       else
       {
-        v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot add output to track (%d) in '%@'.", v6, v7];
-        [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v28 code:26];
+        assetCopy4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot add output to track (%d) in '%@'.", v6, assetCopy];
+        [MEMORY[0x277CCA9B8] populateReaderError:error message:assetCopy4 code:26];
       }
 
       LODWORD(PixelFormatType) = 0;
@@ -4039,14 +4039,14 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"No format description for track (%d) in '%@'.", v6, v7];
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v27 code:26];
+    assetCopy5 = [MEMORY[0x277CCACA8] stringWithFormat:@"No format description for track (%d) in '%@'.", v6, assetCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:assetCopy5 code:26];
   }
 
   else
   {
-    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track (%d) in '%@'.", v6, v7];
-    [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v27 code:26];
+    assetCopy5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot find track (%d) in '%@'.", v6, assetCopy];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:assetCopy5 code:26];
   }
 
   LODWORD(PixelFormatType) = 0;
@@ -4071,9 +4071,9 @@ LABEL_23:
   return v3;
 }
 
-+ (double)deriveMaxKeyFrameIntervalFromFps:(double)a3
++ (double)deriveMaxKeyFrameIntervalFromFps:(double)fps
 {
-  result = round(a3);
+  result = round(fps);
   if (result < 1.0)
   {
     return 1.0;
@@ -4152,16 +4152,16 @@ void __59__MOVStreamIOUtility_Private__reservedMIOTrackMetadataKeys__block_invok
   +[MOVStreamIOUtility(Private) reservedMIOTrackMetadataKeys]::reservedList = v3;
 }
 
-+ (id)nonMIOTrackMetadataItemsInMetadataItems:(id)a3
++ (id)nonMIOTrackMetadataItemsInMetadataItems:(id)items
 {
   v19 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  itemsCopy = items;
   v3 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v13;
+  v4 = itemsCopy;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -4176,9 +4176,9 @@ void __59__MOVStreamIOUtility_Private__reservedMIOTrackMetadataKeys__block_invok
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 identifier];
+        identifier = [v8 identifier];
         v10 = +[MOVStreamIOUtility reservedMIOTrackMetadataKeys];
-        v11 = [v10 containsObject:v9];
+        v11 = [v10 containsObject:identifier];
 
         if ((v11 & 1) == 0)
         {
@@ -4195,7 +4195,7 @@ void __59__MOVStreamIOUtility_Private__reservedMIOTrackMetadataKeys__block_invok
   return v3;
 }
 
-+ (CVSMPTETime)timecodeForFrameNumber32:(SEL)a3 formatDescription:(int)a4
++ (CVSMPTETime)timecodeForFrameNumber32:(SEL)number32 formatDescription:(int)description
 {
   *&retstr->subframes = 0;
   *&retstr->type = 0;
@@ -4206,7 +4206,7 @@ void __59__MOVStreamIOUtility_Private__reservedMIOTrackMetadataKeys__block_invok
     return result;
   }
 
-  v9 = bswap32(a4);
+  v9 = bswap32(description);
   FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(a5);
   if (v9 >= 0)
   {
@@ -4314,14 +4314,14 @@ LABEL_18:
   return result;
 }
 
-+ (int64_t)frameNumber64ForTimecode:(CVSMPTETime *)a3 usingFormatDescription:(opaqueCMFormatDescription *)a4
++ (int64_t)frameNumber64ForTimecode:(CVSMPTETime *)timecode usingFormatDescription:(opaqueCMFormatDescription *)description
 {
-  if (CMFormatDescriptionGetMediaSubType(a4) == 1952658996)
+  if (CMFormatDescriptionGetMediaSubType(description) == 1952658996)
   {
-    FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(a4);
+    FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(description);
     v7 = 60 * FrameQuanta;
-    v8 = a3->frames + a3->seconds * FrameQuanta + (60 * FrameQuanta * (a3->minutes & 0xFFFFFF7F)) + 3600 * FrameQuanta * a3->hours;
-    if (CMTimeCodeFormatDescriptionGetTimeCodeFlags(a4))
+    v8 = timecode->frames + timecode->seconds * FrameQuanta + (60 * FrameQuanta * (timecode->minutes & 0xFFFFFF7F)) + 3600 * FrameQuanta * timecode->hours;
+    if (CMTimeCodeFormatDescriptionGetTimeCodeFlags(description))
     {
       v9 = 600 * FrameQuanta;
       v10 = -18 * (v8 / v9);
@@ -4345,7 +4345,7 @@ LABEL_18:
       v8 += v10;
     }
 
-    if ((a3->minutes & 0x80) != 0)
+    if ((timecode->minutes & 0x80) != 0)
     {
       v14 = -v8;
     }
@@ -4364,13 +4364,13 @@ LABEL_18:
   return bswap64(v14);
 }
 
-+ (int)frameNumber32ForTimecode:(CVSMPTETime *)a3 usingFormatDescription:(opaqueCMFormatDescription *)a4
++ (int)frameNumber32ForTimecode:(CVSMPTETime *)timecode usingFormatDescription:(opaqueCMFormatDescription *)description
 {
-  if (CMFormatDescriptionGetMediaSubType(a4) == 1953325924)
+  if (CMFormatDescriptionGetMediaSubType(description) == 1953325924)
   {
-    FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(a4);
-    v7 = a3->frames + (a3->seconds + 60 * (a3->minutes & 0xFFFFFF7F) + 3600 * a3->hours) * FrameQuanta;
-    if (CMTimeCodeFormatDescriptionGetTimeCodeFlags(a4))
+    FrameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(description);
+    v7 = timecode->frames + (timecode->seconds + 60 * (timecode->minutes & 0xFFFFFF7F) + 3600 * timecode->hours) * FrameQuanta;
+    if (CMTimeCodeFormatDescriptionGetTimeCodeFlags(description))
     {
       v8 = -18 * (v7 / (600 * FrameQuanta));
       v9 = v7 % (600 * FrameQuanta);
@@ -4393,7 +4393,7 @@ LABEL_18:
       v7 += v8;
     }
 
-    if ((a3->minutes & 0x80) != 0)
+    if ((timecode->minutes & 0x80) != 0)
     {
       v12 = -v7;
     }
@@ -4412,20 +4412,20 @@ LABEL_18:
   return bswap32(v12);
 }
 
-+ (CVSMPTETime)advanceTimeCode:(SEL)a3 frameQuanta:(CVSMPTETime *)a4 dropFrame:(int64_t)a5
++ (CVSMPTETime)advanceTimeCode:(SEL)code frameQuanta:(CVSMPTETime *)quanta dropFrame:(int64_t)frame
 {
-  *&retstr->subframes = *&a4->subframes;
-  *&retstr->counter = *&a4->counter;
-  retstr->flags = a4->flags;
-  hours = a4->hours;
+  *&retstr->subframes = *&quanta->subframes;
+  *&retstr->counter = *&quanta->counter;
+  retstr->flags = quanta->flags;
+  hours = quanta->hours;
   retstr->hours = hours;
-  minutes = a4->minutes;
+  minutes = quanta->minutes;
   retstr->minutes = minutes;
-  seconds = a4->seconds;
+  seconds = quanta->seconds;
   retstr->seconds = seconds;
-  v9 = a4->frames + 1;
+  v9 = quanta->frames + 1;
   retstr->frames = v9;
-  if (!(v9 % a5))
+  if (!(v9 % frame))
   {
     v10 = seconds + 1;
     *&retstr->seconds = v10;
@@ -4448,31 +4448,31 @@ LABEL_18:
   return result;
 }
 
-+ (opaqueCMFormatDescription)createTimeCodeFormatDescriptionWithFrameRate:(double)a3 error:(id *)a4
++ (opaqueCMFormatDescription)createTimeCodeFormatDescriptionWithFrameRate:(double)rate error:(id *)error
 {
   formatDescriptionOut = 0;
-  v6 = vcvtpd_u64_f64(a3);
+  v6 = vcvtpd_u64_f64(rate);
   v7 = *MEMORY[0x277CBECE8];
-  CMTimeMake(&frameDuration, 100, (a3 * 100.0));
+  CMTimeMake(&frameDuration, 100, (rate * 100.0));
   v8 = CMTimeCodeFormatDescriptionCreate(v7, 0x74633634u, &frameDuration, v6, 3u, 0, &formatDescriptionOut);
   if (!v8)
   {
     return formatDescriptionOut;
   }
 
-  if (a4)
+  if (error)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create TimeCode32 FormatDescription with fps %f. Error: %d", *&a3, v8];
-    *a4 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v9 code:8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create TimeCode32 FormatDescription with fps %f. Error: %d", *&rate, v8];
+    *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v9 code:8];
   }
 
   return 0;
 }
 
-+ (opaqueCMFormatDescription)createTimeCode32FormatDescriptionWithFrameRate:(double)a3 tcDropFrame:(BOOL)a4 error:(id *)a5
++ (opaqueCMFormatDescription)createTimeCode32FormatDescriptionWithFrameRate:(double)rate tcDropFrame:(BOOL)frame error:(id *)error
 {
   formatDescriptionOut = 0;
-  if (a4)
+  if (frame)
   {
     v7 = 3;
   }
@@ -4483,26 +4483,26 @@ LABEL_18:
   }
 
   v8 = *MEMORY[0x277CBECE8];
-  CMTimeMake(&frameDuration, 100, (a3 * 100.0));
-  v9 = CMTimeCodeFormatDescriptionCreate(v8, 0x746D6364u, &frameDuration, vcvtpd_u64_f64(a3), v7, 0, &formatDescriptionOut);
+  CMTimeMake(&frameDuration, 100, (rate * 100.0));
+  v9 = CMTimeCodeFormatDescriptionCreate(v8, 0x746D6364u, &frameDuration, vcvtpd_u64_f64(rate), v7, 0, &formatDescriptionOut);
   if (!v9)
   {
     return formatDescriptionOut;
   }
 
-  if (a5)
+  if (error)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create TimeCode32 FormatDescription with fps %f. Error: %d", *&a3, v9];
-    *a5 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v10 code:8];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot create TimeCode32 FormatDescription with fps %f. Error: %d", *&rate, v9];
+    *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v10 code:8];
   }
 
   return 0;
 }
 
-+ (BOOL)isMOVStreamIOMovMetadataIdentifier:(id)a3
++ (BOOL)isMOVStreamIOMovMetadataIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -4521,7 +4521,7 @@ LABEL_18:
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 isEqualToString:*(*(&v10 + 1) + 8 * i)])
+        if ([identifierCopy isEqualToString:*(*(&v10 + 1) + 8 * i)])
         {
 
           goto LABEL_12;
@@ -4538,7 +4538,7 @@ LABEL_18:
     }
   }
 
-  if ([v3 isEqualToString:@"mdta/com.apple.framework.mio.session.starttime"])
+  if ([identifierCopy isEqualToString:@"mdta/com.apple.framework.mio.session.starttime"])
   {
 LABEL_12:
     v8 = 1;
@@ -4546,22 +4546,22 @@ LABEL_12:
 
   else
   {
-    v8 = [v3 isEqualToString:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
+    v8 = [identifierCopy isEqualToString:@"mdta/com.apple.framework.mio.timeRangeMetadataKeyHint"];
   }
 
   return v8;
 }
 
-+ (BOOL)saveSessionStartTime:(id *)a3 toMovieAtURL:(id)a4 error:(id *)a5
++ (BOOL)saveSessionStartTime:(id *)time toMovieAtURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v13 = *a3;
-  v8 = [MEMORY[0x277CE6520] movMetadataItemWithSessionStartTime:&v13 error:a5];
+  lCopy = l;
+  v13 = *time;
+  v8 = [MEMORY[0x277CE6520] movMetadataItemWithSessionStartTime:&v13 error:error];
   if (v8)
   {
-    v9 = [[MIOMovieMetadataUtility alloc] initWithURL:v7 error:a5];
+    v9 = [[MIOMovieMetadataUtility alloc] initWithURL:lCopy error:error];
     v10 = v9;
-    v11 = v9 && [(MIOMovieMetadataUtility *)v9 addMovieMetadataItem:v8]&& [(MIOMovieMetadataUtility *)v10 applyChangesError:a5];
+    v11 = v9 && [(MIOMovieMetadataUtility *)v9 addMovieMetadataItem:v8]&& [(MIOMovieMetadataUtility *)v10 applyChangesError:error];
   }
 
   else
@@ -4572,10 +4572,10 @@ LABEL_12:
   return v11;
 }
 
-+ (id)getCustomAssociatedMetadataStreamIdFromTrack:(id)a3
++ (id)getCustomAssociatedMetadataStreamIdFromTrack:(id)track
 {
-  v3 = [a3 formatDescriptions];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  formatDescriptions = [track formatDescriptions];
+  v4 = [formatDescriptions objectAtIndexedSubscript:0];
 
   v5 = [(__CFDictionary *)CMFormatDescriptionGetExtensions(v4) objectForKeyedSubscript:@"MetadataKeyTable"];
   v6 = [v5 objectForKey:@"2"];

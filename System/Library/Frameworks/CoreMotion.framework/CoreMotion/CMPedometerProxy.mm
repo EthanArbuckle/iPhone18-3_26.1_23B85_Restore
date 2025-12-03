@@ -1,16 +1,16 @@
 @interface CMPedometerProxy
 - (CMPedometerProxy)init;
-- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)a3 onQueue:(id)a4 withHandler:(id)a5;
-- (void)_handleRecordQueryResponse:(shared_ptr<CLConnectionMessage>)a3 withHandler:(id)a4 shouldStartUpdates:(BOOL)a5;
-- (void)_internalQueryPedometerDataFromDate:(id)a3 toDate:(id)a4 onQueue:(id)a5 withHandler:(id)a6;
-- (void)_queryPedometerDataFromDate:(id)a3 toDate:(id)a4 withHandler:(id)a5;
-- (void)_queryPedometerDataSinceDataRecord:(id)a3 withHandler:(id)a4 shouldStartUpdates:(BOOL)a5;
-- (void)_startPedometerEventUpdatesWithHandler:(id)a3;
-- (void)_startPedometerUpdatesFromDate:(id)a3 withHandler:(id)a4;
-- (void)_startPedometerUpdatesSinceDataRecord:(id)a3 withHandler:(id)a4;
+- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)response onQueue:(id)queue withHandler:(id)handler;
+- (void)_handleRecordQueryResponse:(shared_ptr<CLConnectionMessage>)response withHandler:(id)handler shouldStartUpdates:(BOOL)updates;
+- (void)_internalQueryPedometerDataFromDate:(id)date toDate:(id)toDate onQueue:(id)queue withHandler:(id)handler;
+- (void)_queryPedometerDataFromDate:(id)date toDate:(id)toDate withHandler:(id)handler;
+- (void)_queryPedometerDataSinceDataRecord:(id)record withHandler:(id)handler shouldStartUpdates:(BOOL)updates;
+- (void)_startPedometerEventUpdatesWithHandler:(id)handler;
+- (void)_startPedometerUpdatesFromDate:(id)date withHandler:(id)handler;
+- (void)_startPedometerUpdatesSinceDataRecord:(id)record withHandler:(id)handler;
 - (void)_stopPedometerEventUpdates;
 - (void)_stopPedometerUpdates;
-- (void)_subscribeToCumulativePedometerUpdates:(id)a3;
+- (void)_subscribeToCumulativePedometerUpdates:(id)updates;
 - (void)_teardown;
 - (void)dealloc;
 @end
@@ -68,22 +68,22 @@
   self->fLocationdConnection = 0;
 }
 
-- (void)_internalQueryPedometerDataFromDate:(id)a3 toDate:(id)a4 onQueue:(id)a5 withHandler:(id)a6
+- (void)_internalQueryPedometerDataFromDate:(id)date toDate:(id)toDate onQueue:(id)queue withHandler:(id)handler
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v16[0] = @"CMPedometerStartTime";
   v7 = MEMORY[0x1E696AD98];
-  objc_msgSend_timeIntervalSinceReferenceDate(a3, a2, a3);
+  objc_msgSend_timeIntervalSinceReferenceDate(date, a2, date);
   v17[0] = objc_msgSend_numberWithDouble_(v7, v8, v9);
   v16[1] = @"CMPedometerStopTime";
   v10 = MEMORY[0x1E696AD98];
-  objc_msgSend_timeIntervalSinceReferenceDate(a4, v11, v12);
+  objc_msgSend_timeIntervalSinceReferenceDate(toDate, v11, v12);
   v17[1] = objc_msgSend_numberWithDouble_(v10, v13, v14);
   objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v15, v17, v16, 2);
   sub_19B6C0F30();
 }
 
-- (void)_queryPedometerDataFromDate:(id)a3 toDate:(id)a4 withHandler:(id)a5
+- (void)_queryPedometerDataFromDate:(id)date toDate:(id)toDate withHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -91,21 +91,21 @@
   v6[2] = sub_19B6C62DC;
   v6[3] = &unk_1E7533678;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = date;
+  v6[6] = toDate;
+  v6[7] = handler;
   dispatch_async(fInternalQueue, v6);
 }
 
-- (void)_startPedometerUpdatesFromDate:(id)a3 withHandler:(id)a4
+- (void)_startPedometerUpdatesFromDate:(id)date withHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B6C6368;
   block[3] = &unk_1E7532C80;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = date;
+  block[6] = handler;
   block[4] = self;
   dispatch_async(fInternalQueue, block);
 }
@@ -121,10 +121,10 @@
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)a3 onQueue:(id)a4 withHandler:(id)a5
+- (void)_handleQueryResponse:(shared_ptr<CLConnectionMessage>)response onQueue:(id)queue withHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = response.var1;
+  var0 = response.var0;
   v35 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
@@ -168,7 +168,7 @@
     block[2] = sub_19B6C709C;
     block[3] = &unk_1E7532B90;
     block[4] = 0;
-    block[5] = a4;
+    block[5] = queue;
     v20 = block;
     goto LABEL_17;
   }
@@ -183,7 +183,7 @@
     v30[2] = sub_19B6C6FC8;
     v30[3] = &unk_1E75344C0;
     v30[5] = v17;
-    v30[6] = a4;
+    v30[6] = queue;
     v30[4] = v16;
     v20 = v30;
 LABEL_17:
@@ -198,7 +198,7 @@ LABEL_17:
     v29[2] = sub_19B6C7048;
     v29[3] = &unk_1E75344C0;
     v29[5] = v16;
-    v29[6] = a4;
+    v29[6] = queue;
     v29[4] = v19;
     v20 = v29;
     goto LABEL_17;
@@ -240,47 +240,47 @@ LABEL_18:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startPedometerUpdatesSinceDataRecord:(id)a3 withHandler:(id)a4
+- (void)_startPedometerUpdatesSinceDataRecord:(id)record withHandler:(id)handler
 {
-  if ((objc_msgSend_isStepCountingAvailable(CMPedometer, a2, a3) & 1) == 0)
+  if ((objc_msgSend_isStepCountingAvailable(CMPedometer, a2, record) & 1) == 0)
   {
     v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CMPedometer.mm", 408, @"Step Counting not available on this platform.");
   }
 
-  objc_msgSend__queryPedometerDataSinceDataRecord_withHandler_shouldStartUpdates_(self, v8, a3, a4, 1);
+  objc_msgSend__queryPedometerDataSinceDataRecord_withHandler_shouldStartUpdates_(self, v8, record, handler, 1);
 }
 
-- (void)_subscribeToCumulativePedometerUpdates:(id)a3
+- (void)_subscribeToCumulativePedometerUpdates:(id)updates
 {
   v7[1] = *MEMORY[0x1E69E9840];
 
   self->fCumulativeUpdateHandler = 0;
-  self->fCumulativeUpdateHandler = a3;
+  self->fCumulativeUpdateHandler = updates;
   v6 = @"kCLConnectionMessageSubscribeKey";
   v7[0] = MEMORY[0x1E695E118];
   objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v5, v7, &v6, 1);
   sub_19B6CA5DC();
 }
 
-- (void)_queryPedometerDataSinceDataRecord:(id)a3 withHandler:(id)a4 shouldStartUpdates:(BOOL)a5
+- (void)_queryPedometerDataSinceDataRecord:(id)record withHandler:(id)handler shouldStartUpdates:(BOOL)updates
 {
   fInternalQueue = self->fInternalQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_19B6C7338;
   v6[3] = &unk_1E75340D8;
-  v6[4] = a3;
+  v6[4] = record;
   v6[5] = self;
-  v6[6] = a4;
-  v7 = a5;
+  v6[6] = handler;
+  updatesCopy = updates;
   dispatch_async(fInternalQueue, v6);
 }
 
-- (void)_handleRecordQueryResponse:(shared_ptr<CLConnectionMessage>)a3 withHandler:(id)a4 shouldStartUpdates:(BOOL)a5
+- (void)_handleRecordQueryResponse:(shared_ptr<CLConnectionMessage>)response withHandler:(id)handler shouldStartUpdates:(BOOL)updates
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = response.var1;
+  var0 = response.var0;
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
@@ -311,7 +311,7 @@ LABEL_18:
     v41[3] = &unk_1E7534510;
     v41[5] = self;
     v41[6] = var1;
-    v42 = a4;
+    handlerCopy = handler;
     v41[4] = v19;
     v23 = v41;
 LABEL_6:
@@ -327,7 +327,7 @@ LABEL_6:
     v37[1] = 3221225472;
     v37[2] = sub_19B6C793C;
     v37[3] = &unk_1E7534538;
-    v38 = a4;
+    handlerCopy2 = handler;
     v37[4] = self;
     v37[5] = var1;
     v23 = v37;
@@ -340,7 +340,7 @@ LABEL_6:
   v39[3] = &unk_1E7534510;
   v39[5] = self;
   v39[6] = var1;
-  v40 = a4;
+  handlerCopy3 = handler;
   v39[4] = v24;
   dispatch_async(fAppQueue, v39);
   v27 = objc_msgSend_count(v24, v25, v26);
@@ -348,11 +348,11 @@ LABEL_6:
   if (v27 == objc_msgSend_unsignedIntegerValue(v30, v31, v32))
   {
     Object = objc_msgSend_lastObject(v24, v33, v34);
-    objc_msgSend__queryPedometerDataSinceDataRecord_withHandler_shouldStartUpdates_(self, v36, Object, var1, a4);
+    objc_msgSend__queryPedometerDataSinceDataRecord_withHandler_shouldStartUpdates_(self, v36, Object, var1, handler);
   }
 }
 
-- (void)_startPedometerEventUpdatesWithHandler:(id)a3
+- (void)_startPedometerEventUpdatesWithHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -360,7 +360,7 @@ LABEL_6:
   v4[2] = sub_19B6C7A38;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(fInternalQueue, v4);
 }
 

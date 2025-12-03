@@ -1,8 +1,8 @@
 @interface WFContentSortDescriptor
 + (id)randomSortDescriptor;
-+ (id)sortDescriptorWithProperty:(id)a3 ascending:(BOOL)a4 comparator:(id)a5;
++ (id)sortDescriptorWithProperty:(id)property ascending:(BOOL)ascending comparator:(id)comparator;
 - (NSSet)containedProperties;
-- (WFContentSortDescriptor)initWithProperty:(id)a3 ascending:(BOOL)a4 comparator:(id)a5;
+- (WFContentSortDescriptor)initWithProperty:(id)property ascending:(BOOL)ascending comparator:(id)comparator;
 - (id)description;
 @end
 
@@ -11,8 +11,8 @@
 - (NSSet)containedProperties
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(WFContentSortDescriptor *)self property];
-  v4 = [v2 setWithObjects:{v3, 0}];
+  property = [(WFContentSortDescriptor *)self property];
+  v4 = [v2 setWithObjects:{property, 0}];
 
   return v4;
 }
@@ -22,7 +22,7 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFContentSortDescriptor *)self property];
+  property = [(WFContentSortDescriptor *)self property];
   if ([(WFContentSortDescriptor *)self ascending])
   {
     v7 = @"YES";
@@ -33,32 +33,32 @@
     v7 = @"NO";
   }
 
-  v8 = [(WFContentSortDescriptor *)self comparator];
-  if (v8)
+  comparator = [(WFContentSortDescriptor *)self comparator];
+  if (comparator)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(WFContentSortDescriptor *)self comparator];
-    v11 = _Block_copy(v10);
+    comparator2 = [(WFContentSortDescriptor *)self comparator];
+    v11 = _Block_copy(comparator2);
     v12 = [v9 stringWithFormat:@", comparator: %@", v11];
-    v13 = [v3 stringWithFormat:@"<%@: %p, property: %@, ascending: %@%@>", v5, self, v6, v7, v12];
+    v13 = [v3 stringWithFormat:@"<%@: %p, property: %@, ascending: %@%@>", v5, self, property, v7, v12];
   }
 
   else
   {
-    v13 = [v3 stringWithFormat:@"<%@: %p, property: %@, ascending: %@%@>", v5, self, v6, v7, &stru_282F53518];
+    v13 = [v3 stringWithFormat:@"<%@: %p, property: %@, ascending: %@%@>", v5, self, property, v7, &stru_282F53518];
   }
 
   return v13;
 }
 
-- (WFContentSortDescriptor)initWithProperty:(id)a3 ascending:(BOOL)a4 comparator:(id)a5
+- (WFContentSortDescriptor)initWithProperty:(id)property ascending:(BOOL)ascending comparator:(id)comparator
 {
-  v10 = a3;
-  v11 = a5;
-  if (v10 && ([v10 isSortable] & 1) == 0)
+  propertyCopy = property;
+  comparatorCopy = comparator;
+  if (propertyCopy && ([propertyCopy isSortable] & 1) == 0)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFContentSortDescriptor.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"!property || property.sortable"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentSortDescriptor.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"!property || property.sortable"}];
   }
 
   v18.receiver = self;
@@ -67,9 +67,9 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_property, a3);
-    v13->_ascending = a4;
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_property, property);
+    v13->_ascending = ascending;
+    v14 = [comparatorCopy copy];
     comparator = v13->_comparator;
     v13->_comparator = v14;
   }
@@ -96,12 +96,12 @@ uint64_t __47__WFContentSortDescriptor_randomSortDescriptor__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)sortDescriptorWithProperty:(id)a3 ascending:(BOOL)a4 comparator:(id)a5
++ (id)sortDescriptorWithProperty:(id)property ascending:(BOOL)ascending comparator:(id)comparator
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithProperty:v9 ascending:v5 comparator:v8];
+  ascendingCopy = ascending;
+  comparatorCopy = comparator;
+  propertyCopy = property;
+  v10 = [[self alloc] initWithProperty:propertyCopy ascending:ascendingCopy comparator:comparatorCopy];
 
   return v10;
 }

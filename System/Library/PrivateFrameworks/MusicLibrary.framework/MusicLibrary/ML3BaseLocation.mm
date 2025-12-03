@@ -1,24 +1,24 @@
 @interface ML3BaseLocation
-+ (id)newWithDictionary:(id)a3 inLibrary:(id)a4;
-- (void)enumerateOrphanedAssetsUsingBlock:(id)a3;
++ (id)newWithDictionary:(id)dictionary inLibrary:(id)library;
+- (void)enumerateOrphanedAssetsUsingBlock:(id)block;
 @end
 
 @implementation ML3BaseLocation
 
-+ (id)newWithDictionary:(id)a3 inLibrary:(id)a4
++ (id)newWithDictionary:(id)dictionary inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mutableCopy];
-  v9 = [v6 objectForKey:@"ROWID"];
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
+  v8 = [dictionaryCopy mutableCopy];
+  v9 = [dictionaryCopy objectForKey:@"ROWID"];
 
   if (!v9)
   {
-    v10 = [v6 objectForKey:@"path"];
+    v10 = [dictionaryCopy objectForKey:@"path"];
     v11 = v10;
     if (v10)
     {
-      v12 = ML3BaseLocationIDFromMediaRelativePathInLibrary(v10, v7);
+      v12 = ML3BaseLocationIDFromMediaRelativePathInLibrary(v10, libraryCopy);
       if (v12)
       {
         v13 = [MEMORY[0x277CCABB0] numberWithLongLong:v12];
@@ -27,17 +27,17 @@
     }
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___ML3BaseLocation;
-  v14 = objc_msgSendSuper2(&v16, sel_newWithDictionary_inLibrary_, v8, v7);
+  v14 = objc_msgSendSuper2(&v16, sel_newWithDictionary_inLibrary_, v8, libraryCopy);
 
   return v14;
 }
 
-- (void)enumerateOrphanedAssetsUsingBlock:(id)a3
+- (void)enumerateOrphanedAssetsUsingBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
   WeakRetained = objc_loadWeakRetained(&self->super._library);
   v5 = [(ML3Entity *)self valueForProperty:@"ROWID"];
@@ -56,9 +56,9 @@
   [v7 enumeratePersistentIDsAndProperties:v9 usingBlock:v38];
 
   v10 = [(ML3Entity *)self valueForProperty:@"path"];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v26 = v10;
-  v12 = [v11 enumeratorAtPath:v10];
+  v12 = [defaultManager enumeratorAtPath:v10];
 
   v36 = 0u;
   v37 = 0u;
@@ -83,8 +83,8 @@
         }
 
         v20 = *(*(&v34 + 1) + 8 * v19);
-        v21 = [v13 fileAttributes];
-        v22 = [v21 objectForKey:v17];
+        fileAttributes = [v13 fileAttributes];
+        v22 = [fileAttributes objectForKey:v17];
         v23 = [v22 isEqualToString:v18];
 
         if (v23)
@@ -106,7 +106,7 @@
   v31[1] = 3221225472;
   v31[2] = __53__ML3BaseLocation_enumerateOrphanedAssetsUsingBlock___block_invoke_2;
   v31[3] = &unk_278762DE8;
-  v24 = v27;
+  v24 = blockCopy;
   v32 = v26;
   v33 = v24;
   v25 = v26;

@@ -1,57 +1,57 @@
 @interface VoiceOverBrailleAutoAdvanceViewController
 - (double)numericalPreferenceValue;
 - (id)activity;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation VoiceOverBrailleAutoAdvanceViewController
 
 - (id)activity
 {
-  v2 = [(VoiceOverBrailleAutoAdvanceViewController *)self specifier];
-  v3 = [v2 propertyForKey:@"activity"];
+  specifier = [(VoiceOverBrailleAutoAdvanceViewController *)self specifier];
+  v3 = [specifier propertyForKey:@"activity"];
 
   return v3;
 }
 
 - (double)numericalPreferenceValue
 {
-  v3 = [(VoiceOverBrailleAutoAdvanceViewController *)self activity];
-  v4 = [v3 brailleAutoAdvanceDuration];
+  activity = [(VoiceOverBrailleAutoAdvanceViewController *)self activity];
+  brailleAutoAdvanceDuration = [activity brailleAutoAdvanceDuration];
 
-  if (v4)
+  if (brailleAutoAdvanceDuration)
   {
-    v5 = [(VoiceOverBrailleAutoAdvanceViewController *)self activity];
-    v6 = [v5 brailleAutoAdvanceDuration];
-    [v6 doubleValue];
+    activity2 = [(VoiceOverBrailleAutoAdvanceViewController *)self activity];
+    brailleAutoAdvanceDuration2 = [activity2 brailleAutoAdvanceDuration];
+    [brailleAutoAdvanceDuration2 doubleValue];
     v8 = v7;
   }
 
   else
   {
-    v5 = +[AXSettings sharedInstance];
-    [v5 voiceOverBrailleAutoAdvanceDuration];
+    activity2 = +[AXSettings sharedInstance];
+    [activity2 voiceOverBrailleAutoAdvanceDuration];
     v8 = v9;
   }
 
   return v8;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
-  v5 = [(VoiceOverBrailleAutoAdvanceViewController *)self activity];
+  activity = [(VoiceOverBrailleAutoAdvanceViewController *)self activity];
 
-  if (v5)
+  if (activity)
   {
-    v7 = [NSNumber numberWithDouble:a3];
-    v6 = [(VoiceOverBrailleAutoAdvanceViewController *)self activity];
-    [v6 setBrailleAutoAdvanceDuration:v7];
+    v7 = [NSNumber numberWithDouble:user];
+    activity2 = [(VoiceOverBrailleAutoAdvanceViewController *)self activity];
+    [activity2 setBrailleAutoAdvanceDuration:v7];
   }
 
   else
   {
     v7 = +[AXSettings sharedInstance];
-    [v7 setVoiceOverBrailleAutoAdvanceDuration:a3];
+    [v7 setVoiceOverBrailleAutoAdvanceDuration:user];
   }
 }
 

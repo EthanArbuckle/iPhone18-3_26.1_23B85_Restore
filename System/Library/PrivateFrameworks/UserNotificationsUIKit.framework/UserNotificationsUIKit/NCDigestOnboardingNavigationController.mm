@@ -1,62 +1,62 @@
 @interface NCDigestOnboardingNavigationController
-+ (id)navigationControllerWithOnboardingDelegate:(id)a3 deferButtonText:(id)a4;
-+ (id)navigationControllerWithOnboardingDelegate:(id)a3 deferButtonText:(id)a4 previousBundleIdentifiersSelection:(id)a5 previousDeliveryTimesSelection:(id)a6;
-- (id)_initWithWithOnboardingDelegate:(id)a3 deferButtonText:(id)a4 previousBundleIdentifiersSelection:(id)a5 previousDeliveryTimesSelection:(id)a6 entrySource:(int)a7;
-- (id)popViewControllerAnimated:(BOOL)a3;
++ (id)navigationControllerWithOnboardingDelegate:(id)delegate deferButtonText:(id)text;
++ (id)navigationControllerWithOnboardingDelegate:(id)delegate deferButtonText:(id)text previousBundleIdentifiersSelection:(id)selection previousDeliveryTimesSelection:(id)timesSelection;
+- (id)_initWithWithOnboardingDelegate:(id)delegate deferButtonText:(id)text previousBundleIdentifiersSelection:(id)selection previousDeliveryTimesSelection:(id)timesSelection entrySource:(int)source;
+- (id)popViewControllerAnimated:(BOOL)animated;
 - (void)_pushToAppPicker;
-- (void)_saveStateOfOnboardingViewController:(id)a3;
-- (void)onboardingViewControllerDidDeferSetup:(id)a3;
-- (void)onboardingViewControllerNextButtonTapped:(id)a3;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)_saveStateOfOnboardingViewController:(id)controller;
+- (void)onboardingViewControllerDidDeferSetup:(id)setup;
+- (void)onboardingViewControllerNextButtonTapped:(id)tapped;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation NCDigestOnboardingNavigationController
 
-+ (id)navigationControllerWithOnboardingDelegate:(id)a3 deferButtonText:(id)a4
++ (id)navigationControllerWithOnboardingDelegate:(id)delegate deferButtonText:(id)text
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NCDigestOnboardingNavigationController alloc] _initWithWithOnboardingDelegate:v6 deferButtonText:v5 previousBundleIdentifiersSelection:0 previousDeliveryTimesSelection:0 entrySource:1];
+  textCopy = text;
+  delegateCopy = delegate;
+  v7 = [[NCDigestOnboardingNavigationController alloc] _initWithWithOnboardingDelegate:delegateCopy deferButtonText:textCopy previousBundleIdentifiersSelection:0 previousDeliveryTimesSelection:0 entrySource:1];
 
   return v7;
 }
 
-+ (id)navigationControllerWithOnboardingDelegate:(id)a3 deferButtonText:(id)a4 previousBundleIdentifiersSelection:(id)a5 previousDeliveryTimesSelection:(id)a6
++ (id)navigationControllerWithOnboardingDelegate:(id)delegate deferButtonText:(id)text previousBundleIdentifiersSelection:(id)selection previousDeliveryTimesSelection:(id)timesSelection
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[NCDigestOnboardingNavigationController alloc] _initWithWithOnboardingDelegate:v12 deferButtonText:v11 previousBundleIdentifiersSelection:v10 previousDeliveryTimesSelection:v9 entrySource:0];
+  timesSelectionCopy = timesSelection;
+  selectionCopy = selection;
+  textCopy = text;
+  delegateCopy = delegate;
+  v13 = [[NCDigestOnboardingNavigationController alloc] _initWithWithOnboardingDelegate:delegateCopy deferButtonText:textCopy previousBundleIdentifiersSelection:selectionCopy previousDeliveryTimesSelection:timesSelectionCopy entrySource:0];
 
   return v13;
 }
 
-- (id)_initWithWithOnboardingDelegate:(id)a3 deferButtonText:(id)a4 previousBundleIdentifiersSelection:(id)a5 previousDeliveryTimesSelection:(id)a6 entrySource:(int)a7
+- (id)_initWithWithOnboardingDelegate:(id)delegate deferButtonText:(id)text previousBundleIdentifiersSelection:(id)selection previousDeliveryTimesSelection:(id)timesSelection entrySource:(int)source
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [NCDigestOnboardingIntroductionViewController introductionViewControllerWithDeferButtonText:v13];
+  delegateCopy = delegate;
+  textCopy = text;
+  selectionCopy = selection;
+  timesSelectionCopy = timesSelection;
+  v16 = [NCDigestOnboardingIntroductionViewController introductionViewControllerWithDeferButtonText:textCopy];
   v31.receiver = self;
   v31.super_class = NCDigestOnboardingNavigationController;
   v17 = [(NCDigestOnboardingNavigationController *)&v31 initWithRootViewController:v16];
   v18 = v17;
   if (v17)
   {
-    v26 = v15;
-    [(NCModalNavigationController *)v17 setPresenterDelegate:v12];
+    v26 = timesSelectionCopy;
+    [(NCModalNavigationController *)v17 setPresenterDelegate:delegateCopy];
     v19 = NCUserNotificationsUIKitFrameworkBundle();
     v20 = [v19 localizedStringForKey:@"NOTIFICATION_DIGEST_ONBOARDING_INTRODUCTION_NEXT_BUTTON" value:&stru_282FE84F8 table:0];
     [v16 setNextButtonText:v20];
 
     [v16 setDelegate:v18];
-    objc_storeStrong(&v18->_deliveryTimes, a6);
-    objc_storeStrong(&v18->_appBundleIdentifiers, a5);
-    v18->_entrySource = a7;
+    objc_storeStrong(&v18->_deliveryTimes, timesSelection);
+    objc_storeStrong(&v18->_appBundleIdentifiers, selection);
+    v18->_entrySource = source;
     shownAppBundleIdentifiers = v18->_shownAppBundleIdentifiers;
     v18->_shownAppBundleIdentifiers = 0;
 
@@ -79,11 +79,11 @@
     v27[3] = &unk_278372CF0;
     objc_copyWeak(&v29, &location);
     v28 = v18;
-    [NCAppPickerContentProvider providerWithPreviousBundleIdentifiersSelection:v14 numDaysForAverageNotificationCount:v24 onMainQueue:v27];
+    [NCAppPickerContentProvider providerWithPreviousBundleIdentifiersSelection:selectionCopy numDaysForAverageNotificationCount:v24 onMainQueue:v27];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
-    v15 = v26;
+    timesSelectionCopy = v26;
   }
 
   return v18;
@@ -105,51 +105,51 @@ void __168__NCDigestOnboardingNavigationController__initWithWithOnboardingDelega
   }
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = NCDigestOnboardingNavigationController;
-  [(NCDigestOnboardingNavigationController *)&v7 pushViewController:a3 animated:a4];
-  v5 = [(NCDigestOnboardingNavigationController *)self navigationBar];
-  v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  [(NCDigestOnboardingNavigationController *)&v7 pushViewController:controller animated:animated];
+  navigationBar = [(NCDigestOnboardingNavigationController *)self navigationBar];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [navigationBar setBackgroundColor:systemBackgroundColor];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NCDigestOnboardingNavigationController *)self viewControllers];
-  v6 = [v5 lastObject];
-  [(NCDigestOnboardingNavigationController *)self _saveStateOfOnboardingViewController:v6];
+  animatedCopy = animated;
+  viewControllers = [(NCDigestOnboardingNavigationController *)self viewControllers];
+  lastObject = [viewControllers lastObject];
+  [(NCDigestOnboardingNavigationController *)self _saveStateOfOnboardingViewController:lastObject];
 
   v9.receiver = self;
   v9.super_class = NCDigestOnboardingNavigationController;
-  v7 = [(NCDigestOnboardingNavigationController *)&v9 popViewControllerAnimated:v3];
+  v7 = [(NCDigestOnboardingNavigationController *)&v9 popViewControllerAnimated:animatedCopy];
 
   return v7;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = NCDigestOnboardingNavigationController;
-  [(NCDigestOnboardingNavigationController *)&v7 viewWillDisappear:a3];
-  v4 = [(NCModalNavigationController *)self presenterDelegate];
+  [(NCDigestOnboardingNavigationController *)&v7 viewWillDisappear:disappear];
+  presenterDelegate = [(NCModalNavigationController *)self presenterDelegate];
   if (!self->_userFinishedOnboarding && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [(NCDigestOnboardingNavigationController *)self viewControllers];
-    v6 = [v5 lastObject];
-    [(NCDigestOnboardingNavigationController *)self _saveStateOfOnboardingViewController:v6];
+    viewControllers = [(NCDigestOnboardingNavigationController *)self viewControllers];
+    lastObject = [viewControllers lastObject];
+    [(NCDigestOnboardingNavigationController *)self _saveStateOfOnboardingViewController:lastObject];
 
-    [v4 digestOnboardingNavigationController:self didChangeDeliveryTimesActiveSelection:self->_deliveryTimes appBundleIdentifiersActiveSelection:self->_appBundleIdentifiers];
+    [presenterDelegate digestOnboardingNavigationController:self didChangeDeliveryTimesActiveSelection:self->_deliveryTimes appBundleIdentifiersActiveSelection:self->_appBundleIdentifiers];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v17.receiver = self;
   v17.super_class = NCDigestOnboardingNavigationController;
-  [(NCModalNavigationController *)&v17 viewDidDisappear:a3];
+  [(NCModalNavigationController *)&v17 viewDidDisappear:disappear];
   v4 = [MEMORY[0x277CBEAA8] now];
   [v4 timeIntervalSinceDate:self->_startTime];
   v6 = v5;
@@ -202,10 +202,10 @@ void __168__NCDigestOnboardingNavigationController__initWithWithOnboardingDelega
   [v16 logDigestOnboardingWithEntrySource:self->_entrySource digestSetupOutcome:userDeferredOnboarding finalUIShown:self->_finalUIShown timeTaken:self->_appPickerShowMoreButtonWasPressed didSelectShowMore:14 numDaysForAverageNotificationCount:v10 shownApps:v6 appsAddedToDigest:v12 deliveryTimes:v15];
 }
 
-- (void)onboardingViewControllerNextButtonTapped:(id)a3
+- (void)onboardingViewControllerNextButtonTapped:(id)tapped
 {
-  v5 = a3;
-  [(NCDigestOnboardingNavigationController *)self _saveStateOfOnboardingViewController:v5];
+  tappedCopy = tapped;
+  [(NCDigestOnboardingNavigationController *)self _saveStateOfOnboardingViewController:tappedCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -225,18 +225,18 @@ void __168__NCDigestOnboardingNavigationController__initWithWithOnboardingDelega
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [NCSchedulerViewController schedulerWithDeliveryTimes:self->_deliveryTimes];
-      [v4 setDelegate:self];
-      [(NCDigestOnboardingNavigationController *)self pushViewController:v4 animated:1];
+      presenterDelegate = [NCSchedulerViewController schedulerWithDeliveryTimes:self->_deliveryTimes];
+      [presenterDelegate setDelegate:self];
+      [(NCDigestOnboardingNavigationController *)self pushViewController:presenterDelegate animated:1];
     }
 
     else
     {
       self->_userFinishedOnboarding = 1;
-      v4 = [(NCModalNavigationController *)self presenterDelegate];
+      presenterDelegate = [(NCModalNavigationController *)self presenterDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v4 digestOnboardingNavigationController:self didScheduleDigestDeliveryTimes:self->_deliveryTimes forAppBundleIdentifiers:self->_appBundleIdentifiers];
+        [presenterDelegate digestOnboardingNavigationController:self didScheduleDigestDeliveryTimes:self->_deliveryTimes forAppBundleIdentifiers:self->_appBundleIdentifiers];
       }
 
       [(NCDigestOnboardingNavigationController *)self dismissViewControllerAnimated:1 completion:0];
@@ -251,25 +251,25 @@ void __168__NCDigestOnboardingNavigationController__initWithWithOnboardingDelega
   [(NCDigestOnboardingNavigationController *)self pushViewController:v3 animated:1];
 }
 
-- (void)onboardingViewControllerDidDeferSetup:(id)a3
+- (void)onboardingViewControllerDidDeferSetup:(id)setup
 {
   self->_userDeferredOnboarding = 1;
-  v4 = [(NCModalNavigationController *)self presenterDelegate];
+  presenterDelegate = [(NCModalNavigationController *)self presenterDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 digestOnboardingNavigationControllerDidDeferSetup:self];
+    [presenterDelegate digestOnboardingNavigationControllerDidDeferSetup:self];
   }
 }
 
-- (void)_saveStateOfOnboardingViewController:(id)a3
+- (void)_saveStateOfOnboardingViewController:(id)controller
 {
-  v11 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v11 deliveryTimes];
+    deliveryTimes = [controllerCopy deliveryTimes];
     deliveryTimes = self->_deliveryTimes;
-    self->_deliveryTimes = v4;
+    self->_deliveryTimes = deliveryTimes;
 
     self->_deliveryTimesMutated = 1;
     v6 = 2;
@@ -283,17 +283,17 @@ void __168__NCDigestOnboardingNavigationController__initWithWithOnboardingDelega
       goto LABEL_6;
     }
 
-    v7 = [v11 selectedBundleIdentifiers];
+    selectedBundleIdentifiers = [controllerCopy selectedBundleIdentifiers];
     appBundleIdentifiers = self->_appBundleIdentifiers;
-    self->_appBundleIdentifiers = v7;
+    self->_appBundleIdentifiers = selectedBundleIdentifiers;
 
     v6 = 1;
     self->_appBundleIdentifiersMutated = 1;
-    v9 = [v11 shownBundleIdentifiers];
+    shownBundleIdentifiers = [controllerCopy shownBundleIdentifiers];
     shownAppBundleIdentifiers = self->_shownAppBundleIdentifiers;
-    self->_shownAppBundleIdentifiers = v9;
+    self->_shownAppBundleIdentifiers = shownBundleIdentifiers;
 
-    self->_appPickerShowMoreButtonWasPressed = [v11 showMoreButtonWasPressed];
+    self->_appPickerShowMoreButtonWasPressed = [controllerCopy showMoreButtonWasPressed];
   }
 
   self->_finalUIShown = v6;

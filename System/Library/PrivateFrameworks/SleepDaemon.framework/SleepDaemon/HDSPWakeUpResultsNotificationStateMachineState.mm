@@ -11,36 +11,36 @@
 {
   if (![(HDSPWakeUpResultsNotificationStateMachineState *)self isNotificationEnabled])
   {
-    v5 = [(HKSPStateMachineState *)self stateMachine];
-    v3 = [(HKSPStateMachineState *)self stateMachine];
-    v4 = [v3 disabledState];
-    [v5 enterState:v4];
+    stateMachine = [(HKSPStateMachineState *)self stateMachine];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    disabledState = [stateMachine2 disabledState];
+    [stateMachine enterState:disabledState];
   }
 }
 
 - (HDSPWakeUpResultsNotificationStateMachineInfoProvider)infoProvider
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  return v3;
+  return infoProvider;
 }
 
 - (BOOL)isNotificationEnabled
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
-  v4 = [v3 isWakeUpResultsNotificationEnabled];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  isWakeUpResultsNotificationEnabled = [infoProvider isWakeUpResultsNotificationEnabled];
 
-  return v4;
+  return isWakeUpResultsNotificationEnabled;
 }
 
 - (void)stateDidExpire
 {
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 waitingForWakeUpState];
-  [v5 enterState:v4];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+  waitingForWakeUpState = [stateMachine2 waitingForWakeUpState];
+  [stateMachine enterState:waitingForWakeUpState];
 }
 
 @end

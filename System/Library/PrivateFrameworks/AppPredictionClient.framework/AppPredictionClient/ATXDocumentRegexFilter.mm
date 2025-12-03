@@ -1,8 +1,8 @@
 @interface ATXDocumentRegexFilter
 + (id)sharedInstance;
 - (ATXDocumentRegexFilter)init;
-- (BOOL)shouldFilterOutBundleId:(id)a3 andURL:(id)a4;
-- (BOOL)shouldFilterOutURL:(id)a3;
+- (BOOL)shouldFilterOutBundleId:(id)id andURL:(id)l;
+- (BOOL)shouldFilterOutURL:(id)l;
 @end
 
 @implementation ATXDocumentRegexFilter
@@ -36,17 +36,17 @@ void __40__ATXDocumentRegexFilter_sharedInstance__block_invoke()
   return [(ATXRegexFilter *)&v3 initWithAssetName:@"ATXDocumentRegexFilter"];
 }
 
-- (BOOL)shouldFilterOutURL:(id)a3
+- (BOOL)shouldFilterOutURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
-    v6 = [v4 path];
-    if (v6)
+    path = [lCopy path];
+    if (path)
     {
-      v7 = [v5 path];
-      v8 = [(ATXRegexFilter *)self shouldFilterOutOnlyBasedOnAttribute:v7];
+      path2 = [v5 path];
+      v8 = [(ATXRegexFilter *)self shouldFilterOutOnlyBasedOnAttribute:path2];
     }
 
     else
@@ -63,18 +63,18 @@ void __40__ATXDocumentRegexFilter_sharedInstance__block_invoke()
   return v8;
 }
 
-- (BOOL)shouldFilterOutBundleId:(id)a3 andURL:(id)a4
+- (BOOL)shouldFilterOutBundleId:(id)id andURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  idCopy = id;
+  lCopy = l;
+  v8 = lCopy;
+  if (lCopy)
   {
-    v9 = [v7 path];
-    if (v9)
+    path = [lCopy path];
+    if (path)
     {
-      v10 = [v8 path];
-      v11 = [(ATXRegexFilter *)self shouldFilterOutBundleId:v6 andAttribute:v10];
+      path2 = [v8 path];
+      v11 = [(ATXRegexFilter *)self shouldFilterOutBundleId:idCopy andAttribute:path2];
     }
 
     else

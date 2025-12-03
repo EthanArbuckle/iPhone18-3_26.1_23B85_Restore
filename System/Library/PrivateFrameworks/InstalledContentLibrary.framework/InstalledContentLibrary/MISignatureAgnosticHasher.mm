@@ -1,17 +1,17 @@
 @interface MISignatureAgnosticHasher
-+ (void)unpackPackedCpuTypeAndSubType:(id)a3 cputype:(int *)a4 subtype:(int *)a5;
-- (BOOL)performHashWithError:(id *)a3;
-- (MISignatureAgnosticHasher)initWithExecutable:(id)a3 searchForSectionNamed:(id)a4;
-- (id)_hashSliceAtOffset:(int64_t)a3 withSize:(int64_t)a4 machHeaderAndCommands:(const mach_header *)a5 dictionaryKey:(id *)a6 error:(id *)a7;
++ (void)unpackPackedCpuTypeAndSubType:(id)type cputype:(int *)cputype subtype:(int *)subtype;
+- (BOOL)performHashWithError:(id *)error;
+- (MISignatureAgnosticHasher)initWithExecutable:(id)executable searchForSectionNamed:(id)named;
+- (id)_hashSliceAtOffset:(int64_t)offset withSize:(int64_t)size machHeaderAndCommands:(const mach_header *)commands dictionaryKey:(id *)key error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MISignatureAgnosticHasher
 
-- (MISignatureAgnosticHasher)initWithExecutable:(id)a3 searchForSectionNamed:(id)a4
+- (MISignatureAgnosticHasher)initWithExecutable:(id)executable searchForSectionNamed:(id)named
 {
-  v7 = a3;
-  v8 = a4;
+  executableCopy = executable;
+  namedCopy = named;
   v12.receiver = self;
   v12.super_class = MISignatureAgnosticHasher;
   v9 = [(MISignatureAgnosticHasher *)&v12 init];
@@ -19,8 +19,8 @@
   if (v9)
   {
     v9->_fd = -1;
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_sectionName, a4);
+    objc_storeStrong(&v9->_url, executable);
+    objc_storeStrong(&v10->_sectionName, named);
   }
 
   return v10;
@@ -38,19 +38,19 @@
   [(MISignatureAgnosticHasher *)&v3 dealloc];
 }
 
-- (id)_hashSliceAtOffset:(int64_t)a3 withSize:(int64_t)a4 machHeaderAndCommands:(const mach_header *)a5 dictionaryKey:(id *)a6 error:(id *)a7
+- (id)_hashSliceAtOffset:(int64_t)offset withSize:(int64_t)size machHeaderAndCommands:(const mach_header *)commands dictionaryKey:(id *)key error:(id *)error
 {
-  v12 = self;
+  selfCopy = self;
   v121 = *MEMORY[0x1E69E9840];
   memset(&c, 0, sizeof(c));
   *md = 0;
   v119 = 0;
   v120 = 0;
-  v13 = [(MISignatureAgnosticHasher *)self sectionName];
-  v14 = [v13 UTF8String];
+  sectionName = [(MISignatureAgnosticHasher *)self sectionName];
+  uTF8String = [sectionName UTF8String];
 
-  magic = a5->magic;
-  if (a5->magic <= -17958195)
+  magic = commands->magic;
+  if (commands->magic <= -17958195)
   {
     if (magic == -822415874 || magic == -805638658)
     {
@@ -71,9 +71,9 @@
     if (magic != -17958193)
     {
 LABEL_8:
-      v19 = [(MISignatureAgnosticHasher *)v12 url];
-      v20 = [v19 path];
-      _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 87, @"MIInstallerErrorDomain", 73, 0, 0, @"Invalid mach_header.magic in %@ : 0x%08x", v21, v20);
+      v19 = [(MISignatureAgnosticHasher *)selfCopy url];
+      path = [v19 path];
+      _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 87, @"MIInstallerErrorDomain", 73, 0, 0, @"Invalid mach_header.magic in %@ : 0x%08x", v21, path);
       v17 = LABEL_12:;
 
 LABEL_13:
@@ -87,23 +87,23 @@ LABEL_15:
     v18 = 32;
   }
 
-  *a6 = [objc_opt_class() packedNumberForCPUType:a5->cputype subtype:a5->cpusubtype];
-  if (a5->sizeofcmds > 0x1000)
+  *key = [objc_opt_class() packedNumberForCPUType:commands->cputype subtype:commands->cpusubtype];
+  if (commands->sizeofcmds > 0x1000)
   {
-    v19 = [(MISignatureAgnosticHasher *)v12 url];
-    v20 = [v19 path];
-    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 95, @"MIInstallerErrorDomain", 73, 0, 0, @"Invalid mach_header.sizeofcmds in %@", v22, v20);
+    v19 = [(MISignatureAgnosticHasher *)selfCopy url];
+    path = [v19 path];
+    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 95, @"MIInstallerErrorDomain", 73, 0, 0, @"Invalid mach_header.sizeofcmds in %@", v22, path);
     goto LABEL_12;
   }
 
-  sizeofcmds = a5->sizeofcmds;
-  v111 = a7;
+  sizeofcmds = commands->sizeofcmds;
+  errorCopy = error;
   v107 = v18;
-  v108 = a3;
-  v105 = a4;
-  v27 = a5 + v18;
-  ncmds = a5->ncmds;
-  v106 = a5 + v18;
+  offsetCopy = offset;
+  sizeCopy = size;
+  v27 = commands + v18;
+  ncmds = commands->ncmds;
+  v106 = commands + v18;
   if (ncmds)
   {
     v29 = 0;
@@ -118,8 +118,8 @@ LABEL_15:
     {
       if ((v27 + 8) > v31 || (v32 = *(v27 + 1), v33 = &v27[v32], &v27[v32] > v31))
       {
-        v46 = [(MISignatureAgnosticHasher *)v12 url];
-        v47 = [v46 path];
+        v46 = [(MISignatureAgnosticHasher *)selfCopy url];
+        path2 = [v46 path];
         _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 105, @"MIInstallerErrorDomain", 73, 0, 0, @"Load command %d exceeds bounds in %@", v40, v30);
         goto LABEL_73;
       }
@@ -132,9 +132,9 @@ LABEL_15:
 
       if (v32 != 16)
       {
-        v46 = [(MISignatureAgnosticHasher *)v12 url];
-        v47 = [v46 path];
-        _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 169, @"MIInstallerErrorDomain", 73, 0, 0, @"Invalid LC_CODE_SIGNATURE command in %@", v48, v47);
+        v46 = [(MISignatureAgnosticHasher *)selfCopy url];
+        path2 = [v46 path];
+        _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 169, @"MIInstallerErrorDomain", 73, 0, 0, @"Invalid LC_CODE_SIGNATURE command in %@", v48, path2);
         goto LABEL_73;
       }
 
@@ -152,23 +152,23 @@ LABEL_55:
     {
       if (strncmp(v27 + 8, "__LINKEDIT", 0xAuLL))
       {
-        if (v14 && !strncmp(v27 + 8, "__DATA", 6uLL))
+        if (uTF8String && !strncmp(v27 + 8, "__DATA", 6uLL))
         {
-          v104 = v12;
+          v104 = selfCopy;
           v37 = *(v27 + 16);
           if (v37 > 0x1000)
           {
             v46 = [(MISignatureAgnosticHasher *)v104 url];
-            v47 = [v46 path];
-            _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 150, @"MIInstallerErrorDomain", 73, 0, 0, @"__DATA segment has too many sections in %@", v83, v47);
+            path2 = [v46 path];
+            _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 150, @"MIInstallerErrorDomain", 73, 0, 0, @"__DATA segment has too many sections in %@", v83, path2);
             goto LABEL_73;
           }
 
           if (80 * v37 + 72 > v32)
           {
             v46 = [(MISignatureAgnosticHasher *)v104 url];
-            v47 = [v46 path];
-            _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 155, @"MIInstallerErrorDomain", 73, 0, 0, @"__DATA segment exceeds bounds in %@", v85, v47);
+            path2 = [v46 path];
+            _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 155, @"MIInstallerErrorDomain", 73, 0, 0, @"__DATA segment exceeds bounds in %@", v85, path2);
             v17 = LABEL_73:;
 
 LABEL_74:
@@ -179,7 +179,7 @@ LABEL_74:
           if (v37)
           {
             v38 = v27 + 72;
-            while (strncmp(v38, v14, 0x10uLL))
+            while (strncmp(v38, uTF8String, 0x10uLL))
             {
               v38 += 80;
               if (!--v37)
@@ -194,7 +194,7 @@ LABEL_57:
 
 LABEL_58:
           v27 = v29;
-          v12 = v104;
+          selfCopy = v104;
           goto LABEL_55;
         }
 
@@ -218,30 +218,30 @@ LABEL_54:
 
       if (strncmp(v27 + 8, "__LINKEDIT", 0xAuLL))
       {
-        if (v14 && !strncmp(v27 + 8, "__DATA", 6uLL))
+        if (uTF8String && !strncmp(v27 + 8, "__DATA", 6uLL))
         {
-          v104 = v12;
+          v104 = selfCopy;
           v35 = *(v27 + 12);
           if (v35 > 0x1000)
           {
             v46 = [(MISignatureAgnosticHasher *)v104 url];
-            v47 = [v46 path];
-            _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 121, @"MIInstallerErrorDomain", 73, 0, 0, @"__DATA segment has too many sections in %@", v82, v47);
+            path2 = [v46 path];
+            _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 121, @"MIInstallerErrorDomain", 73, 0, 0, @"__DATA segment has too many sections in %@", v82, path2);
             goto LABEL_73;
           }
 
           if (68 * v35 + 56 > v32)
           {
             v46 = [(MISignatureAgnosticHasher *)v104 url];
-            v47 = [v46 path];
-            _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 126, @"MIInstallerErrorDomain", 73, 0, 0, @"__DATA segment exceeds bounds in %@", v84, v47);
+            path2 = [v46 path];
+            _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 126, @"MIInstallerErrorDomain", 73, 0, 0, @"__DATA segment exceeds bounds in %@", v84, path2);
             goto LABEL_73;
           }
 
           if (v35)
           {
             v36 = v27 + 56;
-            while (strncmp(v36, v14, 0x10uLL))
+            while (strncmp(v36, uTF8String, 0x10uLL))
             {
               v36 += 68;
               if (!--v35)
@@ -278,34 +278,34 @@ LABEL_54:
 LABEL_61:
   if (!v115 || !v113 || !v114 || !v112)
   {
-    v46 = [(MISignatureAgnosticHasher *)v12 url];
-    v47 = [v46 path];
-    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 178, @"MIInstallerErrorDomain", 73, 0, 0, @"Failed to find __LINKEDIT segment in %@", v43, v47);
+    v46 = [(MISignatureAgnosticHasher *)selfCopy url];
+    path2 = [v46 path];
+    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 178, @"MIInstallerErrorDomain", 73, 0, 0, @"Failed to find __LINKEDIT segment in %@", v43, path2);
     goto LABEL_73;
   }
 
   if (!v29)
   {
-    v46 = [(MISignatureAgnosticHasher *)v12 url];
-    v47 = [v46 path];
-    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 183, @"MIInstallerErrorDomain", 73, 0, 0, @"Failed to find LC_CODE_SIGNATURE load command in %@", v44, v47);
+    v46 = [(MISignatureAgnosticHasher *)selfCopy url];
+    path2 = [v46 path];
+    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 183, @"MIInstallerErrorDomain", 73, 0, 0, @"Failed to find LC_CODE_SIGNATURE load command in %@", v44, path2);
     goto LABEL_73;
   }
 
   if (v115 > v29 || v114 > v29)
   {
-    v46 = [(MISignatureAgnosticHasher *)v12 url];
-    v47 = [v46 path];
-    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 188, @"MIInstallerErrorDomain", 73, 0, 0, @"__LINKEDIT segment found after LC_CODE_SIGNATURE load command in %@", v45, v47);
+    v46 = [(MISignatureAgnosticHasher *)selfCopy url];
+    path2 = [v46 path];
+    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 188, @"MIInstallerErrorDomain", 73, 0, 0, @"__LINKEDIT segment found after LC_CODE_SIGNATURE load command in %@", v45, path2);
     goto LABEL_73;
   }
 
   v41 = *(v29 + 2);
   if (v41 < sizeofcmds)
   {
-    v46 = [(MISignatureAgnosticHasher *)v12 url];
-    v47 = [v46 path];
-    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 193, @"MIInstallerErrorDomain", 73, 0, 0, @"LC_CODE_SIGNATURE command's data offset is less than the size of the mach header in %@", v42, v47);
+    v46 = [(MISignatureAgnosticHasher *)selfCopy url];
+    path2 = [v46 path];
+    _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 193, @"MIInstallerErrorDomain", 73, 0, 0, @"LC_CODE_SIGNATURE command's data offset is less than the size of the mach header in %@", v42, path2);
     goto LABEL_73;
   }
 
@@ -319,22 +319,22 @@ LABEL_61:
   v117[6] = v41;
   v117[7] = v49;
   CC_SHA1_Init(&c);
-  if (lseek([(MISignatureAgnosticHasher *)v12 fd], v108, 0) == -1)
+  if (lseek([(MISignatureAgnosticHasher *)selfCopy fd], offsetCopy, 0) == -1)
   {
     v63 = *__error();
     v64 = *MEMORY[0x1E696A798];
     strerror(v63);
-    v66 = _CreateError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 218, v64, v63, 0, 0, @"lseek to %lld failed: %s", v65, v108);
-    v67 = [(MISignatureAgnosticHasher *)v12 url];
-    v101 = [v67 path];
+    v66 = _CreateError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 218, v64, v63, 0, 0, @"lseek to %lld failed: %s", v65, offsetCopy);
+    v67 = [(MISignatureAgnosticHasher *)selfCopy url];
+    path3 = [v67 path];
     strerror(v63);
-    v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 218, @"MIInstallerErrorDomain", 73, v66, 0, @"Failed to seek to %lld in %@ : %s", v68, v108);
+    v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 218, @"MIInstallerErrorDomain", 73, v66, 0, @"Failed to seek to %lld in %@ : %s", v68, offsetCopy);
 
     goto LABEL_74;
   }
 
   v50 = malloc_type_malloc(0x4000uLL, 0xB4AE63A6uLL);
-  a7 = v111;
+  error = errorCopy;
   if (!v50)
   {
     v69 = *__error();
@@ -367,17 +367,17 @@ LABEL_61:
           v55 = v54;
         }
 
-        v56 = read([(MISignatureAgnosticHasher *)v12 fd], v23, v55);
+        v56 = read([(MISignatureAgnosticHasher *)selfCopy fd], v23, v55);
         if (v56 < 0)
         {
           v74 = *__error();
           v75 = *MEMORY[0x1E696A798];
           strerror(v74);
           v77 = _CreateError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 238, v75, v74, 0, 0, @"Failed to read %zu bytes : %s", v76, v55);
-          v78 = [(MISignatureAgnosticHasher *)v12 url];
-          v79 = [v78 path];
+          path5 = [(MISignatureAgnosticHasher *)selfCopy url];
+          path4 = [path5 path];
           strerror(v74);
-          v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 238, @"MIInstallerErrorDomain", 73, v77, 0, @"Failed to read file at %@: %s", v80, v79);
+          v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 238, @"MIInstallerErrorDomain", 73, v77, 0, @"Failed to read file at %@: %s", v80, path4);
 
           goto LABEL_97;
         }
@@ -396,26 +396,26 @@ LABEL_61:
         }
       }
 
-      v77 = [(MISignatureAgnosticHasher *)v12 url];
-      v78 = [v77 path];
+      v77 = [(MISignatureAgnosticHasher *)selfCopy url];
+      path5 = [v77 path];
       v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 241, @"MIInstallerErrorDomain", 73, 0, 0, @"Expected to read %zu bytes but got %ld bytes when reading %@", v81, v55);
       goto LABEL_97;
     }
 
 LABEL_88:
     v58 = v117[v51 + 1];
-    if (lseek([(MISignatureAgnosticHasher *)v12 fd], v58, 1) == -1)
+    if (lseek([(MISignatureAgnosticHasher *)selfCopy fd], v58, 1) == -1)
     {
       v86 = *__error();
       v87 = *MEMORY[0x1E696A798];
       strerror(v86);
       v77 = _CreateError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 253, v87, v86, 0, 0, @"lseek to %lld from current offset failed: %s", v88, v58);
-      v78 = [(MISignatureAgnosticHasher *)v12 url];
-      v102 = [v78 path];
+      path5 = [(MISignatureAgnosticHasher *)selfCopy url];
+      v78Path = [path5 path];
       strerror(v86);
       v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 253, @"MIInstallerErrorDomain", 73, v77, 0, @"Failed to seek to %lld from current offset in %@ : %s", v89, v58);
 
-      a7 = v111;
+      error = errorCopy;
 LABEL_97:
 
       goto LABEL_15;
@@ -427,11 +427,11 @@ LABEL_97:
   }
 
   while (!v59);
-  v60 = v105 - v52;
-  if (v105 < v52)
+  v60 = sizeCopy - v52;
+  if (sizeCopy < v52)
   {
-    v61 = [(MISignatureAgnosticHasher *)v12 url];
-    v103 = [v61 path];
+    v61 = [(MISignatureAgnosticHasher *)selfCopy url];
+    path6 = [v61 path];
     v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 261, @"MIInstallerErrorDomain", 73, 0, 0, @"Hashed more (%lld) than slice length %llu in %@", v62, v52);
 
     goto LABEL_15;
@@ -443,7 +443,7 @@ LABEL_111:
     CC_SHA1_Final(md, &c);
     if (v109)
     {
-      [(MISignatureAgnosticHasher *)v12 setCountOfSlicesWithNamedSection:[(MISignatureAgnosticHasher *)v12 countOfSlicesWithNamedSection]+ 1];
+      [(MISignatureAgnosticHasher *)selfCopy setCountOfSlicesWithNamedSection:[(MISignatureAgnosticHasher *)selfCopy countOfSlicesWithNamedSection]+ 1];
     }
 
     v24 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:20];
@@ -464,17 +464,17 @@ LABEL_111:
         v90 = v60;
       }
 
-      v91 = read([(MISignatureAgnosticHasher *)v12 fd], v23, v90);
+      v91 = read([(MISignatureAgnosticHasher *)selfCopy fd], v23, v90);
       if (v91 < 0)
       {
         v92 = *__error();
         v93 = *MEMORY[0x1E696A798];
         strerror(v92);
         v95 = _CreateError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 271, v93, v92, 0, 0, @"Failed to read %zu bytes : %s", v94, v90);
-        v96 = [(MISignatureAgnosticHasher *)v12 url];
-        v97 = [v96 path];
+        path8 = [(MISignatureAgnosticHasher *)selfCopy url];
+        path7 = [path8 path];
         strerror(v92);
-        v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 271, @"MIInstallerErrorDomain", 73, v95, 0, @"Failed to read file at %@: %s", v98, v97);
+        v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 271, @"MIInstallerErrorDomain", 73, v95, 0, @"Failed to read file at %@: %s", v98, path7);
 
         goto LABEL_116;
       }
@@ -493,8 +493,8 @@ LABEL_111:
       }
     }
 
-    v95 = [(MISignatureAgnosticHasher *)v12 url];
-    v96 = [v95 path];
+    v95 = [(MISignatureAgnosticHasher *)selfCopy url];
+    path8 = [v95 path];
     v17 = _CreateAndLogError("[MISignatureAgnosticHasher _hashSliceAtOffset:withSize:machHeaderAndCommands:dictionaryKey:error:]", 274, @"MIInstallerErrorDomain", 73, 0, 0, @"Expected to read %zu bytes but got %ld bytes when reading %@", v99, v90);
 LABEL_116:
 
@@ -502,19 +502,19 @@ LABEL_75:
     v24 = 0;
   }
 
-  a7 = v111;
+  error = errorCopy;
 LABEL_16:
   free(v23);
-  if (a7 && !v24)
+  if (error && !v24)
   {
     v25 = v17;
-    *a7 = v17;
+    *error = v17;
   }
 
   return v24;
 }
 
-- (BOOL)performHashWithError:(id *)a3
+- (BOOL)performHashWithError:(id *)error
 {
   v36 = 0;
   v37 = &v36;
@@ -544,13 +544,13 @@ LABEL_16:
   {
     v13 = *__error();
     v14 = [(MISignatureAgnosticHasher *)self url];
-    v15 = [v14 fileSystemRepresentation];
+    fileSystemRepresentation = [v14 fileSystemRepresentation];
     strerror(v13);
-    v17 = _CreateError("[MISignatureAgnosticHasher performHashWithError:]", 371, *MEMORY[0x1E696A798], v13, 0, 0, @"Failed to open %s: %s", v16, v15);
+    v17 = _CreateError("[MISignatureAgnosticHasher performHashWithError:]", 371, *MEMORY[0x1E696A798], v13, 0, 0, @"Failed to open %s: %s", v16, fileSystemRepresentation);
     v18 = [(MISignatureAgnosticHasher *)self url];
-    v19 = [v18 path];
+    path = [v18 path];
     strerror(v13);
-    v21 = _CreateAndLogError("[MISignatureAgnosticHasher performHashWithError:]", 371, @"MIInstallerErrorDomain", 73, v17, 0, @"Failed to open executable for reading at %@ : %s", v20, v19);
+    v21 = _CreateAndLogError("[MISignatureAgnosticHasher performHashWithError:]", 371, @"MIInstallerErrorDomain", 73, v17, 0, @"Failed to open executable for reading at %@ : %s", v20, path);
     v22 = v37[5];
     v37[5] = v21;
 
@@ -566,8 +566,8 @@ LABEL_7:
   if ((v9 & 1) == 0)
   {
     v14 = [(MISignatureAgnosticHasher *)self url];
-    v23 = [v14 path];
-    v25 = _CreateAndLogError("[MISignatureAgnosticHasher performHashWithError:]", 376, @"MIInstallerErrorDomain", 73, 0, 0, @"Could not iterate slices in macho %@", v24, v23);
+    path2 = [v14 path];
+    v25 = _CreateAndLogError("[MISignatureAgnosticHasher performHashWithError:]", 376, @"MIInstallerErrorDomain", 73, 0, 0, @"Could not iterate slices in macho %@", v24, path2);
     v26 = v37[5];
     v37[5] = v25;
 
@@ -576,16 +576,16 @@ LABEL_7:
 
   v11 = v37[5] == 0;
   objc_storeStrong(&self->_hashes, v5);
-  v12 = [(MISignatureAgnosticHasher *)self countOfSlicesWithNamedSection];
-  if (v12 == *(v33 + 6))
+  countOfSlicesWithNamedSection = [(MISignatureAgnosticHasher *)self countOfSlicesWithNamedSection];
+  if (countOfSlicesWithNamedSection == *(v33 + 6))
   {
     self->_hasNamedSection = 1;
   }
 
 LABEL_8:
-  if (a3 && !v11)
+  if (error && !v11)
   {
-    *a3 = v37[5];
+    *error = v37[5];
   }
 
   if (([(MISignatureAgnosticHasher *)self fd]& 0x80000000) == 0)
@@ -694,11 +694,11 @@ LABEL_14:
   return v29;
 }
 
-+ (void)unpackPackedCpuTypeAndSubType:(id)a3 cputype:(int *)a4 subtype:(int *)a5
++ (void)unpackPackedCpuTypeAndSubType:(id)type cputype:(int *)cputype subtype:(int *)subtype
 {
-  v7 = [a3 unsignedLongLongValue];
-  *a4 = HIDWORD(v7);
-  *a5 = v7;
+  unsignedLongLongValue = [type unsignedLongLongValue];
+  *cputype = HIDWORD(unsignedLongLongValue);
+  *subtype = unsignedLongLongValue;
 }
 
 @end

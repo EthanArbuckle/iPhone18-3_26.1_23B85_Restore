@@ -1,21 +1,21 @@
 @interface SiriGKSummaryView
-- (CGSize)_sizeThatFits:(CGSize)a3 setFrames:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriGKSummaryView)initWithText:(id)a3 caption:(id)a4 imageResource:(id)a5 usingPersistentStore:(id)a6;
+- (CGSize)_sizeThatFits:(CGSize)fits setFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriGKSummaryView)initWithText:(id)text caption:(id)caption imageResource:(id)resource usingPersistentStore:(id)store;
 - (id)_linkTextAttributes;
 - (id)_textAttributes;
-- (void)_configureWithImage:(id)a3;
+- (void)_configureWithImage:(id)image;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriGKSummaryView
 
-- (SiriGKSummaryView)initWithText:(id)a3 caption:(id)a4 imageResource:(id)a5 usingPersistentStore:(id)a6
+- (SiriGKSummaryView)initWithText:(id)text caption:(id)caption imageResource:(id)resource usingPersistentStore:(id)store
 {
-  v10 = a3;
-  v65 = a4;
-  v11 = a5;
-  v64 = a6;
+  textCopy = text;
+  captionCopy = caption;
+  resourceCopy = resource;
+  storeCopy = store;
   v71.receiver = self;
   v71.super_class = SiriGKSummaryView;
   v12 = [(SiriGKSummaryView *)&v71 init];
@@ -28,15 +28,15 @@ LABEL_17:
   }
 
   [(SiriGKView *)v12 setEdgeInsets:0.0, SiriUIPlatterStyle[32], 0.0, SiriUIPlatterStyle[34]];
-  v14 = [v10 length];
-  if (v11 || v14)
+  v14 = [textCopy length];
+  if (resourceCopy || v14)
   {
     v16 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     v17 = p_isa[6];
     p_isa[6] = v16;
 
     [p_isa addSubview:p_isa[6]];
-    if (v10)
+    if (textCopy)
     {
       v18 = objc_alloc_init(UITextView);
       v19 = p_isa[7];
@@ -48,19 +48,19 @@ LABEL_17:
 
       [p_isa[7] setScrollEnabled:0];
       [p_isa[7] setUserInteractionEnabled:0];
-      v22 = [p_isa[7] textLayoutManager];
-      [v22 setUsesFontLeading:0];
+      textLayoutManager = [p_isa[7] textLayoutManager];
+      [textLayoutManager setUsesFontLeading:0];
 
       [p_isa[7] setContentInset:{0.0, -5.0, 0.0, 0.0}];
       v23 = p_isa[7];
       v24 = [NSAttributedString alloc];
-      v25 = [p_isa _textAttributes];
-      v26 = [v24 initWithString:v10 attributes:v25];
+      _textAttributes = [p_isa _textAttributes];
+      v26 = [v24 initWithString:textCopy attributes:_textAttributes];
       [v23 setAttributedText:v26];
 
       v27 = p_isa[7];
-      v28 = [p_isa _linkTextAttributes];
-      [v27 setLinkTextAttributes:v28];
+      _linkTextAttributes = [p_isa _linkTextAttributes];
+      [v27 setLinkTextAttributes:_linkTextAttributes];
 
       [p_isa[6] addSubview:p_isa[7]];
     }
@@ -71,7 +71,7 @@ LABEL_17:
     [v29 setAlignment:1];
     LODWORD(v30) = 1.0;
     [v29 setHyphenationFactor:v30];
-    if (v11)
+    if (resourceCopy)
     {
       v31 = [[UIView alloc] initWithFrame:{0.0, 0.0, 90.0, 90.0}];
       v32 = p_isa[10];
@@ -99,7 +99,7 @@ LABEL_17:
       p_isa[9] = v40;
 
       [p_isa[9] setContentMode:1];
-      if (v65)
+      if (captionCopy)
       {
         v42 = +[SiriSharedUIContentLabel label];
         v43 = p_isa[8];
@@ -114,17 +114,17 @@ LABEL_17:
         v72 = NSParagraphStyleAttributeName;
         v73 = v29;
         v48 = [NSDictionary dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-        v49 = [v47 initWithString:v65 attributes:v48];
+        v49 = [v47 initWithString:captionCopy attributes:v48];
         [v46 setAttributedText:v49];
 
         [p_isa[8] setNumberOfLines:0];
         [p_isa[6] addSubview:p_isa[8]];
       }
 
-      v50 = [v11 resourceUrl];
-      v51 = [v50 absoluteString];
+      resourceUrl = [resourceCopy resourceUrl];
+      absoluteString = [resourceUrl absoluteString];
 
-      v52 = [v64 imageForKey:v51];
+      v52 = [storeCopy imageForKey:absoluteString];
       if (v52)
       {
         [p_isa _configureWithImage:v52];
@@ -134,16 +134,16 @@ LABEL_17:
       {
         objc_initWeak(&location, p_isa);
         v53 = +[SiriUIURLSession sharedURLSession];
-        v54 = [v11 resourceUrl];
+        resourceUrl2 = [resourceCopy resourceUrl];
         v55 = +[UIColor siriui_maskingColor];
         v67[0] = _NSConcreteStackBlock;
         v67[1] = 3221225472;
         v67[2] = sub_809C;
         v67[3] = &unk_18590;
         objc_copyWeak(&v70, &location);
-        v68 = v64;
-        v69 = v51;
-        v56 = [v53 imageTaskWithHTTPGetRequest:v54 client:p_isa fitToSize:v55 fillColor:v67 completionHandler:{90.0, 90.0}];
+        v68 = storeCopy;
+        v69 = absoluteString;
+        v56 = [v53 imageTaskWithHTTPGetRequest:resourceUrl2 client:p_isa fitToSize:v55 fillColor:v67 completionHandler:{90.0, 90.0}];
 
         objc_destroyWeak(&v70);
         objc_destroyWeak(&location);
@@ -178,9 +178,9 @@ LABEL_18:
   return v15;
 }
 
-- (void)_configureWithImage:(id)a3
+- (void)_configureWithImage:(id)image
 {
-  [(UIImageView *)self->_insetImageView setImage:a3];
+  [(UIImageView *)self->_insetImageView setImage:image];
   insetImageView = self->_insetImageView;
   v5 = +[UIColor clearColor];
   [(UIImageView *)insetImageView setBackgroundColor:v5];
@@ -200,10 +200,10 @@ LABEL_18:
   [UIView animateWithDuration:v7 animations:v6 completion:0.2];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(SiriGKView *)self edgeInsets];
   v10 = width - v8 - v9;
 
@@ -273,20 +273,20 @@ LABEL_18:
   return v8;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 setFrames:(BOOL)a4
+- (CGSize)_sizeThatFits:(CGSize)fits setFrames:(BOOL)frames
 {
-  v4 = a4;
-  height = a3.height;
+  framesCopy = frames;
+  height = fits.height;
   insetImageView = self->_insetImageView;
-  dx = a3.width;
+  dx = fits.width;
   if (insetImageView || self->_placeholderView)
   {
-    x = a3.width + -90.0;
-    if (a4)
+    x = fits.width + -90.0;
+    if (frames)
     {
       v8 = 90.0;
       y = 15.0;
-      [(UIImageView *)insetImageView setFrame:a3.width + -90.0, 15.0, 90.0, 90.0];
+      [(UIImageView *)insetImageView setFrame:fits.width + -90.0, 15.0, 90.0, 90.0];
       [(UIView *)self->_placeholderView setFrame:x, 15.0, 90.0, 90.0];
     }
 
@@ -347,7 +347,7 @@ LABEL_19:
   rect = 90.0;
   [(UILabel *)self->_captionLabel sizeThatFits:?];
   v17 = v16;
-  if (v4)
+  if (framesCopy)
   {
     [(UILabel *)self->_captionLabel setFrame:x, v15, 90.0, v16];
   }
@@ -431,11 +431,11 @@ LABEL_20:
     v26 = v73.origin.y;
     v27 = v73.size.width;
     v28 = v73.size.height;
-    v29 = [(UITextView *)self->_summaryTextView textContainer];
+    textContainer = [(UITextView *)self->_summaryTextView textContainer];
     v30 = [UIBezierPath bezierPathWithRect:v25, v26, v27, v28];
     v63 = v30;
     v31 = [NSArray arrayWithObjects:&v63 count:1];
-    [v29 setExclusionPaths:v31];
+    [textContainer setExclusionPaths:v31];
   }
 
 LABEL_24:
@@ -445,7 +445,7 @@ LABEL_24:
   [(UITextView *)self->_summaryTextView sizeThatFits:dx, height];
   v38 = v36;
   v39 = v37;
-  if (v4)
+  if (framesCopy)
   {
     [(UITextView *)self->_summaryTextView setFrame:v33, v35, v36, v37];
   }
@@ -458,7 +458,7 @@ LABEL_24:
     v40 = v43;
     v8 = v44;
     v61 = v42;
-    if (v4)
+    if (framesCopy)
     {
       v45 = v42;
       v60 = v41;

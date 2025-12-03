@@ -1,36 +1,36 @@
 @interface CLClientManagerStateTracker
-- (BOOL)dumpState:(void *)a3 withSize:(unint64_t)a4 hints:(os_state_hints_s *)a5;
-- (CLClientManagerStateTracker)initWithQueue:(id)a3 identifier:(void *)a4 state:(id)a5;
-- (id)initInSilo:(id)a3 withIdentifier:(void *)a4 state:(id)a5;
+- (BOOL)dumpState:(void *)state withSize:(unint64_t)size hints:(os_state_hints_s *)hints;
+- (CLClientManagerStateTracker)initWithQueue:(id)queue identifier:(void *)identifier state:(id)state;
+- (id)initInSilo:(id)silo withIdentifier:(void *)identifier state:(id)state;
 - (void)dealloc;
-- (void)setLocationRestricted:(BOOL)a3;
-- (void)setLocationServicesEnabledStatus:(int)a3;
-- (void)updateState:(id)a3;
+- (void)setLocationRestricted:(BOOL)restricted;
+- (void)setLocationServicesEnabledStatus:(int)status;
+- (void)updateState:(id)state;
 @end
 
 @implementation CLClientManagerStateTracker
 
-- (id)initInSilo:(id)a3 withIdentifier:(void *)a4 state:(id)a5
+- (id)initInSilo:(id)silo withIdentifier:(void *)identifier state:(id)state
 {
-  [a3 assertInside];
-  v9 = [a3 queue];
+  [silo assertInside];
+  queue = [silo queue];
 
-  return [(CLClientManagerStateTracker *)self initWithQueue:v9 identifier:a4 state:a5];
+  return [(CLClientManagerStateTracker *)self initWithQueue:queue identifier:identifier state:state];
 }
 
-- (CLClientManagerStateTracker)initWithQueue:(id)a3 identifier:(void *)a4 state:(id)a5
+- (CLClientManagerStateTracker)initWithQueue:(id)queue identifier:(void *)identifier state:(id)state
 {
   v14.receiver = self;
   v14.super_class = CLClientManagerStateTracker;
-  v7 = [(CLClientManagerStateTracker *)&v14 initWithQueue:a3];
+  v7 = [(CLClientManagerStateTracker *)&v14 initWithQueue:queue];
   v8 = v7;
   if (!v7)
   {
     return v8;
   }
 
-  v7->_identifier = a4;
-  if (a5)
+  v7->_identifier = identifier;
+  if (state)
   {
     if (v7->_inTransaction)
     {
@@ -38,7 +38,7 @@
     }
 
     v7->_inTransaction = 1;
-    (*(a5 + 2))(a5, v7);
+    (*(state + 2))(state, v7);
     v8->_inTransaction = 0;
     if (qword_1025D47A0 != -1)
     {
@@ -51,7 +51,7 @@
       goto LABEL_10;
     }
 
-    v10 = [(CLClientManagerStateTracker *)v8 identifier];
+    identifier = [(CLClientManagerStateTracker *)v8 identifier];
     *buf = 68290562;
     v16 = 0;
     v17 = 2082;
@@ -61,7 +61,7 @@
     v21 = 2082;
     v22 = "ClientManager";
     v23 = 2050;
-    v24 = v10;
+    v24 = identifier;
     v25 = 2082;
     v26 = "init";
     v27 = 1040;
@@ -80,7 +80,7 @@ LABEL_10:
   v11 = off_1025D47A8;
   if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(CLClientManagerStateTracker *)v8 identifier];
+    identifier2 = [(CLClientManagerStateTracker *)v8 identifier];
     *buf = 68290562;
     v16 = 0;
     v17 = 2082;
@@ -90,7 +90,7 @@ LABEL_10:
     v21 = 2082;
     v22 = "ClientManager";
     v23 = 2050;
-    v24 = v12;
+    v24 = identifier2;
     v25 = 2082;
     v26 = "lifecycle";
     v27 = 2050;
@@ -122,11 +122,11 @@ LABEL_10:
     v11 = 2082;
     v12 = "ClientManager";
     v13 = 2050;
-    v14 = [(CLClientManagerStateTracker *)self identifier];
+    identifier = [(CLClientManagerStateTracker *)self identifier];
     v15 = 2082;
     v16 = "lifecycle";
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     v19 = 2050;
     v20 = 0;
     _os_log_impl(dword_100000000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}p, new:%{public}p}", buf, 0x4Eu);
@@ -137,7 +137,7 @@ LABEL_10:
   [(CLClientManagerStateTracker *)&v4 dealloc];
 }
 
-- (void)setLocationServicesEnabledStatus:(int)a3
+- (void)setLocationServicesEnabledStatus:(int)status
 {
   if (!self->_inTransaction)
   {
@@ -149,7 +149,7 @@ LABEL_10:
     v5 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CLClientManagerStateTracker *)self identifier];
+      identifier = [(CLClientManagerStateTracker *)self identifier];
       locationServicesEnabledStatus = self->_state.locationServicesEnabledStatus;
       v8[0] = 68290562;
       v8[1] = 0;
@@ -160,23 +160,23 @@ LABEL_10:
       v13 = 2082;
       v14 = "ClientManager";
       v15 = 2050;
-      v16 = v6;
+      v16 = identifier;
       v17 = 2082;
       v18 = "locationServicesEnabledStatus";
       v19 = 1026;
       v20 = locationServicesEnabledStatus;
       v21 = 1026;
-      v22 = a3;
+      statusCopy = status;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}d, new:%{public}d}", v8, 0x46u);
     }
   }
 
-  self->_state.locationServicesEnabledStatus = a3;
+  self->_state.locationServicesEnabledStatus = status;
 }
 
-- (void)setLocationRestricted:(BOOL)a3
+- (void)setLocationRestricted:(BOOL)restricted
 {
-  v3 = a3;
+  restrictedCopy = restricted;
   if (!self->_inTransaction)
   {
     if (qword_1025D47A0 != -1)
@@ -187,7 +187,7 @@ LABEL_10:
     v5 = off_1025D47A8;
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(CLClientManagerStateTracker *)self identifier];
+      identifier = [(CLClientManagerStateTracker *)self identifier];
       locationRestricted = self->_state.locationRestricted;
       v8[0] = 68290562;
       v8[1] = 0;
@@ -198,21 +198,21 @@ LABEL_10:
       v13 = 2082;
       v14 = "ClientManager";
       v15 = 2050;
-      v16 = v6;
+      v16 = identifier;
       v17 = 2082;
       v18 = "locationRestricted";
       v19 = 1026;
       v20 = locationRestricted;
       v21 = 1026;
-      v22 = v3;
+      v22 = restrictedCopy;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:state transition, event:%{public, location:escape_only}s, state:%{public, location:escape_only}s, id:%{public}p, property:%{public, location:escape_only}s, old:%{public}hhd, new:%{public}hhd}", v8, 0x46u);
     }
   }
 
-  self->_state.locationRestricted = v3;
+  self->_state.locationRestricted = restrictedCopy;
 }
 
-- (void)updateState:(id)a3
+- (void)updateState:(id)state
 {
   p_state = &self->_state;
   state = self->_state;
@@ -222,7 +222,7 @@ LABEL_10:
   }
 
   self->_inTransaction = 1;
-  (*(a3 + 2))(a3, self);
+  (*(state + 2))(state, self);
   self->_inTransaction = 0;
   if (qword_1025D47A0 != -1)
   {
@@ -241,7 +241,7 @@ LABEL_10:
     v13 = 2082;
     v14 = "ClientManager";
     v15 = 2050;
-    v16 = [(CLClientManagerStateTracker *)self identifier];
+    identifier = [(CLClientManagerStateTracker *)self identifier];
     v17 = 2082;
     v18 = "allStates";
     v19 = 1040;
@@ -256,9 +256,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)dumpState:(void *)a3 withSize:(unint64_t)a4 hints:(os_state_hints_s *)a5
+- (BOOL)dumpState:(void *)state withSize:(unint64_t)size hints:(os_state_hints_s *)hints
 {
-  if (a4 <= 7)
+  if (size <= 7)
   {
     if (qword_1025D47A0 != -1)
     {
@@ -275,7 +275,7 @@ LABEL_10:
       v13 = 2050;
       v14 = 8;
       v15 = 2050;
-      v16 = a4;
+      sizeCopy2 = size;
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:state dump failure, expected_size:%{public}lld, provided_size:%{public}lld}", &v9, 0x26u);
       if (qword_1025D47A0 != -1)
       {
@@ -293,17 +293,17 @@ LABEL_10:
       v13 = 2050;
       v14 = 8;
       v15 = 2050;
-      v16 = a4;
+      sizeCopy2 = size;
       _os_signpost_emit_with_name_impl(dword_100000000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "state dump failure", "{msg%{public}.0s:state dump failure, expected_size:%{public}lld, provided_size:%{public}lld}", &v9, 0x26u);
     }
   }
 
   else
   {
-    *a3 = self->_state;
+    *state = self->_state;
   }
 
-  return a4 > 7;
+  return size > 7;
 }
 
 @end

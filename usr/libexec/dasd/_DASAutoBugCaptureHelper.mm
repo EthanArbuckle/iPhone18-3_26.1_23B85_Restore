@@ -1,19 +1,19 @@
 @interface _DASAutoBugCaptureHelper
-+ (BOOL)isActivitySignificantlyOverdue:(id)a3 now:(id)a4;
-+ (void)checkAllTasksForBGSystemTask:(id)a3;
++ (BOOL)isActivitySignificantlyOverdue:(id)overdue now:(id)now;
++ (void)checkAllTasksForBGSystemTask:(id)task;
 + (void)schedule;
-+ (void)triggerABCCaseForActivities:(id)a3;
++ (void)triggerABCCaseForActivities:(id)activities;
 @end
 
 @implementation _DASAutoBugCaptureHelper
 
-+ (BOOL)isActivitySignificantlyOverdue:(id)a3 now:(id)a4
++ (BOOL)isActivitySignificantlyOverdue:(id)overdue now:(id)now
 {
-  v5 = a3;
-  v6 = a4;
+  overdueCopy = overdue;
+  nowCopy = now;
   v7 = [_DASDaemonLogger logForCategory:@"abcHelper"];
   v8 = v7;
-  if (!v5)
+  if (!overdueCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
@@ -23,7 +23,7 @@
     goto LABEL_14;
   }
 
-  if (!v6)
+  if (!nowCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
@@ -33,19 +33,19 @@
     goto LABEL_14;
   }
 
-  if (![v5 significantlyOverdueAtDate:v6])
+  if (![overdueCopy significantlyOverdueAtDate:nowCopy])
   {
 LABEL_14:
     v17 = 0;
     goto LABEL_15;
   }
 
-  v9 = [v5 submitDate];
-  if (v9)
+  submitDate = [overdueCopy submitDate];
+  if (submitDate)
   {
-    v10 = v9;
-    v11 = [v5 submitDate];
-    [v6 timeIntervalSinceDate:v11];
+    v10 = submitDate;
+    submitDate2 = [overdueCopy submitDate];
+    [nowCopy timeIntervalSinceDate:submitDate2];
     v13 = v12;
 
     if (v13 > 2073600.0)
@@ -53,16 +53,16 @@ LABEL_14:
       v14 = v8;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v5 submitDate];
-        v16 = [v5 startBefore];
+        submitDate3 = [overdueCopy submitDate];
+        startBefore = [overdueCopy startBefore];
         v19 = 138413058;
-        v20 = v5;
+        v20 = overdueCopy;
         v21 = 2112;
-        v22 = v15;
+        v22 = submitDate3;
         v23 = 2112;
-        v24 = v16;
+        v24 = startBefore;
         v25 = 2112;
-        v26 = v6;
+        v26 = nowCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Activity %@ significantly overdue, submit: %@, startBefore: %@, now: %@", &v19, 0x2Au);
       }
     }
@@ -74,12 +74,12 @@ LABEL_15:
   return v17;
 }
 
-+ (void)triggerABCCaseForActivities:(id)a3
++ (void)triggerABCCaseForActivities:(id)activities
 {
-  v3 = a3;
+  activitiesCopy = activities;
   v4 = [_DASDaemonLogger logForCategory:@"abcHelper"];
   v5 = v4;
-  if (v3)
+  if (activitiesCopy)
   {
     v23 = v4;
     v6 = objc_alloc_init(NSMutableArray);
@@ -87,7 +87,7 @@ LABEL_15:
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = v3;
+    v7 = activitiesCopy;
     v8 = [v7 countByEnumeratingWithState:&v27 objects:v40 count:16];
     if (v8)
     {
@@ -103,8 +103,8 @@ LABEL_15:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v27 + 1) + 8 * v11) name];
-          [v6 addObject:v12];
+          name = [*(*(&v27 + 1) + 8 * v11) name];
+          [v6 addObject:name];
 
           v11 = v11 + 1;
         }
@@ -156,9 +156,9 @@ LABEL_15:
   }
 }
 
-+ (void)checkAllTasksForBGSystemTask:(id)a3
++ (void)checkAllTasksForBGSystemTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v4 = [_DASDaemonLogger logForCategory:@"abcHelper"];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -166,7 +166,7 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Checking activities for significantly overdue tasks", buf, 2u);
   }
 
-  if (v3)
+  if (taskCopy)
   {
     *buf = 0;
     v30 = buf;
@@ -179,19 +179,19 @@ LABEL_15:
     v28 = buf;
     v5 = v4;
     v27 = v5;
-    [v3 setExpirationHandler:v26];
+    [taskCopy setExpirationHandler:v26];
     v19 = objc_alloc_init(NSMutableArray);
     v20 = +[NSDate date];
     v6 = +[_DASDaemon sharedInstance];
-    v7 = [v6 allPendingTasks];
+    allPendingTasks = [v6 allPendingTasks];
 
     v17 = v4;
-    v18 = v3;
+    v18 = taskCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v7;
+    v8 = allPendingTasks;
     v9 = [v8 countByEnumeratingWithState:&v22 objects:v35 count:16];
     if (v9)
     {
@@ -239,7 +239,7 @@ LABEL_15:
 LABEL_18:
 
     v4 = v17;
-    v3 = v18;
+    taskCopy = v18;
     if (v30[24] == 1)
     {
       v21 = 0;
@@ -250,8 +250,8 @@ LABEL_18:
         v15 = v5;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
         {
-          v16 = [v18 identifier];
-          sub_10012516C(v16, v14, v33, v15);
+          identifier = [v18 identifier];
+          sub_10012516C(identifier, v14, v33, v15);
         }
 
         [v18 setTaskCompleted];
@@ -298,7 +298,7 @@ LABEL_18:
   v6[2] = sub_1000965A8;
   v6[3] = &unk_1001B75D8;
   v7 = v3;
-  v8 = a1;
+  selfCopy = self;
   v5 = v3;
   [v4 registerForTaskWithIdentifier:@"com.apple.dasd.overdueCheck" usingQueue:0 launchHandler:v6];
 }

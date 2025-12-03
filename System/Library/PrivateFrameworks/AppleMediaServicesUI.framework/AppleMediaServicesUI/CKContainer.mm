@@ -1,8 +1,8 @@
 @interface CKContainer
 - (BOOL)isAvailable;
-- (id)_acceptShareWithShareMetadata:(id)a3;
-- (id)_fetchShareMetadataForURL:(id)a3 withToken:(id)a4;
-- (id)acceptShareURL:(id)a3 withToken:(id)a4;
+- (id)_acceptShareWithShareMetadata:(id)metadata;
+- (id)_fetchShareMetadataForURL:(id)l withToken:(id)token;
+- (id)acceptShareURL:(id)l withToken:(id)token;
 - (id)fetchUserRecordID;
 - (id)queryDeviceToDeviceEncryptionAvailability;
 @end
@@ -16,12 +16,12 @@
   {
     if ([v2 accountStatus] == 1)
     {
-      v3 = [v2 supportsDeviceToDeviceEncryption];
+      supportsDeviceToDeviceEncryption = [v2 supportsDeviceToDeviceEncryption];
     }
 
     else
     {
-      v3 = 0;
+      supportsDeviceToDeviceEncryption = 0;
     }
   }
 
@@ -33,8 +33,8 @@
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
@@ -42,27 +42,27 @@
       v10 = v6;
       v11 = 2114;
       v12 = v7;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] accountInfo.accountStatus == CKAccountStatusCouldNotDetermine", &v9, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] accountInfo.accountStatus == CKAccountStatusCouldNotDetermine", &v9, 0x16u);
     }
 
-    v3 = 1;
+    supportsDeviceToDeviceEncryption = 1;
   }
 
-  return v3;
+  return supportsDeviceToDeviceEncryption;
 }
 
-- (id)acceptShareURL:(id)a3 withToken:(id)a4
+- (id)acceptShareURL:(id)l withToken:(id)token
 {
-  v5 = [(CKContainer *)self _fetchShareMetadataForURL:a3 withToken:a4];
+  v5 = [(CKContainer *)self _fetchShareMetadataForURL:l withToken:token];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001D39C4;
   v9[3] = &unk_1002548C8;
   v9[4] = self;
   v6 = [v5 thenWithBlock:v9];
-  v7 = [v6 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v6 binaryPromiseAdapter];
 
-  return v7;
+  return binaryPromiseAdapter;
 }
 
 - (id)fetchUserRecordID
@@ -91,12 +91,12 @@
   return v3;
 }
 
-- (id)_acceptShareWithShareMetadata:(id)a3
+- (id)_acceptShareWithShareMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_alloc_init(AMSPromise);
   v6 = [CKAcceptSharesOperation alloc];
-  v13 = v4;
+  v13 = metadataCopy;
   v7 = [NSArray arrayWithObjects:&v13 count:1];
   v8 = [v6 initWithShareMetadatas:v7];
 
@@ -112,14 +112,14 @@
   return v9;
 }
 
-- (id)_fetchShareMetadataForURL:(id)a3 withToken:(id)a4
+- (id)_fetchShareMetadataForURL:(id)l withToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = tokenCopy;
   }
 
   else
@@ -131,9 +131,9 @@
   v10 = [CKFetchShareMetadataOperation alloc];
   if (v8)
   {
-    v24 = v6;
+    v24 = lCopy;
     v11 = [NSArray arrayWithObjects:&v24 count:1];
-    v22 = v6;
+    v22 = lCopy;
     v23 = v8;
     v12 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v13 = [v10 initWithShareURLs:v11 invitationTokensByShareURL:v12];
@@ -141,7 +141,7 @@
 
   else
   {
-    v21 = v6;
+    v21 = lCopy;
     v11 = [NSArray arrayWithObjects:&v21 count:1];
     v13 = [v10 initWithShareURLs:v11];
   }

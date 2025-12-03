@@ -1,6 +1,6 @@
 @interface MFCertificateTrustInfo
 - (BOOL)hasTrustException;
-- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)a3 trust:(__SecTrust *)a4 sender:(id)a5;
+- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)type trust:(__SecTrust *)trust sender:(id)sender;
 - (NSString)commonName;
 - (NSString)emailAddress;
 - (int)action;
@@ -15,10 +15,10 @@
 
 @implementation MFCertificateTrustInfo
 
-- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)a3 trust:(__SecTrust *)a4 sender:(id)a5
+- (MFCertificateTrustInfo)initWithCertificateType:(unint64_t)type trust:(__SecTrust *)trust sender:(id)sender
 {
-  v9 = a5;
-  if (!a4)
+  senderCopy = sender;
+  if (!trust)
   {
     [MFCertificateTrustInfo initWithCertificateType:a2 trust:self sender:?];
   }
@@ -29,15 +29,15 @@
   v11 = v10;
   if (v10)
   {
-    v10->_certificateType = a3;
-    v10->_trust = CFRetain(a4);
-    v12 = [v9 copy];
+    v10->_certificateType = type;
+    v10->_trust = CFRetain(trust);
+    v12 = [senderCopy copy];
     sender = v11->_sender;
     v11->_sender = v12;
 
-    v14 = [v9 mf_copyUncommentedAddress];
+    mf_copyUncommentedAddress = [senderCopy mf_copyUncommentedAddress];
     uncommentedSender = v11->_uncommentedSender;
-    v11->_uncommentedSender = v14;
+    v11->_uncommentedSender = mf_copyUncommentedAddress;
   }
 
   return v11;
@@ -117,8 +117,8 @@
     _os_log_impl(&dword_258BDA000, v4, OS_LOG_TYPE_INFO, "#SMIMEErrors Added trust exception for %@", &v8, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"MFCertificateTrustInfoTrustDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MFCertificateTrustInfoTrustDidChangeNotification" object:self];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -145,8 +145,8 @@
     _os_log_impl(&dword_258BDA000, v4, OS_LOG_TYPE_INFO, "#SMIMEErrors Removed trust exception for %@", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"MFCertificateTrustInfoTrustDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MFCertificateTrustInfoTrustDidChangeNotification" object:self];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -221,12 +221,12 @@
 - (void)keychainStatus
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = *a1;
-  v5 = [a2 ef_publicDescription];
+  v4 = *self;
+  ef_publicDescription = [a2 ef_publicDescription];
   v7 = 138412546;
   v8 = v4;
   v9 = 2114;
-  v10 = v5;
+  v10 = ef_publicDescription;
   _os_log_error_impl(&dword_258BDA000, a3, OS_LOG_TYPE_ERROR, "#SMIMEErrors Error when retrieving encryption certificate for %@: %{public}@", &v7, 0x16u);
 
   v6 = *MEMORY[0x277D85DE8];

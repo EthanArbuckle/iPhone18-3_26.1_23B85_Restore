@@ -1,46 +1,46 @@
 @interface ARGyroscopeData
-+ (id)grabNextFromReader:(id)a3 timestamp:(double *)a4;
++ (id)grabNextFromReader:(id)reader timestamp:(double *)timestamp;
 - ($1AB5FA073B851C12C2339EC22442E995)rotationRate;
-- (ARGyroscopeData)initWithCoder:(id)a3;
-- (ARGyroscopeData)initWithDictionary:(id)a3;
-- (ARGyroscopeData)initWithGyroData:(id)a3;
-- (ARGyroscopeData)initWithMetadataWrapper:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARGyroscopeData)initWithCoder:(id)coder;
+- (ARGyroscopeData)initWithDictionary:(id)dictionary;
+- (ARGyroscopeData)initWithGyroData:(id)data;
+- (ARGyroscopeData)initWithMetadataWrapper:(id)wrapper;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeToDictionary;
 - (id)encodeToMetadataWrapper;
-- (void)appendToWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendToWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARGyroscopeData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeDouble:@"timestamp" forKey:timestamp];
-  [v5 encodeDouble:@"rotationX" forKey:self->_rotationRate.x];
-  [v5 encodeDouble:@"rotationY" forKey:self->_rotationRate.y];
-  [v5 encodeDouble:@"rotationZ" forKey:self->_rotationRate.z];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:timestamp];
+  [coderCopy encodeDouble:@"rotationX" forKey:self->_rotationRate.x];
+  [coderCopy encodeDouble:@"rotationY" forKey:self->_rotationRate.y];
+  [coderCopy encodeDouble:@"rotationZ" forKey:self->_rotationRate.z];
 }
 
-- (ARGyroscopeData)initWithCoder:(id)a3
+- (ARGyroscopeData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ARGyroscopeData;
   v5 = [(ARGyroscopeData *)&v12 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     [(ARGyroscopeData *)v5 setTimestamp:?];
-    [v4 decodeDoubleForKey:@"rotationX"];
+    [coderCopy decodeDoubleForKey:@"rotationX"];
     v7 = v6;
-    [v4 decodeDoubleForKey:@"rotationY"];
+    [coderCopy decodeDoubleForKey:@"rotationY"];
     v9 = v8;
-    [v4 decodeDoubleForKey:@"rotationZ"];
+    [coderCopy decodeDoubleForKey:@"rotationZ"];
     [(ARGyroscopeData *)v5 setRotationRate:v7, v9, v10];
   }
 
@@ -67,27 +67,27 @@
   return v7;
 }
 
-- (ARGyroscopeData)initWithDictionary:(id)a3
+- (ARGyroscopeData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ARGyroscopeData;
   v5 = [(ARGyroscopeData *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"t"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"t"];
     [v6 doubleValue];
     v5->_timestamp = v7;
 
-    v8 = [v4 objectForKeyedSubscript:@"x"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"x"];
     [v8 doubleValue];
     v5->_rotationRate.x = v9;
 
-    v10 = [v4 objectForKeyedSubscript:@"y"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"y"];
     [v10 doubleValue];
     v5->_rotationRate.y = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"z"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"z"];
     [v12 doubleValue];
     v5->_rotationRate.z = v13;
   }
@@ -100,87 +100,87 @@
   v3 = objc_opt_new();
   [v3 setTimestamp:self->_timestamp];
   x = self->_rotationRate.x;
-  v5 = [v3 rotationRate];
+  rotationRate = [v3 rotationRate];
   *&v6 = x;
-  [v5 setX:v6];
+  [rotationRate setX:v6];
 
   y = self->_rotationRate.y;
-  v8 = [v3 rotationRate];
+  rotationRate2 = [v3 rotationRate];
   *&v9 = y;
-  [v8 setY:v9];
+  [rotationRate2 setY:v9];
 
   z = self->_rotationRate.z;
-  v11 = [v3 rotationRate];
+  rotationRate3 = [v3 rotationRate];
   *&v12 = z;
-  [v11 setZ:v12];
+  [rotationRate3 setZ:v12];
 
   v13 = [MEMORY[0x1E698BEB0] encodeGyroscopeData:v3 andAdditionalData:0];
 
   return v13;
 }
 
-- (ARGyroscopeData)initWithMetadataWrapper:(id)a3
+- (ARGyroscopeData)initWithMetadataWrapper:(id)wrapper
 {
-  v4 = [MEMORY[0x1E698BEB0] decodeGyro:a3];
+  v4 = [MEMORY[0x1E698BEB0] decodeGyro:wrapper];
   v5 = [(ARGyroscopeData *)self initWithGyroData:v4];
 
   return v5;
 }
 
-- (ARGyroscopeData)initWithGyroData:(id)a3
+- (ARGyroscopeData)initWithGyroData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = ARGyroscopeData;
   v5 = [(ARGyroscopeData *)&v14 init];
   if (v5)
   {
-    [v4 timestamp];
+    [dataCopy timestamp];
     v5->_timestamp = v6;
-    v7 = [v4 rotationRate];
-    [v7 x];
+    rotationRate = [dataCopy rotationRate];
+    [rotationRate x];
     v5->_rotationRate.x = v8;
 
-    v9 = [v4 rotationRate];
-    [v9 y];
+    rotationRate2 = [dataCopy rotationRate];
+    [rotationRate2 y];
     v5->_rotationRate.y = v10;
 
-    v11 = [v4 rotationRate];
-    [v11 z];
+    rotationRate3 = [dataCopy rotationRate];
+    [rotationRate3 z];
     v5->_rotationRate.z = v12;
   }
 
   return v5;
 }
 
-- (void)appendToWriter:(id)a3
+- (void)appendToWriter:(id)writer
 {
-  v4 = a3;
+  writerCopy = writer;
   v14 = objc_opt_new();
   [v14 setTimestamp:self->_timestamp];
   x = self->_rotationRate.x;
-  v6 = [v14 rotationRate];
+  rotationRate = [v14 rotationRate];
   *&v7 = x;
-  [v6 setX:v7];
+  [rotationRate setX:v7];
 
   y = self->_rotationRate.y;
-  v9 = [v14 rotationRate];
+  rotationRate2 = [v14 rotationRate];
   *&v10 = y;
-  [v9 setY:v10];
+  [rotationRate2 setY:v10];
 
   z = self->_rotationRate.z;
-  v12 = [v14 rotationRate];
+  rotationRate3 = [v14 rotationRate];
   *&v13 = z;
-  [v12 setZ:v13];
+  [rotationRate3 setZ:v13];
 
-  [v4 processGyroscopeData:v14 andAdditionalData:0];
+  [writerCopy processGyroscopeData:v14 andAdditionalData:0];
 }
 
-+ (id)grabNextFromReader:(id)a3 timestamp:(double *)a4
++ (id)grabNextFromReader:(id)reader timestamp:(double *)timestamp
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  readerCopy = reader;
+  array = [MEMORY[0x1E695DF70] array];
   v7 = objc_autoreleasePoolPush();
   v8 = *(MEMORY[0x1E6960CA8] + 16);
   v21 = *MEMORY[0x1E6960CA8];
@@ -190,7 +190,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v5 grabNextRawGyroData:&v21 location:0];
+  v9 = [readerCopy grabNextRawGyroData:&v21 location:0];
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v24 count:16];
   if (v10)
   {
@@ -206,7 +206,7 @@
         }
 
         v14 = [objc_alloc(objc_opt_class()) initWithGyroData:*(*(&v17 + 1) + 8 * i)];
-        [v6 addObject:v14];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v17 objects:v24 count:16];
@@ -217,15 +217,15 @@
 
   *&v16.value = v21;
   v16.epoch = v22;
-  *a4 = CMTimeGetSeconds(&v16);
+  *timestamp = CMTimeGetSeconds(&v16);
   objc_autoreleasePoolPop(v7);
 
-  return v6;
+  return array;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   if (result)
   {
     *(result + 1) = *&self->_timestamp;
@@ -237,12 +237,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = vabdd_f64(self->_timestamp, v5[1]) < 2.22044605e-16 && vabdd_f64(self->_rotationRate.x, v5[2]) < 0.00000011920929 && vabdd_f64(self->_rotationRate.y, v5[3]) < 0.00000011920929 && vabdd_f64(self->_rotationRate.z, v5[4]) < 0.00000011920929;
   }
 

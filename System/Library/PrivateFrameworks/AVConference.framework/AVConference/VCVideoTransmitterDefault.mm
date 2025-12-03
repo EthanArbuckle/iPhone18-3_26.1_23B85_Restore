@@ -1,45 +1,45 @@
 @interface VCVideoTransmitterDefault
-+ (void)setupBandwidthEstimationOptions:(tagBWEOPTION *)a3 featureString:(id)a4;
-- (VCVideoTransmitterDefault)initWithConfig:(id)a3;
-- (unsigned)setTemporaryMaximumBitrate:(unsigned int)a3;
-- (void)collectChannelMetrics:(id *)a3 interval:(float)a4;
++ (void)setupBandwidthEstimationOptions:(tagBWEOPTION *)options featureString:(id)string;
+- (VCVideoTransmitterDefault)initWithConfig:(id)config;
+- (unsigned)setTemporaryMaximumBitrate:(unsigned int)bitrate;
+- (void)collectChannelMetrics:(id *)metrics interval:(float)interval;
 - (void)dealloc;
-- (void)generateKeyFrameWithFIRType:(int)a3;
-- (void)handleActiveConnectionChange:(id)a3;
-- (void)handleActiveConnectionChangeDefault:(id)a3;
-- (void)handleActiveConnectionChangeMultiway:(id)a3;
-- (void)setRtxEnabled:(BOOL)a3;
-- (void)setTargetBitrate:(unsigned int)a3;
-- (void)setUpAspectRatios:(BOOL)a3;
-- (void)setUpAspectRatiosFromFeatureListString:(const char *)a3;
+- (void)generateKeyFrameWithFIRType:(int)type;
+- (void)handleActiveConnectionChange:(id)change;
+- (void)handleActiveConnectionChangeDefault:(id)default;
+- (void)handleActiveConnectionChangeMultiway:(id)multiway;
+- (void)setRtxEnabled:(BOOL)enabled;
+- (void)setTargetBitrate:(unsigned int)bitrate;
+- (void)setUpAspectRatios:(BOOL)ratios;
+- (void)setUpAspectRatiosFromFeatureListString:(const char *)string;
 - (void)startVideo;
 - (void)stopVideo;
-- (void)updateWindowState:(int)a3 isLocal:(BOOL)a4 windowRect:(CGRect)a5;
+- (void)updateWindowState:(int)state isLocal:(BOOL)local windowRect:(CGRect)rect;
 @end
 
 @implementation VCVideoTransmitterDefault
 
-- (VCVideoTransmitterDefault)initWithConfig:(id)a3
+- (VCVideoTransmitterDefault)initWithConfig:(id)config
 {
   v135 = *MEMORY[0x1E69E9840];
   v49 = 0;
   v50 = 0;
-  self->_logPrefix = [a3 logPrefix];
-  if ([a3 rtpTimestampRate])
+  self->_logPrefix = [config logPrefix];
+  if ([config rtpTimestampRate])
   {
-    v5 = [a3 rtpTimestampRate];
+    rtpTimestampRate = [config rtpTimestampRate];
   }
 
   else
   {
-    v5 = 24000;
+    rtpTimestampRate = 24000;
   }
 
-  self->_audioTimestampRate = v5;
-  self->_forceL4SHighDataRate = [a3 forceL4SHighDataRate];
+  self->_audioTimestampRate = rtpTimestampRate;
+  self->_forceL4SHighDataRate = [config forceL4SHighDataRate];
   v48.receiver = self;
   v48.super_class = VCVideoTransmitterDefault;
-  v6 = [(VCVideoTransmitterBase *)&v48 initWithConfig:a3];
+  v6 = [(VCVideoTransmitterBase *)&v48 initWithConfig:config];
   if (!v6)
   {
     [VCVideoTransmitterDefault initWithConfig:?];
@@ -51,7 +51,7 @@ LABEL_55:
   }
 
   v7 = v6;
-  if (!a3)
+  if (!config)
   {
     [(VCVideoTransmitterDefault *)v6 initWithConfig:?];
     goto LABEL_53;
@@ -61,20 +61,20 @@ LABEL_55:
   v8 = *&v126.value;
   v7->super._latestSampleBufferTimestamp.epoch = v126.epoch;
   *&v7->super._latestSampleBufferTimestamp.value = v8;
-  v9 = [a3 mediaControlInfoGenerator];
-  if (v9)
+  mediaControlInfoGenerator = [config mediaControlInfoGenerator];
+  if (mediaControlInfoGenerator)
   {
-    v9 = CFRetain(v9);
+    mediaControlInfoGenerator = CFRetain(mediaControlInfoGenerator);
   }
 
-  v7->super._controlInfoGenerator = v9;
-  v10 = [a3 customFeatureListStrings];
-  v11 = [v10 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(a3, "videoPayload"))}];
-  v7->_transmitterMode = [a3 mode];
+  v7->super._controlInfoGenerator = mediaControlInfoGenerator;
+  customFeatureListStrings = [config customFeatureListStrings];
+  v11 = [customFeatureListStrings objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(config, "videoPayload"))}];
+  v7->_transmitterMode = [config mode];
   v12 = 0;
-  if ([a3 mode] == 1 && v11)
+  if ([config mode] == 1 && v11)
   {
-    if ([a3 setupBWEstimationOptionWithFeatureString])
+    if ([config setupBWEstimationOptionWithFeatureString])
     {
       [VCVideoTransmitterDefault setupBandwidthEstimationOptions:&v49 featureString:v11];
     }
@@ -172,7 +172,7 @@ LABEL_24:
   }
 
   bzero(v51, 0x400uLL);
-  if ([a3 streamCount] >= 1)
+  if ([config streamCount] >= 1)
   {
     v21 = 0;
     v22 = 0;
@@ -180,11 +180,11 @@ LABEL_24:
     {
       v23 = v51[0]++;
       v24 = &v51[16 * v23 + 2];
-      v25 = [a3 streamConfigs];
-      v26 = *(v25 + v21 + 48);
-      v28 = *(v25 + v21);
-      v27 = *(v25 + v21 + 16);
-      *(v24 + 2) = *(v25 + v21 + 32);
+      streamConfigs = [config streamConfigs];
+      v26 = *(streamConfigs + v21 + 48);
+      v28 = *(streamConfigs + v21);
+      v27 = *(streamConfigs + v21 + 16);
+      *(v24 + 2) = *(streamConfigs + v21 + 32);
       *(v24 + 3) = v26;
       *v24 = v28;
       *(v24 + 1) = v27;
@@ -192,96 +192,96 @@ LABEL_24:
       v21 += 64;
     }
 
-    while (v22 < [a3 streamCount]);
+    while (v22 < [config streamCount]);
   }
 
-  v92 = [a3 encoderUsage];
-  if ([a3 mode] == 1)
+  encoderUsage = [config encoderUsage];
+  if ([config mode] == 1)
   {
     encodingWidth = v7->super._encodingWidth;
     v69 = encodingWidth;
     encodingHeight = v7->super._encodingHeight;
     v73 = encodingHeight;
-    v71 = [a3 framerate];
-    v74 = [a3 framerate];
+    framerate = [config framerate];
+    framerate2 = [config framerate];
   }
 
   controlInfoGenerator = v7->super._controlInfoGenerator;
-  v53 = [a3 reportingAgent];
-  v54 = [a3 reportingParentID];
-  v123 = [a3 experimentManager];
+  reportingAgent = [config reportingAgent];
+  reportingParentID = [config reportingParentID];
+  experimentManager = [config experimentManager];
   v65 = v7->super._encodingWidth;
   v66 = v7->super._encodingHeight;
-  v68 = [a3 pixelFormat];
-  v67 = [a3 framerate];
-  v75 = [a3 txMaxBitrate];
-  v79 = [a3 videoPayload];
+  pixelFormat = [config pixelFormat];
+  framerate3 = [config framerate];
+  txMaxBitrate = [config txMaxBitrate];
+  videoPayload = [config videoPayload];
   v76 = -1;
-  v77 = [a3 keyFrameInterval];
-  [a3 minKeyFrameGenerationIntervalInSeconds];
+  keyFrameInterval = [config keyFrameInterval];
+  [config minKeyFrameGenerationIntervalInSeconds];
   DoubleValueForKey = VCDefaults_GetDoubleValueForKey(@"minKeyFrameGenerationInterval", v29);
   v82 = 0x20000000200;
-  v85 = [v11 UTF8String];
+  uTF8String = [v11 UTF8String];
   v63 = v12;
   v62 = VCCPUCount() > 1;
   v64 = 1;
   v57 = 1;
-  if ([a3 recommendedMTU])
+  if ([config recommendedMTU])
   {
-    v30 = [a3 recommendedMTU];
+    recommendedMTU = [config recommendedMTU];
   }
 
   else
   {
-    v30 = 1280;
+    recommendedMTU = 1280;
   }
 
-  v86 = v30;
-  v58 = [a3 isIPv6];
-  v83 = [a3 parameterSets];
+  v86 = recommendedMTU;
+  isIPv6 = [config isIPv6];
+  parameterSets = [config parameterSets];
   v60 = 1;
   v61 = 2;
-  v89 = [a3 mode];
-  v90 = [a3 captureSource];
+  mode = [config mode];
+  captureSource = [config captureSource];
   audioTimestampRate = v7->_audioTimestampRate;
-  v91 = [a3 encodingMode];
-  v84 = [a3 colorInfo];
-  v93 = [a3 videoPriorityPointer];
-  v94 = [a3 tilesPerFrame];
-  v56 = [a3 statisticsCollector];
-  v59 = [a3 useRateControl];
-  v100 = [a3 qualityIndex];
-  v87 = [+[VCDefaults sharedInstance](VCDefaults enableTxSourceYuvDump];
-  v88 = [+[VCDefaults sharedInstance](VCDefaults enableTxBitstreamDump];
-  v96 = [a3 reinitEncoderOnFrameSizeChangeEnabled];
-  v99 = [a3 remoteIDSParticipantID];
-  v55 = [a3 mediaController];
+  encodingMode = [config encodingMode];
+  colorInfo = [config colorInfo];
+  videoPriorityPointer = [config videoPriorityPointer];
+  tilesPerFrame = [config tilesPerFrame];
+  statisticsCollector = [config statisticsCollector];
+  useRateControl = [config useRateControl];
+  qualityIndex = [config qualityIndex];
+  enableTxSourceYuvDump = [+[VCDefaults sharedInstance](VCDefaults enableTxSourceYuvDump];
+  enableTxBitstreamDump = [+[VCDefaults sharedInstance](VCDefaults enableTxBitstreamDump];
+  reinitEncoderOnFrameSizeChangeEnabled = [config reinitEncoderOnFrameSizeChangeEnabled];
+  remoteIDSParticipantID = [config remoteIDSParticipantID];
+  mediaController = [config mediaController];
   v81 = &v49;
-  v101 = [a3 profileLevel];
-  v97 = [a3 isFecGeneratorEnabled];
-  v98 = [a3 fecHeaderVersion];
-  v95 = [a3 fecHeaderV1Enabled];
-  v102 = [a3 temporalScalingEnabled];
-  v103 = [a3 maxSupportedTemporalLayers];
-  v104 = [a3 cvoExtensionID];
-  v105 = [a3 useInBandFec];
-  v106 = [a3 maxEncoderPixels];
-  v107 = [a3 encoderBitrateAveragingInterval];
-  v108 = [a3 ltrAckFeedbackType];
-  v109 = [a3 isLowBandwidthSinglePacketDuplicationEnabled];
-  v111 = [a3 fecEnabled];
-  v112 = [a3 rtxEnabled];
-  v113 = [a3 foveationEnabled];
-  v114 = [a3 pdEncryptionContext];
-  v115 = [a3 stereoVideoPackingType];
-  v116 = [a3 useMultiImageEncoding];
-  v119 = [a3 sessionId];
-  v120 = [a3 participantId];
-  v121 = [a3 streamGroupId];
-  v122 = [a3 streamToken];
-  v117 = [a3 enableInterleavedEncoding];
-  v118 = [a3 numberOfInterleavedEncoders];
-  v124 = [a3 videoFrameMetadataSupportedVersion];
+  profileLevel = [config profileLevel];
+  isFecGeneratorEnabled = [config isFecGeneratorEnabled];
+  fecHeaderVersion = [config fecHeaderVersion];
+  fecHeaderV1Enabled = [config fecHeaderV1Enabled];
+  temporalScalingEnabled = [config temporalScalingEnabled];
+  maxSupportedTemporalLayers = [config maxSupportedTemporalLayers];
+  cvoExtensionID = [config cvoExtensionID];
+  useInBandFec = [config useInBandFec];
+  maxEncoderPixels = [config maxEncoderPixels];
+  encoderBitrateAveragingInterval = [config encoderBitrateAveragingInterval];
+  ltrAckFeedbackType = [config ltrAckFeedbackType];
+  isLowBandwidthSinglePacketDuplicationEnabled = [config isLowBandwidthSinglePacketDuplicationEnabled];
+  fecEnabled = [config fecEnabled];
+  rtxEnabled = [config rtxEnabled];
+  foveationEnabled = [config foveationEnabled];
+  pdEncryptionContext = [config pdEncryptionContext];
+  stereoVideoPackingType = [config stereoVideoPackingType];
+  useMultiImageEncoding = [config useMultiImageEncoding];
+  sessionId = [config sessionId];
+  participantId = [config participantId];
+  streamGroupId = [config streamGroupId];
+  streamToken = [config streamToken];
+  enableInterleavedEncoding = [config enableInterleavedEncoding];
+  numberOfInterleavedEncoders = [config numberOfInterleavedEncoders];
+  videoFrameMetadataSupportedVersion = [config videoFrameMetadataSupportedVersion];
   snprintf(v125, 0x1EuLL, "parent=%p", v7);
   if ([+[VCDefaults isTransmitterTestVerificationEnabled] sharedInstance]
   {
@@ -396,9 +396,9 @@ LABEL_45:
   return v7;
 }
 
-- (void)setUpAspectRatios:(BOOL)a3
+- (void)setUpAspectRatios:(BOOL)ratios
 {
-  v3 = a3;
+  ratiosCopy = ratios;
   v40 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() != self)
   {
@@ -435,9 +435,9 @@ LABEL_45:
     v31 = 2112;
     *v32 = v5;
     *&v32[8] = 2048;
-    v33 = self;
+    selfCopy = self;
     v34 = 1024;
-    v35 = v3;
+    v35 = ratiosCopy;
     v36 = 1024;
     v37 = canLocalResizePIP;
     v38 = 1024;
@@ -463,11 +463,11 @@ LABEL_45:
       v29 = 1024;
       v30 = 200;
       v31 = 1024;
-      *v32 = v3;
+      *v32 = ratiosCopy;
       *&v32[4] = 1024;
       *&v32[6] = v8;
-      LOWORD(v33) = 1024;
-      *(&v33 + 2) = v9;
+      LOWORD(selfCopy) = 1024;
+      *(&selfCopy + 2) = v9;
       v10 = " [%s] %s:%d portraitFrameRotated=%d, _canLocalResizePIP=%d, _canRemoteResizePIP=%d";
       v11 = v7;
       v12 = 46;
@@ -515,16 +515,16 @@ LABEL_12:
   [(VCVideoTransmitterBase *)&v4 dealloc];
 }
 
-- (void)setUpAspectRatiosFromFeatureListString:(const char *)a3
+- (void)setUpAspectRatiosFromFeatureListString:(const char *)string
 {
   v52 = *MEMORY[0x1E69E9840];
   self->_canRemoteResizePIP = 0;
   v30 = -1431655766;
   v28 = -1431655766;
   v29 = 0xAAAAAAAAAAAAAAAALL;
-  if ([VCVideoFeatureListStringHelper extractAspectRatios:a3 landscapeX:&v30 landscapeY:&v29 + 4 portraitX:&v29 portraitY:&v28])
+  if ([VCVideoFeatureListStringHelper extractAspectRatios:string landscapeX:&v30 landscapeY:&v29 + 4 portraitX:&v29 portraitY:&v28])
   {
-    if (+[VCVideoFeatureListStringHelper isResizePIPSupportedInFeatureListString:](VCVideoFeatureListStringHelper, "isResizePIPSupportedInFeatureListString:", [MEMORY[0x1E696AEC0] stringWithUTF8String:a3]))
+    if (+[VCVideoFeatureListStringHelper isResizePIPSupportedInFeatureListString:](VCVideoFeatureListStringHelper, "isResizePIPSupportedInFeatureListString:", [MEMORY[0x1E696AEC0] stringWithUTF8String:string]))
     {
       self->_canRemoteResizePIP = 1;
     }
@@ -540,7 +540,7 @@ LABEL_12:
   v27 = -1431655766;
   v25 = -1431655766;
   v26 = 0xAAAAAAAAAAAAAAAALL;
-  if (![VCVideoFeatureListStringHelper extractExpectedAspectRatios:a3 expectedLandscapeX:&v27 expectedLandscapeY:&v26 + 4 expectedPortraitX:&v26 expectedPortraitY:&v25])
+  if (![VCVideoFeatureListStringHelper extractExpectedAspectRatios:string expectedLandscapeX:&v27 expectedLandscapeY:&v26 + 4 expectedPortraitX:&v26 expectedPortraitY:&v25])
   {
     v27 = v30;
     v25 = v28;
@@ -549,7 +549,7 @@ LABEL_12:
 
   v23 = *MEMORY[0x1E695F060];
   v24 = v23;
-  [VCVideoFeatureListStringHelper extractExpectedAspectRatiosFromFeatureString:a3 expectedFullScreenAspectRatios:&v23];
+  [VCVideoFeatureListStringHelper extractExpectedAspectRatiosFromFeatureString:string expectedFullScreenAspectRatios:&v23];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -578,9 +578,9 @@ LABEL_12:
         *v38 = v30;
         *&v38[4] = 1024;
         *&v38[6] = HIDWORD(v29);
-        LOWORD(v39) = 1024;
-        *(&v39 + 2) = v29;
-        HIWORD(v39) = 1024;
+        LOWORD(selfCopy) = 1024;
+        *(&selfCopy + 2) = v29;
+        HIWORD(selfCopy) = 1024;
         *v40 = v28;
         *&v40[4] = 2080;
         v41 = v8;
@@ -637,7 +637,7 @@ LABEL_12:
         v37 = 2112;
         *v38 = v5;
         *&v38[8] = 2048;
-        v39 = self;
+        selfCopy = self;
         *v40 = 1024;
         *&v40[2] = v30;
         LOWORD(v41) = 1024;
@@ -714,25 +714,25 @@ LABEL_23:
   }
 }
 
-+ (void)setupBandwidthEstimationOptions:(tagBWEOPTION *)a3 featureString:(id)a4
++ (void)setupBandwidthEstimationOptions:(tagBWEOPTION *)options featureString:(id)string
 {
   v9 = *MEMORY[0x1E69E9840];
   v8 = 0;
   v7 = 0;
-  VideoUtil_ParseFeatureListString([a4 UTF8String], &v8, &v7);
+  VideoUtil_ParseFeatureListString([string UTF8String], &v8, &v7);
   v5 = [CFPreferencesCopyAppValue(@"useFakeLF" @"com.apple.VideoConference")];
   v6 = (v7 | v5) & 1;
-  a3->var2 = v5 & ~v7 & 1;
-  a3->var3 = 0;
-  a3->var0 = v6;
-  a3->var1 = v6;
+  options->var2 = v5 & ~v7 & 1;
+  options->var3 = 0;
+  options->var0 = v6;
+  options->var1 = v6;
 }
 
-- (void)generateKeyFrameWithFIRType:(int)a3
+- (void)generateKeyFrameWithFIRType:(int)type
 {
   v6[1] = *MEMORY[0x1E69E9840];
   videoTransmitterHandle = self->_videoTransmitterHandle;
-  if (a3 == 2)
+  if (type == 2)
   {
     v5 = 2;
   }
@@ -742,31 +742,31 @@ LABEL_23:
     v5 = 0;
   }
 
-  VideoTransmitter_GenerateKeyFrameNow(videoTransmitterHandle, 0, 0, v5, 0, 1, a3);
+  VideoTransmitter_GenerateKeyFrameNow(videoTransmitterHandle, 0, 0, v5, 0, 1, type);
   v6[0] = NAN;
   VideoTransmitter_GetLastKeyFrameSentTime(self->_videoTransmitterHandle, v6);
   [(VCVideoTransmitterBase *)self setLastKeyFrameSentTime:v6[0]];
 }
 
-- (unsigned)setTemporaryMaximumBitrate:(unsigned int)a3
+- (unsigned)setTemporaryMaximumBitrate:(unsigned int)bitrate
 {
   result = self->super._temporaryMaximumBitrate;
-  if (result == a3)
+  if (result == bitrate)
   {
-    return a3;
+    return bitrate;
   }
 
-  if (self->super._txMaxBitrate >= a3 && self->super._txMinBitrate <= a3)
+  if (self->super._txMaxBitrate >= bitrate && self->super._txMinBitrate <= bitrate)
   {
-    VideoTransmitter_SetBitrate(self->_videoTransmitterHandle, a3);
-    self->super._temporaryMaximumBitrate = a3;
-    return a3;
+    VideoTransmitter_SetBitrate(self->_videoTransmitterHandle, bitrate);
+    self->super._temporaryMaximumBitrate = bitrate;
+    return bitrate;
   }
 
   return result;
 }
 
-- (void)setTargetBitrate:(unsigned int)a3
+- (void)setTargetBitrate:(unsigned int)bitrate
 {
   v32 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() != self)
@@ -804,9 +804,9 @@ LABEL_23:
     v23 = 2112;
     *v24 = v5;
     *&v24[8] = 2048;
-    v25 = self;
+    selfCopy = self;
     v26 = 1024;
-    v27 = a3;
+    bitrateCopy = bitrate;
     v28 = 1024;
     v29 = txMaxBitrate;
     v30 = 1024;
@@ -832,11 +832,11 @@ LABEL_23:
       v21 = 1024;
       v22 = 393;
       v23 = 1024;
-      *v24 = a3;
+      *v24 = bitrate;
       *&v24[4] = 1024;
       *&v24[6] = v8;
-      LOWORD(v25) = 1024;
-      *(&v25 + 2) = v9;
+      LOWORD(selfCopy) = 1024;
+      *(&selfCopy + 2) = v9;
       v10 = " [%s] %s:%d Set targetBitrate=%d, Max=%d, Min=%d";
       v11 = v7;
       v12 = 46;
@@ -846,41 +846,41 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (self->super._targetBitrate != a3 && self->super._txMaxBitrate >= a3 && self->super._txMinBitrate <= a3)
+  if (self->super._targetBitrate != bitrate && self->super._txMaxBitrate >= bitrate && self->super._txMinBitrate <= bitrate)
   {
-    VideoTransmitter_SetTargetBitrate(self->_videoTransmitterHandle, a3, self->super._targetBitrateChangeCounter, 0);
-    self->super._targetBitrate = a3;
+    VideoTransmitter_SetTargetBitrate(self->_videoTransmitterHandle, bitrate, self->super._targetBitrateChangeCounter, 0);
+    self->super._targetBitrate = bitrate;
   }
 }
 
-- (void)collectChannelMetrics:(id *)a3 interval:(float)a4
+- (void)collectChannelMetrics:(id *)metrics interval:(float)interval
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = 0.0;
   v11[0] = 0.0;
   v9 = 0;
-  VideoTransmitter_GetBitrate(a4, self->_videoTransmitterHandle, v11);
-  VideoTransmitter_GetFramerate(a4, self->_videoTransmitterHandle, &v10);
+  VideoTransmitter_GetBitrate(interval, self->_videoTransmitterHandle, v11);
+  VideoTransmitter_GetFramerate(interval, self->_videoTransmitterHandle, &v10);
   VideoTransmitter_GetLastVideoSampleTime(self->_videoTransmitterHandle, &v9);
-  a3->var0 = (v11[0] / 1000.0);
-  a3->var3 = v10;
+  metrics->var0 = (v11[0] / 1000.0);
+  metrics->var3 = v10;
   lastSentAudioHostTime = self->super._lastSentAudioHostTime;
-  a3->var2 = 0;
+  metrics->var2 = 0;
   lastSentAudioSampleTime = self->super._lastSentAudioSampleTime;
-  a3->var5 = lastSentAudioHostTime;
-  a3->var6 = lastSentAudioSampleTime;
-  a3->var7 = self->_lastSentVideoHostTime;
-  a3->var8 = v9;
+  metrics->var5 = lastSentAudioHostTime;
+  metrics->var6 = lastSentAudioSampleTime;
+  metrics->var7 = self->_lastSentVideoHostTime;
+  metrics->var8 = v9;
 }
 
-- (void)updateWindowState:(int)a3 isLocal:(BOOL)a4 windowRect:(CGRect)a5
+- (void)updateWindowState:(int)state isLocal:(BOOL)local windowRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4;
-  VideoTransmitter_SetWindowState(self->_videoTransmitterHandle, a4, a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  localCopy = local;
+  VideoTransmitter_SetWindowState(self->_videoTransmitterHandle, local, state);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -889,18 +889,18 @@ LABEL_12:
   {
     videoTransmitterHandle = self->_videoTransmitterHandle;
 
-    VideoTransmitter_SetVisualRectangle(x, y, width, height, videoTransmitterHandle, v9);
+    VideoTransmitter_SetVisualRectangle(x, y, width, height, videoTransmitterHandle, localCopy);
   }
 }
 
-- (void)handleActiveConnectionChangeDefault:(id)a3
+- (void)handleActiveConnectionChangeDefault:(id)default
 {
   v30 = *MEMORY[0x1E69E9840];
-  IsLocalOnCellular = VCConnection_IsLocalOnCellular(a3);
-  IsRemoteOnCellular = VCConnection_IsRemoteOnCellular(a3);
+  IsLocalOnCellular = VCConnection_IsLocalOnCellular(default);
+  IsRemoteOnCellular = VCConnection_IsRemoteOnCellular(default);
   videoTransmitterHandle = self->_videoTransmitterHandle;
-  v8 = VCConnection_LocalCellTech(a3);
-  v9 = VCConnection_RemoteCellTech(a3);
+  v8 = VCConnection_LocalCellTech(default);
+  v9 = VCConnection_RemoteCellTech(default);
   VideoTransmitter_SetCellTech(videoTransmitterHandle, IsLocalOnCellular, v8, IsRemoteOnCellular, v9);
   if (self->_transmitterMode != 1)
   {
@@ -925,7 +925,7 @@ LABEL_12:
         WORD2(v26) = 1024;
         *(&v26 + 6) = txMaxBitrate;
         WORD5(v26) = 1024;
-        HIDWORD(v26) = [a3 uplinkBitrateCapOneToOne];
+        HIDWORD(v26) = [default uplinkBitrateCapOneToOne];
         v14 = " [%s] %s:%d Received new connection, changing max tx bitrate from [%d] to [%d]";
         v15 = v12;
         v16 = 40;
@@ -963,11 +963,11 @@ LABEL_12:
         WORD2(v26) = 2112;
         *(&v26 + 6) = v10;
         HIWORD(v26) = 2048;
-        v27 = self;
+        selfCopy = self;
         LOWORD(v28) = 1024;
         *(&v28 + 2) = v19;
         HIWORD(v28) = 1024;
-        LODWORD(v29) = [a3 uplinkBitrateCapOneToOne];
+        LODWORD(v29) = [default uplinkBitrateCapOneToOne];
         v14 = " [%s] %s:%d %@(%p) Received new connection, changing max tx bitrate from [%d] to [%d]";
         v15 = v18;
         v16 = 60;
@@ -976,27 +976,27 @@ LABEL_12:
     }
   }
 
-  self->super._txMaxBitrate = [a3 uplinkBitrateCapOneToOne];
+  self->super._txMaxBitrate = [default uplinkBitrateCapOneToOne];
   if (self->_forceL4SHighDataRate)
   {
-    VideoTransmitter_SetBitrate(self->_videoTransmitterHandle, [a3 uplinkBitrateCapOneToOne]);
+    VideoTransmitter_SetBitrate(self->_videoTransmitterHandle, [default uplinkBitrateCapOneToOne]);
   }
 
 LABEL_15:
-  IsIPv6 = VCConnection_IsIPv6(a3);
+  IsIPv6 = VCConnection_IsIPv6(default);
   if (self->_transmitterMode == 1 && ((IsLocalOnCellular | IsRemoteOnCellular) & 1) != 0)
   {
-    if ([a3 maxConnectionMTU])
+    if ([default maxConnectionMTU])
     {
-      v21 = [a3 maxConnectionMTU];
+      maxConnectionMTU = [default maxConnectionMTU];
     }
 
     else
     {
-      v21 = [a3 connectionMTU];
+      maxConnectionMTU = [default connectionMTU];
     }
 
-    v23 = v21;
+    connectionMTU = maxConnectionMTU;
     v24 = self->_videoTransmitterHandle;
   }
 
@@ -1005,50 +1005,50 @@ LABEL_15:
     v22 = self->_videoTransmitterHandle;
     if (IsLocalOnCellular)
     {
-      v23 = [a3 connectionMTU];
+      connectionMTU = [default connectionMTU];
       v24 = v22;
     }
 
     else
     {
       v24 = self->_videoTransmitterHandle;
-      v23 = 1280;
+      connectionMTU = 1280;
     }
   }
 
-  VideoTransmitter_UpdateMTU(v24, v23, IsIPv6);
+  VideoTransmitter_UpdateMTU(v24, connectionMTU, IsIPv6);
   [(VCVideoTransmitterDefault *)self setUpAspectRatios:IsRemoteOnCellular];
 }
 
-- (void)handleActiveConnectionChangeMultiway:(id)a3
+- (void)handleActiveConnectionChangeMultiway:(id)multiway
 {
-  IsIPv6 = VCConnection_IsIPv6(a3);
+  IsIPv6 = VCConnection_IsIPv6(multiway);
   videoTransmitterHandle = self->_videoTransmitterHandle;
-  v7 = [a3 maxConnectionMTU];
+  maxConnectionMTU = [multiway maxConnectionMTU];
 
-  VideoTransmitter_UpdateMTU(videoTransmitterHandle, v7, IsIPv6);
+  VideoTransmitter_UpdateMTU(videoTransmitterHandle, maxConnectionMTU, IsIPv6);
 }
 
-- (void)handleActiveConnectionChange:(id)a3
+- (void)handleActiveConnectionChange:(id)change
 {
   if (self->_transmitterMode == 2)
   {
-    [(VCVideoTransmitterDefault *)self handleActiveConnectionChangeMultiway:a3];
+    [(VCVideoTransmitterDefault *)self handleActiveConnectionChangeMultiway:change];
   }
 
   else
   {
-    [(VCVideoTransmitterDefault *)self handleActiveConnectionChangeDefault:a3];
+    [(VCVideoTransmitterDefault *)self handleActiveConnectionChangeDefault:change];
   }
 }
 
-- (void)setRtxEnabled:(BOOL)a3
+- (void)setRtxEnabled:(BOOL)enabled
 {
-  self->super._rtxEnabled = a3;
+  self->super._rtxEnabled = enabled;
   videoTransmitterHandle = self->_videoTransmitterHandle;
   if (videoTransmitterHandle != 0xFFFFFFFFLL)
   {
-    VideoTransmitter_SetIsRtxEnabled(videoTransmitterHandle, a3);
+    VideoTransmitter_SetIsRtxEnabled(videoTransmitterHandle, enabled);
   }
 }
 

@@ -1,10 +1,10 @@
 @interface AVCAudioPowerSpectrum
 - (AVCAudioPowerSpectrum)init;
-- (AVCAudioPowerSpectrum)initWithCoder:(id)a3;
-- (void)applyChannelBins:(_VCAudioPowerSpectrumEntry *)a3 binCount:(unsigned int)a4 channelID:(unsigned __int16)a5;
-- (void)checkNumChannels:(unsigned __int16)a3;
+- (AVCAudioPowerSpectrum)initWithCoder:(id)coder;
+- (void)applyChannelBins:(_VCAudioPowerSpectrumEntry *)bins binCount:(unsigned int)count channelID:(unsigned __int16)d;
+- (void)checkNumChannels:(unsigned __int16)channels;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCAudioPowerSpectrum
@@ -32,18 +32,18 @@
   [(AVCAudioPowerSpectrum *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *&v3 = self->_minFrequency;
-  [a3 encodeFloat:@"minFrequency" forKey:v3];
+  [coder encodeFloat:@"minFrequency" forKey:v3];
   *&v6 = self->_maxFrequency;
-  [a3 encodeFloat:@"maxFrequency" forKey:v6];
+  [coder encodeFloat:@"maxFrequency" forKey:v6];
   channels = self->_channels;
 
-  [a3 encodeObject:channels forKey:@"channels"];
+  [coder encodeObject:channels forKey:@"channels"];
 }
 
-- (AVCAudioPowerSpectrum)initWithCoder:(id)a3
+- (AVCAudioPowerSpectrum)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -51,28 +51,28 @@
   v4 = [(AVCAudioPowerSpectrum *)&v8 init];
   if (v4)
   {
-    [a3 decodeFloatForKey:@"minFrequency"];
+    [coder decodeFloatForKey:@"minFrequency"];
     v4->_minFrequency = v5;
-    [a3 decodeFloatForKey:@"maxFrequency"];
+    [coder decodeFloatForKey:@"maxFrequency"];
     v4->_maxFrequency = v6;
-    v4->_channels = [a3 decodeObjectForKey:@"channels"];
+    v4->_channels = [coder decodeObjectForKey:@"channels"];
   }
 
   return v4;
 }
 
-- (void)applyChannelBins:(_VCAudioPowerSpectrumEntry *)a3 binCount:(unsigned int)a4 channelID:(unsigned __int16)a5
+- (void)applyChannelBins:(_VCAudioPowerSpectrumEntry *)bins binCount:(unsigned int)count channelID:(unsigned __int16)d
 {
-  v5 = a5;
-  v6 = *&a4;
+  dCopy = d;
+  v6 = *&count;
   v31 = *MEMORY[0x1E69E9840];
-  if ([(NSMutableArray *)self->_channels count]> a5)
+  if ([(NSMutableArray *)self->_channels count]> d)
   {
-    [-[NSMutableArray objectAtIndexedSubscript:](self->_channels objectAtIndexedSubscript:{v5), "applyChannelBins:binCount:", a3, v6}];
+    [-[NSMutableArray objectAtIndexedSubscript:](self->_channels objectAtIndexedSubscript:{dCopy), "applyChannelBins:binCount:", bins, v6}];
     if (v6)
     {
-      self->_minFrequency = a3->var0.min;
-      self->_maxFrequency = a3[(v6 - 1)].var0.max;
+      self->_minFrequency = bins->var0.min;
+      self->_maxFrequency = bins[(v6 - 1)].var0.max;
     }
 
     return;
@@ -100,7 +100,7 @@
     v23 = 1024;
     v24 = 73;
     v25 = 1024;
-    *v26 = v5;
+    *v26 = dCopy;
     *&v26[4] = 2048;
     *&v26[6] = v12;
     v13 = " [%s] %s:%d Number of channels is incorrect (%d >= %lu)";
@@ -139,7 +139,7 @@ LABEL_15:
       *&v26[8] = 2048;
       *&v26[10] = self;
       v27 = 1024;
-      v28 = v5;
+      v28 = dCopy;
       v29 = 2048;
       v30 = v18;
       v13 = " [%s] %s:%d %@(%p) Number of channels is incorrect (%d >= %lu)";
@@ -150,21 +150,21 @@ LABEL_15:
   }
 }
 
-- (void)checkNumChannels:(unsigned __int16)a3
+- (void)checkNumChannels:(unsigned __int16)channels
 {
-  v3 = a3;
-  for (i = [(NSMutableArray *)self->_channels count]; i < v3; ++i)
+  channelsCopy = channels;
+  for (i = [(NSMutableArray *)self->_channels count]; i < channelsCopy; ++i)
   {
     v6 = objc_alloc_init(AVCAudioPowerSpectrumChannel);
     [(NSMutableArray *)self->_channels addObject:v6];
   }
 
-  if ([(NSMutableArray *)self->_channels count]> v3)
+  if ([(NSMutableArray *)self->_channels count]> channelsCopy)
   {
-    v7 = [(NSMutableArray *)self->_channels count]- v3;
+    v7 = [(NSMutableArray *)self->_channels count]- channelsCopy;
     channels = self->_channels;
 
-    [(NSMutableArray *)channels removeObjectsInRange:v3, v7];
+    [(NSMutableArray *)channels removeObjectsInRange:channelsCopy, v7];
   }
 }
 

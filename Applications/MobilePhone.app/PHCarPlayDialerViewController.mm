@@ -1,26 +1,26 @@
 @interface PHCarPlayDialerViewController
 - (BOOL)_viewControllerWasSelected;
-- (PHCarPlayDialerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHCarPlayDialerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)preferredFocusEnvironments;
 - (unint64_t)dialerSupportedInterfaceOrientations;
-- (void)callButtonPressed:(id)a3;
+- (void)callButtonPressed:(id)pressed;
 - (void)dealloc;
-- (void)deleteButtonPressed:(id)a3;
-- (void)hardwareControlEventNotification:(id)a3;
-- (void)limitedUINotification:(id)a3;
+- (void)deleteButtonPressed:(id)pressed;
+- (void)hardwareControlEventNotification:(id)notification;
+- (void)limitedUINotification:(id)notification;
 - (void)loadView;
 - (void)postMessageOverlayIfNeeded;
-- (void)setLimitedSoftPhoneKeypad:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setLimitedSoftPhoneKeypad:(BOOL)keypad;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PHCarPlayDialerViewController
 
-- (PHCarPlayDialerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHCarPlayDialerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = PHCarPlayDialerViewController;
-  v4 = [(PHCarPlayGenericViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(PHCarPlayGenericViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[AVExternalDevice currentCarPlayExternalDevice];
@@ -28,8 +28,8 @@
 
     v6 = +[NSNotificationCenter defaultCenter];
     v7 = AVExternalDeviceLimitedUIChangedNotification;
-    v8 = [(PHCarPlayGenericDialerViewController *)v4 carPlayExternalDevice];
-    [v6 addObserver:v4 selector:"limitedUINotification:" name:v7 object:v8];
+    carPlayExternalDevice = [(PHCarPlayGenericDialerViewController *)v4 carPlayExternalDevice];
+    [v6 addObserver:v4 selector:"limitedUINotification:" name:v7 object:carPlayExternalDevice];
   }
 
   return v4;
@@ -38,9 +38,9 @@
 - (void)loadView
 {
   [(PHCarPlayGenericViewController *)self setRespondsToEventsWhileInCall:0];
-  v3 = [(PHCarPlayDialerViewController *)self navigationItem];
-  v4 = [v3 navigationBar];
-  [v4 setHidden:1];
+  navigationItem = [(PHCarPlayDialerViewController *)self navigationItem];
+  navigationBar = [navigationItem navigationBar];
+  [navigationBar setHidden:1];
 
   v5 = objc_alloc_init(UIView);
   [(PHCarPlayDialerViewController *)self setView:v5];
@@ -51,34 +51,34 @@
 
   if ([UIApp userInterfaceStyle] == 1)
   {
-    v7 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-    [v7 setEdgesForExtendedLayout:0];
+    dialerController = [(PHCarPlayGenericDialerViewController *)self dialerController];
+    [dialerController setEdgesForExtendedLayout:0];
   }
 
-  v8 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v9 = [v8 view];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  dialerController2 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  view = [dialerController2 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  [v10 setShouldHideDeleteButtonWhenEmpty:1];
+  dialerController3 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  [dialerController3 setShouldHideDeleteButtonWhenEmpty:1];
 
-  v11 = [(PHCarPlayDialerViewController *)self view];
-  v12 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v13 = [v12 view];
-  [v11 addSubview:v13];
+  view2 = [(PHCarPlayDialerViewController *)self view];
+  dialerController4 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  view3 = [dialerController4 view];
+  [view2 addSubview:view3];
 
-  v14 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  [(PHCarPlayDialerViewController *)self addChildViewController:v14];
+  dialerController5 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  [(PHCarPlayDialerViewController *)self addChildViewController:dialerController5];
 
-  v15 = [(PHCarPlayDialerViewController *)self view];
-  [v15 bounds];
+  view4 = [(PHCarPlayDialerViewController *)self view];
+  [view4 bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v25 = [v24 view];
-  [v25 setFrame:{v17, v19, v21, v23}];
+  dialerController6 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  view5 = [dialerController6 view];
+  [view5 setFrame:{v17, v19, v21, v23}];
 
   if (_os_feature_enabled_impl())
   {
@@ -90,72 +90,72 @@
     +[UIColor tableBackgroundColor];
   }
   v26 = ;
-  v27 = [(PHCarPlayDialerViewController *)self view];
-  [v27 setBackgroundColor:v26];
+  view6 = [(PHCarPlayDialerViewController *)self view];
+  [view6 setBackgroundColor:v26];
 
-  v71 = [(PHCarPlayDialerViewController *)self view];
-  v70 = [v71 safeAreaLayoutGuide];
-  v68 = [v70 topAnchor];
-  v69 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v67 = [v69 view];
-  v66 = [v67 topAnchor];
-  v65 = [v68 constraintEqualToAnchor:v66];
+  view7 = [(PHCarPlayDialerViewController *)self view];
+  safeAreaLayoutGuide = [view7 safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  dialerController7 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  view8 = [dialerController7 view];
+  topAnchor2 = [view8 topAnchor];
+  v65 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v73[0] = v65;
-  v64 = [(PHCarPlayDialerViewController *)self view];
-  v63 = [v64 safeAreaLayoutGuide];
-  v61 = [v63 bottomAnchor];
-  v62 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v60 = [v62 view];
-  v59 = [v60 bottomAnchor];
-  v58 = [v61 constraintEqualToAnchor:v59];
+  view9 = [(PHCarPlayDialerViewController *)self view];
+  safeAreaLayoutGuide2 = [view9 safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
+  dialerController8 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  view10 = [dialerController8 view];
+  bottomAnchor2 = [view10 bottomAnchor];
+  v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v73[1] = v58;
-  v57 = [(PHCarPlayDialerViewController *)self view];
-  v56 = [v57 safeAreaLayoutGuide];
-  v54 = [v56 leftAnchor];
-  v55 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v53 = [v55 view];
-  v52 = [v53 leftAnchor];
-  v28 = [v54 constraintEqualToAnchor:v52];
+  view11 = [(PHCarPlayDialerViewController *)self view];
+  safeAreaLayoutGuide3 = [view11 safeAreaLayoutGuide];
+  leftAnchor = [safeAreaLayoutGuide3 leftAnchor];
+  dialerController9 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  view12 = [dialerController9 view];
+  leftAnchor2 = [view12 leftAnchor];
+  v28 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v73[2] = v28;
-  v29 = [(PHCarPlayDialerViewController *)self view];
-  v30 = [v29 safeAreaLayoutGuide];
-  v31 = [v30 rightAnchor];
-  v32 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v33 = [v32 view];
-  v34 = [v33 rightAnchor];
-  v35 = [v31 constraintEqualToAnchor:v34];
+  view13 = [(PHCarPlayDialerViewController *)self view];
+  safeAreaLayoutGuide4 = [view13 safeAreaLayoutGuide];
+  rightAnchor = [safeAreaLayoutGuide4 rightAnchor];
+  dialerController10 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  view14 = [dialerController10 view];
+  rightAnchor2 = [view14 rightAnchor];
+  v35 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v73[3] = v35;
   v36 = [NSArray arrayWithObjects:v73 count:4];
   [NSLayoutConstraint activateConstraints:v36];
 
   v37 = +[NSNotificationCenter defaultCenter];
-  v38 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v39 = [v38 dialerView];
-  v40 = [v39 deleteButton];
-  [v37 addObserver:self selector:"deleteButtonHide:" name:@"kPHCarPlayDeleteButtonHideNotification" object:v40];
+  dialerController11 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  dialerView = [dialerController11 dialerView];
+  deleteButton = [dialerView deleteButton];
+  [v37 addObserver:self selector:"deleteButtonHide:" name:@"kPHCarPlayDeleteButtonHideNotification" object:deleteButton];
 
   [(PHCarPlayDialerViewController *)self setLimitedSoftPhoneKeypad:+[PHCarPlayUtilities shouldLimitKeypadAccess]];
   v41 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"deleteButtonPressed:"];
   [v41 setMinimumPressDuration:0.0];
   [v41 setAllowedPressTypes:&off_100295510];
-  v42 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v43 = [v42 dialerView];
-  v44 = [v43 deleteButton];
-  [v44 addGestureRecognizer:v41];
+  dialerController12 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  dialerView2 = [dialerController12 dialerView];
+  deleteButton2 = [dialerView2 deleteButton];
+  [deleteButton2 addGestureRecognizer:v41];
 
   v45 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"callButtonPressed:"];
   [v45 setMinimumPressDuration:0.0];
   [v45 setAllowedPressTypes:&off_100295528];
-  v46 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v47 = [v46 dialerView];
-  v48 = [v47 callButton];
-  [v48 addGestureRecognizer:v45];
+  dialerController13 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  dialerView3 = [dialerController13 dialerView];
+  callButton = [dialerView3 callButton];
+  [callButton addGestureRecognizer:v45];
 
   v49 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_noOpGestureAction:"];
   [v49 setAllowedPressTypes:&off_100295540];
-  v50 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v51 = [v50 dialerView];
-  [v51 addGestureRecognizer:v49];
+  dialerController14 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  dialerView4 = [dialerController14 dialerView];
+  [dialerView4 addGestureRecognizer:v49];
 }
 
 - (void)dealloc
@@ -168,30 +168,30 @@
   [(PHCarPlayDialerViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PHCarPlayDialerViewController;
-  [(PHCarPlayDialerViewController *)&v4 viewWillAppear:a3];
+  [(PHCarPlayDialerViewController *)&v4 viewWillAppear:appear];
   [(PHCarPlayDialerViewController *)self setLimitedSoftPhoneKeypad:+[PHCarPlayUtilities shouldLimitKeypadAccess]];
   [(PHCarPlayDialerViewController *)self postMessageOverlayIfNeeded];
 }
 
-- (void)limitedUINotification:(id)a3
+- (void)limitedUINotification:(id)notification
 {
   v4 = +[PHCarPlayUtilities shouldLimitKeypadAccess];
 
   [(PHCarPlayDialerViewController *)self setLimitedSoftPhoneKeypad:v4];
 }
 
-- (void)setLimitedSoftPhoneKeypad:(BOOL)a3
+- (void)setLimitedSoftPhoneKeypad:(BOOL)keypad
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = __59__PHCarPlayDialerViewController_setLimitedSoftPhoneKeypad___block_invoke;
   v3[3] = &unk_100285120;
   v3[4] = self;
-  v4 = a3;
+  keypadCopy = keypad;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
@@ -211,89 +211,89 @@ id __59__PHCarPlayDialerViewController_setLimitedSoftPhoneKeypad___block_invoke(
     v6 = [[PHCarPlayNoContentBannerView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [(PHCarPlayGenericDialerViewController *)self setNoContentBannerView:v6];
 
-    v7 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    noContentBannerView = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    [noContentBannerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
     if (_UISolariumEnabled())
     {
-      v8 = [UIColor colorWithDynamicProvider:&__block_literal_global_21];
-      v9 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-      [v9 setBackgroundColor:v8];
+      view = [UIColor colorWithDynamicProvider:&__block_literal_global_21];
+      noContentBannerView2 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+      [noContentBannerView2 setBackgroundColor:view];
     }
 
     else
     {
-      v8 = [(PHCarPlayDialerViewController *)self view];
-      v9 = [v8 backgroundColor];
-      v10 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-      [v10 setBackgroundColor:v9];
+      view = [(PHCarPlayDialerViewController *)self view];
+      noContentBannerView2 = [view backgroundColor];
+      noContentBannerView3 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+      [noContentBannerView3 setBackgroundColor:noContentBannerView2];
     }
 
-    v11 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    [v11 setAlpha:0.95];
+    noContentBannerView4 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    [noContentBannerView4 setAlpha:0.95];
 
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"KEYPAD_ACCESS_IS_LIMITED" value:&stru_10028F310 table:@"PHCarPlay"];
-    v14 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    [v14 setTitleString:v13];
+    noContentBannerView5 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    [noContentBannerView5 setTitleString:v13];
 
-    v15 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    [v15 setHidden:0];
+    noContentBannerView6 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    [noContentBannerView6 setHidden:0];
 
-    v16 = [(PHCarPlayDialerViewController *)self view];
-    [v16 setUserInteractionEnabled:0];
+    view2 = [(PHCarPlayDialerViewController *)self view];
+    [view2 setUserInteractionEnabled:0];
 
-    v17 = [(PHCarPlayDialerViewController *)self view];
-    v18 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    [v17 addSubview:v18];
+    view3 = [(PHCarPlayDialerViewController *)self view];
+    noContentBannerView7 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    [view3 addSubview:noContentBannerView7];
 
-    v45 = [(PHCarPlayDialerViewController *)self view];
-    v43 = [v45 safeAreaLayoutGuide];
-    v41 = [v43 topAnchor];
-    v42 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    v40 = [v42 topAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    view4 = [(PHCarPlayDialerViewController *)self view];
+    safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide topAnchor];
+    noContentBannerView8 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    topAnchor2 = [noContentBannerView8 topAnchor];
+    v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v46[0] = v39;
-    v38 = [(PHCarPlayDialerViewController *)self view];
-    v37 = [v38 safeAreaLayoutGuide];
-    v35 = [v37 bottomAnchor];
-    v36 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    v34 = [v36 bottomAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    view5 = [(PHCarPlayDialerViewController *)self view];
+    safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+    bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
+    noContentBannerView9 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    bottomAnchor2 = [noContentBannerView9 bottomAnchor];
+    v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v46[1] = v33;
-    v32 = [(PHCarPlayDialerViewController *)self view];
-    v31 = [v32 safeAreaLayoutGuide];
-    v29 = [v31 leftAnchor];
-    v30 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    v19 = [v30 leftAnchor];
-    v20 = [v29 constraintEqualToAnchor:v19];
+    view6 = [(PHCarPlayDialerViewController *)self view];
+    safeAreaLayoutGuide3 = [view6 safeAreaLayoutGuide];
+    leftAnchor = [safeAreaLayoutGuide3 leftAnchor];
+    noContentBannerView10 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    leftAnchor2 = [noContentBannerView10 leftAnchor];
+    v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v46[2] = v20;
-    v21 = [(PHCarPlayDialerViewController *)self view];
-    v22 = [v21 safeAreaLayoutGuide];
-    v23 = [v22 rightAnchor];
-    v24 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-    v25 = [v24 rightAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    view7 = [(PHCarPlayDialerViewController *)self view];
+    safeAreaLayoutGuide4 = [view7 safeAreaLayoutGuide];
+    rightAnchor = [safeAreaLayoutGuide4 rightAnchor];
+    noContentBannerView11 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    rightAnchor2 = [noContentBannerView11 rightAnchor];
+    v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v46[3] = v26;
     v27 = [NSArray arrayWithObjects:v46 count:4];
     [NSLayoutConstraint activateConstraints:v27];
 
-    v28 = [(PHCarPlayDialerViewController *)self view];
-    [v28 setNeedsFocusUpdate];
+    view8 = [(PHCarPlayDialerViewController *)self view];
+    [view8 setNeedsFocusUpdate];
   }
 
   else if (![(PHCarPlayGenericDialerViewController *)self limitedSoftPhoneKeypad])
   {
-    v4 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+    noContentBannerView12 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
 
-    if (v4)
+    if (noContentBannerView12)
     {
-      v5 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
-      [v5 removeFromSuperview];
+      noContentBannerView13 = [(PHCarPlayGenericDialerViewController *)self noContentBannerView];
+      [noContentBannerView13 removeFromSuperview];
 
       [(PHCarPlayGenericDialerViewController *)self setNoContentBannerView:0];
-      v44 = [(PHCarPlayDialerViewController *)self view];
-      [v44 setUserInteractionEnabled:1];
+      view9 = [(PHCarPlayDialerViewController *)self view];
+      [view9 setUserInteractionEnabled:1];
     }
   }
 }
@@ -326,130 +326,130 @@ UIColor *__cdecl __59__PHCarPlayDialerViewController_postMessageOverlayIfNeeded_
   return [(PHCarPlayDialerViewController *)&v3 _viewControllerWasSelected];
 }
 
-- (void)callButtonPressed:(id)a3
+- (void)callButtonPressed:(id)pressed
 {
-  v4 = [a3 state];
-  v17 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v5 = [v17 dialerView];
-  v6 = [v5 callButton];
-  v7 = v6;
-  if (v4 == 1)
+  state = [pressed state];
+  dialerController = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  dialerView = [dialerController dialerView];
+  callButton = [dialerView callButton];
+  v7 = callButton;
+  if (state == 1)
   {
-    [v6 setHighlighted:1];
+    [callButton setHighlighted:1];
 
 LABEL_3:
 
     return;
   }
 
-  [v6 setHighlighted:0];
+  [callButton setHighlighted:0];
 
-  if (v4 != 3)
+  if (state != 3)
   {
     return;
   }
 
-  v8 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v9 = [v8 digitsEntered];
+  dialerController2 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  digitsEntered = [dialerController2 digitsEntered];
 
-  v10 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v17 = v10;
-  if (!v9)
+  dialerController3 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  dialerController = dialerController3;
+  if (!digitsEntered)
   {
-    [v10 restoreLastDialedNumber];
+    [dialerController3 restoreLastDialedNumber];
     goto LABEL_3;
   }
 
-  v11 = [v10 callProviderManager];
-  v12 = [v11 telephonyProvider];
+  callProviderManager = [dialerController3 callProviderManager];
+  telephonyProvider = [callProviderManager telephonyProvider];
 
-  if (v12)
+  if (telephonyProvider)
   {
-    v13 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-    v14 = [v13 dialerView];
-    v15 = [v14 callButton];
-    [v15 setSelected:1];
+    dialerController4 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+    dialerView2 = [dialerController4 dialerView];
+    callButton2 = [dialerView2 callButton];
+    [callButton2 setSelected:1];
 
-    v16 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-    [v16 performCallActionForCallProvider:v12];
+    dialerController5 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+    [dialerController5 performCallActionForCallProvider:telephonyProvider];
   }
 
   else
   {
-    v16 = PHDefaultLog();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    dialerController5 = PHDefaultLog();
+    if (os_log_type_enabled(dialerController5, OS_LOG_TYPE_ERROR))
     {
-      [PHCarPlayDialerViewController callButtonPressed:v16];
+      [PHCarPlayDialerViewController callButtonPressed:dialerController5];
     }
   }
 }
 
-- (void)deleteButtonPressed:(id)a3
+- (void)deleteButtonPressed:(id)pressed
 {
-  v4 = [a3 state];
-  v8 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  v5 = [v8 dialerView];
-  v6 = [v5 deleteButton];
-  v7 = v6;
-  if (v4 == 1)
+  state = [pressed state];
+  dialerController = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  dialerView = [dialerController dialerView];
+  deleteButton = [dialerView deleteButton];
+  v7 = deleteButton;
+  if (state == 1)
   {
-    [v6 setHighlighted:1];
+    [deleteButton setHighlighted:1];
 
-    v8 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-    [v8 performDeleteAction];
+    dialerController = [(PHCarPlayGenericDialerViewController *)self dialerController];
+    [dialerController performDeleteAction];
   }
 
   else
   {
-    [v6 setHighlighted:0];
+    [deleteButton setHighlighted:0];
   }
 }
 
-- (void)hardwareControlEventNotification:(id)a3
+- (void)hardwareControlEventNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHCarPlayDialerViewController received hardware control event notification: %@", &v17, 0xCu);
   }
 
   if ([(PHCarPlayGenericViewController *)self shouldRespondToHardwareControlEvent])
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 valueForKey:kTUCarPlayHardwareControlButtonKey];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo valueForKey:kTUCarPlayHardwareControlButtonKey];
 
     if (v7 == kTUCarPlayHardwareControlButtonGreenTelephone || v7 == kTUCarPlayHardwareControlButtonWhiteTelephone)
     {
-      v9 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-      v10 = [v9 digitsEntered];
+      dialerController = [(PHCarPlayGenericDialerViewController *)self dialerController];
+      digitsEntered = [dialerController digitsEntered];
 
-      v11 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-      v12 = v11;
-      if (!v10)
+      dialerController2 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+      v12 = dialerController2;
+      if (!digitsEntered)
       {
-        [v11 restoreLastDialedNumber];
-        v14 = v12;
+        [dialerController2 restoreLastDialedNumber];
+        telephonyProvider = v12;
         goto LABEL_20;
       }
 
-      v13 = [v11 callProviderManager];
-      v14 = [v13 telephonyProvider];
+      callProviderManager = [dialerController2 callProviderManager];
+      telephonyProvider = [callProviderManager telephonyProvider];
 
-      if (v14)
+      if (telephonyProvider)
       {
-        v15 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-        [v15 performCallActionForCallProvider:v14];
+        dialerController3 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+        [dialerController3 performCallActionForCallProvider:telephonyProvider];
       }
 
       else
       {
-        v15 = PHDefaultLog();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        dialerController3 = PHDefaultLog();
+        if (os_log_type_enabled(dialerController3, OS_LOG_TYPE_ERROR))
         {
-          [PHCarPlayDialerViewController callButtonPressed:v15];
+          [PHCarPlayDialerViewController callButtonPressed:dialerController3];
         }
       }
     }
@@ -465,17 +465,17 @@ LABEL_21:
           goto LABEL_22;
         }
 
-        v14 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-        [v14 performDeleteAction];
+        telephonyProvider = [(PHCarPlayGenericDialerViewController *)self dialerController];
+        [telephonyProvider performDeleteAction];
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      v14 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-      v15 = [v4 userInfo];
-      v16 = [v15 valueForKey:kTUCarPlayHardwareControlKeypadValueKey];
-      [v14 performCharacterAddAction:v16];
+      telephonyProvider = [(PHCarPlayGenericDialerViewController *)self dialerController];
+      dialerController3 = [notificationCopy userInfo];
+      v16 = [dialerController3 valueForKey:kTUCarPlayHardwareControlKeypadValueKey];
+      [telephonyProvider performCharacterAddAction:v16];
     }
 
     goto LABEL_20;
@@ -486,24 +486,24 @@ LABEL_22:
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-  if (v3 && (v4 = v3, v5 = [(PHCarPlayGenericDialerViewController *)self limitedSoftPhoneKeypad], v4, (v5 & 1) == 0))
+  dialerController = [(PHCarPlayGenericDialerViewController *)self dialerController];
+  if (dialerController && (v4 = dialerController, v5 = [(PHCarPlayGenericDialerViewController *)self limitedSoftPhoneKeypad], v4, (v5 & 1) == 0))
   {
-    v7 = [(PHCarPlayGenericDialerViewController *)self dialerController];
-    v8 = [v7 dialerView];
-    v9 = [v8 phonePadView];
-    v12 = v9;
-    v6 = [NSArray arrayWithObjects:&v12 count:1];
+    dialerController2 = [(PHCarPlayGenericDialerViewController *)self dialerController];
+    dialerView = [dialerController2 dialerView];
+    phonePadView = [dialerView phonePadView];
+    v12 = phonePadView;
+    preferredFocusEnvironments = [NSArray arrayWithObjects:&v12 count:1];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = PHCarPlayDialerViewController;
-    v6 = [(PHCarPlayDialerViewController *)&v11 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(PHCarPlayDialerViewController *)&v11 preferredFocusEnvironments];
   }
 
-  return v6;
+  return preferredFocusEnvironments;
 }
 
 - (unint64_t)dialerSupportedInterfaceOrientations

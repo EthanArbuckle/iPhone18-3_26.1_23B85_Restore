@@ -1,22 +1,22 @@
 @interface AVScrubbingGestureController
-- (AVScrubbingGestureController)initWithPlatformAdapter:(id)a3;
+- (AVScrubbingGestureController)initWithPlatformAdapter:(id)adapter;
 - (AVScrubbingGestureControllerDelegate)delegate;
 - (double)_targetTime;
 - (float)_resumptionRate;
 - (id)_updateAdapterState;
-- (id)configurationForScrubbingGesturePlatformAdapter:(id)a3;
+- (id)configurationForScrubbingGesturePlatformAdapter:(id)adapter;
 - (uint64_t)_seekForScrubIncrement;
 - (void)_endScrubbingAndResetState;
-- (void)_endScrubbingForPlayerController:(uint64_t)a1;
+- (void)_endScrubbingForPlayerController:(uint64_t)controller;
 - (void)_performScrubIncrement;
-- (void)_updateStateTo:(void *)a1;
+- (void)_updateStateTo:(void *)to;
 - (void)dealloc;
-- (void)scrubbingGesturePlatformAdapterDidBeginScrubbing:(id)a3;
-- (void)scrubbingGesturePlatformAdapterDidContinueScrubbing:(id)a3;
-- (void)scrubbingGesturePlatformAdapterDidEndScrubbing:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPlayerController:(id)a3;
-- (void)setScrubsHaveMomentum:(BOOL)a3;
+- (void)scrubbingGesturePlatformAdapterDidBeginScrubbing:(id)scrubbing;
+- (void)scrubbingGesturePlatformAdapterDidContinueScrubbing:(id)scrubbing;
+- (void)scrubbingGesturePlatformAdapterDidEndScrubbing:(id)scrubbing;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPlayerController:(id)controller;
+- (void)setScrubsHaveMomentum:(BOOL)momentum;
 @end
 
 @implementation AVScrubbingGestureController
@@ -28,14 +28,14 @@
   return WeakRetained;
 }
 
-- (void)scrubbingGesturePlatformAdapterDidEndScrubbing:(id)a3
+- (void)scrubbingGesturePlatformAdapterDidEndScrubbing:(id)scrubbing
 {
-  v4 = a3;
+  scrubbingCopy = scrubbing;
   if ([(AVScrubbingGestureController *)self state]== 2)
   {
-    v5 = [(AVScrubbingGestureController *)self _resumptionRate];
+    _resumptionRate = [(AVScrubbingGestureController *)self _resumptionRate];
     currentScrubRate = self->_currentScrubRate;
-    if ([(AVScrubbingGestureController *)self scrubsHaveMomentum]&& vabds_f32(currentScrubRate, v5) >= 10.0)
+    if ([(AVScrubbingGestureController *)self scrubsHaveMomentum]&& vabds_f32(currentScrubRate, _resumptionRate) >= 10.0)
     {
       self->_startingMomentumRate = currentScrubRate;
       [(AVScrubbingGestureController *)self _updateStateTo:?];
@@ -67,16 +67,16 @@
 
 - (float)_resumptionRate
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [a1 playerController];
-  v3 = v2;
-  if (v2)
+  playerController = [self playerController];
+  v3 = playerController;
+  if (playerController)
   {
-    if ([v2 avkit_isAVPlayerControllerOrSubclass])
+    if ([playerController avkit_isAVPlayerControllerOrSubclass])
     {
       if ([v3 isPlaybackSuspended])
       {
@@ -93,7 +93,7 @@
 
     else
     {
-      v5 = a1[14];
+      v5 = self[14];
     }
   }
 
@@ -105,15 +105,15 @@
   return v5;
 }
 
-- (void)_updateStateTo:(void *)a1
+- (void)_updateStateTo:(void *)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!to)
   {
     return;
   }
 
-  v4 = a1[9];
+  v4 = to[9];
   if (v4 == a2)
   {
     return;
@@ -137,9 +137,9 @@ LABEL_12:
       v5 = _AVLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v8 = a1[9];
+        v8 = to[9];
         *buf = 134217984;
-        v11 = v8;
+        toCopy = v8;
         _os_log_error_impl(&dword_18B49C000, v5, OS_LOG_TYPE_ERROR, "Error: Unknown AVScrubbingGestureControllerState - %ld", buf, 0xCu);
       }
 
@@ -152,11 +152,11 @@ LABEL_12:
     }
 
 LABEL_21:
-    a1[9] = a2;
-    v9 = [a1 delegate];
+    to[9] = a2;
+    delegate = [to delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 scrubbingGestureControllerStateDidChange:a1];
+      [delegate scrubbingGestureControllerStateDidChange:to];
     }
 
     return;
@@ -186,9 +186,9 @@ LABEL_16:
   v6 = _AVLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = a1[9];
+    v7 = to[9];
     *buf = 138543874;
-    v11 = a1;
+    toCopy = to;
     v12 = 2048;
     v13 = v7;
     v14 = 2048;
@@ -205,7 +205,7 @@ void __79__AVScrubbingGestureController_scrubbingGesturePlatformAdapterDidEndScr
 
 - (void)_performScrubIncrement
 {
-  if (a1)
+  if (self)
   {
     if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
     {
@@ -217,7 +217,7 @@ void __79__AVScrubbingGestureController_scrubbingGesturePlatformAdapterDidEndScr
       }
     }
 
-    if ([a1 state] != 2 && objc_msgSend(a1, "state") != 3)
+    if ([self state] != 2 && objc_msgSend(self, "state") != 3)
     {
       v3 = _AVLog();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -227,7 +227,7 @@ void __79__AVScrubbingGestureController_scrubbingGesturePlatformAdapterDidEndScr
       }
     }
 
-    if (!*(a1 + 24))
+    if (!*(self + 24))
     {
       v4 = _AVLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -237,13 +237,13 @@ void __79__AVScrubbingGestureController_scrubbingGesturePlatformAdapterDidEndScr
       }
     }
 
-    if ([a1 state] == 2)
+    if ([self state] == 2)
     {
-      [*(a1 + 8) timelineVelocity];
+      [*(self + 8) timelineVelocity];
       v6 = v5;
-      v7 = [*(a1 + 24) usesNaturalDirection];
+      usesNaturalDirection = [*(self + 24) usesNaturalDirection];
       v8 = -v6;
-      if (!v7)
+      if (!usesNaturalDirection)
       {
         v8 = v6;
       }
@@ -251,90 +251,90 @@ void __79__AVScrubbingGestureController_scrubbingGesturePlatformAdapterDidEndScr
       goto LABEL_18;
     }
 
-    if ([a1 state] == 3)
+    if ([self state] == 3)
     {
-      v9 = [(AVScrubbingGestureController *)a1 _resumptionRate];
-      v10 = *(a1 + 32);
-      if (vabds_f32(v10, v9) > 0.0333333333)
+      _resumptionRate = [(AVScrubbingGestureController *)self _resumptionRate];
+      v10 = *(self + 32);
+      if (vabds_f32(v10, _resumptionRate) > 0.0333333333)
       {
-        v11 = *(a1 + 36);
-        if ((v11 <= v9 || v10 >= v9) && (v11 >= v9 || v10 <= v9))
+        v11 = *(self + 36);
+        if ((v11 <= _resumptionRate || v10 >= _resumptionRate) && (v11 >= _resumptionRate || v10 <= _resumptionRate))
         {
-          v12 = v10 - v9;
-          v13 = *(a1 + 24);
+          v12 = v10 - _resumptionRate;
+          v13 = *(self + 24);
           objc_opt_self();
           [v13 syntheticFriction];
           v15 = v14;
 
-          v8 = v9 + (v15 * v12);
+          v8 = _resumptionRate + (v15 * v12);
 LABEL_18:
-          *(a1 + 32) = v8;
-          [(AVScrubbingGestureController *)a1 _seekForScrubIncrement];
+          *(self + 32) = v8;
+          [(AVScrubbingGestureController *)self _seekForScrubIncrement];
           return;
         }
       }
 
-      [(AVScrubbingGestureController *)a1 _endScrubbingAndResetState];
+      [(AVScrubbingGestureController *)self _endScrubbingAndResetState];
     }
   }
 }
 
 - (void)_endScrubbingAndResetState
 {
-  if (a1 && ([a1 state] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if (self && ([self state] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v4 = [a1 playerController];
-    v2 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    playerController = [self playerController];
+    v2 = *(self + 24);
+    *(self + 24) = 0;
 
-    [(AVScrubbingGestureController *)a1 _endScrubbingForPlayerController:v4];
-    [*(a1 + 48) invalidate];
-    v3 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    [(AVScrubbingGestureController *)self _endScrubbingForPlayerController:playerController];
+    [*(self + 48) invalidate];
+    v3 = *(self + 48);
+    *(self + 48) = 0;
 
-    *(a1 + 32) = 0;
-    [*(a1 + 64) avkit_setWebKitSeekToTime:NAN];
-    [*(a1 + 64) avkit_setWebKitIsScrubbing:0];
-    [(AVScrubbingGestureController *)a1 _updateStateTo:?];
+    *(self + 32) = 0;
+    [*(self + 64) avkit_setWebKitSeekToTime:NAN];
+    [*(self + 64) avkit_setWebKitIsScrubbing:0];
+    [(AVScrubbingGestureController *)self _updateStateTo:?];
   }
 }
 
-- (void)_endScrubbingForPlayerController:(uint64_t)a1
+- (void)_endScrubbingForPlayerController:(uint64_t)controller
 {
-  if (a1)
+  if (controller)
   {
     v3 = a2;
-    [v3 endScrubbing:a1];
+    [v3 endScrubbing:controller];
     [v3 avkit_setWebKitIsScrubbing:0];
     [v3 endPlaybackSuspension];
 
-    *(a1 + 56) = 0;
+    *(controller + 56) = 0;
   }
 }
 
 - (uint64_t)_seekForScrubIncrement
 {
-  v2 = [a1 playerController];
-  v3 = v2;
-  if (v2)
+  playerController = [self playerController];
+  v3 = playerController;
+  if (playerController)
   {
-    v24 = v2;
-    v2 = [v2 canSeek];
+    v24 = playerController;
+    playerController = [playerController canSeek];
     v3 = v24;
-    if (v2)
+    if (playerController)
     {
-      v4 = [(AVScrubbingGestureController *)a1 _targetTime];
-      if (*(a1 + 72) == 3 || ![*(a1 + 24) linearSeeking] || (objc_msgSend(*(a1 + 8), "translation"), v6 == 0.0) && v5 == 0.0)
+      _targetTime = [(AVScrubbingGestureController *)self _targetTime];
+      if (*(self + 72) == 3 || ![*(self + 24) linearSeeking] || (objc_msgSend(*(self + 8), "translation"), v6 == 0.0) && v5 == 0.0)
       {
-        v7 = *(a1 + 32) * 0.0166666667;
+        v7 = *(self + 32) * 0.0166666667;
         v8 = fabs(v7 * 0.5);
-        v9 = v4 + v7;
+        v9 = _targetTime + v7;
       }
 
       else
       {
-        [*(a1 + 8) translation];
-        v17 = v16 - *(a1 + 40) + *(a1 + 44);
+        [*(self + 8) translation];
+        v17 = v16 - *(self + 40) + *(self + 44);
         [v24 minTime];
         v19 = v18;
         [v24 maxTime];
@@ -367,28 +367,28 @@ LABEL_18:
       }
 
       [v24 seekToTime:v9 toleranceBefore:v8 toleranceAfter:v8];
-      v2 = [v24 avkit_setWebKitSeekToTime:v9];
+      playerController = [v24 avkit_setWebKitSeekToTime:v9];
       v3 = v24;
     }
   }
 
-  return MEMORY[0x1EEE66BB8](v2, v3);
+  return MEMORY[0x1EEE66BB8](playerController, v3);
 }
 
 - (double)_targetTime
 {
-  v1 = [a1 playerController];
-  if ([v1 avkit_isAVPlayerControllerOrSubclass])
+  playerController = [self playerController];
+  if ([playerController avkit_isAVPlayerControllerOrSubclass])
   {
-    [v1 seekToTime];
-    if ([v1 isSeeking])
+    [playerController seekToTime];
+    if ([playerController isSeeking])
     {
-      [v1 seekToTime];
+      [playerController seekToTime];
     }
 
     else
     {
-      [v1 currentTimeWithinEndTimes];
+      [playerController currentTimeWithinEndTimes];
     }
 
     v4 = v2;
@@ -396,20 +396,20 @@ LABEL_18:
 
   else
   {
-    [v1 avkit_webkitSeekToTime];
+    [playerController avkit_webkitSeekToTime];
     v4 = v3;
   }
 
   return v4;
 }
 
-- (void)scrubbingGesturePlatformAdapterDidContinueScrubbing:(id)a3
+- (void)scrubbingGesturePlatformAdapterDidContinueScrubbing:(id)scrubbing
 {
   if (self && (self->_initialNormalizedTouchTranslation == 0.0 || self->_initialNormalizedTimelinePosition == 0.0))
   {
-    v4 = [(AVScrubbingGestureController *)self _targetTime];
+    _targetTime = [(AVScrubbingGestureController *)self _targetTime];
     [(AVPlayerController *)self->_playerController maxTime];
-    *&v5 = v4 / v5;
+    *&v5 = _targetTime / v5;
     self->_initialNormalizedTimelinePosition = *&v5;
     [(AVScrubbingGesturePlatformAdapter *)self->_platformAdapter translation];
     *&v6 = v6;
@@ -419,7 +419,7 @@ LABEL_18:
   [(AVScrubbingGestureController *)self _performScrubIncrement];
 }
 
-- (void)scrubbingGesturePlatformAdapterDidBeginScrubbing:(id)a3
+- (void)scrubbingGesturePlatformAdapterDidBeginScrubbing:(id)scrubbing
 {
   if (![(AVScrubbingGestureController *)self state]&& [(AVScrubbingGestureController *)self state]== 2)
   {
@@ -431,9 +431,9 @@ LABEL_18:
     }
   }
 
-  v5 = [(AVScrubbingGestureController *)self playerController];
-  v6 = v5;
-  if (v5 && [v5 canSeek])
+  playerController = [(AVScrubbingGestureController *)self playerController];
+  v6 = playerController;
+  if (playerController && [playerController canSeek])
   {
     if ([(AVScrubbingGestureController *)self state]== 3)
     {
@@ -463,14 +463,14 @@ LABEL_18:
   }
 }
 
-- (id)configurationForScrubbingGesturePlatformAdapter:(id)a3
+- (id)configurationForScrubbingGesturePlatformAdapter:(id)adapter
 {
   if (self && !self->_gestureConfiguration)
   {
-    v4 = [(AVScrubbingGestureController *)self delegate];
+    delegate = [(AVScrubbingGestureController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 configurationForScrubbingGestureController:self];
+      v5 = [delegate configurationForScrubbingGestureController:self];
     }
 
     if (!self->_gestureConfiguration)
@@ -486,12 +486,12 @@ LABEL_18:
   return [(AVScrubbingGestureConfiguration *)v8 platformConfiguration];
 }
 
-- (void)setScrubsHaveMomentum:(BOOL)a3
+- (void)setScrubsHaveMomentum:(BOOL)momentum
 {
-  if (self->_scrubsHaveMomentum != a3)
+  if (self->_scrubsHaveMomentum != momentum)
   {
-    self->_scrubsHaveMomentum = a3;
-    if (!a3 && [(AVScrubbingGestureController *)self state]== 3)
+    self->_scrubsHaveMomentum = momentum;
+    if (!momentum && [(AVScrubbingGestureController *)self state]== 3)
     {
 
       [(AVScrubbingGestureController *)self _endScrubbingAndResetState];
@@ -499,23 +499,23 @@ LABEL_18:
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
-  if (self->_playerController != v5)
+  controllerCopy = controller;
+  if (self->_playerController != controllerCopy)
   {
-    v6 = v5;
+    v6 = controllerCopy;
     [(AVScrubbingGestureController *)self _endScrubbingAndResetState];
-    objc_storeStrong(&self->_playerController, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_playerController, controller);
+    controllerCopy = v6;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(AVScrubbingGestureController *)&self->super.isa _updateAdapterState];
   }
 }
@@ -530,20 +530,20 @@ LABEL_18:
   v1 = result;
   if ([result enabled])
   {
-    v2 = [v1 playerController];
-    if (v2)
+    playerController = [v1 playerController];
+    if (playerController)
     {
-      v3 = [v1 playerController];
-      v4 = [v3 canSeek];
+      playerController2 = [v1 playerController];
+      canSeek = [playerController2 canSeek];
     }
 
     else
     {
-      v4 = 0;
+      canSeek = 0;
     }
 
     v5 = v1 + 1;
-    if (v4 == [v1[1] gestureEnabled])
+    if (canSeek == [v1[1] gestureEnabled])
     {
       goto LABEL_7;
     }
@@ -552,7 +552,7 @@ LABEL_18:
   }
 
   v5 = v1 + 1;
-  v4 = 0;
+  canSeek = 0;
   if ([v1[1] gestureEnabled])
   {
 LABEL_6:
@@ -562,15 +562,15 @@ LABEL_6:
 LABEL_7:
   v6 = *v5;
 
-  return [v6 setGestureEnabled:v4];
+  return [v6 setGestureEnabled:canSeek];
 }
 
 - (void)dealloc
 {
-  v3 = [(AVScrubbingGestureController *)self playerController];
+  playerController = [(AVScrubbingGestureController *)self playerController];
   if (([(AVScrubbingGestureController *)self state]& 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [(AVScrubbingGestureController *)self _endScrubbingForPlayerController:v3];
+    [(AVScrubbingGestureController *)self _endScrubbingForPlayerController:playerController];
     if (self)
     {
       [(NSTimer *)self->_scrubMomentumIncrementTimer invalidate];
@@ -590,9 +590,9 @@ LABEL_7:
   [(AVScrubbingGestureController *)&v5 dealloc];
 }
 
-- (AVScrubbingGestureController)initWithPlatformAdapter:(id)a3
+- (AVScrubbingGestureController)initWithPlatformAdapter:(id)adapter
 {
-  v5 = a3;
+  adapterCopy = adapter;
   v12.receiver = self;
   v12.super_class = AVScrubbingGestureController;
   v6 = [(AVScrubbingGestureController *)&v12 init];
@@ -600,7 +600,7 @@ LABEL_7:
   if (v6)
   {
     v6->_state = 1;
-    objc_storeStrong(&v6->_platformAdapter, a3);
+    objc_storeStrong(&v6->_platformAdapter, adapter);
     [(AVScrubbingGesturePlatformAdapter *)v7->_platformAdapter setDelegate:v7];
     v8 = [[AVObservationController alloc] initWithOwner:v7];
     observationController = v7->_observationController;

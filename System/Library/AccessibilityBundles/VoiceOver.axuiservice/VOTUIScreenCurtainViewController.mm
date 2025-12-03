@@ -1,19 +1,19 @@
 @interface VOTUIScreenCurtainViewController
-- (void)_updateScreenCurtainForInvertColors:(id)a3;
+- (void)_updateScreenCurtainForInvertColors:(id)colors;
 - (void)removeFromParentViewController;
-- (void)setEnabled:(BOOL)a3 animate:(BOOL)a4;
+- (void)setEnabled:(BOOL)enabled animate:(BOOL)animate;
 - (void)viewDidLoad;
 @end
 
 @implementation VOTUIScreenCurtainViewController
 
-- (void)setEnabled:(BOOL)a3 animate:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animate:(BOOL)animate
 {
   enabled = self->_enabled;
-  if (enabled && !a3)
+  if (enabled && !enabled)
   {
     v7 = 0.3;
-    if (!a4)
+    if (!animate)
     {
       v7 = 0.0;
     }
@@ -22,17 +22,17 @@
     v15 = 3221225472;
     v16 = sub_11820;
     v17 = &unk_3D218;
-    v18 = self;
+    selfCopy = self;
     v8 = &v14;
 LABEL_11:
-    [UIView animateWithDuration:v8 animations:v7, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18];
+    [UIView animateWithDuration:v8 animations:v7, v9, v10, v11, v12, selfCopy2, v14, v15, v16, v17, selfCopy];
     goto LABEL_12;
   }
 
-  if (a3 && !enabled)
+  if (enabled && !enabled)
   {
     v7 = 0.3;
-    if (!a4)
+    if (!animate)
     {
       v7 = 0.0;
     }
@@ -41,14 +41,14 @@ LABEL_11:
     v10 = 3221225472;
     v11 = sub_11868;
     v12 = &unk_3D218;
-    v13 = self;
+    selfCopy2 = self;
     v8 = &v9;
     goto LABEL_11;
   }
 
 LABEL_12:
-  self->_enabled = a3;
-  [(VOTUIScreenCurtainViewController *)self _updateScreenCurtainForInvertColors:0, a4];
+  self->_enabled = enabled;
+  [(VOTUIScreenCurtainViewController *)self _updateScreenCurtainForInvertColors:0, animate];
 }
 
 - (void)removeFromParentViewController
@@ -60,18 +60,18 @@ LABEL_12:
   [v3 removeObserver:self];
 
   v4 = +[AXSpringBoardServer server];
-  v5 = [(VOTUIScreenCurtainViewController *)self screenshotActionHandlerIdentifier];
-  [v4 removeActionHandler:v5];
+  screenshotActionHandlerIdentifier = [(VOTUIScreenCurtainViewController *)self screenshotActionHandlerIdentifier];
+  [v4 removeActionHandler:screenshotActionHandlerIdentifier];
 }
 
-- (void)_updateScreenCurtainForInvertColors:(id)a3
+- (void)_updateScreenCurtainForInvertColors:(id)colors
 {
   if (!self->_enabled)
   {
     return;
   }
 
-  v4 = self;
+  selfCopy = self;
   if (AXIsInternalInstall())
   {
     if (CFPreferencesGetAppBooleanValue(@"UseAlpha1ScreenCurtain", kAXSAccessibilityPreferenceDomain, 0))
@@ -90,12 +90,12 @@ LABEL_12:
     v5 = 0.999999881;
   }
 
-  v9 = [v4 curtainView];
+  curtainView = [selfCopy curtainView];
   IsInvertColorsEnabled = UIAccessibilityIsInvertColorsEnabled();
-  if (IsInvertColorsEnabled || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), ([v4 classicInvertColors] & 1) != 0))
+  if (IsInvertColorsEnabled || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), selfCopy = objc_claimAutoreleasedReturnValue(), ([selfCopy classicInvertColors] & 1) != 0))
   {
     v7 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:v5];
-    [v9 setBackgroundColor:v7];
+    [curtainView setBackgroundColor:v7];
 
     if (IsInvertColorsEnabled)
     {
@@ -106,7 +106,7 @@ LABEL_12:
   else
   {
     v8 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:v5];
-    [v9 setBackgroundColor:v8];
+    [curtainView setBackgroundColor:v8];
   }
 
 LABEL_14:
@@ -121,20 +121,20 @@ LABEL_14:
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(VOTUIScreenCurtainViewController *)self setView:v7];
 
-  v8 = [(VOTUIScreenCurtainViewController *)self view];
-  [v8 setAutoresizingMask:18];
+  view = [(VOTUIScreenCurtainViewController *)self view];
+  [view setAutoresizingMask:18];
 
-  v9 = [(VOTUIScreenCurtainViewController *)self view];
-  [v9 autoresizesSubviews];
+  view2 = [(VOTUIScreenCurtainViewController *)self view];
+  [view2 autoresizesSubviews];
 
-  v10 = [[VOTUIScreenCurtainView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(VOTUIScreenCurtainViewController *)self setCurtainView:v10];
+  height = [[VOTUIScreenCurtainView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(VOTUIScreenCurtainViewController *)self setCurtainView:height];
 
-  v11 = [(VOTUIScreenCurtainViewController *)self curtainView];
-  [v11 setAutoresizingMask:18];
+  curtainView = [(VOTUIScreenCurtainViewController *)self curtainView];
+  [curtainView setAutoresizingMask:18];
 
-  v12 = [(VOTUIScreenCurtainViewController *)self curtainView];
-  [v12 setUserInteractionEnabled:0];
+  curtainView2 = [(VOTUIScreenCurtainViewController *)self curtainView];
+  [curtainView2 setUserInteractionEnabled:0];
 
   if (self->_enabled)
   {
@@ -148,23 +148,23 @@ LABEL_14:
 
   else
   {
-    v13 = [(VOTUIScreenCurtainViewController *)self curtainView];
-    [v13 setAlpha:0.0];
+    curtainView3 = [(VOTUIScreenCurtainViewController *)self curtainView];
+    [curtainView3 setAlpha:0.0];
   }
 
-  v14 = [(VOTUIScreenCurtainViewController *)self view];
-  v15 = [(VOTUIScreenCurtainViewController *)self curtainView];
-  [v14 addSubview:v15];
+  view3 = [(VOTUIScreenCurtainViewController *)self view];
+  curtainView4 = [(VOTUIScreenCurtainViewController *)self curtainView];
+  [view3 addSubview:curtainView4];
 
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = sub_11EBC;
   v24[4] = sub_11ECC;
-  v16 = self;
-  v25 = v16;
+  selfCopy = self;
+  v25 = selfCopy;
   v17 = +[AXSpringBoardServer server];
-  v22[4] = v16;
+  v22[4] = selfCopy;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_11ED4;
@@ -182,12 +182,12 @@ LABEL_14:
   v21[2] = sub_11FB4;
   v21[3] = &unk_3D1A0;
   v21[4] = v24;
-  [v18 registerUpdateBlock:v21 forRetrieveSelector:"classicInvertColors" withListener:v16];
+  [v18 registerUpdateBlock:v21 forRetrieveSelector:"classicInvertColors" withListener:selfCopy];
 
   v19 = +[NSNotificationCenter defaultCenter];
-  [v19 addObserver:v16 selector:"_updateScreenCurtainForInvertColors:" name:UIAccessibilityInvertColorsStatusDidChangeNotification object:0];
+  [v19 addObserver:selfCopy selector:"_updateScreenCurtainForInvertColors:" name:UIAccessibilityInvertColorsStatusDidChangeNotification object:0];
 
-  v20.receiver = v16;
+  v20.receiver = selfCopy;
   v20.super_class = VOTUIScreenCurtainViewController;
   [(VOTUIScreenCurtainViewController *)&v20 viewDidLoad];
   _Block_object_dispose(v24, 8);

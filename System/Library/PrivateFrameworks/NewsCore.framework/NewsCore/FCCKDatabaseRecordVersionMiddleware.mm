@@ -1,28 +1,28 @@
 @interface FCCKDatabaseRecordVersionMiddleware
-- (id)clientToServerRecord:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-- (id)serverToClientRecord:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5;
+- (id)clientToServerRecord:(id)record inDatabase:(id)database error:(id *)error;
+- (id)serverToClientRecord:(id)record inDatabase:(id)database error:(id *)error;
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error;
 @end
 
 @implementation FCCKDatabaseRecordVersionMiddleware
 
-- (id)serverToClientRecord:(id)a3 inDatabase:(id)a4 error:(id *)a5
+- (id)serverToClientRecord:(id)record inDatabase:(id)database error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"readerMinimumRequiredVersion"];
+  recordCopy = record;
+  v6 = [recordCopy objectForKeyedSubscript:@"readerMinimumRequiredVersion"];
   v7 = v6;
-  v8 = v5;
+  v8 = recordCopy;
   if (v6)
   {
-    v8 = v5;
+    v8 = recordCopy;
     if ([v6 integerValue] >= 2)
     {
       v9 = FCPrivateDataEncryptionLog;
       if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412546;
-        v14 = v5;
+        v14 = recordCopy;
         v15 = 2112;
         v16 = &unk_1F2E6FF18;
         _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "Cannot handle version due minimumRequiredVersion {Record: %@, readingVersion: %@}", &v13, 0x16u);
@@ -38,36 +38,36 @@
   return v8;
 }
 
-- (id)clientToServerRecord:(id)a3 inDatabase:(id)a4 error:(id *)a5
+- (id)clientToServerRecord:(id)record inDatabase:(id)database error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"writerVersionHighWatermark"];
+  recordCopy = record;
+  v6 = [recordCopy objectForKeyedSubscript:@"writerVersionHighWatermark"];
   v7 = v6;
   if (!v6 || [v6 integerValue] <= 0)
   {
-    [v5 setObject:&unk_1F2E6FF18 forKeyedSubscript:@"writerVersionHighWatermark"];
+    [recordCopy setObject:&unk_1F2E6FF18 forKeyedSubscript:@"writerVersionHighWatermark"];
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"readerMinimumRequiredVersion"];
+  v8 = [recordCopy objectForKeyedSubscript:@"readerMinimumRequiredVersion"];
   if (!v8)
   {
-    [v5 setObject:&unk_1F2E6FF18 forKeyedSubscript:@"readerMinimumRequiredVersion"];
+    [recordCopy setObject:&unk_1F2E6FF18 forKeyedSubscript:@"readerMinimumRequiredVersion"];
   }
 
-  return v5;
+  return recordCopy;
 }
 
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  operationCopy = operation;
   objc_opt_class();
-  v22 = v5;
-  if (v5)
+  v22 = operationCopy;
+  if (operationCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = operationCopy;
     }
 
     else
@@ -86,8 +86,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [v7 recordZoneIDs];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  recordZoneIDs = [v7 recordZoneIDs];
+  v9 = [recordZoneIDs countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -98,17 +98,17 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(recordZoneIDs);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v7 configurationsByRecordZoneID];
-        v15 = [v14 objectForKey:v13];
+        configurationsByRecordZoneID = [v7 configurationsByRecordZoneID];
+        v15 = [configurationsByRecordZoneID objectForKey:v13];
 
         if (v15)
         {
-          v16 = [v15 desiredKeys];
-          v17 = [v16 mutableCopy];
+          desiredKeys = [v15 desiredKeys];
+          v17 = [desiredKeys mutableCopy];
 
           if (v17)
           {
@@ -123,7 +123,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v10 = [recordZoneIDs countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v10);

@@ -13,8 +13,8 @@
   if (v4)
   {
     v6 = +[TPSCloudController sharedInstance];
-    v7 = [v6 _listDisplayContentIDs];
-    NSLog(@"%@", v7);
+    _listDisplayContentIDs = [v6 _listDisplayContentIDs];
+    NSLog(@"%@", _listDisplayContentIDs);
   }
 
   v8 = [v2 stringForKey:@"clearKVS"];

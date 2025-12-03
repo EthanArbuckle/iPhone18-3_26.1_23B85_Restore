@@ -8,16 +8,16 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   ContextHeuristicsScheduler.start()();
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   sub_2267CD83C();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(ATXContextHeuristicsScheduler *)&v5 dealloc];
 }

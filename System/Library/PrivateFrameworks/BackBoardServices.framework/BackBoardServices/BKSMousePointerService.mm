@@ -6,31 +6,31 @@
 - (CGPoint)globalPointerPosition;
 - (CGPoint)normalizedGlobalPointerPosition;
 - (id)_init;
-- (id)_locked_infoForDisplayUUID:(id)a3 createIfNeeded:(BOOL)a4;
+- (id)_locked_infoForDisplayUUID:(id)d createIfNeeded:(BOOL)needed;
 - (id)_locked_serverTarget;
 - (id)_unlocked_serverTarget;
-- (id)addPointerDeviceObserver:(id)a3;
-- (id)addPointerPreferencesObserver:(id)a3;
-- (id)pointerSuppressionAssertionOnDisplay:(id)a3 forReason:(id)a4 withOptionsMask:(unint64_t)a5;
-- (id)preferencesForDevice:(id)a3;
-- (void)_activateServerConnection:(id)a3;
-- (void)_locked_pointingDevicesDidChange:(id)a3;
+- (id)addPointerDeviceObserver:(id)observer;
+- (id)addPointerPreferencesObserver:(id)observer;
+- (id)pointerSuppressionAssertionOnDisplay:(id)display forReason:(id)reason withOptionsMask:(unint64_t)mask;
+- (id)preferencesForDevice:(id)device;
+- (void)_activateServerConnection:(id)connection;
+- (void)_locked_pointingDevicesDidChange:(id)change;
 - (void)_locked_reactivateConnection;
-- (void)_locked_sendCurrentAssertionParameters:(id)a3 forDisplayUUID:(id)a4;
-- (void)_locked_setMousePointerDeviceObservationEnabled:(BOOL)a3;
-- (void)_locked_setMousePointerPreferencesObservationEnabled:(BOOL)a3;
-- (void)_locked_updateEventRoutesFromContext:(id)a3 forDisplayUUID:(id)a4;
-- (void)_locked_updateObserver:(id)a3 withPointingDevices:(id)a4;
+- (void)_locked_sendCurrentAssertionParameters:(id)parameters forDisplayUUID:(id)d;
+- (void)_locked_setMousePointerDeviceObservationEnabled:(BOOL)enabled;
+- (void)_locked_setMousePointerPreferencesObservationEnabled:(BOOL)enabled;
+- (void)_locked_updateEventRoutesFromContext:(id)context forDisplayUUID:(id)d;
+- (void)_locked_updateObserver:(id)observer withPointingDevices:(id)devices;
 - (void)_locked_updateServerWithPointerDeviceObservationState;
 - (void)_locked_updateServerWithPreferencesObservationState;
 - (void)dealloc;
-- (void)getHitTestContextsAtPoint:(id)a3 withAdditionalContexts:(id)a4 onDisplay:(id)a5 withCompletion:(id)a6;
-- (void)pointerGlobalDevicePreferencesDidChange:(id)a3;
-- (void)pointingDevicesDidChange:(id)a3;
-- (void)setGlobalDevicePreferences:(id)a3;
-- (void)setGlobalPointerPosition:(CGPoint)a3;
-- (void)setPointerPosition:(CGPoint)a3 onDisplay:(id)a4 withAnimationParameters:(id)a5;
-- (void)setPreferences:(id)a3 forDevice:(id)a4;
+- (void)getHitTestContextsAtPoint:(id)point withAdditionalContexts:(id)contexts onDisplay:(id)display withCompletion:(id)completion;
+- (void)pointerGlobalDevicePreferencesDidChange:(id)change;
+- (void)pointingDevicesDidChange:(id)change;
+- (void)setGlobalDevicePreferences:(id)preferences;
+- (void)setGlobalPointerPosition:(CGPoint)position;
+- (void)setPointerPosition:(CGPoint)position onDisplay:(id)display withAnimationParameters:(id)parameters;
+- (void)setPreferences:(id)preferences forDevice:(id)device;
 @end
 
 @implementation BKSMousePointerService
@@ -86,8 +86,8 @@ uint64_t __40__BKSMousePointerService_sharedInstance__block_invoke()
 
     v14 = +[BKSHIDServiceConnectionFactory sharedInstance];
     v15 = +[BKSMousePointerServiceSessionSpecification identifier];
-    v16 = [MEMORY[0x1E698F4E0] userInteractiveMultiplexer];
-    v17 = [v14 clientConnectionForServiceWithName:v15 multiplexer:v16];
+    userInteractiveMultiplexer = [MEMORY[0x1E698F4E0] userInteractiveMultiplexer];
+    v17 = [v14 clientConnectionForServiceWithName:v15 multiplexer:userInteractiveMultiplexer];
 
     [(BKSMousePointerService *)v9 _activateServerConnection:v17];
   }
@@ -99,9 +99,9 @@ uint64_t __40__BKSMousePointerService_sharedInstance__block_invoke()
 {
   os_unfair_lock_assert_owner(&self->_lock);
   isObservingDeviceConnection = self->_isObservingDeviceConnection;
-  v4 = [(BKSMousePointerService *)self _locked_serverTarget];
+  _locked_serverTarget = [(BKSMousePointerService *)self _locked_serverTarget];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:isObservingDeviceConnection];
-  v6 = [v4 setMousePointerDeviceObservationEnabled:v5];
+  v6 = [_locked_serverTarget setMousePointerDeviceObservationEnabled:v5];
 
   if (isObservingDeviceConnection)
   {
@@ -117,14 +117,14 @@ uint64_t __40__BKSMousePointerService_sharedInstance__block_invoke()
   return [(BSServiceInitiatingConnection *)connection remoteTarget];
 }
 
-- (void)pointerGlobalDevicePreferencesDidChange:(id)a3
+- (void)pointerGlobalDevicePreferencesDidChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BSCompoundAssertion *)self->_preferencesObservers context];
-  v6 = [v5 copy];
+  context = [(BSCompoundAssertion *)self->_preferencesObservers context];
+  v6 = [context copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v16 = 0u;
@@ -147,8 +147,8 @@ uint64_t __40__BKSMousePointerService_sharedInstance__block_invoke()
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) observer];
-        [v12 mousePointerGlobalDevicePreferencesDidChange:v4];
+        observer = [*(*(&v14 + 1) + 8 * v11) observer];
+        [observer mousePointerGlobalDevicePreferencesDidChange:changeCopy];
 
         ++v11;
       }
@@ -163,24 +163,24 @@ uint64_t __40__BKSMousePointerService_sharedInstance__block_invoke()
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pointingDevicesDidChange:(id)a3
+- (void)pointingDevicesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(BKSMousePointerService *)self _locked_pointingDevicesDidChange:v4];
+  [(BKSMousePointerService *)self _locked_pointingDevicesDidChange:changeCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_activateServerConnection:(id)a3
+- (void)_activateServerConnection:(id)connection
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&self->_connection, connection);
     connection = self->_connection;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -198,7 +198,7 @@ uint64_t __40__BKSMousePointerService_sharedInstance__block_invoke()
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    [v5 activate];
+    [connectionCopy activate];
   }
 
   else
@@ -303,24 +303,24 @@ void __54__BKSMousePointerService__locked_reactivateConnection__block_invoke(uin
   }
 }
 
-- (void)_locked_updateEventRoutesFromContext:(id)a3 forDisplayUUID:(id)a4
+- (void)_locked_updateEventRoutesFromContext:(id)context forDisplayUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BKSMousePointerService *)self _locked_serverTarget];
-  v8 = [v7 context];
+  dCopy = d;
+  contextCopy = context;
+  _locked_serverTarget = [(BKSMousePointerService *)self _locked_serverTarget];
+  context = [contextCopy context];
 
-  [v9 setGlobalPointerEventRoutes:v8 forDisplay:v6];
+  [_locked_serverTarget setGlobalPointerEventRoutes:context forDisplay:dCopy];
 }
 
-- (void)_locked_sendCurrentAssertionParameters:(id)a3 forDisplayUUID:(id)a4
+- (void)_locked_sendCurrentAssertionParameters:(id)parameters forDisplayUUID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 context];
-  v9 = [v7 bs_reduce:&unk_1EF56BEE0 block:&__block_literal_global_136_5332];
+  dCopy = d;
+  context = [parameters context];
+  v9 = [context bs_reduce:&unk_1EF56BEE0 block:&__block_literal_global_136_5332];
 
-  v8 = [(BKSMousePointerService *)self _locked_serverTarget];
-  [v8 applyAssertionParametersOnDisplay:v6 withOptionsMask:v9];
+  _locked_serverTarget = [(BKSMousePointerService *)self _locked_serverTarget];
+  [_locked_serverTarget applyAssertionParametersOnDisplay:dCopy withOptionsMask:v9];
 }
 
 uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_forDisplayUUID___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -333,12 +333,12 @@ uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_for
   return [v4 numberWithUnsignedInteger:v7 | v6];
 }
 
-- (id)_locked_infoForDisplayUUID:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_locked_infoForDisplayUUID:(id)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
+  neededCopy = needed;
+  dCopy = d;
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_displayUUIDToPerDisplayInfo objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_displayUUIDToPerDisplayInfo objectForKeyedSubscript:dCopy];
   if (v7)
   {
     v8 = 1;
@@ -346,7 +346,7 @@ uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_for
 
   else
   {
-    v8 = !v4;
+    v8 = !neededCopy;
   }
 
   if (!v8)
@@ -362,19 +362,19 @@ uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_for
       displayUUIDToPerDisplayInfo = self->_displayUUIDToPerDisplayInfo;
     }
 
-    [(NSMutableDictionary *)displayUUIDToPerDisplayInfo setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)displayUUIDToPerDisplayInfo setObject:v7 forKeyedSubscript:dCopy];
   }
 
   return v7;
 }
 
-- (void)_locked_setMousePointerPreferencesObservationEnabled:(BOOL)a3
+- (void)_locked_setMousePointerPreferencesObservationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_isObservingPreferences != v3)
+  if (self->_isObservingPreferences != enabledCopy)
   {
-    self->_isObservingPreferences = v3;
+    self->_isObservingPreferences = enabledCopy;
 
     [(BKSMousePointerService *)self _locked_updateServerWithPreferencesObservationState];
   }
@@ -383,29 +383,29 @@ uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_for
 - (void)_locked_updateServerWithPreferencesObservationState
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v4 = [(BKSMousePointerService *)self _locked_serverTarget];
+  _locked_serverTarget = [(BKSMousePointerService *)self _locked_serverTarget];
   v3 = [MEMORY[0x1E696AD98] numberWithBool:self->_isObservingPreferences];
-  [v4 setMousePointerPreferenceObservationEnabled:v3];
+  [_locked_serverTarget setMousePointerPreferenceObservationEnabled:v3];
 }
 
-- (void)_locked_setMousePointerDeviceObservationEnabled:(BOOL)a3
+- (void)_locked_setMousePointerDeviceObservationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_isObservingDeviceConnection != v3)
+  if (self->_isObservingDeviceConnection != enabledCopy)
   {
-    self->_isObservingDeviceConnection = v3;
+    self->_isObservingDeviceConnection = enabledCopy;
 
     [(BKSMousePointerService *)self _locked_updateServerWithPointerDeviceObservationState];
   }
 }
 
-- (void)_locked_pointingDevicesDidChange:(id)a3
+- (void)_locked_pointingDevicesDidChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [changeCopy copy];
   attachedDevices = self->_attachedDevices;
   self->_attachedDevices = v5;
 
@@ -413,8 +413,8 @@ uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_for
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(BSCompoundAssertion *)self->_deviceConnectionObservers context];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  context = [(BSCompoundAssertion *)self->_deviceConnectionObservers context];
+  v8 = [context countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -426,14 +426,14 @@ uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_for
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(context);
         }
 
-        [(BKSMousePointerService *)self _locked_updateObserver:*(*(&v13 + 1) + 8 * v11++) withPointingDevices:v4];
+        [(BKSMousePointerService *)self _locked_updateObserver:*(*(&v13 + 1) + 8 * v11++) withPointingDevices:changeCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [context countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -442,86 +442,86 @@ uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_for
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_locked_updateObserver:(id)a3 withPointingDevices:(id)a4
+- (void)_locked_updateObserver:(id)observer withPointingDevices:(id)devices
 {
-  v19 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  devicesCopy = devices;
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [v19 visibleDevices];
-  v8 = [v6 mutableCopy];
-  if ([v7 count])
+  visibleDevices = [observerCopy visibleDevices];
+  v8 = [devicesCopy mutableCopy];
+  if ([visibleDevices count])
   {
-    [v8 minusSet:v7];
+    [v8 minusSet:visibleDevices];
   }
 
   if ([v8 count])
   {
-    v9 = [v19 observer];
+    observer = [observerCopy observer];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [v19 observer];
-      [v11 mousePointerDevicesDidConnect:v8];
+      observer2 = [observerCopy observer];
+      [observer2 mousePointerDevicesDidConnect:v8];
     }
   }
 
-  v12 = [v7 mutableCopy];
-  [v12 minusSet:v6];
+  v12 = [visibleDevices mutableCopy];
+  [v12 minusSet:devicesCopy];
   if ([v12 count])
   {
-    v13 = [v19 observer];
+    observer3 = [observerCopy observer];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [v19 observer];
-      [v15 mousePointerDevicesDidDisconnect:v12];
+      observer4 = [observerCopy observer];
+      [observer4 mousePointerDevicesDidDisconnect:v12];
     }
   }
 
-  v16 = [v19 observer];
+  observer5 = [observerCopy observer];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [v19 observer];
-    [v18 mousePointerDevicesDidChange:v6];
+    observer6 = [observerCopy observer];
+    [observer6 mousePointerDevicesDidChange:devicesCopy];
   }
 
-  [v19 setVisibleDevices:v6];
+  [observerCopy setVisibleDevices:devicesCopy];
 }
 
 - (id)_unlocked_serverTarget
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
+  remoteTarget = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return remoteTarget;
 }
 
-- (void)setPreferences:(id)a3 forDevice:(id)a4
+- (void)setPreferences:(id)preferences forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKSMousePointerService *)self _unlocked_serverTarget];
-  [v8 setPreferences:v7 forDevice:v6];
+  deviceCopy = device;
+  preferencesCopy = preferences;
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  [_unlocked_serverTarget setPreferences:preferencesCopy forDevice:deviceCopy];
 }
 
-- (id)preferencesForDevice:(id)a3
+- (id)preferencesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(BKSMousePointerService *)self _unlocked_serverTarget];
-  v6 = [v5 preferencesForDevice:v4];
+  deviceCopy = device;
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  v6 = [_unlocked_serverTarget preferencesForDevice:deviceCopy];
 
   return v6;
 }
 
-- (id)addPointerPreferencesObserver:(id)a3
+- (id)addPointerPreferencesObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_preferencesObservers)
   {
@@ -542,10 +542,10 @@ uint64_t __80__BKSMousePointerService__locked_sendCurrentAssertionParameters_for
 
   os_unfair_lock_unlock(&self->_lock);
   v8 = objc_alloc_init(BKSMousePointerPreferencesObserverInfo);
-  [(BKSMousePointerPreferencesObserverInfo *)v8 setObserver:v4];
+  [(BKSMousePointerPreferencesObserverInfo *)v8 setObserver:observerCopy];
   v9 = self->_preferencesObservers;
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v4];
-  v11 = [(BSCompoundAssertion *)v9 acquireForReason:v10 withContext:v8];
+  observerCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), observerCopy];
+  v11 = [(BSCompoundAssertion *)v9 acquireForReason:observerCopy withContext:v8];
 
   return v11;
 }
@@ -563,24 +563,24 @@ void __56__BKSMousePointerService_addPointerPreferencesObserver___block_invoke(u
   }
 }
 
-- (void)setGlobalDevicePreferences:(id)a3
+- (void)setGlobalDevicePreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = [(BKSMousePointerService *)self _unlocked_serverTarget];
-  [v5 setGlobalDevicePreferences:v4];
+  preferencesCopy = preferences;
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  [_unlocked_serverTarget setGlobalDevicePreferences:preferencesCopy];
 }
 
 - (BKSMousePointerDevicePreferences)globalDevicePreferences
 {
-  v2 = [(BKSMousePointerService *)self _unlocked_serverTarget];
-  v3 = [v2 globalDevicePreferences];
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  globalDevicePreferences = [_unlocked_serverTarget globalDevicePreferences];
 
-  return v3;
+  return globalDevicePreferences;
 }
 
-- (id)addPointerDeviceObserver:(id)a3
+- (id)addPointerDeviceObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_deviceConnectionObservers)
   {
@@ -600,12 +600,12 @@ void __56__BKSMousePointerService_addPointerPreferencesObserver___block_invoke(u
   }
 
   v8 = objc_alloc_init(BKSMousePointerDeviceObserverInfo);
-  [(BKSMousePointerDeviceObserverInfo *)v8 setObserver:v4];
+  [(BKSMousePointerDeviceObserverInfo *)v8 setObserver:observerCopy];
   [(BKSMousePointerService *)self _locked_updateObserver:v8 withPointingDevices:self->_attachedDevices];
   os_unfair_lock_unlock(&self->_lock);
   v9 = self->_deviceConnectionObservers;
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), v4];
-  v11 = [(BSCompoundAssertion *)v9 acquireForReason:v10 withContext:v8];
+  observerCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), observerCopy];
+  v11 = [(BSCompoundAssertion *)v9 acquireForReason:observerCopy withContext:v8];
 
   return v11;
 }
@@ -623,14 +623,14 @@ void __51__BKSMousePointerService_addPointerDeviceObserver___block_invoke(uint64
   }
 }
 
-- (void)getHitTestContextsAtPoint:(id)a3 withAdditionalContexts:(id)a4 onDisplay:(id)a5 withCompletion:(id)a6
+- (void)getHitTestContextsAtPoint:(id)point withAdditionalContexts:(id)contexts onDisplay:(id)display withCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(BKSMousePointerService *)self _unlocked_serverTarget];
-  [v14 getHitTestContextsAtPoint:v13 withAdditionalContexts:v12 onDisplay:v11 withCompletion:v10];
+  completionCopy = completion;
+  displayCopy = display;
+  contextsCopy = contexts;
+  pointCopy = point;
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  [_unlocked_serverTarget getHitTestContextsAtPoint:pointCopy withAdditionalContexts:contextsCopy onDisplay:displayCopy withCompletion:completionCopy];
 }
 
 void __85__BKSMousePointerService_requestGlobalMouseEventsForDisplay_targetContextID_options___block_invoke(uint64_t a1, void *a2)
@@ -653,12 +653,12 @@ void __85__BKSMousePointerService_requestGlobalMouseEventsForDisplay_targetConte
   [v4 setOptions:*(a1 + 32)];
 }
 
-- (id)pointerSuppressionAssertionOnDisplay:(id)a3 forReason:(id)a4 withOptionsMask:(unint64_t)a5
+- (id)pointerSuppressionAssertionOnDisplay:(id)display forReason:(id)reason withOptionsMask:(unint64_t)mask
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!a5)
+  displayCopy = display;
+  reasonCopy = reason;
+  if (!mask)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Suppression Options must suppress something"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -671,7 +671,7 @@ void __85__BKSMousePointerService_requestGlobalMouseEventsForDisplay_targetConte
       v36 = 2114;
       v37 = v27;
       v38 = 2048;
-      v39 = self;
+      selfCopy = self;
       v40 = 2114;
       v41 = @"BKSMousePointerService.m";
       v42 = 1024;
@@ -687,10 +687,10 @@ void __85__BKSMousePointerService_requestGlobalMouseEventsForDisplay_targetConte
     JUMPOUT(0x1863809ACLL);
   }
 
-  v11 = v10;
+  v11 = reasonCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v12 = v9;
+  v12 = displayCopy;
   v13 = [(__CFString *)v12 length];
   v14 = @"<main>";
   if (v13)
@@ -701,8 +701,8 @@ void __85__BKSMousePointerService_requestGlobalMouseEventsForDisplay_targetConte
   v15 = v14;
 
   v16 = [(BKSMousePointerService *)self _locked_infoForDisplayUUID:v15 createIfNeeded:1];
-  v17 = [v16 pointerSuppressionAssertion];
-  if (!v17)
+  pointerSuppressionAssertion = [v16 pointerSuppressionAssertion];
+  if (!pointerSuppressionAssertion)
   {
     v18 = MEMORY[0x1E698E658];
     v19 = [@"mouse-pointer-suppression:" stringByAppendingString:v15];
@@ -710,17 +710,17 @@ void __85__BKSMousePointerService_requestGlobalMouseEventsForDisplay_targetConte
     v29 = 3221225472;
     v30 = __89__BKSMousePointerService_pointerSuppressionAssertionOnDisplay_forReason_withOptionsMask___block_invoke;
     v31 = &unk_1E6F46DC0;
-    v32 = self;
+    selfCopy2 = self;
     v33 = v15;
-    v17 = [v18 assertionWithIdentifier:v19 stateDidChangeHandler:&v28];
+    pointerSuppressionAssertion = [v18 assertionWithIdentifier:v19 stateDidChangeHandler:&v28];
 
-    [v16 setPointerSuppressionAssertion:{v17, v28, v29, v30, v31, v32}];
+    [v16 setPointerSuppressionAssertion:{pointerSuppressionAssertion, v28, v29, v30, v31, selfCopy2}];
   }
 
   v20 = objc_alloc_init(BKSMousePointerSuppressionAssertionDescriptor);
-  [(BKSMousePointerSuppressionAssertionDescriptor *)v20 setSuppressionOptions:a5];
+  [(BKSMousePointerSuppressionAssertionDescriptor *)v20 setSuppressionOptions:mask];
   os_unfair_lock_unlock(&self->_lock);
-  v21 = [v17 acquireForReason:v11 withContext:v20];
+  v21 = [pointerSuppressionAssertion acquireForReason:v11 withContext:v20];
 
   v22 = *MEMORY[0x1E69E9840];
 
@@ -747,32 +747,32 @@ void __137__BKSMousePointerService_acquireButtonDownPointerRepositionAssertionFo
   [v2 invalidateButtonDownPointerRepositionAssertionWithUniqueIdentifier:*(a1 + 32) onDisplay:*(a1 + 40)];
 }
 
-- (void)setPointerPosition:(CGPoint)a3 onDisplay:(id)a4 withAnimationParameters:(id)a5
+- (void)setPointerPosition:(CGPoint)position onDisplay:(id)display withAnimationParameters:(id)parameters
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  v10 = a4;
-  v12 = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  y = position.y;
+  x = position.x;
+  parametersCopy = parameters;
+  displayCopy = display;
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
   v11 = [MEMORY[0x1E696B098] bs_valueWithCGPoint:{x, y}];
-  [v12 setPointerPosition:v11 onDisplay:v10 withAnimationParameters:v9];
+  [_unlocked_serverTarget setPointerPosition:v11 onDisplay:displayCopy withAnimationParameters:parametersCopy];
 }
 
-- (void)setGlobalPointerPosition:(CGPoint)a3
+- (void)setGlobalPointerPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  y = position.y;
+  x = position.x;
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
   v5 = [MEMORY[0x1E696B098] bs_valueWithCGPoint:{x, y}];
-  [v6 setGlobalPointerPosition:v5];
+  [_unlocked_serverTarget setGlobalPointerPosition:v5];
 }
 
 - (CGPoint)normalizedGlobalPointerPosition
 {
-  v2 = [(BKSMousePointerService *)self _unlocked_serverTarget];
-  v3 = [v2 normalizedGlobalPointerPosition];
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  normalizedGlobalPointerPosition = [_unlocked_serverTarget normalizedGlobalPointerPosition];
 
-  [v3 bs_CGPointValue];
+  [normalizedGlobalPointerPosition bs_CGPointValue];
   v5 = v4;
   v7 = v6;
 
@@ -785,10 +785,10 @@ void __137__BKSMousePointerService_acquireButtonDownPointerRepositionAssertionFo
 
 - (CGPoint)globalPointerPosition
 {
-  v2 = [(BKSMousePointerService *)self _unlocked_serverTarget];
-  v3 = [v2 globalPointerPosition];
+  _unlocked_serverTarget = [(BKSMousePointerService *)self _unlocked_serverTarget];
+  globalPointerPosition = [_unlocked_serverTarget globalPointerPosition];
 
-  [v3 bs_CGPointValue];
+  [globalPointerPosition bs_CGPointValue];
   v5 = v4;
   v7 = v6;
 
@@ -815,7 +815,7 @@ void __137__BKSMousePointerService_acquireButtonDownPointerRepositionAssertionFo
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BKSMousePointerService.m";
       v18 = 1024;
@@ -867,7 +867,7 @@ void __31__BKSMousePointerService__init__block_invoke(uint64_t a1, void *a2)
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSMousePointerService.m";
     v17 = 1024;
@@ -896,7 +896,7 @@ void __31__BKSMousePointerService__init__block_invoke(uint64_t a1, void *a2)
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSMousePointerService.m";
     v17 = 1024;

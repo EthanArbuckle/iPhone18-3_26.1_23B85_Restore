@@ -1,18 +1,18 @@
 @interface DepthSettingsController
-- (_TtC22DepthCompanionSettings23DepthSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22DepthCompanionSettings23DepthSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)applicationBundleIdentifier;
 - (id)localizedPaneTitle;
 - (id)specifiers;
 - (void)openUserGuide;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DepthSettingsController
 
-- (_TtC22DepthCompanionSettings23DepthSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22DepthCompanionSettings23DepthSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_A174();
     v6 = v5;
@@ -23,14 +23,14 @@
     v6 = 0;
   }
 
-  return sub_562C(a4, v6, a4);
+  return sub_562C(bundle, v6, bundle);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = self;
-  sub_59D0(v3);
+  appearCopy = appear;
+  selfCopy = self;
+  sub_59D0(appearCopy);
 }
 
 - (id)localizedPaneTitle
@@ -49,7 +49,7 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_5F70();
 
   if (v3)
@@ -65,7 +65,7 @@
   return v4.super.isa;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_9FF4();
   v7 = *(v6 - 8);
@@ -73,9 +73,9 @@
   __chkstk_darwin();
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_9FE4();
-  v11 = a3;
-  v12 = self;
-  sub_67B4(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_67B4(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 }
@@ -92,24 +92,24 @@
   v7 = v22 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v26 = 0xD000000000000025;
   v27 = 0x800000000000B900;
-  v8 = [objc_opt_self() sharedInstance];
-  if (!v8)
+  sharedInstance = [objc_opt_self() sharedInstance];
+  if (!sharedInstance)
   {
     __break(1u);
     goto LABEL_19;
   }
 
-  v9 = v8;
-  v10 = [v8 getActivePairedDevice];
+  v9 = sharedInstance;
+  getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-  if (!v10)
+  if (!getActivePairedDevice)
   {
 LABEL_19:
     __break(1u);
     goto LABEL_20;
   }
 
-  v11 = [v10 valueForProperty:NRDevicePropertyAbsoluteDepthLimit];
+  v11 = [getActivePairedDevice valueForProperty:NRDevicePropertyAbsoluteDepthLimit];
 
   if (v11)
   {

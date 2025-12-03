@@ -1,23 +1,23 @@
 @interface CHSWidgetMargins
 - (BOOL)isDawnCompatible;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualTo:(id)a3 using32BitFloats:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualTo:(id)to using32BitFloats:(BOOL)floats;
 - (CHSEdgeInsets)backgroundRemovedContentMargins;
 - (CHSEdgeInsets)contentMargins;
 - (CHSEdgeInsets)layoutInsets;
 - (CHSEdgeInsets)safeAreaInsets;
-- (CHSWidgetMargins)initWithCoder:(id)a3;
-- (CHSWidgetMargins)initWithXPCDictionary:(id)a3;
-- (double)initWithSafeAreaInsets:(double)a3 layoutInsets:(double)a4 contentMargins:(double)a5 backgroundRemovedContentMargins:(double)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (CHSWidgetMargins)initWithCoder:(id)coder;
+- (CHSWidgetMargins)initWithXPCDictionary:(id)dictionary;
+- (double)initWithSafeAreaInsets:(double)insets layoutInsets:(double)layoutInsets contentMargins:(double)margins backgroundRemovedContentMargins:(double)contentMargins;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (unint64_t)hashUsing32BitFloats:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (unint64_t)hashUsing32BitFloats:(BOOL)floats;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation CHSWidgetMargins
@@ -78,18 +78,18 @@
   return result;
 }
 
-- (double)initWithSafeAreaInsets:(double)a3 layoutInsets:(double)a4 contentMargins:(double)a5 backgroundRemovedContentMargins:(double)a6
+- (double)initWithSafeAreaInsets:(double)insets layoutInsets:(double)layoutInsets contentMargins:(double)margins backgroundRemovedContentMargins:(double)contentMargins
 {
-  v33.receiver = a1;
+  v33.receiver = self;
   v33.super_class = CHSWidgetMargins;
   result = objc_msgSendSuper2(&v33, sel_init);
   if (result)
   {
     result[1] = a2;
-    result[2] = a3;
-    result[3] = a4;
-    result[4] = a5;
-    result[5] = a6;
+    result[2] = insets;
+    result[3] = layoutInsets;
+    result[4] = margins;
+    result[5] = contentMargins;
     result[6] = a7;
     result[7] = a8;
     result[8] = a9;
@@ -106,11 +106,11 @@
   return result;
 }
 
-- (BOOL)isEqualTo:(id)a3 using32BitFloats:(BOOL)a4
+- (BOOL)isEqualTo:(id)to using32BitFloats:(BOOL)floats
 {
-  v6 = a3;
+  toCopy = to;
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = toCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -137,7 +137,7 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __47__CHSWidgetMargins_isEqualTo_using32BitFloats___block_invoke;
     aBlock[3] = &__block_descriptor_33_e58__CGRect__CGPoint_dd__CGSize_dd__40__0_CHSEdgeInsets_dddd_8l;
-    v70 = a4;
+    floatsCopy = floats;
     v11 = _Block_copy(aBlock);
     v12 = [MEMORY[0x1E698E6A0] builderWithObject:v8 ofExpectedClass:objc_opt_class()];
     v13 = v11[2](v11, self->_safeAreaInsets.top, self->_safeAreaInsets.leading, self->_safeAreaInsets.bottom, self->_safeAreaInsets.trailing);
@@ -213,32 +213,32 @@ double __47__CHSWidgetMargins_isEqualTo_using32BitFloats___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  LOBYTE(self) = [(CHSWidgetMargins *)self isEqualTo:v4 using32BitFloats:+[CHSWidgetMetrics use32BitFloats]];
+  equalCopy = equal;
+  LOBYTE(self) = [(CHSWidgetMargins *)self isEqualTo:equalCopy using32BitFloats:+[CHSWidgetMetrics use32BitFloats]];
 
   return self;
 }
 
-- (unint64_t)hashUsing32BitFloats:(BOOL)a3
+- (unint64_t)hashUsing32BitFloats:(BOOL)floats
 {
-  v5 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__CHSWidgetMargins_hashUsing32BitFloats___block_invoke;
   aBlock[3] = &__block_descriptor_33_e58__CGRect__CGPoint_dd__CGSize_dd__40__0_CHSEdgeInsets_dddd_8l;
-  v14 = a3;
+  floatsCopy = floats;
   v6 = _Block_copy(aBlock);
   v6[2](self->_safeAreaInsets.top, self->_safeAreaInsets.leading, self->_safeAreaInsets.bottom, self->_safeAreaInsets.trailing);
-  v7 = [v5 appendCGRect:?];
+  v7 = [builder appendCGRect:?];
   (v6[2])(v6, self->_layoutInsets.top, self->_layoutInsets.leading, self->_layoutInsets.bottom, self->_layoutInsets.trailing);
-  v8 = [v5 appendCGRect:?];
+  v8 = [builder appendCGRect:?];
   (v6[2])(v6, self->_contentMargins.top, self->_contentMargins.leading, self->_contentMargins.bottom, self->_contentMargins.trailing);
-  v9 = [v5 appendCGRect:?];
+  v9 = [builder appendCGRect:?];
   (v6[2])(v6, self->_backgroundRemovedContentMargins.top, self->_backgroundRemovedContentMargins.leading, self->_backgroundRemovedContentMargins.bottom, self->_backgroundRemovedContentMargins.trailing);
-  v10 = [v5 appendCGRect:?];
-  v11 = [v5 hash];
+  v10 = [builder appendCGRect:?];
+  v11 = [builder hash];
 
   return v11;
 }
@@ -256,10 +256,10 @@ double __41__CHSWidgetMargins_hashUsing32BitFloats___block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(CHSWidgetMargins *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSWidgetMargins *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -271,7 +271,7 @@ double __41__CHSWidgetMargins_hashUsing32BitFloats___block_invoke(uint64_t a1)
   v7[3] = &unk_1E7453000;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendProem:0 block:v7];
   v5 = v4;
 
@@ -297,17 +297,17 @@ void __46__CHSWidgetMargins_succinctDescriptionBuilder__block_invoke(uint64_t a1
   [v5 appendString:? withName:?];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSWidgetMargins *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSWidgetMargins *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -315,8 +315,8 @@ void __46__CHSWidgetMargins_succinctDescriptionBuilder__block_invoke(uint64_t a1
   v9[3] = &unk_1E7453000;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -341,25 +341,25 @@ void __58__CHSWidgetMargins_descriptionBuilderWithMultilinePrefix___block_invoke
   [v5 appendString:? withName:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   CHSRectFromEdgeInsets(self->_safeAreaInsets.top, self->_safeAreaInsets.leading, self->_safeAreaInsets.bottom, self->_safeAreaInsets.trailing);
-  [v4 encodeRect:@"safeAreaInsets" forKey:?];
+  [coderCopy encodeRect:@"safeAreaInsets" forKey:?];
   CHSRectFromEdgeInsets(self->_layoutInsets.top, self->_layoutInsets.leading, self->_layoutInsets.bottom, self->_layoutInsets.trailing);
-  [v4 encodeRect:@"layoutInsets" forKey:?];
+  [coderCopy encodeRect:@"layoutInsets" forKey:?];
   CHSRectFromEdgeInsets(self->_contentMargins.top, self->_contentMargins.leading, self->_contentMargins.bottom, self->_contentMargins.trailing);
-  [v4 encodeRect:@"contentMargins" forKey:?];
+  [coderCopy encodeRect:@"contentMargins" forKey:?];
   CHSRectFromEdgeInsets(self->_backgroundRemovedContentMargins.top, self->_backgroundRemovedContentMargins.leading, self->_backgroundRemovedContentMargins.bottom, self->_backgroundRemovedContentMargins.trailing);
-  [v4 encodeRect:@"backgroundRemovedContentMargins" forKey:?];
+  [coderCopy encodeRect:@"backgroundRemovedContentMargins" forKey:?];
 }
 
-- (CHSWidgetMargins)initWithCoder:(id)a3
+- (CHSWidgetMargins)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"safeAreaInsets"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"safeAreaInsets"])
   {
-    v5 = CHSEdgeInsetsFromRect([v4 decodeRectForKey:@"safeAreaInsets"]);
+    v5 = CHSEdgeInsetsFromRect([coderCopy decodeRectForKey:@"safeAreaInsets"]);
     v31 = v7;
     v32 = v6;
     v30 = v8;
@@ -374,9 +374,9 @@ void __58__CHSWidgetMargins_descriptionBuilderWithMultilinePrefix___block_invoke
     v30 = 0.0;
   }
 
-  if ([v4 containsValueForKey:@"layoutInsets"])
+  if ([coderCopy containsValueForKey:@"layoutInsets"])
   {
-    v9 = CHSEdgeInsetsFromRect([v4 decodeRectForKey:@"layoutInsets"]);
+    v9 = CHSEdgeInsetsFromRect([coderCopy decodeRectForKey:@"layoutInsets"]);
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -390,9 +390,9 @@ void __58__CHSWidgetMargins_descriptionBuilderWithMultilinePrefix___block_invoke
     v15 = 0.0;
   }
 
-  if ([v4 containsValueForKey:@"contentMargins"])
+  if ([coderCopy containsValueForKey:@"contentMargins"])
   {
-    v16 = CHSEdgeInsetsFromRect([v4 decodeRectForKey:@"contentMargins"]);
+    v16 = CHSEdgeInsetsFromRect([coderCopy decodeRectForKey:@"contentMargins"]);
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -406,9 +406,9 @@ void __58__CHSWidgetMargins_descriptionBuilderWithMultilinePrefix___block_invoke
     v22 = 0;
   }
 
-  if ([v4 containsValueForKey:@"backgroundRemovedContentMargins"])
+  if ([coderCopy containsValueForKey:@"backgroundRemovedContentMargins"])
   {
-    v23 = CHSEdgeInsetsFromRect([v4 decodeRectForKey:@"backgroundRemovedContentMargins"]);
+    v23 = CHSEdgeInsetsFromRect([coderCopy decodeRectForKey:@"backgroundRemovedContentMargins"]);
   }
 
   else
@@ -424,10 +424,10 @@ void __58__CHSWidgetMargins_descriptionBuilderWithMultilinePrefix___block_invoke
   return v27;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     CHSRectFromEdgeInsets(self->_safeAreaInsets.top, self->_safeAreaInsets.leading, self->_safeAreaInsets.bottom, self->_safeAreaInsets.trailing);
     [@"safeAreaInsets" UTF8String];
@@ -444,10 +444,10 @@ void __58__CHSWidgetMargins_descriptionBuilderWithMultilinePrefix___block_invoke
   }
 }
 
-- (CHSWidgetMargins)initWithXPCDictionary:(id)a3
+- (CHSWidgetMargins)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     [@"safeAreaInsets" UTF8String];
     v5 = BSDeserializeCGRectFromXPCDictionaryWithKey();
@@ -471,30 +471,30 @@ void __58__CHSWidgetMargins_descriptionBuilderWithMultilinePrefix___block_invoke
     v25 = BSDeserializeCGRectFromXPCDictionaryWithKey();
     v26 = CHSEdgeInsetsFromRect(v25);
     self = [(CHSWidgetMargins *)self initWithSafeAreaInsets:v32 layoutInsets:v35 contentMargins:v34 backgroundRemovedContentMargins:v33, v10, v12, v14, v16, *&v18, v20, v22, v24, *&v26, v27, v28, v29];
-    v30 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v30 = 0;
+    selfCopy = 0;
   }
 
-  return v30;
+  return selfCopy;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = CHSEdgeInsetsCompare(self->_safeAreaInsets.top, self->_safeAreaInsets.leading, self->_safeAreaInsets.bottom, self->_safeAreaInsets.trailing, v4[1], v4[2], v4[3], v4[4]);
+  compareCopy = compare;
+  v5 = CHSEdgeInsetsCompare(self->_safeAreaInsets.top, self->_safeAreaInsets.leading, self->_safeAreaInsets.bottom, self->_safeAreaInsets.trailing, compareCopy[1], compareCopy[2], compareCopy[3], compareCopy[4]);
   if (!v5)
   {
-    v5 = CHSEdgeInsetsCompare(self->_layoutInsets.top, self->_layoutInsets.leading, self->_layoutInsets.bottom, self->_layoutInsets.trailing, v4[5], v4[6], v4[7], v4[8]);
+    v5 = CHSEdgeInsetsCompare(self->_layoutInsets.top, self->_layoutInsets.leading, self->_layoutInsets.bottom, self->_layoutInsets.trailing, compareCopy[5], compareCopy[6], compareCopy[7], compareCopy[8]);
     if (!v5)
     {
-      v5 = CHSEdgeInsetsCompare(self->_contentMargins.top, self->_contentMargins.leading, self->_contentMargins.bottom, self->_contentMargins.trailing, v4[9], v4[10], v4[11], v4[12]);
+      v5 = CHSEdgeInsetsCompare(self->_contentMargins.top, self->_contentMargins.leading, self->_contentMargins.bottom, self->_contentMargins.trailing, compareCopy[9], compareCopy[10], compareCopy[11], compareCopy[12]);
       if (!v5)
       {
-        v5 = CHSEdgeInsetsCompare(self->_backgroundRemovedContentMargins.top, self->_backgroundRemovedContentMargins.leading, self->_backgroundRemovedContentMargins.bottom, self->_backgroundRemovedContentMargins.trailing, v4[13], v4[14], v4[15], v4[16]);
+        v5 = CHSEdgeInsetsCompare(self->_backgroundRemovedContentMargins.top, self->_backgroundRemovedContentMargins.leading, self->_backgroundRemovedContentMargins.bottom, self->_backgroundRemovedContentMargins.trailing, compareCopy[13], compareCopy[14], compareCopy[15], compareCopy[16]);
       }
     }
   }

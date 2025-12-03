@@ -1,17 +1,17 @@
 @interface HMDHH2MigrationStateLogger
 + (BOOL)doesLogEventExistOnDisk;
-+ (id)_getLowestError:(id)a3;
++ (id)_getLowestError:(id)error;
 + (id)allowedValues;
 + (id)autoMigrationAttempt;
 + (id)migrationLogEventRecord;
 + (int64_t)migrationAttempt;
-+ (void)commitMigrationLogEventToDisk:(id)a3;
-+ (void)commitMigrationLogEventToDiskWithKey:(id)a3 value:(id)a4;
++ (void)commitMigrationLogEventToDisk:(id)disk;
++ (void)commitMigrationLogEventToDiskWithKey:(id)key value:(id)value;
 + (void)incrementAutoMigrationAttempt;
 + (void)incrementMigrationAttempt;
-+ (void)recordMigrationEndTimeWithValue:(unint64_t)a3;
-+ (void)recordMigrationFailedWithError:(id)a3 withReason:(id)a4;
-+ (void)recordMigrationStartTimeWithValue:(unint64_t)a3;
++ (void)recordMigrationEndTimeWithValue:(unint64_t)value;
++ (void)recordMigrationFailedWithError:(id)error withReason:(id)reason;
++ (void)recordMigrationStartTimeWithValue:(unint64_t)value;
 + (void)removeMigrationLogEventRecordFromDisk;
 - (BOOL)isAutoMigration;
 - (BOOL)isDryRun;
@@ -30,51 +30,51 @@
 
 - (BOOL)isMigrationSuccessful
 {
-  v2 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v3 = [v2 hmf_numberForKey:@"migrationSuccess"];
-  v4 = [v3 BOOLValue];
+  logEventRecord = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v3 = [logEventRecord hmf_numberForKey:@"migrationSuccess"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)migrationEndTime
 {
-  v2 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v3 = [v2 hmf_numberForKey:@"migrationEndTime"];
-  v4 = [v3 unsignedIntegerValue];
+  logEventRecord = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v3 = [logEventRecord hmf_numberForKey:@"migrationEndTime"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (int64_t)migrationStartTime
 {
-  v2 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v3 = [v2 hmf_numberForKey:@"migrationStartTime"];
-  v4 = [v3 unsignedIntegerValue];
+  logEventRecord = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v3 = [logEventRecord hmf_numberForKey:@"migrationStartTime"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isDryRun
 {
-  v2 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v3 = [v2 hmf_BOOLForKey:@"isDryRun"];
+  logEventRecord = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v3 = [logEventRecord hmf_BOOLForKey:@"isDryRun"];
 
   return v3;
 }
 
 - (BOOL)isAutoMigration
 {
-  v2 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v3 = [v2 hmf_BOOLForKey:@"isAutoMigration"];
+  logEventRecord = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v3 = [logEventRecord hmf_BOOLForKey:@"isAutoMigration"];
 
   return v3;
 }
 
 - (id)migrationError
 {
-  v2 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v3 = [v2 hmf_errorForKey:@"migrationError"];
+  logEventRecord = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v3 = [logEventRecord hmf_errorForKey:@"migrationError"];
 
   return v3;
 }
@@ -90,21 +90,21 @@
 {
   [(HMDHH2MigrationStateLogger *)self populateTotalMigrationTime];
   v19 = [HMDHH2MigrationLogEvent alloc];
-  v18 = [(HMDHH2MigrationStateLogger *)self isAutoMigration];
-  v17 = [(HMDHH2MigrationStateLogger *)self isDryRun];
-  v16 = [(HMDHH2MigrationStateLogger *)self isMigrationSuccessful];
-  v15 = [(HMDHH2MigrationStateLogger *)self totalTimeTakenForMigration];
-  v3 = [objc_opt_class() migrationAttempt];
-  v4 = [(HMDHH2MigrationStateLogger *)self migrationError];
-  v5 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v6 = [v5 objectForKeyedSubscript:@"migrationFailureReason"];
-  v7 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v8 = [v7 objectForKeyedSubscript:@"validationEntityClassName"];
-  v9 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v10 = [v9 objectForKeyedSubscript:@"validationAttributeName"];
-  v11 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
-  v12 = [v11 objectForKeyedSubscript:@"localizedDescription"];
-  v13 = [(HMDHH2MigrationLogEvent *)v19 initWithAutoMigration:v18 isDryRun:v17 migrationSuccessful:v16 totalMigrationTime:v15 totalMigrationAttempt:v3 migrationError:v4 failureReason:v6 coreDataValidationEntityClassName:v8 coreDataValidationAttributeName:v10 localizedErrorDescription:v12];
+  isAutoMigration = [(HMDHH2MigrationStateLogger *)self isAutoMigration];
+  isDryRun = [(HMDHH2MigrationStateLogger *)self isDryRun];
+  isMigrationSuccessful = [(HMDHH2MigrationStateLogger *)self isMigrationSuccessful];
+  totalTimeTakenForMigration = [(HMDHH2MigrationStateLogger *)self totalTimeTakenForMigration];
+  migrationAttempt = [objc_opt_class() migrationAttempt];
+  migrationError = [(HMDHH2MigrationStateLogger *)self migrationError];
+  logEventRecord = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v6 = [logEventRecord objectForKeyedSubscript:@"migrationFailureReason"];
+  logEventRecord2 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v8 = [logEventRecord2 objectForKeyedSubscript:@"validationEntityClassName"];
+  logEventRecord3 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v10 = [logEventRecord3 objectForKeyedSubscript:@"validationAttributeName"];
+  logEventRecord4 = [(HMDHH2MigrationStateLogger *)self logEventRecord];
+  v12 = [logEventRecord4 objectForKeyedSubscript:@"localizedDescription"];
+  v13 = [(HMDHH2MigrationLogEvent *)v19 initWithAutoMigration:isAutoMigration isDryRun:isDryRun migrationSuccessful:isMigrationSuccessful totalMigrationTime:totalTimeTakenForMigration totalMigrationAttempt:migrationAttempt migrationError:migrationError failureReason:v6 coreDataValidationEntityClassName:v8 coreDataValidationAttributeName:v10 localizedErrorDescription:v12];
 
   return v13;
 }
@@ -113,19 +113,19 @@
 {
   if ([(HMDHH2MigrationStateLogger *)self isAutoMigration])
   {
-    v3 = [objc_opt_class() autoMigrationAttempt];
+    autoMigrationAttempt = [objc_opt_class() autoMigrationAttempt];
   }
 
   else
   {
-    v3 = 0;
+    autoMigrationAttempt = 0;
   }
 
   v4 = [HMDHH2MigrationDailyTotalsLogEvent alloc];
-  v5 = [(HMDHH2MigrationStateLogger *)self isAutoMigration];
-  v6 = [(HMDHH2MigrationStateLogger *)self isDryRun];
-  v7 = [(HMDHH2MigrationStateLogger *)self migrationError];
-  v8 = [(HMDHH2MigrationDailyTotalsLogEvent *)v4 initEndWithAutoMigration:v5 dryRun:v6 attemptCount:v3 error:v7];
+  isAutoMigration = [(HMDHH2MigrationStateLogger *)self isAutoMigration];
+  isDryRun = [(HMDHH2MigrationStateLogger *)self isDryRun];
+  migrationError = [(HMDHH2MigrationStateLogger *)self migrationError];
+  v8 = [(HMDHH2MigrationDailyTotalsLogEvent *)v4 initEndWithAutoMigration:isAutoMigration dryRun:isDryRun attemptCount:autoMigrationAttempt error:migrationError];
 
   return v8;
 }
@@ -134,8 +134,8 @@
 {
   if ([(HMDHH2MigrationStateLogger *)self isMigrationSuccessful])
   {
-    v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v2 removeObjectForKey:@"migrationAttemptCount"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults removeObjectForKey:@"migrationAttemptCount"];
   }
 
   v3 = objc_opt_class();
@@ -150,9 +150,9 @@
   v2 = [(HMDHH2MigrationStateLogger *)&v6 init];
   if (v2)
   {
-    v3 = [objc_opt_class() migrationLogEventRecord];
+    migrationLogEventRecord = [objc_opt_class() migrationLogEventRecord];
     logEventRecord = v2->_logEventRecord;
-    v2->_logEventRecord = v3;
+    v2->_logEventRecord = migrationLogEventRecord;
 
     [(HMDHH2MigrationStateLogger *)v2 populateTotalMigrationTime];
   }
@@ -164,13 +164,13 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = hh2MigrationLogEventPath;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v17 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v17];
+  v5 = [defaultManager removeItemAtPath:v3 error:&v17];
   v6 = v17;
 
   v7 = objc_autoreleasePoolPush();
-  v8 = a1;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v5)
@@ -219,15 +219,15 @@ LABEL_6:
     if (v4)
     {
       v6 = MEMORY[0x277CCAAC8];
-      v7 = [objc_opt_class() allowedValues];
+      allowedValues = [objc_opt_class() allowedValues];
       v32 = 0;
-      v8 = [v6 unarchivedObjectOfClasses:v7 fromData:v4 error:&v32];
+      dictionary = [v6 unarchivedObjectOfClasses:allowedValues fromData:v4 error:&v32];
       v9 = v32;
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v8;
+        v10 = dictionary;
       }
 
       else
@@ -262,7 +262,7 @@ LABEL_6:
         else
         {
           v25 = objc_autoreleasePoolPush();
-          v26 = a1;
+          selfCopy = self;
           v27 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
@@ -278,14 +278,14 @@ LABEL_6:
           }
 
           objc_autoreleasePoolPop(v25);
-          v8 = [MEMORY[0x277CBEAC0] dictionary];
+          dictionary = [MEMORY[0x277CBEAC0] dictionary];
         }
       }
 
       else
       {
         v21 = objc_autoreleasePoolPush();
-        v22 = a1;
+        selfCopy2 = self;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
@@ -298,14 +298,14 @@ LABEL_6:
         }
 
         objc_autoreleasePoolPop(v21);
-        v8 = [MEMORY[0x277CBEAC0] dictionary];
+        dictionary = [MEMORY[0x277CBEAC0] dictionary];
       }
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = a1;
+      selfCopy3 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -318,25 +318,25 @@ LABEL_6:
       }
 
       objc_autoreleasePoolPop(v17);
-      v8 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return dictionary;
 }
 
 + (BOOL)doesLogEventExistOnDisk
 {
   v2 = hh2MigrationLogEventPath;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:v2];
 
   return v4;
 }
@@ -357,13 +357,13 @@ LABEL_6:
   return v4;
 }
 
-+ (void)commitMigrationLogEventToDisk:(id)a3
++ (void)commitMigrationLogEventToDisk:(id)disk
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  diskCopy = disk;
   v5 = hh2MigrationLogEventPath;
   v6 = objc_autoreleasePoolPush();
-  v7 = a1;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -371,7 +371,7 @@ LABEL_6:
     v21 = 138543618;
     v22 = v9;
     v23 = 2112;
-    v24 = v4;
+    v24 = diskCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Going to write migration log event : [%@]", &v21, 0x16u);
   }
 
@@ -381,7 +381,7 @@ LABEL_6:
   if (!v10)
   {
     v12 = objc_autoreleasePoolPush();
-    v19 = v7;
+    v19 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -405,7 +405,7 @@ LABEL_10:
   if (([v10 writeToFile:v5 atomically:1] & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v7;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -433,34 +433,34 @@ LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)commitMigrationLogEventToDiskWithKey:(id)a3 value:(id)a4
++ (void)commitMigrationLogEventToDiskWithKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() migrationLogEventRecord];
-  v9 = [v8 mutableCopy];
+  valueCopy = value;
+  keyCopy = key;
+  migrationLogEventRecord = [objc_opt_class() migrationLogEventRecord];
+  v9 = [migrationLogEventRecord mutableCopy];
 
-  [v9 setObject:v6 forKeyedSubscript:v7];
-  [a1 commitMigrationLogEventToDisk:v9];
+  [v9 setObject:valueCopy forKeyedSubscript:keyCopy];
+  [self commitMigrationLogEventToDisk:v9];
 }
 
 + (void)incrementAutoMigrationAttempt
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [MEMORY[0x277D0F8E8] productInfo];
-  v5 = [v4 softwareVersion];
-  v6 = [v5 buildVersion];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  softwareVersion = [productInfo softwareVersion];
+  buildVersion = [softwareVersion buildVersion];
 
-  if (v6)
+  if (buildVersion)
   {
-    v7 = [objc_opt_class() autoMigrationAttempt];
-    v8 = v7;
-    if (v7)
+    autoMigrationAttempt = [objc_opt_class() autoMigrationAttempt];
+    v8 = autoMigrationAttempt;
+    if (autoMigrationAttempt)
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "integerValue") + 1}];
+      v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(autoMigrationAttempt, "integerValue") + 1}];
       v10 = objc_autoreleasePoolPush();
-      v11 = a1;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -470,21 +470,21 @@ LABEL_11:
         v30 = 2114;
         v31 = v9;
         v32 = 2114;
-        v33 = v6;
+        v33 = buildVersion;
         _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Incrementing auto migration attempt to %{public}@ for build %{public}@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v26 = v6;
+      v26 = buildVersion;
       v27 = v9;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-      [v3 setObject:v14 forKey:@"autoMigrationAttemptCount"];
+      [standardUserDefaults setObject:v14 forKey:@"autoMigrationAttemptCount"];
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = a1;
+      selfCopy2 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -492,22 +492,22 @@ LABEL_11:
         *buf = 138543618;
         v29 = v22;
         v30 = 2114;
-        v31 = v6;
+        v31 = buildVersion;
         _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_INFO, "%{public}@Initializing first auto migration attempt for build %{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v19);
-      v24 = v6;
+      v24 = buildVersion;
       v25 = &unk_286628630;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-      [v3 setObject:v9 forKey:@"autoMigrationAttemptCount"];
+      [standardUserDefaults setObject:v9 forKey:@"autoMigrationAttemptCount"];
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
@@ -525,14 +525,14 @@ LABEL_11:
 
 + (id)autoMigrationAttempt
 {
-  v2 = [MEMORY[0x277D0F8E8] productInfo];
-  v3 = [v2 softwareVersion];
-  v4 = [v3 buildVersion];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  softwareVersion = [productInfo softwareVersion];
+  buildVersion = [softwareVersion buildVersion];
 
-  if (v4)
+  if (buildVersion)
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6 = [v5 dictionaryForKey:@"autoMigrationAttemptCount"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v6 = [standardUserDefaults dictionaryForKey:@"autoMigrationAttemptCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -546,7 +546,7 @@ LABEL_11:
 
     v8 = v7;
 
-    v9 = [v8 objectForKey:v4];
+    v9 = [v8 objectForKey:buildVersion];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -572,94 +572,94 @@ LABEL_11:
 
 + (int64_t)migrationAttempt
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 integerForKey:@"migrationAttemptCount"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"migrationAttemptCount"];
 
   return v3;
 }
 
 + (void)incrementMigrationAttempt
 {
-  v2 = [objc_opt_class() migrationAttempt];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 setInteger:v2 + 1 forKey:@"migrationAttemptCount"];
+  migrationAttempt = [objc_opt_class() migrationAttempt];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setInteger:migrationAttempt + 1 forKey:@"migrationAttemptCount"];
 }
 
-+ (void)recordMigrationEndTimeWithValue:(unint64_t)a3
++ (void)recordMigrationEndTimeWithValue:(unint64_t)value
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
   [v4 commitMigrationLogEventToDiskWithKey:@"migrationEndTime" value:v5];
 }
 
-+ (void)recordMigrationStartTimeWithValue:(unint64_t)a3
++ (void)recordMigrationStartTimeWithValue:(unint64_t)value
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
   [v4 commitMigrationLogEventToDiskWithKey:@"migrationStartTime" value:v5];
 }
 
-+ (id)_getLowestError:(id)a3
++ (id)_getLowestError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 underlyingErrors];
-  v5 = [v4 firstObject];
+  errorCopy = error;
+  underlyingErrors = [errorCopy underlyingErrors];
+  firstObject = [underlyingErrors firstObject];
 
-  if (v5)
+  if (firstObject)
   {
     v6 = 4;
     while (1)
     {
-      v7 = [v5 underlyingErrors];
-      v8 = [v7 firstObject];
+      underlyingErrors2 = [firstObject underlyingErrors];
+      firstObject2 = [underlyingErrors2 firstObject];
 
-      if (!v8)
+      if (!firstObject2)
       {
         break;
       }
 
-      v5 = v8;
+      firstObject = firstObject2;
       if (!--v6)
       {
-        v9 = v8;
+        v9 = firstObject2;
         goto LABEL_8;
       }
     }
 
-    v9 = v5;
+    v9 = firstObject;
 LABEL_8:
     v10 = v9;
   }
 
   else
   {
-    v10 = v3;
+    v10 = errorCopy;
     v9 = 0;
   }
 
   return v10;
 }
 
-+ (void)recordMigrationFailedWithError:(id)a3 withReason:(id)a4
++ (void)recordMigrationFailedWithError:(id)error withReason:(id)reason
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() migrationLogEventRecord];
-  v8 = [v7 mutableCopy];
+  errorCopy = error;
+  reasonCopy = reason;
+  migrationLogEventRecord = [objc_opt_class() migrationLogEventRecord];
+  v8 = [migrationLogEventRecord mutableCopy];
 
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__91032;
   v37 = __Block_byref_object_dispose__91033;
-  v9 = v5;
+  v9 = errorCopy;
   v38 = v9;
-  v10 = [v9 userInfo];
+  userInfo = [v9 userInfo];
 
-  if (v10)
+  if (userInfo)
   {
-    v11 = [v34[5] userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA090]];
+    userInfo2 = [v34[5] userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CCA090]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -683,55 +683,55 @@ LABEL_8:
     [objc_opt_class() _addInfoFromCoreDataError:v34[5] logEvent:v8];
   }
 
-  v15 = [v34[5] domain];
+  domain = [v34[5] domain];
 
-  if (v15)
+  if (domain)
   {
     v16 = objc_opt_class();
-    v17 = [v34[5] underlyingErrors];
-    v18 = [v17 firstObject];
-    v19 = [v16 _getLowestError:v18];
+    underlyingErrors = [v34[5] underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
+    v19 = [v16 _getLowestError:firstObject];
 
     if (v19)
     {
-      v20 = [v34[5] domain];
-      v21 = [v20 isEqual:*MEMORY[0x277CCFD28]];
+      domain2 = [v34[5] domain];
+      v21 = [domain2 isEqual:*MEMORY[0x277CCFD28]];
 
       if (v21)
       {
         [objc_opt_class() _addInfoFromCoreDataError:v19 logEvent:v8];
       }
 
-      v22 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v23 = objc_alloc(MEMORY[0x277CCA9B8]);
-      v24 = [v19 domain];
-      v25 = [v23 initWithDomain:v24 code:objc_msgSend(v19 userInfo:{"code"), 0}];
-      [v22 setObject:v25 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      domain3 = [v19 domain];
+      v25 = [v23 initWithDomain:domain3 code:objc_msgSend(v19 userInfo:{"code"), 0}];
+      [dictionary setObject:v25 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
     }
 
     else
     {
-      v22 = 0;
+      dictionary = 0;
     }
 
     v30 = objc_alloc(MEMORY[0x277CCA9B8]);
-    v31 = [v34[5] domain];
-    v29 = [v30 initWithDomain:v31 code:objc_msgSend(v34[5] userInfo:{"code"), v22}];
+    domain4 = [v34[5] domain];
+    v29 = [v30 initWithDomain:domain4 code:objc_msgSend(v34[5] userInfo:{"code"), dictionary}];
   }
 
   else
   {
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v26 = MEMORY[0x277CCA9B8];
-    v27 = [v34[5] code];
+    code = [v34[5] code];
     v28 = *MEMORY[0x277CCFD28];
-    v19 = [v26 errorWithDomain:*MEMORY[0x277CCFD28] code:v27 userInfo:0];
-    [v22 setObject:v19 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
-    v29 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:v28 code:2717 userInfo:v22];
+    v19 = [v26 errorWithDomain:*MEMORY[0x277CCFD28] code:code userInfo:0];
+    [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    v29 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:v28 code:2717 userInfo:dictionary];
   }
 
   [v8 setObject:v29 forKeyedSubscript:@"migrationError"];
-  [v8 setObject:v6 forKeyedSubscript:@"migrationFailureReason"];
+  [v8 setObject:reasonCopy forKeyedSubscript:@"migrationFailureReason"];
   [objc_opt_class() commitMigrationLogEventToDisk:v8];
 
   _Block_object_dispose(&v33, 8);

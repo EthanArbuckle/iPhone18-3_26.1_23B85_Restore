@@ -1,22 +1,22 @@
 @interface _DPRenyiDP
-+ (BOOL)isValidAlpha:(double)a3 error:(id *)a4;
++ (BOOL)isValidAlpha:(double)alpha error:(id *)error;
 + (id)defaultAlphas;
-- (_DPRenyiDP)initWithAlpha:(double)a3 tau:(double)a4 error:(id *)a5;
-- (id)approximateDPForDelta:(double)a3 error:(id *)a4;
+- (_DPRenyiDP)initWithAlpha:(double)alpha tau:(double)tau error:(id *)error;
+- (id)approximateDPForDelta:(double)delta error:(id *)error;
 @end
 
 @implementation _DPRenyiDP
 
-- (_DPRenyiDP)initWithAlpha:(double)a3 tau:(double)a4 error:(id *)a5
+- (_DPRenyiDP)initWithAlpha:(double)alpha tau:(double)tau error:(id *)error
 {
   if (![_DPRenyiDP isValidAlpha:"isValidAlpha:error:" error:?])
   {
 LABEL_8:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if ((*&a4 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  if ((*&tau & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
     v9 = _DPPrivacyBudgetError(1, @"Renyi-DP tau must be finite, and not NAN.");
     v10 = +[_DPLog framework];
@@ -25,10 +25,10 @@ LABEL_8:
       +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v11 = v9;
-      *a5 = v9;
+      *error = v9;
     }
 
     goto LABEL_8;
@@ -39,22 +39,22 @@ LABEL_8:
   v13 = [(_DPRenyiDP *)&v15 init];
   if (v13)
   {
-    v13->_alpha = a3;
-    v13->_tau = a4;
+    v13->_alpha = alpha;
+    v13->_tau = tau;
   }
 
   self = v13;
-  v12 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)approximateDPForDelta:(double)a3 error:(id *)a4
+- (id)approximateDPForDelta:(double)delta error:(id *)error
 {
   if ([_DPApproximateDP isValidDelta:"isValidDelta:error:" error:?])
   {
-    if (a3 == 0.0)
+    if (delta == 0.0)
     {
       v7 = _DPPrivacyBudgetError(1, @"Approximate-DP delta cannot be 0 when converting Renyi-DP to approximate-DP.");
       v8 = +[_DPLog framework];
@@ -63,11 +63,11 @@ LABEL_12:
         +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v9 = v7;
         v10 = 0;
-        *a4 = v7;
+        *error = v7;
       }
 
       else
@@ -80,7 +80,7 @@ LABEL_12:
     {
       [(_DPRenyiDP *)self tau];
       v12 = v11;
-      v13 = log(1.0 / a3);
+      v13 = log(1.0 / delta);
       [(_DPRenyiDP *)self alpha];
       v15 = v14 + -1.0;
       [(_DPRenyiDP *)self alpha];
@@ -88,7 +88,7 @@ LABEL_12:
       [(_DPRenyiDP *)self alpha];
       v19 = v17 - log(v18);
       [(_DPRenyiDP *)self alpha];
-      v21 = [[_DPApproximateDP alloc] initWithEpsilon:a4 delta:(v12 + v19 / (v20 + -1.0)) error:a3];
+      v21 = [[_DPApproximateDP alloc] initWithEpsilon:error delta:(v12 + v19 / (v20 + -1.0)) error:delta];
       v7 = v21;
       if (v21)
       {
@@ -105,10 +105,10 @@ LABEL_12:
           +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
         }
 
-        if (a4)
+        if (error)
         {
           v24 = v22;
-          *a4 = v22;
+          *error = v22;
         }
 
         v10 = 0;
@@ -124,10 +124,10 @@ LABEL_12:
   return v10;
 }
 
-+ (BOOL)isValidAlpha:(double)a3 error:(id *)a4
++ (BOOL)isValidAlpha:(double)alpha error:(id *)error
 {
-  v5 = fabs(a3) == INFINITY;
-  if (a3 > 1.0 && !v5)
+  v5 = fabs(alpha) == INFINITY;
+  if (alpha > 1.0 && !v5)
   {
     return 1;
   }
@@ -139,10 +139,10 @@ LABEL_12:
     +[_DPBudgetAuditor budgetAuditorFromMetadata:plistParameters:isInternalBuild:error:];
   }
 
-  if (a4)
+  if (error)
   {
     v9 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   return 0;

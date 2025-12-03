@@ -1,34 +1,34 @@
 @interface CRLWPSelection
-+ (CRLWPSelection)selectionWithRange:(_NSRange)a3;
-+ (CRLWPSelection)selectionWithRange:(_NSRange)a3 type:(unint64_t)a4 leadingEdge:(BOOL)a5 storage:(id)a6;
-+ (id)selectionFromWPSelection:(id)a3;
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3;
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3 withOptions:(unint64_t)a4;
-- (BOOL)intersectsRange:(_NSRange)a3;
-- (BOOL)isEquivalentForInsertionStyle:(id)a3;
-- (BOOL)p_isEqual:(id)a3;
-- (CRLWPSelection)initWithRangeArray:(id)a3;
-- (CRLWPSelection)initWithType:(unint64_t)a3 range:(_NSRange)a4 styleInsertionBehavior:(int)a5 caretAffinity:(unint64_t)a6 smartFieldRange:(_NSRange)a7 leadingEdge:(BOOL)a8 leadingCharIndex:(unint64_t)a9;
-- (CRLWPSelection)initWithType:(unint64_t)a3 range:(_NSRange)a4 styleInsertionBehavior:(int)a5 caretAffinity:(unint64_t)a6 smartFieldRange:(_NSRange)a7 leadingEdge:(BOOL)a8 storage:(id)a9;
++ (CRLWPSelection)selectionWithRange:(_NSRange)range;
++ (CRLWPSelection)selectionWithRange:(_NSRange)range type:(unint64_t)type leadingEdge:(BOOL)edge storage:(id)storage;
++ (id)selectionFromWPSelection:(id)selection;
+- (BOOL)containsCharacterAtIndex:(unint64_t)index;
+- (BOOL)containsCharacterAtIndex:(unint64_t)index withOptions:(unint64_t)options;
+- (BOOL)intersectsRange:(_NSRange)range;
+- (BOOL)isEquivalentForInsertionStyle:(id)style;
+- (BOOL)p_isEqual:(id)equal;
+- (CRLWPSelection)initWithRangeArray:(id)array;
+- (CRLWPSelection)initWithType:(unint64_t)type range:(_NSRange)range styleInsertionBehavior:(int)behavior caretAffinity:(unint64_t)affinity smartFieldRange:(_NSRange)fieldRange leadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index;
+- (CRLWPSelection)initWithType:(unint64_t)type range:(_NSRange)range styleInsertionBehavior:(int)behavior caretAffinity:(unint64_t)affinity smartFieldRange:(_NSRange)fieldRange leadingEdge:(BOOL)edge storage:(id)storage;
 - (_NSRange)range;
 - (_NSRange)rawRange;
 - (_NSRange)smartFieldRange;
 - (_NSRange)superRange;
-- (id)constrainToRange:(_NSRange)a3;
-- (id)copyWithNewRange:(_NSRange)a3 newCaretAffinity:(unint64_t)a4;
-- (id)copyWithNewStyleInsertionBehavior:(int)a3 newCaretAffinity:(unint64_t)a4;
-- (id)copyWithNewType:(unint64_t)a3;
-- (id)copyWithNewType:(unint64_t)a3 range:(_NSRange)a4;
-- (id)copyWithNewType:(unint64_t)a3 smartFieldRange:(_NSRange)a4;
-- (id)copyWithNewVisualRanges:(id)a3;
-- (id)copyWithNewVisualTypeRange:(_NSRange)a3 head:(unint64_t)a4 tail:(unint64_t)a5;
-- (id)copyWithVisualRanges:(id)a3 headCharIndex:(unint64_t)a4 tailCharIndex:(unint64_t)a5 rightToLeft:(BOOL)a6 sameLine:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)constrainToRange:(_NSRange)range;
+- (id)copyWithNewRange:(_NSRange)range newCaretAffinity:(unint64_t)affinity;
+- (id)copyWithNewStyleInsertionBehavior:(int)behavior newCaretAffinity:(unint64_t)affinity;
+- (id)copyWithNewType:(unint64_t)type;
+- (id)copyWithNewType:(unint64_t)type range:(_NSRange)range;
+- (id)copyWithNewType:(unint64_t)type smartFieldRange:(_NSRange)range;
+- (id)copyWithNewVisualRanges:(id)ranges;
+- (id)copyWithNewVisualTypeRange:(_NSRange)range head:(unint64_t)head tail:(unint64_t)tail;
+- (id)copyWithVisualRanges:(id)ranges headCharIndex:(unint64_t)index tailCharIndex:(unint64_t)charIndex rightToLeft:(BOOL)left sameLine:(BOOL)line;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)visualRangesArray;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)i_setVisualRanges:(id)a3;
+- (void)i_setVisualRanges:(id)ranges;
 @end
 
 @implementation CRLWPSelection
@@ -53,11 +53,11 @@
   return result;
 }
 
-- (CRLWPSelection)initWithType:(unint64_t)a3 range:(_NSRange)a4 styleInsertionBehavior:(int)a5 caretAffinity:(unint64_t)a6 smartFieldRange:(_NSRange)a7 leadingEdge:(BOOL)a8 leadingCharIndex:(unint64_t)a9
+- (CRLWPSelection)initWithType:(unint64_t)type range:(_NSRange)range styleInsertionBehavior:(int)behavior caretAffinity:(unint64_t)affinity smartFieldRange:(_NSRange)fieldRange leadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index
 {
-  length = a4.length;
-  location = a4.location;
-  v32 = a7;
+  length = range.length;
+  location = range.location;
+  fieldRangeCopy = fieldRange;
   v31.receiver = self;
   v31.super_class = CRLWPSelection;
   v14 = [(CRLWPSelection *)&v31 init];
@@ -67,32 +67,32 @@
     goto LABEL_34;
   }
 
-  v14->_type = a3;
+  v14->_type = type;
   v14->_range.location = location;
   v14->_range.length = length;
   if (length)
   {
-    a8 = 1;
+    edge = 1;
   }
 
-  v14->_leadingEdge = a8;
+  v14->_leadingEdge = edge;
   if (length)
   {
-    a9 = 0x7FFFFFFFFFFFFFFFLL;
+    index = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v14->_leadingCharIndex = a9;
-  v14->_styleInsertionBehavior = a5;
-  v14->_caretAffinity = a6;
-  if (a3 == 6)
+  v14->_leadingCharIndex = index;
+  v14->_styleInsertionBehavior = behavior;
+  v14->_caretAffinity = affinity;
+  if (type == 6)
   {
-    v18 = &v32;
+    v18 = &fieldRangeCopy;
   }
 
   else
   {
     v18 = &xmmword_101464828;
-    if (a7.location != 0x7FFFFFFFFFFFFFFFLL || a7.length)
+    if (fieldRange.location != 0x7FFFFFFFFFFFFFFFLL || fieldRange.length)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -220,13 +220,13 @@ LABEL_45:
   return v26;
 }
 
-- (CRLWPSelection)initWithType:(unint64_t)a3 range:(_NSRange)a4 styleInsertionBehavior:(int)a5 caretAffinity:(unint64_t)a6 smartFieldRange:(_NSRange)a7 leadingEdge:(BOOL)a8 storage:(id)a9
+- (CRLWPSelection)initWithType:(unint64_t)type range:(_NSRange)range styleInsertionBehavior:(int)behavior caretAffinity:(unint64_t)affinity smartFieldRange:(_NSRange)fieldRange leadingEdge:(BOOL)edge storage:(id)storage
 {
-  length = a4.length;
-  location = a4.location;
-  v13 = a9;
-  v14 = v13;
-  if (a3 == 7 && !v13 && !a8)
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  v14 = storageCopy;
+  if (type == 7 && !storageCopy && !edge)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -259,35 +259,35 @@ LABEL_45:
     goto LABEL_17;
   }
 
-  if (a3 != 7 || !v13 || a8)
+  if (type != 7 || !storageCopy || edge)
   {
 LABEL_17:
     v18 = location;
     goto LABEL_18;
   }
 
-  v18 = [v13 nextCharacterIndex:location];
+  v18 = [storageCopy nextCharacterIndex:location];
 LABEL_18:
-  LOBYTE(v21) = a8;
-  v19 = [(CRLWPSelection *)self initWithType:a3 range:location styleInsertionBehavior:length caretAffinity:a5 smartFieldRange:a6 leadingEdge:0x7FFFFFFFFFFFFFFFLL leadingCharIndex:0, v21, v18];
+  LOBYTE(v21) = edge;
+  v19 = [(CRLWPSelection *)self initWithType:type range:location styleInsertionBehavior:length caretAffinity:behavior smartFieldRange:affinity leadingEdge:0x7FFFFFFFFFFFFFFFLL leadingCharIndex:0, v21, v18];
 
   return v19;
 }
 
-- (CRLWPSelection)initWithRangeArray:(id)a3
+- (CRLWPSelection)initWithRangeArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   LOBYTE(v9) = 1;
   v6 = [CRLWPSelection initWithType:"initWithType:range:styleInsertionBehavior:caretAffinity:smartFieldRange:leadingEdge:leadingCharIndex:" range:0 styleInsertionBehavior:0x7FFFFFFFFFFFFFFFLL caretAffinity:0 smartFieldRange:v9 leadingEdge:0x7FFFFFFFFFFFFFFFLL leadingCharIndex:?];
   if (v6)
   {
-    if ([v5 rangeCount])
+    if ([arrayCopy rangeCount])
     {
-      v6->_range.location = [v5 superRange];
+      v6->_range.location = [arrayCopy superRange];
       v6->_range.length = v7;
       if (v7)
       {
-        objc_storeStrong(&v6->_visualRanges, a3);
+        objc_storeStrong(&v6->_visualRanges, array);
         v6->_validVisualRanges = 1;
       }
     }
@@ -296,57 +296,57 @@ LABEL_18:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   LOBYTE(v6) = self->_leadingEdge;
   return [v4 initWithType:self->_type range:self->_range.location styleInsertionBehavior:self->_range.length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v6, self->_leadingCharIndex}];
 }
 
-+ (CRLWPSelection)selectionWithRange:(_NSRange)a3
++ (CRLWPSelection)selectionWithRange:(_NSRange)range
 {
-  v3 = [[a1 alloc] initWithRange:{a3.location, a3.length}];
+  v3 = [[self alloc] initWithRange:{range.location, range.length}];
 
   return v3;
 }
 
-+ (CRLWPSelection)selectionWithRange:(_NSRange)a3 type:(unint64_t)a4 leadingEdge:(BOOL)a5 storage:(id)a6
++ (CRLWPSelection)selectionWithRange:(_NSRange)range type:(unint64_t)type leadingEdge:(BOOL)edge storage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a6;
-  LOBYTE(v14) = a5;
-  v12 = [[a1 alloc] initWithType:a4 range:location styleInsertionBehavior:length caretAffinity:0 smartFieldRange:0 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:{0, v14, v11}];
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  LOBYTE(v14) = edge;
+  v12 = [[self alloc] initWithType:type range:location styleInsertionBehavior:length caretAffinity:0 smartFieldRange:0 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:{0, v14, storageCopy}];
 
   return v12;
 }
 
-+ (id)selectionFromWPSelection:(id)a3
++ (id)selectionFromWPSelection:(id)selection
 {
-  v4 = a3;
-  if (v4)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = selectionCopy;
     }
 
     else
     {
-      v9 = [a1 alloc];
-      v10 = [v4 type];
-      v11 = [v4 rawRange];
+      v9 = [self alloc];
+      type = [selectionCopy type];
+      rawRange = [selectionCopy rawRange];
       v13 = v12;
-      v14 = [v4 styleInsertionBehavior];
-      v15 = [v4 caretAffinity];
-      v16 = [v4 smartFieldRange];
+      styleInsertionBehavior = [selectionCopy styleInsertionBehavior];
+      caretAffinity = [selectionCopy caretAffinity];
+      smartFieldRange = [selectionCopy smartFieldRange];
       v18 = v17;
-      LOBYTE(v20) = [v4 leadingEdge];
-      v5 = [v9 initWithType:v10 range:v11 styleInsertionBehavior:v13 caretAffinity:v14 smartFieldRange:v15 leadingEdge:v16 leadingCharIndex:{v18, v20, objc_msgSend(v4, "leadingCharIndex")}];
-      v5[4] = v4[4];
-      v5[5] = v4[5];
-      *(v5 + 64) = *(v4 + 64);
-      objc_storeStrong(v5 + 12, v4[12]);
+      LOBYTE(v20) = [selectionCopy leadingEdge];
+      v5 = [v9 initWithType:type range:rawRange styleInsertionBehavior:v13 caretAffinity:styleInsertionBehavior smartFieldRange:caretAffinity leadingEdge:smartFieldRange leadingCharIndex:{v18, v20, objc_msgSend(selectionCopy, "leadingCharIndex")}];
+      v5[4] = selectionCopy[4];
+      v5[5] = selectionCopy[5];
+      *(v5 + 64) = *(selectionCopy + 64);
+      objc_storeStrong(v5 + 12, selectionCopy[12]);
     }
   }
 
@@ -386,10 +386,10 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)p_isEqual:(id)a3
+- (BOOL)p_isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -397,7 +397,7 @@ LABEL_18:
   else
   {
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v4);
+    v6 = sub_100014370(v5, equalCopy);
     v7 = v6;
     v10 = 0;
     if (v6)
@@ -430,23 +430,23 @@ LABEL_18:
   [(CRLHasher *)v3 addUnsignedInteger:self->_leadingCharIndex];
   [(CRLHasher *)v3 addUnsignedInteger:self->_validVisualRanges];
   [(CRLHasher *)v3 addBool:self->_leadingEdge];
-  v4 = [(CRLHasher *)v3 hashValue];
+  hashValue = [(CRLHasher *)v3 hashValue];
 
-  return v4;
+  return hashValue;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, compareCopy);
   if (v6 && -[CRLWPSelection isValid](self, "isValid") && [v6 isValid])
   {
-    v7 = [(CRLWPSelection *)self range];
-    if (v7 >= [v6 range])
+    range = [(CRLWPSelection *)self range];
+    if (range >= [v6 range])
     {
-      v10 = [(CRLWPSelection *)self range];
-      if (v10 > [v6 range])
+      range2 = [(CRLWPSelection *)self range];
+      if (range2 > [v6 range])
       {
         v8 = 1;
         goto LABEL_7;
@@ -478,10 +478,10 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isEquivalentForInsertionStyle:(id)a3
+- (BOOL)isEquivalentForInsertionStyle:(id)style
 {
-  v4 = a3;
-  if (v4 == self)
+  styleCopy = style;
+  if (styleCopy == self)
   {
     v9 = 1;
   }
@@ -491,12 +491,12 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CRLWPSelection *)self range];
+      range = [(CRLWPSelection *)self range];
       v7 = v6;
       v9 = 0;
-      if (v5 == [(CRLWPSelection *)v4 range]&& v7 == v8)
+      if (range == [(CRLWPSelection *)styleCopy range]&& v7 == v8)
       {
-        v9 = self->_type == v4->_type;
+        v9 = self->_type == styleCopy->_type;
       }
     }
 
@@ -509,20 +509,20 @@ LABEL_7:
   return v9;
 }
 
-- (id)copyWithNewType:(unint64_t)a3 smartFieldRange:(_NSRange)a4
+- (id)copyWithNewType:(unint64_t)type smartFieldRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v8 = objc_alloc(objc_opt_class());
   LOBYTE(v10) = self->_leadingEdge;
-  return [v8 initWithType:a3 range:self->_range.location styleInsertionBehavior:self->_range.length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:location leadingCharIndex:{length, v10, self->_leadingCharIndex}];
+  return [v8 initWithType:type range:self->_range.location styleInsertionBehavior:self->_range.length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:location leadingCharIndex:{length, v10, self->_leadingCharIndex}];
 }
 
-- (id)copyWithNewType:(unint64_t)a3 range:(_NSRange)a4
+- (id)copyWithNewType:(unint64_t)type range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a3 == 6)
+  length = range.length;
+  location = range.location;
+  if (type == 6)
   {
     p_smartFieldRange = &self->_smartFieldRange;
   }
@@ -536,23 +536,23 @@ LABEL_7:
   v10 = p_smartFieldRange->length;
   v11 = objc_alloc(objc_opt_class());
   LOBYTE(v13) = self->_leadingEdge;
-  return [v11 initWithType:a3 range:location styleInsertionBehavior:length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:v9 leadingCharIndex:{v10, v13, location}];
+  return [v11 initWithType:type range:location styleInsertionBehavior:length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:v9 leadingCharIndex:{v10, v13, location}];
 }
 
-- (id)copyWithNewVisualTypeRange:(_NSRange)a3 head:(unint64_t)a4 tail:(unint64_t)a5
+- (id)copyWithNewVisualTypeRange:(_NSRange)range head:(unint64_t)head tail:(unint64_t)tail
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10 = objc_alloc(objc_opt_class());
   LOBYTE(v13) = self->_leadingEdge;
   v11 = [v10 initWithType:7 range:location styleInsertionBehavior:length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v13, self->_leadingCharIndex}];
-  [v11 setHeadCharIndex:a4 tailCharIndex:a5];
+  [v11 setHeadCharIndex:head tailCharIndex:tail];
   return v11;
 }
 
-- (id)copyWithNewType:(unint64_t)a3
+- (id)copyWithNewType:(unint64_t)type
 {
-  if (a3 == 6)
+  if (type == 6)
   {
     p_smartFieldRange = &self->_smartFieldRange;
   }
@@ -566,15 +566,15 @@ LABEL_7:
   length = p_smartFieldRange->length;
   v8 = objc_alloc(objc_opt_class());
   LOBYTE(v10) = self->_leadingEdge;
-  return [v8 initWithType:a3 range:self->_range.location styleInsertionBehavior:self->_range.length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:location leadingCharIndex:{length, v10, self->_leadingCharIndex}];
+  return [v8 initWithType:type range:self->_range.location styleInsertionBehavior:self->_range.length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:location leadingCharIndex:{length, v10, self->_leadingCharIndex}];
 }
 
-- (id)copyWithNewRange:(_NSRange)a3 newCaretAffinity:(unint64_t)a4
+- (id)copyWithNewRange:(_NSRange)range newCaretAffinity:(unint64_t)affinity
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   LOBYTE(v11) = 1;
-  v7 = [objc_alloc(objc_opt_class()) initWithType:self->_type range:location styleInsertionBehavior:a3.length caretAffinity:self->_styleInsertionBehavior smartFieldRange:a4 leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v11, location}];
+  v7 = [objc_alloc(objc_opt_class()) initWithType:self->_type range:location styleInsertionBehavior:range.length caretAffinity:self->_styleInsertionBehavior smartFieldRange:affinity leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v11, location}];
   v8 = v7;
   if (v7)
   {
@@ -596,13 +596,13 @@ LABEL_7:
   return v8;
 }
 
-- (id)copyWithNewStyleInsertionBehavior:(int)a3 newCaretAffinity:(unint64_t)a4
+- (id)copyWithNewStyleInsertionBehavior:(int)behavior newCaretAffinity:(unint64_t)affinity
 {
-  v5 = *&a3;
+  v5 = *&behavior;
   location = self->_range.location;
   length = self->_range.length;
   leadingEdge = self->_leadingEdge;
-  if (!a4 && self->_caretAffinity == 1)
+  if (!affinity && self->_caretAffinity == 1)
   {
     if ([(CRLWPSelection *)self isInsertionPoint])
     {
@@ -613,15 +613,15 @@ LABEL_7:
   }
 
   LOBYTE(v11) = leadingEdge;
-  return [objc_alloc(objc_opt_class()) initWithType:self->_type range:location styleInsertionBehavior:length caretAffinity:v5 smartFieldRange:a4 leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v11, self->_leadingCharIndex}];
+  return [objc_alloc(objc_opt_class()) initWithType:self->_type range:location styleInsertionBehavior:length caretAffinity:v5 smartFieldRange:affinity leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v11, self->_leadingCharIndex}];
 }
 
-- (id)constrainToRange:(_NSRange)a3
+- (id)constrainToRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
-  v18.location = [(CRLWPSelection *)v5 range];
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
+  v18.location = [(CRLWPSelection *)selfCopy range];
   v6 = v18.location;
   v7 = v18.length;
   v19.location = location;
@@ -661,31 +661,31 @@ LABEL_7:
       v14 = v9;
     }
 
-    v15 = [(CRLWPSelection *)v5 copyWithNewRange:v13, v14];
+    v15 = [(CRLWPSelection *)selfCopy copyWithNewRange:v13, v14];
 
-    v5 = v15;
+    selfCopy = v15;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)copyWithNewVisualRanges:(id)a3
+- (id)copyWithNewVisualRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [v4 superRange];
+  superRange = [rangesCopy superRange];
   LOBYTE(v10) = self->_leadingEdge;
-  v8 = [v5 initWithType:7 range:v6 styleInsertionBehavior:v7 caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v10, self->_leadingCharIndex}];
-  [v8 i_setVisualRanges:v4];
+  v8 = [v5 initWithType:7 range:superRange styleInsertionBehavior:v7 caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v10, self->_leadingCharIndex}];
+  [v8 i_setVisualRanges:rangesCopy];
 
   return v8;
 }
 
-- (id)copyWithVisualRanges:(id)a3 headCharIndex:(unint64_t)a4 tailCharIndex:(unint64_t)a5 rightToLeft:(BOOL)a6 sameLine:(BOOL)a7
+- (id)copyWithVisualRanges:(id)ranges headCharIndex:(unint64_t)index tailCharIndex:(unint64_t)charIndex rightToLeft:(BOOL)left sameLine:(BOOL)line
 {
-  v21 = a7;
-  v7 = a6;
-  v11 = a3;
+  lineCopy = line;
+  leftCopy = left;
+  rangesCopy = ranges;
   if (self->_type != 7)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -720,28 +720,28 @@ LABEL_7:
   v15 = objc_alloc(objc_opt_class());
   LOBYTE(v20) = self->_leadingEdge;
   v16 = [v15 initWithType:self->_type range:self->_range.location styleInsertionBehavior:self->_range.length caretAffinity:self->_styleInsertionBehavior smartFieldRange:self->_caretAffinity leadingEdge:self->_smartFieldRange.location leadingCharIndex:{self->_smartFieldRange.length, v20, self->_leadingCharIndex}];
-  [v16 i_setVisualRanges:v11];
-  if (v21 && v7)
+  [v16 i_setVisualRanges:rangesCopy];
+  if (lineCopy && leftCopy)
   {
-    v17 = a5;
+    indexCopy = charIndex;
   }
 
   else
   {
-    v17 = a4;
+    indexCopy = index;
   }
 
-  if (v21 && v7)
+  if (lineCopy && leftCopy)
   {
-    v18 = a4;
+    charIndexCopy2 = index;
   }
 
   else
   {
-    v18 = a5;
+    charIndexCopy2 = charIndex;
   }
 
-  [v16 setHeadCharIndex:v17 tailCharIndex:v18];
+  [v16 setHeadCharIndex:indexCopy tailCharIndex:charIndexCopy2];
 
   return v16;
 }
@@ -752,24 +752,24 @@ LABEL_7:
   {
     visualRanges = self->_visualRanges;
 
-    v4 = [(CRLWPRangeArray *)visualRanges superRange];
+    superRange = [(CRLWPRangeArray *)visualRanges superRange];
   }
 
   else
   {
 
-    v4 = [(CRLWPSelection *)self range];
+    superRange = [(CRLWPSelection *)self range];
   }
 
   result.length = v5;
-  result.location = v4;
+  result.location = superRange;
   return result;
 }
 
-- (void)i_setVisualRanges:(id)a3
+- (void)i_setVisualRanges:(id)ranges
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  rangesCopy = ranges;
+  v4 = [rangesCopy copy];
   visualRanges = self->_visualRanges;
   self->_visualRanges = v4;
 
@@ -810,17 +810,17 @@ LABEL_7:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:544 isFatal:0 description:"Visual ranges have not been calculated"];
   }
 
-  v6 = [(CRLWPRangeArray *)self->_visualRanges rangeCount];
-  if (v6 < 2)
+  rangeCount = [(CRLWPRangeArray *)self->_visualRanges rangeCount];
+  if (rangeCount < 2)
   {
-    v11 = [(CRLWPSelection *)self superRange];
-    v10 = [NSValue valueWithRange:v11, v12];
+    superRange = [(CRLWPSelection *)self superRange];
+    v10 = [NSValue valueWithRange:superRange, v12];
     v9 = [NSMutableArray arrayWithObject:v10];
   }
 
   else
   {
-    v7 = [NSMutableArray arrayWithCapacity:v6];
+    v7 = [NSMutableArray arrayWithCapacity:rangeCount];
     visualRanges = self->_visualRanges;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -835,16 +835,16 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3
+- (BOOL)containsCharacterAtIndex:(unint64_t)index
 {
   location = self->_range.location;
-  v5 = a3 >= location;
-  v4 = a3 - location;
+  v5 = index >= location;
+  v4 = index - location;
   v5 = !v5 || v4 >= self->_range.length;
   return !v5;
 }
 
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3 withOptions:(unint64_t)a4
+- (BOOL)containsCharacterAtIndex:(unint64_t)index withOptions:(unint64_t)options
 {
   [(CRLWPSelection *)self visualRangesArray];
   v16 = 0u;
@@ -864,8 +864,8 @@ LABEL_7:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) rangeValue];
-        if (sub_100282B48(a3, 0, v10, v11, a4))
+        rangeValue = [*(*(&v14 + 1) + 8 * i) rangeValue];
+        if (sub_100282B48(index, 0, rangeValue, v11, options))
         {
           v12 = 1;
           goto LABEL_11;
@@ -888,22 +888,22 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)intersectsRange:(_NSRange)a3
+- (BOOL)intersectsRange:(_NSRange)range
 {
   p_range = &self->_range;
   v4.length = self->_range.length;
   if (v4.length)
   {
     v4.location = p_range->location;
-    return NSIntersectionRange(v4, a3).length != 0;
+    return NSIntersectionRange(v4, range).length != 0;
   }
 
   else
   {
     location = p_range->location;
-    v8 = location >= a3.location && location - a3.location < a3.length;
-    v9 = location == a3.location;
-    if (a3.length)
+    v8 = location >= range.location && location - range.location < range.length;
+    v9 = location == range.location;
+    if (range.length)
     {
       return v8;
     }
@@ -924,8 +924,8 @@ LABEL_11:
   validVisualRanges = self->_validVisualRanges;
   if (validVisualRanges)
   {
-    v2 = [(CRLWPSelection *)self visualRangesArray];
-    v9 = [v2 description];
+    visualRangesArray = [(CRLWPSelection *)self visualRangesArray];
+    v9 = [visualRangesArray description];
   }
 
   else
@@ -933,16 +933,16 @@ LABEL_11:
     v9 = @"not set";
   }
 
-  v10 = [(CRLWPSelection *)self isAtEndOfLine];
-  v11 = [(CRLWPSelection *)self insertionEdge];
+  isAtEndOfLine = [(CRLWPSelection *)self isAtEndOfLine];
+  insertionEdge = [(CRLWPSelection *)self insertionEdge];
   v12 = @".start";
-  if (v10)
+  if (isAtEndOfLine)
   {
     v12 = @".end";
   }
 
   v13 = @".trailing";
-  if (!v11)
+  if (!insertionEdge)
   {
     v13 = @".leading";
   }

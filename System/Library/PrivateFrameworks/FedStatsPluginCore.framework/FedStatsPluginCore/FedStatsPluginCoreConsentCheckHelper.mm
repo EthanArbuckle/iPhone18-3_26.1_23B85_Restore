@@ -10,18 +10,18 @@
 
 + (BOOL)checkDnU
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isDiagnosticSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isDiagnosticSubmissionAllowed = [mEMORY[0x277D262A0] isDiagnosticSubmissionAllowed];
 
-  return v3;
+  return isDiagnosticSubmissionAllowed;
 }
 
 + (BOOL)checkIHA
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isHealthDataSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isHealthDataSubmissionAllowed = [mEMORY[0x277D262A0] isHealthDataSubmissionAllowed];
 
-  return v3;
+  return isHealthDataSubmissionAllowed;
 }
 
 + (BOOL)checkIDV
@@ -70,7 +70,7 @@
     v9 = v19[5];
     if (v9)
     {
-      v8 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
       goto LABEL_9;
     }
 
@@ -81,13 +81,13 @@
     }
   }
 
-  v8 = 0;
+  bOOLValue = 0;
 LABEL_9:
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v18, 8);
 
-  return v8;
+  return bOOLValue;
 }
 
 intptr_t __48__FedStatsPluginCoreConsentCheckHelper_checkIDV__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -127,7 +127,7 @@ intptr_t __48__FedStatsPluginCoreConsentCheckHelper_checkIDV__block_invoke(uint6
 + (void)checkIDV
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(*a1 + 40);
+  v7 = *(*self + 40);
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

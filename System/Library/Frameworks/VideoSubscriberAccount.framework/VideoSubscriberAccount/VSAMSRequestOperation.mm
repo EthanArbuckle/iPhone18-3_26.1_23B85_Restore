@@ -1,21 +1,21 @@
 @interface VSAMSRequestOperation
 - (VSAMSRequestOperation)init;
-- (VSAMSRequestOperation)initWithRequest:(id)a3;
+- (VSAMSRequestOperation)initWithRequest:(id)request;
 - (void)cancel;
 - (void)executionDidBegin;
-- (void)urlForRequestType:(unint64_t)a3 completionHandler:(id)a4;
+- (void)urlForRequestType:(unint64_t)type completionHandler:(id)handler;
 @end
 
 @implementation VSAMSRequestOperation
 
-- (VSAMSRequestOperation)initWithRequest:(id)a3
+- (VSAMSRequestOperation)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = [(VSAMSRequestOperation *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
   }
 
   return v7;
@@ -45,26 +45,26 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSAMSRequestOperation *)self request];
-  v4 = [v3 requestType];
+  request = [(VSAMSRequestOperation *)self request];
+  requestType = [request requestType];
 
-  v5 = [(VSAMSRequestOperation *)self request];
-  v6 = [v5 methodName];
+  request2 = [(VSAMSRequestOperation *)self request];
+  methodName = [request2 methodName];
 
-  v7 = [(VSAMSRequestOperation *)self request];
-  v8 = [v7 parameters];
+  request3 = [(VSAMSRequestOperation *)self request];
+  parameters = [request3 parameters];
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __42__VSAMSRequestOperation_executionDidBegin__block_invoke;
   v11[3] = &unk_278B73260;
-  v9 = v6;
+  v9 = methodName;
   v12 = v9;
-  v10 = v8;
+  v10 = parameters;
   v13 = v10;
   objc_copyWeak(&v14, &location);
-  [(VSAMSRequestOperation *)self urlForRequestType:v4 completionHandler:v11];
+  [(VSAMSRequestOperation *)self urlForRequestType:requestType completionHandler:v11];
   objc_destroyWeak(&v14);
 
   objc_destroyWeak(&location);
@@ -231,13 +231,13 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = VSAMSRequestOperation;
   [(VSAsyncOperation *)&v4 cancel];
-  v3 = [(VSAMSRequestOperation *)self privateQueue];
-  [v3 cancelAllOperations];
+  privateQueue = [(VSAMSRequestOperation *)self privateQueue];
+  [privateQueue cancelAllOperations];
 }
 
-- (void)urlForRequestType:(unint64_t)a3 completionHandler:(id)a4
+- (void)urlForRequestType:(unint64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_alloc_init(VSAMSBagLoadOperation);
   [(VSAMSBagLoadOperation *)v7 setBagKey:@"countryCode"];
   v8 = objc_alloc_init(VSAMSBagLoadOperation);
@@ -257,8 +257,8 @@ LABEL_10:
   objc_copyWeak(&v20, &from);
   objc_copyWeak(&v21, &v24);
   objc_copyWeak(v22, &v23);
-  v22[1] = a3;
-  v11 = v6;
+  v22[1] = type;
+  v11 = handlerCopy;
   v18 = v11;
   v12 = [v10 blockOperationWithBlock:&v14];
   v13 = [(VSAMSRequestOperation *)self privateQueue:v14];

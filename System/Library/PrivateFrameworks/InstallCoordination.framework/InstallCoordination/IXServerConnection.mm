@@ -1,34 +1,34 @@
 @interface IXServerConnection
-+ (id)retrySynchronousIPC:(id)a3;
++ (id)retrySynchronousIPC:(id)c;
 + (id)sharedConnection;
 - (BOOL)_onQueue_createXPCConnectionIfNecessary;
 - (IXServerConnection)init;
-- (id)_onQueue_remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)_onQueue_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_client_coordinatorDidCompleteSuccessfullyWithUUID:(id)a3 forRecordPromise:(id)a4;
-- (void)_client_coordinatorDidInstallPlaceholderWithUUID:(id)a3 forRecordPromise:(id)a4;
-- (void)_client_coordinatorDidRegisterForObservationWithUUID:(id)a3;
-- (void)_client_coordinatorShouldBeginPostProcessingWithUUID:(id)a3 forRecordPromise:(id)a4;
-- (void)_client_coordinatorShouldBeginRestoringUserDataWithUUID:(id)a3;
-- (void)_client_coordinatorShouldPauseWithUUID:(id)a3;
-- (void)_client_coordinatorShouldPrioritizeWithUUID:(id)a3;
-- (void)_client_coordinatorShouldResumeWithUUID:(id)a3;
-- (void)_client_coordinatorWithUUID:(id)a3 configuredPromiseDidBeginFulfillment:(unint64_t)a4;
-- (void)_client_coordinatorWithUUID:(id)a3 didCancelWithReason:(id)a4 client:(unint64_t)a5;
-- (void)_client_coordinatorWithUUID:(id)a3 didUpdateProgress:(double)a4 forPhase:(unint64_t)a5 overallProgress:(double)a6;
-- (void)_client_promiseDidCompleteSuccessfullyWithUUID:(id)a3;
-- (void)_client_promiseWithUUID:(id)a3 didCancelWithReason:(id)a4 client:(unint64_t)a5;
-- (void)_onQueue_doCleanupForCoordinatorWithUUID:(id)a3;
-- (void)_onQueue_doCleanupForPromiseWithUUID:(id)a3;
-- (void)_onQueue_reSetupObserversAfter:(id)a3;
+- (id)_onQueue_remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)_onQueue_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_client_coordinatorDidCompleteSuccessfullyWithUUID:(id)d forRecordPromise:(id)promise;
+- (void)_client_coordinatorDidInstallPlaceholderWithUUID:(id)d forRecordPromise:(id)promise;
+- (void)_client_coordinatorDidRegisterForObservationWithUUID:(id)d;
+- (void)_client_coordinatorShouldBeginPostProcessingWithUUID:(id)d forRecordPromise:(id)promise;
+- (void)_client_coordinatorShouldBeginRestoringUserDataWithUUID:(id)d;
+- (void)_client_coordinatorShouldPauseWithUUID:(id)d;
+- (void)_client_coordinatorShouldPrioritizeWithUUID:(id)d;
+- (void)_client_coordinatorShouldResumeWithUUID:(id)d;
+- (void)_client_coordinatorWithUUID:(id)d configuredPromiseDidBeginFulfillment:(unint64_t)fulfillment;
+- (void)_client_coordinatorWithUUID:(id)d didCancelWithReason:(id)reason client:(unint64_t)client;
+- (void)_client_coordinatorWithUUID:(id)d didUpdateProgress:(double)progress forPhase:(unint64_t)phase overallProgress:(double)overallProgress;
+- (void)_client_promiseDidCompleteSuccessfullyWithUUID:(id)d;
+- (void)_client_promiseWithUUID:(id)d didCancelWithReason:(id)reason client:(unint64_t)client;
+- (void)_onQueue_doCleanupForCoordinatorWithUUID:(id)d;
+- (void)_onQueue_doCleanupForPromiseWithUUID:(id)d;
+- (void)_onQueue_reSetupObserversAfter:(id)after;
 - (void)_onQueue_scanForAndRemoveEmptyHashTables;
-- (void)registerAppInstallCoordinatorForUpdates:(id)a3 notifyDaemon:(BOOL)a4;
-- (void)registerDataPromiseForUpdates:(id)a3 notifyDaemon:(BOOL)a4;
+- (void)registerAppInstallCoordinatorForUpdates:(id)updates notifyDaemon:(BOOL)daemon;
+- (void)registerDataPromiseForUpdates:(id)updates notifyDaemon:(BOOL)daemon;
 - (void)resetDaemonConnection;
-- (void)unregisterForUpdatesForAppInstallCoordinatorWithUUID:(id)a3;
-- (void)unregisterForUpdatesForDataPromiseWithUUID:(id)a3;
+- (void)unregisterForUpdatesForAppInstallCoordinatorWithUUID:(id)d;
+- (void)unregisterForUpdatesForDataPromiseWithUUID:(id)d;
 @end
 
 @implementation IXServerConnection
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __38__IXServerConnection_sharedConnection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConnection_onceToken != -1)
   {
     dispatch_once(&sharedConnection_onceToken, block);
@@ -90,41 +90,41 @@ void __62__IXServerConnection__onQueue_scanForAndRemoveEmptyHashTables__block_in
   *a4 = 0;
 }
 
-- (void)_onQueue_reSetupObserversAfter:(id)a3
+- (void)_onQueue_reSetupObserversAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   [(IXServerConnection *)self _onQueue_scanForAndRemoveEmptyHashTables];
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(IXServerConnection *)self promiseInstances];
-  v7 = [v6 allKeys];
-  v8 = [v5 setWithArray:v7];
+  promiseInstances = [(IXServerConnection *)self promiseInstances];
+  allKeys = [promiseInstances allKeys];
+  v8 = [v5 setWithArray:allKeys];
 
   if ([v8 count])
   {
-    v9 = [(IXServerConnection *)self xpcConnection];
+    xpcConnection = [(IXServerConnection *)self xpcConnection];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __53__IXServerConnection__onQueue_reSetupObserversAfter___block_invoke;
     v22[3] = &unk_1E85C5998;
-    v23 = v4;
-    v10 = [v9 remoteObjectProxyWithErrorHandler:v22];
+    v23 = afterCopy;
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v22];
     [v10 _remote_addObserversForDataPromisesWithUUIDs:v8];
   }
 
   v11 = MEMORY[0x1E695DFD8];
-  v12 = [(IXServerConnection *)self coordinatorInstances];
-  v13 = [v12 allKeys];
-  v14 = [v11 setWithArray:v13];
+  coordinatorInstances = [(IXServerConnection *)self coordinatorInstances];
+  allKeys2 = [coordinatorInstances allKeys];
+  v14 = [v11 setWithArray:allKeys2];
 
   if ([v14 count])
   {
-    v15 = [(IXServerConnection *)self xpcConnection];
+    xpcConnection2 = [(IXServerConnection *)self xpcConnection];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __53__IXServerConnection__onQueue_reSetupObserversAfter___block_invoke_25;
     v20 = &unk_1E85C5998;
-    v21 = v4;
-    v16 = [v15 remoteObjectProxyWithErrorHandler:&v17];
+    v21 = afterCopy;
+    v16 = [xpcConnection2 remoteObjectProxyWithErrorHandler:&v17];
     [v16 _remote_addObserversForCoordinatorsWithUUIDs:v14 fireObserverMethods:{1, v17, v18, v19, v20}];
   }
 }
@@ -169,19 +169,19 @@ void __53__IXServerConnection__onQueue_reSetupObserversAfter___block_invoke_25(u
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onQueue_doCleanupForCoordinatorWithUUID:(id)a3
+- (void)_onQueue_doCleanupForCoordinatorWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v6 = [(IXServerConnection *)self coordinatorInstances];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  coordinatorInstances = [(IXServerConnection *)self coordinatorInstances];
+  v7 = [coordinatorInstances objectForKeyedSubscript:dCopy];
 
   if (!v7)
   {
-    v8 = IXGetLoggingHandle(kIXLoggingSubsystem);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    coordinatorInstances2 = IXGetLoggingHandle(kIXLoggingSubsystem);
+    if (os_log_type_enabled(coordinatorInstances2, OS_LOG_TYPE_ERROR))
     {
       [IXServerConnection _onQueue_doCleanupForCoordinatorWithUUID:];
     }
@@ -196,25 +196,25 @@ void __53__IXServerConnection__onQueue_reSetupObserversAfter___block_invoke_25(u
 
   if (![v7 count])
   {
-    v8 = [(IXServerConnection *)self coordinatorInstances];
-    [v8 setObject:0 forKeyedSubscript:v4];
+    coordinatorInstances2 = [(IXServerConnection *)self coordinatorInstances];
+    [coordinatorInstances2 setObject:0 forKeyedSubscript:dCopy];
 LABEL_8:
   }
 }
 
-- (void)_onQueue_doCleanupForPromiseWithUUID:(id)a3
+- (void)_onQueue_doCleanupForPromiseWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v6 = [(IXServerConnection *)self promiseInstances];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  promiseInstances = [(IXServerConnection *)self promiseInstances];
+  v7 = [promiseInstances objectForKeyedSubscript:dCopy];
 
   if (!v7)
   {
-    v8 = IXGetLoggingHandle(kIXLoggingSubsystem);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    promiseInstances2 = IXGetLoggingHandle(kIXLoggingSubsystem);
+    if (os_log_type_enabled(promiseInstances2, OS_LOG_TYPE_ERROR))
     {
       [IXServerConnection _onQueue_doCleanupForPromiseWithUUID:];
     }
@@ -229,8 +229,8 @@ LABEL_8:
 
   if (![v7 count])
   {
-    v8 = [(IXServerConnection *)self promiseInstances];
-    [v8 setObject:0 forKeyedSubscript:v4];
+    promiseInstances2 = [(IXServerConnection *)self promiseInstances];
+    [promiseInstances2 setObject:0 forKeyedSubscript:dCopy];
 LABEL_8:
   }
 }
@@ -238,9 +238,9 @@ LABEL_8:
 - (BOOL)_onQueue_createXPCConnectionIfNecessary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(IXServerConnection *)self xpcConnection];
+  xpcConnection = [(IXServerConnection *)self xpcConnection];
 
-  if (v3)
+  if (xpcConnection)
   {
     goto LABEL_4;
   }
@@ -248,20 +248,20 @@ LABEL_8:
   v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.installcoordinationd" options:4096];
   [(IXServerConnection *)self setXpcConnection:v4];
 
-  v5 = [(IXServerConnection *)self xpcConnection];
+  xpcConnection2 = [(IXServerConnection *)self xpcConnection];
 
-  if (v5)
+  if (xpcConnection2)
   {
     v6 = +[IXClientProtocolInterface interface];
-    v7 = [(IXServerConnection *)self xpcConnection];
-    [v7 setRemoteObjectInterface:v6];
+    xpcConnection3 = [(IXServerConnection *)self xpcConnection];
+    [xpcConnection3 setRemoteObjectInterface:v6];
 
     v8 = +[IXClientDelegateProtocolInterface interface];
-    v9 = [(IXServerConnection *)self xpcConnection];
-    [v9 setExportedInterface:v8];
+    xpcConnection4 = [(IXServerConnection *)self xpcConnection];
+    [xpcConnection4 setExportedInterface:v8];
 
-    v10 = [(IXServerConnection *)self xpcConnection];
-    [v10 setExportedObject:self];
+    xpcConnection5 = [(IXServerConnection *)self xpcConnection];
+    [xpcConnection5 setExportedObject:self];
 
     objc_initWeak(location, self);
     v19[0] = MEMORY[0x1E69E9820];
@@ -269,16 +269,16 @@ LABEL_8:
     v19[2] = __61__IXServerConnection__onQueue_createXPCConnectionIfNecessary__block_invoke;
     v19[3] = &unk_1E85C68E8;
     objc_copyWeak(&v20, location);
-    v11 = [(IXServerConnection *)self xpcConnection];
-    [v11 setInterruptionHandler:v19];
+    xpcConnection6 = [(IXServerConnection *)self xpcConnection];
+    [xpcConnection6 setInterruptionHandler:v19];
 
     v17 = MEMORY[0x1E69E9820];
     objc_copyWeak(&v18, location);
     v12 = [(IXServerConnection *)self xpcConnection:v17];
     [v12 setInvalidationHandler:&v17];
 
-    v13 = [(IXServerConnection *)self xpcConnection];
-    [v13 resume];
+    xpcConnection7 = [(IXServerConnection *)self xpcConnection];
+    [xpcConnection7 resume];
 
     [(IXServerConnection *)self _onQueue_reSetupObserversAfter:@"connection setup"];
     objc_destroyWeak(&v18);
@@ -413,16 +413,16 @@ void __61__IXServerConnection__onQueue_createXPCConnectionIfNecessary__block_inv
   return v2;
 }
 
-- (id)_onQueue_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_onQueue_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  internalQueue = [(IXServerConnection *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   if ([(IXServerConnection *)self _onQueue_createXPCConnectionIfNecessary])
   {
-    v6 = [(IXServerConnection *)self xpcConnection];
-    v7 = [v6 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(IXServerConnection *)self xpcConnection];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
@@ -432,7 +432,7 @@ void __61__IXServerConnection__onQueue_createXPCConnectionIfNecessary__block_inv
     v10[1] = 3221225472;
     v10[2] = __65__IXServerConnection__onQueue_remoteObjectProxyWithErrorHandler___block_invoke;
     v10[3] = &unk_1E85C5258;
-    v11 = v4;
+    v11 = handlerCopy;
     IXDispatchAsyncWithAutoreleasePool(v8, v10);
 
     v7 = 0;
@@ -453,25 +453,25 @@ void __65__IXServerConnection__onQueue_remoteObjectProxyWithErrorHandler___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__13;
   v16 = __Block_byref_object_dispose__13;
   v17 = 0;
-  v5 = [(IXServerConnection *)self internalQueue];
+  internalQueue = [(IXServerConnection *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__IXServerConnection_remoteObjectProxyWithErrorHandler___block_invoke;
   block[3] = &unk_1E85C6910;
-  v10 = v4;
+  v10 = handlerCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = handlerCopy;
+  dispatch_sync(internalQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -489,16 +489,16 @@ uint64_t __56__IXServerConnection_remoteObjectProxyWithErrorHandler___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_onQueue_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_onQueue_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  internalQueue = [(IXServerConnection *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   if ([(IXServerConnection *)self _onQueue_createXPCConnectionIfNecessary])
   {
-    v6 = [(IXServerConnection *)self xpcConnection];
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(IXServerConnection *)self xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
@@ -510,7 +510,7 @@ uint64_t __56__IXServerConnection_remoteObjectProxyWithErrorHandler___block_invo
     }
 
     v10 = _CreateError("[IXServerConnection _onQueue_synchronousRemoteObjectProxyWithErrorHandler:]", 266, @"IXErrorDomain", 1uLL, 0, 0, @"Unable to get synchronous remote object proxy for installcoordinationd connection", v9, v12);
-    (*(v4 + 2))(v4, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
 
     v7 = 0;
   }
@@ -518,25 +518,25 @@ uint64_t __56__IXServerConnection_remoteObjectProxyWithErrorHandler___block_invo
   return v7;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__13;
   v16 = __Block_byref_object_dispose__13;
   v17 = 0;
-  v5 = [(IXServerConnection *)self internalQueue];
+  internalQueue = [(IXServerConnection *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__IXServerConnection_synchronousRemoteObjectProxyWithErrorHandler___block_invoke;
   block[3] = &unk_1E85C6910;
-  v10 = v4;
+  v10 = handlerCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = handlerCopy;
+  dispatch_sync(internalQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -554,10 +554,10 @@ uint64_t __67__IXServerConnection_synchronousRemoteObjectProxyWithErrorHandler__
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)retrySynchronousIPC:(id)a3
++ (id)retrySynchronousIPC:(id)c
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  cCopy = c;
   v4 = 0;
   v5 = *MEMORY[0x1E696A250];
   for (i = 6; i; --i)
@@ -577,15 +577,15 @@ uint64_t __67__IXServerConnection_synchronousRemoteObjectProxyWithErrorHandler__
       sleep(1u);
     }
 
-    v8 = v3[2](v3);
+    v8 = cCopy[2](cCopy);
 
     if (!v8)
     {
       break;
     }
 
-    v9 = [v8 domain];
-    if (![v9 isEqualToString:v5] || objc_msgSend(v8, "code") != 4097)
+    domain = [v8 domain];
+    if (![domain isEqualToString:v5] || objc_msgSend(v8, "code") != 4097)
     {
 
       break;
@@ -599,24 +599,24 @@ uint64_t __67__IXServerConnection_synchronousRemoteObjectProxyWithErrorHandler__
   return v8;
 }
 
-- (void)registerAppInstallCoordinatorForUpdates:(id)a3 notifyDaemon:(BOOL)a4
+- (void)registerAppInstallCoordinatorForUpdates:(id)updates notifyDaemon:(BOOL)daemon
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 uniqueIdentifier];
-  if (v7)
+  updatesCopy = updates;
+  uniqueIdentifier = [updatesCopy uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v8 = [(IXServerConnection *)self internalQueue];
+    internalQueue = [(IXServerConnection *)self internalQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __75__IXServerConnection_registerAppInstallCoordinatorForUpdates_notifyDaemon___block_invoke;
     v12[3] = &unk_1E85C6938;
     v12[4] = self;
-    v9 = v7;
+    v9 = uniqueIdentifier;
     v13 = v9;
-    v14 = v6;
-    v15 = a4;
-    dispatch_sync(v8, v12);
+    v14 = updatesCopy;
+    daemonCopy = daemon;
+    dispatch_sync(internalQueue, v12);
 
     v10 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -681,19 +681,19 @@ void __75__IXServerConnection_registerAppInstallCoordinatorForUpdates_notifyDaem
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterForUpdatesForAppInstallCoordinatorWithUUID:(id)a3
+- (void)unregisterForUpdatesForAppInstallCoordinatorWithUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(IXServerConnection *)self internalQueue];
+    internalQueue = [(IXServerConnection *)self internalQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __75__IXServerConnection_unregisterForUpdatesForAppInstallCoordinatorWithUUID___block_invoke;
     v6[3] = &unk_1E85C5BF0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = dCopy;
+    dispatch_async(internalQueue, v6);
   }
 }
 
@@ -744,24 +744,24 @@ void __75__IXServerConnection_unregisterForUpdatesForAppInstallCoordinatorWithUU
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerDataPromiseForUpdates:(id)a3 notifyDaemon:(BOOL)a4
+- (void)registerDataPromiseForUpdates:(id)updates notifyDaemon:(BOOL)daemon
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 uniqueIdentifier];
-  if (v7)
+  updatesCopy = updates;
+  uniqueIdentifier = [updatesCopy uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v8 = [(IXServerConnection *)self internalQueue];
+    internalQueue = [(IXServerConnection *)self internalQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __65__IXServerConnection_registerDataPromiseForUpdates_notifyDaemon___block_invoke;
     v12[3] = &unk_1E85C6938;
     v12[4] = self;
-    v9 = v7;
+    v9 = uniqueIdentifier;
     v13 = v9;
-    v14 = v6;
-    v15 = a4;
-    dispatch_sync(v8, v12);
+    v14 = updatesCopy;
+    daemonCopy = daemon;
+    dispatch_sync(internalQueue, v12);
 
     v10 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -824,19 +824,19 @@ void __65__IXServerConnection_registerDataPromiseForUpdates_notifyDaemon___block
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterForUpdatesForDataPromiseWithUUID:(id)a3
+- (void)unregisterForUpdatesForDataPromiseWithUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(IXServerConnection *)self internalQueue];
+    internalQueue = [(IXServerConnection *)self internalQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __65__IXServerConnection_unregisterForUpdatesForDataPromiseWithUUID___block_invoke;
     v6[3] = &unk_1E85C5BF0;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = dCopy;
+    dispatch_async(internalQueue, v6);
   }
 }
 
@@ -889,13 +889,13 @@ void __65__IXServerConnection_unregisterForUpdatesForDataPromiseWithUUID___block
 
 - (void)resetDaemonConnection
 {
-  v3 = [(IXServerConnection *)self internalQueue];
+  internalQueue = [(IXServerConnection *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__IXServerConnection_resetDaemonConnection__block_invoke;
   block[3] = &unk_1E85C5D58;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalQueue, block);
 }
 
 uint64_t __43__IXServerConnection_resetDaemonConnection__block_invoke(uint64_t a1)
@@ -963,18 +963,18 @@ void __43__IXServerConnection_resetDaemonConnection__block_invoke_50(uint64_t a1
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorDidRegisterForObservationWithUUID:(id)a3
+- (void)_client_coordinatorDidRegisterForObservationWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__IXServerConnection__client_coordinatorDidRegisterForObservationWithUUID___block_invoke;
   v7[3] = &unk_1E85C5BF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __75__IXServerConnection__client_coordinatorDidRegisterForObservationWithUUID___block_invoke(uint64_t a1)
@@ -1017,18 +1017,18 @@ void __75__IXServerConnection__client_coordinatorDidRegisterForObservationWithUU
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorShouldPrioritizeWithUUID:(id)a3
+- (void)_client_coordinatorShouldPrioritizeWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__IXServerConnection__client_coordinatorShouldPrioritizeWithUUID___block_invoke;
   v7[3] = &unk_1E85C5BF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __66__IXServerConnection__client_coordinatorShouldPrioritizeWithUUID___block_invoke(uint64_t a1)
@@ -1071,18 +1071,18 @@ void __66__IXServerConnection__client_coordinatorShouldPrioritizeWithUUID___bloc
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorShouldResumeWithUUID:(id)a3
+- (void)_client_coordinatorShouldResumeWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__IXServerConnection__client_coordinatorShouldResumeWithUUID___block_invoke;
   v7[3] = &unk_1E85C5BF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __62__IXServerConnection__client_coordinatorShouldResumeWithUUID___block_invoke(uint64_t a1)
@@ -1125,18 +1125,18 @@ void __62__IXServerConnection__client_coordinatorShouldResumeWithUUID___block_in
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorShouldPauseWithUUID:(id)a3
+- (void)_client_coordinatorShouldPauseWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__IXServerConnection__client_coordinatorShouldPauseWithUUID___block_invoke;
   v7[3] = &unk_1E85C5BF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __61__IXServerConnection__client_coordinatorShouldPauseWithUUID___block_invoke(uint64_t a1)
@@ -1179,19 +1179,19 @@ void __61__IXServerConnection__client_coordinatorShouldPauseWithUUID___block_inv
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorWithUUID:(id)a3 configuredPromiseDidBeginFulfillment:(unint64_t)a4
+- (void)_client_coordinatorWithUUID:(id)d configuredPromiseDidBeginFulfillment:(unint64_t)fulfillment
 {
-  v6 = a3;
-  v7 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__IXServerConnection__client_coordinatorWithUUID_configuredPromiseDidBeginFulfillment___block_invoke;
   block[3] = &unk_1E85C52A8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dCopy;
+  fulfillmentCopy = fulfillment;
+  v8 = dCopy;
+  dispatch_async(internalQueue, block);
 }
 
 void __87__IXServerConnection__client_coordinatorWithUUID_configuredPromiseDidBeginFulfillment___block_invoke(uint64_t a1)
@@ -1234,18 +1234,18 @@ void __87__IXServerConnection__client_coordinatorWithUUID_configuredPromiseDidBe
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorShouldBeginRestoringUserDataWithUUID:(id)a3
+- (void)_client_coordinatorShouldBeginRestoringUserDataWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__IXServerConnection__client_coordinatorShouldBeginRestoringUserDataWithUUID___block_invoke;
   v7[3] = &unk_1E85C5BF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __78__IXServerConnection__client_coordinatorShouldBeginRestoringUserDataWithUUID___block_invoke(uint64_t a1)
@@ -1288,21 +1288,21 @@ void __78__IXServerConnection__client_coordinatorShouldBeginRestoringUserDataWit
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorDidInstallPlaceholderWithUUID:(id)a3 forRecordPromise:(id)a4
+- (void)_client_coordinatorDidInstallPlaceholderWithUUID:(id)d forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  promiseCopy = promise;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__IXServerConnection__client_coordinatorDidInstallPlaceholderWithUUID_forRecordPromise___block_invoke;
   block[3] = &unk_1E85C6960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = promiseCopy;
+  v9 = promiseCopy;
+  v10 = dCopy;
+  dispatch_async(internalQueue, block);
 }
 
 void __88__IXServerConnection__client_coordinatorDidInstallPlaceholderWithUUID_forRecordPromise___block_invoke(uint64_t a1)
@@ -1357,21 +1357,21 @@ void __88__IXServerConnection__client_coordinatorDidInstallPlaceholderWithUUID_f
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorShouldBeginPostProcessingWithUUID:(id)a3 forRecordPromise:(id)a4
+- (void)_client_coordinatorShouldBeginPostProcessingWithUUID:(id)d forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  promiseCopy = promise;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__IXServerConnection__client_coordinatorShouldBeginPostProcessingWithUUID_forRecordPromise___block_invoke;
   block[3] = &unk_1E85C6960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = promiseCopy;
+  v9 = promiseCopy;
+  v10 = dCopy;
+  dispatch_async(internalQueue, block);
 }
 
 void __92__IXServerConnection__client_coordinatorShouldBeginPostProcessingWithUUID_forRecordPromise___block_invoke(uint64_t a1)
@@ -1426,21 +1426,21 @@ void __92__IXServerConnection__client_coordinatorShouldBeginPostProcessingWithUU
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorDidCompleteSuccessfullyWithUUID:(id)a3 forRecordPromise:(id)a4
+- (void)_client_coordinatorDidCompleteSuccessfullyWithUUID:(id)d forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  promiseCopy = promise;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__IXServerConnection__client_coordinatorDidCompleteSuccessfullyWithUUID_forRecordPromise___block_invoke;
   block[3] = &unk_1E85C6960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = promiseCopy;
+  v9 = promiseCopy;
+  v10 = dCopy;
+  dispatch_async(internalQueue, block);
 }
 
 void __90__IXServerConnection__client_coordinatorDidCompleteSuccessfullyWithUUID_forRecordPromise___block_invoke(uint64_t a1)
@@ -1495,22 +1495,22 @@ void __90__IXServerConnection__client_coordinatorDidCompleteSuccessfullyWithUUID
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorWithUUID:(id)a3 didCancelWithReason:(id)a4 client:(unint64_t)a5
+- (void)_client_coordinatorWithUUID:(id)d didCancelWithReason:(id)reason client:(unint64_t)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  reasonCopy = reason;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__IXServerConnection__client_coordinatorWithUUID_didCancelWithReason_client___block_invoke;
   v13[3] = &unk_1E85C6988;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dCopy;
+  v15 = reasonCopy;
+  clientCopy = client;
+  v11 = reasonCopy;
+  v12 = dCopy;
+  dispatch_async(internalQueue, v13);
 }
 
 void __77__IXServerConnection__client_coordinatorWithUUID_didCancelWithReason_client___block_invoke(uint64_t a1)
@@ -1569,21 +1569,21 @@ void __77__IXServerConnection__client_coordinatorWithUUID_didCancelWithReason_cl
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_coordinatorWithUUID:(id)a3 didUpdateProgress:(double)a4 forPhase:(unint64_t)a5 overallProgress:(double)a6
+- (void)_client_coordinatorWithUUID:(id)d didUpdateProgress:(double)progress forPhase:(unint64_t)phase overallProgress:(double)overallProgress
 {
-  v10 = a3;
-  v11 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__IXServerConnection__client_coordinatorWithUUID_didUpdateProgress_forPhase_overallProgress___block_invoke;
   block[3] = &unk_1E85C69B0;
   block[4] = self;
-  v14 = v10;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v12 = v10;
-  dispatch_async(v11, block);
+  v14 = dCopy;
+  progressCopy = progress;
+  phaseCopy = phase;
+  overallProgressCopy = overallProgress;
+  v12 = dCopy;
+  dispatch_async(internalQueue, block);
 }
 
 void __93__IXServerConnection__client_coordinatorWithUUID_didUpdateProgress_forPhase_overallProgress___block_invoke(uint64_t a1)
@@ -1626,18 +1626,18 @@ void __93__IXServerConnection__client_coordinatorWithUUID_didUpdateProgress_forP
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_promiseDidCompleteSuccessfullyWithUUID:(id)a3
+- (void)_client_promiseDidCompleteSuccessfullyWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__IXServerConnection__client_promiseDidCompleteSuccessfullyWithUUID___block_invoke;
   v7[3] = &unk_1E85C5BF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __69__IXServerConnection__client_promiseDidCompleteSuccessfullyWithUUID___block_invoke(uint64_t a1)
@@ -1680,22 +1680,22 @@ void __69__IXServerConnection__client_promiseDidCompleteSuccessfullyWithUUID___b
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_client_promiseWithUUID:(id)a3 didCancelWithReason:(id)a4 client:(unint64_t)a5
+- (void)_client_promiseWithUUID:(id)d didCancelWithReason:(id)reason client:(unint64_t)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IXServerConnection *)self internalQueue];
+  dCopy = d;
+  reasonCopy = reason;
+  internalQueue = [(IXServerConnection *)self internalQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__IXServerConnection__client_promiseWithUUID_didCancelWithReason_client___block_invoke;
   v13[3] = &unk_1E85C6988;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dCopy;
+  v15 = reasonCopy;
+  clientCopy = client;
+  v11 = reasonCopy;
+  v12 = dCopy;
+  dispatch_async(internalQueue, v13);
 }
 
 void __73__IXServerConnection__client_promiseWithUUID_didCancelWithReason_client___block_invoke(uint64_t a1)

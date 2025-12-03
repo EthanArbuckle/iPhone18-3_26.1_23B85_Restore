@@ -1,24 +1,24 @@
 @interface NSArray
-+ (NSArray)arrayWithXPCArray:(id)a3;
-- (NSArray)initWithXPCArray:(id)a3;
-- (id)_convertObjectToNSData:(id)a3;
++ (NSArray)arrayWithXPCArray:(id)array;
+- (NSArray)initWithXPCArray:(id)array;
+- (id)_convertObjectToNSData:(id)data;
 - (id)xpcArrayFromArray;
 - (id)xpcSafeArrayFromArray;
 @end
 
 @implementation NSArray
 
-+ (NSArray)arrayWithXPCArray:(id)a3
++ (NSArray)arrayWithXPCArray:(id)array
 {
-  v3 = a3;
-  v4 = [[NSArray alloc] initWithXPCArray:v3];
+  arrayCopy = array;
+  v4 = [[NSArray alloc] initWithXPCArray:arrayCopy];
 
   return v4;
 }
 
-- (NSArray)initWithXPCArray:(id)a3
+- (NSArray)initWithXPCArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v15 = 0;
   v16[0] = &v15;
   v16[1] = 0x3032000000;
@@ -30,9 +30,9 @@
   v11 = sub_100001840;
   v12 = &unk_100050C50;
   v14 = &v15;
-  v5 = self;
-  v13 = v5;
-  if (xpc_array_apply(v4, &v9))
+  selfCopy = self;
+  v13 = selfCopy;
+  if (xpc_array_apply(arrayCopy, &v9))
   {
     v6 = sub_100021268();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -40,8 +40,8 @@
       sub_100024988(v16, v6);
     }
 
-    v5 = [(NSArray *)v5 initWithArray:*(v16[0] + 40), v9, v10, v11, v12];
-    v7 = v5;
+    selfCopy = [(NSArray *)selfCopy initWithArray:*(v16[0] + 40), v9, v10, v11, v12];
+    v7 = selfCopy;
   }
 
   else
@@ -223,13 +223,13 @@ LABEL_34:
   return v27;
 }
 
-- (id)_convertObjectToNSData:(id)a3
+- (id)_convertObjectToNSData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy)
   {
-    if (![v3 conformsToProtocol:&OBJC_PROTOCOL___NSCoding] || (+[NSKeyedArchiver archivedDataWithRootObject:requiringSecureCoding:error:](NSKeyedArchiver, "archivedDataWithRootObject:requiringSecureCoding:error:", v4, 0, 0), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![dataCopy conformsToProtocol:&OBJC_PROTOCOL___NSCoding] || (+[NSKeyedArchiver archivedDataWithRootObject:requiringSecureCoding:error:](NSKeyedArchiver, "archivedDataWithRootObject:requiringSecureCoding:error:", v4, 0, 0), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       if (![NSPropertyListSerialization propertyList:v4 isValidForFormat:200]|| ([NSPropertyListSerialization dataWithPropertyList:v4 format:200 options:0 error:0], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
       {

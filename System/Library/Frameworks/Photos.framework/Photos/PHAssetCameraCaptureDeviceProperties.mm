@@ -1,20 +1,20 @@
 @interface PHAssetCameraCaptureDeviceProperties
 + (id)propertiesToFetch;
-- (PHAssetCameraCaptureDeviceProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetCameraCaptureDeviceProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetCameraCaptureDeviceProperties
 
-- (PHAssetCameraCaptureDeviceProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetCameraCaptureDeviceProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v7 = a3;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PHAssetCameraCaptureDeviceProperties;
   v8 = [(PHAssetCameraCaptureDeviceProperties *)&v14 init];
   if (v8)
   {
-    if (v5)
+    if (prefetchedCopy)
     {
       v9 = @"additionalAttributes.cameraCaptureDevice";
     }
@@ -24,11 +24,11 @@
       v9 = @"cameraCaptureDevice";
     }
 
-    v10 = [v7 objectForKeyedSubscript:v9];
-    v11 = [v10 integerValue];
+    v10 = [dictionaryCopy objectForKeyedSubscript:v9];
+    integerValue = [v10 integerValue];
 
-    v12 = v11 << 16;
-    if (v11 <= 2)
+    v12 = integerValue << 16;
+    if (integerValue <= 2)
     {
       v8->_isSelfie = 0x100u >> (8 * BYTE2(v12));
     }

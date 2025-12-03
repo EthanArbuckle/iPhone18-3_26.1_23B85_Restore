@@ -1,11 +1,11 @@
 @interface BSUIAssetActionModifyRequest
 - (BSUIAssetActionModifyRequest)init;
-- (BSUIAssetActionModifyRequest)initWithStoreID:(id)a3 collectionID:(id)a4 tracker:(id)a5;
+- (BSUIAssetActionModifyRequest)initWithStoreID:(id)d collectionID:(id)iD tracker:(id)tracker;
 @end
 
 @implementation BSUIAssetActionModifyRequest
 
-- (BSUIAssetActionModifyRequest)initWithStoreID:(id)a3 collectionID:(id)a4 tracker:(id)a5
+- (BSUIAssetActionModifyRequest)initWithStoreID:(id)d collectionID:(id)iD tracker:(id)tracker
 {
   ObjectType = swift_getObjectType();
   v8 = sub_2C58C8();
@@ -17,10 +17,10 @@
   v13 = (self + OBJC_IVAR___BSUIAssetActionModifyRequest_collectionID);
   *v13 = v11;
   v13[1] = v14;
-  *(self + OBJC_IVAR___BSUIAssetActionModifyRequest_tracker) = a5;
+  *(self + OBJC_IVAR___BSUIAssetActionModifyRequest_tracker) = tracker;
   v17.receiver = self;
   v17.super_class = ObjectType;
-  v15 = a5;
+  trackerCopy = tracker;
   return [(BSUIAssetActionModifyRequest *)&v17 init];
 }
 

@@ -3,12 +3,12 @@
 - (BOOL)_stateWithEffectiveOverrides;
 - (BOOL)_toggleState;
 - (CCUIConnectivityAirplaneViewController)init;
-- (id)_debugDescriptionForState:(BOOL)a3;
+- (id)_debugDescriptionForState:(BOOL)state;
 - (id)displayName;
 - (id)subtitleText;
 - (void)_updateState;
 - (void)airplaneModeChanged;
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 - (void)dealloc;
 - (void)startObservingStateChanges;
 - (void)stopObservingStateChanges;
@@ -59,13 +59,13 @@
   return v16;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   objc_msgSend__toggleState(self, v5, v6);
   v7.receiver = self;
   v7.super_class = CCUIConnectivityAirplaneViewController;
-  [(CCUIConnectivityButtonViewController *)&v7 buttonTapped:v4];
+  [(CCUIConnectivityButtonViewController *)&v7 buttonTapped:tappedCopy];
 }
 
 - (id)displayName
@@ -224,9 +224,9 @@ LABEL_5:
   return v9 & 1;
 }
 
-- (id)_debugDescriptionForState:(BOOL)a3
+- (id)_debugDescriptionForState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return @"on";
   }

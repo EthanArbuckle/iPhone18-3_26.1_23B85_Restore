@@ -1,6 +1,6 @@
 @interface VCPCNNSmileDetectorMPS
 - (VCPCNNSmileDetectorMPS)init;
-- (int)computeSmileScore:(float *)a3;
+- (int)computeSmileScore:(float *)score;
 @end
 
 @implementation VCPCNNSmileDetectorMPS
@@ -50,8 +50,8 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v10 = [(VCPCNNModel *)v9 getGPUContext];
-  v11 = [VCPCNNData cnnDataWithPlane:1 height:40 width:40 context:v10];
+  getGPUContext = [(VCPCNNModel *)v9 getGPUContext];
+  v11 = [VCPCNNData cnnDataWithPlane:1 height:40 width:40 context:getGPUContext];
   input = v6->_input;
   v6->_input = v11;
 
@@ -132,10 +132,10 @@ LABEL_16:
 
       else
       {
-        v24 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-        v30 = [v24 resourceURL];
+        vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+        resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-        v29 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_smile.dat" relativeToURL:v30];
+        v29 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_smile.dat" relativeToURL:resourceURL];
         v25 = v6->_model;
         v26 = [(VCPCNNData *)v6->_input size];
         LODWORD(v25) = [(VCPCNNModel *)v25 prepareNetworkFromURL:v29 withInputSize:v26];
@@ -164,24 +164,24 @@ LABEL_37:
   return v13;
 }
 
-- (int)computeSmileScore:(float *)a3
+- (int)computeSmileScore:(float *)score
 {
-  v5 = [(VCPCNNModel *)self->_model forward:self->_input];
-  if (!v5)
+  softmax = [(VCPCNNModel *)self->_model forward:self->_input];
+  if (!softmax)
   {
-    v6 = [(VCPCNNModel *)self->_model output];
-    v5 = [v6 softmax];
+    output = [(VCPCNNModel *)self->_model output];
+    softmax = [output softmax];
 
-    if (!v5)
+    if (!softmax)
     {
-      v7 = [(VCPCNNModel *)self->_model output];
-      *a3 = *([v7 data] + 4);
+      output2 = [(VCPCNNModel *)self->_model output];
+      *score = *([output2 data] + 4);
 
       return 0;
     }
   }
 
-  return v5;
+  return softmax;
 }
 
 @end

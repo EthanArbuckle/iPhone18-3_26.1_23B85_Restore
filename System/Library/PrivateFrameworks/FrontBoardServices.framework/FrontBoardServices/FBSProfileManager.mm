@@ -1,10 +1,10 @@
 @interface FBSProfileManager
 + (id)sharedInstance;
-- (BOOL)isManaged:(id)a3;
+- (BOOL)isManaged:(id)managed;
 - (BOOL)isStarted;
 - (FBSProfileManager)init;
-- (id)profilesForSignerIdentity:(id)a3;
-- (void)_managedAppsChangedNotification:(id)a3;
+- (id)profilesForSignerIdentity:(id)identity;
+- (void)_managedAppsChangedNotification:(id)notification;
 - (void)_reloadProfiles;
 - (void)_workQueue_reloadManagedApplicationBundleIDs;
 - (void)_workQueue_reloadProfiles;
@@ -54,8 +54,8 @@ uint64_t __35__FBSProfileManager_sharedInstance__block_invoke()
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = FBSProfileManager;
@@ -106,9 +106,9 @@ void __33__FBSProfileManager_startService__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)isManaged:(id)a3
+- (BOOL)isManaged:(id)managed
 {
-  v4 = a3;
+  managedCopy = managed;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -118,10 +118,10 @@ void __33__FBSProfileManager_startService__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__FBSProfileManager_isManaged___block_invoke;
   block[3] = &unk_1E76BDCD8;
-  v9 = v4;
+  v9 = managedCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = managedCopy;
   dispatch_sync(workQueue, block);
   LOBYTE(workQueue) = *(v12 + 24);
 
@@ -136,9 +136,9 @@ uint64_t __31__FBSProfileManager_isManaged___block_invoke(void *a1)
   return result;
 }
 
-- (id)profilesForSignerIdentity:(id)a3
+- (id)profilesForSignerIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -150,10 +150,10 @@ uint64_t __31__FBSProfileManager_isManaged___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __47__FBSProfileManager_profilesForSignerIdentity___block_invoke;
   block[3] = &unk_1E76BDCD8;
-  v10 = v4;
+  v10 = identityCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identityCopy;
   dispatch_sync(workQueue, block);
   v7 = v13[5];
 
@@ -260,9 +260,9 @@ uint64_t __46__FBSProfileManager__workQueue_reloadProfiles__block_invoke(uint64_
 {
   v9 = self->_workQueue_managedApplicationBundleIDs;
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v4 = [getMCProfileConnectionClass() sharedConnection];
-  v5 = [v4 managedAppIDs];
-  v6 = [v3 initWithArray:v5];
+  sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+  managedAppIDs = [sharedConnection managedAppIDs];
+  v6 = [v3 initWithArray:managedAppIDs];
 
   if (([v6 isEqual:v9] & 1) == 0)
   {
@@ -272,7 +272,7 @@ uint64_t __46__FBSProfileManager__workQueue_reloadProfiles__block_invoke(uint64_
   }
 }
 
-- (void)_managedAppsChangedNotification:(id)a3
+- (void)_managedAppsChangedNotification:(id)notification
 {
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x1E69E9820];

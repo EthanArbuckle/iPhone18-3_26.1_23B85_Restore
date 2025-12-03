@@ -1,6 +1,6 @@
 @interface BWDeepZoomProcessorInput
 - (id)description;
-- (void)addSampleBuffer:(opaqueCMSampleBuffer *)a3 bufferType:(unint64_t)a4;
+- (void)addSampleBuffer:(opaqueCMSampleBuffer *)buffer bufferType:(unint64_t)type;
 - (void)dealloc;
 @end
 
@@ -26,7 +26,7 @@
   return [v3 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@, %@ : sbuf:%p", v4, self, -[BWStillImageCaptureSettings settingsID](-[BWStillImageProcessorControllerInput captureSettings](self, "captureSettings"), "settingsID"), BWPhotoEncoderStringFromEncodingScheme(-[BWStillImageCaptureStreamSettings captureType](-[BWStillImageProcessorControllerInput captureStreamSettings](self, "captureStreamSettings"), "captureType")), -[BWStillImageCaptureStreamSettings portType](-[BWStillImageProcessorControllerInput captureStreamSettings](self, "captureStreamSettings"), "portType"), self->_sampleBuffer];
 }
 
-- (void)addSampleBuffer:(opaqueCMSampleBuffer *)a3 bufferType:(unint64_t)a4
+- (void)addSampleBuffer:(opaqueCMSampleBuffer *)buffer bufferType:(unint64_t)type
 {
   sampleBuffer = self->_sampleBuffer;
   if (sampleBuffer)
@@ -36,10 +36,10 @@
   }
 
   self->_sampleBufferSet = 1;
-  self->_bufferType = a4;
-  if (a3)
+  self->_bufferType = type;
+  if (buffer)
   {
-    self->_sampleBuffer = CFRetain(a3);
+    self->_sampleBuffer = CFRetain(buffer);
   }
 
   delegate = self->_delegate;

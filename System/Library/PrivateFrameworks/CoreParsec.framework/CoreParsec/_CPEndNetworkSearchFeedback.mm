@@ -1,10 +1,10 @@
 @interface _CPEndNetworkSearchFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPEndNetworkSearchFeedback)init;
-- (_CPEndNetworkSearchFeedback)initWithFacade:(id)a3;
-- (_CPEndNetworkSearchFeedback)initWithStartSearch:(id)a3 responseSize:(int64_t)a4 statusCode:(int64_t)a5 parsecStatus:(id)a6 parsecDuration:(double)a7 fbq:(id)a8 partialClientIp:(id)a9 networkTimingData:(id)a10;
+- (_CPEndNetworkSearchFeedback)initWithFacade:(id)facade;
+- (_CPEndNetworkSearchFeedback)initWithStartSearch:(id)search responseSize:(int64_t)size statusCode:(int64_t)code parsecStatus:(id)status parsecDuration:(double)duration fbq:(id)fbq partialClientIp:(id)ip networkTimingData:(id)self0;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPEndNetworkSearchFeedback
@@ -36,46 +36,46 @@
   return v5 ^ v12 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ [(NSString *)self->_edge hash]^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_39;
   }
 
   responseSize = self->_responseSize;
-  if (responseSize != [v4 responseSize])
+  if (responseSize != [equalCopy responseSize])
   {
     goto LABEL_39;
   }
 
   statusCode = self->_statusCode;
-  if (statusCode != [v4 statusCode])
+  if (statusCode != [equalCopy statusCode])
   {
     goto LABEL_39;
   }
 
-  v8 = [(_CPEndNetworkSearchFeedback *)self uuid];
-  v9 = [v4 uuid];
-  if ((v8 != 0) == (v9 == 0))
+  uuid = [(_CPEndNetworkSearchFeedback *)self uuid];
+  uuid2 = [equalCopy uuid];
+  if ((uuid != 0) == (uuid2 == 0))
   {
     goto LABEL_38;
   }
 
-  v10 = [(_CPEndNetworkSearchFeedback *)self uuid];
-  if (v10)
+  uuid3 = [(_CPEndNetworkSearchFeedback *)self uuid];
+  if (uuid3)
   {
-    v11 = v10;
-    v12 = [(_CPEndNetworkSearchFeedback *)self uuid];
-    v13 = [v4 uuid];
-    v14 = [v12 isEqual:v13];
+    v11 = uuid3;
+    uuid4 = [(_CPEndNetworkSearchFeedback *)self uuid];
+    uuid5 = [equalCopy uuid];
+    v14 = [uuid4 isEqual:uuid5];
 
     if (!v14)
     {
@@ -87,20 +87,20 @@
   {
   }
 
-  v8 = [(_CPEndNetworkSearchFeedback *)self parsecStatus];
-  v9 = [v4 parsecStatus];
-  if ((v8 != 0) == (v9 == 0))
+  uuid = [(_CPEndNetworkSearchFeedback *)self parsecStatus];
+  uuid2 = [equalCopy parsecStatus];
+  if ((uuid != 0) == (uuid2 == 0))
   {
     goto LABEL_38;
   }
 
-  v15 = [(_CPEndNetworkSearchFeedback *)self parsecStatus];
-  if (v15)
+  parsecStatus = [(_CPEndNetworkSearchFeedback *)self parsecStatus];
+  if (parsecStatus)
   {
-    v16 = v15;
-    v17 = [(_CPEndNetworkSearchFeedback *)self parsecStatus];
-    v18 = [v4 parsecStatus];
-    v19 = [v17 isEqual:v18];
+    v16 = parsecStatus;
+    parsecStatus2 = [(_CPEndNetworkSearchFeedback *)self parsecStatus];
+    parsecStatus3 = [equalCopy parsecStatus];
+    v19 = [parsecStatus2 isEqual:parsecStatus3];
 
     if (!v19)
     {
@@ -112,9 +112,9 @@
   {
   }
 
-  v8 = [(_CPEndNetworkSearchFeedback *)self fbq];
-  v9 = [v4 fbq];
-  if ((v8 != 0) == (v9 == 0))
+  uuid = [(_CPEndNetworkSearchFeedback *)self fbq];
+  uuid2 = [equalCopy fbq];
+  if ((uuid != 0) == (uuid2 == 0))
   {
     goto LABEL_38;
   }
@@ -124,7 +124,7 @@
   {
     v21 = v20;
     v22 = [(_CPEndNetworkSearchFeedback *)self fbq];
-    v23 = [v4 fbq];
+    v23 = [equalCopy fbq];
     v24 = [v22 isEqual:v23];
 
     if (!v24)
@@ -138,26 +138,26 @@
   }
 
   duration = self->_duration;
-  [v4 duration];
+  [equalCopy duration];
   if (duration != v26)
   {
     goto LABEL_39;
   }
 
-  v8 = [(_CPEndNetworkSearchFeedback *)self partialClientIp];
-  v9 = [v4 partialClientIp];
-  if ((v8 != 0) == (v9 == 0))
+  uuid = [(_CPEndNetworkSearchFeedback *)self partialClientIp];
+  uuid2 = [equalCopy partialClientIp];
+  if ((uuid != 0) == (uuid2 == 0))
   {
     goto LABEL_38;
   }
 
-  v27 = [(_CPEndNetworkSearchFeedback *)self partialClientIp];
-  if (v27)
+  partialClientIp = [(_CPEndNetworkSearchFeedback *)self partialClientIp];
+  if (partialClientIp)
   {
-    v28 = v27;
-    v29 = [(_CPEndNetworkSearchFeedback *)self partialClientIp];
-    v30 = [v4 partialClientIp];
-    v31 = [v29 isEqual:v30];
+    v28 = partialClientIp;
+    partialClientIp2 = [(_CPEndNetworkSearchFeedback *)self partialClientIp];
+    partialClientIp3 = [equalCopy partialClientIp];
+    v31 = [partialClientIp2 isEqual:partialClientIp3];
 
     if (!v31)
     {
@@ -169,20 +169,20 @@
   {
   }
 
-  v8 = [(_CPEndNetworkSearchFeedback *)self timingData];
-  v9 = [v4 timingData];
-  if ((v8 != 0) == (v9 == 0))
+  uuid = [(_CPEndNetworkSearchFeedback *)self timingData];
+  uuid2 = [equalCopy timingData];
+  if ((uuid != 0) == (uuid2 == 0))
   {
     goto LABEL_38;
   }
 
-  v32 = [(_CPEndNetworkSearchFeedback *)self timingData];
-  if (v32)
+  timingData = [(_CPEndNetworkSearchFeedback *)self timingData];
+  if (timingData)
   {
-    v33 = v32;
-    v34 = [(_CPEndNetworkSearchFeedback *)self timingData];
-    v35 = [v4 timingData];
-    v36 = [v34 isEqual:v35];
+    v33 = timingData;
+    timingData2 = [(_CPEndNetworkSearchFeedback *)self timingData];
+    timingData3 = [equalCopy timingData];
+    v36 = [timingData2 isEqual:timingData3];
 
     if (!v36)
     {
@@ -195,34 +195,34 @@
   }
 
   endpointType = self->_endpointType;
-  if (endpointType != [v4 endpointType])
+  if (endpointType != [equalCopy endpointType])
   {
     goto LABEL_39;
   }
 
   rawResponseSize = self->_rawResponseSize;
-  if (rawResponseSize != [v4 rawResponseSize])
+  if (rawResponseSize != [equalCopy rawResponseSize])
   {
     goto LABEL_39;
   }
 
   decompressedResponseSize = self->_decompressedResponseSize;
-  if (decompressedResponseSize != [v4 decompressedResponseSize])
+  if (decompressedResponseSize != [equalCopy decompressedResponseSize])
   {
     goto LABEL_39;
   }
 
-  v8 = [(_CPEndNetworkSearchFeedback *)self edge];
-  v9 = [v4 edge];
-  if ((v8 != 0) == (v9 == 0))
+  uuid = [(_CPEndNetworkSearchFeedback *)self edge];
+  uuid2 = [equalCopy edge];
+  if ((uuid != 0) == (uuid2 == 0))
   {
 LABEL_38:
 
     goto LABEL_39;
   }
 
-  v40 = [(_CPEndNetworkSearchFeedback *)self edge];
-  if (!v40)
+  edge = [(_CPEndNetworkSearchFeedback *)self edge];
+  if (!edge)
   {
 
 LABEL_42:
@@ -230,10 +230,10 @@ LABEL_42:
     goto LABEL_40;
   }
 
-  v41 = v40;
-  v42 = [(_CPEndNetworkSearchFeedback *)self edge];
-  v43 = [v4 edge];
-  v44 = [v42 isEqual:v43];
+  v41 = edge;
+  edge2 = [(_CPEndNetworkSearchFeedback *)self edge];
+  edge3 = [equalCopy edge];
+  v44 = [edge2 isEqual:edge3];
 
   if (v44)
   {
@@ -247,9 +247,9 @@ LABEL_40:
   return v45;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v25 = a3;
+  toCopy = to;
   if ([(_CPEndNetworkSearchFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -268,17 +268,17 @@ LABEL_40:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_CPEndNetworkSearchFeedback *)self uuid];
+  uuid = [(_CPEndNetworkSearchFeedback *)self uuid];
 
-  if (v7)
+  if (uuid)
   {
     uuid = self->_uuid;
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_CPEndNetworkSearchFeedback *)self parsecStatus];
+  parsecStatus = [(_CPEndNetworkSearchFeedback *)self parsecStatus];
 
-  if (v9)
+  if (parsecStatus)
   {
     parsecStatus = self->_parsecStatus;
     PBDataWriterWriteStringField();
@@ -299,19 +299,19 @@ LABEL_40:
     PBDataWriterWriteDoubleField();
   }
 
-  v15 = [(_CPEndNetworkSearchFeedback *)self partialClientIp];
+  partialClientIp = [(_CPEndNetworkSearchFeedback *)self partialClientIp];
 
-  if (v15)
+  if (partialClientIp)
   {
     partialClientIp = self->_partialClientIp;
     PBDataWriterWriteStringField();
   }
 
-  v17 = [(_CPEndNetworkSearchFeedback *)self timingData];
+  timingData = [(_CPEndNetworkSearchFeedback *)self timingData];
 
-  if (v17)
+  if (timingData)
   {
-    v18 = [(_CPEndNetworkSearchFeedback *)self timingData];
+    timingData2 = [(_CPEndNetworkSearchFeedback *)self timingData];
     PBDataWriterWriteSubmessage();
   }
 
@@ -333,14 +333,14 @@ LABEL_40:
     PBDataWriterWriteUint64Field();
   }
 
-  v22 = [(_CPEndNetworkSearchFeedback *)self edge];
+  edge = [(_CPEndNetworkSearchFeedback *)self edge];
 
-  v23 = v25;
-  if (v22)
+  v23 = toCopy;
+  if (edge)
   {
     edge = self->_edge;
     PBDataWriterWriteStringField();
-    v23 = v25;
+    v23 = toCopy;
   }
 }
 
@@ -358,88 +358,88 @@ LABEL_40:
   return v2;
 }
 
-- (_CPEndNetworkSearchFeedback)initWithStartSearch:(id)a3 responseSize:(int64_t)a4 statusCode:(int64_t)a5 parsecStatus:(id)a6 parsecDuration:(double)a7 fbq:(id)a8 partialClientIp:(id)a9 networkTimingData:(id)a10
+- (_CPEndNetworkSearchFeedback)initWithStartSearch:(id)search responseSize:(int64_t)size statusCode:(int64_t)code parsecStatus:(id)status parsecDuration:(double)duration fbq:(id)fbq partialClientIp:(id)ip networkTimingData:(id)self0
 {
-  v17 = a3;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  searchCopy = search;
+  statusCopy = status;
+  fbqCopy = fbq;
+  ipCopy = ip;
+  dataCopy = data;
   v22 = [(_CPEndNetworkSearchFeedback *)self init];
   if (v22)
   {
-    v23 = [v17 uuid];
+    uuid = [searchCopy uuid];
 
-    if (v23)
+    if (uuid)
     {
-      v24 = [v17 uuid];
-      [(_CPEndNetworkSearchFeedback *)v22 setUuid:v24];
+      uuid2 = [searchCopy uuid];
+      [(_CPEndNetworkSearchFeedback *)v22 setUuid:uuid2];
     }
 
-    if (a4)
+    if (size)
     {
-      [(_CPEndNetworkSearchFeedback *)v22 setResponseSize:a4];
+      [(_CPEndNetworkSearchFeedback *)v22 setResponseSize:size];
     }
 
-    if (a5)
+    if (code)
     {
-      [(_CPEndNetworkSearchFeedback *)v22 setStatusCode:a5];
+      [(_CPEndNetworkSearchFeedback *)v22 setStatusCode:code];
     }
 
-    [(_CPEndNetworkSearchFeedback *)v22 setParsecStatus:v18];
-    if (a7 != 0.0)
+    [(_CPEndNetworkSearchFeedback *)v22 setParsecStatus:statusCopy];
+    if (duration != 0.0)
     {
-      [(_CPEndNetworkSearchFeedback *)v22 setDuration:a7];
+      [(_CPEndNetworkSearchFeedback *)v22 setDuration:duration];
     }
 
-    [(_CPEndNetworkSearchFeedback *)v22 setFbq:v19];
-    [(_CPEndNetworkSearchFeedback *)v22 setPartialClientIp:v20];
-    if ([v21 count])
+    [(_CPEndNetworkSearchFeedback *)v22 setFbq:fbqCopy];
+    [(_CPEndNetworkSearchFeedback *)v22 setPartialClientIp:ipCopy];
+    if ([dataCopy count])
     {
-      v25 = [[_CPNetworkTimingData alloc] initWithTelemetryDictionary:v21];
+      v25 = [[_CPNetworkTimingData alloc] initWithTelemetryDictionary:dataCopy];
       [(_CPEndNetworkSearchFeedback *)v22 setTimingData:v25];
     }
 
-    -[_CPEndNetworkSearchFeedback setEndpointType:](v22, "setEndpointType:", [v17 endpointType]);
+    -[_CPEndNetworkSearchFeedback setEndpointType:](v22, "setEndpointType:", [searchCopy endpointType]);
     v26 = v22;
   }
 
   return v22;
 }
 
-- (_CPEndNetworkSearchFeedback)initWithFacade:(id)a3
+- (_CPEndNetworkSearchFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPEndNetworkSearchFeedback *)self init];
   if (v5)
   {
-    -[_CPEndNetworkSearchFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 uuid];
-    [(_CPEndNetworkSearchFeedback *)v5 setUuid:v6];
+    -[_CPEndNetworkSearchFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    uuid = [facadeCopy uuid];
+    [(_CPEndNetworkSearchFeedback *)v5 setUuid:uuid];
 
-    if ([v4 responseSize])
+    if ([facadeCopy responseSize])
     {
-      -[_CPEndNetworkSearchFeedback setResponseSize:](v5, "setResponseSize:", [v4 responseSize]);
+      -[_CPEndNetworkSearchFeedback setResponseSize:](v5, "setResponseSize:", [facadeCopy responseSize]);
     }
 
-    if ([v4 statusCode])
+    if ([facadeCopy statusCode])
     {
-      -[_CPEndNetworkSearchFeedback setStatusCode:](v5, "setStatusCode:", [v4 statusCode]);
+      -[_CPEndNetworkSearchFeedback setStatusCode:](v5, "setStatusCode:", [facadeCopy statusCode]);
     }
 
-    v7 = [v4 networkTimingData];
-    v8 = [v7 count];
+    networkTimingData = [facadeCopy networkTimingData];
+    v8 = [networkTimingData count];
 
     if (v8)
     {
       v9 = [_CPNetworkTimingData alloc];
-      v10 = [v4 networkTimingData];
-      v11 = [(_CPNetworkTimingData *)v9 initWithTelemetryDictionary:v10];
+      networkTimingData2 = [facadeCopy networkTimingData];
+      v11 = [(_CPNetworkTimingData *)v9 initWithTelemetryDictionary:networkTimingData2];
       [(_CPEndNetworkSearchFeedback *)v5 setTimingData:v11];
     }
 
-    v12 = [v4 edge];
-    [(_CPEndNetworkSearchFeedback *)v5 setEdge:v12];
+    edge = [facadeCopy edge];
+    [(_CPEndNetworkSearchFeedback *)v5 setEdge:edge];
 
     v13 = v5;
   }

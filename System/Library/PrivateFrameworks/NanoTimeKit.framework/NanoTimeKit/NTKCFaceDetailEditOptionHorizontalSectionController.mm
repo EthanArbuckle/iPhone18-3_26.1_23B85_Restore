@@ -1,50 +1,50 @@
 @interface NTKCFaceDetailEditOptionHorizontalSectionController
-- (BOOL)collectionChanged:(id)a3 withSelectedOptions:(id)a4;
-- (NTKCFaceDetailEditOptionHorizontalSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7;
-- (void)didSelectRow:(int64_t)a3;
-- (void)editOptionCell:(id)a3 didSelectOptionAtIndex:(int64_t)a4;
+- (BOOL)collectionChanged:(id)changed withSelectedOptions:(id)options;
+- (NTKCFaceDetailEditOptionHorizontalSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view;
+- (void)didSelectRow:(int64_t)row;
+- (void)editOptionCell:(id)cell didSelectOptionAtIndex:(int64_t)index;
 - (void)reloadActionRow;
-- (void)setSelectedOptions:(id)a3;
+- (void)setSelectedOptions:(id)options;
 @end
 
 @implementation NTKCFaceDetailEditOptionHorizontalSectionController
 
-- (NTKCFaceDetailEditOptionHorizontalSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5 editOptionCollection:(id)a6 faceView:(id)a7
+- (NTKCFaceDetailEditOptionHorizontalSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery editOptionCollection:(id)collection faceView:(id)view
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = a7;
+  galleryCopy = gallery;
+  faceCopy = face;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = NTKCFaceDetailEditOptionHorizontalSectionController;
-  v14 = [(NTKCFaceDetailEditOptionSectionController *)&v24 _initWithTableViewController:a3 face:v12 inGallery:v9 editOptionCollection:a6 faceView:v13];
+  v14 = [(NTKCFaceDetailEditOptionSectionController *)&v24 _initWithTableViewController:controller face:faceCopy inGallery:galleryCopy editOptionCollection:collection faceView:viewCopy];
   v15 = v14;
   if (v14)
   {
     v16 = objc_alloc([(NTKCFaceDetailEditOptionHorizontalSectionController *)v14 editCellClass]);
-    v17 = [(NTKCFaceDetailEditOptionSectionController *)v15 collection];
-    v18 = [v16 initWithCollection:v17 forFaceView:v13 face:v12];
+    collection = [(NTKCFaceDetailEditOptionSectionController *)v15 collection];
+    v18 = [v16 initWithCollection:collection forFaceView:viewCopy face:faceCopy];
     [(NTKCFaceDetailSectionController *)v15 setCell:v18];
 
-    v19 = [(NTKCFaceDetailSectionController *)v15 cell];
-    [v19 setDelegate:v15];
+    cell = [(NTKCFaceDetailSectionController *)v15 cell];
+    [cell setDelegate:v15];
 
     v20 = MEMORY[0x277CBEB18];
-    v21 = [(NTKCFaceDetailSectionController *)v15 cell];
-    v22 = [v20 arrayWithObject:v21];
+    cell2 = [(NTKCFaceDetailSectionController *)v15 cell];
+    v22 = [v20 arrayWithObject:cell2];
     [(NTKCFaceDetailSectionController *)v15 setRows:v22];
   }
 
   return v15;
 }
 
-- (void)didSelectRow:(int64_t)a3
+- (void)didSelectRow:(int64_t)row
 {
-  v5 = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
-  if (v5)
+  actionRow = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
+  if (actionRow)
   {
-    v6 = [(NTKCFaceDetailSectionController *)self rows];
-    v7 = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
-    v8 = [v6 indexOfObject:v7];
+    rows = [(NTKCFaceDetailSectionController *)self rows];
+    actionRow2 = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
+    v8 = [rows indexOfObject:actionRow2];
   }
 
   else
@@ -52,58 +52,58 @@
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v8 == a3)
+  if (v8 == row)
   {
-    v9 = a3 - 1;
+    v9 = row - 1;
     v10 = [(NTKCFaceDetailEditOptionSectionController *)self optionAtIndex:v9];
     v11 = [(NTKCFaceDetailEditOptionSectionController *)self _handleDidSelectActionRowForOption:v10];
 
     if (v11)
     {
-      v12 = [(NTKCFaceDetailEditOptionSectionController *)self delegate];
-      [v12 editOptionSection:self didSelectActionForOptionAtIndex:v9];
+      delegate = [(NTKCFaceDetailEditOptionSectionController *)self delegate];
+      [delegate editOptionSection:self didSelectActionForOptionAtIndex:v9];
     }
   }
 }
 
-- (void)setSelectedOptions:(id)a3
+- (void)setSelectedOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v19.receiver = self;
   v19.super_class = NTKCFaceDetailEditOptionHorizontalSectionController;
-  [(NTKCFaceDetailEditOptionSectionController *)&v19 setSelectedOptions:v4];
-  v5 = [(NTKCFaceDetailSectionController *)self cell];
-  [v5 setSelectedOptions:v4];
+  [(NTKCFaceDetailEditOptionSectionController *)&v19 setSelectedOptions:optionsCopy];
+  cell = [(NTKCFaceDetailSectionController *)self cell];
+  [cell setSelectedOptions:optionsCopy];
 
-  v6 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
-  v7 = [v6 collectionType];
+  collection = [(NTKCFaceDetailEditOptionSectionController *)self collection];
+  collectionType = [collection collectionType];
 
-  if (v7 == 1)
+  if (collectionType == 1)
   {
-    v8 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
-    v9 = [v8 slot];
+    collection2 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
+    slot = [collection2 slot];
 
-    if (v9)
+    if (slot)
     {
-      v10 = [(NTKCFaceDetailSectionController *)self face];
-      v11 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
-      v12 = [v11 mode];
-      v13 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
-      v14 = [v13 slot];
-      v15 = [v10 selectedOptionForCustomEditMode:v12 slot:v14];
+      face = [(NTKCFaceDetailSectionController *)self face];
+      collection3 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
+      mode = [collection3 mode];
+      collection4 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
+      slot2 = [collection4 slot];
+      v15 = [face selectedOptionForCustomEditMode:mode slot:slot2];
     }
 
     else
     {
       v16 = MEMORY[0x277CCABB0];
-      v10 = [(NTKCFaceDetailEditOptionSectionController *)self collection];
-      v11 = [v16 numberWithInteger:{objc_msgSend(v10, "mode")}];
-      v15 = [v4 objectForKeyedSubscript:v11];
+      face = [(NTKCFaceDetailEditOptionSectionController *)self collection];
+      collection3 = [v16 numberWithInteger:{objc_msgSend(face, "mode")}];
+      v15 = [optionsCopy objectForKeyedSubscript:collection3];
     }
 
-    v17 = [v15 localizedName];
-    v18 = [(NTKCFaceDetailSectionController *)self headerView];
-    [v18 setSubtitle:v17];
+    localizedName = [v15 localizedName];
+    headerView = [(NTKCFaceDetailSectionController *)self headerView];
+    [headerView setSubtitle:localizedName];
   }
 
   [(NTKCFaceDetailEditOptionHorizontalSectionController *)self reloadActionRow];
@@ -112,12 +112,12 @@
 - (void)reloadActionRow
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v3 = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
-  v4 = [(NTKCFaceDetailEditOptionSectionController *)self _hasActionRow];
-  if (!v4)
+  actionRow = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
+  _hasActionRow = [(NTKCFaceDetailEditOptionSectionController *)self _hasActionRow];
+  if (!_hasActionRow)
   {
 LABEL_5:
-    if (!v3)
+    if (!actionRow)
     {
       goto LABEL_16;
     }
@@ -125,39 +125,39 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!actionRow)
   {
     [(NTKCFaceDetailEditOptionSectionController *)self _createActionRow];
-    v3 = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
+    actionRow = [(NTKCFaceDetailEditOptionSectionController *)self actionRow];
     goto LABEL_5;
   }
 
   [(NTKCFaceDetailEditOptionSectionController *)self _refreshActionRowContent];
 LABEL_6:
-  v5 = [(NTKCFaceDetailSectionController *)self rows];
-  v6 = [v5 count];
+  rows = [(NTKCFaceDetailSectionController *)self rows];
+  v6 = [rows count];
 
-  v7 = v6 == 1 || v4;
+  v7 = v6 == 1 || _hasActionRow;
   if ((v7 & 1) == 0)
   {
-    v14 = [(NTKCFaceDetailSectionController *)self rows];
-    v15 = [v14 indexOfObject:v3];
+    rows2 = [(NTKCFaceDetailSectionController *)self rows];
+    v15 = [rows2 indexOfObject:actionRow];
 
-    v16 = [(NTKCFaceDetailSectionController *)self rows];
-    [v16 removeObject:v3];
+    rows3 = [(NTKCFaceDetailSectionController *)self rows];
+    [rows3 removeObject:actionRow];
 
     [(NTKCFaceDetailSectionController *)self setHasSpacerRow:0];
     v10 = [MEMORY[0x277CCAA70] indexPathForRow:v15 inSection:{-[NTKCFaceDetailSectionController section](self, "section")}];
     v11 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v10 inSection:{"row") + 1, -[NTKCFaceDetailSectionController section](self, "section")}];
-    v12 = [(NTKCFaceDetailSectionController *)self tableView];
+    tableView = [(NTKCFaceDetailSectionController *)self tableView];
     v18[0] = v10;
     v18[1] = v11;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-    [v12 deleteRowsAtIndexPaths:v13 withRowAnimation:100];
+    [tableView deleteRowsAtIndexPaths:v13 withRowAnimation:100];
     goto LABEL_15;
   }
 
-  v8 = !v4;
+  v8 = !_hasActionRow;
   if (v6 != 1)
   {
     v8 = 1;
@@ -165,38 +165,38 @@ LABEL_6:
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(NTKCFaceDetailSectionController *)self rows];
-    [v9 insertObject:v3 atIndex:1];
+    rows4 = [(NTKCFaceDetailSectionController *)self rows];
+    [rows4 insertObject:actionRow atIndex:1];
 
     v10 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:{-[NTKCFaceDetailSectionController section](self, "section")}];
     v11 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v10 inSection:{"row") + 1, -[NTKCFaceDetailSectionController section](self, "section")}];
     [(NTKCFaceDetailSectionController *)self setHasSpacerRow:1];
-    v12 = [(NTKCFaceDetailSectionController *)self tableView];
+    tableView = [(NTKCFaceDetailSectionController *)self tableView];
     v17[0] = v10;
     v17[1] = v11;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-    [v12 insertRowsAtIndexPaths:v13 withRowAnimation:100];
+    [tableView insertRowsAtIndexPaths:v13 withRowAnimation:100];
 LABEL_15:
   }
 
 LABEL_16:
 }
 
-- (BOOL)collectionChanged:(id)a3 withSelectedOptions:(id)a4
+- (BOOL)collectionChanged:(id)changed withSelectedOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  [(NTKCFaceDetailEditOptionSectionController *)self setCollection:v7];
-  v8 = [(NTKCFaceDetailSectionController *)self cell];
-  v9 = [v8 collectionChanged:v7 withSelectedOptions:v6];
+  optionsCopy = options;
+  changedCopy = changed;
+  [(NTKCFaceDetailEditOptionSectionController *)self setCollection:changedCopy];
+  cell = [(NTKCFaceDetailSectionController *)self cell];
+  v9 = [cell collectionChanged:changedCopy withSelectedOptions:optionsCopy];
 
   return v9;
 }
 
-- (void)editOptionCell:(id)a3 didSelectOptionAtIndex:(int64_t)a4
+- (void)editOptionCell:(id)cell didSelectOptionAtIndex:(int64_t)index
 {
-  v6 = [(NTKCFaceDetailEditOptionSectionController *)self delegate];
-  [v6 editOptionSection:self didSelectOptionAtIndex:a4];
+  delegate = [(NTKCFaceDetailEditOptionSectionController *)self delegate];
+  [delegate editOptionSection:self didSelectOptionAtIndex:index];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface ObjCDiagnosticsReporterLaunchOptions
 - (NSArray)files_to_attach;
 - (ObjCDiagnosticsReporterLaunchOptions)init;
-- (void)setFiles_to_attach:(id)a3;
+- (void)setFiles_to_attach:(id)files_to_attach;
 @end
 
 @implementation ObjCDiagnosticsReporterLaunchOptions
@@ -17,7 +17,7 @@
   return v5.super.isa;
 }
 
-- (void)setFiles_to_attach:(id)a3
+- (void)setFiles_to_attach:(id)files_to_attach
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___ObjCDiagnosticsReporterLaunchOptions_files_to_attach;

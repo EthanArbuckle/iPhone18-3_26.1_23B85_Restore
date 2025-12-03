@@ -1,11 +1,11 @@
 @interface SBDashBoardExtensionWhileLockedCapturePolicy
 + (id)new;
-+ (id)policyWithAuthenticationStatusProvider:(id)a3;
-+ (id)policyWithAuthenticationStatusProvider:(id)a3 captureApplicationMonitor:(id)a4;
++ (id)policyWithAuthenticationStatusProvider:(id)provider;
++ (id)policyWithAuthenticationStatusProvider:(id)provider captureApplicationMonitor:(id)monitor;
 - (SBDashBoardExtensionWhileLockedCapturePolicy)init;
-- (SBDashBoardExtensionWhileLockedCapturePolicy)initWithAuthenticationStatusProvider:(id)a3 captureApplicationMonitor:(id)a4;
-- (id)prewarmingConfigurationForIdentifier:(id)a3 captureApplicationProvider:(id)a4;
-- (id)resolveCameraDestinationLaunchOf:(id)a3 fromSource:(id)a4;
+- (SBDashBoardExtensionWhileLockedCapturePolicy)initWithAuthenticationStatusProvider:(id)provider captureApplicationMonitor:(id)monitor;
+- (id)prewarmingConfigurationForIdentifier:(id)identifier captureApplicationProvider:(id)provider;
+- (id)resolveCameraDestinationLaunchOf:(id)of fromSource:(id)source;
 - (void)_notePolicyMayHaveChanged;
 @end
 
@@ -13,83 +13,83 @@
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_launchDestinationWithPlacement_entity_);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"SBDashBoardExtensionWhileLockedCapturePolicy.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "+[SBDashBoardExtensionWhileLockedCapturePolicy new]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDashBoardExtensionWhileLockedCapturePolicy.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "+[SBDashBoardExtensionWhileLockedCapturePolicy new]", v5}];
 
   return 0;
 }
 
 - (SBDashBoardExtensionWhileLockedCapturePolicy)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithPlacement_entity_);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBDashBoardExtensionWhileLockedCapturePolicy.m" lineNumber:44 description:{@"%s is unavailable; use %@ instead", "-[SBDashBoardExtensionWhileLockedCapturePolicy init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDashBoardExtensionWhileLockedCapturePolicy.m" lineNumber:44 description:{@"%s is unavailable; use %@ instead", "-[SBDashBoardExtensionWhileLockedCapturePolicy init]", v5}];
 
   return 0;
 }
 
-+ (id)policyWithAuthenticationStatusProvider:(id)a3
++ (id)policyWithAuthenticationStatusProvider:(id)provider
 {
   v4 = MEMORY[0x277D243D0];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [a1 policyWithAuthenticationStatusProvider:v5 captureApplicationMonitor:v6];
+  providerCopy = provider;
+  sharedInstance = [v4 sharedInstance];
+  v7 = [self policyWithAuthenticationStatusProvider:providerCopy captureApplicationMonitor:sharedInstance];
 
   return v7;
 }
 
-+ (id)policyWithAuthenticationStatusProvider:(id)a3 captureApplicationMonitor:(id)a4
++ (id)policyWithAuthenticationStatusProvider:(id)provider captureApplicationMonitor:(id)monitor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAuthenticationStatusProvider:v7 captureApplicationMonitor:v6];
+  monitorCopy = monitor;
+  providerCopy = provider;
+  v8 = [[self alloc] initWithAuthenticationStatusProvider:providerCopy captureApplicationMonitor:monitorCopy];
 
   return v8;
 }
 
-- (SBDashBoardExtensionWhileLockedCapturePolicy)initWithAuthenticationStatusProvider:(id)a3 captureApplicationMonitor:(id)a4
+- (SBDashBoardExtensionWhileLockedCapturePolicy)initWithAuthenticationStatusProvider:(id)provider captureApplicationMonitor:(id)monitor
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  monitorCopy = monitor;
   v15.receiver = self;
   v15.super_class = SBDashBoardExtensionWhileLockedCapturePolicy;
   v9 = [(SBDashBoardExtensionWhileLockedCapturePolicy *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_authenticationStatusProvider, a3);
-    objc_storeStrong(&v10->_applicationMonitor, a4);
+    objc_storeStrong(&v9->_authenticationStatusProvider, provider);
+    objc_storeStrong(&v10->_applicationMonitor, monitor);
     [(LCSCaptureApplicationMonitor *)v10->_applicationMonitor addObserver:v10];
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v10->_observers;
-    v10->_observers = v11;
+    v10->_observers = weakObjectsHashTable;
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v10 selector:sel__authenticationStateDidChange_ name:*MEMORY[0x277D66078] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__authenticationStateDidChange_ name:*MEMORY[0x277D66078] object:0];
   }
 
   return v10;
 }
 
-- (id)resolveCameraDestinationLaunchOf:(id)a3 fromSource:(id)a4
+- (id)resolveCameraDestinationLaunchOf:(id)of fromSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 application];
-  v9 = [v8 bundleIdentifier];
+  ofCopy = of;
+  sourceCopy = source;
+  application = [ofCopy application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  v10 = [(LCSCaptureApplicationMonitor *)self->_applicationMonitor knownCameraCaptureApplicationsByBundleIdentifier];
-  v11 = [(SBFAuthenticationStatusProvider *)self->_authenticationStatusProvider isAuthenticatedCached];
-  if ([v9 isEqualToString:@"com.apple.camera"])
+  knownCameraCaptureApplicationsByBundleIdentifier = [(LCSCaptureApplicationMonitor *)self->_applicationMonitor knownCameraCaptureApplicationsByBundleIdentifier];
+  isAuthenticatedCached = [(SBFAuthenticationStatusProvider *)self->_authenticationStatusProvider isAuthenticatedCached];
+  if ([bundleIdentifier isEqualToString:@"com.apple.camera"])
   {
     v12 = &SBDashBoardCapturePlacementCameraPage;
   }
 
-  else if ([v7 isEqualToString:SBDashBoardCaptureLaunchSourceCaptureButton])
+  else if ([sourceCopy isEqualToString:SBDashBoardCaptureLaunchSourceCaptureButton])
   {
     v12 = &SBDashBoardCapturePlacementCameraOverlay;
-    if (v11)
+    if (isAuthenticatedCached)
     {
       v12 = &SBDashBoardCapturePlacementCaptureButtonCameraPage;
     }
@@ -97,7 +97,7 @@
 
   else
   {
-    if (v11)
+    if (isAuthenticatedCached)
     {
       v13 = 0;
       goto LABEL_17;
@@ -109,11 +109,11 @@
   v13 = *v12;
   if (v13)
   {
-    v14 = [v10 objectForKeyedSubscript:v9];
+    v14 = [knownCameraCaptureApplicationsByBundleIdentifier objectForKeyedSubscript:bundleIdentifier];
     if (v14)
     {
       v15 = v14;
-      v16 = (v11 & 1) != 0 ? [[SBDashBoardApplicationHostableEntity alloc] initWithApplicationSceneEntity:v6]: [[SBDashBoardSecureCaptureExtensionHostableEntity alloc] initWithCaptureApplication:v14 launchType:0];
+      v16 = (isAuthenticatedCached & 1) != 0 ? [[SBDashBoardApplicationHostableEntity alloc] initWithApplicationSceneEntity:ofCopy]: [[SBDashBoardSecureCaptureExtensionHostableEntity alloc] initWithCaptureApplication:v14 launchType:0];
       v17 = v16;
 
       if (v17)
@@ -132,44 +132,44 @@ LABEL_18:
   return v18;
 }
 
-- (id)prewarmingConfigurationForIdentifier:(id)a3 captureApplicationProvider:(id)a4
+- (id)prewarmingConfigurationForIdentifier:(id)identifier captureApplicationProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 prewarmType];
-  v9 = [v7 applicationBundleIdentifier];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  prewarmType = [identifierCopy prewarmType];
+  applicationBundleIdentifier = [identifierCopy applicationBundleIdentifier];
 
-  LODWORD(v7) = [(SBFAuthenticationStatusProvider *)self->_authenticationStatusProvider isAuthenticatedCached];
-  v10 = [v6 captureApplicationForBundleIdentifier:v9];
+  LODWORD(identifierCopy) = [(SBFAuthenticationStatusProvider *)self->_authenticationStatusProvider isAuthenticatedCached];
+  v10 = [providerCopy captureApplicationForBundleIdentifier:applicationBundleIdentifier];
 
-  if (v7)
+  if (identifierCopy)
   {
-    v11 = v9;
+    bundleIdentifier = applicationBundleIdentifier;
     v12 = 1;
   }
 
   else
   {
-    v13 = [v10 extension];
-    v11 = [v13 bundleIdentifier];
+    extension = [v10 extension];
+    bundleIdentifier = [extension bundleIdentifier];
 
     v12 = 2;
   }
 
-  if (v8 == 2)
+  if (prewarmType == 2)
   {
     v12 = 0;
   }
 
-  else if (v8 == 1)
+  else if (prewarmType == 1)
   {
-    v14 = v9;
+    v14 = applicationBundleIdentifier;
 
     v12 = 0;
-    v11 = v14;
+    bundleIdentifier = v14;
   }
 
-  v15 = [[SBDashBoardCameraPrewarmConfiguration alloc] initWithPrewarmCameraHardware:1 prewarmForCaptureLaunch:1 backgroundLaunchTarget:v12 applicationBundleIdentifier:v9 prewarmingBundleIdentifier:v11];
+  v15 = [[SBDashBoardCameraPrewarmConfiguration alloc] initWithPrewarmCameraHardware:1 prewarmForCaptureLaunch:1 backgroundLaunchTarget:v12 applicationBundleIdentifier:applicationBundleIdentifier prewarmingBundleIdentifier:bundleIdentifier];
 
   return v15;
 }
@@ -181,8 +181,8 @@ LABEL_18:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -194,14 +194,14 @@ LABEL_18:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) captureLaunchPolicyDidUpdatePolicy:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

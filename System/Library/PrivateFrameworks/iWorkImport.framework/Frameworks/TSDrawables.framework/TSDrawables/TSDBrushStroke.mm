@@ -3,39 +3,39 @@
 + (id)p_glContextQueue;
 + (id)p_glContextSemaphore;
 + (unint64_t)p_glContextCount;
-+ (void)p_clearFrameBuffers:(id)a3;
-+ (void)p_drawColor:(id)a3 intoContext:(CGContext *)a4 usingImageAsMask:(CGImage *)a5 withRect:(CGRect)a6;
-+ (void)p_drawFrameBuffers:(id)a3 intoFrameBuffer:(id)a4 withAlpha:(double)a5 usingDataBuffer:(id)a6;
-- (BOOL)p_isDrawingRasterizedIntoPDFWithContext:(CGContext *)a3;
++ (void)p_clearFrameBuffers:(id)buffers;
++ (void)p_drawColor:(id)color intoContext:(CGContext *)context usingImageAsMask:(CGImage *)mask withRect:(CGRect)rect;
++ (void)p_drawFrameBuffers:(id)buffers intoFrameBuffer:(id)buffer withAlpha:(double)alpha usingDataBuffer:(id)dataBuffer;
+- (BOOL)p_isDrawingRasterizedIntoPDFWithContext:(CGContext *)context;
 - (BOOL)p_isFreehandDrawingStrokeWithFixedTileWidth;
-- (BOOL)p_prefersRasterRenderingInContext:(CGContext *)a3;
+- (BOOL)p_prefersRasterRenderingInContext:(CGContext *)context;
 - (BOOL)p_shouldSplitAtSharpAngles;
 - (BOOL)usesOpenGL;
-- (CGImage)p_newCGImageFromGLWithWidth:(int)a3 height:(int)a4;
-- (TSDBrushStroke)initWithArchive:(const StrokeArchive *)a3 unarchiver:(id)a4;
-- (TSDBrushStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(int)a6 join:(int)a7 pattern:(id)a8 miterLimit:(double)a9;
+- (CGImage)p_newCGImageFromGLWithWidth:(int)width height:(int)height;
+- (TSDBrushStroke)initWithArchive:(const StrokeArchive *)archive unarchiver:(id)unarchiver;
+- (TSDBrushStroke)initWithName:(id)name color:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit;
 - (double)horizontalMarginForSwatch;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)p_glTextureForCurrentStrokeAndContext;
-- (id)strokeLineEnd:(id)a3;
+- (id)strokeLineEnd:(id)end;
 - (int)cap;
-- (int64_t)p_fastElementPercentage:(double *)a3 forOverallPercentage:(double)a4 onPath:(id)a5 withCachedCurrentElementPercentage:(id *)a6;
-- (void)i_setCap:(int)a3;
-- (void)p_brushPath:(CGPath *)a3 inContext:(CGContext *)a4 orDirectly:(id)a5 parameterized:(BOOL)a6 drawRasterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8 withLayoutOptions:(id)a9;
-- (void)p_brushPath:(id)a3 withScaling:(id)a4 inElementRange:(_NSRange)a5 intoPath:(id)a6 orIntoVector:(void *)a7 sectionIndex:(unint64_t *)a8 viewScale:(double)a9 withLayoutOptions:(id)a10 currentSubpathIndex:(unint64_t)a11 cachedCurrentElementPercentage:(id *)a12;
-- (void)p_brushSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 inElementRange:(_NSRange)a6 intoPath:(id)a7 orIntoVector:(void *)a8 viewScale:(double)a9 strokeTileLayout:(id)a10 cachedCurrentElementPercentage:(id *)a11;
-- (void)p_finishOpenGLRenderInContext:(CGContext *)a3 orDirectly:(id)a4 pathVertexData:(void *)a5 parameterized:(BOOL)a6 shouldReverseDrawOrder:(BOOL)a7 withLayoutOptions:(id)a8;
-- (void)p_rasterBrushPath:(CGPath *)a3 inContext:(CGContext *)a4 orDirectly:(id)a5 parameterized:(BOOL)a6 shouldReverseDrawOrder:(BOOL)a7 withLayoutOptions:(id)a8;
-- (void)p_rasterRenderSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 inElementRange:(_NSRange)a6 into:(void *)a7 viewScale:(double)a8 strokeTileLayout:(id)a9 cachedCurrentElementPercentage:(id *)a10;
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8 withLayoutOptions:(id)a9;
+- (int64_t)p_fastElementPercentage:(double *)percentage forOverallPercentage:(double)overallPercentage onPath:(id)path withCachedCurrentElementPercentage:(id *)elementPercentage;
+- (void)i_setCap:(int)cap;
+- (void)p_brushPath:(CGPath *)path inContext:(CGContext *)context orDirectly:(id)directly parameterized:(BOOL)parameterized drawRasterized:(BOOL)rasterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options;
+- (void)p_brushPath:(id)path withScaling:(id)scaling inElementRange:(_NSRange)range intoPath:(id)intoPath orIntoVector:(void *)vector sectionIndex:(unint64_t *)index viewScale:(double)scale withLayoutOptions:(id)self0 currentSubpathIndex:(unint64_t)self1 cachedCurrentElementPercentage:(id *)self2;
+- (void)p_brushSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path inElementRange:(_NSRange)range intoPath:(id)intoPath orIntoVector:(void *)vector viewScale:(double)scale strokeTileLayout:(id)self0 cachedCurrentElementPercentage:(id *)self1;
+- (void)p_finishOpenGLRenderInContext:(CGContext *)context orDirectly:(id)directly pathVertexData:(void *)data parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options;
+- (void)p_rasterBrushPath:(CGPath *)path inContext:(CGContext *)context orDirectly:(id)directly parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options;
+- (void)p_rasterRenderSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path inElementRange:(_NSRange)range into:(void *)into viewScale:(double)scale strokeTileLayout:(id)layout cachedCurrentElementPercentage:(id *)self0;
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options;
 @end
 
 @implementation TSDBrushStroke
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableBrushStroke alloc];
   v7 = objc_msgSend_strokeName(self, v5, v6);
@@ -51,16 +51,16 @@
   return v28;
 }
 
-- (TSDBrushStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(int)a6 join:(int)a7 pattern:(id)a8 miterLimit:(double)a9
+- (TSDBrushStroke)initWithName:(id)name color:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit
 {
-  v11 = *&a7;
-  v12 = *&a6;
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
+  v11 = *&join;
+  v12 = *&cap;
+  nameCopy = name;
+  colorCopy = color;
+  patternCopy = pattern;
   v23.receiver = self;
   v23.super_class = TSDBrushStroke;
-  v19 = [(TSDSmartStroke *)&v23 initWithName:v16 color:v17 width:v12 cap:v11 join:v18 pattern:a5 miterLimit:a9];
+  v19 = [(TSDSmartStroke *)&v23 initWithName:nameCopy color:colorCopy width:v12 cap:v11 join:patternCopy pattern:width miterLimit:limit];
   v21 = v19;
   if (v19)
   {
@@ -70,12 +70,12 @@
   return v21;
 }
 
-- (TSDBrushStroke)initWithArchive:(const StrokeArchive *)a3 unarchiver:(id)a4
+- (TSDBrushStroke)initWithArchive:(const StrokeArchive *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v11.receiver = self;
   v11.super_class = TSDBrushStroke;
-  v7 = [(TSDSmartStroke *)&v11 initWithArchive:a3 unarchiver:v6];
+  v7 = [(TSDSmartStroke *)&v11 initWithArchive:archive unarchiver:unarchiverCopy];
   v9 = v7;
   if (v7)
   {
@@ -120,7 +120,7 @@
   return v4;
 }
 
-- (void)i_setCap:(int)a3
+- (void)i_setCap:(int)cap
 {
   v3.receiver = self;
   v3.super_class = TSDBrushStroke;
@@ -178,17 +178,17 @@
   return v27;
 }
 
-- (id)strokeLineEnd:(id)a3
+- (id)strokeLineEnd:(id)end
 {
-  v4 = a3;
-  if (objc_msgSend_isNone(v4, v5, v6))
+  endCopy = end;
+  if (objc_msgSend_isNone(endCopy, v5, v6))
   {
-    v9 = v4;
+    v9 = endCopy;
   }
 
   else
   {
-    v10 = objc_msgSend_identifier(v4, v7, v8);
+    v10 = objc_msgSend_identifier(endCopy, v7, v8);
     v12 = objc_msgSend_rangeOfString_(v10, v11, @":");
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -222,7 +222,7 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v33, v37, v34, v36, 450, 0, "invalid nil value for '%{public}s'", "strokedLineEnd");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39);
-      v32 = v4;
+      v32 = endCopy;
     }
 
     v9 = v32;
@@ -231,16 +231,16 @@
   return v9;
 }
 
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  v8 = a8;
-  y = a4.y;
-  x = a4.x;
-  v15 = a3;
-  v18 = v15;
-  if (v8)
+  drawingCopy = drawing;
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  v18 = endCopy;
+  if (drawingCopy)
   {
-    v19 = objc_msgSend_identifier(v15, v16, v17);
+    v19 = objc_msgSend_identifier(endCopy, v16, v17);
     v21 = objc_msgSend_rangeOfString_(v19, v20, @":");
     if (v21 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -254,67 +254,67 @@
 
     v28.receiver = self;
     v28.super_class = TSDBrushStroke;
-    [(TSDStroke *)&v28 paintLineEnd:v18 atPoint:a7 atAngle:1 withScale:x inContext:y useFastDrawing:a5, a6];
+    [(TSDStroke *)&v28 paintLineEnd:v18 atPoint:context atAngle:1 withScale:x inContext:y useFastDrawing:angle, scale];
   }
 
   else
   {
-    v26 = objc_msgSend_strokeLineEnd_(self, v16, v15);
+    v26 = objc_msgSend_strokeLineEnd_(self, v16, endCopy);
 
     v27.receiver = self;
     v27.super_class = TSDBrushStroke;
     v18 = v26;
-    [(TSDStroke *)&v27 paintLineEnd:v26 atPoint:a7 atAngle:0 withScale:x inContext:y useFastDrawing:a5, a6];
+    [(TSDStroke *)&v27 paintLineEnd:v26 atPoint:context atAngle:0 withScale:x inContext:y useFastDrawing:angle, scale];
   }
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v12 = a4;
+  orderCopy = order;
+  parameterizedCopy = parameterized;
+  drawingCopy = drawing;
+  strokeCopy = stroke;
   v16 = objc_alloc_init(TSDBrushStrokeLayoutOptions);
-  objc_msgSend_paintPath_wantsInteriorStroke_inContext_useFastDrawing_parameterized_shouldReverseDrawOrder_withLayoutOptions_(self, v15, a3, v12, a5, v10, v9, v8, v16);
+  objc_msgSend_paintPath_wantsInteriorStroke_inContext_useFastDrawing_parameterized_shouldReverseDrawOrder_withLayoutOptions_(self, v15, path, strokeCopy, context, drawingCopy, parameterizedCopy, orderCopy, v16);
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8 withLayoutOptions:(id)a9
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v13 = a4;
-  v16 = a9;
-  if ((objc_msgSend_p_prefersRasterRenderingInContext_(self, v17, a5) | v11))
+  orderCopy = order;
+  parameterizedCopy = parameterized;
+  drawingCopy = drawing;
+  strokeCopy = stroke;
+  optionsCopy = options;
+  if ((objc_msgSend_p_prefersRasterRenderingInContext_(self, v17, context) | drawingCopy))
   {
     v22.receiver = self;
     v22.super_class = TSDBrushStroke;
-    [(TSDStroke *)&v22 paintPath:a3 wantsInteriorStroke:v13 inContext:a5 useFastDrawing:1 parameterized:v10 shouldReverseDrawOrder:v9];
+    [(TSDStroke *)&v22 paintPath:path wantsInteriorStroke:strokeCopy inContext:context useFastDrawing:1 parameterized:parameterizedCopy shouldReverseDrawOrder:orderCopy];
   }
 
   else if (objc_msgSend_shouldRender(self, v18, v19))
   {
-    if (objc_msgSend_p_shouldDrawAsVectorInContext_(self, v20, a5))
+    if (objc_msgSend_p_shouldDrawAsVectorInContext_(self, v20, context))
     {
-      objc_msgSend_p_brushPath_inContext_orDirectly_parameterized_drawRasterized_shouldReverseDrawOrder_withLayoutOptions_(self, v21, a3, a5, 0, v10, 0, 0, v16);
+      objc_msgSend_p_brushPath_inContext_orDirectly_parameterized_drawRasterized_shouldReverseDrawOrder_withLayoutOptions_(self, v21, path, context, 0, parameterizedCopy, 0, 0, optionsCopy);
     }
 
     else
     {
-      objc_msgSend_p_rasterBrushPath_inContext_orDirectly_parameterized_shouldReverseDrawOrder_withLayoutOptions_(self, v21, a3, a5, 0, v10, v9, v16);
+      objc_msgSend_p_rasterBrushPath_inContext_orDirectly_parameterized_shouldReverseDrawOrder_withLayoutOptions_(self, v21, path, context, 0, parameterizedCopy, orderCopy, optionsCopy);
     }
   }
 }
 
-- (void)p_brushPath:(CGPath *)a3 inContext:(CGContext *)a4 orDirectly:(id)a5 parameterized:(BOOL)a6 drawRasterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8 withLayoutOptions:(id)a9
+- (void)p_brushPath:(CGPath *)path inContext:(CGContext *)context orDirectly:(id)directly parameterized:(BOOL)parameterized drawRasterized:(BOOL)rasterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options
 {
-  v129 = a7;
-  v9 = a6;
+  rasterizedCopy = rasterized;
+  parameterizedCopy = parameterized;
   v138 = *MEMORY[0x277D85DE8];
-  v128 = a5;
-  v132 = a9;
-  v124 = v9;
-  if (v9 && !v129)
+  directlyCopy = directly;
+  optionsCopy = options;
+  v124 = parameterizedCopy;
+  if (parameterizedCopy && !rasterizedCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSDBrushStroke p_brushPath:inContext:orDirectly:parameterized:drawRasterized:shouldReverseDrawOrder:withLayoutOptions:]");
@@ -324,9 +324,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
 
-  if (v132)
+  if (optionsCopy)
   {
-    v20 = !v129;
+    v20 = !rasterizedCopy;
   }
 
   else
@@ -334,9 +334,9 @@
     v20 = 1;
   }
 
-  if (v20 || (objc_msgSend_strokeEnd(v132, v11, v12), v21 > 0.0))
+  if (v20 || (objc_msgSend_strokeEnd(optionsCopy, v11, v12), v21 > 0.0))
   {
-    v22 = objc_msgSend_bezierPathWithCGPath_(MEMORY[0x277D81160], v11, a3);
+    v22 = objc_msgSend_bezierPathWithCGPath_(MEMORY[0x277D81160], v11, path);
     objc_msgSend_length(v22, v23, v24);
     if (v27 == 0.0)
     {
@@ -366,44 +366,44 @@ LABEL_75:
     objc_msgSend_setLineWidth_(v22, v32, v33);
     objc_msgSend_miterLimit(self, v34, v35);
     objc_msgSend_setMiterLimit_(v22, v36, v37);
-    if (v128)
+    if (directlyCopy)
     {
-      objc_msgSend_transform(v128, v38, v39);
+      objc_msgSend_transform(directlyCopy, v38, v39);
       TSUTransformScale();
       v41 = v40;
-      objc_msgSend_contentsScale(v128, v42, v43);
+      objc_msgSend_contentsScale(directlyCopy, v42, v43);
     }
 
     else
     {
-      v44 = a4;
-      if (!a4)
+      contextCopy = context;
+      if (!context)
       {
         v46 = 0.0;
         goto LABEL_18;
       }
 
-      if (objc_msgSend_p_isDrawingRasterizedIntoPDFWithContext_(self, v38, a4))
+      if (objc_msgSend_p_isDrawingRasterizedIntoPDFWithContext_(self, v38, context))
       {
         v46 = 1.0;
         goto LABEL_18;
       }
 
-      CGContextGetCTM(&v136, a4);
+      CGContextGetCTM(&v136, context);
       TSUTransformScale();
       v41 = v122;
-      v45 = TSDCGContextAssociatedScreenScale(a4);
+      v45 = TSDCGContextAssociatedScreenScale(context);
     }
 
     v46 = v41 / v45;
 LABEL_18:
     v125 = v46;
-    if (v129)
+    if (rasterizedCopy)
     {
       operator new();
     }
 
-    v47 = objc_msgSend_bezierPath(MEMORY[0x277D81160], v38, v44);
+    v47 = objc_msgSend_bezierPath(MEMORY[0x277D81160], v38, contextCopy);
     objc_msgSend_lineWidth(v22, v48, v49);
     objc_msgSend_setLineWidth_(v47, v50, v51);
     objc_msgSend_setWindingRule_(v47, v52, 0);
@@ -470,7 +470,7 @@ LABEL_18:
 
                 else
                 {
-                  objc_msgSend_p_brushPath_withScaling_inElementRange_intoPath_orIntoVector_sectionIndex_viewScale_withLayoutOptions_currentSubpathIndex_cachedCurrentElementPercentage_(self, v90, v22, v66, v67 - v66, v127, 0, &v135, v68, v70 - v68, v125, v132, v130, v133);
+                  objc_msgSend_p_brushPath_withScaling_inElementRange_intoPath_orIntoVector_sectionIndex_viewScale_withLayoutOptions_currentSubpathIndex_cachedCurrentElementPercentage_(self, v90, v22, v66, v67 - v66, v127, 0, &v135, v68, v70 - v68, v125, optionsCopy, v130, v133);
                   v66 = v67 - 1;
                 }
               }
@@ -493,7 +493,7 @@ LABEL_18:
 
               else
               {
-                v81 = objc_msgSend_patternOffsetsBySubpath(v132, v74, v75);
+                v81 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v74, v75);
                 v82 = v81 == 0;
 
                 if (!v82)
@@ -507,7 +507,7 @@ LABEL_18:
                 }
               }
 
-              objc_msgSend_p_brushPath_withScaling_inElementRange_intoPath_orIntoVector_sectionIndex_viewScale_withLayoutOptions_currentSubpathIndex_cachedCurrentElementPercentage_(self, v74, v22, v66, v67 - v66, v127, 0, &v135, v68, v69 - v68, v125, v132, v130++, v133);
+              objc_msgSend_p_brushPath_withScaling_inElementRange_intoPath_orIntoVector_sectionIndex_viewScale_withLayoutOptions_currentSubpathIndex_cachedCurrentElementPercentage_(self, v74, v22, v66, v67 - v66, v127, 0, &v135, v68, v69 - v68, v125, optionsCopy, v130++, v133);
               v68 = v69;
               v66 = v67;
             }
@@ -537,7 +537,7 @@ LABEL_18:
           goto LABEL_41;
         }
 
-        objc_msgSend_p_brushPath_withScaling_inElementRange_intoPath_orIntoVector_sectionIndex_viewScale_withLayoutOptions_currentSubpathIndex_cachedCurrentElementPercentage_(self, v63, v22, v66, v67 - v66, v127, 0, &v135, v68, v70 - v68, v125, v132, v130, v133);
+        objc_msgSend_p_brushPath_withScaling_inElementRange_intoPath_orIntoVector_sectionIndex_viewScale_withLayoutOptions_currentSubpathIndex_cachedCurrentElementPercentage_(self, v63, v22, v66, v67 - v66, v127, 0, &v135, v68, v70 - v68, v125, optionsCopy, v130, v133);
         v66 = v67 - 1;
 LABEL_42:
         *&v136.a = *&v136.c;
@@ -572,7 +572,7 @@ LABEL_66:
 
       else
       {
-        v97 = objc_msgSend_patternOffsetsBySubpath(v132, v95, v96);
+        v97 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v95, v96);
         v98 = v97 == 0;
 
         if (!v98)
@@ -586,7 +586,7 @@ LABEL_66:
         }
       }
 
-      objc_msgSend_p_brushPath_withScaling_inElementRange_intoPath_orIntoVector_sectionIndex_viewScale_withLayoutOptions_currentSubpathIndex_cachedCurrentElementPercentage_(self, v95, v22, v66, v94, v127, 0, &v135, v68, v69 - v68, v125, v132, v130, v133);
+      objc_msgSend_p_brushPath_withScaling_inElementRange_intoPath_orIntoVector_sectionIndex_viewScale_withLayoutOptions_currentSubpathIndex_cachedCurrentElementPercentage_(self, v95, v22, v66, v94, v127, 0, &v135, v68, v69 - v68, v125, optionsCopy, v130, v133);
     }
 
     if (!v127)
@@ -604,27 +604,27 @@ LABEL_66:
     CGContextAddPathSafe();
     v118 = objc_msgSend_color(self, v116, v117);
     v121 = objc_msgSend_CGColor(v118, v119, v120);
-    CGContextSetFillColorWithColor(a4, v121);
+    CGContextSetFillColorWithColor(context, v121);
 
-    CGContextFillPath(a4);
+    CGContextFillPath(context);
     goto LABEL_75;
   }
 
 LABEL_76:
 }
 
-- (void)p_brushPath:(id)a3 withScaling:(id)a4 inElementRange:(_NSRange)a5 intoPath:(id)a6 orIntoVector:(void *)a7 sectionIndex:(unint64_t *)a8 viewScale:(double)a9 withLayoutOptions:(id)a10 currentSubpathIndex:(unint64_t)a11 cachedCurrentElementPercentage:(id *)a12
+- (void)p_brushPath:(id)path withScaling:(id)scaling inElementRange:(_NSRange)range intoPath:(id)intoPath orIntoVector:(void *)vector sectionIndex:(unint64_t *)index viewScale:(double)scale withLayoutOptions:(id)self0 currentSubpathIndex:(unint64_t)self1 cachedCurrentElementPercentage:(id *)self2
 {
-  length = a5.length;
-  location = a5.location;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v178 = a3;
-  v20 = a6;
-  v176 = a10;
-  if (objc_msgSend_elementCount(v178, v21, v22) >= 2)
+  length = range.length;
+  location = range.location;
+  var1 = scaling.var1;
+  var0 = scaling.var0;
+  pathCopy = path;
+  intoPathCopy = intoPath;
+  optionsCopy = options;
+  if (objc_msgSend_elementCount(pathCopy, v21, v22) >= 2)
   {
-    v27 = objc_msgSend_patternOffsetsBySubpath(v176, v23, v24);
+    v27 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v23, v24);
     if (v27)
     {
       isFreehandDrawingStrokeWithFixedTileWidth = objc_msgSend_p_isFreehandDrawingStrokeWithFixedTileWidth(self, v25, v26);
@@ -640,7 +640,7 @@ LABEL_76:
       }
     }
 
-    objc_msgSend_lineWidth(v178, v25, v26);
+    objc_msgSend_lineWidth(pathCopy, v25, v26);
     v37 = v36;
     v40 = objc_msgSend_strokeName(self, v38, v39);
     v42 = objc_msgSend_storageForBrushStrokeNamed_(TSDBrushStrokeLoader, v41, v40);
@@ -696,7 +696,7 @@ LABEL_76:
     }
 
     v168 = v37;
-    objc_msgSend_length(v178, v60, v61);
+    objc_msgSend_length(pathCopy, v60, v61);
     v170 = v68;
     v69 = var0 + var1;
     if (v59)
@@ -717,9 +717,9 @@ LABEL_76:
       v93 = fmin(v91, v92);
 
       v94 = var0 + v93 / v170;
-      objc_msgSend_p_brushSection_sectionIndex_ontoPath_inElementRange_intoPath_orIntoVector_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v95, @"start", 0, v178, location, length, v20, a9, var0, v94, 0.0, 1.0, a7, a12);
+      objc_msgSend_p_brushSection_sectionIndex_ontoPath_inElementRange_intoPath_orIntoVector_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v95, @"start", 0, pathCopy, location, length, intoPathCopy, scale, var0, v94, 0.0, 1.0, vector, percentage);
       v96 = v69 - fmin(v168 * (v88 / v90), v92) / v170;
-      objc_msgSend_p_brushSection_sectionIndex_ontoPath_inElementRange_intoPath_orIntoVector_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v97, @"end", 0, v178, location, length, v20, a9, v96, v69, 0.0, 1.0, a7, a12);
+      objc_msgSend_p_brushSection_sectionIndex_ontoPath_inElementRange_intoPath_orIntoVector_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v97, @"end", 0, pathCopy, location, length, intoPathCopy, scale, v96, v69, 0.0, 1.0, vector, percentage);
       v69 = v96;
     }
 
@@ -753,18 +753,18 @@ LABEL_55:
     }
 
     v169 = v116;
-    v117 = objc_msgSend_patternOffsetsBySubpath(v176, v110, v111);
+    v117 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v110, v111);
 
     v120 = 0.0;
     if (v117)
     {
-      v121 = objc_msgSend_patternOffsetsBySubpath(v176, v118, v119);
+      v121 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v118, v119);
       v124 = objc_msgSend_count(v121, v122, v123);
 
-      if (v124 > a11)
+      if (v124 > subpathIndex)
       {
-        v127 = objc_msgSend_patternOffsetsBySubpath(v176, v125, v126);
-        v129 = objc_msgSend_objectAtIndexedSubscript_(v127, v128, a11);
+        v127 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v125, v126);
+        v129 = objc_msgSend_objectAtIndexedSubscript_(v127, v128, subpathIndex);
         objc_msgSend_tsu_CGFloatValue(v129, v130, v131);
 LABEL_28:
         v120 = v132 / v170;
@@ -772,12 +772,12 @@ LABEL_28:
         goto LABEL_30;
       }
 
-      v133 = objc_msgSend_patternOffsetsBySubpath(v176, v125, v126);
+      v133 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v125, v126);
       v136 = objc_msgSend_count(v133, v134, v135);
 
       if (v136 == 1)
       {
-        v127 = objc_msgSend_patternOffsetsBySubpath(v176, v137, v138);
+        v127 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v137, v138);
         v129 = objc_msgSend_objectAtIndexedSubscript_(v127, v139, 0);
         objc_msgSend_tsu_CGFloatValue(v129, v140, v141);
         goto LABEL_28;
@@ -786,9 +786,9 @@ LABEL_28:
       v166 = MEMORY[0x277D81150];
       v171 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v137, "[TSDBrushStroke p_brushPath:withScaling:inElementRange:intoPath:orIntoVector:sectionIndex:viewScale:withLayoutOptions:currentSubpathIndex:cachedCurrentElementPercentage:]");
       v167 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v142, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDBrushStroke.mm");
-      v165 = objc_msgSend_patternOffsetsBySubpath(v176, v143, v144);
+      v165 = objc_msgSend_patternOffsetsBySubpath(optionsCopy, v143, v144);
       v147 = objc_msgSend_count(v165, v145, v146);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v166, v148, v171, v167, 867, 0, "Not enough pattern offsets for each subpath. Got %zi for index %zi", v147, a11);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v166, v148, v171, v167, 867, 0, "Not enough pattern offsets for each subpath. Got %zi for index %zi", v147, subpathIndex);
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v149, v150);
     }
@@ -799,7 +799,7 @@ LABEL_30:
       v153 = v113 * (v115 / v114);
       if (v120 > 0.0 && v120 > v153)
       {
-        v154 = *a8;
+        v154 = *index;
         do
         {
           v120 = v120 - v153;
@@ -816,7 +816,7 @@ LABEL_30:
         }
 
         while (v120 > 0.0 && v120 > v153);
-        *a8 = v154;
+        *index = v154;
       }
     }
 
@@ -845,27 +845,27 @@ LABEL_30:
         }
 
         v161 = v153 * (1.0 - v159);
-        v162 = a12;
+        percentageCopy2 = percentage;
         if (v158 - v94 <= v161)
         {
           goto LABEL_48;
         }
 
         v158 = v158 - (v158 - v94 - v161);
-        objc_msgSend_p_brushSection_sectionIndex_ontoPath_inElementRange_intoPath_orIntoVector_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v157, v65, *a8 % v99, v178, location, length, v20, a9, v94, v158, a7, a12);
+        objc_msgSend_p_brushSection_sectionIndex_ontoPath_inElementRange_intoPath_orIntoVector_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v157, v65, *index % v99, pathCopy, location, length, intoPathCopy, scale, v94, v158, vector, percentage);
 LABEL_49:
-        v163 = 1664525 * *a8 + 1013904223;
-        if (v163 % v99 == *a8 % v99)
+        v163 = 1664525 * *index + 1013904223;
+        if (v163 % v99 == *index % v99)
         {
           v164 = v163 + 1;
         }
 
         else
         {
-          v164 = 1664525 * *a8 + 1013904223;
+          v164 = 1664525 * *index + 1013904223;
         }
 
-        *a8 = v164;
+        *index = v164;
         v94 = v158;
         if (vabdd_f64(v158, v69) <= 0.00000999999975)
         {
@@ -873,9 +873,9 @@ LABEL_49:
         }
       }
 
-      v162 = a12;
+      percentageCopy2 = percentage;
 LABEL_48:
-      objc_msgSend_p_brushSection_sectionIndex_ontoPath_inElementRange_intoPath_orIntoVector_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v157, v65, *a8 % v99, v178, location, length, v20, a9, v94, v158, a7, v162);
+      objc_msgSend_p_brushSection_sectionIndex_ontoPath_inElementRange_intoPath_orIntoVector_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v157, v65, *index % v99, pathCopy, location, length, intoPathCopy, scale, v94, v158, vector, percentageCopy2);
       goto LABEL_49;
     }
 
@@ -885,22 +885,22 @@ LABEL_48:
 LABEL_56:
 }
 
-- (void)p_brushSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 inElementRange:(_NSRange)a6 intoPath:(id)a7 orIntoVector:(void *)a8 viewScale:(double)a9 strokeTileLayout:(id)a10 cachedCurrentElementPercentage:(id *)a11
+- (void)p_brushSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path inElementRange:(_NSRange)range intoPath:(id)intoPath orIntoVector:(void *)vector viewScale:(double)scale strokeTileLayout:(id)self0 cachedCurrentElementPercentage:(id *)self1
 {
-  var3 = a10.var3;
-  var2 = a10.var2;
-  var1 = a10.var1;
-  var0 = a10.var0;
-  length = a6.length;
-  location = a6.location;
-  v65 = a3;
-  v66 = a5;
-  v22 = a7;
-  v64 = v22;
-  if (a8)
+  var3 = layout.var3;
+  var2 = layout.var2;
+  var1 = layout.var1;
+  var0 = layout.var0;
+  length = range.length;
+  location = range.location;
+  sectionCopy = section;
+  pathCopy = path;
+  intoPathCopy = intoPath;
+  v64 = intoPathCopy;
+  if (vector)
   {
     v25 = length;
-    if (v22)
+    if (intoPathCopy)
     {
       v26 = MEMORY[0x277D81150];
       v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "[TSDBrushStroke p_brushSection:sectionIndex:ontoPath:inElementRange:intoPath:orIntoVector:viewScale:strokeTileLayout:cachedCurrentElementPercentage:]");
@@ -910,10 +910,10 @@ LABEL_56:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32);
     }
 
-    objc_msgSend_p_rasterRenderSection_sectionIndex_ontoPath_inElementRange_into_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v23, v65, a4, v66, location, v25, a8, a9, var0, var1, var2, var3, a11);
+    objc_msgSend_p_rasterRenderSection_sectionIndex_ontoPath_inElementRange_into_viewScale_strokeTileLayout_cachedCurrentElementPercentage_(self, v23, sectionCopy, index, pathCopy, location, v25, vector, scale, var0, var1, var2, var3, percentage);
   }
 
-  else if (v22)
+  else if (intoPathCopy)
   {
     v33 = objc_msgSend_strokeName(self, v23, v24);
     v35 = objc_msgSend_storageForBrushStrokeNamed_(TSDBrushStrokeLoader, v34, v33);
@@ -929,10 +929,10 @@ LABEL_56:
     }
 
     v45 = objc_msgSend_paths(v35, v36, v37);
-    v47 = objc_msgSend_objectForKeyedSubscript_(v45, v46, v65);
-    v49 = objc_msgSend_objectAtIndexedSubscript_(v47, v48, a4);
+    v47 = objc_msgSend_objectForKeyedSubscript_(v45, v46, sectionCopy);
+    v49 = objc_msgSend_objectAtIndexedSubscript_(v47, v48, index);
 
-    objc_msgSend_lineWidth(v66, v50, v51);
+    objc_msgSend_lineWidth(pathCopy, v50, v51);
     if (v54 >= 15.0)
     {
       objc_msgSend_originalPath(v49, v52, v53);
@@ -943,7 +943,7 @@ LABEL_56:
       objc_msgSend_pathWithPossibleSmoothing(v49, v52, v53);
     }
     v62 = ;
-    objc_msgSend_recursiveSubdivideOntoPath_withScaling_inElementRange_into_(v62, v63, v66, location, length, v64, var0, var1 - var0);
+    objc_msgSend_recursiveSubdivideOntoPath_withScaling_inElementRange_into_(v62, v63, pathCopy, location, length, v64, var0, var1 - var0);
   }
 
   else
@@ -957,24 +957,24 @@ LABEL_56:
   }
 }
 
-- (void)p_rasterBrushPath:(CGPath *)a3 inContext:(CGContext *)a4 orDirectly:(id)a5 parameterized:(BOOL)a6 shouldReverseDrawOrder:(BOOL)a7 withLayoutOptions:(id)a8
+- (void)p_rasterBrushPath:(CGPath *)path inContext:(CGContext *)context orDirectly:(id)directly parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a5;
-  v17 = a8;
-  if (v14)
+  orderCopy = order;
+  parameterizedCopy = parameterized;
+  directlyCopy = directly;
+  optionsCopy = options;
+  if (directlyCopy)
   {
-    objc_msgSend_transform(v14, v15, v16);
+    objc_msgSend_transform(directlyCopy, v15, v16);
   }
 
   else
   {
-    CGContextGetCTM(&v29, a4);
+    CGContextGetCTM(&v29, context);
   }
 
   v19 = sqrt(v29.b * v29.b + v29.a * v29.a);
-  if (a4 && objc_msgSend_p_isDrawingRasterizedIntoPDFWithContext_(self, v18, a4))
+  if (context && objc_msgSend_p_isDrawingRasterizedIntoPDFWithContext_(self, v18, context))
   {
     v19 = 1.0;
   }
@@ -999,36 +999,36 @@ LABEL_56:
     *(*&v29.b + 24) = (v23 & 1) == 0;
   }
 
-  if ((!objc_msgSend_usesOpenGL(self, v21, v22) || *(*&v29.b + 24)) && (v14 || v10 || (objc_msgSend_width(self, v24, v25), v26 > 0.5 / v19)))
+  if ((!objc_msgSend_usesOpenGL(self, v21, v22) || *(*&v29.b + 24)) && (directlyCopy || parameterizedCopy || (objc_msgSend_width(self, v24, v25), v26 > 0.5 / v19)))
   {
-    objc_msgSend_p_brushPath_inContext_orDirectly_parameterized_drawRasterized_shouldReverseDrawOrder_withLayoutOptions_(self, v24, a3, a4, v14, v10, 1, v9, v17);
+    objc_msgSend_p_brushPath_inContext_orDirectly_parameterized_drawRasterized_shouldReverseDrawOrder_withLayoutOptions_(self, v24, path, context, directlyCopy, parameterizedCopy, 1, orderCopy, optionsCopy);
   }
 
-  else if (a4)
+  else if (context)
   {
     v27.receiver = self;
     v27.super_class = TSDBrushStroke;
-    [(TSDStroke *)&v27 paintPath:a3 wantsInteriorStroke:0 inContext:a4 useFastDrawing:0 parameterized:v10 shouldReverseDrawOrder:0];
+    [(TSDStroke *)&v27 paintPath:path wantsInteriorStroke:0 inContext:context useFastDrawing:0 parameterized:parameterizedCopy shouldReverseDrawOrder:0];
   }
 
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)p_rasterRenderSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 inElementRange:(_NSRange)a6 into:(void *)a7 viewScale:(double)a8 strokeTileLayout:(id)a9 cachedCurrentElementPercentage:(id *)a10
+- (void)p_rasterRenderSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path inElementRange:(_NSRange)range into:(void *)into viewScale:(double)scale strokeTileLayout:(id)layout cachedCurrentElementPercentage:(id *)self0
 {
-  length = a6.length;
-  location = a6.location;
-  var3 = a9.var3;
-  var2 = a9.var2;
-  var1 = a9.var1;
-  var0 = a9.var0;
+  length = range.length;
+  location = range.location;
+  var3 = layout.var3;
+  var2 = layout.var2;
+  var1 = layout.var1;
+  var0 = layout.var0;
   v247 = *MEMORY[0x277D85DE8];
-  v215 = a3;
-  v18 = a5;
+  sectionCopy = section;
+  pathCopy = path;
   v19 = location + length;
-  while (location < objc_msgSend_elementCount(v18, v16, v17))
+  while (location < objc_msgSend_elementCount(pathCopy, v16, v17))
   {
-    objc_msgSend_lengthOfElement_(v18, v16, location);
+    objc_msgSend_lengthOfElement_(pathCopy, v16, location);
     if (v20 != 0.0)
     {
       break;
@@ -1039,7 +1039,7 @@ LABEL_56:
 
   while (v19 > location)
   {
-    objc_msgSend_lengthOfElement_(v18, v16, v19);
+    objc_msgSend_lengthOfElement_(pathCopy, v16, v19);
     if (v21 != 0.0)
     {
       break;
@@ -1055,8 +1055,8 @@ LABEL_56:
 
   v243 = 0.0;
   v244 = 0.0;
-  v230 = objc_msgSend_p_fastElementPercentage_forOverallPercentage_onPath_withCachedCurrentElementPercentage_(self, v16, &v244, v18, a10, var0);
-  v23 = objc_msgSend_p_fastElementPercentage_forOverallPercentage_onPath_withCachedCurrentElementPercentage_(self, v22, &v243, v18, a10, var1);
+  v230 = objc_msgSend_p_fastElementPercentage_forOverallPercentage_onPath_withCachedCurrentElementPercentage_(self, v16, &v244, pathCopy, percentage, var0);
+  v23 = objc_msgSend_p_fastElementPercentage_forOverallPercentage_onPath_withCachedCurrentElementPercentage_(self, v22, &v243, pathCopy, percentage, var1);
   if (v230 < location)
   {
     v244 = 0.0;
@@ -1087,17 +1087,17 @@ LABEL_56:
 
   v224 = v23;
   v27 = objc_msgSend_bezierPath(MEMORY[0x277D81160], v24, v25, v26);
-  objc_msgSend_appendBezierPath_fromSegment_t_toSegment_t_withoutMove_(v27, v28, v18, v230, v224, 0, v244, v243);
-  CGAffineTransformMakeScale(&v246, a8, a8);
+  objc_msgSend_appendBezierPath_fromSegment_t_toSegment_t_withoutMove_(v27, v28, pathCopy, v230, v224, 0, v244, v243);
+  CGAffineTransformMakeScale(&v246, scale, scale);
   objc_msgSend_transformUsingAffineTransform_(v27, v29, &v246);
   v226 = objc_msgSend_bezierPathByFlatteningPathWithFlatness_(v27, v30, v31, 0.1);
 
-  CGAffineTransformMakeScale(&v246, 1.0 / a8, 1.0 / a8);
+  CGAffineTransformMakeScale(&v246, 1.0 / scale, 1.0 / scale);
   objc_msgSend_transformUsingAffineTransform_(v226, v32, &v246);
   objc_msgSend_width(self, v33, v34);
-  if (v37 < 0.5 / a8)
+  if (v37 < 0.5 / scale)
   {
-    v37 = 0.5 / a8;
+    v37 = 0.5 / scale;
   }
 
   v216 = v37;
@@ -1147,7 +1147,7 @@ LABEL_56:
       }
 
       TSUDistanceSquared();
-      v54 = v53 * a8 * a8;
+      v54 = v53 * scale * scale;
       if (v54 > 0.000000999999997 && v54 <= 1.0)
       {
         v56 = 1.0;
@@ -1225,19 +1225,19 @@ LABEL_44:
     }
 
     v82 = objc_msgSend_textureIndices(v214, v73, v74);
-    v84 = objc_msgSend_objectForKeyedSubscript_(v82, v83, v215);
-    v86 = objc_msgSend_objectAtIndexedSubscript_(v84, v85, a4);
+    v84 = objc_msgSend_objectForKeyedSubscript_(v82, v83, sectionCopy);
+    v86 = objc_msgSend_objectAtIndexedSubscript_(v84, v85, index);
     v234 = objc_msgSend_unsignedIntegerValue(v86, v87, v88);
 
     v228 = objc_msgSend_totalSectionCount(v214, v89, v90);
     LODWORD(v86) = log2(64.0) - 1;
-    log2((v216 + v216) * a8);
+    log2((v216 + v216) * scale);
     v91 = 1.0;
     TSUClamp();
     v93 = (v86 - v92);
     v222 = exp2f(-v93);
     v213 = exp2f(-(v93 + 1.0));
-    v94 = v70 - 1;
+    intoCopy = v70 - 1;
     v95 = __p + 24;
     v96 = 0.0;
     v97 = v70 - 1;
@@ -1251,8 +1251,8 @@ LABEL_44:
 
     while (v97);
     v101 = objc_msgSend_paths(v214, v98, v99);
-    v103 = objc_msgSend_objectForKeyedSubscript_(v101, v102, v215);
-    v105 = objc_msgSend_objectAtIndexedSubscript_(v103, v104, a4);
+    v103 = objc_msgSend_objectForKeyedSubscript_(v101, v102, sectionCopy);
+    v105 = objc_msgSend_objectAtIndexedSubscript_(v103, v104, index);
     v108 = objc_msgSend_originalPath(v105, v106, v107);
 
     v236 = v108;
@@ -1267,7 +1267,7 @@ LABEL_44:
     }
 
     objc_msgSend_bounds(v236, v109, v110);
-    v118 = a8;
+    scaleCopy = scale;
     CGRectGetMaxX(v248);
     if (var2 < 0.001)
     {
@@ -1283,7 +1283,7 @@ LABEL_44:
 
     if (var3 > 0.999)
     {
-      v122 = __p + 16 * v94;
+      v122 = __p + 16 * intoCopy;
       TSUSubtractPoints();
       TSUNormalizePoint();
       TSUMultiplyPointScalar();
@@ -1304,14 +1304,14 @@ LABEL_44:
       v128 = v131 + v128;
       *v126++ = v128;
       v127 += 16;
-      --v94;
+      --intoCopy;
     }
 
-    while (v94);
-    v132 = *(a7 + 1);
-    v133 = v132 - *a7;
-    v134 = v132 != *a7;
-    if (v132 == *a7)
+    while (intoCopy);
+    v132 = *(into + 1);
+    v133 = v132 - *into;
+    v134 = v132 != *into;
+    if (v132 == *into)
     {
 LABEL_72:
       shouldSplitAtSharpAngles = objc_msgSend_p_shouldSplitAtSharpAngles(self, v129, v130);
@@ -1350,15 +1350,15 @@ LABEL_72:
         }
       }
 
-      objc_msgSend_gradientAt_fromElement_(v18, v150, v230, v151, v153);
+      objc_msgSend_gradientAt_fromElement_(pathCopy, v150, v230, v151, v153);
       TSUSubtractPoints();
-      objc_msgSend_gradientAt_fromElement_(v18, v157, v224, v243);
+      objc_msgSend_gradientAt_fromElement_(pathCopy, v157, v224, v243);
       TSUAddPoints();
       v160 = objc_msgSend_strokeName(self, v158, v159);
       isEqualToString = objc_msgSend_isEqualToString_(v160, v161, @"Basic");
-      if (isEqualToString & 1) != 0 || (objc_msgSend_strokeName(self, v162, v163), v94 = objc_claimAutoreleasedReturnValue(), (objc_msgSend_isEqualToString_(v94, v165, @"Basic Rounded")))
+      if (isEqualToString & 1) != 0 || (objc_msgSend_strokeName(self, v162, v163), intoCopy = objc_claimAutoreleasedReturnValue(), (objc_msgSend_isEqualToString_(intoCopy, v165, @"Basic Rounded")))
       {
-        isEffectivelyClosed = objc_msgSend_isEffectivelyClosed(v18, v162, v163);
+        isEffectivelyClosed = objc_msgSend_isEffectivelyClosed(pathCopy, v162, v163);
         if (isEqualToString)
         {
 
@@ -1378,7 +1378,7 @@ LABEL_103:
             v178 = vabds_f32(*&v172, v177);
             v179 = v177;
             v180 = *&v172;
-            v181 = v178 / (v216 * a8);
+            v181 = v178 / (v216 * scale);
             v182 = v91 / (v228 * v175);
             v183 = v181 + v179;
             *&v181 = v180 - v181;
@@ -1393,7 +1393,7 @@ LABEL_103:
             v223 = v186;
             do
             {
-              v235 = v118;
+              v235 = scaleCopy;
               v237 = v91;
               v188 = v171 + 1;
               TSUSubtractPoints();
@@ -1443,7 +1443,7 @@ LABEL_103:
                 *&v246.b = __PAIR64__(LODWORD(v203), LODWORD(v206));
                 *&v246.c = __PAIR64__(v225, LODWORD(v231));
                 *&v246.d = __PAIR64__(LODWORD(v204), LODWORD(v223));
-                sub_27678CE30(a7, &v246);
+                sub_27678CE30(into, &v246);
               }
 
               else
@@ -1456,7 +1456,7 @@ LABEL_103:
               *&v246.b = __PAIR64__(LODWORD(v203), LODWORD(v206));
               *&v246.c = __PAIR64__(v225, LODWORD(v231));
               *&v246.d = __PAIR64__(LODWORD(v204), LODWORD(v223));
-              sub_27678CE30(a7, &v246);
+              sub_27678CE30(into, &v246);
               TSUSubtractPoints();
               *&v207 = v207;
               LODWORD(v246.a) = 0;
@@ -1465,8 +1465,8 @@ LABEL_103:
               *&v246.b = __PAIR64__(LODWORD(v203), LODWORD(v208));
               *&v246.c = __PAIR64__(v225, LODWORD(v221));
               *&v246.d = __PAIR64__(LODWORD(v204), LODWORD(v223));
-              sub_27678CE30(a7, &v246);
-              v118 = v235;
+              sub_27678CE30(into, &v246);
+              scaleCopy = v235;
               v91 = v237;
               if (v229 > v227)
               {
@@ -1478,7 +1478,7 @@ LABEL_103:
                 *&v246.b = __PAIR64__(LODWORD(v203), LODWORD(v210));
                 *&v246.c = __PAIR64__(v225, LODWORD(v231));
                 *&v246.d = __PAIR64__(LODWORD(v204), LODWORD(v223));
-                sub_27678CE30(a7, &v246);
+                sub_27678CE30(into, &v246);
                 TSUSubtractPoints();
                 *&v211 = v211;
                 LODWORD(v246.a) = 0;
@@ -1487,7 +1487,7 @@ LABEL_103:
                 *&v246.b = __PAIR64__(LODWORD(v203), LODWORD(v212));
                 *&v246.c = __PAIR64__(v225, LODWORD(v221));
                 *&v246.d = __PAIR64__(LODWORD(v204), LODWORD(v223));
-                sub_27678CE30(a7, &v246);
+                sub_27678CE30(into, &v246);
               }
 
               v134 = 0;
@@ -1517,9 +1517,9 @@ LABEL_103:
           }
         }
 
-        objc_msgSend_gradientAt_fromElement_(v18, v167, v224, v243);
-        objc_msgSend_gradientAt_fromElement_(v18, v168, v230, v244);
-        v118 = v169;
+        objc_msgSend_gradientAt_fromElement_(pathCopy, v167, v224, v243);
+        objc_msgSend_gradientAt_fromElement_(pathCopy, v168, v230, v244);
+        scaleCopy = v169;
         TSUSubtractPoints();
         TSUAddPoints();
         v91 = 1.0;
@@ -1530,7 +1530,7 @@ LABEL_103:
     }
 
     v135 = v132 - 2;
-    v136 = *(a7 + 2);
+    v136 = *(into + 2);
     if (v132 >= v136)
     {
       v139 = v133 >> 5;
@@ -1540,7 +1540,7 @@ LABEL_103:
         sub_2766E23A4();
       }
 
-      v141 = v136 - *a7;
+      v141 = v136 - *into;
       if (v141 >> 4 > v140)
       {
         v140 = v141 >> 4;
@@ -1558,7 +1558,7 @@ LABEL_103:
 
       if (v142)
       {
-        sub_2767913E0(a7, v142);
+        sub_2767913E0(into, v142);
       }
 
       v143 = (32 * v139);
@@ -1566,17 +1566,17 @@ LABEL_103:
       *v143 = *v135;
       v143[1] = v144;
       v138 = 32 * v139 + 32;
-      v94 = a7;
-      v145 = *(a7 + 1) - *a7;
+      intoCopy = into;
+      v145 = *(into + 1) - *into;
       v146 = v143 - v145;
-      memcpy(v143 - v145, *a7, v145);
-      v147 = *a7;
-      *a7 = v146;
-      *(a7 + 1) = v138;
-      *(a7 + 2) = 0;
+      memcpy(v143 - v145, *into, v145);
+      v147 = *into;
+      *into = v146;
+      *(into + 1) = v138;
+      *(into + 2) = 0;
       if (!v147)
       {
-        v148 = a7;
+        intoCopy3 = into;
         goto LABEL_71;
       }
 
@@ -1591,9 +1591,9 @@ LABEL_103:
       v138 = (v132 + 2);
     }
 
-    v148 = a7;
+    intoCopy3 = into;
 LABEL_71:
-    v148[1] = v138;
+    intoCopy3[1] = v138;
     goto LABEL_72;
   }
 
@@ -1607,21 +1607,21 @@ LABEL_116:
 LABEL_119:
 }
 
-- (void)p_finishOpenGLRenderInContext:(CGContext *)a3 orDirectly:(id)a4 pathVertexData:(void *)a5 parameterized:(BOOL)a6 shouldReverseDrawOrder:(BOOL)a7 withLayoutOptions:(id)a8
+- (void)p_finishOpenGLRenderInContext:(CGContext *)context orDirectly:(id)directly pathVertexData:(void *)data parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options
 {
-  v162 = a6;
-  v11 = a4;
-  v12 = a8;
+  parameterizedCopy = parameterized;
+  directlyCopy = directly;
+  optionsCopy = options;
   v15 = objc_autoreleasePoolPush();
-  if (*(a5 + 1) == *a5)
+  if (*(data + 1) == *data)
   {
     goto LABEL_59;
   }
 
-  if (v11)
+  if (directlyCopy)
   {
-    objc_msgSend_frame(v11, v13, v14);
-    objc_msgSend_transform(v11, v16, v17);
+    objc_msgSend_frame(directlyCopy, v13, v14);
+    objc_msgSend_transform(directlyCopy, v16, v17);
     TSURectWithSize();
     m12 = transform.m12;
     m11 = transform.m11;
@@ -1639,15 +1639,15 @@ LABEL_119:
 
   else
   {
-    ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+    ClipBoundingBox = CGContextGetClipBoundingBox(context);
     width = ClipBoundingBox.size.width;
     height = ClipBoundingBox.size.height;
-    CGContextGetCTM(&transform, a3);
+    CGContextGetCTM(&transform, context);
     m12 = transform.m12;
     m11 = transform.m11;
     v171 = *&transform.m13;
     v172 = *&transform.m21;
-    if (objc_msgSend_p_isDrawingRasterizedIntoPDFWithContext_(self, v26, a3))
+    if (objc_msgSend_p_isDrawingRasterizedIntoPDFWithContext_(self, v26, context))
     {
       v167.m11 = m11;
       v167.m12 = m12;
@@ -1667,9 +1667,9 @@ LABEL_119:
       goto LABEL_59;
     }
 
-    if (a3)
+    if (context)
     {
-      v153 = objc_msgSend_colorForCGContext_(self, v27, a3);
+      v153 = objc_msgSend_colorForCGContext_(self, v27, context);
     }
 
     else
@@ -1686,10 +1686,10 @@ LABEL_119:
 
   objc_msgSend_width(self, v22, v23);
   objc_msgSend_alphaComponent(v153, v35, v36);
-  c = a3;
-  v147 = v12;
-  v148 = v11;
-  if (v11)
+  c = context;
+  v147 = optionsCopy;
+  v148 = directlyCopy;
+  if (directlyCopy)
   {
     x = *MEMORY[0x277CBF3A0];
     y = *(MEMORY[0x277CBF3A0] + 8);
@@ -1707,17 +1707,17 @@ LABEL_119:
 
   else
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     v167.m11 = m11;
     v167.m12 = m12;
     *&v167.m13 = v169;
     *&v167.m21 = v170;
     CGAffineTransformInvert(&transform, &v167);
-    CGContextConcatCTM(a3, &transform);
+    CGContextConcatCTM(context, &transform);
     v49 = *(MEMORY[0x277CBF2C0] + 32);
     v169 = *(MEMORY[0x277CBF2C0] + 16);
     v170 = v49;
-    v174 = CGContextGetClipBoundingBox(a3);
+    v174 = CGContextGetClipBoundingBox(context);
     v175 = CGRectIntegral(v174);
     x = v175.origin.x;
     y = v175.origin.y;
@@ -1742,7 +1742,7 @@ LABEL_119:
   v60 = 0x277CBE000uLL;
   v63 = objc_msgSend_array(MEMORY[0x277CBEB18], v61, v62);
   v164 = objc_msgSend_array(MEMORY[0x277CBEB18], v64, v65);
-  v66 = *(a5 + 1) - *a5;
+  v66 = *(data + 1) - *data;
   if (v66)
   {
     v67 = 0;
@@ -1750,7 +1750,7 @@ LABEL_119:
     do
     {
       v69 = 0;
-      v70 = *a5;
+      v70 = *data;
       v71 = 32 * v67;
       v72 = v67;
       do
@@ -1799,7 +1799,7 @@ LABEL_119:
   }
 
   glClearColor(0.0, 0.0, 0.0, 0.0);
-  if (!v11)
+  if (!directlyCopy)
   {
     v151 = vcvtpd_s64_f64(v39 * 0.0009765625);
     if (v151 >= 1)
@@ -1855,7 +1855,7 @@ LABEL_119:
                 {
                   v105 = [TSDGLFrameBuffer alloc];
                   objc_msgSend_size(v45, v106, v107);
-                  if (!v162)
+                  if (!parameterizedCopy)
                   {
                     TSUMultiplySizeScalar();
                   }
@@ -1915,7 +1915,7 @@ LABEL_119:
 
             glFlush();
             v140 = objc_msgSend_p_newCGImageFromGLWithWidth_height_(self, v137, v156, HIDWORD(v156));
-            if (v162)
+            if (parameterizedCopy)
             {
               v176.origin.x = (x + (v152 << 10));
               v176.origin.y = v78;
@@ -1951,32 +1951,32 @@ LABEL_119:
 
   objc_msgSend_unbindFramebufferAndBindGLFramebuffer_(v45, v75, 0xFFFFFFFFLL);
 
-  v12 = v147;
-  v11 = v148;
+  optionsCopy = v147;
+  directlyCopy = v148;
   v15 = v146;
 LABEL_59:
   objc_autoreleasePoolPop(v15);
 }
 
-+ (void)p_drawColor:(id)a3 intoContext:(CGContext *)a4 usingImageAsMask:(CGImage *)a5 withRect:(CGRect)a6
++ (void)p_drawColor:(id)color intoContext:(CGContext *)context usingImageAsMask:(CGImage *)mask withRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  CGContextSaveGState(a4);
-  v13 = CGImageGetWidth(a5);
-  v14 = CGImageGetHeight(a5);
+  colorCopy = color;
+  CGContextSaveGState(context);
+  v13 = CGImageGetWidth(mask);
+  v14 = CGImageGetHeight(mask);
   v15 = TSDBitmapContextCreate(2, v13, v14);
-  v16 = CGImageGetWidth(a5);
-  v17 = CGImageGetHeight(a5);
+  v16 = CGImageGetWidth(mask);
+  v17 = CGImageGetHeight(mask);
   v44.size.width = v16;
   v44.size.height = v17;
   v44.origin.x = 0.0;
   v44.origin.y = 0.0;
-  CGContextDrawImage(v15, v44, a5);
+  CGContextDrawImage(v15, v44, mask);
   Image = CGBitmapContextCreateImage(v15);
   CGContextRelease(v15);
   v42 = xmmword_2768256E0;
@@ -1989,10 +1989,10 @@ LABEL_59:
   ShouldInterpolate = CGImageGetShouldInterpolate(Image);
   v26 = CGImageMaskCreate(v19, v20, BitsPerComponent, BitsPerPixel, BytesPerRow, DataProvider, &v42, ShouldInterpolate);
   CGImageRelease(Image);
-  IsPDFContext = TSDCGContextIsPDFContext(a4);
+  IsPDFContext = TSDCGContextIsPDFContext(context);
   if (IsPDFContext)
   {
-    if (objc_msgSend_colorRGBSpace(v12, v27, v28, v42) == 1)
+    if (objc_msgSend_colorRGBSpace(colorCopy, v27, v28, v42) == 1)
     {
       v30 = 35;
     }
@@ -2002,11 +2002,11 @@ LABEL_59:
       v30 = 3;
     }
 
-    v31 = CGImageGetWidth(a5);
-    v32 = CGImageGetHeight(a5);
-    v33 = TSDBitmapContextCreate(v30, v31, v32);
-    v34 = CGImageGetWidth(a5);
-    v35 = CGImageGetHeight(a5);
+    v31 = CGImageGetWidth(mask);
+    v32 = CGImageGetHeight(mask);
+    contextCopy = TSDBitmapContextCreate(v30, v31, v32);
+    v34 = CGImageGetWidth(mask);
+    v35 = CGImageGetHeight(mask);
     v36 = 0.0;
     v37 = 0.0;
   }
@@ -2017,40 +2017,40 @@ LABEL_59:
     v37 = y;
     v34 = width;
     v35 = height;
-    v33 = a4;
+    contextCopy = context;
   }
 
   v45.origin.x = v36;
   v45.origin.y = v37;
   v45.size.width = v34;
   v45.size.height = v35;
-  CGContextClipToMask(v33, v45, v26);
+  CGContextClipToMask(contextCopy, v45, v26);
   CGImageRelease(v26);
-  v40 = objc_msgSend_CGColor(v12, v38, v39);
-  CGContextSetFillColorWithColor(v33, v40);
+  v40 = objc_msgSend_CGColor(colorCopy, v38, v39);
+  CGContextSetFillColorWithColor(contextCopy, v40);
   v46.origin.x = v36;
   v46.origin.y = v37;
   v46.size.width = v34;
   v46.size.height = v35;
-  CGContextFillRect(v33, v46);
+  CGContextFillRect(contextCopy, v46);
   if (IsPDFContext)
   {
-    v41 = CGBitmapContextCreateImage(v33);
-    CGContextRelease(v33);
+    v41 = CGBitmapContextCreateImage(contextCopy);
+    CGContextRelease(contextCopy);
     v47.origin.x = x;
     v47.origin.y = y;
     v47.size.width = width;
     v47.size.height = height;
-    CGContextDrawImage(a4, v47, v41);
+    CGContextDrawImage(context, v47, v41);
     CGImageRelease(v41);
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (BOOL)p_prefersRasterRenderingInContext:(CGContext *)a3
+- (BOOL)p_prefersRasterRenderingInContext:(CGContext *)context
 {
-  if (!a3)
+  if (!context)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDBrushStroke p_prefersRasterRenderingInContext:]");
@@ -2060,7 +2060,7 @@ LABEL_59:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  if (TSDCGContextPrefersRasterRendering(a3))
+  if (TSDCGContextPrefersRasterRendering(context))
   {
     return 1;
   }
@@ -2080,9 +2080,9 @@ LABEL_59:
   return isEqualToString;
 }
 
-- (BOOL)p_isDrawingRasterizedIntoPDFWithContext:(CGContext *)a3
+- (BOOL)p_isDrawingRasterizedIntoPDFWithContext:(CGContext *)context
 {
-  if (!a3)
+  if (!context)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDBrushStroke p_isDrawingRasterizedIntoPDFWithContext:]");
@@ -2092,10 +2092,10 @@ LABEL_59:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  IsPDFContext = TSDCGContextIsPDFContext(a3);
+  IsPDFContext = TSDCGContextIsPDFContext(context);
   if (IsPDFContext)
   {
-    LOBYTE(IsPDFContext) = objc_msgSend_p_shouldDrawAsVectorInContext_(self, v13, a3) ^ 1;
+    LOBYTE(IsPDFContext) = objc_msgSend_p_shouldDrawAsVectorInContext_(self, v13, context) ^ 1;
   }
 
   return IsPDFContext;
@@ -2118,14 +2118,14 @@ LABEL_59:
   return isEqualToString;
 }
 
-- (int64_t)p_fastElementPercentage:(double *)a3 forOverallPercentage:(double)a4 onPath:(id)a5 withCachedCurrentElementPercentage:(id *)a6
+- (int64_t)p_fastElementPercentage:(double *)percentage forOverallPercentage:(double)overallPercentage onPath:(id)path withCachedCurrentElementPercentage:(id *)elementPercentage
 {
-  v10 = a5;
-  objc_msgSend_length(v10, v11, v12);
+  pathCopy = path;
+  objc_msgSend_length(pathCopy, v11, v12);
   var2 = 0.0;
-  if (a6->var0 == v10 && a6->var2 <= v14 * a4)
+  if (elementPercentage->var0 == pathCopy && elementPercentage->var2 <= v14 * overallPercentage)
   {
-    var1 = a6->var1;
+    var1 = elementPercentage->var1;
     if (var1 <= 1)
     {
       var2 = 0.0;
@@ -2133,26 +2133,26 @@ LABEL_59:
 
     else
     {
-      var2 = a6->var2;
+      var2 = elementPercentage->var2;
     }
 
     if (var1 <= 1)
     {
       v16 = 1;
-      v17 = objc_msgSend_elementPercentage_forOverallPercentage_startingElementIndex_lengthToStartingElement_(v10, v13, a3, 1, a4, var2);
+      v17 = objc_msgSend_elementPercentage_forOverallPercentage_startingElementIndex_lengthToStartingElement_(pathCopy, v13, percentage, 1, overallPercentage, var2);
     }
 
     else
     {
-      v16 = a6->var1;
-      v17 = objc_msgSend_elementPercentage_forOverallPercentage_startingElementIndex_lengthToStartingElement_(v10, v13, a3, v16, a4, var2);
+      v16 = elementPercentage->var1;
+      v17 = objc_msgSend_elementPercentage_forOverallPercentage_startingElementIndex_lengthToStartingElement_(pathCopy, v13, percentage, v16, overallPercentage, var2);
     }
   }
 
   else
   {
     v16 = 1;
-    v17 = objc_msgSend_elementPercentage_forOverallPercentage_startingElementIndex_lengthToStartingElement_(v10, v13, a3, 1, a4, 0.0);
+    v17 = objc_msgSend_elementPercentage_forOverallPercentage_startingElementIndex_lengthToStartingElement_(pathCopy, v13, percentage, 1, overallPercentage, 0.0);
   }
 
   v19 = v17;
@@ -2160,15 +2160,15 @@ LABEL_59:
   {
     do
     {
-      objc_msgSend_lengthOfElement_(v10, v18, v16);
+      objc_msgSend_lengthOfElement_(pathCopy, v18, v16);
       var2 = var2 + v20;
       ++v16;
     }
 
     while (v19 != v16);
-    objc_storeStrong(&a6->var0, a5);
-    a6->var1 = v19;
-    a6->var2 = var2;
+    objc_storeStrong(&elementPercentage->var0, path);
+    elementPercentage->var1 = v19;
+    elementPercentage->var2 = var2;
   }
 
   return v19;
@@ -2190,7 +2190,7 @@ LABEL_59:
   block[1] = 3221225472;
   block[2] = sub_276790840;
   block[3] = &unk_27A6CC4B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A4CA20 != -1)
   {
     dispatch_once(&qword_280A4CA20, block);
@@ -2219,7 +2219,7 @@ LABEL_59:
   block[1] = 3221225472;
   block[2] = sub_2767909A0;
   block[3] = &unk_27A6CC4B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A4CA40 != -1)
   {
     dispatch_once(&qword_280A4CA40, block);
@@ -2258,22 +2258,22 @@ LABEL_59:
   return v5;
 }
 
-+ (void)p_drawFrameBuffers:(id)a3 intoFrameBuffer:(id)a4 withAlpha:(double)a5 usingDataBuffer:(id)a6
++ (void)p_drawFrameBuffers:(id)buffers intoFrameBuffer:(id)buffer withAlpha:(double)alpha usingDataBuffer:(id)dataBuffer
 {
-  v6 = a4;
+  bufferCopy = buffer;
   params = 0;
   glGetIntegerv(0x8069u, &params);
-  objc_msgSend_size(v6, v7, v8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  objc_msgSend_size(bufferCopy, v7, v8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   v10 = v9;
-  objc_msgSend_size(v6, v11, v12);
+  objc_msgSend_size(bufferCopy, v11, v12);
   TSDTransform3DMakeOrtho(&v14, 0.0, v10, 0.0, v13, -1.0, 1.0);
   glBindTexture(0xDE1u, params);
 }
 
-+ (void)p_clearFrameBuffers:(id)a3
++ (void)p_clearFrameBuffers:(id)buffers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  buffersCopy = buffers;
   *params = 0;
   v16 = 0;
   glGetIntegerv(0x8CAAu, &params[1]);
@@ -2284,7 +2284,7 @@ LABEL_59:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = buffersCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v12, v18, 16);
   if (v7)
   {
@@ -2315,15 +2315,15 @@ LABEL_59:
   glBindTexture(0xDE1u, v16);
 }
 
-- (CGImage)p_newCGImageFromGLWithWidth:(int)a3 height:(int)a4
+- (CGImage)p_newCGImageFromGLWithWidth:(int)width height:(int)height
 {
-  v6 = 4 * a3;
-  v7 = 4 * a3 * a4;
+  v6 = 4 * width;
+  v7 = 4 * width * height;
   v8 = malloc_type_malloc(v7, 0x100004077774924uLL);
-  glReadPixels(0, 0, a3, a4, 0x1908u, 0x1401u, v8);
+  glReadPixels(0, 0, width, height, 0x1908u, 0x1401u, v8);
   v9 = CGDataProviderCreateWithData(0, v8, v7, sub_276791248);
   v10 = TSUDeviceRGBColorSpace();
-  v11 = CGImageCreate(a3, a4, 8uLL, 0x20uLL, v6, v10, 1u, v9, 0, 0, kCGRenderingIntentDefault);
+  v11 = CGImageCreate(width, height, 8uLL, 0x20uLL, v6, v10, 1u, v9, 0, 0, kCGRenderingIntentDefault);
   CGDataProviderRelease(v9);
   return v11;
 }

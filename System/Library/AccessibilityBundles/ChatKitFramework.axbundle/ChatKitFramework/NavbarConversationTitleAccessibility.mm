@@ -1,5 +1,5 @@
 @interface NavbarConversationTitleAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,11 +7,11 @@
 
 @implementation NavbarConversationTitleAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ChatKit.NavbarConversationTitle" hasSwiftField:@"titleLabel" withSwiftType:"CKLabel"];
-  [v3 validateClass:@"ChatKit.NavbarConversationTitle" hasSwiftField:@"title" withSwiftType:"String"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ChatKit.NavbarConversationTitle" hasSwiftField:@"titleLabel" withSwiftType:"CKLabel"];
+  [validationsCopy validateClass:@"ChatKit.NavbarConversationTitle" hasSwiftField:@"title" withSwiftType:"String"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -28,8 +28,8 @@
   v3 = [(NavbarConversationTitleAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
   v4 = __UIAccessibilitySafeClass();
 
-  v5 = [v4 titleIconImageType];
-  if (v5 == 1)
+  titleIconImageType = [v4 titleIconImageType];
+  if (titleIconImageType == 1)
   {
     v6 = accessibilityLocalizedString(@"conversation.verified");
   }
@@ -47,9 +47,9 @@
 
 - (id)accessibilityHint
 {
-  v3 = [(NavbarConversationTitleAccessibility *)self accessibilityUserDefinedHint];
+  accessibilityUserDefinedHint = [(NavbarConversationTitleAccessibility *)self accessibilityUserDefinedHint];
 
-  if (v3)
+  if (accessibilityUserDefinedHint)
   {
     [(NavbarConversationTitleAccessibility *)self accessibilityUserDefinedHint];
   }

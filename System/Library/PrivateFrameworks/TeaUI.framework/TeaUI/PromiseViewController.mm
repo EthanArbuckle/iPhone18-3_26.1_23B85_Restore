@@ -1,11 +1,11 @@
 @interface PromiseViewController
 - (NSString)description;
 - (UINavigationItem)navigationItem;
-- (_TtC5TeaUI21PromiseViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI21PromiseViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (int64_t)preferredStatusBarStyle;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -20,7 +20,7 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7F1B3D8();
 
   return v3;
@@ -28,28 +28,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F1B47C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D7F1C570(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D7F1C570(change);
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v4 = self;
-  v5 = sub_1D7F1C660(a3);
+  selfCopy = self;
+  v5 = sub_1D7F1C660(edge);
 
   return v5;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7F1C724();
 
   return v3;
@@ -57,7 +57,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F1CA1C();
 
   v3 = sub_1D8190EE4();
@@ -65,14 +65,14 @@
   return v3;
 }
 
-- (_TtC5TeaUI21PromiseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI21PromiseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   PromiseViewController.init(nibName:bundle:)();
 }
 

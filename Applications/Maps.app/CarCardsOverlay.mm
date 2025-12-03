@@ -1,41 +1,41 @@
 @interface CarCardsOverlay
-- (BOOL)_shouldInterruptUpdates:(id)a3 toRunUpdates:(id)a4;
-- (BOOL)hasCard:(id)a3;
-- (BOOL)isCardHidden:(id)a3;
+- (BOOL)_shouldInterruptUpdates:(id)updates toRunUpdates:(id)runUpdates;
+- (BOOL)hasCard:(id)card;
+- (BOOL)isCardHidden:(id)hidden;
 - (BOOL)isHidden;
 - (CarCardViewDelegate)cardDelegate;
-- (CarCardsOverlay)initWithCarSceneType:(int64_t)a3;
+- (CarCardsOverlay)initWithCarSceneType:(int64_t)type;
 - (ChromeOverlayHosting)host;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
 - (UIView)contentView;
-- (id)_configurationForKey:(id)a3 createIfNeeded:(BOOL)a4;
+- (id)_configurationForKey:(id)key createIfNeeded:(BOOL)needed;
 - (void)_captureInsetContraintsFromConfigurations;
-- (void)_performBatchUpdates:(id)a3 withAnimation:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)_performBatchUpdates:(id)updates withAnimation:(id)animation animated:(BOOL)animated completion:(id)completion;
 - (void)_refreshPinningConstraints;
 - (void)_runNextUpdate;
-- (void)_setCardConfiguration:(id)a3 forKey:(id)a4;
-- (void)_updateDidComplete:(id)a3;
-- (void)_userDefaultsChanged:(id)a3;
+- (void)_setCardConfiguration:(id)configuration forKey:(id)key;
+- (void)_updateDidComplete:(id)complete;
+- (void)_userDefaultsChanged:(id)changed;
 - (void)_validatePendingUpdates;
-- (void)cardsUpdate:(id)a3 applyConfigurations:(id)a4;
-- (void)cardsUpdate:(id)a3 finalizeUpdate:(unint64_t)a4 withCardConfigurations:(id)a5;
-- (void)cardsUpdate:(id)a3 prepareForUpdate:(unint64_t)a4 withCardConfigurations:(id)a5;
-- (void)cardsUpdateWantsLayout:(id)a3;
-- (void)configureCard:(id)a3 withBlock:(id)a4;
+- (void)cardsUpdate:(id)update applyConfigurations:(id)configurations;
+- (void)cardsUpdate:(id)update finalizeUpdate:(unint64_t)finalizeUpdate withCardConfigurations:(id)configurations;
+- (void)cardsUpdate:(id)update prepareForUpdate:(unint64_t)forUpdate withCardConfigurations:(id)configurations;
+- (void)cardsUpdateWantsLayout:(id)layout;
+- (void)configureCard:(id)card withBlock:(id)block;
 - (void)dealloc;
-- (void)deleteCard:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)dismissAllCardsAnimated:(BOOL)a3 completion:(id)a4;
-- (void)hideCard:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)insertCard:(id)a3 animated:(BOOL)a4 configurationBlock:(id)a5 completion:(id)a6;
-- (void)performBatchUpdates:(id)a3 withAnimation:(id)a4 completion:(id)a5;
-- (void)presentAllCardsAnimated:(BOOL)a3 completion:(id)a4;
+- (void)deleteCard:(id)card animated:(BOOL)animated completion:(id)completion;
+- (void)dismissAllCardsAnimated:(BOOL)animated completion:(id)completion;
+- (void)hideCard:(id)card animated:(BOOL)animated completion:(id)completion;
+- (void)insertCard:(id)card animated:(BOOL)animated configurationBlock:(id)block completion:(id)completion;
+- (void)performBatchUpdates:(id)updates withAnimation:(id)animation completion:(id)completion;
+- (void)presentAllCardsAnimated:(BOOL)animated completion:(id)completion;
 - (void)reset;
-- (void)setCardDelegate:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
-- (void)showCard:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setCardDelegate:(id)delegate;
+- (void)setContentView:(id)view;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
+- (void)showCard:(id)card animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation CarCardsOverlay
@@ -50,26 +50,26 @@
       goto LABEL_11;
     }
 
-    v15 = self;
+    selfCopy = self;
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     if (objc_opt_respondsToSelector())
     {
-      v18 = [(CarCardsOverlay *)v15 performSelector:"accessibilityIdentifier"];
+      v18 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v19 = v18;
       if (v18 && ![v18 isEqualToString:v17])
       {
-        v20 = [NSString stringWithFormat:@"%@<%p, %@>", v17, v15, v19];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v17, selfCopy, v19];
 
         goto LABEL_18;
       }
     }
 
-    v20 = [NSString stringWithFormat:@"%@<%p>", v17, v15];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v17, selfCopy];
 LABEL_18:
 
     *buf = 138543362;
-    v45 = v20;
+    v45 = selfCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] No batched updates to run", buf, 0xCu);
 
     goto LABEL_11;
@@ -88,28 +88,28 @@ LABEL_11:
       return;
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarCardsOverlay *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy2, v11];
 
         goto LABEL_10;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy2];
 LABEL_10:
 
     pendingUpdates = self->_pendingUpdates;
     v14 = self->_runningUpdates;
     *buf = 138543874;
-    v45 = v12;
+    v45 = selfCopy2;
     v46 = 2048;
     v47 = pendingUpdates;
     v48 = 2048;
@@ -128,27 +128,27 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v29 = self;
+    selfCopy3 = self;
     v30 = objc_opt_class();
     v31 = NSStringFromClass(v30);
     if (objc_opt_respondsToSelector())
     {
-      v32 = [(CarCardsOverlay *)v29 performSelector:"accessibilityIdentifier"];
+      v32 = [(CarCardsOverlay *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v33 = v32;
       if (v32 && ![v32 isEqualToString:v31])
       {
-        v34 = [NSString stringWithFormat:@"%@<%p, %@>", v31, v29, v33];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v31, selfCopy3, v33];
 
         goto LABEL_35;
       }
     }
 
-    v34 = [NSString stringWithFormat:@"%@<%p>", v31, v29];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v31, selfCopy3];
 LABEL_35:
 
     v35 = self->_pendingUpdates;
     *buf = 138543618;
-    v45 = v34;
+    v45 = selfCopy3;
     v46 = 2048;
     v47 = v35;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Running next batch updates %p", buf, 0x16u);
@@ -158,28 +158,28 @@ LABEL_35:
 
   if (v6)
   {
-    v21 = self;
+    selfCopy4 = self;
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(CarCardsOverlay *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(CarCardsOverlay *)selfCopy4 performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ![v24 isEqualToString:v23])
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy4, v25];
 
         goto LABEL_27;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy4];
 LABEL_27:
 
     v28 = self->_pendingUpdates;
     v27 = self->_runningUpdates;
     *buf = 138543874;
-    v45 = v26;
+    v45 = selfCopy4;
     v46 = 2048;
     v47 = v27;
     v48 = 2048;
@@ -222,8 +222,8 @@ LABEL_37:
 
 - (void)_captureInsetContraintsFromConfigurations
 {
-  v3 = [(CarCardsOverlay *)self configurationsByKey];
-  v4 = [v3 count];
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  v4 = [configurationsByKey count];
 
   v5 = sub_10006CF98();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -233,21 +233,21 @@ LABEL_37:
     {
 LABEL_23:
 
-      v33 = [(CarCardsOverlay *)self host];
-      [v33 setViewportConstraints:0 forOverlay:self];
+      host = [(CarCardsOverlay *)self host];
+      [host setViewportConstraints:0 forOverlay:self];
 
-      v34 = [(CarCardsOverlay *)self host];
-      [v34 setMapInsetsConstraints:0 forOverlay:self];
+      host2 = [(CarCardsOverlay *)self host];
+      [host2 setMapInsetsConstraints:0 forOverlay:self];
 
-      v26 = [(CarCardsOverlay *)self host];
-      [v26 setCollisionConstraints:0 forOverlay:self];
+      host3 = [(CarCardsOverlay *)self host];
+      [host3 setCollisionConstraints:0 forOverlay:self];
       goto LABEL_24;
     }
 
-    v13 = self;
-    if (!v13)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v18 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_22;
     }
 
@@ -255,22 +255,22 @@ LABEL_23:
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(CarCardsOverlay *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy, v17];
 
         goto LABEL_17;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy];
 LABEL_17:
 
 LABEL_22:
     *buf = 138543362;
-    v40 = v18;
+    v40 = selfCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] No cards from which to capture inset constraints", buf, 0xCu);
 
     goto LABEL_23;
@@ -278,10 +278,10 @@ LABEL_22:
 
   if (v6)
   {
-    v7 = self;
-    if (!v7)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v12 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_19;
     }
 
@@ -289,32 +289,32 @@ LABEL_22:
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarCardsOverlay *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy2, v11];
 
         goto LABEL_9;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy2];
 LABEL_9:
 
 LABEL_19:
-    v19 = [(CarCardsOverlay *)v7 configurationsByKey];
+    configurationsByKey2 = [(CarCardsOverlay *)selfCopy2 configurationsByKey];
     *buf = 138543618;
-    v40 = v12;
+    v40 = selfCopy2;
     v41 = 2048;
-    v42 = [v19 count];
+    v42 = [configurationsByKey2 count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Capturing inset constraints from %lu cards", buf, 0x16u);
   }
 
   v20 = +[NSMutableArray array];
   v21 = +[NSMutableArray array];
   v22 = +[NSMutableArray array];
-  v23 = [(CarCardsOverlay *)self configurationsByKey];
+  configurationsByKey3 = [(CarCardsOverlay *)self configurationsByKey];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_10008CCC8;
@@ -324,20 +324,20 @@ LABEL_19:
   v38 = v22;
   v24 = v22;
   v25 = v21;
-  v26 = v20;
-  [v23 enumerateKeysAndObjectsUsingBlock:v35];
+  host3 = v20;
+  [configurationsByKey3 enumerateKeysAndObjectsUsingBlock:v35];
 
-  v27 = [(CarCardsOverlay *)self host];
-  v28 = [v26 copy];
-  [v27 setViewportConstraints:v28 forOverlay:self];
+  host4 = [(CarCardsOverlay *)self host];
+  v28 = [host3 copy];
+  [host4 setViewportConstraints:v28 forOverlay:self];
 
-  v29 = [(CarCardsOverlay *)self host];
+  host5 = [(CarCardsOverlay *)self host];
   v30 = [v25 copy];
-  [v29 setMapInsetsConstraints:v30 forOverlay:self];
+  [host5 setMapInsetsConstraints:v30 forOverlay:self];
 
-  v31 = [(CarCardsOverlay *)self host];
+  host6 = [(CarCardsOverlay *)self host];
   v32 = [v24 copy];
-  [v31 setCollisionConstraints:v32 forOverlay:self];
+  [host6 setCollisionConstraints:v32 forOverlay:self];
 
 LABEL_24:
 }
@@ -368,28 +368,28 @@ LABEL_10:
       return;
     }
 
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarCardsOverlay *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_9;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_9:
 
     v10 = self->_pendingUpdates;
     runningUpdates = self->_runningUpdates;
     *buf = 138543874;
-    v15 = v9;
+    v15 = selfCopy;
     v16 = 2048;
     v17 = v10;
     v18 = 2048;
@@ -409,14 +409,14 @@ LABEL_9:
 
 - (NSArray)focusOrderSubItems
 {
-  v3 = [(CarCardsOverlay *)self configurationsByKey];
-  v4 = [v3 count];
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  v4 = [configurationsByKey count];
 
   if (v4)
   {
-    v5 = [(CarCardsOverlay *)self configurationsByKey];
-    v6 = [v5 allValues];
-    v7 = [v6 sortedArrayUsingComparator:&stru_101653C98];
+    configurationsByKey2 = [(CarCardsOverlay *)self configurationsByKey];
+    allValues = [configurationsByKey2 allValues];
+    v7 = [allValues sortedArrayUsingComparator:&stru_101653C98];
 
     v8 = +[NSMutableArray array];
     v18 = 0u;
@@ -438,9 +438,9 @@ LABEL_9:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) cardView];
-          v15 = [v14 focusOrderSubItems];
-          [v8 addObjectsFromArray:v15];
+          cardView = [*(*(&v18 + 1) + 8 * i) cardView];
+          focusOrderSubItems = [cardView focusOrderSubItems];
+          [v8 addObjectsFromArray:focusOrderSubItems];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -462,14 +462,14 @@ LABEL_9:
 
 - (NSArray)preferredFocusEnvironments
 {
-  v3 = [(CarCardsOverlay *)self configurationsByKey];
-  v4 = [v3 count];
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  v4 = [configurationsByKey count];
 
   if (v4)
   {
-    v5 = [(CarCardsOverlay *)self configurationsByKey];
-    v6 = [v5 allValues];
-    v7 = [v6 sortedArrayUsingComparator:&stru_101653C78];
+    configurationsByKey2 = [(CarCardsOverlay *)self configurationsByKey];
+    allValues = [configurationsByKey2 allValues];
+    v7 = [allValues sortedArrayUsingComparator:&stru_101653C78];
 
     v8 = +[NSMutableArray array];
     v18 = 0u;
@@ -491,9 +491,9 @@ LABEL_9:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) cardView];
-          v15 = [v14 preferredFocusEnvironments];
-          [v8 addObjectsFromArray:v15];
+          cardView = [*(*(&v18 + 1) + 8 * i) cardView];
+          preferredFocusEnvironments = [cardView preferredFocusEnvironments];
+          [v8 addObjectsFromArray:preferredFocusEnvironments];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -513,20 +513,20 @@ LABEL_9:
   return v16;
 }
 
-- (void)cardsUpdate:(id)a3 finalizeUpdate:(unint64_t)a4 withCardConfigurations:(id)a5
+- (void)cardsUpdate:(id)update finalizeUpdate:(unint64_t)finalizeUpdate withCardConfigurations:(id)configurations
 {
-  v8 = a3;
-  v9 = a5;
+  updateCopy = update;
+  configurationsCopy = configurations;
   v10 = sub_10006CF98();
   if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     goto LABEL_14;
   }
 
-  v11 = self;
-  if (!v11)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v16 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -534,38 +534,38 @@ LABEL_9:
   v13 = NSStringFromClass(v12);
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(CarCardsOverlay *)v11 performSelector:"accessibilityIdentifier"];
+    v14 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
     v15 = v14;
     if (v14 && ![v14 isEqualToString:v13])
     {
-      v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy, v15];
 
       goto LABEL_8;
     }
   }
 
-  v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  if (a4 > 2)
+  if (finalizeUpdate > 2)
   {
     v17 = @"unknown";
   }
 
   else
   {
-    v17 = off_101653D90[a4];
+    v17 = off_101653D90[finalizeUpdate];
   }
 
   *buf = 138544130;
-  v34 = v16;
+  v34 = selfCopy;
   v35 = 2048;
-  v36 = v8;
+  v36 = updateCopy;
   v37 = 2112;
   v38 = v17;
   v39 = 2048;
-  v40 = [v9 count];
+  v40 = [configurationsCopy count];
   _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] %p | Will finalize %@ update for %lu card configurations", buf, 0x2Au);
 
 LABEL_14:
@@ -573,7 +573,7 @@ LABEL_14:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = v9;
+  v18 = configurationsCopy;
   v19 = [v18 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v19)
   {
@@ -589,19 +589,19 @@ LABEL_14:
         }
 
         v23 = *(*(&v28 + 1) + 8 * i);
-        if (a4 == 2)
+        if (finalizeUpdate == 2)
         {
-          v25 = [(CarCardsOverlay *)self host];
-          v26 = [v25 containingViewController];
+          host = [(CarCardsOverlay *)self host];
+          containingViewController = [host containingViewController];
 
-          v27 = [v23 content];
-          [v27 didMoveToParentViewController:v26];
+          content = [v23 content];
+          [content didMoveToParentViewController:containingViewController];
         }
 
-        else if (!a4)
+        else if (!finalizeUpdate)
         {
-          v24 = [*(*(&v28 + 1) + 8 * i) previousContent];
-          [v24 removeFromParentViewController];
+          previousContent = [*(*(&v28 + 1) + 8 * i) previousContent];
+          [previousContent removeFromParentViewController];
 
           [v23 setPreviousContent:0];
         }
@@ -616,16 +616,16 @@ LABEL_14:
   }
 }
 
-- (void)cardsUpdateWantsLayout:(id)a3
+- (void)cardsUpdateWantsLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = sub_10006CF98();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -633,45 +633,45 @@ LABEL_14:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarCardsOverlay *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v15 = v11;
+    v15 = selfCopy;
     v16 = 2048;
-    v17 = v4;
+    v17 = layoutCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] %p | Wants layout", buf, 0x16u);
   }
 
-  v12 = [(CarCardsOverlay *)self contentView];
-  [v12 layoutIfNeeded];
+  contentView = [(CarCardsOverlay *)self contentView];
+  [contentView layoutIfNeeded];
 
-  v13 = [(CarCardsOverlay *)self configurationsByKey];
-  [v13 enumerateKeysAndObjectsUsingBlock:&stru_101653C38];
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  [configurationsByKey enumerateKeysAndObjectsUsingBlock:&stru_101653C38];
 }
 
-- (void)cardsUpdate:(id)a3 applyConfigurations:(id)a4
+- (void)cardsUpdate:(id)update applyConfigurations:(id)configurations
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  configurationsCopy = configurations;
   v8 = sub_10006CF98();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v14 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -679,26 +679,26 @@ LABEL_10:
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(CarCardsOverlay *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_8;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543874;
-    v57 = v14;
+    v57 = selfCopy;
     v58 = 2048;
-    v59 = v6;
+    v59 = updateCopy;
     v60 = 2048;
-    v61 = [v7 count];
+    v61 = [configurationsCopy count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}@] %p | Will apply %lu card configurations", buf, 0x20u);
   }
 
@@ -707,7 +707,7 @@ LABEL_10:
   v53[2] = sub_100D8F8A8;
   v53[3] = &unk_101653BF0;
   v53[4] = self;
-  v15 = sub_1000282CC(v7, v53);
+  v15 = sub_1000282CC(configurationsCopy, v53);
 
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
@@ -722,10 +722,10 @@ LABEL_10:
     goto LABEL_21;
   }
 
-  v18 = self;
-  if (!v18)
+  selfCopy2 = self;
+  if (!selfCopy2)
   {
-    v23 = @"<nil>";
+    selfCopy2 = @"<nil>";
     goto LABEL_20;
   }
 
@@ -733,35 +733,35 @@ LABEL_10:
   v20 = NSStringFromClass(v19);
   if (objc_opt_respondsToSelector())
   {
-    v21 = [(CarCardsOverlay *)v18 performSelector:"accessibilityIdentifier"];
+    v21 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
     v22 = v21;
     if (v21 && ![v21 isEqualToString:v20])
     {
-      v23 = [NSString stringWithFormat:@"%@<%p, %@>", v20, v18, v22];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v20, selfCopy2, v22];
 
       goto LABEL_18;
     }
   }
 
-  v23 = [NSString stringWithFormat:@"%@<%p>", v20, v18];
+  selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v20, selfCopy2];
 LABEL_18:
 
 LABEL_20:
   v24 = [v16 count];
   *buf = 138543874;
-  v57 = v23;
+  v57 = selfCopy2;
   v58 = 2048;
-  v59 = v6;
+  v59 = updateCopy;
   v60 = 2048;
   v61 = v24;
   _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}@] %p | Will apply %lu valid card configurations", buf, 0x20u);
 
 LABEL_21:
-  v43 = v6;
+  v43 = updateCopy;
 
-  v25 = [(CarCardsOverlay *)self host];
-  v26 = [(CarCardsOverlay *)self host];
-  v27 = [v26 layoutGuideForOverlay:self];
+  host = [(CarCardsOverlay *)self host];
+  host2 = [(CarCardsOverlay *)self host];
+  v27 = [host2 layoutGuideForOverlay:self];
 
   v50 = 0u;
   v51 = 0u;
@@ -782,7 +782,7 @@ LABEL_21:
           objc_enumerationMutation(v28);
         }
 
-        [*(*(&v48 + 1) + 8 * i) layoutInHost:v25 withLayoutGuide:v27];
+        [*(*(&v48 + 1) + 8 * i) layoutInHost:host withLayoutGuide:v27];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v48 objects:v55 count:16];
@@ -813,10 +813,10 @@ LABEL_21:
         v38 = *(*(&v44 + 1) + 8 * j);
         if ([v38 staysOnTop])
         {
-          v39 = [v38 cardView];
-          v40 = [v39 superview];
-          v41 = [v38 cardView];
-          [v40 bringSubviewToFront:v41];
+          cardView = [v38 cardView];
+          superview = [cardView superview];
+          cardView2 = [v38 cardView];
+          [superview bringSubviewToFront:cardView2];
         }
       }
 
@@ -827,24 +827,24 @@ LABEL_21:
   }
 
   [(CarCardsOverlay *)self _captureInsetContraintsFromConfigurations];
-  v42 = [(CarCardsOverlay *)self contentView];
-  [v42 setNeedsFocusUpdate];
+  contentView = [(CarCardsOverlay *)self contentView];
+  [contentView setNeedsFocusUpdate];
 }
 
-- (void)cardsUpdate:(id)a3 prepareForUpdate:(unint64_t)a4 withCardConfigurations:(id)a5
+- (void)cardsUpdate:(id)update prepareForUpdate:(unint64_t)forUpdate withCardConfigurations:(id)configurations
 {
-  v8 = a3;
-  v9 = a5;
+  updateCopy = update;
+  configurationsCopy = configurations;
   v10 = sub_10006CF98();
   if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     goto LABEL_14;
   }
 
-  v11 = self;
-  if (!v11)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v16 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -852,48 +852,48 @@ LABEL_21:
   v13 = NSStringFromClass(v12);
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(CarCardsOverlay *)v11 performSelector:"accessibilityIdentifier"];
+    v14 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
     v15 = v14;
     if (v14 && ![v14 isEqualToString:v13])
     {
-      v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy, v15];
 
       goto LABEL_8;
     }
   }
 
-  v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  if (a4 > 2)
+  if (forUpdate > 2)
   {
     v17 = @"unknown";
   }
 
   else
   {
-    v17 = off_101653D90[a4];
+    v17 = off_101653D90[forUpdate];
   }
 
   *buf = 138544130;
-  v38 = v16;
+  v38 = selfCopy;
   v39 = 2048;
-  v40 = v8;
+  v40 = updateCopy;
   v41 = 2112;
   v42 = v17;
   v43 = 2048;
-  v44 = [v9 count];
+  v44 = [configurationsCopy count];
   _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] %p | Will prepare %@ update for %lu card configurations", buf, 0x2Au);
 
 LABEL_14:
-  v31 = v8;
+  v31 = updateCopy;
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v18 = v9;
+  v18 = configurationsCopy;
   v19 = [v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v19)
   {
@@ -911,23 +911,23 @@ LABEL_14:
 
         v24 = *(*(&v32 + 1) + 8 * i);
         [v24 _startIgnoringContainerBoundsChanges];
-        if (a4 == 2)
+        if (forUpdate == 2)
         {
-          v26 = [(CarCardsOverlay *)self host];
-          v27 = [v26 containingViewController];
+          host = [(CarCardsOverlay *)self host];
+          containingViewController = [host containingViewController];
 
-          v28 = [v24 content];
-          [v27 addChildViewController:v28];
+          content = [v24 content];
+          [containingViewController addChildViewController:content];
 
-          v29 = [v24 content];
-          v30 = [v29 view];
-          UIAccessibilityPostNotification(v22, v30);
+          content2 = [v24 content];
+          view = [content2 view];
+          UIAccessibilityPostNotification(v22, view);
         }
 
-        else if (!a4)
+        else if (!forUpdate)
         {
-          v25 = [v24 content];
-          [v25 willMoveToParentViewController:0];
+          content3 = [v24 content];
+          [content3 willMoveToParentViewController:0];
 
           UIAccessibilityPostNotification(v22, 0);
         }
@@ -943,19 +943,19 @@ LABEL_14:
 - (void)reset
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CarCardsOverlay *)self configurationsByKey];
-  v5 = [v4 allValues];
-  [v3 addObjectsFromArray:v5];
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  allValues = [configurationsByKey allValues];
+  [v3 addObjectsFromArray:allValues];
 
-  v6 = [(CarCardsUpdate *)self->_pendingUpdates pendingDeletedConfigurations];
-  [v3 addObjectsFromArray:v6];
+  pendingDeletedConfigurations = [(CarCardsUpdate *)self->_pendingUpdates pendingDeletedConfigurations];
+  [v3 addObjectsFromArray:pendingDeletedConfigurations];
 
-  v7 = [(CarCardsUpdate *)self->_runningUpdates pendingDeletedConfigurations];
-  [v3 addObjectsFromArray:v7];
+  pendingDeletedConfigurations2 = [(CarCardsUpdate *)self->_runningUpdates pendingDeletedConfigurations];
+  [v3 addObjectsFromArray:pendingDeletedConfigurations2];
 
   v8 = [v3 count];
-  v9 = sub_10006CF98();
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
+  configurationsByKey2 = sub_10006CF98();
+  v10 = os_log_type_enabled(configurationsByKey2, OS_LOG_TYPE_INFO);
   if (!v8)
   {
     if (!v10)
@@ -963,58 +963,58 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    v19 = self;
+    selfCopy = self;
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     if (objc_opt_respondsToSelector())
     {
-      v22 = [(CarCardsOverlay *)v19 performSelector:"accessibilityIdentifier"];
+      v22 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v23 = v22;
       if (v22 && ![v22 isEqualToString:v21])
       {
-        v24 = [NSString stringWithFormat:@"%@<%p, %@>", v21, v19, v23];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v21, selfCopy, v23];
 
         goto LABEL_16;
       }
     }
 
-    v24 = [NSString stringWithFormat:@"%@<%p>", v21, v19];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v21, selfCopy];
 LABEL_16:
 
     *buf = 138543362;
-    v26 = v24;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}@] No cards to reset", buf, 0xCu);
+    v26 = selfCopy;
+    _os_log_impl(&_mh_execute_header, configurationsByKey2, OS_LOG_TYPE_INFO, "[%{public}@] No cards to reset", buf, 0xCu);
 
     goto LABEL_17;
   }
 
   if (v10)
   {
-    v11 = self;
+    selfCopy2 = self;
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [(CarCardsOverlay *)v11 performSelector:"accessibilityIdentifier"];
+      v14 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v15 = v14;
       if (v14 && ![v14 isEqualToString:v13])
       {
-        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy2, v15];
 
         goto LABEL_8;
       }
     }
 
-    v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy2];
 LABEL_8:
 
     *buf = 138543874;
-    v26 = v16;
+    v26 = selfCopy2;
     v27 = 2048;
     v28 = [v3 count];
     v29 = 2112;
     v30 = v3;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}@] Will reset %lu cards: %@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, configurationsByKey2, OS_LOG_TYPE_INFO, "[%{public}@] Will reset %lu cards: %@", buf, 0x20u);
   }
 
   [v3 enumerateObjectsUsingBlock:&stru_101653BC8];
@@ -1024,52 +1024,52 @@ LABEL_8:
   pendingUpdates = self->_pendingUpdates;
   self->_pendingUpdates = 0;
 
-  v9 = [(CarCardsOverlay *)self configurationsByKey];
-  [v9 removeAllObjects];
+  configurationsByKey2 = [(CarCardsOverlay *)self configurationsByKey];
+  [configurationsByKey2 removeAllObjects];
 LABEL_17:
 }
 
-- (void)_setCardConfiguration:(id)a3 forKey:(id)a4
+- (void)_setCardConfiguration:(id)configuration forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  configurationCopy = configuration;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [(CarCardsOverlay *)self configurationKeys];
-    if (v9)
+    configurationKeys = [(CarCardsOverlay *)self configurationKeys];
+    if (configurationCopy)
     {
-      [v7 addObject:v6];
+      [configurationKeys addObject:keyCopy];
 
-      v8 = [(CarCardsOverlay *)self configurationsByKey];
-      [v8 setObject:v9 forKeyedSubscript:v6];
+      configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+      [configurationsByKey setObject:configurationCopy forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      [v7 removeObject:v6];
+      [configurationKeys removeObject:keyCopy];
 
-      v8 = [(CarCardsOverlay *)self configurationsByKey];
-      [v8 removeObjectForKey:v6];
+      configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+      [configurationsByKey removeObjectForKey:keyCopy];
     }
   }
 }
 
-- (id)_configurationForKey:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_configurationForKey:(id)key createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CarCardsOverlay *)self configurationsByKey];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  neededCopy = needed;
+  keyCopy = key;
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  v8 = [configurationsByKey objectForKeyedSubscript:keyCopy];
 
-  if (!v8 && v4)
+  if (!v8 && neededCopy)
   {
-    v8 = [(CarCardsUpdate *)self->_pendingUpdates pendingDeletedConfigurationForKey:v6];
+    v8 = [(CarCardsUpdate *)self->_pendingUpdates pendingDeletedConfigurationForKey:keyCopy];
     if (!v8)
     {
-      v8 = [[CarCardConfiguration alloc] initWithKey:v6 carSceneType:self->_carSceneType];
+      v8 = [[CarCardConfiguration alloc] initWithKey:keyCopy carSceneType:self->_carSceneType];
       WeakRetained = objc_loadWeakRetained(&self->_cardDelegate);
-      v10 = [(CarCardConfiguration *)v8 cardView];
-      [v10 setDelegate:WeakRetained];
+      cardView = [(CarCardConfiguration *)v8 cardView];
+      [cardView setDelegate:WeakRetained];
 
       [(CarCardConfiguration *)v8 _setShowContainerVisualisation:self->_showDebugVisualisation];
     }
@@ -1078,13 +1078,13 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)_shouldInterruptUpdates:(id)a3 toRunUpdates:(id)a4
+- (BOOL)_shouldInterruptUpdates:(id)updates toRunUpdates:(id)runUpdates
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 isAnimated])
+  updatesCopy = updates;
+  runUpdatesCopy = runUpdates;
+  if (updatesCopy && [updatesCopy isAnimated])
   {
-    v7 = [v6 isAnimated] ^ 1;
+    v7 = [runUpdatesCopy isAnimated] ^ 1;
   }
 
   else
@@ -1095,10 +1095,10 @@ LABEL_17:
   return v7;
 }
 
-- (void)_updateDidComplete:(id)a3
+- (void)_updateDidComplete:(id)complete
 {
-  v4 = a3;
-  if (self->_runningUpdates == v4)
+  completeCopy = complete;
+  if (self->_runningUpdates == completeCopy)
   {
     v5 = sub_10006CF98();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1113,28 +1113,28 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarCardsOverlay *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
     *buf = 138543618;
-    v14 = v11;
+    v14 = selfCopy;
     v15 = 2048;
-    v16 = v4;
+    v16 = completeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Running updates %p completed, will check for more updates", buf, 0x16u);
 
     goto LABEL_9;
@@ -1143,13 +1143,13 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)_performBatchUpdates:(id)a3 withAnimation:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_performBatchUpdates:(id)updates withAnimation:(id)animation animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  animatedCopy = animated;
+  updatesCopy = updates;
+  animationCopy = animation;
+  completionCopy = completion;
+  if (updatesCopy)
   {
     pendingUpdates = self->_pendingUpdates;
     if (pendingUpdates)
@@ -1169,99 +1169,99 @@ LABEL_12:
 
       pendingUpdates = self->_pendingUpdates;
 LABEL_13:
-      v28 = [(CarCardsUpdate *)pendingUpdates incrementNestCounter];
+      incrementNestCounter = [(CarCardsUpdate *)pendingUpdates incrementNestCounter];
       v29 = sub_10006CF98();
       if (!os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         goto LABEL_20;
       }
 
-      v30 = self;
+      selfCopy = self;
       v31 = objc_opt_class();
       v32 = NSStringFromClass(v31);
-      v51 = v12;
+      v51 = completionCopy;
       if (objc_opt_respondsToSelector())
       {
-        v33 = [(CarCardsOverlay *)v30 performSelector:"accessibilityIdentifier"];
+        v33 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
         v34 = v33;
         if (v33 && ![v33 isEqualToString:v32])
         {
-          v35 = v11;
-          v36 = v7;
-          v37 = [NSString stringWithFormat:@"%@<%p, %@>", v32, v30, v34];
+          v35 = animationCopy;
+          v36 = animatedCopy;
+          selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v32, selfCopy, v34];
 
           goto LABEL_19;
         }
       }
 
-      v35 = v11;
-      v36 = v7;
-      v37 = [NSString stringWithFormat:@"%@<%p>", v32, v30];
+      v35 = animationCopy;
+      v36 = animatedCopy;
+      selfCopy = [NSString stringWithFormat:@"%@<%p>", v32, selfCopy];
 LABEL_19:
 
       v38 = self->_pendingUpdates;
       *buf = 138543874;
-      v55 = v37;
+      v55 = selfCopy;
       v56 = 2048;
       v57 = v38;
       v58 = 2048;
-      v59 = v28;
+      v59 = incrementNestCounter;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "[%{public}@] Incrementing batch update %p nest counter to %lu", buf, 0x20u);
 
-      v7 = v36;
-      v11 = v35;
-      v12 = v51;
+      animatedCopy = v36;
+      animationCopy = v35;
+      completionCopy = v51;
 LABEL_20:
 
-      v10[2](v10);
-      if (v12)
+      updatesCopy[2](updatesCopy);
+      if (completionCopy)
       {
         v39 = self->_pendingUpdates;
         v52[0] = _NSConcreteStackBlock;
         v52[1] = 3221225472;
         v52[2] = sub_100D91028;
         v52[3] = &unk_101653B10;
-        v53 = v12;
+        v53 = completionCopy;
         [(CarCardsUpdate *)v39 addCompletionBlock:v52];
       }
 
-      v40 = [(CarCardsUpdate *)self->_pendingUpdates decrementNestCounter];
-      if (!v40)
+      decrementNestCounter = [(CarCardsUpdate *)self->_pendingUpdates decrementNestCounter];
+      if (!decrementNestCounter)
       {
-        [(CarCardsUpdate *)self->_pendingUpdates setAnimated:v7];
-        [(CarCardsUpdate *)self->_pendingUpdates setParentAnimation:v11];
+        [(CarCardsUpdate *)self->_pendingUpdates setAnimated:animatedCopy];
+        [(CarCardsUpdate *)self->_pendingUpdates setParentAnimation:animationCopy];
         [(CarCardsOverlay *)self _runNextUpdate];
         goto LABEL_32;
       }
 
-      v41 = v40;
+      v41 = decrementNestCounter;
       v42 = sub_10006CF98();
       if (!os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
       {
         goto LABEL_30;
       }
 
-      v43 = self;
+      selfCopy2 = self;
       v44 = objc_opt_class();
       v45 = NSStringFromClass(v44);
       if (objc_opt_respondsToSelector())
       {
-        v46 = [(CarCardsOverlay *)v43 performSelector:"accessibilityIdentifier"];
+        v46 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
         v47 = v46;
         if (v46 && ![v46 isEqualToString:v45])
         {
-          v48 = [NSString stringWithFormat:@"%@<%p, %@>", v45, v43, v47];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v45, selfCopy2, v47];
 
           goto LABEL_29;
         }
       }
 
-      v48 = [NSString stringWithFormat:@"%@<%p>", v45, v43];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v45, selfCopy2];
 LABEL_29:
 
       v49 = self->_pendingUpdates;
       *buf = 138543874;
-      v55 = v48;
+      v55 = selfCopy2;
       v56 = 2048;
       v57 = v49;
       v58 = 2048;
@@ -1272,44 +1272,44 @@ LABEL_30:
       goto LABEL_32;
     }
 
-    v17 = self;
+    selfCopy3 = self;
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v50 = v12;
-      v20 = v11;
-      v21 = v7;
-      v22 = [(CarCardsOverlay *)v17 performSelector:"accessibilityIdentifier"];
+      v50 = completionCopy;
+      v20 = animationCopy;
+      v21 = animatedCopy;
+      v22 = [(CarCardsOverlay *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v23 = v22;
       if (v22 && ![v22 isEqualToString:v19])
       {
-        v24 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v23];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy3, v23];
 
-        v7 = v21;
-        v11 = v20;
-        v12 = v50;
+        animatedCopy = v21;
+        animationCopy = v20;
+        completionCopy = v50;
         goto LABEL_9;
       }
 
-      v7 = v21;
-      v11 = v20;
-      v12 = v50;
+      animatedCopy = v21;
+      animationCopy = v20;
+      completionCopy = v50;
     }
 
-    v24 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy3];
 LABEL_9:
 
     v25 = self->_pendingUpdates;
     v26 = @"NO";
-    if (v7)
+    if (animatedCopy)
     {
       v26 = @"YES";
     }
 
     v27 = v26;
     *buf = 138543874;
-    v55 = v24;
+    v55 = selfCopy3;
     v56 = 2048;
     v57 = v25;
     v58 = 2112;
@@ -1322,20 +1322,20 @@ LABEL_9:
 LABEL_32:
 }
 
-- (void)performBatchUpdates:(id)a3 withAnimation:(id)a4 completion:(id)a5
+- (void)performBatchUpdates:(id)updates withAnimation:(id)animation completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  -[CarCardsOverlay _performBatchUpdates:withAnimation:animated:completion:](self, "_performBatchUpdates:withAnimation:animated:completion:", v10, v9, [v9 isAnimated], v8);
+  completionCopy = completion;
+  animationCopy = animation;
+  updatesCopy = updates;
+  -[CarCardsOverlay _performBatchUpdates:withAnimation:animated:completion:](self, "_performBatchUpdates:withAnimation:animated:completion:", updatesCopy, animationCopy, [animationCopy isAnimated], completionCopy);
 }
 
-- (void)dismissAllCardsAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAllCardsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CarCardsOverlay *)self configurationsByKey];
-  v8 = [v7 count];
+  animatedCopy = animated;
+  completionCopy = completion;
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  v8 = [configurationsByKey count];
 
   if (v8)
   {
@@ -1344,31 +1344,31 @@ LABEL_32:
     {
 LABEL_14:
 
-      v21 = [(CarCardsOverlay *)self configurationsByKey];
-      v22 = [v21 allValues];
+      configurationsByKey2 = [(CarCardsOverlay *)self configurationsByKey];
+      allValues = [configurationsByKey2 allValues];
 
-      v23 = [(CarCardsOverlay *)self configurationsByKey];
-      [v23 removeAllObjects];
+      configurationsByKey3 = [(CarCardsOverlay *)self configurationsByKey];
+      [configurationsByKey3 removeAllObjects];
 
-      v24 = [(CarCardsOverlay *)self configurationKeys];
-      [v24 removeAllObjects];
+      configurationKeys = [(CarCardsOverlay *)self configurationKeys];
+      [configurationKeys removeAllObjects];
 
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_100D93CE4;
       v26[3] = &unk_101661A90;
-      v27 = v22;
-      v28 = self;
-      v25 = v22;
-      [(CarCardsOverlay *)self performBatchUpdates:v26 animated:v4 completion:v6];
+      v27 = allValues;
+      selfCopy = self;
+      v25 = allValues;
+      [(CarCardsOverlay *)self performBatchUpdates:v26 animated:animatedCopy completion:completionCopy];
 
       goto LABEL_15;
     }
 
-    v10 = self;
-    if (!v10)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v15 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_11;
     }
 
@@ -1376,33 +1376,33 @@ LABEL_14:
     v12 = NSStringFromClass(v11);
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(CarCardsOverlay *)v10 performSelector:"accessibilityIdentifier"];
+      v13 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v14 = v13;
       if (v13 && ![v13 isEqualToString:v12])
       {
-        v15 = [NSString stringWithFormat:@"%@<%p, %@>", v12, v10, v14];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v12, selfCopy2, v14];
 
         goto LABEL_9;
       }
     }
 
-    v15 = [NSString stringWithFormat:@"%@<%p>", v12, v10];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v12, selfCopy2];
 LABEL_9:
 
 LABEL_11:
-    v16 = v15;
-    v17 = [(CarCardsOverlay *)v10 configurationsByKey];
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 count]);
+    v16 = selfCopy2;
+    configurationsByKey4 = [(CarCardsOverlay *)selfCopy2 configurationsByKey];
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [configurationsByKey4 count]);
 
     v19 = @"NO";
-    if (v4)
+    if (animatedCopy)
     {
       v19 = @"YES";
     }
 
     v20 = v19;
     *buf = 138543874;
-    v30 = v15;
+    v30 = selfCopy2;
     v31 = 2112;
     v32 = v18;
     v33 = 2112;
@@ -1415,11 +1415,11 @@ LABEL_11:
 LABEL_15:
 }
 
-- (void)showCard:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)showCard:(id)card animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(CarCardsOverlay *)self _configurationForKey:a3 createIfNeeded:0];
+  animatedCopy = animated;
+  completionCopy = completion;
+  v9 = [(CarCardsOverlay *)self _configurationForKey:card createIfNeeded:0];
   v10 = v9;
   if (v9)
   {
@@ -1428,15 +1428,15 @@ LABEL_15:
     v11[2] = sub_100D93EC0;
     v11[3] = &unk_101661B18;
     v12 = v9;
-    [(CarCardsOverlay *)self performBatchUpdates:v11 animated:v5 completion:v8];
+    [(CarCardsOverlay *)self performBatchUpdates:v11 animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)hideCard:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)hideCard:(id)card animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(CarCardsOverlay *)self _configurationForKey:a3 createIfNeeded:0];
+  animatedCopy = animated;
+  completionCopy = completion;
+  v9 = [(CarCardsOverlay *)self _configurationForKey:card createIfNeeded:0];
   v10 = v9;
   if (v9)
   {
@@ -1445,16 +1445,16 @@ LABEL_15:
     v11[2] = sub_100D93FD4;
     v11[3] = &unk_101661B18;
     v12 = v9;
-    [(CarCardsOverlay *)self performBatchUpdates:v11 animated:v5 completion:v8];
+    [(CarCardsOverlay *)self performBatchUpdates:v11 animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)deleteCard:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)deleteCard:(id)card animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CarCardsOverlay *)self _configurationForKey:v8 createIfNeeded:0];
+  animatedCopy = animated;
+  cardCopy = card;
+  completionCopy = completion;
+  v10 = [(CarCardsOverlay *)self _configurationForKey:cardCopy createIfNeeded:0];
   if (v10)
   {
     v11 = sub_10006CF98();
@@ -1462,22 +1462,22 @@ LABEL_15:
     {
 LABEL_14:
 
-      [(CarCardsOverlay *)self _setCardConfiguration:0 forKey:v8];
+      [(CarCardsOverlay *)self _setCardConfiguration:0 forKey:cardCopy];
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_100D9429C;
       v20[3] = &unk_101661A90;
       v20[4] = self;
       v21 = v10;
-      [(CarCardsOverlay *)self performBatchUpdates:v20 animated:v6 completion:v9];
+      [(CarCardsOverlay *)self performBatchUpdates:v20 animated:animatedCopy completion:completionCopy];
 
       goto LABEL_15;
     }
 
-    v12 = self;
-    if (!v12)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v17 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -1485,31 +1485,31 @@ LABEL_14:
     v14 = NSStringFromClass(v13);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(CarCardsOverlay *)v12 performSelector:"accessibilityIdentifier"];
+      v15 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v16 = v15;
       if (v15 && ![v15 isEqualToString:v14])
       {
-        v17 = [NSString stringWithFormat:@"%@<%p, %@>", v14, v12, v16];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v14, selfCopy, v16];
 
         goto LABEL_9;
       }
     }
 
-    v17 = [NSString stringWithFormat:@"%@<%p>", v14, v12];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v14, selfCopy];
 LABEL_9:
 
 LABEL_11:
     v18 = @"NO";
-    if (v6)
+    if (animatedCopy)
     {
       v18 = @"YES";
     }
 
     v19 = v18;
     *buf = 138543874;
-    v23 = v17;
+    v23 = selfCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = cardCopy;
     v26 = 2112;
     v27 = v19;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}@] Will dismiss card %@ (animated:%@)", buf, 0x20u);
@@ -1520,12 +1520,12 @@ LABEL_11:
 LABEL_15:
 }
 
-- (void)presentAllCardsAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAllCardsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CarCardsOverlay *)self configurationsByKey];
-  v8 = [v7 count];
+  animatedCopy = animated;
+  completionCopy = completion;
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  v8 = [configurationsByKey count];
 
   if (v8)
   {
@@ -1534,30 +1534,30 @@ LABEL_15:
     {
 LABEL_14:
 
-      v21 = [(CarCardsOverlay *)self configurationKeys];
+      configurationKeys = [(CarCardsOverlay *)self configurationKeys];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_100D94604;
       v27[3] = &unk_101653AE8;
       v27[4] = self;
-      v22 = sub_100021DB0(v21, v27);
+      v22 = sub_100021DB0(configurationKeys, v27);
 
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_100D94670;
       v24[3] = &unk_101661A90;
       v25 = v22;
-      v26 = self;
+      selfCopy = self;
       v23 = v22;
-      [(CarCardsOverlay *)self performBatchUpdates:v24 animated:v4 completion:v6];
+      [(CarCardsOverlay *)self performBatchUpdates:v24 animated:animatedCopy completion:completionCopy];
 
       goto LABEL_15;
     }
 
-    v10 = self;
-    if (!v10)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v15 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_11;
     }
 
@@ -1565,33 +1565,33 @@ LABEL_14:
     v12 = NSStringFromClass(v11);
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(CarCardsOverlay *)v10 performSelector:"accessibilityIdentifier"];
+      v13 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v14 = v13;
       if (v13 && ![v13 isEqualToString:v12])
       {
-        v15 = [NSString stringWithFormat:@"%@<%p, %@>", v12, v10, v14];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v12, selfCopy2, v14];
 
         goto LABEL_9;
       }
     }
 
-    v15 = [NSString stringWithFormat:@"%@<%p>", v12, v10];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v12, selfCopy2];
 LABEL_9:
 
 LABEL_11:
-    v16 = v15;
-    v17 = [(CarCardsOverlay *)v10 configurationsByKey];
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 count]);
+    v16 = selfCopy2;
+    configurationsByKey2 = [(CarCardsOverlay *)selfCopy2 configurationsByKey];
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [configurationsByKey2 count]);
 
     v19 = @"NO";
-    if (v4)
+    if (animatedCopy)
     {
       v19 = @"YES";
     }
 
     v20 = v19;
     *buf = 138543874;
-    v29 = v15;
+    v29 = selfCopy2;
     v30 = 2112;
     v31 = v18;
     v32 = 2112;
@@ -1604,39 +1604,39 @@ LABEL_11:
 LABEL_15:
 }
 
-- (void)insertCard:(id)a3 animated:(BOOL)a4 configurationBlock:(id)a5 completion:(id)a6
+- (void)insertCard:(id)card animated:(BOOL)animated configurationBlock:(id)block completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  animatedCopy = animated;
+  cardCopy = card;
+  blockCopy = block;
+  completionCopy = completion;
   v13 = sub_10006CF98();
   v14 = v13;
-  if (v11)
+  if (blockCopy)
   {
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
 LABEL_22:
 
-      v29 = [(CarCardsOverlay *)self _configurationForKey:v10 createIfNeeded:1];
-      [(CarCardsOverlay *)self _setCardConfiguration:v29 forKey:v10];
+      v29 = [(CarCardsOverlay *)self _configurationForKey:cardCopy createIfNeeded:1];
+      [(CarCardsOverlay *)self _setCardConfiguration:v29 forKey:cardCopy];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_100D94B3C;
       v30[3] = &unk_1016605F8;
       v30[4] = self;
       v31 = v29;
-      v32 = v11;
+      v32 = blockCopy;
       v14 = v29;
-      [(CarCardsOverlay *)self performBatchUpdates:v30 animated:v8 completion:v12];
+      [(CarCardsOverlay *)self performBatchUpdates:v30 animated:animatedCopy completion:completionCopy];
 
       goto LABEL_25;
     }
 
-    v15 = self;
-    if (!v15)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v20 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_19;
     }
 
@@ -1644,31 +1644,31 @@ LABEL_22:
     v17 = NSStringFromClass(v16);
     if (objc_opt_respondsToSelector())
     {
-      v18 = [(CarCardsOverlay *)v15 performSelector:"accessibilityIdentifier"];
+      v18 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v19 = v18;
       if (v18 && ![v18 isEqualToString:v17])
       {
-        v20 = [NSString stringWithFormat:@"%@<%p, %@>", v17, v15, v19];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v17, selfCopy, v19];
 
         goto LABEL_9;
       }
     }
 
-    v20 = [NSString stringWithFormat:@"%@<%p>", v17, v15];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v17, selfCopy];
 LABEL_9:
 
 LABEL_19:
     v27 = @"NO";
-    if (v8)
+    if (animatedCopy)
     {
       v27 = @"YES";
     }
 
     v28 = v27;
     *buf = 138543874;
-    v34 = v20;
+    v34 = selfCopy;
     v35 = 2112;
-    v36 = v10;
+    v36 = cardCopy;
     v37 = 2112;
     v38 = v28;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{public}@] Will present card %@ (animated:%@)", buf, 0x20u);
@@ -1678,10 +1678,10 @@ LABEL_19:
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v21 = self;
-    if (!v21)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v26 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_24;
     }
 
@@ -1689,61 +1689,61 @@ LABEL_19:
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(CarCardsOverlay *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ![v24 isEqualToString:v23])
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy2, v25];
 
         goto LABEL_17;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy2];
 LABEL_17:
 
 LABEL_24:
     *buf = 138543618;
-    v34 = v26;
+    v34 = selfCopy2;
     v35 = 2112;
-    v36 = v10;
+    v36 = cardCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%{public}@] Tried to insert card %@ without a configuration block, aborting.", buf, 0x16u);
   }
 
 LABEL_25:
 }
 
-- (void)configureCard:(id)a3 withBlock:(id)a4
+- (void)configureCard:(id)card withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  cardCopy = card;
+  blockCopy = block;
   v8 = sub_10006CF98();
   v9 = v8;
-  if (v7)
+  if (blockCopy)
   {
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
 LABEL_20:
 
-      v22 = [(CarCardsOverlay *)self _configurationForKey:v6 createIfNeeded:1];
-      [(CarCardsOverlay *)self _setCardConfiguration:v22 forKey:v6];
+      v22 = [(CarCardsOverlay *)self _configurationForKey:cardCopy createIfNeeded:1];
+      [(CarCardsOverlay *)self _setCardConfiguration:v22 forKey:cardCopy];
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_100D94F00;
       v23[3] = &unk_1016605F8;
       v23[4] = self;
       v24 = v22;
-      v25 = v7;
+      v25 = blockCopy;
       v9 = v22;
       [(CarCardsOverlay *)self performBatchUpdates:v23 animated:0 completion:0];
 
       goto LABEL_23;
     }
 
-    v10 = self;
-    if (!v10)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v15 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_19;
     }
 
@@ -1751,24 +1751,24 @@ LABEL_20:
     v12 = NSStringFromClass(v11);
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(CarCardsOverlay *)v10 performSelector:"accessibilityIdentifier"];
+      v13 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v14 = v13;
       if (v13 && ![v13 isEqualToString:v12])
       {
-        v15 = [NSString stringWithFormat:@"%@<%p, %@>", v12, v10, v14];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v12, selfCopy, v14];
 
         goto LABEL_9;
       }
     }
 
-    v15 = [NSString stringWithFormat:@"%@<%p>", v12, v10];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v12, selfCopy];
 LABEL_9:
 
 LABEL_19:
     *buf = 138543618;
-    v27 = v15;
+    v27 = selfCopy;
     v28 = 2112;
-    v29 = v6;
+    v29 = cardCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}@] Will configure card %@", buf, 0x16u);
 
     goto LABEL_20;
@@ -1776,10 +1776,10 @@ LABEL_19:
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v16 = self;
-    if (!v16)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v21 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_22;
     }
 
@@ -1787,51 +1787,51 @@ LABEL_19:
     v18 = NSStringFromClass(v17);
     if (objc_opt_respondsToSelector())
     {
-      v19 = [(CarCardsOverlay *)v16 performSelector:"accessibilityIdentifier"];
+      v19 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v20 = v19;
       if (v19 && ![v19 isEqualToString:v18])
       {
-        v21 = [NSString stringWithFormat:@"%@<%p, %@>", v18, v16, v20];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v18, selfCopy2, v20];
 
         goto LABEL_17;
       }
     }
 
-    v21 = [NSString stringWithFormat:@"%@<%p>", v18, v16];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v18, selfCopy2];
 LABEL_17:
 
 LABEL_22:
     *buf = 138543618;
-    v27 = v21;
+    v27 = selfCopy2;
     v28 = 2112;
-    v29 = v6;
+    v29 = cardCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[%{public}@] Tried to configure card %@ without a configuration block, aborting.", buf, 0x16u);
   }
 
 LABEL_23:
 }
 
-- (BOOL)isCardHidden:(id)a3
+- (BOOL)isCardHidden:(id)hidden
 {
-  v3 = [(CarCardsOverlay *)self _configurationForKey:a3 createIfNeeded:0];
+  v3 = [(CarCardsOverlay *)self _configurationForKey:hidden createIfNeeded:0];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 cardView];
-    v6 = [v5 isHidden];
+    cardView = [v3 cardView];
+    isHidden = [cardView isHidden];
   }
 
   else
   {
-    v6 = 1;
+    isHidden = 1;
   }
 
-  return v6;
+  return isHidden;
 }
 
-- (BOOL)hasCard:(id)a3
+- (BOOL)hasCard:(id)card
 {
-  v3 = [(CarCardsOverlay *)self _configurationForKey:a3 createIfNeeded:0];
+  v3 = [(CarCardsOverlay *)self _configurationForKey:card createIfNeeded:0];
   v4 = v3 != 0;
 
   return v4;
@@ -1839,20 +1839,20 @@ LABEL_23:
 
 - (void)_refreshPinningConstraints
 {
-  v3 = [(CarCardsOverlay *)self host];
-  v4 = [(CarCardsOverlay *)self host];
-  v5 = [v4 layoutGuideForOverlay:self];
+  host = [(CarCardsOverlay *)self host];
+  host2 = [(CarCardsOverlay *)self host];
+  v5 = [host2 layoutGuideForOverlay:self];
 
-  v6 = [(CarCardsOverlay *)self configurationsByKey];
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100D95148;
   v10[3] = &unk_101653AC0;
-  v11 = v3;
+  v11 = host;
   v12 = v5;
   v7 = v5;
-  v8 = v3;
-  [v6 enumerateKeysAndObjectsUsingBlock:v10];
+  v8 = host;
+  [configurationsByKey enumerateKeysAndObjectsUsingBlock:v10];
 
   [(CarCardsOverlay *)self _captureInsetContraintsFromConfigurations];
   v9[0] = _NSConcreteStackBlock;
@@ -1863,12 +1863,12 @@ LABEL_23:
   [UIView performWithoutAnimation:v9];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_contentView);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == viewCopy)
   {
     goto LABEL_41;
   }
@@ -1877,8 +1877,8 @@ LABEL_23:
   if (v6)
   {
     v7 = v6;
-    v8 = [(CarCardsOverlay *)self configurationsByKey];
-    v9 = [v8 count];
+    configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+    v9 = [configurationsByKey count];
 
     if (v9)
     {
@@ -1887,28 +1887,28 @@ LABEL_23:
       {
 LABEL_22:
 
-        v24 = [(CarCardsOverlay *)self configurationsByKey];
-        [v24 enumerateKeysAndObjectsUsingBlock:&stru_101653A98];
+        configurationsByKey2 = [(CarCardsOverlay *)self configurationsByKey];
+        [configurationsByKey2 enumerateKeysAndObjectsUsingBlock:&stru_101653A98];
 
-        v25 = [(CarCardsOverlay *)self configurationsByKey];
-        [v25 removeAllObjects];
+        configurationsByKey3 = [(CarCardsOverlay *)self configurationsByKey];
+        [configurationsByKey3 removeAllObjects];
 
-        v26 = [(CarCardsOverlay *)self configurationKeys];
-        [v26 removeAllObjects];
+        configurationKeys = [(CarCardsOverlay *)self configurationKeys];
+        [configurationKeys removeAllObjects];
 
         [(CarCardsOverlay *)self _captureInsetContraintsFromConfigurations];
         goto LABEL_23;
       }
 
-      v11 = self;
-      if (!v11)
+      selfCopy = self;
+      if (!selfCopy)
       {
-        v16 = @"<nil>";
+        selfCopy = @"<nil>";
 LABEL_13:
 
-        v17 = v16;
-        v18 = [(CarCardsOverlay *)v11 contentView];
-        if (!v18)
+        v17 = selfCopy;
+        contentView = [(CarCardsOverlay *)selfCopy contentView];
+        if (!contentView)
         {
           v23 = @"<nil>";
           goto LABEL_21;
@@ -1918,17 +1918,17 @@ LABEL_13:
         v20 = NSStringFromClass(v19);
         if (objc_opt_respondsToSelector())
         {
-          v21 = [v18 performSelector:"accessibilityIdentifier"];
+          v21 = [contentView performSelector:"accessibilityIdentifier"];
           v22 = v21;
           if (v21 && ![v21 isEqualToString:v20])
           {
-            v23 = [NSString stringWithFormat:@"%@<%p, %@>", v20, v18, v22];
+            v23 = [NSString stringWithFormat:@"%@<%p, %@>", v20, contentView, v22];
 
             goto LABEL_19;
           }
         }
 
-        v23 = [NSString stringWithFormat:@"%@<%p>", v20, v18];
+        v23 = [NSString stringWithFormat:@"%@<%p>", v20, contentView];
 LABEL_19:
 
 LABEL_21:
@@ -1945,17 +1945,17 @@ LABEL_21:
       v13 = NSStringFromClass(v12);
       if (objc_opt_respondsToSelector())
       {
-        v14 = [(CarCardsOverlay *)v11 performSelector:"accessibilityIdentifier"];
+        v14 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
         v15 = v14;
         if (v14 && ![v14 isEqualToString:v13])
         {
-          v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+          selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy, v15];
 
           goto LABEL_11;
         }
       }
 
-      v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+      selfCopy = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy];
 LABEL_11:
 
       goto LABEL_13;
@@ -1963,11 +1963,11 @@ LABEL_11:
   }
 
 LABEL_23:
-  v27 = objc_storeWeak(&self->_contentView, v4);
-  if (v4)
+  v27 = objc_storeWeak(&self->_contentView, viewCopy);
+  if (viewCopy)
   {
-    v28 = [(CarCardsOverlay *)self configurationsByKey];
-    v29 = [v28 count];
+    configurationsByKey4 = [(CarCardsOverlay *)self configurationsByKey];
+    v29 = [configurationsByKey4 count];
 
     if (v29)
     {
@@ -1980,14 +1980,14 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v31 = self;
-      if (!v31)
+      selfCopy2 = self;
+      if (!selfCopy2)
       {
-        v36 = @"<nil>";
+        selfCopy2 = @"<nil>";
 LABEL_34:
 
-        v37 = v36;
-        v38 = v4;
+        v37 = selfCopy2;
+        v38 = viewCopy;
         v39 = objc_opt_class();
         v40 = NSStringFromClass(v39);
         if (objc_opt_respondsToSelector())
@@ -2018,17 +2018,17 @@ LABEL_39:
       v33 = NSStringFromClass(v32);
       if (objc_opt_respondsToSelector())
       {
-        v34 = [(CarCardsOverlay *)v31 performSelector:"accessibilityIdentifier"];
+        v34 = [(CarCardsOverlay *)selfCopy2 performSelector:"accessibilityIdentifier"];
         v35 = v34;
         if (v34 && ![v34 isEqualToString:v33])
         {
-          v36 = [NSString stringWithFormat:@"%@<%p, %@>", v33, v31, v35];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v33, selfCopy2, v35];
 
           goto LABEL_32;
         }
       }
 
-      v36 = [NSString stringWithFormat:@"%@<%p>", v33, v31];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v33, selfCopy2];
 LABEL_32:
 
       goto LABEL_34;
@@ -2038,7 +2038,7 @@ LABEL_32:
 LABEL_41:
 }
 
-- (void)_userDefaultsChanged:(id)a3
+- (void)_userDefaultsChanged:(id)changed
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"__internal_CarVisualizeCardContainersDebug"];
@@ -2046,82 +2046,82 @@ LABEL_41:
   if (self->_showDebugVisualisation != v5)
   {
     self->_showDebugVisualisation = v5;
-    v6 = [(CarCardsOverlay *)self configurationsByKey];
+    configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100D957B4;
     v7[3] = &unk_101653A58;
     v8 = v5;
-    [v6 enumerateKeysAndObjectsUsingBlock:v7];
+    [configurationsByKey enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (a3)
+  if (hidden)
   {
-    [(CarCardsOverlay *)self dismissAllCardsAnimated:a4 completion:0];
+    [(CarCardsOverlay *)self dismissAllCardsAnimated:animated completion:0];
   }
 
   else
   {
-    [(CarCardsOverlay *)self presentAllCardsAnimated:a4 completion:0];
+    [(CarCardsOverlay *)self presentAllCardsAnimated:animated completion:0];
   }
 }
 
 - (BOOL)isHidden
 {
-  v2 = [(NSMutableDictionary *)self->_configurationsByKey allValues];
-  v3 = [v2 indexOfObjectPassingTest:&stru_101653A38] == 0x7FFFFFFFFFFFFFFFLL;
+  allValues = [(NSMutableDictionary *)self->_configurationsByKey allValues];
+  v3 = [allValues indexOfObjectPassingTest:&stru_101653A38] == 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
   if (WeakRetained != obj)
   {
     v5 = objc_storeWeak(&self->_host, obj);
-    v6 = [obj overlayContentView];
-    [(CarCardsOverlay *)self setContentView:v6];
+    overlayContentView = [obj overlayContentView];
+    [(CarCardsOverlay *)self setContentView:overlayContentView];
   }
 }
 
-- (void)setCardDelegate:(id)a3
+- (void)setCardDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_cardDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_cardDelegate, v4);
+    objc_storeWeak(&self->_cardDelegate, delegateCopy);
     v6 = sub_10006CF98();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
 LABEL_20:
 
-      v20 = [(CarCardsOverlay *)self configurationsByKey];
+      configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100D95BF8;
       v21[3] = &unk_1016539F8;
       v21[4] = self;
-      [v20 enumerateKeysAndObjectsUsingBlock:v21];
+      [configurationsByKey enumerateKeysAndObjectsUsingBlock:v21];
 
       goto LABEL_21;
     }
 
-    v7 = self;
-    if (!v7)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v12 = @"<nil>";
+      selfCopy = @"<nil>";
 LABEL_11:
 
-      v13 = v12;
-      v14 = v4;
+      v13 = selfCopy;
+      v14 = delegateCopy;
       if (!v14)
       {
         v19 = @"<nil>";
@@ -2159,17 +2159,17 @@ LABEL_19:
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarCardsOverlay *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarCardsOverlay *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_9;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_9:
 
     goto LABEL_11;
@@ -2178,7 +2178,7 @@ LABEL_9:
 LABEL_21:
 }
 
-- (CarCardsOverlay)initWithCarSceneType:(int64_t)a3
+- (CarCardsOverlay)initWithCarSceneType:(int64_t)type
 {
   v13.receiver = self;
   v13.super_class = CarCardsOverlay;
@@ -2186,7 +2186,7 @@ LABEL_21:
   v5 = v4;
   if (v4)
   {
-    v4->_carSceneType = a3;
+    v4->_carSceneType = type;
     v6 = +[NSUserDefaults standardUserDefaults];
     v5->_showDebugVisualisation = [v6 BOOLForKey:@"__internal_CarVisualizeCardContainersDebug"];
 
@@ -2207,8 +2207,8 @@ LABEL_21:
 
 - (void)dealloc
 {
-  v3 = [(CarCardsOverlay *)self configurationsByKey];
-  [v3 removeAllObjects];
+  configurationsByKey = [(CarCardsOverlay *)self configurationsByKey];
+  [configurationsByKey removeAllObjects];
 
   [(CarCardsOverlay *)self setHost:0];
   v4 = +[NSNotificationCenter defaultCenter];

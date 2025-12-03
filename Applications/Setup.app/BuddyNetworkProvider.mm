@@ -64,19 +64,19 @@
 {
   if (![(BuddyNetworkProvider *)self forceNetworkReachabilityOverWiFi])
   {
-    v2 = [(BuddyNetworkProvider *)self pathEvaluator];
-    v3 = [(NWPathEvaluator *)v2 path];
-    v4 = [v3 status];
+    pathEvaluator = [(BuddyNetworkProvider *)self pathEvaluator];
+    path = [(NWPathEvaluator *)pathEvaluator path];
+    status = [path status];
 
-    if (v4)
+    if (status)
     {
-      if (v4 == 1)
+      if (status == 1)
       {
         v7 = 1;
         return v7 & 1;
       }
 
-      if ((v4 - 2) >= 2)
+      if ((status - 2) >= 2)
       {
         return v7 & 1;
       }
@@ -94,31 +94,31 @@
 {
   if (![(BuddyNetworkProvider *)self forceNetworkReachabilityOverWiFi])
   {
-    v2 = [(BuddyNetworkProvider *)self pathEvaluator];
-    v3 = [(NWPathEvaluator *)v2 path];
-    v4 = [v3 interface];
-    v5 = [v4 type];
+    pathEvaluator = [(BuddyNetworkProvider *)self pathEvaluator];
+    path = [(NWPathEvaluator *)pathEvaluator path];
+    interface = [path interface];
+    type = [interface type];
 
-    if (v5)
+    if (type)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         goto LABEL_9;
       }
 
-      if (v5 == 2)
+      if (type == 2)
       {
         goto LABEL_8;
       }
 
-      if (v5 == 3)
+      if (type == 3)
       {
 LABEL_9:
         v8 = 1;
         return v8 & 1;
       }
 
-      if (v5 != 4)
+      if (type != 4)
       {
         return v8 & 1;
       }
@@ -135,23 +135,23 @@ LABEL_8:
 
 - (BOOL)connectedOverCellular
 {
-  v2 = [(BuddyNetworkProvider *)self pathEvaluator];
-  v3 = [(NWPathEvaluator *)v2 path];
-  v4 = [v3 interface];
-  v5 = [v4 type];
+  pathEvaluator = [(BuddyNetworkProvider *)self pathEvaluator];
+  path = [(NWPathEvaluator *)pathEvaluator path];
+  interface = [path interface];
+  type = [interface type];
 
-  if (v5 < 2)
+  if (type < 2)
   {
     goto LABEL_4;
   }
 
-  if (v5 == 2)
+  if (type == 2)
   {
     v7 = 1;
     return v7 & 1;
   }
 
-  if ((v5 - 3) <= 1)
+  if ((type - 3) <= 1)
   {
 LABEL_4:
     v7 = 0;
@@ -162,32 +162,32 @@ LABEL_4:
 
 - (BOOL)connectedOverWiFiAndNetworkReachable
 {
-  v2 = [(BuddyNetworkProvider *)self networkReachable];
-  v3 = 0;
-  if (v2)
+  networkReachable = [(BuddyNetworkProvider *)self networkReachable];
+  connectedOverWiFi = 0;
+  if (networkReachable)
   {
-    v3 = [(BuddyNetworkProvider *)self connectedOverWiFi];
+    connectedOverWiFi = [(BuddyNetworkProvider *)self connectedOverWiFi];
   }
 
-  return v3 & 1;
+  return connectedOverWiFi & 1;
 }
 
 - (BOOL)currentNetworkSupportsRestore
 {
-  v72 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyNetworkProvider *)self pathEvaluator];
-  v3 = [(NWPathEvaluator *)v2 path];
-  v4 = [v3 status];
+  pathEvaluator = [(BuddyNetworkProvider *)self pathEvaluator];
+  path = [(NWPathEvaluator *)pathEvaluator path];
+  status = [path status];
 
-  if (!v4)
+  if (!status)
   {
     goto LABEL_74;
   }
 
-  if (v4 != 1)
+  if (status != 1)
   {
-    if ((v4 - 2) >= 2)
+    if ((status - 2) >= 2)
     {
       return v73 & 1;
     }
@@ -195,19 +195,19 @@ LABEL_4:
     goto LABEL_74;
   }
 
-  v5 = [(BuddyNetworkProvider *)v72 pathEvaluator];
-  v6 = [(NWPathEvaluator *)v5 path];
-  v7 = [v6 interface];
-  v8 = [v7 type];
+  pathEvaluator2 = [(BuddyNetworkProvider *)selfCopy pathEvaluator];
+  path2 = [(NWPathEvaluator *)pathEvaluator2 path];
+  interface = [path2 interface];
+  type = [interface type];
 
-  if (v8 < 2)
+  if (type < 2)
   {
     goto LABEL_73;
   }
 
-  if (v8 != 2)
+  if (type != 2)
   {
-    if ((v8 - 3) >= 2)
+    if ((type - 3) >= 2)
     {
 LABEL_74:
       v73 = 0;
@@ -219,12 +219,12 @@ LABEL_73:
     return v73 & 1;
   }
 
-  v9 = [(BuddyNetworkProvider *)v72 pathEvaluator];
-  v10 = [(NWPathEvaluator *)v9 path];
-  v11 = [v10 interface];
-  v12 = [v11 isExpensive];
+  pathEvaluator3 = [(BuddyNetworkProvider *)selfCopy pathEvaluator];
+  path3 = [(NWPathEvaluator *)pathEvaluator3 path];
+  interface2 = [path3 interface];
+  isExpensive = [interface2 isExpensive];
 
-  if (v12)
+  if (isExpensive)
   {
     location[0] = _BYLoggingFacility();
     v70 = OS_LOG_TYPE_DEFAULT;
@@ -241,12 +241,12 @@ LABEL_73:
     return v73 & 1;
   }
 
-  if ([(BuddyNetworkProvider *)v72 deviceSupportsCellularRestore])
+  if ([(BuddyNetworkProvider *)selfCopy deviceSupportsCellularRestore])
   {
     v65 = 0;
-    v17 = [(BuddyNetworkProvider *)v72 telephonyClient];
+    telephonyClient = [(BuddyNetworkProvider *)selfCopy telephonyClient];
     v63 = 0;
-    v18 = [(CoreTelephonyClient *)v17 getCurrentDataSubscriptionContextSync:&v63];
+    v18 = [(CoreTelephonyClient *)telephonyClient getCurrentDataSubscriptionContextSync:&v63];
     objc_storeStrong(&v65, v63);
     v64 = v18;
 
@@ -265,9 +265,9 @@ LABEL_73:
 
         else if (v65)
         {
-          v60 = [v65 domain];
+          domain = [v65 domain];
           v59 = 1;
-          v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v60, [v65 code]);
+          v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v65 code]);
           v58 = v19;
           v57 = 1;
         }
@@ -295,9 +295,9 @@ LABEL_73:
     }
 
     v55 = [[CTBundle alloc] initWithBundleType:1];
-    v20 = [(BuddyNetworkProvider *)v72 telephonyClient];
+    telephonyClient2 = [(BuddyNetworkProvider *)selfCopy telephonyClient];
     obj = v65;
-    v21 = [(CoreTelephonyClient *)v20 copyCarrierBundleValue:v64 key:@"EnableRestoreOnCellular" bundleType:v55 error:&obj];
+    v21 = [(CoreTelephonyClient *)telephonyClient2 copyCarrierBundleValue:v64 key:@"EnableRestoreOnCellular" bundleType:v55 error:&obj];
     objc_storeStrong(&v65, obj);
     v54 = v21;
 
@@ -360,9 +360,9 @@ LABEL_72:
 
         else if (v65)
         {
-          v45 = [v65 domain];
+          domain2 = [v65 domain];
           v44 = 1;
-          v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v45, [v65 code]);
+          v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [v65 code]);
           v43 = v24;
           v42 = 1;
         }
@@ -386,9 +386,9 @@ LABEL_72:
       objc_storeStrong(&v47, 0);
     }
 
-    v25 = [(BuddyNetworkProvider *)v72 telephonyClient];
+    telephonyClient3 = [(BuddyNetworkProvider *)selfCopy telephonyClient];
     v40 = v65;
-    v26 = [(CoreTelephonyClient *)v25 getDataStatus:v64 error:&v40];
+    v26 = [(CoreTelephonyClient *)telephonyClient3 getDataStatus:v64 error:&v40];
     objc_storeStrong(&v65, v40);
     v41 = v26;
 
@@ -407,9 +407,9 @@ LABEL_72:
 
         else if (v65)
         {
-          v37 = [v65 domain];
+          domain3 = [v65 domain];
           v36 = 1;
-          v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v37, [v65 code]);
+          v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain3, [v65 code]);
           v35 = v27;
           v34 = 1;
         }
@@ -486,9 +486,9 @@ LABEL_72:
 - (BOOL)currentNetworkRequiresDataUsageWarningForRestore
 {
   v2 = [(BuddyNetworkProvider *)self pathEvaluator:a2];
-  v3 = [(NWPathEvaluator *)v2 path];
-  v4 = [v3 interface];
-  v5 = [v4 type] == 2;
+  path = [(NWPathEvaluator *)v2 path];
+  interface = [path interface];
+  v5 = [interface type] == 2;
 
   return v5;
 }
@@ -498,9 +498,9 @@ LABEL_72:
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  v2 = [(BuddyNetworkProvider *)self telephonyClient];
+  telephonyClient = [(BuddyNetworkProvider *)self telephonyClient];
   obj = 0;
-  v3 = [(CoreTelephonyClient *)v2 getInternetDataStatusBasicSync:&obj];
+  v3 = [(CoreTelephonyClient *)telephonyClient getInternetDataStatusBasicSync:&obj];
   objc_storeStrong(location, obj);
   v14 = v3;
 
@@ -518,9 +518,9 @@ LABEL_72:
 
       else if (location[0])
       {
-        v11 = [location[0] domain];
+        domain = [location[0] domain];
         v10 = 1;
-        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v11, [location[0] code]);
+        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
         v9 = v4;
         v8 = 1;
       }
@@ -547,14 +547,14 @@ LABEL_72:
 
   else
   {
-    v5 = [v14 roamAllowed];
-    v6 = 0;
-    if (v5)
+    roamAllowed = [v14 roamAllowed];
+    cellularDataPossible = 0;
+    if (roamAllowed)
     {
-      v6 = [v14 cellularDataPossible];
+      cellularDataPossible = [v14 cellularDataPossible];
     }
 
-    v16 = v6 & 1;
+    v16 = cellularDataPossible & 1;
   }
 
   objc_storeStrong(&v14, 0);
@@ -564,12 +564,12 @@ LABEL_72:
 
 - (BOOL)deviceSupportsCellularRestore
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  v2 = [(BuddyNetworkProvider *)self telephonyClient];
+  telephonyClient = [(BuddyNetworkProvider *)self telephonyClient];
   obj = 0;
-  v3 = [(CoreTelephonyClient *)v2 getCurrentDataSubscriptionContextSync:&obj];
+  v3 = [(CoreTelephonyClient *)telephonyClient getCurrentDataSubscriptionContextSync:&obj];
   objc_storeStrong(location, obj);
   v24 = v3;
 
@@ -588,9 +588,9 @@ LABEL_72:
 
       else if (location[0])
       {
-        v20 = [location[0] domain];
+        domain = [location[0] domain];
         v19 = 1;
-        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v20, [location[0] code]);
+        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
         v18 = v4;
         v17 = 1;
       }
@@ -618,9 +618,9 @@ LABEL_72:
 
   else
   {
-    v5 = [(BuddyNetworkProvider *)v26 telephonyClient];
+    telephonyClient2 = [(BuddyNetworkProvider *)selfCopy telephonyClient];
     v14 = location[0];
-    v6 = [(CoreTelephonyClient *)v5 getSupports5G:v24 error:&v14];
+    v6 = [(CoreTelephonyClient *)telephonyClient2 getSupports5G:v24 error:&v14];
     objc_storeStrong(location, v14);
     v15 = v6;
 
@@ -638,9 +638,9 @@ LABEL_72:
 
         else if (location[0])
         {
-          v12 = [location[0] domain];
+          domain2 = [location[0] domain];
           v11 = 1;
-          v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v12, [location[0] code]);
+          v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain2, [location[0] code]);
           v10 = v7;
           v9 = 1;
         }
@@ -686,8 +686,8 @@ LABEL_72:
   location[1] = a2;
   location[0] = objc_alloc_init(CWFInterface);
   [location[0] activate];
-  v2 = [location[0] networkName];
-  v3 = [v2 isEqualToString:@"Apple Store"];
+  networkName = [location[0] networkName];
+  v3 = [networkName isEqualToString:@"Apple Store"];
 
   [location[0] invalidate];
   objc_storeStrong(location, 0);
@@ -696,16 +696,16 @@ LABEL_72:
 
 - (void)assumeNetworkReachabilityOverWiFi
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v2 = [(BuddyNetworkProvider *)self forceNetworkReachabilityQueue];
+  forceNetworkReachabilityQueue = [(BuddyNetworkProvider *)self forceNetworkReachabilityQueue];
   block = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000C2154;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
-  dispatch_async(v2, &block);
+  v8[0] = selfCopy;
+  dispatch_async(forceNetworkReachabilityQueue, &block);
 
   objc_storeStrong(v8, 0);
 }

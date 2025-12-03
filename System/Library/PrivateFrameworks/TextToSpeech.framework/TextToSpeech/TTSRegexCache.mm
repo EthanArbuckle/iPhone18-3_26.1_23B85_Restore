@@ -1,7 +1,7 @@
 @interface TTSRegexCache
 + (id)sharedInstance;
 - (TTSRegexCache)init;
-- (id)regexForString:(id)a3 atStart:(BOOL)a4;
+- (id)regexForString:(id)string atStart:(BOOL)start;
 @end
 
 @implementation TTSRegexCache
@@ -34,14 +34,14 @@
   return v6;
 }
 
-- (id)regexForString:(id)a3 atStart:(BOOL)a4
+- (id)regexForString:(id)string atStart:(BOOL)start
 {
-  v4 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (v4)
+  startCopy = start;
+  stringCopy = string;
+  v10 = stringCopy;
+  if (startCopy)
   {
-    v10 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v6, @"^%@", v7, v8, v9);
+    v10 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v6, @"^%@", v7, v8, stringCopy);
   }
 
   v24 = 0;

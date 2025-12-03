@@ -1,62 +1,62 @@
 @interface TSCH3DCombinationRenderProcessor
-+ (id)processorWithOriginal:(id)a3 enableTypes:(id)a4;
++ (id)processorWithOriginal:(id)original enableTypes:(id)types;
 - (RenderState)renderState;
-- (TSCH3DCombinationRenderProcessor)initWithOriginal:(id)a3;
-- (TSCH3DCombinationRenderProcessor)initWithOriginal:(id)a3 enableTypes:(id)a4;
+- (TSCH3DCombinationRenderProcessor)initWithOriginal:(id)original;
+- (TSCH3DCombinationRenderProcessor)initWithOriginal:(id)original enableTypes:(id)types;
 - (TSCH3DShaderEffectsStates)currentEffectsStates;
 - (id).cxx_construct;
 - (id)effects;
 - (id)effectsStates;
-- (void)copyProjectionInto:(void *)a3;
-- (void)copyTransformInto:(void *)a3;
-- (void)multiply:(void *)a3;
+- (void)copyProjectionInto:(void *)into;
+- (void)copyTransformInto:(void *)into;
+- (void)multiply:(void *)multiply;
 - (void)popMatrix;
 - (void)popRenderState;
 - (void)popState;
-- (void)projection:(void *)a3;
+- (void)projection:(void *)projection;
 - (void)pushMatrix;
 - (void)pushRenderState;
 - (void)pushState;
-- (void)replace:(void *)a3;
+- (void)replace:(void *)replace;
 - (void)resetBuffers;
 - (void)resetTransformChangeFlags;
-- (void)scale:(void *)a3;
-- (void)setRenderState:(const void *)a3;
-- (void)translate:(void *)a3;
+- (void)scale:(void *)scale;
+- (void)setRenderState:(const void *)state;
+- (void)translate:(void *)translate;
 @end
 
 @implementation TSCH3DCombinationRenderProcessor
 
-+ (id)processorWithOriginal:(id)a3 enableTypes:(id)a4
++ (id)processorWithOriginal:(id)original enableTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithOriginal_enableTypes_(v8, v9, v10, v11, v12, v6, v7);
+  originalCopy = original;
+  typesCopy = types;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithOriginal_enableTypes_(v8, v9, v10, v11, v12, originalCopy, typesCopy);
 
   return v13;
 }
 
-- (TSCH3DCombinationRenderProcessor)initWithOriginal:(id)a3
+- (TSCH3DCombinationRenderProcessor)initWithOriginal:(id)original
 {
-  v4 = a3;
+  originalCopy = original;
   v9 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], v5, v6, v7, v8, 0, 4);
-  v14 = objc_msgSend_initWithOriginal_enableTypes_(self, v10, v11, v12, v13, v4, v9);
+  v14 = objc_msgSend_initWithOriginal_enableTypes_(self, v10, v11, v12, v13, originalCopy, v9);
 
   return v14;
 }
 
-- (TSCH3DCombinationRenderProcessor)initWithOriginal:(id)a3 enableTypes:(id)a4
+- (TSCH3DCombinationRenderProcessor)initWithOriginal:(id)original enableTypes:(id)types
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  originalCopy = original;
+  typesCopy = types;
   v34.receiver = self;
   v34.super_class = TSCH3DCombinationRenderProcessor;
-  v9 = [(TSCH3DRetargetRenderProcessor *)&v34 initWithOriginal:v6];
+  v9 = [(TSCH3DRetargetRenderProcessor *)&v34 initWithOriginal:originalCopy];
   if (v9)
   {
-    v13 = objc_msgSend_copy(v7, v8, v10, v11, v12);
+    v13 = objc_msgSend_copy(typesCopy, v8, v10, v11, v12);
     enabled = v9->_enabled;
     v9->_enabled = v13;
 
@@ -87,106 +87,106 @@
   }
 }
 
-- (void)copyProjectionInto:(void *)a3
+- (void)copyProjectionInto:(void *)into
 {
   if (objc_msgSend_matrixEnabled(self, a2, v3, v4, v5))
   {
     v12 = objc_msgSend_projectionTransform(self, v8, v9, v10, v11);
-    *a3 = *v12;
-    *(a3 + 1) = v12[1];
-    *(a3 + 2) = v12[2];
-    *(a3 + 3) = v12[3];
-    *(a3 + 4) = v12[4];
-    *(a3 + 5) = v12[5];
-    *(a3 + 6) = v12[6];
-    *(a3 + 7) = v12[7];
-    *(a3 + 8) = v12[8];
-    *(a3 + 9) = v12[9];
-    *(a3 + 10) = v12[10];
-    *(a3 + 11) = v12[11];
-    *(a3 + 12) = v12[12];
-    *(a3 + 13) = v12[13];
-    *(a3 + 14) = v12[14];
-    *(a3 + 15) = v12[15];
+    *into = *v12;
+    *(into + 1) = v12[1];
+    *(into + 2) = v12[2];
+    *(into + 3) = v12[3];
+    *(into + 4) = v12[4];
+    *(into + 5) = v12[5];
+    *(into + 6) = v12[6];
+    *(into + 7) = v12[7];
+    *(into + 8) = v12[8];
+    *(into + 9) = v12[9];
+    *(into + 10) = v12[10];
+    *(into + 11) = v12[11];
+    *(into + 12) = v12[12];
+    *(into + 13) = v12[13];
+    *(into + 14) = v12[14];
+    *(into + 15) = v12[15];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = TSCH3DCombinationRenderProcessor;
-    [(TSCH3DRetargetRenderProcessor *)&v13 copyProjectionInto:a3];
+    [(TSCH3DRetargetRenderProcessor *)&v13 copyProjectionInto:into];
   }
 }
 
-- (void)copyTransformInto:(void *)a3
+- (void)copyTransformInto:(void *)into
 {
   if (objc_msgSend_matrixEnabled(self, a2, v3, v4, v5))
   {
     v12 = objc_msgSend_currentTransform(self, v8, v9, v10, v11);
-    *a3 = *v12;
-    *(a3 + 1) = v12[1];
-    *(a3 + 2) = v12[2];
-    *(a3 + 3) = v12[3];
-    *(a3 + 4) = v12[4];
-    *(a3 + 5) = v12[5];
-    *(a3 + 6) = v12[6];
-    *(a3 + 7) = v12[7];
-    *(a3 + 8) = v12[8];
-    *(a3 + 9) = v12[9];
-    *(a3 + 10) = v12[10];
-    *(a3 + 11) = v12[11];
-    *(a3 + 12) = v12[12];
-    *(a3 + 13) = v12[13];
-    *(a3 + 14) = v12[14];
-    *(a3 + 15) = v12[15];
+    *into = *v12;
+    *(into + 1) = v12[1];
+    *(into + 2) = v12[2];
+    *(into + 3) = v12[3];
+    *(into + 4) = v12[4];
+    *(into + 5) = v12[5];
+    *(into + 6) = v12[6];
+    *(into + 7) = v12[7];
+    *(into + 8) = v12[8];
+    *(into + 9) = v12[9];
+    *(into + 10) = v12[10];
+    *(into + 11) = v12[11];
+    *(into + 12) = v12[12];
+    *(into + 13) = v12[13];
+    *(into + 14) = v12[14];
+    *(into + 15) = v12[15];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = TSCH3DCombinationRenderProcessor;
-    [(TSCH3DRetargetRenderProcessor *)&v13 copyTransformInto:a3];
+    [(TSCH3DRetargetRenderProcessor *)&v13 copyTransformInto:into];
   }
 }
 
-- (void)replace:(void *)a3
+- (void)replace:(void *)replace
 {
   if (objc_msgSend_matrixEnabled(self, a2, v3, v4, v5))
   {
     self->_transformChanged = 1;
-    self->_transformStack._current.value[0].var0.var0 = *a3;
-    self->_transformStack._current.value[0].var1.var0 = *(a3 + 1);
-    self->_transformStack._current.value[0].var2.var0 = *(a3 + 2);
-    self->_transformStack._current.value[0].var3.var0 = *(a3 + 3);
-    self->_transformStack._current.value[1].var0.var0 = *(a3 + 4);
-    self->_transformStack._current.value[1].var1.var0 = *(a3 + 5);
-    self->_transformStack._current.value[1].var2.var0 = *(a3 + 6);
-    self->_transformStack._current.value[1].var3.var0 = *(a3 + 7);
-    self->_transformStack._current.value[2].var0.var0 = *(a3 + 8);
-    self->_transformStack._current.value[2].var1.var0 = *(a3 + 9);
-    self->_transformStack._current.value[2].var2.var0 = *(a3 + 10);
-    self->_transformStack._current.value[2].var3.var0 = *(a3 + 11);
-    self->_transformStack._current.value[3].var0.var0 = *(a3 + 12);
-    self->_transformStack._current.value[3].var1.var0 = *(a3 + 13);
-    self->_transformStack._current.value[3].var2.var0 = *(a3 + 14);
-    self->_transformStack._current.value[3].var3.var0 = *(a3 + 15);
+    self->_transformStack._current.value[0].var0.var0 = *replace;
+    self->_transformStack._current.value[0].var1.var0 = *(replace + 1);
+    self->_transformStack._current.value[0].var2.var0 = *(replace + 2);
+    self->_transformStack._current.value[0].var3.var0 = *(replace + 3);
+    self->_transformStack._current.value[1].var0.var0 = *(replace + 4);
+    self->_transformStack._current.value[1].var1.var0 = *(replace + 5);
+    self->_transformStack._current.value[1].var2.var0 = *(replace + 6);
+    self->_transformStack._current.value[1].var3.var0 = *(replace + 7);
+    self->_transformStack._current.value[2].var0.var0 = *(replace + 8);
+    self->_transformStack._current.value[2].var1.var0 = *(replace + 9);
+    self->_transformStack._current.value[2].var2.var0 = *(replace + 10);
+    self->_transformStack._current.value[2].var3.var0 = *(replace + 11);
+    self->_transformStack._current.value[3].var0.var0 = *(replace + 12);
+    self->_transformStack._current.value[3].var1.var0 = *(replace + 13);
+    self->_transformStack._current.value[3].var2.var0 = *(replace + 14);
+    self->_transformStack._current.value[3].var3.var0 = *(replace + 15);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TSCH3DCombinationRenderProcessor;
-    [(TSCH3DRetargetRenderProcessor *)&v8 replace:a3];
+    [(TSCH3DRetargetRenderProcessor *)&v8 replace:replace];
   }
 }
 
-- (void)multiply:(void *)a3
+- (void)multiply:(void *)multiply
 {
   if (objc_msgSend_matrixEnabled(self, a2, v3, v4, v5))
   {
     self->_transformChanged = 1;
     p_transformStack = &self->_transformStack;
-    sub_2761558A0(&p_transformStack->_current, a3, v12);
+    sub_2761558A0(&p_transformStack->_current, multiply, v12);
     v9 = v12[1];
     p_transformStack->_current.value[0] = v12[0];
     p_transformStack->_current.value[1] = v9;
@@ -199,21 +199,21 @@
   {
     v11.receiver = self;
     v11.super_class = TSCH3DCombinationRenderProcessor;
-    [(TSCH3DRetargetRenderProcessor *)&v11 multiply:a3];
+    [(TSCH3DRetargetRenderProcessor *)&v11 multiply:multiply];
   }
 }
 
-- (void)scale:(void *)a3
+- (void)scale:(void *)scale
 {
   if (objc_msgSend_matrixEnabled(self, a2, v3, v4, v5))
   {
     self->_transformChanged = 1;
-    *v8.i32 = *a3 * 0.0;
-    v13[0] = *a3;
+    *v8.i32 = *scale * 0.0;
+    v13[0] = *scale;
     v13[1] = v8.i32[0];
     v13[2] = v8.i32[0];
     v13[3] = v8.i32[0];
-    v9 = *(a3 + 4);
+    v9 = *(scale + 4);
     *v8.i8 = vmul_f32(v9, 0);
     v14 = vzip1_s32(*v8.i8, v9);
     v15 = vzip1q_s32(v8, v8);
@@ -233,11 +233,11 @@
   {
     v18.receiver = self;
     v18.super_class = TSCH3DCombinationRenderProcessor;
-    [(TSCH3DRetargetRenderProcessor *)&v18 scale:a3];
+    [(TSCH3DRetargetRenderProcessor *)&v18 scale:scale];
   }
 }
 
-- (void)translate:(void *)a3
+- (void)translate:(void *)translate
 {
   if (objc_msgSend_matrixEnabled(self, a2, v3, v4, v5))
   {
@@ -248,12 +248,12 @@
     v17 = 1065353216;
     v18 = 0;
     v19 = 0;
-    v9.i64[0] = *a3;
-    *&v9.u32[2] = vmul_f32(*a3, 0);
+    v9.i64[0] = *translate;
+    *&v9.u32[2] = vmul_f32(*translate, 0);
     *v8.f32 = vrev64_s32(*&v9.u32[2]);
     v8.i32[3] = 0;
     v10 = vaddq_f32(v9, vdupq_lane_s64(v8.i64[0], 0));
-    v9.i32[3] = *(a3 + 2);
+    v9.i32[3] = *(translate + 2);
     v10.i32[3] = vmulq_f32(v9, v8).i32[3];
     v20 = 1065353216;
     v21 = vaddq_f32(vaddq_f32(vzip2q_s32(vtrn2q_s32(v10, v9), vrev64q_s32(v10)), v10), xmmword_2764D5F20);
@@ -271,7 +271,7 @@
   {
     v22.receiver = self;
     v22.super_class = TSCH3DCombinationRenderProcessor;
-    [(TSCH3DRetargetRenderProcessor *)&v22 translate:a3];
+    [(TSCH3DRetargetRenderProcessor *)&v22 translate:translate];
   }
 }
 
@@ -308,34 +308,34 @@
   }
 }
 
-- (void)projection:(void *)a3
+- (void)projection:(void *)projection
 {
   if (objc_msgSend_matrixEnabled(self, a2, v3, v4, v5))
   {
     self->_projectionChanged = 1;
-    self->_projection.value[0].var0.var0 = *a3;
-    self->_projection.value[0].var1.var0 = *(a3 + 1);
-    self->_projection.value[0].var2.var0 = *(a3 + 2);
-    self->_projection.value[0].var3.var0 = *(a3 + 3);
-    self->_projection.value[1].var0.var0 = *(a3 + 4);
-    self->_projection.value[1].var1.var0 = *(a3 + 5);
-    self->_projection.value[1].var2.var0 = *(a3 + 6);
-    self->_projection.value[1].var3.var0 = *(a3 + 7);
-    self->_projection.value[2].var0.var0 = *(a3 + 8);
-    self->_projection.value[2].var1.var0 = *(a3 + 9);
-    self->_projection.value[2].var2.var0 = *(a3 + 10);
-    self->_projection.value[2].var3.var0 = *(a3 + 11);
-    self->_projection.value[3].var0.var0 = *(a3 + 12);
-    self->_projection.value[3].var1.var0 = *(a3 + 13);
-    self->_projection.value[3].var2.var0 = *(a3 + 14);
-    self->_projection.value[3].var3.var0 = *(a3 + 15);
+    self->_projection.value[0].var0.var0 = *projection;
+    self->_projection.value[0].var1.var0 = *(projection + 1);
+    self->_projection.value[0].var2.var0 = *(projection + 2);
+    self->_projection.value[0].var3.var0 = *(projection + 3);
+    self->_projection.value[1].var0.var0 = *(projection + 4);
+    self->_projection.value[1].var1.var0 = *(projection + 5);
+    self->_projection.value[1].var2.var0 = *(projection + 6);
+    self->_projection.value[1].var3.var0 = *(projection + 7);
+    self->_projection.value[2].var0.var0 = *(projection + 8);
+    self->_projection.value[2].var1.var0 = *(projection + 9);
+    self->_projection.value[2].var2.var0 = *(projection + 10);
+    self->_projection.value[2].var3.var0 = *(projection + 11);
+    self->_projection.value[3].var0.var0 = *(projection + 12);
+    self->_projection.value[3].var1.var0 = *(projection + 13);
+    self->_projection.value[3].var2.var0 = *(projection + 14);
+    self->_projection.value[3].var3.var0 = *(projection + 15);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TSCH3DCombinationRenderProcessor;
-    [(TSCH3DRetargetRenderProcessor *)&v8 projection:a3];
+    [(TSCH3DRetargetRenderProcessor *)&v8 projection:projection];
   }
 }
 
@@ -461,17 +461,17 @@
   return result;
 }
 
-- (void)setRenderState:(const void *)a3
+- (void)setRenderState:(const void *)state
 {
   if ((objc_msgSend_renderStateEnabled(self, a2, v3, v4, v5) & 1) == 0)
   {
     v9.receiver = self;
     v9.super_class = TSCH3DCombinationRenderProcessor;
-    [(TSCH3DRetargetRenderProcessor *)&v9 setRenderState:a3];
+    [(TSCH3DRetargetRenderProcessor *)&v9 setRenderState:state];
   }
 
-  v8 = *(a3 + 1);
-  *&self->_renderStateStack._current.blendState._blend = *a3;
+  v8 = *(state + 1);
+  *&self->_renderStateStack._current.blendState._blend = *state;
   *&self->_renderStateStack._current.polygonOffsetFactor = v8;
 }
 

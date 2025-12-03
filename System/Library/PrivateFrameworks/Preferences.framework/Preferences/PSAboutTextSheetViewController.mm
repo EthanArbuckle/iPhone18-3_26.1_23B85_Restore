@@ -1,8 +1,8 @@
 @interface PSAboutTextSheetViewController
-+ (void)presentAboutSheetTitled:(id)a3 attributedText:(id)a4 fromViewController:(id)a5;
++ (void)presentAboutSheetTitled:(id)titled attributedText:(id)text fromViewController:(id)controller;
 - (void)donePressed;
 - (void)loadView;
-- (void)setAttributedText:(id)a3;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation PSAboutTextSheetViewController
@@ -19,35 +19,35 @@
   [(PSAboutTextSheetViewController *)self setView:v5];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [(PSAboutTextSheetViewController *)self view];
-  [v5 setAttributedText:v4];
+  textCopy = text;
+  view = [(PSAboutTextSheetViewController *)self view];
+  [view setAttributedText:textCopy];
 }
 
 - (void)donePressed
 {
-  v2 = [(PSAboutTextSheetViewController *)self parentViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  parentViewController = [(PSAboutTextSheetViewController *)self parentViewController];
+  [parentViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-+ (void)presentAboutSheetTitled:(id)a3 attributedText:(id)a4 fromViewController:(id)a5
++ (void)presentAboutSheetTitled:(id)titled attributedText:(id)text fromViewController:(id)controller
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v14 = objc_alloc_init(a1);
-  [v14 setTitle:v10];
+  controllerCopy = controller;
+  textCopy = text;
+  titledCopy = titled;
+  v14 = objc_alloc_init(self);
+  [v14 setTitle:titledCopy];
 
-  [v14 setAttributedText:v9];
+  [v14 setAttributedText:textCopy];
   v11 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v14];
   [v11 setModalPresentationStyle:2];
   v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v14 action:sel_donePressed];
-  v13 = [v14 navigationItem];
-  [v13 setRightBarButtonItem:v12];
+  navigationItem = [v14 navigationItem];
+  [navigationItem setRightBarButtonItem:v12];
 
-  [v8 presentViewController:v11 animated:1 completion:0];
+  [controllerCopy presentViewController:v11 animated:1 completion:0];
 }
 
 @end

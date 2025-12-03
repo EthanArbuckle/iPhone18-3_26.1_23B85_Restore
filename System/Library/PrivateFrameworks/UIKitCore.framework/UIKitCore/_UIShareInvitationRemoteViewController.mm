@@ -2,27 +2,27 @@
 + (id)exportedInterface;
 + (id)serviceViewControllerInterface;
 - (_UISharingPublicController)publicController;
-- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6;
+- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)x y:(double)y width:(double)width height:(double)height;
 - (void)_cloudSharingControllerDidActivateShowActivityController;
 - (void)_cloudSharingControllerDidActivateShowSharedFolder;
-- (void)_cloudSharingControllerDidChooseTransport:(id)a3;
-- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)a3;
-- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)a3;
-- (void)_cloudSharingControllerDidUpdateRootFolderURL:(id)a3;
-- (void)_dismissAndRepresentForActivity:(id)a3;
-- (void)_dismissForActivityRepresentation:(id)a3;
+- (void)_cloudSharingControllerDidChooseTransport:(id)transport;
+- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)switch;
+- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)switch;
+- (void)_cloudSharingControllerDidUpdateRootFolderURL:(id)l;
+- (void)_dismissAndRepresentForActivity:(id)activity;
+- (void)_dismissForActivityRepresentation:(id)representation;
 - (void)_dismissViewController;
-- (void)_dismissViewControllerWithError:(id)a3;
-- (void)_performAuxiliaryActionWithCompletion:(id)a3;
-- (void)_performHeaderActionWithCompletion:(id)a3;
-- (void)_representFullscreenAfterActivityDismissal:(id)a3;
-- (void)_requestContentSize:(CGSize)a3;
-- (void)_requestSavedShareWithCompletion:(id)a3;
-- (void)_shareDidChange:(id)a3;
+- (void)_dismissViewControllerWithError:(id)error;
+- (void)_performAuxiliaryActionWithCompletion:(id)completion;
+- (void)_performHeaderActionWithCompletion:(id)completion;
+- (void)_representFullscreenAfterActivityDismissal:(id)dismissal;
+- (void)_requestContentSize:(CGSize)size;
+- (void)_requestSavedShareWithCompletion:(id)completion;
+- (void)_shareDidChange:(id)change;
 - (void)_shareWasMadePrivate;
-- (void)_tintColorDidChangeToColor:(id)a3;
+- (void)_tintColorDidChangeToColor:(id)color;
 - (void)_updateTraitCollectionForPopoverStatus;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -71,9 +71,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSSet *_CKOperationProgressCallbackClasses(void)"];
-    [v6 handleFailureInFunction:v7 file:@"_UIShareInvitationRemoteViewController.m" lineNumber:33 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"_UIShareInvitationRemoteViewController.m" lineNumber:33 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -83,9 +83,9 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   v4 = objc_alloc_init(_UIShareInvitationRemoteViewControllerTintColorView);
-  [v3 addSubview:v4];
+  [view addSubview:v4];
 
   v5.receiver = self;
   v5.super_class = _UIShareInvitationRemoteViewController;
@@ -94,176 +94,176 @@
 
 - (void)_dismissViewController
 {
-  v2 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v2 _dismissViewControllerWithError:0];
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _dismissViewControllerWithError:0];
 }
 
-- (void)_dismissViewControllerWithError:(id)a3
+- (void)_dismissViewControllerWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 _dismissViewControllerWithError:v4];
+  errorCopy = error;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _dismissViewControllerWithError:errorCopy];
 }
 
-- (void)_shareDidChange:(id)a3
+- (void)_shareDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 _shareDidChange:v4];
+  changeCopy = change;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _shareDidChange:changeCopy];
 }
 
 - (void)_shareWasMadePrivate
 {
-  v2 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v2 _shareWasMadePrivate];
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _shareWasMadePrivate];
 }
 
-- (void)_tintColorDidChangeToColor:(id)a3
+- (void)_tintColorDidChangeToColor:(id)color
 {
-  v4 = a3;
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 _setTintColor:v4];
+  colorCopy = color;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy _setTintColor:colorCopy];
 }
 
-- (void)_performAuxiliaryActionWithCompletion:(id)a3
+- (void)_performAuxiliaryActionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 _performAuxiliaryActionWithCompletion:v4];
+  completionCopy = completion;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _performAuxiliaryActionWithCompletion:completionCopy];
 }
 
-- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)a3
+- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)switch
 {
-  v3 = a3;
-  v4 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v4 _cloudSharingControllerDidModifyPrimarySwitch:v3];
+  switchCopy = switch;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _cloudSharingControllerDidModifyPrimarySwitch:switchCopy];
 }
 
-- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)a3
+- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)switch
 {
-  v3 = a3;
-  v4 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v4 _cloudSharingControllerDidModifySecondarySwitch:v3];
+  switchCopy = switch;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _cloudSharingControllerDidModifySecondarySwitch:switchCopy];
 }
 
-- (void)_cloudSharingControllerDidUpdateRootFolderURL:(id)a3
+- (void)_cloudSharingControllerDidUpdateRootFolderURL:(id)l
 {
-  v5 = [a3 url];
-  v4 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v4 _cloudSharingControllerDidUpdateRootFolderURL:v5];
+  v5 = [l url];
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _cloudSharingControllerDidUpdateRootFolderURL:v5];
 }
 
 - (void)_cloudSharingControllerDidActivateShowSharedFolder
 {
-  v2 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v2 _cloudSharingControllerDidActivateShowSharedFolder];
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _cloudSharingControllerDidActivateShowSharedFolder];
 }
 
 - (void)_cloudSharingControllerDidActivateShowActivityController
 {
-  v2 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v2 _cloudSharingControllerDidActivateShowActivityController];
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _cloudSharingControllerDidActivateShowActivityController];
 }
 
-- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6
+- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)x y:(double)y width:(double)width height:(double)height
 {
-  v10 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v10 _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:a3 y:a4 width:a5 height:a6];
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:x y:y width:width height:height];
 }
 
-- (void)_cloudSharingControllerDidChooseTransport:(id)a3
+- (void)_cloudSharingControllerDidChooseTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 _cloudSharingControllerDidChooseTransport:v4];
+  transportCopy = transport;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _cloudSharingControllerDidChooseTransport:transportCopy];
 }
 
-- (void)_performHeaderActionWithCompletion:(id)a3
+- (void)_performHeaderActionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 _performHeaderActionWithCompletion:v4];
+  completionCopy = completion;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _performHeaderActionWithCompletion:completionCopy];
 }
 
-- (void)_dismissAndRepresentForActivity:(id)a3
+- (void)_dismissAndRepresentForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
+  activityCopy = activity;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74___UIShareInvitationRemoteViewController__dismissAndRepresentForActivity___block_invoke;
   v7[3] = &unk_1E70F37C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 _dismissForActivityRepresentation:v7];
+  v8 = activityCopy;
+  v6 = activityCopy;
+  [publicController _dismissForActivityRepresentation:v7];
 }
 
-- (void)_dismissForActivityRepresentation:(id)a3
+- (void)_dismissForActivityRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 _dismissForActivityRepresentation:v4];
+  representationCopy = representation;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _dismissForActivityRepresentation:representationCopy];
 }
 
-- (void)_representFullscreenAfterActivityDismissal:(id)a3
+- (void)_representFullscreenAfterActivityDismissal:(id)dismissal
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 _representFullscreenAfterActivityDismissal:v4];
+  dismissalCopy = dismissal;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _representFullscreenAfterActivityDismissal:dismissalCopy];
 }
 
-- (void)_requestSavedShareWithCompletion:(id)a3
+- (void)_requestSavedShareWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 _requestSavedShareWithCompletion:v4];
+  completionCopy = completion;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController _requestSavedShareWithCompletion:completionCopy];
 }
 
 - (void)viewWillLayoutSubviews
 {
   [(_UIShareInvitationRemoteViewController *)self _updateTraitCollectionForPopoverStatus];
-  v3 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v3 _setIsInPopoverMode:{-[UIViewController _isInPopoverPresentation](self, "_isInPopoverPresentation")}];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy _setIsInPopoverMode:{-[UIViewController _isInPopoverPresentation](self, "_isInPopoverPresentation")}];
 
   v4.receiver = self;
   v4.super_class = _UIShareInvitationRemoteViewController;
   [(UIViewController *)&v4 viewWillLayoutSubviews];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(_UIShareInvitationRemoteViewController *)self _updateTraitCollectionForPopoverStatus];
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 _setIsInPopoverMode:{-[UIViewController _isInPopoverPresentation](self, "_isInPopoverPresentation")}];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy _setIsInPopoverMode:{-[UIViewController _isInPopoverPresentation](self, "_isInPopoverPresentation")}];
 
   v6.receiver = self;
   v6.super_class = _UIShareInvitationRemoteViewController;
-  [(_UIRemoteViewController *)&v6 didMoveToParentViewController:v4];
+  [(_UIRemoteViewController *)&v6 didMoveToParentViewController:controllerCopy];
 }
 
 - (void)_updateTraitCollectionForPopoverStatus
 {
-  v3 = [(UIViewController *)self view];
-  v4 = [v3 window];
+  view = [(UIViewController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[UIViewController _isInPopoverPresentation](self, "_isInPopoverPresentation")}];
     v7 = [UITraitCollection _traitCollectionWithValue:v5 forTraitNamed:@"_UIShareInvitationPopoverTrait"];
 
-    v6 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-    [v6 _setOverrideTraitCollection:v7];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+    [serviceViewControllerProxy _setOverrideTraitCollection:v7];
   }
 }
 
-- (void)_requestContentSize:(CGSize)a3
+- (void)_requestContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(_UIShareInvitationRemoteViewController *)self publicController];
-  [v5 setPreferredContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  publicController = [(_UIShareInvitationRemoteViewController *)self publicController];
+  [publicController setPreferredContentSize:{width, height}];
 }
 
 - (_UISharingPublicController)publicController

@@ -1,27 +1,27 @@
 @interface SMLocation
-+ (BOOL)isCLLocationValid:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
++ (BOOL)isCLLocationValid:(id)valid;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalent:(id)equivalent;
 - (BOOL)isValid;
-- (SMLocation)initWithCLLocation:(id)a3;
-- (SMLocation)initWithCoder:(id)a3;
-- (SMLocation)initWithDictionary:(id)a3;
-- (SMLocation)initWithIdentifier:(id)a3 latitude:(double)a4 longitude:(double)a5 hunc:(double)a6 altitude:(double)a7 vunc:(double)a8 date:(id)a9;
+- (SMLocation)initWithCLLocation:(id)location;
+- (SMLocation)initWithCoder:(id)coder;
+- (SMLocation)initWithDictionary:(id)dictionary;
+- (SMLocation)initWithIdentifier:(id)identifier latitude:(double)latitude longitude:(double)longitude hunc:(double)hunc altitude:(double)altitude vunc:(double)vunc date:(id)date;
 - (id)description;
 - (id)outputToDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMLocation
 
-- (SMLocation)initWithIdentifier:(id)a3 latitude:(double)a4 longitude:(double)a5 hunc:(double)a6 altitude:(double)a7 vunc:(double)a8 date:(id)a9
+- (SMLocation)initWithIdentifier:(id)identifier latitude:(double)latitude longitude:(double)longitude hunc:(double)hunc altitude:(double)altitude vunc:(double)vunc date:(id)date
 {
-  v17 = a3;
-  v18 = a9;
-  v19 = v18;
-  v20 = 0;
-  if (v17 && v18)
+  identifierCopy = identifier;
+  dateCopy = date;
+  v19 = dateCopy;
+  selfCopy = 0;
+  if (identifierCopy && dateCopy)
   {
     v24.receiver = self;
     v24.super_class = SMLocation;
@@ -29,50 +29,50 @@
     v22 = v21;
     if (v21)
     {
-      objc_storeStrong(&v21->_identifier, a3);
-      v22->_hunc = a6;
-      v22->_altitude = a7;
-      v22->_latitude = a4;
-      v22->_longitude = a5;
-      objc_storeStrong(&v22->_date, a9);
-      v22->_vunc = a8;
+      objc_storeStrong(&v21->_identifier, identifier);
+      v22->_hunc = hunc;
+      v22->_altitude = altitude;
+      v22->_latitude = latitude;
+      v22->_longitude = longitude;
+      objc_storeStrong(&v22->_date, date);
+      v22->_vunc = vunc;
       v22->_referenceFrame = 1;
     }
 
     self = v22;
-    v20 = self;
+    selfCopy = self;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (SMLocation)initWithCLLocation:(id)a3
+- (SMLocation)initWithCLLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = objc_opt_new();
-  [v4 coordinate];
+  [locationCopy coordinate];
   v7 = v6;
-  [v4 coordinate];
+  [locationCopy coordinate];
   v9 = v8;
-  [v4 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v11 = v10;
-  [v4 altitude];
+  [locationCopy altitude];
   v13 = v12;
-  [v4 verticalAccuracy];
+  [locationCopy verticalAccuracy];
   v15 = v14;
-  v16 = [v4 timestamp];
+  timestamp = [locationCopy timestamp];
 
-  v17 = [(SMLocation *)self initWithIdentifier:v5 latitude:v16 longitude:v7 hunc:v9 altitude:v11 vunc:v13 date:v15];
+  v17 = [(SMLocation *)self initWithIdentifier:v5 latitude:timestamp longitude:v7 hunc:v9 altitude:v11 vunc:v13 date:v15];
   return v17;
 }
 
-+ (BOOL)isCLLocationValid:(id)a3
++ (BOOL)isCLLocationValid:(id)valid
 {
-  v3 = a3;
-  v4 = [[SMLocation alloc] initWithCLLocation:v3];
+  validCopy = valid;
+  v4 = [[SMLocation alloc] initWithCLLocation:validCopy];
 
-  LOBYTE(v3) = [(SMLocation *)v4 isValid];
-  return v3;
+  LOBYTE(validCopy) = [(SMLocation *)v4 isValid];
+  return validCopy;
 }
 
 - (BOOL)isValid
@@ -102,43 +102,43 @@
     return 0;
   }
 
-  v9 = [(SMLocation *)self date];
-  v10 = v9 != 0;
+  date = [(SMLocation *)self date];
+  v10 = date != 0;
 
   return v10;
 }
 
-- (SMLocation)initWithDictionary:(id)a3
+- (SMLocation)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = MEMORY[0x277CCAD78];
-    v5 = a3;
+    dictionaryCopy = dictionary;
     v6 = [v4 alloc];
-    v7 = [v5 valueForKey:@"identifier"];
+    v7 = [dictionaryCopy valueForKey:@"identifier"];
     v8 = [v6 initWithUUIDString:v7];
 
-    v9 = [v5 valueForKey:@"latitude"];
+    v9 = [dictionaryCopy valueForKey:@"latitude"];
     [v9 doubleValue];
     v11 = v10;
 
-    v12 = [v5 valueForKey:@"longitude"];
+    v12 = [dictionaryCopy valueForKey:@"longitude"];
     [v12 doubleValue];
     v14 = v13;
 
-    v15 = [v5 valueForKey:@"hunc"];
+    v15 = [dictionaryCopy valueForKey:@"hunc"];
     [v15 doubleValue];
     v17 = v16;
 
-    v18 = [v5 valueForKey:@"altitude"];
+    v18 = [dictionaryCopy valueForKey:@"altitude"];
     [v18 doubleValue];
     v20 = v19;
 
-    v21 = [v5 valueForKey:@"vunc"];
+    v21 = [dictionaryCopy valueForKey:@"vunc"];
     [v21 doubleValue];
     v23 = v22;
 
-    v24 = [v5 valueForKey:@"date"];
+    v24 = [dictionaryCopy valueForKey:@"date"];
 
     [v24 doubleValue];
     v26 = v25;
@@ -146,23 +146,23 @@
     v27 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v26];
     self = [(SMLocation *)self initWithIdentifier:v8 latitude:v27 longitude:v11 hunc:v14 altitude:v17 vunc:v20 date:v23];
 
-    v28 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(SMLocation *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:@"identifier"];
+  identifier = [(SMLocation *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"identifier"];
 
   v6 = MEMORY[0x277CCABB0];
   [(SMLocation *)self latitude];
@@ -190,58 +190,58 @@
   [v3 setObject:v15 forKey:@"vunc"];
 
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(SMLocation *)self date];
-  [v17 timeIntervalSince1970];
+  date = [(SMLocation *)self date];
+  [date timeIntervalSince1970];
   v18 = [v16 numberWithDouble:?];
   [v3 setObject:v18 forKey:@"date"];
 
   return v3;
 }
 
-- (SMLocation)initWithCoder:(id)a3
+- (SMLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  [v4 decodeDoubleForKey:@"latitude"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"hunc"];
+  [coderCopy decodeDoubleForKey:@"hunc"];
   v11 = v10;
-  [v4 decodeDoubleForKey:@"altitude"];
+  [coderCopy decodeDoubleForKey:@"altitude"];
   v13 = v12;
-  [v4 decodeDoubleForKey:@"vunc"];
+  [coderCopy decodeDoubleForKey:@"vunc"];
   v15 = v14;
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
 
   v17 = [(SMLocation *)self initWithIdentifier:v5 latitude:v16 longitude:v7 hunc:v9 altitude:v11 vunc:v13 date:v15];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SMLocation *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SMLocation *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
   [(SMLocation *)self latitude];
-  [v4 encodeDouble:@"latitude" forKey:?];
+  [coderCopy encodeDouble:@"latitude" forKey:?];
   [(SMLocation *)self longitude];
-  [v4 encodeDouble:@"longitude" forKey:?];
+  [coderCopy encodeDouble:@"longitude" forKey:?];
   [(SMLocation *)self hunc];
-  [v4 encodeDouble:@"hunc" forKey:?];
+  [coderCopy encodeDouble:@"hunc" forKey:?];
   [(SMLocation *)self altitude];
-  [v4 encodeDouble:@"altitude" forKey:?];
+  [coderCopy encodeDouble:@"altitude" forKey:?];
   [(SMLocation *)self vunc];
-  [v4 encodeDouble:@"vunc" forKey:?];
-  v6 = [(SMLocation *)self date];
-  [v4 encodeObject:v6 forKey:@"date"];
+  [coderCopy encodeDouble:@"vunc" forKey:?];
+  date = [(SMLocation *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v7 = a3;
-  if (self == v7)
+  equivalentCopy = equivalent;
+  if (self == equivalentCopy)
   {
     v11 = 1;
   }
@@ -251,14 +251,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [(SMLocation *)self identifier];
-      v10 = [(SMLocation *)v8 identifier];
-      if (v9 != v10)
+      v8 = equivalentCopy;
+      identifier = [(SMLocation *)self identifier];
+      identifier2 = [(SMLocation *)v8 identifier];
+      if (identifier != identifier2)
       {
-        v3 = [(SMLocation *)self identifier];
-        v4 = [(SMLocation *)v8 identifier];
-        if (![v3 isEqual:v4])
+        identifier3 = [(SMLocation *)self identifier];
+        identifier4 = [(SMLocation *)v8 identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v11 = 0;
           goto LABEL_26;
@@ -337,22 +337,22 @@ LABEL_21:
         }
       }
 
-      v42 = [(SMLocation *)self date];
-      [v42 timeIntervalSince1970];
+      date = [(SMLocation *)self date];
+      [date timeIntervalSince1970];
       v44 = v43;
-      v45 = [(SMLocation *)v8 date];
-      [v45 timeIntervalSince1970];
+      date2 = [(SMLocation *)v8 date];
+      [date2 timeIntervalSince1970];
       v47 = v46;
       if (v44 == v46 || (-[SMLocation date](self, "date"), v53 = objc_claimAutoreleasedReturnValue(), [v53 timeIntervalSince1970], v49 = v48, -[SMLocation date](v8, "date"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "timeIntervalSince1970"), vabdd_f64(v49, v50) < 2.22044605e-16))
       {
-        v51 = [(SMLocation *)self referenceFrame];
-        v11 = v51 == [(SMLocation *)v8 referenceFrame];
+        referenceFrame = [(SMLocation *)self referenceFrame];
+        v11 = referenceFrame == [(SMLocation *)v8 referenceFrame];
         if (v44 == v47)
         {
 LABEL_24:
 
 LABEL_25:
-          if (v9 == v10)
+          if (identifier == identifier2)
           {
 LABEL_27:
 
@@ -383,8 +383,8 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v24 = [(SMLocation *)self identifier];
-  v3 = [v24 hash];
+  identifier = [(SMLocation *)self identifier];
+  v3 = [identifier hash];
   v4 = MEMORY[0x277CCABB0];
   [(SMLocation *)self latitude];
   v5 = [v4 numberWithDouble:?];
@@ -405,18 +405,18 @@ LABEL_28:
   [(SMLocation *)self vunc];
   v17 = [v16 numberWithDouble:?];
   v18 = v15 ^ [v17 hash];
-  v19 = [(SMLocation *)self date];
-  v20 = v12 ^ v18 ^ [v19 hash];
+  date = [(SMLocation *)self date];
+  v20 = v12 ^ v18 ^ [date hash];
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[SMLocation referenceFrame](self, "referenceFrame")}];
   v22 = [v21 hash];
 
   return v20 ^ v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -426,14 +426,14 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(SMLocation *)self identifier];
-      v9 = [(SMLocation *)v7 identifier];
-      if (v8 != v9)
+      v7 = equalCopy;
+      identifier = [(SMLocation *)self identifier];
+      identifier2 = [(SMLocation *)v7 identifier];
+      if (identifier != identifier2)
       {
-        v3 = [(SMLocation *)self identifier];
-        v4 = [(SMLocation *)v7 identifier];
-        if (![v3 isEqual:v4])
+        identifier3 = [(SMLocation *)self identifier];
+        identifier4 = [(SMLocation *)v7 identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v10 = 0;
           goto LABEL_18;
@@ -465,12 +465,12 @@ LABEL_28:
               [(SMLocation *)v7 vunc];
               if (v25 == v26)
               {
-                v27 = [(SMLocation *)self date];
-                v28 = [(SMLocation *)v7 date];
-                if ([v27 isEqualToDate:v28])
+                date = [(SMLocation *)self date];
+                date2 = [(SMLocation *)v7 date];
+                if ([date isEqualToDate:date2])
                 {
-                  v29 = [(SMLocation *)self referenceFrame];
-                  v10 = v29 == [(SMLocation *)v7 referenceFrame];
+                  referenceFrame = [(SMLocation *)self referenceFrame];
+                  v10 = referenceFrame == [(SMLocation *)v7 referenceFrame];
 
                   v11 = v10;
                   goto LABEL_17;
@@ -484,7 +484,7 @@ LABEL_28:
       v10 = 0;
       v11 = 0;
 LABEL_17:
-      if (v8 == v9)
+      if (identifier == identifier2)
       {
 LABEL_19:
 
@@ -508,7 +508,7 @@ LABEL_20:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SMLocation *)self identifier];
+  identifier = [(SMLocation *)self identifier];
   [(SMLocation *)self latitude];
   v6 = v5;
   [(SMLocation *)self longitude];
@@ -519,9 +519,9 @@ LABEL_20:
   v12 = v11;
   [(SMLocation *)self vunc];
   v14 = v13;
-  v15 = [(SMLocation *)self date];
-  v16 = [v15 stringFromDate];
-  v17 = [v3 stringWithFormat:@"identifier, %@, latitude, %f, longitude, %f, hunc, %f, altitude, %f, vunc, %f, date, %@", v4, v6, v8, v10, v12, v14, v16];
+  date = [(SMLocation *)self date];
+  stringFromDate = [date stringFromDate];
+  v17 = [v3 stringWithFormat:@"identifier, %@, latitude, %f, longitude, %f, hunc, %f, altitude, %f, vunc, %f, date, %@", identifier, v6, v8, v10, v12, v14, stringFromDate];
 
   return v17;
 }

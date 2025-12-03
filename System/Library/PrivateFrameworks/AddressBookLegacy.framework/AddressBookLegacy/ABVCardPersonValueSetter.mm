@@ -1,27 +1,27 @@
 @interface ABVCardPersonValueSetter
 + (__CFArray)supportedProperties;
-- (ABVCardPersonValueSetter)initWithPerson:(void *)a3;
-- (BOOL)setImageData:(id)a3 cropRectX:(int)a4 cropRectY:(int)a5 cropRectWidth:(int)a6 cropRectHeight:(int)a7;
-- (BOOL)setValue:(void *)a3 forProperty:(unsigned int)a4;
+- (ABVCardPersonValueSetter)initWithPerson:(void *)person;
+- (BOOL)setImageData:(id)data cropRectX:(int)x cropRectY:(int)y cropRectWidth:(int)width cropRectHeight:(int)height;
+- (BOOL)setValue:(void *)value forProperty:(unsigned int)property;
 - (id)imageData;
 - (void)dealloc;
-- (void)setValueInTemporaryCache:(id)a3 forProperty:(unsigned int)a4;
-- (void)valueForProperty:(unsigned int)a3;
+- (void)setValueInTemporaryCache:(id)cache forProperty:(unsigned int)property;
+- (void)valueForProperty:(unsigned int)property;
 @end
 
 @implementation ABVCardPersonValueSetter
 
-- (ABVCardPersonValueSetter)initWithPerson:(void *)a3
+- (ABVCardPersonValueSetter)initWithPerson:(void *)person
 {
   v6.receiver = self;
   v6.super_class = ABVCardPersonValueSetter;
   v4 = [(ABVCardPersonValueSetter *)&v6 init];
-  if (a3)
+  if (person)
   {
-    CFRetain(a3);
+    CFRetain(person);
   }
 
-  v4->_person = a3;
+  v4->_person = person;
   v4->_properties = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
   return v4;
 }
@@ -109,20 +109,20 @@ CFArrayRef __47__ABVCardPersonValueSetter_supportedProperties__block_invoke()
   return result;
 }
 
-- (BOOL)setValue:(void *)a3 forProperty:(unsigned int)a4
+- (BOOL)setValue:(void *)value forProperty:(unsigned int)property
 {
   v7 = +[ABVCardPersonValueSetter supportedProperties];
-  if (a4 && (v8 = v7, v11.length = CFArrayGetCount(v7), v11.location = 0, CFArrayGetFirstIndexOfValue(v8, v11, a4) == -1))
+  if (property && (v8 = v7, v11.length = CFArrayGetCount(v7), v11.location = 0, CFArrayGetFirstIndexOfValue(v8, v11, property) == -1))
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v9 = ABRecordSetValue(self->_person, a4, a3, 0);
+    v9 = ABRecordSetValue(self->_person, property, value, 0);
     if (v9)
     {
-      CFArrayAppendValue(self->_properties, a4);
+      CFArrayAppendValue(self->_properties, property);
       LOBYTE(v9) = 1;
     }
   }
@@ -130,24 +130,24 @@ CFArrayRef __47__ABVCardPersonValueSetter_supportedProperties__block_invoke()
   return v9;
 }
 
-- (void)valueForProperty:(unsigned int)a3
+- (void)valueForProperty:(unsigned int)property
 {
-  v3 = ABRecordCopyValue(self->_person, a3);
+  v3 = ABRecordCopyValue(self->_person, property);
 
   return v3;
 }
 
-- (BOOL)setImageData:(id)a3 cropRectX:(int)a4 cropRectY:(int)a5 cropRectWidth:(int)a6 cropRectHeight:(int)a7
+- (BOOL)setImageData:(id)data cropRectX:(int)x cropRectY:(int)y cropRectWidth:(int)width cropRectHeight:(int)height
 {
   person = self->_person;
-  if (a6 && a7)
+  if (width && height)
   {
-    return ABPersonSetImageDataWithInvertedCropRect(person, 2, a3, a4, a5, a6, a7);
+    return ABPersonSetImageDataWithInvertedCropRect(person, 2, data, x, y, width, height);
   }
 
   else
   {
-    return ABPersonSetImageData(person, a3, 0);
+    return ABPersonSetImageData(person, data, 0);
   }
 }
 
@@ -158,7 +158,7 @@ CFArrayRef __47__ABVCardPersonValueSetter_supportedProperties__block_invoke()
   return v2;
 }
 
-- (void)setValueInTemporaryCache:(id)a3 forProperty:(unsigned int)a4
+- (void)setValueInTemporaryCache:(id)cache forProperty:(unsigned int)property
 {
   if (ABDiagnosticsEnabled())
   {

@@ -1,13 +1,13 @@
 @interface MAGraphSpecification
 - (MAGraphSpecification)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MAGraphSpecification
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   *(v4 + 8) = self->_persistenceOptions;
   objc_storeStrong((v4 + 16), self->_defaultNodeClass);
   objc_storeStrong((v4 + 24), self->_defaultEdgeClass);

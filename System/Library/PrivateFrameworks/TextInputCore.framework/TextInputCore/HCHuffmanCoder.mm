@@ -1,26 +1,26 @@
 @interface HCHuffmanCoder
-+ (id)coderFromBurstTrieFile:(id)a3 indexTableFile:(id)a4;
-+ (id)coderMatchingName:(id)a3 locale:(id)a4;
-- (HCHuffmanCoder)initWithBurstTrie:(id)a3 indexTable:(id)a4;
++ (id)coderFromBurstTrieFile:(id)file indexTableFile:(id)tableFile;
++ (id)coderMatchingName:(id)name locale:(id)locale;
+- (HCHuffmanCoder)initWithBurstTrie:(id)trie indexTable:(id)table;
 - (NSUUID)versionUUID;
-- (id)codeForKey:(id)a3;
-- (id)stringCodeForKey:(id)a3;
+- (id)codeForKey:(id)key;
+- (id)stringCodeForKey:(id)key;
 - (unint64_t)count;
 @end
 
 @implementation HCHuffmanCoder
 
-- (id)stringCodeForKey:(id)a3
+- (id)stringCodeForKey:(id)key
 {
-  v3 = [(HCHuffmanCoder *)self codeForKey:a3];
+  v3 = [(HCHuffmanCoder *)self codeForKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedLongLongValue];
-    v6 = vcvtpd_u64_f64(log2(v5));
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
+    v6 = vcvtpd_u64_f64(log2(unsignedLongLongValue));
     for (i = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:v6]; v6; --v6)
     {
-      if (v5)
+      if (unsignedLongLongValue)
       {
         v8 = @"1";
       }
@@ -31,7 +31,7 @@
       }
 
       [i insertString:v8 atIndex:0];
-      v5 >>= 1;
+      unsignedLongLongValue >>= 1;
     }
 
     v9 = [i copy];
@@ -45,13 +45,13 @@
   return v9;
 }
 
-- (id)codeForKey:(id)a3
+- (id)codeForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   burstTrie = self->_burstTrie;
   if (burstTrie && self->_indexTable)
   {
-    v6 = [(HCBurstTrie *)burstTrie payloadForKey:v4];
+    v6 = [(HCBurstTrie *)burstTrie payloadForKey:keyCopy];
     v7 = v6;
     if (v6)
     {
@@ -74,10 +74,10 @@
 
 - (NSUUID)versionUUID
 {
-  v2 = [(HCHuffmanCoder *)self indexTable];
-  v3 = [v2 versionUUID];
+  indexTable = [(HCHuffmanCoder *)self indexTable];
+  versionUUID = [indexTable versionUUID];
 
-  return v3;
+  return versionUUID;
 }
 
 - (unint64_t)count
@@ -87,29 +87,29 @@
   return v3;
 }
 
-- (HCHuffmanCoder)initWithBurstTrie:(id)a3 indexTable:(id)a4
+- (HCHuffmanCoder)initWithBurstTrie:(id)trie indexTable:(id)table
 {
-  v7 = a3;
-  v8 = a4;
+  trieCopy = trie;
+  tableCopy = table;
   v12.receiver = self;
   v12.super_class = HCHuffmanCoder;
   v9 = [(HCHuffmanCoder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_burstTrie, a3);
-    objc_storeStrong(&v10->_indexTable, a4);
+    objc_storeStrong(&v9->_burstTrie, trie);
+    objc_storeStrong(&v10->_indexTable, table);
   }
 
   return v10;
 }
 
-+ (id)coderFromBurstTrieFile:(id)a3 indexTableFile:(id)a4
++ (id)coderFromBurstTrieFile:(id)file indexTableFile:(id)tableFile
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [HCBurstTrie burstTrieFromFile:a3];
-  v7 = [HCIndexTable indexTableFromFile:v5];
+  tableFileCopy = tableFile;
+  v6 = [HCBurstTrie burstTrieFromFile:file];
+  v7 = [HCIndexTable indexTableFromFile:tableFileCopy];
 
   if (v6)
   {
@@ -143,11 +143,11 @@
   return v9;
 }
 
-+ (id)coderMatchingName:(id)a3 locale:(id)a4
++ (id)coderMatchingName:(id)name locale:(id)locale
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  localeCopy = locale;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -158,22 +158,22 @@
   LDEnumerateAssetDataItems();
   if (v18[5])
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.triemap", v6, v16, 3221225472, __43__HCHuffmanCoder_coderMatchingName_locale___block_invoke, &unk_278730200, &v17];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.htbl", v6];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.triemap", nameCopy, v16, 3221225472, __43__HCHuffmanCoder_coderMatchingName_locale___block_invoke, &unk_278730200, &v17];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.htbl", nameCopy];
     v10 = [v18[5] URLByAppendingPathComponent:v8];
-    v11 = [v18[5] URLByAppendingPathComponent:v9];
-    v12 = [a1 coderFromBurstTrieFile:v10 indexTableFile:v11];
+    v11 = [v18[5] URLByAppendingPathComponent:nameCopy];
+    v12 = [self coderFromBurstTrieFile:v10 indexTableFile:v11];
   }
 
   else
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v15 = [v7 localeIdentifier];
+      localeIdentifier = [localeCopy localeIdentifier];
       *buf = 136315394;
       v24 = "+[HCHuffmanCoder coderMatchingName:locale:]";
       v25 = 2112;
-      v26 = v15;
+      v26 = localeIdentifier;
       _os_log_error_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%s  Couldn't find a Huffman coder for locale: '%@'", buf, 0x16u);
     }
 

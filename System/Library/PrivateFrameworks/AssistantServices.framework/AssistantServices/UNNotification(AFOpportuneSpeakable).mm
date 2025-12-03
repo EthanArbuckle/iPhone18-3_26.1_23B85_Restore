@@ -7,19 +7,19 @@
 
 - (id)speakableContent
 {
-  v1 = [a1 request];
-  v2 = [v1 content];
-  v3 = [v2 body];
+  request = [self request];
+  content = [request content];
+  body = [content body];
 
-  return v3;
+  return body;
 }
 
 - (id)speakableIdentifier
 {
-  v1 = [a1 request];
-  v2 = [v1 identifier];
+  request = [self request];
+  identifier = [request identifier];
 
-  return v2;
+  return identifier;
 }
 
 @end

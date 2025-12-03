@@ -1,14 +1,14 @@
 @interface RBAssertionStateResolver
-- (id)assertionDescriptorsWithFlattenedAttributes:(BOOL)a3;
-- (id)resolveForAssertions:(id)a3;
+- (id)assertionDescriptorsWithFlattenedAttributes:(BOOL)attributes;
+- (id)resolveForAssertions:(id)assertions;
 @end
 
 @implementation RBAssertionStateResolver
 
-- (id)resolveForAssertions:(id)a3
+- (id)resolveForAssertions:(id)assertions
 {
-  v4 = a3;
-  v5 = [[RBAssertionResolutionContext alloc] initWithAssertions:v4];
+  assertionsCopy = assertions;
+  v5 = [[RBAssertionResolutionContext alloc] initWithAssertions:assertionsCopy];
 
   [(RBAssertionResolutionContext *)v5 setAssertionCollection:?];
   [(RBAssertionResolutionContext *)v5 setProcessIndex:?];
@@ -66,7 +66,7 @@ void __72__RBAssertionStateResolver_assertionDescriptorsWithFlattenedAttributes_
   [v2 addObjectsFromArray:v3];
 }
 
-- (id)assertionDescriptorsWithFlattenedAttributes:(BOOL)a3
+- (id)assertionDescriptorsWithFlattenedAttributes:(BOOL)attributes
 {
   v5 = [[RBAssertionResolutionContext alloc] initWithAssertions:?];
   [(RBAssertionResolutionContext *)v5 setAssertionCollection:?];
@@ -82,7 +82,7 @@ void __72__RBAssertionStateResolver_assertionDescriptorsWithFlattenedAttributes_
   v13[1] = 3221225472;
   v13[2] = __72__RBAssertionStateResolver_assertionDescriptorsWithFlattenedAttributes___block_invoke;
   v13[3] = &unk_279B33E60;
-  v16 = a3;
+  attributesCopy = attributes;
   v14 = v5;
   v8 = v6;
   v15 = v8;

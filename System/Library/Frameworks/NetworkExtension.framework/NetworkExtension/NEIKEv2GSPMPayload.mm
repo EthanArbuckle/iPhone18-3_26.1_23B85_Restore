@@ -1,25 +1,25 @@
 @interface NEIKEv2GSPMPayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
-- (void)setGspmData:(uint64_t)a1;
+- (BOOL)parsePayloadData:(id)data;
+- (void)setGspmData:(uint64_t)data;
 @end
 
 @implementation NEIKEv2GSPMPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   [(NEIKEv2GSPMPayload *)self setGspmData:v4];
 
   return [(NEIKEv2GSPMPayload *)self hasRequiredFields];
 }
 
-- (void)setGspmData:(uint64_t)a1
+- (void)setGspmData:(uint64_t)data
 {
-  if (a1)
+  if (data)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((data + 32), a2);
   }
 }
 
@@ -28,9 +28,9 @@
   v12[1] = *MEMORY[0x1E69E9840];
   if (!self)
   {
-    v8 = [0 hasRequiredFields];
+    hasRequiredFields = [0 hasRequiredFields];
     gspmData = 0;
-    if (v8)
+    if (hasRequiredFields)
     {
       goto LABEL_6;
     }

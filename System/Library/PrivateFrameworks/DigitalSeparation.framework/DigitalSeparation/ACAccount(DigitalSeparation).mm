@@ -8,30 +8,30 @@
 {
   v38 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CBEB58] set];
-  v3 = [a1 aa_primaryEmail];
+  aa_primaryEmail = [self aa_primaryEmail];
 
-  if (v3)
+  if (aa_primaryEmail)
   {
-    v4 = [a1 aa_primaryEmail];
-    [v2 addObject:v4];
+    aa_primaryEmail2 = [self aa_primaryEmail];
+    [v2 addObject:aa_primaryEmail2];
   }
 
-  v5 = [a1 username];
+  username = [self username];
 
-  if (v5)
+  if (username)
   {
-    v6 = [a1 username];
-    [v2 addObject:v6];
+    username2 = [self username];
+    [v2 addObject:username2];
   }
 
-  v7 = [a1 accountType];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x277CB8BC8]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v9 = [identifier isEqualToString:*MEMORY[0x277CB8BC8]];
 
   if (v9)
   {
-    v10 = [a1 accountProperties];
-    v11 = [v10 objectForKeyedSubscript:@"CalDAVPrincipals"];
+    accountProperties = [self accountProperties];
+    v11 = [accountProperties objectForKeyedSubscript:@"CalDAVPrincipals"];
 
     v34 = 0u;
     v35 = 0u;

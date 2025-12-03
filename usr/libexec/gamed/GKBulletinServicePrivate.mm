@@ -1,40 +1,40 @@
 @interface GKBulletinServicePrivate
-- (void)clearBulletinsForReceivedChallenges:(id)a3;
-- (void)clearBulletinsForTurnBasedTurn:(id)a3 exchangeID:(id)a4;
-- (void)fetchBadgeCountsForBundleID:(id)a3 handler:(id)a4;
-- (void)fetchMessageImageForBundleID:(id)a3 handler:(id)a4;
-- (void)markAllBadgesAsViewedForType:(unint64_t)a3;
+- (void)clearBulletinsForReceivedChallenges:(id)challenges;
+- (void)clearBulletinsForTurnBasedTurn:(id)turn exchangeID:(id)d;
+- (void)fetchBadgeCountsForBundleID:(id)d handler:(id)handler;
+- (void)fetchMessageImageForBundleID:(id)d handler:(id)handler;
+- (void)markAllBadgesAsViewedForType:(unint64_t)type;
 @end
 
 @implementation GKBulletinServicePrivate
 
-- (void)markAllBadgesAsViewedForType:(unint64_t)a3
+- (void)markAllBadgesAsViewedForType:(unint64_t)type
 {
   v5 = [NSString stringWithFormat:@"%s:%d %s", "GKBulletinService.m", 63, "[GKBulletinServicePrivate markAllBadgesAsViewedForType:]"];
   v6 = [(GKService *)self transactionGroupWithName:v5];
 
-  v7 = [v6 context];
+  context = [v6 context];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100060A50;
   v9[3] = &unk_1003615B0;
-  v11 = self;
-  v12 = a3;
+  selfCopy = self;
+  typeCopy = type;
   v10 = v6;
   v8 = v6;
-  [v7 performBlockAndWait:v9];
+  [context performBlockAndWait:v9];
 }
 
-- (void)fetchBadgeCountsForBundleID:(id)a3 handler:(id)a4
+- (void)fetchBadgeCountsForBundleID:(id)d handler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v5 = a4;
-    v6 = a3;
+    handlerCopy = handler;
+    dCopy = d;
     v7 = +[GKBadgeController sharedController];
-    v8 = [v7 badgeCountForBundleID:v6 badgeType:1];
-    v9 = [v7 badgeCountForBundleID:v6 badgeType:0];
-    v10 = [v7 badgeCountForBundleID:v6 badgeType:2];
+    v8 = [v7 badgeCountForBundleID:dCopy badgeType:1];
+    v9 = [v7 badgeCountForBundleID:dCopy badgeType:0];
+    v10 = [v7 badgeCountForBundleID:dCopy badgeType:2];
 
     v15[0] = &off_100382388;
     v11 = [NSNumber numberWithUnsignedInteger:v9];
@@ -46,13 +46,13 @@
     v13 = [NSNumber numberWithUnsignedInteger:v10];
     v16[2] = v13;
     v14 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
-    v5[2](v5, v14, 0);
+    handlerCopy[2](handlerCopy, v14, 0);
   }
 }
 
-- (void)clearBulletinsForReceivedChallenges:(id)a3
+- (void)clearBulletinsForReceivedChallenges:(id)challenges
 {
-  v3 = a3;
+  challengesCopy = challenges;
   v4 = +[GKBulletinController sharedController];
   v5 = [v4 getBulletinsOfType:objc_opt_class()];
   v14 = 0u;
@@ -75,9 +75,9 @@
         }
 
         v10 = [v5 objectForKey:*(*(&v14 + 1) + 8 * v9)];
-        v11 = [v10 challenge];
-        v12 = [v11 challengeID];
-        v13 = [v3 containsObject:v12];
+        challenge = [v10 challenge];
+        challengeID = [challenge challengeID];
+        v13 = [challengesCopy containsObject:challengeID];
 
         if (v13)
         {
@@ -95,9 +95,9 @@
   }
 }
 
-- (void)clearBulletinsForTurnBasedTurn:(id)a3 exchangeID:(id)a4
+- (void)clearBulletinsForTurnBasedTurn:(id)turn exchangeID:(id)d
 {
-  v4 = a3;
+  turnCopy = turn;
   v5 = +[GKBulletinController sharedController];
   v6 = [v5 getBulletinsOfType:objc_opt_class()];
   v14 = 0u;
@@ -120,8 +120,8 @@
         }
 
         v11 = [v6 objectForKey:*(*(&v14 + 1) + 8 * v10)];
-        v12 = [v11 matchID];
-        v13 = [v4 isEqualToString:v12];
+        matchID = [v11 matchID];
+        v13 = [turnCopy isEqualToString:matchID];
 
         if (v13)
         {
@@ -139,19 +139,19 @@
   }
 }
 
-- (void)fetchMessageImageForBundleID:(id)a3 handler:(id)a4
+- (void)fetchMessageImageForBundleID:(id)d handler:(id)handler
 {
-  v11 = a4;
-  v5 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v6 = +[GKApplicationWorkspace defaultWorkspace];
-  v7 = [v6 applicationProxyForBundleID:v5];
+  v7 = [v6 applicationProxyForBundleID:dCopy];
 
-  v8 = [v7 bundle];
-  v9 = [v8 _gkPathForMessageImage];
-  v10 = [NSData dataWithContentsOfFile:v9];
-  if (v11)
+  bundle = [v7 bundle];
+  _gkPathForMessageImage = [bundle _gkPathForMessageImage];
+  v10 = [NSData dataWithContentsOfFile:_gkPathForMessageImage];
+  if (handlerCopy)
   {
-    v11[2](v11, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 }
 

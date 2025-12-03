@@ -1,57 +1,57 @@
 @interface IAMMessageCoordinator
-+ (id)_createMessageFromMessageEntry:(id)a3 replacingResourcePathsWithCachedResourceLocations:(BOOL)a4;
++ (id)_createMessageFromMessageEntry:(id)entry replacingResourcePathsWithCachedResourceLocations:(BOOL)locations;
 + (void)initialize;
 - (IAMApplicationContextProvider)applicationContext;
 - (IAMMessageCoordinator)init;
 - (IAMMessageMetricsDelegate)metricsDelegate;
 - (id)_dequeuePendingTriggerContexts;
-- (id)_filterActiveTargetIdentifiers:(id)a3;
+- (id)_filterActiveTargetIdentifiers:(id)identifiers;
 - (id)_messageBundleIdentifiers;
-- (id)_metadataEntryForMessageIdentifier:(id)a3;
-- (id)beginObservingTriggerEvent:(id)a3 withHandler:(id)a4;
-- (void)_calculateMessagesProximityAndDownloadResourcesIfNeeded:(id)a3;
+- (id)_metadataEntryForMessageIdentifier:(id)identifier;
+- (id)beginObservingTriggerEvent:(id)event withHandler:(id)handler;
+- (void)_calculateMessagesProximityAndDownloadResourcesIfNeeded:(id)needed;
 - (void)_evaluateMessagesForAllActiveTargets;
-- (void)_fetchMessagesAndMetadataFromStorageCoordinator:(id)a3;
-- (void)_handleMessageReachedMaximumDisplayCount:(id)a3;
-- (void)_handleUpdatedMessageEntries:(id)a3 andMetadata:(id)a4;
-- (void)_incrementNumberOfDisplaysForMessageEntry:(id)a3;
-- (void)_notifyMessageTargets:(id)a3 withTargetIdentifier:(id)a4 didUpdatePriorityMessageFromEntry:(id)a5 observedEventName:(id)a6;
-- (void)_reevaluateMessageEntries:(id)a3 forTargetIdentifier:(id)a4 shouldNotifyTargetsIfPriorityMessageNonNil:(BOOL)a5 withObservedEventName:(id)a6;
-- (void)_reevaluateTargetsWithIdentifiers:(id)a3 forTriggerContext:(id)a4 shouldNotifyTargetsIfPriorityMessageNonNil:(BOOL)a5;
-- (void)_removeUserNotificationRemovalForMessageWithIdentifier:(id)a3;
-- (void)_reportHoldoutMessageWouldAppear:(id)a3;
-- (void)_reportMessageAction:(id)a3 wasPerformedInMessageEntry:(id)a4 fromTargetWithIdentifier:(id)a5;
-- (void)_setMessageGroups:(id)a3;
-- (void)_startStorageCoordinatorWithMessageEntryProvider:(id)a3 messageMetadataStorage:(id)a4 propertyStorage:(id)a5;
-- (void)_updateLastDisplayTime:(id)a3 forMessageEntry:(id)a4;
-- (void)_updateMetadata:(id)a3 forMessageEntry:(id)a4 completion:(id)a5;
-- (void)_updateMetadataOfMessageEntriesByTrigger:(id)a3 forReceivedEvent:(id)a4;
-- (void)_updatePriorityMessageEntry:(id)a3 forTargetIdentifier:(id)a4 shouldNotifyTargetsIfNonNil:(BOOL)a5 observedEventName:(id)a6;
+- (void)_fetchMessagesAndMetadataFromStorageCoordinator:(id)coordinator;
+- (void)_handleMessageReachedMaximumDisplayCount:(id)count;
+- (void)_handleUpdatedMessageEntries:(id)entries andMetadata:(id)metadata;
+- (void)_incrementNumberOfDisplaysForMessageEntry:(id)entry;
+- (void)_notifyMessageTargets:(id)targets withTargetIdentifier:(id)identifier didUpdatePriorityMessageFromEntry:(id)entry observedEventName:(id)name;
+- (void)_reevaluateMessageEntries:(id)entries forTargetIdentifier:(id)identifier shouldNotifyTargetsIfPriorityMessageNonNil:(BOOL)nil withObservedEventName:(id)name;
+- (void)_reevaluateTargetsWithIdentifiers:(id)identifiers forTriggerContext:(id)context shouldNotifyTargetsIfPriorityMessageNonNil:(BOOL)nil;
+- (void)_removeUserNotificationRemovalForMessageWithIdentifier:(id)identifier;
+- (void)_reportHoldoutMessageWouldAppear:(id)appear;
+- (void)_reportMessageAction:(id)action wasPerformedInMessageEntry:(id)entry fromTargetWithIdentifier:(id)identifier;
+- (void)_setMessageGroups:(id)groups;
+- (void)_startStorageCoordinatorWithMessageEntryProvider:(id)provider messageMetadataStorage:(id)storage propertyStorage:(id)propertyStorage;
+- (void)_updateLastDisplayTime:(id)time forMessageEntry:(id)entry;
+- (void)_updateMetadata:(id)metadata forMessageEntry:(id)entry completion:(id)completion;
+- (void)_updateMetadataOfMessageEntriesByTrigger:(id)trigger forReceivedEvent:(id)event;
+- (void)_updatePriorityMessageEntry:(id)entry forTargetIdentifier:(id)identifier shouldNotifyTargetsIfNonNil:(BOOL)nil observedEventName:(id)name;
 - (void)dealloc;
-- (void)endObservingTriggerEvent:(id)a3 forToken:(id)a4;
-- (void)impressionManager:(id)a3 impressionDidEndForMessageEntry:(id)a4;
-- (void)receiveEvent:(id)a3;
-- (void)receiveTriggerEventContext:(id)a3;
-- (void)registerMessageTarget:(id)a3;
-- (void)reportApplicationContextPropertiesDidChange:(id)a3;
-- (void)reportChangedContextPropertiesContext:(id)a3;
-- (void)reportMessageDidAppearWithIdentifier:(id)a3;
-- (void)reportMessageDidAppearWithIdentifier:(id)a3 fromTargetWithIdentifier:(id)a4;
-- (void)reportMessageDidDisappearWithIdentifier:(id)a3;
-- (void)reportMessageDidDisappearWithIdentifier:(id)a3 fromTargetWithIdentifier:(id)a4;
-- (void)reportMessageWithIdentifier:(id)a3 actionWasPerformedWithIdentifier:(id)a4 fromTargetWithIdentifier:(id)a5;
-- (void)reportMetricsEvent:(id)a3;
-- (void)startWithApplicationContext:(id)a3 messageGroups:(id)a4 messageEntryProvider:(id)a5 messageMetadataStorage:(id)a6 propertyStorage:(id)a7;
-- (void)storageCoordinatorMessageEntriesChanged:(id)a3;
-- (void)triggerPresentationForMessageWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)unregisterMessageTarget:(id)a3;
+- (void)endObservingTriggerEvent:(id)event forToken:(id)token;
+- (void)impressionManager:(id)manager impressionDidEndForMessageEntry:(id)entry;
+- (void)receiveEvent:(id)event;
+- (void)receiveTriggerEventContext:(id)context;
+- (void)registerMessageTarget:(id)target;
+- (void)reportApplicationContextPropertiesDidChange:(id)change;
+- (void)reportChangedContextPropertiesContext:(id)context;
+- (void)reportMessageDidAppearWithIdentifier:(id)identifier;
+- (void)reportMessageDidAppearWithIdentifier:(id)identifier fromTargetWithIdentifier:(id)withIdentifier;
+- (void)reportMessageDidDisappearWithIdentifier:(id)identifier;
+- (void)reportMessageDidDisappearWithIdentifier:(id)identifier fromTargetWithIdentifier:(id)withIdentifier;
+- (void)reportMessageWithIdentifier:(id)identifier actionWasPerformedWithIdentifier:(id)withIdentifier fromTargetWithIdentifier:(id)targetWithIdentifier;
+- (void)reportMetricsEvent:(id)event;
+- (void)startWithApplicationContext:(id)context messageGroups:(id)groups messageEntryProvider:(id)provider messageMetadataStorage:(id)storage propertyStorage:(id)propertyStorage;
+- (void)storageCoordinatorMessageEntriesChanged:(id)changed;
+- (void)triggerPresentationForMessageWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)unregisterMessageTarget:(id)target;
 @end
 
 @implementation IAMMessageCoordinator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _allCoordinators = objc_opt_new();
 
@@ -85,9 +85,9 @@
 
     [(IAMImpressionManager *)v2->_impressionManager setDelegate:v2];
     v11 = MEMORY[0x277CCACA8];
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 UUIDString];
-    v14 = [v11 stringWithFormat:@"ModalTarget-%@", v13];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v14 = [v11 stringWithFormat:@"ModalTarget-%@", uUIDString];
     modalTargetIdentifier = v2->_modalTargetIdentifier;
     v2->_modalTargetIdentifier = v14;
 
@@ -126,12 +126,12 @@
 - (id)_messageBundleIdentifiers
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  [v3 addObject:v5];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v3 addObject:bundleIdentifier];
 
-  v6 = [(NSDictionary *)self->_messageGroupsByGroupIdentifier allKeys];
-  [v3 addObjectsFromArray:v6];
+  allKeys = [(NSDictionary *)self->_messageGroupsByGroupIdentifier allKeys];
+  [v3 addObjectsFromArray:allKeys];
 
   v7 = [v3 copy];
 
@@ -141,14 +141,14 @@
 - (void)_evaluateMessagesForAllActiveTargets
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(IAMMessageCoordinator *)self _dequeuePendingTriggerContexts];
-  v4 = [(NSMutableDictionary *)self->_messageTargetsByTargetIdentifier allKeys];
-  [(IAMMessageCoordinator *)self _reevaluateTargetsWithIdentifiers:v4 forTriggerContext:0 shouldNotifyTargetsIfPriorityMessageNonNil:0];
+  _dequeuePendingTriggerContexts = [(IAMMessageCoordinator *)self _dequeuePendingTriggerContexts];
+  allKeys = [(NSMutableDictionary *)self->_messageTargetsByTargetIdentifier allKeys];
+  [(IAMMessageCoordinator *)self _reevaluateTargetsWithIdentifiers:allKeys forTriggerContext:0 shouldNotifyTargetsIfPriorityMessageNonNil:0];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v3;
+  v5 = _dequeuePendingTriggerContexts;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -212,9 +212,9 @@
   [(IAMMessageCoordinator *)&v3 dealloc];
 }
 
-- (void)startWithApplicationContext:(id)a3 messageGroups:(id)a4 messageEntryProvider:(id)a5 messageMetadataStorage:(id)a6 propertyStorage:(id)a7
+- (void)startWithApplicationContext:(id)context messageGroups:(id)groups messageEntryProvider:(id)provider messageMetadataStorage:(id)storage propertyStorage:(id)propertyStorage
 {
-  v12 = a4;
+  groupsCopy = groups;
   v13 = IAMLogCategoryDefault();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -228,12 +228,12 @@
   v16[2] = __127__IAMMessageCoordinator_startWithApplicationContext_messageGroups_messageEntryProvider_messageMetadataStorage_propertyStorage___block_invoke;
   v16[3] = &unk_2797A7098;
   v16[4] = self;
-  v17 = v12;
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v15 = v12;
+  v17 = groupsCopy;
+  contextCopy = context;
+  providerCopy = provider;
+  storageCopy = storage;
+  propertyStorageCopy = propertyStorage;
+  v15 = groupsCopy;
   dispatch_async(accessQueue, v16);
 }
 
@@ -252,18 +252,18 @@ uint64_t __127__IAMMessageCoordinator_startWithApplicationContext_messageGroups_
   return [v4 _startStorageCoordinatorWithMessageEntryProvider:v5 messageMetadataStorage:v6 propertyStorage:v7];
 }
 
-- (void)registerMessageTarget:(id)a3
+- (void)registerMessageTarget:(id)target
 {
-  v4 = a3;
-  v5 = [v4 targetIdentifier];
+  targetCopy = target;
+  targetIdentifier = [targetCopy targetIdentifier];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 shouldBeNotifiedOfNilPriorityMessageAfterRegistration];
+    shouldBeNotifiedOfNilPriorityMessageAfterRegistration = [targetCopy shouldBeNotifiedOfNilPriorityMessageAfterRegistration];
   }
 
   else
   {
-    v6 = 0;
+    shouldBeNotifiedOfNilPriorityMessageAfterRegistration = 0;
   }
 
   accessQueue = self->_accessQueue;
@@ -272,11 +272,11 @@ uint64_t __127__IAMMessageCoordinator_startWithApplicationContext_messageGroups_
   v10[2] = __47__IAMMessageCoordinator_registerMessageTarget___block_invoke;
   v10[3] = &unk_2797A70C0;
   v10[4] = self;
-  v11 = v5;
-  v12 = v4;
-  v13 = v6;
-  v8 = v4;
-  v9 = v5;
+  v11 = targetIdentifier;
+  v12 = targetCopy;
+  v13 = shouldBeNotifiedOfNilPriorityMessageAfterRegistration;
+  v8 = targetCopy;
+  v9 = targetIdentifier;
   dispatch_async(accessQueue, v10);
 }
 
@@ -321,20 +321,20 @@ void __47__IAMMessageCoordinator_registerMessageTarget___block_invoke(uint64_t a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterMessageTarget:(id)a3
+- (void)unregisterMessageTarget:(id)target
 {
-  v4 = a3;
-  v5 = [v4 targetIdentifier];
+  targetCopy = target;
+  targetIdentifier = [targetCopy targetIdentifier];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__IAMMessageCoordinator_unregisterMessageTarget___block_invoke;
   block[3] = &unk_2797A70E8;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = targetIdentifier;
+  v11 = targetCopy;
+  v7 = targetCopy;
+  v8 = targetIdentifier;
   dispatch_async(accessQueue, block);
 }
 
@@ -373,9 +373,9 @@ void __49__IAMMessageCoordinator_unregisterMessageTarget___block_invoke(void *a1
   }
 }
 
-- (void)reportMessageDidAppearWithIdentifier:(id)a3
+- (void)reportMessageDidAppearWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(MEMORY[0x277CBEAA8]);
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -383,10 +383,10 @@ void __49__IAMMessageCoordinator_unregisterMessageTarget___block_invoke(void *a1
   block[2] = __62__IAMMessageCoordinator_reportMessageDidAppearWithIdentifier___block_invoke;
   block[3] = &unk_2797A70E8;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = identifierCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -414,10 +414,10 @@ void __62__IAMMessageCoordinator_reportMessageDidAppearWithIdentifier___block_in
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportMessageDidAppearWithIdentifier:(id)a3 fromTargetWithIdentifier:(id)a4
+- (void)reportMessageDidAppearWithIdentifier:(id)identifier fromTargetWithIdentifier:(id)withIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
   v8 = objc_alloc_init(MEMORY[0x277CBEAA8]);
   accessQueue = self->_accessQueue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -425,12 +425,12 @@ void __62__IAMMessageCoordinator_reportMessageDidAppearWithIdentifier___block_in
   v13[2] = __87__IAMMessageCoordinator_reportMessageDidAppearWithIdentifier_fromTargetWithIdentifier___block_invoke;
   v13[3] = &unk_2797A7138;
   v13[4] = self;
-  v14 = v6;
+  v14 = identifierCopy;
   v15 = v8;
-  v16 = v7;
-  v10 = v7;
+  v16 = withIdentifierCopy;
+  v10 = withIdentifierCopy;
   v11 = v8;
-  v12 = v6;
+  v12 = identifierCopy;
   dispatch_async(accessQueue, v13);
 }
 
@@ -501,17 +501,17 @@ void __87__IAMMessageCoordinator_reportMessageDidAppearWithIdentifier_fromTarget
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportMessageDidDisappearWithIdentifier:(id)a3
+- (void)reportMessageDidDisappearWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__IAMMessageCoordinator_reportMessageDidDisappearWithIdentifier___block_invoke;
   v7[3] = &unk_2797A7160;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -539,10 +539,10 @@ void __65__IAMMessageCoordinator_reportMessageDidDisappearWithIdentifier___block
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportMessageDidDisappearWithIdentifier:(id)a3 fromTargetWithIdentifier:(id)a4
+- (void)reportMessageDidDisappearWithIdentifier:(id)identifier fromTargetWithIdentifier:(id)withIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
   v8 = objc_alloc_init(MEMORY[0x277CBEAA8]);
   accessQueue = self->_accessQueue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -550,32 +550,32 @@ void __65__IAMMessageCoordinator_reportMessageDidDisappearWithIdentifier___block
   v13[2] = __90__IAMMessageCoordinator_reportMessageDidDisappearWithIdentifier_fromTargetWithIdentifier___block_invoke;
   v13[3] = &unk_2797A7138;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = withIdentifierCopy;
   v16 = v8;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = withIdentifierCopy;
+  v12 = identifierCopy;
   dispatch_async(accessQueue, v13);
 }
 
-- (void)reportMessageWithIdentifier:(id)a3 actionWasPerformedWithIdentifier:(id)a4 fromTargetWithIdentifier:(id)a5
+- (void)reportMessageWithIdentifier:(id)identifier actionWasPerformedWithIdentifier:(id)withIdentifier fromTargetWithIdentifier:(id)targetWithIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  targetWithIdentifierCopy = targetWithIdentifier;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __111__IAMMessageCoordinator_reportMessageWithIdentifier_actionWasPerformedWithIdentifier_fromTargetWithIdentifier___block_invoke;
   v15[3] = &unk_2797A7138;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = withIdentifierCopy;
+  v18 = targetWithIdentifierCopy;
+  v12 = targetWithIdentifierCopy;
+  v13 = withIdentifierCopy;
+  v14 = identifierCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -696,34 +696,34 @@ LABEL_20:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportApplicationContextPropertiesDidChange:(id)a3
+- (void)reportApplicationContextPropertiesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = [IAMChangedContextPropertiesTriggerContext alloc];
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v8 bundleIdentifier];
-  v7 = [(IAMChangedContextPropertiesTriggerContext *)v5 initWithContextPropertyNames:v4 bundleIdentifier:v6];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [(IAMChangedContextPropertiesTriggerContext *)v5 initWithContextPropertyNames:changeCopy bundleIdentifier:bundleIdentifier];
 
   [(IAMMessageCoordinator *)self reportChangedContextPropertiesContext:v7];
 }
 
-- (id)beginObservingTriggerEvent:(id)a3 withHandler:(id)a4
+- (id)beginObservingTriggerEvent:(id)event withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAD78] UUID];
+  eventCopy = event;
+  handlerCopy = handler;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   accessQueue = self->_accessQueue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__IAMMessageCoordinator_beginObservingTriggerEvent_withHandler___block_invoke;
   v16[3] = &unk_2797A7188;
   v16[4] = self;
-  v17 = v6;
-  v19 = v7;
-  v10 = v8;
+  v17 = eventCopy;
+  v19 = handlerCopy;
+  v10 = uUID;
   v18 = v10;
-  v11 = v7;
-  v12 = v6;
+  v11 = handlerCopy;
+  v12 = eventCopy;
   dispatch_async(accessQueue, v16);
   v13 = v18;
   v14 = v10;
@@ -750,20 +750,20 @@ void __64__IAMMessageCoordinator_beginObservingTriggerEvent_withHandler___block_
   [v8 setObject:v7 forKey:*(a1 + 48)];
 }
 
-- (void)endObservingTriggerEvent:(id)a3 forToken:(id)a4
+- (void)endObservingTriggerEvent:(id)event forToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  tokenCopy = token;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__IAMMessageCoordinator_endObservingTriggerEvent_forToken___block_invoke;
   block[3] = &unk_2797A70E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
+  v10 = eventCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -789,20 +789,20 @@ void __59__IAMMessageCoordinator_endObservingTriggerEvent_forToken___block_invok
   }
 }
 
-- (void)triggerPresentationForMessageWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)triggerPresentationForMessageWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__IAMMessageCoordinator_triggerPresentationForMessageWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_2797A7200;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -877,16 +877,16 @@ void __87__IAMMessageCoordinator_triggerPresentationForMessageWithIdentifier_com
   }
 }
 
-- (void)reportMetricsEvent:(id)a3
+- (void)reportMetricsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__IAMMessageCoordinator_reportMetricsEvent___block_invoke;
   v6[3] = &unk_2797A7160;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = eventCopy;
+  v5 = eventCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -902,17 +902,17 @@ void __44__IAMMessageCoordinator_reportMetricsEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)receiveTriggerEventContext:(id)a3
+- (void)receiveTriggerEventContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__IAMMessageCoordinator_receiveTriggerEventContext___block_invoke;
   v7[3] = &unk_2797A7160;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -941,17 +941,17 @@ void __52__IAMMessageCoordinator_receiveTriggerEventContext___block_invoke(uint6
   }
 }
 
-- (void)reportChangedContextPropertiesContext:(id)a3
+- (void)reportChangedContextPropertiesContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__IAMMessageCoordinator_reportChangedContextPropertiesContext___block_invoke;
   v7[3] = &unk_2797A7160;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -974,20 +974,20 @@ void __63__IAMMessageCoordinator_reportChangedContextPropertiesContext___block_i
   }
 }
 
-- (void)receiveEvent:(id)a3
+- (void)receiveEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [IAMReceivedEventTriggerContext alloc];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [(IAMReceivedEventTriggerContext *)v5 initWithEvent:v4 bundleIdentifier:v7];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [(IAMReceivedEventTriggerContext *)v5 initWithEvent:eventCopy bundleIdentifier:bundleIdentifier];
 
   [(IAMMessageCoordinator *)self receiveTriggerEventContext:v8];
 }
 
-- (void)storageCoordinatorMessageEntriesChanged:(id)a3
+- (void)storageCoordinatorMessageEntriesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = IAMLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1065,33 +1065,33 @@ void __65__IAMMessageCoordinator_storageCoordinatorMessageEntriesChanged___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)impressionManager:(id)a3 impressionDidEndForMessageEntry:(id)a4
+- (void)impressionManager:(id)manager impressionDidEndForMessageEntry:(id)entry
 {
-  v5 = a4;
+  entryCopy = entry;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__IAMMessageCoordinator_impressionManager_impressionDidEndForMessageEntry___block_invoke;
   v8[3] = &unk_2797A7160;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = entryCopy;
+  v7 = entryCopy;
   dispatch_async(accessQueue, v8);
 }
 
-- (void)_setMessageGroups:(id)a3
+- (void)_setMessageGroups:(id)groups
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  groupsCopy = groups;
+  if (groupsCopy)
   {
     v5 = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v17 = v4;
-    v6 = v4;
+    v17 = groupsCopy;
+    v6 = groupsCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v7)
     {
@@ -1108,10 +1108,10 @@ void __65__IAMMessageCoordinator_storageCoordinatorMessageEntriesChanged___block
 
           v11 = *(*(&v18 + 1) + 8 * i);
           [v11 setMessageCoordinator:self];
-          v12 = [v11 groupIdentifier];
-          if (v12)
+          groupIdentifier = [v11 groupIdentifier];
+          if (groupIdentifier)
           {
-            [v5 setObject:v11 forKeyedSubscript:v12];
+            [v5 setObject:v11 forKeyedSubscript:groupIdentifier];
           }
 
           else
@@ -1137,19 +1137,19 @@ void __65__IAMMessageCoordinator_storageCoordinatorMessageEntriesChanged___block
     self->_messageGroupsByGroupIdentifier = v14;
 
     [(IAMModalTarget *)self->_modalTarget setMessageGroupsByGroupIdentifier:self->_messageGroupsByGroupIdentifier];
-    v4 = v17;
+    groupsCopy = v17;
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startStorageCoordinatorWithMessageEntryProvider:(id)a3 messageMetadataStorage:(id)a4 propertyStorage:(id)a5
+- (void)_startStorageCoordinatorWithMessageEntryProvider:(id)provider messageMetadataStorage:(id)storage propertyStorage:(id)propertyStorage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IAMMessageCoordinator *)self _messageBundleIdentifiers];
-  v12 = [[IAMStorageCoordinator alloc] initWithMessageEntryProvider:v8 messageMetadataStorage:v9 propertyStorage:v10 messageBundleIdentifiers:v11];
+  providerCopy = provider;
+  storageCopy = storage;
+  propertyStorageCopy = propertyStorage;
+  _messageBundleIdentifiers = [(IAMMessageCoordinator *)self _messageBundleIdentifiers];
+  v12 = [[IAMStorageCoordinator alloc] initWithMessageEntryProvider:providerCopy messageMetadataStorage:storageCopy propertyStorage:propertyStorageCopy messageBundleIdentifiers:_messageBundleIdentifiers];
   storageCoordinator = self->_storageCoordinator;
   self->_storageCoordinator = v12;
 
@@ -1203,9 +1203,9 @@ void __113__IAMMessageCoordinator__startStorageCoordinatorWithMessageEntryProvid
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchMessagesAndMetadataFromStorageCoordinator:(id)a3
+- (void)_fetchMessagesAndMetadataFromStorageCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -1243,7 +1243,7 @@ void __113__IAMMessageCoordinator__startStorageCoordinatorWithMessageEntryProvid
   v12[2] = __73__IAMMessageCoordinator__fetchMessagesAndMetadataFromStorageCoordinator___block_invoke;
   v12[3] = &unk_2797A72A0;
   v14 = v30;
-  v5 = v4;
+  v5 = coordinatorCopy;
   v13 = v5;
   v15 = v28;
   v16 = v22;
@@ -1399,18 +1399,18 @@ void __73__IAMMessageCoordinator__fetchMessagesAndMetadataFromStorageCoordinator
   }
 }
 
-- (void)_handleUpdatedMessageEntries:(id)a3 andMetadata:(id)a4
+- (void)_handleUpdatedMessageEntries:(id)entries andMetadata:(id)metadata
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  entriesCopy = entries;
+  metadataCopy = metadata;
+  if (entriesCopy)
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    v8 = [entriesCopy countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v8)
     {
       v10 = v8;
@@ -1424,15 +1424,15 @@ void __73__IAMMessageCoordinator__fetchMessagesAndMetadataFromStorageCoordinator
         {
           if (*v33 != v12)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(entriesCopy);
           }
 
-          v14 = [*(*(&v32 + 1) + 8 * i) applicationMessage];
-          v15 = [v14 identifier];
+          applicationMessage = [*(*(&v32 + 1) + 8 * i) applicationMessage];
+          identifier = [applicationMessage identifier];
 
-          v16 = [(IAMMessageCoordinator *)self _metadataEntryForMessageIdentifier:v15];
+          v16 = [(IAMMessageCoordinator *)self _metadataEntryForMessageIdentifier:identifier];
           v17 = v16;
-          if (!v7 || v16)
+          if (!metadataCopy || v16)
           {
             if (!v16)
             {
@@ -1442,7 +1442,7 @@ void __73__IAMMessageCoordinator__fetchMessagesAndMetadataFromStorageCoordinator
 
           else
           {
-            v18 = [v7 objectForKeyedSubscript:v15];
+            v18 = [metadataCopy objectForKeyedSubscript:identifier];
             if (!v18)
             {
               goto LABEL_17;
@@ -1455,20 +1455,20 @@ void __73__IAMMessageCoordinator__fetchMessagesAndMetadataFromStorageCoordinator
               [v17 allMetadataValues];
               v31 = v11;
               v20 = v10;
-              v21 = v7;
+              v21 = metadataCopy;
               v22 = v12;
-              v23 = self;
-              v25 = v24 = v6;
+              selfCopy = self;
+              v25 = v24 = entriesCopy;
               *buf = v30;
               v37 = v25;
               v38 = 2114;
-              v39 = v15;
+              v39 = identifier;
               _os_log_impl(&dword_254AF4000, v19, OS_LOG_TYPE_DEFAULT, "Received new metadata entry = %{public}@ for message with identifier = %{public}@", buf, 0x16u);
 
-              v6 = v24;
-              self = v23;
+              entriesCopy = v24;
+              self = selfCopy;
               v12 = v22;
-              v7 = v21;
+              metadataCopy = v21;
               v10 = v20;
               v11 = v31;
             }
@@ -1479,12 +1479,12 @@ void __73__IAMMessageCoordinator__fetchMessagesAndMetadataFromStorageCoordinator
             v11 = objc_opt_new();
           }
 
-          [v11 setObject:v17 forKeyedSubscript:v15];
+          [v11 setObject:v17 forKeyedSubscript:identifier];
 
 LABEL_17:
         }
 
-        v10 = [v6 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v10 = [entriesCopy countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (!v10)
         {
           goto LABEL_21;
@@ -1499,78 +1499,78 @@ LABEL_21:
   metadataEntryByMessageIdentifier = self->_metadataEntryByMessageIdentifier;
   self->_metadataEntryByMessageIdentifier = v26;
 
-  v28 = [v6 copy];
+  v28 = [entriesCopy copy];
   [(IAMMessageEntryManager *)self->_messageEntryManager setMessageEntries:v28];
 
   [(IAMMessageCoordinator *)self _evaluateMessagesForAllActiveTargets];
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportHoldoutMessageWouldAppear:(id)a3
+- (void)_reportHoldoutMessageWouldAppear:(id)appear
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  appearCopy = appear;
   v9 = objc_alloc_init(v4);
-  v6 = [v5 applicationMessage];
-  v7 = [v6 holdoutEvent];
-  v8 = [v7 reportableDictionary];
-  [(IAMMessageCoordinator *)self reportMetricsEvent:v8];
+  applicationMessage = [appearCopy applicationMessage];
+  holdoutEvent = [applicationMessage holdoutEvent];
+  reportableDictionary = [holdoutEvent reportableDictionary];
+  [(IAMMessageCoordinator *)self reportMetricsEvent:reportableDictionary];
 
-  [(IAMMessageCoordinator *)self _incrementNumberOfDisplaysForMessageEntry:v5];
-  [(IAMMessageCoordinator *)self _updateLastDisplayTime:v9 forMessageEntry:v5];
+  [(IAMMessageCoordinator *)self _incrementNumberOfDisplaysForMessageEntry:appearCopy];
+  [(IAMMessageCoordinator *)self _updateLastDisplayTime:v9 forMessageEntry:appearCopy];
 }
 
-- (void)_updateLastDisplayTime:(id)a3 forMessageEntry:(id)a4
+- (void)_updateLastDisplayTime:(id)time forMessageEntry:(id)entry
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = [v7 applicationMessage];
-  v9 = [v8 hasGlobalPresentationPolicyGroup];
+  timeCopy = time;
+  entryCopy = entry;
+  applicationMessage = [entryCopy applicationMessage];
+  hasGlobalPresentationPolicyGroup = [applicationMessage hasGlobalPresentationPolicyGroup];
 
-  if (v9)
+  if (hasGlobalPresentationPolicyGroup)
   {
-    v10 = [v7 applicationMessage];
-    v11 = [v10 globalPresentationPolicyGroup];
+    applicationMessage2 = [entryCopy applicationMessage];
+    globalPresentationPolicyGroup = [applicationMessage2 globalPresentationPolicyGroup];
 
-    if (v11 == 1)
+    if (globalPresentationPolicyGroup == 1)
     {
-      objc_storeStrong(&self->_lastDisplayTimeGlobalPresentationPolicyGroupRestricted, a3);
-      [(IAMStorageCoordinator *)self->_storageCoordinator updateLastDisplayTimeGlobalPresentationPolicyGroupRestricted:v12];
+      objc_storeStrong(&self->_lastDisplayTimeGlobalPresentationPolicyGroupRestricted, time);
+      [(IAMStorageCoordinator *)self->_storageCoordinator updateLastDisplayTimeGlobalPresentationPolicyGroupRestricted:timeCopy];
     }
 
-    else if (!v11)
+    else if (!globalPresentationPolicyGroup)
     {
-      objc_storeStrong(&self->_lastDisplayTimeGlobalPresentationPolicyGroupNormal, a3);
-      [(IAMStorageCoordinator *)self->_storageCoordinator updateLastDisplayTimeGlobalPresentationPolicyGroupNormal:v12];
+      objc_storeStrong(&self->_lastDisplayTimeGlobalPresentationPolicyGroupNormal, time);
+      [(IAMStorageCoordinator *)self->_storageCoordinator updateLastDisplayTimeGlobalPresentationPolicyGroupNormal:timeCopy];
     }
   }
 }
 
-- (id)_metadataEntryForMessageIdentifier:(id)a3
+- (id)_metadataEntryForMessageIdentifier:(id)identifier
 {
   metadataEntryByMessageIdentifier = self->_metadataEntryByMessageIdentifier;
   if (metadataEntryByMessageIdentifier)
   {
-    metadataEntryByMessageIdentifier = [metadataEntryByMessageIdentifier objectForKeyedSubscript:a3];
+    metadataEntryByMessageIdentifier = [metadataEntryByMessageIdentifier objectForKeyedSubscript:identifier];
     v3 = vars8;
   }
 
   return metadataEntryByMessageIdentifier;
 }
 
-- (void)_calculateMessagesProximityAndDownloadResourcesIfNeeded:(id)a3
+- (void)_calculateMessagesProximityAndDownloadResourcesIfNeeded:(id)needed
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   v5 = [(NSDate *)self->_lastDisplayTimeGlobalPresentationPolicyGroupRestricted copy];
   v6 = [(NSDate *)self->_lastDisplayTimeGlobalPresentationPolicyGroupNormal copy];
   v7 = [(NSDictionary *)self->_metadataEntryByMessageIdentifier copy];
   v8 = [(NSDictionary *)self->_messageGroupsByGroupIdentifier copy];
   v9 = [IAMEvaluator alloc];
   WeakRetained = objc_loadWeakRetained(&self->_applicationContext);
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 bundleIdentifier];
-  v13 = [(IAMEvaluator *)v9 initWithMessageEntries:v4 metadataEntries:v7 applicationContext:WeakRetained hostBundleIdentifier:v12 messageGroups:v8 lastDisplayTimeForRestrictedPresentationPolicyGroup:v5 lastDisplayTimeForNormalPresentationPolicyGroup:v6];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v13 = [(IAMEvaluator *)v9 initWithMessageEntries:neededCopy metadataEntries:v7 applicationContext:WeakRetained hostBundleIdentifier:bundleIdentifier messageGroups:v8 lastDisplayTimeForRestrictedPresentationPolicyGroup:v5 lastDisplayTimeForNormalPresentationPolicyGroup:v6];
 
   v14 = [(IAMEvaluator *)v13 computeMessagesCloseToPassingWithProximityThreshold:50];
   if ([v14 count])
@@ -1580,7 +1580,7 @@ LABEL_21:
     v29 = v7;
     v30 = v6;
     v31 = v5;
-    v32 = v4;
+    v32 = neededCopy;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -1603,18 +1603,18 @@ LABEL_21:
           v20 = *(*(&v33 + 1) + 8 * i);
           if (([v20 shouldDownloadResources] & 1) == 0)
           {
-            v21 = [v20 applicationMessage];
-            v22 = [v21 hasHoldoutEvent];
+            applicationMessage = [v20 applicationMessage];
+            hasHoldoutEvent = [applicationMessage hasHoldoutEvent];
 
-            if ((v22 & 1) == 0)
+            if ((hasHoldoutEvent & 1) == 0)
             {
               v23 = IAMLogCategoryDefault();
               if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
               {
-                v24 = [v20 applicationMessage];
-                v25 = [v24 identifier];
+                applicationMessage2 = [v20 applicationMessage];
+                identifier = [applicationMessage2 identifier];
                 *buf = 138543362;
-                v38 = v25;
+                v38 = identifier;
                 _os_log_impl(&dword_254AF4000, v23, OS_LOG_TYPE_DEFAULT, "Asking iTunesCloud to download resources for message with identifier = %{public}@", buf, 0xCu);
               }
 
@@ -1631,7 +1631,7 @@ LABEL_21:
     }
 
     v5 = v31;
-    v4 = v32;
+    neededCopy = v32;
     v7 = v29;
     v6 = v30;
     v13 = v27;
@@ -1641,35 +1641,35 @@ LABEL_21:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reevaluateMessageEntries:(id)a3 forTargetIdentifier:(id)a4 shouldNotifyTargetsIfPriorityMessageNonNil:(BOOL)a5 withObservedEventName:(id)a6
+- (void)_reevaluateMessageEntries:(id)entries forTargetIdentifier:(id)identifier shouldNotifyTargetsIfPriorityMessageNonNil:(BOOL)nil withObservedEventName:(id)name
 {
-  v27 = a5;
+  nilCopy = nil;
   lastDisplayTimeGlobalPresentationPolicyGroupRestricted = self->_lastDisplayTimeGlobalPresentationPolicyGroupRestricted;
-  v26 = a6;
-  v25 = a4;
-  v10 = a3;
+  nameCopy = name;
+  identifierCopy = identifier;
+  entriesCopy = entries;
   v11 = [(NSDate *)lastDisplayTimeGlobalPresentationPolicyGroupRestricted copy];
   v24 = [(NSDate *)self->_lastDisplayTimeGlobalPresentationPolicyGroupNormal copy];
   v12 = [(NSDictionary *)self->_metadataEntryByMessageIdentifier copy];
   v13 = [(NSDictionary *)self->_messageGroupsByGroupIdentifier copy];
   v14 = [IAMEvaluator alloc];
   WeakRetained = objc_loadWeakRetained(&self->_applicationContext);
-  v16 = [MEMORY[0x277CCA8D8] mainBundle];
-  v17 = [v16 bundleIdentifier];
-  v18 = [(IAMEvaluator *)v14 initWithMessageEntries:v10 metadataEntries:v12 applicationContext:WeakRetained hostBundleIdentifier:v17 messageGroups:v13 lastDisplayTimeForRestrictedPresentationPolicyGroup:v11 lastDisplayTimeForNormalPresentationPolicyGroup:v24];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v18 = [(IAMEvaluator *)v14 initWithMessageEntries:entriesCopy metadataEntries:v12 applicationContext:WeakRetained hostBundleIdentifier:bundleIdentifier messageGroups:v13 lastDisplayTimeForRestrictedPresentationPolicyGroup:v11 lastDisplayTimeForNormalPresentationPolicyGroup:v24];
 
-  v19 = [(IAMEvaluator *)v18 computePassingMessageEntries];
+  computePassingMessageEntries = [(IAMEvaluator *)v18 computePassingMessageEntries];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __136__IAMMessageCoordinator__reevaluateMessageEntries_forTargetIdentifier_shouldNotifyTargetsIfPriorityMessageNonNil_withObservedEventName___block_invoke;
   v28[3] = &unk_2797A7368;
   v28[4] = self;
   v20 = [MEMORY[0x277CCAC30] predicateWithBlock:v28];
-  v21 = [v19 filteredArrayUsingPredicate:v20];
+  v21 = [computePassingMessageEntries filteredArrayUsingPredicate:v20];
 
   v22 = [v21 sortedArrayUsingComparator:&__block_literal_global_0];
-  v23 = [v22 firstObject];
-  [(IAMMessageCoordinator *)self _updatePriorityMessageEntry:v23 forTargetIdentifier:v25 shouldNotifyTargetsIfNonNil:v27 observedEventName:v26];
+  firstObject = [v22 firstObject];
+  [(IAMMessageCoordinator *)self _updatePriorityMessageEntry:firstObject forTargetIdentifier:identifierCopy shouldNotifyTargetsIfNonNil:nilCopy observedEventName:nameCopy];
 }
 
 BOOL __136__IAMMessageCoordinator__reevaluateMessageEntries_forTargetIdentifier_shouldNotifyTargetsIfPriorityMessageNonNil_withObservedEventName___block_invoke(uint64_t a1, void *a2)
@@ -1709,25 +1709,25 @@ BOOL __136__IAMMessageCoordinator__reevaluateMessageEntries_forTargetIdentifier_
   return v13;
 }
 
-- (void)_reevaluateTargetsWithIdentifiers:(id)a3 forTriggerContext:(id)a4 shouldNotifyTargetsIfPriorityMessageNonNil:(BOOL)a5
+- (void)_reevaluateTargetsWithIdentifiers:(id)identifiers forTriggerContext:(id)context shouldNotifyTargetsIfPriorityMessageNonNil:(BOOL)nil
 {
-  v30 = a5;
+  nilCopy = nil;
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  identifiersCopy = identifiers;
+  contextCopy = context;
+  if (contextCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = v8;
+    v9 = contextCopy;
     completionHandlersForObservedEvents = self->_completionHandlersForObservedEvents;
-    v11 = [v9 event];
-    v12 = [v11 name];
-    v13 = [(NSMutableDictionary *)completionHandlersForObservedEvents objectForKeyedSubscript:v12];
+    event = [v9 event];
+    name = [event name];
+    v13 = [(NSMutableDictionary *)completionHandlersForObservedEvents objectForKeyedSubscript:name];
 
     if (v13)
     {
-      v14 = [v9 event];
-      v15 = [v14 name];
-      v13 = [v15 copy];
+      event2 = [v9 event];
+      name2 = [event2 name];
+      v13 = [name2 copy];
 
       v16 = 0;
       goto LABEL_7;
@@ -1744,7 +1744,7 @@ BOOL __136__IAMMessageCoordinator__reevaluateMessageEntries_forTargetIdentifier_
 LABEL_7:
   if (self->_isReadyToEvaluateMessages)
   {
-    if ([v7 count])
+    if ([identifiersCopy count])
     {
       v17 = 1;
     }
@@ -1757,12 +1757,12 @@ LABEL_7:
     if (v17)
     {
       v27 = v9;
-      v28 = v7;
+      v28 = identifiersCopy;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      obj = v7;
+      obj = identifiersCopy;
       v18 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v18)
       {
@@ -1781,8 +1781,8 @@ LABEL_7:
             v23 = [(IAMMessageEntryManager *)self->_messageEntryManager messageEntriesForTargetIdentifier:v22, v27, v28];
             v24 = [v23 copy];
 
-            v25 = [IAMMessageEntryManager messageEntries:v24 withSatisfiedPresentationTriggerForTriggerContext:v8];
-            [(IAMMessageCoordinator *)self _reevaluateMessageEntries:v25 forTargetIdentifier:v22 shouldNotifyTargetsIfPriorityMessageNonNil:v30 withObservedEventName:v13];
+            v25 = [IAMMessageEntryManager messageEntries:v24 withSatisfiedPresentationTriggerForTriggerContext:contextCopy];
+            [(IAMMessageCoordinator *)self _reevaluateMessageEntries:v25 forTargetIdentifier:v22 shouldNotifyTargetsIfPriorityMessageNonNil:nilCopy withObservedEventName:v13];
           }
 
           v19 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -1792,7 +1792,7 @@ LABEL_7:
       }
 
       v9 = v27;
-      v7 = v28;
+      identifiersCopy = v28;
     }
 
     else
@@ -1804,21 +1804,21 @@ LABEL_7:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updatePriorityMessageEntry:(id)a3 forTargetIdentifier:(id)a4 shouldNotifyTargetsIfNonNil:(BOOL)a5 observedEventName:(id)a6
+- (void)_updatePriorityMessageEntry:(id)entry forTargetIdentifier:(id)identifier shouldNotifyTargetsIfNonNil:(BOOL)nil observedEventName:(id)name
 {
-  v7 = a5;
+  nilCopy = nil;
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(NSMutableDictionary *)self->_priorityMessageEntryByTargetIdentifier objectForKeyedSubscript:v11];
-  v14 = [(NSMutableDictionary *)self->_messageTargetsByTargetIdentifier objectForKeyedSubscript:v11];
+  entryCopy = entry;
+  identifierCopy = identifier;
+  nameCopy = name;
+  v13 = [(NSMutableDictionary *)self->_priorityMessageEntryByTargetIdentifier objectForKeyedSubscript:identifierCopy];
+  v14 = [(NSMutableDictionary *)self->_messageTargetsByTargetIdentifier objectForKeyedSubscript:identifierCopy];
   v15 = [v14 copy];
 
-  if (v13 != v10 || ([v11 isEqualToString:self->_modalTargetIdentifier] & 1) != 0)
+  if (v13 != entryCopy || ([identifierCopy isEqualToString:self->_modalTargetIdentifier] & 1) != 0)
   {
 LABEL_5:
-    [(NSMutableDictionary *)self->_priorityMessageEntryByTargetIdentifier setObject:v10 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)self->_priorityMessageEntryByTargetIdentifier setObject:entryCopy forKeyedSubscript:identifierCopy];
     if (!v15)
     {
       goto LABEL_13;
@@ -1827,9 +1827,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v10)
+  if (entryCopy)
   {
-    if (!v7)
+    if (!nilCopy)
     {
       goto LABEL_13;
     }
@@ -1837,7 +1837,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v22 = [(NSMutableDictionary *)self->_messageTargetsRequiringNilPriorityMessageNotificationAfterRegistrationByTargetIdentifier objectForKeyedSubscript:v11];
+  v22 = [(NSMutableDictionary *)self->_messageTargetsRequiringNilPriorityMessageNotificationAfterRegistrationByTargetIdentifier objectForKeyedSubscript:identifierCopy];
   v23 = [v22 copy];
 
   if (!v23)
@@ -1845,37 +1845,37 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  [(NSMutableDictionary *)self->_priorityMessageEntryByTargetIdentifier setObject:0 forKeyedSubscript:v11];
+  [(NSMutableDictionary *)self->_priorityMessageEntryByTargetIdentifier setObject:0 forKeyedSubscript:identifierCopy];
   v15 = v23;
 LABEL_6:
-  [(NSMutableDictionary *)self->_messageTargetsRequiringNilPriorityMessageNotificationAfterRegistrationByTargetIdentifier setObject:0 forKeyedSubscript:v11];
-  v16 = [v10 applicationMessage];
-  v17 = [v16 hasHoldoutEvent];
+  [(NSMutableDictionary *)self->_messageTargetsRequiringNilPriorityMessageNotificationAfterRegistrationByTargetIdentifier setObject:0 forKeyedSubscript:identifierCopy];
+  applicationMessage = [entryCopy applicationMessage];
+  hasHoldoutEvent = [applicationMessage hasHoldoutEvent];
 
-  if (v17)
+  if (hasHoldoutEvent)
   {
-    [(IAMMessageCoordinator *)self _reportHoldoutMessageWouldAppear:v10];
+    [(IAMMessageCoordinator *)self _reportHoldoutMessageWouldAppear:entryCopy];
     v18 = IAMLogCategoryDefault();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v10 applicationMessage];
-      v20 = [v19 identifier];
+      applicationMessage2 = [entryCopy applicationMessage];
+      identifier = [applicationMessage2 identifier];
       v24 = 138543362;
-      v25 = v20;
+      v25 = identifier;
       _os_log_impl(&dword_254AF4000, v18, OS_LOG_TYPE_DEFAULT, "Unable to display message for identifier = %{public}@. The message contains a holdoutEvent", &v24, 0xCu);
     }
 
-    [(IAMMessageCoordinator *)self _processObservedEventCallbacksforEventName:v12 willTriggerPresentation:0 messageIdentifier:0];
+    [(IAMMessageCoordinator *)self _processObservedEventCallbacksforEventName:nameCopy willTriggerPresentation:0 messageIdentifier:0];
   }
 
   else
   {
-    if (v10)
+    if (entryCopy)
     {
-      [(IAMMessageEntryManager *)self->_messageEntryManager addPriorityMessageEntry:v10];
+      [(IAMMessageEntryManager *)self->_messageEntryManager addPriorityMessageEntry:entryCopy];
     }
 
-    [(IAMMessageCoordinator *)self _notifyMessageTargets:v15 withTargetIdentifier:v11 didUpdatePriorityMessageFromEntry:v10 observedEventName:v12];
+    [(IAMMessageCoordinator *)self _notifyMessageTargets:v15 withTargetIdentifier:identifierCopy didUpdatePriorityMessageFromEntry:entryCopy observedEventName:nameCopy];
   }
 
 LABEL_13:
@@ -1883,19 +1883,19 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyMessageTargets:(id)a3 withTargetIdentifier:(id)a4 didUpdatePriorityMessageFromEntry:(id)a5 observedEventName:(id)a6
+- (void)_notifyMessageTargets:(id)targets withTargetIdentifier:(id)identifier didUpdatePriorityMessageFromEntry:(id)entry observedEventName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 applicationMessage];
-  v15 = [v14 assetPrefetchStrategy];
+  targetsCopy = targets;
+  identifierCopy = identifier;
+  entryCopy = entry;
+  nameCopy = name;
+  applicationMessage = [entryCopy applicationMessage];
+  assetPrefetchStrategy = [applicationMessage assetPrefetchStrategy];
 
-  if (v12)
+  if (entryCopy)
   {
-    v16 = [IAMMessageCoordinator _createMessageFromMessageEntry:v12 replacingResourcePathsWithCachedResourceLocations:v15 != 2];
+    v16 = [IAMMessageCoordinator _createMessageFromMessageEntry:entryCopy replacingResourcePathsWithCachedResourceLocations:assetPrefetchStrategy != 2];
   }
 
   else
@@ -1908,7 +1908,7 @@ LABEL_13:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v10;
+  obj = targetsCopy;
   v17 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v17)
   {
@@ -1931,9 +1931,9 @@ LABEL_13:
         block[4] = v20;
         block[5] = self;
         v24 = v16;
-        v25 = v12;
-        v26 = v11;
-        v27 = v13;
+        v25 = entryCopy;
+        v26 = identifierCopy;
+        v27 = nameCopy;
         objc_copyWeak(&v28, &location);
         dispatch_async(MEMORY[0x277D85CD0], block);
         objc_destroyWeak(&v28);
@@ -2004,35 +2004,35 @@ void __120__IAMMessageCoordinator__notifyMessageTargets_withTargetIdentifier_did
   }
 }
 
-+ (id)_createMessageFromMessageEntry:(id)a3 replacingResourcePathsWithCachedResourceLocations:(BOOL)a4
++ (id)_createMessageFromMessageEntry:(id)entry replacingResourcePathsWithCachedResourceLocations:(BOOL)locations
 {
-  v4 = a4;
+  locationsCopy = locations;
   v72 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v4 || ![v5 shouldDownloadResources] || (objc_msgSend(v6, "didCacheRequiredResources") & 1) == 0)
+  entryCopy = entry;
+  v6 = entryCopy;
+  if (!locationsCopy || ![entryCopy shouldDownloadResources] || (objc_msgSend(v6, "didCacheRequiredResources") & 1) == 0)
   {
     v8 = [objc_alloc(MEMORY[0x277D1B2C0]) initWithICInAppMessageEntry:v6];
     goto LABEL_8;
   }
 
-  v7 = [v6 applicationMessage];
-  if ([v7 messageType] == 1 && objc_msgSend(v7, "hasWebArchiveURL"))
+  applicationMessage = [v6 applicationMessage];
+  if ([applicationMessage messageType] == 1 && objc_msgSend(applicationMessage, "hasWebArchiveURL"))
   {
     v8 = [objc_alloc(MEMORY[0x277D1B2C0]) initWithICInAppMessageEntry:v6];
     goto LABEL_47;
   }
 
   v11 = objc_alloc(MEMORY[0x277CBEB18]);
-  v12 = [v7 contentPages];
-  v53 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+  contentPages = [applicationMessage contentPages];
+  v53 = [v11 initWithCapacity:{objc_msgSend(contentPages, "count")}];
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v48 = v7;
-  obj = [v7 contentPages];
+  v48 = applicationMessage;
+  obj = [applicationMessage contentPages];
   v54 = [obj countByEnumeratingWithState:&v65 objects:v71 count:16];
   if (!v54)
   {
@@ -2059,8 +2059,8 @@ void __120__IAMMessageCoordinator__notifyMessageTargets_withTargetIdentifier_did
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v15 = [v14 images];
-        v16 = [v15 countByEnumeratingWithState:&v61 objects:v70 count:16];
+        images = [v14 images];
+        v16 = [images countByEnumeratingWithState:&v61 objects:v70 count:16];
         if (v16)
         {
           v17 = v16;
@@ -2071,21 +2071,21 @@ void __120__IAMMessageCoordinator__notifyMessageTargets_withTargetIdentifier_did
             {
               if (*v62 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(images);
               }
 
               v20 = *(*(&v61 + 1) + 8 * j);
               if ([v20 hasIdentifier] && objc_msgSend(v20, "hasURL"))
               {
-                v21 = [v20 identifier];
-                v22 = [v6 cachedLocationForResourceWithIdentifier:v21];
+                identifier = [v20 identifier];
+                v22 = [v6 cachedLocationForResourceWithIdentifier:identifier];
 
                 if (v22)
                 {
                   v23 = objc_alloc(MEMORY[0x277D1B2B0]);
-                  v24 = [v20 identifier];
+                  identifier2 = [v20 identifier];
                   v25 = [MEMORY[0x277CBEBC0] fileURLWithPath:v22 isDirectory:0];
-                  v26 = [v23 initWithIdentifier:v24 url:v25 width:objc_msgSend(v20 height:{"width"), objc_msgSend(v20, "height")}];
+                  v26 = [v23 initWithIdentifier:identifier2 url:v25 width:objc_msgSend(v20 height:{"width"), objc_msgSend(v20, "height")}];
                   [v56 addObject:v26];
 
                   v6 = v55;
@@ -2093,7 +2093,7 @@ void __120__IAMMessageCoordinator__notifyMessageTargets_withTargetIdentifier_did
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v61 objects:v70 count:16];
+            v17 = [images countByEnumeratingWithState:&v61 objects:v70 count:16];
           }
 
           while (v17);
@@ -2108,12 +2108,12 @@ void __120__IAMMessageCoordinator__notifyMessageTargets_withTargetIdentifier_did
         v56 = 0;
       }
 
-      v27 = [v14 messageActions];
-      if ([v27 count])
+      messageActions = [v14 messageActions];
+      if ([messageActions count])
       {
         v28 = objc_alloc(MEMORY[0x277CBEB18]);
-        v29 = [v14 messageActions];
-        v30 = [v28 initWithCapacity:{objc_msgSend(v29, "count")}];
+        messageActions2 = [v14 messageActions];
+        v30 = [v28 initWithCapacity:{objc_msgSend(messageActions2, "count")}];
 
         if (!v30)
         {
@@ -2124,8 +2124,8 @@ void __120__IAMMessageCoordinator__notifyMessageTargets_withTargetIdentifier_did
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v27 = [v14 messageActions];
-        v31 = [v27 countByEnumeratingWithState:&v57 objects:v69 count:16];
+        messageActions = [v14 messageActions];
+        v31 = [messageActions countByEnumeratingWithState:&v57 objects:v69 count:16];
         if (v31)
         {
           v32 = v31;
@@ -2137,14 +2137,14 @@ void __120__IAMMessageCoordinator__notifyMessageTargets_withTargetIdentifier_did
             {
               if (*v58 != v34)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(messageActions);
               }
 
               v36 = [objc_alloc(MEMORY[0x277D1B290]) initWithICAction:*(*(&v57 + 1) + 8 * k)];
               [v30 addObject:v36];
             }
 
-            v32 = [v27 countByEnumeratingWithState:&v57 objects:v69 count:16];
+            v32 = [messageActions countByEnumeratingWithState:&v57 objects:v69 count:16];
           }
 
           while (v32);
@@ -2159,13 +2159,13 @@ void __120__IAMMessageCoordinator__notifyMessageTargets_withTargetIdentifier_did
 
 LABEL_44:
       v37 = objc_alloc(MEMORY[0x277D1B298]);
-      v38 = [v14 title];
-      v39 = [v14 subtitle];
-      v40 = [v14 body];
-      v41 = [v14 contentParameters];
-      v42 = [v41 iam_dictionaryFromArrayOfICIIAMParameters];
-      v43 = [v14 identifier];
-      v44 = [v37 initWithTitle:v38 subtitle:v39 body:v40 images:v56 actions:v30 contentParameters:v42 identifier:v43];
+      title = [v14 title];
+      subtitle = [v14 subtitle];
+      body = [v14 body];
+      contentParameters = [v14 contentParameters];
+      iam_dictionaryFromArrayOfICIIAMParameters = [contentParameters iam_dictionaryFromArrayOfICIIAMParameters];
+      identifier3 = [v14 identifier];
+      v44 = [v37 initWithTitle:title subtitle:subtitle body:body images:v56 actions:v30 contentParameters:iam_dictionaryFromArrayOfICIIAMParameters identifier:identifier3];
 
       [v53 addObject:v44];
       v6 = v55;
@@ -2178,10 +2178,10 @@ LABEL_44:
 LABEL_46:
 
   v45 = objc_alloc(MEMORY[0x277D1B2C0]);
-  v7 = v48;
-  v46 = [v48 identifier];
-  v47 = [v6 bundleIdentifier];
-  v8 = [v45 initWithIdentifier:v46 messageGroupIdentifier:v47 contentPages:v53 requiresCloseButton:{objc_msgSend(v48, "hasCloseButton")}];
+  applicationMessage = v48;
+  identifier4 = [v48 identifier];
+  bundleIdentifier = [v6 bundleIdentifier];
+  v8 = [v45 initWithIdentifier:identifier4 messageGroupIdentifier:bundleIdentifier contentPages:v53 requiresCloseButton:{objc_msgSend(v48, "hasCloseButton")}];
 
 LABEL_47:
 LABEL_8:
@@ -2191,17 +2191,17 @@ LABEL_8:
   return v8;
 }
 
-- (id)_filterActiveTargetIdentifiers:(id)a3
+- (id)_filterActiveTargetIdentifiers:(id)identifiers
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_opt_new();
   v6 = [(NSMutableDictionary *)self->_messageTargetsByTargetIdentifier copy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -2237,18 +2237,18 @@ LABEL_8:
   return v14;
 }
 
-- (void)_updateMetadataOfMessageEntriesByTrigger:(id)a3 forReceivedEvent:(id)a4
+- (void)_updateMetadataOfMessageEntriesByTrigger:(id)trigger forReceivedEvent:(id)event
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  triggerCopy = trigger;
+  eventCopy = event;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v6;
-  v8 = v6;
-  v9 = v7;
+  obj = triggerCopy;
+  v8 = triggerCopy;
+  v9 = eventCopy;
   v31 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v31)
   {
@@ -2266,7 +2266,7 @@ LABEL_8:
         v33 = v10;
         v11 = *(*(&v41 + 1) + 8 * v10);
         v12 = [obj objectForKey:v11];
-        v36 = [v11 nameSpacedKeyName];
+        nameSpacedKeyName = [v11 nameSpacedKeyName];
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
@@ -2288,10 +2288,10 @@ LABEL_8:
               }
 
               v17 = *(*(&v37 + 1) + 8 * i);
-              v18 = [v17 applicationMessage];
-              v19 = [v18 identifier];
+              applicationMessage = [v17 applicationMessage];
+              identifier = [applicationMessage identifier];
 
-              v20 = [(IAMMessageCoordinator *)self _metadataEntryForMessageIdentifier:v19];
+              v20 = [(IAMMessageCoordinator *)self _metadataEntryForMessageIdentifier:identifier];
               v21 = v20;
               if (v20)
               {
@@ -2305,25 +2305,25 @@ LABEL_8:
 
               v23 = v22;
 
-              v24 = [v9 type];
-              if (v24)
+              type = [v9 type];
+              if (type)
               {
-                if (v24 != 1)
+                if (type != 1)
                 {
                   goto LABEL_19;
                 }
 
-                v25 = [v9 value];
-                [v23 setMetadataValue:v25 forKey:v36];
+                value = [v9 value];
+                [v23 setMetadataValue:value forKey:nameSpacedKeyName];
               }
 
               else
               {
                 v26 = v9;
                 v27 = MEMORY[0x277CCABB0];
-                v25 = [v23 metadataValueForKey:v36];
-                v28 = [v27 numberWithInt:{objc_msgSend(v25, "intValue") + 1}];
-                [v23 setMetadataValue:v28 forKey:v36];
+                value = [v23 metadataValueForKey:nameSpacedKeyName];
+                v28 = [v27 numberWithInt:{objc_msgSend(value, "intValue") + 1}];
+                [v23 setMetadataValue:v28 forKey:nameSpacedKeyName];
 
                 v9 = v26;
                 v15 = v34;
@@ -2352,14 +2352,14 @@ LABEL_19:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateMetadata:(id)a3 forMessageEntry:(id)a4 completion:(id)a5
+- (void)_updateMetadata:(id)metadata forMessageEntry:(id)entry completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 applicationMessage];
-  v12 = [v11 identifier];
+  metadataCopy = metadata;
+  completionCopy = completion;
+  entryCopy = entry;
+  applicationMessage = [entryCopy applicationMessage];
+  identifier = [applicationMessage identifier];
 
   v13 = [(NSDictionary *)self->_metadataEntryByMessageIdentifier mutableCopy];
   if (!v13)
@@ -2367,7 +2367,7 @@ LABEL_19:
     v13 = objc_opt_new();
   }
 
-  [v13 setObject:v8 forKeyedSubscript:v12];
+  [v13 setObject:metadataCopy forKeyedSubscript:identifier];
   v14 = [v13 copy];
   metadataEntryByMessageIdentifier = self->_metadataEntryByMessageIdentifier;
   self->_metadataEntryByMessageIdentifier = v14;
@@ -2375,91 +2375,91 @@ LABEL_19:
   v16 = IAMLogCategoryDefault();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v8 allMetadataValues];
+    allMetadataValues = [metadataCopy allMetadataValues];
     v19 = 138543618;
-    v20 = v17;
+    v20 = allMetadataValues;
     v21 = 2114;
-    v22 = v12;
+    v22 = identifier;
     _os_log_impl(&dword_254AF4000, v16, OS_LOG_TYPE_DEFAULT, "Updating metadata = %{public}@ for message entry with identifier = %{public}@", &v19, 0x16u);
   }
 
-  [(IAMStorageCoordinator *)self->_storageCoordinator updateMetadata:v8 forMessageEntry:v10 completion:v9];
+  [(IAMStorageCoordinator *)self->_storageCoordinator updateMetadata:metadataCopy forMessageEntry:entryCopy completion:completionCopy];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportMessageAction:(id)a3 wasPerformedInMessageEntry:(id)a4 fromTargetWithIdentifier:(id)a5
+- (void)_reportMessageAction:(id)action wasPerformedInMessageEntry:(id)entry fromTargetWithIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 applicationMessage];
-  v12 = [v11 identifier];
-  v13 = [v8 identifier];
+  actionCopy = action;
+  entryCopy = entry;
+  identifierCopy = identifier;
+  applicationMessage = [entryCopy applicationMessage];
+  identifier = [applicationMessage identifier];
+  identifier2 = [actionCopy identifier];
   v14 = IAMLogCategoryDefault();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138543618;
-    v22 = v13;
+    v22 = identifier2;
     v23 = 2114;
-    v24 = v12;
+    v24 = identifier;
     _os_log_impl(&dword_254AF4000, v14, OS_LOG_TYPE_DEFAULT, "Action with identifier = %{public}@ performed in message with identifier = %{public}@", &v21, 0x16u);
   }
 
-  if ([v8 hasClickEvent])
+  if ([actionCopy hasClickEvent])
   {
-    v15 = [v9 applicationMessage];
-    v16 = [v15 identifier];
+    applicationMessage2 = [entryCopy applicationMessage];
+    identifier3 = [applicationMessage2 identifier];
 
-    v17 = [v8 clickEvent];
-    v18 = [v17 reportableDictionaryForClickEventWithMessageIdentifier:v16 andTargetIdentifier:v10];
+    clickEvent = [actionCopy clickEvent];
+    v18 = [clickEvent reportableDictionaryForClickEventWithMessageIdentifier:identifier3 andTargetIdentifier:identifierCopy];
 
     [(IAMMessageCoordinator *)self reportMetricsEvent:v18];
   }
 
-  if ([v8 hasMessageRemovalPolicy])
+  if ([actionCopy hasMessageRemovalPolicy])
   {
-    v19 = [v8 messageRemovalPolicy];
-    if (v19 == 2)
+    messageRemovalPolicy = [actionCopy messageRemovalPolicy];
+    if (messageRemovalPolicy == 2)
     {
-      [(IAMStorageCoordinator *)self->_storageCoordinator removeMessageEntry:v9 completion:0];
-      if ([v11 reportingEnabled])
+      [(IAMStorageCoordinator *)self->_storageCoordinator removeMessageEntry:entryCopy completion:0];
+      if ([applicationMessage reportingEnabled])
       {
-        [(IAMStorageCoordinator *)self->_storageCoordinator reportEventForMessageIdentifier:v12 withParams:MEMORY[0x277CBEC10] completion:0];
+        [(IAMStorageCoordinator *)self->_storageCoordinator reportEventForMessageIdentifier:identifier withParams:MEMORY[0x277CBEC10] completion:0];
       }
     }
 
-    else if (v19 == 1)
+    else if (messageRemovalPolicy == 1)
     {
-      [(IAMStorageCoordinator *)self->_storageCoordinator removeMessageEntry:v9 completion:0];
+      [(IAMStorageCoordinator *)self->_storageCoordinator removeMessageEntry:entryCopy completion:0];
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleMessageReachedMaximumDisplayCount:(id)a3
+- (void)_handleMessageReachedMaximumDisplayCount:(id)count
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countCopy = count;
   v5 = IAMLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = countCopy;
     _os_log_impl(&dword_254AF4000, v5, OS_LOG_TYPE_DEFAULT, "Reporting message with identifier = %{public}@ reached maximum display count.", &v7, 0xCu);
   }
 
-  [(IAMStorageCoordinator *)self->_storageCoordinator reportEventForMessageIdentifier:v4 withParams:MEMORY[0x277CBEC10] completion:0];
+  [(IAMStorageCoordinator *)self->_storageCoordinator reportEventForMessageIdentifier:countCopy withParams:MEMORY[0x277CBEC10] completion:0];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_incrementNumberOfDisplaysForMessageEntry:(id)a3
+- (void)_incrementNumberOfDisplaysForMessageEntry:(id)entry
 {
-  v16 = a3;
-  v4 = [v16 applicationMessage];
-  v5 = [v4 identifier];
-  v6 = [(IAMMessageCoordinator *)self _metadataEntryForMessageIdentifier:v5];
+  entryCopy = entry;
+  applicationMessage = [entryCopy applicationMessage];
+  identifier = [applicationMessage identifier];
+  v6 = [(IAMMessageCoordinator *)self _metadataEntryForMessageIdentifier:identifier];
   v7 = v6;
   if (v6)
   {
@@ -2474,52 +2474,52 @@ LABEL_19:
   v9 = v8;
 
   [v9 setNumberOfDisplays:{objc_msgSend(v9, "numberOfDisplays") + 1}];
-  [(IAMMessageCoordinator *)self _updateMetadata:v9 forMessageEntry:v16 completion:0];
-  v10 = [v9 numberOfDisplays];
-  if ([v4 hasMaximumDisplays])
+  [(IAMMessageCoordinator *)self _updateMetadata:v9 forMessageEntry:entryCopy completion:0];
+  numberOfDisplays = [v9 numberOfDisplays];
+  if ([applicationMessage hasMaximumDisplays])
   {
-    v11 = [v4 maximumDisplays];
+    maximumDisplays = [applicationMessage maximumDisplays];
   }
 
   else
   {
-    v11 = 1;
+    maximumDisplays = 1;
   }
 
-  if (v10 >= v11)
+  if (numberOfDisplays >= maximumDisplays)
   {
-    if ([v4 reportingEnabled])
+    if ([applicationMessage reportingEnabled])
     {
-      [(IAMMessageCoordinator *)self _handleMessageReachedMaximumDisplayCount:v5];
+      [(IAMMessageCoordinator *)self _handleMessageReachedMaximumDisplayCount:identifier];
     }
 
-    v12 = [v16 applicationMessage];
-    v13 = [v12 targets];
-    v14 = [v13 copy];
+    applicationMessage2 = [entryCopy applicationMessage];
+    targets = [applicationMessage2 targets];
+    v14 = [targets copy];
     v15 = [(IAMMessageCoordinator *)self _filterActiveTargetIdentifiers:v14];
 
     [(IAMMessageCoordinator *)self _reevaluateTargetsWithIdentifiers:v15 forTriggerContext:0 shouldNotifyTargetsIfPriorityMessageNonNil:0];
   }
 }
 
-- (void)_removeUserNotificationRemovalForMessageWithIdentifier:(id)a3
+- (void)_removeUserNotificationRemovalForMessageWithIdentifier:(id)identifier
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IAMMessageCoordinator *)self _metadataEntryForMessageIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(IAMMessageCoordinator *)self _metadataEntryForMessageIdentifier:identifierCopy];
   if (([v5 didCancelUserNotification] & 1) == 0)
   {
     v6 = objc_alloc(MEMORY[0x277CE2028]);
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v7 bundleIdentifier];
-    v9 = [v6 initWithBundleIdentifier:v8];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v9 = [v6 initWithBundleIdentifier:bundleIdentifier];
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"ams_", v4];
-    v15[0] = v10;
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"ams_", identifierCopy];
+    v15[0] = identifierCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     [v9 removePendingNotificationRequestsWithIdentifiers:v11];
 
-    v14 = v10;
+    v14 = identifierCopy;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
     [v9 removeDeliveredNotificationsWithIdentifiers:v12];
 

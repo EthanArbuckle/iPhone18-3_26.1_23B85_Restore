@@ -1,31 +1,31 @@
 @interface HDDatabaseControlServer
 + (id)requiredEntitlements;
-- (void)remote_classifiedDeletedSampleInfoWithReferenceDate:(id)a3 anchor:(int64_t)a4 limit:(int64_t)a5 completion:(id)a6;
-- (void)remote_classifiedDeletedSampleInfoWithReferenceDate:(id)a3 createdOnOrAfter:(id)a4 createdBefore:(id)a5 limit:(int64_t)a6 completion:(id)a7;
-- (void)remote_deletedSampleDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 sampleUUID:(id)a5 completion:(id)a6;
-- (void)remote_deletedSampleInfoWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)remote_deletedSamplesDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 samplesWithDifferentPruningOutcomesOnly:(BOOL)a5 anchor:(int64_t)a6 limit:(int64_t)a7 completion:(id)a8;
-- (void)remote_deletedSamplesDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 samplesWithDifferentPruningOutcomesOnly:(BOOL)a5 createdOnOrAfter:(id)a6 createdBefore:(id)a7 limit:(int64_t)a8 completion:(id)a9;
-- (void)remote_getHealthDatabaseIdentifierWithCompletion:(id)a3;
-- (void)remote_getHealthDirectorySizeInBytesWithCompletion:(id)a3;
-- (void)remote_hkqa_generateDemoDataWithDurationInDays:(int64_t)a3 completion:(id)a4;
-- (void)remote_hkqa_statisticsWithCompletion:(id)a3;
-- (void)remote_obliterateHealthDataWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)remote_performMigrationWithCompletion:(id)a3;
-- (void)remote_pruneSamplesWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)remote_showAndDeletedSampleInfoWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)remote_showWithReferenceDate:(id)a3 deletedSamplesOnly:(BOOL)a4 completion:(id)a5;
+- (void)remote_classifiedDeletedSampleInfoWithReferenceDate:(id)date anchor:(int64_t)anchor limit:(int64_t)limit completion:(id)completion;
+- (void)remote_classifiedDeletedSampleInfoWithReferenceDate:(id)date createdOnOrAfter:(id)after createdBefore:(id)before limit:(int64_t)limit completion:(id)completion;
+- (void)remote_deletedSampleDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only sampleUUID:(id)d completion:(id)completion;
+- (void)remote_deletedSampleInfoWithReferenceDate:(id)date completion:(id)completion;
+- (void)remote_deletedSamplesDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only samplesWithDifferentPruningOutcomesOnly:(BOOL)outcomesOnly anchor:(int64_t)anchor limit:(int64_t)limit completion:(id)completion;
+- (void)remote_deletedSamplesDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only samplesWithDifferentPruningOutcomesOnly:(BOOL)outcomesOnly createdOnOrAfter:(id)after createdBefore:(id)before limit:(int64_t)limit completion:(id)completion;
+- (void)remote_getHealthDatabaseIdentifierWithCompletion:(id)completion;
+- (void)remote_getHealthDirectorySizeInBytesWithCompletion:(id)completion;
+- (void)remote_hkqa_generateDemoDataWithDurationInDays:(int64_t)days completion:(id)completion;
+- (void)remote_hkqa_statisticsWithCompletion:(id)completion;
+- (void)remote_obliterateHealthDataWithOptions:(unint64_t)options completion:(id)completion;
+- (void)remote_performMigrationWithCompletion:(id)completion;
+- (void)remote_pruneSamplesWithReferenceDate:(id)date completion:(id)completion;
+- (void)remote_showAndDeletedSampleInfoWithReferenceDate:(id)date completion:(id)completion;
+- (void)remote_showWithReferenceDate:(id)date deletedSamplesOnly:(BOOL)only completion:(id)completion;
 @end
 
 @implementation HDDatabaseControlServer
 
-- (void)remote_getHealthDatabaseIdentifierWithCompletion:(id)a3
+- (void)remote_getHealthDatabaseIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 database];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v9 = 0;
-  v7 = [v6 databaseUUIDWithError:&v9];
+  v7 = [database databaseUUIDWithError:&v9];
   v8 = v9;
 
   if (!(v7 | v8))
@@ -33,51 +33,51 @@
     v8 = [MEMORY[0x277CCA9B8] hk_error:11 format:@"No identifier found protected data may not exist."];;
   }
 
-  v4[2](v4, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (void)remote_getHealthDirectorySizeInBytesWithCompletion:(id)a3
+- (void)remote_getHealthDirectorySizeInBytesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 daemon];
-  v7 = [v6 healthDirectorySizeInBytes];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  healthDirectorySizeInBytes = [daemon healthDirectorySizeInBytes];
 
-  v4[2](v4, v7, 0);
+  completionCopy[2](completionCopy, healthDirectorySizeInBytes, 0);
 }
 
-- (void)remote_obliterateHealthDataWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)remote_obliterateHealthDataWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HDStandardTaskServer *)self client];
+  completionCopy = completion;
+  client = [(HDStandardTaskServer *)self client];
   v8 = *MEMORY[0x277CCC5C0];
   v21 = 0;
-  v9 = [v7 hasRequiredEntitlement:v8 error:&v21];
+  v9 = [client hasRequiredEntitlement:v8 error:&v21];
   v10 = v21;
 
   if (v9)
   {
-    v11 = [(HDStandardTaskServer *)self client];
-    v12 = [v11 process];
+    client2 = [(HDStandardTaskServer *)self client];
+    process = [client2 process];
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v12 name];
-    v15 = [v13 stringWithFormat:@"Requested by %@ (%d)", v14, objc_msgSend(v12, "processIdentifier")];
+    name = [process name];
+    v15 = [v13 stringWithFormat:@"Requested by %@ (%d)", name, objc_msgSend(process, "processIdentifier")];
 
-    v16 = [(HDStandardTaskServer *)self profile];
-    v17 = [v16 daemon];
+    profile = [(HDStandardTaskServer *)self profile];
+    daemon = [profile daemon];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __77__HDDatabaseControlServer_remote_obliterateHealthDataWithOptions_completion___block_invoke;
     v18[3] = &unk_278614008;
     v19 = 0;
-    v20 = v6;
-    [v17 obliterateAndTerminateWithOptions:a3 reason:v15 completion:v18];
+    v20 = completionCopy;
+    [daemon obliterateAndTerminateWithOptions:options reason:v15 completion:v18];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -92,48 +92,48 @@ uint64_t __77__HDDatabaseControlServer_remote_obliterateHealthDataWithOptions_co
   return result;
 }
 
-- (void)remote_performMigrationWithCompletion:(id)a3
+- (void)remote_performMigrationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 database];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v7 = +[HDDatabaseTransactionContext contextForWritingProtectedData];
   v10 = 0;
-  v8 = [v6 performTransactionWithContext:v7 error:&v10 block:&__block_literal_global_5 inaccessibilityHandler:0];
+  v8 = [database performTransactionWithContext:v7 error:&v10 block:&__block_literal_global_5 inaccessibilityHandler:0];
   v9 = v10;
 
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_hkqa_generateDemoDataWithDurationInDays:(int64_t)a3 completion:(id)a4
+- (void)remote_hkqa_generateDemoDataWithDurationInDays:(int64_t)days completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = HKCreateSerialDispatchQueue();
   v8 = [HDDemoDataGenerator alloc];
-  v9 = [(HDStandardTaskServer *)self profile];
-  v10 = [(HDDemoDataGenerator *)v8 initWithProfile:v9 queue:v7];
+  profile = [(HDStandardTaskServer *)self profile];
+  v10 = [(HDDemoDataGenerator *)v8 initWithProfile:profile queue:v7];
 
-  v11 = [(HDDemoDataGenerator *)v10 configuration];
-  [v11 setGenerationPeriodInDays:a3];
-  v12 = +[HDDemoDataPerson defaultPersonWithBiologicalSex:](HDDemoDataPerson, "defaultPersonWithBiologicalSex:", [v11 biologicalSex]);
-  v13 = [(HDDemoDataGenerator *)v10 gregorianCalendar];
-  v14 = [v12 birthDateComponents];
-  v15 = [v13 dateFromComponents:v14];
+  configuration = [(HDDemoDataGenerator *)v10 configuration];
+  [configuration setGenerationPeriodInDays:days];
+  v12 = +[HDDemoDataPerson defaultPersonWithBiologicalSex:](HDDemoDataPerson, "defaultPersonWithBiologicalSex:", [configuration biologicalSex]);
+  gregorianCalendar = [(HDDemoDataGenerator *)v10 gregorianCalendar];
+  birthDateComponents = [v12 birthDateComponents];
+  v15 = [gregorianCalendar dateFromComponents:birthDateComponents];
   [v12 setBirthDate:v15];
 
-  [v12 setNutritionTrackingType:{objc_msgSend(v11, "nutritionTrackingType")}];
-  [v12 setResultsTrackingType:{objc_msgSend(v11, "resultsTrackingType")}];
-  [v12 applyProfileType:{objc_msgSend(v11, "profileType")}];
-  [v12 setHighFidelityGeneration:{objc_msgSend(v11, "highFidelityGeneration")}];
+  [v12 setNutritionTrackingType:{objc_msgSend(configuration, "nutritionTrackingType")}];
+  [v12 setResultsTrackingType:{objc_msgSend(configuration, "resultsTrackingType")}];
+  [v12 applyProfileType:{objc_msgSend(configuration, "profileType")}];
+  [v12 setHighFidelityGeneration:{objc_msgSend(configuration, "highFidelityGeneration")}];
   [(HDDemoDataGenerator *)v10 setDemoPerson:v12];
-  v16 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __85__HDDatabaseControlServer_remote_hkqa_generateDemoDataWithDurationInDays_completion___block_invoke;
   v18[3] = &unk_278614050;
-  v19 = v6;
-  v17 = v6;
-  [(HDDemoDataGenerator *)v10 generateThroughEndDate:v16 completion:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [(HDDemoDataGenerator *)v10 generateThroughEndDate:date completion:v18];
 }
 
 uint64_t __68__HDDatabaseControlServer__queryDistinctTypesWithTransaction_error___block_invoke(uint64_t a1)
@@ -155,9 +155,9 @@ uint64_t __66__HDDatabaseControlServer__queryTypeCounts_withTransaction_error___
   return 1;
 }
 
-- (void)remote_hkqa_statisticsWithCompletion:(id)a3
+- (void)remote_hkqa_statisticsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -171,11 +171,11 @@ uint64_t __66__HDDatabaseControlServer__queryTypeCounts_withTransaction_error___
   aBlock[4] = self;
   aBlock[5] = &v14;
   v5 = _Block_copy(aBlock);
-  v6 = [(HDStandardTaskServer *)self profile];
-  v7 = [v6 database];
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v8 = +[HDDatabaseTransactionContext contextForReadingProtectedData];
   v12 = 0;
-  v9 = [v7 performTransactionWithContext:v8 error:&v12 block:v5 inaccessibilityHandler:0];
+  v9 = [database performTransactionWithContext:v8 error:&v12 block:v5 inaccessibilityHandler:0];
   v10 = v12;
 
   if (v9)
@@ -188,7 +188,7 @@ uint64_t __66__HDDatabaseControlServer__queryTypeCounts_withTransaction_error___
     v11 = 0;
   }
 
-  v4[2](v4, v11, v10);
+  completionCopy[2](completionCopy, v11, v10);
 
   _Block_object_dispose(&v14, 8);
 }
@@ -359,21 +359,21 @@ LABEL_28:
   return v31;
 }
 
-- (void)remote_showWithReferenceDate:(id)a3 deletedSamplesOnly:(BOOL)a4 completion:(id)a5
+- (void)remote_showWithReferenceDate:(id)date deletedSamplesOnly:(BOOL)only completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dateCopy = date;
+  completionCopy = completion;
   v10 = dispatch_get_global_queue(0, 0);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __86__HDDatabaseControlServer_remote_showWithReferenceDate_deletedSamplesOnly_completion___block_invoke;
   v13[3] = &unk_278614138;
-  v16 = a4;
+  onlyCopy = only;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = dateCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = dateCopy;
   dispatch_async(v10, v13);
 }
 
@@ -389,20 +389,20 @@ void __86__HDDatabaseControlServer_remote_showWithReferenceDate_deletedSamplesOn
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)remote_showAndDeletedSampleInfoWithReferenceDate:(id)a3 completion:(id)a4
+- (void)remote_showAndDeletedSampleInfoWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__HDDatabaseControlServer_remote_showAndDeletedSampleInfoWithReferenceDate_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dateCopy;
   dispatch_async(v8, block);
 }
 
@@ -417,20 +417,20 @@ void __87__HDDatabaseControlServer_remote_showAndDeletedSampleInfoWithReferenceD
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)remote_deletedSampleInfoWithReferenceDate:(id)a3 completion:(id)a4
+- (void)remote_deletedSampleInfoWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__HDDatabaseControlServer_remote_deletedSampleInfoWithReferenceDate_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dateCopy;
   dispatch_async(v8, block);
 }
 
@@ -445,22 +445,22 @@ void __80__HDDatabaseControlServer_remote_deletedSampleInfoWithReferenceDate_com
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)remote_classifiedDeletedSampleInfoWithReferenceDate:(id)a3 anchor:(int64_t)a4 limit:(int64_t)a5 completion:(id)a6
+- (void)remote_classifiedDeletedSampleInfoWithReferenceDate:(id)date anchor:(int64_t)anchor limit:(int64_t)limit completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  dateCopy = date;
+  completionCopy = completion;
   v12 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __103__HDDatabaseControlServer_remote_classifiedDeletedSampleInfoWithReferenceDate_anchor_limit_completion___block_invoke;
   block[3] = &unk_278614188;
   block[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = dateCopy;
+  anchorCopy = anchor;
+  limitCopy = limit;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = dateCopy;
   dispatch_async(v12, block);
 }
 
@@ -477,27 +477,27 @@ void __103__HDDatabaseControlServer_remote_classifiedDeletedSampleInfoWithRefere
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)remote_classifiedDeletedSampleInfoWithReferenceDate:(id)a3 createdOnOrAfter:(id)a4 createdBefore:(id)a5 limit:(int64_t)a6 completion:(id)a7
+- (void)remote_classifiedDeletedSampleInfoWithReferenceDate:(id)date createdOnOrAfter:(id)after createdBefore:(id)before limit:(int64_t)limit completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dateCopy = date;
+  afterCopy = after;
+  beforeCopy = before;
+  completionCopy = completion;
   v16 = dispatch_get_global_queue(0, 0);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __127__HDDatabaseControlServer_remote_classifiedDeletedSampleInfoWithReferenceDate_createdOnOrAfter_createdBefore_limit_completion___block_invoke;
   v21[3] = &unk_2786141B0;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a6;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = dateCopy;
+  v23 = afterCopy;
+  v24 = beforeCopy;
+  v25 = completionCopy;
+  limitCopy = limit;
+  v17 = completionCopy;
+  v18 = beforeCopy;
+  v19 = afterCopy;
+  v20 = dateCopy;
   dispatch_async(v16, v21);
 }
 
@@ -515,24 +515,24 @@ void __127__HDDatabaseControlServer_remote_classifiedDeletedSampleInfoWithRefere
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)remote_deletedSampleDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 sampleUUID:(id)a5 completion:(id)a6
+- (void)remote_deletedSampleDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only sampleUUID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  dCopy = d;
+  completionCopy = completion;
   v13 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __116__HDDatabaseControlServer_remote_deletedSampleDetailWithReferenceDate_matchingPredicatesOnly_sampleUUID_completion___block_invoke;
   block[3] = &unk_2786141D8;
-  v21 = a4;
+  onlyCopy = only;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = dateCopy;
+  v19 = dCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = dCopy;
+  v16 = dateCopy;
   dispatch_async(v13, block);
 }
 
@@ -549,24 +549,24 @@ void __116__HDDatabaseControlServer_remote_deletedSampleDetailWithReferenceDate_
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)remote_deletedSamplesDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 samplesWithDifferentPruningOutcomesOnly:(BOOL)a5 anchor:(int64_t)a6 limit:(int64_t)a7 completion:(id)a8
+- (void)remote_deletedSamplesDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only samplesWithDifferentPruningOutcomesOnly:(BOOL)outcomesOnly anchor:(int64_t)anchor limit:(int64_t)limit completion:(id)completion
 {
-  v14 = a3;
-  v15 = a8;
+  dateCopy = date;
+  completionCopy = completion;
   v16 = dispatch_get_global_queue(0, 0);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __159__HDDatabaseControlServer_remote_deletedSamplesDetailWithReferenceDate_matchingPredicatesOnly_samplesWithDifferentPruningOutcomesOnly_anchor_limit_completion___block_invoke;
   v19[3] = &unk_278614200;
-  v24 = a4;
-  v25 = a5;
+  onlyCopy = only;
+  outcomesOnlyCopy = outcomesOnly;
   v19[4] = self;
-  v20 = v14;
-  v22 = a6;
-  v23 = a7;
-  v21 = v15;
-  v17 = v15;
-  v18 = v14;
+  v20 = dateCopy;
+  anchorCopy = anchor;
+  limitCopy = limit;
+  v21 = completionCopy;
+  v17 = completionCopy;
+  v18 = dateCopy;
   dispatch_async(v16, v19);
 }
 
@@ -585,29 +585,29 @@ void __159__HDDatabaseControlServer_remote_deletedSamplesDetailWithReferenceDate
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)remote_deletedSamplesDetailWithReferenceDate:(id)a3 matchingPredicatesOnly:(BOOL)a4 samplesWithDifferentPruningOutcomesOnly:(BOOL)a5 createdOnOrAfter:(id)a6 createdBefore:(id)a7 limit:(int64_t)a8 completion:(id)a9
+- (void)remote_deletedSamplesDetailWithReferenceDate:(id)date matchingPredicatesOnly:(BOOL)only samplesWithDifferentPruningOutcomesOnly:(BOOL)outcomesOnly createdOnOrAfter:(id)after createdBefore:(id)before limit:(int64_t)limit completion:(id)completion
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  dateCopy = date;
+  afterCopy = after;
+  beforeCopy = before;
+  completionCopy = completion;
   v19 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __183__HDDatabaseControlServer_remote_deletedSamplesDetailWithReferenceDate_matchingPredicatesOnly_samplesWithDifferentPruningOutcomesOnly_createdOnOrAfter_createdBefore_limit_completion___block_invoke;
   block[3] = &unk_278614228;
-  v30 = a4;
-  v31 = a5;
+  onlyCopy = only;
+  outcomesOnlyCopy = outcomesOnly;
   block[4] = self;
-  v25 = v15;
-  v26 = v16;
-  v27 = v17;
-  v28 = v18;
-  v29 = a8;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
+  v25 = dateCopy;
+  v26 = afterCopy;
+  v27 = beforeCopy;
+  v28 = completionCopy;
+  limitCopy = limit;
+  v20 = completionCopy;
+  v21 = beforeCopy;
+  v22 = afterCopy;
+  v23 = dateCopy;
   dispatch_async(v19, block);
 }
 
@@ -627,24 +627,24 @@ void __183__HDDatabaseControlServer_remote_deletedSamplesDetailWithReferenceDate
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)remote_pruneSamplesWithReferenceDate:(id)a3 completion:(id)a4
+- (void)remote_pruneSamplesWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dateCopy = date;
   v8 = [HDDatabasePruningTask alloc];
-  v9 = [(HDStandardTaskServer *)self profile];
-  v10 = [(HDDatabasePruningTask *)v8 initWithProfile:v9];
+  profile = [(HDStandardTaskServer *)self profile];
+  v10 = [(HDDatabasePruningTask *)v8 initWithProfile:profile];
 
-  v11 = [(HDStandardTaskServer *)self profile];
-  v12 = [v11 daemon];
-  v13 = [v12 maintenanceWorkCoordinator];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  daemon = [profile2 daemon];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__HDDatabaseControlServer_remote_pruneSamplesWithReferenceDate_completion___block_invoke;
   v15[3] = &unk_278614250;
-  v16 = v6;
-  v14 = v6;
-  [(HDDatabasePruningTask *)v10 enqueueMaintenanceOperationOnCoordinator:v13 takeAccessibilityAssertion:0 nowDate:v7 shouldDefer:0 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(HDDatabasePruningTask *)v10 enqueueMaintenanceOperationOnCoordinator:maintenanceWorkCoordinator takeAccessibilityAssertion:0 nowDate:dateCopy shouldDefer:0 completion:v15];
 }
 
 + (id)requiredEntitlements

@@ -1,14 +1,14 @@
 @interface HKClinicalAccount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalAccount)init;
-- (HKClinicalAccount)initWithCoder:(id)a3;
-- (HKClinicalAccount)initWithIdentifier:(id)a3 state:(int64_t)a4 userEnabled:(BOOL)a5 lastFetchDate:(id)a6 lastFullFetchDate:(id)a7 lastFailedFetchDate:(id)a8 failedFetchAttemptsCount:(id)a9 clinicalSharingStatus:(id)a10 hasClinicalSharingScopes:(BOOL)a11 provenance:(id)a12;
+- (HKClinicalAccount)initWithCoder:(id)coder;
+- (HKClinicalAccount)initWithIdentifier:(id)identifier state:(int64_t)state userEnabled:(BOOL)enabled lastFetchDate:(id)date lastFullFetchDate:(id)fetchDate lastFailedFetchDate:(id)failedFetchDate failedFetchAttemptsCount:(id)count clinicalSharingStatus:(id)self0 hasClinicalSharingScopes:(BOOL)self1 provenance:(id)self2;
 - (HKClinicalGatewayReference)newerAvailableGateway;
 - (NSString)description;
 - (NSString)subtitle;
 - (NSString)title;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalAccount
@@ -23,49 +23,49 @@
   return 0;
 }
 
-- (HKClinicalAccount)initWithIdentifier:(id)a3 state:(int64_t)a4 userEnabled:(BOOL)a5 lastFetchDate:(id)a6 lastFullFetchDate:(id)a7 lastFailedFetchDate:(id)a8 failedFetchAttemptsCount:(id)a9 clinicalSharingStatus:(id)a10 hasClinicalSharingScopes:(BOOL)a11 provenance:(id)a12
+- (HKClinicalAccount)initWithIdentifier:(id)identifier state:(int64_t)state userEnabled:(BOOL)enabled lastFetchDate:(id)date lastFullFetchDate:(id)fetchDate lastFailedFetchDate:(id)failedFetchDate failedFetchAttemptsCount:(id)count clinicalSharingStatus:(id)self0 hasClinicalSharingScopes:(BOOL)self1 provenance:(id)self2
 {
-  v18 = a3;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a12;
+  identifierCopy = identifier;
+  dateCopy = date;
+  fetchDateCopy = fetchDate;
+  failedFetchDateCopy = failedFetchDate;
+  countCopy = count;
+  statusCopy = status;
+  provenanceCopy = provenance;
   v42.receiver = self;
   v42.super_class = HKClinicalAccount;
   v25 = [(HKClinicalAccount *)&v42 init];
   if (v25)
   {
-    v26 = [v18 copy];
+    v26 = [identifierCopy copy];
     identifier = v25->_identifier;
     v25->_identifier = v26;
 
-    v25->_state = a4;
-    v25->_userEnabled = a5;
+    v25->_state = state;
+    v25->_userEnabled = enabled;
     v28 = HKDateMax();
     v29 = [v28 copy];
     lastFetchDate = v25->_lastFetchDate;
     v25->_lastFetchDate = v29;
 
-    v31 = [v20 copy];
+    v31 = [fetchDateCopy copy];
     lastFullFetchDate = v25->_lastFullFetchDate;
     v25->_lastFullFetchDate = v31;
 
-    v33 = [v21 copy];
+    v33 = [failedFetchDateCopy copy];
     lastFailedFetchDate = v25->_lastFailedFetchDate;
     v25->_lastFailedFetchDate = v33;
 
-    v35 = [v22 copy];
+    v35 = [countCopy copy];
     failedFetchAttemptsCount = v25->_failedFetchAttemptsCount;
     v25->_failedFetchAttemptsCount = v35;
 
-    v37 = [v23 copy];
+    v37 = [statusCopy copy];
     clinicalSharingStatus = v25->_clinicalSharingStatus;
     v25->_clinicalSharingStatus = v37;
 
-    v25->_hasClinicalSharingScopes = a11;
-    v39 = [v24 copy];
+    v25->_hasClinicalSharingScopes = scopes;
+    v39 = [provenanceCopy copy];
     provenance = v25->_provenance;
     v25->_provenance = v39;
   }
@@ -78,7 +78,7 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NSUUID *)self->_identifier UUIDString];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
   v7 = @"true";
   if (self->_userEnabled)
   {
@@ -100,67 +100,67 @@
   }
 
   v11 = [(HKClinicalAccountProvenance *)self->_provenance description];
-  v12 = [v3 stringWithFormat:@"<%@ %p identifier: %@; isUserEnabled: %@; state: %ld; lastFetchDate: %@; lastFullFetchDate: %@; lastFailedFetchDate: %@; failedFetchAttemptsCount: %@; clinicalSharingStatus: %@ ; hasClinicalSharingScopes: %@; provenance: %@;>", v5, self, v6, v8, v15, v14, failedFetchAttemptsCount, v10, v7, v11];;
+  v12 = [v3 stringWithFormat:@"<%@ %p identifier: %@; isUserEnabled: %@; state: %ld; lastFetchDate: %@; lastFullFetchDate: %@; lastFailedFetchDate: %@; failedFetchAttemptsCount: %@; clinicalSharingStatus: %@ ; hasClinicalSharingScopes: %@; provenance: %@;>", v5, self, uUIDString, v8, v15, v14, failedFetchAttemptsCount, v10, v7, v11];;
 
   return v12;
 }
 
 - (HKClinicalGatewayReference)newerAvailableGateway
 {
-  v2 = [(HKClinicalAccountProvenance *)self->_provenance gateway];
-  v3 = [v2 newerSupportedGatewayVersion];
+  gateway = [(HKClinicalAccountProvenance *)self->_provenance gateway];
+  newerSupportedGatewayVersion = [gateway newerSupportedGatewayVersion];
 
-  return v3;
+  return newerSupportedGatewayVersion;
 }
 
 - (NSString)title
 {
-  v3 = [(HKClinicalAccountProvenance *)self->_provenance type];
+  type = [(HKClinicalAccountProvenance *)self->_provenance type];
   provenance = self->_provenance;
-  if (v3 == 1)
+  if (type == 1)
   {
-    v5 = [(HKClinicalAccountProvenance *)provenance signedClinicalDataIssuer];
-    v6 = [v5 title];
+    signedClinicalDataIssuer = [(HKClinicalAccountProvenance *)provenance signedClinicalDataIssuer];
+    title = [signedClinicalDataIssuer title];
   }
 
   else
   {
-    v6 = [(HKClinicalAccountProvenance *)provenance title];
+    title = [(HKClinicalAccountProvenance *)provenance title];
   }
 
-  return v6;
+  return title;
 }
 
 - (NSString)subtitle
 {
-  v3 = [(HKClinicalAccountProvenance *)self->_provenance type];
+  type = [(HKClinicalAccountProvenance *)self->_provenance type];
   provenance = self->_provenance;
-  if (v3 == 1)
+  if (type == 1)
   {
-    v5 = [(HKClinicalAccountProvenance *)provenance signedClinicalDataIssuer];
-    v6 = [v5 subtitle];
+    signedClinicalDataIssuer = [(HKClinicalAccountProvenance *)provenance signedClinicalDataIssuer];
+    subtitle = [signedClinicalDataIssuer subtitle];
   }
 
   else
   {
-    v6 = [(HKClinicalAccountProvenance *)provenance subtitle];
+    subtitle = [(HKClinicalAccountProvenance *)provenance subtitle];
   }
 
-  return v6;
+  return subtitle;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HKClinicalAccount *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HKClinicalAccount *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -170,9 +170,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HKClinicalAccount *)v4 identifier];
-      v6 = [(HKClinicalAccount *)self identifier];
-      v7 = [v5 isEqual:v6];
+      identifier = [(HKClinicalAccount *)equalCopy identifier];
+      identifier2 = [(HKClinicalAccount *)self identifier];
+      v7 = [identifier isEqual:identifier2];
     }
 
     else
@@ -184,28 +184,28 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   provenance = self->_provenance;
-  v5 = a3;
-  [v5 encodeObject:provenance forKey:@"provenance"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_lastFetchDate forKey:@"lastFetchDate"];
-  [v5 encodeObject:self->_lastFullFetchDate forKey:@"lastFullFetchDate"];
-  [v5 encodeObject:self->_lastFailedFetchDate forKey:@"lastFailedFetchDate"];
-  [v5 encodeObject:self->_failedFetchAttemptsCount forKey:@"failedFetchAttemptsCount"];
-  [v5 encodeObject:self->_clinicalSharingStatus forKey:@"clinicalSharingStatus"];
-  [v5 encodeBool:self->_hasClinicalSharingScopes forKey:@"hasClinicalSharingScopes"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeBool:self->_userEnabled forKey:@"userEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:provenance forKey:@"provenance"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_lastFetchDate forKey:@"lastFetchDate"];
+  [coderCopy encodeObject:self->_lastFullFetchDate forKey:@"lastFullFetchDate"];
+  [coderCopy encodeObject:self->_lastFailedFetchDate forKey:@"lastFailedFetchDate"];
+  [coderCopy encodeObject:self->_failedFetchAttemptsCount forKey:@"failedFetchAttemptsCount"];
+  [coderCopy encodeObject:self->_clinicalSharingStatus forKey:@"clinicalSharingStatus"];
+  [coderCopy encodeBool:self->_hasClinicalSharingScopes forKey:@"hasClinicalSharingScopes"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeBool:self->_userEnabled forKey:@"userEnabled"];
 }
 
-- (HKClinicalAccount)initWithCoder:(id)a3
+- (HKClinicalAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provenance"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clinicalSharingStatus"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provenance"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clinicalSharingStatus"];
   v8 = v7;
   if (v6)
   {
@@ -218,28 +218,28 @@
   }
 
   v10 = v9 || v7 == 0;
-  if (!v10 && [v4 containsValueForKey:@"state"] && objc_msgSend(v4, "containsValueForKey:", @"userEnabled") && (objc_msgSend(v4, "containsValueForKey:", @"hasClinicalSharingScopes") & 1) != 0)
+  if (!v10 && [coderCopy containsValueForKey:@"state"] && objc_msgSend(coderCopy, "containsValueForKey:", @"userEnabled") && (objc_msgSend(coderCopy, "containsValueForKey:", @"hasClinicalSharingScopes") & 1) != 0)
   {
-    v20 = [v4 decodeIntegerForKey:@"state"];
-    v19 = [v4 decodeBoolForKey:@"userEnabled"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastFetchDate"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastFullFetchDate"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastFailedFetchDate"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"failedFetchAttemptsCount"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clinicalSharingStatus"];
-    LOBYTE(v18) = [v4 decodeBoolForKey:@"hasClinicalSharingScopes"];
+    v20 = [coderCopy decodeIntegerForKey:@"state"];
+    v19 = [coderCopy decodeBoolForKey:@"userEnabled"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastFetchDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastFullFetchDate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastFailedFetchDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"failedFetchAttemptsCount"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clinicalSharingStatus"];
+    LOBYTE(v18) = [coderCopy decodeBoolForKey:@"hasClinicalSharingScopes"];
     self = [(HKClinicalAccount *)self initWithIdentifier:v6 state:v20 userEnabled:v19 lastFetchDate:v11 lastFullFetchDate:v12 lastFailedFetchDate:v13 failedFetchAttemptsCount:v14 clinicalSharingStatus:v15 hasClinicalSharingScopes:v18 provenance:v5];
 
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v16 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

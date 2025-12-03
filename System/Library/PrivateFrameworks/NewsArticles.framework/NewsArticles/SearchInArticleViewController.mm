@@ -1,16 +1,16 @@
 @interface SearchInArticleViewController
 - (NSArray)keyCommands;
-- (_TtC12NewsArticles29SearchInArticleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NewsArticles29SearchInArticleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelButtonTapped;
 - (void)clearSearchTextField;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
 - (void)nextButtonTapped;
 - (void)previousButtonTapped;
-- (void)textFieldDidChange:(id)a3;
-- (void)updateMenuButtonTitle:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)textFieldDidChange:(id)change;
+- (void)updateMenuButtonTitle:(id)title;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -18,40 +18,40 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7CF668C();
 }
 
-- (void)updateMenuButtonTitle:(id)a3
+- (void)updateMenuButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D7CF7BC0(v4);
+  titleCopy = title;
+  selfCopy = self;
+  sub_1D7CF7BC0(titleCopy);
 }
 
 - (void)loadView
 {
   type metadata accessor for PassthroughView();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(SearchInArticleViewController *)v5 setView:v4];
+  [(SearchInArticleViewController *)selfCopy setView:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(SearchInArticleViewController *)&v6 viewDidAppear:v3];
+  [(SearchInArticleViewController *)&v6 viewDidAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC12NewsArticles29SearchInArticleViewController_searchTextField];
   [v5 becomeFirstResponder];
 }
 
 - (void)cancelButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7CF7FA4();
 }
 
@@ -62,7 +62,7 @@
   *(v3 + 16) = xmmword_1D7D3C670;
   v4 = *MEMORY[0x1E69DDEA0];
   v5 = objc_opt_self();
-  v6 = self;
+  selfCopy = self;
   *(v3 + 32) = [v5 keyCommandWithInput:v4 modifierFlags:0 action:sel_cancelButtonTapped];
 
   sub_1D7992EFC(0, &unk_1EE0BF118);
@@ -73,28 +73,28 @@
 
 - (void)nextButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7CF8370(&qword_1EC9DFE78);
 }
 
 - (void)previousButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7CF8370(&qword_1EC9DFE80);
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = a3;
-  v11 = self;
-  v5 = [v4 text];
-  if (v5)
+  changeCopy = change;
+  selfCopy = self;
+  text = [changeCopy text];
+  if (text)
   {
-    v6 = v5;
+    v6 = text;
     v7 = sub_1D7D3034C();
     v9 = v8;
 
-    v10 = (v11 + OBJC_IVAR____TtC12NewsArticles29SearchInArticleViewController_searchTerm);
+    v10 = (selfCopy + OBJC_IVAR____TtC12NewsArticles29SearchInArticleViewController_searchTerm);
     *v10 = v7;
     v10[1] = v9;
 
@@ -104,24 +104,24 @@
 
 - (void)clearSearchTextField
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7CF870C();
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   v4 = sub_1D7D2802C();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7D27FFC();
-  v9 = self;
+  selfCopy = self;
   sub_1D7CF89F4();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   v4 = sub_1D7D2802C();
   v5 = *(v4 - 8);
@@ -129,12 +129,12 @@
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7D27FFC();
   v9 = *(v5 + 8);
-  v10 = self;
+  selfCopy = self;
   v9(v8, v4);
-  *(&v10->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles29SearchInArticleViewController_keyboardHeight) = 0;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles29SearchInArticleViewController_keyboardHeight) = 0;
 }
 
-- (_TtC12NewsArticles29SearchInArticleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles29SearchInArticleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

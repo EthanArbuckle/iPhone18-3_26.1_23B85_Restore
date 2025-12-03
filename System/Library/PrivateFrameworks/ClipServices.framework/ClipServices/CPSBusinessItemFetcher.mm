@@ -1,15 +1,15 @@
 @interface CPSBusinessItemFetcher
-- (void)fetchBusinessMetadataForURL:(id)a3 availabilityHandler:(id)a4 completion:(id)a5;
-- (void)fetchBusinessMetadataForURLHash:(id)a3 completion:(id)a4;
+- (void)fetchBusinessMetadataForURL:(id)l availabilityHandler:(id)handler completion:(id)completion;
+- (void)fetchBusinessMetadataForURLHash:(id)hash completion:(id)completion;
 @end
 
 @implementation CPSBusinessItemFetcher
 
-- (void)fetchBusinessMetadataForURL:(id)a3 availabilityHandler:(id)a4 completion:(id)a5
+- (void)fetchBusinessMetadataForURL:(id)l availabilityHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
+  completionCopy = completion;
   if (!self->_businessQueryService)
   {
     v11 = objc_alloc_init(MEMORY[0x277CF3618]);
@@ -21,13 +21,13 @@
   v22[1] = 3221225472;
   v22[2] = __85__CPSBusinessItemFetcher_fetchBusinessMetadataForURL_availabilityHandler_completion___block_invoke;
   v22[3] = &unk_278DCDB38;
-  v13 = v8;
+  v13 = lCopy;
   v23 = v13;
-  v14 = v9;
+  v14 = handlerCopy;
   v25 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v26 = v15;
-  v24 = self;
+  selfCopy = self;
   v16 = MEMORY[0x245D3D5F0](v22);
   v17 = self->_businessQueryService;
   v18 = objc_opt_respondsToSelector();
@@ -153,10 +153,10 @@ LABEL_4:
 LABEL_11:
 }
 
-- (void)fetchBusinessMetadataForURLHash:(id)a3 completion:(id)a4
+- (void)fetchBusinessMetadataForURLHash:(id)hash completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  hashCopy = hash;
+  completionCopy = completion;
   businessQueryService = self->_businessQueryService;
   if (!businessQueryService)
   {
@@ -171,9 +171,9 @@ LABEL_11:
   v12[1] = 3221225472;
   v12[2] = __69__CPSBusinessItemFetcher_fetchBusinessMetadataForURLHash_completion___block_invoke;
   v12[3] = &unk_278DCDB88;
-  v13 = v7;
-  v11 = v7;
-  [(BCSBusinessQueryService *)businessQueryService fetchLinkItemWithHash:v6 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(BCSBusinessQueryService *)businessQueryService fetchLinkItemWithHash:hashCopy completion:v12];
 }
 
 void __69__CPSBusinessItemFetcher_fetchBusinessMetadataForURLHash_completion___block_invoke(uint64_t a1, void *a2)

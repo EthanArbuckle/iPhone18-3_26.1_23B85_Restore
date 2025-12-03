@@ -1,25 +1,25 @@
 @interface ATXAppClipUsageStream
-- (int)_launchReasonFromString:(id)a3;
-- (void)enumerateAppClipUsageEventsFromStartDate:(id)a3 endDate:(id)a4 filterBlock:(id)a5 limit:(unint64_t)a6 ascending:(BOOL)a7 block:(id)a8;
+- (int)_launchReasonFromString:(id)string;
+- (void)enumerateAppClipUsageEventsFromStartDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending block:(id)a8;
 @end
 
 @implementation ATXAppClipUsageStream
 
-- (void)enumerateAppClipUsageEventsFromStartDate:(id)a3 endDate:(id)a4 filterBlock:(id)a5 limit:(unint64_t)a6 ascending:(BOOL)a7 block:(id)a8
+- (void)enumerateAppClipUsageEventsFromStartDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending block:(id)a8
 {
-  v9 = a7;
-  v14 = a5;
+  ascendingCopy = ascending;
+  blockCopy = block;
   v15 = a8;
-  v16 = [(ATXAppClipUsageStream *)self _publisherWithStartDate:a3 endDate:a4 limit:a6 shouldReverse:!v9];
+  v16 = [(ATXAppClipUsageStream *)self _publisherWithStartDate:date endDate:endDate limit:limit shouldReverse:!ascendingCopy];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __108__ATXAppClipUsageStream_enumerateAppClipUsageEventsFromStartDate_endDate_filterBlock_limit_ascending_block___block_invoke_11;
   v20[3] = &unk_278590948;
   v20[4] = self;
-  v21 = v14;
+  v21 = blockCopy;
   v22 = v15;
   v17 = v15;
-  v18 = v14;
+  v18 = blockCopy;
   v19 = [v16 sinkWithCompletion:&__block_literal_global_19 shouldContinue:v20];
 }
 
@@ -99,50 +99,50 @@ LABEL_10:
   return 1;
 }
 
-- (int)_launchReasonFromString:(id)a3
+- (int)_launchReasonFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NFC"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"NFC"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"QR"])
+  else if ([stringCopy isEqualToString:@"QR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LocationBased"])
+  else if ([stringCopy isEqualToString:@"LocationBased"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SpringBoard"])
+  else if ([stringCopy isEqualToString:@"SpringBoard"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Maps"])
+  else if ([stringCopy isEqualToString:@"Maps"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Safari"])
+  else if ([stringCopy isEqualToString:@"Safari"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Messages"])
+  else if ([stringCopy isEqualToString:@"Messages"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Mail"])
+  else if ([stringCopy isEqualToString:@"Mail"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Other"])
+  else if ([stringCopy isEqualToString:@"Other"])
   {
     v4 = 9;
   }
@@ -152,7 +152,7 @@ LABEL_10:
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [(ATXAppClipUsageStream *)v3 _launchReasonFromString:v5];
+      [(ATXAppClipUsageStream *)stringCopy _launchReasonFromString:v5];
     }
 
     v4 = 0;

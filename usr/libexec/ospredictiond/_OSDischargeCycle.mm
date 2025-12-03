@@ -1,6 +1,6 @@
 @interface _OSDischargeCycle
 - (_OSDischargeCycle)init;
-- (id)findEventWithCurrentCapacity:(id)a3;
+- (id)findEventWithCurrentCapacity:(id)capacity;
 - (id)getLastEvent;
 @end
 
@@ -22,15 +22,15 @@
 
 - (id)getLastEvent
 {
-  v2 = [(_OSDischargeCycle *)self dischargeEvents];
-  v3 = [v2 lastObject];
+  dischargeEvents = [(_OSDischargeCycle *)self dischargeEvents];
+  lastObject = [dischargeEvents lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)findEventWithCurrentCapacity:(id)a3
+- (id)findEventWithCurrentCapacity:(id)capacity
 {
-  v4 = a3;
+  capacityCopy = capacity;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -52,8 +52,8 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 currentCapacity];
-        v13 = [v12 isEqualToNumber:v4];
+        currentCapacity = [v11 currentCapacity];
+        v13 = [currentCapacity isEqualToNumber:capacityCopy];
 
         if (v13)
         {

@@ -1,24 +1,24 @@
 @interface WFCompactPlatterSashView
 + (id)font;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WFCompactPlatterSashView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WFCompactPlatterSashView)initWithFrame:(CGRect)frame;
 - (double)contentBaseline;
 - (void)layoutSubviews;
-- (void)setAppearanceProvider:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAppearanceProvider:(id)provider;
+- (void)setIcon:(id)icon;
+- (void)setTitle:(id)title;
 @end
 
 @implementation WFCompactPlatterSashView
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v8 = a3;
-  objc_storeStrong(&self->_icon, a3);
+  iconCopy = icon;
+  objc_storeStrong(&self->_icon, icon);
   iconView = self->_iconView;
   if (!iconView)
   {
-    v6 = [objc_alloc(MEMORY[0x277D7D520]) initWithIcon:v8 size:{20.0, 20.0}];
+    v6 = [objc_alloc(MEMORY[0x277D7D520]) initWithIcon:iconCopy size:{20.0, 20.0}];
     v7 = self->_iconView;
     self->_iconView = v6;
 
@@ -27,34 +27,34 @@
     iconView = self->_iconView;
   }
 
-  [(WFIconHostingView *)iconView setIcon:v8];
+  [(WFIconHostingView *)iconView setIcon:iconCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  titleCopy = title;
+  v4 = [titleCopy copy];
   title = self->_title;
   self->_title = v4;
 
-  [(UILabel *)self->_label setText:v6];
+  [(UILabel *)self->_label setText:titleCopy];
 }
 
-- (void)setAppearanceProvider:(id)a3
+- (void)setAppearanceProvider:(id)provider
 {
-  objc_storeStrong(&self->_appearanceProvider, a3);
-  v5 = a3;
-  v7 = [(WFCompactPlatterSashView *)self label];
-  v6 = [(WFCompactPlatterSashView *)self iconView];
-  [v5 configurePlatterSashView:v7 iconView:v6];
+  objc_storeStrong(&self->_appearanceProvider, provider);
+  providerCopy = provider;
+  label = [(WFCompactPlatterSashView *)self label];
+  iconView = [(WFCompactPlatterSashView *)self iconView];
+  [providerCopy configurePlatterSashView:label iconView:iconView];
 }
 
 - (double)contentBaseline
 {
   [(WFIconHostingView *)self->_iconView iconSize];
   v3 = v2 + 10.0;
-  v4 = [objc_opt_class() font];
-  [v4 _scaledValueForValue:15.0];
+  font = [objc_opt_class() font];
+  [font _scaledValueForValue:15.0];
   v6 = v5 + 10.0;
 
   if (v3 >= v6)
@@ -68,10 +68,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(WFIconHostingView *)self->_iconView iconSize:a3.width];
+  width = fits.width;
+  [(WFIconHostingView *)self->_iconView iconSize:fits.width];
   [(UILabel *)self->_label sizeThatFits:width - (v5 + 18.0), 1.79769313e308];
   v7 = v6;
   [(WFIconHostingView *)self->_iconView iconSize];
@@ -147,28 +147,28 @@
   [(UILabel *)label setFrame:?];
 }
 
-- (WFCompactPlatterSashView)initWithFrame:(CGRect)a3
+- (WFCompactPlatterSashView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = WFCompactPlatterSashView;
-  v3 = [(WFCompactPlatterSashView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFCompactPlatterSashView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(WFCompactPlatterSashView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(WFCompactPlatterSashView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
     v6 = objc_alloc(MEMORY[0x277D756B8]);
     v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v8 = [MEMORY[0x277D75348] labelColor];
-    v9 = [v8 colorWithAlphaComponent:0.5];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v9 = [labelColor colorWithAlphaComponent:0.5];
     [(UILabel *)v7 setTextColor:v9];
 
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v7 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v7 setBackgroundColor:clearColor];
 
-    v11 = [objc_opt_class() font];
-    [(UILabel *)v7 setFont:v11];
+    font = [objc_opt_class() font];
+    [(UILabel *)v7 setFont:font];
 
     label = v4->_label;
     v4->_label = v7;
@@ -177,8 +177,8 @@
     v14 = [MEMORY[0x277D75210] effectWithStyle:8];
     v15 = [MEMORY[0x277D75D00] effectForBlurEffect:v14 style:1];
     v16 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v15];
-    v17 = [(UIVisualEffectView *)v16 contentView];
-    [v17 addSubview:v13];
+    contentView = [(UIVisualEffectView *)v16 contentView];
+    [contentView addSubview:v13];
 
     visualEffectView = v4->_visualEffectView;
     v4->_visualEffectView = v16;
@@ -207,8 +207,8 @@
   v14[1] = v3;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v7 = [objc_alloc(MEMORY[0x277D74310]) initWithFontAttributes:v6];
-  v8 = [MEMORY[0x277D75520] defaultMetrics];
-  [v8 scaledValueForValue:15.0];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:15.0];
   v10 = round(v9);
 
   v11 = [MEMORY[0x277D74300] fontWithDescriptor:v7 size:{fmin(fmax(v10, 15.0), 22.0)}];

@@ -1,25 +1,25 @@
 @interface CSDScreenTimeCallFilter
-- (BOOL)containsOutgoingRestrictedHandle:(id)a3 forBundleIdentifier:(id)a4 performSynchronously:(BOOL)a5;
-- (BOOL)containsRestrictedHandle:(id)a3;
-- (BOOL)isUnknownAddress:(id)a3 normalizedAddress:(id)a4 forBundleIdentifier:(id)a5;
-- (BOOL)shouldFilterIncomingCall:(id)a3 from:(id)a4;
-- (BOOL)shouldRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4 performSynchronously:(BOOL)a5;
-- (BOOL)willRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4;
-- (CSDScreenTimeCallFilter)initWithCallProviderManager:(id)a3 delegate:(id)a4 queue:(id)a5;
-- (id)policyForAddresses:(id)a3 forBundleIdentifier:(id)a4;
-- (int64_t)filterStatusForAddresses:(id)a3 withBundleIdentifier:(id)a4;
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
-- (void)handleCallRemoteParticipantsChanged:(id)a3;
-- (void)providersChangedForProviderManager:(id)a3 withValidKeychain:(BOOL)a4;
-- (void)startMonitoringCall:(id)a3;
-- (void)stopMonitoringCall:(id)a3;
+- (BOOL)containsOutgoingRestrictedHandle:(id)handle forBundleIdentifier:(id)identifier performSynchronously:(BOOL)synchronously;
+- (BOOL)containsRestrictedHandle:(id)handle;
+- (BOOL)isUnknownAddress:(id)address normalizedAddress:(id)normalizedAddress forBundleIdentifier:(id)identifier;
+- (BOOL)shouldFilterIncomingCall:(id)call from:(id)from;
+- (BOOL)shouldRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier performSynchronously:(BOOL)synchronously;
+- (BOOL)willRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier;
+- (CSDScreenTimeCallFilter)initWithCallProviderManager:(id)manager delegate:(id)delegate queue:(id)queue;
+- (id)policyForAddresses:(id)addresses forBundleIdentifier:(id)identifier;
+- (int64_t)filterStatusForAddresses:(id)addresses withBundleIdentifier:(id)identifier;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
+- (void)handleCallRemoteParticipantsChanged:(id)changed;
+- (void)providersChangedForProviderManager:(id)manager withValidKeychain:(BOOL)keychain;
+- (void)startMonitoringCall:(id)call;
+- (void)stopMonitoringCall:(id)call;
 @end
 
 @implementation CSDScreenTimeCallFilter
 
-- (BOOL)containsOutgoingRestrictedHandle:(id)a3 forBundleIdentifier:(id)a4 performSynchronously:(BOOL)a5
+- (BOOL)containsOutgoingRestrictedHandle:(id)handle forBundleIdentifier:(id)identifier performSynchronously:(BOOL)synchronously
 {
-  if (a4)
+  if (identifier)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
@@ -31,68 +31,68 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = self;
-  v13 = sub_10001D9D8(a3, v8, v10, a5);
+  handleCopy = handle;
+  selfCopy = self;
+  v13 = sub_10001D9D8(handle, v8, v10, synchronously);
 
   return v13 & 1;
 }
 
-- (void)startMonitoringCall:(id)a3
+- (void)startMonitoringCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
+  callCopy = call;
+  selfCopy = self;
   sub_10002156C();
 }
 
-- (void)handleCallRemoteParticipantsChanged:(id)a3
+- (void)handleCallRemoteParticipantsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
+  changedCopy = changed;
+  selfCopy = self;
   sub_100032D88();
 }
 
-- (void)stopMonitoringCall:(id)a3
+- (void)stopMonitoringCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
+  callCopy = call;
+  selfCopy = self;
   sub_100021B9C();
 }
 
-- (CSDScreenTimeCallFilter)initWithCallProviderManager:(id)a3 delegate:(id)a4 queue:(id)a5
+- (CSDScreenTimeCallFilter)initWithCallProviderManager:(id)manager delegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v7 = a5;
+  queueCopy = queue;
   sub_10045E81C();
   return result;
 }
 
-- (BOOL)containsRestrictedHandle:(id)a3
+- (BOOL)containsRestrictedHandle:(id)handle
 {
-  v5 = a3;
-  v6 = self;
-  sub_10045ED64(a3);
+  handleCopy = handle;
+  selfCopy = self;
+  sub_10045ED64(handle);
 
   return 0;
 }
 
-- (BOOL)shouldFilterIncomingCall:(id)a3 from:(id)a4
+- (BOOL)shouldFilterIncomingCall:(id)call from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10045EE0C(v6, v7);
+  callCopy = call;
+  fromCopy = from;
+  selfCopy = self;
+  v9 = sub_10045EE0C(callCopy, fromCopy);
 
   return v9 & 1;
 }
 
-- (id)policyForAddresses:(id)a3 forBundleIdentifier:(id)a4
+- (id)policyForAddresses:(id)addresses forBundleIdentifier:(id)identifier
 {
   v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_10045EEFC(v5, v6, v8);
 
   sub_100006AF0(0, &qword_1006A3480, NSNumber_ptr);
@@ -101,42 +101,42 @@
   return v10.super.isa;
 }
 
-- (int64_t)filterStatusForAddresses:(id)a3 withBundleIdentifier:(id)a4
+- (int64_t)filterStatusForAddresses:(id)addresses withBundleIdentifier:(id)identifier
 {
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_10045F144();
 
   return v6;
 }
 
-- (BOOL)willRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)willRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier
 {
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   LOBYTE(v6) = sub_10045F420(v5, v6, v8);
 
   return v6 & 1;
 }
 
-- (BOOL)shouldRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4 performSynchronously:(BOOL)a5
+- (BOOL)shouldRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier performSynchronously:(BOOL)synchronously
 {
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
-  v12 = sub_10045F5BC(v7, v8, v10, a5);
+  selfCopy = self;
+  v12 = sub_10045F5BC(v7, v8, v10, synchronously);
 
   return v12 & 1;
 }
 
-- (BOOL)isUnknownAddress:(id)a3 normalizedAddress:(id)a4 forBundleIdentifier:(id)a5
+- (BOOL)isUnknownAddress:(id)address normalizedAddress:(id)normalizedAddress forBundleIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (normalizedAddress)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -146,18 +146,18 @@
   return 0;
 }
 
-- (void)providersChangedForProviderManager:(id)a3 withValidKeychain:(BOOL)a4
+- (void)providersChangedForProviderManager:(id)manager withValidKeychain:(BOOL)keychain
 {
-  v5 = a3;
-  v6 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_10045F758();
 }
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_10045F7C0();
 }
 

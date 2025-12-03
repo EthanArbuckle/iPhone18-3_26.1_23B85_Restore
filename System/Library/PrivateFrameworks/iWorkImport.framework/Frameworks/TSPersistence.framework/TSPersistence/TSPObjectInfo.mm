@@ -2,9 +2,9 @@
 - (NSArray)referencedData;
 - (NSArray)referencedObjects;
 - (TSPObjectInfo)init;
-- (TSPObjectInfo)initWithObject:(id)a3 referenceDepth:(unint64_t)a4;
-- (void)visitObject:(id)a3 rootObject:(id)a4 referenceDepth:(unint64_t)a5;
-- (void)visitObjectReferences:(id)a3 rootObject:(id)a4 referenceDepth:(unint64_t)a5;
+- (TSPObjectInfo)initWithObject:(id)object referenceDepth:(unint64_t)depth;
+- (void)visitObject:(id)object rootObject:(id)rootObject referenceDepth:(unint64_t)depth;
+- (void)visitObjectReferences:(id)references rootObject:(id)object referenceDepth:(unint64_t)depth;
 @end
 
 @implementation TSPObjectInfo
@@ -25,25 +25,25 @@
   objc_exception_throw(v13);
 }
 
-- (TSPObjectInfo)initWithObject:(id)a3 referenceDepth:(unint64_t)a4
+- (TSPObjectInfo)initWithObject:(id)object referenceDepth:(unint64_t)depth
 {
-  v6 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = TSPObjectInfo;
   v7 = [(TSPObjectInfo *)&v11 init];
   v9 = v7;
   if (v7)
   {
-    objc_msgSend_visitObject_rootObject_referenceDepth_(v7, v8, v6, v6, a4);
+    objc_msgSend_visitObject_rootObject_referenceDepth_(v7, v8, objectCopy, objectCopy, depth);
   }
 
   return v9;
 }
 
-- (void)visitObject:(id)a3 rootObject:(id)a4 referenceDepth:(unint64_t)a5
+- (void)visitObject:(id)object rootObject:(id)rootObject referenceDepth:(unint64_t)depth
 {
   v9 = [TSPReflectionArchiver alloc];
-  v11 = objc_msgSend_initWithObject_(v9, v10, a3);
+  v11 = objc_msgSend_initWithObject_(v9, v10, object);
   objc_msgSend_archive(v11, v12, v13);
   v30 = objc_msgSend_dataReferences(v11, v14, v15);
   v18 = objc_msgSend_strongReferences(v11, v16, v17);
@@ -65,19 +65,19 @@
     objc_msgSend_unionHashTable_(referencedDataHashTable, v21, v30);
   }
 
-  objc_msgSend_visitObjectReferences_rootObject_referenceDepth_(self, v21, v18, a4, a5);
+  objc_msgSend_visitObjectReferences_rootObject_referenceDepth_(self, v21, v18, rootObject, depth);
 }
 
-- (void)visitObjectReferences:(id)a3 rootObject:(id)a4 referenceDepth:(unint64_t)a5
+- (void)visitObjectReferences:(id)references rootObject:(id)object referenceDepth:(unint64_t)depth
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_276AEA1A8;
   v5[3] = &unk_27A6E7150;
   v5[4] = self;
-  v5[5] = a4;
-  v5[6] = a5;
-  objc_msgSend_enumerateItemsUsingBlock_(a3, a2, v5);
+  v5[5] = object;
+  v5[6] = depth;
+  objc_msgSend_enumerateItemsUsingBlock_(references, a2, v5);
 }
 
 - (NSArray)referencedData

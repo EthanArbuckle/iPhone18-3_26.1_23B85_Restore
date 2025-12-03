@@ -1,23 +1,23 @@
 @interface CPLNewAssetExtractionStep
-- (BOOL)extractToBatch:(id)a3 maximumCount:(unint64_t)a4 maximumResourceSize:(unint64_t)a5 error:(id *)a6;
-- (BOOL)shouldResetFromThisStepWithIncomingChange:(id)a3;
-- (CPLNewAssetExtractionStep)initWithStorage:(id)a3 scopeIdentifier:(id)a4 maximumCount:(unint64_t)a5;
+- (BOOL)extractToBatch:(id)batch maximumCount:(unint64_t)count maximumResourceSize:(unint64_t)size error:(id *)error;
+- (BOOL)shouldResetFromThisStepWithIncomingChange:(id)change;
+- (CPLNewAssetExtractionStep)initWithStorage:(id)storage scopeIdentifier:(id)identifier maximumCount:(unint64_t)count;
 @end
 
 @implementation CPLNewAssetExtractionStep
 
-- (BOOL)shouldResetFromThisStepWithIncomingChange:(id)a3
+- (BOOL)shouldResetFromThisStepWithIncomingChange:(id)change
 {
-  v3 = a3;
-  v4 = [v3 isAssetChange] && (objc_msgSend(v3, "isFullRecord") & 1) != 0;
+  changeCopy = change;
+  v4 = [changeCopy isAssetChange] && (objc_msgSend(changeCopy, "isFullRecord") & 1) != 0;
 
   return v4;
 }
 
-- (BOOL)extractToBatch:(id)a3 maximumCount:(unint64_t)a4 maximumResourceSize:(unint64_t)a5 error:(id *)a6
+- (BOOL)extractToBatch:(id)batch maximumCount:(unint64_t)count maximumResourceSize:(unint64_t)size error:(id *)error
 {
   v120 = *MEMORY[0x1E69E9840];
-  v66 = a3;
+  batchCopy = batch;
   v113 = 0;
   v114 = &v113;
   v115 = 0x2020000000;
@@ -29,19 +29,19 @@
   v111 = __Block_byref_object_dispose__13769;
   v112 = 0;
   maximumCount = self->_maximumCount;
-  if (maximumCount >= a4)
+  if (maximumCount >= count)
   {
-    maximumCount = a4;
+    maximumCount = count;
   }
 
   v67 = maximumCount;
-  v64 = self;
-  v70 = [(CPLBatchExtractionStep *)self storage];
-  v59 = a5;
+  selfCopy = self;
+  storage = [(CPLBatchExtractionStep *)self storage];
+  sizeCopy = size;
   v57 = a2;
   v11 = objc_opt_class();
-  v12 = [(CPLBatchExtractionStep *)self scopeIdentifier];
-  v13 = [v70 allChangesWithClass:v11 scopeIdentifier:v12 changeType:0];
+  scopeIdentifier = [(CPLBatchExtractionStep *)self scopeIdentifier];
+  v13 = [storage allChangesWithClass:v11 scopeIdentifier:scopeIdentifier changeType:0];
 
   v73 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v105 = 0u;
@@ -66,13 +66,13 @@
 
         v16 = *(*(&v103 + 1) + 8 * v15);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 scopedIdentifier];
-        if (([v73 containsObject:v18] & 1) == 0)
+        scopedIdentifier = [v16 scopedIdentifier];
+        if (([v73 containsObject:scopedIdentifier] & 1) == 0)
         {
-          [v73 addObject:v18];
-          v20 = [v16 masterScopedIdentifier];
-          v71 = v20;
-          if (v20 && ((-[NSMutableSet containsObject:](v64->_alreadySeenMasterScopedIdentifiers, "containsObject:", v20) & 1) == 0 ? ([v70 changeWithScopedIdentifier:v71], v72 = objc_claimAutoreleasedReturnValue()) : (v72 = 0), -[NSMutableSet addObject:](v64->_alreadySeenMasterScopedIdentifiers, "addObject:", v71), v72))
+          [v73 addObject:scopedIdentifier];
+          masterScopedIdentifier = [v16 masterScopedIdentifier];
+          v71 = masterScopedIdentifier;
+          if (masterScopedIdentifier && ((-[NSMutableSet containsObject:](selfCopy->_alreadySeenMasterScopedIdentifiers, "containsObject:", masterScopedIdentifier) & 1) == 0 ? ([storage changeWithScopedIdentifier:v71], v72 = objc_claimAutoreleasedReturnValue()) : (v72 = 0), -[NSMutableSet addObject:](selfCopy->_alreadySeenMasterScopedIdentifiers, "addObject:", v71), v72))
           {
             if ([v72 isFullRecord])
             {
@@ -80,12 +80,12 @@
               v99 = &v98;
               v100 = 0x2020000000;
               v21 = v72;
-              v101 = [v72 effectiveResourceSizeToUploadUsingStorage:v70];
+              v101 = [v72 effectiveResourceSizeToUploadUsingStorage:storage];
               v61 = v67 - 1;
               if (v67 == 1)
               {
-                [(NSMutableSet *)v64->_alreadySeenMasterScopedIdentifiers removeObject:v71];
-                [v66 setFull:1];
+                [(NSMutableSet *)selfCopy->_alreadySeenMasterScopedIdentifiers removeObject:v71];
+                [batchCopy setFull:1];
                 v19 = 2;
                 v67 = 1;
               }
@@ -118,12 +118,12 @@
                 v60 = v24;
                 v87 = v60;
                 v91 = &v98;
-                v62 = v70;
+                v62 = storage;
                 v88 = v62;
                 v92 = &v94;
                 v93 = v67 - 1;
                 v65 = MEMORY[0x1E128EBA0](v85);
-                if ((v65)[2](v65, v18, v16))
+                if ((v65)[2](v65, scopedIdentifier, v16))
                 {
                   v83 = 0u;
                   v84 = 0u;
@@ -144,8 +144,8 @@
                         }
 
                         v29 = *(*(&v81 + 1) + 8 * i);
-                        v30 = [v29 scopedIdentifier];
-                        if (([v30 isEqual:v18] & 1) == 0 && ((v65)[2](v65, v30, v29) & 1) == 0)
+                        scopedIdentifier2 = [v29 scopedIdentifier];
+                        if (([scopedIdentifier2 isEqual:scopedIdentifier] & 1) == 0 && ((v65)[2](v65, scopedIdentifier2, v29) & 1) == 0)
                         {
 
                           goto LABEL_40;
@@ -175,25 +175,25 @@ LABEL_40:
                   goto LABEL_45;
                 }
 
-                v33 = [v66 batch];
-                v34 = [v33 count] == 0;
+                batch = [batchCopy batch];
+                v34 = [batch count] == 0;
 
                 if (!v34)
                 {
 LABEL_47:
-                  [(NSMutableSet *)v64->_alreadySeenMasterScopedIdentifiers removeObject:v71];
-                  [v66 setFull:1];
+                  [(NSMutableSet *)selfCopy->_alreadySeenMasterScopedIdentifiers removeObject:v71];
+                  [batchCopy setFull:1];
                   goto LABEL_66;
                 }
 
                 [v60 removeLastObject];
 LABEL_45:
                 v35 = v99[3];
-                v36 = v59;
-                if (v35 > v59)
+                v36 = sizeCopy;
+                if (v35 > sizeCopy)
                 {
-                  v37 = [v66 batch];
-                  v38 = [v37 count] == 0;
+                  batch2 = [batchCopy batch];
+                  v38 = [batch2 count] == 0;
 
                   if (!v38)
                   {
@@ -201,7 +201,7 @@ LABEL_45:
                   }
 
                   v35 = v99[3];
-                  v36 = v59;
+                  v36 = sizeCopy;
                 }
 
                 v39 = v36 >= v35;
@@ -211,8 +211,8 @@ LABEL_45:
                   v40 = 0;
                 }
 
-                v59 = v40;
-                [v66 addChange:v72 fromStorage:v62];
+                sizeCopy = v40;
+                [batchCopy addChange:v72 fromStorage:v62];
                 v41 = (v108 + 5);
                 v80 = v108[5];
                 v42 = [v62 removeChange:v72 error:&v80];
@@ -242,7 +242,7 @@ LABEL_54:
                     }
 
                     v47 = *(*(&v76 + 1) + 8 * v46);
-                    [v66 addChange:v47 fromStorage:v62];
+                    [batchCopy addChange:v47 fromStorage:v62];
                     v48 = (v108 + 5);
                     v75 = v108[5];
                     LOBYTE(v47) = [v62 removeChange:v47 error:&v75];
@@ -268,9 +268,9 @@ LABEL_54:
 
                 if (v114[3])
                 {
-                  if (v95[3] >= v61 || v59 >> 11 <= 4)
+                  if (v95[3] >= v61 || sizeCopy >> 11 <= 4)
                   {
-                    [v66 setFull:1];
+                    [batchCopy setFull:1];
                     goto LABEL_66;
                   }
 
@@ -288,9 +288,9 @@ LABEL_54:
                       }
                     }
 
-                    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+                    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLBatchExtractionStep.m"];
-                    [v55 handleFailureInMethod:v57 object:v64 file:v56 lineNumber:543 description:@"Batch should have at least one place left"];
+                    [currentHandler handleFailureInMethod:v57 object:selfCopy file:v56 lineNumber:543 description:@"Batch should have at least one place left"];
 
                     abort();
                   }
@@ -320,10 +320,10 @@ LABEL_69:
             v72 = 0;
           }
 
-          [v66 addChange:v16 fromStorage:v70];
+          [batchCopy addChange:v16 fromStorage:storage];
           v31 = (v108 + 5);
           v102 = v108[5];
-          v32 = [v70 removeChange:v16 error:&v102];
+          v32 = [storage removeChange:v16 error:&v102];
           objc_storeStrong(v31, v102);
           *(v114 + 24) = v32;
           if (v32)
@@ -336,7 +336,7 @@ LABEL_69:
               goto LABEL_69;
             }
 
-            [v66 setFull:1];
+            [batchCopy setFull:1];
             v67 = 0;
           }
 
@@ -372,9 +372,9 @@ LABEL_70:
 LABEL_77:
 
   v51 = *(v114 + 24);
-  if (a6 && (v114[3] & 1) == 0)
+  if (error && (v114[3] & 1) == 0)
   {
-    *a6 = v108[5];
+    *error = v108[5];
     v51 = *(v114 + 24);
   }
 
@@ -425,17 +425,17 @@ uint64_t __83__CPLNewAssetExtractionStep_extractToBatch_maximumCount_maximumReso
   return v5 & v12;
 }
 
-- (CPLNewAssetExtractionStep)initWithStorage:(id)a3 scopeIdentifier:(id)a4 maximumCount:(unint64_t)a5
+- (CPLNewAssetExtractionStep)initWithStorage:(id)storage scopeIdentifier:(id)identifier maximumCount:(unint64_t)count
 {
-  v9 = a3;
-  v10 = a4;
+  storageCopy = storage;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = CPLNewAssetExtractionStep;
-  v11 = [(CPLBatchExtractionStep *)&v20 initWithStorage:v9 scopeIdentifier:v10];
+  v11 = [(CPLBatchExtractionStep *)&v20 initWithStorage:storageCopy scopeIdentifier:identifierCopy];
   v12 = v11;
   if (v11)
   {
-    if (a5 <= 1)
+    if (count <= 1)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -447,14 +447,14 @@ uint64_t __83__CPLNewAssetExtractionStep_extractToBatch_maximumCount_maximumReso
         }
       }
 
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLBatchExtractionStep.m"];
-      [v17 handleFailureInMethod:a2 object:v12 file:v18 lineNumber:390 description:@"Can't extract masters with no room for assets"];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:v18 lineNumber:390 description:@"Can't extract masters with no room for assets"];
 
       abort();
     }
 
-    v11->_maximumCount = a5;
+    v11->_maximumCount = count;
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     alreadySeenMasterScopedIdentifiers = v12->_alreadySeenMasterScopedIdentifiers;
     v12->_alreadySeenMasterScopedIdentifiers = v13;

@@ -1,5 +1,5 @@
 @interface VKVenueBuildingFeatureMarker
-- ($F24F406B2B787EFB06265DBA3D28CBD5)nearestFramingPositionToLocation:(id)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)nearestFramingPositionToLocation:(id)location;
 - (NSArray)floorOrdinals;
 - (NSDictionary)floorNames;
 - (NSDictionary)shortFloorNames;
@@ -8,10 +8,10 @@
 
 @implementation VKVenueBuildingFeatureMarker
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)nearestFramingPositionToLocation:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)nearestFramingPositionToLocation:(id)location
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = location.var1;
+  var0 = location.var0;
   v4 = *[(VKVenueBuildingFeatureMarker *)self venueBuildingFeatureMarker];
   v5 = tan(var0 * 0.00872664626 + 0.785398163);
   v6 = log(v5);

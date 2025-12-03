@@ -1,24 +1,24 @@
 @interface DOCDownloadSettings
-- (BOOL)_saveDownloadFolderItem:(id)a3 error:(id *)a4;
+- (BOOL)_saveDownloadFolderItem:(id)item error:(id *)error;
 - (DOCDownloadSettings)init;
-- (id)_createErrorForCode:(int64_t)a3 localizedDescription:(id)a4 underlyingError:(id)a5;
-- (void)_createDefaultDownloadsFolderInParent:(id)a3 completion:(id)a4;
-- (void)_fetchAvailableProviders:(id)a3;
-- (void)_fetchDefaultDownloadsFolderInParent:(id)a3 completion:(id)a4;
-- (void)_fetchDefaultFallbackDownloadLocationWithPreferredDomain:(id)a3 createIfMissing:(BOOL)a4 completion:(id)a5;
-- (void)_fetchProviders:(id)a3;
-- (void)_preferredProvidersIn:(id)a3 completion:(id)a4;
+- (id)_createErrorForCode:(int64_t)code localizedDescription:(id)description underlyingError:(id)error;
+- (void)_createDefaultDownloadsFolderInParent:(id)parent completion:(id)completion;
+- (void)_fetchAvailableProviders:(id)providers;
+- (void)_fetchDefaultDownloadsFolderInParent:(id)parent completion:(id)completion;
+- (void)_fetchDefaultFallbackDownloadLocationWithPreferredDomain:(id)domain createIfMissing:(BOOL)missing completion:(id)completion;
+- (void)_fetchProviders:(id)providers;
+- (void)_preferredProvidersIn:(id)in completion:(id)completion;
 - (void)_removeCurrentDownloadsLocationFromFavorites;
-- (void)_rootItemOfPreferredProviderInDomains:(id)a3 completion:(id)a4;
-- (void)_validatePreferredProvider:(id)a3 completion:(id)a4;
-- (void)fetchDefaultDownloadsLocationSettingsItem:(id)a3;
-- (void)fetchProvidersSuitableForDownloads:(id)a3;
-- (void)fetchSuitableLocationsForDownloads:(id)a3;
+- (void)_rootItemOfPreferredProviderInDomains:(id)domains completion:(id)completion;
+- (void)_validatePreferredProvider:(id)provider completion:(id)completion;
+- (void)fetchDefaultDownloadsLocationSettingsItem:(id)item;
+- (void)fetchProvidersSuitableForDownloads:(id)downloads;
+- (void)fetchSuitableLocationsForDownloads:(id)downloads;
 - (void)resetDefaultDownloadsLocationItem;
-- (void)setDefaultDownloadsItemForProviderDomain:(id)a3 completionHandler:(id)a4;
-- (void)setDefaultDownloadsLocationItem:(id)a3 completionHandler:(id)a4;
-- (void)setDefaultDownloadsLocationURL:(id)a3 completionHandler:(id)a4;
-- (void)setDefaultDownloadsToLocation:(id)a3 completionHandler:(id)a4;
+- (void)setDefaultDownloadsItemForProviderDomain:(id)domain completionHandler:(id)handler;
+- (void)setDefaultDownloadsLocationItem:(id)item completionHandler:(id)handler;
+- (void)setDefaultDownloadsLocationURL:(id)l completionHandler:(id)handler;
+- (void)setDefaultDownloadsToLocation:(id)location completionHandler:(id)handler;
 @end
 
 @implementation DOCDownloadSettings
@@ -30,11 +30,11 @@
   v2 = [(DOCDownloadSettings *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     v5 = +[DOCManagedPermission defaultPermission];
-    [v5 setHostIdentifier:v4];
+    [v5 setHostIdentifier:bundleIdentifier];
 
     v6 = +[DOCNodeStartupManager shared];
     [v6 startIfNeeded];
@@ -43,15 +43,15 @@
   return v2;
 }
 
-- (void)fetchDefaultDownloadsLocationSettingsItem:(id)a3
+- (void)fetchDefaultDownloadsLocationSettingsItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__DOCDownloadSettings_fetchDefaultDownloadsLocationSettingsItem___block_invoke;
   v6[3] = &unk_278F9B570;
-  v7 = v4;
-  v5 = v4;
+  v7 = itemCopy;
+  v5 = itemCopy;
   [(DOCDownloadSettings *)self fetchDefaultDownloadsLocationItem:v6];
 }
 
@@ -83,15 +83,15 @@ void __65__DOCDownloadSettings_fetchDefaultDownloadsLocationSettingsItem___block
   }
 }
 
-- (void)fetchSuitableLocationsForDownloads:(id)a3
+- (void)fetchSuitableLocationsForDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__DOCDownloadSettings_fetchSuitableLocationsForDownloads___block_invoke;
   v6[3] = &unk_278F9B888;
-  v7 = v4;
-  v5 = v4;
+  v7 = downloadsCopy;
+  v5 = downloadsCopy;
   [(DOCDownloadSettings *)self fetchProvidersSuitableForDownloads:v6];
 }
 
@@ -161,20 +161,20 @@ void __58__DOCDownloadSettings_fetchSuitableLocationsForDownloads___block_invoke
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDefaultDownloadsToLocation:(id)a3 completionHandler:(id)a4
+- (void)setDefaultDownloadsToLocation:(id)location completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 providerDomain];
+  locationCopy = location;
+  handlerCopy = handler;
+  providerDomain = [locationCopy providerDomain];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__DOCDownloadSettings_setDefaultDownloadsToLocation_completionHandler___block_invoke;
   v11[3] = &unk_278F9C2A8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
-  [(DOCDownloadSettings *)self setDefaultDownloadsItemForProviderDomain:v8 completionHandler:v11];
+  v12 = locationCopy;
+  v13 = handlerCopy;
+  v9 = locationCopy;
+  v10 = handlerCopy;
+  [(DOCDownloadSettings *)self setDefaultDownloadsItemForProviderDomain:providerDomain completionHandler:v11];
 }
 
 void __71__DOCDownloadSettings_setDefaultDownloadsToLocation_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -205,21 +205,21 @@ void __71__DOCDownloadSettings_setDefaultDownloadsToLocation_completionHandler__
   }
 }
 
-- (void)setDefaultDownloadsLocationURL:(id)a3 completionHandler:(id)a4
+- (void)setDefaultDownloadsLocationURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CC6408] defaultManager];
+  lCopy = l;
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x277CC6408] defaultManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__DOCDownloadSettings_setDefaultDownloadsLocationURL_completionHandler___block_invoke;
   v11[3] = &unk_278F9C2F8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 fetchItemForURL:v10 completionHandler:v11];
+  v12 = lCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
+  [defaultManager fetchItemForURL:v10 completionHandler:v11];
 }
 
 void __72__DOCDownloadSettings_setDefaultDownloadsLocationURL_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -637,9 +637,9 @@ void __85__DOCDownloadSettings_fetchDefaultDownloadsLocationItemAndCreateIfNeede
 
 - (void)_removeCurrentDownloadsLocationFromFavorites
 {
-  v3 = [(DOCDownloadSettings *)self currentDefaultDownloadsLocationItem];
+  currentDefaultDownloadsLocationItem = [(DOCDownloadSettings *)self currentDefaultDownloadsLocationItem];
 
-  if (v3)
+  if (currentDefaultDownloadsLocationItem)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
@@ -688,22 +688,22 @@ void __67__DOCDownloadSettings__removeCurrentDownloadsLocationFromFavorites__blo
   }
 }
 
-- (BOOL)_saveDownloadFolderItem:(id)a3 error:(id *)a4
+- (BOOL)_saveDownloadFolderItem:(id)item error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:a4];
+  itemCopy = item;
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:itemCopy requiringSecureCoding:1 error:error];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.DocumentManager.defaults"];
     [v8 setObject:v7 forKey:@"DOCDefaultDownloadLocationKey"];
-    [(DOCDownloadSettings *)self setCurrentDefaultDownloadsLocationItem:v6];
-    if (v6)
+    [(DOCDownloadSettings *)self setCurrentDefaultDownloadsLocationItem:itemCopy];
+    if (itemCopy)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __53__DOCDownloadSettings__saveDownloadFolderItem_error___block_invoke;
       v12[3] = &unk_278F9B408;
-      v13 = v6;
+      v13 = itemCopy;
       DOCRunInMainThread(v12);
     }
 
@@ -734,7 +734,7 @@ void __67__DOCDownloadSettings__removeCurrentDownloadsLocationFromFavorites__blo
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [DOCDownloadSettings _saveDownloadFolderItem:v6 error:a4];
+      [DOCDownloadSettings _saveDownloadFolderItem:itemCopy error:error];
     }
   }
 
@@ -771,40 +771,40 @@ void __53__DOCDownloadSettings__saveDownloadFolderItem_error___block_invoke_2(ui
   }
 }
 
-- (void)setDefaultDownloadsLocationItem:(id)a3 completionHandler:(id)a4
+- (void)setDefaultDownloadsLocationItem:(id)item completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (!itemCopy)
   {
     [DOCDownloadSettings setDefaultDownloadsLocationItem:a2 completionHandler:self];
   }
 
   [(DOCDownloadSettings *)self _removeCurrentDownloadsLocationFromFavorites];
   v11 = 0;
-  v9 = [(DOCDownloadSettings *)self _saveDownloadFolderItem:v7 error:&v11];
+  v9 = [(DOCDownloadSettings *)self _saveDownloadFolderItem:itemCopy error:&v11];
   v10 = v11;
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, v9, v10);
+    handlerCopy[2](handlerCopy, v9, v10);
   }
 }
 
-- (void)setDefaultDownloadsItemForProviderDomain:(id)a3 completionHandler:(id)a4
+- (void)setDefaultDownloadsItemForProviderDomain:(id)domain completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v14[0] = a3;
+  handlerCopy = handler;
+  v14[0] = domain;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
+  domainCopy = domain;
   v9 = [v7 arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__DOCDownloadSettings_setDefaultDownloadsItemForProviderDomain_completionHandler___block_invoke;
   v12[3] = &unk_278F9C3C0;
   v12[4] = self;
-  v13 = v6;
-  v10 = v6;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   [(DOCDownloadSettings *)self _rootItemOfPreferredProviderInDomains:v9 completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -911,15 +911,15 @@ void __82__DOCDownloadSettings_setDefaultDownloadsItemForProviderDomain_completi
   [v2 setObject:0 forKey:@"DOCDefaultDownloadLocationKey"];
 }
 
-- (void)fetchProvidersSuitableForDownloads:(id)a3
+- (void)fetchProvidersSuitableForDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__DOCDownloadSettings_fetchProvidersSuitableForDownloads___block_invoke;
   v6[3] = &unk_278F9B888;
-  v7 = v4;
-  v5 = v4;
+  v7 = downloadsCopy;
+  v5 = downloadsCopy;
   [(DOCDownloadSettings *)self _fetchProviders:v6];
 }
 
@@ -1113,10 +1113,10 @@ uint64_t __58__DOCDownloadSettings_fetchProvidersSuitableForDownloads___block_in
   return v7;
 }
 
-- (void)_fetchDefaultFallbackDownloadLocationWithPreferredDomain:(id)a3 createIfMissing:(BOOL)a4 completion:(id)a5
+- (void)_fetchDefaultFallbackDownloadLocationWithPreferredDomain:(id)domain createIfMissing:(BOOL)missing completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  domainCopy = domain;
+  completionCopy = completion;
   v10 = docDownloadServiceLogHandle;
   if (!docDownloadServiceLogHandle)
   {
@@ -1135,11 +1135,11 @@ uint64_t __58__DOCDownloadSettings_fetchProvidersSuitableForDownloads___block_in
   v13[2] = __107__DOCDownloadSettings__fetchDefaultFallbackDownloadLocationWithPreferredDomain_createIfMissing_completion___block_invoke;
   v13[3] = &unk_278F9C4F8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = domainCopy;
+  v15 = completionCopy;
+  missingCopy = missing;
+  v11 = completionCopy;
+  v12 = domainCopy;
   [(DOCDownloadSettings *)self _fetchAvailableProviders:v13];
 }
 
@@ -1485,22 +1485,22 @@ void __107__DOCDownloadSettings__fetchDefaultFallbackDownloadLocationWithPreferr
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createDefaultDownloadsFolderInParent:(id)a3 completion:(id)a4
+- (void)_createDefaultDownloadsFolderInParent:(id)parent completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x277CC63A0];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithParentItem:v7 folderName:@"Downloads"];
+  parentCopy = parent;
+  v8 = [[v6 alloc] initWithParentItem:parentCopy folderName:@"Downloads"];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__DOCDownloadSettings__createDefaultDownloadsFolderInParent_completion___block_invoke;
   v11[3] = &unk_278F9B570;
-  v12 = v5;
-  v9 = v5;
+  v12 = completionCopy;
+  v9 = completionCopy;
   [v8 setCreateFolderCompletionBlock:v11];
-  v10 = [MEMORY[0x277CC6408] defaultManager];
-  [v10 scheduleAction:v8];
+  defaultManager = [MEMORY[0x277CC6408] defaultManager];
+  [defaultManager scheduleAction:v8];
 }
 
 void __72__DOCDownloadSettings__createDefaultDownloadsFolderInParent_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1528,11 +1528,11 @@ void __72__DOCDownloadSettings__createDefaultDownloadsFolderInParent_completion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_fetchDefaultDownloadsFolderInParent:(id)a3 completion:(id)a4
+- (void)_fetchDefaultDownloadsFolderInParent:(id)parent completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  parentCopy = parent;
+  completionCopy = completion;
   v7 = docDownloadServiceLogHandle;
   if (!docDownloadServiceLogHandle)
   {
@@ -1545,20 +1545,20 @@ void __72__DOCDownloadSettings__createDefaultDownloadsFolderInParent_completion_
     *buf = 136315394;
     v23 = "[DOCDownloadSettings _fetchDefaultDownloadsFolderInParent:completion:]";
     v24 = 2112;
-    v25 = v5;
+    v25 = parentCopy;
     _os_log_impl(&dword_249340000, v7, OS_LOG_TYPE_INFO, "%s Look for existing Downloads folder in parent: %@", buf, 0x16u);
   }
 
-  v8 = [v5 fileURL];
+  fileURL = [parentCopy fileURL];
 
-  if (v8)
+  if (fileURL)
   {
-    v9 = [v5 fileURL];
-    v10 = [v9 URLByAppendingPathComponent:@"Downloads"];
+    fileURL2 = [parentCopy fileURL];
+    v10 = [fileURL2 URLByAppendingPathComponent:@"Downloads"];
 
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v10 path];
-    v13 = [v11 fileExistsAtPath:v12 isDirectory:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v10 path];
+    v13 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     v14 = docDownloadServiceLogHandle;
     if (v13)
@@ -1574,18 +1574,18 @@ void __72__DOCDownloadSettings__createDefaultDownloadsFolderInParent_completion_
         *buf = 136315394;
         v23 = "[DOCDownloadSettings _fetchDefaultDownloadsFolderInParent:completion:]";
         v24 = 2112;
-        v25 = v5;
+        v25 = parentCopy;
         _os_log_impl(&dword_249340000, v14, OS_LOG_TYPE_INFO, "%s Downloads folder at URL: %@ exists. Fetching item and returning.", buf, 0x16u);
       }
 
-      v15 = [MEMORY[0x277CC6408] defaultManager];
+      defaultManager2 = [MEMORY[0x277CC6408] defaultManager];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __71__DOCDownloadSettings__fetchDefaultDownloadsFolderInParent_completion___block_invoke;
       v19[3] = &unk_278F9BCE0;
       v20 = v10;
-      v21 = v6;
-      [v15 fetchItemForURL:v20 completionHandler:v19];
+      v21 = completionCopy;
+      [defaultManager2 fetchItemForURL:v20 completionHandler:v19];
     }
 
     else
@@ -1601,11 +1601,11 @@ void __72__DOCDownloadSettings__createDefaultDownloadsFolderInParent_completion_
         *buf = 136315394;
         v23 = "[DOCDownloadSettings _fetchDefaultDownloadsFolderInParent:completion:]";
         v24 = 2112;
-        v25 = v5;
+        v25 = parentCopy;
         _os_log_impl(&dword_249340000, v14, OS_LOG_TYPE_INFO, "%s Look parent did not have a fileURL: %@", buf, 0x16u);
       }
 
-      (*(v6 + 2))(v6, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
 
     v17 = docDownloadServiceLogHandle;
@@ -1620,7 +1620,7 @@ void __72__DOCDownloadSettings__createDefaultDownloadsFolderInParent_completion_
       *buf = 136315394;
       v23 = "[DOCDownloadSettings _fetchDefaultDownloadsFolderInParent:completion:]";
       v24 = 2112;
-      v25 = v5;
+      v25 = parentCopy;
       _os_log_impl(&dword_249340000, v17, OS_LOG_TYPE_INFO, "%s Look for existing Downloads folder in URL: %@", buf, 0x16u);
     }
   }
@@ -1639,11 +1639,11 @@ void __72__DOCDownloadSettings__createDefaultDownloadsFolderInParent_completion_
       *buf = 136315394;
       v23 = "[DOCDownloadSettings _fetchDefaultDownloadsFolderInParent:completion:]";
       v24 = 2112;
-      v25 = v5;
+      v25 = parentCopy;
       _os_log_impl(&dword_249340000, v16, OS_LOG_TYPE_INFO, "%s Look parent did not have a fileURL: %@", buf, 0x16u);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1680,9 +1680,9 @@ void __71__DOCDownloadSettings__fetchDefaultDownloadsFolderInParent_completion__
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchProviders:(id)a3
+- (void)_fetchProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -1700,7 +1700,7 @@ void __71__DOCDownloadSettings__fetchDefaultDownloadsFolderInParent_completion__
   v9[3] = &unk_278F9C520;
   v9[4] = self;
   v11 = v19;
-  v6 = v4;
+  v6 = providersCopy;
   v10 = v6;
   v12 = &v13;
   v7 = [v5 beginMonitoringProviderDomainChangesWithHandler:v9];
@@ -1758,16 +1758,16 @@ void __39__DOCDownloadSettings__fetchProviders___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_fetchAvailableProviders:(id)a3
+- (void)_fetchAvailableProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__DOCDownloadSettings__fetchAvailableProviders___block_invoke;
   v6[3] = &unk_278F9C598;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = providersCopy;
+  v5 = providersCopy;
   [(DOCDownloadSettings *)self fetchProvidersSuitableForDownloads:v6];
 }
 
@@ -1853,23 +1853,23 @@ void __48__DOCDownloadSettings__fetchAvailableProviders___block_invoke_3(uint64_
   }
 }
 
-- (void)_rootItemOfPreferredProviderInDomains:(id)a3 completion:(id)a4
+- (void)_rootItemOfPreferredProviderInDomains:(id)domains completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  if (v8)
+  domainsCopy = domains;
+  completionCopy = completion;
+  firstObject = [domainsCopy firstObject];
+  if (firstObject)
   {
-    v9 = [MEMORY[0x277CC6408] defaultManager];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __72__DOCDownloadSettings__rootItemOfPreferredProviderInDomains_completion___block_invoke;
     v14[3] = &unk_278F9C5C0;
-    v18 = v7;
-    v15 = v8;
-    v16 = v6;
-    v17 = self;
-    [v9 doc_fetchRootNodeForProviderDomain:v15 completionHandler:v14];
+    v18 = completionCopy;
+    v15 = firstObject;
+    v16 = domainsCopy;
+    selfCopy = self;
+    [defaultManager doc_fetchRootNodeForProviderDomain:v15 completionHandler:v14];
 
     v10 = v18;
   }
@@ -1892,7 +1892,7 @@ void __48__DOCDownloadSettings__fetchAvailableProviders___block_invoke_3(uint64_
     v10 = [v12 localizedStringForKey:@"Unrecoverable failure to locate the Downloads location." value:@"Unrecoverable failure to locate the Downloads location." table:@"Localizable"];
 
     v13 = [(DOCDownloadSettings *)self _createErrorForCode:-1001 localizedDescription:v10 underlyingError:0];
-    (*(v7 + 2))(v7, 0, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v13);
   }
 }
 
@@ -1928,17 +1928,17 @@ void __72__DOCDownloadSettings__rootItemOfPreferredProviderInDomains_completion_
   }
 }
 
-- (void)_preferredProvidersIn:(id)a3 completion:(id)a4
+- (void)_preferredProvidersIn:(id)in completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v14 = a4;
+  inCopy = in;
+  completionCopy = completion;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
   v29[3] = __Block_byref_object_copy__8;
   v29[4] = __Block_byref_object_dispose__8;
-  v30 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = dispatch_group_create();
   v27[0] = 0;
   v27[1] = v27;
@@ -1948,7 +1948,7 @@ void __72__DOCDownloadSettings__rootItemOfPreferredProviderInDomains_completion_
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = inCopy;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v8)
   {
@@ -1990,8 +1990,8 @@ void __72__DOCDownloadSettings__rootItemOfPreferredProviderInDomains_completion_
   block[2] = __56__DOCDownloadSettings__preferredProvidersIn_completion___block_invoke_2;
   block[3] = &unk_278F9C610;
   v18 = v29;
-  v17 = v14;
-  v12 = v14;
+  v17 = completionCopy;
+  v12 = completionCopy;
   dispatch_group_notify(v7, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(v27, 8);
@@ -2040,11 +2040,11 @@ uint64_t __56__DOCDownloadSettings__preferredProvidersIn_completion___block_invo
   return v5();
 }
 
-- (void)_validatePreferredProvider:(id)a3 completion:(id)a4
+- (void)_validatePreferredProvider:(id)provider completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isiCloudDriveProvider] && objc_msgSend(v5, "isEnabled") && (objc_msgSend(v5, "needsAuthentication") & 1) == 0)
+  providerCopy = provider;
+  completionCopy = completion;
+  if ([providerCopy isiCloudDriveProvider] && objc_msgSend(providerCopy, "isEnabled") && (objc_msgSend(providerCopy, "needsAuthentication") & 1) == 0)
   {
     v13[0] = 0;
     v13[1] = v13;
@@ -2054,9 +2054,9 @@ uint64_t __56__DOCDownloadSettings__preferredProvidersIn_completion___block_invo
     block[1] = 3221225472;
     block[2] = __61__DOCDownloadSettings__validatePreferredProvider_completion___block_invoke;
     block[3] = &unk_278F9C660;
-    v10 = v5;
+    v10 = providerCopy;
     v12 = v13;
-    v11 = v6;
+    v11 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     _Block_object_dispose(v13, 8);
@@ -2064,10 +2064,10 @@ uint64_t __56__DOCDownloadSettings__preferredProvidersIn_completion___block_invo
 
   else
   {
-    v7 = [v5 identifier];
-    v8 = [v7 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
+    identifier = [providerCopy identifier];
+    v8 = [identifier isEqualToString:@"com.apple.FileProvider.LocalStorage"];
 
-    (*(v6 + 2))(v6, v8 != 0);
+    (*(completionCopy + 2))(completionCopy, v8 != 0);
   }
 }
 
@@ -2104,20 +2104,20 @@ uint64_t __61__DOCDownloadSettings__validatePreferredProvider_completion___block
   return v5();
 }
 
-- (id)_createErrorForCode:(int64_t)a3 localizedDescription:(id)a4 underlyingError:(id)a5
+- (id)_createErrorForCode:(int64_t)code localizedDescription:(id)description underlyingError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
-  v10 = [v8 dictionary];
-  [v10 setObject:v9 forKey:*MEMORY[0x277CCA450]];
+  descriptionCopy = description;
+  dictionary = [v8 dictionary];
+  [dictionary setObject:descriptionCopy forKey:*MEMORY[0x277CCA450]];
 
-  if (v7)
+  if (errorCopy)
   {
-    [v10 setObject:v7 forKey:*MEMORY[0x277CCA7E8]];
+    [dictionary setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.DocumentManager.DocumentDownloads" code:a3 userInfo:v10];
+  v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.DocumentManager.DocumentDownloads" code:code userInfo:dictionary];
 
   return v11;
 }

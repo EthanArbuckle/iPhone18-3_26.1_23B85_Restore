@@ -1,30 +1,30 @@
 @interface OAVShapeGeometry
-+ (OADAdjustCoord)readAdjustCoord:(id)a3;
-+ (id)readFromManager:(id)a3;
-+ (void)readAdjustValuesFromManager:(id)a3 toGeometry:(id)a4;
-+ (void)readLimoFromManager:(id)a3 toGeometry:(id)a4;
-+ (void)readTextBodyRectsFromManager:(id)a3 toGeometry:(id)a4;
++ (OADAdjustCoord)readAdjustCoord:(id)coord;
++ (id)readFromManager:(id)manager;
++ (void)readAdjustValuesFromManager:(id)manager toGeometry:(id)geometry;
++ (void)readLimoFromManager:(id)manager toGeometry:(id)geometry;
++ (void)readTextBodyRectsFromManager:(id)manager toGeometry:(id)geometry;
 @end
 
 @implementation OAVShapeGeometry
 
-+ (void)readAdjustValuesFromManager:(id)a3 toGeometry:(id)a4
++ (void)readAdjustValuesFromManager:(id)manager toGeometry:(id)geometry
 {
-  v17 = a3;
-  v5 = a4;
-  if ([v17 type] == 2)
+  managerCopy = manager;
+  geometryCopy = geometry;
+  if ([managerCopy type] == 2)
   {
-    v6 = [v17 shape];
-    v7 = CXDefaultStringAttribute(v6, CXNoNamespace, "arcsize", 0);
+    shape = [managerCopy shape];
+    v7 = CXDefaultStringAttribute(shape, CXNoNamespace, "arcsize", 0);
     v8 = v7;
     if (v7)
     {
-      [v5 setAdjustValue:(OAVReadFraction(v7) * 21600.0) atIndex:0];
+      [geometryCopy setAdjustValue:(OAVReadFraction(v7) * 21600.0) atIndex:0];
     }
   }
 
-  v9 = [v17 shape];
-  v10 = CXDefaultStringAttribute(v9, CXNoNamespace, "adj", 0);
+  shape2 = [managerCopy shape];
+  v10 = CXDefaultStringAttribute(shape2, CXNoNamespace, "adj", 0);
   v11 = v10;
   if (v10)
   {
@@ -32,29 +32,29 @@
     for (i = 0; [v12 count] > i; ++i)
     {
       v14 = [v12 objectAtIndex:i];
-      v15 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v16 = [v14 stringByTrimmingCharactersInSet:v15];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v16 = [v14 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       if ([v16 length])
       {
-        [v5 setAdjustValue:objc_msgSend(v16 atIndex:{"intValue"), i}];
+        [geometryCopy setAdjustValue:objc_msgSend(v16 atIndex:{"intValue"), i}];
       }
     }
   }
 }
 
-+ (void)readLimoFromManager:(id)a3 toGeometry:(id)a4
++ (void)readLimoFromManager:(id)manager toGeometry:(id)geometry
 {
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  geometryCopy = geometry;
   v7 = 0x8000000080000000;
   v20 = 0x8000000080000000;
-  v8 = [v5 limo];
-  v9 = v8;
-  if (v8)
+  limo = [managerCopy limo];
+  v9 = limo;
+  if (limo)
   {
-    v18 = v5;
-    v10 = [v8 componentsSeparatedByString:{@", "}];
+    v18 = managerCopy;
+    v10 = [limo componentsSeparatedByString:{@", "}];
     v11 = 0;
     v12 = &v20;
     v13 = 1;
@@ -64,8 +64,8 @@
       if ([v10 count] > v11)
       {
         v15 = [v10 objectAtIndex:v11];
-        v16 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v17 = [v15 stringByTrimmingCharactersInSet:v16];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v17 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         if ([v17 length])
         {
@@ -81,41 +81,41 @@
     while ((v14 & 1) != 0);
 
     v7 = v20;
-    v5 = v18;
+    managerCopy = v18;
   }
 
   v19 = v7;
-  [v6 setLimo:&v19];
+  [geometryCopy setLimo:&v19];
 }
 
-+ (OADAdjustCoord)readAdjustCoord:(id)a3
++ (OADAdjustCoord)readAdjustCoord:(id)coord
 {
-  v3 = a3;
-  v4 = [v3 characterAtIndex:0];
+  coordCopy = coord;
+  v4 = [coordCopy characterAtIndex:0];
   if (v4 == 64)
   {
-    v5 = [v3 substringFromIndex:1];
-    v6 = [v5 intValue];
+    v5 = [coordCopy substringFromIndex:1];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = [v3 intValue];
+    intValue = [coordCopy intValue];
   }
 
-  return ((v4 == 64) | (v6 << 32));
+  return ((v4 == 64) | (intValue << 32));
 }
 
-+ (void)readTextBodyRectsFromManager:(id)a3 toGeometry:(id)a4
++ (void)readTextBodyRectsFromManager:(id)manager toGeometry:(id)geometry
 {
   v24 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v21 = a4;
-  v6 = [v19 textBodyRects];
-  if (v6)
+  managerCopy = manager;
+  geometryCopy = geometry;
+  textBodyRects = [managerCopy textBodyRects];
+  if (textBodyRects)
   {
-    v18 = v6;
-    v7 = [v6 componentsSeparatedByString:@""];;
+    v18 = textBodyRects;
+    v7 = [textBodyRects componentsSeparatedByString:@""];;
     v8 = 0;
     for (i = v7; ; v7 = i)
     {
@@ -133,10 +133,10 @@
       do
       {
         v13 = [v11 objectAtIndex:v12];
-        v14 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v15 = [v13 stringByTrimmingCharactersInSet:v14];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v15 = [v13 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-        *(&v22 + v12) = [a1 readAdjustCoord:v15];
+        *(&v22 + v12) = [self readAdjustCoord:v15];
         ++v12;
       }
 
@@ -144,24 +144,24 @@
       v16 = [OADAdjustRect alloc];
       v17 = [OADAdjustRect initWithLeft:v16 top:"initWithLeft:top:right:bottom:" right:v22 bottom:v23];
 
-      [v21 addTextBodyRect:v17];
+      [geometryCopy addTextBodyRect:v17];
       v8 = v9 + 1;
     }
 
-    v6 = v18;
+    textBodyRects = v18;
   }
 }
 
-+ (id)readFromManager:(id)a3
++ (id)readFromManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 path];
-  if (v5)
+  managerCopy = manager;
+  path = [managerCopy path];
+  if (path)
   {
     v6 = objc_alloc_init(OADCustomShapeGeometry);
     [(OADShapeGeometry *)v6 setIsEscher:1];
-    [a1 readAdjustValuesFromManager:v4 toGeometry:v6];
-    +[OAVDrawable readCoordBounds:](OAVDrawable, "readCoordBounds:", [v4 shape]);
+    [self readAdjustValuesFromManager:managerCopy toGeometry:v6];
+    +[OAVDrawable readCoordBounds:](OAVDrawable, "readCoordBounds:", [managerCopy shape]);
     x = v17.origin.x;
     y = v17.origin.y;
     width = v17.size.width;
@@ -186,19 +186,19 @@
     v15[2] = MaxX;
     v15[3] = CGRectGetMaxY(v20);
     [(OADCustomShapeGeometry *)v6 setGeometryCoordSpace:v15];
-    [a1 readLimoFromManager:v4 toGeometry:v6];
-    [a1 readTextBodyRectsFromManager:v4 toGeometry:v6];
-    [OAVFormula readFormulasFromManager:v4 toGeometry:v6];
-    [OAVPath readPath:v5 toGeometry:v6];
+    [self readLimoFromManager:managerCopy toGeometry:v6];
+    [self readTextBodyRectsFromManager:managerCopy toGeometry:v6];
+    [OAVFormula readFormulasFromManager:managerCopy toGeometry:v6];
+    [OAVPath readPath:path toGeometry:v6];
   }
 
   else
   {
     v6 = objc_alloc_init(OADPresetShapeGeometry);
     [(OADShapeGeometry *)v6 setIsEscher:1];
-    -[OADCustomShapeGeometry setType:](v6, "setType:", [v4 type]);
+    -[OADCustomShapeGeometry setType:](v6, "setType:", [managerCopy type]);
     [(OADShapeGeometry *)v6 setIsEscher:1];
-    [a1 readAdjustValuesFromManager:v4 toGeometry:v6];
+    [self readAdjustValuesFromManager:managerCopy toGeometry:v6];
   }
 
   return v6;

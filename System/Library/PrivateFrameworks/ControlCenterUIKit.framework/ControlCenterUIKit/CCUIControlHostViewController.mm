@@ -1,25 +1,25 @@
 @interface CCUIControlHostViewController
-- (BOOL)controlHostViewShouldPerformPrimaryAction:(id)a3;
-- (BOOL)isDevicePasscodeLocked:(id)a3;
+- (BOOL)controlHostViewShouldPerformPrimaryAction:(id)action;
+- (BOOL)isDevicePasscodeLocked:(id)locked;
 - (BOOL)shouldPerformClickInteraction;
 - (BOOL)suppressesContentTransitions;
-- (CCUIControlHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CCUIControlHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CCUIControlHostViewControllerDelegate)delegate;
 - (CCUIModuleContentMetrics)contentMetrics;
 - (double)compactContinuousCornerRadius;
-- (id)contextMenuPreviewForControlHostView:(id)a3;
+- (id)contextMenuPreviewForControlHostView:(id)view;
 - (int64_t)gridSizeClass;
 - (int64_t)userVisibilityStatus;
-- (void)controlHostView:(id)a3 enqueue:(id)a4;
+- (void)controlHostView:(id)view enqueue:(id)enqueue;
 - (void)dealloc;
 - (void)loadView;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContentModuleContext:(id)a3;
-- (void)setGridSizeClass:(int64_t)a3;
-- (void)setSuppressesContentTransitions:(BOOL)a3;
-- (void)setUserVisibilityStatus:(int64_t)a3;
-- (void)set_isResizing:(BOOL)a3;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContentModuleContext:(id)context;
+- (void)setGridSizeClass:(int64_t)class;
+- (void)setSuppressesContentTransitions:(BOOL)transitions;
+- (void)setUserVisibilityStatus:(int64_t)status;
+- (void)set_isResizing:(BOOL)resizing;
 @end
 
 @implementation CCUIControlHostViewController
@@ -31,26 +31,26 @@
   return Strong;
 }
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
   v4 = *(self + OBJC_IVAR___CCUIControlHostViewController_contentModuleContext);
-  *(self + OBJC_IVAR___CCUIControlHostViewController_contentModuleContext) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CCUIControlHostViewController_contentModuleContext) = context;
+  contextCopy = context;
 }
 
 - (void)dealloc
 {
   v2 = *(self + OBJC_IVAR___CCUIControlHostViewController_controlInstance);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = CCUIControlHostViewController;
   [(CCUIControlHostViewController *)&v4 dealloc];
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   CCUIControlHostViewController.loadView()();
 }
 
@@ -61,10 +61,10 @@
   return *(self + v3);
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
-  v4 = self;
-  CCUIControlHostViewController.gridSizeClass.setter(a3);
+  selfCopy = self;
+  CCUIControlHostViewController.gridSizeClass.setter(class);
 }
 
 - (BOOL)suppressesContentTransitions
@@ -74,10 +74,10 @@
   return *(self + v3);
 }
 
-- (void)setSuppressesContentTransitions:(BOOL)a3
+- (void)setSuppressesContentTransitions:(BOOL)transitions
 {
-  v4 = self;
-  CCUIControlHostViewController.suppressesContentTransitions.setter(a3);
+  selfCopy = self;
+  CCUIControlHostViewController.suppressesContentTransitions.setter(transitions);
 }
 
 - (int64_t)userVisibilityStatus
@@ -87,13 +87,13 @@
   return *(self + v3);
 }
 
-- (void)setUserVisibilityStatus:(int64_t)a3
+- (void)setUserVisibilityStatus:(int64_t)status
 {
-  v5 = a3 == 2;
+  v5 = status == 2;
   v6 = OBJC_IVAR___CCUIControlHostViewController_userVisibilityStatus;
   swift_beginAccess();
-  *(self + v6) = a3;
-  if (a3 == 1)
+  *(self + v6) = status;
+  if (status == 1)
   {
     v7 = 1;
   }
@@ -113,10 +113,10 @@
   return *(self + v3);
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
-  v4 = self;
-  CCUIControlHostViewController.compactContinuousCornerRadius.setter(a3);
+  selfCopy = self;
+  CCUIControlHostViewController.compactContinuousCornerRadius.setter(radius);
 }
 
 - (CCUIModuleContentMetrics)contentMetrics
@@ -126,26 +126,26 @@
   return *(self + v3);
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v5 = a3;
-  v6 = self;
-  CCUIControlHostViewController.contentMetrics.setter(a3);
+  metricsCopy = metrics;
+  selfCopy = self;
+  CCUIControlHostViewController.contentMetrics.setter(metrics);
 }
 
-- (void)set_isResizing:(BOOL)a3
+- (void)set_isResizing:(BOOL)resizing
 {
-  v4 = self;
-  sub_1D16C55F8(a3);
+  selfCopy = self;
+  sub_1D16C55F8(resizing);
 }
 
 - (BOOL)shouldPerformClickInteraction
 {
-  v2 = self;
-  v3 = [(CCUIControlHostViewController *)v2 viewIfLoaded];
-  if (v3)
+  selfCopy = self;
+  viewIfLoaded = [(CCUIControlHostViewController *)selfCopy viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v4 = v3;
+    v4 = viewIfLoaded;
     objc_opt_self();
     v5 = swift_dynamicCastObjCClass();
     if (!v5)
@@ -158,22 +158,22 @@
     v5 = 0;
   }
 
-  v6 = [v5 contextMenu];
+  contextMenu = [v5 contextMenu];
 
-  if (v6)
+  if (contextMenu)
   {
   }
 
-  return v6 == 0;
+  return contextMenu == 0;
 }
 
-- (BOOL)controlHostViewShouldPerformPrimaryAction:(id)a3
+- (BOOL)controlHostViewShouldPerformPrimaryAction:(id)action
 {
-  v3 = self;
-  v4 = [(CCUIControlHostViewController *)v3 delegate];
-  if (v4)
+  selfCopy = self;
+  delegate = [(CCUIControlHostViewController *)selfCopy delegate];
+  if (delegate)
   {
-    v5 = [(CCUIControlHostViewControllerDelegate *)v4 controlHostViewControllerShouldPerformPrimaryAction:v3];
+    v5 = [(CCUIControlHostViewControllerDelegate *)delegate controlHostViewControllerShouldPerformPrimaryAction:selfCopy];
     swift_unknownObjectRelease();
   }
 
@@ -185,42 +185,42 @@
   return v5;
 }
 
-- (void)controlHostView:(id)a3 enqueue:(id)a4
+- (void)controlHostView:(id)view enqueue:(id)enqueue
 {
-  v5 = a4;
-  v7 = self;
-  v6 = [(CCUIControlHostViewController *)v7 contentModuleContext];
-  [(CCUIContentModuleContext *)v6 enqueueStatusUpdate:v5];
+  enqueueCopy = enqueue;
+  selfCopy = self;
+  contentModuleContext = [(CCUIControlHostViewController *)selfCopy contentModuleContext];
+  [(CCUIContentModuleContext *)contentModuleContext enqueueStatusUpdate:enqueueCopy];
 }
 
-- (BOOL)isDevicePasscodeLocked:(id)a3
+- (BOOL)isDevicePasscodeLocked:(id)locked
 {
-  v3 = self;
-  v4 = [(CCUIControlHostViewController *)v3 contentModuleContext];
-  if (v4)
+  selfCopy = self;
+  contentModuleContext = [(CCUIControlHostViewController *)selfCopy contentModuleContext];
+  if (contentModuleContext)
   {
-    v5 = v4;
-    v6 = [(CCUIContentModuleContext *)v4 isDevicePasscodeLocked];
+    v5 = contentModuleContext;
+    isDevicePasscodeLocked = [(CCUIContentModuleContext *)contentModuleContext isDevicePasscodeLocked];
   }
 
   else
   {
-    v6 = 0;
+    isDevicePasscodeLocked = 0;
   }
 
-  return v6;
+  return isDevicePasscodeLocked;
 }
 
-- (id)contextMenuPreviewForControlHostView:(id)a3
+- (id)contextMenuPreviewForControlHostView:(id)view
 {
-  v3 = self;
-  v4 = [(CCUIControlHostViewController *)v3 delegate];
-  if (v4)
+  selfCopy = self;
+  delegate = [(CCUIControlHostViewController *)selfCopy delegate];
+  if (delegate)
   {
-    v5 = v4;
-    if (([(CCUIControlHostViewControllerDelegate *)v4 respondsToSelector:sel_contextMenuPreviewForControlHostViewController_]& 1) != 0)
+    v5 = delegate;
+    if (([(CCUIControlHostViewControllerDelegate *)delegate respondsToSelector:sel_contextMenuPreviewForControlHostViewController_]& 1) != 0)
     {
-      v6 = [(CCUIControlHostViewControllerDelegate *)v5 contextMenuPreviewForControlHostViewController:v3];
+      v6 = [(CCUIControlHostViewControllerDelegate *)v5 contextMenuPreviewForControlHostViewController:selfCopy];
     }
 
     else
@@ -239,7 +239,7 @@
   return v6;
 }
 
-- (CCUIControlHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUIControlHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

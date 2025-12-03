@@ -1,46 +1,46 @@
 @interface ATXAudioRouteStream
-+ (int)atxAudioRouteTypeFromBMAudioRouteType:(int)a3;
-- (void)_enumerateAudioOutputEventsConnected:(BOOL)a3 startDate:(id)a4 endDate:(id)a5 filterBlock:(id)a6 limit:(unint64_t)a7 ascending:(BOOL)a8 block:(id)a9;
++ (int)atxAudioRouteTypeFromBMAudioRouteType:(int)type;
+- (void)_enumerateAudioOutputEventsConnected:(BOOL)connected startDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending block:(id)a9;
 @end
 
 @implementation ATXAudioRouteStream
 
-+ (int)atxAudioRouteTypeFromBMAudioRouteType:(int)a3
++ (int)atxAudioRouteTypeFromBMAudioRouteType:(int)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-- (void)_enumerateAudioOutputEventsConnected:(BOOL)a3 startDate:(id)a4 endDate:(id)a5 filterBlock:(id)a6 limit:(unint64_t)a7 ascending:(BOOL)a8 block:(id)a9
+- (void)_enumerateAudioOutputEventsConnected:(BOOL)connected startDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending block:(id)a9
 {
-  v9 = a8;
-  v15 = a6;
+  ascendingCopy = ascending;
+  blockCopy = block;
   v16 = a9;
-  v17 = a5;
-  v18 = a4;
+  endDateCopy = endDate;
+  dateCopy = date;
   v19 = objc_opt_new();
-  v20 = !v9;
-  v21 = [(ATXAudioRouteStream *)self _publisherWithStartDate:v18 endDate:v17 limit:a7 shouldReverse:!v9];
+  v20 = !ascendingCopy;
+  v21 = [(ATXAudioRouteStream *)self _publisherWithStartDate:dateCopy endDate:endDateCopy limit:limit shouldReverse:!ascendingCopy];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __112__ATXAudioRouteStream__enumerateAudioOutputEventsConnected_startDate_endDate_filterBlock_limit_ascending_block___block_invoke_2;
   v26[3] = &unk_2785904D0;
   v31 = v20;
-  v32 = a3;
+  connectedCopy = connected;
   v27 = v19;
-  v28 = self;
-  v29 = v15;
+  selfCopy = self;
+  v29 = blockCopy;
   v30 = v16;
   v22 = v16;
-  v23 = v15;
+  v23 = blockCopy;
   v24 = v19;
   v25 = [v21 sinkWithCompletion:&__block_literal_global_8 shouldContinue:v26];
 }

@@ -2,8 +2,8 @@
 - (HPSThirdPartyHeadphonesDatasource)init;
 - (HPSThirdPartyHeadphonesDatasourceDelegate)delegate;
 - (NSArray)routedThirdPartyHeadphones;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)handleDAEvent:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)handleDAEvent:(id)event;
 @end
 
 @implementation HPSThirdPartyHeadphonesDatasource
@@ -46,10 +46,10 @@ void __41__HPSThirdPartyHeadphonesDatasource_init__block_invoke(uint64_t a1, voi
   [WeakRetained handleDAEvent:v3];
 }
 
-- (void)handleDAEvent:(id)a3
+- (void)handleDAEvent:(id)event
 {
-  v3 = [a3 eventType];
-  if (v3 == 20)
+  eventType = [event eventType];
+  if (eventType == 20)
   {
     v4 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -63,7 +63,7 @@ void __41__HPSThirdPartyHeadphonesDatasource_init__block_invoke(uint64_t a1, voi
 
   else
   {
-    if (v3 != 10)
+    if (eventType != 10)
     {
       return;
     }
@@ -85,9 +85,9 @@ LABEL_7:
   v67 = *MEMORY[0x277D85DE8];
   if ([(CBCentralManager *)self->_centralManager state]== 5)
   {
-    v46 = self;
+    selfCopy = self;
     v3 = [MEMORY[0x277D04780] getDevicesWithFlags:8 session:self->_daSession error:0];
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
@@ -108,12 +108,12 @@ LABEL_7:
           }
 
           v10 = *(*(&v58 + 1) + 8 * i);
-          v11 = [v10 bluetoothIdentifier];
+          bluetoothIdentifier = [v10 bluetoothIdentifier];
 
-          if (v11)
+          if (bluetoothIdentifier)
           {
-            v12 = [v10 bluetoothIdentifier];
-            [v4 setObject:v10 forKeyedSubscript:v12];
+            bluetoothIdentifier2 = [v10 bluetoothIdentifier];
+            [dictionary setObject:v10 forKeyedSubscript:bluetoothIdentifier2];
           }
         }
 
@@ -123,16 +123,16 @@ LABEL_7:
       while (v7);
     }
 
-    objc_storeStrong(&v46->_daDevices, v4);
-    v13 = [MEMORY[0x277CB8698] sharedSystemAudioContext];
-    v14 = [v13 outputDevices];
+    objc_storeStrong(&selfCopy->_daDevices, dictionary);
+    mEMORY[0x277CB8698] = [MEMORY[0x277CB8698] sharedSystemAudioContext];
+    outputDevices = [mEMORY[0x277CB8698] outputDevices];
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v16 = v14;
+    v16 = outputDevices;
     v17 = [v16 countByEnumeratingWithState:&v54 objects:v65 count:16];
     if (v17)
     {
@@ -150,7 +150,7 @@ LABEL_7:
           v21 = *(*(&v54 + 1) + 8 * j);
           if ([v21 deviceType] == 1 && (objc_msgSend(v21, "deviceSubType") == 3 || objc_msgSend(v21, "deviceSubType") == 2))
           {
-            [v15 addObject:v21];
+            [array addObject:v21];
           }
         }
 
@@ -160,23 +160,23 @@ LABEL_7:
       while (v18);
     }
 
-    objc_storeStrong(&v46->_avDevices, v15);
-    if ([(NSDictionary *)v46->_daDevices count]&& [(NSArray *)v46->_avDevices count])
+    objc_storeStrong(&selfCopy->_avDevices, array);
+    if ([(NSDictionary *)selfCopy->_daDevices count]&& [(NSArray *)selfCopy->_avDevices count])
     {
-      v42 = v15;
+      v42 = array;
       v43 = v5;
-      v44 = v4;
-      v45 = [MEMORY[0x277CBEB18] array];
+      v44 = dictionary;
+      array2 = [MEMORY[0x277CBEB18] array];
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v22 = v46->_avDevices;
+      v22 = selfCopy->_avDevices;
       v23 = [(NSArray *)v22 countByEnumeratingWithState:&v50 objects:v64 count:16];
       if (v23)
       {
         v24 = v23;
-        v25 = v46;
+        v25 = selfCopy;
         v26 = *v51;
         v48 = v22;
         v49 = v16;
@@ -199,20 +199,20 @@ LABEL_7:
               if ([v31 supportsCTKD])
               {
                 daDevices = v25->_daDevices;
-                v33 = [v30 identifier];
-                v34 = [(NSDictionary *)daDevices objectForKeyedSubscript:v33];
+                identifier = [v30 identifier];
+                v34 = [(NSDictionary *)daDevices objectForKeyedSubscript:identifier];
 
                 if (v34)
                 {
-                  v35 = [MEMORY[0x277CF3248] sharedInstance];
-                  v36 = [v30 identifier];
-                  v37 = [v35 deviceFromIdentifier:v36];
+                  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+                  identifier2 = [v30 identifier];
+                  v37 = [mEMORY[0x277CF3248] deviceFromIdentifier:identifier2];
 
                   if (v37)
                   {
                     v38 = [BTSDeviceClassic deviceWithDevice:v37];
                     v39 = [[HPSThirdPartyHeadphone alloc] initWithLEDevice:v31 classicDevice:v38 daDevice:v34 avDevice:v28];
-                    [v45 addObject:v39];
+                    [array2 addObject:v39];
                   }
 
                   else
@@ -226,7 +226,7 @@ LABEL_7:
                     }
                   }
 
-                  v25 = v46;
+                  v25 = selfCopy;
                 }
 
                 else
@@ -267,29 +267,29 @@ LABEL_7:
       }
 
       v5 = v43;
-      v4 = v44;
-      v15 = v42;
+      dictionary = v44;
+      array = v42;
     }
 
     else
     {
-      v45 = MEMORY[0x277CBEBF8];
+      array2 = MEMORY[0x277CBEBF8];
     }
   }
 
   else
   {
-    v45 = MEMORY[0x277CBEBF8];
+    array2 = MEMORY[0x277CBEBF8];
   }
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v45;
+  return array2;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  if (([a3 state] & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if (([state state] & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained thirdPartyHeadphonesDatasourceDidUpdate:self];

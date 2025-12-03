@@ -1,28 +1,28 @@
 @interface NUBlockBasedURLModifier
-+ (id)modifierWithBlock:(id)a3;
-- (NUBlockBasedURLModifier)initWithBlock:(id)a3;
-- (id)modifyURL:(id)a3;
++ (id)modifierWithBlock:(id)block;
+- (NUBlockBasedURLModifier)initWithBlock:(id)block;
+- (id)modifyURL:(id)l;
 @end
 
 @implementation NUBlockBasedURLModifier
 
-+ (id)modifierWithBlock:(id)a3
++ (id)modifierWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithBlock:blockCopy];
 
   return v5;
 }
 
-- (NUBlockBasedURLModifier)initWithBlock:(id)a3
+- (NUBlockBasedURLModifier)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = NUBlockBasedURLModifier;
   v5 = [(NUBlockBasedURLModifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
   }
@@ -30,16 +30,16 @@
   return v5;
 }
 
-- (id)modifyURL:(id)a3
+- (id)modifyURL:(id)l
 {
-  v4 = a3;
-  v5 = [(NUBlockBasedURLModifier *)self block];
+  lCopy = l;
+  block = [(NUBlockBasedURLModifier *)self block];
 
-  v6 = v4;
-  if (v5)
+  v6 = lCopy;
+  if (block)
   {
-    v7 = [(NUBlockBasedURLModifier *)self block];
-    v6 = (v7)[2](v7, v4);
+    block2 = [(NUBlockBasedURLModifier *)self block];
+    v6 = (block2)[2](block2, lCopy);
   }
 
   return v6;

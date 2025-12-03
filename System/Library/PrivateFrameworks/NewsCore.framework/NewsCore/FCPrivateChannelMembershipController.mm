@@ -2,28 +2,28 @@
 + (id)backingRecordZoneIDs;
 + (id)desiredKeys;
 - (BOOL)hasMemberships;
-- (BOOL)isAllowedToSeeDraftsForChannelID:(id)a3;
-- (BOOL)isMemberOfChannelID:(id)a3;
-- (FCPrivateChannelMembershipController)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
-- (id)feedDescriptorForDraftFeedForChannel:(id)a3;
+- (BOOL)isAllowedToSeeDraftsForChannelID:(id)d;
+- (BOOL)isMemberOfChannelID:(id)d;
+- (FCPrivateChannelMembershipController)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
+- (id)feedDescriptorForDraftFeedForChannel:(id)channel;
 - (id)membershipChannelIDs;
 - (uint64_t)shouldShowAllDraftContent;
-- (void)_fetchPrivateChannelMembershipsWithCompletion:(void *)a1;
+- (void)_fetchPrivateChannelMembershipsWithCompletion:(void *)completion;
 - (void)_logCurrentMemberships;
-- (void)_refreshPublicMembershipsWithCompletion:(void *)a1;
+- (void)_refreshPublicMembershipsWithCompletion:(void *)completion;
 - (void)activityObservingApplicationWindowDidBecomeForeground;
-- (void)addItem:(int)a3 toStore:;
-- (void)addObserver:(id)a3;
+- (void)addItem:(int)item toStore:;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
-- (void)isAllowedToSeeArticleID:(id)a3 completionBlock:(id)a4;
-- (void)isAllowedToSeeIssueID:(id)a3 completionBlock:(id)a4;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
+- (void)isAllowedToSeeArticleID:(id)d completionBlock:(id)block;
+- (void)isAllowedToSeeIssueID:(id)d completionBlock:(id)block;
 - (void)loadLocalCachesFromStore;
-- (void)referenceToMembershipForMembershipID:(void *)a1;
-- (void)removeItemWithItemID:(void *)a1;
-- (void)removeObserver:(id)a3;
-- (void)setMembershipsByChannelID:(uint64_t)a1;
+- (void)referenceToMembershipForMembershipID:(void *)d;
+- (void)removeItemWithItemID:(void *)d;
+- (void)removeObserver:(id)observer;
+- (void)setMembershipsByChannelID:(uint64_t)d;
 @end
 
 @implementation FCPrivateChannelMembershipController
@@ -31,14 +31,14 @@
 - (void)_logCurrentMemberships
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
-    v2 = *(a1 + 96);
+    v2 = *(self + 96);
     v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_75_0];
 
-    v4 = *(a1 + 88);
-    v5 = [v4 allKeys];
+    v4 = *(self + 88);
+    allKeys = [v4 allKeys];
 
     v6 = FCChannelMembershipLog;
     if (os_log_type_enabled(FCChannelMembershipLog, OS_LOG_TYPE_DEFAULT))
@@ -49,7 +49,7 @@
       v11 = 2114;
       v12 = v3;
       v13 = 2114;
-      v14 = v5;
+      v14 = allKeys;
       _os_log_impl(&dword_1B63EF000, v7, OS_LOG_TYPE_DEFAULT, "user has %lu memberships, ids=%{public}@, channels=%{public}@", &v9, 0x20u);
     }
   }
@@ -60,15 +60,15 @@
 - (void)loadLocalCachesFromStore
 {
   v67 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(FCPrivateDataController *)self localStore];
+  array = [MEMORY[0x1E695DF70] array];
+  localStore = [(FCPrivateDataController *)self localStore];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v53 objects:v66 count:16];
-  v43 = v3;
+  allKeys = [localStore allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v53 objects:v66 count:16];
+  v43 = array;
   if (v6)
   {
     v7 = v6;
@@ -80,14 +80,14 @@
       {
         if (*v54 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v53 + 1) + 8 * v9);
         if (([objc_opt_class() isLocalStoreKeyInternal:v10] & 1) == 0)
         {
           objc_opt_class();
-          v11 = [v4 objectForKeyedSubscript:v10];
+          v11 = [localStore objectForKeyedSubscript:v10];
           if (v11)
           {
             if (objc_opt_isKindOfClass())
@@ -114,9 +114,9 @@
             if (v14)
             {
               [(FCPrivateChannelMembershipController *)self addItem:v14 toStore:0];
-              v15 = [(FCReferenceToMembership *)v14 membershipID];
+              membershipID = [(FCReferenceToMembership *)v14 membershipID];
 
-              if (!v15 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+              if (!membershipID && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "reference.membershipID"];
                 *buf = 136315906;
@@ -130,19 +130,19 @@
                 _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
               }
 
-              v16 = [(FCReferenceToMembership *)v14 membershipID];
+              membershipID2 = [(FCReferenceToMembership *)v14 membershipID];
 
-              if (v16)
+              if (membershipID2)
               {
-                v17 = [(FCReferenceToMembership *)v14 membershipID];
-                [v3 addObject:v17];
+                membershipID3 = [(FCReferenceToMembership *)v14 membershipID];
+                [array addObject:membershipID3];
                 goto LABEL_19;
               }
             }
 
             else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
-              v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "reference"];
+              membershipID3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "reference"];
               *buf = 136315906;
               v59 = "[FCPrivateChannelMembershipController loadLocalCachesFromStore]";
               v60 = 2080;
@@ -150,7 +150,7 @@
               v62 = 1024;
               v63 = 350;
               v64 = 2114;
-              v65 = v17;
+              v65 = membershipID3;
               _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 LABEL_19:
             }
@@ -170,7 +170,7 @@ LABEL_19:
               v61 = v10;
               _os_log_error_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_ERROR, "ERROR: Object of type %{public}@ is not dictionary for key %{public}@", buf, 0x16u);
 
-              v3 = v43;
+              array = v43;
             }
           }
         }
@@ -179,20 +179,20 @@ LABEL_19:
       }
 
       while (v7 != v9);
-      v23 = [v5 countByEnumeratingWithState:&v53 objects:v66 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v53 objects:v66 count:16];
       v7 = v23;
     }
 
     while (v23);
   }
 
-  v24 = [(FCPrivateDataController *)self context];
-  [v24 internalContentContext];
-  v26 = v25 = v3;
-  v27 = [v26 channelMembershipController];
+  context = [(FCPrivateDataController *)self context];
+  [context internalContentContext];
+  v26 = v25 = array;
+  channelMembershipController = [v26 channelMembershipController];
 
-  v28 = [v27 cachedChannelMembershipsForIDs:v25];
-  v29 = [MEMORY[0x1E695DF90] dictionary];
+  v28 = [channelMembershipController cachedChannelMembershipsForIDs:v25];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -213,8 +213,8 @@ LABEL_19:
         }
 
         v35 = [v30 objectForKeyedSubscript:*(*(&v49 + 1) + 8 * i)];
-        v36 = [v35 channelID];
-        [v29 setObject:v35 forKey:v36];
+        channelID = [v35 channelID];
+        [dictionary setObject:v35 forKey:channelID];
       }
 
       v32 = [v30 countByEnumeratingWithState:&v49 objects:v57 count:16];
@@ -238,11 +238,11 @@ LABEL_19:
   v47[2] = __64__FCPrivateChannelMembershipController_loadLocalCachesFromStore__block_invoke;
   v47[3] = &unk_1E7C36C58;
   v47[4] = self;
-  v38 = v29;
+  v38 = dictionary;
   v48 = v38;
   [(FCMTWriterLock *)membershipsLock performWriteSync:v47];
   [(FCPrivateChannelMembershipController *)self _logCurrentMemberships];
-  v39 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v40 = FCChannelMembershipLog;
   if (os_log_type_enabled(FCChannelMembershipLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -254,9 +254,9 @@ LABEL_19:
   v44[1] = 3221225472;
   v44[2] = __64__FCPrivateChannelMembershipController_loadLocalCachesFromStore__block_invoke_53;
   v44[3] = &unk_1E7C36C58;
-  v45 = v39;
-  v46 = self;
-  v41 = v39;
+  v45 = date;
+  selfCopy = self;
+  v41 = date;
   [FCTaskScheduler scheduleLowPriorityBlockForMainThread:v44];
 
   v42 = *MEMORY[0x1E69E9840];
@@ -270,20 +270,20 @@ LABEL_19:
   }
 }
 
-- (FCPrivateChannelMembershipController)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCPrivateChannelMembershipController)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
-  v8 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = FCPrivateChannelMembershipController;
-  v9 = [(FCPrivateDataController *)&v14 initWithContext:v8 pushNotificationCenter:a4 storeDirectory:a5];
+  v9 = [(FCPrivateDataController *)&v14 initWithContext:contextCopy pushNotificationCenter:center storeDirectory:directory];
   if (v9)
   {
     v10 = objc_alloc_init(FCMTWriterLock);
     membershipsLock = v9->_membershipsLock;
     v9->_membershipsLock = v10;
 
-    v12 = [v8 appActivityMonitor];
-    [v12 addObserver:v9];
+    appActivityMonitor = [contextCopy appActivityMonitor];
+    [appActivityMonitor addObserver:v9];
   }
 
   return v9;
@@ -291,18 +291,18 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FCPrivateChannelMembershipController;
   [(FCPrivateDataController *)&v4 dealloc];
 }
 
-- (BOOL)isMemberOfChannelID:(id)a3
+- (BOOL)isMemberOfChannelID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     if (([(FCPrivateChannelMembershipController *)self shouldShowAllDraftContent]& 1) != 0)
     {
@@ -326,7 +326,7 @@ LABEL_19:
       v9[2] = __60__FCPrivateChannelMembershipController_isMemberOfChannelID___block_invoke_2;
       v9[3] = &unk_1E7C36F68;
       v9[4] = self;
-      v10 = v4;
+      v10 = dCopy;
       v7 = membershipsLock;
       v5 = [(FCMTWriterLock *)v7 readBool:v9];
     }
@@ -342,7 +342,7 @@ LABEL_19:
 
 - (uint64_t)shouldShowAllDraftContent
 {
-  if (!a1 || !NFInternalBuild())
+  if (!self || !NFInternalBuild())
   {
     return 0;
   }
@@ -367,10 +367,10 @@ BOOL __60__FCPrivateChannelMembershipController_isMemberOfChannelID___block_invo
   return v3;
 }
 
-- (BOOL)isAllowedToSeeDraftsForChannelID:(id)a3
+- (BOOL)isAllowedToSeeDraftsForChannelID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     if (([(FCPrivateChannelMembershipController *)self shouldShowAllDraftContent]& 1) != 0)
     {
@@ -394,7 +394,7 @@ BOOL __60__FCPrivateChannelMembershipController_isMemberOfChannelID___block_invo
       v9[2] = __73__FCPrivateChannelMembershipController_isAllowedToSeeDraftsForChannelID___block_invoke_2;
       v9[3] = &unk_1E7C36F68;
       v9[4] = self;
-      v10 = v4;
+      v10 = dCopy;
       v7 = membershipsLock;
       v5 = [(FCMTWriterLock *)v7 readBool:v9];
     }
@@ -431,11 +431,11 @@ uint64_t __73__FCPrivateChannelMembershipController_isAllowedToSeeDraftsForChann
   return v4;
 }
 
-- (id)feedDescriptorForDraftFeedForChannel:(id)a3
+- (id)feedDescriptorForDraftFeedForChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([(FCPrivateChannelMembershipController *)self isAllowedToSeeDraftsForChannelID:v5])
+  channelCopy = channel;
+  identifier = [channelCopy identifier];
+  if ([(FCPrivateChannelMembershipController *)self isAllowedToSeeDraftsForChannelID:identifier])
   {
     if (self)
     {
@@ -451,14 +451,14 @@ uint64_t __73__FCPrivateChannelMembershipController_isAllowedToSeeDraftsForChann
     v20 = 3221225472;
     v21 = __77__FCPrivateChannelMembershipController_feedDescriptorForDraftFeedForChannel___block_invoke;
     v22 = &unk_1E7C397D0;
-    v23 = self;
-    v7 = v5;
+    selfCopy = self;
+    v7 = identifier;
     v24 = v7;
     v8 = [(FCMTWriterLock *)membershipsLock readObject:&v19];
     if ([(FCPrivateChannelMembershipController *)self shouldShowAllDraftContent]&& !v8)
     {
       v9 = objc_alloc_init(MEMORY[0x1E69B6DE8]);
-      [v9 setChannelID:{v7, v19, v20, v21, v22, v23}];
+      [v9 setChannelID:{v7, v19, v20, v21, v22, selfCopy}];
       v10 = [v7 substringFromIndex:1];
       v11 = [@"LDT" stringByAppendingString:v10];
       [v9 setDraftArticleListID:v11];
@@ -471,9 +471,9 @@ uint64_t __73__FCPrivateChannelMembershipController_isAllowedToSeeDraftsForChann
     }
 
     v14 = [FCDraftFeedDescriptor alloc];
-    v15 = [(FCChannelMembership *)v8 draftArticleListID];
-    v16 = [(FCChannelMembership *)v8 draftIssueListID];
-    v17 = [(FCDraftFeedDescriptor *)v14 initWithChannel:v4 articleListID:v15 issueListID:v16];
+    draftArticleListID = [(FCChannelMembership *)v8 draftArticleListID];
+    draftIssueListID = [(FCChannelMembership *)v8 draftIssueListID];
+    v17 = [(FCDraftFeedDescriptor *)v14 initWithChannel:channelCopy articleListID:draftArticleListID issueListID:draftIssueListID];
   }
 
   else
@@ -495,12 +495,12 @@ uint64_t __77__FCPrivateChannelMembershipController_feedDescriptorForDraftFeedFo
   return [v1 objectForKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)isAllowedToSeeArticleID:(id)a3 completionBlock:(id)a4
+- (void)isAllowedToSeeArticleID:(id)d completionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  blockCopy = block;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "articleID != nil"];
     *buf = 136315906;
@@ -513,13 +513,13 @@ uint64_t __77__FCPrivateChannelMembershipController_feedDescriptorForDraftFeedFo
     v23 = v11;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (blockCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
     goto LABEL_6;
   }
@@ -543,11 +543,11 @@ LABEL_6:
   v13[1] = 3221225472;
   v13[2] = __80__FCPrivateChannelMembershipController_isAllowedToSeeArticleID_completionBlock___block_invoke;
   v13[3] = &unk_1E7C39B60;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = blockCopy;
   v13[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = dCopy;
+  v9 = blockCopy;
   [(FCPrivateChannelMembershipController *)self _fetchPrivateChannelMembershipsWithCompletion:v13];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -632,12 +632,12 @@ uint64_t __80__FCPrivateChannelMembershipController_isAllowedToSeeArticleID_comp
   return v5();
 }
 
-- (void)_fetchPrivateChannelMembershipsWithCompletion:(void *)a1
+- (void)_fetchPrivateChannelMembershipsWithCompletion:(void *)completion
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
     if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -657,20 +657,20 @@ uint64_t __80__FCPrivateChannelMembershipController_isAllowedToSeeArticleID_comp
     v7[1] = 3221225472;
     v7[2] = __86__FCPrivateChannelMembershipController__fetchPrivateChannelMembershipsWithCompletion___block_invoke;
     v7[3] = &unk_1E7C39C20;
-    v7[4] = a1;
+    v7[4] = completion;
     v8 = v4;
-    [a1 syncWithCompletion:v7];
+    [completion syncWithCompletion:v7];
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)isAllowedToSeeIssueID:(id)a3 completionBlock:(id)a4
+- (void)isAllowedToSeeIssueID:(id)d completionBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  blockCopy = block;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "issueID != nil"];
     *buf = 136315906;
@@ -683,13 +683,13 @@ uint64_t __80__FCPrivateChannelMembershipController_isAllowedToSeeArticleID_comp
     v23 = v11;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (blockCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
     goto LABEL_6;
   }
@@ -713,11 +713,11 @@ LABEL_6:
   v13[1] = 3221225472;
   v13[2] = __78__FCPrivateChannelMembershipController_isAllowedToSeeIssueID_completionBlock___block_invoke;
   v13[3] = &unk_1E7C39B60;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = blockCopy;
   v13[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = dCopy;
+  v9 = blockCopy;
   [(FCPrivateChannelMembershipController *)self _fetchPrivateChannelMembershipsWithCompletion:v13];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -912,39 +912,39 @@ void __60__FCPrivateChannelMembershipController_membershipChannelIDs__block_invo
   return v4;
 }
 
-- (void)addItem:(int)a3 toStore:
+- (void)addItem:(int)item toStore:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
     if (v5)
     {
-      v6 = a1[13];
+      v6 = self[13];
       v11 = MEMORY[0x1E69E9820];
       v12 = 3221225472;
       v13 = __56__FCPrivateChannelMembershipController_addItem_toStore___block_invoke;
       v14 = &unk_1E7C36C58;
-      v15 = a1;
+      selfCopy = self;
       v7 = v5;
       v16 = v7;
       [v6 performWriteSync:&v11];
-      if (a3)
+      if (item)
       {
-        v8 = [v7 dictionaryRepresentation];
-        v9 = [a1 localStore];
-        v10 = [v7 identifier];
-        [v9 setObject:v8 forKeyedSubscript:v10];
+        dictionaryRepresentation = [v7 dictionaryRepresentation];
+        localStore = [self localStore];
+        identifier = [v7 identifier];
+        [localStore setObject:dictionaryRepresentation forKeyedSubscript:identifier];
       }
     }
   }
 }
 
-- (void)setMembershipsByChannelID:(uint64_t)a1
+- (void)setMembershipsByChannelID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((d + 88), a2);
   }
 }
 
@@ -1026,23 +1026,23 @@ LABEL_6:
   return [v5 addObject:v6];
 }
 
-- (void)removeItemWithItemID:(void *)a1
+- (void)removeItemWithItemID:(void *)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
     [MEMORY[0x1E696AF00] isMainThread];
-    v4 = a1[13];
+    v4 = d[13];
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __61__FCPrivateChannelMembershipController_removeItemWithItemID___block_invoke;
     v10 = &unk_1E7C36C58;
-    v11 = a1;
+    dCopy = d;
     v5 = v3;
     v12 = v5;
     [v4 performWriteSync:&v7];
-    v6 = [a1 localStore];
-    [v6 removeObjectForKey:v5];
+    localStore = [d localStore];
+    [localStore removeObjectForKey:v5];
   }
 }
 
@@ -1213,40 +1213,40 @@ void __86__FCPrivateChannelMembershipController_fetchMembershipsWithIDs_queue_co
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)referenceToMembershipForMembershipID:(void *)a1
+- (void)referenceToMembershipForMembershipID:(void *)d
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (d)
   {
-    v5 = a1[13];
+    v5 = d[13];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __77__FCPrivateChannelMembershipController_referenceToMembershipForMembershipID___block_invoke;
     v8[3] = &unk_1E7C397D0;
-    v8[4] = a1;
+    v8[4] = d;
     v9 = v3;
     v6 = v5;
-    a1 = [v6 readObject:v8];
+    d = [v6 readObject:v8];
   }
 
-  return a1;
+  return d;
 }
 
-- (void)_refreshPublicMembershipsWithCompletion:(void *)a1
+- (void)_refreshPublicMembershipsWithCompletion:(void *)completion
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = a1[13];
+    array = [MEMORY[0x1E695DF70] array];
+    v5 = completion[13];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __80__FCPrivateChannelMembershipController__refreshPublicMembershipsWithCompletion___block_invoke;
     v23[3] = &unk_1E7C36C58;
-    v23[4] = a1;
-    v6 = v4;
+    v23[4] = completion;
+    v6 = array;
     v24 = v6;
     [v5 performReadSync:v23];
     v7 = FCChannelMembershipLog;
@@ -1261,24 +1261,24 @@ void __86__FCPrivateChannelMembershipController_fetchMembershipsWithIDs_queue_co
     v18 = 3221225472;
     v19 = __80__FCPrivateChannelMembershipController__refreshPublicMembershipsWithCompletion___block_invoke_61;
     v20 = &unk_1E7C37C88;
-    v21 = a1;
+    completionCopy = completion;
     v22 = v3;
     v8 = &v17;
     v9 = MEMORY[0x1E69E96A0];
     v10 = MEMORY[0x1E69E96A0];
     v11 = v6;
-    v12 = [a1 context];
-    v13 = [v12 internalContentContext];
-    v14 = [v13 channelMembershipController];
+    context = [completion context];
+    internalContentContext = [context internalContentContext];
+    channelMembershipController = [internalContentContext channelMembershipController];
 
     *&buf = MEMORY[0x1E69E9820];
     *(&buf + 1) = 3221225472;
     v26 = __86__FCPrivateChannelMembershipController_fetchMembershipsWithIDs_queue_completionBlock___block_invoke;
     v27 = &unk_1E7C39BB0;
-    v28 = a1;
+    completionCopy2 = completion;
     v15 = v8;
     v29 = v15;
-    [v14 fetchChannelMembershipsForIDs:v11 maximumCachedAge:v9 callbackQueue:&buf completionHandler:1.0];
+    [channelMembershipController fetchChannelMembershipsForIDs:v11 maximumCachedAge:v9 callbackQueue:&buf completionHandler:1.0];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1542,16 +1542,16 @@ void __80__FCPrivateChannelMembershipController__refreshPublicMembershipsWithCom
   [(FCPrivateChannelMembershipController *)v4 setMembershipsByChannelID:v5];
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v24 = a4;
+  recordsCopy = records;
+  namesCopy = names;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v7 = [recordsCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1563,21 +1563,21 @@ void __80__FCPrivateChannelMembershipController__refreshPublicMembershipsWithCom
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordsCopy);
         }
 
         v11 = [[FCReferenceToMembership alloc] initWithRecord:*(*(&v29 + 1) + 8 * v10)];
-        v12 = [(FCReferenceToMembership *)v11 membershipID];
+        membershipID = [(FCReferenceToMembership *)v11 membershipID];
 
-        if (v12)
+        if (membershipID)
         {
-          v13 = [(FCReferenceToMembership *)v11 membershipID];
-          v14 = [(FCPrivateChannelMembershipController *)self referenceToMembershipForMembershipID:v13];
+          membershipID2 = [(FCReferenceToMembership *)v11 membershipID];
+          v14 = [(FCPrivateChannelMembershipController *)self referenceToMembershipForMembershipID:membershipID2];
 
           if (v14)
           {
-            v15 = [(FCRemoveReferenceToChannelMembershipCommand *)v14 identifier];
-            [(FCPrivateChannelMembershipController *)self removeItemWithItemID:v15];
+            identifier = [(FCRemoveReferenceToChannelMembershipCommand *)v14 identifier];
+            [(FCPrivateChannelMembershipController *)self removeItemWithItemID:identifier];
           }
 
           [(FCPrivateChannelMembershipController *)self addItem:v11 toStore:1];
@@ -1586,8 +1586,8 @@ void __80__FCPrivateChannelMembershipController__refreshPublicMembershipsWithCom
         else
         {
           v16 = [FCRemoveReferenceToChannelMembershipCommand alloc];
-          v17 = [(FCReferenceToMembership *)v11 identifier];
-          v14 = [(FCRemoveReferenceToChannelMembershipCommand *)v16 initWithReferenceToChannelMembershipID:v17];
+          identifier2 = [(FCReferenceToMembership *)v11 identifier];
+          v14 = [(FCRemoveReferenceToChannelMembershipCommand *)v16 initWithReferenceToChannelMembershipID:identifier2];
 
           [(FCPrivateDataController *)self addCommandToCommandQueue:v14];
         }
@@ -1596,7 +1596,7 @@ void __80__FCPrivateChannelMembershipController__refreshPublicMembershipsWithCom
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [recordsCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v8);
@@ -1606,7 +1606,7 @@ void __80__FCPrivateChannelMembershipController__refreshPublicMembershipsWithCom
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v18 = v24;
+  v18 = namesCopy;
   v19 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v19)
   {
@@ -1640,7 +1640,7 @@ void __80__FCPrivateChannelMembershipController__refreshPublicMembershipsWithCom
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
   [MEMORY[0x1E696AF00] isMainThread];
   if (self)
@@ -1712,19 +1712,19 @@ uint64_t __77__FCPrivateChannelMembershipController_referenceToMembershipForMemb
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCPrivateDataController *)self observers];
-    v6 = [v5 containsObject:v4];
+    observers = [(FCPrivateDataController *)self observers];
+    v6 = [observers containsObject:observerCopy];
 
     if (v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already a state observer", v4];
+      observerCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already a state observer", observerCopy];
       *buf = 136315906;
       v11 = "[FCPrivateChannelMembershipController addObserver:]";
       v12 = 2080;
@@ -1732,12 +1732,12 @@ uint64_t __77__FCPrivateChannelMembershipController_referenceToMembershipForMemb
       v14 = 1024;
       v15 = 613;
       v16 = 2114;
-      v17 = v9;
+      v17 = observerCopy;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v7 = [(FCPrivateDataController *)self observers];
-    [v7 addObject:v4];
+    observers2 = [(FCPrivateDataController *)self observers];
+    [observers2 addObject:observerCopy];
   }
 
   else
@@ -1747,7 +1747,7 @@ uint64_t __77__FCPrivateChannelMembershipController_referenceToMembershipForMemb
       goto LABEL_8;
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "stateObserver != nil"];
+    observers2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "stateObserver != nil"];
     *buf = 136315906;
     v11 = "[FCPrivateChannelMembershipController addObserver:]";
     v12 = 2080;
@@ -1755,7 +1755,7 @@ uint64_t __77__FCPrivateChannelMembershipController_referenceToMembershipForMemb
     v14 = 1024;
     v15 = 609;
     v16 = 2114;
-    v17 = v7;
+    v17 = observers2;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
@@ -1763,15 +1763,15 @@ LABEL_8:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCPrivateDataController *)self observers];
-    [v5 removeObject:v4];
+    observers = [(FCPrivateDataController *)self observers];
+    [observers removeObject:observerCopy];
   }
 
   else
@@ -1781,7 +1781,7 @@ LABEL_8:
       goto LABEL_5;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "stateObserver != nil"];
+    observers = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "stateObserver != nil"];
     *buf = 136315906;
     v8 = "[FCPrivateChannelMembershipController removeObserver:]";
     v9 = 2080;
@@ -1789,7 +1789,7 @@ LABEL_8:
     v11 = 1024;
     v12 = 622;
     v13 = 2114;
-    v14 = v5;
+    v14 = observers;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 

@@ -1,14 +1,14 @@
 @interface TCMessageException
-+ (id)exceptionWithMessage:(id)a3;
-+ (id)exceptionWithMessage:(id)a3 args:(char *)a4;
-+ (id)exceptionWithUntaggedMessage:(id)a3;
-+ (id)exceptionWithUntaggedMessage:(id)a3 args:(char *)a4;
-+ (id)nsError:(id)a3 domain:(id)a4;
++ (id)exceptionWithMessage:(id)message;
++ (id)exceptionWithMessage:(id)message args:(char *)args;
++ (id)exceptionWithUntaggedMessage:(id)message;
++ (id)exceptionWithUntaggedMessage:(id)message args:(char *)args;
++ (id)nsError:(id)error domain:(id)domain;
 + (void)initialize;
-+ (void)raise:(id)a3;
-+ (void)raiseUntaggedMessage:(id)a3;
-- (TCMessageException)initWithMessage:(id)a3;
-- (TCMessageException)initWithUntaggedMessage:(id)a3;
++ (void)raise:(id)raise;
++ (void)raiseUntaggedMessage:(id)message;
+- (TCMessageException)initWithMessage:(id)message;
+- (TCMessageException)initWithUntaggedMessage:(id)message;
 - (id)description;
 @end
 
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && (initAllMessages(void)::alreadyDone & 1) == 0)
+  if (objc_opt_class() == self && (initAllMessages(void)::alreadyDone & 1) == 0)
   {
     initAllMessages(void)::alreadyDone = 1;
 
@@ -24,18 +24,18 @@
   }
 }
 
-- (TCMessageException)initWithMessage:(id)a3
+- (TCMessageException)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = TCMessageException;
   v5 = [(TCMessageException *)&v12 initWithName:@"TCMessageException" reason:0 userInfo:0];
   if (v5)
   {
     v6 = [TCMessageEntry alloc];
-    v7 = [v4 messageTag];
-    v8 = [v4 messageText];
-    v9 = [(TCMessageEntry *)v6 initWithTag:v7 affectedObject:0 text:v8 parameters:&v13];
+    messageTag = [messageCopy messageTag];
+    messageText = [messageCopy messageText];
+    v9 = [(TCMessageEntry *)v6 initWithTag:messageTag affectedObject:0 text:messageText parameters:&v13];
     m_entry = v5->m_entry;
     v5->m_entry = v9;
   }
@@ -43,15 +43,15 @@
   return v5;
 }
 
-- (TCMessageException)initWithUntaggedMessage:(id)a3
+- (TCMessageException)initWithUntaggedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = TCMessageException;
   v5 = [(TCMessageException *)&v9 initWithName:@"TCMessageException" reason:0 userInfo:0];
   if (v5)
   {
-    v6 = [[TCMessageEntry alloc] initWithTag:0xFFFFFFFFLL affectedObject:0 text:v4 parameters:&v10];
+    v6 = [[TCMessageEntry alloc] initWithTag:0xFFFFFFFFLL affectedObject:0 text:messageCopy parameters:&v10];
     m_entry = v5->m_entry;
     v5->m_entry = v6;
   }
@@ -59,16 +59,16 @@
   return v5;
 }
 
-+ (id)exceptionWithMessage:(id)a3 args:(char *)a4
++ (id)exceptionWithMessage:(id)message args:(char *)args
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithName:@"TCMessageException" reason:0 userInfo:0];
+  messageCopy = message;
+  v7 = [[self alloc] initWithName:@"TCMessageException" reason:0 userInfo:0];
   if (v7)
   {
     v8 = [TCMessageEntry alloc];
-    v9 = [v6 messageTag];
-    v10 = [v6 messageText];
-    v11 = [(TCMessageEntry *)v8 initWithTag:v9 affectedObject:0 text:v10 parameters:a4];
+    messageTag = [messageCopy messageTag];
+    messageText = [messageCopy messageText];
+    v11 = [(TCMessageEntry *)v8 initWithTag:messageTag affectedObject:0 text:messageText parameters:args];
     v12 = v7[5];
     v7[5] = v11;
   }
@@ -76,20 +76,20 @@
   return v7;
 }
 
-+ (id)exceptionWithMessage:(id)a3
++ (id)exceptionWithMessage:(id)message
 {
-  v3 = [a1 exceptionWithMessage:a3 args:&v6];
+  v3 = [self exceptionWithMessage:message args:&v6];
 
   return v3;
 }
 
-+ (id)exceptionWithUntaggedMessage:(id)a3 args:(char *)a4
++ (id)exceptionWithUntaggedMessage:(id)message args:(char *)args
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithName:@"TCMessageException" reason:0 userInfo:0];
+  messageCopy = message;
+  v7 = [[self alloc] initWithName:@"TCMessageException" reason:0 userInfo:0];
   if (v7)
   {
-    v8 = [[TCMessageEntry alloc] initWithTag:0xFFFFFFFFLL affectedObject:0 text:v6 parameters:a4];
+    v8 = [[TCMessageEntry alloc] initWithTag:0xFFFFFFFFLL affectedObject:0 text:messageCopy parameters:args];
     v9 = v7[5];
     v7[5] = v8;
   }
@@ -97,22 +97,22 @@
   return v7;
 }
 
-+ (id)exceptionWithUntaggedMessage:(id)a3
++ (id)exceptionWithUntaggedMessage:(id)message
 {
-  v3 = [a1 exceptionWithUntaggedMessage:a3 args:&v6];
+  v3 = [self exceptionWithUntaggedMessage:message args:&v6];
 
   return v3;
 }
 
-+ (void)raise:(id)a3
++ (void)raise:(id)raise
 {
-  v3 = [TCMessageException exceptionWithMessage:a3 args:&v4];
+  v3 = [TCMessageException exceptionWithMessage:raise args:&v4];
   objc_exception_throw(v3);
 }
 
-+ (void)raiseUntaggedMessage:(id)a3
++ (void)raiseUntaggedMessage:(id)message
 {
-  v3 = [a1 exceptionWithUntaggedMessage:a3 args:&v4];
+  v3 = [self exceptionWithUntaggedMessage:message args:&v4];
   objc_exception_throw(v3);
 }
 
@@ -125,56 +125,56 @@
   return v4;
 }
 
-+ (id)nsError:(id)a3 domain:(id)a4
++ (id)nsError:(id)error domain:(id)domain
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  errorCopy = error;
+  domainCopy = domain;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = 0;
+    getMessageText = 0;
     goto LABEL_10;
   }
 
-  v7 = [v5 getEntry];
-  v8 = [v7 getMessageText];
-  if (!v8)
+  getEntry = [errorCopy getEntry];
+  getMessageText = [getEntry getMessageText];
+  if (!getMessageText)
   {
 
     goto LABEL_10;
   }
 
-  v9 = [TCUnknownProblemMessage messageText];
-  v10 = [v8 isEqualToString:v9];
+  messageText = [TCUnknownProblemMessage messageText];
+  v10 = [getMessageText isEqualToString:messageText];
 
   if (v10)
   {
 LABEL_10:
-    v19 = [v5 name];
-    v20 = [v19 isEqualToString:*MEMORY[0x277CBE728]];
+    name = [errorCopy name];
+    v20 = [name isEqualToString:*MEMORY[0x277CBE728]];
 
     if (v20)
     {
-      v21 = [TCOutOfMemoryMessage messageText];
+      messageText2 = [TCOutOfMemoryMessage messageText];
 
-      v8 = v21;
+      getMessageText = messageText2;
     }
 
     v12 = 0;
-    v14 = 0;
+    getAdditionalText = 0;
     v17 = 0;
     v16 = MEMORY[0x277CCA9B8];
     goto LABEL_13;
   }
 
-  v11 = [v5 getEntry];
-  LODWORD(v12) = [v11 getMessageTag];
+  getEntry2 = [errorCopy getEntry];
+  LODWORD(v12) = [getEntry2 getMessageTag];
 
-  v13 = [v5 getEntry];
-  v14 = [v13 getAdditionalText];
+  getEntry3 = [errorCopy getEntry];
+  getAdditionalText = [getEntry3 getAdditionalText];
 
-  if ([v8 isEqualToString:@"TCUserCancelled"])
+  if ([getMessageText isEqualToString:@"TCUserCancelled"])
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
     if (v15)
@@ -185,10 +185,10 @@ LABEL_10:
 
   v16 = MEMORY[0x277CCA9B8];
   v12 = v12;
-  if (v14)
+  if (getAdditionalText)
   {
     v23 = *MEMORY[0x277CCA470];
-    v24[0] = v14;
+    v24[0] = getAdditionalText;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v18 = 0;
     goto LABEL_14;
@@ -198,7 +198,7 @@ LABEL_10:
 LABEL_13:
   v18 = 1;
 LABEL_14:
-  v15 = [v16 tsu_errorWithDomain:v6 code:v12 alertTitle:v8 alertMessage:v14 userInfo:v17];
+  v15 = [v16 tsu_errorWithDomain:domainCopy code:v12 alertTitle:getMessageText alertMessage:getAdditionalText userInfo:v17];
   if ((v18 & 1) == 0)
   {
   }

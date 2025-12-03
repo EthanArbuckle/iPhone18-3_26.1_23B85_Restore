@@ -1,50 +1,50 @@
 @interface FBAInboxItemsViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (FBAInboxItemsViewController)initWithCoder:(id)a3;
-- (FBAInboxItemsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (FBAInboxItemsViewController)initWithStyle:(int64_t)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (FBAInboxItemsViewController)initWithCoder:(id)coder;
+- (FBAInboxItemsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (FBAInboxItemsViewController)initWithStyle:(int64_t)style;
 - (id)activeInboxSource;
 - (id)fbkLeftToolbarItem;
 - (id)filterSource;
-- (id)itemForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)itemForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)fbkNewFeedbackButtonState;
 - (void)awakeFromNib;
 - (void)beginRefresh;
 - (void)beginSearch;
 - (void)clearDetail;
 - (void)commonInit;
-- (void)destroyDraft:(id)a3;
-- (void)destroyItemAtIndexPath:(id)a3;
-- (void)destroySelectedItems:(id)a3;
-- (void)didDismissSearchController:(id)a3;
-- (void)fbkCreateNewFeedback:(id)a3;
-- (void)fbkDidTapSubtitleAction:(id)a3;
-- (void)filterContentForFilterManager:(id)a3;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
+- (void)destroyDraft:(id)draft;
+- (void)destroyItemAtIndexPath:(id)path;
+- (void)destroySelectedItems:(id)items;
+- (void)didDismissSearchController:(id)controller;
+- (void)fbkCreateNewFeedback:(id)feedback;
+- (void)fbkDidTapSubtitleAction:(id)action;
+- (void)filterContentForFilterManager:(id)manager;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
 - (void)reloadAppProxy;
 - (void)reloadView;
 - (void)removeFBAObservers;
-- (void)setTeam:(id)a3;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setTeam:(id)team;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)toggleFiltering;
 - (void)updateSearchResults;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation FBAInboxItemsViewController
 
-- (FBAInboxItemsViewController)initWithStyle:(int64_t)a3
+- (FBAInboxItemsViewController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = FBAInboxItemsViewController;
-  v3 = [(FBAInboxItemsViewController *)&v6 initWithStyle:a3];
+  v3 = [(FBAInboxItemsViewController *)&v6 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -54,11 +54,11 @@
   return v4;
 }
 
-- (FBAInboxItemsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FBAInboxItemsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = FBAInboxItemsViewController;
-  v4 = [(FBAInboxItemsViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(FBAInboxItemsViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -68,11 +68,11 @@
   return v5;
 }
 
-- (FBAInboxItemsViewController)initWithCoder:(id)a3
+- (FBAInboxItemsViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FBAInboxItemsViewController;
-  v3 = [(FBAInboxItemsViewController *)&v6 initWithCoder:a3];
+  v3 = [(FBAInboxItemsViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -112,17 +112,17 @@
   v28.receiver = self;
   v28.super_class = FBAInboxItemsViewController;
   [(FBATableViewControler *)&v28 viewDidLoad];
-  v3 = [(FBAInboxItemsViewController *)self tableView];
-  [v3 setEstimatedRowHeight:60.0];
+  tableView = [(FBAInboxItemsViewController *)self tableView];
+  [tableView setEstimatedRowHeight:60.0];
 
-  v4 = [(FBAInboxItemsViewController *)self tableView];
-  [v4 setRowHeight:UITableViewAutomaticDimension];
+  tableView2 = [(FBAInboxItemsViewController *)self tableView];
+  [tableView2 setRowHeight:UITableViewAutomaticDimension];
 
   v5 = objc_alloc_init(UIRefreshControl);
   [(FBAInboxItemsViewController *)self setRefreshControl:v5];
 
-  v6 = [(FBAInboxItemsViewController *)self refreshControl];
-  [v6 addTarget:self action:"reloadAppProxy" forControlEvents:4096];
+  refreshControl = [(FBAInboxItemsViewController *)self refreshControl];
+  [refreshControl addTarget:self action:"reloadAppProxy" forControlEvents:4096];
 
   v7 = [UIKeyCommand keyCommandWithInput:@"R" modifierFlags:1572864 action:"reloadAppProxy"];
   v8 = +[NSBundle mainBundle];
@@ -137,42 +137,42 @@
   [v11 setDiscoverabilityTitle:v13];
 
   [(FBAInboxItemsViewController *)self addKeyCommand:v11];
-  v14 = [(FBAInboxItemsViewController *)self inbox];
-  v15 = [v14 supportsSelection];
+  inbox = [(FBAInboxItemsViewController *)self inbox];
+  supportsSelection = [inbox supportsSelection];
 
-  if (v15)
+  if (supportsSelection)
   {
-    v16 = [(FBAInboxItemsViewController *)self tableView];
-    [v16 setAllowsMultipleSelectionDuringEditing:1];
+    tableView3 = [(FBAInboxItemsViewController *)self tableView];
+    [tableView3 setAllowsMultipleSelectionDuringEditing:1];
   }
 
-  v17 = [(FBAInboxItemsViewController *)self inbox];
-  v18 = [v17 type];
+  inbox2 = [(FBAInboxItemsViewController *)self inbox];
+  type = [inbox2 type];
 
-  if (v18 != 3)
+  if (type != 3)
   {
     v19 = [[UISearchController alloc] initWithSearchResultsController:0];
     [(FBAInboxItemsViewController *)self setSearchController:v19];
 
-    v20 = [(FBAInboxItemsViewController *)self searchController];
-    [v20 setDelegate:self];
+    searchController = [(FBAInboxItemsViewController *)self searchController];
+    [searchController setDelegate:self];
 
-    v21 = [(FBAInboxItemsViewController *)self searchController];
-    [v21 setSearchResultsUpdater:self];
+    searchController2 = [(FBAInboxItemsViewController *)self searchController];
+    [searchController2 setSearchResultsUpdater:self];
 
-    v22 = [(FBAInboxItemsViewController *)self searchController];
-    [v22 setObscuresBackgroundDuringPresentation:0];
+    searchController3 = [(FBAInboxItemsViewController *)self searchController];
+    [searchController3 setObscuresBackgroundDuringPresentation:0];
 
-    v23 = [(FBAInboxItemsViewController *)self searchController];
-    v24 = [v23 searchBar];
-    [v24 setDelegate:self];
+    searchController4 = [(FBAInboxItemsViewController *)self searchController];
+    searchBar = [searchController4 searchBar];
+    [searchBar setDelegate:self];
 
-    v25 = [(FBAInboxItemsViewController *)self searchController];
-    [v25 setHidesNavigationBarDuringPresentation:1];
+    searchController5 = [(FBAInboxItemsViewController *)self searchController];
+    [searchController5 setHidesNavigationBarDuringPresentation:1];
 
-    v26 = [(FBAInboxItemsViewController *)self searchController];
-    v27 = [(FBAInboxItemsViewController *)self navigationItem];
-    [v27 setSearchController:v26];
+    searchController6 = [(FBAInboxItemsViewController *)self searchController];
+    navigationItem = [(FBAInboxItemsViewController *)self navigationItem];
+    [navigationItem setSearchController:searchController6];
 
     [(FBAInboxItemsViewController *)self setDefinesPresentationContext:1];
   }
@@ -180,10 +180,10 @@
   [(FBAInboxItemsViewController *)self fbkShowToolbarWithStatus:&stru_1000E2210 animated:0];
 }
 
-- (void)setTeam:(id)a3
+- (void)setTeam:(id)team
 {
-  v9 = a3;
-  objc_storeStrong(&self->_team, a3);
+  teamCopy = team;
+  objc_storeStrong(&self->_team, team);
   if ([(FBAInboxItemsViewController *)self showingSyntheticInbox])
   {
     v5 = +[FBKContentItem filterGroupsForAll];
@@ -191,8 +191,8 @@
 
   else
   {
-    v6 = [(FBAInboxItemsViewController *)self team];
-    v5 = [FBKContentItem filterGroupsForTeam:v6];
+    team = [(FBAInboxItemsViewController *)self team];
+    v5 = [FBKContentItem filterGroupsForTeam:team];
   }
 
   v7 = [[_TtC18Feedback_Assistant16FBAFilterManager alloc] initWithFilterGroups:v5];
@@ -210,32 +210,32 @@
 
 - (void)beginRefresh
 {
-  v3 = [(FBAInboxItemsViewController *)self refreshControl];
-  [v3 beginRefreshing];
+  refreshControl = [(FBAInboxItemsViewController *)self refreshControl];
+  [refreshControl beginRefreshing];
 
   [(FBAInboxItemsViewController *)self reloadAppProxy];
 }
 
 - (void)beginSearch
 {
-  v4 = [(FBAInboxItemsViewController *)self navigationItem];
-  v2 = [v4 searchController];
-  v3 = [v2 searchBar];
-  [v3 becomeFirstResponder];
+  navigationItem = [(FBAInboxItemsViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  searchBar = [searchController searchBar];
+  [searchBar becomeFirstResponder];
 }
 
 - (void)removeFBAObservers
 {
   v3 = +[FBKData sharedInstance];
-  v4 = [v3 notificationCenter];
+  notificationCenter = [v3 notificationCenter];
 
   fbaDataObservers = self->_fbaDataObservers;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100014D30;
   v8[3] = &unk_1000DEC28;
-  v9 = v4;
-  v6 = v4;
+  v9 = notificationCenter;
+  v6 = notificationCenter;
   [(NSMutableArray *)fbaDataObservers enumerateObjectsUsingBlock:v8];
   v7 = self->_fbaDataObservers;
   self->_fbaDataObservers = 0;
@@ -243,12 +243,12 @@
 
 - (void)reloadView
 {
-  v3 = [(FBAInboxItemsViewController *)self tableView];
-  v22 = [v3 indexPathForSelectedRow];
+  tableView = [(FBAInboxItemsViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v22 && (v4 = [v22 row], -[FBAInboxItemsViewController activeInboxSource](self, "activeInboxSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4 < v6))
+  if (indexPathForSelectedRow && (v4 = [indexPathForSelectedRow row], -[FBAInboxItemsViewController activeInboxSource](self, "activeInboxSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4 < v6))
   {
-    v7 = [(FBAInboxItemsViewController *)self itemForIndexPath:v22];
+    v7 = [(FBAInboxItemsViewController *)self itemForIndexPath:indexPathForSelectedRow];
   }
 
   else
@@ -256,36 +256,36 @@
     v7 = 0;
   }
 
-  v8 = [(FBAInboxItemsViewController *)self inbox];
-  v9 = [(FBAInboxItemsViewController *)self team];
-  v10 = [v8 inboxItemsForTeam:v9 withSortDescriptors:self->_sortDescriptors];
+  inbox = [(FBAInboxItemsViewController *)self inbox];
+  team = [(FBAInboxItemsViewController *)self team];
+  v10 = [inbox inboxItemsForTeam:team withSortDescriptors:self->_sortDescriptors];
   v11 = [NSMutableArray arrayWithArray:v10];
   [(FBAInboxItemsViewController *)self setSortedInboxItems:v11];
 
-  v12 = [(FBAInboxItemsViewController *)self inbox];
-  v13 = [v12 displayText];
-  v14 = [(FBAInboxItemsViewController *)self navigationItem];
-  [v14 setTitle:v13];
+  inbox2 = [(FBAInboxItemsViewController *)self inbox];
+  displayText = [inbox2 displayText];
+  navigationItem = [(FBAInboxItemsViewController *)self navigationItem];
+  [navigationItem setTitle:displayText];
 
   [(FBAInboxItemsViewController *)self updateSearchResults];
-  v15 = [(FBAInboxItemsViewController *)self tableView];
-  [v15 reloadData];
+  tableView2 = [(FBAInboxItemsViewController *)self tableView];
+  [tableView2 reloadData];
 
   if (v7)
   {
-    v16 = [(FBAInboxItemsViewController *)self activeInboxSource];
-    v17 = [v16 indexOfObject:v7];
+    activeInboxSource = [(FBAInboxItemsViewController *)self activeInboxSource];
+    v17 = [activeInboxSource indexOfObject:v7];
 
     if (v17 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v18 = [(FBAInboxItemsViewController *)self inbox];
-      v19 = [v18 type];
+      inbox3 = [(FBAInboxItemsViewController *)self inbox];
+      type = [inbox3 type];
 
-      if (v19 != 3)
+      if (type != 3)
       {
-        v20 = [(FBAInboxItemsViewController *)self tableView];
+        tableView3 = [(FBAInboxItemsViewController *)self tableView];
         v21 = [NSIndexPath indexPathForRow:v17 inSection:0];
-        [v20 selectRowAtIndexPath:v21 animated:0 scrollPosition:0];
+        [tableView3 selectRowAtIndexPath:v21 animated:0 scrollPosition:0];
       }
     }
   }
@@ -293,40 +293,40 @@
 
 - (void)clearDetail
 {
-  v3 = [(FBAInboxItemsViewController *)self splitViewController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  splitViewController = [(FBAInboxItemsViewController *)self splitViewController];
+  viewControllers = [splitViewController viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 == 2)
   {
-    v6 = [(FBAInboxItemsViewController *)self storyboard];
-    v8 = [v6 instantiateViewControllerWithIdentifier:@"FBAEmptyStack"];
+    storyboard = [(FBAInboxItemsViewController *)self storyboard];
+    v8 = [storyboard instantiateViewControllerWithIdentifier:@"FBAEmptyStack"];
 
-    v7 = [(FBAInboxItemsViewController *)self splitViewController];
-    [v7 showDetailViewController:v8 sender:self];
+    splitViewController2 = [(FBAInboxItemsViewController *)self splitViewController];
+    [splitViewController2 showDetailViewController:v8 sender:self];
   }
 }
 
-- (void)destroyItemAtIndexPath:(id)a3
+- (void)destroyItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(FBAInboxItemsViewController *)self itemForIndexPath:v4];
+  pathCopy = path;
+  v5 = [(FBAInboxItemsViewController *)self itemForIndexPath:pathCopy];
   if ([v5 itemType] == 1)
   {
-    v6 = [(FBAInboxItemsViewController *)self activeInboxSource];
-    [v6 removeObjectAtIndex:{objc_msgSend(v4, "row")}];
+    activeInboxSource = [(FBAInboxItemsViewController *)self activeInboxSource];
+    [activeInboxSource removeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v7 = [(FBAInboxItemsViewController *)self tableView];
-    v12 = v4;
+    tableView = [(FBAInboxItemsViewController *)self tableView];
+    v12 = pathCopy;
     v8 = [NSArray arrayWithObjects:&v12 count:1];
-    [v7 deleteRowsAtIndexPaths:v8 withRowAnimation:100];
+    [tableView deleteRowsAtIndexPaths:v8 withRowAnimation:100];
 
     [(FBAInboxItemsViewController *)self destroyDraft:v5];
   }
 
-  v9 = [(FBAInboxItemsViewController *)self currDetailIndexPath];
-  v10 = [v9 row];
-  v11 = [v4 row];
+  currDetailIndexPath = [(FBAInboxItemsViewController *)self currDetailIndexPath];
+  v10 = [currDetailIndexPath row];
+  v11 = [pathCopy row];
 
   if (v10 == v11)
   {
@@ -334,18 +334,18 @@
   }
 }
 
-- (void)destroySelectedItems:(id)a3
+- (void)destroySelectedItems:(id)items
 {
   v4 = objc_opt_new();
-  v5 = [(FBAInboxItemsViewController *)self tableView];
-  v6 = [v5 indexPathsForSelectedRows];
+  tableView = [(FBAInboxItemsViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v7 = [[NSMutableArray alloc] initWithArray:v6];
+  v7 = [[NSMutableArray alloc] initWithArray:indexPathsForSelectedRows];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v6;
+  v8 = indexPathsForSelectedRows;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
@@ -385,80 +385,80 @@
   v26[3] = &unk_1000DEC28;
   v26[4] = self;
   [v4 enumerateObjectsUsingBlock:v26];
-  v15 = [(FBAInboxItemsViewController *)self tableView];
-  [v15 beginUpdates];
+  tableView2 = [(FBAInboxItemsViewController *)self tableView];
+  [tableView2 beginUpdates];
 
-  v16 = [(FBAInboxItemsViewController *)self tableView];
-  [v16 deleteRowsAtIndexPaths:v7 withRowAnimation:100];
+  tableView3 = [(FBAInboxItemsViewController *)self tableView];
+  [tableView3 deleteRowsAtIndexPaths:v7 withRowAnimation:100];
 
-  v17 = [(FBAInboxItemsViewController *)self tableView];
-  [v17 endUpdates];
+  tableView4 = [(FBAInboxItemsViewController *)self tableView];
+  [tableView4 endUpdates];
 
-  v18 = [(FBAInboxItemsViewController *)self splitViewController];
-  v19 = [v18 viewControllers];
-  v20 = [v19 count];
+  splitViewController = [(FBAInboxItemsViewController *)self splitViewController];
+  viewControllers = [splitViewController viewControllers];
+  v20 = [viewControllers count];
 
   if (v20 == 2)
   {
-    v21 = [(FBAInboxItemsViewController *)self currDetailIndexPath];
-    v22 = [v7 containsObject:v21];
+    currDetailIndexPath = [(FBAInboxItemsViewController *)self currDetailIndexPath];
+    v22 = [v7 containsObject:currDetailIndexPath];
 
     if (v22)
     {
-      v23 = [(FBAInboxItemsViewController *)self storyboard];
-      v24 = [v23 instantiateViewControllerWithIdentifier:@"FBAEmptyStack"];
+      storyboard = [(FBAInboxItemsViewController *)self storyboard];
+      v24 = [storyboard instantiateViewControllerWithIdentifier:@"FBAEmptyStack"];
 
-      v25 = [(FBAInboxItemsViewController *)self splitViewController];
-      [v25 showDetailViewController:v24 sender:self];
+      splitViewController2 = [(FBAInboxItemsViewController *)self splitViewController];
+      [splitViewController2 showDetailViewController:v24 sender:self];
     }
   }
 
   [(FBAInboxItemsViewController *)self setEditing:0 animated:1];
 }
 
-- (void)destroyDraft:(id)a3
+- (void)destroyDraft:(id)draft
 {
-  v3 = a3;
+  draftCopy = draft;
   v4 = +[FBADraftManager sharedInstance];
-  [v4 deleteDraftFromContentItem:v3 dismissViewOnCompletion:0];
+  [v4 deleteDraftFromContentItem:draftCopy dismissViewOnCompletion:0];
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v21 = a3;
-  v5 = [(FBAInboxItemsViewController *)self tableView];
-  v6 = [v5 indexPathForSelectedRow];
+  segueCopy = segue;
+  tableView = [(FBAInboxItemsViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  [(FBAInboxItemsViewController *)self setCurrDetailIndexPath:v6];
-  v7 = [(FBAInboxItemsViewController *)self itemForIndexPath:v6];
-  v8 = [v21 destinationViewController];
-  v9 = [v8 viewControllers];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  [(FBAInboxItemsViewController *)self setCurrDetailIndexPath:indexPathForSelectedRow];
+  v7 = [(FBAInboxItemsViewController *)self itemForIndexPath:indexPathForSelectedRow];
+  destinationViewController = [segueCopy destinationViewController];
+  viewControllers = [destinationViewController viewControllers];
+  v10 = [viewControllers objectAtIndexedSubscript:0];
 
-  v11 = [v21 identifier];
-  LODWORD(v9) = [v11 isEqualToString:@"FBAResponseDetailPresentation"];
+  identifier = [segueCopy identifier];
+  LODWORD(viewControllers) = [identifier isEqualToString:@"FBAResponseDetailPresentation"];
 
-  if (v9)
+  if (viewControllers)
   {
     goto LABEL_3;
   }
 
-  v12 = [v21 identifier];
-  v13 = [v12 isEqualToString:@"FBAFollowupDetailPresentation"];
+  identifier2 = [segueCopy identifier];
+  v13 = [identifier2 isEqualToString:@"FBAFollowupDetailPresentation"];
 
   if (v13)
   {
     goto LABEL_3;
   }
 
-  v14 = [v21 identifier];
-  v15 = [v14 isEqualToString:@"FBASurveyDetailPresentation"];
+  identifier3 = [segueCopy identifier];
+  v15 = [identifier3 isEqualToString:@"FBASurveyDetailPresentation"];
 
   if (v15)
   {
     v16 = v10;
-    v17 = [(FBAInboxItemsViewController *)self team];
-    v18 = [v7 teamForItemPreferringTeam:v17];
+    team = [(FBAInboxItemsViewController *)self team];
+    v18 = [v7 teamForItemPreferringTeam:team];
     [v16 setTeam:v18];
 
     [v16 setContentItem:v7];
@@ -466,8 +466,8 @@
 
   else
   {
-    v19 = [v21 identifier];
-    v20 = [v19 isEqualToString:@"FBAAnnouncementDetailPresentation"];
+    identifier4 = [segueCopy identifier];
+    v20 = [identifier4 isEqualToString:@"FBAAnnouncementDetailPresentation"];
 
     if (v20)
     {
@@ -477,28 +477,28 @@ LABEL_3:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FBAInboxItemsViewController *)self itemForIndexPath:v7];
-  v9 = [(FBAInboxItemsViewController *)self searchController];
-  v10 = [v9 isActive];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(FBAInboxItemsViewController *)self itemForIndexPath:pathCopy];
+  searchController = [(FBAInboxItemsViewController *)self searchController];
+  isActive = [searchController isActive];
 
-  if (v10)
+  if (isActive)
   {
-    v11 = [(FBAInboxItemsViewController *)self searchController];
-    v12 = [v11 searchBar];
-    [v12 resignFirstResponder];
+    searchController2 = [(FBAInboxItemsViewController *)self searchController];
+    searchBar = [searchController2 searchBar];
+    [searchBar resignFirstResponder];
   }
 
-  if ([v6 isEditing])
+  if ([viewCopy isEditing])
   {
-    v13 = [(FBAInboxItemsViewController *)self tableView];
-    v14 = [v13 indexPathsForSelectedRows];
-    v15 = [v14 count]!= 0;
-    v16 = [(FBAInboxItemsViewController *)self destructiveBarButtonItem];
-    [v16 setEnabled:v15];
+    tableView = [(FBAInboxItemsViewController *)self tableView];
+    indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+    v15 = [indexPathsForSelectedRows count]!= 0;
+    destructiveBarButtonItem = [(FBAInboxItemsViewController *)self destructiveBarButtonItem];
+    [destructiveBarButtonItem setEnabled:v15];
 
 LABEL_5:
 LABEL_6:
@@ -506,36 +506,36 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  v17 = [(FBAInboxItemsViewController *)self inbox];
-  v18 = [v17 type];
+  inbox = [(FBAInboxItemsViewController *)self inbox];
+  type = [inbox type];
 
-  if (v18 != 3)
+  if (type != 3)
   {
     v24 = +[FBALog appHandle];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v8 shortDescription];
-      v26 = [v8 updatedAt];
+      shortDescription = [v8 shortDescription];
+      updatedAt = [v8 updatedAt];
       v30 = 138543618;
-      v31 = v25;
+      v31 = shortDescription;
       v32 = 2114;
-      v33 = v26;
+      v33 = updatedAt;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Selected Inbox Item [%{public}@] updated at: [%{public}@]", &v30, 0x16u);
     }
 
-    v13 = [v6 cellForRowAtIndexPath:v7];
-    v27 = [v8 itemType];
+    tableView = [viewCopy cellForRowAtIndexPath:pathCopy];
+    itemType = [v8 itemType];
     v28 = &off_1000DF968;
-    if (v27 > 2)
+    if (itemType > 2)
     {
-      if (v27 == 3)
+      if (itemType == 3)
       {
         v28 = &off_1000DF980;
       }
 
-      else if (v27 != 5)
+      else if (itemType != 5)
       {
-        if (v27 != 4)
+        if (itemType != 4)
         {
           goto LABEL_6;
         }
@@ -546,20 +546,20 @@ LABEL_6:
 
     else
     {
-      if (!v27)
+      if (!itemType)
       {
-        v14 = +[FBALog appHandle];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        indexPathsForSelectedRows = +[FBALog appHandle];
+        if (os_log_type_enabled(indexPathsForSelectedRows, OS_LOG_TYPE_ERROR))
         {
-          sub_100092ECC(v14);
+          sub_100092ECC(indexPathsForSelectedRows);
         }
 
         goto LABEL_5;
       }
 
-      if (v27 != 1)
+      if (itemType != 1)
       {
-        if (v27 != 2)
+        if (itemType != 2)
         {
           goto LABEL_6;
         }
@@ -574,72 +574,72 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v14 = v29;
-    [(FBAInboxItemsViewController *)self performSegueWithIdentifier:v29 sender:v13];
+    indexPathsForSelectedRows = v29;
+    [(FBAInboxItemsViewController *)self performSegueWithIdentifier:v29 sender:tableView];
     goto LABEL_5;
   }
 
-  v19 = [v8 formResponse];
-  v20 = [v19 uploadTask];
-  v21 = [v20 localSubmissionStage];
+  formResponse = [v8 formResponse];
+  uploadTask = [formResponse uploadTask];
+  localSubmissionStage = [uploadTask localSubmissionStage];
 
   v22 = +[FBALog appHandle];
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v8 shortDescription];
+    shortDescription2 = [v8 shortDescription];
     v30 = 138543618;
-    v31 = v23;
+    v31 = shortDescription2;
     v32 = 1024;
-    LODWORD(v33) = v21;
+    LODWORD(v33) = localSubmissionStage;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "did tap on outbox cell for item [%{public}@] upload task stage [%u]", &v30, 0x12u);
   }
 
 LABEL_11:
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  if ([a3 isEditing])
+  if ([view isEditing])
   {
-    v8 = [(FBAInboxItemsViewController *)self tableView];
-    v5 = [v8 indexPathsForSelectedRows];
-    v6 = [v5 count] != 0;
-    v7 = [(FBAInboxItemsViewController *)self destructiveBarButtonItem];
-    [v7 setEnabled:v6];
+    tableView = [(FBAInboxItemsViewController *)self tableView];
+    indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+    v6 = [indexPathsForSelectedRows count] != 0;
+    destructiveBarButtonItem = [(FBAInboxItemsViewController *)self destructiveBarButtonItem];
+    [destructiveBarButtonItem setEnabled:v6];
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(FBAInboxItemsViewController *)self inbox:a3];
-  v5 = [v4 supportsSelection];
+  v4 = [(FBAInboxItemsViewController *)self inbox:view];
+  supportsSelection = [v4 supportsSelection];
 
-  return v5;
+  return supportsSelection;
 }
 
-- (BOOL)tableView:(id)a3 shouldBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
-  v4 = [(FBAInboxItemsViewController *)self inbox:a3];
-  v5 = [v4 supportsSelection];
+  v4 = [(FBAInboxItemsViewController *)self inbox:view];
+  supportsSelection = [v4 supportsSelection];
 
-  return v5;
+  return supportsSelection;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(FBAInboxItemsViewController *)self inbox:a3];
-  v5 = [v4 supportsDeletion];
+  v4 = [(FBAInboxItemsViewController *)self inbox:view];
+  supportsDeletion = [v4 supportsDeletion];
 
-  return v5;
+  return supportsDeletion;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
-  v8 = [(FBAInboxItemsViewController *)self inbox];
-  v9 = [v8 type] == 0;
+  inbox = [(FBAInboxItemsViewController *)self inbox];
+  v9 = [inbox type] == 0;
 
   if (v9)
   {
@@ -648,7 +648,7 @@ LABEL_11:
     v15[2] = sub_100016B68;
     v15[3] = &unk_1000DED50;
     objc_copyWeak(&v17, &location);
-    v16 = v7;
+    v16 = pathCopy;
     v11 = [UIContextualAction contextualActionWithStyle:1 title:0 handler:v15];
     v12 = [UIImage systemImageNamed:FBKSystemImageNameSwipeToDelete];
     [v11 setImage:v12];
@@ -670,39 +670,39 @@ LABEL_11:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(FBAInboxItemsViewController *)self activeInboxSource:a3];
+  v4 = [(FBAInboxItemsViewController *)self activeInboxSource:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FBAInboxItemsViewController *)self inbox];
-  v9 = [v8 type];
+  pathCopy = path;
+  viewCopy = view;
+  inbox = [(FBAInboxItemsViewController *)self inbox];
+  type = [inbox type];
   v10 = @"FBAMailboxItemCell";
-  if (v9 == 3)
+  if (type == 3)
   {
     v10 = @"FBAOutboxItemCell";
   }
 
   v11 = v10;
 
-  v12 = [v7 dequeueReusableCellWithIdentifier:v11 forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:v11 forIndexPath:pathCopy];
 
-  v13 = [(FBAInboxItemsViewController *)self itemForIndexPath:v6];
+  v13 = [(FBAInboxItemsViewController *)self itemForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
-    v15 = [v14 contentItem];
+    contentItem = [v14 contentItem];
 
-    if (v15)
+    if (contentItem)
     {
       [v12 updateWithItem:v14 showingTeamName:{-[FBAInboxItemsViewController showingSyntheticInbox](self, "showingSyntheticInbox")}];
     }
@@ -718,25 +718,25 @@ LABEL_11:
     [v12 updateWithItem:v13 showingTeamName:{-[FBAInboxItemsViewController showingSyntheticInbox](self, "showingSyntheticInbox")}];
   }
 
-  v16 = [(FBAInboxItemsViewController *)self inbox];
-  v17 = [v16 type];
+  inbox2 = [(FBAInboxItemsViewController *)self inbox];
+  type2 = [inbox2 type];
 
-  if (v17 == 3)
+  if (type2 == 3)
   {
-    v18 = [v13 formResponse];
+    formResponse = [v13 formResponse];
 
-    if (v18)
+    if (formResponse)
     {
-      v19 = [v13 formResponse];
-      [v12 setObservedResponse:v19];
+      formResponse2 = [v13 formResponse];
+      [v12 setObservedResponse:formResponse2];
     }
 
     else
     {
-      v19 = +[FBALog appHandle];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      formResponse2 = +[FBALog appHandle];
+      if (os_log_type_enabled(formResponse2, OS_LOG_TYPE_ERROR))
       {
-        sub_100092F10(v13, v19);
+        sub_100092F10(v13, formResponse2);
       }
     }
   }
@@ -746,15 +746,15 @@ LABEL_11:
   return v12;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if ([v5 length])
+  if ([text length])
   {
     v6 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    v7 = [text stringByTrimmingCharactersInSet:v6];
 
     v8 = [[NSMutableArray alloc] initWithCapacity:5];
     v9 = [v7 length];
@@ -766,8 +766,8 @@ LABEL_11:
     v10 = v8;
     [v7 enumerateSubstringsInRange:0 options:v9 usingBlock:{1027, v22}];
     v11 = [NSCompoundPredicate andPredicateWithSubpredicates:v10];
-    v12 = [(FBAInboxItemsViewController *)self sortedInboxItems];
-    v13 = [v12 filteredArrayUsingPredicate:v11];
+    sortedInboxItems = [(FBAInboxItemsViewController *)self sortedInboxItems];
+    v13 = [sortedInboxItems filteredArrayUsingPredicate:v11];
     v14 = [v13 mutableCopy];
     searchResultItems = self->_searchResultItems;
     self->_searchResultItems = v14;
@@ -775,25 +775,25 @@ LABEL_11:
 
   else
   {
-    v16 = [(FBAInboxItemsViewController *)self sortedInboxItems];
+    sortedInboxItems2 = [(FBAInboxItemsViewController *)self sortedInboxItems];
     v17 = self->_searchResultItems;
-    self->_searchResultItems = v16;
+    self->_searchResultItems = sortedInboxItems2;
   }
 
-  v18 = [(FBAInboxItemsViewController *)self filterManager];
-  v19 = [v18 active];
+  filterManager = [(FBAInboxItemsViewController *)self filterManager];
+  active = [filterManager active];
 
-  if (v19)
+  if (active)
   {
-    v20 = [(FBAInboxItemsViewController *)self filterManager];
-    [(FBAInboxItemsViewController *)self filterContentForFilterManager:v20];
+    filterManager2 = [(FBAInboxItemsViewController *)self filterManager];
+    [(FBAInboxItemsViewController *)self filterContentForFilterManager:filterManager2];
   }
 
-  v21 = [(FBAInboxItemsViewController *)self tableView];
-  [v21 reloadData];
+  tableView = [(FBAInboxItemsViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
   [(FBAInboxItemsViewController *)self setSearchResultItems:0];
   [(FBAInboxItemsViewController *)self reloadView];
@@ -803,15 +803,15 @@ LABEL_11:
 
 - (void)updateSearchResults
 {
-  v3 = [(FBAInboxItemsViewController *)self searchController];
-  [(FBAInboxItemsViewController *)self updateSearchResultsForSearchController:v3];
+  searchController = [(FBAInboxItemsViewController *)self searchController];
+  [(FBAInboxItemsViewController *)self updateSearchResultsForSearchController:searchController];
 }
 
 - (id)activeInboxSource
 {
-  v3 = [(FBAInboxItemsViewController *)self filteredInboxItems];
+  filteredInboxItems = [(FBAInboxItemsViewController *)self filteredInboxItems];
 
-  if (v3)
+  if (filteredInboxItems)
   {
     [(FBAInboxItemsViewController *)self filteredInboxItems];
   }
@@ -827,9 +827,9 @@ LABEL_11:
 
 - (id)filterSource
 {
-  v3 = [(FBAInboxItemsViewController *)self searchResultItems];
+  searchResultItems = [(FBAInboxItemsViewController *)self searchResultItems];
 
-  if (v3)
+  if (searchResultItems)
   {
     [(FBAInboxItemsViewController *)self searchResultItems];
   }
@@ -843,23 +843,23 @@ LABEL_11:
   return v4;
 }
 
-- (id)itemForIndexPath:(id)a3
+- (id)itemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(FBAInboxItemsViewController *)self activeInboxSource];
-  v6 = [v4 row];
+  pathCopy = path;
+  activeInboxSource = [(FBAInboxItemsViewController *)self activeInboxSource];
+  v6 = [pathCopy row];
 
-  v7 = [v5 objectAtIndex:v6];
+  v7 = [activeInboxSource objectAtIndex:v6];
 
   return v7;
 }
 
 - (unint64_t)fbkNewFeedbackButtonState
 {
-  v2 = [(FBAInboxItemsViewController *)self team];
-  v3 = [v2 canStartNewFeedback];
+  team = [(FBAInboxItemsViewController *)self team];
+  canStartNewFeedback = [team canStartNewFeedback];
 
-  if (v3)
+  if (canStartNewFeedback)
   {
     return 2;
   }
@@ -870,21 +870,21 @@ LABEL_11:
   }
 }
 
-- (void)fbkCreateNewFeedback:(id)a3
+- (void)fbkCreateNewFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   v6 = +[FBADraftManager sharedInstance];
-  v5 = [(FBAInboxItemsViewController *)self team];
-  [v6 beginFeedbackForTeam:v5 sender:v4];
+  team = [(FBAInboxItemsViewController *)self team];
+  [v6 beginFeedbackForTeam:team sender:feedbackCopy];
 }
 
 - (id)fbkLeftToolbarItem
 {
   v3 = [UIImage systemImageNamed:FBKSystemImageNameFilter];
-  v4 = [(FBAInboxItemsViewController *)self filterManager];
-  v5 = [v4 active];
+  filterManager = [(FBAInboxItemsViewController *)self filterManager];
+  active = [filterManager active];
   v6 = @"ENABLE_FILTER";
-  if (v5)
+  if (active)
   {
     v6 = @"DISABLE_FILTER";
   }
@@ -892,8 +892,8 @@ LABEL_11:
   v7 = v6;
 
   v8 = [[UIBarButtonItem alloc] initWithImage:v3 style:0 target:self action:"toggleFiltering"];
-  v9 = [(FBAInboxItemsViewController *)self filterManager];
-  [v8 setSelected:{objc_msgSend(v9, "active")}];
+  filterManager2 = [(FBAInboxItemsViewController *)self filterManager];
+  [v8 setSelected:{objc_msgSend(filterManager2, "active")}];
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:v7 value:&stru_1000E2210 table:FBKCommonStrings];
@@ -905,58 +905,58 @@ LABEL_11:
 
 - (void)toggleFiltering
 {
-  v2 = [(FBAInboxItemsViewController *)self filterManager];
-  [v2 toggleActive];
+  filterManager = [(FBAInboxItemsViewController *)self filterManager];
+  [filterManager toggleActive];
 }
 
-- (void)filterContentForFilterManager:(id)a3
+- (void)filterContentForFilterManager:(id)manager
 {
-  v14 = a3;
-  if ([v14 active])
+  managerCopy = manager;
+  if ([managerCopy active])
   {
-    v4 = [(FBAInboxItemsViewController *)self filterSource];
-    v5 = [v14 predicate];
-    v6 = [v4 filteredArrayUsingPredicate:v5];
+    filterSource = [(FBAInboxItemsViewController *)self filterSource];
+    predicate = [managerCopy predicate];
+    v6 = [filterSource filteredArrayUsingPredicate:predicate];
     v7 = [v6 mutableCopy];
     [(FBAInboxItemsViewController *)self setFilteredInboxItems:v7];
 
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"FILTERED_BY_PROMPT" value:&stru_1000E2210 table:FBKCommonStrings];
 
-    v10 = [v14 userDescription];
+    userDescription = [managerCopy userDescription];
   }
 
   else
   {
     [(FBAInboxItemsViewController *)self setFilteredInboxItems:0];
-    v10 = 0;
+    userDescription = 0;
     v9 = &stru_1000E2210;
   }
 
-  v11 = [(FBAInboxItemsViewController *)self navigationController];
-  v12 = [v11 topViewController];
+  navigationController = [(FBAInboxItemsViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v12 == self)
+  if (topViewController == self)
   {
-    [(FBAInboxItemsViewController *)self fbkShowToolbarWithStatus:v9 subtitle:v10 animated:1];
+    [(FBAInboxItemsViewController *)self fbkShowToolbarWithStatus:v9 subtitle:userDescription animated:1];
   }
 
-  v13 = [(FBAInboxItemsViewController *)self tableView];
-  [v13 reloadData];
+  tableView = [(FBAInboxItemsViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)fbkDidTapSubtitleAction:(id)a3
+- (void)fbkDidTapSubtitleAction:(id)action
 {
   v9 = [[_TtC18Feedback_Assistant25FBAFilterPickerController alloc] initWithStyle:2];
-  v4 = [(FBAInboxItemsViewController *)self filterManager];
-  [(FBAFilterPickerController *)v9 setFilterManager:v4];
+  filterManager = [(FBAInboxItemsViewController *)self filterManager];
+  [(FBAFilterPickerController *)v9 setFilterManager:filterManager];
 
   v5 = [[UINavigationController alloc] initWithRootViewController:v9];
   [v5 setModalPresentationStyle:7];
-  v6 = [(FBAInboxItemsViewController *)self navigationController];
-  v7 = [v6 toolbar];
-  v8 = [v5 presentationController];
-  [v8 setSourceView:v7];
+  navigationController = [(FBAInboxItemsViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  presentationController = [v5 presentationController];
+  [presentationController setSourceView:toolbar];
 
   [(FBAInboxItemsViewController *)self presentViewController:v5 animated:1 completion:0];
 }

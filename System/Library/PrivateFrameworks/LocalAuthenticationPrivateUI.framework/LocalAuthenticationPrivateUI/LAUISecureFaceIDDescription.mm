@@ -1,32 +1,32 @@
 @interface LAUISecureFaceIDDescription
-- (LAUISecureFaceIDDescription)initWithContainerView:(id)a3;
+- (LAUISecureFaceIDDescription)initWithContainerView:(id)view;
 - (LAUISecureFaceIDDescriptionObserver)observer;
-- (void)dispatchAfterFrames:(unint64_t)a3 block:(id)a4;
-- (void)fadeIn:(BOOL)a3 orOut:(BOOL)a4 view:(id)a5 frames:(unint64_t)a6;
+- (void)dispatchAfterFrames:(unint64_t)frames block:(id)block;
+- (void)fadeIn:(BOOL)in orOut:(BOOL)out view:(id)view frames:(unint64_t)frames;
 @end
 
 @implementation LAUISecureFaceIDDescription
 
-- (LAUISecureFaceIDDescription)initWithContainerView:(id)a3
+- (LAUISecureFaceIDDescription)initWithContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = LAUISecureFaceIDDescription;
   v6 = [(LAUISecureFaceIDDescription *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containerView, a3);
+    objc_storeStrong(&v6->_containerView, view);
   }
 
   return v7;
 }
 
-- (void)dispatchAfterFrames:(unint64_t)a3 block:(id)a4
+- (void)dispatchAfterFrames:(unint64_t)frames block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
-  [(LAUISecureFaceIDDescription *)self framesToSeconds:a3];
+  [(LAUISecureFaceIDDescription *)self framesToSeconds:frames];
   v9 = dispatch_time(0, (v8 * 1000000000.0));
   dispatch_source_set_timer(v7, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
   v12[0] = MEMORY[0x277D85DD0];
@@ -34,8 +34,8 @@
   v12[2] = __57__LAUISecureFaceIDDescription_dispatchAfterFrames_block___block_invoke;
   v12[3] = &unk_2798218D0;
   v13 = v7;
-  v14 = v6;
-  v10 = v6;
+  v14 = blockCopy;
+  v10 = blockCopy;
   v11 = v7;
   dispatch_source_set_event_handler(v11, v12);
   dispatch_resume(v11);
@@ -49,21 +49,21 @@ uint64_t __57__LAUISecureFaceIDDescription_dispatchAfterFrames_block___block_inv
   return v2();
 }
 
-- (void)fadeIn:(BOOL)a3 orOut:(BOOL)a4 view:(id)a5 frames:(unint64_t)a6
+- (void)fadeIn:(BOOL)in orOut:(BOOL)out view:(id)view frames:(unint64_t)frames
 {
-  v7 = a4;
-  v10 = a5;
-  if (a3 || v7)
+  outCopy = out;
+  viewCopy = view;
+  if (in || outCopy)
   {
     v11 = MEMORY[0x277D75D18];
-    [(LAUISecureFaceIDDescription *)self framesToSeconds:a6];
+    [(LAUISecureFaceIDDescription *)self framesToSeconds:frames];
     v13 = v12;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __56__LAUISecureFaceIDDescription_fadeIn_orOut_view_frames___block_invoke;
     v14[3] = &unk_2798218F8;
-    v15 = v10;
-    v16 = v7;
+    v15 = viewCopy;
+    v16 = outCopy;
     [v11 animateWithDuration:v14 animations:v13];
   }
 }

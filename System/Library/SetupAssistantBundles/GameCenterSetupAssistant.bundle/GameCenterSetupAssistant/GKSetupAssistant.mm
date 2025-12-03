@@ -1,6 +1,6 @@
 @interface GKSetupAssistant
 - (id)accountSetupRequestParameters;
-- (void)completeSetupWithResponseParameters:(id)a3 handler:(id)a4;
+- (void)completeSetupWithResponseParameters:(id)parameters handler:(id)handler;
 @end
 
 @implementation GKSetupAssistant
@@ -8,37 +8,37 @@
 - (id)accountSetupRequestParameters
 {
   v3 = +[GKDevice currentDevice];
-  v4 = [v3 udid];
+  udid = [v3 udid];
 
-  v5 = [(GKSetupAssistant *)self _gkAuthenticatedPlayerID];
+  _gkAuthenticatedPlayerID = [(GKSetupAssistant *)self _gkAuthenticatedPlayerID];
   v6 = +[NSMutableDictionary dictionary];
   v7 = v6;
-  if (v5)
+  if (_gkAuthenticatedPlayerID)
   {
-    [v6 setObject:v5 forKey:@"player-id"];
+    [v6 setObject:_gkAuthenticatedPlayerID forKey:@"player-id"];
   }
 
-  if (v4)
+  if (udid)
   {
-    [v7 setObject:v4 forKey:@"device-id"];
+    [v7 setObject:udid forKey:@"device-id"];
   }
 
   return v7;
 }
 
-- (void)completeSetupWithResponseParameters:(id)a3 handler:(id)a4
+- (void)completeSetupWithResponseParameters:(id)parameters handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  parametersCopy = parameters;
   [(GKSetupAssistant *)self setCancelled:0];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_D2C;
   v9[3] = &unk_4090;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(GKSetupAssistant *)self _gkSetupAccountWithParamaters:v7 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(GKSetupAssistant *)self _gkSetupAccountWithParamaters:parametersCopy completionHandler:v9];
 }
 
 @end

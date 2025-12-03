@@ -1,25 +1,25 @@
 @interface TypistKeyboardTibetan
-- (TypistKeyboardTibetan)initWithCoder:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4;
-- (id)tryAlternateVariationsOfKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TypistKeyboardTibetan)initWithCoder:(id)coder;
+- (id)init:(id)init options:(id)options;
+- (id)setupKeyboardInfo:(id)info options:(id)options;
+- (id)tryAlternateVariationsOfKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TypistKeyboardTibetan
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v5.receiver = self;
   v5.super_class = TypistKeyboardTibetan;
-  return [(TypistKeyboard *)&v5 init:a3 options:a4 locale:@"bo"];
+  return [(TypistKeyboard *)&v5 init:init options:options locale:@"bo"];
 }
 
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4
+- (id)setupKeyboardInfo:(id)info options:(id)options
 {
   v10.receiver = self;
   v10.super_class = TypistKeyboardTibetan;
-  v5 = [(TypistKeyboard *)&v10 setupKeyboardInfo:a3 options:a4];
+  v5 = [(TypistKeyboard *)&v10 setupKeyboardInfo:info options:options];
   if (!v5)
   {
     v9 = 0;
@@ -31,17 +31,17 @@
   return v5;
 }
 
-- (id)tryAlternateVariationsOfKey:(id)a3
+- (id)tryAlternateVariationsOfKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (!keyCopy)
   {
     goto LABEL_9;
   }
 
-  if ([v4 characterAtIndex:0] == 3953)
+  if ([keyCopy characterAtIndex:0] == 3953)
   {
     v17.receiver = self;
     v17.super_class = TypistKeyboardTibetan;
@@ -49,8 +49,8 @@
     goto LABEL_10;
   }
 
-  v7 = [(TypistKeyboardTibetan *)self subjoinedExpression];
-  v8 = [v7 numberOfMatchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+  subjoinedExpression = [(TypistKeyboardTibetan *)self subjoinedExpression];
+  v8 = [subjoinedExpression numberOfMatchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
 
   if (v8)
   {
@@ -89,15 +89,15 @@ LABEL_10:
   return v6;
 }
 
-- (TypistKeyboardTibetan)initWithCoder:(id)a3
+- (TypistKeyboardTibetan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TypistKeyboardTibetan;
-  v5 = [(TypistKeyboard *)&v9 initWithCoder:v4];
+  v5 = [(TypistKeyboard *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subjoinedExpression"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subjoinedExpression"];
     subjoinedExpression = v5->_subjoinedExpression;
     v5->_subjoinedExpression = v6;
   }
@@ -105,16 +105,16 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TypistKeyboardTibetan;
-  [(TypistKeyboard *)&v6 encodeWithCoder:v4];
+  [(TypistKeyboard *)&v6 encodeWithCoder:coderCopy];
   subjoinedExpression = self->_subjoinedExpression;
   if (subjoinedExpression)
   {
-    [v4 encodeObject:subjoinedExpression forKey:@"subjoinedExpression"];
+    [coderCopy encodeObject:subjoinedExpression forKey:@"subjoinedExpression"];
   }
 }
 

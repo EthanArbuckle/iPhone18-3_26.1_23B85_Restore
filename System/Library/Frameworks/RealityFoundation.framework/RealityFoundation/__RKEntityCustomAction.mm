@@ -1,10 +1,10 @@
 @interface __RKEntityCustomAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityCustomAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityCustomAction.copy(with:)(v5);

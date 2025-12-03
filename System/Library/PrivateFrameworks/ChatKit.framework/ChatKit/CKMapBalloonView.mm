@@ -1,15 +1,15 @@
 @interface CKMapBalloonView
-- (CKMapBalloonView)initWithFrame:(CGRect)a3;
+- (CKMapBalloonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CKMapBalloonView
 
-- (CKMapBalloonView)initWithFrame:(CGRect)a3
+- (CKMapBalloonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKMapBalloonView;
-  v3 = [(CKTitledImageBalloonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTitledImageBalloonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x193AF5EC0](@"MKMarkerAnnotationView", @"MapKit");
@@ -34,10 +34,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKMapBalloonView *)self annotationView];
-  [(CKMapBalloonView *)self bringSubviewToFront:v11];
-  [v11 sizeToFit];
-  [v11 frame];
+  annotationView = [(CKMapBalloonView *)self annotationView];
+  [(CKMapBalloonView *)self bringSubviewToFront:annotationView];
+  [annotationView sizeToFit];
+  [annotationView frame];
   v13 = v12;
   v15 = v14;
   if (CKMainScreenScale_once_71 != -1)
@@ -68,8 +68,8 @@
   v25.size.width = v13;
   v25.size.height = v15;
   v20 = v18 - (MaxY - CGRectGetMidY(v25));
-  v21 = [(CKMapBalloonView *)self annotationView];
-  [v21 setFrame:{v17, v20, v13, v15}];
+  annotationView2 = [(CKMapBalloonView *)self annotationView];
+  [annotationView2 setFrame:{v17, v20, v13, v15}];
 }
 
 @end

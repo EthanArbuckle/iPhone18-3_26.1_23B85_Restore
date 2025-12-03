@@ -1,29 +1,29 @@
 @interface RegPyrFusion
-+ (int)prewarmShaders:(id)a3;
-+ (void)calculatePyramidDimensions:(float)a3 pyrWidths:(int *)a4 pyrHeights:(int *)a5 topLevelIndex:(int)a6 maxDim:(int)a7 minDim:(int)a8;
-- (RegPyrFusion)fusionWithCommandBuffer:(id)a3 refTex:(id)a4 refDerivTex:(id)a5 nonRefDerivTex:(id)a6 prevShiftMap:(id)a7 nextShiftMap:(id)a8 homography:(id)a9 pyrLevel:(int)a10;
-- (RegPyrFusion)initWithMetalContext:(id)a3;
-- (int)basicSearchWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 refDerivTex:(id)a5 nonRefDerivTex:(id)a6 prevShiftMap:(id)a7 nextShiftMap:(id)a8 homography:(id)a9 pyrLevel:(int)a10;
-- (int)bilinearScaleWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 refTexIn:(id)a5 refTexOut:(id)a6 nonRefTexIn:(id)a7 nonRefTexOut:(id)a8 pyrLevel:(int)a9;
-- (int)confidenceMapWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 shiftMap:(id)a5 confidenceOut:(id)a6;
-- (int)generateDerivativesWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 inputTex:(id)a5 outputTex:(id)a6;
-- (int)initialDownScaleWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 refTex:(id)a5 nonRefTex:(id)a6 refTexOut:(id)a7 nonRefTexOut:(id)a8 refCamType:(int)a9;
-- (int)registerImagesWithReferenceImg:(id)a3 nonRefImage:(id)a4 refTexlvl1:(id)a5 nonRefTexlvl1:(id)a6 shiftMap:(id)a7 confidenceMap:(id)a8;
-- (int)selectionWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 refDerivTex:(id)a5 nonRefDerivTex:(id)a6 prevShiftMap:(id)a7 nextShiftMap:(id)a8 homography:(id)a9 pyrLevel:(int)a10;
++ (int)prewarmShaders:(id)shaders;
++ (void)calculatePyramidDimensions:(float)dimensions pyrWidths:(int *)widths pyrHeights:(int *)heights topLevelIndex:(int)index maxDim:(int)dim minDim:(int)minDim;
+- (RegPyrFusion)fusionWithCommandBuffer:(id)buffer refTex:(id)tex refDerivTex:(id)derivTex nonRefDerivTex:(id)refDerivTex prevShiftMap:(id)map nextShiftMap:(id)shiftMap homography:(id)homography pyrLevel:(int)self0;
+- (RegPyrFusion)initWithMetalContext:(id)context;
+- (int)basicSearchWithCommandBuffer:(id)buffer renderPassDesc:(id)desc refDerivTex:(id)tex nonRefDerivTex:(id)derivTex prevShiftMap:(id)map nextShiftMap:(id)shiftMap homography:(id)homography pyrLevel:(int)self0;
+- (int)bilinearScaleWithCommandBuffer:(id)buffer renderPassDesc:(id)desc refTexIn:(id)in refTexOut:(id)out nonRefTexIn:(id)texIn nonRefTexOut:(id)texOut pyrLevel:(int)level;
+- (int)confidenceMapWithCommandBuffer:(id)buffer renderPassDesc:(id)desc shiftMap:(id)map confidenceOut:(id)out;
+- (int)generateDerivativesWithCommandBuffer:(id)buffer renderPassDesc:(id)desc inputTex:(id)tex outputTex:(id)outputTex;
+- (int)initialDownScaleWithCommandBuffer:(id)buffer renderPassDesc:(id)desc refTex:(id)tex nonRefTex:(id)refTex refTexOut:(id)out nonRefTexOut:(id)texOut refCamType:(int)type;
+- (int)registerImagesWithReferenceImg:(id)img nonRefImage:(id)image refTexlvl1:(id)texlvl1 nonRefTexlvl1:(id)refTexlvl1 shiftMap:(id)map confidenceMap:(id)confidenceMap;
+- (int)selectionWithCommandBuffer:(id)buffer renderPassDesc:(id)desc refDerivTex:(id)tex nonRefDerivTex:(id)derivTex prevShiftMap:(id)map nextShiftMap:(id)shiftMap homography:(id)homography pyrLevel:(int)self0;
 - (int)setupPyramidScalersUsingCalib;
-- (int)smoothShiftMapWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 input:(id)a5 output:(id)a6;
-- (void)scaleHomographyUsingCalib:(id *)a3 to:(id *)a4;
+- (int)smoothShiftMapWithCommandBuffer:(id)buffer renderPassDesc:(id)desc input:(id)input output:(id)output;
+- (void)scaleHomographyUsingCalib:(id *)calib to:(id *)to;
 @end
 
 @implementation RegPyrFusion
 
-+ (void)calculatePyramidDimensions:(float)a3 pyrWidths:(int *)a4 pyrHeights:(int *)a5 topLevelIndex:(int)a6 maxDim:(int)a7 minDim:(int)a8
++ (void)calculatePyramidDimensions:(float)dimensions pyrWidths:(int *)widths pyrHeights:(int *)heights topLevelIndex:(int)index maxDim:(int)dim minDim:(int)minDim
 {
-  v13 = log2f(a7);
-  if (a6 < 2)
+  v13 = log2f(dim);
+  if (index < 2)
   {
     v14 = 0.0;
-    if (a6 != 1)
+    if (index != 1)
     {
       return;
     }
@@ -31,24 +31,24 @@
 
   else
   {
-    v14 = (v13 - log2f(a8)) / (a6 - 1);
+    v14 = (v13 - log2f(minDim)) / (index - 1);
   }
 
   v15 = 0;
-  v16 = sqrtf(1.0 / a3);
+  v16 = sqrtf(1.0 / dimensions);
   do
   {
     v17 = (ceilf((v16 * exp2f(v13 - (v15 * v14))) / 6.0) * 6.0);
-    a4[v15] = (v17 * a3);
-    a5[v15++] = v17;
+    widths[v15] = (v17 * dimensions);
+    heights[v15++] = v17;
   }
 
-  while (a6 != v15);
+  while (index != v15);
 }
 
-- (RegPyrFusion)initWithMetalContext:(id)a3
+- (RegPyrFusion)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v65.receiver = self;
   v65.super_class = RegPyrFusion;
   v6 = [(RegPyrFusion *)&v65 init];
@@ -59,7 +59,7 @@
     goto LABEL_26;
   }
 
-  objc_storeStrong(&v6->_metal, a3);
+  objc_storeStrong(&v6->_metal, context);
   if (!v7->_metal)
   {
     sub_295890504(&v66);
@@ -191,11 +191,11 @@ LABEL_14:
   return v62;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [RegPyrFusionShaders alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -207,28 +207,28 @@ LABEL_14:
     v10 = -12786;
   }
 
-  objc_msgSend_prewarmRenderers_(RegPyrFusion, v8, v3, v9);
+  objc_msgSend_prewarmRenderers_(RegPyrFusion, v8, shadersCopy, v9);
 
   return v10;
 }
 
-- (void)scaleHomographyUsingCalib:(id *)a3 to:(id *)a4
+- (void)scaleHomographyUsingCalib:(id *)calib to:(id *)to
 {
-  v7 = truncf((a3[2].var1.var1.var0 - a3[2].var1.var0.var0) + 1.0);
-  v8 = truncf((a3[2].var1.var1.var1 - a3[2].var1.var0.var1) + 1.0);
+  v7 = truncf((calib[2].var1.var1.var0 - calib[2].var1.var0.var0) + 1.0);
+  v8 = truncf((calib[2].var1.var1.var1 - calib[2].var1.var0.var1) + 1.0);
   *&v4 = self->_pyrWidths[1];
   v9 = self->_pyrHeights[1];
-  *&v58 = truncf((a3[1].var2.var1.var0 - a3[1].var2.var0.var0) + 1.0) / *&v4;
-  v61 = truncf((a3[1].var2.var1.var1 - a3[1].var2.var0.var1) + 1.0) / v9;
+  *&v58 = truncf((calib[1].var2.var1.var0 - calib[1].var2.var0.var0) + 1.0) / *&v4;
+  v61 = truncf((calib[1].var2.var1.var1 - calib[1].var2.var0.var1) + 1.0) / v9;
   v54 = v9;
   v55 = v4;
   v65 = 0u;
   v66 = 0u;
   v10 = v7 / *&v4;
   v64 = 0u;
-  var2 = a3->var2;
-  var1 = a3[1].var1;
-  v73 = a3->var1;
+  var2 = calib->var2;
+  var1 = calib[1].var1;
+  v73 = calib->var1;
   v74 = var2;
   v75 = var1;
   v70 = xmmword_2959D5E20;
@@ -292,7 +292,7 @@ LABEL_14:
   v56 = v28;
   v59 = v29;
   v62 = v30;
-  v31 = a4[1];
+  v31 = to[1];
   v35 = objc_msgSend_contents(v31, v32, v33, v34);
   *v35 = v56;
   *(v35 + 8) = DWORD2(v56);
@@ -323,7 +323,7 @@ LABEL_14:
     v57 = v44;
     v60 = v45;
     v63 = v46;
-    v47 = a4[i];
+    v47 = to[i];
     v51 = objc_msgSend_contents(v47, v48, v49, v50);
     *(v51 + 8) = DWORD2(v57);
     *v51 = v57;
@@ -469,12 +469,12 @@ LABEL_14:
   return v64;
 }
 
-- (int)generateDerivativesWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 inputTex:(id)a5 outputTex:(id)a6
+- (int)generateDerivativesWithCommandBuffer:(id)buffer renderPassDesc:(id)desc inputTex:(id)tex outputTex:(id)outputTex
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  bufferCopy = buffer;
+  descCopy = desc;
+  texCopy = tex;
+  outputTexCopy = outputTex;
   v129 = 0;
   v17 = objc_msgSend_allocator(self->_metal, v14, v15, v16);
   v20 = objc_msgSend_newTextureDescriptor_(v17, v18, 0, v19);
@@ -487,11 +487,11 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v24 = objc_msgSend_width(v12, v21, v22, v23);
+  v24 = objc_msgSend_width(texCopy, v21, v22, v23);
   v28 = objc_msgSend_desc(v20, v25, v26, v27);
   objc_msgSend_setWidth_(v28, v29, v24, v30);
 
-  v34 = objc_msgSend_height(v12, v31, v32, v33);
+  v34 = objc_msgSend_height(texCopy, v31, v32, v33);
   v38 = objc_msgSend_desc(v20, v35, v36, v37);
   objc_msgSend_setHeight_(v38, v39, v34, v40);
 
@@ -512,11 +512,11 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v64 = objc_msgSend_colorAttachments(v11, v61, v62, v63);
+  v64 = objc_msgSend_colorAttachments(descCopy, v61, v62, v63);
   v67 = objc_msgSend_objectAtIndexedSubscript_(v64, v65, 0, v66);
   objc_msgSend_setTexture_(v67, v68, v60, v69);
 
-  v72 = objc_msgSend_renderCommandEncoderWithDescriptor_(v10, v70, v11, v71);
+  v72 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v70, descCopy, v71);
   if (!v72)
   {
     sub_295890C54();
@@ -524,22 +524,22 @@ LABEL_12:
   }
 
   v76 = v72;
-  v125 = v13;
+  v125 = outputTexCopy;
   v77 = objc_msgSend_fullRangeVertexBuf(self->_metal, v73, v74, v75);
   objc_msgSend_setVertexBuffer_offset_atIndex_(v76, v78, v77, 0, 0);
 
-  objc_msgSend_setFragmentTexture_atIndex_(v76, v79, v12, 0);
+  objc_msgSend_setFragmentTexture_atIndex_(v76, v79, texCopy, 0);
   objc_msgSend_setRenderPipelineState_(v76, v80, self->_shaders->_derivSobelPipelineState, v81);
   objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v76, v82, 4, 0, 4);
   objc_msgSend_endEncoding(v76, v83, v84, v85);
-  v89 = objc_msgSend_width(v12, v86, v87, v88);
-  v93 = objc_msgSend_height(v12, v90, v91, v92);
-  v97 = objc_msgSend_computeCommandEncoder(v10, v94, v95, v96);
+  v89 = objc_msgSend_width(texCopy, v86, v87, v88);
+  v93 = objc_msgSend_height(texCopy, v90, v91, v92);
+  v97 = objc_msgSend_computeCommandEncoder(bufferCopy, v94, v95, v96);
   if (v97)
   {
     v101 = v97;
-    v123 = v11;
-    v124 = v10;
+    v123 = descCopy;
+    v124 = bufferCopy;
     v102 = (v89 + 31) >> 5;
     v103 = (v93 + 31) >> 5;
     v104 = objc_msgSend_allocator(self->_metal, v98, v99, v100);
@@ -552,9 +552,9 @@ LABEL_12:
 
     objc_msgSend_setImageblockWidth_height_(v101, v109, 32, 32);
     objc_msgSend_setComputePipelineState_(v101, v112, self->_shaders->_derivPipelineState, v113);
-    objc_msgSend_setTexture_atIndex_(v101, v114, v12, 0);
+    objc_msgSend_setTexture_atIndex_(v101, v114, texCopy, 0);
     objc_msgSend_setTexture_atIndex_(v101, v115, v60, 1);
-    v13 = v125;
+    outputTexCopy = v125;
     objc_msgSend_setTexture_atIndex_(v101, v116, v125, 2);
     v128[0] = v102;
     v128[1] = v103;
@@ -566,15 +566,15 @@ LABEL_12:
     FigMetalDecRef();
 
     v121 = 0;
-    v11 = v123;
-    v10 = v124;
+    descCopy = v123;
+    bufferCopy = v124;
   }
 
   else
   {
     sub_295890B80(v60, v76, v128);
     v121 = v128[0];
-    v13 = v125;
+    outputTexCopy = v125;
   }
 
 LABEL_8:
@@ -582,30 +582,30 @@ LABEL_8:
   return v121;
 }
 
-- (int)basicSearchWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 refDerivTex:(id)a5 nonRefDerivTex:(id)a6 prevShiftMap:(id)a7 nextShiftMap:(id)a8 homography:(id)a9 pyrLevel:(int)a10
+- (int)basicSearchWithCommandBuffer:(id)buffer renderPassDesc:(id)desc refDerivTex:(id)tex nonRefDerivTex:(id)derivTex prevShiftMap:(id)map nextShiftMap:(id)shiftMap homography:(id)homography pyrLevel:(int)self0
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  v20 = a8;
-  v21 = a4;
-  v22 = a3;
-  v26 = objc_msgSend_colorAttachments(v21, v23, v24, v25);
+  texCopy = tex;
+  derivTexCopy = derivTex;
+  mapCopy = map;
+  homographyCopy = homography;
+  shiftMapCopy = shiftMap;
+  descCopy = desc;
+  bufferCopy = buffer;
+  v26 = objc_msgSend_colorAttachments(descCopy, v23, v24, v25);
   v29 = objc_msgSend_objectAtIndexedSubscript_(v26, v27, 0, v28);
-  objc_msgSend_setTexture_(v29, v30, v20, v31);
+  objc_msgSend_setTexture_(v29, v30, shiftMapCopy, v31);
 
-  v34 = objc_msgSend_renderCommandEncoderWithDescriptor_(v22, v32, v21, v33);
+  v34 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v32, descCopy, v33);
 
   if (v34)
   {
     v38 = objc_msgSend_fullRangeVertexBuf(self->_metal, v35, v36, v37);
     objc_msgSend_setVertexBuffer_offset_atIndex_(v34, v39, v38, 0, 0);
 
-    objc_msgSend_setFragmentTexture_atIndex_(v34, v40, v16, 0);
-    objc_msgSend_setFragmentTexture_atIndex_(v34, v41, v17, 1);
-    objc_msgSend_setFragmentTexture_atIndex_(v34, v42, v18, 2);
-    objc_msgSend_setFragmentBuffer_offset_atIndex_(v34, v43, v19, 0, 0);
+    objc_msgSend_setFragmentTexture_atIndex_(v34, v40, texCopy, 0);
+    objc_msgSend_setFragmentTexture_atIndex_(v34, v41, derivTexCopy, 1);
+    objc_msgSend_setFragmentTexture_atIndex_(v34, v42, mapCopy, 2);
+    objc_msgSend_setFragmentBuffer_offset_atIndex_(v34, v43, homographyCopy, 0, 0);
     objc_msgSend_setRenderPipelineState_(v34, v44, self->_shaders->_basicSearchLumaPipelineState, v45);
     objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v34, v46, 4, 0, 4);
     objc_msgSend_endEncoding(v34, v47, v48, v49);
@@ -621,24 +621,24 @@ LABEL_8:
   return v50;
 }
 
-- (int)smoothShiftMapWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 input:(id)a5 output:(id)a6
+- (int)smoothShiftMapWithCommandBuffer:(id)buffer renderPassDesc:(id)desc input:(id)input output:(id)output
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v17 = objc_msgSend_colorAttachments(v12, v14, v15, v16);
+  inputCopy = input;
+  outputCopy = output;
+  descCopy = desc;
+  bufferCopy = buffer;
+  v17 = objc_msgSend_colorAttachments(descCopy, v14, v15, v16);
   v20 = objc_msgSend_objectAtIndexedSubscript_(v17, v18, 0, v19);
-  objc_msgSend_setTexture_(v20, v21, v11, v22);
+  objc_msgSend_setTexture_(v20, v21, outputCopy, v22);
 
-  v25 = objc_msgSend_renderCommandEncoderWithDescriptor_(v13, v23, v12, v24);
+  v25 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v23, descCopy, v24);
 
   if (v25)
   {
     v29 = objc_msgSend_fullRangeVertexBuf(self->_metal, v26, v27, v28);
     objc_msgSend_setVertexBuffer_offset_atIndex_(v25, v30, v29, 0, 0);
 
-    objc_msgSend_setFragmentTexture_atIndex_(v25, v31, v10, 0);
+    objc_msgSend_setFragmentTexture_atIndex_(v25, v31, inputCopy, 0);
     objc_msgSend_setRenderPipelineState_(v25, v32, self->_shaders->_smoothPipelineState, v33);
     objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v25, v34, 4, 0, 4);
     objc_msgSend_endEncoding(v25, v35, v36, v37);
@@ -654,32 +654,32 @@ LABEL_8:
   return v38;
 }
 
-- (int)selectionWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 refDerivTex:(id)a5 nonRefDerivTex:(id)a6 prevShiftMap:(id)a7 nextShiftMap:(id)a8 homography:(id)a9 pyrLevel:(int)a10
+- (int)selectionWithCommandBuffer:(id)buffer renderPassDesc:(id)desc refDerivTex:(id)tex nonRefDerivTex:(id)derivTex prevShiftMap:(id)map nextShiftMap:(id)shiftMap homography:(id)homography pyrLevel:(int)self0
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  v20 = a8;
-  v21 = a4;
-  v22 = a3;
-  v26 = objc_msgSend_colorAttachments(v21, v23, v24, v25);
+  texCopy = tex;
+  derivTexCopy = derivTex;
+  mapCopy = map;
+  homographyCopy = homography;
+  shiftMapCopy = shiftMap;
+  descCopy = desc;
+  bufferCopy = buffer;
+  v26 = objc_msgSend_colorAttachments(descCopy, v23, v24, v25);
   v29 = objc_msgSend_objectAtIndexedSubscript_(v26, v27, 0, v28);
-  objc_msgSend_setTexture_(v29, v30, v20, v31);
+  objc_msgSend_setTexture_(v29, v30, shiftMapCopy, v31);
 
-  v35 = objc_msgSend_width(v16, v32, v33, v34);
-  v39 = objc_msgSend_height(v16, v36, v37, v38);
-  v42 = objc_msgSend_renderCommandEncoderWithDescriptor_(v22, v40, v21, v41);
+  v35 = objc_msgSend_width(texCopy, v32, v33, v34);
+  v39 = objc_msgSend_height(texCopy, v36, v37, v38);
+  v42 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v40, descCopy, v41);
 
   if (v42)
   {
     v46 = objc_msgSend_fullRangeVertexBuf(self->_metal, v43, v44, v45);
     objc_msgSend_setVertexBuffer_offset_atIndex_(v42, v47, v46, 0, 0);
 
-    objc_msgSend_setFragmentTexture_atIndex_(v42, v48, v16, 0);
-    objc_msgSend_setFragmentTexture_atIndex_(v42, v49, v17, 1);
-    objc_msgSend_setFragmentTexture_atIndex_(v42, v50, v18, 2);
-    objc_msgSend_setFragmentBuffer_offset_atIndex_(v42, v51, v19, 0, 0);
+    objc_msgSend_setFragmentTexture_atIndex_(v42, v48, texCopy, 0);
+    objc_msgSend_setFragmentTexture_atIndex_(v42, v49, derivTexCopy, 1);
+    objc_msgSend_setFragmentTexture_atIndex_(v42, v50, mapCopy, 2);
+    objc_msgSend_setFragmentBuffer_offset_atIndex_(v42, v51, homographyCopy, 0, 0);
     v61 = 2.0 / (1024.0 / sqrtf((v39 * v35)));
     objc_msgSend_setFragmentBytes_length_atIndex_(v42, v52, &v61, 4, 1);
     objc_msgSend_setRenderPipelineState_(v42, v53, self->_shaders->_selectionLumaPipelineState, v54);
@@ -697,26 +697,26 @@ LABEL_8:
   return v59;
 }
 
-- (RegPyrFusion)fusionWithCommandBuffer:(id)a3 refTex:(id)a4 refDerivTex:(id)a5 nonRefDerivTex:(id)a6 prevShiftMap:(id)a7 nextShiftMap:(id)a8 homography:(id)a9 pyrLevel:(int)a10
+- (RegPyrFusion)fusionWithCommandBuffer:(id)buffer refTex:(id)tex refDerivTex:(id)derivTex nonRefDerivTex:(id)refDerivTex prevShiftMap:(id)map nextShiftMap:(id)shiftMap homography:(id)homography pyrLevel:(int)self0
 {
-  v141 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v143 = a8;
-  v20 = a9;
+  bufferCopy = buffer;
+  texCopy = tex;
+  derivTexCopy = derivTex;
+  refDerivTexCopy = refDerivTex;
+  mapCopy = map;
+  shiftMapCopy = shiftMap;
+  homographyCopy = homography;
   v146 = 0;
   v24 = objc_msgSend_allocator(self->_metal, v21, v22, v23);
   v28 = objc_msgSend_newTextureDescriptor(v24, v25, v26, v27);
 
   if (v28)
   {
-    v32 = objc_msgSend_width(v19, v29, v30, v31);
+    v32 = objc_msgSend_width(mapCopy, v29, v30, v31);
     v36 = objc_msgSend_desc(v28, v33, v34, v35);
     objc_msgSend_setWidth_(v36, v37, v32, v38);
 
-    v42 = objc_msgSend_height(v19, v39, v40, v41);
+    v42 = objc_msgSend_height(mapCopy, v39, v40, v41);
     v46 = objc_msgSend_desc(v28, v43, v44, v45);
     objc_msgSend_setHeight_(v46, v47, v42, v48);
 
@@ -731,7 +731,7 @@ LABEL_8:
 
     if (v63)
     {
-      v142 = v19;
+      v142 = mapCopy;
       v67 = objc_msgSend_renderPassDescriptor(MEMORY[0x29EDBB5F8], v64, v65, v66);
       if (v67)
       {
@@ -740,9 +740,9 @@ LABEL_8:
         v75 = objc_msgSend_objectAtIndexedSubscript_(v72, v73, 0, v74);
         objc_msgSend_setTexture_(v75, v76, v63, v77);
 
-        v81 = objc_msgSend_width(v17, v78, v79, v80);
-        v85 = objc_msgSend_height(v17, v82, v83, v84);
-        v88 = objc_msgSend_renderCommandEncoderWithDescriptor_(v141, v86, v71, v87);
+        v81 = objc_msgSend_width(derivTexCopy, v78, v79, v80);
+        v85 = objc_msgSend_height(derivTexCopy, v82, v83, v84);
+        v88 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v86, v71, v87);
         if (v88)
         {
           v92 = v88;
@@ -750,11 +750,11 @@ LABEL_8:
           v94 = objc_msgSend_fullRangeVertexBuf(self->_metal, v89, v90, v91);
           objc_msgSend_setVertexBuffer_offset_atIndex_(v92, v95, v94, 0, 0);
 
-          objc_msgSend_setFragmentTexture_atIndex_(v92, v96, v16, 0);
-          objc_msgSend_setFragmentTexture_atIndex_(v92, v97, v17, 1);
-          objc_msgSend_setFragmentTexture_atIndex_(v92, v98, v18, 2);
+          objc_msgSend_setFragmentTexture_atIndex_(v92, v96, texCopy, 0);
+          objc_msgSend_setFragmentTexture_atIndex_(v92, v97, derivTexCopy, 1);
+          objc_msgSend_setFragmentTexture_atIndex_(v92, v98, refDerivTexCopy, 2);
           objc_msgSend_setFragmentTexture_atIndex_(v92, v99, v142, 3);
-          objc_msgSend_setFragmentBuffer_offset_atIndex_(v92, v100, v20, 0, 0);
+          objc_msgSend_setFragmentBuffer_offset_atIndex_(v92, v100, homographyCopy, 0, 0);
           v145 = v93;
           objc_msgSend_setFragmentBytes_length_atIndex_(v92, v101, &v145, 4, 1);
           objc_msgSend_setRenderPipelineState_(v92, v102, self->_shaders->_fusionXLumaPipelineState, v103);
@@ -762,21 +762,21 @@ LABEL_8:
           objc_msgSend_endEncoding(v92, v105, v106, v107);
           v111 = objc_msgSend_colorAttachments(v71, v108, v109, v110);
           v114 = objc_msgSend_objectAtIndexedSubscript_(v111, v112, 0, v113);
-          objc_msgSend_setTexture_(v114, v115, v143, v116);
+          objc_msgSend_setTexture_(v114, v115, shiftMapCopy, v116);
 
-          v119 = objc_msgSend_renderCommandEncoderWithDescriptor_(v141, v117, v71, v118);
+          v119 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v117, v71, v118);
 
-          v123 = v141;
+          v123 = bufferCopy;
           if (v119)
           {
             v124 = objc_msgSend_fullRangeVertexBuf(self->_metal, v120, v121, v122);
             objc_msgSend_setVertexBuffer_offset_atIndex_(v119, v125, v124, 0, 0);
 
-            objc_msgSend_setFragmentTexture_atIndex_(v119, v126, v16, 0);
-            objc_msgSend_setFragmentTexture_atIndex_(v119, v127, v17, 1);
-            objc_msgSend_setFragmentTexture_atIndex_(v119, v128, v18, 2);
+            objc_msgSend_setFragmentTexture_atIndex_(v119, v126, texCopy, 0);
+            objc_msgSend_setFragmentTexture_atIndex_(v119, v127, derivTexCopy, 1);
+            objc_msgSend_setFragmentTexture_atIndex_(v119, v128, refDerivTexCopy, 2);
             objc_msgSend_setFragmentTexture_atIndex_(v119, v129, v63, 3);
-            objc_msgSend_setFragmentBuffer_offset_atIndex_(v119, v130, v20, 0, 0);
+            objc_msgSend_setFragmentBuffer_offset_atIndex_(v119, v130, homographyCopy, 0, 0);
             v144 = v93;
             objc_msgSend_setFragmentBytes_length_atIndex_(v119, v131, &v144, 4, 1);
             objc_msgSend_setRenderPipelineState_(v119, v132, self->_shaders->_fusionYLumaPipelineState, v133);
@@ -798,7 +798,7 @@ LABEL_8:
         {
           sub_295891128();
           v138 = v147;
-          v123 = v141;
+          v123 = bufferCopy;
         }
       }
 
@@ -806,17 +806,17 @@ LABEL_8:
       {
         sub_2958911E4(&v147);
         v138 = v147;
-        v123 = v141;
+        v123 = bufferCopy;
       }
 
-      v19 = v142;
+      mapCopy = v142;
     }
 
     else
     {
       sub_295891290(&v147);
       v138 = v147;
-      v123 = v141;
+      v123 = bufferCopy;
     }
 
     v28 = v140;
@@ -826,18 +826,18 @@ LABEL_8:
   {
     sub_29589133C(&v147);
     v138 = v147;
-    v123 = v141;
+    v123 = bufferCopy;
   }
 
   return v138;
 }
 
-- (int)confidenceMapWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 shiftMap:(id)a5 confidenceOut:(id)a6
+- (int)confidenceMapWithCommandBuffer:(id)buffer renderPassDesc:(id)desc shiftMap:(id)map confidenceOut:(id)out
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  bufferCopy = buffer;
+  descCopy = desc;
+  mapCopy = map;
+  outCopy = out;
   v17 = objc_msgSend_allocator(self->_metal, v14, v15, v16, 0);
   v21 = objc_msgSend_newTextureDescriptor(v17, v18, v19, v20);
 
@@ -849,11 +849,11 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v25 = objc_msgSend_colorAttachments(v11, v22, v23, v24);
+  v25 = objc_msgSend_colorAttachments(descCopy, v22, v23, v24);
   v28 = objc_msgSend_objectAtIndexedSubscript_(v25, v26, 0, v27);
-  objc_msgSend_setTexture_(v28, v29, v13, v30);
+  objc_msgSend_setTexture_(v28, v29, outCopy, v30);
 
-  v33 = objc_msgSend_renderCommandEncoderWithDescriptor_(v10, v31, v11, v32);
+  v33 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v31, descCopy, v32);
   if (!v33)
   {
     sub_29589161C(&v132);
@@ -864,15 +864,15 @@ LABEL_13:
   v38 = objc_msgSend_fullRangeVertexBuf(self->_metal, v34, v35, v36);
   objc_msgSend_setVertexBuffer_offset_atIndex_(v37, v39, v38, 0, 0);
 
-  objc_msgSend_setFragmentTexture_atIndex_(v37, v40, v12, 0);
+  objc_msgSend_setFragmentTexture_atIndex_(v37, v40, mapCopy, 0);
   objc_msgSend_setRenderPipelineState_(v37, v41, self->_shaders->_confidenceStageOne, v42);
   objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v37, v43, 4, 0, 4);
   objc_msgSend_endEncoding(v37, v44, v45, v46);
-  v50 = objc_msgSend_width(v12, v47, v48, v49);
+  v50 = objc_msgSend_width(mapCopy, v47, v48, v49);
   v54 = objc_msgSend_desc(v21, v51, v52, v53);
   objc_msgSend_setWidth_(v54, v55, v50, v56);
 
-  v60 = objc_msgSend_height(v12, v57, v58, v59);
+  v60 = objc_msgSend_height(mapCopy, v57, v58, v59);
   v64 = objc_msgSend_desc(v21, v61, v62, v63);
   objc_msgSend_setHeight_(v64, v65, v60, v66);
 
@@ -889,11 +889,11 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v85 = objc_msgSend_colorAttachments(v11, v82, v83, v84);
+  v85 = objc_msgSend_colorAttachments(descCopy, v82, v83, v84);
   v88 = objc_msgSend_objectAtIndexedSubscript_(v85, v86, 0, v87);
   objc_msgSend_setTexture_(v88, v89, v81, v90);
 
-  v93 = objc_msgSend_renderCommandEncoderWithDescriptor_(v10, v91, v11, v92);
+  v93 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v91, descCopy, v92);
 
   if (!v93)
   {
@@ -904,15 +904,15 @@ LABEL_13:
   v97 = objc_msgSend_fullRangeVertexBuf(self->_metal, v94, v95, v96);
   objc_msgSend_setVertexBuffer_offset_atIndex_(v93, v98, v97, 0, 0);
 
-  objc_msgSend_setFragmentTexture_atIndex_(v93, v99, v13, 0);
+  objc_msgSend_setFragmentTexture_atIndex_(v93, v99, outCopy, 0);
   objc_msgSend_setRenderPipelineState_(v93, v100, self->_shaders->_confidenceErode, v101);
   objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v93, v102, 4, 0, 4);
   objc_msgSend_endEncoding(v93, v103, v104, v105);
-  v109 = objc_msgSend_colorAttachments(v11, v106, v107, v108);
+  v109 = objc_msgSend_colorAttachments(descCopy, v106, v107, v108);
   v112 = objc_msgSend_objectAtIndexedSubscript_(v109, v110, 0, v111);
-  objc_msgSend_setTexture_(v112, v113, v13, v114);
+  objc_msgSend_setTexture_(v112, v113, outCopy, v114);
 
-  v117 = objc_msgSend_renderCommandEncoderWithDescriptor_(v10, v115, v11, v116);
+  v117 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v115, descCopy, v116);
 
   if (!v117)
   {
@@ -935,32 +935,32 @@ LABEL_7:
   return v130;
 }
 
-- (int)bilinearScaleWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 refTexIn:(id)a5 refTexOut:(id)a6 nonRefTexIn:(id)a7 nonRefTexOut:(id)a8 pyrLevel:(int)a9
+- (int)bilinearScaleWithCommandBuffer:(id)buffer renderPassDesc:(id)desc refTexIn:(id)in refTexOut:(id)out nonRefTexIn:(id)texIn nonRefTexOut:(id)texOut pyrLevel:(int)level
 {
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a6;
-  v19 = a4;
-  v20 = a3;
-  v24 = objc_msgSend_colorAttachments(v19, v21, v22, v23);
+  inCopy = in;
+  texInCopy = texIn;
+  texOutCopy = texOut;
+  outCopy = out;
+  descCopy = desc;
+  bufferCopy = buffer;
+  v24 = objc_msgSend_colorAttachments(descCopy, v21, v22, v23);
   v27 = objc_msgSend_objectAtIndexedSubscript_(v24, v25, 0, v26);
-  objc_msgSend_setTexture_(v27, v28, v18, v29);
+  objc_msgSend_setTexture_(v27, v28, outCopy, v29);
 
-  v33 = objc_msgSend_colorAttachments(v19, v30, v31, v32);
+  v33 = objc_msgSend_colorAttachments(descCopy, v30, v31, v32);
   v36 = objc_msgSend_objectAtIndexedSubscript_(v33, v34, 1, v35);
-  objc_msgSend_setTexture_(v36, v37, v17, v38);
+  objc_msgSend_setTexture_(v36, v37, texOutCopy, v38);
 
-  v41 = objc_msgSend_renderCommandEncoderWithDescriptor_(v20, v39, v19, v40);
+  v41 = objc_msgSend_renderCommandEncoderWithDescriptor_(bufferCopy, v39, descCopy, v40);
 
   if (v41)
   {
     v45 = objc_msgSend_fullRangeVertexBuf(self->_metal, v42, v43, v44);
     objc_msgSend_setVertexBuffer_offset_atIndex_(v41, v46, v45, 0, 0);
 
-    objc_msgSend_setFragmentTexture_atIndex_(v41, v47, v15, 0);
-    objc_msgSend_setFragmentTexture_atIndex_(v41, v48, v16, 1);
-    objc_msgSend_setFragmentBuffer_offset_atIndex_(v41, v49, self->_pyrScaleParams[a9], 0, 0);
+    objc_msgSend_setFragmentTexture_atIndex_(v41, v47, inCopy, 0);
+    objc_msgSend_setFragmentTexture_atIndex_(v41, v48, texInCopy, 1);
+    objc_msgSend_setFragmentBuffer_offset_atIndex_(v41, v49, self->_pyrScaleParams[level], 0, 0);
     objc_msgSend_setRenderPipelineState_(v41, v50, self->_shaders->_bilinearScalePipelineState, v51);
     objc_msgSend_drawPrimitives_vertexStart_vertexCount_(v41, v52, 4, 0, 4);
     objc_msgSend_endEncoding(v41, v53, v54, v55);
@@ -976,72 +976,72 @@ LABEL_7:
   return v56;
 }
 
-- (int)initialDownScaleWithCommandBuffer:(id)a3 renderPassDesc:(id)a4 refTex:(id)a5 nonRefTex:(id)a6 refTexOut:(id)a7 nonRefTexOut:(id)a8 refCamType:(int)a9
+- (int)initialDownScaleWithCommandBuffer:(id)buffer renderPassDesc:(id)desc refTex:(id)tex nonRefTex:(id)refTex refTexOut:(id)out nonRefTexOut:(id)texOut refCamType:(int)type
 {
-  v64 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v23 = objc_msgSend_colorAttachments(v15, v20, v21, v22);
+  bufferCopy = buffer;
+  descCopy = desc;
+  texCopy = tex;
+  refTexCopy = refTex;
+  outCopy = out;
+  texOutCopy = texOut;
+  v23 = objc_msgSend_colorAttachments(descCopy, v20, v21, v22);
   v26 = objc_msgSend_objectAtIndexedSubscript_(v23, v24, 0, v25);
   v29 = v26;
-  if (a9 == 1)
+  if (type == 1)
   {
-    v30 = v18;
+    v30 = outCopy;
   }
 
   else
   {
-    v30 = v19;
+    v30 = texOutCopy;
   }
 
-  if (a9 == 1)
+  if (type == 1)
   {
-    v31 = v19;
+    v31 = texOutCopy;
   }
 
   else
   {
-    v31 = v18;
+    v31 = outCopy;
   }
 
-  objc_msgSend_setTexture_(v26, v27, v30, v28, v64);
+  objc_msgSend_setTexture_(v26, v27, v30, v28, bufferCopy);
 
-  v35 = objc_msgSend_colorAttachments(v15, v32, v33, v34);
+  v35 = objc_msgSend_colorAttachments(descCopy, v32, v33, v34);
   v38 = objc_msgSend_objectAtIndexedSubscript_(v35, v36, 1, v37);
   objc_msgSend_setTexture_(v38, v39, v31, v40);
 
-  v46 = objc_msgSend_renderCommandEncoderWithDescriptor_(v65, v41, v15, v42);
+  v46 = objc_msgSend_renderCommandEncoderWithDescriptor_(v65, v41, descCopy, v42);
   if (v46)
   {
     v47 = objc_msgSend_fullRangeVertexBuf(self->_metal, v43, v44, v45);
     objc_msgSend_setVertexBuffer_offset_atIndex_(v46, v48, v47, 0, 0);
 
-    if (a9 == 1)
+    if (type == 1)
     {
-      v50 = v16;
+      v50 = texCopy;
     }
 
     else
     {
-      v50 = v17;
+      v50 = refTexCopy;
     }
 
-    if (a9 == 1)
+    if (type == 1)
     {
-      v51 = v17;
+      v51 = refTexCopy;
     }
 
     else
     {
-      v51 = v16;
+      v51 = texCopy;
     }
 
     objc_msgSend_setFragmentTexture_atIndex_(v46, v49, v50, 0);
     objc_msgSend_setFragmentTexture_atIndex_(v46, v52, v51, 1);
-    v53 = &self->super.isa + a9;
+    v53 = &self->super.isa + type;
     objc_msgSend_setFragmentBuffer_offset_atIndex_(v46, v54, v53[68], 0, 0);
     objc_msgSend_setFragmentBuffer_offset_atIndex_(v46, v55, v53[66], 0, 1);
     objc_msgSend_setRenderPipelineState_(v46, v56, self->_shaders->_initialDownScalePipelineState, v57);
@@ -1059,30 +1059,30 @@ LABEL_7:
   return v62;
 }
 
-- (int)registerImagesWithReferenceImg:(id)a3 nonRefImage:(id)a4 refTexlvl1:(id)a5 nonRefTexlvl1:(id)a6 shiftMap:(id)a7 confidenceMap:(id)a8
+- (int)registerImagesWithReferenceImg:(id)img nonRefImage:(id)image refTexlvl1:(id)texlvl1 nonRefTexlvl1:(id)refTexlvl1 shiftMap:(id)map confidenceMap:(id)confidenceMap
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v282 = a7;
-  v18 = a8;
+  imgCopy = img;
+  imageCopy = image;
+  texlvl1Copy = texlvl1;
+  refTexlvl1Copy = refTexlvl1;
+  mapCopy = map;
+  confidenceMapCopy = confidenceMap;
   v323 = 0;
   v324 = 0;
-  v279 = v15;
-  v280 = v16;
-  v278 = v17;
-  v281 = v18;
-  if (!v16)
+  v279 = imageCopy;
+  v280 = texlvl1Copy;
+  v278 = refTexlvl1Copy;
+  v281 = confidenceMapCopy;
+  if (!texlvl1Copy)
   {
     sub_2958925B8(&v287);
 LABEL_66:
     v284 = 0;
-    v17 = 0;
+    refTexlvl1Copy = 0;
     goto LABEL_47;
   }
 
-  if (!v17)
+  if (!refTexlvl1Copy)
   {
     sub_29589250C(&v287);
 LABEL_69:
@@ -1090,38 +1090,38 @@ LABEL_69:
     goto LABEL_47;
   }
 
-  if (!v282)
+  if (!mapCopy)
   {
     sub_295892460(&v287);
     goto LABEL_66;
   }
 
-  if (!v18)
+  if (!confidenceMapCopy)
   {
     sub_2958923B4(&v287);
     goto LABEL_66;
   }
 
-  v20 = objc_msgSend_setLumaTexture_chromaTexture_level_metal_(self->_refPyr, v19, v14[2], v14[3], 0, self->_metal);
+  v20 = objc_msgSend_setLumaTexture_chromaTexture_level_metal_(self->_refPyr, v19, imgCopy[2], imgCopy[3], 0, self->_metal);
   if (v20)
   {
     sub_2958918CC(v20, &v287);
     goto LABEL_66;
   }
 
-  v22 = objc_msgSend_setLumaTexture_chromaTexture_level_metal_(self->_nonRefPyr, v21, v15[2], v15[3], 0, self->_metal);
+  v22 = objc_msgSend_setLumaTexture_chromaTexture_level_metal_(self->_nonRefPyr, v21, imageCopy[2], imageCopy[3], 0, self->_metal);
   if (v22)
   {
     sub_295891984(v22, &v287);
     goto LABEL_66;
   }
 
-  objc_storeStrong(&self->_refPyr->textureY[1], a5);
-  objc_storeStrong(&self->_nonRefPyr->textureY[1], a6);
+  objc_storeStrong(&self->_refPyr->textureY[1], texlvl1);
+  objc_storeStrong(&self->_nonRefPyr->textureY[1], refTexlvl1);
   v26 = objc_msgSend_allocator(self->_metal, v23, v24, v25);
-  v17 = objc_msgSend_newTextureDescriptor(v26, v27, v28, v29);
+  refTexlvl1Copy = objc_msgSend_newTextureDescriptor(v26, v27, v28, v29);
 
-  if (!v17)
+  if (!refTexlvl1Copy)
   {
     sub_295892308(&v287);
     goto LABEL_69;
@@ -1171,8 +1171,8 @@ LABEL_48:
   }
 
   while (v41 != 18);
-  v54 = objc_msgSend_width(v14[2], v38, v39, v40);
-  v58 = objc_msgSend_height(v14[2], v55, v56, v57);
+  v54 = objc_msgSend_width(imgCopy[2], v38, v39, v40);
+  v58 = objc_msgSend_height(imgCopy[2], v55, v56, v57);
   v303 = 0u;
   v304 = 0u;
   v305 = 0u;
@@ -1231,26 +1231,26 @@ LABEL_48:
   }
 
   v74 = v70;
-  v75 = objc_msgSend_desc(v17, v71, v72, v73);
+  v75 = objc_msgSend_desc(refTexlvl1Copy, v71, v72, v73);
   objc_msgSend_setPixelFormat_(v75, v76, 25, v77);
 
-  v81 = objc_msgSend_desc(v17, v78, v79, v80);
+  v81 = objc_msgSend_desc(refTexlvl1Copy, v78, v79, v80);
   objc_msgSend_setUsage_(v81, v82, 7, v83);
 
   v87 = &self->_pyrWidths[2];
   for (i = 2; i != 11; ++i)
   {
     v89 = *v87;
-    v90 = objc_msgSend_desc(v17, v84, v85, v86);
+    v90 = objc_msgSend_desc(refTexlvl1Copy, v84, v85, v86);
     objc_msgSend_setWidth_(v90, v91, v89, v92);
 
     v93 = v87[20];
-    v97 = objc_msgSend_desc(v17, v94, v95, v96);
+    v97 = objc_msgSend_desc(refTexlvl1Copy, v94, v95, v96);
     objc_msgSend_setHeight_(v97, v98, v93, v99);
 
-    objc_msgSend_setLabel_(v17, v100, 0, v101);
+    objc_msgSend_setLabel_(refTexlvl1Copy, v100, 0, v101);
     v105 = objc_msgSend_allocator(self->_metal, v102, v103, v104);
-    v108 = objc_msgSend_newTextureWithDescriptor_(v105, v106, v17, v107);
+    v108 = objc_msgSend_newTextureWithDescriptor_(v105, v106, refTexlvl1Copy, v107);
     textureY = self->_refPyr->textureY;
     v110 = textureY[i];
     textureY[i] = v108;
@@ -1264,9 +1264,9 @@ LABEL_52:
       goto LABEL_45;
     }
 
-    objc_msgSend_setLabel_(v17, v111, 0, v112);
+    objc_msgSend_setLabel_(refTexlvl1Copy, v111, 0, v112);
     v116 = objc_msgSend_allocator(self->_metal, v113, v114, v115);
-    v119 = objc_msgSend_newTextureWithDescriptor_(v116, v117, v17, v118);
+    v119 = objc_msgSend_newTextureWithDescriptor_(v116, v117, refTexlvl1Copy, v118);
     v120 = self->_nonRefPyr->textureY;
     v121 = v120[i];
     v120[i] = v119;
@@ -1318,7 +1318,7 @@ LABEL_52:
     goto LABEL_48;
   }
 
-  v277 = v14;
+  v277 = imgCopy;
   v143 = 0;
   v144 = &self->_pyrHomographyWideIsRef[10];
   v145 = &self->_pyrWidths[10];
@@ -1329,22 +1329,22 @@ LABEL_52:
     v286 = 0;
     v287 = 0;
     v147 = *v145;
-    v148 = objc_msgSend_desc(v17, v140, v141, v142);
+    v148 = objc_msgSend_desc(refTexlvl1Copy, v140, v141, v142);
     objc_msgSend_setWidth_(v148, v149, v147, v150);
 
     v151 = v145[20];
-    v155 = objc_msgSend_desc(v17, v152, v153, v154);
+    v155 = objc_msgSend_desc(refTexlvl1Copy, v152, v153, v154);
     objc_msgSend_setHeight_(v155, v156, v151, v157);
 
-    v161 = objc_msgSend_desc(v17, v158, v159, v160);
+    v161 = objc_msgSend_desc(refTexlvl1Copy, v158, v159, v160);
     objc_msgSend_setPixelFormat_(v161, v162, 70, v163);
 
-    v167 = objc_msgSend_desc(v17, v164, v165, v166);
+    v167 = objc_msgSend_desc(refTexlvl1Copy, v164, v165, v166);
     objc_msgSend_setUsage_(v167, v168, 7, v169);
 
-    objc_msgSend_setLabel_(v17, v170, 0, v171);
+    objc_msgSend_setLabel_(refTexlvl1Copy, v170, 0, v171);
     v175 = objc_msgSend_allocator(self->_metal, v172, v173, v174);
-    v287 = objc_msgSend_newTextureWithDescriptor_(v175, v176, v17, v177);
+    v287 = objc_msgSend_newTextureWithDescriptor_(v175, v176, refTexlvl1Copy, v177);
 
     if (!v287)
     {
@@ -1355,9 +1355,9 @@ LABEL_56:
     }
 
     objc_msgSend_generateDerivativesWithCommandBuffer_renderPassDesc_inputTex_outputTex_(self, v178, v139, v68, self->_refPyr->textureY[v143 + 10]);
-    objc_msgSend_setLabel_(v17, v179, 0, v180);
+    objc_msgSend_setLabel_(refTexlvl1Copy, v179, 0, v180);
     v184 = objc_msgSend_allocator(self->_metal, v181, v182, v183);
-    v286 = objc_msgSend_newTextureWithDescriptor_(v184, v185, v17, v186);
+    v286 = objc_msgSend_newTextureWithDescriptor_(v184, v185, refTexlvl1Copy, v186);
 
     if (!v286)
     {
@@ -1366,12 +1366,12 @@ LABEL_56:
     }
 
     objc_msgSend_generateDerivativesWithCommandBuffer_renderPassDesc_inputTex_outputTex_(self, v187, v139, v68, self->_nonRefPyr->textureY[v143 + 10]);
-    v191 = objc_msgSend_desc(v17, v188, v189, v190);
+    v191 = objc_msgSend_desc(refTexlvl1Copy, v188, v189, v190);
     objc_msgSend_setPixelFormat_(v191, v192, 65, v193);
 
-    objc_msgSend_setLabel_(v17, v194, 0, v195);
+    objc_msgSend_setLabel_(refTexlvl1Copy, v194, 0, v195);
     v199 = objc_msgSend_allocator(self->_metal, v196, v197, v198);
-    v202 = objc_msgSend_newTextureWithDescriptor_(v199, v200, v17, v201);
+    v202 = objc_msgSend_newTextureWithDescriptor_(v199, v200, refTexlvl1Copy, v201);
     v203 = v323;
     v323 = v202;
 
@@ -1425,9 +1425,9 @@ LABEL_56:
 
     objc_msgSend_smoothShiftMapWithCommandBuffer_renderPassDesc_input_output_(self, v241, v139, v68, v323);
     FigMetalDecRef();
-    objc_msgSend_setLabel_(v17, v242, 0, v243);
+    objc_msgSend_setLabel_(refTexlvl1Copy, v242, 0, v243);
     v247 = objc_msgSend_allocator(self->_metal, v244, v245, v246);
-    v250 = objc_msgSend_newTextureWithDescriptor_(v247, v248, v17, v249);
+    v250 = objc_msgSend_newTextureWithDescriptor_(v247, v248, refTexlvl1Copy, v249);
     v251 = v323;
     v323 = v250;
 
@@ -1447,10 +1447,10 @@ LABEL_56:
     }
 
     FigMetalDecRef();
-    objc_msgSend_setLabel_(v17, v254, 0, v255);
+    objc_msgSend_setLabel_(refTexlvl1Copy, v254, 0, v255);
     if (v143 == -9)
     {
-      v259 = v282;
+      v259 = mapCopy;
       v260 = v324;
       v324 = v259;
     }
@@ -1458,7 +1458,7 @@ LABEL_56:
     else
     {
       v260 = objc_msgSend_allocator(self->_metal, v256, v257, v258);
-      v263 = objc_msgSend_newTextureWithDescriptor_(v260, v261, v17, v262);
+      v263 = objc_msgSend_newTextureWithDescriptor_(v260, v261, refTexlvl1Copy, v262);
       v264 = v324;
       v324 = v263;
     }
@@ -1489,7 +1489,7 @@ LABEL_49:
     --v145;
     if (v268 <= 1)
     {
-      objc_msgSend_confidenceMapWithCommandBuffer_renderPassDesc_shiftMap_confidenceOut_(self, v140, v139, v68, v282, v281);
+      objc_msgSend_confidenceMapWithCommandBuffer_renderPassDesc_shiftMap_confidenceOut_(self, v140, v139, v68, mapCopy, v281);
       objc_msgSend_commit(self->_metal, v269, v270, v271);
 
       v69 = 0;
@@ -1502,7 +1502,7 @@ LABEL_49:
 LABEL_59:
 
 LABEL_44:
-  v14 = v277;
+  imgCopy = v277;
 LABEL_45:
 
   return v69;

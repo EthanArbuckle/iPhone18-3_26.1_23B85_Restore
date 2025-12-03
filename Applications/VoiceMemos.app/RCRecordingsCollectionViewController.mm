@@ -1,127 +1,127 @@
 @interface RCRecordingsCollectionViewController
-- (BOOL)_isDownloadingAtIndex:(id)a3;
-- (BOOL)_supportsSwipeActionsForIndexPath:(id)a3 swipeActionsType:(unint64_t)a4;
+- (BOOL)_isDownloadingAtIndex:(id)index;
+- (BOOL)_supportsSwipeActionsForIndexPath:(id)path swipeActionsType:(unint64_t)type;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)isSearching;
-- (BOOL)presentsRecordingWithUUID:(id)a3;
+- (BOOL)presentsRecordingWithUUID:(id)d;
 - (BOOL)selectedCellIsEditingTitle;
 - (BOOL)selectedCellIsInFlightEditing;
 - (RCCloudRecording)selectedRecording;
 - (RCFolderSelectionDelegate)folderSelectionDelegate;
 - (RCLibraryActionHandler)libraryActionHandler;
 - (RCLibraryEditStateHandler)editStateHandler;
-- (RCRecordingsCollectionViewController)initWithBuiltInFolderType:(int64_t)a3 folderUUID:(id)a4;
-- (RCRecordingsCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (RCRecordingsCollectionViewController)initWithUserFolderNamed:(id)a3 folderUUID:(id)a4;
+- (RCRecordingsCollectionViewController)initWithBuiltInFolderType:(int64_t)type folderUUID:(id)d;
+- (RCRecordingsCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (RCRecordingsCollectionViewController)initWithUserFolderNamed:(id)named folderUUID:(id)d;
 - (id)_createCollectionViewLayout;
 - (id)_createDiffableDataSource;
-- (id)_createSwipeActionWithConfiguration:(id)a3;
-- (id)_deleteSwipeActionForUUID:(id)a3 shouldExecuteCompletionBeforeAction:(BOOL)a4;
-- (id)_eraseSwipeActionForUUID:(id)a3 shouldExecuteCompletionBeforeAction:(BOOL)a4;
-- (id)_favoriteSwipeAction:(BOOL)a3 forUUID:(id)a4;
+- (id)_createSwipeActionWithConfiguration:(id)configuration;
+- (id)_deleteSwipeActionForUUID:(id)d shouldExecuteCompletionBeforeAction:(BOOL)action;
+- (id)_eraseSwipeActionForUUID:(id)d shouldExecuteCompletionBeforeAction:(BOOL)action;
+- (id)_favoriteSwipeAction:(BOOL)action forUUID:(id)d;
 - (id)_leadingSwipeActionsConfigurationProvider;
-- (id)_moreOptionsSwipeActionForUUID:(id)a3 shouldExecuteCompletionBeforeAction:(BOOL)a4;
-- (id)_moveToFolderSwipeActionForUUID:(id)a3 shouldExecuteCompletionBeforeAction:(BOOL)a4;
-- (id)_scopeBarTitleFor:(int64_t)a3;
+- (id)_moreOptionsSwipeActionForUUID:(id)d shouldExecuteCompletionBeforeAction:(BOOL)action;
+- (id)_moveToFolderSwipeActionForUUID:(id)d shouldExecuteCompletionBeforeAction:(BOOL)action;
+- (id)_scopeBarTitleFor:(int64_t)for;
 - (id)_trailingSwipeActionsConfigurationProvider;
-- (id)_uuidForItemAtIndexPath:(id)a3;
+- (id)_uuidForItemAtIndexPath:(id)path;
 - (id)allUUIDs;
-- (id)cellForUUID:(id)a3;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
+- (id)cellForUUID:(id)d;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
 - (id)contentUnavailableConfigurationState;
 - (id)dataArray;
 - (id)selectedUUIDs;
 - (id)uuidOfSelectedRecording;
 - (int64_t)_expectedNumberOfItems;
-- (int64_t)_searchScopeForScopeButtonIndex:(int64_t)a3;
-- (void)_addCollectionViewCellToCellsMapTable:(id)a3;
-- (void)_animateContentUnavailableUpdateWithCompletion:(id)a3;
+- (int64_t)_searchScopeForScopeButtonIndex:(int64_t)index;
+- (void)_addCollectionViewCellToCellsMapTable:(id)table;
+- (void)_animateContentUnavailableUpdateWithCompletion:(id)completion;
 - (void)_commonInit;
-- (void)_configureCell:(id)a3 usingDisplayModel:(id)a4;
+- (void)_configureCell:(id)cell usingDisplayModel:(id)model;
 - (void)_handleEditModeFooterAndNavigationItem;
 - (void)_handleMove;
 - (void)_logHashTable;
 - (void)_logWhetherVisibleCellsHaveIntegrity;
 - (void)_notifyDelegatesThatSelectionChanged;
 - (void)_pauseSelecteditem;
-- (void)_performFolderTypeUpdatesOnRecording:(id)a3;
-- (void)_removeCollectionViewCellFromCellsMapTable:(id)a3;
+- (void)_performFolderTypeUpdatesOnRecording:(id)recording;
+- (void)_removeCollectionViewCellFromCellsMapTable:(id)table;
 - (void)_restyleAllExtantCells;
-- (void)_scrollDownToItemAtIndexPathIfNeeded:(id)a3;
-- (void)_scrollUpToItemAtIndexPathIfNeeded:(id)a3;
-- (void)_setEditing:(BOOL)a3 animated:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)_setSearchString:(id)a3;
+- (void)_scrollDownToItemAtIndexPathIfNeeded:(id)needed;
+- (void)_scrollUpToItemAtIndexPathIfNeeded:(id)needed;
+- (void)_setEditing:(BOOL)editing animated:(BOOL)animated withCompletionHandler:(id)handler;
+- (void)_setSearchString:(id)string;
 - (void)_setupCollectionView;
 - (void)_setupSearchController;
 - (void)_styleView;
 - (void)_toggleEdit;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)_updateCollectionViewContent:(BOOL)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)_updateCollectionViewContent:(BOOL)content;
 - (void)_updateEditButton;
-- (void)_updateEditButtonStateForRecordingsCount:(unint64_t)a3;
+- (void)_updateEditButtonStateForRecordingsCount:(unint64_t)count;
 - (void)_updateScopeBarTitles;
 - (void)_updateSearchBarPlaceholder;
-- (void)_updateSearchString:(id)a3;
+- (void)_updateSearchString:(id)string;
 - (void)_updateUUIDOfSelectedItem;
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4 folder:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator folder:(id)folder;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)contentChangesComplete;
 - (void)contentSizeChanged;
-- (void)deleteFolder:(id)a3 controller:(id)a4;
-- (void)deleteItemAtIndexPath:(id)a3 withUUID:(id)a4;
+- (void)deleteFolder:(id)folder controller:(id)controller;
+- (void)deleteItemAtIndexPath:(id)path withUUID:(id)d;
 - (void)deleteSelectedItems;
 - (void)deselectSelectedItem;
-- (void)didDismissSearchController:(id)a3;
-- (void)didEndEditingTitle:(id)a3;
-- (void)didPresentSearchController:(id)a3;
-- (void)didProcessUpdatesWithRemainingItemCount:(unint64_t)a3;
-- (void)didSelectCellWithUUID:(id)a3;
+- (void)didDismissSearchController:(id)controller;
+- (void)didEndEditingTitle:(id)title;
+- (void)didPresentSearchController:(id)controller;
+- (void)didProcessUpdatesWithRemainingItemCount:(unint64_t)count;
+- (void)didSelectCellWithUUID:(id)d;
 - (void)editSelectedItemTitle;
-- (void)editingIsInFlight:(BOOL)a3 progress:(float)a4 forUUID:(id)a5;
+- (void)editingIsInFlight:(BOOL)flight progress:(float)progress forUUID:(id)d;
 - (void)endEditing;
 - (void)finishLaunchTests;
-- (void)handleDeleteForUUID:(id)a3;
-- (void)moveFolder:(id)a3 toDestinationIndexPath:(id)a4;
-- (void)performAction:(int64_t)a3 atPosition:(double)a4 forCellWithUUID:(id)a5 source:(id)a6;
-- (void)performDropWithSession:(id)a3 folder:(id)a4;
-- (void)performRenameWithNewTitle:(id)a3 forCellWithUUID:(id)a4;
-- (void)prepareForAdditionOfNewRecordingWithUUID:(id)a3;
-- (void)presentViewController:(id)a3 sourceController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)handleDeleteForUUID:(id)d;
+- (void)moveFolder:(id)folder toDestinationIndexPath:(id)path;
+- (void)performAction:(int64_t)action atPosition:(double)position forCellWithUUID:(id)d source:(id)source;
+- (void)performDropWithSession:(id)session folder:(id)folder;
+- (void)performRenameWithNewTitle:(id)title forCellWithUUID:(id)d;
+- (void)prepareForAdditionOfNewRecordingWithUUID:(id)d;
+- (void)presentViewController:(id)controller sourceController:(id)sourceController animated:(BOOL)animated completion:(id)completion;
 - (void)registerAppIntentInteractions;
-- (void)reloadItemAtIndexPath:(id)a3 usingDisplayModel:(id)a4;
-- (void)renameFolder:(id)a3 toName:(id)a4;
-- (void)scrollToRevealPartiallyObscuredItemAtIndexPathIfNeeded:(id)a3;
+- (void)reloadItemAtIndexPath:(id)path usingDisplayModel:(id)model;
+- (void)renameFolder:(id)folder toName:(id)name;
+- (void)scrollToRevealPartiallyObscuredItemAtIndexPathIfNeeded:(id)needed;
 - (void)scrollToTop;
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4;
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scroll:(BOOL)a5;
-- (void)selectItemWithUUID:(id)a3 animated:(BOOL)a4;
-- (void)setCurrentTime:(double)a3 forItemWithUUID:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setRecordingsDataCoordinator:(id)a3;
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change;
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scroll:(BOOL)scroll;
+- (void)selectItemWithUUID:(id)d animated:(BOOL)animated;
+- (void)setCurrentTime:(double)time forItemWithUUID:(id)d;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setRecordingsDataCoordinator:(id)coordinator;
 - (void)setupAppIntentsDataSource;
-- (void)showIdleForItemWithUUID:(id)a3;
-- (void)showNewFolderUIFromController:(id)a3;
-- (void)showPlayingForItemWithUUID:(id)a3;
-- (void)showRenamingControllerWithFolderName:(id)a3 controller:(id)a4;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)showIdleForItemWithUUID:(id)d;
+- (void)showNewFolderUIFromController:(id)controller;
+- (void)showPlayingForItemWithUUID:(id)d;
+- (void)showRenamingControllerWithFolderName:(id)name controller:(id)controller;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)updateEditButtonItemTitle;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)updateToolbarAndFooterView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)wasDeselectedForCellWithUUID:(id)a3;
-- (void)willDismissSearchController:(id)a3;
-- (void)willSelectItemWithUUID:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)wasDeselectedForCellWithUUID:(id)d;
+- (void)willDismissSearchController:(id)controller;
+- (void)willSelectItemWithUUID:(id)d;
 @end
 
 @implementation RCRecordingsCollectionViewController
@@ -172,15 +172,15 @@
   [(RCRecordingsCollectionViewController *)self _setupSearchController];
   [(RCRecordingsCollectionViewController *)self setupAppIntentsDataSource];
   [(RCRecordingsCollectionViewController *)self _updateCollectionViewContent:0];
-  v3 = [(RCRecordingsCollectionViewController *)self navigationItem];
+  navigationItem = [(RCRecordingsCollectionViewController *)self navigationItem];
   v4 = [[UIBarButtonItem alloc] initWithImage:0 style:0 target:self action:"_toggleEdit"];
   [(RCRecordingsCollectionViewController *)self setEditButtonItem:v4];
 
-  v5 = [(RCRecordingsCollectionViewController *)self editButtonItem];
-  [v3 setRightBarButtonItem:v5];
+  editButtonItem = [(RCRecordingsCollectionViewController *)self editButtonItem];
+  [navigationItem setRightBarButtonItem:editButtonItem];
 
   [(RCRecordingsCollectionViewController *)self updateEditButtonItemTitle];
-  [v3 setLargeTitleDisplayMode:1];
+  [navigationItem setLargeTitleDisplayMode:1];
   [(RCRecordingsCollectionViewController *)self registerAppIntentInteractions];
   [(RCRecordingsCollectionViewController *)self _styleView];
   v6 = +[NSNotificationCenter defaultCenter];
@@ -203,44 +203,44 @@
 
 - (void)_setupCollectionView
 {
-  v3 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v3 setAccessibilityIdentifier:@"RecordingsList"];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView setAccessibilityIdentifier:@"RecordingsList"];
 
-  v4 = [(RCRecordingsCollectionViewController *)self _createDiffableDataSource];
+  _createDiffableDataSource = [(RCRecordingsCollectionViewController *)self _createDiffableDataSource];
   diffableDataSource = self->_diffableDataSource;
-  self->_diffableDataSource = v4;
+  self->_diffableDataSource = _createDiffableDataSource;
 
   v6 = self->_diffableDataSource;
-  v7 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v7 setDataSource:v6];
+  collectionView2 = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView2 setDataSource:v6];
 
-  v8 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"NormalRecordingCellReuseIdentifier"];
+  collectionView3 = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"NormalRecordingCellReuseIdentifier"];
 
-  v9 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"RecentlyDeletedRecordingCellReuseIdentifier"];
+  collectionView4 = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"RecentlyDeletedRecordingCellReuseIdentifier"];
 
-  v10 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v10 setAllowsMultipleSelectionDuringEditing:1];
+  collectionView5 = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView5 setAllowsMultipleSelectionDuringEditing:1];
 
-  v11 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v11 setSelectionFollowsFocus:1];
+  collectionView6 = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView6 setSelectionFollowsFocus:1];
 
-  v12 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v12 setDropDelegate:self];
+  collectionView7 = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView7 setDropDelegate:self];
 }
 
 - (id)_createDiffableDataSource
 {
   objc_initWeak(&location, self);
   v3 = [UICollectionViewDiffableDataSource alloc];
-  v4 = [(RCRecordingsCollectionViewController *)self collectionView];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001F000;
   v7[3] = &unk_10028B588;
   objc_copyWeak(&v8, &location);
-  v5 = [v3 initWithCollectionView:v4 cellProvider:v7];
+  v5 = [v3 initWithCollectionView:collectionView cellProvider:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -254,15 +254,15 @@
   {
     if (([(RCRecordingsCollectionViewController *)self isEditing]& 1) != 0)
     {
-      v4 = [(RCRecordingsCollectionViewController *)self collectionView];
-      v5 = [v4 indexPathsForSelectedItems];
-      v6 = [v5 count];
+      collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+      indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+      v6 = [indexPathsForSelectedItems count];
     }
 
     else
     {
-      v4 = [(RCRecordingsCollectionViewController *)self dataArray];
-      v6 = [v4 count];
+      collectionView = [(RCRecordingsCollectionViewController *)self dataArray];
+      v6 = [collectionView count];
     }
 
     [(RCRecordingsCollectionViewController *)self _updateEditButtonStateForRecordingsCount:v6];
@@ -271,25 +271,25 @@
 
 - (void)_setupSearchController
 {
-  v7 = [(RCRecordingsCollectionViewController *)self searchController];
-  if (!v7)
+  searchController = [(RCRecordingsCollectionViewController *)self searchController];
+  if (!searchController)
   {
-    v7 = [[UISearchController alloc] initWithSearchResultsController:0];
-    [(RCRecordingsCollectionViewController *)self setSearchController:v7];
-    [v7 setDelegate:self];
-    [v7 setSearchResultsUpdater:self];
-    v3 = [v7 searchBar];
-    [v3 setDelegate:self];
+    searchController = [[UISearchController alloc] initWithSearchResultsController:0];
+    [(RCRecordingsCollectionViewController *)self setSearchController:searchController];
+    [searchController setDelegate:self];
+    [searchController setSearchResultsUpdater:self];
+    searchBar = [searchController searchBar];
+    [searchBar setDelegate:self];
 
-    v4 = [v7 searchBar];
-    [v4 setClipsToBounds:1];
+    searchBar2 = [searchController searchBar];
+    [searchBar2 setClipsToBounds:1];
 
-    v5 = [v7 searchBar];
-    [v5 setUserInteractionEnabled:1];
+    searchBar3 = [searchController searchBar];
+    [searchBar3 setUserInteractionEnabled:1];
 
-    [v7 setObscuresBackgroundDuringPresentation:0];
-    v6 = [v7 searchBar];
-    [v6 setLookToDictateEnabled:1];
+    [searchController setObscuresBackgroundDuringPresentation:0];
+    searchBar4 = [searchController searchBar];
+    [searchBar4 setLookToDictateEnabled:1];
   }
 
   [(RCRecordingsCollectionViewController *)self _updateSearchBarPlaceholder];
@@ -298,16 +298,16 @@
 
 - (void)_updateSearchBarPlaceholder
 {
-  v3 = [(RCRecordingsCollectionViewController *)self searchController];
+  searchController = [(RCRecordingsCollectionViewController *)self searchController];
 
-  if (v3)
+  if (searchController)
   {
     v4 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
-    v5 = [v4 deviceIsSupported];
+    deviceIsSupported = [v4 deviceIsSupported];
 
     v6 = +[NSBundle mainBundle];
     v11 = v6;
-    if (v5)
+    if (deviceIsSupported)
     {
       v7 = @"SEARCH_BAR_PLACEHOLDER_TRANSCRIPTION_SUPPORTED";
     }
@@ -318,9 +318,9 @@
     }
 
     v8 = [v6 localizedStringForKey:v7 value:&stru_100295BB8 table:0];
-    v9 = [(RCRecordingsCollectionViewController *)self searchController];
-    v10 = [v9 searchBar];
-    [v10 setPlaceholder:v8];
+    searchController2 = [(RCRecordingsCollectionViewController *)self searchController];
+    searchBar = [searchController2 searchBar];
+    [searchBar setPlaceholder:v8];
   }
 }
 
@@ -335,24 +335,24 @@
       v10[0] = v3;
       v10[1] = v4;
       v5 = [NSArray arrayWithObjects:v10 count:2];
-      v6 = [(RCRecordingsCollectionViewController *)self searchController];
-      v7 = [v6 searchBar];
-      [v7 setScopeButtonTitles:v5];
+      searchController = [(RCRecordingsCollectionViewController *)self searchController];
+      searchBar = [searchController searchBar];
+      [searchBar setScopeButtonTitles:v5];
 
-      v8 = [(RCRecordingsCollectionViewController *)self searchController];
-      v9 = [v8 searchBar];
-      [v9 setSelectedScopeButtonIndex:1];
+      searchController2 = [(RCRecordingsCollectionViewController *)self searchController];
+      searchBar2 = [searchController2 searchBar];
+      [searchBar2 setSelectedScopeButtonIndex:1];
     }
   }
 }
 
 - (void)setupAppIntentsDataSource
 {
-  v4 = self;
-  v2 = [(RCRecordingsCollectionViewController *)v4 collectionView];
-  if (v2)
+  selfCopy = self;
+  collectionView = [(RCRecordingsCollectionViewController *)selfCopy collectionView];
+  if (collectionView)
   {
-    v3 = v2;
+    v3 = collectionView;
     sub_10001AE38();
     swift_unknownObjectRetain();
     UICollectionView.appIntentsDataSource.setter();
@@ -366,7 +366,7 @@
 
 - (void)registerAppIntentInteractions
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001AF10();
 }
 
@@ -374,49 +374,49 @@
 {
   v16 = +[RCRecorderStyleProvider sharedStyleProvider];
   [(RCRecordingsCollectionViewController *)self _restyleAllExtantCells];
-  v3 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-  v4 = [v3 objectEnumerator];
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  objectEnumerator = [cellsMapTable objectEnumerator];
 
-  v5 = [v4 nextObject];
-  if (v5)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     do
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [v7 UUID];
-        v9 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-        v10 = [v8 isEqualToString:v9];
+        uUID = [v7 UUID];
+        uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+        v10 = [uUID isEqualToString:uuidOfSelectedItem];
 
         if (v10)
         {
-          v11 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-          v12 = [v11 isPlayingForUUID:v8];
+          libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+          v12 = [libraryActionHandler isPlayingForUUID:uUID];
 
           if ((v12 & 1) == 0)
           {
-            v13 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-            [v13 currentTime];
+            libraryActionHandler2 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+            [libraryActionHandler2 currentTime];
             [v7 setCurrentTime:?];
           }
         }
       }
 
-      v14 = [v4 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v6 = v14;
+      v6 = nextObject2;
     }
 
-    while (v14);
+    while (nextObject2);
   }
 
   if ([v16 pinsSearchBarInLibrary])
   {
-    v15 = [(RCRecordingsCollectionViewController *)self navigationItem];
-    [v15 setHidesSearchBarWhenScrolling:0];
+    navigationItem = [(RCRecordingsCollectionViewController *)self navigationItem];
+    [navigationItem setHidesSearchBarWhenScrolling:0];
   }
 }
 
@@ -426,8 +426,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(RCRecordingsCollectionViewController *)self cellsHashTable];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  cellsHashTable = [(RCRecordingsCollectionViewController *)self cellsHashTable];
+  v3 = [cellsHashTable countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -438,7 +438,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(cellsHashTable);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -448,7 +448,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [cellsHashTable countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -489,28 +489,28 @@
 {
   v7.receiver = self;
   v7.super_class = RCRecordingsCollectionViewController;
-  v3 = [(RCRecordingsCollectionViewController *)&v7 contentUnavailableConfigurationState];
-  v4 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v5 = [v4 searchString];
-  [v3 setSearchText:v5];
+  contentUnavailableConfigurationState = [(RCRecordingsCollectionViewController *)&v7 contentUnavailableConfigurationState];
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  searchString = [recordingsDataCoordinator searchString];
+  [contentUnavailableConfigurationState setSearchText:searchString];
 
-  return v3;
+  return contentUnavailableConfigurationState;
 }
 
 - (int64_t)_expectedNumberOfItems
 {
-  v2 = [(RCRecordingsCollectionViewController *)self dataArray];
-  v3 = [v2 count];
+  dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+  v3 = [dataArray count];
 
   return v3;
 }
 
 - (id)dataArray
 {
-  v2 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v3 = [v2 recordingDataArray];
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  recordingDataArray = [recordingsDataCoordinator recordingDataArray];
 
-  return v3;
+  return recordingDataArray;
 }
 
 - (RCLibraryActionHandler)libraryActionHandler
@@ -523,40 +523,40 @@
 - (void)finishLaunchTests
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isRunningTest];
+  isRunningTest = [v2 isRunningTest];
 
-  if (v3)
+  if (isRunningTest)
   {
     v5 = +[UIApplication sharedApplication];
-    v4 = [v5 delegate];
-    [v4 ppt_didShowVoiceMemosList];
+    delegate = [v5 delegate];
+    [delegate ppt_didShowVoiceMemosList];
   }
 }
 
-- (void)setRecordingsDataCoordinator:(id)a3
+- (void)setRecordingsDataCoordinator:(id)coordinator
 {
-  objc_storeStrong(&self->_recordingsDataCoordinator, a3);
-  v5 = a3;
-  [v5 setDelegate:self];
+  objc_storeStrong(&self->_recordingsDataCoordinator, coordinator);
+  coordinatorCopy = coordinator;
+  [coordinatorCopy setDelegate:self];
 }
 
 - (RCCloudRecording)selectedRecording
 {
-  v3 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathForSelectedItem];
-  v5 = v4;
-  if (v4)
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  indexPathForSelectedItem = [collectionView indexPathForSelectedItem];
+  v5 = indexPathForSelectedItem;
+  if (indexPathForSelectedItem)
   {
-    v6 = [v4 item];
-    v7 = [(RCRecordingsCollectionViewController *)self dataArray];
-    if (v6 >= [v7 count])
+    item = [indexPathForSelectedItem item];
+    dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+    if (item >= [dataArray count])
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      v8 = [dataArray objectAtIndexedSubscript:item];
     }
   }
 
@@ -570,31 +570,31 @@
 
 - (id)uuidOfSelectedRecording
 {
-  v2 = [(RCRecordingsCollectionViewController *)self selectedRecording];
-  v3 = [v2 uuid];
+  selectedRecording = [(RCRecordingsCollectionViewController *)self selectedRecording];
+  uuid = [selectedRecording uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (BOOL)isSearching
 {
-  v2 = [(RCRecordingsCollectionViewController *)self searchController];
-  v3 = [v2 isActive];
+  searchController = [(RCRecordingsCollectionViewController *)self searchController];
+  isActive = [searchController isActive];
 
-  return v3;
+  return isActive;
 }
 
-- (RCRecordingsCollectionViewController)initWithBuiltInFolderType:(int64_t)a3 folderUUID:(id)a4
+- (RCRecordingsCollectionViewController)initWithBuiltInFolderType:(int64_t)type folderUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCRecordingsCollectionViewController *)self _createCollectionViewLayout];
-  v8 = [(RCRecordingsCollectionViewController *)self initWithCollectionViewLayout:v7];
+  dCopy = d;
+  _createCollectionViewLayout = [(RCRecordingsCollectionViewController *)self _createCollectionViewLayout];
+  v8 = [(RCRecordingsCollectionViewController *)self initWithCollectionViewLayout:_createCollectionViewLayout];
 
   if (v8)
   {
-    [(RCRecordingsCollectionViewController *)v8 setFolderType:a3];
-    [(RCRecordingsCollectionViewController *)v8 setFolderUUID:v6];
-    v9 = [[RCRecordingsCollectionViewControllerDataCoordinator alloc] initWithFolderType:a3 delegate:v8];
+    [(RCRecordingsCollectionViewController *)v8 setFolderType:type];
+    [(RCRecordingsCollectionViewController *)v8 setFolderUUID:dCopy];
+    v9 = [[RCRecordingsCollectionViewControllerDataCoordinator alloc] initWithFolderType:type delegate:v8];
     recordingsDataCoordinator = v8->_recordingsDataCoordinator;
     v8->_recordingsDataCoordinator = v9;
   }
@@ -602,19 +602,19 @@
   return v8;
 }
 
-- (RCRecordingsCollectionViewController)initWithUserFolderNamed:(id)a3 folderUUID:(id)a4
+- (RCRecordingsCollectionViewController)initWithUserFolderNamed:(id)named folderUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RCRecordingsCollectionViewController *)self _createCollectionViewLayout];
-  v9 = [(RCRecordingsCollectionViewController *)self initWithCollectionViewLayout:v8];
+  namedCopy = named;
+  dCopy = d;
+  _createCollectionViewLayout = [(RCRecordingsCollectionViewController *)self _createCollectionViewLayout];
+  v9 = [(RCRecordingsCollectionViewController *)self initWithCollectionViewLayout:_createCollectionViewLayout];
 
   if (v9)
   {
     [(RCRecordingsCollectionViewController *)v9 setFolderType:4];
-    [(RCRecordingsCollectionViewController *)v9 setUserFolderName:v6];
-    [(RCRecordingsCollectionViewController *)v9 setFolderUUID:v7];
-    v10 = [[RCRecordingsCollectionViewControllerDataCoordinator alloc] initWithUserFolderNamed:v6 delegate:v9];
+    [(RCRecordingsCollectionViewController *)v9 setUserFolderName:namedCopy];
+    [(RCRecordingsCollectionViewController *)v9 setFolderUUID:dCopy];
+    v10 = [[RCRecordingsCollectionViewControllerDataCoordinator alloc] initWithUserFolderNamed:namedCopy delegate:v9];
     recordingsDataCoordinator = v9->_recordingsDataCoordinator;
     v9->_recordingsDataCoordinator = v10;
   }
@@ -622,11 +622,11 @@
   return v9;
 }
 
-- (RCRecordingsCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (RCRecordingsCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   v6.receiver = self;
   v6.super_class = RCRecordingsCollectionViewController;
-  v3 = [(RCRecordingsCollectionViewController *)&v6 initWithCollectionViewLayout:a3];
+  v3 = [(RCRecordingsCollectionViewController *)&v6 initWithCollectionViewLayout:layout];
   v4 = v3;
   if (v3)
   {
@@ -638,45 +638,45 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = RCRecordingsCollectionViewController;
-  [(RCRecordingsCollectionViewController *)&v5 viewWillAppear:a3];
+  [(RCRecordingsCollectionViewController *)&v5 viewWillAppear:appear];
   [(RCRecordingsCollectionViewController *)self _updateEditButton];
   [(RCRecordingsCollectionViewController *)self _classSpecificViewWillAppear];
-  v4 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v4 setDragDelegate:self];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView setDragDelegate:self];
 }
 
-- (void)_updateCollectionViewContent:(BOOL)a3
+- (void)_updateCollectionViewContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v5 = objc_opt_new();
-  v6 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v7 = [v6 recordingDataArray];
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  recordingDataArray = [recordingsDataCoordinator recordingDataArray];
 
   [v5 appendSectionsWithIdentifiers:&off_10029ABD8];
-  [v5 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&off_10029AA78];
-  v8 = [(RCRecordingsCollectionViewController *)self diffableDataSource];
-  v9 = [v8 snapshot];
-  v10 = [v9 isEqual:v5];
+  [v5 appendItemsWithIdentifiers:recordingDataArray intoSectionWithIdentifier:&off_10029AA78];
+  diffableDataSource = [(RCRecordingsCollectionViewController *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
+  v10 = [snapshot isEqual:v5];
 
   if ((v10 & 1) == 0)
   {
-    if (v3)
+    if (contentCopy)
     {
-      v11 = [(RCRecordingsCollectionViewController *)self diffableDataSource];
-      v12 = [v11 snapshot];
-      if ([v12 numberOfItems])
+      diffableDataSource2 = [(RCRecordingsCollectionViewController *)self diffableDataSource];
+      snapshot2 = [diffableDataSource2 snapshot];
+      if ([snapshot2 numberOfItems])
       {
       }
 
       else
       {
-        v14 = [v5 numberOfItems];
+        numberOfItems = [v5 numberOfItems];
 
-        if (v14 >= 1)
+        if (numberOfItems >= 1)
         {
           v17[0] = _NSConcreteStackBlock;
           v17[1] = 3221225472;
@@ -684,31 +684,31 @@
           v17[3] = &unk_10028B5B0;
           v17[4] = self;
           v18 = v5;
-          v19 = v3;
+          v19 = contentCopy;
           [(RCRecordingsCollectionViewController *)self _animateContentUnavailableUpdateWithCompletion:v17];
-          v13 = v18;
+          diffableDataSource3 = v18;
           goto LABEL_6;
         }
       }
     }
 
-    v13 = [(RCRecordingsCollectionViewController *)self diffableDataSource];
+    diffableDataSource3 = [(RCRecordingsCollectionViewController *)self diffableDataSource];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100072260;
     v15[3] = &unk_10028A988;
-    v16 = v3;
+    v16 = contentCopy;
     v15[4] = self;
-    [v13 applySnapshot:v5 animatingDifferences:v3 completion:v15];
+    [diffableDataSource3 applySnapshot:v5 animatingDifferences:contentCopy completion:v15];
 LABEL_6:
   }
 }
 
-- (id)_scopeBarTitleFor:(int64_t)a3
+- (id)_scopeBarTitleFor:(int64_t)for
 {
-  if (a3)
+  if (for)
   {
-    if (a3 != 1)
+    if (for != 1)
     {
       goto LABEL_6;
     }
@@ -729,11 +729,11 @@ LABEL_6:
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v18.receiver = self;
   v18.super_class = RCRecordingsCollectionViewController;
-  [(RCRecordingsCollectionViewController *)&v18 viewDidAppear:a3];
+  [(RCRecordingsCollectionViewController *)&v18 viewDidAppear:appear];
   if (([(RCRecordingsCollectionViewController *)self isFirstResponder]& 1) == 0)
   {
     v4 = +[UIResponder currentFirstResponder];
@@ -744,28 +744,28 @@ LABEL_6:
     }
   }
 
-  v5 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathForSelectedItem];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  indexPathForSelectedItem = [collectionView indexPathForSelectedItem];
 
-  v7 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v8 = v7;
-  if (v6)
+  collectionView2 = [(RCRecordingsCollectionViewController *)self collectionView];
+  v8 = collectionView2;
+  if (indexPathForSelectedItem)
   {
-    [v7 selectItemAtIndexPath:v6 animated:0 scrollPosition:0];
+    [collectionView2 selectItemAtIndexPath:indexPathForSelectedItem animated:0 scrollPosition:0];
   }
 
   if (([(RCRecordingsCollectionViewController *)self isEditing]& 1) == 0)
   {
-    v9 = [v8 indexPathForSelectedItem];
-    if (v9)
+    indexPathForSelectedItem2 = [v8 indexPathForSelectedItem];
+    if (indexPathForSelectedItem2)
     {
-      v10 = [v8 cellForItemAtIndexPath:v9];
+      v10 = [v8 cellForItemAtIndexPath:indexPathForSelectedItem2];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v11 = v10;
-        v12 = [v11 UUID];
-        v13 = [RCRecordingCellDisplayModel recordingDisplayModelForUUID:v12];
+        uUID = [v11 UUID];
+        v13 = [RCRecordingCellDisplayModel recordingDisplayModelForUUID:uUID];
 
         if (v13)
         {
@@ -775,29 +775,29 @@ LABEL_6:
     }
   }
 
-  v14 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  v15 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-  [v14 didSelectForUUID:v15 resetPosition:0 force:0];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+  [libraryActionHandler didSelectForUUID:uuidOfSelectedItem resetPosition:0 force:0];
 
   [(RCRecordingsCollectionViewController *)self finishLaunchTests];
-  v16 = [(RCRecordingsCollectionViewController *)self viewDidAppearCompletionBlock];
+  viewDidAppearCompletionBlock = [(RCRecordingsCollectionViewController *)self viewDidAppearCompletionBlock];
 
-  if (v16)
+  if (viewDidAppearCompletionBlock)
   {
-    v17 = [(RCRecordingsCollectionViewController *)self viewDidAppearCompletionBlock];
-    v17[2]();
+    viewDidAppearCompletionBlock2 = [(RCRecordingsCollectionViewController *)self viewDidAppearCompletionBlock];
+    viewDidAppearCompletionBlock2[2]();
 
     [(RCRecordingsCollectionViewController *)self setViewDidAppearCompletionBlock:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = RCRecordingsCollectionViewController;
-  [(RCRecordingsCollectionViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(RCRecordingsCollectionViewController *)self searchController];
-  [v4 setActive:0];
+  [(RCRecordingsCollectionViewController *)&v5 viewWillDisappear:disappear];
+  searchController = [(RCRecordingsCollectionViewController *)self searchController];
+  [searchController setActive:0];
 
   [(RCRecordingsCollectionViewController *)self _updateSearchString:&stru_100295BB8];
   if ([(RCRecordingsCollectionViewController *)self isFirstResponder])
@@ -806,14 +806,14 @@ LABEL_6:
   }
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(RCRecordingsCollectionViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
-  v8 = [v5 userInterfaceStyle];
+  collectionCopy = collection;
+  traitCollection = [(RCRecordingsCollectionViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-  if (v7 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(RCRecordingsCollectionViewController *)self restyle];
@@ -822,23 +822,23 @@ LABEL_6:
 
 - (void)contentSizeChanged
 {
-  v3 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v5 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v5 reloadData];
+  collectionView2 = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView2 reloadData];
 
   [(RCRecordingsCollectionViewController *)self restyle];
-  v6 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v7 = [v6 isEditing];
+  collectionView3 = [(RCRecordingsCollectionViewController *)self collectionView];
+  isEditing = [collectionView3 isEditing];
 
-  if (v7)
+  if (isEditing)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v4;
+    v8 = indexPathsForSelectedItems;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -855,8 +855,8 @@ LABEL_6:
           }
 
           v13 = *(*(&v17 + 1) + 8 * v12);
-          v14 = [(RCRecordingsCollectionViewController *)self collectionView];
-          [v14 selectItemAtIndexPath:v13 animated:0 scrollPosition:0];
+          collectionView4 = [(RCRecordingsCollectionViewController *)self collectionView];
+          [collectionView4 selectItemAtIndexPath:v13 animated:0 scrollPosition:0];
 
           v12 = v12 + 1;
         }
@@ -871,9 +871,9 @@ LABEL_6:
 
   else
   {
-    v15 = [(RCRecordingsCollectionViewController *)self collectionView];
-    v16 = [v4 firstObject];
-    [v15 selectItemAtIndexPath:v16 animated:0 scrollPosition:0];
+    collectionView5 = [(RCRecordingsCollectionViewController *)self collectionView];
+    firstObject = [indexPathsForSelectedItems firstObject];
+    [collectionView5 selectItemAtIndexPath:firstObject animated:0 scrollPosition:0];
   }
 }
 
@@ -882,9 +882,9 @@ LABEL_6:
   if (![(RCRecordingsCollectionViewController *)self isUpdatingBottomLayoutForEditing])
   {
     [(RCRecordingsCollectionViewController *)self setEditing:[(RCRecordingsCollectionViewController *)self isEditing]^ 1 animated:1];
-    v3 = [(RCRecordingsCollectionViewController *)self isEditing];
-    v4 = [(RCRecordingsCollectionViewController *)self editStateHandler];
-    [v4 updateBottomLayoutForEditing:v3 isSearching:-[RCRecordingsCollectionViewController isSearching](self delegate:{"isSearching"), self}];
+    isEditing = [(RCRecordingsCollectionViewController *)self isEditing];
+    editStateHandler = [(RCRecordingsCollectionViewController *)self editStateHandler];
+    [editStateHandler updateBottomLayoutForEditing:isEditing isSearching:-[RCRecordingsCollectionViewController isSearching](self delegate:{"isSearching"), self}];
 
     [(RCRecordingsCollectionViewController *)self _handleEditModeFooterAndNavigationItem];
   }
@@ -894,8 +894,8 @@ LABEL_6:
 {
   v5 = +[NSBundle mainBundle];
   v3 = [v5 localizedStringForKey:@"Select" value:&stru_100295BB8 table:0];
-  v4 = [(RCRecordingsCollectionViewController *)self editButtonItem];
-  [v4 setTitle:v3];
+  editButtonItem = [(RCRecordingsCollectionViewController *)self editButtonItem];
+  [editButtonItem setTitle:v3];
 }
 
 - (void)updateToolbarAndFooterView
@@ -916,20 +916,20 @@ LABEL_6:
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(RCRecordingsCollectionViewController *)self isEditing];
-  v8 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v8 libraryWillChangeEditingState:v5];
+  animatedCopy = animated;
+  editingCopy = editing;
+  isEditing = [(RCRecordingsCollectionViewController *)self isEditing];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler libraryWillChangeEditingState:editingCopy];
 
-  v9 = [(RCRecordingsCollectionViewController *)self collectionView];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
   v10 = 0;
-  if (v7 && !v5)
+  if (isEditing && !editingCopy)
   {
-    v11 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-    v10 = v11 != 0;
+    uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+    v10 = uuidOfSelectedItem != 0;
   }
 
   [(RCRecordingsCollectionViewController *)self setWillSelectRecordingAfterExitingEditMode:v10];
@@ -940,50 +940,50 @@ LABEL_6:
   v22 = &unk_10028B5D8;
   v25 = v10;
   objc_copyWeak(&v24, &location);
-  v12 = v9;
+  v12 = collectionView;
   v23 = v12;
-  [(RCRecordingsCollectionViewController *)self _setEditing:v5 animated:v4 withCompletionHandler:&v19];
-  if (v5)
+  [(RCRecordingsCollectionViewController *)self _setEditing:editingCopy animated:animatedCopy withCompletionHandler:&v19];
+  if (editingCopy)
   {
     v13 = [(RCRecordingsCollectionViewController *)self editButtonItem:v19];
     [v13 setImage:0];
 
-    v14 = +[NSBundle mainBundle];
-    v15 = [v14 localizedStringForKey:@"CANCEL" value:&stru_100295BB8 table:0];
-    v16 = [(RCRecordingsCollectionViewController *)self editButtonItem];
-    [v16 setTitle:v15];
+    dataArray = +[NSBundle mainBundle];
+    v15 = [dataArray localizedStringForKey:@"CANCEL" value:&stru_100295BB8 table:0];
+    editButtonItem = [(RCRecordingsCollectionViewController *)self editButtonItem];
+    [editButtonItem setTitle:v15];
   }
 
   else
   {
     [(RCRecordingsCollectionViewController *)self updateEditButtonItemTitle:v19];
-    v14 = [(RCRecordingsCollectionViewController *)self dataArray];
-    -[RCRecordingsCollectionViewController _updateEditButtonStateForRecordingsCount:](self, "_updateEditButtonStateForRecordingsCount:", [v14 count]);
+    dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+    -[RCRecordingsCollectionViewController _updateEditButtonStateForRecordingsCount:](self, "_updateEditButtonStateForRecordingsCount:", [dataArray count]);
   }
 
-  [v12 setSelectionFollowsFocus:v5 ^ 1];
-  if (!v5)
+  [v12 setSelectionFollowsFocus:editingCopy ^ 1];
+  if (!editingCopy)
   {
-    v17 = [(RCRecordingsCollectionViewController *)self editStateHandler];
-    [v17 updateBottomLayoutForEditing:0 isSearching:-[RCRecordingsCollectionViewController isSearching](self delegate:{"isSearching"), self}];
+    editStateHandler = [(RCRecordingsCollectionViewController *)self editStateHandler];
+    [editStateHandler updateBottomLayoutForEditing:0 isSearching:-[RCRecordingsCollectionViewController isSearching](self delegate:{"isSearching"), self}];
   }
 
-  v18 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v18 libraryDidChangeEditingState];
+  libraryActionHandler2 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler2 libraryDidChangeEditingState];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
 }
 
-- (void)_setEditing:(BOOL)a3 animated:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)_setEditing:(BOOL)editing animated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  editingCopy = editing;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = RCRecordingsCollectionViewController;
-  [(RCRecordingsCollectionViewController *)&v15 setEditing:v6 animated:v5];
-  if (v5)
+  [(RCRecordingsCollectionViewController *)&v15 setEditing:editingCopy animated:animatedCopy];
+  if (animatedCopy)
   {
     v9 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v9 collectionViewEditModeAnimationDuration];
@@ -994,70 +994,70 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = sub_100072E38;
     block[3] = &unk_10028A510;
-    v14 = v8;
+    v14 = handlerCopy;
     dispatch_after(v12, &_dispatch_main_q, block);
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
 - (void)_updateUUIDOfSelectedItem
 {
-  v5 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v3 = [v5 indexPathForSelectedItem];
-  v4 = [(RCRecordingsCollectionViewController *)self _uuidForItemAtIndexPath:v3];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  indexPathForSelectedItem = [collectionView indexPathForSelectedItem];
+  v4 = [(RCRecordingsCollectionViewController *)self _uuidForItemAtIndexPath:indexPathForSelectedItem];
   [(RCRecordingsCollectionViewController *)self setUuidOfSelectedItem:v4];
 }
 
-- (void)prepareForAdditionOfNewRecordingWithUUID:(id)a3
+- (void)prepareForAdditionOfNewRecordingWithUUID:(id)d
 {
-  [(RCRecordingsCollectionViewController *)self setUuidOfNewestRecording:a3];
-  v5 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  v4 = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
-  [v5 setUUIDToSelectAfterDismiss:v4];
+  [(RCRecordingsCollectionViewController *)self setUuidOfNewestRecording:d];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  uuidOfNewestRecording = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
+  [libraryActionHandler setUUIDToSelectAfterDismiss:uuidOfNewestRecording];
 }
 
-- (void)didProcessUpdatesWithRemainingItemCount:(unint64_t)a3
+- (void)didProcessUpdatesWithRemainingItemCount:(unint64_t)count
 {
-  v3 = a3;
-  if (!a3)
+  countCopy = count;
+  if (!count)
   {
     [(RCRecordingsCollectionViewController *)self setEditing:?];
   }
 
   if ([(RCRecordingsCollectionViewController *)self isEditing])
   {
-    v5 = [(RCRecordingsCollectionViewController *)self collectionView];
-    v6 = [v5 indexPathsForSelectedItems];
-    v3 = [v6 count];
+    collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    countCopy = [indexPathsForSelectedItems count];
   }
 
-  [(RCRecordingsCollectionViewController *)self _updateEditButtonStateForRecordingsCount:v3];
+  [(RCRecordingsCollectionViewController *)self _updateEditButtonStateForRecordingsCount:countCopy];
 }
 
-- (void)_updateEditButtonStateForRecordingsCount:(unint64_t)a3
+- (void)_updateEditButtonStateForRecordingsCount:(unint64_t)count
 {
-  v5 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v6 = [v5 isEditing];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  isEditing = [collectionView isEditing];
 
-  if (a3)
+  if (count)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6;
+    v7 = isEditing;
   }
 
-  v8 = [(RCRecordingsCollectionViewController *)self editButtonItem];
-  [v8 setEnabled:v7];
+  editButtonItem = [(RCRecordingsCollectionViewController *)self editButtonItem];
+  [editButtonItem setEnabled:v7];
 
-  v9 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v9 updateNavigationItemForCurrentState];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler updateNavigationItemForCurrentState];
 }
 
 - (void)_logWhetherVisibleCellsHaveIntegrity
@@ -1067,10 +1067,10 @@ LABEL_6:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v5 = [v4 visibleCells];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v6 = [visibleCells countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1082,7 +1082,7 @@ LABEL_6:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v25 + 1) + 8 * v9);
@@ -1090,23 +1090,23 @@ LABEL_6:
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 UUID];
-          [v3 addObject:v12];
+          uUID = [v11 UUID];
+          [v3 addObject:uUID];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v7);
   }
 
   v13 = objc_opt_new();
-  v14 = [(RCRecordingsCollectionViewController *)self dataArray];
-  if ([v14 count])
+  dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+  if ([dataArray count])
   {
     v15 = 0;
     do
@@ -1116,14 +1116,14 @@ LABEL_6:
         break;
       }
 
-      v16 = [v14 objectAtIndexedSubscript:v15];
-      v17 = [v16 uuid];
-      [v13 addObject:v17];
+      v16 = [dataArray objectAtIndexedSubscript:v15];
+      uuid = [v16 uuid];
+      [v13 addObject:uuid];
 
       ++v15;
     }
 
-    while ([v14 count] > v15);
+    while ([dataArray count] > v15);
   }
 
   if ([v3 count])
@@ -1165,92 +1165,92 @@ LABEL_23:
 
 - (void)deleteSelectedItems
 {
-  v3 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v3 performAction:15 atPosition:0 forUUID:self sourceController:0 source:0.0];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler performAction:15 atPosition:0 forUUID:self sourceController:0 source:0.0];
 
   [(RCRecordingsCollectionViewController *)self _handleEditModeFooterAndNavigationItem];
 
   [(RCRecordingsCollectionViewController *)self setEditing:0 animated:1];
 }
 
-- (void)reloadItemAtIndexPath:(id)a3 usingDisplayModel:(id)a4
+- (void)reloadItemAtIndexPath:(id)path usingDisplayModel:(id)model
 {
-  v13 = a4;
-  v5 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v5 refreshDisplayWithDisplayModel:v13];
+  modelCopy = model;
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler refreshDisplayWithDisplayModel:modelCopy];
 
-  v6 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v7 = [v6 window];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  window = [collectionView window];
 
-  if (v7)
+  if (window)
   {
-    v8 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-    v9 = [v13 UUID];
-    v10 = [v8 objectForKey:v9];
+    cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+    uUID = [modelCopy UUID];
+    v10 = [cellsMapTable objectForKey:uUID];
 
     if (v10)
     {
-      v11 = [v13 title];
-      [v10 setRecordingTitle:v11];
+      title = [modelCopy title];
+      [v10 setRecordingTitle:title];
 
-      [v13 duration];
+      [modelCopy duration];
       [v10 setRecordingDuration:?];
-      v12 = [v13 creationDate];
-      [v10 setCreationDate:v12];
+      creationDate = [modelCopy creationDate];
+      [v10 setCreationDate:creationDate];
 
-      [v10 setRepresentsDownloadingFile:{objc_msgSend(v13, "representsDownloadingFile")}];
-      [v10 setWasManuallyRenamed:{objc_msgSend(v13, "wasManuallyRenamed")}];
-      [v10 setHasTranscription:{objc_msgSend(v13, "hasTranscription")}];
-      [v10 setHasMultipleTracks:{objc_msgSend(v13, "hasMultipleTracks")}];
-      [v10 setIsSpatialRecording:{objc_msgSend(v13, "isSpatialRecording")}];
+      [v10 setRepresentsDownloadingFile:{objc_msgSend(modelCopy, "representsDownloadingFile")}];
+      [v10 setWasManuallyRenamed:{objc_msgSend(modelCopy, "wasManuallyRenamed")}];
+      [v10 setHasTranscription:{objc_msgSend(modelCopy, "hasTranscription")}];
+      [v10 setHasMultipleTracks:{objc_msgSend(modelCopy, "hasMultipleTracks")}];
+      [v10 setIsSpatialRecording:{objc_msgSend(modelCopy, "isSpatialRecording")}];
     }
   }
 }
 
-- (void)deleteItemAtIndexPath:(id)a3 withUUID:(id)a4
+- (void)deleteItemAtIndexPath:(id)path withUUID:(id)d
 {
-  v6 = a4;
-  if (a3)
+  dCopy = d;
+  if (path)
   {
-    v11 = v6;
-    v7 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-    v8 = [v11 isEqualToString:v7];
+    v11 = dCopy;
+    uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+    v8 = [v11 isEqualToString:uuidOfSelectedItem];
 
     if (v8)
     {
       [(RCRecordingsCollectionViewController *)self setUuidOfSelectedItem:0];
     }
 
-    v9 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    [v9 wasDeselectedForUUID:v11];
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    [libraryActionHandler wasDeselectedForUUID:v11];
 
-    v10 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-    [v10 removeObjectForKey:v11];
+    cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+    [cellsMapTable removeObjectForKey:v11];
 
-    v6 = v11;
+    dCopy = v11;
   }
 }
 
 - (void)contentChangesComplete
 {
   [(RCRecordingsCollectionViewController *)self _updateCollectionViewContent:[(RCRecordingsCollectionViewController *)self isSearching]^ 1];
-  v3 = [(RCRecordingsCollectionViewController *)self dataArray];
-  v4 = [v3 count];
+  dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+  v4 = [dataArray count];
 
   [(RCRecordingsCollectionViewController *)self didProcessUpdatesWithRemainingItemCount:v4];
   if (self->_didInsertItems)
   {
-    v5 = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
-    if (v5)
+    uuidOfNewestRecording = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
+    if (uuidOfNewestRecording)
     {
-      v6 = v5;
+      v6 = uuidOfNewestRecording;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v8 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-        [v8 selectNewRecordingForDismiss];
+        libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+        [libraryActionHandler selectNewRecordingForDismiss];
       }
     }
   }
@@ -1263,10 +1263,10 @@ LABEL_23:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1277,18 +1277,18 @@ LABEL_23:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [(RCRecordingsCollectionViewController *)self dataArray];
-        v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v10, "item")}];
-        v13 = [v12 uuid];
+        dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+        v12 = [dataArray objectAtIndexedSubscript:{objc_msgSend(v10, "item")}];
+        uuid = [v12 uuid];
 
-        [v3 addObject:v13];
+        [v3 addObject:uuid];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1304,8 +1304,8 @@ LABEL_23:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(RCRecordingsCollectionViewController *)self dataArray];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+  v5 = [dataArray countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1316,14 +1316,14 @@ LABEL_23:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataArray);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) uuid];
-        [v3 addObject:v9];
+        uuid = [*(*(&v11 + 1) + 8 * i) uuid];
+        [v3 addObject:uuid];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [dataArray countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1332,30 +1332,30 @@ LABEL_23:
   return v3;
 }
 
-- (id)cellForUUID:(id)a3
+- (id)cellForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  v6 = [cellsMapTable objectForKey:dCopy];
 
   return v6;
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
   if ([(RCRecordingsCollectionViewController *)self _expectedNumberOfItems]|| [(RCRecordingsCollectionViewController *)self captureIsUnderway])
   {
     goto LABEL_3;
   }
 
-  v6 = [(RCRecordingsCollectionViewController *)self isSearching];
+  isSearching = [(RCRecordingsCollectionViewController *)self isSearching];
   if ([(RCRecordingsCollectionViewController *)self isSearching])
   {
-    v7 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-    v8 = [v7 searchString];
-    v9 = [v8 length];
+    recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+    searchString = [recordingsDataCoordinator searchString];
+    v9 = [searchString length];
 
-    if (v6)
+    if (isSearching)
     {
       if (v9)
       {
@@ -1369,15 +1369,15 @@ LABEL_3:
     }
   }
 
-  else if (v6)
+  else if (isSearching)
   {
     goto LABEL_3;
   }
 
   v10 = +[RCRecorderStyleProvider sharedStyleProvider];
   v17 = +[UIContentUnavailableConfiguration emptyConfiguration];
-  v11 = [v10 recordingsContentUnavailableImage];
-  [v17 setImage:v11];
+  recordingsContentUnavailableImage = [v10 recordingsContentUnavailableImage];
+  [v17 setImage:recordingsContentUnavailableImage];
 
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"RECORDINGS_CONTENT_UNAVAILABLE_TEXT" value:&stru_100295BB8 table:0];
@@ -1391,13 +1391,13 @@ LABEL_3:
 LABEL_4:
   v16 = v4;
   [(RCRecordingsCollectionViewController *)self setContentUnavailableConfiguration:v4];
-  v5 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v5 libraryChangedEmptyState];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler libraryChangedEmptyState];
 }
 
-- (void)_animateContentUnavailableUpdateWithCompletion:(id)a3
+- (void)_animateContentUnavailableUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v5 contentUnavailableViewAnimationDuration];
   v6[0] = _NSConcreteStackBlock;
@@ -1405,36 +1405,36 @@ LABEL_4:
   v6[2] = sub_100073CDC;
   v6[3] = &unk_10028A3B8;
   v6[4] = self;
-  [UIView animateWithDuration:v6 animations:v4 completion:?];
+  [UIView animateWithDuration:v6 animations:completionCopy completion:?];
 }
 
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scroll:(BOOL)a5
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scroll:(BOOL)scroll
 {
-  v5 = a5;
-  v6 = a4;
-  v10 = a3;
-  v8 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v9 = v8;
-  if (v5)
+  scrollCopy = scroll;
+  animatedCopy = animated;
+  pathCopy = path;
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  v9 = collectionView;
+  if (scrollCopy)
   {
-    [v8 scrollToItemAtIndexPath:v10 atScrollPosition:1 animated:v6];
+    [collectionView scrollToItemAtIndexPath:pathCopy atScrollPosition:1 animated:animatedCopy];
   }
 
-  [v9 selectItemAtIndexPath:v10 animated:v6 scrollPosition:0];
+  [v9 selectItemAtIndexPath:pathCopy animated:animatedCopy scrollPosition:0];
   [(RCRecordingsCollectionViewController *)self _updateUUIDOfSelectedItem];
   [(RCRecordingsCollectionViewController *)self _notifyDelegatesThatSelectionChanged];
 }
 
 - (void)deselectSelectedItem
 {
-  v6 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v3 = [v6 indexPathForSelectedItem];
-  if (v3)
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  indexPathForSelectedItem = [collectionView indexPathForSelectedItem];
+  if (indexPathForSelectedItem)
   {
-    [v6 deselectItemAtIndexPath:v3 animated:0];
-    v4 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    v5 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-    [v4 wasDeselectedForUUID:v5];
+    [collectionView deselectItemAtIndexPath:indexPathForSelectedItem animated:0];
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+    [libraryActionHandler wasDeselectedForUUID:uuidOfSelectedItem];
 
     [(RCRecordingsCollectionViewController *)self setUuidOfSelectedItem:0];
   }
@@ -1444,34 +1444,34 @@ LABEL_4:
 {
   if ([(RCRecordingsCollectionViewController *)self _expectedNumberOfItems]>= 2)
   {
-    v4 = [(RCRecordingsCollectionViewController *)self collectionView];
+    collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
     v3 = [NSIndexPath indexPathForItem:0 inSection:0];
-    [v4 scrollToItemAtIndexPath:v3 atScrollPosition:1 animated:0];
+    [collectionView scrollToItemAtIndexPath:v3 atScrollPosition:1 animated:0];
   }
 }
 
-- (BOOL)presentsRecordingWithUUID:(id)a3
+- (BOOL)presentsRecordingWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v6 = [v5 indexOfUUID:v4];
+  dCopy = d;
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  v6 = [recordingsDataCoordinator indexOfUUID:dCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v8 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v7 = v6 < [v8 numberOfItemsInSection:0];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  v7 = v6 < [collectionView numberOfItemsInSection:0];
 
   return v7;
 }
 
-- (void)willSelectItemWithUUID:(id)a3
+- (void)willSelectItemWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v6 = [v5 indexOfUUID:v4];
+  dCopy = d;
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  v6 = [recordingsDataCoordinator indexOfUUID:dCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1480,21 +1480,21 @@ LABEL_4:
   }
 }
 
-- (void)selectItemWithUUID:(id)a3 animated:(BOOL)a4
+- (void)selectItemWithUUID:(id)d animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v8 = [v7 indexOfUUID:v6];
+  animatedCopy = animated;
+  dCopy = d;
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  v8 = [recordingsDataCoordinator indexOfUUID:dCopy];
 
-  LODWORD(v7) = [(RCRecordingsCollectionViewController *)self presentsRecordingWithUUID:v6];
-  if (v7)
+  LODWORD(recordingsDataCoordinator) = [(RCRecordingsCollectionViewController *)self presentsRecordingWithUUID:dCopy];
+  if (recordingsDataCoordinator)
   {
     v12 = [NSIndexPath indexPathForItem:v8 inSection:0];
-    v9 = [(RCRecordingsCollectionViewController *)self collectionView];
-    v10 = [v9 cellForItemAtIndexPath:v12];
+    collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+    v10 = [collectionView cellForItemAtIndexPath:v12];
 
-    [(RCRecordingsCollectionViewController *)self selectItemAtIndexPath:v12 animated:v4 scroll:v10 == 0];
+    [(RCRecordingsCollectionViewController *)self selectItemAtIndexPath:v12 animated:animatedCopy scroll:v10 == 0];
   }
 
   else
@@ -1509,15 +1509,15 @@ LABEL_4:
 
 - (void)_handleEditModeFooterAndNavigationItem
 {
-  v2 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v2 updateNavigationItemForCurrentState];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler updateNavigationItemForCurrentState];
 }
 
-- (void)handleDeleteForUUID:(id)a3
+- (void)handleDeleteForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+  v6 = [dCopy isEqualToString:uuidOfSelectedItem];
 
   if (v6)
   {
@@ -1526,70 +1526,70 @@ LABEL_4:
   }
 }
 
-- (void)showNewFolderUIFromController:(id)a3
+- (void)showNewFolderUIFromController:(id)controller
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
-  [v5 showNewFolderUIFromController:v4];
+  controllerCopy = controller;
+  folderSelectionDelegate = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
+  [folderSelectionDelegate showNewFolderUIFromController:controllerCopy];
 }
 
-- (void)showRenamingControllerWithFolderName:(id)a3 controller:(id)a4
+- (void)showRenamingControllerWithFolderName:(id)name controller:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
-  [v8 showRenamingControllerWithFolderName:v7 controller:v6];
+  controllerCopy = controller;
+  nameCopy = name;
+  folderSelectionDelegate = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
+  [folderSelectionDelegate showRenamingControllerWithFolderName:nameCopy controller:controllerCopy];
 }
 
-- (void)moveFolder:(id)a3 toDestinationIndexPath:(id)a4
+- (void)moveFolder:(id)folder toDestinationIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
-  [v8 moveFolder:v7 toDestinationIndexPath:v6];
+  pathCopy = path;
+  folderCopy = folder;
+  folderSelectionDelegate = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
+  [folderSelectionDelegate moveFolder:folderCopy toDestinationIndexPath:pathCopy];
 }
 
-- (void)deleteFolder:(id)a3 controller:(id)a4
+- (void)deleteFolder:(id)folder controller:(id)controller
 {
-  v5 = a3;
-  v6 = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
-  [v6 deleteFolder:v5 controller:self completionBlock:0];
+  folderCopy = folder;
+  folderSelectionDelegate = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
+  [folderSelectionDelegate deleteFolder:folderCopy controller:self completionBlock:0];
 }
 
-- (void)renameFolder:(id)a3 toName:(id)a4
+- (void)renameFolder:(id)folder toName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
-  [v8 renameFolder:v7 toName:v6];
+  nameCopy = name;
+  folderCopy = folder;
+  folderSelectionDelegate = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
+  [folderSelectionDelegate renameFolder:folderCopy toName:nameCopy];
 }
 
-- (void)presentViewController:(id)a3 sourceController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentViewController:(id)controller sourceController:(id)sourceController animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
-  [v13 presentViewController:v12 sourceController:v11 animated:v6 completion:v10];
+  animatedCopy = animated;
+  completionCopy = completion;
+  sourceControllerCopy = sourceController;
+  controllerCopy = controller;
+  folderSelectionDelegate = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
+  [folderSelectionDelegate presentViewController:controllerCopy sourceController:sourceControllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (void)_handleMove
 {
   v5 = objc_opt_new();
-  v3 = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
-  [v5 setSelectionDelegate:v3];
+  folderSelectionDelegate = [(RCRecordingsCollectionViewController *)self folderSelectionDelegate];
+  [v5 setSelectionDelegate:folderSelectionDelegate];
 
-  v4 = [(RCRecordingsCollectionViewController *)self navigationController];
-  [v4 pushViewController:v5 animated:1];
+  navigationController = [(RCRecordingsCollectionViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v4 = a4;
-  v5 = [v4 localDragSession];
+  sessionCopy = session;
+  localDragSession = [sessionCopy localDragSession];
 
-  if (v5)
+  if (localDragSession)
   {
     LOBYTE(v6) = 0;
   }
@@ -1597,27 +1597,27 @@ LABEL_4:
   else
   {
     v7 = +[RCCaptureFormat supportedFileTypeIdentifiers];
-    v6 = [v4 hasItemsConformingToTypeIdentifiers:v7];
+    v6 = [sessionCopy hasItemsConformingToTypeIdentifiers:v7];
   }
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4 folder:(id)a5
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator folder:(id)folder
 {
-  v7 = a5;
-  v8 = [a4 session];
-  [(RCRecordingsCollectionViewController *)self performDropWithSession:v8 folder:v7];
+  folderCopy = folder;
+  session = [coordinator session];
+  [(RCRecordingsCollectionViewController *)self performDropWithSession:session folder:folderCopy];
 }
 
-- (void)performDropWithSession:(id)a3 folder:(id)a4
+- (void)performDropWithSession:(id)session folder:(id)folder
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a3 items];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  items = [session items];
+  v6 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1629,16 +1629,16 @@ LABEL_4:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * v9) itemProvider];
-        v11 = [v10 rc_supportedFileTypesRepresented];
-        v12 = [v11 firstObject];
+        itemProvider = [*(*(&v16 + 1) + 8 * v9) itemProvider];
+        rc_supportedFileTypesRepresented = [itemProvider rc_supportedFileTypesRepresented];
+        firstObject = [rc_supportedFileTypesRepresented firstObject];
 
-        if (v10)
+        if (itemProvider)
         {
-          v13 = v12 == 0;
+          v13 = firstObject == 0;
         }
 
         else
@@ -1653,72 +1653,72 @@ LABEL_4:
           v15[2] = sub_10007483C;
           v15[3] = &unk_10028B260;
           v15[4] = self;
-          v14 = [v10 loadFileRepresentationForTypeIdentifier:v12 completionHandler:v15];
+          v14 = [itemProvider loadFileRepresentationForTypeIdentifier:firstObject completionHandler:v15];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_performFolderTypeUpdatesOnRecording:(id)a3
+- (void)_performFolderTypeUpdatesOnRecording:(id)recording
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self folderType];
-  if (v5 == 1)
+  recordingCopy = recording;
+  folderType = [(RCRecordingsCollectionViewController *)self folderType];
+  if (folderType == 1)
   {
-    v10 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    v11 = [v4 uuid];
-    [v10 setFavorite:1 forRecordingWithUUID:v11];
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    uuid = [recordingCopy uuid];
+    [libraryActionHandler setFavorite:1 forRecordingWithUUID:uuid];
   }
 
-  else if (v5 == 4)
+  else if (folderType == 4)
   {
-    v6 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    v7 = [v4 uuid];
-    v12 = v7;
+    libraryActionHandler2 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    uuid2 = [recordingCopy uuid];
+    v12 = uuid2;
     v8 = [NSArray arrayWithObjects:&v12 count:1];
-    v9 = [(RCRecordingsCollectionViewController *)self userFolderName];
-    [v6 moveRecordingsWithUUIDs:v8 toUserFolderNamed:v9 source:self];
+    userFolderName = [(RCRecordingsCollectionViewController *)self userFolderName];
+    [libraryActionHandler2 moveRecordingsWithUUIDs:v8 toUserFolderNamed:userFolderName source:self];
   }
 }
 
-- (void)_configureCell:(id)a3 usingDisplayModel:(id)a4
+- (void)_configureCell:(id)cell usingDisplayModel:(id)model
 {
-  v19 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 UUID];
-    v8 = v19;
-    v9 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-    [v9 setObject:v8 forKey:v7];
+    uUID = [modelCopy UUID];
+    v8 = cellCopy;
+    cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+    [cellsMapTable setObject:v8 forKey:uUID];
 
     [v8 setCellDelegate:self];
-    [v8 setUUID:v7];
-    v10 = [v6 title];
-    [v8 setRecordingTitle:v10];
+    [v8 setUUID:uUID];
+    title = [modelCopy title];
+    [v8 setRecordingTitle:title];
 
-    [v6 duration];
+    [modelCopy duration];
     [v8 setRecordingDuration:?];
-    v11 = [v6 creationDate];
-    [v8 setCreationDate:v11];
+    creationDate = [modelCopy creationDate];
+    [v8 setCreationDate:creationDate];
 
-    [v8 setRepresentsDownloadingFile:{objc_msgSend(v6, "representsDownloadingFile")}];
-    [v8 setWasManuallyRenamed:{objc_msgSend(v6, "wasManuallyRenamed")}];
-    [v8 setHasTranscription:{objc_msgSend(v6, "hasTranscription")}];
-    [v8 setHasMultipleTracks:{objc_msgSend(v6, "hasMultipleTracks")}];
-    [v8 setIsRecentlyDeleted:{objc_msgSend(v6, "recentlyDeleted")}];
-    [v8 setIsSpatialRecording:{objc_msgSend(v6, "isSpatialRecording")}];
-    v12 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    v13 = [v12 isPlayingForUUID:v7];
+    [v8 setRepresentsDownloadingFile:{objc_msgSend(modelCopy, "representsDownloadingFile")}];
+    [v8 setWasManuallyRenamed:{objc_msgSend(modelCopy, "wasManuallyRenamed")}];
+    [v8 setHasTranscription:{objc_msgSend(modelCopy, "hasTranscription")}];
+    [v8 setHasMultipleTracks:{objc_msgSend(modelCopy, "hasMultipleTracks")}];
+    [v8 setIsRecentlyDeleted:{objc_msgSend(modelCopy, "recentlyDeleted")}];
+    [v8 setIsSpatialRecording:{objc_msgSend(modelCopy, "isSpatialRecording")}];
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    v13 = [libraryActionHandler isPlayingForUUID:uUID];
 
     if (v13)
     {
@@ -1728,15 +1728,15 @@ LABEL_4:
     else
     {
       [v8 setPlayControlState:0];
-      v14 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-      [v14 currentTime];
+      libraryActionHandler2 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+      [libraryActionHandler2 currentTime];
       v16 = v15;
 
       [v8 setCurrentTime:v16];
     }
 
-    v17 = [(RCRecordingsCollectionViewController *)self editingProgressItems];
-    v18 = [v17 objectForKeyedSubscript:v7];
+    editingProgressItems = [(RCRecordingsCollectionViewController *)self editingProgressItems];
+    v18 = [editingProgressItems objectForKeyedSubscript:uUID];
 
     if (v18)
     {
@@ -1752,38 +1752,38 @@ LABEL_4:
   }
 }
 
-- (void)_removeCollectionViewCellFromCellsMapTable:(id)a3
+- (void)_removeCollectionViewCellFromCellsMapTable:(id)table
 {
-  v9 = a3;
-  v4 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  tableCopy = table;
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v9;
-    v6 = [v5 UUID];
-    if (v6)
+    v5 = tableCopy;
+    uUID = [v5 UUID];
+    if (uUID)
     {
-      v7 = [v4 objectForKey:v6];
+      v7 = [cellsMapTable objectForKey:uUID];
       v8 = v7;
       if (v7 && v7 == v5)
       {
-        [v4 removeObjectForKey:v6];
+        [cellsMapTable removeObjectForKey:uUID];
       }
     }
   }
 }
 
-- (id)_favoriteSwipeAction:(BOOL)a3 forUUID:(id)a4
+- (id)_favoriteSwipeAction:(BOOL)action forUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v7 = +[RCRecorderStyleProvider sharedStyleProvider];
   v8 = +[NSBundle mainBundle];
   v9 = v8;
-  if (a3)
+  if (action)
   {
     v10 = [v8 localizedStringForKey:@"ADD_TO_FAVORITES" value:&stru_100295BB8 table:0];
 
-    v11 = [v7 notFavoriteImageForSwipeAction];
+    notFavoriteImageForSwipeAction = [v7 notFavoriteImageForSwipeAction];
     v12 = 36;
   }
 
@@ -1791,22 +1791,22 @@ LABEL_4:
   {
     v10 = [v8 localizedStringForKey:@"REMOVE_FROM_FAVORITES" value:&stru_100295BB8 table:0];
 
-    v11 = [v7 favoriteImageForSwipeAction];
+    notFavoriteImageForSwipeAction = [v7 favoriteImageForSwipeAction];
     v12 = 37;
   }
 
-  v13 = [[RCSwipeActionConfiguration alloc] initWithControlsAction:v12 recordingUUID:v6 actionTitle:v10];
+  v13 = [[RCSwipeActionConfiguration alloc] initWithControlsAction:v12 recordingUUID:dCopy actionTitle:v10];
 
-  [(RCSwipeActionConfiguration *)v13 setActionImage:v11];
+  [(RCSwipeActionConfiguration *)v13 setActionImage:notFavoriteImageForSwipeAction];
   [(RCSwipeActionConfiguration *)v13 setActionImageAxLabel:v10];
-  v14 = [(RCSwipeActionConfiguration *)v13 actionImage];
-  [v14 setAccessibilityIdentifier:@"RecordingsList/SwipeAction/Favorite"];
+  actionImage = [(RCSwipeActionConfiguration *)v13 actionImage];
+  [actionImage setAccessibilityIdentifier:@"RecordingsList/SwipeAction/Favorite"];
 
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_100075458;
   v21 = &unk_10028B628;
-  v23 = a3;
+  actionCopy = action;
   v22 = v7;
   v15 = v7;
   [(RCSwipeActionConfiguration *)v13 setCustomCompletionBlock:&v18];
@@ -1815,199 +1815,199 @@ LABEL_4:
   return v16;
 }
 
-- (id)_deleteSwipeActionForUUID:(id)a3 shouldExecuteCompletionBeforeAction:(BOOL)a4
+- (id)_deleteSwipeActionForUUID:(id)d shouldExecuteCompletionBeforeAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = a3;
+  actionCopy = action;
+  dCopy = d;
   v7 = [RCSwipeActionConfiguration alloc];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"DELETE" value:&stru_100295BB8 table:0];
-  v10 = [(RCSwipeActionConfiguration *)v7 initWithControlsAction:14 recordingUUID:v6 actionTitle:v9];
+  v10 = [(RCSwipeActionConfiguration *)v7 initWithControlsAction:14 recordingUUID:dCopy actionTitle:v9];
 
   [(RCSwipeActionConfiguration *)v10 setActionStyle:1];
   v11 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v12 = [v11 swipeTrashImage];
-  [(RCSwipeActionConfiguration *)v10 setActionImage:v12];
+  swipeTrashImage = [v11 swipeTrashImage];
+  [(RCSwipeActionConfiguration *)v10 setActionImage:swipeTrashImage];
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"AX_DELETE" value:&stru_100295BB8 table:0];
   [(RCSwipeActionConfiguration *)v10 setActionImageAxLabel:v14];
 
-  v15 = [(RCSwipeActionConfiguration *)v10 actionImage];
-  [v15 setAccessibilityIdentifier:@"RecordingsList/SwipeAction/Delete"];
+  actionImage = [(RCSwipeActionConfiguration *)v10 actionImage];
+  [actionImage setAccessibilityIdentifier:@"RecordingsList/SwipeAction/Delete"];
 
-  v16 = [(RCRecordingsCollectionViewController *)self cellForUUID:v6];
+  v16 = [(RCRecordingsCollectionViewController *)self cellForUUID:dCopy];
 
-  v17 = [v16 contentView];
-  [(RCSwipeActionConfiguration *)v10 setSourceItem:v17];
+  contentView = [v16 contentView];
+  [(RCSwipeActionConfiguration *)v10 setSourceItem:contentView];
 
-  [(RCSwipeActionConfiguration *)v10 setShouldExecuteCompletionBeforeAction:v4];
+  [(RCSwipeActionConfiguration *)v10 setShouldExecuteCompletionBeforeAction:actionCopy];
   v18 = [(RCRecordingsCollectionViewController *)self _createSwipeActionWithConfiguration:v10];
 
   return v18;
 }
 
-- (id)_eraseSwipeActionForUUID:(id)a3 shouldExecuteCompletionBeforeAction:(BOOL)a4
+- (id)_eraseSwipeActionForUUID:(id)d shouldExecuteCompletionBeforeAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = a3;
+  actionCopy = action;
+  dCopy = d;
   v7 = [RCSwipeActionConfiguration alloc];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"DELETE" value:&stru_100295BB8 table:0];
-  v10 = [(RCSwipeActionConfiguration *)v7 initWithControlsAction:16 recordingUUID:v6 actionTitle:v9];
+  v10 = [(RCSwipeActionConfiguration *)v7 initWithControlsAction:16 recordingUUID:dCopy actionTitle:v9];
 
   [(RCSwipeActionConfiguration *)v10 setActionStyle:1];
-  v11 = [(RCSwipeActionConfiguration *)v10 actionImage];
-  [v11 setAccessibilityIdentifier:@"RecordingsList/SwipeAction/Erase"];
+  actionImage = [(RCSwipeActionConfiguration *)v10 actionImage];
+  [actionImage setAccessibilityIdentifier:@"RecordingsList/SwipeAction/Erase"];
 
-  v12 = [(RCRecordingsCollectionViewController *)self cellForUUID:v6];
+  v12 = [(RCRecordingsCollectionViewController *)self cellForUUID:dCopy];
 
   [(RCSwipeActionConfiguration *)v10 setSourceItem:v12];
-  [(RCSwipeActionConfiguration *)v10 setShouldExecuteCompletionBeforeAction:v4];
+  [(RCSwipeActionConfiguration *)v10 setShouldExecuteCompletionBeforeAction:actionCopy];
   v13 = [(RCRecordingsCollectionViewController *)self _createSwipeActionWithConfiguration:v10];
 
   return v13;
 }
 
-- (id)_moveToFolderSwipeActionForUUID:(id)a3 shouldExecuteCompletionBeforeAction:(BOOL)a4
+- (id)_moveToFolderSwipeActionForUUID:(id)d shouldExecuteCompletionBeforeAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = a3;
+  actionCopy = action;
+  dCopy = d;
   v7 = [RCSwipeActionConfiguration alloc];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"MOVE_TO_FOLDER" value:&stru_100295BB8 table:0];
-  v10 = [(RCSwipeActionConfiguration *)v7 initWithControlsAction:40 recordingUUID:v6 actionTitle:v9];
+  v10 = [(RCSwipeActionConfiguration *)v7 initWithControlsAction:40 recordingUUID:dCopy actionTitle:v9];
 
   v11 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v12 = [v11 filledMoveToFolderImage];
-  [(RCSwipeActionConfiguration *)v10 setActionImage:v12];
+  filledMoveToFolderImage = [v11 filledMoveToFolderImage];
+  [(RCSwipeActionConfiguration *)v10 setActionImage:filledMoveToFolderImage];
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"AX_MOVE_TO_FOLDER" value:&stru_100295BB8 table:0];
   [(RCSwipeActionConfiguration *)v10 setActionImageAxLabel:v14];
 
-  v15 = [(RCSwipeActionConfiguration *)v10 actionImage];
-  [v15 setAccessibilityIdentifier:@"RecordingsList/SwipeAction/MoveToFolder"];
+  actionImage = [(RCSwipeActionConfiguration *)v10 actionImage];
+  [actionImage setAccessibilityIdentifier:@"RecordingsList/SwipeAction/MoveToFolder"];
 
   v16 = +[UIColor systemBlueColor];
   [(RCSwipeActionConfiguration *)v10 setActionBackgroundColor:v16];
 
-  v17 = [(RCRecordingsCollectionViewController *)self cellForUUID:v6];
+  v17 = [(RCRecordingsCollectionViewController *)self cellForUUID:dCopy];
 
-  v18 = [v17 contentView];
-  [(RCSwipeActionConfiguration *)v10 setSourceItem:v18];
+  contentView = [v17 contentView];
+  [(RCSwipeActionConfiguration *)v10 setSourceItem:contentView];
 
-  [(RCSwipeActionConfiguration *)v10 setShouldExecuteCompletionBeforeAction:v4];
+  [(RCSwipeActionConfiguration *)v10 setShouldExecuteCompletionBeforeAction:actionCopy];
   v19 = [(RCRecordingsCollectionViewController *)self _createSwipeActionWithConfiguration:v10];
 
   return v19;
 }
 
-- (id)_moreOptionsSwipeActionForUUID:(id)a3 shouldExecuteCompletionBeforeAction:(BOOL)a4
+- (id)_moreOptionsSwipeActionForUUID:(id)d shouldExecuteCompletionBeforeAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = a3;
+  actionCopy = action;
+  dCopy = d;
   v7 = [RCSwipeActionConfiguration alloc];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"MORE_ACTIONS" value:&stru_100295BB8 table:0];
-  v10 = [(RCSwipeActionConfiguration *)v7 initWithControlsAction:27 recordingUUID:v6 actionTitle:v9];
+  v10 = [(RCSwipeActionConfiguration *)v7 initWithControlsAction:27 recordingUUID:dCopy actionTitle:v9];
 
   v11 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v12 = [v11 ellipsisImage];
-  [(RCSwipeActionConfiguration *)v10 setActionImage:v12];
+  ellipsisImage = [v11 ellipsisImage];
+  [(RCSwipeActionConfiguration *)v10 setActionImage:ellipsisImage];
 
-  v13 = [(RCSwipeActionConfiguration *)v10 actionImage];
-  [v13 setAccessibilityIdentifier:@"RecordingsList/SwipeAction/MoreActions"];
+  actionImage = [(RCSwipeActionConfiguration *)v10 actionImage];
+  [actionImage setAccessibilityIdentifier:@"RecordingsList/SwipeAction/MoreActions"];
 
-  v14 = [(RCRecordingsCollectionViewController *)self cellForUUID:v6];
+  v14 = [(RCRecordingsCollectionViewController *)self cellForUUID:dCopy];
 
   [(RCSwipeActionConfiguration *)v10 setSourceItem:v14];
-  [(RCSwipeActionConfiguration *)v10 setShouldExecuteCompletionBeforeAction:v4];
+  [(RCSwipeActionConfiguration *)v10 setShouldExecuteCompletionBeforeAction:actionCopy];
   v15 = [(RCRecordingsCollectionViewController *)self _createSwipeActionWithConfiguration:v10];
 
   return v15;
 }
 
-- (id)_createSwipeActionWithConfiguration:(id)a3
+- (id)_createSwipeActionWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 actionStyle];
-  v6 = [v4 actionTitle];
+  configurationCopy = configuration;
+  actionStyle = [configurationCopy actionStyle];
+  actionTitle = [configurationCopy actionTitle];
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_100075CD0;
   v20 = &unk_10028B650;
-  v7 = v4;
+  v7 = configurationCopy;
   v21 = v7;
-  v22 = self;
-  v8 = [UIContextualAction contextualActionWithStyle:v5 title:v6 handler:&v17];
+  selfCopy = self;
+  v8 = [UIContextualAction contextualActionWithStyle:actionStyle title:actionTitle handler:&v17];
 
-  v9 = [v7 actionImage];
+  actionImage = [v7 actionImage];
 
-  if (v9)
+  if (actionImage)
   {
-    v10 = [v7 actionImage];
-    [v8 setImage:v10];
+    actionImage2 = [v7 actionImage];
+    [v8 setImage:actionImage2];
   }
 
-  v11 = [v7 actionImageAxLabel];
+  actionImageAxLabel = [v7 actionImageAxLabel];
 
-  if (v11)
+  if (actionImageAxLabel)
   {
-    v12 = [v7 actionImageAxLabel];
-    v13 = [v8 image];
-    [v13 setAccessibilityLabel:v12];
+    actionImageAxLabel2 = [v7 actionImageAxLabel];
+    image = [v8 image];
+    [image setAccessibilityLabel:actionImageAxLabel2];
   }
 
-  v14 = [v7 actionBackgroundColor];
+  actionBackgroundColor = [v7 actionBackgroundColor];
 
-  if (v14)
+  if (actionBackgroundColor)
   {
-    v15 = [v7 actionBackgroundColor];
-    [v8 setBackgroundColor:v15];
+    actionBackgroundColor2 = [v7 actionBackgroundColor];
+    [v8 setBackgroundColor:actionBackgroundColor2];
   }
 
   return v8;
 }
 
-- (BOOL)_supportsSwipeActionsForIndexPath:(id)a3 swipeActionsType:(unint64_t)a4
+- (BOOL)_supportsSwipeActionsForIndexPath:(id)path swipeActionsType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v8 = [v7 uuidAtIndexPath:v6];
+  pathCopy = path;
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  v8 = [recordingsDataCoordinator uuidAtIndexPath:pathCopy];
 
-  v9 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-  v10 = [v9 objectForKey:v8];
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  v10 = [cellsMapTable objectForKey:v8];
 
-  v11 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  v12 = [v11 isEditingInFlightForUUID:v8];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  v12 = [libraryActionHandler isEditingInFlightForUUID:v8];
 
-  LOBYTE(v11) = [v10 isEditingTitle];
+  LOBYTE(libraryActionHandler) = [v10 isEditingTitle];
   objc_opt_class();
-  LOBYTE(a4) = v12 | v11 | (a4 == 0) & objc_opt_isKindOfClass();
+  LOBYTE(type) = v12 | libraryActionHandler | (type == 0) & objc_opt_isKindOfClass();
 
-  return (a4 & 1) == 0;
+  return (type & 1) == 0;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v9 = [v8 uuidAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  v9 = [recordingsDataCoordinator uuidAtIndexPath:pathCopy];
 
-  v10 = [v6 indexPathForSelectedItem];
-  v11 = [(RCRecordingsCollectionViewController *)self _isDownloadingAtIndex:v7];
-  if ([v6 isEditing])
+  indexPathForSelectedItem = [viewCopy indexPathForSelectedItem];
+  v11 = [(RCRecordingsCollectionViewController *)self _isDownloadingAtIndex:pathCopy];
+  if ([viewCopy isEditing])
   {
-    v12 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    v13 = [v12 isEditingInFlightForUUID:v9];
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    v13 = [libraryActionHandler isEditingInFlightForUUID:v9];
 
     v14 = v13 ^ 1;
-    if (v10)
+    if (indexPathForSelectedItem)
     {
 LABEL_3:
-      v15 = [v10 compare:v7] != 0;
+      v15 = [indexPathForSelectedItem compare:pathCopy] != 0;
       goto LABEL_6;
     }
   }
@@ -2015,7 +2015,7 @@ LABEL_3:
   else
   {
     v14 = 1;
-    if (v10)
+    if (indexPathForSelectedItem)
     {
       goto LABEL_3;
     }
@@ -2026,37 +2026,37 @@ LABEL_6:
   v16 = (v11 ^ 1) & v14 & v15;
   if (v16 == 1)
   {
-    v17 = [v6 cellForItemAtIndexPath:v7];
+    v17 = [viewCopy cellForItemAtIndexPath:pathCopy];
     -[RCRecordingsCollectionViewController setIsSelectingCellForFocusUpdate:](self, "setIsSelectingCellForFocusUpdate:", [v17 isFocused]);
   }
 
   return v16;
 }
 
-- (void)scrollToRevealPartiallyObscuredItemAtIndexPathIfNeeded:(id)a3
+- (void)scrollToRevealPartiallyObscuredItemAtIndexPathIfNeeded:(id)needed
 {
-  v7 = a3;
-  v4 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v5 = [v4 indexPathsForVisibleItems];
-  v6 = [v5 containsObject:v7];
+  neededCopy = needed;
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  v6 = [indexPathsForVisibleItems containsObject:neededCopy];
 
   if (v6)
   {
-    [(RCRecordingsCollectionViewController *)self _scrollDownToItemAtIndexPathIfNeeded:v7];
-    [(RCRecordingsCollectionViewController *)self _scrollUpToItemAtIndexPathIfNeeded:v7];
+    [(RCRecordingsCollectionViewController *)self _scrollDownToItemAtIndexPathIfNeeded:neededCopy];
+    [(RCRecordingsCollectionViewController *)self _scrollUpToItemAtIndexPathIfNeeded:neededCopy];
   }
 }
 
-- (void)_scrollUpToItemAtIndexPathIfNeeded:(id)a3
+- (void)_scrollUpToItemAtIndexPathIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  neededCopy = needed;
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:neededCopy];
   [v6 frame];
   v8 = v7;
-  [v5 contentOffset];
+  [collectionView contentOffset];
   v10 = v9;
-  [v5 safeAreaInsets];
+  [collectionView safeAreaInsets];
   v12 = v11;
   v13 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v13 explicitlyScrollsToRecordingsCollectionViewItemOnSelection])
@@ -2076,28 +2076,28 @@ LABEL_6:
     v16 = 3221225472;
     v17 = sub_100076290;
     v18 = &unk_10028A650;
-    v19 = v5;
-    v20 = v4;
+    v19 = collectionView;
+    v20 = neededCopy;
     [CATransaction setCompletionBlock:&v15];
     [CATransaction commit:v15];
   }
 }
 
-- (void)_scrollDownToItemAtIndexPathIfNeeded:(id)a3
+- (void)_scrollDownToItemAtIndexPathIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  neededCopy = needed;
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:neededCopy];
   [v6 frame];
   v8 = v7;
   v10 = v9;
-  [v5 contentOffset];
+  [collectionView contentOffset];
   v12 = v11;
-  [v5 frame];
+  [collectionView frame];
   v14 = v13;
-  [v5 contentInset];
+  [collectionView contentInset];
   v16 = v15;
-  [v5 contentInset];
+  [collectionView contentInset];
   v18 = v17;
   v19 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v19 explicitlyScrollsToRecordingsCollectionViewItemOnSelection] && v8 + v10 > v12 + v14 - v16 - v18)
@@ -2107,75 +2107,75 @@ LABEL_6:
     v21 = 3221225472;
     v22 = sub_100076424;
     v23 = &unk_10028A650;
-    v24 = v5;
-    v25 = v4;
+    v24 = collectionView;
+    v25 = neededCopy;
     [CATransaction setCompletionBlock:&v20];
     [CATransaction commit:v20];
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(RCRecordingsCollectionViewController *)self _addCollectionViewCellToCellsMapTable:v6];
+    [(RCRecordingsCollectionViewController *)self _addCollectionViewCellToCellsMapTable:cellCopy];
   }
 }
 
-- (void)_addCollectionViewCellToCellsMapTable:(id)a3
+- (void)_addCollectionViewCellToCellsMapTable:(id)table
 {
-  v8 = a3;
-  v4 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  tableCopy = table;
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v8;
-    v6 = [v5 UUID];
-    if (v6)
+    v5 = tableCopy;
+    uUID = [v5 UUID];
+    if (uUID)
     {
-      v7 = [v4 objectForKey:v6];
+      v7 = [cellsMapTable objectForKey:uUID];
       if (!v7)
       {
-        [v4 setObject:v5 forKey:v6];
+        [cellsMapTable setObject:v5 forKey:uUID];
       }
     }
   }
 }
 
-- (BOOL)_isDownloadingAtIndex:(id)a3
+- (BOOL)_isDownloadingAtIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v6 = [v5 isDownloadingAtIndexPath:v4];
+  indexCopy = index;
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  v6 = [recordingsDataCoordinator isDownloadingAtIndexPath:indexCopy];
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [(RCRecordingsCollectionViewController *)self searchController];
-  if ([v7 isActive] && !-[RCRecordingsCollectionViewController isSelectingCellForFocusUpdate](self, "isSelectingCellForFocusUpdate"))
+  pathCopy = path;
+  viewCopy = view;
+  searchController = [(RCRecordingsCollectionViewController *)self searchController];
+  if ([searchController isActive] && !-[RCRecordingsCollectionViewController isSelectingCellForFocusUpdate](self, "isSelectingCellForFocusUpdate"))
   {
-    v8 = [v7 searchBar];
-    [v8 resignFirstResponder];
+    searchBar = [searchController searchBar];
+    [searchBar resignFirstResponder];
   }
 
   [(RCRecordingsCollectionViewController *)self setInDidSelect:1];
-  v9 = [v6 cellForItemAtIndexPath:v11];
+  v9 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
   [(RCRecordingsCollectionViewController *)self setInDidSelect:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([(RCRecordingsCollectionViewController *)self isEditing]& 1) == 0)
   {
-    v10 = [v9 UUID];
-    [(RCRecordingsCollectionViewController *)self setUuidOfSelectedItem:v10];
+    uUID = [v9 UUID];
+    [(RCRecordingsCollectionViewController *)self setUuidOfSelectedItem:uUID];
   }
 
-  [(RCRecordingsCollectionViewController *)self scrollToRevealPartiallyObscuredItemAtIndexPathIfNeeded:v11];
+  [(RCRecordingsCollectionViewController *)self scrollToRevealPartiallyObscuredItemAtIndexPathIfNeeded:pathCopy];
   [(RCRecordingsCollectionViewController *)self _handleEditModeFooterAndNavigationItem];
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, v9);
   [(RCRecordingsCollectionViewController *)self setIsSelectingCellForFocusUpdate:0];
@@ -2186,55 +2186,55 @@ LABEL_6:
 {
   if (([(RCRecordingsCollectionViewController *)self isEditing]& 1) == 0)
   {
-    v3 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+    uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
 
-    if (v3)
+    if (uuidOfSelectedItem)
     {
-      v4 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-      [(RCRecordingsCollectionViewController *)self didSelectCellWithUUID:v4];
+      uuidOfSelectedItem2 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+      [(RCRecordingsCollectionViewController *)self didSelectCellWithUUID:uuidOfSelectedItem2];
     }
   }
 }
 
 - (void)_pauseSelecteditem
 {
-  v4 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  v3 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-  [v4 performAction:1 atPosition:v3 forUUID:0 sourceController:0 source:0.0];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+  [libraryActionHandler performAction:1 atPosition:uuidOfSelectedItem forUUID:0 sourceController:0 source:0.0];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v5 = [(RCRecordingsCollectionViewController *)self _uuidForItemAtIndexPath:a4];
+  v5 = [(RCRecordingsCollectionViewController *)self _uuidForItemAtIndexPath:path];
   [(RCRecordingsCollectionViewController *)self wasDeselectedForCellWithUUID:v5];
   [(RCRecordingsCollectionViewController *)self _handleEditModeFooterAndNavigationItem];
 }
 
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
-  if (([(RCRecordingsCollectionViewController *)self isEditing:a3]& 1) == 0)
+  if (([(RCRecordingsCollectionViewController *)self isEditing:view]& 1) == 0)
   {
 
     [(RCRecordingsCollectionViewController *)self _toggleEdit];
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
+  y = point.y;
+  x = point.x;
+  pathsCopy = paths;
   v9 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v10 = [v9 showsMoreActionsContextMenu];
+  showsMoreActionsContextMenu = [v9 showsMoreActionsContextMenu];
 
-  if (v10)
+  if (showsMoreActionsContextMenu)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000769D0;
     v13[3] = &unk_10028B678;
-    v14 = v8;
-    v15 = self;
+    v14 = pathsCopy;
+    selfCopy = self;
     v16 = x;
     v17 = y;
     v11 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:0 actionProvider:v13];
@@ -2248,42 +2248,42 @@ LABEL_6:
   return v11;
 }
 
-- (void)performAction:(int64_t)a3 atPosition:(double)a4 forCellWithUUID:(id)a5 source:(id)a6
+- (void)performAction:(int64_t)action atPosition:(double)position forCellWithUUID:(id)d source:(id)source
 {
-  if (a5)
+  if (d)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    [v12 performAction:a3 atPosition:v11 forUUID:self sourceController:v10 source:a4];
+    sourceCopy = source;
+    dCopy = d;
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    [libraryActionHandler performAction:action atPosition:dCopy forUUID:self sourceController:sourceCopy source:position];
   }
 }
 
-- (void)showPlayingForItemWithUUID:(id)a3
+- (void)showPlayingForItemWithUUID:(id)d
 {
-  v8 = a3;
-  v4 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v5 = [v4 indexOfUUID:v8];
+  dCopy = d;
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  v5 = [recordingsDataCoordinator indexOfUUID:dCopy];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-    v7 = [v6 objectForKey:v8];
+    cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+    v7 = [cellsMapTable objectForKey:dCopy];
 
     [v7 setPlayControlState:1];
   }
 }
 
-- (void)showIdleForItemWithUUID:(id)a3
+- (void)showIdleForItemWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-  v8 = [v5 objectForKey:v4];
+  dCopy = d;
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  v8 = [cellsMapTable objectForKey:dCopy];
 
   if (v8)
   {
-    v6 = [(RCRecordingsCollectionViewController *)self collectionView];
-    v7 = [v6 indexPathForCell:v8];
+    collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+    v7 = [collectionView indexPathForCell:v8];
 
     if (v7)
     {
@@ -2292,91 +2292,91 @@ LABEL_6:
   }
 }
 
-- (void)setCurrentTime:(double)a3 forItemWithUUID:(id)a4
+- (void)setCurrentTime:(double)time forItemWithUUID:(id)d
 {
-  v12 = a4;
+  dCopy = d;
   v6 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v7 = [v6 expandsRecordingsCollectionViewItemOnSelection];
+  expandsRecordingsCollectionViewItemOnSelection = [v6 expandsRecordingsCollectionViewItemOnSelection];
 
-  if (v7)
+  if (expandsRecordingsCollectionViewItemOnSelection)
   {
-    v8 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-    v9 = [v8 indexOfUUID:v12];
+    recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+    v9 = [recordingsDataCoordinator indexOfUUID:dCopy];
 
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-      v11 = [v10 objectForKey:v12];
+      cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+      v11 = [cellsMapTable objectForKey:dCopy];
 
-      [v11 setCurrentTime:a3];
+      [v11 setCurrentTime:time];
     }
   }
 }
 
-- (void)editingIsInFlight:(BOOL)a3 progress:(float)a4 forUUID:(id)a5
+- (void)editingIsInFlight:(BOOL)flight progress:(float)progress forUUID:(id)d
 {
-  v6 = a3;
-  v18 = a5;
-  if (v6)
+  flightCopy = flight;
+  dCopy = d;
+  if (flightCopy)
   {
-    *&v8 = a4;
-    v9 = [NSNumber numberWithFloat:v8];
-    v10 = [(RCRecordingsCollectionViewController *)self editingProgressItems];
-    [v10 setObject:v9 forKeyedSubscript:v18];
+    *&v8 = progress;
+    editingProgressItems2 = [NSNumber numberWithFloat:v8];
+    editingProgressItems = [(RCRecordingsCollectionViewController *)self editingProgressItems];
+    [editingProgressItems setObject:editingProgressItems2 forKeyedSubscript:dCopy];
   }
 
   else
   {
-    v9 = [(RCRecordingsCollectionViewController *)self editingProgressItems];
-    [v9 setObject:0 forKeyedSubscript:v18];
+    editingProgressItems2 = [(RCRecordingsCollectionViewController *)self editingProgressItems];
+    [editingProgressItems2 setObject:0 forKeyedSubscript:dCopy];
   }
 
-  v11 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-  v12 = [v11 objectForKey:v18];
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  v12 = [cellsMapTable objectForKey:dCopy];
 
   if (v12)
   {
     v13 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v14 = [v13 expandsRecordingsCollectionViewItemOnSelection];
+    expandsRecordingsCollectionViewItemOnSelection = [v13 expandsRecordingsCollectionViewItemOnSelection];
 
-    [v12 setEditingInFlight:v6];
-    *&v15 = a4;
+    [v12 setEditingInFlight:flightCopy];
+    *&v15 = progress;
     [v12 setEditingProgress:v15];
-    if (!v6)
+    if (!flightCopy)
     {
-      if (v14)
+      if (expandsRecordingsCollectionViewItemOnSelection)
       {
-        v16 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-        v17 = [v16 isEqualToString:v18];
+        uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+        v17 = [uuidOfSelectedItem isEqualToString:dCopy];
 
         if (v17)
         {
-          [(RCRecordingsCollectionViewController *)self selectItemWithUUID:v18];
+          [(RCRecordingsCollectionViewController *)self selectItemWithUUID:dCopy];
         }
       }
     }
   }
 }
 
-- (void)performRenameWithNewTitle:(id)a3 forCellWithUUID:(id)a4
+- (void)performRenameWithNewTitle:(id)title forCellWithUUID:(id)d
 {
-  if (a4)
+  if (d)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    [v8 performRenameWithNewTitle:v7 forUUID:v6];
+    dCopy = d;
+    titleCopy = title;
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    [libraryActionHandler performRenameWithNewTitle:titleCopy forUUID:dCopy];
   }
 }
 
-- (void)didSelectCellWithUUID:(id)a3
+- (void)didSelectCellWithUUID:(id)d
 {
-  v20 = a3;
-  v4 = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
-  if (v4)
+  dCopy = d;
+  uuidOfNewestRecording = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
+  if (uuidOfNewestRecording)
   {
-    v5 = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
-    v6 = [v20 isEqualToString:v5];
+    uuidOfNewestRecording2 = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
+    v6 = [dCopy isEqualToString:uuidOfNewestRecording2];
   }
 
   else
@@ -2384,10 +2384,10 @@ LABEL_6:
     v6 = 0;
   }
 
-  if (v20)
+  if (dCopy)
   {
-    v7 = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
-    v8 = (v7 == 0) | v6;
+    uuidOfNewestRecording3 = [(RCRecordingsCollectionViewController *)self uuidOfNewestRecording];
+    v8 = (uuidOfNewestRecording3 == 0) | v6;
 
     if (!v6)
     {
@@ -2405,21 +2405,21 @@ LABEL_6:
   }
 
   v9 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v10 = [v9 expandsRecordingsCollectionViewItemOnSelection];
+  expandsRecordingsCollectionViewItemOnSelection = [v9 expandsRecordingsCollectionViewItemOnSelection];
 
-  if (v10)
+  if (expandsRecordingsCollectionViewItemOnSelection)
   {
-    v11 = [(RCRecordingsCollectionViewController *)self diffableDataSource];
-    v12 = [(RCRecordingsCollectionViewController *)self diffableDataSource];
-    v13 = [v12 snapshot];
-    [v11 applySnapshot:v13 animatingDifferences:1];
+    diffableDataSource = [(RCRecordingsCollectionViewController *)self diffableDataSource];
+    diffableDataSource2 = [(RCRecordingsCollectionViewController *)self diffableDataSource];
+    snapshot = [diffableDataSource2 snapshot];
+    [diffableDataSource applySnapshot:snapshot animatingDifferences:1];
   }
 
   [(RCRecordingsCollectionViewController *)self setUuidOfNewestRecording:0];
   v8 = 0;
 LABEL_11:
-  v14 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-  v15 = [v14 objectForKey:v20];
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  v15 = [cellsMapTable objectForKey:dCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -2429,33 +2429,33 @@ LABEL_11:
     }
   }
 
-  v18 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v18 didSelectForUUID:v20 resetPosition:v8 & 1 force:0];
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler didSelectForUUID:dCopy resetPosition:v8 & 1 force:0];
 
   if (![(RCRecordingsCollectionViewController *)self willSelectRecordingAfterExitingEditMode])
   {
-    v19 = [(RCRecordingsCollectionViewController *)self splitViewController];
-    [v19 hidePrimaryColumnIfNeeded];
+    splitViewController = [(RCRecordingsCollectionViewController *)self splitViewController];
+    [splitViewController hidePrimaryColumnIfNeeded];
   }
 }
 
-- (void)wasDeselectedForCellWithUUID:(id)a3
+- (void)wasDeselectedForCellWithUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    [v5 wasDeselectedForUUID:v4];
+    dCopy = d;
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    [libraryActionHandler wasDeselectedForUUID:dCopy];
   }
 }
 
-- (void)didEndEditingTitle:(id)a3
+- (void)didEndEditingTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [(RCRecordingsCollectionViewController *)self cellWhoseTitleIsBeingEdited];
-  v7 = [v6 UUID];
-  v8 = [v5 isEqualToString:v7];
+  titleCopy = title;
+  uUID = [titleCopy UUID];
+  cellWhoseTitleIsBeingEdited = [(RCRecordingsCollectionViewController *)self cellWhoseTitleIsBeingEdited];
+  uUID2 = [cellWhoseTitleIsBeingEdited UUID];
+  v8 = [uUID isEqualToString:uUID2];
 
   if (v8)
   {
@@ -2467,31 +2467,31 @@ LABEL_11:
     v9 = OSLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_1001B879C(self, v4, v9);
+      sub_1001B879C(self, titleCopy, v9);
     }
   }
 }
 
-- (id)_uuidForItemAtIndexPath:(id)a3
+- (id)_uuidForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self dataArray];
-  if (!v4)
+  pathCopy = path;
+  dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+  if (!pathCopy)
   {
 LABEL_6:
-    v6 = 0;
+    uuid = 0;
     goto LABEL_7;
   }
 
-  v6 = 0;
-  if ([v4 item] != 0x7FFFFFFFFFFFFFFFLL && v5)
+  uuid = 0;
+  if ([pathCopy item] != 0x7FFFFFFFFFFFFFFFLL && dataArray)
   {
-    v7 = [v4 item];
-    if (v7 < [v5 count])
+    item = [pathCopy item];
+    if (item < [dataArray count])
     {
-      v8 = [(RCRecordingsCollectionViewController *)self dataArray];
-      v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
-      v6 = [v9 uuid];
+      dataArray2 = [(RCRecordingsCollectionViewController *)self dataArray];
+      v9 = [dataArray2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+      uuid = [v9 uuid];
 
       goto LABEL_7;
     }
@@ -2501,41 +2501,41 @@ LABEL_6:
 
 LABEL_7:
 
-  return v6;
+  return uuid;
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   if (UIAccessibilityIsInvertColorsEnabled())
   {
-    v3 = [v6 searchBar];
-    v4 = [v3 searchField];
+    searchBar = [controllerCopy searchBar];
+    searchField = [searchBar searchField];
 
     v5 = +[UIColor blackColor];
-    [v4 setTextColor:v5];
+    [searchField setTextColor:v5];
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  [(RCRecordingsCollectionViewController *)self _updateSearchString:v5];
+  [(RCRecordingsCollectionViewController *)self _updateSearchString:text];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
   [(RCRecordingsCollectionViewController *)self _updateSearchString:&stru_100295BB8];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(RCRecordingsCollectionViewController *)self collectionView];
-  v5 = [v4 visibleCells];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2547,7 +2547,7 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -2560,42 +2560,42 @@ LABEL_7:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = [(RCRecordingsCollectionViewController *)self collectionView];
-  [v4 becomeFirstResponder];
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  [collectionView becomeFirstResponder];
 
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v6 = [v5 supportsHideRecordButtonDuringSearch];
+  supportsHideRecordButtonDuringSearch = [v5 supportsHideRecordButtonDuringSearch];
 
-  if (v6)
+  if (supportsHideRecordButtonDuringSearch)
   {
-    v7 = [(RCRecordingsCollectionViewController *)self editStateHandler];
-    [v7 updateBottomLayoutForEditing:-[RCRecordingsCollectionViewController isEditing](self isSearching:"isEditing") delegate:{0, self}];
+    editStateHandler = [(RCRecordingsCollectionViewController *)self editStateHandler];
+    [editStateHandler updateBottomLayoutForEditing:-[RCRecordingsCollectionViewController isEditing](self isSearching:"isEditing") delegate:{0, self}];
   }
 }
 
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change
 {
-  v6 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  v9 = [v6 searchString];
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  searchString = [recordingsDataCoordinator searchString];
 
-  v7 = [(RCRecordingsCollectionViewController *)self _searchScopeForScopeButtonIndex:a4];
-  v8 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  [v8 setSearchString:v9 inScope:v7];
+  v7 = [(RCRecordingsCollectionViewController *)self _searchScopeForScopeButtonIndex:change];
+  recordingsDataCoordinator2 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  [recordingsDataCoordinator2 setSearchString:searchString inScope:v7];
 }
 
-- (int64_t)_searchScopeForScopeButtonIndex:(int64_t)a3
+- (int64_t)_searchScopeForScopeButtonIndex:(int64_t)index
 {
-  result = a3;
-  if (a3 >= 2)
+  result = index;
+  if (index >= 2)
   {
     v4 = OSLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -2609,17 +2609,17 @@ LABEL_7:
   return result;
 }
 
-- (void)_updateSearchString:(id)a3
+- (void)_updateSearchString:(id)string
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self searchController];
-  v9 = [v5 searchBar];
+  stringCopy = string;
+  searchController = [(RCRecordingsCollectionViewController *)self searchController];
+  searchBar = [searchController searchBar];
 
-  v6 = [v9 scopeButtonTitles];
+  scopeButtonTitles = [searchBar scopeButtonTitles];
 
-  if (v6)
+  if (scopeButtonTitles)
   {
-    v7 = -[RCRecordingsCollectionViewController _searchScopeForScopeButtonIndex:](self, "_searchScopeForScopeButtonIndex:", [v9 selectedScopeButtonIndex]);
+    v7 = -[RCRecordingsCollectionViewController _searchScopeForScopeButtonIndex:](self, "_searchScopeForScopeButtonIndex:", [searchBar selectedScopeButtonIndex]);
   }
 
   else
@@ -2627,32 +2627,32 @@ LABEL_7:
     v7 = 1;
   }
 
-  v8 = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
-  [v8 setSearchString:v4 inScope:v7];
+  recordingsDataCoordinator = [(RCRecordingsCollectionViewController *)self recordingsDataCoordinator];
+  [recordingsDataCoordinator setSearchString:stringCopy inScope:v7];
 
   [(RCRecordingsCollectionViewController *)self _handleEditModeFooterAndNavigationItem];
   [(RCRecordingsCollectionViewController *)self setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (void)_setSearchString:(id)a3
+- (void)_setSearchString:(id)string
 {
-  v4 = a3;
-  v6 = [(RCRecordingsCollectionViewController *)self searchController];
-  v5 = [v6 searchBar];
-  [v5 setText:v4];
+  stringCopy = string;
+  searchController = [(RCRecordingsCollectionViewController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setText:stringCopy];
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [a5 item];
-  v9 = [(RCRecordingsCollectionViewController *)self dataArray];
-  if (v8 >= [v9 count])
+  sessionCopy = session;
+  item = [path item];
+  dataArray = [(RCRecordingsCollectionViewController *)self dataArray];
+  if (item >= [dataArray count])
   {
     goto LABEL_6;
   }
 
-  v10 = [v9 objectAtIndexedSubscript:v8];
+  v10 = [dataArray objectAtIndexedSubscript:item];
   v11 = [RCComposition compositionLoadedForSavedRecording:v10];
   if (![v11 compositionIsShareable])
   {
@@ -2669,25 +2669,25 @@ LABEL_6:
   v15 = v30;
   if (v14)
   {
-    v16 = [v10 title];
+    title = [v10 title];
     [v10 url];
     v17 = v28 = v15;
     [v17 pathExtension];
     v18 = v29 = v12;
-    v19 = [v16 stringByAppendingPathExtension:v18];
+    v19 = [title stringByAppendingPathExtension:v18];
 
     [v13 setSuggestedName:v19];
     v20 = [[UIDragItem alloc] initWithItemProvider:v13];
-    v21 = [v10 uuid];
-    [v20 setLocalObject:v21];
+    uuid = [v10 uuid];
+    [v20 setLocalObject:uuid];
 
-    v22 = [(RCRecordingsCollectionViewController *)self folderType];
-    v23 = [(RCRecordingsCollectionViewController *)self folderUUID];
-    v24 = v22;
+    folderType = [(RCRecordingsCollectionViewController *)self folderType];
+    folderUUID = [(RCRecordingsCollectionViewController *)self folderUUID];
+    v24 = folderType;
     v15 = v28;
-    v25 = [RCLocalDropContext dropContextWithFolderType:v24 folderUUID:v23 folderIndexPath:0 payloadType:0];
+    v25 = [RCLocalDropContext dropContextWithFolderType:v24 folderUUID:folderUUID folderIndexPath:0 payloadType:0];
 
-    [v7 setLocalContext:v25];
+    [sessionCopy setLocalContext:v25];
     v31 = v20;
     v26 = [NSArray arrayWithObjects:&v31 count:1];
 
@@ -2710,15 +2710,15 @@ LABEL_11:
   return v26;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v4 = [(RCRecordingsCollectionViewController *)self libraryActionHandler:a3];
+  v4 = [(RCRecordingsCollectionViewController *)self libraryActionHandler:view];
   [v4 willBeginDragSession];
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v4 = [(RCRecordingsCollectionViewController *)self libraryActionHandler:a3];
+  v4 = [(RCRecordingsCollectionViewController *)self libraryActionHandler:view];
   [v4 didEndDragSession];
 }
 
@@ -2747,19 +2747,19 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v3 = [(RCRecordingsCollectionViewController *)self cellWhoseTitleIsBeingEdited];
+    cellWhoseTitleIsBeingEdited = [(RCRecordingsCollectionViewController *)self cellWhoseTitleIsBeingEdited];
 
-    if (!v3)
+    if (!cellWhoseTitleIsBeingEdited)
     {
-      v5 = [(RCRecordingsCollectionViewController *)self recentlyDeletedCollectionViewController];
-      v7 = [v5 selectedCellIsEditingTitle];
+      recentlyDeletedCollectionViewController = [(RCRecordingsCollectionViewController *)self recentlyDeletedCollectionViewController];
+      selectedCellIsEditingTitle = [recentlyDeletedCollectionViewController selectedCellIsEditingTitle];
       goto LABEL_12;
     }
   }
 
-  v4 = [(RCRecordingsCollectionViewController *)self cellWhoseTitleIsBeingEdited];
-  v5 = v4;
-  if (v4 && ([v4 isEditingTitle] & 1) == 0)
+  cellWhoseTitleIsBeingEdited2 = [(RCRecordingsCollectionViewController *)self cellWhoseTitleIsBeingEdited];
+  recentlyDeletedCollectionViewController = cellWhoseTitleIsBeingEdited2;
+  if (cellWhoseTitleIsBeingEdited2 && ([cellWhoseTitleIsBeingEdited2 isEditingTitle] & 1) == 0)
   {
     v6 = OSLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2768,11 +2768,11 @@ LABEL_11:
     }
   }
 
-  if ([v5 isEditingTitle])
+  if ([recentlyDeletedCollectionViewController isEditingTitle])
   {
-    v7 = [v5 isSelected];
+    selectedCellIsEditingTitle = [recentlyDeletedCollectionViewController isSelected];
 LABEL_12:
-    v8 = v7;
+    v8 = selectedCellIsEditingTitle;
     goto LABEL_13;
   }
 
@@ -2784,11 +2784,11 @@ LABEL_13:
 
 - (BOOL)selectedCellIsInFlightEditing
 {
-  v3 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-  if (v3)
+  uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+  if (uuidOfSelectedItem)
   {
-    v4 = [(RCRecordingsCollectionViewController *)self editingProgressItems];
-    v5 = [v4 objectForKeyedSubscript:v3];
+    editingProgressItems = [(RCRecordingsCollectionViewController *)self editingProgressItems];
+    v5 = [editingProgressItems objectForKeyedSubscript:uuidOfSelectedItem];
 
     v6 = v5 != 0;
   }
@@ -2803,18 +2803,18 @@ LABEL_13:
 
 - (void)editSelectedItemTitle
 {
-  v3 = [(RCRecordingsCollectionViewController *)self collectionView];
-  if ([v3 numberOfItemsInSection:0] >= 1)
+  collectionView = [(RCRecordingsCollectionViewController *)self collectionView];
+  if ([collectionView numberOfItemsInSection:0] >= 1)
   {
-    v4 = [v3 indexPathForSelectedItem];
-    if (v4)
+    indexPathForSelectedItem = [collectionView indexPathForSelectedItem];
+    if (indexPathForSelectedItem)
     {
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_100077FE8;
       v7[3] = &unk_10028A650;
-      v8 = v3;
-      v9 = v4;
+      v8 = collectionView;
+      v9 = indexPathForSelectedItem;
       v5[0] = _NSConcreteStackBlock;
       v5[1] = 3221225472;
       v5[2] = sub_100077FFC;
@@ -2828,31 +2828,31 @@ LABEL_13:
 
 - (void)_logHashTable
 {
-  v2 = [(RCRecordingsCollectionViewController *)self cellsMapTable];
-  v8 = [v2 objectEnumerator];
+  cellsMapTable = [(RCRecordingsCollectionViewController *)self cellsMapTable];
+  objectEnumerator = [cellsMapTable objectEnumerator];
 
-  v3 = [v8 nextObject];
-  if (v3)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v4 = v3;
+    v4 = nextObject;
     v5 = 0;
     do
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v4 UUID];
-        NSLog(@"cell at index %d has UUID: %@", v5, v6);
+        uUID = [v4 UUID];
+        NSLog(@"cell at index %d has UUID: %@", v5, uUID);
 
         v5 = (v5 + 1);
       }
 
-      v7 = [v8 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v4 = v7;
+      v4 = nextObject2;
     }
 
-    while (v7);
+    while (nextObject2);
   }
 }
 

@@ -22,8 +22,8 @@
   v3.receiver = self;
   v3.super_class = PUIrisSettings;
   [(PXSettings *)&v3 performPostSaveActions];
-  v2 = [objc_opt_class() _photosPlayerRootSettings];
-  [v2 save];
+  _photosPlayerRootSettings = [objc_opt_class() _photosPlayerRootSettings];
+  [_photosPlayerRootSettings save];
 }
 
 - (void)restoreDefaultValues
@@ -31,8 +31,8 @@
   v3.receiver = self;
   v3.super_class = PUIrisSettings;
   [(PXSettings *)&v3 restoreDefaultValues];
-  v2 = [objc_opt_class() _photosPlayerRootSettings];
-  [v2 restoreDefaultValues];
+  _photosPlayerRootSettings = [objc_opt_class() _photosPlayerRootSettings];
+  [_photosPlayerRootSettings restoreDefaultValues];
 }
 
 + (id)settingsControllerModule
@@ -43,7 +43,7 @@
   v27[1] = 3221225472;
   v27[2] = __42__PUIrisSettings_settingsControllerModule__block_invoke;
   v27[3] = &__block_descriptor_40_e17___ISSettings_8__0l;
-  v27[4] = a1;
+  v27[4] = self;
   v3 = [MEMORY[0x1E69C65E8] pu_rowWithTitle:@"PhotosPlayer Settings" settingsProvider:v27];
   v32[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];

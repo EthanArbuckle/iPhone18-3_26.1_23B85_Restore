@@ -1,21 +1,21 @@
 @interface HMIVideoFrameGenerator
-- (HMIVideoFrameGenerator)initWithVideoFragment:(id)a3;
-- (void)generateVideoFramesForTimes:(id)a3 completionHandler:(id)a4;
+- (HMIVideoFrameGenerator)initWithVideoFragment:(id)fragment;
+- (void)generateVideoFramesForTimes:(id)times completionHandler:(id)handler;
 @end
 
 @implementation HMIVideoFrameGenerator
 
-- (HMIVideoFrameGenerator)initWithVideoFragment:(id)a3
+- (HMIVideoFrameGenerator)initWithVideoFragment:(id)fragment
 {
-  v4 = a3;
+  fragmentCopy = fragment;
   v12.receiver = self;
   v12.super_class = HMIVideoFrameGenerator;
   v5 = [(HMIVideoFrameGenerator *)&v12 init];
   if (v5)
   {
     v6 = [HMIMemoryAVAsset alloc];
-    v7 = [v4 data];
-    v8 = [(HMIMemoryAVAsset *)v6 initWithData:v7];
+    data = [fragmentCopy data];
+    v8 = [(HMIMemoryAVAsset *)v6 initWithData:data];
 
     v9 = [[HMIVideoAssetReader alloc] initWithAsset:v8];
     reader = v5->_reader;
@@ -25,45 +25,45 @@
   return v5;
 }
 
-- (void)generateVideoFramesForTimes:(id)a3 completionHandler:(id)a4
+- (void)generateVideoFramesForTimes:(id)times completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  timesCopy = times;
+  handlerCopy = handler;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   [v8 setDelegate:v9];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __72__HMIVideoFrameGenerator_generateVideoFramesForTimes_completionHandler___block_invoke;
   v19 = &unk_2787542D8;
-  v11 = v6;
+  v11 = timesCopy;
   v20 = v11;
-  v12 = v10;
+  v12 = array;
   v21 = v12;
   [v9 setDecoderDidDecodeSampleBuffer:&v16];
   while (1)
   {
     v13 = [(HMIVideoFrameGenerator *)self reader:v16];
-    v14 = [v13 copyNextSampleBuffer];
+    copyNextSampleBuffer = [v13 copyNextSampleBuffer];
 
-    if (!v14)
+    if (!copyNextSampleBuffer)
     {
       break;
     }
 
-    if (HMICMSampleBufferIsVideo(v14))
+    if (HMICMSampleBufferIsVideo(copyNextSampleBuffer))
     {
-      CopyWithoutEdits = HMICMSampleBufferCreateCopyWithoutEdits(v14);
+      CopyWithoutEdits = HMICMSampleBufferCreateCopyWithoutEdits(copyNextSampleBuffer);
       [v8 handleSampleBuffer:CopyWithoutEdits outputFrame:1];
       CFRelease(CopyWithoutEdits);
     }
 
-    CFRelease(v14);
+    CFRelease(copyNextSampleBuffer);
   }
 
   [v8 flush];
-  v7[2](v7, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
 void __72__HMIVideoFrameGenerator_generateVideoFramesForTimes_completionHandler___block_invoke(uint64_t a1, uint64_t a2, opaqueCMSampleBuffer *a3)

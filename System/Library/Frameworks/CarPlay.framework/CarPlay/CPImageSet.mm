@@ -1,12 +1,12 @@
 @interface CPImageSet
-- (BOOL)isEqual:(id)a3;
-- (CPImageSet)initWithCoder:(id)a3;
-- (CPImageSet)initWithImage:(id)a3 treatmentBlock:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CPImageSet)initWithCoder:(id)coder;
+- (CPImageSet)initWithImage:(id)image treatmentBlock:(id)block;
 - (CPImageSet)initWithLightContentImage:(UIImage *)lightImage darkContentImage:(UIImage *)darkImage;
 - (id)description;
 - (id)image;
-- (void)encodeWithCoder:(id)a3;
-- (void)resizeImagesToSize:(CGSize)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)resizeImagesToSize:(CGSize)size;
 - (void)swapStyles;
 @end
 
@@ -46,19 +46,19 @@
   return v5;
 }
 
-- (CPImageSet)initWithCoder:(id)a3
+- (CPImageSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPImageSet;
   v5 = [(CPImageSet *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPLightContentImageKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPLightContentImageKey"];
     lightContentImage = v5->_lightContentImage;
     v5->_lightContentImage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPDarkContentImageKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPDarkContentImageKey"];
     darkContentImage = v5->_darkContentImage;
     v5->_darkContentImage = v8;
   }
@@ -66,39 +66,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPImageSet *)self lightContentImage];
-  [v4 encodeObject:v5 forKey:@"kCPLightContentImageKey"];
+  coderCopy = coder;
+  lightContentImage = [(CPImageSet *)self lightContentImage];
+  [coderCopy encodeObject:lightContentImage forKey:@"kCPLightContentImageKey"];
 
-  v6 = [(CPImageSet *)self darkContentImage];
-  [v4 encodeObject:v6 forKey:@"kCPDarkContentImageKey"];
+  darkContentImage = [(CPImageSet *)self darkContentImage];
+  [coderCopy encodeObject:darkContentImage forKey:@"kCPDarkContentImageKey"];
 }
 
-- (CPImageSet)initWithImage:(id)a3 treatmentBlock:(id)a4
+- (CPImageSet)initWithImage:(id)image treatmentBlock:(id)block
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  blockCopy = block;
   v36.receiver = self;
   v36.super_class = CPImageSet;
   v8 = [(CPImageSet *)&v36 init];
   if (v8)
   {
-    v9 = [v6 traitCollection];
+    traitCollection = [imageCopy traitCollection];
     v10 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
     v11 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-    if (v9)
+    if (traitCollection)
     {
       v12 = MEMORY[0x277D75C80];
-      v38[0] = v9;
+      v38[0] = traitCollection;
       v38[1] = v10;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
       v14 = [v12 traitCollectionWithTraitsFromCollections:v13];
 
       v15 = MEMORY[0x277D75C80];
-      v37[0] = v9;
+      v37[0] = traitCollection;
       v37[1] = v11;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
       v17 = [v15 traitCollectionWithTraitsFromCollections:v16];
@@ -107,19 +107,19 @@
       v11 = v17;
     }
 
-    if ([v6 isSymbolImage])
+    if ([imageCopy isSymbolImage])
     {
-      v18 = v6;
+      v18 = imageCopy;
       v19 = v18;
     }
 
     else
     {
-      v20 = [v6 imageAsset];
-      v18 = [v20 imageWithTraitCollection:v10];
+      imageAsset = [imageCopy imageAsset];
+      v18 = [imageAsset imageWithTraitCollection:v10];
 
-      v21 = [v6 imageAsset];
-      v19 = [v21 imageWithTraitCollection:v11];
+      imageAsset2 = [imageCopy imageAsset];
+      v19 = [imageAsset2 imageWithTraitCollection:v11];
     }
 
     v22 = objc_opt_class();
@@ -130,7 +130,7 @@
 
     else
     {
-      v23 = v6;
+      v23 = imageCopy;
     }
 
     v24 = CPSanitizeImage(v23, v22);
@@ -145,20 +145,20 @@
 
     else
     {
-      v27 = v6;
+      v27 = imageCopy;
     }
 
     v28 = CPSanitizeImage(v27, v26);
     darkContentImage = v8->_darkContentImage;
     v8->_darkContentImage = v28;
 
-    if (v7)
+    if (blockCopy)
     {
-      v30 = (v7)[2](v7, v8->_darkContentImage);
+      v30 = (blockCopy)[2](blockCopy, v8->_darkContentImage);
       v31 = v8->_darkContentImage;
       v8->_darkContentImage = v30;
 
-      v32 = (v7)[2](v7, v8->_lightContentImage);
+      v32 = (blockCopy)[2](blockCopy, v8->_lightContentImage);
       v33 = v8->_lightContentImage;
       v8->_lightContentImage = v32;
     }
@@ -170,50 +170,50 @@
 
 - (id)image
 {
-  v3 = [MEMORY[0x277D75C80] _currentTraitCollection];
-  v4 = [(CPImageSet *)self currentAssetRegistration];
-  if (!v4)
+  _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+  currentAssetRegistration = [(CPImageSet *)self currentAssetRegistration];
+  if (!currentAssetRegistration)
   {
     goto LABEL_3;
   }
 
-  v5 = v4;
-  v6 = [(CPImageSet *)self currentAssetRegistration];
-  v7 = [v6 baseTraitCollection];
-  v8 = [v7 isEqual:v3];
+  v5 = currentAssetRegistration;
+  currentAssetRegistration2 = [(CPImageSet *)self currentAssetRegistration];
+  baseTraitCollection = [currentAssetRegistration2 baseTraitCollection];
+  v8 = [baseTraitCollection isEqual:_currentTraitCollection];
 
   if ((v8 & 1) == 0)
   {
 LABEL_3:
     v9 = [CPImageSetAssetRegistration alloc];
-    v10 = [(CPImageSet *)self lightContentImage];
-    v11 = [(CPImageSet *)self darkContentImage];
-    v12 = [(CPImageSetAssetRegistration *)v9 initWithLightImage:v10 darkImage:v11 baseTraitCollection:v3];
+    lightContentImage = [(CPImageSet *)self lightContentImage];
+    darkContentImage = [(CPImageSet *)self darkContentImage];
+    v12 = [(CPImageSetAssetRegistration *)v9 initWithLightImage:lightContentImage darkImage:darkContentImage baseTraitCollection:_currentTraitCollection];
     [(CPImageSet *)self setCurrentAssetRegistration:v12];
   }
 
-  v13 = [(CPImageSet *)self currentAssetRegistration];
-  v14 = [v13 combinedImage];
+  currentAssetRegistration3 = [(CPImageSet *)self currentAssetRegistration];
+  combinedImage = [currentAssetRegistration3 combinedImage];
 
-  return v14;
+  return combinedImage;
 }
 
 - (void)swapStyles
 {
-  v4 = [(CPImageSet *)self lightContentImage];
-  v3 = [(CPImageSet *)self darkContentImage];
-  [(CPImageSet *)self setDarkContentImage:v4];
-  [(CPImageSet *)self setLightContentImage:v3];
+  lightContentImage = [(CPImageSet *)self lightContentImage];
+  darkContentImage = [(CPImageSet *)self darkContentImage];
+  [(CPImageSet *)self setDarkContentImage:lightContentImage];
+  [(CPImageSet *)self setLightContentImage:darkContentImage];
 }
 
-- (void)resizeImagesToSize:(CGSize)a3
+- (void)resizeImagesToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   lightContentImage = self->_lightContentImage;
   if (lightContentImage)
   {
-    v7 = CPImageByScalingImageToSize(lightContentImage, a3.width, a3.height);
+    v7 = CPImageByScalingImageToSize(lightContentImage, size.width, size.height);
     v8 = self->_lightContentImage;
     self->_lightContentImage = v7;
   }
@@ -229,23 +229,23 @@ LABEL_3:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CPImageSet *)self darkContentImage];
-    v7 = UIImagePNGRepresentation(v6);
-    v8 = [v5 darkContentImage];
-    v9 = UIImagePNGRepresentation(v8);
+    v5 = equalCopy;
+    darkContentImage = [(CPImageSet *)self darkContentImage];
+    v7 = UIImagePNGRepresentation(darkContentImage);
+    darkContentImage2 = [v5 darkContentImage];
+    v9 = UIImagePNGRepresentation(darkContentImage2);
     if ([v7 isEqualToData:v9])
     {
-      v15 = [(CPImageSet *)self lightContentImage];
-      v10 = UIImagePNGRepresentation(v15);
-      v11 = [v5 lightContentImage];
-      v12 = UIImagePNGRepresentation(v11);
+      lightContentImage = [(CPImageSet *)self lightContentImage];
+      v10 = UIImagePNGRepresentation(lightContentImage);
+      lightContentImage2 = [v5 lightContentImage];
+      v12 = UIImagePNGRepresentation(lightContentImage2);
       v13 = [v10 isEqualToData:v12];
     }
 

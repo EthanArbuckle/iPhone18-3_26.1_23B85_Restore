@@ -1,6 +1,6 @@
 @interface __HMFNetAddressMonitor
-- (__HMFNetAddressMonitor)initWithNetAddress:(id)a3;
-- (__HMFNetAddressMonitor)initWithNetService:(id)a3;
+- (__HMFNetAddressMonitor)initWithNetAddress:(id)address;
+- (__HMFNetAddressMonitor)initWithNetService:(id)service;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (id)shortDescription;
@@ -10,9 +10,9 @@
 
 @implementation __HMFNetAddressMonitor
 
-- (__HMFNetAddressMonitor)initWithNetService:(id)a3
+- (__HMFNetAddressMonitor)initWithNetService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -24,13 +24,13 @@
   objc_exception_throw(v10);
 }
 
-- (__HMFNetAddressMonitor)initWithNetAddress:(id)a3
+- (__HMFNetAddressMonitor)initWithNetAddress:(id)address
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  addressCopy = address;
   v36.receiver = self;
   v36.super_class = __HMFNetAddressMonitor;
-  v7 = [(HMFNetMonitor *)&v36 initWithNetAddress:v6];
+  v7 = [(HMFNetMonitor *)&v36 initWithNetAddress:addressCopy];
   v8 = v7;
   if (!v7)
   {
@@ -45,12 +45,12 @@ LABEL_16:
   queue = v8->_queue;
   v8->_queue = v11;
 
-  objc_storeStrong(&v8->_netAddress, a3);
-  if (v6)
+  objc_storeStrong(&v8->_netAddress, address);
+  if (addressCopy)
   {
     v13 = *MEMORY[0x277CBECE8];
-    v14 = [v6 addressString];
-    v8->_networkReachabilityRef = SCNetworkReachabilityCreateWithName(v13, [v14 UTF8String]);
+    addressString = [addressCopy addressString];
+    v8->_networkReachabilityRef = SCNetworkReachabilityCreateWithName(v13, [addressString UTF8String]);
 
     if (v8->_networkReachabilityRef)
     {
@@ -121,11 +121,11 @@ LABEL_4:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
   {
     v28 = HMFGetLogIdentifier(v26);
-    if (v6)
+    if (addressCopy)
     {
       v29 = MEMORY[0x277CCACA8];
-      v3 = [v6 addressString];
-      v30 = [v29 stringWithFormat:@"for %@", v3];
+      addressString2 = [addressCopy addressString];
+      v30 = [v29 stringWithFormat:@"for %@", addressString2];
     }
 
     else
@@ -138,7 +138,7 @@ LABEL_4:
     WORD2(context.info) = 2112;
     *(&context.info + 6) = v30;
     _os_log_impl(&dword_22ADEC000, v27, OS_LOG_TYPE_ERROR, "%{public}@Failed to create network reachability monitor%@.", &context, 0x16u);
-    if (v6)
+    if (addressCopy)
     {
     }
   }
@@ -170,18 +170,18 @@ LABEL_22:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(__HMFNetAddressMonitor *)self netAddress];
-  if (v5)
+  shortDescription = [objc_opt_class() shortDescription];
+  netAddress = [(__HMFNetAddressMonitor *)self netAddress];
+  if (netAddress)
   {
-    v6 = [(__HMFNetAddressMonitor *)self netAddress];
-    v7 = [v6 addressString];
-    v8 = [v3 stringWithFormat:@"%@ '%@'", v4, v7];
+    netAddress2 = [(__HMFNetAddressMonitor *)self netAddress];
+    addressString = [netAddress2 addressString];
+    v8 = [v3 stringWithFormat:@"%@ '%@'", shortDescription, addressString];
   }
 
   else
   {
-    v8 = [v3 stringWithFormat:@"%@ '%@'", v4, @"localhost"];
+    v8 = [v3 stringWithFormat:@"%@ '%@'", shortDescription, @"localhost"];
   }
 
   return v8;
@@ -191,8 +191,8 @@ LABEL_22:
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(__HMFNetAddressMonitor *)self netAddress];
-  v5 = [(HMFAttributeDescription *)v3 initWithName:@"Address" value:v4];
+  netAddress = [(__HMFNetAddressMonitor *)self netAddress];
+  v5 = [(HMFAttributeDescription *)v3 initWithName:@"Address" value:netAddress];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -227,19 +227,19 @@ LABEL_22:
 
 - (id)logIdentifier
 {
-  v3 = [(__HMFNetAddressMonitor *)self netAddress];
-  if (v3)
+  netAddress = [(__HMFNetAddressMonitor *)self netAddress];
+  if (netAddress)
   {
-    v4 = [(__HMFNetAddressMonitor *)self netAddress];
-    v5 = [v4 addressString];
+    netAddress2 = [(__HMFNetAddressMonitor *)self netAddress];
+    addressString = [netAddress2 addressString];
   }
 
   else
   {
-    v5 = @"localhost";
+    addressString = @"localhost";
   }
 
-  return v5;
+  return addressString;
 }
 
 @end

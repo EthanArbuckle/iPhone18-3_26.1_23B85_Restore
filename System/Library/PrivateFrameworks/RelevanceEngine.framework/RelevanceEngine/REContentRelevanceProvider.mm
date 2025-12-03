@@ -1,9 +1,9 @@
 @interface REContentRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (REContentRelevanceProvider)initWithContent:(id)a3;
-- (REContentRelevanceProvider)initWithDictionary:(id)a3;
-- (REContentRelevanceProvider)initWithKeywords:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REContentRelevanceProvider)initWithContent:(id)content;
+- (REContentRelevanceProvider)initWithDictionary:(id)dictionary;
+- (REContentRelevanceProvider)initWithKeywords:(id)keywords;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 - (unint64_t)_hash;
@@ -11,24 +11,24 @@
 
 @implementation REContentRelevanceProvider
 
-- (REContentRelevanceProvider)initWithContent:(id)a3
+- (REContentRelevanceProvider)initWithContent:(id)content
 {
-  v4 = RETokenizeString(a3);
+  v4 = RETokenizeString(content);
   v5 = [(REContentRelevanceProvider *)self initWithKeywords:v4];
 
   return v5;
 }
 
-- (REContentRelevanceProvider)initWithKeywords:(id)a3
+- (REContentRelevanceProvider)initWithKeywords:(id)keywords
 {
-  v5 = a3;
+  keywordsCopy = keywords;
   v9.receiver = self;
   v9.super_class = REContentRelevanceProvider;
   v6 = [(RERelevanceProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keywords, a3);
+    objc_storeStrong(&v6->_keywords, keywords);
     if (!v7->_keywords)
     {
       v7->_keywords = MEMORY[0x277CBEBF8];
@@ -38,9 +38,9 @@
   return v7;
 }
 
-- (REContentRelevanceProvider)initWithDictionary:(id)a3
+- (REContentRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"keywords"];
+  v4 = [dictionary objectForKeyedSubscript:@"keywords"];
   if (v4)
   {
     v5 = [(REContentRelevanceProvider *)self init];
@@ -62,15 +62,15 @@
     }
 
     self = v5;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryEncoding
@@ -94,17 +94,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[REContentRelevanceProvider allocWithZone:?]];
   objc_storeStrong(&v4->_keywords, self->_keywords);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -112,10 +112,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = REContentRelevanceProvider, [(RERelevanceProvider *)&v11 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = REContentRelevanceProvider, [(RERelevanceProvider *)&v11 isEqual:equalCopy]))
     {
       keywords = self->_keywords;
-      v6 = v4->_keywords;
+      v6 = equalCopy->_keywords;
       v7 = keywords;
       v8 = v7;
       if (v7 == v6)

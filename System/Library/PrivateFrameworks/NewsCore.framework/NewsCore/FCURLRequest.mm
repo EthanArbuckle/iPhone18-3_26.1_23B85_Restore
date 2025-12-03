@@ -65,8 +65,8 @@ uint64_t __26__FCURLRequest_comparator__block_invoke(uint64_t a1, void *a2, void
   if (self)
   {
     v4 = [(NSURLRequest *)self->_URLRequest URL];
-    v5 = [v4 absoluteString];
-    [(FCDescription *)v3 addField:@"URL" value:v5];
+    absoluteString = [v4 absoluteString];
+    [(FCDescription *)v3 addField:@"URL" value:absoluteString];
 
     priority = self->_priority;
   }
@@ -74,8 +74,8 @@ uint64_t __26__FCURLRequest_comparator__block_invoke(uint64_t a1, void *a2, void
   else
   {
     v12 = [0 URL];
-    v13 = [v12 absoluteString];
-    [(FCDescription *)v3 addField:@"URL" value:v13];
+    absoluteString2 = [v12 absoluteString];
+    [(FCDescription *)v3 addField:@"URL" value:absoluteString2];
 
     priority = 0;
   }
@@ -100,9 +100,9 @@ uint64_t __26__FCURLRequest_comparator__block_invoke(uint64_t a1, void *a2, void
   }
 
   [(FCDescription *)v3 addField:@"loggingKey" object:loggingKey];
-  v10 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v10;
+  return descriptionString;
 }
 
 @end

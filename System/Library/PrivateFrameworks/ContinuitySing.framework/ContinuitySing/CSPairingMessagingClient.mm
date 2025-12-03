@@ -1,21 +1,21 @@
 @interface CSPairingMessagingClient
 - (CSPairingMessagingClient)init;
 - (NSString)localMediaRouteIdentifier;
-- (id)deviceForMediaRouteIdentifier:(id)a3;
-- (id)deviceForRemoteDisplayIdentifier:(id)a3;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_completePendingGroupSessionTokenRequests:(id)a3 error:(id)a4;
+- (id)deviceForMediaRouteIdentifier:(id)identifier;
+- (id)deviceForRemoteDisplayIdentifier:(id)identifier;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_completePendingGroupSessionTokenRequests:(id)requests error:(id)error;
 - (void)_endPairingClient;
-- (void)_pairWithDevice:(id)a3 password:(id)a4 completion:(id)a5;
-- (void)_pairWithDeviceIfNeeded:(id)a3 password:(id)a4 completion:(id)a5;
-- (void)_pairWithMediaRouteIdentifierIfNeeded:(id)a3 password:(id)a4 attempts:(int64_t)a5 completion:(id)a6;
-- (void)_requestGroupSessionTokenFromIdentifer:(id)a3 attempts:(int64_t)a4 completion:(id)a5;
-- (void)_sendPingToDevice:(id)a3 completion:(id)a4;
-- (void)_serviceActivationHandlersWithError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_pairWithDevice:(id)device password:(id)password completion:(id)completion;
+- (void)_pairWithDeviceIfNeeded:(id)needed password:(id)password completion:(id)completion;
+- (void)_pairWithMediaRouteIdentifierIfNeeded:(id)needed password:(id)password attempts:(int64_t)attempts completion:(id)completion;
+- (void)_requestGroupSessionTokenFromIdentifer:(id)identifer attempts:(int64_t)attempts completion:(id)completion;
+- (void)_sendPingToDevice:(id)device completion:(id)completion;
+- (void)_serviceActivationHandlersWithError:(id)error;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)requestGroupSessionTokenFromIdentifer:(id)a3 completion:(id)a4;
+- (void)requestGroupSessionTokenFromIdentifer:(id)identifer completion:(id)completion;
 @end
 
 @implementation CSPairingMessagingClient
@@ -36,9 +36,9 @@
     v2->_callbackQueue = v5;
 
     v2->_activationState = 0;
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     activationHandlers = v2->_activationHandlers;
-    v2->_activationHandlers = v7;
+    v2->_activationHandlers = array;
   }
 
   return v2;
@@ -101,34 +101,34 @@ void __35__CSPairingMessagingClient_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__CSPairingMessagingClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_278E0AF88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalQueue);
   activationHandlers = self->_activationHandlers;
-  v6 = _Block_copy(v4);
+  v6 = _Block_copy(completionCopy);
   [(NSMutableArray *)activationHandlers addObject:v6];
 
   activationState = self->_activationState;
   if (activationState == 2)
   {
-    v8 = [(RPCompanionLinkClient *)self->_rpClient localDevice];
+    localDevice = [(RPCompanionLinkClient *)self->_rpClient localDevice];
 
-    if (v8)
+    if (localDevice)
     {
       v9 = ContinuitySingLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -136,7 +136,7 @@ void __35__CSPairingMessagingClient_dealloc__block_invoke(uint64_t a1)
         v18 = 136315394;
         v19 = "[CSPairingMessagingClient _activateWithCompletion:]";
         v20 = 2112;
-        v21 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_2441FB000, v9, OS_LOG_TYPE_DEFAULT, "%s: %@ Already active", &v18, 0x16u);
       }
 
@@ -153,15 +153,15 @@ void __35__CSPairingMessagingClient_dealloc__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_activationState];
-      v12 = [(RPCompanionLinkClient *)self->_rpClient localDevice];
+      localDevice2 = [(RPCompanionLinkClient *)self->_rpClient localDevice];
       v18 = 136315906;
       v19 = "[CSPairingMessagingClient _activateWithCompletion:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = v11;
       v24 = 2112;
-      v25 = v12;
+      v25 = localDevice2;
       _os_log_impl(&dword_2441FB000, v10, OS_LOG_TYPE_DEFAULT, "%s: %@ Nothing to do currently for activation request with state %@ and local device %@", &v18, 0x2Au);
     }
   }
@@ -306,9 +306,9 @@ void __52__CSPairingMessagingClient__activateWithCompletion___block_invoke_3(uin
   }
 }
 
-- (void)_serviceActivationHandlersWithError:(id)a3
+- (void)_serviceActivationHandlersWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_internalQueue);
   v5 = [(NSMutableArray *)self->_activationHandlers copy];
   [(NSMutableArray *)self->_activationHandlers removeAllObjects];
@@ -318,8 +318,8 @@ void __52__CSPairingMessagingClient__activateWithCompletion___block_invoke_3(uin
   v9[2] = __64__CSPairingMessagingClient__serviceActivationHandlersWithError___block_invoke;
   v9[3] = &unk_278E0AD78;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = errorCopy;
+  v7 = errorCopy;
   v8 = v5;
   dispatch_async(callbackQueue, v9);
 }
@@ -393,21 +393,21 @@ void __38__CSPairingMessagingClient_invalidate__block_invoke(uint64_t a1)
 
 - (NSString)localMediaRouteIdentifier
 {
-  v2 = [(RPCompanionLinkClient *)self->_rpClient localDevice];
-  v3 = [v2 mediaRouteIdentifier];
+  localDevice = [(RPCompanionLinkClient *)self->_rpClient localDevice];
+  mediaRouteIdentifier = [localDevice mediaRouteIdentifier];
 
-  return v3;
+  return mediaRouteIdentifier;
 }
 
-- (id)deviceForMediaRouteIdentifier:(id)a3
+- (id)deviceForMediaRouteIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(RPCompanionLinkClient *)self->_rpClient activeDevices];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v20 count:16];
+  activeDevices = [(RPCompanionLinkClient *)self->_rpClient activeDevices];
+  v6 = [activeDevices countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -419,23 +419,23 @@ void __38__CSPairingMessagingClient_invalidate__block_invoke(uint64_t a1)
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeDevices);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 mediaRouteIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        mediaRouteIdentifier = [v11 mediaRouteIdentifier];
+        v13 = [mediaRouteIdentifier isEqualToString:identifierCopy];
 
         if (v13)
         {
           v14 = v11;
 
-          v15 = [v14 idsDeviceIdentifier];
-          if (v15)
+          idsDeviceIdentifier = [v14 idsDeviceIdentifier];
+          if (idsDeviceIdentifier)
           {
-            v16 = v15;
-            v17 = [v14 idsDeviceIdentifier];
-            v18 = [v17 isEqual:v4];
+            v16 = idsDeviceIdentifier;
+            idsDeviceIdentifier2 = [v14 idsDeviceIdentifier];
+            v18 = [idsDeviceIdentifier2 isEqual:identifierCopy];
 
             v8 = v14;
             if (!v18)
@@ -451,7 +451,7 @@ void __38__CSPairingMessagingClient_invalidate__block_invoke(uint64_t a1)
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v20 count:16];
+      v7 = [activeDevices countByEnumeratingWithState:&v21 objects:v20 count:16];
       v14 = v8;
     }
 
@@ -468,15 +468,15 @@ LABEL_15:
   return v14;
 }
 
-- (id)deviceForRemoteDisplayIdentifier:(id)a3
+- (id)deviceForRemoteDisplayIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(RPCompanionLinkClient *)self->_rpClient activeDevices];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  activeDevices = [(RPCompanionLinkClient *)self->_rpClient activeDevices];
+  v6 = [activeDevices countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -486,18 +486,18 @@ LABEL_15:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeDevices);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 compareWithDeviceIdentifier:v4])
+        if ([v9 compareWithDeviceIdentifier:identifierCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v6 = [activeDevices countByEnumeratingWithState:&v12 objects:v11 count:16];
       if (v6)
       {
         continue;
@@ -512,12 +512,12 @@ LABEL_11:
   return v6;
 }
 
-- (void)_pairWithMediaRouteIdentifierIfNeeded:(id)a3 password:(id)a4 attempts:(int64_t)a5 completion:(id)a6
+- (void)_pairWithMediaRouteIdentifierIfNeeded:(id)needed password:(id)password attempts:(int64_t)attempts completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(CSPairingMessagingClient *)self deviceForMediaRouteIdentifier:v10];
+  neededCopy = needed;
+  passwordCopy = password;
+  completionCopy = completion;
+  v13 = [(CSPairingMessagingClient *)self deviceForMediaRouteIdentifier:neededCopy];
   v14 = v13;
   if (v13)
   {
@@ -528,8 +528,8 @@ LABEL_11:
     block[3] = &unk_278E0B2A8;
     block[4] = self;
     v37 = v13;
-    v38 = v11;
-    v39 = v12;
+    v38 = passwordCopy;
+    v39 = completionCopy;
     dispatch_async(internalQueue, block);
   }
 
@@ -537,7 +537,7 @@ LABEL_11:
   {
     v16 = ContinuitySingLog();
     v17 = v16;
-    if (a5 < 2)
+    if (attempts < 2)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -546,18 +546,18 @@ LABEL_11:
 
       v21 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = [v21 initWithDomain:CSPairingErrorDomain code:3 userInfo:0];
-      (*(v12 + 2))(v12, 0, v22);
+      (*(completionCopy + 2))(completionCopy, 0, v22);
     }
 
     else
     {
-      v18 = (a5 - 1);
+      v18 = (attempts - 1);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315906;
         v29 = "[CSPairingMessagingClient _pairWithMediaRouteIdentifierIfNeeded:password:attempts:completion:]";
         v30 = 2112;
-        v31 = v10;
+        v31 = neededCopy;
         v32 = 2048;
         v33 = 0x4000000000000000;
         v34 = 2048;
@@ -573,10 +573,10 @@ LABEL_11:
       v23[2] = __95__CSPairingMessagingClient__pairWithMediaRouteIdentifierIfNeeded_password_attempts_completion___block_invoke_23;
       v23[3] = &unk_278E0BC80;
       objc_copyWeak(v27, buf);
-      v24 = v10;
-      v25 = v11;
+      v24 = neededCopy;
+      v25 = passwordCopy;
       v27[1] = v18;
-      v26 = v12;
+      v26 = completionCopy;
       dispatch_after(v19, v20, v23);
 
       objc_destroyWeak(v27);
@@ -621,19 +621,19 @@ void __95__CSPairingMessagingClient__pairWithMediaRouteIdentifierIfNeeded_passwo
   }
 }
 
-- (void)_pairWithDeviceIfNeeded:(id)a3 password:(id)a4 completion:(id)a5
+- (void)_pairWithDeviceIfNeeded:(id)needed password:(id)password completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  neededCopy = needed;
+  passwordCopy = password;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v11 = [v8 statusFlags] & 0x500008A000;
-  v12 = [v8 idsDeviceIdentifier];
-  if (v12)
+  v11 = [neededCopy statusFlags] & 0x500008A000;
+  idsDeviceIdentifier = [neededCopy idsDeviceIdentifier];
+  if (idsDeviceIdentifier)
   {
-    v13 = [v8 idsDeviceIdentifier];
-    v14 = [v8 mediaRouteIdentifier];
-    v15 = [v13 isEqual:v14];
+    idsDeviceIdentifier2 = [neededCopy idsDeviceIdentifier];
+    mediaRouteIdentifier = [neededCopy mediaRouteIdentifier];
+    v15 = [idsDeviceIdentifier2 isEqual:mediaRouteIdentifier];
   }
 
   else
@@ -645,11 +645,11 @@ void __95__CSPairingMessagingClient__pairWithMediaRouteIdentifierIfNeeded_passwo
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = [MEMORY[0x277CCABB0] numberWithBool:v11 == 0];
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v8, "statusFlags")}];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(neededCopy, "statusFlags")}];
     v22 = 136315906;
     v23 = "[CSPairingMessagingClient _pairWithDeviceIfNeeded:password:completion:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = neededCopy;
     v26 = 2112;
     v27 = v17;
     v28 = 2112;
@@ -668,11 +668,11 @@ void __95__CSPairingMessagingClient__pairWithMediaRouteIdentifierIfNeeded_passwo
         v22 = 136315394;
         v23 = "[CSPairingMessagingClient _pairWithDeviceIfNeeded:password:completion:]";
         v24 = 2112;
-        v25 = v8;
+        v25 = neededCopy;
         _os_log_impl(&dword_2441FB000, v19, OS_LOG_TYPE_DEFAULT, "%s: Need to ping device for info %@", &v22, 0x16u);
       }
 
-      [(CSPairingMessagingClient *)self _sendPingToDevice:v8 completion:v10];
+      [(CSPairingMessagingClient *)self _sendPingToDevice:neededCopy completion:completionCopy];
     }
 
     else
@@ -682,12 +682,12 @@ void __95__CSPairingMessagingClient__pairWithMediaRouteIdentifierIfNeeded_passwo
         v22 = 136315394;
         v23 = "[CSPairingMessagingClient _pairWithDeviceIfNeeded:password:completion:]";
         v24 = 2112;
-        v25 = v8;
+        v25 = neededCopy;
         _os_log_impl(&dword_2441FB000, v19, OS_LOG_TYPE_DEFAULT, "%s: Device already paired %@", &v22, 0x16u);
       }
 
-      v21 = [[CSPairingDevice alloc] initWithRPCompanionLinkDevice:v8];
-      v10[2](v10, v21, 0);
+      v21 = [[CSPairingDevice alloc] initWithRPCompanionLinkDevice:neededCopy];
+      completionCopy[2](completionCopy, v21, 0);
     }
   }
 
@@ -698,21 +698,21 @@ void __95__CSPairingMessagingClient__pairWithMediaRouteIdentifierIfNeeded_passwo
       v22 = 136315394;
       v23 = "[CSPairingMessagingClient _pairWithDeviceIfNeeded:password:completion:]";
       v24 = 2112;
-      v25 = v8;
+      v25 = neededCopy;
       _os_log_impl(&dword_2441FB000, v19, OS_LOG_TYPE_DEFAULT, "%s: Requesting to pair with %@", &v22, 0x16u);
     }
 
-    [(CSPairingMessagingClient *)self _pairWithDevice:v8 password:v9 completion:v10];
+    [(CSPairingMessagingClient *)self _pairWithDevice:neededCopy password:passwordCopy completion:completionCopy];
   }
 }
 
-- (void)_pairWithDevice:(id)a3 password:(id)a4 completion:(id)a5
+- (void)_pairWithDevice:(id)device password:(id)password completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  passwordCopy = password;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalQueue);
-  if (!v9)
+  if (!passwordCopy)
   {
     v19 = ContinuitySingLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -734,11 +734,11 @@ void __95__CSPairingMessagingClient__pairWithMediaRouteIdentifierIfNeeded_passwo
   {
     if (v14)
     {
-      v15 = [(RPCompanionLinkClient *)*p_pairingClient destinationDevice];
+      destinationDevice = [(RPCompanionLinkClient *)*p_pairingClient destinationDevice];
       *buf = 136315394;
       *&buf[4] = "[CSPairingMessagingClient _pairWithDevice:password:completion:]";
       *&buf[12] = 2112;
-      *&buf[14] = v15;
+      *&buf[14] = destinationDevice;
       _os_log_impl(&dword_2441FB000, v13, OS_LOG_TYPE_DEFAULT, "%s: Pairing in progress with %@", buf, 0x16u);
     }
 
@@ -747,7 +747,7 @@ void __95__CSPairingMessagingClient__pairWithMediaRouteIdentifierIfNeeded_passwo
     v18 = 0;
 LABEL_9:
     v20 = [v16 initWithDomain:v17 code:v18 userInfo:0];
-    v10[2](v10, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
 
     goto LABEL_13;
   }
@@ -757,7 +757,7 @@ LABEL_9:
     *buf = 136315394;
     *&buf[4] = "[CSPairingMessagingClient _pairWithDevice:password:completion:]";
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = deviceCopy;
     _os_log_impl(&dword_2441FB000, v13, OS_LOG_TYPE_DEFAULT, "%s: Pair with %@", buf, 0x16u);
   }
 
@@ -775,13 +775,13 @@ LABEL_9:
   v64 = v41;
   v66 = buf;
   objc_copyWeak(&v67, location);
-  v65 = v10;
+  v65 = completionCopy;
   v22 = _Block_copy(aBlock);
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
   v60[2] = __64__CSPairingMessagingClient__pairWithDevice_password_completion___block_invoke_3;
   v60[3] = &unk_278E0BCF8;
-  v23 = v8;
+  v23 = deviceCopy;
   v61 = v23;
   v24 = v22;
   v62 = v24;
@@ -821,7 +821,7 @@ LABEL_9:
   objc_copyWeak(&v54, location);
   v35 = v33;
   v53 = v35;
-  v52 = v9;
+  v52 = passwordCopy;
   [v34 setPromptForPasswordHandler:v51];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
@@ -1125,13 +1125,13 @@ void __64__CSPairingMessagingClient__pairWithDevice_password_completion___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_sendPingToDevice:(id)a3 completion:(id)a4
+- (void)_sendPingToDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalQueue);
   v8 = objc_alloc_init(MEMORY[0x277D44160]);
-  [v8 setDestinationDevice:v6];
+  [v8 setDestinationDevice:deviceCopy];
   [v8 setControlFlags:{-[RPCompanionLinkClient controlFlags](self->_rpClient, "controlFlags")}];
   [v8 setFlags:{-[RPCompanionLinkClient flags](self->_rpClient, "flags")}];
   v9 = self->_callbackQueue;
@@ -1140,18 +1140,18 @@ void __64__CSPairingMessagingClient__pairWithDevice_password_completion___block_
   aBlock[2] = __57__CSPairingMessagingClient__sendPingToDevice_completion___block_invoke;
   aBlock[3] = &unk_278E0BDE8;
   v21 = v9;
-  v22 = v7;
-  v10 = v7;
+  v22 = completionCopy;
+  v10 = completionCopy;
   v11 = v9;
   v12 = _Block_copy(aBlock);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __57__CSPairingMessagingClient__sendPingToDevice_completion___block_invoke_3;
   v16[3] = &unk_278E0BE10;
-  v18 = v6;
+  v18 = deviceCopy;
   v19 = v12;
   v17 = v8;
-  v13 = v6;
+  v13 = deviceCopy;
   v14 = v12;
   v15 = v8;
   [v15 activateWithCompletion:v16];
@@ -1288,29 +1288,29 @@ void __57__CSPairingMessagingClient__sendPingToDevice_completion___block_invoke_
   }
 }
 
-- (void)requestGroupSessionTokenFromIdentifer:(id)a3 completion:(id)a4
+- (void)requestGroupSessionTokenFromIdentifer:(id)identifer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identiferCopy = identifer;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__CSPairingMessagingClient_requestGroupSessionTokenFromIdentifer_completion___block_invoke;
   block[3] = &unk_278E0BE38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identiferCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identiferCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)_requestGroupSessionTokenFromIdentifer:(id)a3 attempts:(int64_t)a4 completion:(id)a5
+- (void)_requestGroupSessionTokenFromIdentifer:(id)identifer attempts:(int64_t)attempts completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identiferCopy = identifer;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v10 = [(CSPairingMessagingClient *)self deviceForRemoteDisplayIdentifier:v8];
+  v10 = [(CSPairingMessagingClient *)self deviceForRemoteDisplayIdentifier:identiferCopy];
   if (v10)
   {
     if (self->_pendingGroupSessionTokenCompletionHandlers)
@@ -1324,20 +1324,20 @@ void __57__CSPairingMessagingClient__sendPingToDevice_completion___block_invoke_
       }
 
       pendingGroupSessionTokenCompletionHandlers = self->_pendingGroupSessionTokenCompletionHandlers;
-      v13 = _Block_copy(v9);
+      v13 = _Block_copy(completionCopy);
       [(NSMutableArray *)pendingGroupSessionTokenCompletionHandlers addObject:v13];
 
       goto LABEL_15;
     }
 
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = self->_pendingGroupSessionTokenCompletionHandlers;
-    self->_pendingGroupSessionTokenCompletionHandlers = v18;
+    self->_pendingGroupSessionTokenCompletionHandlers = array;
 
-    if (v9)
+    if (completionCopy)
     {
       v20 = self->_pendingGroupSessionTokenCompletionHandlers;
-      v21 = _Block_copy(v9);
+      v21 = _Block_copy(completionCopy);
       [(NSMutableArray *)v20 addObject:v21];
     }
 
@@ -1356,7 +1356,7 @@ void __57__CSPairingMessagingClient__sendPingToDevice_completion___block_invoke_
     v27[1] = 3221225472;
     v27[2] = __87__CSPairingMessagingClient__requestGroupSessionTokenFromIdentifer_attempts_completion___block_invoke_2;
     v27[3] = &unk_278E0BEB0;
-    v28 = v8;
+    v28 = identiferCopy;
     v24 = v22;
     v29 = v24;
     v25 = v23;
@@ -1371,22 +1371,22 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a4 < 2)
+  if (attempts < 2)
   {
     v26 = objc_alloc(MEMORY[0x277CCA9B8]);
     v24 = [v26 initWithDomain:CSPairingErrorDomain code:3 userInfo:0];
-    (*(v9 + 2))(v9, 0, v24);
+    (*(completionCopy + 2))(completionCopy, 0, v24);
     goto LABEL_14;
   }
 
-  v14 = (a4 - 1);
+  v14 = (attempts - 1);
   v15 = ContinuitySingLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v39 = "[CSPairingMessagingClient _requestGroupSessionTokenFromIdentifer:attempts:completion:]";
     v40 = 2112;
-    v41 = v8;
+    v41 = identiferCopy;
     v42 = 2048;
     v43 = 0x4000000000000000;
     v44 = 2048;
@@ -1402,9 +1402,9 @@ LABEL_14:
   block[2] = __87__CSPairingMessagingClient__requestGroupSessionTokenFromIdentifer_attempts_completion___block_invoke;
   block[3] = &unk_278E0BE60;
   objc_copyWeak(v37, buf);
-  v35 = v8;
+  v35 = identiferCopy;
   v37[1] = v14;
-  v36 = v9;
+  v36 = completionCopy;
   dispatch_after(v16, internalQueue, block);
 
   objc_destroyWeak(v37);
@@ -1541,20 +1541,20 @@ void __87__CSPairingMessagingClient__requestGroupSessionTokenFromIdentifer_attem
   }
 }
 
-- (void)_completePendingGroupSessionTokenRequests:(id)a3 error:(id)a4
+- (void)_completePendingGroupSessionTokenRequests:(id)requests error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  errorCopy = error;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__CSPairingMessagingClient__completePendingGroupSessionTokenRequests_error___block_invoke;
   block[3] = &unk_278E0AE18;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestsCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = requestsCopy;
   dispatch_async(internalQueue, block);
 }
 

@@ -1,11 +1,11 @@
 @interface HKMCDayViewModel
-+ (id)dayViewModelWithMenstruationLevel:(unint64_t)a3 fertileWindowLevel:(unint64_t)a4 pregnancyState:(unint64_t)a5 bleedingInPregnancyLevel:(unint64_t)a6 bleedingAfterPregnancyLevel:(unint64_t)a7 daySummary:(id)a8 cycleFactors:(id)a9 partiallyLoggedPeriod:(BOOL)a10 fetched:(BOOL)a11;
++ (id)dayViewModelWithMenstruationLevel:(unint64_t)level fertileWindowLevel:(unint64_t)windowLevel pregnancyState:(unint64_t)state bleedingInPregnancyLevel:(unint64_t)pregnancyLevel bleedingAfterPregnancyLevel:(unint64_t)afterPregnancyLevel daySummary:(id)summary cycleFactors:(id)factors partiallyLoggedPeriod:(BOOL)self0 fetched:(BOOL)self1;
 + (id)emptyDayViewModel;
 + (id)unfetchedDayViewModel;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)accessibilityIdentifier;
 - (NSString)hk_redactedDescription;
-- (id)_initWithMenstruationLevel:(unint64_t)a3 fertileWindowLevel:(unint64_t)a4 pregnancyState:(unint64_t)a5 bleedingInPregnancyLevel:(unint64_t)a6 bleedingAfterPregnancyLevel:(unint64_t)a7 daySummary:(id)a8 cycleFactors:(id)a9 partiallyLoggedPeriod:(BOOL)a10 fetched:(BOOL)a11;
+- (id)_initWithMenstruationLevel:(unint64_t)level fertileWindowLevel:(unint64_t)windowLevel pregnancyState:(unint64_t)state bleedingInPregnancyLevel:(unint64_t)pregnancyLevel bleedingAfterPregnancyLevel:(unint64_t)afterPregnancyLevel daySummary:(id)summary cycleFactors:(id)factors partiallyLoggedPeriod:(BOOL)self0 fetched:(BOOL)self1;
 - (id)description;
 - (unint64_t)bleedingTypesWithFlowLogged;
 - (unint64_t)defaultLoggingBleedingType;
@@ -54,38 +54,38 @@ uint64_t __37__HKMCDayViewModel_emptyDayViewModel__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)dayViewModelWithMenstruationLevel:(unint64_t)a3 fertileWindowLevel:(unint64_t)a4 pregnancyState:(unint64_t)a5 bleedingInPregnancyLevel:(unint64_t)a6 bleedingAfterPregnancyLevel:(unint64_t)a7 daySummary:(id)a8 cycleFactors:(id)a9 partiallyLoggedPeriod:(BOOL)a10 fetched:(BOOL)a11
++ (id)dayViewModelWithMenstruationLevel:(unint64_t)level fertileWindowLevel:(unint64_t)windowLevel pregnancyState:(unint64_t)state bleedingInPregnancyLevel:(unint64_t)pregnancyLevel bleedingAfterPregnancyLevel:(unint64_t)afterPregnancyLevel daySummary:(id)summary cycleFactors:(id)factors partiallyLoggedPeriod:(BOOL)self0 fetched:(BOOL)self1
 {
-  v17 = a9;
-  v18 = a8;
-  LOWORD(v21) = __PAIR16__(a11, a10);
-  v19 = [[HKMCDayViewModel alloc] _initWithMenstruationLevel:a3 fertileWindowLevel:a4 pregnancyState:a5 bleedingInPregnancyLevel:a6 bleedingAfterPregnancyLevel:a7 daySummary:v18 cycleFactors:v17 partiallyLoggedPeriod:v21 fetched:?];
+  factorsCopy = factors;
+  summaryCopy = summary;
+  LOWORD(v21) = __PAIR16__(fetched, period);
+  v19 = [[HKMCDayViewModel alloc] _initWithMenstruationLevel:level fertileWindowLevel:windowLevel pregnancyState:state bleedingInPregnancyLevel:pregnancyLevel bleedingAfterPregnancyLevel:afterPregnancyLevel daySummary:summaryCopy cycleFactors:factorsCopy partiallyLoggedPeriod:v21 fetched:?];
 
   return v19;
 }
 
-- (id)_initWithMenstruationLevel:(unint64_t)a3 fertileWindowLevel:(unint64_t)a4 pregnancyState:(unint64_t)a5 bleedingInPregnancyLevel:(unint64_t)a6 bleedingAfterPregnancyLevel:(unint64_t)a7 daySummary:(id)a8 cycleFactors:(id)a9 partiallyLoggedPeriod:(BOOL)a10 fetched:(BOOL)a11
+- (id)_initWithMenstruationLevel:(unint64_t)level fertileWindowLevel:(unint64_t)windowLevel pregnancyState:(unint64_t)state bleedingInPregnancyLevel:(unint64_t)pregnancyLevel bleedingAfterPregnancyLevel:(unint64_t)afterPregnancyLevel daySummary:(id)summary cycleFactors:(id)factors partiallyLoggedPeriod:(BOOL)self0 fetched:(BOOL)self1
 {
-  v18 = a8;
-  v19 = a9;
+  summaryCopy = summary;
+  factorsCopy = factors;
   v25.receiver = self;
   v25.super_class = HKMCDayViewModel;
   v20 = [(HKMCDayViewModel *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    v20->_menstruationLevel = a3;
-    v20->_fertileWindowLevel = a4;
-    v20->_pregnancyState = a5;
-    v20->_bleedingInPregnancyLevel = a6;
-    v20->_bleedingAfterPregnancyLevel = a7;
-    objc_storeStrong(&v20->_daySummary, a8);
-    v22 = [v19 copy];
+    v20->_menstruationLevel = level;
+    v20->_fertileWindowLevel = windowLevel;
+    v20->_pregnancyState = state;
+    v20->_bleedingInPregnancyLevel = pregnancyLevel;
+    v20->_bleedingAfterPregnancyLevel = afterPregnancyLevel;
+    objc_storeStrong(&v20->_daySummary, summary);
+    v22 = [factorsCopy copy];
     cycleFactors = v21->_cycleFactors;
     v21->_cycleFactors = v22;
 
-    v21->_partiallyLoggedPeriod = a10;
-    v21->_fetched = a11;
+    v21->_partiallyLoggedPeriod = period;
+    v21->_fetched = fetched;
   }
 
   return v21;
@@ -111,9 +111,9 @@ uint64_t __37__HKMCDayViewModel_emptyDayViewModel__block_invoke()
   bleedingInPregnancyLevel = self->_bleedingInPregnancyLevel;
   bleedingAfterPregnancyLevel = self->_bleedingAfterPregnancyLevel;
   v5 = [MEMORY[0x277CCABB0] numberWithBool:menstruationLevel == 4];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:bleedingInPregnancyLevel == 1];
-  v8 = [v7 integerValue] + v6;
+  v8 = [v7 integerValue] + integerValue;
   v9 = [MEMORY[0x277CCABB0] numberWithBool:bleedingAfterPregnancyLevel == 1];
   v10 = v8 + [v9 integerValue];
 
@@ -151,10 +151,10 @@ uint64_t __37__HKMCDayViewModel_emptyDayViewModel__block_invoke()
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -164,7 +164,7 @@ uint64_t __37__HKMCDayViewModel_emptyDayViewModel__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       v7 = self->_menstruationLevel == v5->_menstruationLevel && self->_fertileWindowLevel == v5->_fertileWindowLevel && self->_partiallyLoggedPeriod == v5->_partiallyLoggedPeriod && self->_fetched == v5->_fetched && [(HKMCDaySummary *)self->_daySummary isEqual:v5->_daySummary]&& self->_pregnancyState == v6->_pregnancyState;
     }
@@ -260,9 +260,9 @@ uint64_t __37__HKMCDayViewModel_emptyDayViewModel__block_invoke()
     v7 = off_2796D53C8[v6];
   }
 
-  v8 = [(HKMCDayViewModel *)self isSupplementaryDataLogged];
+  isSupplementaryDataLogged = [(HKMCDayViewModel *)self isSupplementaryDataLogged];
   v9 = @"NO";
-  if (v8)
+  if (isSupplementaryDataLogged)
   {
     v9 = @"YES";
   }

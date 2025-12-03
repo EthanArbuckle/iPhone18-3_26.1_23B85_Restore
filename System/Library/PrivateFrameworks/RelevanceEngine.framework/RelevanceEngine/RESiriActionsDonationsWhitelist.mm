@@ -1,12 +1,12 @@
 @interface RESiriActionsDonationsWhitelist
 + (id)sharedInstance;
-- (BOOL)intentIsWhitelistedForBundleID:(id)a3 andTypeName:(id)a4;
-- (BOOL)userActivityIsWhitelistedForBundleID:(id)a3 andActivityType:(id)a4;
+- (BOOL)intentIsWhitelistedForBundleID:(id)d andTypeName:(id)name;
+- (BOOL)userActivityIsWhitelistedForBundleID:(id)d andActivityType:(id)type;
 - (NSSet)intentWhitelistBundleIDs;
 - (NSSet)userActivityWhitelistBundleIDs;
 - (RESiriActionsDonationsWhitelist)init;
-- (id)intentWhitelistedRelevanceThresholdForBundleID:(id)a3 andTypeName:(id)a4;
-- (id)userActivityWhitelistedRelevanceThresholdForBundleID:(id)a3 andActivityType:(id)a4;
+- (id)intentWhitelistedRelevanceThresholdForBundleID:(id)d andTypeName:(id)name;
+- (id)userActivityWhitelistedRelevanceThresholdForBundleID:(id)d andActivityType:(id)type;
 @end
 
 @implementation RESiriActionsDonationsWhitelist
@@ -52,43 +52,43 @@ uint64_t __49__RESiriActionsDonationsWhitelist_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)userActivityWhitelistedRelevanceThresholdForBundleID:(id)a3 andActivityType:(id)a4
+- (id)userActivityWhitelistedRelevanceThresholdForBundleID:(id)d andActivityType:(id)type
 {
   whitelist = self->_whitelist;
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  dCopy = d;
   v8 = [(NSDictionary *)whitelist objectForKeyedSubscript:@"UserActivities"];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:dCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v6];
+  v10 = [v9 objectForKeyedSubscript:typeCopy];
 
   return v10;
 }
 
-- (BOOL)userActivityIsWhitelistedForBundleID:(id)a3 andActivityType:(id)a4
+- (BOOL)userActivityIsWhitelistedForBundleID:(id)d andActivityType:(id)type
 {
-  v4 = [(RESiriActionsDonationsWhitelist *)self userActivityWhitelistedRelevanceThresholdForBundleID:a3 andActivityType:a4];
+  v4 = [(RESiriActionsDonationsWhitelist *)self userActivityWhitelistedRelevanceThresholdForBundleID:d andActivityType:type];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (id)intentWhitelistedRelevanceThresholdForBundleID:(id)a3 andTypeName:(id)a4
+- (id)intentWhitelistedRelevanceThresholdForBundleID:(id)d andTypeName:(id)name
 {
   whitelist = self->_whitelist;
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  dCopy = d;
   v8 = [(NSDictionary *)whitelist objectForKeyedSubscript:@"Intents"];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:dCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v6];
+  v10 = [v9 objectForKeyedSubscript:nameCopy];
 
   return v10;
 }
 
-- (BOOL)intentIsWhitelistedForBundleID:(id)a3 andTypeName:(id)a4
+- (BOOL)intentIsWhitelistedForBundleID:(id)d andTypeName:(id)name
 {
-  v4 = [(RESiriActionsDonationsWhitelist *)self intentWhitelistedRelevanceThresholdForBundleID:a3 andTypeName:a4];
+  v4 = [(RESiriActionsDonationsWhitelist *)self intentWhitelistedRelevanceThresholdForBundleID:d andTypeName:name];
   v5 = v4 != 0;
 
   return v5;
@@ -102,8 +102,8 @@ uint64_t __49__RESiriActionsDonationsWhitelist_sharedInstance__block_invoke()
   {
     v4 = objc_alloc(MEMORY[0x277CBEB98]);
     v5 = [(NSDictionary *)self->_whitelist objectForKeyedSubscript:@"Intents"];
-    v6 = [v5 allKeys];
-    v3 = [v4 initWithArray:v6];
+    allKeys = [v5 allKeys];
+    v3 = [v4 initWithArray:allKeys];
 
     objc_storeStrong(&self->_intentWhitelistBundleIDs, v3);
   }
@@ -121,8 +121,8 @@ uint64_t __49__RESiriActionsDonationsWhitelist_sharedInstance__block_invoke()
   {
     v4 = objc_alloc(MEMORY[0x277CBEB98]);
     v5 = [(NSDictionary *)self->_whitelist objectForKeyedSubscript:@"UserActivities"];
-    v6 = [v5 allKeys];
-    v3 = [v4 initWithArray:v6];
+    allKeys = [v5 allKeys];
+    v3 = [v4 initWithArray:allKeys];
 
     objc_storeStrong(&self->_userActivityWhitelistBundleIDs, v3);
   }

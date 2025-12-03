@@ -11,8 +11,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a1 sublayers];
-  result = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  sublayers = [self sublayers];
+  result = [sublayers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (result)
   {
     v6 = result;
@@ -24,14 +24,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) tsu_recursivelySetAllowsEdgeAntialiasing:a3];
       }
 
       while (v6 != v8);
-      result = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      result = [sublayers countByEnumeratingWithState:&v9 objects:v13 count:16];
       v6 = result;
     }
 

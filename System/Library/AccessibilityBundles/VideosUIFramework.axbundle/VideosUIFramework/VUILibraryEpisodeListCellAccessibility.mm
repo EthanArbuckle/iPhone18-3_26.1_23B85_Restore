@@ -1,24 +1,24 @@
 @interface VUILibraryEpisodeListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation VUILibraryEpisodeListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUILibraryEpisodeListCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryEpisodeListCell" hasInstanceMethod:@"releaseDateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryEpisodeListCell" hasInstanceMethod:@"durationLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryEpisodeListCell" hasInstanceMethod:@"downloadButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUILibraryEpisodeListCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryEpisodeListCell" hasInstanceMethod:@"releaseDateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryEpisodeListCell" hasInstanceMethod:@"durationLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryEpisodeListCell" hasInstanceMethod:@"downloadButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [(VUILibraryEpisodeListCellAccessibility *)self _accessibilityLabelAggregateElement];
+  _accessibilityLabelAggregateElement = [(VUILibraryEpisodeListCellAccessibility *)self _accessibilityLabelAggregateElement];
 
-  if (!v3)
+  if (!_accessibilityLabelAggregateElement)
   {
     v4 = MEMORY[0x29EDB8D80];
     v5 = [(VUILibraryEpisodeListCellAccessibility *)self safeValueForKey:@"titleLabel"];
@@ -32,9 +32,9 @@
   }
 
   v10 = MEMORY[0x29EDB8D80];
-  v11 = [(VUILibraryEpisodeListCellAccessibility *)self _accessibilityLabelAggregateElement];
+  _accessibilityLabelAggregateElement2 = [(VUILibraryEpisodeListCellAccessibility *)self _accessibilityLabelAggregateElement];
   v12 = [(VUILibraryEpisodeListCellAccessibility *)self safeValueForKey:@"downloadButton"];
-  v13 = [v10 axArrayByIgnoringNilElementsWithCount:{2, v11, v12}];
+  v13 = [v10 axArrayByIgnoringNilElementsWithCount:{2, _accessibilityLabelAggregateElement2, v12}];
 
   return v13;
 }

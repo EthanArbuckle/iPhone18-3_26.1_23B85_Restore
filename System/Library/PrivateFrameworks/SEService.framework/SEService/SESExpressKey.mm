@@ -1,40 +1,40 @@
 @interface SESExpressKey
-+ (id)withKeyIdentifier:(id)a3 appletIdentifier:(id)a4 configuration:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)withKeyIdentifier:(id)identifier appletIdentifier:(id)appletIdentifier configuration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation SESExpressKey
 
-+ (id)withKeyIdentifier:(id)a3 appletIdentifier:(id)a4 configuration:(id)a5
++ (id)withKeyIdentifier:(id)identifier appletIdentifier:(id)appletIdentifier configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  appletIdentifierCopy = appletIdentifier;
+  configurationCopy = configuration;
   v10 = objc_opt_new();
   v11 = v10[1];
-  v10[1] = v7;
-  v12 = v7;
+  v10[1] = identifierCopy;
+  v12 = identifierCopy;
 
   v13 = v10[2];
-  v10[2] = v8;
-  v14 = v8;
+  v10[2] = appletIdentifierCopy;
+  v14 = appletIdentifierCopy;
 
   v15 = v10[3];
-  v10[3] = v9;
+  v10[3] = configurationCopy;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SESExpressKey *)self keyIdentifier];
-    v6 = [v4 keyIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    keyIdentifier = [(SESExpressKey *)self keyIdentifier];
+    keyIdentifier2 = [equalCopy keyIdentifier];
+    v7 = [keyIdentifier isEqualToString:keyIdentifier2];
   }
 
   else
@@ -47,8 +47,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SESExpressKey *)self keyIdentifier];
-  v3 = [v2 hash];
+  keyIdentifier = [(SESExpressKey *)self keyIdentifier];
+  v3 = [keyIdentifier hash];
 
   return v3;
 }

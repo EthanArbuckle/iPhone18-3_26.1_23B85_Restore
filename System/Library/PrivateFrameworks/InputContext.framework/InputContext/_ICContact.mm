@@ -1,57 +1,57 @@
 @interface _ICContact
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContact:(id)a3;
-- (_ICContact)initWithFirstName:(id)a3 phoneticFirstName:(id)a4 middleName:(id)a5 phoneticMiddleName:(id)a6 lastName:(id)a7 phoneticLastName:(id)a8 organizationName:(id)a9 jobTitle:(id)a10 nickname:(id)a11 relations:(id)a12 streets:(id)a13 cities:(id)a14 score:(double)a15;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContact:(id)contact;
+- (_ICContact)initWithFirstName:(id)name phoneticFirstName:(id)firstName middleName:(id)middleName phoneticMiddleName:(id)phoneticMiddleName lastName:(id)lastName phoneticLastName:(id)phoneticLastName organizationName:(id)organizationName jobTitle:(id)self0 nickname:(id)self1 relations:(id)self2 streets:(id)self3 cities:(id)self4 score:(double)self5;
 - (id)flatten;
 - (unint64_t)hash;
 @end
 
 @implementation _ICContact
 
-- (_ICContact)initWithFirstName:(id)a3 phoneticFirstName:(id)a4 middleName:(id)a5 phoneticMiddleName:(id)a6 lastName:(id)a7 phoneticLastName:(id)a8 organizationName:(id)a9 jobTitle:(id)a10 nickname:(id)a11 relations:(id)a12 streets:(id)a13 cities:(id)a14 score:(double)a15
+- (_ICContact)initWithFirstName:(id)name phoneticFirstName:(id)firstName middleName:(id)middleName phoneticMiddleName:(id)phoneticMiddleName lastName:(id)lastName phoneticLastName:(id)phoneticLastName organizationName:(id)organizationName jobTitle:(id)self0 nickname:(id)self1 relations:(id)self2 streets:(id)self3 cities:(id)self4 score:(double)self5
 {
-  v45 = a3;
-  v35 = a4;
-  v44 = a4;
-  v43 = a5;
-  v42 = a6;
-  v36 = a7;
-  v41 = a7;
-  v40 = a8;
-  v39 = a9;
-  v38 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
+  nameCopy = name;
+  firstNameCopy = firstName;
+  firstNameCopy2 = firstName;
+  middleNameCopy = middleName;
+  phoneticMiddleNameCopy = phoneticMiddleName;
+  lastNameCopy = lastName;
+  lastNameCopy2 = lastName;
+  phoneticLastNameCopy = phoneticLastName;
+  organizationNameCopy = organizationName;
+  titleCopy = title;
+  nicknameCopy = nickname;
+  relationsCopy = relations;
+  streetsCopy = streets;
+  citiesCopy = cities;
   v46.receiver = self;
   v46.super_class = _ICContact;
   v25 = [(_ICContact *)&v46 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_firstName, a3);
-    objc_storeStrong(&v26->_phoneticFirstName, v35);
-    objc_storeStrong(&v26->_middleName, a5);
-    objc_storeStrong(&v26->_phoneticMiddleName, a6);
-    objc_storeStrong(&v26->_lastName, v36);
-    objc_storeStrong(&v26->_phoneticLastName, a8);
-    objc_storeStrong(&v26->_organizationName, a9);
-    objc_storeStrong(&v26->_jobTitle, a10);
-    objc_storeStrong(&v26->_nickname, a11);
-    v27 = [v22 copy];
+    objc_storeStrong(&v25->_firstName, name);
+    objc_storeStrong(&v26->_phoneticFirstName, firstNameCopy);
+    objc_storeStrong(&v26->_middleName, middleName);
+    objc_storeStrong(&v26->_phoneticMiddleName, phoneticMiddleName);
+    objc_storeStrong(&v26->_lastName, lastNameCopy);
+    objc_storeStrong(&v26->_phoneticLastName, phoneticLastName);
+    objc_storeStrong(&v26->_organizationName, organizationName);
+    objc_storeStrong(&v26->_jobTitle, title);
+    objc_storeStrong(&v26->_nickname, nickname);
+    v27 = [relationsCopy copy];
     relations = v26->_relations;
     v26->_relations = v27;
 
-    v29 = [v23 copy];
+    v29 = [streetsCopy copy];
     streets = v26->_streets;
     v26->_streets = v29;
 
-    v31 = [v24 copy];
+    v31 = [citiesCopy copy];
     cities = v26->_cities;
     v26->_cities = v31;
 
-    v26->_score = a15;
+    v26->_score = score;
   }
 
   return v26;
@@ -71,26 +71,26 @@
   v6 = v4;
   v41 = v6;
   v7 = MEMORY[0x259C27030](v39);
-  v8 = [(_ICContact *)self lastName];
-  (v7)[2](v7, v8);
+  lastName = [(_ICContact *)self lastName];
+  (v7)[2](v7, lastName);
 
-  v9 = [(_ICContact *)self firstName];
-  (v7)[2](v7, v9);
+  firstName = [(_ICContact *)self firstName];
+  (v7)[2](v7, firstName);
 
-  v10 = [(_ICContact *)self middleName];
-  (v7)[2](v7, v10);
+  middleName = [(_ICContact *)self middleName];
+  (v7)[2](v7, middleName);
 
-  v11 = [(_ICContact *)self organizationName];
-  (v7)[2](v7, v11);
+  organizationName = [(_ICContact *)self organizationName];
+  (v7)[2](v7, organizationName);
 
-  v12 = [(_ICContact *)self jobTitle];
-  (v7)[2](v7, v12);
+  jobTitle = [(_ICContact *)self jobTitle];
+  (v7)[2](v7, jobTitle);
 
-  v13 = [(_ICContact *)self nickname];
-  (v7)[2](v7, v13);
+  nickname = [(_ICContact *)self nickname];
+  (v7)[2](v7, nickname);
 
-  v14 = [(_ICContact *)self relations];
-  v15 = [v14 count];
+  relations = [(_ICContact *)self relations];
+  v15 = [relations count];
 
   if (v15)
   {
@@ -98,8 +98,8 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v16 = [(_ICContact *)self relations];
-    v17 = [v16 countByEnumeratingWithState:&v35 objects:v43 count:16];
+    relations2 = [(_ICContact *)self relations];
+    v17 = [relations2 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v17)
     {
       v18 = v17;
@@ -111,22 +111,22 @@
         {
           if (*v36 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(relations2);
           }
 
           v7[2](v7, *(*(&v35 + 1) + 8 * v20++));
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v18 = [relations2 countByEnumeratingWithState:&v35 objects:v43 count:16];
       }
 
       while (v18);
     }
   }
 
-  v21 = [(_ICContact *)self cities];
-  v22 = [v21 count];
+  cities = [(_ICContact *)self cities];
+  v22 = [cities count];
 
   if (v22)
   {
@@ -134,8 +134,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v23 = [(_ICContact *)self cities];
-    v24 = [v23 countByEnumeratingWithState:&v31 objects:v42 count:16];
+    cities2 = [(_ICContact *)self cities];
+    v24 = [cities2 countByEnumeratingWithState:&v31 objects:v42 count:16];
     if (v24)
     {
       v25 = v24;
@@ -147,14 +147,14 @@
         {
           if (*v32 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(cities2);
           }
 
           v7[2](v7, *(*(&v31 + 1) + 8 * v27++));
         }
 
         while (v25 != v27);
-        v25 = [v23 countByEnumeratingWithState:&v31 objects:v42 count:16];
+        v25 = [cities2 countByEnumeratingWithState:&v31 objects:v42 count:16];
       }
 
       while (v25);
@@ -183,26 +183,26 @@
   return (self->_score + (31 * ([(NSArray *)self->_cities hash]- v13 + 32 * v13)));
 }
 
-- (BOOL)isEqualToContact:(id)a3
+- (BOOL)isEqualToContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(NSString *)self->_firstName isEqualToString:*(v4 + 1)]&& [(NSString *)self->_phoneticFirstName isEqualToString:self->_phoneticFirstName]&& [(NSString *)self->_middleName isEqualToString:*(v4 + 3)]&& [(NSString *)self->_phoneticMiddleName isEqualToString:*(v4 + 4)]&& [(NSString *)self->_lastName isEqualToString:*(v4 + 5)]&& [(NSString *)self->_phoneticLastName isEqualToString:*(v4 + 6)]&& [(NSString *)self->_organizationName isEqualToString:*(v4 + 7)]&& [(NSString *)self->_jobTitle isEqualToString:*(v4 + 8)]&& [(NSString *)self->_nickname isEqualToString:*(v4 + 9)]&& [(NSArray *)self->_relations isEqualToArray:*(v4 + 10)]&& [(NSArray *)self->_streets isEqualToArray:*(v4 + 11)]&& [(NSArray *)self->_cities isEqualToArray:*(v4 + 12)]&& self->_score == v4[13];
+  contactCopy = contact;
+  v5 = [(NSString *)self->_firstName isEqualToString:*(contactCopy + 1)]&& [(NSString *)self->_phoneticFirstName isEqualToString:self->_phoneticFirstName]&& [(NSString *)self->_middleName isEqualToString:*(contactCopy + 3)]&& [(NSString *)self->_phoneticMiddleName isEqualToString:*(contactCopy + 4)]&& [(NSString *)self->_lastName isEqualToString:*(contactCopy + 5)]&& [(NSString *)self->_phoneticLastName isEqualToString:*(contactCopy + 6)]&& [(NSString *)self->_organizationName isEqualToString:*(contactCopy + 7)]&& [(NSString *)self->_jobTitle isEqualToString:*(contactCopy + 8)]&& [(NSString *)self->_nickname isEqualToString:*(contactCopy + 9)]&& [(NSArray *)self->_relations isEqualToArray:*(contactCopy + 10)]&& [(NSArray *)self->_streets isEqualToArray:*(contactCopy + 11)]&& [(NSArray *)self->_cities isEqualToArray:*(contactCopy + 12)]&& self->_score == contactCopy[13];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_ICContact *)self isEqualToContact:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_ICContact *)self isEqualToContact:v5];
   }
 
   return v6;

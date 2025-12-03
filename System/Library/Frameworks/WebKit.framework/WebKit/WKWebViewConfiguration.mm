@@ -1,5 +1,5 @@
 @interface WKWebViewConfiguration
-+ (BOOL)_isValidCustomScheme:(id)a3;
++ (BOOL)_isValidCustomScheme:(id)scheme;
 - (BOOL)_applePayEnabled;
 - (BOOL)_delaysWebProcessLaunchUntilFirstLoad;
 - (BOOL)_printsBackgrounds;
@@ -29,61 +29,61 @@
 - (WKWebView)_relatedWebView;
 - (WKWebView)_webViewToCloneSessionStorageFrom;
 - (WKWebViewConfiguration)init;
-- (WKWebViewConfiguration)initWithCoder:(id)a3;
+- (WKWebViewConfiguration)initWithCoder:(id)coder;
 - (WKWebpagePreferences)defaultWebpagePreferences;
 - (WKWebsiteDataStore)_websiteDataStoreIfExists;
 - (WKWebsiteDataStore)websiteDataStore;
 - (_WKApplicationManifest)_applicationManifest;
 - (_WKVisitedLinkStore)_visitedLinkStore;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)urlSchemeHandlerForURLScheme:(NSString *)urlScheme;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 - (int64_t)writingToolsBehavior;
 - (unint64_t)_appInitiatedOverrideValueForTesting;
 - (unint64_t)_contentSecurityPolicyModeForExtension;
 - (unint64_t)_dragLiftDelay;
-- (void)_setAdditionalSupportedImageTypes:(id)a3;
-- (void)_setAllowedNetworkHosts:(id)a3;
-- (void)_setAlternateWebViewForNavigationGestures:(id)a3;
-- (void)_setAppInitiatedOverrideValueForTesting:(unint64_t)a3;
-- (void)_setApplePayEnabled:(BOOL)a3;
-- (void)_setApplicationManifest:(id)a3;
-- (void)_setAttachmentFileWrapperClass:(Class)a3;
-- (void)_setAttributedBundleIdentifier:(id)a3;
-- (void)_setCORSDisablingPatterns:(id)a3;
-- (void)_setClickInteractionDriverForTesting:(id)a3;
-- (void)_setContentSecurityPolicyModeForExtension:(unint64_t)a3;
-- (void)_setDelaysWebProcessLaunchUntilFirstLoad:(BOOL)a3;
-- (void)_setDragLiftDelay:(unint64_t)a3;
-- (void)_setGroupIdentifier:(id)a3;
-- (void)_setLoadsFromNetwork:(BOOL)a3;
-- (void)_setMaskedURLSchemes:(id)a3;
-- (void)_setMediaContentTypesRequiringHardwareSupport:(id)a3;
-- (void)_setOverrideContentSecurityPolicy:(id)a3;
-- (void)_setPortsForUpgradingInsecureSchemeForTesting:(id)a3;
-- (void)_setPrintsBackgrounds:(BOOL)a3;
-- (void)_setProcessDisplayName:(id)a3;
-- (void)_setRelatedWebView:(id)a3;
-- (void)_setRequiredWebExtensionBaseURL:(id)a3;
-- (void)_setRequiresUserActionForAudioPlayback:(BOOL)a3;
-- (void)_setRequiresUserActionForVideoPlayback:(BOOL)a3;
-- (void)_setRespectsImageOrientation:(BOOL)a3;
-- (void)_setShouldRelaxThirdPartyCookieBlocking:(BOOL)a3;
-- (void)_setVisitedLinkStore:(id)a3;
-- (void)_setWeakWebExtensionController:(id)a3;
-- (void)_setWebViewToCloneSessionStorageFrom:(id)a3;
+- (void)_setAdditionalSupportedImageTypes:(id)types;
+- (void)_setAllowedNetworkHosts:(id)hosts;
+- (void)_setAlternateWebViewForNavigationGestures:(id)gestures;
+- (void)_setAppInitiatedOverrideValueForTesting:(unint64_t)testing;
+- (void)_setApplePayEnabled:(BOOL)enabled;
+- (void)_setApplicationManifest:(id)manifest;
+- (void)_setAttachmentFileWrapperClass:(Class)class;
+- (void)_setAttributedBundleIdentifier:(id)identifier;
+- (void)_setCORSDisablingPatterns:(id)patterns;
+- (void)_setClickInteractionDriverForTesting:(id)testing;
+- (void)_setContentSecurityPolicyModeForExtension:(unint64_t)extension;
+- (void)_setDelaysWebProcessLaunchUntilFirstLoad:(BOOL)load;
+- (void)_setDragLiftDelay:(unint64_t)delay;
+- (void)_setGroupIdentifier:(id)identifier;
+- (void)_setLoadsFromNetwork:(BOOL)network;
+- (void)_setMaskedURLSchemes:(id)schemes;
+- (void)_setMediaContentTypesRequiringHardwareSupport:(id)support;
+- (void)_setOverrideContentSecurityPolicy:(id)policy;
+- (void)_setPortsForUpgradingInsecureSchemeForTesting:(id)testing;
+- (void)_setPrintsBackgrounds:(BOOL)backgrounds;
+- (void)_setProcessDisplayName:(id)name;
+- (void)_setRelatedWebView:(id)view;
+- (void)_setRequiredWebExtensionBaseURL:(id)l;
+- (void)_setRequiresUserActionForAudioPlayback:(BOOL)playback;
+- (void)_setRequiresUserActionForVideoPlayback:(BOOL)playback;
+- (void)_setRespectsImageOrientation:(BOOL)orientation;
+- (void)_setShouldRelaxThirdPartyCookieBlocking:(BOOL)blocking;
+- (void)_setVisitedLinkStore:(id)store;
+- (void)_setWeakWebExtensionController:(id)controller;
+- (void)_setWebViewToCloneSessionStorageFrom:(id)from;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setApplicationNameForUserAgent:(NSString *)applicationNameForUserAgent;
 - (void)setDefaultWebpagePreferences:(WKWebpagePreferences *)defaultWebpagePreferences;
 - (void)setPreferences:(WKPreferences *)preferences;
 - (void)setProcessPool:(WKProcessPool *)processPool;
 - (void)setURLSchemeHandler:(id)urlSchemeHandler forURLScheme:(NSString *)urlScheme;
 - (void)setUserContentController:(WKUserContentController *)userContentController;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setWebExtensionController:(id)a3;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setWebExtensionController:(id)controller;
 - (void)setWebsiteDataStore:(WKWebsiteDataStore *)websiteDataStore;
-- (void)setWritingToolsBehavior:(int64_t)a3;
+- (void)setWritingToolsBehavior:(int64_t)behavior;
 @end
 
 @implementation WKWebViewConfiguration
@@ -97,9 +97,9 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(WKWebViewConfiguration *)v3 _apiObject];
+    _apiObject = [(WKWebViewConfiguration *)v3 _apiObject];
     v10 = v3;
-    v11 = v5;
+    v11 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v11, &v10, v9);
     v6 = API::Object::Object([(WKWebViewConfiguration *)v3 _apiObject]);
     *v6 = &unk_1F111B740;
@@ -694,13 +694,13 @@ LABEL_5:
   return [v3 stringWithFormat:@"<%@: %p; processPool = %@; preferences = %@>", NSStringFromClass(v4), self, -[WKWebViewConfiguration processPool](self, "processPool"), -[WKWebViewConfiguration preferences](self, "preferences")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[WKWebViewConfiguration processPool](self forKey:{"processPool"), @"processPool"}];
-  [a3 encodeObject:-[WKWebViewConfiguration preferences](self forKey:{"preferences"), @"preferences"}];
-  [a3 encodeObject:-[WKWebViewConfiguration userContentController](self forKey:{"userContentController"), @"userContentController"}];
-  [a3 encodeObject:-[WKWebViewConfiguration websiteDataStore](self forKey:{"websiteDataStore"), @"websiteDataStore"}];
-  [a3 encodeBool:-[WKWebViewConfiguration suppressesIncrementalRendering](self forKey:{"suppressesIncrementalRendering"), @"suppressesIncrementalRendering"}];
+  [coder encodeObject:-[WKWebViewConfiguration processPool](self forKey:{"processPool"), @"processPool"}];
+  [coder encodeObject:-[WKWebViewConfiguration preferences](self forKey:{"preferences"), @"preferences"}];
+  [coder encodeObject:-[WKWebViewConfiguration userContentController](self forKey:{"userContentController"), @"userContentController"}];
+  [coder encodeObject:-[WKWebViewConfiguration websiteDataStore](self forKey:{"websiteDataStore"), @"websiteDataStore"}];
+  [coder encodeBool:-[WKWebViewConfiguration suppressesIncrementalRendering](self forKey:{"suppressesIncrementalRendering"), @"suppressesIncrementalRendering"}];
   if (self[9]._pageConfiguration.m_storage.data[32] == 1)
   {
     v5 = *&self[9]._pageConfiguration.m_storage.data[24];
@@ -720,7 +720,7 @@ LABEL_5:
       v7 = &stru_1F1147748;
     }
 
-    [a3 encodeObject:v9 forKey:@"applicationNameForUserAgent"];
+    [coder encodeObject:v9 forKey:@"applicationNameForUserAgent"];
     v8 = v9;
     v9 = 0;
     if (v8)
@@ -728,59 +728,59 @@ LABEL_5:
     }
   }
 
-  [a3 encodeBool:-[WKWebViewConfiguration allowsAirPlayForMediaPlayback](self forKey:{"allowsAirPlayForMediaPlayback"), @"allowsAirPlayForMediaPlayback"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _drawsBackground](self forKey:{"_drawsBackground"), @"drawsBackground"}];
-  [a3 encodeInteger:-[WKWebViewConfiguration dataDetectorTypes](self forKey:{"dataDetectorTypes"), @"dataDetectorTypes"}];
-  [a3 encodeBool:-[WKWebViewConfiguration allowsInlineMediaPlayback](self forKey:{"allowsInlineMediaPlayback"), @"allowsInlineMediaPlayback"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _allowsInlineMediaPlaybackAfterFullscreen](self forKey:{"_allowsInlineMediaPlaybackAfterFullscreen"), @"allowsInlineMediaPlaybackAfterFullscreen"}];
-  [a3 encodeBool:-[WKWebViewConfiguration mediaTypesRequiringUserActionForPlayback](self forKey:{"mediaTypesRequiringUserActionForPlayback") != 0, @"mediaTypesRequiringUserActionForPlayback"}];
-  [a3 encodeInteger:-[WKWebViewConfiguration selectionGranularity](self forKey:{"selectionGranularity"), @"selectionGranularity"}];
-  [a3 encodeBool:-[WKWebViewConfiguration allowsPictureInPictureMediaPlayback](self forKey:{"allowsPictureInPictureMediaPlayback"), @"allowsPictureInPictureMediaPlayback"}];
-  [a3 encodeBool:-[WKWebViewConfiguration ignoresViewportScaleLimits](self forKey:{"ignoresViewportScaleLimits"), @"ignoresViewportScaleLimits"}];
-  [a3 encodeInteger:-[WKWebViewConfiguration _dragLiftDelay](self forKey:{"_dragLiftDelay"), @"dragLiftDelay"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _textInteractionGesturesEnabled](self forKey:{"_textInteractionGesturesEnabled"), @"textInteractionGesturesEnabled"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _longPressActionsEnabled](self forKey:{"_longPressActionsEnabled"), @"longPressActionsEnabled"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _systemPreviewEnabled](self forKey:{"_systemPreviewEnabled"), @"systemPreviewEnabled"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _shouldDecidePolicyBeforeLoadingQuickLookPreview](self forKey:{"_shouldDecidePolicyBeforeLoadingQuickLookPreview"), @"shouldDecidePolicyBeforeLoadingQuickLookPreview"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _scrollToTextFragmentIndicatorEnabled](self forKey:{"_scrollToTextFragmentIndicatorEnabled"), @"scrollToTextFragmentIndicatorEnabled"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _scrollToTextFragmentMarkingEnabled](self forKey:{"_scrollToTextFragmentMarkingEnabled"), @"scrollToTextFragmentMarkingEnabled"}];
-  [a3 encodeBool:-[WKWebViewConfiguration _multiRepresentationHEICInsertionEnabled](self forKey:{"_multiRepresentationHEICInsertionEnabled"), @"multiRepresentationHEICInsertionEnabled"}];
+  [coder encodeBool:-[WKWebViewConfiguration allowsAirPlayForMediaPlayback](self forKey:{"allowsAirPlayForMediaPlayback"), @"allowsAirPlayForMediaPlayback"}];
+  [coder encodeBool:-[WKWebViewConfiguration _drawsBackground](self forKey:{"_drawsBackground"), @"drawsBackground"}];
+  [coder encodeInteger:-[WKWebViewConfiguration dataDetectorTypes](self forKey:{"dataDetectorTypes"), @"dataDetectorTypes"}];
+  [coder encodeBool:-[WKWebViewConfiguration allowsInlineMediaPlayback](self forKey:{"allowsInlineMediaPlayback"), @"allowsInlineMediaPlayback"}];
+  [coder encodeBool:-[WKWebViewConfiguration _allowsInlineMediaPlaybackAfterFullscreen](self forKey:{"_allowsInlineMediaPlaybackAfterFullscreen"), @"allowsInlineMediaPlaybackAfterFullscreen"}];
+  [coder encodeBool:-[WKWebViewConfiguration mediaTypesRequiringUserActionForPlayback](self forKey:{"mediaTypesRequiringUserActionForPlayback") != 0, @"mediaTypesRequiringUserActionForPlayback"}];
+  [coder encodeInteger:-[WKWebViewConfiguration selectionGranularity](self forKey:{"selectionGranularity"), @"selectionGranularity"}];
+  [coder encodeBool:-[WKWebViewConfiguration allowsPictureInPictureMediaPlayback](self forKey:{"allowsPictureInPictureMediaPlayback"), @"allowsPictureInPictureMediaPlayback"}];
+  [coder encodeBool:-[WKWebViewConfiguration ignoresViewportScaleLimits](self forKey:{"ignoresViewportScaleLimits"), @"ignoresViewportScaleLimits"}];
+  [coder encodeInteger:-[WKWebViewConfiguration _dragLiftDelay](self forKey:{"_dragLiftDelay"), @"dragLiftDelay"}];
+  [coder encodeBool:-[WKWebViewConfiguration _textInteractionGesturesEnabled](self forKey:{"_textInteractionGesturesEnabled"), @"textInteractionGesturesEnabled"}];
+  [coder encodeBool:-[WKWebViewConfiguration _longPressActionsEnabled](self forKey:{"_longPressActionsEnabled"), @"longPressActionsEnabled"}];
+  [coder encodeBool:-[WKWebViewConfiguration _systemPreviewEnabled](self forKey:{"_systemPreviewEnabled"), @"systemPreviewEnabled"}];
+  [coder encodeBool:-[WKWebViewConfiguration _shouldDecidePolicyBeforeLoadingQuickLookPreview](self forKey:{"_shouldDecidePolicyBeforeLoadingQuickLookPreview"), @"shouldDecidePolicyBeforeLoadingQuickLookPreview"}];
+  [coder encodeBool:-[WKWebViewConfiguration _scrollToTextFragmentIndicatorEnabled](self forKey:{"_scrollToTextFragmentIndicatorEnabled"), @"scrollToTextFragmentIndicatorEnabled"}];
+  [coder encodeBool:-[WKWebViewConfiguration _scrollToTextFragmentMarkingEnabled](self forKey:{"_scrollToTextFragmentMarkingEnabled"), @"scrollToTextFragmentMarkingEnabled"}];
+  [coder encodeBool:-[WKWebViewConfiguration _multiRepresentationHEICInsertionEnabled](self forKey:{"_multiRepresentationHEICInsertionEnabled"), @"multiRepresentationHEICInsertionEnabled"}];
 }
 
-- (WKWebViewConfiguration)initWithCoder:(id)a3
+- (WKWebViewConfiguration)initWithCoder:(id)coder
 {
   v4 = [(WKWebViewConfiguration *)self init];
   if (v4)
   {
-    -[WKWebViewConfiguration setProcessPool:](v4, "setProcessPool:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"processPool"]);
-    -[WKWebViewConfiguration setPreferences:](v4, "setPreferences:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"preferences"]);
-    -[WKWebViewConfiguration setUserContentController:](v4, "setUserContentController:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"userContentController"]);
-    -[WKWebViewConfiguration setWebsiteDataStore:](v4, "setWebsiteDataStore:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"websiteDataStore"]);
-    -[WKWebViewConfiguration setSuppressesIncrementalRendering:](v4, "setSuppressesIncrementalRendering:", [a3 decodeBoolForKey:@"suppressesIncrementalRendering"]);
-    if ([a3 containsValueForKey:@"applicationNameForUserAgent"])
+    -[WKWebViewConfiguration setProcessPool:](v4, "setProcessPool:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"processPool"]);
+    -[WKWebViewConfiguration setPreferences:](v4, "setPreferences:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"preferences"]);
+    -[WKWebViewConfiguration setUserContentController:](v4, "setUserContentController:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"userContentController"]);
+    -[WKWebViewConfiguration setWebsiteDataStore:](v4, "setWebsiteDataStore:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"websiteDataStore"]);
+    -[WKWebViewConfiguration setSuppressesIncrementalRendering:](v4, "setSuppressesIncrementalRendering:", [coder decodeBoolForKey:@"suppressesIncrementalRendering"]);
+    if ([coder containsValueForKey:@"applicationNameForUserAgent"])
     {
-      -[WKWebViewConfiguration setApplicationNameForUserAgent:](v4, "setApplicationNameForUserAgent:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"applicationNameForUserAgent"]);
+      -[WKWebViewConfiguration setApplicationNameForUserAgent:](v4, "setApplicationNameForUserAgent:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"applicationNameForUserAgent"]);
     }
 
-    -[WKWebViewConfiguration setAllowsAirPlayForMediaPlayback:](v4, "setAllowsAirPlayForMediaPlayback:", [a3 decodeBoolForKey:@"allowsAirPlayForMediaPlayback"]);
-    if ([a3 containsValueForKey:@"drawsBackground"])
+    -[WKWebViewConfiguration setAllowsAirPlayForMediaPlayback:](v4, "setAllowsAirPlayForMediaPlayback:", [coder decodeBoolForKey:@"allowsAirPlayForMediaPlayback"]);
+    if ([coder containsValueForKey:@"drawsBackground"])
     {
-      -[WKWebViewConfiguration _setDrawsBackground:](v4, "_setDrawsBackground:", [a3 decodeBoolForKey:@"drawsBackground"]);
+      -[WKWebViewConfiguration _setDrawsBackground:](v4, "_setDrawsBackground:", [coder decodeBoolForKey:@"drawsBackground"]);
     }
 
-    -[WKWebViewConfiguration setDataDetectorTypes:](v4, "setDataDetectorTypes:", [a3 decodeIntegerForKey:@"dataDetectorTypes"]);
-    -[WKWebViewConfiguration setAllowsInlineMediaPlayback:](v4, "setAllowsInlineMediaPlayback:", [a3 decodeBoolForKey:@"allowsInlineMediaPlayback"]);
-    -[WKWebViewConfiguration _setAllowsInlineMediaPlaybackAfterFullscreen:](v4, "_setAllowsInlineMediaPlaybackAfterFullscreen:", [a3 decodeBoolForKey:@"allowsInlineMediaPlaybackAfterFullscreen"]);
-    -[WKWebViewConfiguration setMediaTypesRequiringUserActionForPlayback:](v4, "setMediaTypesRequiringUserActionForPlayback:", [a3 decodeBoolForKey:@"mediaTypesRequiringUserActionForPlayback"]);
-    v5 = [a3 decodeIntegerForKey:@"selectionGranularity"];
+    -[WKWebViewConfiguration setDataDetectorTypes:](v4, "setDataDetectorTypes:", [coder decodeIntegerForKey:@"dataDetectorTypes"]);
+    -[WKWebViewConfiguration setAllowsInlineMediaPlayback:](v4, "setAllowsInlineMediaPlayback:", [coder decodeBoolForKey:@"allowsInlineMediaPlayback"]);
+    -[WKWebViewConfiguration _setAllowsInlineMediaPlaybackAfterFullscreen:](v4, "_setAllowsInlineMediaPlaybackAfterFullscreen:", [coder decodeBoolForKey:@"allowsInlineMediaPlaybackAfterFullscreen"]);
+    -[WKWebViewConfiguration setMediaTypesRequiringUserActionForPlayback:](v4, "setMediaTypesRequiringUserActionForPlayback:", [coder decodeBoolForKey:@"mediaTypesRequiringUserActionForPlayback"]);
+    v5 = [coder decodeIntegerForKey:@"selectionGranularity"];
     if (v5 <= 1)
     {
       [(WKWebViewConfiguration *)v4 setSelectionGranularity:v5];
     }
 
-    -[WKWebViewConfiguration setAllowsPictureInPictureMediaPlayback:](v4, "setAllowsPictureInPictureMediaPlayback:", [a3 decodeBoolForKey:@"allowsPictureInPictureMediaPlayback"]);
-    -[WKWebViewConfiguration setIgnoresViewportScaleLimits:](v4, "setIgnoresViewportScaleLimits:", [a3 decodeBoolForKey:@"ignoresViewportScaleLimits"]);
-    v6 = [a3 decodeIntegerForKey:@"dragLiftDelay"];
+    -[WKWebViewConfiguration setAllowsPictureInPictureMediaPlayback:](v4, "setAllowsPictureInPictureMediaPlayback:", [coder decodeBoolForKey:@"allowsPictureInPictureMediaPlayback"]);
+    -[WKWebViewConfiguration setIgnoresViewportScaleLimits:](v4, "setIgnoresViewportScaleLimits:", [coder decodeBoolForKey:@"ignoresViewportScaleLimits"]);
+    v6 = [coder decodeIntegerForKey:@"dragLiftDelay"];
     if (v6 == 1)
     {
       v7 = 1;
@@ -792,21 +792,21 @@ LABEL_5:
     }
 
     [(WKWebViewConfiguration *)v4 _setDragLiftDelay:v7];
-    -[WKWebViewConfiguration _setTextInteractionGesturesEnabled:](v4, "_setTextInteractionGesturesEnabled:", [a3 decodeBoolForKey:@"textInteractionGesturesEnabled"]);
-    -[WKWebViewConfiguration _setLongPressActionsEnabled:](v4, "_setLongPressActionsEnabled:", [a3 decodeBoolForKey:@"longPressActionsEnabled"]);
-    -[WKWebViewConfiguration _setSystemPreviewEnabled:](v4, "_setSystemPreviewEnabled:", [a3 decodeBoolForKey:@"systemPreviewEnabled"]);
-    -[WKWebViewConfiguration _setShouldDecidePolicyBeforeLoadingQuickLookPreview:](v4, "_setShouldDecidePolicyBeforeLoadingQuickLookPreview:", [a3 decodeBoolForKey:@"shouldDecidePolicyBeforeLoadingQuickLookPreview"]);
-    -[WKWebViewConfiguration _setScrollToTextFragmentIndicatorEnabled:](v4, "_setScrollToTextFragmentIndicatorEnabled:", [a3 decodeBoolForKey:@"scrollToTextFragmentIndicatorEnabled"]);
-    -[WKWebViewConfiguration _setScrollToTextFragmentMarkingEnabled:](v4, "_setScrollToTextFragmentMarkingEnabled:", [a3 decodeBoolForKey:@"scrollToTextFragmentMarkingEnabled"]);
-    -[WKWebViewConfiguration _setMultiRepresentationHEICInsertionEnabled:](v4, "_setMultiRepresentationHEICInsertionEnabled:", [a3 decodeBoolForKey:@"multiRepresentationHEICInsertionEnabled"]);
+    -[WKWebViewConfiguration _setTextInteractionGesturesEnabled:](v4, "_setTextInteractionGesturesEnabled:", [coder decodeBoolForKey:@"textInteractionGesturesEnabled"]);
+    -[WKWebViewConfiguration _setLongPressActionsEnabled:](v4, "_setLongPressActionsEnabled:", [coder decodeBoolForKey:@"longPressActionsEnabled"]);
+    -[WKWebViewConfiguration _setSystemPreviewEnabled:](v4, "_setSystemPreviewEnabled:", [coder decodeBoolForKey:@"systemPreviewEnabled"]);
+    -[WKWebViewConfiguration _setShouldDecidePolicyBeforeLoadingQuickLookPreview:](v4, "_setShouldDecidePolicyBeforeLoadingQuickLookPreview:", [coder decodeBoolForKey:@"shouldDecidePolicyBeforeLoadingQuickLookPreview"]);
+    -[WKWebViewConfiguration _setScrollToTextFragmentIndicatorEnabled:](v4, "_setScrollToTextFragmentIndicatorEnabled:", [coder decodeBoolForKey:@"scrollToTextFragmentIndicatorEnabled"]);
+    -[WKWebViewConfiguration _setScrollToTextFragmentMarkingEnabled:](v4, "_setScrollToTextFragmentMarkingEnabled:", [coder decodeBoolForKey:@"scrollToTextFragmentMarkingEnabled"]);
+    -[WKWebViewConfiguration _setMultiRepresentationHEICInsertionEnabled:](v4, "_setMultiRepresentationHEICInsertionEnabled:", [coder decodeBoolForKey:@"multiRepresentationHEICInsertionEnabled"]);
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -835,39 +835,39 @@ LABEL_5:
   return v5;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (([a4 isEqualToString:@"allowUniversalAccessFromFileURLs"] & 1) != 0 || objc_msgSend(a4, "isEqualToString:", @"_allowUniversalAccessFromFileURLs")) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (WTF::linkedOnOrAfterSDKWithBehavior() & 1) == 0)
+  if (([key isEqualToString:@"allowUniversalAccessFromFileURLs"] & 1) != 0 || objc_msgSend(key, "isEqualToString:", @"_allowUniversalAccessFromFileURLs")) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (WTF::linkedOnOrAfterSDKWithBehavior() & 1) == 0)
   {
     v7 = qword_1ED6407C0;
     if (os_log_type_enabled(qword_1ED6407C0, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v10 = a4;
+      keyCopy = key;
     }
 
-    -[WKWebViewConfiguration _setAllowUniversalAccessFromFileURLs:](self, "_setAllowUniversalAccessFromFileURLs:", [a3 BOOLValue]);
+    -[WKWebViewConfiguration _setAllowUniversalAccessFromFileURLs:](self, "_setAllowUniversalAccessFromFileURLs:", [value BOOLValue]);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WKWebViewConfiguration;
-    [(WKWebViewConfiguration *)&v8 setValue:a3 forKey:a4];
+    [(WKWebViewConfiguration *)&v8 setValue:value forKey:key];
   }
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  if ((([a3 isEqualToString:@"allowUniversalAccessFromFileURLs"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"_allowUniversalAccessFromFileURLs")) && (WTF::linkedOnOrAfterSDKWithBehavior() & 1) == 0)
+  if ((([key isEqualToString:@"allowUniversalAccessFromFileURLs"] & 1) != 0 || objc_msgSend(key, "isEqualToString:", @"_allowUniversalAccessFromFileURLs")) && (WTF::linkedOnOrAfterSDKWithBehavior() & 1) == 0)
   {
     v6 = qword_1ED6407C0;
     if (os_log_type_enabled(qword_1ED6407C0, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v9 = a3;
+      keyCopy = key;
     }
 
     return [MEMORY[0x1E696AD98] numberWithBool:{-[WKWebViewConfiguration _allowUniversalAccessFromFileURLs](self, "_allowUniversalAccessFromFileURLs")}];
@@ -877,7 +877,7 @@ LABEL_5:
   {
     v7.receiver = self;
     v7.super_class = WKWebViewConfiguration;
-    return [(WKWebViewConfiguration *)&v7 valueForKey:a3];
+    return [(WKWebViewConfiguration *)&v7 valueForKey:key];
   }
 }
 
@@ -1027,7 +1027,7 @@ LABEL_6:
   return v2;
 }
 
-- (void)_setRequiredWebExtensionBaseURL:(id)a3
+- (void)_setRequiredWebExtensionBaseURL:(id)l
 {
   if (self)
   {
@@ -1041,7 +1041,7 @@ LABEL_6:
     v9 = 0;
   }
 
-  MEMORY[0x19EB01DE0](v8, a3);
+  MEMORY[0x19EB01DE0](v8, l);
   WTF::URL::operator=(v4 + 64, v8);
   v6 = v8[0];
   v8[0] = 0;
@@ -1058,19 +1058,19 @@ LABEL_6:
   }
 }
 
-- (void)_setWeakWebExtensionController:(id)a3
+- (void)_setWeakWebExtensionController:(id)controller
 {
   if (self)
   {
     [(WKWebViewConfiguration *)self _protectedPageConfiguration];
     v4 = v6;
-    if (a3)
+    if (controller)
     {
 LABEL_3:
-      v5 = [a3 _webExtensionController];
-      CFRetain(v5[1]);
-      API::PageConfiguration::setWeakWebExtensionController(v4, v5);
-      CFRelease(v5[1]);
+      _webExtensionController = [controller _webExtensionController];
+      CFRetain(_webExtensionController[1]);
+      API::PageConfiguration::setWeakWebExtensionController(v4, _webExtensionController);
+      CFRelease(_webExtensionController[1]);
       goto LABEL_6;
     }
   }
@@ -1079,7 +1079,7 @@ LABEL_3:
   {
     v4 = 0;
     v6 = 0;
-    if (a3)
+    if (controller)
     {
       goto LABEL_3;
     }
@@ -1105,18 +1105,18 @@ LABEL_6:
   return result;
 }
 
-- (void)setWebExtensionController:(id)a3
+- (void)setWebExtensionController:(id)controller
 {
   if (self)
   {
     [(WKWebViewConfiguration *)self _protectedPageConfiguration];
     v4 = v7;
-    if (a3)
+    if (controller)
     {
 LABEL_3:
-      v5 = [a3 _webExtensionController];
-      CFRetain(*(v5 + 8));
-      CFRetain(*(v5 + 8));
+      _webExtensionController = [controller _webExtensionController];
+      CFRetain(*(_webExtensionController + 8));
+      CFRetain(*(_webExtensionController + 8));
       goto LABEL_6;
     }
   }
@@ -1125,24 +1125,24 @@ LABEL_3:
   {
     v4 = 0;
     v7 = 0;
-    if (a3)
+    if (controller)
     {
       goto LABEL_3;
     }
   }
 
-  v5 = 0;
+  _webExtensionController = 0;
 LABEL_6:
   v6 = *(v4 + 104);
-  *(v4 + 104) = v5;
+  *(v4 + 104) = _webExtensionController;
   if (v6)
   {
     CFRelease(*(v6 + 8));
   }
 
-  if (a3 && v5)
+  if (controller && _webExtensionController)
   {
-    CFRelease(*(v5 + 8));
+    CFRelease(*(_webExtensionController + 8));
   }
 
   if (v7)
@@ -1250,17 +1250,17 @@ LABEL_6:
   }
 }
 
-- (void)_setVisitedLinkStore:(id)a3
+- (void)_setVisitedLinkStore:(id)store
 {
   if (self)
   {
     [(WKWebViewConfiguration *)self _protectedPageConfiguration];
     v4 = v7;
-    if (a3)
+    if (store)
     {
 LABEL_3:
-      CFRetain(*(a3 + 2));
-      v5 = a3 + 8;
+      CFRetain(*(store + 2));
+      v5 = store + 8;
       goto LABEL_6;
     }
   }
@@ -1269,7 +1269,7 @@ LABEL_3:
   {
     v4 = 0;
     v7 = 0;
-    if (a3)
+    if (store)
     {
       goto LABEL_3;
     }
@@ -1518,14 +1518,14 @@ LABEL_19:
   return result;
 }
 
-+ (BOOL)_isValidCustomScheme:(id)a3
++ (BOOL)_isValidCustomScheme:(id)scheme
 {
   if ([WKWebView handlesURLScheme:?])
   {
     return 0;
   }
 
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, scheme);
   WTF::URLParser::maybeCanonicalizeScheme();
   v6 = v9;
   v9 = 0;
@@ -1551,10 +1551,10 @@ LABEL_19:
   return v4;
 }
 
-- (void)setWritingToolsBehavior:(int64_t)a3
+- (void)setWritingToolsBehavior:(int64_t)behavior
 {
-  v3 = 0x20301u >> (8 * a3);
-  if (a3 >= 3)
+  v3 = 0x20301u >> (8 * behavior);
+  if (behavior >= 3)
   {
     LOBYTE(v3) = 0;
   }
@@ -1575,9 +1575,9 @@ LABEL_19:
   }
 }
 
-- (void)_setRelatedWebView:(id)a3
+- (void)_setRelatedWebView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     v6 = *&self[2]._pageConfiguration.m_storage.data[16];
     *&self[2]._pageConfiguration.m_storage.data[16] = 0;
@@ -1589,7 +1589,7 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  v4 = *(a3 + 52);
+  v4 = *(view + 52);
   if (v4)
   {
     WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded((v4 + 24), v4 + 16);
@@ -1619,9 +1619,9 @@ LABEL_9:
   }
 }
 
-- (void)_setWebViewToCloneSessionStorageFrom:(id)a3
+- (void)_setWebViewToCloneSessionStorageFrom:(id)from
 {
-  if (a3)
+  if (from)
   {
     if (self)
     {
@@ -1635,7 +1635,7 @@ LABEL_9:
       v9 = 0;
     }
 
-    v7 = *(a3 + 52);
+    v7 = *(from + 52);
     if (v7)
     {
       WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded((v7 + 24), v7 + 16);
@@ -1684,9 +1684,9 @@ LABEL_14:
   }
 }
 
-- (void)_setAlternateWebViewForNavigationGestures:(id)a3
+- (void)_setAlternateWebViewForNavigationGestures:(id)gestures
 {
-  if (a3)
+  if (gestures)
   {
     if (self)
     {
@@ -1700,7 +1700,7 @@ LABEL_14:
       v9 = 0;
     }
 
-    v7 = *(a3 + 52);
+    v7 = *(gestures + 52);
     if (v7)
     {
       WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded((v7 + 24), v7 + 16);
@@ -1749,9 +1749,9 @@ LABEL_14:
   }
 }
 
-- (void)_setGroupIdentifier:(id)a3
+- (void)_setGroupIdentifier:(id)identifier
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, identifier);
   v5 = v8;
   v8 = 0;
   v6 = *&self[9]._pageConfiguration.m_storage.data[8];
@@ -1777,42 +1777,42 @@ LABEL_14:
 
 - (BOOL)_respectsImageOrientation
 {
-  v2 = [(WKWebViewConfiguration *)self preferences];
-  CFRetain(*&v2->_preferences.m_storage.data[8]);
+  preferences = [(WKWebViewConfiguration *)self preferences];
+  CFRetain(*&preferences->_preferences.m_storage.data[8]);
   {
     atomic_fetch_add_explicit(WebKit::WebPreferencesKey::shouldRespectImageOrientationKey(void)::$_0::operator() const(void)::impl, 2u, memory_order_relaxed);
     WebKit::WebPreferencesKey::shouldRespectImageOrientationKey(void)::key = WebKit::WebPreferencesKey::shouldRespectImageOrientationKey(void)::$_0::operator() const(void)::impl;
   }
 
-  BoolValueForKey = WebKit::WebPreferencesStore::getBoolValueForKey(&v2->_preferences.m_storage.data[40], &WebKit::WebPreferencesKey::shouldRespectImageOrientationKey(void)::key, v3);
-  CFRelease(*&v2->_preferences.m_storage.data[8]);
+  BoolValueForKey = WebKit::WebPreferencesStore::getBoolValueForKey(&preferences->_preferences.m_storage.data[40], &WebKit::WebPreferencesKey::shouldRespectImageOrientationKey(void)::key, v3);
+  CFRelease(*&preferences->_preferences.m_storage.data[8]);
   return BoolValueForKey;
 }
 
-- (void)_setRespectsImageOrientation:(BOOL)a3
+- (void)_setRespectsImageOrientation:(BOOL)orientation
 {
-  v5 = a3;
-  v3 = [(WKWebViewConfiguration *)self preferences];
-  CFRetain(*&v3->_preferences.m_storage.data[8]);
-  WebKit::WebPreferences::setShouldRespectImageOrientation(&v3->_preferences, &v5);
-  v4 = *&v3->_preferences.m_storage.data[8];
+  orientationCopy = orientation;
+  preferences = [(WKWebViewConfiguration *)self preferences];
+  CFRetain(*&preferences->_preferences.m_storage.data[8]);
+  WebKit::WebPreferences::setShouldRespectImageOrientation(&preferences->_preferences, &orientationCopy);
+  v4 = *&preferences->_preferences.m_storage.data[8];
 
   CFRelease(v4);
 }
 
 - (BOOL)_printsBackgrounds
 {
-  v2 = [(WKWebViewConfiguration *)self preferences];
+  preferences = [(WKWebViewConfiguration *)self preferences];
 
-  return [(WKPreferences *)v2 shouldPrintBackgrounds];
+  return [(WKPreferences *)preferences shouldPrintBackgrounds];
 }
 
-- (void)_setPrintsBackgrounds:(BOOL)a3
+- (void)_setPrintsBackgrounds:(BOOL)backgrounds
 {
-  v3 = a3;
-  v4 = [(WKWebViewConfiguration *)self preferences];
+  backgroundsCopy = backgrounds;
+  preferences = [(WKWebViewConfiguration *)self preferences];
 
-  [(WKPreferences *)v4 setShouldPrintBackgrounds:v3];
+  [(WKPreferences *)preferences setShouldPrintBackgrounds:backgroundsCopy];
 }
 
 - (NSArray)_portsForUpgradingInsecureSchemeForTesting
@@ -1829,12 +1829,12 @@ LABEL_14:
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:2];
 }
 
-- (void)_setPortsForUpgradingInsecureSchemeForTesting:(id)a3
+- (void)_setPortsForUpgradingInsecureSchemeForTesting:(id)testing
 {
-  if ([a3 count] == 2 && !(objc_msgSend(objc_msgSend(a3, "objectAtIndexedSubscript:", 0), "unsignedIntegerValue") >> 16) && !(objc_msgSend(objc_msgSend(a3, "objectAtIndexedSubscript:", 1), "unsignedIntegerValue") >> 16))
+  if ([testing count] == 2 && !(objc_msgSend(objc_msgSend(testing, "objectAtIndexedSubscript:", 0), "unsignedIntegerValue") >> 16) && !(objc_msgSend(objc_msgSend(testing, "objectAtIndexedSubscript:", 1), "unsignedIntegerValue") >> 16))
   {
-    v5 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "unsignedIntegerValue"}];
-    v6 = [objc_msgSend(a3 objectAtIndexedSubscript:{1), "unsignedIntegerValue"}];
+    v5 = [objc_msgSend(testing objectAtIndexedSubscript:{0), "unsignedIntegerValue"}];
+    v6 = [objc_msgSend(testing objectAtIndexedSubscript:{1), "unsignedIntegerValue"}];
     if (self[6]._pageConfiguration.m_storage.data[4] == 1)
     {
       *self[6]._pageConfiguration.m_storage.data = v5;
@@ -1863,10 +1863,10 @@ LABEL_14:
   }
 }
 
-- (void)_setDragLiftDelay:(unint64_t)a3
+- (void)_setDragLiftDelay:(unint64_t)delay
 {
-  v3 = 2 * (a3 == 2);
-  if (a3 == 1)
+  v3 = 2 * (delay == 2);
+  if (delay == 1)
   {
     v3 = 1;
   }
@@ -1874,24 +1874,24 @@ LABEL_14:
   self[5]._pageConfiguration.m_storage.data[20] = v3;
 }
 
-- (void)_setClickInteractionDriverForTesting:(id)a3
+- (void)_setClickInteractionDriverForTesting:(id)testing
 {
-  if (a3)
+  if (testing)
   {
-    v5 = a3;
+    testingCopy = testing;
   }
 
   v6 = *&self[5]._pageConfiguration.m_storage.data[8];
-  *&self[5]._pageConfiguration.m_storage.data[8] = a3;
+  *&self[5]._pageConfiguration.m_storage.data[8] = testing;
   if (v6)
   {
   }
 }
 
-- (void)_setAppInitiatedOverrideValueForTesting:(unint64_t)a3
+- (void)_setAppInitiatedOverrideValueForTesting:(unint64_t)testing
 {
-  v3 = a3 == 2;
-  if (a3 == 1)
+  v3 = testing == 2;
+  if (testing == 1)
   {
     v3 = 2;
   }
@@ -1913,17 +1913,17 @@ LABEL_14:
   }
 }
 
-- (void)_setAttachmentFileWrapperClass:(Class)a3
+- (void)_setAttachmentFileWrapperClass:(Class)class
 {
-  if (a3 && ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (class && ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Class %@ does not inherit from NSFileWrapper", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Class %@ does not inherit from NSFileWrapper", class}];
   }
 
   if (!self)
   {
     v7 = 0;
-    if (!a3)
+    if (!class)
     {
       goto LABEL_9;
     }
@@ -1933,15 +1933,15 @@ LABEL_14:
 
   [(WKWebViewConfiguration *)self _protectedPageConfiguration];
   self = v7;
-  if (a3)
+  if (class)
   {
 LABEL_8:
-    v5 = a3;
+    classCopy = class;
   }
 
 LABEL_9:
   v6 = *&self[6]._pageConfiguration.m_storage.data[8];
-  *&self[6]._pageConfiguration.m_storage.data[8] = a3;
+  *&self[6]._pageConfiguration.m_storage.data[8] = class;
   if (v6)
   {
   }
@@ -2011,7 +2011,7 @@ LABEL_7:
   return v2;
 }
 
-- (void)_setCORSDisablingPatterns:(id)a3
+- (void)_setCORSDisablingPatterns:(id)patterns
 {
   if (self)
   {
@@ -2025,9 +2025,9 @@ LABEL_7:
     v13 = 0;
   }
 
-  v15 = a3;
-  v5 = [a3 count];
-  v14 = &v15;
+  patternsCopy = patterns;
+  v5 = [patterns count];
+  v14 = &patternsCopy;
   WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v11, v5, &v14, 0);
   v7 = *(v4 + 428);
   if (v7)
@@ -2150,7 +2150,7 @@ LABEL_7:
   return v4;
 }
 
-- (void)_setMaskedURLSchemes:(id)a3
+- (void)_setMaskedURLSchemes:(id)schemes
 {
   v24 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -2158,7 +2158,7 @@ LABEL_7:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v5 = [schemes countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v5)
   {
     v6 = *v19;
@@ -2168,7 +2168,7 @@ LABEL_7:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(schemes);
         }
 
         MEMORY[0x19EB02040](&v17, *(*(&v18 + 1) + 8 * i));
@@ -2181,7 +2181,7 @@ LABEL_7:
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [schemes countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);
@@ -2217,14 +2217,14 @@ LABEL_14:
   }
 }
 
-- (void)_setLoadsFromNetwork:(BOOL)a3
+- (void)_setLoadsFromNetwork:(BOOL)network
 {
-  v3 = a3;
+  networkCopy = network;
   if (!self)
   {
     v4 = 0;
     v10 = 0;
-    if (a3)
+    if (network)
     {
       goto LABEL_3;
     }
@@ -2239,7 +2239,7 @@ LABEL_5:
 
   [(WKWebViewConfiguration *)self _protectedPageConfiguration];
   v4 = v10;
-  if (!v3)
+  if (!networkCopy)
   {
     goto LABEL_5;
   }
@@ -2263,10 +2263,10 @@ LABEL_6:
   }
 }
 
-- (void)_setAllowedNetworkHosts:(id)a3
+- (void)_setAllowedNetworkHosts:(id)hosts
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (hosts)
   {
     v19 = 0;
     memset(v20, 0, 13);
@@ -2274,7 +2274,7 @@ LABEL_6:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v15 objects:v26 count:16];
+    v5 = [hosts countByEnumeratingWithState:&v15 objects:v26 count:16];
     if (v5)
     {
       v6 = *v16;
@@ -2284,7 +2284,7 @@ LABEL_6:
         {
           if (*v16 != v6)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(hosts);
           }
 
           MEMORY[0x19EB02040](&v14, *(*(&v15 + 1) + 8 * i));
@@ -2297,7 +2297,7 @@ LABEL_6:
           }
         }
 
-        v5 = [a3 countByEnumeratingWithState:&v15 objects:v26 count:16];
+        v5 = [hosts countByEnumeratingWithState:&v15 objects:v26 count:16];
       }
 
       while (v5);
@@ -2433,12 +2433,12 @@ LABEL_13:
   return result;
 }
 
-- (void)_setRequiresUserActionForVideoPlayback:(BOOL)a3
+- (void)_setRequiresUserActionForVideoPlayback:(BOOL)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   v5 = [(WKWebViewConfiguration *)self mediaTypesRequiringUserActionForPlayback]& 0xFFFFFFFFFFFFFFFDLL;
   v6 = 2;
-  if (!v3)
+  if (!playbackCopy)
   {
     v6 = 0;
   }
@@ -2446,9 +2446,9 @@ LABEL_13:
   [(WKWebViewConfiguration *)self setMediaTypesRequiringUserActionForPlayback:v5 | v6];
 }
 
-- (void)_setRequiresUserActionForAudioPlayback:(BOOL)a3
+- (void)_setRequiresUserActionForAudioPlayback:(BOOL)playback
 {
-  v4 = [(WKWebViewConfiguration *)self mediaTypesRequiringUserActionForPlayback]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(WKWebViewConfiguration *)self mediaTypesRequiringUserActionForPlayback]& 0xFFFFFFFFFFFFFFFELL | playback;
 
   [(WKWebViewConfiguration *)self setMediaTypesRequiringUserActionForPlayback:v4];
 }
@@ -2494,17 +2494,17 @@ LABEL_7:
   return result;
 }
 
-- (void)_setApplicationManifest:(id)a3
+- (void)_setApplicationManifest:(id)manifest
 {
   if (self)
   {
     [(WKWebViewConfiguration *)self _protectedPageConfiguration];
     v4 = v7;
-    if (a3)
+    if (manifest)
     {
 LABEL_3:
-      CFRetain(*(a3 + 2));
-      v5 = a3 + 8;
+      CFRetain(*(manifest + 2));
+      v5 = manifest + 8;
       goto LABEL_6;
     }
   }
@@ -2513,7 +2513,7 @@ LABEL_3:
   {
     v4 = 0;
     v7 = 0;
-    if (a3)
+    if (manifest)
     {
       goto LABEL_3;
     }
@@ -2534,12 +2534,12 @@ LABEL_6:
   }
 }
 
-- (void)_setApplePayEnabled:(BOOL)a3
+- (void)_setApplePayEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(WKWebViewConfiguration *)self _protectedPageConfiguration];
   v4 = v5;
-  *(v5 + 503) = v3 | 0x100;
+  *(v5 + 503) = enabledCopy | 0x100;
   v5 = 0;
   CFRelease(*(v4 + 8));
 }
@@ -2580,9 +2580,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)_setOverrideContentSecurityPolicy:(id)a3
+- (void)_setOverrideContentSecurityPolicy:(id)policy
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, policy);
   v5 = v8;
   if (v8)
   {
@@ -2607,9 +2607,9 @@ LABEL_7:
   }
 }
 
-- (void)_setMediaContentTypesRequiringHardwareSupport:(id)a3
+- (void)_setMediaContentTypesRequiringHardwareSupport:(id)support
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, support);
   v5 = v8;
   v8 = 0;
   v6 = *&self[9]._pageConfiguration.m_storage.data[16];
@@ -2633,9 +2633,9 @@ LABEL_7:
   }
 }
 
-- (void)_setAdditionalSupportedImageTypes:(id)a3
+- (void)_setAdditionalSupportedImageTypes:(id)types
 {
-  if (a3)
+  if (types)
   {
     if (self)
     {
@@ -2649,9 +2649,9 @@ LABEL_7:
       v12 = 0;
     }
 
-    v14 = a3;
-    v7 = [a3 count];
-    v13 = &v14;
+    typesCopy = types;
+    v7 = [types count];
+    v13 = &typesCopy;
     WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v9, v7, &v13, 0);
     std::optional<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>>::optional[abi:sn200100]<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>,0>(v10, v9);
     std::__optional_storage_base<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>,false>::__assign_from[abi:sn200100]<std::__optional_move_assign_base<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>,false>>((v4 + 360), v10);
@@ -2712,9 +2712,9 @@ LABEL_12:
   return Load;
 }
 
-- (void)_setDelaysWebProcessLaunchUntilFirstLoad:(BOOL)a3
+- (void)_setDelaysWebProcessLaunchUntilFirstLoad:(BOOL)load
 {
-  v3 = a3;
+  loadCopy = load;
   if (self)
   {
     [(WKWebViewConfiguration *)self _protectedPageConfiguration];
@@ -2726,7 +2726,7 @@ LABEL_12:
     v5 = 0;
   }
 
-  API::PageConfiguration::setDelaysWebProcessLaunchUntilFirstLoad(self, v3);
+  API::PageConfiguration::setDelaysWebProcessLaunchUntilFirstLoad(self, loadCopy);
   v4 = v5;
   v5 = 0;
   if (v4)
@@ -2735,7 +2735,7 @@ LABEL_12:
   }
 }
 
-- (void)_setShouldRelaxThirdPartyCookieBlocking:(BOOL)a3
+- (void)_setShouldRelaxThirdPartyCookieBlocking:(BOOL)blocking
 {
   WTF::applicationBundleIdentifier(&v13, self);
   v6 = MEMORY[0x19EB01EF0](v13, "com.apple.WebKit.TestWebKitAPI", 30);
@@ -2768,7 +2768,7 @@ LABEL_12:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A790] format:@"_shouldRelaxThirdPartyCookieBlocking may only be used by Safari."];
   }
 
-  self[10]._pageConfiguration.m_storage.data[30] = a3;
+  self[10]._pageConfiguration.m_storage.data[30] = blocking;
 }
 
 - (NSString)_processDisplayName
@@ -2807,9 +2807,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)_setProcessDisplayName:(id)a3
+- (void)_setProcessDisplayName:(id)name
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, name);
   v5 = v8;
   if (v8)
   {
@@ -2834,9 +2834,9 @@ LABEL_7:
   }
 }
 
-- (void)_setAttributedBundleIdentifier:(id)a3
+- (void)_setAttributedBundleIdentifier:(id)identifier
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, identifier);
   v5 = v8;
   v8 = 0;
   v6 = *&self[10]._pageConfiguration.m_storage.data[32];
@@ -2888,10 +2888,10 @@ LABEL_7:
   return v2;
 }
 
-- (void)_setContentSecurityPolicyModeForExtension:(unint64_t)a3
+- (void)_setContentSecurityPolicyModeForExtension:(unint64_t)extension
 {
-  v3 = a3 == 1;
-  if (a3 == 2)
+  v3 = extension == 1;
+  if (extension == 2)
   {
     v3 = 2;
   }

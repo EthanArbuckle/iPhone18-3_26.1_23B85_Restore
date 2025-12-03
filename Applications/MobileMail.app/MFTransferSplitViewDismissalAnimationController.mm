@@ -1,37 +1,37 @@
 @interface MFTransferSplitViewDismissalAnimationController
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation MFTransferSplitViewDismissalAnimationController
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v52 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v51 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v5 = [v4 containerView];
-  v6 = [v52 view];
-  [v5 addSubview:v6];
+  transitionCopy = transition;
+  v52 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v51 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  containerView = [transitionCopy containerView];
+  view = [v52 view];
+  [containerView addSubview:view];
 
-  [v4 finalFrameForViewController:v52];
+  [transitionCopy finalFrameForViewController:v52];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v15 = [v51 viewControllerForColumn:0];
-  v16 = [v15 view];
+  view2 = [v15 view];
 
-  v53 = [v16 snapshotViewAfterScreenUpdates:0];
-  [v5 addSubview:v53];
+  v53 = [view2 snapshotViewAfterScreenUpdates:0];
+  [containerView addSubview:v53];
   v17 = [v51 viewControllerForColumn:1];
-  v18 = [v17 view];
+  view3 = [v17 view];
 
-  v19 = [v18 snapshotViewAfterScreenUpdates:0];
-  [v5 addSubview:v19];
-  v20 = [v5 _shouldReverseLayoutDirection];
-  sub_1002261EC(v19, v20 ^ 1);
-  [v16 bounds];
-  [v16 convertRect:v5 toView:?];
+  v19 = [view3 snapshotViewAfterScreenUpdates:0];
+  [containerView addSubview:v19];
+  _shouldReverseLayoutDirection = [containerView _shouldReverseLayoutDirection];
+  sub_1002261EC(v19, _shouldReverseLayoutDirection ^ 1);
+  [view2 bounds];
+  [view2 convertRect:containerView toView:?];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -43,14 +43,14 @@
   v48 = v12;
   v49 = v10;
   v50 = v8;
-  [v18 bounds];
-  [v18 convertRect:v5 toView:?];
+  [view3 bounds];
+  [view3 convertRect:containerView toView:?];
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v36 = v35;
   [v19 setFrame:?];
-  if (v20)
+  if (_shouldReverseLayoutDirection)
   {
     v37 = v26;
   }
@@ -60,7 +60,7 @@
     v37 = -v26;
   }
 
-  if (v20)
+  if (_shouldReverseLayoutDirection)
   {
     v38 = v26 + v34;
   }
@@ -70,9 +70,9 @@
     v38 = -(v26 + v34);
   }
 
-  [v16 setAlpha:0.0];
-  [v18 setAlpha:0.0];
-  [(MFTransferSplitViewDismissalAnimationController *)self transitionDuration:v4];
+  [view2 setAlpha:0.0];
+  [view3 setAlpha:0.0];
+  [(MFTransferSplitViewDismissalAnimationController *)self transitionDuration:transitionCopy];
   v44 = v39;
   v58[0] = _NSConcreteStackBlock;
   v58[1] = 3221225472;
@@ -102,7 +102,7 @@
   v55 = v41;
   v42 = v60;
   v56 = v42;
-  v43 = v4;
+  v43 = transitionCopy;
   v57 = v43;
   [UIView animateWithDuration:0 delay:v58 usingSpringWithDamping:v54 initialSpringVelocity:v44 options:0.0 animations:1.0 completion:0.0];
 }

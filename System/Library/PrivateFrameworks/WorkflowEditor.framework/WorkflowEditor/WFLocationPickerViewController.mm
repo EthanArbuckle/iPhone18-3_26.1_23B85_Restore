@@ -1,65 +1,65 @@
 @interface WFLocationPickerViewController
-- ($9AD185B98C4A4E0F06446A487FEC3478)mapRadiusView:(id)a3 boundingMapRectForOverlay:(id)a4;
+- ($9AD185B98C4A4E0F06446A487FEC3478)mapRadiusView:(id)view boundingMapRectForOverlay:(id)overlay;
 - (BOOL)hasLocation;
 - (BOOL)shouldShowCurrentLocationItem;
 - (MKMapView)mapView;
-- (WFLocationPickerViewController)initWithPickerType:(unint64_t)a3 value:(id)a4;
+- (WFLocationPickerViewController)initWithPickerType:(unint64_t)type value:(id)value;
 - (WFLocationPickerViewControllerDelegate)delegate;
 - (WFLocationTriggerEditorMapDragRadiusView)dragView;
 - (id)circularRegion;
-- (id)locationFromRecentContact:(id)a3;
-- (id)mapRadiusView:(id)a3 overlayForRadius:(double)a4;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)overlayWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)locationFromRecentContact:(id)contact;
+- (id)mapRadiusView:(id)view overlayForRadius:(double)radius;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)overlayWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)currentLocationRowIndex;
 - (int64_t)firstLocalSearchResultRowIndex;
 - (int64_t)firstRecentRowIndex;
 - (int64_t)lastRecentRowIndex;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)proximityType;
-- (void)cancel:(id)a3;
+- (void)cancel:(id)cancel;
 - (void)checkLocationAuthorization;
-- (void)displayLocationCoordinate:(CLLocationCoordinate2D)a3;
-- (void)done:(id)a3;
-- (void)getMapItemFromRecentContact:(id)a3 completionHandler:(id)a4;
-- (void)getPlacemarkFromLocation:(id)a3 streetAddress:(id)a4 completionHandler:(id)a5;
+- (void)displayLocationCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)done:(id)done;
+- (void)getMapItemFromRecentContact:(id)contact completionHandler:(id)handler;
+- (void)getPlacemarkFromLocation:(id)location streetAddress:(id)address completionHandler:(id)handler;
 - (void)loadView;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)mapRadiusView:(id)a3 radiusDidChange:(double)a4;
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 regionWillChangeAnimated:(BOOL)a4;
-- (void)mapViewDidChangeVisibleRegion:(id)a3;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)mapRadiusView:(id)view radiusDidChange:(double)change;
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view regionWillChangeAnimated:(BOOL)animated;
+- (void)mapViewDidChangeVisibleRegion:(id)region;
 - (void)reloadData;
 - (void)resetSearchResults;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)setAllowsPickingCurrentLocation:(BOOL)a3;
-- (void)setLocationValueWithPlacemark:(id)a3;
-- (void)setRegionCondition:(unint64_t)a3;
-- (void)setRegionValueWithPlacemark:(id)a3 radius:(double)a4;
-- (void)setResolvesCurrentLocationToPlacemark:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)setAllowsPickingCurrentLocation:(BOOL)location;
+- (void)setLocationValueWithPlacemark:(id)placemark;
+- (void)setRegionCondition:(unint64_t)condition;
+- (void)setRegionValueWithPlacemark:(id)placemark radius:(double)radius;
+- (void)setResolvesCurrentLocationToPlacemark:(BOOL)placemark;
+- (void)setValue:(id)value;
 - (void)setupMap;
-- (void)showMapRegionForCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)showMapRegionForCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateMapHeight;
-- (void)updateRecentsWithSearchText:(id)a3;
+- (void)updateRecentsWithSearchText:(id)text;
 - (void)updateUI;
-- (void)updateUIWithValue:(id)a3;
-- (void)updateValueWithMapItem:(id)a3;
-- (void)updateValueWithRadius:(double)a3;
+- (void)updateUIWithValue:(id)value;
+- (void)updateValueWithMapItem:(id)item;
+- (void)updateValueWithRadius:(double)radius;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WFLocationPickerViewController
@@ -71,33 +71,33 @@
   return WeakRetained;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   [(WFLocationPickerViewController *)self resetSearchResults];
-  v6 = [v5 length];
+  v6 = [changeCopy length];
 
   if (v6)
   {
-    v7 = [(WFLocationPickerViewController *)self searchBar];
-    v8 = [v7 text];
-    [(WFLocationPickerViewController *)self updateRecentsWithSearchText:v8];
+    searchBar = [(WFLocationPickerViewController *)self searchBar];
+    text = [searchBar text];
+    [(WFLocationPickerViewController *)self updateRecentsWithSearchText:text];
 
     v9 = objc_alloc_init(MEMORY[0x277CD4E38]);
-    v10 = [(WFLocationPickerViewController *)self searchBar];
-    v11 = [v10 text];
-    [v9 setNaturalLanguageQuery:v11];
+    searchBar2 = [(WFLocationPickerViewController *)self searchBar];
+    text2 = [searchBar2 text];
+    [v9 setNaturalLanguageQuery:text2];
 
     v12 = [objc_alloc(MEMORY[0x277CD4E20]) initWithRequest:v9];
     [(WFLocationPickerViewController *)self setLocalSearch:v12];
 
-    v13 = [(WFLocationPickerViewController *)self localSearch];
+    localSearch = [(WFLocationPickerViewController *)self localSearch];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __58__WFLocationPickerViewController_searchBar_textDidChange___block_invoke;
     v14[3] = &unk_279EDC0B8;
     v14[4] = self;
-    [v13 startWithCompletionHandler:v14];
+    [localSearch startWithCompletionHandler:v14];
   }
 
   else
@@ -121,12 +121,12 @@ uint64_t __58__WFLocationPickerViewController_searchBar_textDidChange___block_in
 
 - (void)resetSearchResults
 {
-  v3 = [(WFLocationPickerViewController *)self localSearch];
+  localSearch = [(WFLocationPickerViewController *)self localSearch];
 
-  if (v3)
+  if (localSearch)
   {
-    v4 = [(WFLocationPickerViewController *)self localSearch];
-    [v4 cancel];
+    localSearch2 = [(WFLocationPickerViewController *)self localSearch];
+    [localSearch2 cancel];
 
     [(WFLocationPickerViewController *)self setLocalSearch:0];
   }
@@ -134,30 +134,30 @@ uint64_t __58__WFLocationPickerViewController_searchBar_textDidChange___block_in
   [(WFLocationPickerViewController *)self setLocalSearchResults:0];
 }
 
-- (id)mapRadiusView:(id)a3 overlayForRadius:(double)a4
+- (id)mapRadiusView:(id)view overlayForRadius:(double)radius
 {
-  v5 = [(WFLocationPickerViewController *)self mapView];
-  v6 = [v5 annotations];
-  v7 = [v6 firstObject];
+  mapView = [(WFLocationPickerViewController *)self mapView];
+  annotations = [mapView annotations];
+  firstObject = [annotations firstObject];
 
-  [v7 coordinate];
+  [firstObject coordinate];
   v8 = [WFLocationPickerViewController overlayWithCenterCoordinate:"overlayWithCenterCoordinate:radius:" radius:?];
 
   return v8;
 }
 
-- ($9AD185B98C4A4E0F06446A487FEC3478)mapRadiusView:(id)a3 boundingMapRectForOverlay:(id)a4
+- ($9AD185B98C4A4E0F06446A487FEC3478)mapRadiusView:(id)view boundingMapRectForOverlay:(id)overlay
 {
-  v4 = a4;
+  overlayCopy = overlay;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 innerCircleBoundingMapRect];
+    [overlayCopy innerCircleBoundingMapRect];
   }
 
   else
   {
-    [v4 boundingMapRect];
+    [overlayCopy boundingMapRect];
   }
 
   v9 = v5;
@@ -176,25 +176,25 @@ uint64_t __58__WFLocationPickerViewController_searchBar_textDidChange___block_in
   return result;
 }
 
-- (id)overlayWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4
+- (id)overlayWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   if ([(WFLocationPickerViewController *)self proximityType]== 1)
   {
-    v8 = [MEMORY[0x277CD4DA0] circleWithCenterCoordinate:latitude radius:{longitude, a4}];
+    v8 = [MEMORY[0x277CD4DA0] circleWithCenterCoordinate:latitude radius:{longitude, radius}];
   }
 
   else if ([(WFLocationPickerViewController *)self proximityType]== 2)
   {
-    v9 = [(WFLocationPickerViewController *)self mapView];
-    [v9 visibleMapRect];
+    mapView = [(WFLocationPickerViewController *)self mapView];
+    [mapView visibleMapRect];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v8 = [WFReverseCircleOverlay circleWithCenterCoordinate:latitude radius:longitude boundingMapRect:a4, v11, v13, v15, v17];
+    v8 = [WFReverseCircleOverlay circleWithCenterCoordinate:latitude radius:longitude boundingMapRect:radius, v11, v13, v15, v17];
   }
 
   else
@@ -205,37 +205,37 @@ uint64_t __58__WFLocationPickerViewController_searchBar_textDidChange___block_in
   return v8;
 }
 
-- (void)mapRadiusView:(id)a3 radiusDidChange:(double)a4
+- (void)mapRadiusView:(id)view radiusDidChange:(double)change
 {
-  v6 = [(WFLocationPickerViewController *)self circularRegion];
+  circularRegion = [(WFLocationPickerViewController *)self circularRegion];
 
-  if (v6)
+  if (circularRegion)
   {
-    [(WFLocationPickerViewController *)self updateValueWithRadius:a4];
-    v7 = [(WFLocationPickerViewController *)self circularRegion];
-    [v7 center];
+    [(WFLocationPickerViewController *)self updateValueWithRadius:change];
+    circularRegion2 = [(WFLocationPickerViewController *)self circularRegion];
+    [circularRegion2 center];
     v9 = v8;
     v11 = v10;
 
-    [(WFLocationPickerViewController *)self showMapRegionForCoordinate:v9 radius:v11, a4];
+    [(WFLocationPickerViewController *)self showMapRegionForCoordinate:v9 radius:v11, change];
   }
 }
 
-- (void)mapViewDidChangeVisibleRegion:(id)a3
+- (void)mapViewDidChangeVisibleRegion:(id)region
 {
-  v18 = a3;
-  v3 = [v18 overlays];
-  v4 = [v3 firstObject];
+  regionCopy = region;
+  overlays = [regionCopy overlays];
+  firstObject = [overlays firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 boundingMapRect];
+    [firstObject boundingMapRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v18 visibleMapRect];
+    [regionCopy visibleMapRect];
     v22.origin.x = v13;
     v22.origin.y = v14;
     v22.size.width = v15;
@@ -245,26 +245,26 @@ uint64_t __58__WFLocationPickerViewController_searchBar_textDidChange___block_in
     v20.size.width = v10;
     v20.size.height = v12;
     v21 = MKMapRectUnion(v20, v22);
-    [v4 setBoundingRect:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
-    v17 = [v18 rendererForOverlay:v4];
+    [firstObject setBoundingRect:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
+    v17 = [regionCopy rendererForOverlay:firstObject];
     [v17 setNeedsDisplay];
   }
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a4;
+  overlayCopy = overlay;
   v6 = objc_opt_class();
-  v7 = WFEnforceClass(v5, v6);
+  v7 = WFEnforceClass(overlayCopy, v6);
 
-  v8 = [(WFLocationPickerViewController *)self proximityType];
-  if (v8 == 1)
+  proximityType = [(WFLocationPickerViewController *)self proximityType];
+  if (proximityType == 1)
   {
     v9 = 0x277CD4DA8;
     goto LABEL_5;
   }
 
-  if (v8 == 2)
+  if (proximityType == 2)
   {
     v9 = off_279ED9328;
 LABEL_5:
@@ -274,15 +274,15 @@ LABEL_5:
 
   v10 = 0;
 LABEL_7:
-  v11 = [MEMORY[0x277D75348] systemBlueColor];
-  [v10 setStrokeColor:v11];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [v10 setStrokeColor:systemBlueColor];
 
-  v12 = [MEMORY[0x277D75348] systemBlueColor];
-  v13 = [v12 colorWithAlphaComponent:0.15];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+  v13 = [systemBlueColor2 colorWithAlphaComponent:0.15];
   [v10 setFillColor:v13];
 
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v16 = v15 <= 1.0;
   v17 = 2.0;
   if (!v16)
@@ -295,53 +295,53 @@ LABEL_7:
   return v10;
 }
 
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView
 {
-  v4 = [(WFLocationPickerViewController *)self dragView:a3];
+  v4 = [(WFLocationPickerViewController *)self dragView:view];
   [v4 removeHandle:1];
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v11 = a3;
-  v6 = a4;
+  viewCopy = view;
+  annotationViewCopy = annotationView;
   if ([(WFLocationPickerViewController *)self proximityType])
   {
-    v7 = [(WFLocationPickerViewController *)self dragView];
-    v8 = [v6 annotation];
-    v9 = [v11 overlays];
-    v10 = [v9 firstObject];
-    [v7 addHandleForAnnotation:v8 withOverlay:v10];
+    dragView = [(WFLocationPickerViewController *)self dragView];
+    annotation = [annotationViewCopy annotation];
+    overlays = [viewCopy overlays];
+    firstObject = [overlays firstObject];
+    [dragView addHandleForAnnotation:annotation withOverlay:firstObject];
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v10 = a3;
+  viewCopy = view;
   if ([(WFLocationPickerViewController *)self proximityType])
   {
-    v5 = [(WFLocationPickerViewController *)self dragView];
-    v6 = [v10 annotations];
-    v7 = [v6 lastObject];
-    v8 = [v10 overlays];
-    v9 = [v8 lastObject];
-    [v5 addHandleForAnnotation:v7 withOverlay:v9];
+    dragView = [(WFLocationPickerViewController *)self dragView];
+    annotations = [viewCopy annotations];
+    lastObject = [annotations lastObject];
+    overlays = [viewCopy overlays];
+    lastObject2 = [overlays lastObject];
+    [dragView addHandleForAnnotation:lastObject withOverlay:lastObject2];
   }
 }
 
-- (void)mapView:(id)a3 regionWillChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionWillChangeAnimated:(BOOL)animated
 {
-  v4 = [(WFLocationPickerViewController *)self dragView:a3];
+  v4 = [(WFLocationPickerViewController *)self dragView:view];
   [v4 removeHandle:1];
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v4 = a4;
+  annotationCopy = annotation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [objc_alloc(MEMORY[0x277CD4ED0]) initWithAnnotation:v4 reuseIdentifier:@"marker"];
+    v5 = [objc_alloc(MEMORY[0x277CD4ED0]) initWithAnnotation:annotationCopy reuseIdentifier:@"marker"];
     [v5 setTitleVisibility:1];
     [v5 setSubtitleVisibility:1];
   }
@@ -354,109 +354,109 @@ LABEL_7:
   return v5;
 }
 
-- (void)setRegionValueWithPlacemark:(id)a3 radius:(double)a4
+- (void)setRegionValueWithPlacemark:(id)placemark radius:(double)radius
 {
-  v20 = a3;
-  v6 = [v20 location];
-  if (a4 < 100.0)
+  placemarkCopy = placemark;
+  location = [placemarkCopy location];
+  if (radius < 100.0)
   {
-    a4 = 100.0;
+    radius = 100.0;
   }
 
-  v7 = [v20 name];
+  name = [placemarkCopy name];
 
   v8 = objc_alloc(MEMORY[0x277CBFBC8]);
-  [v6 coordinate];
+  [location coordinate];
   v10 = v9;
   v12 = v11;
-  if (v7)
+  if (name)
   {
-    v13 = [v20 name];
-    v14 = [v8 initWithCenter:v13 radius:v10 identifier:{v12, a4}];
+    name2 = [placemarkCopy name];
+    v14 = [v8 initWithCenter:name2 radius:v10 identifier:{v12, radius}];
   }
 
   else
   {
-    v13 = [(WFLocationPickerViewController *)self value];
-    v15 = [v13 locationName];
-    v14 = [v8 initWithCenter:v15 radius:v10 identifier:{v12, a4}];
+    name2 = [(WFLocationPickerViewController *)self value];
+    locationName = [name2 locationName];
+    v14 = [v8 initWithCenter:locationName radius:v10 identifier:{v12, radius}];
   }
 
   v16 = objc_alloc(MEMORY[0x277CBFC40]);
-  v17 = [v20 addressDictionary];
-  v18 = [v16 initWithLocation:v6 addressDictionary:v17 region:v14 areasOfInterest:0];
+  addressDictionary = [placemarkCopy addressDictionary];
+  v18 = [v16 initWithLocation:location addressDictionary:addressDictionary region:v14 areasOfInterest:0];
 
   v19 = [objc_alloc(MEMORY[0x277D7C620]) initWithPlacemark:v18];
   [(WFLocationPickerViewController *)self setValue:v19];
 }
 
-- (void)setLocationValueWithPlacemark:(id)a3
+- (void)setLocationValueWithPlacemark:(id)placemark
 {
   v4 = MEMORY[0x277D7C620];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithPlacemark:v5];
+  placemarkCopy = placemark;
+  v6 = [[v4 alloc] initWithPlacemark:placemarkCopy];
 
   [(WFLocationPickerViewController *)self setValue:v6];
 }
 
-- (void)updateValueWithRadius:(double)a3
+- (void)updateValueWithRadius:(double)radius
 {
-  v5 = [(WFLocationPickerViewController *)self value];
-  v6 = [v5 placemark];
+  value = [(WFLocationPickerViewController *)self value];
+  placemark = [value placemark];
 
-  [(WFLocationPickerViewController *)self setRegionValueWithPlacemark:v6 radius:a3];
+  [(WFLocationPickerViewController *)self setRegionValueWithPlacemark:placemark radius:radius];
 }
 
-- (void)updateValueWithMapItem:(id)a3
+- (void)updateValueWithMapItem:(id)item
 {
-  v7 = a3;
-  v4 = [(WFLocationPickerViewController *)self pickerType];
-  if (v4 == 1)
+  itemCopy = item;
+  pickerType = [(WFLocationPickerViewController *)self pickerType];
+  if (pickerType == 1)
   {
-    v5 = CLPlacemarkFromMapItem(v7);
-    v6 = [(WFLocationPickerViewController *)self circularRegion];
-    [v6 radius];
+    v5 = CLPlacemarkFromMapItem(itemCopy);
+    circularRegion = [(WFLocationPickerViewController *)self circularRegion];
+    [circularRegion radius];
     [(WFLocationPickerViewController *)self setRegionValueWithPlacemark:v5 radius:?];
   }
 
   else
   {
-    if (v4)
+    if (pickerType)
     {
       goto LABEL_6;
     }
 
-    v5 = CLPlacemarkFromMapItem(v7);
+    v5 = CLPlacemarkFromMapItem(itemCopy);
     [(WFLocationPickerViewController *)self setLocationValueWithPlacemark:v5];
   }
 
 LABEL_6:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v8 = [(WFLocationPickerViewController *)self selectedIndexPath];
-  v9 = [v7 cellForRowAtIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  selectedIndexPath = [(WFLocationPickerViewController *)self selectedIndexPath];
+  v9 = [viewCopy cellForRowAtIndexPath:selectedIndexPath];
   [v9 setAccessoryType:0];
 
-  v10 = [v7 cellForRowAtIndexPath:v6];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v10 setAccessoryType:3];
-  [(WFLocationPickerViewController *)self setSelectedIndexPath:v6];
-  v11 = [(WFLocationPickerViewController *)self firstRecentRowIndex];
-  v12 = [(WFLocationPickerViewController *)self firstLocalSearchResultRowIndex];
-  v13 = [v6 row];
+  [(WFLocationPickerViewController *)self setSelectedIndexPath:pathCopy];
+  firstRecentRowIndex = [(WFLocationPickerViewController *)self firstRecentRowIndex];
+  firstLocalSearchResultRowIndex = [(WFLocationPickerViewController *)self firstLocalSearchResultRowIndex];
+  v13 = [pathCopy row];
 
-  v14 = [(WFLocationPickerViewController *)self currentLocationRowIndex];
-  v15 = v14;
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL || v13 < v11)
+  currentLocationRowIndex = [(WFLocationPickerViewController *)self currentLocationRowIndex];
+  v15 = currentLocationRowIndex;
+  if (firstRecentRowIndex == 0x7FFFFFFFFFFFFFFFLL || v13 < firstRecentRowIndex)
   {
-    if (v13 != v14)
+    if (v13 != currentLocationRowIndex)
     {
-      if (v12 == 0x7FFFFFFFFFFFFFFFLL || v13 < v12)
+      if (firstLocalSearchResultRowIndex == 0x7FFFFFFFFFFFFFFFLL || v13 < firstLocalSearchResultRowIndex)
       {
         return;
       }
@@ -467,35 +467,35 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  v16 = [(WFLocationPickerViewController *)self lastRecentRowIndex];
-  v18 = v12 != 0x7FFFFFFFFFFFFFFFLL && v13 >= v12;
+  lastRecentRowIndex = [(WFLocationPickerViewController *)self lastRecentRowIndex];
+  v18 = firstLocalSearchResultRowIndex != 0x7FFFFFFFFFFFFFFFLL && v13 >= firstLocalSearchResultRowIndex;
   if (v13 == v15)
   {
 LABEL_14:
     if (![(WFLocationPickerViewController *)self resolvesCurrentLocationToPlacemark])
     {
-      v24 = [objc_alloc(MEMORY[0x277D7C620]) initWithCurrentLocation];
-      [(WFLocationPickerViewController *)self setValue:v24];
+      initWithCurrentLocation = [objc_alloc(MEMORY[0x277D7C620]) initWithCurrentLocation];
+      [(WFLocationPickerViewController *)self setValue:initWithCurrentLocation];
       goto LABEL_20;
     }
 
     v19 = objc_alloc_init(MEMORY[0x277CBFBE8]);
-    v20 = [(WFLocationPickerViewController *)self currentLocation];
+    currentLocation = [(WFLocationPickerViewController *)self currentLocation];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __68__WFLocationPickerViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v26[3] = &unk_279EDBFC8;
     v26[4] = self;
-    [v19 reverseGeocodeLocation:v20 completionHandler:v26];
+    [v19 reverseGeocodeLocation:currentLocation completionHandler:v26];
 
 LABEL_24:
     return;
   }
 
-  if (v13 <= v16)
+  if (v13 <= lastRecentRowIndex)
   {
-    v23 = [(WFLocationPickerViewController *)self recents];
-    v19 = [v23 objectAtIndex:v13 - v11];
+    recents = [(WFLocationPickerViewController *)self recents];
+    v19 = [recents objectAtIndex:v13 - firstRecentRowIndex];
 
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -512,11 +512,11 @@ LABEL_24:
   }
 
 LABEL_18:
-  v21 = v13 - v12;
-  v22 = [(WFLocationPickerViewController *)self localSearchResults];
-  v24 = [v22 objectAtIndex:v21];
+  v21 = v13 - firstLocalSearchResultRowIndex;
+  localSearchResults = [(WFLocationPickerViewController *)self localSearchResults];
+  initWithCurrentLocation = [localSearchResults objectAtIndex:v21];
 
-  [(WFLocationPickerViewController *)self updateValueWithMapItem:v24];
+  [(WFLocationPickerViewController *)self updateValueWithMapItem:initWithCurrentLocation];
 LABEL_20:
 }
 
@@ -564,83 +564,83 @@ void __68__WFLocationPickerViewController_tableView_didSelectRowAtIndexPath___bl
   [*(a1 + 32) updateValueWithMapItem:v6];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"locationCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"locationCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"locationCell"];
   }
 
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v9 = [v7 textLabel];
-  [v9 setFont:v8];
+  textLabel = [v7 textLabel];
+  [textLabel setFont:v8];
 
   v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940]];
-  v11 = [v7 detailTextLabel];
-  [v11 setFont:v10];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setFont:v10];
 
-  v12 = [(WFLocationPickerViewController *)self firstRecentRowIndex];
-  v13 = [(WFLocationPickerViewController *)self firstLocalSearchResultRowIndex];
-  v14 = [v6 row];
+  firstRecentRowIndex = [(WFLocationPickerViewController *)self firstRecentRowIndex];
+  firstLocalSearchResultRowIndex = [(WFLocationPickerViewController *)self firstLocalSearchResultRowIndex];
+  v14 = [pathCopy row];
   if (v14 == [(WFLocationPickerViewController *)self currentLocationRowIndex])
   {
-    v15 = WFLocalizedString(@"Current Location");
+    name = WFLocalizedString(@"Current Location");
     v16 = [MEMORY[0x277D755B8] systemImageNamed:@"location.fill"];
-    v17 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v18 = 0;
     goto LABEL_14;
   }
 
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL || [v6 row] < v12 || (v19 = objc_msgSend(v6, "row"), v19 > -[WFLocationPickerViewController lastRecentRowIndex](self, "lastRecentRowIndex")))
+  if (firstRecentRowIndex == 0x7FFFFFFFFFFFFFFFLL || [pathCopy row] < firstRecentRowIndex || (v19 = objc_msgSend(pathCopy, "row"), v19 > -[WFLocationPickerViewController lastRecentRowIndex](self, "lastRecentRowIndex")))
   {
-    if (v13 == 0x7FFFFFFFFFFFFFFFLL || [v6 row] < v13)
+    if (firstLocalSearchResultRowIndex == 0x7FFFFFFFFFFFFFFFLL || [pathCopy row] < firstLocalSearchResultRowIndex)
     {
-      v17 = 0;
+      labelColor = 0;
       v16 = 0;
       v18 = 0;
-      v15 = 0;
+      name = 0;
       goto LABEL_14;
     }
 
-    v20 = [v6 row] - v13;
-    v21 = [(WFLocationPickerViewController *)self localSearchResults];
-    v22 = [v21 objectAtIndexedSubscript:v20];
+    v20 = [pathCopy row] - firstLocalSearchResultRowIndex;
+    localSearchResults = [(WFLocationPickerViewController *)self localSearchResults];
+    v22 = [localSearchResults objectAtIndexedSubscript:v20];
 
-    v15 = [v22 name];
-    v23 = [v22 _shortAddress];
+    name = [v22 name];
+    _shortAddress = [v22 _shortAddress];
   }
 
   else
   {
-    v24 = [v6 row] - v12;
-    v25 = [(WFLocationPickerViewController *)self recents];
-    v22 = [v25 objectAtIndexedSubscript:v24];
+    v24 = [pathCopy row] - firstRecentRowIndex;
+    recents = [(WFLocationPickerViewController *)self recents];
+    v22 = [recents objectAtIndexedSubscript:v24];
 
-    v15 = [v22 displayName];
-    v23 = [v22 address];
+    name = [v22 displayName];
+    _shortAddress = [v22 address];
   }
 
-  v18 = v23;
+  v18 = _shortAddress;
   v16 = [MEMORY[0x277D755B8] systemImageNamed:@"mappin.and.ellipse"];
-  v17 = [MEMORY[0x277D75348] systemRedColor];
+  labelColor = [MEMORY[0x277D75348] systemRedColor];
 
 LABEL_14:
-  v26 = [v7 textLabel];
-  [v26 setText:v15];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setText:name];
 
-  v27 = [v7 detailTextLabel];
-  [v27 setText:v18];
+  detailTextLabel2 = [v7 detailTextLabel];
+  [detailTextLabel2 setText:v18];
 
-  v28 = [v7 imageView];
-  [v28 setImage:v16];
+  imageView = [v7 imageView];
+  [imageView setImage:v16];
 
-  v29 = [v7 imageView];
-  [v29 setTintColor:v17];
+  imageView2 = [v7 imageView];
+  [imageView2 setTintColor:labelColor];
 
-  v30 = [(WFLocationPickerViewController *)self selectedIndexPath];
-  if ([v6 isEqual:v30])
+  selectedIndexPath = [(WFLocationPickerViewController *)self selectedIndexPath];
+  if ([pathCopy isEqual:selectedIndexPath])
   {
     if ([(WFLocationPickerViewController *)self hasLocation])
     {
@@ -663,19 +663,19 @@ LABEL_14:
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  [v5 setOpaque:0];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v6];
+  cellCopy = cell;
+  [cellCopy setOpaque:0];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFLocationPickerViewController *)self currentLocationRowIndex:a3];
-  v6 = [(WFLocationPickerViewController *)self recents];
-  v7 = [v6 count];
+  v5 = [(WFLocationPickerViewController *)self currentLocationRowIndex:view];
+  recents = [(WFLocationPickerViewController *)self recents];
+  v7 = [recents count];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
@@ -686,41 +686,41 @@ LABEL_14:
     v8 = v7 + 1;
   }
 
-  v9 = [(WFLocationPickerViewController *)self localSearchResults];
-  v10 = [v9 count];
+  localSearchResults = [(WFLocationPickerViewController *)self localSearchResults];
+  v10 = [localSearchResults count];
 
   return v8 + v10;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v9 = a4;
-  v5 = [(WFLocationPickerViewController *)self currentLocation];
-  v6 = [v9 firstObject];
-  v7 = [v5 isEqual:v6];
+  locationsCopy = locations;
+  currentLocation = [(WFLocationPickerViewController *)self currentLocation];
+  firstObject = [locationsCopy firstObject];
+  v7 = [currentLocation isEqual:firstObject];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v9 firstObject];
-    [(WFLocationPickerViewController *)self setCurrentLocation:v8];
+    firstObject2 = [locationsCopy firstObject];
+    [(WFLocationPickerViewController *)self setCurrentLocation:firstObject2];
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  authorizationCopy = authorization;
   v5 = getWFTriggersLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315394;
     v7 = "[WFLocationPickerViewController locationManagerDidChangeAuthorization:]";
     v8 = 1024;
-    v9 = [v4 authorizationStatus];
+    authorizationStatus = [authorizationCopy authorizationStatus];
     _os_log_impl(&dword_2743F0000, v5, OS_LOG_TYPE_DEBUG, "%s locationManager:didChangeAuthorizationStatus: got status: %d", &v6, 0x12u);
   }
 
-  -[WFLocationPickerViewController setCurrentAppLocationAuthorizationStatus:](self, "setCurrentAppLocationAuthorizationStatus:", [v4 authorizationStatus]);
+  -[WFLocationPickerViewController setCurrentAppLocationAuthorizationStatus:](self, "setCurrentAppLocationAuthorizationStatus:", [authorizationCopy authorizationStatus]);
   [(WFLocationPickerViewController *)self reloadData];
 }
 
@@ -734,7 +734,7 @@ LABEL_14:
     v6 = 136315394;
     v7 = "[WFLocationPickerViewController checkLocationAuthorization]";
     v8 = 1024;
-    v9 = [(WFLocationPickerViewController *)self currentAppLocationAuthorizationStatus];
+    currentAppLocationAuthorizationStatus = [(WFLocationPickerViewController *)self currentAppLocationAuthorizationStatus];
     _os_log_impl(&dword_2743F0000, v3, OS_LOG_TYPE_DEBUG, "%s Current CLAuthorizationStatus: %d", &v6, 0x12u);
   }
 
@@ -748,34 +748,34 @@ LABEL_14:
       _os_log_impl(&dword_2743F0000, v4, OS_LOG_TYPE_DEBUG, "%s Rrequesting WhenInUse…", &v6, 0xCu);
     }
 
-    v5 = [(WFLocationPickerViewController *)self locationManager];
-    [v5 requestWhenInUseAuthorization];
+    locationManager = [(WFLocationPickerViewController *)self locationManager];
+    [locationManager requestWhenInUseAuthorization];
   }
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v5 = [(WFLocationPickerViewController *)self delegate];
-  v4 = [(WFLocationPickerViewController *)self value];
-  [v5 locationPicker:self didFinishWithValue:v4];
+  delegate = [(WFLocationPickerViewController *)self delegate];
+  value = [(WFLocationPickerViewController *)self value];
+  [delegate locationPicker:self didFinishWithValue:value];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(WFLocationPickerViewController *)self delegate];
-  [v4 locationPickerDidCancel:self];
+  delegate = [(WFLocationPickerViewController *)self delegate];
+  [delegate locationPickerDidCancel:self];
 }
 
 - (id)circularRegion
 {
-  v2 = [(WFLocationPickerViewController *)self value];
-  v3 = [v2 placemark];
-  v4 = [v3 region];
+  value = [(WFLocationPickerViewController *)self value];
+  placemark = [value placemark];
+  region = [placemark region];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = region;
   }
 
   else
@@ -786,32 +786,32 @@ LABEL_14:
   return v5;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  objc_storeStrong(&self->_value, a3);
+  objc_storeStrong(&self->_value, value);
 
   [(WFLocationPickerViewController *)self updateUI];
 }
 
-- (void)setRegionCondition:(unint64_t)a3
+- (void)setRegionCondition:(unint64_t)condition
 {
-  if (self->_regionCondition != a3)
+  if (self->_regionCondition != condition)
   {
-    self->_regionCondition = a3;
-    v5 = [(WFLocationPickerViewController *)self proximityType];
-    v6 = [(WFLocationPickerViewController *)self dragView];
-    [v6 setProximity:v5];
+    self->_regionCondition = condition;
+    proximityType = [(WFLocationPickerViewController *)self proximityType];
+    dragView = [(WFLocationPickerViewController *)self dragView];
+    [dragView setProximity:proximityType];
   }
 }
 
-- (void)showMapRegionForCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4
+- (void)showMapRegionForCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius
 {
-  v5 = MEMORY[0x277C59340](self, a2, a3, *&a3.longitude, a4 * 3.5, a4 * 3.5);
+  v5 = MEMORY[0x277C59340](self, a2, coordinate, *&coordinate.longitude, radius * 3.5, radius * 3.5);
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(WFLocationPickerViewController *)self mapView];
-  [v12 regionThatFits:{v5, v7, v9, v11}];
+  mapView = [(WFLocationPickerViewController *)self mapView];
+  [mapView regionThatFits:{v5, v7, v9, v11}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -819,92 +819,92 @@ LABEL_14:
 
   if (fabs(v16) <= 180.0 && fabs(v14) <= 90.0 && v18 >= 0.0 && v18 <= 180.0 && v20 >= 0.0 && v20 <= 360.0)
   {
-    v21 = [(WFLocationPickerViewController *)self mapView];
-    [v21 setRegion:0 animated:{v14, v16, v18, v20}];
+    mapView2 = [(WFLocationPickerViewController *)self mapView];
+    [mapView2 setRegion:0 animated:{v14, v16, v18, v20}];
   }
 }
 
-- (id)locationFromRecentContact:(id)a3
+- (id)locationFromRecentContact:(id)contact
 {
-  v3 = [a3 metadata];
-  v4 = [v3 objectForKey:@"latitude"];
+  metadata = [contact metadata];
+  v4 = [metadata objectForKey:@"latitude"];
   [v4 doubleValue];
   v6 = v5;
 
-  v7 = [v3 objectForKey:@"longitude"];
+  v7 = [metadata objectForKey:@"longitude"];
   [v7 doubleValue];
   v9 = v8;
 
   v10 = CLLocationCoordinate2DMake(v6, v9);
-  v11 = [v3 objectForKey:@"hAccuracy"];
+  v11 = [metadata objectForKey:@"hAccuracy"];
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [v3 objectForKey:@"vAccuracy"];
+  v14 = [metadata objectForKey:@"vAccuracy"];
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [v3 objectForKey:@"referenceFrame"];
-  v18 = [v17 integerValue];
+  v17 = [metadata objectForKey:@"referenceFrame"];
+  integerValue = [v17 integerValue];
 
   v19 = objc_alloc(MEMORY[0x277CE41F8]);
-  v20 = [MEMORY[0x277CBEAA8] date];
-  v21 = [v19 initWithCoordinate:v20 altitude:v18 horizontalAccuracy:v10.latitude verticalAccuracy:v10.longitude timestamp:0.0 referenceFrame:{v13, v16}];
+  date = [MEMORY[0x277CBEAA8] date];
+  v21 = [v19 initWithCoordinate:date altitude:integerValue horizontalAccuracy:v10.latitude verticalAccuracy:v10.longitude timestamp:0.0 referenceFrame:{v13, v16}];
 
   return v21;
 }
 
-- (void)getPlacemarkFromLocation:(id)a3 streetAddress:(id)a4 completionHandler:(id)a5
+- (void)getPlacemarkFromLocation:(id)location streetAddress:(id)address completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v8)
+  locationCopy = location;
+  addressCopy = address;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (locationCopy && addressCopy)
   {
-    v11 = [v8 postalAddress];
+    postalAddress = [addressCopy postalAddress];
     v12 = objc_alloc(MEMORY[0x277CD4F00]);
-    [v7 coordinate];
-    v13 = [v12 initWithCoordinate:v11 postalAddress:?];
+    [locationCopy coordinate];
+    v13 = [v12 initWithCoordinate:postalAddress postalAddress:?];
     (v10)[2](v10, v13, 0);
   }
 
   else
   {
-    if (!(v7 | v8))
+    if (!(locationCopy | addressCopy))
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
       goto LABEL_11;
     }
 
-    if (v7)
+    if (locationCopy)
     {
-      v14 = v7;
+      v14 = locationCopy;
     }
 
     else
     {
-      v14 = v8;
+      v14 = addressCopy;
     }
 
-    v11 = [MEMORY[0x277CFC2F8] itemWithObject:v14];
+    postalAddress = [MEMORY[0x277CFC2F8] itemWithObject:v14];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __91__WFLocationPickerViewController_getPlacemarkFromLocation_streetAddress_completionHandler___block_invoke;
     v15[3] = &unk_279EDC068;
     v16 = v10;
-    [v11 getObjectRepresentation:v15 forClass:objc_opt_class()];
+    [postalAddress getObjectRepresentation:v15 forClass:objc_opt_class()];
   }
 
 LABEL_11:
 }
 
-- (void)getMapItemFromRecentContact:(id)a3 completionHandler:(id)a4
+- (void)getMapItemFromRecentContact:(id)contact completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 metadata];
-  v9 = [v8 objectForKey:@"mapKitHandle"];
+  contactCopy = contact;
+  handlerCopy = handler;
+  metadata = [contactCopy metadata];
+  v9 = [metadata objectForKey:@"mapKitHandle"];
   v10 = objc_opt_class();
   v11 = WFEnforceClass(v9, v10);
 
@@ -915,23 +915,23 @@ LABEL_11:
     v31[1] = 3221225472;
     v31[2] = __80__WFLocationPickerViewController_getMapItemFromRecentContact_completionHandler___block_invoke;
     v31[3] = &unk_279EDC018;
-    v32 = v7;
-    v13 = v7;
+    v32 = handlerCopy;
+    address = handlerCopy;
     [v12 _mapItemFromHandle:v11 completionHandler:v31];
-    v14 = v32;
+    firstObject = v32;
   }
 
   else
   {
-    v13 = [v6 address];
-    v15 = [MEMORY[0x277CFC528] streetAddressesInString:v13 error:0];
-    v14 = [v15 firstObject];
+    address = [contactCopy address];
+    v15 = [MEMORY[0x277CFC528] streetAddressesInString:address error:0];
+    firstObject = [v15 firstObject];
 
-    v16 = [v8 objectForKey:@"latitude"];
+    v16 = [metadata objectForKey:@"latitude"];
     v17 = objc_opt_class();
     v18 = WFEnforceClass(v16, v17);
 
-    v19 = [v8 objectForKey:@"longitude"];
+    v19 = [metadata objectForKey:@"longitude"];
     v20 = objc_opt_class();
     v21 = WFEnforceClass(v19, v20);
 
@@ -949,10 +949,10 @@ LABEL_11:
     v28[1] = 3221225472;
     v28[2] = __80__WFLocationPickerViewController_getMapItemFromRecentContact_completionHandler___block_invoke_3;
     v28[3] = &unk_279EDC040;
-    v29 = v6;
-    v30 = v7;
-    v27 = v7;
-    [(WFLocationPickerViewController *)self getPlacemarkFromLocation:v22 streetAddress:v14 completionHandler:v28];
+    v29 = contactCopy;
+    v30 = handlerCopy;
+    v27 = handlerCopy;
+    [(WFLocationPickerViewController *)self getPlacemarkFromLocation:v22 streetAddress:firstObject completionHandler:v28];
   }
 }
 
@@ -1005,19 +1005,19 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
   }
 }
 
-- (void)displayLocationCoordinate:(CLLocationCoordinate2D)a3
+- (void)displayLocationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v13 = [(WFLocationPickerViewController *)self mapView];
-  v6 = [v13 annotations];
-  [v13 removeAnnotations:v6];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  mapView = [(WFLocationPickerViewController *)self mapView];
+  annotations = [mapView annotations];
+  [mapView removeAnnotations:annotations];
 
-  v7 = [v13 overlays];
-  [v13 removeOverlays:v7];
+  overlays = [mapView overlays];
+  [mapView removeOverlays:overlays];
 
-  v8 = [(WFLocationPickerViewController *)self circularRegion];
-  [v8 radius];
+  circularRegion = [(WFLocationPickerViewController *)self circularRegion];
+  [circularRegion radius];
   v10 = v9;
 
   if (v10 < 100.0)
@@ -1028,14 +1028,14 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
   [(WFLocationPickerViewController *)self showMapRegionForCoordinate:latitude radius:longitude, v10];
   v11 = objc_alloc_init(MEMORY[0x277CD4F08]);
   [v11 setCoordinate:{latitude, longitude}];
-  [v13 addAnnotation:v11];
+  [mapView addAnnotation:v11];
   v12 = [(WFLocationPickerViewController *)self overlayWithCenterCoordinate:latitude radius:longitude, v10];
   if (v12)
   {
-    [v13 addOverlay:v12];
+    [mapView addOverlay:v12];
   }
 
-  [v13 selectAnnotation:v11 animated:0];
+  [mapView selectAnnotation:v11 animated:0];
 }
 
 - (unint64_t)proximityType
@@ -1053,38 +1053,38 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
 
 - (BOOL)hasLocation
 {
-  v2 = [(WFLocationPickerViewController *)self value];
-  v3 = v2 != 0;
+  value = [(WFLocationPickerViewController *)self value];
+  v3 = value != 0;
 
   return v3;
 }
 
 - (void)updateMapHeight
 {
-  v3 = [(WFLocationPickerViewController *)self mapHeightConstraint];
+  mapHeightConstraint = [(WFLocationPickerViewController *)self mapHeightConstraint];
 
-  if (v3)
+  if (mapHeightConstraint)
   {
     [(WFLocationPickerViewController *)self mapHeight];
     v5 = v4;
-    v6 = [(WFLocationPickerViewController *)self mapHeightConstraint];
-    [v6 setConstant:v5];
+    mapHeightConstraint2 = [(WFLocationPickerViewController *)self mapHeightConstraint];
+    [mapHeightConstraint2 setConstant:v5];
   }
 }
 
 - (void)setupMap
 {
-  v3 = [(WFLocationPickerViewController *)self circularRegion];
-  if (v3)
+  circularRegion = [(WFLocationPickerViewController *)self circularRegion];
+  if (circularRegion)
   {
-    v4 = v3;
-    v5 = [(WFLocationPickerViewController *)self mapView];
-    v6 = [v5 superview];
+    v4 = circularRegion;
+    mapView = [(WFLocationPickerViewController *)self mapView];
+    superview = [mapView superview];
 
-    if (v6)
+    if (superview)
     {
-      v7 = [(WFLocationPickerViewController *)self circularRegion];
-      [v7 center];
+      circularRegion2 = [(WFLocationPickerViewController *)self circularRegion];
+      [circularRegion2 center];
       [(WFLocationPickerViewController *)self displayLocationCoordinate:?];
     }
   }
@@ -1092,32 +1092,32 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
 
 - (void)reloadData
 {
-  v2 = [(WFLocationPickerViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFLocationPickerViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (int64_t)firstLocalSearchResultRowIndex
 {
-  v3 = [(WFLocationPickerViewController *)self localSearchResults];
-  v4 = [v3 count];
+  localSearchResults = [(WFLocationPickerViewController *)self localSearchResults];
+  v4 = [localSearchResults count];
 
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4)
   {
-    v6 = [(WFLocationPickerViewController *)self lastRecentRowIndex];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    lastRecentRowIndex = [(WFLocationPickerViewController *)self lastRecentRowIndex];
+    if (lastRecentRowIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(WFLocationPickerViewController *)self currentLocationRowIndex];
+      lastRecentRowIndex = [(WFLocationPickerViewController *)self currentLocationRowIndex];
     }
 
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    if (lastRecentRowIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      return v6 + 1;
+      return lastRecentRowIndex + 1;
     }
   }
 
@@ -1126,13 +1126,13 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
 
 - (int64_t)lastRecentRowIndex
 {
-  v3 = [(WFLocationPickerViewController *)self firstRecentRowIndex];
+  firstRecentRowIndex = [(WFLocationPickerViewController *)self firstRecentRowIndex];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (firstRecentRowIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
-    v6 = [(WFLocationPickerViewController *)self recents];
-    v4 = v5 + [v6 count] - 1;
+    v5 = firstRecentRowIndex;
+    recents = [(WFLocationPickerViewController *)self recents];
+    v4 = v5 + [recents count] - 1;
   }
 
   return v4;
@@ -1140,21 +1140,21 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
 
 - (int64_t)firstRecentRowIndex
 {
-  v3 = [(WFLocationPickerViewController *)self recents];
-  v4 = [v3 count];
+  recents = [(WFLocationPickerViewController *)self recents];
+  v4 = [recents count];
 
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4)
   {
-    v6 = [(WFLocationPickerViewController *)self currentLocationRowIndex];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    currentLocationRowIndex = [(WFLocationPickerViewController *)self currentLocationRowIndex];
+    if (currentLocationRowIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      return v6 + 1;
+      return currentLocationRowIndex + 1;
     }
   }
 
@@ -1174,12 +1174,12 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
   }
 }
 
-- (void)setResolvesCurrentLocationToPlacemark:(BOOL)a3
+- (void)setResolvesCurrentLocationToPlacemark:(BOOL)placemark
 {
-  if (self->_resolvesCurrentLocationToPlacemark != a3)
+  if (self->_resolvesCurrentLocationToPlacemark != placemark)
   {
-    self->_resolvesCurrentLocationToPlacemark = a3;
-    if (a3)
+    self->_resolvesCurrentLocationToPlacemark = placemark;
+    if (placemark)
     {
       v5 = WFCLLocationManagerWithOptions();
       locationManager = self->_locationManager;
@@ -1199,11 +1199,11 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
   }
 }
 
-- (void)setAllowsPickingCurrentLocation:(BOOL)a3
+- (void)setAllowsPickingCurrentLocation:(BOOL)location
 {
-  if (self->_allowsPickingCurrentLocation != a3)
+  if (self->_allowsPickingCurrentLocation != location)
   {
-    self->_allowsPickingCurrentLocation = a3;
+    self->_allowsPickingCurrentLocation = location;
     if (!self->_locationManager)
     {
       v5 = WFCLLocationManagerWithOptions();
@@ -1219,33 +1219,33 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
 
 - (BOOL)shouldShowCurrentLocationItem
 {
-  v3 = [(WFLocationPickerViewController *)self allowsPickingCurrentLocation];
-  if (v3)
+  allowsPickingCurrentLocation = [(WFLocationPickerViewController *)self allowsPickingCurrentLocation];
+  if (allowsPickingCurrentLocation)
   {
 
-    LOBYTE(v3) = [(WFLocationPickerViewController *)self hasSufficientLocationAuthorization];
+    LOBYTE(allowsPickingCurrentLocation) = [(WFLocationPickerViewController *)self hasSufficientLocationAuthorization];
   }
 
-  return v3;
+  return allowsPickingCurrentLocation;
 }
 
-- (void)updateRecentsWithSearchText:(id)a3
+- (void)updateRecentsWithSearchText:(id)text
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (text)
   {
     v4 = MEMORY[0x277D00F30];
     v5 = *MEMORY[0x277D00EF8];
     v22 = *MEMORY[0x277D00ED8];
     v6 = MEMORY[0x277CBEA60];
-    v7 = a3;
+    textCopy = text;
     v8 = [v6 arrayWithObjects:&v22 count:1];
     v9 = [v4 predicateForKey:v5 inCollection:v8];
     v23[0] = v9;
     v10 = MEMORY[0x277D00F30];
-    v11 = [MEMORY[0x277D00F30] predicateForKey:*MEMORY[0x277D00EF0] matchingText:v7 comparison:1];
+    v11 = [MEMORY[0x277D00F30] predicateForKey:*MEMORY[0x277D00EF0] matchingText:textCopy comparison:1];
     v21[0] = v11;
-    v12 = [MEMORY[0x277D00F30] predicateForKey:*MEMORY[0x277D00EE8] matchingText:v7 comparison:1];
+    v12 = [MEMORY[0x277D00F30] predicateForKey:*MEMORY[0x277D00EE8] matchingText:textCopy comparison:1];
 
     v21[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
@@ -1263,16 +1263,16 @@ void __80__WFLocationPickerViewController_getMapItemFromRecentContact_completion
   v17 = objc_alloc_init(MEMORY[0x277D00F38]);
   [v17 setSearchPredicate:v16];
   [v17 setDomains:&unk_288386A58];
-  v18 = [MEMORY[0x277D00F38] frecencyComparator];
-  [v17 setComparator:v18];
+  frecencyComparator = [MEMORY[0x277D00F38] frecencyComparator];
+  [v17 setComparator:frecencyComparator];
 
-  v19 = [MEMORY[0x277D00F28] defaultInstance];
+  defaultInstance = [MEMORY[0x277D00F28] defaultInstance];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_invoke;
   v20[3] = &unk_279EDBFC8;
   v20[4] = self;
-  [v19 performRecentsSearch:v17 queue:MEMORY[0x277D85CD0] completion:v20];
+  [defaultInstance performRecentsSearch:v17 queue:MEMORY[0x277D85CD0] completion:v20];
 }
 
 void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_invoke(uint64_t a1, uint64_t a2)
@@ -1294,52 +1294,52 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
   }
 }
 
-- (void)updateUIWithValue:(id)a3
+- (void)updateUIWithValue:(id)value
 {
-  v15 = a3;
+  valueCopy = value;
   [(WFLocationPickerViewController *)self loadViewIfNeeded];
-  v4 = [(WFLocationPickerViewController *)self hasLocation];
-  v5 = [v15 defaultSearchText];
-  v6 = [(WFLocationPickerViewController *)self searchBar];
-  [v6 setText:v5];
+  hasLocation = [(WFLocationPickerViewController *)self hasLocation];
+  defaultSearchText = [valueCopy defaultSearchText];
+  searchBar = [(WFLocationPickerViewController *)self searchBar];
+  [searchBar setText:defaultSearchText];
 
-  if (v4 && [(WFLocationPickerViewController *)self showsMapView])
+  if (hasLocation && [(WFLocationPickerViewController *)self showsMapView])
   {
-    v7 = [(WFLocationPickerViewController *)self searchBar];
-    [v7 resignFirstResponder];
+    searchBar2 = [(WFLocationPickerViewController *)self searchBar];
+    [searchBar2 resignFirstResponder];
 
-    v8 = [(WFLocationPickerViewController *)self view];
-    v9 = [(WFLocationPickerViewController *)self mapView];
-    [v8 addSubview:v9];
+    view = [(WFLocationPickerViewController *)self view];
+    mapView = [(WFLocationPickerViewController *)self mapView];
+    [view addSubview:mapView];
 
-    v10 = [(WFLocationPickerViewController *)self view];
-    v11 = [(WFLocationPickerViewController *)self dividerView];
-    [v10 addSubview:v11];
+    view2 = [(WFLocationPickerViewController *)self view];
+    dividerView = [(WFLocationPickerViewController *)self dividerView];
+    [view2 addSubview:dividerView];
   }
 
   else
   {
-    v12 = [(WFLocationPickerViewController *)self mapView];
-    [v12 removeFromSuperview];
+    mapView2 = [(WFLocationPickerViewController *)self mapView];
+    [mapView2 removeFromSuperview];
 
-    v10 = [(WFLocationPickerViewController *)self dividerView];
-    [v10 removeFromSuperview];
+    view2 = [(WFLocationPickerViewController *)self dividerView];
+    [view2 removeFromSuperview];
   }
 
-  if (-[WFLocationPickerViewController allowsPickingCurrentLocation](self, "allowsPickingCurrentLocation") && [v15 isCurrentLocation])
+  if (-[WFLocationPickerViewController allowsPickingCurrentLocation](self, "allowsPickingCurrentLocation") && [valueCopy isCurrentLocation])
   {
     v13 = [MEMORY[0x277CCAA70] indexPathForRow:-[WFLocationPickerViewController currentLocationRowIndex](self inSection:{"currentLocationRowIndex"), 0}];
     [(WFLocationPickerViewController *)self setSelectedIndexPath:v13];
   }
 
-  v14 = [(WFLocationPickerViewController *)self view];
-  [v14 setNeedsUpdateConstraints];
+  view3 = [(WFLocationPickerViewController *)self view];
+  [view3 setNeedsUpdateConstraints];
 }
 
 - (void)updateUI
 {
-  v3 = [(WFLocationPickerViewController *)self value];
-  [(WFLocationPickerViewController *)self updateUIWithValue:v3];
+  value = [(WFLocationPickerViewController *)self value];
+  [(WFLocationPickerViewController *)self updateUIWithValue:value];
 }
 
 - (MKMapView)mapView
@@ -1355,9 +1355,9 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
     [(MKMapView *)self->_mapView setPitchEnabled:0];
     [(MKMapView *)self->_mapView setRotateEnabled:0];
     [(MKMapView *)self->_mapView setShowsUserLocation:1];
-    v5 = [(WFLocationPickerViewController *)self dragView];
-    [v5 setMapView:self->_mapView];
-    [(MKMapView *)self->_mapView addSubview:v5];
+    dragView = [(WFLocationPickerViewController *)self dragView];
+    [dragView setMapView:self->_mapView];
+    [(MKMapView *)self->_mapView addSubview:dragView];
   }
 
   v6 = self->_mapView;
@@ -1375,8 +1375,8 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
     self->_dragView = v4;
 
     [(WFLocationTriggerEditorMapDragRadiusView *)self->_dragView setAutoresizingMask:18];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(WFLocationTriggerEditorMapDragRadiusView *)self->_dragView setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WFLocationTriggerEditorMapDragRadiusView *)self->_dragView setBackgroundColor:clearColor];
 
     [(WFLocationTriggerEditorMapDragRadiusView *)self->_dragView setMapView:self->_mapView];
     [(WFLocationTriggerEditorMapDragRadiusView *)self->_dragView setDelegate:self];
@@ -1388,32 +1388,32 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = WFLocationPickerViewController;
-  v4 = a3;
-  [(WFLocationPickerViewController *)&v12 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WFLocationPickerViewController *)&v12 traitCollectionDidChange:changeCopy];
   v5 = [(WFLocationPickerViewController *)self traitCollection:v12.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(WFLocationPickerViewController *)self traitCollection];
-    v9 = [v8 userInterfaceStyle];
-    if (v9 == 1)
+    traitCollection = [(WFLocationPickerViewController *)self traitCollection];
+    userInterfaceStyle3 = [traitCollection userInterfaceStyle];
+    if (userInterfaceStyle3 == 1)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 2;
+      v10 = userInterfaceStyle3 == 2;
     }
 
-    v11 = [(WFLocationPickerViewController *)self searchBar];
-    [v11 setKeyboardAppearance:v10];
+    searchBar = [(WFLocationPickerViewController *)self searchBar];
+    [searchBar setKeyboardAppearance:v10];
   }
 }
 
@@ -1423,137 +1423,137 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
   v82.super_class = WFLocationPickerViewController;
   [(WFLocationPickerViewController *)&v82 updateViewConstraints];
   v3 = objc_opt_new();
-  v4 = [(WFLocationPickerViewController *)self tableView];
-  v5 = [v4 leadingAnchor];
-  v6 = [(WFLocationPickerViewController *)self view];
-  v7 = [v6 safeAreaLayoutGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v5 constraintEqualToAnchor:v8];
+  tableView = [(WFLocationPickerViewController *)self tableView];
+  leadingAnchor = [tableView leadingAnchor];
+  view = [(WFLocationPickerViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v3 addObject:v9];
 
-  v10 = [(WFLocationPickerViewController *)self tableView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(WFLocationPickerViewController *)self view];
-  v13 = [v12 safeAreaLayoutGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [v11 constraintEqualToAnchor:v14];
+  tableView2 = [(WFLocationPickerViewController *)self tableView];
+  trailingAnchor = [tableView2 trailingAnchor];
+  view2 = [(WFLocationPickerViewController *)self view];
+  safeAreaLayoutGuide2 = [view2 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v3 addObject:v15];
 
-  v16 = [(WFLocationPickerViewController *)self tableView];
-  v17 = [v16 topAnchor];
-  v18 = [(WFLocationPickerViewController *)self view];
-  v19 = [v18 safeAreaLayoutGuide];
-  v20 = [v19 topAnchor];
-  v21 = [v17 constraintEqualToAnchor:v20];
+  tableView3 = [(WFLocationPickerViewController *)self tableView];
+  topAnchor = [tableView3 topAnchor];
+  view3 = [(WFLocationPickerViewController *)self view];
+  safeAreaLayoutGuide3 = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v3 addObject:v21];
 
-  v22 = [(WFLocationPickerViewController *)self dividerView];
-  v23 = [v22 superview];
+  dividerView = [(WFLocationPickerViewController *)self dividerView];
+  superview = [dividerView superview];
 
-  v24 = [(WFLocationPickerViewController *)self tableView];
-  v25 = [v24 bottomAnchor];
-  if (v23)
+  tableView4 = [(WFLocationPickerViewController *)self tableView];
+  bottomAnchor = [tableView4 bottomAnchor];
+  if (superview)
   {
-    v26 = [(WFLocationPickerViewController *)self dividerView];
-    [v26 topAnchor];
+    dividerView2 = [(WFLocationPickerViewController *)self dividerView];
+    [dividerView2 topAnchor];
   }
 
   else
   {
-    v26 = [(WFLocationPickerViewController *)self view];
-    [v26 bottomAnchor];
+    dividerView2 = [(WFLocationPickerViewController *)self view];
+    [dividerView2 bottomAnchor];
   }
   v27 = ;
-  v28 = [v25 constraintEqualToAnchor:v27];
+  v28 = [bottomAnchor constraintEqualToAnchor:v27];
   [v3 addObject:v28];
 
-  v29 = [(WFLocationPickerViewController *)self dividerView];
-  v30 = [v29 superview];
+  dividerView3 = [(WFLocationPickerViewController *)self dividerView];
+  superview2 = [dividerView3 superview];
 
-  if (v30)
+  if (superview2)
   {
-    v31 = [(WFLocationPickerViewController *)self dividerView];
-    v32 = [v31 leadingAnchor];
-    v33 = [(WFLocationPickerViewController *)self view];
-    v34 = [v33 safeAreaLayoutGuide];
-    v35 = [v34 leadingAnchor];
-    v36 = [v32 constraintEqualToAnchor:v35];
+    dividerView4 = [(WFLocationPickerViewController *)self dividerView];
+    leadingAnchor3 = [dividerView4 leadingAnchor];
+    view4 = [(WFLocationPickerViewController *)self view];
+    safeAreaLayoutGuide4 = [view4 safeAreaLayoutGuide];
+    leadingAnchor4 = [safeAreaLayoutGuide4 leadingAnchor];
+    v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v3 addObject:v36];
 
-    v37 = [(WFLocationPickerViewController *)self dividerView];
-    v38 = [v37 trailingAnchor];
-    v39 = [(WFLocationPickerViewController *)self view];
-    v40 = [v39 safeAreaLayoutGuide];
-    v41 = [v40 trailingAnchor];
-    v42 = [v38 constraintEqualToAnchor:v41];
+    dividerView5 = [(WFLocationPickerViewController *)self dividerView];
+    trailingAnchor3 = [dividerView5 trailingAnchor];
+    view5 = [(WFLocationPickerViewController *)self view];
+    safeAreaLayoutGuide5 = [view5 safeAreaLayoutGuide];
+    trailingAnchor4 = [safeAreaLayoutGuide5 trailingAnchor];
+    v42 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v3 addObject:v42];
 
-    v43 = [(WFLocationPickerViewController *)self dividerView];
-    v44 = [v43 heightAnchor];
-    v45 = [MEMORY[0x277D759A0] mainScreen];
-    [v45 scale];
-    v47 = [v44 constraintEqualToConstant:1.0 / v46];
+    dividerView6 = [(WFLocationPickerViewController *)self dividerView];
+    heightAnchor = [dividerView6 heightAnchor];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v47 = [heightAnchor constraintEqualToConstant:1.0 / v46];
     [v3 addObject:v47];
   }
 
-  v48 = [(WFLocationPickerViewController *)self mapView];
-  v49 = [v48 superview];
+  mapView = [(WFLocationPickerViewController *)self mapView];
+  superview3 = [mapView superview];
 
-  if (v49)
+  if (superview3)
   {
-    v50 = [(WFLocationPickerViewController *)self mapView];
-    v51 = [v50 topAnchor];
-    v52 = [(WFLocationPickerViewController *)self dividerView];
-    v53 = [v52 bottomAnchor];
-    v54 = [v51 constraintEqualToAnchor:v53];
+    mapView2 = [(WFLocationPickerViewController *)self mapView];
+    topAnchor3 = [mapView2 topAnchor];
+    dividerView7 = [(WFLocationPickerViewController *)self dividerView];
+    bottomAnchor2 = [dividerView7 bottomAnchor];
+    v54 = [topAnchor3 constraintEqualToAnchor:bottomAnchor2];
     [v3 addObject:v54];
 
-    v55 = [(WFLocationPickerViewController *)self mapView];
-    v56 = [v55 leadingAnchor];
-    v57 = [(WFLocationPickerViewController *)self view];
-    v58 = [v57 safeAreaLayoutGuide];
-    v59 = [v58 leadingAnchor];
-    v60 = [v56 constraintEqualToAnchor:v59];
+    mapView3 = [(WFLocationPickerViewController *)self mapView];
+    leadingAnchor5 = [mapView3 leadingAnchor];
+    view6 = [(WFLocationPickerViewController *)self view];
+    safeAreaLayoutGuide6 = [view6 safeAreaLayoutGuide];
+    leadingAnchor6 = [safeAreaLayoutGuide6 leadingAnchor];
+    v60 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v3 addObject:v60];
 
-    v61 = [(WFLocationPickerViewController *)self mapView];
-    v62 = [v61 trailingAnchor];
-    v63 = [(WFLocationPickerViewController *)self view];
-    v64 = [v63 safeAreaLayoutGuide];
-    v65 = [v64 trailingAnchor];
-    v66 = [v62 constraintEqualToAnchor:v65];
+    mapView4 = [(WFLocationPickerViewController *)self mapView];
+    trailingAnchor5 = [mapView4 trailingAnchor];
+    view7 = [(WFLocationPickerViewController *)self view];
+    safeAreaLayoutGuide7 = [view7 safeAreaLayoutGuide];
+    trailingAnchor6 = [safeAreaLayoutGuide7 trailingAnchor];
+    v66 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v3 addObject:v66];
 
-    v67 = [(WFLocationPickerViewController *)self mapView];
-    v68 = [v67 bottomAnchor];
-    v69 = [(WFLocationPickerViewController *)self view];
-    v70 = [v69 bottomAnchor];
-    v71 = [v68 constraintEqualToAnchor:v70];
+    mapView5 = [(WFLocationPickerViewController *)self mapView];
+    bottomAnchor3 = [mapView5 bottomAnchor];
+    view8 = [(WFLocationPickerViewController *)self view];
+    bottomAnchor4 = [view8 bottomAnchor];
+    v71 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v3 addObject:v71];
 
-    v72 = [(WFLocationPickerViewController *)self mapView];
-    v73 = [v72 heightAnchor];
+    mapView6 = [(WFLocationPickerViewController *)self mapView];
+    heightAnchor2 = [mapView6 heightAnchor];
     [(WFLocationPickerViewController *)self mapHeight];
-    v74 = [v73 constraintEqualToConstant:?];
+    v74 = [heightAnchor2 constraintEqualToConstant:?];
     [(WFLocationPickerViewController *)self setMapHeightConstraint:v74];
 
-    v75 = [(WFLocationPickerViewController *)self mapHeightConstraint];
-    [v3 addObject:v75];
+    mapHeightConstraint = [(WFLocationPickerViewController *)self mapHeightConstraint];
+    [v3 addObject:mapHeightConstraint];
   }
 
-  v76 = [(WFLocationPickerViewController *)self constraints];
-  v77 = [v3 isEqual:v76];
+  constraints = [(WFLocationPickerViewController *)self constraints];
+  v77 = [v3 isEqual:constraints];
 
   if ((v77 & 1) == 0)
   {
     v78 = MEMORY[0x277CCAAD0];
-    v79 = [(WFLocationPickerViewController *)self constraints];
-    [v78 deactivateConstraints:v79];
+    constraints2 = [(WFLocationPickerViewController *)self constraints];
+    [v78 deactivateConstraints:constraints2];
 
     [(WFLocationPickerViewController *)self setConstraints:v3];
     v80 = MEMORY[0x277CCAAD0];
-    v81 = [(WFLocationPickerViewController *)self constraints];
-    [v80 activateConstraints:v81];
+    constraints3 = [(WFLocationPickerViewController *)self constraints];
+    [v80 activateConstraints:constraints3];
   }
 }
 
@@ -1564,74 +1564,74 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
   [(WFLocationPickerViewController *)&v4 viewDidLayoutSubviews];
   [(WFLocationPickerViewController *)self setupMap];
   [(WFLocationPickerViewController *)self updateMapHeight];
-  v3 = [(WFLocationPickerViewController *)self tableView];
-  [v3 scrollToNearestSelectedRowAtScrollPosition:0 animated:0];
+  tableView = [(WFLocationPickerViewController *)self tableView];
+  [tableView scrollToNearestSelectedRowAtScrollPosition:0 animated:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = WFLocationPickerViewController;
-  [(WFLocationPickerViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(WFLocationPickerViewController *)self locationManager];
+  [(WFLocationPickerViewController *)&v6 viewDidDisappear:disappear];
+  locationManager = [(WFLocationPickerViewController *)self locationManager];
 
-  if (v4)
+  if (locationManager)
   {
-    v5 = [(WFLocationPickerViewController *)self locationManager];
-    [v5 stopUpdatingLocation];
+    locationManager2 = [(WFLocationPickerViewController *)self locationManager];
+    [locationManager2 stopUpdatingLocation];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v15.receiver = self;
   v15.super_class = WFLocationPickerViewController;
-  [(WFLocationPickerViewController *)&v15 viewWillDisappear:a3];
-  v4 = [(WFLocationPickerViewController *)self mapView];
-  v5 = [(WFLocationPickerViewController *)self mapView];
-  v6 = [v5 annotations];
-  [v4 removeAnnotations:v6];
+  [(WFLocationPickerViewController *)&v15 viewWillDisappear:disappear];
+  mapView = [(WFLocationPickerViewController *)self mapView];
+  mapView2 = [(WFLocationPickerViewController *)self mapView];
+  annotations = [mapView2 annotations];
+  [mapView removeAnnotations:annotations];
 
-  v7 = [(WFLocationPickerViewController *)self mapView];
-  v8 = [(WFLocationPickerViewController *)self mapView];
-  v9 = [v8 overlays];
-  [v7 removeOverlays:v9];
+  mapView3 = [(WFLocationPickerViewController *)self mapView];
+  mapView4 = [(WFLocationPickerViewController *)self mapView];
+  overlays = [mapView4 overlays];
+  [mapView3 removeOverlays:overlays];
 
-  v10 = [(WFLocationPickerViewController *)self mapView];
-  [v10 setDelegate:0];
+  mapView5 = [(WFLocationPickerViewController *)self mapView];
+  [mapView5 setDelegate:0];
 
-  v11 = [(WFLocationPickerViewController *)self mapView];
-  [v11 setShowsUserLocation:0];
+  mapView6 = [(WFLocationPickerViewController *)self mapView];
+  [mapView6 setShowsUserLocation:0];
 
-  v12 = [(WFLocationPickerViewController *)self searchBar];
-  [v12 resignFirstResponder];
+  searchBar = [(WFLocationPickerViewController *)self searchBar];
+  [searchBar resignFirstResponder];
 
-  v13 = [(WFLocationPickerViewController *)self navigationItem];
-  v14 = [v13 searchController];
-  [v14 setActive:0];
+  navigationItem = [(WFLocationPickerViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  [searchController setActive:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = WFLocationPickerViewController;
-  [(WFLocationPickerViewController *)&v6 viewDidAppear:a3];
-  v4 = [(WFLocationPickerViewController *)self locationManager];
+  [(WFLocationPickerViewController *)&v6 viewDidAppear:appear];
+  locationManager = [(WFLocationPickerViewController *)self locationManager];
 
-  if (v4)
+  if (locationManager)
   {
-    v5 = [(WFLocationPickerViewController *)self locationManager];
-    [v5 startUpdatingLocation];
+    locationManager2 = [(WFLocationPickerViewController *)self locationManager];
+    [locationManager2 startUpdatingLocation];
   }
 
   [(WFLocationPickerViewController *)self setupMap];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WFLocationPickerViewController;
-  [(WFLocationPickerViewController *)&v4 viewWillAppear:a3];
+  [(WFLocationPickerViewController *)&v4 viewWillAppear:appear];
   [(WFLocationPickerViewController *)self checkLocationAuthorization];
 }
 
@@ -1643,22 +1643,22 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
   v23 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], v5, v6, v7}];
-  v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v23 setBackgroundColor:v8];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v23 setBackgroundColor:systemBackgroundColor];
 
   v9 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
   [v9 setObscuresBackgroundDuringPresentation:0];
   [v9 setHidesNavigationBarDuringPresentation:0];
   [v9 setAutomaticallyShowsCancelButton:0];
-  v10 = [(WFLocationPickerViewController *)self navigationItem];
-  [v10 setSearchController:v9];
+  navigationItem = [(WFLocationPickerViewController *)self navigationItem];
+  [navigationItem setSearchController:v9];
 
-  v11 = [(WFLocationPickerViewController *)self navigationItem];
-  [v11 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(WFLocationPickerViewController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
-  v12 = [v9 searchBar];
+  searchBar = [v9 searchBar];
   searchBar = self->_searchBar;
-  self->_searchBar = v12;
+  self->_searchBar = searchBar;
 
   [(UISearchBar *)self->_searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UISearchBar *)self->_searchBar setAutocorrectionType:1];
@@ -1689,8 +1689,8 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
 
   [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
   v21 = self->_tableView;
-  v22 = [(UITableView *)v21 indexPathForSelectedRow];
-  [(UITableView *)v21 deselectRowAtIndexPath:v22 animated:0];
+  indexPathForSelectedRow = [(UITableView *)v21 indexPathForSelectedRow];
+  [(UITableView *)v21 deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
   [(WFLocationPickerViewController *)self reloadData];
   [v23 addSubview:self->_tableView];
@@ -1698,23 +1698,23 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
   [(WFLocationPickerViewController *)self updateUI];
 }
 
-- (WFLocationPickerViewController)initWithPickerType:(unint64_t)a3 value:(id)a4
+- (WFLocationPickerViewController)initWithPickerType:(unint64_t)type value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v19.receiver = self;
   v19.super_class = WFLocationPickerViewController;
   v8 = [(WFLocationPickerViewController *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    v8->_pickerType = a3;
-    objc_storeStrong(&v8->_value, a4);
-    v10 = [v7 placemark];
+    v8->_pickerType = type;
+    objc_storeStrong(&v8->_value, value);
+    placemark = [valueCopy placemark];
 
-    if (v10)
+    if (placemark)
     {
-      v11 = [v7 placemark];
-      v12 = MKMapItemWithPlacemark(v11);
+      placemark2 = [valueCopy placemark];
+      v12 = MKMapItemWithPlacemark(placemark2);
       [(WFLocationPickerViewController *)v9 updateValueWithMapItem:v12];
     }
 
@@ -1722,12 +1722,12 @@ void __62__WFLocationPickerViewController_updateRecentsWithSearchText___block_in
     v13 = WFLocalizedString(@"Location");
     [(WFLocationPickerViewController *)v9 setTitle:v13];
 
-    v14 = [(WFLocationPickerViewController *)v9 navigationItem];
+    navigationItem = [(WFLocationPickerViewController *)v9 navigationItem];
     v15 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v9 action:sel_cancel_];
-    [v14 setLeftBarButtonItem:v15];
+    [navigationItem setLeftBarButtonItem:v15];
 
     v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v9 action:sel_done_];
-    [v14 setRightBarButtonItem:v16];
+    [navigationItem setRightBarButtonItem:v16];
 
     v17 = v9;
   }

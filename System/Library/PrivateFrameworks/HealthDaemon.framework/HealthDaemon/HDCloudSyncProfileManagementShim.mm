@@ -1,23 +1,23 @@
 @interface HDCloudSyncProfileManagementShim
-- (HDCloudSyncProfileManagementShim)initWithProfile:(id)a3;
-- (void)createProfileForIdentifier:(id)a3 firstName:(id)a4 lastName:(id)a5 configuration:(id)a6 completion:(id)a7;
-- (void)deleteAllProfilesOfType:(int64_t)a3 configuration:(id)a4 completion:(id)a5;
-- (void)deleteProfile:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)profileExistsForProfileIdentifier:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (HDCloudSyncProfileManagementShim)initWithProfile:(id)profile;
+- (void)createProfileForIdentifier:(id)identifier firstName:(id)name lastName:(id)lastName configuration:(id)configuration completion:(id)completion;
+- (void)deleteAllProfilesOfType:(int64_t)type configuration:(id)configuration completion:(id)completion;
+- (void)deleteProfile:(id)profile configuration:(id)configuration completion:(id)completion;
+- (void)profileExistsForProfileIdentifier:(id)identifier configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation HDCloudSyncProfileManagementShim
 
-- (HDCloudSyncProfileManagementShim)initWithProfile:(id)a3
+- (HDCloudSyncProfileManagementShim)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDCloudSyncProfileManagementShim;
   v5 = [(HDCloudSyncProfileManagementShim *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -26,13 +26,13 @@
   return v6;
 }
 
-- (void)deleteAllProfilesOfType:(int64_t)a3 configuration:(id)a4 completion:(id)a5
+- (void)deleteAllProfilesOfType:(int64_t)type configuration:(id)configuration completion:(id)completion
 {
-  v8 = a5;
-  v9 = [a4 repository];
-  v10 = [v9 profileManager];
+  completionCopy = completion;
+  repository = [configuration repository];
+  profileManager = [repository profileManager];
   v19 = 0;
-  LOBYTE(a3) = [v10 deleteAllProfilesOfType:a3 error:&v19];
+  LOBYTE(type) = [profileManager deleteAllProfilesOfType:type error:&v19];
   v11 = v19;
 
   queue = self->_queue;
@@ -40,22 +40,22 @@
   v15[1] = 3221225472;
   v15[2] = __85__HDCloudSyncProfileManagementShim_deleteAllProfilesOfType_configuration_completion___block_invoke;
   v15[3] = &unk_278616460;
-  v18 = a3;
+  typeCopy = type;
   v16 = v11;
-  v17 = v8;
+  v17 = completionCopy;
   v13 = v11;
-  v14 = v8;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)deleteProfile:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)deleteProfile:(id)profile configuration:(id)configuration completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 repository];
-  v11 = [v10 profileManager];
+  completionCopy = completion;
+  profileCopy = profile;
+  repository = [configuration repository];
+  profileManager = [repository profileManager];
   v21 = 0;
-  v12 = [v11 deleteProfile:v9 error:&v21];
+  v12 = [profileManager deleteProfile:profileCopy error:&v21];
 
   v13 = v21;
   queue = self->_queue;
@@ -65,22 +65,22 @@
   v17[3] = &unk_278616460;
   v20 = v12;
   v18 = v13;
-  v19 = v8;
+  v19 = completionCopy;
   v15 = v13;
-  v16 = v8;
+  v16 = completionCopy;
   dispatch_async(queue, v17);
 }
 
-- (void)createProfileForIdentifier:(id)a3 firstName:(id)a4 lastName:(id)a5 configuration:(id)a6 completion:(id)a7
+- (void)createProfileForIdentifier:(id)identifier firstName:(id)name lastName:(id)lastName configuration:(id)configuration completion:(id)completion
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a6 repository];
-  v17 = [v16 profileManager];
+  completionCopy = completion;
+  lastNameCopy = lastName;
+  nameCopy = name;
+  identifierCopy = identifier;
+  repository = [configuration repository];
+  profileManager = [repository profileManager];
   v28 = 0;
-  v18 = [v17 createProfileForIdentifier:v15 firstName:v14 lastName:v13 error:&v28];
+  v18 = [profileManager createProfileForIdentifier:identifierCopy firstName:nameCopy lastName:lastNameCopy error:&v28];
 
   v19 = v28;
   queue = self->_queue;
@@ -89,11 +89,11 @@
   v24[2] = __107__HDCloudSyncProfileManagementShim_createProfileForIdentifier_firstName_lastName_configuration_completion___block_invoke;
   v24[3] = &unk_278616488;
   v26 = v19;
-  v27 = v12;
+  v27 = completionCopy;
   v25 = v18;
   v21 = v19;
   v22 = v18;
-  v23 = v12;
+  v23 = completionCopy;
   dispatch_async(queue, v24);
 }
 
@@ -116,14 +116,14 @@ void __107__HDCloudSyncProfileManagementShim_createProfileForIdentifier_firstNam
   }
 }
 
-- (void)profileExistsForProfileIdentifier:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)profileExistsForProfileIdentifier:(id)identifier configuration:(id)configuration completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 repository];
-  v11 = [v10 profileManager];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  repository = [configuration repository];
+  profileManager = [repository profileManager];
   v21 = 0;
-  v12 = [v11 profileExistsForIdentifier:v9 error:&v21];
+  v12 = [profileManager profileExistsForIdentifier:identifierCopy error:&v21];
 
   v13 = v21;
   queue = self->_queue;
@@ -133,8 +133,8 @@ void __107__HDCloudSyncProfileManagementShim_createProfileForIdentifier_firstNam
   v17[3] = &unk_2786164B0;
   v20 = v12;
   v18 = v13;
-  v19 = v8;
-  v15 = v8;
+  v19 = completionCopy;
+  v15 = completionCopy;
   v16 = v13;
   dispatch_async(queue, v17);
 }

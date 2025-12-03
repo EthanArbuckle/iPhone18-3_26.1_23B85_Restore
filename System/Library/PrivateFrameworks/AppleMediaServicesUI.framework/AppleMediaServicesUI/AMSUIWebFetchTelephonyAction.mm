@@ -1,22 +1,22 @@
 @interface AMSUIWebFetchTelephonyAction
-- (AMSUIWebFetchTelephonyAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebFetchTelephonyAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebFetchTelephonyAction
 
-- (AMSUIWebFetchTelephonyAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebFetchTelephonyAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = AMSUIWebFetchTelephonyAction;
-  v7 = [(AMSUIWebAction *)&v11 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v11 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"suppressPhoneNumber"];
+    v8 = [objectCopy objectForKeyedSubscript:@"suppressPhoneNumber"];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 objectForKeyedSubscript:@"suppressPhoneNumber"];
+      v9 = [objectCopy objectForKeyedSubscript:@"suppressPhoneNumber"];
       v7->_suppressPhoneNumber = [v9 BOOLValue];
     }
 
@@ -34,15 +34,15 @@
   v57 = *MEMORY[0x1E69E9840];
   v48.receiver = self;
   v48.super_class = AMSUIWebFetchTelephonyAction;
-  v3 = [(AMSUIWebAction *)&v48 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v48 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -50,23 +50,23 @@
     v52 = v6;
     v53 = 2114;
     v54 = v7;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching telephony...", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching telephony...", buf, 0x16u);
   }
 
-  v8 = [(AMSUIWebAction *)self context];
-  v9 = [v8 dataProvider];
-  v10 = [v9 telephony];
+  context = [(AMSUIWebAction *)self context];
+  dataProvider = [context dataProvider];
+  telephony = [dataProvider telephony];
 
-  if (v10)
+  if (telephony)
   {
-    v11 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v11)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v11 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -74,19 +74,19 @@
       v52 = v13;
       v53 = 2114;
       v54 = v14;
-      _os_log_impl(&dword_1BB036000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully fetched telephony", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Successfully fetched telephony", buf, 0x16u);
     }
 
     if ([(AMSUIWebFetchTelephonyAction *)self suppressPhoneNumber])
     {
-      v15 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v15)
+      mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968]3)
       {
-        v15 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v16 = [v15 OSLogObject];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [mEMORY[0x1E698C968]3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v17 = objc_opt_class();
         v18 = AMSLogKey();
@@ -94,18 +94,18 @@
         v52 = v17;
         v53 = 2114;
         v54 = v18;
-        _os_log_impl(&dword_1BB036000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Suppressing phone number", buf, 0x16u);
+        _os_log_impl(&dword_1BB036000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Suppressing phone number", buf, 0x16u);
       }
 
-      v19 = 0;
+      phoneNumber = 0;
     }
 
     else
     {
-      v19 = [v10 phoneNumber];
-      if (v19)
+      phoneNumber = [telephony phoneNumber];
+      if (phoneNumber)
       {
-        v26 = [v10 formattedPhoneNumber:v19];
+        v26 = [telephony formattedPhoneNumber:phoneNumber];
 LABEL_24:
         v27 = MEMORY[0x1E698CAD0];
         if (v26)
@@ -121,11 +121,11 @@ LABEL_24:
         v50[0] = v28;
         v49[0] = @"formattedPhoneNumber";
         v49[1] = @"mobileCountryCode";
-        v29 = [v10 countryCode];
-        v30 = v29;
-        if (v29)
+        countryCode = [telephony countryCode];
+        v30 = countryCode;
+        if (countryCode)
         {
-          v31 = v29;
+          v31 = countryCode;
         }
 
         else
@@ -135,11 +135,11 @@ LABEL_24:
 
         v50[1] = v31;
         v49[2] = @"mobileNetworkCode";
-        v32 = [v10 networkCode];
-        v33 = v32;
-        if (v32)
+        networkCode = [telephony networkCode];
+        v33 = networkCode;
+        if (networkCode)
         {
-          v34 = v32;
+          v34 = networkCode;
         }
 
         else
@@ -147,9 +147,9 @@ LABEL_24:
           v34 = &stru_1F3921360;
         }
 
-        if (v19)
+        if (phoneNumber)
         {
-          v35 = v19;
+          v35 = phoneNumber;
         }
 
         else
@@ -161,11 +161,11 @@ LABEL_24:
         v50[3] = v35;
         v49[3] = @"phoneNumber";
         v49[4] = @"providerName";
-        v36 = [v10 providerName];
-        v37 = v36;
-        if (v36)
+        providerName = [telephony providerName];
+        v37 = providerName;
+        if (providerName)
         {
-          v38 = v36;
+          v38 = providerName;
         }
 
         else
@@ -175,11 +175,11 @@ LABEL_24:
 
         v50[4] = v38;
         v49[5] = @"radioTechnology";
-        v39 = [v10 radioTechnology];
-        v40 = v39;
-        if (v39)
+        radioTechnology = [telephony radioTechnology];
+        v40 = radioTechnology;
+        if (radioTechnology)
         {
-          v41 = v39;
+          v41 = radioTechnology;
         }
 
         else
@@ -189,11 +189,11 @@ LABEL_24:
 
         v50[5] = v41;
         v49[6] = @"radioType";
-        v42 = [v10 radioType];
-        v43 = v42;
-        if (v42)
+        radioType = [telephony radioType];
+        v43 = radioType;
+        if (radioType)
         {
-          v44 = v42;
+          v44 = radioType;
         }
 
         else
@@ -213,15 +213,15 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v19 = AMSError();
-  v20 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v20)
+  phoneNumber = AMSError();
+  mEMORY[0x1E698C968]4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968]4)
   {
-    v20 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]4 = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v21 = [v20 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+  oSLogObject4 = [mEMORY[0x1E698C968]4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
   {
     v22 = objc_opt_class();
     v23 = AMSLogKey();
@@ -232,10 +232,10 @@ LABEL_24:
     v54 = v23;
     v55 = 2114;
     v56 = v24;
-    _os_log_impl(&dword_1BB036000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch telephony: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch telephony: %{public}@", buf, 0x20u);
   }
 
-  v25 = [MEMORY[0x1E698CAD0] promiseWithError:v19];
+  v25 = [MEMORY[0x1E698CAD0] promiseWithError:phoneNumber];
 LABEL_46:
 
   v46 = *MEMORY[0x1E69E9840];

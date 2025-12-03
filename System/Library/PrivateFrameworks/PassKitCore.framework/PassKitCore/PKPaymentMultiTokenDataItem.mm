@@ -6,11 +6,11 @@
 
 - (NSArray)multiTokenContexts
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 paymentRequest];
-  v4 = [v3 multiTokenContexts];
+  model = [(PKPaymentDataItem *)self model];
+  paymentRequest = [model paymentRequest];
+  multiTokenContexts = [paymentRequest multiTokenContexts];
 
-  return v4;
+  return multiTokenContexts;
 }
 
 @end

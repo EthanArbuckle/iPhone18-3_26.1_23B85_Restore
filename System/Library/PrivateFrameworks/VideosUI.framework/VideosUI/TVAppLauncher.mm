@@ -8,19 +8,19 @@
 
 - (void)showLoadingView
 {
-  v2 = self;
+  selfCopy = self;
   TVAppLauncher.showLoadingView()();
 }
 
 - (void)hideLoadingView
 {
-  v2 = self;
+  selfCopy = self;
   TVAppLauncher.hideLoadingView()();
 }
 
 - (void)configureAppWindow
 {
-  v2 = self;
+  selfCopy = self;
   TVAppLauncher.configureAppWindow()();
 }
 

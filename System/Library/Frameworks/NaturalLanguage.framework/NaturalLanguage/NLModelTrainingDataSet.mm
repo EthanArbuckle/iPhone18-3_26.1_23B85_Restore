@@ -1,47 +1,47 @@
 @interface NLModelTrainingDataSet
-- (NLModelTrainingDataSet)initWithConfiguration:(id)a3 numberOfTrainingInstances:(unint64_t)a4 numberOfValidationInstances:(unint64_t)a5 trainingDataSource:(void *)a6 validationDataSource:(void *)a7 instanceDataProvider:(id)a8;
-- (id)dataProviderOfType:(int64_t)a3;
+- (NLModelTrainingDataSet)initWithConfiguration:(id)configuration numberOfTrainingInstances:(unint64_t)instances numberOfValidationInstances:(unint64_t)validationInstances trainingDataSource:(void *)source validationDataSource:(void *)dataSource instanceDataProvider:(id)provider;
+- (id)dataProviderOfType:(int64_t)type;
 @end
 
 @implementation NLModelTrainingDataSet
 
-- (NLModelTrainingDataSet)initWithConfiguration:(id)a3 numberOfTrainingInstances:(unint64_t)a4 numberOfValidationInstances:(unint64_t)a5 trainingDataSource:(void *)a6 validationDataSource:(void *)a7 instanceDataProvider:(id)a8
+- (NLModelTrainingDataSet)initWithConfiguration:(id)configuration numberOfTrainingInstances:(unint64_t)instances numberOfValidationInstances:(unint64_t)validationInstances trainingDataSource:(void *)source validationDataSource:(void *)dataSource instanceDataProvider:(id)provider
 {
-  v14 = a3;
-  v15 = a8;
+  configurationCopy = configuration;
+  providerCopy = provider;
   v43.receiver = self;
   v43.super_class = NLModelTrainingDataSet;
-  v16 = [(NLDataSet *)&v43 initWithConfiguration:v14 trainingDataURL:0 validationDataURL:0 testDataURL:0];
+  v16 = [(NLDataSet *)&v43 initWithConfiguration:configurationCopy trainingDataURL:0 validationDataURL:0 testDataURL:0];
   if (v16)
   {
-    obj = [[NLPModelTrainingDataProvider alloc] initWithConfiguration:v14 numberOfInstances:a4 dataSource:a6 instanceDataProvider:v15];
-    v41 = [[NLPModelTrainingDataProvider alloc] initWithConfiguration:v14 numberOfInstances:a5 dataSource:a7 instanceDataProvider:v15];
-    v17 = [(NLDataSet *)v16 configuration];
-    v18 = [v17 options];
-    v19 = BOOLForKeyWithDefault(v18, @"UseCRF");
+    obj = [[NLPModelTrainingDataProvider alloc] initWithConfiguration:configurationCopy numberOfInstances:instances dataSource:source instanceDataProvider:providerCopy];
+    v41 = [[NLPModelTrainingDataProvider alloc] initWithConfiguration:configurationCopy numberOfInstances:validationInstances dataSource:dataSource instanceDataProvider:providerCopy];
+    configuration = [(NLDataSet *)v16 configuration];
+    options = [configuration options];
+    v19 = BOOLForKeyWithDefault(options, @"UseCRF");
 
-    v20 = [(NLDataSet *)v16 configuration];
-    v21 = [v20 options];
-    v22 = BOOLForKeyWithDefault(v21, @"UseRNN");
+    configuration2 = [(NLDataSet *)v16 configuration];
+    options2 = [configuration2 options];
+    v22 = BOOLForKeyWithDefault(options2, @"UseRNN");
 
-    v23 = [(NLDataSet *)v16 configuration];
-    v24 = [v23 options];
-    v25 = BOOLForKeyWithDefault(v24, @"UseTransfer");
+    configuration3 = [(NLDataSet *)v16 configuration];
+    options3 = [configuration3 options];
+    v25 = BOOLForKeyWithDefault(options3, @"UseTransfer");
 
-    if (a4 >= 0xA && !a5)
+    if (instances >= 0xA && !validationInstances)
     {
-      v26 = [(NLDataSet *)v16 configuration];
-      if (([v26 type] != 0) | v19 & 1)
+      configuration4 = [(NLDataSet *)v16 configuration];
+      if (([configuration4 type] != 0) | v19 & 1)
       {
 
 LABEL_7:
-        v27 = dbl_19D4E9340[a4 > 0x63];
-        if (a4 >> 5 > 0xC34)
+        v27 = dbl_19D4E9340[instances > 0x63];
+        if (instances >> 5 > 0xC34)
         {
           v27 = 0.05;
         }
 
-        v28 = splitIndexes(a4, v27, 0.0);
+        v28 = splitIndexes(instances, v27, 0.0);
         v29 = [NLSplitDataProvider alloc];
         v30 = [v28 objectAtIndex:0];
         v31 = obj;
@@ -77,9 +77,9 @@ LABEL_11:
   return v16;
 }
 
-- (id)dataProviderOfType:(int64_t)a3
+- (id)dataProviderOfType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = &OBJC_IVAR___NLModelTrainingDataSet__modelTrainingDataProvider;
 LABEL_5:
@@ -88,7 +88,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = &OBJC_IVAR___NLModelTrainingDataSet__modelValidationDataProvider;
     goto LABEL_5;

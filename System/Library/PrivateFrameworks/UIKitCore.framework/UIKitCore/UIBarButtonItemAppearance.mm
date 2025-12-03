@@ -1,19 +1,19 @@
 @interface UIBarButtonItemAppearance
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIBarButtonItemAppearance)copy;
-- (UIBarButtonItemAppearance)initWithBarButtonItemAppearance:(id)a3;
+- (UIBarButtonItemAppearance)initWithBarButtonItemAppearance:(id)appearance;
 - (UIBarButtonItemAppearance)initWithCoder:(NSCoder *)coder;
 - (UIBarButtonItemAppearance)initWithStyle:(UIBarButtonItemStyle)style;
 - (_UIBarButtonItemAppearanceChangeObserver)_changeObserver;
-- (id)_proxyForState:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_proxyForState:(int64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_resetBackIndicatorImages;
-- (void)_setBackIndicatorImage:(id)a3 transitionMaskImage:(id)a4;
-- (void)_setFallback:(id)a3;
-- (void)_updateDataTo:(id)a3 signal:(BOOL)a4;
-- (void)_updateToSupportBackIndicatorsCopyingIndicatorsAndFallbackFrom:(id)a3;
-- (void)_writeToStorage:(id)a3;
+- (void)_setBackIndicatorImage:(id)image transitionMaskImage:(id)maskImage;
+- (void)_setFallback:(id)fallback;
+- (void)_updateDataTo:(id)to signal:(BOOL)signal;
+- (void)_updateToSupportBackIndicatorsCopyingIndicatorsAndFallbackFrom:(id)from;
+- (void)_writeToStorage:(id)storage;
 - (void)configureWithDefaultForStyle:(UIBarButtonItemStyle)style;
 - (void)dealloc;
 @end
@@ -54,13 +54,13 @@
   return v4;
 }
 
-- (UIBarButtonItemAppearance)initWithBarButtonItemAppearance:(id)a3
+- (UIBarButtonItemAppearance)initWithBarButtonItemAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = -[UIBarButtonItemAppearance initWithStyle:](self, "initWithStyle:", [v4[2] style]);
+  appearanceCopy = appearance;
+  v5 = -[UIBarButtonItemAppearance initWithStyle:](self, "initWithStyle:", [appearanceCopy[2] style]);
   if (v5)
   {
-    v6 = [v4[2] copy];
+    v6 = [appearanceCopy[2] copy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -91,7 +91,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
@@ -110,16 +110,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (self == v4)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.isa;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && [(UIBarButtonItemAppearance *)v4 isMemberOfClass:objc_opt_class()])
+  else if (equalCopy && [(UIBarButtonItemAppearance *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v6 = [p_isa[2] isEqual:self->_data];
   }
@@ -132,59 +132,59 @@
   return v6;
 }
 
-- (void)_updateDataTo:(id)a3 signal:(BOOL)a4
+- (void)_updateDataTo:(id)to signal:(BOOL)signal
 {
-  v7 = a3;
+  toCopy = to;
   data = self->_data;
-  if (data != v7)
+  if (data != toCopy)
   {
-    v12 = v7;
+    v12 = toCopy;
     v9 = data;
-    objc_storeStrong(&self->_data, a3);
+    objc_storeStrong(&self->_data, to);
     for (i = 24; i != 56; i += 8)
     {
       [*(&self->super.isa + i) setData:self->_data];
     }
 
-    if (a4)
+    if (signal)
     {
       WeakRetained = objc_loadWeakRetained(&self->_changeObserver);
       [WeakRetained _barButtonItemAppearanceChangedItemData:self toItemData:self->_data fromItemData:v9];
     }
 
-    v7 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)_setFallback:(id)a3
+- (void)_setFallback:(id)fallback
 {
-  v4 = [(_UIBarButtonItemData *)self->_data dataWithNewFallback:a3];
+  v4 = [(_UIBarButtonItemData *)self->_data dataWithNewFallback:fallback];
   [(UIBarButtonItemAppearance *)self _updateDataTo:v4 signal:0];
 }
 
-- (void)_writeToStorage:(id)a3
+- (void)_writeToStorage:(id)storage
 {
   data = self->_data;
-  v5 = a3;
-  v6 = [(_UIBarAppearanceData *)data writableInstance];
-  [(UIBarButtonItemAppearance *)self _updateDataTo:v6 signal:1];
+  storageCopy = storage;
+  writableInstance = [(_UIBarAppearanceData *)data writableInstance];
+  [(UIBarButtonItemAppearance *)self _updateDataTo:writableInstance signal:1];
 
-  v5[2](v5);
+  storageCopy[2](storageCopy);
   WeakRetained = objc_loadWeakRetained(&self->_changeObserver);
   [WeakRetained _barButtonItemDataChanged:self];
 }
 
-- (id)_proxyForState:(int64_t)a3
+- (id)_proxyForState:(int64_t)state
 {
   states = self->_states;
-  v5 = self->_states[a3];
+  v5 = self->_states[state];
   if (!v5)
   {
-    v7 = [[UIBarButtonItemStateAppearance alloc] _initWithOwner:self data:self->_data state:a3];
-    v8 = states[a3];
-    states[a3] = v7;
+    v7 = [[UIBarButtonItemStateAppearance alloc] _initWithOwner:self data:self->_data state:state];
+    v8 = states[state];
+    states[state] = v7;
 
-    v5 = states[a3];
+    v5 = states[state];
   }
 
   return v5;
@@ -208,34 +208,34 @@
   [WeakRetained _barButtonItemDataChanged:self];
 }
 
-- (void)_updateToSupportBackIndicatorsCopyingIndicatorsAndFallbackFrom:(id)a3
+- (void)_updateToSupportBackIndicatorsCopyingIndicatorsAndFallbackFrom:(id)from
 {
-  v8 = a3;
+  fromCopy = from;
   WeakRetained = objc_loadWeakRetained(&self->_changeObserver);
 
   if (WeakRetained)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIBarButtonItemAppearance.m" lineNumber:311 description:@"This method must be called before a change observer is attached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIBarButtonItemAppearance.m" lineNumber:311 description:@"This method must be called before a change observer is attached"];
   }
 
-  v6 = [(_UIBarButtonItemData *)self->_data copyAsBackButtonDataWithIndicatorsAndFallbackFrom:v8];
+  v6 = [(_UIBarButtonItemData *)self->_data copyAsBackButtonDataWithIndicatorsAndFallbackFrom:fromCopy];
   [(UIBarButtonItemAppearance *)self _updateDataTo:v6 signal:0];
 }
 
-- (void)_setBackIndicatorImage:(id)a3 transitionMaskImage:(id)a4
+- (void)_setBackIndicatorImage:(id)image transitionMaskImage:(id)maskImage
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  maskImageCopy = maskImage;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__UIBarButtonItemAppearance__setBackIndicatorImage_transitionMaskImage___block_invoke;
   v10[3] = &unk_1E70F6228;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = imageCopy;
+  v12 = maskImageCopy;
+  v8 = maskImageCopy;
+  v9 = imageCopy;
   [(UIBarButtonItemAppearance *)self _writeToStorage:v10];
 }
 

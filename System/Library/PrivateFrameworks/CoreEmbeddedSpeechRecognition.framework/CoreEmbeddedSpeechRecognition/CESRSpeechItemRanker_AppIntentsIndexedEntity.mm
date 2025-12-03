@@ -1,44 +1,44 @@
 @interface CESRSpeechItemRanker_AppIntentsIndexedEntity
-+ (BOOL)_isEntityAllowListed:(id)a3 bundleId:(id)a4 appEntityConfig:(id)a5;
-+ (BOOL)_shouldAcceptEntity:(id)a3 bundleId:(id)a4 appEntityConfig:(id)a5 entityTypes:(id)a6 numEntitiesRejected:(unint64_t *)a7 numEmptyDisplayRepresentations:(unint64_t *)a8;
-+ (id)_itemCountsFromSetDict:(id)a3 appEntityConfig:(id)a4 numDonatingFirstPartyApps:(unint64_t *)a5 numDonatingThirdPartyApps:(unint64_t *)a6 totalNumEntitiesPresent:(unint64_t *)a7 itemCountSum:(unint64_t *)a8;
-+ (id)_transformedItemCountsFromItemCounts:(id)a3 transformationFunction:(unint64_t)a4 transformationFunctionAlpha:(double)a5 transformedCountSum:(double *)a6;
-+ (unint64_t)_bundleQuotaFromAllocationStrategy:(unint64_t)a3 remainingQuota:(unint64_t)a4 numBundles:(unint64_t)a5 transformedRelativeSize:(double)a6;
-+ (void)_logAppEntitiesEnumeratedWithTotalNumEntitiesPresent:(unint64_t)a3 numTotalAccepted:(unint64_t)a4 numTotalRankedAccepted:(unint64_t)a5 numTotalUnrankedAccepted:(unint64_t)a6 numDonatingFirstPartyApps:(unint64_t)a7 numDonatingThirdPartyApps:(unint64_t)a8;
-+ (void)_logAppEntityPartitionEnumeratedWithSourceBundleId:(id)a3 numEntitiesPresent:(unint64_t)a4 numDistinctEntityTypes:(unint64_t)a5 numEmptyTitleDisplayRepresentations:(unint64_t)a6 numRankedEntitiesAccepted:(unint64_t)a7 numUnrankedEntitiesAccepted:(unint64_t)a8 numEntitiesRejected:(unint64_t)a9 calculatedQuota:(unint64_t)a10;
-- (BOOL)addSet:(id)a3;
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (CESRSpeechItemRanker_AppIntentsIndexedEntity)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5;
++ (BOOL)_isEntityAllowListed:(id)listed bundleId:(id)id appEntityConfig:(id)config;
++ (BOOL)_shouldAcceptEntity:(id)entity bundleId:(id)id appEntityConfig:(id)config entityTypes:(id)types numEntitiesRejected:(unint64_t *)rejected numEmptyDisplayRepresentations:(unint64_t *)representations;
++ (id)_itemCountsFromSetDict:(id)dict appEntityConfig:(id)config numDonatingFirstPartyApps:(unint64_t *)apps numDonatingThirdPartyApps:(unint64_t *)partyApps totalNumEntitiesPresent:(unint64_t *)present itemCountSum:(unint64_t *)sum;
++ (id)_transformedItemCountsFromItemCounts:(id)counts transformationFunction:(unint64_t)function transformationFunctionAlpha:(double)alpha transformedCountSum:(double *)sum;
++ (unint64_t)_bundleQuotaFromAllocationStrategy:(unint64_t)strategy remainingQuota:(unint64_t)quota numBundles:(unint64_t)bundles transformedRelativeSize:(double)size;
++ (void)_logAppEntitiesEnumeratedWithTotalNumEntitiesPresent:(unint64_t)present numTotalAccepted:(unint64_t)accepted numTotalRankedAccepted:(unint64_t)rankedAccepted numTotalUnrankedAccepted:(unint64_t)unrankedAccepted numDonatingFirstPartyApps:(unint64_t)apps numDonatingThirdPartyApps:(unint64_t)partyApps;
++ (void)_logAppEntityPartitionEnumeratedWithSourceBundleId:(id)id numEntitiesPresent:(unint64_t)present numDistinctEntityTypes:(unint64_t)types numEmptyTitleDisplayRepresentations:(unint64_t)representations numRankedEntitiesAccepted:(unint64_t)accepted numUnrankedEntitiesAccepted:(unint64_t)entitiesAccepted numEntitiesRejected:(unint64_t)rejected calculatedQuota:(unint64_t)self0;
+- (BOOL)addSet:(id)set;
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block;
+- (CESRSpeechItemRanker_AppIntentsIndexedEntity)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group;
 - (id)getActivatedCodepathIds;
 @end
 
 @implementation CESRSpeechItemRanker_AppIntentsIndexedEntity
 
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block
 {
   v167 = *MEMORY[0x277D85DE8];
-  v85 = a4;
-  v82 = [(CESRAppEntityConfig *)self->_appEntityConfig allocationStrategy];
-  v5 = [(CESRAppEntityConfig *)self->_appEntityConfig proportionTransformationFunction];
+  blockCopy = block;
+  allocationStrategy = [(CESRAppEntityConfig *)self->_appEntityConfig allocationStrategy];
+  proportionTransformationFunction = [(CESRAppEntityConfig *)self->_appEntityConfig proportionTransformationFunction];
   [(CESRAppEntityConfig *)self->_appEntityConfig proportionTransformationAlpha];
   v7 = v6;
-  v76 = [(CESRAppEntityConfig *)self->_appEntityConfig interactionStoreRankingEnabled];
+  interactionStoreRankingEnabled = [(CESRAppEntityConfig *)self->_appEntityConfig interactionStoreRankingEnabled];
   v135 = 0;
   v134 = 0;
   v133 = 0;
   v132 = 0;
   v87 = [CESRSpeechItemRanker_AppIntentsIndexedEntity _itemCountsFromSetDict:self->_setDict appEntityConfig:self->_appEntityConfig numDonatingFirstPartyApps:&v134 numDonatingThirdPartyApps:&v133 totalNumEntitiesPresent:&v135 itemCountSum:&v132];
   v131 = 0.0;
-  v86 = [CESRSpeechItemRanker_AppIntentsIndexedEntity _transformedItemCountsFromItemCounts:v87 transformationFunction:v5 transformationFunctionAlpha:&v131 transformedCountSum:v7];
+  v86 = [CESRSpeechItemRanker_AppIntentsIndexedEntity _transformedItemCountsFromItemCounts:v87 transformationFunction:proportionTransformationFunction transformationFunctionAlpha:&v131 transformedCountSum:v7];
   v8 = [v87 keysSortedByValueUsingComparator:&__block_literal_global_381];
   v9 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
   {
     v10 = v9;
     v11 = [v8 count];
-    v12 = [(CESRSpeechItemRanker_AppIntentsIndexedEntity *)self sets];
-    v13 = [v12 count];
-    v14 = [(CESRAppEntityConfig *)self->_appEntityConfig overallAppEntityLimit];
+    sets = [(CESRSpeechItemRanker_AppIntentsIndexedEntity *)self sets];
+    v13 = [sets count];
+    overallAppEntityLimit = [(CESRAppEntityConfig *)self->_appEntityConfig overallAppEntityLimit];
     *buf = 136315906;
     v137 = "[CESRSpeechItemRanker_AppIntentsIndexedEntity enumerateRankedItemsWithError:usingBlock:]";
     v138 = 2048;
@@ -46,7 +46,7 @@
     v140 = 2048;
     v141 = v13;
     v142 = 2048;
-    v143 = v14;
+    v143 = overallAppEntityLimit;
     _os_log_impl(&dword_225EEB000, v10, OS_LOG_TYPE_INFO, "%s Enumerating %lu of %lu total AppIntentsIndexEntity sets with overall limit of %lu entities", buf, 0x2Au);
 
     v9 = *MEMORY[0x277CEF0E8];
@@ -71,35 +71,35 @@
     _os_log_debug_impl(&dword_225EEB000, v9, OS_LOG_TYPE_DEBUG, "%s Transformed App Entity counts from supported bundleIds:\n%@", buf, 0x16u);
   }
 
-  v88 = [(CESRAppEntityConfig *)self->_appEntityConfig overallAppEntityLimit];
+  overallAppEntityLimit2 = [(CESRAppEntityConfig *)self->_appEntityConfig overallAppEntityLimit];
   v89 = [v8 count];
   v15 = v132;
   v16 = *MEMORY[0x277CEF0E8];
   v17 = os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG);
-  if (v15 <= v88)
+  if (v15 <= overallAppEntityLimit2)
   {
     if (v17)
     {
       v66 = v16;
-      v67 = CESRAppEntityAllocationStrategyEnumAsString(v82);
+      v67 = CESRAppEntityAllocationStrategyEnumAsString(allocationStrategy);
       *buf = 136315906;
       v137 = "[CESRSpeechItemRanker_AppIntentsIndexedEntity enumerateRankedItemsWithError:usingBlock:]";
       v138 = 2048;
       v139 = v15;
       v140 = 2048;
-      v141 = v88;
+      v141 = overallAppEntityLimit2;
       v142 = 2112;
       v143 = v67;
       _os_log_debug_impl(&dword_225EEB000, v66, OS_LOG_TYPE_DEBUG, "%s Selecting In-Order allocation strategy given we can ingest all %lu items, which is less than the %lu limit. (Previously was CESRAppEntityAllocationStrategy=%@", buf, 0x2Au);
     }
 
-    v82 = 1;
+    allocationStrategy = 1;
   }
 
   else if (v17)
   {
     v18 = v16;
-    v19 = CESRAppEntityAllocationStrategyEnumAsString(v82);
+    v19 = CESRAppEntityAllocationStrategyEnumAsString(allocationStrategy);
     *buf = 136315394;
     v137 = "[CESRSpeechItemRanker_AppIntentsIndexedEntity enumerateRankedItemsWithError:usingBlock:]";
     v138 = 2112;
@@ -120,7 +120,7 @@
     v83 = 0;
     v75 = *v128;
     v20 = &selRef__endTransaction;
-    v79 = self;
+    selfCopy = self;
     while (2)
     {
       v90 = 0;
@@ -156,10 +156,10 @@
         v105 = 0x3032000000;
         v106 = __Block_byref_object_copy__388;
         v107 = __Block_byref_object_dispose__389;
-        v108 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v92 = [(NSMutableDictionary *)self->_setDict objectForKey:v21];
         v22 = [v87 objectForKeyedSubscript:v21];
-        v23 = [v22 unsignedIntegerValue];
+        unsignedIntegerValue = [v22 unsignedIntegerValue];
         v24 = v132;
 
         v25 = [v86 objectForKeyedSubscript:v21];
@@ -168,16 +168,16 @@
         v28 = v131;
 
         v29 = v27 / v28;
-        v30 = [CESRSpeechItemRanker_AppIntentsIndexedEntity _bundleQuotaFromAllocationStrategy:v82 remainingQuota:v88 numBundles:v89 transformedRelativeSize:v29];
+        v30 = [CESRSpeechItemRanker_AppIntentsIndexedEntity _bundleQuotaFromAllocationStrategy:allocationStrategy remainingQuota:overallAppEntityLimit2 numBundles:v89 transformedRelativeSize:v29];
         v31 = [(CESRAppEntityConfig *)self->_appEntityConfig limitForBundleId:v21];
         v32 = v31;
         if (v31)
         {
-          v33 = [v31 intValue];
-          v34 = v33;
-          if (v30 >= v33)
+          intValue = [v31 intValue];
+          v34 = intValue;
+          if (v30 >= intValue)
           {
-            v30 = v33;
+            v30 = intValue;
           }
 
           v35 = *MEMORY[0x277CEF0E8];
@@ -203,35 +203,35 @@
         v97 = &v119;
         v98 = &v123;
         v99 = &v115;
-        v102 = v76;
+        v102 = interactionStoreRankingEnabled;
         v100 = &v103;
         v101 = v30;
-        v36 = v85;
+        v36 = blockCopy;
         v95 = v36;
         v93.receiver = self;
         v93.super_class = CESRSpeechItemRanker_AppIntentsIndexedEntity;
-        v91 = objc_msgSendSuper2(&v93, v78, v92, a3, v94);
+        v91 = objc_msgSendSuper2(&v93, v78, v92, error, v94);
         if (v91)
         {
           v37 = 0;
-          v38 = v23 / v24;
+          v38 = unsignedIntegerValue / v24;
           while (v37 < [v104[5] count] && v37 < v30 - v116[3])
           {
             v39 = [v104[5] objectAtIndex:v37];
-            (*(v85 + 2))(v36, v39, v21, 0, 0);
+            (*(blockCopy + 2))(v36, v39, v21, 0, 0);
 
             ++v37;
           }
 
           v40 = [v87 objectForKeyedSubscript:v21];
-          v41 = [v40 unsignedIntValue];
+          unsignedIntValue = [v40 unsignedIntValue];
           v42 = [v110[5] count];
           v43 = v124[3];
           v44 = v116[3];
           v45 = [v104[5] count];
-          [CESRSpeechItemRanker_AppIntentsIndexedEntity _logAppEntityPartitionEnumeratedWithSourceBundleId:v21 numEntitiesPresent:v41 numDistinctEntityTypes:v42 numEmptyTitleDisplayRepresentations:v43 numRankedEntitiesAccepted:v44 numUnrankedEntitiesAccepted:v45 numEntitiesRejected:v120[3] calculatedQuota:v30];
+          [CESRSpeechItemRanker_AppIntentsIndexedEntity _logAppEntityPartitionEnumeratedWithSourceBundleId:v21 numEntitiesPresent:unsignedIntValue numDistinctEntityTypes:v42 numEmptyTitleDisplayRepresentations:v43 numRankedEntitiesAccepted:v44 numUnrankedEntitiesAccepted:v45 numEntitiesRejected:v120[3] calculatedQuota:v30];
 
-          self = v79;
+          self = selfCopy;
           v20 = &selRef__endTransaction;
           v46 = [v104[5] count];
           v47 = v116[3];
@@ -242,12 +242,12 @@
           v50 = v116[3];
           v51 = [v104[5] count];
           v52 = v47 + v46;
-          v88 -= v52;
+          overallAppEntityLimit2 -= v52;
           v53 = *MEMORY[0x277CEF0E8];
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
           {
             v73 = [v87 objectForKeyedSubscript:v21];
-            v71 = [v73 unsignedLongValue];
+            unsignedLongValue = [v73 unsignedLongValue];
             v72 = [v86 objectForKeyedSubscript:v21];
             [v72 doubleValue];
             v55 = v54;
@@ -262,7 +262,7 @@
             v138 = 2112;
             v139 = v21;
             v140 = 2048;
-            v141 = v71;
+            v141 = unsignedLongValue;
             v142 = 2048;
             v143 = v55;
             v144 = 2048;
@@ -280,7 +280,7 @@
             v156 = 2048;
             v157 = v57;
             v158 = 2048;
-            v159 = v88;
+            v159 = overallAppEntityLimit2;
             v160 = 2048;
             v161 = v38;
             v162 = 2048;
@@ -289,7 +289,7 @@
             v165 = v58;
             _os_log_debug_impl(&dword_225EEB000, v53, OS_LOG_TYPE_DEBUG, "%s Finished processing set for app=%@: setSize=%lu, transformedSetSize=%f, transformedSum=%f bundleQuota=%lu, numEmptyDisplayRepresentations=%lu, numEntitiesRejected=%lu, numEntitiesAccepted=%lu (numRankedAccepted=%lu, numUnrankedAccepted=%lu), remainingQuota=%lu, relativeSize=%f, transformedRelativeSize=%f, numDistinctEntityTypes=%lu", buf, 0x98u);
 
-            self = v79;
+            self = selfCopy;
             v20 = &selRef__endTransaction;
           }
 
@@ -300,7 +300,7 @@
 
         else
         {
-          self = v79;
+          self = selfCopy;
           v20 = &selRef__endTransaction;
         }
 
@@ -344,15 +344,15 @@
   {
     appEntityConfig = self->_appEntityConfig;
     v62 = v60;
-    v63 = [(CESRAppEntityConfig *)appEntityConfig overallAppEntityLimit];
+    overallAppEntityLimit3 = [(CESRAppEntityConfig *)appEntityConfig overallAppEntityLimit];
     *buf = 136315906;
     v137 = "[CESRSpeechItemRanker_AppIntentsIndexedEntity enumerateRankedItemsWithError:usingBlock:]";
     v138 = 2048;
-    v139 = v63;
+    v139 = overallAppEntityLimit3;
     v140 = 2048;
     v141 = v83;
     v142 = 2048;
-    v143 = v88;
+    v143 = overallAppEntityLimit2;
     _os_log_impl(&dword_225EEB000, v62, OS_LOG_TYPE_INFO, "%s Finished processing all App Entity sets: appEntityLimit=%lu, totalNumEntitiesAccepted=%lu remainingQuota=%lu", buf, 0x2Au);
   }
 
@@ -365,16 +365,16 @@ LABEL_41:
   return v59;
 }
 
-- (BOOL)addSet:(id)a3
+- (BOOL)addSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_appEntityIngestionEnabled && [v4 itemType] == 47341)
+  setCopy = set;
+  v5 = setCopy;
+  if (self->_appEntityIngestionEnabled && [setCopy itemType] == 47341)
   {
     setDict = self->_setDict;
     v7 = [v5 descriptorWithKey:*MEMORY[0x277CF9498]];
-    v8 = [v7 value];
-    [(NSMutableDictionary *)setDict setObject:v5 forKey:v8];
+    value = [v7 value];
+    [(NSMutableDictionary *)setDict setObject:v5 forKey:value];
 
     v9 = 1;
   }
@@ -415,11 +415,11 @@ LABEL_41:
   return codepathIds;
 }
 
-- (CESRSpeechItemRanker_AppIntentsIndexedEntity)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5
+- (CESRSpeechItemRanker_AppIntentsIndexedEntity)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group
 {
   v14.receiver = self;
   v14.super_class = CESRSpeechItemRanker_AppIntentsIndexedEntity;
-  v5 = [(CESRSpeechItemRanker *)&v14 initWithInstance:a3 speechProfileSite:a4 categoryGroup:a5];
+  v5 = [(CESRSpeechItemRanker *)&v14 initWithInstance:instance speechProfileSite:site categoryGroup:group];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -427,9 +427,9 @@ LABEL_41:
     v5->_setDict = v6;
 
     v8 = objc_alloc_init(CESRSpeechProfileConfig);
-    v9 = [(CESRSpeechProfileConfig *)v8 appEntityConfig];
+    appEntityConfig = [(CESRSpeechProfileConfig *)v8 appEntityConfig];
     appEntityConfig = v5->_appEntityConfig;
-    v5->_appEntityConfig = v9;
+    v5->_appEntityConfig = appEntityConfig;
 
     v5->_appEntityIngestionEnabled = +[CESRSpeechItemRanker_AppIntentsIndexedEntity _appEntityIngestionEnabledForFeatureFlagStatus:overallAppEntityLimit:](CESRSpeechItemRanker_AppIntentsIndexedEntity, "_appEntityIngestionEnabledForFeatureFlagStatus:overallAppEntityLimit:", +[CESRSpeechProfileBuilder appEntityFeatureFlagEnabled], [(CESRAppEntityConfig *)v5->_appEntityConfig overallAppEntityLimit]);
     v11 = [MEMORY[0x277CBEB58] set];
@@ -442,37 +442,37 @@ LABEL_41:
   return v5;
 }
 
-+ (void)_logAppEntityPartitionEnumeratedWithSourceBundleId:(id)a3 numEntitiesPresent:(unint64_t)a4 numDistinctEntityTypes:(unint64_t)a5 numEmptyTitleDisplayRepresentations:(unint64_t)a6 numRankedEntitiesAccepted:(unint64_t)a7 numUnrankedEntitiesAccepted:(unint64_t)a8 numEntitiesRejected:(unint64_t)a9 calculatedQuota:(unint64_t)a10
++ (void)_logAppEntityPartitionEnumeratedWithSourceBundleId:(id)id numEntitiesPresent:(unint64_t)present numDistinctEntityTypes:(unint64_t)types numEmptyTitleDisplayRepresentations:(unint64_t)representations numRankedEntitiesAccepted:(unint64_t)accepted numUnrankedEntitiesAccepted:(unint64_t)entitiesAccepted numEntitiesRejected:(unint64_t)rejected calculatedQuota:(unint64_t)self0
 {
   v36 = *MEMORY[0x277D85DE8];
   v15 = MEMORY[0x277CBEB38];
-  v16 = a3;
-  v17 = [v15 dictionary];
-  [v17 setObject:v16 forKeyedSubscript:@"source_bundle_id"];
+  idCopy = id;
+  dictionary = [v15 dictionary];
+  [dictionary setObject:idCopy forKeyedSubscript:@"source_bundle_id"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v17 setObject:v18 forKeyedSubscript:@"num_entities_present"];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:present];
+  [dictionary setObject:v18 forKeyedSubscript:@"num_entities_present"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  [v17 setObject:v19 forKeyedSubscript:@"num_distinct_entity_types"];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:types];
+  [dictionary setObject:v19 forKeyedSubscript:@"num_distinct_entity_types"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-  [v17 setObject:v20 forKeyedSubscript:@"num_empty_title_display_representations"];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:representations];
+  [dictionary setObject:v20 forKeyedSubscript:@"num_empty_title_display_representations"];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a8 + a7];
-  [v17 setObject:v21 forKeyedSubscript:@"num_entities_accepted"];
+  accepted = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:entitiesAccepted + accepted];
+  [dictionary setObject:accepted forKeyedSubscript:@"num_entities_accepted"];
 
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
-  [v17 setObject:v22 forKeyedSubscript:@"num_ranked_entities_accepted"];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:accepted];
+  [dictionary setObject:v22 forKeyedSubscript:@"num_ranked_entities_accepted"];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a8];
-  [v17 setObject:v23 forKeyedSubscript:@"num_unranked_entities_accepted"];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:entitiesAccepted];
+  [dictionary setObject:v23 forKeyedSubscript:@"num_unranked_entities_accepted"];
 
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a9];
-  [v17 setObject:v24 forKeyedSubscript:@"num_entities_rejected"];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:rejected];
+  [dictionary setObject:v24 forKeyedSubscript:@"num_entities_rejected"];
 
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a10];
-  [v17 setObject:v25 forKeyedSubscript:@"calculated_quota"];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:quota];
+  [dictionary setObject:v25 forKeyedSubscript:@"calculated_quota"];
 
   v26 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
@@ -482,38 +482,38 @@ LABEL_41:
     v32 = 2112;
     v33 = @"com.apple.siri.asr.speechprofile.AppEntityPartitionEnumerated";
     v34 = 2112;
-    v35 = v17;
+    v35 = dictionary;
     _os_log_debug_impl(&dword_225EEB000, v26, OS_LOG_TYPE_DEBUG, "%s Emitting CoreAnalytics event %@ : %@", buf, 0x20u);
   }
 
-  v29 = v17;
-  v27 = v17;
+  v29 = dictionary;
+  v27 = dictionary;
   AnalyticsSendEventLazy();
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_logAppEntitiesEnumeratedWithTotalNumEntitiesPresent:(unint64_t)a3 numTotalAccepted:(unint64_t)a4 numTotalRankedAccepted:(unint64_t)a5 numTotalUnrankedAccepted:(unint64_t)a6 numDonatingFirstPartyApps:(unint64_t)a7 numDonatingThirdPartyApps:(unint64_t)a8
++ (void)_logAppEntitiesEnumeratedWithTotalNumEntitiesPresent:(unint64_t)present numTotalAccepted:(unint64_t)accepted numTotalRankedAccepted:(unint64_t)rankedAccepted numTotalUnrankedAccepted:(unint64_t)unrankedAccepted numDonatingFirstPartyApps:(unint64_t)apps numDonatingThirdPartyApps:(unint64_t)partyApps
 {
   v31 = *MEMORY[0x277D85DE8];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v14 setObject:v15 forKeyedSubscript:@"total_num_entities_present"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:present];
+  [dictionary setObject:v15 forKeyedSubscript:@"total_num_entities_present"];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v14 setObject:v16 forKeyedSubscript:@"total_num_entities_accepted"];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:accepted];
+  [dictionary setObject:v16 forKeyedSubscript:@"total_num_entities_accepted"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  [v14 setObject:v17 forKeyedSubscript:@"total_num_ranked_entities_accepted"];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:rankedAccepted];
+  [dictionary setObject:v17 forKeyedSubscript:@"total_num_ranked_entities_accepted"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-  [v14 setObject:v18 forKeyedSubscript:@"total_num_unranked_entities_accepted"];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unrankedAccepted];
+  [dictionary setObject:v18 forKeyedSubscript:@"total_num_unranked_entities_accepted"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
-  [v14 setObject:v19 forKeyedSubscript:@"num_donating_first_party_apps"];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:apps];
+  [dictionary setObject:v19 forKeyedSubscript:@"num_donating_first_party_apps"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a8];
-  [v14 setObject:v20 forKeyedSubscript:@"num_donating_third_party_apps"];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:partyApps];
+  [dictionary setObject:v20 forKeyedSubscript:@"num_donating_third_party_apps"];
 
   v21 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
@@ -523,27 +523,27 @@ LABEL_41:
     v27 = 2112;
     v28 = @"com.apple.siri.asr.speechprofile.AppEntitiesEnumerated";
     v29 = 2112;
-    v30 = v14;
+    v30 = dictionary;
     _os_log_debug_impl(&dword_225EEB000, v21, OS_LOG_TYPE_DEBUG, "%s Emitting CoreAnalytics event %@ : %@", buf, 0x20u);
   }
 
-  v24 = v14;
-  v22 = v14;
+  v24 = dictionary;
+  v22 = dictionary;
   AnalyticsSendEventLazy();
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_isEntityAllowListed:(id)a3 bundleId:(id)a4 appEntityConfig:(id)a5
++ (BOOL)_isEntityAllowListed:(id)listed bundleId:(id)id appEntityConfig:(id)config
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([CESRUtilities isFirstPartyBundleId:v8])
+  listedCopy = listed;
+  idCopy = id;
+  configCopy = config;
+  if ([CESRUtilities isFirstPartyBundleId:idCopy])
   {
-    v10 = [v7 typeIdentifier];
-    v11 = [v9 appEntityMappingForBundleId:v8 appEntityName:v10];
+    typeIdentifier = [listedCopy typeIdentifier];
+    v11 = [configCopy appEntityMappingForBundleId:idCopy appEntityName:typeIdentifier];
     v12 = v11 != 0;
   }
 
@@ -553,8 +553,8 @@ LABEL_41:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = [v7 assistantDefinedSchemas];
-    v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    assistantDefinedSchemas = [listedCopy assistantDefinedSchemas];
+    v14 = [assistantDefinedSchemas countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v14)
     {
       v15 = v14;
@@ -565,12 +565,12 @@ LABEL_41:
         {
           if (*v23 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(assistantDefinedSchemas);
           }
 
           [*(*(&v22 + 1) + 8 * i) type];
           v18 = CCAssistantSchemaTypeAsString();
-          v19 = [v9 isAssistantSchemaTypeSupported:v18];
+          v19 = [configCopy isAssistantSchemaTypeSupported:v18];
 
           if (v19)
           {
@@ -580,7 +580,7 @@ LABEL_41:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v15 = [assistantDefinedSchemas countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v15)
         {
           continue;
@@ -599,76 +599,76 @@ LABEL_13:
   return v12;
 }
 
-+ (BOOL)_shouldAcceptEntity:(id)a3 bundleId:(id)a4 appEntityConfig:(id)a5 entityTypes:(id)a6 numEntitiesRejected:(unint64_t *)a7 numEmptyDisplayRepresentations:(unint64_t *)a8
++ (BOOL)_shouldAcceptEntity:(id)entity bundleId:(id)id appEntityConfig:(id)config entityTypes:(id)types numEntitiesRejected:(unint64_t *)rejected numEmptyDisplayRepresentations:(unint64_t *)representations
 {
-  v13 = a3;
-  v14 = a6;
-  if ([CESRSpeechItemRanker_AppIntentsIndexedEntity _isEntityAllowListed:v13 bundleId:a4 appEntityConfig:a5])
+  entityCopy = entity;
+  typesCopy = types;
+  if ([CESRSpeechItemRanker_AppIntentsIndexedEntity _isEntityAllowListed:entityCopy bundleId:id appEntityConfig:config])
   {
-    v15 = [v13 displayRepresentation];
-    v16 = [v15 title];
+    displayRepresentation = [entityCopy displayRepresentation];
+    title = [displayRepresentation title];
 
-    v17 = [v16 length];
+    v17 = [title length];
     v18 = v17 != 0;
     if (v17)
     {
-      v19 = [v13 typeIdentifier];
-      [v14 addObject:v19];
+      typeIdentifier = [entityCopy typeIdentifier];
+      [typesCopy addObject:typeIdentifier];
     }
 
-    else if (a8)
+    else if (representations)
     {
-      ++*a8;
+      ++*representations;
     }
   }
 
   else
   {
     v18 = 0;
-    if (a7)
+    if (rejected)
     {
-      ++*a7;
+      ++*rejected;
     }
   }
 
   return v18;
 }
 
-+ (unint64_t)_bundleQuotaFromAllocationStrategy:(unint64_t)a3 remainingQuota:(unint64_t)a4 numBundles:(unint64_t)a5 transformedRelativeSize:(double)a6
++ (unint64_t)_bundleQuotaFromAllocationStrategy:(unint64_t)strategy remainingQuota:(unint64_t)quota numBundles:(unint64_t)bundles transformedRelativeSize:(double)size
 {
-  if (!a5)
+  if (!bundles)
   {
     return 0;
   }
 
-  result = a4;
-  if (a3 != 1)
+  result = quota;
+  if (strategy != 1)
   {
-    if (a3 == 2)
+    if (strategy == 2)
     {
-      return a4 / a5;
+      return quota / bundles;
     }
 
     else
     {
-      return (a4 * a6);
+      return (quota * size);
     }
   }
 
   return result;
 }
 
-+ (id)_transformedItemCountsFromItemCounts:(id)a3 transformationFunction:(unint64_t)a4 transformationFunctionAlpha:(double)a5 transformedCountSum:(double *)a6
++ (id)_transformedItemCountsFromItemCounts:(id)counts transformationFunction:(unint64_t)function transformationFunctionAlpha:(double)alpha transformedCountSum:(double *)sum
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  countsCopy = counts;
+  v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(countsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [v8 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  allKeys = [countsCopy allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
     v12 = v11;
@@ -680,27 +680,27 @@ LABEL_13:
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = *(*(&v26 + 1) + 8 * i);
-        v17 = [v8 objectForKeyedSubscript:v16];
-        v18 = [v17 unsignedIntValue];
+        v17 = [countsCopy objectForKeyedSubscript:v16];
+        unsignedIntValue = [v17 unsignedIntValue];
 
-        if (v18)
+        if (unsignedIntValue)
         {
-          v19 = v18;
-          if (a4 >= 2)
+          v19 = unsignedIntValue;
+          if (function >= 2)
           {
-            v20 = v18;
-            if (a4 == 2)
+            v20 = unsignedIntValue;
+            if (function == 2)
             {
               v21 = log(v20);
             }
 
             else
             {
-              v21 = pow(v20, a5);
+              v21 = pow(v20, alpha);
             }
 
             v19 = v21;
@@ -713,7 +713,7 @@ LABEL_13:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v12);
@@ -724,9 +724,9 @@ LABEL_13:
     v14 = 0.0;
   }
 
-  if (a6)
+  if (sum)
   {
-    *a6 = v14;
+    *sum = v14;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -734,18 +734,18 @@ LABEL_13:
   return v9;
 }
 
-+ (id)_itemCountsFromSetDict:(id)a3 appEntityConfig:(id)a4 numDonatingFirstPartyApps:(unint64_t *)a5 numDonatingThirdPartyApps:(unint64_t *)a6 totalNumEntitiesPresent:(unint64_t *)a7 itemCountSum:(unint64_t *)a8
++ (id)_itemCountsFromSetDict:(id)dict appEntityConfig:(id)config numDonatingFirstPartyApps:(unint64_t *)apps numDonatingThirdPartyApps:(unint64_t *)partyApps totalNumEntitiesPresent:(unint64_t *)present itemCountSum:(unint64_t *)sum
 {
-  v28 = a5;
+  appsCopy = apps;
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v34 = a4;
-  v32 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  dictCopy = dict;
+  configCopy = config;
+  v32 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(dictCopy, "count")}];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = v9;
+  v10 = dictCopy;
   v36 = [v10 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (!v36)
   {
@@ -772,12 +772,12 @@ LABEL_13:
       }
 
       v15 = *(*(&v37 + 1) + 8 * v14);
-      v16 = [CESRUtilities isFirstPartyBundleId:v15, v28];
+      appsCopy = [CESRUtilities isFirstPartyBundleId:v15, appsCopy];
       v17 = [v10 objectForKey:v15];
       v18 = [v17 changePublisherWithUseCase:@"SpeechProfile"];
-      v19 = [v18 sharedItemCount];
+      sharedItemCount = [v18 sharedItemCount];
 
-      if (!v19)
+      if (!sharedItemCount)
       {
         v21 = *MEMORY[0x277CEF0E8];
         if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
@@ -794,12 +794,12 @@ LABEL_13:
         goto LABEL_15;
       }
 
-      if ([v34 isBundleIdSupported:v15])
+      if ([configCopy isBundleIdSupported:v15])
       {
-        v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
+        v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sharedItemCount];
         [v32 setObject:v20 forKey:v15];
 
-        v33 += v19;
+        v33 += sharedItemCount;
         goto LABEL_12;
       }
 
@@ -817,9 +817,9 @@ LABEL_15:
       }
 
 LABEL_12:
-      v12 += !v16;
-      v13 += v16;
-      v11 += v19;
+      v12 += !appsCopy;
+      v13 += appsCopy;
+      v11 += sharedItemCount;
 
       ++v14;
     }
@@ -832,24 +832,24 @@ LABEL_12:
   while (v25);
 LABEL_19:
 
-  if (v28)
+  if (appsCopy)
   {
-    *v28 = v13;
+    *appsCopy = v13;
   }
 
-  if (a6)
+  if (partyApps)
   {
-    *a6 = v12;
+    *partyApps = v12;
   }
 
-  if (a7)
+  if (present)
   {
-    *a7 = v11;
+    *present = v11;
   }
 
-  if (a8)
+  if (sum)
   {
-    *a8 = v33;
+    *sum = v33;
   }
 
   v26 = *MEMORY[0x277D85DE8];

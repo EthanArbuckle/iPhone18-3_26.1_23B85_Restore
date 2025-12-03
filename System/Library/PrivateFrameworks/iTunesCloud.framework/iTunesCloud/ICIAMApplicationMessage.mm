@@ -1,46 +1,46 @@
 @interface ICIAMApplicationMessage
-- (BOOL)isEqual:(id)a3;
-- (id)assetPrefetchStrategyAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)assetPrefetchStrategyAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)globalPresentationPolicyGroupAsString:(int)a3;
-- (id)messageTypeAsString:(int)a3;
-- (id)modalPresentationStyleAsString:(int)a3;
-- (int)StringAsAssetPrefetchStrategy:(id)a3;
-- (int)StringAsGlobalPresentationPolicyGroup:(id)a3;
-- (int)StringAsMessageType:(id)a3;
-- (int)StringAsModalPresentationStyle:(id)a3;
+- (id)globalPresentationPolicyGroupAsString:(int)string;
+- (id)messageTypeAsString:(int)string;
+- (id)modalPresentationStyleAsString:(int)string;
+- (int)StringAsAssetPrefetchStrategy:(id)strategy;
+- (int)StringAsGlobalPresentationPolicyGroup:(id)group;
+- (int)StringAsMessageType:(id)type;
+- (int)StringAsModalPresentationStyle:(id)style;
 - (int)assetPrefetchStrategy;
 - (int)globalPresentationPolicyGroup;
 - (int)messageType;
 - (int)modalPresentationStyle;
 - (unint64_t)hash;
-- (void)addContentPages:(id)a3;
-- (void)addPresentationTriggers:(id)a3;
-- (void)addTarget:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAssetPrefetchStrategy:(BOOL)a3;
-- (void)setHasCarousel:(BOOL)a3;
-- (void)setHasGlobalPresentationPolicyGroup:(BOOL)a3;
-- (void)setHasHasCloseButton:(BOOL)a3;
-- (void)setHasMaximumDisplays:(BOOL)a3;
-- (void)setHasMessageType:(BOOL)a3;
-- (void)setHasModalPresentationStyle:(BOOL)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasReportingEnabled:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentPages:(id)pages;
+- (void)addPresentationTriggers:(id)triggers;
+- (void)addTarget:(id)target;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAssetPrefetchStrategy:(BOOL)strategy;
+- (void)setHasCarousel:(BOOL)carousel;
+- (void)setHasGlobalPresentationPolicyGroup:(BOOL)group;
+- (void)setHasHasCloseButton:(BOOL)button;
+- (void)setHasMaximumDisplays:(BOOL)displays;
+- (void)setHasMessageType:(BOOL)type;
+- (void)setHasModalPresentationStyle:(BOOL)style;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasReportingEnabled:(BOOL)enabled;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMApplicationMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(ICIAMApplicationMessage *)self setIdentifier:?];
   }
@@ -49,7 +49,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = *(v4 + 16);
+  v5 = *(fromCopy + 16);
   v6 = [v5 countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v6)
   {
@@ -73,12 +73,12 @@
     while (v7);
   }
 
-  v10 = *(v4 + 78);
+  v10 = *(fromCopy + 78);
   if ((v10 & 0x20) != 0)
   {
-    self->_messageType = *(v4 + 23);
+    self->_messageType = *(fromCopy + 23);
     *&self->_has |= 0x20u;
-    v10 = *(v4 + 78);
+    v10 = *(fromCopy + 78);
     if ((v10 & 0x100) == 0)
     {
 LABEL_12:
@@ -91,32 +91,32 @@ LABEL_12:
     }
   }
 
-  else if ((*(v4 + 78) & 0x100) == 0)
+  else if ((*(fromCopy + 78) & 0x100) == 0)
   {
     goto LABEL_12;
   }
 
-  self->_carousel = *(v4 + 152);
+  self->_carousel = *(fromCopy + 152);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 78) & 0x80) != 0)
+  if ((*(fromCopy + 78) & 0x80) != 0)
   {
 LABEL_13:
-    self->_priority = *(v4 + 28);
+    self->_priority = *(fromCopy + 28);
     *&self->_has |= 0x80u;
   }
 
 LABEL_14:
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(ICIAMApplicationMessage *)self setTemplateURL:?];
   }
 
-  v11 = *(v4 + 78);
+  v11 = *(fromCopy + 78);
   if ((v11 & 0x10) != 0)
   {
-    self->_maximumDisplays = *(v4 + 22);
+    self->_maximumDisplays = *(fromCopy + 22);
     *&self->_has |= 0x10u;
-    v11 = *(v4 + 78);
+    v11 = *(fromCopy + 78);
     if ((v11 & 2) == 0)
     {
 LABEL_18:
@@ -134,9 +134,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  self->_startDate = *(v4 + 2);
+  self->_startDate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v11 = *(v4 + 78);
+  v11 = *(fromCopy + 78);
   if ((v11 & 1) == 0)
   {
 LABEL_19:
@@ -149,12 +149,12 @@ LABEL_19:
   }
 
 LABEL_36:
-  self->_endDate = *(v4 + 1);
+  self->_endDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 78) & 0x200) != 0)
+  if ((*(fromCopy + 78) & 0x200) != 0)
   {
 LABEL_20:
-    self->_hasCloseButton = *(v4 + 153);
+    self->_hasCloseButton = *(fromCopy + 153);
     *&self->_has |= 0x200u;
   }
 
@@ -163,7 +163,7 @@ LABEL_21:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v13)
   {
@@ -188,7 +188,7 @@ LABEL_21:
   }
 
   rule = self->_rule;
-  v18 = *(v4 + 15);
+  v18 = *(fromCopy + 15);
   if (rule)
   {
     if (v18)
@@ -202,17 +202,17 @@ LABEL_21:
     [(ICIAMApplicationMessage *)self setRule:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(ICIAMApplicationMessage *)self setWebArchiveURL:?];
   }
 
-  v19 = *(v4 + 78);
+  v19 = *(fromCopy + 78);
   if ((v19 & 0x40) != 0)
   {
-    self->_modalPresentationStyle = *(v4 + 24);
+    self->_modalPresentationStyle = *(fromCopy + 24);
     *&self->_has |= 0x40u;
-    v19 = *(v4 + 78);
+    v19 = *(fromCopy + 78);
     if ((v19 & 8) == 0)
     {
 LABEL_44:
@@ -230,18 +230,18 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  self->_globalPresentationPolicyGroup = *(v4 + 12);
+  self->_globalPresentationPolicyGroup = *(fromCopy + 12);
   *&self->_has |= 8u;
-  if ((*(v4 + 78) & 4) != 0)
+  if ((*(fromCopy + 78) & 4) != 0)
   {
 LABEL_45:
-    self->_assetPrefetchStrategy = *(v4 + 8);
+    self->_assetPrefetchStrategy = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
 LABEL_46:
   holdoutEvent = self->_holdoutEvent;
-  v21 = *(v4 + 7);
+  v21 = *(fromCopy + 7);
   if (holdoutEvent)
   {
     if (v21)
@@ -256,7 +256,7 @@ LABEL_46:
   }
 
   localNotification = self->_localNotification;
-  v23 = *(v4 + 10);
+  v23 = *(fromCopy + 10);
   if (localNotification)
   {
     if (v23)
@@ -271,7 +271,7 @@ LABEL_46:
   }
 
   impressionEvent = self->_impressionEvent;
-  v25 = *(v4 + 9);
+  v25 = *(fromCopy + 9);
   if (impressionEvent)
   {
     if (v25)
@@ -289,7 +289,7 @@ LABEL_46:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v26 = *(v4 + 13);
+  v26 = *(fromCopy + 13);
   v27 = [v26 countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v27)
   {
@@ -314,7 +314,7 @@ LABEL_46:
   }
 
   applicationBadge = self->_applicationBadge;
-  v32 = *(v4 + 3);
+  v32 = *(fromCopy + 3);
   if (applicationBadge)
   {
     if (v32)
@@ -328,9 +328,9 @@ LABEL_46:
     [(ICIAMApplicationMessage *)self setApplicationBadge:?];
   }
 
-  if ((*(v4 + 78) & 0x400) != 0)
+  if ((*(fromCopy + 78) & 0x400) != 0)
   {
-    self->_reportingEnabled = *(v4 + 154);
+    self->_reportingEnabled = *(fromCopy + 154);
     *&self->_has |= 0x400u;
   }
 }
@@ -528,16 +528,16 @@ LABEL_36:
   return v37 ^ v38 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 8))
+  if (identifier | *(equalCopy + 8))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -546,7 +546,7 @@ LABEL_36:
   }
 
   targets = self->_targets;
-  if (targets | *(v4 + 16))
+  if (targets | *(equalCopy + 16))
   {
     if (![(NSMutableArray *)targets isEqual:?])
     {
@@ -555,10 +555,10 @@ LABEL_36:
   }
 
   has = self->_has;
-  v8 = *(v4 + 78);
+  v8 = *(equalCopy + 78);
   if ((has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_messageType != *(v4 + 23))
+    if ((v8 & 0x20) == 0 || self->_messageType != *(equalCopy + 23))
     {
       goto LABEL_54;
     }
@@ -571,33 +571,33 @@ LABEL_36:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 78) & 0x100) == 0)
+    if ((*(equalCopy + 78) & 0x100) == 0)
     {
       goto LABEL_54;
     }
 
     if (self->_carousel)
     {
-      if ((*(v4 + 152) & 1) == 0)
+      if ((*(equalCopy + 152) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 152))
+    else if (*(equalCopy + 152))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 78) & 0x100) != 0)
+  else if ((*(equalCopy + 78) & 0x100) != 0)
   {
     goto LABEL_54;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_priority != *(v4 + 28))
+    if ((v8 & 0x80) == 0 || self->_priority != *(equalCopy + 28))
     {
       goto LABEL_54;
     }
@@ -609,7 +609,7 @@ LABEL_36:
   }
 
   templateURL = self->_templateURL;
-  if (templateURL | *(v4 + 17))
+  if (templateURL | *(equalCopy + 17))
   {
     if (![(NSString *)templateURL isEqual:?])
     {
@@ -617,12 +617,12 @@ LABEL_36:
     }
 
     has = self->_has;
-    v8 = *(v4 + 78);
+    v8 = *(equalCopy + 78);
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_maximumDisplays != *(v4 + 22))
+    if ((v8 & 0x10) == 0 || self->_maximumDisplays != *(equalCopy + 22))
     {
       goto LABEL_54;
     }
@@ -635,7 +635,7 @@ LABEL_36:
 
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_startDate != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_startDate != *(equalCopy + 2))
     {
       goto LABEL_54;
     }
@@ -648,7 +648,7 @@ LABEL_36:
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_54;
     }
@@ -668,13 +668,13 @@ LABEL_36:
 
     if (self->_hasCloseButton)
     {
-      if ((*(v4 + 153) & 1) == 0)
+      if ((*(equalCopy + 153) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 153))
+    else if (*(equalCopy + 153))
     {
       goto LABEL_54;
     }
@@ -686,13 +686,13 @@ LABEL_36:
   }
 
   contentPages = self->_contentPages;
-  if (contentPages | *(v4 + 5) && ![(NSMutableArray *)contentPages isEqual:?])
+  if (contentPages | *(equalCopy + 5) && ![(NSMutableArray *)contentPages isEqual:?])
   {
     goto LABEL_54;
   }
 
   rule = self->_rule;
-  if (rule | *(v4 + 15))
+  if (rule | *(equalCopy + 15))
   {
     if (![(ICIAMMessageRule *)rule isEqual:?])
     {
@@ -701,7 +701,7 @@ LABEL_36:
   }
 
   webArchiveURL = self->_webArchiveURL;
-  if (webArchiveURL | *(v4 + 18))
+  if (webArchiveURL | *(equalCopy + 18))
   {
     if (![(NSString *)webArchiveURL isEqual:?])
     {
@@ -710,10 +710,10 @@ LABEL_36:
   }
 
   v13 = self->_has;
-  v14 = *(v4 + 78);
+  v14 = *(equalCopy + 78);
   if ((v13 & 0x40) != 0)
   {
-    if ((v14 & 0x40) == 0 || self->_modalPresentationStyle != *(v4 + 24))
+    if ((v14 & 0x40) == 0 || self->_modalPresentationStyle != *(equalCopy + 24))
     {
       goto LABEL_54;
     }
@@ -726,7 +726,7 @@ LABEL_36:
 
   if ((v13 & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_globalPresentationPolicyGroup != *(v4 + 12))
+    if ((v14 & 8) == 0 || self->_globalPresentationPolicyGroup != *(equalCopy + 12))
     {
       goto LABEL_54;
     }
@@ -739,7 +739,7 @@ LABEL_36:
 
   if ((v13 & 4) != 0)
   {
-    if ((v14 & 4) == 0 || self->_assetPrefetchStrategy != *(v4 + 8))
+    if ((v14 & 4) == 0 || self->_assetPrefetchStrategy != *(equalCopy + 8))
     {
       goto LABEL_54;
     }
@@ -751,37 +751,37 @@ LABEL_36:
   }
 
   holdoutEvent = self->_holdoutEvent;
-  if (!(holdoutEvent | *(v4 + 7)) || [(ICIAMMetricEvent *)holdoutEvent isEqual:?])
+  if (!(holdoutEvent | *(equalCopy + 7)) || [(ICIAMMetricEvent *)holdoutEvent isEqual:?])
   {
     localNotification = self->_localNotification;
-    if (!(localNotification | *(v4 + 10)) || [(ICIAMLocalNotification *)localNotification isEqual:?])
+    if (!(localNotification | *(equalCopy + 10)) || [(ICIAMLocalNotification *)localNotification isEqual:?])
     {
       impressionEvent = self->_impressionEvent;
-      if (!(impressionEvent | *(v4 + 9)) || [(ICIAMMetricEvent *)impressionEvent isEqual:?])
+      if (!(impressionEvent | *(equalCopy + 9)) || [(ICIAMMetricEvent *)impressionEvent isEqual:?])
       {
         presentationTriggers = self->_presentationTriggers;
-        if (!(presentationTriggers | *(v4 + 13)) || [(NSMutableArray *)presentationTriggers isEqual:?])
+        if (!(presentationTriggers | *(equalCopy + 13)) || [(NSMutableArray *)presentationTriggers isEqual:?])
         {
           applicationBadge = self->_applicationBadge;
-          if (!(applicationBadge | *(v4 + 3)) || [(ICIAMApplicationBadge *)applicationBadge isEqual:?])
+          if (!(applicationBadge | *(equalCopy + 3)) || [(ICIAMApplicationBadge *)applicationBadge isEqual:?])
           {
             if ((*&self->_has & 0x400) == 0)
             {
-              v15 = (*(v4 + 78) & 0x400) == 0;
+              v15 = (*(equalCopy + 78) & 0x400) == 0;
               goto LABEL_55;
             }
 
-            if ((*(v4 + 78) & 0x400) != 0)
+            if ((*(equalCopy + 78) & 0x400) != 0)
             {
               if (self->_reportingEnabled)
               {
-                if (*(v4 + 154))
+                if (*(equalCopy + 154))
                 {
                   goto LABEL_90;
                 }
               }
 
-              else if (!*(v4 + 154))
+              else if (!*(equalCopy + 154))
               {
 LABEL_90:
                 v15 = 1;
@@ -801,11 +801,11 @@ LABEL_55:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -828,7 +828,7 @@ LABEL_55:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v52 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v52 + 1) + 8 * i) copyWithZone:zone];
         [v5 addTarget:v13];
       }
 
@@ -871,7 +871,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  v15 = [(NSString *)self->_templateURL copyWithZone:a3];
+  v15 = [(NSString *)self->_templateURL copyWithZone:zone];
   v16 = *(v5 + 136);
   *(v5 + 136) = v15;
 
@@ -942,7 +942,7 @@ LABEL_17:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v48 + 1) + 8 * j) copyWithZone:a3];
+        v23 = [*(*(&v48 + 1) + 8 * j) copyWithZone:zone];
         [v5 addContentPages:v23];
       }
 
@@ -952,11 +952,11 @@ LABEL_17:
     while (v20);
   }
 
-  v24 = [(ICIAMMessageRule *)self->_rule copyWithZone:a3];
+  v24 = [(ICIAMMessageRule *)self->_rule copyWithZone:zone];
   v25 = *(v5 + 120);
   *(v5 + 120) = v24;
 
-  v26 = [(NSString *)self->_webArchiveURL copyWithZone:a3];
+  v26 = [(NSString *)self->_webArchiveURL copyWithZone:zone];
   v27 = *(v5 + 144);
   *(v5 + 144) = v26;
 
@@ -993,15 +993,15 @@ LABEL_27:
   }
 
 LABEL_28:
-  v29 = [(ICIAMMetricEvent *)self->_holdoutEvent copyWithZone:a3];
+  v29 = [(ICIAMMetricEvent *)self->_holdoutEvent copyWithZone:zone];
   v30 = *(v5 + 56);
   *(v5 + 56) = v29;
 
-  v31 = [(ICIAMLocalNotification *)self->_localNotification copyWithZone:a3];
+  v31 = [(ICIAMLocalNotification *)self->_localNotification copyWithZone:zone];
   v32 = *(v5 + 80);
   *(v5 + 80) = v31;
 
-  v33 = [(ICIAMMetricEvent *)self->_impressionEvent copyWithZone:a3];
+  v33 = [(ICIAMMetricEvent *)self->_impressionEvent copyWithZone:zone];
   v34 = *(v5 + 72);
   *(v5 + 72) = v33;
 
@@ -1024,7 +1024,7 @@ LABEL_28:
           objc_enumerationMutation(v35);
         }
 
-        v40 = [*(*(&v44 + 1) + 8 * k) copyWithZone:{a3, v44}];
+        v40 = [*(*(&v44 + 1) + 8 * k) copyWithZone:{zone, v44}];
         [v5 addPresentationTriggers:v40];
       }
 
@@ -1034,7 +1034,7 @@ LABEL_28:
     while (v37);
   }
 
-  v41 = [(ICIAMApplicationBadge *)self->_applicationBadge copyWithZone:a3];
+  v41 = [(ICIAMApplicationBadge *)self->_applicationBadge copyWithZone:zone];
   v42 = *(v5 + 24);
   *(v5 + 24) = v41;
 
@@ -1047,35 +1047,35 @@ LABEL_28:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
-    [v21 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if ([(ICIAMApplicationMessage *)self targetsCount])
   {
-    [v21 clearTargets];
-    v4 = [(ICIAMApplicationMessage *)self targetsCount];
-    if (v4)
+    [toCopy clearTargets];
+    targetsCount = [(ICIAMApplicationMessage *)self targetsCount];
+    if (targetsCount)
     {
-      v5 = v4;
+      v5 = targetsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ICIAMApplicationMessage *)self targetAtIndex:i];
-        [v21 addTarget:v7];
+        [toCopy addTarget:v7];
       }
     }
   }
 
   has = self->_has;
-  v9 = v21;
+  v9 = toCopy;
   if ((has & 0x20) != 0)
   {
-    *(v21 + 23) = self->_messageType;
-    *(v21 + 78) |= 0x20u;
+    *(toCopy + 23) = self->_messageType;
+    *(toCopy + 78) |= 0x20u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -1094,20 +1094,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v21 + 152) = self->_carousel;
-  *(v21 + 78) |= 0x100u;
+  *(toCopy + 152) = self->_carousel;
+  *(toCopy + 78) |= 0x100u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_10:
-    *(v21 + 28) = self->_priority;
-    *(v21 + 78) |= 0x80u;
+    *(toCopy + 28) = self->_priority;
+    *(toCopy + 78) |= 0x80u;
   }
 
 LABEL_11:
   if (self->_templateURL)
   {
-    [v21 setTemplateURL:?];
-    v9 = v21;
+    [toCopy setTemplateURL:?];
+    v9 = toCopy;
   }
 
   v10 = self->_has;
@@ -1160,29 +1160,29 @@ LABEL_17:
 LABEL_18:
   if ([(ICIAMApplicationMessage *)self contentPagesCount])
   {
-    [v21 clearContentPages];
-    v11 = [(ICIAMApplicationMessage *)self contentPagesCount];
-    if (v11)
+    [toCopy clearContentPages];
+    contentPagesCount = [(ICIAMApplicationMessage *)self contentPagesCount];
+    if (contentPagesCount)
     {
-      v12 = v11;
+      v12 = contentPagesCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(ICIAMApplicationMessage *)self contentPagesAtIndex:j];
-        [v21 addContentPages:v14];
+        [toCopy addContentPages:v14];
       }
     }
   }
 
   if (self->_rule)
   {
-    [v21 setRule:?];
+    [toCopy setRule:?];
   }
 
-  v15 = v21;
+  v15 = toCopy;
   if (self->_webArchiveURL)
   {
-    [v21 setWebArchiveURL:?];
-    v15 = v21;
+    [toCopy setWebArchiveURL:?];
+    v15 = toCopy;
   }
 
   v16 = self->_has;
@@ -1220,50 +1220,50 @@ LABEL_29:
 LABEL_30:
   if (self->_holdoutEvent)
   {
-    [v21 setHoldoutEvent:?];
+    [toCopy setHoldoutEvent:?];
   }
 
   if (self->_localNotification)
   {
-    [v21 setLocalNotification:?];
+    [toCopy setLocalNotification:?];
   }
 
   if (self->_impressionEvent)
   {
-    [v21 setImpressionEvent:?];
+    [toCopy setImpressionEvent:?];
   }
 
   if ([(ICIAMApplicationMessage *)self presentationTriggersCount])
   {
-    [v21 clearPresentationTriggers];
-    v17 = [(ICIAMApplicationMessage *)self presentationTriggersCount];
-    if (v17)
+    [toCopy clearPresentationTriggers];
+    presentationTriggersCount = [(ICIAMApplicationMessage *)self presentationTriggersCount];
+    if (presentationTriggersCount)
     {
-      v18 = v17;
+      v18 = presentationTriggersCount;
       for (k = 0; k != v18; ++k)
       {
         v20 = [(ICIAMApplicationMessage *)self presentationTriggersAtIndex:k];
-        [v21 addPresentationTriggers:v20];
+        [toCopy addPresentationTriggers:v20];
       }
     }
   }
 
   if (self->_applicationBadge)
   {
-    [v21 setApplicationBadge:?];
+    [toCopy setApplicationBadge:?];
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    *(v21 + 154) = self->_reportingEnabled;
-    *(v21 + 78) |= 0x400u;
+    *(toCopy + 154) = self->_reportingEnabled;
+    *(toCopy + 78) |= 0x400u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -1501,12 +1501,12 @@ LABEL_36:
 - (id)dictionaryRepresentation
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   targets = self->_targets;
@@ -1627,8 +1627,8 @@ LABEL_22:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v56 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation = [*(*(&v56 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v56 objects:v61 count:16];
@@ -1643,8 +1643,8 @@ LABEL_22:
   rule = self->_rule;
   if (rule)
   {
-    v23 = [(ICIAMMessageRule *)rule dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"rule"];
+    dictionaryRepresentation2 = [(ICIAMMessageRule *)rule dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"rule"];
   }
 
   webArchiveURL = self->_webArchiveURL;
@@ -1737,22 +1737,22 @@ LABEL_59:
   holdoutEvent = self->_holdoutEvent;
   if (holdoutEvent)
   {
-    v36 = [(ICIAMMetricEvent *)holdoutEvent dictionaryRepresentation];
-    [v4 setObject:v36 forKey:@"holdoutEvent"];
+    dictionaryRepresentation3 = [(ICIAMMetricEvent *)holdoutEvent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"holdoutEvent"];
   }
 
   localNotification = self->_localNotification;
   if (localNotification)
   {
-    v38 = [(ICIAMLocalNotification *)localNotification dictionaryRepresentation];
-    [v4 setObject:v38 forKey:@"localNotification"];
+    dictionaryRepresentation4 = [(ICIAMLocalNotification *)localNotification dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"localNotification"];
   }
 
   impressionEvent = self->_impressionEvent;
   if (impressionEvent)
   {
-    v40 = [(ICIAMMetricEvent *)impressionEvent dictionaryRepresentation];
-    [v4 setObject:v40 forKey:@"impressionEvent"];
+    dictionaryRepresentation5 = [(ICIAMMetricEvent *)impressionEvent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"impressionEvent"];
   }
 
   if ([(NSMutableArray *)self->_presentationTriggers count])
@@ -1777,8 +1777,8 @@ LABEL_59:
             objc_enumerationMutation(v42);
           }
 
-          v47 = [*(*(&v52 + 1) + 8 * j) dictionaryRepresentation];
-          [v41 addObject:v47];
+          dictionaryRepresentation6 = [*(*(&v52 + 1) + 8 * j) dictionaryRepresentation];
+          [v41 addObject:dictionaryRepresentation6];
         }
 
         v44 = [(NSMutableArray *)v42 countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -1793,8 +1793,8 @@ LABEL_59:
   applicationBadge = self->_applicationBadge;
   if (applicationBadge)
   {
-    v49 = [(ICIAMApplicationBadge *)applicationBadge dictionaryRepresentation];
-    [v4 setObject:v49 forKey:@"applicationBadge"];
+    dictionaryRepresentation7 = [(ICIAMApplicationBadge *)applicationBadge dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation7 forKey:@"applicationBadge"];
   }
 
   if ((*&self->_has & 0x400) != 0)
@@ -1812,15 +1812,15 @@ LABEL_59:
   v8.receiver = self;
   v8.super_class = ICIAMApplicationMessage;
   v4 = [(ICIAMApplicationMessage *)&v8 description];
-  v5 = [(ICIAMApplicationMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMApplicationMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasReportingEnabled:(BOOL)a3
+- (void)setHasReportingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -1833,38 +1833,38 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)addPresentationTriggers:(id)a3
+- (void)addPresentationTriggers:(id)triggers
 {
-  v4 = a3;
+  triggersCopy = triggers;
   presentationTriggers = self->_presentationTriggers;
-  v8 = v4;
+  v8 = triggersCopy;
   if (!presentationTriggers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_presentationTriggers;
     self->_presentationTriggers = v6;
 
-    v4 = v8;
+    triggersCopy = v8;
     presentationTriggers = self->_presentationTriggers;
   }
 
-  [(NSMutableArray *)presentationTriggers addObject:v4];
+  [(NSMutableArray *)presentationTriggers addObject:triggersCopy];
 }
 
-- (int)StringAsAssetPrefetchStrategy:(id)a3
+- (int)StringAsAssetPrefetchStrategy:(id)strategy
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  strategyCopy = strategy;
+  if ([strategyCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Immediate"])
+  else if ([strategyCopy isEqualToString:@"Immediate"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Never"])
+  else if ([strategyCopy isEqualToString:@"Never"])
   {
     v4 = 2;
   }
@@ -1877,24 +1877,24 @@ LABEL_59:
   return v4;
 }
 
-- (id)assetPrefetchStrategyAsString:(int)a3
+- (id)assetPrefetchStrategyAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7BF3840[a3];
+    v4 = off_1E7BF3840[string];
   }
 
   return v4;
 }
 
-- (void)setHasAssetPrefetchStrategy:(BOOL)a3
+- (void)setHasAssetPrefetchStrategy:(BOOL)strategy
 {
-  if (a3)
+  if (strategy)
   {
     v3 = 4;
   }
@@ -1920,34 +1920,34 @@ LABEL_59:
   }
 }
 
-- (int)StringAsGlobalPresentationPolicyGroup:(id)a3
+- (int)StringAsGlobalPresentationPolicyGroup:(id)group
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Normal"])
+  groupCopy = group;
+  if ([groupCopy isEqualToString:@"Normal"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Restricted"];
+    v4 = [groupCopy isEqualToString:@"Restricted"];
   }
 
   return v4;
 }
 
-- (id)globalPresentationPolicyGroupAsString:(int)a3
+- (id)globalPresentationPolicyGroupAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"Restricted";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -1959,9 +1959,9 @@ LABEL_59:
   return v4;
 }
 
-- (void)setHasGlobalPresentationPolicyGroup:(BOOL)a3
+- (void)setHasGlobalPresentationPolicyGroup:(BOOL)group
 {
-  if (a3)
+  if (group)
   {
     v3 = 8;
   }
@@ -1987,34 +1987,34 @@ LABEL_59:
   }
 }
 
-- (int)StringAsModalPresentationStyle:(id)a3
+- (int)StringAsModalPresentationStyle:(id)style
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Card"])
+  styleCopy = style;
+  if ([styleCopy isEqualToString:@"Card"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Fullscreen"];
+    v4 = [styleCopy isEqualToString:@"Fullscreen"];
   }
 
   return v4;
 }
 
-- (id)modalPresentationStyleAsString:(int)a3
+- (id)modalPresentationStyleAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"Fullscreen";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -2026,9 +2026,9 @@ LABEL_59:
   return v4;
 }
 
-- (void)setHasModalPresentationStyle:(BOOL)a3
+- (void)setHasModalPresentationStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 64;
   }
@@ -2054,27 +2054,27 @@ LABEL_59:
   }
 }
 
-- (void)addContentPages:(id)a3
+- (void)addContentPages:(id)pages
 {
-  v4 = a3;
+  pagesCopy = pages;
   contentPages = self->_contentPages;
-  v8 = v4;
+  v8 = pagesCopy;
   if (!contentPages)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contentPages;
     self->_contentPages = v6;
 
-    v4 = v8;
+    pagesCopy = v8;
     contentPages = self->_contentPages;
   }
 
-  [(NSMutableArray *)contentPages addObject:v4];
+  [(NSMutableArray *)contentPages addObject:pagesCopy];
 }
 
-- (void)setHasHasCloseButton:(BOOL)a3
+- (void)setHasHasCloseButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 512;
   }
@@ -2087,9 +2087,9 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -2102,9 +2102,9 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasMaximumDisplays:(BOOL)a3
+- (void)setHasMaximumDisplays:(BOOL)displays
 {
-  if (a3)
+  if (displays)
   {
     v3 = 16;
   }
@@ -2117,9 +2117,9 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 128;
   }
@@ -2132,9 +2132,9 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasCarousel:(BOOL)a3
+- (void)setHasCarousel:(BOOL)carousel
 {
-  if (a3)
+  if (carousel)
   {
     v3 = 256;
   }
@@ -2147,25 +2147,25 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsMessageType:(id)a3
+- (int)StringAsMessageType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Banner"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Banner"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Modal"])
+  else if ([typeCopy isEqualToString:@"Modal"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Native"])
+  else if ([typeCopy isEqualToString:@"Native"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Notification"])
+  else if ([typeCopy isEqualToString:@"Notification"])
   {
     v4 = 4;
   }
@@ -2178,24 +2178,24 @@ LABEL_59:
   return v4;
 }
 
-- (id)messageTypeAsString:(int)a3
+- (id)messageTypeAsString:(int)string
 {
-  if (a3 < 5 && ((0x17u >> a3) & 1) != 0)
+  if (string < 5 && ((0x17u >> string) & 1) != 0)
   {
-    v4 = off_1E7BF3818[a3];
+    v4 = off_1E7BF3818[string];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (void)setHasMessageType:(BOOL)a3
+- (void)setHasMessageType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -2221,22 +2221,22 @@ LABEL_59:
   }
 }
 
-- (void)addTarget:(id)a3
+- (void)addTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   targets = self->_targets;
-  v8 = v4;
+  v8 = targetCopy;
   if (!targets)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_targets;
     self->_targets = v6;
 
-    v4 = v8;
+    targetCopy = v8;
     targets = self->_targets;
   }
 
-  [(NSMutableArray *)targets addObject:v4];
+  [(NSMutableArray *)targets addObject:targetCopy];
 }
 
 @end

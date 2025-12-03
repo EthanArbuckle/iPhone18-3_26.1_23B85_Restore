@@ -3,39 +3,39 @@
 - (BOOL)controllerIdentifierChanged;
 - (BOOL)decryptionFailed;
 - (BOOL)doRecordsExistInCache;
-- (BOOL)doesRecordExistInCacheWithObjectID:(id)a3;
-- (BOOL)doesRecordExistWithObjectID:(id)a3;
+- (BOOL)doesRecordExistInCacheWithObjectID:(id)d;
+- (BOOL)doesRecordExistWithObjectID:(id)d;
 - (BOOL)encryptionFailed;
 - (BOOL)hasValidChanges;
 - (BOOL)moreChangesToProcess;
 - (CKRecordID)privateZoneRootRecordID;
 - (HMDCloudTransaction)init;
-- (HMDCloudTransaction)initWithType:(unint64_t)a3 temporaryCache:(BOOL)a4 noLocalData:(BOOL)a5;
+- (HMDCloudTransaction)initWithType:(unint64_t)type temporaryCache:(BOOL)cache noLocalData:(BOOL)data;
 - (HMDCloudZone)cloudZone;
 - (NSArray)allTransactionStoreRowIDs;
 - (NSArray)objectChanges;
 - (NSArray)processedTransactionStoreRowIDs;
-- (id)cachedCloudRecordWithObjectID:(id)a3;
-- (id)changeWithObjectID:(id)a3;
-- (id)changeWithRecordName:(id)a3;
+- (id)cachedCloudRecordWithObjectID:(id)d;
+- (id)changeWithObjectID:(id)d;
+- (id)changeWithRecordName:(id)name;
 - (id)description;
-- (id)replayTransaction:(id)a3 stagedTransaction:(id)a4;
+- (id)replayTransaction:(id)transaction stagedTransaction:(id)stagedTransaction;
 - (id)shortDescription;
-- (void)addChangeWithDeletedRecordID:(id)a3;
-- (void)addChangeWithObjectChange:(id)a3;
-- (void)addChangeWithRecord:(id)a3;
-- (void)cachedCloudRecordWithObjectID:(id)a3 completionHandler:(id)a4;
-- (void)fetchBatchToUpload:(id)a3;
-- (void)loadCloudRecordsAndDetermineDeletesFromCache:(id)a3;
+- (void)addChangeWithDeletedRecordID:(id)d;
+- (void)addChangeWithObjectChange:(id)change;
+- (void)addChangeWithRecord:(id)record;
+- (void)cachedCloudRecordWithObjectID:(id)d completionHandler:(id)handler;
+- (void)fetchBatchToUpload:(id)upload;
+- (void)loadCloudRecordsAndDetermineDeletesFromCache:(id)cache;
 - (void)loadObjectChanges;
-- (void)removeChangeWithObjectID:(id)a3;
-- (void)resetRecordWithRecordID:(id)a3;
+- (void)removeChangeWithObjectID:(id)d;
+- (void)resetRecordWithRecordID:(id)d;
 - (void)setAllChangedAsProcessed;
-- (void)setDeleteAsProcessedWithRecordID:(id)a3;
-- (void)setOsTransaction:(id)a3;
-- (void)setSaveAsProcessedWithRecord:(id)a3;
+- (void)setDeleteAsProcessedWithRecordID:(id)d;
+- (void)setOsTransaction:(id)transaction;
+- (void)setSaveAsProcessedWithRecord:(id)record;
 - (void)updateCloudCache;
-- (void)updateCloudZone:(id)a3;
+- (void)updateCloudZone:(id)zone;
 @end
 
 @implementation HMDCloudTransaction
@@ -49,21 +49,21 @@
 
 - (NSArray)objectChanges
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 objectChanges];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  objectChanges = [cloudZoneChange objectChanges];
 
-  return v3;
+  return objectChanges;
 }
 
-- (id)replayTransaction:(id)a3 stagedTransaction:(id)a4
+- (id)replayTransaction:(id)transaction stagedTransaction:(id)stagedTransaction
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCloudTransaction *)self objectChanges];
-  v9 = [v8 mutableCopy];
+  transactionCopy = transaction;
+  stagedTransactionCopy = stagedTransaction;
+  objectChanges = [(HMDCloudTransaction *)self objectChanges];
+  v9 = [objectChanges mutableCopy];
 
-  if (v7)
+  if (stagedTransactionCopy)
   {
     [MEMORY[0x277CBEB18] array];
     v23 = v22 = v9;
@@ -87,11 +87,11 @@
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 objectID];
-          v17 = [v6 changeWithObjectID:v16];
+          objectID = [v15 objectID];
+          v17 = [transactionCopy changeWithObjectID:objectID];
 
-          v18 = [v15 objectID];
-          v19 = [v7 changeWithObjectID:v18];
+          objectID2 = [v15 objectID];
+          v19 = [stagedTransactionCopy changeWithObjectID:objectID2];
 
           if (v17 | v19)
           {
@@ -120,23 +120,23 @@
 
 - (void)loadObjectChanges
 {
-  v2 = [(HMDCloudTransaction *)self objectChanges];
+  objectChanges = [(HMDCloudTransaction *)self objectChanges];
 }
 
-- (id)changeWithRecordName:(id)a3
+- (id)changeWithRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v6 = [v5 changeWithRecordName:v4];
+  nameCopy = name;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  v6 = [cloudZoneChange changeWithRecordName:nameCopy];
 
   return v6;
 }
 
-- (id)changeWithObjectID:(id)a3
+- (id)changeWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v6 = [v5 changeWithObjectID:v4];
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  v6 = [cloudZoneChange changeWithObjectID:dCopy];
 
   return v6;
 }
@@ -154,7 +154,7 @@ LABEL_6:
   if ([(HMDCloudTransaction *)self decryptionFailed])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -168,68 +168,68 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v8 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v8 flushAllChangesToCache];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange flushAllChangesToCache];
 
-  v11 = [(HMDCloudTransaction *)self updatedServerChangeToken];
-  v9 = [(HMDCloudTransaction *)self cloudZone];
-  [v9 setServerChangeToken:v11];
+  updatedServerChangeToken = [(HMDCloudTransaction *)self updatedServerChangeToken];
+  cloudZone = [(HMDCloudTransaction *)self cloudZone];
+  [cloudZone setServerChangeToken:updatedServerChangeToken];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeleteAsProcessedWithRecordID:(id)a3
+- (void)setDeleteAsProcessedWithRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v5 setDeleteAsProcessedWithRecordID:v4];
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange setDeleteAsProcessedWithRecordID:dCopy];
 }
 
-- (void)resetRecordWithRecordID:(id)a3
+- (void)resetRecordWithRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v5 resetRecordWithRecordID:v4];
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange resetRecordWithRecordID:dCopy];
 }
 
-- (void)setSaveAsProcessedWithRecord:(id)a3
+- (void)setSaveAsProcessedWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v5 setSaveAsProcessedWithRecord:v4];
+  recordCopy = record;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange setSaveAsProcessedWithRecord:recordCopy];
 }
 
-- (void)fetchBatchToUpload:(id)a3
+- (void)fetchBatchToUpload:(id)upload
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v5 fetchBatchToUpload:v4];
+  uploadCopy = upload;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange fetchBatchToUpload:uploadCopy];
 }
 
 - (BOOL)moreChangesToProcess
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 moreChangesToProcess];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  moreChangesToProcess = [cloudZoneChange moreChangesToProcess];
 
-  return v3;
+  return moreChangesToProcess;
 }
 
 - (void)setAllChangedAsProcessed
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v2 setAllChangedAsProcessed];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange setAllChangedAsProcessed];
 }
 
-- (void)loadCloudRecordsAndDetermineDeletesFromCache:(id)a3
+- (void)loadCloudRecordsAndDetermineDeletesFromCache:(id)cache
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
+  cacheCopy = cache;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
 
-  if (v4 && !v5)
+  if (cacheCopy && !cloudZoneChange)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -241,149 +241,149 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v6);
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    v4[2](v4, v10);
+    cacheCopy[2](cacheCopy, v10);
   }
 
-  v11 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v11 loadCloudRecordsAndDetermineDeletesFromCache:v4];
+  cloudZoneChange2 = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange2 loadCloudRecordsAndDetermineDeletesFromCache:cacheCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cachedCloudRecordWithObjectID:(id)a3 completionHandler:(id)a4
+- (void)cachedCloudRecordWithObjectID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v8 cachedCloudRecordWithObjectID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange cachedCloudRecordWithObjectID:dCopy completionHandler:handlerCopy];
 }
 
-- (id)cachedCloudRecordWithObjectID:(id)a3
+- (id)cachedCloudRecordWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v6 = [v5 cachedCloudRecordWithObjectID:v4];
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  v6 = [cloudZoneChange cachedCloudRecordWithObjectID:dCopy];
 
   return v6;
 }
 
 - (BOOL)doRecordsExistInCache
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 doRecordsExistInCache];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  doRecordsExistInCache = [cloudZoneChange doRecordsExistInCache];
 
-  return v3;
+  return doRecordsExistInCache;
 }
 
-- (BOOL)doesRecordExistInCacheWithObjectID:(id)a3
+- (BOOL)doesRecordExistInCacheWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v6 = [v5 doesRecordExistInCacheWithObjectID:v4];
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  v6 = [cloudZoneChange doesRecordExistInCacheWithObjectID:dCopy];
 
   return v6;
 }
 
-- (BOOL)doesRecordExistWithObjectID:(id)a3
+- (BOOL)doesRecordExistWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v6 = [v5 doesRecordExistWithObjectID:v4];
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  v6 = [cloudZoneChange doesRecordExistWithObjectID:dCopy];
 
   return v6;
 }
 
 - (BOOL)hasValidChanges
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 hasValidChanges];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  hasValidChanges = [cloudZoneChange hasValidChanges];
 
-  return v3;
+  return hasValidChanges;
 }
 
-- (void)removeChangeWithObjectID:(id)a3
+- (void)removeChangeWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v5 removeChangeWithObjectID:v4];
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange removeChangeWithObjectID:dCopy];
 }
 
-- (void)addChangeWithDeletedRecordID:(id)a3
+- (void)addChangeWithDeletedRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v5 addChangeWithDeletedRecordID:v4];
+  dCopy = d;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange addChangeWithDeletedRecordID:dCopy];
 }
 
-- (void)addChangeWithRecord:(id)a3
+- (void)addChangeWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v5 addChangeWithRecord:v4];
+  recordCopy = record;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange addChangeWithRecord:recordCopy];
 }
 
-- (void)addChangeWithObjectChange:(id)a3
+- (void)addChangeWithObjectChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  [v5 addChangeWithObjectChange:v4];
+  changeCopy = change;
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  [cloudZoneChange addChangeWithObjectChange:changeCopy];
 }
 
 - (NSArray)processedTransactionStoreRowIDs
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 processedTransactionStoreRowIDs];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  processedTransactionStoreRowIDs = [cloudZoneChange processedTransactionStoreRowIDs];
 
-  return v3;
+  return processedTransactionStoreRowIDs;
 }
 
 - (NSArray)allTransactionStoreRowIDs
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 allTransactionStoreRowIDs];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  allTransactionStoreRowIDs = [cloudZoneChange allTransactionStoreRowIDs];
 
-  return v3;
+  return allTransactionStoreRowIDs;
 }
 
 - (CKRecordID)privateZoneRootRecordID
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 privateZoneRootRecordID];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  privateZoneRootRecordID = [cloudZoneChange privateZoneRootRecordID];
 
-  return v3;
+  return privateZoneRootRecordID;
 }
 
 - (BOOL)controllerIdentifierChanged
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 controllerIdentifierChanged];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  controllerIdentifierChanged = [cloudZoneChange controllerIdentifierChanged];
 
-  return v3;
+  return controllerIdentifierChanged;
 }
 
 - (BOOL)encryptionFailed
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 encryptionFailed];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  encryptionFailed = [cloudZoneChange encryptionFailed];
 
-  return v3;
+  return encryptionFailed;
 }
 
 - (BOOL)decryptionFailed
 {
-  v2 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v3 = [v2 decryptionFailed];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  decryptionFailed = [cloudZoneChange decryptionFailed];
 
-  return v3;
+  return decryptionFailed;
 }
 
-- (void)setOsTransaction:(id)a3
+- (void)setOsTransaction:(id)transaction
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  transactionCopy = transaction;
+  v7 = transactionCopy;
+  if (transactionCopy)
   {
-    v5 = v4;
+    v5 = transactionCopy;
     osTransaction = self->_osTransaction;
     self->_osTransaction = v5;
   }
@@ -399,9 +399,9 @@ LABEL_6:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCloudTransaction *)self shortDescription];
-  v5 = [(HMDCloudTransaction *)self cloudZoneChange];
-  v6 = [v3 stringWithFormat:@"<%@, Cloud Zone Change = %@>", v4, v5];
+  shortDescription = [(HMDCloudTransaction *)self shortDescription];
+  cloudZoneChange = [(HMDCloudTransaction *)self cloudZoneChange];
+  v6 = [v3 stringWithFormat:@"<%@, Cloud Zone Change = %@>", shortDescription, cloudZoneChange];
 
   return v6;
 }
@@ -409,49 +409,49 @@ LABEL_6:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDCloudTransaction *)self identifier];
-  v6 = [v5 UUIDString];
-  v7 = [(HMDCloudTransaction *)self transactionType];
-  if (v7 > 4)
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMDCloudTransaction *)self identifier];
+  uUIDString = [identifier UUIDString];
+  transactionType = [(HMDCloudTransaction *)self transactionType];
+  if (transactionType > 4)
   {
     v8 = @"unknown";
   }
 
   else
   {
-    v8 = off_279732FF8[v7];
+    v8 = off_279732FF8[transactionType];
   }
 
-  v9 = [v3 stringWithFormat:@"%@ %@, Type = %@", v4, v6, v8];
+  v9 = [v3 stringWithFormat:@"%@ %@, Type = %@", shortDescription, uUIDString, v8];
 
   return v9;
 }
 
-- (void)updateCloudZone:(id)a3
+- (void)updateCloudZone:(id)zone
 {
-  v4 = a3;
-  objc_storeWeak(&self->_cloudZone, v4);
-  v5 = [v4 createCloudZoneChangeTemporaryCache:{-[HMDCloudTransaction isTemporaryCache](self, "isTemporaryCache")}];
+  zoneCopy = zone;
+  objc_storeWeak(&self->_cloudZone, zoneCopy);
+  v5 = [zoneCopy createCloudZoneChangeTemporaryCache:{-[HMDCloudTransaction isTemporaryCache](self, "isTemporaryCache")}];
 
   cloudZoneChange = self->_cloudZoneChange;
   self->_cloudZoneChange = v5;
 }
 
-- (HMDCloudTransaction)initWithType:(unint64_t)a3 temporaryCache:(BOOL)a4 noLocalData:(BOOL)a5
+- (HMDCloudTransaction)initWithType:(unint64_t)type temporaryCache:(BOOL)cache noLocalData:(BOOL)data
 {
   v12.receiver = self;
   v12.super_class = HMDCloudTransaction;
   v8 = [(HMDCloudTransaction *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = uUID;
 
-    v8->_transactionType = a3;
-    v8->_temporaryCache = a4;
-    v8->_zoneHasNoLocalData = a5;
+    v8->_transactionType = type;
+    v8->_temporaryCache = cache;
+    v8->_zoneHasNoLocalData = data;
   }
 
   return v8;

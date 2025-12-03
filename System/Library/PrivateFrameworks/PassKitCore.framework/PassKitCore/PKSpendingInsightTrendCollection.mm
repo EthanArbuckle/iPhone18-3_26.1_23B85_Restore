@@ -1,20 +1,20 @@
 @interface PKSpendingInsightTrendCollection
-- (BOOL)isEqual:(id)a3;
-- (PKSpendingInsightTrendCollection)initWithCoder:(id)a3;
-- (PKSpendingInsightTrendCollection)initWithFHFeatureInsights:(id)a3;
-- (PKSpendingInsightTrendCollection)initWithOverallTrend:(id)a3 categoryTrends:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKSpendingInsightTrendCollection)initWithCoder:(id)coder;
+- (PKSpendingInsightTrendCollection)initWithFHFeatureInsights:(id)insights;
+- (PKSpendingInsightTrendCollection)initWithOverallTrend:(id)trend categoryTrends:(id)trends;
 - (id)description;
-- (id)spendingTrendForMerchantCategory:(int64_t)a3;
+- (id)spendingTrendForMerchantCategory:(int64_t)category;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSpendingInsightTrendCollection
 
-- (PKSpendingInsightTrendCollection)initWithFHFeatureInsights:(id)a3
+- (PKSpendingInsightTrendCollection)initWithFHFeatureInsights:(id)insights
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  insightsCopy = insights;
   v35.receiver = self;
   v35.super_class = PKSpendingInsightTrendCollection;
   v5 = [(PKSpendingInsightTrendCollection *)&v35 init];
@@ -23,15 +23,15 @@
     goto LABEL_24;
   }
 
-  v6 = [v4 pk_firstObjectPassingTest:&__block_literal_global_106];
+  v6 = [insightsCopy pk_firstObjectPassingTest:&__block_literal_global_106];
   v7 = [[PKSpendingInsightTrend alloc] initWithFHFeatureInsight:v6];
   overallSpendingTrend = v5->_overallSpendingTrend;
   v5->_overallSpendingTrend = v7;
 
-  v9 = [v6 averageAmount];
-  v10 = [v9 pk_isZeroNumber];
+  averageAmount = [v6 averageAmount];
+  pk_isZeroNumber = [averageAmount pk_isZeroNumber];
 
-  if (v10)
+  if (pk_isZeroNumber)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF20]);
     categoryTrends = v5->_categoryTrends;
@@ -45,8 +45,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v30 = v4;
-  v13 = v4;
+  v30 = insightsCopy;
+  v13 = insightsCopy;
   v14 = [v13 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (!v14)
   {
@@ -65,9 +65,9 @@
       }
 
       v18 = *(*(&v31 + 1) + 8 * i);
-      v19 = [v18 type];
+      type = [v18 type];
       v20 = getFHInsightTypeCategorySpend[0]();
-      v21 = v19;
+      v21 = type;
       v22 = v20;
       v23 = v22;
       if (v21 == v22)
@@ -116,7 +116,7 @@ LABEL_22:
   v27 = v5->_categoryTrends;
   v5->_categoryTrends = v26;
 
-  v4 = v30;
+  insightsCopy = v30;
   v6 = v29;
 LABEL_23:
 
@@ -148,25 +148,25 @@ uint64_t __62__PKSpendingInsightTrendCollection_initWithFHFeatureInsights___bloc
   return v7;
 }
 
-- (PKSpendingInsightTrendCollection)initWithOverallTrend:(id)a3 categoryTrends:(id)a4
+- (PKSpendingInsightTrendCollection)initWithOverallTrend:(id)trend categoryTrends:(id)trends
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  trendCopy = trend;
+  trendsCopy = trends;
   v27.receiver = self;
   v27.super_class = PKSpendingInsightTrendCollection;
   v9 = [(PKSpendingInsightTrendCollection *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    v22 = v7;
-    objc_storeStrong(&v9->_overallSpendingTrend, a3);
+    v22 = trendCopy;
+    objc_storeStrong(&v9->_overallSpendingTrend, trend);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v8;
+    v12 = trendsCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v13)
     {
@@ -196,16 +196,16 @@ uint64_t __62__PKSpendingInsightTrendCollection_initWithFHFeatureInsights___bloc
     categoryTrends = v10->_categoryTrends;
     v10->_categoryTrends = v19;
 
-    v7 = v22;
+    trendCopy = v22;
   }
 
   return v10;
 }
 
-- (id)spendingTrendForMerchantCategory:(int64_t)a3
+- (id)spendingTrendForMerchantCategory:(int64_t)category
 {
   categoryTrends = self->_categoryTrends;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:category];
   v5 = [(NSDictionary *)categoryTrends objectForKeyedSubscript:v4];
 
   return v5;
@@ -222,15 +222,15 @@ uint64_t __62__PKSpendingInsightTrendCollection_initWithFHFeatureInsights___bloc
   return v3;
 }
 
-- (PKSpendingInsightTrendCollection)initWithCoder:(id)a3
+- (PKSpendingInsightTrendCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKSpendingInsightTrendCollection;
   v5 = [(PKSpendingInsightTrendCollection *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"overallSpendingTrend"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"overallSpendingTrend"];
     overallSpendingTrend = v5->_overallSpendingTrend;
     v5->_overallSpendingTrend = v6;
 
@@ -238,7 +238,7 @@ uint64_t __62__PKSpendingInsightTrendCollection_initWithFHFeatureInsights___bloc
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"overallSpendingTrend"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"overallSpendingTrend"];
     categoryTrends = v5->_categoryTrends;
     v5->_categoryTrends = v12;
   }
@@ -246,17 +246,17 @@ uint64_t __62__PKSpendingInsightTrendCollection_initWithFHFeatureInsights___bloc
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   overallSpendingTrend = self->_overallSpendingTrend;
-  v5 = a3;
-  [v5 encodeObject:overallSpendingTrend forKey:@"overallSpendingTrend"];
-  [v5 encodeObject:self->_categoryTrends forKey:@"categoryTrends"];
+  coderCopy = coder;
+  [coderCopy encodeObject:overallSpendingTrend forKey:@"overallSpendingTrend"];
+  [coderCopy encodeObject:self->_categoryTrends forKey:@"categoryTrends"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -264,7 +264,7 @@ uint64_t __62__PKSpendingInsightTrendCollection_initWithFHFeatureInsights___bloc
   }
 
   overallSpendingTrend = self->_overallSpendingTrend;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (!overallSpendingTrend || !v6)
   {
     if (overallSpendingTrend == v6)
@@ -284,7 +284,7 @@ LABEL_9:
 
 LABEL_5:
   categoryTrends = self->_categoryTrends;
-  v8 = v4[1];
+  v8 = equalCopy[1];
   if (categoryTrends && v8)
   {
     v9 = [(NSDictionary *)categoryTrends isEqual:?];

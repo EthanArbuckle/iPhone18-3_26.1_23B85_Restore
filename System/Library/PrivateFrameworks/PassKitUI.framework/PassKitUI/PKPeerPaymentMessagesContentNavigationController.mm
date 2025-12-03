@@ -33,29 +33,29 @@
 
 - (void)reloadContent
 {
-  v2 = [(PKPeerPaymentMessagesContentNavigationController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(PKPeerPaymentMessagesContentNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  [v3 reloadContent];
+  [firstObject reloadContent];
 }
 
 - (PKPeerPaymentMessagesContentView)contentView
 {
-  v2 = [(PKPeerPaymentMessagesContentNavigationController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(PKPeerPaymentMessagesContentNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  v4 = [v3 contentView];
+  contentView = [firstObject contentView];
 
-  return v4;
+  return contentView;
 }
 
 - (BOOL)reportAnalyticsInternally
 {
-  v2 = [(PKPeerPaymentMessagesContentNavigationController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(PKPeerPaymentMessagesContentNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  LOBYTE(v2) = [v3 reportAnalyticsInternally];
-  return v2;
+  LOBYTE(viewControllers) = [firstObject reportAnalyticsInternally];
+  return viewControllers;
 }
 
 @end

@@ -9,26 +9,26 @@
 
 - (uint64_t)unc_isEligibleToDeliverNotifications
 {
-  v2 = [a1 isLaunchProhibited];
-  v3 = [a1 applicationState];
-  if (![v3 isInstalled] || v2)
+  isLaunchProhibited = [self isLaunchProhibited];
+  applicationState = [self applicationState];
+  if (![applicationState isInstalled] || isLaunchProhibited)
   {
-    v4 = [a1 isWebApp];
+    isWebApp = [self isWebApp];
   }
 
   else
   {
-    v4 = 1;
+    isWebApp = 1;
   }
 
-  return v4;
+  return isWebApp;
 }
 
 + (void)unc_enumerateApplicationRecordsEligibleToDeliverNotifications:()UserNotificationsCore
 {
   v4 = a3;
-  [a1 _uns_enumerateRecordsWithOptions:0 block:v4];
-  [a1 _uns_enumerateRecordsWithOptions:64 block:v4];
+  [self _uns_enumerateRecordsWithOptions:0 block:v4];
+  [self _uns_enumerateRecordsWithOptions:64 block:v4];
 }
 
 + (id)unc_applicationRecordIfEligibleToDeliverNotificationsForBundleIdentifier:()UserNotificationsCore

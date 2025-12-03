@@ -1,39 +1,39 @@
 @interface PGYearInReviewMemoryGenerator
-- (PGYearInReviewMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (id)titleGeneratorWithYear:(int64_t)a3 titleGenerationContext:(id)a4;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5 usingBlock:(id)a6;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (PGYearInReviewMemoryGenerator)initWithMemoryGenerationContext:(id)context;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (id)titleGeneratorWithYear:(int64_t)year titleGenerationContext:(id)context;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block usingBlock:(id)usingBlock;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGYearInReviewMemoryGenerator
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a7;
-  v11 = [a3 memoryFeatureNodes];
-  v12 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:v11];
+  contextCopy = context;
+  memoryFeatureNodes = [memory memoryFeatureNodes];
+  v12 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:memoryFeatureNodes];
 
   if ([v12 count] == 1)
   {
-    v13 = [v12 years];
-    v14 = [v13 firstObject];
-    v15 = [v14 integerValue];
+    years = [v12 years];
+    firstObject = [years firstObject];
+    integerValue = [firstObject integerValue];
 
-    v16 = [(PGYearInReviewMemoryGenerator *)self titleGeneratorWithYear:v15 titleGenerationContext:v10];
+    v16 = [(PGYearInReviewMemoryGenerator *)self titleGeneratorWithYear:integerValue titleGenerationContext:contextCopy];
   }
 
   else
   {
-    v17 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v20[0] = 67109120;
       v20[1] = [v12 count];
-      _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "[PGYearInReviewMemoryGenerator] One year node expected, found %d", v20, 8u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGYearInReviewMemoryGenerator] One year node expected, found %d", v20, 8u);
     }
 
     v16 = 0;
@@ -44,40 +44,40 @@
   return v16;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
   v6.receiver = self;
   v6.super_class = PGYearInReviewMemoryGenerator;
-  v4 = [(PGMemoryGenerator *)&v6 keyAssetCurationOptionsWithTriggeredMemory:a3 inGraph:a4];
+  v4 = [(PGMemoryGenerator *)&v6 keyAssetCurationOptionsWithTriggeredMemory:memory inGraph:graph];
   [v4 setPrefilterAssetsWithFacesThreshold:2.22507386e-308];
 
   return v4;
 }
 
-- (id)titleGeneratorWithYear:(int64_t)a3 titleGenerationContext:(id)a4
+- (id)titleGeneratorWithYear:(int64_t)year titleGenerationContext:(id)context
 {
-  v5 = a4;
-  v6 = [[PGBestOfTimeMemoryTitleGenerator alloc] initWithYear:a3 titleGenerationContext:v5];
+  contextCopy = context;
+  v6 = [[PGBestOfTimeMemoryTitleGenerator alloc] initWithYear:year titleGenerationContext:contextCopy];
 
   return v6;
 }
 
-- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5 usingBlock:(id)a6
+- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block usingBlock:(id)usingBlock
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  windowCopy = window;
+  graphCopy = graph;
+  usingBlockCopy = usingBlock;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __111__PGYearInReviewMemoryGenerator__enumeratePotentialMemoriesForProcessingWindow_graph_progressBlock_usingBlock___block_invoke;
   v15[3] = &unk_27887F990;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v16 = windowCopy;
+  v17 = graphCopy;
+  v18 = usingBlockCopy;
+  v12 = usingBlockCopy;
+  v13 = graphCopy;
+  v14 = windowCopy;
   [v13 enumerateNodesWithLabel:@"Year" domain:400 usingBlock:v15];
 }
 
@@ -185,38 +185,38 @@ void __111__PGYearInReviewMemoryGenerator__enumeratePotentialMemoriesForProcessi
   }
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
   v9 = 0;
-  v5 = a4;
-  v6 = a3;
-  v7 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v6];
-  v8 = [(MAElementCollection *)[PGGraphFeatureNodeCollection alloc] initWithGraph:v6];
+  blockCopy = block;
+  graphCopy = graph;
+  v7 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graphCopy];
+  v8 = [(MAElementCollection *)[PGGraphFeatureNodeCollection alloc] initWithGraph:graphCopy];
 
-  v5[2](v5, v7, v8, &v9);
+  blockCopy[2](blockCopy, v7, v8, &v9);
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     result = 5001;
   }
 
   else
   {
-    v4 = a3;
-    v5 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    typeCopy = type;
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       v9 = 138412546;
       v10 = v8;
       v11 = 1024;
-      v12 = v4;
-      _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+      v12 = typeCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
     }
 
     result = 0;
@@ -226,11 +226,11 @@ void __111__PGYearInReviewMemoryGenerator__enumeratePotentialMemoriesForProcessi
   return result;
 }
 
-- (PGYearInReviewMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGYearInReviewMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v10.receiver = self;
   v10.super_class = PGYearInReviewMemoryGenerator;
-  v3 = [(PGMemoryGenerator *)&v10 initWithMemoryGenerationContext:a3];
+  v3 = [(PGMemoryGenerator *)&v10 initWithMemoryGenerationContext:context];
   v4 = v3;
   if (v3)
   {

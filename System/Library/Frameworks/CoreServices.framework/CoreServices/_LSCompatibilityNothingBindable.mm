@@ -1,8 +1,8 @@
 @interface _LSCompatibilityNothingBindable
-- (BOOL)isEqual:(id)a3;
-- (BindingEvaluator)baseBindingEvaluatorWithBindingStyle:(SEL)a3 auditToken:(unsigned __int8)a4;
+- (BOOL)isEqual:(id)equal;
+- (BindingEvaluator)baseBindingEvaluatorWithBindingStyle:(SEL)style auditToken:(unsigned __int8)token;
 - (_LSCompatibilityNothingBindable)init;
-- (id)typeRecordWithError:(id *)a3;
+- (id)typeRecordWithError:(id *)error;
 @end
 
 @implementation _LSCompatibilityNothingBindable
@@ -14,26 +14,26 @@
   return [(LSClaimBindingBindable *)&v3 _initProtected];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)typeRecordWithError:(id *)a3
+- (id)typeRecordWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -9499, 0, "[_LSCompatibilityNothingBindable typeRecordWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimBindingConfiguration.mm", 476);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -9499, 0, "[_LSCompatibilityNothingBindable typeRecordWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimBindingConfiguration.mm", 476);
   }
 
   return 0;
 }
 
-- (BindingEvaluator)baseBindingEvaluatorWithBindingStyle:(SEL)a3 auditToken:(unsigned __int8)a4
+- (BindingEvaluator)baseBindingEvaluatorWithBindingStyle:(SEL)style auditToken:(unsigned __int8)token
 {
   v6 = _LSDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))

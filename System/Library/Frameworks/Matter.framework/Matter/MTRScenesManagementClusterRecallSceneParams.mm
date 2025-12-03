@@ -1,8 +1,8 @@
 @interface MTRScenesManagementClusterRecallSceneParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRScenesManagementClusterRecallSceneParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRScenesManagementClusterRecallSceneParams);
-  v5 = [(MTRScenesManagementClusterRecallSceneParams *)self groupID];
-  [(MTRScenesManagementClusterRecallSceneParams *)v4 setGroupID:v5];
+  groupID = [(MTRScenesManagementClusterRecallSceneParams *)self groupID];
+  [(MTRScenesManagementClusterRecallSceneParams *)v4 setGroupID:groupID];
 
-  v6 = [(MTRScenesManagementClusterRecallSceneParams *)self sceneID];
-  [(MTRScenesManagementClusterRecallSceneParams *)v4 setSceneID:v6];
+  sceneID = [(MTRScenesManagementClusterRecallSceneParams *)self sceneID];
+  [(MTRScenesManagementClusterRecallSceneParams *)v4 setSceneID:sceneID];
 
-  v7 = [(MTRScenesManagementClusterRecallSceneParams *)self transitionTime];
-  [(MTRScenesManagementClusterRecallSceneParams *)v4 setTransitionTime:v7];
+  transitionTime = [(MTRScenesManagementClusterRecallSceneParams *)self transitionTime];
+  [(MTRScenesManagementClusterRecallSceneParams *)v4 setTransitionTime:transitionTime];
 
-  v8 = [(MTRScenesManagementClusterRecallSceneParams *)self timedInvokeTimeoutMs];
-  [(MTRScenesManagementClusterRecallSceneParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRScenesManagementClusterRecallSceneParams *)self timedInvokeTimeoutMs];
+  [(MTRScenesManagementClusterRecallSceneParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRScenesManagementClusterRecallSceneParams *)self serverSideProcessingTimeout];
-  [(MTRScenesManagementClusterRecallSceneParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRScenesManagementClusterRecallSceneParams *)self serverSideProcessingTimeout];
+  [(MTRScenesManagementClusterRecallSceneParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,34 +66,34 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v26 = 0;
-  v27 = 0;
+  unsignedShortValue = 0;
+  unsignedCharValue = 0;
   v28 = 0;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v5 = [(MTRScenesManagementClusterRecallSceneParams *)self groupID];
-  v26 = [v5 unsignedShortValue];
+  groupID = [(MTRScenesManagementClusterRecallSceneParams *)self groupID];
+  unsignedShortValue = [groupID unsignedShortValue];
 
-  v6 = [(MTRScenesManagementClusterRecallSceneParams *)self sceneID];
-  v27 = [v6 unsignedCharValue];
+  sceneID = [(MTRScenesManagementClusterRecallSceneParams *)self sceneID];
+  unsignedCharValue = [sceneID unsignedCharValue];
 
-  v7 = [(MTRScenesManagementClusterRecallSceneParams *)self transitionTime];
+  transitionTime = [(MTRScenesManagementClusterRecallSceneParams *)self transitionTime];
 
-  if (v7)
+  if (transitionTime)
   {
     v28 = 1;
     v29 = 0;
-    v8 = [(MTRScenesManagementClusterRecallSceneParams *)self transitionTime];
+    transitionTime2 = [(MTRScenesManagementClusterRecallSceneParams *)self transitionTime];
 
-    if (v8)
+    if (transitionTime2)
     {
       LODWORD(v29) = 0;
       BYTE4(v29) = 1;
-      v9 = [(MTRScenesManagementClusterRecallSceneParams *)self transitionTime];
-      LODWORD(v29) = [v9 unsignedIntValue];
+      transitionTime3 = [(MTRScenesManagementClusterRecallSceneParams *)self transitionTime];
+      LODWORD(v29) = [transitionTime3 unsignedIntValue];
     }
   }
 
@@ -107,7 +107,7 @@
     v22 = 0;
     sub_238EA16C4(&v19, &v23, 0);
     sub_2393C7BF0(v18, &v19, 0xFFFFFFFF);
-    v10 = sub_238F26ED4(&v26, v18, 0x100uLL);
+    v10 = sub_238F26ED4(&unsignedShortValue, v18, 0x100uLL);
     v12 = v10;
     if (v10 || (v10 = sub_238DD2EFC(v18, &v23), v12 = v10, v10))
     {
@@ -116,8 +116,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v17;
       v12 = v10;
     }
@@ -145,19 +145,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRScenesManagementClusterRecallSceneParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -168,7 +168,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x3B3F00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

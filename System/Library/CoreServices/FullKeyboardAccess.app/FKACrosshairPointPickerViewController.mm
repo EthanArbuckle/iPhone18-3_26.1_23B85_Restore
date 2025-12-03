@@ -1,20 +1,20 @@
 @interface FKACrosshairPointPickerViewController
 - (id)keyCommands;
-- (void)_handleCommandDownArrow:(id)a3;
-- (void)_handleCommandLeftArrow:(id)a3;
-- (void)_handleCommandRightArrow:(id)a3;
-- (void)_handleCommandUpArrow:(id)a3;
-- (void)_handleD:(id)a3;
-- (void)_handleDownArrow:(id)a3;
-- (void)_handleEscape:(id)a3;
-- (void)_handleLeftArrow:(id)a3;
-- (void)_handleRightArrow:(id)a3;
-- (void)_handleShiftDownArrow:(id)a3;
-- (void)_handleShiftLeftArrow:(id)a3;
-- (void)_handleShiftRightArrow:(id)a3;
-- (void)_handleShiftUpArrow:(id)a3;
-- (void)_handleSpace:(id)a3;
-- (void)_handleUpArrow:(id)a3;
+- (void)_handleCommandDownArrow:(id)arrow;
+- (void)_handleCommandLeftArrow:(id)arrow;
+- (void)_handleCommandRightArrow:(id)arrow;
+- (void)_handleCommandUpArrow:(id)arrow;
+- (void)_handleD:(id)d;
+- (void)_handleDownArrow:(id)arrow;
+- (void)_handleEscape:(id)escape;
+- (void)_handleLeftArrow:(id)arrow;
+- (void)_handleRightArrow:(id)arrow;
+- (void)_handleShiftDownArrow:(id)arrow;
+- (void)_handleShiftLeftArrow:(id)arrow;
+- (void)_handleShiftRightArrow:(id)arrow;
+- (void)_handleShiftUpArrow:(id)arrow;
+- (void)_handleSpace:(id)space;
+- (void)_handleUpArrow:(id)arrow;
 - (void)loadView;
 @end
 
@@ -28,9 +28,9 @@
 
 - (id)keyCommands
 {
-  v3 = [(FKACrosshairPointPickerViewController *)self cachedKeyCommands];
+  cachedKeyCommands = [(FKACrosshairPointPickerViewController *)self cachedKeyCommands];
 
-  if (!v3)
+  if (!cachedKeyCommands)
   {
     v21 = [UIKeyCommand keyCommandWithInput:@" " modifierFlags:0 action:"_handleSpace:"];
     v22[0] = v21;
@@ -66,133 +66,133 @@
     [(FKACrosshairPointPickerViewController *)self setCachedKeyCommands:v12];
   }
 
-  v13 = [(FKACrosshairPointPickerViewController *)self cachedKeyCommands];
+  cachedKeyCommands2 = [(FKACrosshairPointPickerViewController *)self cachedKeyCommands];
 
-  return v13;
+  return cachedKeyCommands2;
 }
 
-- (void)_handleSpace:(id)a3
+- (void)_handleSpace:(id)space
 {
-  v4 = [(FKAPointPickerViewController *)self delegate];
-  [v4 dismissPointPickerViewController:self];
+  delegate = [(FKAPointPickerViewController *)self delegate];
+  [delegate dismissPointPickerViewController:self];
 
-  v6 = [(FKAPointPickerViewController *)self delegate];
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 selectedScreenPoint];
-  [v6 pointPickerViewController:self tapScreenPoint:?];
+  delegate2 = [(FKAPointPickerViewController *)self delegate];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView selectedScreenPoint];
+  [delegate2 pointPickerViewController:self tapScreenPoint:?];
 }
 
-- (void)_handleD:(id)a3
+- (void)_handleD:(id)d
 {
-  v4 = [(FKAPointPickerViewController *)self delegate];
-  [v4 dismissPointPickerViewController:self];
+  delegate = [(FKAPointPickerViewController *)self delegate];
+  [delegate dismissPointPickerViewController:self];
 
-  v6 = [(FKAPointPickerViewController *)self delegate];
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 selectedScreenPoint];
-  [v6 pointPickerViewController:self doubleTapScreenPoint:?];
+  delegate2 = [(FKAPointPickerViewController *)self delegate];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView selectedScreenPoint];
+  [delegate2 pointPickerViewController:self doubleTapScreenPoint:?];
 }
 
-- (void)_handleLeftArrow:(id)a3
+- (void)_handleLeftArrow:(id)arrow
 {
-  v3 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v3 moveLeft];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView moveLeft];
 }
 
-- (void)_handleShiftLeftArrow:(id)a3
+- (void)_handleShiftLeftArrow:(id)arrow
 {
-  v4 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v4 increaseXPrecision];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView increaseXPrecision];
 
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 moveLeft];
+  pointPickerView2 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView2 moveLeft];
 }
 
-- (void)_handleCommandLeftArrow:(id)a3
+- (void)_handleCommandLeftArrow:(id)arrow
 {
-  v4 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v4 decreaseXPrecision];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView decreaseXPrecision];
 
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 moveLeft];
+  pointPickerView2 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView2 moveLeft];
 }
 
-- (void)_handleRightArrow:(id)a3
+- (void)_handleRightArrow:(id)arrow
 {
-  v3 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v3 moveRight];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView moveRight];
 }
 
-- (void)_handleShiftRightArrow:(id)a3
+- (void)_handleShiftRightArrow:(id)arrow
 {
-  v4 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v4 increaseXPrecision];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView increaseXPrecision];
 
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 moveRight];
+  pointPickerView2 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView2 moveRight];
 }
 
-- (void)_handleCommandRightArrow:(id)a3
+- (void)_handleCommandRightArrow:(id)arrow
 {
-  v4 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v4 decreaseXPrecision];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView decreaseXPrecision];
 
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 moveRight];
+  pointPickerView2 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView2 moveRight];
 }
 
-- (void)_handleUpArrow:(id)a3
+- (void)_handleUpArrow:(id)arrow
 {
-  v3 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v3 moveUp];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView moveUp];
 }
 
-- (void)_handleShiftUpArrow:(id)a3
+- (void)_handleShiftUpArrow:(id)arrow
 {
-  v4 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v4 increaseYPrecision];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView increaseYPrecision];
 
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 moveUp];
+  pointPickerView2 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView2 moveUp];
 }
 
-- (void)_handleCommandUpArrow:(id)a3
+- (void)_handleCommandUpArrow:(id)arrow
 {
-  v4 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v4 decreaseYPrecision];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView decreaseYPrecision];
 
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 moveUp];
+  pointPickerView2 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView2 moveUp];
 }
 
-- (void)_handleDownArrow:(id)a3
+- (void)_handleDownArrow:(id)arrow
 {
-  v3 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v3 moveDown];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView moveDown];
 }
 
-- (void)_handleShiftDownArrow:(id)a3
+- (void)_handleShiftDownArrow:(id)arrow
 {
-  v4 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v4 increaseYPrecision];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView increaseYPrecision];
 
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 moveDown];
+  pointPickerView2 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView2 moveDown];
 }
 
-- (void)_handleCommandDownArrow:(id)a3
+- (void)_handleCommandDownArrow:(id)arrow
 {
-  v4 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v4 decreaseYPrecision];
+  pointPickerView = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView decreaseYPrecision];
 
-  v5 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
-  [v5 moveDown];
+  pointPickerView2 = [(FKACrosshairPointPickerViewController *)self pointPickerView];
+  [pointPickerView2 moveDown];
 }
 
-- (void)_handleEscape:(id)a3
+- (void)_handleEscape:(id)escape
 {
-  v4 = [(FKAPointPickerViewController *)self delegate];
-  [v4 dismissPointPickerViewController:self];
+  delegate = [(FKAPointPickerViewController *)self delegate];
+  [delegate dismissPointPickerViewController:self];
 }
 
 @end

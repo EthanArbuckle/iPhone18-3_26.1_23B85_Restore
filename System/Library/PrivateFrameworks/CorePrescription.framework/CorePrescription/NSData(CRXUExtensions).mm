@@ -10,7 +10,7 @@
 + (id)crxu_dataWithHexString:()CRXUExtensions
 {
   v4 = a3;
-  v5 = [v4 UTF8String];
+  uTF8String = [v4 UTF8String];
   v6 = [v4 length];
   if (v6)
   {
@@ -25,7 +25,7 @@
     if (v6)
     {
       v8 = 0;
-      v9 = (v5 + 1);
+      v9 = (uTF8String + 1);
       v10 = MEMORY[0x277D85DE0];
       while (1)
       {
@@ -70,7 +70,7 @@
     else
     {
 LABEL_9:
-      v12 = [a1 dataWithData:{v7, v15}];
+      v12 = [self dataWithData:{v7, v15}];
     }
 
 LABEL_12:
@@ -90,19 +90,19 @@ LABEL_12:
 
 - (id)crxu_asHexString
 {
-  v2 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(a1, "length")}];
-  v3 = [a1 bytes];
-  v4 = [a1 length];
+  v2 = [MEMORY[0x277CCAB68] stringWithCapacity:{2 * objc_msgSend(self, "length")}];
+  bytes = [self bytes];
+  v4 = [self length];
   if (v4 >= 1)
   {
-    v5 = &v3[v4];
+    v5 = &bytes[v4];
     do
     {
-      v6 = *v3++;
+      v6 = *bytes++;
       [v2 appendFormat:@"%02x", v6];
     }
 
-    while (v3 < v5);
+    while (bytes < v5);
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithString:v2];
@@ -113,13 +113,13 @@ LABEL_12:
 - (id)crxu_SHA256Hash
 {
   v6 = *MEMORY[0x277D85DE8];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:md length:32 freeWhenDone:0];
-  v2 = [v1 crxu_asHexString];
+  crxu_asHexString = [v1 crxu_asHexString];
 
   v3 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return crxu_asHexString;
 }
 
 @end

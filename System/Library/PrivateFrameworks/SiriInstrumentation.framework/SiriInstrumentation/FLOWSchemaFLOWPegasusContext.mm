@@ -1,31 +1,31 @@
 @interface FLOWSchemaFLOWPegasusContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWPegasusContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWPegasusContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWPegasusContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWPegasusContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)otherProvidersAtIndex:(unint64_t)a3;
+- (int)otherProvidersAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addOtherProviders:(int)a3;
-- (void)setHasIsHandOffExecution:(BOOL)a3;
-- (void)setHasPrimaryProvider:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addOtherProviders:(int)providers;
+- (void)setHasIsHandOffExecution:(BOOL)execution;
+- (void)setHasPrimaryProvider:(BOOL)provider;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWPegasusContext
 
-- (FLOWSchemaFLOWPegasusContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWPegasusContext)initWithDictionary:(id)dictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v40.receiver = self;
   v40.super_class = FLOWSchemaFLOWPegasusContext;
   v5 = [(FLOWSchemaFLOWPegasusContext *)&v40 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(FLOWSchemaFLOWPegasusContext *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"productArea"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"productArea"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,7 +41,7 @@
     }
 
     v35 = v6;
-    v9 = [v4 objectForKeyedSubscript:@"primaryProvider"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"primaryProvider"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
 
     v33 = v9;
     v34 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"otherProviders"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"otherProviders"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       }
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"intent"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"intent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,14 +100,14 @@
       [(FLOWSchemaFLOWPegasusContext *)v5 setIntent:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"isHandOffExecution"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isHandOffExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWPegasusContext setIsHandOffExecution:](v5, "setIsHandOffExecution:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:{@"kgQAExecution", v10}];
+    v20 = [dictionaryCopy objectForKeyedSubscript:{@"kgQAExecution", v10}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,7 +115,7 @@
       [(FLOWSchemaFLOWPegasusContext *)v5 setKgQAExecution:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"webAnswerExecution"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"webAnswerExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,7 +123,7 @@
       [(FLOWSchemaFLOWPegasusContext *)v5 setWebAnswerExecution:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"sportsExecution"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"sportsExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,7 +131,7 @@
       [(FLOWSchemaFLOWPegasusContext *)v5 setSportsExecution:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"crossIntentRankerResponse"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"crossIntentRankerResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,7 +139,7 @@
       [(FLOWSchemaFLOWPegasusContext *)v5 setCrossIntentRankerResponse:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"mapsExecution"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"mapsExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,30 +153,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWPegasusContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWPegasusContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWPegasusContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWPegasusContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWPegasusContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -189,98 +189,98 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_crossIntentRankerResponse)
   {
-    v4 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    crossIntentRankerResponse = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
+    dictionaryRepresentation = [crossIntentRankerResponse dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"crossIntentRankerResponse"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"crossIntentRankerResponse"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"crossIntentRankerResponse"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"crossIntentRankerResponse"];
     }
   }
 
   if (self->_intent)
   {
-    v7 = [(FLOWSchemaFLOWPegasusContext *)self intent];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    intent = [(FLOWSchemaFLOWPegasusContext *)self intent];
+    dictionaryRepresentation2 = [intent dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"intent"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intent"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"intent"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"intent"];
     }
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWPegasusContext isHandOffExecution](self, "isHandOffExecution")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isHandOffExecution"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isHandOffExecution"];
   }
 
   if (self->_kgQAExecution)
   {
-    v11 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    kgQAExecution = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
+    dictionaryRepresentation3 = [kgQAExecution dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"kgQAExecution"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"kgQAExecution"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"kgQAExecution"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"kgQAExecution"];
     }
   }
 
   if (self->_linkId)
   {
-    v14 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    linkId = [(FLOWSchemaFLOWPegasusContext *)self linkId];
+    dictionaryRepresentation4 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"linkId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_mapsExecution)
   {
-    v17 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    mapsExecution = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
+    dictionaryRepresentation5 = [mapsExecution dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"mapsExecution"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"mapsExecution"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"mapsExecution"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"mapsExecution"];
     }
   }
 
   if ([(NSArray *)self->_otherProviders count])
   {
-    v20 = [(FLOWSchemaFLOWPegasusContext *)self otherProviders];
-    v21 = [v20 copy];
-    [v3 setObject:v21 forKeyedSubscript:@"otherProviders"];
+    otherProviders = [(FLOWSchemaFLOWPegasusContext *)self otherProviders];
+    v21 = [otherProviders copy];
+    [dictionary setObject:v21 forKeyedSubscript:@"otherProviders"];
   }
 
   has = self->_has;
@@ -297,7 +297,7 @@
       v24 = off_1E78D5F40[v23];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"primaryProvider"];
+    [dictionary setObject:v24 forKeyedSubscript:@"primaryProvider"];
     has = self->_has;
   }
 
@@ -314,44 +314,44 @@
       v26 = off_1E78D5FC0[v25];
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"productArea"];
+    [dictionary setObject:v26 forKeyedSubscript:@"productArea"];
   }
 
   if (self->_sportsExecution)
   {
-    v27 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
-    v28 = [v27 dictionaryRepresentation];
-    if (v28)
+    sportsExecution = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
+    dictionaryRepresentation6 = [sportsExecution dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v28 forKeyedSubscript:@"sportsExecution"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"sportsExecution"];
     }
 
     else
     {
-      v29 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v29 forKeyedSubscript:@"sportsExecution"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"sportsExecution"];
     }
   }
 
   if (self->_webAnswerExecution)
   {
-    v30 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
-    v31 = [v30 dictionaryRepresentation];
-    if (v31)
+    webAnswerExecution = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
+    dictionaryRepresentation7 = [webAnswerExecution dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v31 forKeyedSubscript:@"webAnswerExecution"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"webAnswerExecution"];
     }
 
     else
     {
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v32 forKeyedSubscript:@"webAnswerExecution"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"webAnswerExecution"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -398,28 +398,28 @@ LABEL_6:
   return v9 ^ v12 ^ [(FLOWSchemaFLOWMapsExecution *)self->_mapsExecution hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_51;
   }
 
-  v7 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
-  if (v7)
+  linkId3 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -432,7 +432,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v13 = v4[88];
+  v13 = equalCopy[88];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_52;
@@ -441,13 +441,13 @@ LABEL_6:
   if (*&has)
   {
     productArea = self->_productArea;
-    if (productArea != [v4 productArea])
+    if (productArea != [equalCopy productArea])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v13 = v4[88];
+    v13 = equalCopy[88];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -459,26 +459,26 @@ LABEL_6:
   if (v15)
   {
     primaryProvider = self->_primaryProvider;
-    if (primaryProvider != [v4 primaryProvider])
+    if (primaryProvider != [equalCopy primaryProvider])
     {
       goto LABEL_52;
     }
   }
 
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self otherProviders];
-  v6 = [v4 otherProviders];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self otherProviders];
+  linkId2 = [equalCopy otherProviders];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_51;
   }
 
-  v17 = [(FLOWSchemaFLOWPegasusContext *)self otherProviders];
-  if (v17)
+  otherProviders = [(FLOWSchemaFLOWPegasusContext *)self otherProviders];
+  if (otherProviders)
   {
-    v18 = v17;
-    v19 = [(FLOWSchemaFLOWPegasusContext *)self otherProviders];
-    v20 = [v4 otherProviders];
-    v21 = [v19 isEqual:v20];
+    v18 = otherProviders;
+    otherProviders2 = [(FLOWSchemaFLOWPegasusContext *)self otherProviders];
+    otherProviders3 = [equalCopy otherProviders];
+    v21 = [otherProviders2 isEqual:otherProviders3];
 
     if (!v21)
     {
@@ -490,20 +490,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self intent];
-  v6 = [v4 intent];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self intent];
+  linkId2 = [equalCopy intent];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_51;
   }
 
-  v22 = [(FLOWSchemaFLOWPegasusContext *)self intent];
-  if (v22)
+  intent = [(FLOWSchemaFLOWPegasusContext *)self intent];
+  if (intent)
   {
-    v23 = v22;
-    v24 = [(FLOWSchemaFLOWPegasusContext *)self intent];
-    v25 = [v4 intent];
-    v26 = [v24 isEqual:v25];
+    v23 = intent;
+    intent2 = [(FLOWSchemaFLOWPegasusContext *)self intent];
+    intent3 = [equalCopy intent];
+    v26 = [intent2 isEqual:intent3];
 
     if (!v26)
     {
@@ -516,7 +516,7 @@ LABEL_6:
   }
 
   v27 = (*&self->_has >> 2) & 1;
-  if (v27 != ((v4[88] >> 2) & 1))
+  if (v27 != ((equalCopy[88] >> 2) & 1))
   {
     goto LABEL_52;
   }
@@ -524,26 +524,26 @@ LABEL_6:
   if (v27)
   {
     isHandOffExecution = self->_isHandOffExecution;
-    if (isHandOffExecution != [v4 isHandOffExecution])
+    if (isHandOffExecution != [equalCopy isHandOffExecution])
     {
       goto LABEL_52;
     }
   }
 
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
-  v6 = [v4 kgQAExecution];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
+  linkId2 = [equalCopy kgQAExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_51;
   }
 
-  v29 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
-  if (v29)
+  kgQAExecution = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
+  if (kgQAExecution)
   {
-    v30 = v29;
-    v31 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
-    v32 = [v4 kgQAExecution];
-    v33 = [v31 isEqual:v32];
+    v30 = kgQAExecution;
+    kgQAExecution2 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
+    kgQAExecution3 = [equalCopy kgQAExecution];
+    v33 = [kgQAExecution2 isEqual:kgQAExecution3];
 
     if (!v33)
     {
@@ -555,20 +555,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
-  v6 = [v4 webAnswerExecution];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
+  linkId2 = [equalCopy webAnswerExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_51;
   }
 
-  v34 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
-  if (v34)
+  webAnswerExecution = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
+  if (webAnswerExecution)
   {
-    v35 = v34;
-    v36 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
-    v37 = [v4 webAnswerExecution];
-    v38 = [v36 isEqual:v37];
+    v35 = webAnswerExecution;
+    webAnswerExecution2 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
+    webAnswerExecution3 = [equalCopy webAnswerExecution];
+    v38 = [webAnswerExecution2 isEqual:webAnswerExecution3];
 
     if (!v38)
     {
@@ -580,20 +580,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
-  v6 = [v4 sportsExecution];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
+  linkId2 = [equalCopy sportsExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_51;
   }
 
-  v39 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
-  if (v39)
+  sportsExecution = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
+  if (sportsExecution)
   {
-    v40 = v39;
-    v41 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
-    v42 = [v4 sportsExecution];
-    v43 = [v41 isEqual:v42];
+    v40 = sportsExecution;
+    sportsExecution2 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
+    sportsExecution3 = [equalCopy sportsExecution];
+    v43 = [sportsExecution2 isEqual:sportsExecution3];
 
     if (!v43)
     {
@@ -605,20 +605,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
-  v6 = [v4 crossIntentRankerResponse];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
+  linkId2 = [equalCopy crossIntentRankerResponse];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_51;
   }
 
-  v44 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
-  if (v44)
+  crossIntentRankerResponse = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
+  if (crossIntentRankerResponse)
   {
-    v45 = v44;
-    v46 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
-    v47 = [v4 crossIntentRankerResponse];
-    v48 = [v46 isEqual:v47];
+    v45 = crossIntentRankerResponse;
+    crossIntentRankerResponse2 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
+    crossIntentRankerResponse3 = [equalCopy crossIntentRankerResponse];
+    v48 = [crossIntentRankerResponse2 isEqual:crossIntentRankerResponse3];
 
     if (!v48)
     {
@@ -630,17 +630,17 @@ LABEL_6:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
-  v6 = [v4 mapsExecution];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
+  linkId2 = [equalCopy mapsExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_51:
 
     goto LABEL_52;
   }
 
-  v49 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
-  if (!v49)
+  mapsExecution = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
+  if (!mapsExecution)
   {
 
 LABEL_55:
@@ -648,10 +648,10 @@ LABEL_55:
     goto LABEL_53;
   }
 
-  v50 = v49;
-  v51 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
-  v52 = [v4 mapsExecution];
-  v53 = [v51 isEqual:v52];
+  v50 = mapsExecution;
+  mapsExecution2 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
+  mapsExecution3 = [equalCopy mapsExecution];
+  v53 = [mapsExecution2 isEqual:mapsExecution3];
 
   if (v53)
   {
@@ -665,15 +665,15 @@ LABEL_53:
   return v54;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
+  toCopy = to;
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
+    linkId2 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -718,11 +718,11 @@ LABEL_53:
     while (v10);
   }
 
-  v13 = [(FLOWSchemaFLOWPegasusContext *)self intent];
+  intent = [(FLOWSchemaFLOWPegasusContext *)self intent];
 
-  if (v13)
+  if (intent)
   {
-    v14 = [(FLOWSchemaFLOWPegasusContext *)self intent];
+    intent2 = [(FLOWSchemaFLOWPegasusContext *)self intent];
     PBDataWriterWriteSubmessage();
   }
 
@@ -731,50 +731,50 @@ LABEL_53:
     PBDataWriterWriteBOOLField();
   }
 
-  v15 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
+  kgQAExecution = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
 
-  if (v15)
+  if (kgQAExecution)
   {
-    v16 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
+    kgQAExecution2 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
+  webAnswerExecution = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
 
-  if (v17)
+  if (webAnswerExecution)
   {
-    v18 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
+    webAnswerExecution2 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
+  sportsExecution = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
 
-  if (v19)
+  if (sportsExecution)
   {
-    v20 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
+    sportsExecution2 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
+  crossIntentRankerResponse = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
 
-  if (v21)
+  if (crossIntentRankerResponse)
   {
-    v22 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
+    crossIntentRankerResponse2 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
     PBDataWriterWriteSubmessage();
   }
 
-  v23 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
+  mapsExecution = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
 
-  if (v23)
+  if (mapsExecution)
   {
-    v24 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
+    mapsExecution2 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasIsHandOffExecution:(BOOL)a3
+- (void)setHasIsHandOffExecution:(BOOL)execution
 {
-  if (a3)
+  if (execution)
   {
     v3 = 4;
   }
@@ -787,23 +787,23 @@ LABEL_53:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)otherProvidersAtIndex:(unint64_t)a3
+- (int)otherProvidersAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_otherProviders objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_otherProviders objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addOtherProviders:(int)a3
+- (void)addOtherProviders:(int)providers
 {
-  v3 = *&a3;
+  v3 = *&providers;
   otherProviders = self->_otherProviders;
   if (!otherProviders)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_otherProviders;
-    self->_otherProviders = v6;
+    self->_otherProviders = array;
 
     otherProviders = self->_otherProviders;
   }
@@ -812,9 +812,9 @@ LABEL_53:
   [(NSArray *)otherProviders addObject:v8];
 }
 
-- (void)setHasPrimaryProvider:(BOOL)a3
+- (void)setHasPrimaryProvider:(BOOL)provider
 {
-  if (a3)
+  if (provider)
   {
     v3 = 2;
   }
@@ -827,71 +827,71 @@ LABEL_53:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v28.receiver = self;
   v28.super_class = FLOWSchemaFLOWPegasusContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWPegasusContext *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(FLOWSchemaFLOWPegasusContext *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWPegasusContext *)self deleteLinkId];
   }
 
-  v9 = [(FLOWSchemaFLOWPegasusContext *)self intent];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  intent = [(FLOWSchemaFLOWPegasusContext *)self intent];
+  v10 = [intent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWPegasusContext *)self deleteIntent];
   }
 
-  v12 = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  kgQAExecution = [(FLOWSchemaFLOWPegasusContext *)self kgQAExecution];
+  v13 = [kgQAExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLOWSchemaFLOWPegasusContext *)self deleteKgQAExecution];
   }
 
-  v15 = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  webAnswerExecution = [(FLOWSchemaFLOWPegasusContext *)self webAnswerExecution];
+  v16 = [webAnswerExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(FLOWSchemaFLOWPegasusContext *)self deleteWebAnswerExecution];
   }
 
-  v18 = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  sportsExecution = [(FLOWSchemaFLOWPegasusContext *)self sportsExecution];
+  v19 = [sportsExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(FLOWSchemaFLOWPegasusContext *)self deleteSportsExecution];
   }
 
-  v21 = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  crossIntentRankerResponse = [(FLOWSchemaFLOWPegasusContext *)self crossIntentRankerResponse];
+  v22 = [crossIntentRankerResponse applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(FLOWSchemaFLOWPegasusContext *)self deleteCrossIntentRankerResponse];
   }
 
-  v24 = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  mapsExecution = [(FLOWSchemaFLOWPegasusContext *)self mapsExecution];
+  v25 = [mapsExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(FLOWSchemaFLOWPegasusContext *)self deleteMapsExecution];
   }

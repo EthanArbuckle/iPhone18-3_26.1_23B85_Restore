@@ -1,31 +1,31 @@
 @interface THNotesAnnotationLayer
 - (CGSize)sizeThatFits:(CGSize)result;
-- (THNotesAnnotationLayer)initWithAnnotation:(id)a3 maxLines:(unint64_t)a4 showHighlight:(BOOL)a5;
+- (THNotesAnnotationLayer)initWithAnnotation:(id)annotation maxLines:(unint64_t)lines showHighlight:(BOOL)highlight;
 - (void)dealloc;
-- (void)i_updateStorageImageWithSize:(CGSize)a3;
+- (void)i_updateStorageImageWithSize:(CGSize)size;
 - (void)layoutSublayers;
 @end
 
 @implementation THNotesAnnotationLayer
 
-- (THNotesAnnotationLayer)initWithAnnotation:(id)a3 maxLines:(unint64_t)a4 showHighlight:(BOOL)a5
+- (THNotesAnnotationLayer)initWithAnnotation:(id)annotation maxLines:(unint64_t)lines showHighlight:(BOOL)highlight
 {
-  v5 = a5;
+  highlightCopy = highlight;
   v11.receiver = self;
   v11.super_class = THNotesAnnotationLayer;
   v8 = [(THNoteCardStorageLayer *)&v11 init];
   if (v8)
   {
-    if (v5)
+    if (highlightCopy)
     {
       v9 = objc_alloc_init(AEHighlight);
       v8->_highlight = v9;
-      [(AEHighlight *)v9 setAnnotation:a3];
+      [(AEHighlight *)v9 setAnnotation:annotation];
       v8->_renderingController = objc_alloc_init(AEHighlightRenderingController);
     }
 
-    v8->_annotation = a3;
-    v8->_maxLines = a4;
+    v8->_annotation = annotation;
+    v8->_maxLines = lines;
   }
 
   return v8;
@@ -87,8 +87,8 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(AEHighlightRenderingController *)self->_renderingController highlightLayers];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v19 count:16];
+    highlightLayers = [(AEHighlightRenderingController *)self->_renderingController highlightLayers];
+    v7 = [highlightLayers countByEnumeratingWithState:&v12 objects:v19 count:16];
     if (v7)
     {
       v9 = *v13;
@@ -98,7 +98,7 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(highlightLayers);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
@@ -107,7 +107,7 @@
           [(THNotesAnnotationLayer *)self insertSublayer:v11 atIndex:0];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v12 objects:v19 count:16];
+        v7 = [highlightLayers countByEnumeratingWithState:&v12 objects:v19 count:16];
       }
 
       while (v7);
@@ -117,9 +117,9 @@
   }
 }
 
-- (void)i_updateStorageImageWithSize:(CGSize)a3
+- (void)i_updateStorageImageWithSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (!self->super._storage)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler currentHandler];
@@ -128,7 +128,7 @@
   if (!self->super._storageImageValid)
   {
     v14 = 0;
-    v5 = [(TSWPStorage *)self->super._storage characterCount:a3.width];
+    v5 = [(TSWPStorage *)self->super._storage characterCount:size.width];
     v13[0] = 0;
     v13[1] = v5 - 1;
     v6 = [(TSWPStorage *)self->super._storage valueForProperty:18 atCharIndex:0 effectiveRange:v13];

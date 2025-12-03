@@ -1,17 +1,17 @@
 @interface ColorPickerUISlider.Coordinator
-- (void)sliderValueChangedWithSlider:(id)a3;
+- (void)sliderValueChangedWithSlider:(id)slider;
 @end
 
 @implementation ColorPickerUISlider.Coordinator
 
-- (void)sliderValueChangedWithSlider:(id)a3
+- (void)sliderValueChangedWithSlider:(id)slider
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  *(v5 + 24) = a3;
-  v6 = a3;
+  *(v5 + 24) = slider;
+  sliderCopy = slider;
   swift_retain_n();
-  v7 = v6;
+  v7 = sliderCopy;
   static ViewGraphHostUpdate.enqueueAction(_:)();
 }
 

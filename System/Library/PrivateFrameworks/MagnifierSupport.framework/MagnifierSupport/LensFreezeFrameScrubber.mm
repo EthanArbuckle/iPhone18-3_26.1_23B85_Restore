@@ -4,49 +4,49 @@
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)didTapAddButton:(id)a3;
-- (void)didTapScrollView:(id)a3;
+- (void)didTapAddButton:(id)button;
+- (void)didTapScrollView:(id)view;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation LensFreezeFrameScrubber
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_257EBB1F0();
 }
 
-- (void)didTapScrollView:(id)a3
+- (void)didTapScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_257EBB9A0(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_257EBB9A0(viewCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_257EBBFA4(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_257EBBFA4(scrollCopy);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a5->x;
-  v9 = self;
+  x = offset->x;
+  selfCopy = self;
   v7 = sub_257EBBE70(x);
   if ((v8 & 1) == 0)
   {
-    *&a5->x = v7;
+    *&offset->x = v7;
   }
 }
 
-- (void)didTapAddButton:(id)a3
+- (void)didTapAddButton:(id)button
 {
-  if (a3)
+  if (button)
   {
     swift_unknownObjectRetain();
     sub_257ED0160();
@@ -112,13 +112,13 @@ LABEL_5:
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_257EBC344();
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_257EBC45C();
 }
 
@@ -127,7 +127,7 @@ LABEL_5:
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F8F5470);
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_257ED6D30;
-  v4 = self;
+  selfCopy = self;
   v5 = sub_257EB85FC();
   *(v3 + 56) = sub_257BD2C2C(0, &unk_281543D80);
   *(v3 + 32) = v5;

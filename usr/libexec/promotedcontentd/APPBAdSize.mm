@@ -1,15 +1,15 @@
 @interface APPBAdSize
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLockAspectRatio:(BOOL)a3;
-- (void)setHasWidthInset:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLockAspectRatio:(BOOL)ratio;
+- (void)setHasWidthInset:(BOOL)inset;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdSize
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setHasWidthInset:(BOOL)a3
+- (void)setHasWidthInset:(BOOL)inset
 {
-  if (a3)
+  if (inset)
   {
     v3 = 2;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLockAspectRatio:(BOOL)a3
+- (void)setHasLockAspectRatio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 4;
   }
@@ -61,8 +61,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdSize;
   v3 = [(APPBAdSize *)&v7 description];
-  v4 = [(APPBAdSize *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdSize *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -115,9 +115,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteInt32Field();
   has = self->_has;
@@ -152,16 +152,16 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_width;
-  v4[2] = self->_height;
+  toCopy = to;
+  toCopy[4] = self->_width;
+  toCopy[2] = self->_height;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_widthInset;
-    *(v4 + 28) |= 2u;
+    toCopy[5] = self->_widthInset;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -180,21 +180,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_heightInset;
-  *(v4 + 28) |= 1u;
+  toCopy[3] = self->_heightInset;
+  *(toCopy + 28) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 24) = self->_lockAspectRatio;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 24) = self->_lockAspectRatio;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 4) = self->_width;
   *(result + 2) = self->_height;
   has = self->_has;
@@ -233,44 +233,44 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_width != *(v4 + 4) || self->_height != *(v4 + 2))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_width != *(equalCopy + 4) || self->_height != *(equalCopy + 2))
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_widthInset != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_widthInset != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_heightInset != *(v4 + 3))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_heightInset != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 28) & 4) == 0;
+  v5 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
 LABEL_16:
       v5 = 0;
@@ -279,13 +279,13 @@ LABEL_16:
 
     if (self->_lockAspectRatio)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_16;
     }
@@ -333,17 +333,17 @@ LABEL_17:
   return (2654435761 * self->_height) ^ (2654435761 * self->_width) ^ v2 ^ v3 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_width = *(v4 + 4);
-  self->_height = *(v4 + 2);
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  self->_width = *(fromCopy + 4);
+  self->_height = *(fromCopy + 2);
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_widthInset = *(v4 + 5);
+    self->_widthInset = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -356,17 +356,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 1) == 0)
+  else if ((*(fromCopy + 28) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_heightInset = *(v4 + 3);
+  self->_heightInset = *(fromCopy + 3);
   *&self->_has |= 1u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_4:
-    self->_lockAspectRatio = *(v4 + 24);
+    self->_lockAspectRatio = *(fromCopy + 24);
     *&self->_has |= 4u;
   }
 

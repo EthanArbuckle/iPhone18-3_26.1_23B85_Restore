@@ -5,27 +5,27 @@
 - (SiriTTSSynthesisVoice)voice;
 - (id)didGenerateAudio;
 - (id)didGenerateWordTimings;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContextInfo:(id)a3;
-- (void)setCustomResourceURLs:(id)a3;
-- (void)setDidGenerateAudio:(id)a3;
-- (void)setDidGenerateWordTimings:(id)a3;
-- (void)setProsodyProperties:(id)a3;
-- (void)setVoice:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContextInfo:(id)info;
+- (void)setCustomResourceURLs:(id)ls;
+- (void)setDidGenerateAudio:(id)audio;
+- (void)setDidGenerateWordTimings:(id)timings;
+- (void)setProsodyProperties:(id)properties;
+- (void)setVoice:(id)voice;
 @end
 
 @implementation SiriTTSSynthesisContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1A9CDF8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1A9CDF8(coderCopy);
 }
 
-- (void)setContextInfo:(id)a3
+- (void)setContextInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     v4 = sub_1B1C2CA98();
   }
@@ -35,13 +35,13 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1B1AD60FC(v4);
 }
 
-- (void)setDidGenerateWordTimings:(id)a3
+- (void)setDidGenerateWordTimings:(id)timings
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(timings);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -54,7 +54,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1B1AD5768(v4, v5);
 }
 
@@ -65,10 +65,10 @@
   return v2;
 }
 
-- (void)setVoice:(id)a3
+- (void)setVoice:(id)voice
 {
-  v4 = a3;
-  v5 = self;
+  voiceCopy = voice;
+  selfCopy = self;
   sub_1B1B0C9C8();
 }
 
@@ -103,17 +103,17 @@
   return v2;
 }
 
-- (void)setCustomResourceURLs:(id)a3
+- (void)setCustomResourceURLs:(id)ls
 {
-  v3 = a3;
-  if (a3)
+  lsCopy = ls;
+  if (ls)
   {
     sub_1B1C2C1C8();
-    v3 = sub_1B1C2CE78();
+    lsCopy = sub_1B1C2CE78();
   }
 
-  v5 = self;
-  sub_1B1B0D10C(v3);
+  selfCopy = self;
+  sub_1B1B0D10C(lsCopy);
 }
 
 - (id)didGenerateAudio
@@ -138,9 +138,9 @@
   return v4;
 }
 
-- (void)setDidGenerateAudio:(id)a3
+- (void)setDidGenerateAudio:(id)audio
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(audio);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -153,7 +153,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1B1B0D7BC(v4, v5);
 }
 
@@ -186,10 +186,10 @@
   return v2;
 }
 
-- (void)setProsodyProperties:(id)a3
+- (void)setProsodyProperties:(id)properties
 {
-  v4 = a3;
-  v5 = self;
+  propertiesCopy = properties;
+  selfCopy = self;
   sub_1B1B0DEBC();
 }
 

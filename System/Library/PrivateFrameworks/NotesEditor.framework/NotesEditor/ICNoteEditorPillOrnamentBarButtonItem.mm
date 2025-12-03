@@ -2,11 +2,11 @@
 - (UIButton)button;
 - (id)menu;
 - (void)performButtonAction;
-- (void)setAction:(SEL)a3;
-- (void)setImage:(id)a3;
-- (void)setMenu:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUsedInPillOrnament:(BOOL)a3;
+- (void)setAction:(SEL)action;
+- (void)setImage:(id)image;
+- (void)setMenu:(id)menu;
+- (void)setTitle:(id)title;
+- (void)setUsedInPillOrnament:(BOOL)ornament;
 @end
 
 @implementation ICNoteEditorPillOrnamentBarButtonItem
@@ -18,7 +18,7 @@
     objc_opt_class();
     v6.receiver = self;
     v6.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-    v3 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v6 customView];
+    customView = [(ICNoteEditorPillOrnamentBarButtonItem *)&v6 customView];
     v4 = ICDynamicCast();
   }
 
@@ -34,60 +34,60 @@
 {
   if ([(ICNoteEditorPillOrnamentBarButtonItem *)self isUsedInPillOrnament])
   {
-    v3 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-    v4 = [v3 menu];
+    button = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+    menu = [button menu];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-    v4 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v6 menu];
+    menu = [(ICNoteEditorPillOrnamentBarButtonItem *)&v6 menu];
   }
 
-  return v4;
+  return menu;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v8.receiver = self;
   v8.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-  [(ICNoteEditorPillOrnamentBarButtonItem *)&v8 setImage:v4];
+  [(ICNoteEditorPillOrnamentBarButtonItem *)&v8 setImage:imageCopy];
   if ([(ICNoteEditorPillOrnamentBarButtonItem *)self isUsedInPillOrnament])
   {
-    v5 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-    v6 = [v5 configuration];
+    button = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+    configuration = [button configuration];
 
-    [v6 setImage:v4];
-    v7 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-    [v7 setConfiguration:v6];
+    [configuration setImage:imageCopy];
+    button2 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+    [button2 setConfiguration:configuration];
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
   if ([(ICNoteEditorPillOrnamentBarButtonItem *)self isUsedInPillOrnament])
   {
     if ([(ICNoteEditorPillOrnamentBarButtonItem *)self action])
     {
-      v5 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+      button = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
       v11.receiver = self;
       v11.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-      v6 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v11 target];
+      target = [(ICNoteEditorPillOrnamentBarButtonItem *)&v11 target];
       v10.receiver = self;
       v10.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-      [v5 removeTarget:v6 action:-[ICNoteEditorPillOrnamentBarButtonItem action](&v10 forControlEvents:{sel_action), 0x2000}];
+      [button removeTarget:target action:-[ICNoteEditorPillOrnamentBarButtonItem action](&v10 forControlEvents:{sel_action), 0x2000}];
     }
 
-    if (a3)
+    if (action)
     {
-      v7 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-      [v7 addTarget:self action:sel_performButtonAction forControlEvents:0x2000];
+      button2 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+      [button2 addTarget:self action:sel_performButtonAction forControlEvents:0x2000];
     }
 
-    v9 = self;
-    v8 = &v9;
+    selfCopy = self;
+    v8 = &selfCopy;
   }
 
   else
@@ -97,109 +97,109 @@
   }
 
   v8->super_class = ICNoteEditorPillOrnamentBarButtonItem;
-  [(objc_super *)v8 setAction:a3, v9];
+  [(objc_super *)v8 setAction:action, selfCopy];
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   if ([(ICNoteEditorPillOrnamentBarButtonItem *)self isUsedInPillOrnament])
   {
-    v5 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-    [v5 setMenu:v4];
+    button = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+    [button setMenu:menuCopy];
 
-    v6 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-    [v6 setShowsMenuAsPrimaryAction:v4 != 0];
+    button2 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+    [button2 setShowsMenuAsPrimaryAction:menuCopy != 0];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-    [(ICNoteEditorPillOrnamentBarButtonItem *)&v7 setMenu:v4];
+    [(ICNoteEditorPillOrnamentBarButtonItem *)&v7 setMenu:menuCopy];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-  [(ICNoteEditorPillOrnamentBarButtonItem *)&v12 setTitle:v4];
-  if (-[ICNoteEditorPillOrnamentBarButtonItem isUsedInPillOrnament](self, "isUsedInPillOrnament") && [v4 length])
+  [(ICNoteEditorPillOrnamentBarButtonItem *)&v12 setTitle:titleCopy];
+  if (-[ICNoteEditorPillOrnamentBarButtonItem isUsedInPillOrnament](self, "isUsedInPillOrnament") && [titleCopy length])
   {
-    v5 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
+    toolTipInteraction = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
 
-    if (v5)
+    if (toolTipInteraction)
     {
-      v6 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
-      [v6 setDefaultToolTip:v4];
+      toolTipInteraction2 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
+      [toolTipInteraction2 setDefaultToolTip:titleCopy];
     }
 
     else
     {
-      v9 = [objc_alloc(MEMORY[0x277D75C50]) initWithDefaultToolTip:v4];
+      v9 = [objc_alloc(MEMORY[0x277D75C50]) initWithDefaultToolTip:titleCopy];
       [(ICNoteEditorPillOrnamentBarButtonItem *)self setToolTipInteraction:v9];
 
-      v10 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-      v11 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
-      [v10 addInteraction:v11];
+      button = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+      toolTipInteraction3 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
+      [button addInteraction:toolTipInteraction3];
     }
   }
 
   else
   {
-    v7 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-    v8 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
-    [v7 removeInteraction:v8];
+    button2 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+    toolTipInteraction4 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
+    [button2 removeInteraction:toolTipInteraction4];
 
     [(ICNoteEditorPillOrnamentBarButtonItem *)self setToolTipInteraction:0];
   }
 }
 
-- (void)setUsedInPillOrnament:(BOOL)a3
+- (void)setUsedInPillOrnament:(BOOL)ornament
 {
-  if (self->_usedInPillOrnament != a3)
+  if (self->_usedInPillOrnament != ornament)
   {
     v25 = v3;
     v26 = v4;
-    self->_usedInPillOrnament = a3;
-    if (a3)
+    self->_usedInPillOrnament = ornament;
+    if (ornament)
     {
-      v6 = [MEMORY[0x277D75230] borderlessButtonConfiguration];
-      v7 = [MEMORY[0x277D75348] labelColor];
-      [v6 setBaseForegroundColor:v7];
+      borderlessButtonConfiguration = [MEMORY[0x277D75230] borderlessButtonConfiguration];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [borderlessButtonConfiguration setBaseForegroundColor:labelColor];
 
       v24.receiver = self;
       v24.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-      v8 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v24 image];
-      [v6 setImage:v8];
+      image = [(ICNoteEditorPillOrnamentBarButtonItem *)&v24 image];
+      [borderlessButtonConfiguration setImage:image];
 
-      v9 = [MEMORY[0x277D75220] buttonWithConfiguration:v6 primaryAction:0];
+      v9 = [MEMORY[0x277D75220] buttonWithConfiguration:borderlessButtonConfiguration primaryAction:0];
       [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v9 addTarget:self action:sel_performButtonAction forControlEvents:0x2000];
       v23.receiver = self;
       v23.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-      v10 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v23 menu];
-      [v9 setMenu:v10];
+      menu = [(ICNoteEditorPillOrnamentBarButtonItem *)&v23 menu];
+      [v9 setMenu:menu];
 
       v22.receiver = self;
       v22.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-      v11 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v22 menu];
-      [v9 setShowsMenuAsPrimaryAction:v11 != 0];
+      menu2 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v22 menu];
+      [v9 setShowsMenuAsPrimaryAction:menu2 != 0];
 
-      v12 = [(ICNoteEditorPillOrnamentBarButtonItem *)self title];
-      v13 = [v12 length];
+      title = [(ICNoteEditorPillOrnamentBarButtonItem *)self title];
+      v13 = [title length];
 
       if (v13)
       {
         v14 = objc_alloc(MEMORY[0x277D75C50]);
-        v15 = [(ICNoteEditorPillOrnamentBarButtonItem *)self title];
-        v16 = [v14 initWithDefaultToolTip:v15];
+        title2 = [(ICNoteEditorPillOrnamentBarButtonItem *)self title];
+        v16 = [v14 initWithDefaultToolTip:title2];
         [(ICNoteEditorPillOrnamentBarButtonItem *)self setToolTipInteraction:v16];
 
-        v17 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
-        [v9 addInteraction:v17];
+        toolTipInteraction = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
+        [v9 addInteraction:toolTipInteraction];
       }
 
       v21.receiver = self;
@@ -209,9 +209,9 @@
 
     else
     {
-      v18 = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
-      v19 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
-      [v18 removeInteraction:v19];
+      button = [(ICNoteEditorPillOrnamentBarButtonItem *)self button];
+      toolTipInteraction2 = [(ICNoteEditorPillOrnamentBarButtonItem *)self toolTipInteraction];
+      [button removeInteraction:toolTipInteraction2];
 
       [(ICNoteEditorPillOrnamentBarButtonItem *)self setToolTipInteraction:0];
       v20.receiver = self;
@@ -225,37 +225,37 @@
 {
   v17.receiver = self;
   v17.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-  v3 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v17 target];
+  target = [(ICNoteEditorPillOrnamentBarButtonItem *)&v17 target];
   v4 = ICProtocolCast();
 
   if (v4)
   {
-    v5 = [v4 presentingViewController];
-    v6 = [v5 ic_window];
+    presentingViewController = [v4 presentingViewController];
+    ic_window = [presentingViewController ic_window];
 
-    [v6 makeKeyWindow];
+    [ic_window makeKeyWindow];
   }
 
   v16.receiver = self;
   v16.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-  v7 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v16 action];
-  if (v7)
+  action = [(ICNoteEditorPillOrnamentBarButtonItem *)&v16 action];
+  if (action)
   {
-    v8 = v7;
+    v8 = action;
     v15.receiver = self;
     v15.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-    v9 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v15 target];
-    v10 = [v9 methodForSelector:v8];
+    target2 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v15 target];
+    v10 = [target2 methodForSelector:v8];
 
     if (v10)
     {
       v14.receiver = self;
       v14.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-      v11 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v14 target];
+      target3 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v14 target];
       v13.receiver = self;
       v13.super_class = ICNoteEditorPillOrnamentBarButtonItem;
-      v12 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v13 action];
-      v10(v11, v12, self);
+      action2 = [(ICNoteEditorPillOrnamentBarButtonItem *)&v13 action];
+      v10(target3, action2, self);
     }
   }
 }

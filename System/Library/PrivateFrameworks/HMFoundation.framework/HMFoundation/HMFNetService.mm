@@ -1,53 +1,53 @@
 @interface HMFNetService
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)errorFromNetServiceErrorDict:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)errorFromNetServiceErrorDict:(id)dict;
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPublishing;
 - (BOOL)isResolved;
 - (HMFNetAddress)hostName;
 - (HMFNetService)init;
-- (HMFNetService)initWithDomain:(id)a3 type:(id)a4 name:(id)a5;
-- (HMFNetService)initWithNetService:(id)a3;
+- (HMFNetService)initWithDomain:(id)domain type:(id)type name:(id)name;
+- (HMFNetService)initWithNetService:(id)service;
 - (HMFNetServiceDelegate)delegate;
 - (NSArray)addresses;
 - (NSDictionary)TXTRecord;
 - (id)bestAddress;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)shortDescription;
 - (int64_t)resolveRunningState;
 - (int64_t)resolveState;
 - (unint64_t)hash;
 - (unint64_t)port;
-- (void)_reallyResolveWithTimeout:(double)a3 completionHandler:(id)a4;
-- (void)confirmWithTimeout:(double)a3 completionHandler:(id)a4;
+- (void)_reallyResolveWithTimeout:(double)timeout completionHandler:(id)handler;
+- (void)confirmWithTimeout:(double)timeout completionHandler:(id)handler;
 - (void)dealloc;
-- (void)netService:(id)a3 didNotResolve:(id)a4;
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4;
-- (void)netServiceDidResolveAddress:(id)a3;
-- (void)netServiceDidStop:(id)a3;
-- (void)netServiceWillResolve:(id)a3;
-- (void)notifyUpdatedAddresses:(id)a3;
+- (void)netService:(id)service didNotResolve:(id)resolve;
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data;
+- (void)netServiceDidResolveAddress:(id)address;
+- (void)netServiceDidStop:(id)stop;
+- (void)netServiceWillResolve:(id)resolve;
+- (void)notifyUpdatedAddresses:(id)addresses;
 - (void)removeAllTXTRecordObjects;
-- (void)resolveWithTimeout:(double)a3 completionHandler:(id)a4;
-- (void)setAddresses:(id)a3;
-- (void)setHostname:(id)a3;
-- (void)setPublishing:(BOOL)a3;
-- (void)setResolveRunningState:(int64_t)a3;
-- (void)setResolveState:(int64_t)a3;
-- (void)setResolved:(BOOL)a3;
-- (void)setTXTRecord:(id)a3;
+- (void)resolveWithTimeout:(double)timeout completionHandler:(id)handler;
+- (void)setAddresses:(id)addresses;
+- (void)setHostname:(id)hostname;
+- (void)setPublishing:(BOOL)publishing;
+- (void)setResolveRunningState:(int64_t)state;
+- (void)setResolveState:(int64_t)state;
+- (void)setResolved:(BOOL)resolved;
+- (void)setTXTRecord:(id)record;
 - (void)startMonitoring;
-- (void)updateTXTRecordWithData:(id)a3;
+- (void)updateTXTRecordWithData:(id)data;
 @end
 
 @implementation HMFNetService
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"resolved"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"isResolved") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"publishing") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"isPublishing"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"resolved"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"isResolved") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"publishing") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"isPublishing"))
   {
     v4 = 0;
   }
@@ -55,7 +55,7 @@
   else
   {
     v6 = NSStringFromSelector(sel_port);
-    v7 = [v3 isEqualToString:v6];
+    v7 = [keyCopy isEqualToString:v6];
 
     v4 = v7 ^ 1;
   }
@@ -63,19 +63,19 @@
   return v4;
 }
 
-+ (id)errorFromNetServiceErrorDict:(id)a3
++ (id)errorFromNetServiceErrorDict:(id)dict
 {
-  v3 = a3;
-  v4 = [v3 hmf_numberForKey:*MEMORY[0x277CBAAB8]];
+  dictCopy = dict;
+  v4 = [dictCopy hmf_numberForKey:*MEMORY[0x277CBAAB8]];
   v5 = v4;
   if (v4)
   {
-    [MEMORY[0x277CCA9B8] errorWithDomain:@"NSNetServiceErrorDomain" code:objc_msgSend(v4 userInfo:{"integerValue"), v3}];
+    [MEMORY[0x277CCA9B8] errorWithDomain:@"NSNetServiceErrorDomain" code:objc_msgSend(v4 userInfo:{"integerValue"), dictCopy}];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hmfErrorWithCode:11 userInfo:v3];
+    [MEMORY[0x277CCA9B8] hmfErrorWithCode:11 userInfo:dictCopy];
   }
   v6 = ;
 
@@ -95,21 +95,21 @@
   objc_exception_throw(v7);
 }
 
-- (HMFNetService)initWithDomain:(id)a3 type:(id)a4 name:(id)a5
+- (HMFNetService)initWithDomain:(id)domain type:(id)type name:(id)name
 {
   v8 = MEMORY[0x277CBAB60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithDomain:v11 type:v10 name:v9];
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
+  v12 = [[v8 alloc] initWithDomain:domainCopy type:typeCopy name:nameCopy];
 
   v13 = [(HMFNetService *)self initWithNetService:v12];
   return v13;
 }
 
-- (HMFNetService)initWithNetService:(id)a3
+- (HMFNetService)initWithNetService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v26.receiver = self;
   v26.super_class = HMFNetService;
   v6 = [(HMFNetService *)&v26 init];
@@ -117,42 +117,42 @@
   if (v6)
   {
     objc_storeStrong(&v6->_clientQueue, MEMORY[0x277D85CD0]);
-    v8 = [v5 domain];
-    v9 = [v8 copy];
+    domain = [serviceCopy domain];
+    v9 = [domain copy];
     domain = v7->_domain;
     v7->_domain = v9;
 
-    v11 = [v5 type];
-    v12 = [v11 copy];
+    type = [serviceCopy type];
+    v12 = [type copy];
     type = v7->_type;
     v7->_type = v12;
 
-    v14 = [v5 name];
-    v15 = [v14 copy];
+    name = [serviceCopy name];
+    v15 = [name copy];
     name = v7->_name;
     v7->_name = v15;
 
-    v7->_port = [v5 port];
-    v17 = [MEMORY[0x277CBEB18] array];
+    v7->_port = [serviceCopy port];
+    array = [MEMORY[0x277CBEB18] array];
     resolveBlocks = v7->_resolveBlocks;
-    v7->_resolveBlocks = v17;
+    v7->_resolveBlocks = array;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     TXTRecord = v7->_TXTRecord;
-    v7->_TXTRecord = v19;
+    v7->_TXTRecord = dictionary;
 
-    objc_storeStrong(&v7->_internal, a3);
-    v21 = [MEMORY[0x277CBEB88] currentRunLoop];
+    objc_storeStrong(&v7->_internal, service);
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v22 = *MEMORY[0x277CBE738];
-    [v5 removeFromRunLoop:v21 forMode:*MEMORY[0x277CBE738]];
+    [serviceCopy removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
-    v23 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v5 scheduleInRunLoop:v23 forMode:v22];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [serviceCopy scheduleInRunLoop:mainRunLoop forMode:v22];
 
-    if (v5)
+    if (serviceCopy)
     {
-      v24 = [v5 TXTRecordData];
-      [(HMFNetService *)v7 updateTXTRecordWithData:v24];
+      tXTRecordData = [serviceCopy TXTRecordData];
+      [(HMFNetService *)v7 updateTXTRecordWithData:tXTRecordData];
     }
 
     [(HMFNetService *)v7 startMonitoring];
@@ -217,13 +217,13 @@ uint64_t __24__HMFNetService_dealloc__block_invoke(uint64_t a1)
   return [v2 shortDescription];
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v17 = MEMORY[0x277CCACA8];
-  v5 = [(HMFNetService *)self shortDescription];
-  v19 = v3;
-  if (v3)
+  shortDescription = [(HMFNetService *)self shortDescription];
+  v19 = pointerCopy;
+  if (pointerCopy)
   {
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -233,16 +233,16 @@ uint64_t __24__HMFNetService_dealloc__block_invoke(uint64_t a1)
     v18 = &stru_283EBDA30;
   }
 
-  v6 = [(HMFNetService *)self domain];
-  v7 = [(HMFNetService *)self type];
-  v8 = [(HMFNetService *)self name];
-  v9 = [(HMFNetService *)self port];
-  v10 = [(HMFNetService *)self addresses];
-  v11 = [(HMFNetService *)self isPublishing];
+  domain = [(HMFNetService *)self domain];
+  type = [(HMFNetService *)self type];
+  name = [(HMFNetService *)self name];
+  port = [(HMFNetService *)self port];
+  addresses = [(HMFNetService *)self addresses];
+  isPublishing = [(HMFNetService *)self isPublishing];
   v12 = self->_resolveState == 1;
   v13 = self->_resolveRunningState == 1;
-  v14 = [(HMFNetService *)self resolveBlocks];
-  v15 = [v17 stringWithFormat:@"<%@%@, Domain = %@, Type = %@, Name = %@, Port = %tu, Addresses = %@, isPublishing = %d, ResolveState = %d, ResolveRunningState = %d, ResolveBlocksCount = %d>", v5, v18, v6, v7, v8, v9, v10, v11, v12, v13, objc_msgSend(v14, "count")];
+  resolveBlocks = [(HMFNetService *)self resolveBlocks];
+  v15 = [v17 stringWithFormat:@"<%@%@, Domain = %@, Type = %@, Name = %@, Port = %tu, Addresses = %@, isPublishing = %d, ResolveState = %d, ResolveRunningState = %d, ResolveBlocksCount = %d>", shortDescription, v18, domain, type, name, port, addresses, isPublishing, v12, v13, objc_msgSend(resolveBlocks, "count")];
 
   if (v19)
   {
@@ -253,20 +253,20 @@ uint64_t __24__HMFNetService_dealloc__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [(HMFNetService *)self name];
-  v4 = [v3 hash];
-  v5 = [(HMFNetService *)self type];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMFNetService *)self domain];
-  v8 = [v7 hash];
+  name = [(HMFNetService *)self name];
+  v4 = [name hash];
+  type = [(HMFNetService *)self type];
+  v6 = [type hash] ^ v4;
+  domain = [(HMFNetService *)self domain];
+  v8 = [domain hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -279,41 +279,41 @@ uint64_t __24__HMFNetService_dealloc__block_invoke(uint64_t a1)
       goto LABEL_11;
     }
 
-    v5 = [(HMFNetService *)self port];
-    v6 = [(HMFNetService *)v4 port];
-    if (v5 != -1 && v6 != -1)
+    port = [(HMFNetService *)self port];
+    port2 = [(HMFNetService *)equalCopy port];
+    if (port != -1 && port2 != -1)
     {
-      v7 = [(HMFNetService *)self port];
-      if (v7 != [(HMFNetService *)v4 port])
+      port3 = [(HMFNetService *)self port];
+      if (port3 != [(HMFNetService *)equalCopy port])
       {
         goto LABEL_11;
       }
     }
 
-    v8 = [(HMFNetService *)self name];
-    v9 = [(HMFNetService *)v4 name];
-    v10 = [v8 isEqualToString:v9];
+    name = [(HMFNetService *)self name];
+    name2 = [(HMFNetService *)equalCopy name];
+    v10 = [name isEqualToString:name2];
 
     if (!v10)
     {
       goto LABEL_11;
     }
 
-    v11 = [(HMFNetService *)self type];
-    v12 = [(HMFNetService *)v4 type];
-    v13 = [v11 isEqualToString:v12];
+    type = [(HMFNetService *)self type];
+    type2 = [(HMFNetService *)equalCopy type];
+    v13 = [type isEqualToString:type2];
 
     if (v13)
     {
-      v14 = [(HMFNetService *)self domain];
-      if ([v14 length])
+      domain = [(HMFNetService *)self domain];
+      if ([domain length])
       {
-        v15 = [(HMFNetService *)v4 domain];
-        if ([v15 length])
+        domain2 = [(HMFNetService *)equalCopy domain];
+        if ([domain2 length])
         {
-          v16 = [(HMFNetService *)self domain];
-          v17 = [(HMFNetService *)v4 domain];
-          v18 = [v16 isEqualToString:v17];
+          domain3 = [(HMFNetService *)self domain];
+          domain4 = [(HMFNetService *)equalCopy domain];
+          v18 = [domain3 isEqualToString:domain4];
         }
 
         else
@@ -340,13 +340,13 @@ LABEL_11:
 
 - (void)startMonitoring
 {
-  v3 = [(HMFNetService *)self clientQueue];
+  clientQueue = [(HMFNetService *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__HMFNetService_startMonitoring__block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __32__HMFNetService_startMonitoring__block_invoke(uint64_t a1)
@@ -374,9 +374,9 @@ void __32__HMFNetService_startMonitoring__block_invoke(uint64_t a1)
   return resolved;
 }
 
-- (void)setResolved:(BOOL)a3
+- (void)setResolved:(BOOL)resolved
 {
-  if (a3)
+  if (resolved)
   {
     [(HMFNetService *)self willChangeValueForKey:@"isResolved"];
     os_unfair_lock_lock_with_options();
@@ -395,12 +395,12 @@ void __32__HMFNetService_startMonitoring__block_invoke(uint64_t a1)
   return publishing;
 }
 
-- (void)setPublishing:(BOOL)a3
+- (void)setPublishing:(BOOL)publishing
 {
-  v3 = a3;
+  publishingCopy = publishing;
   [(HMFNetService *)self willChangeValueForKey:@"isPublishing"];
   os_unfair_lock_lock_with_options();
-  if (self->_publishing == v3)
+  if (self->_publishing == publishingCopy)
   {
     os_unfair_lock_unlock(&self->_lock);
 
@@ -409,55 +409,55 @@ void __32__HMFNetService_startMonitoring__block_invoke(uint64_t a1)
 
   else
   {
-    self->_publishing = v3;
+    self->_publishing = publishingCopy;
     os_unfair_lock_unlock(&self->_lock);
     [(HMFNetService *)self didChangeValueForKey:@"isPublishing"];
-    v5 = [(HMFNetService *)self delegate];
-    if (v3)
+    delegate = [(HMFNetService *)self delegate];
+    if (publishingCopy)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 netServiceDidStartPublishing:self];
+        [delegate netServiceDidStartPublishing:self];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v5 netServiceDidStopPublishing:self];
+      [delegate netServiceDidStopPublishing:self];
     }
   }
 }
 
 - (int64_t)resolveState
 {
-  v3 = [(HMFNetService *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMFNetService *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   return self->_resolveState;
 }
 
-- (void)setResolveState:(int64_t)a3
+- (void)setResolveState:(int64_t)state
 {
-  v5 = [(HMFNetService *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  clientQueue = [(HMFNetService *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  self->_resolveState = a3;
+  self->_resolveState = state;
 }
 
 - (int64_t)resolveRunningState
 {
-  v3 = [(HMFNetService *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMFNetService *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   return self->_resolveRunningState;
 }
 
-- (void)setResolveRunningState:(int64_t)a3
+- (void)setResolveRunningState:(int64_t)state
 {
-  v5 = [(HMFNetService *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  clientQueue = [(HMFNetService *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  self->_resolveRunningState = a3;
+  self->_resolveRunningState = state;
 }
 
 - (HMFNetAddress)hostName
@@ -469,12 +469,12 @@ void __32__HMFNetService_startMonitoring__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setHostname:(id)a3
+- (void)setHostname:(id)hostname
 {
-  v4 = a3;
+  hostnameCopy = hostname;
   os_unfair_lock_lock_with_options();
   hostName = self->_hostName;
-  self->_hostName = v4;
+  self->_hostName = hostnameCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -488,10 +488,10 @@ void __32__HMFNetService_startMonitoring__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setAddresses:(id)a3
+- (void)setAddresses:(id)addresses
 {
-  v5 = a3;
-  v4 = [v5 copy];
+  addressesCopy = addresses;
+  v4 = [addressesCopy copy];
   os_unfair_lock_lock_with_options();
   if (([(NSArray *)self->_addresses isEqual:v4]& 1) == 0)
   {
@@ -502,18 +502,18 @@ void __32__HMFNetService_startMonitoring__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)notifyUpdatedAddresses:(id)a3
+- (void)notifyUpdatedAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [(HMFNetService *)self clientQueue];
+  addressesCopy = addresses;
+  clientQueue = [(HMFNetService *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HMFNetService_notifyUpdatedAddresses___block_invoke;
   v7[3] = &unk_2786E6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = addressesCopy;
+  v6 = addressesCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __40__HMFNetService_notifyUpdatedAddresses___block_invoke(uint64_t a1)
@@ -534,12 +534,12 @@ void __40__HMFNetService_notifyUpdatedAddresses___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setTXTRecord:(id)a3
+- (void)setTXTRecord:(id)record
 {
-  v10 = a3;
-  v4 = [v10 mutableCopy];
+  recordCopy = record;
+  v4 = [recordCopy mutableCopy];
   os_unfair_lock_lock_with_options();
-  if (([(NSMutableDictionary *)self->_TXTRecord isEqualToDictionary:v10]& 1) != 0)
+  if (([(NSMutableDictionary *)self->_TXTRecord isEqualToDictionary:recordCopy]& 1) != 0)
   {
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -548,16 +548,16 @@ void __40__HMFNetService_notifyUpdatedAddresses___block_invoke(uint64_t a1)
   {
     if (v4)
     {
-      v5 = v4;
+      dictionary = v4;
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     TXTRecord = self->_TXTRecord;
-    self->_TXTRecord = v5;
+    self->_TXTRecord = dictionary;
 
     os_unfair_lock_unlock(&self->_lock);
     v7 = [v4 copy];
@@ -595,10 +595,10 @@ void __40__HMFNetService_notifyUpdatedAddresses___block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateTXTRecordWithData:(id)a3
+- (void)updateTXTRecordWithData:(id)data
 {
-  v6 = a3;
-  if (v6 && ([MEMORY[0x277CBAB60] dictionaryFromTXTRecordData:v6], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  dataCopy = data;
+  if (dataCopy && ([MEMORY[0x277CBAB60] dictionaryFromTXTRecordData:dataCopy], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     [(HMFNetService *)self setTXTRecord:v4];
@@ -612,35 +612,35 @@ void __40__HMFNetService_notifyUpdatedAddresses___block_invoke(uint64_t a1)
 
 - (id)bestAddress
 {
-  v3 = [(HMFNetService *)self hostName];
-  v4 = v3;
-  if (v3)
+  hostName = [(HMFNetService *)self hostName];
+  v4 = hostName;
+  if (hostName)
   {
-    v5 = v3;
+    firstObject = hostName;
   }
 
   else
   {
-    v6 = [(HMFNetService *)self addresses];
-    v5 = [v6 firstObject];
+    addresses = [(HMFNetService *)self addresses];
+    firstObject = [addresses firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (void)resolveWithTimeout:(double)a3 completionHandler:(id)a4
+- (void)resolveWithTimeout:(double)timeout completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HMFNetService *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HMFNetService *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HMFNetService_resolveWithTimeout_completionHandler___block_invoke;
   block[3] = &unk_2786E7208;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  timeoutCopy = timeout;
+  v8 = handlerCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __54__HMFNetService_resolveWithTimeout_completionHandler___block_invoke(uint64_t a1)
@@ -683,19 +683,19 @@ void __54__HMFNetService_resolveWithTimeout_completionHandler___block_invoke(uin
   }
 }
 
-- (void)confirmWithTimeout:(double)a3 completionHandler:(id)a4
+- (void)confirmWithTimeout:(double)timeout completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HMFNetService *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HMFNetService *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HMFNetService_confirmWithTimeout_completionHandler___block_invoke;
   block[3] = &unk_2786E7208;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  timeoutCopy = timeout;
+  v8 = handlerCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __54__HMFNetService_confirmWithTimeout_completionHandler___block_invoke(uint64_t a1)
@@ -748,42 +748,42 @@ uint64_t __54__HMFNetService_confirmWithTimeout_completionHandler___block_invoke
   return result;
 }
 
-- (void)_reallyResolveWithTimeout:(double)a3 completionHandler:(id)a4
+- (void)_reallyResolveWithTimeout:(double)timeout completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = [(HMFNetService *)self resolveBlocks];
-    v8 = [v6 copy];
+    resolveBlocks = [(HMFNetService *)self resolveBlocks];
+    v8 = [handlerCopy copy];
     v9 = _Block_copy(v8);
-    [v7 addObject:v9];
+    [resolveBlocks addObject:v9];
   }
 
   if ([(HMFNetService *)self resolveRunningState]!= 1)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = HMFGetLogIdentifier(v11);
+      v13 = HMFGetLogIdentifier(selfCopy);
       v18 = 138543362;
       v19 = v13;
       _os_log_impl(&dword_22ADEC000, v12, OS_LOG_TYPE_DEBUG, "%{public}@Starting to resolve service", &v18, 0xCu);
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HMFNetService *)v11 setResolveRunningState:1];
-    v14 = [(HMFNetService *)v11 internal];
-    v15 = v14;
-    v16 = 15.0;
-    if (a3 > 0.0)
+    [(HMFNetService *)selfCopy setResolveRunningState:1];
+    internal = [(HMFNetService *)selfCopy internal];
+    v15 = internal;
+    timeoutCopy = 15.0;
+    if (timeout > 0.0)
     {
-      v16 = a3;
+      timeoutCopy = timeout;
     }
 
-    [v14 resolveWithTimeout:v16];
+    [internal resolveWithTimeout:timeoutCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -810,16 +810,16 @@ uint64_t __28__HMFNetService_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)netServiceWillResolve:(id)a3
+- (void)netServiceWillResolve:(id)resolve
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resolveCopy = resolve;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = HMFGetLogIdentifier(v6);
+    v8 = HMFGetLogIdentifier(selfCopy);
     v10 = 138543362;
     v11 = v8;
     _os_log_impl(&dword_22ADEC000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Net service will resolve", &v10, 0xCu);
@@ -829,18 +829,18 @@ uint64_t __28__HMFNetService_logCategory__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(HMFNetService *)self clientQueue];
+  addressCopy = address;
+  clientQueue = [(HMFNetService *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HMFNetService_netServiceDidResolveAddress___block_invoke;
   v7[3] = &unk_2786E6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = addressCopy;
+  v6 = addressCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __45__HMFNetService_netServiceDidResolveAddress___block_invoke(uint64_t a1)
@@ -959,18 +959,18 @@ void __45__HMFNetService_netServiceDidResolveAddress___block_invoke(uint64_t a1)
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netService:(id)a3 didNotResolve:(id)a4
+- (void)netService:(id)service didNotResolve:(id)resolve
 {
-  v5 = a4;
-  v6 = [(HMFNetService *)self clientQueue];
+  resolveCopy = resolve;
+  clientQueue = [(HMFNetService *)self clientQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__HMFNetService_netService_didNotResolve___block_invoke;
   v8[3] = &unk_2786E6D18;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = resolveCopy;
+  v7 = resolveCopy;
+  dispatch_async(clientQueue, v8);
 }
 
 void __42__HMFNetService_netService_didNotResolve___block_invoke(uint64_t a1)
@@ -1036,15 +1036,15 @@ void __42__HMFNetService_netService_didNotResolve___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceDidStop:(id)a3
+- (void)netServiceDidStop:(id)stop
 {
-  v4 = [(HMFNetService *)self clientQueue];
+  clientQueue = [(HMFNetService *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__HMFNetService_netServiceDidStop___block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __35__HMFNetService_netServiceDidStop___block_invoke(uint64_t a1)
@@ -1103,26 +1103,26 @@ void __35__HMFNetService_netServiceDidStop___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  dataCopy = data;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = HMFGetLogIdentifier(v9);
+    v11 = HMFGetLogIdentifier(selfCopy);
     v13 = 138543618;
     v14 = v11;
     v15 = 2112;
-    v16 = v7;
+    v16 = dataCopy;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Net service TXT record updated: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  [(HMFNetService *)v9 updateTXTRecordWithData:v7];
+  [(HMFNetService *)selfCopy updateTXTRecordWithData:dataCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }

@@ -1,7 +1,7 @@
 @interface ArtworkComponentVideoView
 + (Class)layerClass;
-- (_TtC16MusicApplication25ArtworkComponentVideoView)initWithCoder:(id)a3;
-- (_TtC16MusicApplication25ArtworkComponentVideoView)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplication25ArtworkComponentVideoView)initWithCoder:(id)coder;
+- (_TtC16MusicApplication25ArtworkComponentVideoView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ArtworkComponentVideoView
@@ -13,12 +13,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC16MusicApplication25ArtworkComponentVideoView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication25ArtworkComponentVideoView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication25ArtworkComponentVideoView_statusHandler);
   *v7 = 0;
   v7[1] = 0;
@@ -31,7 +31,7 @@
   return [(ArtworkComponentVideoView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16MusicApplication25ArtworkComponentVideoView)initWithCoder:(id)a3
+- (_TtC16MusicApplication25ArtworkComponentVideoView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication25ArtworkComponentVideoView_statusHandler);
   *v4 = 0;
@@ -42,8 +42,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication25ArtworkComponentVideoView_cropStyle) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for ArtworkComponentVideoView();
-  v6 = a3;
-  v7 = [(ArtworkComponentVideoView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(ArtworkComponentVideoView *)&v9 initWithCoder:coderCopy];
 
   return v7;
 }

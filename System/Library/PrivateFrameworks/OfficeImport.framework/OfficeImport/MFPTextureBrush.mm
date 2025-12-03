@@ -1,33 +1,33 @@
 @interface MFPTextureBrush
-- (MFPTextureBrush)initWithImage:(id)a3 wrapMode:(int)a4 transform:(CGAffineTransform *)a5;
+- (MFPTextureBrush)initWithImage:(id)image wrapMode:(int)mode transform:(CGAffineTransform *)transform;
 @end
 
 @implementation MFPTextureBrush
 
-- (MFPTextureBrush)initWithImage:(id)a3 wrapMode:(int)a4 transform:(CGAffineTransform *)a5
+- (MFPTextureBrush)initWithImage:(id)image wrapMode:(int)mode transform:(CGAffineTransform *)transform
 {
-  v8 = a3;
-  if (v8)
+  imageCopy = image;
+  if (imageCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v8 phoneImage], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "pixelSize"), v11 = v10, v9))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([imageCopy phoneImage], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(imageCopy, "pixelSize"), v11 = v10, v9))
     {
-      tx = a5->tx;
-      d = a5->d;
-      ty = a5->ty;
-      a = a5->a;
+      tx = transform->tx;
+      d = transform->d;
+      ty = transform->ty;
+      a = transform->a;
       v18 = objc_autoreleasePoolPush();
       v19 = a;
       v20 = MEMORY[0x277CBF348];
       v21 = &OBJC_METACLASS___OITSUPathSet;
-      if ((a4 - 1) >= 3 && fabs(v19 + -1.0) <= 0.001 && fabs(d + -1.0) <= 0.001)
+      if ((mode - 1) >= 3 && fabs(v19 + -1.0) <= 0.001 && fabs(d + -1.0) <= 0.001)
       {
         v34 = v9;
       }
 
       else
       {
-        if ((a4 & 0xFFFFFFFE) == 2)
+        if ((mode & 0xFFFFFFFE) == 2)
         {
           v22 = 2;
         }
@@ -37,7 +37,7 @@
           v22 = 1;
         }
 
-        if ((a4 & 0xFFFFFFFD) == 1)
+        if ((mode & 0xFFFFFFFD) == 1)
         {
           v23 = 2;
         }
@@ -158,15 +158,15 @@
 
     self = self;
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

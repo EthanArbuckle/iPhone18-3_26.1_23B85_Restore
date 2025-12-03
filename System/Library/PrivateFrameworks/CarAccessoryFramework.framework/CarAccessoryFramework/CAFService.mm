@@ -1,14 +1,14 @@
 @interface CAFService
 + (id)registeredServiceClasses;
 + (id)serviceType;
-+ (id)serviceWithAccessory:(id)a3 config:(id)a4;
++ (id)serviceWithAccessory:(id)accessory config:(id)config;
 + (void)load;
-+ (void)registerServiceClass:(Class)a3;
++ (void)registerServiceClass:(Class)class;
 - (BOOL)hasError;
 - (BOOL)usable;
 - (CAFAccessory)accessory;
 - (CAFCar)car;
-- (CAFService)initWithAccessory:(id)a3 config:(id)a4;
+- (CAFService)initWithAccessory:(id)accessory config:(id)config;
 - (NSArray)characteristicsWithLargePayload;
 - (NSArray)sortedCharacteristics;
 - (NSArray)sortedControls;
@@ -17,24 +17,24 @@
 - (NSDictionary)controls;
 - (NSDictionary)controlsByType;
 - (NSString)description;
-- (id)characteristicForName:(id)a3;
-- (id)characteristicForType:(id)a3;
-- (id)controlForName:(id)a3;
-- (id)controlForType:(id)a3;
-- (id)currentDescriptionForCache:(id)a3;
+- (id)characteristicForName:(id)name;
+- (id)characteristicForType:(id)type;
+- (id)controlForName:(id)name;
+- (id)controlForType:(id)type;
+- (id)currentDescriptionForCache:(id)cache;
 - (id)indexBy;
 - (id)pluginID;
 - (unint64_t)state;
-- (void)_controlDidUpdate:(id)a3;
-- (void)_didUpdateValuesForGroupedCharacteristics:(id)a3;
-- (void)_updateReceivedValuesWithCharacteristic:(id)a3;
+- (void)_controlDidUpdate:(id)update;
+- (void)_didUpdateValuesForGroupedCharacteristics:(id)characteristics;
+- (void)_updateReceivedValuesWithCharacteristic:(id)characteristic;
 - (void)invalidate;
 - (void)refreshCharacteristics;
 - (void)registerAllRawDataIfNeeded;
-- (void)registerObserver:(id)a3;
-- (void)setReceivedAllValues:(BOOL)a3;
+- (void)registerObserver:(id)observer;
+- (void)setReceivedAllValues:(BOOL)values;
 - (void)unregisterAllRawDataIfNeeded;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFService
@@ -50,7 +50,7 @@
   }
 }
 
-+ (void)registerServiceClass:(Class)a3
++ (void)registerServiceClass:(Class)class
 {
   if (registerServiceClass__onceToken != -1)
   {
@@ -60,8 +60,8 @@
   obj = _registeredServiceClasses;
   objc_sync_enter(obj);
   v4 = _registeredServiceClasses;
-  v5 = [(objc_class *)a3 serviceType];
-  [v4 setObject:a3 forKeyedSubscript:v5];
+  serviceType = [(objc_class *)class serviceType];
+  [v4 setObject:class forKeyedSubscript:serviceType];
 
   objc_sync_exit(obj);
 }
@@ -83,11 +83,11 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
   return v3;
 }
 
-+ (id)serviceWithAccessory:(id)a3 config:(id)a4
++ (id)serviceWithAccessory:(id)accessory config:(id)config
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [CAFCarConfiguration getType:v5];
+  configCopy = config;
+  accessoryCopy = accessory;
+  v7 = [CAFCarConfiguration getType:configCopy];
   v8 = +[CAFService registeredServiceClasses];
   v9 = +[CAFServiceTypes serviceNameByType];
   v10 = [v9 objectForKeyedSubscript:v7];
@@ -98,15 +98,15 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
     v11 = objc_opt_class();
   }
 
-  v12 = [[v11 alloc] initWithAccessory:v6 config:v5];
+  v12 = [[v11 alloc] initWithAccessory:accessoryCopy config:configCopy];
 
   return v12;
 }
 
-- (CAFService)initWithAccessory:(id)a3 config:(id)a4
+- (CAFService)initWithAccessory:(id)accessory config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  configCopy = config;
   v62.receiver = self;
   v62.super_class = CAFService;
   v8 = [(CAFService *)&v62 init];
@@ -115,9 +115,9 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
   {
     v8->_characteristicTrackingLock._os_unfair_lock_opaque = 0;
     v8->_controlTrackingLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v8->_accessory, v6);
+    objc_storeWeak(&v8->_accessory, accessoryCopy);
     objc_opt_class();
-    v10 = [v7 objectForKeyedSubscript:@"iid"];
+    v10 = [configCopy objectForKeyedSubscript:@"iid"];
     if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v11 = v10;
@@ -133,14 +133,14 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
 
     if (v9->_instanceID)
     {
-      v13 = [CAFCarConfiguration getType:v7];
+      v13 = [CAFCarConfiguration getType:configCopy];
       serviceType = v9->_serviceType;
       v9->_serviceType = v13;
 
       if (v9->_serviceType)
       {
-        v15 = [v6 pluginID];
-        v16 = [CAFCarConfiguration getUUID:v15 instanceID:v9->_instanceID];
+        pluginID = [accessoryCopy pluginID];
+        v16 = [CAFCarConfiguration getUUID:pluginID instanceID:v9->_instanceID];
         uniqueIdentifier = v9->_uniqueIdentifier;
         v9->_uniqueIdentifier = v16;
 
@@ -158,8 +158,8 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
         v9->_rawDataRegisterQueue = v23;
 
         v25 = objc_alloc(MEMORY[0x277CF89C0]);
-        v26 = [objc_opt_class() observerProtocol];
-        v27 = [v25 initWithProtocol:v26];
+        observerProtocol = [objc_opt_class() observerProtocol];
+        v27 = [v25 initWithProtocol:observerProtocol];
         observers = v9->_observers;
         v9->_observers = v27;
 
@@ -175,7 +175,7 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
         v49 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
         objc_opt_class();
-        v34 = [v7 objectForKeyedSubscript:@"characteristics"];
+        v34 = [configCopy objectForKeyedSubscript:@"characteristics"];
         if (v34 && (objc_opt_isKindOfClass() & 1) != 0)
         {
           v35 = v34;
@@ -192,7 +192,7 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
           v56[1] = 3221225472;
           v56[2] = __39__CAFService_initWithAccessory_config___block_invoke;
           v56[3] = &unk_27890D430;
-          v57 = v6;
+          v57 = accessoryCopy;
           v58 = v9;
           v59 = v50;
           v60 = v49;
@@ -208,7 +208,7 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
         v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v38 = objc_alloc_init(MEMORY[0x277CBEB38]);
         objc_opt_class();
-        v39 = [v7 objectForKeyedSubscript:@"controls"];
+        v39 = [configCopy objectForKeyedSubscript:@"controls"];
         if (v39 && (objc_opt_isKindOfClass() & 1) != 0)
         {
           v40 = v39;
@@ -225,7 +225,7 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
           v51[1] = 3221225472;
           v51[2] = __39__CAFService_initWithAccessory_config___block_invoke_36;
           v51[3] = &unk_27890D458;
-          v52 = v6;
+          v52 = accessoryCopy;
           v53 = v9;
           v54 = v37;
           v55 = v38;
@@ -239,8 +239,8 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
         v42 = v38;
 
         os_unfair_lock_unlock(&v9->_controlTrackingLock);
-        v43 = [(CAFService *)v9 cachedDescription];
-        [v43 setNeedsRefreshDescription];
+        cachedDescription = [(CAFService *)v9 cachedDescription];
+        [cachedDescription setNeedsRefreshDescription];
 
         v44 = CAFServiceLogging();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
@@ -249,16 +249,16 @@ uint64_t __35__CAFService_registerServiceClass___block_invoke()
         }
 
         [(CAFValueMonitor *)v9->_valueMonitor signalReadyToMonitor];
-        v45 = [(CAFValueMonitor *)v9->_valueMonitor receivedAllValues];
+        receivedAllValues = [(CAFValueMonitor *)v9->_valueMonitor receivedAllValues];
 
-        [(CAFService *)v9 setReceivedAllValues:v45];
+        [(CAFService *)v9 setReceivedAllValues:receivedAllValues];
         goto LABEL_25;
       }
 
       v36 = CAFServiceLogging();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        [CAFService initWithAccessory:v6 config:&v9->_instanceID];
+        [CAFService initWithAccessory:accessoryCopy config:&v9->_instanceID];
       }
     }
 
@@ -475,54 +475,54 @@ void __39__CAFService_initWithAccessory_config___block_invoke_36(uint64_t a1, vo
 
 - (CAFCar)car
 {
-  v2 = [(CAFService *)self accessory];
-  v3 = [v2 car];
+  accessory = [(CAFService *)self accessory];
+  v3 = [accessory car];
 
   return v3;
 }
 
-- (id)characteristicForType:(id)a3
+- (id)characteristicForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[CAFCharacteristicTypes characteristicNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:typeCopy];
 
   v7 = [(CAFService *)self characteristicForName:v6];
 
   return v7;
 }
 
-- (id)characteristicForName:(id)a3
+- (id)characteristicForName:(id)name
 {
-  v4 = a3;
-  v5 = [(CAFService *)self characteristicsByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  characteristicsByType = [(CAFService *)self characteristicsByType];
+  v6 = [characteristicsByType objectForKeyedSubscript:nameCopy];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)controlForType:(id)a3
+- (id)controlForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[CAFControlTypes controlNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:typeCopy];
 
   v7 = [(CAFService *)self controlForName:v6];
 
   return v7;
 }
 
-- (id)controlForName:(id)a3
+- (id)controlForName:(id)name
 {
-  v4 = a3;
-  v5 = [(CAFService *)self controlsByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  controlsByType = [(CAFService *)self controlsByType];
+  v6 = [controlsByType objectForKeyedSubscript:nameCopy];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 - (BOOL)hasError
@@ -532,8 +532,8 @@ void __39__CAFService_initWithAccessory_config___block_invoke_36(uint64_t a1, vo
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CAFService *)self characteristics];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  characteristics = [(CAFService *)self characteristics];
+  v3 = [characteristics countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -543,7 +543,7 @@ void __39__CAFService_initWithAccessory_config___block_invoke_36(uint64_t a1, vo
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(characteristics);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) hasError])
@@ -553,7 +553,7 @@ void __39__CAFService_initWithAccessory_config___block_invoke_36(uint64_t a1, vo
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [characteristics countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -571,28 +571,28 @@ LABEL_11:
 
 - (NSArray)sortedCharacteristics
 {
-  v2 = [(CAFService *)self characteristics];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  characteristics = [(CAFService *)self characteristics];
+  allValues = [characteristics allValues];
+  v4 = [allValues sortedArrayUsingSelector:sel_compare_];
 
   return v4;
 }
 
 - (NSArray)sortedControls
 {
-  v2 = [(CAFService *)self controls];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  controls = [(CAFService *)self controls];
+  allValues = [controls allValues];
+  v4 = [allValues sortedArrayUsingSelector:sel_compare_];
 
   return v4;
 }
 
-- (void)setReceivedAllValues:(BOOL)a3
+- (void)setReceivedAllValues:(BOOL)values
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_receivedAllValues != a3)
+  if (self->_receivedAllValues != values)
   {
-    v3 = a3;
+    valuesCopy = values;
     v5 = CAFServiceLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -608,8 +608,8 @@ LABEL_11:
       }
 
       v13 = 138543874;
-      v14 = self;
-      if (v3)
+      selfCopy2 = self;
+      if (valuesCopy)
       {
         v11 = @"YES";
       }
@@ -621,33 +621,33 @@ LABEL_11:
       _os_log_debug_impl(&dword_231618000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ receivedAllValues transitioning from %@ to %@", &v13, 0x20u);
     }
 
-    if (v3)
+    if (valuesCopy)
     {
-      self->_receivedAllValues = v3;
-      v6 = [(CAFService *)self cachedDescription];
-      [v6 setNeedsRefreshDescription];
+      self->_receivedAllValues = valuesCopy;
+      cachedDescription = [(CAFService *)self cachedDescription];
+      [cachedDescription setNeedsRefreshDescription];
 
       v7 = CARSignpostLogForCategory();
       if (os_signpost_enabled(v7))
       {
         v13 = 138412290;
-        v14 = self;
+        selfCopy2 = self;
         _os_signpost_emit_with_name_impl(&dword_231618000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ReceivedAllValues", "%@", &v13, 0xCu);
       }
 
-      v8 = [(CAFService *)self accessory];
-      [v8 _serviceReceivedAllValues:self];
+      accessory = [(CAFService *)self accessory];
+      [accessory _serviceReceivedAllValues:self];
 
-      v9 = [(CAFService *)self observers];
-      [v9 serviceDidUpdate:self receivedAllValues:1];
+      observers = [(CAFService *)self observers];
+      [observers serviceDidUpdate:self receivedAllValues:1];
     }
 
     else
     {
-      v9 = CAFGeneralLogging();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+      observers = CAFGeneralLogging();
+      if (os_log_type_enabled(observers, OS_LOG_TYPE_FAULT))
       {
-        [CAFService setReceivedAllValues:v9];
+        [CAFService setReceivedAllValues:observers];
       }
     }
   }
@@ -840,38 +840,38 @@ void __42__CAFService_unregisterAllRawDataIfNeeded__block_invoke_52(uint64_t a1)
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = CAFServiceLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CAFService registerObserver:];
   }
 
-  v6 = [(CAFService *)self observers];
-  v7 = [v6 hasObservers];
+  observers = [(CAFService *)self observers];
+  hasObservers = [observers hasObservers];
 
-  v8 = [(CAFService *)self observers];
-  [v8 registerObserver:v4];
+  observers2 = [(CAFService *)self observers];
+  [observers2 registerObserver:observerCopy];
 
-  v9 = [(CAFService *)self cachedDescription];
-  [v9 setNeedsRefreshDescription];
+  cachedDescription = [(CAFService *)self cachedDescription];
+  [cachedDescription setNeedsRefreshDescription];
 
-  if ((v7 & 1) == 0)
+  if ((hasObservers & 1) == 0)
   {
     [(CAFService *)self registerAllRawDataIfNeeded];
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFService *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFService *)self observers];
+  [observers unregisterObserver:observerCopy];
 
-  v6 = [(CAFService *)self cachedDescription];
-  [v6 setNeedsRefreshDescription];
+  cachedDescription = [(CAFService *)self cachedDescription];
+  [cachedDescription setNeedsRefreshDescription];
 
   v7 = CAFServiceLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -879,10 +879,10 @@ void __42__CAFService_unregisterAllRawDataIfNeeded__block_invoke_52(uint64_t a1)
     [CAFService unregisterObserver:];
   }
 
-  v8 = [(CAFService *)self observers];
-  v9 = [v8 hasObservers];
+  observers2 = [(CAFService *)self observers];
+  hasObservers = [observers2 hasObservers];
 
-  if ((v9 & 1) == 0)
+  if ((hasObservers & 1) == 0)
   {
     [(CAFService *)self unregisterAllRawDataIfNeeded];
   }
@@ -890,8 +890,8 @@ void __42__CAFService_unregisterAllRawDataIfNeeded__block_invoke_52(uint64_t a1)
 
 - (NSString)description
 {
-  v2 = [(CAFService *)self cachedDescription];
-  v3 = [v2 description];
+  cachedDescription = [(CAFService *)self cachedDescription];
+  v3 = [cachedDescription description];
 
   return v3;
 }
@@ -899,8 +899,8 @@ void __42__CAFService_unregisterAllRawDataIfNeeded__block_invoke_52(uint64_t a1)
 + (id)serviceType
 {
   v3 = +[CAFServiceTypes serviceNameByType];
-  v4 = [a1 serviceIdentifier];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  serviceIdentifier = [self serviceIdentifier];
+  v5 = [v3 objectForKeyedSubscript:serviceIdentifier];
 
   return v5;
 }
@@ -912,26 +912,26 @@ void __42__CAFService_unregisterAllRawDataIfNeeded__block_invoke_52(uint64_t a1)
   return [v2 indexBy];
 }
 
-- (void)_updateReceivedValuesWithCharacteristic:(id)a3
+- (void)_updateReceivedValuesWithCharacteristic:(id)characteristic
 {
-  v6 = a3;
-  if ([v6 isCurrent])
+  characteristicCopy = characteristic;
+  if ([characteristicCopy isCurrent])
   {
-    v4 = [(CAFService *)self valueMonitor];
-    v5 = [v6 uniqueIdentifier];
-    -[CAFService setReceivedAllValues:](self, "setReceivedAllValues:", [v4 valueReceivedFor:v5]);
+    valueMonitor = [(CAFService *)self valueMonitor];
+    uniqueIdentifier = [characteristicCopy uniqueIdentifier];
+    -[CAFService setReceivedAllValues:](self, "setReceivedAllValues:", [valueMonitor valueReceivedFor:uniqueIdentifier]);
   }
 }
 
 - (id)pluginID
 {
-  v2 = [(CAFService *)self accessory];
-  v3 = [v2 pluginID];
+  accessory = [(CAFService *)self accessory];
+  pluginID = [accessory pluginID];
 
-  return v3;
+  return pluginID;
 }
 
-- (void)_didUpdateValuesForGroupedCharacteristics:(id)a3
+- (void)_didUpdateValuesForGroupedCharacteristics:(id)characteristics
 {
   v4 = dispatch_get_global_queue(33, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -948,20 +948,20 @@ void __56__CAFService__didUpdateValuesForGroupedCharacteristics___block_invoke(u
   [v2 serviceDidFinishGroupUpdate:*(a1 + 32)];
 }
 
-- (void)_controlDidUpdate:(id)a3
+- (void)_controlDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = CAFServiceLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CAFService _controlDidUpdate:];
   }
 
-  v6 = [(CAFService *)self accessory];
-  [v6 _serviceDidUpdate:self control:v4];
+  accessory = [(CAFService *)self accessory];
+  [accessory _serviceDidUpdate:self control:updateCopy];
 
-  v7 = [(CAFService *)self observers];
-  [v7 serviceDidUpdate:self control:v4];
+  observers = [(CAFService *)self observers];
+  [observers serviceDidUpdate:self control:updateCopy];
 }
 
 - (void)invalidate
@@ -974,40 +974,40 @@ void __56__CAFService__didUpdateValuesForGroupedCharacteristics___block_invoke(u
 
 - (BOOL)usable
 {
-  v3 = [(CAFService *)self characteristics];
-  if ([v3 count])
+  characteristics = [(CAFService *)self characteristics];
+  if ([characteristics count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CAFService *)self controls];
-    v4 = [v5 count] != 0;
+    controls = [(CAFService *)self controls];
+    v4 = [controls count] != 0;
   }
 
   return v4;
 }
 
-- (id)currentDescriptionForCache:(id)a3
+- (id)currentDescriptionForCache:(id)cache
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(CAFService *)self name];
-  v7 = [(CAFService *)self pluginID];
-  v8 = [(CAFService *)self instanceID];
-  v9 = [(CAFService *)self serviceType];
-  v10 = [(CAFService *)self accessory];
-  v11 = [(CAFService *)self accessory];
-  v12 = [v11 instanceID];
-  v13 = [(CAFService *)self receivedAllValues];
+  name = [(CAFService *)self name];
+  pluginID = [(CAFService *)self pluginID];
+  instanceID = [(CAFService *)self instanceID];
+  serviceType = [(CAFService *)self serviceType];
+  accessory = [(CAFService *)self accessory];
+  accessory2 = [(CAFService *)self accessory];
+  instanceID2 = [accessory2 instanceID];
+  receivedAllValues = [(CAFService *)self receivedAllValues];
   v14 = @"NO";
-  if (v13)
+  if (receivedAllValues)
   {
     v14 = @"YES";
   }
 
-  v15 = [v4 stringWithFormat:@"<%@: %p %@ %@ %@ type=%@ accessory=(%p)%@ recievedAllValues=%@>", v5, self, v6, v7, v8, v9, v10, v12, v14];
+  v15 = [v4 stringWithFormat:@"<%@: %p %@ %@ %@ type=%@ accessory=(%p)%@ recievedAllValues=%@>", v5, self, name, pluginID, instanceID, serviceType, accessory, instanceID2, v14];
 
   return v15;
 }

@@ -2,9 +2,9 @@
 + (id)sharedObserver;
 - (id)_init;
 - (void)_invalidate;
-- (void)bluetoothDevice:(id)a3 headphoneInEarDetectionStateDidChangeFrom:(id)a4 to:(id)a5;
-- (void)startObservingForBTAddress:(id)a3 forObserverID:(unint64_t)a4;
-- (void)stopObservingForObserverID:(unint64_t)a3;
+- (void)bluetoothDevice:(id)device headphoneInEarDetectionStateDidChangeFrom:(id)from to:(id)to;
+- (void)startObservingForBTAddress:(id)address forObserverID:(unint64_t)d;
+- (void)stopObservingForObserverID:(unint64_t)d;
 @end
 
 @implementation ADBluetoothInEarDetectionStateObserver
@@ -43,33 +43,33 @@
   }
 }
 
-- (void)bluetoothDevice:(id)a3 headphoneInEarDetectionStateDidChangeFrom:(id)a4 to:(id)a5
+- (void)bluetoothDevice:(id)device headphoneInEarDetectionStateDidChangeFrom:(id)from to:(id)to
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  fromCopy = from;
+  toCopy = to;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v14 = 136315650;
     v15 = "[ADBluetoothInEarDetectionStateObserver bluetoothDevice:headphoneInEarDetectionStateDidChangeFrom:to:]";
     v16 = 2112;
-    v17 = v9;
+    v17 = fromCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = toCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s headphoneInEarDetectionStateDidChangeFrom from: %@ to: %@", &v14, 0x20u);
   }
 
-  if (v9 != v10)
+  if (fromCopy != toCopy)
   {
-    v12 = [v8 identifier];
-    v13 = [AFBluetoothHeadphoneInEarDetectionState encodeForBTAddress:v12 headphoneInEarDetectionStateDidChangeFrom:v9 to:v10];
+    identifier = [deviceCopy identifier];
+    v13 = [AFBluetoothHeadphoneInEarDetectionState encodeForBTAddress:identifier headphoneInEarDetectionStateDidChangeFrom:fromCopy to:toCopy];
 
     [(AFNotifyStatePublisher *)self->_publisher publishState:v13];
   }
 }
 
-- (void)stopObservingForObserverID:(unint64_t)a3
+- (void)stopObservingForObserverID:(unint64_t)d
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -77,22 +77,22 @@
   v4[2] = sub_100363CC8;
   v4[3] = &unk_10051D770;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_async(queue, v4);
 }
 
-- (void)startObservingForBTAddress:(id)a3 forObserverID:(unint64_t)a4
+- (void)startObservingForBTAddress:(id)address forObserverID:(unint64_t)d
 {
-  v6 = a3;
+  addressCopy = address;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100363FF8;
   block[3] = &unk_10051E128;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = addressCopy;
+  dCopy = d;
+  v8 = addressCopy;
   dispatch_async(queue, block);
 }
 

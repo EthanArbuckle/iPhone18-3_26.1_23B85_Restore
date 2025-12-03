@@ -1,7 +1,7 @@
 @interface HDCloudSyncUpdateLocalAnchorsOperation
 + (id)finishedOperationTags;
 + (id)operationTagDependencies;
-- (BOOL)performWithError:(id *)a3;
+- (BOOL)performWithError:(id *)error;
 @end
 
 @implementation HDCloudSyncUpdateLocalAnchorsOperation
@@ -27,22 +27,22 @@
   return v2;
 }
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 repository];
-  v7 = [v6 profile];
-  v8 = [v7 legacyRepositoryProfile];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  profile = [repository profile];
+  legacyRepositoryProfile = [profile legacyRepositoryProfile];
 
-  v9 = [v8 database];
+  database = [legacyRepositoryProfile database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__HDCloudSyncUpdateLocalAnchorsOperation_performWithError___block_invoke;
   v11[3] = &unk_278616048;
   v11[4] = self;
-  LOBYTE(a3) = [(HDHealthEntity *)HDSyncAnchorEntity performWriteTransactionWithHealthDatabase:v9 error:a3 block:v11];
+  LOBYTE(error) = [(HDHealthEntity *)HDSyncAnchorEntity performWriteTransactionWithHealthDatabase:database error:error block:v11];
 
-  return a3;
+  return error;
 }
 
 uint64_t __59__HDCloudSyncUpdateLocalAnchorsOperation_performWithError___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

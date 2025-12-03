@@ -1,10 +1,10 @@
 @interface IDSExternalListController
-- (id)niceBasicLogging:(id)a3;
+- (id)niceBasicLogging:(id)logging;
 - (id)niceBasicLoggingDefaults;
 - (id)specifiers;
-- (void)dumpLogs:(id)a3;
-- (void)setNiceBasicLogging:(id)a3 specifier:(id)a4;
-- (void)setRegistrationLoggingEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)dumpLogs:(id)logs;
+- (void)setNiceBasicLogging:(id)logging specifier:(id)specifier;
+- (void)setRegistrationLoggingEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation IDSExternalListController
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (void)dumpLogs:(id)a3
+- (void)dumpLogs:(id)logs
 {
   [TULogging sendDirectoryToCrashReporter:@"/var/mobile/Library/Logs/Phone" error:0];
 
@@ -44,16 +44,16 @@
   return result;
 }
 
-- (id)niceBasicLogging:(id)a3
+- (id)niceBasicLogging:(id)logging
 {
-  v3 = [(IDSExternalListController *)self niceBasicLoggingDefaults];
-  if ([v3 count])
+  niceBasicLoggingDefaults = [(IDSExternalListController *)self niceBasicLoggingDefaults];
+  if ([niceBasicLoggingDefaults count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v4 = [niceBasicLoggingDefaults countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v4)
     {
       v5 = v4;
@@ -64,7 +64,7 @@
         {
           if (*v21 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(niceBasicLoggingDefaults);
           }
 
           v8 = *(*(&v20 + 1) + 8 * i);
@@ -72,7 +72,7 @@
           v17 = 0u;
           v18 = 0u;
           v19 = 0u;
-          v9 = [v3 objectForKey:{v8, 0}];
+          v9 = [niceBasicLoggingDefaults objectForKey:{v8, 0}];
           v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
           if (v10)
           {
@@ -105,7 +105,7 @@
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v5 = [niceBasicLoggingDefaults countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v5);
@@ -122,14 +122,14 @@
   }
 }
 
-- (void)setNiceBasicLogging:(id)a3 specifier:(id)a4
+- (void)setNiceBasicLogging:(id)logging specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  sub_1ED8(v5, [(IDSExternalListController *)self niceBasicLoggingDefaults]);
+  bOOLValue = [logging BOOLValue];
+  sub_1ED8(bOOLValue, [(IDSExternalListController *)self niceBasicLoggingDefaults]);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"kMarcoSyncLoggingPrefs", 0, 0, 1u);
   v7 = sub_29D4();
-  if (!v5)
+  if (!bOOLValue)
   {
     v8 = -1;
     goto LABEL_5;
@@ -142,25 +142,25 @@ LABEL_5:
     sub_2B88(v8);
   }
 
-  sub_263C(v5);
+  sub_263C(bOOLValue);
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_3870;
   block[3] = &unk_8318;
-  v11 = v5;
+  v11 = bOOLValue;
   dispatch_async(global_queue, block);
-  sub_2280(v5 - 1);
+  sub_2280(bOOLValue - 1);
   sub_2FB8();
   sub_2FD0();
-  sub_310C(v5);
+  sub_310C(bOOLValue);
 }
 
-- (void)setRegistrationLoggingEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setRegistrationLoggingEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  sub_2280(v5 - 1);
-  sub_263C(v5);
+  bOOLValue = [enabled BOOLValue];
+  sub_2280(bOOLValue - 1);
+  sub_263C(bOOLValue);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"PCLoggingSettingsDidChangeNotification", 0, 0, 1u);
 

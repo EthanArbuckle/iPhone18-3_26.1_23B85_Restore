@@ -1,6 +1,6 @@
 @interface ArcadeDownloadPackCategoriesPageView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)invalidateMeasurements;
 - (void)layoutSubviews;
 - (void)preferredContentSizeCategoryDidChange;
@@ -10,9 +10,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(ArcadeDownloadPackCategoriesPageView *)v2 bounds];
-  v3 = [(ArcadeDownloadPackCategoriesPageView *)v2 traitCollection];
+  selfCopy = self;
+  [(ArcadeDownloadPackCategoriesPageView *)selfCopy bounds];
+  traitCollection = [(ArcadeDownloadPackCategoriesPageView *)selfCopy traitCollection];
   sub_1000B2188(v10);
   sub_10000C888(v10, v10[3]);
   sub_100751254();
@@ -27,10 +27,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(ArcadeDownloadPackCategoriesPageView *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(ArcadeDownloadPackCategoriesPageView *)selfCopy traitCollection];
   sub_1000B2188(v11);
   sub_10000C888(v11, v11[3]);
   sub_100751254();
@@ -54,7 +54,7 @@
   sub_1000B2188(v4);
   sub_10000C888(v4, v4[3]);
   [v2 bounds];
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_100751244();
 
   sub_10000C620(v4);
@@ -62,13 +62,13 @@
 
 - (void)invalidateMeasurements
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B2960();
 }
 
 - (void)preferredContentSizeCategoryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B2C18();
 }
 

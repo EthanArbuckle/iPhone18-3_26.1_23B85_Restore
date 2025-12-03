@@ -1,11 +1,11 @@
 @interface LACUIRatchetViewModel
-+ (id)mapError:(id)a3;
++ (id)mapError:(id)error;
 - (BOOL)isInvalidated;
 - (_TtC25LocalAuthenticationCoreUI21LACUIRatchetViewModel)init;
-- (void)ratchetStateDidChange:(id)a3;
-- (void)setIsInvalidated:(BOOL)a3;
+- (void)ratchetStateDidChange:(id)change;
+- (void)setIsInvalidated:(BOOL)invalidated;
 - (void)start;
-- (void)stopWithReason:(id)a3 invalidate:(BOOL)a4;
+- (void)stopWithReason:(id)reason invalidate:(BOOL)invalidate;
 @end
 
 @implementation LACUIRatchetViewModel
@@ -17,20 +17,20 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsInvalidated:(BOOL)a3
+- (void)setIsInvalidated:(BOOL)invalidated
 {
   v5 = OBJC_IVAR____TtC25LocalAuthenticationCoreUI21LACUIRatchetViewModel_isInvalidated;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = invalidated;
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   LACUIRatchetViewModel.start()();
 }
 
-- (void)stopWithReason:(id)a3 invalidate:(BOOL)a4
+- (void)stopWithReason:(id)reason invalidate:(BOOL)invalidate
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v7 = *(*(v6 - 8) + 64);
@@ -46,15 +46,15 @@
   *(v14 + 32) = self;
   *(v14 + 40) = v10;
   *(v14 + 48) = v12;
-  *(v14 + 56) = a4;
-  v15 = self;
+  *(v14 + 56) = invalidate;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v9, &closure #1 in LACUIRatchetViewModel.stop(withReason:invalidate:)partial apply, v14);
 }
 
-+ (id)mapError:(id)a3
++ (id)mapError:(id)error
 {
-  v4 = a3;
-  v5 = specialized static LACUIRatchetViewModel.mapError(_:)(a3);
+  errorCopy = error;
+  v5 = specialized static LACUIRatchetViewModel.mapError(_:)(error);
 
   if (v5)
   {
@@ -76,11 +76,11 @@
   return result;
 }
 
-- (void)ratchetStateDidChange:(id)a3
+- (void)ratchetStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  LACUIRatchetViewModel.ratchetStateDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  LACUIRatchetViewModel.ratchetStateDidChange(_:)(changeCopy);
 }
 
 @end

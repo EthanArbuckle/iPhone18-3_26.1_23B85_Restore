@@ -1,18 +1,18 @@
 @interface MPAssistantSetPlaybackSpeed
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantSetPlaybackSpeed
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  completionCopy = completion;
+  date = [MEMORY[0x277CBEAA8] date];
   if (![(NSString *)self->_requestAceHash length])
   {
-    v6 = [(MPAssistantSetPlaybackSpeed *)self aceId];
-    v7 = sub_233505670(@"Seek To Playback Speed", v6);
+    aceId = [(MPAssistantSetPlaybackSpeed *)self aceId];
+    v7 = sub_233505670(@"Seek To Playback Speed", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v7;
   }
@@ -21,8 +21,8 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = self->_requestAceHash;
-    v11 = [(MPAssistantSetPlaybackSpeed *)self hashedRouteUIDs];
-    v12 = [v11 count];
+    hashedRouteUIDs = [(MPAssistantSetPlaybackSpeed *)self hashedRouteUIDs];
+    v12 = [hashedRouteUIDs count];
     [(MPAssistantSetPlaybackSpeed *)self scalingFactor];
     *buf = 138543874;
     v37 = v10;
@@ -34,8 +34,8 @@
   }
 
   v14 = self->_requestAceHash;
-  v15 = [(MPAssistantSetPlaybackSpeed *)self hashedRouteUIDs];
-  sub_2335057BC(@"Seek To Playback Speed", v14, v15);
+  hashedRouteUIDs2 = [(MPAssistantSetPlaybackSpeed *)self hashedRouteUIDs];
+  sub_2335057BC(@"Seek To Playback Speed", v14, hashedRouteUIDs2);
 
   v34[0] = *MEMORY[0x277D27D60];
   v16 = MEMORY[0x277CCABB0];
@@ -47,22 +47,22 @@
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
   v19 = objc_alloc_init(MEMORY[0x277D27828]);
-  v20 = [MEMORY[0x277D27850] nowPlayingApplicationDestination];
+  nowPlayingApplicationDestination = [MEMORY[0x277D27850] nowPlayingApplicationDestination];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = sub_2334F6DD8;
   v27[3] = &unk_2789DBAF8;
-  v28 = v20;
-  v29 = self;
+  v28 = nowPlayingApplicationDestination;
+  selfCopy = self;
   v30 = v19;
   v31 = v18;
-  v32 = v5;
-  v33 = v4;
-  v21 = v4;
-  v22 = v5;
+  v32 = date;
+  v33 = completionCopy;
+  v21 = completionCopy;
+  v22 = date;
   v23 = v18;
   v24 = v19;
-  v25 = v20;
+  v25 = nowPlayingApplicationDestination;
   sub_2334F6DD8(v27, 0);
 
   v26 = *MEMORY[0x277D85DE8];

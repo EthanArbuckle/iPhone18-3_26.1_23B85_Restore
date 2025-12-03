@@ -1,12 +1,12 @@
 @interface TSCHCallbackAnimationDelegate
 - (SEL)selector;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)setSelector:(SEL)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation TSCHCallbackAnimationDelegate
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   target = self->target;
   if (self->selector)
@@ -19,7 +19,7 @@
     selector = 0;
   }
 
-  v13 = a3;
+  stopCopy = stop;
   v11 = objc_msgSend_methodForSelector_(target, v7, v8, v9, v10, selector);
   if (self->selector)
   {
@@ -47,19 +47,19 @@
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->selector = v3;
+  self->selector = selectorCopy;
 }
 
 @end

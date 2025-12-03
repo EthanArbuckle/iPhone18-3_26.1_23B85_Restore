@@ -1,34 +1,34 @@
 @interface HAPDataStreamTransportParameters
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPDataStreamTransportParameters)init;
-- (HAPDataStreamTransportParameters)initWithTcpListeningPort:(id)a3 sessionIdentifier:(id)a4;
+- (HAPDataStreamTransportParameters)initWithTcpListeningPort:(id)port sessionIdentifier:(id)identifier;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPDataStreamTransportParameters
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPDataStreamTransportParameters);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPDataStreamTransportParameters *)v6 parseFromData:v5 error:&v11];
+    [(HAPDataStreamTransportParameters *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,46 +48,46 @@
   return [(HAPDataStreamTransportParameters *)&v3 init];
 }
 
-- (HAPDataStreamTransportParameters)initWithTcpListeningPort:(id)a3 sessionIdentifier:(id)a4
+- (HAPDataStreamTransportParameters)initWithTcpListeningPort:(id)port sessionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  portCopy = port;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HAPDataStreamTransportParameters;
   v9 = [(HAPDataStreamTransportParameters *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tcpListeningPort, a3);
-    objc_storeStrong(&v10->_sessionIdentifier, a4);
+    objc_storeStrong(&v9->_tcpListeningPort, port);
+    objc_storeStrong(&v10->_sessionIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
     v10 = 0;
 LABEL_19:
-    [(HAPDataStreamTransportParameters *)self setTcpListeningPort:v10, v22];
+    [(HAPDataStreamTransportParameters *)self setTcpListeningPort:v10, selfCopy];
     [(HAPDataStreamTransportParameters *)self setSessionIdentifier:v9];
     v11 = 0;
     v19 = 1;
     goto LABEL_21;
   }
 
-  v22 = self;
-  v23 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = &v7[v8];
+  v12 = &bytes[v8];
   while (1)
   {
     v29 = 0;
@@ -141,11 +141,11 @@ LABEL_9:
       if (v11)
       {
 LABEL_12:
-        if (v23)
+        if (errorCopy)
         {
           v18 = v11;
           v19 = 0;
-          *v23 = v11;
+          *errorCopy = v11;
           goto LABEL_21;
         }
 
@@ -153,15 +153,15 @@ LABEL_12:
       }
 
 LABEL_18:
-      self = v22;
+      self = selfCopy;
       goto LABEL_19;
     }
   }
 
-  if (v23)
+  if (errorCopy)
   {
     sub_100041618(Next);
-    *v23 = v19 = 0;
+    *errorCopy = v19 = 0;
     goto LABEL_21;
   }
 
@@ -172,7 +172,7 @@ LABEL_21:
   return v19;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v37 = 0u;
   v38 = 0u;
@@ -196,16 +196,16 @@ LABEL_21:
   v20 = 0u;
   v18 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
+  tcpListeningPort = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
 
-  if (!v5)
+  if (!tcpListeningPort)
   {
     goto LABEL_5;
   }
 
-  v6 = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
+  tcpListeningPort2 = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
   v17 = 0;
-  v7 = [v6 serializeWithError:&v17];
+  v7 = [tcpListeningPort2 serializeWithError:&v17];
   v8 = v17;
 
   if (v8)
@@ -222,16 +222,16 @@ LABEL_7:
   {
 
 LABEL_5:
-    v10 = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
+    sessionIdentifier = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
 
-    if (!v10)
+    if (!sessionIdentifier)
     {
       goto LABEL_16;
     }
 
-    v11 = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
+    sessionIdentifier2 = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
     v16 = 0;
-    v7 = [v11 serializeWithError:&v16];
+    v7 = [sessionIdentifier2 serializeWithError:&v16];
     v8 = v16;
 
     if (v8)
@@ -251,11 +251,11 @@ LABEL_10:
   {
     if (v12)
     {
-      if (a3)
+      if (error)
       {
         sub_100041618(v12);
         v8 = 0;
-        *a3 = v14 = 0;
+        *error = v14 = 0;
         goto LABEL_19;
       }
 
@@ -269,11 +269,11 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  if (a3)
+  if (error)
   {
     v13 = v8;
     v14 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_19;
   }
 
@@ -285,20 +285,20 @@ LABEL_19:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPDataStreamTransportParameters allocWithZone:a3];
-  v5 = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
-  v6 = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
-  v7 = [(HAPDataStreamTransportParameters *)v4 initWithTcpListeningPort:v5 sessionIdentifier:v6];
+  v4 = [HAPDataStreamTransportParameters allocWithZone:zone];
+  tcpListeningPort = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
+  sessionIdentifier = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
+  v7 = [(HAPDataStreamTransportParameters *)v4 initWithTcpListeningPort:tcpListeningPort sessionIdentifier:sessionIdentifier];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -308,14 +308,14 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
-      v8 = [(HAPDataStreamTransportParameters *)v6 tcpListeningPort];
-      if (v7 != v8)
+      v6 = equalCopy;
+      tcpListeningPort = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
+      tcpListeningPort2 = [(HAPDataStreamTransportParameters *)v6 tcpListeningPort];
+      if (tcpListeningPort != tcpListeningPort2)
       {
-        v9 = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
-        v3 = [(HAPDataStreamTransportParameters *)v6 tcpListeningPort];
-        if (![v9 isEqual:v3])
+        tcpListeningPort3 = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
+        tcpListeningPort4 = [(HAPDataStreamTransportParameters *)v6 tcpListeningPort];
+        if (![tcpListeningPort3 isEqual:tcpListeningPort4])
         {
           v10 = 0;
 LABEL_13:
@@ -324,25 +324,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = tcpListeningPort3;
       }
 
-      v11 = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
-      v12 = [(HAPDataStreamTransportParameters *)v6 sessionIdentifier];
-      if (v11 == v12)
+      sessionIdentifier = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
+      sessionIdentifier2 = [(HAPDataStreamTransportParameters *)v6 sessionIdentifier];
+      if (sessionIdentifier == sessionIdentifier2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
-        v14 = [(HAPDataStreamTransportParameters *)v6 sessionIdentifier];
-        v10 = [v13 isEqual:v14];
+        sessionIdentifier3 = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
+        sessionIdentifier4 = [(HAPDataStreamTransportParameters *)v6 sessionIdentifier];
+        v10 = [sessionIdentifier3 isEqual:sessionIdentifier4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      tcpListeningPort3 = v16;
+      if (tcpListeningPort == tcpListeningPort2)
       {
         goto LABEL_14;
       }
@@ -360,9 +360,9 @@ LABEL_15:
 
 - (NSString)description
 {
-  v3 = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
-  v4 = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
-  v5 = [NSString stringWithFormat:@"<HAPDataStreamTransportParameters tcpListeningPort=%@, sessionIdentifier=%@>", v3, v4];
+  tcpListeningPort = [(HAPDataStreamTransportParameters *)self tcpListeningPort];
+  sessionIdentifier = [(HAPDataStreamTransportParameters *)self sessionIdentifier];
+  v5 = [NSString stringWithFormat:@"<HAPDataStreamTransportParameters tcpListeningPort=%@, sessionIdentifier=%@>", tcpListeningPort, sessionIdentifier];
 
   return v5;
 }

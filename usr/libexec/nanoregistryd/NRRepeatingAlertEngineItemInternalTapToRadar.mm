@@ -11,8 +11,8 @@
   v3 = objc_alloc_init(NSURLComponents);
   [v3 setScheme:@"tap-to-radar"];
   [v3 setHost:@"new"];
-  v4 = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self nanoRegistryWatchMigrationTapToRadarQueryItems];
-  [v3 setQueryItems:v4];
+  nanoRegistryWatchMigrationTapToRadarQueryItems = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self nanoRegistryWatchMigrationTapToRadarQueryItems];
+  [v3 setQueryItems:nanoRegistryWatchMigrationTapToRadarQueryItems];
 
   v5 = [v3 URL];
 
@@ -27,12 +27,12 @@
   v5 = [[NSURLQueryItem alloc] initWithName:@"ComponentID" value:@"573726"];
   v14[2] = v5;
   v6 = [NSURLQueryItem alloc];
-  v7 = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self radarTitle];
-  v8 = [v6 initWithName:@"Title" value:v7];
+  radarTitle = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self radarTitle];
+  v8 = [v6 initWithName:@"Title" value:radarTitle];
   v14[3] = v8;
   v9 = [NSURLQueryItem alloc];
-  v10 = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self radarDescription];
-  v11 = [v9 initWithName:@"Description" value:v10];
+  radarDescription = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self radarDescription];
+  v11 = [v9 initWithName:@"Description" value:radarDescription];
   v14[4] = v11;
   v12 = [NSArray arrayWithObjects:v14 count:5];
 
@@ -55,12 +55,12 @@
   }
 
   v6 = +[NRRepeatingAlertEngine sharedInstance];
-  v7 = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self alertName];
-  [v6 resetStateForAlertWithName:v7];
+  alertName = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self alertName];
+  [v6 resetStateForAlertWithName:alertName];
 
-  v8 = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self tapToRadarLaunchURL];
+  tapToRadarLaunchURL = [(NRRepeatingAlertEngineItemInternalTapToRadar *)self tapToRadarLaunchURL];
   v9 = +[LSApplicationWorkspace defaultWorkspace];
-  [v9 openURL:v8 configuration:0 completionHandler:&stru_100179728];
+  [v9 openURL:tapToRadarLaunchURL configuration:0 completionHandler:&stru_100179728];
 }
 
 @end

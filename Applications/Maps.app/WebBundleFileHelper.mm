@@ -1,37 +1,37 @@
 @interface WebBundleFileHelper
-+ (id)copyToDirectory:(id)a3 fromDirectory:(id)a4 files:(id)a5;
-+ (void)copyWebBundleFilesToDirectory:(id)a3 fromDirectory:(id)a4 webBundleManifest:(id)a5 error:(id *)a6;
-+ (void)parseManifestFileFromData:(id)a3 withCompletion:(id)a4;
++ (id)copyToDirectory:(id)directory fromDirectory:(id)fromDirectory files:(id)files;
++ (void)copyWebBundleFilesToDirectory:(id)directory fromDirectory:(id)fromDirectory webBundleManifest:(id)manifest error:(id *)error;
++ (void)parseManifestFileFromData:(id)data withCompletion:(id)completion;
 @end
 
 @implementation WebBundleFileHelper
 
-+ (void)copyWebBundleFilesToDirectory:(id)a3 fromDirectory:(id)a4 webBundleManifest:(id)a5 error:(id *)a6
++ (void)copyWebBundleFilesToDirectory:(id)directory fromDirectory:(id)fromDirectory webBundleManifest:(id)manifest error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  directoryCopy = directory;
+  fromDirectoryCopy = fromDirectory;
+  manifestCopy = manifest;
   v12 = sub_100038318();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v9 path];
-    v14 = [v10 path];
+    path = [directoryCopy path];
+    path2 = [fromDirectoryCopy path];
     *buf = 138412546;
-    v33 = v13;
+    v33 = path;
     v34 = 2112;
-    v35 = v14;
+    v35 = path2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Moving on-device files to writable directory: %@, from directory: %@", buf, 0x16u);
   }
 
   v15 = +[NSFileManager defaultManager];
-  v16 = [v9 path];
-  v17 = [v15 fileExistsAtPath:v16];
+  path3 = [directoryCopy path];
+  v17 = [v15 fileExistsAtPath:path3];
 
   if (v17)
   {
     v18 = +[NSFileManager defaultManager];
     v31 = 0;
-    [v18 removeItemAtURL:v9 error:&v31];
+    [v18 removeItemAtURL:directoryCopy error:&v31];
     v19 = v31;
 
     v20 = sub_100038318();
@@ -53,7 +53,7 @@ LABEL_9:
     else if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v33 = v9;
+      v33 = directoryCopy;
       v22 = "Removed web bundle at directory: %@";
       v23 = v21;
       v24 = OS_LOG_TYPE_DEBUG;
@@ -61,8 +61,8 @@ LABEL_9:
     }
   }
 
-  v25 = [v11 files];
-  v26 = [WebBundleFileHelper copyToDirectory:v9 fromDirectory:v10 files:v25];
+  files = [manifestCopy files];
+  v26 = [WebBundleFileHelper copyToDirectory:directoryCopy fromDirectory:fromDirectoryCopy files:files];
 
   v27 = [v26 count];
   v28 = sub_100038318();
@@ -77,29 +77,29 @@ LABEL_9:
     }
 
     v29 = [NSError errorWithDomain:@"com.apple.Maps.ReportAProblem.Downloader" code:-6 userInfo:0];
-    *a6 = v29;
+    *error = v29;
   }
 
   else if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
-    v30 = [v9 path];
+    path4 = [directoryCopy path];
     *buf = 138412290;
-    v33 = v30;
+    v33 = path4;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Successfully copy web bundle files to directory: %@", buf, 0xCu);
   }
 }
 
-+ (id)copyToDirectory:(id)a3 fromDirectory:(id)a4 files:(id)a5
++ (id)copyToDirectory:(id)directory fromDirectory:(id)fromDirectory files:(id)files
 {
-  v40 = a3;
-  v39 = a4;
-  v7 = a5;
+  directoryCopy = directory;
+  fromDirectoryCopy = fromDirectory;
+  filesCopy = files;
   v37 = objc_alloc_init(NSMutableArray);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v7;
+  obj = filesCopy;
   v8 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v8)
   {
@@ -115,13 +115,13 @@ LABEL_9:
         }
 
         v11 = *(*(&v44 + 1) + 8 * i);
-        v12 = [v11 filePath];
-        v13 = [v40 URLByAppendingPathComponent:v12];
+        filePath = [v11 filePath];
+        v13 = [directoryCopy URLByAppendingPathComponent:filePath];
 
-        v14 = [v13 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [v13 URLByDeletingLastPathComponent];
         v15 = +[NSFileManager defaultManager];
         v43 = 0;
-        [v15 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:&v43];
+        [v15 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v43];
         v16 = v43;
 
         if (v16)
@@ -136,8 +136,8 @@ LABEL_9:
         }
 
         v18 = +[NSFileManager defaultManager];
-        v19 = [v13 path];
-        v20 = [v18 fileExistsAtPath:v19];
+        path = [v13 path];
+        v20 = [v18 fileExistsAtPath:path];
 
         if (v20)
         {
@@ -173,8 +173,8 @@ LABEL_16:
           }
         }
 
-        v28 = [v11 filePath];
-        v29 = [v39 URLByAppendingPathComponent:v28];
+        filePath2 = [v11 filePath];
+        v29 = [fromDirectoryCopy URLByAppendingPathComponent:filePath2];
 
         v30 = +[NSFileManager defaultManager];
         v41 = 0;
@@ -216,15 +216,15 @@ LABEL_16:
   return v34;
 }
 
-+ (void)parseManifestFileFromData:(id)a3 withCompletion:(id)a4
++ (void)parseManifestFileFromData:(id)data withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v27 = 0;
-  v6 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v27];
+  v6 = [NSJSONSerialization JSONObjectWithData:data options:0 error:&v27];
   v7 = v27;
   if (v7)
   {
-    v5[2](v5, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 
   else
@@ -241,8 +241,8 @@ LABEL_16:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v10 = [v8 allKeys];
-        v11 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        allKeys = [v8 allKeys];
+        v11 = [allKeys countByEnumeratingWithState:&v23 objects:v28 count:16];
         if (v11)
         {
           v12 = v11;
@@ -253,7 +253,7 @@ LABEL_16:
             {
               if (*v24 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allKeys);
               }
 
               v15 = *(*(&v23 + 1) + 8 * i);
@@ -262,7 +262,7 @@ LABEL_16:
               [v9 addObject:v17];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
+            v12 = [allKeys countByEnumeratingWithState:&v23 objects:v28 count:16];
           }
 
           while (v12);
@@ -276,13 +276,13 @@ LABEL_16:
           v20 = [v9 copy];
           v21 = [(WebBundleManifest *)v19 initWithVersion:v18 files:v20];
 
-          (v5)[2](v5, v21, 0);
+          (completionCopy)[2](completionCopy, v21, 0);
         }
 
         else
         {
           v21 = [NSError errorWithDomain:@"com.apple.Maps.ReportAProblem.Downloader" code:-2 userInfo:0];
-          v5[2](v5, 0, v21);
+          completionCopy[2](completionCopy, 0, v21);
         }
 
         v7 = v22;
@@ -291,14 +291,14 @@ LABEL_16:
       else
       {
         v9 = [NSError errorWithDomain:@"com.apple.Maps.ReportAProblem.Downloader" code:-2 userInfo:0];
-        v5[2](v5, 0, v9);
+        completionCopy[2](completionCopy, 0, v9);
       }
     }
 
     else
     {
       v8 = [NSError errorWithDomain:@"com.apple.Maps.ReportAProblem.Downloader" code:-1 userInfo:0];
-      v5[2](v5, 0, v8);
+      completionCopy[2](completionCopy, 0, v8);
     }
   }
 }

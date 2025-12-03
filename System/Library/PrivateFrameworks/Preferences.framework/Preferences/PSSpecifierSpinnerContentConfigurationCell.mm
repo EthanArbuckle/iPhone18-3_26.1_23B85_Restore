@@ -1,18 +1,18 @@
 @interface PSSpecifierSpinnerContentConfigurationCell
-- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithCoder:(id)a3;
-- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithCoder:(id)coder;
+- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSSpecifierSpinnerContentConfigurationCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B0E936C(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_18B0E936C(specifier);
 }
 
 - (void)prepareForReuse
@@ -24,9 +24,9 @@
   sub_18B0EDD88();
 }
 
-- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_18B0F51B0();
     v9 = v8;
@@ -38,13 +38,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return PSSpecifierSpinnerContentConfigurationCell.init(style:reuseIdentifier:specifier:)(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return PSSpecifierSpinnerContentConfigurationCell.init(style:reuseIdentifier:specifier:)(style, v7, v9, specifier);
 }
 
-- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_18B0F51B0();
     v6 = sub_18B0F5180();
@@ -57,17 +57,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for PSSpecifierSpinnerContentConfigurationCell();
-  v7 = [(PSSpinnerTableCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(PSSpinnerTableCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithCoder:(id)a3
+- (_TtC11Preferences42PSSpecifierSpinnerContentConfigurationCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PSSpecifierSpinnerContentConfigurationCell();
-  v4 = a3;
-  v5 = [(PSSpecifierSpinnerContentConfigurationCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PSSpecifierSpinnerContentConfigurationCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

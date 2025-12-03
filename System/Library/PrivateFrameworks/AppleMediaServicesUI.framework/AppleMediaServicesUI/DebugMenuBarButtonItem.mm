@@ -6,7 +6,7 @@
 
 - (void)presentDebugMenu
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BB146AB4();
 }
 

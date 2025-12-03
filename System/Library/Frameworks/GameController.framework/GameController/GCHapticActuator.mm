@@ -1,86 +1,86 @@
 @interface GCHapticActuator
-- (GCHapticActuator)initWithCoder:(id)a3;
-- (GCHapticActuator)initWithJSONDictionaryRepresentation:(id)a3;
-- (GCHapticActuator)initWithLabel:(id)a3 type:(int64_t)a4 index:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GCHapticActuator)initWithCoder:(id)coder;
+- (GCHapticActuator)initWithJSONDictionaryRepresentation:(id)representation;
+- (GCHapticActuator)initWithLabel:(id)label type:(int64_t)type index:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonDictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCHapticActuator
 
-- (GCHapticActuator)initWithLabel:(id)a3 type:(int64_t)a4 index:(unint64_t)a5
+- (GCHapticActuator)initWithLabel:(id)label type:(int64_t)type index:(unint64_t)index
 {
-  v9 = a3;
+  labelCopy = label;
   v13.receiver = self;
   v13.super_class = GCHapticActuator;
   v10 = [(GCHapticActuator *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_label, a3);
-    v11->_type = a4;
-    v11->_index = a5;
+    objc_storeStrong(&v10->_label, label);
+    v11->_type = type;
+    v11->_index = index;
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [GCHapticActuator alloc];
-  v5 = [(GCHapticActuator *)self label];
-  v6 = [v5 copy];
+  label = [(GCHapticActuator *)self label];
+  v6 = [label copy];
   v7 = [(GCHapticActuator *)v4 initWithLabel:v6 type:[(GCHapticActuator *)self type] index:[(GCHapticActuator *)self index]];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(GCHapticActuator *)self label];
-  [v5 encodeObject:v4 forKey:@"label"];
+  coderCopy = coder;
+  label = [(GCHapticActuator *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
-  [v5 encodeInteger:-[GCHapticActuator type](self forKey:{"type"), @"type"}];
-  [v5 encodeInteger:-[GCHapticActuator index](self forKey:{"index"), @"index"}];
+  [coderCopy encodeInteger:-[GCHapticActuator type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[GCHapticActuator index](self forKey:{"index"), @"index"}];
 }
 
-- (GCHapticActuator)initWithCoder:(id)a3
+- (GCHapticActuator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GCHapticActuator;
   v5 = [(GCHapticActuator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_index = [v4 decodeIntegerForKey:@"index"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_index = [coderCopy decodeIntegerForKey:@"index"];
   }
 
   return v5;
 }
 
-- (GCHapticActuator)initWithJSONDictionaryRepresentation:(id)a3
+- (GCHapticActuator)initWithJSONDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = GCHapticActuator;
   v5 = [(GCHapticActuator *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"label"];
+    v6 = [representationCopy objectForKeyedSubscript:@"label"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"type"];
+    v8 = [representationCopy objectForKeyedSubscript:@"type"];
     v5->_type = [v8 unsignedIntValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"index"];
+    v9 = [representationCopy objectForKeyedSubscript:@"index"];
     v5->_index = [v9 unsignedIntValue];
   }
 

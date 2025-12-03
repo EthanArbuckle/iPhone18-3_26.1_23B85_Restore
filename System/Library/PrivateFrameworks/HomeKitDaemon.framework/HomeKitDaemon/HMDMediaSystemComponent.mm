@@ -1,17 +1,17 @@
 @interface HMDMediaSystemComponent
-+ (id)accessoryForMediaSystemComponentWithDictionary:(id)a3 home:(id)a4;
++ (id)accessoryForMediaSystemComponentWithDictionary:(id)dictionary home:(id)home;
 + (id)logCategory;
-+ (id)mediaSystemComponentWithDictionary:(id)a3 home:(id)a4;
++ (id)mediaSystemComponentWithDictionary:(id)dictionary home:(id)home;
 - (HMDAccessory)accessory;
 - (HMDMediaProfile)mediaProfile;
-- (HMDMediaSystemComponent)initWithCoder:(id)a3;
-- (HMDMediaSystemComponent)initWithUUID:(id)a3 accessory:(id)a4 role:(id)a5;
+- (HMDMediaSystemComponent)initWithCoder:(id)coder;
+- (HMDMediaSystemComponent)initWithUUID:(id)d accessory:(id)accessory role:(id)role;
 - (HMMediaSystemRole)role;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRole:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRole:(id)role;
 @end
 
 @implementation HMDMediaSystemComponent
@@ -23,36 +23,36 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDMediaSystemComponent *)self uuid];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD2430]];
+  coderCopy = coder;
+  uuid = [(HMDMediaSystemComponent *)self uuid];
+  [coderCopy encodeObject:uuid forKey:*MEMORY[0x277CD2430]];
 
-  v6 = [(HMDMediaSystemComponent *)self accessory];
-  [v4 encodeConditionalObject:v6 forKey:@"accessory"];
+  accessory = [(HMDMediaSystemComponent *)self accessory];
+  [coderCopy encodeConditionalObject:accessory forKey:@"accessory"];
 
-  v7 = [(HMDMediaSystemComponent *)self role];
-  [v4 encodeObject:v7 forKey:*MEMORY[0x277CD2428]];
+  role = [(HMDMediaSystemComponent *)self role];
+  [coderCopy encodeObject:role forKey:*MEMORY[0x277CD2428]];
 }
 
-- (HMDMediaSystemComponent)initWithCoder:(id)a3
+- (HMDMediaSystemComponent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2430]];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2428]];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2430]];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD2428]];
 
   v8 = [(HMDMediaSystemComponent *)self initWithUUID:v5 accessory:v6 role:v7];
   return v8;
 }
 
-- (void)setRole:(id)a3
+- (void)setRole:(id)role
 {
-  v4 = a3;
+  roleCopy = role;
   os_unfair_lock_lock_with_options();
   role = self->_role;
-  self->_role = v4;
+  self->_role = roleCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -83,56 +83,56 @@
 
   v5 = v4;
 
-  v6 = [v5 mediaProfile];
+  mediaProfile = [v5 mediaProfile];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return mediaProfile;
 }
 
 - (id)serialize
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDMediaSystemComponent *)self uuid];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x277CD2430]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uuid = [(HMDMediaSystemComponent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CD2430]];
 
-  v6 = [(HMDMediaSystemComponent *)self accessory];
-  v7 = [v6 uuid];
-  v8 = [v7 UUIDString];
-  [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x277CCF0B0]];
+  accessory = [(HMDMediaSystemComponent *)self accessory];
+  uuid2 = [accessory uuid];
+  uUIDString2 = [uuid2 UUIDString];
+  [dictionary setObject:uUIDString2 forKeyedSubscript:*MEMORY[0x277CCF0B0]];
 
-  v9 = [(HMDMediaSystemComponent *)self role];
-  v10 = [v9 serialize];
-  [v3 setObject:v10 forKeyedSubscript:*MEMORY[0x277CD2428]];
+  role = [(HMDMediaSystemComponent *)self role];
+  serialize = [role serialize];
+  [dictionary setObject:serialize forKeyedSubscript:*MEMORY[0x277CD2428]];
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMediaSystemComponent *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDMediaSystemComponent *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)attributeDescriptions
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDMediaSystemComponent *)self uuid];
-  v5 = [v3 initWithName:@"uuid" value:v4];
+  uuid = [(HMDMediaSystemComponent *)self uuid];
+  v5 = [v3 initWithName:@"uuid" value:uuid];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDMediaSystemComponent *)self accessory];
-  v8 = [v7 uuid];
-  v9 = [v6 initWithName:@"accessoryUUID" value:v8];
+  accessory = [(HMDMediaSystemComponent *)self accessory];
+  uuid2 = [accessory uuid];
+  v9 = [v6 initWithName:@"accessoryUUID" value:uuid2];
   v17[1] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMDMediaSystemComponent *)self role];
-  [v11 type];
+  role = [(HMDMediaSystemComponent *)self role];
+  [role type];
   v12 = HMMediaSystemRoleTypeAsString();
   v13 = [v10 initWithName:@"roleType" value:v12];
   v17[2] = v13;
@@ -143,20 +143,20 @@
   return v14;
 }
 
-- (HMDMediaSystemComponent)initWithUUID:(id)a3 accessory:(id)a4 role:(id)a5
+- (HMDMediaSystemComponent)initWithUUID:(id)d accessory:(id)accessory role:(id)role
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  accessoryCopy = accessory;
+  roleCopy = role;
   v15.receiver = self;
   v15.super_class = HMDMediaSystemComponent;
   v12 = [(HMDMediaSystemComponent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_uuid, a3);
-    objc_storeWeak(&v13->_accessory, v10);
-    objc_storeStrong(&v13->_role, a5);
+    objc_storeStrong(&v12->_uuid, d);
+    objc_storeWeak(&v13->_accessory, accessoryCopy);
+    objc_storeStrong(&v13->_role, role);
   }
 
   return v13;
@@ -182,18 +182,18 @@ void __38__HMDMediaSystemComponent_logCategory__block_invoke()
   logCategory__hmf_once_v5_159359 = v1;
 }
 
-+ (id)mediaSystemComponentWithDictionary:(id)a3 home:(id)a4
++ (id)mediaSystemComponentWithDictionary:(id)dictionary home:(id)home
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 hmf_UUIDForKey:*MEMORY[0x277CD2430]];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  v7 = [dictionaryCopy hmf_UUIDForKey:*MEMORY[0x277CD2430]];
   if (v7)
   {
-    v8 = [HMDMediaSystemComponent accessoryForMediaSystemComponentWithDictionary:v5 home:v6];
+    v8 = [HMDMediaSystemComponent accessoryForMediaSystemComponentWithDictionary:dictionaryCopy home:homeCopy];
     if (v8)
     {
-      v9 = [v5 hmf_dictionaryForKey:*MEMORY[0x277CD2428]];
+      v9 = [dictionaryCopy hmf_dictionaryForKey:*MEMORY[0x277CD2428]];
       v10 = [objc_alloc(MEMORY[0x277CD1C10]) initWithDictionary:v9];
       if (v10)
       {
@@ -210,7 +210,7 @@ void __38__HMDMediaSystemComponent_logCategory__block_invoke()
           v23 = 138543618;
           v24 = v20;
           v25 = 2112;
-          v26 = v5;
+          v26 = dictionaryCopy;
           _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Role entry is nil - cannot create mediaSystemComponent with %@", &v23, 0x16u);
         }
 
@@ -229,9 +229,9 @@ void __38__HMDMediaSystemComponent_logCategory__block_invoke()
         v23 = 138543874;
         v24 = v17;
         v25 = 2112;
-        v26 = v5;
+        v26 = dictionaryCopy;
         v27 = 2112;
-        v28 = v6;
+        v28 = homeCopy;
         _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_ERROR, "%{public}@accessory cannot be looked up - cannot create mediaSystemComponent with %@in home %@", &v23, 0x20u);
       }
 
@@ -250,7 +250,7 @@ void __38__HMDMediaSystemComponent_logCategory__block_invoke()
       v23 = 138543618;
       v24 = v14;
       v25 = 2112;
-      v26 = v5;
+      v26 = dictionaryCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@mediaComponentUUID is nil - cannot create mediaSystemComponent with %@", &v23, 0x16u);
     }
 
@@ -263,16 +263,16 @@ void __38__HMDMediaSystemComponent_logCategory__block_invoke()
   return v11;
 }
 
-+ (id)accessoryForMediaSystemComponentWithDictionary:(id)a3 home:(id)a4
++ (id)accessoryForMediaSystemComponentWithDictionary:(id)dictionary home:(id)home
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  v7 = [dictionaryCopy hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
   if (v7)
   {
-    v8 = [v6 accessories];
-    v9 = [v8 hmf_firstObjectWithUUID:v7];
+    accessories = [homeCopy accessories];
+    v9 = [accessories hmf_firstObjectWithUUID:v7];
   }
 
   else
@@ -285,9 +285,9 @@ void __38__HMDMediaSystemComponent_logCategory__block_invoke()
       v15 = 138543874;
       v16 = v12;
       v17 = 2112;
-      v18 = v5;
+      v18 = dictionaryCopy;
       v19 = 2112;
-      v20 = v6;
+      v20 = homeCopy;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@accessoryUUID is nil transaction dictionary - cannot find accessory with %@in home %@", &v15, 0x20u);
     }
 

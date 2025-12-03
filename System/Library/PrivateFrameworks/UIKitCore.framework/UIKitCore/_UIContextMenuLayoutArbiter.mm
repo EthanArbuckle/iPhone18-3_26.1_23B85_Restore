@@ -1,40 +1,40 @@
 @interface _UIContextMenuLayoutArbiter
 - ($9638EFF0CCCAFE90921E224CC361F7AC)menuAnchor;
-- (CGPoint)_computedMenuAnchorPointForMenuFrame:(CGRect)a3 previewFrame:(CGRect)a4;
-- (CGRect)_computedMenuBoundsForContentBounds:(CGRect)a3 predictedPreviewFrame:(CGRect)a4;
-- (CGRect)_computedPreviewBoundsForContentBounds:(CGRect)a3 sourceWindowBounds:(CGRect)a4;
+- (CGPoint)_computedMenuAnchorPointForMenuFrame:(CGRect)frame previewFrame:(CGRect)previewFrame;
+- (CGRect)_computedMenuBoundsForContentBounds:(CGRect)bounds predictedPreviewFrame:(CGRect)frame;
+- (CGRect)_computedPreviewBoundsForContentBounds:(CGRect)bounds sourceWindowBounds:(CGRect)windowBounds;
 - (CGRect)contentBounds;
 - (CGRect)contentBoundsForConstrainingPreview;
 - (CGRect)sourceWindowBounds;
 - (UIView)containerView;
-- (_UIContextMenuLayoutArbiter)initWithContainerView:(id)a3 layout:(unint64_t)a4;
-- (double)_applyEdgeInsetsToBounds:(void *)a1;
+- (_UIContextMenuLayoutArbiter)initWithContainerView:(id)view layout:(unint64_t)layout;
+- (double)_applyEdgeInsetsToBounds:(void *)bounds;
 - (double)contentSpacing;
-- (id)_accessoryPositionsForBaseLayout:(id)a3;
-- (id)computedLayoutWithInput:(id)a3;
-- (unint64_t)_automaticAlignmentAndOffset:(double *)a3 forAttachment:(unint64_t)a4 sourcePoint:(CGPoint)a5;
+- (id)_accessoryPositionsForBaseLayout:(id)layout;
+- (id)computedLayoutWithInput:(id)input;
+- (unint64_t)_automaticAlignmentAndOffset:(double *)offset forAttachment:(unint64_t)attachment sourcePoint:(CGPoint)point;
 - (unint64_t)_defaultAttachmentEdge;
-- (void)_drawContentBoundsDebugUI:(CGRect)a3;
-- (void)_positionPlatterFrame:(CGRect *)a3 andActionViewFrame:(CGRect *)a4 inBounds:(CGRect)a5 aboutSourcePoint:(CGPoint)a6;
+- (void)_drawContentBoundsDebugUI:(CGRect)i;
+- (void)_positionPlatterFrame:(CGRect *)frame andActionViewFrame:(CGRect *)viewFrame inBounds:(CGRect)bounds aboutSourcePoint:(CGPoint)point;
 @end
 
 @implementation _UIContextMenuLayoutArbiter
 
 - (CGRect)sourceWindowBounds
 {
-  v3 = [(_UIContextMenuLayoutArbiter *)self containerView];
-  [v3 bounds];
+  containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+  [containerView bounds];
   v5 = v4;
-  v6 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  v7 = [v6 sourcePreview];
-  v8 = [v7 target];
-  v9 = [v8 container];
-  v10 = [v9 _window];
+  currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  sourcePreview = [currentInput sourcePreview];
+  target = [sourcePreview target];
+  container = [target container];
+  _window = [container _window];
 
-  if (v10)
+  if (_window)
   {
-    [v10 bounds];
-    v5 = _UIContextMenuProjectFrameFromViewToView_0(v10, v3, v11, v12, v13, v14);
+    [_window bounds];
+    v5 = _UIContextMenuProjectFrameFromViewToView_0(_window, containerView, v11, v12, v13, v14);
   }
 
   v15 = [(_UIContextMenuLayoutArbiter *)self _applyEdgeInsetsToBounds:v5];
@@ -58,9 +58,9 @@
   p_var4 = &self->var4;
   if (self->var4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = self;
+    selfCopy = self;
     self = [($9638EFF0CCCAFE90921E224CC361F7AC *)self _defaultAttachmentEdge];
-    v5->var4 = self;
+    selfCopy->var4 = self;
   }
 
   v6 = *(p_var4 + 1);
@@ -72,21 +72,21 @@
 
 - (double)contentSpacing
 {
-  v3 = [(_UIContextMenuLayoutArbiter *)self currentLayout];
+  currentLayout = [(_UIContextMenuLayoutArbiter *)self currentLayout];
   result = 0.0;
-  if (v3 != 3)
+  if (currentLayout != 3)
   {
-    v5 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-    [v5 preferredContentSpacing];
+    currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+    [currentInput preferredContentSpacing];
     v7 = fabs(v6);
 
     if (v7 < 2.22044605e-16)
     {
-      v11 = [(_UIContextMenuLayoutArbiter *)self containerView];
-      v12 = _UIContextMenuDefaultContentSpacing(v11);
+      containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+      v12 = _UIContextMenuDefaultContentSpacing(containerView);
 
-      v13 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-      [v13 preferredEdgeInsets];
+      currentInput2 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+      [currentInput2 preferredEdgeInsets];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -123,8 +123,8 @@
 
     else
     {
-      v8 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-      [v8 preferredContentSpacing];
+      currentInput3 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+      [currentInput3 preferredContentSpacing];
       v10 = v9;
 
       return v10;
@@ -136,9 +136,9 @@
 
 - (CGRect)contentBoundsForConstrainingPreview
 {
-  v3 = [(_UIContextMenuLayoutArbiter *)self containerView];
-  v4 = [v3 traitCollection];
-  v5 = _UIContextMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
+  containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+  traitCollection = [containerView traitCollection];
+  v5 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   if ([v5 previewIsConstrainedToSourceWindowBounds])
   {
@@ -175,8 +175,8 @@
 
 - (CGRect)contentBounds
 {
-  v3 = [(_UIContextMenuLayoutArbiter *)self containerView];
-  [v3 bounds];
+  containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+  [containerView bounds];
   v5 = [(_UIContextMenuLayoutArbiter *)self _applyEdgeInsetsToBounds:v4];
   v7 = v6;
   v9 = v8;
@@ -196,40 +196,40 @@
 - (unint64_t)_defaultAttachmentEdge
 {
   v66 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  v4 = [v3 _hasVisibleMenu];
+  currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  _hasVisibleMenu = [currentInput _hasVisibleMenu];
 
-  if (!v4)
+  if (!_hasVisibleMenu)
   {
     v30 = 4;
     goto LABEL_20;
   }
 
-  v5 = [(_UIContextMenuLayoutArbiter *)self containerView];
-  v6 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  v7 = [v6 sourcePreview];
-  v8 = [v7 target];
-  v9 = v5;
-  [v8 center];
+  containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+  currentInput2 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  sourcePreview = [currentInput2 sourcePreview];
+  target = [sourcePreview target];
+  v9 = containerView;
+  [target center];
   v11 = v10;
   v13 = v12;
-  v14 = [v8 container];
-  v15 = _UIContextMenuConvertCGPointBetweenViews(v14, v9, v11, v13);
+  container = [target container];
+  v15 = _UIContextMenuConvertCGPointBetweenViews(container, v9, v11, v13);
   v17 = v16;
 
-  v18 = [v9 traitCollection];
-  v19 = [v18 userInterfaceIdiom];
-  v20 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  [v20 preferredPreviewSize];
+  traitCollection = [v9 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  currentInput3 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  [currentInput3 preferredPreviewSize];
   v22 = v21;
   v24 = v23;
-  v25 = v18;
-  v26 = _UIContextMenuGetPlatformMetrics(v19);
-  v27 = [v26 prefersWrapToSidesHandler];
-  if (v27)
+  v25 = traitCollection;
+  v26 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+  prefersWrapToSidesHandler = [v26 prefersWrapToSidesHandler];
+  if (prefersWrapToSidesHandler)
   {
-    v28 = v27;
-    v29 = (*(v27 + 16))(v27, v25, v22, v24);
+    v28 = prefersWrapToSidesHandler;
+    v29 = (*(prefersWrapToSidesHandler + 16))(prefersWrapToSidesHandler, v25, v22, v24);
 
     if (v29)
     {
@@ -241,9 +241,9 @@
   {
   }
 
-  v31 = [v25 horizontalSizeClass];
-  v32 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  [v32 preferredMenuSize];
+  horizontalSizeClass = [v25 horizontalSizeClass];
+  currentInput4 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  [currentInput4 preferredMenuSize];
   v34 = v33;
 
   if ([(_UIContextMenuLayoutArbiter *)self currentLayout]== 1)
@@ -254,15 +254,15 @@
     v35 = v17 - CGRectGetMinY(v67);
     [(_UIContextMenuLayoutArbiter *)self contentBounds];
     CGRectDivide(v68, &slice, &remainder, v35, CGRectMinYEdge);
-    v36 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-    [v36 preferredPreviewSize];
+    currentInput5 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+    [currentInput5 preferredPreviewSize];
     v38 = v37;
     [(_UIContextMenuLayoutArbiter *)self contentSpacing];
     v40 = v39;
 
     Height = CGRectGetHeight(slice);
     v42 = CGRectGetHeight(remainder);
-    if (v31 != 2 || (v43 = v40 + v38 * 0.5, v34 <= Height - v43) || v34 <= v42 - v43)
+    if (horizontalSizeClass != 2 || (v43 = v40 + v38 * 0.5, v34 <= Height - v43) || v34 <= v42 - v43)
     {
       v44 = CGRectGetHeight(slice);
       if (v44 > CGRectGetHeight(remainder))
@@ -282,7 +282,7 @@
   else
   {
     v30 = 4;
-    if (v31 != 2 || v34 <= 135.0)
+    if (horizontalSizeClass != 2 || v34 <= 135.0)
     {
       goto LABEL_19;
     }
@@ -307,10 +307,10 @@ LABEL_20:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v45 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  v46 = [v45 accessoryViews];
+  currentInput6 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  accessoryViews = [currentInput6 accessoryViews];
 
-  v47 = [v46 countByEnumeratingWithState:&v59 objects:v65 count:16];
+  v47 = [accessoryViews countByEnumeratingWithState:&v59 objects:v65 count:16];
   if (v47)
   {
     v48 = v47;
@@ -322,7 +322,7 @@ LABEL_20:
       {
         if (*v60 != v50)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(accessoryViews);
         }
 
         v52 = *(*(&v59 + 1) + 8 * i);
@@ -346,7 +346,7 @@ LABEL_20:
         }
       }
 
-      v48 = [v46 countByEnumeratingWithState:&v59 objects:v65 count:16];
+      v48 = [accessoryViews countByEnumeratingWithState:&v59 objects:v65 count:16];
     }
 
     while (v48);
@@ -369,17 +369,17 @@ LABEL_20:
   return v30;
 }
 
-- (_UIContextMenuLayoutArbiter)initWithContainerView:(id)a3 layout:(unint64_t)a4
+- (_UIContextMenuLayoutArbiter)initWithContainerView:(id)view layout:(unint64_t)layout
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _UIContextMenuLayoutArbiter;
   v7 = [(_UIContextMenuLayoutArbiter *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(_UIContextMenuLayoutArbiter *)v7 setContainerView:v6];
-    [(_UIContextMenuLayoutArbiter *)v8 setCurrentLayout:a4];
+    [(_UIContextMenuLayoutArbiter *)v7 setContainerView:viewCopy];
+    [(_UIContextMenuLayoutArbiter *)v8 setCurrentLayout:layout];
     v8->_menuAnchor.gravity = 0;
     *&v8->_menuAnchor.attachment = _UIContextMenuNullAnchor_0;
     *&v8->_menuAnchor.attachmentOffset = unk_18A67BA40;
@@ -388,25 +388,25 @@ LABEL_20:
   return v8;
 }
 
-- (id)computedLayoutWithInput:(id)a3
+- (id)computedLayoutWithInput:(id)input
 {
-  v4 = a3;
-  [(_UIContextMenuLayoutArbiter *)self setCurrentInput:v4];
+  inputCopy = input;
+  [(_UIContextMenuLayoutArbiter *)self setCurrentInput:inputCopy];
   v5 = *(MEMORY[0x1E695F058] + 16);
   v115.origin = *MEMORY[0x1E695F058];
   v115.size = v5;
-  [v4 preferredMenuSize];
+  [inputCopy preferredMenuSize];
   v114.origin.x = 0.0;
   v114.origin.y = 0.0;
   v114.size.width = v6;
   v114.size.height = v7;
-  if (([v4 shouldUpdateAttachment] & 1) != 0 || self->_menuAnchor.attachment == 0x7FFFFFFFFFFFFFFFLL && self->_menuAnchor.alignment == 0x7FFFFFFFFFFFFFFFLL)
+  if (([inputCopy shouldUpdateAttachment] & 1) != 0 || self->_menuAnchor.attachment == 0x7FFFFFFFFFFFFFFFLL && self->_menuAnchor.alignment == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-    v9 = v8;
-    if (v8)
+    currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+    v9 = currentInput;
+    if (currentInput)
     {
-      [v8 preferredAnchor];
+      [currentInput preferredAnchor];
     }
 
     else
@@ -422,33 +422,33 @@ LABEL_20:
     *&self->_menuAnchor.gravity = v107;
   }
 
-  v11 = [(_UIContextMenuLayoutArbiter *)self containerView];
+  containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
   [(_UIContextMenuLayoutArbiter *)self contentBounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v11 traitCollection];
-  v21 = _UIContextMenuGetPlatformMetrics([v20 userInterfaceIdiom]);
+  traitCollection = [containerView traitCollection];
+  v21 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v22 = [v4 sourcePreview];
-  v23 = [v22 target];
-  v24 = v11;
-  [v23 center];
+  sourcePreview = [inputCopy sourcePreview];
+  target = [sourcePreview target];
+  v24 = containerView;
+  [target center];
   v26 = v25;
   v28 = v27;
-  v29 = [v23 container];
-  v99 = _UIContextMenuConvertCGPointBetweenViews(v29, v24, v26, v28);
+  container = [target container];
+  v99 = _UIContextMenuConvertCGPointBetweenViews(container, v24, v26, v28);
   v96 = v30;
 
-  v31 = [v4 sourcePreview];
-  v32 = [v31 target];
+  sourcePreview2 = [inputCopy sourcePreview];
+  target2 = [sourcePreview2 target];
   v33 = v24;
-  [v32 center];
+  [target2 center];
   v35 = v34;
   v37 = v36;
-  v38 = [v32 container];
-  _UIContextMenuConvertCGPointBetweenViews(v38, v33, v35, v37);
+  container2 = [target2 container];
+  _UIContextMenuConvertCGPointBetweenViews(container2, v33, v35, v37);
 
   [(_UIContextMenuLayoutArbiter *)self contentBounds];
   v40 = v39;
@@ -465,13 +465,13 @@ LABEL_20:
   v115.origin.y = v53;
   v115.size.width = v55;
   v115.size.height = v57;
-  v59 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  LOBYTE(v32) = [v59 _hasVisibleMenu];
+  currentInput2 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  LOBYTE(target2) = [currentInput2 _hasVisibleMenu];
 
-  if (v32)
+  if (target2)
   {
-    v60 = [v33 _screen];
-    [v60 scale];
+    _screen = [v33 _screen];
+    [_screen scale];
     UIRectCenteredAboutPointScale(v52, v54, v56, v58, v99, v96, v61);
     v63 = v62;
     v65 = v64;
@@ -493,11 +493,11 @@ LABEL_20:
   *&v113.c = v97;
   v94 = *(MEMORY[0x1E695EFD0] + 32);
   *&v113.tx = v94;
-  v74 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  v75 = [v74 shouldConcealMenu];
+  currentInput3 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  shouldConcealMenu = [currentInput3 shouldConcealMenu];
 
   v76 = 1.0;
-  if (v75)
+  if (shouldConcealMenu)
   {
     v114.size.height = 22.0;
     CGAffineTransformMakeScale(&v113, 0.2, 0.2);
@@ -525,7 +525,7 @@ LABEL_20:
   v109 = xmmword_18A67BA20;
   v110 = 0x3FE0000000000000;
   v112 = 0x3FF0000000000000;
-  _validatedItemLayout(v104, &v105, v4, @"Preview");
+  _validatedItemLayout(v104, &v105, inputCopy, @"Preview");
   [v77 setPreview:v104];
   [(_UIContextMenuLayoutArbiter *)self _computedMenuAnchorPointForMenuFrame:v114.origin.x previewFrame:v114.origin.y, *&v114.size, v115.origin.x, *&v115.origin.y, v115.size.height];
   v83 = v82;
@@ -549,7 +549,7 @@ LABEL_20:
   *(&v109 + 1) = v83;
   v110 = *&v85;
   v112 = v100;
-  _validatedItemLayout(v104, &v105, v4, @"Menu");
+  _validatedItemLayout(v104, &v105, inputCopy, @"Menu");
   [v77 setMenu:v104];
   [(_UIContextMenuLayoutArbiter *)self menuAnchor];
   v105 = v101;
@@ -559,27 +559,27 @@ LABEL_20:
   v92 = [(_UIContextMenuLayoutArbiter *)self _accessoryPositionsForBaseLayout:v77];
   [v77 setAccessoryPositions:v92];
 
-  [v4 maximumMenuHeight];
+  [inputCopy maximumMenuHeight];
   [v77 setMaximumMenuHeight:?];
 
   return v77;
 }
 
-- (double)_applyEdgeInsetsToBounds:(void *)a1
+- (double)_applyEdgeInsetsToBounds:(void *)bounds
 {
-  if (!a1)
+  if (!bounds)
   {
     return 0.0;
   }
 
-  v3 = [a1 currentInput];
-  [v3 preferredEdgeInsets];
+  currentInput = [bounds currentInput];
+  [currentInput preferredEdgeInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [a1 containerView];
+  containerView = [bounds containerView];
   v63 = v7;
   v64 = v5;
   v13 = v7 == 0.0;
@@ -594,16 +594,16 @@ LABEL_20:
   }
 
   v14 = v9 == 0.0 && v13;
-  v15 = [a1 currentInput];
-  v16 = [v15 shouldAvoidInputViews];
-  v17 = v12;
+  currentInput2 = [bounds currentInput];
+  shouldAvoidInputViews = [currentInput2 shouldAvoidInputViews];
+  v17 = containerView;
   [v17 safeAreaInsets];
   v19 = v18;
   v21 = v20;
-  v22 = [v17 traitCollection];
-  v23 = [v22 verticalSizeClass];
+  traitCollection = [v17 traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v23 != 1)
+  if (verticalSizeClass != 1)
   {
     v21 = v21 + 0.0;
     v19 = v19 + 20.0;
@@ -611,41 +611,41 @@ LABEL_20:
 
   v24 = fmax(v19, 20.0);
   v25 = fmax(v21, _UIContextMenuDefaultContentSpacing(v17));
-  if (v16)
+  if (shouldAvoidInputViews)
   {
     v26 = v17;
-    v27 = [v26 _window];
-    v28 = [v27 _isRemoteInputHostWindow];
+    _window = [v26 _window];
+    _isRemoteInputHostWindow = [_window _isRemoteInputHostWindow];
 
-    if ((v28 & 1) == 0)
+    if ((_isRemoteInputHostWindow & 1) == 0)
     {
       v29 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
       v30 = v29;
       if (v29)
       {
         [v29 verticalOverlapForView:v26 usingKeyboardInfo:0];
-        v31 = [v26 traitCollection];
-        v32 = _UIContextMenuGetPlatformMetrics([v31 userInterfaceIdiom]);
+        traitCollection2 = [v26 traitCollection];
+        v32 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
 
         [v32 minimumContainerInsets];
       }
     }
   }
 
-  v33 = [v17 traitCollection];
-  v34 = [v33 userInterfaceIdiom];
+  traitCollection3 = [v17 traitCollection];
+  userInterfaceIdiom = [traitCollection3 userInterfaceIdiom];
 
-  v35 = _UIContextMenuGetPlatformMetrics(v34);
+  v35 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v35 preferredDefaultContentInsets];
   v37 = fmax(v24, v36);
   v39 = fmax(v25, v38);
 
   if (!v14)
   {
-    v40 = [a1 currentLayout];
+    currentLayout = [bounds currentLayout];
     v41 = fmin(v64, v37);
     v42 = fmin(v63, v39);
-    if (v40 == 3)
+    if (currentLayout == 3)
     {
       v39 = v42;
     }
@@ -655,7 +655,7 @@ LABEL_20:
       v39 = v63;
     }
 
-    if (v40 == 3)
+    if (currentLayout == 3)
     {
       v37 = v41;
     }
@@ -677,8 +677,8 @@ LABEL_20:
   }
 
   v44 = v43;
-  v45 = [v17 traitCollection];
-  v46 = _UIContextMenuGetPlatformMetrics([v45 userInterfaceIdiom]);
+  traitCollection4 = [v17 traitCollection];
+  v46 = _UIContextMenuGetPlatformMetrics([traitCollection4 userInterfaceIdiom]);
 
   [v46 minimumContainerInsets];
   v48 = v47;
@@ -686,24 +686,24 @@ LABEL_20:
   v49 = fmax(v39, fmax(v48, v44));
   if (!v14)
   {
-    v50 = [a1 currentInput];
-    v51 = [v50 shouldAvoidInputViews];
+    currentInput3 = [bounds currentInput];
+    shouldAvoidInputViews2 = [currentInput3 shouldAvoidInputViews];
 
-    if (v51)
+    if (shouldAvoidInputViews2)
     {
       v52 = v17;
-      v53 = [v52 _window];
-      v54 = [v53 _isRemoteInputHostWindow];
+      _window2 = [v52 _window];
+      _isRemoteInputHostWindow2 = [_window2 _isRemoteInputHostWindow];
 
-      if ((v54 & 1) == 0)
+      if ((_isRemoteInputHostWindow2 & 1) == 0)
       {
         v55 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
         v56 = v55;
         if (v55)
         {
           [v55 verticalOverlapForView:v52 usingKeyboardInfo:0];
-          v57 = [v52 traitCollection];
-          v58 = _UIContextMenuGetPlatformMetrics([v57 userInterfaceIdiom]);
+          traitCollection5 = [v52 traitCollection];
+          v58 = _UIContextMenuGetPlatformMetrics([traitCollection5 userInterfaceIdiom]);
 
           [v58 minimumContainerInsets];
         }
@@ -718,15 +718,15 @@ LABEL_20:
   return v61;
 }
 
-- (unint64_t)_automaticAlignmentAndOffset:(double *)a3 forAttachment:(unint64_t)a4 sourcePoint:(CGPoint)a5
+- (unint64_t)_automaticAlignmentAndOffset:(double *)offset forAttachment:(unint64_t)attachment sourcePoint:(CGPoint)point
 {
-  x = a5.x;
-  if (a4 != 4 && a4 != 1)
+  x = point.x;
+  if (attachment != 4 && attachment != 1)
   {
     return 1;
   }
 
-  [(_UIContextMenuLayoutArbiter *)self contentBounds:a5.x];
+  [(_UIContextMenuLayoutArbiter *)self contentBounds:point.x];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -735,26 +735,26 @@ LABEL_20:
   {
     if ([UIApp userInterfaceLayoutDirection])
     {
-      *a3 = -2.0;
+      *offset = -2.0;
       return 8;
     }
 
     else
     {
-      *a3 = 2.0;
+      *offset = 2.0;
       return 2;
     }
   }
 
   else
   {
-    v17 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-    v18 = [v17 sourcePreview];
-    v19 = [v18 view];
-    [v19 bounds];
+    currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+    sourcePreview = [currentInput sourcePreview];
+    view = [sourcePreview view];
+    [view bounds];
     Width = CGRectGetWidth(v23);
-    v21 = [(_UIContextMenuLayoutArbiter *)self containerView];
-    [v21 bounds];
+    containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+    [containerView bounds];
     v22 = CGRectGetWidth(v24);
 
     if (Width < v22 && (v25.origin.x = v9, v25.origin.y = v11, v25.size.width = v13, v25.size.height = v15, vabdd_f64(x, CGRectGetMidX(v25)) <= 1.0))
@@ -781,38 +781,38 @@ LABEL_20:
   }
 }
 
-- (void)_positionPlatterFrame:(CGRect *)a3 andActionViewFrame:(CGRect *)a4 inBounds:(CGRect)a5 aboutSourcePoint:(CGPoint)a6
+- (void)_positionPlatterFrame:(CGRect *)frame andActionViewFrame:(CGRect *)viewFrame inBounds:(CGRect)bounds aboutSourcePoint:(CGPoint)point
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   v255 = *MEMORY[0x1E69E9840];
-  v13 = [(_UIContextMenuLayoutArbiter *)self containerView];
-  v14 = [v13 _screen];
-  [v14 scale];
+  containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+  _screen = [containerView _screen];
+  [_screen scale];
   v234 = v15;
 
-  v16 = a3->origin.x;
-  v17 = a3->origin.y;
-  v18 = a3->size.width;
-  v231 = a3->size.height;
-  v236 = a4->origin.x;
-  rect = a4->origin.y;
-  v19 = a4->size.height;
-  v235 = a4->size.width;
-  v20 = [(_UIContextMenuLayoutArbiter *)v12 currentLayout];
-  [(_UIContextMenuLayoutArbiter *)v12 menuAnchor];
+  v16 = frame->origin.x;
+  v17 = frame->origin.y;
+  v18 = frame->size.width;
+  v231 = frame->size.height;
+  v236 = viewFrame->origin.x;
+  rect = viewFrame->origin.y;
+  v19 = viewFrame->size.height;
+  v235 = viewFrame->size.width;
+  currentLayout = [(_UIContextMenuLayoutArbiter *)selfCopy currentLayout];
+  [(_UIContextMenuLayoutArbiter *)selfCopy menuAnchor];
   v21 = v250;
-  [(_UIContextMenuLayoutArbiter *)v12 menuAnchor];
+  [(_UIContextMenuLayoutArbiter *)selfCopy menuAnchor];
   v22 = v249;
   if (v249 == 0x7FFFFFFFFFFFFFFFLL)
   {
     *buf = 0;
-    v22 = [(_UIContextMenuLayoutArbiter *)v12 _automaticAlignmentAndOffset:buf forAttachment:v250 sourcePoint:a6.x, a6.y];
-    v12->_menuAnchor.alignment = v22;
-    v12->_menuAnchor.alignmentOffset = *buf;
+    v22 = [(_UIContextMenuLayoutArbiter *)selfCopy _automaticAlignmentAndOffset:buf forAttachment:v250 sourcePoint:point.x, point.y];
+    selfCopy->_menuAnchor.alignment = v22;
+    selfCopy->_menuAnchor.alignmentOffset = *buf;
   }
 
   v218 = height;
@@ -820,37 +820,37 @@ LABEL_20:
   v224 = width;
   v222 = x;
   v227 = v19;
-  if ([(_UIContextMenuLayoutArbiter *)v12 currentLayout]!= 3)
+  if ([(_UIContextMenuLayoutArbiter *)selfCopy currentLayout]!= 3)
   {
-    gravity = v12->_menuAnchor.gravity;
-    if (gravity == 2 || !gravity && (+[UIDevice currentDevice](UIDevice, "currentDevice"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 userInterfaceIdiom], v25, (v26 & 0xFFFFFFFFFFFFFFFBLL) != 1) && (-[_UIContextMenuLayoutArbiter currentInput](v12, "currentInput"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "_hasVisibleMenu"), v27, (v28 & 1) == 0))
+    gravity = selfCopy->_menuAnchor.gravity;
+    if (gravity == 2 || !gravity && (+[UIDevice currentDevice](UIDevice, "currentDevice"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 userInterfaceIdiom], v25, (v26 & 0xFFFFFFFFFFFFFFFBLL) != 1) && (-[_UIContextMenuLayoutArbiter currentInput](selfCopy, "currentInput"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "_hasVisibleMenu"), v27, (v28 & 1) == 0))
     {
-      [v13 bounds];
-      a6.x = v31 + v29 * 0.5;
-      a6.y = v32 + v30 * 0.5;
+      [containerView bounds];
+      point.x = v31 + v29 * 0.5;
+      point.y = v32 + v30 * 0.5;
     }
 
-    v33 = [v13 _screen];
-    [v33 scale];
+    _screen2 = [containerView _screen];
+    [_screen2 scale];
     v228 = v16;
     v225 = v17;
     v219 = v18;
-    UIRectCenteredAboutPointScale(v16, v17, v18, v231, a6.x, a6.y, v34);
+    UIRectCenteredAboutPointScale(v16, v17, v18, v231, point.x, point.y, v34);
     v36 = v35;
     v38 = v37;
     v40 = v39;
     v42 = v41;
 
-    v43 = [(_UIContextMenuLayoutArbiter *)v12 currentInput];
-    v44 = [v43 shouldConcealMenu];
+    currentInput = [(_UIContextMenuLayoutArbiter *)selfCopy currentInput];
+    shouldConcealMenu = [currentInput shouldConcealMenu];
 
-    if (v44)
+    if (shouldConcealMenu)
     {
 LABEL_27:
-      v58 = [v13 traitCollection];
-      v59 = [v58 verticalSizeClass];
+      traitCollection = [containerView traitCollection];
+      verticalSizeClass = [traitCollection verticalSizeClass];
 
-      if (v59 != 1 || v20 == 1)
+      if (verticalSizeClass != 1 || currentLayout == 1)
       {
         v61 = v222;
         v60 = v223;
@@ -860,8 +860,8 @@ LABEL_27:
       {
         v61 = v222;
         v60 = v223;
-        v62 = [v13 _screen];
-        [v62 scale];
+        _screen3 = [containerView _screen];
+        [_screen3 scale];
         v63 = v222 + width * 0.5;
         width = v224;
         v64 = v223 + height * 0.5;
@@ -927,7 +927,7 @@ LABEL_27:
           v75 = CGRectGetWidth(v268);
           v76 = -0.5;
 LABEL_41:
-          a6.x = MinX + v75 * v76;
+          point.x = MinX + v75 * v76;
           goto LABEL_42;
         }
 
@@ -940,11 +940,11 @@ LABEL_41:
         v79 = -0.5;
       }
 
-      UIRectCenteredAboutPointScale(v16, v17, v18, v23, a6.x, MinY + v78 * v79, v234);
+      UIRectCenteredAboutPointScale(v16, v17, v18, v23, point.x, MinY + v78 * v79, v234);
       goto LABEL_43;
     }
 
-    [(_UIContextMenuLayoutArbiter *)v12 contentSpacing];
+    [(_UIContextMenuLayoutArbiter *)selfCopy contentSpacing];
     v46 = v45;
     if (v21 <= 1)
     {
@@ -1091,21 +1091,21 @@ LABEL_26:
 
   v23 = v231;
 LABEL_42:
-  UIRectCenteredAboutPointScale(v16, v17, v18, v23, a6.x, a6.y, v234);
+  UIRectCenteredAboutPointScale(v16, v17, v18, v23, point.x, point.y, v234);
 LABEL_43:
   v84 = v80;
   v85 = v81;
   v86 = v82;
   v87 = v83;
-  if ([(_UIContextMenuLayoutArbiter *)v12 currentLayout]!= 3)
+  if ([(_UIContextMenuLayoutArbiter *)selfCopy currentLayout]!= 3)
   {
-    [(_UIContextMenuLayoutArbiter *)v12 contentBoundsForConstrainingPreview];
+    [(_UIContextMenuLayoutArbiter *)selfCopy contentBoundsForConstrainingPreview];
     v84 = _CGRectConstrainedWithinRect(15, v84, v85, v86, v87, v88, v89, v90, v91);
     v85 = v92;
     v86 = v93;
     v87 = v94;
-    v95 = [(_UIContextMenuLayoutArbiter *)v12 containerView];
-    [v95 bounds];
+    containerView2 = [(_UIContextMenuLayoutArbiter *)selfCopy containerView];
+    [containerView2 bounds];
     v239 = v97;
     v241 = v96;
     v229 = v99;
@@ -1115,11 +1115,11 @@ LABEL_43:
     v254 = 0u;
     *buf = 0u;
     v252 = 0u;
-    v100 = [(_UIContextMenuLayoutArbiter *)v12 containerView];
-    v101 = v100;
-    if (v100)
+    containerView3 = [(_UIContextMenuLayoutArbiter *)selfCopy containerView];
+    v101 = containerView3;
+    if (containerView3)
     {
-      [v100 _safeAreaCornerInsets];
+      [containerView3 _safeAreaCornerInsets];
     }
 
     else
@@ -1287,15 +1287,15 @@ LABEL_43:
     }
   }
 
-  [(_UIContextMenuLayoutArbiter *)v12 menuAnchor];
+  [(_UIContextMenuLayoutArbiter *)selfCopy menuAnchor];
   v226 = v244;
-  [(_UIContextMenuLayoutArbiter *)v12 menuAnchor];
-  v138 = [(_UIContextMenuLayoutArbiter *)v12 currentInput];
-  [v138 additionalAlignmentOffset];
+  [(_UIContextMenuLayoutArbiter *)selfCopy menuAnchor];
+  currentInput2 = [(_UIContextMenuLayoutArbiter *)selfCopy currentInput];
+  [currentInput2 additionalAlignmentOffset];
   v140 = v139;
 
-  v141 = [(_UIContextMenuLayoutArbiter *)v12 currentInput];
-  [v141 preferredMenuAttachmentPoint];
+  currentInput3 = [(_UIContextMenuLayoutArbiter *)selfCopy currentInput];
+  [currentInput3 preferredMenuAttachmentPoint];
   v143 = v142;
   v145 = v144;
 
@@ -1303,32 +1303,32 @@ LABEL_43:
   {
     v240 = *(MEMORY[0x1E695F058] + 16);
     v242 = *(MEMORY[0x1E695F058] + 24);
-    v146 = [(_UIContextMenuLayoutArbiter *)v12 currentInput];
-    v147 = [v146 sourcePreview];
-    [v147 target];
-    v220 = v12;
-    v148 = a3;
-    v149 = a4;
+    currentInput4 = [(_UIContextMenuLayoutArbiter *)selfCopy currentInput];
+    sourcePreview = [currentInput4 sourcePreview];
+    [sourcePreview target];
+    v220 = selfCopy;
+    frameCopy = frame;
+    viewFrameCopy = viewFrame;
     v150 = v21;
     v151 = v22;
-    v153 = v152 = v20;
-    v154 = [v153 container];
-    v230 = _UIContextMenuConvertCGPointBetweenViews(v154, v13, v143, v145);
+    v153 = v152 = currentLayout;
+    container = [v153 container];
+    v230 = _UIContextMenuConvertCGPointBetweenViews(container, containerView, v143, v145);
     v233 = v155;
 
-    v20 = v152;
+    currentLayout = v152;
     v22 = v151;
     v21 = v150;
-    a4 = v149;
-    a3 = v148;
-    v12 = v220;
+    viewFrame = viewFrameCopy;
+    frame = frameCopy;
+    selfCopy = v220;
   }
 
   v156 = MEMORY[0x1E695EFF8];
-  v157 = [(_UIContextMenuLayoutArbiter *)v12 currentInput];
-  if ([v157 shouldMenuOverlapSourcePreview])
+  currentInput5 = [(_UIContextMenuLayoutArbiter *)selfCopy currentInput];
+  if ([currentInput5 shouldMenuOverlapSourcePreview])
   {
-    v158 = [(_UIContextMenuLayoutArbiter *)v12 currentLayout]== 3;
+    v158 = [(_UIContextMenuLayoutArbiter *)selfCopy currentLayout]== 3;
   }
 
   else
@@ -1356,7 +1356,7 @@ LABEL_43:
       else
       {
         v172 = CGRectGetMinX(*&v166);
-        [(_UIContextMenuLayoutArbiter *)v12 contentSpacing];
+        [(_UIContextMenuLayoutArbiter *)selfCopy contentSpacing];
         MaxX = v172 - v173;
       }
 
@@ -1385,7 +1385,7 @@ LABEL_43:
         else
         {
           v198 = CGRectGetMaxX(*&v161);
-          [(_UIContextMenuLayoutArbiter *)v12 contentSpacing];
+          [(_UIContextMenuLayoutArbiter *)selfCopy contentSpacing];
           MaxX = v198 + v199;
         }
 
@@ -1445,7 +1445,7 @@ LABEL_69:
       if (v21 == 1)
       {
         v170 = CGRectGetMinY(*&v184);
-        [(_UIContextMenuLayoutArbiter *)v12 contentSpacing];
+        [(_UIContextMenuLayoutArbiter *)selfCopy contentSpacing];
         v190 = v170 - v171;
         v294.origin.x = v236;
         v294.origin.y = rect;
@@ -1458,7 +1458,7 @@ LABEL_69:
       else
       {
         v188 = CGRectGetMaxY(*&v184);
-        [(_UIContextMenuLayoutArbiter *)v12 contentSpacing];
+        [(_UIContextMenuLayoutArbiter *)selfCopy contentSpacing];
         v190 = v188 + v189;
         v297.origin.x = v236;
         v297.origin.y = rect;
@@ -1519,7 +1519,7 @@ LABEL_69:
 LABEL_90:
     MidX = v221 + MidX;
     MidY = v183 + v226;
-    if (v20)
+    if (currentLayout)
     {
       v197 = 15;
     }
@@ -1601,10 +1601,10 @@ LABEL_106:
   v207 = v206;
   v209 = v208;
   v211 = v210;
-  v212 = [(_UIContextMenuLayoutArbiter *)v12 currentInput];
-  v213 = [v212 shouldConcealMenu];
+  currentInput6 = [(_UIContextMenuLayoutArbiter *)selfCopy currentInput];
+  shouldConcealMenu2 = [currentInput6 shouldConcealMenu];
 
-  if ((v213 & 1) == 0)
+  if ((shouldConcealMenu2 & 1) == 0)
   {
     v205 = _CGRectConstrainedWithinRect(v197, v205, v207, v209, v211, v222, v223, v224, v218);
     v207 = v214;
@@ -1612,27 +1612,27 @@ LABEL_106:
     v211 = v216;
   }
 
-  a3->origin.x = v84;
-  a3->origin.y = v85;
-  a3->size.width = v86;
-  a3->size.height = v87;
-  a4->origin.x = v205;
-  a4->origin.y = v207;
-  a4->size.width = v209;
-  a4->size.height = v211;
+  frame->origin.x = v84;
+  frame->origin.y = v85;
+  frame->size.width = v86;
+  frame->size.height = v87;
+  viewFrame->origin.x = v205;
+  viewFrame->origin.y = v207;
+  viewFrame->size.width = v209;
+  viewFrame->size.height = v211;
 }
 
-- (CGRect)_computedPreviewBoundsForContentBounds:(CGRect)a3 sourceWindowBounds:(CGRect)a4
+- (CGRect)_computedPreviewBoundsForContentBounds:(CGRect)bounds sourceWindowBounds:(CGRect)windowBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  y = a3.origin.y;
-  rect = a3.origin.x;
-  v10 = a3.size.width;
-  v11 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  [v11 preferredMenuSize];
+  height = windowBounds.size.height;
+  width = windowBounds.size.width;
+  v6 = bounds.size.height;
+  v7 = bounds.size.width;
+  y = bounds.origin.y;
+  rect = bounds.origin.x;
+  v10 = bounds.size.width;
+  currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  [currentInput preferredMenuSize];
   v13 = v12;
 
   [(_UIContextMenuLayoutArbiter *)self menuAnchor];
@@ -1642,33 +1642,33 @@ LABEL_106:
     v10 = v7 - (v13 + v15);
   }
 
-  v16 = [(_UIContextMenuLayoutArbiter *)self containerView];
-  v17 = [v16 traitCollection];
-  v18 = _UIContextMenuGetPlatformMetrics([v17 userInterfaceIdiom]);
+  containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+  traitCollection = [containerView traitCollection];
+  v18 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v19 = [v18 previewIsConstrainedToSourceWindowBounds];
-  if ((v19 & (height < v6)) == 0)
+  previewIsConstrainedToSourceWindowBounds = [v18 previewIsConstrainedToSourceWindowBounds];
+  if ((previewIsConstrainedToSourceWindowBounds & (height < v6)) == 0)
   {
     height = v6;
   }
 
-  if ((v19 & (width < v10)) != 0)
+  if ((previewIsConstrainedToSourceWindowBounds & (width < v10)) != 0)
   {
     v10 = width;
   }
 
-  v20 = [(_UIContextMenuLayoutArbiter *)self currentLayout];
-  v21 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  [v21 preferredPreviewSize];
+  currentLayout = [(_UIContextMenuLayoutArbiter *)self currentLayout];
+  currentInput2 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  [currentInput2 preferredPreviewSize];
   v23 = v22;
   v25 = v24;
 
   v68 = v10;
-  if (v20 == 1)
+  if (currentLayout == 1)
   {
-    v26 = [(_UIContextMenuLayoutArbiter *)self containerView];
-    v27 = [v26 traitCollection];
-    v28 = _UIContextMenuGetPlatformMetrics([v27 userInterfaceIdiom]);
+    containerView2 = [(_UIContextMenuLayoutArbiter *)self containerView];
+    traitCollection2 = [containerView2 traitCollection];
+    v28 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
     [v28 maxLiftScale];
     v30 = v29;
     [v28 maxLiftScaleUpPoints];
@@ -1748,10 +1748,10 @@ LABEL_106:
     }
   }
 
-  v41 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  v42 = [v41 preferredPreviewFittingStrategy];
+  currentInput3 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  preferredPreviewFittingStrategy = [currentInput3 preferredPreviewFittingStrategy];
 
-  if (v42 == 1)
+  if (preferredPreviewFittingStrategy == 1)
   {
     v80.origin.x = rect;
     v80.origin.y = y;
@@ -1793,9 +1793,9 @@ LABEL_106:
 
   v50 = *MEMORY[0x1E695EFF8];
   v51 = *(MEMORY[0x1E695EFF8] + 8);
-  v52 = [(_UIContextMenuLayoutArbiter *)self containerView];
-  v53 = [v52 _screen];
-  [v53 scale];
+  containerView3 = [(_UIContextMenuLayoutArbiter *)self containerView];
+  _screen = [containerView3 _screen];
+  [_screen scale];
   v55 = UIRectIntegralWithScale(v50, v51, v45, v46, v54);
   v57 = v56;
   v59 = v58;
@@ -1812,17 +1812,17 @@ LABEL_106:
   return result;
 }
 
-- (CGRect)_computedMenuBoundsForContentBounds:(CGRect)a3 predictedPreviewFrame:(CGRect)a4
+- (CGRect)_computedMenuBoundsForContentBounds:(CGRect)bounds predictedPreviewFrame:(CGRect)frame
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  v11 = CGRectGetHeight(a3);
+  width = frame.size.width;
+  height = frame.size.height;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v6 = bounds.size.height;
+  v7 = bounds.size.width;
+  v8 = bounds.origin.y;
+  v9 = bounds.origin.x;
+  v11 = CGRectGetHeight(bounds);
   v12 = v11;
   v47.origin.x = v9;
   v47.origin.y = v8;
@@ -1871,17 +1871,17 @@ LABEL_106:
   v12 = v11 - v17;
 LABEL_18:
   v19 = +[UIDevice currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  userInterfaceIdiom = [v19 userInterfaceIdiom];
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v21 = [(_UIContextMenuLayoutArbiter *)self containerView];
-    v22 = [v21 traitCollection];
-    v23 = [v22 preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v23))
+    containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+    traitCollection = [containerView traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
-      v24 = [(_UIContextMenuLayoutArbiter *)self currentLayout];
-      v25 = v11 > v13 && v24 == 3;
+      currentLayout = [(_UIContextMenuLayoutArbiter *)self currentLayout];
+      v25 = v11 > v13 && currentLayout == 3;
       v26 = v25;
     }
 
@@ -1896,8 +1896,8 @@ LABEL_18:
     }
   }
 
-  v27 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  [v27 maximumMenuHeight];
+  currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  [currentInput maximumMenuHeight];
   v29 = v28;
 
   if (v12 >= v29)
@@ -1905,12 +1905,12 @@ LABEL_18:
     v12 = v29;
   }
 
-  v30 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  [v30 preferredMenuSize];
+  currentInput2 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  [currentInput2 preferredMenuSize];
   v32 = v31;
 
-  v33 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  [v33 preferredMenuSize];
+  currentInput3 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  [currentInput3 preferredMenuSize];
   v35 = v34;
 
   if (v35 >= v12)
@@ -1922,14 +1922,14 @@ LABEL_18:
   {
     if (byte_1EA95E0E4)
     {
-      v36 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-      v37 = [v36 computePreferredScrollTruncationDetentForHeight];
+      currentInput4 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+      computePreferredScrollTruncationDetentForHeight = [currentInput4 computePreferredScrollTruncationDetentForHeight];
 
-      if (v37)
+      if (computePreferredScrollTruncationDetentForHeight)
       {
-        v38 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-        v39 = [v38 computePreferredScrollTruncationDetentForHeight];
-        v35 = v39[2](v35);
+        currentInput5 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+        computePreferredScrollTruncationDetentForHeight2 = [currentInput5 computePreferredScrollTruncationDetentForHeight];
+        v35 = computePreferredScrollTruncationDetentForHeight2[2](v35);
       }
     }
   }
@@ -1954,19 +1954,19 @@ LABEL_18:
   return result;
 }
 
-- (CGPoint)_computedMenuAnchorPointForMenuFrame:(CGRect)a3 previewFrame:(CGRect)a4
+- (CGPoint)_computedMenuAnchorPointForMenuFrame:(CGRect)frame previewFrame:(CGRect)previewFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v13 = [(_UIContextMenuLayoutArbiter *)self currentLayout];
+  height = previewFrame.size.height;
+  width = previewFrame.size.width;
+  y = previewFrame.origin.y;
+  x = previewFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  currentLayout = [(_UIContextMenuLayoutArbiter *)self currentLayout];
   v54 = v8;
-  if (v13 == 3)
+  if (currentLayout == 3)
   {
     v14 = 0;
   }
@@ -2042,39 +2042,39 @@ LABEL_18:
   }
 
 LABEL_18:
-  if (v13 == 3)
+  if (currentLayout == 3)
   {
     v22 = [(_UIContextMenuLayoutArbiter *)self currentInput:v16];
-    v23 = [v22 sourcePreview];
-    v24 = [v23 target];
-    v25 = [(_UIContextMenuLayoutArbiter *)self containerView];
-    v26 = v24;
+    sourcePreview = [v22 sourcePreview];
+    target = [sourcePreview target];
+    containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+    v26 = target;
     [v26 center];
     v28 = v27;
     v30 = v29;
-    v31 = [v26 container];
+    container = [v26 container];
 
-    v32 = _UIContextMenuConvertCGPointBetweenViews(v31, v25, v28, v30);
+    v32 = _UIContextMenuConvertCGPointBetweenViews(container, containerView, v28, v30);
     v34 = v33;
 
-    v35 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-    [v35 preferredMenuAttachmentPoint];
+    currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+    [currentInput preferredMenuAttachmentPoint];
     v37 = v36;
     v39 = v38;
 
     if (v37 != 1.79769313e308 || v39 != 1.79769313e308)
     {
-      v40 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-      [v40 preferredMenuAttachmentPoint];
+      currentInput2 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+      [currentInput2 preferredMenuAttachmentPoint];
       v42 = v41;
       v44 = v43;
 
-      v45 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-      v46 = [v45 sourcePreview];
-      v47 = [v46 target];
-      v48 = [v47 container];
-      v49 = [(_UIContextMenuLayoutArbiter *)self containerView];
-      v32 = _UIContextMenuConvertCGPointBetweenViews(v48, v49, v42, v44);
+      currentInput3 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+      sourcePreview2 = [currentInput3 sourcePreview];
+      target2 = [sourcePreview2 target];
+      container2 = [target2 container];
+      containerView2 = [(_UIContextMenuLayoutArbiter *)self containerView];
+      v32 = _UIContextMenuConvertCGPointBetweenViews(container2, containerView2, v42, v44);
       v34 = v50;
     }
 
@@ -2106,20 +2106,20 @@ LABEL_18:
   return result;
 }
 
-- (id)_accessoryPositionsForBaseLayout:(id)a3
+- (id)_accessoryPositionsForBaseLayout:(id)layout
 {
   v95 = *MEMORY[0x1E69E9840];
-  v77 = a3;
-  v80 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+  layoutCopy = layout;
+  weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v4 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-  v5 = [v4 accessoryViews];
+  currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+  accessoryViews = [currentInput accessoryViews];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v90 objects:v94 count:16];
+  obj = accessoryViews;
+  v6 = [accessoryViews countByEnumeratingWithState:&v90 objects:v94 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2138,19 +2138,19 @@ LABEL_18:
         }
 
         v9 = *(*(&v90 + 1) + 8 * i);
-        v10 = [(_UIContextMenuLayoutArbiter *)self containerView];
-        v11 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-        v12 = [v11 sourcePreview];
-        v13 = [v12 target];
-        v14 = [v13 container];
-        v15 = [v14 _window];
+        containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+        currentInput2 = [(_UIContextMenuLayoutArbiter *)self currentInput];
+        sourcePreview = [currentInput2 sourcePreview];
+        target = [sourcePreview target];
+        container = [target container];
+        _window = [container _window];
 
-        v16 = [v9 location];
-        if (v16 == 2)
+        location = [v9 location];
+        if (location == 2)
         {
-          if (v77)
+          if (layoutCopy)
           {
-            [v77 menu];
+            [layoutCopy menu];
             goto LABEL_16;
           }
 
@@ -2165,11 +2165,11 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        if (v16 == 1)
+        if (location == 1)
         {
-          if (v77)
+          if (layoutCopy)
           {
-            [v77 preview];
+            [layoutCopy preview];
 LABEL_16:
             v19 = _UIContextMenuItemFrameFromLayout(&v83);
             v20 = v33;
@@ -2191,33 +2191,33 @@ LABEL_17:
         v17 = v74;
         v20 = v75;
         v19 = v76;
-        if (v16)
+        if (location)
         {
           goto LABEL_17;
         }
 
-        [v15 bounds];
-        v25 = _UIContextMenuProjectFrameFromViewToView_0(v15, v10, v21, v22, v23, v24);
+        [_window bounds];
+        v25 = _UIContextMenuProjectFrameFromViewToView_0(_window, containerView, v21, v22, v23, v24);
         v70 = v26;
         v71 = v25;
         v72 = v27;
         v81 = v28;
-        if ([v10 _usesMinimumSafeAreas])
+        if ([containerView _usesMinimumSafeAreas])
         {
-          [v10 _minimumSafeAreaInsets];
+          [containerView _minimumSafeAreaInsets];
         }
 
         else
         {
-          [v10 safeAreaInsets];
+          [containerView safeAreaInsets];
         }
 
         v39 = v29;
         v40 = v30;
         v41 = v31;
         v42 = v32;
-        v43 = [v15 traitCollection];
-        v44 = _UIContextMenuGetPlatformMetrics([v43 userInterfaceIdiom]);
+        traitCollection = [_window traitCollection];
+        v44 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
         [v44 minimumContainerInsets];
         v46 = v45;
@@ -2312,7 +2312,7 @@ LABEL_23:
           v60 = v58;
         }
 
-        [v9 attachmentOffsetWithReferenceFrame:{_UIContextMenuProjectFrameFromViewToView_0(v10, v15, v19, v20, v17, v18)}];
+        [v9 attachmentOffsetWithReferenceFrame:{_UIContextMenuProjectFrameFromViewToView_0(containerView, _window, v19, v20, v17, v18)}];
         v62 = v61;
         v64 = v63;
         [v9 setOffset:?];
@@ -2336,7 +2336,7 @@ LABEL_23:
         v100.size.width = v17;
         v100.size.height = v18;
         v68 = [MEMORY[0x1E696B098] valueWithCGPoint:{v66, v64 + MinY + v82 * CGRectGetHeight(v100)}];
-        [v80 setObject:v68 forKey:v9];
+        [weakToStrongObjectsMapTable setObject:v68 forKey:v9];
       }
 
       v7 = [obj countByEnumeratingWithState:&v90 objects:v94 count:16];
@@ -2345,15 +2345,15 @@ LABEL_23:
     while (v7);
   }
 
-  return v80;
+  return weakToStrongObjectsMapTable;
 }
 
-- (void)_drawContentBoundsDebugUI:(CGRect)a3
+- (void)_drawContentBoundsDebugUI:(CGRect)i
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = i.size.height;
+  width = i.size.width;
+  y = i.origin.y;
+  x = i.origin.x;
   if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_ClickUIDebugEnabled, @"ClickUIDebugEnabled") & 1) == 0 && byte_1EA95E0FC)
   {
     if (!_MergedGlobals_1135)
@@ -2369,12 +2369,12 @@ LABEL_23:
       [_MergedGlobals_1135 setAlpha:0.4];
     }
 
-    v11 = [(_UIContextMenuLayoutArbiter *)self containerView];
-    [v11 bounds];
+    containerView = [(_UIContextMenuLayoutArbiter *)self containerView];
+    [containerView bounds];
     [_MergedGlobals_1135 setFrame:?];
 
-    v12 = [(_UIContextMenuLayoutArbiter *)self containerView];
-    [v12 addSubview:_MergedGlobals_1135];
+    containerView2 = [(_UIContextMenuLayoutArbiter *)self containerView];
+    [containerView2 addSubview:_MergedGlobals_1135];
 
     v13 = qword_1ED49E548;
     if (!qword_1ED49E548)
@@ -2391,8 +2391,8 @@ LABEL_23:
 
     [v13 setFrame:{x, y, width, height}];
     v17 = *MEMORY[0x1E69798E8];
-    v18 = [qword_1ED49E548 layer];
-    [v18 setCompositingFilter:v17];
+    layer = [qword_1ED49E548 layer];
+    [layer setCompositingFilter:v17];
 
     [_MergedGlobals_1135 addSubview:qword_1ED49E548];
     if (!qword_1ED49E550)
@@ -2401,28 +2401,28 @@ LABEL_23:
       v20 = qword_1ED49E550;
       qword_1ED49E550 = v19;
 
-      v21 = [qword_1ED49E550 layer];
-      [v21 setBorderWidth:1.0];
+      layer2 = [qword_1ED49E550 layer];
+      [layer2 setBorderWidth:1.0];
 
       v22 = +[UIColor redColor];
-      v23 = [v22 CGColor];
-      v24 = [qword_1ED49E550 layer];
-      [v24 setBorderColor:v23];
+      cGColor = [v22 CGColor];
+      layer3 = [qword_1ED49E550 layer];
+      [layer3 setBorderColor:cGColor];
 
       [qword_1ED49E550 setUserInteractionEnabled:0];
     }
 
-    v25 = [(_UIContextMenuLayoutArbiter *)self currentInput];
-    v26 = [v25 sourcePreview];
+    currentInput = [(_UIContextMenuLayoutArbiter *)self currentInput];
+    sourcePreview = [currentInput sourcePreview];
 
-    [v26 size];
+    [sourcePreview size];
     v28 = v27;
     v30 = v29;
-    v31 = [v26 target];
-    v32 = v31;
-    if (v31)
+    target = [sourcePreview target];
+    v32 = target;
+    if (target)
     {
-      [v31 transform];
+      [target transform];
     }
 
     else
@@ -2438,19 +2438,19 @@ LABEL_23:
     v33 = v46.size.width;
     v34 = v46.size.height;
 
-    v35 = [v26 target];
-    [v35 center];
+    target2 = [sourcePreview target];
+    [target2 center];
     v37 = round(v36 - v34 * 0.5);
     v39 = round(v38 - v33 * 0.5);
 
-    v40 = [v26 target];
-    v41 = [v40 container];
-    v42 = [(_UIContextMenuLayoutArbiter *)self containerView];
-    [v41 convertRect:v42 toView:{v39, v37, v33, v34}];
+    target3 = [sourcePreview target];
+    container = [target3 container];
+    containerView3 = [(_UIContextMenuLayoutArbiter *)self containerView];
+    [container convertRect:containerView3 toView:{v39, v37, v33, v34}];
     [qword_1ED49E550 setFrame:?];
 
-    v43 = [(_UIContextMenuLayoutArbiter *)self containerView];
-    [v43 addSubview:qword_1ED49E550];
+    containerView4 = [(_UIContextMenuLayoutArbiter *)self containerView];
+    [containerView4 addSubview:qword_1ED49E550];
   }
 }
 

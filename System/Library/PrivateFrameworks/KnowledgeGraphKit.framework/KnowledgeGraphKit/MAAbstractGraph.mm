@@ -1,16 +1,16 @@
 @interface MAAbstractGraph
 - (MAAbstractGraph)init;
-- (id)insertEdgeWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 minimum:(unint64_t)a6 maximum:(unint64_t)a7 directed:(BOOL)a8;
-- (id)insertNodeWithLabel:(id)a3;
+- (id)insertEdgeWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode minimum:(unint64_t)minimum maximum:(unint64_t)maximum directed:(BOOL)directed;
+- (id)insertNodeWithLabel:(id)label;
 @end
 
 @implementation MAAbstractGraph
 
-- (id)insertEdgeWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 minimum:(unint64_t)a6 maximum:(unint64_t)a7 directed:(BOOL)a8
+- (id)insertEdgeWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode minimum:(unint64_t)minimum maximum:(unint64_t)maximum directed:(BOOL)directed
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  labelCopy = label;
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -21,35 +21,35 @@
   v33 = 3221225472;
   v34 = __86__MAAbstractGraph_insertEdgeWithLabel_sourceNode_targetNode_minimum_maximum_directed___block_invoke;
   v35 = &unk_2797FF8B8;
-  v17 = v16;
+  v17 = targetNodeCopy;
   v36 = v17;
-  v18 = v14;
+  v18 = labelCopy;
   v37 = v18;
   v38 = &v39;
-  [v15 enumerateEdgesUsingBlock:&v32];
+  [nodeCopy enumerateEdgesUsingBlock:&v32];
   v19 = v40[5];
   if (!v19)
   {
     v20 = [MAAbstractEdge alloc];
-    LOBYTE(v31) = a8;
+    LOBYTE(v31) = directed;
     LODWORD(v21) = 1.0;
-    v22 = [(MAAbstractEdge *)v20 initWithLabel:v18 sourceNode:v15 targetNode:v17 domain:1 weight:a6 minimum:a7 maximum:v21 directed:v31, v32, v33, v34, v35, v36];
+    v22 = [(MAAbstractEdge *)v20 initWithLabel:v18 sourceNode:nodeCopy targetNode:v17 domain:1 weight:minimum minimum:maximum maximum:v21 directed:v31, v32, v33, v34, v35, v36];
     v23 = v40[5];
     v40[5] = v22;
 
     v24 = [(NSMutableArray *)self->_edges count];
     [v40[5] setIdentifier:v24 + 1];
     [(NSMutableArray *)self->_edges addObject:v40[5]];
-    v25 = [v40[5] sourceNode];
-    v26 = [v25 implementation];
+    sourceNode = [v40[5] sourceNode];
+    implementation = [sourceNode implementation];
 
-    [v26 addEdge:v40[5]];
+    [implementation addEdge:v40[5]];
     if (([v40[5] isLoop] & 1) == 0)
     {
-      v27 = [v40[5] targetNode];
-      v28 = [v27 implementation];
+      targetNode = [v40[5] targetNode];
+      implementation2 = [targetNode implementation];
 
-      [v28 addEdge:v40[5]];
+      [implementation2 addEdge:v40[5]];
     }
 
     v19 = v40[5];
@@ -91,10 +91,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)insertNodeWithLabel:(id)a3
+- (id)insertNodeWithLabel:(id)label
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelCopy = label;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -115,9 +115,9 @@ LABEL_8:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 label];
-        v12 = v11;
-        if (v11 == v4 || ([v11 isEqualToString:v4] & 1) != 0)
+        label = [v10 label];
+        v12 = label;
+        if (label == labelCopy || ([label isEqualToString:labelCopy] & 1) != 0)
         {
           v15 = v10;
 
@@ -137,7 +137,7 @@ LABEL_8:
 
   v13 = [MAAbstractNode alloc];
   LODWORD(v14) = 1.0;
-  v15 = [(MAAbstractNode *)v13 initWithLabel:v4 domain:1 weight:MEMORY[0x277CBEC10] properties:v14];
+  v15 = [(MAAbstractNode *)v13 initWithLabel:labelCopy domain:1 weight:MEMORY[0x277CBEC10] properties:v14];
   [(MANode *)v15 setIdentifier:[(NSMutableArray *)self->_nodes count]+ 1];
   [(NSMutableArray *)self->_nodes addObject:v15];
 LABEL_12:

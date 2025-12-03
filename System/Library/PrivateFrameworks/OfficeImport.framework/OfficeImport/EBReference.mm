@@ -1,14 +1,14 @@
 @interface EBReference
-+ (id)edReferenceFromXlRef:(const XlRef *)a3;
++ (id)edReferenceFromXlRef:(const XlRef *)ref;
 @end
 
 @implementation EBReference
 
-+ (id)edReferenceFromXlRef:(const XlRef *)a3
++ (id)edReferenceFromXlRef:(const XlRef *)ref
 {
-  if (a3)
+  if (ref)
   {
-    v4 = [EDReference referenceWithFirstRow:a3->var0 lastRow:a3->var1 firstColumn:a3->var2 lastColumn:a3->var3];
+    v4 = [EDReference referenceWithFirstRow:ref->var0 lastRow:ref->var1 firstColumn:ref->var2 lastColumn:ref->var3];
   }
 
   else

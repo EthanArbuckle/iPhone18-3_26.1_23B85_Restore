@@ -1,5 +1,5 @@
 @interface TTArray
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)wantsUndoCommands;
 - (CRDocument)document;
 - (CRUndoDelegate)delegate;
@@ -7,31 +7,31 @@
 - (NSString)description;
 - (NSUUID)replicaUUID;
 - (TTArray)init;
-- (TTArray)initWithArchive:(const void *)a3 andReplicaID:(id)a4;
-- (TTArray)initWithCRCoder:(id)a3;
-- (TTArray)initWithCRCoder:(id)a3 stringArray:(const void *)a4;
-- (TTArray)initWithContents:(id)a3;
-- (TTArray)initWithDocument:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)serializeDataFromArchive:(const void *)a3;
-- (id)textAttachmentAtIndex:(unint64_t)a3;
+- (TTArray)initWithArchive:(const void *)archive andReplicaID:(id)d;
+- (TTArray)initWithCRCoder:(id)coder;
+- (TTArray)initWithCRCoder:(id)coder stringArray:(const void *)array;
+- (TTArray)initWithContents:(id)contents;
+- (TTArray)initWithDocument:(id)document;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)serializeDataFromArchive:(const void *)archive;
+- (id)textAttachmentAtIndex:(unint64_t)index;
 - (id)tombstone;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (unint64_t)indexOfObject:(id)a3;
-- (void)addObject:(id)a3;
-- (void)addUndoCommand:(id)a3;
-- (void)encodeWithCRCoder:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)mergeWith:(id)a3;
-- (void)realizeLocalChangesIn:(id)a3;
+- (unint64_t)indexOfObject:(id)object;
+- (void)addObject:(id)object;
+- (void)addUndoCommand:(id)command;
+- (void)encodeWithCRCoder:(id)coder;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)mergeWith:(id)with;
+- (void)realizeLocalChangesIn:(id)in;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)saveToArchive:(void *)a3;
-- (void)setDocument:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
+- (void)saveToArchive:(void *)archive;
+- (void)setDocument:(id)document;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation TTArray
@@ -44,38 +44,38 @@
   return v4;
 }
 
-- (TTArray)initWithDocument:(id)a3
+- (TTArray)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v5 = [TTMergeableAttributedString alloc];
-  v6 = [v4 replica];
-  v7 = [(TTMergeableString *)v5 initWithReplicaID:v6];
+  replica = [documentCopy replica];
+  v7 = [(TTMergeableString *)v5 initWithReplicaID:replica];
   v8 = [(TTArray *)self initWithContents:v7];
 
   if (v8)
   {
-    [(TTArray *)v8 setDocument:v4];
+    [(TTArray *)v8 setDocument:documentCopy];
   }
 
   return v8;
 }
 
-- (TTArray)initWithContents:(id)a3
+- (TTArray)initWithContents:(id)contents
 {
-  v5 = a3;
+  contentsCopy = contents;
   v8.receiver = self;
   v8.super_class = TTArray;
   v6 = [(TTArray *)&v8 init];
   if (v6)
   {
-    [v5 setDelegate:v6];
-    objc_storeStrong(&v6->_contents, a3);
+    [contentsCopy setDelegate:v6];
+    objc_storeStrong(&v6->_contents, contents);
   }
 
   return v6;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v4 = [(TTArray *)self textAttachmentAtIndex:?];
   if (!v4)
@@ -83,17 +83,17 @@
     v6 = os_log_create("com.apple.coreCRDT", "TTArray");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(TTArray *)a3 objectAtIndex:v6];
+      [(TTArray *)index objectAtIndex:v6];
     }
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TTArray: no object at index %lu", a3];
-    objc_exception_throw(v7);
+    index = [MEMORY[0x1E696AEC0] stringWithFormat:@"TTArray: no object at index %lu", index];
+    objc_exception_throw(index);
   }
 
   return v4;
 }
 
-- (id)textAttachmentAtIndex:(unint64_t)a3
+- (id)textAttachmentAtIndex:(unint64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -101,14 +101,14 @@
   v12 = __Block_byref_object_copy__16;
   v13 = __Block_byref_object_dispose__16;
   v14 = 0;
-  v4 = [(TTArray *)self contents];
-  v5 = [v4 attributedString];
+  contents = [(TTArray *)self contents];
+  attributedString = [contents attributedString];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __33__TTArray_textAttachmentAtIndex___block_invoke;
   v8[3] = &unk_1E7509BB8;
   v8[4] = &v9;
-  [v5 enumerateAttribute:@"TTArrayAttachment" inRange:a3 options:1 usingBlock:{0, v8}];
+  [attributedString enumerateAttribute:@"TTArrayAttachment" inRange:index options:1 usingBlock:{0, v8}];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -116,15 +116,15 @@
   return v6;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  [(TTArray *)self insertObject:v4 atIndex:[(TTArray *)self count]];
+  objectCopy = object;
+  [(TTArray *)self insertObject:objectCopy atIndex:[(TTArray *)self count]];
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -133,7 +133,7 @@
   v8[1] = 3221225472;
   v8[2] = __25__TTArray_indexOfObject___block_invoke;
   v8[3] = &unk_1E7509BE0;
-  v5 = v4;
+  v5 = objectCopy;
   v9 = v5;
   v10 = &v11;
   [(TTArray *)self enumerateObjectsUsingBlock:v8];
@@ -155,20 +155,20 @@ uint64_t __25__TTArray_indexOfObject___block_invoke(uint64_t a1, void *a2, uint6
   return result;
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
+  objectCopy = object;
   v8 = [[v6 alloc] initWithUTF8String:"\uFFFC"];
   v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v8];
   v13 = @"TTArrayAttachment";
-  v14[0] = v7;
+  v14[0] = objectCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
   [v9 setAttributes:v10 range:{0, 1}];
-  v11 = [(TTArray *)self contents];
-  [v11 insertAttributedString:v9 atIndex:a4];
+  contents = [(TTArray *)self contents];
+  [contents insertAttributedString:v9 atIndex:index];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -183,22 +183,22 @@ uint64_t __25__TTArray_indexOfObject___block_invoke(uint64_t a1, void *a2, uint6
   }
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  v4 = [(TTArray *)self contents];
-  [v4 deleteCharactersInRange:{a3, 1}];
+  contents = [(TTArray *)self contents];
+  [contents deleteCharactersInRange:{index, 1}];
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  [(TTArray *)self removeObjectAtIndex:a3];
-  [(TTArray *)self insertObject:v6 atIndex:a3];
+  objectCopy = object;
+  [(TTArray *)self removeObjectAtIndex:index];
+  [(TTArray *)self insertObject:objectCopy atIndex:index];
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(TTArray *)self count])
   {
     v5 = 0;
@@ -206,7 +206,7 @@ uint64_t __25__TTArray_indexOfObject___block_invoke(uint64_t a1, void *a2, uint6
     {
       v7 = 0;
       v6 = [(TTArray *)self objectAtIndexedSubscript:v5];
-      v4[2](v4, v6, v5, &v7);
+      blockCopy[2](blockCopy, v6, v5, &v7);
 
       if (v7 == 1)
       {
@@ -222,18 +222,18 @@ uint64_t __25__TTArray_indexOfObject___block_invoke(uint64_t a1, void *a2, uint6
 
 - (unint64_t)count
 {
-  v2 = [(TTArray *)self contents];
-  v3 = [v2 length];
+  contents = [(TTArray *)self contents];
+  v3 = [contents length];
 
   return v3;
 }
 
 - (NSUUID)replicaUUID
 {
-  v2 = [(TTArray *)self contents];
-  v3 = [v2 replicaUUID];
+  contents = [(TTArray *)self contents];
+  replicaUUID = [contents replicaUUID];
 
-  return v3;
+  return replicaUUID;
 }
 
 - (NSString)description
@@ -294,17 +294,17 @@ void __22__TTArray_description__block_invoke(uint64_t a1, void *a2, uint64_t a3)
   [*(*(*(a1 + 32) + 8) + 40) appendString:v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TTArray *)self contents];
-    v7 = [v5 contents];
+    v5 = equalCopy;
+    contents = [(TTArray *)self contents];
+    contents2 = [v5 contents];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [contents isEqual:contents2];
   }
 
   else
@@ -317,30 +317,30 @@ void __22__TTArray_description__block_invoke(uint64_t a1, void *a2, uint64_t a3)
 
 - (unint64_t)hash
 {
-  v2 = [(TTArray *)self contents];
-  v3 = [v2 hash];
+  contents = [(TTArray *)self contents];
+  v3 = [contents hash];
 
   return v3;
 }
 
 - (NSArray)nsArray
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __18__TTArray_nsArray__block_invoke;
   v7[3] = &unk_1E7509C30;
-  v8 = v3;
-  v4 = v3;
+  v8 = array;
+  v4 = array;
   [(TTArray *)self enumerateObjectsUsingBlock:v7];
   v5 = [v4 copy];
 
   return v5;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -356,56 +356,56 @@ void __22__TTArray_description__block_invoke(uint64_t a1, void *a2, uint64_t a3)
     objc_exception_throw(v10);
   }
 
-  v11 = v4;
-  v5 = [(TTArray *)self contents];
-  v6 = [v11 contents];
+  v11 = withCopy;
+  contents = [(TTArray *)self contents];
+  contents2 = [v11 contents];
 
-  [v5 mergeWith:v6];
+  [contents mergeWith:contents2];
 }
 
-- (void)realizeLocalChangesIn:(id)a3
+- (void)realizeLocalChangesIn:(id)in
 {
-  v4 = a3;
-  v5 = [(TTArray *)self contents];
-  [v5 realizeLocalChangesIn:v4];
+  inCopy = in;
+  contents = [(TTArray *)self contents];
+  [contents realizeLocalChangesIn:inCopy];
 }
 
 - (id)tombstone
 {
-  v2 = [(TTArray *)self contents];
-  v3 = [v2 tombstone];
+  contents = [(TTArray *)self contents];
+  tombstone = [contents tombstone];
 
-  v4 = [[TTArray alloc] initWithContents:v3];
+  v4 = [[TTArray alloc] initWithContents:tombstone];
 
   return v4;
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [(TTArray *)self contents];
-  [v5 walkGraph:v4];
+  graphCopy = graph;
+  contents = [(TTArray *)self contents];
+  [contents walkGraph:graphCopy];
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v4 = a3;
-  objc_storeWeak(&self->_document, v4);
-  v5 = [(TTArray *)self contents];
-  [v5 setDocument:v4];
+  documentCopy = document;
+  objc_storeWeak(&self->_document, documentCopy);
+  contents = [(TTArray *)self contents];
+  [contents setDocument:documentCopy];
 }
 
-- (void)addUndoCommand:(id)a3
+- (void)addUndoCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(TTArray *)self delegate];
+  commandCopy = command;
+  delegate = [(TTArray *)self delegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __26__TTArray_addUndoCommand___block_invoke;
   v7[3] = &unk_1E7509C58;
-  v8 = v4;
-  v6 = v4;
-  [v5 addUndoCommandsForObject:self block:v7];
+  v8 = commandCopy;
+  v6 = commandCopy;
+  [delegate addUndoCommandsForObject:self block:v7];
 }
 
 void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
@@ -417,10 +417,10 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)wantsUndoCommands
 {
-  v2 = [(TTArray *)self delegate];
-  v3 = [v2 wantsUndoCommands];
+  delegate = [(TTArray *)self delegate];
+  wantsUndoCommands = [delegate wantsUndoCommands];
 
-  return v3;
+  return wantsUndoCommands;
 }
 
 - (CRDocument)document
@@ -437,37 +437,37 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
   return WeakRetained;
 }
 
-- (id)serializeDataFromArchive:(const void *)a3
+- (id)serializeDataFromArchive:(const void *)archive
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:(*(*a3 + 72))(a3)];
-  v5 = [v4 mutableBytes];
+  v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:(*(*archive + 72))(archive)];
+  mutableBytes = [v4 mutableBytes];
   v6 = TTBoundedCheckedCastNSUIntegerToUInt32([v4 length]);
-  google::protobuf::MessageLite::SerializeToArray(a3, v5, v6);
+  google::protobuf::MessageLite::SerializeToArray(archive, mutableBytes, v6);
 
   return v4;
 }
 
-- (TTArray)initWithArchive:(const void *)a3 andReplicaID:(id)a4
+- (TTArray)initWithArchive:(const void *)archive andReplicaID:(id)d
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v25 = a4;
-  if (*(a3 + 32))
+  dCopy = d;
+  if (*(archive + 32))
   {
     v7 = [TTMergeableAttributedString alloc];
     v8 = v7;
-    v9 = *(a3 + 5);
+    v9 = *(archive + 5);
     if (!v9)
     {
       v9 = *(CRDT::StringArray::default_instance(v7) + 40);
     }
 
-    v10 = [(TTMergeableString *)v8 initWithArchive:v9 andReplicaID:v25];
+    v10 = [(TTMergeableString *)v8 initWithArchive:v9 andReplicaID:dCopy];
     v11 = v10;
-    v12 = *(a3 + 14);
+    v12 = *(archive + 14);
     if (v12)
     {
-      v24 = self;
-      v13 = *(a3 + 6);
+      selfCopy = self;
+      v13 = *(archive + 6);
       v14 = 8 * v12;
       do
       {
@@ -488,12 +488,12 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
               v17 = *v29;
             }
 
-            v18 = [v16 initWithUUIDBytes:v24];
-            v19 = [(TTMergeableString *)v11 attributedString];
+            v18 = [v16 initWithUUIDBytes:selfCopy];
+            attributedString = [(TTMergeableString *)v11 attributedString];
             v30 = @"TTArrayAttachment";
             v31[0] = v18;
             v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-            [v19 setAttributes:v20 range:{v28, 1}];
+            [attributedString setAttributes:v20 range:{v28, 1}];
           }
         }
 
@@ -504,7 +504,7 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
 
       while (v14);
       v6 = v11;
-      self = v24;
+      self = selfCopy;
     }
 
     else
@@ -515,27 +515,27 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v6 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:v25];
+    v6 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:dCopy];
   }
 
-  v21 = [(TTArray *)self initWithContents:v6, v24];
+  selfCopy = [(TTArray *)self initWithContents:v6, selfCopy];
 
   v22 = *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = [(TTArray *)self contents];
-  *(a3 + 8) |= 1u;
-  v6 = *(a3 + 5);
+  contents = [(TTArray *)self contents];
+  *(archive + 8) |= 1u;
+  v6 = *(archive + 5);
   if (!v6)
   {
     operator new();
   }
 
-  [v5 saveToArchive:v6];
+  [contents saveToArchive:v6];
 
   if ([(TTArray *)self count])
   {
@@ -545,20 +545,20 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
       v8 = [(TTArray *)self objectAtIndexedSubscript:v7];
       if (v8)
       {
-        v9 = *(a3 + 15);
-        v10 = *(a3 + 14);
+        v9 = *(archive + 15);
+        v10 = *(archive + 14);
         if (v10 >= v9)
         {
-          if (v9 == *(a3 + 16))
+          if (v9 == *(archive + 16))
           {
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 6, v9 + 1);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 6, v9 + 1);
           }
 
           google::protobuf::internal::GenericTypeHandler<CRDT::StringArray_ArrayAttachment>::New();
         }
 
-        v11 = *(a3 + 6);
-        *(a3 + 14) = v10 + 1;
+        v11 = *(archive + 6);
+        *(archive + 14) = v10 + 1;
         v12 = *(v11 + 8 * v10);
         *(v12 + 32) |= 1u;
         *(v12 + 40) = v7;
@@ -588,13 +588,13 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (TTArray)initWithCRCoder:(id)a3
+- (TTArray)initWithCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 14)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 14)
   {
-    v6 = [(TTArray *)self initWithCRCoder:v4 stringArray:*(v5 + 40)];
+    v6 = [(TTArray *)self initWithCRCoder:coderCopy stringArray:*(currentDocumentObjectForDecoding + 40)];
   }
 
   else
@@ -607,27 +607,27 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (TTArray)initWithCRCoder:(id)a3 stringArray:(const void *)a4
+- (TTArray)initWithCRCoder:(id)coder stringArray:(const void *)array
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  if (*(a4 + 32))
+  coderCopy = coder;
+  if (*(array + 32))
   {
     v13 = [TTMergeableAttributedString alloc];
     v14 = v13;
-    v15 = *(a4 + 5);
+    v15 = *(array + 5);
     if (!v15)
     {
       v15 = *(CRDT::StringArray::default_instance(v13) + 40);
     }
 
-    v16 = [(TTMergeableAttributedString *)v14 initWithCRCoder:v31 string:v15];
+    v16 = [(TTMergeableAttributedString *)v14 initWithCRCoder:coderCopy string:v15];
     v17 = v16;
-    v18 = *(a4 + 14);
+    v18 = *(array + 14);
     if (v18)
     {
-      v30 = self;
-      v19 = *(a4 + 6);
+      selfCopy = self;
+      v19 = *(array + 6);
       v20 = 8 * v18;
       do
       {
@@ -648,12 +648,12 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
               v23 = *v35;
             }
 
-            v24 = [v22 initWithUUIDBytes:v30];
-            v25 = [(TTMergeableString *)v17 attributedString];
+            v24 = [v22 initWithUUIDBytes:selfCopy];
+            attributedString = [(TTMergeableString *)v17 attributedString];
             v36 = @"TTArrayAttachment";
             v37[0] = v24;
             v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-            [v25 setAttributes:v26 range:{v34, 1}];
+            [attributedString setAttributes:v26 range:{v34, 1}];
           }
         }
 
@@ -664,7 +664,7 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
 
       while (v20);
       v9 = v17;
-      self = v30;
+      self = selfCopy;
     }
 
     else
@@ -676,13 +676,13 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
   else
   {
     v6 = [TTMergeableAttributedString alloc];
-    v7 = [v31 document];
-    v8 = [v7 replica];
-    v9 = [(TTMergeableString *)v6 initWithReplicaID:v8];
+    document = [coderCopy document];
+    replica = [document replica];
+    v9 = [(TTMergeableString *)v6 initWithReplicaID:replica];
 
     v10 = objc_opt_class();
-    v11 = [v31 document];
-    v12 = REMDynamicCast(v10, v11);
+    document2 = [coderCopy document];
+    v12 = REMDynamicCast(v10, document2);
 
     if (v12)
     {
@@ -690,25 +690,25 @@ void __26__TTArray_addUndoCommand___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v27 = [(TTArray *)self initWithContents:v9, v30];
+  selfCopy = [(TTArray *)self initWithContents:v9, selfCopy];
 
   v28 = *MEMORY[0x1E69E9840];
-  return v27;
+  return selfCopy;
 }
 
-- (void)encodeWithCRCoder:(id)a3
+- (void)encodeWithCRCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 14)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 14)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 14;
     operator new();
   }
 
-  [(TTArray *)self saveToArchive:*(v4 + 40)];
+  [(TTArray *)self saveToArchive:*(currentDocumentObjectForEncoding + 40)];
 }
 
 - (void)objectAtIndex:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

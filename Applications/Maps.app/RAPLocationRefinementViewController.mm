@@ -9,8 +9,8 @@
   v4.receiver = self;
   v4.super_class = RAPLocationRefinementViewController;
   [(LocationRefinementViewController *)&v4 viewDidLoad];
-  v3 = [(LocationRefinementViewController *)self mapView];
-  [v3 setMapType:2];
+  mapView = [(LocationRefinementViewController *)self mapView];
+  [mapView setMapType:2];
 }
 
 @end

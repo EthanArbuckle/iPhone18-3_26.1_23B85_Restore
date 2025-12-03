@@ -1,24 +1,24 @@
 @interface PUSlideShowActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 @end
 
 @implementation PUSlideShowActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  if ([v4 isPreparingIndividualItems])
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  if ([itemSourceController isPreparingIndividualItems])
   {
-    v5 = [(PXActivity *)self itemSourceController];
-    v6 = [v5 itemSourcesSupportSlideshow];
+    itemSourceController2 = [(PXActivity *)self itemSourceController];
+    itemSourcesSupportSlideshow = [itemSourceController2 itemSourcesSupportSlideshow];
   }
 
   else
   {
-    v6 = 0;
+    itemSourcesSupportSlideshow = 0;
   }
 
-  return v6;
+  return itemSourcesSupportSlideshow;
 }
 
 @end

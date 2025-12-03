@@ -1,14 +1,14 @@
 @interface SBSystemApertureStatusBarPillElement
-- (BOOL)_isAssociatedWithApplicationWithBundleIdentifier:(id)a3;
-- (BOOL)acceptsFullScreenTransitionFromSceneWithIdentifier:(id)a3 ofBundleId:(id)a4;
-- (BOOL)handleElementViewEvent:(int64_t)a3;
+- (BOOL)_isAssociatedWithApplicationWithBundleIdentifier:(id)identifier;
+- (BOOL)acceptsFullScreenTransitionFromSceneWithIdentifier:(id)identifier ofBundleId:(id)id;
+- (BOOL)handleElementViewEvent:(int64_t)event;
 - (BOOL)shouldIgnoreSystemChromeSuppression;
-- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)a3;
+- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)id;
 - (BOOL)shouldSuppressElementWhileProximityReaderPresent;
 - (CGSize)_sizeForPillWithImageName;
 - (NSString)activeSymbolName;
 - (SAUILayoutHosting)layoutHost;
-- (SBSystemApertureStatusBarPillElement)initWithBackgroundActivityIdentifier:(id)a3;
+- (SBSystemApertureStatusBarPillElement)initWithBackgroundActivityIdentifier:(id)identifier;
 - (UIColor)activeTintColor;
 - (UIView)leadingView;
 - (id)_accessibilityLabel;
@@ -16,25 +16,25 @@
 - (id)_packageName;
 - (id)_representedVisualDescriptor;
 - (id)_textLabel;
-- (id)_viewWithImageName:(id)a3 systemApertureSize:(CGSize)a4 tintColor:(id)a5;
-- (id)_viewWithPackageName:(id)a3;
-- (id)_viewWithSymbolName:(id)a3 tintColor:(id)a4;
-- (id)_viewWithTextLabel:(id)a3 tintColor:(id)a4;
+- (id)_viewWithImageName:(id)name systemApertureSize:(CGSize)size tintColor:(id)color;
+- (id)_viewWithPackageName:(id)name;
+- (id)_viewWithSymbolName:(id)name tintColor:(id)color;
+- (id)_viewWithTextLabel:(id)label tintColor:(id)color;
 - (unint64_t)_representedStatusBarStyleOverrides;
-- (void)setAssociatedApplications:(id)a3;
+- (void)setAssociatedApplications:(id)applications;
 @end
 
 @implementation SBSystemApertureStatusBarPillElement
 
-- (SBSystemApertureStatusBarPillElement)initWithBackgroundActivityIdentifier:(id)a3
+- (SBSystemApertureStatusBarPillElement)initWithBackgroundActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = SBSystemApertureStatusBarPillElement;
   v5 = [(SBSystemApertureStatusBarPillElement *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     representedBackgroundActivityIdentifier = v5->_representedBackgroundActivityIdentifier;
     v5->_representedBackgroundActivityIdentifier = v6;
 
@@ -76,31 +76,31 @@ LABEL_8:
   return v5;
 }
 
-- (void)setAssociatedApplications:(id)a3
+- (void)setAssociatedApplications:(id)applications
 {
-  v7 = a3;
+  applicationsCopy = applications;
   if ((BSEqualSets() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [applicationsCopy copy];
     associatedApplications = self->_associatedApplications;
     self->_associatedApplications = v4;
 
-    v6 = [(SBSystemApertureStatusBarPillElement *)self layoutHost];
-    [v6 preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
+    layoutHost = [(SBSystemApertureStatusBarPillElement *)self layoutHost];
+    [layoutHost preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
   }
 }
 
-- (BOOL)handleElementViewEvent:(int64_t)a3
+- (BOOL)handleElementViewEvent:(int64_t)event
 {
-  if (a3 <= 3)
+  if (event <= 3)
   {
     representedBackgroundActivityIdentifier = self->_representedBackgroundActivityIdentifier;
-    v5 = [(SBSystemApertureStatusBarPillElement *)self leadingView];
-    v6 = [v5 _sbWindowScene];
-    SBWorkspaceHandleStatusBarReturnActionFromApp(0, 0, representedBackgroundActivityIdentifier, v6);
+    leadingView = [(SBSystemApertureStatusBarPillElement *)self leadingView];
+    _sbWindowScene = [leadingView _sbWindowScene];
+    SBWorkspaceHandleStatusBarReturnActionFromApp(0, 0, representedBackgroundActivityIdentifier, _sbWindowScene);
   }
 
-  return a3 < 4;
+  return event < 4;
 }
 
 - (UIView)leadingView
@@ -108,53 +108,53 @@ LABEL_8:
   leadingView = self->_leadingView;
   if (!leadingView)
   {
-    v4 = [(SBSystemApertureStatusBarPillElement *)self _packageName];
-    v5 = [(SBSystemApertureStatusBarPillElement *)self activeSymbolName];
-    v6 = [(SBSystemApertureStatusBarPillElement *)self _imageName];
-    v7 = [(SBSystemApertureStatusBarPillElement *)self _textLabel];
-    v8 = v7;
-    if (v4)
+    _packageName = [(SBSystemApertureStatusBarPillElement *)self _packageName];
+    activeSymbolName = [(SBSystemApertureStatusBarPillElement *)self activeSymbolName];
+    _imageName = [(SBSystemApertureStatusBarPillElement *)self _imageName];
+    _textLabel = [(SBSystemApertureStatusBarPillElement *)self _textLabel];
+    v8 = _textLabel;
+    if (_packageName)
     {
-      v9 = [(SBSystemApertureStatusBarPillElement *)self _viewWithPackageName:v4];
-      v10 = self->_leadingView;
+      v9 = [(SBSystemApertureStatusBarPillElement *)self _viewWithPackageName:_packageName];
+      activeSymbolName2 = self->_leadingView;
       self->_leadingView = v9;
     }
 
-    else if (v5)
+    else if (activeSymbolName)
     {
-      v10 = [(SBSystemApertureStatusBarPillElement *)self activeSymbolName];
-      v11 = [(SBSystemApertureStatusBarPillElement *)self activeTintColor];
-      v12 = [(SBSystemApertureStatusBarPillElement *)self _viewWithSymbolName:v10 tintColor:v11];
+      activeSymbolName2 = [(SBSystemApertureStatusBarPillElement *)self activeSymbolName];
+      activeTintColor = [(SBSystemApertureStatusBarPillElement *)self activeTintColor];
+      v12 = [(SBSystemApertureStatusBarPillElement *)self _viewWithSymbolName:activeSymbolName2 tintColor:activeTintColor];
       v13 = self->_leadingView;
       self->_leadingView = v12;
     }
 
     else
     {
-      if (v6)
+      if (_imageName)
       {
         [(SBSystemApertureStatusBarPillElement *)self _sizeForPillWithImageName];
         v15 = v14;
         v17 = v16;
-        v10 = [(SBSystemApertureStatusBarPillElement *)self activeTintColor];
-        v18 = [(SBSystemApertureStatusBarPillElement *)self _viewWithImageName:v6 systemApertureSize:v10 tintColor:v15, v17];
+        activeSymbolName2 = [(SBSystemApertureStatusBarPillElement *)self activeTintColor];
+        v18 = [(SBSystemApertureStatusBarPillElement *)self _viewWithImageName:_imageName systemApertureSize:activeSymbolName2 tintColor:v15, v17];
       }
 
       else
       {
-        if (!v7)
+        if (!_textLabel)
         {
 LABEL_12:
           v20 = self->_leadingView;
-          v21 = [(SBSystemApertureStatusBarPillElement *)self accessibilityLabel];
-          [(UIView *)v20 setAccessibilityLabel:v21];
+          accessibilityLabel = [(SBSystemApertureStatusBarPillElement *)self accessibilityLabel];
+          [(UIView *)v20 setAccessibilityLabel:accessibilityLabel];
 
           leadingView = self->_leadingView;
           goto LABEL_13;
         }
 
-        v10 = [(SBSystemApertureStatusBarPillElement *)self activeTintColor];
-        v18 = [(SBSystemApertureStatusBarPillElement *)self _viewWithTextLabel:v8 tintColor:v10];
+        activeSymbolName2 = [(SBSystemApertureStatusBarPillElement *)self activeTintColor];
+        v18 = [(SBSystemApertureStatusBarPillElement *)self _viewWithTextLabel:v8 tintColor:activeSymbolName2];
       }
 
       v19 = self->_leadingView;
@@ -171,48 +171,48 @@ LABEL_13:
 
 - (BOOL)shouldIgnoreSystemChromeSuppression
 {
-  v3 = [objc_opt_class() backgroundActivityIdentifiersThatIgnoreSystemChromeSuppression];
-  v4 = [(SBSystemApertureStatusBarPillElement *)self representedBackgroundActivityIdentifiers];
-  v5 = [v3 intersectsSet:v4];
+  backgroundActivityIdentifiersThatIgnoreSystemChromeSuppression = [objc_opt_class() backgroundActivityIdentifiersThatIgnoreSystemChromeSuppression];
+  representedBackgroundActivityIdentifiers = [(SBSystemApertureStatusBarPillElement *)self representedBackgroundActivityIdentifiers];
+  v5 = [backgroundActivityIdentifiersThatIgnoreSystemChromeSuppression intersectsSet:representedBackgroundActivityIdentifiers];
 
   return v5;
 }
 
 - (BOOL)shouldSuppressElementWhileProximityReaderPresent
 {
-  v2 = [(SBSystemApertureStatusBarPillElement *)self elementIdentifier];
-  v3 = [v2 isEqual:*MEMORY[0x277D67FD0]];
+  elementIdentifier = [(SBSystemApertureStatusBarPillElement *)self elementIdentifier];
+  v3 = [elementIdentifier isEqual:*MEMORY[0x277D67FD0]];
 
   return v3 ^ 1;
 }
 
-- (BOOL)acceptsFullScreenTransitionFromSceneWithIdentifier:(id)a3 ofBundleId:(id)a4
+- (BOOL)acceptsFullScreenTransitionFromSceneWithIdentifier:(id)identifier ofBundleId:(id)id
 {
-  v5 = a4;
-  v6 = [(SBSystemApertureStatusBarPillElement *)self representedBackgroundActivityIdentifiers];
-  v7 = ([v6 containsObject:*MEMORY[0x277D6BCA8]] & 1) == 0 && -[SBSystemApertureStatusBarPillElement _isAssociatedWithApplicationWithBundleIdentifier:](self, "_isAssociatedWithApplicationWithBundleIdentifier:", v5);
+  idCopy = id;
+  representedBackgroundActivityIdentifiers = [(SBSystemApertureStatusBarPillElement *)self representedBackgroundActivityIdentifiers];
+  v7 = ([representedBackgroundActivityIdentifiers containsObject:*MEMORY[0x277D6BCA8]] & 1) == 0 && -[SBSystemApertureStatusBarPillElement _isAssociatedWithApplicationWithBundleIdentifier:](self, "_isAssociatedWithApplicationWithBundleIdentifier:", idCopy);
 
   return v7;
 }
 
-- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)a3
+- (BOOL)shouldSuppressElementWhilePresentingAppWithBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(NSSet *)self->_associatedApplications count]<= 1 && [(SBSystemApertureStatusBarPillElement *)self _isAssociatedWithApplicationWithBundleIdentifier:v4];
+  idCopy = id;
+  v5 = [(NSSet *)self->_associatedApplications count]<= 1 && [(SBSystemApertureStatusBarPillElement *)self _isAssociatedWithApplicationWithBundleIdentifier:idCopy];
 
   return v5;
 }
 
-- (BOOL)_isAssociatedWithApplicationWithBundleIdentifier:(id)a3
+- (BOOL)_isAssociatedWithApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   associatedApplications = self->_associatedApplications;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplicationWithBundleIdentifier___block_invoke;
   v8[3] = &unk_2783B7288;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   LOBYTE(associatedApplications) = [(NSSet *)associatedApplications bs_containsObjectPassingTest:v8];
 
   return associatedApplications;
@@ -226,74 +226,74 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
   return v4;
 }
 
-- (id)_viewWithPackageName:(id)a3
+- (id)_viewWithPackageName:(id)name
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [objc_alloc(MEMORY[0x277CF0D48]) initWithPackageName:v4 inBundle:v5];
+  v6 = [objc_alloc(MEMORY[0x277CF0D48]) initWithPackageName:nameCopy inBundle:v5];
 
   return v6;
 }
 
-- (id)_viewWithSymbolName:(id)a3 tintColor:(id)a4
+- (id)_viewWithSymbolName:(id)name tintColor:(id)color
 {
   v5 = MEMORY[0x277D755D0];
-  v6 = a3;
-  v7 = [v5 configurationWithHierarchicalColor:a4];
-  v8 = [MEMORY[0x277D755B8] _systemImageNamed:v6 withConfiguration:v7];
+  nameCopy = name;
+  v7 = [v5 configurationWithHierarchicalColor:color];
+  v8 = [MEMORY[0x277D755B8] _systemImageNamed:nameCopy withConfiguration:v7];
 
   v9 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v8];
 
   return v9;
 }
 
-- (id)_viewWithImageName:(id)a3 systemApertureSize:(CGSize)a4 tintColor:(id)a5
+- (id)_viewWithImageName:(id)name systemApertureSize:(CGSize)size tintColor:(id)color
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x277D755B8];
   v9 = MEMORY[0x277CCA8D8];
-  v10 = a5;
-  v11 = a3;
+  colorCopy = color;
+  nameCopy = name;
   v12 = [v9 bundleForClass:objc_opt_class()];
-  v13 = [v8 imageNamed:v11 inBundle:v12];
+  v13 = [v8 imageNamed:nameCopy inBundle:v12];
 
-  v14 = [v13 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v13 _imageThatSuppressesAccessibilityHairlineThickening];
 
-  v15 = [v14 imageWithRenderingMode:2];
+  v15 = [_imageThatSuppressesAccessibilityHairlineThickening imageWithRenderingMode:2];
 
   v16 = [[SBSystemAperturePillImageView alloc] initWithImage:v15];
   [(SBSystemAperturePillImageView *)v16 setSystemApertureSize:width, height];
-  [(SBSystemAperturePillImageView *)v16 setTintColor:v10];
+  [(SBSystemAperturePillImageView *)v16 setTintColor:colorCopy];
 
   [(SBSystemAperturePillImageView *)v16 setContentMode:1];
 
   return v16;
 }
 
-- (id)_viewWithTextLabel:(id)a3 tintColor:(id)a4
+- (id)_viewWithTextLabel:(id)label tintColor:(id)color
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v6 = v5;
-    v7 = a3;
+    systemWhiteColor = colorCopy;
+    labelCopy = label;
   }
 
   else
   {
     v8 = MEMORY[0x277D75348];
-    v9 = a3;
-    v6 = [v8 systemWhiteColor];
+    labelCopy2 = label;
+    systemWhiteColor = [v8 systemWhiteColor];
   }
 
   v10 = objc_alloc(MEMORY[0x277CCA898]);
   v25 = *MEMORY[0x277D740C0];
-  v26[0] = v6;
+  v26[0] = systemWhiteColor;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  v12 = [v10 initWithString:a3 attributes:v11];
+  v12 = [v10 initWithString:label attributes:v11];
 
   v13 = objc_alloc(MEMORY[0x277D75560]);
   [v12 size];
@@ -313,13 +313,13 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
 
 - (id)_packageName
 {
-  v2 = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
+  _representedStatusBarStyleOverrides = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
   result = 0;
-  if (v2 > 63)
+  if (_representedStatusBarStyleOverrides > 63)
   {
-    if (v2 <= 1023)
+    if (_representedStatusBarStyleOverrides <= 1023)
     {
-      if (v2 != 64 && v2 != 128)
+      if (_representedStatusBarStyleOverrides != 64 && _representedStatusBarStyleOverrides != 128)
       {
         return result;
       }
@@ -327,14 +327,14 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
 
     else
     {
-      if (v2 == 1024)
+      if (_representedStatusBarStyleOverrides == 1024)
       {
         return @"AudioRecording-D73";
       }
 
-      if (v2 != 2048)
+      if (_representedStatusBarStyleOverrides != 2048)
       {
-        if (v2 != 0x4000000)
+        if (_representedStatusBarStyleOverrides != 0x4000000)
         {
           return result;
         }
@@ -346,14 +346,14 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
     return @"Navigation-D73";
   }
 
-  if (v2 <= 7)
+  if (_representedStatusBarStyleOverrides <= 7)
   {
-    if (v2 == 1)
+    if (_representedStatusBarStyleOverrides == 1)
     {
       return @"InCall-D73";
     }
 
-    if (v2 != 4)
+    if (_representedStatusBarStyleOverrides != 4)
     {
       return result;
     }
@@ -363,17 +363,17 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
 
   v4 = @"VideoCall-D73";
   v5 = @"AirPlay-D73";
-  if (v2 != 32)
+  if (_representedStatusBarStyleOverrides != 32)
   {
     v5 = 0;
   }
 
-  if (v2 != 16)
+  if (_representedStatusBarStyleOverrides != 16)
   {
     v4 = v5;
   }
 
-  if (v2 == 8)
+  if (_representedStatusBarStyleOverrides == 8)
   {
     return @"Tethering-D73";
   }
@@ -386,7 +386,7 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
 
 - (unint64_t)_representedStatusBarStyleOverrides
 {
-  v2 = [(SBSystemApertureStatusBarPillElement *)self representedBackgroundActivityIdentifiers];
+  representedBackgroundActivityIdentifiers = [(SBSystemApertureStatusBarPillElement *)self representedBackgroundActivityIdentifiers];
   v3 = STUIStyleOverridesForBackgroundActivityIdentifiers();
 
   return v3;
@@ -394,14 +394,14 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
 
 - (id)_imageName
 {
-  v2 = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
+  _representedStatusBarStyleOverrides = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
   v3 = @"FallbackPill_SOS";
-  if (v2 != 0x10000)
+  if (_representedStatusBarStyleOverrides != 0x10000)
   {
     v3 = 0;
   }
 
-  if (v2 == 0x20000000)
+  if (_representedStatusBarStyleOverrides == 0x20000000)
   {
     v4 = @"FallbackPill_satellite";
   }
@@ -411,7 +411,7 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
     v4 = v3;
   }
 
-  if (v2 == 0x800000000)
+  if (_representedStatusBarStyleOverrides == 0x800000000)
   {
     return @"FallbackPill_satellite-disconnected";
   }
@@ -424,12 +424,12 @@ uint64_t __89__SBSystemApertureStatusBarPillElement__isAssociatedWithApplication
 
 - (CGSize)_sizeForPillWithImageName
 {
-  v2 = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
+  _representedStatusBarStyleOverrides = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
   v3 = 20.0;
   v4 = 40.0;
-  if (v2 > 0x1FFFFFFF)
+  if (_representedStatusBarStyleOverrides > 0x1FFFFFFF)
   {
-    if (v2 != 0x20000000 && v2 != 0x800000000)
+    if (_representedStatusBarStyleOverrides != 0x20000000 && _representedStatusBarStyleOverrides != 0x800000000)
     {
 LABEL_7:
       v4 = *MEMORY[0x277CBF3A8];
@@ -439,14 +439,14 @@ LABEL_7:
 
   else
   {
-    if (v2 == 512)
+    if (_representedStatusBarStyleOverrides == 512)
     {
       v4 = 24.0;
       v3 = 24.0;
       goto LABEL_9;
     }
 
-    if (v2 != 0x10000)
+    if (_representedStatusBarStyleOverrides != 0x10000)
     {
       goto LABEL_7;
     }
@@ -475,14 +475,14 @@ LABEL_9:
 
 - (UIColor)activeTintColor
 {
-  v3 = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
-  if (v3 <= 127)
+  _representedStatusBarStyleOverrides = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
+  if (_representedStatusBarStyleOverrides <= 127)
   {
-    if (v3 > 15)
+    if (_representedStatusBarStyleOverrides > 15)
     {
-      if (v3 != 16)
+      if (_representedStatusBarStyleOverrides != 16)
       {
-        if (v3 == 32)
+        if (_representedStatusBarStyleOverrides == 32)
         {
           v4 = MEMORY[0x277D75348];
           v7 = 0.117647059;
@@ -490,7 +490,7 @@ LABEL_9:
           goto LABEL_25;
         }
 
-        if (v3 != 64)
+        if (_representedStatusBarStyleOverrides != 64)
         {
           goto LABEL_31;
         }
@@ -499,14 +499,14 @@ LABEL_9:
       }
     }
 
-    else if (v3 != 1)
+    else if (_representedStatusBarStyleOverrides != 1)
     {
-      if (v3 == 4)
+      if (_representedStatusBarStyleOverrides == 4)
       {
         goto LABEL_15;
       }
 
-      if (v3 != 8)
+      if (_representedStatusBarStyleOverrides != 8)
       {
         goto LABEL_31;
       }
@@ -519,16 +519,16 @@ LABEL_9:
     goto LABEL_26;
   }
 
-  if (v3 <= 2047)
+  if (_representedStatusBarStyleOverrides <= 2047)
   {
-    if (v3 != 128)
+    if (_representedStatusBarStyleOverrides != 128)
     {
-      if (v3 == 256)
+      if (_representedStatusBarStyleOverrides == 256)
       {
         goto LABEL_23;
       }
 
-      if (v3 != 1024)
+      if (_representedStatusBarStyleOverrides != 1024)
       {
         goto LABEL_31;
       }
@@ -539,7 +539,7 @@ LABEL_15:
       v6 = 0.0509803922;
       v7 = 1.0;
 LABEL_26:
-      v8 = [v4 colorWithRed:v7 green:v5 blue:v6 alpha:1.0];
+      systemGrayColor = [v4 colorWithRed:v7 green:v5 blue:v6 alpha:1.0];
       goto LABEL_27;
     }
 
@@ -552,11 +552,11 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v3 <= 0x7FFFFFFFFLL)
+  if (_representedStatusBarStyleOverrides <= 0x7FFFFFFFFLL)
   {
-    if (v3 != 2048)
+    if (_representedStatusBarStyleOverrides != 2048)
     {
-      if (v3 != 0x4000000)
+      if (_representedStatusBarStyleOverrides != 0x4000000)
       {
         goto LABEL_31;
       }
@@ -567,38 +567,38 @@ LABEL_25:
     goto LABEL_19;
   }
 
-  if (v3 == 0x800000000 || v3 == 0x10000000000)
+  if (_representedStatusBarStyleOverrides == 0x800000000 || _representedStatusBarStyleOverrides == 0x10000000000)
   {
 LABEL_23:
-    v8 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
 LABEL_27:
-    v9 = v8;
+    backgroundColor = systemGrayColor;
     goto LABEL_28;
   }
 
 LABEL_31:
-  v11 = [(SBSystemApertureStatusBarPillElement *)self _representedVisualDescriptor];
-  v12 = v11;
-  if (!v11)
+  _representedVisualDescriptor = [(SBSystemApertureStatusBarPillElement *)self _representedVisualDescriptor];
+  v12 = _representedVisualDescriptor;
+  if (!_representedVisualDescriptor)
   {
-    v9 = 0;
+    backgroundColor = 0;
     goto LABEL_37;
   }
 
-  v9 = [v11 backgroundColor];
-  v13 = [MEMORY[0x277D75348] clearColor];
-  if (![v9 isEqual:v13])
+  backgroundColor = [_representedVisualDescriptor backgroundColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  if (![backgroundColor isEqual:clearColor])
   {
     goto LABEL_35;
   }
 
-  v14 = [v12 preferredVisualEffectName];
-  v15 = [v14 isEqualToString:*MEMORY[0x277D6BD28]];
+  preferredVisualEffectName = [v12 preferredVisualEffectName];
+  v15 = [preferredVisualEffectName isEqualToString:*MEMORY[0x277D6BD28]];
 
   if (v15)
   {
     [MEMORY[0x277D75348] systemGrayColor];
-    v9 = v13 = v9;
+    backgroundColor = clearColor = backgroundColor;
 LABEL_35:
   }
 
@@ -606,66 +606,66 @@ LABEL_37:
 
 LABEL_28:
 
-  return v9;
+  return backgroundColor;
 }
 
 - (NSString)activeSymbolName
 {
-  v3 = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
-  v4 = 0;
-  if (v3 > 0x1FFFFFFF)
+  _representedStatusBarStyleOverrides = [(SBSystemApertureStatusBarPillElement *)self _representedStatusBarStyleOverrides];
+  systemImageName = 0;
+  if (_representedStatusBarStyleOverrides > 0x1FFFFFFF)
   {
-    if (v3 != 0x20000000 && v3 != 0x800000000)
+    if (_representedStatusBarStyleOverrides != 0x20000000 && _representedStatusBarStyleOverrides != 0x800000000)
     {
 LABEL_7:
-      v5 = [(SBSystemApertureStatusBarPillElement *)self _representedVisualDescriptor];
-      v6 = v5;
-      if (v5)
+      _representedVisualDescriptor = [(SBSystemApertureStatusBarPillElement *)self _representedVisualDescriptor];
+      v6 = _representedVisualDescriptor;
+      if (_representedVisualDescriptor)
       {
-        v4 = [v5 systemImageName];
+        systemImageName = [_representedVisualDescriptor systemImageName];
       }
 
       else
       {
-        v4 = @"questionmark";
+        systemImageName = @"questionmark";
       }
     }
   }
 
-  else if (v3 == 0x4000)
+  else if (_representedStatusBarStyleOverrides == 0x4000)
   {
-    v4 = @"shareplay";
+    systemImageName = @"shareplay";
   }
 
-  else if (v3 != 0x10000)
+  else if (_representedStatusBarStyleOverrides != 0x10000)
   {
     goto LABEL_7;
   }
 
-  return v4;
+  return systemImageName;
 }
 
 - (id)_textLabel
 {
-  v2 = [(SBSystemApertureStatusBarPillElement *)self _representedVisualDescriptor];
-  v3 = v2;
-  if (v2)
+  _representedVisualDescriptor = [(SBSystemApertureStatusBarPillElement *)self _representedVisualDescriptor];
+  v3 = _representedVisualDescriptor;
+  if (_representedVisualDescriptor)
   {
-    v4 = [v2 textLabel];
+    textLabel = [_representedVisualDescriptor textLabel];
   }
 
   else
   {
-    v4 = 0;
+    textLabel = 0;
   }
 
-  return v4;
+  return textLabel;
 }
 
 - (id)_representedVisualDescriptor
 {
-  v3 = [MEMORY[0x277D6B920] sharedInstance];
-  v4 = [v3 visualDescriptorForBackgroundActivityWithIdentifier:self->_representedBackgroundActivityIdentifier];
+  mEMORY[0x277D6B920] = [MEMORY[0x277D6B920] sharedInstance];
+  v4 = [mEMORY[0x277D6B920] visualDescriptorForBackgroundActivityWithIdentifier:self->_representedBackgroundActivityIdentifier];
 
   return v4;
 }

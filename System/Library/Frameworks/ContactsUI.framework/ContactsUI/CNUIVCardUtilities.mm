@@ -1,12 +1,12 @@
 @interface CNUIVCardUtilities
-+ (id)fileNameForContact:(id)a3;
++ (id)fileNameForContact:(id)contact;
 @end
 
 @implementation CNUIVCardUtilities
 
-+ (id)fileNameForContact:(id)a3
++ (id)fileNameForContact:(id)contact
 {
-  v3 = [MEMORY[0x1E695CD80] stringFromContact:a3 style:0];
+  v3 = [MEMORY[0x1E695CD80] stringFromContact:contact style:0];
   if (!v3)
   {
     v4 = CNContactsUIBundle();

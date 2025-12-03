@@ -1,19 +1,19 @@
 @interface _CDUserActivityCache
-- (BOOL)containsObjectForSourceID:(id)a3 bundleID:(id)a4 itemID:(id)a5;
-- (_CDUserActivityCache)initWithKnowledgeStore:(id)a3;
-- (id)hashArrayForSourceID:(id)a3 bundleID:(id)a4 itemID:(id)a5;
+- (BOOL)containsObjectForSourceID:(id)d bundleID:(id)iD itemID:(id)itemID;
+- (_CDUserActivityCache)initWithKnowledgeStore:(id)store;
+- (id)hashArrayForSourceID:(id)d bundleID:(id)iD itemID:(id)itemID;
 - (unsigned)count;
 - (void)_populateAppActivityStream;
 - (void)_populateAppLocationActivityStream;
-- (void)addSourceID:(id)a3 bundleID:(id)a4 itemID:(id)a5;
+- (void)addSourceID:(id)d bundleID:(id)iD itemID:(id)itemID;
 - (void)populateCache;
 @end
 
 @implementation _CDUserActivityCache
 
-- (_CDUserActivityCache)initWithKnowledgeStore:(id)a3
+- (_CDUserActivityCache)initWithKnowledgeStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = _CDUserActivityCache;
   v6 = [(_CDUserActivityCache *)&v12 init];
@@ -25,7 +25,7 @@
     deletionCache = v6->_deletionCache;
     v6->_deletionCache = v9;
 
-    objc_storeStrong(&v6->_knowledgeStore, a3);
+    objc_storeStrong(&v6->_knowledgeStore, store);
     v6->_count = 0;
   }
 
@@ -51,14 +51,14 @@
   return v3;
 }
 
-- (id)hashArrayForSourceID:(id)a3 bundleID:(id)a4 itemID:(id)a5
+- (id)hashArrayForSourceID:(id)d bundleID:(id)iD itemID:(id)itemID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dCopy = d;
+  iDCopy = iD;
+  itemIDCopy = itemID;
+  if (dCopy)
   {
-    v11 = v8;
+    v11 = dCopy;
   }
 
   else
@@ -67,9 +67,9 @@
   }
 
   v12 = v11;
-  if (v9)
+  if (iDCopy)
   {
-    v13 = v9;
+    v13 = iDCopy;
   }
 
   else
@@ -94,7 +94,7 @@
   v22 = v16;
   v17 = v14;
   v23 = v17;
-  v18 = v10;
+  v18 = itemIDCopy;
   v24 = v18;
   [(_PASLock *)deletionCache runWithLockAcquired:v21];
   v19 = v27[5];
@@ -104,26 +104,26 @@
   return v19;
 }
 
-- (void)addSourceID:(id)a3 bundleID:(id)a4 itemID:(id)a5
+- (void)addSourceID:(id)d bundleID:(id)iD itemID:(id)itemID
 {
-  v6 = [(_CDUserActivityCache *)self hashArrayForSourceID:a3 bundleID:a4 itemID:a5];
+  v6 = [(_CDUserActivityCache *)self hashArrayForSourceID:d bundleID:iD itemID:itemID];
   deletionCache = self->_deletionCache;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52___CDUserActivityCache_addSourceID_bundleID_itemID___block_invoke;
   v9[3] = &unk_1E7369AB0;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v8 = v6;
   [(_PASLock *)deletionCache runWithLockAcquired:v9];
 }
 
-- (BOOL)containsObjectForSourceID:(id)a3 bundleID:(id)a4 itemID:(id)a5
+- (BOOL)containsObjectForSourceID:(id)d bundleID:(id)iD itemID:(id)itemID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_CDUserActivityCache *)self hashArrayForSourceID:v8 bundleID:v9 itemID:v10];
+  dCopy = d;
+  iDCopy = iD;
+  itemIDCopy = itemID;
+  v11 = [(_CDUserActivityCache *)self hashArrayForSourceID:dCopy bundleID:iDCopy itemID:itemIDCopy];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -191,13 +191,13 @@
           }
 
           v16 = *(*(&v31 + 1) + 8 * i);
-          v17 = [v16 source];
-          v18 = [v17 sourceID];
-          v19 = [v16 source];
-          v20 = [v19 bundleID];
-          v21 = [v16 source];
-          v22 = [v21 itemID];
-          [(_CDUserActivityCache *)self addSourceID:v18 bundleID:v20 itemID:v22];
+          source = [v16 source];
+          sourceID = [source sourceID];
+          source2 = [v16 source];
+          bundleID = [source2 bundleID];
+          source3 = [v16 source];
+          itemID = [source3 itemID];
+          [(_CDUserActivityCache *)self addSourceID:sourceID bundleID:bundleID itemID:itemID];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];

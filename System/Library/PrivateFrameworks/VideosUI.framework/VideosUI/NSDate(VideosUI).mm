@@ -31,9 +31,9 @@
 
   v3 = MEMORY[0x1E695DEE8];
   v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 components:32 fromDate:v6 toDate:v4 options:0];
+  currentCalendar = [v3 currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [currentCalendar components:32 fromDate:date toDate:v4 options:0];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "hour")}];
   LODWORD(v9) = 1111490560;
@@ -46,18 +46,18 @@
 
 - (BOOL)vui_isInThePast
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [a1 earlierDate:v2];
-  v4 = v3 == a1;
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [self earlierDate:date];
+  v4 = v3 == self;
 
   return v4;
 }
 
 - (BOOL)vui_isInTheFuture
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [a1 laterDate:v2];
-  v4 = v3 == a1;
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [self laterDate:date];
+  v4 = v3 == self;
 
   return v4;
 }

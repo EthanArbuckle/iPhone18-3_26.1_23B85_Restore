@@ -1,109 +1,109 @@
 @interface UARPAssetSubscription
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForAnyDomain:(id)a3;
-- (UARPAssetSubscription)initWithCoder:(id)a3;
-- (UARPAssetSubscription)initWithIdentifier:(id)a3 domain:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForAnyDomain:(id)domain;
+- (UARPAssetSubscription)initWithCoder:(id)coder;
+- (UARPAssetSubscription)initWithIdentifier:(id)identifier domain:(id)domain;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPAssetSubscription
 
-- (UARPAssetSubscription)initWithIdentifier:(id)a3 domain:(id)a4
+- (UARPAssetSubscription)initWithIdentifier:(id)identifier domain:(id)domain
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v4 = v15;
-  v15 = 0;
+  objc_storeStrong(&v13, domain);
+  v4 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v4;
   v12.super_class = UARPAssetSubscription;
-  v15 = [(UARPAssetSubscription *)&v12 init];
-  objc_storeStrong(&v15, v15);
-  if (v15)
+  selfCopy = [(UARPAssetSubscription *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = [location[0] copy];
-    identifier = v15->_identifier;
-    v15->_identifier = v5;
+    identifier = selfCopy->_identifier;
+    selfCopy->_identifier = v5;
 
     v7 = [v13 copy];
-    domain = v15->_domain;
-    v15->_domain = v7;
+    domain = selfCopy->_domain;
+    selfCopy->_domain = v7;
   }
 
-  v10 = v15;
+  v10 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_identifier forKey:@"identifier"];
-  [location[0] encodeObject:v4->_domain forKey:@"domain"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_identifier forKey:@"identifier"];
+  [location[0] encodeObject:selfCopy->_domain forKey:@"domain"];
   objc_storeStrong(location, 0);
 }
 
-- (UARPAssetSubscription)initWithCoder:(id)a3
+- (UARPAssetSubscription)initWithCoder:(id)coder
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = UARPAssetSubscription;
-  v12 = [(UARPAssetSubscription *)&v10 init];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(UARPAssetSubscription *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-    identifier = v12->_identifier;
-    v12->_identifier = v4;
+    identifier = selfCopy->_identifier;
+    selfCopy->_identifier = v4;
 
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
-    domain = v12->_domain;
-    v12->_domain = v6;
+    domain = selfCopy->_domain;
+    selfCopy->_domain = v6;
   }
 
-  v9 = v12;
+  v9 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v6 = self;
+  selfCopy = self;
   v5[2] = a2;
-  v5[1] = a3;
-  v5[0] = [[UARPAssetSubscription alloc] initWithIdentifier:v6->_identifier domain:v6->_domain];
+  v5[1] = zone;
+  v5[0] = [[UARPAssetSubscription alloc] initWithIdentifier:selfCopy->_identifier domain:selfCopy->_domain];
   v4 = v5[0];
   objc_storeStrong(v5, 0);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v13 == location[0])
+    if (selfCopy == location[0])
     {
       v14 = 1;
       v11 = 1;
@@ -112,14 +112,14 @@
     else
     {
       v10 = location[0];
-      identifier = v13->_identifier;
-      v6 = [v10 identifier];
+      identifier = selfCopy->_identifier;
+      identifier = [v10 identifier];
       v8 = 0;
       v7 = 0;
       if ([(NSString *)identifier isEqualToString:?])
       {
-        domain = v13->_domain;
-        v9 = [v10 domain];
+        domain = selfCopy->_domain;
+        domain = [v10 domain];
         v8 = 1;
         v7 = [(NSString *)domain isEqualToString:?];
       }
@@ -144,16 +144,16 @@
   return v14 & 1;
 }
 
-- (BOOL)isEqualForAnyDomain:(id)a3
+- (BOOL)isEqualForAnyDomain:(id)domain
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v9 == location[0])
+    if (selfCopy == location[0])
     {
       v10 = 1;
       v7 = 1;
@@ -162,8 +162,8 @@
     else
     {
       v6 = location[0];
-      identifier = v9->_identifier;
-      v5 = [v6 identifier];
+      identifier = selfCopy->_identifier;
+      identifier = [v6 identifier];
       v10 = [(NSString *)identifier isEqualToString:?];
 
       v7 = 1;
@@ -193,9 +193,9 @@
 {
   v2 = objc_opt_class();
   v6 = NSStringFromClass(v2);
-  v5 = [(UARPAssetSubscription *)self identifier];
-  v4 = [(UARPAssetSubscription *)self domain];
-  v7 = [NSString stringWithFormat:@"<%@: id=%@ domain=%@>", v6, v5, v4];
+  identifier = [(UARPAssetSubscription *)self identifier];
+  domain = [(UARPAssetSubscription *)self domain];
+  v7 = [NSString stringWithFormat:@"<%@: id=%@ domain=%@>", v6, identifier, domain];
 
   return v7;
 }

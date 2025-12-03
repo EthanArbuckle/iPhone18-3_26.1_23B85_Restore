@@ -1,8 +1,8 @@
 @interface NTKCFaceDetailEnumeratedEditOptionCell
 + (id)reuseIdentifier;
-- (NTKCFaceDetailEnumeratedEditOptionCell)initWithEditOption:(id)a3;
+- (NTKCFaceDetailEnumeratedEditOptionCell)initWithEditOption:(id)option;
 - (double)rowHeight;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation NTKCFaceDetailEnumeratedEditOptionCell
@@ -23,9 +23,9 @@
   return v4;
 }
 
-- (NTKCFaceDetailEnumeratedEditOptionCell)initWithEditOption:(id)a3
+- (NTKCFaceDetailEnumeratedEditOptionCell)initWithEditOption:(id)option
 {
-  v5 = a3;
+  optionCopy = option;
   v16.receiver = self;
   v16.super_class = NTKCFaceDetailEnumeratedEditOptionCell;
   v6 = [(NTKCDetailTableViewCell *)&v16 init];
@@ -37,27 +37,27 @@
     v8 = NTKCActionColor();
     [(NTKCFaceDetailEnumeratedEditOptionCell *)v7 setTintColor:v8];
 
-    objc_storeStrong(&v7->_editOption, a3);
-    v9 = [(NTKEditOption *)v7->_editOption localizedName];
-    v10 = [(NTKCFaceDetailEnumeratedEditOptionCell *)v7 textLabel];
-    [v10 setText:v9];
+    objc_storeStrong(&v7->_editOption, option);
+    localizedName = [(NTKEditOption *)v7->_editOption localizedName];
+    textLabel = [(NTKCFaceDetailEnumeratedEditOptionCell *)v7 textLabel];
+    [textLabel setText:localizedName];
 
-    v11 = [(NTKCFaceDetailEnumeratedEditOptionCell *)v7 textLabel];
-    v12 = [v11 text];
-    v13 = [v12 isEqualToString:&stru_284110E98];
-    v14 = [(NTKCFaceDetailEnumeratedEditOptionCell *)v7 textLabel];
-    [v14 setHidden:v13];
+    textLabel2 = [(NTKCFaceDetailEnumeratedEditOptionCell *)v7 textLabel];
+    text = [textLabel2 text];
+    v13 = [text isEqualToString:&stru_284110E98];
+    textLabel3 = [(NTKCFaceDetailEnumeratedEditOptionCell *)v7 textLabel];
+    [textLabel3 setHidden:v13];
   }
 
   return v7;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       v3 = 3;
     }

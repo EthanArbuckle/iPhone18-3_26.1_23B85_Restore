@@ -1,19 +1,19 @@
 @interface PREditorSeparatedRootViewController
 - (id)currentLookViews;
 - (int64_t)_windowInterfaceOrientation;
-- (void)_enumerateContainerViewsWithBlock:(id)a3;
-- (void)_updateContainerViewClipping:(BOOL)a3;
+- (void)_enumerateContainerViewsWithBlock:(id)block;
+- (void)_updateContainerViewClipping:(BOOL)clipping;
 - (void)_updateContainerViewFrames;
 - (void)_updateCounterRotationLayout;
-- (void)_updateLooksDividerViewForTransitionToSize:(CGSize)a3 startingTransition:(BOOL)a4;
+- (void)_updateLooksDividerViewForTransitionToSize:(CGSize)size startingTransition:(BOOL)transition;
 - (void)loadView;
 - (void)looksDidChange;
 - (void)looksWillChange;
-- (void)setOverlayHostViewController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setOverlayHostViewController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PREditorSeparatedRootViewController
@@ -24,26 +24,26 @@
   v35.receiver = self;
   v35.super_class = PREditorSeparatedRootViewController;
   [(PREditorRootViewController *)&v35 loadView];
-  v3 = [(PREditorSeparatedRootViewController *)self view];
-  v4 = [(PREditorRootViewController *)self scrollView];
+  view = [(PREditorSeparatedRootViewController *)self view];
+  scrollView = [(PREditorRootViewController *)self scrollView];
   v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v6 = [v5 layer];
-  [v6 setName:@"backgroundForegroundContainerViewsZStackView"];
+  layer = [v5 layer];
+  [layer setName:@"backgroundForegroundContainerViewsZStackView"];
 
   v34 = v5;
   [(PREditorSeparatedRootViewController *)self setBackgroundForegroundContainerViewsZStackView:v5];
   v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v8 = [v7 layer];
-  [v8 setName:@"floatingContainerViewsZStackView"];
+  layer2 = [v7 layer];
+  [layer2 setName:@"floatingContainerViewsZStackView"];
 
   v32 = v7;
   [(PREditorSeparatedRootViewController *)self setFloatingContainerViewsZStackView:v7];
   v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v10 = [v9 layer];
-  [v10 setName:@"looksDividerView"];
+  layer3 = [v9 layer];
+  [layer3 setName:@"looksDividerView"];
 
-  v11 = [MEMORY[0x1E69DC888] systemBlackColor];
-  [v9 setBackgroundColor:v11];
+  systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
+  [v9 setBackgroundColor:systemBlackColor];
 
   v29 = v9;
   [(PREditorSeparatedRootViewController *)self setLooksDividerView:v9];
@@ -54,38 +54,38 @@
   [v12 setScrollsToTop:0];
   [v12 setBounces:0];
   [v12 _setAutoScrollEnabled:0];
-  v13 = [v12 layer];
-  [v13 setHitTestsAsOpaque:1];
+  layer4 = [v12 layer];
+  [layer4 setHitTestsAsOpaque:1];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PREditorSeparatedRootViewController *)self setTimeContainerScrollView:v12];
-  v33 = [(PREditorRootViewController *)self timeContainerView];
-  [v12 addSubview:v33];
-  v30 = [(PREditorRootViewController *)self reticleVibrancyView];
-  v28 = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
-  v31 = v4;
-  [v3 insertSubview:v5 belowSubview:v4];
-  [v3 insertSubview:v7 belowSubview:v4];
-  [v3 insertSubview:v30 belowSubview:v4];
-  [v3 insertSubview:v12 belowSubview:v4];
-  [v3 insertSubview:v28 belowSubview:v4];
-  [v3 insertSubview:v9 aboveSubview:v4];
+  timeContainerView = [(PREditorRootViewController *)self timeContainerView];
+  [v12 addSubview:timeContainerView];
+  reticleVibrancyView = [(PREditorRootViewController *)self reticleVibrancyView];
+  sidebarReticleVibrancyView = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
+  v31 = scrollView;
+  [view insertSubview:v5 belowSubview:scrollView];
+  [view insertSubview:v7 belowSubview:scrollView];
+  [view insertSubview:reticleVibrancyView belowSubview:scrollView];
+  [view insertSubview:v12 belowSubview:scrollView];
+  [view insertSubview:sidebarReticleVibrancyView belowSubview:scrollView];
+  [view insertSubview:v9 aboveSubview:scrollView];
   v22 = MEMORY[0x1E696ACD8];
-  v27 = [v12 topAnchor];
-  v26 = [v3 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  topAnchor = [v12 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[0] = v25;
-  v24 = [v12 bottomAnchor];
-  v23 = [v3 bottomAnchor];
-  v21 = [v24 constraintEqualToAnchor:v23];
+  bottomAnchor = [v12 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v36[1] = v21;
-  v14 = [v12 leadingAnchor];
-  v15 = [v3 leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  leadingAnchor = [v12 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[2] = v16;
-  v17 = [v12 trailingAnchor];
-  v18 = [v3 trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  trailingAnchor = [v12 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[3] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
   [v22 activateConstraints:v20];
@@ -93,20 +93,20 @@
   [(PREditorSeparatedRootViewController *)self _updateCounterRotationLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PREditorSeparatedRootViewController;
-  [(PREditorSeparatedRootViewController *)&v4 viewWillAppear:a3];
+  [(PREditorSeparatedRootViewController *)&v4 viewWillAppear:appear];
   [(PREditorSeparatedRootViewController *)self _updateContainerViewFrames];
   [(PREditorSeparatedRootViewController *)self _updateCounterRotationLayout];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PREditorSeparatedRootViewController;
-  [(PREditorRootViewController *)&v4 viewDidAppear:a3];
+  [(PREditorRootViewController *)&v4 viewDidAppear:appear];
   [(PREditorRootViewController *)self updateReticleViewFrames];
 }
 
@@ -118,15 +118,15 @@
   [(PREditorSeparatedRootViewController *)self _updateCounterRotationLayout];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(PREditorSeparatedRootViewController *)self _updateContainerViewClipping:0];
   [(PREditorSeparatedRootViewController *)self _updateLooksDividerViewForTransitionToSize:1 startingTransition:width, height];
-  v8 = [(PREditorSeparatedRootViewController *)self timeContainerScrollView];
-  [v8 setClipsToBounds:0];
+  timeContainerScrollView = [(PREditorSeparatedRootViewController *)self timeContainerScrollView];
+  [timeContainerScrollView setClipsToBounds:0];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -140,10 +140,10 @@
   v10[4] = self;
   *&v10[5] = width;
   *&v10[6] = height;
-  [v7 animateAlongsideTransition:v11 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:v10];
   v9.receiver = self;
   v9.super_class = PREditorSeparatedRootViewController;
-  [(PREditorRootViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PREditorRootViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 uint64_t __90__PREditorSeparatedRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -167,20 +167,20 @@ uint64_t __90__PREditorSeparatedRootViewController_viewWillTransitionToSize_with
   return [v3 lookPropertiesDidChange];
 }
 
-- (void)_updateContainerViewClipping:(BOOL)a3
+- (void)_updateContainerViewClipping:(BOOL)clipping
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__PREditorSeparatedRootViewController__updateContainerViewClipping___block_invoke;
   v3[3] = &__block_descriptor_33_e16_v16__0__UIView_8l;
-  v4 = a3;
+  clippingCopy = clipping;
   [(PREditorSeparatedRootViewController *)self _enumerateContainerViewsWithBlock:v3];
 }
 
 - (void)_updateContainerViewFrames
 {
-  v3 = [(PREditorSeparatedRootViewController *)self view];
-  [v3 bounds];
+  view = [(PREditorSeparatedRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -199,31 +199,31 @@ uint64_t __90__PREditorSeparatedRootViewController_viewWillTransitionToSize_with
 
 - (void)_updateCounterRotationLayout
 {
-  v3 = [(PREditorRootViewController *)self editor];
-  if ([v3 _editorDynamicRotationIsActive])
+  editor = [(PREditorRootViewController *)self editor];
+  if ([editor _editorDynamicRotationIsActive])
   {
-    v4 = [(PREditorSeparatedRootViewController *)self _windowInterfaceOrientation];
+    _windowInterfaceOrientation = [(PREditorSeparatedRootViewController *)self _windowInterfaceOrientation];
   }
 
   else
   {
-    v4 = 1;
+    _windowInterfaceOrientation = 1;
   }
 
-  v5 = [(PREditorSeparatedRootViewController *)self view];
-  [v5 bounds];
+  view = [(PREditorSeparatedRootViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PREditorRootViewController *)self editor];
-  if ([v14 _editorDynamicRotationIsActive])
+  editor2 = [(PREditorRootViewController *)self editor];
+  if ([editor2 _editorDynamicRotationIsActive])
   {
 
     v15 = v11;
     v16 = v13;
-    if ((v4 - 3) <= 1)
+    if ((_windowInterfaceOrientation - 3) <= 1)
     {
       BSSizeSwap();
       v15 = v17;
@@ -246,12 +246,12 @@ uint64_t __90__PREditorSeparatedRootViewController_viewWillTransitionToSize_with
   *&v21[5] = v9;
   *&v21[6] = v11;
   *&v21[7] = v13;
-  v21[8] = v4;
+  v21[8] = _windowInterfaceOrientation;
   [(PREditorSeparatedRootViewController *)self _enumerateContainerViewsWithBlock:v21];
-  v19 = [(PREditorSeparatedRootViewController *)self backgroundForegroundContainerViewsZStackView];
-  v20 = [(PREditorSeparatedRootViewController *)self floatingContainerViewsZStackView];
-  [v19 setFrame:{v7, v9, v15, v16}];
-  [v20 setFrame:{v7, v9, v15, v16}];
+  backgroundForegroundContainerViewsZStackView = [(PREditorSeparatedRootViewController *)self backgroundForegroundContainerViewsZStackView];
+  floatingContainerViewsZStackView = [(PREditorSeparatedRootViewController *)self floatingContainerViewsZStackView];
+  [backgroundForegroundContainerViewsZStackView setFrame:{v7, v9, v15, v16}];
+  [floatingContainerViewsZStackView setFrame:{v7, v9, v15, v16}];
 }
 
 void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__block_invoke(uint64_t a1, void *a2)
@@ -285,16 +285,16 @@ void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__blo
   [v8 setContainerOrientation:*(a1 + 64)];
 }
 
-- (void)_updateLooksDividerViewForTransitionToSize:(CGSize)a3 startingTransition:(BOOL)a4
+- (void)_updateLooksDividerViewForTransitionToSize:(CGSize)size startingTransition:(BOOL)transition
 {
-  v4 = a4;
-  width = a3.width;
-  v7 = [(PREditorSeparatedRootViewController *)self looksDividerView:a3.width];
+  transitionCopy = transition;
+  width = size.width;
+  v7 = [(PREditorSeparatedRootViewController *)self looksDividerView:size.width];
   v9 = v7;
-  if (v4)
+  if (transitionCopy)
   {
-    v8 = [(PREditorRootViewController *)self scrollView];
-    if (([v8 isDragging] & 1) == 0)
+    scrollView = [(PREditorRootViewController *)self scrollView];
+    if (([scrollView isDragging] & 1) == 0)
     {
       [v9 setHidden:1];
       [v9 frame];
@@ -310,35 +310,35 @@ void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__blo
 
 - (int64_t)_windowInterfaceOrientation
 {
-  v3 = [(PREditorSeparatedRootViewController *)self view];
-  v4 = [v3 window];
-  v5 = v4;
-  if (!v4)
+  view = [(PREditorSeparatedRootViewController *)self view];
+  window = [view window];
+  v5 = window;
+  if (!window)
   {
-    v4 = [(PREditorSeparatedRootViewController *)self performSelector:sel__window];
+    window = [(PREditorSeparatedRootViewController *)self performSelector:sel__window];
   }
 
-  v6 = v4;
+  v6 = window;
 
-  v7 = [v6 _windowInterfaceOrientation];
-  return v7;
+  _windowInterfaceOrientation = [v6 _windowInterfaceOrientation];
+  return _windowInterfaceOrientation;
 }
 
-- (void)_enumerateContainerViewsWithBlock:(id)a3
+- (void)_enumerateContainerViewsWithBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PREditorSeparatedRootViewController *)self backgroundForegroundContainerViewsZStackView];
-  v6 = [v5 subviews];
+  blockCopy = block;
+  backgroundForegroundContainerViewsZStackView = [(PREditorSeparatedRootViewController *)self backgroundForegroundContainerViewsZStackView];
+  subviews = [backgroundForegroundContainerViewsZStackView subviews];
 
-  v7 = [(PREditorSeparatedRootViewController *)self floatingContainerViewsZStackView];
-  v8 = [v7 subviews];
+  floatingContainerViewsZStackView = [(PREditorSeparatedRootViewController *)self floatingContainerViewsZStackView];
+  subviews2 = [floatingContainerViewsZStackView subviews];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = subviews;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v10)
   {
@@ -354,7 +354,7 @@ void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__blo
           objc_enumerationMutation(v9);
         }
 
-        v4[2](v4, *(*(&v23 + 1) + 8 * v13++));
+        blockCopy[2](blockCopy, *(*(&v23 + 1) + 8 * v13++));
       }
 
       while (v11 != v13);
@@ -368,7 +368,7 @@ void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__blo
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v14 = v8;
+  v14 = subviews2;
   v15 = [v14 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v15)
   {
@@ -384,7 +384,7 @@ void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__blo
           objc_enumerationMutation(v14);
         }
 
-        v4[2](v4, *(*(&v19 + 1) + 8 * v18++));
+        blockCopy[2](blockCopy, *(*(&v19 + 1) + 8 * v18++));
       }
 
       while (v16 != v18);
@@ -451,16 +451,16 @@ void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__blo
     self->_viewsForLook = v3;
   }
 
-  v5 = [(PREditorSeparatedRootViewController *)self view];
-  v33 = [(PREditorSeparatedRootViewController *)self backgroundForegroundContainerViewsZStackView];
-  v32 = [(PREditorSeparatedRootViewController *)self floatingContainerViewsZStackView];
-  [v5 bounds];
+  view = [(PREditorSeparatedRootViewController *)self view];
+  backgroundForegroundContainerViewsZStackView = [(PREditorSeparatedRootViewController *)self backgroundForegroundContainerViewsZStackView];
+  floatingContainerViewsZStackView = [(PREditorSeparatedRootViewController *)self floatingContainerViewsZStackView];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v27 = v5;
-  v31 = [v5 effectiveUserInterfaceLayoutDirection];
+  v27 = view;
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -486,21 +486,21 @@ void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__blo
         v17 = *(*(&v38 + 1) + 8 * v15);
         v18 = __53__PREditorSeparatedRootViewController_looksDidChange__block_invoke(v7, v9, v11, v13);
         v19 = __53__PREditorSeparatedRootViewController_looksDidChange__block_invoke(v7, v9, v11, v13);
-        v20 = [v18 subviews];
-        v21 = [v20 firstObject];
+        subviews = [v18 subviews];
+        firstObject = [subviews firstObject];
 
-        v22 = [v19 subviews];
-        v23 = [v22 firstObject];
+        subviews2 = [v19 subviews];
+        firstObject2 = [subviews2 firstObject];
 
         v24 = objc_alloc_init(PREditorLookViews);
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __53__PREditorSeparatedRootViewController_looksDidChange__block_invoke_2;
         v35[3] = &unk_1E78443A8;
-        v36 = v23;
-        v37 = v21;
-        v25 = v21;
-        v26 = v23;
+        v36 = firstObject2;
+        v37 = firstObject;
+        v25 = firstObject;
+        v26 = firstObject2;
         [(PREditorLookViews *)v24 enumerateViewsUsingBlock:v35];
         if (v16 != v15)
         {
@@ -508,16 +508,16 @@ void __67__PREditorSeparatedRootViewController__updateCounterRotationLayout__blo
           [v19 setHidden:1];
         }
 
-        if (v31)
+        if (effectiveUserInterfaceLayoutDirection)
         {
-          [v33 addSubview:v18];
-          [v32 addSubview:v19];
+          [backgroundForegroundContainerViewsZStackView addSubview:v18];
+          [floatingContainerViewsZStackView addSubview:v19];
         }
 
         else
         {
-          [v33 insertSubview:v18 atIndex:0];
-          [v32 insertSubview:v19 atIndex:0];
+          [backgroundForegroundContainerViewsZStackView insertSubview:v18 atIndex:0];
+          [floatingContainerViewsZStackView insertSubview:v19 atIndex:0];
         }
 
         [(NSMutableDictionary *)self->_viewsForLook setObject:v24 forKey:v17];
@@ -558,17 +558,17 @@ uint64_t __53__PREditorSeparatedRootViewController_looksDidChange__block_invoke_
 
 - (id)currentLookViews
 {
-  v3 = [(PREditorRootViewController *)self currentLook];
-  v4 = [(PREditorSeparatedRootViewController *)self viewsForLook:v3];
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  v4 = [(PREditorSeparatedRootViewController *)self viewsForLook:currentLook];
 
   return v4;
 }
 
-- (void)setOverlayHostViewController:(id)a3
+- (void)setOverlayHostViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PREditorSeparatedRootViewController *)self floatingContainerViewsZStackView];
-  [(PREditorRootViewController *)self _setOverlayHostViewController:v4 insertingAboveSubview:v5];
+  controllerCopy = controller;
+  floatingContainerViewsZStackView = [(PREditorSeparatedRootViewController *)self floatingContainerViewsZStackView];
+  [(PREditorRootViewController *)self _setOverlayHostViewController:controllerCopy insertingAboveSubview:floatingContainerViewsZStackView];
 }
 
 @end

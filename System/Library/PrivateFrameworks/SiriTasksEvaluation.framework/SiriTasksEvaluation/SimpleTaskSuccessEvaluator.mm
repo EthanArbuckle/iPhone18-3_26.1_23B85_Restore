@@ -1,15 +1,15 @@
 @interface SimpleTaskSuccessEvaluator
 - (_TtC19SiriTasksEvaluation26SimpleTaskSuccessEvaluator)init;
-- (id)evaluateWithPseEvents:(id)a3;
+- (id)evaluateWithPseEvents:(id)events;
 @end
 
 @implementation SimpleTaskSuccessEvaluator
 
-- (id)evaluateWithPseEvents:(id)a3
+- (id)evaluateWithPseEvents:(id)events
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2803027B0, &qword_26926C030);
   v4 = sub_26926B310();
-  v5 = self;
+  selfCopy = self;
   sub_2692666A0(v4);
   v7 = v6;
 

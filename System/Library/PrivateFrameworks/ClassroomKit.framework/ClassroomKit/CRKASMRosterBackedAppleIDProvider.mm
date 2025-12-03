@@ -1,20 +1,20 @@
 @interface CRKASMRosterBackedAppleIDProvider
-- (CRKASMRosterBackedAppleIDProvider)initWithRosterProvider:(id)a3;
+- (CRKASMRosterBackedAppleIDProvider)initWithRosterProvider:(id)provider;
 - (NSString)appleID;
 @end
 
 @implementation CRKASMRosterBackedAppleIDProvider
 
-- (CRKASMRosterBackedAppleIDProvider)initWithRosterProvider:(id)a3
+- (CRKASMRosterBackedAppleIDProvider)initWithRosterProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CRKASMRosterBackedAppleIDProvider;
   v6 = [(CRKASMRosterBackedAppleIDProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rosterProvider, a3);
+    objc_storeStrong(&v6->_rosterProvider, provider);
   }
 
   return v7;
@@ -22,12 +22,12 @@
 
 - (NSString)appleID
 {
-  v2 = [(CRKASMRosterBackedAppleIDProvider *)self rosterProvider];
-  v3 = [v2 roster];
-  v4 = [v3 user];
-  v5 = [v4 appleID];
+  rosterProvider = [(CRKASMRosterBackedAppleIDProvider *)self rosterProvider];
+  roster = [rosterProvider roster];
+  user = [roster user];
+  appleID = [user appleID];
 
-  return v5;
+  return appleID;
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface MSObjectWrapper
-+ (id)objectsFromWrappers:(id)a3;
-+ (id)objectsFromWrappers:(id)a3 equalToObject:(id)a4;
-+ (id)wrapperWithObject:(id)a3 size:(int64_t)a4;
-+ (int64_t)indexOfObject:(id)a3 inWrapperArray:(id)a4;
-- (MSObjectWrapper)initWithObject:(id)a3 size:(int64_t)a4;
++ (id)objectsFromWrappers:(id)wrappers;
++ (id)objectsFromWrappers:(id)wrappers equalToObject:(id)object;
++ (id)wrapperWithObject:(id)object size:(int64_t)size;
++ (int64_t)indexOfObject:(id)object inWrapperArray:(id)array;
+- (MSObjectWrapper)initWithObject:(id)object size:(int64_t)size;
 @end
 
 @implementation MSObjectWrapper
 
-- (MSObjectWrapper)initWithObject:(id)a3 size:(int64_t)a4
+- (MSObjectWrapper)initWithObject:(id)object size:(int64_t)size
 {
-  v7 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = MSObjectWrapper;
   v8 = [(MSObjectWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_object, a3);
-    v9->_size = a4;
+    objc_storeStrong(&v8->_object, object);
+    v9->_size = size;
   }
 
   return v9;
 }
 
-+ (id)objectsFromWrappers:(id)a3 equalToObject:(id)a4
++ (id)objectsFromWrappers:(id)wrappers equalToObject:(id)object
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  wrappersCopy = wrappers;
+  objectCopy = object;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(wrappersCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = wrappersCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -50,11 +50,11 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 object];
-        if ([v14 isEqual:v6])
+        object = [v13 object];
+        if ([object isEqual:objectCopy])
         {
-          v15 = [v13 object];
-          [v7 addObject:v15];
+          object2 = [v13 object];
+          [v7 addObject:object2];
         }
       }
 
@@ -69,16 +69,16 @@
   return v7;
 }
 
-+ (id)objectsFromWrappers:(id)a3
++ (id)objectsFromWrappers:(id)wrappers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  wrappersCopy = wrappers;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(wrappersCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = wrappersCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -93,10 +93,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) object];
-        if (v10)
+        object = [*(*(&v13 + 1) + 8 * i) object];
+        if (object)
         {
-          [v4 addObject:v10];
+          [v4 addObject:object];
         }
       }
 
@@ -111,25 +111,25 @@
   return v4;
 }
 
-+ (int64_t)indexOfObject:(id)a3 inWrapperArray:(id)a4
++ (int64_t)indexOfObject:(id)object inWrapperArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  objectCopy = object;
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v6 objectAtIndex:v7];
-      v9 = [v8 object];
-      v10 = [v9 isEqual:v5];
+      v8 = [arrayCopy objectAtIndex:v7];
+      object = [v8 object];
+      v10 = [object isEqual:objectCopy];
 
       if (v10)
       {
         break;
       }
 
-      if (++v7 >= [v6 count])
+      if (++v7 >= [arrayCopy count])
       {
         goto LABEL_5;
       }
@@ -145,10 +145,10 @@ LABEL_5:
   return v7;
 }
 
-+ (id)wrapperWithObject:(id)a3 size:(int64_t)a4
++ (id)wrapperWithObject:(id)object size:(int64_t)size
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithObject:v6 size:a4];
+  objectCopy = object;
+  v7 = [[self alloc] initWithObject:objectCopy size:size];
 
   return v7;
 }

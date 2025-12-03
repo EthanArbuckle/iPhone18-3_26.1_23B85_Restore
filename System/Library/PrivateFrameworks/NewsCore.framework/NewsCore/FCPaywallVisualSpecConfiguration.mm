@@ -5,10 +5,10 @@
 + (id)defaultMagazineFeedPaywallVisualSpecConfigurationMedium;
 + (id)defaultMagazineFeedPaywallVisualSpecConfigurationSmall;
 + (id)defaultPaywallVisualSpecConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCPaywallVisualSpecConfiguration)init;
-- (FCPaywallVisualSpecConfiguration)initWithConfigDictionary:(id)a3;
-- (FCPaywallVisualSpecConfiguration)initWithMultiResolutionImage:(id)a3 darkStyleMultiResolutionImage:(id)a4 multiResolutionBadgeImage:(id)a5 darkStyleMultiResolutionBadgeImage:(id)a6 multiSizeVideo:(id)a7 videoURL:(id)a8 videoWidth:(int64_t)a9 videoHeight:(int64_t)a10 gradientPercentHeight:(double)a11 textTopPadding:(int64_t)a12 badgeVerticalOffset:(int64_t)a13 backgroundColor:(id)a14 darkStyleBackgroundColor:(id)a15 mastheadTextColor:(id)a16 largeTextColor:(id)a17 smallTextColor:(id)a18 offersTextColor:(id)a19;
+- (FCPaywallVisualSpecConfiguration)initWithConfigDictionary:(id)dictionary;
+- (FCPaywallVisualSpecConfiguration)initWithMultiResolutionImage:(id)image darkStyleMultiResolutionImage:(id)resolutionImage multiResolutionBadgeImage:(id)badgeImage darkStyleMultiResolutionBadgeImage:(id)resolutionBadgeImage multiSizeVideo:(id)video videoURL:(id)l videoWidth:(int64_t)width videoHeight:(int64_t)self0 gradientPercentHeight:(double)self1 textTopPadding:(int64_t)self2 badgeVerticalOffset:(int64_t)self3 backgroundColor:(id)self4 darkStyleBackgroundColor:(id)self5 mastheadTextColor:(id)self6 largeTextColor:(id)self7 smallTextColor:(id)self8 offersTextColor:(id)self9;
 - (unint64_t)hash;
 @end
 
@@ -40,36 +40,36 @@
   objc_exception_throw(v6);
 }
 
-- (FCPaywallVisualSpecConfiguration)initWithConfigDictionary:(id)a3
+- (FCPaywallVisualSpecConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v3 = a3;
-  v32 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"image", 0);
+  dictionaryCopy = dictionary;
+  v32 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"image", 0);
   v34 = [[FCMultiResolutionImage alloc] initWithConfigDictionary:v32];
-  v31 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"alternateImage", 0);
+  v31 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"alternateImage", 0);
   v33 = [[FCMultiResolutionImage alloc] initWithConfigDictionary:v31];
-  v30 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"badgeImage", 0);
+  v30 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"badgeImage", 0);
   v17 = [[FCMultiResolutionImage alloc] initWithConfigDictionary:v30];
-  v29 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"alternateBadgeImage", 0);
+  v29 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"alternateBadgeImage", 0);
   v16 = [[FCMultiResolutionImage alloc] initWithConfigDictionary:v29];
-  v28 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"video", 0);
+  v28 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"video", 0);
   v27 = [[FCMultiSizeVideo alloc] initWithConfigDictionary:v28];
-  v26 = FCAppConfigurationURLValue(v3, @"videoURL");
-  v22 = FCAppConfigurationIntegerValue(v3, @"videoWidth", 0);
-  v21 = FCAppConfigurationIntegerValue(v3, @"videoHeight", 0);
-  v4 = FCAppConfigurationDoubleValue(v3, @"gradientPercentHeight", 0.0);
-  v19 = FCAppConfigurationIntegerValue(v3, @"textTopPadding", 57);
-  v15 = FCAppConfigurationIntegerValue(v3, @"badgeVerticalOffset", 0);
-  v25 = FCAppConfigurationStringValue(v3, @"backgroundColor", 0);
+  v26 = FCAppConfigurationURLValue(dictionaryCopy, @"videoURL");
+  v22 = FCAppConfigurationIntegerValue(dictionaryCopy, @"videoWidth", 0);
+  v21 = FCAppConfigurationIntegerValue(dictionaryCopy, @"videoHeight", 0);
+  v4 = FCAppConfigurationDoubleValue(dictionaryCopy, @"gradientPercentHeight", 0.0);
+  v19 = FCAppConfigurationIntegerValue(dictionaryCopy, @"textTopPadding", 57);
+  v15 = FCAppConfigurationIntegerValue(dictionaryCopy, @"badgeVerticalOffset", 0);
+  v25 = FCAppConfigurationStringValue(dictionaryCopy, @"backgroundColor", 0);
   v13 = [FCColor nullableColorWithHexString:v25];
-  v20 = FCAppConfigurationStringValue(v3, @"alternateBackgroundColor", 0);
+  v20 = FCAppConfigurationStringValue(dictionaryCopy, @"alternateBackgroundColor", 0);
   v12 = [FCColor nullableColorWithHexString:v20];
-  v18 = FCAppConfigurationStringValue(v3, @"mastheadColor", 0);
+  v18 = FCAppConfigurationStringValue(dictionaryCopy, @"mastheadColor", 0);
   v5 = [FCColor nullableColorWithHexString:v18];
-  v14 = FCAppConfigurationStringValue(v3, @"largeTextColor", 0);
+  v14 = FCAppConfigurationStringValue(dictionaryCopy, @"largeTextColor", 0);
   v6 = [FCColor nullableColorWithHexString:v14];
-  v7 = FCAppConfigurationStringValue(v3, @"smallTextColor", 0);
+  v7 = FCAppConfigurationStringValue(dictionaryCopy, @"smallTextColor", 0);
   v8 = [FCColor nullableColorWithHexString:v7];
-  v9 = FCAppConfigurationStringValue(v3, @"offersTextColor", 0);
+  v9 = FCAppConfigurationStringValue(dictionaryCopy, @"offersTextColor", 0);
 
   v10 = [FCColor nullableColorWithHexString:v9];
   v24 = [(FCPaywallVisualSpecConfiguration *)self initWithMultiResolutionImage:v34 darkStyleMultiResolutionImage:v33 multiResolutionBadgeImage:v17 darkStyleMultiResolutionBadgeImage:v16 multiSizeVideo:v27 videoURL:v26 videoWidth:v4 videoHeight:v22 gradientPercentHeight:v21 textTopPadding:v19 badgeVerticalOffset:v15 backgroundColor:v13 darkStyleBackgroundColor:v12 mastheadTextColor:v5 largeTextColor:v6 smallTextColor:v8 offersTextColor:v10];
@@ -77,60 +77,60 @@
   return v24;
 }
 
-- (FCPaywallVisualSpecConfiguration)initWithMultiResolutionImage:(id)a3 darkStyleMultiResolutionImage:(id)a4 multiResolutionBadgeImage:(id)a5 darkStyleMultiResolutionBadgeImage:(id)a6 multiSizeVideo:(id)a7 videoURL:(id)a8 videoWidth:(int64_t)a9 videoHeight:(int64_t)a10 gradientPercentHeight:(double)a11 textTopPadding:(int64_t)a12 badgeVerticalOffset:(int64_t)a13 backgroundColor:(id)a14 darkStyleBackgroundColor:(id)a15 mastheadTextColor:(id)a16 largeTextColor:(id)a17 smallTextColor:(id)a18 offersTextColor:(id)a19
+- (FCPaywallVisualSpecConfiguration)initWithMultiResolutionImage:(id)image darkStyleMultiResolutionImage:(id)resolutionImage multiResolutionBadgeImage:(id)badgeImage darkStyleMultiResolutionBadgeImage:(id)resolutionBadgeImage multiSizeVideo:(id)video videoURL:(id)l videoWidth:(int64_t)width videoHeight:(int64_t)self0 gradientPercentHeight:(double)self1 textTopPadding:(int64_t)self2 badgeVerticalOffset:(int64_t)self3 backgroundColor:(id)self4 darkStyleBackgroundColor:(id)self5 mastheadTextColor:(id)self6 largeTextColor:(id)self7 smallTextColor:(id)self8 offersTextColor:(id)self9
 {
-  v44 = a3;
-  v42 = a4;
-  v35 = a5;
-  v41 = a5;
-  v40 = a6;
-  v36 = a7;
-  v25 = a7;
-  v37 = a8;
-  v26 = a8;
-  v43 = a14;
-  v27 = a15;
-  v28 = a16;
-  v29 = a17;
-  v30 = a18;
-  v39 = a19;
+  imageCopy = image;
+  resolutionImageCopy = resolutionImage;
+  badgeImageCopy = badgeImage;
+  badgeImageCopy2 = badgeImage;
+  resolutionBadgeImageCopy = resolutionBadgeImage;
+  videoCopy = video;
+  videoCopy2 = video;
+  lCopy = l;
+  lCopy2 = l;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  textColorCopy = textColor;
+  largeTextColorCopy = largeTextColor;
+  smallTextColorCopy = smallTextColor;
+  offersTextColorCopy = offersTextColor;
   v45.receiver = self;
   v45.super_class = FCPaywallVisualSpecConfiguration;
   v31 = [(FCPaywallVisualSpecConfiguration *)&v45 init];
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_multiResolutionImage, a3);
-    objc_storeStrong(&v32->_darkStyleMultiResolutionImage, a4);
-    objc_storeStrong(&v32->_multiResolutionBadgeImage, v35);
-    objc_storeStrong(&v32->_darkStyleMultiResolutionBadgeImage, a6);
-    objc_storeStrong(&v32->_multiSizeVideo, v36);
-    objc_storeStrong(&v32->_videoURL, v37);
-    v32->_videoWidth = a9;
-    v32->_videoHeight = a10;
-    v32->_gradientPercentHeight = a11;
-    v32->_textTopPadding = a12;
-    v32->_badgeVerticalOffset = a13;
-    objc_storeStrong(&v32->_backgroundColor, a14);
-    objc_storeStrong(&v32->_darkStyleBackgroundColor, a15);
-    objc_storeStrong(&v32->_mastheadTextColor, a16);
-    objc_storeStrong(&v32->_largeTextColor, a17);
-    objc_storeStrong(&v32->_smallTextColor, a18);
-    objc_storeStrong(&v32->_offersTextColor, a19);
+    objc_storeStrong(&v31->_multiResolutionImage, image);
+    objc_storeStrong(&v32->_darkStyleMultiResolutionImage, resolutionImage);
+    objc_storeStrong(&v32->_multiResolutionBadgeImage, badgeImageCopy);
+    objc_storeStrong(&v32->_darkStyleMultiResolutionBadgeImage, resolutionBadgeImage);
+    objc_storeStrong(&v32->_multiSizeVideo, videoCopy);
+    objc_storeStrong(&v32->_videoURL, lCopy);
+    v32->_videoWidth = width;
+    v32->_videoHeight = height;
+    v32->_gradientPercentHeight = percentHeight;
+    v32->_textTopPadding = padding;
+    v32->_badgeVerticalOffset = offset;
+    objc_storeStrong(&v32->_backgroundColor, color);
+    objc_storeStrong(&v32->_darkStyleBackgroundColor, backgroundColor);
+    objc_storeStrong(&v32->_mastheadTextColor, textColor);
+    objc_storeStrong(&v32->_largeTextColor, largeTextColor);
+    objc_storeStrong(&v32->_smallTextColor, smallTextColor);
+    objc_storeStrong(&v32->_offersTextColor, offersTextColor);
   }
 
   return v32;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -149,52 +149,52 @@
   if (v6)
   {
     v7 = MEMORY[0x1E69E58C0];
-    v8 = [(FCPaywallVisualSpecConfiguration *)self multiResolutionImage];
-    v9 = [v6 multiResolutionImage];
-    if ([v7 nf_object:v8 isEqualToObject:v9])
+    multiResolutionImage = [(FCPaywallVisualSpecConfiguration *)self multiResolutionImage];
+    multiResolutionImage2 = [v6 multiResolutionImage];
+    if ([v7 nf_object:multiResolutionImage isEqualToObject:multiResolutionImage2])
     {
       v10 = MEMORY[0x1E69E58C0];
-      v11 = [(FCPaywallVisualSpecConfiguration *)self darkStyleMultiResolutionImage];
-      v12 = [v6 darkStyleMultiResolutionImage];
-      if ([v10 nf_object:v11 isEqualToObject:v12])
+      darkStyleMultiResolutionImage = [(FCPaywallVisualSpecConfiguration *)self darkStyleMultiResolutionImage];
+      darkStyleMultiResolutionImage2 = [v6 darkStyleMultiResolutionImage];
+      if ([v10 nf_object:darkStyleMultiResolutionImage isEqualToObject:darkStyleMultiResolutionImage2])
       {
         v13 = MEMORY[0x1E69E58C0];
-        v14 = [(FCPaywallVisualSpecConfiguration *)self multiResolutionBadgeImage];
-        v15 = [v6 multiResolutionBadgeImage];
-        if ([v13 nf_object:v14 isEqualToObject:v15])
+        multiResolutionBadgeImage = [(FCPaywallVisualSpecConfiguration *)self multiResolutionBadgeImage];
+        multiResolutionBadgeImage2 = [v6 multiResolutionBadgeImage];
+        if ([v13 nf_object:multiResolutionBadgeImage isEqualToObject:multiResolutionBadgeImage2])
         {
-          v36 = v14;
+          v36 = multiResolutionBadgeImage;
           v16 = MEMORY[0x1E69E58C0];
-          v17 = [(FCPaywallVisualSpecConfiguration *)self darkStyleMultiResolutionBadgeImage];
+          darkStyleMultiResolutionBadgeImage = [(FCPaywallVisualSpecConfiguration *)self darkStyleMultiResolutionBadgeImage];
           [v6 darkStyleMultiResolutionBadgeImage];
-          v35 = v37 = v17;
-          if ([v16 nf_object:v17 isEqualToObject:?])
+          v35 = v37 = darkStyleMultiResolutionBadgeImage;
+          if ([v16 nf_object:darkStyleMultiResolutionBadgeImage isEqualToObject:?])
           {
             v18 = MEMORY[0x1E69E58C0];
-            v19 = [(FCPaywallVisualSpecConfiguration *)self backgroundColor];
-            v33 = [v6 backgroundColor];
-            v34 = v19;
-            if ([v18 nf_object:v19 isEqualToObject:?])
+            backgroundColor = [(FCPaywallVisualSpecConfiguration *)self backgroundColor];
+            backgroundColor2 = [v6 backgroundColor];
+            v34 = backgroundColor;
+            if ([v18 nf_object:backgroundColor isEqualToObject:?])
             {
               v20 = MEMORY[0x1E69E58C0];
-              v21 = [(FCPaywallVisualSpecConfiguration *)self darkStyleBackgroundColor];
-              v22 = [v6 darkStyleBackgroundColor];
+              darkStyleBackgroundColor = [(FCPaywallVisualSpecConfiguration *)self darkStyleBackgroundColor];
+              darkStyleBackgroundColor2 = [v6 darkStyleBackgroundColor];
               v23 = v20;
-              v24 = v22;
-              if ([v23 nf_object:v21 isEqualToObject:v22])
+              v24 = darkStyleBackgroundColor2;
+              if ([v23 nf_object:darkStyleBackgroundColor isEqualToObject:darkStyleBackgroundColor2])
               {
                 [(FCPaywallVisualSpecConfiguration *)self gradientPercentHeight];
                 v26 = v25;
                 [v6 gradientPercentHeight];
-                v14 = v36;
+                multiResolutionBadgeImage = v36;
                 if (v26 == v27)
                 {
                   v32 = v24;
-                  v28 = [(FCPaywallVisualSpecConfiguration *)self textTopPadding];
-                  if (v28 == [v6 textTopPadding])
+                  textTopPadding = [(FCPaywallVisualSpecConfiguration *)self textTopPadding];
+                  if (textTopPadding == [v6 textTopPadding])
                   {
-                    v29 = [(FCPaywallVisualSpecConfiguration *)self badgeVerticalOffset];
-                    v30 = v29 == [v6 badgeVerticalOffset];
+                    badgeVerticalOffset = [(FCPaywallVisualSpecConfiguration *)self badgeVerticalOffset];
+                    v30 = badgeVerticalOffset == [v6 badgeVerticalOffset];
                   }
 
                   else
@@ -214,21 +214,21 @@
               else
               {
                 v30 = 0;
-                v14 = v36;
+                multiResolutionBadgeImage = v36;
               }
             }
 
             else
             {
               v30 = 0;
-              v14 = v36;
+              multiResolutionBadgeImage = v36;
             }
           }
 
           else
           {
             v30 = 0;
-            v14 = v36;
+            multiResolutionBadgeImage = v36;
           }
         }
 
@@ -260,18 +260,18 @@
 
 - (unint64_t)hash
 {
-  v22 = [(FCPaywallVisualSpecConfiguration *)self multiResolutionImage];
-  v3 = [v22 hash];
-  v21 = [(FCPaywallVisualSpecConfiguration *)self darkStyleMultiResolutionImage];
-  v4 = [v21 hash] ^ v3;
-  v5 = [(FCPaywallVisualSpecConfiguration *)self multiResolutionBadgeImage];
-  v6 = [v5 hash];
-  v7 = [(FCPaywallVisualSpecConfiguration *)self darkStyleMultiResolutionBadgeImage];
-  v8 = v4 ^ v6 ^ [v7 hash];
-  v9 = [(FCPaywallVisualSpecConfiguration *)self backgroundColor];
-  v10 = [v9 hash];
-  v11 = [(FCPaywallVisualSpecConfiguration *)self darkStyleBackgroundColor];
-  v12 = v8 ^ v10 ^ [v11 hash];
+  multiResolutionImage = [(FCPaywallVisualSpecConfiguration *)self multiResolutionImage];
+  v3 = [multiResolutionImage hash];
+  darkStyleMultiResolutionImage = [(FCPaywallVisualSpecConfiguration *)self darkStyleMultiResolutionImage];
+  v4 = [darkStyleMultiResolutionImage hash] ^ v3;
+  multiResolutionBadgeImage = [(FCPaywallVisualSpecConfiguration *)self multiResolutionBadgeImage];
+  v6 = [multiResolutionBadgeImage hash];
+  darkStyleMultiResolutionBadgeImage = [(FCPaywallVisualSpecConfiguration *)self darkStyleMultiResolutionBadgeImage];
+  v8 = v4 ^ v6 ^ [darkStyleMultiResolutionBadgeImage hash];
+  backgroundColor = [(FCPaywallVisualSpecConfiguration *)self backgroundColor];
+  v10 = [backgroundColor hash];
+  darkStyleBackgroundColor = [(FCPaywallVisualSpecConfiguration *)self darkStyleBackgroundColor];
+  v12 = v8 ^ v10 ^ [darkStyleBackgroundColor hash];
   v13 = MEMORY[0x1E696AD98];
   [(FCPaywallVisualSpecConfiguration *)self gradientPercentHeight];
   v14 = [v13 numberWithDouble:?];

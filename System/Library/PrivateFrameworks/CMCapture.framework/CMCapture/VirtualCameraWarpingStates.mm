@@ -1,5 +1,5 @@
 @interface VirtualCameraWarpingStates
-- (double)initWithInputCamera:(void *)a3 outputCamera:(double)a4 outputROI:(double)a5;
+- (double)initWithInputCamera:(void *)camera outputCamera:(double)outputCamera outputROI:(double)i;
 - (void)dealloc;
 @end
 
@@ -12,22 +12,22 @@
   [(VirtualCameraWarpingStates *)&v3 dealloc];
 }
 
-- (double)initWithInputCamera:(void *)a3 outputCamera:(double)a4 outputROI:(double)a5
+- (double)initWithInputCamera:(void *)camera outputCamera:(double)outputCamera outputROI:(double)i
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = VirtualCameraWarpingStates;
   v13 = objc_msgSendSuper2(&v15, sel_init);
   if (v13)
   {
     *(v13 + 1) = a2;
-    *(v13 + 2) = a3;
-    v13[3] = a4;
-    v13[4] = a5;
+    *(v13 + 2) = camera;
+    v13[3] = outputCamera;
+    v13[4] = i;
     v13[5] = a6;
     v13[6] = a7;
   }

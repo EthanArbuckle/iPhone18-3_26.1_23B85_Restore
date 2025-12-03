@@ -1,15 +1,15 @@
 @interface EDPersistenceDatabaseConnectionPool
-- (BOOL)_lockForConnectionType:(unint64_t)a3 resource:(id *)a4;
+- (BOOL)_lockForConnectionType:(unint64_t)type resource:(id *)resource;
 - (BOOL)_shouldAddReaderConnectionBackToCache;
-- (EDPersistenceDatabaseConnectionPool)initWithDelegate:(id)a3 minimumCachedReaderConnections:(unint64_t)a4;
+- (EDPersistenceDatabaseConnectionPool)initWithDelegate:(id)delegate minimumCachedReaderConnections:(unint64_t)connections;
 - (EDPersistenceDatabaseConnectionPoolDelegate)delegate;
-- (id)_connectionWithType:(unint64_t)a3;
+- (id)_connectionWithType:(unint64_t)type;
 - (unint64_t)cacheSize;
-- (void)_unlockForConnectionType:(unint64_t)a3 resource:(id)a4;
-- (void)checkInConnection:(id)a3;
+- (void)_unlockForConnectionType:(unint64_t)type resource:(id)resource;
+- (void)checkInConnection:(id)connection;
 - (void)dealloc;
 - (void)flush;
-- (void)setCacheSize:(unint64_t)a3;
+- (void)setCacheSize:(unint64_t)size;
 @end
 
 @implementation EDPersistenceDatabaseConnectionPool
@@ -45,21 +45,21 @@ void ___ef_log_EDPersistenceDatabaseConnectionPool_block_invoke()
   _ef_log_EDPersistenceDatabaseConnectionPool_log = v0;
 }
 
-- (EDPersistenceDatabaseConnectionPool)initWithDelegate:(id)a3 minimumCachedReaderConnections:(unint64_t)a4
+- (EDPersistenceDatabaseConnectionPool)initWithDelegate:(id)delegate minimumCachedReaderConnections:(unint64_t)connections
 {
-  v7 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = EDPersistenceDatabaseConnectionPool;
   v8 = [(EDPersistenceDatabaseConnectionPool *)&v21 init];
   if (v8)
   {
-    if (!a4)
+    if (!connections)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:v8 file:@"EDPersistenceDatabaseConnectionPool.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"minimumCachedReaderConnections > 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"EDPersistenceDatabaseConnectionPool.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"minimumCachedReaderConnections > 0"}];
     }
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v9 = objc_alloc_init(MEMORY[0x1E696AD10]);
     cacheLock = v8->_cacheLock;
     v8->_cacheLock = v9;
@@ -68,9 +68,9 @@ void ___ef_log_EDPersistenceDatabaseConnectionPool_block_invoke()
     checkoutLock = v8->_checkoutLock;
     v8->_checkoutLock = v11;
 
-    v13 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     checkoutMap = v8->_checkoutMap;
-    v8->_checkoutMap = v13;
+    v8->_checkoutMap = weakToStrongObjectsMapTable;
 
     v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     cache = v8->_cache;
@@ -80,7 +80,7 @@ void ___ef_log_EDPersistenceDatabaseConnectionPool_block_invoke()
     writerLock = v8->_writerLock;
     v8->_writerLock = v17;
 
-    [(EDPersistenceDatabaseConnectionPool *)v8 setCacheSize:a4];
+    [(EDPersistenceDatabaseConnectionPool *)v8 setCacheSize:connections];
   }
 
   return v8;
@@ -89,19 +89,19 @@ void ___ef_log_EDPersistenceDatabaseConnectionPool_block_invoke()
 - (void)dealloc
 {
   [(EDPersistenceDatabaseConnectionPool *)self setCacheSize:0];
-  v3 = [(_EDPersistenceDatabaseConnectionWrapper *)self->_writerConnection connection];
-  [v3 close];
+  connection = [(_EDPersistenceDatabaseConnectionWrapper *)self->_writerConnection connection];
+  [connection close];
 
   v4.receiver = self;
   v4.super_class = EDPersistenceDatabaseConnectionPool;
   [(EDPersistenceDatabaseConnectionPool *)&v4 dealloc];
 }
 
-- (id)_connectionWithType:(unint64_t)a3
+- (id)_connectionWithType:(unint64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
   v19 = 0;
-  v5 = [(EDPersistenceDatabaseConnectionPool *)self _lockForConnectionType:a3 resource:&v19];
+  v5 = [(EDPersistenceDatabaseConnectionPool *)self _lockForConnectionType:type resource:&v19];
   v6 = v19;
   [(NSLock *)self->_cacheLock lock];
   cacheGeneration = self->_cacheGeneration;
@@ -114,10 +114,10 @@ void ___ef_log_EDPersistenceDatabaseConnectionPool_block_invoke()
 
   else
   {
-    v10 = [(NSMutableSet *)self->_cache anyObject];
-    if (v10)
+    anyObject = [(NSMutableSet *)self->_cache anyObject];
+    if (anyObject)
     {
-      v8 = v10;
+      v8 = anyObject;
       [(NSMutableSet *)self->_cache removeObject:?];
     }
 
@@ -130,22 +130,22 @@ void ___ef_log_EDPersistenceDatabaseConnectionPool_block_invoke()
   [(NSLock *)self->_cacheLock unlock];
   if (v8)
   {
-    v11 = [(_EDPersistenceDatabaseConnectionWrapper *)v8 connection];
+    connection = [(_EDPersistenceDatabaseConnectionWrapper *)v8 connection];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [WeakRetained openConnectionIsWriter:v5];
+    connection = [WeakRetained openConnectionIsWriter:v5];
 
-    if (![v11 isValid])
+    if (![connection isValid])
     {
 
       v8 = 0;
       goto LABEL_17;
     }
 
-    v8 = [[_EDPersistenceDatabaseConnectionWrapper alloc] initWithConnection:v11 generation:cacheGeneration];
+    v8 = [[_EDPersistenceDatabaseConnectionWrapper alloc] initWithConnection:connection generation:cacheGeneration];
     [(NSLock *)self->_cacheLock lock];
     v13 = [MEMORY[0x1E695DF00] now];
     lastConnectionCreationTime = self->_lastConnectionCreationTime;
@@ -167,30 +167,30 @@ void ___ef_log_EDPersistenceDatabaseConnectionPool_block_invoke()
     [(NSLock *)self->_cacheLock unlock];
   }
 
-  if (v11)
+  if (connection)
   {
-    [(_EDPersistenceDatabaseConnectionWrapper *)v8 setType:a3];
+    [(_EDPersistenceDatabaseConnectionWrapper *)v8 setType:type];
     [(_EDPersistenceDatabaseConnectionWrapper *)v8 setResource:v6];
     [(NSLock *)self->_checkoutLock lock];
-    [(NSMapTable *)self->_checkoutMap setObject:v8 forKey:v11];
+    [(NSMapTable *)self->_checkoutMap setObject:v8 forKey:connection];
     [(NSLock *)self->_checkoutLock unlock];
     goto LABEL_18;
   }
 
 LABEL_17:
-  v11 = 0;
-  [(EDPersistenceDatabaseConnectionPool *)self _unlockForConnectionType:a3 resource:v6];
+  connection = 0;
+  [(EDPersistenceDatabaseConnectionPool *)self _unlockForConnectionType:type resource:v6];
 LABEL_18:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return connection;
 }
 
-- (BOOL)_lockForConnectionType:(unint64_t)a3 resource:(id *)a4
+- (BOOL)_lockForConnectionType:(unint64_t)type resource:(id *)resource
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
     p_writersWaiting = &self->_writersWaiting;
     add = atomic_fetch_add(&self->_writersWaiting, 1u);
@@ -220,35 +220,35 @@ LABEL_18:
     }
   }
 
-  result = a3 == 0;
+  result = type == 0;
   v13 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)checkInConnection:(id)a3
+- (void)checkInConnection:(id)connection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  connectionCopy = connection;
   [(NSLock *)self->_checkoutLock lock];
-  v6 = [(NSMapTable *)self->_checkoutMap objectForKey:v5];
+  v6 = [(NSMapTable *)self->_checkoutMap objectForKey:connectionCopy];
   if (v6)
   {
-    [(NSMapTable *)self->_checkoutMap removeObjectForKey:v5];
+    [(NSMapTable *)self->_checkoutMap removeObjectForKey:connectionCopy];
   }
 
   [(NSLock *)self->_checkoutLock unlock];
   if (!v6)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnectionPool.m" lineNumber:198 description:@"No connection wrapper found"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnectionPool.m" lineNumber:198 description:@"No connection wrapper found"];
   }
 
-  v7 = [v6 type];
-  v8 = [v6 resource];
+  type = [v6 type];
+  resource = [v6 resource];
   [(NSLock *)self->_cacheLock lock];
   if ([v6 generation] == self->_cacheGeneration)
   {
-    if ([v5 isWriter])
+    if ([connectionCopy isWriter])
     {
       objc_storeStrong(&self->_writerConnection, v6);
     }
@@ -288,28 +288,28 @@ LABEL_18:
       lastConnectionDisposalTime = self->_lastConnectionDisposalTime;
       self->_lastConnectionDisposalTime = v14;
 
-      [v5 close];
+      [connectionCopy close];
     }
   }
 
   else
   {
-    [v5 close];
-    if (([v5 isWriter] & 1) == 0)
+    [connectionCopy close];
+    if (([connectionCopy isWriter] & 1) == 0)
     {
       --self->_totalCurrentReaderConnections;
     }
   }
 
   [(NSLock *)self->_cacheLock unlock];
-  [(EDPersistenceDatabaseConnectionPool *)self _unlockForConnectionType:v7 resource:v8];
+  [(EDPersistenceDatabaseConnectionPool *)self _unlockForConnectionType:type resource:resource];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_unlockForConnectionType:(unint64_t)a3 resource:(id)a4
+- (void)_unlockForConnectionType:(unint64_t)type resource:(id)resource
 {
-  if (!a3)
+  if (!type)
   {
     [(NSLock *)self->_writerLock unlock:0];
   }
@@ -356,8 +356,8 @@ LABEL_18:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) connection];
-        [v11 close];
+        connection = [*(*(&v13 + 1) + 8 * v10) connection];
+        [connection close];
 
         ++v10;
       }
@@ -372,10 +372,10 @@ LABEL_18:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCacheSize:(unint64_t)a3
+- (void)setCacheSize:(unint64_t)size
 {
   [(NSLock *)self->_cacheLock lock];
-  self->_minimumCachedReaderConnections = a3;
+  self->_minimumCachedReaderConnections = size;
   cacheLock = self->_cacheLock;
 
   [(NSLock *)cacheLock unlock];

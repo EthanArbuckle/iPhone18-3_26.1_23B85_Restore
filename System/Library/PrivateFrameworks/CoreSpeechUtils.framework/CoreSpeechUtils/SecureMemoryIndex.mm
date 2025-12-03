@@ -3,7 +3,7 @@
 - (SecureMemoryIndex)init;
 - (id)memoryIndexes;
 - (int64_t)indexCount;
-- (void)insertWithLabel:(id)a3 resource:(id)a4;
+- (void)insertWithLabel:(id)label resource:(id)resource;
 @end
 
 @implementation SecureMemoryIndex
@@ -29,7 +29,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SecureMemoryIndex.description.getter();
 
   v3 = sub_247994E74();
@@ -37,25 +37,25 @@
   return v3;
 }
 
-- (void)insertWithLabel:(id)a3 resource:(id)a4
+- (void)insertWithLabel:(id)label resource:(id)resource
 {
   v6 = sub_247994E84();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  resourceCopy = resource;
+  selfCopy = self;
   v11 = sub_247994C54();
   v13 = v12;
 
   v14 = OBJC_IVAR___SecureMemoryIndex_indexData;
   swift_beginAccess();
   sub_247978CAC(v11, v13);
-  v15 = *(&v10->super.isa + v14);
+  v15 = *(&selfCopy->super.isa + v14);
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
-  v17 = *(&v10->super.isa + v14);
-  *(&v10->super.isa + v14) = 0x8000000000000000;
+  v17 = *(&selfCopy->super.isa + v14);
+  *(&selfCopy->super.isa + v14) = 0x8000000000000000;
   sub_247990CD4(v11, v13, v6, v8, isUniquelyReferenced_nonNull_native);
 
-  *(&v10->super.isa + v14) = v17;
+  *(&selfCopy->super.isa + v14) = v17;
   swift_endAccess();
 
   sub_247978C04(v11, v13);

@@ -1,5 +1,5 @@
 @interface _SVXUserFeedbackMutation
-- (_SVXUserFeedbackMutation)initWithBaseModel:(id)a3;
+- (_SVXUserFeedbackMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -18,15 +18,15 @@
   {
     if ((*&self->_mutationFlags & 2) != 0)
     {
-      v6 = self->_identifier;
+      identifier = self->_identifier;
     }
 
     else
     {
-      v6 = [(SVXUserFeedback *)baseModel identifier];
+      identifier = [(SVXUserFeedback *)baseModel identifier];
     }
 
-    v7 = v6;
+    v7 = identifier;
     if ((*&self->_mutationFlags & 4) != 0)
     {
       contentType = self->_contentType;
@@ -42,27 +42,27 @@
       if ((*&self->_mutationFlags & 8) != 0)
       {
 LABEL_11:
-        v9 = self->_audioContent;
+        audioContent = self->_audioContent;
 LABEL_14:
-        v10 = v9;
+        v10 = audioContent;
         if ((*&self->_mutationFlags & 0x10) != 0)
         {
-          v11 = self->_voiceContent;
+          voiceContent = self->_voiceContent;
         }
 
         else
         {
-          v11 = [(SVXUserFeedback *)self->_baseModel voiceContent];
+          voiceContent = [(SVXUserFeedback *)self->_baseModel voiceContent];
         }
 
-        v12 = v11;
-        v5 = [[SVXUserFeedback alloc] initWithIdentifier:v7 contentType:contentType audioContent:v10 voiceContent:v11];
+        v12 = voiceContent;
+        v5 = [[SVXUserFeedback alloc] initWithIdentifier:v7 contentType:contentType audioContent:v10 voiceContent:voiceContent];
 
         goto LABEL_18;
       }
     }
 
-    v9 = [(SVXUserFeedback *)self->_baseModel audioContent];
+    audioContent = [(SVXUserFeedback *)self->_baseModel audioContent];
     goto LABEL_14;
   }
 
@@ -74,16 +74,16 @@ LABEL_18:
   return v5;
 }
 
-- (_SVXUserFeedbackMutation)initWithBaseModel:(id)a3
+- (_SVXUserFeedbackMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXUserFeedbackMutation;
   v6 = [(_SVXUserFeedbackMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

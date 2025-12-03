@@ -1,33 +1,33 @@
 @interface AWDWiFiMetricsManagerInfraInterface
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAvgCCA:(BOOL)a3;
-- (void)setHasDataTransferRateMpbs:(BOOL)a3;
-- (void)setHasEffectiveDataTransferRateMpbs:(BOOL)a3;
-- (void)setHasEffectiveLinkRateMpbs:(BOOL)a3;
-- (void)setHasLinkLatencyMs:(BOOL)a3;
-- (void)setHasLinkOpenPct:(BOOL)a3;
-- (void)setHasLinkRateMbps:(BOOL)a3;
-- (void)setHasLqm:(BOOL)a3;
-- (void)setHasRxPackets:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTxBytes:(BOOL)a3;
-- (void)setHasTxBytesBe:(BOOL)a3;
-- (void)setHasTxBytesBk:(BOOL)a3;
-- (void)setHasTxBytesVi:(BOOL)a3;
-- (void)setHasTxBytesVo:(BOOL)a3;
-- (void)setHasTxPackets:(BOOL)a3;
-- (void)setHasTxPacketsBe:(BOOL)a3;
-- (void)setHasTxPacketsBk:(BOOL)a3;
-- (void)setHasTxPacketsVi:(BOOL)a3;
-- (void)setHasTxPacketsVo:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAvgCCA:(BOOL)a;
+- (void)setHasDataTransferRateMpbs:(BOOL)mpbs;
+- (void)setHasEffectiveDataTransferRateMpbs:(BOOL)mpbs;
+- (void)setHasEffectiveLinkRateMpbs:(BOOL)mpbs;
+- (void)setHasLinkLatencyMs:(BOOL)ms;
+- (void)setHasLinkOpenPct:(BOOL)pct;
+- (void)setHasLinkRateMbps:(BOOL)mbps;
+- (void)setHasLqm:(BOOL)lqm;
+- (void)setHasRxPackets:(BOOL)packets;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTxBytes:(BOOL)bytes;
+- (void)setHasTxBytesBe:(BOOL)be;
+- (void)setHasTxBytesBk:(BOOL)bk;
+- (void)setHasTxBytesVi:(BOOL)vi;
+- (void)setHasTxBytesVo:(BOOL)vo;
+- (void)setHasTxPackets:(BOOL)packets;
+- (void)setHasTxPacketsBe:(BOOL)be;
+- (void)setHasTxPacketsBk:(BOOL)bk;
+- (void)setHasTxPacketsVi:(BOOL)vi;
+- (void)setHasTxPacketsVo:(BOOL)vo;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerInfraInterface
@@ -73,9 +73,9 @@
   [(AWDWiFiMetricsManagerInfraInterface *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -88,9 +88,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasRxPackets:(BOOL)a3
+- (void)setHasRxPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 2;
   }
@@ -103,9 +103,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasTxPackets:(BOOL)a3
+- (void)setHasTxPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 256;
   }
@@ -118,9 +118,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasTxPacketsBe:(BOOL)a3
+- (void)setHasTxPacketsBe:(BOOL)be
 {
-  if (a3)
+  if (be)
   {
     v3 = 512;
   }
@@ -133,9 +133,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasTxPacketsBk:(BOOL)a3
+- (void)setHasTxPacketsBk:(BOOL)bk
 {
-  if (a3)
+  if (bk)
   {
     v3 = 1024;
   }
@@ -148,9 +148,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasTxPacketsVi:(BOOL)a3
+- (void)setHasTxPacketsVi:(BOOL)vi
 {
-  if (a3)
+  if (vi)
   {
     v3 = 2048;
   }
@@ -163,9 +163,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasTxPacketsVo:(BOOL)a3
+- (void)setHasTxPacketsVo:(BOOL)vo
 {
-  if (a3)
+  if (vo)
   {
     v3 = 4096;
   }
@@ -178,9 +178,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasTxBytes:(BOOL)a3
+- (void)setHasTxBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 8;
   }
@@ -193,9 +193,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasTxBytesBe:(BOOL)a3
+- (void)setHasTxBytesBe:(BOOL)be
 {
-  if (a3)
+  if (be)
   {
     v3 = 16;
   }
@@ -208,9 +208,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasTxBytesBk:(BOOL)a3
+- (void)setHasTxBytesBk:(BOOL)bk
 {
-  if (a3)
+  if (bk)
   {
     v3 = 32;
   }
@@ -223,9 +223,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasTxBytesVi:(BOOL)a3
+- (void)setHasTxBytesVi:(BOOL)vi
 {
-  if (a3)
+  if (vi)
   {
     v3 = 64;
   }
@@ -238,9 +238,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTxBytesVo:(BOOL)a3
+- (void)setHasTxBytesVo:(BOOL)vo
 {
-  if (a3)
+  if (vo)
   {
     v3 = 128;
   }
@@ -253,9 +253,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasLinkRateMbps:(BOOL)a3
+- (void)setHasLinkRateMbps:(BOOL)mbps
 {
-  if (a3)
+  if (mbps)
   {
     v3 = 0x80000;
   }
@@ -268,9 +268,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasEffectiveLinkRateMpbs:(BOOL)a3
+- (void)setHasEffectiveLinkRateMpbs:(BOOL)mpbs
 {
-  if (a3)
+  if (mpbs)
   {
     v3 = 0x10000;
   }
@@ -283,9 +283,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasDataTransferRateMpbs:(BOOL)a3
+- (void)setHasDataTransferRateMpbs:(BOOL)mpbs
 {
-  if (a3)
+  if (mpbs)
   {
     v3 = 0x4000;
   }
@@ -298,9 +298,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasEffectiveDataTransferRateMpbs:(BOOL)a3
+- (void)setHasEffectiveDataTransferRateMpbs:(BOOL)mpbs
 {
-  if (a3)
+  if (mpbs)
   {
     v3 = 0x8000;
   }
@@ -313,9 +313,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasLinkLatencyMs:(BOOL)a3
+- (void)setHasLinkLatencyMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x20000;
   }
@@ -328,9 +328,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasLinkOpenPct:(BOOL)a3
+- (void)setHasLinkOpenPct:(BOOL)pct
 {
-  if (a3)
+  if (pct)
   {
     v3 = 0x40000;
   }
@@ -343,9 +343,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasAvgCCA:(BOOL)a3
+- (void)setHasAvgCCA:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 0x2000;
   }
@@ -358,9 +358,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasLqm:(BOOL)a3
+- (void)setHasLqm:(BOOL)lqm
 {
-  if (a3)
+  if (lqm)
   {
     v3 = 0x100000;
   }
@@ -382,11 +382,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -405,7 +405,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rxPackets), @"rxPackets"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rxPackets), @"rxPackets"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -419,7 +419,7 @@ LABEL_4:
   }
 
 LABEL_97:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPackets), @"txPackets"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPackets), @"txPackets"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -433,7 +433,7 @@ LABEL_5:
   }
 
 LABEL_98:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPacketsBe), @"txPacketsBe"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPacketsBe), @"txPacketsBe"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -447,7 +447,7 @@ LABEL_6:
   }
 
 LABEL_99:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPacketsBk), @"txPacketsBk"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPacketsBk), @"txPacketsBk"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -461,7 +461,7 @@ LABEL_7:
   }
 
 LABEL_100:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPacketsVi), @"txPacketsVi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPacketsVi), @"txPacketsVi"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -475,7 +475,7 @@ LABEL_8:
   }
 
 LABEL_101:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPacketsVo), @"txPacketsVo"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txPacketsVo), @"txPacketsVo"}];
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -489,7 +489,7 @@ LABEL_9:
   }
 
 LABEL_102:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rxBytes), @"rxBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rxBytes), @"rxBytes"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -503,7 +503,7 @@ LABEL_10:
   }
 
 LABEL_103:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytes), @"txBytes"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytes), @"txBytes"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -517,7 +517,7 @@ LABEL_11:
   }
 
 LABEL_104:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytesBe), @"txBytesBe"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytesBe), @"txBytesBe"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -531,7 +531,7 @@ LABEL_12:
   }
 
 LABEL_105:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytesBk), @"txBytesBk"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytesBk), @"txBytesBk"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -545,7 +545,7 @@ LABEL_13:
   }
 
 LABEL_106:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytesVi), @"txBytesVi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytesVi), @"txBytesVi"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -559,7 +559,7 @@ LABEL_14:
   }
 
 LABEL_107:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytesVo), @"txBytesVo"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txBytesVo), @"txBytesVo"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -573,7 +573,7 @@ LABEL_15:
   }
 
 LABEL_108:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkRateMbps), @"linkRate_Mbps"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkRateMbps), @"linkRate_Mbps"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -587,7 +587,7 @@ LABEL_16:
   }
 
 LABEL_109:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_effectiveLinkRateMpbs), @"effectiveLinkRate_Mpbs"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_effectiveLinkRateMpbs), @"effectiveLinkRate_Mpbs"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -601,7 +601,7 @@ LABEL_17:
   }
 
 LABEL_110:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataTransferRateMpbs), @"dataTransferRate_Mpbs"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dataTransferRateMpbs), @"dataTransferRate_Mpbs"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -615,237 +615,237 @@ LABEL_18:
   }
 
 LABEL_111:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_effectiveDataTransferRateMpbs), @"effectiveDataTransferRate_Mpbs"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_effectiveDataTransferRateMpbs), @"effectiveDataTransferRate_Mpbs"}];
   if ((*&self->_has & 0x20000) != 0)
   {
 LABEL_19:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkLatencyMs), @"linkLatency_ms"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkLatencyMs), @"linkLatency_ms"}];
   }
 
 LABEL_20:
   linkLatency0ms = self->_linkLatency0ms;
   if (linkLatency0ms)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency0ms forKey:{"dictionaryRepresentation"), @"linkLatency_0ms"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency0ms forKey:{"dictionaryRepresentation"), @"linkLatency_0ms"}];
   }
 
   linkLatency64ms = self->_linkLatency64ms;
   if (linkLatency64ms)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency64ms forKey:{"dictionaryRepresentation"), @"linkLatency_64ms"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency64ms forKey:{"dictionaryRepresentation"), @"linkLatency_64ms"}];
   }
 
   linkLatency128ms = self->_linkLatency128ms;
   if (linkLatency128ms)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency128ms forKey:{"dictionaryRepresentation"), @"linkLatency_128ms"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency128ms forKey:{"dictionaryRepresentation"), @"linkLatency_128ms"}];
   }
 
   linkLatency256ms = self->_linkLatency256ms;
   if (linkLatency256ms)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency256ms forKey:{"dictionaryRepresentation"), @"linkLatency_256ms"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency256ms forKey:{"dictionaryRepresentation"), @"linkLatency_256ms"}];
   }
 
   linkLatency512ms = self->_linkLatency512ms;
   if (linkLatency512ms)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency512ms forKey:{"dictionaryRepresentation"), @"linkLatency_512ms"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency512ms forKey:{"dictionaryRepresentation"), @"linkLatency_512ms"}];
   }
 
   linkLatency1024ms = self->_linkLatency1024ms;
   if (linkLatency1024ms)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency1024ms forKey:{"dictionaryRepresentation"), @"linkLatency_1024ms"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkLatency1024ms forKey:{"dictionaryRepresentation"), @"linkLatency_1024ms"}];
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkOpenPct), @"linkOpen_pct"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkOpenPct), @"linkOpen_pct"}];
   }
 
   linkOpen0pct = self->_linkOpen0pct;
   if (linkOpen0pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen0pct forKey:{"dictionaryRepresentation"), @"linkOpen_0pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen0pct forKey:{"dictionaryRepresentation"), @"linkOpen_0pct"}];
   }
 
   linkOpen125pct = self->_linkOpen125pct;
   if (linkOpen125pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen125pct forKey:{"dictionaryRepresentation"), @"linkOpen_125pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen125pct forKey:{"dictionaryRepresentation"), @"linkOpen_125pct"}];
   }
 
   linkOpen25pct = self->_linkOpen25pct;
   if (linkOpen25pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen25pct forKey:{"dictionaryRepresentation"), @"linkOpen_25pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen25pct forKey:{"dictionaryRepresentation"), @"linkOpen_25pct"}];
   }
 
   linkOpen375pct = self->_linkOpen375pct;
   if (linkOpen375pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen375pct forKey:{"dictionaryRepresentation"), @"linkOpen_375pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen375pct forKey:{"dictionaryRepresentation"), @"linkOpen_375pct"}];
   }
 
   linkOpen50pct = self->_linkOpen50pct;
   if (linkOpen50pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen50pct forKey:{"dictionaryRepresentation"), @"linkOpen_50pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen50pct forKey:{"dictionaryRepresentation"), @"linkOpen_50pct"}];
   }
 
   linkOpen625pct = self->_linkOpen625pct;
   if (linkOpen625pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen625pct forKey:{"dictionaryRepresentation"), @"linkOpen_625pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen625pct forKey:{"dictionaryRepresentation"), @"linkOpen_625pct"}];
   }
 
   linkOpen75pct = self->_linkOpen75pct;
   if (linkOpen75pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen75pct forKey:{"dictionaryRepresentation"), @"linkOpen_75pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen75pct forKey:{"dictionaryRepresentation"), @"linkOpen_75pct"}];
   }
 
   linkOpen875pct = self->_linkOpen875pct;
   if (linkOpen875pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen875pct forKey:{"dictionaryRepresentation"), @"linkOpen_875pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen875pct forKey:{"dictionaryRepresentation"), @"linkOpen_875pct"}];
   }
 
   linkOpen100pct = self->_linkOpen100pct;
   if (linkOpen100pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen100pct forKey:{"dictionaryRepresentation"), @"linkOpen_100pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](linkOpen100pct forKey:{"dictionaryRepresentation"), @"linkOpen_100pct"}];
   }
 
   if ((*(&self->_has + 1) & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgCCA), @"avgCCA"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_avgCCA), @"avgCCA"}];
   }
 
   avgCCA0pct = self->_avgCCA0pct;
   if (avgCCA0pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA0pct forKey:{"dictionaryRepresentation"), @"avgCCA_0pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA0pct forKey:{"dictionaryRepresentation"), @"avgCCA_0pct"}];
   }
 
   avgCCA125pct = self->_avgCCA125pct;
   if (avgCCA125pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA125pct forKey:{"dictionaryRepresentation"), @"avgCCA_125pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA125pct forKey:{"dictionaryRepresentation"), @"avgCCA_125pct"}];
   }
 
   avgCCA25pct = self->_avgCCA25pct;
   if (avgCCA25pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA25pct forKey:{"dictionaryRepresentation"), @"avgCCA_25pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA25pct forKey:{"dictionaryRepresentation"), @"avgCCA_25pct"}];
   }
 
   avgCCA375pct = self->_avgCCA375pct;
   if (avgCCA375pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA375pct forKey:{"dictionaryRepresentation"), @"avgCCA_375pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA375pct forKey:{"dictionaryRepresentation"), @"avgCCA_375pct"}];
   }
 
   avgCCA50pct = self->_avgCCA50pct;
   if (avgCCA50pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA50pct forKey:{"dictionaryRepresentation"), @"avgCCA_50pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA50pct forKey:{"dictionaryRepresentation"), @"avgCCA_50pct"}];
   }
 
   avgCCA625pct = self->_avgCCA625pct;
   if (avgCCA625pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA625pct forKey:{"dictionaryRepresentation"), @"avgCCA_625pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA625pct forKey:{"dictionaryRepresentation"), @"avgCCA_625pct"}];
   }
 
   avgCCA75pct = self->_avgCCA75pct;
   if (avgCCA75pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA75pct forKey:{"dictionaryRepresentation"), @"avgCCA_75pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA75pct forKey:{"dictionaryRepresentation"), @"avgCCA_75pct"}];
   }
 
   avgCCA875pct = self->_avgCCA875pct;
   if (avgCCA875pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA875pct forKey:{"dictionaryRepresentation"), @"avgCCA_875pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA875pct forKey:{"dictionaryRepresentation"), @"avgCCA_875pct"}];
   }
 
   avgCCA100pct = self->_avgCCA100pct;
   if (avgCCA100pct)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA100pct forKey:{"dictionaryRepresentation"), @"avgCCA_100pct"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](avgCCA100pct forKey:{"dictionaryRepresentation"), @"avgCCA_100pct"}];
   }
 
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_lqm), @"lqm"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_lqm), @"lqm"}];
   }
 
   lqmOff = self->_lqmOff;
   if (lqmOff)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmOff forKey:{"dictionaryRepresentation"), @"lqm_Off"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmOff forKey:{"dictionaryRepresentation"), @"lqm_Off"}];
   }
 
   lqmUnknown = self->_lqmUnknown;
   if (lqmUnknown)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmUnknown forKey:{"dictionaryRepresentation"), @"lqm_Unknown"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmUnknown forKey:{"dictionaryRepresentation"), @"lqm_Unknown"}];
   }
 
   lqmBad = self->_lqmBad;
   if (lqmBad)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmBad forKey:{"dictionaryRepresentation"), @"lqm_Bad"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmBad forKey:{"dictionaryRepresentation"), @"lqm_Bad"}];
   }
 
   lqmPoor = self->_lqmPoor;
   if (lqmPoor)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmPoor forKey:{"dictionaryRepresentation"), @"lqm_Poor"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmPoor forKey:{"dictionaryRepresentation"), @"lqm_Poor"}];
   }
 
   lqmGood = self->_lqmGood;
   if (lqmGood)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmGood forKey:{"dictionaryRepresentation"), @"lqm_Good"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](lqmGood forKey:{"dictionaryRepresentation"), @"lqm_Good"}];
   }
 
   activityUp = self->_activityUp;
   if (activityUp)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityUp forKey:{"dictionaryRepresentation"), @"activity_Up"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityUp forKey:{"dictionaryRepresentation"), @"activity_Up"}];
   }
 
   activityDown = self->_activityDown;
   if (activityDown)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityDown forKey:{"dictionaryRepresentation"), @"activity_Down"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityDown forKey:{"dictionaryRepresentation"), @"activity_Down"}];
   }
 
   activityInvoluntarilyDown = self->_activityInvoluntarilyDown;
   if (activityInvoluntarilyDown)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityInvoluntarilyDown forKey:{"dictionaryRepresentation"), @"activity_InvoluntarilyDown"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityInvoluntarilyDown forKey:{"dictionaryRepresentation"), @"activity_InvoluntarilyDown"}];
   }
 
   activityScanning = self->_activityScanning;
   if (activityScanning)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityScanning forKey:{"dictionaryRepresentation"), @"activity_Scanning"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityScanning forKey:{"dictionaryRepresentation"), @"activity_Scanning"}];
   }
 
   activityRoaming = self->_activityRoaming;
   if (activityRoaming)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityRoaming forKey:{"dictionaryRepresentation"), @"activity_Roaming"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerStateMachine dictionaryRepresentation](activityRoaming forKey:{"dictionaryRepresentation"), @"activity_Roaming"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 4) != 0)
@@ -1295,13 +1295,13 @@ LABEL_20:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 108) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 108) |= 4u;
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -1320,8 +1320,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_rxPackets;
-  *(a3 + 108) |= 2u;
+  *(to + 2) = self->_rxPackets;
+  *(to + 108) |= 2u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1335,8 +1335,8 @@ LABEL_4:
   }
 
 LABEL_98:
-  *(a3 + 9) = self->_txPackets;
-  *(a3 + 108) |= 0x100u;
+  *(to + 9) = self->_txPackets;
+  *(to + 108) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1350,8 +1350,8 @@ LABEL_5:
   }
 
 LABEL_99:
-  *(a3 + 10) = self->_txPacketsBe;
-  *(a3 + 108) |= 0x200u;
+  *(to + 10) = self->_txPacketsBe;
+  *(to + 108) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1365,8 +1365,8 @@ LABEL_6:
   }
 
 LABEL_100:
-  *(a3 + 11) = self->_txPacketsBk;
-  *(a3 + 108) |= 0x400u;
+  *(to + 11) = self->_txPacketsBk;
+  *(to + 108) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1380,8 +1380,8 @@ LABEL_7:
   }
 
 LABEL_101:
-  *(a3 + 12) = self->_txPacketsVi;
-  *(a3 + 108) |= 0x800u;
+  *(to + 12) = self->_txPacketsVi;
+  *(to + 108) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1395,8 +1395,8 @@ LABEL_8:
   }
 
 LABEL_102:
-  *(a3 + 13) = self->_txPacketsVo;
-  *(a3 + 108) |= 0x1000u;
+  *(to + 13) = self->_txPacketsVo;
+  *(to + 108) |= 0x1000u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1410,8 +1410,8 @@ LABEL_9:
   }
 
 LABEL_103:
-  *(a3 + 1) = self->_rxBytes;
-  *(a3 + 108) |= 1u;
+  *(to + 1) = self->_rxBytes;
+  *(to + 108) |= 1u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1425,8 +1425,8 @@ LABEL_10:
   }
 
 LABEL_104:
-  *(a3 + 4) = self->_txBytes;
-  *(a3 + 108) |= 8u;
+  *(to + 4) = self->_txBytes;
+  *(to + 108) |= 8u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1440,8 +1440,8 @@ LABEL_11:
   }
 
 LABEL_105:
-  *(a3 + 5) = self->_txBytesBe;
-  *(a3 + 108) |= 0x10u;
+  *(to + 5) = self->_txBytesBe;
+  *(to + 108) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1455,8 +1455,8 @@ LABEL_12:
   }
 
 LABEL_106:
-  *(a3 + 6) = self->_txBytesBk;
-  *(a3 + 108) |= 0x20u;
+  *(to + 6) = self->_txBytesBk;
+  *(to + 108) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1470,8 +1470,8 @@ LABEL_13:
   }
 
 LABEL_107:
-  *(a3 + 7) = self->_txBytesVi;
-  *(a3 + 108) |= 0x40u;
+  *(to + 7) = self->_txBytesVi;
+  *(to + 108) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1485,8 +1485,8 @@ LABEL_14:
   }
 
 LABEL_108:
-  *(a3 + 8) = self->_txBytesVo;
-  *(a3 + 108) |= 0x80u;
+  *(to + 8) = self->_txBytesVo;
+  *(to + 108) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1500,8 +1500,8 @@ LABEL_15:
   }
 
 LABEL_109:
-  *(a3 + 95) = self->_linkRateMbps;
-  *(a3 + 108) |= 0x80000u;
+  *(to + 95) = self->_linkRateMbps;
+  *(to + 108) |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1515,8 +1515,8 @@ LABEL_16:
   }
 
 LABEL_110:
-  *(a3 + 60) = self->_effectiveLinkRateMpbs;
-  *(a3 + 108) |= 0x10000u;
+  *(to + 60) = self->_effectiveLinkRateMpbs;
+  *(to + 108) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1530,8 +1530,8 @@ LABEL_17:
   }
 
 LABEL_111:
-  *(a3 + 58) = self->_dataTransferRateMpbs;
-  *(a3 + 108) |= 0x4000u;
+  *(to + 58) = self->_dataTransferRateMpbs;
+  *(to + 108) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1545,209 +1545,209 @@ LABEL_18:
   }
 
 LABEL_112:
-  *(a3 + 59) = self->_effectiveDataTransferRateMpbs;
-  *(a3 + 108) |= 0x8000u;
+  *(to + 59) = self->_effectiveDataTransferRateMpbs;
+  *(to + 108) |= 0x8000u;
   if ((*&self->_has & 0x20000) != 0)
   {
 LABEL_19:
-    *(a3 + 74) = self->_linkLatencyMs;
-    *(a3 + 108) |= 0x20000u;
+    *(to + 74) = self->_linkLatencyMs;
+    *(to + 108) |= 0x20000u;
   }
 
 LABEL_20:
   if (self->_linkLatency0ms)
   {
-    [a3 setLinkLatency0ms:?];
+    [to setLinkLatency0ms:?];
   }
 
   if (self->_linkLatency64ms)
   {
-    [a3 setLinkLatency64ms:?];
+    [to setLinkLatency64ms:?];
   }
 
   if (self->_linkLatency128ms)
   {
-    [a3 setLinkLatency128ms:?];
+    [to setLinkLatency128ms:?];
   }
 
   if (self->_linkLatency256ms)
   {
-    [a3 setLinkLatency256ms:?];
+    [to setLinkLatency256ms:?];
   }
 
   if (self->_linkLatency512ms)
   {
-    [a3 setLinkLatency512ms:?];
+    [to setLinkLatency512ms:?];
   }
 
   if (self->_linkLatency1024ms)
   {
-    [a3 setLinkLatency1024ms:?];
+    [to setLinkLatency1024ms:?];
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
   {
-    *(a3 + 94) = self->_linkOpenPct;
-    *(a3 + 108) |= 0x40000u;
+    *(to + 94) = self->_linkOpenPct;
+    *(to + 108) |= 0x40000u;
   }
 
   if (self->_linkOpen0pct)
   {
-    [a3 setLinkOpen0pct:?];
+    [to setLinkOpen0pct:?];
   }
 
   if (self->_linkOpen125pct)
   {
-    [a3 setLinkOpen125pct:?];
+    [to setLinkOpen125pct:?];
   }
 
   if (self->_linkOpen25pct)
   {
-    [a3 setLinkOpen25pct:?];
+    [to setLinkOpen25pct:?];
   }
 
   if (self->_linkOpen375pct)
   {
-    [a3 setLinkOpen375pct:?];
+    [to setLinkOpen375pct:?];
   }
 
   if (self->_linkOpen50pct)
   {
-    [a3 setLinkOpen50pct:?];
+    [to setLinkOpen50pct:?];
   }
 
   if (self->_linkOpen625pct)
   {
-    [a3 setLinkOpen625pct:?];
+    [to setLinkOpen625pct:?];
   }
 
   if (self->_linkOpen75pct)
   {
-    [a3 setLinkOpen75pct:?];
+    [to setLinkOpen75pct:?];
   }
 
   if (self->_linkOpen875pct)
   {
-    [a3 setLinkOpen875pct:?];
+    [to setLinkOpen875pct:?];
   }
 
   if (self->_linkOpen100pct)
   {
-    [a3 setLinkOpen100pct:?];
+    [to setLinkOpen100pct:?];
   }
 
   if ((*(&self->_has + 1) & 0x20) != 0)
   {
-    *(a3 + 38) = self->_avgCCA;
-    *(a3 + 108) |= 0x2000u;
+    *(to + 38) = self->_avgCCA;
+    *(to + 108) |= 0x2000u;
   }
 
   if (self->_avgCCA0pct)
   {
-    [a3 setAvgCCA0pct:?];
+    [to setAvgCCA0pct:?];
   }
 
   if (self->_avgCCA125pct)
   {
-    [a3 setAvgCCA125pct:?];
+    [to setAvgCCA125pct:?];
   }
 
   if (self->_avgCCA25pct)
   {
-    [a3 setAvgCCA25pct:?];
+    [to setAvgCCA25pct:?];
   }
 
   if (self->_avgCCA375pct)
   {
-    [a3 setAvgCCA375pct:?];
+    [to setAvgCCA375pct:?];
   }
 
   if (self->_avgCCA50pct)
   {
-    [a3 setAvgCCA50pct:?];
+    [to setAvgCCA50pct:?];
   }
 
   if (self->_avgCCA625pct)
   {
-    [a3 setAvgCCA625pct:?];
+    [to setAvgCCA625pct:?];
   }
 
   if (self->_avgCCA75pct)
   {
-    [a3 setAvgCCA75pct:?];
+    [to setAvgCCA75pct:?];
   }
 
   if (self->_avgCCA875pct)
   {
-    [a3 setAvgCCA875pct:?];
+    [to setAvgCCA875pct:?];
   }
 
   if (self->_avgCCA100pct)
   {
-    [a3 setAvgCCA100pct:?];
+    [to setAvgCCA100pct:?];
   }
 
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
-    *(a3 + 96) = self->_lqm;
-    *(a3 + 108) |= 0x100000u;
+    *(to + 96) = self->_lqm;
+    *(to + 108) |= 0x100000u;
   }
 
   if (self->_lqmOff)
   {
-    [a3 setLqmOff:?];
+    [to setLqmOff:?];
   }
 
   if (self->_lqmUnknown)
   {
-    [a3 setLqmUnknown:?];
+    [to setLqmUnknown:?];
   }
 
   if (self->_lqmBad)
   {
-    [a3 setLqmBad:?];
+    [to setLqmBad:?];
   }
 
   if (self->_lqmPoor)
   {
-    [a3 setLqmPoor:?];
+    [to setLqmPoor:?];
   }
 
   if (self->_lqmGood)
   {
-    [a3 setLqmGood:?];
+    [to setLqmGood:?];
   }
 
   if (self->_activityUp)
   {
-    [a3 setActivityUp:?];
+    [to setActivityUp:?];
   }
 
   if (self->_activityDown)
   {
-    [a3 setActivityDown:?];
+    [to setActivityDown:?];
   }
 
   if (self->_activityInvoluntarilyDown)
   {
-    [a3 setActivityInvoluntarilyDown:?];
+    [to setActivityInvoluntarilyDown:?];
   }
 
   if (self->_activityScanning)
   {
-    [a3 setActivityScanning:?];
+    [to setActivityScanning:?];
   }
 
   if (self->_activityRoaming)
   {
 
-    [a3 setActivityRoaming:?];
+    [to setActivityRoaming:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 4) != 0)
@@ -2008,85 +2008,85 @@ LABEL_19:
 
 LABEL_20:
 
-  *(v6 + 248) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency0ms copyWithZone:a3];
-  *(v6 + 288) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency64ms copyWithZone:a3];
+  *(v6 + 248) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency0ms copyWithZone:zone];
+  *(v6 + 288) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency64ms copyWithZone:zone];
 
-  *(v6 + 264) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency128ms copyWithZone:a3];
-  *(v6 + 272) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency256ms copyWithZone:a3];
+  *(v6 + 264) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency128ms copyWithZone:zone];
+  *(v6 + 272) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency256ms copyWithZone:zone];
 
-  *(v6 + 280) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency512ms copyWithZone:a3];
-  *(v6 + 256) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency1024ms copyWithZone:a3];
+  *(v6 + 280) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency512ms copyWithZone:zone];
+  *(v6 + 256) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkLatency1024ms copyWithZone:zone];
   if ((*(&self->_has + 2) & 4) != 0)
   {
     *(v6 + 376) = self->_linkOpenPct;
     *(v6 + 432) |= 0x40000u;
   }
 
-  *(v6 + 304) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen0pct copyWithZone:a3];
-  *(v6 + 320) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen125pct copyWithZone:a3];
+  *(v6 + 304) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen0pct copyWithZone:zone];
+  *(v6 + 320) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen125pct copyWithZone:zone];
 
-  *(v6 + 328) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen25pct copyWithZone:a3];
-  *(v6 + 336) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen375pct copyWithZone:a3];
+  *(v6 + 328) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen25pct copyWithZone:zone];
+  *(v6 + 336) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen375pct copyWithZone:zone];
 
-  *(v6 + 344) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen50pct copyWithZone:a3];
-  *(v6 + 352) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen625pct copyWithZone:a3];
+  *(v6 + 344) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen50pct copyWithZone:zone];
+  *(v6 + 352) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen625pct copyWithZone:zone];
 
-  *(v6 + 360) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen75pct copyWithZone:a3];
-  *(v6 + 368) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen875pct copyWithZone:a3];
+  *(v6 + 360) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen75pct copyWithZone:zone];
+  *(v6 + 368) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen875pct copyWithZone:zone];
 
-  *(v6 + 312) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen100pct copyWithZone:a3];
+  *(v6 + 312) = [(AWDWiFiMetricsManagerStateMachine *)self->_linkOpen100pct copyWithZone:zone];
   if ((*(&self->_has + 1) & 0x20) != 0)
   {
     *(v6 + 152) = self->_avgCCA;
     *(v6 + 432) |= 0x2000u;
   }
 
-  *(v6 + 160) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA0pct copyWithZone:a3];
-  *(v6 + 176) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA125pct copyWithZone:a3];
+  *(v6 + 160) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA0pct copyWithZone:zone];
+  *(v6 + 176) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA125pct copyWithZone:zone];
 
-  *(v6 + 184) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA25pct copyWithZone:a3];
-  *(v6 + 192) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA375pct copyWithZone:a3];
+  *(v6 + 184) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA25pct copyWithZone:zone];
+  *(v6 + 192) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA375pct copyWithZone:zone];
 
-  *(v6 + 200) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA50pct copyWithZone:a3];
-  *(v6 + 208) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA625pct copyWithZone:a3];
+  *(v6 + 200) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA50pct copyWithZone:zone];
+  *(v6 + 208) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA625pct copyWithZone:zone];
 
-  *(v6 + 216) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA75pct copyWithZone:a3];
-  *(v6 + 224) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA875pct copyWithZone:a3];
+  *(v6 + 216) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA75pct copyWithZone:zone];
+  *(v6 + 224) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA875pct copyWithZone:zone];
 
-  *(v6 + 168) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA100pct copyWithZone:a3];
+  *(v6 + 168) = [(AWDWiFiMetricsManagerStateMachine *)self->_avgCCA100pct copyWithZone:zone];
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
     *(v6 + 384) = self->_lqm;
     *(v6 + 432) |= 0x100000u;
   }
 
-  *(v6 + 408) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmOff copyWithZone:a3];
-  *(v6 + 424) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmUnknown copyWithZone:a3];
+  *(v6 + 408) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmOff copyWithZone:zone];
+  *(v6 + 424) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmUnknown copyWithZone:zone];
 
-  *(v6 + 392) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmBad copyWithZone:a3];
-  *(v6 + 416) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmPoor copyWithZone:a3];
+  *(v6 + 392) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmBad copyWithZone:zone];
+  *(v6 + 416) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmPoor copyWithZone:zone];
 
-  *(v6 + 400) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmGood copyWithZone:a3];
-  *(v6 + 144) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityUp copyWithZone:a3];
+  *(v6 + 400) = [(AWDWiFiMetricsManagerStateMachine *)self->_lqmGood copyWithZone:zone];
+  *(v6 + 144) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityUp copyWithZone:zone];
 
-  *(v6 + 112) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityDown copyWithZone:a3];
-  *(v6 + 120) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityInvoluntarilyDown copyWithZone:a3];
+  *(v6 + 112) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityDown copyWithZone:zone];
+  *(v6 + 120) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityInvoluntarilyDown copyWithZone:zone];
 
-  *(v6 + 136) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityScanning copyWithZone:a3];
-  *(v6 + 128) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityRoaming copyWithZone:a3];
+  *(v6 + 136) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityScanning copyWithZone:zone];
+  *(v6 + 128) = [(AWDWiFiMetricsManagerStateMachine *)self->_activityRoaming copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 108);
+    v7 = *(equal + 108);
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_175;
       }
@@ -2101,7 +2101,7 @@ LABEL_175:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_rxPackets != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_rxPackets != *(equal + 2))
       {
         goto LABEL_175;
       }
@@ -2114,7 +2114,7 @@ LABEL_175:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v7 & 0x100) == 0 || self->_txPackets != *(a3 + 9))
+      if ((v7 & 0x100) == 0 || self->_txPackets != *(equal + 9))
       {
         goto LABEL_175;
       }
@@ -2127,7 +2127,7 @@ LABEL_175:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v7 & 0x200) == 0 || self->_txPacketsBe != *(a3 + 10))
+      if ((v7 & 0x200) == 0 || self->_txPacketsBe != *(equal + 10))
       {
         goto LABEL_175;
       }
@@ -2140,7 +2140,7 @@ LABEL_175:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((v7 & 0x400) == 0 || self->_txPacketsBk != *(a3 + 11))
+      if ((v7 & 0x400) == 0 || self->_txPacketsBk != *(equal + 11))
       {
         goto LABEL_175;
       }
@@ -2153,7 +2153,7 @@ LABEL_175:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_txPacketsVi != *(a3 + 12))
+      if ((v7 & 0x800) == 0 || self->_txPacketsVi != *(equal + 12))
       {
         goto LABEL_175;
       }
@@ -2166,7 +2166,7 @@ LABEL_175:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_txPacketsVo != *(a3 + 13))
+      if ((v7 & 0x1000) == 0 || self->_txPacketsVo != *(equal + 13))
       {
         goto LABEL_175;
       }
@@ -2179,7 +2179,7 @@ LABEL_175:
 
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_rxBytes != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_rxBytes != *(equal + 1))
       {
         goto LABEL_175;
       }
@@ -2192,7 +2192,7 @@ LABEL_175:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_txBytes != *(a3 + 4))
+      if ((v7 & 8) == 0 || self->_txBytes != *(equal + 4))
       {
         goto LABEL_175;
       }
@@ -2205,7 +2205,7 @@ LABEL_175:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_txBytesBe != *(a3 + 5))
+      if ((v7 & 0x10) == 0 || self->_txBytesBe != *(equal + 5))
       {
         goto LABEL_175;
       }
@@ -2218,7 +2218,7 @@ LABEL_175:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_txBytesBk != *(a3 + 6))
+      if ((v7 & 0x20) == 0 || self->_txBytesBk != *(equal + 6))
       {
         goto LABEL_175;
       }
@@ -2231,7 +2231,7 @@ LABEL_175:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_txBytesVi != *(a3 + 7))
+      if ((v7 & 0x40) == 0 || self->_txBytesVi != *(equal + 7))
       {
         goto LABEL_175;
       }
@@ -2244,7 +2244,7 @@ LABEL_175:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_txBytesVo != *(a3 + 8))
+      if ((v7 & 0x80) == 0 || self->_txBytesVo != *(equal + 8))
       {
         goto LABEL_175;
       }
@@ -2257,7 +2257,7 @@ LABEL_175:
 
     if ((*&has & 0x80000) != 0)
     {
-      if ((v7 & 0x80000) == 0 || self->_linkRateMbps != *(a3 + 95))
+      if ((v7 & 0x80000) == 0 || self->_linkRateMbps != *(equal + 95))
       {
         goto LABEL_175;
       }
@@ -2270,7 +2270,7 @@ LABEL_175:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v7 & 0x10000) == 0 || self->_effectiveLinkRateMpbs != *(a3 + 60))
+      if ((v7 & 0x10000) == 0 || self->_effectiveLinkRateMpbs != *(equal + 60))
       {
         goto LABEL_175;
       }
@@ -2283,7 +2283,7 @@ LABEL_175:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_dataTransferRateMpbs != *(a3 + 58))
+      if ((v7 & 0x4000) == 0 || self->_dataTransferRateMpbs != *(equal + 58))
       {
         goto LABEL_175;
       }
@@ -2296,7 +2296,7 @@ LABEL_175:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v7 & 0x8000) == 0 || self->_effectiveDataTransferRateMpbs != *(a3 + 59))
+      if ((v7 & 0x8000) == 0 || self->_effectiveDataTransferRateMpbs != *(equal + 59))
       {
         goto LABEL_175;
       }
@@ -2309,7 +2309,7 @@ LABEL_175:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v7 & 0x20000) == 0 || self->_linkLatencyMs != *(a3 + 74))
+      if ((v7 & 0x20000) == 0 || self->_linkLatencyMs != *(equal + 74))
       {
         goto LABEL_175;
       }
@@ -2321,27 +2321,27 @@ LABEL_175:
     }
 
     linkLatency0ms = self->_linkLatency0ms;
-    if (!(linkLatency0ms | *(a3 + 31)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency0ms isEqual:?]) != 0)
+    if (!(linkLatency0ms | *(equal + 31)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency0ms isEqual:?]) != 0)
     {
       linkLatency64ms = self->_linkLatency64ms;
-      if (!(linkLatency64ms | *(a3 + 36)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency64ms isEqual:?]) != 0)
+      if (!(linkLatency64ms | *(equal + 36)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency64ms isEqual:?]) != 0)
       {
         linkLatency128ms = self->_linkLatency128ms;
-        if (!(linkLatency128ms | *(a3 + 33)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency128ms isEqual:?]) != 0)
+        if (!(linkLatency128ms | *(equal + 33)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency128ms isEqual:?]) != 0)
         {
           linkLatency256ms = self->_linkLatency256ms;
-          if (!(linkLatency256ms | *(a3 + 34)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency256ms isEqual:?]) != 0)
+          if (!(linkLatency256ms | *(equal + 34)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency256ms isEqual:?]) != 0)
           {
             linkLatency512ms = self->_linkLatency512ms;
-            if (!(linkLatency512ms | *(a3 + 35)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency512ms isEqual:?]) != 0)
+            if (!(linkLatency512ms | *(equal + 35)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency512ms isEqual:?]) != 0)
             {
               linkLatency1024ms = self->_linkLatency1024ms;
-              if (!(linkLatency1024ms | *(a3 + 32)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency1024ms isEqual:?]) != 0)
+              if (!(linkLatency1024ms | *(equal + 32)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkLatency1024ms isEqual:?]) != 0)
               {
-                v14 = *(a3 + 108);
+                v14 = *(equal + 108);
                 if ((*(&self->_has + 2) & 4) != 0)
                 {
-                  if ((v14 & 0x40000) == 0 || self->_linkOpenPct != *(a3 + 94))
+                  if ((v14 & 0x40000) == 0 || self->_linkOpenPct != *(equal + 94))
                   {
                     goto LABEL_175;
                   }
@@ -2353,36 +2353,36 @@ LABEL_175:
                 }
 
                 linkOpen0pct = self->_linkOpen0pct;
-                if (!(linkOpen0pct | *(a3 + 38)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen0pct isEqual:?]) != 0)
+                if (!(linkOpen0pct | *(equal + 38)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen0pct isEqual:?]) != 0)
                 {
                   linkOpen125pct = self->_linkOpen125pct;
-                  if (!(linkOpen125pct | *(a3 + 40)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen125pct isEqual:?]) != 0)
+                  if (!(linkOpen125pct | *(equal + 40)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen125pct isEqual:?]) != 0)
                   {
                     linkOpen25pct = self->_linkOpen25pct;
-                    if (!(linkOpen25pct | *(a3 + 41)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen25pct isEqual:?]) != 0)
+                    if (!(linkOpen25pct | *(equal + 41)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen25pct isEqual:?]) != 0)
                     {
                       linkOpen375pct = self->_linkOpen375pct;
-                      if (!(linkOpen375pct | *(a3 + 42)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen375pct isEqual:?]) != 0)
+                      if (!(linkOpen375pct | *(equal + 42)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen375pct isEqual:?]) != 0)
                       {
                         linkOpen50pct = self->_linkOpen50pct;
-                        if (!(linkOpen50pct | *(a3 + 43)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen50pct isEqual:?]) != 0)
+                        if (!(linkOpen50pct | *(equal + 43)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen50pct isEqual:?]) != 0)
                         {
                           linkOpen625pct = self->_linkOpen625pct;
-                          if (!(linkOpen625pct | *(a3 + 44)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen625pct isEqual:?]) != 0)
+                          if (!(linkOpen625pct | *(equal + 44)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen625pct isEqual:?]) != 0)
                           {
                             linkOpen75pct = self->_linkOpen75pct;
-                            if (!(linkOpen75pct | *(a3 + 45)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen75pct isEqual:?]) != 0)
+                            if (!(linkOpen75pct | *(equal + 45)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen75pct isEqual:?]) != 0)
                             {
                               linkOpen875pct = self->_linkOpen875pct;
-                              if (!(linkOpen875pct | *(a3 + 46)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen875pct isEqual:?]) != 0)
+                              if (!(linkOpen875pct | *(equal + 46)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen875pct isEqual:?]) != 0)
                               {
                                 linkOpen100pct = self->_linkOpen100pct;
-                                if (!(linkOpen100pct | *(a3 + 39)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen100pct isEqual:?]) != 0)
+                                if (!(linkOpen100pct | *(equal + 39)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)linkOpen100pct isEqual:?]) != 0)
                                 {
-                                  v24 = *(a3 + 108);
+                                  v24 = *(equal + 108);
                                   if ((*(&self->_has + 1) & 0x20) != 0)
                                   {
-                                    if ((v24 & 0x2000) == 0 || self->_avgCCA != *(a3 + 38))
+                                    if ((v24 & 0x2000) == 0 || self->_avgCCA != *(equal + 38))
                                     {
                                       goto LABEL_175;
                                     }
@@ -2394,36 +2394,36 @@ LABEL_175:
                                   }
 
                                   avgCCA0pct = self->_avgCCA0pct;
-                                  if (!(avgCCA0pct | *(a3 + 20)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA0pct isEqual:?]) != 0)
+                                  if (!(avgCCA0pct | *(equal + 20)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA0pct isEqual:?]) != 0)
                                   {
                                     avgCCA125pct = self->_avgCCA125pct;
-                                    if (!(avgCCA125pct | *(a3 + 22)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA125pct isEqual:?]) != 0)
+                                    if (!(avgCCA125pct | *(equal + 22)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA125pct isEqual:?]) != 0)
                                     {
                                       avgCCA25pct = self->_avgCCA25pct;
-                                      if (!(avgCCA25pct | *(a3 + 23)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA25pct isEqual:?]) != 0)
+                                      if (!(avgCCA25pct | *(equal + 23)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA25pct isEqual:?]) != 0)
                                       {
                                         avgCCA375pct = self->_avgCCA375pct;
-                                        if (!(avgCCA375pct | *(a3 + 24)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA375pct isEqual:?]) != 0)
+                                        if (!(avgCCA375pct | *(equal + 24)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA375pct isEqual:?]) != 0)
                                         {
                                           avgCCA50pct = self->_avgCCA50pct;
-                                          if (!(avgCCA50pct | *(a3 + 25)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA50pct isEqual:?]) != 0)
+                                          if (!(avgCCA50pct | *(equal + 25)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA50pct isEqual:?]) != 0)
                                           {
                                             avgCCA625pct = self->_avgCCA625pct;
-                                            if (!(avgCCA625pct | *(a3 + 26)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA625pct isEqual:?]) != 0)
+                                            if (!(avgCCA625pct | *(equal + 26)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA625pct isEqual:?]) != 0)
                                             {
                                               avgCCA75pct = self->_avgCCA75pct;
-                                              if (!(avgCCA75pct | *(a3 + 27)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA75pct isEqual:?]) != 0)
+                                              if (!(avgCCA75pct | *(equal + 27)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA75pct isEqual:?]) != 0)
                                               {
                                                 avgCCA875pct = self->_avgCCA875pct;
-                                                if (!(avgCCA875pct | *(a3 + 28)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA875pct isEqual:?]) != 0)
+                                                if (!(avgCCA875pct | *(equal + 28)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA875pct isEqual:?]) != 0)
                                                 {
                                                   avgCCA100pct = self->_avgCCA100pct;
-                                                  if (!(avgCCA100pct | *(a3 + 21)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA100pct isEqual:?]) != 0)
+                                                  if (!(avgCCA100pct | *(equal + 21)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)avgCCA100pct isEqual:?]) != 0)
                                                   {
-                                                    v34 = *(a3 + 108);
+                                                    v34 = *(equal + 108);
                                                     if ((*(&self->_has + 2) & 0x10) != 0)
                                                     {
-                                                      if ((v34 & 0x100000) == 0 || self->_lqm != *(a3 + 96))
+                                                      if ((v34 & 0x100000) == 0 || self->_lqm != *(equal + 96))
                                                       {
                                                         goto LABEL_175;
                                                       }
@@ -2435,34 +2435,34 @@ LABEL_175:
                                                     }
 
                                                     lqmOff = self->_lqmOff;
-                                                    if (!(lqmOff | *(a3 + 51)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmOff isEqual:?]) != 0)
+                                                    if (!(lqmOff | *(equal + 51)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmOff isEqual:?]) != 0)
                                                     {
                                                       lqmUnknown = self->_lqmUnknown;
-                                                      if (!(lqmUnknown | *(a3 + 53)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmUnknown isEqual:?]) != 0)
+                                                      if (!(lqmUnknown | *(equal + 53)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmUnknown isEqual:?]) != 0)
                                                       {
                                                         lqmBad = self->_lqmBad;
-                                                        if (!(lqmBad | *(a3 + 49)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmBad isEqual:?]) != 0)
+                                                        if (!(lqmBad | *(equal + 49)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmBad isEqual:?]) != 0)
                                                         {
                                                           lqmPoor = self->_lqmPoor;
-                                                          if (!(lqmPoor | *(a3 + 52)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmPoor isEqual:?]) != 0)
+                                                          if (!(lqmPoor | *(equal + 52)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmPoor isEqual:?]) != 0)
                                                           {
                                                             lqmGood = self->_lqmGood;
-                                                            if (!(lqmGood | *(a3 + 50)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmGood isEqual:?]) != 0)
+                                                            if (!(lqmGood | *(equal + 50)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)lqmGood isEqual:?]) != 0)
                                                             {
                                                               activityUp = self->_activityUp;
-                                                              if (!(activityUp | *(a3 + 18)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)activityUp isEqual:?]) != 0)
+                                                              if (!(activityUp | *(equal + 18)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)activityUp isEqual:?]) != 0)
                                                               {
                                                                 activityDown = self->_activityDown;
-                                                                if (!(activityDown | *(a3 + 14)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)activityDown isEqual:?]) != 0)
+                                                                if (!(activityDown | *(equal + 14)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)activityDown isEqual:?]) != 0)
                                                                 {
                                                                   activityInvoluntarilyDown = self->_activityInvoluntarilyDown;
-                                                                  if (!(activityInvoluntarilyDown | *(a3 + 15)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)activityInvoluntarilyDown isEqual:?]) != 0)
+                                                                  if (!(activityInvoluntarilyDown | *(equal + 15)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)activityInvoluntarilyDown isEqual:?]) != 0)
                                                                   {
                                                                     activityScanning = self->_activityScanning;
-                                                                    if (!(activityScanning | *(a3 + 17)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)activityScanning isEqual:?]) != 0)
+                                                                    if (!(activityScanning | *(equal + 17)) || (v5 = [(AWDWiFiMetricsManagerStateMachine *)activityScanning isEqual:?]) != 0)
                                                                     {
                                                                       activityRoaming = self->_activityRoaming;
-                                                                      if (activityRoaming | *(a3 + 16))
+                                                                      if (activityRoaming | *(equal + 16))
                                                                       {
 
                                                                         LOBYTE(v5) = [(AWDWiFiMetricsManagerStateMachine *)activityRoaming isEqual:?];
@@ -2825,14 +2825,14 @@ LABEL_38:
   return v23 ^ [(AWDWiFiMetricsManagerStateMachine *)self->_activityRoaming hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v5 = *(a3 + 108);
+    v5 = *(from + 108);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -2850,9 +2850,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_rxPackets = *(a3 + 2);
+  self->_rxPackets = *(from + 2);
   *&self->_has |= 2u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x100) == 0)
   {
 LABEL_4:
@@ -2865,9 +2865,9 @@ LABEL_4:
   }
 
 LABEL_25:
-  self->_txPackets = *(a3 + 9);
+  self->_txPackets = *(from + 9);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x200) == 0)
   {
 LABEL_5:
@@ -2880,9 +2880,9 @@ LABEL_5:
   }
 
 LABEL_26:
-  self->_txPacketsBe = *(a3 + 10);
+  self->_txPacketsBe = *(from + 10);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x400) == 0)
   {
 LABEL_6:
@@ -2895,9 +2895,9 @@ LABEL_6:
   }
 
 LABEL_27:
-  self->_txPacketsBk = *(a3 + 11);
+  self->_txPacketsBk = *(from + 11);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x800) == 0)
   {
 LABEL_7:
@@ -2910,9 +2910,9 @@ LABEL_7:
   }
 
 LABEL_28:
-  self->_txPacketsVi = *(a3 + 12);
+  self->_txPacketsVi = *(from + 12);
   *&self->_has |= 0x800u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_8:
@@ -2925,9 +2925,9 @@ LABEL_8:
   }
 
 LABEL_29:
-  self->_txPacketsVo = *(a3 + 13);
+  self->_txPacketsVo = *(from + 13);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 1) == 0)
   {
 LABEL_9:
@@ -2940,9 +2940,9 @@ LABEL_9:
   }
 
 LABEL_30:
-  self->_rxBytes = *(a3 + 1);
+  self->_rxBytes = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -2955,9 +2955,9 @@ LABEL_10:
   }
 
 LABEL_31:
-  self->_txBytes = *(a3 + 4);
+  self->_txBytes = *(from + 4);
   *&self->_has |= 8u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x10) == 0)
   {
 LABEL_11:
@@ -2970,9 +2970,9 @@ LABEL_11:
   }
 
 LABEL_32:
-  self->_txBytesBe = *(a3 + 5);
+  self->_txBytesBe = *(from + 5);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x20) == 0)
   {
 LABEL_12:
@@ -2985,9 +2985,9 @@ LABEL_12:
   }
 
 LABEL_33:
-  self->_txBytesBk = *(a3 + 6);
+  self->_txBytesBk = *(from + 6);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x40) == 0)
   {
 LABEL_13:
@@ -3000,9 +3000,9 @@ LABEL_13:
   }
 
 LABEL_34:
-  self->_txBytesVi = *(a3 + 7);
+  self->_txBytesVi = *(from + 7);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x80) == 0)
   {
 LABEL_14:
@@ -3015,9 +3015,9 @@ LABEL_14:
   }
 
 LABEL_35:
-  self->_txBytesVo = *(a3 + 8);
+  self->_txBytesVo = *(from + 8);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_15:
@@ -3030,9 +3030,9 @@ LABEL_15:
   }
 
 LABEL_36:
-  self->_linkRateMbps = *(a3 + 95);
+  self->_linkRateMbps = *(from + 95);
   *&self->_has |= 0x80000u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_16:
@@ -3045,9 +3045,9 @@ LABEL_16:
   }
 
 LABEL_37:
-  self->_effectiveLinkRateMpbs = *(a3 + 60);
+  self->_effectiveLinkRateMpbs = *(from + 60);
   *&self->_has |= 0x10000u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_17:
@@ -3060,9 +3060,9 @@ LABEL_17:
   }
 
 LABEL_38:
-  self->_dataTransferRateMpbs = *(a3 + 58);
+  self->_dataTransferRateMpbs = *(from + 58);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 108);
+  v5 = *(from + 108);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_18:
@@ -3075,18 +3075,18 @@ LABEL_18:
   }
 
 LABEL_39:
-  self->_effectiveDataTransferRateMpbs = *(a3 + 59);
+  self->_effectiveDataTransferRateMpbs = *(from + 59);
   *&self->_has |= 0x8000u;
-  if ((*(a3 + 108) & 0x20000) != 0)
+  if ((*(from + 108) & 0x20000) != 0)
   {
 LABEL_19:
-    self->_linkLatencyMs = *(a3 + 74);
+    self->_linkLatencyMs = *(from + 74);
     *&self->_has |= 0x20000u;
   }
 
 LABEL_20:
   linkLatency0ms = self->_linkLatency0ms;
-  v7 = *(a3 + 31);
+  v7 = *(from + 31);
   if (linkLatency0ms)
   {
     if (v7)
@@ -3101,7 +3101,7 @@ LABEL_20:
   }
 
   linkLatency64ms = self->_linkLatency64ms;
-  v9 = *(a3 + 36);
+  v9 = *(from + 36);
   if (linkLatency64ms)
   {
     if (v9)
@@ -3116,7 +3116,7 @@ LABEL_20:
   }
 
   linkLatency128ms = self->_linkLatency128ms;
-  v11 = *(a3 + 33);
+  v11 = *(from + 33);
   if (linkLatency128ms)
   {
     if (v11)
@@ -3131,7 +3131,7 @@ LABEL_20:
   }
 
   linkLatency256ms = self->_linkLatency256ms;
-  v13 = *(a3 + 34);
+  v13 = *(from + 34);
   if (linkLatency256ms)
   {
     if (v13)
@@ -3146,7 +3146,7 @@ LABEL_20:
   }
 
   linkLatency512ms = self->_linkLatency512ms;
-  v15 = *(a3 + 35);
+  v15 = *(from + 35);
   if (linkLatency512ms)
   {
     if (v15)
@@ -3161,7 +3161,7 @@ LABEL_20:
   }
 
   linkLatency1024ms = self->_linkLatency1024ms;
-  v17 = *(a3 + 32);
+  v17 = *(from + 32);
   if (linkLatency1024ms)
   {
     if (v17)
@@ -3175,14 +3175,14 @@ LABEL_20:
     [(AWDWiFiMetricsManagerInfraInterface *)self setLinkLatency1024ms:?];
   }
 
-  if ((*(a3 + 434) & 4) != 0)
+  if ((*(from + 434) & 4) != 0)
   {
-    self->_linkOpenPct = *(a3 + 94);
+    self->_linkOpenPct = *(from + 94);
     *&self->_has |= 0x40000u;
   }
 
   linkOpen0pct = self->_linkOpen0pct;
-  v19 = *(a3 + 38);
+  v19 = *(from + 38);
   if (linkOpen0pct)
   {
     if (v19)
@@ -3197,7 +3197,7 @@ LABEL_20:
   }
 
   linkOpen125pct = self->_linkOpen125pct;
-  v21 = *(a3 + 40);
+  v21 = *(from + 40);
   if (linkOpen125pct)
   {
     if (v21)
@@ -3212,7 +3212,7 @@ LABEL_20:
   }
 
   linkOpen25pct = self->_linkOpen25pct;
-  v23 = *(a3 + 41);
+  v23 = *(from + 41);
   if (linkOpen25pct)
   {
     if (v23)
@@ -3227,7 +3227,7 @@ LABEL_20:
   }
 
   linkOpen375pct = self->_linkOpen375pct;
-  v25 = *(a3 + 42);
+  v25 = *(from + 42);
   if (linkOpen375pct)
   {
     if (v25)
@@ -3242,7 +3242,7 @@ LABEL_20:
   }
 
   linkOpen50pct = self->_linkOpen50pct;
-  v27 = *(a3 + 43);
+  v27 = *(from + 43);
   if (linkOpen50pct)
   {
     if (v27)
@@ -3257,7 +3257,7 @@ LABEL_20:
   }
 
   linkOpen625pct = self->_linkOpen625pct;
-  v29 = *(a3 + 44);
+  v29 = *(from + 44);
   if (linkOpen625pct)
   {
     if (v29)
@@ -3272,7 +3272,7 @@ LABEL_20:
   }
 
   linkOpen75pct = self->_linkOpen75pct;
-  v31 = *(a3 + 45);
+  v31 = *(from + 45);
   if (linkOpen75pct)
   {
     if (v31)
@@ -3287,7 +3287,7 @@ LABEL_20:
   }
 
   linkOpen875pct = self->_linkOpen875pct;
-  v33 = *(a3 + 46);
+  v33 = *(from + 46);
   if (linkOpen875pct)
   {
     if (v33)
@@ -3302,7 +3302,7 @@ LABEL_20:
   }
 
   linkOpen100pct = self->_linkOpen100pct;
-  v35 = *(a3 + 39);
+  v35 = *(from + 39);
   if (linkOpen100pct)
   {
     if (v35)
@@ -3316,14 +3316,14 @@ LABEL_20:
     [(AWDWiFiMetricsManagerInfraInterface *)self setLinkOpen100pct:?];
   }
 
-  if ((*(a3 + 433) & 0x20) != 0)
+  if ((*(from + 433) & 0x20) != 0)
   {
-    self->_avgCCA = *(a3 + 38);
+    self->_avgCCA = *(from + 38);
     *&self->_has |= 0x2000u;
   }
 
   avgCCA0pct = self->_avgCCA0pct;
-  v37 = *(a3 + 20);
+  v37 = *(from + 20);
   if (avgCCA0pct)
   {
     if (v37)
@@ -3338,7 +3338,7 @@ LABEL_20:
   }
 
   avgCCA125pct = self->_avgCCA125pct;
-  v39 = *(a3 + 22);
+  v39 = *(from + 22);
   if (avgCCA125pct)
   {
     if (v39)
@@ -3353,7 +3353,7 @@ LABEL_20:
   }
 
   avgCCA25pct = self->_avgCCA25pct;
-  v41 = *(a3 + 23);
+  v41 = *(from + 23);
   if (avgCCA25pct)
   {
     if (v41)
@@ -3368,7 +3368,7 @@ LABEL_20:
   }
 
   avgCCA375pct = self->_avgCCA375pct;
-  v43 = *(a3 + 24);
+  v43 = *(from + 24);
   if (avgCCA375pct)
   {
     if (v43)
@@ -3383,7 +3383,7 @@ LABEL_20:
   }
 
   avgCCA50pct = self->_avgCCA50pct;
-  v45 = *(a3 + 25);
+  v45 = *(from + 25);
   if (avgCCA50pct)
   {
     if (v45)
@@ -3398,7 +3398,7 @@ LABEL_20:
   }
 
   avgCCA625pct = self->_avgCCA625pct;
-  v47 = *(a3 + 26);
+  v47 = *(from + 26);
   if (avgCCA625pct)
   {
     if (v47)
@@ -3413,7 +3413,7 @@ LABEL_20:
   }
 
   avgCCA75pct = self->_avgCCA75pct;
-  v49 = *(a3 + 27);
+  v49 = *(from + 27);
   if (avgCCA75pct)
   {
     if (v49)
@@ -3428,7 +3428,7 @@ LABEL_20:
   }
 
   avgCCA875pct = self->_avgCCA875pct;
-  v51 = *(a3 + 28);
+  v51 = *(from + 28);
   if (avgCCA875pct)
   {
     if (v51)
@@ -3443,7 +3443,7 @@ LABEL_20:
   }
 
   avgCCA100pct = self->_avgCCA100pct;
-  v53 = *(a3 + 21);
+  v53 = *(from + 21);
   if (avgCCA100pct)
   {
     if (v53)
@@ -3457,14 +3457,14 @@ LABEL_20:
     [(AWDWiFiMetricsManagerInfraInterface *)self setAvgCCA100pct:?];
   }
 
-  if ((*(a3 + 434) & 0x10) != 0)
+  if ((*(from + 434) & 0x10) != 0)
   {
-    self->_lqm = *(a3 + 96);
+    self->_lqm = *(from + 96);
     *&self->_has |= 0x100000u;
   }
 
   lqmOff = self->_lqmOff;
-  v55 = *(a3 + 51);
+  v55 = *(from + 51);
   if (lqmOff)
   {
     if (v55)
@@ -3479,7 +3479,7 @@ LABEL_20:
   }
 
   lqmUnknown = self->_lqmUnknown;
-  v57 = *(a3 + 53);
+  v57 = *(from + 53);
   if (lqmUnknown)
   {
     if (v57)
@@ -3494,7 +3494,7 @@ LABEL_20:
   }
 
   lqmBad = self->_lqmBad;
-  v59 = *(a3 + 49);
+  v59 = *(from + 49);
   if (lqmBad)
   {
     if (v59)
@@ -3509,7 +3509,7 @@ LABEL_20:
   }
 
   lqmPoor = self->_lqmPoor;
-  v61 = *(a3 + 52);
+  v61 = *(from + 52);
   if (lqmPoor)
   {
     if (v61)
@@ -3524,7 +3524,7 @@ LABEL_20:
   }
 
   lqmGood = self->_lqmGood;
-  v63 = *(a3 + 50);
+  v63 = *(from + 50);
   if (lqmGood)
   {
     if (v63)
@@ -3539,7 +3539,7 @@ LABEL_20:
   }
 
   activityUp = self->_activityUp;
-  v65 = *(a3 + 18);
+  v65 = *(from + 18);
   if (activityUp)
   {
     if (v65)
@@ -3554,7 +3554,7 @@ LABEL_20:
   }
 
   activityDown = self->_activityDown;
-  v67 = *(a3 + 14);
+  v67 = *(from + 14);
   if (activityDown)
   {
     if (v67)
@@ -3569,7 +3569,7 @@ LABEL_20:
   }
 
   activityInvoluntarilyDown = self->_activityInvoluntarilyDown;
-  v69 = *(a3 + 15);
+  v69 = *(from + 15);
   if (activityInvoluntarilyDown)
   {
     if (v69)
@@ -3584,7 +3584,7 @@ LABEL_20:
   }
 
   activityScanning = self->_activityScanning;
-  v71 = *(a3 + 17);
+  v71 = *(from + 17);
   if (activityScanning)
   {
     if (v71)
@@ -3599,7 +3599,7 @@ LABEL_20:
   }
 
   activityRoaming = self->_activityRoaming;
-  v73 = *(a3 + 16);
+  v73 = *(from + 16);
   if (activityRoaming)
   {
     if (v73)

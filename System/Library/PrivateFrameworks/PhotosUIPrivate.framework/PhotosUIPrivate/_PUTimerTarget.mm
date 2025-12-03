@@ -1,25 +1,25 @@
 @interface _PUTimerTarget
 - (SEL)selector;
 - (id)target;
-- (void)handleTimer:(id)a3;
-- (void)setSelector:(SEL)a3;
+- (void)handleTimer:(id)timer;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation _PUTimerTarget
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 - (SEL)selector
@@ -42,11 +42,11 @@
   return WeakRetained;
 }
 
-- (void)handleTimer:(id)a3
+- (void)handleTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(_PUTimerTarget *)self target];
-  [v5 performSelector:-[_PUTimerTarget selector](self withObject:{"selector"), v4}];
+  timerCopy = timer;
+  target = [(_PUTimerTarget *)self target];
+  [target performSelector:-[_PUTimerTarget selector](self withObject:{"selector"), timerCopy}];
 }
 
 @end

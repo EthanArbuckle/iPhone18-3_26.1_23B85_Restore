@@ -1,19 +1,19 @@
 @interface DNDAssistantOpenSettings
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation DNDAssistantOpenSettings
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a4;
-  v6 = a3;
+  helperCopy = helper;
+  completionCopy = completion;
   v9 = [NSURL URLWithString:@"prefs:root=DO_NOT_DISTURB"];
-  [v5 openSensitiveURL:v9];
+  [helperCopy openSensitiveURL:v9];
 
   v7 = objc_alloc_init(SACommandSucceeded);
-  v8 = [v7 dictionary];
-  v6[2](v6, v8);
+  dictionary = [v7 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

@@ -8,11 +8,11 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
-  v3 = [(BCCardSetView *)self accessibilityDelegate];
-  LOBYTE(v2) = [v3 accessibilityDismissCardSetView:v2];
+  selfCopy = self;
+  accessibilityDelegate = [(BCCardSetView *)self accessibilityDelegate];
+  LOBYTE(selfCopy) = [accessibilityDelegate accessibilityDismissCardSetView:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)accessibilityElements
@@ -20,20 +20,20 @@
   v3 = [NSMutableArray alloc];
   v10.receiver = self;
   v10.super_class = BCCardSetView;
-  v4 = [(BCCardSetView *)&v10 accessibilityElements];
-  v5 = [v3 initWithArray:v4];
+  accessibilityElements = [(BCCardSetView *)&v10 accessibilityElements];
+  v5 = [v3 initWithArray:accessibilityElements];
 
   if (!v5)
   {
     v5 = objc_alloc_init(NSMutableArray);
   }
 
-  v6 = [(BCCardSetView *)self subviews];
-  [v5 addObjectsFromArray:v6];
+  subviews = [(BCCardSetView *)self subviews];
+  [v5 addObjectsFromArray:subviews];
 
-  v7 = [(BCCardSetView *)self accessibilityDelegate];
-  v8 = [v7 additionalAccessibilityElementsForCardSetView];
-  [v5 addObjectsFromArray:v8];
+  accessibilityDelegate = [(BCCardSetView *)self accessibilityDelegate];
+  additionalAccessibilityElementsForCardSetView = [accessibilityDelegate additionalAccessibilityElementsForCardSetView];
+  [v5 addObjectsFromArray:additionalAccessibilityElementsForCardSetView];
 
   return v5;
 }

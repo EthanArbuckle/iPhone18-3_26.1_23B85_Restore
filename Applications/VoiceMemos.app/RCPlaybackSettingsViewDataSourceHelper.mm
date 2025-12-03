@@ -11,7 +11,7 @@
 + (NSString)speechIsolatorSectionIdentifier;
 + (NSString)speechIsolatorSliderCellIdentifier;
 + (NSString)speechIsolatorToggleCellIdentifier;
-+ (id)buildDiffableDataSourceSnapshotWithSpatialAudioRecording:(BOOL)a3 multitrackRecording:(BOOL)a4 speechIsolatorEnabled:(BOOL)a5;
++ (id)buildDiffableDataSourceSnapshotWithSpatialAudioRecording:(BOOL)recording multitrackRecording:(BOOL)multitrackRecording speechIsolatorEnabled:(BOOL)enabled;
 - (_TtC10VoiceMemos38RCPlaybackSettingsViewDataSourceHelper)init;
 @end
 
@@ -101,13 +101,13 @@
   return v2;
 }
 
-+ (id)buildDiffableDataSourceSnapshotWithSpatialAudioRecording:(BOOL)a3 multitrackRecording:(BOOL)a4 speechIsolatorEnabled:(BOOL)a5
++ (id)buildDiffableDataSourceSnapshotWithSpatialAudioRecording:(BOOL)recording multitrackRecording:(BOOL)multitrackRecording speechIsolatorEnabled:(BOOL)enabled
 {
   v8 = sub_1000C773C(&qword_1002CF8E8);
   v9 = *(v8 - 8);
   __chkstk_darwin(v8, v10);
   v12 = &v15 - v11;
-  sub_1000E52DC(a3, a4, a5);
+  sub_1000E52DC(recording, multitrackRecording, enabled);
   v13.super.isa = NSDiffableDataSourceSnapshot._bridgeToObjectiveC()().super.isa;
   (*(v9 + 8))(v12, v8);
 

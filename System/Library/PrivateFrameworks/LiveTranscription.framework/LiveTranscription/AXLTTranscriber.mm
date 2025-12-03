@@ -2,21 +2,21 @@
 + (AXLTTranscriber)sharedInstance;
 - (AXLTTranscriber)init;
 - (BOOL)isAssetPending;
-- (BOOL)isTranscribingForPID:(int)a3;
+- (BOOL)isTranscribingForPID:(int)d;
 - (float)_coalsecingTime;
 - (int64_t)defaultTaskHint;
 - (int64_t)mapUserTaskHint;
 - (int64_t)recognitionTaskHint;
 - (void)_downloadAndInstallSpeechRecognizer;
-- (void)_handleAssetDownloadError:(id)a3;
+- (void)_handleAssetDownloadError:(id)error;
 - (void)_restartTranscription;
 - (void)dealloc;
-- (void)speechRecognitionDidDetectSpeech:(id)a3;
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4;
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4;
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4;
-- (void)speechRecognitionTaskFinishedReadingAudio:(id)a3;
-- (void)speechRecognitionTaskWasCancelled:(id)a3;
+- (void)speechRecognitionDidDetectSpeech:(id)speech;
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition;
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully;
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription;
+- (void)speechRecognitionTaskFinishedReadingAudio:(id)audio;
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled;
 @end
 
 @implementation AXLTTranscriber
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __33__AXLTTranscriber_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -58,23 +58,23 @@ uint64_t __33__AXLTTranscriber_sharedInstance__block_invoke(uint64_t a1)
     languageAssetManager = v2->_languageAssetManager;
     v2->_languageAssetManager = v3;
 
-    v5 = [(AXLTTranscriber *)v2 languageAssetManager];
-    v6 = [v5 locale];
+    languageAssetManager = [(AXLTTranscriber *)v2 languageAssetManager];
+    locale = [languageAssetManager locale];
 
     v7 = AXLogLiveTranscription();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 localeIdentifier];
+      localeIdentifier = [locale localeIdentifier];
       *buf = 138412290;
-      v15 = v8;
+      v15 = localeIdentifier;
       _os_log_impl(&dword_256022000, v7, OS_LOG_TYPE_DEFAULT, "Transcriber: Using locale: %@", buf, 0xCu);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277CDCF00]) initWithLocale:v6];
+    v9 = [objc_alloc(MEMORY[0x277CDCF00]) initWithLocale:locale];
     [(AXLTTranscriber *)v2 setRecognizer:v9];
 
-    v10 = [(AXLTTranscriber *)v2 recognizer];
-    [v10 setDelegate:v2];
+    recognizer = [(AXLTTranscriber *)v2 recognizer];
+    [recognizer setDelegate:v2];
 
     v2->_downloadState = -2;
   }
@@ -123,9 +123,9 @@ uint64_t __33__AXLTTranscriber_sharedInstance__block_invoke(uint64_t a1)
 
 - (int64_t)defaultTaskHint
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 localeIdentifier];
-  v4 = [v3 isEqualToString:@"en_US"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v4 = [localeIdentifier isEqualToString:@"en_US"];
 
   if (v4)
   {
@@ -176,24 +176,24 @@ uint64_t __80__AXLTTranscriber_startTranscriptionForPID_appName_callback_complet
   }
 }
 
-- (BOOL)isTranscribingForPID:(int)a3
+- (BOOL)isTranscribingForPID:(int)d
 {
-  v5 = [(AXLTTranscriber *)self isTranscribing];
-  if (v5)
+  isTranscribing = [(AXLTTranscriber *)self isTranscribing];
+  if (isTranscribing)
   {
-    LOBYTE(v5) = [(AXLTTranscriber *)self pid]== a3;
+    LOBYTE(isTranscribing) = [(AXLTTranscriber *)self pid]== d;
   }
 
-  return v5;
+  return isTranscribing;
 }
 
 - (void)_restartTranscription
 {
   v3 = [(AXLTTranscriber *)self pid];
-  v6 = [(AXLTTranscriber *)self appName];
-  v4 = [(AXLTTranscriber *)self transcriptionCallback];
-  v5 = [(AXLTTranscriber *)self completionCallback];
-  [(AXLTTranscriber *)self startTranscriptionForPID:v3 appName:v6 callback:v4 completionCallback:v5];
+  appName = [(AXLTTranscriber *)self appName];
+  transcriptionCallback = [(AXLTTranscriber *)self transcriptionCallback];
+  completionCallback = [(AXLTTranscriber *)self completionCallback];
+  [(AXLTTranscriber *)self startTranscriptionForPID:v3 appName:appName callback:transcriptionCallback completionCallback:completionCallback];
 }
 
 - (BOOL)isAssetPending
@@ -203,10 +203,10 @@ uint64_t __80__AXLTTranscriber_startTranscriptionForPID_appName_callback_complet
     return 0;
   }
 
-  v4 = [(AXLTTranscriber *)self downloadState];
+  downloadState = [(AXLTTranscriber *)self downloadState];
   v5 = AXLogLiveTranscription();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v4 == -1)
+  if (downloadState == -1)
   {
     if (v6)
     {
@@ -225,7 +225,7 @@ uint64_t __80__AXLTTranscriber_startTranscriptionForPID_appName_callback_complet
 - (void)_downloadAndInstallSpeechRecognizer
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "downloadState")}];
+  v1 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "downloadState")}];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -328,15 +328,15 @@ uint64_t __54__AXLTTranscriber__downloadAndInstallSpeechRecognizer__block_invoke
   return result;
 }
 
-- (void)_handleAssetDownloadError:(id)a3
+- (void)_handleAssetDownloadError:(id)error
 {
-  v4 = [(AXLTTranscriber *)self transcriptionCallback];
-  v4[2](v4, 0, -1);
+  transcriptionCallback = [(AXLTTranscriber *)self transcriptionCallback];
+  transcriptionCallback[2](transcriptionCallback, 0, -1);
 
   [(AXLTTranscriber *)self setDownloadState:-1];
 }
 
-- (void)speechRecognitionDidDetectSpeech:(id)a3
+- (void)speechRecognitionDidDetectSpeech:(id)speech
 {
   v3 = AXLogLiveTranscription();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -345,7 +345,7 @@ uint64_t __54__AXLTTranscriber__downloadAndInstallSpeechRecognizer__block_invoke
   }
 }
 
-- (void)speechRecognitionTaskFinishedReadingAudio:(id)a3
+- (void)speechRecognitionTaskFinishedReadingAudio:(id)audio
 {
   v3 = AXLogLiveTranscription();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -354,7 +354,7 @@ uint64_t __54__AXLTTranscriber__downloadAndInstallSpeechRecognizer__block_invoke
   }
 }
 
-- (void)speechRecognitionTaskWasCancelled:(id)a3
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled
 {
   v3 = AXLogLiveTranscription();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -363,7 +363,7 @@ uint64_t __54__AXLTTranscriber__downloadAndInstallSpeechRecognizer__block_invoke
   }
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully
 {
   v6 = AXLogLiveTranscription();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -371,7 +371,7 @@ uint64_t __54__AXLTTranscriber__downloadAndInstallSpeechRecognizer__block_invoke
     [AXLTTranscriber speechRecognitionTask:didFinishSuccessfully:];
   }
 
-  if (!a4)
+  if (!successfully)
   {
     v7 = AXLogLiveTranscription();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -382,44 +382,44 @@ uint64_t __54__AXLTTranscriber__downloadAndInstallSpeechRecognizer__block_invoke
   }
 
   [(AXLTTranscriber *)self setCurrentTranscription:0];
-  v8 = [(AXLTTranscriber *)self transcriptionCallback];
+  transcriptionCallback = [(AXLTTranscriber *)self transcriptionCallback];
 
-  if (v8)
+  if (transcriptionCallback)
   {
-    v9 = [(AXLTTranscriber *)self transcriptionCallback];
-    v9[2](v9, 0, -2);
+    transcriptionCallback2 = [(AXLTTranscriber *)self transcriptionCallback];
+    transcriptionCallback2[2](transcriptionCallback2, 0, -2);
   }
 }
 
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  transcriptionCopy = transcription;
   v8 = AXLogLiveTranscription();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [AXLTTranscriber speechRecognitionTask:v7 didHypothesizeTranscription:?];
+    [AXLTTranscriber speechRecognitionTask:transcriptionCopy didHypothesizeTranscription:?];
   }
 
-  v9 = [(AXLTTranscriber *)self transcriptionCallback];
+  transcriptionCallback = [(AXLTTranscriber *)self transcriptionCallback];
 
-  if (v9)
+  if (transcriptionCallback)
   {
     v10 = [AXLTTranscription alloc];
-    v11 = [(AXLTTranscriber *)self currentTranscription];
-    v12 = [(AXLTTranscription *)v10 initWithRecognitionTask:v6 transcription:v7 previousTranscription:v11];
+    currentTranscription = [(AXLTTranscriber *)self currentTranscription];
+    v12 = [(AXLTTranscription *)v10 initWithRecognitionTask:taskCopy transcription:transcriptionCopy previousTranscription:currentTranscription];
 
     [(AXLTTranscriber *)self setCurrentTranscription:v12];
-    v13 = [(AXLTTranscriber *)self transcriptionCallback];
-    v14 = [(AXLTTranscriber *)self currentTranscription];
-    (v13)[2](v13, v14, -2);
+    transcriptionCallback2 = [(AXLTTranscriber *)self transcriptionCallback];
+    currentTranscription2 = [(AXLTTranscriber *)self currentTranscription];
+    (transcriptionCallback2)[2](transcriptionCallback2, currentTranscription2, -2);
   }
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  recognitionCopy = recognition;
   v8 = AXLogLiveTranscription();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -427,25 +427,25 @@ uint64_t __54__AXLTTranscriber__downloadAndInstallSpeechRecognizer__block_invoke
   }
 
   [(AXLTTranscriber *)self setCurrentTranscription:0];
-  v9 = [(AXLTTranscriber *)self transcriptionCallback];
+  transcriptionCallback = [(AXLTTranscriber *)self transcriptionCallback];
 
-  if (v9)
+  if (transcriptionCallback)
   {
     v10 = [AXLTTranscription alloc];
-    v11 = [v7 bestTranscription];
-    v12 = [(AXLTTranscriber *)self currentTranscription];
-    v13 = [(AXLTTranscription *)v10 initWithRecognitionTask:v6 transcription:v11 previousTranscription:v12];
+    bestTranscription = [recognitionCopy bestTranscription];
+    currentTranscription = [(AXLTTranscriber *)self currentTranscription];
+    v13 = [(AXLTTranscription *)v10 initWithRecognitionTask:taskCopy transcription:bestTranscription previousTranscription:currentTranscription];
 
-    v14 = [(AXLTTranscriber *)self transcriptionCallback];
-    (v14)[2](v14, v13, -2);
+    transcriptionCallback2 = [(AXLTTranscriber *)self transcriptionCallback];
+    (transcriptionCallback2)[2](transcriptionCallback2, v13, -2);
   }
 
-  v15 = [(AXLTTranscriber *)self completionCallback];
+  completionCallback = [(AXLTTranscriber *)self completionCallback];
 
-  if (v15)
+  if (completionCallback)
   {
-    v16 = [(AXLTTranscriber *)self completionCallback];
-    v16[2]();
+    completionCallback2 = [(AXLTTranscriber *)self completionCallback];
+    completionCallback2[2]();
   }
 }
 

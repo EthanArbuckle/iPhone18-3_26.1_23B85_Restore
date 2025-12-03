@@ -1,31 +1,31 @@
 @interface CNCardNamePickingCell
 - (id)labelView;
 - (id)valueView;
-- (void)setCardGroupItem:(id)a3;
+- (void)setCardGroupItem:(id)item;
 @end
 
 @implementation CNCardNamePickingCell
 
-- (void)setCardGroupItem:(id)a3
+- (void)setCardGroupItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = CNCardNamePickingCell;
-  v5 = [(CNContactCell *)&v12 cardGroupItem];
+  cardGroupItem = [(CNContactCell *)&v12 cardGroupItem];
 
-  if (v5 != v4)
+  if (cardGroupItem != itemCopy)
   {
     v11.receiver = self;
     v11.super_class = CNCardNamePickingCell;
-    [(CNContactCell *)&v11 setCardGroupItem:v4];
+    [(CNContactCell *)&v11 setCardGroupItem:itemCopy];
     v6 = CNContactsUIBundle();
     v7 = [v6 localizedStringForKey:@"NAME_LABEL" value:@"Name" table:@"Localized"];
-    v8 = [(CNCardNamePickingCell *)self sourceLabel];
-    [v8 setText:v7];
+    sourceLabel = [(CNCardNamePickingCell *)self sourceLabel];
+    [sourceLabel setText:v7];
 
-    v9 = [v4 displayName];
-    v10 = [(CNCardNamePickingCell *)self nameLabel];
-    [v10 setText:v9];
+    displayName = [itemCopy displayName];
+    nameLabel = [(CNCardNamePickingCell *)self nameLabel];
+    [nameLabel setText:displayName];
   }
 }
 
@@ -34,9 +34,9 @@
   nameLabel = self->_nameLabel;
   if (!nameLabel)
   {
-    v4 = [(CNLabeledCell *)self standardValueView];
+    standardValueView = [(CNLabeledCell *)self standardValueView];
     v5 = self->_nameLabel;
-    self->_nameLabel = v4;
+    self->_nameLabel = standardValueView;
 
     nameLabel = self->_nameLabel;
   }
@@ -49,9 +49,9 @@
   sourceLabel = self->_sourceLabel;
   if (!sourceLabel)
   {
-    v4 = [(CNLabeledCell *)self standardLabelView];
+    standardLabelView = [(CNLabeledCell *)self standardLabelView];
     v5 = self->_sourceLabel;
-    self->_sourceLabel = v4;
+    self->_sourceLabel = standardLabelView;
 
     sourceLabel = self->_sourceLabel;
   }

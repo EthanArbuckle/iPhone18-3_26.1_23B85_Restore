@@ -2,24 +2,24 @@
 + (id)diagnosticInfo;
 + (id)gPTPManager;
 + (id)sharedgPTPManager;
-+ (id)sharedgPTPManagerSyncWithTimeout:(unint64_t)a3;
++ (id)sharedgPTPManagerSyncWithTimeout:(unint64_t)timeout;
 + (void)initialize;
-+ (void)notifyWhengPTPManagerIsAvailable:(id)a3;
-+ (void)notifyWhengPTPManagerIsUnavailable:(id)a3;
-- (BOOL)addAVBPTPInstanceIndex:(unsigned __int16)a3 identifier:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)addAirPlayPTPInstance:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)addCopresencePTPInstance:(unint64_t *)a3 ntpAndUpTimeOffsetNsec:(int64_t)a4 isLocalClockSourceFromNTP:(BOOL)a5 error:(id *)a6;
-- (BOOL)addCopresencePTPInstanceRefWithError:(id *)a3;
-- (BOOL)addPTPInstance:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)addTimeOfDayPTPInstance:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)dockReplayTimestamps:(id *)a3;
-- (BOOL)logInterfaceStatisticsWithError:(id *)a3;
-- (BOOL)removeAVBPTPInstanceWithIndex:(unsigned __int16)a3 error:(id *)a4;
-- (BOOL)removeAirPlayPTPInstanceWithError:(id *)a3;
-- (BOOL)removeCopresencePTPInstanceWithError:(id *)a3;
-- (BOOL)removePTPInstanceWithIdentifier:(unint64_t)a3 error:(id *)a4;
-- (BOOL)startReplayTimestamps:(id)a3;
-- (BOOL)stopReplayTimestamps:(id)a3;
++ (void)notifyWhengPTPManagerIsAvailable:(id)available;
++ (void)notifyWhengPTPManagerIsUnavailable:(id)unavailable;
+- (BOOL)addAVBPTPInstanceIndex:(unsigned __int16)index identifier:(unint64_t *)identifier error:(id *)error;
+- (BOOL)addAirPlayPTPInstance:(unint64_t *)instance error:(id *)error;
+- (BOOL)addCopresencePTPInstance:(unint64_t *)instance ntpAndUpTimeOffsetNsec:(int64_t)nsec isLocalClockSourceFromNTP:(BOOL)p error:(id *)error;
+- (BOOL)addCopresencePTPInstanceRefWithError:(id *)error;
+- (BOOL)addPTPInstance:(unint64_t *)instance error:(id *)error;
+- (BOOL)addTimeOfDayPTPInstance:(unint64_t *)instance error:(id *)error;
+- (BOOL)dockReplayTimestamps:(id *)timestamps;
+- (BOOL)logInterfaceStatisticsWithError:(id *)error;
+- (BOOL)removeAVBPTPInstanceWithIndex:(unsigned __int16)index error:(id *)error;
+- (BOOL)removeAirPlayPTPInstanceWithError:(id *)error;
+- (BOOL)removeCopresencePTPInstanceWithError:(id *)error;
+- (BOOL)removePTPInstanceWithIdentifier:(unint64_t)identifier error:(id *)error;
+- (BOOL)startReplayTimestamps:(id)timestamps;
+- (BOOL)stopReplayTimestamps:(id)timestamps;
 - (TSDgPTPClock)systemDomain;
 - (TSDgPTPManager)init;
 - (unint64_t)airPlayPTPInstanceClockIdentifier;
@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000168C;
   block[3] = &unk_10004CAB0;
-  block[4] = a1;
+  block[4] = self;
   dispatch_sync(qword_1000588D8, block);
   v3 = qword_1000588D0;
 
@@ -53,7 +53,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(TSDKextNotifier);
     v3 = qword_1000588C8;
@@ -70,33 +70,33 @@
   }
 }
 
-+ (void)notifyWhengPTPManagerIsAvailable:(id)a3
++ (void)notifyWhengPTPManagerIsAvailable:(id)available
 {
-  v3 = a3;
+  availableCopy = available;
   v4 = qword_1000588C8;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100020FDC;
   v6[3] = &unk_10004D1C8;
-  v7 = v3;
-  v5 = v3;
+  v7 = availableCopy;
+  v5 = availableCopy;
   [v4 notifyWhenServiceIsAvailable:v6];
 }
 
-+ (void)notifyWhengPTPManagerIsUnavailable:(id)a3
++ (void)notifyWhengPTPManagerIsUnavailable:(id)unavailable
 {
-  v3 = a3;
+  unavailableCopy = unavailable;
   v4 = qword_1000588C8;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100021084;
   v6[3] = &unk_10004D1C8;
-  v7 = v3;
-  v5 = v3;
+  v7 = unavailableCopy;
+  v5 = unavailableCopy;
   [v4 notifyWhenServiceIsUnavailable:v6];
 }
 
-+ (id)sharedgPTPManagerSyncWithTimeout:(unint64_t)a3
++ (id)sharedgPTPManagerSyncWithTimeout:(unint64_t)timeout
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -104,8 +104,8 @@
   v10[3] = &unk_10004C6A8;
   v5 = dispatch_semaphore_create(0);
   v11 = v5;
-  [a1 notifyWhengPTPManagerIsAvailable:v10];
-  v6 = dispatch_time(0, 1000000 * a3);
+  [self notifyWhengPTPManagerIsAvailable:v10];
+  v6 = dispatch_time(0, 1000000 * timeout);
   if (dispatch_semaphore_wait(v5, v6))
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -114,15 +114,15 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Failed to find gPTP manager within the timeout period.\n", v9, 2u);
     }
 
-    v7 = 0;
+    sharedgPTPManager = 0;
   }
 
   else
   {
-    v7 = [a1 sharedgPTPManager];
+    sharedgPTPManager = [self sharedgPTPManager];
   }
 
-  return v7;
+  return sharedgPTPManager;
 }
 
 + (id)gPTPManager
@@ -184,15 +184,15 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
   }
 
   else
   {
-    v10 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  v2->_systemDomainClockIdentifier = v10;
+  v2->_systemDomainClockIdentifier = unsignedLongLongValue;
   v11 = dispatch_queue_create("com.apple.TimeSync.TSDgPTPManager.systemDomain", 0);
   systemDomainQueue = v2->_systemDomainQueue;
   v2->_systemDomainQueue = v11;
@@ -222,47 +222,47 @@
   return v3;
 }
 
-- (BOOL)addPTPInstance:(unint64_t *)a3 error:(id *)a4
+- (BOOL)addPTPInstance:(unint64_t *)instance error:(id *)error
 {
-  if (!a3)
+  if (!instance)
   {
     return 0;
   }
 
   v7 = 1;
-  v5 = [(IODConnection *)self->_connection callMethodWithSelector:0 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v8 scalarOutputCount:&v7 error:a4];
+  v5 = [(IODConnection *)self->_connection callMethodWithSelector:0 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v8 scalarOutputCount:&v7 error:error];
   if (!v5)
   {
     sub_10002E65C();
   }
 
-  *a3 = v8;
+  *instance = v8;
   return v5;
 }
 
-- (BOOL)addTimeOfDayPTPInstance:(unint64_t *)a3 error:(id *)a4
+- (BOOL)addTimeOfDayPTPInstance:(unint64_t *)instance error:(id *)error
 {
-  if (!a3)
+  if (!instance)
   {
     return 0;
   }
 
   v7 = 1;
-  v5 = [(IODConnection *)self->_connection callMethodWithSelector:6 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v8 scalarOutputCount:&v7 error:a4];
+  v5 = [(IODConnection *)self->_connection callMethodWithSelector:6 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v8 scalarOutputCount:&v7 error:error];
   if (!v5)
   {
     sub_10002E70C();
   }
 
-  *a3 = v8;
+  *instance = v8;
   return v5;
 }
 
-- (BOOL)removePTPInstanceWithIdentifier:(unint64_t)a3 error:(id *)a4
+- (BOOL)removePTPInstanceWithIdentifier:(unint64_t)identifier error:(id *)error
 {
   v6 = 0;
-  v7 = a3;
-  v4 = [(IODConnection *)self->_connection callMethodWithSelector:1 scalarInputs:&v7 scalarInputCount:1 scalarOutputs:0 scalarOutputCount:&v6 error:a4];
+  identifierCopy = identifier;
+  v4 = [(IODConnection *)self->_connection callMethodWithSelector:1 scalarInputs:&identifierCopy scalarInputCount:1 scalarOutputs:0 scalarOutputCount:&v6 error:error];
   if (!v4)
   {
     sub_10002E7BC();
@@ -271,30 +271,30 @@
   return v4;
 }
 
-- (BOOL)addAVBPTPInstanceIndex:(unsigned __int16)a3 identifier:(unint64_t *)a4 error:(id *)a5
+- (BOOL)addAVBPTPInstanceIndex:(unsigned __int16)index identifier:(unint64_t *)identifier error:(id *)error
 {
-  if (!a4)
+  if (!identifier)
   {
     return 0;
   }
 
-  v10 = a3;
+  indexCopy = index;
   v8 = 1;
-  v6 = [(IODConnection *)self->_connection callMethodWithSelector:2 scalarInputs:&v10 scalarInputCount:1 scalarOutputs:&v9 scalarOutputCount:&v8 error:a5];
+  v6 = [(IODConnection *)self->_connection callMethodWithSelector:2 scalarInputs:&indexCopy scalarInputCount:1 scalarOutputs:&v9 scalarOutputCount:&v8 error:error];
   if (!v6)
   {
     sub_10002E86C();
   }
 
-  *a4 = v9;
+  *identifier = v9;
   return v6;
 }
 
-- (BOOL)removeAVBPTPInstanceWithIndex:(unsigned __int16)a3 error:(id *)a4
+- (BOOL)removeAVBPTPInstanceWithIndex:(unsigned __int16)index error:(id *)error
 {
   v6 = 0;
-  v7 = a3;
-  v4 = [(IODConnection *)self->_connection callMethodWithSelector:3 scalarInputs:&v7 scalarInputCount:1 scalarOutputs:0 scalarOutputCount:&v6 error:a4];
+  indexCopy = index;
+  v4 = [(IODConnection *)self->_connection callMethodWithSelector:3 scalarInputs:&indexCopy scalarInputCount:1 scalarOutputs:0 scalarOutputCount:&v6 error:error];
   if (!v4)
   {
     sub_10002E91C();
@@ -309,15 +309,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)avbPTPInstance1ClockIdentifier
@@ -326,15 +326,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)avbPTPInstance2ClockIdentifier
@@ -343,15 +343,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)avbPTPInstance3ClockIdentifier
@@ -360,15 +360,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)airPlayPTPInstanceClockIdentifier
@@ -377,39 +377,39 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)addAirPlayPTPInstance:(unint64_t *)a3 error:(id *)a4
+- (BOOL)addAirPlayPTPInstance:(unint64_t *)instance error:(id *)error
 {
-  if (!a3)
+  if (!instance)
   {
     return 0;
   }
 
   v7 = 1;
-  v5 = [(IODConnection *)self->_connection callMethodWithSelector:4 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v8 scalarOutputCount:&v7 error:a4];
+  v5 = [(IODConnection *)self->_connection callMethodWithSelector:4 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v8 scalarOutputCount:&v7 error:error];
   if (!v5)
   {
     sub_10002E9CC();
   }
 
-  *a3 = v8;
+  *instance = v8;
   return v5;
 }
 
-- (BOOL)removeAirPlayPTPInstanceWithError:(id *)a3
+- (BOOL)removeAirPlayPTPInstanceWithError:(id *)error
 {
   v5 = 0;
-  v3 = [(IODConnection *)self->_connection callMethodWithSelector:5 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v5 error:a3];
+  v3 = [(IODConnection *)self->_connection callMethodWithSelector:5 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v5 error:error];
   if (!v3)
   {
     sub_10002EA7C();
@@ -424,41 +424,41 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedLongLongValue];
+    unsignedLongLongValue = [v2 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)addCopresencePTPInstance:(unint64_t *)a3 ntpAndUpTimeOffsetNsec:(int64_t)a4 isLocalClockSourceFromNTP:(BOOL)a5 error:(id *)a6
+- (BOOL)addCopresencePTPInstance:(unint64_t *)instance ntpAndUpTimeOffsetNsec:(int64_t)nsec isLocalClockSourceFromNTP:(BOOL)p error:(id *)error
 {
-  if (!a3)
+  if (!instance)
   {
     return 0;
   }
 
   v9 = 1;
-  v11[0] = a4;
-  v11[1] = a5;
-  v7 = [(IODConnection *)self->_connection callMethodWithSelector:7 scalarInputs:v11 scalarInputCount:2 scalarOutputs:&v10 scalarOutputCount:&v9 error:a6];
+  v11[0] = nsec;
+  v11[1] = p;
+  v7 = [(IODConnection *)self->_connection callMethodWithSelector:7 scalarInputs:v11 scalarInputCount:2 scalarOutputs:&v10 scalarOutputCount:&v9 error:error];
   if (!v7)
   {
     sub_10002EB2C();
   }
 
-  *a3 = v10;
+  *instance = v10;
   return v7;
 }
 
-- (BOOL)removeCopresencePTPInstanceWithError:(id *)a3
+- (BOOL)removeCopresencePTPInstanceWithError:(id *)error
 {
   v5 = 0;
-  v3 = [(IODConnection *)self->_connection callMethodWithSelector:8 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v5 error:a3];
+  v3 = [(IODConnection *)self->_connection callMethodWithSelector:8 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v5 error:error];
   if (!v3)
   {
     sub_10002EBDC();
@@ -467,10 +467,10 @@
   return v3;
 }
 
-- (BOOL)addCopresencePTPInstanceRefWithError:(id *)a3
+- (BOOL)addCopresencePTPInstanceRefWithError:(id *)error
 {
   v5 = 0;
-  v3 = [(IODConnection *)self->_connection callMethodWithSelector:10 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v5 error:a3];
+  v3 = [(IODConnection *)self->_connection callMethodWithSelector:10 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v5 error:error];
   if (!v3)
   {
     sub_10002EC8C();
@@ -479,10 +479,10 @@
   return v3;
 }
 
-- (BOOL)logInterfaceStatisticsWithError:(id *)a3
+- (BOOL)logInterfaceStatisticsWithError:(id *)error
 {
   v5 = 0;
-  v3 = [(IODConnection *)self->_connection callMethodWithSelector:9 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v5 error:a3];
+  v3 = [(IODConnection *)self->_connection callMethodWithSelector:9 scalarInputs:0 scalarInputCount:0 scalarOutputs:0 scalarOutputCount:&v5 error:error];
   if (!v3)
   {
     sub_10002ED3C();
@@ -521,8 +521,8 @@ LABEL_25:
   }
 
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 ioClassName];
-  [v4 setObject:v5 forKeyedSubscript:@"ClassName"];
+  ioClassName = [v3 ioClassName];
+  [v4 setObject:ioClassName forKeyedSubscript:@"ClassName"];
 
   v6 = [v3 iodPropertyForKey:@"SystemDomainIdentifier"];
   if (v6)
@@ -591,17 +591,17 @@ LABEL_20:
   return v4;
 }
 
-- (BOOL)dockReplayTimestamps:(id *)a3
+- (BOOL)dockReplayTimestamps:(id *)timestamps
 {
-  if (!a3)
+  if (!timestamps)
   {
     return 0;
   }
 
-  v8[0] = a3;
+  v8[0] = timestamps;
   v8[1] = 152;
-  v3 = 40 * a3->var0.var1;
-  v8[2] = a3->var1;
+  v3 = 40 * timestamps->var0.var1;
+  v8[2] = timestamps->var1;
   v8[3] = v3;
   connection = self->_connection;
   v7 = 0;
@@ -614,16 +614,16 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)startReplayTimestamps:(id)a3
+- (BOOL)startReplayTimestamps:(id)timestamps
 {
   connection = self->_connection;
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  v8 = [v6 length];
+  timestampsCopy = timestamps;
+  timestampsCopy2 = timestamps;
+  uTF8String = [timestampsCopy2 UTF8String];
+  v8 = [timestampsCopy2 length];
 
   v11 = 0;
-  v9 = [(IODConnection *)connection callMethodWithSelector:12 scalarInputs:0 scalarInputCount:0 structInput:v7 structInputSize:v8 scalarOutputs:0 scalarOutputCount:0 error:&v11];
+  v9 = [(IODConnection *)connection callMethodWithSelector:12 scalarInputs:0 scalarInputCount:0 structInput:uTF8String structInputSize:v8 scalarOutputs:0 scalarOutputCount:0 error:&v11];
   if ((v9 & 1) == 0)
   {
     sub_10002F01C();
@@ -632,16 +632,16 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)stopReplayTimestamps:(id)a3
+- (BOOL)stopReplayTimestamps:(id)timestamps
 {
   connection = self->_connection;
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  v8 = [v6 length];
+  timestampsCopy = timestamps;
+  timestampsCopy2 = timestamps;
+  uTF8String = [timestampsCopy2 UTF8String];
+  v8 = [timestampsCopy2 length];
 
   v11 = 0;
-  v9 = [(IODConnection *)connection callMethodWithSelector:13 scalarInputs:0 scalarInputCount:0 structInput:v7 structInputSize:v8 scalarOutputs:0 scalarOutputCount:0 error:&v11];
+  v9 = [(IODConnection *)connection callMethodWithSelector:13 scalarInputs:0 scalarInputCount:0 structInput:uTF8String structInputSize:v8 scalarOutputs:0 scalarOutputCount:0 error:&v11];
   if ((v9 & 1) == 0)
   {
     sub_10002F0CC();

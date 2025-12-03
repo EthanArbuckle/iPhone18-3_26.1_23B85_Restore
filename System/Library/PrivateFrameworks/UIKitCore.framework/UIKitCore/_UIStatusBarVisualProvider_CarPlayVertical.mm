@@ -1,13 +1,13 @@
 @interface _UIStatusBarVisualProvider_CarPlayVertical
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3;
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3;
-- (id)setupInContainerView:(id)a3;
-- (void)itemCreated:(id)a3;
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation;
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier;
+- (id)setupInContainerView:(id)view;
+- (void)itemCreated:(id)created;
 @end
 
 @implementation _UIStatusBarVisualProvider_CarPlayVertical
 
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation
 {
   v3 = 45.0;
   v4 = -1.0;
@@ -16,25 +16,25 @@
   return result;
 }
 
-- (void)itemCreated:(id)a3
+- (void)itemCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v4;
+    v3 = createdCopy;
     [v3 setItemSpacing:3.0];
     [v3 setAdditionRemovalScale:0.25];
     [v3 setAdditionRemovalDuration:0.25];
   }
 }
 
-- (id)setupInContainerView:(id)a3
+- (id)setupInContainerView:(id)view
 {
   v167[6] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
+  viewCopy = view;
+  array = [v4 array];
   v7 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"time"];
   v8 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
   v9 = +[_UIStatusBarRegionAxisFillingLayout fillingLayout];
@@ -59,14 +59,14 @@
   [(_UIStatusBarRegion *)v11 setLayout:v12];
   v164 = v11;
   [(_UIStatusBarRegion *)v11 setActionInsets:0.0, -3.0, -13.0, -3.0];
-  v15 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-  [v15 setPillRegion:v11];
+  pillRegionCoordinator = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  [pillRegionCoordinator setPillRegion:v11];
 
   v16 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"pillContent"];
-  v17 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-  v18 = [v17 pillRegion];
+  pillRegionCoordinator2 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  pillRegion = [pillRegionCoordinator2 pillRegion];
   v165 = v16;
-  [(_UIStatusBarRegion *)v16 setEnabilityRegion:v18];
+  [(_UIStatusBarRegion *)v16 setEnabilityRegion:pillRegion];
 
   v19 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
   v20 = +[_UIStatusBarRegionAxisFillingLayout fillingLayout];
@@ -113,198 +113,198 @@
   [(_UIStatusBarRegion *)v26 setActionInsets:0.0, -3.0, -10.0, -10.0];
   [(_UIStatusBarVisualProvider_CarPlay *)self setRadarRegion:v26];
   v30 = objc_alloc_init(UILayoutGuide);
-  [v5 addLayoutGuide:v30];
-  v31 = [(UILayoutGuide *)v30 heightAnchor];
-  v32 = [v31 constraintEqualToConstant:103.0];
-  [v6 addObject:v32];
+  [viewCopy addLayoutGuide:v30];
+  heightAnchor = [(UILayoutGuide *)v30 heightAnchor];
+  v32 = [heightAnchor constraintEqualToConstant:103.0];
+  [array addObject:v32];
 
-  v33 = [(UILayoutGuide *)v30 leadingAnchor];
-  v34 = [v5 leadingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
-  [v6 addObject:v35];
+  leadingAnchor = [(UILayoutGuide *)v30 leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v35];
 
-  v36 = [(UILayoutGuide *)v30 trailingAnchor];
-  v37 = [v5 trailingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
-  [v6 addObject:v38];
+  trailingAnchor = [(UILayoutGuide *)v30 trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
+  v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v38];
 
-  v39 = [(UILayoutGuide *)v30 centerYAnchor];
-  v40 = [v5 centerYAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
-  [v6 addObject:v41];
+  centerYAnchor = [(UILayoutGuide *)v30 centerYAnchor];
+  centerYAnchor2 = [viewCopy centerYAnchor];
+  v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v41];
 
-  v42 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v43 = [v42 topAnchor];
-  v44 = [v5 safeAreaLayoutGuide];
-  v45 = [v44 topAnchor];
-  v46 = [v43 constraintEqualToAnchor:v45];
-  [v6 addObject:v46];
+  layoutItem = [(_UIStatusBarRegion *)v163 layoutItem];
+  topAnchor = [layoutItem topAnchor];
+  safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v46];
 
-  v47 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v48 = [v47 heightAnchor];
-  v49 = [v48 constraintEqualToConstant:18.0];
-  [v6 addObject:v49];
+  layoutItem2 = [(_UIStatusBarRegion *)v163 layoutItem];
+  heightAnchor2 = [layoutItem2 heightAnchor];
+  v49 = [heightAnchor2 constraintEqualToConstant:18.0];
+  [array addObject:v49];
 
-  v50 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v51 = [v50 widthAnchor];
-  v52 = [v51 constraintEqualToConstant:39.0];
-  [v6 addObject:v52];
+  layoutItem3 = [(_UIStatusBarRegion *)v163 layoutItem];
+  widthAnchor = [layoutItem3 widthAnchor];
+  v52 = [widthAnchor constraintEqualToConstant:39.0];
+  [array addObject:v52];
 
-  v53 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v54 = [v53 centerXAnchor];
-  v55 = [v5 centerXAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
-  [v6 addObject:v56];
+  layoutItem4 = [(_UIStatusBarRegion *)v163 layoutItem];
+  centerXAnchor = [layoutItem4 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v56 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v56];
 
-  v57 = [(_UIStatusBarRegion *)v163 layoutItem];
-  [v5 _ui_addSubLayoutItem:v57];
+  layoutItem5 = [(_UIStatusBarRegion *)v163 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem5];
 
-  v58 = [(_UIStatusBarRegion *)v164 layoutItem];
-  v59 = [v58 topAnchor];
-  v60 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v61 = [v60 topAnchor];
-  v62 = [v59 constraintEqualToAnchor:v61];
-  [v6 addObject:v62];
+  layoutItem6 = [(_UIStatusBarRegion *)v164 layoutItem];
+  topAnchor3 = [layoutItem6 topAnchor];
+  layoutItem7 = [(_UIStatusBarRegion *)v163 layoutItem];
+  topAnchor4 = [layoutItem7 topAnchor];
+  v62 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+  [array addObject:v62];
 
-  v63 = [(_UIStatusBarRegion *)v164 layoutItem];
-  v64 = [v63 bottomAnchor];
-  v65 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v66 = [v65 bottomAnchor];
-  v67 = [v64 constraintEqualToAnchor:v66];
-  [v6 addObject:v67];
+  layoutItem8 = [(_UIStatusBarRegion *)v164 layoutItem];
+  bottomAnchor = [layoutItem8 bottomAnchor];
+  layoutItem9 = [(_UIStatusBarRegion *)v163 layoutItem];
+  bottomAnchor2 = [layoutItem9 bottomAnchor];
+  v67 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v67];
 
-  v68 = [(_UIStatusBarRegion *)v164 layoutItem];
-  v69 = [v68 leadingAnchor];
-  v70 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v71 = [v70 leadingAnchor];
-  v72 = [v69 constraintEqualToAnchor:v71];
-  [v6 addObject:v72];
+  layoutItem10 = [(_UIStatusBarRegion *)v164 layoutItem];
+  leadingAnchor3 = [layoutItem10 leadingAnchor];
+  layoutItem11 = [(_UIStatusBarRegion *)v163 layoutItem];
+  leadingAnchor4 = [layoutItem11 leadingAnchor];
+  v72 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+  [array addObject:v72];
 
-  v73 = [(_UIStatusBarRegion *)v164 layoutItem];
-  v74 = [v73 trailingAnchor];
-  v75 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v76 = [v75 trailingAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76];
-  [v6 addObject:v77];
+  layoutItem12 = [(_UIStatusBarRegion *)v164 layoutItem];
+  trailingAnchor3 = [layoutItem12 trailingAnchor];
+  layoutItem13 = [(_UIStatusBarRegion *)v163 layoutItem];
+  trailingAnchor4 = [layoutItem13 trailingAnchor];
+  v77 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+  [array addObject:v77];
 
-  v78 = [(_UIStatusBarRegion *)v164 layoutItem];
-  [v5 _ui_addSubLayoutItem:v78];
+  layoutItem14 = [(_UIStatusBarRegion *)v164 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem14];
 
-  v79 = [(_UIStatusBarRegion *)v165 layoutItem];
-  v80 = [v79 topAnchor];
-  v81 = [(_UIStatusBarRegion *)v164 layoutItem];
-  v82 = [v81 topAnchor];
-  v83 = [v80 constraintEqualToAnchor:v82];
-  [v6 addObject:v83];
+  layoutItem15 = [(_UIStatusBarRegion *)v165 layoutItem];
+  topAnchor5 = [layoutItem15 topAnchor];
+  layoutItem16 = [(_UIStatusBarRegion *)v164 layoutItem];
+  topAnchor6 = [layoutItem16 topAnchor];
+  v83 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
+  [array addObject:v83];
 
-  v84 = [(_UIStatusBarRegion *)v165 layoutItem];
-  v85 = [v84 bottomAnchor];
-  v86 = [(_UIStatusBarRegion *)v164 layoutItem];
-  v87 = [v86 bottomAnchor];
-  v88 = [v85 constraintEqualToAnchor:v87];
-  [v6 addObject:v88];
+  layoutItem17 = [(_UIStatusBarRegion *)v165 layoutItem];
+  bottomAnchor3 = [layoutItem17 bottomAnchor];
+  layoutItem18 = [(_UIStatusBarRegion *)v164 layoutItem];
+  bottomAnchor4 = [layoutItem18 bottomAnchor];
+  v88 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+  [array addObject:v88];
 
-  v89 = [(_UIStatusBarRegion *)v165 layoutItem];
-  v90 = [v89 leadingAnchor];
-  v91 = [(_UIStatusBarRegion *)v164 layoutItem];
-  v92 = [v91 leadingAnchor];
-  v93 = [v90 constraintEqualToAnchor:v92];
-  [v6 addObject:v93];
+  layoutItem19 = [(_UIStatusBarRegion *)v165 layoutItem];
+  leadingAnchor5 = [layoutItem19 leadingAnchor];
+  layoutItem20 = [(_UIStatusBarRegion *)v164 layoutItem];
+  leadingAnchor6 = [layoutItem20 leadingAnchor];
+  v93 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
+  [array addObject:v93];
 
-  v94 = [(_UIStatusBarRegion *)v165 layoutItem];
-  v95 = [v94 trailingAnchor];
-  v96 = [(_UIStatusBarRegion *)v164 layoutItem];
-  v97 = [v96 trailingAnchor];
-  v98 = [v95 constraintEqualToAnchor:v97];
-  [v6 addObject:v98];
+  layoutItem21 = [(_UIStatusBarRegion *)v165 layoutItem];
+  trailingAnchor5 = [layoutItem21 trailingAnchor];
+  layoutItem22 = [(_UIStatusBarRegion *)v164 layoutItem];
+  trailingAnchor6 = [layoutItem22 trailingAnchor];
+  v98 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+  [array addObject:v98];
 
-  v99 = [(_UIStatusBarRegion *)v165 layoutItem];
-  [v5 _ui_addSubLayoutItem:v99];
+  layoutItem23 = [(_UIStatusBarRegion *)v165 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem23];
 
-  v100 = [(_UIStatusBarRegion *)v166 layoutItem];
-  v101 = [v100 topAnchor];
-  v102 = [(_UIStatusBarRegion *)v163 layoutItem];
-  v103 = [v102 bottomAnchor];
-  v104 = [v101 constraintEqualToAnchor:v103 constant:3.0];
-  [v6 addObject:v104];
+  layoutItem24 = [(_UIStatusBarRegion *)v166 layoutItem];
+  topAnchor7 = [layoutItem24 topAnchor];
+  layoutItem25 = [(_UIStatusBarRegion *)v163 layoutItem];
+  bottomAnchor5 = [layoutItem25 bottomAnchor];
+  v104 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:3.0];
+  [array addObject:v104];
 
-  v105 = [(_UIStatusBarRegion *)v166 layoutItem];
-  v106 = [v105 heightAnchor];
-  v107 = [v106 constraintEqualToConstant:10.0];
-  [v6 addObject:v107];
+  layoutItem26 = [(_UIStatusBarRegion *)v166 layoutItem];
+  heightAnchor3 = [layoutItem26 heightAnchor];
+  v107 = [heightAnchor3 constraintEqualToConstant:10.0];
+  [array addObject:v107];
 
-  v108 = [(_UIStatusBarRegion *)v166 layoutItem];
-  v109 = [v108 leadingAnchor];
-  v110 = [v5 leadingAnchor];
-  v111 = [v109 constraintEqualToAnchor:v110];
-  [v6 addObject:v111];
+  layoutItem27 = [(_UIStatusBarRegion *)v166 layoutItem];
+  leadingAnchor7 = [layoutItem27 leadingAnchor];
+  leadingAnchor8 = [viewCopy leadingAnchor];
+  v111 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
+  [array addObject:v111];
 
-  v112 = [(_UIStatusBarRegion *)v166 layoutItem];
-  v113 = [v112 trailingAnchor];
-  v114 = [v5 trailingAnchor];
-  v115 = [v113 constraintEqualToAnchor:v114];
-  [v6 addObject:v115];
+  layoutItem28 = [(_UIStatusBarRegion *)v166 layoutItem];
+  trailingAnchor7 = [layoutItem28 trailingAnchor];
+  trailingAnchor8 = [viewCopy trailingAnchor];
+  v115 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
+  [array addObject:v115];
 
-  v116 = [(_UIStatusBarRegion *)v166 layoutItem];
-  [v5 _ui_addSubLayoutItem:v116];
+  layoutItem29 = [(_UIStatusBarRegion *)v166 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem29];
 
-  v117 = [(_UIStatusBarRegion *)v155 layoutItem];
-  v118 = [v117 topAnchor];
-  v119 = [(_UIStatusBarRegion *)v166 layoutItem];
-  v120 = [v119 bottomAnchor];
-  v121 = [v118 constraintEqualToAnchor:v120 constant:8.0];
-  [v6 addObject:v121];
+  layoutItem30 = [(_UIStatusBarRegion *)v155 layoutItem];
+  topAnchor8 = [layoutItem30 topAnchor];
+  layoutItem31 = [(_UIStatusBarRegion *)v166 layoutItem];
+  bottomAnchor6 = [layoutItem31 bottomAnchor];
+  v121 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6 constant:8.0];
+  [array addObject:v121];
 
-  v122 = [(_UIStatusBarRegion *)v155 layoutItem];
-  v123 = [v122 bottomAnchor];
-  v124 = [(UILayoutGuide *)v30 topAnchor];
-  v125 = [v123 constraintEqualToAnchor:v124 constant:-5.0];
-  [v6 addObject:v125];
+  layoutItem32 = [(_UIStatusBarRegion *)v155 layoutItem];
+  bottomAnchor7 = [layoutItem32 bottomAnchor];
+  topAnchor9 = [(UILayoutGuide *)v30 topAnchor];
+  v125 = [bottomAnchor7 constraintEqualToAnchor:topAnchor9 constant:-5.0];
+  [array addObject:v125];
 
-  v126 = [(_UIStatusBarRegion *)v155 layoutItem];
-  v127 = [v126 leadingAnchor];
-  v128 = [v5 leadingAnchor];
-  v129 = [v127 constraintEqualToAnchor:v128];
-  [v6 addObject:v129];
+  layoutItem33 = [(_UIStatusBarRegion *)v155 layoutItem];
+  leadingAnchor9 = [layoutItem33 leadingAnchor];
+  leadingAnchor10 = [viewCopy leadingAnchor];
+  v129 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
+  [array addObject:v129];
 
-  v130 = [(_UIStatusBarRegion *)v155 layoutItem];
-  v131 = [v130 trailingAnchor];
-  v132 = [v5 trailingAnchor];
-  v133 = [v131 constraintEqualToAnchor:v132];
-  [v6 addObject:v133];
+  layoutItem34 = [(_UIStatusBarRegion *)v155 layoutItem];
+  trailingAnchor9 = [layoutItem34 trailingAnchor];
+  trailingAnchor10 = [viewCopy trailingAnchor];
+  v133 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
+  [array addObject:v133];
 
-  v134 = [(_UIStatusBarRegion *)v155 layoutItem];
-  [v5 _ui_addSubLayoutItem:v134];
+  layoutItem35 = [(_UIStatusBarRegion *)v155 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem35];
 
-  v135 = [(_UIStatusBarRegion *)v26 layoutItem];
-  v136 = [v135 topAnchor];
-  v137 = [(UILayoutGuide *)v30 bottomAnchor];
-  v138 = [v136 constraintEqualToAnchor:v137 constant:5.0];
-  [v6 addObject:v138];
+  layoutItem36 = [(_UIStatusBarRegion *)v26 layoutItem];
+  topAnchor10 = [layoutItem36 topAnchor];
+  bottomAnchor8 = [(UILayoutGuide *)v30 bottomAnchor];
+  v138 = [topAnchor10 constraintEqualToAnchor:bottomAnchor8 constant:5.0];
+  [array addObject:v138];
 
-  v139 = [(_UIStatusBarRegion *)v26 layoutItem];
-  v140 = [v139 bottomAnchor];
-  v141 = [v5 safeAreaLayoutGuide];
-  v142 = [v141 bottomAnchor];
-  v143 = [v140 constraintEqualToAnchor:v142 constant:-5.0];
-  [v6 addObject:v143];
+  layoutItem37 = [(_UIStatusBarRegion *)v26 layoutItem];
+  bottomAnchor9 = [layoutItem37 bottomAnchor];
+  safeAreaLayoutGuide2 = [viewCopy safeAreaLayoutGuide];
+  bottomAnchor10 = [safeAreaLayoutGuide2 bottomAnchor];
+  v143 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:-5.0];
+  [array addObject:v143];
 
-  v144 = [(_UIStatusBarRegion *)v26 layoutItem];
-  v145 = [v144 leadingAnchor];
-  v146 = [v5 leadingAnchor];
-  v147 = [v145 constraintEqualToAnchor:v146];
-  [v6 addObject:v147];
+  layoutItem38 = [(_UIStatusBarRegion *)v26 layoutItem];
+  leadingAnchor11 = [layoutItem38 leadingAnchor];
+  leadingAnchor12 = [viewCopy leadingAnchor];
+  v147 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
+  [array addObject:v147];
 
-  v148 = [(_UIStatusBarRegion *)v26 layoutItem];
-  v149 = [v148 trailingAnchor];
-  v150 = [v5 trailingAnchor];
-  v151 = [v149 constraintEqualToAnchor:v150];
-  [v6 addObject:v151];
+  layoutItem39 = [(_UIStatusBarRegion *)v26 layoutItem];
+  trailingAnchor11 = [layoutItem39 trailingAnchor];
+  trailingAnchor12 = [viewCopy trailingAnchor];
+  v151 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
+  [array addObject:v151];
 
-  v152 = [(_UIStatusBarRegion *)v26 layoutItem];
-  [v5 _ui_addSubLayoutItem:v152];
+  layoutItem40 = [(_UIStatusBarRegion *)v26 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem40];
 
-  [MEMORY[0x1E69977A0] activateConstraints:v6];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
   v167[0] = v165;
   v167[1] = v164;
   v167[2] = v163;
@@ -316,15 +316,15 @@
   return v153;
 }
 
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier
 {
   v89[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   orderedDisplayItemPlacements = self->_orderedDisplayItemPlacements;
   if (!orderedDisplayItemPlacements)
   {
     +[_UIStatusBarTimeItem shortTimeDisplayIdentifier];
-    v6 = v62 = v4;
+    v6 = v62 = identifierCopy;
     v73 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v6 priority:400];
 
     v7 = +[(_UIStatusBarBackgroundActivityItem *)_UIStatusBarPillBackgroundActivityItem];
@@ -342,9 +342,9 @@
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
     v14 = [v12 excludingPlacements:v13];
 
-    v15 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+    pillRegionCoordinator = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
     v71 = v14;
-    [v15 setPillIconPlacement:v14];
+    [pillRegionCoordinator setPillIconPlacement:v14];
 
     v16 = +[(_UIStatusBarBackgroundActivityItem *)_UIStatusBarPillBackgroundActivityItem];
     v17 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v16 priority:474];
@@ -456,11 +456,11 @@
     v53 = v67->_orderedDisplayItemPlacements;
     v67->_orderedDisplayItemPlacements = v52;
 
-    v4 = v62;
+    identifierCopy = v62;
     orderedDisplayItemPlacements = v67->_orderedDisplayItemPlacements;
   }
 
-  v54 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:v4];
+  v54 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:identifierCopy];
 
   return v54;
 }

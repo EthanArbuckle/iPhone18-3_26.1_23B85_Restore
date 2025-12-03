@@ -1,11 +1,11 @@
 @interface MTKTextureUploader
-- (MTKTextureUploader)initWithDevice:(id)a3 commandQueue:(id)a4 notifyQueue:(id)a5;
-- (id)newTextureWithData:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)copyBytes:(const void *)a3 toTexture:(id)a4 bitsPerPixel:(unint64_t)a5 pixelComponents:(unint64_t)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 region:(id *)a9 slice:(unint64_t)a10 level:(unint64_t)a11 flipVertically:(BOOL)a12;
-- (void)copyTexture:(id)a3 toTexture:(id)a4;
+- (MTKTextureUploader)initWithDevice:(id)device commandQueue:(id)queue notifyQueue:(id)notifyQueue;
+- (id)newTextureWithData:(id)data options:(id)options error:(id *)error;
+- (void)copyBytes:(const void *)bytes toTexture:(id)texture bitsPerPixel:(unint64_t)pixel pixelComponents:(unint64_t)components bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image region:(id *)region slice:(unint64_t)self0 level:(unint64_t)self1 flipVertically:(BOOL)self2;
+- (void)copyTexture:(id)texture toTexture:(id)toTexture;
 - (void)dealloc;
-- (void)finishWithCompletionHandler:(id)a3;
-- (void)generateMipmapsForTexture:(id)a3;
+- (void)finishWithCompletionHandler:(id)handler;
+- (void)generateMipmapsForTexture:(id)texture;
 @end
 
 @implementation MTKTextureUploader
@@ -30,23 +30,23 @@
   [(MTKTextureUploader *)&v4 dealloc];
 }
 
-- (MTKTextureUploader)initWithDevice:(id)a3 commandQueue:(id)a4 notifyQueue:(id)a5
+- (MTKTextureUploader)initWithDevice:(id)device commandQueue:(id)queue notifyQueue:(id)notifyQueue
 {
   v12.receiver = self;
   v12.super_class = MTKTextureUploader;
   v8 = [(MTKTextureUploader *)&v12 init];
   if (v8)
   {
-    v8->_device = a3;
+    v8->_device = device;
     v8->_lock = objc_alloc_init(MEMORY[0x1E696AD10]);
-    v8->_notifyQueue = a5;
-    dispatch_retain(a5);
+    v8->_notifyQueue = notifyQueue;
+    dispatch_retain(notifyQueue);
     v9 = objc_autoreleasePoolPush();
-    if (a4)
+    if (queue)
     {
-      v10 = [a4 commandBuffer];
-      v8->_commandBuffer = v10;
-      v8->_blit = [(MTLCommandBuffer *)v10 blitCommandEncoder];
+      commandBuffer = [queue commandBuffer];
+      v8->_commandBuffer = commandBuffer;
+      v8->_blit = [(MTLCommandBuffer *)commandBuffer blitCommandEncoder];
     }
 
     objc_autoreleasePoolPop(v9);
@@ -55,71 +55,71 @@
   return v8;
 }
 
-- (void)generateMipmapsForTexture:(id)a3
+- (void)generateMipmapsForTexture:(id)texture
 {
-  if (a3)
+  if (texture)
   {
     [(NSLock *)self->_lock lock];
-    [(MTLBlitCommandEncoder *)self->_blit generateMipmapsForTexture:a3];
+    [(MTLBlitCommandEncoder *)self->_blit generateMipmapsForTexture:texture];
     lock = self->_lock;
 
     [(NSLock *)lock unlock];
   }
 }
 
-- (void)copyBytes:(const void *)a3 toTexture:(id)a4 bitsPerPixel:(unint64_t)a5 pixelComponents:(unint64_t)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 region:(id *)a9 slice:(unint64_t)a10 level:(unint64_t)a11 flipVertically:(BOOL)a12
+- (void)copyBytes:(const void *)bytes toTexture:(id)texture bitsPerPixel:(unint64_t)pixel pixelComponents:(unint64_t)components bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image region:(id *)region slice:(unint64_t)self0 level:(unint64_t)self1 flipVertically:(BOOL)self2
 {
-  if (!a3 || !a4)
+  if (!bytes || !texture)
   {
     [MTKTextureUploader copyBytes:toTexture:bitsPerPixel:pixelComponents:bytesPerRow:bytesPerImage:region:slice:level:flipVertically:];
   }
 
-  v15 = a3;
-  v17 = a10;
-  v18 = a11;
-  if (a12)
+  bytesCopy = bytes;
+  sliceCopy2 = slice;
+  levelCopy2 = level;
+  if (vertically)
   {
-    v23 = a6;
-    v20 = malloc_type_malloc(a8, 0x446B8D26uLL);
-    reflectImage(v15, v20, a9->var1.var0, a9->var1.var1, a7, a5, v23);
-    v15 = v20;
-    v18 = a11;
-    v17 = a10;
+    componentsCopy = components;
+    v20 = malloc_type_malloc(image, 0x446B8D26uLL);
+    reflectImage(bytesCopy, v20, region->var1.var0, region->var1.var1, row, pixel, componentsCopy);
+    bytesCopy = v20;
+    levelCopy2 = level;
+    sliceCopy2 = slice;
   }
 
   v25 = 0;
   memset(&v24[3], 0, 48);
   device = self->_device;
-  [a4 pixelFormat];
+  [texture pixelFormat];
   MTLPixelFormatGetInfoForDevice();
-  v22 = *&a9->var0.var2;
-  v24[0] = *&a9->var0.var0;
+  v22 = *&region->var0.var2;
+  v24[0] = *&region->var0.var0;
   v24[1] = v22;
-  v24[2] = *&a9->var1.var1;
-  [a4 replaceRegion:v24 mipmapLevel:v18 slice:v17 withBytes:v15 bytesPerRow:a7 bytesPerImage:a8];
-  if (a12)
+  v24[2] = *&region->var1.var1;
+  [texture replaceRegion:v24 mipmapLevel:levelCopy2 slice:sliceCopy2 withBytes:bytesCopy bytesPerRow:row bytesPerImage:image];
+  if (vertically)
   {
-    free(v15);
+    free(bytesCopy);
   }
 }
 
-- (void)copyTexture:(id)a3 toTexture:(id)a4
+- (void)copyTexture:(id)texture toTexture:(id)toTexture
 {
-  if (!a3 || !a4)
+  if (!texture || !toTexture)
   {
     [MTKTextureUploader copyTexture:toTexture:];
   }
 
   [(NSLock *)self->_lock lock];
-  v7 = [a3 textureType];
+  textureType = [texture textureType];
   v8 = 6;
-  if ((v7 - 5) >= 2)
+  if ((textureType - 5) >= 2)
   {
     v8 = 1;
   }
 
   v18 = v8;
-  if ([a3 arrayLength])
+  if ([texture arrayLength])
   {
     v9 = 0;
     do
@@ -129,10 +129,10 @@
       v17 = v9 * v18;
       do
       {
-        v11 = [a3 width];
-        v12 = [a3 height];
-        v13 = [a3 depth];
-        if ([a3 mipmapLevelCount])
+        width = [texture width];
+        height = [texture height];
+        depth = [texture depth];
+        if ([texture mipmapLevelCount])
         {
           v14 = 0;
           do
@@ -140,44 +140,44 @@
             blit = self->_blit;
             memset(v21, 0, sizeof(v21));
             memset(v19, 0, sizeof(v19));
-            v20[0] = v11;
-            v20[1] = v12;
-            v20[2] = v13;
-            [(MTLBlitCommandEncoder *)blit copyFromTexture:a3 sourceSlice:v10 + v17 sourceLevel:v14 sourceOrigin:v21 sourceSize:v20 toTexture:a4 destinationSlice:v10 + v17 destinationLevel:v14 destinationOrigin:v19];
-            if (v11 <= 1)
+            v20[0] = width;
+            v20[1] = height;
+            v20[2] = depth;
+            [(MTLBlitCommandEncoder *)blit copyFromTexture:texture sourceSlice:v10 + v17 sourceLevel:v14 sourceOrigin:v21 sourceSize:v20 toTexture:toTexture destinationSlice:v10 + v17 destinationLevel:v14 destinationOrigin:v19];
+            if (width <= 1)
             {
-              v11 = 1;
+              width = 1;
             }
 
             else
             {
-              v11 >>= 1;
+              width >>= 1;
             }
 
-            if (v12 <= 1)
+            if (height <= 1)
             {
-              v12 = 1;
-            }
-
-            else
-            {
-              v12 >>= 1;
-            }
-
-            if (v13 <= 1)
-            {
-              v13 = 1;
+              height = 1;
             }
 
             else
             {
-              v13 >>= 1;
+              height >>= 1;
+            }
+
+            if (depth <= 1)
+            {
+              depth = 1;
+            }
+
+            else
+            {
+              depth >>= 1;
             }
 
             ++v14;
           }
 
-          while (v14 < [a3 mipmapLevelCount]);
+          while (v14 < [texture mipmapLevelCount]);
         }
 
         ++v10;
@@ -187,54 +187,54 @@
       v9 = v16 + 1;
     }
 
-    while (v16 + 1 < [a3 arrayLength]);
+    while (v16 + 1 < [texture arrayLength]);
   }
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (id)newTextureWithData:(id)a3 options:(id)a4 error:(id *)a5
+- (id)newTextureWithData:(id)data options:(id)options error:(id *)error
 {
   v8 = objc_alloc_init(MEMORY[0x1E69741C0]);
-  [v8 setTextureType:{objc_msgSend(a3, "textureType")}];
-  [v8 setPixelFormat:objc_msgSend(a3, "pixelFormat")];
-  [v8 setWidth:{objc_msgSend(a3, "width")}];
-  [v8 setHeight:{objc_msgSend(a3, "height")}];
-  [v8 setDepth:{objc_msgSend(a3, "depth")}];
-  [v8 setMipmapLevelCount:{objc_msgSend(a3, "numMipmapLevels")}];
+  [v8 setTextureType:{objc_msgSend(data, "textureType")}];
+  [v8 setPixelFormat:objc_msgSend(data, "pixelFormat")];
+  [v8 setWidth:{objc_msgSend(data, "width")}];
+  [v8 setHeight:{objc_msgSend(data, "height")}];
+  [v8 setDepth:{objc_msgSend(data, "depth")}];
+  [v8 setMipmapLevelCount:{objc_msgSend(data, "numMipmapLevels")}];
   [v8 setSampleCount:1];
-  [v8 setArrayLength:{objc_msgSend(a3, "numArrayElements")}];
-  if ([a3 numMipmapLevels] == 1 && ((objc_msgSend(objc_msgSend(a4, "objectForKey:", @"MTKTextureLoaderOptionAllocateMipmaps"), "BOOLValue") & 1) != 0 || objc_msgSend(objc_msgSend(a4, "objectForKey:", @"MTKTextureLoaderOptionGenerateMipmaps"), "BOOLValue")))
+  [v8 setArrayLength:{objc_msgSend(data, "numArrayElements")}];
+  if ([data numMipmapLevels] == 1 && ((objc_msgSend(objc_msgSend(options, "objectForKey:", @"MTKTextureLoaderOptionAllocateMipmaps"), "BOOLValue") & 1) != 0 || objc_msgSend(objc_msgSend(options, "objectForKey:", @"MTKTextureLoaderOptionGenerateMipmaps"), "BOOLValue")))
   {
-    v9 = [a3 width];
-    v10 = [a3 height];
-    if (v9 <= v10)
+    width = [data width];
+    height = [data height];
+    if (width <= height)
     {
-      v11 = v10;
+      v11 = height;
     }
 
     else
     {
-      v11 = v9;
+      v11 = width;
     }
 
     [v8 setMipmapLevelCount:(floor(log2(v11)) + 1.0)];
   }
 
-  v12 = [a4 objectForKeyedSubscript:@"MTKTextureLoaderOptionLoadAsArray"];
+  v12 = [options objectForKeyedSubscript:@"MTKTextureLoaderOptionLoadAsArray"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 BOOLValue])
   {
     [v8 setTextureType:{arrayTextureTypeFromTextureType(objc_msgSend(v8, "textureType"))}];
   }
 
-  v13 = [v8 storageMode];
-  if ([a4 objectForKey:@"MTKTextureLoaderOptionTextureStorageMode"])
+  storageMode = [v8 storageMode];
+  if ([options objectForKey:@"MTKTextureLoaderOptionTextureStorageMode"])
   {
-    v13 = [objc_msgSend(a4 objectForKey:{@"MTKTextureLoaderOptionTextureStorageMode", "unsignedIntegerValue"}];
+    storageMode = [objc_msgSend(options objectForKey:{@"MTKTextureLoaderOptionTextureStorageMode", "unsignedIntegerValue"}];
   }
 
-  if (v13 == 2)
+  if (storageMode == 2)
   {
     v14 = [(MTLDevice *)self->_device newTextureWithDescriptor:v8];
   }
@@ -244,27 +244,27 @@
     v14 = 0;
   }
 
-  [v8 setStorageMode:v13];
-  if ([a4 objectForKey:@"MTKTextureLoaderOptionTextureUsage"])
+  [v8 setStorageMode:storageMode];
+  if ([options objectForKey:@"MTKTextureLoaderOptionTextureUsage"])
   {
-    [v8 setUsage:{objc_msgSend(objc_msgSend(a4, "objectForKey:", @"MTKTextureLoaderOptionTextureUsage", "unsignedIntegerValue")}];
+    [v8 setUsage:{objc_msgSend(objc_msgSend(options, "objectForKey:", @"MTKTextureLoaderOptionTextureUsage", "unsignedIntegerValue")}];
   }
 
-  if ([a4 objectForKey:@"MTKTextureLoaderOptionTextureCPUCacheMode"])
+  if ([options objectForKey:@"MTKTextureLoaderOptionTextureCPUCacheMode"])
   {
-    [v8 setCpuCacheMode:{objc_msgSend(objc_msgSend(a4, "objectForKey:", @"MTKTextureLoaderOptionTextureCPUCacheMode", "unsignedIntegerValue")}];
+    [v8 setCpuCacheMode:{objc_msgSend(objc_msgSend(options, "objectForKey:", @"MTKTextureLoaderOptionTextureCPUCacheMode", "unsignedIntegerValue")}];
   }
 
   v15 = [(MTLDevice *)self->_device newTextureWithDescriptor:v8];
 
-  v16 = [a3 imageOrigin];
-  v17 = [a4 objectForKey:@"MTKTextureLoaderOptionOrigin"];
+  imageOrigin = [data imageOrigin];
+  v17 = [options objectForKey:@"MTKTextureLoaderOptionOrigin"];
   if (v17)
   {
     v18 = v17;
     if (v17 == @"MTKTextureLoaderOriginFlippedVertically")
     {
-      if (v16 == @"MTKTextureLoaderOriginTopLeft")
+      if (imageOrigin == @"MTKTextureLoaderOriginTopLeft")
       {
         v18 = @"MTKTextureLoaderOriginBottomLeft";
       }
@@ -278,10 +278,10 @@
 
   else
   {
-    v18 = v16;
+    v18 = imageOrigin;
   }
 
-  if (v13 == 2)
+  if (storageMode == 2)
   {
     v19 = v14;
   }
@@ -293,9 +293,9 @@
 
   if (!v19 || !v15)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, @"Failed to allocate texture memory.");
+      *error = _newMTKTextureErrorWithCodeAndErrorString(0, @"Failed to allocate texture memory.");
     }
 
     if (v19 != v15)
@@ -305,18 +305,18 @@
     return 0;
   }
 
-  v40 = a5;
+  errorCopy = error;
   v41 = v15;
-  if ([a3 numArrayElements])
+  if ([data numArrayElements])
   {
     v20 = 0;
     v43 = v18;
     v44 = v19;
-    v42 = v16;
-    while (![a3 numFaces])
+    v42 = imageOrigin;
+    while (![data numFaces])
     {
 LABEL_48:
-      if (++v20 >= [a3 numArrayElements])
+      if (++v20 >= [data numArrayElements])
       {
         goto LABEL_49;
       }
@@ -325,43 +325,43 @@ LABEL_48:
     v21 = 0;
     while (1)
     {
-      v46 = [a3 width];
-      v45 = [a3 height];
-      if ([a3 numMipmapLevels])
+      width2 = [data width];
+      height2 = [data height];
+      if ([data numMipmapLevels])
       {
         break;
       }
 
 LABEL_47:
-      if (++v21 >= [a3 numFaces])
+      if (++v21 >= [data numFaces])
       {
         goto LABEL_48;
       }
     }
 
     v22 = 0;
-    while (![a3 depth])
+    while (![data depth])
     {
 LABEL_41:
-      if (v46 <= 1)
+      if (width2 <= 1)
       {
         v35 = 1;
       }
 
       else
       {
-        v35 = v46 >> 1;
+        v35 = width2 >> 1;
       }
 
-      v36 = v45 >> 1;
-      if (v45 <= 1)
+      v36 = height2 >> 1;
+      if (height2 <= 1)
       {
         v36 = 1;
       }
 
-      v45 = v36;
-      v46 = v35;
-      if (++v22 >= [a3 numMipmapLevels])
+      height2 = v36;
+      width2 = v35;
+      if (++v22 >= [data numMipmapLevels])
       {
         goto LABEL_47;
       }
@@ -372,7 +372,7 @@ LABEL_41:
     {
       v54 = 0;
       v55 = 0;
-      v24 = [a3 getDataForArrayElement:v20 face:v21 level:v22 depthPlane:v23 bytesPerRow:&v55 bytesPerImage:&v54];
+      v24 = [data getDataForArrayElement:v20 face:v21 level:v22 depthPlane:v23 bytesPerRow:&v55 bytesPerImage:&v54];
       if (!v24)
       {
         break;
@@ -380,41 +380,41 @@ LABEL_41:
 
       v25 = v24;
       v53 = 0;
-      v48 = v16 != v18;
+      v48 = imageOrigin != v18;
       v51 = 0u;
       v52 = 0u;
       v50 = 0u;
-      [a3 pixelFormat];
+      [data pixelFormat];
       MTLPixelFormatGetInfoForDevice();
-      v26 = [v25 bytes];
+      bytes = [v25 bytes];
       v27 = 8 * *(&v51 + 1);
       v28 = v52;
       v29 = v54;
       v30 = v55;
-      v31 = [a3 numFaces];
+      numFaces = [data numFaces];
       v49[0] = 0;
       v49[1] = 0;
       v49[2] = v23;
-      v49[3] = v46;
-      v49[4] = v45;
+      v49[3] = width2;
+      v49[4] = height2;
       v49[5] = 1;
       LOBYTE(v39) = v48;
-      v32 = v26;
+      v32 = bytes;
       v19 = v44;
       v33 = v27;
       v34 = v30;
-      v16 = v42;
+      imageOrigin = v42;
       v18 = v43;
-      [(MTKTextureUploader *)self copyBytes:v32 toTexture:v44 bitsPerPixel:v33 pixelComponents:v28 bytesPerRow:v34 bytesPerImage:v29 region:v49 slice:v21 + v31 * v20 level:v22 flipVertically:v39];
-      if (++v23 >= [a3 depth])
+      [(MTKTextureUploader *)self copyBytes:v32 toTexture:v44 bitsPerPixel:v33 pixelComponents:v28 bytesPerRow:v34 bytesPerImage:v29 region:v49 slice:v21 + numFaces * v20 level:v22 flipVertically:v39];
+      if (++v23 >= [data depth])
       {
         goto LABEL_41;
       }
     }
 
-    if (v40)
+    if (errorCopy)
     {
-      *v40 = _newMTKTextureErrorWithCodeAndErrorString(0, @"Texture malformed.");
+      *errorCopy = _newMTKTextureErrorWithCodeAndErrorString(0, @"Texture malformed.");
     }
 
     if (v44 != v41)
@@ -434,7 +434,7 @@ LABEL_49:
   return v37;
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
   if (self->_commandBuffer)
   {
@@ -444,7 +444,7 @@ LABEL_49:
     v7[1] = 3221225472;
     v7[2] = __50__MTKTextureUploader_finishWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E8580A38;
-    v7[4] = a3;
+    v7[4] = handler;
     [(MTLCommandBuffer *)commandBuffer addCompletedHandler:v7];
     [(MTLCommandBuffer *)self->_commandBuffer commit];
 
@@ -455,7 +455,7 @@ LABEL_49:
   {
     notifyQueue = self->_notifyQueue;
 
-    dispatch_async(notifyQueue, a3);
+    dispatch_async(notifyQueue, handler);
   }
 }
 

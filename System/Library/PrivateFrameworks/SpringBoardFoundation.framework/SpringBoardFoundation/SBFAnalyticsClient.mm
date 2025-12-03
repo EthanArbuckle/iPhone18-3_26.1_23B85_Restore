@@ -1,8 +1,8 @@
 @interface SBFAnalyticsClient
 + (id)sharedInstance;
-- (SBFAnalyticsClient)initWithBackend:(id)a3;
-- (void)emitEvent:(unint64_t)a3 withPayload:(id)a4;
-- (void)setSignificantTimeChangedNotificationName:(id)a3;
+- (SBFAnalyticsClient)initWithBackend:(id)backend;
+- (void)emitEvent:(unint64_t)event withPayload:(id)payload;
+- (void)setSignificantTimeChangedNotificationName:(id)name;
 @end
 
 @implementation SBFAnalyticsClient
@@ -28,44 +28,44 @@ void __36__SBFAnalyticsClient_sharedInstance__block_invoke()
   sharedInstance___client = v1;
 }
 
-- (SBFAnalyticsClient)initWithBackend:(id)a3
+- (SBFAnalyticsClient)initWithBackend:(id)backend
 {
-  v5 = a3;
+  backendCopy = backend;
   v9.receiver = self;
   v9.super_class = SBFAnalyticsClient;
   v6 = [(SBFAnalyticsClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backend, a3);
+    objc_storeStrong(&v6->_backend, backend);
   }
 
   return v7;
 }
 
-- (void)emitEvent:(unint64_t)a3 withPayload:(id)a4
+- (void)emitEvent:(unint64_t)event withPayload:(id)payload
 {
   backend = self->_backend;
-  v7 = a4;
-  v8 = [[SBAnalyticsContextProvider alloc] initWithEventPayload:v7 backend:self->_backend];
+  payloadCopy = payload;
+  v8 = [[SBAnalyticsContextProvider alloc] initWithEventPayload:payloadCopy backend:self->_backend];
 
-  [(SBFAnalyticsBackend *)backend handleEvent:a3 withContext:v8];
+  [(SBFAnalyticsBackend *)backend handleEvent:event withContext:v8];
 }
 
-- (void)setSignificantTimeChangedNotificationName:(id)a3
+- (void)setSignificantTimeChangedNotificationName:(id)name
 {
-  if (self->_significantTimeChangedNotificationName != a3)
+  if (self->_significantTimeChangedNotificationName != name)
   {
     v5 = MEMORY[0x1E696AD88];
-    v6 = a3;
-    v9 = [v5 defaultCenter];
-    [v9 removeObserver:self name:self->_significantTimeChangedNotificationName object:0];
-    v7 = [v6 copy];
+    nameCopy = name;
+    defaultCenter = [v5 defaultCenter];
+    [defaultCenter removeObserver:self name:self->_significantTimeChangedNotificationName object:0];
+    v7 = [nameCopy copy];
 
     significantTimeChangedNotificationName = self->_significantTimeChangedNotificationName;
     self->_significantTimeChangedNotificationName = v7;
 
-    [v9 addObserver:self selector:sel__noteSignificantTimeChanged_ name:self->_significantTimeChangedNotificationName object:0];
+    [defaultCenter addObserver:self selector:sel__noteSignificantTimeChanged_ name:self->_significantTimeChangedNotificationName object:0];
   }
 }
 

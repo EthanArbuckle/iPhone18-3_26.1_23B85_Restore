@@ -1,23 +1,23 @@
 @interface HDQuantitySeriesManager
-- (BOOL)discardSeries:(id)a3 error:(id *)a4;
-- (BOOL)insertValues:(id)a3 series:(id)a4 error:(id *)a5;
+- (BOOL)discardSeries:(id)series error:(id *)error;
+- (BOOL)insertValues:(id)values series:(id)series error:(id *)error;
 - (HDProfile)profile;
 - (HDQuantitySeriesManager)init;
-- (HDQuantitySeriesManager)initWithProfile:(id)a3;
-- (id)_observersForType:(uint64_t)a1;
-- (id)_synchronousObserversForType:(uint64_t)a1;
-- (id)freezeSeries:(id)a3 metadata:(id)a4 endDate:(id)a5 error:(id *)a6;
-- (void)_notifyForValues:(void *)a3 series:(void *)a4 anchor:(char)a5 journaled:;
-- (void)_notifyObserver:(void *)a3 samplesAdded:(void *)a4 anchor:quantityCount:journaled:;
-- (void)_notifyObserver:(void *)a3 values:(void *)a4 series:(void *)a5 anchor:(uint64_t)a6 journaled:;
-- (void)_runOnCommitOfTransaction:(void *)a3 block:;
-- (void)_synchronousNotifyForValues:(uint64_t)a1 series:(void *)a2 anchor:(void *)a3 journaled:(void *)a4;
-- (void)addObserver:(id)a3 forType:(id)a4 queue:(id)a5;
-- (void)addSynchronousObserver:(id)a3 forType:(id)a4;
-- (void)removeObserver:(id)a3 forType:(id)a4;
-- (void)samplesAdded:(id)a3 type:(id)a4 anchor:(id)a5 transaction:(id)a6;
-- (void)samplesJournaled:(id)a3 type:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4 transaction:(id)a5;
+- (HDQuantitySeriesManager)initWithProfile:(id)profile;
+- (id)_observersForType:(uint64_t)type;
+- (id)_synchronousObserversForType:(uint64_t)type;
+- (id)freezeSeries:(id)series metadata:(id)metadata endDate:(id)date error:(id *)error;
+- (void)_notifyForValues:(void *)values series:(void *)series anchor:(char)anchor journaled:;
+- (void)_notifyObserver:(void *)observer samplesAdded:(void *)added anchor:quantityCount:journaled:;
+- (void)_notifyObserver:(void *)observer values:(void *)values series:(void *)series anchor:(uint64_t)anchor journaled:;
+- (void)_runOnCommitOfTransaction:(void *)transaction block:;
+- (void)_synchronousNotifyForValues:(uint64_t)values series:(void *)series anchor:(void *)anchor journaled:(void *)journaled;
+- (void)addObserver:(id)observer forType:(id)type queue:(id)queue;
+- (void)addSynchronousObserver:(id)observer forType:(id)type;
+- (void)removeObserver:(id)observer forType:(id)type;
+- (void)samplesAdded:(id)added type:(id)type anchor:(id)anchor transaction:(id)transaction;
+- (void)samplesJournaled:(id)journaled type:(id)type;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor transaction:(id)transaction;
 @end
 
 @implementation HDQuantitySeriesManager
@@ -32,16 +32,16 @@
   return 0;
 }
 
-- (HDQuantitySeriesManager)initWithProfile:(id)a3
+- (HDQuantitySeriesManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDQuantitySeriesManager;
   v5 = [(HDQuantitySeriesManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v6->_observerLock._os_unfair_lock_opaque = 0;
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     observerLock_observersByType = v6->_observerLock_observersByType;
@@ -55,31 +55,31 @@
   return v6;
 }
 
-- (BOOL)insertValues:(id)a3 series:(id)a4 error:(id *)a5
+- (BOOL)insertValues:(id)values series:(id)series error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valuesCopy = values;
+  seriesCopy = series;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __53__HDQuantitySeriesManager_insertValues_series_error___block_invoke;
   v19[3] = &unk_278615D40;
-  v20 = v8;
-  v21 = v9;
-  v22 = self;
+  v20 = valuesCopy;
+  v21 = seriesCopy;
+  selfCopy = self;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__HDQuantitySeriesManager_insertValues_series_error___block_invoke_3;
   v15[3] = &unk_2786219B0;
   v16 = v20;
   v17 = v21;
-  v18 = self;
+  selfCopy2 = self;
   v12 = v21;
   v13 = v20;
-  LOBYTE(a5) = [(HDHealthEntity *)HDQuantitySampleSeriesEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v19 inaccessibilityHandler:v15];
+  LOBYTE(error) = [(HDHealthEntity *)HDQuantitySampleSeriesEntity performWriteTransactionWithHealthDatabase:database error:error block:v19 inaccessibilityHandler:v15];
 
-  return a5;
+  return error;
 }
 
 uint64_t __53__HDQuantitySeriesManager_insertValues_series_error___block_invoke(id *a1, void *a2, uint64_t a3)
@@ -121,24 +121,24 @@ uint64_t __53__HDQuantitySeriesManager_insertValues_series_error___block_invoke(
   return v19;
 }
 
-- (void)_synchronousNotifyForValues:(uint64_t)a1 series:(void *)a2 anchor:(void *)a3 journaled:(void *)a4
+- (void)_synchronousNotifyForValues:(uint64_t)values series:(void *)series anchor:(void *)anchor journaled:(void *)journaled
 {
-  v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  seriesCopy = series;
+  anchorCopy = anchor;
+  journaledCopy = journaled;
+  if (values)
   {
-    v10 = [v8 quantityType];
-    v11 = [(HDQuantitySeriesManager *)a1 _synchronousObserversForType:v10];
+    quantityType = [anchorCopy quantityType];
+    v11 = [(HDQuantitySeriesManager *)values _synchronousObserversForType:quantityType];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __79__HDQuantitySeriesManager__synchronousNotifyForValues_series_anchor_journaled___block_invoke;
     v12[3] = &unk_278621A28;
-    v12[4] = a1;
-    v13 = v7;
-    v14 = v8;
-    v15 = v9;
+    v12[4] = values;
+    v13 = seriesCopy;
+    v14 = anchorCopy;
+    v15 = journaledCopy;
     v16 = 0;
     [v11 notifyObservers:v12];
   }
@@ -153,25 +153,25 @@ void __53__HDQuantitySeriesManager_insertValues_series_error___block_invoke_2(ui
   [(HDQuantitySeriesManager *)v1 _notifyForValues:v2 series:v3 anchor:v4 journaled:0];
 }
 
-- (void)_notifyForValues:(void *)a3 series:(void *)a4 anchor:(char)a5 journaled:
+- (void)_notifyForValues:(void *)values series:(void *)series anchor:(char)anchor journaled:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  valuesCopy = values;
+  seriesCopy = series;
+  if (self)
   {
-    v12 = [v10 quantityType];
-    v13 = [(HDQuantitySeriesManager *)a1 _observersForType:v12];
+    quantityType = [valuesCopy quantityType];
+    v13 = [(HDQuantitySeriesManager *)self _observersForType:quantityType];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __68__HDQuantitySeriesManager__notifyForValues_series_anchor_journaled___block_invoke;
     v14[3] = &unk_278621A28;
-    v14[4] = a1;
+    v14[4] = self;
     v15 = v9;
-    v16 = v10;
-    v17 = v11;
-    v18 = a5;
+    v16 = valuesCopy;
+    v17 = seriesCopy;
+    anchorCopy = anchor;
     [v13 notifyObservers:v14];
   }
 }
@@ -192,23 +192,23 @@ BOOL __53__HDQuantitySeriesManager_insertValues_series_error___block_invoke_3(vo
   return v8;
 }
 
-- (id)freezeSeries:(id)a3 metadata:(id)a4 endDate:(id)a5 error:(id *)a6
+- (id)freezeSeries:(id)series metadata:(id)metadata endDate:(id)date error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [a3 UUID];
+  dateCopy = date;
+  metadataCopy = metadata;
+  uUID = [series UUID];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [HDQuantitySampleSeriesEntity freezeSeriesWithIdentifier:v12 metadata:v11 endDate:v10 profile:WeakRetained error:a6];
+  v14 = [HDQuantitySampleSeriesEntity freezeSeriesWithIdentifier:uUID metadata:metadataCopy endDate:dateCopy profile:WeakRetained error:error];
 
   return v14;
 }
 
-- (BOOL)discardSeries:(id)a3 error:(id *)a4
+- (BOOL)discardSeries:(id)series error:(id *)error
 {
-  v6 = a3;
-  if ([v6 _frozen])
+  seriesCopy = series;
+  if ([seriesCopy _frozen])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Cannot discard a frozen series."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Cannot discard a frozen series."];
     v7 = 0;
   }
 
@@ -219,13 +219,13 @@ BOOL __53__HDQuantitySeriesManager_insertValues_series_error___block_invoke_3(vo
     [(HDDataDeletionConfiguration *)v8 setFailIfNotFound:0];
     [(HDDataDeletionConfiguration *)v8 setNotifyObservers:0];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v10 = [WeakRetained database];
+    database = [WeakRetained database];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __47__HDQuantitySeriesManager_discardSeries_error___block_invoke;
     v16[3] = &unk_278615D40;
     v16[4] = self;
-    v17 = v6;
+    v17 = seriesCopy;
     v18 = v8;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -235,7 +235,7 @@ BOOL __53__HDQuantitySeriesManager_insertValues_series_error___block_invoke_3(vo
     v14 = v17;
     v15 = v18;
     v11 = v18;
-    v7 = [(HDHealthEntity *)HDQuantitySampleSeriesEntity performWriteTransactionWithHealthDatabase:v10 error:a4 block:v16 inaccessibilityHandler:v13];
+    v7 = [(HDHealthEntity *)HDQuantitySampleSeriesEntity performWriteTransactionWithHealthDatabase:database error:error block:v16 inaccessibilityHandler:v13];
   }
 
   return v7;
@@ -288,24 +288,24 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
   return v9;
 }
 
-- (void)_notifyObserver:(void *)a3 samplesAdded:(void *)a4 anchor:quantityCount:journaled:
+- (void)_notifyObserver:(void *)observer samplesAdded:(void *)added anchor:quantityCount:journaled:
 {
   v60 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v37 = a3;
-  v46 = a4;
-  if (a1)
+  observerCopy = observer;
+  addedCopy = added;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((self + 32));
     v47 = [v7 transactionalQuantityInsertHandlerForProfile:? journaled:? count:?];
     if (v47)
     {
-      v45 = [v37 lastObject];
+      lastObject = [observerCopy lastObject];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      obj = v37;
+      obj = observerCopy;
       v41 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
       if (v41)
       {
@@ -321,21 +321,21 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
             }
 
             v9 = *(*(&v54 + 1) + 8 * i);
-            v10 = [v9 codableQuantitySample];
-            v11 = [v10 quantitySeriesDatas];
+            codableQuantitySample = [v9 codableQuantitySample];
+            quantitySeriesDatas = [codableQuantitySample quantitySeriesDatas];
 
-            if (v11)
+            if (quantitySeriesDatas)
             {
               v43 = i;
-              v12 = [v11 lastObject];
-              v13 = [v9 quantityType];
-              v49 = [v13 canonicalUnit];
+              lastObject2 = [quantitySeriesDatas lastObject];
+              quantityType = [v9 quantityType];
+              canonicalUnit = [quantityType canonicalUnit];
               v50 = 0u;
               v51 = 0u;
               v52 = 0u;
               v53 = 0u;
-              v42 = v11;
-              v44 = v11;
+              v42 = quantitySeriesDatas;
+              v44 = quantitySeriesDatas;
               v14 = [v44 countByEnumeratingWithState:&v50 objects:v58 count:16];
               if (v14)
               {
@@ -345,7 +345,7 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
                 {
                   for (j = 0; j != v15; ++j)
                   {
-                    v17 = v12;
+                    v17 = lastObject2;
                     if (*v51 != v48)
                     {
                       objc_enumerationMutation(v44);
@@ -355,7 +355,7 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
                     v19 = objc_autoreleasePoolPush();
                     v20 = MEMORY[0x277CCD7E8];
                     [v18 value];
-                    v21 = [v20 quantityWithUnit:v49 doubleValue:?];
+                    v21 = [v20 quantityWithUnit:canonicalUnit doubleValue:?];
                     v22 = objc_alloc(MEMORY[0x277CCA970]);
                     v23 = MEMORY[0x277CBEAA8];
                     [v18 startDate];
@@ -365,9 +365,9 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
                     [v18 startDate];
                     v28 = [v22 initWithStartDate:v24 duration:v26 - v27];
 
-                    v12 = v17;
-                    v30 = v45 == v9 && v18 == v17;
-                    (v47)[2](v47, v21, v13, v28, v9, v46, v30);
+                    lastObject2 = v17;
+                    v30 = lastObject == v9 && v18 == v17;
+                    (v47)[2](v47, v21, quantityType, v28, v9, addedCopy, v30);
 
                     objc_autoreleasePoolPop(v19);
                   }
@@ -379,21 +379,21 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
               }
 
               v7 = v39;
-              v11 = v42;
+              quantitySeriesDatas = v42;
               i = v43;
-              v31 = v49;
+              quantityType2 = canonicalUnit;
             }
 
             else
             {
               v32 = objc_alloc(MEMORY[0x277CCA970]);
-              v33 = [v9 startDate];
-              v34 = [v9 endDate];
-              v12 = [v32 initWithStartDate:v33 endDate:v34];
+              startDate = [v9 startDate];
+              endDate = [v9 endDate];
+              lastObject2 = [v32 initWithStartDate:startDate endDate:endDate];
 
-              v13 = [v9 quantity];
-              v31 = [v9 quantityType];
-              (v47)[2](v47, v13, v31, v12, v9, v46, v45 == v9);
+              quantityType = [v9 quantity];
+              quantityType2 = [v9 quantityType];
+              (v47)[2](v47, quantityType, quantityType2, lastObject2, v9, addedCopy, lastObject == v9);
             }
           }
 
@@ -408,26 +408,26 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 type:(id)a4 anchor:(id)a5 transaction:(id)a6
+- (void)samplesAdded:(id)added type:(id)type anchor:(id)anchor transaction:(id)transaction
 {
   v45 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v30 = a5;
-  v13 = a6;
+  addedCopy = added;
+  typeCopy = type;
+  anchorCopy = anchor;
+  transactionCopy = transaction;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"HDQuantitySeriesManager.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"[type isKindOfClass:[HKQuantityType class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySeriesManager.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"[type isKindOfClass:[HKQuantityType class]]"}];
   }
 
-  v14 = [v11 count];
+  v14 = [addedCopy count];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v15 = v11;
+  v15 = addedCopy;
   v16 = [v15 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v16)
   {
@@ -443,12 +443,12 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v40 + 1) + 8 * v19) codableQuantitySample];
-        v21 = [v20 quantitySeriesDatas];
+        codableQuantitySample = [*(*(&v40 + 1) + 8 * v19) codableQuantitySample];
+        quantitySeriesDatas = [codableQuantitySample quantitySeriesDatas];
 
-        if (v21)
+        if (quantitySeriesDatas)
         {
-          v14 = v14 + [v21 count] - 1;
+          v14 = v14 + [quantitySeriesDatas count] - 1;
         }
 
         ++v19;
@@ -461,7 +461,7 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
     while (v17);
   }
 
-  v22 = [(HDQuantitySeriesManager *)self _synchronousObserversForType:v12];
+  v22 = [(HDQuantitySeriesManager *)self _synchronousObserversForType:typeCopy];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __64__HDQuantitySeriesManager_samplesAdded_type_anchor_transaction___block_invoke;
@@ -469,7 +469,7 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
   v36[4] = self;
   v23 = v15;
   v37 = v23;
-  v24 = v30;
+  v24 = anchorCopy;
   v38 = v24;
   v39 = v14;
   [v22 notifyObservers:v36];
@@ -478,27 +478,27 @@ uint64_t __47__HDQuantitySeriesManager_discardSeries_error___block_invoke_2(uint
   v31[2] = __64__HDQuantitySeriesManager_samplesAdded_type_anchor_transaction___block_invoke_2;
   v31[3] = &unk_278613608;
   v31[4] = self;
-  v32 = v12;
+  v32 = typeCopy;
   v33 = v23;
   v34 = v24;
   v35 = v14;
   v25 = v24;
   v26 = v23;
-  v27 = v12;
-  [(HDQuantitySeriesManager *)self _runOnCommitOfTransaction:v13 block:v31];
+  v27 = typeCopy;
+  [(HDQuantitySeriesManager *)self _runOnCommitOfTransaction:transactionCopy block:v31];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_synchronousObserversForType:(uint64_t)a1
+- (id)_synchronousObserversForType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 24));
-    v4 = [*(a1 + 16) objectForKeyedSubscript:v3];
+    os_unfair_lock_lock((type + 24));
+    v4 = [*(type + 16) objectForKeyedSubscript:v3];
 
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((type + 24));
   }
 
   else
@@ -525,15 +525,15 @@ void __64__HDQuantitySeriesManager_samplesAdded_type_anchor_transaction___block_
   [v2 notifyObservers:v5];
 }
 
-- (id)_observersForType:(uint64_t)a1
+- (id)_observersForType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 24));
-    v4 = [*(a1 + 8) objectForKeyedSubscript:v3];
+    os_unfair_lock_lock((type + 24));
+    v4 = [*(type + 8) objectForKeyedSubscript:v3];
 
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((type + 24));
   }
 
   else
@@ -544,45 +544,45 @@ void __64__HDQuantitySeriesManager_samplesAdded_type_anchor_transaction___block_
   return v4;
 }
 
-- (void)_runOnCommitOfTransaction:(void *)a3 block:
+- (void)_runOnCommitOfTransaction:(void *)transaction block:
 {
   v6 = a2;
-  v5 = a3;
-  if (a1)
+  transactionCopy = transaction;
+  if (self)
   {
     if (v6)
     {
-      [v6 onCommit:v5 orRollback:&__block_literal_global_108];
+      [v6 onCommit:transactionCopy orRollback:&__block_literal_global_108];
     }
 
     else
     {
-      v5[2](v5);
+      transactionCopy[2](transactionCopy);
     }
   }
 }
 
-- (void)samplesJournaled:(id)a3 type:(id)a4
+- (void)samplesJournaled:(id)journaled type:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  journaledCopy = journaled;
+  typeCopy = type;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDQuantitySeriesManager.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"[type isKindOfClass:[HKQuantityType class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySeriesManager.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"[type isKindOfClass:[HKQuantityType class]]"}];
   }
 
-  v9 = [(HDQuantitySeriesManager *)self _observersForType:v8];
+  v9 = [(HDQuantitySeriesManager *)self _observersForType:typeCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __49__HDQuantitySeriesManager_samplesJournaled_type___block_invoke;
   v16[3] = &unk_278621A00;
   v16[4] = self;
-  v10 = v7;
+  v10 = journaledCopy;
   v17 = v10;
   [v9 notifyObservers:v16];
-  v11 = [(HDQuantitySeriesManager *)self _synchronousObserversForType:v8];
+  v11 = [(HDQuantitySeriesManager *)self _synchronousObserversForType:typeCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__HDQuantitySeriesManager_samplesJournaled_type___block_invoke_2;
@@ -611,16 +611,16 @@ void __49__HDQuantitySeriesManager_samplesJournaled_type___block_invoke_2(uint64
   [HDQuantitySeriesManager _notifyObserver:v2 samplesAdded:v4 anchor:v3 quantityCount:0 journaled:?];
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4 transaction:(id)a5
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor transaction:(id)transaction
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v19 = a5;
+  removedCopy = removed;
+  transactionCopy = transaction;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v8 = [removedCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -632,15 +632,15 @@ void __49__HDQuantitySeriesManager_samplesJournaled_type___block_invoke_2(uint64
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(removedCopy);
         }
 
         v12 = *(*(&v28 + 1) + 8 * v11);
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v16 = [MEMORY[0x277CCA890] currentHandler];
-          [v16 handleFailureInMethod:a2 object:self file:@"HDQuantitySeriesManager.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"[type isKindOfClass:[HKQuantityType class]]"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySeriesManager.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"[type isKindOfClass:[HKQuantityType class]]"}];
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -658,7 +658,7 @@ void __49__HDQuantitySeriesManager_samplesJournaled_type___block_invoke_2(uint64
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v9 = [removedCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v9);
@@ -668,11 +668,11 @@ void __49__HDQuantitySeriesManager_samplesJournaled_type___block_invoke_2(uint64
   v21[1] = 3221225472;
   v21[2] = __72__HDQuantitySeriesManager_samplesOfTypesWereRemoved_anchor_transaction___block_invoke_2;
   v21[3] = &unk_278614E78;
-  v23 = self;
+  selfCopy = self;
   v24 = a2;
-  v22 = v7;
-  v17 = v7;
-  [(HDQuantitySeriesManager *)self _runOnCommitOfTransaction:v19 block:v21];
+  v22 = removedCopy;
+  v17 = removedCopy;
+  [(HDQuantitySeriesManager *)self _runOnCommitOfTransaction:transactionCopy block:v21];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -732,85 +732,85 @@ void __72__HDQuantitySeriesManager_samplesOfTypesWereRemoved_anchor_transaction_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3 forType:(id)a4 queue:(id)a5
+- (void)addObserver:(id)observer forType:(id)type queue:(id)queue
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  observerCopy = observer;
+  typeCopy = type;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_observerLock);
-  v10 = [(NSMutableDictionary *)self->_observerLock_observersByType objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_observerLock_observersByType objectForKeyedSubscript:typeCopy];
   if (!v10)
   {
     _HKInitializeLogging();
     v11 = objc_alloc(MEMORY[0x277CCD738]);
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"series-observers-%@", v8];
-    v10 = [v11 initWithName:v12 loggingCategory:*MEMORY[0x277CCC2B0]];
+    typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"series-observers-%@", typeCopy];
+    v10 = [v11 initWithName:typeCopy loggingCategory:*MEMORY[0x277CCC2B0]];
 
-    [(NSMutableDictionary *)self->_observerLock_observersByType setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_observerLock_observersByType setObject:v10 forKeyedSubscript:typeCopy];
   }
 
-  [v10 registerObserver:v13 queue:v9];
+  [v10 registerObserver:observerCopy queue:queueCopy];
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)addSynchronousObserver:(id)a3 forType:(id)a4
+- (void)addSynchronousObserver:(id)observer forType:(id)type
 {
-  v10 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_observerLock);
-  v7 = [(NSMutableDictionary *)self->_observerLock_synchronousObserversByType objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_observerLock_synchronousObserversByType objectForKeyedSubscript:typeCopy];
   if (!v7)
   {
     _HKInitializeLogging();
     v8 = objc_alloc(MEMORY[0x277CCDA88]);
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"series-observers-%@", v6];
-    v7 = [v8 initWithName:v9 loggingCategory:*MEMORY[0x277CCC2B0]];
+    typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"series-observers-%@", typeCopy];
+    v7 = [v8 initWithName:typeCopy loggingCategory:*MEMORY[0x277CCC2B0]];
 
-    [(NSMutableDictionary *)self->_observerLock_synchronousObserversByType setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_observerLock_synchronousObserversByType setObject:v7 forKeyedSubscript:typeCopy];
   }
 
-  [v7 registerObserver:v10];
+  [v7 registerObserver:observerCopy];
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)removeObserver:(id)a3 forType:(id)a4
+- (void)removeObserver:(id)observer forType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  v8 = [(NSMutableDictionary *)self->_observerLock_observersByType objectForKeyedSubscript:v6];
-  [v8 unregisterObserver:v7];
+  v8 = [(NSMutableDictionary *)self->_observerLock_observersByType objectForKeyedSubscript:typeCopy];
+  [v8 unregisterObserver:observerCopy];
 
-  v9 = [(NSMutableDictionary *)self->_observerLock_synchronousObserversByType objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_observerLock_synchronousObserversByType objectForKeyedSubscript:typeCopy];
 
-  [v9 unregisterObserver:v7];
+  [v9 unregisterObserver:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)_notifyObserver:(void *)a3 values:(void *)a4 series:(void *)a5 anchor:(uint64_t)a6 journaled:
+- (void)_notifyObserver:(void *)observer values:(void *)values series:(void *)series anchor:(uint64_t)anchor journaled:
 {
   v43 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v36 = a5;
-  if (a1)
+  observerCopy = observer;
+  valuesCopy = values;
+  seriesCopy = series;
+  if (self)
   {
-    v35 = [v13 quantityType];
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v37 = [v11 transactionalQuantityInsertHandlerForProfile:WeakRetained journaled:a6 count:{objc_msgSend(v12, "count")}];
+    quantityType = [valuesCopy quantityType];
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    v37 = [v11 transactionalQuantityInsertHandlerForProfile:WeakRetained journaled:anchor count:{objc_msgSend(observerCopy, "count")}];
     if (v37)
     {
       v31 = WeakRetained;
       v33 = v11;
-      v34 = [v12 lastObject];
+      lastObject = [observerCopy lastObject];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v32 = v12;
-      v15 = v12;
+      v32 = observerCopy;
+      v15 = observerCopy;
       v16 = [v15 countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v16)
       {
@@ -839,11 +839,11 @@ void __72__HDQuantitySeriesManager_samplesOfTypesWereRemoved_anchor_transaction_
                 v26 = [v22 initWithStartDate:v24 duration:v25];
 
                 v27 = MEMORY[0x277CCD7E8];
-                v28 = [v35 canonicalUnit];
+                canonicalUnit = [quantityType canonicalUnit];
                 [v20 value];
-                v29 = [v27 quantityWithUnit:v28 doubleValue:?];
+                v29 = [v27 quantityWithUnit:canonicalUnit doubleValue:?];
 
-                (v37)[2](v37, v29, v35, v26, v13, v36, v34 == v20);
+                (v37)[2](v37, v29, quantityType, v26, valuesCopy, seriesCopy, lastObject == v20);
               }
             }
           }
@@ -854,7 +854,7 @@ void __72__HDQuantitySeriesManager_samplesOfTypesWereRemoved_anchor_transaction_
         while (v17);
       }
 
-      v12 = v32;
+      observerCopy = v32;
       v11 = v33;
       WeakRetained = v31;
     }

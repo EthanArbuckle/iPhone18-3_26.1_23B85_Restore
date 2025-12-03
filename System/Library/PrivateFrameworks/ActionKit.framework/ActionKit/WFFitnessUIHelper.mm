@@ -1,22 +1,22 @@
 @interface WFFitnessUIHelper
 + (BOOL)isWheelchairUser;
-+ (id)activityTypeForLocalizedActivityName:(id)a3;
++ (id)activityTypeForLocalizedActivityName:(id)name;
 + (id)allActivityTypes;
-+ (id)quantityTypesForActivityType:(id)a3;
++ (id)quantityTypesForActivityType:(id)type;
 + (id)timeUnits;
-+ (void)preferredUnitsForActivityType:(id)a3 completion:(id)a4;
++ (void)preferredUnitsForActivityType:(id)type completion:(id)completion;
 @end
 
 @implementation WFFitnessUIHelper
 
-+ (id)quantityTypesForActivityType:(id)a3
++ (id)quantityTypesForActivityType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC918]];
   v5 = [MEMORY[0x277CBEB18] arrayWithObjects:{v4, 0}];
-  if ([v3 identifier] != 13 || (objc_msgSend(v3, "isIndoor") & 1) == 0)
+  if ([typeCopy identifier] != 13 || (objc_msgSend(typeCopy, "isIndoor") & 1) == 0)
   {
-    v6 = [v3 identifier];
+    identifier = [typeCopy identifier];
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
@@ -36,15 +36,15 @@
     _Block_object_dispose(&v13, 8);
     if (!v7)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"HKQuantityType *WFHKWorkoutDistanceTypeForActivityType(HKWorkoutActivityType)"];
-      [v10 handleFailureInFunction:v11 file:@"WFFitnessUIHelper.m" lineNumber:22 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v11 file:@"WFFitnessUIHelper.m" lineNumber:22 description:{@"%s", dlerror()}];
 
       __break(1u);
       return result;
     }
 
-    v8 = v7(v6);
+    v8 = v7(identifier);
     if (v8)
     {
       [v5 addObject:v8];
@@ -57,10 +57,10 @@
 + (id)timeUnits
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCDAB0] minuteUnit];
-  v7[0] = v2;
-  v3 = [MEMORY[0x277CCDAB0] hourUnit];
-  v7[1] = v3;
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+  v7[0] = minuteUnit;
+  hourUnit = [MEMORY[0x277CCDAB0] hourUnit];
+  v7[1] = hourUnit;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -68,25 +68,25 @@
   return v4;
 }
 
-+ (void)preferredUnitsForActivityType:(id)a3 completion:(id)a4
++ (void)preferredUnitsForActivityType:(id)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CCD4D8];
-  v8 = a3;
-  v9 = [v7 wf_shortcutsAppHealthStore];
-  v10 = [a1 quantityTypesForActivityType:v8];
+  typeCopy = type;
+  wf_shortcutsAppHealthStore = [v7 wf_shortcutsAppHealthStore];
+  v10 = [self quantityTypesForActivityType:typeCopy];
 
   v11 = [MEMORY[0x277CBEB98] setWithArray:v10];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__WFFitnessUIHelper_preferredUnitsForActivityType_completion___block_invoke;
   v14[3] = &unk_278C1BBF0;
-  v16 = v6;
-  v17 = a1;
+  v16 = completionCopy;
+  selfCopy = self;
   v15 = v10;
-  v12 = v6;
+  v12 = completionCopy;
   v13 = v10;
-  [v9 preferredUnitsForQuantityTypes:v11 completion:v14];
+  [wf_shortcutsAppHealthStore preferredUnitsForQuantityTypes:v11 completion:v14];
 }
 
 void __62__WFFitnessUIHelper_preferredUnitsForActivityType_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -154,9 +154,9 @@ void __62__WFFitnessUIHelper_preferredUnitsForActivityType_completion___block_in
 + (BOOL)isWheelchairUser
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCD4D8] wf_shortcutsAppHealthStore];
+  wf_shortcutsAppHealthStore = [MEMORY[0x277CCD4D8] wf_shortcutsAppHealthStore];
   v9 = 0;
-  v3 = [v2 wheelchairUseWithError:&v9];
+  v3 = [wf_shortcutsAppHealthStore wheelchairUseWithError:&v9];
   v4 = v9;
   if (v3)
   {
@@ -182,15 +182,15 @@ void __62__WFFitnessUIHelper_preferredUnitsForActivityType_completion___block_in
   return v5;
 }
 
-+ (id)activityTypeForLocalizedActivityName:(id)a3
++ (id)activityTypeForLocalizedActivityName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [WFFitnessUIHelper allActivityTypesIncludingWheelchairWorkouts:1 includingSwimmingWorkouts:1];
   v5 = MEMORY[0x277CBEAC0];
   v6 = [v4 valueForKey:@"localizedName"];
   v7 = [v5 dictionaryWithObjects:v4 forKeys:v6];
 
-  v8 = [v7 objectForKey:v3];
+  v8 = [v7 objectForKey:nameCopy];
 
   return v8;
 }
@@ -221,9 +221,9 @@ void __62__WFFitnessUIHelper_preferredUnitsForActivityType_completion___block_in
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL WFFIUIDeviceSupportsSwimming(void)"];
-    [v7 handleFailureInFunction:v8 file:@"WFFitnessUIHelper.m" lineNumber:19 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v8 file:@"WFFitnessUIHelper.m" lineNumber:19 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

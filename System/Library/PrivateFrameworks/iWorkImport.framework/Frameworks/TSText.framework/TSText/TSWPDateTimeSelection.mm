@@ -1,34 +1,34 @@
 @interface TSWPDateTimeSelection
-+ (TSWPDateTimeSelection)selectionWithDateTimeField:(id)a3 rep:(id)a4;
-- (TSWPDateTimeSelection)initWithDateTimeField:(id)a3 rep:(id)a4;
++ (TSWPDateTimeSelection)selectionWithDateTimeField:(id)field rep:(id)rep;
+- (TSWPDateTimeSelection)initWithDateTimeField:(id)field rep:(id)rep;
 - (TSWPDateTimeSmartField)dateTimeField;
 - (id)description;
 @end
 
 @implementation TSWPDateTimeSelection
 
-+ (TSWPDateTimeSelection)selectionWithDateTimeField:(id)a3 rep:(id)a4
++ (TSWPDateTimeSelection)selectionWithDateTimeField:(id)field rep:(id)rep
 {
-  v5 = a4;
-  v6 = a3;
+  repCopy = rep;
+  fieldCopy = field;
   v7 = [TSWPDateTimeSelection alloc];
-  v9 = objc_msgSend_initWithDateTimeField_rep_(v7, v8, v6, v5);
+  v9 = objc_msgSend_initWithDateTimeField_rep_(v7, v8, fieldCopy, repCopy);
 
   return v9;
 }
 
-- (TSWPDateTimeSelection)initWithDateTimeField:(id)a3 rep:(id)a4
+- (TSWPDateTimeSelection)initWithDateTimeField:(id)field rep:(id)rep
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  repCopy = rep;
   v11.receiver = self;
   v11.super_class = TSWPDateTimeSelection;
   v8 = [(TSWPDateTimeSelection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dateTimeField, v6);
-    objc_storeStrong(&v9->_dateTimeRep, a4);
+    objc_storeWeak(&v8->_dateTimeField, fieldCopy);
+    objc_storeStrong(&v9->_dateTimeRep, rep);
   }
 
   return v9;

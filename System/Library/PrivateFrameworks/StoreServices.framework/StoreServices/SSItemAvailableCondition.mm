@@ -1,20 +1,20 @@
 @interface SSItemAvailableCondition
-- (BOOL)evaluateWithContext:(id)a3;
+- (BOOL)evaluateWithContext:(id)context;
 @end
 
 @implementation SSItemAvailableCondition
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
-  v4 = [a3 itemLookupBlock];
-  if (v4)
+  itemLookupBlock = [context itemLookupBlock];
+  if (itemLookupBlock)
   {
-    v5 = v4;
+    v5 = itemLookupBlock;
     v6 = SSGetItemIdentifierFromValue(self->super._value);
-    LOBYTE(v4) = (*(v5 + 16))(v5, v6);
+    LOBYTE(itemLookupBlock) = (*(v5 + 16))(v5, v6);
   }
 
-  return v4 ^ (self->super._operator == 1);
+  return itemLookupBlock ^ (self->super._operator == 1);
 }
 
 @end

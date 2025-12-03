@@ -1,24 +1,24 @@
 @interface SESDCKAssertion
-- (SESDCKAssertion)initWithKeyIdentifier:(id)a3;
+- (SESDCKAssertion)initWithKeyIdentifier:(id)identifier;
 - (id)proxy;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setProxy:(id)a3;
+- (void)setProxy:(id)proxy;
 @end
 
 @implementation SESDCKAssertion
 
-- (SESDCKAssertion)initWithKeyIdentifier:(id)a3
+- (SESDCKAssertion)initWithKeyIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SESDCKAssertion;
   v6 = [(SESDCKAssertion *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyIdentifier, a3);
+    objc_storeStrong(&v6->_keyIdentifier, identifier);
     appletIdentifier = v7->_appletIdentifier;
     v7->_appletIdentifier = @"A000000809434343444B417631";
   }
@@ -100,37 +100,37 @@ void __29__SESDCKAssertion_invalidate__block_invoke_508(uint64_t a1, char a2, vo
 
 - (id)proxy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_proxy;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_proxy;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setProxy:(id)a3
+- (void)setProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   obj = self;
   objc_sync_enter(obj);
   proxy = obj->_proxy;
-  obj->_proxy = v4;
+  obj->_proxy = proxyCopy;
 
   objc_sync_exit(obj);
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SESDCKAssertion *)self proxy];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  proxy = [(SESDCKAssertion *)self proxy];
+  v6 = [proxy synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (!v6)
   {
     v7 = SESDefaultLogObject();
     v8 = *MEMORY[0x1E69E5148];
     v9 = SESCreateAndLogError();
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   return v6;

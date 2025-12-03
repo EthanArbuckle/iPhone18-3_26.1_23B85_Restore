@@ -1,28 +1,28 @@
 @interface ArtistViewController
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ArtistViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4B60();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(VerticalStackViewController *)&v6 viewWillAppear:v3];
+  [(VerticalStackViewController *)&v6 viewWillAppear:appearCopy];
   v5 = v4[OBJC_IVAR____TtC16MusicApplication20ArtistViewController__visible];
   v4[OBJC_IVAR____TtC16MusicApplication20ArtistViewController__visible] = 1;
   if ((v5 & 1) == 0)
@@ -31,13 +31,13 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(VerticalStackViewController *)&v6 viewWillDisappear:v3];
+  [(VerticalStackViewController *)&v6 viewWillDisappear:disappearCopy];
   v5 = v4[OBJC_IVAR____TtC16MusicApplication20ArtistViewController__visible];
   v4[OBJC_IVAR____TtC16MusicApplication20ArtistViewController__visible] = 0;
   if (v5 == 1)
@@ -46,17 +46,17 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   ObjectType = swift_getObjectType();
   v6 = type metadata accessor for MetricsEvent.Page(0);
   __chkstk_darwin(v6 - 8);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v9 = self;
-  [(VerticalStackViewController *)&v12 viewDidAppear:v3];
+  selfCopy = self;
+  [(VerticalStackViewController *)&v12 viewDidAppear:appearCopy];
   v10 = *MetricsReportingController.shared.unsafeMutableAddressor();
   v11 = MetricsEvent.Page.libraryArtistDetail.unsafeMutableAddressor();
   sub_1EC1F8(v11, v8, type metadata accessor for MetricsEvent.Page);
@@ -66,22 +66,22 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E616C();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1EB768();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E644C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1E644C(change);
 }
 
 @end

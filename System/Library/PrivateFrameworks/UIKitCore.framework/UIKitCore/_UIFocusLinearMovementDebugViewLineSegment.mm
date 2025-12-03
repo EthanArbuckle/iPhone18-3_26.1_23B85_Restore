@@ -1,37 +1,37 @@
 @interface _UIFocusLinearMovementDebugViewLineSegment
 - (CGRect)endRect;
 - (CGRect)startRect;
-- (_UIFocusLinearMovementDebugViewLineSegment)initWithStartRect:(CGRect)a3 endRect:(CGRect)a4 previousSegment:(id)a5;
+- (_UIFocusLinearMovementDebugViewLineSegment)initWithStartRect:(CGRect)rect endRect:(CGRect)endRect previousSegment:(id)segment;
 - (id)_calculateArrowHeadPath;
-- (id)_calculateStemPathFrom:(CGRect)a3 to:(CGRect)a4 startPoint:(CGPoint *)a5 endPoint:(CGPoint *)a6;
-- (id)_flattenedBezierPathFromBezierPath:(id)a3;
-- (id)_pathElementsFromPath:(id)a3;
+- (id)_calculateStemPathFrom:(CGRect)from to:(CGRect)to startPoint:(CGPoint *)point endPoint:(CGPoint *)endPoint;
+- (id)_flattenedBezierPathFromBezierPath:(id)path;
+- (id)_pathElementsFromPath:(id)path;
 - (int64_t)type;
 - (void)_calculatePaths;
-- (void)_subdivideBezier:(id)a3 startPoint:(CGPoint)a4 controlPoint1:(CGPoint)a5 controlPoint2:(CGPoint)a6 endPoint:(CGPoint)a7;
-- (void)drawInRect:(CGRect)a3;
+- (void)_subdivideBezier:(id)bezier startPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 endPoint:(CGPoint)endPoint;
+- (void)drawInRect:(CGRect)rect;
 @end
 
 @implementation _UIFocusLinearMovementDebugViewLineSegment
 
-- (_UIFocusLinearMovementDebugViewLineSegment)initWithStartRect:(CGRect)a3 endRect:(CGRect)a4 previousSegment:(id)a5
+- (_UIFocusLinearMovementDebugViewLineSegment)initWithStartRect:(CGRect)rect endRect:(CGRect)endRect previousSegment:(id)segment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  v15 = a5;
+  height = endRect.size.height;
+  width = endRect.size.width;
+  y = endRect.origin.y;
+  x = endRect.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  segmentCopy = segment;
   v19.receiver = self;
   v19.super_class = _UIFocusLinearMovementDebugViewLineSegment;
   v16 = [(_UIFocusLinearMovementDebugViewLineSegment *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_previousSegment, a5);
+    objc_storeStrong(&v16->_previousSegment, segment);
     v17->_startRect.origin.x = v13;
     v17->_startRect.origin.y = v12;
     v17->_startRect.size.width = v11;
@@ -144,31 +144,31 @@
   }
 }
 
-- (void)drawInRect:(CGRect)a3
+- (void)drawInRect:(CGRect)rect
 {
   if (!self->_arrowHeadPath || (stemPath = self->_stemPath) == 0)
   {
-    [(_UIFocusLinearMovementDebugViewLineSegment *)self _calculatePaths:a3.origin.x];
+    [(_UIFocusLinearMovementDebugViewLineSegment *)self _calculatePaths:rect.origin.x];
     stemPath = self->_stemPath;
   }
 
-  [(UIBezierPath *)stemPath stroke:a3.origin.x];
+  [(UIBezierPath *)stemPath stroke:rect.origin.x];
   arrowHeadPath = self->_arrowHeadPath;
 
   [(UIBezierPath *)arrowHeadPath fill];
 }
 
-- (id)_calculateStemPathFrom:(CGRect)a3 to:(CGRect)a4 startPoint:(CGPoint *)a5 endPoint:(CGPoint *)a6
+- (id)_calculateStemPathFrom:(CGRect)from to:(CGRect)to startPoint:(CGPoint *)point endPoint:(CGPoint *)endPoint
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  v15 = [(_UIFocusLinearMovementDebugViewLineSegment *)self->_previousSegment type];
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  v11 = from.size.height;
+  v12 = from.size.width;
+  v13 = from.origin.y;
+  v14 = from.origin.x;
+  type = [(_UIFocusLinearMovementDebugViewLineSegment *)self->_previousSegment type];
   v89.origin.x = v14;
   v89.origin.y = v13;
   v89.size.width = v12;
@@ -306,7 +306,7 @@
         v50 = v85;
         v51 = v86;
         v52 = v11;
-        if (v15 == 1)
+        if (type == 1)
         {
           v53 = CGRectGetMaxY(*&v49);
         }
@@ -408,7 +408,7 @@
             v61 = v85;
             v62 = v86;
             v63 = v11;
-            if (v15 == 1)
+            if (type == 1)
             {
               v64 = CGRectGetMaxY(*&v60);
             }
@@ -448,7 +448,7 @@ LABEL_36:
         v41 = v85;
         v42 = v86;
         v43 = v11;
-        if (v15 == 1)
+        if (type == 1)
         {
           MaxY = CGRectGetMaxY(*&v40);
           v114.origin.x = x;
@@ -564,16 +564,16 @@ LABEL_37:
   v79 = objc_alloc_init(UIBezierPath);
   [(UIBezierPath *)v79 moveToPoint:v26, v23];
   [(UIBezierPath *)v79 addCurveToPoint:v25 controlPoint1:v27 controlPoint2:v29, MaxY, MaxX, v57];
-  if (a5)
+  if (point)
   {
-    a5->x = v26;
-    a5->y = v23;
+    point->x = v26;
+    point->y = v23;
   }
 
-  if (a6)
+  if (endPoint)
   {
-    a6->x = v25;
-    a6->y = v27;
+    endPoint->x = v25;
+    endPoint->y = v27;
   }
 
   return v79;
@@ -643,7 +643,7 @@ LABEL_37:
       v34 = v41;
       v31 = v18;
       [v13 enumerateObjectsUsingBlock:v30];
-      v19 = [(_UIFocusLinearMovementDebugViewLineSegment *)self _calculateArrowHeadPath];
+      _calculateArrowHeadPath = [(_UIFocusLinearMovementDebugViewLineSegment *)self _calculateArrowHeadPath];
       memset(&v29, 0, sizeof(v29));
       v20 = v41;
       CGAffineTransformMakeTranslation(&v29, *&v41, *(&v41 + 1));
@@ -662,25 +662,25 @@ LABEL_37:
       v27 = v29;
       CGAffineTransformRotate(&v28, &v27, v23);
       v29 = v28;
-      [(UIBezierPath *)v19 applyTransform:&v28];
+      [(UIBezierPath *)_calculateArrowHeadPath applyTransform:&v28];
       [(UIBezierPath *)v18 setLineWidth:2.0];
       stemPath = self->_stemPath;
       self->_stemPath = v18;
       v25 = v18;
 
       arrowHeadPath = self->_arrowHeadPath;
-      self->_arrowHeadPath = v19;
+      self->_arrowHeadPath = _calculateArrowHeadPath;
 
       _Block_object_dispose(&v35, 8);
     }
   }
 }
 
-- (id)_pathElementsFromPath:(id)a3
+- (id)_pathElementsFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_new();
-  v5 = [v3 CGPath];
+  cGPath = [pathCopy CGPath];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -688,28 +688,28 @@ LABEL_37:
   block[3] = &unk_1E710DA18;
   v6 = v4;
   v9 = v6;
-  CGPathApplyWithBlock(v5, block);
+  CGPathApplyWithBlock(cGPath, block);
 
   return v6;
 }
 
-- (id)_flattenedBezierPathFromBezierPath:(id)a3
+- (id)_flattenedBezierPathFromBezierPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_opt_new();
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3010000000;
   v14[3] = "";
   v15 = *MEMORY[0x1E695EFF8];
-  v6 = [(_UIFocusLinearMovementDebugViewLineSegment *)self _pathElementsFromPath:v4];
+  v6 = [(_UIFocusLinearMovementDebugViewLineSegment *)self _pathElementsFromPath:pathCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81___UIFocusLinearMovementDebugViewLineSegment__flattenedBezierPathFromBezierPath___block_invoke;
   v10[3] = &unk_1E710DA40;
   v7 = v5;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v13 = v14;
   [v6 enumerateObjectsUsingBlock:v10];
 
@@ -719,19 +719,19 @@ LABEL_37:
   return v8;
 }
 
-- (void)_subdivideBezier:(id)a3 startPoint:(CGPoint)a4 controlPoint1:(CGPoint)a5 controlPoint2:(CGPoint)a6 endPoint:(CGPoint)a7
+- (void)_subdivideBezier:(id)bezier startPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 endPoint:(CGPoint)endPoint
 {
-  x = a7.x;
-  y = a7.y;
-  v43 = a6.y;
-  v35 = a5;
-  v36 = a5.y;
-  v39 = a4.y;
-  v41 = a6.x;
-  v45 = a4.x;
-  v7 = a3;
+  x = endPoint.x;
+  y = endPoint.y;
+  v43 = point2.y;
+  point1Copy = point1;
+  v36 = point1.y;
+  v39 = point.y;
+  v41 = point2.x;
+  v45 = point.x;
+  bezierCopy = bezier;
   v10.f64[0] = v45;
-  v8.f64[0] = v35.x;
+  v8.f64[0] = point1Copy.x;
   v8.f64[1] = v36;
   v9.f64[0] = v41;
   v10.f64[1] = v39;
@@ -750,7 +750,7 @@ LABEL_37:
   }
 
   v18 = v17.f64[0] * 9.0 * 0.0625;
-  v47 = v7;
+  v47 = bezierCopy;
   if (v18 > 0.36)
   {
     v19 = vsubq_f64(v16, v15);
@@ -789,12 +789,12 @@ LABEL_37:
         v44 = vaddq_f64(v25, v27);
         v46 = vaddq_f64(v25, v10);
         v40 = vaddq_f64(v28, v27);
-        [v47 addLineToPoint:{*&v46, v35}];
+        [v47 addLineToPoint:{*&v46, point1Copy}];
         v27 = v40;
         v28 = v42;
         v25 = v44;
         v10 = v46;
-        v7 = v47;
+        bezierCopy = v47;
         --v34;
       }
 
@@ -802,7 +802,7 @@ LABEL_37:
     }
   }
 
-  [v7 addLineToPoint:{x, y, *&v35.x}];
+  [bezierCopy addLineToPoint:{x, y, *&point1Copy.x}];
 }
 
 - (CGRect)startRect

@@ -1,17 +1,17 @@
 @interface MSDDefaultsManager
 + (id)sharedManager;
-- (BOOL)clearObjectForDefault:(id)a3;
+- (BOOL)clearObjectForDefault:(id)default;
 - (BOOL)isDeveloperProfileLoaded;
-- (BOOL)removeObjectForDefault:(id)a3;
-- (BOOL)setObject:(id)a3 forDefault:(id)a4;
-- (BOOL)setObjectWithCustomClass:(id)a3 forDefault:(id)a4;
+- (BOOL)removeObjectForDefault:(id)default;
+- (BOOL)setObject:(id)object forDefault:(id)default;
+- (BOOL)setObjectWithCustomClass:(id)class forDefault:(id)default;
 - (MSDDefaultsManager)init;
 - (NSDictionary)dictionaryRepresentation;
-- (id)_decodeObject:(id)a3 forKey:(id)a4;
-- (id)objectForDefault:(id)a3;
-- (id)objectForDefaultWithCustomClass:(id)a3;
-- (id)objectForKeyInDefaultDomain:(id)a3;
-- (id)objectForKeyInDeveloperDomain:(id)a3;
+- (id)_decodeObject:(id)object forKey:(id)key;
+- (id)objectForDefault:(id)default;
+- (id)objectForDefaultWithCustomClass:(id)class;
+- (id)objectForKeyInDefaultDomain:(id)domain;
+- (id)objectForKeyInDeveloperDomain:(id)domain;
 - (void)clearDeveloperDefaults;
 - (void)clearPrivateAndSharedLocalData;
 @end
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000023D8;
   block[3] = &unk_1000508C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100059A28 != -1)
   {
     dispatch_once(&qword_100059A28, block);
@@ -56,13 +56,13 @@
   return v2;
 }
 
-- (BOOL)setObjectWithCustomClass:(id)a3 forDefault:(id)a4
+- (BOOL)setObjectWithCustomClass:(id)class forDefault:(id)default
 {
-  v6 = a4;
-  if (a3)
+  defaultCopy = default;
+  if (class)
   {
     v12 = 0;
-    v7 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v12];
+    v7 = [NSKeyedArchiver archivedDataWithRootObject:class requiringSecureCoding:1 error:&v12];
     v8 = v12;
     if (v8)
     {
@@ -77,7 +77,7 @@
 
     else
     {
-      v10 = [(MSDDefaultsManager *)self setObject:v7 forDefault:v6];
+      v10 = [(MSDDefaultsManager *)self setObject:v7 forDefault:defaultCopy];
     }
   }
 
@@ -89,20 +89,20 @@
   return v10;
 }
 
-- (BOOL)setObject:(id)a3 forDefault:(id)a4
+- (BOOL)setObject:(id)object forDefault:(id)default
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  objectCopy = object;
+  defaultCopy = default;
+  if (defaultCopy)
   {
-    v8 = [(MSDDefaultsManager *)self isDeveloperProfileLoaded];
+    isDeveloperProfileLoaded = [(MSDDefaultsManager *)self isDeveloperProfileLoaded];
     v9 = 8;
-    if (v8)
+    if (isDeveloperProfileLoaded)
     {
       v9 = 16;
     }
 
-    [*(&self->super.isa + v9) setObject:v6 forKey:v7];
+    [*(&self->super.isa + v9) setObject:objectCopy forKey:defaultCopy];
   }
 
   else
@@ -114,16 +114,16 @@
     }
   }
 
-  return v7 != 0;
+  return defaultCopy != 0;
 }
 
-- (BOOL)clearObjectForDefault:(id)a3
+- (BOOL)clearObjectForDefault:(id)default
 {
-  v4 = a3;
-  if (v4)
+  defaultCopy = default;
+  if (defaultCopy)
   {
-    [(NSUserDefaults *)self->_MSDDeveloperDefaults removeObjectForKey:v4];
-    [(NSUserDefaults *)self->_MSDDefaults removeObjectForKey:v4];
+    [(NSUserDefaults *)self->_MSDDeveloperDefaults removeObjectForKey:defaultCopy];
+    [(NSUserDefaults *)self->_MSDDefaults removeObjectForKey:defaultCopy];
   }
 
   else
@@ -135,22 +135,22 @@
     }
   }
 
-  return v4 != 0;
+  return defaultCopy != 0;
 }
 
-- (BOOL)removeObjectForDefault:(id)a3
+- (BOOL)removeObjectForDefault:(id)default
 {
-  v4 = a3;
-  if (v4)
+  defaultCopy = default;
+  if (defaultCopy)
   {
-    v5 = [(MSDDefaultsManager *)self isDeveloperProfileLoaded];
+    isDeveloperProfileLoaded = [(MSDDefaultsManager *)self isDeveloperProfileLoaded];
     v6 = 8;
-    if (v5)
+    if (isDeveloperProfileLoaded)
     {
       v6 = 16;
     }
 
-    [*(&self->super.isa + v6) removeObjectForKey:v4];
+    [*(&self->super.isa + v6) removeObjectForKey:defaultCopy];
   }
 
   else
@@ -162,13 +162,13 @@
     }
   }
 
-  return v4 != 0;
+  return defaultCopy != 0;
 }
 
-- (id)objectForDefault:(id)a3
+- (id)objectForDefault:(id)default
 {
-  v4 = a3;
-  if (v4)
+  defaultCopy = default;
+  if (defaultCopy)
   {
     if ([(MSDDefaultsManager *)self isDeveloperProfileLoaded])
     {
@@ -180,7 +180,7 @@
       MSDDeveloperDefaults = self->_MSDDefaults;
     }
 
-    v7 = [(NSUserDefaults *)MSDDeveloperDefaults objectForKey:v4];
+    v7 = [(NSUserDefaults *)MSDDeveloperDefaults objectForKey:defaultCopy];
   }
 
   else
@@ -197,13 +197,13 @@
   return v7;
 }
 
-- (id)objectForKeyInDeveloperDomain:(id)a3
+- (id)objectForKeyInDeveloperDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(NSUserDefaults *)self->_MSDDeveloperDefaults objectForKey:v4];
+  domainCopy = domain;
+  v5 = [(NSUserDefaults *)self->_MSDDeveloperDefaults objectForKey:domainCopy];
   if (v5)
   {
-    v6 = [(MSDDefaultsManager *)self _decodeObject:v5 forKey:v4];
+    v6 = [(MSDDefaultsManager *)self _decodeObject:v5 forKey:domainCopy];
   }
 
   else
@@ -214,13 +214,13 @@
   return v6;
 }
 
-- (id)objectForKeyInDefaultDomain:(id)a3
+- (id)objectForKeyInDefaultDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(NSUserDefaults *)self->_MSDDefaults objectForKey:v4];
+  domainCopy = domain;
+  v5 = [(NSUserDefaults *)self->_MSDDefaults objectForKey:domainCopy];
   if (v5)
   {
-    v6 = [(MSDDefaultsManager *)self _decodeObject:v5 forKey:v4];
+    v6 = [(MSDDefaultsManager *)self _decodeObject:v5 forKey:domainCopy];
   }
 
   else
@@ -231,13 +231,13 @@
   return v6;
 }
 
-- (id)objectForDefaultWithCustomClass:(id)a3
+- (id)objectForDefaultWithCustomClass:(id)class
 {
-  v4 = a3;
-  v5 = [(MSDDefaultsManager *)self objectForDefault:v4];
+  classCopy = class;
+  v5 = [(MSDDefaultsManager *)self objectForDefault:classCopy];
   if (v5)
   {
-    v6 = [(MSDDefaultsManager *)self _decodeObject:v5 forKey:v4];
+    v6 = [(MSDDefaultsManager *)self _decodeObject:v5 forKey:classCopy];
   }
 
   else
@@ -250,27 +250,27 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [(MSDDefaultsManager *)self isDeveloperProfileLoaded];
+  isDeveloperProfileLoaded = [(MSDDefaultsManager *)self isDeveloperProfileLoaded];
   v4 = 8;
-  if (v3)
+  if (isDeveloperProfileLoaded)
   {
     v4 = 16;
   }
 
-  v5 = [*(&self->super.isa + v4) dictionaryRepresentation];
+  dictionaryRepresentation = [*(&self->super.isa + v4) dictionaryRepresentation];
 
-  return v5;
+  return dictionaryRepresentation;
 }
 
 - (BOOL)isDeveloperProfileLoaded
 {
-  v3 = [(MSDDefaultsManager *)self developerProfilesCount];
-  if ((v3 != 0) != [(NSUserDefaults *)self->_MSDDeveloperDefaults BOOLForKey:@"developerProfileLoaded"])
+  developerProfilesCount = [(MSDDefaultsManager *)self developerProfilesCount];
+  if ((developerProfilesCount != 0) != [(NSUserDefaults *)self->_MSDDeveloperDefaults BOOLForKey:@"developerProfileLoaded"])
   {
-    [(NSUserDefaults *)self->_MSDDeveloperDefaults setBool:v3 != 0 forKey:@"developerProfileLoaded"];
+    [(NSUserDefaults *)self->_MSDDeveloperDefaults setBool:developerProfilesCount != 0 forKey:@"developerProfileLoaded"];
   }
 
-  return v3 != 0;
+  return developerProfilesCount != 0;
 }
 
 - (void)clearDeveloperDefaults
@@ -294,14 +294,14 @@
   [(MSDDefaultsManager *)self clearObjectForDefault:@"sharedDatabaseKeyRefreshTokens"];
 }
 
-- (id)_decodeObject:(id)a3 forKey:(id)a4
+- (id)_decodeObject:(id)object forKey:(id)key
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  keyCopy = key;
+  v6 = keyCopy;
+  if (object)
   {
-    v25 = v5;
-    v7 = a3;
+    v25 = keyCopy;
+    objectCopy = object;
     v24 = objc_opt_class();
     v23 = objc_opt_class();
     v8 = objc_opt_class();
@@ -315,7 +315,7 @@
     v16 = objc_opt_class();
     v17 = [NSSet setWithObjects:v24, v23, v8, v9, v10, v11, v12, v13, v14, v15, v16, objc_opt_class(), 0];
     v26 = 0;
-    v18 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v17 fromData:v7 error:&v26];
+    v18 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v17 fromData:objectCopy error:&v26];
 
     v19 = v26;
     if (v19)

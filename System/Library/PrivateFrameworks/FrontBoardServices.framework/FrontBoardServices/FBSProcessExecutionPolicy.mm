@@ -1,18 +1,18 @@
 @interface FBSProcessExecutionPolicy
-+ (id)policyForStrategy:(id)a3 withProvisions:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)policyForStrategy:(id)strategy withProvisions:(id)provisions;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)setProvisions:(id)a3;
+- (void)setProvisions:(id)provisions;
 @end
 
 @implementation FBSProcessExecutionPolicy
 
-+ (id)policyForStrategy:(id)a3 withProvisions:(id)a4
++ (id)policyForStrategy:(id)strategy withProvisions:(id)provisions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  strategyCopy = strategy;
+  provisionsCopy = provisions;
+  v9 = strategyCopy;
   NSClassFromString(&cfstr_Fbsprocessexec_3.isa);
   if (!v9)
   {
@@ -24,7 +24,7 @@
     [FBSProcessExecutionPolicy policyForStrategy:a2 withProvisions:?];
   }
 
-  v10 = v8;
+  v10 = provisionsCopy;
   if (v10)
   {
     NSClassFromString(&cfstr_Nsarray.isa);
@@ -34,20 +34,20 @@
     }
   }
 
-  v11 = objc_alloc_init(a1);
+  v11 = objc_alloc_init(self);
   [v11 setStrategy:v9];
   [v11 setProvisions:v10];
 
   return v11;
 }
 
-- (void)setProvisions:(id)a3
+- (void)setProvisions:(id)provisions
 {
-  if (self->_provisions != a3)
+  if (self->_provisions != provisions)
   {
     v5 = MEMORY[0x1E695DEC8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithArray:v6 copyItems:1];
+    provisionsCopy = provisions;
+    v7 = [[v5 alloc] initWithArray:provisionsCopy copyItems:1];
 
     provisions = self->_provisions;
     self->_provisions = v7;
@@ -56,32 +56,32 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSProcessExecutionPolicy *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSProcessExecutionPolicy *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSProcessExecutionPolicy *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSProcessExecutionPolicy *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSProcessExecutionPolicy *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSProcessExecutionPolicy *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__FBSProcessExecutionPolicy_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

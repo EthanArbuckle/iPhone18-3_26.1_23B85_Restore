@@ -1,13 +1,13 @@
 @interface SilhouetteLayer
 - (_TtC14ContactsUICore15SilhouetteLayer)init;
-- (_TtC14ContactsUICore15SilhouetteLayer)initWithCoder:(id)a3;
-- (_TtC14ContactsUICore15SilhouetteLayer)initWithLayer:(id)a3;
+- (_TtC14ContactsUICore15SilhouetteLayer)initWithCoder:(id)coder;
+- (_TtC14ContactsUICore15SilhouetteLayer)initWithLayer:(id)layer;
 - (void)display;
 @end
 
 @implementation SilhouetteLayer
 
-- (_TtC14ContactsUICore15SilhouetteLayer)initWithLayer:(id)a3
+- (_TtC14ContactsUICore15SilhouetteLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1A34CD920();
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (_TtC14ContactsUICore15SilhouetteLayer)initWithCoder:(id)a3
+- (_TtC14ContactsUICore15SilhouetteLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC14ContactsUICore15SilhouetteLayer_spec) = 2;
   *(&self->super.super.isa + OBJC_IVAR____TtC14ContactsUICore15SilhouetteLayer____lazy_storage___businessLayer) = 0;
@@ -39,7 +39,7 @@
 
 - (void)display
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A33F8EE0();
 }
 

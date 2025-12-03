@@ -1,6 +1,6 @@
 @interface COSTinkerFamilyMemberCell
 + (id)nameFormatter;
-- (COSTinkerFamilyMemberCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (COSTinkerFamilyMemberCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (COSTinkerFamilyMemberCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (COSTinkerFamilyMemberCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v66.receiver = self;
   v66.super_class = COSTinkerFamilyMemberCell;
-  v4 = [(COSTinkerFamilyMemberCell *)&v66 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(COSTinkerFamilyMemberCell *)&v66 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v6 = [UILabel alloc];
@@ -58,14 +58,14 @@
     [(UIImageView *)v4->_profilePictureView setContentMode:1];
     LODWORD(v17) = 1148846080;
     [(UIImageView *)v4->_profilePictureView setContentHuggingPriority:0 forAxis:v17];
-    v18 = [(UIImageView *)v4->_profilePictureView widthAnchor];
-    v19 = [v18 constraintEqualToConstant:36.0];
+    widthAnchor = [(UIImageView *)v4->_profilePictureView widthAnchor];
+    v19 = [widthAnchor constraintEqualToConstant:36.0];
     [v19 setActive:1];
 
     v20 = v4->_profilePictureView;
-    v21 = [(UIImageView *)v20 heightAnchor];
-    v22 = [(UIImageView *)v4->_profilePictureView widthAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    heightAnchor = [(UIImageView *)v20 heightAnchor];
+    widthAnchor2 = [(UIImageView *)v4->_profilePictureView widthAnchor];
+    v23 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     [v23 setActive:1];
 
     objc_opt_self();
@@ -73,18 +73,18 @@
     sub_10018B1DC(v4, v24);
 
     [(COSTinkerFamilyBadgeView *)v4->_profileWatchBadgeView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [(COSTinkerFamilyBadgeView *)v4->_profileWatchBadgeView widthAnchor];
-    v26 = [v25 constraintEqualToConstant:14.0];
+    widthAnchor3 = [(COSTinkerFamilyBadgeView *)v4->_profileWatchBadgeView widthAnchor];
+    v26 = [widthAnchor3 constraintEqualToConstant:14.0];
     [v26 setActive:1];
 
     v27 = v4->_profileWatchBadgeView;
-    v28 = [(COSTinkerFamilyBadgeView *)v27 heightAnchor];
-    v29 = [(COSTinkerFamilyBadgeView *)v4->_profileWatchBadgeView widthAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    heightAnchor2 = [(COSTinkerFamilyBadgeView *)v27 heightAnchor];
+    widthAnchor4 = [(COSTinkerFamilyBadgeView *)v4->_profileWatchBadgeView widthAnchor];
+    v30 = [heightAnchor2 constraintEqualToAnchor:widthAnchor4];
     [v30 setActive:1];
 
-    v31 = [(COSTinkerFamilyMemberCell *)v4 contentView];
-    [v31 addSubview:v4->_profileWatchBadgeView];
+    contentView = [(COSTinkerFamilyMemberCell *)v4 contentView];
+    [contentView addSubview:v4->_profileWatchBadgeView];
 
     v32 = objc_alloc_init(UIStackView);
     [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -94,8 +94,8 @@
     v65 = v32;
     [v32 addArrangedSubview:v4->_subtitleLabel];
     v33 = [UIStackView alloc];
-    v34 = [(COSTinkerFamilyMemberCell *)v4 contentView];
-    [v34 bounds];
+    contentView2 = [(COSTinkerFamilyMemberCell *)v4 contentView];
+    [contentView2 bounds];
     v35 = [v33 initWithFrame:?];
 
     [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -104,46 +104,46 @@
     [v35 setSpacing:16.0];
     [v35 addArrangedSubview:v4->_profilePictureView];
     [v35 addArrangedSubview:v32];
-    v36 = [(COSTinkerFamilyMemberCell *)v4 contentView];
-    [v36 addSubview:v35];
+    contentView3 = [(COSTinkerFamilyMemberCell *)v4 contentView];
+    [contentView3 addSubview:v35];
 
-    v63 = [v35 leadingAnchor];
-    v64 = [(COSTinkerFamilyMemberCell *)v4 contentView];
-    v62 = [v64 leadingAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:15.0];
+    leadingAnchor = [v35 leadingAnchor];
+    contentView4 = [(COSTinkerFamilyMemberCell *)v4 contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v61 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
     v67[0] = v61;
-    v59 = [v35 trailingAnchor];
-    v60 = [(COSTinkerFamilyMemberCell *)v4 contentView];
-    v58 = [v60 trailingAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58 constant:-15.0];
+    trailingAnchor = [v35 trailingAnchor];
+    contentView5 = [(COSTinkerFamilyMemberCell *)v4 contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v57 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
     v67[1] = v57;
-    v55 = [v35 topAnchor];
-    v56 = [(COSTinkerFamilyMemberCell *)v4 contentView];
-    v54 = [v56 topAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54 constant:11.0];
+    topAnchor = [v35 topAnchor];
+    contentView6 = [(COSTinkerFamilyMemberCell *)v4 contentView];
+    topAnchor2 = [contentView6 topAnchor];
+    v53 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:11.0];
     v67[2] = v53;
-    v51 = [v35 bottomAnchor];
-    v52 = [(COSTinkerFamilyMemberCell *)v4 contentView];
-    v50 = [v52 bottomAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:-11.0];
+    bottomAnchor = [v35 bottomAnchor];
+    contentView7 = [(COSTinkerFamilyMemberCell *)v4 contentView];
+    bottomAnchor2 = [contentView7 bottomAnchor];
+    v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-11.0];
     v67[3] = v49;
     v48 = v4->_profileWatchBadgeView;
-    v47 = [(COSTinkerFamilyBadgeView *)v48 trailingAnchor];
+    trailingAnchor3 = [(COSTinkerFamilyBadgeView *)v48 trailingAnchor];
     v46 = v4->_profilePictureView;
-    v37 = [(UIImageView *)v46 trailingAnchor];
-    v38 = [v47 constraintEqualToAnchor:v37 constant:3.0];
+    trailingAnchor4 = [(UIImageView *)v46 trailingAnchor];
+    v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:3.0];
     v67[4] = v38;
     v39 = v4->_profileWatchBadgeView;
-    v40 = [(COSTinkerFamilyBadgeView *)v39 bottomAnchor];
+    bottomAnchor3 = [(COSTinkerFamilyBadgeView *)v39 bottomAnchor];
     v41 = v4->_profilePictureView;
-    v42 = [(UIImageView *)v41 bottomAnchor];
-    v43 = [v40 constraintEqualToAnchor:v42 constant:2.0];
+    bottomAnchor4 = [(UIImageView *)v41 bottomAnchor];
+    v43 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:2.0];
     v67[5] = v43;
     v44 = [NSArray arrayWithObjects:v67 count:6];
     [NSLayoutConstraint activateConstraints:v44];
 
-    v45 = [(COSTinkerFamilyMemberCell *)v4 contentView];
-    [v45 bringSubviewToFront:v4->_profileWatchBadgeView];
+    contentView8 = [(COSTinkerFamilyMemberCell *)v4 contentView];
+    [contentView8 bringSubviewToFront:v4->_profileWatchBadgeView];
   }
 
   return v4;

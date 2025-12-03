@@ -1,13 +1,13 @@
 @interface _UISystemIconAppearance
-+ (id)appearanceWithSBSHomeScreenIconStyleConfiguration:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
++ (id)appearanceWithSBSHomeScreenIconStyleConfiguration:(uint64_t)configuration;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)applyAppearanceToDescriptor:(uint64_t)a3 userInterfaceStyle:;
+- (void)applyAppearanceToDescriptor:(uint64_t)descriptor userInterfaceStyle:;
 @end
 
 @implementation _UISystemIconAppearance
 
-+ (id)appearanceWithSBSHomeScreenIconStyleConfiguration:(uint64_t)a1
++ (id)appearanceWithSBSHomeScreenIconStyleConfiguration:(uint64_t)configuration
 {
   v2 = a2;
   objc_opt_self();
@@ -20,26 +20,26 @@
   return v3;
 }
 
-- (void)applyAppearanceToDescriptor:(uint64_t)a3 userInterfaceStyle:
+- (void)applyAppearanceToDescriptor:(uint64_t)descriptor userInterfaceStyle:
 {
   v5 = a2;
-  if (a1 && (*(a1 + 16) & 1) != 0)
+  if (self && (*(self + 16) & 1) != 0)
   {
-    v6 = a3 == 2;
+    v6 = descriptor == 2;
     v18 = v5;
-    v7 = *(a1 + 8);
+    v7 = *(self + 8);
     [v18 setAppearance:{objc_msgSend(v7, "iconServicesAppearanceUsingDarkInterfaceStyle:", v6)}];
     [v18 setAppearanceVariant:{objc_msgSend(v7, "iconServicesAppearanceVariantUsingDarkInterfaceStyle:", v6)}];
-    v8 = [v7 tintColor];
+    tintColor = [v7 tintColor];
 
     v9 = objc_alloc(MEMORY[0x1E69A8968]);
-    [v8 red];
+    [tintColor red];
     v11 = v10;
-    [v8 green];
+    [tintColor green];
     v13 = v12;
-    [v8 blue];
+    [tintColor blue];
     v15 = v14;
-    [v8 alpha];
+    [tintColor alpha];
     v17 = [v9 initWithRed:v11 green:v13 blue:v15 alpha:v16];
     [v18 setTintColor:v17];
 
@@ -47,10 +47,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -62,7 +62,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (((*&v7->_flags ^ *&self->_flags) & 3) != 0)
       {
@@ -122,9 +122,9 @@
 
   v6 = [v3 appendObject:self->_configuration withName:v5];
 LABEL_6:
-  v7 = [v4 build];
+  build = [v4 build];
 
-  return v7;
+  return build;
 }
 
 @end

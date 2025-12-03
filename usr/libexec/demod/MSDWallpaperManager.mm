@@ -41,14 +41,14 @@
 - (void)stashWallpaperSettingsIfNeeded
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  wallpaperSettingsFilePath = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
+  v5 = [v3 fileExistsAtPath:wallpaperSettingsFilePath];
 
   if (v5)
   {
     v6 = [NSDictionary alloc];
-    v7 = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
-    v8 = [NSURL fileURLWithPath:v7];
+    wallpaperSettingsFilePath2 = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
+    v8 = [NSURL fileURLWithPath:wallpaperSettingsFilePath2];
     v24 = 0;
     v9 = [v6 initWithContentsOfURL:v8 error:&v24];
     v10 = v24;
@@ -74,10 +74,10 @@
 
   else
   {
-    v14 = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
-    v15 = [v14 stringByDeletingLastPathComponent];
+    wallpaperSettingsFilePath3 = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
+    stringByDeletingLastPathComponent = [wallpaperSettingsFilePath3 stringByDeletingLastPathComponent];
     v23 = 0;
-    v16 = [v3 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v23];
+    v16 = [v3 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v23];
     v10 = v23;
 
     if ((v16 & 1) == 0)
@@ -87,8 +87,8 @@
       goto LABEL_13;
     }
 
-    v17 = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
-    v18 = [NSURL fileURLWithPath:v17];
+    wallpaperSettingsFilePath4 = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
+    v18 = [NSURL fileURLWithPath:wallpaperSettingsFilePath4];
     v22 = v10;
     v19 = [&off_10017BFE0 writeToURL:v18 error:&v22];
     v20 = v22;
@@ -163,8 +163,8 @@ LABEL_13:
   v7 = [[PRSWallpaperObserver alloc] initWithExplanation:@"Store Demo Mode"];
   [(MSDWallpaperManager *)self setPosterObserver:v7];
 
-  v8 = [(MSDWallpaperManager *)self posterObserver];
-  [v8 activateWithConfiguration:v5];
+  posterObserver = [(MSDWallpaperManager *)self posterObserver];
+  [posterObserver activateWithConfiguration:v5];
 }
 
 - (void)_handleWallpaperConfigChange
@@ -190,8 +190,8 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Will reset wallpaper settings to factory default next time.", v11, 2u);
     }
 
-    v5 = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
-    v6 = [NSURL fileURLWithPath:v5];
+    wallpaperSettingsFilePath = [(MSDWallpaperManager *)self wallpaperSettingsFilePath];
+    v6 = [NSURL fileURLWithPath:wallpaperSettingsFilePath];
     v10 = 0;
     v7 = [&off_10017C008 writeToURL:v6 error:&v10];
     v8 = v10;
@@ -199,8 +199,8 @@ LABEL_13:
     if (v7)
     {
       [(MSDWallpaperManager *)self setUseFactoryDefault:1];
-      v9 = [(MSDWallpaperManager *)self posterObserver];
-      [v9 invalidate];
+      posterObserver = [(MSDWallpaperManager *)self posterObserver];
+      [posterObserver invalidate];
 
       [(MSDWallpaperManager *)self setPosterObserver:0];
     }

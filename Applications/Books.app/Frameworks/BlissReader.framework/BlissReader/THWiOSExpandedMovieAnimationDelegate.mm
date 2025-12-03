@@ -1,22 +1,22 @@
 @interface THWiOSExpandedMovieAnimationDelegate
 - (CGAffineTransform)freeTransform;
-- (THWiOSExpandedMovieAnimationDelegate)initWithMovieViewController:(id)a3;
+- (THWiOSExpandedMovieAnimationDelegate)initWithMovieViewController:(id)controller;
 - (id)animationLayer;
 - (id)targetLayer;
 - (void)dealloc;
-- (void)reparentTargetLayerIfBackedByView:(id)a3;
+- (void)reparentTargetLayerIfBackedByView:(id)view;
 @end
 
 @implementation THWiOSExpandedMovieAnimationDelegate
 
-- (THWiOSExpandedMovieAnimationDelegate)initWithMovieViewController:(id)a3
+- (THWiOSExpandedMovieAnimationDelegate)initWithMovieViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = THWiOSExpandedMovieAnimationDelegate;
   result = [(THWiOSExpandedMovieAnimationDelegate *)&v5 init];
   if (result)
   {
-    result->_movieViewController = a3;
+    result->_movieViewController = controller;
   }
 
   return result;
@@ -34,9 +34,9 @@
 {
   if (![(THWFreeTransformController *)[(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] freeTransformController] isFreeTransformInProgress]|| (result = [(THWFreeTransformController *)[(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] freeTransformController] freeTransformLayer]) == 0)
   {
-    v4 = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] moviePlayerViewController] view];
+    view = [(AVPlayerViewController *)[(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] moviePlayerViewController] view];
 
-    return [v4 layer];
+    return [view layer];
   }
 
   return result;
@@ -75,18 +75,18 @@
 
 - (id)targetLayer
 {
-  v2 = [(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] view];
+  view = [(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] view];
 
-  return [v2 layer];
+  return [view layer];
 }
 
-- (void)reparentTargetLayerIfBackedByView:(id)a3
+- (void)reparentTargetLayerIfBackedByView:(id)view
 {
   [-[THWiOSExpandedMovieViewController view](-[THWiOSExpandedMovieAnimationDelegate movieViewController](self movieViewController];
-  v4 = [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] delegate] rootSuperview];
-  v5 = [(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] view];
+  rootSuperview = [(THWExpandedViewControllerDelegate *)[(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] delegate] rootSuperview];
+  view = [(THWiOSExpandedMovieViewController *)[(THWiOSExpandedMovieAnimationDelegate *)self movieViewController] view];
 
-  [v4 addSubview:v5];
+  [rootSuperview addSubview:view];
 }
 
 @end

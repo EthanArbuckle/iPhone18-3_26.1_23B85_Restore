@@ -1,7 +1,7 @@
 @interface _UICollectionTableIndexOverlayIndicatorView
-- (_UICollectionTableIndexOverlayIndicatorView)initWithHost:(id)a3;
-- (void)_tapGestureChanged:(id)a3;
-- (void)_willChangeToIdiom:(int64_t)a3 onScreen:(id)a4;
+- (_UICollectionTableIndexOverlayIndicatorView)initWithHost:(id)host;
+- (void)_tapGestureChanged:(id)changed;
+- (void)_willChangeToIdiom:(int64_t)idiom onScreen:(id)screen;
 - (void)layoutSubviews;
 @end
 
@@ -15,9 +15,9 @@
   [(UILabel *)label setFrame:?];
 }
 
-- (_UICollectionTableIndexOverlayIndicatorView)initWithHost:(id)a3
+- (_UICollectionTableIndexOverlayIndicatorView)initWithHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v11.receiver = self;
   v11.super_class = _UICollectionTableIndexOverlayIndicatorView;
   v5 = [(UIView *)&v11 init];
@@ -33,27 +33,27 @@
     v5->_tapGestureRecognizer = v8;
 
     [(UIView *)v5 addGestureRecognizer:v5->_tapGestureRecognizer];
-    objc_storeWeak(&v5->_host, v4);
+    objc_storeWeak(&v5->_host, hostCopy);
   }
 
   return v5;
 }
 
-- (void)_tapGestureChanged:(id)a3
+- (void)_tapGestureChanged:(id)changed
 {
-  if ([a3 state] == 3)
+  if ([changed state] == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_host);
     [WeakRetained _hideIndexOverlay];
   }
 }
 
-- (void)_willChangeToIdiom:(int64_t)a3 onScreen:(id)a4
+- (void)_willChangeToIdiom:(int64_t)idiom onScreen:(id)screen
 {
-  if (a3 == 3)
+  if (idiom == 3)
   {
     label = self->_label;
-    v7 = [UIColor whiteColor:a3];
+    v7 = [UIColor whiteColor:idiom];
     [(UILabel *)label setTextColor:v7];
 
     v8 = self->_label;

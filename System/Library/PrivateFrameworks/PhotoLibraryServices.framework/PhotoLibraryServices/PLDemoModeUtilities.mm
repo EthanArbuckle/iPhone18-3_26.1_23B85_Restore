@@ -1,14 +1,14 @@
 @interface PLDemoModeUtilities
 + (id)newDemoModeUtilitiesWithDefaultSystemPaths;
-- (BOOL)_evalSystemSafetyCheck:(id)a3;
+- (BOOL)_evalSystemSafetyCheck:(id)check;
 - (BOOL)cleanupForStoreDemoModeByRemovingNonDemoContentFromTargetLibrary;
 - (BOOL)prepareForStoreDemoModeByStagingDemoLibraryContentFromTemplate;
 - (BOOL)replaceTargetPhotoLibraryWithStagedDemoLibraryIfExists;
 - (NSString)demoContentPhotoLibraryPrestagingPath;
 - (NSString)demoContentPhotoLibraryStagingPath;
-- (PLDemoModeUtilities)initWithDemoContentTemplatePath:(id)a3 stagingBasePath:(id)a4 targetPhotoLibraryPathManager:(id)a5 options:(unint64_t)a6;
-- (id)fetchDemoContentResultsInLibrary:(id)a3;
-- (int64_t)markAssetOriginalsInTargetPhotoLibraryAsLegacyDemoContent:(BOOL)a3;
+- (PLDemoModeUtilities)initWithDemoContentTemplatePath:(id)path stagingBasePath:(id)basePath targetPhotoLibraryPathManager:(id)manager options:(unint64_t)options;
+- (id)fetchDemoContentResultsInLibrary:(id)library;
+- (int64_t)markAssetOriginalsInTargetPhotoLibraryAsLegacyDemoContent:(BOOL)content;
 - (void)kickstartStagedDemoContentInstallationByKillingAllClients;
 - (void)warmUpDemoLibraryInstalledFromStagedTemplate;
 @end
@@ -321,22 +321,22 @@ void __87__PLDemoModeUtilities_cleanupForStoreDemoModeByRemovingNonDemoContentFr
   [v52 removeItemAtPath:v62 error:0];
 }
 
-- (id)fetchDemoContentResultsInLibrary:(id)a3
+- (id)fetchDemoContentResultsInLibrary:(id)library
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  libraryCopy = library;
+  managedObjectContext = [libraryCopy managedObjectContext];
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLManagedAsset entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
 
   *(&v27 + 1) = 256;
   LOBYTE(v27) = 0;
-  v8 = [MEMORY[0x1E69BF328] validatedSavedAssetTypeMaskUnknown:0 photoBooth:0 photoStream:0 camera:0 cloudShared:0 cameraConnectionKit:0 cloudPhotoLibrary:objc_msgSend(v3 wallpaper_UNUSED:"isCloudPhotoLibraryEnabled") momentShared:v27 placeholder:? referenced:? alternate:? guest:? companionSynced:? recovered:? collectionShare:? legacyImport:?];
+  v8 = [MEMORY[0x1E69BF328] validatedSavedAssetTypeMaskUnknown:0 photoBooth:0 photoStream:0 camera:0 cloudShared:0 cameraConnectionKit:0 cloudPhotoLibrary:objc_msgSend(libraryCopy wallpaper_UNUSED:"isCloudPhotoLibraryEnabled") momentShared:v27 placeholder:? referenced:? alternate:? guest:? companionSynced:? recovered:? collectionShare:? legacyImport:?];
   v9 = [MEMORY[0x1E69BF328] predicateForExcludeMask:v8 useIndex:0];
   [v7 setPredicate:v9];
   v40 = 0;
-  v10 = [v4 executeFetchRequest:v7 error:&v40];
+  v10 = [managedObjectContext executeFetchRequest:v7 error:&v40];
   v11 = v40;
   v12 = v11;
   if (v10)
@@ -344,10 +344,10 @@ void __87__PLDemoModeUtilities_cleanupForStoreDemoModeByRemovingNonDemoContentFr
     v28 = v11;
     v30 = v9;
     v31 = v7;
-    v32 = v4;
-    v33 = v3;
-    v35 = [MEMORY[0x1E695DF70] array];
-    v34 = [MEMORY[0x1E695DF70] array];
+    v32 = managedObjectContext;
+    v33 = libraryCopy;
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -371,22 +371,22 @@ void __87__PLDemoModeUtilities_cleanupForStoreDemoModeByRemovingNonDemoContentFr
 
           v19 = *(*(&v36 + 1) + 8 * i);
           v20 = objc_autoreleasePoolPush();
-          v21 = [v19 mainFileURL];
-          v22 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:v21];
+          mainFileURL = [v19 mainFileURL];
+          v22 = [MEMORY[0x1E69BF230] persistedAttributesForFileAtURL:mainFileURL];
           *buf = 0;
           [v22 getUInt16:buf forKey:v17];
           if (*buf)
           {
             if ([v19 hasAdjustments])
             {
-              [v34 addObject:v19];
+              [array2 addObject:v19];
             }
           }
 
           else
           {
-            v23 = [v19 objectID];
-            [v35 addObject:v23];
+            objectID = [v19 objectID];
+            [array addObject:objectID];
           }
 
           objc_autoreleasePoolPop(v20);
@@ -399,12 +399,12 @@ void __87__PLDemoModeUtilities_cleanupForStoreDemoModeByRemovingNonDemoContentFr
     }
 
     v24 = objc_alloc_init(PLDemoContentResults);
-    v25 = v35;
-    [(PLDemoContentResults *)v24 setAssetIDsToDelete:v35];
-    [(PLDemoContentResults *)v24 setAssetsToRevert:v34];
+    v25 = array;
+    [(PLDemoContentResults *)v24 setAssetIDsToDelete:array];
+    [(PLDemoContentResults *)v24 setAssetsToRevert:array2];
 
-    v4 = v32;
-    v3 = v33;
+    managedObjectContext = v32;
+    libraryCopy = v33;
     v9 = v30;
     v7 = v31;
     v12 = v28;
@@ -427,18 +427,18 @@ void __87__PLDemoModeUtilities_cleanupForStoreDemoModeByRemovingNonDemoContentFr
   return v24;
 }
 
-- (int64_t)markAssetOriginalsInTargetPhotoLibraryAsLegacyDemoContent:(BOOL)a3
+- (int64_t)markAssetOriginalsInTargetPhotoLibraryAsLegacyDemoContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   v25 = *MEMORY[0x1E69E9840];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v4 = [(PLDemoModeUtilities *)self targetPhotoLibraryPathManager];
-  v5 = [v4 libraryURL];
+  targetPhotoLibraryPathManager = [(PLDemoModeUtilities *)self targetPhotoLibraryPathManager];
+  libraryURL = [targetPhotoLibraryPathManager libraryURL];
   v16 = 0;
-  v6 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLDemoModeUtilities markAssetOriginalsInTargetPhotoLibraryAsLegacyDemoContent:]" loadedFromURL:v5 options:0 error:&v16];
+  v6 = [PLPhotoLibrary newPhotoLibraryWithName:"[PLDemoModeUtilities markAssetOriginalsInTargetPhotoLibraryAsLegacyDemoContent:]" loadedFromURL:libraryURL options:0 error:&v16];
   v7 = v16;
 
   if (v6)
@@ -447,7 +447,7 @@ void __87__PLDemoModeUtilities_cleanupForStoreDemoModeByRemovingNonDemoContentFr
     v12[1] = 3221225472;
     v12[2] = __81__PLDemoModeUtilities_markAssetOriginalsInTargetPhotoLibraryAsLegacyDemoContent___block_invoke;
     v12[3] = &unk_1E7573CD8;
-    v15 = v3;
+    v15 = contentCopy;
     v13 = v6;
     v14 = &v17;
     [v13 performBlockAndWait:v12];
@@ -461,7 +461,7 @@ void __87__PLDemoModeUtilities_cleanupForStoreDemoModeByRemovingNonDemoContentFr
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = @"NO";
-      if (v3)
+      if (contentCopy)
       {
         v10 = @"YES";
       }
@@ -533,42 +533,42 @@ void __81__PLDemoModeUtilities_markAssetOriginalsInTargetPhotoLibraryAsLegacyDem
 {
   v2 = [(PLDemoModeUtilities *)self _evalSystemSafetyCheck:&__block_literal_global_91_90841];
   v3 = PLStoreDemoModeGetLog();
-  v4 = v3;
+  systemLibraryPathManager = v3;
   if (v2)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Killing all connected photos clients to kickstart demo content installation.", buf, 2u);
+      _os_log_impl(&dword_19BF1F000, systemLibraryPathManager, OS_LOG_TYPE_DEFAULT, "Killing all connected photos clients to kickstart demo content installation.", buf, 2u);
     }
 
-    v4 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-    [v4 setSqliteErrorForRebuildReason:3 allowsExit:1];
+    systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+    [systemLibraryPathManager setSqliteErrorForRebuildReason:3 allowsExit:1];
   }
 
   else if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     *v5 = 0;
-    _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_ERROR, "Safety check failed: kickstartStagedDemoContentInstallationByKillingAllClients requires store demo mode", v5, 2u);
+    _os_log_impl(&dword_19BF1F000, systemLibraryPathManager, OS_LOG_TYPE_ERROR, "Safety check failed: kickstartStagedDemoContentInstallationByKillingAllClients requires store demo mode", v5, 2u);
   }
 }
 
 - (BOOL)prepareForStoreDemoModeByStagingDemoLibraryContentFromTemplate
 {
-  v2 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = [(PLDemoModeUtilities *)self _evalSystemSafetyCheck:&__block_literal_global_89_90846];
-  v3 = [MEMORY[0x1E69BF238] fileManager];
-  v4 = [(PLDemoModeUtilities *)v2 demoContentPhotoLibraryTemplatePath];
-  v6 = v3;
-  v7 = v4;
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
+  demoContentPhotoLibraryTemplatePath = [(PLDemoModeUtilities *)selfCopy demoContentPhotoLibraryTemplatePath];
+  v6 = fileManager;
+  v7 = demoContentPhotoLibraryTemplatePath;
   PLSafeRunWithUnfairLock();
-  LOBYTE(v2) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
 
   _Block_object_dispose(&v8, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __85__PLDemoModeUtilities_prepareForStoreDemoModeByStagingDemoLibraryContentFromTemplate__block_invoke_2(uint64_t a1)
@@ -1052,7 +1052,7 @@ LABEL_53:
 LABEL_55:
 }
 
-- (BOOL)_evalSystemSafetyCheck:(id)a3
+- (BOOL)_evalSystemSafetyCheck:(id)check
 {
   if (self->_options)
   {
@@ -1061,27 +1061,27 @@ LABEL_55:
 
   else
   {
-    return (*(a3 + 2))(a3);
+    return (*(check + 2))(check);
   }
 }
 
-- (PLDemoModeUtilities)initWithDemoContentTemplatePath:(id)a3 stagingBasePath:(id)a4 targetPhotoLibraryPathManager:(id)a5 options:(unint64_t)a6
+- (PLDemoModeUtilities)initWithDemoContentTemplatePath:(id)path stagingBasePath:(id)basePath targetPhotoLibraryPathManager:(id)manager options:(unint64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v12)
+  pathCopy = path;
+  basePathCopy = basePath;
+  managerCopy = manager;
+  if (pathCopy)
   {
-    if (v13)
+    if (basePathCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLDemoModeUtilities.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"stagingBase"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDemoModeUtilities.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"stagingBase"}];
 
-    if (v14)
+    if (managerCopy)
     {
       goto LABEL_4;
     }
@@ -1089,23 +1089,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"PLDemoModeUtilities.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"templatePath"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDemoModeUtilities.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"templatePath"}];
 
-  if (!v13)
+  if (!basePathCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (managerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PLDemoModeUtilities.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLDemoModeUtilities.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
 LABEL_4:
   v21.receiver = self;
@@ -1114,10 +1114,10 @@ LABEL_4:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_demoContentPhotoLibraryTemplatePath, a3);
-    objc_storeStrong(&v16->_demoContentStagingBasePath, a4);
-    objc_storeStrong(&v16->_targetPhotoLibraryPathManager, a5);
-    v16->_options = a6;
+    objc_storeStrong(&v15->_demoContentPhotoLibraryTemplatePath, path);
+    objc_storeStrong(&v16->_demoContentStagingBasePath, basePath);
+    objc_storeStrong(&v16->_targetPhotoLibraryPathManager, manager);
+    v16->_options = options;
   }
 
   return v16;
@@ -1125,26 +1125,26 @@ LABEL_4:
 
 - (NSString)demoContentPhotoLibraryPrestagingPath
 {
-  v2 = [(PLDemoModeUtilities *)self demoContentPhotoLibraryStagingPath];
-  v3 = [v2 stringByAppendingString:@"-inprogress"];
+  demoContentPhotoLibraryStagingPath = [(PLDemoModeUtilities *)self demoContentPhotoLibraryStagingPath];
+  v3 = [demoContentPhotoLibraryStagingPath stringByAppendingString:@"-inprogress"];
 
   return v3;
 }
 
 - (NSString)demoContentPhotoLibraryStagingPath
 {
-  v2 = [(PLDemoModeUtilities *)self demoContentStagingBasePath];
-  v3 = [v2 stringByAppendingPathComponent:@"DemoPhotoLibrary_STAGED.photoslibrary"];
+  demoContentStagingBasePath = [(PLDemoModeUtilities *)self demoContentStagingBasePath];
+  v3 = [demoContentStagingBasePath stringByAppendingPathComponent:@"DemoPhotoLibrary_STAGED.photoslibrary"];
 
   return v3;
 }
 
 + (id)newDemoModeUtilitiesWithDefaultSystemPaths
 {
-  v3 = [a1 systemDemoContentPhotoLibraryTemplatePath];
-  v4 = [a1 systemDemoContentStagingBasePath];
-  v5 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v6 = [[PLDemoModeUtilities alloc] initWithDemoContentTemplatePath:v3 stagingBasePath:v4 targetPhotoLibraryPathManager:v5 options:0];
+  systemDemoContentPhotoLibraryTemplatePath = [self systemDemoContentPhotoLibraryTemplatePath];
+  systemDemoContentStagingBasePath = [self systemDemoContentStagingBasePath];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  v6 = [[PLDemoModeUtilities alloc] initWithDemoContentTemplatePath:systemDemoContentPhotoLibraryTemplatePath stagingBasePath:systemDemoContentStagingBasePath targetPhotoLibraryPathManager:systemLibraryPathManager options:0];
 
   return v6;
 }

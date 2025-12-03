@@ -1,26 +1,26 @@
 @interface ICFileUtilities
-+ (id)coordinateDeleteItemAt:(id)a3;
-+ (id)coordinateDeleteItemAt:(id)a3 coordinator:(id)a4;
-+ (id)coordinateMoveItemAt:(id)a3 to:(id)a4;
-+ (id)coordinateMoveItemAt:(id)a3 to:(id)a4 coordinator:(id)a5;
++ (id)coordinateDeleteItemAt:(id)at;
++ (id)coordinateDeleteItemAt:(id)at coordinator:(id)coordinator;
++ (id)coordinateMoveItemAt:(id)at to:(id)to;
++ (id)coordinateMoveItemAt:(id)at to:(id)to coordinator:(id)coordinator;
 @end
 
 @implementation ICFileUtilities
 
-+ (id)coordinateDeleteItemAt:(id)a3
++ (id)coordinateDeleteItemAt:(id)at
 {
   v4 = MEMORY[0x277CCA9E8];
-  v5 = a3;
+  atCopy = at;
   v6 = objc_alloc_init(v4);
-  v7 = [a1 coordinateDeleteItemAt:v5 coordinator:v6];
+  v7 = [self coordinateDeleteItemAt:atCopy coordinator:v6];
 
   return v7;
 }
 
-+ (id)coordinateDeleteItemAt:(id)a3 coordinator:(id)a4
++ (id)coordinateDeleteItemAt:(id)at coordinator:(id)coordinator
 {
-  v5 = a3;
-  v6 = a4;
+  atCopy = at;
+  coordinatorCopy = coordinator;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -38,7 +38,7 @@
   v11[2] = __54__ICFileUtilities_coordinateDeleteItemAt_coordinator___block_invoke;
   v11[3] = &unk_278195820;
   v11[4] = &v13;
-  [v6 coordinateWritingItemAtURL:v5 options:1 error:&v12 byAccessor:v11];
+  [coordinatorCopy coordinateWritingItemAtURL:atCopy options:1 error:&v12 byAccessor:v11];
   v7 = v12;
   v8 = v12;
   if ((v14[3] & 1) == 0)
@@ -72,31 +72,31 @@ void __54__ICFileUtilities_coordinateDeleteItemAt_coordinator___block_invoke(uin
   }
 }
 
-+ (id)coordinateMoveItemAt:(id)a3 to:(id)a4
++ (id)coordinateMoveItemAt:(id)at to:(id)to
 {
   v6 = MEMORY[0x277CCA9E8];
-  v7 = a4;
-  v8 = a3;
+  toCopy = to;
+  atCopy = at;
   v9 = objc_alloc_init(v6);
-  v10 = [a1 coordinateMoveItemAt:v8 to:v7 coordinator:v9];
+  v10 = [self coordinateMoveItemAt:atCopy to:toCopy coordinator:v9];
 
   return v10;
 }
 
-+ (id)coordinateMoveItemAt:(id)a3 to:(id)a4 coordinator:(id)a5
++ (id)coordinateMoveItemAt:(id)at to:(id)to coordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  atCopy = at;
+  toCopy = to;
+  coordinatorCopy = coordinator;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__6;
   v30 = __Block_byref_object_dispose__6;
   v31 = 0;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v7 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [atCopy path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
   if (v12)
   {
@@ -110,9 +110,9 @@ void __54__ICFileUtilities_coordinateDeleteItemAt_coordinator___block_invoke(uin
     v17[2] = __55__ICFileUtilities_coordinateMoveItemAt_to_coordinator___block_invoke;
     v17[3] = &unk_278195848;
     v19 = &v22;
-    v18 = v10;
+    v18 = defaultManager;
     v20 = &v26;
-    [v9 coordinateWritingItemAtURL:v7 options:2 writingItemAtURL:v8 options:8 error:&v21 byAccessor:v17];
+    [coordinatorCopy coordinateWritingItemAtURL:atCopy options:2 writingItemAtURL:toCopy options:8 error:&v21 byAccessor:v17];
     v13 = v21;
     v14 = v21;
     if ((v23[3] & 1) == 0)

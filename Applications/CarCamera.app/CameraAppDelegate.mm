@@ -1,16 +1,16 @@
 @interface CameraAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC9CarCamera17CameraAppDelegate)init;
 @end
 
 @implementation CameraAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v4 = self;
+  selfCopy = self;
   CAFSignpostEmit_Launched();
   v5 = qword_10003CE20;
-  qword_10003CE20 = v4;
+  qword_10003CE20 = selfCopy;
 
   return 1;
 }

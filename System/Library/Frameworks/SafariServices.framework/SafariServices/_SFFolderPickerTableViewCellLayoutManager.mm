@@ -1,24 +1,24 @@
 @interface _SFFolderPickerTableViewCellLayoutManager
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5;
-- (UIEdgeInsets)_layoutMarginsForCell:(id)a3;
-- (void)layoutSubviewsOfCell:(id)a3;
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing;
+- (UIEdgeInsets)_layoutMarginsForCell:(id)cell;
+- (void)layoutSubviewsOfCell:(id)cell;
 @end
 
 @implementation _SFFolderPickerTableViewCellLayoutManager
 
-- (void)layoutSubviewsOfCell:(id)a3
+- (void)layoutSubviewsOfCell:(id)cell
 {
-  v4 = a3;
-  [(_SFFolderPickerTableViewCellLayoutManager *)self _layoutMarginsForCell:v4];
-  [v4 setLayoutMargins:?];
+  cellCopy = cell;
+  [(_SFFolderPickerTableViewCellLayoutManager *)self _layoutMarginsForCell:cellCopy];
+  [cellCopy setLayoutMargins:?];
   v5.receiver = self;
   v5.super_class = _SFFolderPickerTableViewCellLayoutManager;
-  [(UITableViewCellLayoutManagerValue1 *)&v5 layoutSubviewsOfCell:v4];
+  [(UITableViewCellLayoutManagerValue1 *)&v5 layoutSubviewsOfCell:cellCopy];
 }
 
-- (UIEdgeInsets)_layoutMarginsForCell:(id)a3
+- (UIEdgeInsets)_layoutMarginsForCell:(id)cell
 {
-  [(UITableViewCellLayoutManager *)self contentIndentationForCell:a3];
+  [(UITableViewCellLayoutManager *)self contentIndentationForCell:cell];
   v4 = v3 + 16.0;
   v5 = 0.0;
   v6 = 0.0;
@@ -30,13 +30,13 @@
   return result;
 }
 
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing
 {
-  v5 = a5;
+  sizingCopy = sizing;
   v30.receiver = self;
   v30.super_class = _SFFolderPickerTableViewCellLayoutManager;
-  v8 = a3;
-  [(UITableViewCellLayoutManager *)&v30 textRectForCell:v8 rowWidth:v5 forSizing:a4];
+  cellCopy = cell;
+  [(UITableViewCellLayoutManager *)&v30 textRectForCell:cellCopy rowWidth:sizingCopy forSizing:width];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -45,11 +45,11 @@
   v17 = *(MEMORY[0x1E69DDCE0] + 8);
   v19 = *(MEMORY[0x1E69DDCE0] + 16);
   v18 = *(MEMORY[0x1E69DDCE0] + 24);
-  v20 = [v8 _shouldReverseLayoutDirection];
-  [(UITableViewCellLayoutManager *)self contentIndentationForCell:v8];
+  _shouldReverseLayoutDirection = [cellCopy _shouldReverseLayoutDirection];
+  [(UITableViewCellLayoutManager *)self contentIndentationForCell:cellCopy];
   v22 = v21;
 
-  if (v20)
+  if (_shouldReverseLayoutDirection)
   {
     v23 = v17;
   }
@@ -59,7 +59,7 @@
     v23 = -v22;
   }
 
-  if (v20)
+  if (_shouldReverseLayoutDirection)
   {
     v24 = -v22;
   }

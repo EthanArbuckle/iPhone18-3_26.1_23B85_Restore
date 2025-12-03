@@ -1,15 +1,15 @@
 @interface BroadwayActivationNoCardViewController
-- (void)handleOKButton:(id)a3;
-- (void)handleOrderPhysicalCardButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleOKButton:(id)button;
+- (void)handleOrderPhysicalCardButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BroadwayActivationNoCardViewController
 
-- (void)handleOrderPhysicalCardButton:(id)a3
+- (void)handleOrderPhysicalCardButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -18,9 +18,9 @@
   [self->super._mainController dismiss:5 completion:&stru_100195650];
 }
 
-- (void)handleOKButton:(id)a3
+- (void)handleOKButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -29,9 +29,9 @@
   [self->super._mainController dismiss:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -39,12 +39,12 @@
 
   v5.receiver = self;
   v5.super_class = BroadwayActivationNoCardViewController;
-  [(BroadwayActivationNoCardViewController *)&v5 viewDidDisappear:v3];
+  [(BroadwayActivationNoCardViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -52,9 +52,9 @@
 
   v14.receiver = self;
   v14.super_class = BroadwayActivationNoCardViewController;
-  [(SVSBaseViewController *)&v14 viewWillAppear:v3];
-  v5 = [(SVSBaseViewController *)self containerView];
-  [v5 setSwipeDismissible:1];
+  [(SVSBaseViewController *)&v14 viewWillAppear:appearCopy];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 
   v6 = SFFontForTextStyleWithAdditionalSymbolicTraits();
   [*(&self->super._didReactivateContainerViewAfterLayingOut + 1) setFont:v6];
@@ -71,11 +71,11 @@
   v9 = [UIColor colorWithWhite:0.54 alpha:1.0];
   [*(&self->_subheadLabel + 1) setTextColor:v9];
 
-  v10 = [self->super._mainController physicalCard];
-  v11 = [v10 nameOnCard];
-  if (v11)
+  physicalCard = [self->super._mainController physicalCard];
+  nameOnCard = [physicalCard nameOnCard];
+  if (nameOnCard)
   {
-    [*(&self->_subheadLabel + 1) setText:v11];
+    [*(&self->_subheadLabel + 1) setText:nameOnCard];
   }
 
   else

@@ -3,10 +3,10 @@
 - (void)clear;
 - (void)databaseDidChange;
 - (void)dealloc;
-- (void)getCachedVoiceShortcuts:(id)a3;
+- (void)getCachedVoiceShortcuts:(id)shortcuts;
 - (void)registerForDatabaseNotifications;
-- (void)setCachedVoiceShortcuts:(id)a3;
-- (void)setVoiceShortcuts:(id)a3;
+- (void)setCachedVoiceShortcuts:(id)shortcuts;
+- (void)setVoiceShortcuts:(id)shortcuts;
 - (void)unregisterFromDatabaseNotifications;
 @end
 
@@ -49,29 +49,29 @@
 
 - (void)unregisterFromDatabaseNotifications
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.shortcuts.WFCoreDataDatabaseContextDidSaveNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.shortcuts.WFCoreDataDatabaseContextDidSaveNotification" object:0];
 }
 
 - (void)registerForDatabaseNotifications
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 addObserver:self selector:sel_databaseDidChange name:@"com.apple.shortcuts.WFCoreDataDatabaseContextDidSaveNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_databaseDidChange name:@"com.apple.shortcuts.WFCoreDataDatabaseContextDidSaveNotification" object:0];
 }
 
-- (void)setVoiceShortcuts:(id)a3
+- (void)setVoiceShortcuts:(id)shortcuts
 {
-  v5 = a3;
+  shortcutsCopy = shortcuts;
   p_voiceShortcuts = &self->_voiceShortcuts;
-  if (self->_voiceShortcuts != v5)
+  if (self->_voiceShortcuts != shortcutsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_voiceShortcuts, a3);
+    v7 = shortcutsCopy;
+    objc_storeStrong(p_voiceShortcuts, shortcuts);
     p_voiceShortcuts = [(WFVoiceShortcutCache *)self registerForDatabaseNotifications];
-    v5 = v7;
+    shortcutsCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_voiceShortcuts, v5);
+  MEMORY[0x1EEE66BB8](p_voiceShortcuts, shortcutsCopy);
 }
 
 - (void)clear
@@ -82,13 +82,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCachedVoiceShortcuts:(id)a3
+- (void)setCachedVoiceShortcuts:(id)shortcuts
 {
-  v5 = a3;
-  if (!v5)
+  shortcutsCopy = shortcuts;
+  if (!shortcutsCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"WFVoiceShortcutCache.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"setterBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVoiceShortcutCache.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"setterBlock"}];
   }
 
   if ([(WFVoiceShortcutCache *)self isEnabled])
@@ -108,13 +108,13 @@
       v7[2] = __48__WFVoiceShortcutCache_setCachedVoiceShortcuts___block_invoke_2;
       v7[3] = &unk_1E7B00F00;
       v7[4] = self;
-      v5[2](v5, v7);
+      shortcutsCopy[2](shortcutsCopy, v7);
     }
   }
 
   else
   {
-    v5[2](v5, __block_literal_global_7165);
+    shortcutsCopy[2](shortcutsCopy, __block_literal_global_7165);
   }
 }
 
@@ -166,24 +166,24 @@ void __48__WFVoiceShortcutCache_setCachedVoiceShortcuts___block_invoke_2(uint64_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getCachedVoiceShortcuts:(id)a3
+- (void)getCachedVoiceShortcuts:(id)shortcuts
 {
-  aBlock = a3;
+  aBlock = shortcuts;
   if (!aBlock)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFVoiceShortcutCache.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"resultBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVoiceShortcutCache.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"resultBlock"}];
   }
 
   if ([(WFVoiceShortcutCache *)self isEnabled])
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(WFVoiceShortcutCache *)self state];
-    if (v5 == 1)
+    state = [(WFVoiceShortcutCache *)self state];
+    if (state == 1)
     {
-      v9 = [(WFVoiceShortcutCache *)self waitingFetchRequests];
+      waitingFetchRequests = [(WFVoiceShortcutCache *)self waitingFetchRequests];
       v10 = _Block_copy(aBlock);
-      [v9 addObject:v10];
+      [waitingFetchRequests addObject:v10];
 
       os_unfair_lock_unlock(&self->_lock);
     }
@@ -191,13 +191,13 @@ void __48__WFVoiceShortcutCache_setCachedVoiceShortcuts___block_invoke_2(uint64_
     else
     {
       v6 = aBlock;
-      if (v5)
+      if (state)
       {
         goto LABEL_10;
       }
 
-      v7 = [(WFVoiceShortcutCache *)self voiceShortcuts];
-      v8 = [v7 copy];
+      voiceShortcuts = [(WFVoiceShortcutCache *)self voiceShortcuts];
+      v8 = [voiceShortcuts copy];
 
       os_unfair_lock_unlock(&self->_lock);
       (*(aBlock + 2))(aBlock, v8);
@@ -206,13 +206,13 @@ void __48__WFVoiceShortcutCache_setCachedVoiceShortcuts___block_invoke_2(uint64_
 
   else
   {
-    v5 = (*(aBlock + 2))(aBlock, 0);
+    state = (*(aBlock + 2))(aBlock, 0);
   }
 
   v6 = aBlock;
 LABEL_10:
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](state, v6);
 }
 
 - (void)dealloc

@@ -7,8 +7,8 @@
 - (NSString)cacheKey
 {
   v3 = +[PersistenceManager sharedManager];
-  v4 = [(GEODirectionsRequest *)self waypointTypeds];
-  v5 = [v3 cacheKeyForWaypoints:v4];
+  waypointTypeds = [(GEODirectionsRequest *)self waypointTypeds];
+  v5 = [v3 cacheKeyForWaypoints:waypointTypeds];
 
   return v5;
 }

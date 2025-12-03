@@ -1,41 +1,41 @@
 @interface ICDeviceManager
 - (BOOL)openRemoteDeviceManager;
 - (ICDeviceManager)init;
-- (id)deviceForConnection:(id)a3;
-- (id)deviceForUUID:(id)a3;
+- (id)deviceForConnection:(id)connection;
+- (id)deviceForUUID:(id)d;
 - (id)remoteManager;
-- (int64_t)closeDevice:(id)a3 contextInfo:(void *)a4;
-- (int64_t)closeSession:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (int64_t)deleteFile:(id)a3 fromDevice:(id)a4 completion:(id)a5;
-- (int64_t)downloadFile:(id)a3 fromDevice:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (int64_t)ejectDevice:(id)a3 completion:(id)a4;
-- (int64_t)enumerateContent:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (int64_t)getFileData:(id)a3 fromDevice:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (int64_t)getFileMetadata:(id)a3 fromDevice:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (int64_t)getFileThumbnail:(id)a3 fromDevice:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (int64_t)getFingerprint:(id)a3 fromDevice:(id)a4 completion:(id)a5;
-- (int64_t)getSecurityScopedURL:(id)a3 fromDevice:(id)a4 completion:(id)a5;
-- (int64_t)openDevice:(id)a3 contextInfo:(void *)a4;
-- (int64_t)openSession:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (int64_t)refreshObjectHandleInfo:(id)a3 fromDevice:(id)a4 completion:(id)a5;
-- (int64_t)registerDevice:(id)a3 forImageCaptureEventNotifications:(id)a4;
-- (int64_t)sendDevice:(id)a3 ptpCommand:(id)a4 andPayload:(id)a5 completion:(id)a6;
-- (int64_t)syncClock:(id)a3 completion:(id)a4;
-- (int64_t)unregisterDevice:(id)a3 forImageCaptureEventNotifications:(id)a4;
-- (void)addInitiatedOperation:(id)a3;
-- (void)addInteractiveOperation:(id)a3;
-- (void)closeDeviceHandle:(id)a3;
-- (void)closeDeviceImp:(id)a3;
-- (void)closeSessionImp:(id)a3;
+- (int64_t)closeDevice:(id)device contextInfo:(void *)info;
+- (int64_t)closeSession:(id)session withOptions:(id)options completion:(id)completion;
+- (int64_t)deleteFile:(id)file fromDevice:(id)device completion:(id)completion;
+- (int64_t)downloadFile:(id)file fromDevice:(id)device withOptions:(id)options completion:(id)completion;
+- (int64_t)ejectDevice:(id)device completion:(id)completion;
+- (int64_t)enumerateContent:(id)content withOptions:(id)options completion:(id)completion;
+- (int64_t)getFileData:(id)data fromDevice:(id)device withOptions:(id)options completion:(id)completion;
+- (int64_t)getFileMetadata:(id)metadata fromDevice:(id)device withOptions:(id)options completion:(id)completion;
+- (int64_t)getFileThumbnail:(id)thumbnail fromDevice:(id)device withOptions:(id)options completion:(id)completion;
+- (int64_t)getFingerprint:(id)fingerprint fromDevice:(id)device completion:(id)completion;
+- (int64_t)getSecurityScopedURL:(id)l fromDevice:(id)device completion:(id)completion;
+- (int64_t)openDevice:(id)device contextInfo:(void *)info;
+- (int64_t)openSession:(id)session withOptions:(id)options completion:(id)completion;
+- (int64_t)refreshObjectHandleInfo:(id)info fromDevice:(id)device completion:(id)completion;
+- (int64_t)registerDevice:(id)device forImageCaptureEventNotifications:(id)notifications;
+- (int64_t)sendDevice:(id)device ptpCommand:(id)command andPayload:(id)payload completion:(id)completion;
+- (int64_t)syncClock:(id)clock completion:(id)completion;
+- (int64_t)unregisterDevice:(id)device forImageCaptureEventNotifications:(id)notifications;
+- (void)addInitiatedOperation:(id)operation;
+- (void)addInteractiveOperation:(id)operation;
+- (void)closeDeviceHandle:(id)handle;
+- (void)closeDeviceImp:(id)imp;
+- (void)closeSessionImp:(id)imp;
 - (void)dealloc;
-- (void)enumerateContentImp:(id)a3;
+- (void)enumerateContentImp:(id)imp;
 - (void)getDeviceList;
-- (void)notifyAddedDevice:(id)a3;
-- (void)notifyRemovedDevice:(id)a3;
-- (void)openDeviceHandle:(id)a3;
-- (void)openSessionImp:(id)a3;
-- (void)postCommandCompletionNotification:(id)a3;
-- (void)postNotification:(id)a3;
+- (void)notifyAddedDevice:(id)device;
+- (void)notifyRemovedDevice:(id)device;
+- (void)openDeviceHandle:(id)handle;
+- (void)openSessionImp:(id)imp;
+- (void)postCommandCompletionNotification:(id)notification;
+- (void)postNotification:(id)notification;
 - (void)restartRunning;
 - (void)resumeOperations;
 - (void)startRunning;
@@ -126,8 +126,8 @@
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allKeys = [v3 allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -139,18 +139,18 @@
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = [v3 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v8)];
-          v10 = [v9 internalUUID];
-          [(ICDeviceManager *)self closeDeviceHandle:v10];
+          internalUUID = [v9 internalUUID];
+          [(ICDeviceManager *)self closeDeviceHandle:internalUUID];
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v6);
@@ -187,20 +187,20 @@ uint64_t __64__ICDeviceManager_addSelectorToInterface_selectorString_origin___bl
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)openDeviceHandle:(id)a3
+- (void)openDeviceHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __36__ICDeviceManager_openDeviceHandle___block_invoke;
   v11[3] = &unk_1E829C870;
-  v5 = v4;
+  v5 = handleCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v6 = MEMORY[0x1CCA59970](v11);
   v7 = +[ICPrefManager defaultAuthManager];
-  v8 = [v7 getContentsAuthorizationStatus];
-  if (v8 == @"ICAuthorizationStatusAuthorized")
+  getContentsAuthorizationStatus = [v7 getContentsAuthorizationStatus];
+  if (getContentsAuthorizationStatus == @"ICAuthorizationStatusAuthorized")
   {
     v6[2](v6);
   }
@@ -540,10 +540,10 @@ void __32__ICDeviceManager_getDeviceList__block_invoke_3(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyAddedDevice:(id)a3
+- (void)notifyAddedDevice:(id)device
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   __ICOSLogCreate();
   v5 = @"notifyAddedDevice";
   if ([@"notifyAddedDevice" length] >= 0x15)
@@ -552,16 +552,16 @@ void __32__ICDeviceManager_getDeviceList__block_invoke_3(uint64_t a1)
     v5 = [v6 stringByAppendingString:@".."];
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v4];
+  deviceCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", deviceCopy];
   v8 = *MEMORY[0x1E69A8B08];
   if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v5;
     v10 = v8;
     *buf = 136446466;
-    v29 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v30 = 2114;
-    v31 = v7;
+    v31 = deviceCopy;
     _os_log_impl(&dword_1C6F19000, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
@@ -588,7 +588,7 @@ void __32__ICDeviceManager_getDeviceList__block_invoke_3(uint64_t a1)
         }
 
         v17 = [*(*(&v23 + 1) + 8 * v16) objectForKeyedSubscript:@"ICDeviceHandle"];
-        v18 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
+        v18 = [deviceCopy objectForKeyedSubscript:@"ICDeviceHandle"];
         v19 = [v17 isEqualToString:v18];
 
         if (v19)
@@ -611,8 +611,8 @@ void __32__ICDeviceManager_getDeviceList__block_invoke_3(uint64_t a1)
     }
   }
 
-  [(NSMutableArray *)self->_deviceHandles addObject:v4];
-  v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v4];
+  [(NSMutableArray *)self->_deviceHandles addObject:deviceCopy];
+  v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:deviceCopy];
   [v20 setObject:self forKeyedSubscript:@"ICDeviceDelegate"];
   v21 = SharedICDeviceHardwareHandler();
   [v21 addDeviceContext:v20];
@@ -623,12 +623,12 @@ LABEL_15:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyRemovedDevice:(id)a3
+- (void)notifyRemovedDevice:(id)device
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_deviceHandlesLock);
-  v17 = self;
+  selfCopy = self;
   v5 = [(NSMutableArray *)self->_deviceHandles copy];
   v18 = 0u;
   v19 = 0u;
@@ -651,16 +651,16 @@ LABEL_15:
 
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = [v11 objectForKeyedSubscript:@"ICDeviceHandle"];
-        v13 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
+        v13 = [deviceCopy objectForKeyedSubscript:@"ICDeviceHandle"];
         v14 = [v12 isEqualToString:v13];
 
         if (v14)
         {
-          [(NSMutableArray *)v17->_deviceHandles removeObject:v11];
+          [(NSMutableArray *)selfCopy->_deviceHandles removeObject:v11];
 
-          os_unfair_lock_unlock(&v17->_deviceHandlesLock);
+          os_unfair_lock_unlock(&selfCopy->_deviceHandlesLock);
           v15 = SharedICDeviceHardwareHandler();
-          [v15 removeDeviceContext:v4];
+          [v15 removeDeviceContext:deviceCopy];
 
           goto LABEL_11;
         }
@@ -676,18 +676,18 @@ LABEL_15:
     }
   }
 
-  os_unfair_lock_unlock(&v17->_deviceHandlesLock);
+  os_unfair_lock_unlock(&selfCopy->_deviceHandlesLock);
 LABEL_11:
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)closeDeviceHandle:(id)a3
+- (void)closeDeviceHandle:(id)handle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:handleCopy];
   if (v6)
   {
     __ICOSLogCreate();
@@ -698,20 +698,20 @@ LABEL_11:
       v7 = [v8 stringByAppendingString:@".."];
     }
 
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"removing device: %@", v4];
+    handleCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"removing device: %@", handleCopy];
     v10 = *MEMORY[0x1E69A8B08];
     if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
     {
       v11 = v7;
       v12 = v10;
       *buf = 136446466;
-      v18 = [(__CFString *)v7 UTF8String];
+      uTF8String = [(__CFString *)v7 UTF8String];
       v19 = 2114;
-      v20 = v9;
+      v20 = handleCopy;
       _os_log_impl(&dword_1C6F19000, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    [(NSMutableDictionary *)self->_devices removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_devices removeObjectForKey:handleCopy];
     v15[0] = @"device";
     v15[1] = @"type";
     v16[0] = v6;
@@ -724,26 +724,26 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)closeDeviceImp:(id)a3
+- (void)closeDeviceImp:(id)imp
 {
-  v4 = [a3 objectForKeyedSubscript:@"device"];
+  v4 = [imp objectForKeyedSubscript:@"device"];
   if (v4)
   {
     v6 = v4;
-    v5 = [v4 internalUUID];
-    [(ICDeviceManager *)self closeDeviceHandle:v5];
+    internalUUID = [v4 internalUUID];
+    [(ICDeviceManager *)self closeDeviceHandle:internalUUID];
 
     v4 = v6;
   }
 }
 
-- (void)openSessionImp:(id)a3
+- (void)openSessionImp:(id)imp
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"options"];
-  v7 = [v4 objectForKeyedSubscript:@"info"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  impCopy = imp;
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"options"];
+  v7 = [impCopy objectForKeyedSubscript:@"info"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
 
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   if ([v5 isAccessRestrictedAppleDevice])
@@ -798,13 +798,13 @@ void __34__ICDeviceManager_openSessionImp___block_invoke(uint64_t a1)
   [v2 enumerateContentWithOptions:*(a1 + 40)];
 }
 
-- (void)enumerateContentImp:(id)a3
+- (void)enumerateContentImp:(id)imp
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"options"];
-  v7 = [v4 objectForKeyedSubscript:@"info"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  impCopy = imp;
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"options"];
+  v7 = [impCopy objectForKeyedSubscript:@"info"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
 
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   if (![v5 hasOpenSession])
@@ -851,12 +851,12 @@ void __39__ICDeviceManager_enumerateContentImp___block_invoke(uint64_t a1)
   [v2 enumerateContentWithOptions:*(a1 + 40)];
 }
 
-- (void)closeSessionImp:(id)a3
+- (void)closeSessionImp:(id)imp
 {
-  v3 = a3;
-  v9 = [v3 objectForKeyedSubscript:@"device"];
-  v4 = [v3 objectForKeyedSubscript:@"info"];
-  v5 = [v3 objectForKeyedSubscript:@"cbBlock"];
+  impCopy = imp;
+  v9 = [impCopy objectForKeyedSubscript:@"device"];
+  v4 = [impCopy objectForKeyedSubscript:@"info"];
+  v5 = [impCopy objectForKeyedSubscript:@"cbBlock"];
 
   v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v9, @"device", 0}];
   if ([v9 hasOpenSession])
@@ -885,16 +885,16 @@ void __39__ICDeviceManager_enumerateContentImp___block_invoke(uint64_t a1)
 
 - (id)remoteManager
 {
-  v3 = [(ICDeviceManager *)self managerConnection];
-  if (v3 && (v4 = v3, v5 = [(ICDeviceManager *)self managerInvalidationCount], v4, v5 <= 4))
+  managerConnection = [(ICDeviceManager *)self managerConnection];
+  if (managerConnection && (v4 = managerConnection, v5 = [(ICDeviceManager *)self managerInvalidationCount], v4, v5 <= 4))
   {
-    v6 = [(ICDeviceManager *)self managerConnection];
+    managerConnection2 = [(ICDeviceManager *)self managerConnection];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __32__ICDeviceManager_remoteManager__block_invoke;
     v9[3] = &unk_1E829C820;
     v9[4] = self;
-    v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
+    v7 = [managerConnection2 remoteObjectProxyWithErrorHandler:v9];
   }
 
   else
@@ -943,8 +943,8 @@ void __32__ICDeviceManager_remoteManager__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)openRemoteDeviceManager
 {
-  v3 = [(ICDeviceManager *)self deviceManagerConnection];
-  if (v3)
+  deviceManagerConnection = [(ICDeviceManager *)self deviceManagerConnection];
+  if (deviceManagerConnection)
   {
     v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F46A04D8];
     v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F46A04D8];
@@ -953,25 +953,25 @@ void __32__ICDeviceManager_remoteManager__block_invoke(uint64_t a1, void *a2)
     [(ICDeviceManager *)self addSelectorToInterface:v5 selectorString:@"requestDeviceListWithOptions:reply:" origin:1];
     [(ICDeviceManager *)self addSelectorToInterface:v5 selectorString:@"openDevice:withReply:" origin:1];
     [(ICDeviceManager *)self addSelectorToInterface:v5 selectorString:@"closeDevice:withReply:" origin:1];
-    [v3 setExportedInterface:v4];
-    [v3 setRemoteObjectInterface:v5];
-    [v3 setExportedObject:self];
+    [deviceManagerConnection setExportedInterface:v4];
+    [deviceManagerConnection setRemoteObjectInterface:v5];
+    [deviceManagerConnection setExportedObject:self];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __42__ICDeviceManager_openRemoteDeviceManager__block_invoke;
     v12 = &unk_1E829C870;
-    v13 = self;
-    v14 = self;
-    v6 = self;
-    [v3 setInvalidationHandler:&v9];
-    v7 = [v3 invalidationHandler];
-    [v3 setInterruptionHandler:v7];
+    selfCopy = self;
+    selfCopy2 = self;
+    selfCopy3 = self;
+    [deviceManagerConnection setInvalidationHandler:&v9];
+    invalidationHandler = [deviceManagerConnection invalidationHandler];
+    [deviceManagerConnection setInterruptionHandler:invalidationHandler];
 
-    [(ICDeviceManager *)v6 setManagerConnection:v3];
-    [v3 resume];
+    [(ICDeviceManager *)selfCopy3 setManagerConnection:deviceManagerConnection];
+    [deviceManagerConnection resume];
   }
 
-  return v3 != 0;
+  return deviceManagerConnection != 0;
 }
 
 void __42__ICDeviceManager_openRemoteDeviceManager__block_invoke(uint64_t a1)
@@ -1071,16 +1071,16 @@ void __42__ICDeviceManager_openRemoteDeviceManager__block_invoke(uint64_t a1)
   [(ICDeviceManager *)&v3 dealloc];
 }
 
-- (id)deviceForConnection:(id)a3
+- (id)deviceForConnection:(id)connection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NSMutableDictionary *)self->_devices allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [(NSMutableDictionary *)self->_devices allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1091,13 +1091,13 @@ void __42__ICDeviceManager_openRemoteDeviceManager__block_invoke(uint64_t a1)
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v10];
-        v12 = [v11 devConnection];
-        v13 = [v12 isEqual:v4];
+        devConnection = [v11 devConnection];
+        v13 = [devConnection isEqual:connectionCopy];
 
         if (v13)
         {
@@ -1106,7 +1106,7 @@ void __42__ICDeviceManager_openRemoteDeviceManager__block_invoke(uint64_t a1)
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -1124,16 +1124,16 @@ LABEL_11:
   return v14;
 }
 
-- (id)deviceForUUID:(id)a3
+- (id)deviceForUUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NSMutableDictionary *)self->_devices allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [(NSMutableDictionary *)self->_devices allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1144,13 +1144,13 @@ LABEL_11:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v10];
-        v12 = [v11 internalUUID];
-        v13 = [v12 isEqual:v4];
+        internalUUID = [v11 internalUUID];
+        v13 = [internalUUID isEqual:dCopy];
 
         if (v13)
         {
@@ -1159,7 +1159,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -1177,15 +1177,15 @@ LABEL_11:
   return v14;
 }
 
-- (int64_t)openDevice:(id)a3 contextInfo:(void *)a4
+- (int64_t)openDevice:(id)device contextInfo:(void *)info
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v18[0] = a3;
+  v18[0] = device;
   v17[0] = @"params";
   v17[1] = @"info";
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedLong:a4];
+  deviceCopy = device;
+  v8 = [v6 numberWithUnsignedLong:info];
   v18[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
@@ -1204,15 +1204,15 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)closeDevice:(id)a3 contextInfo:(void *)a4
+- (int64_t)closeDevice:(id)device contextInfo:(void *)info
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v18[0] = a3;
+  v18[0] = device;
   v17[0] = @"device";
   v17[1] = @"info";
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedLong:a4];
+  deviceCopy = device;
+  v8 = [v6 numberWithUnsignedLong:info];
   v18[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
@@ -1231,21 +1231,21 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)getFileThumbnail:(id)a3 fromDevice:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (int64_t)getFileThumbnail:(id)thumbnail fromDevice:(id)device withOptions:(id)options completion:(id)completion
 {
   v23[4] = *MEMORY[0x1E69E9840];
   v22[0] = @"file";
   v22[1] = @"device";
-  v23[0] = a3;
-  v23[1] = a4;
+  v23[0] = thumbnail;
+  v23[1] = device;
   v22[2] = @"cbBlock";
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a6 copy];
+  optionsCopy = options;
+  deviceCopy = device;
+  thumbnailCopy = thumbnail;
+  v13 = [completion copy];
   v22[3] = @"options";
   v23[2] = v13;
-  v23[3] = v10;
+  v23[3] = optionsCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:4];
 
   v15 = MEMORY[0x1E696AAE0];
@@ -1263,17 +1263,17 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)getFileMetadata:(id)a3 fromDevice:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (int64_t)getFileMetadata:(id)metadata fromDevice:(id)device withOptions:(id)options completion:(id)completion
 {
   v21[3] = *MEMORY[0x1E69E9840];
   v20[0] = @"file";
   v20[1] = @"device";
-  v21[0] = a3;
-  v21[1] = a4;
+  v21[0] = metadata;
+  v21[1] = device;
   v20[2] = @"cbBlock";
-  v9 = a4;
-  v10 = a3;
-  v11 = [a6 copy];
+  deviceCopy = device;
+  metadataCopy = metadata;
+  v11 = [completion copy];
   v21[2] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:3];
 
@@ -1292,21 +1292,21 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)getFileData:(id)a3 fromDevice:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (int64_t)getFileData:(id)data fromDevice:(id)device withOptions:(id)options completion:(id)completion
 {
   v23[4] = *MEMORY[0x1E69E9840];
   v22[0] = @"file";
   v22[1] = @"device";
-  v23[0] = a3;
-  v23[1] = a4;
+  v23[0] = data;
+  v23[1] = device;
   v22[2] = @"cbBlock";
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a6 copy];
+  optionsCopy = options;
+  deviceCopy = device;
+  dataCopy = data;
+  v13 = [completion copy];
   v22[3] = @"options";
   v23[2] = v13;
-  v23[3] = v10;
+  v23[3] = optionsCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:4];
 
   v15 = MEMORY[0x1E696AAE0];
@@ -1324,24 +1324,24 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)openSession:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (int64_t)openSession:(id)session withOptions:(id)options completion:(id)completion
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v9 = MEMORY[0x1E695E0F8];
-  if (a4)
+  optionsCopy = MEMORY[0x1E695E0F8];
+  if (options)
   {
-    v9 = a4;
+    optionsCopy = options;
   }
 
   v22[0] = @"device";
   v22[1] = @"options";
-  v23[0] = a3;
-  v23[1] = v9;
+  v23[0] = session;
+  v23[1] = optionsCopy;
   v22[2] = @"cbBlock";
-  v10 = v9;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a5 copy];
+  v10 = optionsCopy;
+  optionsCopy2 = options;
+  sessionCopy = session;
+  v13 = [completion copy];
   v23[2] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
@@ -1360,24 +1360,24 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)enumerateContent:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (int64_t)enumerateContent:(id)content withOptions:(id)options completion:(id)completion
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v9 = MEMORY[0x1E695E0F8];
-  if (a4)
+  optionsCopy = MEMORY[0x1E695E0F8];
+  if (options)
   {
-    v9 = a4;
+    optionsCopy = options;
   }
 
   v22[0] = @"device";
   v22[1] = @"options";
-  v23[0] = a3;
-  v23[1] = v9;
+  v23[0] = content;
+  v23[1] = optionsCopy;
   v22[2] = @"cbBlock";
-  v10 = v9;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a5 copy];
+  v10 = optionsCopy;
+  optionsCopy2 = options;
+  contentCopy = content;
+  v13 = [completion copy];
   v23[2] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
@@ -1396,14 +1396,14 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)closeSession:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (int64_t)closeSession:(id)session withOptions:(id)options completion:(id)completion
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v18[0] = a3;
+  v18[0] = session;
   v17[0] = @"device";
   v17[1] = @"cbBlock";
-  v7 = a3;
-  v8 = [a5 copy];
+  sessionCopy = session;
+  v8 = [completion copy];
   v18[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
@@ -1422,14 +1422,14 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)syncClock:(id)a3 completion:(id)a4
+- (int64_t)syncClock:(id)clock completion:(id)completion
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v17[0] = a3;
+  v17[0] = clock;
   v16[0] = @"device";
   v16[1] = @"cbBlock";
-  v6 = a3;
-  v7 = [a4 copy];
+  clockCopy = clock;
+  v7 = [completion copy];
   v17[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
@@ -1448,17 +1448,17 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)deleteFile:(id)a3 fromDevice:(id)a4 completion:(id)a5
+- (int64_t)deleteFile:(id)file fromDevice:(id)device completion:(id)completion
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v19[0] = @"file";
   v19[1] = @"device";
-  v20[0] = a3;
-  v20[1] = a4;
+  v20[0] = file;
+  v20[1] = device;
   v19[2] = @"cbBlock";
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
+  deviceCopy = device;
+  fileCopy = file;
+  v10 = [completion copy];
   v20[2] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
@@ -1477,20 +1477,20 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)downloadFile:(id)a3 fromDevice:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (int64_t)downloadFile:(id)file fromDevice:(id)device withOptions:(id)options completion:(id)completion
 {
   v23[4] = *MEMORY[0x1E69E9840];
   v22[0] = @"file";
   v22[1] = @"device";
-  v23[0] = a3;
-  v23[1] = a4;
-  v23[2] = a5;
+  v23[0] = file;
+  v23[1] = device;
+  v23[2] = options;
   v22[2] = @"opts";
   v22[3] = @"cbBlock";
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a6 copy];
+  optionsCopy = options;
+  deviceCopy = device;
+  fileCopy = file;
+  v13 = [completion copy];
   v23[3] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:4];
 
@@ -1509,25 +1509,25 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)sendDevice:(id)a3 ptpCommand:(id)a4 andPayload:(id)a5 completion:(id)a6
+- (int64_t)sendDevice:(id)device ptpCommand:(id)command andPayload:(id)payload completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  commandCopy = command;
+  payloadCopy = payload;
+  completionCopy = completion;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __63__ICDeviceManager_sendDevice_ptpCommand_andPayload_completion___block_invoke;
   v26[3] = &unk_1E829D468;
-  v14 = v10;
+  v14 = deviceCopy;
   v27 = v14;
-  v15 = v11;
+  v15 = commandCopy;
   v28 = v15;
-  v16 = v13;
+  v16 = completionCopy;
   v31 = v16;
-  v17 = v12;
+  v17 = payloadCopy;
   v29 = v17;
-  v30 = self;
+  selfCopy = self;
   v18 = MEMORY[0x1CCA59970](v26);
   v19 = v18;
   if (self->_controlAuthorizedOnce)
@@ -1538,8 +1538,8 @@ LABEL_11:
   else
   {
     v20 = +[ICPrefManager defaultAuthManager];
-    v21 = [v20 getControlAuthorizationStatus];
-    v22 = [v21 isEqualToString:@"ICAuthorizationStatusAuthorized"];
+    getControlAuthorizationStatus = [v20 getControlAuthorizationStatus];
+    v22 = [getControlAuthorizationStatus isEqualToString:@"ICAuthorizationStatusAuthorized"];
 
     if (v22)
     {
@@ -1599,54 +1599,54 @@ void __63__ICDeviceManager_sendDevice_ptpCommand_andPayload_completion___block_i
   }
 }
 
-- (int64_t)registerDevice:(id)a3 forImageCaptureEventNotifications:(id)a4
+- (int64_t)registerDevice:(id)device forImageCaptureEventNotifications:(id)notifications
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  notificationsCopy = notifications;
   v8 = MEMORY[0x1E696AAE0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__ICDeviceManager_registerDevice_forImageCaptureEventNotifications___block_invoke;
   v13[3] = &unk_1E829CC30;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = deviceCopy;
+  v15 = notificationsCopy;
+  v9 = notificationsCopy;
+  v10 = deviceCopy;
   v11 = [v8 blockOperationWithBlock:v13];
   [(ICDeviceManager *)self addInteractiveOperation:v11];
 
   return 0;
 }
 
-- (int64_t)unregisterDevice:(id)a3 forImageCaptureEventNotifications:(id)a4
+- (int64_t)unregisterDevice:(id)device forImageCaptureEventNotifications:(id)notifications
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  notificationsCopy = notifications;
   v8 = MEMORY[0x1E696AAE0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__ICDeviceManager_unregisterDevice_forImageCaptureEventNotifications___block_invoke;
   v13[3] = &unk_1E829CC30;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = deviceCopy;
+  v15 = notificationsCopy;
+  v9 = notificationsCopy;
+  v10 = deviceCopy;
   v11 = [v8 blockOperationWithBlock:v13];
   [(ICDeviceManager *)self addInteractiveOperation:v11];
 
   return 0;
 }
 
-- (int64_t)ejectDevice:(id)a3 completion:(id)a4
+- (int64_t)ejectDevice:(id)device completion:(id)completion
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v17[0] = a3;
+  v17[0] = device;
   v16[0] = @"device";
   v16[1] = @"cbBlock";
-  v6 = a3;
-  v7 = [a4 copy];
+  deviceCopy = device;
+  v7 = [completion copy];
   v17[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
@@ -1665,17 +1665,17 @@ void __63__ICDeviceManager_sendDevice_ptpCommand_andPayload_completion___block_i
   return 0;
 }
 
-- (int64_t)getSecurityScopedURL:(id)a3 fromDevice:(id)a4 completion:(id)a5
+- (int64_t)getSecurityScopedURL:(id)l fromDevice:(id)device completion:(id)completion
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v19[0] = @"file";
   v19[1] = @"device";
-  v20[0] = a3;
-  v20[1] = a4;
+  v20[0] = l;
+  v20[1] = device;
   v19[2] = @"cbBlock";
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
+  deviceCopy = device;
+  lCopy = l;
+  v10 = [completion copy];
   v20[2] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
@@ -1694,17 +1694,17 @@ void __63__ICDeviceManager_sendDevice_ptpCommand_andPayload_completion___block_i
   return 0;
 }
 
-- (int64_t)refreshObjectHandleInfo:(id)a3 fromDevice:(id)a4 completion:(id)a5
+- (int64_t)refreshObjectHandleInfo:(id)info fromDevice:(id)device completion:(id)completion
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v19[0] = @"file";
   v19[1] = @"device";
-  v20[0] = a3;
-  v20[1] = a4;
+  v20[0] = info;
+  v20[1] = device;
   v19[2] = @"cbBlock";
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
+  deviceCopy = device;
+  infoCopy = info;
+  v10 = [completion copy];
   v20[2] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
@@ -1723,17 +1723,17 @@ void __63__ICDeviceManager_sendDevice_ptpCommand_andPayload_completion___block_i
   return 0;
 }
 
-- (int64_t)getFingerprint:(id)a3 fromDevice:(id)a4 completion:(id)a5
+- (int64_t)getFingerprint:(id)fingerprint fromDevice:(id)device completion:(id)completion
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v19[0] = @"file";
   v19[1] = @"device";
-  v20[0] = a3;
-  v20[1] = a4;
+  v20[0] = fingerprint;
+  v20[1] = device;
   v19[2] = @"cbBlock";
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
+  deviceCopy = device;
+  fingerprintCopy = fingerprint;
+  v10 = [completion copy];
   v20[2] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
@@ -1752,15 +1752,15 @@ void __63__ICDeviceManager_sendDevice_ptpCommand_andPayload_completion___block_i
   return 0;
 }
 
-- (void)postCommandCompletionNotification:(id)a3
+- (void)postCommandCompletionNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__ICDeviceManager_postCommandCompletionNotification___block_invoke;
   block[3] = &unk_1E829C848;
-  v6 = v3;
-  v4 = v3;
+  v6 = notificationCopy;
+  v4 = notificationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1770,10 +1770,10 @@ void __53__ICDeviceManager_postCommandCompletionNotification___block_invoke(uint
   [v2 postNotificationName:@"ICCommandCompletionNotification" object:0 userInfo:*(a1 + 32)];
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   __ICOSLogCreate();
   v5 = @"post";
   if ([@"post" length] >= 0x15)
@@ -1782,20 +1782,20 @@ void __53__ICDeviceManager_postCommandCompletionNotification___block_invoke(uint
     v5 = [v6 stringByAppendingString:@".."];
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Device Posted: %@", v4];
+  notificationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Device Posted: %@", notificationCopy];
   v8 = *MEMORY[0x1E69A8B08];
   if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v5;
     v10 = v8;
     *buf = 136446466;
-    v20 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v21 = 2114;
-    v22 = v7;
+    v22 = notificationCopy;
     _os_log_impl(&dword_1C6F19000, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  v11 = [v4 mutableCopy];
+  v11 = [notificationCopy mutableCopy];
   v12 = [v11 objectForKeyedSubscript:@"ICInternalDeviceUUID"];
   if (v12)
   {
@@ -1825,20 +1825,20 @@ void __36__ICDeviceManager_postNotification___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"ICEventNotification" object:0 userInfo:*(a1 + 32)];
 }
 
-- (void)addInitiatedOperation:(id)a3
+- (void)addInitiatedOperation:(id)operation
 {
-  v4 = a3;
-  [v4 setQueuePriority:0];
-  [v4 setQualityOfService:25];
-  [(NSOperationQueue *)self->_deviceOperationQueue addOperation:v4];
+  operationCopy = operation;
+  [operationCopy setQueuePriority:0];
+  [operationCopy setQualityOfService:25];
+  [(NSOperationQueue *)self->_deviceOperationQueue addOperation:operationCopy];
 }
 
-- (void)addInteractiveOperation:(id)a3
+- (void)addInteractiveOperation:(id)operation
 {
-  v4 = a3;
-  [v4 setQueuePriority:4];
-  [v4 setQualityOfService:33];
-  [(NSOperationQueue *)self->_deviceOperationQueue addOperation:v4];
+  operationCopy = operation;
+  [operationCopy setQueuePriority:4];
+  [operationCopy setQualityOfService:33];
+  [(NSOperationQueue *)self->_deviceOperationQueue addOperation:operationCopy];
 }
 
 - (void)suspendOperations
@@ -1862,7 +1862,7 @@ void __36__ICDeviceManager_postNotification___block_invoke(uint64_t a1)
       v7 = v3;
       v8 = v6;
       v10 = 136446466;
-      v11 = [(__CFString *)v3 UTF8String];
+      uTF8String = [(__CFString *)v3 UTF8String];
       v12 = 2114;
       v13 = v5;
       _os_log_impl(&dword_1C6F19000, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v10, 0x16u);
@@ -1897,7 +1897,7 @@ void __36__ICDeviceManager_postNotification___block_invoke(uint64_t a1)
       v7 = v3;
       v8 = v6;
       v10 = 136446466;
-      v11 = [(__CFString *)v3 UTF8String];
+      uTF8String = [(__CFString *)v3 UTF8String];
       v12 = 2114;
       v13 = v5;
       _os_log_impl(&dword_1C6F19000, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v10, 0x16u);

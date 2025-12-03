@@ -6,9 +6,9 @@
 - (id)_crlaxInteractiveCanvasController;
 - (id)crlaxFocusedElement;
 - (id)crlaxTextEditor;
-- (id)crlaxVoiceControlPositionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(unint64_t)a5;
+- (id)crlaxVoiceControlPositionFromPosition:(id)position inDirection:(int64_t)direction offset:(unint64_t)offset;
 - (void)crlaxReloadInputViews;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CRLTextInputResponderAccessibility
@@ -26,71 +26,71 @@
   }
 }
 
-- (id)crlaxVoiceControlPositionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(unint64_t)a5
+- (id)crlaxVoiceControlPositionFromPosition:(id)position inDirection:(int64_t)direction offset:(unint64_t)offset
 {
-  v8 = (a4 & 0xFFFFFFFFFFFFFFFELL) == 4;
-  v9 = a3;
-  v10 = v9;
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+  v8 = (direction & 0xFFFFFFFFFFFFFFFELL) == 4;
+  positionCopy = position;
+  v10 = positionCopy;
+  if (offset != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
-    v12 = [v11 tokenizer];
+    crlaxTarget = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
+    tokenizer = [crlaxTarget tokenizer];
 
-    v10 = v9;
-    if (a5)
+    v10 = positionCopy;
+    if (offset)
     {
       v13 = 4 * v8;
-      v14 = v9;
+      v14 = positionCopy;
       do
       {
-        v10 = [v12 positionFromPosition:v14 toBoundary:v13 inDirection:a4];
+        v10 = [tokenizer positionFromPosition:v14 toBoundary:v13 inDirection:direction];
 
         v14 = v10;
-        --a5;
+        --offset;
       }
 
-      while (a5);
+      while (offset);
     }
   }
 
   return v10;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
-  v6 = [v5 editor];
+  invocationCopy = invocation;
+  crlaxTarget = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
+  editor = [crlaxTarget editor];
 
-  if (!v6)
+  if (!editor)
   {
     goto LABEL_11;
   }
 
-  v7 = [v4 selector];
+  selector = [invocationCopy selector];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  if (v7 == "copy:")
+  if (selector == "copy:")
   {
     v8 = &CRLAccessibilityTextOperationActionCopy;
   }
 
-  else if (v7 == "cut:")
+  else if (selector == "cut:")
   {
     v8 = &CRLAccessibilityTextOperationActionCut;
   }
 
   else
   {
-    if (v7 != "paste:")
+    if (selector != "paste:")
     {
 LABEL_11:
       v11.receiver = self;
       v11.super_class = CRLTextInputResponderAccessibility;
-      [(CRLTextInputResponderAccessibility *)&v11 forwardInvocation:v4];
+      [(CRLTextInputResponderAccessibility *)&v11 forwardInvocation:invocationCopy];
       goto LABEL_12;
     }
 
@@ -108,8 +108,8 @@ LABEL_11:
   v12[1] = 3221225472;
   v12[2] = sub_1002B5544;
   v12[3] = &unk_10183AE28;
-  v13 = v4;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   [(CRLTextInputResponderAccessibility *)self crlaxHandleTextOperationAction:v10 usingBlock:v12];
 
 LABEL_12:
@@ -120,49 +120,49 @@ LABEL_12:
   v3 = +[CRLAccessibility sharedInstance];
   if ([v3 shouldPreventFocusingCanvasResponderElementOnScreenChange])
   {
-    v4 = 0;
+    crlaxFocusedElement = 0;
   }
 
   else
   {
-    v4 = [(CRLTextInputResponderAccessibility *)self crlaxFocusedElement];
+    crlaxFocusedElement = [(CRLTextInputResponderAccessibility *)self crlaxFocusedElement];
   }
 
-  return v4;
+  return crlaxFocusedElement;
 }
 
 - (id)crlaxFocusedElement
 {
-  v3 = [(CRLTextInputResponderAccessibility *)self crlaxTextEditor];
-  v4 = [v3 editingReps];
-  v5 = [v4 allObjects];
-  v6 = [v5 firstObject];
+  crlaxTextEditor = [(CRLTextInputResponderAccessibility *)self crlaxTextEditor];
+  editingReps = [crlaxTextEditor editingReps];
+  allObjects = [editingReps allObjects];
+  firstObject = [allObjects firstObject];
 
-  if (!v6)
+  if (!firstObject)
   {
-    v7 = [(CRLTextInputResponderAccessibility *)self _crlaxInteractiveCanvasController];
-    v8 = [v7 crlaxFocusedRep];
+    _crlaxInteractiveCanvasController = [(CRLTextInputResponderAccessibility *)self _crlaxInteractiveCanvasController];
+    crlaxFocusedRep = [_crlaxInteractiveCanvasController crlaxFocusedRep];
 
-    v6 = [v8 crlaxFocusedElement];
+    firstObject = [crlaxFocusedRep crlaxFocusedElement];
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (BOOL)crlaxIsFirstResponder
 {
-  v2 = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
-  v3 = [v2 isFirstResponder];
+  crlaxTarget = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
+  isFirstResponder = [crlaxTarget isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (UITextRange)crlaxTextRange
 {
   v10 = 0;
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsClassAndProtocol(v3, &OBJC_PROTOCOL___UITextInput, v2, 1, &v10);
+  v4 = __CRLAccessibilityCastAsClassAndProtocol(v3, &OBJC_PROTOCOL___UITextInput, selfCopy, 1, &v10);
   if (v10 == 1)
   {
     abort();
@@ -170,9 +170,9 @@ LABEL_12:
 
   v5 = v4;
 
-  v6 = [v5 beginningOfDocument];
-  v7 = [v5 endOfDocument];
-  v8 = [v5 textRangeFromPosition:v6 toPosition:v7];
+  beginningOfDocument = [v5 beginningOfDocument];
+  endOfDocument = [v5 endOfDocument];
+  v8 = [v5 textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
 
   return v8;
 }
@@ -180,8 +180,8 @@ LABEL_12:
 - (id)_crlaxInteractiveCanvasController
 {
   v8 = 0;
-  v2 = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
-  v3 = [v2 icc];
+  crlaxTarget = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
+  v3 = [crlaxTarget icc];
 
   v4 = objc_opt_class();
   v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
@@ -198,28 +198,28 @@ LABEL_12:
 - (id)_accessibilityQuickSpeakContent
 {
   v3 = objc_opt_class();
-  v4 = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
-  v5 = [v4 selectedTextRange];
-  v6 = __CRLAccessibilityCastAsClass(v3, v5, 0, 0);
+  crlaxTarget = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
+  selectedTextRange = [crlaxTarget selectedTextRange];
+  v6 = __CRLAccessibilityCastAsClass(v3, selectedTextRange, 0, 0);
 
-  if (![(CRLTextInputResponderAccessibility *)self crlaxBoolValueForKey:@"_accessibilityIsTextInput"]|| (v7 = 0, v6))
+  if (![(CRLTextInputResponderAccessibility *)self crlaxBoolValueForKey:@"_accessibilityIsTextInput"]|| (_accessibilityQuickSpeakContent = 0, v6))
   {
     v9.receiver = self;
     v9.super_class = CRLTextInputResponderAccessibility;
-    v7 = [(CRLTextInputResponderAccessibility *)&v9 _accessibilityQuickSpeakContent];
+    _accessibilityQuickSpeakContent = [(CRLTextInputResponderAccessibility *)&v9 _accessibilityQuickSpeakContent];
   }
 
-  return v7;
+  return _accessibilityQuickSpeakContent;
 }
 
 - (id)crlaxTextEditor
 {
   v8 = 0;
-  v2 = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
-  v3 = [v2 editor];
+  crlaxTarget = [(CRLTextInputResponderAccessibility *)self crlaxTarget];
+  editor = [crlaxTarget editor];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsClass(v4, editor, 1, &v8);
   if (v8 == 1)
   {
     abort();

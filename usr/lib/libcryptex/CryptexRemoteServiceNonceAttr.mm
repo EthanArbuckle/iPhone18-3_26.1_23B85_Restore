@@ -20,10 +20,10 @@
 - (unint64_t)getNonceDomainIndex
 {
   v8 = *MEMORY[0x29EDCA608];
-  v3 = [(CryptexRemoteServiceNonceAttr *)self image_type];
-  if (v3)
+  image_type = [(CryptexRemoteServiceNonceAttr *)self image_type];
+  if (image_type)
   {
-    if (v3 != 1)
+    if (image_type != 1)
     {
       [(CryptexRemoteServiceNonceAttr *)&v6 getNonceDomainIndex];
     }
@@ -63,11 +63,11 @@
 
 - (void)getNonceDomainIndex
 {
-  OUTLINED_FUNCTION_2(a1, a2);
+  OUTLINED_FUNCTION_2(self, a2);
   OUTLINED_FUNCTION_4();
   [a3 image_type];
   OUTLINED_FUNCTION_0_0();
-  v5 = *a1;
+  v5 = *self;
   _os_crash_msg();
   __break(1u);
 }

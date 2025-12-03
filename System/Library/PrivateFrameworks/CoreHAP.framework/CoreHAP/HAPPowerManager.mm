@@ -2,24 +2,24 @@
 + (HAPPowerManager)sharedInstance;
 + (id)logCategory;
 - (HAPPowerManager)init;
-- (void)deRegisterFromSleepWake:(id)a3;
+- (void)deRegisterFromSleepWake:(id)wake;
 - (void)dealloc;
-- (void)registerForSleepWake:(id)a3 queue:(id)a4;
+- (void)registerForSleepWake:(id)wake queue:(id)queue;
 @end
 
 @implementation HAPPowerManager
 
-- (void)deRegisterFromSleepWake:(id)a3
+- (void)deRegisterFromSleepWake:(id)wake
 {
-  v4 = a3;
+  wakeCopy = wake;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HAPPowerManager_deRegisterFromSleepWake___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = wakeCopy;
+  v6 = wakeCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -29,20 +29,20 @@ void __43__HAPPowerManager_deRegisterFromSleepWake___block_invoke(uint64_t a1)
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)registerForSleepWake:(id)a3 queue:(id)a4
+- (void)registerForSleepWake:(id)wake queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  wakeCopy = wake;
+  queueCopy = queue;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__HAPPowerManager_registerForSleepWake_queue___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = wakeCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = wakeCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -66,7 +66,7 @@ void __46__HAPPowerManager_registerForSleepWake_queue___block_invoke(uint64_t a1
     {
       v5 = v4;
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -99,7 +99,7 @@ void __46__HAPPowerManager_registerForSleepWake_queue___block_invoke(uint64_t a1
     {
       v13 = v12;
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -118,7 +118,7 @@ void __46__HAPPowerManager_registerForSleepWake_queue___block_invoke(uint64_t a1
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy3 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -129,7 +129,7 @@ void __46__HAPPowerManager_registerForSleepWake_queue___block_invoke(uint64_t a1
   }
 
   objc_autoreleasePoolPop(v18);
-  v23.receiver = v19;
+  v23.receiver = selfCopy3;
   v23.super_class = HAPPowerManager;
   [(HAPPowerManager *)&v23 dealloc];
   v22 = *MEMORY[0x277D85DE8];
@@ -148,9 +148,9 @@ void __46__HAPPowerManager_registerForSleepWake_queue___block_invoke(uint64_t a1
     v5 = *(v2 + 1);
     *(v2 + 1) = v4;
 
-    v6 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     v7 = *(v2 + 4);
-    *(v2 + 4) = v6;
+    *(v2 + 4) = weakToWeakObjectsMapTable;
 
     v8 = IORegisterForSystemPower(v2, v2 + 3, PowerChangedCallback, v2 + 5);
     *(v2 + 4) = v8;

@@ -1,34 +1,34 @@
 @interface BWInferenceVideoRequirement
-- (BWInferenceVideoRequirement)initWithAttachedMediaKey:(id)a3 videoFormat:(id)a4 count:(unint64_t)a5;
-- (BWInferenceVideoRequirement)initWithVideoRequirement:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BWInferenceVideoRequirement)initWithAttachedMediaKey:(id)key videoFormat:(id)format count:(unint64_t)count;
+- (BWInferenceVideoRequirement)initWithVideoRequirement:(id)requirement;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation BWInferenceVideoRequirement
 
-- (BWInferenceVideoRequirement)initWithAttachedMediaKey:(id)a3 videoFormat:(id)a4 count:(unint64_t)a5
+- (BWInferenceVideoRequirement)initWithAttachedMediaKey:(id)key videoFormat:(id)format count:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = BWInferenceVideoRequirement;
-  v6 = [(BWInferenceMediaRequirement *)&v8 initWithAttachedMediaKey:a3 count:a5];
+  v6 = [(BWInferenceMediaRequirement *)&v8 initWithAttachedMediaKey:key count:count];
   if (v6)
   {
-    v6->_videoFormat = a4;
+    v6->_videoFormat = format;
   }
 
   return v6;
 }
 
-- (BWInferenceVideoRequirement)initWithVideoRequirement:(id)a3
+- (BWInferenceVideoRequirement)initWithVideoRequirement:(id)requirement
 {
   v6.receiver = self;
   v6.super_class = BWInferenceVideoRequirement;
   v4 = [(BWInferenceMediaRequirement *)&v6 initWithMediaRequirement:?];
   if (v4)
   {
-    v4->_videoFormat = [objc_msgSend(a3 "videoFormat")];
-    v4->_videoStorageType = [a3 videoStorageType];
+    v4->_videoFormat = [objc_msgSend(requirement "videoFormat")];
+    v4->_videoStorageType = [requirement videoStorageType];
   }
 
   return v4;
@@ -41,9 +41,9 @@
   [(BWInferenceMediaRequirement *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithVideoRequirement:self];
 }

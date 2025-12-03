@@ -1,15 +1,15 @@
 @interface RefreshSearchHereBusinessController
 - ($873BFAB23BBB6E2F0B0288ED2F935688)visibleMapRect;
-- (BOOL)didStopRespondingToGesture:(id)a3;
+- (BOOL)didStopRespondingToGesture:(id)gesture;
 - (BOOL)shouldShowManualRedoButton;
 - (LocalSearchBusinessControllerDelegate)delegate;
 - (RefreshSearchHereBusinessController)init;
-- (RefreshSearchHereBusinessController)initWithDelegate:(id)a3;
+- (RefreshSearchHereBusinessController)initWithDelegate:(id)delegate;
 - (unint64_t)state;
-- (void)didStartRespondingToGesture:(id)a3;
-- (void)sendAnalyticsOnBecomeVisibleWithTarget:(int)a3;
-- (void)setContentView:(id)a3;
-- (void)setSearchSession:(id)a3;
+- (void)didStartRespondingToGesture:(id)gesture;
+- (void)sendAnalyticsOnBecomeVisibleWithTarget:(int)target;
+- (void)setContentView:(id)view;
+- (void)setSearchSession:(id)session;
 - (void)updateState;
 - (void)updateTrigger;
 @end
@@ -36,9 +36,9 @@
   return WeakRetained;
 }
 
-- (void)sendAnalyticsOnBecomeVisibleWithTarget:(int)a3
+- (void)sendAnalyticsOnBecomeVisibleWithTarget:(int)target
 {
-  v3 = *&a3;
+  v3 = *&target;
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:2016 onTarget:v3 eventValue:0];
 }
@@ -60,60 +60,60 @@
     return 0;
   }
 
-  v4 = [(SearchSession *)self->_searchSession lastError];
-  v5 = v4 != 0;
+  lastError = [(SearchSession *)self->_searchSession lastError];
+  v5 = lastError != 0;
 
   return 4 * v5;
 }
 
 - (void)updateTrigger
 {
-  v3 = [(RefreshSearchHereBusinessController *)self delegate];
-  if (!v3 || (v4 = v3, -[RefreshSearchHereBusinessController delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEnabled], v5, v4, v6))
+  delegate = [(RefreshSearchHereBusinessController *)self delegate];
+  if (!delegate || (v4 = delegate, -[RefreshSearchHereBusinessController delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEnabled], v5, v4, v6))
   {
-    v13 = [(SearchSession *)self->_searchSession searchInfo];
-    if ([v13 canRedoSearch])
+    searchInfo = [(SearchSession *)self->_searchSession searchInfo];
+    if ([searchInfo canRedoSearch])
     {
-      v7 = [(SearchSession *)self->_searchSession searchInfo];
-      v8 = [v7 searchAutoRedoThreshold];
+      searchInfo2 = [(SearchSession *)self->_searchSession searchInfo];
+      searchAutoRedoThreshold = [searchInfo2 searchAutoRedoThreshold];
 
-      if (!v8)
+      if (!searchAutoRedoThreshold)
       {
         return;
       }
 
       redoSearchController = self->_redoSearchController;
-      v13 = [(SearchSession *)self->_searchSession searchInfo];
-      v10 = [v13 searchAutoRedoThreshold];
-      v11 = [(SearchSession *)self->_searchSession searchInfo];
-      v12 = [v11 results];
-      self->_triggered = [(RedoSearchController *)redoSearchController shouldTriggerAutoRedoWithThreshold:v10 searchResults:v12];
+      searchInfo = [(SearchSession *)self->_searchSession searchInfo];
+      searchAutoRedoThreshold2 = [searchInfo searchAutoRedoThreshold];
+      searchInfo3 = [(SearchSession *)self->_searchSession searchInfo];
+      results = [searchInfo3 results];
+      self->_triggered = [(RedoSearchController *)redoSearchController shouldTriggerAutoRedoWithThreshold:searchAutoRedoThreshold2 searchResults:results];
     }
   }
 }
 
 - (void)updateState
 {
-  v3 = [(RefreshSearchHereBusinessController *)self state];
-  v4 = [(RefreshSearchHereBusinessController *)self contentView];
-  v5 = [v4 state];
+  state = [(RefreshSearchHereBusinessController *)self state];
+  contentView = [(RefreshSearchHereBusinessController *)self contentView];
+  state2 = [contentView state];
 
-  if (v3 != v5)
+  if (state != state2)
   {
-    v6 = [(RefreshSearchHereBusinessController *)self delegate];
-    v7 = v6;
-    if (v5 && v3)
+    delegate = [(RefreshSearchHereBusinessController *)self delegate];
+    v7 = delegate;
+    if (state2 && state)
     {
-      [v6 businessControllerContentSizeDidChange:self];
+      [delegate businessControllerContentSizeDidChange:self];
     }
 
     else
     {
-      [v6 businessControllerVisibilityDidChange:self];
+      [delegate businessControllerVisibilityDidChange:self];
     }
 
-    v8 = [(RefreshSearchHereBusinessController *)self contentView];
-    [v8 setState:v3];
+    contentView2 = [(RefreshSearchHereBusinessController *)self contentView];
+    [contentView2 setState:state];
   }
 }
 
@@ -124,14 +124,14 @@
     return 0;
   }
 
-  v4 = [(SearchSession *)self->_searchSession searchInfo];
-  v5 = v4;
-  if (v4 && [v4 shouldAllowManualRedoButton])
+  searchInfo = [(SearchSession *)self->_searchSession searchInfo];
+  v5 = searchInfo;
+  if (searchInfo && [searchInfo shouldAllowManualRedoButton])
   {
     redoSearchController = self->_redoSearchController;
-    v7 = [v5 searchRedoButtonThreshold];
-    v8 = [v5 results];
-    v2 = [(RedoSearchController *)redoSearchController shouldShowManualRedoSearchButton:v7 searchResults:v8];
+    searchRedoButtonThreshold = [v5 searchRedoButtonThreshold];
+    results = [v5 results];
+    v2 = [(RedoSearchController *)redoSearchController shouldShowManualRedoSearchButton:searchRedoButtonThreshold searchResults:results];
   }
 
   else
@@ -142,27 +142,27 @@
   return v2;
 }
 
-- (BOOL)didStopRespondingToGesture:(id)a3
+- (BOOL)didStopRespondingToGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 mapRegion];
-  [v4 _zoomLevel];
+  gestureCopy = gesture;
+  mapRegion = [gestureCopy mapRegion];
+  [gestureCopy _zoomLevel];
   v7 = v6;
-  [v4 visibleMapRect];
+  [gestureCopy visibleMapRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
   [(RefreshSearchHereBusinessController *)self setVisibleMapRect:v9, v11, v13, v15];
-  v16 = [[RedoSearchMapState alloc] initWithMapRegion:v5 zoomLevel:v7];
+  v16 = [[RedoSearchMapState alloc] initWithMapRegion:mapRegion zoomLevel:v7];
   [(RedoSearchController *)self->_redoSearchController setCurrentState:v16];
 
   [(RefreshSearchHereBusinessController *)self updateState];
   [(RefreshSearchHereBusinessController *)self updateTrigger];
   if (self->_triggered)
   {
-    v17 = [[RedoSearchMapState alloc] initWithMapRegion:v5 zoomLevel:v7];
+    v17 = [[RedoSearchMapState alloc] initWithMapRegion:mapRegion zoomLevel:v7];
     [(RedoSearchController *)self->_redoSearchController setOriginalState:v17];
 
     triggered = self->_triggered;
@@ -176,10 +176,10 @@
   return triggered;
 }
 
-- (void)didStartRespondingToGesture:(id)a3
+- (void)didStartRespondingToGesture:(id)gesture
 {
-  v4 = a3;
-  [v4 visibleMapRect];
+  gestureCopy = gesture;
+  [gestureCopy visibleMapRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -197,51 +197,51 @@
 
   else
   {
-    v20 = [v4 mapRegion];
-    [v4 _zoomLevel];
+    mapRegion = [gestureCopy mapRegion];
+    [gestureCopy _zoomLevel];
     v22 = v21;
-    [v4 visibleMapRect];
+    [gestureCopy visibleMapRect];
     [(RefreshSearchHereBusinessController *)self setVisibleMapRect:?];
-    v23 = [(RedoSearchController *)self->_redoSearchController originalState];
+    originalState = [(RedoSearchController *)self->_redoSearchController originalState];
 
-    if (!v23)
+    if (!originalState)
     {
-      v24 = [[RedoSearchMapState alloc] initWithMapRegion:v20 zoomLevel:v22];
+      v24 = [[RedoSearchMapState alloc] initWithMapRegion:mapRegion zoomLevel:v22];
       [(RedoSearchController *)self->_redoSearchController setOriginalState:v24];
     }
 
     [(RefreshSearchHereBusinessController *)self updateState];
     if (self->_triggered)
     {
-      v25 = [[RedoSearchMapState alloc] initWithMapRegion:v20 zoomLevel:v22];
+      v25 = [[RedoSearchMapState alloc] initWithMapRegion:mapRegion zoomLevel:v22];
       [(RedoSearchController *)self->_redoSearchController setOriginalState:v25];
     }
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  objc_storeStrong(&self->_contentView, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_contentView, view);
+  viewCopy = view;
   [(LocalSearchView *)self->_contentView setAccessibilityIdentifier:@"LocalSearchContentView"];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Search Here" value:@"localized string not found" table:0];
-  [v5 setText:v7 forState:1];
+  [viewCopy setText:v7 forState:1];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"Searching Here" value:@"localized string not found" table:0];
-  [v5 setText:v9 forState:3];
+  [viewCopy setText:v9 forState:3];
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"No results found in this area." value:@"localized string not found" table:0];
-  [v5 setText:v11 forState:4];
+  [viewCopy setText:v11 forState:4];
 
   [(RefreshSearchHereBusinessController *)self updateState];
 }
 
-- (void)setSearchSession:(id)a3
+- (void)setSearchSession:(id)session
 {
-  objc_storeStrong(&self->_searchSession, a3);
+  objc_storeStrong(&self->_searchSession, session);
   self->_triggered = 0;
 
   [(RefreshSearchHereBusinessController *)self updateState];
@@ -262,16 +262,16 @@
   return v2;
 }
 
-- (RefreshSearchHereBusinessController)initWithDelegate:(id)a3
+- (RefreshSearchHereBusinessController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = RefreshSearchHereBusinessController;
   v5 = [(RefreshSearchHereBusinessController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_alloc_init(RedoSearchController);
     redoSearchController = v6->_redoSearchController;
     v6->_redoSearchController = v7;

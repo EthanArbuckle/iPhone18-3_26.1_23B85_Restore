@@ -1,17 +1,17 @@
 @interface _BCPPTCacheManager
-- (_BCPPTCacheManager)initWithClassDefinitions:(id)a3 highPriorityGeneralQueue:(id)a4 lowPriorityGeneralQueue:(id)a5 highPriorityTargetQueue:(id)a6 backgroundTargetQueue:(id)a7 delegate:(id)a8;
-- (id)describedImagesFromProductProfile:(id)a3;
-- (id)fetchLayerForAssetID:(id)a3 size:(CGSize)a4 options:(unsigned __int16)a5;
-- (void)fetchCGImageFor:(id)a3 forRequest:(id)a4 completion:(id)a5;
-- (void)fetchCGImageFor:(id)a3 forRequest:(id)a4 timeOut:(double)a5 waitForNonGeneric:(BOOL)a6 completion:(id)a7;
-- (void)fetchDescribedImageFileURLForImage:(id)a3 completion:(id)a4;
-- (void)fetchMetadataForIdentifier:(id)a3 completion:(id)a4;
-- (void)imageColorForIdentifier:(id)a3 completion:(id)a4;
+- (_BCPPTCacheManager)initWithClassDefinitions:(id)definitions highPriorityGeneralQueue:(id)queue lowPriorityGeneralQueue:(id)generalQueue highPriorityTargetQueue:(id)targetQueue backgroundTargetQueue:(id)backgroundTargetQueue delegate:(id)delegate;
+- (id)describedImagesFromProductProfile:(id)profile;
+- (id)fetchLayerForAssetID:(id)d size:(CGSize)size options:(unsigned __int16)options;
+- (void)fetchCGImageFor:(id)for forRequest:(id)request completion:(id)completion;
+- (void)fetchCGImageFor:(id)for forRequest:(id)request timeOut:(double)out waitForNonGeneric:(BOOL)generic completion:(id)completion;
+- (void)fetchDescribedImageFileURLForImage:(id)image completion:(id)completion;
+- (void)fetchMetadataForIdentifier:(id)identifier completion:(id)completion;
+- (void)imageColorForIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation _BCPPTCacheManager
 
-- (id)describedImagesFromProductProfile:(id)a3
+- (id)describedImagesFromProductProfile:(id)profile
 {
   v3 = +[_BCPPTFlawlessImageEntry entry];
   v6 = v3;
@@ -20,16 +20,16 @@
   return v4;
 }
 
-- (void)fetchDescribedImageFileURLForImage:(id)a3 completion:(id)a4
+- (void)fetchDescribedImageFileURLForImage:(id)image completion:(id)completion
 {
-  v10 = a4;
+  completionCopy = completion;
   v4 = +[_BCPPTFlawlessImageEntry entry];
   v5 = sub_18110(v4);
 
-  v6 = [v5 filePath];
-  if (v6)
+  filePath = [v5 filePath];
+  if (filePath)
   {
-    v7 = [NSURL fileURLWithPath:v6];
+    v7 = [NSURL fileURLWithPath:filePath];
   }
 
   else
@@ -37,7 +37,7 @@
     v7 = 0;
   }
 
-  v8 = objc_retainBlock(v10);
+  v8 = objc_retainBlock(completionCopy);
   v9 = v8;
   if (v8)
   {
@@ -45,10 +45,10 @@
   }
 }
 
-- (id)fetchLayerForAssetID:(id)a3 size:(CGSize)a4 options:(unsigned __int16)a5
+- (id)fetchLayerForAssetID:(id)d size:(CGSize)size options:(unsigned __int16)options
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(CALayer);
   v8 = [_BCPPTImageSet imageColor]_0();
   [v7 setBackgroundColor:{objc_msgSend(v8, "CGColor")}];
@@ -58,16 +58,16 @@
   return v7;
 }
 
-- (_BCPPTCacheManager)initWithClassDefinitions:(id)a3 highPriorityGeneralQueue:(id)a4 lowPriorityGeneralQueue:(id)a5 highPriorityTargetQueue:(id)a6 backgroundTargetQueue:(id)a7 delegate:(id)a8
+- (_BCPPTCacheManager)initWithClassDefinitions:(id)definitions highPriorityGeneralQueue:(id)queue lowPriorityGeneralQueue:(id)generalQueue highPriorityTargetQueue:(id)targetQueue backgroundTargetQueue:(id)backgroundTargetQueue delegate:(id)delegate
 {
   v9 = objc_alloc_init(objc_opt_class());
 
   return v9;
 }
 
-- (void)fetchCGImageFor:(id)a3 forRequest:(id)a4 completion:(id)a5
+- (void)fetchCGImageFor:(id)for forRequest:(id)request completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v8 = v5;
@@ -79,9 +79,9 @@
   }
 }
 
-- (void)fetchCGImageFor:(id)a3 forRequest:(id)a4 timeOut:(double)a5 waitForNonGeneric:(BOOL)a6 completion:(id)a7
+- (void)fetchCGImageFor:(id)for forRequest:(id)request timeOut:(double)out waitForNonGeneric:(BOOL)generic completion:(id)completion
 {
-  v7 = objc_retainBlock(a7);
+  v7 = objc_retainBlock(completion);
   if (v7)
   {
     v10 = v7;
@@ -93,9 +93,9 @@
   }
 }
 
-- (void)fetchMetadataForIdentifier:(id)a3 completion:(id)a4
+- (void)fetchMetadataForIdentifier:(id)identifier completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -104,9 +104,9 @@
   }
 }
 
-- (void)imageColorForIdentifier:(id)a3 completion:(id)a4
+- (void)imageColorForIdentifier:(id)identifier completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v6 = v4;

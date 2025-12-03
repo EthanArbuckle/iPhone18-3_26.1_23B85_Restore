@@ -1,27 +1,27 @@
 @interface VKCStickerEffectVideoProcessor
-+ (int)_transcodeSequenceData:(id)a3 effect:(id)a4 maxDimension:(unint64_t)a5 outputData:(id *)a6 progressHandler:(id)a7;
-+ (void)applyEffect:(id)a3 toImageSequence:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
++ (int)_transcodeSequenceData:(id)data effect:(id)effect maxDimension:(unint64_t)dimension outputData:(id *)outputData progressHandler:(id)handler;
++ (void)applyEffect:(id)effect toImageSequence:(id)sequence progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation VKCStickerEffectVideoProcessor
 
-+ (void)applyEffect:(id)a3 toImageSequence:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
++ (void)applyEffect:(id)effect toImageSequence:(id)sequence progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  effectCopy = effect;
+  sequenceCopy = sequence;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v14 = 0;
-  [a1 _transcodeSequenceData:v11 effect:v10 maxDimension:50000 outputData:&v14 progressHandler:v12];
-  v13[2](v13, v14, 0);
+  [self _transcodeSequenceData:sequenceCopy effect:effectCopy maxDimension:50000 outputData:&v14 progressHandler:handlerCopy];
+  completionHandlerCopy[2](completionHandlerCopy, v14, 0);
 }
 
-+ (int)_transcodeSequenceData:(id)a3 effect:(id)a4 maxDimension:(unint64_t)a5 outputData:(id *)a6 progressHandler:(id)a7
++ (int)_transcodeSequenceData:(id)data effect:(id)effect maxDimension:(unint64_t)dimension outputData:(id *)outputData progressHandler:(id)handler
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  dataCopy = data;
+  effectCopy = effect;
+  handlerCopy = handler;
   v29 = 0;
   Container = CMPhotoDecompressionSessionCreate();
   if (!Container)
@@ -69,13 +69,13 @@
                       Container = CMPhotoCompressionSessionCloseContainerAndCopyBacking();
                       if (!Container)
                       {
-                        if (v12 && v24 >= 1)
+                        if (handlerCopy && v24 >= 1)
                         {
                           v20[0] = MEMORY[0x1E69E9820];
                           v20[1] = 3221225472;
                           v20[2] = __104__VKCStickerEffectVideoProcessor__transcodeSequenceData_effect_maxDimension_outputData_progressHandler___block_invoke_2;
                           v20[3] = &unk_1E7BE4408;
-                          v21 = v12;
+                          v21 = handlerCopy;
                           vk_dispatchMainAfterDelay(v20, 0.0);
                         }
 
@@ -85,8 +85,8 @@
                           v16 = CFRetain(cf);
                         }
 
-                        v17 = *a6;
-                        *a6 = v16;
+                        v17 = *outputData;
+                        *outputData = v16;
                       }
 
                       CF<__CFData const*>::~CF(&cf);

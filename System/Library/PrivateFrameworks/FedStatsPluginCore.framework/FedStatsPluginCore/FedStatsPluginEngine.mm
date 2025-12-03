@@ -1,23 +1,23 @@
 @interface FedStatsPluginEngine
-+ (BOOL)hasRecipeIdentifier:(id)a3 usedWithAssetProvider:(id)a4;
-+ (id)runAllRecipesWithAssetProvider:(id)a3;
++ (BOOL)hasRecipeIdentifier:(id)identifier usedWithAssetProvider:(id)provider;
++ (id)runAllRecipesWithAssetProvider:(id)provider;
 + (void)removeOldRecordsFromUserDefaults;
-+ (void)removeOldRecordsFromUserDefaultsBefore:(double)a3;
++ (void)removeOldRecordsFromUserDefaultsBefore:(double)before;
 @end
 
 @implementation FedStatsPluginEngine
 
-+ (BOOL)hasRecipeIdentifier:(id)a3 usedWithAssetProvider:(id)a4
++ (BOOL)hasRecipeIdentifier:(id)identifier usedWithAssetProvider:(id)provider
 {
   v34[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 recipeIdentifiers];
-  v8 = [v7 containsObject:v5];
+  identifierCopy = identifier;
+  providerCopy = provider;
+  recipeIdentifiers = [providerCopy recipeIdentifiers];
+  v8 = [recipeIdentifiers containsObject:identifierCopy];
 
   if (v8)
   {
-    v9 = [v6 namespaceIdentifierForRecipe:v5];
+    v9 = [providerCopy namespaceIdentifierForRecipe:identifierCopy];
     if ([&unk_285E17AA0 containsObject:v9])
     {
       v10 = +[FedStatsPluginLog logger];
@@ -31,17 +31,17 @@
 
     else
     {
-      v12 = [v6 experimentIdentifierForRecipe:v5];
+      v12 = [providerCopy experimentIdentifierForRecipe:identifierCopy];
       v34[0] = v12;
-      v13 = [v6 deploymentIdentifierForRecipe:v5];
+      v13 = [providerCopy deploymentIdentifierForRecipe:identifierCopy];
       v34[1] = v13;
-      v14 = [v6 treatmentIdentifierForRecipe:v5];
+      v14 = [providerCopy treatmentIdentifierForRecipe:identifierCopy];
       v34[2] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:3];
       v10 = [v15 componentsJoinedByString:@":"];
 
-      v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v17 = [v16 persistentDomainForName:kFedStatsPluginUserDefaultsDomain];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v17 = [standardUserDefaults persistentDomainForName:kFedStatsPluginUserDefaultsDomain];
       v18 = [v17 mutableCopy];
 
       v19 = [v18 objectForKey:kFedStatsPluginUserDefaultsKeyExperimentList];
@@ -86,8 +86,8 @@
           v18 = [v26 mutableCopy];
         }
 
-        v27 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        [v27 setPersistentDomain:v18 forName:kFedStatsPluginUserDefaultsDomain];
+        standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        [standardUserDefaults2 setPersistentDomain:v18 forName:kFedStatsPluginUserDefaultsDomain];
       }
     }
   }
@@ -107,11 +107,11 @@
   return v11;
 }
 
-+ (void)removeOldRecordsFromUserDefaultsBefore:(double)a3
++ (void)removeOldRecordsFromUserDefaultsBefore:(double)before
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 persistentDomainForName:kFedStatsPluginUserDefaultsDomain];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults persistentDomainForName:kFedStatsPluginUserDefaultsDomain];
   v6 = [v5 mutableCopy];
 
   v7 = [v6 objectForKey:kFedStatsPluginUserDefaultsKeyExperimentList];
@@ -121,8 +121,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allKeys = [v8 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -133,7 +133,7 @@
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
@@ -141,13 +141,13 @@
         [v15 doubleValue];
         v17 = v16;
 
-        if (v17 < a3)
+        if (v17 < before)
         {
           [v8 removeObjectForKey:v14];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
@@ -160,8 +160,8 @@
     +[FedStatsPluginEngine hasRecipeIdentifier:usedWithAssetProvider:];
   }
 
-  v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v19 setPersistentDomain:v6 forName:kFedStatsPluginUserDefaultsDomain];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 setPersistentDomain:v6 forName:kFedStatsPluginUserDefaultsDomain];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -170,20 +170,20 @@
 {
   v3 = CFAbsoluteTimeGetCurrent() - kFedStatsPluginExperimentRetentionPeriod;
 
-  [a1 removeOldRecordsFromUserDefaultsBefore:v3];
+  [self removeOldRecordsFromUserDefaultsBefore:v3];
 }
 
-+ (id)runAllRecipesWithAssetProvider:(id)a3
++ (id)runAllRecipesWithAssetProvider:(id)provider
 {
   v151 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 recipeIdentifiers];
-  v101 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  providerCopy = provider;
+  recipeIdentifiers = [providerCopy recipeIdentifiers];
+  v101 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(recipeIdentifiers, "count")}];
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v5 = v4;
+  v5 = recipeIdentifiers;
   v6 = [v5 countByEnumeratingWithState:&v135 objects:v150 count:16];
   v91 = v5;
   if (v6)
@@ -202,7 +202,7 @@
         }
 
         v12 = *(*(&v135 + 1) + 8 * i);
-        if ([*(v9 + 1744) hasRecipeIdentifier:v12 usedWithAssetProvider:v3])
+        if ([*(v9 + 1744) hasRecipeIdentifier:v12 usedWithAssetProvider:providerCopy])
         {
           v13 = +[FedStatsPluginLog logger];
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -215,11 +215,11 @@
 
         else
         {
-          v13 = [v3 namespaceIdentifierForRecipe:v12];
+          v13 = [providerCopy namespaceIdentifierForRecipe:v12];
           if ([*(v10 + 1712) isConsentedForUseCase:v13])
           {
             v134 = 0;
-            v14 = [FedStatsPluginRecipe recipeWithAssetProvider:v3 recipeIdentifier:v12 error:&v134];
+            v14 = [FedStatsPluginRecipe recipeWithAssetProvider:providerCopy recipeIdentifier:v12 error:&v134];
             v15 = v134;
             v16 = v15;
             if (!v14)
@@ -268,7 +268,7 @@
               if (v16)
               {
 LABEL_27:
-                [FedStatsPluginTelemetry reportPluginForAssetProvider:v3 recipeIdentifier:v12 withError:v16];
+                [FedStatsPluginTelemetry reportPluginForAssetProvider:providerCopy recipeIdentifier:v12 withError:v16];
 LABEL_28:
               }
             }
@@ -288,7 +288,7 @@ LABEL_28:
               v9 = 0x278FF7000;
               if (v18)
               {
-                [FedStatsPluginTelemetry reportPluginForAssetProvider:v3 recipeIdentifier:v12 withError:v18];
+                [FedStatsPluginTelemetry reportPluginForAssetProvider:providerCopy recipeIdentifier:v12 withError:v18];
                 v16 = v18;
                 goto LABEL_28;
               }
@@ -307,7 +307,7 @@ LABEL_28:
             _os_log_debug_impl(&dword_24AB24000, v20, OS_LOG_TYPE_DEBUG, "Cannot get consent for recipe with identifier '%@'.", buf, 0xCu);
           }
 
-          [FedStatsPluginTelemetry reportPluginForAssetProvider:v3 recipeIdentifier:v12 withError:0];
+          [FedStatsPluginTelemetry reportPluginForAssetProvider:providerCopy recipeIdentifier:v12 withError:0];
         }
 
 LABEL_30:
@@ -324,8 +324,8 @@ LABEL_30:
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
-  v24 = [v101 allKeys];
-  v25 = [v24 countByEnumeratingWithState:&v128 objects:v145 count:16];
+  allKeys = [v101 allKeys];
+  v25 = [allKeys countByEnumeratingWithState:&v128 objects:v145 count:16];
   if (v25)
   {
     v26 = v25;
@@ -336,7 +336,7 @@ LABEL_30:
       {
         if (*v129 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allKeys);
         }
 
         v29 = *(*(&v128 + 1) + 8 * j);
@@ -361,11 +361,11 @@ LABEL_30:
             _os_log_debug_impl(&dword_24AB24000, v33, OS_LOG_TYPE_DEBUG, "Cannot run query for recipe with identifier '%@'. Error: %@", buf, 0x16u);
           }
 
-          [FedStatsPluginTelemetry reportPluginForAssetProvider:v3 recipeIdentifier:v29 withError:v32];
+          [FedStatsPluginTelemetry reportPluginForAssetProvider:providerCopy recipeIdentifier:v29 withError:v32];
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v128 objects:v145 count:16];
+      v26 = [allKeys countByEnumeratingWithState:&v128 objects:v145 count:16];
     }
 
     while (v26);
@@ -376,8 +376,8 @@ LABEL_30:
   v124 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v34 = [v93 allKeys];
-  v35 = [v34 countByEnumeratingWithState:&v123 objects:v144 count:16];
+  allKeys2 = [v93 allKeys];
+  v35 = [allKeys2 countByEnumeratingWithState:&v123 objects:v144 count:16];
   if (v35)
   {
     v36 = v35;
@@ -388,7 +388,7 @@ LABEL_30:
       {
         if (*v124 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(allKeys2);
         }
 
         v39 = *(*(&v123 + 1) + 8 * k);
@@ -398,7 +398,7 @@ LABEL_30:
         [v100 setObject:v42 forKey:v39];
       }
 
-      v36 = [v34 countByEnumeratingWithState:&v123 objects:v144 count:16];
+      v36 = [allKeys2 countByEnumeratingWithState:&v123 objects:v144 count:16];
     }
 
     while (v36);
@@ -409,8 +409,8 @@ LABEL_30:
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v44 = [v100 allKeys];
-  v45 = [v44 countByEnumeratingWithState:&v119 objects:v143 count:16];
+  allKeys3 = [v100 allKeys];
+  v45 = [allKeys3 countByEnumeratingWithState:&v119 objects:v143 count:16];
   if (v45)
   {
     v46 = v45;
@@ -421,7 +421,7 @@ LABEL_30:
       {
         if (*v120 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(allKeys3);
         }
 
         v49 = *(*(&v119 + 1) + 8 * m);
@@ -431,14 +431,14 @@ LABEL_30:
         [v43 setObject:v52 forKey:v49];
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v119 objects:v143 count:16];
+      v46 = [allKeys3 countByEnumeratingWithState:&v119 objects:v143 count:16];
     }
 
     while (v46);
   }
 
   v118 = 0;
-  v53 = [v3 fetchAssets:v43 error:&v118];
+  v53 = [providerCopy fetchAssets:v43 error:&v118];
   v54 = v118;
   if ((v53 & 1) == 0)
   {
@@ -449,15 +449,15 @@ LABEL_30:
     }
   }
 
-  v88 = v3;
+  v88 = providerCopy;
   v89 = v54;
   v97 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v100, "count")}];
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v56 = [v100 allKeys];
-  v57 = [v56 countByEnumeratingWithState:&v114 objects:v142 count:16];
+  allKeys4 = [v100 allKeys];
+  v57 = [allKeys4 countByEnumeratingWithState:&v114 objects:v142 count:16];
   v95 = v43;
   if (v57)
   {
@@ -469,7 +469,7 @@ LABEL_30:
       {
         if (*v115 != v59)
         {
-          objc_enumerationMutation(v56);
+          objc_enumerationMutation(allKeys4);
         }
 
         v61 = *(*(&v114 + 1) + 8 * n);
@@ -483,7 +483,7 @@ LABEL_30:
         v43 = v95;
       }
 
-      v58 = [v56 countByEnumeratingWithState:&v114 objects:v142 count:16];
+      v58 = [allKeys4 countByEnumeratingWithState:&v114 objects:v142 count:16];
     }
 
     while (v58);
@@ -516,8 +516,8 @@ LABEL_30:
         v108 = 0u;
         v109 = 0u;
         v98 = v69;
-        v70 = [v69 accessedStreams];
-        v71 = [v70 countByEnumeratingWithState:&v106 objects:v140 count:16];
+        accessedStreams = [v69 accessedStreams];
+        v71 = [accessedStreams countByEnumeratingWithState:&v106 objects:v140 count:16];
         if (v71)
         {
           v72 = v71;
@@ -528,7 +528,7 @@ LABEL_30:
             {
               if (*v107 != v73)
               {
-                objc_enumerationMutation(v70);
+                objc_enumerationMutation(accessedStreams);
               }
 
               v75 = *(*(&v106 + 1) + 8 * ii);
@@ -536,7 +536,7 @@ LABEL_30:
               [FedStatsPluginBiomeStreamPruner pruneBiomeStream:v75 forNamespace:v76 eventsPassingTest:&__block_literal_global_3];
             }
 
-            v72 = [v70 countByEnumeratingWithState:&v106 objects:v140 count:16];
+            v72 = [accessedStreams countByEnumeratingWithState:&v106 objects:v140 count:16];
           }
 
           while (v72);
@@ -557,8 +557,8 @@ LABEL_30:
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v77 = [v97 allKeys];
-  v78 = [v77 countByEnumeratingWithState:&v102 objects:v139 count:16];
+  allKeys5 = [v97 allKeys];
+  v78 = [allKeys5 countByEnumeratingWithState:&v102 objects:v139 count:16];
   v79 = 0x278FF7000uLL;
   if (v78)
   {
@@ -570,7 +570,7 @@ LABEL_30:
       {
         if (*v103 != v81)
         {
-          objc_enumerationMutation(v77);
+          objc_enumerationMutation(allKeys5);
         }
 
         v83 = *(*(&v102 + 1) + 8 * jj);
@@ -590,13 +590,13 @@ LABEL_30:
         [*(v79 + 1816) reportPluginSucceedForAssetProvider:v88 recipeIdentifier:v83];
       }
 
-      v80 = [v77 countByEnumeratingWithState:&v102 objects:v139 count:16];
+      v80 = [allKeys5 countByEnumeratingWithState:&v102 objects:v139 count:16];
     }
 
     while (v80);
   }
 
-  [a1 removeOldRecordsFromUserDefaults];
+  [self removeOldRecordsFromUserDefaults];
   v86 = *MEMORY[0x277D85DE8];
 
   return v97;

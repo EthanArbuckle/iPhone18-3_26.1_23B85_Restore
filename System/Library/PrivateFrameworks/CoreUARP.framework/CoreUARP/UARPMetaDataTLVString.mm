@@ -1,7 +1,7 @@
 @interface UARPMetaDataTLVString
 - (UARPMetaDataTLVString)init;
-- (id)generateTLV:(unsigned int)a3 tlvValue:(id)a4;
-- (id)tlvValue:(id)a3;
+- (id)generateTLV:(unsigned int)v tlvValue:(id)value;
+- (id)tlvValue:(id)value;
 @end
 
 @implementation UARPMetaDataTLVString
@@ -13,16 +13,16 @@
   return [(UARPMetaDataTLV *)&v3 init];
 }
 
-- (id)generateTLV:(unsigned int)a3 tlvValue:(id)a4
+- (id)generateTLV:(unsigned int)v tlvValue:(id)value
 {
   v6 = MEMORY[0x277CBEB28];
-  v7 = a4;
+  valueCopy = value;
   v8 = objc_alloc_init(v6);
-  v13 = uarpHtonl(a3);
+  v13 = uarpHtonl(v);
   [v8 appendBytes:&v13 length:4];
-  v12 = uarpHtonl([v7 length]);
+  v12 = uarpHtonl([valueCopy length]);
   [v8 appendBytes:&v12 length:4];
-  v9 = [(UARPMetaDataTLVString *)self tlvValue:v7];
+  v9 = [(UARPMetaDataTLVString *)self tlvValue:valueCopy];
 
   [v8 appendData:v9];
   v10 = [MEMORY[0x277CBEA90] dataWithData:v8];
@@ -30,15 +30,15 @@
   return v10;
 }
 
-- (id)tlvValue:(id)a3
+- (id)tlvValue:(id)value
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = a3;
+  valueCopy = value;
   v5 = [v3 alloc];
-  v6 = [v4 UTF8String];
-  v7 = [v4 length];
+  uTF8String = [valueCopy UTF8String];
+  v7 = [valueCopy length];
 
-  v8 = [v5 initWithBytes:v6 length:v7];
+  v8 = [v5 initWithBytes:uTF8String length:v7];
 
   return v8;
 }

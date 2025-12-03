@@ -20,8 +20,8 @@
           [v5 floatValue];
           __asm { FCVT            H0, S0 }
 
-          LOWORD(v17) = _S0;
-          v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:2];
+          LOWORD(longValue) = _S0;
+          v9 = [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:2];
         }
 
         else
@@ -32,15 +32,15 @@
           }
 
           [v5 floatValue];
-          LODWORD(v17) = v8;
-          v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:4];
+          LODWORD(longValue) = v8;
+          v9 = [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:4];
         }
       }
 
       else
       {
-        LOBYTE(v17) = [v5 BOOLValue];
-        v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:1];
+        LOBYTE(longValue) = [v5 BOOLValue];
+        v9 = [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:1];
       }
 
       goto LABEL_27;
@@ -49,21 +49,21 @@
     if (a4 == 4)
     {
       [v5 doubleValue];
-      v17 = v10;
-      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:8];
+      longValue = v10;
+      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:8];
       goto LABEL_27;
     }
 
     if (a4 == 5)
     {
-      LOBYTE(v17) = [v5 charValue];
-      [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:1];
+      LOBYTE(longValue) = [v5 charValue];
+      [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:1];
     }
 
     else
     {
-      LOWORD(v17) = [v5 shortValue];
-      [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:2];
+      LOWORD(longValue) = [v5 shortValue];
+      [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:2];
     }
 
     v9 = LABEL_11:;
@@ -74,21 +74,21 @@
   {
     if (a4 == 7)
     {
-      LODWORD(v17) = [v5 intValue];
-      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:4];
+      LODWORD(longValue) = [v5 intValue];
+      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:4];
       goto LABEL_27;
     }
 
     if (a4 == 8)
     {
-      v17 = [v5 longValue];
-      [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:8];
+      longValue = [v5 longValue];
+      [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:8];
     }
 
     else
     {
-      LOBYTE(v17) = [v5 unsignedCharValue];
-      [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:1];
+      LOBYTE(longValue) = [v5 unsignedCharValue];
+      [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:1];
     }
 
     goto LABEL_11;
@@ -97,16 +97,16 @@
   switch(a4)
   {
     case 10:
-      LOWORD(v17) = [v5 unsignedShortValue];
-      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:2];
+      LOWORD(longValue) = [v5 unsignedShortValue];
+      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:2];
       break;
     case 11:
-      LODWORD(v17) = [v5 unsignedIntValue];
-      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:4];
+      LODWORD(longValue) = [v5 unsignedIntValue];
+      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:4];
       break;
     case 12:
-      v17 = [v5 unsignedLongValue];
-      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&v17 length:8];
+      longValue = [v5 unsignedLongValue];
+      v9 = [MEMORY[0x277CBEA90] dataWithBytes:&longValue length:8];
       break;
     default:
       goto LABEL_28;

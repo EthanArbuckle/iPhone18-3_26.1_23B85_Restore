@@ -11,18 +11,18 @@
   v15.super_class = WiFiDataUsageViewController;
   [(WiFiDataUsageViewController *)&v15 loadView];
   [(WiFiDataUsageViewController *)self addChildViewController:self->_dataUsageController];
-  v3 = [(WiFiDataUsageViewController *)self view];
-  v4 = [(CTUIWirelessUsageAndAppPolicyController *)self->_dataUsageController view];
-  [v3 addSubview:v4];
+  view = [(WiFiDataUsageViewController *)self view];
+  view2 = [(CTUIWirelessUsageAndAppPolicyController *)self->_dataUsageController view];
+  [view addSubview:view2];
 
-  v5 = [(WiFiDataUsageViewController *)self view];
-  [v5 frame];
+  view3 = [(WiFiDataUsageViewController *)self view];
+  [view3 frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CTUIWirelessUsageAndAppPolicyController *)self->_dataUsageController view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view4 = [(CTUIWirelessUsageAndAppPolicyController *)self->_dataUsageController view];
+  [view4 setFrame:{v7, v9, v11, v13}];
 }
 
 - (WiFiDataUsageViewController)init
@@ -39,20 +39,20 @@
     v5 = v2->_dataUsageController;
     if (v5)
     {
-      v6 = [(CTUIWirelessUsageAndAppPolicyController *)v5 specifier];
-      [v6 setProperty:@"com.apple.wifi" forKey:*MEMORY[0x277D3FFB8]];
+      specifier = [(CTUIWirelessUsageAndAppPolicyController *)v5 specifier];
+      [specifier setProperty:@"com.apple.wifi" forKey:*MEMORY[0x277D3FFB8]];
     }
 
     else
     {
-      v6 = v2;
+      specifier = v2;
       v2 = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    specifier = 0;
   }
 
   return v2;

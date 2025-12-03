@@ -3,7 +3,7 @@
 - (NSString)label;
 - (id)_additionalCategoricalValue;
 - (id)_additionalNumericValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)setLabel:(NSString *)label;
 @end
@@ -34,14 +34,14 @@
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AXDataPoint allocWithZone:a3];
-  v5 = [(AXDataPoint *)self xValue];
-  v6 = [(AXDataPoint *)self yValue];
-  v7 = [(AXDataPoint *)self additionalValues];
-  v8 = [(AXDataPoint *)self label];
-  v9 = [(AXDataPoint *)v4 initWithX:v5 y:v6 additionalValues:v7 label:v8];
+  v4 = [AXDataPoint allocWithZone:zone];
+  xValue = [(AXDataPoint *)self xValue];
+  yValue = [(AXDataPoint *)self yValue];
+  additionalValues = [(AXDataPoint *)self additionalValues];
+  label = [(AXDataPoint *)self label];
+  v9 = [(AXDataPoint *)v4 initWithX:xValue y:yValue additionalValues:additionalValues label:label];
 
   return v9;
 }
@@ -61,33 +61,33 @@
 
 - (NSString)label
 {
-  v2 = [(AXDataPoint *)self attributedLabel];
-  v3 = [v2 string];
+  attributedLabel = [(AXDataPoint *)self attributedLabel];
+  string = [attributedLabel string];
 
-  return v3;
+  return string;
 }
 
 - (id)description
 {
-  v3 = [(AXDataPoint *)self xValue];
-  v4 = [v3 category];
-  if (v4)
+  xValue = [(AXDataPoint *)self xValue];
+  category = [xValue category];
+  if (category)
   {
-    v5 = [(AXDataPoint *)self xValue];
-    [v5 category];
+    xValue2 = [(AXDataPoint *)self xValue];
+    [xValue2 category];
   }
 
   else
   {
     v6 = MEMORY[0x1E696AD98];
-    v5 = [(AXDataPoint *)self xValue];
-    [v5 number];
+    xValue2 = [(AXDataPoint *)self xValue];
+    [xValue2 number];
     [v6 numberWithDouble:?];
   }
   v30 = ;
 
-  v7 = [(AXDataPoint *)self additionalValues];
-  v8 = [v7 count];
+  additionalValues = [(AXDataPoint *)self additionalValues];
+  v8 = [additionalValues count];
 
   if (v8)
   {
@@ -96,14 +96,14 @@
     v11 = 0;
     do
     {
-      v12 = [(AXDataPoint *)self additionalValues];
-      v13 = [v12 objectAtIndexedSubscript:v9];
-      v14 = [v13 category];
+      additionalValues2 = [(AXDataPoint *)self additionalValues];
+      v13 = [additionalValues2 objectAtIndexedSubscript:v9];
+      category2 = [v13 category];
 
-      if (v14)
+      if (category2)
       {
-        v15 = [(AXDataPoint *)self additionalValues];
-        v16 = [v15 objectAtIndexedSubscript:v9];
+        additionalValues3 = [(AXDataPoint *)self additionalValues];
+        v16 = [additionalValues3 objectAtIndexedSubscript:v9];
         [v16 category];
         v10 = v17 = v10;
       }
@@ -112,8 +112,8 @@
       {
         v18 = MEMORY[0x1E696AEC0];
         v19 = MEMORY[0x1E696AD98];
-        v15 = [(AXDataPoint *)self additionalValues];
-        v16 = [v15 objectAtIndexedSubscript:v9];
+        additionalValues3 = [(AXDataPoint *)self additionalValues];
+        v16 = [additionalValues3 objectAtIndexedSubscript:v9];
         [v16 number];
         v17 = [v19 numberWithDouble:?];
         v20 = [v18 stringWithFormat:@"%@", v17];
@@ -122,8 +122,8 @@
       }
 
       ++v9;
-      v21 = [(AXDataPoint *)self additionalValues];
-      v22 = [v21 count];
+      additionalValues4 = [(AXDataPoint *)self additionalValues];
+      v22 = [additionalValues4 count];
     }
 
     while (v9 < v22);
@@ -137,11 +137,11 @@
 
   v23 = MEMORY[0x1E696AEC0];
   v24 = MEMORY[0x1E696AD98];
-  v25 = [(AXDataPoint *)self yValue];
-  [v25 number];
+  yValue = [(AXDataPoint *)self yValue];
+  [yValue number];
   v26 = [v24 numberWithDouble:?];
-  v27 = [(AXDataPoint *)self label];
-  v28 = [v23 stringWithFormat:@"(x=%@\ty=%@\tz=%@\tcategory=%@\tlabel=%@)", v30, v26, v11, v10, v27];
+  label = [(AXDataPoint *)self label];
+  v28 = [v23 stringWithFormat:@"(x=%@\ty=%@\tz=%@\tcategory=%@\tlabel=%@)", v30, v26, v11, v10, label];
 
   return v28;
 }
@@ -154,13 +154,13 @@
   v12 = 0u;
   v13 = 0u;
   v2 = v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
-  if (v3)
+  category2 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (category2)
   {
     v4 = *v12;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != category2; i = i + 1)
       {
         if (*v12 != v4)
         {
@@ -168,18 +168,18 @@
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 category];
-        v8 = [v7 length];
+        category = [v6 category];
+        v8 = [category length];
 
         if (v8)
         {
-          v3 = [v6 category];
+          category2 = [v6 category];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
-      if (v3)
+      category2 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      if (category2)
       {
         continue;
       }
@@ -192,7 +192,7 @@ LABEL_11:
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return category2;
 }
 
 - (id)_additionalNumericValue
@@ -217,8 +217,8 @@ LABEL_11:
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 category];
-        v8 = [v7 length];
+        category = [v6 category];
+        v8 = [category length];
 
         if (!v8)
         {

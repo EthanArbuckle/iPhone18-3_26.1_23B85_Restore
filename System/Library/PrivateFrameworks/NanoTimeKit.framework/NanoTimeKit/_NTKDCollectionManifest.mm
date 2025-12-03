@@ -1,16 +1,16 @@
 @interface _NTKDCollectionManifest
 + (id)emptyManifest;
-- (BOOL)_containsUUID:(id)a3;
-- (BOOL)addUUID:(id)a3 withFaceStyle:(int64_t)a4;
-- (BOOL)removeUUID:(id)a3;
-- (BOOL)updateOrderWithUUIDs:(id)a3;
+- (BOOL)_containsUUID:(id)d;
+- (BOOL)addUUID:(id)d withFaceStyle:(int64_t)style;
+- (BOOL)removeUUID:(id)d;
+- (BOOL)updateOrderWithUUIDs:(id)ds;
 - (_NTKDCollectionManifest)init;
-- (_NTKDCollectionManifest)initWithContentsOfFile:(id)a3;
+- (_NTKDCollectionManifest)initWithContentsOfFile:(id)file;
 - (id)description;
-- (int64_t)faceStyleForUUID:(id)a3;
-- (void)_getUUID:(id *)a3 boxedStyle:(id *)a4 fromEntry:(id)a5;
+- (int64_t)faceStyleForUUID:(id)d;
+- (void)_getUUID:(id *)d boxedStyle:(id *)style fromEntry:(id)entry;
 - (void)removeAllUUIDs;
-- (void)writeToFile:(id)a3 atomically:(BOOL)a4;
+- (void)writeToFile:(id)file atomically:(BOOL)atomically;
 @end
 
 @implementation _NTKDCollectionManifest
@@ -87,9 +87,9 @@ LABEL_8:
         }
 
 LABEL_9:
-        v12 = [v9 UUIDString];
+        uUIDString = [v9 UUIDString];
         v13 = NTKFaceStyleDescription();
-        [v3 appendFormat:@"(%@:%@)", v12, v13];
+        [v3 appendFormat:@"(%@:%@)", uUIDString, v13];
 
         v8 = v8 + 1;
         v6 = 1;
@@ -108,73 +108,73 @@ LABEL_9:
   return v3;
 }
 
-- (int64_t)faceStyleForUUID:(id)a3
+- (int64_t)faceStyleForUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = -1;
+    integerValue = -1;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (BOOL)addUUID:(id)a3 withFaceStyle:(int64_t)a4
+- (BOOL)addUUID:(id)d withFaceStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:v6];
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:dCopy];
 
   if (!v7)
   {
     boxedStylesByUUID = self->_boxedStylesByUUID;
-    v9 = [NSNumber numberWithInteger:a4];
-    [(NSMutableDictionary *)boxedStylesByUUID setObject:v9 forKey:v6];
+    v9 = [NSNumber numberWithInteger:style];
+    [(NSMutableDictionary *)boxedStylesByUUID setObject:v9 forKey:dCopy];
   }
 
-  if (([(NSMutableArray *)self->_orderedUUIDs containsObject:v6]& 1) == 0)
+  if (([(NSMutableArray *)self->_orderedUUIDs containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_orderedUUIDs addObject:v6];
+    [(NSMutableArray *)self->_orderedUUIDs addObject:dCopy];
   }
 
   return v7 == 0;
 }
 
-- (BOOL)removeUUID:(id)a3
+- (BOOL)removeUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:dCopy];
 
   if (v5)
   {
-    [(NSMutableDictionary *)self->_boxedStylesByUUID removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_boxedStylesByUUID removeObjectForKey:dCopy];
   }
 
-  [(NSMutableArray *)self->_orderedUUIDs removeObject:v4];
+  [(NSMutableArray *)self->_orderedUUIDs removeObject:dCopy];
 
   return v5 != 0;
 }
 
-- (BOOL)updateOrderWithUUIDs:(id)a3
+- (BOOL)updateOrderWithUUIDs:(id)ds
 {
-  v3 = self;
+  selfCopy = self;
   orderedUUIDs = self->_orderedUUIDs;
-  v5 = a3;
+  dsCopy = ds;
   v6 = [(NSMutableArray *)orderedUUIDs copy];
-  v7 = [(NSMutableArray *)v3->_orderedUUIDs mutableCopy];
-  [v7 removeObjectsInArray:v5];
-  [(NSMutableArray *)v3->_orderedUUIDs removeAllObjects];
-  [(NSMutableArray *)v3->_orderedUUIDs addObjectsFromArray:v5];
+  v7 = [(NSMutableArray *)selfCopy->_orderedUUIDs mutableCopy];
+  [v7 removeObjectsInArray:dsCopy];
+  [(NSMutableArray *)selfCopy->_orderedUUIDs removeAllObjects];
+  [(NSMutableArray *)selfCopy->_orderedUUIDs addObjectsFromArray:dsCopy];
 
-  [(NSMutableArray *)v3->_orderedUUIDs addObjectsFromArray:v7];
-  LOBYTE(v3) = [v6 isEqualToArray:v3->_orderedUUIDs];
+  [(NSMutableArray *)selfCopy->_orderedUUIDs addObjectsFromArray:v7];
+  LOBYTE(selfCopy) = [v6 isEqualToArray:selfCopy->_orderedUUIDs];
 
-  return v3 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (void)removeAllUUIDs
@@ -185,13 +185,13 @@ LABEL_9:
   [(NSMutableDictionary *)boxedStylesByUUID removeAllObjects];
 }
 
-- (_NTKDCollectionManifest)initWithContentsOfFile:(id)a3
+- (_NTKDCollectionManifest)initWithContentsOfFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = [(_NTKDCollectionManifest *)self init];
   if (v5)
   {
-    v6 = [[NSArray alloc] initWithContentsOfFile:v4];
+    v6 = [[NSArray alloc] initWithContentsOfFile:fileCopy];
     if (v6)
     {
       objc_opt_class();
@@ -243,10 +243,10 @@ LABEL_9:
   return v5;
 }
 
-- (void)writeToFile:(id)a3 atomically:(BOOL)a4
+- (void)writeToFile:(id)file atomically:(BOOL)atomically
 {
-  v15 = a4;
-  v14 = a3;
+  atomicallyCopy = atomically;
+  fileCopy = file;
   v5 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
@@ -270,8 +270,8 @@ LABEL_9:
 
         v10 = *(*(&v17 + 1) + 8 * v9);
         v11 = +[NSMutableDictionary dictionary];
-        v12 = [v10 UUIDString];
-        [v11 setObject:v12 forKey:@"uuid"];
+        uUIDString = [v10 UUIDString];
+        [v11 setObject:uUIDString forKey:@"uuid"];
 
         v13 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:v10];
         if (v13)
@@ -291,21 +291,21 @@ LABEL_9:
     while (v7);
   }
 
-  [v5 writeToFile:v14 atomically:v15];
+  [v5 writeToFile:fileCopy atomically:atomicallyCopy];
 }
 
-- (BOOL)_containsUUID:(id)a3
+- (BOOL)_containsUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_boxedStylesByUUID objectForKey:d];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)_getUUID:(id *)a3 boxedStyle:(id *)a4 fromEntry:(id)a5
+- (void)_getUUID:(id *)d boxedStyle:(id *)style fromEntry:(id)entry
 {
-  v12 = a5;
-  v7 = [v12 objectForKey:@"uuid"];
+  entryCopy = entry;
+  v7 = [entryCopy objectForKey:@"uuid"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -318,7 +318,7 @@ LABEL_9:
     [NSException raise:NSInvalidUnarchiveOperationException format:@"could not generate UUID from string: %@", v7];
   }
 
-  v9 = [v12 objectForKey:@"style"];
+  v9 = [entryCopy objectForKey:@"style"];
   if (v9)
   {
     objc_opt_class();
@@ -329,9 +329,9 @@ LABEL_9:
   }
 
   v10 = v8;
-  *a3 = v8;
+  *d = v8;
   v11 = v9;
-  *a4 = v9;
+  *style = v9;
 }
 
 @end

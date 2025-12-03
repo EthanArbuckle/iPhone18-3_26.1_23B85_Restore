@@ -1,5 +1,5 @@
 @interface PUTabbedSidebarController
-- (PUTabbedSidebarController)initWithPhotoLibrary:(id)a3 libraryFilterState:(id)a4 actionProviderDelegate:(id)a5;
+- (PUTabbedSidebarController)initWithPhotoLibrary:(id)library libraryFilterState:(id)state actionProviderDelegate:(id)delegate;
 - (PXActionProviderDelegate)actionProviderDelegate;
 - (PXSidebarDataContext)dataContext;
 - (PXTabGroupManager)albumsTabGroupManager;
@@ -9,17 +9,17 @@
 - (PXTabGroupManager)sharedAlbumsTabGroupManager;
 - (PXTabGroupManager)utilitiesTabGroupManager;
 - (PXTabListManager)collectionsTabListManager;
-- (id)_tabGroupControllerForTab:(id)a3;
-- (id)representedObjectForTab:(id)a3;
-- (id)tabBarController:(id)a3 sidebar:(id)a4 contextMenuConfigurationForTab:(id)a5;
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5;
-- (id)tabBarController:(id)a3 sidebar:(id)a4 trailingSwipeActionsConfigurationForTab:(id)a5;
-- (id)tabGroupController:(id)a3 makeViewControllerForTab:(id)a4;
-- (void)_createControllerIfNeededForTabGroup:(id)a3;
-- (void)_loadImageForTab:(id)a3 traitCollection:(id)a4;
-- (void)_registerTabGroupController:(id)a3 forOutlineItem:(id)a4;
-- (void)displayOrderDidChangeForGroup:(id)a3 undoManager:(id)a4;
-- (void)tabGroupController:(id)a3 didUpdateAuxiliaryObjectsForTabs:(id)a4;
+- (id)_tabGroupControllerForTab:(id)tab;
+- (id)representedObjectForTab:(id)tab;
+- (id)tabBarController:(id)controller sidebar:(id)sidebar contextMenuConfigurationForTab:(id)tab;
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request;
+- (id)tabBarController:(id)controller sidebar:(id)sidebar trailingSwipeActionsConfigurationForTab:(id)tab;
+- (id)tabGroupController:(id)controller makeViewControllerForTab:(id)tab;
+- (void)_createControllerIfNeededForTabGroup:(id)group;
+- (void)_loadImageForTab:(id)tab traitCollection:(id)collection;
+- (void)_registerTabGroupController:(id)controller forOutlineItem:(id)item;
+- (void)displayOrderDidChangeForGroup:(id)group undoManager:(id)manager;
+- (void)tabGroupController:(id)controller didUpdateAuxiliaryObjectsForTabs:(id)tabs;
 @end
 
 @implementation PUTabbedSidebarController
@@ -31,22 +31,22 @@
   return WeakRetained;
 }
 
-- (id)_tabGroupControllerForTab:(id)a3
+- (id)_tabGroupControllerForTab:(id)tab
 {
-  v4 = [a3 parent];
-  v5 = v4;
-  if (v4)
+  parent = [tab parent];
+  v5 = parent;
+  if (parent)
   {
-    if ([v4 sidebarAppearance] == 1)
+    if ([parent sidebarAppearance] == 1)
     {
-      v6 = [v5 parent];
+      parent2 = [v5 parent];
 
-      v5 = v6;
+      v5 = parent2;
     }
 
     tabGroupControllers = self->_tabGroupControllers;
-    v8 = [v5 identifier];
-    v9 = [(NSMutableDictionary *)tabGroupControllers objectForKeyedSubscript:v8];
+    identifier = [v5 identifier];
+    v9 = [(NSMutableDictionary *)tabGroupControllers objectForKeyedSubscript:identifier];
   }
 
   else
@@ -57,29 +57,29 @@
   return v9;
 }
 
-- (void)_registerTabGroupController:(id)a3 forOutlineItem:(id)a4
+- (void)_registerTabGroupController:(id)controller forOutlineItem:(id)item
 {
   tabGroupControllers = self->_tabGroupControllers;
-  v6 = a3;
-  v7 = [a4 identifier];
-  [(NSMutableDictionary *)tabGroupControllers setObject:v6 forKeyedSubscript:v7];
+  controllerCopy = controller;
+  identifier = [item identifier];
+  [(NSMutableDictionary *)tabGroupControllers setObject:controllerCopy forKeyedSubscript:identifier];
 }
 
-- (void)_loadImageForTab:(id)a3 traitCollection:(id)a4
+- (void)_loadImageForTab:(id)tab traitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  tabCopy = tab;
+  collectionCopy = collection;
+  if (!collectionCopy)
   {
     v8 = MEMORY[0x1E69DD1B8];
     [(PUTabbedSidebarController *)self lastUsedDisplayScale];
-    v7 = [v8 traitCollectionWithDisplayScale:?];
+    collectionCopy = [v8 traitCollectionWithDisplayScale:?];
   }
 
-  v9 = [(PUTabbedSidebarController *)self _tabGroupControllerForTab:v6];
-  if ([v9 wantsFolderKeyAssetsForChildTab:v6])
+  v9 = [(PUTabbedSidebarController *)self _tabGroupControllerForTab:tabCopy];
+  if ([v9 wantsFolderKeyAssetsForChildTab:tabCopy])
   {
-    v10 = [v9 auxiliaryObjectForChildTab:v6 key:*MEMORY[0x1E69C40D8]];
+    v10 = [v9 auxiliaryObjectForChildTab:tabCopy key:*MEMORY[0x1E69C40D8]];
     PXSizeMakeSquare();
     v12 = v11;
     v14 = v13;
@@ -89,17 +89,17 @@
     v24[2] = __62__PUTabbedSidebarController__loadImageForTab_traitCollection___block_invoke;
     v24[3] = &unk_1E7B74B38;
     v16 = &v25;
-    v25 = v6;
-    [(PXSidebarImageLoader *)imageLoader requestFolderImageWithAssets:v10 imageSize:v7 traitCollection:v24 completion:v12, v14];
+    v25 = tabCopy;
+    [(PXSidebarImageLoader *)imageLoader requestFolderImageWithAssets:v10 imageSize:collectionCopy traitCollection:v24 completion:v12, v14];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v10 = [v9 auxiliaryObjectForChildTab:v6 key:*MEMORY[0x1E69C40F0]];
+  v10 = [v9 auxiliaryObjectForChildTab:tabCopy key:*MEMORY[0x1E69C40F0]];
   if (v10)
   {
-    [v7 displayScale];
+    [collectionCopy displayScale];
     PXSizeMakeSquare();
     v18 = v17;
     v20 = v19;
@@ -109,7 +109,7 @@ LABEL_7:
     v22[2] = __62__PUTabbedSidebarController__loadImageForTab_traitCollection___block_invoke_2;
     v22[3] = &unk_1E7B74B38;
     v16 = &v23;
-    v23 = v6;
+    v23 = tabCopy;
     [(PXSidebarImageLoader *)v21 requestImageForAsset:v10 pixelSize:v22 completion:v18, v20];
     goto LABEL_7;
   }
@@ -117,38 +117,38 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_createControllerIfNeededForTabGroup:(id)a3
+- (void)_createControllerIfNeededForTabGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   tabGroupControllers = self->_tabGroupControllers;
-  v17 = v4;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)tabGroupControllers objectForKeyedSubscript:v6];
+  v17 = groupCopy;
+  identifier = [groupCopy identifier];
+  v7 = [(NSMutableDictionary *)tabGroupControllers objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
     v8 = [objc_msgSend(MEMORY[0x1E69C3B80] "transformerClass")];
     v9 = MEMORY[0x1E69C3A30];
-    v10 = [v8 collection];
-    v11 = [(PUTabbedSidebarController *)self dataContext];
-    v12 = [v17 identifier];
-    v13 = [v9 dataSectionManagerForCollectionList:v10 context:v11 topLevelIdentifier:v12];
+    collection = [v8 collection];
+    dataContext = [(PUTabbedSidebarController *)self dataContext];
+    identifier2 = [v17 identifier];
+    v13 = [v9 dataSectionManagerForCollectionList:collection context:dataContext topLevelIdentifier:identifier2];
 
     v14 = [objc_alloc(MEMORY[0x1E69C3B80]) initWithTabGroup:v17 dataSectionManager:v13];
     v15 = self->_tabGroupControllers;
-    v16 = [v17 identifier];
-    [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
+    identifier3 = [v17 identifier];
+    [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:identifier3];
 
     [v14 updateTabGroup];
     [v14 setDelegate:self];
   }
 }
 
-- (id)tabBarController:(id)a3 sidebar:(id)a4 contextMenuConfigurationForTab:(id)a5
+- (id)tabBarController:(id)controller sidebar:(id)sidebar contextMenuConfigurationForTab:(id)tab
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(PUTabbedSidebarController *)self representedObjectForTab:v8];
+  controllerCopy = controller;
+  tabCopy = tab;
+  v9 = [(PUTabbedSidebarController *)self representedObjectForTab:tabCopy];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v10 = v9;
@@ -163,21 +163,21 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
-    v12 = [(PUTabbedSidebarController *)self options];
-    v13 = [v11 assetCollectionSubtype];
-    v14 = [v11 px_isSharedAlbum];
-    if ((v12 & 1) == 0 && (v13 == 2) | v14 & 1)
+    options = [(PUTabbedSidebarController *)self options];
+    assetCollectionSubtype = [v11 assetCollectionSubtype];
+    px_isSharedAlbum = [v11 px_isSharedAlbum];
+    if ((options & 1) == 0 && (assetCollectionSubtype == 2) | px_isSharedAlbum & 1)
     {
       v15 = MEMORY[0x1E69DC8D8];
-      v16 = [v8 identifier];
+      identifier = [tabCopy identifier];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __85__PUTabbedSidebarController_tabBarController_sidebar_contextMenuConfigurationForTab___block_invoke;
       v26[3] = &unk_1E7B78C80;
       v27 = v11;
-      v28 = self;
+      selfCopy = self;
       v17 = v11;
-      v18 = [v15 configurationWithIdentifier:v16 previewProvider:0 actionProvider:v26];
+      v18 = [v15 configurationWithIdentifier:identifier previewProvider:0 actionProvider:v26];
 
 LABEL_12:
       goto LABEL_15;
@@ -186,21 +186,21 @@ LABEL_12:
 
   else if ([v10 canContainCollections])
   {
-    v17 = [MEMORY[0x1E69C4608] popoverPresenterWithViewController:v7 sourceItem:v8];
-    v19 = [v7 undoManager];
+    v17 = [MEMORY[0x1E69C4608] popoverPresenterWithViewController:controllerCopy sourceItem:tabCopy];
+    undoManager = [controllerCopy undoManager];
     v18 = PXCollectionActionMenuForCollection();
 
     if (v18)
     {
       v20 = MEMORY[0x1E69DC8D8];
-      v21 = [v8 identifier];
+      identifier2 = [tabCopy identifier];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __85__PUTabbedSidebarController_tabBarController_sidebar_contextMenuConfigurationForTab___block_invoke_3;
       v24[3] = &unk_1E7B78CA8;
       v25 = v18;
       v22 = v18;
-      v18 = [v20 configurationWithIdentifier:v21 previewProvider:0 actionProvider:v24];
+      v18 = [v20 configurationWithIdentifier:identifier2 previewProvider:0 actionProvider:v24];
     }
 
     goto LABEL_12;
@@ -227,11 +227,11 @@ id __85__PUTabbedSidebarController_tabBarController_sidebar_contextMenuConfigura
   return v6;
 }
 
-- (id)tabBarController:(id)a3 sidebar:(id)a4 trailingSwipeActionsConfigurationForTab:(id)a5
+- (id)tabBarController:(id)controller sidebar:(id)sidebar trailingSwipeActionsConfigurationForTab:(id)tab
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(PUTabbedSidebarController *)self representedObjectForTab:a5];
+  controllerCopy = controller;
+  v8 = [(PUTabbedSidebarController *)self representedObjectForTab:tab];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v9 = v8;
@@ -246,7 +246,7 @@ id __85__PUTabbedSidebarController_tabBarController_sidebar_contextMenuConfigura
       v20 = &unk_1E7B78C30;
       v9 = v9;
       v21 = v9;
-      v22 = v7;
+      v22 = controllerCopy;
       v12 = [v11 contextualActionWithStyle:1 title:v10 handler:&v17];
       v13 = MEMORY[0x1E69DCFC0];
       v23[0] = v12;
@@ -294,47 +294,47 @@ uint64_t __94__PUTabbedSidebarController_tabBarController_sidebar_trailingSwipeA
   return result;
 }
 
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request
 {
-  v7 = a3;
+  controllerCopy = controller;
   v8 = MEMORY[0x1E69DD018];
-  v9 = a5;
-  v10 = [v8 itemFromRequest:v9];
-  v11 = [v9 tab];
+  requestCopy = request;
+  v10 = [v8 itemFromRequest:requestCopy];
+  v11 = [requestCopy tab];
 
   if (v11)
   {
     v12 = [(PUTabbedSidebarController *)self _tabGroupControllerForTab:v11];
     [v12 activateIfNeeded];
-    v13 = [v10 defaultContentConfiguration];
-    v14 = [v13 imageProperties];
-    v15 = [MEMORY[0x1E69DCA40] defaultMetrics];
-    [v15 scaledValueForValue:25.0];
+    defaultContentConfiguration = [v10 defaultContentConfiguration];
+    imageProperties = [defaultContentConfiguration imageProperties];
+    defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+    [defaultMetrics scaledValueForValue:25.0];
     v17 = v16;
 
     PXSizeMakeSquare();
-    [v14 setReservedLayoutSize:?];
-    [v14 reservedLayoutSize];
-    [v14 setMaximumSize:?];
-    v49 = v14;
-    [v14 setCornerRadius:v17 / 9.3];
+    [imageProperties setReservedLayoutSize:?];
+    [imageProperties reservedLayoutSize];
+    [imageProperties setMaximumSize:?];
+    v49 = imageProperties;
+    [imageProperties setCornerRadius:v17 / 9.3];
     v18 = [objc_msgSend(MEMORY[0x1E69C3B80] "transformerClass")];
-    v19 = [v11 image];
+    image = [v11 image];
 
-    if (!v19)
+    if (!image)
     {
-      v20 = [v18 glyphImageName];
-      if (v20)
+      glyphImageName = [v18 glyphImageName];
+      if (glyphImageName)
       {
-        v21 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v20];
-        [v13 setImage:v21];
+        v21 = [MEMORY[0x1E69DCAB8] _systemImageNamed:glyphImageName];
+        [defaultContentConfiguration setImage:v21];
       }
 
-      v22 = [v7 traitCollection];
-      [(PUTabbedSidebarController *)self _loadImageForTab:v11 traitCollection:v22];
+      traitCollection = [controllerCopy traitCollection];
+      [(PUTabbedSidebarController *)self _loadImageForTab:v11 traitCollection:traitCollection];
     }
 
-    v47 = self;
+    selfCopy = self;
     v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
     if ([v18 isDeletable])
     {
@@ -343,27 +343,27 @@ uint64_t __94__PUTabbedSidebarController_tabBarController_sidebar_trailingSwipeA
     }
 
     v48 = v18;
-    v25 = [v18 accessoryGlyphImageName];
-    if ([v25 length])
+    accessoryGlyphImageName = [v18 accessoryGlyphImageName];
+    if ([accessoryGlyphImageName length])
     {
       v26 = MEMORY[0x1E69DCAD8];
       [MEMORY[0x1E69DC888] secondaryLabelColor];
       v27 = v10;
-      v28 = v13;
+      v28 = defaultContentConfiguration;
       v29 = v12;
-      v31 = v30 = v7;
+      v31 = v30 = controllerCopy;
       v32 = [v26 configurationWithHierarchicalColor:v31];
 
       v33 = objc_alloc(MEMORY[0x1E69DCAE0]);
-      v34 = [MEMORY[0x1E69DCAB8] systemImageNamed:v25 withConfiguration:v32];
+      v34 = [MEMORY[0x1E69DCAB8] systemImageNamed:accessoryGlyphImageName withConfiguration:v32];
       v35 = [v33 initWithImage:v34];
 
       v36 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v35 placement:1];
       [v23 addObject:v36];
 
-      v7 = v30;
+      controllerCopy = v30;
       v12 = v29;
-      v13 = v28;
+      defaultContentConfiguration = v28;
       v10 = v27;
     }
 
@@ -373,31 +373,31 @@ uint64_t __94__PUTabbedSidebarController_tabBarController_sidebar_trailingSwipeA
     {
       v38 = v37;
 
-      v39 = [v38 parent];
-      if (v39)
+      parent = [v38 parent];
+      if (parent)
       {
-        v40 = v39;
+        v40 = parent;
         v41 = v10;
-        v42 = v13;
+        v42 = defaultContentConfiguration;
         v43 = v12;
-        v44 = v7;
-        v45 = [v38 sidebarAppearance];
+        v44 = controllerCopy;
+        sidebarAppearance = [v38 sidebarAppearance];
 
-        if (v45 != 1)
+        if (sidebarAppearance != 1)
         {
           v50[0] = MEMORY[0x1E69E9820];
           v50[1] = 3221225472;
           v50[2] = __69__PUTabbedSidebarController_tabBarController_sidebar_itemForRequest___block_invoke;
           v50[3] = &unk_1E7B80C38;
-          v50[4] = v47;
+          v50[4] = selfCopy;
           v38 = v38;
           v51 = v38;
-          [(PUTabbedSidebarController *)v47 _performTabUpdates:v50];
+          [(PUTabbedSidebarController *)selfCopy _performTabUpdates:v50];
         }
 
-        v7 = v44;
+        controllerCopy = v44;
         v12 = v43;
-        v13 = v42;
+        defaultContentConfiguration = v42;
         v10 = v41;
       }
     }
@@ -408,21 +408,21 @@ uint64_t __94__PUTabbedSidebarController_tabBarController_sidebar_trailingSwipeA
       v38 = 0;
     }
 
-    [v10 setContentConfiguration:v13];
+    [v10 setContentConfiguration:defaultContentConfiguration];
   }
 
   return v10;
 }
 
-- (void)tabGroupController:(id)a3 didUpdateAuxiliaryObjectsForTabs:(id)a4
+- (void)tabGroupController:(id)controller didUpdateAuxiliaryObjectsForTabs:(id)tabs
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  tabsCopy = tabs;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [tabsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -434,23 +434,23 @@ uint64_t __94__PUTabbedSidebarController_tabBarController_sidebar_trailingSwipeA
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tabsCopy);
         }
 
         [(PUTabbedSidebarController *)self _loadImageForTab:*(*(&v10 + 1) + 8 * v9++) traitCollection:0];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [tabsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)tabGroupController:(id)a3 makeViewControllerForTab:(id)a4
+- (id)tabGroupController:(id)controller makeViewControllerForTab:(id)tab
 {
-  v5 = [(PUTabbedSidebarController *)self representedObjectForTab:a4];
+  v5 = [(PUTabbedSidebarController *)self representedObjectForTab:tab];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -480,9 +480,9 @@ uint64_t __94__PUTabbedSidebarController_tabBarController_sidebar_trailingSwipeA
 
     v8 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:v9 revealMode:1 routingType:2];
     v10 = PXLemonadeViewControllerFactory();
-    v11 = [(PUTabbedSidebarController *)self photoLibrary];
-    v12 = [(PUTabbedSidebarController *)self actionProviderDelegate];
-    v7 = [v10 viewControllerForSidebarNavigationDestination:v8 photoLibrary:v11 actionProviderDelegate:v12];
+    photoLibrary = [(PUTabbedSidebarController *)self photoLibrary];
+    actionProviderDelegate = [(PUTabbedSidebarController *)self actionProviderDelegate];
+    v7 = [v10 viewControllerForSidebarNavigationDestination:v8 photoLibrary:photoLibrary actionProviderDelegate:actionProviderDelegate];
   }
 
   else
@@ -497,33 +497,33 @@ LABEL_15:
   return v7;
 }
 
-- (void)displayOrderDidChangeForGroup:(id)a3 undoManager:(id)a4
+- (void)displayOrderDidChangeForGroup:(id)group undoManager:(id)manager
 {
   tabGroupControllers = self->_tabGroupControllers;
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [(NSMutableDictionary *)tabGroupControllers objectForKeyedSubscript:v7];
+  managerCopy = manager;
+  identifier = [group identifier];
+  v8 = [(NSMutableDictionary *)tabGroupControllers objectForKeyedSubscript:identifier];
 
-  [v8 persistDisplayOrderWithUndoManager:v6];
+  [v8 persistDisplayOrderWithUndoManager:managerCopy];
 }
 
-- (id)representedObjectForTab:(id)a3
+- (id)representedObjectForTab:(id)tab
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
+  tabCopy = tab;
+  userInfo = [tabCopy userInfo];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 userInfo];
+    userInfo2 = [tabCopy userInfo];
   }
 
   else
   {
-    v5 = 0;
+    userInfo2 = 0;
   }
 
-  v6 = [v5 representedObject];
+  representedObject = [userInfo2 representedObject];
 
-  return v6;
+  return representedObject;
 }
 
 - (PXTabListManager)collectionsTabListManager
@@ -533,18 +533,18 @@ LABEL_15:
   if (!collectionsTabListManager)
   {
     v4 = objc_alloc(MEMORY[0x1E69C3B88]);
-    v5 = [(PUTabbedSidebarController *)self bookmarksTabGroupManager];
-    v16[0] = v5;
-    v6 = [(PUTabbedSidebarController *)self albumsTabGroupManager];
-    v16[1] = v6;
-    v7 = [(PUTabbedSidebarController *)self fromMyMacTabGroupManager];
-    v16[2] = v7;
-    v8 = [(PUTabbedSidebarController *)self sharedAlbumsTabGroupManager];
-    v16[3] = v8;
-    v9 = [(PUTabbedSidebarController *)self mediaTypesTabGroupManager];
-    v16[4] = v9;
-    v10 = [(PUTabbedSidebarController *)self utilitiesTabGroupManager];
-    v16[5] = v10;
+    bookmarksTabGroupManager = [(PUTabbedSidebarController *)self bookmarksTabGroupManager];
+    v16[0] = bookmarksTabGroupManager;
+    albumsTabGroupManager = [(PUTabbedSidebarController *)self albumsTabGroupManager];
+    v16[1] = albumsTabGroupManager;
+    fromMyMacTabGroupManager = [(PUTabbedSidebarController *)self fromMyMacTabGroupManager];
+    v16[2] = fromMyMacTabGroupManager;
+    sharedAlbumsTabGroupManager = [(PUTabbedSidebarController *)self sharedAlbumsTabGroupManager];
+    v16[3] = sharedAlbumsTabGroupManager;
+    mediaTypesTabGroupManager = [(PUTabbedSidebarController *)self mediaTypesTabGroupManager];
+    v16[4] = mediaTypesTabGroupManager;
+    utilitiesTabGroupManager = [(PUTabbedSidebarController *)self utilitiesTabGroupManager];
+    v16[5] = utilitiesTabGroupManager;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:6];
     v12 = [v4 initWithChildTabManagers:v11];
     v13 = self->_collectionsTabListManager;
@@ -568,15 +568,15 @@ LABEL_15:
 
   else
   {
-    v5 = [(PUTabbedSidebarController *)self photoLibrary];
-    v6 = [v5 px_virtualCollections];
-    v7 = [v6 utilitiesCollectionList];
+    photoLibrary = [(PUTabbedSidebarController *)self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    utilitiesCollectionList = [px_virtualCollections utilitiesCollectionList];
 
-    v8 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:v7];
+    v8 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:utilitiesCollectionList];
     v9 = MEMORY[0x1E69C3A30];
-    v10 = [(PUTabbedSidebarController *)self photoLibrary];
-    v11 = [(PUTabbedSidebarController *)self dataContext];
-    v12 = [v9 utilitiesDataSectionManagerForLibrary:v10 context:v11];
+    photoLibrary2 = [(PUTabbedSidebarController *)self photoLibrary];
+    dataContext = [(PUTabbedSidebarController *)self dataContext];
+    v12 = [v9 utilitiesDataSectionManagerForLibrary:photoLibrary2 context:dataContext];
 
     v13 = [objc_alloc(MEMORY[0x1E69C3B80]) initWithOutlineItem:v8 dataSectionManager:v12];
     v14 = self->_utilitiesTabGroupManager;
@@ -602,15 +602,15 @@ LABEL_15:
 
   else
   {
-    v5 = [(PUTabbedSidebarController *)self photoLibrary];
-    v6 = [v5 px_virtualCollections];
-    v7 = [v6 mediaTypesCollectionList];
+    photoLibrary = [(PUTabbedSidebarController *)self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    mediaTypesCollectionList = [px_virtualCollections mediaTypesCollectionList];
 
-    v8 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:v7];
+    v8 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:mediaTypesCollectionList];
     v9 = MEMORY[0x1E69C3A30];
-    v10 = [(PUTabbedSidebarController *)self photoLibrary];
-    v11 = [(PUTabbedSidebarController *)self dataContext];
-    v12 = [v9 mediaTypesDataSectionManagerForLibrary:v10 context:v11];
+    photoLibrary2 = [(PUTabbedSidebarController *)self photoLibrary];
+    dataContext = [(PUTabbedSidebarController *)self dataContext];
+    v12 = [v9 mediaTypesDataSectionManagerForLibrary:photoLibrary2 context:dataContext];
 
     v13 = [objc_alloc(MEMORY[0x1E69C3B80]) initWithOutlineItem:v8 dataSectionManager:v12];
     v14 = self->_mediaTypesTabGroupManager;
@@ -636,15 +636,15 @@ LABEL_15:
 
   else
   {
-    v5 = [(PUTabbedSidebarController *)self dataContext];
-    v6 = [(PUTabbedSidebarController *)self photoLibrary];
-    v7 = [v6 px_virtualCollections];
-    v8 = [v7 sharedAlbumsCollectionList];
+    dataContext = [(PUTabbedSidebarController *)self dataContext];
+    photoLibrary = [(PUTabbedSidebarController *)self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    sharedAlbumsCollectionList = [px_virtualCollections sharedAlbumsCollectionList];
 
-    v9 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:v8];
+    v9 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:sharedAlbumsCollectionList];
     v10 = MEMORY[0x1E69C3A30];
-    v11 = [(PUTabbedSidebarController *)self photoLibrary];
-    v12 = [v10 sharedAlbumsDataSectionManagerForLibrary:v11 context:v5];
+    photoLibrary2 = [(PUTabbedSidebarController *)self photoLibrary];
+    v12 = [v10 sharedAlbumsDataSectionManagerForLibrary:photoLibrary2 context:dataContext];
 
     v13 = [objc_alloc(MEMORY[0x1E69C3B80]) initWithOutlineItem:v9 dataSectionManager:v12];
     v14 = self->_sharedAlbumsTabGroupManager;
@@ -653,13 +653,13 @@ LABEL_15:
     [(PXTabGroupManager *)self->_sharedAlbumsTabGroupManager setCollapsedByDefault:1];
     [(PXTabGroupManager *)self->_sharedAlbumsTabGroupManager setDelegate:self];
     v15 = MEMORY[0x1E695DEC8];
-    v16 = [(PUTabbedSidebarController *)self addSharedAlbumAction];
-    v17 = [v15 arrayWithObjects:{v16, 0}];
+    addSharedAlbumAction = [(PUTabbedSidebarController *)self addSharedAlbumAction];
+    v17 = [v15 arrayWithObjects:{addSharedAlbumAction, 0}];
     [(PXTabGroupManager *)self->_sharedAlbumsTabGroupManager setSidebarActions:v17];
 
     [(PUTabbedSidebarController *)self _registerTabGroupController:self->_sharedAlbumsTabGroupManager forOutlineItem:v9];
-    v18 = [v5 enablementProvider];
-    [v18 configureEnablementOfSectionManager:self->_sharedAlbumsTabGroupManager enablementItem:6];
+    enablementProvider = [dataContext enablementProvider];
+    [enablementProvider configureEnablementOfSectionManager:self->_sharedAlbumsTabGroupManager enablementItem:6];
 
     v3 = self->_sharedAlbumsTabGroupManager;
   }
@@ -677,15 +677,15 @@ LABEL_15:
 
   else
   {
-    v5 = [(PUTabbedSidebarController *)self dataContext];
-    v6 = [(PUTabbedSidebarController *)self photoLibrary];
-    v7 = [v6 px_virtualCollections];
-    v8 = [v7 macSyncedAlbumsCollectionList];
+    dataContext = [(PUTabbedSidebarController *)self dataContext];
+    photoLibrary = [(PUTabbedSidebarController *)self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    macSyncedAlbumsCollectionList = [px_virtualCollections macSyncedAlbumsCollectionList];
 
-    v9 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:v8];
+    v9 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:macSyncedAlbumsCollectionList];
     v10 = MEMORY[0x1E69C3A30];
-    v11 = [(PUTabbedSidebarController *)self photoLibrary];
-    v12 = [v10 fromMyMacDataSectionManagerForLibrary:v11 context:v5];
+    photoLibrary2 = [(PUTabbedSidebarController *)self photoLibrary];
+    v12 = [v10 fromMyMacDataSectionManagerForLibrary:photoLibrary2 context:dataContext];
 
     v13 = [objc_alloc(MEMORY[0x1E69C3B80]) initWithOutlineItem:v9 dataSectionManager:v12];
     v14 = self->_fromMyMacTabGroupManager;
@@ -695,8 +695,8 @@ LABEL_15:
     [(PXTabGroupManager *)self->_fromMyMacTabGroupManager setDelegate:self];
     [(PXTabGroupManager *)self->_fromMyMacTabGroupManager setEnabled:1];
     [(PUTabbedSidebarController *)self _registerTabGroupController:self->_fromMyMacTabGroupManager forOutlineItem:v9];
-    v15 = [v5 enablementProvider];
-    [v15 configureEnablementOfSectionManager:self->_fromMyMacTabGroupManager enablementItem:7];
+    enablementProvider = [dataContext enablementProvider];
+    [enablementProvider configureEnablementOfSectionManager:self->_fromMyMacTabGroupManager enablementItem:7];
 
     v3 = self->_fromMyMacTabGroupManager;
   }
@@ -714,15 +714,15 @@ LABEL_15:
 
   else
   {
-    v5 = [(PUTabbedSidebarController *)self photoLibrary];
-    v6 = [v5 px_virtualCollections];
-    v7 = [v6 rootAlbumCollectionList];
+    photoLibrary = [(PUTabbedSidebarController *)self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    rootAlbumCollectionList = [px_virtualCollections rootAlbumCollectionList];
 
-    v8 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:v7];
+    v8 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:rootAlbumCollectionList];
     v9 = MEMORY[0x1E69C3A30];
-    v10 = [(PUTabbedSidebarController *)self photoLibrary];
-    v11 = [(PUTabbedSidebarController *)self dataContext];
-    v12 = [v9 albumsDataSectionManagerForLibrary:v10 context:v11];
+    photoLibrary2 = [(PUTabbedSidebarController *)self photoLibrary];
+    dataContext = [(PUTabbedSidebarController *)self dataContext];
+    v12 = [v9 albumsDataSectionManagerForLibrary:photoLibrary2 context:dataContext];
 
     v13 = [objc_alloc(MEMORY[0x1E69C3B80]) initWithOutlineItem:v8 dataSectionManager:v12];
     v14 = self->_albumsTabGroupManager;
@@ -732,8 +732,8 @@ LABEL_15:
     [(PXTabGroupManager *)self->_albumsTabGroupManager setDelegate:self];
     [(PXTabGroupManager *)self->_albumsTabGroupManager setEnabled:1];
     v15 = MEMORY[0x1E695DEC8];
-    v16 = [(PUTabbedSidebarController *)self addAlbumAction];
-    v17 = [v15 arrayWithObjects:{v16, 0}];
+    addAlbumAction = [(PUTabbedSidebarController *)self addAlbumAction];
+    v17 = [v15 arrayWithObjects:{addAlbumAction, 0}];
     [(PXTabGroupManager *)self->_albumsTabGroupManager setSidebarActions:v17];
 
     [(PUTabbedSidebarController *)self _registerTabGroupController:self->_albumsTabGroupManager forOutlineItem:v8];
@@ -753,14 +753,14 @@ LABEL_15:
 
   else
   {
-    v5 = [(PUTabbedSidebarController *)self photoLibrary];
-    v6 = [v5 px_virtualCollections];
-    v7 = [v6 bookmarksCollectionList];
+    photoLibrary = [(PUTabbedSidebarController *)self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    bookmarksCollectionList = [px_virtualCollections bookmarksCollectionList];
 
-    v8 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:v7];
+    v8 = [objc_alloc(MEMORY[0x1E69C3710]) initWithCollectionList:bookmarksCollectionList];
     v9 = MEMORY[0x1E69C3A30];
-    v10 = [(PUTabbedSidebarController *)self photoLibrary];
-    v11 = [v9 bookmarksDataSectionManagerForLibrary:v10];
+    photoLibrary2 = [(PUTabbedSidebarController *)self photoLibrary];
+    v11 = [v9 bookmarksDataSectionManagerForLibrary:photoLibrary2];
 
     v12 = [objc_alloc(MEMORY[0x1E69C3B80]) initWithOutlineItem:v8 dataSectionManager:v11];
     v13 = self->_bookmarksTabGroupManager;
@@ -786,12 +786,12 @@ LABEL_15:
   else
   {
     v5 = [PUSidebarDataSectionEnablementController alloc];
-    v6 = [(PUTabbedSidebarController *)self photoLibrary];
-    v7 = [(PUSidebarDataSectionEnablementController *)v5 initWithPhotoLibrary:v6 andOptions:[(PUTabbedSidebarController *)self options]];
+    photoLibrary = [(PUTabbedSidebarController *)self photoLibrary];
+    v7 = [(PUSidebarDataSectionEnablementController *)v5 initWithPhotoLibrary:photoLibrary andOptions:[(PUTabbedSidebarController *)self options]];
 
     v8 = MEMORY[0x1E69C3A28];
-    v9 = [(PUTabbedSidebarController *)self libraryFilterState];
-    v10 = [v8 standardContextWithLibraryFilterState:v9 enablementProvider:v7 assetsFilterPredicate:0 collectionsTabBadgeModel:0 sharedActivityTabBadgeModel:0];
+    libraryFilterState = [(PUTabbedSidebarController *)self libraryFilterState];
+    v10 = [v8 standardContextWithLibraryFilterState:libraryFilterState enablementProvider:v7 assetsFilterPredicate:0 collectionsTabBadgeModel:0 sharedActivityTabBadgeModel:0];
     v11 = self->_dataContext;
     self->_dataContext = v10;
 
@@ -801,20 +801,20 @@ LABEL_15:
   return v3;
 }
 
-- (PUTabbedSidebarController)initWithPhotoLibrary:(id)a3 libraryFilterState:(id)a4 actionProviderDelegate:(id)a5
+- (PUTabbedSidebarController)initWithPhotoLibrary:(id)library libraryFilterState:(id)state actionProviderDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  stateCopy = state;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = PUTabbedSidebarController;
   v12 = [(PUTabbedSidebarController *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photoLibrary, a3);
-    objc_storeStrong(&v13->_libraryFilterState, a4);
-    objc_storeWeak(&v13->_actionProviderDelegate, v11);
+    objc_storeStrong(&v12->_photoLibrary, library);
+    objc_storeStrong(&v13->_libraryFilterState, state);
+    objc_storeWeak(&v13->_actionProviderDelegate, delegateCopy);
     v13->_options = 0;
     v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:4];
     tabGroupControllers = v13->_tabGroupControllers;

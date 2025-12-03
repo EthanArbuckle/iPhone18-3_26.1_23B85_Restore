@@ -1,32 +1,32 @@
 @interface SVXServiceCommandHandlerUIDelayedActionCancelCommand
-- (SVXServiceCommandHandlerUIDelayedActionCancelCommand)initWithDelayedActionStore:(id)a3 performer:(id)a4;
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6;
+- (SVXServiceCommandHandlerUIDelayedActionCancelCommand)initWithDelayedActionStore:(id)store performer:(id)performer;
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion;
 @end
 
 @implementation SVXServiceCommandHandlerUIDelayedActionCancelCommand
 
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
+  commandCopy = command;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIDelayedActionCancelCommand.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIDelayedActionCancelCommand class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIDelayedActionCancelCommand.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIDelayedActionCancelCommand class]]"}];
   }
 
-  v11 = [v9 delayedActionAceId];
+  delayedActionAceId = [commandCopy delayedActionAceId];
   performer = self->_performer;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __105__SVXServiceCommandHandlerUIDelayedActionCancelCommand_handleCommand_withContext_taskTracker_completion___block_invoke;
   v16[3] = &unk_279C68EA8;
   v16[4] = self;
-  v17 = v11;
-  v18 = v10;
-  v13 = v10;
-  v14 = v11;
+  v17 = delayedActionAceId;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = delayedActionAceId;
   [(SVXPerforming *)performer performBlock:v16];
 }
 
@@ -62,21 +62,21 @@ void __105__SVXServiceCommandHandlerUIDelayedActionCancelCommand_handleCommand_w
 LABEL_7:
 }
 
-- (SVXServiceCommandHandlerUIDelayedActionCancelCommand)initWithDelayedActionStore:(id)a3 performer:(id)a4
+- (SVXServiceCommandHandlerUIDelayedActionCancelCommand)initWithDelayedActionStore:(id)store performer:(id)performer
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  performerCopy = performer;
   v17.receiver = self;
   v17.super_class = SVXServiceCommandHandlerUIDelayedActionCancelCommand;
   v9 = [(SVXServiceCommandHandlerUIDelayedActionCancelCommand *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_delayedActionStore, a3);
-    objc_storeStrong(&v10->_performer, a4);
+    objc_storeStrong(&v9->_delayedActionStore, store);
+    objc_storeStrong(&v10->_performer, performer);
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
-    v12 = [objc_opt_class() supportedCommandClass];
-    v13 = NSStringFromClass(v12);
+    supportedCommandClass = [objc_opt_class() supportedCommandClass];
+    v13 = NSStringFromClass(supportedCommandClass);
     v14 = [v11 initWithFormat:@"com.apple.SiriVOXService.service-command.%@", v13];
     identifier = v10->_identifier;
     v10->_identifier = v14;

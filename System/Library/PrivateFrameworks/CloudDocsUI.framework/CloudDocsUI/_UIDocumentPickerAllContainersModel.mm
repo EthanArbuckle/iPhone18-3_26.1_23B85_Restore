@@ -1,5 +1,5 @@
 @interface _UIDocumentPickerAllContainersModel
-- (_UIDocumentPickerAllContainersModel)initWithFoldersForPickableTypes:(id)a3 mode:(unint64_t)a4 sourceContainer:(id)a5;
+- (_UIDocumentPickerAllContainersModel)initWithFoldersForPickableTypes:(id)types mode:(unint64_t)mode sourceContainer:(id)container;
 - (id)_createObserver;
 - (id)scopes;
 - (void)startMonitoringChanges;
@@ -8,16 +8,16 @@
 
 @implementation _UIDocumentPickerAllContainersModel
 
-- (_UIDocumentPickerAllContainersModel)initWithFoldersForPickableTypes:(id)a3 mode:(unint64_t)a4 sourceContainer:(id)a5
+- (_UIDocumentPickerAllContainersModel)initWithFoldersForPickableTypes:(id)types mode:(unint64_t)mode sourceContainer:(id)container
 {
-  v9 = a5;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = _UIDocumentPickerAllContainersModel;
-  v10 = [(_UIDocumentPickerURLContainerModel *)&v13 initWithURL:0 pickableTypes:a3 mode:a4];
+  v10 = [(_UIDocumentPickerURLContainerModel *)&v13 initWithURL:0 pickableTypes:types mode:mode];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_sourceContainer, a5);
+    objc_storeStrong(&v10->_sourceContainer, container);
   }
 
   return v11;
@@ -26,26 +26,26 @@
 - (id)_createObserver
 {
   v3 = [_UIDocumentPickerCloudDirectoryObserver alloc];
-  v4 = [(_UIDocumentPickerAllContainersModel *)self scopes];
-  v5 = [(_UIDocumentPickerCloudDirectoryObserver *)v3 initWithRecursiveScopes:v4 delegate:self];
+  scopes = [(_UIDocumentPickerAllContainersModel *)self scopes];
+  v5 = [(_UIDocumentPickerCloudDirectoryObserver *)v3 initWithRecursiveScopes:scopes delegate:self];
 
   return v5;
 }
 
 - (void)updateScopes
 {
-  v3 = [MEMORY[0x277CFAE20] documentContainers];
-  v4 = [v3 valueForKey:@"identifier"];
+  documentContainers = [MEMORY[0x277CFAE20] documentContainers];
+  v4 = [documentContainers valueForKey:@"identifier"];
 
-  v5 = [MEMORY[0x277CFAE20] allContainersByContainerID];
+  allContainersByContainerID = [MEMORY[0x277CFAE20] allContainersByContainerID];
   v6 = MEMORY[0x277CCAC30];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __51___UIDocumentPickerAllContainersModel_updateScopes__block_invoke;
   v14 = &unk_278DD6EA8;
-  v15 = v5;
-  v16 = self;
-  v7 = v5;
+  v15 = allContainersByContainerID;
+  selfCopy = self;
+  v7 = allContainersByContainerID;
   v8 = [v6 predicateWithBlock:&v11];
   v9 = [v4 filteredArrayUsingPredicate:{v8, v11, v12, v13, v14}];
   scopes = self->_scopes;
@@ -62,22 +62,22 @@
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"sortPath" ascending:1];
   v26[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-  v5 = [(_UIDocumentPickerURLContainerModel *)self observer];
-  [v5 setSortDescriptors:v4];
+  observer = [(_UIDocumentPickerURLContainerModel *)self observer];
+  [observer setSortDescriptors:v4];
 
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K UTI-CONFORMS-TO %@", *MEMORY[0x277CCA4B8], *MEMORY[0x277CC2078]];
-  v7 = [(_UIDocumentPickerURLContainerModel *)self observer];
-  [v7 setQueryPredicate:v6];
+  observer2 = [(_UIDocumentPickerURLContainerModel *)self observer];
+  [observer2 setQueryPredicate:v6];
 
-  v8 = self;
+  selfCopy = self;
   [(_UIDocumentPickerAllContainersModel *)self updateScopes];
   v9 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [MEMORY[0x277CFAE20] documentContainers];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  documentContainers = [MEMORY[0x277CFAE20] documentContainers];
+  v11 = [documentContainers countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -88,29 +88,29 @@
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(documentContainers);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
         if (([v15 isInInitialState] & 1) == 0)
         {
           v16 = [[_UIDocumentPickerContainerContainerItem alloc] initWithContainer:v15];
-          scopes = v8->_scopes;
-          v18 = [v15 identifier];
-          [(_UIDocumentPickerContainerItem *)v16 setPickable:[(NSArray *)scopes containsObject:v18]];
+          scopes = selfCopy->_scopes;
+          identifier = [v15 identifier];
+          [(_UIDocumentPickerContainerItem *)v16 setPickable:[(NSArray *)scopes containsObject:identifier]];
 
           [v9 addObject:v16];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v12 = [documentContainers countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v12);
   }
 
-  v19 = [(_UIDocumentPickerURLContainerModel *)v8 observer];
-  [v19 setStaticItems:v9];
+  observer3 = [(_UIDocumentPickerURLContainerModel *)selfCopy observer];
+  [observer3 setStaticItems:v9];
 }
 
 - (id)scopes

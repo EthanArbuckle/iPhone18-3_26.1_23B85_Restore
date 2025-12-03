@@ -1,8 +1,8 @@
 @interface PowerUIRelevantDrainPredictionResult
 - (PowerUIRelevantDrainPredictionResult)init;
 - (id)description;
-- (void)setScheme:(int64_t)a3;
-- (void)setSuggestedLimitForSignificantDrain:(unint64_t)a3;
+- (void)setScheme:(int64_t)scheme;
+- (void)setSuggestedLimitForSignificantDrain:(unint64_t)drain;
 @end
 
 @implementation PowerUIRelevantDrainPredictionResult
@@ -26,33 +26,33 @@
   return v3;
 }
 
-- (void)setScheme:(int64_t)a3
+- (void)setScheme:(int64_t)scheme
 {
-  if ((a3 - 1) > 3)
+  if ((scheme - 1) > 3)
   {
     v3 = &stru_282D0B728;
   }
 
   else
   {
-    v3 = off_2782D4990[a3 - 1];
+    v3 = off_2782D4990[scheme - 1];
   }
 
   predictionSchemeString = self->_predictionSchemeString;
-  self->_predictionScheme = a3;
+  self->_predictionScheme = scheme;
   self->_predictionSchemeString = &v3->isa;
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSuggestedLimitForSignificantDrain:(unint64_t)a3
+- (void)setSuggestedLimitForSignificantDrain:(unint64_t)drain
 {
-  v3 = 100;
+  drainCopy = 100;
   if (!self->_significantDrainAhead)
   {
-    v3 = a3;
+    drainCopy = drain;
   }
 
-  self->_suggestedLimit = v3;
+  self->_suggestedLimit = drainCopy;
 }
 
 - (id)description

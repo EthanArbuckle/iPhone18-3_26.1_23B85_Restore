@@ -1,34 +1,34 @@
 @interface CSAdaptiveFontLayoutContext
-+ (CSAdaptiveFontLayoutContext)layoutContextWithPortrait:(BOOL)a3 deviceCategory:(unint64_t)a4;
-+ (CSAdaptiveFontLayoutContext)layoutContextWithPortrait:(BOOL)a3 deviceCategory:(unint64_t)a4 maximumWidthPortrait:(id)a5 maximumWidthLandscape:(id)a6 text:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (CSAdaptiveFontLayoutContext)layoutContextWithPortrait:(BOOL)portrait deviceCategory:(unint64_t)category;
++ (CSAdaptiveFontLayoutContext)layoutContextWithPortrait:(BOOL)portrait deviceCategory:(unint64_t)category maximumWidthPortrait:(id)widthPortrait maximumWidthLandscape:(id)landscape text:(id)text;
+- (BOOL)isEqual:(id)equal;
 - (CSAdaptiveFontLayoutContext)init;
 @end
 
 @implementation CSAdaptiveFontLayoutContext
 
-+ (CSAdaptiveFontLayoutContext)layoutContextWithPortrait:(BOOL)a3 deviceCategory:(unint64_t)a4
++ (CSAdaptiveFontLayoutContext)layoutContextWithPortrait:(BOOL)portrait deviceCategory:(unint64_t)category
 {
-  v4 = sub_1A2D9CAC8(a3, a4);
+  v4 = sub_1A2D9CAC8(portrait, category);
 
   return v4;
 }
 
-+ (CSAdaptiveFontLayoutContext)layoutContextWithPortrait:(BOOL)a3 deviceCategory:(unint64_t)a4 maximumWidthPortrait:(id)a5 maximumWidthLandscape:(id)a6 text:(id)a7
++ (CSAdaptiveFontLayoutContext)layoutContextWithPortrait:(BOOL)portrait deviceCategory:(unint64_t)category maximumWidthPortrait:(id)widthPortrait maximumWidthLandscape:(id)landscape text:(id)text
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = sub_1A2D9CCE8(a3, a4, a5, a6, a7);
+  widthPortraitCopy = widthPortrait;
+  landscapeCopy = landscape;
+  textCopy = text;
+  v15 = sub_1A2D9CCE8(portrait, category, widthPortrait, landscape, text);
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A2D9FCD0();
     swift_unknownObjectRelease();
@@ -37,7 +37,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = AdaptiveFontLayoutContext.isEqual(_:)(v8);

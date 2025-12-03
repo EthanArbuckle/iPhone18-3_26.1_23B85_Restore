@@ -1,9 +1,9 @@
 @interface DrivePreferences
 - (BOOL)hasAnyNonStandardPreferences;
-- (DrivePreferences)initWithAutomobileOptions:(id)a3 defaults:(id)a4;
-- (DrivePreferences)initWithAvoidTolls:(BOOL)a3 avoidHighways:(BOOL)a4 ignoreLiveTraffic:(BOOL)a5 defaults:(id)a6;
-- (DrivePreferences)initWithCopy:(id)a3;
-- (DrivePreferences)initWithDefaults:(id)a3;
+- (DrivePreferences)initWithAutomobileOptions:(id)options defaults:(id)defaults;
+- (DrivePreferences)initWithAvoidTolls:(BOOL)tolls avoidHighways:(BOOL)highways ignoreLiveTraffic:(BOOL)traffic defaults:(id)defaults;
+- (DrivePreferences)initWithCopy:(id)copy;
+- (DrivePreferences)initWithDefaults:(id)defaults;
 - (id)_values;
 - (id)automobileOptions;
 - (id)writtenDefaults;
@@ -12,59 +12,59 @@
 
 @implementation DrivePreferences
 
-- (DrivePreferences)initWithAvoidTolls:(BOOL)a3 avoidHighways:(BOOL)a4 ignoreLiveTraffic:(BOOL)a5 defaults:(id)a6
+- (DrivePreferences)initWithAvoidTolls:(BOOL)tolls avoidHighways:(BOOL)highways ignoreLiveTraffic:(BOOL)traffic defaults:(id)defaults
 {
   v10.receiver = self;
   v10.super_class = DrivePreferences;
-  result = [(WatchSyncedPreferences *)&v10 initWithDefaults:a6];
+  result = [(WatchSyncedPreferences *)&v10 initWithDefaults:defaults];
   if (result)
   {
-    result->_avoidTolls = a3;
-    result->_avoidHighways = a4;
-    result->_ignoreLiveTraffic = a5;
+    result->_avoidTolls = tolls;
+    result->_avoidHighways = highways;
+    result->_ignoreLiveTraffic = traffic;
   }
 
   return result;
 }
 
-- (DrivePreferences)initWithAutomobileOptions:(id)a3 defaults:(id)a4
+- (DrivePreferences)initWithAutomobileOptions:(id)options defaults:(id)defaults
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 userPreferences];
-  v9 = [v8 avoidTolls];
-  v10 = [v7 userPreferences];
-  v11 = [v10 avoidHighways];
-  v12 = [v7 trafficType];
+  defaultsCopy = defaults;
+  optionsCopy = options;
+  userPreferences = [optionsCopy userPreferences];
+  avoidTolls = [userPreferences avoidTolls];
+  userPreferences2 = [optionsCopy userPreferences];
+  avoidHighways = [userPreferences2 avoidHighways];
+  trafficType = [optionsCopy trafficType];
 
-  v13 = [(DrivePreferences *)self initWithAvoidTolls:v9 avoidHighways:v11 ignoreLiveTraffic:v12 != 3 defaults:v6];
+  v13 = [(DrivePreferences *)self initWithAvoidTolls:avoidTolls avoidHighways:avoidHighways ignoreLiveTraffic:trafficType != 3 defaults:defaultsCopy];
   return v13;
 }
 
-- (DrivePreferences)initWithDefaults:(id)a3
+- (DrivePreferences)initWithDefaults:(id)defaults
 {
   v4.receiver = self;
   v4.super_class = DrivePreferences;
-  return [(WatchSyncedPreferences *)&v4 initWithDefaults:a3];
+  return [(WatchSyncedPreferences *)&v4 initWithDefaults:defaults];
 }
 
-- (DrivePreferences)initWithCopy:(id)a3
+- (DrivePreferences)initWithCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   v8.receiver = self;
   v8.super_class = DrivePreferences;
-  v5 = [(WatchSyncedPreferences *)&v8 initWithCopy:v4];
+  v5 = [(WatchSyncedPreferences *)&v8 initWithCopy:copyCopy];
   if (v5)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (copyCopy)
     {
       if (isKindOfClass)
       {
-        v5->_avoidTolls = v4[24];
-        v5->_avoidHighways = v4[25];
-        v5->_ignoreLiveTraffic = v4[26];
+        v5->_avoidTolls = copyCopy[24];
+        v5->_avoidHighways = copyCopy[25];
+        v5->_ignoreLiveTraffic = copyCopy[26];
       }
     }
   }
@@ -97,8 +97,8 @@
 
 - (id)writtenDefaults
 {
-  v2 = [(WatchSyncedPreferences *)self defaults];
-  v6[0] = v2;
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  v6[0] = defaults;
   v3 = +[NSUserDefaults __maps_groupUserDefaults];
   v6[1] = v3;
   v4 = [NSArray arrayWithObjects:v6 count:2];
@@ -118,14 +118,14 @@
 
 - (void)loadValuesFromDefaults
 {
-  v3 = [(WatchSyncedPreferences *)self defaults];
-  -[DrivePreferences setAvoidTolls:](self, "setAvoidTolls:", [v3 BOOLForKey:@"MapsDefaultAvoidTollsKey"]);
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  -[DrivePreferences setAvoidTolls:](self, "setAvoidTolls:", [defaults BOOLForKey:@"MapsDefaultAvoidTollsKey"]);
 
-  v4 = [(WatchSyncedPreferences *)self defaults];
-  -[DrivePreferences setAvoidHighways:](self, "setAvoidHighways:", [v4 BOOLForKey:@"MapsDefaultAvoidHighwaysKey"]);
+  defaults2 = [(WatchSyncedPreferences *)self defaults];
+  -[DrivePreferences setAvoidHighways:](self, "setAvoidHighways:", [defaults2 BOOLForKey:@"MapsDefaultAvoidHighwaysKey"]);
 
-  v5 = [(WatchSyncedPreferences *)self defaults];
-  -[DrivePreferences setIgnoreLiveTraffic:](self, "setIgnoreLiveTraffic:", [v5 BOOLForKey:@"NavigationDirectionsIgnoreLiveTraffic"]);
+  defaults3 = [(WatchSyncedPreferences *)self defaults];
+  -[DrivePreferences setIgnoreLiveTraffic:](self, "setIgnoreLiveTraffic:", [defaults3 BOOLForKey:@"NavigationDirectionsIgnoreLiveTraffic"]);
 }
 
 - (id)_values

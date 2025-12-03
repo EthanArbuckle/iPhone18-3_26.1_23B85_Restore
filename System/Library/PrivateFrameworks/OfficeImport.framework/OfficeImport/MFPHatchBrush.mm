@@ -1,28 +1,28 @@
 @interface MFPHatchBrush
-+ (id)bitmapNameForHatchStyle:(int)a3;
-- (MFPHatchBrush)initWithHatchStyle:(int)a3 foreColor:(id)a4 backColor:(id)a5;
++ (id)bitmapNameForHatchStyle:(int)style;
+- (MFPHatchBrush)initWithHatchStyle:(int)style foreColor:(id)color backColor:(id)backColor;
 @end
 
 @implementation MFPHatchBrush
 
-+ (id)bitmapNameForHatchStyle:(int)a3
++ (id)bitmapNameForHatchStyle:(int)style
 {
-  if (a3 > 0x34)
+  if (style > 0x34)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_2799CC7E8 + a3);
+    return *(&off_2799CC7E8 + style);
   }
 }
 
-- (MFPHatchBrush)initWithHatchStyle:(int)a3 foreColor:(id)a4 backColor:(id)a5
+- (MFPHatchBrush)initWithHatchStyle:(int)style foreColor:(id)color backColor:(id)backColor
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&style;
+  colorCopy = color;
+  backColorCopy = backColor;
   v10 = [MFPHatchBrush bitmapNameForHatchStyle:v6];
   if (v10)
   {

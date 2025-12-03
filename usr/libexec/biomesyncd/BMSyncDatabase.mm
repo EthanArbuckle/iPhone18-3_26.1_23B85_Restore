@@ -1,50 +1,50 @@
 @interface BMSyncDatabase
-+ (id)createDatabaseForAccount:(id)a3 queue:(id)a4;
-+ (id)createPrimaryDatabaseWithQueue:(id)a3;
++ (id)createDatabaseForAccount:(id)account queue:(id)queue;
++ (id)createPrimaryDatabaseWithQueue:(id)queue;
 + (id)primaryDatabasePath;
 + (id)primaryDatabaseWALPath;
-+ (void)enumerateAccountSpecificDatabasesWithBlock:(id)a3;
-- (BMSyncDatabase)initWithPath:(id)a3 options:(unint64_t)a4 queue:(id)a5;
-- (BMSyncDatabase)initWithQueue:(id)a3;
-- (BOOL)_tryOpen:(unint64_t)a3;
-- (BOOL)addAtomBatchFileNameToAtomBatchFiles:(id)a3 sessionContext:(id)a4 locationRow:(id)a5;
-- (BOOL)addCKAtomRow:(id)a3 inStream:(id)a4;
++ (void)enumerateAccountSpecificDatabasesWithBlock:(id)block;
+- (BMSyncDatabase)initWithPath:(id)path options:(unint64_t)options queue:(id)queue;
+- (BMSyncDatabase)initWithQueue:(id)queue;
+- (BOOL)_tryOpen:(unint64_t)open;
+- (BOOL)addAtomBatchFileNameToAtomBatchFiles:(id)files sessionContext:(id)context locationRow:(id)row;
+- (BOOL)addCKAtomRow:(id)row inStream:(id)stream;
 - (BOOL)areAtomBatchFileNameRowsPresent;
-- (BOOL)ckRecordExists:(id)a3 zoneName:(id)a4 recordType:(unint64_t)a5;
-- (BOOL)ckZoneExists:(id)a3;
-- (BOOL)ckZoneSetZoneVersionUUID:(id)a3 forZoneName:(id)a4;
-- (BOOL)clearCKMergeableRecordValueServerMergeableValuesForRecordName:(id)a3 zoneName:(id)a4;
-- (BOOL)clearCKMergeableRecordValueServerMergeableValuesForZoneName:(id)a3;
-- (BOOL)clearCKRecordLocalMergeableValueAndSetToSyncForZone:(id)a3;
-- (BOOL)containsCKAtomRowWithSegment:(id)a3 inStream:(id)a4;
-- (BOOL)containsCKAtomRowWithTimestamp:(id)a3 inStream:(id)a4;
-- (BOOL)containsCKAtomRowWithTimestamp:(id)a3 inStream:(id)a4 onDisk:(BOOL)a5;
-- (BOOL)deleteAllAtomsAtOrBeforeLocation:(id)a3;
-- (BOOL)deleteAtomBatchFilesTableRowsNotReferencedInCKAtomForStream:(id)a3;
-- (BOOL)deleteAtomsFromCKAtomWithNonExistentAtomBatchFilesForStream:(id)a3;
-- (BOOL)deleteRowsWithAtomBatchFilename:(id)a3;
-- (BOOL)disableAllCKSyncRecordsForSite:(id)a3 stream:(id)a4;
-- (BOOL)enableAllCKSyncRecordsPreviouslyDisabledForSite:(id)a3 stream:(id)a4;
-- (BOOL)getLatestTombstoneBookmarkForSiteIdentifier:(id)a3 inStream:(id)a4 segmentName:(id *)a5 segmentOffset:(unint64_t *)a6;
-- (BOOL)isAtomBatchFileNamePresent:(id)a3;
+- (BOOL)ckRecordExists:(id)exists zoneName:(id)name recordType:(unint64_t)type;
+- (BOOL)ckZoneExists:(id)exists;
+- (BOOL)ckZoneSetZoneVersionUUID:(id)d forZoneName:(id)name;
+- (BOOL)clearCKMergeableRecordValueServerMergeableValuesForRecordName:(id)name zoneName:(id)zoneName;
+- (BOOL)clearCKMergeableRecordValueServerMergeableValuesForZoneName:(id)name;
+- (BOOL)clearCKRecordLocalMergeableValueAndSetToSyncForZone:(id)zone;
+- (BOOL)containsCKAtomRowWithSegment:(id)segment inStream:(id)stream;
+- (BOOL)containsCKAtomRowWithTimestamp:(id)timestamp inStream:(id)stream;
+- (BOOL)containsCKAtomRowWithTimestamp:(id)timestamp inStream:(id)stream onDisk:(BOOL)disk;
+- (BOOL)deleteAllAtomsAtOrBeforeLocation:(id)location;
+- (BOOL)deleteAtomBatchFilesTableRowsNotReferencedInCKAtomForStream:(id)stream;
+- (BOOL)deleteAtomsFromCKAtomWithNonExistentAtomBatchFilesForStream:(id)stream;
+- (BOOL)deleteRowsWithAtomBatchFilename:(id)filename;
+- (BOOL)disableAllCKSyncRecordsForSite:(id)site stream:(id)stream;
+- (BOOL)enableAllCKSyncRecordsPreviouslyDisabledForSite:(id)site stream:(id)stream;
+- (BOOL)getLatestTombstoneBookmarkForSiteIdentifier:(id)identifier inStream:(id)stream segmentName:(id *)name segmentOffset:(unint64_t *)offset;
+- (BOOL)isAtomBatchFileNamePresent:(id)present;
 - (BOOL)migration_Schema20ToSchema21;
 - (BOOL)migration_Schema31ToSchema32;
 - (BOOL)migration_StarSkySchema11ToSydRoSchema12;
 - (BOOL)open;
-- (BOOL)removeAllDeletedLocationsBeforeHighestDeletedLocation:(id)a3;
-- (BOOL)resetCKRecordsMetaDataAndSetToSyncForZone:(id)a3;
-- (BOOL)saveCKMergeableRecordValueRecordName:(id)a3 zoneName:(id)a4 mergeableRecordValueData:(id)a5;
-- (BOOL)saveCKRecordHighestDeletedLocationRow:(id)a3 recordName:(id)a4 zoneName:(id)a5 recordExists:(BOOL)a6;
-- (BOOL)saveCKRecordLocalMergeableValue:(id)a3 recordName:(id)a4 zoneName:(id)a5 locationRow:(id)a6;
-- (BOOL)saveCKRecordServerMergeableValue:(id)a3 recordName:(id)a4 zoneName:(id)a5 locationRow:(id)a6;
-- (BOOL)saveLatestTombstoneBookmark:(id)a3 forSiteIdentifier:(id)a4 inStream:(id)a5;
-- (BOOL)setLastSyncDate:(id)a3 forDeviceWithIdentifier:(id)a4;
-- (BOOL)updateAllLocationsAtOrBefore:(id)a3 state:(unint64_t)a4;
-- (BOOL)updateCKAtomRow:(id)a3 inStream:(id)a4;
-- (BOOL)updateLocationState:(unint64_t)a3 forLocation:(id)a4;
-- (BOOL)upsertCKRecordWithLocation:(id)a3 inStream:(id)a4;
-- (BOOL)upsertLocation:(id)a3;
-- (BOOL)vacuumWithShouldContinueBlock:(id)a3;
+- (BOOL)removeAllDeletedLocationsBeforeHighestDeletedLocation:(id)location;
+- (BOOL)resetCKRecordsMetaDataAndSetToSyncForZone:(id)zone;
+- (BOOL)saveCKMergeableRecordValueRecordName:(id)name zoneName:(id)zoneName mergeableRecordValueData:(id)data;
+- (BOOL)saveCKRecordHighestDeletedLocationRow:(id)row recordName:(id)name zoneName:(id)zoneName recordExists:(BOOL)exists;
+- (BOOL)saveCKRecordLocalMergeableValue:(id)value recordName:(id)name zoneName:(id)zoneName locationRow:(id)row;
+- (BOOL)saveCKRecordServerMergeableValue:(id)value recordName:(id)name zoneName:(id)zoneName locationRow:(id)row;
+- (BOOL)saveLatestTombstoneBookmark:(id)bookmark forSiteIdentifier:(id)identifier inStream:(id)stream;
+- (BOOL)setLastSyncDate:(id)date forDeviceWithIdentifier:(id)identifier;
+- (BOOL)updateAllLocationsAtOrBefore:(id)before state:(unint64_t)state;
+- (BOOL)updateCKAtomRow:(id)row inStream:(id)stream;
+- (BOOL)updateLocationState:(unint64_t)state forLocation:(id)location;
+- (BOOL)upsertCKRecordWithLocation:(id)location inStream:(id)stream;
+- (BOOL)upsertLocation:(id)location;
+- (BOOL)vacuumWithShouldContinueBlock:(id)block;
 - (NSDate)dateOfLastVacuum;
 - (NSDate)lastCloudKitSyncAttemptDate;
 - (NSDate)lastCloudKitSyncDate;
@@ -52,87 +52,87 @@
 - (NSDate)lastRapportSyncDate;
 - (NSUUID)sharedSyncGeneration;
 - (id)CKAtomRowSiteIdentifiers;
-- (id)CKAtomRowSiteIdentifiersForStreamIdentifier:(id)a3;
-- (id)activeLocationsInClockVector:(id)a3 inStream:(id)a4 error:(id *)a5;
+- (id)CKAtomRowSiteIdentifiersForStreamIdentifier:(id)identifier;
+- (id)activeLocationsInClockVector:(id)vector inStream:(id)stream error:(id *)error;
 - (id)allPeers;
-- (id)ckAtomRowForAtomWithBookmark:(id)a3 type:(unint64_t)a4 forSiteIdentifier:(id)a5 inStream:(id)a6;
-- (id)ckAtomRowWithTimestamp:(id)a3 inStream:(id)a4;
-- (id)ckRecordForRecordName:(id)a3 zoneName:(id)a4 recordType:(unint64_t)a5;
-- (id)ckRecordsToSyncToCloudKitForZone:(id)a3;
-- (id)ckZoneForZoneName:(id)a3;
-- (id)computeHighestLocationToDeleteUpToBookmark:(id)a3 forSiteIdentifier:(id)a4 inStream:(id)a5 offsetsIncrease:(BOOL)a6;
-- (id)createCKRecordFromRecordID:(id)a3 newRecord:(BOOL *)a4 recordType:(unint64_t)a5;
-- (id)deviceWithIdentifier:(id)a3;
+- (id)ckAtomRowForAtomWithBookmark:(id)bookmark type:(unint64_t)type forSiteIdentifier:(id)identifier inStream:(id)stream;
+- (id)ckAtomRowWithTimestamp:(id)timestamp inStream:(id)stream;
+- (id)ckRecordForRecordName:(id)name zoneName:(id)zoneName recordType:(unint64_t)type;
+- (id)ckRecordsToSyncToCloudKitForZone:(id)zone;
+- (id)ckZoneForZoneName:(id)name;
+- (id)computeHighestLocationToDeleteUpToBookmark:(id)bookmark forSiteIdentifier:(id)identifier inStream:(id)stream offsetsIncrease:(BOOL)increase;
+- (id)createCKRecordFromRecordID:(id)d newRecord:(BOOL *)record recordType:(unint64_t)type;
+- (id)deviceWithIdentifier:(id)identifier;
 - (id)gatherAllCKSyncRecordRecordsToBeDeleted;
-- (id)getSystemFieldsDataForRecordName:(id)a3 zoneName:(id)a4 recordType:(unint64_t)a5;
-- (id)highestDeletedLocationForSiteIdentifier:(id)a3 inStream:(id)a4;
-- (id)highestDeletedLocationsForStream:(id)a3;
-- (id)highestLocationWithBufferedAtomsOlderThan:(double)a3 forSiteIdentifier:(id)a4 inStream:(id)a5;
-- (id)insertLocationIfNotExists:(id)a3 withState:(unint64_t)a4;
+- (id)getSystemFieldsDataForRecordName:(id)name zoneName:(id)zoneName recordType:(unint64_t)type;
+- (id)highestDeletedLocationForSiteIdentifier:(id)identifier inStream:(id)stream;
+- (id)highestDeletedLocationsForStream:(id)stream;
+- (id)highestLocationWithBufferedAtomsOlderThan:(double)than forSiteIdentifier:(id)identifier inStream:(id)stream;
+- (id)insertLocationIfNotExists:(id)exists withState:(unint64_t)state;
 - (id)lastSyncDateFromAnyDevice;
-- (id)lastSyncDateOfDeviceWithIdentifier:(id)a3;
-- (id)latestCKAtomRowForSiteIdentifier:(id)a3 inStream:(id)a4;
-- (id)latestCKAtomRowOfType:(unint64_t)a3 forSiteIdentifier:(id)a4 inStream:(id)a5;
-- (id)latestDistributedTimestampForSiteIdentifier:(id)a3 inStream:(id)a4;
-- (id)legacyTimestampClockVectorForStreamName:(id)a3;
+- (id)lastSyncDateOfDeviceWithIdentifier:(id)identifier;
+- (id)latestCKAtomRowForSiteIdentifier:(id)identifier inStream:(id)stream;
+- (id)latestCKAtomRowOfType:(unint64_t)type forSiteIdentifier:(id)identifier inStream:(id)stream;
+- (id)latestDistributedTimestampForSiteIdentifier:(id)identifier inStream:(id)stream;
+- (id)legacyTimestampClockVectorForStreamName:(id)name;
 - (id)localDevice;
-- (id)locationRowWithLocation:(id)a3;
-- (id)locationRowWithLocationID:(id)a3;
-- (id)locationsWithState:(unint64_t)a3;
-- (id)locationsWithState:(unint64_t)a3 stream:(id)a4;
-- (id)previousLocationRowBeforeLocationRow:(id)a3;
-- (id)rangeClockVectorForStreamName:(id)a3;
-- (id)recordFromSystemFieldsData:(id)a3;
-- (id)stateVectorForLocationRow:(id)a3;
-- (id)valueForMetadataKey:(id)a3;
+- (id)locationRowWithLocation:(id)location;
+- (id)locationRowWithLocationID:(id)d;
+- (id)locationsWithState:(unint64_t)state;
+- (id)locationsWithState:(unint64_t)state stream:(id)stream;
+- (id)previousLocationRowBeforeLocationRow:(id)row;
+- (id)rangeClockVectorForStreamName:(id)name;
+- (id)recordFromSystemFieldsData:(id)data;
+- (id)stateVectorForLocationRow:(id)row;
+- (id)valueForMetadataKey:(id)key;
 - (int)CRDTLocationCount;
 - (int)ckAtomCount;
 - (unint64_t)_numPagesToVacuum;
-- (unint64_t)_sizeOfFileInKilobytes:(id)a3;
-- (unint64_t)ckRecordCountForRecordType:(unint64_t)a3;
+- (unint64_t)_sizeOfFileInKilobytes:(id)kilobytes;
+- (unint64_t)ckRecordCountForRecordType:(unint64_t)type;
 - (unint64_t)countAtomMergeResultRecords;
 - (unint64_t)databaseSizeInKilobytes;
-- (unint64_t)numRowsInTable:(id)a3;
-- (unint64_t)sizeOfTableInKilobytes:(id)a3;
+- (unint64_t)numRowsInTable:(id)table;
+- (unint64_t)sizeOfTableInKilobytes:(id)kilobytes;
 - (unint64_t)state;
 - (unint64_t)walSizeInKilobytes;
-- (void)atomRowsInTimestampClockVector:(id)a3 forLocation:(id)a4 inStream:(id)a5 enumerateWithBlock:(id)a6;
-- (void)atomRowsNotOnDiskReferencingSiteIdentifier:(id)a3 inStream:(id)a4 enumerateWithBlock:(id)a5;
-- (void)atomsAtOrBeforeLocation:(id)a3 ofType:(unint64_t)a4 enumerateWithBlock:(id)a5;
+- (void)atomRowsInTimestampClockVector:(id)vector forLocation:(id)location inStream:(id)stream enumerateWithBlock:(id)block;
+- (void)atomRowsNotOnDiskReferencingSiteIdentifier:(id)identifier inStream:(id)stream enumerateWithBlock:(id)block;
+- (void)atomsAtOrBeforeLocation:(id)location ofType:(unint64_t)type enumerateWithBlock:(id)block;
 - (void)clearCKSyncEngineMetaData;
 - (void)clearCachedStatements;
 - (void)close;
 - (void)compactAndDeleteSessionLogs;
-- (void)computeAggregatedSessionLogsWithHandlerBlock:(id)a3;
-- (void)deleteAllCKRecordsInZone:(id)a3;
-- (void)deleteCKRecordAtLocation:(id)a3;
-- (void)deleteCKRecordsAtOrBeforeLocation:(id)a3;
-- (void)deleteCKRecordsForStreamName:(id)a3;
-- (void)disableStatementCachingForBlock:(id)a3;
+- (void)computeAggregatedSessionLogsWithHandlerBlock:(id)block;
+- (void)deleteAllCKRecordsInZone:(id)zone;
+- (void)deleteCKRecordAtLocation:(id)location;
+- (void)deleteCKRecordsAtOrBeforeLocation:(id)location;
+- (void)deleteCKRecordsForStreamName:(id)name;
+- (void)disableStatementCachingForBlock:(id)block;
 - (void)enforceMaxSessionLogPrunePolicy;
-- (void)enumerateAtomBatchFilesNotReferencedInCKAtomForStream:(id)a3 withBlock:(id)a4;
-- (void)enumerateAtomBatchFilesReferencedInCKAtomForStream:(id)a3 withBlock:(id)a4;
-- (void)enumerateCKSyncRecordRecordsSetForDeletingUsingBlock:(id)a3;
-- (void)enumerateMergeableRecordValuesForRecordName:(id)a3 zoneName:(id)a4 withBlock:(id)a5;
-- (void)enumerateRecordsWithBlock:(id)a3;
-- (void)enumerateZonesWithBlock:(id)a3;
-- (void)markCKRecordsAtOrBeforeLocationToBeDeletedOnSync:(id)a3;
-- (void)recordAtomMergeResult:(unint64_t)a3 inStream:(id)a4 sessionID:(id)a5 messageID:(unint64_t)a6 ownerSite:(id)a7 originatingSite:(id)a8 eventCreatedAt:(double)a9;
-- (void)recordSessionEnd:(id)a3 timeSincePreviousSync:(double)a4;
-- (void)resetMetadataForRecord:(id)a3 zoneName:(id)a4;
-- (void)runMetricsCollectionTask:(id)a3;
-- (void)runVacuumingTask:(id)a3;
-- (void)saveSystemFieldsDataForRecord:(id)a3 syncToCloudKit:(id)a4 recordType:(unint64_t)a5 crdtDeleted:(id)a6;
-- (void)setDateOfLastVacuum:(id)a3;
-- (void)setLastCloudKitSyncAttemptDate:(id)a3;
-- (void)setLastCloudKitSyncDate:(id)a3;
-- (void)setLastRapportSyncAttemptDate:(id)a3;
-- (void)setLastRapportSyncDate:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSharedSyncGeneration:(id)a3;
-- (void)setState:(unint64_t)a3 error:(id)a4;
-- (void)setState:(unint64_t)a3 errorFormat:(id)a4;
-- (void)updateAllCKRecordsAtOrBeforeLocationToBeDeletedOnSync:(id)a3;
+- (void)enumerateAtomBatchFilesNotReferencedInCKAtomForStream:(id)stream withBlock:(id)block;
+- (void)enumerateAtomBatchFilesReferencedInCKAtomForStream:(id)stream withBlock:(id)block;
+- (void)enumerateCKSyncRecordRecordsSetForDeletingUsingBlock:(id)block;
+- (void)enumerateMergeableRecordValuesForRecordName:(id)name zoneName:(id)zoneName withBlock:(id)block;
+- (void)enumerateRecordsWithBlock:(id)block;
+- (void)enumerateZonesWithBlock:(id)block;
+- (void)markCKRecordsAtOrBeforeLocationToBeDeletedOnSync:(id)sync;
+- (void)recordAtomMergeResult:(unint64_t)result inStream:(id)stream sessionID:(id)d messageID:(unint64_t)iD ownerSite:(id)site originatingSite:(id)originatingSite eventCreatedAt:(double)at;
+- (void)recordSessionEnd:(id)end timeSincePreviousSync:(double)sync;
+- (void)resetMetadataForRecord:(id)record zoneName:(id)name;
+- (void)runMetricsCollectionTask:(id)task;
+- (void)runVacuumingTask:(id)task;
+- (void)saveSystemFieldsDataForRecord:(id)record syncToCloudKit:(id)kit recordType:(unint64_t)type crdtDeleted:(id)deleted;
+- (void)setDateOfLastVacuum:(id)vacuum;
+- (void)setLastCloudKitSyncAttemptDate:(id)date;
+- (void)setLastCloudKitSyncDate:(id)date;
+- (void)setLastRapportSyncAttemptDate:(id)date;
+- (void)setLastRapportSyncDate:(id)date;
+- (void)setName:(id)name;
+- (void)setSharedSyncGeneration:(id)generation;
+- (void)setState:(unint64_t)state error:(id)error;
+- (void)setState:(unint64_t)state errorFormat:(id)format;
+- (void)updateAllCKRecordsAtOrBeforeLocationToBeDeletedOnSync:(id)sync;
 @end
 
 @implementation BMSyncDatabase
@@ -196,26 +196,26 @@
   }
 
   v4 = [(_bmFMDatabase *)self->_fmdb SELECT_FROM:@"AtomBatchFiles" COLUMNS:&off_10007EBF8 WHERE:0 ORDER_BY:0 LIMIT:&off_10007F360];
-  v5 = [v4 next];
+  next = [v4 next];
   [v4 close];
 
-  return v5;
+  return next;
 }
 
-- (id)locationRowWithLocation:(id)a3
+- (id)locationRowWithLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
     fmdb = self->_fmdb;
     v13[0] = @"stream = ?";
-    v4 = a3;
-    v5 = [v4 streamName];
-    v13[1] = v5;
+    locationCopy = location;
+    streamName = [locationCopy streamName];
+    v13[1] = streamName;
     v13[2] = @" AND site = ?";
-    v6 = [v4 siteIdentifier];
-    v13[3] = v6;
+    siteIdentifier = [locationCopy siteIdentifier];
+    v13[3] = siteIdentifier;
     v13[4] = @" AND day = ?";
-    v7 = [v4 day];
+    v7 = [locationCopy day];
 
     [v7 timeIntervalSinceReferenceDate];
     v8 = [NSNumber numberWithDouble:?];
@@ -244,15 +244,15 @@
   return v11;
 }
 
-- (id)locationRowWithLocationID:(id)a3
+- (id)locationRowWithLocationID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     fmdb = self->_fmdb;
     v11[0] = @"id = ?";
-    v11[1] = v4;
+    v11[1] = dCopy;
     v7 = [NSArray arrayWithObjects:v11 count:2];
     v8 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CRDTLocation" COLUMNS:&off_10007EAD8 WHERE:v7];
 
@@ -277,56 +277,56 @@
   return v9;
 }
 
-- (BOOL)updateLocationState:(unint64_t)a3 forLocation:(id)a4
+- (BOOL)updateLocationState:(unint64_t)state forLocation:(id)location
 {
-  v6 = a4;
+  locationCopy = location;
   v7 = __biome_log_for_category();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134218242;
-    v14 = a3;
+    stateCopy = state;
     v15 = 2112;
-    v16 = v6;
+    v16 = locationCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "updateLocationState: %lu forLocation:%@", &v13, 0x16u);
   }
 
   v8 = [BMSyncCRDTLocationRow alloc];
-  v9 = [v6 location];
-  v10 = -[BMSyncCRDTLocationRow initWithLocation:state:primaryKey:](v8, "initWithLocation:state:primaryKey:", v9, a3, [v6 primaryKey]);
+  location = [locationCopy location];
+  v10 = -[BMSyncCRDTLocationRow initWithLocation:state:primaryKey:](v8, "initWithLocation:state:primaryKey:", location, state, [locationCopy primaryKey]);
 
   v11 = [(BMSyncDatabase *)self upsertLocation:v10];
   return v11;
 }
 
-- (BOOL)updateAllLocationsAtOrBefore:(id)a3 state:(unint64_t)a4
+- (BOOL)updateAllLocationsAtOrBefore:(id)before state:(unint64_t)state
 {
-  v6 = a3;
+  beforeCopy = before;
   v7 = __biome_log_for_category();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = beforeCopy;
     v25 = 2048;
-    v26 = a4;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "updateAllLocationsAtOrBefore:%@ to state %lu", buf, 0x16u);
   }
 
   fmdb = self->_fmdb;
   v21 = @"state";
-  v19 = [NSNumber numberWithUnsignedInteger:a4];
+  v19 = [NSNumber numberWithUnsignedInteger:state];
   v22 = v19;
   v9 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
   v20[0] = @"stream = ?";
-  v18 = [v6 location];
-  v10 = [v18 streamName];
-  v20[1] = v10;
+  location = [beforeCopy location];
+  streamName = [location streamName];
+  v20[1] = streamName;
   v20[2] = @" AND site = ?";
-  v11 = [v6 location];
-  v12 = [v11 siteIdentifier];
-  v20[3] = v12;
+  location2 = [beforeCopy location];
+  siteIdentifier = [location2 siteIdentifier];
+  v20[3] = siteIdentifier;
   v20[4] = @" AND day <= ?";
-  v13 = [v6 location];
-  v14 = [v13 day];
+  location3 = [beforeCopy location];
+  v14 = [location3 day];
   [v14 timeIntervalSinceReferenceDate];
   v15 = [NSNumber numberWithDouble:?];
   v20[5] = v15;
@@ -336,10 +336,10 @@
   return fmdb;
 }
 
-- (id)insertLocationIfNotExists:(id)a3 withState:(unint64_t)a4
+- (id)insertLocationIfNotExists:(id)exists withState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(BMSyncDatabase *)self locationRowWithLocation:v6];
+  existsCopy = exists;
+  v7 = [(BMSyncDatabase *)self locationRowWithLocation:existsCopy];
   v8 = v7;
   if (v7)
   {
@@ -350,23 +350,23 @@
   {
     fmdb = self->_fmdb;
     v19[0] = @"stream";
-    v10 = [v6 streamName];
-    v20[0] = v10;
+    streamName = [existsCopy streamName];
+    v20[0] = streamName;
     v19[1] = @"site";
-    v11 = [v6 siteIdentifier];
-    v20[1] = v11;
+    siteIdentifier = [existsCopy siteIdentifier];
+    v20[1] = siteIdentifier;
     v19[2] = @"day";
-    v12 = [v6 day];
+    v12 = [existsCopy day];
     [v12 timeIntervalSinceReferenceDate];
     v13 = [NSNumber numberWithDouble:?];
     v20[2] = v13;
     v19[3] = @"state";
-    v14 = [NSNumber numberWithUnsignedInteger:a4];
+    v14 = [NSNumber numberWithUnsignedInteger:state];
     v20[3] = v14;
     v15 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:4];
     [(_bmFMDatabase *)fmdb INSERT_INTO:@"CRDTLocation" VALUES:v15];
 
-    v9 = [[BMSyncCRDTLocationRow alloc] initWithLocation:v6 state:a4 primaryKey:[(_bmFMDatabase *)self->_fmdb lastInsertRowId]];
+    v9 = [[BMSyncCRDTLocationRow alloc] initWithLocation:existsCopy state:state primaryKey:[(_bmFMDatabase *)self->_fmdb lastInsertRowId]];
   }
 
   v16 = v9;
@@ -374,30 +374,30 @@
   return v16;
 }
 
-- (BOOL)upsertLocation:(id)a3
+- (BOOL)upsertLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 location];
-  v6 = [(BMSyncDatabase *)self locationRowWithLocation:v5];
+  locationCopy = location;
+  location = [locationCopy location];
+  v6 = [(BMSyncDatabase *)self locationRowWithLocation:location];
   fmdb = self->_fmdb;
   if (v6)
   {
     v25[0] = @"stream";
-    [v5 streamName];
+    [location streamName];
     v8 = v21 = v6;
     v26[0] = v8;
     v25[1] = @"site";
-    v9 = [v5 siteIdentifier];
-    v26[1] = v9;
+    siteIdentifier = [location siteIdentifier];
+    v26[1] = siteIdentifier;
     v25[2] = @"day";
-    v10 = [v5 day];
+    v10 = [location day];
     [v10 timeIntervalSinceReferenceDate];
     v11 = [NSNumber numberWithDouble:?];
     v26[2] = v11;
     v25[3] = @"state";
-    v12 = [v4 state];
+    state = [locationCopy state];
 
-    v13 = [NSNumber numberWithUnsignedInteger:v12];
+    v13 = [NSNumber numberWithUnsignedInteger:state];
     v26[3] = v13;
     v14 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:4];
     v24[0] = @"id = ?";
@@ -406,27 +406,27 @@
     v16 = [NSArray arrayWithObjects:v24 count:2];
     v17 = [(_bmFMDatabase *)fmdb UPDATE:@"CRDTLocation" SET:v14 WHERE:v16];
 
-    v18 = v8;
+    streamName = v8;
     v6 = v21;
   }
 
   else
   {
     v22[0] = @"stream";
-    v18 = [v5 streamName];
-    v23[0] = v18;
+    streamName = [location streamName];
+    v23[0] = streamName;
     v22[1] = @"site";
-    v9 = [v5 siteIdentifier];
-    v23[1] = v9;
+    siteIdentifier = [location siteIdentifier];
+    v23[1] = siteIdentifier;
     v22[2] = @"day";
-    v10 = [v5 day];
+    v10 = [location day];
     [v10 timeIntervalSinceReferenceDate];
     v11 = [NSNumber numberWithDouble:?];
     v23[2] = v11;
     v22[3] = @"state";
-    v19 = [v4 state];
+    state2 = [locationCopy state];
 
-    v13 = [NSNumber numberWithUnsignedInteger:v19];
+    v13 = [NSNumber numberWithUnsignedInteger:state2];
     v23[3] = v13;
     v14 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:4];
     v17 = [(_bmFMDatabase *)fmdb INSERT_INTO:@"CRDTLocation" VALUES:v14];
@@ -435,29 +435,29 @@
   return v17;
 }
 
-- (BOOL)removeAllDeletedLocationsBeforeHighestDeletedLocation:(id)a3
+- (BOOL)removeAllDeletedLocationsBeforeHighestDeletedLocation:(id)location
 {
-  v4 = [a3 location];
+  location = [location location];
   fmdb = self->_fmdb;
   v14[0] = @"stream = ?";
-  v6 = [v4 streamName];
-  v14[1] = v6;
+  streamName = [location streamName];
+  v14[1] = streamName;
   v14[2] = @" AND site = ?";
-  v7 = [v4 siteIdentifier];
-  v14[3] = v7;
+  siteIdentifier = [location siteIdentifier];
+  v14[3] = siteIdentifier;
   v14[4] = @" AND state = ?";
   v14[5] = &off_10007F330;
   v14[6] = @" AND day < ?";
-  v8 = [v4 day];
+  v8 = [location day];
   [v8 timeIntervalSinceReferenceDate];
   v9 = [NSNumber numberWithDouble:?];
   v14[7] = v9;
   v14[8] = CFSTR(" AND NOT EXISTS (SELECT 1 FROM CKAtom WHERE stream = ? ");
-  v10 = [v4 streamName];
-  v14[9] = v10;
+  streamName2 = [location streamName];
+  v14[9] = streamName2;
   v14[10] = @" AND site = ?";
-  v11 = [v4 siteIdentifier];
-  v14[11] = v11;
+  siteIdentifier2 = [location siteIdentifier];
+  v14[11] = siteIdentifier2;
   v14[12] = @" AND location_id = id");
   v14[13] = &stru_100079C10;
   v14[14] = @" AND NOT EXISTS (SELECT location_id FROM CKRecord WHERE location_id = id)";
@@ -468,22 +468,22 @@
   return fmdb;
 }
 
-- (id)previousLocationRowBeforeLocationRow:(id)a3
+- (id)previousLocationRowBeforeLocationRow:(id)row
 {
   fmdb = self->_fmdb;
   v16[0] = @"stream = ?";
-  v4 = a3;
-  v5 = [v4 location];
-  v6 = [v5 streamName];
-  v16[1] = v6;
+  rowCopy = row;
+  location = [rowCopy location];
+  streamName = [location streamName];
+  v16[1] = streamName;
   v16[2] = @" AND site = ?";
-  v7 = [v4 location];
-  v8 = [v7 siteIdentifier];
-  v16[3] = v8;
+  location2 = [rowCopy location];
+  siteIdentifier = [location2 siteIdentifier];
+  v16[3] = siteIdentifier;
   v16[4] = @" AND day < ?";
-  v9 = [v4 location];
+  location3 = [rowCopy location];
 
-  v10 = [v9 day];
+  v10 = [location3 day];
   [v10 timeIntervalSinceReferenceDate];
   v11 = [NSNumber numberWithDouble:?];
   v16[5] = v11;
@@ -505,11 +505,11 @@
   return v14;
 }
 
-- (id)locationsWithState:(unint64_t)a3
+- (id)locationsWithState:(unint64_t)state
 {
   fmdb = self->_fmdb;
   v11[0] = @"state = ?";
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:state];
   v11[1] = v4;
   v5 = [NSArray arrayWithObjects:v11 count:2];
   v6 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CRDTLocation" COLUMNS:&off_10007EB20 WHERE:v5 ORDER_BY:&off_10007EB38 LIMIT:0];
@@ -520,8 +520,8 @@
     do
     {
       v8 = [[BMSyncCRDTLocationRow alloc] initWithFMResultSet:v6 modifier:0];
-      v9 = [(BMSyncCRDTLocationRow *)v8 location];
-      [v7 addObject:v9];
+      location = [(BMSyncCRDTLocationRow *)v8 location];
+      [v7 addObject:location];
     }
 
     while (([v6 next] & 1) != 0);
@@ -532,15 +532,15 @@
   return v7;
 }
 
-- (id)locationsWithState:(unint64_t)a3 stream:(id)a4
+- (id)locationsWithState:(unint64_t)state stream:(id)stream
 {
-  v6 = a4;
+  streamCopy = stream;
   fmdb = self->_fmdb;
   v15[0] = @"state = ? AND ";
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  v8 = [NSNumber numberWithUnsignedInteger:state];
   v15[1] = v8;
   v15[2] = @"stream = ?";
-  v15[3] = v6;
+  v15[3] = streamCopy;
   v9 = [NSArray arrayWithObjects:v15 count:4];
   v10 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CRDTLocation" COLUMNS:&off_10007EB50 WHERE:v9 ORDER_BY:&off_10007EB68 LIMIT:0];
 
@@ -550,8 +550,8 @@
     do
     {
       v12 = [[BMSyncCRDTLocationRow alloc] initWithFMResultSet:v10 modifier:0];
-      v13 = [(BMSyncCRDTLocationRow *)v12 location];
-      [v11 addObject:v13];
+      location = [(BMSyncCRDTLocationRow *)v12 location];
+      [v11 addObject:location];
     }
 
     while (([v10 next] & 1) != 0);
@@ -562,17 +562,17 @@
   return v11;
 }
 
-- (id)highestDeletedLocationsForStream:(id)a3
+- (id)highestDeletedLocationsForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = objc_opt_new();
   fmdb = self->_fmdb;
   v12[0] = CFSTR("day = (select max(day) from CRDTLocation i where i.stream = ? and i.site=CRDTLocation.site");
-  v12[1] = v4;
+  v12[1] = streamCopy;
   v12[2] = @" and state = ?");
   v12[3] = &off_10007F330;
   v12[4] = @" AND stream = ?";
-  v12[5] = v4;
+  v12[5] = streamCopy;
   v7 = [NSArray arrayWithObjects:v12 count:6];
   v8 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CRDTLocation" COLUMNS:&off_10007EB80 WHERE:v7];
 
@@ -581,8 +581,8 @@
     do
     {
       v9 = [[BMSyncCRDTLocationRow alloc] initWithFMResultSet:v8 modifier:0];
-      v10 = [(BMSyncCRDTLocationRow *)v9 location];
-      [v5 addObject:v10];
+      location = [(BMSyncCRDTLocationRow *)v9 location];
+      [v5 addObject:location];
     }
 
     while (([v8 next] & 1) != 0);
@@ -593,15 +593,15 @@
   return v5;
 }
 
-- (id)highestDeletedLocationForSiteIdentifier:(id)a3 inStream:(id)a4
+- (id)highestDeletedLocationForSiteIdentifier:(id)identifier inStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  streamCopy = stream;
   fmdb = self->_fmdb;
   v13[0] = @"stream = ?";
-  v13[1] = v7;
+  v13[1] = streamCopy;
   v13[2] = @" AND site = ?";
-  v13[3] = v6;
+  v13[3] = identifierCopy;
   v13[4] = @" AND state = ? ";
   v13[5] = &off_10007F330;
   v9 = [NSArray arrayWithObjects:v13 count:6];
@@ -646,11 +646,11 @@
   return v5;
 }
 
-- (BOOL)addAtomBatchFileNameToAtomBatchFiles:(id)a3 sessionContext:(id)a4 locationRow:(id)a5
+- (BOOL)addAtomBatchFileNameToAtomBatchFiles:(id)files sessionContext:(id)context locationRow:(id)row
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  filesCopy = files;
+  contextCopy = context;
+  rowCopy = row;
   queue = self->_queue;
   if (queue)
   {
@@ -658,31 +658,31 @@
   }
 
   fmdb = self->_fmdb;
-  v27[0] = v8;
-  v13 = [v9 sessionID];
-  v14 = v13;
+  v27[0] = filesCopy;
+  sessionID = [contextCopy sessionID];
+  v14 = sessionID;
   v15 = @"no session id";
-  if (v13)
+  if (sessionID)
   {
-    v15 = v13;
+    v15 = sessionID;
   }
 
   v27[1] = v15;
   v26[2] = @"message_id";
-  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 messageID]);
+  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contextCopy messageID]);
   v27[2] = v16;
   v26[3] = @"originating_site_identifier";
-  v17 = [v9 originatingSiteIdentifier];
-  v18 = v17;
+  originatingSiteIdentifier = [contextCopy originatingSiteIdentifier];
+  v18 = originatingSiteIdentifier;
   v19 = @"no siteID";
-  if (v17)
+  if (originatingSiteIdentifier)
   {
-    v19 = v17;
+    v19 = originatingSiteIdentifier;
   }
 
   v27[3] = v19;
   v26[4] = @"location_id";
-  v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 primaryKey]);
+  v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy primaryKey]);
   v27[4] = v20;
   v21 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:5];
   v22 = [(_bmFMDatabase *)fmdb INSERT_INTO:@"AtomBatchFiles" VALUES:v21];
@@ -699,9 +699,9 @@
   return v22;
 }
 
-- (BOOL)isAtomBatchFileNamePresent:(id)a3
+- (BOOL)isAtomBatchFileNamePresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   queue = self->_queue;
   if (queue)
   {
@@ -710,7 +710,7 @@
 
   fmdb = self->_fmdb;
   v10[0] = @"atom_batch_filename = ?";
-  v10[1] = v4;
+  v10[1] = presentCopy;
   v7 = [NSArray arrayWithObjects:v10 count:2];
   v8 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"AtomBatchFiles" COLUMNS:&off_10007EBE0 WHERE:v7];
 
@@ -720,15 +720,15 @@
   return fmdb;
 }
 
-- (void)enumerateAtomBatchFilesNotReferencedInCKAtomForStream:(id)a3 withBlock:(id)a4
+- (void)enumerateAtomBatchFilesNotReferencedInCKAtomForStream:(id)stream withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  blockCopy = block;
   v8 = __biome_log_for_category();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = streamCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "enumerateAtomBatchFilesNotReferencedInCKAtomForStream: %@", buf, 0xCu);
   }
 
@@ -740,9 +740,9 @@
 
   fmdb = self->_fmdb;
   v15[0] = @"INSTR(atom_batch_filename, ?) > 0 ";
-  v15[1] = v6;
+  v15[1] = streamCopy;
   v15[2] = @"AND NOT EXISTS (SELECT ref_atom_batch_filename FROM CKAtom WHERE ref_atom_batch_filename = atom_batch_filename AND stream = ? LIMIT 1)";
-  v15[3] = v6;
+  v15[3] = streamCopy;
   v11 = [NSArray arrayWithObjects:v15 count:4];
   v12 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"AtomBatchFiles" COLUMNS:&off_10007EC10 WHERE:v11];
 
@@ -755,7 +755,7 @@
 
     v13 = [v12 stringForColumnIndex:0];
     buf[0] = 0;
-    v7[2](v7, v13, buf);
+    blockCopy[2](blockCopy, v13, buf);
     v14 = buf[0];
   }
 
@@ -763,10 +763,10 @@
   [v12 close];
 }
 
-- (void)enumerateAtomBatchFilesReferencedInCKAtomForStream:(id)a3 withBlock:(id)a4
+- (void)enumerateAtomBatchFilesReferencedInCKAtomForStream:(id)stream withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  blockCopy = block;
   queue = self->_queue;
   if (queue)
   {
@@ -775,7 +775,7 @@
 
   fmdb = self->_fmdb;
   v17[0] = @"EXISTS (SELECT DISTINCT ref_atom_batch_filename FROM CKAtom WHERE ref_atom_batch_filename = atom_batch_filename AND stream = ?)";
-  v17[1] = v6;
+  v17[1] = streamCopy;
   v10 = [NSArray arrayWithObjects:v17 count:2];
   v11 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"AtomBatchFiles" COLUMNS:&off_10007EC28 WHERE:v10 ORDER_BY:&off_10007EC40 LIMIT:0];
 
@@ -796,7 +796,7 @@
     [v13 setOriginatingSiteIdentifier:v15];
 
     v16 = 0;
-    v7[2](v7, v12, v13, &v16);
+    blockCopy[2](blockCopy, v12, v13, &v16);
     LODWORD(v15) = v16;
   }
 
@@ -804,9 +804,9 @@
   [v11 close];
 }
 
-- (BOOL)deleteAtomBatchFilesTableRowsNotReferencedInCKAtomForStream:(id)a3
+- (BOOL)deleteAtomBatchFilesTableRowsNotReferencedInCKAtomForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -815,18 +815,18 @@
 
   fmdb = self->_fmdb;
   v9[0] = @"INSTR(atom_batch_filename, ?) > 0 ";
-  v9[1] = v4;
+  v9[1] = streamCopy;
   v9[2] = @"AND NOT EXISTS (SELECT ref_atom_batch_filename FROM CKAtom WHERE ref_atom_batch_filename = atom_batch_filename AND stream = ? LIMIT 1)";
-  v9[3] = v4;
+  v9[3] = streamCopy;
   v7 = [NSArray arrayWithObjects:v9 count:4];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb DELETE_FROM:@"AtomBatchFiles" WHERE:v7];
 
   return fmdb;
 }
 
-- (id)deviceWithIdentifier:(id)a3
+- (id)deviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   if (queue)
   {
@@ -835,7 +835,7 @@
 
   fmdb = self->_fmdb;
   v11[0] = @"device_identifier = ?";
-  v11[1] = v4;
+  v11[1] = identifierCopy;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"DevicePeer" COLUMNS:&off_10007EC88 WHERE:v7];
 
@@ -874,9 +874,9 @@
   return v5;
 }
 
-- (id)lastSyncDateOfDeviceWithIdentifier:(id)a3
+- (id)lastSyncDateOfDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   if (queue)
   {
@@ -885,7 +885,7 @@
 
   fmdb = self->_fmdb;
   v11[0] = @"device_identifier = ?";
-  v11[1] = v4;
+  v11[1] = identifierCopy;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"DevicePeer" COLUMNS:&off_10007ECB8 WHERE:v7];
 
@@ -904,10 +904,10 @@
   return v9;
 }
 
-- (BOOL)setLastSyncDate:(id)a3 forDeviceWithIdentifier:(id)a4
+- (BOOL)setLastSyncDate:(id)date forDeviceWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  identifierCopy = identifier;
   queue = self->_queue;
   if (queue)
   {
@@ -916,31 +916,31 @@
 
   fmdb = self->_fmdb;
   v14 = @"last_sync_date";
-  v15 = v6;
+  v15 = dateCopy;
   v10 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v13[0] = @"device_identifier = ?";
-  v13[1] = v7;
+  v13[1] = identifierCopy;
   v11 = [NSArray arrayWithObjects:v13 count:2];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb UPDATE:@"DevicePeer" SET:v10 WHERE:v11];
 
   return fmdb;
 }
 
-- (void)runMetricsCollectionTask:(id)a3
+- (void)runMetricsCollectionTask:(id)task
 {
-  v4 = a3;
-  v6 = [[BMSyncSessionMetricsAggregator alloc] initWithDatabase:self activity:v4];
+  taskCopy = task;
+  v6 = [[BMSyncSessionMetricsAggregator alloc] initWithDatabase:self activity:taskCopy];
   [(BMSyncSessionMetricsAggregator *)v6 enforceMaxSessionLogPrunePolicy];
   [(BMSyncSessionMetricsAggregator *)v6 computeAndSendAggregatedMetrics];
   [(BMSyncSessionMetricsAggregator *)v6 compactAndDeleteSessionLogs];
-  v5 = [[BMStateVectorMetricsCollector alloc] initWithDatabase:self activity:v4];
+  v5 = [[BMStateVectorMetricsCollector alloc] initWithDatabase:self activity:taskCopy];
 
   [(BMStateVectorMetricsCollector *)v5 computeAndSendStateVectorMetrics];
 }
 
-- (BOOL)ckZoneExists:(id)a3
+- (BOOL)ckZoneExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   queue = self->_queue;
   if (queue)
   {
@@ -949,7 +949,7 @@
 
   fmdb = self->_fmdb;
   v10[0] = @"zone_name = ?";
-  v10[1] = v4;
+  v10[1] = existsCopy;
   v7 = [NSArray arrayWithObjects:v10 count:2];
   v8 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKZone" COLUMNS:&off_10007ECE8 WHERE:v7];
 
@@ -957,9 +957,9 @@
   return fmdb;
 }
 
-- (id)ckZoneForZoneName:(id)a3
+- (id)ckZoneForZoneName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   if (queue)
   {
@@ -968,7 +968,7 @@
 
   fmdb = self->_fmdb;
   v11[0] = @"zone_name = ?";
-  v11[1] = v4;
+  v11[1] = nameCopy;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKZone" COLUMNS:&off_10007ED00 WHERE:v7];
 
@@ -985,25 +985,25 @@
   return v9;
 }
 
-- (BOOL)ckZoneSetZoneVersionUUID:(id)a3 forZoneName:(id)a4
+- (BOOL)ckZoneSetZoneVersionUUID:(id)d forZoneName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   queue = self->_queue;
   if (queue)
   {
     dispatch_assert_queue_V2(queue);
   }
 
-  v9 = [(BMSyncDatabase *)self ckZoneExists:v7];
+  v9 = [(BMSyncDatabase *)self ckZoneExists:nameCopy];
   fmdb = self->_fmdb;
   if (v9)
   {
     v19 = @"zone_uuid";
-    v20 = v6;
+    v20 = dCopy;
     v11 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v18[0] = @"zone_name = ?";
-    v18[1] = v7;
+    v18[1] = nameCopy;
     v12 = [NSArray arrayWithObjects:v18 count:2];
     v13 = [(_bmFMDatabase *)fmdb UPDATE:@"CKZone" SET:v11 WHERE:v12];
   }
@@ -1012,8 +1012,8 @@
   {
     v16[0] = @"zone_name";
     v16[1] = @"zone_uuid";
-    v17[0] = v7;
-    v17[1] = v6;
+    v17[0] = nameCopy;
+    v17[1] = dCopy;
     v17[2] = &off_10007F3A8;
     v16[2] = @"recovery_state";
     v16[3] = @"attempted_recovery_date";
@@ -1028,9 +1028,9 @@
   return v14;
 }
 
-- (void)enumerateZonesWithBlock:(id)a3
+- (void)enumerateZonesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   if (queue)
   {
@@ -1048,7 +1048,7 @@
 
     v7 = objc_autoreleasePoolPush();
     v8 = [[BMSyncCKZone alloc] initWithFMResultSet:v6];
-    v4[2](v4, v8, &v9);
+    blockCopy[2](blockCopy, v8, &v9);
 
     objc_autoreleasePoolPop(v7);
   }
@@ -1056,10 +1056,10 @@
   while (v9 != 1);
 }
 
-- (BOOL)addCKAtomRow:(id)a3 inStream:(id)a4
+- (BOOL)addCKAtomRow:(id)row inStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  rowCopy = row;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1067,51 +1067,51 @@
   }
 
   v9 = [NSString alloc];
-  v10 = [v6 timestamp];
-  v11 = [v10 siteIdentifierObject];
-  v12 = [v11 identifier];
-  v13 = [v9 initWithData:v12 encoding:4];
+  timestamp = [rowCopy timestamp];
+  siteIdentifierObject = [timestamp siteIdentifierObject];
+  identifier = [siteIdentifierObject identifier];
+  v13 = [v9 initWithData:identifier encoding:4];
 
   v14 = [NSString alloc];
-  v15 = [v6 causalReference];
-  v16 = [v15 timestamp];
-  v17 = [v16 siteIdentifierObject];
-  v18 = [v17 identifier];
-  v19 = [v14 initWithData:v18 encoding:4];
+  causalReference = [rowCopy causalReference];
+  timestamp2 = [causalReference timestamp];
+  siteIdentifierObject2 = [timestamp2 siteIdentifierObject];
+  identifier2 = [siteIdentifierObject2 identifier];
+  v19 = [v14 initWithData:identifier2 encoding:4];
 
   fmdb = self->_fmdb;
   v66[0] = @"stream";
   v66[1] = @"site";
-  v67[0] = v7;
+  v67[0] = streamCopy;
   v67[1] = v13;
   v63 = v13;
   v66[2] = @"clock";
-  v61 = [v6 timestamp];
-  v60 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v61 clockValue]);
+  timestamp3 = [rowCopy timestamp];
+  v60 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [timestamp3 clockValue]);
   v67[2] = v60;
   v66[3] = @"type";
-  v59 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 type]);
+  v59 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy type]);
   v67[3] = v59;
   v66[4] = @"location_id";
-  v58 = [v6 location];
-  v57 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v58 primaryKey]);
+  location = [rowCopy location];
+  v57 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [location primaryKey]);
   v67[4] = v57;
   v66[5] = @"segment_name";
-  v20 = [v6 segmentName];
-  v21 = v20;
-  if (!v20)
+  segmentName = [rowCopy segmentName];
+  v21 = segmentName;
+  if (!segmentName)
   {
-    v20 = +[NSNull null];
+    segmentName = +[NSNull null];
   }
 
   v56 = v21;
-  v42 = v20;
-  v67[5] = v20;
+  v42 = segmentName;
+  v67[5] = segmentName;
   v66[6] = @"segment_offset";
-  v55 = [v6 segmentName];
-  if (v55)
+  segmentName2 = [rowCopy segmentName];
+  if (segmentName2)
   {
-    +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v6 segmentOffset]);
+    +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [rowCopy segmentOffset]);
   }
 
   else
@@ -1121,8 +1121,8 @@
   v54 = ;
   v67[6] = v54;
   v66[7] = @"on_disk";
-  v22 = [v6 segmentName];
-  if (v22)
+  segmentName3 = [rowCopy segmentName];
+  if (segmentName3)
   {
     v23 = &__kCFBooleanTrue;
   }
@@ -1135,104 +1135,104 @@
   v41 = v23;
   v67[7] = v23;
   v66[8] = @"ref_type";
-  v50 = [v6 causalReference];
-  if (v50)
+  causalReference2 = [rowCopy causalReference];
+  if (causalReference2)
   {
-    v49 = [v6 causalReference];
-    v24 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v49 type]);
+    causalReference3 = [rowCopy causalReference];
+    v24 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [causalReference3 type]);
   }
 
   else
   {
     v24 = +[NSNull null];
-    v49 = v24;
+    causalReference3 = v24;
   }
 
   v44 = v24;
   v67[8] = v24;
   v66[9] = @"ref_location_id";
-  v48 = [v6 referenceLocation];
-  if (v48)
+  referenceLocation = [rowCopy referenceLocation];
+  if (referenceLocation)
   {
-    v47 = [v6 referenceLocation];
-    v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v47 primaryKey]);
+    referenceLocation2 = [rowCopy referenceLocation];
+    v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [referenceLocation2 primaryKey]);
   }
 
   else
   {
     v25 = +[NSNull null];
-    v47 = v25;
+    referenceLocation2 = v25;
   }
 
   v43 = v25;
   v67[9] = v25;
   v66[10] = @"ref_site";
-  v26 = [v6 causalReference];
+  causalReference4 = [rowCopy causalReference];
   v27 = v19;
-  if (!v26)
+  if (!causalReference4)
   {
     v27 = +[NSNull null];
   }
 
-  v46 = v26;
-  v53 = v22;
+  v46 = causalReference4;
+  v53 = segmentName3;
   v40 = v27;
   v67[10] = v27;
   v66[11] = @"ref_clock";
-  v28 = [v6 causalReference];
-  v64 = self;
+  causalReference5 = [rowCopy causalReference];
+  selfCopy = self;
   v62 = v19;
-  if (v28)
+  if (causalReference5)
   {
-    v45 = [v6 causalReference];
-    v39 = [v45 timestamp];
-    v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v39 clockValue]);
+    causalReference6 = [rowCopy causalReference];
+    timestamp4 = [causalReference6 timestamp];
+    v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [timestamp4 clockValue]);
   }
 
   else
   {
     v29 = +[NSNull null];
-    v45 = v29;
+    causalReference6 = v29;
   }
 
-  v65 = v7;
+  v65 = streamCopy;
   v67[11] = v29;
   v66[12] = @"value_version";
-  v30 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 valueVersion]);
+  v30 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [rowCopy valueVersion]);
   v67[12] = v30;
   v66[13] = @"value_data";
-  v31 = [v6 valueData];
-  v32 = v31;
-  if (!v31)
+  valueData = [rowCopy valueData];
+  v32 = valueData;
+  if (!valueData)
   {
     v32 = +[NSNull null];
   }
 
   v67[13] = v32;
   v66[14] = @"ref_atom_batch_filename";
-  v33 = [v6 referenceAtomBatchFilename];
-  v34 = v33;
-  if (!v33)
+  referenceAtomBatchFilename = [rowCopy referenceAtomBatchFilename];
+  v34 = referenceAtomBatchFilename;
+  if (!referenceAtomBatchFilename)
   {
     v34 = +[NSNull null];
   }
 
   v67[14] = v34;
   v66[15] = @"atom_batch_file_index";
-  v35 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 atomBatchFileIndex]);
+  v35 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy atomBatchFileIndex]);
   v67[15] = v35;
   v36 = [NSDictionary dictionaryWithObjects:v67 forKeys:v66 count:16];
   v52 = [(_bmFMDatabase *)fmdb INSERT_INTO:@"CKAtom" VALUES:v36];
 
-  if (!v33)
+  if (!referenceAtomBatchFilename)
   {
   }
 
-  if (!v31)
+  if (!valueData)
   {
   }
 
-  if (v28)
+  if (causalReference5)
   {
   }
 
@@ -1240,11 +1240,11 @@
   {
   }
 
-  if (v48)
+  if (referenceLocation)
   {
   }
 
-  if (v50)
+  if (causalReference2)
   {
   }
 
@@ -1261,17 +1261,17 @@
     v37 = __biome_log_for_category();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
     {
-      sub_100049D14(&v64->_fmdb);
+      sub_100049D14(&selfCopy->_fmdb);
     }
   }
 
   return v52;
 }
 
-- (id)ckAtomRowWithTimestamp:(id)a3 inStream:(id)a4
+- (id)ckAtomRowWithTimestamp:(id)timestamp inStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  timestampCopy = timestamp;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1279,16 +1279,16 @@
   }
 
   v9 = [NSString alloc];
-  v10 = [v6 siteIdentifierObject];
-  v11 = [v10 identifier];
-  v12 = [v9 initWithData:v11 encoding:4];
+  siteIdentifierObject = [timestampCopy siteIdentifierObject];
+  identifier = [siteIdentifierObject identifier];
+  v12 = [v9 initWithData:identifier encoding:4];
 
   v18[0] = @"CKAtom.site = ?";
   v18[1] = v12;
   v18[2] = @" AND CKAtom.stream = ?";
-  v18[3] = v7;
+  v18[3] = streamCopy;
   v18[4] = @" AND clock = ?";
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 clockValue]);
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [timestampCopy clockValue]);
   v18[5] = v13;
   v14 = [NSArray arrayWithObjects:v18 count:6];
   v15 = [(BMSyncDatabase *)self SELECT_ATOMS_WHERE:v14 ORDER_BY:0 LIMIT:0];
@@ -1304,10 +1304,10 @@
   return v16;
 }
 
-- (id)latestCKAtomRowForSiteIdentifier:(id)a3 inStream:(id)a4
+- (id)latestCKAtomRowForSiteIdentifier:(id)identifier inStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1315,9 +1315,9 @@
   }
 
   v13[0] = @"CKAtom.site = ?";
-  v13[1] = v6;
+  v13[1] = identifierCopy;
   v13[2] = @" AND CKAtom.stream = ?";
-  v13[3] = v7;
+  v13[3] = streamCopy;
   v13[4] = @" AND on_disk IS ?";
   v13[5] = &__kCFBooleanTrue;
   v9 = [NSArray arrayWithObjects:v13 count:6];
@@ -1338,9 +1338,9 @@
   return v11;
 }
 
-- (id)legacyTimestampClockVectorForStreamName:(id)a3
+- (id)legacyTimestampClockVectorForStreamName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   if (queue)
   {
@@ -1350,7 +1350,7 @@
   v6 = objc_opt_new();
   fmdb = self->_fmdb;
   v17[0] = @"stream = ?";
-  v17[1] = v4;
+  v17[1] = nameCopy;
   v17[2] = @" AND on_disk IS ?";
   v17[3] = &__kCFBooleanTrue;
   v8 = [NSArray arrayWithObjects:v17 count:4];
@@ -1368,10 +1368,10 @@
   return v10;
 }
 
-- (id)rangeClockVectorForStreamName:(id)a3
+- (id)rangeClockVectorForStreamName:(id)name
 {
-  v24 = a3;
-  v23 = self;
+  nameCopy = name;
+  selfCopy = self;
   queue = self->_queue;
   if (queue)
   {
@@ -1383,7 +1383,7 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = [(BMSyncDatabase *)self CKAtomRowSiteIdentifiersForStreamIdentifier:v24];
+  obj = [(BMSyncDatabase *)self CKAtomRowSiteIdentifiersForStreamIdentifier:nameCopy];
   v5 = [obj countByEnumeratingWithState:&v27 objects:v34 count:16];
   if (v5)
   {
@@ -1402,9 +1402,9 @@
         v9 = *(*(&v27 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
         v11 = objc_opt_new();
-        fmdb = v23->_fmdb;
+        fmdb = selfCopy->_fmdb;
         v33[0] = @"stream = ?";
-        v33[1] = v24;
+        v33[1] = nameCopy;
         v33[2] = @" AND site = ?";
         v33[3] = v9;
         v13 = [NSArray arrayWithObjects:v33 count:4];
@@ -1452,9 +1452,9 @@
   return v22;
 }
 
-- (id)stateVectorForLocationRow:(id)a3
+- (id)stateVectorForLocationRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   queue = self->_queue;
   if (queue)
   {
@@ -1463,7 +1463,7 @@
 
   fmdb = self->_fmdb;
   v23[0] = @"location_id = ?";
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 primaryKey]);
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy primaryKey]);
   v23[1] = v7;
   v23[2] = @" AND on_disk IS ?";
   v23[3] = &__kCFBooleanTrue;
@@ -1498,10 +1498,10 @@
   return v12;
 }
 
-- (id)latestCKAtomRowOfType:(unint64_t)a3 forSiteIdentifier:(id)a4 inStream:(id)a5
+- (id)latestCKAtomRowOfType:(unint64_t)type forSiteIdentifier:(id)identifier inStream:(id)stream
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1509,12 +1509,12 @@
   }
 
   v16[0] = @"type = ?";
-  v11 = [NSNumber numberWithUnsignedInteger:a3];
+  v11 = [NSNumber numberWithUnsignedInteger:type];
   v16[1] = v11;
   v16[2] = @" AND CKAtom.stream = ?";
-  v16[3] = v9;
+  v16[3] = streamCopy;
   v16[4] = @" AND CKAtom.site = ?";
-  v16[5] = v8;
+  v16[5] = identifierCopy;
   v16[6] = @" AND on_disk IS ?";
   v16[7] = &__kCFBooleanTrue;
   v16[8] = @" AND segment_name IS NOT ?";
@@ -1561,10 +1561,10 @@
   return v5;
 }
 
-- (BOOL)containsCKAtomRowWithTimestamp:(id)a3 inStream:(id)a4
+- (BOOL)containsCKAtomRowWithTimestamp:(id)timestamp inStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  timestampCopy = timestamp;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1572,16 +1572,16 @@
   }
 
   v9 = [NSString alloc];
-  v10 = [v6 siteIdentifierObject];
-  v11 = [v10 identifier];
-  v12 = [v9 initWithData:v11 encoding:4];
+  siteIdentifierObject = [timestampCopy siteIdentifierObject];
+  identifier = [siteIdentifierObject identifier];
+  v12 = [v9 initWithData:identifier encoding:4];
 
   fmdb = self->_fmdb;
   v19[0] = @"clock = ?";
-  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 clockValue]);
+  v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [timestampCopy clockValue]);
   v19[1] = v14;
   v19[2] = @" AND stream = ?";
-  v19[3] = v7;
+  v19[3] = streamCopy;
   v19[4] = @" AND site = ?";
   v19[5] = v12;
   v15 = [NSArray arrayWithObjects:v19 count:6];
@@ -1602,10 +1602,10 @@
   return v17;
 }
 
-- (BOOL)containsCKAtomRowWithTimestamp:(id)a3 inStream:(id)a4 onDisk:(BOOL)a5
+- (BOOL)containsCKAtomRowWithTimestamp:(id)timestamp inStream:(id)stream onDisk:(BOOL)disk
 {
-  v8 = a3;
-  v9 = a4;
+  timestampCopy = timestamp;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1613,20 +1613,20 @@
   }
 
   v11 = [NSString alloc];
-  v12 = [v8 siteIdentifierObject];
-  v13 = [v12 identifier];
-  v14 = [v11 initWithData:v13 encoding:4];
+  siteIdentifierObject = [timestampCopy siteIdentifierObject];
+  identifier = [siteIdentifierObject identifier];
+  v14 = [v11 initWithData:identifier encoding:4];
 
   fmdb = self->_fmdb;
   v22[0] = @"clock = ?";
-  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 clockValue]);
+  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [timestampCopy clockValue]);
   v22[1] = v16;
   v22[2] = @" AND stream = ?";
-  v22[3] = v9;
+  v22[3] = streamCopy;
   v22[4] = @" AND site = ?";
   v22[5] = v14;
   v22[6] = @" AND on_disk IS ?";
-  if (a5)
+  if (disk)
   {
     v17 = &__kCFBooleanTrue;
   }
@@ -1640,7 +1640,7 @@
   v18 = [NSArray arrayWithObjects:v22 count:8];
   v19 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKAtom" COLUMNS:&off_10007EE20 WHERE:v18];
 
-  if (!a5)
+  if (!disk)
   {
   }
 
@@ -1659,10 +1659,10 @@
   return v20;
 }
 
-- (BOOL)updateCKAtomRow:(id)a3 inStream:(id)a4
+- (BOOL)updateCKAtomRow:(id)row inStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  rowCopy = row;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1670,28 +1670,28 @@
   }
 
   v9 = [NSString alloc];
-  v10 = [v6 timestamp];
-  v11 = [v10 siteIdentifierObject];
-  v12 = [v11 identifier];
-  v13 = [v9 initWithData:v12 encoding:4];
+  timestamp = [rowCopy timestamp];
+  siteIdentifierObject = [timestamp siteIdentifierObject];
+  identifier = [siteIdentifierObject identifier];
+  v13 = [v9 initWithData:identifier encoding:4];
 
   fmdb = self->_fmdb;
   v42[0] = @"segment_name";
-  v14 = [v6 segmentName];
-  v15 = v14;
-  if (!v14)
+  segmentName = [rowCopy segmentName];
+  v15 = segmentName;
+  if (!segmentName)
   {
-    v14 = +[NSNull null];
+    segmentName = +[NSNull null];
   }
 
   v37 = v15;
-  v31 = v14;
-  v43[0] = v14;
+  v31 = segmentName;
+  v43[0] = segmentName;
   v42[1] = @"segment_offset";
-  v36 = [v6 segmentName];
-  if (v36)
+  segmentName2 = [rowCopy segmentName];
+  if (segmentName2)
   {
-    +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v6 segmentOffset]);
+    +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [rowCopy segmentOffset]);
   }
 
   else
@@ -1701,22 +1701,22 @@
   v35 = ;
   v43[1] = v35;
   v42[2] = @"value_version";
-  v33 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 valueVersion]);
+  v33 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [rowCopy valueVersion]);
   v43[2] = v33;
   v42[3] = @"value_data";
-  v16 = [v6 valueData];
-  v17 = v16;
-  if (!v16)
+  valueData = [rowCopy valueData];
+  v17 = valueData;
+  if (!valueData)
   {
-    v16 = +[NSNull null];
+    valueData = +[NSNull null];
   }
 
-  v30 = v16;
-  v43[3] = v16;
+  v30 = valueData;
+  v43[3] = valueData;
   v42[4] = @"on_disk";
-  v18 = [v6 segmentName];
-  v39 = self;
-  if (v18)
+  segmentName3 = [rowCopy segmentName];
+  selfCopy = self;
+  if (segmentName3)
   {
     v19 = &__kCFBooleanTrue;
   }
@@ -1735,23 +1735,23 @@
   v20 = +[NSNull null];
   v43[6] = v20;
   v21 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:7];
-  v40 = v7;
+  v40 = streamCopy;
   v41[0] = @"stream = ?";
-  v41[1] = v7;
+  v41[1] = streamCopy;
   v41[2] = @" AND site = ?";
   v38 = v13;
   v41[3] = v13;
   v41[4] = @" AND clock = ?";
-  v22 = [v6 timestamp];
-  v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 clockValue]);
+  timestamp2 = [rowCopy timestamp];
+  v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [timestamp2 clockValue]);
   v41[5] = v23;
   v41[6] = @" AND type = ?";
-  v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 type]);
+  v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy type]);
   v41[7] = v24;
   v25 = [NSArray arrayWithObjects:v41 count:8];
   v26 = [(_bmFMDatabase *)fmdb UPDATE:@"CKAtom" SET:v21 WHERE:v25];
 
-  if (!v18)
+  if (!segmentName3)
   {
   }
 
@@ -1768,18 +1768,18 @@
     v27 = __biome_log_for_category();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
-      sub_100049D9C(&v39->_fmdb);
+      sub_100049D9C(&selfCopy->_fmdb);
     }
   }
 
   return v26;
 }
 
-- (id)ckAtomRowForAtomWithBookmark:(id)a3 type:(unint64_t)a4 forSiteIdentifier:(id)a5 inStream:(id)a6
+- (id)ckAtomRowForAtomWithBookmark:(id)bookmark type:(unint64_t)type forSiteIdentifier:(id)identifier inStream:(id)stream
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  bookmarkCopy = bookmark;
+  identifierCopy = identifier;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1787,17 +1787,17 @@
   }
 
   v21[0] = @"CKAtom.site = ?";
-  v21[1] = v11;
+  v21[1] = identifierCopy;
   v21[2] = @" AND CKAtom.stream = ?";
-  v21[3] = v12;
+  v21[3] = streamCopy;
   v21[4] = @" AND type = ?";
-  v14 = [NSNumber numberWithUnsignedInteger:a4];
+  v14 = [NSNumber numberWithUnsignedInteger:type];
   v21[5] = v14;
   v21[6] = @" AND segment_name = ?";
-  v15 = [v10 segmentName];
-  v21[7] = v15;
+  segmentName = [bookmarkCopy segmentName];
+  v21[7] = segmentName;
   v21[8] = @" AND segment_offset = ?";
-  v16 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v10 offset]);
+  v16 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [bookmarkCopy offset]);
   v21[9] = v16;
   v17 = [NSArray arrayWithObjects:v21 count:10];
   v18 = [(BMSyncDatabase *)self SELECT_ATOMS_WHERE:v17 ORDER_BY:0 LIMIT:0];
@@ -1813,10 +1813,10 @@
   return v19;
 }
 
-- (id)latestDistributedTimestampForSiteIdentifier:(id)a3 inStream:(id)a4
+- (id)latestDistributedTimestampForSiteIdentifier:(id)identifier inStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1825,9 +1825,9 @@
 
   fmdb = self->_fmdb;
   v18[0] = @"site = ?";
-  v18[1] = v6;
+  v18[1] = identifierCopy;
   v18[2] = @" AND stream = ?";
-  v18[3] = v7;
+  v18[3] = streamCopy;
   v10 = [NSArray arrayWithObjects:v18 count:4];
   v11 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKAtom" COLUMNS:&off_10007EE38 WHERE:v10];
 
@@ -1835,7 +1835,7 @@
   {
     v12 = [v11 unsignedLongLongIntForColumnIndex:0];
     v13 = [CKDistributedSiteIdentifier alloc];
-    v14 = [v6 dataUsingEncoding:4];
+    v14 = [identifierCopy dataUsingEncoding:4];
     v15 = [v13 initWithIdentifier:v14];
 
     v16 = [[CKDistributedTimestamp alloc] initWithSiteIdentifierObject:v15 clockValue:v12];
@@ -1851,10 +1851,10 @@
   return v16;
 }
 
-- (BOOL)containsCKAtomRowWithSegment:(id)a3 inStream:(id)a4
+- (BOOL)containsCKAtomRowWithSegment:(id)segment inStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  segmentCopy = segment;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -1863,9 +1863,9 @@
 
   fmdb = self->_fmdb;
   v13[0] = @"stream = ?";
-  v13[1] = v7;
+  v13[1] = streamCopy;
   v13[2] = @" AND segment_name = ?";
-  v13[3] = v6;
+  v13[3] = segmentCopy;
   v10 = [NSArray arrayWithObjects:v13 count:4];
   v11 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKAtom" COLUMNS:&off_10007EE50 WHERE:v10];
 
@@ -1901,9 +1901,9 @@
   return v5;
 }
 
-- (id)CKAtomRowSiteIdentifiersForStreamIdentifier:(id)a3
+- (id)CKAtomRowSiteIdentifiersForStreamIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   if (queue)
   {
@@ -1912,7 +1912,7 @@
 
   fmdb = self->_fmdb;
   v12[0] = @"stream = ?";
-  v12[1] = v4;
+  v12[1] = identifierCopy;
   v7 = [NSArray arrayWithObjects:v12 count:2];
   v8 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKAtom" COLUMNS:&off_10007EE80 WHERE:v7];
 
@@ -1933,11 +1933,11 @@
   return v9;
 }
 
-- (void)atomRowsNotOnDiskReferencingSiteIdentifier:(id)a3 inStream:(id)a4 enumerateWithBlock:(id)a5
+- (void)atomRowsNotOnDiskReferencingSiteIdentifier:(id)identifier inStream:(id)stream enumerateWithBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  streamCopy = stream;
+  blockCopy = block;
   queue = self->_queue;
   if (queue)
   {
@@ -1945,11 +1945,11 @@
   }
 
   v20[0] = CFSTR("(ref_site = ?");
-  v20[1] = v8;
+  v20[1] = identifierCopy;
   v20[2] = @" OR (ref_site IS NULL AND CKAtom.site = ?)");
-  v20[3] = v8;
+  v20[3] = identifierCopy;
   v20[4] = @" AND CKAtom.stream = ?";
-  v20[5] = v9;
+  v20[5] = streamCopy;
   v20[6] = @" AND on_disk IS ?";
   v12 = +[NSNull null];
   v20[7] = v12;
@@ -1961,17 +1961,17 @@
   v17[2] = sub_10001F8B4;
   v17[3] = &unk_100079290;
   v18 = v14;
-  v19 = v10;
+  v19 = blockCopy;
   v15 = v14;
-  v16 = v10;
+  v16 = blockCopy;
   [v15 enumerateWithBlock:v17];
   [v15 close];
 }
 
-- (void)atomsAtOrBeforeLocation:(id)a3 ofType:(unint64_t)a4 enumerateWithBlock:(id)a5
+- (void)atomsAtOrBeforeLocation:(id)location ofType:(unint64_t)type enumerateWithBlock:(id)block
 {
-  v8 = a3;
-  v22 = a5;
+  locationCopy = location;
+  blockCopy = block;
   queue = self->_queue;
   if (queue)
   {
@@ -1979,21 +1979,21 @@
   }
 
   v26[0] = @"location.stream = ?";
-  v21 = [v8 location];
-  v10 = [v21 streamName];
-  v26[1] = v10;
+  location = [locationCopy location];
+  streamName = [location streamName];
+  v26[1] = streamName;
   v26[2] = @" AND location.site = ?";
-  v11 = [v8 location];
-  v12 = [v11 siteIdentifier];
-  v26[3] = v12;
+  location2 = [locationCopy location];
+  siteIdentifier = [location2 siteIdentifier];
+  v26[3] = siteIdentifier;
   v26[4] = @" AND location.day <= ?";
-  v13 = [v8 location];
-  v14 = [v13 day];
+  location3 = [locationCopy location];
+  v14 = [location3 day];
   [v14 timeIntervalSinceReferenceDate];
   v15 = [NSNumber numberWithDouble:?];
   v26[5] = v15;
   v26[6] = @" AND type = ?";
-  v16 = [NSNumber numberWithUnsignedInteger:a4];
+  v16 = [NSNumber numberWithUnsignedInteger:type];
   v26[7] = v16;
   v17 = [NSArray arrayWithObjects:v26 count:8];
   v18 = [(BMSyncDatabase *)self SELECT_ATOMS_WHERE:v17 ORDER_BY:&off_10007EEB0 LIMIT:0];
@@ -2003,25 +2003,25 @@
   v23[2] = sub_10001FB7C;
   v23[3] = &unk_100079290;
   v24 = v18;
-  v25 = v22;
+  v25 = blockCopy;
   v19 = v18;
-  v20 = v22;
+  v20 = blockCopy;
   [v19 enumerateWithBlock:v23];
   [v19 close];
 }
 
-- (BOOL)deleteAllAtomsAtOrBeforeLocation:(id)a3
+- (BOOL)deleteAllAtomsAtOrBeforeLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   fmdb = self->_fmdb;
   v29[0] = @"site = ?";
-  v6 = [v4 location];
-  v7 = [v6 siteIdentifier];
-  v29[1] = v7;
+  location = [locationCopy location];
+  siteIdentifier = [location siteIdentifier];
+  v29[1] = siteIdentifier;
   v29[2] = @" AND stream = ?";
-  v8 = [v4 location];
-  v9 = [v8 streamName];
-  v29[3] = v9;
+  location2 = [locationCopy location];
+  streamName = [location2 streamName];
+  v29[3] = streamName;
   v10 = [NSArray arrayWithObjects:v29 count:4];
   v11 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKAtom" COLUMNS:&off_10007EEC8 WHERE:v10 ORDER_BY:&off_10007EEE0 LIMIT:&off_10007F3D8];
 
@@ -2031,29 +2031,29 @@
     [v11 close];
     v23 = self->_fmdb;
     v28[0] = CFSTR("location_id IN (SELECT id from CRDTLocation where stream = ?");
-    v27 = [v4 location];
-    v26 = [v27 streamName];
-    v28[1] = v26;
+    location3 = [locationCopy location];
+    streamName2 = [location3 streamName];
+    v28[1] = streamName2;
     v28[2] = @" AND site = ?";
-    v25 = [v4 location];
-    v24 = [v25 siteIdentifier];
-    v28[3] = v24;
+    location4 = [locationCopy location];
+    siteIdentifier2 = [location4 siteIdentifier];
+    v28[3] = siteIdentifier2;
     v28[4] = @" AND day <= ?");
-    v22 = [v4 location];
-    v12 = [v22 day];
+    location5 = [locationCopy location];
+    v12 = [location5 day];
     [v12 timeIntervalSinceReferenceDate];
     v13 = [NSNumber numberWithDouble:?];
     v28[5] = v13;
     v28[6] = @" AND clock != ?";
     v28[7] = v21;
     v28[8] = CFSTR(" AND clock != (SELECT MAX(clock) FROM CKAtom WHERE stream = ?");
-    v14 = [v4 location];
-    v15 = [v14 streamName];
-    v28[9] = v15;
+    location6 = [locationCopy location];
+    streamName3 = [location6 streamName];
+    v28[9] = streamName3;
     v28[10] = @" AND site = ?");
-    v16 = [v4 location];
-    v17 = [v16 siteIdentifier];
-    v28[11] = v17;
+    location7 = [locationCopy location];
+    siteIdentifier3 = [location7 siteIdentifier];
+    v28[11] = siteIdentifier3;
     v18 = [NSArray arrayWithObjects:v28 count:12];
     v19 = [(_bmFMDatabase *)v23 DELETE_FROM:@"CKAtom" WHERE:v18];
   }
@@ -2067,16 +2067,16 @@
   return v19;
 }
 
-- (id)activeLocationsInClockVector:(id)a3 inStream:(id)a4 error:(id *)a5
+- (id)activeLocationsInClockVector:(id)vector inStream:(id)stream error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 timestampCount])
+  vectorCopy = vector;
+  streamCopy = stream;
+  if ([vectorCopy timestampCount])
   {
-    v26 = self;
+    selfCopy = self;
     v9 = objc_opt_new();
     [v9 addObject:@"CKAtom.stream = ? "];
-    [v9 addObject:v8];
+    [v9 addObject:streamCopy];
     v48[0] = 0;
     v48[1] = v48;
     v48[2] = 0x2020000000;
@@ -2085,13 +2085,13 @@
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v10 = [v7 allSiteIdentifiers];
-    v11 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
+    allSiteIdentifiers = [vectorCopy allSiteIdentifiers];
+    v11 = [allSiteIdentifiers countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v11)
     {
       v12 = *v45;
       v13 = CFSTR(" AND ((CKAtom.site = ? ");
-      obj = v10;
+      obj = allSiteIdentifiers;
       do
       {
         for (i = 0; i != v11; i = i + 1)
@@ -2103,12 +2103,12 @@
 
           v15 = *(*(&v44 + 1) + 8 * i);
           v16 = [NSString alloc];
-          v17 = [v15 identifier];
-          v18 = [v16 initWithData:v17 encoding:4];
+          identifier = [v15 identifier];
+          v18 = [v16 initWithData:identifier encoding:4];
 
           [v9 addObject:v13];
           [v9 addObject:v18];
-          v19 = [v7 clockValuesForSiteIdentifier:v15];
+          v19 = [vectorCopy clockValuesForSiteIdentifier:v15];
           v34 = 0;
           v35 = &v34;
           v36 = 0x2020000000;
@@ -2126,7 +2126,7 @@
           v13 = @" OR (CKAtom.site = ? ");
         }
 
-        v10 = obj;
+        allSiteIdentifiers = obj;
         v11 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
       }
 
@@ -2148,20 +2148,20 @@
     v29[1] = 3221225472;
     v29[2] = sub_100020568;
     v29[3] = &unk_100079308;
-    v29[4] = v26;
+    v29[4] = selfCopy;
     v21 = v9;
     v30 = v21;
     v22 = v20;
     v31 = v22;
     v33 = &v34;
-    v32 = v8;
-    [(BMSyncDatabase *)v26 disableStatementCachingForBlock:v29];
-    if (a5)
+    v32 = streamCopy;
+    [(BMSyncDatabase *)selfCopy disableStatementCachingForBlock:v29];
+    if (error)
     {
       v23 = v35[5];
       if (v23)
       {
-        *a5 = v23;
+        *error = v23;
       }
     }
 
@@ -2185,22 +2185,22 @@
   return v24;
 }
 
-- (void)atomRowsInTimestampClockVector:(id)a3 forLocation:(id)a4 inStream:(id)a5 enumerateWithBlock:(id)a6
+- (void)atomRowsInTimestampClockVector:(id)vector forLocation:(id)location inStream:(id)stream enumerateWithBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v28 = a6;
-  v27 = v12;
-  if ([v10 timestampCount])
+  vectorCopy = vector;
+  locationCopy = location;
+  streamCopy = stream;
+  blockCopy = block;
+  v27 = streamCopy;
+  if ([vectorCopy timestampCount])
   {
     v13 = objc_opt_new();
     [v13 addObject:@"CKAtom.stream = ? "];
-    [v13 addObject:v12];
-    if (v11)
+    [v13 addObject:streamCopy];
+    if (locationCopy)
     {
       [v13 addObject:@" AND CKAtom.location_id = ? "];
-      v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 primaryKey]);
+      v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [locationCopy primaryKey]);
       [v13 addObject:v14];
     }
 
@@ -2212,13 +2212,13 @@
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v15 = [v10 allSiteIdentifiers];
-    v16 = [v15 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    allSiteIdentifiers = [vectorCopy allSiteIdentifiers];
+    v16 = [allSiteIdentifiers countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v16)
     {
       v17 = *v40;
       v18 = CFSTR(" AND ((CKAtom.site = ? ");
-      obj = v15;
+      obj = allSiteIdentifiers;
       do
       {
         for (i = 0; i != v16; i = i + 1)
@@ -2230,12 +2230,12 @@
 
           v20 = *(*(&v39 + 1) + 8 * i);
           v21 = [NSString alloc];
-          v22 = [v20 identifier];
-          v23 = [v21 initWithData:v22 encoding:4];
+          identifier = [v20 identifier];
+          v23 = [v21 initWithData:identifier encoding:4];
 
           [v13 addObject:v18];
           [v13 addObject:v23];
-          v24 = [v10 clockValuesForSiteIdentifier:v20];
+          v24 = [vectorCopy clockValuesForSiteIdentifier:v20];
           v37[0] = 0;
           v37[1] = v37;
           v37[2] = 0x2020000000;
@@ -2253,7 +2253,7 @@
           v18 = @" OR (CKAtom.site = ? ");
         }
 
-        v15 = obj;
+        allSiteIdentifiers = obj;
         v16 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
       }
 
@@ -2269,7 +2269,7 @@
     v30[4] = v26;
     v25 = v13;
     v31 = v25;
-    v32 = v28;
+    v32 = blockCopy;
     [v26 disableStatementCachingForBlock:v30];
 
     _Block_object_dispose(v43, 8);
@@ -2285,13 +2285,13 @@
   }
 }
 
-- (id)computeHighestLocationToDeleteUpToBookmark:(id)a3 forSiteIdentifier:(id)a4 inStream:(id)a5 offsetsIncrease:(BOOL)a6
+- (id)computeHighestLocationToDeleteUpToBookmark:(id)bookmark forSiteIdentifier:(id)identifier inStream:(id)stream offsetsIncrease:(BOOL)increase
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
+  increaseCopy = increase;
+  identifierCopy = identifier;
+  streamCopy = stream;
   v12 = @" AND segment_offset < ? OR NULL) == 0");
-  if (v6)
+  if (increaseCopy)
   {
     v12 = @" AND segment_offset > ? OR NULL) == 0");
   }
@@ -2299,23 +2299,23 @@
   v13 = v12;
   fmdb = self->_fmdb;
   v28[0] = @"CKAtom.stream = ?";
-  v28[1] = v11;
-  v26 = v10;
+  v28[1] = streamCopy;
+  v26 = identifierCopy;
   v28[2] = @" AND CKAtom.site = ?";
-  v28[3] = v10;
-  v15 = a3;
+  v28[3] = identifierCopy;
+  bookmarkCopy = bookmark;
   v16 = [NSArray arrayWithObjects:v28 count:4];
   v27[0] = CFSTR("COUNT ((CAST(segment_name AS INT) > ?");
-  v17 = [v15 segmentName];
-  v18 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v17 longLongValue]);
+  segmentName = [bookmarkCopy segmentName];
+  v18 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [segmentName longLongValue]);
   v27[1] = v18;
   v27[2] = @" OR segment_name = ?";
-  v19 = [v15 segmentName];
-  v27[3] = v19;
+  segmentName2 = [bookmarkCopy segmentName];
+  v27[3] = segmentName2;
   v27[4] = v13;
-  v20 = [v15 offset];
+  offset = [bookmarkCopy offset];
 
-  v21 = [NSNumber numberWithUnsignedLong:v20];
+  v21 = [NSNumber numberWithUnsignedLong:offset];
   v27[5] = v21;
   v22 = [NSArray arrayWithObjects:v27 count:6];
   v23 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKAtom" COLUMNS:&off_10007EF70 JOIN:&off_10007EF88 WHERE:v16 GROUP_BY:&off_10007EFA0 HAVING:v22 ORDER_BY:&off_10007EFB8 LIMIT:&off_10007F3D8];
@@ -2335,18 +2335,18 @@
   return v24;
 }
 
-- (id)highestLocationWithBufferedAtomsOlderThan:(double)a3 forSiteIdentifier:(id)a4 inStream:(id)a5
+- (id)highestLocationWithBufferedAtomsOlderThan:(double)than forSiteIdentifier:(id)identifier inStream:(id)stream
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  streamCopy = stream;
   v15[0] = @"CKAtom.stream = ?";
-  v15[1] = v9;
+  v15[1] = streamCopy;
   v15[2] = @" AND CKAtom.site = ?";
-  v15[3] = v8;
+  v15[3] = identifierCopy;
   v15[4] = @" AND on_disk IS NOT ?";
   v15[5] = &__kCFBooleanTrue;
   v15[6] = @" AND location.day <= ?";
-  v10 = [NSNumber numberWithDouble:a3];
+  v10 = [NSNumber numberWithDouble:than];
   v15[7] = v10;
   v11 = [NSArray arrayWithObjects:v15 count:8];
   v12 = [(BMSyncDatabase *)self SELECT_ATOMS_WHERE:v11 ORDER_BY:&off_10007EFD0 LIMIT:&off_10007F3D8];
@@ -2366,12 +2366,12 @@
   return v13;
 }
 
-- (BOOL)deleteRowsWithAtomBatchFilename:(id)a3
+- (BOOL)deleteRowsWithAtomBatchFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   fmdb = self->_fmdb;
   v10[0] = @"ref_atom_batch_filename = ?";
-  v10[1] = v4;
+  v10[1] = filenameCopy;
   v6 = [NSArray arrayWithObjects:v10 count:2];
   v7 = [(_bmFMDatabase *)fmdb DELETE_FROM:@"CKAtom" WHERE:v6];
 
@@ -2387,9 +2387,9 @@
   return v7;
 }
 
-- (BOOL)deleteAtomsFromCKAtomWithNonExistentAtomBatchFilesForStream:(id)a3
+- (BOOL)deleteAtomsFromCKAtomWithNonExistentAtomBatchFilesForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -2398,7 +2398,7 @@
 
   fmdb = self->_fmdb;
   v9[0] = @"ref_atom_batch_filename IS NOT NULL AND stream = ? AND NOT EXISTS (SELECT DISTINCT atom_batch_filename from AtomBatchFiles WHERE atom_batch_filename = ref_atom_batch_filename)";
-  v9[1] = v4;
+  v9[1] = streamCopy;
   v7 = [NSArray arrayWithObjects:v9 count:2];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb DELETE_FROM:@"CKAtom" WHERE:v7];
 
@@ -2428,11 +2428,11 @@
   return v3;
 }
 
-- (void)setSharedSyncGeneration:(id)a3
+- (void)setSharedSyncGeneration:(id)generation
 {
   v5[0] = 0;
   v5[1] = 0;
-  [a3 getUUIDBytes:v5];
+  [generation getUUIDBytes:v5];
   v4 = [NSData dataWithBytes:v5 length:16];
   [(BMSyncDatabase *)self setValue:v4 forMetadataKey:@"SharedSyncGeneration"];
 }
@@ -2455,11 +2455,11 @@
   return v4;
 }
 
-- (void)setLastRapportSyncAttemptDate:(id)a3
+- (void)setLastRapportSyncAttemptDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v4 = [NSNumber numberWithDouble:?];
   }
 
@@ -2490,11 +2490,11 @@
   return v4;
 }
 
-- (void)setLastRapportSyncDate:(id)a3
+- (void)setLastRapportSyncDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v4 = [NSNumber numberWithDouble:?];
   }
 
@@ -2525,11 +2525,11 @@
   return v4;
 }
 
-- (void)setLastCloudKitSyncAttemptDate:(id)a3
+- (void)setLastCloudKitSyncAttemptDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v4 = [NSNumber numberWithDouble:?];
   }
 
@@ -2560,11 +2560,11 @@
   return v4;
 }
 
-- (void)setLastCloudKitSyncDate:(id)a3
+- (void)setLastCloudKitSyncDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v4 = [NSNumber numberWithDouble:?];
   }
 
@@ -2583,11 +2583,11 @@
   [(BMSyncDatabase *)self setValue:v3 forMetadataKey:@"com.apple.biome.sync.ckMetaData"];
 }
 
-- (BOOL)saveCKMergeableRecordValueRecordName:(id)a3 zoneName:(id)a4 mergeableRecordValueData:(id)a5
+- (BOOL)saveCKMergeableRecordValueRecordName:(id)name zoneName:(id)zoneName mergeableRecordValueData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
+  dataCopy = data;
   queue = self->_queue;
   if (queue)
   {
@@ -2597,20 +2597,20 @@
   fmdb = self->_fmdb;
   v15[0] = @"stream_name";
   v15[1] = @"record_name";
-  v16[0] = v9;
-  v16[1] = v8;
+  v16[0] = zoneNameCopy;
+  v16[1] = nameCopy;
   v15[2] = @"server_mergeable_value";
-  v16[2] = v10;
+  v16[2] = dataCopy;
   v13 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb INSERT_INTO:@"CKMergeableRecordValue" VALUES:v13];
 
   return fmdb;
 }
 
-- (BOOL)clearCKMergeableRecordValueServerMergeableValuesForRecordName:(id)a3 zoneName:(id)a4
+- (BOOL)clearCKMergeableRecordValueServerMergeableValuesForRecordName:(id)name zoneName:(id)zoneName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
   queue = self->_queue;
   if (queue)
   {
@@ -2619,18 +2619,18 @@
 
   fmdb = self->_fmdb;
   v12[0] = @"stream_name = ?";
-  v12[1] = v7;
+  v12[1] = zoneNameCopy;
   v12[2] = @" AND record_name = ?";
-  v12[3] = v6;
+  v12[3] = nameCopy;
   v10 = [NSArray arrayWithObjects:v12 count:4];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb DELETE_FROM:@"CKMergeableRecordValue" WHERE:v10];
 
   return fmdb;
 }
 
-- (BOOL)clearCKMergeableRecordValueServerMergeableValuesForZoneName:(id)a3
+- (BOOL)clearCKMergeableRecordValueServerMergeableValuesForZoneName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   if (queue)
   {
@@ -2639,23 +2639,23 @@
 
   fmdb = self->_fmdb;
   v9[0] = @"stream_name = ?";
-  v9[1] = v4;
+  v9[1] = nameCopy;
   v7 = [NSArray arrayWithObjects:v9 count:2];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb DELETE_FROM:@"CKMergeableRecordValue" WHERE:v7];
 
   return fmdb;
 }
 
-- (void)enumerateMergeableRecordValuesForRecordName:(id)a3 zoneName:(id)a4 withBlock:(id)a5
+- (void)enumerateMergeableRecordValuesForRecordName:(id)name zoneName:(id)zoneName withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
+  blockCopy = block;
   fmdb = self->_fmdb;
   v17[0] = @"stream_name = ?";
-  v17[1] = v9;
+  v17[1] = zoneNameCopy;
   v17[2] = @" AND record_name = ?";
-  v17[3] = v8;
+  v17[3] = nameCopy;
   v12 = [NSArray arrayWithObjects:v17 count:4];
   v13 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKMergeableRecordValue" COLUMNS:&off_10007F018 WHERE:v12 ORDER_BY:&off_10007F030 LIMIT:0];
 
@@ -2669,7 +2669,7 @@
 
     v14 = objc_autoreleasePoolPush();
     v15 = [v13 dataForColumn:@"server_mergeable_value"];
-    v10[2](v10, v15, &v16);
+    blockCopy[2](blockCopy, v15, &v16);
 
     objc_autoreleasePoolPop(v14);
   }
@@ -2677,57 +2677,57 @@
   while (v16 != 1);
 }
 
-- (BOOL)getLatestTombstoneBookmarkForSiteIdentifier:(id)a3 inStream:(id)a4 segmentName:(id *)a5 segmentOffset:(unint64_t *)a6
+- (BOOL)getLatestTombstoneBookmarkForSiteIdentifier:(id)identifier inStream:(id)stream segmentName:(id *)name segmentOffset:(unint64_t *)offset
 {
   fmdb = self->_fmdb;
   v16[0] = @"stream = ?";
-  v16[1] = a4;
+  v16[1] = stream;
   v16[2] = @"AND site = ?";
-  v16[3] = a3;
-  v10 = a4;
-  v11 = a3;
+  v16[3] = identifier;
+  streamCopy = stream;
+  identifierCopy = identifier;
   v12 = [NSArray arrayWithObjects:v16 count:4];
   v13 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"TombstoneBookmark" COLUMNS:&off_10007F048 WHERE:v12];
 
-  v14 = [v13 next];
-  if (v14)
+  next = [v13 next];
+  if (next)
   {
-    if (a5)
+    if (name)
     {
-      *a5 = [v13 stringForColumn:@"segment_name"];
+      *name = [v13 stringForColumn:@"segment_name"];
     }
 
-    if (a6)
+    if (offset)
     {
-      *a6 = [v13 longForColumn:@"segment_offset"];
+      *offset = [v13 longForColumn:@"segment_offset"];
     }
   }
 
-  return v14;
+  return next;
 }
 
-- (BOOL)saveLatestTombstoneBookmark:(id)a3 forSiteIdentifier:(id)a4 inStream:(id)a5
+- (BOOL)saveLatestTombstoneBookmark:(id)bookmark forSiteIdentifier:(id)identifier inStream:(id)stream
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  bookmarkCopy = bookmark;
+  identifierCopy = identifier;
+  streamCopy = stream;
+  if (bookmarkCopy)
   {
-    v11 = [(BMSyncDatabase *)self getLatestTombstoneBookmarkForSiteIdentifier:v9 inStream:v10 segmentName:0 segmentOffset:0];
+    v11 = [(BMSyncDatabase *)self getLatestTombstoneBookmarkForSiteIdentifier:identifierCopy inStream:streamCopy segmentName:0 segmentOffset:0];
     fmdb = self->_fmdb;
     if (v11)
     {
       v22[0] = @"segment_name";
-      v13 = [v8 segmentName];
-      v23[0] = v13;
+      segmentName = [bookmarkCopy segmentName];
+      v23[0] = segmentName;
       v22[1] = @"segment_offset";
-      v14 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v8 offset]);
+      v14 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [bookmarkCopy offset]);
       v23[1] = v14;
       v15 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
       v21[0] = @"stream = ?";
-      v21[1] = v10;
+      v21[1] = streamCopy;
       v21[2] = @" AND site = ?";
-      v21[3] = v9;
+      v21[3] = identifierCopy;
       v16 = [NSArray arrayWithObjects:v21 count:4];
       v17 = [(_bmFMDatabase *)fmdb UPDATE:@"TombstoneBookmark" SET:v15 WHERE:v16];
     }
@@ -2736,13 +2736,13 @@
     {
       v19[0] = @"stream";
       v19[1] = @"site";
-      v20[0] = v10;
-      v20[1] = v9;
+      v20[0] = streamCopy;
+      v20[1] = identifierCopy;
       v19[2] = @"segment_name";
-      v13 = [v8 segmentName];
-      v20[2] = v13;
+      segmentName = [bookmarkCopy segmentName];
+      v20[2] = segmentName;
       v19[3] = @"segment_offset";
-      v14 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v8 offset]);
+      v14 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [bookmarkCopy offset]);
       v20[3] = v14;
       v15 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:4];
       v17 = [(_bmFMDatabase *)fmdb INSERT_INTO:@"TombstoneBookmark" VALUES:v15];
@@ -2757,10 +2757,10 @@
   return v17;
 }
 
-+ (id)createPrimaryDatabaseWithQueue:(id)a3
++ (id)createPrimaryDatabaseWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[BMSyncDatabase alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[BMSyncDatabase alloc] initWithQueue:queueCopy];
 
   [(BMSyncDatabase *)v4 setName:@"primary"];
   [(BMSyncDatabase *)v4 setCorruptionHandler:&stru_100079530];
@@ -2768,46 +2768,46 @@
   return v4;
 }
 
-+ (id)createDatabaseForAccount:(id)a3 queue:(id)a4
++ (id)createDatabaseForAccount:(id)account queue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [BMPaths pathForSharedSyncWithAccount:v5 domain:0];
+  accountCopy = account;
+  queueCopy = queue;
+  v7 = [BMPaths pathForSharedSyncWithAccount:accountCopy domain:0];
   v8 = [v7 stringByAppendingPathComponent:@"sync.db"];
 
-  v9 = [[BMSyncDatabase alloc] initWithPath:v8 options:0 queue:v6];
-  v10 = [v5 identifier];
-  v11 = [v10 length];
-  v12 = [v5 identifier];
-  v13 = v12;
+  v9 = [[BMSyncDatabase alloc] initWithPath:v8 options:0 queue:queueCopy];
+  identifier = [accountCopy identifier];
+  v11 = [identifier length];
+  identifier2 = [accountCopy identifier];
+  v13 = identifier2;
   if (v11 > 7)
   {
-    v14 = [v12 substringToIndex:8];
+    v14 = [identifier2 substringToIndex:8];
     [(BMSyncDatabase *)v9 setName:v14];
   }
 
   else
   {
-    [(BMSyncDatabase *)v9 setName:v12];
+    [(BMSyncDatabase *)v9 setName:identifier2];
   }
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100027140;
   v17[3] = &unk_100078B70;
-  v18 = v5;
-  v15 = v5;
+  v18 = accountCopy;
+  v15 = accountCopy;
   [(BMSyncDatabase *)v9 setCorruptionHandler:v17];
 
   return v9;
 }
 
-+ (void)enumerateAccountSpecificDatabasesWithBlock:(id)a3
++ (void)enumerateAccountSpecificDatabasesWithBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    sub_10004A5A0(a2, a1);
+    sub_10004A5A0(a2, self);
   }
 
   v6 = dispatch_get_current_queue();
@@ -2836,7 +2836,7 @@
         v13 = [BMSyncDatabase createDatabaseForAccount:v12 queue:v6];
         if ([v13 open])
         {
-          v5[2](v5, v13, v12);
+          blockCopy[2](blockCopy, v13, v12);
           [v13 close];
         }
 
@@ -2857,15 +2857,15 @@
   }
 }
 
-- (id)ckRecordsToSyncToCloudKitForZone:(id)a3
+- (id)ckRecordsToSyncToCloudKitForZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v5 = objc_alloc_init(NSMutableArray);
   [v5 addObjectsFromArray:&off_10007F078];
-  if (v4)
+  if (zoneCopy)
   {
     v15[0] = @" AND stream_identifier = ?";
-    v15[1] = v4;
+    v15[1] = zoneCopy;
     v6 = [NSArray arrayWithObjects:v15 count:2];
     [v5 addObjectsFromArray:v6];
   }
@@ -2891,16 +2891,16 @@
     while (([v7 next] & 1) != 0);
   }
 
-  v13 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v13;
+  return allObjects;
 }
 
-- (id)recordFromSystemFieldsData:(id)a3
+- (id)recordFromSystemFieldsData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v10 = 0;
-  v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v3 error:&v10];
+  v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:dataCopy error:&v10];
 
   v5 = v10;
   if (v5)
@@ -2932,13 +2932,13 @@
   return v8;
 }
 
-- (id)createCKRecordFromRecordID:(id)a3 newRecord:(BOOL *)a4 recordType:(unint64_t)a5
+- (id)createCKRecordFromRecordID:(id)d newRecord:(BOOL *)record recordType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = [v8 recordName];
-  v10 = [v8 zoneID];
-  v11 = [v10 zoneName];
-  v12 = [(BMSyncDatabase *)self getSystemFieldsDataForRecordName:v9 zoneName:v11 recordType:a5];
+  dCopy = d;
+  recordName = [dCopy recordName];
+  zoneID = [dCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v12 = [(BMSyncDatabase *)self getSystemFieldsDataForRecordName:recordName zoneName:zoneName recordType:type];
 
   if (v12)
   {
@@ -2956,14 +2956,14 @@
   }
 
   v15 = [CKRecord alloc];
-  v16 = sub_100027674(a5);
-  v13 = [v15 initWithRecordType:v16 recordID:v8];
+  v16 = sub_100027674(type);
+  v13 = [v15 initWithRecordType:v16 recordID:dCopy];
 
   if (v13)
   {
-    if (a4)
+    if (record)
     {
-      *a4 = 1;
+      *record = 1;
     }
   }
 
@@ -2983,28 +2983,28 @@ LABEL_12:
   return v13;
 }
 
-- (void)saveSystemFieldsDataForRecord:(id)a3 syncToCloudKit:(id)a4 recordType:(unint64_t)a5 crdtDeleted:(id)a6
+- (void)saveSystemFieldsDataForRecord:(id)record syncToCloudKit:(id)kit recordType:(unint64_t)type crdtDeleted:(id)deleted
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  recordCopy = record;
+  kitCopy = kit;
+  deletedCopy = deleted;
   queue = self->_queue;
   if (queue)
   {
     dispatch_assert_queue_V2(queue);
   }
 
-  v14 = [v10 recordID];
-  v15 = [v14 recordName];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
 
-  v16 = [v10 recordID];
-  v17 = [v16 zoneID];
-  v18 = [v17 zoneName];
+  recordID2 = [recordCopy recordID];
+  zoneID = [recordID2 zoneID];
+  zoneName = [zoneID zoneName];
 
-  v19 = [(BMSyncDatabase *)self ckRecordExists:v15 zoneName:v18 recordType:a5];
-  v20 = [v10 recordChangeTag];
+  v19 = [(BMSyncDatabase *)self ckRecordExists:recordName zoneName:zoneName recordType:type];
+  recordChangeTag = [recordCopy recordChangeTag];
 
-  if (!v20)
+  if (!recordChangeTag)
   {
     if ((v19 & 1) == 0)
     {
@@ -3013,19 +3013,19 @@ LABEL_12:
       goto LABEL_20;
     }
 
-    v22 = 0;
+    encodedData = 0;
 LABEL_9:
     v24 = objc_alloc_init(NSMutableDictionary);
-    v25 = [v10 recordChangeTag];
+    recordChangeTag2 = [recordCopy recordChangeTag];
 
-    if (v25)
+    if (recordChangeTag2)
     {
-      if (!v22)
+      if (!encodedData)
       {
         v36 = +[NSNull null];
         [v24 setObject:v36 forKey:@"record_metadata"];
 
-        if (!v11)
+        if (!kitCopy)
         {
           goto LABEL_14;
         }
@@ -3033,15 +3033,15 @@ LABEL_9:
         goto LABEL_13;
       }
 
-      [v24 setObject:v22 forKey:@"record_metadata"];
+      [v24 setObject:encodedData forKey:@"record_metadata"];
     }
 
-    if (!v11)
+    if (!kitCopy)
     {
 LABEL_14:
-      if (v12)
+      if (deletedCopy)
       {
-        [v24 setObject:v12 forKey:@"deleted_crdt"];
+        [v24 setObject:deletedCopy forKey:@"deleted_crdt"];
       }
 
       if (![v24 count])
@@ -3052,11 +3052,11 @@ LABEL_14:
 
       v26 = self->_fmdb;
       v42[0] = @"record_name = ?";
-      v42[1] = v15;
+      v42[1] = recordName;
       v42[2] = @" AND stream_identifier = ?";
-      v42[3] = v18;
+      v42[3] = zoneName;
       v42[4] = @" AND record_type = ?";
-      v27 = [NSNumber numberWithUnsignedInteger:a5];
+      v27 = [NSNumber numberWithUnsignedInteger:type];
       v42[5] = v27;
       v28 = [NSArray arrayWithObjects:v42 count:6];
       LOBYTE(v26) = [(_bmFMDatabase *)v26 UPDATE:@"CKRecord" SET:v24 WHERE:v28];
@@ -3070,13 +3070,13 @@ LABEL_14:
     }
 
 LABEL_13:
-    [v24 setObject:v11 forKey:@"sync_to_cloud_kit"];
+    [v24 setObject:kitCopy forKey:@"sync_to_cloud_kit"];
     goto LABEL_14;
   }
 
   v21 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v10 encodeSystemFieldsWithCoder:v21];
-  v22 = [v21 encodedData];
+  [recordCopy encodeSystemFieldsWithCoder:v21];
+  encodedData = [v21 encodedData];
 
   if (v19)
   {
@@ -3085,48 +3085,48 @@ LABEL_13:
 
   fmdb = self->_fmdb;
   v40[0] = @"record_metadata";
-  if (v22)
+  if (encodedData)
   {
     v37 = 0;
-    v23 = v22;
+    v23 = encodedData;
     goto LABEL_21;
   }
 
 LABEL_20:
   v23 = +[NSNull null];
-  v22 = 0;
+  encodedData = 0;
   v37 = 1;
 LABEL_21:
   v41[0] = v23;
-  v41[1] = v15;
-  v39 = v15;
+  v41[1] = recordName;
+  v39 = recordName;
   v40[1] = @"record_name";
   v40[2] = @"stream_identifier";
   v29 = &__kCFBooleanFalse;
-  v30 = v11;
-  if (v11)
+  v30 = kitCopy;
+  if (kitCopy)
   {
-    v29 = v11;
+    v29 = kitCopy;
   }
 
-  v41[2] = v18;
+  v41[2] = zoneName;
   v41[3] = v29;
   v40[3] = @"sync_to_cloud_kit";
   v40[4] = @"deleted_crdt";
-  v31 = v12;
-  if (!v12)
+  v31 = deletedCopy;
+  if (!deletedCopy)
   {
     v31 = +[NSNull null];
   }
 
   v41[4] = v31;
   v40[5] = @"record_type";
-  v32 = [NSNumber numberWithUnsignedInteger:a5];
+  v32 = [NSNumber numberWithUnsignedInteger:type];
   v41[5] = v32;
   v33 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:6];
   v34 = [(_bmFMDatabase *)fmdb INSERT_INTO:@"CKRecord" VALUES:v33];
 
-  if (!v12)
+  if (!deletedCopy)
   {
   }
 
@@ -3134,8 +3134,8 @@ LABEL_21:
   {
   }
 
-  v11 = v30;
-  v15 = v39;
+  kitCopy = v30;
+  recordName = v39;
   if ((v34 & 1) == 0)
   {
 LABEL_30:
@@ -3149,10 +3149,10 @@ LABEL_30:
 LABEL_34:
 }
 
-- (id)getSystemFieldsDataForRecordName:(id)a3 zoneName:(id)a4 recordType:(unint64_t)a5
+- (id)getSystemFieldsDataForRecordName:(id)name zoneName:(id)zoneName recordType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
   queue = self->_queue;
   if (queue)
   {
@@ -3161,12 +3161,12 @@ LABEL_34:
 
   fmdb = self->_fmdb;
   v17[0] = @"record_name = ?";
-  v17[1] = v8;
+  v17[1] = nameCopy;
   v17[2] = @" AND record_type = ?";
-  v12 = [NSNumber numberWithUnsignedInteger:a5];
+  v12 = [NSNumber numberWithUnsignedInteger:type];
   v17[3] = v12;
   v17[4] = @" AND stream_identifier = ?";
-  v17[5] = v9;
+  v17[5] = zoneNameCopy;
   v13 = [NSArray arrayWithObjects:v17 count:6];
   v14 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKRecord" COLUMNS:&off_10007F0A8 WHERE:v13];
 
@@ -3183,9 +3183,9 @@ LABEL_34:
   return v15;
 }
 
-- (BOOL)resetCKRecordsMetaDataAndSetToSyncForZone:(id)a3
+- (BOOL)resetCKRecordsMetaDataAndSetToSyncForZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   queue = self->_queue;
   if (queue)
   {
@@ -3203,20 +3203,20 @@ LABEL_34:
   v15[2] = &__kCFBooleanTrue;
   v9 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
   v13[0] = @"stream_identifier = ?";
-  v13[1] = v4;
+  v13[1] = zoneCopy;
   v13[2] = @" AND record_type = ?";
   v13[3] = &off_10007F408;
   v10 = [NSArray arrayWithObjects:v13 count:4];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb UPDATE:@"CKRecord" SET:v9 WHERE:v10];
 
-  v11 = [(BMSyncDatabase *)self clearCKMergeableRecordValueServerMergeableValuesForZoneName:v4];
+  v11 = [(BMSyncDatabase *)self clearCKMergeableRecordValueServerMergeableValuesForZoneName:zoneCopy];
   return fmdb & v11;
 }
 
-- (void)resetMetadataForRecord:(id)a3 zoneName:(id)a4
+- (void)resetMetadataForRecord:(id)record zoneName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  nameCopy = name;
   queue = self->_queue;
   if (queue)
   {
@@ -3232,9 +3232,9 @@ LABEL_34:
   v17[1] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
   v15[0] = @"record_name = ?";
-  v15[1] = v6;
+  v15[1] = recordCopy;
   v15[2] = @" AND stream_identifier = ?";
-  v15[3] = v7;
+  v15[3] = nameCopy;
   v13 = [NSArray arrayWithObjects:v15 count:4];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb UPDATE:@"CKRecord" SET:v12 WHERE:v13];
 
@@ -3248,12 +3248,12 @@ LABEL_34:
   }
 }
 
-- (BOOL)saveCKRecordServerMergeableValue:(id)a3 recordName:(id)a4 zoneName:(id)a5 locationRow:(id)a6
+- (BOOL)saveCKRecordServerMergeableValue:(id)value recordName:(id)name zoneName:(id)zoneName locationRow:(id)row
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
+  rowCopy = row;
   queue = self->_queue;
   if (queue)
   {
@@ -3261,21 +3261,21 @@ LABEL_34:
   }
 
   v15 = 1;
-  if (![(BMSyncDatabase *)self ckRecordExists:v11 zoneName:v12 recordType:1])
+  if (![(BMSyncDatabase *)self ckRecordExists:nameCopy zoneName:zoneNameCopy recordType:1])
   {
     fmdb = self->_fmdb;
     v21[0] = @"location_id";
-    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 primaryKey]);
+    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy primaryKey]);
     v22[0] = v17;
     v22[1] = &__kCFBooleanFalse;
     v21[1] = @"sync_to_cloud_kit";
     v21[2] = @"deleting";
     v22[2] = &__kCFBooleanFalse;
-    v22[3] = v11;
+    v22[3] = nameCopy;
     v21[3] = @"record_name";
     v21[4] = @"stream_identifier";
     v21[5] = @"record_type";
-    v22[4] = v12;
+    v22[4] = zoneNameCopy;
     v22[5] = &off_10007F408;
     v18 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:6];
     LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb INSERT_INTO:@"CKRecord" VALUES:v18];
@@ -3289,7 +3289,7 @@ LABEL_34:
       }
 
       v15 = 0;
-      if (v10)
+      if (valueCopy)
       {
         goto LABEL_7;
       }
@@ -3300,10 +3300,10 @@ LABEL_34:
     v15 = 1;
   }
 
-  if (v10)
+  if (valueCopy)
   {
 LABEL_7:
-    v15 = [(BMSyncDatabase *)self saveCKMergeableRecordValueRecordName:v11 zoneName:v12 mergeableRecordValueData:v10];
+    v15 = [(BMSyncDatabase *)self saveCKMergeableRecordValueRecordName:nameCopy zoneName:zoneNameCopy mergeableRecordValueData:valueCopy];
   }
 
 LABEL_8:
@@ -3311,12 +3311,12 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)saveCKRecordHighestDeletedLocationRow:(id)a3 recordName:(id)a4 zoneName:(id)a5 recordExists:(BOOL)a6
+- (BOOL)saveCKRecordHighestDeletedLocationRow:(id)row recordName:(id)name zoneName:(id)zoneName recordExists:(BOOL)exists
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  existsCopy = exists;
+  rowCopy = row;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
   queue = self->_queue;
   if (queue)
   {
@@ -3324,16 +3324,16 @@ LABEL_8:
   }
 
   fmdb = self->_fmdb;
-  if (v6)
+  if (existsCopy)
   {
     v23 = @"location_id";
-    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 primaryKey]);
+    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy primaryKey]);
     v24 = v15;
     v16 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v22[0] = @"record_name = ?";
-    v22[1] = v11;
+    v22[1] = nameCopy;
     v22[2] = @" AND stream_identifier = ?";
-    v22[3] = v12;
+    v22[3] = zoneNameCopy;
     v22[4] = @" AND record_type = ?";
     v22[5] = &off_10007F420;
     v17 = [NSArray arrayWithObjects:v22 count:6];
@@ -3343,17 +3343,17 @@ LABEL_8:
   else
   {
     v20[0] = @"location_id";
-    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 primaryKey]);
+    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy primaryKey]);
     v21[0] = v15;
     v21[1] = &__kCFBooleanFalse;
     v20[1] = @"sync_to_cloud_kit";
     v20[2] = @"deleting";
     v21[2] = &__kCFBooleanFalse;
-    v21[3] = v11;
+    v21[3] = nameCopy;
     v20[3] = @"record_name";
     v20[4] = @"stream_identifier";
     v20[5] = @"record_type";
-    v21[4] = v12;
+    v21[4] = zoneNameCopy;
     v21[5] = &off_10007F420;
     v16 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:6];
     v18 = [(_bmFMDatabase *)fmdb INSERT_INTO:@"CKRecord" VALUES:v16];
@@ -3362,38 +3362,38 @@ LABEL_8:
   return v18;
 }
 
-- (BOOL)saveCKRecordLocalMergeableValue:(id)a3 recordName:(id)a4 zoneName:(id)a5 locationRow:(id)a6
+- (BOOL)saveCKRecordLocalMergeableValue:(id)value recordName:(id)name zoneName:(id)zoneName locationRow:(id)row
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
+  rowCopy = row;
   queue = self->_queue;
   if (queue)
   {
     dispatch_assert_queue_V2(queue);
   }
 
-  v15 = [(BMSyncDatabase *)self ckRecordExists:v11 zoneName:v12 recordType:1];
+  v15 = [(BMSyncDatabase *)self ckRecordExists:nameCopy zoneName:zoneNameCopy recordType:1];
   fmdb = self->_fmdb;
   if (!v15)
   {
     v24[0] = @"location_id";
-    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 primaryKey]);
+    v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rowCopy primaryKey]);
     v25[0] = v17;
     v25[1] = &__kCFBooleanFalse;
     v24[1] = @"sync_to_cloud_kit";
     v24[2] = @"deleting";
     v25[2] = &__kCFBooleanFalse;
-    v25[3] = v11;
+    v25[3] = nameCopy;
     v24[3] = @"record_name";
     v24[4] = @"stream_identifier";
-    v25[4] = v12;
+    v25[4] = zoneNameCopy;
     v25[5] = &off_10007F408;
-    v21 = v10;
+    v21 = valueCopy;
     v24[5] = @"record_type";
     v24[6] = @"local_mergeable_value";
-    if (!v10)
+    if (!valueCopy)
     {
       v21 = +[NSNull null];
     }
@@ -3402,7 +3402,7 @@ LABEL_8:
     v22 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:7];
     v20 = [(_bmFMDatabase *)fmdb INSERT_INTO:@"CKRecord" VALUES:v22];
 
-    if (!v10)
+    if (!valueCopy)
     {
     }
 
@@ -3410,8 +3410,8 @@ LABEL_8:
   }
 
   v27 = @"local_mergeable_value";
-  v17 = v10;
-  if (!v10)
+  v17 = valueCopy;
+  if (!valueCopy)
   {
     v17 = +[NSNull null];
   }
@@ -3419,15 +3419,15 @@ LABEL_8:
   v28 = v17;
   v18 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   v26[0] = @"record_name = ?";
-  v26[1] = v11;
+  v26[1] = nameCopy;
   v26[2] = @" AND stream_identifier = ?";
-  v26[3] = v12;
+  v26[3] = zoneNameCopy;
   v26[4] = @" AND record_type = ?";
   v26[5] = &off_10007F408;
   v19 = [NSArray arrayWithObjects:v26 count:6];
   v20 = [(_bmFMDatabase *)fmdb UPDATE:@"CKRecord" SET:v18 WHERE:v19];
 
-  if (!v10)
+  if (!valueCopy)
   {
 LABEL_12:
   }
@@ -3435,14 +3435,14 @@ LABEL_12:
   return v20;
 }
 
-- (BOOL)clearCKRecordLocalMergeableValueAndSetToSyncForZone:(id)a3
+- (BOOL)clearCKRecordLocalMergeableValueAndSetToSyncForZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = zoneCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "clearCKRecordLocalMergeableValueAndSetToSyncForZone %@", buf, 0xCu);
   }
 
@@ -3454,20 +3454,20 @@ LABEL_12:
   v14[1] = &__kCFBooleanTrue;
   v8 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
   v12[0] = @"stream_identifier = ?";
-  v12[1] = v4;
+  v12[1] = zoneCopy;
   v12[2] = @" AND record_type = ?";
   v12[3] = &off_10007F408;
   v9 = [NSArray arrayWithObjects:v12 count:4];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb UPDATE:@"CKRecord" SET:v8 WHERE:v9];
 
-  v10 = [(BMSyncDatabase *)self clearCKMergeableRecordValueServerMergeableValuesForZoneName:v4];
+  v10 = [(BMSyncDatabase *)self clearCKMergeableRecordValueServerMergeableValuesForZoneName:zoneCopy];
   return fmdb & v10;
 }
 
-- (id)ckRecordForRecordName:(id)a3 zoneName:(id)a4 recordType:(unint64_t)a5
+- (id)ckRecordForRecordName:(id)name zoneName:(id)zoneName recordType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  zoneNameCopy = zoneName;
   queue = self->_queue;
   if (queue)
   {
@@ -3476,12 +3476,12 @@ LABEL_12:
 
   fmdb = self->_fmdb;
   v17[0] = @"record_name = ?";
-  v17[1] = v8;
+  v17[1] = nameCopy;
   v17[2] = @" AND record_type = ?";
-  v12 = [NSNumber numberWithUnsignedInteger:a5];
+  v12 = [NSNumber numberWithUnsignedInteger:type];
   v17[3] = v12;
   v17[4] = @" AND stream_identifier = ?";
-  v17[5] = v9;
+  v17[5] = zoneNameCopy;
   v13 = [NSArray arrayWithObjects:v17 count:6];
   v14 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKRecord" COLUMNS:&off_10007F0C0 WHERE:v13];
 
@@ -3498,10 +3498,10 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)ckRecordExists:(id)a3 zoneName:(id)a4 recordType:(unint64_t)a5
+- (BOOL)ckRecordExists:(id)exists zoneName:(id)name recordType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  existsCopy = exists;
+  nameCopy = name;
   queue = self->_queue;
   if (queue)
   {
@@ -3510,12 +3510,12 @@ LABEL_12:
 
   fmdb = self->_fmdb;
   v16[0] = @"record_name = ?";
-  v16[1] = v8;
+  v16[1] = existsCopy;
   v16[2] = @" AND record_type = ?";
-  v12 = [NSNumber numberWithUnsignedInteger:a5];
+  v12 = [NSNumber numberWithUnsignedInteger:type];
   v16[3] = v12;
   v16[4] = @" AND stream_identifier = ?";
-  v16[5] = v9;
+  v16[5] = nameCopy;
   v13 = [NSArray arrayWithObjects:v16 count:6];
   v14 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKRecord" COLUMNS:&off_10007F0D8 WHERE:v13];
 
@@ -3523,9 +3523,9 @@ LABEL_12:
   return v12;
 }
 
-- (void)updateAllCKRecordsAtOrBeforeLocationToBeDeletedOnSync:(id)a3
+- (void)updateAllCKRecordsAtOrBeforeLocationToBeDeletedOnSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   queue = self->_queue;
   if (queue)
   {
@@ -3536,13 +3536,13 @@ LABEL_12:
   v13[0] = @"record_type = ?";
   v13[1] = &off_10007F408;
   v13[2] = CFSTR(" AND location_id IN(    SELECT id FROM CRDTLocation WHERE site = ?");
-  v7 = [v4 siteIdentifier];
-  v13[3] = v7;
+  siteIdentifier = [syncCopy siteIdentifier];
+  v13[3] = siteIdentifier;
   v13[4] = @"     AND stream = ?";
-  v8 = [v4 streamName];
-  v13[5] = v8;
+  streamName = [syncCopy streamName];
+  v13[5] = streamName;
   v13[6] = @"     AND day <= ?");
-  v9 = [v4 day];
+  v9 = [syncCopy day];
   [v9 timeIntervalSinceReferenceDate];
   v10 = [NSNumber numberWithDouble:?];
   v13[7] = v10;
@@ -3559,9 +3559,9 @@ LABEL_12:
   }
 }
 
-- (void)markCKRecordsAtOrBeforeLocationToBeDeletedOnSync:(id)a3
+- (void)markCKRecordsAtOrBeforeLocationToBeDeletedOnSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   queue = self->_queue;
   if (queue)
   {
@@ -3576,13 +3576,13 @@ LABEL_12:
   v15[0] = @"record_type = ?";
   v15[1] = &off_10007F408;
   v15[2] = CFSTR(" AND location_id IN(    SELECT id FROM CRDTLocation WHERE site = ?");
-  v9 = [v4 siteIdentifier];
-  v15[3] = v9;
+  siteIdentifier = [syncCopy siteIdentifier];
+  v15[3] = siteIdentifier;
   v15[4] = @"     AND stream = ?";
-  v10 = [v4 streamName];
-  v15[5] = v10;
+  streamName = [syncCopy streamName];
+  v15[5] = streamName;
   v15[6] = @"     AND day <= ?");
-  v11 = [v4 day];
+  v11 = [syncCopy day];
   [v11 timeIntervalSinceReferenceDate];
   v12 = [NSNumber numberWithDouble:?];
   v15[7] = v12;
@@ -3599,9 +3599,9 @@ LABEL_12:
   }
 }
 
-- (void)enumerateRecordsWithBlock:(id)a3
+- (void)enumerateRecordsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   if (queue)
   {
@@ -3619,7 +3619,7 @@ LABEL_12:
 
     v7 = objc_autoreleasePoolPush();
     v8 = [[BMSyncCKRecord alloc] initWithFMResultSet:v6];
-    v4[2](v4, v8, &v9);
+    blockCopy[2](blockCopy, v8, &v9);
 
     objc_autoreleasePoolPop(v7);
   }
@@ -3627,9 +3627,9 @@ LABEL_12:
   while (v9 != 1);
 }
 
-- (void)deleteCKRecordsAtOrBeforeLocation:(id)a3
+- (void)deleteCKRecordsAtOrBeforeLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   queue = self->_queue;
   if (queue)
   {
@@ -3640,13 +3640,13 @@ LABEL_12:
   v13[0] = @"record_type = ?";
   v13[1] = &off_10007F408;
   v13[2] = CFSTR(" AND location_id IN(    SELECT id FROM CRDTLocation WHERE site = ?");
-  v7 = [v4 siteIdentifier];
-  v13[3] = v7;
+  siteIdentifier = [locationCopy siteIdentifier];
+  v13[3] = siteIdentifier;
   v13[4] = @"     AND stream = ?";
-  v8 = [v4 streamName];
-  v13[5] = v8;
+  streamName = [locationCopy streamName];
+  v13[5] = streamName;
   v13[6] = @"     AND day <= ?");
-  v9 = [v4 day];
+  v9 = [locationCopy day];
   [v9 timeIntervalSinceReferenceDate];
   v10 = [NSNumber numberWithDouble:?];
   v13[7] = v10;
@@ -3663,9 +3663,9 @@ LABEL_12:
   }
 }
 
-- (void)deleteCKRecordsForStreamName:(id)a3
+- (void)deleteCKRecordsForStreamName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   if (queue)
   {
@@ -3674,7 +3674,7 @@ LABEL_12:
 
   fmdb = self->_fmdb;
   v9[0] = @"stream_identifier = ?";
-  v9[1] = v4;
+  v9[1] = nameCopy;
   v7 = [NSArray arrayWithObjects:v9 count:2];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb DELETE_FROM:@"CKRecord" WHERE:v7];
 
@@ -3688,24 +3688,24 @@ LABEL_12:
   }
 }
 
-- (void)deleteCKRecordAtLocation:(id)a3
+- (void)deleteCKRecordAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   queue = self->_queue;
   if (queue)
   {
     dispatch_assert_queue_V2(queue);
   }
 
-  v6 = [v4 recordName];
+  recordName = [locationCopy recordName];
   fmdb = self->_fmdb;
   v11[0] = @"record_name = ?";
-  v11[1] = v6;
+  v11[1] = recordName;
   v11[2] = @" AND record_type = ?";
   v11[3] = &off_10007F408;
   v11[4] = @" AND stream_identifier = ?";
-  v8 = [v4 streamName];
-  v11[5] = v8;
+  streamName = [locationCopy streamName];
+  v11[5] = streamName;
   v9 = [NSArray arrayWithObjects:v11 count:6];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb DELETE_FROM:@"CKRecord" WHERE:v9];
 
@@ -3719,9 +3719,9 @@ LABEL_12:
   }
 }
 
-- (void)enumerateCKSyncRecordRecordsSetForDeletingUsingBlock:(id)a3
+- (void)enumerateCKSyncRecordRecordsSetForDeletingUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   if (queue)
   {
@@ -3748,7 +3748,7 @@ LABEL_12:
       v12 = v7;
       v13 = [[CKRecordZoneID alloc] initWithZoneName:v9 ownerName:v15];
       v14 = [[CKRecordID alloc] initWithRecordName:v11 zoneID:v13];
-      v4[2](v4, v14, &v16);
+      blockCopy[2](blockCopy, v14, &v16);
 
       v7 = v12;
     }
@@ -3779,9 +3779,9 @@ LABEL_12:
   return v2;
 }
 
-- (void)deleteAllCKRecordsInZone:(id)a3
+- (void)deleteAllCKRecordsInZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   queue = self->_queue;
   if (queue)
   {
@@ -3790,8 +3790,8 @@ LABEL_12:
 
   fmdb = self->_fmdb;
   v10[0] = @"stream_identifier = ?";
-  v7 = [v4 zoneName];
-  v10[1] = v7;
+  zoneName = [zoneCopy zoneName];
+  v10[1] = zoneName;
   v8 = [NSArray arrayWithObjects:v10 count:2];
   LOBYTE(fmdb) = [(_bmFMDatabase *)fmdb DELETE_FROM:@"CKRecord" WHERE:v8];
 
@@ -3800,12 +3800,12 @@ LABEL_12:
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_10004C6A0(v4, v9);
+      sub_10004C6A0(zoneCopy, v9);
     }
   }
 }
 
-- (unint64_t)ckRecordCountForRecordType:(unint64_t)a3
+- (unint64_t)ckRecordCountForRecordType:(unint64_t)type
 {
   queue = self->_queue;
   if (queue)
@@ -3815,7 +3815,7 @@ LABEL_12:
 
   fmdb = self->_fmdb;
   v12[0] = @"record_type = ?";
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
+  v7 = [NSNumber numberWithUnsignedInteger:type];
   v12[1] = v7;
   v8 = [NSArray arrayWithObjects:v12 count:2];
   v9 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKRecord" COLUMNS:&off_10007F180 WHERE:v8];
@@ -3833,32 +3833,32 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)upsertCKRecordWithLocation:(id)a3 inStream:(id)a4
+- (BOOL)upsertCKRecordWithLocation:(id)location inStream:(id)stream
 {
-  v6 = a3;
-  v25 = a4;
+  locationCopy = location;
+  streamCopy = stream;
   fmdb = self->_fmdb;
   v29[0] = @"location_id = ?";
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 primaryKey]);
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [locationCopy primaryKey]);
   v29[1] = v8;
   v29[2] = @" AND record_type = ?";
   v29[3] = &off_10007F408;
   v9 = [NSArray arrayWithObjects:v29 count:4];
   v10 = [(_bmFMDatabase *)fmdb SELECT_FROM:@"CKRecord" COLUMNS:&off_10007F198 WHERE:v9];
 
-  v11 = [v10 next];
+  next = [v10 next];
   v12 = self->_fmdb;
-  if (v11)
+  if (next)
   {
     v28[0] = @"location_id =?";
-    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 primaryKey]);
+    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [locationCopy primaryKey]);
     v28[1] = v13;
     v28[2] = @" AND record_type = ?";
     v28[3] = &off_10007F408;
     v14 = [NSArray arrayWithObjects:v28 count:4];
     v15 = [(_bmFMDatabase *)v12 UPDATE:@"CKRecord" SET:&off_10007F638 WHERE:v14];
 
-    v16 = v25;
+    v16 = streamCopy;
     if (v15)
     {
 LABEL_3:
@@ -3870,18 +3870,18 @@ LABEL_3:
   else
   {
     v26[0] = @"location_id";
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 primaryKey]);
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [locationCopy primaryKey]);
     v27[0] = v18;
     v27[1] = &__kCFBooleanTrue;
     v26[1] = @"sync_to_cloud_kit";
     v26[2] = @"deleting";
     v27[2] = &__kCFBooleanFalse;
     v26[3] = @"record_name";
-    v19 = [v6 location];
-    v20 = [v19 recordName];
-    v16 = v25;
-    v27[3] = v20;
-    v27[4] = v25;
+    location = [locationCopy location];
+    recordName = [location recordName];
+    v16 = streamCopy;
+    v27[3] = recordName;
+    v27[4] = streamCopy;
     v26[4] = @"stream_identifier";
     v26[5] = @"record_type";
     v27[5] = &off_10007F408;
@@ -3906,10 +3906,10 @@ LABEL_8:
   return v17;
 }
 
-- (BOOL)disableAllCKSyncRecordsForSite:(id)a3 stream:(id)a4
+- (BOOL)disableAllCKSyncRecordsForSite:(id)site stream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  siteCopy = site;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -3924,9 +3924,9 @@ LABEL_8:
   v18[1] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
   v16[0] = CFSTR("location_id IN (SELECT id FROM CRDTLocation WHERE site = ?");
-  v16[1] = v6;
+  v16[1] = siteCopy;
   v16[2] = @" AND stream = ?");
-  v16[3] = v7;
+  v16[3] = streamCopy;
   v16[4] = @" AND deleted_crdt = ?";
   v16[5] = &__kCFBooleanFalse;
   v16[6] = @" AND record_type = ?";
@@ -3946,10 +3946,10 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)enableAllCKSyncRecordsPreviouslyDisabledForSite:(id)a3 stream:(id)a4
+- (BOOL)enableAllCKSyncRecordsPreviouslyDisabledForSite:(id)site stream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  siteCopy = site;
+  streamCopy = stream;
   queue = self->_queue;
   if (queue)
   {
@@ -3958,9 +3958,9 @@ LABEL_8:
 
   fmdb = self->_fmdb;
   v14[0] = CFSTR("location_id IN (SELECT id FROM CRDTLocation WHERE site = ?");
-  v14[1] = v6;
+  v14[1] = siteCopy;
   v14[2] = @" AND stream = ?");
-  v14[3] = v7;
+  v14[3] = streamCopy;
   v14[4] = @" AND record_type = ?";
   v14[5] = &off_10007F408;
   v14[6] = @" AND deleted_crdt = ?";
@@ -3990,29 +3990,29 @@ LABEL_8:
 
 + (id)primaryDatabaseWALPath
 {
-  v2 = [a1 primaryDatabasePath];
-  v3 = [v2 stringByAppendingString:@"-wal"];
+  primaryDatabasePath = [self primaryDatabasePath];
+  v3 = [primaryDatabasePath stringByAppendingString:@"-wal"];
 
   return v3;
 }
 
-- (BMSyncDatabase)initWithQueue:(id)a3
+- (BMSyncDatabase)initWithQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [objc_opt_class() primaryDatabasePath];
-  v6 = [(BMSyncDatabase *)self initWithPath:v5 options:0 queue:v4];
+  queueCopy = queue;
+  primaryDatabasePath = [objc_opt_class() primaryDatabasePath];
+  v6 = [(BMSyncDatabase *)self initWithPath:primaryDatabasePath options:0 queue:queueCopy];
 
   return v6;
 }
 
-- (BMSyncDatabase)initWithPath:(id)a3 options:(unint64_t)a4 queue:(id)a5
+- (BMSyncDatabase)initWithPath:(id)path options:(unint64_t)options queue:(id)queue
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  pathCopy = path;
+  queueCopy = queue;
+  v11 = queueCopy;
+  if (pathCopy)
   {
-    if (!v10)
+    if (!queueCopy)
     {
       goto LABEL_4;
     }
@@ -4035,13 +4035,13 @@ LABEL_4:
   if (v12)
   {
     v12->__internal_state_ivar = 0;
-    v14 = [_bmFMDatabase databaseWithPath:v9];
+    v14 = [_bmFMDatabase databaseWithPath:pathCopy];
     fmdb = v13->_fmdb;
     v13->_fmdb = v14;
 
     [(_bmFMDatabase *)v13->_fmdb setShouldCacheStatements:1];
-    v13->_options = a4;
-    objc_storeStrong(&v13->_queue, a5);
+    v13->_options = options;
+    objc_storeStrong(&v13->_queue, queue);
     loggingSuffix = v13->_loggingSuffix;
     v13->_loggingSuffix = &stru_100079C10;
   }
@@ -4049,45 +4049,45 @@ LABEL_4:
   return v13;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   if (([(NSString *)self->_name isEqual:?]& 1) == 0)
   {
-    if (v7)
+    if (nameCopy)
     {
-      v5 = [[NSString alloc] initWithFormat:@"[%@]", v7];
+      nameCopy = [[NSString alloc] initWithFormat:@"[%@]", nameCopy];
     }
 
     else
     {
-      v5 = &stru_100079C10;
+      nameCopy = &stru_100079C10;
     }
 
     loggingSuffix = self->_loggingSuffix;
-    self->_loggingSuffix = &v5->isa;
+    self->_loggingSuffix = &nameCopy->isa;
 
-    objc_storeStrong(&self->_name, a3);
+    objc_storeStrong(&self->_name, name);
   }
 }
 
-- (void)setState:(unint64_t)a3 error:(id)a4
+- (void)setState:(unint64_t)state error:(id)error
 {
-  v7 = a4;
-  objc_storeStrong(&self->__error_ivar, a4);
-  self->__internal_state_ivar = a3;
+  errorCopy = error;
+  objc_storeStrong(&self->__error_ivar, error);
+  self->__internal_state_ivar = state;
   v8 = __biome_log_for_category();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     loggingSuffix = self->_loggingSuffix;
-    if (a3 > 9)
+    if (state > 9)
     {
       v10 = @"Unknown";
     }
 
     else
     {
-      v10 = off_1000799B8[a3];
+      v10 = off_1000799B8[state];
     }
 
     v13 = 138412546;
@@ -4097,11 +4097,11 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "BMSyncDatabase%@ transitioned to state: %@", &v13, 0x16u);
   }
 
-  if (a3 == 7)
+  if (state == 7)
   {
     v11 = __biome_log_for_category();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_FAULT);
-    if (v7)
+    if (errorCopy)
     {
       if (v12)
       {
@@ -4117,7 +4117,7 @@ LABEL_4:
     goto LABEL_18;
   }
 
-  if (a3 == 9)
+  if (state == 9)
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -4130,7 +4130,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -4144,12 +4144,12 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)setState:(unint64_t)a3 errorFormat:(id)a4
+- (void)setState:(unint64_t)state errorFormat:(id)format
 {
-  v6 = a4;
-  if ([v6 length])
+  formatCopy = format;
+  if ([formatCopy length])
   {
-    v7 = [[NSString alloc] initWithFormat:v6 arguments:&v8];
+    v7 = [[NSString alloc] initWithFormat:formatCopy arguments:&v8];
   }
 
   else
@@ -4157,44 +4157,44 @@ LABEL_19:
     v7 = 0;
   }
 
-  [(BMSyncDatabase *)self setState:a3 error:v7];
+  [(BMSyncDatabase *)self setState:state error:v7];
 }
 
-- (BOOL)_tryOpen:(unint64_t)a3
+- (BOOL)_tryOpen:(unint64_t)open
 {
   if ([(BMSyncDatabase *)self internalState]== 4)
   {
     return 1;
   }
 
-  v7 = a3 + 1;
+  v7 = open + 1;
   if (v7 >= 0xA)
   {
     [(BMSyncDatabase *)self setState:9 error:@"recursion max"];
     return 0;
   }
 
-  v8 = [(BMSyncDatabase *)self internalState];
-  if (v8 <= 4)
+  internalState = [(BMSyncDatabase *)self internalState];
+  if (internalState <= 4)
   {
-    if (v8 <= 2)
+    if (internalState <= 2)
     {
-      if (v8 >= 2)
+      if (internalState >= 2)
       {
-        if (v8 == 2)
+        if (internalState == 2)
         {
-          v9 = [(_bmFMDatabase *)self->_fmdb databasePath];
-          v10 = [v9 stringByDeletingLastPathComponent];
+          databasePath = [(_bmFMDatabase *)self->_fmdb databasePath];
+          stringByDeletingLastPathComponent = [databasePath stringByDeletingLastPathComponent];
 
           v11 = +[NSFileManager defaultManager];
           v84 = 0;
-          v12 = [v11 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v84];
+          v12 = [v11 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v84];
           v13 = v84;
 
           if (!v12 || v13)
           {
-            v50 = [v13 localizedFailureReason];
-            [(BMSyncDatabase *)self setState:9 errorFormat:@"failed to create path at: %@, reason: %@", v10, v50];
+            localizedFailureReason = [v13 localizedFailureReason];
+            [(BMSyncDatabase *)self setState:9 errorFormat:@"failed to create path at: %@, reason: %@", stringByDeletingLastPathComponent, localizedFailureReason];
 
             goto LABEL_72;
           }
@@ -4214,7 +4214,7 @@ LABEL_72:
       goto LABEL_23;
     }
 
-    if (v8 != 3)
+    if (internalState != 3)
     {
       return 1;
     }
@@ -4241,22 +4241,22 @@ LABEL_72:
 
     if ([(_bmFMDatabase *)self->_fmdb openWithFlags:v21])
     {
-      v10 = [NSString stringWithFormat:@"PRAGMA journal_mode = WALPRAGMA foreign_keys = ON;PRAGMA cache_spill = %u;", 250];;
-      if ([(_bmFMDatabase *)self->_fmdb executeStatements:v10])
+      stringByDeletingLastPathComponent = [NSString stringWithFormat:@"PRAGMA journal_mode = WALPRAGMA foreign_keys = ON;PRAGMA cache_spill = %u;", 250];;
+      if ([(_bmFMDatabase *)self->_fmdb executeStatements:stringByDeletingLastPathComponent])
       {
         if ([(_bmFMDatabase *)self->_fmdb tableExists:@"Metadata"])
         {
-          v22 = [(_bmFMDatabase *)self->_fmdb userVersion];
-          if (v22 >= 0x23)
+          userVersion = [(_bmFMDatabase *)self->_fmdb userVersion];
+          if (userVersion >= 0x23)
           {
             v23 = @"version too new";
 LABEL_124:
-            v54 = self;
+            selfCopy4 = self;
             v55 = 7;
             goto LABEL_125;
           }
 
-          v69 = v22;
+          v69 = userVersion;
           has_internal_diagnostics = os_variant_has_internal_diagnostics();
           if (v69 <= 0x10 && has_internal_diagnostics)
           {
@@ -4273,7 +4273,7 @@ LABEL_124:
           if (v69 != 34)
           {
             v23 = &stru_100079C10;
-            v54 = self;
+            selfCopy4 = self;
             v55 = 8;
             goto LABEL_125;
           }
@@ -4292,7 +4292,7 @@ LABEL_124:
         {
 LABEL_91:
           v23 = &stru_100079C10;
-          v54 = self;
+          selfCopy4 = self;
           v55 = 4;
           goto LABEL_125;
         }
@@ -4308,58 +4308,58 @@ LABEL_91:
       }
 
       v23 = &stru_100079C10;
-      v54 = self;
+      selfCopy4 = self;
       v55 = 9;
 LABEL_125:
-      [(BMSyncDatabase *)v54 setState:v55 errorFormat:v23];
+      [(BMSyncDatabase *)selfCopy4 setState:v55 errorFormat:v23];
       v73 = [(BMSyncDatabase *)self performSelector:a2 withObject:v7]== 0;
       goto LABEL_126;
     }
 
-    v49 = [(_bmFMDatabase *)self->_fmdb lastErrorCode];
-    if (v49 <= 13)
+    lastErrorCode = [(_bmFMDatabase *)self->_fmdb lastErrorCode];
+    if (lastErrorCode <= 13)
     {
-      if (v49 == 5)
+      if (lastErrorCode == 5)
       {
         v17 = &stru_100079C10;
-        v18 = self;
+        selfCopy13 = self;
         v19 = 5;
         goto LABEL_110;
       }
 
-      if (v49 != 11)
+      if (lastErrorCode != 11)
       {
         goto LABEL_96;
       }
 
 LABEL_89:
       v17 = &stru_100079C10;
-      v18 = self;
+      selfCopy13 = self;
       v19 = 7;
       goto LABEL_110;
     }
 
-    if (v49 == 14)
+    if (lastErrorCode == 14)
     {
       v62 = +[NSFileManager defaultManager];
-      v63 = [(_bmFMDatabase *)self->_fmdb databasePath];
-      v64 = [v62 fileExistsAtPath:v63];
+      databasePath2 = [(_bmFMDatabase *)self->_fmdb databasePath];
+      v64 = [v62 fileExistsAtPath:databasePath2];
 
       if ((v64 & 1) == 0)
       {
         v17 = &stru_100079C10;
-        v18 = self;
+        selfCopy13 = self;
         v19 = 2;
         goto LABEL_110;
       }
     }
 
-    else if (v49 == 23)
+    else if (lastErrorCode == 23)
     {
       if ((self->_options & 1) == 0)
       {
         v17 = &stru_100079C10;
-        v18 = self;
+        selfCopy13 = self;
         v19 = 6;
         goto LABEL_110;
       }
@@ -4385,9 +4385,9 @@ LABEL_96:
     goto LABEL_108;
   }
 
-  if (v8 <= 6)
+  if (internalState <= 6)
   {
-    if (v8 != 5)
+    if (internalState != 5)
     {
       if (v7)
       {
@@ -4395,25 +4395,25 @@ LABEL_96:
       }
 
       [(BMSyncDatabase *)self setState:3 errorFormat:&stru_100079C10];
-      v14 = self;
+      selfCopy11 = self;
       v15 = a2;
       v16 = 0;
-      return [(BMSyncDatabase *)v14 performSelector:v15 withObject:v16]!= 0;
+      return [(BMSyncDatabase *)selfCopy11 performSelector:v15 withObject:v16]!= 0;
     }
 
 LABEL_23:
     v17 = &stru_100079C10;
-    v18 = self;
+    selfCopy13 = self;
     v19 = 3;
 LABEL_110:
-    [(BMSyncDatabase *)v18 setState:v19 errorFormat:v17, v76];
-    v14 = self;
+    [(BMSyncDatabase *)selfCopy13 setState:v19 errorFormat:v17, internalState2];
+    selfCopy11 = self;
     v15 = a2;
     v16 = v7;
-    return [(BMSyncDatabase *)v14 performSelector:v15 withObject:v16]!= 0;
+    return [(BMSyncDatabase *)selfCopy11 performSelector:v15 withObject:v16]!= 0;
   }
 
-  if (v8 == 7)
+  if (internalState == 7)
   {
     if (self->_flags)
     {
@@ -4424,62 +4424,62 @@ LABEL_108:
 
     [(_bmFMDatabase *)self->_fmdb close];
     v24 = +[NSFileManager defaultManager];
-    v25 = [(_bmFMDatabase *)self->_fmdb databasePath];
+    databasePath3 = [(_bmFMDatabase *)self->_fmdb databasePath];
     v79 = 0;
-    v26 = [v24 removeItemAtPath:v25 error:&v79];
-    v10 = v79;
+    v26 = [v24 removeItemAtPath:databasePath3 error:&v79];
+    stringByDeletingLastPathComponent = v79;
 
-    if (v26 && !v10)
+    if (v26 && !stringByDeletingLastPathComponent)
     {
 LABEL_38:
 
       v27 = +[NSFileManager defaultManager];
-      v28 = [(_bmFMDatabase *)self->_fmdb databasePath];
-      v29 = [v28 stringByAppendingString:@"-wal"];
+      databasePath4 = [(_bmFMDatabase *)self->_fmdb databasePath];
+      v29 = [databasePath4 stringByAppendingString:@"-wal"];
       v78 = 0;
       v30 = [v27 removeItemAtPath:v29 error:&v78];
-      v10 = v78;
+      stringByDeletingLastPathComponent = v78;
 
-      if (v30 && !v10)
+      if (v30 && !stringByDeletingLastPathComponent)
       {
         goto LABEL_40;
       }
 
-      v58 = [v10 domain];
-      if ([v58 isEqual:NSCocoaErrorDomain])
+      domain = [stringByDeletingLastPathComponent domain];
+      if ([domain isEqual:NSCocoaErrorDomain])
       {
-        v59 = [v10 code];
+        code = [stringByDeletingLastPathComponent code];
 
-        if (v59 == 4)
+        if (code == 4)
         {
 LABEL_40:
 
           v31 = +[NSFileManager defaultManager];
-          v32 = [(_bmFMDatabase *)self->_fmdb databasePath];
-          v33 = [v32 stringByAppendingString:@"-shm"];
+          databasePath5 = [(_bmFMDatabase *)self->_fmdb databasePath];
+          v33 = [databasePath5 stringByAppendingString:@"-shm"];
           v77 = 0;
           v34 = [v31 removeItemAtPath:v33 error:&v77];
-          v10 = v77;
+          stringByDeletingLastPathComponent = v77;
 
-          if (v34 && !v10)
+          if (v34 && !stringByDeletingLastPathComponent)
           {
 LABEL_42:
-            v35 = [(BMSyncDatabase *)self corruptionHandler];
-            v13 = v35;
-            if (v35)
+            corruptionHandler = [(BMSyncDatabase *)self corruptionHandler];
+            v13 = corruptionHandler;
+            if (corruptionHandler)
             {
-              (*(v35 + 16))(v35);
+              (*(corruptionHandler + 16))(corruptionHandler);
             }
 
             goto LABEL_12;
           }
 
-          v67 = [v10 domain];
-          if ([v67 isEqual:NSCocoaErrorDomain])
+          domain2 = [stringByDeletingLastPathComponent domain];
+          if ([domain2 isEqual:NSCocoaErrorDomain])
           {
-            v68 = [v10 code];
+            code2 = [stringByDeletingLastPathComponent code];
 
-            if (v68 == 4)
+            if (code2 == 4)
             {
               goto LABEL_42;
             }
@@ -4489,10 +4489,10 @@ LABEL_42:
           {
           }
 
-          v76 = v10;
+          internalState2 = stringByDeletingLastPathComponent;
           v72 = @"failed to delete corrupt database SHM file: %@";
 LABEL_115:
-          [(BMSyncDatabase *)self setState:9 errorFormat:v72, v76];
+          [(BMSyncDatabase *)self setState:9 errorFormat:v72, internalState2];
 LABEL_116:
           v51 = [(BMSyncDatabase *)self performSelector:a2 withObject:v7];
           goto LABEL_117;
@@ -4503,16 +4503,16 @@ LABEL_116:
       {
       }
 
-      [(BMSyncDatabase *)self setState:9 errorFormat:@"failed to delete corrupt database WAL file: %@", v10];
+      [(BMSyncDatabase *)self setState:9 errorFormat:@"failed to delete corrupt database WAL file: %@", stringByDeletingLastPathComponent];
       goto LABEL_116;
     }
 
-    v56 = [v10 domain];
-    if ([v56 isEqual:NSCocoaErrorDomain])
+    domain3 = [stringByDeletingLastPathComponent domain];
+    if ([domain3 isEqual:NSCocoaErrorDomain])
     {
-      v57 = [v10 code];
+      code3 = [stringByDeletingLastPathComponent code];
 
-      if (v57 == 4)
+      if (code3 == 4)
       {
         goto LABEL_38;
       }
@@ -4522,37 +4522,37 @@ LABEL_116:
     {
     }
 
-    [(BMSyncDatabase *)self setState:9 errorFormat:@"failed to delete corrupt database file: %@", v10];
+    [(BMSyncDatabase *)self setState:9 errorFormat:@"failed to delete corrupt database file: %@", stringByDeletingLastPathComponent];
     goto LABEL_116;
   }
 
-  if (v8 != 8)
+  if (internalState != 8)
   {
-    if (v8 == 9)
+    if (internalState == 9)
     {
       return 0;
     }
 
 LABEL_66:
-    v76 = [(BMSyncDatabase *)self internalState];
+    internalState2 = [(BMSyncDatabase *)self internalState];
     v17 = @"unhandled state %llu";
 LABEL_109:
-    v18 = self;
+    selfCopy13 = self;
     v19 = 9;
     goto LABEL_110;
   }
 
-  v36 = [(_bmFMDatabase *)self->_fmdb userVersion];
-  if (v36 > 0x21)
+  userVersion2 = [(_bmFMDatabase *)self->_fmdb userVersion];
+  if (userVersion2 > 0x21)
   {
 LABEL_65:
     v17 = &stru_100079C10;
-    v18 = self;
+    selfCopy13 = self;
     v19 = 4;
     goto LABEL_110;
   }
 
-  LODWORD(v37) = v36;
+  LODWORD(v37) = userVersion2;
   while (1)
   {
     v37 = (v37 + 1);
@@ -4569,7 +4569,7 @@ LABEL_65:
 
     v40 = sub_10003AF74();
     v41 = [NSNumber numberWithUnsignedInt:v37];
-    v10 = [v40 objectForKeyedSubscript:v41];
+    stringByDeletingLastPathComponent = [v40 objectForKeyedSubscript:v41];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -4580,14 +4580,14 @@ LABEL_65:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v44 = [v10 sqlStatements];
+      sqlStatements = [stringByDeletingLastPathComponent sqlStatements];
       [(_bmFMDatabase *)self->_fmdb beginTransaction];
       v80 = 0u;
       v81 = 0u;
       v82 = 0u;
       v83 = 0u;
-      v42 = v44;
-      v45 = [v42 countByEnumeratingWithState:&v80 objects:v85 count:16];
+      customFunctionName = sqlStatements;
+      v45 = [customFunctionName countByEnumeratingWithState:&v80 objects:v85 count:16];
       if (v45)
       {
         v46 = v45;
@@ -4598,20 +4598,20 @@ LABEL_65:
           {
             if (*v81 != v47)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(customFunctionName);
             }
 
             if (![(_bmFMDatabase *)self->_fmdb executeStatements:*(*(&v80 + 1) + 8 * i)])
             {
-              v52 = [(_bmFMDatabase *)self->_fmdb lastError];
-              [(BMSyncDatabase *)self setState:7 errorFormat:@"migration to version %u failed with error %@", v37, v52];
+              lastError = [(_bmFMDatabase *)self->_fmdb lastError];
+              [(BMSyncDatabase *)self setState:7 errorFormat:@"migration to version %u failed with error %@", v37, lastError];
 
               v51 = [(BMSyncDatabase *)self performSelector:a2 withObject:v7];
               goto LABEL_74;
             }
           }
 
-          v46 = [v42 countByEnumeratingWithState:&v80 objects:v85 count:16];
+          v46 = [customFunctionName countByEnumeratingWithState:&v80 objects:v85 count:16];
           if (v46)
           {
             continue;
@@ -4648,8 +4648,8 @@ LABEL_64:
     }
   }
 
-  v42 = [v10 customFunctionName];
-  v43 = NSSelectorFromString(v42);
+  customFunctionName = [stringByDeletingLastPathComponent customFunctionName];
+  v43 = NSSelectorFromString(customFunctionName);
   if (!v43)
   {
     goto LABEL_118;
@@ -4662,8 +4662,8 @@ LABEL_51:
     goto LABEL_64;
   }
 
-  v74 = [(_bmFMDatabase *)self->_fmdb lastError];
-  [(BMSyncDatabase *)self setState:7 errorFormat:@"custom migration to version %u failed with error %@", v37, v74];
+  lastError2 = [(_bmFMDatabase *)self->_fmdb lastError];
+  [(BMSyncDatabase *)self setState:7 errorFormat:@"custom migration to version %u failed with error %@", v37, lastError2];
 
 LABEL_120:
   v51 = [(BMSyncDatabase *)self performSelector:a2 withObject:v7];
@@ -4690,21 +4690,21 @@ LABEL_126:
 
 - (unint64_t)state
 {
-  v3 = [(BMSyncDatabase *)self internalState];
-  if (v3 > 5)
+  internalState = [(BMSyncDatabase *)self internalState];
+  if (internalState > 5)
   {
-    if ((v3 - 7) < 2)
+    if ((internalState - 7) < 2)
     {
       goto LABEL_12;
     }
 
     v4 = 3;
-    if (v3 != 9)
+    if (internalState != 9)
     {
       v4 = 0;
     }
 
-    if (v3 == 6)
+    if (internalState == 6)
     {
       return 2;
     }
@@ -4717,14 +4717,14 @@ LABEL_126:
 
   else
   {
-    if ((v3 - 2) < 2)
+    if ((internalState - 2) < 2)
     {
       goto LABEL_12;
     }
 
-    if (v3 != 4)
+    if (internalState != 4)
     {
-      if (v3 != 5)
+      if (internalState != 5)
       {
         return 0;
       }
@@ -4775,17 +4775,17 @@ LABEL_12:
   [(_bmFMDatabase *)self->_fmdb clearCachedStatements];
 }
 
-- (void)disableStatementCachingForBlock:(id)a3
+- (void)disableStatementCachingForBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(_bmFMDatabase *)self->_fmdb setShouldCacheStatementsWithoutClearingExistingStatements:0];
-  v4[2]();
+  blockCopy[2]();
   [(_bmFMDatabase *)self->_fmdb setShouldCacheStatementsWithoutClearingExistingStatements:1];
 }
 
-- (id)valueForMetadataKey:(id)a3
+- (id)valueForMetadataKey:(id)key
 {
-  v3 = [(_bmFMDatabase *)self->_fmdb executeQuery:@"SELECT value FROM Metadata WHERE key=?", a3];
+  v3 = [(_bmFMDatabase *)self->_fmdb executeQuery:@"SELECT value FROM Metadata WHERE key=?", key];
   if ([v3 next])
   {
     v4 = [v3 objectForColumnIndex:0];
@@ -4802,7 +4802,7 @@ LABEL_12:
 - (BOOL)migration_StarSkySchema11ToSydRoSchema12
 {
   v21 = [(_bmFMDatabase *)self->_fmdb executeStatements:@"PRAGMA foreign_keys=OFF"];
-  v20 = [(_bmFMDatabase *)self->_fmdb beginTransaction];
+  beginTransaction = [(_bmFMDatabase *)self->_fmdb beginTransaction];
   v3 = [[NSMutableSet alloc] initWithArray:&off_10007F300];
   v4 = objc_opt_new();
   v5 = [(_bmFMDatabase *)self->_fmdb executeQuery:@"SELECT type, name FROM sqlite_schema WHERE tbl_name = 'CRDTLocation'"];
@@ -4824,7 +4824,7 @@ LABEL_12:
   if ([v3 isEqualToSet:v4])
   {
     v8 = [(_bmFMDatabase *)self->_fmdb executeStatements:@"CREATE TABLE new_CRDTLocation (id INTEGER primary key, stream STRING NOT NULL, site STRING NOT NULL, day INTEGER NOT NULL, state INTEGER NOT NULL)"];
-    v9 = v21 & v20 & v8 & [(_bmFMDatabase *)self->_fmdb executeStatements:@"INSERT INTO new_CRDTLocation SELECT * FROM CRDTLocation"];
+    v9 = v21 & beginTransaction & v8 & [(_bmFMDatabase *)self->_fmdb executeStatements:@"INSERT INTO new_CRDTLocation SELECT * FROM CRDTLocation"];
     v10 = [(_bmFMDatabase *)self->_fmdb executeStatements:@"DROP TABLE CRDTLocation"];
     v11 = v10 & [(_bmFMDatabase *)self->_fmdb executeStatements:@"ALTER TABLE new_CRDTLocation RENAME TO CRDTLocation"];
     v12 = v9 & v11 & [(_bmFMDatabase *)self->_fmdb executeStatements:@"CREATE INDEX IF NOT EXISTS idx_crdt_location ON CRDTLocation(stream, site, day)"];
@@ -4887,9 +4887,9 @@ LABEL_12:
   return v16 & v15 & [(_bmFMDatabase *)self->_fmdb executeStatements:@"PRAGMA foreign_keys=ON"];
 }
 
-- (void)recordSessionEnd:(id)a3 timeSincePreviousSync:(double)a4
+- (void)recordSessionEnd:(id)end timeSincePreviousSync:(double)sync
 {
-  v6 = a3;
+  endCopy = end;
   queue = self->_queue;
   if (queue)
   {
@@ -4900,7 +4900,7 @@ LABEL_12:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = endCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "recordSessionEnd: %@", buf, 0xCu);
   }
 
@@ -4910,21 +4910,21 @@ LABEL_12:
   v11 = [NSNumber numberWithDouble:Current];
   v16[1] = @"time_since_previous_sync";
   v17[0] = v11;
-  v12 = [NSNumber numberWithDouble:a4];
+  v12 = [NSNumber numberWithDouble:sync];
   v17[1] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
   v15[0] = @"session_id = ?";
-  v15[1] = v6;
+  v15[1] = endCopy;
   v14 = [NSArray arrayWithObjects:v15 count:2];
   [(_bmFMDatabase *)fmdb UPDATE:@"SyncSessionLog" SET:v13 WHERE:v14];
 }
 
-- (void)recordAtomMergeResult:(unint64_t)a3 inStream:(id)a4 sessionID:(id)a5 messageID:(unint64_t)a6 ownerSite:(id)a7 originatingSite:(id)a8 eventCreatedAt:(double)a9
+- (void)recordAtomMergeResult:(unint64_t)result inStream:(id)stream sessionID:(id)d messageID:(unint64_t)iD ownerSite:(id)site originatingSite:(id)originatingSite eventCreatedAt:(double)at
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
+  streamCopy = stream;
+  dCopy = d;
+  siteCopy = site;
+  originatingSiteCopy = originatingSite;
   queue = self->_queue;
   if (queue)
   {
@@ -4934,25 +4934,25 @@ LABEL_12:
   v21 = __biome_log_for_category();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    sub_10004CF74(a3, v21);
+    sub_10004CF74(result, v21);
   }
 
   Current = CFAbsoluteTimeGetCurrent();
   fmdb = self->_fmdb;
-  v30[0] = v17;
-  v24 = [NSNumber numberWithUnsignedInteger:a6, @"session_id", @"message_id"];
+  v30[0] = dCopy;
+  v24 = [NSNumber numberWithUnsignedInteger:iD, @"session_id", @"message_id"];
   v30[1] = v24;
-  v30[2] = v16;
+  v30[2] = streamCopy;
   v29[2] = @"stream";
   v29[3] = @"owning_site_identifier";
-  v30[3] = v18;
-  v30[4] = v19;
+  v30[3] = siteCopy;
+  v30[4] = originatingSiteCopy;
   v29[4] = @"relayed_by_site_identifier";
   v29[5] = @"merge_result";
-  v25 = [NSNumber numberWithUnsignedInteger:a3];
+  v25 = [NSNumber numberWithUnsignedInteger:result];
   v30[5] = v25;
   v29[6] = @"event_created_at";
-  v26 = [NSNumber numberWithDouble:a9];
+  v26 = [NSNumber numberWithDouble:at];
   v30[6] = v26;
   v29[7] = @"synced_at";
   v27 = [NSNumber numberWithDouble:Current];
@@ -4979,9 +4979,9 @@ LABEL_12:
   return v3;
 }
 
-- (void)computeAggregatedSessionLogsWithHandlerBlock:(id)a3
+- (void)computeAggregatedSessionLogsWithHandlerBlock:(id)block
 {
-  v8 = a3;
+  blockCopy = block;
   queue = self->_queue;
   if (queue)
   {
@@ -4994,8 +4994,8 @@ LABEL_12:
     do
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = [v5 resultDictionary];
-      v8[2](v8, v7);
+      resultDictionary = [v5 resultDictionary];
+      blockCopy[2](blockCopy, resultDictionary);
 
       objc_autoreleasePoolPop(v6);
     }
@@ -5037,14 +5037,14 @@ LABEL_12:
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)runVacuumingTask:(id)a3
+- (void)runVacuumingTask:(id)task
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10003DFE0;
   v6[3] = &unk_100079A10;
-  v4 = a3;
-  v7 = v4;
+  taskCopy = task;
+  v7 = taskCopy;
   if ([(BMSyncDatabase *)self vacuumWithShouldContinueBlock:v6])
   {
     v5 = objc_opt_new();
@@ -5072,11 +5072,11 @@ LABEL_12:
   return v4;
 }
 
-- (void)setDateOfLastVacuum:(id)a3
+- (void)setDateOfLastVacuum:(id)vacuum
 {
-  if (a3)
+  if (vacuum)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [vacuum timeIntervalSinceReferenceDate];
     v4 = [NSNumber numberWithDouble:?];
   }
 
@@ -5166,9 +5166,9 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)vacuumWithShouldContinueBlock:(id)a3
+- (BOOL)vacuumWithShouldContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(_bmFMDatabase *)self->_fmdb executeQuery:@"PRAGMA auto_vacuum"];
   v28 = 0;
   v6 = [v5 nextWithError:&v28];
@@ -5194,7 +5194,7 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "vacuumWithShouldContinueBlock current vacuum mode is %u", buf, 8u);
   }
 
-  if (v4 && !v4[2](v4))
+  if (blockCopy && !blockCopy[2](blockCopy))
   {
     goto LABEL_26;
   }
@@ -5248,29 +5248,29 @@ LABEL_26:
   }
 
   v27 = v7;
-  v10 = [(BMSyncDatabase *)self _numPagesToVacuum];
+  _numPagesToVacuum = [(BMSyncDatabase *)self _numPagesToVacuum];
   v11 = __biome_log_for_category();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v30 = v10;
+    v30 = _numPagesToVacuum;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "vacuumWithShouldContinueBlock calculated pages to vacuum: %lu", buf, 0xCu);
   }
 
-  v12 = v10 != 0;
-  if (v10)
+  v12 = _numPagesToVacuum != 0;
+  if (_numPagesToVacuum)
   {
     v13 = 0;
     while (1)
     {
-      if (v10 - v13 >= 0x1F4)
+      if (_numPagesToVacuum - v13 >= 0x1F4)
       {
         v14 = 500;
       }
 
       else
       {
-        v14 = v10 - v13;
+        v14 = _numPagesToVacuum - v13;
       }
 
       v15 = __biome_log_for_category();
@@ -5293,12 +5293,12 @@ LABEL_26:
       }
 
       v13 += v14;
-      if (v4 && !v4[2](v4))
+      if (blockCopy && !blockCopy[2](blockCopy))
       {
         goto LABEL_43;
       }
 
-      if (v13 >= v10)
+      if (v13 >= _numPagesToVacuum)
       {
         goto LABEL_20;
       }
@@ -5333,27 +5333,27 @@ LABEL_27:
 
 - (unint64_t)databaseSizeInKilobytes
 {
-  v3 = [(_bmFMDatabase *)self->_fmdb databasePath];
-  v4 = [(BMSyncDatabase *)self _sizeOfFileInKilobytes:v3];
+  databasePath = [(_bmFMDatabase *)self->_fmdb databasePath];
+  v4 = [(BMSyncDatabase *)self _sizeOfFileInKilobytes:databasePath];
 
   return v4;
 }
 
 - (unint64_t)walSizeInKilobytes
 {
-  v3 = [(_bmFMDatabase *)self->_fmdb databasePath];
-  v4 = [v3 stringByAppendingString:@"-wal"];
+  databasePath = [(_bmFMDatabase *)self->_fmdb databasePath];
+  v4 = [databasePath stringByAppendingString:@"-wal"];
   v5 = [(BMSyncDatabase *)self _sizeOfFileInKilobytes:v4];
 
   return v5;
 }
 
-- (unint64_t)_sizeOfFileInKilobytes:(id)a3
+- (unint64_t)_sizeOfFileInKilobytes:(id)kilobytes
 {
-  v3 = a3;
+  kilobytesCopy = kilobytes;
   v4 = +[NSFileManager defaultManager];
   v12 = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:&v12];
+  v5 = [v4 attributesOfItemAtPath:kilobytesCopy error:&v12];
   v6 = v12;
 
   if (v5)
@@ -5372,7 +5372,7 @@ LABEL_27:
       *buf = 138412802;
       v14 = v11;
       v15 = 2112;
-      v16 = v3;
+      v16 = kilobytesCopy;
       v17 = 2112;
       v18 = v6;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@ sizeOfFileInKilobytes error fetching attributes for filepath: %@, err: %@", buf, 0x20u);
@@ -5385,11 +5385,11 @@ LABEL_8:
   return v8;
 }
 
-- (unint64_t)numRowsInTable:(id)a3
+- (unint64_t)numRowsInTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   fmdb = self->_fmdb;
-  v31 = v4;
+  v31 = tableCopy;
   v6 = [NSArray arrayWithObjects:&v31 count:1];
   v7 = [(_bmFMDatabase *)fmdb executeQuery:@"SELECT name FROM sqlite_schema WHERE type='table' AND name=?" withArgumentsInArray:v6];
 
@@ -5400,8 +5400,8 @@ LABEL_8:
   {
     [v7 close];
     v10 = self->_fmdb;
-    v11 = [[NSString alloc] initWithFormat:@"SELECT COUNT(*) FROM %@", v4];
-    v12 = [(_bmFMDatabase *)v10 executeQuery:v11];
+    tableCopy = [[NSString alloc] initWithFormat:@"SELECT COUNT(*) FROM %@", tableCopy];
+    v12 = [(_bmFMDatabase *)v10 executeQuery:tableCopy];
 
     v23 = v9;
     v13 = [v12 nextWithError:&v23];
@@ -5422,7 +5422,7 @@ LABEL_8:
         *buf = 138412802;
         v26 = v22;
         v27 = 2112;
-        v28 = v4;
+        v28 = tableCopy;
         v29 = 2112;
         v30 = v14;
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@ numRowsInTable error querying pgsize for table: %@, err: %@", buf, 0x20u);
@@ -5446,7 +5446,7 @@ LABEL_8:
       *buf = 138412802;
       v26 = v20;
       v27 = 2112;
-      v28 = v4;
+      v28 = tableCopy;
       v29 = 2112;
       v30 = v9;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%@ numRowsInTable table name: %@ does not exist, err: %@", buf, 0x20u);
@@ -5459,11 +5459,11 @@ LABEL_8:
   return v15;
 }
 
-- (unint64_t)sizeOfTableInKilobytes:(id)a3
+- (unint64_t)sizeOfTableInKilobytes:(id)kilobytes
 {
-  v4 = a3;
+  kilobytesCopy = kilobytes;
   fmdb = self->_fmdb;
-  v22 = v4;
+  v22 = kilobytesCopy;
   v6 = [NSArray arrayWithObjects:&v22 count:1];
   v7 = [(_bmFMDatabase *)fmdb executeQuery:@"SELECT SUM(pgsize) FROM dbstat WHERE name = ?" withArgumentsInArray:v6];
 
@@ -5485,7 +5485,7 @@ LABEL_8:
       *buf = 138412802;
       v17 = v14;
       v18 = 2112;
-      v19 = v4;
+      v19 = kilobytesCopy;
       v20 = 2112;
       v21 = v9;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%@ sizeOfTable error querying pgsize for table: %@, err: %@", buf, 0x20u);

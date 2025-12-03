@@ -1,17 +1,17 @@
 @interface CAFWriteRequest
-+ (id)requestWithCharacteristic:(id)a3 value:(id)a4;
-- (CAFWriteRequest)initWithCharacteristic:(id)a3 value:(id)a4;
++ (id)requestWithCharacteristic:(id)characteristic value:(id)value;
+- (CAFWriteRequest)initWithCharacteristic:(id)characteristic value:(id)value;
 @end
 
 @implementation CAFWriteRequest
 
-+ (id)requestWithCharacteristic:(id)a3 value:(id)a4
++ (id)requestWithCharacteristic:(id)characteristic value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 writable])
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  if ([characteristicCopy writable])
   {
-    v8 = [[a1 alloc] initWithCharacteristic:v6 value:v7];
+    v8 = [[self alloc] initWithCharacteristic:characteristicCopy value:valueCopy];
   }
 
   else
@@ -22,16 +22,16 @@
   return v8;
 }
 
-- (CAFWriteRequest)initWithCharacteristic:(id)a3 value:(id)a4
+- (CAFWriteRequest)initWithCharacteristic:(id)characteristic value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = CAFWriteRequest;
-  v8 = [(CAFRequest *)&v11 initWithCharacteristic:a3];
+  v8 = [(CAFRequest *)&v11 initWithCharacteristic:characteristic];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_value, a4);
+    objc_storeStrong(&v8->_value, value);
   }
 
   return v9;

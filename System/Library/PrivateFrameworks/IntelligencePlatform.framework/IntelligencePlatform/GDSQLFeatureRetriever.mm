@@ -1,12 +1,12 @@
 @interface GDSQLFeatureRetriever
-- (GDSQLFeatureRetriever)initWithDatabase:(id)a3;
-- (id)featureForKey:(id)a3 error:(id *)a4;
-- (id)featureKeysWithError:(id *)a3;
+- (GDSQLFeatureRetriever)initWithDatabase:(id)database;
+- (id)featureForKey:(id)key error:(id *)error;
+- (id)featureKeysWithError:(id *)error;
 @end
 
 @implementation GDSQLFeatureRetriever
 
-- (id)featureKeysWithError:(id *)a3
+- (id)featureKeysWithError:(id *)error
 {
   v5 = objc_opt_new();
   v14 = 0;
@@ -28,10 +28,10 @@
   v11[3] = &unk_1E79621E8;
   v11[4] = &v14;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"SELECT viewName onPrep:featureName onRow:subidentifierName FROM kv" onError:&unk_1F20A1AF8, v12, v11];
-  if (a3 && (v8 = v15[5]) != 0)
+  if (error && (v8 = v15[5]) != 0)
   {
     v9 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -44,13 +44,13 @@
   return v9;
 }
 
-- (id)featureForKey:(id)a3 error:(id *)a4
+- (id)featureForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = objc_opt_new();
-  v8 = [v6 subidentifierName];
+  subidentifierName = [keyCopy subidentifierName];
 
-  if (v8)
+  if (subidentifierName)
   {
     v9 = @"SELECT value FROM kv WHERE viewName = :viewName AND featureName = :featureName AND subidentifierName = :subidentifierName";
   }
@@ -71,7 +71,7 @@
   v19[1] = 3221225472;
   v19[2] = sub_1ABF0644C;
   v19[3] = &unk_1E7962230;
-  v11 = v6;
+  v11 = keyCopy;
   v20 = v11;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -85,10 +85,10 @@
   v16[3] = &unk_1E79621E8;
   v16[4] = &v21;
   [(_PASSqliteDatabase *)db prepAndRunQuery:v9 onPrep:v19 onRow:v17 onError:v16];
-  if (a4 && (v13 = v22[5]) != 0)
+  if (error && (v13 = v22[5]) != 0)
   {
     v14 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -101,16 +101,16 @@
   return v14;
 }
 
-- (GDSQLFeatureRetriever)initWithDatabase:(id)a3
+- (GDSQLFeatureRetriever)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v9.receiver = self;
   v9.super_class = GDSQLFeatureRetriever;
   v6 = [(GDSQLFeatureRetriever *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_db, a3);
+    objc_storeStrong(&v6->_db, database);
   }
 
   return v7;

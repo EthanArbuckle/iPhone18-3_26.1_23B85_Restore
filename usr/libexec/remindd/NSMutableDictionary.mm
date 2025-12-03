@@ -1,25 +1,25 @@
 @interface NSMutableDictionary
-- (void)ic_addZoneID:(id)a3 forAccountID:(id)a4;
-- (void)ic_removeZoneID:(id)a3 forAccountID:(id)a4;
-- (void)ic_setNonNilObject:(id)a3 forKey:(id)a4;
+- (void)ic_addZoneID:(id)d forAccountID:(id)iD;
+- (void)ic_removeZoneID:(id)d forAccountID:(id)iD;
+- (void)ic_setNonNilObject:(id)object forKey:(id)key;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)ic_setNonNilObject:(id)a3 forKey:(id)a4
+- (void)ic_setNonNilObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    [(NSMutableDictionary *)self setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)self setObject:object forKeyedSubscript:key];
   }
 }
 
-- (void)ic_addZoneID:(id)a3 forAccountID:(id)a4
+- (void)ic_addZoneID:(id)d forAccountID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dCopy = d;
+  iDCopy = iD;
+  v8 = iDCopy;
+  if (!iDCopy)
   {
     v10 = +[REMLog cloudkit];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -30,7 +30,7 @@
     goto LABEL_13;
   }
 
-  if (![v7 length])
+  if (![iDCopy length])
   {
     v10 = +[REMLog cloudkit];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -41,7 +41,7 @@
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     v10 = +[REMLog cloudkit];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -61,25 +61,25 @@ LABEL_13:
   }
 
   [(NSMutableDictionary *)self setObject:v9 forKeyedSubscript:v8];
-  [v9 addObject:v6];
+  [v9 addObject:dCopy];
 
 LABEL_14:
 }
 
-- (void)ic_removeZoneID:(id)a3 forAccountID:(id)a4
+- (void)ic_removeZoneID:(id)d forAccountID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  iDCopy = iD;
+  v8 = iDCopy;
+  if (iDCopy)
   {
-    if ([v7 length])
+    if ([iDCopy length])
     {
       v9 = [(NSMutableDictionary *)self objectForKeyedSubscript:v8];
       v10 = v9;
       if (v9)
       {
-        [v9 removeObject:v6];
+        [v9 removeObject:dCopy];
       }
     }
 

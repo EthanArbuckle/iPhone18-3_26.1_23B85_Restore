@@ -1,5 +1,5 @@
 @interface PBA_SBUICallToActionLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation PBA_SBUICallToActionLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PBADeviceUnlockViewController" hasInstanceMethod:@"_homeButtonPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PBADataRecoveryViewController" hasInstanceMethod:@"_pushPasscodeView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBUICallToActionLabel" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PBADeviceUnlockViewController" hasInstanceMethod:@"_homeButtonPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PBADataRecoveryViewController" hasInstanceMethod:@"_pushPasscodeView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBUICallToActionLabel" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -76,9 +76,9 @@ LABEL_6:
 - (id)accessibilityLabel
 {
   v2 = [(PBA_SBUICallToActionLabelAccessibility *)self safeValueForKey:@"label"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface GKChallengeEventHandler
 + (GKChallengeEventHandler)challengeEventHandler;
 - (id)delegate;
-- (void)challengeCompleted:(id)a3;
-- (void)challengeReceived:(id)a3;
-- (void)completedChallengeSelected:(id)a3;
-- (void)receivedChallengeSelected:(id)a3;
+- (void)challengeCompleted:(id)completed;
+- (void)challengeReceived:(id)received;
+- (void)completedChallengeSelected:(id)selected;
+- (void)receivedChallengeSelected:(id)selected;
 - (void)setDelegate:(id)delegate;
-- (void)showBannerForChallenge:(id)a3 complete:(id)a4;
+- (void)showBannerForChallenge:(id)challenge complete:(id)complete;
 @end
 
 @implementation GKChallengeEventHandler
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __48__GKChallengeEventHandler_challengeEventHandler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (challengeEventHandler_onceToken != -1)
   {
     dispatch_once(&challengeEventHandler_onceToken, block);
@@ -84,19 +84,19 @@ uint64_t __48__GKChallengeEventHandler_challengeEventHandler__block_invoke(uint6
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)receivedChallengeSelected:(id)a3
+- (void)receivedChallengeSelected:(id)selected
 {
-  v4 = a3;
-  if (v4)
+  selectedCopy = selected;
+  if (selectedCopy)
   {
-    v7 = v4;
-    v5 = [(GKChallengeEventHandler *)self delegate];
-    if (v5)
+    v7 = selectedCopy;
+    delegate = [(GKChallengeEventHandler *)self delegate];
+    if (delegate)
     {
       if (objc_opt_respondsToSelector())
       {
         v6 = [GKChallenge challengeForInternalRepresentation:v7];
-        [v5 localPlayerDidSelectChallenge:v6];
+        [delegate localPlayerDidSelectChallenge:v6];
       }
     }
 
@@ -105,39 +105,39 @@ uint64_t __48__GKChallengeEventHandler_challengeEventHandler__block_invoke(uint6
       [(GKChallengeEventHandler *)self setPendingReceivedChallenge:v7];
     }
 
-    v4 = v7;
+    selectedCopy = v7;
   }
 }
 
-- (void)completedChallengeSelected:(id)a3
+- (void)completedChallengeSelected:(id)selected
 {
-  v4 = a3;
-  if (v4)
+  selectedCopy = selected;
+  if (selectedCopy)
   {
-    v14 = v4;
-    v5 = [(GKChallengeEventHandler *)self delegate];
-    if (v5)
+    v14 = selectedCopy;
+    delegate = [(GKChallengeEventHandler *)self delegate];
+    if (delegate)
     {
       v6 = [GKChallenge challengeForInternalRepresentation:v14];
-      v7 = [v6 receivingPlayer];
-      v8 = [v7 internal];
-      v9 = [v8 playerID];
+      receivingPlayer = [v6 receivingPlayer];
+      internal = [receivingPlayer internal];
+      playerID = [internal playerID];
       v10 = +[GKLocalPlayer localPlayer];
-      v11 = [v10 internal];
-      v12 = [v11 playerID];
-      v13 = [v9 isEqualToString:v12];
+      internal2 = [v10 internal];
+      playerID2 = [internal2 playerID];
+      v13 = [playerID isEqualToString:playerID2];
 
       if (v13)
       {
         if (objc_opt_respondsToSelector())
         {
-          [v5 localPlayerDidCompleteChallenge:v6];
+          [delegate localPlayerDidCompleteChallenge:v6];
         }
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        [v5 remotePlayerDidCompleteChallenge:v6];
+        [delegate remotePlayerDidCompleteChallenge:v6];
       }
     }
 
@@ -146,31 +146,31 @@ uint64_t __48__GKChallengeEventHandler_challengeEventHandler__block_invoke(uint6
       [(GKChallengeEventHandler *)self setPendingCompletedChallenge:v14];
     }
 
-    v4 = v14;
+    selectedCopy = v14;
   }
 }
 
-- (void)challengeReceived:(id)a3
+- (void)challengeReceived:(id)received
 {
-  v4 = a3;
-  if (!v4)
+  receivedCopy = received;
+  if (!receivedCopy)
   {
     goto LABEL_12;
   }
 
-  v5 = [GKChallenge challengeForInternalRepresentation:v4];
-  v6 = [(GKChallengeEventHandler *)self delegate];
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 infoDictionary];
+  v5 = [GKChallenge challengeForInternalRepresentation:receivedCopy];
+  delegate = [(GKChallengeEventHandler *)self delegate];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v9 = [v8 objectForKey:@"GKShowChallengeBanners"];
+  v9 = [infoDictionary objectForKey:@"GKShowChallengeBanners"];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      if (!v11)
+      if (!bOOLValue)
       {
         goto LABEL_9;
       }
@@ -188,13 +188,13 @@ LABEL_8:
     v12[3] = &unk_2785DDB40;
     v12[4] = self;
     v13 = v5;
-    v14 = v4;
+    v14 = receivedCopy;
     [(GKChallengeEventHandler *)self showBannerForChallenge:v13 complete:v12];
 
     goto LABEL_9;
   }
 
-  if ([v6 shouldShowBannerForLocallyReceivedChallenge:v5])
+  if ([delegate shouldShowBannerForLocallyReceivedChallenge:v5])
   {
     goto LABEL_8;
   }
@@ -202,7 +202,7 @@ LABEL_8:
 LABEL_9:
   if (objc_opt_respondsToSelector())
   {
-    [v6 localPlayerDidReceiveChallenge:v5];
+    [delegate localPlayerDidReceiveChallenge:v5];
   }
 
 LABEL_12:
@@ -226,73 +226,73 @@ void __45__GKChallengeEventHandler_challengeReceived___block_invoke(uint64_t a1)
   [v3 player:v2 wantsToPlayChallenge:*(a1 + 40)];
 }
 
-- (void)challengeCompleted:(id)a3
+- (void)challengeCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  completedCopy = completed;
+  v5 = completedCopy;
+  if (!completedCopy)
   {
     goto LABEL_23;
   }
 
-  v23 = v4;
-  v6 = [GKChallenge challengeForInternalRepresentation:v4];
-  v7 = [(GKChallengeEventHandler *)self delegate];
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 infoDictionary];
+  v23 = completedCopy;
+  v6 = [GKChallenge challengeForInternalRepresentation:completedCopy];
+  delegate = [(GKChallengeEventHandler *)self delegate];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v21 = v9;
-  v10 = [v9 objectForKey:@"GKShowChallengeBanners"];
+  v21 = infoDictionary;
+  v10 = [infoDictionary objectForKey:@"GKShowChallengeBanners"];
   v11 = v10;
-  v22 = self;
+  selfCopy = self;
   if (v10)
   {
-    v20 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
   {
-    v20 = 1;
+    bOOLValue = 1;
   }
 
-  v12 = [v6 receivingPlayer];
-  v13 = [v12 internal];
-  v14 = [v13 playerID];
+  receivingPlayer = [v6 receivingPlayer];
+  internal = [receivingPlayer internal];
+  playerID = [internal playerID];
   v15 = +[GKLocalPlayer localPlayer];
-  v16 = [v15 internal];
-  v17 = [v16 playerID];
-  v18 = [v14 isEqualToString:v17];
+  internal2 = [v15 internal];
+  playerID2 = [internal2 playerID];
+  v18 = [playerID isEqualToString:playerID2];
 
   if (!v18)
   {
-    v19 = v22;
+    v19 = selfCopy;
     if (objc_opt_respondsToSelector())
     {
-      if (([v7 shouldShowBannerForRemotelyCompletedChallenge:v6] & 1) == 0)
+      if (([delegate shouldShowBannerForRemotelyCompletedChallenge:v6] & 1) == 0)
       {
 LABEL_18:
         if (objc_opt_respondsToSelector())
         {
-          [v7 remotePlayerDidCompleteChallenge:v6];
+          [delegate remotePlayerDidCompleteChallenge:v6];
         }
 
         goto LABEL_20;
       }
     }
 
-    else if (!v20)
+    else if (!bOOLValue)
     {
       goto LABEL_18;
     }
 
-    [(GKChallengeEventHandler *)v22 showBannerForChallenge:v6 complete:0];
+    [(GKChallengeEventHandler *)selfCopy showBannerForChallenge:v6 complete:0];
     goto LABEL_18;
   }
 
-  v19 = v22;
+  v19 = selfCopy;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (!v20)
+    if (!bOOLValue)
     {
       goto LABEL_14;
     }
@@ -300,20 +300,20 @@ LABEL_18:
     goto LABEL_13;
   }
 
-  if ([v7 shouldShowBannerForLocallyCompletedChallenge:v6])
+  if ([delegate shouldShowBannerForLocallyCompletedChallenge:v6])
   {
 LABEL_13:
-    [(GKChallengeEventHandler *)v22 showBannerForChallenge:v6 complete:0];
+    [(GKChallengeEventHandler *)selfCopy showBannerForChallenge:v6 complete:0];
   }
 
 LABEL_14:
   if (objc_opt_respondsToSelector())
   {
-    [v7 localPlayerDidCompleteChallenge:v6];
+    [delegate localPlayerDidCompleteChallenge:v6];
   }
 
 LABEL_20:
-  if (!v7)
+  if (!delegate)
   {
     [(GKChallengeEventHandler *)v19 setPendingCompletedChallenge:v23];
   }
@@ -321,39 +321,39 @@ LABEL_20:
   v5 = v23;
 LABEL_23:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](completedCopy, v5);
 }
 
-- (void)showBannerForChallenge:(id)a3 complete:(id)a4
+- (void)showBannerForChallenge:(id)challenge complete:(id)complete
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 receivingPlayer];
-  v8 = [v12 issuingPlayer];
-  if ([v12 state] == 1)
+  challengeCopy = challenge;
+  completeCopy = complete;
+  receivingPlayer = [challengeCopy receivingPlayer];
+  issuingPlayer = [challengeCopy issuingPlayer];
+  if ([challengeCopy state] == 1)
   {
     uiDelegate = self->_uiDelegate;
     if (objc_opt_respondsToSelector())
     {
-      [(GKChallengeEventHandlerUIDelegate *)self->_uiDelegate showReceivedBannerForIssuingPlayer:v8 challenge:v12 handler:v6];
+      [(GKChallengeEventHandlerUIDelegate *)self->_uiDelegate showReceivedBannerForIssuingPlayer:issuingPlayer challenge:challengeCopy handler:completeCopy];
     }
   }
 
   else
   {
-    v10 = [v7 isLocalPlayer];
+    isLocalPlayer = [receivingPlayer isLocalPlayer];
     v11 = self->_uiDelegate;
-    if (v10)
+    if (isLocalPlayer)
     {
       if (objc_opt_respondsToSelector())
       {
-        [(GKChallengeEventHandlerUIDelegate *)self->_uiDelegate showLocallyCompletedBannerForIssuingPlayer:v8 challenge:v12 handler:v6];
+        [(GKChallengeEventHandlerUIDelegate *)self->_uiDelegate showLocallyCompletedBannerForIssuingPlayer:issuingPlayer challenge:challengeCopy handler:completeCopy];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [(GKChallengeEventHandlerUIDelegate *)self->_uiDelegate showRemotelyCompletedBannerForReceivingPlayer:v7 challenge:v12 handler:v6];
+      [(GKChallengeEventHandlerUIDelegate *)self->_uiDelegate showRemotelyCompletedBannerForReceivingPlayer:receivingPlayer challenge:challengeCopy handler:completeCopy];
     }
   }
 }

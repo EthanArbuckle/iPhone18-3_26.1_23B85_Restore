@@ -1,28 +1,28 @@
 @interface DirectToVMSettingsBundleController
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 - (BOOL)currentControllerIsFaceTimeSettings;
 - (BOOL)silenceUnknownCallersForFaceTimeIsEnabled;
 - (BOOL)silenceUnknownCallersForPhoneIsEnabled;
-- (DirectToVMSettingsBundleController)initWithParentListController:(id)a3;
+- (DirectToVMSettingsBundleController)initWithParentListController:(id)controller;
 - (PSListController)parentListController;
 - (id)createDirectToVoicemailSpecifier;
 - (id)currentControllerSpecifierID;
 - (id)currentControllerSpecifierIdentifier;
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4;
-- (id)getDirectToVoicemailEnabled:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default;
+- (id)getDirectToVoicemailEnabled:(id)enabled;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)refreshView;
-- (void)setDirectToVoicemailEnabled:(id)a3 specifier:(id)a4;
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4;
+- (void)setDirectToVoicemailEnabled:(id)enabled specifier:(id)specifier;
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key;
 @end
 
 @implementation DirectToVMSettingsBundleController
 
-- (DirectToVMSettingsBundleController)initWithParentListController:(id)a3
+- (DirectToVMSettingsBundleController)initWithParentListController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = DirectToVMSettingsBundleController;
-  v3 = [(DirectToVMSettingsBundleController *)&v10 initWithParentListController:a3];
+  v3 = [(DirectToVMSettingsBundleController *)&v10 initWithParentListController:controller];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -45,40 +45,40 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(DirectToVMSettingsBundleController *)self currentControllerSpecifierIdentifier];
+    currentControllerSpecifierIdentifier = [(DirectToVMSettingsBundleController *)self currentControllerSpecifierIdentifier];
     *v18 = 138412290;
-    *&v18[4] = v5;
+    *&v18[4] = currentControllerSpecifierIdentifier;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "DIRECT TO VM SETTINGS: Loading settings page for app %@", v18, 0xCu);
   }
 
   v6 = +[NSMutableArray array];
-  v7 = [(DirectToVMSettingsBundleController *)self currentControllerIsPhoneSettings];
-  v8 = PHDefaultLog();
-  v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  currentControllerIsPhoneSettings = [(DirectToVMSettingsBundleController *)self currentControllerIsPhoneSettings];
+  createDirectToVoicemailSpecifier = PHDefaultLog();
+  v9 = os_log_type_enabled(createDirectToVoicemailSpecifier, OS_LOG_TYPE_DEFAULT);
+  if (currentControllerIsPhoneSettings)
   {
     if (v9)
     {
       *v18 = 0;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "DIRECT TO VM SETTINGS: We are in Phone Settings", v18, 2u);
+      _os_log_impl(&dword_0, createDirectToVoicemailSpecifier, OS_LOG_TYPE_DEFAULT, "DIRECT TO VM SETTINGS: We are in Phone Settings", v18, 2u);
     }
 
-    v10 = [(DirectToVMSettingsBundleController *)self configurationProvider];
-    v11 = [v10 isReceptionistAvailable];
+    configurationProvider = [(DirectToVMSettingsBundleController *)self configurationProvider];
+    isReceptionistAvailable = [configurationProvider isReceptionistAvailable];
 
-    v8 = PHDefaultLog();
-    v12 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    createDirectToVoicemailSpecifier = PHDefaultLog();
+    v12 = os_log_type_enabled(createDirectToVoicemailSpecifier, OS_LOG_TYPE_DEFAULT);
+    if (isReceptionistAvailable)
     {
       if (v12)
       {
         *v18 = 0;
-        _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "DIRECT TO VM SETTINGS: We are in Phone Settings with receptionist available, so we will not show Silence Unknown Callers toggle, we must show Intelligent Call Screening group instead", v18, 2u);
+        _os_log_impl(&dword_0, createDirectToVoicemailSpecifier, OS_LOG_TYPE_DEFAULT, "DIRECT TO VM SETTINGS: We are in Phone Settings with receptionist available, so we will not show Silence Unknown Callers toggle, we must show Intelligent Call Screening group instead", v18, 2u);
       }
 
       goto LABEL_17;
@@ -97,23 +97,23 @@
     *v18 = 0;
     v13 = "DIRECT TO VM SETTINGS: We are in FT Settings, so we will show Silence Unknown Callers toggle";
 LABEL_13:
-    _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, v13, v18, 2u);
+    _os_log_impl(&dword_0, createDirectToVoicemailSpecifier, OS_LOG_TYPE_DEFAULT, v13, v18, 2u);
   }
 
-  v14 = [(DirectToVMSettingsBundleController *)self activeSpecifier];
+  activeSpecifier = [(DirectToVMSettingsBundleController *)self activeSpecifier];
 
-  if (v14)
+  if (activeSpecifier)
   {
     goto LABEL_18;
   }
 
-  v8 = [(DirectToVMSettingsBundleController *)self createDirectToVoicemailSpecifier];
-  if (v8)
+  createDirectToVoicemailSpecifier = [(DirectToVMSettingsBundleController *)self createDirectToVoicemailSpecifier];
+  if (createDirectToVoicemailSpecifier)
   {
     v15 = [PSSpecifier groupSpecifierWithName:&stru_42D0];
     [v6 addObject:v15];
-    [v6 addObject:v8];
-    [(DirectToVMSettingsBundleController *)self setActiveSpecifier:v8];
+    [v6 addObject:createDirectToVoicemailSpecifier];
+    [(DirectToVMSettingsBundleController *)self setActiveSpecifier:createDirectToVoicemailSpecifier];
   }
 
 LABEL_17:
@@ -136,12 +136,12 @@ LABEL_18:
   return v5;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_42D0 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_42D0 table:localizationTableName];
 
   return v7;
 }
@@ -155,88 +155,88 @@ LABEL_18:
 
 - (void)refreshView
 {
-  v4 = [(DirectToVMSettingsBundleController *)self parentListController];
-  v3 = [(DirectToVMSettingsBundleController *)self activeSpecifier];
-  [v4 reloadSpecifier:v3 animated:1];
+  parentListController = [(DirectToVMSettingsBundleController *)self parentListController];
+  activeSpecifier = [(DirectToVMSettingsBundleController *)self activeSpecifier];
+  [parentListController reloadSpecifier:activeSpecifier animated:1];
 }
 
-- (void)setDirectToVoicemailEnabled:(id)a3 specifier:(id)a4
+- (void)setDirectToVoicemailEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(DirectToVMSettingsBundleController *)self currentControllerSpecifierIdentifier];
+    currentControllerSpecifierIdentifier = [(DirectToVMSettingsBundleController *)self currentControllerSpecifierIdentifier];
     v12 = 138412546;
-    v13 = v7;
+    v13 = currentControllerSpecifierIdentifier;
     v14 = 2112;
-    v15 = v5;
+    v15 = enabledCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "User has toggled Direct to Voicemail %@ switch to %@", &v12, 0x16u);
   }
 
-  v8 = [(DirectToVMSettingsBundleController *)self currentControllerIsFaceTimeSettings];
-  v9 = [v5 BOOLValue];
-  v10 = [(DirectToVMSettingsBundleController *)self configurationProvider];
-  v11 = v10;
-  if (v8)
+  currentControllerIsFaceTimeSettings = [(DirectToVMSettingsBundleController *)self currentControllerIsFaceTimeSettings];
+  bOOLValue = [enabledCopy BOOLValue];
+  configurationProvider = [(DirectToVMSettingsBundleController *)self configurationProvider];
+  v11 = configurationProvider;
+  if (currentControllerIsFaceTimeSettings)
   {
-    [v10 setSilenceUnknownCallersEnabledForFaceTime:v9];
+    [configurationProvider setSilenceUnknownCallersEnabledForFaceTime:bOOLValue];
   }
 
   else
   {
-    [v10 setSilenceUnknownCallersEnabledForPhone:v9];
+    [configurationProvider setSilenceUnknownCallersEnabledForPhone:bOOLValue];
   }
 }
 
-- (id)getDirectToVoicemailEnabled:(id)a3
+- (id)getDirectToVoicemailEnabled:(id)enabled
 {
-  v4 = [(DirectToVMSettingsBundleController *)self tuFeatureFlags];
-  v5 = [v4 deviceExpertMigrationEnabled];
+  tuFeatureFlags = [(DirectToVMSettingsBundleController *)self tuFeatureFlags];
+  deviceExpertMigrationEnabled = [tuFeatureFlags deviceExpertMigrationEnabled];
 
-  v6 = [(DirectToVMSettingsBundleController *)self currentControllerIsFaceTimeSettings];
-  if (v5)
+  currentControllerIsFaceTimeSettings = [(DirectToVMSettingsBundleController *)self currentControllerIsFaceTimeSettings];
+  if (deviceExpertMigrationEnabled)
   {
-    v7 = [(DirectToVMSettingsBundleController *)self configurationProvider];
-    v8 = v7;
-    if (v6)
+    configurationProvider = [(DirectToVMSettingsBundleController *)self configurationProvider];
+    v8 = configurationProvider;
+    if (currentControllerIsFaceTimeSettings)
     {
-      v9 = [v7 isSilenceUnknownCallersEnabledForFaceTime];
+      isSilenceUnknownCallersEnabledForFaceTime = [configurationProvider isSilenceUnknownCallersEnabledForFaceTime];
     }
 
     else
     {
-      v9 = [v7 isSilenceUnknownCallersEnabledForPhone];
+      isSilenceUnknownCallersEnabledForFaceTime = [configurationProvider isSilenceUnknownCallersEnabledForPhone];
     }
 
-    v11 = [NSNumber numberWithBool:v9];
+    v11 = [NSNumber numberWithBool:isSilenceUnknownCallersEnabledForFaceTime];
   }
 
   else
   {
-    if (v6)
+    if (currentControllerIsFaceTimeSettings)
     {
-      v10 = [(DirectToVMSettingsBundleController *)self silenceUnknownCallersForFaceTimeIsEnabled];
+      silenceUnknownCallersForFaceTimeIsEnabled = [(DirectToVMSettingsBundleController *)self silenceUnknownCallersForFaceTimeIsEnabled];
     }
 
     else
     {
-      v10 = [(DirectToVMSettingsBundleController *)self silenceUnknownCallersForPhoneIsEnabled];
+      silenceUnknownCallersForFaceTimeIsEnabled = [(DirectToVMSettingsBundleController *)self silenceUnknownCallersForPhoneIsEnabled];
     }
 
-    v11 = [NSNumber numberWithBool:v10];
+    v11 = [NSNumber numberWithBool:silenceUnknownCallersForFaceTimeIsEnabled];
   }
 
   return v11;
 }
 
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default
 {
-  v5 = a4;
-  v6 = a3;
+  defaultCopy = default;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:defaultsCopy];
 
   if (v9)
   {
@@ -245,7 +245,7 @@ LABEL_18:
 
   else
   {
-    v10 = v5;
+    v10 = defaultCopy;
   }
 
   v11 = v10;
@@ -253,13 +253,13 @@ LABEL_18:
   return v10;
 }
 
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  [v8 setValue:v6 forKey:v5];
+  [v8 setValue:defaultsCopy forKey:keyCopy];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 postNotificationName:@"DirectToVoicemailSettingsChangedNotification" object:0];
@@ -267,24 +267,24 @@ LABEL_18:
 
 - (BOOL)currentControllerIsFaceTimeSettings
 {
-  v3 = [(DirectToVMSettingsBundleController *)self currentControllerSpecifierIdentifier];
-  v4 = [v3 rangeOfString:@"FaceTime" options:1];
+  currentControllerSpecifierIdentifier = [(DirectToVMSettingsBundleController *)self currentControllerSpecifierIdentifier];
+  v4 = [currentControllerSpecifierIdentifier rangeOfString:@"FaceTime" options:1];
 
-  v5 = [(DirectToVMSettingsBundleController *)self currentControllerSpecifierID];
-  v6 = [v5 rangeOfString:@"FaceTime" options:1];
+  currentControllerSpecifierID = [(DirectToVMSettingsBundleController *)self currentControllerSpecifierID];
+  v6 = [currentControllerSpecifierID rangeOfString:@"FaceTime" options:1];
 
   return v4 != 0x7FFFFFFFFFFFFFFFLL || v6 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (id)currentControllerSpecifierIdentifier
 {
-  v2 = [(DirectToVMSettingsBundleController *)self parentListController];
-  v3 = [v2 specifier];
-  v4 = [v3 identifier];
-  v5 = v4;
-  if (v4)
+  parentListController = [(DirectToVMSettingsBundleController *)self parentListController];
+  specifier = [parentListController specifier];
+  identifier = [specifier identifier];
+  v5 = identifier;
+  if (identifier)
   {
-    v6 = v4;
+    v6 = identifier;
   }
 
   else
@@ -299,12 +299,12 @@ LABEL_18:
 
 - (id)currentControllerSpecifierID
 {
-  v2 = [(DirectToVMSettingsBundleController *)self parentListController];
-  v3 = [v2 specifierID];
-  v4 = v3;
-  if (v3)
+  parentListController = [(DirectToVMSettingsBundleController *)self parentListController];
+  specifierID = [parentListController specifierID];
+  v4 = specifierID;
+  if (specifierID)
   {
-    v5 = v3;
+    v5 = specifierID;
   }
 
   else
@@ -330,9 +330,9 @@ LABEL_18:
 - (BOOL)silenceUnknownCallersForPhoneIsEnabled
 {
   v2 = [(DirectToVMSettingsBundleController *)self getBooleanFromUserDefaults:TUCallFilteringPreferencesContactsOnlyKey default:&off_4318];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

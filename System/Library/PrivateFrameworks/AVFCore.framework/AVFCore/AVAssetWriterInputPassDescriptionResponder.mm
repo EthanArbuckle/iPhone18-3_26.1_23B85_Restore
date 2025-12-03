@@ -1,17 +1,17 @@
 @interface AVAssetWriterInputPassDescriptionResponder
-- (AVAssetWriterInputPassDescriptionResponder)initWithCallbackQueue:(id)a3 block:(id)a4;
+- (AVAssetWriterInputPassDescriptionResponder)initWithCallbackQueue:(id)queue block:(id)block;
 - (void)dealloc;
-- (void)respondToNewPassDescription:(id)a3;
+- (void)respondToNewPassDescription:(id)description;
 - (void)stopRespondingToPassDescriptions;
 @end
 
 @implementation AVAssetWriterInputPassDescriptionResponder
 
-- (AVAssetWriterInputPassDescriptionResponder)initWithCallbackQueue:(id)a3 block:(id)a4
+- (AVAssetWriterInputPassDescriptionResponder)initWithCallbackQueue:(id)queue block:(id)block
 {
-  if (a3)
+  if (queue)
   {
-    if (a4)
+    if (block)
     {
       goto LABEL_3;
     }
@@ -20,7 +20,7 @@
   else
   {
     [AVAssetWriterInputPassDescriptionResponder initWithCallbackQueue:block:];
-    if (a4)
+    if (block)
     {
       goto LABEL_3;
     }
@@ -34,9 +34,9 @@ LABEL_3:
   v8 = v7;
   if (v7)
   {
-    v7->_callbackQueue = a3;
-    dispatch_retain(a3);
-    v8->_callbackBlock = [a4 copy];
+    v7->_callbackQueue = queue;
+    dispatch_retain(queue);
+    v8->_callbackBlock = [block copy];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8->_serializationQueue = dispatch_queue_create("AVAssetWriterInputPassDescriptionResponder serialization queue", v9);
   }
@@ -63,14 +63,14 @@ LABEL_3:
   [(AVAssetWriterInputPassDescriptionResponder *)&v5 dealloc];
 }
 
-- (void)respondToNewPassDescription:(id)a3
+- (void)respondToNewPassDescription:(id)description
 {
   serializationQueue = self->_serializationQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__AVAssetWriterInputPassDescriptionResponder_respondToNewPassDescription___block_invoke;
   v4[3] = &unk_1E7460DF0;
-  v4[4] = a3;
+  v4[4] = description;
   v4[5] = self;
   dispatch_async(serializationQueue, v4);
 }

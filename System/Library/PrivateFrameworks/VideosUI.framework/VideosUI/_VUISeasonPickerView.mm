@@ -1,20 +1,20 @@
 @interface _VUISeasonPickerView
-- (_VUISeasonPickerView)initWithFrame:(CGRect)a3;
+- (_VUISeasonPickerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _VUISeasonPickerView
 
-- (_VUISeasonPickerView)initWithFrame:(CGRect)a3
+- (_VUISeasonPickerView)initWithFrame:(CGRect)frame
 {
   v18[3] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = _VUISeasonPickerView;
-  v3 = [(_VUISeasonPickerView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_VUISeasonPickerView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(_VUISeasonPickerView *)v3 setBackgroundColor:v4];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(_VUISeasonPickerView *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
     v5 = objc_alloc_init(MEMORY[0x1E69DC840]);
     [v5 setScrollDirection:0];
@@ -26,8 +26,8 @@
 
     [(UICollectionView *)v3->_collectionView setAlwaysBounceVertical:1];
     v9 = v3->_collectionView;
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v9 setBackgroundColor:clearColor];
 
     [(_VUISeasonPickerView *)v3 addSubview:v3->_collectionView];
     objc_initWeak(&location, v3);

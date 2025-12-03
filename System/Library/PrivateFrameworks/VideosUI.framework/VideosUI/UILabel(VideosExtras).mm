@@ -27,39 +27,39 @@
   v15 = MEMORY[0x1E69DB880];
   v16 = a4;
   v17 = [v15 preferredFontDescriptorWithTextStyle:v13];
-  v18 = [v16 fontAttributes];
+  fontAttributes = [v16 fontAttributes];
 
-  v19 = [v17 fontDescriptorByAddingAttributes:v18];
+  v19 = [v17 fontDescriptorByAddingAttributes:fontAttributes];
 
   v33 = v19;
   v20 = [MEMORY[0x1E69DB878] fontWithDescriptor:v19 size:0.0];
   if (v14)
   {
     v21 = MEMORY[0x1E69DB878];
-    v22 = [v14 preferredContentSizeCategory];
-    v23 = [v21 _preferredFontForTextStyle:v13 maximumContentSizeCategory:v22];
+    preferredContentSizeCategory = [v14 preferredContentSizeCategory];
+    v23 = [v21 _preferredFontForTextStyle:v13 maximumContentSizeCategory:preferredContentSizeCategory];
 
     v20 = v23;
   }
 
-  [a1 setFont:v20];
-  v24 = [v12 maxLines];
-  [a1 setNumberOfLines:v24 & ~(v24 >> 63)];
-  v25 = [v12 color];
-  if (v25)
+  [self setFont:v20];
+  maxLines = [v12 maxLines];
+  [self setNumberOfLines:maxLines & ~(maxLines >> 63)];
+  color = [v12 color];
+  if (color)
   {
-    [a1 setTextColor:v25];
+    [self setTextColor:color];
   }
 
-  [a1 setTextAlignment:{objc_msgSend(a1, "_textAlignmentFromElementAlignment:", objc_msgSend(v12, "alignment"))}];
+  [self setTextAlignment:{objc_msgSend(self, "_textAlignmentFromElementAlignment:", objc_msgSend(v12, "alignment"))}];
   v26 = [MEMORY[0x1E696AAB0] attributedStringWithTextElement:v12 baseFont:v20];
   if (a6)
   {
     v27 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v26];
-    v28 = [v26 string];
-    v29 = [v28 uppercaseString];
+    string = [v26 string];
+    uppercaseString = [string uppercaseString];
 
-    [v27 replaceCharactersInRange:0 withString:{objc_msgSend(v29, "length"), v29}];
+    [v27 replaceCharactersInRange:0 withString:{objc_msgSend(uppercaseString, "length"), uppercaseString}];
     v26 = v27;
   }
 
@@ -75,7 +75,7 @@
     v26 = v32;
   }
 
-  [a1 setAttributedText:v26];
+  [self setAttributedText:v26];
 }
 
 @end

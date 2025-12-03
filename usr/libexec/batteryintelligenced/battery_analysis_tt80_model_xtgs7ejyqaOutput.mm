@@ -1,31 +1,31 @@
 @interface battery_analysis_tt80_model_xtgs7ejyqaOutput
-- (battery_analysis_tt80_model_xtgs7ejyqaOutput)initWithTt80_prediction:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (battery_analysis_tt80_model_xtgs7ejyqaOutput)initWithTt80_prediction:(id)tt80_prediction;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation battery_analysis_tt80_model_xtgs7ejyqaOutput
 
-- (battery_analysis_tt80_model_xtgs7ejyqaOutput)initWithTt80_prediction:(id)a3
+- (battery_analysis_tt80_model_xtgs7ejyqaOutput)initWithTt80_prediction:(id)tt80_prediction
 {
-  v5 = a3;
+  tt80_predictionCopy = tt80_prediction;
   v9.receiver = self;
   v9.super_class = battery_analysis_tt80_model_xtgs7ejyqaOutput;
   v6 = [(battery_analysis_tt80_model_xtgs7ejyqaOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tt80_prediction, a3);
+    objc_storeStrong(&v6->_tt80_prediction, tt80_prediction);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"tt80_prediction"])
+  if ([name isEqualToString:@"tt80_prediction"])
   {
-    v4 = [(battery_analysis_tt80_model_xtgs7ejyqaOutput *)self tt80_prediction];
-    v5 = [MLFeatureValue featureValueWithMultiArray:v4];
+    tt80_prediction = [(battery_analysis_tt80_model_xtgs7ejyqaOutput *)self tt80_prediction];
+    v5 = [MLFeatureValue featureValueWithMultiArray:tt80_prediction];
   }
 
   else

@@ -1,16 +1,16 @@
 @interface SKUIProxyScrollView
 - (void)didMoveToWindow;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUIProxyScrollView
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProxyScrollView setContentInset:];
@@ -27,10 +27,10 @@
   [(SKUIProxyScrollView *)self contentInset];
   if (v19 != v11 || v16 != v9 || v18 != v15 || v17 != v13)
   {
-    v23 = [(SKUIProxyScrollView *)self delegate];
+    delegate = [(SKUIProxyScrollView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v23 scrollViewDidChangeContentInset:self];
+      [delegate scrollViewDidChangeContentInset:self];
     }
   }
 }

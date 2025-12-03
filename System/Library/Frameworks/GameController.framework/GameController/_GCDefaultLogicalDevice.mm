@@ -1,31 +1,31 @@
 @interface _GCDefaultLogicalDevice
-- (BOOL)_addClient:(id)a3;
+- (BOOL)_addClient:(id)client;
 - (NSSet)components;
 - (NSSet)underlyingDevices;
 - (NSString)debugDescription;
 - (_GCDefaultLogicalDevice)init;
-- (_GCDefaultLogicalDevice)initWithPhysicalDevice:(id)a3 configuration:(id)a4 manager:(id)a5;
+- (_GCDefaultLogicalDevice)initWithPhysicalDevice:(id)device configuration:(id)configuration manager:(id)manager;
 - (_GCDefaultLogicalDeviceDelegate)delegate;
 - (_GCDeviceManager)manager;
 - (id)_makeControllerGamepadEventSource;
 - (id)hapticDriver;
-- (id)makeControllerForClient:(id)a3;
+- (id)makeControllerForClient:(id)client;
 - (id)makeSyntheticController;
 - (id)persistentIdentifierForSettings;
 - (uint64_t)updateAdaptiveTriggersForActiveClient;
-- (void)_removeClient:(id)a3;
+- (void)_removeClient:(id)client;
 - (void)activateLogical;
 - (void)deactivateLogical;
 - (void)dealloc;
-- (void)lightXPCProxyServerEndpoint:(id)a3 didReceiveLightChange:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playerIndicatorXPCProxyServerEndpoint:(id)a3 didReceivePlayerIndexChange:(int64_t)a4;
-- (void)setActiveApplicationPID:(int)a3;
+- (void)lightXPCProxyServerEndpoint:(id)endpoint didReceiveLightChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playerIndicatorXPCProxyServerEndpoint:(id)endpoint didReceivePlayerIndexChange:(int64_t)change;
+- (void)setActiveApplicationPID:(int)d;
 - (void)settingsDidChange;
-- (void)startTrackingSessionForClient:(void *)a1;
-- (void)stopTrackingSessionForClient:(void *)a1;
+- (void)startTrackingSessionForClient:(void *)client;
+- (void)stopTrackingSessionForClient:(void *)client;
 - (void)stopTrackingSessionsForAllClients;
-- (void)systemGestureXPCProxyServerEndpoint:(void *)a3 didSetSystemGestureStateForInput:(int)a4 enabled:;
+- (void)systemGestureXPCProxyServerEndpoint:(void *)endpoint didSetSystemGestureStateForInput:(int)input enabled:;
 - (void)updateAdaptiveTriggersForActiveClient;
 - (void)updateAnalyticsForActiveClient;
 - (void)updateLightForActiveClient;
@@ -35,28 +35,28 @@
 
 @implementation _GCDefaultLogicalDevice
 
-- (_GCDefaultLogicalDevice)initWithPhysicalDevice:(id)a3 configuration:(id)a4 manager:(id)a5
+- (_GCDefaultLogicalDevice)initWithPhysicalDevice:(id)device configuration:(id)configuration manager:(id)manager
 {
   v178 = *MEMORY[0x1E69E9840];
-  v124 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  configurationCopy = configuration;
+  managerCopy = manager;
   v168.receiver = self;
   v168.super_class = _GCDefaultLogicalDevice;
   v11 = [(_GCDefaultLogicalDevice *)&v168 init];
 
   if (v11)
   {
-    v12 = [v9 deviceIdentifier];
+    deviceIdentifier = [configurationCopy deviceIdentifier];
     identifier = v11->_identifier;
-    v11->_identifier = v12;
+    v11->_identifier = deviceIdentifier;
 
-    objc_storeStrong(&v11->_underlyingDevice, a3);
-    objc_storeStrong(&v11->_configuration, a4);
-    objc_storeWeak(&v11->_manager, v10);
-    v14 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v11->_underlyingDevice, device);
+    objc_storeStrong(&v11->_configuration, configuration);
+    objc_storeWeak(&v11->_manager, managerCopy);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clients = v11->_clients;
-    v11->_clients = v14;
+    v11->_clients = strongToStrongObjectsMapTable;
 
     v16 = objc_opt_new();
     pidToAnalytics = v11->_pidToAnalytics;
@@ -66,8 +66,8 @@
     v167 = 0u;
     v164 = 0u;
     v165 = 0u;
-    v18 = [(_GCDefaultLogicalDevice *)v11 components];
-    v19 = [v18 countByEnumeratingWithState:&v164 objects:v177 count:16];
+    components = [(_GCDefaultLogicalDevice *)v11 components];
+    v19 = [components countByEnumeratingWithState:&v164 objects:v177 count:16];
     if (v19)
     {
       v20 = *v165;
@@ -77,7 +77,7 @@
         {
           if (*v165 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(components);
           }
 
           v22 = *(*(&v164 + 1) + 8 * i);
@@ -87,7 +87,7 @@
           }
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v164 objects:v177 count:16];
+        v19 = [components countByEnumeratingWithState:&v164 objects:v177 count:16];
       }
 
       while (v19);
@@ -96,17 +96,17 @@
     if (v11->_devicePlayerIndicatorComponent)
     {
       v11->_indicatedPlayerIndex = -1;
-      v23 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientPlayerIndicatorEndpoints = v11->_clientPlayerIndicatorEndpoints;
-      v11->_clientPlayerIndicatorEndpoints = v23;
+      v11->_clientPlayerIndicatorEndpoints = strongToStrongObjectsMapTable2;
     }
 
     v162 = 0u;
     v163 = 0u;
     v160 = 0u;
     v161 = 0u;
-    v25 = [(_GCDefaultLogicalDevice *)v11 components];
-    v26 = [v25 countByEnumeratingWithState:&v160 objects:v176 count:16];
+    components2 = [(_GCDefaultLogicalDevice *)v11 components];
+    v26 = [components2 countByEnumeratingWithState:&v160 objects:v176 count:16];
     if (v26)
     {
       v27 = *v161;
@@ -116,7 +116,7 @@
         {
           if (*v161 != v27)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(components2);
           }
 
           v29 = *(*(&v160 + 1) + 8 * j);
@@ -126,7 +126,7 @@
           }
         }
 
-        v26 = [v25 countByEnumeratingWithState:&v160 objects:v176 count:16];
+        v26 = [components2 countByEnumeratingWithState:&v160 objects:v176 count:16];
       }
 
       while (v26);
@@ -149,10 +149,10 @@
 
       v32 = dispatch_time(0, 1000000000);
       dispatch_semaphore_wait(v31, v32);
-      v33 = [(_GCDeviceLightComponent *)v11->_deviceLightComponent light];
+      light = [(_GCDeviceLightComponent *)v11->_deviceLightComponent light];
       p_light = &v11->_light;
       light = v11->_light;
-      v11->_light = v33;
+      v11->_light = light;
 
       if (!v11->_light)
       {
@@ -177,17 +177,17 @@
         [_GCDefaultLogicalDevice initWithPhysicalDevice:? configuration:? manager:?];
       }
 
-      v44 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientLightEndpoints = v11->_clientLightEndpoints;
-      v11->_clientLightEndpoints = v44;
+      v11->_clientLightEndpoints = strongToStrongObjectsMapTable3;
     }
 
     v156 = 0u;
     v157 = 0u;
     v154 = 0u;
     v155 = 0u;
-    v46 = [(_GCDefaultLogicalDevice *)v11 components];
-    v47 = [v46 countByEnumeratingWithState:&v154 objects:v175 count:16];
+    components3 = [(_GCDefaultLogicalDevice *)v11 components];
+    v47 = [components3 countByEnumeratingWithState:&v154 objects:v175 count:16];
     if (v47)
     {
       v48 = *v155;
@@ -197,7 +197,7 @@
         {
           if (*v155 != v48)
           {
-            objc_enumerationMutation(v46);
+            objc_enumerationMutation(components3);
           }
 
           v50 = *(*(&v154 + 1) + 8 * k);
@@ -207,7 +207,7 @@
           }
         }
 
-        v47 = [v46 countByEnumeratingWithState:&v154 objects:v175 count:16];
+        v47 = [components3 countByEnumeratingWithState:&v154 objects:v175 count:16];
       }
 
       while (v47);
@@ -230,10 +230,10 @@
 
       v53 = dispatch_time(0, 1000000000);
       dispatch_semaphore_wait(v52, v53);
-      v54 = [(_GCDeviceAdaptiveTriggersComponent *)v11->_deviceAdaptiveTriggersComponent triggerStatuses];
+      triggerStatuses = [(_GCDeviceAdaptiveTriggersComponent *)v11->_deviceAdaptiveTriggersComponent triggerStatuses];
       p_adaptiveTriggerStatuses = &v11->_adaptiveTriggerStatuses;
       adaptiveTriggerStatuses = v11->_adaptiveTriggerStatuses;
-      v11->_adaptiveTriggerStatuses = v54;
+      v11->_adaptiveTriggerStatuses = triggerStatuses;
 
       if (!v11->_adaptiveTriggerStatuses)
       {
@@ -256,13 +256,13 @@
         [_GCDefaultLogicalDevice initWithPhysicalDevice:? configuration:? manager:?];
       }
 
-      v61 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientAdaptiveTriggersEndpoints = v11->_clientAdaptiveTriggersEndpoints;
-      v11->_clientAdaptiveTriggersEndpoints = v61;
+      v11->_clientAdaptiveTriggersEndpoints = strongToStrongObjectsMapTable4;
 
-      v63 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       pidToAdaptiveTriggersComponent = v11->_pidToAdaptiveTriggersComponent;
-      v11->_pidToAdaptiveTriggersComponent = v63;
+      v11->_pidToAdaptiveTriggersComponent = strongToStrongObjectsMapTable5;
 
       objc_initWeak(location, v11);
       v150[0] = MEMORY[0x1E69E9820];
@@ -279,8 +279,8 @@
     v149 = 0u;
     v146 = 0u;
     v147 = 0u;
-    v65 = [(_GCDefaultLogicalDevice *)v11 components];
-    v66 = [v65 countByEnumeratingWithState:&v146 objects:v173 count:16];
+    components4 = [(_GCDefaultLogicalDevice *)v11 components];
+    v66 = [components4 countByEnumeratingWithState:&v146 objects:v173 count:16];
     if (v66)
     {
       v67 = *v147;
@@ -290,7 +290,7 @@
         {
           if (*v147 != v67)
           {
-            objc_enumerationMutation(v65);
+            objc_enumerationMutation(components4);
           }
 
           v69 = *(*(&v146 + 1) + 8 * m);
@@ -300,7 +300,7 @@
           }
         }
 
-        v66 = [v65 countByEnumeratingWithState:&v146 objects:v173 count:16];
+        v66 = [components4 countByEnumeratingWithState:&v146 objects:v173 count:16];
       }
 
       while (v66);
@@ -325,17 +325,17 @@
       dispatch_semaphore_wait(v71, v72);
       v11->_motionSensorsActive = 0;
       [(_GCDeviceMotionComponent *)v11->_deviceMotionComponent setSensorsActive:0];
-      v73 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientMotionEndpoints = v11->_clientMotionEndpoints;
-      v11->_clientMotionEndpoints = v73;
+      v11->_clientMotionEndpoints = strongToStrongObjectsMapTable6;
     }
 
     v142 = 0u;
     v143 = 0u;
     v140 = 0u;
     v141 = 0u;
-    v75 = [(_GCDefaultLogicalDevice *)v11 components];
-    v76 = [v75 countByEnumeratingWithState:&v140 objects:v172 count:16];
+    components5 = [(_GCDefaultLogicalDevice *)v11 components];
+    v76 = [components5 countByEnumeratingWithState:&v140 objects:v172 count:16];
     if (v76)
     {
       v77 = *v141;
@@ -345,7 +345,7 @@
         {
           if (*v141 != v77)
           {
-            objc_enumerationMutation(v75);
+            objc_enumerationMutation(components5);
           }
 
           v79 = *(*(&v140 + 1) + 8 * n);
@@ -355,7 +355,7 @@
           }
         }
 
-        v76 = [v75 countByEnumeratingWithState:&v140 objects:v172 count:16];
+        v76 = [components5 countByEnumeratingWithState:&v140 objects:v172 count:16];
       }
 
       while (v76);
@@ -378,10 +378,10 @@
 
       v82 = dispatch_time(0, 1000000000);
       dispatch_semaphore_wait(v81, v82);
-      v83 = [(_GCDeviceBatteryComponent *)v11->_deviceBatteryComponent battery];
+      battery = [(_GCDeviceBatteryComponent *)v11->_deviceBatteryComponent battery];
       p_battery = &v11->_battery;
       battery = v11->_battery;
-      v11->_battery = v83;
+      v11->_battery = battery;
 
       if (!v11->_battery)
       {
@@ -400,9 +400,9 @@
         [_GCDefaultLogicalDevice initWithPhysicalDevice:? configuration:? manager:?];
       }
 
-      v88 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientBatteryEndpoints = v11->_clientBatteryEndpoints;
-      v11->_clientBatteryEndpoints = v88;
+      v11->_clientBatteryEndpoints = strongToStrongObjectsMapTable7;
 
       objc_initWeak(location, v11);
       v136[0] = MEMORY[0x1E69E9820];
@@ -419,8 +419,8 @@
     v135 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v90 = [(_GCDefaultLogicalDevice *)v11 components];
-    v91 = [v90 countByEnumeratingWithState:&v132 objects:v171 count:16];
+    components6 = [(_GCDefaultLogicalDevice *)v11 components];
+    v91 = [components6 countByEnumeratingWithState:&v132 objects:v171 count:16];
     if (v91)
     {
       v92 = *v133;
@@ -430,7 +430,7 @@
         {
           if (*v133 != v92)
           {
-            objc_enumerationMutation(v90);
+            objc_enumerationMutation(components6);
           }
 
           v94 = *(*(&v132 + 1) + 8 * ii);
@@ -440,7 +440,7 @@
           }
         }
 
-        v91 = [v90 countByEnumeratingWithState:&v132 objects:v171 count:16];
+        v91 = [components6 countByEnumeratingWithState:&v132 objects:v171 count:16];
       }
 
       while (v91);
@@ -453,17 +453,17 @@
       activeSystemGesturesState = v11->_activeSystemGesturesState;
       v11->_activeSystemGesturesState = v95;
 
-      v97 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientSystemGestureEndpoints = v11->_clientSystemGestureEndpoints;
-      v11->_clientSystemGestureEndpoints = v97;
+      v11->_clientSystemGestureEndpoints = strongToStrongObjectsMapTable8;
 
-      v99 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientToSystemGesturesState = v11->_clientToSystemGesturesState;
-      v11->_clientToSystemGesturesState = v99;
+      v11->_clientToSystemGesturesState = strongToStrongObjectsMapTable9;
 
-      v101 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientToSystemButtonResponderAssertion = v11->_clientToSystemButtonResponderAssertion;
-      v11->_clientToSystemButtonResponderAssertion = v101;
+      v11->_clientToSystemButtonResponderAssertion = strongToStrongObjectsMapTable10;
 
       v103 = GCLookupService();
       userDefaults = v11->_userDefaults;
@@ -479,8 +479,8 @@
         v122 = _gc_log_logical_device();
         if (os_log_type_enabled(v122, OS_LOG_TYPE_ERROR))
         {
-          v123 = [(_GCDefaultLogicalDevice *)v11 identifier];
-          [_GCDefaultLogicalDevice initWithPhysicalDevice:v123 configuration:location manager:v122];
+          identifier = [(_GCDefaultLogicalDevice *)v11 identifier];
+          [_GCDefaultLogicalDevice initWithPhysicalDevice:identifier configuration:location manager:v122];
         }
       }
 
@@ -498,8 +498,8 @@
     v128 = 0u;
     v125 = 0u;
     v126 = 0u;
-    v107 = [(_GCDefaultLogicalDevice *)v11 components];
-    v108 = [v107 countByEnumeratingWithState:&v125 objects:v169 count:16];
+    components7 = [(_GCDefaultLogicalDevice *)v11 components];
+    v108 = [components7 countByEnumeratingWithState:&v125 objects:v169 count:16];
     if (v108)
     {
       v109 = *v126;
@@ -509,7 +509,7 @@
         {
           if (*v126 != v109)
           {
-            objc_enumerationMutation(v107);
+            objc_enumerationMutation(components7);
           }
 
           v111 = *(*(&v125 + 1) + 8 * jj);
@@ -519,7 +519,7 @@
           }
         }
 
-        v108 = [v107 countByEnumeratingWithState:&v125 objects:v169 count:16];
+        v108 = [components7 countByEnumeratingWithState:&v125 objects:v169 count:16];
       }
 
       while (v108);
@@ -528,19 +528,19 @@
     WeakRetained = objc_loadWeakRetained(&v11->_deviceSettingsComponent);
     if (WeakRetained)
     {
-      v113 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable11 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       clientSettingsEndpoints = v11->_clientSettingsEndpoints;
-      v11->_clientSettingsEndpoints = v113;
+      v11->_clientSettingsEndpoints = strongToStrongObjectsMapTable11;
 
       v115 = GCLookupService();
       settingsStore = v11->_settingsStore;
       v11->_settingsStore = v115;
 
-      v117 = [(GCSSettingsStoreService *)v11->_settingsStore profiles];
-      [v117 addObserver:v11 forKeyPath:@"values" options:5 context:0];
+      profiles = [(GCSSettingsStoreService *)v11->_settingsStore profiles];
+      [profiles addObserver:v11 forKeyPath:@"values" options:5 context:0];
 
-      v118 = [(GCSSettingsStoreService *)v11->_settingsStore games];
-      [v118 addObserver:v11 forKeyPath:@"values" options:5 context:0];
+      games = [(GCSSettingsStoreService *)v11->_settingsStore games];
+      [games addObserver:v11 forKeyPath:@"values" options:5 context:0];
 
       if (([(GCSSettingsStoreService *)v11->_settingsStore showGCPreferencesPane]& 1) == 0)
       {
@@ -572,28 +572,28 @@
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (self->_systemButtonServer == v11 && [v10 isEqualToString:@"hasButtonThief"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_systemButtonServer == objectCopy && [pathCopy isEqualToString:@"hasButtonThief"])
   {
 LABEL_8:
     [(_GCDefaultLogicalDevice *)self updateSystemGestureStateForSettings];
     goto LABEL_14;
   }
 
-  if (self->_userDefaults == v11 && [v10 isEqualToString:@"bluetoothPrefsMenuLongPressAction"])
+  if (self->_userDefaults == objectCopy && [pathCopy isEqualToString:@"bluetoothPrefsMenuLongPressAction"])
   {
     v13 = _gc_log_logical_device();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(_GCDefaultLogicalDevice *)self identifier];
-      v15 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+      identifier = [(_GCDefaultLogicalDevice *)self identifier];
+      v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
       *buf = 138412546;
-      v20 = v14;
+      v20 = identifier;
       v21 = 2114;
       v22 = v15;
       _os_log_impl(&dword_1D2CD5000, v13, OS_LOG_TYPE_DEFAULT, "[%@] Shortcuts Enabled changed: %{public}@", buf, 0x16u);
@@ -602,14 +602,14 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if ([v10 isEqualToString:@"values"])
+  if ([pathCopy isEqualToString:@"values"])
   {
     [(_GCDefaultLogicalDevice *)self settingsDidChange];
   }
 
-  else if ([v10 isEqualToString:@"deferringTarget"])
+  else if ([pathCopy isEqualToString:@"deferringTarget"])
   {
-    v16 = [v12 objectForKey:*MEMORY[0x1E696A4F0]];
+    v16 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     -[_GCDefaultLogicalDevice setActiveApplicationPID:](self, "setActiveApplicationPID:", [v16 intValue]);
   }
 
@@ -617,7 +617,7 @@ LABEL_8:
   {
     v18.receiver = self;
     v18.super_class = _GCDefaultLogicalDevice;
-    [(_GCDefaultLogicalDevice *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_GCDefaultLogicalDevice *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_14:
@@ -628,7 +628,7 @@ LABEL_14:
 - (void)updateSystemGestureStateForSettings
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_impl(&dword_1D2CD5000, log, OS_LOG_TYPE_DEFAULT, "[%@] Does not support system button.", buf, 0xCu);
 }
 
@@ -637,11 +637,11 @@ LABEL_14:
   settingsStore = self->_settingsStore;
   if (settingsStore)
   {
-    v4 = [(GCSSettingsStoreService *)settingsStore profiles];
-    [v4 removeObserver:self forKeyPath:@"values" context:0];
+    profiles = [(GCSSettingsStoreService *)settingsStore profiles];
+    [profiles removeObserver:self forKeyPath:@"values" context:0];
 
-    v5 = [(GCSSettingsStoreService *)self->_settingsStore games];
-    [v5 removeObserver:self forKeyPath:@"values" context:0];
+    games = [(GCSSettingsStoreService *)self->_settingsStore games];
+    [games removeObserver:self forKeyPath:@"values" context:0];
   }
 
   v6.receiver = self;
@@ -649,17 +649,17 @@ LABEL_14:
   [(_GCDefaultLogicalDevice *)&v6 dealloc];
 }
 
-- (void)playerIndicatorXPCProxyServerEndpoint:(id)a3 didReceivePlayerIndexChange:(int64_t)a4
+- (void)playerIndicatorXPCProxyServerEndpoint:(id)endpoint didReceivePlayerIndexChange:(int64_t)change
 {
   v17 = *MEMORY[0x1E69E9840];
-  self->_indicatedPlayerIndex = a4;
-  [(_GCDevicePlayerIndexIndicatorComponent *)self->_devicePlayerIndicatorComponent setIndicatedPlayerIndex:a4];
+  self->_indicatedPlayerIndex = change;
+  [(_GCDevicePlayerIndexIndicatorComponent *)self->_devicePlayerIndicatorComponent setIndicatedPlayerIndex:change];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSMapTable *)self->_clientPlayerIndicatorEndpoints objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clientPlayerIndicatorEndpoints objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -671,14 +671,14 @@ LABEL_14:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) setPlayerIndex:a4];
+        [*(*(&v12 + 1) + 8 * v10++) setPlayerIndex:change];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -687,23 +687,23 @@ LABEL_14:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)lightXPCProxyServerEndpoint:(id)a3 didReceiveLightChange:(id)a4
+- (void)lightXPCProxyServerEndpoint:(id)endpoint didReceiveLightChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  objc_storeStrong(&self->_light, a4);
+  changeCopy = change;
+  objc_storeStrong(&self->_light, change);
   self->_lightClientOverrideEnabled = 1;
   if (!self->_lightUserOverrideEnabled)
   {
-    [(_GCDeviceLightComponent *)self->_deviceLightComponent setLight:v6];
+    [(_GCDeviceLightComponent *)self->_deviceLightComponent setLight:changeCopy];
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(NSMapTable *)self->_clientLightEndpoints objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clientLightEndpoints objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -715,14 +715,14 @@ LABEL_14:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) setLight:v6];
+        [*(*(&v13 + 1) + 8 * v11++) setLight:changeCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -731,12 +731,12 @@ LABEL_14:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)systemGestureXPCProxyServerEndpoint:(void *)a3 didSetSystemGestureStateForInput:(int)a4 enabled:
+- (void)systemGestureXPCProxyServerEndpoint:(void *)endpoint didSetSystemGestureStateForInput:(int)input enabled:
 {
   v47 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v41 = a3;
-  if (a1)
+  endpointCopy = endpoint;
+  if (self)
   {
     if (gc_isInternalBuild())
     {
@@ -744,14 +744,14 @@ LABEL_14:
     }
 
     context = objc_autoreleasePoolPush();
-    v7 = a1;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v8 = [v7[29] keyEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    keyEnumerator = [selfCopy[29] keyEnumerator];
+    v9 = [keyEnumerator countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v9)
     {
       v10 = *v43;
@@ -761,11 +761,11 @@ LABEL_14:
         {
           if (*v43 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v12 = *(*(&v42 + 1) + 8 * i);
-          v13 = [v7[29] objectForKey:v12];
+          v13 = [selfCopy[29] objectForKey:v12];
           v14 = [v13 isEqual:v6];
 
           if (v14)
@@ -775,7 +775,7 @@ LABEL_14:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v9 = [keyEnumerator countByEnumeratingWithState:&v42 objects:v46 count:16];
         if (v9)
         {
           continue;
@@ -787,13 +787,13 @@ LABEL_14:
 
 LABEL_14:
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
     if (!v9)
     {
       goto LABEL_29;
     }
 
-    v15 = v7;
+    v15 = selfCopy;
     objc_sync_enter(v15);
     v16 = [v15[27] objectForKey:v9];
     if (!v16)
@@ -801,35 +801,35 @@ LABEL_14:
       v17 = [GCSystemGesturesState alloc];
       v18 = objc_opt_new();
       v19 = objc_opt_new();
-      v20 = [v9 bundleIdentifier];
-      v16 = [(GCSystemGesturesState *)v17 initWithEnabledSystemGestures:v18 disabledSystemGestures:v19 bundleIdentifier:v20];
+      bundleIdentifier = [v9 bundleIdentifier];
+      v16 = [(GCSystemGesturesState *)v17 initWithEnabledSystemGestures:v18 disabledSystemGestures:v19 bundleIdentifier:bundleIdentifier];
     }
 
-    v21 = [(GCSystemGesturesState *)v16 disabledSystemGestureInputNames];
-    v22 = [v21 mutableCopy];
+    disabledSystemGestureInputNames = [(GCSystemGesturesState *)v16 disabledSystemGestureInputNames];
+    v22 = [disabledSystemGestureInputNames mutableCopy];
 
-    v23 = [(GCSystemGesturesState *)v16 enabledSystemGestureInputNames];
-    v24 = [v23 mutableCopy];
+    enabledSystemGestureInputNames = [(GCSystemGesturesState *)v16 enabledSystemGestureInputNames];
+    v24 = [enabledSystemGestureInputNames mutableCopy];
 
-    if (a4)
+    if (input)
     {
-      [v24 addObject:v41];
-      [v22 removeObject:v41];
+      [v24 addObject:endpointCopy];
+      [v22 removeObject:endpointCopy];
     }
 
     else
     {
-      [v24 removeObject:v41];
-      [v22 addObject:v41];
+      [v24 removeObject:endpointCopy];
+      [v22 addObject:endpointCopy];
     }
 
     v25 = [GCSystemGesturesState alloc];
-    v26 = [v9 bundleIdentifier];
-    v27 = [(GCSystemGesturesState *)v25 initWithEnabledSystemGestures:v24 disabledSystemGestures:v22 bundleIdentifier:v26];
+    bundleIdentifier2 = [v9 bundleIdentifier];
+    v27 = [(GCSystemGesturesState *)v25 initWithEnabledSystemGestures:v24 disabledSystemGestures:v22 bundleIdentifier:bundleIdentifier2];
 
     [v15[27] setObject:v27 forKey:v9];
-    v28 = [(GCSystemGesturesState *)v27 disabledSystemGestureInputNames];
-    if ([v28 containsObject:@"Button Home"])
+    disabledSystemGestureInputNames2 = [(GCSystemGesturesState *)v27 disabledSystemGestureInputNames];
+    if ([disabledSystemGestureInputNames2 containsObject:@"Button Home"])
     {
       v29 = [v15[28] objectForKey:v9];
       v30 = v29 == 0;
@@ -838,8 +838,8 @@ LABEL_14:
       {
         objc_opt_class();
         v31 = GCLookupService();
-        v32 = [v9 bundleIdentifier];
-        v33 = [v31 activeProcessRespondingToSystemButton:v32];
+        bundleIdentifier3 = [v9 bundleIdentifier];
+        v33 = [v31 activeProcessRespondingToSystemButton:bundleIdentifier3];
 
         [v15[28] setObject:v33 forKey:v9];
 LABEL_26:
@@ -861,8 +861,8 @@ LABEL_29:
     {
     }
 
-    v34 = [(GCSystemGesturesState *)v27 disabledSystemGestureInputNames];
-    v35 = [v34 containsObject:@"Button Home"];
+    disabledSystemGestureInputNames3 = [(GCSystemGesturesState *)v27 disabledSystemGestureInputNames];
+    v35 = [disabledSystemGestureInputNames3 containsObject:@"Button Home"];
 
     if ((v35 & 1) == 0)
     {
@@ -883,22 +883,22 @@ LABEL_30:
 - (void)updateSystemGestureStateForActiveClient
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v2 = *(v1 + 67);
-    obj = v1;
-    v3 = [v1[26] disabledSystemGestureInputNames];
-    v22 = [v3 containsObject:@"Button Home"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v2 = *(selfCopy + 67);
+    obj = selfCopy;
+    disabledSystemGestureInputNames = [selfCopy[26] disabledSystemGestureInputNames];
+    v22 = [disabledSystemGestureInputNames containsObject:@"Button Home"];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [v1[27] keyEnumerator];
-    v5 = [v4 countByEnumeratingWithState:&v24 objects:v36 count:16];
-    location = v1 + 26;
+    keyEnumerator = [selfCopy[27] keyEnumerator];
+    v5 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v36 count:16];
+    location = selfCopy + 26;
     v6 = 0;
     if (v5)
     {
@@ -909,21 +909,21 @@ LABEL_30:
         {
           if (*v25 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v9 = *(*(&v24 + 1) + 8 * i);
           if ([v9 processIdentifier] == v2)
           {
             v10 = [obj[27] objectForKey:v9];
-            v11 = [v10 disabledSystemGestureInputNames];
-            v12 = [v11 containsObject:@"Button Home"];
+            disabledSystemGestureInputNames2 = [v10 disabledSystemGestureInputNames];
+            v12 = [disabledSystemGestureInputNames2 containsObject:@"Button Home"];
 
             v6 |= v12;
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        v5 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v36 count:16];
       }
 
       while (v5);
@@ -936,9 +936,9 @@ LABEL_30:
       v14 = v6 & 1;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [obj identifier];
+        identifier = [obj identifier];
         *buf = 138413058;
-        v29 = v15;
+        v29 = identifier;
         v30 = 1024;
         v31 = v2;
         v32 = 1024;
@@ -979,15 +979,15 @@ LABEL_30:
 - (NSSet)components
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
-  v5 = [v4 components];
+  underlyingDevice = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+  components = [underlyingDevice components];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [components countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -998,20 +998,20 @@ LABEL_30:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(components);
         }
 
-        [v3 addObject:*(*(&v13 + 1) + 8 * i)];
+        [array addObject:*(*(&v13 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [components countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  [v3 addObject:self];
-  v10 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+  [array addObject:self];
+  v10 = [MEMORY[0x1E695DFD8] setWithArray:array];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -1105,46 +1105,46 @@ LABEL_30:
 
 - (void)stopTrackingSessionsForAllClients
 {
-  if (OUTLINED_FUNCTION_11(a1))
+  if (OUTLINED_FUNCTION_11(self))
   {
     OUTLINED_FUNCTION_1();
     _os_log_impl(v2, v3, v4, v5, v6, 2u);
   }
 }
 
-- (void)startTrackingSessionForClient:(void *)a1
+- (void)startTrackingSessionForClient:(void *)client
 {
   v3 = a2;
-  if (a1)
+  if (client)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = [v3 bundleIdentifier];
+    clientCopy = client;
+    objc_sync_enter(clientCopy);
+    bundleIdentifier = [v3 bundleIdentifier];
 
-    if (v5 && (v6 = v4[32], [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "processIdentifier")}], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+    if (bundleIdentifier && (v6 = clientCopy[32], [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "processIdentifier")}], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
     {
-      v9 = [v4 delegate];
+      delegate = [clientCopy delegate];
       v10 = objc_opt_respondsToSelector();
 
-      [v4 delegate];
+      [clientCopy delegate];
       if (v10)
         v11 = {;
-        [v11 logicalDeviceControllerDetailedProductCategory:v4];
+        [v11 logicalDeviceControllerDetailedProductCategory:clientCopy];
       }
 
       else
         v11 = {;
-        [v11 logicalDeviceControllerProductCategory:v4];
+        [v11 logicalDeviceControllerProductCategory:clientCopy];
       }
       v12 = ;
 
       v13 = [GCLogicalDeviceAnalytics alloc];
       v14 = +[_GCDaemonSettings instance];
-      v15 = [v14 anonymizedIdentifierForControllerIdentifier:v4[34]];
-      v16 = [v3 bundleIdentifier];
-      v17 = [(GCLogicalDeviceAnalytics *)v13 initWithAnonymousIdentifier:v15 bundleIdentifier:v16 productCategory:v12];
+      v15 = [v14 anonymizedIdentifierForControllerIdentifier:clientCopy[34]];
+      bundleIdentifier2 = [v3 bundleIdentifier];
+      v17 = [(GCLogicalDeviceAnalytics *)v13 initWithAnonymousIdentifier:v15 bundleIdentifier:bundleIdentifier2 productCategory:v12];
 
-      v18 = v4[32];
+      v18 = clientCopy[32];
       v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "processIdentifier")}];
       [v18 setObject:v17 forKeyedSubscript:v19];
 
@@ -1160,45 +1160,45 @@ LABEL_30:
         [(_GCDefaultLogicalDevice *)v21 startTrackingSessionForClient:?];
       }
 
-      objc_sync_exit(v4);
-      [(_GCDefaultLogicalDevice *)v4 updateAnalyticsForActiveClient];
+      objc_sync_exit(clientCopy);
+      [(_GCDefaultLogicalDevice *)clientCopy updateAnalyticsForActiveClient];
     }
 
     else
     {
-      objc_sync_exit(v4);
+      objc_sync_exit(clientCopy);
     }
   }
 }
 
 - (void)updateAnalyticsForActiveClient
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = v1[67];
-  if (v2 == v1[66])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = selfCopy[67];
+  if (v2 == selfCopy[66])
   {
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
     v9 = 0;
   }
 
   else
   {
-    v3 = *(v1 + 32);
+    v3 = *(selfCopy + 32);
     v4 = [MEMORY[0x1E696AD98] numberWithInt:?];
     v9 = [v3 objectForKeyedSubscript:v4];
 
-    v5 = *(v1 + 32);
+    v5 = *(selfCopy + 32);
     v6 = [MEMORY[0x1E696AD98] numberWithInt:v2];
     v7 = [v5 objectForKeyedSubscript:v6];
 
-    v1[66] = v2;
-    objc_sync_exit(v1);
+    selfCopy[66] = v2;
+    objc_sync_exit(selfCopy);
 
     v8 = v9;
     if (v9)
@@ -1213,29 +1213,29 @@ LABEL_30:
     }
 
     [v7 resumeSession];
-    v1 = v7;
+    selfCopy = v7;
   }
 
   v8 = v9;
 LABEL_9:
 }
 
-- (void)stopTrackingSessionForClient:(void *)a1
+- (void)stopTrackingSessionForClient:(void *)client
 {
   v3 = a2;
-  if (a1)
+  if (client)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = [v3 bundleIdentifier];
+    clientCopy = client;
+    objc_sync_enter(clientCopy);
+    bundleIdentifier = [v3 bundleIdentifier];
 
-    if (v5 && (v6 = v4[32], [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "processIdentifier")}], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+    if (bundleIdentifier && (v6 = clientCopy[32], [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "processIdentifier")}], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
     {
-      v9 = v4[32];
+      v9 = clientCopy[32];
       v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "processIdentifier")}];
       v11 = [v9 objectForKeyedSubscript:v10];
 
-      v12 = v4[32];
+      v12 = clientCopy[32];
       v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "processIdentifier")}];
       [v12 removeObjectForKey:v13];
 
@@ -1253,26 +1253,26 @@ LABEL_9:
 
       [v11 flushSessionAndSendCAEvent];
 
-      objc_sync_exit(v4);
-      [(_GCDefaultLogicalDevice *)v4 updateAnalyticsForActiveClient];
+      objc_sync_exit(clientCopy);
+      [(_GCDefaultLogicalDevice *)clientCopy updateAnalyticsForActiveClient];
     }
 
     else
     {
-      objc_sync_exit(v4);
+      objc_sync_exit(clientCopy);
     }
   }
 }
 
-- (BOOL)_addClient:(id)a3
+- (BOOL)_addClient:(id)client
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  clientCopy = client;
+  if (clientCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMapTable *)v5->_clients objectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMapTable *)selfCopy->_clients objectForKey:clientCopy];
 
     if (v6)
     {
@@ -1281,33 +1281,33 @@ LABEL_9:
 
     else
     {
-      objc_initWeak(&location, v5);
-      objc_initWeak(&from, v4);
+      objc_initWeak(&location, selfCopy);
+      objc_initWeak(&from, clientCopy);
       v14 = MEMORY[0x1E69E9820];
       v15 = 3221225472;
       v16 = __38___GCDefaultLogicalDevice__addClient___block_invoke;
       v17 = &unk_1E8419D00;
       objc_copyWeak(&v18, &location);
       objc_copyWeak(&v19, &from);
-      v8 = [v4 addInvalidationHandler:&v14];
+      v8 = [clientCopy addInvalidationHandler:&v14];
       v7 = v8 != 0;
       if (v8)
       {
-        [(NSMapTable *)v5->_clients setObject:v8 forKey:v4, v14, v15, v16, v17];
+        [(NSMapTable *)selfCopy->_clients setObject:v8 forKey:clientCopy, v14, v15, v16, v17];
         v9 = _gc_log_logical_device();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          v10 = [(_GCDefaultLogicalDevice *)v5 identifier];
-          [(_GCDefaultLogicalDevice *)v10 _addClient:v4, v22];
+          identifier = [(_GCDefaultLogicalDevice *)selfCopy identifier];
+          [(_GCDefaultLogicalDevice *)identifier _addClient:clientCopy, v22];
         }
 
-        if ([(NSMapTable *)v5->_clients count]== 1)
+        if ([(NSMapTable *)selfCopy->_clients count]== 1)
         {
           v13 = +[_GCHIDEventDeliveryMonitor sharedInstance];
-          [v13 addObserver:v5 forKeyPath:@"deferringTarget" options:5 context:0];
+          [v13 addObserver:selfCopy forKeyPath:@"deferringTarget" options:5 context:0];
         }
 
-        [(_GCDefaultLogicalDevice *)v5 startTrackingSessionForClient:v4];
+        [(_GCDefaultLogicalDevice *)selfCopy startTrackingSessionForClient:clientCopy];
       }
 
       objc_destroyWeak(&v19);
@@ -1316,7 +1316,7 @@ LABEL_9:
       objc_destroyWeak(&location);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1328,48 +1328,48 @@ LABEL_9:
   return v7;
 }
 
-- (void)_removeClient:(id)a3
+- (void)_removeClient:(id)client
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (clientCopy)
   {
-    v6 = [(NSMapTable *)v5->_clients objectForKey:v4];
+    v6 = [(NSMapTable *)selfCopy->_clients objectForKey:clientCopy];
 
     if (v6)
     {
-      v7 = [(NSMapTable *)v5->_clientToSystemButtonResponderAssertion objectForKey:v4];
+      v7 = [(NSMapTable *)selfCopy->_clientToSystemButtonResponderAssertion objectForKey:clientCopy];
       [v7 invalidate];
 
-      [(_GCDefaultLogicalDevice *)v5 stopTrackingSessionForClient:v4];
-      [(NSMapTable *)v5->_clientPlayerIndicatorEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientLightEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientAdaptiveTriggersEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientMotionEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientBatteryEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientSettingsEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientSystemGestureEndpoints removeObjectForKey:v4];
-      v6 = [(NSMapTable *)v5->_clients objectForKey:v4];
-      [(NSMapTable *)v5->_clients removeObjectForKey:v4];
-      pidToAdaptiveTriggersComponent = v5->_pidToAdaptiveTriggersComponent;
-      v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "processIdentifier")}];
+      [(_GCDefaultLogicalDevice *)selfCopy stopTrackingSessionForClient:clientCopy];
+      [(NSMapTable *)selfCopy->_clientPlayerIndicatorEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientLightEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientAdaptiveTriggersEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientMotionEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientBatteryEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientSettingsEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientSystemGestureEndpoints removeObjectForKey:clientCopy];
+      v6 = [(NSMapTable *)selfCopy->_clients objectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clients removeObjectForKey:clientCopy];
+      pidToAdaptiveTriggersComponent = selfCopy->_pidToAdaptiveTriggersComponent;
+      v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(clientCopy, "processIdentifier")}];
       [(NSMapTable *)pidToAdaptiveTriggersComponent removeObjectForKey:v9];
 
-      [(NSMapTable *)v5->_clientToSystemGesturesState removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientToSystemButtonResponderAssertion removeObjectForKey:v4];
-      if (!v5->_clients)
+      [(NSMapTable *)selfCopy->_clientToSystemGesturesState removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientToSystemButtonResponderAssertion removeObjectForKey:clientCopy];
+      if (!selfCopy->_clients)
       {
         v13 = +[_GCHIDEventDeliveryMonitor sharedInstance];
-        [v13 removeObserver:v5 forKeyPath:@"deferringTarget" context:0];
+        [v13 removeObserver:selfCopy forKeyPath:@"deferringTarget" context:0];
       }
 
       v10 = _gc_log_logical_device();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [(_GCDefaultLogicalDevice *)v5 identifier];
-        [(_GCDefaultLogicalDevice *)v11 _removeClient:v4, v14];
+        identifier = [(_GCDefaultLogicalDevice *)selfCopy identifier];
+        [(_GCDefaultLogicalDevice *)identifier _removeClient:clientCopy, v14];
       }
     }
   }
@@ -1379,31 +1379,31 @@ LABEL_9:
     v6 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActiveApplicationPID:(int)a3
+- (void)setActiveApplicationPID:(int)d
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = _gc_log_logical_device();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(_GCDefaultLogicalDevice *)self identifier];
+    identifier = [(_GCDefaultLogicalDevice *)self identifier];
     activeApplicationPID = self->_activeApplicationPID;
     v9 = 138412802;
-    v10 = v6;
+    v10 = identifier;
     v11 = 1024;
     v12 = activeApplicationPID;
     v13 = 1024;
-    v14 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1D2CD5000, v5, OS_LOG_TYPE_INFO, "[%@] setActiveApplicationPID - was %d now %d", &v9, 0x18u);
   }
 
-  if (self->_activeApplicationPID != a3)
+  if (self->_activeApplicationPID != d)
   {
-    self->_activeApplicationPID = a3;
+    self->_activeApplicationPID = d;
     [(_GCDefaultLogicalDevice *)self updateAnalyticsForActiveClient];
     [(_GCDefaultLogicalDevice *)&self->super.isa updateAdaptiveTriggersForActiveClient];
     [(_GCDefaultLogicalDevice *)&self->super.isa updateLightForActiveClient];
@@ -1416,19 +1416,19 @@ LABEL_9:
 - (void)updateAdaptiveTriggersForActiveClient
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1 + 6;
-    if (a1[6])
+    v1 = self + 6;
+    if (self[6])
     {
-      v2 = a1;
-      objc_sync_enter(v2);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v3 = [v2[9] keyEnumerator];
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      keyEnumerator = [selfCopy[9] keyEnumerator];
+      v4 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v4)
       {
         v5 = *v17;
@@ -1438,18 +1438,18 @@ LABEL_9:
           {
             if (*v17 != v5)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v7 = *(*(&v16 + 1) + 8 * i);
-            if ([v7 processIdentifier] == *(v2 + 67))
+            if ([v7 processIdentifier] == *(selfCopy + 67))
             {
               v4 = v7;
               goto LABEL_13;
             }
           }
 
-          v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+          v4 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
           if (v4)
           {
             continue;
@@ -1461,10 +1461,10 @@ LABEL_9:
 
 LABEL_13:
 
-      objc_sync_exit(v2);
+      objc_sync_exit(selfCopy);
       if (v4)
       {
-        v8 = v2;
+        v8 = selfCopy;
         objc_sync_enter(v8);
         v9 = v8[8];
         v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "processIdentifier")}];
@@ -1503,16 +1503,16 @@ LABEL_13:
   objc_sync_exit(a2);
 
   v7 = *(a2 + 160);
-  v8 = [a2 persistentIdentifierForSettings];
-  if (a1)
+  persistentIdentifierForSettings = [a2 persistentIdentifierForSettings];
+  if (self)
   {
-    v9 = [a1 bundleIdentifier];
-    v10 = [v7 profileForPersistentControllerIdentifier:v8 appBundleIdentifier:v9];
+    bundleIdentifier = [self bundleIdentifier];
+    v10 = [v7 profileForPersistentControllerIdentifier:persistentIdentifierForSettings appBundleIdentifier:bundleIdentifier];
   }
 
   else
   {
-    v10 = [v7 profileForPersistentControllerIdentifier:v8 appBundleIdentifier:0];
+    v10 = [v7 profileForPersistentControllerIdentifier:persistentIdentifierForSettings appBundleIdentifier:0];
   }
 
   if ([v10 lightbarColor])
@@ -1548,19 +1548,19 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (id)makeControllerForClient:(id)a3
+- (id)makeControllerForClient:(id)client
 {
   v122 = a2;
   v135[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(_GCDefaultLogicalDevice *)self _addClient:v4])
+  clientCopy = client;
+  if (![(_GCDefaultLogicalDevice *)self _addClient:clientCopy])
   {
     v6 = 0;
     goto LABEL_104;
   }
 
-  v5 = [(_GCDefaultLogicalDevice *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v5 logicalDevice:self shouldMakeControllerForClient:{v4, v122}])
+  delegate = [(_GCDefaultLogicalDevice *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate logicalDevice:self shouldMakeControllerForClient:{clientCopy, v122}])
   {
     v6 = 0;
     goto LABEL_103;
@@ -1568,24 +1568,24 @@ LABEL_13:
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v7 = [(_GCDefaultLogicalDevice *)self components];
-    v124 = [MEMORY[0x1E695DF70] array];
+    components = [(_GCDefaultLogicalDevice *)self components];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = [[GCProductInformation alloc] initWithIdentifier:@"ProductInfo"];
     if (objc_opt_respondsToSelector())
     {
-      [v5 logicalDeviceControllerProductCategory:self forClient:v4];
+      [delegate logicalDeviceControllerProductCategory:self forClient:clientCopy];
     }
 
     else
     {
-      [v5 logicalDeviceControllerProductCategory:self];
+      [delegate logicalDeviceControllerProductCategory:self];
     }
     v9 = ;
     [(GCProductInformation *)v8 setProductCategory:v9, v122];
 
     if (objc_opt_respondsToSelector())
     {
-      [v5 logicalDeviceControllerDetailedProductCategory:self];
+      [delegate logicalDeviceControllerDetailedProductCategory:self];
     }
 
     else
@@ -1597,8 +1597,8 @@ LABEL_13:
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v5 logicalDeviceControllerVendorName:self forClient:v4];
-      if (!v11)
+      underlyingDevice = [delegate logicalDeviceControllerVendorName:self forClient:clientCopy];
+      if (!underlyingDevice)
       {
         goto LABEL_21;
       }
@@ -1608,19 +1608,19 @@ LABEL_13:
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
-        v11 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
-        v12 = [v11 propertyForKey:@"Product"];
+        underlyingDevice = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+        v12 = [underlyingDevice propertyForKey:@"Product"];
         [(GCProductInformation *)v8 setVendorName:v12];
 
         goto LABEL_22;
       }
 
-      v11 = [v5 logicalDeviceControllerVendorName:self];
-      if (!v11)
+      underlyingDevice = [delegate logicalDeviceControllerVendorName:self];
+      if (!underlyingDevice)
       {
 LABEL_21:
-        v13 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
-        v14 = [v13 propertyForKey:@"Product"];
+        underlyingDevice2 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+        v14 = [underlyingDevice2 propertyForKey:@"Product"];
         [(GCProductInformation *)v8 setVendorName:v14];
 
 LABEL_22:
@@ -1630,92 +1630,92 @@ LABEL_22:
 
         if (objc_opt_respondsToSelector())
         {
-          v17 = [v5 logicalDeviceControllerUniformTypeIdentifier:self];
+          v17 = [delegate logicalDeviceControllerUniformTypeIdentifier:self];
           [(GCProductInformation *)v8 setUniformTypeIdentifier:v17];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v18 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "logicalDeviceControllerIsAttachedToHost:", self)}];
+          v18 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(delegate, "logicalDeviceControllerIsAttachedToHost:", self)}];
           [(GCProductInformation *)v8 setAttachedToDevice:v18];
         }
 
         else
         {
-          v19 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
-          v18 = [v19 propertyForKey:@"GameControllerFormFitting"];
+          underlyingDevice3 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+          v18 = [underlyingDevice3 propertyForKey:@"GameControllerFormFitting"];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = [v18 BOOLValue];
+            bOOLValue = [v18 BOOLValue];
           }
 
           else
           {
-            v20 = 0;
+            bOOLValue = 0;
           }
 
-          v21 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
-          v22 = [v21 propertyForKey:@"IAPHIDAccessoryCategory"];
+          underlyingDevice4 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+          v22 = [underlyingDevice4 propertyForKey:@"IAPHIDAccessoryCategory"];
 
           objc_opt_class();
           v23 = (objc_opt_isKindOfClass() & 1) != 0 && [v22 intValue] - 3 < 2;
-          v24 = [MEMORY[0x1E696AD98] numberWithBool:(v20 | v23) & 1];
+          v24 = [MEMORY[0x1E696AD98] numberWithBool:(bOOLValue | v23) & 1];
           [(GCProductInformation *)v8 setAttachedToDevice:v24];
         }
 
         v25 = [[_GCControllerComponentDescription alloc] initWithComponent:v8 bindings:0];
-        [v124 addObject:v25];
+        [array addObject:v25];
 
         v26 = [GCHIDInformationDescription alloc];
-        v27 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
-        v28 = [v27 propertyForKey:@"RegistryID"];
+        underlyingDevice5 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+        v28 = [underlyingDevice5 propertyForKey:@"RegistryID"];
         v29 = [(GCHIDInformationDescription *)v26 initWithIdentifier:@"HIDInfo" registryID:v28];
 
-        [v124 addObject:v29];
-        v30 = [(_GCDefaultLogicalDevice *)self _makeControllerGamepadEventSource];
-        if (!v30)
+        [array addObject:v29];
+        _makeControllerGamepadEventSource = [(_GCDefaultLogicalDevice *)self _makeControllerGamepadEventSource];
+        if (!_makeControllerGamepadEventSource)
         {
 LABEL_55:
 
           if (self->_deviceMotionComponent)
           {
-            v45 = [v5 logicalDevice:self makeControllerMotionWithIdentifier:@"Motion"];
-            v46 = [(_GCDeviceMotionComponent *)self->_deviceMotionComponent motionEventSource];
+            v45 = [delegate logicalDevice:self makeControllerMotionWithIdentifier:@"Motion"];
+            motionEventSource = [(_GCDeviceMotionComponent *)self->_deviceMotionComponent motionEventSource];
             v47 = [_GCControllerComponentDescription alloc];
-            v130 = v46;
+            v130 = motionEventSource;
             v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v130 count:1];
             v49 = [(_GCControllerComponentDescription *)v47 initWithComponent:v45 bindings:v48];
 
-            [v124 addObject:v49];
-            v50 = self;
-            objc_sync_enter(v50);
-            v51 = [(NSMapTable *)v50->_clientMotionEndpoints objectForKey:v4];
+            [array addObject:v49];
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
+            v51 = [(NSMapTable *)selfCopy->_clientMotionEndpoints objectForKey:clientCopy];
             if (!v51)
             {
               v52 = [GCMotionXPCProxyServerEndpoint alloc];
-              v53 = [MEMORY[0x1E696AFB0] UUID];
-              v51 = [(GCMotionXPCProxyServerEndpoint *)v52 initWithIdentifier:v53 initialValue:0];
+              uUID = [MEMORY[0x1E696AFB0] UUID];
+              v51 = [(GCMotionXPCProxyServerEndpoint *)v52 initWithIdentifier:uUID initialValue:0];
 
-              [(GCMotionXPCProxyServerEndpoint *)v51 setDelegate:v50];
-              [(NSMapTable *)v50->_clientMotionEndpoints setObject:v51 forKey:v4];
-              v54 = [v4 IPCObjectRegistry];
-              [v54 registerIPCObject:v51];
+              [(GCMotionXPCProxyServerEndpoint *)v51 setDelegate:selfCopy];
+              [(NSMapTable *)selfCopy->_clientMotionEndpoints setObject:v51 forKey:clientCopy];
+              iPCObjectRegistry = [clientCopy IPCObjectRegistry];
+              [iPCObjectRegistry registerIPCObject:v51];
             }
 
-            v55 = [(GCMotionXPCProxyServerEndpoint *)v51 receiverDescription];
-            [v124 addObject:v55];
+            receiverDescription = [(GCMotionXPCProxyServerEndpoint *)v51 receiverDescription];
+            [array addObject:receiverDescription];
 
-            objc_sync_exit(v50);
+            objc_sync_exit(selfCopy);
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v56 = [v5 logicalDevice:self makeControllerSpatialDescriptionWithIdentifier:@"SpatialInput" forClient:v4];
+            v56 = [delegate logicalDevice:self makeControllerSpatialDescriptionWithIdentifier:@"SpatialInput" forClient:clientCopy];
             if (v56)
             {
-              [v124 addObject:v56];
+              [array addObject:v56];
             }
           }
 
@@ -1723,7 +1723,7 @@ LABEL_55:
           v128 = 0u;
           v125 = 0u;
           v126 = 0u;
-          v57 = v7;
+          v57 = components;
           v58 = [v57 countByEnumeratingWithState:&v125 objects:v129 count:16];
           v59 = v57;
           if (v58)
@@ -1759,176 +1759,176 @@ LABEL_55:
             }
 
             v64 = [GCHapticCapabilities alloc];
-            v65 = [v59 hapticEngines];
-            v66 = [v59 hapticCapabilityGraph];
-            v67 = [(GCHapticCapabilities *)v64 initWithIdentifier:@"HapticCapabilities" hapticEnginesInfo:v65 hapticCapabilityGraph:v66];
+            hapticEngines = [v59 hapticEngines];
+            hapticCapabilityGraph = [v59 hapticCapabilityGraph];
+            v67 = [(GCHapticCapabilities *)v64 initWithIdentifier:@"HapticCapabilities" hapticEnginesInfo:hapticEngines hapticCapabilityGraph:hapticCapabilityGraph];
 
             v68 = [[_GCControllerComponentDescription alloc] initWithComponent:v67 bindings:0];
-            [v124 addObject:v68];
+            [array addObject:v68];
           }
 
 LABEL_75:
           if (self->_devicePlayerIndicatorComponent)
           {
-            v69 = self;
-            objc_sync_enter(v69);
-            v70 = [(NSMapTable *)v69->_clientPlayerIndicatorEndpoints objectForKey:v4];
+            selfCopy2 = self;
+            objc_sync_enter(selfCopy2);
+            v70 = [(NSMapTable *)selfCopy2->_clientPlayerIndicatorEndpoints objectForKey:clientCopy];
             if (!v70)
             {
               v71 = [GCPlayerIndicatorXPCProxyServerEndpoint alloc];
-              v72 = [MEMORY[0x1E696AFB0] UUID];
-              v70 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v71 initWithIdentifier:v72 initialValue:v69->_indicatedPlayerIndex];
+              uUID2 = [MEMORY[0x1E696AFB0] UUID];
+              v70 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v71 initWithIdentifier:uUID2 initialValue:selfCopy2->_indicatedPlayerIndex];
 
-              [(GCPlayerIndicatorXPCProxyServerEndpoint *)v70 setDelegate:v69];
-              [(NSMapTable *)v69->_clientPlayerIndicatorEndpoints setObject:v70 forKey:v4];
-              v73 = [v4 IPCObjectRegistry];
-              [v73 registerIPCObject:v70];
+              [(GCPlayerIndicatorXPCProxyServerEndpoint *)v70 setDelegate:selfCopy2];
+              [(NSMapTable *)selfCopy2->_clientPlayerIndicatorEndpoints setObject:v70 forKey:clientCopy];
+              iPCObjectRegistry2 = [clientCopy IPCObjectRegistry];
+              [iPCObjectRegistry2 registerIPCObject:v70];
             }
 
-            v74 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v70 receiverDescription];
-            [v124 addObject:v74];
+            receiverDescription2 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v70 receiverDescription];
+            [array addObject:receiverDescription2];
 
-            objc_sync_exit(v69);
+            objc_sync_exit(selfCopy2);
           }
 
           if (self->_deviceLightComponent)
           {
-            v75 = self;
-            objc_sync_enter(v75);
-            v76 = [(NSMapTable *)v75->_clientLightEndpoints objectForKey:v4];
+            selfCopy3 = self;
+            objc_sync_enter(selfCopy3);
+            v76 = [(NSMapTable *)selfCopy3->_clientLightEndpoints objectForKey:clientCopy];
             if (!v76)
             {
               v77 = [GCLightXPCProxyServerEndpoint alloc];
-              v78 = [MEMORY[0x1E696AFB0] UUID];
-              v76 = [(GCLightXPCProxyServerEndpoint *)v77 initWithIdentifier:v78 initialValue:v75->_light];
+              uUID3 = [MEMORY[0x1E696AFB0] UUID];
+              v76 = [(GCLightXPCProxyServerEndpoint *)v77 initWithIdentifier:uUID3 initialValue:selfCopy3->_light];
 
-              [(GCLightXPCProxyServerEndpoint *)v76 setDelegate:v75];
-              [(NSMapTable *)v75->_clientLightEndpoints setObject:v76 forKey:v4];
-              v79 = [v4 IPCObjectRegistry];
-              [v79 registerIPCObject:v76];
+              [(GCLightXPCProxyServerEndpoint *)v76 setDelegate:selfCopy3];
+              [(NSMapTable *)selfCopy3->_clientLightEndpoints setObject:v76 forKey:clientCopy];
+              iPCObjectRegistry3 = [clientCopy IPCObjectRegistry];
+              [iPCObjectRegistry3 registerIPCObject:v76];
             }
 
-            v80 = [(GCLightXPCProxyServerEndpoint *)v76 receiverDescription];
-            [v124 addObject:v80];
+            receiverDescription3 = [(GCLightXPCProxyServerEndpoint *)v76 receiverDescription];
+            [array addObject:receiverDescription3];
 
-            objc_sync_exit(v75);
+            objc_sync_exit(selfCopy3);
           }
 
           if (self->_deviceAdaptiveTriggersComponent)
           {
-            v81 = self;
-            objc_sync_enter(v81);
-            v82 = [(NSMapTable *)v81->_clientAdaptiveTriggersEndpoints objectForKey:v4];
+            selfCopy4 = self;
+            objc_sync_enter(selfCopy4);
+            v82 = [(NSMapTable *)selfCopy4->_clientAdaptiveTriggersEndpoints objectForKey:clientCopy];
             if (!v82)
             {
               v83 = [GCAdaptiveTriggersXPCProxyServerEndpoint alloc];
-              v84 = [MEMORY[0x1E696AFB0] UUID];
-              v82 = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)v83 initWithIdentifier:v84 initialStatuses:v81->_adaptiveTriggerStatuses];
+              uUID4 = [MEMORY[0x1E696AFB0] UUID];
+              v82 = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)v83 initWithIdentifier:uUID4 initialStatuses:selfCopy4->_adaptiveTriggerStatuses];
 
-              [(GCAdaptiveTriggersXPCProxyServerEndpoint *)v82 setDelegate:v81];
-              [(NSMapTable *)v81->_clientAdaptiveTriggersEndpoints setObject:v82 forKey:v4];
-              v85 = [v4 IPCObjectRegistry];
-              [v85 registerIPCObject:v82];
+              [(GCAdaptiveTriggersXPCProxyServerEndpoint *)v82 setDelegate:selfCopy4];
+              [(NSMapTable *)selfCopy4->_clientAdaptiveTriggersEndpoints setObject:v82 forKey:clientCopy];
+              iPCObjectRegistry4 = [clientCopy IPCObjectRegistry];
+              [iPCObjectRegistry4 registerIPCObject:v82];
             }
 
-            v86 = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)v82 receiverDescription];
-            [v124 addObject:v86];
+            receiverDescription4 = [(GCAdaptiveTriggersXPCProxyServerEndpoint *)v82 receiverDescription];
+            [array addObject:receiverDescription4];
 
             v87 = objc_opt_new();
-            v88 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
-            [v87 addObject:v88];
+            initOff = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+            [v87 addObject:initOff];
 
-            v89 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
-            [v87 addObject:v89];
+            initOff2 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+            [v87 addObject:initOff2];
 
-            pidToAdaptiveTriggersComponent = v81->_pidToAdaptiveTriggersComponent;
-            v91 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "processIdentifier")}];
+            pidToAdaptiveTriggersComponent = selfCopy4->_pidToAdaptiveTriggersComponent;
+            v91 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(clientCopy, "processIdentifier")}];
             [(NSMapTable *)pidToAdaptiveTriggersComponent setObject:v87 forKey:v91];
 
-            objc_sync_exit(v81);
+            objc_sync_exit(selfCopy4);
           }
 
           if (self->_deviceBatteryComponent)
           {
-            v92 = self;
-            objc_sync_enter(v92);
-            v93 = [(NSMapTable *)v92->_clientBatteryEndpoints objectForKey:v4];
+            selfCopy5 = self;
+            objc_sync_enter(selfCopy5);
+            v93 = [(NSMapTable *)selfCopy5->_clientBatteryEndpoints objectForKey:clientCopy];
             if (!v93)
             {
               v94 = [GCBatteryXPCProxyServerEndpoint alloc];
-              v95 = [MEMORY[0x1E696AFB0] UUID];
-              v93 = [(GCBatteryXPCProxyServerEndpoint *)v94 initWithIdentifier:v95 initialValue:v92->_battery];
+              uUID5 = [MEMORY[0x1E696AFB0] UUID];
+              v93 = [(GCBatteryXPCProxyServerEndpoint *)v94 initWithIdentifier:uUID5 initialValue:selfCopy5->_battery];
 
-              [(GCBatteryXPCProxyServerEndpoint *)v93 setDelegate:v92];
-              [(NSMapTable *)v92->_clientBatteryEndpoints setObject:v93 forKey:v4];
-              v96 = [v4 IPCObjectRegistry];
-              [v96 registerIPCObject:v93];
+              [(GCBatteryXPCProxyServerEndpoint *)v93 setDelegate:selfCopy5];
+              [(NSMapTable *)selfCopy5->_clientBatteryEndpoints setObject:v93 forKey:clientCopy];
+              iPCObjectRegistry5 = [clientCopy IPCObjectRegistry];
+              [iPCObjectRegistry5 registerIPCObject:v93];
             }
 
-            v97 = [(GCBatteryXPCProxyServerEndpoint *)v93 receiverDescription];
-            [v124 addObject:v97];
+            receiverDescription5 = [(GCBatteryXPCProxyServerEndpoint *)v93 receiverDescription];
+            [array addObject:receiverDescription5];
 
-            objc_sync_exit(v92);
+            objc_sync_exit(selfCopy5);
           }
 
           if (self->_deviceSystemGestureComponent)
           {
-            v98 = self;
-            objc_sync_enter(v98);
-            v99 = [(NSMapTable *)v98->_clientSystemGestureEndpoints objectForKey:v4];
+            selfCopy6 = self;
+            objc_sync_enter(selfCopy6);
+            v99 = [(NSMapTable *)selfCopy6->_clientSystemGestureEndpoints objectForKey:clientCopy];
             if (!v99)
             {
               v100 = [GCSystemGestureXPCProxyServerEndpoint alloc];
-              v101 = [MEMORY[0x1E696AFB0] UUID];
-              v99 = [(GCSystemGestureXPCProxyServerEndpoint *)v100 initWithIdentifier:v101];
+              uUID6 = [MEMORY[0x1E696AFB0] UUID];
+              v99 = [(GCSystemGestureXPCProxyServerEndpoint *)v100 initWithIdentifier:uUID6];
 
-              [(GCSystemGestureXPCProxyServerEndpoint *)v99 setDelegate:v98];
-              [(NSMapTable *)v98->_clientSystemGestureEndpoints setObject:v99 forKey:v4];
-              v102 = [v4 IPCObjectRegistry];
-              [v102 registerIPCObject:v99];
+              [(GCSystemGestureXPCProxyServerEndpoint *)v99 setDelegate:selfCopy6];
+              [(NSMapTable *)selfCopy6->_clientSystemGestureEndpoints setObject:v99 forKey:clientCopy];
+              iPCObjectRegistry6 = [clientCopy IPCObjectRegistry];
+              [iPCObjectRegistry6 registerIPCObject:v99];
             }
 
-            v103 = [(GCSystemGestureXPCProxyServerEndpoint *)v99 receiverDescription];
-            [v124 addObject:v103];
+            receiverDescription6 = [(GCSystemGestureXPCProxyServerEndpoint *)v99 receiverDescription];
+            [array addObject:receiverDescription6];
 
-            objc_sync_exit(v98);
+            objc_sync_exit(selfCopy6);
           }
 
           WeakRetained = objc_loadWeakRetained(&self->_deviceSettingsComponent);
 
           if (WeakRetained)
           {
-            v105 = self;
-            objc_sync_enter(v105);
-            v106 = [(NSMapTable *)v105->_clientSettingsEndpoints objectForKey:v4];
+            selfCopy7 = self;
+            objc_sync_enter(selfCopy7);
+            v106 = [(NSMapTable *)selfCopy7->_clientSettingsEndpoints objectForKey:clientCopy];
             if (!v106)
             {
-              settingsStore = v105->_settingsStore;
-              v108 = [(_GCDefaultLogicalDevice *)v105 persistentIdentifierForSettings];
-              v109 = [v4 bundleIdentifier];
-              v110 = [(GCSSettingsStoreService *)settingsStore profileForPersistentControllerIdentifier:v108 appBundleIdentifier:v109];
-              v111 = [v110 anonymizedCopy];
+              settingsStore = selfCopy7->_settingsStore;
+              persistentIdentifierForSettings = [(_GCDefaultLogicalDevice *)selfCopy7 persistentIdentifierForSettings];
+              bundleIdentifier = [clientCopy bundleIdentifier];
+              v110 = [(GCSSettingsStoreService *)settingsStore profileForPersistentControllerIdentifier:persistentIdentifierForSettings appBundleIdentifier:bundleIdentifier];
+              anonymizedCopy = [v110 anonymizedCopy];
 
               v112 = [GCSettingsXPCProxyServerEndpoint alloc];
-              v113 = [MEMORY[0x1E696AFB0] UUID];
-              v106 = [(GCSettingsXPCProxyServerEndpoint *)v112 initWithIdentifier:v113 initialValueForProfile:v111];
+              uUID7 = [MEMORY[0x1E696AFB0] UUID];
+              v106 = [(GCSettingsXPCProxyServerEndpoint *)v112 initWithIdentifier:uUID7 initialValueForProfile:anonymizedCopy];
 
-              [(GCSettingsXPCProxyServerEndpoint *)v106 setDelegate:v105];
-              [(NSMapTable *)v105->_clientSettingsEndpoints setObject:v106 forKey:v4];
-              v114 = [v4 IPCObjectRegistry];
-              [v114 registerIPCObject:v106];
+              [(GCSettingsXPCProxyServerEndpoint *)v106 setDelegate:selfCopy7];
+              [(NSMapTable *)selfCopy7->_clientSettingsEndpoints setObject:v106 forKey:clientCopy];
+              iPCObjectRegistry7 = [clientCopy IPCObjectRegistry];
+              [iPCObjectRegistry7 registerIPCObject:v106];
             }
 
-            v115 = [(GCSettingsXPCProxyServerEndpoint *)v106 receiverDescription];
-            [v124 addObject:v115];
+            receiverDescription7 = [(GCSettingsXPCProxyServerEndpoint *)v106 receiverDescription];
+            [array addObject:receiverDescription7];
 
-            objc_sync_exit(v105);
+            objc_sync_exit(selfCopy7);
           }
 
           v116 = objc_opt_class();
           if (objc_opt_respondsToSelector())
           {
-            v116 = [v5 logicalDeviceControllerDescriptionClass:self];
+            v116 = [delegate logicalDeviceControllerDescriptionClass:self];
             if (([v116 isSubclassOfClass:objc_opt_class()] & 1) == 0)
             {
               [(_GCDefaultLogicalDevice(ControllerProviding) *)v123 makeControllerForClient:?];
@@ -1936,8 +1936,8 @@ LABEL_75:
           }
 
           v117 = [v116 alloc];
-          v118 = [(_GCDefaultLogicalDevice *)self identifier];
-          v119 = [v117 initWithIdentifier:v118 components:v124];
+          identifier = [(_GCDefaultLogicalDevice *)self identifier];
+          v119 = [v117 initWithIdentifier:identifier components:array];
 
           v6 = v119;
           goto LABEL_103;
@@ -1945,9 +1945,9 @@ LABEL_75:
 
         if (objc_opt_respondsToSelector())
         {
-          v135[0] = v30;
+          v135[0] = _makeControllerGamepadEventSource;
           v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v135 count:1];
-          v32 = [v5 logicalDevice:self makeControllerInputDescriptionWithIdentifier:@"Input" bindings:v31];
+          v32 = [delegate logicalDevice:self makeControllerInputDescriptionWithIdentifier:@"Input" bindings:v31];
         }
 
         else
@@ -1957,26 +1957,26 @@ LABEL_75:
             goto LABEL_41;
           }
 
-          v134 = v30;
+          v134 = _makeControllerGamepadEventSource;
           v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v134 count:1];
-          v32 = [v5 logicalDevice:self makeControllerInputDescriptionWithIdentifier:@"Input" bindings:v33 forClient:v4];
+          v32 = [delegate logicalDevice:self makeControllerInputDescriptionWithIdentifier:@"Input" bindings:v33 forClient:clientCopy];
         }
 
         if (v32)
         {
-          [v124 addObject:v32];
+          [array addObject:v32];
         }
 
 LABEL_41:
         if (objc_opt_respondsToSelector())
         {
-          v133 = v30;
+          v133 = _makeControllerGamepadEventSource;
           v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v133 count:1];
-          v35 = [v5 logicalDevice:self makeControllerPhysicalInputProfileDescriptionWithIdentifier:@"PhysicalInput" bindings:v34];
+          v35 = [delegate logicalDevice:self makeControllerPhysicalInputProfileDescriptionWithIdentifier:@"PhysicalInput" bindings:v34];
 
           if (v35)
           {
-            [v124 addObject:v35];
+            [array addObject:v35];
 LABEL_54:
 
             goto LABEL_55;
@@ -1985,31 +1985,31 @@ LABEL_54:
 
         else if (objc_opt_respondsToSelector())
         {
-          v132 = v30;
+          v132 = _makeControllerGamepadEventSource;
           v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v132 count:1];
-          v35 = [v5 logicalDevice:self makeControllerPhysicalInputProfileDescriptionWithIdentifier:@"PhysicalInput" bindings:v36 forClient:v4];
+          v35 = [delegate logicalDevice:self makeControllerPhysicalInputProfileDescriptionWithIdentifier:@"PhysicalInput" bindings:v36 forClient:clientCopy];
 
           if (v35)
           {
-            [v124 addObject:v35];
+            [array addObject:v35];
             goto LABEL_54;
           }
         }
 
-        v35 = [v5 logicalDevice:self makeControllerPhysicalInputProfileWithIdentifier:@"PhysicalInput"];
+        v35 = [delegate logicalDevice:self makeControllerPhysicalInputProfileWithIdentifier:@"PhysicalInput"];
         [v35 setGlyphFlags:0];
-        v37 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
-        v38 = [v37 conformsToProtocol:&unk_1F4E9F9E0];
+        underlyingDevice6 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+        v38 = [underlyingDevice6 conformsToProtocol:&unk_1F4E9F9E0];
 
         if (v38)
         {
-          v39 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
-          v40 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+          underlyingDevice7 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
+          underlyingDevice8 = [(_GCDefaultLogicalDevice *)self underlyingDevice];
           v41 = objc_opt_respondsToSelector();
 
           if (v41)
           {
-            [v35 setGlyphFlags:{objc_msgSend(v39, "getGlyphFlags")}];
+            [v35 setGlyphFlags:{objc_msgSend(underlyingDevice7, "getGlyphFlags")}];
             if (gc_isInternalBuild())
             {
               [_GCDefaultLogicalDevice(ControllerProviding) makeControllerForClient:v35];
@@ -2020,22 +2020,22 @@ LABEL_54:
         if ([v35 conformsToProtocol:&unk_1F4E92DF0])
         {
           v42 = [_GCControllerComponentDescription alloc];
-          v131 = v30;
+          v131 = _makeControllerGamepadEventSource;
           v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v131 count:1];
           v44 = [(_GCControllerComponentDescription *)v42 initWithComponent:v35 bindings:v43];
 
-          [v124 addObject:v44];
+          [array addObject:v44];
         }
 
         goto LABEL_54;
       }
     }
 
-    [(GCProductInformation *)v8 setVendorName:v11];
+    [(GCProductInformation *)v8 setVendorName:underlyingDevice];
     goto LABEL_22;
   }
 
-  v6 = [v5 logicalDevice:self makeControllerForClient:v4];
+  v6 = [delegate logicalDevice:self makeControllerForClient:clientCopy];
 LABEL_103:
 
 LABEL_104:
@@ -2051,8 +2051,8 @@ LABEL_104:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(_GCDefaultLogicalDevice *)self components];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  components = [(_GCDefaultLogicalDevice *)self components];
+  v3 = [components countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2064,7 +2064,7 @@ LABEL_104:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(components);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -2076,7 +2076,7 @@ LABEL_104:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [components countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -2087,11 +2087,11 @@ LABEL_104:
     v5 = 0;
   }
 
-  v10 = [v5 gamepadEventSource];
+  gamepadEventSource = [v5 gamepadEventSource];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return gamepadEventSource;
 }
 
 - (void)settingsDidChange
@@ -2104,14 +2104,14 @@ LABEL_104:
     _os_log_impl(&dword_1D2CD5000, v3, OS_LOG_TYPE_INFO, "settingsDidChange", buf, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NSMapTable *)v4->_clientSettingsEndpoints keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  keyEnumerator = [(NSMapTable *)selfCopy->_clientSettingsEndpoints keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v6)
   {
     v7 = *v18;
@@ -2121,67 +2121,67 @@ LABEL_104:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [(NSMapTable *)v4->_clientSettingsEndpoints objectForKey:v9];
-        settingsStore = v4->_settingsStore;
-        v12 = [(_GCDefaultLogicalDevice *)v4 persistentIdentifierForSettings];
-        v13 = [v9 bundleIdentifier];
-        v14 = [(GCSSettingsStoreService *)settingsStore profileForPersistentControllerIdentifier:v12 appBundleIdentifier:v13];
-        v15 = [v14 anonymizedCopy];
+        v10 = [(NSMapTable *)selfCopy->_clientSettingsEndpoints objectForKey:v9];
+        settingsStore = selfCopy->_settingsStore;
+        persistentIdentifierForSettings = [(_GCDefaultLogicalDevice *)selfCopy persistentIdentifierForSettings];
+        bundleIdentifier = [v9 bundleIdentifier];
+        v14 = [(GCSSettingsStoreService *)settingsStore profileForPersistentControllerIdentifier:persistentIdentifierForSettings appBundleIdentifier:bundleIdentifier];
+        anonymizedCopy = [v14 anonymizedCopy];
 
-        [v10 setSettingsProfile:v15];
+        [v10 setSettingsProfile:anonymizedCopy];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v6);
   }
 
-  [(_GCDefaultLogicalDevice *)&v4->super.isa updateLightForActiveClient];
-  objc_sync_exit(v4);
+  [(_GCDefaultLogicalDevice *)&selfCopy->super.isa updateLightForActiveClient];
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
 - (id)persistentIdentifierForSettings
 {
-  v3 = [(_GCDefaultLogicalDevice *)self identifier];
+  identifier = [(_GCDefaultLogicalDevice *)self identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(_GCDefaultLogicalDevice *)self identifier];
+    identifier2 = [(_GCDefaultLogicalDevice *)self identifier];
   }
 
   else
   {
-    v5 = &stru_1F4E3B4E0;
+    identifier2 = &stru_1F4E3B4E0;
   }
 
-  return v5;
+  return identifier2;
 }
 
 - (id)makeSyntheticController
 {
   v3 = [_GCSyntheticControllerDescription alloc];
-  v4 = [(_GCDefaultLogicalDevice *)self identifier];
-  v5 = [(_GCDefaultLogicalDevice *)self persistentIdentifierForSettings];
-  v6 = [(_GCSyntheticControllerDescription *)v3 initWithControllerIdentifier:v4 persistentIdentifier:v5];
+  identifier = [(_GCDefaultLogicalDevice *)self identifier];
+  persistentIdentifierForSettings = [(_GCDefaultLogicalDevice *)self persistentIdentifierForSettings];
+  v6 = [(_GCSyntheticControllerDescription *)v3 initWithControllerIdentifier:identifier persistentIdentifier:persistentIdentifierForSettings];
 
   return v6;
 }
 
 - (id)hapticDriver
 {
-  v2 = [(_GCPhysicalDevice *)self->_underlyingDevice driverConnection];
-  v3 = [v2 remoteProxy];
+  driverConnection = [(_GCPhysicalDevice *)self->_underlyingDevice driverConnection];
+  remoteProxy = [driverConnection remoteProxy];
 
-  return v3;
+  return remoteProxy;
 }
 
 - (void)initWithPhysicalDevice:configuration:manager:.cold.1()
@@ -2412,14 +2412,14 @@ LABEL_104:
 
 - (uint64_t)updateAdaptiveTriggersForActiveClient
 {
-  v4 = *a1;
-  v5 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
-  [v4 setAdaptiveTriggersPayload:v5 forIndex:0];
+  v4 = *self;
+  initOff = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+  [v4 setAdaptiveTriggersPayload:initOff forIndex:0];
 
-  v6 = *a1;
-  v7 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
-  *a2 = v7;
-  return [v6 setAdaptiveTriggersPayload:v7 forIndex:1];
+  v6 = *self;
+  initOff2 = [[GCDeviceAdaptiveTriggersPayload alloc] initOff];
+  *a2 = initOff2;
+  return [v6 setAdaptiveTriggersPayload:initOff2 forIndex:1];
 }
 
 @end

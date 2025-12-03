@@ -1,6 +1,6 @@
 @interface _CUIMultisizeImageSetSizeAndIndex
 - (CGSize)size;
-- (_CUIMultisizeImageSetSizeAndIndex)initWithSize:(CGSize)a3 index:(unsigned int)a4 idiom:(int64_t)a5 subtype:(unint64_t)a6;
+- (_CUIMultisizeImageSetSizeAndIndex)initWithSize:(CGSize)size index:(unsigned int)index idiom:(int64_t)idiom subtype:(unint64_t)subtype;
 - (id)description;
 @end
 
@@ -15,10 +15,10 @@
   return result;
 }
 
-- (_CUIMultisizeImageSetSizeAndIndex)initWithSize:(CGSize)a3 index:(unsigned int)a4 idiom:(int64_t)a5 subtype:(unint64_t)a6
+- (_CUIMultisizeImageSetSizeAndIndex)initWithSize:(CGSize)size index:(unsigned int)index idiom:(int64_t)idiom subtype:(unint64_t)subtype
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = _CUIMultisizeImageSetSizeAndIndex;
   result = [(_CUIMultisizeImageSetSizeAndIndex *)&v12 init];
@@ -26,9 +26,9 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_index = a4;
-    result->_idiom = a5;
-    result->_subtype = a6;
+    result->_index = index;
+    result->_idiom = idiom;
+    result->_subtype = subtype;
   }
 
   return result;

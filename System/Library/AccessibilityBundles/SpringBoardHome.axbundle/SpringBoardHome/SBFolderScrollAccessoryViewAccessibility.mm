@@ -1,8 +1,8 @@
 @interface SBFolderScrollAccessoryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsSearchPillHidden;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityHint;
 - (id)accessibilityIdentifier;
@@ -14,13 +14,13 @@
 
 @implementation SBFolderScrollAccessoryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFolderScrollAccessoryView" hasProperty:@"pageControl" withType:"@"];
-  [v3 validateClass:@"SBFolderScrollAccessoryView" hasProperty:@"auxiliaryView" withType:"@"];
-  [v3 validateClass:@"SBIconListPageControl" hasInstanceVariable:@"_delegate" withType:"<SBIconListPageControlDelegate>"];
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFolderScrollAccessoryView" hasProperty:@"pageControl" withType:"@"];
+  [validationsCopy validateClass:@"SBFolderScrollAccessoryView" hasProperty:@"auxiliaryView" withType:"@"];
+  [validationsCopy validateClass:@"SBIconListPageControl" hasInstanceVariable:@"_delegate" withType:"<SBIconListPageControlDelegate>"];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -29,15 +29,15 @@
   {
     v8.receiver = self;
     v8.super_class = SBFolderScrollAccessoryViewAccessibility;
-    v6 = [(SBFolderScrollAccessoryViewAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(SBFolderScrollAccessoryViewAccessibility *)&v8 accessibilityLabel];
   }
 
   else
   {
-    v6 = accessibilityLocalizedString(@"home.search.pill.view.label");
+    accessibilityLabel = accessibilityLocalizedString(@"home.search.pill.view.label");
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityIdentifier
@@ -46,32 +46,32 @@
   {
     v6.receiver = self;
     v6.super_class = SBFolderScrollAccessoryViewAccessibility;
-    v3 = [(SBFolderScrollAccessoryViewAccessibility *)&v6 accessibilityIdentifier];
+    accessibilityIdentifier = [(SBFolderScrollAccessoryViewAccessibility *)&v6 accessibilityIdentifier];
   }
 
   else
   {
     v4 = [(SBFolderScrollAccessoryViewAccessibility *)self safeValueForKey:@"auxiliaryView"];
-    v3 = [v4 accessibilityIdentifier];
+    accessibilityIdentifier = [v4 accessibilityIdentifier];
   }
 
-  return v3;
+  return accessibilityIdentifier;
 }
 
 - (id)accessibilityHint
 {
   if (-[SBFolderScrollAccessoryViewAccessibility _axIsSearchPillHidden](self, "_axIsSearchPillHidden") || (-[SBFolderScrollAccessoryViewAccessibility _axPageControl](self, "_axPageControl"), v3 = objc_claimAutoreleasedReturnValue(), [v3 safeValueForKey:@"delegate"], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "safeBoolForKey:", @"isEditing"), v4, v3, (v5 & 1) != 0))
   {
-    v6 = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
-    v7 = [v6 accessibilityHint];
+    _axPageControl = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
+    accessibilityHint = [_axPageControl accessibilityHint];
   }
 
   else
   {
-    v7 = accessibilityLocalizedString(@"home.search.pill.view.hint");
+    accessibilityHint = accessibilityLocalizedString(@"home.search.pill.view.hint");
   }
 
-  return v7;
+  return accessibilityHint;
 }
 
 - (CGRect)accessibilityFrame
@@ -103,40 +103,40 @@
   return result;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v4 = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
-  LOBYTE(a3) = [v4 accessibilityScroll:a3];
+  _axPageControl = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
+  LOBYTE(scroll) = [_axPageControl accessibilityScroll:scroll];
 
-  return a3;
+  return scroll;
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
-  [v2 accessibilityIncrement];
+  _axPageControl = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
+  [_axPageControl accessibilityIncrement];
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
-  [v2 accessibilityDecrement];
+  _axPageControl = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
+  [_axPageControl accessibilityDecrement];
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
-  v3 = [v2 accessibilityValue];
+  _axPageControl = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
+  accessibilityValue = [_axPageControl accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
-  v3 = [v2 accessibilityActivate];
+  _axPageControl = [(SBFolderScrollAccessoryViewAccessibility *)self _axPageControl];
+  accessibilityActivate = [_axPageControl accessibilityActivate];
 
-  return v3;
+  return accessibilityActivate;
 }
 
 - (BOOL)_axIsSearchPillHidden
@@ -145,15 +145,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 isHidden];
+    isHidden = [v2 isHidden];
   }
 
   else
   {
-    v4 = 1;
+    isHidden = 1;
   }
 
-  return v4;
+  return isHidden;
 }
 
 @end

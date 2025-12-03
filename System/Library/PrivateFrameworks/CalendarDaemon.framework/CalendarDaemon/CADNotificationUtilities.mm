@@ -1,35 +1,35 @@
 @interface CADNotificationUtilities
-+ (BOOL)_storeIsDelegate:(void *)a3;
-+ (BOOL)storeIsReadOnlyDelegate:(void *)a3;
-+ (id)_attendeeObjectIDsFromNotifications:(id)a3;
-+ (id)_notificationTypesFromNotifications:(id)a3;
-+ (id)_objectIDsFromNotifications:(id)a3;
-+ (id)_occurrenceDatesFromNotifications:(id)a3;
-+ (id)flattenedNotificationsFromNotifications:(id)a3 expanded:(BOOL)a4;
-+ (int)_gatherEventInvitationsAndRepliesWithContext:(id)a3;
-+ (int)_gatherSharedCalendarInvitationsWithContext:(id)a3;
-+ (int)_gatherSharedCalendarResourceChangeNotification:(void *)a3 withContext:(id)a4 database:(CalDatabase *)a5 databaseID:(int)a6;
-+ (int)_gatherSharedCalendarResponsesAndResourceChangesWithContext:(id)a3;
-+ (int)_gatherSuggestionResourceChangeNotification:(void *)a3 withContext:(id)a4 database:(CalDatabase *)a5 databaseID:(int)a6;
-+ (void)_logNotificationCountsForNotifications:(id)a3;
++ (BOOL)_storeIsDelegate:(void *)delegate;
++ (BOOL)storeIsReadOnlyDelegate:(void *)delegate;
++ (id)_attendeeObjectIDsFromNotifications:(id)notifications;
++ (id)_notificationTypesFromNotifications:(id)notifications;
++ (id)_objectIDsFromNotifications:(id)notifications;
++ (id)_occurrenceDatesFromNotifications:(id)notifications;
++ (id)flattenedNotificationsFromNotifications:(id)notifications expanded:(BOOL)expanded;
++ (int)_gatherEventInvitationsAndRepliesWithContext:(id)context;
++ (int)_gatherSharedCalendarInvitationsWithContext:(id)context;
++ (int)_gatherSharedCalendarResourceChangeNotification:(void *)notification withContext:(id)context database:(CalDatabase *)database databaseID:(int)d;
++ (int)_gatherSharedCalendarResponsesAndResourceChangesWithContext:(id)context;
++ (int)_gatherSuggestionResourceChangeNotification:(void *)notification withContext:(id)context database:(CalDatabase *)database databaseID:(int)d;
++ (void)_logNotificationCountsForNotifications:(id)notifications;
 @end
 
 @implementation CADNotificationUtilities
 
-+ (id)_notificationTypesFromNotifications:(id)a3
++ (id)_notificationTypesFromNotifications:(id)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = MEMORY[0x277CBEB18];
-    v4 = a3;
-    v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    notificationsCopy = notifications;
+    v5 = [v3 arrayWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__CADNotificationUtilities__notificationTypesFromNotifications___block_invoke;
     v8[3] = &unk_27851B1D8;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [notificationsCopy enumerateObjectsUsingBlock:v8];
   }
 
   else
@@ -47,20 +47,20 @@ void __64__CADNotificationUtilities__notificationTypesFromNotifications___block_
   [v2 addObject:v3];
 }
 
-+ (id)_objectIDsFromNotifications:(id)a3
++ (id)_objectIDsFromNotifications:(id)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = MEMORY[0x277CBEB18];
-    v4 = a3;
-    v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    notificationsCopy = notifications;
+    v5 = [v3 arrayWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__CADNotificationUtilities__objectIDsFromNotifications___block_invoke;
     v8[3] = &unk_27851B1D8;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [notificationsCopy enumerateObjectsUsingBlock:v8];
   }
 
   else
@@ -78,20 +78,20 @@ void __56__CADNotificationUtilities__objectIDsFromNotifications___block_invoke(u
   [v2 addObject:v3];
 }
 
-+ (id)_occurrenceDatesFromNotifications:(id)a3
++ (id)_occurrenceDatesFromNotifications:(id)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = MEMORY[0x277CBEB18];
-    v4 = a3;
-    v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    notificationsCopy = notifications;
+    v5 = [v3 arrayWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __62__CADNotificationUtilities__occurrenceDatesFromNotifications___block_invoke;
     v8[3] = &unk_27851B1D8;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [notificationsCopy enumerateObjectsUsingBlock:v8];
   }
 
   else
@@ -111,20 +111,20 @@ void __62__CADNotificationUtilities__occurrenceDatesFromNotifications___block_in
   [v2 addObject:v4];
 }
 
-+ (id)_attendeeObjectIDsFromNotifications:(id)a3
++ (id)_attendeeObjectIDsFromNotifications:(id)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = MEMORY[0x277CBEB18];
-    v4 = a3;
-    v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    notificationsCopy = notifications;
+    v5 = [v3 arrayWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__CADNotificationUtilities__attendeeObjectIDsFromNotifications___block_invoke;
     v8[3] = &unk_27851B1D8;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [notificationsCopy enumerateObjectsUsingBlock:v8];
   }
 
   else
@@ -154,17 +154,17 @@ void __64__CADNotificationUtilities__attendeeObjectIDsFromNotifications___block_
   [v5 addObject:v4];
 }
 
-+ (int)_gatherEventInvitationsAndRepliesWithContext:(id)a3
++ (int)_gatherEventInvitationsAndRepliesWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 connection];
+  contextCopy = context;
+  connection = [contextCopy connection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__CADNotificationUtilities__gatherEventInvitationsAndRepliesWithContext___block_invoke;
   v7[3] = &unk_27851A0C0;
-  v8 = v3;
-  v5 = v3;
-  [v4 withAllDatabasesPerform:v7];
+  v8 = contextCopy;
+  v5 = contextCopy;
+  [connection withAllDatabasesPerform:v7];
 
   return 0;
 }
@@ -654,17 +654,17 @@ void __73__CADNotificationUtilities__gatherEventInvitationsAndRepliesWithContext
   }
 }
 
-+ (int)_gatherSharedCalendarInvitationsWithContext:(id)a3
++ (int)_gatherSharedCalendarInvitationsWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 connection];
+  contextCopy = context;
+  connection = [contextCopy connection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__CADNotificationUtilities__gatherSharedCalendarInvitationsWithContext___block_invoke;
   v7[3] = &unk_27851A0C0;
-  v8 = v3;
-  v5 = v3;
-  [v4 withAllDatabasesPerform:v7];
+  v8 = contextCopy;
+  v5 = contextCopy;
+  [connection withAllDatabasesPerform:v7];
 
   return 0;
 }
@@ -784,28 +784,28 @@ LABEL_17:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (int)_gatherSharedCalendarResponsesAndResourceChangesWithContext:(id)a3
++ (int)_gatherSharedCalendarResponsesAndResourceChangesWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [v4 connection];
+  connection = [contextCopy connection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__CADNotificationUtilities__gatherSharedCalendarResponsesAndResourceChangesWithContext___block_invoke;
   v8[3] = &unk_27851B228;
   v10 = &v12;
-  v11 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = contextCopy;
   v9 = v6;
-  [v5 withAllDatabasesPerform:v8];
+  [connection withAllDatabasesPerform:v8];
 
-  LODWORD(v5) = *(v13 + 6);
+  LODWORD(connection) = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
 
-  return v5;
+  return connection;
 }
 
 void __88__CADNotificationUtilities__gatherSharedCalendarResponsesAndResourceChangesWithContext___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -889,10 +889,10 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (int)_gatherSharedCalendarResourceChangeNotification:(void *)a3 withContext:(id)a4 database:(CalDatabase *)a5 databaseID:(int)a6
++ (int)_gatherSharedCalendarResourceChangeNotification:(void *)notification withContext:(id)context database:(CalDatabase *)database databaseID:(int)d
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
@@ -994,12 +994,12 @@ LABEL_22:
 
         v31 = 0;
 LABEL_24:
-        v32 = v31 | [v6 shouldSkipNotificationForCalendar:v16];
+        v32 = v31 | [contextCopy shouldSkipNotificationForCalendar:v16];
         v33 = CalCalendarCopyStore();
         if (v33)
         {
           v34 = v33;
-          LOBYTE(v32) = v32 | [v6 shouldSkipNotificationForStore:v33];
+          LOBYTE(v32) = v32 | [contextCopy shouldSkipNotificationForStore:v33];
           CFRelease(v34);
         }
 
@@ -1025,9 +1025,9 @@ LABEL_24:
           v16 = v36;
           if (CalEntityGetType() == 2)
           {
-            [v6 expirationTimestampForEvent:v16 database:a5];
+            [contextCopy expirationTimestampForEvent:v16 database:database];
             v38 = v37;
-            [v6 now];
+            [contextCopy now];
             if (v38 < v39)
             {
               v40 = CADNotificationLogHandle;
@@ -1040,7 +1040,7 @@ LABEL_24:
                 _os_log_impl(&dword_22430B000, v41, OS_LOG_TYPE_DEFAULT, "Skipping resource change notification %d because it is for an event in the past", buf, 8u);
               }
 
-              if ([v6 deleteOldNotifications])
+              if ([contextCopy deleteOldNotifications])
               {
                 v43 = CADNotificationLogHandle;
                 if (os_log_type_enabled(CADNotificationLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -1088,7 +1088,7 @@ LABEL_24:
                 CFRelease(v16);
 LABEL_53:
                 v57 = CalResourceChangeGetUID();
-                v23 = [objc_alloc(MEMORY[0x277CF74C8]) initWithEntityType:18 entityID:v57 databaseID:a6];
+                v23 = [objc_alloc(MEMORY[0x277CF74C8]) initWithEntityType:18 entityID:v57 databaseID:d];
                 v58 = CADNotificationLogHandle;
                 if (os_log_type_enabled(CADNotificationLogHandle, OS_LOG_TYPE_DEFAULT))
                 {
@@ -1098,7 +1098,7 @@ LABEL_53:
                 }
 
                 v59 = [[CADNotification alloc] initWithType:4 objectID:v23 occurrenceDate:v11 expirationDate:v38];
-                [v6 addNotification:v59];
+                [contextCopy addNotification:v59];
 
 LABEL_18:
                 goto LABEL_28;
@@ -1208,10 +1208,10 @@ LABEL_28:
   return 0;
 }
 
-+ (int)_gatherSuggestionResourceChangeNotification:(void *)a3 withContext:(id)a4 database:(CalDatabase *)a5 databaseID:(int)a6
++ (int)_gatherSuggestionResourceChangeNotification:(void *)notification withContext:(id)context database:(CalDatabase *)database databaseID:(int)d
 {
   v85 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   v7 = CalResourceChangeNotificationCopyChanges();
   v73 = objc_opt_new();
   v78 = 0u;
@@ -1259,9 +1259,9 @@ LABEL_28:
             goto LABEL_24;
           }
 
-          [v6 expirationTimestampForEvent:v17 database:a5];
+          [contextCopy expirationTimestampForEvent:v17 database:database];
           v19 = v18;
-          [v6 now];
+          [contextCopy now];
           if (v19 < v20)
           {
             v21 = CADNotificationLogHandle;
@@ -1274,7 +1274,7 @@ LABEL_28:
               _os_log_impl(&dword_22430B000, v22, OS_LOG_TYPE_DEFAULT, "Skipping suggestion resource change notification %d because it is for an event in the past", buf, 8u);
             }
 
-            if ([v6 deleteOldNotifications])
+            if ([contextCopy deleteOldNotifications])
             {
               v24 = CADNotificationLogHandle;
               if (os_log_type_enabled(CADNotificationLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -1333,7 +1333,7 @@ LABEL_28:
             }
           }
 
-          v59 = [v6 shouldSkipNotificationForStore:v38];
+          v59 = [contextCopy shouldSkipNotificationForStore:v38];
           CFRelease(v38);
           if (!v40 || (v59 & 1) != 0)
           {
@@ -1366,7 +1366,7 @@ LABEL_24:
           CFRelease(v17);
 LABEL_48:
           v61 = CalResourceChangeGetUID();
-          v29 = [objc_alloc(MEMORY[0x277CF74C8]) initWithEntityType:18 entityID:v61 databaseID:a6];
+          v29 = [objc_alloc(MEMORY[0x277CF74C8]) initWithEntityType:18 entityID:v61 databaseID:d];
           v62 = CADNotificationLogHandle;
           if (os_log_type_enabled(CADNotificationLogHandle, OS_LOG_TYPE_DEFAULT))
           {
@@ -1376,7 +1376,7 @@ LABEL_48:
           }
 
           v63 = [[CADNotification alloc] initWithType:5 objectID:v29 occurrenceDate:v12 expirationDate:v19];
-          [v6 addNotification:v63];
+          [contextCopy addNotification:v63];
 
 LABEL_54:
           goto LABEL_55;
@@ -1463,12 +1463,12 @@ LABEL_53:
           }
         }
 
-        v51 = [v6 shouldSkipNotificationForCalendar:v46] | CanContainEntityType ^ 1;
+        v51 = [contextCopy shouldSkipNotificationForCalendar:v46] | CanContainEntityType ^ 1;
         v52 = CalCalendarCopyStore();
         if (v52)
         {
           v53 = v52;
-          LOBYTE(v51) = v51 | [v6 shouldSkipNotificationForStore:v52];
+          LOBYTE(v51) = v51 | [contextCopy shouldSkipNotificationForStore:v52];
           CFRelease(v53);
         }
 
@@ -1573,9 +1573,9 @@ void __104__CADNotificationUtilities__gatherSuggestionResourceChangeNotification
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)storeIsReadOnlyDelegate:(void *)a3
++ (BOOL)storeIsReadOnlyDelegate:(void *)delegate
 {
-  v3 = [a1 _storeIsDelegate:?];
+  v3 = [self _storeIsDelegate:?];
   if (v3)
   {
     LOBYTE(v3) = CalStoreIsWritable() ^ 1;
@@ -1584,17 +1584,17 @@ void __104__CADNotificationUtilities__gatherSuggestionResourceChangeNotification
   return v3;
 }
 
-+ (id)flattenedNotificationsFromNotifications:(id)a3 expanded:(BOOL)a4
++ (id)flattenedNotificationsFromNotifications:(id)notifications expanded:(BOOL)expanded
 {
-  v4 = a4;
+  expandedCopy = expanded;
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  notificationsCopy = notifications;
+  v6 = notificationsCopy;
+  if (notificationsCopy)
   {
-    if (v4)
+    if (expandedCopy)
     {
-      v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+      v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
@@ -1615,13 +1615,13 @@ void __104__CADNotificationUtilities__gatherSuggestionResourceChangeNotification
             }
 
             v13 = *(*(&v19 + 1) + 8 * i);
-            v14 = [v13 expandedNotifications];
-            v15 = [v14 count];
+            expandedNotifications = [v13 expandedNotifications];
+            v15 = [expandedNotifications count];
 
             if (v15)
             {
-              v16 = [v13 expandedNotifications];
-              [v7 addObjectsFromArray:v16];
+              expandedNotifications2 = [v13 expandedNotifications];
+              [v7 addObjectsFromArray:expandedNotifications2];
             }
 
             else
@@ -1639,7 +1639,7 @@ void __104__CADNotificationUtilities__gatherSuggestionResourceChangeNotification
 
     else
     {
-      v7 = v5;
+      v7 = notificationsCopy;
     }
   }
 
@@ -1653,16 +1653,16 @@ void __104__CADNotificationUtilities__gatherSuggestionResourceChangeNotification
   return v7;
 }
 
-+ (void)_logNotificationCountsForNotifications:(id)a3
++ (void)_logNotificationCountsForNotifications:(id)notifications
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = [MEMORY[0x277CCA940] set];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v4;
+  v6 = notificationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v7)
   {
@@ -1677,8 +1677,8 @@ void __104__CADNotificationUtilities__gatherSuggestionResourceChangeNotification
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v29 + 1) + 8 * i) type];
-        v12 = [MEMORY[0x277CCABB0] numberWithInt:v11];
+        type = [*(*(&v29 + 1) + 8 * i) type];
+        v12 = [MEMORY[0x277CCABB0] numberWithInt:type];
         [v5 addObject:v12];
       }
 
@@ -1711,7 +1711,7 @@ void __104__CADNotificationUtilities__gatherSuggestionResourceChangeNotification
 
         v19 = *(*(&v25 + 1) + 8 * j);
         v20 = [v13 countForObject:{v19, v24, v25}];
-        v21 = [a1 _stringForNotificationType:{objc_msgSend(v19, "intValue")}];
+        v21 = [self _stringForNotificationType:{objc_msgSend(v19, "intValue")}];
         v22 = CADLogHandle;
         if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
         {
@@ -1732,7 +1732,7 @@ void __104__CADNotificationUtilities__gatherSuggestionResourceChangeNotification
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_storeIsDelegate:(void *)a3
++ (BOOL)_storeIsDelegate:(void *)delegate
 {
   v3 = CalStoreCopyDelegatedAccountOwnerStoreID();
   v4 = v3;

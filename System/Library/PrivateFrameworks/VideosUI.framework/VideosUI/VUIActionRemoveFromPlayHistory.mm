@@ -1,31 +1,31 @@
 @interface VUIActionRemoveFromPlayHistory
-- (VUIActionRemoveFromPlayHistory)initWithContextData:(id)a3 isContinueWatching:(BOOL)a4;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (VUIActionRemoveFromPlayHistory)initWithContextData:(id)data isContinueWatching:(BOOL)watching;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionRemoveFromPlayHistory
 
-- (VUIActionRemoveFromPlayHistory)initWithContextData:(id)a3 isContinueWatching:(BOOL)a4
+- (VUIActionRemoveFromPlayHistory)initWithContextData:(id)data isContinueWatching:(BOOL)watching
 {
-  v6 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = VUIActionRemoveFromPlayHistory;
   v7 = [(VUIActionRemoveFromPlayHistory *)&v11 init];
   if (v7)
   {
-    v8 = [v6 vui_stringForKey:@"deleteId"];
+    v8 = [dataCopy vui_stringForKey:@"deleteId"];
     deleteID = v7->_deleteID;
     v7->_deleteID = v8;
 
-    v7->_isContinueWatching = a4;
+    v7->_isContinueWatching = watching;
   }
 
   return v7;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   if ([(NSString *)self->_deleteID length])
   {
     v6 = +[VUIRemoveFromPlayHistoryRequestManager sharedInstance];
@@ -41,9 +41,9 @@
     }
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 

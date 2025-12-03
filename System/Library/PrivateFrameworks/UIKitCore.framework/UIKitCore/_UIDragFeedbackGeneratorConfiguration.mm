@@ -1,36 +1,36 @@
 @interface _UIDragFeedbackGeneratorConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIFeedbackContinuousPlayable)interactionProgressingFeedback;
 - (_UIFeedbackDiscretePlayable)interactionUpdatedFeedback;
 - (_UIFeedbackDiscretePlayable)targetUpdatedFeedback;
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)feedbackKeyPaths;
 - (id)hidFeedbackPatternNameKeyPaths;
-- (void)setInteractionProgressingFeedback:(id)a3;
-- (void)setInteractionUpdatedFeedback:(id)a3;
-- (void)setTargetUpdatedFeedback:(id)a3;
+- (void)setInteractionProgressingFeedback:(id)feedback;
+- (void)setInteractionUpdatedFeedback:(id)feedback;
+- (void)setTargetUpdatedFeedback:(id)feedback;
 @end
 
 @implementation _UIDragFeedbackGeneratorConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UIDragFeedbackGeneratorConfiguration;
-  result = [(_UIFeedbackGeneratorConfiguration *)&v5 copyWithZone:a3];
+  result = [(_UIFeedbackGeneratorConfiguration *)&v5 copyWithZone:zone];
   *(result + 17) = *&self->_progressingFeedbackDelay;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIDragFeedbackGeneratorConfiguration;
-  if ([(_UIFeedbackGeneratorConfiguration *)&v7 isEqual:v4])
+  if ([(_UIFeedbackGeneratorConfiguration *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_progressingFeedbackDelay == v4[17];
+    v5 = self->_progressingFeedbackDelay == equalCopy[17];
   }
 
   else
@@ -46,7 +46,7 @@
   v10[3] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _UIDragFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v9 feedbackKeyPaths];
+  feedbackKeyPaths = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v9 feedbackKeyPaths];
   v3 = NSStringFromSelector(sel_interactionProgressingFeedback);
   v10[0] = v3;
   v4 = NSStringFromSelector(sel_interactionUpdatedFeedback);
@@ -54,7 +54,7 @@
   v5 = NSStringFromSelector(sel_targetUpdatedFeedback);
   v10[2] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
-  v7 = [v2 arrayByAddingObjectsFromArray:v6];
+  v7 = [feedbackKeyPaths arrayByAddingObjectsFromArray:v6];
 
   return v7;
 }
@@ -63,41 +63,41 @@
 {
   v6.receiver = self;
   v6.super_class = _UIDragFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorConfiguration *)&v6 hidFeedbackPatternNameKeyPaths];
+  hidFeedbackPatternNameKeyPaths = [(_UIFeedbackGeneratorConfiguration *)&v6 hidFeedbackPatternNameKeyPaths];
   v3 = NSStringFromSelector(sel_hidTargetUpdatedFeedbackPatternName);
-  v4 = [v2 arrayByAddingObject:v3];
+  v4 = [hidFeedbackPatternNameKeyPaths arrayByAddingObject:v3];
 
   return v4;
 }
 
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d
 {
-  v8 = a3;
-  v9 = [(_UIDragFeedbackGeneratorConfiguration *)self targetUpdatedFeedback];
-  v10 = [v8 isEqual:v9];
+  feedbackCopy = feedback;
+  targetUpdatedFeedback = [(_UIDragFeedbackGeneratorConfiguration *)self targetUpdatedFeedback];
+  v10 = [feedbackCopy isEqual:targetUpdatedFeedback];
 
   if (v10)
   {
-    v11 = [(_UIDragFeedbackGeneratorConfiguration *)self hidTargetUpdatedFeedbackPatternName];
-    v12 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:v11 deviceType:a4 senderID:a5];
+    hidTargetUpdatedFeedbackPatternName = [(_UIDragFeedbackGeneratorConfiguration *)self hidTargetUpdatedFeedbackPatternName];
+    v12 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:hidTargetUpdatedFeedbackPatternName deviceType:device senderID:d];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = _UIDragFeedbackGeneratorConfiguration;
-    v12 = [(_UIFeedbackGeneratorConfiguration *)&v14 _alternateFeedback:v8 forDevice:a4 senderID:a5];
+    v12 = [(_UIFeedbackGeneratorConfiguration *)&v14 _alternateFeedback:feedbackCopy forDevice:device senderID:d];
   }
 
   return v12;
 }
 
-- (void)setInteractionProgressingFeedback:(id)a3
+- (void)setInteractionProgressingFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   interactionProgressingFeedback = self->_interactionProgressingFeedback;
-  self->_interactionProgressingFeedback = v4;
+  self->_interactionProgressingFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackContinuousPlayable)interactionProgressingFeedback
@@ -108,12 +108,12 @@
   return interactionProgressingFeedback;
 }
 
-- (void)setInteractionUpdatedFeedback:(id)a3
+- (void)setInteractionUpdatedFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   interactionUpdatedFeedback = self->_interactionUpdatedFeedback;
-  self->_interactionUpdatedFeedback = v4;
+  self->_interactionUpdatedFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)interactionUpdatedFeedback
@@ -124,12 +124,12 @@
   return interactionUpdatedFeedback;
 }
 
-- (void)setTargetUpdatedFeedback:(id)a3
+- (void)setTargetUpdatedFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   targetUpdatedFeedback = self->_targetUpdatedFeedback;
-  self->_targetUpdatedFeedback = v4;
+  self->_targetUpdatedFeedback = feedbackCopy;
 }
 
 - (_UIFeedbackDiscretePlayable)targetUpdatedFeedback

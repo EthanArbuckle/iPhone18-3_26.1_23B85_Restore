@@ -1,7 +1,7 @@
 @interface DKFindMyProvider
-- (void)_locatorStateDidChange:(id)a3;
-- (void)disableFindMyWithPresentingViewController:(id)a3 completion:(id)a4;
-- (void)fetchFindMyState:(id)a3;
+- (void)_locatorStateDidChange:(id)change;
+- (void)disableFindMyWithPresentingViewController:(id)controller completion:(id)completion;
+- (void)fetchFindMyState:(id)state;
 - (void)preheatFindMyState;
 @end
 
@@ -16,8 +16,8 @@
     _os_log_impl(&dword_248D68000, v2, OS_LOG_TYPE_DEFAULT, "Preheating Find My state...", v4, 2u);
   }
 
-  v3 = [MEMORY[0x277CECA38] sharedInstance];
-  [v3 refreshCurrentState:&__block_literal_global_0];
+  mEMORY[0x277CECA38] = [MEMORY[0x277CECA38] sharedInstance];
+  [mEMORY[0x277CECA38] refreshCurrentState:&__block_literal_global_0];
 }
 
 void __38__DKFindMyProvider_preheatFindMyState__block_invoke(uint64_t a1, uint64_t a2)
@@ -40,22 +40,22 @@ void __38__DKFindMyProvider_preheatFindMyState__block_invoke(uint64_t a1, uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchFindMyState:(id)a3
+- (void)fetchFindMyState:(id)state
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CECA38] sharedInstance];
-  v6 = [v5 isStateKnown];
+  stateCopy = state;
+  mEMORY[0x277CECA38] = [MEMORY[0x277CECA38] sharedInstance];
+  isStateKnown = [mEMORY[0x277CECA38] isStateKnown];
 
-  v7 = [MEMORY[0x277CECA38] sharedInstance];
-  v8 = v7;
-  if (v6)
+  mEMORY[0x277CECA38]2 = [MEMORY[0x277CECA38] sharedInstance];
+  v8 = mEMORY[0x277CECA38]2;
+  if (isStateKnown)
   {
-    v9 = [v7 isChangingState];
+    isChangingState = [mEMORY[0x277CECA38]2 isChangingState];
 
-    if ((v9 & 1) == 0)
+    if ((isChangingState & 1) == 0)
     {
-      v12 = [MEMORY[0x277CECA38] sharedInstance];
-      v4[2](v4, [v12 isEnabled]);
+      mEMORY[0x277CECA38]3 = [MEMORY[0x277CECA38] sharedInstance];
+      stateCopy[2](stateCopy, [mEMORY[0x277CECA38]3 isEnabled]);
 
       goto LABEL_8;
     }
@@ -70,10 +70,10 @@ void __38__DKFindMyProvider_preheatFindMyState__block_invoke(uint64_t a1, uint64
     v13[1] = 3221225472;
     v13[2] = __37__DKFindMyProvider_fetchFindMyState___block_invoke_2;
     v13[3] = &unk_278F7DB70;
-    v14 = v4;
+    v14 = stateCopy;
     [(DKFindMyProvider *)self setStateChangeBlock:v13];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel__locatorStateDidChange_ name:*MEMORY[0x277CEC9A0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__locatorStateDidChange_ name:*MEMORY[0x277CEC9A0] object:0];
 
     v11 = v14;
   }
@@ -85,7 +85,7 @@ void __38__DKFindMyProvider_preheatFindMyState__block_invoke(uint64_t a1, uint64
     v15[2] = __37__DKFindMyProvider_fetchFindMyState___block_invoke;
     v15[3] = &unk_278F7DB48;
     v15[4] = self;
-    v16 = v4;
+    v16 = stateCopy;
     [v8 refreshCurrentState:v15];
 
     v11 = v16;
@@ -109,20 +109,20 @@ uint64_t __37__DKFindMyProvider_fetchFindMyState___block_invoke_2(uint64_t a1)
   return v3 ^ 1u;
 }
 
-- (void)disableFindMyWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)disableFindMyWithPresentingViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   [(DKFindMyProvider *)self stateChangeBlock];
   if (objc_claimAutoreleasedReturnValue())
   {
     [DKFindMyProvider disableFindMyWithPresentingViewController:completion:];
   }
 
-  v8 = [MEMORY[0x277CECA38] sharedInstance];
-  v9 = [v8 isEnabled];
+  mEMORY[0x277CECA38] = [MEMORY[0x277CECA38] sharedInstance];
+  isEnabled = [mEMORY[0x277CECA38] isEnabled];
 
-  if (v9)
+  if (isEnabled)
   {
     v10 = _DKLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -131,29 +131,29 @@ uint64_t __37__DKFindMyProvider_fetchFindMyState___block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_248D68000, v10, OS_LOG_TYPE_DEFAULT, "Prompting to disable Find My...", buf, 2u);
     }
 
-    v11 = [MEMORY[0x277CB8F48] defaultStore];
-    v12 = [v11 aa_primaryAppleAccount];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
     v13 = objc_opt_new();
-    v25 = v12;
-    [v13 setAccount:v12];
+    v25 = aa_primaryAppleAccount;
+    [v13 setAccount:aa_primaryAppleAccount];
     v14 = MEMORY[0x277CCACA8];
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16 = [v15 localizedStringForKey:@"TURN_OFF_FIND_MY_DISCLOSURE" value:&stru_285BC2A70 table:@"Localizable"];
-    v17 = [v12 username];
-    v18 = [v14 stringWithFormat:v16, v17];
+    username = [aa_primaryAppleAccount username];
+    v18 = [v14 stringWithFormat:v16, username];
     [v13 setMessage:v18];
 
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:@"TURN_OFF_FINDMY" value:&stru_285BC2A70 table:@"Localizable"];
     [v13 setButtonTitle:v20];
 
-    v21 = [v6 navigationController];
-    [v13 setPresentingViewController:v21];
+    navigationController = [controllerCopy navigationController];
+    [v13 setPresentingViewController:navigationController];
 
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    v23 = [v22 UUIDString];
-    [v13 setTelemetryFlowID:v23];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v13 setTelemetryFlowID:uUIDString];
 
     [v13 setKeepAlertVisible:1];
     [v13 setIsSpyglassSignOut:0];
@@ -162,13 +162,13 @@ uint64_t __37__DKFindMyProvider_fetchFindMyState___block_invoke_2(uint64_t a1)
     v26[1] = 3221225472;
     v26[2] = __73__DKFindMyProvider_disableFindMyWithPresentingViewController_completion___block_invoke;
     v26[3] = &unk_278F7DB98;
-    v27 = v7;
+    v27 = completionCopy;
     [v24 showDisableAlertForContext:v13 withCompletion:v26];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -228,19 +228,19 @@ uint64_t __73__DKFindMyProvider_disableFindMyWithPresentingViewController_comple
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)_locatorStateDidChange:(id)a3
+- (void)_locatorStateDidChange:(id)change
 {
-  v4 = [(DKFindMyProvider *)self stateChangeBlock];
+  stateChangeBlock = [(DKFindMyProvider *)self stateChangeBlock];
 
-  if (v4)
+  if (stateChangeBlock)
   {
-    v5 = [(DKFindMyProvider *)self stateChangeBlock];
-    v6 = v5[2]();
+    stateChangeBlock2 = [(DKFindMyProvider *)self stateChangeBlock];
+    v6 = stateChangeBlock2[2]();
 
     if (v6)
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 removeObserver:self name:*MEMORY[0x277CEC9A0] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277CEC9A0] object:0];
     }
   }
 }

@@ -1,15 +1,15 @@
 @interface MessageActionsViewController
-- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithCoder:(id)a3;
-- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithCoder:(id)coder;
+- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 @end
 
 @implementation MessageActionsViewController
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_1000412F0();
   v8 = *(v7 - 8);
@@ -19,16 +19,16 @@
   v12 = sub_100041B20();
   v14 = v13;
   sub_1000412D0();
-  v15 = a3;
-  v16 = self;
-  v17 = sub_100003D8C(v15, v12, v14, v11);
+  viewCopy = view;
+  selfCopy = self;
+  v17 = sub_100003D8C(viewCopy, v12, v14, v11);
 
   (*(v8 + 8))(v11, v7);
 
   return v17;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_1000412F0();
   v7 = *(v6 - 8);
@@ -36,8 +36,8 @@
   __chkstk_darwin();
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000412D0();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_100003FE8();
 
   (*(v7 + 8))(v10, v6);
@@ -45,7 +45,7 @@
   return v13;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = sub_1000412F0();
   v6 = *(v5 - 8);
@@ -55,7 +55,7 @@
   sub_1000412D0();
   if (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26GameCenterMessageExtension28MessageActionsViewController_delegate))
   {
-    v10 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100030A64();
 
@@ -65,7 +65,7 @@
   (*(v6 + 8))(v9, v5);
 }
 
-- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithCollectionViewLayout:(id)layout
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26GameCenterMessageExtension28MessageActionsViewController_localPlayer) = 0;
   v5 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC26GameCenterMessageExtension28MessageActionsViewController_delegate);
@@ -74,19 +74,19 @@
   v5[1] = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(MessageActionsViewController *)&v8 initWithCollectionViewLayout:a3];
+  return [(MessageActionsViewController *)&v8 initWithCollectionViewLayout:layout];
 }
 
-- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_100041B20();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26GameCenterMessageExtension28MessageActionsViewController_localPlayer) = 0;
     v6 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC26GameCenterMessageExtension28MessageActionsViewController_delegate);
     *v6 = 0;
     v6[1] = 0;
-    v7 = a4;
+    bundleCopy = bundle;
     v8 = sub_100041AF0();
   }
 
@@ -96,18 +96,18 @@
     v9 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC26GameCenterMessageExtension28MessageActionsViewController_delegate);
     *v9 = 0;
     v9[1] = 0;
-    v10 = a4;
+    bundleCopy2 = bundle;
     v8 = 0;
   }
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for MessageActionsViewController();
-  v11 = [(MessageActionsViewController *)&v13 initWithNibName:v8 bundle:a4];
+  v11 = [(MessageActionsViewController *)&v13 initWithNibName:v8 bundle:bundle];
 
   return v11;
 }
 
-- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithCoder:(id)a3
+- (_TtC26GameCenterMessageExtension28MessageActionsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26GameCenterMessageExtension28MessageActionsViewController_localPlayer) = 0;
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC26GameCenterMessageExtension28MessageActionsViewController_delegate);
@@ -115,8 +115,8 @@
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MessageActionsViewController();
-  v5 = a3;
-  v6 = [(MessageActionsViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(MessageActionsViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

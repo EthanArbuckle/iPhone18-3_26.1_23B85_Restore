@@ -1,17 +1,17 @@
 @interface ASUIProductCarouselView
 - (void)layoutSubviews;
-- (void)pageControlChangedWithPageControl:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)pageControlChangedWithPageControl:(id)control;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation ASUIProductCarouselView
 
-- (void)pageControlChangedWithPageControl:(id)a3
+- (void)pageControlChangedWithPageControl:(id)control
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000048E8([v4 currentPage], 1);
+  controlCopy = control;
+  selfCopy = self;
+  sub_1000048E8([controlCopy currentPage], 1);
 }
 
 - (void)layoutSubviews
@@ -37,19 +37,19 @@
   _Block_release(v5);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1000096B8();
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v8 = a3;
-  v9 = self;
-  sub_1000097A4(a5, x);
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_1000097A4(offset, x);
 }
 
 @end

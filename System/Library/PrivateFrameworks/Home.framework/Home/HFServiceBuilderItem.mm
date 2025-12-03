@@ -2,14 +2,14 @@
 - (HFCharacteristicValueSource)valueSource;
 - (HFHomeKitObject)homeKitObject;
 - (HFServiceBuilderItem)init;
-- (HFServiceBuilderItem)initWithServiceBuilder:(id)a3;
-- (HFServiceBuilderItem)initWithServiceBuilder:(id)a3 valueSource:(id)a4;
+- (HFServiceBuilderItem)initWithServiceBuilder:(id)builder;
+- (HFServiceBuilderItem)initWithServiceBuilder:(id)builder valueSource:(id)source;
 - (HMHome)home;
 - (NSSet)services;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)namingComponentForHomeKitObject;
 @end
 
@@ -17,67 +17,67 @@
 
 - (HFServiceBuilderItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithServiceBuilder_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFServiceBuilderItem.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HFServiceBuilderItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceBuilderItem.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HFServiceBuilderItem init]", v5}];
 
   return 0;
 }
 
-- (HFServiceBuilderItem)initWithServiceBuilder:(id)a3
+- (HFServiceBuilderItem)initWithServiceBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [v4 home];
-  v6 = [v5 hf_characteristicValueManager];
-  v7 = [(HFServiceBuilderItem *)self initWithServiceBuilder:v4 valueSource:v6];
+  builderCopy = builder;
+  home = [builderCopy home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
+  v7 = [(HFServiceBuilderItem *)self initWithServiceBuilder:builderCopy valueSource:hf_characteristicValueManager];
 
   return v7;
 }
 
-- (HFServiceBuilderItem)initWithServiceBuilder:(id)a3 valueSource:(id)a4
+- (HFServiceBuilderItem)initWithServiceBuilder:(id)builder valueSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  builderCopy = builder;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = HFServiceBuilderItem;
   v9 = [(HFServiceBuilderItem *)&v14 init];
   if (v9)
   {
-    v10 = [v7 service];
-    v11 = [HFServiceItem serviceItemForService:v10 valueSource:v8];
+    service = [builderCopy service];
+    v11 = [HFServiceItem serviceItemForService:service valueSource:sourceCopy];
     serviceItem = v9->_serviceItem;
     v9->_serviceItem = v11;
 
-    objc_storeStrong(&v9->_serviceBuilder, a3);
+    objc_storeStrong(&v9->_serviceBuilder, builder);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFServiceBuilderItem *)self valueSource];
-  v5 = [(HFServiceBuilderItem *)self copyWithValueSource:v4];
+  valueSource = [(HFServiceBuilderItem *)self valueSource];
+  v5 = [(HFServiceBuilderItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFServiceBuilderItem *)self serviceBuilder];
-  v7 = [v5 initWithServiceBuilder:v6 valueSource:v4];
+  serviceBuilder = [(HFServiceBuilderItem *)self serviceBuilder];
+  v7 = [v5 initWithServiceBuilder:serviceBuilder valueSource:sourceCopy];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFServiceBuilderItem *)self serviceItem];
-  v6 = [v5 updateWithOptions:v4];
+  optionsCopy = options;
+  serviceItem = [(HFServiceBuilderItem *)self serviceItem];
+  v6 = [serviceItem updateWithOptions:optionsCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -129,49 +129,49 @@ id __52__HFServiceBuilderItem__subclass_updateWithOptions___block_invoke(uint64_
 
 - (HFHomeKitObject)homeKitObject
 {
-  v2 = [(HFServiceBuilderItem *)self serviceItem];
-  v3 = [v2 homeKitObject];
+  serviceItem = [(HFServiceBuilderItem *)self serviceItem];
+  homeKitObject = [serviceItem homeKitObject];
 
-  return v3;
+  return homeKitObject;
 }
 
 - (NSSet)services
 {
-  v2 = [(HFServiceBuilderItem *)self serviceItem];
-  v3 = [v2 services];
+  serviceItem = [(HFServiceBuilderItem *)self serviceItem];
+  services = [serviceItem services];
 
-  return v3;
+  return services;
 }
 
 - (HFCharacteristicValueSource)valueSource
 {
-  v2 = [(HFServiceBuilderItem *)self serviceItem];
-  v3 = [v2 valueSource];
+  serviceItem = [(HFServiceBuilderItem *)self serviceItem];
+  valueSource = [serviceItem valueSource];
 
-  return v3;
+  return valueSource;
 }
 
 - (id)accessories
 {
-  v2 = [(HFServiceBuilderItem *)self serviceItem];
-  v3 = [v2 accessories];
+  serviceItem = [(HFServiceBuilderItem *)self serviceItem];
+  accessories = [serviceItem accessories];
 
-  return v3;
+  return accessories;
 }
 
 - (HMHome)home
 {
-  v2 = [(HFServiceBuilderItem *)self serviceItem];
-  v3 = [v2 home];
+  serviceItem = [(HFServiceBuilderItem *)self serviceItem];
+  home = [serviceItem home];
 
-  return v3;
+  return home;
 }
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFServiceBuilderItem *)self serviceItem];
-  v3 = [v2 homeKitObject];
-  v4 = [HFNamingComponents namingComponentFromHomeKitObject:v3];
+  serviceItem = [(HFServiceBuilderItem *)self serviceItem];
+  homeKitObject = [serviceItem homeKitObject];
+  v4 = [HFNamingComponents namingComponentFromHomeKitObject:homeKitObject];
 
   return v4;
 }

@@ -1,7 +1,7 @@
 @interface HMBoundedIntegerSetting
-- (BOOL)isEqual:(id)a3;
-- (HMBoundedIntegerSetting)initWithProtoPayload:(id)a3;
-- (HMBoundedIntegerSetting)settingWithSettingValue:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMBoundedIntegerSetting)initWithProtoPayload:(id)payload;
+- (HMBoundedIntegerSetting)settingWithSettingValue:(id)value;
 - (id)attributeDescriptions;
 - (id)payloadCopy;
 - (id)protoPayload;
@@ -10,10 +10,10 @@
 
 @implementation HMBoundedIntegerSetting
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -23,7 +23,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -34,8 +34,8 @@
     v6 = v5;
     if (v6 && (v13.receiver = self, v13.super_class = HMBoundedIntegerSetting, [(HMImmutableSetting *)&v13 isEqual:v6]) && (v7 = [(HMBoundedIntegerSetting *)self integerValue], v7 == [(HMBoundedIntegerSetting *)v6 integerValue]) && (v8 = [(HMBoundedIntegerSetting *)self maxValue], v8 == [(HMBoundedIntegerSetting *)v6 maxValue]) && (v9 = [(HMBoundedIntegerSetting *)self minValue], v9 == [(HMBoundedIntegerSetting *)v6 minValue]))
     {
-      v10 = [(HMBoundedIntegerSetting *)self valueStepSize];
-      v11 = v10 == [(HMBoundedIntegerSetting *)v6 valueStepSize];
+      valueStepSize = [(HMBoundedIntegerSetting *)self valueStepSize];
+      v11 = valueStepSize == [(HMBoundedIntegerSetting *)v6 valueStepSize];
     }
 
     else
@@ -52,7 +52,7 @@
   v21[4] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = HMBoundedIntegerSetting;
-  v18 = [(HMImmutableSetting *)&v20 attributeDescriptions];
+  attributeDescriptions = [(HMImmutableSetting *)&v20 attributeDescriptions];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
   v19 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HMBoundedIntegerSetting integerValue](self, "integerValue")}];
   v4 = [v3 initWithName:@"integerValue" value:v19];
@@ -70,7 +70,7 @@
   v13 = [v11 initWithName:@"valueStepSize" value:v12];
   v21[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
-  v15 = [v18 arrayByAddingObjectsFromArray:v14];
+  v15 = [attributeDescriptions arrayByAddingObjectsFromArray:v14];
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -82,8 +82,8 @@
   v15[5] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = HMBoundedIntegerSetting;
-  v3 = [(HMImmutableSetting *)&v13 payloadCopy];
-  v4 = [v3 mutableCopy];
+  payloadCopy = [(HMImmutableSetting *)&v13 payloadCopy];
+  v4 = [payloadCopy mutableCopy];
 
   v15[0] = &unk_1F0EFCBC0;
   v14[0] = @"HMImmutableSettingTypePayloadKey";
@@ -112,42 +112,42 @@
 {
   v17.receiver = self;
   v17.super_class = HMBoundedIntegerSetting;
-  v3 = [(HMImmutableSetting *)&v17 protoPayload];
+  protoPayload = [(HMImmutableSetting *)&v17 protoPayload];
   v4 = objc_alloc_init(HMImmutableSettingsProtoBoundedIntegerSettingEvent);
-  [v3 setBoundedIntegerSetting:v4];
+  [protoPayload setBoundedIntegerSetting:v4];
 
-  v5 = [(HMBoundedIntegerSetting *)self minValue];
-  v6 = [v3 boundedIntegerSetting];
-  [v6 setMinValue:v5];
+  minValue = [(HMBoundedIntegerSetting *)self minValue];
+  boundedIntegerSetting = [protoPayload boundedIntegerSetting];
+  [boundedIntegerSetting setMinValue:minValue];
 
-  v7 = [(HMBoundedIntegerSetting *)self maxValue];
-  v8 = [v3 boundedIntegerSetting];
-  [v8 setMaxValue:v7];
+  maxValue = [(HMBoundedIntegerSetting *)self maxValue];
+  boundedIntegerSetting2 = [protoPayload boundedIntegerSetting];
+  [boundedIntegerSetting2 setMaxValue:maxValue];
 
-  v9 = [(HMBoundedIntegerSetting *)self valueStepSize];
-  v10 = [v3 boundedIntegerSetting];
-  [v10 setStepValue:v9];
+  valueStepSize = [(HMBoundedIntegerSetting *)self valueStepSize];
+  boundedIntegerSetting3 = [protoPayload boundedIntegerSetting];
+  [boundedIntegerSetting3 setStepValue:valueStepSize];
 
   v11 = objc_alloc_init(HMImmutableSettingsProtoIntegerValueEvent);
-  v12 = [v3 boundedIntegerSetting];
-  [v12 setValue:v11];
+  boundedIntegerSetting4 = [protoPayload boundedIntegerSetting];
+  [boundedIntegerSetting4 setValue:v11];
 
-  v13 = [(HMBoundedIntegerSetting *)self integerValue];
-  v14 = [v3 boundedIntegerSetting];
-  v15 = [v14 value];
-  [v15 setValue:v13];
+  integerValue = [(HMBoundedIntegerSetting *)self integerValue];
+  boundedIntegerSetting5 = [protoPayload boundedIntegerSetting];
+  value = [boundedIntegerSetting5 value];
+  [value setValue:integerValue];
 
-  return v3;
+  return protoPayload;
 }
 
-- (HMBoundedIntegerSetting)initWithProtoPayload:(id)a3
+- (HMBoundedIntegerSetting)initWithProtoPayload:(id)payload
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 hasKeyPath] & 1) == 0)
+  payloadCopy = payload;
+  if (([payloadCopy hasKeyPath] & 1) == 0)
   {
     v21 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy4 = self;
     v22 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -158,7 +158,7 @@
     *buf = 138543618;
     v30 = v23;
     v31 = 2112;
-    v32 = v4;
+    v32 = payloadCopy;
     v24 = "%{public}@Failed to decode setting missing keyPath: %@";
 LABEL_17:
     _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, v24, buf, 0x16u);
@@ -166,10 +166,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (([v4 hasReadOnly] & 1) == 0)
+  if (([payloadCopy hasReadOnly] & 1) == 0)
   {
     v21 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy4 = self;
     v22 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -180,30 +180,30 @@ LABEL_17:
     *buf = 138543618;
     v30 = v23;
     v31 = 2112;
-    v32 = v4;
+    v32 = payloadCopy;
     v24 = "%{public}@Failed to decode setting missing readOnly: %@";
     goto LABEL_17;
   }
 
-  if (![v4 hasBoundedIntegerSetting])
+  if (![payloadCopy hasBoundedIntegerSetting])
   {
     goto LABEL_15;
   }
 
-  v5 = [v4 boundedIntegerSetting];
-  if (![v5 hasMinValue])
+  boundedIntegerSetting = [payloadCopy boundedIntegerSetting];
+  if (![boundedIntegerSetting hasMinValue])
   {
     goto LABEL_14;
   }
 
-  v6 = [v4 boundedIntegerSetting];
-  if (([v6 hasMaxValue] & 1) == 0)
+  boundedIntegerSetting2 = [payloadCopy boundedIntegerSetting];
+  if (([boundedIntegerSetting2 hasMaxValue] & 1) == 0)
   {
 
 LABEL_14:
 LABEL_15:
     v21 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy4 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -211,7 +211,7 @@ LABEL_15:
       *buf = 138543618;
       v30 = v23;
       v31 = 2112;
-      v32 = v4;
+      v32 = payloadCopy;
       v24 = "%{public}@Failed to decode setting missing integer setting required attributes: %@";
       goto LABEL_17;
     }
@@ -223,21 +223,21 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v7 = [v4 boundedIntegerSetting];
-  v8 = [v7 hasStepValue];
+  boundedIntegerSetting3 = [payloadCopy boundedIntegerSetting];
+  hasStepValue = [boundedIntegerSetting3 hasStepValue];
 
-  if ((v8 & 1) == 0)
+  if ((hasStepValue & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v9 = [v4 boundedIntegerSetting];
-  v10 = [v9 hasValue];
+  boundedIntegerSetting4 = [payloadCopy boundedIntegerSetting];
+  hasValue = [boundedIntegerSetting4 hasValue];
 
-  if ((v10 & 1) == 0)
+  if ((hasValue & 1) == 0)
   {
     v21 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy4 = self;
     v22 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -248,24 +248,24 @@ LABEL_18:
     *buf = 138543618;
     v30 = v23;
     v31 = 2112;
-    v32 = v4;
+    v32 = payloadCopy;
     v24 = "%{public}@Failed to decode setting missing integer value: %@";
     goto LABEL_17;
   }
 
-  v11 = [v4 keyPath];
-  v27 = [v4 readOnly];
-  v28 = [v4 boundedIntegerSetting];
-  v12 = [v28 value];
-  v13 = [v12 value];
-  v14 = [v4 boundedIntegerSetting];
-  v15 = [v14 maxValue];
-  v16 = [v4 boundedIntegerSetting];
-  v17 = [v16 minValue];
-  v18 = [v4 boundedIntegerSetting];
-  v19 = -[HMBoundedIntegerSetting initWithKeyPath:readOnly:integerValue:maxValue:minValue:valueStepSize:](self, "initWithKeyPath:readOnly:integerValue:maxValue:minValue:valueStepSize:", v11, v27, v13, v15, v17, [v18 stepValue]);
+  keyPath = [payloadCopy keyPath];
+  readOnly = [payloadCopy readOnly];
+  boundedIntegerSetting5 = [payloadCopy boundedIntegerSetting];
+  value = [boundedIntegerSetting5 value];
+  v12Value = [value value];
+  boundedIntegerSetting6 = [payloadCopy boundedIntegerSetting];
+  maxValue = [boundedIntegerSetting6 maxValue];
+  boundedIntegerSetting7 = [payloadCopy boundedIntegerSetting];
+  minValue = [boundedIntegerSetting7 minValue];
+  boundedIntegerSetting8 = [payloadCopy boundedIntegerSetting];
+  selfCopy4 = -[HMBoundedIntegerSetting initWithKeyPath:readOnly:integerValue:maxValue:minValue:valueStepSize:](self, "initWithKeyPath:readOnly:integerValue:maxValue:minValue:valueStepSize:", keyPath, readOnly, v12Value, maxValue, minValue, [boundedIntegerSetting8 stepValue]);
 
-  v20 = v19;
+  v20 = selfCopy4;
 LABEL_19:
 
   v25 = *MEMORY[0x1E69E9840];
@@ -279,13 +279,13 @@ LABEL_19:
   return v2;
 }
 
-- (HMBoundedIntegerSetting)settingWithSettingValue:(id)a3
+- (HMBoundedIntegerSetting)settingWithSettingValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -297,8 +297,8 @@ LABEL_19:
   if (v6)
   {
     v7 = [HMBoundedIntegerSetting alloc];
-    v8 = [(HMImmutableSetting *)self keyPath];
-    v9 = -[HMBoundedIntegerSetting initWithKeyPath:readOnly:integerValue:maxValue:minValue:valueStepSize:](v7, "initWithKeyPath:readOnly:integerValue:maxValue:minValue:valueStepSize:", v8, -[HMImmutableSetting isReadOnly](self, "isReadOnly"), [v6 integerValue], -[HMBoundedIntegerSetting maxValue](self, "maxValue"), -[HMBoundedIntegerSetting minValue](self, "minValue"), -[HMBoundedIntegerSetting valueStepSize](self, "valueStepSize"));
+    keyPath = [(HMImmutableSetting *)self keyPath];
+    v9 = -[HMBoundedIntegerSetting initWithKeyPath:readOnly:integerValue:maxValue:minValue:valueStepSize:](v7, "initWithKeyPath:readOnly:integerValue:maxValue:minValue:valueStepSize:", keyPath, -[HMImmutableSetting isReadOnly](self, "isReadOnly"), [v6 integerValue], -[HMBoundedIntegerSetting maxValue](self, "maxValue"), -[HMBoundedIntegerSetting minValue](self, "minValue"), -[HMBoundedIntegerSetting valueStepSize](self, "valueStepSize"));
   }
 
   else

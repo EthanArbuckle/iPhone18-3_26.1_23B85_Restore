@@ -1,25 +1,25 @@
 @interface OFUICircularPagingViewController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (OFUICircularPagingView)circularPagingView;
 - (OFUICircularPagingViewController)init;
-- (OFUICircularPagingViewController)initWithCoder:(id)a3;
-- (OFUICircularPagingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (OFUICircularPagingViewController)initWithCoder:(id)coder;
+- (OFUICircularPagingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)commonInit;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
 - (void)loadView;
-- (void)setCircularPagingView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setCircularPagingView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillUnload;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation OFUICircularPagingViewController
@@ -45,11 +45,11 @@
   return v3;
 }
 
-- (OFUICircularPagingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (OFUICircularPagingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = OFUICircularPagingViewController;
-  v4 = [(OFUIViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(OFUIViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -59,11 +59,11 @@
   return v5;
 }
 
-- (OFUICircularPagingViewController)initWithCoder:(id)a3
+- (OFUICircularPagingViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OFUICircularPagingViewController;
-  v3 = [(OFUIViewController *)&v6 initWithCoder:a3];
+  v3 = [(OFUIViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -94,8 +94,8 @@
     v10.receiver = self;
     v10.super_class = OFUICircularPagingViewController;
     [(OFUIViewController *)&v10 loadView];
-    v4 = [(OFUICircularPagingViewController *)self circularPagingView];
-    if (!v4)
+    circularPagingView = [(OFUICircularPagingViewController *)self circularPagingView];
+    if (!circularPagingView)
     {
       v5 = MEMORY[0x277CCACA8];
       v6 = objc_opt_class();
@@ -103,12 +103,12 @@
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"%@ loaded the %@ nib but didn't get a OFUICircularPagingView.", objc_msgSend(v5, "stringWithFormat:", @"-[%@ %@]", v7, NSStringFromSelector(a2)), -[OFUICircularPagingViewController nibName](self, "nibName")}];
     }
 
-    if (![(OFUICircularPagingView *)v4 delegate])
+    if (![(OFUICircularPagingView *)circularPagingView delegate])
     {
-      [(OFUICircularPagingView *)v4 setDelegate:self];
+      [(OFUICircularPagingView *)circularPagingView setDelegate:self];
     }
 
-    [(OFUICircularPagingView *)v4 setCircularPagingViewController:self];
+    [(OFUICircularPagingView *)circularPagingView setCircularPagingViewController:self];
   }
 
   else
@@ -153,79 +153,79 @@
   [(OFUIViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = OFUICircularPagingViewController;
-  [(OFUIViewController *)&v4 viewWillAppear:a3];
+  [(OFUIViewController *)&v4 viewWillAppear:appear];
   [[(OFUICircularPagingViewController *)self circularPagingView] reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OFUICircularPagingViewController;
-  [(OFUIViewController *)&v3 viewDidAppear:a3];
+  [(OFUIViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OFUICircularPagingViewController;
-  [(OFUIViewController *)&v3 viewWillDisappear:a3];
+  [(OFUIViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OFUICircularPagingViewController;
-  [(OFUIViewController *)&v3 viewDidDisappear:a3];
+  [(OFUIViewController *)&v3 viewDidDisappear:disappear];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = OFUICircularPagingViewController;
-  [(OFUICircularPagingViewController *)&v3 willMoveToParentViewController:a3];
+  [(OFUICircularPagingViewController *)&v3 willMoveToParentViewController:controller];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v4.receiver = self;
   v4.super_class = OFUICircularPagingViewController;
-  return [(OFUICircularPagingViewController *)&v4 shouldAutorotateToInterfaceOrientation:a3];
+  return [(OFUICircularPagingViewController *)&v4 shouldAutorotateToInterfaceOrientation:orientation];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = OFUICircularPagingViewController;
-  [(OFUICircularPagingViewController *)&v4 willRotateToInterfaceOrientation:a3 duration:a4];
+  [(OFUICircularPagingViewController *)&v4 willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = OFUICircularPagingViewController;
-  [(OFUICircularPagingViewController *)&v5 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [(OFUICircularPagingViewController *)&v5 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
   [[(OFUICircularPagingViewController *)self circularPagingView] willAnimateRotation];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v4.receiver = self;
   v4.super_class = OFUICircularPagingViewController;
-  [(OFUICircularPagingViewController *)&v4 didRotateFromInterfaceOrientation:a3];
+  [(OFUICircularPagingViewController *)&v4 didRotateFromInterfaceOrientation:orientation];
   [[(OFUICircularPagingViewController *)self circularPagingView] didRotate];
 }
 
 - (OFUICircularPagingView)circularPagingView
 {
-  v2 = [(OFUICircularPagingViewController *)self view];
+  view = [(OFUICircularPagingViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return view;
   }
 
   else
@@ -234,22 +234,22 @@
   }
 }
 
-- (void)setCircularPagingView:(id)a3
+- (void)setCircularPagingView:(id)view
 {
-  v5 = [(OFUICircularPagingViewController *)self circularPagingView];
-  if (v5 != a3)
+  circularPagingView = [(OFUICircularPagingViewController *)self circularPagingView];
+  if (circularPagingView != view)
   {
-    v6 = v5;
-    if ([(OFUICircularPagingView *)v5 delegate]== self)
+    v6 = circularPagingView;
+    if ([(OFUICircularPagingView *)circularPagingView delegate]== self)
     {
       [(OFUICircularPagingView *)v6 setDelegate:0];
     }
 
-    [(OFUICircularPagingViewController *)self setView:a3];
-    if (![a3 delegate])
+    [(OFUICircularPagingViewController *)self setView:view];
+    if (![view delegate])
     {
 
-      [a3 setDelegate:self];
+      [view setDelegate:self];
     }
   }
 }

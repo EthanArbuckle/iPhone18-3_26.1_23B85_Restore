@@ -12,8 +12,8 @@
     return 0;
   }
 
-  v2 = [(SASExpressSettings *)self appearanceMode];
-  switch(v2)
+  appearanceMode = [(SASExpressSettings *)self appearanceMode];
+  switch(appearanceMode)
   {
     case 1u:
       return 1;
@@ -30,10 +30,10 @@
 {
   if (([(SASExpressSettings *)self hasIPadMultitaskingMode]& 1) != 0)
   {
-    v2 = [(SASExpressSettings *)self iPadMultitaskingMode];
-    if (v2)
+    iPadMultitaskingMode = [(SASExpressSettings *)self iPadMultitaskingMode];
+    if (iPadMultitaskingMode)
     {
-      if (v2 == 1)
+      if (iPadMultitaskingMode == 1)
       {
         v5 = &off_10033D0E8;
       }

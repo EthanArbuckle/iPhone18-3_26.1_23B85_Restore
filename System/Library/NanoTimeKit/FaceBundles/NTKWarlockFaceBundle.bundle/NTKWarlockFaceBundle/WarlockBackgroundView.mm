@@ -1,11 +1,11 @@
 @interface WarlockBackgroundView
-- (_TtC20NTKWarlockFaceBundle21WarlockBackgroundView)initWithCoder:(id)a3;
-- (_TtC20NTKWarlockFaceBundle21WarlockBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC20NTKWarlockFaceBundle21WarlockBackgroundView)initWithCoder:(id)coder;
+- (_TtC20NTKWarlockFaceBundle21WarlockBackgroundView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation WarlockBackgroundView
 
-- (_TtC20NTKWarlockFaceBundle21WarlockBackgroundView)initWithCoder:(id)a3
+- (_TtC20NTKWarlockFaceBundle21WarlockBackgroundView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20NTKWarlockFaceBundle21WarlockBackgroundView_rampColorState;
   if (qword_58558 != -1)
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC20NTKWarlockFaceBundle21WarlockBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC20NTKWarlockFaceBundle21WarlockBackgroundView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

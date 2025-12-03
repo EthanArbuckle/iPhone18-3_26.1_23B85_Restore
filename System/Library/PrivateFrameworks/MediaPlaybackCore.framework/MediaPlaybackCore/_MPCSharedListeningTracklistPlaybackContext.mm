@@ -1,17 +1,17 @@
 @interface _MPCSharedListeningTracklistPlaybackContext
-- (id)getSharedListeningTracklistWithCompletion:(id)a3;
+- (id)getSharedListeningTracklistWithCompletion:(id)completion;
 @end
 
 @implementation _MPCSharedListeningTracklistPlaybackContext
 
-- (id)getSharedListeningTracklistWithCompletion:(id)a3
+- (id)getSharedListeningTracklistWithCompletion:(id)completion
 {
   v4 = MEMORY[0x1E696AE38];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [v4 progressWithTotalUnitCount:1];
-  v7 = [(_MPCSharedListeningTracklistPlaybackContext *)self tracklist];
-  v8 = [(_MPCSharedListeningTracklistPlaybackContext *)self startItemIndexPath];
-  v5[2](v5, v7, v8, 0);
+  tracklist = [(_MPCSharedListeningTracklistPlaybackContext *)self tracklist];
+  startItemIndexPath = [(_MPCSharedListeningTracklistPlaybackContext *)self startItemIndexPath];
+  completionCopy[2](completionCopy, tracklist, startItemIndexPath, 0);
 
   [v6 setCompletedUnitCount:1];
 

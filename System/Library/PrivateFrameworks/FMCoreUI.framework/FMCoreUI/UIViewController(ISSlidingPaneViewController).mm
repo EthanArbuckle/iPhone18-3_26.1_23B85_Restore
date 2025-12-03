@@ -6,8 +6,8 @@
 
 - (id)slidingPaneViewController
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
@@ -17,21 +17,21 @@
         break;
       }
 
-      v2 = [v1 parentViewController];
+      parentViewController = [selfCopy parentViewController];
 
-      v1 = v2;
-      if (!v2)
+      selfCopy = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_6;
       }
     }
 
-    v1 = v1;
+    selfCopy = selfCopy;
   }
 
 LABEL_6:
 
-  return v1;
+  return selfCopy;
 }
 
 @end

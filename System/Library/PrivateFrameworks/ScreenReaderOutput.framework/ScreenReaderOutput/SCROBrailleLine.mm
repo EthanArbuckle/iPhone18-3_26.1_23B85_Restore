@@ -1,76 +1,76 @@
 @interface SCROBrailleLine
 + (void)initialize;
-- (BOOL)_blink:(BOOL)a3;
-- (BOOL)_deleteAtCursorSilently:(BOOL)a3;
-- (BOOL)_forwardDeleteAtCursorSilently:(BOOL)a3;
-- (BOOL)_insertBrailleStringAtCursor:(id)a3 modifiers:(id)a4 silently:(BOOL)a5;
-- (BOOL)_selectBrailleRange:(_NSRange)a3 selectionBegin:(int64_t *)a4 selectionEnd:(int64_t *)a5;
-- (BOOL)_setMainCells:(const char *)a3 length:(int64_t)a4 forZoomOut:(BOOL)a5;
+- (BOOL)_blink:(BOOL)_blink;
+- (BOOL)_deleteAtCursorSilently:(BOOL)silently;
+- (BOOL)_forwardDeleteAtCursorSilently:(BOOL)silently;
+- (BOOL)_insertBrailleStringAtCursor:(id)cursor modifiers:(id)modifiers silently:(BOOL)silently;
+- (BOOL)_selectBrailleRange:(_NSRange)range selectionBegin:(int64_t *)begin selectionEnd:(int64_t *)end;
+- (BOOL)_setMainCells:(const char *)cells length:(int64_t)length forZoomOut:(BOOL)out;
 - (BOOL)canPanRight;
 - (BOOL)display;
-- (BOOL)getStatusRouterIndex:(int64_t *)a3 forRawIndex:(int64_t)a4;
+- (BOOL)getStatusRouterIndex:(int64_t *)index forRawIndex:(int64_t)rawIndex;
 - (BOOL)hasEdits;
-- (BOOL)insertBrailleStringAtCursor:(id)a3 modifiers:(id)a4;
+- (BOOL)insertBrailleStringAtCursor:(id)cursor modifiers:(id)modifiers;
 - (BOOL)moveCursorLeft;
 - (BOOL)moveCursorRight;
-- (BOOL)moveCursorToRouterIndex:(unint64_t)a3 forwardToScreenReader:(BOOL *)a4 updateRouterLocation:(int64_t *)a5;
+- (BOOL)moveCursorToRouterIndex:(unint64_t)index forwardToScreenReader:(BOOL *)reader updateRouterLocation:(int64_t *)location;
 - (BOOL)panBeginning;
 - (BOOL)panEnd;
 - (BOOL)panLeft;
 - (BOOL)panRight;
-- (BOOL)selectContiguousBrailleRange:(unint64_t)a3 selectionBegin:(int64_t *)a4 selectionEnd:(int64_t *)a5;
-- (BOOL)selectEntireLine:(int64_t *)a3 selectionEnd:(int64_t *)a4;
-- (BOOL)selectUpToRouterIndex:(unint64_t)a3 selectionBegin:(int64_t *)a4 selectionEnd:(int64_t *)a5;
+- (BOOL)selectContiguousBrailleRange:(unint64_t)range selectionBegin:(int64_t *)begin selectionEnd:(int64_t *)end;
+- (BOOL)selectEntireLine:(int64_t *)line selectionEnd:(int64_t *)end;
+- (BOOL)selectUpToRouterIndex:(unint64_t)index selectionBegin:(int64_t *)begin selectionEnd:(int64_t *)end;
 - (BOOL)wantsEdits;
 - (BRLTBrailleStateManagerDelegate)translationDelegate;
 - (NSAttributedString)editingString;
 - (NSData)imageData;
 - (NSString)description;
-- (SCROBrailleLine)initWithDriver:(id)a3 mainSize:(int64_t)a4 statusSize:(int64_t)a5;
-- (_NSRange)textRangeForBrailleRange:(_NSRange)a3;
-- (id)_applySuggestionCellsToPrintBraille:(id)a3;
+- (SCROBrailleLine)initWithDriver:(id)driver mainSize:(int64_t)size statusSize:(int64_t)statusSize;
+- (_NSRange)textRangeForBrailleRange:(_NSRange)range;
+- (id)_applySuggestionCellsToPrintBraille:(id)braille;
 - (id)imageCanvas;
 - (id)newLineDescriptor;
 - (id)newLineDescriptorWithoutPadding;
-- (id)printBrailleForText:(id)a3 language:(id)a4 mode:(unint64_t)a5 textPositionsRange:(_NSRange)a6 locations:(id *)a7 textFormattingRanges:(id)a8;
-- (id)textForPrintBraille:(id)a3 language:(id)a4 mode:(unint64_t)a5 locations:(id *)a6;
-- (id)translatedBrailleForTableIdentifier:(id)a3;
-- (int64_t)_indexOfWhitespaceAfterIBeam:(int64_t)a3 inLine:(id)a4;
-- (int64_t)_indexOfWhitespaceBeforeIBeam:(int64_t)a3 inLine:(id)a4;
-- (int64_t)_selectionForOffsetIndex:(int64_t)a3;
-- (int64_t)tokenForRouterIndex:(int64_t *)a3 location:(int64_t *)a4 appToken:(id *)a5;
+- (id)printBrailleForText:(id)text language:(id)language mode:(unint64_t)mode textPositionsRange:(_NSRange)range locations:(id *)locations textFormattingRanges:(id)ranges;
+- (id)textForPrintBraille:(id)braille language:(id)language mode:(unint64_t)mode locations:(id *)locations;
+- (id)translatedBrailleForTableIdentifier:(id)identifier;
+- (int64_t)_indexOfWhitespaceAfterIBeam:(int64_t)beam inLine:(id)line;
+- (int64_t)_indexOfWhitespaceBeforeIBeam:(int64_t)beam inLine:(id)line;
+- (int64_t)_selectionForOffsetIndex:(int64_t)index;
+- (int64_t)tokenForRouterIndex:(int64_t *)index location:(int64_t *)location appToken:(id *)token;
 - (unint64_t)numberOfTextLinesInPlanarBraille;
 - (void)_flush;
 - (void)_flushRealStatus;
 - (void)_updateOffsets;
-- (void)addAttributedPaddingToLineBuffer:(id)a3;
-- (void)addAttributedStringToLineBuffer:(id)a3 brailleOffset:(unint64_t)a4;
+- (void)addAttributedPaddingToLineBuffer:(id)buffer;
+- (void)addAttributedStringToLineBuffer:(id)buffer brailleOffset:(unint64_t)offset;
 - (void)blinker;
-- (void)brailleDisplayDeletedCharacter:(id)a3;
-- (void)brailleDisplayInsertedCharacter:(id)a3 modifiers:(id)a4;
-- (void)brailleDisplayStringDidChange:(id)a3 brailleSelection:(_NSRange)a4 brailleUIOptions:(id)a5 modifiers:(id)a6;
+- (void)brailleDisplayDeletedCharacter:(id)character;
+- (void)brailleDisplayInsertedCharacter:(id)character modifiers:(id)modifiers;
+- (void)brailleDisplayStringDidChange:(id)change brailleSelection:(_NSRange)selection brailleUIOptions:(id)options modifiers:(id)modifiers;
 - (void)dealloc;
-- (void)didChangeBrailleString:(id)a3 brailleSelection:(_NSRange)a4 brailleUIOptions:(id)a5;
-- (void)didInsertScriptString:(id)a3;
-- (void)enumerateWordsBetweenCharacters:(id)a3 text:(id)a4 inRange:(_NSRange)a5 usingBlock:(id)a6;
+- (void)didChangeBrailleString:(id)string brailleSelection:(_NSRange)selection brailleUIOptions:(id)options;
+- (void)didInsertScriptString:(id)string;
+- (void)enumerateWordsBetweenCharacters:(id)characters text:(id)text inRange:(_NSRange)range usingBlock:(id)block;
 - (void)planarPanLeft;
 - (void)planarPanRight;
-- (void)replaceScriptStringRange:(_NSRange)a3 withScriptString:(id)a4 cursorLocation:(unint64_t)a5;
-- (void)scriptSelectionDidChange:(_NSRange)a3;
-- (void)setAnyUnread:(BOOL)a3;
-- (void)setCurrentUnread:(BOOL)a3;
-- (void)setDisplayEnabled:(BOOL)a3;
-- (void)setDisplayMode:(int)a3;
-- (void)setFormatter:(id)a3;
-- (void)setImageData:(id)a3;
-- (void)setLineFocus:(int)a3;
-- (void)setMainSize:(int64_t)a3;
-- (void)setMasterStatusCellIndex:(int64_t)a3;
-- (void)setPlanarData:(id)a3;
-- (void)setRealStatus:(id)a3;
-- (void)setShowDotsSevenAndEight:(BOOL)a3;
-- (void)setStatusSize:(int64_t)a3;
-- (void)setVirtualStatus:(id)a3 alignment:(int)a4;
+- (void)replaceScriptStringRange:(_NSRange)range withScriptString:(id)string cursorLocation:(unint64_t)location;
+- (void)scriptSelectionDidChange:(_NSRange)change;
+- (void)setAnyUnread:(BOOL)unread;
+- (void)setCurrentUnread:(BOOL)unread;
+- (void)setDisplayEnabled:(BOOL)enabled;
+- (void)setDisplayMode:(int)mode;
+- (void)setFormatter:(id)formatter;
+- (void)setImageData:(id)data;
+- (void)setLineFocus:(int)focus;
+- (void)setMainSize:(int64_t)size;
+- (void)setMasterStatusCellIndex:(int64_t)index;
+- (void)setPlanarData:(id)data;
+- (void)setRealStatus:(id)status;
+- (void)setShowDotsSevenAndEight:(BOOL)eight;
+- (void)setStatusSize:(int64_t)size;
+- (void)setVirtualStatus:(id)status alignment:(int)alignment;
 - (void)translate;
 @end
 
@@ -79,7 +79,7 @@
 + (void)initialize
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v10[0] = kSCROBrailleUnicodeCharacterSpace;
     v10[1] = kSCROBrailleUnicodeCharacterDot7;
@@ -106,16 +106,16 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (SCROBrailleLine)initWithDriver:(id)a3 mainSize:(int64_t)a4 statusSize:(int64_t)a5
+- (SCROBrailleLine)initWithDriver:(id)driver mainSize:(int64_t)size statusSize:(int64_t)statusSize
 {
-  v9 = a3;
+  driverCopy = driver;
   v32.receiver = self;
   v32.super_class = SCROBrailleLine;
   v10 = [(SCROBrailleLine *)&v32 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_brailleDriver, a3);
+    objc_storeStrong(&v10->_brailleDriver, driver);
     v12 = objc_alloc_init(MEMORY[0x277CCAB48]);
     lineBuffer = v11->_lineBuffer;
     v11->_lineBuffer = v12;
@@ -131,9 +131,9 @@
     v11->_displayEnabled = 1;
     *&v11->_wordWrapEnabled = 257;
     v11->_isUIString = 0;
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingBrailleStringDictionaries = v11->_pendingBrailleStringDictionaries;
-    v11->_pendingBrailleStringDictionaries = v14;
+    v11->_pendingBrailleStringDictionaries = array;
 
     v16 = objc_alloc_init(SCROBrailleLineVirtualStatus);
     virtualStatus = v11->_virtualStatus;
@@ -151,11 +151,11 @@
       braillePlane = v11->_braillePlane;
       v11->_braillePlane = v20;
 
-      v22 = [(SCROBrailleDriverProtocol *)v11->_brailleDriver canvas];
-      v23 = [v22 descriptor];
-      v24 = [v23 height];
+      canvas = [(SCROBrailleDriverProtocol *)v11->_brailleDriver canvas];
+      descriptor = [canvas descriptor];
+      height = [descriptor height];
 
-      if (v24)
+      if (height)
       {
         v11->_hasNonemptyCanvas = 1;
       }
@@ -185,8 +185,8 @@
     flushLock = v11->_flushLock;
     v11->_flushLock = v29;
 
-    [(SCROBrailleLine *)v11 setMainSize:a4];
-    [(SCROBrailleLine *)v11 setStatusSize:a5];
+    [(SCROBrailleLine *)v11 setMainSize:size];
+    [(SCROBrailleLine *)v11 setStatusSize:statusSize];
     v11->_inputMode = 1;
   }
 
@@ -197,24 +197,24 @@
 {
   if (self->_supportsCanvas)
   {
-    v4 = [(SCROBrailleDriverProtocol *)self->_brailleDriver canvas];
+    canvas = [(SCROBrailleDriverProtocol *)self->_brailleDriver canvas];
   }
 
   else
   {
-    v4 = 0;
+    canvas = 0;
   }
 
-  return v4;
+  return canvas;
 }
 
-- (void)setImageData:(id)a3
+- (void)setImageData:(id)data
 {
   if (self->_supportsCanvas)
   {
-    v5 = a3;
-    v6 = [(SCROBrailleLine *)self imageCanvas];
-    [v6 setImageData:v5];
+    dataCopy = data;
+    imageCanvas = [(SCROBrailleLine *)self imageCanvas];
+    [imageCanvas setImageData:dataCopy];
 
     brailleDriver = self->_brailleDriver;
 
@@ -224,34 +224,34 @@
 
 - (NSData)imageData
 {
-  v2 = [(SCROBrailleLine *)self imageCanvas];
-  v3 = [v2 imageData];
+  imageCanvas = [(SCROBrailleLine *)self imageCanvas];
+  imageData = [imageCanvas imageData];
 
-  return v3;
+  return imageData;
 }
 
-- (void)setPlanarData:(id)a3
+- (void)setPlanarData:(id)data
 {
-  v4 = a3;
-  v27 = v4;
+  dataCopy = data;
+  v27 = dataCopy;
   if (self->_hasNonemptyCanvas || self->_shouldUseMultiRow)
   {
-    [(SCRO2DBraillePlane *)self->_braillePlane setBrailleData:v4];
+    [(SCRO2DBraillePlane *)self->_braillePlane setBrailleData:dataCopy];
   }
 
   else
   {
-    v5 = [(SCROBrailleDriverProtocol *)self->_brailleDriver mainSize];
-    v6 = malloc_type_malloc(v5, 0x100004077774924uLL);
+    mainSize = [(SCROBrailleDriverProtocol *)self->_brailleDriver mainSize];
+    v6 = malloc_type_malloc(mainSize, 0x100004077774924uLL);
     v7 = +[SCROBrailleUISettingsManager sharedInstance];
-    v8 = [v7 zoomOutNumCellsPerElement];
+    zoomOutNumCellsPerElement = [v7 zoomOutNumCellsPerElement];
 
-    v9 = [v27 focusedIndex];
-    v10 = [v27 strings];
-    v11 = [v10 count];
+    focusedIndex = [v27 focusedIndex];
+    strings = [v27 strings];
+    v11 = [strings count];
 
-    v25 = v5;
-    if (v9 >= v11)
+    v25 = mainSize;
+    if (focusedIndex >= v11)
     {
       v13 = 0;
     }
@@ -260,24 +260,24 @@
     {
       v12 = 0;
       v13 = 0;
-      v26 = v5 / (v8 + 1);
+      v26 = mainSize / (zoomOutNumCellsPerElement + 1);
       v14 = v27;
       do
       {
-        v15 = [v14 strings];
-        v16 = [v15 objectAtIndex:v9];
+        strings2 = [v14 strings];
+        v16 = [strings2 objectAtIndex:focusedIndex];
 
         v17 = +[SCROBrailleTranslationManager sharedManager];
-        v18 = [v16 localizedLowercaseString];
-        v19 = [v17 printBrailleForText:v18 language:0 mode:1 textPositionsRange:0x7FFFFFFFFFFFFFFFLL locations:0 textFormattingRanges:{0, 0}];
+        localizedLowercaseString = [v16 localizedLowercaseString];
+        v19 = [v17 printBrailleForText:localizedLowercaseString language:0 mode:1 textPositionsRange:0x7FFFFFFFFFFFFFFFLL locations:0 textFormattingRanges:{0, 0}];
 
         v20 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"⠀"];
         v21 = [v19 stringByTrimmingCharactersInSet:v20];
 
         v6[v13++] = 0;
-        if (v8)
+        if (zoomOutNumCellsPerElement)
         {
-          for (i = 0; i != v8; ++i)
+          for (i = 0; i != zoomOutNumCellsPerElement; ++i)
           {
             if (i < [v21 length])
             {
@@ -295,14 +295,14 @@
           break;
         }
 
-        ++v9;
-        v23 = [v27 strings];
-        v24 = [v23 count];
+        ++focusedIndex;
+        strings3 = [v27 strings];
+        v24 = [strings3 count];
 
         v14 = v27;
       }
 
-      while (v9 < v24);
+      while (focusedIndex < v24);
     }
 
     if (v25 > v13)
@@ -319,11 +319,11 @@
 {
   if (self->_supportsCanvas)
   {
-    v3 = [(SCROBrailleLine *)self imageCanvas];
-    v4 = [v3 descriptor];
-    v5 = [v4 numberOfTextLinesAvailable];
+    imageCanvas = [(SCROBrailleLine *)self imageCanvas];
+    descriptor = [imageCanvas descriptor];
+    numberOfTextLinesAvailable = [descriptor numberOfTextLinesAvailable];
 
-    return v5;
+    return numberOfTextLinesAvailable;
   }
 
   else if (self->_shouldUseMultiRow)
@@ -379,21 +379,21 @@
   [(SCROBrailleLine *)&v8 dealloc];
 }
 
-- (void)setMainSize:(int64_t)a3
+- (void)setMainSize:(int64_t)size
 {
-  if (self->_size != a3)
+  if (self->_size != size)
   {
-    self->_size = a3;
-    v5 = malloc_type_realloc(self->_displayBuffer, a3, 0x100004077774924uLL);
+    self->_size = size;
+    v5 = malloc_type_realloc(self->_displayBuffer, size, 0x100004077774924uLL);
     self->_displayBuffer = v5;
     bzero(v5, self->_size);
-    v6 = malloc_type_realloc(self->_mainCellsBuffer, a3, 0x100004077774924uLL);
+    v6 = malloc_type_realloc(self->_mainCellsBuffer, size, 0x100004077774924uLL);
     self->_mainCellsBuffer = v6;
     bzero(v6, self->_size);
-    v7 = malloc_type_realloc(self->_displayFilter, a3, 0x100004077774924uLL);
+    v7 = malloc_type_realloc(self->_displayFilter, size, 0x100004077774924uLL);
     self->_displayFilter = v7;
     bzero(v7, self->_size);
-    v8 = malloc_type_realloc(self->_blinkerBuffer, a3, 0x100004077774924uLL);
+    v8 = malloc_type_realloc(self->_blinkerBuffer, size, 0x100004077774924uLL);
     self->_blinkerBuffer = v8;
     bzero(v8, self->_size);
     [(SCROBrailleLine *)self _updateOffsets];
@@ -403,25 +403,25 @@
   }
 }
 
-- (void)setStatusSize:(int64_t)a3
+- (void)setStatusSize:(int64_t)size
 {
-  if (self->_statusSize != a3)
+  if (self->_statusSize != size)
   {
-    self->_statusSize = a3;
-    v4 = malloc_type_realloc(self->_statusFilter, a3, 0x100004077774924uLL);
+    self->_statusSize = size;
+    v4 = malloc_type_realloc(self->_statusFilter, size, 0x100004077774924uLL);
     self->_statusFilter = v4;
     bzero(v4, self->_statusSize);
     self->_needsStatusFlush = 1;
   }
 }
 
-- (void)setMasterStatusCellIndex:(int64_t)a3
+- (void)setMasterStatusCellIndex:(int64_t)index
 {
-  if (self->_masterStatusCellIndex != a3)
+  if (self->_masterStatusCellIndex != index)
   {
-    self->_masterStatusCellIndex = a3;
-    v5 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
-    [(SCROBrailleLine *)self setVirtualStatus:v5 alignment:[(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment]];
+    self->_masterStatusCellIndex = index;
+    data = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
+    [(SCROBrailleLine *)self setVirtualStatus:data alignment:[(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment]];
 
     statusData = self->_statusData;
 
@@ -429,16 +429,16 @@
   }
 }
 
-- (void)setRealStatus:(id)a3
+- (void)setRealStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   if (self->_statusSize >= 1)
   {
-    v8 = v5;
-    v5 = [(NSData *)self->_statusData isEqualToData:v5];
-    if ((v5 & 1) == 0)
+    v8 = statusCopy;
+    statusCopy = [(NSData *)self->_statusData isEqualToData:statusCopy];
+    if ((statusCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_statusData, a3);
+      objc_storeStrong(&self->_statusData, status);
       v6 = [v8 length];
       bzero(self->_statusFilter, self->_statusSize);
       if (v6 >= self->_statusSize)
@@ -451,19 +451,19 @@
         statusSize = v6;
       }
 
-      v5 = [v8 getBytes:self->_statusFilter length:statusSize];
+      statusCopy = [v8 getBytes:self->_statusFilter length:statusSize];
       self->_needsStatusFlush = 1;
     }
   }
 
-  MEMORY[0x2821F96F8](v5);
+  MEMORY[0x2821F96F8](statusCopy);
 }
 
-- (void)setVirtualStatus:(id)a3 alignment:(int)a4
+- (void)setVirtualStatus:(id)status alignment:(int)alignment
 {
-  v17 = a3;
-  v6 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
-  v7 = [v6 isEqualToData:v17];
+  statusCopy = status;
+  data = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
+  v7 = [data isEqualToData:statusCopy];
 
   if (v7)
   {
@@ -473,18 +473,18 @@
   else
   {
     v9 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus length];
-    [(SCROBrailleLineVirtualStatus *)self->_virtualStatus setData:v17];
-    v10 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
+    [(SCROBrailleLineVirtualStatus *)self->_virtualStatus setData:statusCopy];
+    data2 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
 
     virtualStatus = self->_virtualStatus;
-    if (v10)
+    if (data2)
     {
-      v12 = [(SCROBrailleLineVirtualStatus *)virtualStatus data];
-      -[SCROBrailleLineVirtualStatus setLength:](self->_virtualStatus, "setLength:", [v12 length]);
+      data3 = [(SCROBrailleLineVirtualStatus *)virtualStatus data];
+      -[SCROBrailleLineVirtualStatus setLength:](self->_virtualStatus, "setLength:", [data3 length]);
 
       [(SCROBrailleLineVirtualStatus *)self->_virtualStatus setCells:malloc_type_realloc([(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells], [(SCROBrailleLineVirtualStatus *)self->_virtualStatus length], 0x100004077774924uLL)];
-      v13 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
-      [v13 getBytes:-[SCROBrailleLineVirtualStatus cells](self->_virtualStatus length:{"cells"), -[SCROBrailleLineVirtualStatus length](self->_virtualStatus, "length")}];
+      data4 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
+      [data4 getBytes:-[SCROBrailleLineVirtualStatus cells](self->_virtualStatus length:{"cells"), -[SCROBrailleLineVirtualStatus length](self->_virtualStatus, "length")}];
     }
 
     else
@@ -502,21 +502,21 @@
     self->_brailleChunksAreDirty = 1;
   }
 
-  v14 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment];
-  v15 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
-  if (v15)
+  alignment = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment];
+  data5 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus data];
+  if (data5)
   {
-    v16 = a4;
+    alignmentCopy = alignment;
   }
 
   else
   {
-    v16 = 0;
+    alignmentCopy = 0;
   }
 
-  [(SCROBrailleLineVirtualStatus *)self->_virtualStatus setAlignment:v16];
+  [(SCROBrailleLineVirtualStatus *)self->_virtualStatus setAlignment:alignmentCopy];
 
-  if ([(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment]!= v14)
+  if ([(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment]!= alignment)
   {
     self->_needsDisplayFlush = 1;
     self->_brailleChunksAreDirty = 1;
@@ -553,10 +553,10 @@ LABEL_15:
 
     if ([(SCROBrailleLineVirtualStatus *)self->_virtualStatus length]>= 1)
     {
-      v6 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment];
+      alignment = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment];
       v7 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus length];
       v8 = 64;
-      if (!v6)
+      if (!alignment)
       {
         v8 = 56;
       }
@@ -572,22 +572,22 @@ LABEL_15:
   if (self->_shouldUseMultiRow)
   {
     [(SCROBrailleLine *)self planarPanLeft];
-    LOBYTE(v3) = 1;
+    LOBYTE(canPanLeft) = 1;
   }
 
   else
   {
-    v3 = [(SCROBrailleLine *)self canPanLeft];
-    if (v3)
+    canPanLeft = [(SCROBrailleLine *)self canPanLeft];
+    if (canPanLeft)
     {
       self->_lineOffset = (self->_lineOffset - self->_insetSize) & ~((self->_lineOffset - self->_insetSize) >> 63);
-      LOBYTE(v3) = 1;
+      LOBYTE(canPanLeft) = 1;
       self->_needsDisplayFlush = 1;
       self->_isPanning = 1;
     }
   }
 
-  return v3;
+  return canPanLeft;
 }
 
 - (BOOL)canPanRight
@@ -607,22 +607,22 @@ LABEL_15:
   if (self->_shouldUseMultiRow)
   {
     [(SCROBrailleLine *)self planarPanRight];
-    LOBYTE(v3) = 1;
+    LOBYTE(canPanRight) = 1;
   }
 
   else
   {
-    v3 = [(SCROBrailleLine *)self canPanRight];
-    if (v3)
+    canPanRight = [(SCROBrailleLine *)self canPanRight];
+    if (canPanRight)
     {
       self->_lineOffset += self->_insetSize;
-      LOBYTE(v3) = 1;
+      LOBYTE(canPanRight) = 1;
       self->_needsDisplayFlush = 1;
       self->_isPanning = 1;
     }
   }
 
-  return v3;
+  return canPanRight;
 }
 
 - (BOOL)panBeginning
@@ -691,11 +691,11 @@ LABEL_15:
   }
 }
 
-- (void)setCurrentUnread:(BOOL)a3
+- (void)setCurrentUnread:(BOOL)unread
 {
-  if (self->_currentUnread != a3)
+  if (self->_currentUnread != unread)
   {
-    self->_currentUnread = a3;
+    self->_currentUnread = unread;
     if ((self->_masterStatusCellIndex & 0x8000000000000000) == 0)
     {
       self->_needsStatusFlush = 1;
@@ -703,11 +703,11 @@ LABEL_15:
   }
 }
 
-- (void)setAnyUnread:(BOOL)a3
+- (void)setAnyUnread:(BOOL)unread
 {
-  if (self->_anyUnread != a3)
+  if (self->_anyUnread != unread)
   {
-    self->_anyUnread = a3;
+    self->_anyUnread = unread;
     if ((self->_masterStatusCellIndex & 0x8000000000000000) == 0)
     {
       self->_needsStatusFlush = 1;
@@ -715,23 +715,23 @@ LABEL_15:
   }
 }
 
-- (void)setFormatter:(id)a3
+- (void)setFormatter:(id)formatter
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CF3318] sharedModel];
-  v7 = [v6 editable];
+  formatterCopy = formatter;
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  editable = [mEMORY[0x277CF3318] editable];
 
   if (self->_isUIString)
   {
     self->_previousUILineOffset = self->_lineOffset;
   }
 
-  v8 = [v5 displayMode];
-  self->_isUIString = v8 == 0;
-  if (v8)
+  displayMode = [formatterCopy displayMode];
+  self->_isUIString = displayMode == 0;
+  if (displayMode)
   {
-    v9 = v7;
+    v9 = editable;
   }
 
   else
@@ -741,9 +741,9 @@ LABEL_15:
 
   if (v9 == 1)
   {
-    if (v8)
+    if (displayMode)
     {
-      v10 = v7;
+      v10 = editable;
     }
 
     else
@@ -754,54 +754,54 @@ LABEL_15:
     self->_editableFieldInterruptedByAlert = v10;
   }
 
-  self->_lineOffset = [v5 lineOffset];
+  self->_lineOffset = [formatterCopy lineOffset];
   self->_iBeamLocation = -1;
-  -[SCROBrailleLine setShowDotsSevenAndEight:](self, "setShowDotsSevenAndEight:", [v5 showDotsSevenAndEight]);
-  -[SCROBrailleLine setCurrentUnread:](self, "setCurrentUnread:", [v5 currentUnread]);
-  -[SCROBrailleLine setAnyUnread:](self, "setAnyUnread:", [v5 anyUnread]);
-  -[SCROBrailleLine setDisplayMode:](self, "setDisplayMode:", [v5 displayMode]);
-  v11 = [v5 appToken];
-  [(SCROBrailleLine *)self setAppToken:v11];
+  -[SCROBrailleLine setShowDotsSevenAndEight:](self, "setShowDotsSevenAndEight:", [formatterCopy showDotsSevenAndEight]);
+  -[SCROBrailleLine setCurrentUnread:](self, "setCurrentUnread:", [formatterCopy currentUnread]);
+  -[SCROBrailleLine setAnyUnread:](self, "setAnyUnread:", [formatterCopy anyUnread]);
+  -[SCROBrailleLine setDisplayMode:](self, "setDisplayMode:", [formatterCopy displayMode]);
+  appToken = [formatterCopy appToken];
+  [(SCROBrailleLine *)self setAppToken:appToken];
 
-  -[SCROBrailleLine setLineFocus:](self, "setLineFocus:", [v5 lineFocus]);
-  -[SCROBrailleLine setLineOffset:](self, "setLineOffset:", [v5 lineOffset]);
-  -[SCROBrailleLine setGenerationID:](self, "setGenerationID:", [v5 generationID]);
+  -[SCROBrailleLine setLineFocus:](self, "setLineFocus:", [formatterCopy lineFocus]);
+  -[SCROBrailleLine setLineOffset:](self, "setLineOffset:", [formatterCopy lineOffset]);
+  -[SCROBrailleLine setGenerationID:](self, "setGenerationID:", [formatterCopy generationID]);
   if (self->_isUIString)
   {
     objc_storeStrong(&self->_previousUIString, self->_currentUIString);
-    v12 = [v5 editString];
-    v13 = [v12 string];
+    editString = [formatterCopy editString];
+    string = [editString string];
     currentUIString = self->_currentUIString;
-    self->_currentUIString = v13;
+    self->_currentUIString = string;
   }
 
-  self->_firstToken = [v5 firstToken];
-  self->_lastToken = [v5 lastToken];
+  self->_firstToken = [formatterCopy firstToken];
+  self->_lastToken = [formatterCopy lastToken];
   self->_needsDisplayFlush = 1;
   self->_brailleChunksAreDirty = 1;
   self->_needsFocusFlush = 1;
-  v15 = [v5 stateManager];
+  stateManager = [formatterCopy stateManager];
   stateManager = self->_stateManager;
-  self->_stateManager = v15;
+  self->_stateManager = stateManager;
 
-  objc_storeStrong(&self->_brailleFormatter, a3);
-  v17 = [v5 inputTableIdentifier];
-  if (v17)
+  objc_storeStrong(&self->_brailleFormatter, formatter);
+  inputTableIdentifier = [formatterCopy inputTableIdentifier];
+  if (inputTableIdentifier)
   {
-    v18 = v17;
+    v18 = inputTableIdentifier;
     inputTableIdentifier = self->_inputTableIdentifier;
-    v20 = [v5 inputTableIdentifier];
-    LOBYTE(inputTableIdentifier) = [(NSString *)inputTableIdentifier isEqualToString:v20];
+    inputTableIdentifier2 = [formatterCopy inputTableIdentifier];
+    LOBYTE(inputTableIdentifier) = [(NSString *)inputTableIdentifier isEqualToString:inputTableIdentifier2];
 
     if ((inputTableIdentifier & 1) == 0)
     {
-      v21 = [v5 inputTableIdentifier];
+      inputTableIdentifier3 = [formatterCopy inputTableIdentifier];
       v22 = self->_inputTableIdentifier;
-      self->_inputTableIdentifier = v21;
+      self->_inputTableIdentifier = inputTableIdentifier3;
 
       v23 = objc_alloc(MEMORY[0x277CF3340]);
-      v24 = [v5 inputTableIdentifier];
-      v25 = [v23 initWithIdentifier:v24];
+      inputTableIdentifier4 = [formatterCopy inputTableIdentifier];
+      v25 = [v23 initWithIdentifier:inputTableIdentifier4];
 
       if ([v25 supportsTranslationMode8Dot])
       {
@@ -822,26 +822,26 @@ LABEL_15:
     }
   }
 
-  [v5 addOutputDelegate:self];
-  v27 = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
-  if ([v27 count])
+  [formatterCopy addOutputDelegate:self];
+  pendingBrailleStringDictionaries = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
+  if ([pendingBrailleStringDictionaries count])
   {
     editableFieldInterruptedByAlert = self->_editableFieldInterruptedByAlert;
 
     if (!editableFieldInterruptedByAlert)
     {
-      v29 = [MEMORY[0x277CF3318] sharedModel];
-      v30 = [v29 editable];
+      mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+      editable2 = [mEMORY[0x277CF3318]2 editable];
 
-      if (v30)
+      if (editable2)
       {
-        v43 = v5;
+        v43 = formatterCopy;
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v31 = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
-        v32 = [v31 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        pendingBrailleStringDictionaries2 = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
+        v32 = [pendingBrailleStringDictionaries2 countByEnumeratingWithState:&v44 objects:v48 count:16];
         if (v32)
         {
           v33 = v32;
@@ -852,7 +852,7 @@ LABEL_15:
             {
               if (*v45 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(pendingBrailleStringDictionaries2);
               }
 
               v36 = *(*(&v44 + 1) + 8 * i);
@@ -860,9 +860,9 @@ LABEL_15:
               if (objc_opt_isKindOfClass())
               {
                 v37 = v36;
-                v38 = [v37 pendingBraille];
-                v39 = [v37 modifiers];
-                [(SCROBrailleLine *)self _insertBrailleStringAtCursor:v38 modifiers:v39 silently:1];
+                pendingBraille = [v37 pendingBraille];
+                modifiers = [v37 modifiers];
+                [(SCROBrailleLine *)self _insertBrailleStringAtCursor:pendingBraille modifiers:modifiers silently:1];
               }
 
               else
@@ -883,22 +883,22 @@ LABEL_15:
               }
             }
 
-            v33 = [v31 countByEnumeratingWithState:&v44 objects:v48 count:16];
+            v33 = [pendingBrailleStringDictionaries2 countByEnumeratingWithState:&v44 objects:v48 count:16];
           }
 
           while (v33);
         }
 
-        v40 = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
-        [v40 removeAllObjects];
+        pendingBrailleStringDictionaries3 = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
+        [pendingBrailleStringDictionaries3 removeAllObjects];
 
-        v5 = v43;
+        formatterCopy = v43;
       }
 
       else
       {
-        v41 = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
-        [v41 removeAllObjects];
+        pendingBrailleStringDictionaries4 = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
+        [pendingBrailleStringDictionaries4 removeAllObjects];
       }
     }
   }
@@ -910,39 +910,39 @@ LABEL_15:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)getStatusRouterIndex:(int64_t *)a3 forRawIndex:(int64_t)a4
+- (BOOL)getStatusRouterIndex:(int64_t *)index forRawIndex:(int64_t)rawIndex
 {
   if (![(SCROBrailleLineVirtualStatus *)self->_virtualStatus alignment])
   {
-    if (self->_leftInset > a4)
+    if (self->_leftInset > rawIndex)
     {
       goto LABEL_5;
     }
 
 LABEL_6:
     result = 0;
-    a4 = -1;
+    rawIndex = -1;
     goto LABEL_7;
   }
 
   size = self->_size;
   rightInset = self->_rightInset;
-  if (size - rightInset > a4)
+  if (size - rightInset > rawIndex)
   {
     goto LABEL_6;
   }
 
-  a4 += ~size + rightInset;
+  rawIndex += ~size + rightInset;
 LABEL_5:
   result = 1;
 LABEL_7:
-  *a3 = a4;
+  *index = rawIndex;
   return result;
 }
 
-- (int64_t)tokenForRouterIndex:(int64_t *)a3 location:(int64_t *)a4 appToken:(id *)a5
+- (int64_t)tokenForRouterIndex:(int64_t *)index location:(int64_t *)location appToken:(id *)token
 {
-  v5 = *a3 - self->_leftInset + self->_lineOffset;
+  v5 = *index - self->_leftInset + self->_lineOffset;
   if (v5 < 0 || v5 >= [(NSMutableAttributedString *)self->_lineBuffer length])
   {
     return 0;
@@ -984,21 +984,21 @@ LABEL_7:
   v22[3] = &unk_279B74038;
   v22[4] = &v28;
   [v13 enumerateAttribute:@"sugg" inRange:0 options:v15 usingBlock:{0, v22}];
-  if (!*a3)
+  if (!*index)
   {
     v25[3] = 0;
   }
 
-  v16 = [MEMORY[0x277CF3318] sharedModel];
-  v17 = [v16 scriptLocationForBrailleLocation:v5 - v29[3]];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  v17 = [mEMORY[0x277CF3318] scriptLocationForBrailleLocation:v5 - v29[3]];
 
   if (!v25[3])
   {
-    v20 = [MEMORY[0x277CF3318] sharedModel];
-    v21 = [v20 displayedScript];
-    v18 = [v21 tokenForLocation:v17];
+    mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+    displayedScript = [mEMORY[0x277CF3318]2 displayedScript];
+    v18 = [displayedScript tokenForLocation:v17];
 
-    if (!a4)
+    if (!location)
     {
       goto LABEL_11;
     }
@@ -1007,16 +1007,16 @@ LABEL_7:
   }
 
   v18 = 0;
-  if (a4)
+  if (location)
   {
 LABEL_10:
-    *a4 = v17;
+    *location = v17;
   }
 
 LABEL_11:
-  if (a5)
+  if (token)
   {
-    *a5 = self->_appToken;
+    *token = self->_appToken;
   }
 
   _Block_object_dispose(&v24, 8);
@@ -1053,30 +1053,30 @@ uint64_t __57__SCROBrailleLine_tokenForRouterIndex_location_appToken___block_inv
   return result;
 }
 
-- (void)enumerateWordsBetweenCharacters:(id)a3 text:(id)a4 inRange:(_NSRange)a5 usingBlock:(id)a6
+- (void)enumerateWordsBetweenCharacters:(id)characters text:(id)text inRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  charactersCopy = characters;
+  textCopy = text;
+  blockCopy = block;
   v13 = location + length;
-  if (location + length <= [v11 length] && location < v13)
+  if (location + length <= [textCopy length] && location < v13)
   {
     v14 = 0;
     v15 = location;
     do
     {
       v21 = 0;
-      v16 = [v11 characterAtIndex:location];
-      if ([v10 characterIsMember:v16])
+      v16 = [textCopy characterAtIndex:location];
+      if ([charactersCopy characterIsMember:v16])
       {
-        if ([v10 characterIsMember:v16])
+        if ([charactersCopy characterIsMember:v16])
         {
           if (v14)
           {
-            v17 = [v11 substringWithRange:{v15, location - v15}];
-            v12[2](v12, v17, v15, location - v15, &v21);
+            v17 = [textCopy substringWithRange:{v15, location - v15}];
+            blockCopy[2](blockCopy, v17, v15, location - v15, &v21);
 
             if (v21)
             {
@@ -1084,8 +1084,8 @@ uint64_t __57__SCROBrailleLine_tokenForRouterIndex_location_appToken___block_inv
             }
           }
 
-          v18 = [v11 substringWithRange:{location, 1}];
-          v12[2](v12, v18, location, 1, &v21);
+          v18 = [textCopy substringWithRange:{location, 1}];
+          blockCopy[2](blockCopy, v18, location, 1, &v21);
 
           if (v21 == 1)
           {
@@ -1115,8 +1115,8 @@ uint64_t __57__SCROBrailleLine_tokenForRouterIndex_location_appToken___block_inv
     if (v14)
     {
       v20 = 0;
-      v19 = [v11 substringWithRange:{v15, v13 - v15}];
-      v12[2](v12, v19, v15, v13 - v15, &v20);
+      v19 = [textCopy substringWithRange:{v15, v13 - v15}];
+      blockCopy[2](blockCopy, v19, v15, v13 - v15, &v20);
     }
   }
 
@@ -1128,20 +1128,20 @@ LABEL_16:
   v62 = *MEMORY[0x277D85DE8];
   v4 = [(NSMutableAttributedString *)self->_lineBuffer mutableCopy];
   v5 = [v4 copy];
-  v6 = [MEMORY[0x277CF3318] sharedModel];
-  v7 = [v6 technicalMode];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  technicalMode = [mEMORY[0x277CF3318] technicalMode];
 
-  if (v7)
+  if (technicalMode)
   {
-    v8 = [v5 string];
-    v9 = [SCROBrailleTranslationUtility translatedTextInIsolationForBraille:v8 translationMode:4];
+    string = [v5 string];
+    string2 = [SCROBrailleTranslationUtility translatedTextInIsolationForBraille:string translationMode:4];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CF3318] sharedModel];
-    v10 = [v8 displayedScript];
-    v9 = [v10 string];
+    string = [MEMORY[0x277CF3318] sharedModel];
+    displayedScript = [string displayedScript];
+    string2 = [displayedScript string];
   }
 
   v61 = 683681792;
@@ -1149,7 +1149,7 @@ LABEL_16:
   v12 = [MEMORY[0x277CCACA8] stringWithCharacters:&v61 length:2];
   v13 = [v11 characterSetWithCharactersInString:v12];
 
-  v52 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
   v60[0] = 0;
   v60[1] = v60;
   v60[2] = 0x2020000000;
@@ -1161,40 +1161,40 @@ LABEL_16:
   v59 = a2;
   v50 = v5;
   v54 = v50;
-  v55 = self;
+  selfCopy = self;
   v14 = v4;
   v56 = v14;
   v58 = v60;
   v51 = v13;
   v57 = v51;
   v15 = _Block_copy(aBlock);
-  -[SCROBrailleLine enumerateWordsBetweenCharacters:text:inRange:usingBlock:](self, "enumerateWordsBetweenCharacters:text:inRange:usingBlock:", v52, v9, 0, [v9 length], v15);
+  -[SCROBrailleLine enumerateWordsBetweenCharacters:text:inRange:usingBlock:](self, "enumerateWordsBetweenCharacters:text:inRange:usingBlock:", whitespaceAndNewlineCharacterSet, string2, 0, [string2 length], v15);
   v16 = [v14 length];
   if (v16)
   {
     v49 = v16;
     v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:6];
-    v18 = [(BRLTBrailleStateManager *)self->_stateManager outputScriptString];
-    v19 = [v18 textFormattingRanges];
+    outputScriptString = [(BRLTBrailleStateManager *)self->_stateManager outputScriptString];
+    textFormattingRanges = [outputScriptString textFormattingRanges];
 
-    v20 = [v19 boldRanges];
-    if (v20)
+    boldRanges = [textFormattingRanges boldRanges];
+    if (boldRanges)
     {
-      [v17 setObject:v20 forKey:kSCROBrailleDisplayBoldRangesAttribute[0]];
+      [v17 setObject:boldRanges forKey:kSCROBrailleDisplayBoldRangesAttribute[0]];
     }
 
-    v48 = v20;
-    v21 = [v19 underlineRanges];
-    if (v21)
+    v48 = boldRanges;
+    underlineRanges = [textFormattingRanges underlineRanges];
+    if (underlineRanges)
     {
-      [v17 setObject:v21 forKey:kSCROBrailleDisplayUnderlineRangesAttribute[0]];
+      [v17 setObject:underlineRanges forKey:kSCROBrailleDisplayUnderlineRangesAttribute[0]];
     }
 
-    v47 = v21;
-    v22 = [v19 italicRanges];
-    if (v22)
+    v47 = underlineRanges;
+    italicRanges = [textFormattingRanges italicRanges];
+    if (italicRanges)
     {
-      [v17 setObject:v22 forKey:kSCROBrailleDisplayItalicRangesAttribute[0]];
+      [v17 setObject:italicRanges forKey:kSCROBrailleDisplayItalicRangesAttribute[0]];
     }
 
     v23 = [MEMORY[0x277CCABB0] numberWithInt:self->_displayMode];
@@ -1228,7 +1228,7 @@ LABEL_16:
       MEMORY[0x28223BE20]();
       v31 = &v44 - v30;
       v32 = self->_statusSize;
-      v45 = v9;
+      v45 = string2;
       if (v32 <= 0)
       {
         v32 = 0;
@@ -1263,7 +1263,7 @@ LABEL_16:
       v40 = [MEMORY[0x277CCABB0] numberWithInt:{-[SCROBrailleLineVirtualStatus alignment](self->_virtualStatus, "alignment")}];
       [v17 setObject:v40 forKey:kSCROBrailleStatusAlignmentAttribute[0]];
 
-      v9 = v45;
+      string2 = v45;
     }
 
     [v14 addAttributes:v17 range:{0, v49}];
@@ -1336,48 +1336,48 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
 
 - (id)newLineDescriptorWithoutPadding
 {
-  v2 = [(SCROBrailleLine *)self newLineDescriptor];
+  newLineDescriptor = [(SCROBrailleLine *)self newLineDescriptor];
   v5 = xmmword_26498C6C0;
-  if (![v2 getRange:&v5 ofAttribute:kSCROEditableTextPaddingAttribute[0]])
+  if (![newLineDescriptor getRange:&v5 ofAttribute:kSCROEditableTextPaddingAttribute[0]])
   {
-    return v2;
+    return newLineDescriptor;
   }
 
   do
   {
-    v3 = [v2 attributedSubstringFromRange:{0, v5}];
+    v3 = [newLineDescriptor attributedSubstringFromRange:{0, v5}];
 
-    v2 = v3;
+    newLineDescriptor = v3;
   }
 
   while (([v3 getRange:&v5 ofAttribute:kSCROEditableTextPaddingAttribute[0]] & 1) != 0);
   return v3;
 }
 
-- (void)setShowDotsSevenAndEight:(BOOL)a3
+- (void)setShowDotsSevenAndEight:(BOOL)eight
 {
-  if (self->_showDotsSevenAndEight != a3)
+  if (self->_showDotsSevenAndEight != eight)
   {
     self->_needsDisplayFlush = 1;
-    self->_showDotsSevenAndEight = a3;
+    self->_showDotsSevenAndEight = eight;
   }
 }
 
-- (void)setLineFocus:(int)a3
+- (void)setLineFocus:(int)focus
 {
-  if (self->_lineFocus != a3)
+  if (self->_lineFocus != focus)
   {
     self->_needsDisplayFlush = 1;
     self->_needsFocusFlush = 1;
-    self->_lineFocus = a3;
+    self->_lineFocus = focus;
   }
 }
 
-- (void)setDisplayMode:(int)a3
+- (void)setDisplayMode:(int)mode
 {
-  if (self->_displayMode != a3)
+  if (self->_displayMode != mode)
   {
-    self->_displayMode = a3;
+    self->_displayMode = mode;
     self->_needsDisplayFlush = 1;
     self->_brailleChunksAreDirty = 1;
     self->_needsFocusFlush = 1;
@@ -1385,21 +1385,21 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (int64_t)_indexOfWhitespaceBeforeIBeam:(int64_t)a3 inLine:(id)a4
+- (int64_t)_indexOfWhitespaceBeforeIBeam:(int64_t)beam inLine:(id)line
 {
-  v5 = a4;
-  v6 = [v5 length];
-  if (v6 >= a3)
+  lineCopy = line;
+  v6 = [lineCopy length];
+  if (v6 >= beam)
   {
-    v7 = a3;
+    beamCopy = beam;
   }
 
   else
   {
-    v7 = v6;
+    beamCopy = v6;
   }
 
-  v8 = [v5 rangeOfCharacterFromSet:_WhitespaceSet options:4 range:{0, v7}];
+  v8 = [lineCopy rangeOfCharacterFromSet:_WhitespaceSet options:4 range:{0, beamCopy}];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1412,13 +1412,13 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (int64_t)_indexOfWhitespaceAfterIBeam:(int64_t)a3 inLine:(id)a4
+- (int64_t)_indexOfWhitespaceAfterIBeam:(int64_t)beam inLine:(id)line
 {
-  v5 = a4;
-  v6 = [v5 length];
-  if ([v5 length] > a3 && v6 != a3)
+  lineCopy = line;
+  v6 = [lineCopy length];
+  if ([lineCopy length] > beam && v6 != beam)
   {
-    v7 = [v5 rangeOfCharacterFromSet:_WhitespaceSet options:0 range:{a3, v6 - a3}];
+    v7 = [lineCopy rangeOfCharacterFromSet:_WhitespaceSet options:0 range:{beam, v6 - beam}];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = v7;
@@ -1428,22 +1428,22 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
   return v6;
 }
 
-- (_NSRange)textRangeForBrailleRange:(_NSRange)a3
+- (_NSRange)textRangeForBrailleRange:(_NSRange)range
 {
-  length = a3.length;
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  length = range.length;
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    location = a3.location;
-    v6 = [MEMORY[0x277CF3318] sharedModel];
-    v4 = [v6 scriptLocationForBrailleLocation:location];
+    location = range.location;
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    v4 = [mEMORY[0x277CF3318] scriptLocationForBrailleLocation:location];
 
-    v7 = [MEMORY[0x277CF3318] sharedModel];
-    v8 = [v7 scriptLocationForBrailleLocation:location + length];
+    mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+    v8 = [mEMORY[0x277CF3318]2 scriptLocationForBrailleLocation:location + length];
 
     length = v8 - v4;
   }
@@ -1472,7 +1472,7 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (BOOL)_blink:(BOOL)a3
+- (BOOL)_blink:(BOOL)_blink
 {
   if (!self->_displayEnabled)
   {
@@ -1480,7 +1480,7 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
   }
 
   v3 = 192;
-  if (a3)
+  if (_blink)
   {
     v3 = 168;
   }
@@ -1488,18 +1488,18 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
   return [(SCROBrailleLine *)self _setMainCells:*(&self->super.isa + v3) length:self->_size];
 }
 
-- (BOOL)_setMainCells:(const char *)a3 length:(int64_t)a4 forZoomOut:(BOOL)a5
+- (BOOL)_setMainCells:(const char *)cells length:(int64_t)length forZoomOut:(BOOL)out
 {
   v26 = *MEMORY[0x277D85DE8];
   mainCellsBuffer = self->_mainCellsBuffer;
-  if (!memcmp(mainCellsBuffer, a3, a4))
+  if (!memcmp(mainCellsBuffer, cells, length))
   {
     v17 = 1;
   }
 
   else
   {
-    memcpy(mainCellsBuffer, a3, a4);
+    memcpy(mainCellsBuffer, cells, length);
     v10 = VOTLogBraille();
     v11 = os_signpost_id_generate(v10);
 
@@ -1507,11 +1507,11 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
-      v14 = [(SCROBrailleDriverProtocol *)self->_brailleDriver modelIdentifier];
+      modelIdentifier = [(SCROBrailleDriverProtocol *)self->_brailleDriver modelIdentifier];
       v22 = 138412546;
       v23 = v13;
       v24 = 2112;
-      v25 = v14;
+      v25 = modelIdentifier;
       _os_log_impl(&dword_26490B000, v12, OS_LOG_TYPE_DEFAULT, "Signpost id %@ generated for Driver %@", &v22, 0x16u);
     }
 
@@ -1523,7 +1523,7 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
       _os_signpost_emit_with_name_impl(&dword_26490B000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v11, "Set Main Cells", "", &v22, 2u);
     }
 
-    v17 = [(SCROBrailleDriverProtocol *)self->_brailleDriver setMainCells:a3 length:a4];
+    v17 = [(SCROBrailleDriverProtocol *)self->_brailleDriver setMainCells:cells length:length];
     v18 = VOTLogBraille();
     v19 = v18;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
@@ -1533,18 +1533,18 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
     }
   }
 
-  self->_isZoomOutActive = a5;
+  self->_isZoomOutActive = out;
   [(SCROBrailleLine *)self _updateOffsets];
   v20 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (void)setDisplayEnabled:(BOOL)a3
+- (void)setDisplayEnabled:(BOOL)enabled
 {
-  if (self->_displayEnabled != a3)
+  if (self->_displayEnabled != enabled)
   {
-    self->_displayEnabled = a3;
-    if (a3)
+    self->_displayEnabled = enabled;
+    if (enabled)
     {
       *&self->_needsDisplayFlush = 257;
       self->_brailleChunksAreDirty = 1;
@@ -1659,35 +1659,35 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
     p_lineBuffer = &self->_lineBuffer;
     [(NSMutableAttributedString *)self->_lineBuffer deleteCharactersInRange:0, [(NSMutableAttributedString *)self->_lineBuffer length]];
     self->_iBeamLocation = -1;
-    v4 = [MEMORY[0x277CF3318] sharedModel];
-    v5 = [v4 displayedBraille];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    displayedBraille = [mEMORY[0x277CF3318] displayedBraille];
 
-    v6 = [(SCROBrailleFormatter *)self->_brailleFormatter statusText];
+    statusText = [(SCROBrailleFormatter *)self->_brailleFormatter statusText];
 
-    if (v6)
+    if (statusText)
     {
-      v7 = [(SCROBrailleFormatter *)self->_brailleFormatter editString];
-      v8 = [v7 string];
-      v9 = [SCROBrailleTranslationUtility brailleForText:v8];
+      editString = [(SCROBrailleFormatter *)self->_brailleFormatter editString];
+      string = [editString string];
+      v9 = [SCROBrailleTranslationUtility brailleForText:string];
 
       v10 = [objc_alloc(MEMORY[0x277CF3330]) initWithString:v9 selection:0x7FFFFFFFFFFFFFFFLL focus:0 token:0x7FFFFFFFFFFFFFFFLL suggestion:0 textFormattingRanges:{0, 0x7FFFFFFFFFFFFFFFLL, 0, 0}];
-      v5 = v10;
+      displayedBraille = v10;
     }
 
-    self->_focusRange.location = [v5 focus];
+    self->_focusRange.location = [displayedBraille focus];
     p_focusRange = &self->_focusRange;
     self->_focusRange.length = v11;
     p_length = &self->_focusRange.length;
-    v12 = [v5 selection];
+    selection = [displayedBraille selection];
     self->_selectionRange.length = v13;
-    self->_selectionRange.location = v12;
+    self->_selectionRange.location = selection;
     p_selectionRange = &self->_selectionRange;
-    self->_suggestionRange.location = [v5 suggestion];
+    self->_suggestionRange.location = [displayedBraille suggestion];
     self->_suggestionRange.length = v14;
-    v15 = [v5 string];
-    v16 = v15;
+    string2 = [displayedBraille string];
+    v16 = string2;
     v186 = &self->_selectionRange.length;
-    if (self->_shouldTruncateAtPanBoundary && [v15 length] > self->_insetSize)
+    if (self->_shouldTruncateAtPanBoundary && [string2 length] > self->_insetSize)
     {
       v17 = [v16 substringToIndex:?];
 
@@ -1710,8 +1710,8 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
     }
 
     v23 = [(NSMutableAttributedString *)*p_lineBuffer length];
-    v24 = [MEMORY[0x277CF3318] sharedModel];
-    v188 = [v24 editable];
+    mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+    editable = [mEMORY[0x277CF3318]2 editable];
 
     if (p_selectionRange->location != 0x7FFFFFFFFFFFFFFFLL && !*v186)
     {
@@ -1723,7 +1723,7 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
     if ([(SCROBrailleLine *)self wordWrapEnabled])
     {
       v182 = v16;
-      v183 = v5;
+      v183 = displayedBraille;
       insetSize = self->_insetSize;
       v27 = v23 / insetSize * insetSize;
       v28 = [v19 length] + v23;
@@ -1738,8 +1738,8 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
         v184 = vdupq_n_s64(8uLL);
         do
         {
-          v34 = [v19 string];
-          v35 = [v34 substringWithRange:{v30, v25}];
+          string3 = [v19 string];
+          v35 = [string3 substringWithRange:{v30, v25}];
 
           v36 = [v35 characterAtIndex:v29 - 1];
           v37 = [v35 characterAtIndex:v29];
@@ -1797,7 +1797,7 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
           if (v44 >= 1)
           {
             v190 = v45;
-            if (v188)
+            if (editable)
             {
               v47 = [(NSMutableAttributedString *)*p_lineBuffer attributesAtIndex:[(NSMutableAttributedString *)*p_lineBuffer length]- 1 effectiveRange:0];
               if (v44 < 0x101)
@@ -2012,7 +2012,7 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
       }
 
       v16 = v182;
-      v5 = v183;
+      displayedBraille = v183;
     }
 
     else
@@ -2028,23 +2028,23 @@ void __36__SCROBrailleLine_newLineDescriptor__block_invoke_2(uint64_t a1, uint64
 
     else
     {
-      v82 = v188;
+      v82 = editable;
     }
 
     if (v82 == 1)
     {
       v83 = +[SCROBrailleUISettingsManager sharedInstance];
-      v84 = [v83 usesUnderlineCursor];
+      usesUnderlineCursor = [v83 usesUnderlineCursor];
 
-      if (!v84)
+      if (!usesUnderlineCursor)
       {
 LABEL_121:
         v102 = *p_lineBuffer;
         v103 = v102;
         if (p_selectionRange->location != 0x7FFFFFFFFFFFFFFFLL && *v186)
         {
-          v104 = [(NSMutableAttributedString *)v102 string];
-          v105 = _applyDots7And8FocusFilterToPrintBraille(v104, p_selectionRange->location, *v186);
+          string4 = [(NSMutableAttributedString *)v102 string];
+          v105 = _applyDots7And8FocusFilterToPrintBraille(string4, p_selectionRange->location, *v186);
 
           v106 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v105];
           v107 = [(NSMutableAttributedString *)v103 length];
@@ -2064,8 +2064,8 @@ LABEL_121:
 
         if (self->_showDotsSevenAndEight && p_focusRange->location != 0x7FFFFFFFFFFFFFFFLL && *p_length)
         {
-          v111 = [(NSMutableAttributedString *)v103 string];
-          v112 = _applyDots7And8FocusFilterToPrintBraille(v111, p_focusRange->location, *p_length);
+          string5 = [(NSMutableAttributedString *)v103 string];
+          v112 = _applyDots7And8FocusFilterToPrintBraille(string5, p_focusRange->location, *p_length);
 
           v113 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v112];
           v114 = [(NSMutableAttributedString *)v103 length];
@@ -2182,8 +2182,8 @@ LABEL_155:
         }
 
         v133 = [(NSMutableAttributedString *)self->_lineBuffer length];
-        v134 = [MEMORY[0x277CF3318] sharedModel];
-        [v134 editable];
+        mEMORY[0x277CF3318]3 = [MEMORY[0x277CF3318] sharedModel];
+        [mEMORY[0x277CF3318]3 editable];
 
         if (v131)
         {
@@ -2233,12 +2233,12 @@ LABEL_155:
         {
 LABEL_202:
           memcpy(self->_displayBuffer, self->_displayFilter, self->_size);
-          v163 = [(NSMutableAttributedString *)self->_lineBuffer string];
-          if (v163)
+          string6 = [(NSMutableAttributedString *)self->_lineBuffer string];
+          if (string6)
           {
             v204.location = v131;
             v204.length = v138;
-            v164 = CFStringCreateWithSubstring(0, v163, v204);
+            v164 = CFStringCreateWithSubstring(0, string6, v204);
           }
 
           else
@@ -2262,9 +2262,9 @@ LABEL_202:
 
           v168 = v166 - v167;
           v169 = +[SCROBrailleUISettingsManager sharedInstance];
-          v170 = [v169 usesUnderlineCursor];
+          usesUnderlineCursor2 = [v169 usesUnderlineCursor];
 
-          if (v170)
+          if (usesUnderlineCursor2)
           {
             if (v168 < 0 || v168 >= self->_insetSize)
             {
@@ -2351,10 +2351,10 @@ LABEL_187:
             {
               v150 = self->_masterStatusCellIndex - self->_statusSize;
               anyUnread = self->_anyUnread;
-              v152 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells];
-              v152[v150] = v152[v150] & 0xFE | anyUnread;
+              cells = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells];
+              cells[v150] = cells[v150] & 0xFE | anyUnread;
               currentUnread = self->_currentUnread;
-              v154 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells];
+              cells2 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells];
               if (currentUnread)
               {
                 v155 = 2;
@@ -2365,10 +2365,10 @@ LABEL_187:
                 v155 = 0;
               }
 
-              v154[v150] = v154[v150] & 0xFD | v155;
-              v156 = [(SCROBrailleLine *)self canPanLeft];
-              v157 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells];
-              if (v156)
+              cells2[v150] = cells2[v150] & 0xFD | v155;
+              canPanLeft = [(SCROBrailleLine *)self canPanLeft];
+              cells3 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells];
+              if (canPanLeft)
               {
                 v158 = 64;
               }
@@ -2378,10 +2378,10 @@ LABEL_187:
                 v158 = 0;
               }
 
-              v157[v150] = v157[v150] & 0xBF | v158;
-              v159 = [(SCROBrailleLine *)self canPanRight];
-              v160 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells];
-              if (v159)
+              cells3[v150] = cells3[v150] & 0xBF | v158;
+              canPanRight = [(SCROBrailleLine *)self canPanRight];
+              cells4 = [(SCROBrailleLineVirtualStatus *)self->_virtualStatus cells];
+              if (canPanRight)
               {
                 v161 = 0x80;
               }
@@ -2391,7 +2391,7 @@ LABEL_187:
                 v161 = 0;
               }
 
-              v160[v150] = v161 & 0x80 | v160[v150] & 0x7F;
+              cells4[v150] = v161 & 0x80 | cells4[v150] & 0x7F;
             }
 
             if ([(SCROBrailleLineVirtualStatus *)self->_virtualStatus length]>= 1)
@@ -2435,9 +2435,9 @@ LABEL_187:
               v145 = 63;
             }
 
-            v146 = [(SCROBrailleLine *)self canPanRight];
+            canPanRight2 = [(SCROBrailleLine *)self canPanRight];
             v147 = v145 | 0x80;
-            if (!v146)
+            if (!canPanRight2)
             {
               v147 = v145;
             }
@@ -2466,7 +2466,7 @@ LABEL_187:
 
     if (v32 > 0)
     {
-      v85 = v188;
+      v85 = editable;
     }
 
     else
@@ -2561,11 +2561,11 @@ LABEL_231:
   v181 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_applySuggestionCellsToPrintBraille:(id)a3
+- (id)_applySuggestionCellsToPrintBraille:(id)braille
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] && (v5 = self->_suggestionRange.length + self->_suggestionRange.location, v5 <= objc_msgSend(v4, "length")))
+  brailleCopy = braille;
+  if ([brailleCopy length] && (v5 = self->_suggestionRange.length + self->_suggestionRange.location, v5 <= objc_msgSend(brailleCopy, "length")))
   {
     if (self->_showDotsSevenAndEight)
     {
@@ -2577,7 +2577,7 @@ LABEL_231:
       v7 = 63;
     }
 
-    v6 = [v4 mutableCopy];
+    v6 = [brailleCopy mutableCopy];
     v17 = kSCROBrailleUnicodeCharacterBase + v7;
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:&v17 length:1];
     v9 = objc_alloc(MEMORY[0x277CCA898]);
@@ -2604,7 +2604,7 @@ LABEL_231:
 
   else
   {
-    v6 = v4;
+    v6 = brailleCopy;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2612,25 +2612,25 @@ LABEL_231:
   return v6;
 }
 
-- (void)addAttributedStringToLineBuffer:(id)a3 brailleOffset:(unint64_t)a4
+- (void)addAttributedStringToLineBuffer:(id)buffer brailleOffset:(unint64_t)offset
 {
-  v5 = a3;
-  if ([v5 length])
+  bufferCopy = buffer;
+  if ([bufferCopy length])
   {
-    [(NSMutableAttributedString *)self->_lineBuffer appendAttributedString:v5];
+    [(NSMutableAttributedString *)self->_lineBuffer appendAttributedString:bufferCopy];
   }
 }
 
-- (void)addAttributedPaddingToLineBuffer:(id)a3
+- (void)addAttributedPaddingToLineBuffer:(id)buffer
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  bufferCopy = buffer;
+  if ([bufferCopy length])
   {
-    [(NSMutableAttributedString *)self->_lineBuffer appendAttributedString:v4];
+    [(NSMutableAttributedString *)self->_lineBuffer appendAttributedString:bufferCopy];
     v5 = [(NSMutableAttributedString *)self->_lineBuffer length];
-    v6 = v5 - [v4 length];
-    v7 = [v4 length];
+    v6 = v5 - [bufferCopy length];
+    v7 = [bufferCopy length];
     v10 = @"padd";
     v11[0] = MEMORY[0x277CBEC38];
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
@@ -2646,8 +2646,8 @@ LABEL_231:
   v8.super_class = SCROBrailleLine;
   v3 = [(SCROBrailleLine *)&v8 description];
   v4 = MEMORY[0x277CCAB68];
-  v5 = [(NSMutableAttributedString *)self->_lineBuffer string];
-  v6 = [v4 stringWithFormat:@"<%@ %@", v3, v5];
+  string = [(NSMutableAttributedString *)self->_lineBuffer string];
+  v6 = [v4 stringWithFormat:@"<%@ %@", v3, string];
 
   return v6;
 }
@@ -2661,60 +2661,60 @@ LABEL_231:
 
 - (BOOL)hasEdits
 {
-  v2 = [MEMORY[0x277CF3318] sharedModel];
-  v3 = [v2 brailleStringDirty];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  brailleStringDirty = [mEMORY[0x277CF3318] brailleStringDirty];
 
-  return v3;
+  return brailleStringDirty;
 }
 
 - (BOOL)wantsEdits
 {
-  v2 = [MEMORY[0x277CF3318] sharedModel];
-  v3 = [v2 editable];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  editable = [mEMORY[0x277CF3318] editable];
 
-  return v3;
+  return editable;
 }
 
 - (void)translate
 {
-  v2 = [MEMORY[0x277CF3318] sharedModel];
-  [v2 forceTranslate];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  [mEMORY[0x277CF3318] forceTranslate];
 }
 
-- (BOOL)_deleteAtCursorSilently:(BOOL)a3
+- (BOOL)_deleteAtCursorSilently:(BOOL)silently
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CF3318] sharedModel];
-  v5 = v4;
-  if (v3)
+  silentlyCopy = silently;
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  v5 = mEMORY[0x277CF3318];
+  if (silentlyCopy)
   {
-    v6 = [v4 handleDeleteSilently];
+    handleDeleteSilently = [mEMORY[0x277CF3318] handleDeleteSilently];
   }
 
   else
   {
-    v6 = [v4 handleDelete];
+    handleDeleteSilently = [mEMORY[0x277CF3318] handleDelete];
   }
 
-  v7 = v6;
+  v7 = handleDeleteSilently;
 
   return v7;
 }
 
-- (BOOL)_forwardDeleteAtCursorSilently:(BOOL)a3
+- (BOOL)_forwardDeleteAtCursorSilently:(BOOL)silently
 {
   if (self->_editableFieldInterruptedByAlert)
   {
     v4 = objc_alloc_init(SCROPendingBrailleDelete);
     v5 = 1;
     [(SCROPendingBrailleDelete *)v4 setIsForwardDelete:1];
-    v6 = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
-    [v6 addObject:v4];
+    pendingBrailleStringDictionaries = [(SCROBrailleLine *)self pendingBrailleStringDictionaries];
+    [pendingBrailleStringDictionaries addObject:v4];
 
     return v5;
   }
 
-  v7 = a3;
+  silentlyCopy = silently;
   v8 = +[SCROBrailleTranslationManager sharedManager];
   if (![v8 primaryTableSupportsRoundTripping])
   {
@@ -2730,7 +2730,7 @@ LABEL_231:
   }
 
   stateManager = self->_stateManager;
-  if (v7)
+  if (silentlyCopy)
   {
 
     return [(BRLTBrailleStateManager *)stateManager forwardDeleteBrailleCharSilently];
@@ -2745,49 +2745,49 @@ LABEL_231:
 
 - (BOOL)moveCursorLeft
 {
-  v2 = [MEMORY[0x277CF3318] sharedModel];
-  v3 = [v2 handleMoveCursorLeft];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  handleMoveCursorLeft = [mEMORY[0x277CF3318] handleMoveCursorLeft];
 
-  return v3;
+  return handleMoveCursorLeft;
 }
 
 - (BOOL)moveCursorRight
 {
-  v2 = [MEMORY[0x277CF3318] sharedModel];
-  v3 = [v2 handleMoveCursorRight];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  handleMoveCursorRight = [mEMORY[0x277CF3318] handleMoveCursorRight];
 
-  return v3;
+  return handleMoveCursorRight;
 }
 
-- (BOOL)moveCursorToRouterIndex:(unint64_t)a3 forwardToScreenReader:(BOOL *)a4 updateRouterLocation:(int64_t *)a5
+- (BOOL)moveCursorToRouterIndex:(unint64_t)index forwardToScreenReader:(BOOL *)reader updateRouterLocation:(int64_t *)location
 {
-  v8 = a3 - self->_leftInset + self->_lineOffset;
+  v8 = index - self->_leftInset + self->_lineOffset;
   if (v8 >= 0 && v8 < -[NSMutableAttributedString length](self->_lineBuffer, "length") || ([MEMORY[0x277CF3318] sharedModel], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "editable"), v9, (v10 & 1) != 0))
   {
     v11 = [(SCROBrailleLine *)self _selectionForOffsetIndex:v8];
-    v12 = [MEMORY[0x277CF3318] sharedModel];
-    v13 = [v12 handleBrailleSelection:{v11, 0}];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    v13 = [mEMORY[0x277CF3318] handleBrailleSelection:{v11, 0}];
 
-    if (a4)
+    if (reader)
     {
-      *a4 = v13;
+      *reader = v13;
     }
 
-    v14 = [MEMORY[0x277CF3318] sharedModel];
-    v15 = [v14 displayedScript];
-    v16 = [v15 selection];
+    mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+    displayedScript = [mEMORY[0x277CF3318]2 displayedScript];
+    selection = [displayedScript selection];
 
-    if (a4 && *a4)
+    if (reader && *reader)
     {
-      if (v16 == 0x7FFFFFFFFFFFFFFFLL)
+      if (selection == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = [MEMORY[0x277CF3318] sharedModel];
-        v16 = [v17 scriptLocationForBrailleLocation:v11];
+        mEMORY[0x277CF3318]3 = [MEMORY[0x277CF3318] sharedModel];
+        selection = [mEMORY[0x277CF3318]3 scriptLocationForBrailleLocation:v11];
       }
 
-      if (*a5 != v16)
+      if (*location != selection)
       {
-        *a5 = v16;
+        *location = selection;
       }
     }
 
@@ -2799,85 +2799,85 @@ LABEL_231:
   else
   {
     v18 = 0;
-    if (a4)
+    if (reader)
     {
-      *a4 = 1;
+      *reader = 1;
     }
   }
 
   return v18;
 }
 
-- (BOOL)selectUpToRouterIndex:(unint64_t)a3 selectionBegin:(int64_t *)a4 selectionEnd:(int64_t *)a5
+- (BOOL)selectUpToRouterIndex:(unint64_t)index selectionBegin:(int64_t *)begin selectionEnd:(int64_t *)end
 {
-  v5 = a3 - self->_leftInset + self->_lineOffset;
+  v5 = index - self->_leftInset + self->_lineOffset;
   if (v5 < 0 || v5 >= [(NSMutableAttributedString *)self->_lineBuffer length])
   {
     return 0;
   }
 
   v7 = [(SCROBrailleLine *)self _selectionForOffsetIndex:v5];
-  v8 = [MEMORY[0x277CF3318] sharedModel];
-  [v8 handleBrailleSelectionUpTo:v7];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  [mEMORY[0x277CF3318] handleBrailleSelectionUpTo:v7];
 
   return 1;
 }
 
-- (BOOL)selectContiguousBrailleRange:(unint64_t)a3 selectionBegin:(int64_t *)a4 selectionEnd:(int64_t *)a5
+- (BOOL)selectContiguousBrailleRange:(unint64_t)range selectionBegin:(int64_t *)begin selectionEnd:(int64_t *)end
 {
-  v8 = [MEMORY[0x277CF3318] sharedModel];
-  v9 = [v8 displayedBraille];
-  v10 = [v9 contiguousBrailleRange];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  displayedBraille = [mEMORY[0x277CF3318] displayedBraille];
+  contiguousBrailleRange = [displayedBraille contiguousBrailleRange];
   v12 = v11;
 
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+  if (contiguousBrailleRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return [(SCROBrailleLine *)self _selectBrailleRange:v10 selectionBegin:v12 selectionEnd:a4, a5];
+  return [(SCROBrailleLine *)self _selectBrailleRange:contiguousBrailleRange selectionBegin:v12 selectionEnd:begin, end];
 }
 
-- (BOOL)selectEntireLine:(int64_t *)a3 selectionEnd:(int64_t *)a4
+- (BOOL)selectEntireLine:(int64_t *)line selectionEnd:(int64_t *)end
 {
-  v7 = [MEMORY[0x277CF3318] sharedModel];
-  v8 = [v7 displayedBraille];
-  v9 = [v8 string];
-  v10 = [v9 length];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  displayedBraille = [mEMORY[0x277CF3318] displayedBraille];
+  string = [displayedBraille string];
+  v10 = [string length];
 
-  return [(SCROBrailleLine *)self _selectBrailleRange:0 selectionBegin:v10 selectionEnd:a3, a4];
+  return [(SCROBrailleLine *)self _selectBrailleRange:0 selectionBegin:v10 selectionEnd:line, end];
 }
 
-- (BOOL)_selectBrailleRange:(_NSRange)a3 selectionBegin:(int64_t *)a4 selectionEnd:(int64_t *)a5
+- (BOOL)_selectBrailleRange:(_NSRange)range selectionBegin:(int64_t *)begin selectionEnd:(int64_t *)end
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = [MEMORY[0x277CF3318] sharedModel];
-  v10 = [v9 handleBrailleSelection:{location, length}];
+  length = range.length;
+  location = range.location;
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  v10 = [mEMORY[0x277CF3318] handleBrailleSelection:{location, length}];
 
-  if (a4)
+  if (begin)
   {
-    v11 = [MEMORY[0x277CF3318] sharedModel];
-    *a4 = [v11 scriptLocationForBrailleLocation:location];
+    mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+    *begin = [mEMORY[0x277CF3318]2 scriptLocationForBrailleLocation:location];
   }
 
-  if (a5)
+  if (end)
   {
-    v12 = [MEMORY[0x277CF3318] sharedModel];
-    *a5 = [v12 scriptLocationForBrailleLocation:location + length];
+    mEMORY[0x277CF3318]3 = [MEMORY[0x277CF3318] sharedModel];
+    *end = [mEMORY[0x277CF3318]3 scriptLocationForBrailleLocation:location + length];
   }
 
   return v10;
 }
 
-- (int64_t)_selectionForOffsetIndex:(int64_t)a3
+- (int64_t)_selectionForOffsetIndex:(int64_t)index
 {
   lineBuffer = self->_lineBuffer;
-  v5 = a3 + 1;
+  v5 = index + 1;
   v6 = [(NSMutableAttributedString *)lineBuffer length];
   if (v5 < v6)
   {
-    v7 = a3 + 1;
+    v7 = index + 1;
   }
 
   else
@@ -2897,7 +2897,7 @@ LABEL_231:
   v12[3] = &unk_279B74038;
   v12[4] = &v13;
   [v8 enumerateAttribute:@"padd" inRange:0 options:v9 usingBlock:{0, v12}];
-  v10 = a3 - v14[3];
+  v10 = index - v14[3];
   _Block_object_dispose(&v13, 8);
 
   return v10;
@@ -2914,31 +2914,31 @@ uint64_t __44__SCROBrailleLine__selectionForOffsetIndex___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)insertBrailleStringAtCursor:(id)a3 modifiers:(id)a4
+- (BOOL)insertBrailleStringAtCursor:(id)cursor modifiers:(id)modifiers
 {
-  v6 = a3;
-  v7 = a4;
+  cursorCopy = cursor;
+  modifiersCopy = modifiers;
   if ([(SCROBrailleFormatter *)self->_brailleFormatter hasPlaceholderText])
   {
     [(SCROBrailleFormatter *)self->_brailleFormatter clearPlaceholderForEditing];
   }
 
-  v8 = [(SCROBrailleLine *)self _insertBrailleStringAtCursor:v6 modifiers:v7 silently:0];
+  v8 = [(SCROBrailleLine *)self _insertBrailleStringAtCursor:cursorCopy modifiers:modifiersCopy silently:0];
 
   return v8;
 }
 
-- (BOOL)_insertBrailleStringAtCursor:(id)a3 modifiers:(id)a4 silently:(BOOL)a5
+- (BOOL)_insertBrailleStringAtCursor:(id)cursor modifiers:(id)modifiers silently:(BOOL)silently
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v22 = v6;
+  cursorCopy = cursor;
+  modifiersCopy = modifiers;
+  v22 = cursorCopy;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v21 = [objc_alloc(MEMORY[0x277CF3328]) initWithUnicode:v6];
+  v21 = [objc_alloc(MEMORY[0x277CF3328]) initWithUnicode:cursorCopy];
   obj = [v21 brailleChars];
   v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
@@ -2958,7 +2958,7 @@ uint64_t __44__SCROBrailleLine__selectionForOffsetIndex___block_invoke(uint64_t 
 
         v13 = *(*(&v25 + 1) + 8 * v12);
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11];
-        v15 = [v7 containsObject:v14];
+        v15 = [modifiersCopy containsObject:v14];
 
         if (v15)
         {
@@ -2970,13 +2970,13 @@ uint64_t __44__SCROBrailleLine__selectionForOffsetIndex___block_invoke(uint64_t 
           else
           {
             v16 = [objc_alloc(MEMORY[0x277CF3310]) initWithUnicode:@"⠠"];
-            v17 = [MEMORY[0x277CF3318] sharedModel];
-            [v17 handleBrailleDotPress:v16];
+            mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+            [mEMORY[0x277CF3318] handleBrailleDotPress:v16];
           }
         }
 
-        v18 = [MEMORY[0x277CF3318] sharedModel];
-        [v18 handleBrailleDotPress:v13];
+        mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+        [mEMORY[0x277CF3318]2 handleBrailleDotPress:v13];
 
         ++v12;
       }
@@ -2992,62 +2992,62 @@ uint64_t __44__SCROBrailleLine__selectionForOffsetIndex___block_invoke(uint64_t 
   return 1;
 }
 
-- (id)translatedBrailleForTableIdentifier:(id)a3
+- (id)translatedBrailleForTableIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CF3318] sharedModel];
-  v4 = [v3 displayedBraille];
-  v5 = [v4 string];
+  mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+  displayedBraille = [mEMORY[0x277CF3318] displayedBraille];
+  string = [displayedBraille string];
 
   v6 = +[SCROBrailleTranslationManager sharedManager];
-  v7 = [v6 textForPrintBraille:v5 language:0 mode:3 locations:0];
+  v7 = [v6 textForPrintBraille:string language:0 mode:3 locations:0];
 
   return v7;
 }
 
-- (id)printBrailleForText:(id)a3 language:(id)a4 mode:(unint64_t)a5 textPositionsRange:(_NSRange)a6 locations:(id *)a7 textFormattingRanges:(id)a8
+- (id)printBrailleForText:(id)text language:(id)language mode:(unint64_t)mode textPositionsRange:(_NSRange)range locations:(id *)locations textFormattingRanges:(id)ranges
 {
-  length = a6.length;
-  location = a6.location;
-  v14 = a8;
-  v15 = a4;
-  v16 = a3;
+  length = range.length;
+  location = range.location;
+  rangesCopy = ranges;
+  languageCopy = language;
+  textCopy = text;
   v17 = +[SCROBrailleTranslationManager sharedManager];
-  v18 = [v17 printBrailleForText:v16 language:v15 mode:a5 textPositionsRange:location locations:length textFormattingRanges:{a7, v14}];
+  v18 = [v17 printBrailleForText:textCopy language:languageCopy mode:mode textPositionsRange:location locations:length textFormattingRanges:{locations, rangesCopy}];
 
   return v18;
 }
 
-- (id)textForPrintBraille:(id)a3 language:(id)a4 mode:(unint64_t)a5 locations:(id *)a6
+- (id)textForPrintBraille:(id)braille language:(id)language mode:(unint64_t)mode locations:(id *)locations
 {
-  v9 = a4;
-  v10 = a3;
+  languageCopy = language;
+  brailleCopy = braille;
   v11 = +[SCROBrailleTranslationManager sharedManager];
-  v12 = [v11 textForPrintBraille:v10 language:v9 mode:a5 locations:a6];
+  v12 = [v11 textForPrintBraille:brailleCopy language:languageCopy mode:mode locations:locations];
 
   return v12;
 }
 
-- (void)brailleDisplayStringDidChange:(id)a3 brailleSelection:(_NSRange)a4 brailleUIOptions:(id)a5 modifiers:(id)a6
+- (void)brailleDisplayStringDidChange:(id)change brailleSelection:(_NSRange)selection brailleUIOptions:(id)options modifiers:(id)modifiers
 {
-  length = a4.length;
-  location = a4.location;
-  v15 = a3;
-  v11 = a5;
-  v12 = a6;
+  length = selection.length;
+  location = selection.location;
+  changeCopy = change;
+  optionsCopy = options;
+  modifiersCopy = modifiers;
   self->_brailleChunksAreDirty = 1;
   self->_needsDisplayFlush = 1;
-  if (v11)
+  if (optionsCopy)
   {
     self->_needsFocusFlush = 1;
-    self->_lineFocus = [v11 lineFocus];
-    if ([v11 showAsAlertReady])
+    self->_lineFocus = [optionsCopy lineFocus];
+    if ([optionsCopy showAsAlertReady])
     {
       v13 = 6;
     }
 
     else
     {
-      if (![v11 showAsAlert])
+      if (![optionsCopy showAsAlert])
       {
         self->_displayMode = 0;
         goto LABEL_8;
@@ -3059,63 +3059,63 @@ uint64_t __44__SCROBrailleLine__selectionForOffsetIndex___block_invoke(uint64_t 
     self->_displayMode = v13;
 LABEL_8:
     [(SCROBrailleLine *)self _updateOffsets];
-    self->_shouldTruncateAtPanBoundary = [v11 truncateAtPanBoundary];
+    self->_shouldTruncateAtPanBoundary = [optionsCopy truncateAtPanBoundary];
   }
 
   [(SCROBrailleLine *)self display];
-  v14 = [(SCROBrailleLine *)self translationDelegate];
-  [v14 brailleDisplayStringDidChange:v15 brailleSelection:location brailleUIOptions:length modifiers:{v11, v12}];
+  translationDelegate = [(SCROBrailleLine *)self translationDelegate];
+  [translationDelegate brailleDisplayStringDidChange:changeCopy brailleSelection:location brailleUIOptions:length modifiers:{optionsCopy, modifiersCopy}];
 }
 
-- (void)replaceScriptStringRange:(_NSRange)a3 withScriptString:(id)a4 cursorLocation:(unint64_t)a5
+- (void)replaceScriptStringRange:(_NSRange)range withScriptString:(id)string cursorLocation:(unint64_t)location
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = [(SCROBrailleLine *)self translationDelegate];
-  [v10 replaceScriptStringRange:location withScriptString:length cursorLocation:{v9, a5}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  translationDelegate = [(SCROBrailleLine *)self translationDelegate];
+  [translationDelegate replaceScriptStringRange:location withScriptString:length cursorLocation:{stringCopy, location}];
 }
 
-- (void)scriptSelectionDidChange:(_NSRange)a3
+- (void)scriptSelectionDidChange:(_NSRange)change
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(SCROBrailleLine *)self translationDelegate];
-  [v5 scriptSelectionDidChange:{location, length}];
+  length = change.length;
+  location = change.location;
+  translationDelegate = [(SCROBrailleLine *)self translationDelegate];
+  [translationDelegate scriptSelectionDidChange:{location, length}];
 }
 
-- (void)didInsertScriptString:(id)a3
+- (void)didInsertScriptString:(id)string
 {
-  v4 = a3;
-  v5 = [(SCROBrailleLine *)self translationDelegate];
-  [v5 didInsertScriptString:v4];
+  stringCopy = string;
+  translationDelegate = [(SCROBrailleLine *)self translationDelegate];
+  [translationDelegate didInsertScriptString:stringCopy];
 }
 
-- (void)brailleDisplayInsertedCharacter:(id)a3 modifiers:(id)a4
+- (void)brailleDisplayInsertedCharacter:(id)character modifiers:(id)modifiers
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCROBrailleLine *)self translationDelegate];
-  [v8 brailleDisplayInsertedCharacter:v7 modifiers:v6];
+  modifiersCopy = modifiers;
+  characterCopy = character;
+  translationDelegate = [(SCROBrailleLine *)self translationDelegate];
+  [translationDelegate brailleDisplayInsertedCharacter:characterCopy modifiers:modifiersCopy];
 }
 
-- (void)brailleDisplayDeletedCharacter:(id)a3
+- (void)brailleDisplayDeletedCharacter:(id)character
 {
-  v4 = a3;
-  v5 = [(SCROBrailleLine *)self translationDelegate];
-  [v5 brailleDisplayDeletedCharacter:v4];
+  characterCopy = character;
+  translationDelegate = [(SCROBrailleLine *)self translationDelegate];
+  [translationDelegate brailleDisplayDeletedCharacter:characterCopy];
 }
 
-- (void)didChangeBrailleString:(id)a3 brailleSelection:(_NSRange)a4 brailleUIOptions:(id)a5
+- (void)didChangeBrailleString:(id)string brailleSelection:(_NSRange)selection brailleUIOptions:(id)options
 {
-  length = a4.length;
-  location = a4.location;
+  length = selection.length;
+  location = selection.location;
   v9 = MEMORY[0x277CF3328];
-  v10 = a5;
-  v11 = a3;
-  v12 = [[v9 alloc] initWithUnicode:v11];
+  optionsCopy = options;
+  stringCopy = string;
+  v12 = [[v9 alloc] initWithUnicode:stringCopy];
 
-  [(SCROBrailleLine *)self brailleDisplayStringDidChange:v12 brailleSelection:location brailleUIOptions:length modifiers:v10, 0];
+  [(SCROBrailleLine *)self brailleDisplayStringDidChange:v12 brailleSelection:location brailleUIOptions:length modifiers:optionsCopy, 0];
 }
 
 - (BRLTBrailleStateManagerDelegate)translationDelegate

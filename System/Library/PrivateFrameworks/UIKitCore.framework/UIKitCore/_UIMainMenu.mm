@@ -1,81 +1,81 @@
 @interface _UIMainMenu
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UIMainMenu)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 uiMenu:(id)a4 children:(id)a5;
-- (id)_initWithUIMenu:(id)a3 children:(id)a4 isPartOfBaseMenu:(BOOL)a5;
+- (_UIMainMenu)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier uiMenu:(id)menu children:(id)children;
+- (id)_initWithUIMenu:(id)menu children:(id)children isPartOfBaseMenu:(BOOL)baseMenu;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenu
 
-- (id)_initWithIdentifier:(id)a3 uiMenu:(id)a4 children:(id)a5
+- (id)_initWithIdentifier:(id)identifier uiMenu:(id)menu children:(id)children
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  menuCopy = menu;
+  childrenCopy = children;
   v21.receiver = self;
   v21.super_class = _UIMainMenu;
   v13 = [(_UIMainMenu *)&v21 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    v15 = [v11 children];
-    v16 = [v15 count];
+    objc_storeStrong(&v13->_identifier, identifier);
+    children = [menuCopy children];
+    v16 = [children count];
 
     if (v16)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:v14 file:@"_UIMainMenuElement.m" lineNumber:347 description:@"_UIMainMenu initializer should only take in a UIMenu with empty children. This is a UIKit internal bug."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v14 file:@"_UIMainMenuElement.m" lineNumber:347 description:@"_UIMainMenu initializer should only take in a UIMenu with empty children. This is a UIKit internal bug."];
     }
 
-    v17 = [v11 _safeCopy];
+    _safeCopy = [menuCopy _safeCopy];
     uiMenu = v14->_uiMenu;
-    v14->_uiMenu = v17;
+    v14->_uiMenu = _safeCopy;
 
-    objc_storeStrong(&v14->_children, a5);
+    objc_storeStrong(&v14->_children, children);
   }
 
   return v14;
 }
 
-- (id)_initWithUIMenu:(id)a3 children:(id)a4 isPartOfBaseMenu:(BOOL)a5
+- (id)_initWithUIMenu:(id)menu children:(id)children isPartOfBaseMenu:(BOOL)baseMenu
 {
-  v7 = a4;
-  v8 = a3;
+  childrenCopy = children;
+  menuCopy = menu;
   v9 = [_UIMainMenuIdentifier alloc];
-  v10 = [v8 identifier];
+  identifier = [menuCopy identifier];
   ++_UIMainMenuElementIdentifierNumberGenerate_lastMenuElementIdentifier;
-  v11 = [_UIMainMenuIdentifier _initWithUIMenuIdentifier:v9 identifierNumber:"_initWithUIMenuIdentifier:identifierNumber:isBaseMenuIdentifier:" isBaseMenuIdentifier:v10];
+  v11 = [_UIMainMenuIdentifier _initWithUIMenuIdentifier:v9 identifierNumber:"_initWithUIMenuIdentifier:identifierNumber:isBaseMenuIdentifier:" isBaseMenuIdentifier:identifier];
 
-  v12 = [(_UIMainMenu *)self _initWithIdentifier:v11 uiMenu:v8 children:v7];
+  v12 = [(_UIMainMenu *)self _initWithIdentifier:v11 uiMenu:menuCopy children:childrenCopy];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"Identifier"];
-  [v5 encodeObject:self->_uiMenu forKey:@"UIMenu"];
-  [v5 encodeObject:self->_children forKey:@"Children"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
+  [coderCopy encodeObject:self->_uiMenu forKey:@"UIMenu"];
+  [coderCopy encodeObject:self->_children forKey:@"Children"];
 }
 
-- (_UIMainMenu)initWithCoder:(id)a3
+- (_UIMainMenu)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenu *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"Identifier"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"Identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"UIMenu"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"UIMenu"];
     uiMenu = v5->_uiMenu;
     v5->_uiMenu = v10;
 
@@ -85,7 +85,7 @@
     v15 = objc_opt_self();
     v16 = objc_opt_self();
     v17 = [v12 setWithObjects:{v13, v14, v15, v16, 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"Children"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"Children"];
     children = v5->_children;
     v5->_children = v18;
   }
@@ -93,10 +93,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -108,7 +108,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       identifier = v7->_identifier;
       v9 = self->_identifier;
       v10 = identifier;
@@ -203,9 +203,9 @@ LABEL_24:
   v4 = [v3 appendObject:self->_identifier withName:@"identifier"];
   v5 = [v3 appendObject:self->_uiMenu withName:@"uiMenu"];
   [v3 appendArraySection:self->_children withName:@"children" skipIfEmpty:0];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface _CNLazyArrayOperatorMap
-- (_CNLazyArrayOperatorMap)initWithInput:(id)a3 transform:(id)a4;
+- (_CNLazyArrayOperatorMap)initWithInput:(id)input transform:(id)transform;
 - (id)nextObject;
 @end
 
 @implementation _CNLazyArrayOperatorMap
 
-- (_CNLazyArrayOperatorMap)initWithInput:(id)a3 transform:(id)a4
+- (_CNLazyArrayOperatorMap)initWithInput:(id)input transform:(id)transform
 {
-  v6 = a4;
+  transformCopy = transform;
   v12.receiver = self;
   v12.super_class = _CNLazyArrayOperatorMap;
-  v7 = [(_CNLazyArrayOperator *)&v12 initWithInput:a3];
+  v7 = [(_CNLazyArrayOperator *)&v12 initWithInput:input];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [transformCopy copy];
     transform = v7->_transform;
     v7->_transform = v8;
 
@@ -25,10 +25,10 @@
 
 - (id)nextObject
 {
-  v3 = [(_CNLazyArrayOperator *)self input];
-  v4 = [v3 nextObject];
+  input = [(_CNLazyArrayOperator *)self input];
+  nextObject = [input nextObject];
 
-  if (v4)
+  if (nextObject)
   {
     v5 = (*(self->_transform + 2))();
   }

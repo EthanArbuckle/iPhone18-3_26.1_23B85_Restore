@@ -1,9 +1,9 @@
 @interface MFNanoBridgeSettingsAccountSpecificMailbox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithAccountUniqueIdentifier:(id)a3 mailboxURL:(id)a4;
-- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithCoder:(id)a3;
-- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithMailboxUid:(id)a3 account:(id)a4;
+- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithAccountUniqueIdentifier:(id)identifier mailboxURL:(id)l;
+- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithCoder:(id)coder;
+- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithMailboxUid:(id)uid account:(id)account;
 - (NSString)mailboxId;
 - (id)_mailboxUid;
 - (id)displayName;
@@ -11,49 +11,49 @@
 - (int64_t)type;
 - (unint64_t)hash;
 - (unint64_t)level;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidateCachedData;
 @end
 
 @implementation MFNanoBridgeSettingsAccountSpecificMailbox
 
-- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithMailboxUid:(id)a3 account:(id)a4
+- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithMailboxUid:(id)uid account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  uidCopy = uid;
+  accountCopy = account;
+  if (!accountCopy)
   {
-    v8 = [v7 account];
+    accountCopy = [uidCopy account];
   }
 
-  v9 = [v8 uniqueID];
-  v10 = [v7 URLString];
-  v11 = [NSURL URLWithString:v10];
-  v12 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self initWithAccountUniqueIdentifier:v9 mailboxURL:v11];
+  uniqueID = [accountCopy uniqueID];
+  uRLString = [uidCopy URLString];
+  v11 = [NSURL URLWithString:uRLString];
+  v12 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self initWithAccountUniqueIdentifier:uniqueID mailboxURL:v11];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_mailboxUid, a3);
+    objc_storeStrong(&v12->_mailboxUid, uid);
     v12->_type = [(MFMailboxUid *)v12->_mailboxUid type];
   }
 
   return v12;
 }
 
-- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithAccountUniqueIdentifier:(id)a3 mailboxURL:(id)a4
+- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithAccountUniqueIdentifier:(id)identifier mailboxURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = MFNanoBridgeSettingsAccountSpecificMailbox;
   v8 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     accountUniqueIdentifier = v8->_accountUniqueIdentifier;
     v8->_accountUniqueIdentifier = v9;
 
-    objc_storeStrong(&v8->_mailboxURL, a4);
+    objc_storeStrong(&v8->_mailboxURL, l);
   }
 
   return v8;
@@ -67,38 +67,38 @@
 
 - (int64_t)type
 {
-  v2 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
-  v3 = [v2 type];
+  _mailboxUid = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
+  type = [_mailboxUid type];
 
-  return v3;
+  return type;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_accountUniqueIdentifier forKey:@"kNSCodingKeyAccount"];
-  [v5 encodeObject:self->_mailboxURL forKey:@"kNSCodingKeyURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_accountUniqueIdentifier forKey:@"kNSCodingKeyAccount"];
+  [coderCopy encodeObject:self->_mailboxURL forKey:@"kNSCodingKeyURL"];
   v4 = [NSNumber numberWithInteger:self->_type];
-  [v5 encodeObject:v4 forKey:@"kNSCodingKeyType"];
+  [coderCopy encodeObject:v4 forKey:@"kNSCodingKeyType"];
 }
 
-- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithCoder:(id)a3
+- (MFNanoBridgeSettingsAccountSpecificMailbox)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MFNanoBridgeSettingsAccountSpecificMailbox;
   v5 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyAccount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyAccount"];
     accountUniqueIdentifier = v5->_accountUniqueIdentifier;
     v5->_accountUniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyURL"];
     mailboxURL = v5->_mailboxURL;
     v5->_mailboxURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyType"];
     v5->_type = [v10 unsignedIntegerValue];
   }
 
@@ -107,28 +107,28 @@
 
 - (id)displayName
 {
-  v2 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
-  v3 = v2;
-  if (v2)
+  _mailboxUid = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
+  v3 = _mailboxUid;
+  if (_mailboxUid)
   {
-    v4 = [v2 displayNameUsingSpecialNames];
+    displayNameUsingSpecialNames = [_mailboxUid displayNameUsingSpecialNames];
   }
 
   else
   {
-    v4 = 0;
+    displayNameUsingSpecialNames = 0;
   }
 
-  return v4;
+  return displayNameUsingSpecialNames;
 }
 
 - (id)icon
 {
-  v2 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
-  v3 = v2;
-  if (v2)
+  _mailboxUid = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
+  v3 = _mailboxUid;
+  if (_mailboxUid)
   {
-    v4 = +[MFMailboxUid shorcutIconNameForMailboxType:](MFMailboxUid, "shorcutIconNameForMailboxType:", [v2 mailboxType]);
+    v4 = +[MFMailboxUid shorcutIconNameForMailboxType:](MFMailboxUid, "shorcutIconNameForMailboxType:", [_mailboxUid mailboxType]);
     if (v4)
     {
       v5 = [UIImage mf_systemImageNamed:v4 forView:7];
@@ -150,21 +150,21 @@
 
 - (unint64_t)level
 {
-  v2 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
-  v3 = v2;
-  if (v2)
+  _mailboxUid = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
+  v3 = _mailboxUid;
+  if (_mailboxUid)
   {
-    if ([v2 mailboxType])
+    if ([_mailboxUid mailboxType])
     {
-      v4 = 0;
+      level = 0;
     }
 
     else
     {
-      v4 = [v3 level];
+      level = [v3 level];
     }
 
-    v5 = v4;
+    v5 = level;
   }
 
   else
@@ -177,32 +177,32 @@
 
 - (BOOL)isValid
 {
-  v2 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
-  v3 = v2 != 0;
+  _mailboxUid = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
+  v3 = _mailboxUid != 0;
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self mailboxURL];
-  v3 = [v2 hash];
+  mailboxURL = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self mailboxURL];
+  v3 = [mailboxURL hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = MFNanoBridgeSettingsAccountSpecificMailbox;
-  if ([(MFNanoBridgeSettingsMailbox *)&v9 isEqual:v4])
+  if ([(MFNanoBridgeSettingsMailbox *)&v9 isEqual:equalCopy])
   {
-    v5 = [v4 mailboxURL];
-    if ([v5 isEqual:self->_mailboxURL])
+    mailboxURL = [equalCopy mailboxURL];
+    if ([mailboxURL isEqual:self->_mailboxURL])
     {
-      v6 = [v4 accountUniqueIdentifier];
-      v7 = [v6 isEqualToString:self->_accountUniqueIdentifier];
+      accountUniqueIdentifier = [equalCopy accountUniqueIdentifier];
+      v7 = [accountUniqueIdentifier isEqualToString:self->_accountUniqueIdentifier];
     }
 
     else
@@ -221,10 +221,10 @@
 
 - (NSString)mailboxId
 {
-  v2 = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
-  v3 = [v2 nano_mailboxId];
+  _mailboxUid = [(MFNanoBridgeSettingsAccountSpecificMailbox *)self _mailboxUid];
+  nano_mailboxId = [_mailboxUid nano_mailboxId];
 
-  return v3;
+  return nano_mailboxId;
 }
 
 - (id)_mailboxUid
@@ -254,15 +254,15 @@
 
       else
       {
-        v9 = [(NSURL *)self->_mailboxURL absoluteString];
-        v10 = [v4 mailboxUidForURL:v9];
+        absoluteString = [(NSURL *)self->_mailboxURL absoluteString];
+        v10 = [v4 mailboxUidForURL:absoluteString];
         v11 = self->_mailboxUid;
         self->_mailboxUid = v10;
 
         if (!self->_mailboxUid)
         {
-          v12 = [(NSURL *)self->_mailboxURL absoluteString];
-          v13 = [v4 URLStringFromLegacyURLString:v12];
+          absoluteString2 = [(NSURL *)self->_mailboxURL absoluteString];
+          v13 = [v4 URLStringFromLegacyURLString:absoluteString2];
 
           v14 = [v4 mailboxUidForURL:v13];
           v15 = self->_mailboxUid;
@@ -289,7 +289,7 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && ![(MFMailboxUid *)self->_mailboxUid type])
       {
-        v19 = [v4 primaryMailboxUid];
+        primaryMailboxUid = [v4 primaryMailboxUid];
       }
     }
 

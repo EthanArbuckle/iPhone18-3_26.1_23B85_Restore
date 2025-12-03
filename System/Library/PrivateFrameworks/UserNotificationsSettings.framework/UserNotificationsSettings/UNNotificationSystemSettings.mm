@@ -1,13 +1,13 @@
 @interface UNNotificationSystemSettings
-- (BOOL)isEqual:(id)a3;
-- (UNNotificationSystemSettings)initWithCoder:(id)a3;
-- (UNNotificationSystemSettings)initWithShowPreviewsSetting:(int64_t)a3 announcementSetting:(int64_t)a4 announcementHeadphonesSetting:(int64_t)a5 announcementCarPlaySetting:(int64_t)a6 scheduledDeliverySetting:(int64_t)a7 scheduledDeliveryTimes:(id)a8 scheduledDeliveryShowNextSummarySetting:(int64_t)a9 notificationListDisplayStyleSetting:(int64_t)a10 remoteNotificationsSetting:(int64_t)a11 summarizationSetting:(int64_t)a12 prioritizationSetting:(int64_t)a13 modifiedSettings:(unint64_t)a14;
-- (id)_stringForNotificationListDisplayStyleSetting:(int64_t)a3;
-- (id)_stringForScheduledDeliveryTimes:(id)a3;
-- (id)_stringforAnnouncementCarPlaySetting:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (UNNotificationSystemSettings)initWithCoder:(id)coder;
+- (UNNotificationSystemSettings)initWithShowPreviewsSetting:(int64_t)setting announcementSetting:(int64_t)announcementSetting announcementHeadphonesSetting:(int64_t)headphonesSetting announcementCarPlaySetting:(int64_t)playSetting scheduledDeliverySetting:(int64_t)deliverySetting scheduledDeliveryTimes:(id)times scheduledDeliveryShowNextSummarySetting:(int64_t)summarySetting notificationListDisplayStyleSetting:(int64_t)self0 remoteNotificationsSetting:(int64_t)self1 summarizationSetting:(int64_t)self2 prioritizationSetting:(int64_t)self3 modifiedSettings:(unint64_t)self4;
+- (id)_stringForNotificationListDisplayStyleSetting:(int64_t)setting;
+- (id)_stringForScheduledDeliveryTimes:(id)times;
+- (id)_stringforAnnouncementCarPlaySetting:(int64_t)setting;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationSystemSettings
@@ -25,8 +25,8 @@
   v3 = [(UNNotificationSystemSettings *)self _stringforAnnouncementCarPlaySetting:[(UNNotificationSystemSettings *)self announcementCarPlaySetting]];
   [(UNNotificationSystemSettings *)self scheduledDeliverySetting];
   v13 = UNNotificationSettingString();
-  v14 = [(UNNotificationSystemSettings *)self scheduledDeliveryTimes];
-  v4 = [(UNNotificationSystemSettings *)self _stringForScheduledDeliveryTimes:v14];
+  scheduledDeliveryTimes = [(UNNotificationSystemSettings *)self scheduledDeliveryTimes];
+  v4 = [(UNNotificationSystemSettings *)self _stringForScheduledDeliveryTimes:scheduledDeliveryTimes];
   [(UNNotificationSystemSettings *)self scheduledDeliveryShowNextSummarySetting];
   v5 = UNNotificationSettingString();
   v6 = [(UNNotificationSystemSettings *)self _stringForNotificationListDisplayStyleSetting:self->_notificationListDisplayStyleSetting];
@@ -41,67 +41,67 @@
   return v10;
 }
 
-- (UNNotificationSystemSettings)initWithShowPreviewsSetting:(int64_t)a3 announcementSetting:(int64_t)a4 announcementHeadphonesSetting:(int64_t)a5 announcementCarPlaySetting:(int64_t)a6 scheduledDeliverySetting:(int64_t)a7 scheduledDeliveryTimes:(id)a8 scheduledDeliveryShowNextSummarySetting:(int64_t)a9 notificationListDisplayStyleSetting:(int64_t)a10 remoteNotificationsSetting:(int64_t)a11 summarizationSetting:(int64_t)a12 prioritizationSetting:(int64_t)a13 modifiedSettings:(unint64_t)a14
+- (UNNotificationSystemSettings)initWithShowPreviewsSetting:(int64_t)setting announcementSetting:(int64_t)announcementSetting announcementHeadphonesSetting:(int64_t)headphonesSetting announcementCarPlaySetting:(int64_t)playSetting scheduledDeliverySetting:(int64_t)deliverySetting scheduledDeliveryTimes:(id)times scheduledDeliveryShowNextSummarySetting:(int64_t)summarySetting notificationListDisplayStyleSetting:(int64_t)self0 remoteNotificationsSetting:(int64_t)self1 summarizationSetting:(int64_t)self2 prioritizationSetting:(int64_t)self3 modifiedSettings:(unint64_t)self4
 {
-  v21 = a8;
+  timesCopy = times;
   v25.receiver = self;
   v25.super_class = UNNotificationSystemSettings;
   v22 = [(UNNotificationSystemSettings *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    v22->_showPreviewsSetting = a3;
-    v22->_announcementSetting = a4;
-    v22->_announcementHeadphonesSetting = a5;
-    v22->_announcementCarPlaySetting = a6;
-    v22->_scheduledDeliverySetting = a7;
-    objc_storeStrong(&v22->_scheduledDeliveryTimes, a8);
-    v23->_notificationListDisplayStyleSetting = a10;
-    v23->_remoteNotificationsSetting = a11;
-    v23->_summarizationSetting = a12;
-    v23->_prioritizationSetting = a13;
-    v23->_scheduledDeliveryShowNextSummarySetting = a9;
-    v23->_modifiedSettings = a14;
+    v22->_showPreviewsSetting = setting;
+    v22->_announcementSetting = announcementSetting;
+    v22->_announcementHeadphonesSetting = headphonesSetting;
+    v22->_announcementCarPlaySetting = playSetting;
+    v22->_scheduledDeliverySetting = deliverySetting;
+    objc_storeStrong(&v22->_scheduledDeliveryTimes, times);
+    v23->_notificationListDisplayStyleSetting = styleSetting;
+    v23->_remoteNotificationsSetting = notificationsSetting;
+    v23->_summarizationSetting = summarizationSetting;
+    v23->_prioritizationSetting = prioritizationSetting;
+    v23->_scheduledDeliveryShowNextSummarySetting = summarySetting;
+    v23->_modifiedSettings = settings;
   }
 
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[UNNotificationSystemSettings showPreviewsSetting](self forKey:{"showPreviewsSetting"), @"showPreviewsSetting"}];
-  [v5 encodeInteger:-[UNNotificationSystemSettings announcementSetting](self forKey:{"announcementSetting"), @"announcementSetting"}];
-  [v5 encodeInteger:-[UNNotificationSystemSettings announcementHeadphonesSetting](self forKey:{"announcementHeadphonesSetting"), @"announcementHeadphonesSetting"}];
-  [v5 encodeInteger:-[UNNotificationSystemSettings announcementCarPlaySetting](self forKey:{"announcementCarPlaySetting"), @"announcementCarPlaySetting"}];
-  [v5 encodeInteger:-[UNNotificationSystemSettings scheduledDeliverySetting](self forKey:{"scheduledDeliverySetting"), @"scheduledDeliverySetting"}];
-  v4 = [(UNNotificationSystemSettings *)self scheduledDeliveryTimes];
-  [v5 encodeObject:v4 forKey:@"scheduledDeliveryTimes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings showPreviewsSetting](self forKey:{"showPreviewsSetting"), @"showPreviewsSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings announcementSetting](self forKey:{"announcementSetting"), @"announcementSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings announcementHeadphonesSetting](self forKey:{"announcementHeadphonesSetting"), @"announcementHeadphonesSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings announcementCarPlaySetting](self forKey:{"announcementCarPlaySetting"), @"announcementCarPlaySetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings scheduledDeliverySetting](self forKey:{"scheduledDeliverySetting"), @"scheduledDeliverySetting"}];
+  scheduledDeliveryTimes = [(UNNotificationSystemSettings *)self scheduledDeliveryTimes];
+  [coderCopy encodeObject:scheduledDeliveryTimes forKey:@"scheduledDeliveryTimes"];
 
-  [v5 encodeInteger:-[UNNotificationSystemSettings scheduledDeliveryShowNextSummarySetting](self forKey:{"scheduledDeliveryShowNextSummarySetting"), @"scheduledDeliveryShowNextSummarySetting"}];
-  [v5 encodeInteger:self->_notificationListDisplayStyleSetting forKey:@"notificationListDisplayStyleSetting"];
-  [v5 encodeInteger:-[UNNotificationSystemSettings remoteNotificationsSetting](self forKey:{"remoteNotificationsSetting"), @"remoteNotificationsSetting"}];
-  [v5 encodeInteger:-[UNNotificationSystemSettings summarizationSetting](self forKey:{"summarizationSetting"), @"summarizationSetting"}];
-  [v5 encodeInteger:-[UNNotificationSystemSettings prioritizationSetting](self forKey:{"prioritizationSetting"), @"prioritizationSetting"}];
-  [v5 encodeInteger:-[UNNotificationSystemSettings modifiedSettings](self forKey:{"modifiedSettings"), @"modifiedSettings"}];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings scheduledDeliveryShowNextSummarySetting](self forKey:{"scheduledDeliveryShowNextSummarySetting"), @"scheduledDeliveryShowNextSummarySetting"}];
+  [coderCopy encodeInteger:self->_notificationListDisplayStyleSetting forKey:@"notificationListDisplayStyleSetting"];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings remoteNotificationsSetting](self forKey:{"remoteNotificationsSetting"), @"remoteNotificationsSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings summarizationSetting](self forKey:{"summarizationSetting"), @"summarizationSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings prioritizationSetting](self forKey:{"prioritizationSetting"), @"prioritizationSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSystemSettings modifiedSettings](self forKey:{"modifiedSettings"), @"modifiedSettings"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UNNotificationSystemSettings *)self showPreviewsSetting];
-    if (v6 == [v5 showPreviewsSetting] && (v7 = -[UNNotificationSystemSettings announcementSetting](self, "announcementSetting"), v7 == objc_msgSend(v5, "announcementSetting")) && (v8 = -[UNNotificationSystemSettings announcementHeadphonesSetting](self, "announcementHeadphonesSetting"), v8 == objc_msgSend(v5, "announcementHeadphonesSetting")) && (v9 = -[UNNotificationSystemSettings announcementCarPlaySetting](self, "announcementCarPlaySetting"), v9 == objc_msgSend(v5, "announcementCarPlaySetting")) && (v10 = -[UNNotificationSystemSettings scheduledDeliverySetting](self, "scheduledDeliverySetting"), v10 == objc_msgSend(v5, "scheduledDeliverySetting")))
+    v5 = equalCopy;
+    showPreviewsSetting = [(UNNotificationSystemSettings *)self showPreviewsSetting];
+    if (showPreviewsSetting == [v5 showPreviewsSetting] && (v7 = -[UNNotificationSystemSettings announcementSetting](self, "announcementSetting"), v7 == objc_msgSend(v5, "announcementSetting")) && (v8 = -[UNNotificationSystemSettings announcementHeadphonesSetting](self, "announcementHeadphonesSetting"), v8 == objc_msgSend(v5, "announcementHeadphonesSetting")) && (v9 = -[UNNotificationSystemSettings announcementCarPlaySetting](self, "announcementCarPlaySetting"), v9 == objc_msgSend(v5, "announcementCarPlaySetting")) && (v10 = -[UNNotificationSystemSettings scheduledDeliverySetting](self, "scheduledDeliverySetting"), v10 == objc_msgSend(v5, "scheduledDeliverySetting")))
     {
-      v11 = [(UNNotificationSystemSettings *)self scheduledDeliveryTimes];
-      v12 = [v5 scheduledDeliveryTimes];
-      if ([v11 isEqual:v12] && (v13 = -[UNNotificationSystemSettings scheduledDeliveryShowNextSummarySetting](self, "scheduledDeliveryShowNextSummarySetting"), v13 == objc_msgSend(v5, "scheduledDeliveryShowNextSummarySetting")) && (v14 = -[UNNotificationSystemSettings notificationListDisplayStyleSetting](self, "notificationListDisplayStyleSetting"), v14 == objc_msgSend(v5, "notificationListDisplayStyleSetting")) && (v15 = -[UNNotificationSystemSettings remoteNotificationsSetting](self, "remoteNotificationsSetting"), v15 == objc_msgSend(v5, "remoteNotificationsSetting")) && (v16 = -[UNNotificationSystemSettings summarizationSetting](self, "summarizationSetting"), v16 == objc_msgSend(v5, "summarizationSetting")) && (v17 = -[UNNotificationSystemSettings prioritizationSetting](self, "prioritizationSetting"), v17 == objc_msgSend(v5, "prioritizationSetting")))
+      scheduledDeliveryTimes = [(UNNotificationSystemSettings *)self scheduledDeliveryTimes];
+      scheduledDeliveryTimes2 = [v5 scheduledDeliveryTimes];
+      if ([scheduledDeliveryTimes isEqual:scheduledDeliveryTimes2] && (v13 = -[UNNotificationSystemSettings scheduledDeliveryShowNextSummarySetting](self, "scheduledDeliveryShowNextSummarySetting"), v13 == objc_msgSend(v5, "scheduledDeliveryShowNextSummarySetting")) && (v14 = -[UNNotificationSystemSettings notificationListDisplayStyleSetting](self, "notificationListDisplayStyleSetting"), v14 == objc_msgSend(v5, "notificationListDisplayStyleSetting")) && (v15 = -[UNNotificationSystemSettings remoteNotificationsSetting](self, "remoteNotificationsSetting"), v15 == objc_msgSend(v5, "remoteNotificationsSetting")) && (v16 = -[UNNotificationSystemSettings summarizationSetting](self, "summarizationSetting"), v16 == objc_msgSend(v5, "summarizationSetting")) && (v17 = -[UNNotificationSystemSettings prioritizationSetting](self, "prioritizationSetting"), v17 == objc_msgSend(v5, "prioritizationSetting")))
       {
-        v18 = [(UNNotificationSystemSettings *)self modifiedSettings];
-        v19 = v18 == [v5 modifiedSettings];
+        modifiedSettings = [(UNNotificationSystemSettings *)self modifiedSettings];
+        v19 = modifiedSettings == [v5 modifiedSettings];
       }
 
       else
@@ -124,69 +124,69 @@
   return v19;
 }
 
-- (UNNotificationSystemSettings)initWithCoder:(id)a3
+- (UNNotificationSystemSettings)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v20 = [v3 decodeIntegerForKey:@"showPreviewsSetting"];
-  v19 = [v3 decodeIntegerForKey:@"announcementSetting"];
-  v18 = [v3 decodeIntegerForKey:@"announcementHeadphonesSetting"];
-  v4 = [v3 decodeIntegerForKey:@"announcementCarPlaySetting"];
-  v5 = [v3 decodeIntegerForKey:@"scheduledDeliverySetting"];
+  coderCopy = coder;
+  v20 = [coderCopy decodeIntegerForKey:@"showPreviewsSetting"];
+  v19 = [coderCopy decodeIntegerForKey:@"announcementSetting"];
+  v18 = [coderCopy decodeIntegerForKey:@"announcementHeadphonesSetting"];
+  v4 = [coderCopy decodeIntegerForKey:@"announcementCarPlaySetting"];
+  v5 = [coderCopy decodeIntegerForKey:@"scheduledDeliverySetting"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v3 decodeObjectOfClasses:v8 forKey:@"scheduledDeliveryTimes"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"scheduledDeliveryTimes"];
 
-  v10 = [v3 decodeIntegerForKey:@"scheduledDeliveryShowNextSummarySetting"];
-  v11 = [v3 decodeIntegerForKey:@"notificationListDisplayStyleSetting"];
-  v12 = [v3 decodeIntegerForKey:@"remoteNotificationsSetting"];
-  v13 = [v3 decodeIntegerForKey:@"summarizationSetting"];
-  v14 = [v3 decodeIntegerForKey:@"prioritizationSetting"];
-  v15 = [v3 decodeIntegerForKey:@"modifiedSettings"];
+  v10 = [coderCopy decodeIntegerForKey:@"scheduledDeliveryShowNextSummarySetting"];
+  v11 = [coderCopy decodeIntegerForKey:@"notificationListDisplayStyleSetting"];
+  v12 = [coderCopy decodeIntegerForKey:@"remoteNotificationsSetting"];
+  v13 = [coderCopy decodeIntegerForKey:@"summarizationSetting"];
+  v14 = [coderCopy decodeIntegerForKey:@"prioritizationSetting"];
+  v15 = [coderCopy decodeIntegerForKey:@"modifiedSettings"];
 
   v16 = [(UNNotificationSystemSettings *)self initWithShowPreviewsSetting:v20 announcementSetting:v19 announcementHeadphonesSetting:v18 announcementCarPlaySetting:v4 scheduledDeliverySetting:v5 scheduledDeliveryTimes:v9 scheduledDeliveryShowNextSummarySetting:v10 notificationListDisplayStyleSetting:v11 remoteNotificationsSetting:v12 summarizationSetting:v13 prioritizationSetting:v14 modifiedSettings:v15];
   return v16;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v12 = [UNMutableNotificationSystemSettings alloc];
-  v11 = [(UNNotificationSystemSettings *)self showPreviewsSetting];
-  v10 = [(UNNotificationSystemSettings *)self announcementSetting];
-  v4 = [(UNNotificationSystemSettings *)self announcementHeadphonesSetting];
-  v5 = [(UNNotificationSystemSettings *)self announcementCarPlaySetting];
-  v6 = [(UNNotificationSystemSettings *)self scheduledDeliverySetting];
-  v7 = [(UNNotificationSystemSettings *)self scheduledDeliveryTimes];
-  v8 = [(UNNotificationSystemSettings *)v12 initWithShowPreviewsSetting:v11 announcementSetting:v10 announcementHeadphonesSetting:v4 announcementCarPlaySetting:v5 scheduledDeliverySetting:v6 scheduledDeliveryTimes:v7 scheduledDeliveryShowNextSummarySetting:[(UNNotificationSystemSettings *)self scheduledDeliveryShowNextSummarySetting] notificationListDisplayStyleSetting:self->_notificationListDisplayStyleSetting remoteNotificationsSetting:[(UNNotificationSystemSettings *)self remoteNotificationsSetting] summarizationSetting:[(UNNotificationSystemSettings *)self summarizationSetting] prioritizationSetting:[(UNNotificationSystemSettings *)self prioritizationSetting] modifiedSettings:[(UNNotificationSystemSettings *)self modifiedSettings]];
+  showPreviewsSetting = [(UNNotificationSystemSettings *)self showPreviewsSetting];
+  announcementSetting = [(UNNotificationSystemSettings *)self announcementSetting];
+  announcementHeadphonesSetting = [(UNNotificationSystemSettings *)self announcementHeadphonesSetting];
+  announcementCarPlaySetting = [(UNNotificationSystemSettings *)self announcementCarPlaySetting];
+  scheduledDeliverySetting = [(UNNotificationSystemSettings *)self scheduledDeliverySetting];
+  scheduledDeliveryTimes = [(UNNotificationSystemSettings *)self scheduledDeliveryTimes];
+  v8 = [(UNNotificationSystemSettings *)v12 initWithShowPreviewsSetting:showPreviewsSetting announcementSetting:announcementSetting announcementHeadphonesSetting:announcementHeadphonesSetting announcementCarPlaySetting:announcementCarPlaySetting scheduledDeliverySetting:scheduledDeliverySetting scheduledDeliveryTimes:scheduledDeliveryTimes scheduledDeliveryShowNextSummarySetting:[(UNNotificationSystemSettings *)self scheduledDeliveryShowNextSummarySetting] notificationListDisplayStyleSetting:self->_notificationListDisplayStyleSetting remoteNotificationsSetting:[(UNNotificationSystemSettings *)self remoteNotificationsSetting] summarizationSetting:[(UNNotificationSystemSettings *)self summarizationSetting] prioritizationSetting:[(UNNotificationSystemSettings *)self prioritizationSetting] modifiedSettings:[(UNNotificationSystemSettings *)self modifiedSettings]];
 
   return v8;
 }
 
-- (id)_stringforAnnouncementCarPlaySetting:(int64_t)a3
+- (id)_stringforAnnouncementCarPlaySetting:(int64_t)setting
 {
-  if (a3 > 3)
+  if (setting > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_279E14DC0[a3];
+    return off_279E14DC0[setting];
   }
 }
 
-- (id)_stringForScheduledDeliveryTimes:(id)a3
+- (id)_stringForScheduledDeliveryTimes:(id)times
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
+  timesCopy = times;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v5 setDateFormat:@"HH:mm"];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = timesCopy;
   v6 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -204,7 +204,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [v4 dateFromComponents:*(*(&v20 + 1) + 8 * v10)];
+        v12 = [currentCalendar dateFromComponents:*(*(&v20 + 1) + 8 * v10)];
         v13 = MEMORY[0x277CCACA8];
         v14 = [v5 stringFromDate:v12];
         v15 = [v13 stringWithFormat:@" %@, ", v14];
@@ -234,15 +234,15 @@
   return v16;
 }
 
-- (id)_stringForNotificationListDisplayStyleSetting:(int64_t)a3
+- (id)_stringForNotificationListDisplayStyleSetting:(int64_t)setting
 {
   v3 = @"Standard";
-  if (a3 == 1)
+  if (setting == 1)
   {
     v3 = @"Stack";
   }
 
-  if (a3 == 2)
+  if (setting == 2)
   {
     return @"Hidden";
   }

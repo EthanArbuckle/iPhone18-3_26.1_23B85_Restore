@@ -10,7 +10,7 @@
   v4 = MEMORY[0x277CBEB98];
   v5 = a3;
   v6 = [v4 setWithObject:v5];
-  v7 = [a1 entitlementValuesForKeys:v6];
+  v7 = [self entitlementValuesForKeys:v6];
 
   v8 = [v7 BOOLForKey:v5];
   return v8;
@@ -22,7 +22,7 @@
   v4 = [RBEntitlements _entitlementsForOptions:a3];
   if ([v4 count])
   {
-    v5 = [a1 entitlementValuesForKeys:v4];
+    v5 = [self entitlementValuesForKeys:v4];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;

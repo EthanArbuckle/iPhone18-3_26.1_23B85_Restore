@@ -1,8 +1,8 @@
 @interface CBSensorActivityAttribution
-- (BOOL)isEqual:(id)a3;
-- (CBSensorActivityAttribution)initWithDataAccessAttribution:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CBSensorActivityAttribution)initWithDataAccessAttribution:(id)attribution;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -10,63 +10,63 @@
 
 @implementation CBSensorActivityAttribution
 
-- (CBSensorActivityAttribution)initWithDataAccessAttribution:(id)a3
+- (CBSensorActivityAttribution)initWithDataAccessAttribution:(id)attribution
 {
-  v4 = a3;
-  v5 = [v4 dataAccessType];
-  if (v5 == 2)
+  attributionCopy = attribution;
+  dataAccessType = [attributionCopy dataAccessType];
+  if (dataAccessType == 2)
   {
-    v9 = [v4 locationAttribution];
-    v6 = [v9 activityAttribution];
+    locationAttribution = [attributionCopy locationAttribution];
+    activityAttribution = [locationAttribution activityAttribution];
 
     v7 = 2;
   }
 
-  else if (v5 == 1)
+  else if (dataAccessType == 1)
   {
-    v8 = [v4 cameraCaptureAttribution];
-    v6 = [v8 activityAttribution];
+    cameraCaptureAttribution = [attributionCopy cameraCaptureAttribution];
+    activityAttribution = [cameraCaptureAttribution activityAttribution];
 
     v7 = 0;
   }
 
-  else if (v5)
+  else if (dataAccessType)
   {
     v7 = 0;
-    v6 = 0;
+    activityAttribution = 0;
   }
 
   else
   {
-    v6 = [v4 audioRecordingActivityAttribution];
+    activityAttribution = [attributionCopy audioRecordingActivityAttribution];
     v7 = 1;
   }
 
   v13.receiver = self;
   v13.super_class = CBSensorActivityAttribution;
-  v10 = [(CBActivityAttribution *)&v13 initWithSTActivityAttribution:v6];
+  v10 = [(CBActivityAttribution *)&v13 initWithSTActivityAttribution:activityAttribution];
   v11 = v10;
   if (v10)
   {
     v10->_sensor = v7;
-    v10->_usedRecently = [v4 isRecent];
+    v10->_usedRecently = [attributionCopy isRecent];
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [BSEqualsBuilder builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(CBSensorActivityAttribution *)self sensor];
+  equalCopy = equal;
+  v5 = [BSEqualsBuilder builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  sensor = [(CBSensorActivityAttribution *)self sensor];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000AC60;
   v12[3] = &unk_10007D860;
-  v7 = v4;
+  v7 = equalCopy;
   v13 = v7;
-  v8 = [v5 appendInteger:v6 counterpart:v12];
+  v8 = [v5 appendInteger:sensor counterpart:v12];
   if ([v5 isEqual])
   {
     v11.receiver = self;
@@ -99,44 +99,44 @@
 
 - (id)succinctDescription
 {
-  v2 = [(CBSensorActivityAttribution *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CBSensorActivityAttribution *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v7.receiver = self;
   v7.super_class = CBSensorActivityAttribution;
-  v3 = [(CBActivityAttribution *)&v7 succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(CBActivityAttribution *)&v7 succinctDescriptionBuilder];
   v4 = sub_10000AA04([(CBSensorActivityAttribution *)self sensor]);
-  v5 = [v3 appendObject:v4 withName:@"sensor"];
+  v5 = [succinctDescriptionBuilder appendObject:v4 withName:@"sensor"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CBSensorActivityAttribution *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CBSensorActivityAttribution *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v11.receiver = self;
   v11.super_class = CBSensorActivityAttribution;
-  v4 = a3;
-  [(CBActivityAttribution *)&v11 descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  [(CBActivityAttribution *)&v11 descriptionBuilderWithMultilinePrefix:prefixCopy];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000AF74;
   v5 = v8[3] = &unk_10007D640;
   v9 = v5;
-  v10 = self;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+  selfCopy = self;
+  [v5 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
 
   v6 = v5;
   return v5;

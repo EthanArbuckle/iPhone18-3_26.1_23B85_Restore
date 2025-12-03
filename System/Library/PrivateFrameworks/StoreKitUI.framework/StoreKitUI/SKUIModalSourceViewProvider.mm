@@ -2,7 +2,7 @@
 - (SKUIModalSourceViewProviderDelegate)delegate;
 - (id)animationView;
 - (void)hideOriginalSourceView;
-- (void)setOriginalSourceView:(id)a3;
+- (void)setOriginalSourceView:(id)view;
 - (void)showOriginalSourceView;
 @end
 
@@ -22,10 +22,10 @@
     }
   }
 
-  v11 = [(SKUIModalSourceViewProvider *)self delegate];
+  delegate = [(SKUIModalSourceViewProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v11 animationViewForModalSourceViewProvider:self];
+    v12 = [delegate animationViewForModalSourceViewProvider:self];
   }
 
   else
@@ -54,9 +54,9 @@
   [(UIView *)self->_originalSourceView setHidden:1];
 }
 
-- (void)setOriginalSourceView:(id)a3
+- (void)setOriginalSourceView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -69,9 +69,9 @@
     }
   }
 
-  if (self->_originalSourceView != v5)
+  if (self->_originalSourceView != viewCopy)
   {
-    objc_storeStrong(&self->_originalSourceView, a3);
+    objc_storeStrong(&self->_originalSourceView, view);
     [(UIView *)self->_originalSourceView setHidden:self->_hideOriginalSourceView];
   }
 }

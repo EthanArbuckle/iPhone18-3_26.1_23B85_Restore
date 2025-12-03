@@ -2,9 +2,9 @@
 + (id)getSharedInstance;
 - (SDTTRSupport)init;
 - (void)clearExistingFiles;
-- (void)collectResultSetForQueryString:(id)a3;
-- (void)dumpFeatureVectorForSections:(id)a3 query:(id)a4;
-- (void)dumpTTRDebugFilesForQuery:(id)a3 sections:(id)a4 enableKeyLogRanking:(BOOL)a5;
+- (void)collectResultSetForQueryString:(id)string;
+- (void)dumpFeatureVectorForSections:(id)sections query:(id)query;
+- (void)dumpTTRDebugFilesForQuery:(id)query sections:(id)sections enableKeyLogRanking:(BOOL)ranking;
 @end
 
 @implementation SDTTRSupport
@@ -53,21 +53,21 @@ void __33__SDTTRSupport_getSharedInstance__block_invoke()
   return v2;
 }
 
-- (void)dumpTTRDebugFilesForQuery:(id)a3 sections:(id)a4 enableKeyLogRanking:(BOOL)a5
+- (void)dumpTTRDebugFilesForQuery:(id)query sections:(id)sections enableKeyLogRanking:(BOOL)ranking
 {
-  v8 = a3;
-  v9 = a4;
+  queryCopy = query;
+  sectionsCopy = sections;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanking___block_invoke;
   v13[3] = &unk_1E82F8DA0;
-  v16 = a5;
+  rankingCopy = ranking;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = queryCopy;
+  v15 = sectionsCopy;
+  v11 = sectionsCopy;
+  v12 = queryCopy;
   dispatch_sync(queue, v13);
 }
 
@@ -89,8 +89,8 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
 - (void)clearExistingFiles
 {
   v29 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 contentsOfDirectoryAtPath:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search" error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager contentsOfDirectoryAtPath:@"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search" error:0];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -113,7 +113,7 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
         if ([v8 hasPrefix:@"Spotlight_Ranking_Diagnostic_Dump_L"])
         {
           v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search", v8];
-          [v2 removeItemAtPath:v9 error:0];
+          [defaultManager removeItemAtPath:v9 error:0];
         }
       }
 
@@ -124,7 +124,7 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
   }
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/Ranking/", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search"];
-  v11 = [v2 contentsOfDirectoryAtPath:v10 error:0];
+  v11 = [defaultManager contentsOfDirectoryAtPath:v10 error:0];
 
   v21 = 0u;
   v22 = 0u;
@@ -146,7 +146,7 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
         }
 
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/Ranking/%@", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search", *(*(&v19 + 1) + 8 * j), v19];
-        [v2 removeItemAtPath:v17 error:0];
+        [defaultManager removeItemAtPath:v17 error:0];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -158,28 +158,28 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dumpFeatureVectorForSections:(id)a3 query:(id)a4
+- (void)dumpFeatureVectorForSections:(id)sections query:(id)query
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  sectionsCopy = sections;
+  queryCopy = query;
+  if ([sectionsCopy count])
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/Spotlight_Ranking_Diagnostic_Dump_L2_%@.log", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search", v6];
-    [v7 UTF8String];
+    queryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/Spotlight_Ranking_Diagnostic_Dump_L2_%@.log", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search", queryCopy];
+    [queryCopy UTF8String];
     v8 = json_writer_create_with_path();
     if (v8)
     {
       v9 = v8;
-      v24 = v7;
-      v25 = v6;
+      v24 = queryCopy;
+      v25 = queryCopy;
       json_writer_begin_array();
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v26 = v5;
-      obj = v5;
+      v26 = sectionsCopy;
+      obj = sectionsCopy;
       v10 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
       if (v10)
       {
@@ -199,8 +199,8 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
             v30 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v14 = [v13 arrayOfRankingItems];
-            v15 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            arrayOfRankingItems = [v13 arrayOfRankingItems];
+            v15 = [arrayOfRankingItems countByEnumeratingWithState:&v29 objects:v37 count:16];
             if (v15)
             {
               v16 = v15;
@@ -211,15 +211,15 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
                 {
                   if (*v30 != v17)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(arrayOfRankingItems);
                   }
 
                   v19 = *(*(&v29 + 1) + 8 * j);
-                  v20 = [v19 identifier];
-                  v21 = [v19 L2FeatureVector];
-                  if ([v20 length])
+                  identifier = [v19 identifier];
+                  l2FeatureVector = [v19 L2FeatureVector];
+                  if ([identifier length])
                   {
-                    v22 = v21 == 0;
+                    v22 = l2FeatureVector == 0;
                   }
 
                   else
@@ -231,14 +231,14 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
                   {
                     json_writer_begin_dictionary();
                     json_writer_add_key();
-                    [v20 UTF8String];
+                    [identifier UTF8String];
                     json_writer_add_string();
-                    [v21 serializeToJSON:v9 options:2];
+                    [l2FeatureVector serializeToJSON:v9 options:2];
                     json_writer_end_dictionary();
                   }
                 }
 
-                v16 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+                v16 = [arrayOfRankingItems countByEnumeratingWithState:&v29 objects:v37 count:16];
               }
 
               while (v16);
@@ -253,31 +253,31 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
 
       json_writer_end_array();
       json_writer_dispose();
-      v6 = v25;
-      v5 = v26;
-      v7 = v24;
+      queryCopy = v25;
+      sectionsCopy = v26;
+      queryCopy = v24;
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collectResultSetForQueryString:(id)a3
+- (void)collectResultSetForQueryString:(id)string
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
-  if (([v5 containsObject:@"_kMDItemSDBInfo"] & 1) == 0)
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if (([array containsObject:@"_kMDItemSDBInfo"] & 1) == 0)
   {
-    [v5 insertObject:@"_kMDItemSDBInfo" atIndex:0];
+    [array insertObject:@"_kMDItemSDBInfo" atIndex:0];
   }
 
   v7 = objc_opt_new();
-  if ([v5 count])
+  if ([array count])
   {
-    [v7 setFetchAttributes:v5];
+    [v7 setFetchAttributes:array];
   }
 
   v8 = *MEMORY[0x1E696A380];
@@ -292,13 +292,13 @@ uint64_t __71__SDTTRSupport_dumpTTRDebugFilesForQuery_sections_enableKeyLogRanki
   v11 = [v7 copy];
   [v11 setFetchAttributes:&unk_1F47DBDE0];
   v12 = objc_autoreleasePoolPush();
-  if ([v3 length])
+  if ([stringCopy length])
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/TTR_allResults_%@", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search", v3];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@/Spotlight_Ranking_Diagnostic_Dump_Filtered_%@", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search", v3];
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"**=%@*cdwt", v3];
-    runQuery(v15, v6, v7, 1, v13);
-    runQuery(v3, v6, v11, 0, v14);
+    stringCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/TTR_allResults_%@", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search", stringCopy];
+    stringCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@/Spotlight_Ranking_Diagnostic_Dump_Filtered_%@", @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/Search", stringCopy];
+    stringCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"**=%@*cdwt", stringCopy];
+    runQuery(stringCopy3, array2, v7, 1, stringCopy);
+    runQuery(stringCopy, array2, v11, 0, stringCopy2);
   }
 
   objc_autoreleasePoolPop(v12);

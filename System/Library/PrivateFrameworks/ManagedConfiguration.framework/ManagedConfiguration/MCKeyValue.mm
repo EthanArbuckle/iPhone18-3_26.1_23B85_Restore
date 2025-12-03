@@ -1,112 +1,112 @@
 @interface MCKeyValue
-- (MCKeyValue)initWithCoder:(id)a3;
-- (MCKeyValue)initWithData:(id)a3 localizedKey:(id)a4;
-- (MCKeyValue)initWithDate:(id)a3 localizedKey:(id)a4;
-- (MCKeyValue)initWithLocalizedArray:(id)a3 localizedKey:(id)a4;
-- (MCKeyValue)initWithLocalizedString:(id)a3 localizedKey:(id)a4;
-- (MCKeyValue)initWithValue:(id)a3 localizedKey:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setData:(id)a3 localizedKey:(id)a4;
-- (void)setDate:(id)a3 localizedKey:(id)a4;
-- (void)setLocalizedArray:(id)a3 localizedKey:(id)a4;
-- (void)setLocalizedString:(id)a3 localizedKey:(id)a4;
-- (void)setValue:(id)a3 localizedKey:(id)a4;
+- (MCKeyValue)initWithCoder:(id)coder;
+- (MCKeyValue)initWithData:(id)data localizedKey:(id)key;
+- (MCKeyValue)initWithDate:(id)date localizedKey:(id)key;
+- (MCKeyValue)initWithLocalizedArray:(id)array localizedKey:(id)key;
+- (MCKeyValue)initWithLocalizedString:(id)string localizedKey:(id)key;
+- (MCKeyValue)initWithValue:(id)value localizedKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)setData:(id)data localizedKey:(id)key;
+- (void)setDate:(id)date localizedKey:(id)key;
+- (void)setLocalizedArray:(id)array localizedKey:(id)key;
+- (void)setLocalizedString:(id)string localizedKey:(id)key;
+- (void)setValue:(id)value localizedKey:(id)key;
 @end
 
 @implementation MCKeyValue
 
-- (MCKeyValue)initWithData:(id)a3 localizedKey:(id)a4
+- (MCKeyValue)initWithData:(id)data localizedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = MCKeyValue;
   v8 = [(MCKeyValue *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MCKeyValue *)v8 setData:v6 localizedKey:v7];
+    [(MCKeyValue *)v8 setData:dataCopy localizedKey:keyCopy];
   }
 
   return v9;
 }
 
-- (MCKeyValue)initWithDate:(id)a3 localizedKey:(id)a4
+- (MCKeyValue)initWithDate:(id)date localizedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = MCKeyValue;
   v8 = [(MCKeyValue *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MCKeyValue *)v8 setDate:v6 localizedKey:v7];
+    [(MCKeyValue *)v8 setDate:dateCopy localizedKey:keyCopy];
   }
 
   return v9;
 }
 
-- (MCKeyValue)initWithLocalizedArray:(id)a3 localizedKey:(id)a4
+- (MCKeyValue)initWithLocalizedArray:(id)array localizedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = MCKeyValue;
   v8 = [(MCKeyValue *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MCKeyValue *)v8 setLocalizedArray:v6 localizedKey:v7];
+    [(MCKeyValue *)v8 setLocalizedArray:arrayCopy localizedKey:keyCopy];
   }
 
   return v9;
 }
 
-- (MCKeyValue)initWithLocalizedString:(id)a3 localizedKey:(id)a4
+- (MCKeyValue)initWithLocalizedString:(id)string localizedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = MCKeyValue;
   v8 = [(MCKeyValue *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MCKeyValue *)v8 setLocalizedString:v6 localizedKey:v7];
+    [(MCKeyValue *)v8 setLocalizedString:stringCopy localizedKey:keyCopy];
   }
 
   return v9;
 }
 
-- (MCKeyValue)initWithValue:(id)a3 localizedKey:(id)a4
+- (MCKeyValue)initWithValue:(id)value localizedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(MCKeyValue *)self initWithData:v6 localizedKey:v7];
+    v8 = [(MCKeyValue *)self initWithData:valueCopy localizedKey:keyCopy];
     goto LABEL_16;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(MCKeyValue *)self initWithDate:v6 localizedKey:v7];
+    v8 = [(MCKeyValue *)self initWithDate:valueCopy localizedKey:keyCopy];
     goto LABEL_16;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 firstObject];
+    firstObject = [valueCopy firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(MCKeyValue *)self initWithLocalizedArray:v6 localizedKey:v7];
+      v8 = [(MCKeyValue *)self initWithLocalizedArray:valueCopy localizedKey:keyCopy];
       goto LABEL_16;
     }
   }
@@ -114,16 +114,16 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = self;
-    v12 = v6;
+    selfCopy2 = self;
+    v12 = valueCopy;
 LABEL_15:
-    v8 = [(MCKeyValue *)v11 initWithLocalizedString:v12 localizedKey:v7];
+    v8 = [(MCKeyValue *)selfCopy2 initWithLocalizedString:v12 localizedKey:keyCopy];
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!valueCopy)
   {
-    v11 = self;
+    selfCopy2 = self;
     v12 = 0;
     goto LABEL_15;
   }
@@ -144,98 +144,98 @@ LABEL_16:
   return v14;
 }
 
-- (void)setData:(id)a3 localizedKey:(id)a4
+- (void)setData:(id)data localizedKey:(id)key
 {
-  v8 = a3;
-  v7 = a4;
-  if (self->_key != v7)
+  dataCopy = data;
+  keyCopy = key;
+  if (self->_key != keyCopy)
   {
-    objc_storeStrong(&self->_key, a4);
+    objc_storeStrong(&self->_key, key);
   }
 
-  if (self->_value != v8)
+  if (self->_value != dataCopy)
   {
-    objc_storeStrong(&self->_value, a3);
+    objc_storeStrong(&self->_value, data);
     self->_valueType = 1;
   }
 }
 
-- (void)setDate:(id)a3 localizedKey:(id)a4
+- (void)setDate:(id)date localizedKey:(id)key
 {
-  v8 = a3;
-  v7 = a4;
-  if (self->_key != v7)
+  dateCopy = date;
+  keyCopy = key;
+  if (self->_key != keyCopy)
   {
-    objc_storeStrong(&self->_key, a4);
+    objc_storeStrong(&self->_key, key);
   }
 
-  if (self->_value != v8)
+  if (self->_value != dateCopy)
   {
-    objc_storeStrong(&self->_value, a3);
+    objc_storeStrong(&self->_value, date);
     self->_valueType = 2;
   }
 }
 
-- (void)setLocalizedArray:(id)a3 localizedKey:(id)a4
+- (void)setLocalizedArray:(id)array localizedKey:(id)key
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = [v10 firstObject];
+  arrayCopy = array;
+  keyCopy = key;
+  firstObject = [arrayCopy firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    if (self->_key != v7)
+    if (self->_key != keyCopy)
     {
-      objc_storeStrong(&self->_key, a4);
+      objc_storeStrong(&self->_key, key);
     }
 
-    if (self->_value != v10)
+    if (self->_value != arrayCopy)
     {
-      objc_storeStrong(&self->_value, a3);
+      objc_storeStrong(&self->_value, array);
       self->_valueType = 0;
     }
   }
 }
 
-- (void)setLocalizedString:(id)a3 localizedKey:(id)a4
+- (void)setLocalizedString:(id)string localizedKey:(id)key
 {
-  v8 = a3;
-  v7 = a4;
-  if (self->_key != v7)
+  stringCopy = string;
+  keyCopy = key;
+  if (self->_key != keyCopy)
   {
-    objc_storeStrong(&self->_key, a4);
+    objc_storeStrong(&self->_key, key);
   }
 
-  if (self->_value != v8)
+  if (self->_value != stringCopy)
   {
-    objc_storeStrong(&self->_value, a3);
+    objc_storeStrong(&self->_value, string);
     self->_valueType = 3;
   }
 }
 
-- (void)setValue:(id)a3 localizedKey:(id)a4
+- (void)setValue:(id)value localizedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [(MCKeyValue *)self setDate:v6 localizedKey:v7];
+    [(MCKeyValue *)self setDate:valueCopy localizedKey:keyCopy];
     goto LABEL_4;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 firstObject];
+    firstObject = [valueCopy firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      [(MCKeyValue *)self setLocalizedArray:v6 localizedKey:v7];
+      [(MCKeyValue *)self setLocalizedArray:valueCopy localizedKey:keyCopy];
       goto LABEL_4;
     }
   }
@@ -243,16 +243,16 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = self;
-    v11 = v6;
+    selfCopy2 = self;
+    v11 = valueCopy;
 LABEL_14:
-    [(MCKeyValue *)v10 setLocalizedString:v11 localizedKey:v7];
+    [(MCKeyValue *)selfCopy2 setLocalizedString:v11 localizedKey:keyCopy];
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!valueCopy)
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
     goto LABEL_14;
   }
@@ -267,33 +267,33 @@ LABEL_14:
 LABEL_4:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MCKeyValue *)self key];
-  [v4 encodeObject:v5 forKey:@"key"];
+  [coderCopy encodeObject:v5 forKey:@"key"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MCKeyValue valueType](self, "valueType")}];
-  [v4 encodeObject:v6 forKey:@"valueType"];
+  [coderCopy encodeObject:v6 forKey:@"valueType"];
 
-  v7 = [(MCKeyValue *)self value];
-  [v4 encodeObject:v7 forKey:@"value"];
+  value = [(MCKeyValue *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
-- (MCKeyValue)initWithCoder:(id)a3
+- (MCKeyValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MCKeyValue;
   v5 = [(MCKeyValue *)&v19 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"key"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"key"];
     key = v5->_key;
     v5->_key = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
     v5->_valueType = [v9 unsignedIntegerValue];
 
     valueType = v5->_valueType;
@@ -320,7 +320,7 @@ LABEL_4:
         v13 = objc_opt_class();
         [v12 setWithObjects:{v13, objc_opt_class(), 0}];
         v14 = LABEL_12:;
-        v15 = [v4 decodeObjectOfClasses:v14 forKey:@"value"];
+        v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"value"];
         value = v5->_value;
         v5->_value = v15;
 

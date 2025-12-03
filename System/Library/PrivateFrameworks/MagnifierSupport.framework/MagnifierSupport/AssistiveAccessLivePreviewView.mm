@@ -1,8 +1,8 @@
 @interface AssistiveAccessLivePreviewView
 + (Class)layerClass;
 - (NSString)accessibilityLabel;
-- (_TtC16MagnifierSupport30AssistiveAccessLivePreviewView)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupport30AssistiveAccessLivePreviewView)initWithFrame:(CGRect)a3;
+- (_TtC16MagnifierSupport30AssistiveAccessLivePreviewView)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupport30AssistiveAccessLivePreviewView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AssistiveAccessLivePreviewView
@@ -30,23 +30,23 @@
   return v3;
 }
 
-- (_TtC16MagnifierSupport30AssistiveAccessLivePreviewView)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport30AssistiveAccessLivePreviewView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   return [(AssistiveAccessLivePreviewView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16MagnifierSupport30AssistiveAccessLivePreviewView)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport30AssistiveAccessLivePreviewView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(AssistiveAccessLivePreviewView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AssistiveAccessLivePreviewView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

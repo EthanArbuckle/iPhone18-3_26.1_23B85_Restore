@@ -1,5 +1,5 @@
 @interface RestaurantReservationsChooseOfferCell
-- (RestaurantReservationsChooseOfferCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RestaurantReservationsChooseOfferCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)initConstraints;
 @end
 
@@ -9,56 +9,56 @@
 {
   [(UILabel *)self->_mainLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_subLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(RestaurantReservationsChooseOfferCell *)self contentView];
-  v6 = [v5 layoutMarginsGuide];
-  v7 = [v6 leadingAnchor];
-  v45 = [v4 constraintEqualToAnchor:v7];
+  mainLabel = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
+  leadingAnchor = [mainLabel leadingAnchor];
+  contentView = [(RestaurantReservationsChooseOfferCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v8 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
-  v9 = [v8 trailingAnchor];
-  v10 = [(RestaurantReservationsChooseOfferCell *)self contentView];
-  v11 = [v10 layoutMarginsGuide];
-  v12 = [v11 trailingAnchor];
-  v44 = [v9 constraintEqualToAnchor:v12];
+  mainLabel2 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
+  trailingAnchor = [mainLabel2 trailingAnchor];
+  contentView2 = [(RestaurantReservationsChooseOfferCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v13 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
-  v14 = [v13 topAnchor];
-  v15 = [(RestaurantReservationsChooseOfferCell *)self contentView];
-  v16 = [v15 layoutMarginsGuide];
-  v17 = [v16 topAnchor];
-  v43 = [v14 constraintEqualToAnchor:v17];
+  mainLabel3 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
+  topAnchor = [mainLabel3 topAnchor];
+  contentView3 = [(RestaurantReservationsChooseOfferCell *)self contentView];
+  layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v18 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
-  v19 = [v18 leadingAnchor];
-  v20 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
-  v21 = [v20 leadingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  subLabel = [(RestaurantReservationsChooseOfferCell *)self subLabel];
+  leadingAnchor3 = [subLabel leadingAnchor];
+  mainLabel4 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
+  leadingAnchor4 = [mainLabel4 leadingAnchor];
+  v22 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v23 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
-  v24 = [v23 trailingAnchor];
-  v25 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
-  v26 = [v25 trailingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  subLabel2 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
+  trailingAnchor3 = [subLabel2 trailingAnchor];
+  mainLabel5 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
+  trailingAnchor4 = [mainLabel5 trailingAnchor];
+  v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-  v28 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
-  v29 = [v28 firstBaselineAnchor];
-  v30 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
-  v31 = [v30 firstBaselineAnchor];
-  v32 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
-  v33 = [v32 font];
-  [v33 _mapkit_scaledValueForValue:20.0];
-  v34 = [v29 constraintEqualToAnchor:v31 constant:?];
+  subLabel3 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
+  firstBaselineAnchor = [subLabel3 firstBaselineAnchor];
+  mainLabel6 = [(RestaurantReservationsChooseOfferCell *)self mainLabel];
+  firstBaselineAnchor2 = [mainLabel6 firstBaselineAnchor];
+  subLabel4 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
+  font = [subLabel4 font];
+  [font _mapkit_scaledValueForValue:20.0];
+  v34 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:?];
 
-  v35 = [(RestaurantReservationsChooseOfferCell *)self contentView];
-  v36 = [v35 bottomAnchor];
-  v37 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
-  v38 = [v37 lastBaselineAnchor];
-  v39 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
-  v40 = [v39 font];
-  [v40 _mapkit_scaledValueForValue:10.0];
-  v41 = [v36 constraintEqualToAnchor:v38 constant:?];
+  contentView4 = [(RestaurantReservationsChooseOfferCell *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  subLabel5 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
+  lastBaselineAnchor = [subLabel5 lastBaselineAnchor];
+  subLabel6 = [(RestaurantReservationsChooseOfferCell *)self subLabel];
+  font2 = [subLabel6 font];
+  [font2 _mapkit_scaledValueForValue:10.0];
+  v41 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:?];
 
   v46[0] = v45;
   v46[1] = v44;
@@ -71,11 +71,11 @@
   [NSLayoutConstraint activateConstraints:v42];
 }
 
-- (RestaurantReservationsChooseOfferCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RestaurantReservationsChooseOfferCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = RestaurantReservationsChooseOfferCell;
-  v4 = [(RestaurantReservationsChooseOfferCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RestaurantReservationsChooseOfferCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -99,11 +99,11 @@
     v12 = +[UIColor secondaryLabelColor];
     [(UILabel *)v4->_subLabel setTextColor:v12];
 
-    v13 = [(RestaurantReservationsChooseOfferCell *)v4 contentView];
-    [v13 addSubview:v4->_mainLabel];
+    contentView = [(RestaurantReservationsChooseOfferCell *)v4 contentView];
+    [contentView addSubview:v4->_mainLabel];
 
-    v14 = [(RestaurantReservationsChooseOfferCell *)v4 contentView];
-    [v14 addSubview:v4->_subLabel];
+    contentView2 = [(RestaurantReservationsChooseOfferCell *)v4 contentView];
+    [contentView2 addSubview:v4->_subLabel];
 
     [(RestaurantReservationsChooseOfferCell *)v4 initConstraints];
   }

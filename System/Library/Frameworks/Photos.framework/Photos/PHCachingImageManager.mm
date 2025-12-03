@@ -1,19 +1,19 @@
 @interface PHCachingImageManager
-+ (id)_chooseImageTableFormatForPreheatingFromFormats:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 returnBestTableRegardlessOfFit:(BOOL)a6;
-- (BOOL)_cacheImageResult:(id)a3 forRequest:(id)a4;
-- (BOOL)_canPopulateCacheForResult:(id)a3;
++ (id)_chooseImageTableFormatForPreheatingFromFormats:(id)formats targetSize:(CGSize)size contentMode:(int64_t)mode returnBestTableRegardlessOfFit:(BOOL)fit;
+- (BOOL)_cacheImageResult:(id)result forRequest:(id)request;
+- (BOOL)_canPopulateCacheForResult:(id)result;
 - (PHCachingImageManager)init;
-- (id)_cacheFailReasonFromInfo:(id)a3;
-- (id)_imageTableForPreheatingDegradedOpportunisticRequestsWithPhotoLibrary:(id)a3;
-- (id)_tableFormatsForLibrary:(id)a3;
+- (id)_cacheFailReasonFromInfo:(id)info;
+- (id)_imageTableForPreheatingDegradedOpportunisticRequestsWithPhotoLibrary:(id)library;
+- (id)_tableFormatsForLibrary:(id)library;
 - (void)_commitCacheChanges;
-- (void)_handleCachingImageRequestResult:(id)a3 request:(id)a4 context:(id)a5;
+- (void)_handleCachingImageRequestResult:(id)result request:(id)request context:(id)context;
 - (void)_handleMemoryWarning;
-- (void)_preheatImageTable:(id)a3 forAssets:(id)a4;
+- (void)_preheatImageTable:(id)table forAssets:(id)assets;
 - (void)_scheduleOrCommitCacheChangesIfNeeded;
-- (void)additionalWorkForImageRequestCompletedWithResult:(id)a3 request:(id)a4 context:(id)a5;
-- (void)imageCache:(id)a3 didEvictCacheEntry:(id)a4;
-- (void)mediaRequestContext:(id)a3 isQueryingCacheForRequest:(id)a4 didWait:(BOOL *)a5 didFindImage:(BOOL *)a6 resultHandler:(id)a7;
+- (void)additionalWorkForImageRequestCompletedWithResult:(id)result request:(id)request context:(id)context;
+- (void)imageCache:(id)cache didEvictCacheEntry:(id)entry;
+- (void)mediaRequestContext:(id)context isQueryingCacheForRequest:(id)request didWait:(BOOL *)wait didFindImage:(BOOL *)image resultHandler:(id)handler;
 - (void)startCachingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHImageRequestOptions *)options;
 - (void)stopCachingImagesForAllAssets;
 - (void)stopCachingImagesForAssets:(NSArray *)assets targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode options:(PHImageRequestOptions *)options;
@@ -58,18 +58,18 @@
   return v2;
 }
 
-- (void)imageCache:(id)a3 didEvictCacheEntry:(id)a4
+- (void)imageCache:(id)cache didEvictCacheEntry:(id)entry
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [a4 imageRequestIDForPopulatingCache];
-  if (v5)
+  imageRequestIDForPopulatingCache = [entry imageRequestIDForPopulatingCache];
+  if (imageRequestIDForPopulatingCache)
   {
-    v6 = v5;
+    v6 = imageRequestIDForPopulatingCache;
     v7 = PLImageManagerGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218240;
-      v9 = [(PHImageManager *)self managerID];
+      managerID = [(PHImageManager *)self managerID];
       v10 = 2048;
       v11 = v6;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEBUG, "[RM][cache]: %ld-%ld cache entry was evicted with inflight request ID, cancelling now", buf, 0x16u);
@@ -84,35 +84,35 @@
   }
 }
 
-- (void)mediaRequestContext:(id)a3 isQueryingCacheForRequest:(id)a4 didWait:(BOOL *)a5 didFindImage:(BOOL *)a6 resultHandler:(id)a7
+- (void)mediaRequestContext:(id)context isQueryingCacheForRequest:(id)request didWait:(BOOL *)wait didFindImage:(BOOL *)image resultHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a7;
+  requestCopy = request;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_cachingLock);
   cachingRequestIDs = self->_cachingRequestIDs;
-  v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v11, "requestID")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestCopy, "requestID")}];
   LOBYTE(cachingRequestIDs) = [(NSMutableSet *)cachingRequestIDs containsObject:v14];
 
   os_unfair_lock_unlock(&self->_cachingLock);
   if ((cachingRequestIDs & 1) == 0)
   {
     imageCache = self->_imageCache;
-    v16 = [v11 asset];
-    v17 = [v11 displaySpec];
-    [v17 targetSize];
+    asset = [requestCopy asset];
+    displaySpec = [requestCopy displaySpec];
+    [displaySpec targetSize];
     v19 = v18;
     v21 = v20;
-    v22 = [v11 displaySpec];
-    [v22 contentMode];
-    v23 = [v11 displaySpec];
-    [v23 normalizedCropRect];
-    v28 = _buildCacheKey(v16, v19, v21, v24, v25, v26, v27);
+    displaySpec2 = [requestCopy displaySpec];
+    [displaySpec2 contentMode];
+    displaySpec3 = [requestCopy displaySpec];
+    [displaySpec3 normalizedCropRect];
+    v28 = _buildCacheKey(asset, v19, v21, v24, v25, v26, v27);
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __106__PHCachingImageManager_mediaRequestContext_isQueryingCacheForRequest_didWait_didFindImage_resultHandler___block_invoke;
     v29[3] = &unk_1E75A4C48;
-    v30 = v11;
-    [(PHImageCache *)imageCache queryEntryForKey:v28 didWaitForInFlightRequest:a5 didFindImage:a6 entryIsValidBlock:v29 resultHandler:v12];
+    v30 = requestCopy;
+    [(PHImageCache *)imageCache queryEntryForKey:v28 didWaitForInFlightRequest:wait didFindImage:image entryIsValidBlock:v29 resultHandler:handlerCopy];
   }
 }
 
@@ -260,12 +260,12 @@ LABEL_9:
   {
     v15 = ceil(width);
     v16 = ceil(height);
-    v17 = [(NSArray *)v11 firstObject];
-    v18 = [v17 photoLibrary];
+    firstObject = [(NSArray *)v11 firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
     v19 = objc_opt_class();
-    v20 = [v18 photoLibrary];
-    v21 = [(PHCachingImageManager *)self _tableFormatsForLibrary:v20];
+    v18PhotoLibrary = [photoLibrary photoLibrary];
+    v21 = [(PHCachingImageManager *)self _tableFormatsForLibrary:v18PhotoLibrary];
     v22 = [v19 _chooseImageTableFormatForPreheatingFromFormats:v21 targetSize:contentMode contentMode:-[PHImageRequestOptions deliveryMode](v66 returnBestTableRegardlessOfFit:{"deliveryMode") == PHImageRequestOptionsDeliveryModeFastFormat, v15, v16}];
 
     v23 = PLImageManagerGetLog();
@@ -280,9 +280,9 @@ LABEL_9:
         _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_DEBUG, "[RM][cache]: preheating image table for assets: %@", buf, 0xCu);
       }
 
-      v26 = [v18 photoLibrary];
-      v27 = [v26 thumbnailManager];
-      v28 = [v27 imageTableForFormat:objc_msgSend(v22, "formatID")];
+      v18PhotoLibrary2 = [photoLibrary photoLibrary];
+      thumbnailManager = [v18PhotoLibrary2 thumbnailManager];
+      v28 = [thumbnailManager imageTableForFormat:objc_msgSend(v22, "formatID")];
 
       [(PHCachingImageManager *)self _preheatImageTable:v28 forAssets:v11];
     }
@@ -311,14 +311,14 @@ LABEL_9:
           _os_log_impl(&dword_19C86F000, v32, OS_LOG_TYPE_DEBUG, "[RM][cache]: preheating image table for opportunistic request", buf, 2u);
         }
 
-        v33 = [v18 photoLibrary];
-        v34 = [(PHCachingImageManager *)self _imageTableForPreheatingDegradedOpportunisticRequestsWithPhotoLibrary:v33];
+        v18PhotoLibrary3 = [photoLibrary photoLibrary];
+        v34 = [(PHCachingImageManager *)self _imageTableForPreheatingDegradedOpportunisticRequestsWithPhotoLibrary:v18PhotoLibrary3];
 
         [(PHCachingImageManager *)self _preheatImageTable:v34 forAssets:v11];
         v31 = v66;
       }
 
-      v63 = v18;
+      v63 = photoLibrary;
       v64 = v13;
       [(PHImageRequestOptions *)v31 setSynchronous:0];
       v76 = 0u;
@@ -343,7 +343,7 @@ LABEL_9:
             }
 
             v39 = *(*(&v74 + 1) + 8 * i);
-            v40 = [(PHImageManager *)self nextID];
+            nextID = [(PHImageManager *)self nextID];
             v41 = [PHImageDisplaySpec alloc];
             [(PHImageRequestOptions *)v37 normalizedCropRect];
             v42 = contentMode;
@@ -352,30 +352,30 @@ LABEL_9:
             imageCache = self->_imageCache;
             [(PHImageDisplaySpec *)v47 normalizedCropRect];
             v53 = _buildCacheKey(v39, v15, v16, v49, v50, v51, v52);
-            LOBYTE(imageCache) = [(PHImageCache *)imageCache pinEntryForKey:v53 requestID:v40 inFlightRequestID:&v73];
+            LOBYTE(imageCache) = [(PHImageCache *)imageCache pinEntryForKey:v53 requestID:nextID inFlightRequestID:&v73];
 
             if ((imageCache & 1) != 0 || !v73)
             {
               os_unfair_lock_lock(&self->_cachingLock);
               cachingRequestIDs = self->_cachingRequestIDs;
-              v55 = [MEMORY[0x1E696AD98] numberWithInt:v40];
+              v55 = [MEMORY[0x1E696AD98] numberWithInt:nextID];
               [(NSMutableSet *)cachingRequestIDs addObject:v55];
 
               os_unfair_lock_unlock(&self->_cachingLock);
               v56 = PLImageManagerGetLog();
               if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
               {
-                v57 = [(PHImageManager *)self managerID];
+                managerID = [(PHImageManager *)self managerID];
                 *buf = 134218240;
-                *&buf[4] = v57;
+                *&buf[4] = managerID;
                 *&buf[12] = 2048;
-                *&buf[14] = v40;
+                *&buf[14] = nextID;
                 _os_log_impl(&dword_19C86F000, v56, OS_LOG_TYPE_DEBUG, "[RM][cache]: %ld-%ld image request being run to populate cache", buf, 0x16u);
               }
 
               if (PHImageManagerRecordEnabled())
               {
-                [PHImageManagerRequestTracer traceMessageForRequestID:v40 message:@"[RM][cache]: %ld-%ld image request being run to populate cache", [(PHImageManager *)self managerID], v40];
+                [PHImageManagerRequestTracer traceMessageForRequestID:nextID message:@"[RM][cache]: %ld-%ld image request being run to populate cache", [(PHImageManager *)self managerID], nextID];
               }
 
               serialQueue = self->_serialQueue;
@@ -383,7 +383,7 @@ LABEL_9:
               v69[1] = 3221225472;
               v69[2] = __84__PHCachingImageManager_startCachingImagesForAssets_targetSize_contentMode_options___block_invoke;
               v69[3] = &unk_1E75A4C20;
-              v72 = v40;
+              v72 = nextID;
               v69[4] = self;
               v69[5] = v39;
               v70 = v66;
@@ -413,7 +413,7 @@ LABEL_9:
       v13 = v64;
       v11 = v65;
       v22 = 0;
-      v18 = v63;
+      photoLibrary = v63;
       if ([(NSArray *)obj count])
       {
         [(PHCachingImageManager *)self _scheduleOrCommitCacheChangesIfNeeded];
@@ -446,10 +446,10 @@ void __84__PHCachingImageManager_startCachingImagesForAssets_targetSize_contentM
     if (!self->_imageCacheCommitScheduled)
     {
       self->_imageCacheCommitScheduled = 1;
-      v3 = [MEMORY[0x1E695DFD0] mainRunLoop];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
       v5[0] = *MEMORY[0x1E695DA28];
       v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
-      [v3 performSelector:sel__commitCacheChanges target:self argument:0 order:0 modes:v4];
+      [mainRunLoop performSelector:sel__commitCacheChanges target:self argument:0 order:0 modes:v4];
     }
   }
 
@@ -477,16 +477,16 @@ void __84__PHCachingImageManager_startCachingImagesForAssets_targetSize_contentM
   [(PHImageCache *)self->_imageCache commitChangesWithQueueToProcessDeletes:self->_serialQueue];
 }
 
-- (void)_handleCachingImageRequestResult:(id)a3 request:(id)a4 context:(id)a5
+- (void)_handleCachingImageRequestResult:(id)result request:(id)request context:(id)context
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 requestID];
+  resultCopy = result;
+  requestCopy = request;
+  contextCopy = context;
+  requestID = [requestCopy requestID];
   os_unfair_lock_lock(&self->_cachingLock);
   cachingRequestIDs = self->_cachingRequestIDs;
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:v11];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:requestID];
   LODWORD(cachingRequestIDs) = [(NSMutableSet *)cachingRequestIDs containsObject:v13];
 
   os_unfair_lock_unlock(&self->_cachingLock);
@@ -497,22 +497,22 @@ void __84__PHCachingImageManager_startCachingImagesForAssets_targetSize_contentM
 
   os_unfair_lock_lock(&self->_cachingLock);
   v14 = self->_cachingRequestIDs;
-  v15 = [MEMORY[0x1E696AD98] numberWithInt:v11];
+  v15 = [MEMORY[0x1E696AD98] numberWithInt:requestID];
   [(NSMutableSet *)v14 removeObject:v15];
 
   os_unfair_lock_unlock(&self->_cachingLock);
-  if (![(PHCachingImageManager *)self _canPopulateCacheForResult:v8])
+  if (![(PHCachingImageManager *)self _canPopulateCacheForResult:resultCopy])
   {
-    if (([v8 isDegraded] & 1) == 0)
+    if (([resultCopy isDegraded] & 1) == 0)
     {
       v23 = PLImageManagerGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [v9 identifierString];
-        v25 = [v8 info];
-        v26 = [(PHCachingImageManager *)self _cacheFailReasonFromInfo:v25];
+        identifierString = [requestCopy identifierString];
+        info = [resultCopy info];
+        v26 = [(PHCachingImageManager *)self _cacheFailReasonFromInfo:info];
         *buf = 138412546;
-        v53 = v24;
+        v53 = identifierString;
         v54 = 2112;
         v55 = v26;
         _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_DEBUG, "[RM][cache]: %@ cache request failed, removing entry, reason: %@", buf, 0x16u);
@@ -520,25 +520,25 @@ void __84__PHCachingImageManager_startCachingImagesForAssets_targetSize_contentM
 
       if (PHImageManagerRecordEnabled())
       {
-        v49 = [v9 identifierString];
-        v50 = [v8 info];
-        v51 = [(PHCachingImageManager *)self _cacheFailReasonFromInfo:v50];
-        [PHImageManagerRequestTracer traceMessageForRequestID:v11 message:@"[RM][cache]: %@ cache request failed, removing entry, reason: %@", v49, v51];
+        identifierString2 = [requestCopy identifierString];
+        info2 = [resultCopy info];
+        v51 = [(PHCachingImageManager *)self _cacheFailReasonFromInfo:info2];
+        [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM][cache]: %@ cache request failed, removing entry, reason: %@", identifierString2, v51];
       }
     }
 
     imageCache = self->_imageCache;
-    v28 = [v9 asset];
-    v29 = [v9 displaySpec];
-    [v29 targetSize];
+    asset = [requestCopy asset];
+    displaySpec = [requestCopy displaySpec];
+    [displaySpec targetSize];
     v31 = v30;
     v33 = v32;
-    v34 = [v9 displaySpec];
-    [v34 contentMode];
-    v35 = [v9 displaySpec];
-    [v35 normalizedCropRect];
-    v40 = _buildCacheKey(v28, v31, v33, v36, v37, v38, v39);
-    [(PHImageCache *)imageCache populateEntryWithImage:0 requestID:v11 forKey:v40 additionalInfo:0];
+    displaySpec2 = [requestCopy displaySpec];
+    [displaySpec2 contentMode];
+    displaySpec3 = [requestCopy displaySpec];
+    [displaySpec3 normalizedCropRect];
+    v40 = _buildCacheKey(asset, v31, v33, v36, v37, v38, v39);
+    [(PHImageCache *)imageCache populateEntryWithImage:0 requestID:requestID forKey:v40 additionalInfo:0];
 
 LABEL_14:
     v22 = 0;
@@ -547,20 +547,20 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v16 = [(PHCachingImageManager *)self _cacheImageResult:v8 forRequest:v9];
+  v16 = [(PHCachingImageManager *)self _cacheImageResult:resultCopy forRequest:requestCopy];
   v17 = PLImageManagerGetLog();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
   if (!v16)
   {
     if (v18)
     {
-      v41 = [v9 identifierString];
-      v42 = [v9 asset];
-      v43 = [v42 uuid];
+      identifierString3 = [requestCopy identifierString];
+      asset2 = [requestCopy asset];
+      uuid = [asset2 uuid];
       *buf = 138412546;
-      v53 = v41;
+      v53 = identifierString3;
       v54 = 2112;
-      v55 = v43;
+      v55 = uuid;
       _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEBUG, "[RM][cache]: %@ cache request finished but request is stale, for asset: %@", buf, 0x16u);
     }
 
@@ -570,69 +570,69 @@ LABEL_15:
       goto LABEL_20;
     }
 
-    v28 = [v9 identifierString];
-    v29 = [v9 asset];
-    v34 = [v29 uuid];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v11 message:@"[RM][cache]: %@ cache request finished but request is stale, for asset: %@", v28, v34];
+    asset = [requestCopy identifierString];
+    displaySpec = [requestCopy asset];
+    displaySpec2 = [displaySpec uuid];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM][cache]: %@ cache request finished but request is stale, for asset: %@", asset, displaySpec2];
     goto LABEL_14;
   }
 
   if (v18)
   {
-    v19 = [v9 identifierString];
-    v20 = [v9 asset];
-    v21 = [v20 uuid];
+    identifierString4 = [requestCopy identifierString];
+    asset3 = [requestCopy asset];
+    uuid2 = [asset3 uuid];
     *buf = 138412546;
-    v53 = v19;
+    v53 = identifierString4;
     v54 = 2112;
-    v55 = v21;
+    v55 = uuid2;
     _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEBUG, "[RM][cache]: %@ cache request stored image in cache for asset: %@", buf, 0x16u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    v28 = [v9 identifierString];
-    v29 = [v9 asset];
-    v34 = [v29 uuid];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v11 message:@"[RM][cache]: %@ cache request stored image in cache for asset: %@", v28, v34];
+    asset = [requestCopy identifierString];
+    displaySpec = [requestCopy asset];
+    displaySpec2 = [displaySpec uuid];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM][cache]: %@ cache request stored image in cache for asset: %@", asset, displaySpec2];
     v22 = 1;
     goto LABEL_15;
   }
 
   v22 = 1;
 LABEL_20:
-  v44 = [v10 imageOptions];
-  v45 = [v44 cachingCompleteHandler];
+  imageOptions = [contextCopy imageOptions];
+  cachingCompleteHandler = [imageOptions cachingCompleteHandler];
 
-  if (v45)
+  if (cachingCompleteHandler)
   {
-    v46 = [v44 cachingCompleteHandler];
-    v47 = [v9 asset];
-    v48 = [v47 localIdentifier];
-    (v46)[2](v46, v48, v22);
+    cachingCompleteHandler2 = [imageOptions cachingCompleteHandler];
+    asset4 = [requestCopy asset];
+    localIdentifier = [asset4 localIdentifier];
+    (cachingCompleteHandler2)[2](cachingCompleteHandler2, localIdentifier, v22);
   }
 
 LABEL_23:
 }
 
-- (BOOL)_cacheImageResult:(id)a3 forRequest:(id)a4
+- (BOOL)_cacheImageResult:(id)result forRequest:(id)request
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 asset];
-  v9 = [v8 adjustmentVersion];
+  requestCopy = request;
+  resultCopy = result;
+  asset = [requestCopy asset];
+  adjustmentVersion = [asset adjustmentVersion];
 
-  if (v9)
+  if (adjustmentVersion)
   {
     v36[0] = @"adjustmentVersion";
-    v10 = [v6 asset];
-    v11 = [v10 adjustmentVersion];
+    asset2 = [requestCopy asset];
+    adjustmentVersion2 = [asset2 adjustmentVersion];
     v36[1] = @"deferredProcessing";
-    v37[0] = v11;
+    v37[0] = adjustmentVersion2;
     v12 = MEMORY[0x1E696AD98];
-    v13 = [v6 asset];
-    v14 = [v12 numberWithUnsignedShort:{objc_msgSend(v13, "deferredProcessingNeeded")}];
+    asset3 = [requestCopy asset];
+    v14 = [v12 numberWithUnsignedShort:{objc_msgSend(asset3, "deferredProcessingNeeded")}];
     v37[1] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
   }
@@ -641,52 +641,52 @@ LABEL_23:
   {
     v34 = @"deferredProcessing";
     v16 = MEMORY[0x1E696AD98];
-    v10 = [v6 asset];
-    v11 = [v16 numberWithUnsignedShort:{objc_msgSend(v10, "deferredProcessingNeeded")}];
-    v35 = v11;
+    asset2 = [requestCopy asset];
+    adjustmentVersion2 = [v16 numberWithUnsignedShort:{objc_msgSend(asset2, "deferredProcessingNeeded")}];
+    v35 = adjustmentVersion2;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   }
 
-  v17 = [v7 imageRef];
+  imageRef = [resultCopy imageRef];
   imageCache = self->_imageCache;
-  v19 = [v6 requestID];
-  v20 = [v6 asset];
-  v21 = [v6 displaySpec];
-  [v21 targetSize];
+  requestID = [requestCopy requestID];
+  asset4 = [requestCopy asset];
+  displaySpec = [requestCopy displaySpec];
+  [displaySpec targetSize];
   v23 = v22;
   v25 = v24;
-  v26 = [v6 displaySpec];
-  [v26 contentMode];
-  v27 = [v6 displaySpec];
-  [v27 normalizedCropRect];
-  v32 = _buildCacheKey(v20, v23, v25, v28, v29, v30, v31);
-  LOBYTE(v17) = [(PHImageCache *)imageCache populateEntryWithImage:v17 requestID:v19 forKey:v32 additionalInfo:v15];
+  displaySpec2 = [requestCopy displaySpec];
+  [displaySpec2 contentMode];
+  displaySpec3 = [requestCopy displaySpec];
+  [displaySpec3 normalizedCropRect];
+  v32 = _buildCacheKey(asset4, v23, v25, v28, v29, v30, v31);
+  LOBYTE(imageRef) = [(PHImageCache *)imageCache populateEntryWithImage:imageRef requestID:requestID forKey:v32 additionalInfo:v15];
 
-  return v17;
+  return imageRef;
 }
 
-- (BOOL)_canPopulateCacheForResult:(id)a3
+- (BOOL)_canPopulateCacheForResult:(id)result
 {
-  v3 = a3;
-  v4 = ([v3 isDegraded] & 1) == 0 && (objc_msgSend(v3, "isPlaceholder") & 1) == 0 && (objc_msgSend(v3, "isCancelled") & 1) == 0 && objc_msgSend(v3, "imageRef") != 0;
+  resultCopy = result;
+  v4 = ([resultCopy isDegraded] & 1) == 0 && (objc_msgSend(resultCopy, "isPlaceholder") & 1) == 0 && (objc_msgSend(resultCopy, "isCancelled") & 1) == 0 && objc_msgSend(resultCopy, "imageRef") != 0;
 
   return v4;
 }
 
-- (id)_cacheFailReasonFromInfo:(id)a3
+- (id)_cacheFailReasonFromInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"PHImageCancelledKey"];
-  v5 = [v4 BOOLValue];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:@"PHImageCancelledKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = @"cancelled";
   }
 
   else
   {
-    v7 = [v3 objectForKey:@"PHImageErrorKey"];
+    v7 = [infoCopy objectForKey:@"PHImageErrorKey"];
     if (v7)
     {
       v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"error: %@", v7];
@@ -708,24 +708,24 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v4 = 134217984;
-    v5 = [(PHImageManager *)self managerID];
+    managerID = [(PHImageManager *)self managerID];
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "[cache] %lu: didReceiveMemoryWarning: flushing all caches", &v4, 0xCu);
   }
 
   [(PHImageCache *)self->_imageCache removeAllEntries];
 }
 
-- (void)_preheatImageTable:(id)a3 forAssets:(id)a4
+- (void)_preheatImageTable:(id)table forAssets:(id)assets
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  tableCopy = table;
+  assetsCopy = assets;
   v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -741,10 +741,10 @@ LABEL_23:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) thumbnailIndex];
-        if (v13 != 0x7FFFFFFFFFFFFFFFLL)
+        thumbnailIndex = [*(*(&v17 + 1) + 8 * v12) thumbnailIndex];
+        if (thumbnailIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v7 addIndex:v13];
+          [v7 addIndex:thumbnailIndex];
         }
 
         ++v12;
@@ -761,16 +761,16 @@ LABEL_23:
   v15[1] = 3221225472;
   v15[2] = __54__PHCachingImageManager__preheatImageTable_forAssets___block_invoke;
   v15[3] = &unk_1E75A4BD0;
-  v16 = v5;
-  v14 = v5;
+  v16 = tableCopy;
+  v14 = tableCopy;
   [v7 enumerateRangesUsingBlock:v15];
 }
 
-- (id)_imageTableForPreheatingDegradedOpportunisticRequestsWithPhotoLibrary:(id)a3
+- (id)_imageTableForPreheatingDegradedOpportunisticRequestsWithPhotoLibrary:(id)library
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHCachingImageManager *)self _tableFormatsForLibrary:v4];
+  libraryCopy = library;
+  v5 = [(PHCachingImageManager *)self _tableFormatsForLibrary:libraryCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -793,8 +793,8 @@ LABEL_23:
         v11 = *(*(&v15 + 1) + 8 * i);
         if (([v11 isSquare] & 1) == 0)
         {
-          v12 = [v4 thumbnailManager];
-          v13 = [v12 imageTableForFormat:objc_msgSend(v11, "formatID")];
+          thumbnailManager = [libraryCopy thumbnailManager];
+          v13 = [thumbnailManager imageTableForFormat:objc_msgSend(v11, "formatID")];
 
           v8 = v13;
         }
@@ -814,28 +814,28 @@ LABEL_23:
   return v8;
 }
 
-- (id)_tableFormatsForLibrary:(id)a3
+- (id)_tableFormatsForLibrary:(id)library
 {
-  v3 = [a3 pathManager];
-  v4 = [MEMORY[0x1E69BF310] tableThumbnailFormatsForConfigPhase:1 withPathManager:v3];
+  pathManager = [library pathManager];
+  v4 = [MEMORY[0x1E69BF310] tableThumbnailFormatsForConfigPhase:1 withPathManager:pathManager];
 
   return v4;
 }
 
-- (void)additionalWorkForImageRequestCompletedWithResult:(id)a3 request:(id)a4 context:(id)a5
+- (void)additionalWorkForImageRequestCompletedWithResult:(id)result request:(id)request context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  requestCopy = request;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__PHCachingImageManager_additionalWorkForImageRequestCompletedWithResult_request_context___block_invoke;
   block[3] = &unk_1E75AB248;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = resultCopy;
+  v14 = requestCopy;
+  v10 = requestCopy;
+  v11 = resultCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -874,21 +874,21 @@ void __29__PHCachingImageManager_init__block_invoke(uint64_t a1)
   [WeakRetained _handleMemoryWarning];
 }
 
-+ (id)_chooseImageTableFormatForPreheatingFromFormats:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 returnBestTableRegardlessOfFit:(BOOL)a6
++ (id)_chooseImageTableFormatForPreheatingFromFormats:(id)formats targetSize:(CGSize)size contentMode:(int64_t)mode returnBestTableRegardlessOfFit:(BOOL)fit
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
+  formatsCopy = formats;
+  v11 = formatsCopy;
   if (width == height)
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v12 = [v10 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    v12 = [formatsCopy countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v12)
     {
       v13 = v12;
@@ -935,7 +935,7 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (a5 && !v6)
+  if (mode && !fitCopy)
   {
     goto LABEL_42;
   }
@@ -944,7 +944,7 @@ LABEL_42:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v25 = [v10 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  v25 = [formatsCopy countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (!v25)
   {
     goto LABEL_42;
@@ -1002,7 +1002,7 @@ LABEL_43:
     v14 = 0;
   }
 
-  if (!v14 && v6)
+  if (!v14 && fitCopy)
   {
     v14 = v15;
   }

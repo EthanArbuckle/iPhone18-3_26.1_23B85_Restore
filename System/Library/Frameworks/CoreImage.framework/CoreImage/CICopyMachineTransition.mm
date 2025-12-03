@@ -204,7 +204,7 @@
   [(CIColor *)self->inputColor alpha];
   v60 = [CIVector vectorWithX:v54 Y:v56 Z:v58 W:v59];
   v61 = [CIVector vectorWithX:v81 Y:v78 Z:v84];
-  v62 = [(CICopyMachineTransition *)self _kernel];
+  _kernel = [(CICopyMachineTransition *)self _kernel];
   v63 = *MEMORY[0x1E695F040];
   v64 = *(MEMORY[0x1E695F040] + 8);
   v65 = *(MEMORY[0x1E695F040] + 16);
@@ -216,7 +216,7 @@
   v85[3] = v52;
   v85[4] = v60;
   v85[5] = v61;
-  return [objc_msgSend(v62 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v85, 6), v63, v64, v65, v66), "imageByCroppingToRect:", x, y, width, height}];
+  return [objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v85, 6), v63, v64, v65, v66), "imageByCroppingToRect:", x, y, width, height}];
 }
 
 @end

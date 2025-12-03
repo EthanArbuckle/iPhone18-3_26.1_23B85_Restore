@@ -8,14 +8,14 @@
 - (id)workflowIdentifierConsumingSingleUseToken:()SingleUseToken
 {
   v4 = a3;
-  v5 = [a1 dictionaryForKey:@"WFWorkflowSingleUseTokenMap"];
+  v5 = [self dictionaryForKey:@"WFWorkflowSingleUseTokenMap"];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 objectForKeyedSubscript:v4];
     if (v7)
     {
-      [a1 setWorkflowIdentifier:0 forToken:v4];
+      [self setWorkflowIdentifier:0 forToken:v4];
     }
   }
 
@@ -31,7 +31,7 @@
 {
   v9 = a3;
   v6 = a4;
-  v7 = [a1 dictionaryForKey:@"WFWorkflowSingleUseTokenMap"];
+  v7 = [self dictionaryForKey:@"WFWorkflowSingleUseTokenMap"];
   v8 = [v7 mutableCopy];
 
   if (v9 | v8)
@@ -51,7 +51,7 @@
       [v8 removeObjectForKey:v6];
     }
 
-    [a1 setObject:v8 forKey:@"WFWorkflowSingleUseTokenMap"];
+    [self setObject:v8 forKey:@"WFWorkflowSingleUseTokenMap"];
   }
 }
 

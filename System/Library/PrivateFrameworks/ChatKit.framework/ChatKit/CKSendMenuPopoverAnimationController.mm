@@ -1,47 +1,47 @@
 @interface CKSendMenuPopoverAnimationController
-- (CKSendMenuPopoverAnimationController)initWithConfiguration:(id)a3 presenting:(BOOL)a4;
+- (CKSendMenuPopoverAnimationController)initWithConfiguration:(id)configuration presenting:(BOOL)presenting;
 - (CKSendMenuPopoverPresentationControllerAnchorItem)anchorItem;
-- (void)animateDismissTransitionUsingContext:(id)a3 containerView:(id)a4 popoverViewController:(id)a5;
-- (void)animatePresentTransitionUsingContext:(id)a3 containerView:(id)a4 popoverViewController:(id)a5;
-- (void)animateTransition:(id)a3;
+- (void)animateDismissTransitionUsingContext:(id)context containerView:(id)view popoverViewController:(id)controller;
+- (void)animatePresentTransitionUsingContext:(id)context containerView:(id)view popoverViewController:(id)controller;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CKSendMenuPopoverAnimationController
 
 - (CKSendMenuPopoverPresentationControllerAnchorItem)anchorItem
 {
-  v2 = [(CKSendMenuPopoverAnimationController *)self configuration];
-  v3 = [v2 anchorItem];
+  configuration = [(CKSendMenuPopoverAnimationController *)self configuration];
+  anchorItem = [configuration anchorItem];
 
-  return v3;
+  return anchorItem;
 }
 
-- (CKSendMenuPopoverAnimationController)initWithConfiguration:(id)a3 presenting:(BOOL)a4
+- (CKSendMenuPopoverAnimationController)initWithConfiguration:(id)configuration presenting:(BOOL)presenting
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = CKSendMenuPopoverAnimationController;
   v8 = [(CKSendMenuPopoverAnimationController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_presenting = a4;
-    objc_storeStrong(&v8->_configuration, a3);
+    v8->_presenting = presenting;
+    objc_storeStrong(&v8->_configuration, configuration);
   }
 
   return v9;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
   if (self->_presenting)
   {
-    v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-    v7 = [v6 popoverView];
-    v8 = [(CKSendMenuPopoverAnimationController *)self configuration];
-    v9 = [v8 initialViewController];
+    v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+    popoverView = [v6 popoverView];
+    configuration = [(CKSendMenuPopoverAnimationController *)self configuration];
+    initialViewController = [configuration initialViewController];
 
     v28[0] = 0;
     v28[1] = v28;
@@ -49,7 +49,7 @@
     v29 = 0;
     v30 = 0;
     v28[3] = &unk_190F92BB2;
-    [v9 preferredContentSize];
+    [initialViewController preferredContentSize];
     v29 = v10;
     v30 = v11;
     v12 = MEMORY[0x1E69DD250];
@@ -60,23 +60,23 @@
     v27 = v28;
     v13 = v6;
     v23 = v13;
-    v14 = v7;
+    v14 = popoverView;
     v24 = v14;
-    v25 = self;
-    v15 = v5;
+    selfCopy = self;
+    v15 = containerView;
     v26 = v15;
     [v12 performWithoutAnimation:v22];
-    v16 = [(CKSendMenuPopoverAnimationController *)self configuration];
-    v17 = [v16 sendMenuViewController];
+    configuration2 = [(CKSendMenuPopoverAnimationController *)self configuration];
+    sendMenuViewController = [configuration2 sendMenuViewController];
 
-    if (v17)
+    if (sendMenuViewController)
     {
-      [v13 setSendMenuViewController:v9];
+      [v13 setSendMenuViewController:initialViewController];
     }
 
     else
     {
-      [v13 setAppContainerViewController:v9];
+      [v13 setAppContainerViewController:initialViewController];
     }
 
     v19 = MEMORY[0x1E69DD250];
@@ -84,19 +84,19 @@
     v20[1] = 3221225472;
     v20[2] = __58__CKSendMenuPopoverAnimationController_animateTransition___block_invoke_2;
     v20[3] = &unk_1E72EBA18;
-    v18 = v14;
-    v21 = v18;
+    popoverView2 = v14;
+    v21 = popoverView2;
     [v19 performWithoutAnimation:v20];
-    [(CKSendMenuPopoverAnimationController *)self animatePresentTransitionUsingContext:v4 containerView:v15 popoverViewController:v13];
+    [(CKSendMenuPopoverAnimationController *)self animatePresentTransitionUsingContext:transitionCopy containerView:v15 popoverViewController:v13];
 
     _Block_object_dispose(v28, 8);
   }
 
   else
   {
-    v13 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-    v18 = [v13 popoverView];
-    [(CKSendMenuPopoverAnimationController *)self animateDismissTransitionUsingContext:v4 containerView:v5 popoverViewController:v13];
+    v13 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+    popoverView2 = [v13 popoverView];
+    [(CKSendMenuPopoverAnimationController *)self animateDismissTransitionUsingContext:transitionCopy containerView:containerView popoverViewController:v13];
   }
 }
 
@@ -180,11 +180,11 @@ void __58__CKSendMenuPopoverAnimationController_animateTransition___block_invoke
   [v28 setFrame:{v21, v23, v25, v27}];
 }
 
-- (void)animatePresentTransitionUsingContext:(id)a3 containerView:(id)a4 popoverViewController:(id)a5
+- (void)animatePresentTransitionUsingContext:(id)context containerView:(id)view popoverViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a5;
-  [v6 finalFrameForViewController:v7];
+  contextCopy = context;
+  controllerCopy = controller;
+  [contextCopy finalFrameForViewController:controllerCopy];
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
@@ -204,27 +204,27 @@ void __58__CKSendMenuPopoverAnimationController_animateTransition___block_invoke
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
-  v15 = [v7 animationForPresentingInitialViewControllerWithFinalBounds:0.0 finalCenter:{0.0, width, height, v13, MinY + CGRectGetHeight(v22) * 0.5}];
+  v15 = [controllerCopy animationForPresentingInitialViewControllerWithFinalBounds:0.0 finalCenter:{0.0, width, height, v13, MinY + CGRectGetHeight(v22) * 0.5}];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __113__CKSendMenuPopoverAnimationController_animatePresentTransitionUsingContext_containerView_popoverViewController___block_invoke;
   v17[3] = &unk_1E72EBA18;
-  v18 = v6;
-  v16 = v6;
+  v18 = contextCopy;
+  v16 = contextCopy;
   [v15 setCompletion:v17];
   [v15 startAnimation];
 }
 
-- (void)animateDismissTransitionUsingContext:(id)a3 containerView:(id)a4 popoverViewController:(id)a5
+- (void)animateDismissTransitionUsingContext:(id)context containerView:(id)view popoverViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(CKSendMenuPopoverAnimationController *)self anchorItem];
-  v12 = [v11 anchorView];
-  [v11 anchorRect];
-  [v10 convertRect:v12 fromView:?];
+  contextCopy = context;
+  controllerCopy = controller;
+  viewCopy = view;
+  anchorItem = [(CKSendMenuPopoverAnimationController *)self anchorItem];
+  anchorView = [anchorItem anchorView];
+  [anchorItem anchorRect];
+  [viewCopy convertRect:anchorView fromView:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -250,19 +250,19 @@ void __58__CKSendMenuPopoverAnimationController_animateTransition___block_invoke
   v38.size.width = v18;
   v38.size.height = v20;
   Height = CGRectGetHeight(v38);
-  v25 = [(CKSendMenuPopoverAnimationController *)self configuration];
-  v26 = [v25 sendMenuViewController];
+  configuration = [(CKSendMenuPopoverAnimationController *)self configuration];
+  sendMenuViewController = [configuration sendMenuViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   v28 = 1.0;
   if (isKindOfClass)
   {
-    v29 = [(CKSendMenuPopoverAnimationController *)self configuration];
-    v30 = [v29 sendMenuViewController];
+    configuration2 = [(CKSendMenuPopoverAnimationController *)self configuration];
+    sendMenuViewController2 = [configuration2 sendMenuViewController];
 
-    LODWORD(v29) = [v30 isPresentingAudioRecordingQuickSend];
-    if (v29)
+    LODWORD(configuration2) = [sendMenuViewController2 isPresentingAudioRecordingQuickSend];
+    if (configuration2)
     {
       v28 = 0.0;
     }
@@ -273,13 +273,13 @@ void __58__CKSendMenuPopoverAnimationController_animateTransition___block_invoke
     }
   }
 
-  v31 = [v9 animationForDismissingWithFinalBounds:0.0 finalCenter:0.0 finalAlpha:{v18, v20, MinX + Width * 0.5, MinY + Height * 0.5, v28}];
+  v31 = [controllerCopy animationForDismissingWithFinalBounds:0.0 finalCenter:0.0 finalAlpha:{v18, v20, MinX + Width * 0.5, MinY + Height * 0.5, v28}];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __113__CKSendMenuPopoverAnimationController_animateDismissTransitionUsingContext_containerView_popoverViewController___block_invoke;
   v33[3] = &unk_1E72EBA18;
-  v34 = v8;
-  v32 = v8;
+  v34 = contextCopy;
+  v32 = contextCopy;
   [v31 setCompletion:v33];
   [v31 startAnimation];
 }

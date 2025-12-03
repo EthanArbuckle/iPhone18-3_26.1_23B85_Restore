@@ -1,19 +1,19 @@
 @interface BPSFadingImageView
-- (BPSFadingImageView)initWithCoder:(id)a3;
-- (BPSFadingImageView)initWithFrame:(CGRect)a3;
-- (BPSFadingImageView)initWithImage:(id)a3;
-- (BPSFadingImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (BPSFadingImageView)initWithCoder:(id)coder;
+- (BPSFadingImageView)initWithFrame:(CGRect)frame;
+- (BPSFadingImageView)initWithImage:(id)image;
+- (BPSFadingImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (CAGradientLayer)maskLayer;
 - (void)layoutSubviews;
-- (void)setFadePercentage:(double)a3;
-- (void)setFadeSpread:(double)a3;
+- (void)setFadePercentage:(double)percentage;
+- (void)setFadeSpread:(double)spread;
 - (void)setupMask;
 - (void)updateMask;
 @end
 
 @implementation BPSFadingImageView
 
-- (void)setFadePercentage:(double)a3
+- (void)setFadePercentage:(double)percentage
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -25,7 +25,7 @@
 
   v5 = OBJC_IVAR___BPSFadingImageView_fadePercentage;
   swift_beginAccess();
-  v6 = fmin(a3, 0.5);
+  v6 = fmin(percentage, 0.5);
   if (v6 < 0.0)
   {
     v6 = 0.0;
@@ -35,7 +35,7 @@
   [(BPSFadingImageView *)self updateMask];
 }
 
-- (void)setFadeSpread:(double)a3
+- (void)setFadeSpread:(double)spread
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -47,7 +47,7 @@
 
   v5 = OBJC_IVAR___BPSFadingImageView_fadeSpread;
   swift_beginAccess();
-  v6 = fmin(a3, 1.0);
+  v6 = fmin(spread, 1.0);
   if (v6 < 0.0)
   {
     v6 = 0.0;
@@ -72,12 +72,12 @@
   return v3;
 }
 
-- (BPSFadingImageView)initWithFrame:(CGRect)a3
+- (BPSFadingImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_241EA9E38();
   sub_241EA9E28();
   sub_241EA9E18();
@@ -92,13 +92,13 @@
   *(&self->super.super.super.super.isa + v8) = [objc_allocWithZone(MEMORY[0x277CD9EB0]) init];
   v11.receiver = self;
   v11.super_class = BPSFadingImageView;
-  v9 = [(BPSFadingImageView *)&v11 initWithFrame:x, y, width, height];
-  [(BPSFadingImageView *)v9 setupMask];
+  height = [(BPSFadingImageView *)&v11 initWithFrame:x, y, width, height];
+  [(BPSFadingImageView *)height setupMask];
 
-  return v9;
+  return height;
 }
 
-- (BPSFadingImageView)initWithCoder:(id)a3
+- (BPSFadingImageView)initWithCoder:(id)coder
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -108,7 +108,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = BPSFadingImageView.init(coder:)(a3);
+  v4 = BPSFadingImageView.init(coder:)(coder);
 
   return v4;
 }
@@ -125,10 +125,10 @@
 
   v5.receiver = self;
   v5.super_class = BPSFadingImageView;
-  v3 = self;
+  selfCopy = self;
   [(BPSFadingImageView *)&v5 layoutSubviews];
-  v4 = [(BPSFadingImageView *)v3 maskLayer:v5.receiver];
-  [(BPSFadingImageView *)v3 bounds];
+  v4 = [(BPSFadingImageView *)selfCopy maskLayer:v5.receiver];
+  [(BPSFadingImageView *)selfCopy bounds];
   [(CAGradientLayer *)v4 setFrame:?];
 }
 
@@ -142,12 +142,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  v3 = [(BPSFadingImageView *)v5 layer];
-  v4 = [(BPSFadingImageView *)v5 maskLayer];
-  [v3 setMask_];
+  selfCopy = self;
+  layer = [(BPSFadingImageView *)selfCopy layer];
+  maskLayer = [(BPSFadingImageView *)selfCopy maskLayer];
+  [layer setMask_];
 
-  [(BPSFadingImageView *)v5 updateMask];
+  [(BPSFadingImageView *)selfCopy updateMask];
 }
 
 - (void)updateMask
@@ -160,11 +160,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_241E9D300();
 }
 
-- (BPSFadingImageView)initWithImage:(id)a3
+- (BPSFadingImageView)initWithImage:(id)image
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -179,7 +179,7 @@
   return result;
 }
 
-- (BPSFadingImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (BPSFadingImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   sub_241EA9E38();
   sub_241EA9E28();

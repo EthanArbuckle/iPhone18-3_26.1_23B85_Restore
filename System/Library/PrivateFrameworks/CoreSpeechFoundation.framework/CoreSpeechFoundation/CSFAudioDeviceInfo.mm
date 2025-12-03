@@ -1,10 +1,10 @@
 @interface CSFAudioDeviceInfo
-- (CSFAudioDeviceInfo)initWithCoder:(id)a3;
-- (CSFAudioDeviceInfo)initWithRecordDeviceInfo:(id)a3 playbackRoute:(id)a4 playbackDeviceTypeList:(id)a5;
-- (CSFAudioDeviceInfo)initWithXPCObject:(id)a3;
+- (CSFAudioDeviceInfo)initWithCoder:(id)coder;
+- (CSFAudioDeviceInfo)initWithRecordDeviceInfo:(id)info playbackRoute:(id)route playbackDeviceTypeList:(id)list;
+- (CSFAudioDeviceInfo)initWithXPCObject:(id)object;
 - (id)description;
 - (id)xpcObject;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSFAudioDeviceInfo
@@ -44,30 +44,30 @@
   return v3;
 }
 
-- (CSFAudioDeviceInfo)initWithCoder:(id)a3
+- (CSFAudioDeviceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordDeviceInfo"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playbackRoute"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playbackDeviceTypeList"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordDeviceInfo"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playbackRoute"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playbackDeviceTypeList"];
 
   v8 = [(CSFAudioDeviceInfo *)self initWithRecordDeviceInfo:v5 playbackRoute:v6 playbackDeviceTypeList:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   recordDeviceInfo = self->_recordDeviceInfo;
-  v5 = a3;
-  [v5 encodeObject:recordDeviceInfo forKey:@"recordDeviceInfo"];
-  [v5 encodeObject:self->_playbackRoute forKey:@"playbackRoute"];
-  [v5 encodeObject:self->_playbackDeviceTypeList forKey:@"playbackDeviceTypeList"];
+  coderCopy = coder;
+  [coderCopy encodeObject:recordDeviceInfo forKey:@"recordDeviceInfo"];
+  [coderCopy encodeObject:self->_playbackRoute forKey:@"playbackRoute"];
+  [coderCopy encodeObject:self->_playbackDeviceTypeList forKey:@"playbackDeviceTypeList"];
 }
 
-- (CSFAudioDeviceInfo)initWithXPCObject:(id)a3
+- (CSFAudioDeviceInfo)initWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_value(v4, kXPCEncodeKeyRecordDeviceInfo);
+  objectCopy = object;
+  v5 = xpc_dictionary_get_value(objectCopy, kXPCEncodeKeyRecordDeviceInfo);
   if (v5)
   {
     v6 = [[CSFAudioRecordDeviceInfo alloc] initWithXPCObject:v5];
@@ -78,7 +78,7 @@
     v6 = 0;
   }
 
-  string = xpc_dictionary_get_string(v4, kXPCEncodeKeyPlaybackRoute);
+  string = xpc_dictionary_get_string(objectCopy, kXPCEncodeKeyPlaybackRoute);
   if (string)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -89,7 +89,7 @@
     v8 = 0;
   }
 
-  v9 = xpc_dictionary_get_array(v4, kXPCEncodeKeyPlaybackDeviceType);
+  v9 = xpc_dictionary_get_array(objectCopy, kXPCEncodeKeyPlaybackDeviceType);
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x1E695DEC8]);
@@ -106,25 +106,25 @@
   return v12;
 }
 
-- (CSFAudioDeviceInfo)initWithRecordDeviceInfo:(id)a3 playbackRoute:(id)a4 playbackDeviceTypeList:(id)a5
+- (CSFAudioDeviceInfo)initWithRecordDeviceInfo:(id)info playbackRoute:(id)route playbackDeviceTypeList:(id)list
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  routeCopy = route;
+  listCopy = list;
   v19.receiver = self;
   v19.super_class = CSFAudioDeviceInfo;
   v11 = [(CSFAudioDeviceInfo *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [infoCopy copy];
     recordDeviceInfo = v11->_recordDeviceInfo;
     v11->_recordDeviceInfo = v12;
 
-    v14 = [v9 copy];
+    v14 = [routeCopy copy];
     playbackRoute = v11->_playbackRoute;
     v11->_playbackRoute = v14;
 
-    v16 = [v10 copy];
+    v16 = [listCopy copy];
     playbackDeviceTypeList = v11->_playbackDeviceTypeList;
     v11->_playbackDeviceTypeList = v16;
   }

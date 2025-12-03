@@ -1,33 +1,33 @@
 @interface FCCTimeOfDayRule
-- (FCCTimeOfDayRule)initWithMinimumDayDuration:(double)a3 secondsBeforeEndOfDay:(double)a4;
-- (FCCTimeOfDayRule)initWithProtobuf:(id)a3;
-- (FCCTimeOfDayRule)initWithTransportData:(id)a3;
+- (FCCTimeOfDayRule)initWithMinimumDayDuration:(double)duration secondsBeforeEndOfDay:(double)day;
+- (FCCTimeOfDayRule)initWithProtobuf:(id)protobuf;
+- (FCCTimeOfDayRule)initWithTransportData:(id)data;
 - (id)protobuf;
 - (id)transportData;
 @end
 
 @implementation FCCTimeOfDayRule
 
-- (FCCTimeOfDayRule)initWithMinimumDayDuration:(double)a3 secondsBeforeEndOfDay:(double)a4
+- (FCCTimeOfDayRule)initWithMinimumDayDuration:(double)duration secondsBeforeEndOfDay:(double)day
 {
   v7.receiver = self;
   v7.super_class = FCCTimeOfDayRule;
   result = [(FCCTimeOfDayRule *)&v7 init];
   if (result)
   {
-    result->_minimumDayDuration = a3;
-    result->_secondsBeforeEndOfDay = a4;
+    result->_minimumDayDuration = duration;
+    result->_secondsBeforeEndOfDay = day;
   }
 
   return result;
 }
 
-- (FCCTimeOfDayRule)initWithProtobuf:(id)a3
+- (FCCTimeOfDayRule)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  [v4 minimumDayDuration];
+  protobufCopy = protobuf;
+  [protobufCopy minimumDayDuration];
   v6 = v5;
-  [v4 secondsBeforeEndOfDay];
+  [protobufCopy secondsBeforeEndOfDay];
   v8 = v7;
 
   return [(FCCTimeOfDayRule *)self initWithMinimumDayDuration:v6 secondsBeforeEndOfDay:v8];
@@ -42,10 +42,10 @@
   return v3;
 }
 
-- (FCCTimeOfDayRule)initWithTransportData:(id)a3
+- (FCCTimeOfDayRule)initWithTransportData:(id)data
 {
-  v4 = a3;
-  v5 = [[FCCTimeOfDayRuleProtobuf alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[FCCTimeOfDayRuleProtobuf alloc] initWithData:dataCopy];
 
   v6 = [(FCCTimeOfDayRule *)self initWithProtobuf:v5];
   return v6;
@@ -53,10 +53,10 @@
 
 - (id)transportData
 {
-  v2 = [(FCCTimeOfDayRule *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(FCCTimeOfDayRule *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 @end

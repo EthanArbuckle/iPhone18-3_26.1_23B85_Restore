@@ -1,18 +1,18 @@
 @interface EKCalendarItemEditorAccessibility
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation EKCalendarItemEditorAccessibility
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = EKCalendarItemEditorAccessibility;
-  v4 = [(EKCalendarItemEditorAccessibility *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(EKCalendarItemEditorAccessibility *)&v9 tableView:view cellForRowAtIndexPath:path];
   [v4 _setAccessibilityTableCellUsesDetailTextAsValue:1];
-  v5 = [v4 detailTextLabel];
-  v6 = [v5 text];
-  v7 = [v6 length];
+  detailTextLabel = [v4 detailTextLabel];
+  text = [detailTextLabel text];
+  v7 = [text length];
 
   if (v7)
   {

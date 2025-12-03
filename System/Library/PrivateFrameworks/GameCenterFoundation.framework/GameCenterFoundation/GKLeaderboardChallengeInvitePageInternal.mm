@@ -1,5 +1,5 @@
 @interface GKLeaderboardChallengeInvitePageInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
 @end
 
@@ -36,15 +36,15 @@ void __67__GKLeaderboardChallengeInvitePageInternal_secureCodedPropertyKeys__blo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeInvitePageInternal);
-  v5 = [v3 objectForKeyedSubscript:@"result"];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"result"];
   v6 = [v5 _gkMapWithBlock:&__block_literal_global_356];
   [(GKLeaderboardChallengeInvitePageInternal *)v4 setInvites:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"next-url"];
+  v7 = [fragmentCopy objectForKeyedSubscript:@"next-url"];
 
   [(GKLeaderboardChallengeInvitePageInternal *)v4 setNextURL:v7];
 

@@ -8,56 +8,56 @@
 + (void)initialize;
 + (void)preheatPlayback;
 - ($115C4C562B26FF47E01F9F4EA65B5887)remoteHostProcessAuditToken;
-- (BOOL)_shouldIgnorePlaybackSessionError:(id)a3;
+- (BOOL)_shouldIgnorePlaybackSessionError:(id)error;
 - (BOOL)isSystemMusicApplication;
 - (BOOL)isSystemPodcastsApplication;
 - (BOOL)isVocalAttenuationAvailable;
-- (BOOL)skipWithDirectionShouldJumpToItemStart:(int64_t)a3;
-- (MPCPlaybackEngine)initWithParameters:(id)a3;
-- (MPCPlaybackEngine)initWithPlayerID:(id)a3 eventStreamConsumers:(id)a4;
+- (BOOL)skipWithDirectionShouldJumpToItemStart:(int64_t)start;
+- (MPCPlaybackEngine)initWithParameters:(id)parameters;
+- (MPCPlaybackEngine)initWithPlayerID:(id)d eventStreamConsumers:(id)consumers;
 - (MPCPlaybackEngineDelegate)delegate;
 - (NSString)hostingSharedSessionID;
 - (double)currentAudioProcessingDelay;
 - (float)vocalLevel;
-- (id)takeCriticalSectionAssertion:(id)a3;
-- (void)_detectCrashLoopForSessionIdentifier:(id)a3 block:(id)a4;
+- (id)takeCriticalSectionAssertion:(id)assertion;
+- (void)_detectCrashLoopForSessionIdentifier:(id)identifier block:(id)block;
 - (void)_initializePlaybackStack;
 - (void)_setupNotifications;
 - (void)_transitionPreferencesChanged;
-- (void)addEngineObserver:(id)a3;
-- (void)beginScanningWithDirection:(int64_t)a3 supportsRateChange:(BOOL)a4 identifier:(NSString *)a5 completion:(id)a6;
-- (void)behavior:(id)a3 didChangeActionAtQueueEnd:(int64_t)a4;
-- (void)behavior:(id)a3 didChangeExplicitContentState:(int64_t)a4;
-- (void)behavior:(id)a3 didChangeRepeatType:(int64_t)a4;
-- (void)behavior:(id)a3 didChangeShuffleType:(int64_t)a4;
-- (void)behavior:(id)a3 didEndSharePlaySessionWithReason:(int64_t)a4;
-- (void)behavior:(id)a3 didReceiveSharedListeningEvent:(id)a4;
+- (void)addEngineObserver:(id)observer;
+- (void)beginScanningWithDirection:(int64_t)direction supportsRateChange:(BOOL)change identifier:(NSString *)identifier completion:(id)completion;
+- (void)behavior:(id)behavior didChangeActionAtQueueEnd:(int64_t)end;
+- (void)behavior:(id)behavior didChangeExplicitContentState:(int64_t)state;
+- (void)behavior:(id)behavior didChangeRepeatType:(int64_t)type;
+- (void)behavior:(id)behavior didChangeShuffleType:(int64_t)type;
+- (void)behavior:(id)behavior didEndSharePlaySessionWithReason:(int64_t)reason;
+- (void)behavior:(id)behavior didReceiveSharedListeningEvent:(id)event;
 - (void)dealloc;
 - (void)initializeSwiftStack;
-- (void)loadSessionWithIdentifier:(NSString *)a3 completion:(id)a4;
-- (void)queueController:(id)a3 didChangeTargetContentItemID:(id)a4;
-- (void)queueControllerDidChangeContents:(id)a3;
-- (void)queueControllerDidReachUnexpectedEndOfQueue:(id)a3;
-- (void)relativeVolumeDidUpdateToVolume:(float)a3;
-- (void)reloadItemsKeepingCurrentItem:(BOOL)a3 allowReuse:(BOOL)a4;
-- (void)reloadQueueForReason:(int64_t)a3 completion:(id)a4;
-- (void)removeEngineObserver:(id)a3;
-- (void)requestAuthorizationForExplicitItem:(id)a3 reason:(int64_t)a4 completion:(id)a5;
-- (void)restoreStateWithCompletion:(id)a3;
-- (void)routingController:(id)a3 pickedRouteDidChange:(id)a4;
+- (void)loadSessionWithIdentifier:(NSString *)identifier completion:(id)completion;
+- (void)queueController:(id)controller didChangeTargetContentItemID:(id)d;
+- (void)queueControllerDidChangeContents:(id)contents;
+- (void)queueControllerDidReachUnexpectedEndOfQueue:(id)queue;
+- (void)relativeVolumeDidUpdateToVolume:(float)volume;
+- (void)reloadItemsKeepingCurrentItem:(BOOL)item allowReuse:(BOOL)reuse;
+- (void)reloadQueueForReason:(int64_t)reason completion:(id)completion;
+- (void)removeEngineObserver:(id)observer;
+- (void)requestAuthorizationForExplicitItem:(id)item reason:(int64_t)reason completion:(id)completion;
+- (void)restoreStateWithCompletion:(id)completion;
+- (void)routingController:(id)controller pickedRouteDidChange:(id)change;
 - (void)schedulePlaybackStatePreservation;
-- (void)setAudioAnalyzerEnabled:(BOOL)a3;
-- (void)setAudioSessionCategory:(id)a3;
-- (void)setAudioSessionOptions:(unint64_t)a3;
-- (void)setDisableAutoPlay:(BOOL)a3;
-- (void)setDisableRepeat:(BOOL)a3;
-- (void)setDisableShuffle:(BOOL)a3;
-- (void)setQueueController:(id)a3;
-- (void)setQueueHandoffSupported:(BOOL)a3;
-- (void)setRemoteHostProcessAuditToken:(id *)a3;
-- (void)setStateRestorationSupported:(BOOL)a3;
-- (void)setVocalAttenuationEnabled:(BOOL)a3;
-- (void)setVocalLevel:(float)a3;
+- (void)setAudioAnalyzerEnabled:(BOOL)enabled;
+- (void)setAudioSessionCategory:(id)category;
+- (void)setAudioSessionOptions:(unint64_t)options;
+- (void)setDisableAutoPlay:(BOOL)play;
+- (void)setDisableRepeat:(BOOL)repeat;
+- (void)setDisableShuffle:(BOOL)shuffle;
+- (void)setQueueController:(id)controller;
+- (void)setQueueHandoffSupported:(BOOL)supported;
+- (void)setRemoteHostProcessAuditToken:(id *)token;
+- (void)setStateRestorationSupported:(BOOL)supported;
+- (void)setVocalAttenuationEnabled:(BOOL)enabled;
+- (void)setVocalLevel:(float)level;
 - (void)start;
 @end
 
@@ -65,17 +65,17 @@
 
 + (BOOL)isRemotePlayerService
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.MediaPlayer.RemotePlayerService"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.MediaPlayer.RemotePlayerService"];
 
   return v4;
 }
 
 + (BOOL)isSystemMusic
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   IsSystemMediaApplication = MRMediaRemoteApplicationIsSystemMediaApplication();
 
   return IsSystemMediaApplication;
@@ -96,7 +96,7 @@
 
   v53 = [[MPCPlaybackEngineEnvironmentConsumer alloc] initWithPlaybackEngine:self];
   [(MPCPlaybackEngineEventStream *)self->_eventStream addConsumer:?];
-  v5 = self;
+  selfCopy = self;
   if (([objc_opt_class() isSystemPodcasts] & 1) == 0)
   {
     v6 = objc_alloc_init(MPCAMSEngagementEventConsumer);
@@ -104,9 +104,9 @@
     v7 = objc_alloc_init(MPCPlayActivityFeedEventConsumer);
     [(MPCPlaybackEngineEventStream *)self->_eventStream addConsumer:v7];
     v8 = [[MPCSiriAnalyticsEventConsumer alloc] initWithPlaybackEngine:self];
-    [(MPCPlaybackEngineEventStream *)v5->_eventStream addConsumer:v8];
+    [(MPCPlaybackEngineEventStream *)selfCopy->_eventStream addConsumer:v8];
 
-    self = v5;
+    self = selfCopy;
   }
 
   v52 = objc_alloc_init(MPCRTCEventConsumer);
@@ -138,8 +138,8 @@
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v14 = [(MPCPlaybackEngineInitializationParameters *)self->_initializationParameters eventStreamConsumers];
-  v15 = [v14 countByEnumeratingWithState:&v56 objects:v64 count:16];
+  eventStreamConsumers = [(MPCPlaybackEngineInitializationParameters *)self->_initializationParameters eventStreamConsumers];
+  v15 = [eventStreamConsumers countByEnumeratingWithState:&v56 objects:v64 count:16];
   if (v15)
   {
     v16 = v15;
@@ -150,7 +150,7 @@
       {
         if (*v57 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(eventStreamConsumers);
         }
 
         v19 = *(*(&v56 + 1) + 8 * i);
@@ -158,17 +158,17 @@
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          v61 = v5;
+          v61 = selfCopy;
           v62 = 2114;
           v63 = v19;
           _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_DEFAULT, "PlaybackEngine %p: Adding app-provided consumer: %{public}@", buf, 0x16u);
         }
 
-        self = v5;
-        [(MPCPlaybackEngineEventStream *)v5->_eventStream addConsumer:v19];
+        self = selfCopy;
+        [(MPCPlaybackEngineEventStream *)selfCopy->_eventStream addConsumer:v19];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v56 objects:v64 count:16];
+      v16 = [eventStreamConsumers countByEnumeratingWithState:&v56 objects:v64 count:16];
     }
 
     while (v16);
@@ -233,8 +233,8 @@
     self->_transcriptAlignmentController = v41;
 
     v43 = self->_eventStream;
-    v44 = [(_MPCTranscriptAlignmentController *)self->_transcriptAlignmentController eventConsumer];
-    [(MPCPlaybackEngineEventStream *)v43 addConsumer:v44];
+    eventConsumer = [(_MPCTranscriptAlignmentController *)self->_transcriptAlignmentController eventConsumer];
+    [(MPCPlaybackEngineEventStream *)v43 addConsumer:eventConsumer];
   }
 
   v45 = objc_alloc(MEMORY[0x1E6970490]);
@@ -256,8 +256,8 @@
 
 + (BOOL)isSystemPodcasts
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   IsSystemPodcastApplication = MRMediaRemoteApplicationIsSystemPodcastApplication();
 
   return IsSystemPodcastApplication;
@@ -274,16 +274,16 @@
 {
   if (_os_feature_enabled_impl() && +[MPCPlaybackEngine deviceSupportsTransitions])
   {
-    v4 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:self selector:sel__transitionPreferencesChanged name:*MEMORY[0x1E6970380] object:v4];
-    [v3 addObserver:self selector:sel__transitionPreferencesChanged name:*MEMORY[0x1E6970388] object:v4];
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__transitionPreferencesChanged name:*MEMORY[0x1E6970380] object:standardUserDefaults];
+    [defaultCenter addObserver:self selector:sel__transitionPreferencesChanged name:*MEMORY[0x1E6970388] object:standardUserDefaults];
   }
 }
 
 - (void)initializeSwiftStack
 {
-  v2 = self;
+  selfCopy = self;
   MPCPlaybackEngine.initializeSwiftStack()();
 }
 
@@ -309,8 +309,8 @@
 
 + (BOOL)deviceSupportsTransitions
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 BOOLForKey:@"SupportsTransitionsOverride"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults BOOLForKey:@"SupportsTransitionsOverride"];
 
   MSVDeviceOSIsInternalInstall();
   return 1;
@@ -325,9 +325,9 @@
     v3 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(MPCPlaybackEngine *)self engineID];
+      engineID = [(MPCPlaybackEngine *)self engineID];
       *buf = 138543362;
-      v8 = v4;
+      v8 = engineID;
       _os_log_impl(&dword_1C5C61000, v3, OS_LOG_TYPE_DEFAULT, "[PSP:%{public}@] schedulePlaybackStatePreservation | scheduling in 1.5s", buf, 0xCu);
     }
 
@@ -347,17 +347,17 @@
   [(_MPCMusicPlayerControllerServer *)self->_musicPlayerControllerServer startServer];
   [(_MPCMediaRemotePublisher *)self->_mediaRemotePublisher publishIfNeeded];
   [objc_opt_class() preheatPlayback];
-  v3 = [(MPCPlaybackEngineInitializationParameters *)self->_initializationParameters nowPlayingInfoCenter];
-  v9 = [v3 playerPath];
+  nowPlayingInfoCenter = [(MPCPlaybackEngineInitializationParameters *)self->_initializationParameters nowPlayingInfoCenter];
+  playerPath = [nowPlayingInfoCenter playerPath];
 
-  v4 = [v9 client];
-  v5 = [v4 parentApplicationBundleIdentifier];
+  client = [playerPath client];
+  parentApplicationBundleIdentifier = [client parentApplicationBundleIdentifier];
 
-  if (v5)
+  if (parentApplicationBundleIdentifier)
   {
-    v6 = [v9 origin];
-    v7 = [v9 client];
-    v8 = [v7 parentApplicationBundleIdentifier];
+    origin = [playerPath origin];
+    client2 = [playerPath client];
+    parentApplicationBundleIdentifier2 = [client2 parentApplicationBundleIdentifier];
     MRMediaRemoteSetParentApplication();
   }
 }
@@ -402,8 +402,8 @@ void __45__MPCPlaybackEngine__initializePlaybackStack__block_invoke(uint64_t a1)
 
 + (BOOL)deviceSupportsSmartTransitions
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 BOOLForKey:@"SupportsSmartTransitionsOverride"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults BOOLForKey:@"SupportsSmartTransitionsOverride"];
 
   MSVDeviceOSIsInternalInstall();
   return 1;
@@ -411,10 +411,10 @@ void __45__MPCPlaybackEngine__initializePlaybackStack__block_invoke(uint64_t a1)
 
 - (float)vocalLevel
 {
-  v2 = [(MPCPlaybackEngine *)self vocalAttenuationController];
-  if (v2)
+  vocalAttenuationController = [(MPCPlaybackEngine *)self vocalAttenuationController];
+  if (vocalAttenuationController)
   {
-    v3 = v2[10];
+    v3 = vocalAttenuationController[10];
   }
 
   else
@@ -425,70 +425,70 @@ void __45__MPCPlaybackEngine__initializePlaybackStack__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)loadSessionWithIdentifier:(NSString *)a3 completion:(id)a4
+- (void)loadSessionWithIdentifier:(NSString *)identifier completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = identifier;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C6044F40, v7);
 }
 
-- (void)reloadQueueForReason:(int64_t)a3 completion:(id)a4
+- (void)reloadQueueForReason:(int64_t)reason completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = reason;
   v7[3] = v6;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C6044F30, v7);
 }
 
-- (void)beginScanningWithDirection:(int64_t)a3 supportsRateChange:(BOOL)a4 identifier:(NSString *)a5 completion:(id)a6
+- (void)beginScanningWithDirection:(int64_t)direction supportsRateChange:(BOOL)change identifier:(NSString *)identifier completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
-  *(v11 + 24) = a4;
-  *(v11 + 32) = a5;
+  *(v11 + 16) = direction;
+  *(v11 + 24) = change;
+  *(v11 + 32) = identifier;
   *(v11 + 40) = v10;
   *(v11 + 48) = self;
-  v12 = a5;
-  v13 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C6044EE8, v11);
 }
 
-- (BOOL)skipWithDirectionShouldJumpToItemStart:(int64_t)a3
+- (BOOL)skipWithDirectionShouldJumpToItemStart:(int64_t)start
 {
-  v3 = self;
+  selfCopy = self;
   v4 = MPCPlaybackEngine.skipShouldJumpToItemStart(direction:)();
 
   return v4 & 1;
 }
 
-- (void)relativeVolumeDidUpdateToVolume:(float)a3
+- (void)relativeVolumeDidUpdateToVolume:(float)volume
 {
-  v4 = self;
-  MPCPlaybackEngine.relativeVolumeDidUpdate(to:)(a3);
+  selfCopy = self;
+  MPCPlaybackEngine.relativeVolumeDidUpdate(to:)(volume);
 }
 
-- (void)reloadItemsKeepingCurrentItem:(BOOL)a3 allowReuse:(BOOL)a4
+- (void)reloadItemsKeepingCurrentItem:(BOOL)item allowReuse:(BOOL)reuse
 {
-  v5 = self;
-  sub_1C5E3CAD0(a3);
+  selfCopy = self;
+  sub_1C5E3CAD0(item);
 }
 
-- (void)setRemoteHostProcessAuditToken:(id *)a3
+- (void)setRemoteHostProcessAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *self->_remoteHostProcessAuditToken.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *self->_remoteHostProcessAuditToken.val = *token->var0;
   *&self->_remoteHostProcessAuditToken.val[4] = v3;
 }
 
@@ -507,27 +507,27 @@ void __45__MPCPlaybackEngine__initializePlaybackStack__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (id)takeCriticalSectionAssertion:(id)a3
+- (id)takeCriticalSectionAssertion:(id)assertion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = +[MPCCriticalSectionManager shared];
-  v6 = [v5 takeAssertion:v4];
+  v6 = [v5 takeAssertion:assertionCopy];
 
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v22 = self;
+    selfCopy = self;
     v23 = 2048;
     v24 = v6;
     v25 = 2114;
-    v26 = v4;
+    v26 = assertionCopy;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "PlaybackEngine %p: takeCriticalSectionAssertion: %p (%{public}@)", buf, 0x20u);
   }
 
-  v8 = [(MPCPlaybackEngine *)self eventStream];
-  v9 = [v8 eventDeliveryDeferralAssertionOfType:1 forReason:v4];
+  eventStream = [(MPCPlaybackEngine *)self eventStream];
+  v9 = [eventStream eventDeliveryDeferralAssertionOfType:1 forReason:assertionCopy];
 
   objc_initWeak(buf, self);
   v10 = objc_alloc(MEMORY[0x1E69B13F0]);
@@ -538,7 +538,7 @@ void __45__MPCPlaybackEngine__initializePlaybackStack__block_invoke(uint64_t a1)
   v11 = v6;
   v17 = v11;
   objc_copyWeak(&v20, buf);
-  v12 = v4;
+  v12 = assertionCopy;
   v18 = v12;
   v13 = v9;
   v19 = v13;
@@ -583,23 +583,23 @@ uint64_t __50__MPCPlaybackEngine_takeCriticalSectionAssertion___block_invoke(uin
   return [*(a1 + 48) invalidate];
 }
 
-- (void)routingController:(id)a3 pickedRouteDidChange:(id)a4
+- (void)routingController:(id)controller pickedRouteDidChange:(id)change
 {
-  objc_storeStrong(&self->_pickedRoute, a4);
-  v6 = a4;
-  v7 = [(MPCPlaybackEngine *)self eventObserver];
-  [v7 engine:self didReceivePickedRouteChange:v6];
+  objc_storeStrong(&self->_pickedRoute, change);
+  changeCopy = change;
+  eventObserver = [(MPCPlaybackEngine *)self eventObserver];
+  [eventObserver engine:self didReceivePickedRouteChange:changeCopy];
 }
 
-- (void)requestAuthorizationForExplicitItem:(id)a3 reason:(int64_t)a4 completion:(id)a5
+- (void)requestAuthorizationForExplicitItem:(id)item reason:(int64_t)reason completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 == 1)
+    if (reason == 1)
     {
       v11 = @"Age Gating";
     }
@@ -610,20 +610,20 @@ uint64_t __50__MPCPlaybackEngine_takeCriticalSectionAssertion___block_invoke(uin
     }
 
     *buf = 134218498;
-    if (a4 == 2)
+    if (reason == 2)
     {
       v11 = @"Age Verification";
     }
 
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v8;
+    v21 = itemCopy;
     v22 = 2114;
     v23 = v11;
     _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "PlaybackEngine %p: requestAuthorizationForExplicitItem:reason:completion: - Received request to authorize explicit item - item=%{public}@ - reason=%{public}@", buf, 0x20u);
   }
 
-  v12 = [(MPCPlaybackEngine *)self delegate];
+  delegate = [(MPCPlaybackEngine *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v15[0] = MEMORY[0x1E69E9820];
@@ -631,14 +631,14 @@ uint64_t __50__MPCPlaybackEngine_takeCriticalSectionAssertion___block_invoke(uin
     v15[2] = __75__MPCPlaybackEngine_requestAuthorizationForExplicitItem_reason_completion___block_invoke;
     v15[3] = &unk_1E8237568;
     v15[4] = self;
-    v16 = v8;
-    v17 = v9;
-    [v12 engine:self requiresAuthorizationToPlayItem:v16 reason:a4 authorizationHandler:v15];
+    v16 = itemCopy;
+    v17 = completionCopy;
+    [delegate engine:self requiresAuthorizationToPlayItem:v16 reason:reason authorizationHandler:v15];
   }
 
   else
   {
-    if (a4 == 1)
+    if (reason == 1)
     {
       v13 = @"Age Gating";
     }
@@ -648,13 +648,13 @@ uint64_t __50__MPCPlaybackEngine_takeCriticalSectionAssertion___block_invoke(uin
       v13 = @"None";
     }
 
-    if (a4 == 2)
+    if (reason == 2)
     {
       v13 = @"Age Verification";
     }
 
-    v14 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:42 debugDescription:{@"Explicit content not allowed [unable to handle request] - item=%@ - reason=%@", v8, v13}];
-    (*(v9 + 2))(v9, 0, v14);
+    v14 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:42 debugDescription:{@"Explicit content not allowed [unable to handle request] - item=%@ - reason=%@", itemCopy, v13}];
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -733,26 +733,26 @@ void __50__MPCPlaybackEngine__transitionPreferencesChanged__block_invoke(uint64_
   }
 }
 
-- (BOOL)_shouldIgnorePlaybackSessionError:(id)a3
+- (BOOL)_shouldIgnorePlaybackSessionError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"MPCPlaybackSessionManagerError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"MPCPlaybackSessionManagerError"];
 
-  v6 = v5 && ([v3 code] - 1) < 3;
+  v6 = v5 && ([errorCopy code] - 1) < 3;
   return v6;
 }
 
-- (void)_detectCrashLoopForSessionIdentifier:(id)a3 block:(id)a4
+- (void)_detectCrashLoopForSessionIdentifier:(id)identifier block:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E696AEC0];
   playerID = self->_playerID;
-  v9 = a4;
-  v10 = [v7 stringWithFormat:@"stateRestoration-%@", playerID];
-  v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v12 = [v11 dictionaryForKey:v10];
+  blockCopy = block;
+  playerID = [v7 stringWithFormat:@"stateRestoration-%@", playerID];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v12 = [standardUserDefaults dictionaryForKey:playerID];
   v13 = v12;
   v14 = MEMORY[0x1E695E0F8];
   if (v12)
@@ -763,14 +763,14 @@ void __50__MPCPlaybackEngine__transitionPreferencesChanged__block_invoke(uint64_
   v15 = v14;
 
   v16 = [v15 objectForKeyedSubscript:@"attempts"];
-  v17 = [v16 integerValue];
+  integerValue = [v16 integerValue];
 
   v18 = [v15 objectForKeyedSubscript:@"identifier"];
 
-  LODWORD(v15) = [v18 isEqualToString:v6];
+  LODWORD(v15) = [v18 isEqualToString:identifierCopy];
   if (v15)
   {
-    v19 = v17;
+    v19 = integerValue;
   }
 
   else
@@ -781,33 +781,33 @@ void __50__MPCPlaybackEngine__transitionPreferencesChanged__block_invoke(uint64_
   v20 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(MPCPlaybackEngine *)self engineID];
+    engineID = [(MPCPlaybackEngine *)self engineID];
     *buf = 138543874;
-    v32 = v21;
+    v32 = engineID;
     v33 = 2114;
-    v34 = v6;
+    v34 = identifierCopy;
     v35 = 2048;
     v36 = v19 + 1;
     _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_DEFAULT, "[PSP:%{public}@] _detectCrashLoopForSessionIdentifier: | sessionIdentifier=%{public}@ attempt=%ld", buf, 0x20u);
   }
 
-  v22 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
   v29[1] = @"attempts";
-  v30[0] = v6;
+  v30[0] = identifierCopy;
   v29[0] = @"identifier";
   v23 = [MEMORY[0x1E696AD98] numberWithInteger:v19 + 1];
   v30[1] = v23;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
-  [v22 setObject:v24 forKey:v10];
+  [standardUserDefaults2 setObject:v24 forKey:playerID];
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __64__MPCPlaybackEngine__detectCrashLoopForSessionIdentifier_block___block_invoke;
   v27[3] = &unk_1E8239298;
-  v28 = v10;
-  v25 = v9[2];
-  v26 = v10;
-  v25(v9, v19 < 2, v27);
+  v28 = playerID;
+  v25 = blockCopy[2];
+  v26 = playerID;
+  v25(blockCopy, v19 < 2, v27);
 }
 
 void __64__MPCPlaybackEngine__detectCrashLoopForSessionIdentifier_block___block_invoke(uint64_t a1)
@@ -818,53 +818,53 @@ void __64__MPCPlaybackEngine__detectCrashLoopForSessionIdentifier_block___block_
 
 - (NSString)hostingSharedSessionID
 {
-  v2 = [(MPCPlaybackEngine *)self mediaRemotePublisher];
-  v3 = [v2 hostingSharedSessionID];
+  mediaRemotePublisher = [(MPCPlaybackEngine *)self mediaRemotePublisher];
+  hostingSharedSessionID = [mediaRemotePublisher hostingSharedSessionID];
 
-  return v3;
+  return hostingSharedSessionID;
 }
 
-- (void)behavior:(id)a3 didReceiveSharedListeningEvent:(id)a4
+- (void)behavior:(id)behavior didReceiveSharedListeningEvent:(id)event
 {
-  v6 = a4;
-  v5 = [(MPCPlaybackEngine *)self delegate];
+  eventCopy = event;
+  delegate = [(MPCPlaybackEngine *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 engine:self didReceiveSharedListeningEvent:v6];
+    [delegate engine:self didReceiveSharedListeningEvent:eventCopy];
   }
 }
 
-- (void)behavior:(id)a3 didChangeExplicitContentState:(int64_t)a4
+- (void)behavior:(id)behavior didChangeExplicitContentState:(int64_t)state
 {
-  v6 = [(MPCPlaybackEngine *)self player];
-  v5 = [v6 currentItem];
-  [v5 setExplicitContentState:a4];
+  player = [(MPCPlaybackEngine *)self player];
+  currentItem = [player currentItem];
+  [currentItem setExplicitContentState:state];
 }
 
-- (void)behavior:(id)a3 didEndSharePlaySessionWithReason:(int64_t)a4
+- (void)behavior:(id)behavior didEndSharePlaySessionWithReason:(int64_t)reason
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AEC0];
   v7 = MSVNanoIDCreateTaggedPointer();
   v8 = [v6 stringWithFormat:@"LeaveSharedSession:%@", v7];
 
-  if (a4)
+  if (reason)
   {
-    if (a4 == 2)
+    if (reason == 2)
     {
       v9 = 0;
-      v10 = @"CannotHostAndParticipateInDistinctSharedSessions";
+      reason = @"CannotHostAndParticipateInDistinctSharedSessions";
     }
 
-    else if (a4 == 1)
+    else if (reason == 1)
     {
       v9 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCPlaybackEngineInternalError" code:2201 debugDescription:@"LiveLink unexpectedly disconnected"];
-      v10 = @"UnexpectedDisconnect";
+      reason = @"UnexpectedDisconnect";
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/%d", a4];
+      reason = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown/%d", reason];
       v9 = 0;
     }
   }
@@ -872,16 +872,16 @@ void __64__MPCPlaybackEngine__detectCrashLoopForSessionIdentifier_block___block_
   else
   {
     v9 = 0;
-    v10 = @"OutOfItems";
+    reason = @"OutOfItems";
   }
 
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v10;
+    v21 = reason;
     v22 = 2114;
     v23 = v8;
     _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "PlaybackEngine %p: sharePlaySessionDidEnd: calling publisher.leaveSharedSession [%{public}@] commandID=%{public}@", buf, 0x20u);
@@ -893,10 +893,10 @@ void __64__MPCPlaybackEngine__detectCrashLoopForSessionIdentifier_block___block_
   v15[2] = __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_invoke;
   v15[3] = &unk_1E8237540;
   v15[4] = self;
-  v16 = v10;
+  v16 = reason;
   v17 = v9;
   v13 = v9;
-  v14 = v10;
+  v14 = reason;
   [(_MPCMediaRemotePublisher *)mediaRemotePublisher leaveSharedSessionWithCommandID:v8 remoteControlInterface:@"MPCPlaybackEngine <MusicSharePlayDelegate>" completion:v15];
 }
 
@@ -925,46 +925,46 @@ void __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_i
   }
 }
 
-- (void)behavior:(id)a3 didChangeActionAtQueueEnd:(int64_t)a4
+- (void)behavior:(id)behavior didChangeActionAtQueueEnd:(int64_t)end
 {
-  v6 = [(MPCPlaybackEngine *)self eventObserver];
-  [v6 engine:self didChangeActionAtQueueEnd:a4];
+  eventObserver = [(MPCPlaybackEngine *)self eventObserver];
+  [eventObserver engine:self didChangeActionAtQueueEnd:end];
 }
 
-- (void)behavior:(id)a3 didChangeShuffleType:(int64_t)a4
+- (void)behavior:(id)behavior didChangeShuffleType:(int64_t)type
 {
-  v6 = [(MPCPlaybackEngine *)self eventObserver];
-  [v6 engine:self didChangeShuffleType:a4];
+  eventObserver = [(MPCPlaybackEngine *)self eventObserver];
+  [eventObserver engine:self didChangeShuffleType:type];
 }
 
-- (void)behavior:(id)a3 didChangeRepeatType:(int64_t)a4
+- (void)behavior:(id)behavior didChangeRepeatType:(int64_t)type
 {
-  v6 = [(MPCPlaybackEngine *)self eventObserver];
-  [v6 engine:self didChangeRepeatType:a4];
+  eventObserver = [(MPCPlaybackEngine *)self eventObserver];
+  [eventObserver engine:self didChangeRepeatType:type];
 }
 
-- (void)queueControllerDidReachUnexpectedEndOfQueue:(id)a3
+- (void)queueControllerDidReachUnexpectedEndOfQueue:(id)queue
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPCPlaybackEngine *)self queueController];
+  queueCopy = queue;
+  queueController = [(MPCPlaybackEngine *)self queueController];
 
-  if (v5 == v4 && [v4 behaviorType])
+  if (queueController == queueCopy && [queueCopy behaviorType])
   {
-    if ([v4 isEmpty])
+    if ([queueCopy isEmpty])
     {
       v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(MPCPlaybackEngine *)self engineID];
+        engineID = [(MPCPlaybackEngine *)self engineID];
         *buf = 138543362;
-        v16 = v7;
+        v16 = engineID;
         _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[ENG:%{public}@] queueControllerDidReachUnexpectedEndOfQueue: switching to empty queue [no items in queue controller]", buf, 0xCu);
       }
 
-      v8 = [(MPCPlaybackEngine *)self mediaRemotePublisher];
+      mediaRemotePublisher = [(MPCPlaybackEngine *)self mediaRemotePublisher];
       v9 = objc_opt_new();
-      [v8 performSetQueue:v9 completion:&__block_literal_global_206];
+      [mediaRemotePublisher performSetQueue:v9 completion:&__block_literal_global_206];
     }
 
     else
@@ -973,63 +973,63 @@ void __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_i
       v11 = MSVNanoIDCreateTaggedPointer();
       v12 = [v10 stringWithFormat:@"UnexpectedEndOfQueue_%@", v11];
 
-      v13 = [(MPCPlaybackEngine *)self player];
-      [v13 pauseWithIdentifier:v12 completion:&__block_literal_global_211];
+      player = [(MPCPlaybackEngine *)self player];
+      [player pauseWithIdentifier:v12 completion:&__block_literal_global_211];
 
-      v14 = [(MPCPlaybackEngine *)self player];
-      [v14 didReachEndOfQueueWithReason:@"UnexpectedEndOfQueue"];
+      player2 = [(MPCPlaybackEngine *)self player];
+      [player2 didReachEndOfQueueWithReason:@"UnexpectedEndOfQueue"];
     }
   }
 }
 
-- (void)queueController:(id)a3 didChangeTargetContentItemID:(id)a4
+- (void)queueController:(id)controller didChangeTargetContentItemID:(id)d
 {
-  v5 = a3;
+  controllerCopy = controller;
   [(MPCPlaybackEngine *)self schedulePlaybackStatePreservation];
-  v6 = [v5 targetContentItemSource] == 3;
-  v7 = [v5 targetContentItemSource];
+  v6 = [controllerCopy targetContentItemSource] == 3;
+  targetContentItemSource = [controllerCopy targetContentItemSource];
 
-  [(MPCPlaybackEngine *)self reloadItemsKeepingCurrentItem:v6 allowReuse:v7 != 6];
+  [(MPCPlaybackEngine *)self reloadItemsKeepingCurrentItem:v6 allowReuse:targetContentItemSource != 6];
 }
 
-- (void)queueControllerDidChangeContents:(id)a3
+- (void)queueControllerDidChangeContents:(id)contents
 {
   [(MPCPlaybackEngine *)self schedulePlaybackStatePreservation];
-  v4 = [(MPCPlaybackEngine *)self eventObserver];
-  [v4 engine:self didChangeQueueWithReason:@"Queue Controller Contents Changed"];
+  eventObserver = [(MPCPlaybackEngine *)self eventObserver];
+  [eventObserver engine:self didChangeQueueWithReason:@"Queue Controller Contents Changed"];
 
   [(MPCPlaybackEngine *)self reloadItemsKeepingCurrentItem:1 allowReuse:1];
 }
 
-- (void)setQueueController:(id)a3
+- (void)setQueueController:(id)controller
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   p_queueController = &self->_queueController;
   queueController = self->_queueController;
-  if (queueController != v6)
+  if (queueController != controllerCopy)
   {
     if (queueController)
     {
-      v9 = [(MPCPlaybackEngine *)self eventObserver];
-      [v9 engine:self willRemoveQueueController:v6];
+      eventObserver = [(MPCPlaybackEngine *)self eventObserver];
+      [eventObserver engine:self willRemoveQueueController:controllerCopy];
 
-      v10 = [(MPCQueueController *)self->_queueController playbackEngine];
+      playbackEngine = [(MPCQueueController *)self->_queueController playbackEngine];
 
-      if (v10 == self)
+      if (playbackEngine == self)
       {
         v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Session");
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [(MPCPlaybackEngine *)self engineID];
-          v13 = [(MPCQueueController *)v6 sessionID];
-          v14 = [(MPCQueueController *)self->_queueController sessionID];
+          engineID = [(MPCPlaybackEngine *)self engineID];
+          sessionID = [(MPCQueueController *)controllerCopy sessionID];
+          sessionID2 = [(MPCQueueController *)self->_queueController sessionID];
           *buf = 138543874;
-          v35 = v12;
+          v35 = engineID;
           v36 = 2114;
-          v37 = v13;
+          v37 = sessionID;
           v38 = 2114;
-          v39 = v14;
+          v39 = sessionID2;
           _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[ENG:%{public}@] setQueueController=%{public}@ | disconnecting [previous controller still connected] queueController=%{public}@", buf, 0x20u);
         }
 
@@ -1045,40 +1045,40 @@ void __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_i
       v15 = 0;
     }
 
-    v16 = [(MPCQueueController *)v15 musicSharePlay];
-    [v16 setMusicSharePlayBehaviorDelegate:0];
+    musicSharePlay = [(MPCQueueController *)v15 musicSharePlay];
+    [musicSharePlay setMusicSharePlayBehaviorDelegate:0];
 
-    v17 = [(MPCQueueController *)*p_queueController music];
-    [v17 setMusicBehaviorDelegate:0];
+    music = [(MPCQueueController *)*p_queueController music];
+    [music setMusicBehaviorDelegate:0];
 
     [(MPCQueueController *)*p_queueController setDelegate:0];
-    v18 = [(MPCQueueController *)v6 musicSharePlay];
+    musicSharePlay2 = [(MPCQueueController *)controllerCopy musicSharePlay];
 
-    if (v18)
+    if (musicSharePlay2)
     {
       [(MPCPlaybackEngine *)self setVocalAttenuationEnabled:0];
     }
 
-    objc_storeStrong(&self->_queueController, a3);
-    v19 = [(MPCQueueController *)self->_queueController playbackEngine];
-    v20 = v19;
-    if (v19 != self)
+    objc_storeStrong(&self->_queueController, controller);
+    playbackEngine2 = [(MPCQueueController *)self->_queueController playbackEngine];
+    v20 = playbackEngine2;
+    if (playbackEngine2 != self)
     {
-      if (v19)
+      if (playbackEngine2)
       {
-        v33 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v33 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngine.m" lineNumber:636 description:{@"Attempt to share QueueController with two players: %@ != %@", v20, self}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngine.m" lineNumber:636 description:{@"Attempt to share QueueController with two players: %@ != %@", v20, self}];
       }
 
       v21 = os_log_create("com.apple.amp.mediaplaybackcore", "Session");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(MPCPlaybackEngine *)self engineID];
-        v23 = [(MPCQueueController *)v6 sessionID];
+        engineID2 = [(MPCPlaybackEngine *)self engineID];
+        sessionID3 = [(MPCQueueController *)controllerCopy sessionID];
         *buf = 138543618;
-        v35 = v22;
+        v35 = engineID2;
         v36 = 2114;
-        v37 = v23;
+        v37 = sessionID3;
         _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_DEFAULT, "[ENG:%{public}@] setQueueController:%{public}@ | connecting [new controller not connected]", buf, 0x16u);
       }
 
@@ -1086,35 +1086,35 @@ void __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_i
     }
 
     [(MPCQueueController *)self->_queueController setDelegate:self];
-    v24 = [(MPCQueueController *)self->_queueController music];
-    [v24 setMusicBehaviorDelegate:self];
+    music2 = [(MPCQueueController *)self->_queueController music];
+    [music2 setMusicBehaviorDelegate:self];
 
-    v25 = [(MPCQueueController *)self->_queueController musicSharePlay];
-    [v25 setMusicSharePlayBehaviorDelegate:self];
+    musicSharePlay3 = [(MPCQueueController *)self->_queueController musicSharePlay];
+    [musicSharePlay3 setMusicSharePlayBehaviorDelegate:self];
 
-    v26 = [(MPCPlaybackEngine *)self delegate];
+    delegate = [(MPCPlaybackEngine *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v27 = [v26 requestedPropertySetForEngine:self];
-      v28 = [(MPCQueueController *)self->_queueController musicSharePlay];
-      [v28 setRequestedPropertySetForEvents:v27];
+      v27 = [delegate requestedPropertySetForEngine:self];
+      musicSharePlay4 = [(MPCQueueController *)self->_queueController musicSharePlay];
+      [musicSharePlay4 setRequestedPropertySetForEvents:v27];
     }
 
     [(MPCQueueController *)self->_queueController didConnectToPlaybackEngine:self];
     v29 = os_log_create("com.apple.amp.mediaplaybackcore", "Session");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(MPCPlaybackEngine *)self engineID];
-      v31 = [(MPCQueueController *)self->_queueController sessionID];
+      engineID3 = [(MPCPlaybackEngine *)self engineID];
+      sessionID4 = [(MPCQueueController *)self->_queueController sessionID];
       *buf = 138543618;
-      v35 = v30;
+      v35 = engineID3;
       v36 = 2114;
-      v37 = v31;
+      v37 = sessionID4;
       _os_log_impl(&dword_1C5C61000, v29, OS_LOG_TYPE_DEFAULT, "[ENG:%{public}@] setQueueController:%{public}@ | didChangeQueueController", buf, 0x16u);
     }
 
-    v32 = [(MPCPlaybackEngine *)self eventObserver];
-    [v32 engine:self didChangeQueueController:v6];
+    eventObserver2 = [(MPCPlaybackEngine *)self eventObserver];
+    [eventObserver2 engine:self didChangeQueueController:controllerCopy];
   }
 }
 
@@ -1136,24 +1136,24 @@ void __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_i
 
 - (double)currentAudioProcessingDelay
 {
-  v3 = [(_MPCPlaybackEnginePlayer *)self->_player currentItem];
+  currentItem = [(_MPCPlaybackEnginePlayer *)self->_player currentItem];
   v4 = 0.0;
-  if ([v3 supportsVocalAttenuation] && objc_msgSend(v3, "isConfiguredForVocalAttenuation") && -[MPCPlaybackEngine isVocalAttenuationEnabled](self, "isVocalAttenuationEnabled"))
+  if ([currentItem supportsVocalAttenuation] && objc_msgSend(currentItem, "isConfiguredForVocalAttenuation") && -[MPCPlaybackEngine isVocalAttenuationEnabled](self, "isVocalAttenuationEnabled"))
   {
-    v5 = [(MPCPlaybackEngine *)self vocalAttenuationController];
-    v6 = v5;
-    if (v5)
+    vocalAttenuationController = [(MPCPlaybackEngine *)self vocalAttenuationController];
+    v6 = vocalAttenuationController;
+    if (vocalAttenuationController)
     {
-      v7 = [v5 processor];
-      v8 = [v7 isEnabled];
+      processor = [vocalAttenuationController processor];
+      isEnabled = [processor isEnabled];
 
-      if (v8)
+      if (isEnabled)
       {
-        v9 = [v6 modelProvider];
-        v10 = [v9 model];
-        if (v10)
+        modelProvider = [v6 modelProvider];
+        model = [modelProvider model];
+        if (model)
         {
-          v4 = v10[10];
+          v4 = model[10];
         }
       }
     }
@@ -1162,13 +1162,13 @@ void __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_i
   return v4;
 }
 
-- (void)setVocalLevel:(float)a3
+- (void)setVocalLevel:(float)level
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(MPCPlaybackEngine *)self vocalAttenuationController];
-  if (v5)
+  vocalAttenuationController = [(MPCPlaybackEngine *)self vocalAttenuationController];
+  if (vocalAttenuationController)
   {
-    v6 = v5[10];
+    v6 = vocalAttenuationController[10];
   }
 
   else
@@ -1176,23 +1176,23 @@ void __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_i
     v6 = 0.0;
   }
 
-  if (v6 != a3)
+  if (v6 != level)
   {
-    v7 = [(MPCPlaybackEngine *)self vocalAttenuationController];
-    if (v7)
+    vocalAttenuationController2 = [(MPCPlaybackEngine *)self vocalAttenuationController];
+    if (vocalAttenuationController2)
     {
-      v9 = fminf(fmaxf(a3, v7[14]), v7[15]);
-      v10 = v7[10];
+      v9 = fminf(fmaxf(level, vocalAttenuationController2[14]), vocalAttenuationController2[15]);
+      v10 = vocalAttenuationController2[10];
       if (v9 != v10)
       {
-        v7[10] = v9;
-        *&v8 = v7[10];
-        v16 = v7;
-        [v7 _processorLevelForVocalLevel:v8];
+        vocalAttenuationController2[10] = v9;
+        *&v8 = vocalAttenuationController2[10];
+        v16 = vocalAttenuationController2;
+        [vocalAttenuationController2 _processorLevelForVocalLevel:v8];
         v12 = v11;
-        v13 = [v16 processor];
+        processor = [v16 processor];
         LODWORD(v14) = v12;
-        [v13 setLevel:v14];
+        [processor setLevel:v14];
 
         v15 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1212,19 +1212,19 @@ void __63__MPCPlaybackEngine_behavior_didEndSharePlaySessionWithReason___block_i
         v18 = COERCE_DOUBLE(&unk_1E8239298);
         v19 = v16;
         msv_dispatch_on_main_queue();
-        v7 = v16;
+        vocalAttenuationController2 = v16;
       }
     }
   }
 }
 
-- (void)setVocalAttenuationEnabled:(BOOL)a3
+- (void)setVocalAttenuationEnabled:(BOOL)enabled
 {
-  if (self->_vocalAttenuationEnabled != a3)
+  if (self->_vocalAttenuationEnabled != enabled)
   {
-    self->_vocalAttenuationEnabled = a3;
-    v4 = [(MPCPlaybackEngine *)self player];
-    [v4 updateAudioSessionSpeechDetection];
+    self->_vocalAttenuationEnabled = enabled;
+    player = [(MPCPlaybackEngine *)self player];
+    [player updateAudioSessionSpeechDetection];
   }
 }
 
@@ -1341,17 +1341,17 @@ LABEL_7:
   }
 }
 
-- (void)setAudioAnalyzerEnabled:(BOOL)a3
+- (void)setAudioAnalyzerEnabled:(BOOL)enabled
 {
-  if (self->_audioAnalyzerEnabled != a3)
+  if (self->_audioAnalyzerEnabled != enabled)
   {
-    v4 = a3;
-    self->_audioAnalyzerEnabled = a3;
-    v6 = [MEMORY[0x1E69708A8] standardUserDefaults];
-    v7 = [v6 disableAudioAnalysis];
+    enabledCopy = enabled;
+    self->_audioAnalyzerEnabled = enabled;
+    standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+    disableAudioAnalysis = [standardUserDefaults disableAudioAnalysis];
 
     v8 = 0;
-    if (v4 && (v7 & 1) == 0)
+    if (enabledCopy && (disableAudioAnalysis & 1) == 0)
     {
       v8 = [[MPCAudioSpectrumAnalyzer alloc] initWithPlaybackEngine:self];
     }
@@ -1363,85 +1363,85 @@ LABEL_7:
   }
 }
 
-- (void)setStateRestorationSupported:(BOOL)a3
+- (void)setStateRestorationSupported:(BOOL)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   [(_MPCPlaybackEngineSessionManager *)self->_sessionManager setStateRestorationSupported:?];
-  if (v3)
+  if (supportedCopy)
   {
 
     [(MPCPlaybackEngine *)self schedulePlaybackStatePreservation];
   }
 }
 
-- (void)removeEngineObserver:(id)a3
+- (void)removeEngineObserver:(id)observer
 {
   eventObserver = self->_eventObserver;
-  v4 = a3;
-  v5 = [(_MPCPlaybackEngineEventObserving *)eventObserver objects];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  objects = [(_MPCPlaybackEngineEventObserving *)eventObserver objects];
+  [objects removeObject:observerCopy];
 }
 
-- (void)addEngineObserver:(id)a3
+- (void)addEngineObserver:(id)observer
 {
   eventObserver = self->_eventObserver;
-  v4 = a3;
-  v5 = [(_MPCPlaybackEngineEventObserving *)eventObserver objects];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  objects = [(_MPCPlaybackEngineEventObserving *)eventObserver objects];
+  [objects addObject:observerCopy];
 }
 
-- (void)setDisableShuffle:(BOOL)a3
+- (void)setDisableShuffle:(BOOL)shuffle
 {
-  if (self->_disableShuffle != a3)
+  if (self->_disableShuffle != shuffle)
   {
-    self->_disableShuffle = a3;
-    v4 = [(MPCPlaybackEngine *)self mediaRemotePublisher];
-    [v4 publishIfNeeded];
+    self->_disableShuffle = shuffle;
+    mediaRemotePublisher = [(MPCPlaybackEngine *)self mediaRemotePublisher];
+    [mediaRemotePublisher publishIfNeeded];
   }
 }
 
-- (void)setDisableRepeat:(BOOL)a3
+- (void)setDisableRepeat:(BOOL)repeat
 {
-  if (self->_disableRepeat != a3)
+  if (self->_disableRepeat != repeat)
   {
-    self->_disableRepeat = a3;
-    v4 = [(MPCPlaybackEngine *)self mediaRemotePublisher];
-    [v4 publishIfNeeded];
+    self->_disableRepeat = repeat;
+    mediaRemotePublisher = [(MPCPlaybackEngine *)self mediaRemotePublisher];
+    [mediaRemotePublisher publishIfNeeded];
   }
 }
 
-- (void)setDisableAutoPlay:(BOOL)a3
+- (void)setDisableAutoPlay:(BOOL)play
 {
-  if (self->_disableAutoPlay != a3)
+  if (self->_disableAutoPlay != play)
   {
-    self->_disableAutoPlay = a3;
-    v4 = [(MPCPlaybackEngine *)self mediaRemotePublisher];
-    [v4 publishIfNeeded];
+    self->_disableAutoPlay = play;
+    mediaRemotePublisher = [(MPCPlaybackEngine *)self mediaRemotePublisher];
+    [mediaRemotePublisher publishIfNeeded];
   }
 }
 
-- (void)setAudioSessionOptions:(unint64_t)a3
+- (void)setAudioSessionOptions:(unint64_t)options
 {
-  if (self->_audioSessionOptions != a3)
+  if (self->_audioSessionOptions != options)
   {
-    self->_audioSessionOptions = a3;
+    self->_audioSessionOptions = options;
     [(_MPCPlaybackEnginePlayer *)self->_player updateAudioSession];
   }
 }
 
-- (void)setAudioSessionCategory:(id)a3
+- (void)setAudioSessionCategory:(id)category
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  categoryCopy = category;
+  v9 = categoryCopy;
+  if (!categoryCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngine.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"audioSessionCategory"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngine.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"audioSessionCategory"}];
 
-    v5 = 0;
+    categoryCopy = 0;
   }
 
-  if (![(NSString *)self->_audioSessionCategory isEqualToString:v5])
+  if (![(NSString *)self->_audioSessionCategory isEqualToString:categoryCopy])
   {
     v6 = [v9 copy];
     audioSessionCategory = self->_audioSessionCategory;
@@ -1451,11 +1451,11 @@ LABEL_7:
   }
 }
 
-- (void)setQueueHandoffSupported:(BOOL)a3
+- (void)setQueueHandoffSupported:(BOOL)supported
 {
-  if (self->_queueHandoffSupported != a3)
+  if (self->_queueHandoffSupported != supported)
   {
-    self->_queueHandoffSupported = a3;
+    self->_queueHandoffSupported = supported;
     if ([(_MPCMediaRemotePublisher *)self->_mediaRemotePublisher hasInitializedSupportedCommands])
     {
       mediaRemotePublisher = self->_mediaRemotePublisher;
@@ -1465,14 +1465,14 @@ LABEL_7:
   }
 }
 
-- (void)restoreStateWithCompletion:(id)a3
+- (void)restoreStateWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_MPCPlaybackEngineSessionManager *)self->_sessionManager stateRestorationSessionIdentifier];
+  completionCopy = completion;
+  stateRestorationSessionIdentifier = [(_MPCPlaybackEngineSessionManager *)self->_sessionManager stateRestorationSessionIdentifier];
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   v7 = v6;
-  if (v5)
+  if (stateRestorationSessionIdentifier)
   {
     v8 = os_signpost_id_generate(v6);
 
@@ -1487,11 +1487,11 @@ LABEL_7:
     v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(MPCPlaybackEngine *)self engineID];
+      engineID = [(MPCPlaybackEngine *)self engineID];
       *buf = 138543618;
-      v19 = v12;
+      v19 = engineID;
       v20 = 2114;
-      v21 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[PSP:%{public}@] restoreStateWithCompletion: | requested playback state restoration [] engine=%{public}@", buf, 0x16u);
     }
 
@@ -1502,8 +1502,8 @@ LABEL_7:
     v14[3] = &unk_1E82374D0;
     v17 = v8;
     v14[4] = self;
-    v16 = v4;
-    v15 = v5;
+    v16 = completionCopy;
+    v15 = stateRestorationSessionIdentifier;
     [(MPCPlaybackEngine *)self _detectCrashLoopForSessionIdentifier:v15 block:v14];
   }
 
@@ -1511,15 +1511,15 @@ LABEL_7:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(MPCPlaybackEngine *)self engineID];
+      engineID2 = [(MPCPlaybackEngine *)self engineID];
       *buf = 138543618;
-      v19 = v13;
+      v19 = engineID2;
       v20 = 2114;
-      v21 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[PSP:%{public}@] restoreStateWithCompletion: | skipping playback state restoration [no stateRestorationSessionID in session manager] engine=%{public}@", buf, 0x16u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -1800,8 +1800,8 @@ void __48__MPCPlaybackEngine_restoreStateWithCompletion___block_invoke_164(uint6
   v3 = +[MPCFairPlayPerformanceController shared];
   [v3 unregisterEngine:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(MPCPlaybackEngineEventStream *)self->_eventStream scheduleInvalidation];
   v5.receiver = self;
@@ -1809,10 +1809,10 @@ void __48__MPCPlaybackEngine_restoreStateWithCompletion___block_invoke_164(uint6
   [(MPCPlaybackEngine *)&v5 dealloc];
 }
 
-- (MPCPlaybackEngine)initWithParameters:(id)a3
+- (MPCPlaybackEngine)initWithParameters:(id)parameters
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  parametersCopy = parameters;
   v20.receiver = self;
   v20.super_class = MPCPlaybackEngine;
   v7 = [(MPCPlaybackEngine *)&v20 init];
@@ -1820,14 +1820,14 @@ void __48__MPCPlaybackEngine_restoreStateWithCompletion___block_invoke_164(uint6
   {
     if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      [v18 handleFailureInMethod:a2 object:v7 file:@"MPCPlaybackEngine.m" lineNumber:137 description:{@"MPCPlaybackEngine API must be called on the main thread. %@", v19}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"MPCPlaybackEngine.m" lineNumber:137 description:{@"MPCPlaybackEngine API must be called on the main thread. %@", callStackSymbols}];
     }
 
-    objc_storeStrong(&v7->_initializationParameters, a3);
-    v8 = [v6 playerID];
-    v9 = [v8 copy];
+    objc_storeStrong(&v7->_initializationParameters, parameters);
+    playerID = [parametersCopy playerID];
+    v9 = [playerID copy];
     playerID = v7->_playerID;
     v7->_playerID = v9;
 
@@ -1837,13 +1837,13 @@ void __48__MPCPlaybackEngine_restoreStateWithCompletion___block_invoke_164(uint6
 
     objc_storeStrong(&v7->_audioSessionCategory, *MEMORY[0x1E6958068]);
     v7->_queueHandoffSupported = 1;
-    v13 = [objc_opt_class() isRemotePlayerService];
-    if ((v13 & 1) == 0)
+    isRemotePlayerService = [objc_opt_class() isRemotePlayerService];
+    if ((isRemotePlayerService & 1) == 0)
     {
       [objc_opt_class() isSystemMusic];
     }
 
-    v7->_usesStopState = v13;
+    v7->_usesStopState = isRemotePlayerService;
     v14 = [MEMORY[0x1E69708B8] proxyForObjects:MEMORY[0x1E695E0F0] protocol:&unk_1F45B0B78];
     eventObserver = v7->_eventObserver;
     v7->_eventObserver = v14;
@@ -1862,11 +1862,11 @@ void __48__MPCPlaybackEngine_restoreStateWithCompletion___block_invoke_164(uint6
   return v7;
 }
 
-- (MPCPlaybackEngine)initWithPlayerID:(id)a3 eventStreamConsumers:(id)a4
+- (MPCPlaybackEngine)initWithPlayerID:(id)d eventStreamConsumers:(id)consumers
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_MPCPlaybackEnginePlayerIDInitializationParameters alloc] initWithPlayerID:v7 eventStreamConsumers:v6];
+  consumersCopy = consumers;
+  dCopy = d;
+  v8 = [[_MPCPlaybackEnginePlayerIDInitializationParameters alloc] initWithPlayerID:dCopy eventStreamConsumers:consumersCopy];
 
   v9 = [(MPCPlaybackEngine *)self initWithParameters:v8];
   return v9;
@@ -1876,8 +1876,8 @@ void __48__MPCPlaybackEngine_restoreStateWithCompletion___block_invoke_164(uint6
 {
   if (MSVDeviceIsAudioAccessory() && (+[MPCPlaybackEngine isSystemMusic](MPCPlaybackEngine, "isSystemMusic") || +[MPCPlaybackEngine isSystemPodcasts](MPCPlaybackEngine, "isSystemPodcasts")) || +[MPCPlaybackEngine isRemotePlayerService])
   {
-    v2 = [MEMORY[0x1E696AF18] sharedURLCache];
-    [v2 setMemoryCapacity:0];
+    mEMORY[0x1E696AF18] = [MEMORY[0x1E696AF18] sharedURLCache];
+    [mEMORY[0x1E696AF18] setMemoryCapacity:0];
   }
 }
 

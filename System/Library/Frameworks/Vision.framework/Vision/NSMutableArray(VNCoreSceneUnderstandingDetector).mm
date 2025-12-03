@@ -11,19 +11,19 @@
   if (a4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8[2]();
-    [a1 addObject:v9];
+    [self addObject:v9];
 LABEL_11:
 
     goto LABEL_12;
   }
 
   v10 = 0;
-  v11 = [a1 count];
+  v11 = [self count];
   if (v11)
   {
     while (1)
     {
-      v12 = [a1 objectAtIndex:v10];
+      v12 = [self objectAtIndex:v10];
       [v12 confidence];
       v14 = v13;
 
@@ -45,10 +45,10 @@ LABEL_11:
     v9 = v15[2]();
     if (v11 == a4)
     {
-      [a1 removeObjectAtIndex:a4 - 1];
+      [self removeObjectAtIndex:a4 - 1];
     }
 
-    [a1 insertObject:v9 atIndex:v10];
+    [self insertObject:v9 atIndex:v10];
     goto LABEL_11;
   }
 

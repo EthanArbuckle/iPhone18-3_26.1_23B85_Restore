@@ -5,56 +5,56 @@
 - (BOOL)shouldShowTapbackPicker;
 - (BOOL)wantsWindowedPresentation;
 - (CGRect)preservedBoundsInBalloonWindowAtAppearance;
-- (CKFullScreenBalloonViewController)initWithChatItem:(id)a3 delegate:(id)a4;
-- (CKFullScreenBalloonViewController)initWithChatItem:(id)a3 displayConfiguration:(id)a4 delegate:(id)a5;
+- (CKFullScreenBalloonViewController)initWithChatItem:(id)item delegate:(id)delegate;
+- (CKFullScreenBalloonViewController)initWithChatItem:(id)item displayConfiguration:(id)configuration delegate:(id)delegate;
 - (CKFullScreenBalloonViewControllerDelegate)delegate;
 - (CKMessagePartChatItem)supplementaryLayoutChatItem;
 - (id)supplementaryLayoutContext;
 - (id)viewToAlignWith;
-- (void)_performClosingAnimationsAnimated:(BOOL)a3 withSendAnimation:(BOOL)a4 duration:(double)a5 withCompletion:(id)a6;
-- (void)addTapRecognizerWithTarget:(id)a3 action:(SEL)a4;
+- (void)_performClosingAnimationsAnimated:(BOOL)animated withSendAnimation:(BOOL)animation duration:(double)duration withCompletion:(id)completion;
+- (void)addTapRecognizerWithTarget:(id)target action:(SEL)action;
 - (void)beginDismissal;
 - (void)dealloc;
 - (void)dismissImmediatelyWithNoAnimations;
-- (void)hideTint:(BOOL)a3 duration:(double)a4;
-- (void)performCancelAnimationWithCompletion:(id)a3;
-- (void)performClosingAnimationsAnimated:(BOOL)a3 withSendAnimation:(BOOL)a4 withCompletion:(id)a5;
-- (void)performSendAndCloseAnimationWithCompletion:(id)a3;
+- (void)hideTint:(BOOL)tint duration:(double)duration;
+- (void)performCancelAnimationWithCompletion:(id)completion;
+- (void)performClosingAnimationsAnimated:(BOOL)animated withSendAnimation:(BOOL)animation withCompletion:(id)completion;
+- (void)performSendAndCloseAnimationWithCompletion:(id)completion;
 - (void)removeTapRecognizer;
-- (void)replyButtonPressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)replyButtonPressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CKFullScreenBalloonViewController
 
-- (CKFullScreenBalloonViewController)initWithChatItem:(id)a3 delegate:(id)a4
+- (CKFullScreenBalloonViewController)initWithChatItem:(id)item delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  itemCopy = item;
   v8 = +[CKFullScreenBalloonViewDisplayConfiguration tapbackPickerContext];
-  v9 = [(CKFullScreenBalloonViewController *)self initWithChatItem:v7 displayConfiguration:v8 delegate:v6];
+  v9 = [(CKFullScreenBalloonViewController *)self initWithChatItem:itemCopy displayConfiguration:v8 delegate:delegateCopy];
 
   return v9;
 }
 
-- (CKFullScreenBalloonViewController)initWithChatItem:(id)a3 displayConfiguration:(id)a4 delegate:(id)a5
+- (CKFullScreenBalloonViewController)initWithChatItem:(id)item displayConfiguration:(id)configuration delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = CKFullScreenBalloonViewController;
   v12 = [(CKFullScreenBalloonViewController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_chatItem, a3);
-    objc_storeWeak(&v13->_delegate, v11);
-    objc_storeStrong(&v13->_displayConfiguration, a4);
+    objc_storeStrong(&v12->_chatItem, item);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_displayConfiguration, configuration);
   }
 
   return v13;
@@ -73,44 +73,44 @@
   v19.receiver = self;
   v19.super_class = CKFullScreenBalloonViewController;
   [(CKFullScreenBalloonViewController *)&v19 viewDidLoad];
-  v3 = [(CKFullScreenBalloonViewController *)self view];
-  [v3 setLayoutMarginsFollowReadableWidth:1];
+  view = [(CKFullScreenBalloonViewController *)self view];
+  [view setLayoutMarginsFollowReadableWidth:1];
 
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
-  v5 = [(CKFullScreenBalloonViewController *)self view];
-  [v5 bounds];
+  view2 = [(CKFullScreenBalloonViewController *)self view];
+  [view2 bounds];
   v6 = [v4 initWithFrame:?];
 
   [(UIView *)v6 setAutoresizingMask:18];
-  v7 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  v8 = [v7 tintViewBackgroundColor];
-  [(UIView *)v6 setBackgroundColor:v8];
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  tintViewBackgroundColor = [displayConfiguration tintViewBackgroundColor];
+  [(UIView *)v6 setBackgroundColor:tintViewBackgroundColor];
 
   [(UIView *)v6 setAlpha:0.0];
   tintView = self->_tintView;
   self->_tintView = v6;
   v10 = v6;
 
-  v11 = [(CKFullScreenBalloonViewController *)self view];
-  [v11 addSubview:v10];
+  view3 = [(CKFullScreenBalloonViewController *)self view];
+  [view3 addSubview:v10];
 
-  v12 = [(CKFullScreenBalloonViewController *)self chatItem];
-  v13 = [(CKFullScreenBalloonViewController *)self delegate];
+  chatItem = [(CKFullScreenBalloonViewController *)self chatItem];
+  delegate = [(CKFullScreenBalloonViewController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CKFullScreenBalloonViewController *)self delegate];
-    v16 = [v15 fullScreenBalloonViewControllerShouldShowReplyButton:self];
+    delegate2 = [(CKFullScreenBalloonViewController *)self delegate];
+    v16 = [delegate2 fullScreenBalloonViewControllerShouldShowReplyButton:self];
 
     if (v16)
     {
-      v17 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-      v18 = [v17 shouldShowReplyButton];
+      displayConfiguration2 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+      shouldShowReplyButton = [displayConfiguration2 shouldShowReplyButton];
 
-      if (v18)
+      if (shouldShowReplyButton)
       {
-        if ([v12 canInlineReply])
+        if ([chatItem canInlineReply])
         {
           [(CKFullScreenBalloonViewController *)self setupReplyButton];
         }
@@ -119,36 +119,36 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = CKFullScreenBalloonViewController;
   [(CKViewController *)&v8 viewWillAppear:?];
-  v5 = [(CKFullScreenBalloonViewController *)self delegate];
+  delegate = [(CKFullScreenBalloonViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKFullScreenBalloonViewController *)self delegate];
-    [v7 fullScreenBalloonViewController:self willAppearAnimated:v3];
+    delegate2 = [(CKFullScreenBalloonViewController *)self delegate];
+    [delegate2 fullScreenBalloonViewController:self willAppearAnimated:appearCopy];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = CKFullScreenBalloonViewController;
   [(CKViewController *)&v8 viewDidAppear:?];
   [(CKFullScreenBalloonViewController *)self addTapRecognizerWithTarget:self action:sel_dismissTapGestureRecognized_];
-  v5 = [(CKFullScreenBalloonViewController *)self delegate];
+  delegate = [(CKFullScreenBalloonViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKFullScreenBalloonViewController *)self delegate];
-    [v7 fullScreenBalloonViewController:self didAppearAnimated:v3];
+    delegate2 = [(CKFullScreenBalloonViewController *)self delegate];
+    [delegate2 fullScreenBalloonViewController:self didAppearAnimated:appearCopy];
   }
 
   if (![(CKFullScreenBalloonViewController *)self hasPerformedInitialAnimations])
@@ -158,11 +158,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CKFullScreenBalloonViewController;
-  [(CKViewController *)&v4 viewDidDisappear:a3];
+  [(CKViewController *)&v4 viewDidDisappear:disappear];
   [(CKFullScreenBalloonViewController *)self removeTapRecognizer];
 }
 
@@ -176,32 +176,32 @@
 - (BOOL)wantsWindowedPresentation
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 fullScreenBalloonWantsWindowedPresentation];
-  self->_wantsWindowedPresentation = v4;
+  fullScreenBalloonWantsWindowedPresentation = [v3 fullScreenBalloonWantsWindowedPresentation];
+  self->_wantsWindowedPresentation = fullScreenBalloonWantsWindowedPresentation;
 
-  return v4;
+  return fullScreenBalloonWantsWindowedPresentation;
 }
 
 - (BOOL)forceWindowedPresentation
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 fullScreenBalloonForceWindowedPresentation];
+  fullScreenBalloonForceWindowedPresentation = [v2 fullScreenBalloonForceWindowedPresentation];
 
-  return v3;
+  return fullScreenBalloonForceWindowedPresentation;
 }
 
-- (void)replyButtonPressed:(id)a3
+- (void)replyButtonPressed:(id)pressed
 {
   [(CKFullScreenBalloonViewController *)self setWillPresentInlineReplies:1];
   [(CKFullScreenBalloonViewController *)self performCancelAnimationWithCompletion:0];
-  v4 = [(CKFullScreenBalloonViewController *)self delegate];
+  delegate = [(CKFullScreenBalloonViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(CKFullScreenBalloonViewController *)self delegate];
-    v6 = [(CKFullScreenBalloonViewController *)self chatItem];
-    [v7 fullScreenBalloonViewController:self replyButtonPressedForChatItem:v6];
+    delegate2 = [(CKFullScreenBalloonViewController *)self delegate];
+    chatItem = [(CKFullScreenBalloonViewController *)self chatItem];
+    [delegate2 fullScreenBalloonViewController:self replyButtonPressedForChatItem:chatItem];
   }
 }
 
@@ -216,36 +216,36 @@
   return 0;
 }
 
-- (void)performClosingAnimationsAnimated:(BOOL)a3 withSendAnimation:(BOOL)a4 withCompletion:(id)a5
+- (void)performClosingAnimationsAnimated:(BOOL)animated withSendAnimation:(BOOL)animation withCompletion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)_performClosingAnimationsAnimated:(BOOL)a3 withSendAnimation:(BOOL)a4 duration:(double)a5 withCompletion:(id)a6
+- (void)_performClosingAnimationsAnimated:(BOOL)animated withSendAnimation:(BOOL)animation duration:(double)duration withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
+  animationCopy = animation;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(CKFullScreenBalloonViewController *)self removeTapRecognizer];
-  v11 = [(CKFullScreenBalloonViewController *)self delegate];
+  delegate = [(CKFullScreenBalloonViewController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(CKFullScreenBalloonViewController *)self delegate];
-    [v13 fullScreenBalloonViewController:self willDisappearWithSendAnimation:v7 duration:a5];
+    delegate2 = [(CKFullScreenBalloonViewController *)self delegate];
+    [delegate2 fullScreenBalloonViewController:self willDisappearWithSendAnimation:animationCopy duration:duration];
   }
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __113__CKFullScreenBalloonViewController__performClosingAnimationsAnimated_withSendAnimation_duration_withCompletion___block_invoke;
   v15[3] = &unk_1E72EBDB8;
-  v16 = v10;
-  v14 = v10;
-  [(CKFullScreenBalloonViewController *)self performClosingAnimationsAnimated:v8 withSendAnimation:v7 withCompletion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(CKFullScreenBalloonViewController *)self performClosingAnimationsAnimated:animatedCopy withSendAnimation:animationCopy withCompletion:v15];
 }
 
 uint64_t __113__CKFullScreenBalloonViewController__performClosingAnimationsAnimated_withSendAnimation_duration_withCompletion___block_invoke(uint64_t a1)
@@ -259,34 +259,34 @@ uint64_t __113__CKFullScreenBalloonViewController__performClosingAnimationsAnima
   return result;
 }
 
-- (void)performSendAndCloseAnimationWithCompletion:(id)a3
+- (void)performSendAndCloseAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  [v5 scrollDuration];
-  [(CKFullScreenBalloonViewController *)self _performClosingAnimationsAnimated:1 withSendAnimation:1 duration:v4 withCompletion:?];
+  completionCopy = completion;
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  [displayConfiguration scrollDuration];
+  [(CKFullScreenBalloonViewController *)self _performClosingAnimationsAnimated:1 withSendAnimation:1 duration:completionCopy withCompletion:?];
 }
 
-- (void)performCancelAnimationWithCompletion:(id)a3
+- (void)performCancelAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  [v5 scrollDuration];
-  [(CKFullScreenBalloonViewController *)self _performClosingAnimationsAnimated:1 withSendAnimation:0 duration:v4 withCompletion:?];
+  completionCopy = completion;
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  [displayConfiguration scrollDuration];
+  [(CKFullScreenBalloonViewController *)self _performClosingAnimationsAnimated:1 withSendAnimation:0 duration:completionCopy withCompletion:?];
 }
 
 - (void)dismissImmediatelyWithNoAnimations
 {
-  v3 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  [v3 scrollDuration];
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  [displayConfiguration scrollDuration];
   [(CKFullScreenBalloonViewController *)self _performClosingAnimationsAnimated:0 withSendAnimation:0 duration:0 withCompletion:?];
 }
 
-- (void)addTapRecognizerWithTarget:(id)a3 action:(SEL)a4
+- (void)addTapRecognizerWithTarget:(id)target action:(SEL)action
 {
   v6 = MEMORY[0x1E69DD060];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithTarget:v7 action:a4];
+  targetCopy = target;
+  v8 = [[v6 alloc] initWithTarget:targetCopy action:action];
 
   tapRecognizer = self->_tapRecognizer;
   self->_tapRecognizer = v8;
@@ -296,27 +296,27 @@ uint64_t __113__CKFullScreenBalloonViewController__performClosingAnimationsAnima
   [(UIGestureRecognizer *)self->_tapRecognizer setDelaysTouchesBegan:1];
   [(UIGestureRecognizer *)self->_tapRecognizer setDelaysTouchesEnded:1];
   [(UIGestureRecognizer *)self->_tapRecognizer setRequiresExclusiveTouchType:0];
-  v10 = [(CKFullScreenBalloonViewController *)self tintView];
-  [v10 addGestureRecognizer:self->_tapRecognizer];
+  tintView = [(CKFullScreenBalloonViewController *)self tintView];
+  [tintView addGestureRecognizer:self->_tapRecognizer];
 }
 
 - (void)removeTapRecognizer
 {
   if (self->_tapRecognizer)
   {
-    v3 = [(CKFullScreenBalloonViewController *)self view];
-    [v3 removeGestureRecognizer:self->_tapRecognizer];
+    view = [(CKFullScreenBalloonViewController *)self view];
+    [view removeGestureRecognizer:self->_tapRecognizer];
 
     tapRecognizer = self->_tapRecognizer;
     self->_tapRecognizer = 0;
   }
 }
 
-- (void)hideTint:(BOOL)a3 duration:(double)a4
+- (void)hideTint:(BOOL)tint duration:(double)duration
 {
-  if (!a3)
+  if (!tint)
   {
-    a4 = 0.0;
+    duration = 0.0;
   }
 
   v4[0] = MEMORY[0x1E69E9820];
@@ -324,7 +324,7 @@ uint64_t __113__CKFullScreenBalloonViewController__performClosingAnimationsAnima
   v4[2] = __55__CKFullScreenBalloonViewController_hideTint_duration___block_invoke;
   v4[3] = &unk_1E72EBA18;
   v4[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v4 options:0 animations:a4 completion:0.0];
+  [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v4 options:0 animations:duration completion:0.0];
 }
 
 void __55__CKFullScreenBalloonViewController_hideTint_duration___block_invoke(uint64_t a1)
@@ -335,32 +335,32 @@ void __55__CKFullScreenBalloonViewController_hideTint_duration___block_invoke(ui
 
 - (BOOL)shouldShowTapbackAttribution
 {
-  v3 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  v4 = [v3 shouldHideTapbackAttributionAndPicker];
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  shouldHideTapbackAttributionAndPicker = [displayConfiguration shouldHideTapbackAttributionAndPicker];
 
-  if (v4)
+  if (shouldHideTapbackAttributionAndPicker)
   {
     return 0;
   }
 
-  v6 = [(CKFullScreenBalloonViewController *)self delegate];
-  v7 = [v6 shouldShowTapbackAttributionForFullScreenBalloonViewController:self];
+  delegate = [(CKFullScreenBalloonViewController *)self delegate];
+  v7 = [delegate shouldShowTapbackAttributionForFullScreenBalloonViewController:self];
 
   return v7;
 }
 
 - (BOOL)shouldShowTapbackPicker
 {
-  v3 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  v4 = [v3 shouldHideTapbackAttributionAndPicker];
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  shouldHideTapbackAttributionAndPicker = [displayConfiguration shouldHideTapbackAttributionAndPicker];
 
-  if (v4)
+  if (shouldHideTapbackAttributionAndPicker)
   {
     return 0;
   }
 
-  v6 = [(CKFullScreenBalloonViewController *)self delegate];
-  v7 = [v6 shouldShowTapbackPickerForFullScreenBalloonViewController:self];
+  delegate = [(CKFullScreenBalloonViewController *)self delegate];
+  v7 = [delegate shouldShowTapbackPickerForFullScreenBalloonViewController:self];
 
   return v7;
 }
@@ -369,40 +369,40 @@ void __55__CKFullScreenBalloonViewController_hideTint_duration___block_invoke(ui
 {
   if (![(CKFullScreenBalloonViewController *)self beganDismissing])
   {
-    v3 = [(CKFullScreenBalloonViewController *)self delegate];
+    delegate = [(CKFullScreenBalloonViewController *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
       [(CKFullScreenBalloonViewController *)self setBeganDismissing:1];
-      v5 = [(CKFullScreenBalloonViewController *)self delegate];
-      [v5 fullScreenBalloonViewControllerHandleDismissTap:self];
+      delegate2 = [(CKFullScreenBalloonViewController *)self delegate];
+      [delegate2 fullScreenBalloonViewControllerHandleDismissTap:self];
     }
   }
 }
 
 - (CKMessagePartChatItem)supplementaryLayoutChatItem
 {
-  v2 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  v3 = [v2 supplementaryLayoutChatItem];
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  supplementaryLayoutChatItem = [displayConfiguration supplementaryLayoutChatItem];
 
-  return v3;
+  return supplementaryLayoutChatItem;
 }
 
 - (id)supplementaryLayoutContext
 {
-  v2 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  v3 = [v2 supplementaryLayoutContext];
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  supplementaryLayoutContext = [displayConfiguration supplementaryLayoutContext];
 
-  return v3;
+  return supplementaryLayoutContext;
 }
 
 - (BOOL)shouldHideBalloonTail
 {
-  v2 = [(CKFullScreenBalloonViewController *)self displayConfiguration];
-  v3 = [v2 shouldHideBalloonTail];
+  displayConfiguration = [(CKFullScreenBalloonViewController *)self displayConfiguration];
+  shouldHideBalloonTail = [displayConfiguration shouldHideBalloonTail];
 
-  return v3;
+  return shouldHideBalloonTail;
 }
 
 - (CKFullScreenBalloonViewControllerDelegate)delegate

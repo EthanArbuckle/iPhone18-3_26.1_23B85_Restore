@@ -1,36 +1,36 @@
 @interface PFParallaxColor
 + (PFParallaxColor)blackColor;
-+ (PFParallaxColor)colorWithCGColor:(CGColor *)a3;
-+ (PFParallaxColor)colorWithRGBValues:(id)a3 error:(id *)a4;
-+ (PFParallaxColor)colorWithTone:(double)a3 hue:(double)a4;
++ (PFParallaxColor)colorWithCGColor:(CGColor *)color;
++ (PFParallaxColor)colorWithRGBValues:(id)values error:(id *)error;
++ (PFParallaxColor)colorWithTone:(double)tone hue:(double)hue;
 + (PFParallaxColor)whiteColor;
 - (BOOL)isCool;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToParallaxColor:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToParallaxColor:(id)color;
 - (BOOL)isWarm;
 - (CGColor)CGColor;
 - (CGPoint)pt;
 - (NSArray)RGBValues;
 - (PFParallaxColor)complementaryColor;
-- (PFParallaxColor)initWithCoder:(id)a3;
-- (PFParallaxColor)initWithHue:(double)a3 tone:(double)a4;
-- (PFParallaxColor)initWithLuma:(double)a3 hue:(double)a4 chroma:(double)a5;
-- (PFParallaxColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5;
-- (double)deltaE94DistanceToColor:(id)a3;
-- (double)distanceToColor:(id)a3;
+- (PFParallaxColor)initWithCoder:(id)coder;
+- (PFParallaxColor)initWithHue:(double)hue tone:(double)tone;
+- (PFParallaxColor)initWithLuma:(double)luma hue:(double)hue chroma:(double)chroma;
+- (PFParallaxColor)initWithRed:(double)red green:(double)green blue:(double)blue;
+- (double)deltaE94DistanceToColor:(id)color;
+- (double)distanceToColor:(id)color;
 - (double)tone;
 - (id)debugQuickLookObject;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFParallaxColor
 
-- (PFParallaxColor)initWithCoder:(id)a3
+- (PFParallaxColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"rgbValues"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"rgbValues"];
 
   v6 = [v5 objectAtIndexedSubscript:0];
   [v6 doubleValue];
@@ -45,40 +45,40 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PFParallaxColor *)self RGBValues];
-  [v4 encodeObject:v5 forKey:@"rgbValues"];
+  coderCopy = coder;
+  rGBValues = [(PFParallaxColor *)self RGBValues];
+  [coderCopy encodeObject:rGBValues forKey:@"rgbValues"];
 }
 
 - (id)debugQuickLookObject
 {
   v2 = [MEMORY[0x1E695F610] colorWithCGColor:{-[PFParallaxColor CGColor](self, "CGColor")}];
-  v3 = [v2 debugQuickLookObject];
+  debugQuickLookObject = [v2 debugQuickLookObject];
 
-  return v3;
+  return debugQuickLookObject;
 }
 
 - (CGColor)CGColor
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_cgColor)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_cgColor)
   {
     v3 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F110]);
-    v4 = *&v2->_srgb[16];
-    v6 = *v2->_srgb;
+    v4 = *&selfCopy->_srgb[16];
+    v6 = *selfCopy->_srgb;
     v7 = v4;
     v8 = 0x3FF0000000000000;
-    v2->_cgColor = CGColorCreate(v3, &v6);
+    selfCopy->_cgColor = CGColorCreate(v3, &v6);
     CGColorSpaceRelease(v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v2->_cgColor;
+  return selfCopy->_cgColor;
 }
 
 - (PFParallaxColor)complementaryColor
@@ -106,9 +106,9 @@
   return v6;
 }
 
-- (double)deltaE94DistanceToColor:(id)a3
+- (double)deltaE94DistanceToColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(PFParallaxColor *)self luma];
   v29 = v5;
   [(PFParallaxColor *)self pt];
@@ -123,11 +123,11 @@
   v28 = v7;
   v30 = vmlaq_f64(v7, v9, v10);
   v25 = vmlaq_f64(xmmword_1B36A1DB0, xmmword_1B36A1DA0, v8);
-  [v4 luma];
+  [colorCopy luma];
   v24 = v11;
-  [v4 pt];
+  [colorCopy pt];
   v23 = v12;
-  [v4 pt];
+  [colorCopy pt];
   v22 = v13;
 
   v14.f64[0] = v24;
@@ -147,20 +147,20 @@
   return sqrtf((*v14.f64 / (*v15.f64 * *v15.f64)) + (((v20 / v19.f32[0]) * (v20 / v19.f32[0])) + (v16 * v16)));
 }
 
-- (double)distanceToColor:(id)a3
+- (double)distanceToColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(PFParallaxColor *)self hue];
   v6 = v5 + 0.0;
-  [v4 hue];
+  [colorCopy hue];
   v8 = vabdd_f64(v6, v7);
   [(PFParallaxColor *)self hue];
   v10 = v9 + 360.0;
-  [v4 hue];
+  [colorCopy hue];
   v12 = vabdd_f64(v10, v11);
   [(PFParallaxColor *)self hue];
   v14 = v13 + -360.0;
-  [v4 hue];
+  [colorCopy hue];
   v16 = v15;
 
   result = vabdd_f64(v14, v16);
@@ -177,20 +177,20 @@
   return result;
 }
 
-- (BOOL)isEqualToParallaxColor:(id)a3
+- (BOOL)isEqualToParallaxColor:(id)color
 {
-  v3 = *(a3 + 2);
+  v3 = *(color + 2);
   v4 = vabdq_f64(*&self->_srgb[16], v3);
   v3.f64[0] = 0.0001;
-  v5 = vcgtq_f64(vdupq_n_s64(0x3F1A36E2EB1C432DuLL), vabdq_f64(*self->_srgb, *(a3 + 1)));
+  v5 = vcgtq_f64(vdupq_n_s64(0x3F1A36E2EB1C432DuLL), vabdq_f64(*self->_srgb, *(color + 1)));
   return (v5.i64[0] & vcgtq_f64(v3, v4).u64[0] & v5.i64[1]) >> 63;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFParallaxColor *)self isEqualToParallaxColor:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFParallaxColor *)self isEqualToParallaxColor:equalCopy];
 
   return v5;
 }
@@ -258,14 +258,14 @@
   return result;
 }
 
-- (PFParallaxColor)initWithHue:(double)a3 tone:(double)a4
+- (PFParallaxColor)initWithHue:(double)hue tone:(double)tone
 {
   v12.receiver = self;
   v12.super_class = PFParallaxColor;
   v6 = [(PFParallaxColor *)&v12 init];
-  v7.f64[0] = (2.0 - a4) * a4;
-  v7.f64[1] = a3 * 3.14159265 / 180.0;
-  *&v8 = (1.0 - a4) * 0.707106781;
+  v7.f64[0] = (2.0 - tone) * tone;
+  v7.f64[1] = hue * 3.14159265 / 180.0;
+  *&v8 = (1.0 - tone) * 0.707106781;
   *v6->_lhc = v7;
   *&v6->_lhc[16] = v8;
   lhc_to_srgb(v11, v7, *&v8);
@@ -286,12 +286,12 @@
   return result;
 }
 
-- (PFParallaxColor)initWithLuma:(double)a3 hue:(double)a4 chroma:(double)a5
+- (PFParallaxColor)initWithLuma:(double)luma hue:(double)hue chroma:(double)chroma
 {
   v17.receiver = self;
   v17.super_class = PFParallaxColor;
   v7 = [(PFParallaxColor *)&v17 init];
-  v8 = fmod(a4, 360.0);
+  v8 = fmod(hue, 360.0);
   v10 = v8 + -360.0;
   if (v8 <= 180.0)
   {
@@ -308,26 +308,26 @@
     v11 = v8 + 360.0;
   }
 
-  v12.f64[0] = a3;
+  v12.f64[0] = luma;
   v12.f64[1] = v11 * 3.14159265 / 180.0;
-  *&v9 = a5 * 0.707106781;
+  *&v9 = chroma * 0.707106781;
   *v7->_lhc = v12;
   *&v7->_lhc[16] = v9;
-  lhc_to_srgb(v16, v12, a5 * 0.707106781);
+  lhc_to_srgb(v16, v12, chroma * 0.707106781);
   v13 = v16[1];
   *v7->_srgb = v16[0];
   *&v7->_srgb[16] = v13;
   return v7;
 }
 
-- (PFParallaxColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5
+- (PFParallaxColor)initWithRed:(double)red green:(double)green blue:(double)blue
 {
-  v44 = *&a5;
+  v44 = *&blue;
   v57.receiver = self;
   v57.super_class = PFParallaxColor;
   v5 = [(PFParallaxColor *)&v57 init];
-  v6.f64[0] = a3;
-  v6.f64[1] = a4;
+  v6.f64[0] = red;
+  v6.f64[1] = green;
   *v5->_srgb = v6;
   *&v5->_srgb[16] = v44;
   v55 = vnegq_f64(0);
@@ -398,23 +398,23 @@
   [(PFParallaxColor *)&v3 dealloc];
 }
 
-+ (PFParallaxColor)colorWithRGBValues:(id)a3 error:(id *)a4
++ (PFParallaxColor)colorWithRGBValues:(id)values error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count] != 3)
+  valuesCopy = values;
+  if ([valuesCopy count] != 3)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
 
     v18 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A278];
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"RGB array is invalid: %@", v5];
-    v29[0] = v19;
+    valuesCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"RGB array is invalid: %@", valuesCopy];
+    v29[0] = valuesCopy;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    *a4 = [v18 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v20];
+    *error = [v18 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v20];
 
     goto LABEL_10;
   }
@@ -422,7 +422,7 @@
   v6 = 0;
   while (1)
   {
-    v7 = [v5 objectAtIndexedSubscript:v6];
+    v7 = [valuesCopy objectAtIndexedSubscript:v6];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -433,46 +433,46 @@
 
     if (++v6 == 3)
     {
-      v9 = [v5 objectAtIndexedSubscript:0];
+      v9 = [valuesCopy objectAtIndexedSubscript:0];
       [v9 doubleValue];
       v11 = v10;
 
-      v12 = [v5 objectAtIndexedSubscript:1];
+      v12 = [valuesCopy objectAtIndexedSubscript:1];
       [v12 doubleValue];
       v14 = v13;
 
-      v15 = [v5 objectAtIndexedSubscript:2];
+      v15 = [valuesCopy objectAtIndexedSubscript:2];
       [v15 doubleValue];
       v17 = v16;
 
-      a4 = [[PFParallaxColor alloc] initWithRed:v11 green:v14 blue:v17];
+      error = [[PFParallaxColor alloc] initWithRed:v11 green:v14 blue:v17];
       goto LABEL_11;
     }
   }
 
-  if (a4)
+  if (error)
   {
     v21 = MEMORY[0x1E696ABC0];
     v26 = *MEMORY[0x1E696A278];
     v22 = MEMORY[0x1E696AEC0];
-    v19 = [v5 objectAtIndexedSubscript:v6];
-    v23 = [v22 stringWithFormat:@"Color value at index %d is not a number: %@", v6, v19];
+    valuesCopy = [valuesCopy objectAtIndexedSubscript:v6];
+    v23 = [v22 stringWithFormat:@"Color value at index %d is not a number: %@", v6, valuesCopy];
     v27 = v23;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    *a4 = [v21 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v24];
+    *error = [v21 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v24];
 
 LABEL_10:
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
-+ (PFParallaxColor)colorWithTone:(double)a3 hue:(double)a4
++ (PFParallaxColor)colorWithTone:(double)tone hue:(double)hue
 {
-  v4 = [[a1 alloc] initWithHue:a4 tone:a3];
+  v4 = [[self alloc] initWithHue:hue tone:tone];
 
   return v4;
 }
@@ -491,12 +491,12 @@ LABEL_11:
   return v2;
 }
 
-+ (PFParallaxColor)colorWithCGColor:(CGColor *)a3
++ (PFParallaxColor)colorWithCGColor:(CGColor *)color
 {
   v5 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F110]);
-  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v5, kCGRenderingIntentDefault, a3, 0);
+  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v5, kCGRenderingIntentDefault, color, 0);
   Components = CGColorGetComponents(CopyByMatchingToColorSpace);
-  v8 = [[a1 alloc] initWithRed:*Components green:Components[1] blue:Components[2]];
+  v8 = [[self alloc] initWithRed:*Components green:Components[1] blue:Components[2]];
   v8[10] = CopyByMatchingToColorSpace;
   CGColorSpaceRelease(v5);
 

@@ -1,17 +1,17 @@
 @interface AKHighlightAnnotationRenderer
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGRect)_rectForQuad:(AKQuadrilateral *)a3 rotationAngle:(double *)a4;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
-+ (void)_enumerateQuadPathsOfAnnotation:(id)a3 applyStyle:(BOOL)a4 handler:(id)a5;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGRect)_rectForQuad:(AKQuadrilateral *)quad rotationAngle:(double *)angle;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
++ (void)_enumerateQuadPathsOfAnnotation:(id)annotation applyStyle:(BOOL)style handler:(id)handler;
 @end
 
 @implementation AKHighlightAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   v15 = 0;
   v16 = &v15;
   v17 = 0x4010000000;
@@ -24,7 +24,7 @@
   v14[2] = sub_23F47AE8C;
   v14[3] = &unk_278C7C100;
   v14[4] = &v15;
-  [a1 _enumerateQuadPathsOfAnnotation:v4 applyStyle:1 handler:v14];
+  [self _enumerateQuadPathsOfAnnotation:annotationCopy applyStyle:1 handler:v14];
   if (CGRectIsNull(v16[1]))
   {
     width = 1.0;
@@ -54,7 +54,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -63,38 +63,38 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  CGContextSaveGState(a4);
-  v13 = [v12 forDisplay];
+  annotationCopy = annotation;
+  nilCopy = nil;
+  optionsCopy = options;
+  CGContextSaveGState(context);
+  forDisplay = [optionsCopy forDisplay];
 
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:v13 pageControllerOrNil:v11];
-  v14 = [v10 color];
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:forDisplay pageControllerOrNil:nilCopy];
+  color = [annotationCopy color];
 
-  if (v14)
+  if (color)
   {
-    v15 = [v10 color];
-    CGContextSetFillColorWithColor(a4, [v15 CGColor]);
+    color2 = [annotationCopy color];
+    CGContextSetFillColorWithColor(context, [color2 CGColor]);
   }
 
-  CGContextSetBlendMode(a4, kCGBlendModeMultiply);
+  CGContextSetBlendMode(context, kCGBlendModeMultiply);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_23F47B040;
   v16[3] = &unk_278C7C120;
-  v16[4] = a4;
-  [a1 _enumerateQuadPathsOfAnnotation:v10 applyStyle:1 handler:v16];
-  CGContextRestoreGState(a4);
+  v16[4] = context;
+  [self _enumerateQuadPathsOfAnnotation:annotationCopy applyStyle:1 handler:v16];
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  annotationCopy = annotation;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -106,23 +106,23 @@
   v9[4] = &v10;
   *&v9[5] = x;
   *&v9[6] = y;
-  [a1 _enumerateQuadPathsOfAnnotation:v7 applyStyle:0 handler:v9];
-  LOBYTE(a1) = *(v11 + 24);
+  [self _enumerateQuadPathsOfAnnotation:annotationCopy applyStyle:0 handler:v9];
+  LOBYTE(self) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return a1;
+  return self;
 }
 
-+ (CGRect)_rectForQuad:(AKQuadrilateral *)a3 rotationAngle:(double *)a4
++ (CGRect)_rectForQuad:(AKQuadrilateral *)quad rotationAngle:(double *)angle
 {
-  if (a4)
+  if (angle)
   {
-    *a4 = atan2(a3->var3.y - a3->var0.y, a3->var3.x - a3->var0.x);
+    *angle = atan2(quad->var3.y - quad->var0.y, quad->var3.x - quad->var0.x);
   }
 
-  y = a3->var0.y;
-  v6 = sqrt((a3->var3.y - y) * (a3->var3.y - y) + (a3->var3.x - a3->var0.x) * (a3->var3.x - a3->var0.x));
-  v7 = sqrt((a3->var1.y - y) * (a3->var1.y - y) + (a3->var0.x - a3->var1.x) * (a3->var0.x - a3->var1.x));
+  y = quad->var0.y;
+  v6 = sqrt((quad->var3.y - y) * (quad->var3.y - y) + (quad->var3.x - quad->var0.x) * (quad->var3.x - quad->var0.x));
+  v7 = sqrt((quad->var1.y - y) * (quad->var1.y - y) + (quad->var0.x - quad->var1.x) * (quad->var0.x - quad->var1.x));
   v8 = 0.0;
   v9 = 0.0;
   result.size.height = v7;
@@ -132,17 +132,17 @@
   return result;
 }
 
-+ (void)_enumerateQuadPathsOfAnnotation:(id)a3 applyStyle:(BOOL)a4 handler:(id)a5
++ (void)_enumerateQuadPathsOfAnnotation:(id)annotation applyStyle:(BOOL)style handler:(id)handler
 {
-  v6 = a4;
+  styleCopy = style;
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  annotationCopy = annotation;
+  handlerCopy = handler;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = [v8 quadPoints];
+  obj = [annotationCopy quadPoints];
   v10 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v10)
   {
@@ -169,24 +169,24 @@
         angle[0] = 0.0;
         v42 = *&angle[1];
         v43 = v45;
-        [a1 _rectForQuad:&v42 rotationAngle:angle];
+        [self _rectForQuad:&v42 rotationAngle:angle];
         x = v15;
         y = v17;
         width = v19;
         v22 = v21;
-        if (!v6)
+        if (!styleCopy)
         {
           goto LABEL_18;
         }
 
-        if ([v8 style] == 1)
+        if ([annotationCopy style] == 1)
         {
           v52.origin.x = x;
           v52.origin.y = y;
           v52.size.width = width;
           v52.size.height = v22;
           Height = CGRectGetHeight(v52);
-          [a1 _highlightOutsetFactor];
+          [self _highlightOutsetFactor];
           v25 = -(Height * v24);
           v53.origin.x = x;
           v53.origin.y = y;
@@ -200,7 +200,7 @@
           goto LABEL_19;
         }
 
-        if ([v8 style] == 2 || objc_msgSend(v8, "style") == 3)
+        if ([annotationCopy style] == 2 || objc_msgSend(annotationCopy, "style") == 3)
         {
           v55.origin.x = x;
           v55.origin.y = y;
@@ -217,12 +217,12 @@
             v26 = 1.0;
           }
 
-          v28 = [v8 style];
+          style = [annotationCopy style];
           v29 = x;
           v30 = y;
           v31 = width;
           v32 = v22;
-          if (v28 == 2)
+          if (style == 2)
           {
             width = CGRectGetWidth(*&v29);
           }
@@ -258,12 +258,12 @@ LABEL_19:
         v56.size.height = v26;
         v33 = CGPathCreateWithRect(v56, &transform);
         v34 = v33;
-        if (v9)
+        if (handlerCopy)
         {
-          v35 = v9[2];
+          v35 = handlerCopy[2];
           v42 = *&angle[1];
           v43 = v45;
-          v36 = v35(v9, &v42, v33);
+          v36 = v35(handlerCopy, &v42, v33);
           if (!v34)
           {
             goto LABEL_22;

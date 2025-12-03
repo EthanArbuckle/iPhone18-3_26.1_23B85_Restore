@@ -1,7 +1,7 @@
 @interface AMSFinanceResponse
-+ (id)valueForProtocolKey:(id)a3 inResponse:(id)a4;
++ (id)valueForProtocolKey:(id)key inResponse:(id)response;
 - (ACAccount)account;
-- (AMSFinanceResponse)initWithTaskInfo:(id)a3 decodedObject:(id)a4;
+- (AMSFinanceResponse)initWithTaskInfo:(id)info decodedObject:(id)object;
 - (BOOL)supportedProtocolVersion;
 - (NSArray)actions;
 - (NSArray)pingURLs;
@@ -12,8 +12,8 @@
 - (id)_performerForCreditDisplay;
 - (id)_performerForDialog;
 - (id)_performerForExpressCheckout;
-- (id)_performerForPaymentSheetWithDelegateAuthentication:(BOOL)a3;
-- (id)_valueForProtocolKey:(id)a3;
+- (id)_performerForPaymentSheetWithDelegateAuthentication:(BOOL)authentication;
+- (id)_valueForProtocolKey:(id)key;
 @end
 
 @implementation AMSFinanceResponse
@@ -48,63 +48,63 @@
 
 - (NSArray)actions
 {
-  v3 = [(AMSFinanceResponse *)self dialogKind];
+  dialogKind = [(AMSFinanceResponse *)self dialogKind];
   v4 = 0;
-  if (v3 <= 4)
+  if (dialogKind <= 4)
   {
-    if ((v3 - 3) >= 2)
+    if ((dialogKind - 3) >= 2)
     {
-      if (v3 != 1)
+      if (dialogKind != 1)
       {
-        if (v3 != 2)
+        if (dialogKind != 2)
         {
           goto LABEL_15;
         }
 
-        v5 = [(AMSFinanceResponse *)self _performerForAuthenticate];
+        _performerForAuthenticate = [(AMSFinanceResponse *)self _performerForAuthenticate];
         goto LABEL_14;
       }
 
       goto LABEL_10;
     }
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
 LABEL_13:
-    v5 = [(AMSFinanceResponse *)v6 _performerForPaymentSheetWithDelegateAuthentication:v7];
+    _performerForAuthenticate = [(AMSFinanceResponse *)selfCopy2 _performerForPaymentSheetWithDelegateAuthentication:v7];
     goto LABEL_14;
   }
 
-  if (v3 == 5)
+  if (dialogKind == 5)
   {
 LABEL_10:
-    v5 = [(AMSFinanceResponse *)self _performerForDialog];
+    _performerForAuthenticate = [(AMSFinanceResponse *)self _performerForDialog];
     goto LABEL_14;
   }
 
-  if (v3 == 6)
+  if (dialogKind == 6)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
     goto LABEL_13;
   }
 
-  if (v3 != 7)
+  if (dialogKind != 7)
   {
     goto LABEL_15;
   }
 
-  v5 = [(AMSFinanceResponse *)self _performerForExpressCheckout];
+  _performerForAuthenticate = [(AMSFinanceResponse *)self _performerForExpressCheckout];
 LABEL_14:
-  v4 = v5;
+  v4 = _performerForAuthenticate;
 LABEL_15:
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v8 ams_addNullableObject:v4];
-  v9 = [(AMSFinanceResponse *)self _performerForActionDictionary];
-  [v8 ams_addNullableObject:v9];
+  _performerForActionDictionary = [(AMSFinanceResponse *)self _performerForActionDictionary];
+  [v8 ams_addNullableObject:_performerForActionDictionary];
 
-  v10 = [(AMSFinanceResponse *)self _performerForCreditDisplay];
-  [v8 ams_addNullableObject:v10];
+  _performerForCreditDisplay = [(AMSFinanceResponse *)self _performerForCreditDisplay];
+  [v8 ams_addNullableObject:_performerForCreditDisplay];
 
   return v8;
 }
@@ -115,8 +115,8 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(AMSFinanceResponse *)self taskInfo];
-    v5 = [AMSFinanceActionResponse actionWithActionDictionary:v3 taskInfo:v4];
+    taskInfo = [(AMSFinanceResponse *)self taskInfo];
+    v5 = [AMSFinanceActionResponse actionWithActionDictionary:v3 taskInfo:taskInfo];
   }
 
   else
@@ -133,9 +133,9 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(AMSFinanceResponse *)self account];
-    v5 = [(AMSFinanceResponse *)self taskInfo];
-    v6 = [AMSFinanceActionResponse actionWithUpdatedCreditString:v3 account:v4 taskInfo:v5];
+    account = [(AMSFinanceResponse *)self account];
+    taskInfo = [(AMSFinanceResponse *)self taskInfo];
+    v6 = [AMSFinanceActionResponse actionWithUpdatedCreditString:v3 account:account taskInfo:taskInfo];
   }
 
   else
@@ -152,22 +152,22 @@ LABEL_15:
   if (objc_opt_respondsToSelector())
   {
     v4 = [(AMSFinanceResponse *)self _valueForProtocolKey:@"failureType"];
-    v5 = [v4 longLongValue];
+    longLongValue = [v4 longLongValue];
 
-    if (!v5)
+    if (!longLongValue)
     {
       goto LABEL_8;
     }
 
     v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:v5];
+    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue];
     [v3 setObject:v6 forKeyedSubscript:@"AMSServerErrorCode"];
 
     v7 = [(AMSFinanceResponse *)self _valueForProtocolKey:@"m-allowed"];
     [v3 setObject:v7 forKeyedSubscript:@"AMSServerAllowed"];
 
-    v8 = [(AMSFinanceResponse *)self responseDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"AMSServerPayload"];
+    responseDictionary = [(AMSFinanceResponse *)self responseDictionary];
+    [v3 setObject:responseDictionary forKeyedSubscript:@"AMSServerPayload"];
 
     v9 = [(AMSFinanceResponse *)self _valueForProtocolKey:@"customerMessage"];
     if (![(__CFString *)v9 length])
@@ -176,34 +176,34 @@ LABEL_15:
       v9 = @"The server encountered an error";
     }
 
-    v5 = AMSCustomError(@"AMSErrorDomain", 305, @"Server Error", v9, v3, 0);
+    longLongValue = AMSCustomError(@"AMSErrorDomain", 305, @"Server Error", v9, v3, 0);
   }
 
   else
   {
-    v5 = 0;
+    longLongValue = 0;
   }
 
 LABEL_8:
 
-  return v5;
+  return longLongValue;
 }
 
-- (AMSFinanceResponse)initWithTaskInfo:(id)a3 decodedObject:(id)a4
+- (AMSFinanceResponse)initWithTaskInfo:(id)info decodedObject:(id)object
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = AMSFinanceResponse;
   v9 = [(AMSFinanceResponse *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_taskInfo, a3);
+    objc_storeStrong(&v9->_taskInfo, info);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v8;
+      v11 = objectCopy;
     }
 
     else
@@ -237,10 +237,10 @@ LABEL_8:
   if (v3)
   {
     v5 = MEMORY[0x1E6959A48];
-    v6 = [(AMSFinanceResponse *)self taskInfo];
-    v7 = [v6 properties];
-    v8 = [v7 clientInfo];
-    v9 = [v5 ams_sharedAccountStoreForProcessInfo:v8];
+    taskInfo = [(AMSFinanceResponse *)self taskInfo];
+    properties = [taskInfo properties];
+    clientInfo = [properties clientInfo];
+    v9 = [v5 ams_sharedAccountStoreForProcessInfo:clientInfo];
 
     v10 = [v9 ams_iTunesAccountWithDSID:v3];
   }
@@ -266,7 +266,7 @@ LABEL_8:
     v3 = v5;
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -290,11 +290,11 @@ LABEL_8:
           }
 
           v12 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:*(*(&v15 + 1) + 8 * i)];
-          v13 = [v12 host];
+          host = [v12 host];
 
-          if (v13)
+          if (host)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -305,19 +305,19 @@ LABEL_8:
     }
   }
 
-  return v6;
+  return array;
 }
 
-+ (id)valueForProtocolKey:(id)a3 inResponse:(id)a4
++ (id)valueForProtocolKey:(id)key inResponse:(id)response
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:@"protocol"];
-  v8 = [v7 objectForKey:v5];
+  keyCopy = key;
+  responseCopy = response;
+  v7 = [responseCopy objectForKey:@"protocol"];
+  v8 = [v7 objectForKey:keyCopy];
 
   if (!v8)
   {
-    v8 = [v6 objectForKey:v5];
+    v8 = [responseCopy objectForKey:keyCopy];
   }
 
   return v8;
@@ -357,11 +357,11 @@ LABEL_8:
 
 - (id)_performerForAuthenticate
 {
-  v3 = [(AMSFinanceResponse *)self cachedAuthenticateResponse];
+  cachedAuthenticateResponse = [(AMSFinanceResponse *)self cachedAuthenticateResponse];
 
-  if (v3)
+  if (cachedAuthenticateResponse)
   {
-    v4 = [(AMSFinanceResponse *)self cachedAuthenticateResponse];
+    cachedAuthenticateResponse2 = [(AMSFinanceResponse *)self cachedAuthenticateResponse];
   }
 
   else
@@ -369,91 +369,91 @@ LABEL_8:
     if ([(AMSFinanceResponse *)self dialogKind]== 2)
     {
       v5 = [AMSFinanceAuthenticateResponse alloc];
-      v6 = [(AMSFinanceResponse *)self responseDictionary];
-      v7 = [(AMSFinanceResponse *)self taskInfo];
-      v4 = [(AMSFinanceAuthenticateResponse *)v5 initWithResponseDictionary:v6 taskInfo:v7];
+      responseDictionary = [(AMSFinanceResponse *)self responseDictionary];
+      taskInfo = [(AMSFinanceResponse *)self taskInfo];
+      cachedAuthenticateResponse2 = [(AMSFinanceAuthenticateResponse *)v5 initWithResponseDictionary:responseDictionary taskInfo:taskInfo];
     }
 
     else
     {
-      v4 = 0;
+      cachedAuthenticateResponse2 = 0;
     }
 
-    [(AMSFinanceResponse *)self setCachedAuthenticateResponse:v4];
+    [(AMSFinanceResponse *)self setCachedAuthenticateResponse:cachedAuthenticateResponse2];
   }
 
-  return v4;
+  return cachedAuthenticateResponse2;
 }
 
 - (id)_performerForDialog
 {
-  v3 = [(AMSFinanceResponse *)self cachedDialogResponse];
+  cachedDialogResponse = [(AMSFinanceResponse *)self cachedDialogResponse];
 
-  if (v3)
+  if (cachedDialogResponse)
   {
-    v4 = [(AMSFinanceResponse *)self cachedDialogResponse];
+    cachedDialogResponse2 = [(AMSFinanceResponse *)self cachedDialogResponse];
     goto LABEL_10;
   }
 
-  v5 = [(AMSFinanceResponse *)self dialogKind];
-  if (v5 == 1)
+  dialogKind = [(AMSFinanceResponse *)self dialogKind];
+  if (dialogKind == 1)
   {
     v10 = [AMSFinanceDialogResponse alloc];
-    v7 = [(AMSFinanceResponse *)self responseDictionary];
-    v8 = [(AMSFinanceResponse *)self taskInfo];
-    v9 = [(AMSFinanceDialogResponse *)v10 initWithResponseDictionary:v7 kind:1 taskInfo:v8];
+    responseDictionary = [(AMSFinanceResponse *)self responseDictionary];
+    taskInfo = [(AMSFinanceResponse *)self taskInfo];
+    v9 = [(AMSFinanceDialogResponse *)v10 initWithResponseDictionary:responseDictionary kind:1 taskInfo:taskInfo];
   }
 
   else
   {
-    if (v5 != 5)
+    if (dialogKind != 5)
     {
-      v4 = 0;
+      cachedDialogResponse2 = 0;
       goto LABEL_9;
     }
 
     v6 = [AMSFinanceVerifyPurchaseResponse alloc];
-    v7 = [(AMSFinanceResponse *)self responseDictionary];
-    v8 = [(AMSFinanceResponse *)self taskInfo];
-    v9 = [(AMSFinanceVerifyPurchaseResponse *)v6 initWithPayload:v7 taskInfo:v8];
+    responseDictionary = [(AMSFinanceResponse *)self responseDictionary];
+    taskInfo = [(AMSFinanceResponse *)self taskInfo];
+    v9 = [(AMSFinanceVerifyPurchaseResponse *)v6 initWithPayload:responseDictionary taskInfo:taskInfo];
   }
 
-  v4 = v9;
+  cachedDialogResponse2 = v9;
 
 LABEL_9:
-  [(AMSFinanceResponse *)self setCachedDialogResponse:v4];
+  [(AMSFinanceResponse *)self setCachedDialogResponse:cachedDialogResponse2];
 LABEL_10:
 
-  return v4;
+  return cachedDialogResponse2;
 }
 
-- (id)_performerForPaymentSheetWithDelegateAuthentication:(BOOL)a3
+- (id)_performerForPaymentSheetWithDelegateAuthentication:(BOOL)authentication
 {
-  v3 = a3;
-  v5 = [(AMSFinanceResponse *)self cachedPaymentSheetResponse];
+  authenticationCopy = authentication;
+  cachedPaymentSheetResponse = [(AMSFinanceResponse *)self cachedPaymentSheetResponse];
 
-  if (v5)
+  if (cachedPaymentSheetResponse)
   {
-    v5 = [(AMSFinanceResponse *)self cachedPaymentSheetResponse];
+    cachedPaymentSheetResponse = [(AMSFinanceResponse *)self cachedPaymentSheetResponse];
     goto LABEL_12;
   }
 
-  v6 = [(AMSFinanceResponse *)self dialogKind];
-  if (v6 <= 6 && ((1 << v6) & 0x58) != 0)
+  dialogKind = [(AMSFinanceResponse *)self dialogKind];
+  if (dialogKind <= 6 && ((1 << dialogKind) & 0x58) != 0)
   {
-    v7 = v6 == 4;
+    v7 = dialogKind == 4;
     v8 = [AMSFinancePaymentSheetResponse alloc];
-    v9 = [(AMSFinanceResponse *)self responseDictionary];
-    v10 = [(AMSFinanceResponse *)self taskInfo];
-    v5 = [(AMSFinancePaymentSheetResponse *)v8 initWithResponseDictionary:v9 confirmationOnly:v7 delegateAuthenticationRequired:v3 biometricSignatureRequired:1 taskInfo:v10];
+    responseDictionary = [(AMSFinanceResponse *)self responseDictionary];
+    taskInfo = [(AMSFinanceResponse *)self taskInfo];
+    cachedPaymentSheetResponse = [(AMSFinancePaymentSheetResponse *)v8 initWithResponseDictionary:responseDictionary confirmationOnly:v7 delegateAuthenticationRequired:authenticationCopy biometricSignatureRequired:1 taskInfo:taskInfo];
 
-    v11 = [(AMSFinanceResponse *)self taskInfo];
-    v12 = [v11 response];
+    taskInfo2 = [(AMSFinanceResponse *)self taskInfo];
+    response = [taskInfo2 response];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v12;
+      v13 = response;
 
       if (!v13)
       {
@@ -462,10 +462,10 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v12 = [v13 valueForHTTPHeaderField:@"apple-timing-app"];
-      v14 = [(AMSFinancePaymentSheetResponse *)v5 paymentSheetRequest];
-      v15 = [v14 performanceMetrics];
-      [v15 setPrimaryDataAppleTimingApp:v12];
+      response = [v13 valueForHTTPHeaderField:@"apple-timing-app"];
+      paymentSheetRequest = [(AMSFinancePaymentSheetResponse *)cachedPaymentSheetResponse paymentSheetRequest];
+      performanceMetrics = [paymentSheetRequest performanceMetrics];
+      [performanceMetrics setPrimaryDataAppleTimingApp:response];
     }
 
     else
@@ -477,27 +477,27 @@ LABEL_10:
   }
 
 LABEL_11:
-  [(AMSFinanceResponse *)self setCachedPaymentSheetResponse:v5];
+  [(AMSFinanceResponse *)self setCachedPaymentSheetResponse:cachedPaymentSheetResponse];
 LABEL_12:
 
-  return v5;
+  return cachedPaymentSheetResponse;
 }
 
 - (id)_performerForExpressCheckout
 {
   v3 = [AMSFinanceExpressCheckoutResponse alloc];
-  v4 = [(AMSFinanceResponse *)self responseDictionary];
-  v5 = [(AMSFinanceResponse *)self taskInfo];
-  v6 = [(AMSFinanceExpressCheckoutResponse *)v3 initWithResponseDictionary:v4 taskInfo:v5];
+  responseDictionary = [(AMSFinanceResponse *)self responseDictionary];
+  taskInfo = [(AMSFinanceResponse *)self taskInfo];
+  v6 = [(AMSFinanceExpressCheckoutResponse *)v3 initWithResponseDictionary:responseDictionary taskInfo:taskInfo];
 
   return v6;
 }
 
-- (id)_valueForProtocolKey:(id)a3
+- (id)_valueForProtocolKey:(id)key
 {
-  v4 = a3;
-  v5 = [(AMSFinanceResponse *)self responseDictionary];
-  v6 = [AMSFinanceResponse valueForProtocolKey:v4 inResponse:v5];
+  keyCopy = key;
+  responseDictionary = [(AMSFinanceResponse *)self responseDictionary];
+  v6 = [AMSFinanceResponse valueForProtocolKey:keyCopy inResponse:responseDictionary];
 
   return v6;
 }

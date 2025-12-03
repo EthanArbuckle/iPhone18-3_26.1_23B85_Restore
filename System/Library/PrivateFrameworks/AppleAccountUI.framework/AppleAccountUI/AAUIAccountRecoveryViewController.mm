@@ -1,6 +1,6 @@
 @interface AAUIAccountRecoveryViewController
-- (AAUIAccountRecoveryViewController)initWithAccountManager:(id)a3;
-- (AAUIAccountRecoveryViewController)initWithAccountManager:(id)a3 highlightRowIdentifier:(id)a4;
+- (AAUIAccountRecoveryViewController)initWithAccountManager:(id)manager;
+- (AAUIAccountRecoveryViewController)initWithAccountManager:(id)manager highlightRowIdentifier:(id)identifier;
 - (BOOL)_canBeCustodian;
 - (BOOL)_canHaveCustodian;
 - (BOOL)_isEligibleForRecoveryKey;
@@ -21,46 +21,46 @@
 - (void)_beginObservingReviewCustodianDismissedNotification;
 - (void)_beginObservingTrustedContactChangeNotification;
 - (void)_continueShowingAddCustodian;
-- (void)_custodianshipOwnerWasTapped:(id)a3;
+- (void)_custodianshipOwnerWasTapped:(id)tapped;
 - (void)_displayCustodianAddNotAllowedAlert;
 - (void)_displayRatchetGenericErrorAlert;
 - (void)_fetchAllCustodianContacts;
 - (void)_fetchRecoveryKeyUpdate;
 - (void)_footerLearnMoreWasTapped;
 - (void)_learnMoreWasTapped;
-- (void)_myRecoveryContactWasTapped:(id)a3;
+- (void)_myRecoveryContactWasTapped:(id)tapped;
 - (void)_reloadSpecifiersAnimated;
 - (void)_rkFooterLearnMoreTapped;
 - (void)_showAddCustodian;
-- (void)_showRecoveryKey:(id)a3;
-- (void)_showViewController:(id)a3;
-- (void)_startSpinnerInSpecifier:(id)a3;
+- (void)_showRecoveryKey:(id)key;
+- (void)_showViewController:(id)controller;
+- (void)_startSpinnerInSpecifier:(id)specifier;
 - (void)_stopObservingNotifications;
 - (void)_stopObservingReviewCustodianDismissedNotification;
 - (void)_stopObservingTrustedContactChangeNotification;
-- (void)_syncAccountRecoveryFactorsWithCompletion:(id)a3;
+- (void)_syncAccountRecoveryFactorsWithCompletion:(id)completion;
 - (void)_syncTrustedContactsFromCloudKit;
 - (void)dealloc;
 - (void)finishingRepair;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
-- (void)reviewCustodianSheetDismissed:(id)a3 withUUIDs:(id)a4;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
+- (void)reviewCustodianSheetDismissed:(id)dismissed withUUIDs:(id)ds;
 - (void)showReviewCustodiansModalIfNeeded;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AAUIAccountRecoveryViewController
 
-- (AAUIAccountRecoveryViewController)initWithAccountManager:(id)a3
+- (AAUIAccountRecoveryViewController)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = AAUIAccountRecoveryViewController;
   v6 = [(AAUIAccountRecoveryViewController *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
     v8 = objc_opt_new();
     contactsProvider = v7->_contactsProvider;
     v7->_contactsProvider = v8;
@@ -100,10 +100,10 @@
   return v7;
 }
 
-- (AAUIAccountRecoveryViewController)initWithAccountManager:(id)a3 highlightRowIdentifier:(id)a4
+- (AAUIAccountRecoveryViewController)initWithAccountManager:(id)manager highlightRowIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = AAUIAccountRecoveryViewController;
   v8 = [(AAUIAccountRecoveryViewController *)&v12 init];
@@ -115,10 +115,10 @@
       [AAUIAccountRecoveryViewController initWithAccountManager:highlightRowIdentifier:];
     }
 
-    objc_storeStrong((&v8->super.super.super.super.super.isa + *MEMORY[0x1E69C57A8]), a4);
+    objc_storeStrong((&v8->super.super.super.super.super.isa + *MEMORY[0x1E69C57A8]), identifier);
   }
 
-  v10 = [(AAUIAccountRecoveryViewController *)v8 initWithAccountManager:v6];
+  v10 = [(AAUIAccountRecoveryViewController *)v8 initWithAccountManager:managerCopy];
 
   return v10;
 }
@@ -149,19 +149,19 @@
   [(AAUIAccountRecoveryViewController *)&v12 viewDidLoad];
   if (!self->_accountManager)
   {
-    v3 = [(AAUIAccountRecoveryViewController *)self specifier];
-    v4 = [v3 objectForKeyedSubscript:@"icloudAccountManager"];
+    specifier = [(AAUIAccountRecoveryViewController *)self specifier];
+    v4 = [specifier objectForKeyedSubscript:@"icloudAccountManager"];
     accountManager = self->_accountManager;
     self->_accountManager = v4;
   }
 
-  v6 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel title];
-  v7 = [(AAUIAccountRecoveryViewController *)self navigationItem];
-  [v7 setTitle:v6];
+  title = [(AAAccountRecoveryManagementViewModel *)self->_viewModel title];
+  navigationItem = [(AAUIAccountRecoveryViewController *)self navigationItem];
+  [navigationItem setTitle:title];
 
   v8 = [AAUISpinnerManager alloc];
-  v9 = [(AAUIAccountRecoveryViewController *)self navigationItem];
-  v10 = [(AAUISpinnerManager *)v8 initWithNavigationItem:v9 hideBackButton:0];
+  navigationItem2 = [(AAUIAccountRecoveryViewController *)self navigationItem];
+  v10 = [(AAUISpinnerManager *)v8 initWithNavigationItem:navigationItem2 hideBackButton:0];
   spinnerManager = self->_spinnerManager;
   self->_spinnerManager = v10;
 
@@ -246,11 +246,11 @@ void __70__AAUIAccountRecoveryViewController_showReviewCustodiansModalIfNeeded__
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AAUIAccountRecoveryViewController;
-  [(AAUIAccountRecoveryViewController *)&v4 viewWillAppear:a3];
+  [(AAUIAccountRecoveryViewController *)&v4 viewWillAppear:appear];
   [(AAUIAccountRecoveryViewController *)self _fetchRecoveryKeyUpdate];
   [(AAUIAccountRecoveryViewController *)self reloadSpecifiers];
   if (!self->_didShowCustodianReviewSheet)
@@ -266,9 +266,9 @@ void __70__AAUIAccountRecoveryViewController_showReviewCustodiansModalIfNeeded__
   [(AAUIAccountRecoveryViewController *)self _beginObservingTrustedContactChangeNotification];
 }
 
-- (void)reviewCustodianSheetDismissed:(id)a3 withUUIDs:(id)a4
+- (void)reviewCustodianSheetDismissed:(id)dismissed withUUIDs:(id)ds
 {
-  v5 = a3;
+  dismissedCopy = dismissed;
   if (-[AAUIAccountRecoveryViewController isViewLoaded](self, "isViewLoaded") && (-[AAUIAccountRecoveryViewController view](self, "view"), v6 = objc_claimAutoreleasedReturnValue(), [v6 window], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v8 = CFPreferencesCopyAppValue(@"DismissCustodianReviewCFU", *MEMORY[0x1E698B7D0]);
@@ -287,8 +287,8 @@ void __70__AAUIAccountRecoveryViewController_showReviewCustodiansModalIfNeeded__
       }
 
       v11 = objc_alloc_init(MEMORY[0x1E698B850]);
-      v12 = [v5 userInfo];
-      v13 = [v12 valueForKey:@"custodianUUIDs"];
+      userInfo = [dismissedCopy userInfo];
+      v13 = [userInfo valueForKey:@"custodianUUIDs"];
       [v11 repairCustodians:v13 remove:MEMORY[0x1E695E0F0] completion:&__block_literal_global_18];
     }
   }
@@ -332,26 +332,26 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
 
 - (void)_beginObservingReviewCustodianDismissedNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_reviewCustodianSheetDismissed_withUUIDs_ name:@"AAUICustodianReviewSheetDismissed" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_reviewCustodianSheetDismissed_withUUIDs_ name:@"AAUICustodianReviewSheetDismissed" object:0];
 }
 
 - (void)_beginObservingTrustedContactChangeNotification
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 addObserver:self selector:sel__fetchAllCustodianContacts name:*MEMORY[0x1E698B7D8] object:0 suspensionBehavior:4];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__fetchAllCustodianContacts name:*MEMORY[0x1E698B7D8] object:0 suspensionBehavior:4];
 }
 
 - (void)_stopObservingTrustedContactChangeNotification
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E698B7D8] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E698B7D8] object:0];
 }
 
 - (void)_stopObservingReviewCustodianDismissedNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"AAUICustodianReviewSheetDismissed" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"AAUICustodianReviewSheetDismissed" object:0];
 }
 
 - (id)specifiers
@@ -360,9 +360,9 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
   v3 = *MEMORY[0x1E69C57B8];
   if (!*(&self->super.super.super.super.super.isa + v3))
   {
-    v4 = [(AAUIAccountRecoveryViewController *)self _generateSpecifiers];
+    _generateSpecifiers = [(AAUIAccountRecoveryViewController *)self _generateSpecifiers];
     v5 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v4;
+    *(&self->super.super.super.super.super.isa + v3) = _generateSpecifiers;
   }
 
   v6 = _AAUILogSystem();
@@ -389,10 +389,10 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
   }
 
   v4 = objc_opt_new();
-  v5 = [(AAUIAccountRecoveryViewController *)self _canHaveCustodian];
+  _canHaveCustodian = [(AAUIAccountRecoveryViewController *)self _canHaveCustodian];
   v6 = _AAUILogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (_canHaveCustodian)
   {
     if (v7)
     {
@@ -400,17 +400,17 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
       _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "Account can have custodians, adding custodian specifiers to UI...", v21, 2u);
     }
 
-    v8 = [(AAUIAccountRecoveryViewController *)self _accountRecoveryDetailsSpecifier];
-    [v4 addObject:v8];
+    _accountRecoveryDetailsSpecifier = [(AAUIAccountRecoveryViewController *)self _accountRecoveryDetailsSpecifier];
+    [v4 addObject:_accountRecoveryDetailsSpecifier];
 
-    v9 = [(AAUIAccountRecoveryViewController *)self _recoveryOptionsGroupSpecifier];
-    [v4 addObject:v9];
+    _recoveryOptionsGroupSpecifier = [(AAUIAccountRecoveryViewController *)self _recoveryOptionsGroupSpecifier];
+    [v4 addObject:_recoveryOptionsGroupSpecifier];
 
-    v10 = [(AAUIAccountRecoveryViewController *)self _myRecoveryOptionsSpecifiers];
-    [v4 addObjectsFromArray:v10];
+    _myRecoveryOptionsSpecifiers = [(AAUIAccountRecoveryViewController *)self _myRecoveryOptionsSpecifiers];
+    [v4 addObjectsFromArray:_myRecoveryOptionsSpecifiers];
 
-    v11 = [(AAUIAccountRecoveryViewController *)self _addRecoveryContactSpecifier];
-    [v4 addObject:v11];
+    _addRecoveryContactSpecifier = [(AAUIAccountRecoveryViewController *)self _addRecoveryContactSpecifier];
+    [v4 addObject:_addRecoveryContactSpecifier];
   }
 
   else
@@ -421,20 +421,20 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
       _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "Account not eligible to have custodians, adding ineligible specifiers to UI...", v20, 2u);
     }
 
-    v12 = [(AAUIAccountRecoveryViewController *)self _accountRecoveryDetailsSpecifierForIneligibleAccount];
-    [v4 addObject:v12];
+    _accountRecoveryDetailsSpecifierForIneligibleAccount = [(AAUIAccountRecoveryViewController *)self _accountRecoveryDetailsSpecifierForIneligibleAccount];
+    [v4 addObject:_accountRecoveryDetailsSpecifierForIneligibleAccount];
 
-    v13 = [(AAUIAccountRecoveryViewController *)self _recoveryOptionsGroupSpecifierForIneligibleAccount];
-    [v4 addObject:v13];
+    _recoveryOptionsGroupSpecifierForIneligibleAccount = [(AAUIAccountRecoveryViewController *)self _recoveryOptionsGroupSpecifierForIneligibleAccount];
+    [v4 addObject:_recoveryOptionsGroupSpecifierForIneligibleAccount];
 
-    v11 = [(AAUIAccountRecoveryViewController *)self _myRecoveryOptionsSpecifiers];
-    [v4 addObjectsFromArray:v11];
+    _addRecoveryContactSpecifier = [(AAUIAccountRecoveryViewController *)self _myRecoveryOptionsSpecifiers];
+    [v4 addObjectsFromArray:_addRecoveryContactSpecifier];
   }
 
   if ([(AAUIAccountRecoveryViewController *)self _isEligibleForRecoveryKey])
   {
-    v14 = [(AAUIAccountRecoveryViewController *)self _recoveryKeySpecifiers];
-    [v4 addObjectsFromArray:v14];
+    _recoveryKeySpecifiers = [(AAUIAccountRecoveryViewController *)self _recoveryKeySpecifiers];
+    [v4 addObjectsFromArray:_recoveryKeySpecifiers];
   }
 
   if ([(AAUIAccountRecoveryViewController *)self _canBeCustodian])
@@ -448,11 +448,11 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
 
     if ([(NSArray *)self->_myCustodianshipOwners count])
     {
-      v16 = [(AAUIAccountRecoveryViewController *)self _recoveryContactForGroupSpecifier];
-      [v4 addObject:v16];
+      _recoveryContactForGroupSpecifier = [(AAUIAccountRecoveryViewController *)self _recoveryContactForGroupSpecifier];
+      [v4 addObject:_recoveryContactForGroupSpecifier];
 
-      v17 = [(AAUIAccountRecoveryViewController *)self _recoveryContactForSpecifiers];
-      [v4 addObjectsFromArray:v17];
+      _recoveryContactForSpecifiers = [(AAUIAccountRecoveryViewController *)self _recoveryContactForSpecifiers];
+      [v4 addObjectsFromArray:_recoveryContactForSpecifiers];
     }
   }
 
@@ -466,17 +466,17 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
   if (v3 && (*(&self->super.super.super.super.super.isa + *MEMORY[0x1E69C57B0]) & 1) != 0)
   {
     v4 = v3;
-    v5 = [(AAUIAccountRecoveryViewController *)self _generateSpecifiers];
-    v6 = [v5 differenceFromArray:v4 withOptions:0 usingEquivalenceTest:&__block_literal_global_81];
+    _generateSpecifiers = [(AAUIAccountRecoveryViewController *)self _generateSpecifiers];
+    v6 = [_generateSpecifiers differenceFromArray:v4 withOptions:0 usingEquivalenceTest:&__block_literal_global_81];
     [(AAUIAccountRecoveryViewController *)self beginUpdates];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [v6 removals];
-    v8 = [v7 reverseObjectEnumerator];
+    removals = [v6 removals];
+    reverseObjectEnumerator = [removals reverseObjectEnumerator];
 
-    v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v9)
     {
       v10 = v9;
@@ -487,13 +487,13 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
         {
           if (*v25 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           -[AAUIAccountRecoveryViewController removeSpecifierAtIndex:animated:](self, "removeSpecifierAtIndex:animated:", [*(*(&v24 + 1) + 8 * i) index], 1);
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v10);
@@ -503,8 +503,8 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [v6 insertions];
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    insertions = [v6 insertions];
+    v14 = [insertions countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -515,15 +515,15 @@ void __77__AAUIAccountRecoveryViewController_reviewCustodianSheetDismissed_withU
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(insertions);
           }
 
           v18 = *(*(&v20 + 1) + 8 * j);
-          v19 = [v18 object];
-          -[AAUIAccountRecoveryViewController insertSpecifier:atIndex:animated:](self, "insertSpecifier:atIndex:animated:", v19, [v18 index], 1);
+          object = [v18 object];
+          -[AAUIAccountRecoveryViewController insertSpecifier:atIndex:animated:](self, "insertSpecifier:atIndex:animated:", object, [v18 index], 1);
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v15 = [insertions countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v15);
@@ -619,7 +619,7 @@ LABEL_15:
   return v8;
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x1E69E9820];
@@ -704,8 +704,8 @@ void __69__AAUIAccountRecoveryViewController__syncTrustedContactsFromCloudKit__b
   v6 = objc_opt_new();
   if (!self->_myCustodiansRequestId)
   {
-    v7 = [(AAUICustodianRepairHelper *)self->_repairHelper localContacts];
-    v8 = [v7 count];
+    localContacts = [(AAUICustodianRepairHelper *)self->_repairHelper localContacts];
+    v8 = [localContacts count];
 
     if (!v8)
     {
@@ -974,9 +974,9 @@ void __60__AAUIAccountRecoveryViewController__fetchRecoveryKeyUpdate__block_invo
   [v1 reloadSpecifierID:v2];
 }
 
-- (void)_syncAccountRecoveryFactorsWithCompletion:(id)a3
+- (void)_syncAccountRecoveryFactorsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -985,15 +985,15 @@ void __60__AAUIAccountRecoveryViewController__fetchRecoveryKeyUpdate__block_invo
   }
 
   authenticationController = self->_authenticationController;
-  v7 = [(AAUIAccountRecoveryViewController *)self _appleAccount];
-  v8 = [v7 aa_altDSID];
+  _appleAccount = [(AAUIAccountRecoveryViewController *)self _appleAccount];
+  aa_altDSID = [_appleAccount aa_altDSID];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__AAUIAccountRecoveryViewController__syncAccountRecoveryFactorsWithCompletion___block_invoke;
   v10[3] = &unk_1E820C0A0;
-  v11 = v4;
-  v9 = v4;
-  [(AKAppleIDAuthenticationController *)authenticationController performCheckInForAccountWithAltDSID:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(AKAppleIDAuthenticationController *)authenticationController performCheckInForAccountWithAltDSID:aa_altDSID completion:v10];
 }
 
 void __79__AAUIAccountRecoveryViewController__syncAccountRecoveryFactorsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1021,8 +1021,8 @@ void __79__AAUIAccountRecoveryViewController__syncAccountRecoveryFactorsWithComp
 - (id)_accountRecoveryDetailsSpecifier
 {
   v3 = [MEMORY[0x1E69C5748] groupSpecifierWithID:@"ACCOUNT RECOVERY DETAILS" name:0];
-  v4 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel details];
-  [v3 setProperty:v4 forKey:*MEMORY[0x1E69C5900]];
+  details = [(AAAccountRecoveryManagementViewModel *)self->_viewModel details];
+  [v3 setProperty:details forKey:*MEMORY[0x1E69C5900]];
 
   return v3;
 }
@@ -1030,8 +1030,8 @@ void __79__AAUIAccountRecoveryViewController__syncAccountRecoveryFactorsWithComp
 - (id)_accountRecoveryDetailsSpecifierForIneligibleAccount
 {
   v3 = [MEMORY[0x1E69C5748] groupSpecifierWithID:@"ACCOUNT RECOVERY DETAILS INELIGIBLE" name:0];
-  v4 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel detailsForIneligibleAccount];
-  [v3 setProperty:v4 forKey:*MEMORY[0x1E69C5900]];
+  detailsForIneligibleAccount = [(AAAccountRecoveryManagementViewModel *)self->_viewModel detailsForIneligibleAccount];
+  [v3 setProperty:detailsForIneligibleAccount forKey:*MEMORY[0x1E69C5900]];
 
   return v3;
 }
@@ -1039,10 +1039,10 @@ void __79__AAUIAccountRecoveryViewController__syncAccountRecoveryFactorsWithComp
 - (id)_recoveryOptionsGroupSpecifier
 {
   v3 = objc_opt_new();
-  v4 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsGroupTitle];
-  v5 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsFooter];
-  v6 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel learnMore];
-  v7 = [v3 createGroupSpecifierWithIdentifier:@"RECOVERY CONTACT" title:v4 footerText:v5 linkText:v6 actionMethodName:@"_footerLearnMoreWasTapped" target:self];
+  myRecoveryContactsGroupTitle = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsGroupTitle];
+  myRecoveryContactsFooter = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsFooter];
+  learnMore = [(AAAccountRecoveryManagementViewModel *)self->_viewModel learnMore];
+  v7 = [v3 createGroupSpecifierWithIdentifier:@"RECOVERY CONTACT" title:myRecoveryContactsGroupTitle footerText:myRecoveryContactsFooter linkText:learnMore actionMethodName:@"_footerLearnMoreWasTapped" target:self];
 
   return v7;
 }
@@ -1050,10 +1050,10 @@ void __79__AAUIAccountRecoveryViewController__syncAccountRecoveryFactorsWithComp
 - (id)_recoveryOptionsGroupSpecifierForIneligibleAccount
 {
   v3 = objc_opt_new();
-  v4 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsGroupTitle];
-  v5 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsFooterForIneligibleAccount];
-  v6 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel learnMore];
-  v7 = [v3 createGroupSpecifierWithIdentifier:@"RECOVERY CONTACT INELIGIBLE" title:v4 footerText:v5 linkText:v6 actionMethodName:@"_footerLearnMoreWasTapped" target:self];
+  myRecoveryContactsGroupTitle = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsGroupTitle];
+  myRecoveryContactsFooterForIneligibleAccount = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsFooterForIneligibleAccount];
+  learnMore = [(AAAccountRecoveryManagementViewModel *)self->_viewModel learnMore];
+  v7 = [v3 createGroupSpecifierWithIdentifier:@"RECOVERY CONTACT INELIGIBLE" title:myRecoveryContactsGroupTitle footerText:myRecoveryContactsFooterForIneligibleAccount linkText:learnMore actionMethodName:@"_footerLearnMoreWasTapped" target:self];
 
   return v7;
 }
@@ -1064,8 +1064,8 @@ void __79__AAUIAccountRecoveryViewController__syncAccountRecoveryFactorsWithComp
   v3 = objc_opt_new();
   if ([(AAUIAccountRecoveryViewController *)self _canHaveCustodian])
   {
-    v4 = [(AAUICustodianRepairHelper *)self->_repairHelper localContacts];
-    v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_114];
+    localContacts = [(AAUICustodianRepairHelper *)self->_repairHelper localContacts];
+    v5 = [localContacts sortedArrayUsingComparator:&__block_literal_global_114];
 
     v18 = 0u;
     v19 = 0u;
@@ -1088,8 +1088,8 @@ void __79__AAUIAccountRecoveryViewController__syncAccountRecoveryFactorsWithComp
 
           v10 = *(*(&v16 + 1) + 8 * i);
           v11 = [AAUITrustedContactListCell specifierForContact:v10 loadAction:sel__myRecoveryContactWasTapped_ target:self];
-          v12 = [v10 handle];
-          v13 = [@"RecoveryOption-" stringByAppendingString:v12];
+          handle = [v10 handle];
+          v13 = [@"RecoveryOption-" stringByAppendingString:handle];
           [v11 setIdentifier:v13];
 
           [v3 addObject:v11];
@@ -1118,8 +1118,8 @@ uint64_t __65__AAUIAccountRecoveryViewController__myRecoveryOptionsSpecifiers__b
 - (id)_addRecoveryContactSpecifier
 {
   v3 = objc_opt_new();
-  v4 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsAdd];
-  v5 = [v3 createAddTableCellWithTitle:v4 loadAction:sel__showAddCustodian target:self];
+  myRecoveryContactsAdd = [(AAAccountRecoveryManagementViewModel *)self->_viewModel myRecoveryContactsAdd];
+  v5 = [v3 createAddTableCellWithTitle:myRecoveryContactsAdd loadAction:sel__showAddCustodian target:self];
 
   return v5;
 }
@@ -1128,21 +1128,21 @@ uint64_t __65__AAUIAccountRecoveryViewController__myRecoveryOptionsSpecifiers__b
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyLabel];
-  v6 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyDetails];
-  v7 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel learnMore];
-  v8 = [v4 createGroupSpecifierWithIdentifier:@"RECOVERY KEY" title:v5 footerText:v6 linkText:v7 actionMethodName:@"_rkFooterLearnMoreTapped" target:self];
+  recoveryKeyLabel = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyLabel];
+  recoveryKeyDetails = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyDetails];
+  learnMore = [(AAAccountRecoveryManagementViewModel *)self->_viewModel learnMore];
+  v8 = [v4 createGroupSpecifierWithIdentifier:@"RECOVERY KEY" title:recoveryKeyLabel footerText:recoveryKeyDetails linkText:learnMore actionMethodName:@"_rkFooterLearnMoreTapped" target:self];
 
   [v3 addObject:v8];
   v9 = MEMORY[0x1E69C5748];
-  v10 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyLabel];
-  v11 = [v9 preferenceSpecifierNamed:v10 target:self set:0 get:sel__recoveryKeyState detail:0 cell:2 edit:0];
+  recoveryKeyLabel2 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyLabel];
+  v11 = [v9 preferenceSpecifierNamed:recoveryKeyLabel2 target:self set:0 get:sel__recoveryKeyState detail:0 cell:2 edit:0];
 
-  v12 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyLabel];
-  [v11 setIdentifier:v12];
+  recoveryKeyLabel3 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyLabel];
+  [v11 setIdentifier:recoveryKeyLabel3];
 
-  v13 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyLabel];
-  [v11 setProperty:v13 forKey:*MEMORY[0x1E69C59A8]];
+  recoveryKeyLabel4 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryKeyLabel];
+  [v11 setProperty:recoveryKeyLabel4 forKey:*MEMORY[0x1E69C59A8]];
 
   [v11 setControllerLoadAction:sel__showRecoveryKey_];
   [v3 addObject:v11];
@@ -1153,8 +1153,8 @@ uint64_t __65__AAUIAccountRecoveryViewController__myRecoveryOptionsSpecifiers__b
 - (id)_recoveryContactForGroupSpecifier
 {
   v2 = MEMORY[0x1E69C5748];
-  v3 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryContactForGroupTitle];
-  v4 = [v2 groupSpecifierWithID:@"ACCOUNT RECOVERY FOR" name:v3];
+  recoveryContactForGroupTitle = [(AAAccountRecoveryManagementViewModel *)self->_viewModel recoveryContactForGroupTitle];
+  v4 = [v2 groupSpecifierWithID:@"ACCOUNT RECOVERY FOR" name:recoveryContactForGroupTitle];
 
   return v4;
 }
@@ -1184,8 +1184,8 @@ uint64_t __65__AAUIAccountRecoveryViewController__myRecoveryOptionsSpecifiers__b
 
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = [AAUITrustedContactListCell specifierForContact:v8 loadAction:sel__custodianshipOwnerWasTapped_ target:self];
-        v10 = [v8 handle];
-        v11 = [@"RecoveryContact-" stringByAppendingString:v10];
+        handle = [v8 handle];
+        v11 = [@"RecoveryContact-" stringByAppendingString:handle];
         [v9 setIdentifier:v11];
 
         [v3 addObject:v9];
@@ -1200,21 +1200,21 @@ uint64_t __65__AAUIAccountRecoveryViewController__myRecoveryOptionsSpecifiers__b
   return v3;
 }
 
-- (void)_myRecoveryContactWasTapped:(id)a3
+- (void)_myRecoveryContactWasTapped:(id)tapped
 {
-  v10 = [a3 userInfo];
-  v4 = [v10 trustedContactStatus];
+  userInfo = [tapped userInfo];
+  trustedContactStatus = [userInfo trustedContactStatus];
   v5 = off_1E8209C50;
-  if (v4 != 1)
+  if (trustedContactStatus != 1)
   {
     v5 = off_1E8209C40;
   }
 
-  v6 = [objc_alloc(*v5) initWithAccountManager:self->_accountManager localContact:v10];
+  v6 = [objc_alloc(*v5) initWithAccountManager:self->_accountManager localContact:userInfo];
   v7 = objc_opt_new();
-  v8 = [v7 viewModelForFlow:0 withContact:v10];
+  v8 = [v7 viewModelForFlow:0 withContact:userInfo];
 
-  v9 = [[AAUITrustedContactDetailsViewController alloc] initWithContact:v10 viewModel:v8 actionHandler:v6];
+  v9 = [[AAUITrustedContactDetailsViewController alloc] initWithContact:userInfo viewModel:v8 actionHandler:v6];
   [(AAUIAccountRecoveryViewController *)self _showViewController:v9];
 }
 
@@ -1227,9 +1227,9 @@ uint64_t __65__AAUIAccountRecoveryViewController__myRecoveryOptionsSpecifiers__b
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "iCDRS Learn More was tapped", v6, 2u);
   }
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel learnMoreURL];
-  [v4 openURL:v5 withCompletionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  learnMoreURL = [(AAAccountRecoveryManagementViewModel *)self->_viewModel learnMoreURL];
+  [mEMORY[0x1E69DC668] openURL:learnMoreURL withCompletionHandler:0];
 }
 
 - (void)_footerLearnMoreWasTapped
@@ -1241,37 +1241,37 @@ uint64_t __65__AAUIAccountRecoveryViewController__myRecoveryOptionsSpecifiers__b
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "iCDRS Footer Learn More was tapped", v6, 2u);
   }
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [(AAAccountRecoveryManagementViewModel *)self->_viewModel footerLearnMoreURL];
-  [v4 openURL:v5 withCompletionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  footerLearnMoreURL = [(AAAccountRecoveryManagementViewModel *)self->_viewModel footerLearnMoreURL];
+  [mEMORY[0x1E69DC668] openURL:footerLearnMoreURL withCompletionHandler:0];
 }
 
-- (void)_custodianshipOwnerWasTapped:(id)a3
+- (void)_custodianshipOwnerWasTapped:(id)tapped
 {
-  v8 = [a3 userInfo];
-  v4 = [[AAUICustodianForActionHandler alloc] initWithLocalContact:v8];
+  userInfo = [tapped userInfo];
+  v4 = [[AAUICustodianForActionHandler alloc] initWithLocalContact:userInfo];
   v5 = objc_opt_new();
-  v6 = [v5 viewModelForFlow:1 withContact:v8];
+  v6 = [v5 viewModelForFlow:1 withContact:userInfo];
 
-  v7 = [[AAUITrustedContactDetailsViewController alloc] initWithContact:v8 viewModel:v6 actionHandler:v4];
+  v7 = [[AAUITrustedContactDetailsViewController alloc] initWithContact:userInfo viewModel:v6 actionHandler:v4];
   [(AAUIAccountRecoveryViewController *)self _showViewController:v7];
 }
 
 - (void)_showAddCustodian
 {
-  v3 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v4)
   {
     dtoHelper = self->_dtoHelper;
-    v6 = [v4 aa_altDSID];
+    aa_altDSID = [v4 aa_altDSID];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __54__AAUIAccountRecoveryViewController__showAddCustodian__block_invoke;
     v8[3] = &unk_1E820C140;
     v8[4] = self;
-    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:v6 completion:v8];
+    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:aa_altDSID completion:v8];
   }
 
   else
@@ -1389,25 +1389,25 @@ uint64_t __54__AAUIAccountRecoveryViewController__showAddCustodian__block_invoke
 
   [(AAUICustodianSetupFlowController *)self->_custodianSetupFlowController setIsWalrusEnabled:+[AAUICDPHelper isWalrusEnabled]];
   [(AAUICustodianSetupFlowController *)self->_custodianSetupFlowController startWithoutFirstTimeSetup];
-  v5 = [(AAUICustodianSetupFlowController *)self->_custodianSetupFlowController navigationController];
-  [(AAUIAccountRecoveryViewController *)self _showViewController:v5];
+  navigationController = [(AAUICustodianSetupFlowController *)self->_custodianSetupFlowController navigationController];
+  [(AAUIAccountRecoveryViewController *)self _showViewController:navigationController];
 }
 
 - (void)_displayCustodianAddNotAllowedAlert
 {
-  v3 = [(AAUIDTOHelper *)self->_dtoHelper makeCustodianAddOpNotAllowedAlert];
-  [(AAUIAccountRecoveryViewController *)self presentViewController:v3 animated:1 completion:0];
+  makeCustodianAddOpNotAllowedAlert = [(AAUIDTOHelper *)self->_dtoHelper makeCustodianAddOpNotAllowedAlert];
+  [(AAUIAccountRecoveryViewController *)self presentViewController:makeCustodianAddOpNotAllowedAlert animated:1 completion:0];
 }
 
 - (void)_displayRatchetGenericErrorAlert
 {
-  v3 = [(AAUIDTOHelper *)self->_dtoHelper makeGenericRatchetFailedAlert];
-  [(AAUIAccountRecoveryViewController *)self presentViewController:v3 animated:1 completion:0];
+  makeGenericRatchetFailedAlert = [(AAUIDTOHelper *)self->_dtoHelper makeGenericRatchetFailedAlert];
+  [(AAUIAccountRecoveryViewController *)self presentViewController:makeGenericRatchetFailedAlert animated:1 completion:0];
 }
 
-- (void)_showRecoveryKey:(id)a3
+- (void)_showRecoveryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1415,12 +1415,12 @@ uint64_t __54__AAUIAccountRecoveryViewController__showAddCustodian__block_invoke
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Show recovery key management...", buf, 2u);
   }
 
-  v6 = [MEMORY[0x1E698DDF8] sharedBag];
-  v7 = [v6 urlAtKey:*MEMORY[0x1E698DC70]];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v7 = [mEMORY[0x1E698DDF8] urlAtKey:*MEMORY[0x1E698DC70]];
 
   if (v7)
   {
-    [(AAUIAccountRecoveryViewController *)self _startSpinnerInSpecifier:v4];
+    [(AAUIAccountRecoveryViewController *)self _startSpinnerInSpecifier:keyCopy];
     v8 = [MEMORY[0x1E696AF68] requestWithURL:v7];
     v9 = [[AAUIGrandSlamRemoteUIPresenter alloc] initWithAccountManager:self->_accountManager presenter:self];
     remoteUIPresenter = self->_remoteUIPresenter;
@@ -1441,17 +1441,17 @@ uint64_t __54__AAUIAccountRecoveryViewController__showAddCustodian__block_invoke
   }
 }
 
-- (void)_startSpinnerInSpecifier:(id)a3
+- (void)_startSpinnerInSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__AAUIAccountRecoveryViewController__startSpinnerInSpecifier___block_invoke;
   block[3] = &unk_1E820BE68;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = specifierCopy;
+  v5 = specifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -1471,26 +1471,26 @@ void __62__AAUIAccountRecoveryViewController__startSpinnerInSpecifier___block_in
   [v5 setUserInteractionEnabled:0];
 }
 
-- (void)_showViewController:(id)a3
+- (void)_showViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AAUIAccountRecoveryViewController *)self presentViewController:v4 animated:1 completion:0];
+    [(AAUIAccountRecoveryViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    [(UIViewController *)self aaui_showViewController:v4 sender:self];
+    [(UIViewController *)self aaui_showViewController:controllerCopy sender:self];
   }
 }
 
 - (id)_appleAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKey:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKey:*MEMORY[0x1E698C218]];
 
   return v3;
 }
@@ -1500,10 +1500,10 @@ void __62__AAUIAccountRecoveryViewController__startSpinnerInSpecifier___block_in
   idmsAccount = self->_idmsAccount;
   if (!idmsAccount)
   {
-    v4 = [MEMORY[0x1E698DC80] sharedInstance];
-    v5 = [(AAUIAccountRecoveryViewController *)self _appleAccount];
-    v6 = [v5 aa_altDSID];
-    v7 = [v4 authKitAccountWithAltDSID:v6];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    _appleAccount = [(AAUIAccountRecoveryViewController *)self _appleAccount];
+    aa_altDSID = [_appleAccount aa_altDSID];
+    v7 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:aa_altDSID];
     v8 = self->_idmsAccount;
     self->_idmsAccount = v7;
 
@@ -1515,18 +1515,18 @@ void __62__AAUIAccountRecoveryViewController__startSpinnerInSpecifier___block_in
 
 - (BOOL)_canHaveCustodian
 {
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [(AAUIAccountRecoveryViewController *)self _idmsAccount];
-  v5 = [v3 canHaveCustodianForAccount:v4];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  _idmsAccount = [(AAUIAccountRecoveryViewController *)self _idmsAccount];
+  v5 = [mEMORY[0x1E698DC80] canHaveCustodianForAccount:_idmsAccount];
 
   return v5;
 }
 
 - (BOOL)_canBeCustodian
 {
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [(AAUIAccountRecoveryViewController *)self _idmsAccount];
-  v5 = [v3 canBeCustodianForAccount:v4];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  _idmsAccount = [(AAUIAccountRecoveryViewController *)self _idmsAccount];
+  v5 = [mEMORY[0x1E698DC80] canBeCustodianForAccount:_idmsAccount];
 
   return v5;
 }
@@ -1534,9 +1534,9 @@ void __62__AAUIAccountRecoveryViewController__startSpinnerInSpecifier___block_in
 - (BOOL)_isEligibleForRecoveryKey
 {
   v2 = MEMORY[0x1E69977E0];
-  v3 = [(AAUIAccountRecoveryViewController *)self _appleAccount];
-  v4 = [v3 aa_personID];
-  LOBYTE(v2) = [v2 isICDPEnabledForDSID:v4];
+  _appleAccount = [(AAUIAccountRecoveryViewController *)self _appleAccount];
+  aa_personID = [_appleAccount aa_personID];
+  LOBYTE(v2) = [v2 isICDPEnabledForDSID:aa_personID];
 
   return v2;
 }

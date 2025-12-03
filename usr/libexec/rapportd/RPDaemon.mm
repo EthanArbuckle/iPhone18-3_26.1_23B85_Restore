@@ -1,22 +1,22 @@
 @interface RPDaemon
 + (id)sharedDaemon;
-- (BOOL)diagnosticCommand:(id)a3 params:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)diagnosticCommand:(id)command params:(id)params;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RPDaemon)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (id)keychainStateString;
 - (void)_metricsSubmissionSetup;
 - (void)_prefsChanged;
 - (void)_updateErrorFlags;
-- (void)_xpcPublisherAction:(unsigned int)a3 token:(unint64_t)a4 event:(id)a5;
-- (void)_xpcPublisherAddToken:(unint64_t)a3 event:(id)a4;
-- (void)_xpcPublisherRemoveToken:(unint64_t)a3;
-- (void)_xpcPublisherStateChangedForToken:(unint64_t)a3 state:(BOOL)a4;
-- (void)_xpcPublisherTriggeredReply:(id)a3 token:(unint64_t)a4 responseHandler:(id)a5;
-- (void)_xpcPublisherTriggeredToken:(unint64_t)a3 payload:(id)a4 responseHandler:(id)a5;
+- (void)_xpcPublisherAction:(unsigned int)action token:(unint64_t)token event:(id)event;
+- (void)_xpcPublisherAddToken:(unint64_t)token event:(id)event;
+- (void)_xpcPublisherRemoveToken:(unint64_t)token;
+- (void)_xpcPublisherStateChangedForToken:(unint64_t)token state:(BOOL)state;
+- (void)_xpcPublisherTriggeredReply:(id)reply token:(unint64_t)token responseHandler:(id)handler;
+- (void)_xpcPublisherTriggeredToken:(unint64_t)token payload:(id)payload responseHandler:(id)handler;
 - (void)activate;
 - (void)invalidate;
-- (void)postDaemonInfoChanges:(unint64_t)a3;
+- (void)postDaemonInfoChanges:(unint64_t)changes;
 @end
 
 @implementation RPDaemon
@@ -127,15 +127,15 @@
   dispatch_resume(self->_metricsReportTimer);
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v4 = a3;
+  levelCopy = level;
   v63 = sub_100009D00();
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v62 = self;
+  selfCopy = self;
   v5 = self->_subDaemons;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v97 objects:v105 count:16];
   if (v6)
@@ -178,7 +178,7 @@
 
   v13 = +[RPMetrics sharedMetricsNoCreate];
   v61 = v13;
-  if (v4 <= 0x13 && v13)
+  if (levelCopy <= 0x13 && v13)
   {
     v95 = v8;
     v52 = CUDescriptionWithLevel();
@@ -224,13 +224,13 @@
 
         v18 = *(*(&v89 + 1) + 8 * j);
         v88 = v16;
-        v19 = [v18 xpcCnx];
-        v56 = [v19 processIdentifier];
+        xpcCnx = [v18 xpcCnx];
+        processIdentifier = [xpcCnx processIdentifier];
         NSAppendPrintF();
         v20 = v88;
 
-        v21 = [v18 assertions];
-        if ([v21 count])
+        assertions = [v18 assertions];
+        if ([assertions count])
         {
           v87 = v20;
           NSAppendPrintF();
@@ -240,8 +240,8 @@
           v86 = 0u;
           v83 = 0u;
           v84 = 0u;
-          v67 = v21;
-          v23 = v21;
+          v67 = assertions;
+          v23 = assertions;
           v24 = [v23 countByEnumeratingWithState:&v83 objects:v103 count:16];
           if (v24)
           {
@@ -283,7 +283,7 @@
           NSAppendPrintF();
           v20 = v22;
 
-          v21 = v67;
+          assertions = v67;
         }
 
         v80 = v20;
@@ -297,7 +297,7 @@
     while (v66);
   }
 
-  errorFlags = v62->_errorFlags;
+  errorFlags = selfCopy->_errorFlags;
   if (errorFlags)
   {
     v79 = v16;
@@ -795,8 +795,8 @@ LABEL_51:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v22 + 1) + 8 * j) xpcCnx];
-        [v20 invalidate];
+        xpcCnx = [*(*(&v22 + 1) + 8 * j) xpcCnx];
+        [xpcCnx invalidate];
       }
 
       v17 = [(NSMutableSet *)v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -815,13 +815,13 @@ LABEL_51:
   }
 }
 
-- (BOOL)diagnosticCommand:(id)a3 params:(id)a4
+- (BOOL)diagnosticCommand:(id)command params:(id)params
 {
-  v6 = a4;
+  paramsCopy = params;
   dispatchQueue = self->_dispatchQueue;
-  v8 = a3;
+  commandCopy = command;
   dispatch_assert_queue_V2(dispatchQueue);
-  v9 = [v8 isEqual:@"errorFlags"];
+  v9 = [commandCopy isEqual:@"errorFlags"];
 
   if (v9)
   {
@@ -855,11 +855,11 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v6 = [[RPDaemonXPCConnection alloc] initWithDaemon:self xpcConnection:v5];
+  v6 = [[RPDaemonXPCConnection alloc] initWithDaemon:self xpcConnection:connectionCopy];
   [(RPDaemonXPCConnection *)v6 setDispatchQueue:self->_dispatchQueue];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
@@ -872,25 +872,25 @@ LABEL_7:
   }
 
   [(NSMutableSet *)xpcConnections addObject:v6];
-  [v5 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RPDaemonXPCServerInterface];
-  [v5 setExportedInterface:v10];
+  [connectionCopy setExportedInterface:v10];
 
-  [v5 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100050728;
   v13[3] = &unk_1001AB488;
   v13[4] = self;
   v13[5] = v6;
-  [v5 setInvalidationHandler:v13];
+  [connectionCopy setInvalidationHandler:v13];
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RPDaemonXPCClientInterface];
-  [v5 setRemoteObjectInterface:v11];
+  [connectionCopy setRemoteObjectInterface:v11];
 
-  [v5 resume];
+  [connectionCopy resume];
   if (dword_1001D3730 <= 20 && (dword_1001D3730 != -1 || _LogCategory_Initialize()))
   {
-    sub_100117230(v5);
+    sub_100117230(connectionCopy);
   }
 
   return 1;
@@ -950,7 +950,7 @@ LABEL_7:
   return v7;
 }
 
-- (void)postDaemonInfoChanges:(unint64_t)a3
+- (void)postDaemonInfoChanges:(unint64_t)changes
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -958,7 +958,7 @@ LABEL_7:
   v4[2] = sub_1000509D0;
   v4[3] = &unk_1001AC750;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = changes;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -1016,9 +1016,9 @@ LABEL_7:
   }
 
   v4 = v3 | (4 * [(CUSystemMonitor *)self->_systemMonitor wifiFlags]) & 0x80;
-  v5 = [(CUSystemMonitor *)self->_systemMonitor wifiState];
+  wifiState = [(CUSystemMonitor *)self->_systemMonitor wifiState];
   v6 = v4 | 4;
-  if (v5 != 10)
+  if (wifiState != 10)
   {
     v6 = v4;
   }
@@ -1042,18 +1042,18 @@ LABEL_7:
   }
 }
 
-- (void)_xpcPublisherAction:(unsigned int)a3 token:(unint64_t)a4 event:(id)a5
+- (void)_xpcPublisherAction:(unsigned int)action token:(unint64_t)token event:(id)event
 {
-  v8 = a5;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (a3 != 2)
+  if (action != 2)
   {
-    if (a3 == 1)
+    if (action == 1)
     {
-      [(RPDaemon *)self _xpcPublisherRemoveToken:a4];
+      [(RPDaemon *)self _xpcPublisherRemoveToken:token];
     }
 
-    else if (a3)
+    else if (action)
     {
       if (dword_1001D3730 <= 30 && (dword_1001D3730 != -1 || _LogCategory_Initialize()))
       {
@@ -1063,12 +1063,12 @@ LABEL_7:
 
     else
     {
-      [(RPDaemon *)self _xpcPublisherAddToken:a4 event:v8];
+      [(RPDaemon *)self _xpcPublisherAddToken:token event:eventCopy];
     }
   }
 }
 
-- (void)_xpcPublisherAddToken:(unint64_t)a3 event:(id)a4
+- (void)_xpcPublisherAddToken:(unint64_t)token event:(id)event
 {
   v6 = _CFXPCCreateCFObjectFromXPCObject();
   if (v6)
@@ -1078,7 +1078,7 @@ LABEL_7:
     {
       if (dword_1001D3730 <= 30 && (dword_1001D3730 != -1 || _LogCategory_Initialize()))
       {
-        v13 = a3;
+        tokenCopy = token;
         v14 = v6;
         LogPrintF();
       }
@@ -1110,8 +1110,8 @@ LABEL_7:
               v15[2] = sub_100051128;
               v15[3] = &unk_1001AC778;
               v15[4] = self;
-              v15[5] = a3;
-              if ([v12 addXPCMatchingToken:a3 event:v6 handler:{v15, v13, v14}])
+              v15[5] = token;
+              if ([v12 addXPCMatchingToken:token event:v6 handler:{v15, tokenCopy, v14}])
               {
 
                 goto LABEL_32;
@@ -1155,7 +1155,7 @@ LABEL_30:
 LABEL_32:
 }
 
-- (void)_xpcPublisherRemoveToken:(unint64_t)a3
+- (void)_xpcPublisherRemoveToken:(unint64_t)token
 {
   v9 = 0u;
   v10 = 0u;
@@ -1176,7 +1176,7 @@ LABEL_32:
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v9 + 1) + 8 * i) removeXPCMatchingToken:{a3, v9}])
+        if ([*(*(&v9 + 1) + 8 * i) removeXPCMatchingToken:{token, v9}])
         {
 
           return;
@@ -1199,11 +1199,11 @@ LABEL_32:
   }
 }
 
-- (void)_xpcPublisherTriggeredToken:(unint64_t)a3 payload:(id)a4 responseHandler:(id)a5
+- (void)_xpcPublisherTriggeredToken:(unint64_t)token payload:(id)payload responseHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = objc_retainBlock(v8);
+  payloadCopy = payload;
+  handlerCopy = handler;
+  v9 = objc_retainBlock(handlerCopy);
   v10 = self->_xpcPublisher;
   if (!v10)
   {
@@ -1227,7 +1227,7 @@ LABEL_32:
     goto LABEL_26;
   }
 
-  if (!v7)
+  if (!payloadCopy)
   {
 LABEL_14:
     v11 = 0;
@@ -1259,7 +1259,7 @@ LABEL_15:
 
 LABEL_5:
   dispatchQueue = self->_dispatchQueue;
-  v15 = v8;
+  v15 = handlerCopy;
   v13 = xpc_event_publisher_fire_with_reply();
 
 LABEL_16:
@@ -1279,9 +1279,9 @@ LABEL_16:
 LABEL_26:
 }
 
-- (void)_xpcPublisherTriggeredReply:(id)a3 token:(unint64_t)a4 responseHandler:(id)a5
+- (void)_xpcPublisherTriggeredReply:(id)reply token:(unint64_t)token responseHandler:(id)handler
 {
-  v7 = a3;
+  replyCopy = reply;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -1293,13 +1293,13 @@ LABEL_26:
   v14[2] = sub_1000518A4;
   v14[3] = &unk_1001AC7C8;
   v16 = &v18;
-  v17 = a4;
-  v8 = a5;
-  v15 = v8;
+  tokenCopy = token;
+  handlerCopy = handler;
+  v15 = handlerCopy;
   v9 = objc_retainBlock(v14);
-  if (xpc_get_type(v7) == &_xpc_type_error)
+  if (xpc_get_type(replyCopy) == &_xpc_type_error)
   {
-    xpc_dictionary_get_string(v7, _xpc_error_key_description);
+    xpc_dictionary_get_string(replyCopy, _xpc_error_key_description);
     v11 = RPErrorF();
     v10 = v19[5];
     v19[5] = v11;
@@ -1315,7 +1315,7 @@ LABEL_26:
         LogPrintF();
       }
 
-      (*(v8 + 2))(v8, v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, v10, 0);
     }
 
     else
@@ -1330,9 +1330,9 @@ LABEL_26:
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)_xpcPublisherStateChangedForToken:(unint64_t)a3 state:(BOOL)a4
+- (void)_xpcPublisherStateChangedForToken:(unint64_t)token state:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v5 = self->_xpcPublisher;
   v6 = v5;
   if (v5)
@@ -1354,7 +1354,7 @@ LABEL_26:
     LogPrintF();
 LABEL_17:
     v6 = v10;
-    if (!v4)
+    if (!stateCopy)
     {
       goto LABEL_28;
     }

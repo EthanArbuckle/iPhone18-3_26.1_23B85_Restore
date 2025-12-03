@@ -1,12 +1,12 @@
 @interface _BPSZipManyInner
-- (id)convertValues:(id)a3;
+- (id)convertValues:(id)values;
 @end
 
 @implementation _BPSZipManyInner
 
-- (id)convertValues:(id)a3
+- (id)convertValues:(id)values
 {
-  v3 = [a3 copy];
+  v3 = [values copy];
 
   return v3;
 }

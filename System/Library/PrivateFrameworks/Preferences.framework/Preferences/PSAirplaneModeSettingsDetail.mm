@@ -1,23 +1,23 @@
 @interface PSAirplaneModeSettingsDetail
 + (BOOL)isEnabled;
-+ (void)setEnabled:(BOOL)a3;
++ (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PSAirplaneModeSettingsDetail
 
-+ (void)setEnabled:(BOOL)a3
++ (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_alloc_init(MEMORY[0x1E698B6B0]);
-  [v4 setAirplaneMode:v3];
+  [v4 setAirplaneMode:enabledCopy];
 }
 
 + (BOOL)isEnabled
 {
   v2 = objc_alloc_init(MEMORY[0x1E698B6B0]);
-  v3 = [v2 airplaneMode];
+  airplaneMode = [v2 airplaneMode];
 
-  return v3;
+  return airplaneMode;
 }
 
 @end

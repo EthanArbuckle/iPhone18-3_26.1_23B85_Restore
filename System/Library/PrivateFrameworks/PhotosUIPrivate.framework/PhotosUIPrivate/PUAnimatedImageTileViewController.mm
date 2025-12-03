@@ -2,36 +2,36 @@
 - (id)loadView;
 - (void)_updateAnimatedImageIfNeeded;
 - (void)_updatePlaybackStateIfNeeded;
-- (void)assetViewModelDidChange:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)assetViewModelDidChange:(id)change;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUAnimatedImageTileViewController
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v6 = a4;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = PUAnimatedImageTileViewController;
-  v7 = a3;
-  [(PUImageTileViewController *)&v13 viewModel:v7 didChange:v6];
+  modelCopy = model;
+  [(PUImageTileViewController *)&v13 viewModel:modelCopy didChange:changeCopy];
   v8 = [(PUImageTileViewController *)self assetViewModel:v13.receiver];
 
-  if (v8 == v7)
+  if (v8 == modelCopy)
   {
-    if ([v6 focusValueChanged])
+    if ([changeCopy focusValueChanged])
     {
       [(PUAnimatedImageTileViewController *)self _invalidatePlaybackState];
     }
 
-    v9 = [v6 animatedImageChange];
-    if (v9)
+    animatedImageChange = [changeCopy animatedImageChange];
+    if (animatedImageChange)
     {
-      v10 = v9;
-      v11 = [v6 animatedImageChange];
-      v12 = [v11 animatedImageDidChange];
+      v10 = animatedImageChange;
+      animatedImageChange2 = [changeCopy animatedImageChange];
+      animatedImageDidChange = [animatedImageChange2 animatedImageDidChange];
 
-      if (v12)
+      if (animatedImageDidChange)
       {
         [(PUAnimatedImageTileViewController *)self _invalidatePlaybackState];
         [(PUAnimatedImageTileViewController *)self _invalidateAnimatedImage];
@@ -48,12 +48,12 @@
   if (!self->_isValid.animatedImage)
   {
     self->_isValid.animatedImage = 1;
-    v4 = [(PUImageTileViewController *)self assetViewModel];
-    v5 = [v4 animatedImagePlayer];
-    v7 = [v5 animatedImage];
+    assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+    animatedImagePlayer = [assetViewModel animatedImagePlayer];
+    animatedImage = [animatedImagePlayer animatedImage];
 
-    v6 = [v7 pf_animatedImage];
-    [(ISAnimatedImageView *)self->_animatedImageView setImage:v6];
+    pf_animatedImage = [animatedImage pf_animatedImage];
+    [(ISAnimatedImageView *)self->_animatedImageView setImage:pf_animatedImage];
   }
 }
 
@@ -65,17 +65,17 @@
   }
 
   self->_isValid.playbackState = 1;
-  v4 = [(PUImageTileViewController *)self assetViewModel];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
 
-  if (!v4)
+  if (!assetViewModel)
   {
     v8 = 0;
     self->_interactionState = 0;
     goto LABEL_23;
   }
 
-  v5 = [(PUImageTileViewController *)self assetViewModel];
-  [v5 focusValue];
+  assetViewModel2 = [(PUImageTileViewController *)self assetViewModel];
+  [assetViewModel2 focusValue];
   v7 = v6;
 
   v8 = 0;
@@ -173,11 +173,11 @@ LABEL_23:
   [(ISAnimatedImageView *)animatedImageView setPlaying:v8];
 }
 
-- (void)assetViewModelDidChange:(id)a3
+- (void)assetViewModelDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PUAnimatedImageTileViewController;
-  [(PUImageTileViewController *)&v4 assetViewModelDidChange:a3];
+  [(PUImageTileViewController *)&v4 assetViewModelDidChange:change];
   [(PUAnimatedImageTileViewController *)self _invalidatePlaybackState];
   [(PUAnimatedImageTileViewController *)self _invalidateAnimatedImage];
   [(PUAnimatedImageTileViewController *)self _updateAnimatedImageIfNeeded];
@@ -188,37 +188,37 @@ LABEL_23:
 {
   v17.receiver = self;
   v17.super_class = PUAnimatedImageTileViewController;
-  v3 = [(PUImageTileViewController *)&v17 loadView];
+  loadView = [(PUImageTileViewController *)&v17 loadView];
   v4 = [objc_alloc(MEMORY[0x1E69C1AE0]) initWithAnimatedImage:0];
   animatedImageView = self->_animatedImageView;
   self->_animatedImageView = v4;
 
   [(ISAnimatedImageView *)self->_animatedImageView setContentMode:2];
   v6 = +[PUOneUpSettings sharedInstance];
-  v7 = [v6 showGIFLoadingDelays];
+  showGIFLoadingDelays = [v6 showGIFLoadingDelays];
 
   v8 = self->_animatedImageView;
-  if (v7)
+  if (showGIFLoadingDelays)
   {
-    v9 = [MEMORY[0x1E69DC888] blueColor];
-    [(ISAnimatedImageView *)v8 setBackgroundColor:v9];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
+    [(ISAnimatedImageView *)v8 setBackgroundColor:blueColor];
   }
 
   else
   {
-    [(ISAnimatedImageView *)self->_animatedImageView setPlaceholderImageView:v3];
+    [(ISAnimatedImageView *)self->_animatedImageView setPlaceholderImageView:loadView];
   }
 
   v10 = +[PUOneUpSettings sharedInstance];
-  v11 = [v10 useDebuggingColors];
+  useDebuggingColors = [v10 useDebuggingColors];
 
-  if (v11)
+  if (useDebuggingColors)
   {
-    v12 = [(ISAnimatedImageView *)self->_animatedImageView layer];
+    layer = [(ISAnimatedImageView *)self->_animatedImageView layer];
     v13 = [MEMORY[0x1E69DC888] colorWithRed:0.258823544 green:0.956862748 blue:0.56078434 alpha:1.0];
-    [v12 setBorderColor:{objc_msgSend(v13, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v13, "CGColor")}];
 
-    [v12 setBorderWidth:2.0];
+    [layer setBorderWidth:2.0];
   }
 
   v14 = self->_animatedImageView;

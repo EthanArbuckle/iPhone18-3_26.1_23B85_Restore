@@ -1,29 +1,29 @@
 @interface DDSMobileAssetv2Provider
-+ (id)latestAssetsOnlyFromAssets:(id)a3;
-+ (id)latestBetweenAssetA:(id)a3 AssetB:(id)a4;
++ (id)latestAssetsOnlyFromAssets:(id)assets;
++ (id)latestBetweenAssetA:(id)a AssetB:(id)b;
 + (id)platformVersion;
 + (void)platformVersion;
-- (BOOL)shouldMatchAttributeValue:(id)a3 givenValue:(id)a4;
+- (BOOL)shouldMatchAttributeValue:(id)value givenValue:(id)givenValue;
 - (DDSMobileAssetv2Provider)init;
-- (DDSMobileAssetv2Provider)initWithDataSource:(id)a3;
-- (id)allContentItemsMatchingQuery:(id)a3 error:(id *)a4;
-- (id)assetsForQuery:(id)a3 errorPtr:(id *)a4;
-- (id)assetsInCatalogForQuery:(id)a3 errorPtr:(id *)a4;
-- (id)contentItemsFromAssets:(id)a3 matchingFilter:(id)a4;
-- (id)updatableAssetsForAssertion:(id)a3;
-- (int64_t)compatabilityVersionForAssetType:(id)a3;
-- (void)beginDownloadForAssertions:(id)a3 discretionaryDownload:(BOOL)a4;
-- (void)beginDownloadForAssets:(id)a3 withPolicy:(id)a4 discretionaryDownload:(BOOL)a5 error:(id *)a6 handler:(id)a7;
-- (void)didChangeDownloadState:(unint64_t)a3 forAsset:(id)a4;
-- (void)didCompleteDownloadForAssertion:(id)a3 error:(id)a4;
-- (void)didUpdateCatalogWithAssetType:(id)a3 error:(id)a4;
-- (void)removeAssets:(id)a3;
-- (void)removeAssetsForAssertions:(id)a3;
-- (void)removeOldAssetsForAssertions:(id)a3;
-- (void)serverDidUpdateAssetsWithType:(id)a3;
-- (void)setCompatabilityVersion:(int64_t)a3 forAssetType:(id)a4;
-- (void)startCatalogDownloadForAssetType:(id)a3 withDownloadOptions:(id)a4 withCompletion:(id)a5;
-- (void)startDownloadForAsset:(id)a3 withOptions:(id)a4 progress:(id)a5 handler:(id)a6;
+- (DDSMobileAssetv2Provider)initWithDataSource:(id)source;
+- (id)allContentItemsMatchingQuery:(id)query error:(id *)error;
+- (id)assetsForQuery:(id)query errorPtr:(id *)ptr;
+- (id)assetsInCatalogForQuery:(id)query errorPtr:(id *)ptr;
+- (id)contentItemsFromAssets:(id)assets matchingFilter:(id)filter;
+- (id)updatableAssetsForAssertion:(id)assertion;
+- (int64_t)compatabilityVersionForAssetType:(id)type;
+- (void)beginDownloadForAssertions:(id)assertions discretionaryDownload:(BOOL)download;
+- (void)beginDownloadForAssets:(id)assets withPolicy:(id)policy discretionaryDownload:(BOOL)download error:(id *)error handler:(id)handler;
+- (void)didChangeDownloadState:(unint64_t)state forAsset:(id)asset;
+- (void)didCompleteDownloadForAssertion:(id)assertion error:(id)error;
+- (void)didUpdateCatalogWithAssetType:(id)type error:(id)error;
+- (void)removeAssets:(id)assets;
+- (void)removeAssetsForAssertions:(id)assertions;
+- (void)removeOldAssetsForAssertions:(id)assertions;
+- (void)serverDidUpdateAssetsWithType:(id)type;
+- (void)setCompatabilityVersion:(int64_t)version forAssetType:(id)type;
+- (void)startCatalogDownloadForAssetType:(id)type withDownloadOptions:(id)options withCompletion:(id)completion;
+- (void)startDownloadForAsset:(id)asset withOptions:(id)options progress:(id)progress handler:(id)handler;
 @end
 
 @implementation DDSMobileAssetv2Provider
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (DDSMobileAssetv2Provider)initWithDataSource:(id)a3
+- (DDSMobileAssetv2Provider)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = DDSMobileAssetv2Provider;
   v6 = [(DDSMobileAssetv2Provider *)&v14 init];
@@ -48,48 +48,48 @@
     assetQueryResultsCache = v6->_assetQueryResultsCache;
     v6->_assetQueryResultsCache = v7;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     downloadStateByAssetID = v6->_downloadStateByAssetID;
-    v6->_downloadStateByAssetID = v9;
+    v6->_downloadStateByAssetID = dictionary;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     compatibilityVersionByAssetType = v6->_compatibilityVersionByAssetType;
-    v6->_compatibilityVersionByAssetType = v11;
+    v6->_compatibilityVersionByAssetType = dictionary2;
 
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v6;
 }
 
-- (int64_t)compatabilityVersionForAssetType:(id)a3
+- (int64_t)compatabilityVersionForAssetType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.MobileAsset.LinguisticData"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"com.apple.MobileAsset.LinguisticData"])
   {
-    v5 = [(DDSMobileAssetv2Provider *)self dataSource];
-    v6 = [v5 linguisticAssetCompatabilityVersion];
+    dataSource = [(DDSMobileAssetv2Provider *)self dataSource];
+    linguisticAssetCompatabilityVersion = [dataSource linguisticAssetCompatabilityVersion];
 LABEL_7:
-    v8 = v6;
+    v8 = linguisticAssetCompatabilityVersion;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"com.apple.MobileAsset.MecabraDictionaryRapidUpdates"])
+  if ([typeCopy isEqualToString:@"com.apple.MobileAsset.MecabraDictionaryRapidUpdates"])
   {
-    v5 = [(DDSMobileAssetv2Provider *)self dataSource];
-    v6 = [v5 mecabraDictionaryRapidUpdatesAssetCompatabilityVersion];
+    dataSource = [(DDSMobileAssetv2Provider *)self dataSource];
+    linguisticAssetCompatabilityVersion = [dataSource mecabraDictionaryRapidUpdatesAssetCompatabilityVersion];
     goto LABEL_7;
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(DDSMobileAssetv2Provider *)self compatibilityVersionByAssetType];
-  v5 = [v7 objectForKey:v4];
+  compatibilityVersionByAssetType = [(DDSMobileAssetv2Provider *)self compatibilityVersionByAssetType];
+  dataSource = [compatibilityVersionByAssetType objectForKey:typeCopy];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v5)
+  if (dataSource)
   {
-    v6 = [v5 integerValue];
+    linguisticAssetCompatabilityVersion = [dataSource integerValue];
     goto LABEL_7;
   }
 
@@ -105,29 +105,29 @@ LABEL_8:
   return v8;
 }
 
-- (void)setCompatabilityVersion:(int64_t)a3 forAssetType:(id)a4
+- (void)setCompatabilityVersion:(int64_t)version forAssetType:(id)type
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v9 = [v6 numberWithInteger:a3];
+  typeCopy = type;
+  v9 = [v6 numberWithInteger:version];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(DDSMobileAssetv2Provider *)self compatibilityVersionByAssetType];
-  [v8 setObject:v9 forKeyedSubscript:v7];
+  compatibilityVersionByAssetType = [(DDSMobileAssetv2Provider *)self compatibilityVersionByAssetType];
+  [compatibilityVersionByAssetType setObject:v9 forKeyedSubscript:typeCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)contentItemsFromAssets:(id)a3 matchingFilter:(id)a4
+- (id)contentItemsFromAssets:(id)assets matchingFilter:(id)filter
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  filterCopy = filter;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v5;
+  obj = assetsCopy;
   v8 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -143,10 +143,10 @@ LABEL_8:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 attributes];
-        v14 = [v13 objectForKeyedSubscript:@"Contents"];
-        v15 = [v6 filters];
-        v16 = [DDSContentItemMatcher assetContentItemsMatching:v15 contentItems:v14 parentAsset:v12];
+        attributes = [v12 attributes];
+        v14 = [attributes objectForKeyedSubscript:@"Contents"];
+        filters = [filterCopy filters];
+        v16 = [DDSContentItemMatcher assetContentItemsMatching:filters contentItems:v14 parentAsset:v12];
 
         [v7 addObjectsFromArray:v16];
       }
@@ -162,15 +162,15 @@ LABEL_8:
   return v7;
 }
 
-- (id)allContentItemsMatchingQuery:(id)a3 error:(id *)a4
+- (id)allContentItemsMatchingQuery:(id)query error:(id *)error
 {
-  v6 = [(DDSMobileAssetv2Provider *)self assetsForQuery:a3 errorPtr:?];
-  if (*a4)
+  v6 = [(DDSMobileAssetv2Provider *)self assetsForQuery:query errorPtr:?];
+  if (*error)
   {
     v7 = QueryLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(DDSMobileAssetv2Provider *)a4 allContentItemsMatchingQuery:v7 error:v8, v9, v10, v11, v12, v13];
+      [(DDSMobileAssetv2Provider *)error allContentItemsMatchingQuery:v7 error:v8, v9, v10, v11, v12, v13];
     }
 
     v14 = MEMORY[0x1E695E0F0];
@@ -184,28 +184,28 @@ LABEL_8:
   return v14;
 }
 
-- (id)assetsForQuery:(id)a3 errorPtr:(id *)a4
+- (id)assetsForQuery:(id)query errorPtr:(id *)ptr
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(DDSMobileAssetv2Provider *)self assetQueryResultsCache];
-  v8 = [v7 cachedAssetsForQuery:v6];
+  queryCopy = query;
+  assetQueryResultsCache = [(DDSMobileAssetv2Provider *)self assetQueryResultsCache];
+  v8 = [assetQueryResultsCache cachedAssetsForQuery:queryCopy];
 
   if (v8)
   {
     v9 = v8;
   }
 
-  else if ([v6 cachedOnly])
+  else if ([queryCopy cachedOnly])
   {
     v9 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v9 = [(DDSMobileAssetv2Provider *)self assetsInCatalogForQuery:v6 errorPtr:a4];
-    v10 = [(DDSMobileAssetv2Provider *)self assetQueryResultsCache];
-    [v10 cacheAssets:v9 forQuery:v6];
+    v9 = [(DDSMobileAssetv2Provider *)self assetsInCatalogForQuery:queryCopy errorPtr:ptr];
+    assetQueryResultsCache2 = [(DDSMobileAssetv2Provider *)self assetQueryResultsCache];
+    [assetQueryResultsCache2 cacheAssets:v9 forQuery:queryCopy];
   }
 
   v11 = QueryLog();
@@ -213,13 +213,13 @@ LABEL_8:
   {
     v12 = [DDSAsset debuggingIDsForAssets:v9];
     v15 = 138544130;
-    v16 = v6;
+    v16 = queryCopy;
     v17 = 2114;
     v18 = v12;
     v19 = 1024;
     v20 = v8 != 0;
     v21 = 1024;
-    v22 = [v6 cachedOnly];
+    cachedOnly = [queryCopy cachedOnly];
     _os_log_impl(&dword_1DF7C6000, v11, OS_LOG_TYPE_DEFAULT, "assetsForQuery: %{public}@ final result: %{public}@ was cached: %d, cachedOnly: %d", &v15, 0x22u);
   }
 
@@ -228,16 +228,16 @@ LABEL_8:
   return v9;
 }
 
-- (id)assetsInCatalogForQuery:(id)a3 errorPtr:(id *)a4
+- (id)assetsInCatalogForQuery:(id)query errorPtr:(id *)ptr
 {
   v70 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(DDSMobileAssetv2Provider *)self dataSource];
-  v7 = [v5 assetType];
-  v8 = [(DDSMobileAssetv2Provider *)self compatabilityVersionForAssetType:v7];
-  v54 = self;
-  v9 = [objc_opt_class() platformVersion];
-  v10 = [v6 maAssetQueryForDDSAssetQuery:v5 compatabilityVersion:v8 platformVersion:v9 internalInstall:DDS_IS_INTERNAL_INSTALL()];
+  queryCopy = query;
+  dataSource = [(DDSMobileAssetv2Provider *)self dataSource];
+  assetType = [queryCopy assetType];
+  v8 = [(DDSMobileAssetv2Provider *)self compatabilityVersionForAssetType:assetType];
+  selfCopy = self;
+  platformVersion = [objc_opt_class() platformVersion];
+  v10 = [dataSource maAssetQueryForDDSAssetQuery:queryCopy compatabilityVersion:v8 platformVersion:platformVersion internalInstall:DDS_IS_INTERNAL_INSTALL()];
 
   [v10 returnTypes:2];
   v44 = v10;
@@ -256,10 +256,10 @@ LABEL_8:
     [DDSMobileAssetv2Provider assetsInCatalogForQuery:errorPtr:];
   }
 
-  v13 = [v5 filter];
-  v14 = [v13 filters];
-  v15 = [v14 objectForKeyedSubscript:?];
-  v16 = [v15 allObjects];
+  filter = [queryCopy filter];
+  filters = [filter filters];
+  v15 = [filters objectForKeyedSubscript:?];
+  allObjects = [v15 allObjects];
 
   v17 = QueryLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -277,8 +277,8 @@ LABEL_8:
   if (v50)
   {
     v19 = *v61;
-    v47 = v16;
-    v48 = v5;
+    v47 = allObjects;
+    v48 = queryCopy;
     v45 = *v61;
     v46 = v18;
     do
@@ -291,7 +291,7 @@ LABEL_8:
         }
 
         v21 = *(*(&v60 + 1) + 8 * i);
-        if (v16)
+        if (allObjects)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -301,14 +301,14 @@ LABEL_8:
 
           v51 = v21;
           v52 = i;
-          v22 = [v21 attributes];
-          v23 = [v22 objectForKeyedSubscript:@"AssetRegion"];
+          attributes = [v21 attributes];
+          v23 = [attributes objectForKeyedSubscript:@"AssetRegion"];
 
           v58 = 0u;
           v59 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v53 = v16;
+          v53 = allObjects;
           v24 = [v53 countByEnumeratingWithState:&v56 objects:v68 count:16];
           if (v24)
           {
@@ -333,15 +333,15 @@ LABEL_8:
 
                 v29 = [v28 objectForKeyedSubscript:@"Country"];
                 v30 = [v23 objectForKeyedSubscript:@"Country"];
-                v31 = [(DDSMobileAssetv2Provider *)v54 shouldMatchAttributeValue:v29 givenValue:v30];
+                v31 = [(DDSMobileAssetv2Provider *)selfCopy shouldMatchAttributeValue:v29 givenValue:v30];
 
                 v32 = [v28 objectForKeyedSubscript:@"Province"];
                 v33 = [v23 objectForKeyedSubscript:@"Province"];
-                v34 = [(DDSMobileAssetv2Provider *)v54 shouldMatchAttributeValue:v32 givenValue:v33];
+                v34 = [(DDSMobileAssetv2Provider *)selfCopy shouldMatchAttributeValue:v32 givenValue:v33];
 
                 v35 = [v28 objectForKeyedSubscript:@"City"];
                 v36 = [v23 objectForKeyedSubscript:@"City"];
-                v37 = [(DDSMobileAssetv2Provider *)v54 shouldMatchAttributeValue:v35 givenValue:v36];
+                v37 = [(DDSMobileAssetv2Provider *)selfCopy shouldMatchAttributeValue:v35 givenValue:v36];
 
                 if (!v26 && v31)
                 {
@@ -370,11 +370,11 @@ LABEL_8:
             v26 = 0;
           }
 
-          v5 = v48;
+          queryCopy = v48;
           if (([v48 installedOnly] & 1) == 0)
           {
             v18 = v46;
-            v16 = v47;
+            allObjects = v47;
             v19 = v45;
             v21 = v51;
             i = v52;
@@ -391,7 +391,7 @@ LABEL_38:
           }
 
           v18 = v46;
-          v16 = v47;
+          allObjects = v47;
           v19 = v45;
           v21 = v51;
           i = v52;
@@ -401,7 +401,7 @@ LABEL_38:
           }
         }
 
-        else if (([v5 installedOnly] & 1) == 0)
+        else if (([queryCopy installedOnly] & 1) == 0)
         {
           goto LABEL_38;
         }
@@ -418,7 +418,7 @@ LABEL_38:
     while (v50);
   }
 
-  if ([v5 latestOnly])
+  if ([queryCopy latestOnly])
   {
     v40 = [objc_opt_class() latestAssetsOnlyFromAssets:v18];
   }
@@ -435,25 +435,25 @@ LABEL_38:
   return v41;
 }
 
-- (BOOL)shouldMatchAttributeValue:(id)a3 givenValue:(id)a4
+- (BOOL)shouldMatchAttributeValue:(id)value givenValue:(id)givenValue
 {
-  v5 = a3;
-  v6 = DDSObjectsAreEqualOrNil(v5, a4);
-  v7 = [v5 isEqualToString:&stru_1F5ABCB80];
+  valueCopy = value;
+  v6 = DDSObjectsAreEqualOrNil(valueCopy, givenValue);
+  v7 = [valueCopy isEqualToString:&stru_1F5ABCB80];
 
-  return (a4 == 0) & ((v5 != 0) | v7) | v6 & 1;
+  return (givenValue == 0) & ((valueCopy != 0) | v7) | v6 & 1;
 }
 
-- (void)beginDownloadForAssertions:(id)a3 discretionaryDownload:(BOOL)a4
+- (void)beginDownloadForAssertions:(id)assertions discretionaryDownload:(BOOL)download
 {
-  v17 = a4;
+  downloadCopy = download;
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assertionsCopy = assertions;
   v6 = DefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v5 count];
+    *(&buf + 4) = [assertionsCopy count];
     _os_log_impl(&dword_1DF7C6000, v6, OS_LOG_TYPE_DEFAULT, "Begin download for %lu assertions", &buf, 0xCu);
   }
 
@@ -467,7 +467,7 @@ LABEL_38:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v5;
+  v7 = assertionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v8)
   {
@@ -500,8 +500,8 @@ LABEL_38:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [v7 allObjects];
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  allObjects = [v7 allObjects];
+  v12 = [allObjects countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v12)
   {
     v13 = *v23;
@@ -512,7 +512,7 @@ LABEL_38:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
         v15 = *(*(&v22 + 1) + 8 * v14);
@@ -524,13 +524,13 @@ LABEL_38:
         p_buf = &buf;
         v21 = v26;
         v19 = v7;
-        [(DDSMobileAssetv2Provider *)self beginDownloadForAssertion:v15 discretionaryDownload:v17 handler:v18];
+        [(DDSMobileAssetv2Provider *)self beginDownloadForAssertion:v15 discretionaryDownload:downloadCopy handler:v18];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v11 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v22 objects:v32 count:16];
     }
 
     while (v12);
@@ -668,26 +668,26 @@ LABEL_12:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startDownloadForAsset:(id)a3 withOptions:(id)a4 progress:(id)a5 handler:(id)a6
+- (void)startDownloadForAsset:(id)asset withOptions:(id)options progress:(id)progress handler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = [a3 maAsset];
+  progressCopy = progress;
+  handlerCopy = handler;
+  optionsCopy = options;
+  maAsset = [asset maAsset];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __79__DDSMobileAssetv2Provider_startDownloadForAsset_withOptions_progress_handler___block_invoke;
   v17[3] = &unk_1E86C63E8;
-  v18 = v9;
-  v13 = v9;
-  [v12 attachProgressCallBack:v17];
+  v18 = progressCopy;
+  v13 = progressCopy;
+  [maAsset attachProgressCallBack:v17];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__DDSMobileAssetv2Provider_startDownloadForAsset_withOptions_progress_handler___block_invoke_2;
   v15[3] = &unk_1E86C6410;
-  v16 = v10;
-  v14 = v10;
-  [v12 startDownload:v11 then:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [maAsset startDownload:optionsCopy then:v15];
 }
 
 uint64_t __79__DDSMobileAssetv2Provider_startDownloadForAsset_withOptions_progress_handler___block_invoke(uint64_t a1)
@@ -712,18 +712,18 @@ uint64_t __79__DDSMobileAssetv2Provider_startDownloadForAsset_withOptions_progre
   return result;
 }
 
-- (void)beginDownloadForAssets:(id)a3 withPolicy:(id)a4 discretionaryDownload:(BOOL)a5 error:(id *)a6 handler:(id)a7
+- (void)beginDownloadForAssets:(id)assets withPolicy:(id)policy discretionaryDownload:(BOOL)download error:(id *)error handler:(id)handler
 {
-  v20 = a5;
+  downloadCopy = download;
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  assetsCopy = assets;
+  policyCopy = policy;
+  handlerCopy = handler;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v13 = [assetsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -734,11 +734,11 @@ uint64_t __79__DDSMobileAssetv2Provider_startDownloadForAsset_withOptions_progre
       {
         if (*v25 != v15)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [(DDSMobileAssetv2Provider *)self downloadOptionsForPolicy:v11 discretionaryDownload:v20];
+        v18 = [(DDSMobileAssetv2Provider *)self downloadOptionsForPolicy:policyCopy discretionaryDownload:downloadCopy];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __98__DDSMobileAssetv2Provider_beginDownloadForAssets_withPolicy_discretionaryDownload_error_handler___block_invoke;
@@ -751,12 +751,12 @@ uint64_t __79__DDSMobileAssetv2Provider_startDownloadForAsset_withOptions_progre
         v21[3] = &unk_1E86C6460;
         v21[4] = v17;
         v21[5] = self;
-        v22 = v12;
+        v22 = handlerCopy;
         [(DDSMobileAssetv2Provider *)self startDownloadForAsset:v17 withOptions:v18 progress:v23 handler:v21];
         [(DDSMobileAssetv2Provider *)self didChangeDownloadState:1 forAsset:v17];
       }
 
-      v14 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v14 = [assetsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v14);
@@ -839,17 +839,17 @@ LABEL_12:
   return result;
 }
 
-- (void)startCatalogDownloadForAssetType:(id)a3 withDownloadOptions:(id)a4 withCompletion:(id)a5
+- (void)startCatalogDownloadForAssetType:(id)type withDownloadOptions:(id)options withCompletion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E69B18D8];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __96__DDSMobileAssetv2Provider_startCatalogDownloadForAssetType_withDownloadOptions_withCompletion___block_invoke;
   v10[3] = &unk_1E86C6410;
-  v11 = v7;
-  v9 = v7;
-  [v8 startCatalogDownload:a3 options:a4 then:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 startCatalogDownload:type options:options then:v10];
 }
 
 uint64_t __96__DDSMobileAssetv2Provider_startCatalogDownloadForAssetType_withDownloadOptions_withCompletion___block_invoke(uint64_t a1)
@@ -914,16 +914,16 @@ void __91__DDSMobileAssetv2Provider_updateCatalogForAssetType_discretionaryDownl
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)latestAssetsOnlyFromAssets:(id)a3
++ (id)latestAssetsOnlyFromAssets:(id)assets
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -939,19 +939,19 @@ void __91__DDSMobileAssetv2Provider_updateCatalogForAssetType_discretionaryDownl
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 uniqueIdentifier];
-        v12 = [v4 objectForKeyedSubscript:v11];
+        uniqueIdentifier = [v10 uniqueIdentifier];
+        v12 = [v4 objectForKeyedSubscript:uniqueIdentifier];
 
         if (v12)
         {
-          v13 = [v4 objectForKeyedSubscript:v11];
+          v13 = [v4 objectForKeyedSubscript:uniqueIdentifier];
           v14 = [objc_opt_class() latestBetweenAssetA:v13 AssetB:v10];
-          [v4 setObject:v14 forKeyedSubscript:v11];
+          [v4 setObject:v14 forKeyedSubscript:uniqueIdentifier];
         }
 
         else
         {
-          [v4 setObject:v10 forKeyedSubscript:v11];
+          [v4 setObject:v10 forKeyedSubscript:uniqueIdentifier];
         }
       }
 
@@ -961,45 +961,45 @@ void __91__DDSMobileAssetv2Provider_updateCatalogForAssetType_discretionaryDownl
     while (v7);
   }
 
-  v15 = [v4 allValues];
+  allValues = [v4 allValues];
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return allValues;
 }
 
-+ (id)latestBetweenAssetA:(id)a3 AssetB:(id)a4
++ (id)latestBetweenAssetA:(id)a AssetB:(id)b
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 compatibilityVersion];
-  v8 = [v6 compatibilityVersion];
-  v9 = v5;
-  if (v7 <= v8)
+  aCopy = a;
+  bCopy = b;
+  compatibilityVersion = [aCopy compatibilityVersion];
+  compatibilityVersion2 = [bCopy compatibilityVersion];
+  v9 = aCopy;
+  if (compatibilityVersion <= compatibilityVersion2)
   {
-    v9 = v6;
-    if (v8 <= v7)
+    v9 = bCopy;
+    if (compatibilityVersion2 <= compatibilityVersion)
     {
-      v10 = [v5 contentVersion];
-      v11 = [v6 contentVersion];
-      if (v11 <= v10)
+      contentVersion = [aCopy contentVersion];
+      contentVersion2 = [bCopy contentVersion];
+      if (contentVersion2 <= contentVersion)
       {
-        v12 = v5;
+        v12 = aCopy;
       }
 
       else
       {
-        v12 = v6;
+        v12 = bCopy;
       }
 
-      if (v10 <= v11)
+      if (contentVersion <= contentVersion2)
       {
         v9 = v12;
       }
 
       else
       {
-        v9 = v5;
+        v9 = aCopy;
       }
     }
   }
@@ -1009,14 +1009,14 @@ void __91__DDSMobileAssetv2Provider_updateCatalogForAssetType_discretionaryDownl
   return v9;
 }
 
-- (void)removeAssetsForAssertions:(id)a3
+- (void)removeAssetsForAssertions:(id)assertions
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__DDSMobileAssetv2Provider_removeAssetsForAssertions___block_invoke;
   v3[3] = &unk_1E86C6488;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [assertions enumerateObjectsUsingBlock:v3];
 }
 
 void __54__DDSMobileAssetv2Provider_removeAssetsForAssertions___block_invoke(uint64_t a1, void *a2)
@@ -1046,15 +1046,15 @@ void __54__DDSMobileAssetv2Provider_removeAssetsForAssertions___block_invoke(uin
   }
 }
 
-- (void)removeOldAssetsForAssertions:(id)a3
+- (void)removeOldAssetsForAssertions:(id)assertions
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionsCopy = assertions;
   v5 = UpdateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = v4;
+    v9 = assertionsCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Removing old assets for assertions: %{public}@", buf, 0xCu);
   }
 
@@ -1063,7 +1063,7 @@ void __54__DDSMobileAssetv2Provider_removeAssetsForAssertions___block_invoke(uin
   v7[2] = __57__DDSMobileAssetv2Provider_removeOldAssetsForAssertions___block_invoke;
   v7[3] = &unk_1E86C6488;
   v7[4] = self;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [assertionsCopy enumerateObjectsUsingBlock:v7];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -1114,14 +1114,14 @@ void __57__DDSMobileAssetv2Provider_removeOldAssetsForAssertions___block_invoke(
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAssets:(id)a3
+- (void)removeAssets:(id)assets
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = UpdateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [DDSAsset debuggingIDsForAssets:v3];
+    v5 = [DDSAsset debuggingIDsForAssets:assetsCopy];
     *buf = 138543362;
     v21 = v5;
     _os_log_impl(&dword_1DF7C6000, v4, OS_LOG_TYPE_DEFAULT, "Removing assets: %{public}@", buf, 0xCu);
@@ -1131,7 +1131,7 @@ void __57__DDSMobileAssetv2Provider_removeOldAssetsForAssertions___block_invoke(
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v3;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1147,13 +1147,13 @@ void __57__DDSMobileAssetv2Provider_removeOldAssetsForAssertions___block_invoke(
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 maAsset];
+        maAsset = [v11 maAsset];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __41__DDSMobileAssetv2Provider_removeAssets___block_invoke;
         v14[3] = &unk_1E86C64B0;
         v14[4] = v11;
-        [v12 purge:v14];
+        [maAsset purge:v14];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1189,79 +1189,79 @@ void __41__DDSMobileAssetv2Provider_removeAssets___block_invoke(uint64_t a1, uin
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serverDidUpdateAssetsWithType:(id)a3
+- (void)serverDidUpdateAssetsWithType:(id)type
 {
-  v4 = a3;
-  v5 = [(DDSMobileAssetv2Provider *)self assetQueryResultsCache];
-  [v5 clearCacheForAssetType:v4];
+  typeCopy = type;
+  assetQueryResultsCache = [(DDSMobileAssetv2Provider *)self assetQueryResultsCache];
+  [assetQueryResultsCache clearCacheForAssetType:typeCopy];
 }
 
-- (void)didChangeDownloadState:(unint64_t)a3 forAsset:(id)a4
+- (void)didChangeDownloadState:(unint64_t)state forAsset:(id)asset
 {
-  v16 = a4;
-  v6 = [(DDSMobileAssetv2Provider *)self downloadStateByAssetID];
-  v7 = [v16 uniqueIdentifier];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 unsignedIntegerValue];
+  assetCopy = asset;
+  downloadStateByAssetID = [(DDSMobileAssetv2Provider *)self downloadStateByAssetID];
+  uniqueIdentifier = [assetCopy uniqueIdentifier];
+  v8 = [downloadStateByAssetID objectForKeyedSubscript:uniqueIdentifier];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  if (v9 != a3)
+  if (unsignedIntegerValue != state)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v11 = [(DDSMobileAssetv2Provider *)self downloadStateByAssetID];
-    v12 = [v16 uniqueIdentifier];
-    [v11 setObject:v10 forKeyedSubscript:v12];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+    downloadStateByAssetID2 = [(DDSMobileAssetv2Provider *)self downloadStateByAssetID];
+    uniqueIdentifier2 = [assetCopy uniqueIdentifier];
+    [downloadStateByAssetID2 setObject:v10 forKeyedSubscript:uniqueIdentifier2];
 
-    if (a3 - 9 <= 2)
+    if (state - 9 <= 2)
     {
-      v13 = [(DDSMobileAssetv2Provider *)self downloadStateByAssetID];
-      v14 = [v16 uniqueIdentifier];
-      [v13 removeObjectForKey:v14];
+      downloadStateByAssetID3 = [(DDSMobileAssetv2Provider *)self downloadStateByAssetID];
+      uniqueIdentifier3 = [assetCopy uniqueIdentifier];
+      [downloadStateByAssetID3 removeObjectForKey:uniqueIdentifier3];
     }
 
-    v15 = [(DDSMobileAssetv2Provider *)self delegate];
-    [v15 didChangeDownloadState:a3 forAsset:v16];
+    delegate = [(DDSMobileAssetv2Provider *)self delegate];
+    [delegate didChangeDownloadState:state forAsset:assetCopy];
   }
 }
 
-- (void)didCompleteDownloadForAssertion:(id)a3 error:(id)a4
+- (void)didCompleteDownloadForAssertion:(id)assertion error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  errorCopy = error;
   v8 = DefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [DDSMobileAssetv2Provider didCompleteDownloadForAssertion:error:];
   }
 
-  v9 = [(DDSMobileAssetv2Provider *)self delegate];
-  [v9 didCompleteDownloadForAssertion:v6 error:v7];
+  delegate = [(DDSMobileAssetv2Provider *)self delegate];
+  [delegate didCompleteDownloadForAssertion:assertionCopy error:errorCopy];
 }
 
-- (void)didUpdateCatalogWithAssetType:(id)a3 error:(id)a4
+- (void)didUpdateCatalogWithAssetType:(id)type error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  errorCopy = error;
   v8 = DefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [DDSMobileAssetv2Provider didUpdateCatalogWithAssetType:error:];
   }
 
-  v9 = [(DDSMobileAssetv2Provider *)self delegate];
-  [v9 didUpdateCatalogWithAssetType:v6 error:v7];
+  delegate = [(DDSMobileAssetv2Provider *)self delegate];
+  [delegate didUpdateCatalogWithAssetType:typeCopy error:errorCopy];
 }
 
 + (id)platformVersion
 {
   v2 = MGCopyAnswer();
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
   if (v2)
   {
     CFRelease(v2);
   }
 
-  v4 = v3 - 1;
-  if (v3 - 1) < 0xB && ((0x52Fu >> v4))
+  v4 = intValue - 1;
+  if (intValue - 1) < 0xB && ((0x52Fu >> v4))
   {
     return off_1E86C64D0[v4];
   }
@@ -1269,23 +1269,23 @@ void __41__DDSMobileAssetv2Provider_removeAssets___block_invoke(uint64_t a1, uin
   v6 = DefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    +[(DDSMobileAssetv2Provider *)v3];
+    +[(DDSMobileAssetv2Provider *)intValue];
   }
 
   return 0;
 }
 
-- (id)updatableAssetsForAssertion:(id)a3
+- (id)updatableAssetsForAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [v4 query];
+  assertionCopy = assertion;
+  query = [assertionCopy query];
   v15 = 0;
-  v6 = [(DDSMobileAssetv2Provider *)self assetsInCatalogForQuery:v5 errorPtr:&v15];
+  v6 = [(DDSMobileAssetv2Provider *)self assetsInCatalogForQuery:query errorPtr:&v15];
   v7 = v15;
 
-  v8 = [v4 query];
+  query2 = [assertionCopy query];
 
-  v9 = [v8 copy];
+  v9 = [query2 copy];
   [v9 setInstalledOnly:1];
   [v9 setLocalOnly:1];
   [v9 setLatestOnly:0];
@@ -1464,7 +1464,7 @@ void __41__DDSMobileAssetv2Provider_removeAssets___block_invoke_cold_1()
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1DF7C6000, a2, OS_LOG_TYPE_ERROR, "Unrecognized device class: %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

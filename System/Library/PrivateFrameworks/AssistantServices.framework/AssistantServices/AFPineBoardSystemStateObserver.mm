@@ -1,12 +1,12 @@
 @interface AFPineBoardSystemStateObserver
 + (id)defaultObserver;
-- (AFPineBoardSystemStateObserver)initWithQueue:(id)a3;
+- (AFPineBoardSystemStateObserver)initWithQueue:(id)queue;
 - (void)_beginGroup;
 - (void)_endGroup;
-- (void)_handlePineBoardStateChange:(int64_t)a3;
+- (void)_handlePineBoardStateChange:(int64_t)change;
 - (void)_startObservingPineBoardSystemState;
-- (void)addListener:(id)a3;
-- (void)removeListener:(id)a3;
+- (void)addListener:(id)listener;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation AFPineBoardSystemStateObserver
@@ -40,14 +40,14 @@
   ++self->_pineBoardStateGroupDepth;
 }
 
-- (void)_handlePineBoardStateChange:(int64_t)a3
+- (void)_handlePineBoardStateChange:(int64_t)change
 {
   v18 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   pineBoardSystemState = self->_pineBoardSystemState;
-  if (pineBoardSystemState != a3)
+  if (pineBoardSystemState != change)
   {
-    self->_pineBoardSystemState = a3;
+    self->_pineBoardSystemState = change;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -110,11 +110,11 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -122,16 +122,16 @@
     v7[2] = __49__AFPineBoardSystemStateObserver_removeListener___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -139,21 +139,21 @@
     v7[2] = __46__AFPineBoardSystemStateObserver_addListener___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (AFPineBoardSystemStateObserver)initWithQueue:(id)a3
+- (AFPineBoardSystemStateObserver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = AFPineBoardSystemStateObserver;
   v6 = [(AFPineBoardSystemStateObserver *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v7->_pineBoardStateGroupDepth = 0;
     v8 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:5 capacity:0];
     listeners = v7->_listeners;

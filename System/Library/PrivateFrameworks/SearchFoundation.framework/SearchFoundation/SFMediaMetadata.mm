@@ -1,56 +1,56 @@
 @interface SFMediaMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFMediaMetadata)initWithCoder:(id)a3;
-- (SFMediaMetadata)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFMediaMetadata)initWithCoder:(id)coder;
+- (SFMediaMetadata)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFMediaMetadata
 
-- (SFMediaMetadata)initWithProtobuf:(id)a3
+- (SFMediaMetadata)initWithProtobuf:(id)protobuf
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v42.receiver = self;
   v42.super_class = SFMediaMetadata;
   v5 = [(SFMediaMetadata *)&v42 init];
   if (v5)
   {
-    v6 = [v4 mediaName];
+    mediaName = [protobufCopy mediaName];
 
-    if (v6)
+    if (mediaName)
     {
-      v7 = [v4 mediaName];
-      [(SFMediaMetadata *)v5 setMediaName:v7];
+      mediaName2 = [protobufCopy mediaName];
+      [(SFMediaMetadata *)v5 setMediaName:mediaName2];
     }
 
-    if ([v4 mediaType])
+    if ([protobufCopy mediaType])
     {
-      -[SFMediaMetadata setMediaType:](v5, "setMediaType:", [v4 mediaType]);
+      -[SFMediaMetadata setMediaType:](v5, "setMediaType:", [protobufCopy mediaType]);
     }
 
-    v8 = [v4 artistName];
+    artistName = [protobufCopy artistName];
 
-    if (v8)
+    if (artistName)
     {
-      v9 = [v4 artistName];
-      [(SFMediaMetadata *)v5 setArtistName:v9];
+      artistName2 = [protobufCopy artistName];
+      [(SFMediaMetadata *)v5 setArtistName:artistName2];
     }
 
-    v10 = [v4 albumName];
+    albumName = [protobufCopy albumName];
 
-    if (v10)
+    if (albumName)
     {
-      v11 = [v4 albumName];
-      [(SFMediaMetadata *)v5 setAlbumName:v11];
+      albumName2 = [protobufCopy albumName];
+      [(SFMediaMetadata *)v5 setAlbumName:albumName2];
     }
 
-    v12 = [v4 mediaPunchouts];
-    if (v12)
+    mediaPunchouts = [protobufCopy mediaPunchouts];
+    if (mediaPunchouts)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -64,8 +64,8 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v14 = [v4 mediaPunchouts];
-    v15 = [v14 countByEnumeratingWithState:&v38 objects:v44 count:16];
+    mediaPunchouts2 = [protobufCopy mediaPunchouts];
+    v15 = [mediaPunchouts2 countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v15)
     {
       v16 = v15;
@@ -76,7 +76,7 @@
         {
           if (*v39 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(mediaPunchouts2);
           }
 
           v19 = [[SFPunchout alloc] initWithProtobuf:*(*(&v38 + 1) + 8 * i)];
@@ -86,15 +86,15 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v38 objects:v44 count:16];
+        v16 = [mediaPunchouts2 countByEnumeratingWithState:&v38 objects:v44 count:16];
       }
 
       while (v16);
     }
 
     [(SFMediaMetadata *)v5 setMediaPunchouts:v13];
-    v20 = [v4 bundleIdentifiersToExcludes];
-    if (v20)
+    bundleIdentifiersToExcludes = [protobufCopy bundleIdentifiersToExcludes];
+    if (bundleIdentifiersToExcludes)
     {
       v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -108,8 +108,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v22 = [v4 bundleIdentifiersToExcludes];
-    v23 = [v22 countByEnumeratingWithState:&v34 objects:v43 count:16];
+    bundleIdentifiersToExcludes2 = [protobufCopy bundleIdentifiersToExcludes];
+    v23 = [bundleIdentifiersToExcludes2 countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v23)
     {
       v24 = v23;
@@ -120,7 +120,7 @@
         {
           if (*v35 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(bundleIdentifiersToExcludes2);
           }
 
           if (*(*(&v34 + 1) + 8 * j))
@@ -129,27 +129,27 @@
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        v24 = [bundleIdentifiersToExcludes2 countByEnumeratingWithState:&v34 objects:v43 count:16];
       }
 
       while (v24);
     }
 
     [(SFMediaMetadata *)v5 setBundleIdentifiersToExclude:v21];
-    v27 = [v4 disambiguationTitle];
+    disambiguationTitle = [protobufCopy disambiguationTitle];
 
-    if (v27)
+    if (disambiguationTitle)
     {
-      v28 = [v4 disambiguationTitle];
-      [(SFMediaMetadata *)v5 setDisambiguationTitle:v28];
+      disambiguationTitle2 = [protobufCopy disambiguationTitle];
+      [(SFMediaMetadata *)v5 setDisambiguationTitle:disambiguationTitle2];
     }
 
-    v29 = [v4 mediaIdentifier];
+    mediaIdentifier = [protobufCopy mediaIdentifier];
 
-    if (v29)
+    if (mediaIdentifier)
     {
-      v30 = [v4 mediaIdentifier];
-      [(SFMediaMetadata *)v5 setMediaIdentifier:v30];
+      mediaIdentifier2 = [protobufCopy mediaIdentifier];
+      [(SFMediaMetadata *)v5 setMediaIdentifier:mediaIdentifier2];
     }
 
     v31 = v5;
@@ -161,41 +161,41 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFMediaMetadata *)self mediaName];
-  v4 = [v3 hash];
+  mediaName = [(SFMediaMetadata *)self mediaName];
+  v4 = [mediaName hash];
   v5 = v4 ^ [(SFMediaMetadata *)self mediaType];
-  v6 = [(SFMediaMetadata *)self artistName];
-  v7 = [v6 hash];
-  v8 = [(SFMediaMetadata *)self albumName];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(SFMediaMetadata *)self mediaPunchouts];
-  v11 = [v10 hash];
-  v12 = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
-  v13 = v11 ^ [v12 hash];
-  v14 = [(SFMediaMetadata *)self disambiguationTitle];
-  v15 = v9 ^ v13 ^ [v14 hash];
-  v16 = [(SFMediaMetadata *)self mediaIdentifier];
-  v17 = [v16 hash];
+  artistName = [(SFMediaMetadata *)self artistName];
+  v7 = [artistName hash];
+  albumName = [(SFMediaMetadata *)self albumName];
+  v9 = v5 ^ v7 ^ [albumName hash];
+  mediaPunchouts = [(SFMediaMetadata *)self mediaPunchouts];
+  v11 = [mediaPunchouts hash];
+  bundleIdentifiersToExclude = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
+  v13 = v11 ^ [bundleIdentifiersToExclude hash];
+  disambiguationTitle = [(SFMediaMetadata *)self disambiguationTitle];
+  v15 = v9 ^ v13 ^ [disambiguationTitle hash];
+  mediaIdentifier = [(SFMediaMetadata *)self mediaIdentifier];
+  v17 = [mediaIdentifier hash];
 
   return v15 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFMediaMetadata *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFMediaMetadata *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFMediaMetadata *)self mediaName];
-      v8 = [(SFMediaMetadata *)v6 mediaName];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      mediaName = [(SFMediaMetadata *)self mediaName];
+      mediaName2 = [(SFMediaMetadata *)v6 mediaName];
+      if ((mediaName != 0) == (mediaName2 == 0))
       {
         v11 = 0;
 LABEL_47:
@@ -203,65 +203,65 @@ LABEL_47:
         goto LABEL_48;
       }
 
-      v9 = [(SFMediaMetadata *)self mediaName];
-      if (v9)
+      mediaName3 = [(SFMediaMetadata *)self mediaName];
+      if (mediaName3)
       {
-        v10 = [(SFMediaMetadata *)self mediaName];
-        v75 = [(SFMediaMetadata *)v6 mediaName];
-        v76 = v10;
-        if (![v10 isEqual:?])
+        mediaName4 = [(SFMediaMetadata *)self mediaName];
+        mediaName5 = [(SFMediaMetadata *)v6 mediaName];
+        v76 = mediaName4;
+        if (![mediaName4 isEqual:?])
         {
           v11 = 0;
           goto LABEL_45;
         }
       }
 
-      v12 = [(SFMediaMetadata *)self mediaType];
-      if (v12 == [(SFMediaMetadata *)v6 mediaType])
+      mediaType = [(SFMediaMetadata *)self mediaType];
+      if (mediaType == [(SFMediaMetadata *)v6 mediaType])
       {
-        v13 = [(SFMediaMetadata *)self artistName];
-        v14 = [(SFMediaMetadata *)v6 artistName];
-        if ((v13 != 0) == (v14 == 0))
+        artistName = [(SFMediaMetadata *)self artistName];
+        artistName2 = [(SFMediaMetadata *)v6 artistName];
+        if ((artistName != 0) == (artistName2 == 0))
         {
 LABEL_42:
 
           goto LABEL_43;
         }
 
-        v74 = v14;
-        v15 = [(SFMediaMetadata *)self artistName];
-        v73 = v15;
-        if (v15)
+        v74 = artistName2;
+        artistName3 = [(SFMediaMetadata *)self artistName];
+        v73 = artistName3;
+        if (artistName3)
         {
-          v16 = v15;
-          v17 = [(SFMediaMetadata *)self artistName];
-          v3 = [(SFMediaMetadata *)v6 artistName];
-          if (([v17 isEqual:v3] & 1) == 0)
+          v16 = artistName3;
+          artistName4 = [(SFMediaMetadata *)self artistName];
+          artistName5 = [(SFMediaMetadata *)v6 artistName];
+          if (([artistName4 isEqual:artistName5] & 1) == 0)
           {
 
 LABEL_43:
             goto LABEL_44;
           }
 
-          v71 = v9;
-          v72 = v13;
+          v71 = mediaName3;
+          v72 = artistName;
           v18 = v76;
-          v13 = v17;
+          artistName = artistName4;
         }
 
         else
         {
-          v71 = v9;
-          v72 = v13;
+          v71 = mediaName3;
+          v72 = artistName;
           v18 = v76;
         }
 
         v76 = v18;
-        v19 = [(SFMediaMetadata *)self albumName];
-        v20 = [(SFMediaMetadata *)v6 albumName];
+        albumName = [(SFMediaMetadata *)self albumName];
+        albumName2 = [(SFMediaMetadata *)v6 albumName];
         v21 = v73;
-        v9 = v71;
-        if ((v19 != 0) == (v20 == 0))
+        mediaName3 = v71;
+        if ((albumName != 0) == (albumName2 == 0))
         {
 LABEL_39:
 
@@ -269,57 +269,57 @@ LABEL_39:
           {
           }
 
-          v13 = v72;
-          v14 = v74;
+          artistName = v72;
+          artistName2 = v74;
           goto LABEL_42;
         }
 
-        v69 = v20;
-        v68 = [(SFMediaMetadata *)self albumName];
-        v70 = v3;
-        if (!v68)
+        v69 = albumName2;
+        albumName3 = [(SFMediaMetadata *)self albumName];
+        v70 = artistName5;
+        if (!albumName3)
         {
-          v67 = v19;
-          v25 = v13;
+          v67 = albumName;
+          v25 = artistName;
           v26 = v73;
           goto LABEL_22;
         }
 
-        v22 = v19;
-        v23 = [(SFMediaMetadata *)self albumName];
-        v24 = [(SFMediaMetadata *)v6 albumName];
-        if ([v23 isEqual:v24])
+        v22 = albumName;
+        albumName4 = [(SFMediaMetadata *)self albumName];
+        albumName5 = [(SFMediaMetadata *)v6 albumName];
+        if ([albumName4 isEqual:albumName5])
         {
-          v64 = v24;
-          v65 = v23;
+          v64 = albumName5;
+          v65 = albumName4;
           v67 = v22;
-          v25 = v13;
+          v25 = artistName;
           v26 = v73;
 LABEL_22:
           v66 = v25;
-          v27 = [(SFMediaMetadata *)self mediaPunchouts];
-          v28 = [(SFMediaMetadata *)v6 mediaPunchouts];
+          mediaPunchouts = [(SFMediaMetadata *)self mediaPunchouts];
+          mediaPunchouts2 = [(SFMediaMetadata *)v6 mediaPunchouts];
           v21 = v26;
-          v3 = v70;
-          v19 = v67;
-          if ((v27 != 0) != (v28 == 0))
+          artistName5 = v70;
+          albumName = v67;
+          if ((mediaPunchouts != 0) != (mediaPunchouts2 == 0))
           {
-            v63 = v28;
-            v62 = [(SFMediaMetadata *)self mediaPunchouts];
-            if (v62)
+            v63 = mediaPunchouts2;
+            mediaPunchouts3 = [(SFMediaMetadata *)self mediaPunchouts];
+            if (mediaPunchouts3)
             {
-              v29 = [(SFMediaMetadata *)self mediaPunchouts];
-              v60 = [(SFMediaMetadata *)v6 mediaPunchouts];
-              v61 = v29;
-              if (![v29 isEqual:?])
+              mediaPunchouts4 = [(SFMediaMetadata *)self mediaPunchouts];
+              mediaPunchouts5 = [(SFMediaMetadata *)v6 mediaPunchouts];
+              v61 = mediaPunchouts4;
+              if (![mediaPunchouts4 isEqual:?])
               {
                 v11 = 0;
                 v30 = v72;
-                v31 = v62;
+                v31 = mediaPunchouts3;
 LABEL_65:
 
 LABEL_66:
-                if (v68)
+                if (albumName3)
                 {
                 }
 
@@ -336,51 +336,51 @@ LABEL_66:
               }
             }
 
-            v32 = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
-            v33 = [(SFMediaMetadata *)v6 bundleIdentifiersToExclude];
-            if ((v32 != 0) != (v33 == 0))
+            bundleIdentifiersToExclude = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
+            bundleIdentifiersToExclude2 = [(SFMediaMetadata *)v6 bundleIdentifiersToExclude];
+            if ((bundleIdentifiersToExclude != 0) != (bundleIdentifiersToExclude2 == 0))
             {
-              v59 = v33;
-              v34 = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
-              v58 = v27;
-              if (v34)
+              v59 = bundleIdentifiersToExclude2;
+              bundleIdentifiersToExclude3 = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
+              v58 = mediaPunchouts;
+              if (bundleIdentifiersToExclude3)
               {
-                v35 = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
-                v55 = [(SFMediaMetadata *)v6 bundleIdentifiersToExclude];
-                v56 = v35;
-                if (![v35 isEqual:?])
+                bundleIdentifiersToExclude4 = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
+                bundleIdentifiersToExclude5 = [(SFMediaMetadata *)v6 bundleIdentifiersToExclude];
+                v56 = bundleIdentifiersToExclude4;
+                if (![bundleIdentifiersToExclude4 isEqual:?])
                 {
                   v11 = 0;
                   v21 = v73;
                   goto LABEL_63;
                 }
 
-                v57 = v32;
+                v57 = bundleIdentifiersToExclude;
               }
 
               else
               {
-                v57 = v32;
+                v57 = bundleIdentifiersToExclude;
               }
 
-              v37 = [(SFMediaMetadata *)self disambiguationTitle];
-              v38 = [(SFMediaMetadata *)v6 disambiguationTitle];
-              if ((v37 != 0) != (v38 == 0))
+              disambiguationTitle = [(SFMediaMetadata *)self disambiguationTitle];
+              disambiguationTitle2 = [(SFMediaMetadata *)v6 disambiguationTitle];
+              if ((disambiguationTitle != 0) != (disambiguationTitle2 == 0))
               {
-                v53 = v38;
+                v53 = disambiguationTitle2;
                 [(SFMediaMetadata *)self disambiguationTitle];
-                v52 = v54 = v34;
+                v52 = v54 = bundleIdentifiersToExclude3;
                 if (!v52 || (-[SFMediaMetadata disambiguationTitle](self, "disambiguationTitle"), v39 = objc_claimAutoreleasedReturnValue(), -[SFMediaMetadata disambiguationTitle](v6, "disambiguationTitle"), v50 = objc_claimAutoreleasedReturnValue(), v51 = v39, [v39 isEqual:?]))
                 {
-                  v42 = [(SFMediaMetadata *)self mediaIdentifier];
-                  v43 = [(SFMediaMetadata *)v6 mediaIdentifier];
-                  if ((v42 != 0) == (v43 == 0))
+                  mediaIdentifier = [(SFMediaMetadata *)self mediaIdentifier];
+                  mediaIdentifier2 = [(SFMediaMetadata *)v6 mediaIdentifier];
+                  if ((mediaIdentifier != 0) == (mediaIdentifier2 == 0))
                   {
 
                     v11 = 0;
                     v21 = v73;
-                    v40 = v37;
-                    v32 = v57;
+                    v40 = disambiguationTitle;
+                    bundleIdentifiersToExclude = v57;
                     v41 = v52;
                     if (!v52)
                     {
@@ -390,16 +390,16 @@ LABEL_66:
 
                   else
                   {
-                    v48 = v43;
-                    v44 = [(SFMediaMetadata *)self mediaIdentifier];
+                    v48 = mediaIdentifier2;
+                    mediaIdentifier3 = [(SFMediaMetadata *)self mediaIdentifier];
                     v21 = v73;
-                    v49 = v37;
-                    if (v44)
+                    v49 = disambiguationTitle;
+                    if (mediaIdentifier3)
                     {
-                      v45 = v44;
-                      v46 = [(SFMediaMetadata *)self mediaIdentifier];
-                      v47 = [(SFMediaMetadata *)v6 mediaIdentifier];
-                      v11 = [v46 isEqual:v47];
+                      v45 = mediaIdentifier3;
+                      mediaIdentifier4 = [(SFMediaMetadata *)self mediaIdentifier];
+                      mediaIdentifier5 = [(SFMediaMetadata *)v6 mediaIdentifier];
+                      v11 = [mediaIdentifier4 isEqual:mediaIdentifier5];
                     }
 
                     else
@@ -408,14 +408,14 @@ LABEL_66:
                       v11 = 1;
                     }
 
-                    v32 = v57;
+                    bundleIdentifiersToExclude = v57;
                     v41 = v52;
                     v40 = v49;
                     if (!v52)
                     {
 LABEL_62:
 
-                      v34 = v54;
+                      bundleIdentifiersToExclude3 = v54;
                       if (!v54)
                       {
                         goto LABEL_64;
@@ -430,8 +430,8 @@ LABEL_62:
                 {
                   v11 = 0;
                   v21 = v73;
-                  v40 = v37;
-                  v32 = v57;
+                  v40 = disambiguationTitle;
+                  bundleIdentifiersToExclude = v57;
                   v41 = v52;
                 }
 
@@ -440,15 +440,15 @@ LABEL_62:
 
               v11 = 0;
               v21 = v73;
-              v32 = v57;
-              if (!v34)
+              bundleIdentifiersToExclude = v57;
+              if (!bundleIdentifiersToExclude3)
               {
 LABEL_64:
 
-                v31 = v62;
+                v31 = mediaPunchouts3;
                 v30 = v72;
-                v27 = v58;
-                if (!v62)
+                mediaPunchouts = v58;
+                if (!mediaPunchouts3)
                 {
                   goto LABEL_66;
                 }
@@ -461,21 +461,21 @@ LABEL_63:
               goto LABEL_64;
             }
 
-            if (v62)
+            if (mediaPunchouts3)
             {
             }
 
             v21 = v73;
-            v28 = v63;
-            v3 = v70;
+            mediaPunchouts2 = v63;
+            artistName5 = v70;
           }
 
-          if (v68)
+          if (albumName3)
           {
           }
 
-          v20 = v69;
-          v13 = v66;
+          albumName2 = v69;
+          artistName = v66;
           goto LABEL_39;
         }
 
@@ -486,7 +486,7 @@ LABEL_63:
 
 LABEL_44:
       v11 = 0;
-      if (!v9)
+      if (!mediaName3)
       {
 LABEL_46:
 
@@ -506,36 +506,36 @@ LABEL_48:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFMediaMetadata *)self mediaName];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  mediaName = [(SFMediaMetadata *)self mediaName];
+  v6 = [mediaName copy];
   [v4 setMediaName:v6];
 
   [v4 setMediaType:{-[SFMediaMetadata mediaType](self, "mediaType")}];
-  v7 = [(SFMediaMetadata *)self artistName];
-  v8 = [v7 copy];
+  artistName = [(SFMediaMetadata *)self artistName];
+  v8 = [artistName copy];
   [v4 setArtistName:v8];
 
-  v9 = [(SFMediaMetadata *)self albumName];
-  v10 = [v9 copy];
+  albumName = [(SFMediaMetadata *)self albumName];
+  v10 = [albumName copy];
   [v4 setAlbumName:v10];
 
-  v11 = [(SFMediaMetadata *)self mediaPunchouts];
-  v12 = [v11 copy];
+  mediaPunchouts = [(SFMediaMetadata *)self mediaPunchouts];
+  v12 = [mediaPunchouts copy];
   [v4 setMediaPunchouts:v12];
 
-  v13 = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
-  v14 = [v13 copy];
+  bundleIdentifiersToExclude = [(SFMediaMetadata *)self bundleIdentifiersToExclude];
+  v14 = [bundleIdentifiersToExclude copy];
   [v4 setBundleIdentifiersToExclude:v14];
 
-  v15 = [(SFMediaMetadata *)self disambiguationTitle];
-  v16 = [v15 copy];
+  disambiguationTitle = [(SFMediaMetadata *)self disambiguationTitle];
+  v16 = [disambiguationTitle copy];
   [v4 setDisambiguationTitle:v16];
 
-  v17 = [(SFMediaMetadata *)self mediaIdentifier];
-  v18 = [v17 copy];
+  mediaIdentifier = [(SFMediaMetadata *)self mediaIdentifier];
+  v18 = [mediaIdentifier copy];
   [v4 setMediaIdentifier:v18];
 
   return v4;
@@ -544,31 +544,31 @@ LABEL_48:
 - (NSData)jsonData
 {
   v2 = [[_SFPBMediaMetadata alloc] initWithFacade:self];
-  v3 = [(_SFPBMediaMetadata *)v2 jsonData];
+  jsonData = [(_SFPBMediaMetadata *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBMediaMetadata alloc] initWithFacade:self];
-  v3 = [(_SFPBMediaMetadata *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBMediaMetadata *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBMediaMetadata alloc] initWithFacade:self];
-  v5 = [(_SFPBMediaMetadata *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBMediaMetadata *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFMediaMetadata)initWithCoder:(id)a3
+- (SFMediaMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBMediaMetadata alloc] initWithData:v5];
   v7 = [(SFMediaMetadata *)self initWithProtobuf:v6];

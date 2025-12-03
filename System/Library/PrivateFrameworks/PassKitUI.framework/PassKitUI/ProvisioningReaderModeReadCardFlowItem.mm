@@ -1,10 +1,10 @@
 @interface ProvisioningReaderModeReadCardFlowItem
 - (_TtC9PassKitUI38ProvisioningReaderModeReadCardFlowItem)init;
 - (id)provisionedPass;
-- (void)provisionWithFieldModel:(id)a3 paymentCredential:(id)a4;
-- (void)viewControllerDidCancel:(id)a3;
-- (void)viewControllerDidComplete:(id)a3;
-- (void)viewControllerDidFailIngestion:(id)a3;
+- (void)provisionWithFieldModel:(id)model paymentCredential:(id)credential;
+- (void)viewControllerDidCancel:(id)cancel;
+- (void)viewControllerDidComplete:(id)complete;
+- (void)viewControllerDidFailIngestion:(id)ingestion;
 @end
 
 @implementation ProvisioningReaderModeReadCardFlowItem
@@ -16,38 +16,38 @@
   return result;
 }
 
-- (void)provisionWithFieldModel:(id)a3 paymentCredential:(id)a4
+- (void)provisionWithFieldModel:(id)model paymentCredential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD881DD4(v6, v7);
+  modelCopy = model;
+  credentialCopy = credential;
+  selfCopy = self;
+  sub_1BD881DD4(modelCopy, credentialCopy);
 }
 
-- (void)viewControllerDidCancel:(id)a3
+- (void)viewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_1BD882248();
 }
 
-- (void)viewControllerDidComplete:(id)a3
+- (void)viewControllerDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = self;
+  completeCopy = complete;
+  selfCopy = self;
   sub_1BD8822D8();
 }
 
-- (void)viewControllerDidFailIngestion:(id)a3
+- (void)viewControllerDidFailIngestion:(id)ingestion
 {
-  v4 = a3;
-  v5 = self;
+  ingestionCopy = ingestion;
+  selfCopy = self;
   sub_1BD882488();
 }
 
 - (id)provisionedPass
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BD882194();
 
   return v3;

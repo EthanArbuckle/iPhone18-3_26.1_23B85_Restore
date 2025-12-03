@@ -1,20 +1,20 @@
 @interface CDPPiggybackingPayloadProvider
-+ (id)proxyWithContext:(id)a3 error:(id *)a4;
-- (id)processIncomingPayload:(id)a3 error:(id *)a4;
++ (id)proxyWithContext:(id)context error:(id *)error;
+- (id)processIncomingPayload:(id)payload error:(id *)error;
 @end
 
 @implementation CDPPiggybackingPayloadProvider
 
-+ (id)proxyWithContext:(id)a3 error:(id *)a4
++ (id)proxyWithContext:(id)context error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 duplexSession];
+  contextCopy = context;
+  duplexSession = [contextCopy duplexSession];
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v6;
+    v28 = duplexSession;
     _os_log_impl(&dword_24510B000, v7, OS_LOG_TYPE_DEFAULT, "Creating a piggybacking data provider with session: %@", buf, 0xCu);
   }
 
@@ -28,11 +28,11 @@
   v13 = v8->_delegate;
   if (v11)
   {
-    v14 = [v5 altDSID];
-    v15 = [v5 telemetryFlowID];
-    v16 = [v5 telemetryDeviceSessionID];
+    altDSID = [contextCopy altDSID];
+    telemetryFlowID = [contextCopy telemetryFlowID];
+    telemetryDeviceSessionID = [contextCopy telemetryDeviceSessionID];
     v26 = 0;
-    v17 = [v12 sessionWithCircleDelegate:v13 session:v6 altDSID:v14 flowID:v15 deviceSessionID:v16 error:&v26];
+    v17 = [v12 sessionWithCircleDelegate:v13 session:duplexSession altDSID:altDSID flowID:telemetryFlowID deviceSessionID:telemetryDeviceSessionID error:&v26];
     v18 = v26;
     session = v8->_session;
     v8->_session = v17;
@@ -41,19 +41,19 @@
   else
   {
     v25 = 0;
-    v20 = [MEMORY[0x277D22B10] sessionWithCircleDelegate:v13 session:v6 error:&v25];
+    v20 = [MEMORY[0x277D22B10] sessionWithCircleDelegate:v13 session:duplexSession error:&v25];
     v18 = v25;
-    v14 = v8->_session;
+    altDSID = v8->_session;
     v8->_session = v20;
   }
 
   if (v18)
   {
-    if (a4)
+    if (error)
     {
       v21 = v18;
       v22 = 0;
-      *a4 = v18;
+      *error = v18;
     }
 
     else
@@ -72,10 +72,10 @@
   return v22;
 }
 
-- (id)processIncomingPayload:(id)a3 error:(id *)a4
+- (id)processIncomingPayload:(id)payload error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  payloadCopy = payload;
   v7 = _CDPSignpostLogSystem();
   v8 = _CDPSignpostCreate();
 
@@ -96,31 +96,31 @@
     _os_log_impl(&dword_24510B000, v12, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: KCJoiningRequestProcessMessage  enableTelemetry=YES ", &v28, 0xCu);
   }
 
-  v13 = [(KCJoiningRequestCircleSession *)self->_session processMessage:v6 error:a4];
+  v13 = [(KCJoiningRequestCircleSession *)self->_session processMessage:payloadCopy error:error];
 
-  if (a4 && *a4)
+  if (error && *error)
   {
     Nanoseconds = _CDPSignpostGetNanoseconds();
     v15 = _CDPSignpostLogSystem();
     v16 = v15;
     if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
     {
-      v17 = [*a4 code];
+      code = [*error code];
       v28 = 67240192;
-      LODWORD(v29) = v17;
+      LODWORD(v29) = code;
       _os_signpost_emit_with_name_impl(&dword_24510B000, v16, OS_SIGNPOST_INTERVAL_END, v8, "KCJoiningRequestProcessMessage", " Error=%{public,signpost.telemetry:number1,name=Error}d ", &v28, 8u);
     }
 
     v18 = _CDPSignpostLogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [*a4 code];
+      code2 = [*error code];
       v28 = 134218496;
       v29 = v8;
       v30 = 2048;
       v31 = Nanoseconds / 1000000000.0;
       v32 = 1026;
-      v33 = v19;
+      v33 = code2;
       v20 = "END [%lld] %fs: KCJoiningRequestProcessMessage  Error=%{public,signpost.telemetry:number1,name=Error}d ";
       v21 = v18;
       v22 = 28;

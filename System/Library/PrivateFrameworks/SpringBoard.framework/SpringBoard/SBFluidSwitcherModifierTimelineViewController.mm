@@ -1,11 +1,11 @@
 @interface SBFluidSwitcherModifierTimelineViewController
-- (void)_reset:(id)a3;
-- (void)_toggleNoiseLevel:(id)a3;
-- (void)_togglePause:(id)a3;
-- (void)addEntry:(id)a3;
-- (void)didSelectEntryView:(id)a3;
+- (void)_reset:(id)_reset;
+- (void)_toggleNoiseLevel:(id)level;
+- (void)_togglePause:(id)pause;
+- (void)addEntry:(id)entry;
+- (void)didSelectEntryView:(id)view;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -34,10 +34,10 @@
 
   [(UIButton *)self->_clearButton setTitle:@"Clear" forState:0];
   [(UIButton *)self->_clearButton addTarget:self action:sel__reset_ forControlEvents:64];
-  v10 = [(UIButton *)self->_clearButton titleLabel];
+  titleLabel = [(UIButton *)self->_clearButton titleLabel];
   v11 = *MEMORY[0x277D743F8];
   v12 = [MEMORY[0x277D74300] systemFontOfSize:16.0 weight:*MEMORY[0x277D743F8]];
-  [v10 setFont:v12];
+  [titleLabel setFont:v12];
 
   [(UIButton *)self->_clearButton sizeToFit];
   [v27 addSubview:self->_clearButton];
@@ -48,9 +48,9 @@
 
   [(UIButton *)self->_noiseLevelButton setTitle:@"Show All Events" forState:0];
   [(UIButton *)self->_noiseLevelButton addTarget:self action:sel__toggleNoiseLevel_ forControlEvents:64];
-  v15 = [(UIButton *)self->_noiseLevelButton titleLabel];
+  titleLabel2 = [(UIButton *)self->_noiseLevelButton titleLabel];
   v16 = [MEMORY[0x277D74300] systemFontOfSize:16.0 weight:v11];
-  [v15 setFont:v16];
+  [titleLabel2 setFont:v16];
 
   [(UIButton *)self->_noiseLevelButton sizeToFit];
   [v27 addSubview:self->_noiseLevelButton];
@@ -61,9 +61,9 @@
 
   [(UIButton *)self->_pauseButton setTitle:@"Pause" forState:0];
   [(UIButton *)self->_pauseButton addTarget:self action:sel__togglePause_ forControlEvents:64];
-  v19 = [(UIButton *)self->_pauseButton titleLabel];
+  titleLabel3 = [(UIButton *)self->_pauseButton titleLabel];
   v20 = [MEMORY[0x277D74300] systemFontOfSize:16.0 weight:v11];
-  [v19 setFont:v20];
+  [titleLabel3 setFont:v20];
 
   [(UIButton *)self->_pauseButton sizeToFit];
   [v27 addSubview:self->_pauseButton];
@@ -75,10 +75,10 @@
   navigationController = self->_navigationController;
   self->_navigationController = v23;
 
-  v25 = [MEMORY[0x277D75418] currentDevice];
-  v26 = [v25 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v26 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(UINavigationController *)self->_navigationController setModalPresentationStyle:7];
   }
@@ -86,30 +86,30 @@
   [(SBFluidSwitcherModifierTimelineViewController *)self setView:v27];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = SBFluidSwitcherModifierTimelineViewController;
-  [(SBFluidSwitcherModifierTimelineViewController *)&v8 viewDidAppear:a3];
-  v4 = [(SBFluidSwitcherModifierTimelineViewController *)self view];
-  v5 = [v4 window];
-  [v5 bounds];
+  [(SBFluidSwitcherModifierTimelineViewController *)&v8 viewDidAppear:appear];
+  view = [(SBFluidSwitcherModifierTimelineViewController *)self view];
+  window = [view window];
+  [window bounds];
   v7 = v6;
 
   [(SBFTouchPassThroughScrollView *)self->_scrollView setContentInset:0.0, 0.0, 0.0, v7 + -40.0];
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   if (!self->_isPaused)
   {
     if ([(NSMutableArray *)self->_entryViews count]== 150)
     {
-      v5 = [(NSMutableArray *)self->_entryViews firstObject];
-      [v5 removeFromSuperview];
-      [(NSMutableArray *)self->_entryViews removeObject:v5];
+      firstObject = [(NSMutableArray *)self->_entryViews firstObject];
+      [firstObject removeFromSuperview];
+      [(NSMutableArray *)self->_entryViews removeObject:firstObject];
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
@@ -159,7 +159,7 @@
     }
 
     v21 = [SBFluidSwitcherModifierTimelineEntryView alloc];
-    v22 = [(SBFluidSwitcherModifierTimelineEntryView *)v21 initWithFrame:v4 entry:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    v22 = [(SBFluidSwitcherModifierTimelineEntryView *)v21 initWithFrame:entryCopy entry:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(SBFluidSwitcherModifierTimelineEntryView *)v22 setDelegate:self];
     [(SBFTouchPassThroughScrollView *)self->_scrollView addSubview:v22];
     [(SBFluidSwitcherModifierTimelineEntryView *)v22 setNeedsLayout];
@@ -167,10 +167,10 @@
     v23 = 10.0;
     if ([(NSMutableArray *)self->_entryViews count])
     {
-      v24 = [(NSMutableArray *)self->_entryViews lastObject];
-      [v24 frame];
+      lastObject = [(NSMutableArray *)self->_entryViews lastObject];
+      [lastObject frame];
       v26 = v25;
-      [v24 frame];
+      [lastObject frame];
       v23 = v26 + v27 + 10.0;
     }
 
@@ -182,8 +182,8 @@
     [(SBFluidSwitcherModifierTimelineEntryView *)v22 frame];
     v30 = CGRectGetMaxX(v42) + 10.0;
     [(SBFTouchPassThroughScrollView *)self->_scrollView setContentSize:v30, 0.0];
-    v31 = [(SBFluidSwitcherModifierTimelineViewController *)self view];
-    [v31 frame];
+    view = [(SBFluidSwitcherModifierTimelineViewController *)self view];
+    [view frame];
     v33 = v32;
 
     if (v30 > v33)
@@ -195,34 +195,34 @@
   }
 }
 
-- (void)didSelectEntryView:(id)a3
+- (void)didSelectEntryView:(id)view
 {
-  v16 = a3;
+  viewCopy = view;
   v4 = [(UINavigationController *)self->_navigationController popToRootViewControllerAnimated:0];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v7 = [(UINavigationController *)self->_navigationController popoverPresentationController];
-    [v7 setSourceView:v16];
+    popoverPresentationController = [(UINavigationController *)self->_navigationController popoverPresentationController];
+    [popoverPresentationController setSourceView:viewCopy];
 
-    v8 = [(UINavigationController *)self->_navigationController popoverPresentationController];
-    [v16 frame];
-    [v8 setSourceRect:{v9 * 0.5, 35.0, 1.0, 1.0}];
+    popoverPresentationController2 = [(UINavigationController *)self->_navigationController popoverPresentationController];
+    [viewCopy frame];
+    [popoverPresentationController2 setSourceRect:{v9 * 0.5, 35.0, 1.0, 1.0}];
 
     [(UINavigationController *)self->_navigationController setPreferredContentSize:600.0, 1.79769313e308];
   }
 
   detailViewController = self->_detailViewController;
-  v11 = [v16 entry];
-  [(SBModifierTimelineDetailViewController *)detailViewController setEntry:v11];
+  entry = [viewCopy entry];
+  [(SBModifierTimelineDetailViewController *)detailViewController setEntry:entry];
 
   v12 = self->_detailViewController;
-  v13 = [v16 entry];
-  v14 = [v13 eventSnapshot];
-  v15 = [v14 eventName];
-  [(SBModifierTimelineDetailViewController *)v12 setTitle:v15];
+  entry2 = [viewCopy entry];
+  eventSnapshot = [entry2 eventSnapshot];
+  eventName = [eventSnapshot eventName];
+  [(SBModifierTimelineDetailViewController *)v12 setTitle:eventName];
 
   [(SBFluidSwitcherModifierTimelineViewController *)self presentViewController:self->_navigationController animated:1 completion:0];
 }
@@ -233,8 +233,8 @@
   v19.super_class = SBFluidSwitcherModifierTimelineViewController;
   [(SBFluidSwitcherModifierTimelineViewController *)&v19 viewWillLayoutSubviews];
   scrollView = self->_scrollView;
-  v4 = [(SBFluidSwitcherModifierTimelineViewController *)self view];
-  [v4 bounds];
+  view = [(SBFluidSwitcherModifierTimelineViewController *)self view];
+  [view bounds];
   [(SBFTouchPassThroughScrollView *)scrollView setFrame:?];
 
   [(UIButton *)self->_clearButton frame];
@@ -273,7 +273,7 @@
   [(UIButton *)self->_pauseButton setFrame:v15, v16, v18];
 }
 
-- (void)_reset:(id)a3
+- (void)_reset:(id)_reset
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -311,7 +311,7 @@
   [(SBFTouchPassThroughScrollView *)self->_scrollView setContentOffset:0.0, 0.0];
 }
 
-- (void)_toggleNoiseLevel:(id)a3
+- (void)_toggleNoiseLevel:(id)level
 {
   ignoreNoisyEvents = self->_ignoreNoisyEvents;
   self->_ignoreNoisyEvents = !ignoreNoisyEvents;
@@ -328,11 +328,11 @@
 
   [(UIButton *)noiseLevelButton setTitle:v6 forState:0];
   [(UIButton *)self->_noiseLevelButton sizeToFit];
-  v7 = [(SBFluidSwitcherModifierTimelineViewController *)self view];
-  [v7 setNeedsLayout];
+  view = [(SBFluidSwitcherModifierTimelineViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)_togglePause:(id)a3
+- (void)_togglePause:(id)pause
 {
   isPaused = self->_isPaused;
   self->_isPaused = !isPaused;
@@ -349,8 +349,8 @@
 
   [(UIButton *)pauseButton setTitle:v6 forState:0];
   [(UIButton *)self->_pauseButton sizeToFit];
-  v7 = [(SBFluidSwitcherModifierTimelineViewController *)self view];
-  [v7 setNeedsLayout];
+  view = [(SBFluidSwitcherModifierTimelineViewController *)self view];
+  [view setNeedsLayout];
 }
 
 @end

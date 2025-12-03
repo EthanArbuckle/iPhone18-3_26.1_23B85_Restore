@@ -1,31 +1,31 @@
 @interface NTKCollieFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKCollieFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKCollieFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKCollieFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v17 = @"unicorn";
   v5 = [NSArray arrayWithObjects:&v17 count:1];
   v6 = [v5 mutableCopy];
 
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v16[0] = @"ghost";
     v16[1] = @"giraffe";
@@ -35,23 +35,23 @@
 
   v15.receiver = self;
   v15.super_class = NTKCollieFaceBundle;
-  v8 = [(NTKCollieFaceBundle *)&v15 galleryFacesForDevice:v4];
+  v8 = [(NTKCollieFaceBundle *)&v15 galleryFacesForDevice:deviceCopy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_149E8;
   v12[3] = &unk_2D0E0;
   v13 = v6;
-  v14 = v4;
-  v9 = v4;
+  v14 = deviceCopy;
+  v9 = deviceCopy;
   v10 = v6;
   [v8 enumerateObjectsUsingBlock:v12];
 
   return v8;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5 = &off_2E018;
     v6 = &off_2DE50;
@@ -66,9 +66,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v8[0] = ntk_seasons_spring2015_purple;
     v8[1] = ntk_seasons_fall2024_ink;
@@ -89,17 +89,17 @@
   return v5;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:4094027452])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4094027452])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKCollieFaceBundle *)self galleryFacesForDevice:v4];
+    v6 = [(NTKCollieFaceBundle *)self galleryFacesForDevice:deviceCopy];
     +[NSMutableArray array];
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;

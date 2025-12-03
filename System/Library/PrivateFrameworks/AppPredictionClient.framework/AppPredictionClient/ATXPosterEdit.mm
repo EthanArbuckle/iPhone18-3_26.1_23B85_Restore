@@ -1,74 +1,74 @@
 @interface ATXPosterEdit
-- (ATXPosterEdit)initWithCoder:(id)a3;
-- (ATXPosterEdit)initWithLockscreenId:(id)a3 entryPoint:(id)a4 newlyCreated:(BOOL)a5 secondsSinceLastEdit:(int64_t)a6;
-- (ATXPosterEdit)initWithLockscreenId:(id)a3 entryPoint:(id)a4 newlyCreated:(BOOL)a5 secondsSinceLastEdit:(int64_t)a6 outcome:(id)a7 userChangedColor:(BOOL)a8 userChangedFont:(BOOL)a9 userChangedNumberingSystem:(BOOL)a10 userChangedPosterContent:(BOOL)a11 userChangedWidgets:(BOOL)a12 didLockscreenHaveWidgetsBeforeEdit:(BOOL)a13 duration:(unint64_t)a14;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPosterEdit:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXPosterEdit)initWithCoder:(id)coder;
+- (ATXPosterEdit)initWithLockscreenId:(id)id entryPoint:(id)point newlyCreated:(BOOL)created secondsSinceLastEdit:(int64_t)edit;
+- (ATXPosterEdit)initWithLockscreenId:(id)id entryPoint:(id)point newlyCreated:(BOOL)created secondsSinceLastEdit:(int64_t)edit outcome:(id)outcome userChangedColor:(BOOL)color userChangedFont:(BOOL)font userChangedNumberingSystem:(BOOL)self0 userChangedPosterContent:(BOOL)self1 userChangedWidgets:(BOOL)self2 didLockscreenHaveWidgetsBeforeEdit:(BOOL)self3 duration:(unint64_t)self4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPosterEdit:(id)edit;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXPosterEdit
 
-- (ATXPosterEdit)initWithLockscreenId:(id)a3 entryPoint:(id)a4 newlyCreated:(BOOL)a5 secondsSinceLastEdit:(int64_t)a6
+- (ATXPosterEdit)initWithLockscreenId:(id)id entryPoint:(id)point newlyCreated:(BOOL)created secondsSinceLastEdit:(int64_t)edit
 {
   BYTE4(v7) = 0;
   LODWORD(v7) = 0;
-  return [ATXPosterEdit initWithLockscreenId:"initWithLockscreenId:entryPoint:newlyCreated:secondsSinceLastEdit:outcome:userChangedColor:userChangedFont:userChangedNumberingSystem:userChangedPosterContent:userChangedWidgets:didLockscreenHaveWidgetsBeforeEdit:duration:" entryPoint:a3 newlyCreated:a4 secondsSinceLastEdit:a5 outcome:a6 userChangedColor:@"unknown" userChangedFont:0 userChangedNumberingSystem:v7 userChangedPosterContent:-1 userChangedWidgets:? didLockscreenHaveWidgetsBeforeEdit:? duration:?];
+  return [ATXPosterEdit initWithLockscreenId:"initWithLockscreenId:entryPoint:newlyCreated:secondsSinceLastEdit:outcome:userChangedColor:userChangedFont:userChangedNumberingSystem:userChangedPosterContent:userChangedWidgets:didLockscreenHaveWidgetsBeforeEdit:duration:" entryPoint:id newlyCreated:point secondsSinceLastEdit:created outcome:edit userChangedColor:@"unknown" userChangedFont:0 userChangedNumberingSystem:v7 userChangedPosterContent:-1 userChangedWidgets:? didLockscreenHaveWidgetsBeforeEdit:? duration:?];
 }
 
-- (ATXPosterEdit)initWithLockscreenId:(id)a3 entryPoint:(id)a4 newlyCreated:(BOOL)a5 secondsSinceLastEdit:(int64_t)a6 outcome:(id)a7 userChangedColor:(BOOL)a8 userChangedFont:(BOOL)a9 userChangedNumberingSystem:(BOOL)a10 userChangedPosterContent:(BOOL)a11 userChangedWidgets:(BOOL)a12 didLockscreenHaveWidgetsBeforeEdit:(BOOL)a13 duration:(unint64_t)a14
+- (ATXPosterEdit)initWithLockscreenId:(id)id entryPoint:(id)point newlyCreated:(BOOL)created secondsSinceLastEdit:(int64_t)edit outcome:(id)outcome userChangedColor:(BOOL)color userChangedFont:(BOOL)font userChangedNumberingSystem:(BOOL)self0 userChangedPosterContent:(BOOL)self1 userChangedWidgets:(BOOL)self2 didLockscreenHaveWidgetsBeforeEdit:(BOOL)self3 duration:(unint64_t)self4
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a7;
+  idCopy = id;
+  pointCopy = point;
+  outcomeCopy = outcome;
   v31.receiver = self;
   v31.super_class = ATXPosterEdit;
   v23 = [(ATXPosterEdit *)&v31 init];
   if (v23)
   {
-    v24 = [v20 copy];
+    v24 = [idCopy copy];
     lockscreenId = v23->_lockscreenId;
     v23->_lockscreenId = v24;
 
-    v26 = [v21 copy];
+    v26 = [pointCopy copy];
     entryPoint = v23->_entryPoint;
     v23->_entryPoint = v26;
 
-    v23->_newlyCreated = a5;
-    v23->_secondsSinceLastEdit = a6;
-    v28 = [v22 copy];
+    v23->_newlyCreated = created;
+    v23->_secondsSinceLastEdit = edit;
+    v28 = [outcomeCopy copy];
     outcome = v23->_outcome;
     v23->_outcome = v28;
 
-    v23->_userChangedColor = a8;
-    v23->_userChangedFont = a9;
-    v23->_userChangedNumberingSystem = a10;
-    v23->_userChangedPosterContent = a11;
-    v23->_userChangedWidgets = a12;
-    v23->_didLockscreenHaveWidgetsBeforeEdit = a13;
-    v23->_duration = a14;
+    v23->_userChangedColor = color;
+    v23->_userChangedFont = font;
+    v23->_userChangedNumberingSystem = system;
+    v23->_userChangedPosterContent = content;
+    v23->_userChangedWidgets = widgets;
+    v23->_didLockscreenHaveWidgetsBeforeEdit = beforeEdit;
+    v23->_duration = duration;
   }
 
   return v23;
 }
 
-- (ATXPosterEdit)initWithCoder:(id)a3
+- (ATXPosterEdit)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"lockscreenId"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"entryPoint"];
-  v17 = [v3 decodeBoolForKey:@"newlyCreated"];
-  v16 = [v3 decodeIntegerForKey:@"secondsSinceLastEdit"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"outcome"];
-  v6 = [v3 decodeBoolForKey:@"userChangedColor"];
-  v7 = [v3 decodeBoolForKey:@"userChangedFont"];
-  v8 = [v3 decodeBoolForKey:@"userChangedNumberingSystem"];
-  v9 = [v3 decodeBoolForKey:@"userChangedPosterContent"];
-  v10 = [v3 decodeBoolForKey:@"userChangedWidgets"];
-  v11 = [v3 decodeBoolForKey:@"didLockscreenHaveWidgetsBeforeEdit"];
-  v12 = [v3 decodeIntegerForKey:@"duration"];
+  coderCopy = coder;
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockscreenId"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryPoint"];
+  v17 = [coderCopy decodeBoolForKey:@"newlyCreated"];
+  v16 = [coderCopy decodeIntegerForKey:@"secondsSinceLastEdit"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outcome"];
+  v6 = [coderCopy decodeBoolForKey:@"userChangedColor"];
+  v7 = [coderCopy decodeBoolForKey:@"userChangedFont"];
+  v8 = [coderCopy decodeBoolForKey:@"userChangedNumberingSystem"];
+  v9 = [coderCopy decodeBoolForKey:@"userChangedPosterContent"];
+  v10 = [coderCopy decodeBoolForKey:@"userChangedWidgets"];
+  v11 = [coderCopy decodeBoolForKey:@"didLockscreenHaveWidgetsBeforeEdit"];
+  v12 = [coderCopy decodeIntegerForKey:@"duration"];
 
   BYTE4(v15) = v11;
   BYTE3(v15) = v10;
@@ -80,78 +80,78 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(ATXPosterEdit *)self lockscreenId];
-  [v7 encodeObject:v4 forKey:@"lockscreenId"];
+  coderCopy = coder;
+  lockscreenId = [(ATXPosterEdit *)self lockscreenId];
+  [coderCopy encodeObject:lockscreenId forKey:@"lockscreenId"];
 
-  v5 = [(ATXPosterEdit *)self entryPoint];
-  [v7 encodeObject:v5 forKey:@"entryPoint"];
+  entryPoint = [(ATXPosterEdit *)self entryPoint];
+  [coderCopy encodeObject:entryPoint forKey:@"entryPoint"];
 
-  [v7 encodeBool:-[ATXPosterEdit isNewlyCreated](self forKey:{"isNewlyCreated"), @"newlyCreated"}];
-  [v7 encodeInteger:-[ATXPosterEdit secondsSinceLastEdit](self forKey:{"secondsSinceLastEdit"), @"secondsSinceLastEdit"}];
-  v6 = [(ATXPosterEdit *)self outcome];
-  [v7 encodeObject:v6 forKey:@"outcome"];
+  [coderCopy encodeBool:-[ATXPosterEdit isNewlyCreated](self forKey:{"isNewlyCreated"), @"newlyCreated"}];
+  [coderCopy encodeInteger:-[ATXPosterEdit secondsSinceLastEdit](self forKey:{"secondsSinceLastEdit"), @"secondsSinceLastEdit"}];
+  outcome = [(ATXPosterEdit *)self outcome];
+  [coderCopy encodeObject:outcome forKey:@"outcome"];
 
-  [v7 encodeBool:-[ATXPosterEdit userChangedColor](self forKey:{"userChangedColor"), @"userChangedColor"}];
-  [v7 encodeBool:-[ATXPosterEdit userChangedFont](self forKey:{"userChangedFont"), @"userChangedFont"}];
-  [v7 encodeBool:-[ATXPosterEdit userChangedNumberingSystem](self forKey:{"userChangedNumberingSystem"), @"userChangedNumberingSystem"}];
-  [v7 encodeBool:-[ATXPosterEdit userChangedPosterContent](self forKey:{"userChangedPosterContent"), @"userChangedPosterContent"}];
-  [v7 encodeBool:-[ATXPosterEdit userChangedWidgets](self forKey:{"userChangedWidgets"), @"userChangedWidgets"}];
-  [v7 encodeBool:-[ATXPosterEdit didLockscreenHaveWidgetsBeforeEdit](self forKey:{"didLockscreenHaveWidgetsBeforeEdit"), @"didLockscreenHaveWidgetsBeforeEdit"}];
-  [v7 encodeInteger:-[ATXPosterEdit duration](self forKey:{"duration"), @"duration"}];
+  [coderCopy encodeBool:-[ATXPosterEdit userChangedColor](self forKey:{"userChangedColor"), @"userChangedColor"}];
+  [coderCopy encodeBool:-[ATXPosterEdit userChangedFont](self forKey:{"userChangedFont"), @"userChangedFont"}];
+  [coderCopy encodeBool:-[ATXPosterEdit userChangedNumberingSystem](self forKey:{"userChangedNumberingSystem"), @"userChangedNumberingSystem"}];
+  [coderCopy encodeBool:-[ATXPosterEdit userChangedPosterContent](self forKey:{"userChangedPosterContent"), @"userChangedPosterContent"}];
+  [coderCopy encodeBool:-[ATXPosterEdit userChangedWidgets](self forKey:{"userChangedWidgets"), @"userChangedWidgets"}];
+  [coderCopy encodeBool:-[ATXPosterEdit didLockscreenHaveWidgetsBeforeEdit](self forKey:{"didLockscreenHaveWidgetsBeforeEdit"), @"didLockscreenHaveWidgetsBeforeEdit"}];
+  [coderCopy encodeInteger:-[ATXPosterEdit duration](self forKey:{"duration"), @"duration"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v19 = [(ATXPosterEdit *)v3 lockscreenId];
-  v17 = [v19 copy];
-  v18 = [(ATXPosterEdit *)v3 entryPoint];
-  v4 = [v18 copy];
-  v16 = [(ATXPosterEdit *)v3 isNewlyCreated];
-  v15 = [(ATXPosterEdit *)v3 secondsSinceLastEdit];
-  v5 = [(ATXPosterEdit *)v3 outcome];
-  v6 = [v5 copy];
-  v7 = [(ATXPosterEdit *)v3 userChangedColor];
-  v8 = [(ATXPosterEdit *)v3 userChangedFont];
-  v9 = [(ATXPosterEdit *)v3 userChangedNumberingSystem];
-  v10 = [(ATXPosterEdit *)v3 userChangedPosterContent];
-  v11 = [(ATXPosterEdit *)v3 userChangedWidgets];
-  BYTE4(v14) = [(ATXPosterEdit *)v3 didLockscreenHaveWidgetsBeforeEdit];
-  BYTE3(v14) = v11;
-  BYTE2(v14) = v10;
-  BYTE1(v14) = v9;
-  LOBYTE(v14) = v8;
-  v12 = [ATXPosterEdit initWithLockscreenId:v3 entryPoint:"initWithLockscreenId:entryPoint:newlyCreated:secondsSinceLastEdit:outcome:userChangedColor:userChangedFont:userChangedNumberingSystem:userChangedPosterContent:userChangedWidgets:didLockscreenHaveWidgetsBeforeEdit:duration:" newlyCreated:v17 secondsSinceLastEdit:v4 outcome:v16 userChangedColor:v15 userChangedFont:v6 userChangedNumberingSystem:v7 userChangedPosterContent:v14 userChangedWidgets:[(ATXPosterEdit *)v3 duration] didLockscreenHaveWidgetsBeforeEdit:? duration:?];
+  selfCopy = self;
+  lockscreenId = [(ATXPosterEdit *)selfCopy lockscreenId];
+  v17 = [lockscreenId copy];
+  entryPoint = [(ATXPosterEdit *)selfCopy entryPoint];
+  v4 = [entryPoint copy];
+  isNewlyCreated = [(ATXPosterEdit *)selfCopy isNewlyCreated];
+  secondsSinceLastEdit = [(ATXPosterEdit *)selfCopy secondsSinceLastEdit];
+  outcome = [(ATXPosterEdit *)selfCopy outcome];
+  v6 = [outcome copy];
+  userChangedColor = [(ATXPosterEdit *)selfCopy userChangedColor];
+  userChangedFont = [(ATXPosterEdit *)selfCopy userChangedFont];
+  userChangedNumberingSystem = [(ATXPosterEdit *)selfCopy userChangedNumberingSystem];
+  userChangedPosterContent = [(ATXPosterEdit *)selfCopy userChangedPosterContent];
+  userChangedWidgets = [(ATXPosterEdit *)selfCopy userChangedWidgets];
+  BYTE4(v14) = [(ATXPosterEdit *)selfCopy didLockscreenHaveWidgetsBeforeEdit];
+  BYTE3(v14) = userChangedWidgets;
+  BYTE2(v14) = userChangedPosterContent;
+  BYTE1(v14) = userChangedNumberingSystem;
+  LOBYTE(v14) = userChangedFont;
+  v12 = [ATXPosterEdit initWithLockscreenId:selfCopy entryPoint:"initWithLockscreenId:entryPoint:newlyCreated:secondsSinceLastEdit:outcome:userChangedColor:userChangedFont:userChangedNumberingSystem:userChangedPosterContent:userChangedWidgets:didLockscreenHaveWidgetsBeforeEdit:duration:" newlyCreated:v17 secondsSinceLastEdit:v4 outcome:isNewlyCreated userChangedColor:secondsSinceLastEdit userChangedFont:v6 userChangedNumberingSystem:userChangedColor userChangedPosterContent:v14 userChangedWidgets:[(ATXPosterEdit *)selfCopy duration] didLockscreenHaveWidgetsBeforeEdit:? duration:?];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPosterEdit *)self isEqualToATXPosterEdit:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPosterEdit *)self isEqualToATXPosterEdit:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPosterEdit:(id)a3
+- (BOOL)isEqualToATXPosterEdit:(id)edit
 {
-  v4 = a3;
+  editCopy = edit;
   v5 = self->_lockscreenId;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == editCopy[2])
   {
   }
 
@@ -169,7 +169,7 @@ LABEL_22:
 
   v8 = self->_entryPoint;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == editCopy[3])
   {
   }
 
@@ -184,20 +184,20 @@ LABEL_22:
   }
 
   newlyCreated = self->_newlyCreated;
-  if (newlyCreated != [v4 isNewlyCreated])
+  if (newlyCreated != [editCopy isNewlyCreated])
   {
     goto LABEL_22;
   }
 
   secondsSinceLastEdit = self->_secondsSinceLastEdit;
-  if (secondsSinceLastEdit != [v4 secondsSinceLastEdit])
+  if (secondsSinceLastEdit != [editCopy secondsSinceLastEdit])
   {
     goto LABEL_22;
   }
 
   v13 = self->_outcome;
   v14 = v13;
-  if (v13 == v4[5])
+  if (v13 == editCopy[5])
   {
   }
 
@@ -212,43 +212,43 @@ LABEL_22:
   }
 
   userChangedColor = self->_userChangedColor;
-  if (userChangedColor != [v4 userChangedColor])
+  if (userChangedColor != [editCopy userChangedColor])
   {
     goto LABEL_22;
   }
 
   userChangedFont = self->_userChangedFont;
-  if (userChangedFont != [v4 userChangedFont])
+  if (userChangedFont != [editCopy userChangedFont])
   {
     goto LABEL_22;
   }
 
   userChangedNumberingSystem = self->_userChangedNumberingSystem;
-  if (userChangedNumberingSystem != [v4 userChangedNumberingSystem])
+  if (userChangedNumberingSystem != [editCopy userChangedNumberingSystem])
   {
     goto LABEL_22;
   }
 
   userChangedPosterContent = self->_userChangedPosterContent;
-  if (userChangedPosterContent != [v4 userChangedPosterContent])
+  if (userChangedPosterContent != [editCopy userChangedPosterContent])
   {
     goto LABEL_22;
   }
 
   userChangedWidgets = self->_userChangedWidgets;
-  if (userChangedWidgets != [v4 userChangedWidgets])
+  if (userChangedWidgets != [editCopy userChangedWidgets])
   {
     goto LABEL_22;
   }
 
   didLockscreenHaveWidgetsBeforeEdit = self->_didLockscreenHaveWidgetsBeforeEdit;
-  if (didLockscreenHaveWidgetsBeforeEdit != [v4 didLockscreenHaveWidgetsBeforeEdit])
+  if (didLockscreenHaveWidgetsBeforeEdit != [editCopy didLockscreenHaveWidgetsBeforeEdit])
   {
     goto LABEL_22;
   }
 
   duration = self->_duration;
-  v23 = duration == [v4 duration];
+  v23 = duration == [editCopy duration];
 LABEL_23:
 
   return v23;
@@ -256,16 +256,16 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXPosterEdit *)self lockscreenId];
-  v4 = [v3 hash];
+  lockscreenId = [(ATXPosterEdit *)self lockscreenId];
+  v4 = [lockscreenId hash];
 
-  v5 = [(ATXPosterEdit *)self entryPoint];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  entryPoint = [(ATXPosterEdit *)self entryPoint];
+  v6 = [entryPoint hash] - v4 + 32 * v4;
 
   v7 = 31 * v6 + [(ATXPosterEdit *)self isNewlyCreated];
   v8 = [(ATXPosterEdit *)self secondsSinceLastEdit]- v7 + 32 * v7;
-  v9 = [(ATXPosterEdit *)self outcome];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  outcome = [(ATXPosterEdit *)self outcome];
+  v10 = [outcome hash] - v8 + 32 * v8;
 
   v11 = 31 * (31 * v10 + [(ATXPosterEdit *)self userChangedColor]);
   v12 = 31 * (v11 + [(ATXPosterEdit *)self userChangedFont]);

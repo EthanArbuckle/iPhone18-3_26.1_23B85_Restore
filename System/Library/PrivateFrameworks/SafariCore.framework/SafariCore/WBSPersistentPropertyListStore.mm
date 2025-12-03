@@ -1,16 +1,16 @@
 @interface WBSPersistentPropertyListStore
-- (WBSPersistentPropertyListStore)initWithBackingStoreURL:(id)a3 fileResourceValues:(id)a4;
+- (WBSPersistentPropertyListStore)initWithBackingStoreURL:(id)l fileResourceValues:(id)values;
 - (id)_dataRepresentation;
 - (id)_existingSavedData;
-- (id)_objectForKey:(id)a3 ofClass:(Class)a4;
+- (id)_objectForKey:(id)key ofClass:(Class)class;
 - (id)allKeys;
-- (id)arrayForKey:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)dateForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)numberForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
+- (id)arrayForKey:(id)key;
+- (id)dataForKey:(id)key;
+- (id)dateForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)numberForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
 - (void)_dataRepresentation;
 - (void)_existingSavedData;
 - (void)_loadDataIfNecessary;
@@ -18,7 +18,7 @@
 - (void)clearStoreSynchronously;
 - (void)saveAndCloseStoreSynchronously;
 - (void)saveStoreSynchronously;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation WBSPersistentPropertyListStore
@@ -27,9 +27,9 @@
 {
   if (!self->_store)
   {
-    v3 = [(WBSPersistentPropertyListStore *)self _existingSavedData];
+    _existingSavedData = [(WBSPersistentPropertyListStore *)self _existingSavedData];
     store = self->_store;
-    self->_store = v3;
+    self->_store = _existingSavedData;
 
     if (!self->_store)
     {
@@ -147,10 +147,10 @@ void __41__WBSPersistentPropertyListStore_allKeys__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (WBSPersistentPropertyListStore)initWithBackingStoreURL:(id)a3 fileResourceValues:(id)a4
+- (WBSPersistentPropertyListStore)initWithBackingStoreURL:(id)l fileResourceValues:(id)values
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  valuesCopy = values;
   v22.receiver = self;
   v22.super_class = WBSPersistentPropertyListStore;
   v8 = [(WBSPersistentPropertyListStore *)&v22 init];
@@ -160,10 +160,10 @@ void __41__WBSPersistentPropertyListStore_allKeys__block_invoke(uint64_t a1)
     queue = v8->_queue;
     v8->_queue = v9;
 
-    if (v6)
+    if (lCopy)
     {
       objc_initWeak(&location, v8);
-      v11 = [v6 copy];
+      v11 = [lCopy copy];
       backingStoreURL = v8->_backingStoreURL;
       v8->_backingStoreURL = v11;
 
@@ -174,7 +174,7 @@ void __41__WBSPersistentPropertyListStore_allKeys__block_invoke(uint64_t a1)
       v19[2] = __77__WBSPersistentPropertyListStore_initWithBackingStoreURL_fileResourceValues___block_invoke;
       v19[3] = &unk_1E7CF3CE0;
       objc_copyWeak(&v20, &location);
-      v15 = [(WBSCoalescedAsynchronousWriter *)v13 initWithName:@"WBSPersistentPropertyListStore" fileURL:v6 dataSourceQueue:v14 dataSourceBlock:v19 fileResourceValues:v7];
+      v15 = [(WBSCoalescedAsynchronousWriter *)v13 initWithName:@"WBSPersistentPropertyListStore" fileURL:lCopy dataSourceQueue:v14 dataSourceBlock:v19 fileResourceValues:valuesCopy];
       writer = v8->_writer;
       v8->_writer = v15;
 
@@ -240,9 +240,9 @@ id __77__WBSPersistentPropertyListStore_initWithBackingStoreURL_fileResourceValu
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -254,10 +254,10 @@ id __77__WBSPersistentPropertyListStore_initWithBackingStoreURL_fileResourceValu
   block[1] = 3221225472;
   block[2] = __47__WBSPersistentPropertyListStore_objectForKey___block_invoke;
   block[3] = &unk_1E7CF2D98;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -275,9 +275,9 @@ void __47__WBSPersistentPropertyListStore_objectForKey___block_invoke(uint64_t a
   *(v3 + 40) = v2;
 }
 
-- (id)_objectForKey:(id)a3 ofClass:(Class)a4
+- (id)_objectForKey:(id)key ofClass:(Class)class
 {
-  v4 = [(WBSPersistentPropertyListStore *)self objectForKey:a3];
+  v4 = [(WBSPersistentPropertyListStore *)self objectForKey:key];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -291,68 +291,68 @@ void __47__WBSPersistentPropertyListStore_objectForKey___block_invoke(uint64_t a
   return v5;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)dateForKey:(id)a3
+- (id)dateForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(WBSPersistentPropertyListStore *)self _objectForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__WBSPersistentPropertyListStore_setObject_forKey___block_invoke;
   block[3] = &unk_1E7CF2308;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = keyCopy;
   dispatch_sync(queue, block);
 }
 
@@ -424,8 +424,8 @@ uint64_t __57__WBSPersistentPropertyListStore_clearStoreSynchronously__block_inv
 - (void)_existingSavedData
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_2(&dword_1B8447000, v5, v6, "Failed to read backing store: %{public}@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -434,8 +434,8 @@ uint64_t __57__WBSPersistentPropertyListStore_clearStoreSynchronously__block_inv
 - (void)_dataRepresentation
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_2(&dword_1B8447000, v5, v6, "Failed to encode backing store: %{public}@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x1E69E9840];

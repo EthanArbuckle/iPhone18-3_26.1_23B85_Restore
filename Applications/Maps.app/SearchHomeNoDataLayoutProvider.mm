@@ -1,16 +1,16 @@
 @interface SearchHomeNoDataLayoutProvider
 - (id)cellClasses;
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5;
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8;
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item;
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme;
 @end
 
 @implementation SearchHomeNoDataLayoutProvider
 
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme
 {
-  v9 = [NSCollectionLayoutDimension fractionalWidthDimension:a3, a6, a7, a8, 1.0, a5];
+  footerHeight = [NSCollectionLayoutDimension fractionalWidthDimension:environment, block, count, theme, 1.0, footerHeight];
   v10 = [NSCollectionLayoutDimension fractionalHeightDimension:1.0];
-  v11 = [NSCollectionLayoutSize sizeWithWidthDimension:v9 heightDimension:v10];
+  v11 = [NSCollectionLayoutSize sizeWithWidthDimension:footerHeight heightDimension:v10];
 
   v12 = [NSCollectionLayoutItem itemWithLayoutSize:v11];
   v13 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v21 = 138412290;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "The LayoutSection is nil for some reason in class - %@.", &v21, 0xCu);
     }
   }
@@ -36,14 +36,14 @@
   return v18;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SearchHomeNoDataLayoutProvider *)self cellReuseIdentifier];
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  cellReuseIdentifier = [(SearchHomeNoDataLayoutProvider *)self cellReuseIdentifier];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
-  [v7 frame];
+  [viewCopy frame];
   v12 = v11;
 
   LODWORD(v13) = 1144750080;

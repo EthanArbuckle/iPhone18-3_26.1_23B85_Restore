@@ -1,16 +1,16 @@
 @interface MTSleepCoordinatorStateMachine
 - (BOOL)isUserAsleep;
-- (MTSleepCoordinatorStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4;
+- (MTSleepCoordinatorStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider;
 - (id)currentDate;
 - (id)sleepAlarm;
 - (unint64_t)sleepTimeOutMinutes;
-- (void)stateMachine:(id)a3 dismissWakeUpAlarm:(id)a4 dismissAction:(unint64_t)a5;
-- (void)stateMachine:(id)a3 shouldScheduleAlarmTimeoutForSecondsFromNow:(double)a4;
-- (void)stateMachineUserWentToBed:(id)a3;
-- (void)stateMachineUserWokeUp:(id)a3;
+- (void)stateMachine:(id)machine dismissWakeUpAlarm:(id)alarm dismissAction:(unint64_t)action;
+- (void)stateMachine:(id)machine shouldScheduleAlarmTimeoutForSecondsFromNow:(double)now;
+- (void)stateMachineUserWentToBed:(id)bed;
+- (void)stateMachineUserWokeUp:(id)up;
 - (void)updateState;
-- (void)userBedTimeReached:(id)a3;
-- (void)userWakeTimeReached:(id)a3;
+- (void)userBedTimeReached:(id)reached;
+- (void)userWakeTimeReached:(id)reached;
 - (void)userWakeUpAlarmFired;
 - (void)userWentToBed;
 - (void)userWokeUp;
@@ -19,11 +19,11 @@
 
 @implementation MTSleepCoordinatorStateMachine
 
-- (MTSleepCoordinatorStateMachine)initWithDelegate:(id)a3 infoProvider:(id)a4
+- (MTSleepCoordinatorStateMachine)initWithDelegate:(id)delegate infoProvider:(id)provider
 {
   v12.receiver = self;
   v12.super_class = MTSleepCoordinatorStateMachine;
-  v4 = [(MTStateMachine *)&v12 initWithDelegate:a3 infoProvider:a4];
+  v4 = [(MTStateMachine *)&v12 initWithDelegate:delegate infoProvider:provider];
   if (v4)
   {
     v5 = [(MTStateMachineState *)[MTSleepCoordinatorStateMachineAsleepState alloc] initWithStateMachine:v4];
@@ -46,17 +46,17 @@
 
 - (BOOL)isUserAsleep
 {
-  v3 = [(MTStateMachine *)self currentState];
-  v4 = [(MTSleepCoordinatorStateMachine *)self asleepState];
-  if (v3 == v4)
+  currentState = [(MTStateMachine *)self currentState];
+  asleepState = [(MTSleepCoordinatorStateMachine *)self asleepState];
+  if (currentState == asleepState)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v5 = [(MTStateMachine *)self currentState];
-    v6 = [(MTSleepCoordinatorStateMachine *)self asleepState];
+    currentState2 = [(MTStateMachine *)self currentState];
+    asleepState2 = [(MTSleepCoordinatorStateMachine *)self asleepState];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -66,99 +66,99 @@
 
 - (void)updateState
 {
-  v2 = [(MTStateMachine *)self currentState];
-  [v2 updateState];
+  currentState = [(MTStateMachine *)self currentState];
+  [currentState updateState];
 }
 
 - (void)userWentToBed
 {
-  v2 = [(MTStateMachine *)self currentState];
-  [v2 userWentToBed];
+  currentState = [(MTStateMachine *)self currentState];
+  [currentState userWentToBed];
 }
 
 - (void)userWokeUp
 {
-  v2 = [(MTStateMachine *)self currentState];
-  [v2 userWokeUp];
+  currentState = [(MTStateMachine *)self currentState];
+  [currentState userWokeUp];
 }
 
-- (void)userBedTimeReached:(id)a3
+- (void)userBedTimeReached:(id)reached
 {
-  v4 = a3;
-  v5 = [(MTStateMachine *)self currentState];
-  [v5 userBedTimeReached:v4];
+  reachedCopy = reached;
+  currentState = [(MTStateMachine *)self currentState];
+  [currentState userBedTimeReached:reachedCopy];
 }
 
-- (void)userWakeTimeReached:(id)a3
+- (void)userWakeTimeReached:(id)reached
 {
-  v4 = a3;
-  v5 = [(MTStateMachine *)self currentState];
-  [v5 userWakeTimeReached:v4];
+  reachedCopy = reached;
+  currentState = [(MTStateMachine *)self currentState];
+  [currentState userWakeTimeReached:reachedCopy];
 }
 
 - (void)userWakeUpAlarmFired
 {
-  v2 = [(MTStateMachine *)self currentState];
-  [v2 userWakeUpAlarmFired];
+  currentState = [(MTStateMachine *)self currentState];
+  [currentState userWakeUpAlarmFired];
 }
 
 - (void)wakeUpAlarmTimedOut
 {
-  v2 = [(MTStateMachine *)self currentState];
-  [v2 wakeUpAlarmTimedOut];
+  currentState = [(MTStateMachine *)self currentState];
+  [currentState wakeUpAlarmTimedOut];
 }
 
 - (id)sleepAlarm
 {
-  v2 = [(MTStateMachine *)self infoProvider];
-  v3 = [v2 sleepAlarm];
+  infoProvider = [(MTStateMachine *)self infoProvider];
+  sleepAlarm = [infoProvider sleepAlarm];
 
-  return v3;
+  return sleepAlarm;
 }
 
 - (id)currentDate
 {
-  v2 = [(MTStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(MTStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 - (unint64_t)sleepTimeOutMinutes
 {
-  v2 = [(MTStateMachine *)self infoProvider];
-  v3 = [v2 sleepTimeOutMinutes];
+  infoProvider = [(MTStateMachine *)self infoProvider];
+  sleepTimeOutMinutes = [infoProvider sleepTimeOutMinutes];
 
-  return v3;
+  return sleepTimeOutMinutes;
 }
 
-- (void)stateMachineUserWokeUp:(id)a3
+- (void)stateMachineUserWokeUp:(id)up
 {
-  v4 = a3;
-  v5 = [(MTStateMachine *)self delegate];
-  [v5 stateMachineUserWokeUp:v4];
+  upCopy = up;
+  delegate = [(MTStateMachine *)self delegate];
+  [delegate stateMachineUserWokeUp:upCopy];
 }
 
-- (void)stateMachineUserWentToBed:(id)a3
+- (void)stateMachineUserWentToBed:(id)bed
 {
-  v4 = a3;
-  v5 = [(MTStateMachine *)self delegate];
-  [v5 stateMachineUserWentToBed:v4];
+  bedCopy = bed;
+  delegate = [(MTStateMachine *)self delegate];
+  [delegate stateMachineUserWentToBed:bedCopy];
 }
 
-- (void)stateMachine:(id)a3 dismissWakeUpAlarm:(id)a4 dismissAction:(unint64_t)a5
+- (void)stateMachine:(id)machine dismissWakeUpAlarm:(id)alarm dismissAction:(unint64_t)action
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MTStateMachine *)self delegate];
-  [v10 stateMachine:v9 dismissWakeUpAlarm:v8 dismissAction:a5];
+  alarmCopy = alarm;
+  machineCopy = machine;
+  delegate = [(MTStateMachine *)self delegate];
+  [delegate stateMachine:machineCopy dismissWakeUpAlarm:alarmCopy dismissAction:action];
 }
 
-- (void)stateMachine:(id)a3 shouldScheduleAlarmTimeoutForSecondsFromNow:(double)a4
+- (void)stateMachine:(id)machine shouldScheduleAlarmTimeoutForSecondsFromNow:(double)now
 {
-  v6 = a3;
-  v7 = [(MTStateMachine *)self delegate];
-  [v7 stateMachine:v6 shouldScheduleAlarmTimeoutForSecondsFromNow:a4];
+  machineCopy = machine;
+  delegate = [(MTStateMachine *)self delegate];
+  [delegate stateMachine:machineCopy shouldScheduleAlarmTimeoutForSecondsFromNow:now];
 }
 
 @end

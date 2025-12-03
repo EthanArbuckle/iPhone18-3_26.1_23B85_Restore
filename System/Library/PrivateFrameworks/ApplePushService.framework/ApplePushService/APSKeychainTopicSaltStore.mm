@@ -1,59 +1,59 @@
 @interface APSKeychainTopicSaltStore
-- (APSKeychainTopicSaltStore)initWithEnvironment:(id)a3 multiUserMode:(id)a4;
-- (BOOL)_saveIdentifiersToSalts:(id)a3 toKeychainForUser:(id)a4;
-- (BOOL)_saveKeychainData:(id)a3 forUser:(id)a4;
-- (BOOL)_useSystemSaltStoreForUser:(id)a3;
-- (BOOL)saveSalt:(id)a3 forIdentifier:(id)a4 user:(id)a5;
-- (id)_deserializeKeychainData:(id)a3;
+- (APSKeychainTopicSaltStore)initWithEnvironment:(id)environment multiUserMode:(id)mode;
+- (BOOL)_saveIdentifiersToSalts:(id)salts toKeychainForUser:(id)user;
+- (BOOL)_saveKeychainData:(id)data forUser:(id)user;
+- (BOOL)_useSystemSaltStoreForUser:(id)user;
+- (BOOL)saveSalt:(id)salt forIdentifier:(id)identifier user:(id)user;
+- (id)_deserializeKeychainData:(id)data;
 - (id)_keychainService;
-- (id)_loadIdentifiersToSaltsFromKeychainForUser:(id)a3;
-- (id)_loadKeychainDataForUser:(id)a3;
-- (id)_saltStoreForUser:(id)a3;
-- (id)_serializeKeychainDict:(id)a3;
-- (id)loadIdentifiersToSaltsForUser:(id)a3;
-- (id)loadSaltForIdentifier:(id)a3 user:(id)a4;
-- (void)_setSaltStore:(id)a3 forUser:(id)a4;
+- (id)_loadIdentifiersToSaltsFromKeychainForUser:(id)user;
+- (id)_loadKeychainDataForUser:(id)user;
+- (id)_saltStoreForUser:(id)user;
+- (id)_serializeKeychainDict:(id)dict;
+- (id)loadIdentifiersToSaltsForUser:(id)user;
+- (id)loadSaltForIdentifier:(id)identifier user:(id)user;
+- (void)_setSaltStore:(id)store forUser:(id)user;
 @end
 
 @implementation APSKeychainTopicSaltStore
 
-- (APSKeychainTopicSaltStore)initWithEnvironment:(id)a3 multiUserMode:(id)a4
+- (APSKeychainTopicSaltStore)initWithEnvironment:(id)environment multiUserMode:(id)mode
 {
-  v7 = a3;
-  v8 = a4;
+  environmentCopy = environment;
+  modeCopy = mode;
   v12.receiver = self;
   v12.super_class = APSKeychainTopicSaltStore;
   v9 = [(APSKeychainTopicSaltStore *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_environment, a3);
-    objc_storeStrong(&v10->_multiUser, a4);
+    objc_storeStrong(&v9->_environment, environment);
+    objc_storeStrong(&v10->_multiUser, mode);
   }
 
   return v10;
 }
 
-- (id)loadSaltForIdentifier:(id)a3 user:(id)a4
+- (id)loadSaltForIdentifier:(id)identifier user:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSKeychainTopicSaltStore *)self _saltStoreForUser:v7];
+  identifierCopy = identifier;
+  userCopy = user;
+  v8 = [(APSKeychainTopicSaltStore *)self _saltStoreForUser:userCopy];
   if (!v8)
   {
-    v8 = [(APSKeychainTopicSaltStore *)self _loadIdentifiersToSaltsFromKeychainForUser:v7];
+    v8 = [(APSKeychainTopicSaltStore *)self _loadIdentifiersToSaltsFromKeychainForUser:userCopy];
   }
 
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v9 = [v8 objectForKeyedSubscript:identifierCopy];
   if (v9)
   {
     v10 = +[APSLog courier];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412802;
-      v13 = v7;
+      v13 = userCopy;
       v14 = 2112;
-      v15 = v6;
+      v15 = identifierCopy;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ loadSaltForIdentifier found salt %@ %@", &v12, 0x20u);
@@ -63,55 +63,55 @@
   return v9;
 }
 
-- (BOOL)saveSalt:(id)a3 forIdentifier:(id)a4 user:(id)a5
+- (BOOL)saveSalt:(id)salt forIdentifier:(id)identifier user:(id)user
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(APSKeychainTopicSaltStore *)self _saltStoreForUser:v10];
+  saltCopy = salt;
+  identifierCopy = identifier;
+  userCopy = user;
+  v11 = [(APSKeychainTopicSaltStore *)self _saltStoreForUser:userCopy];
   if (!v11)
   {
-    v11 = [(APSKeychainTopicSaltStore *)self _loadIdentifiersToSaltsFromKeychainForUser:v10];
+    v11 = [(APSKeychainTopicSaltStore *)self _loadIdentifiersToSaltsFromKeychainForUser:userCopy];
   }
 
-  v12 = [v11 objectForKeyedSubscript:v9];
+  v12 = [v11 objectForKeyedSubscript:identifierCopy];
   v13 = v12;
-  if (v8 || !v12) && ([v8 isEqualToData:v12])
+  if (saltCopy || !v12) && ([saltCopy isEqualToData:v12])
   {
     v14 = 1;
   }
 
   else
   {
-    [v11 setObject:v8 forKeyedSubscript:v9];
-    v14 = [(APSKeychainTopicSaltStore *)self _saveIdentifiersToSalts:v11 toKeychainForUser:v10];
+    [v11 setObject:saltCopy forKeyedSubscript:identifierCopy];
+    v14 = [(APSKeychainTopicSaltStore *)self _saveIdentifiersToSalts:v11 toKeychainForUser:userCopy];
     if (v14)
     {
       v15 = +[APSLog courier];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412802;
-        v18 = v10;
+        v18 = userCopy;
         v19 = 2112;
-        v20 = v8;
+        v20 = saltCopy;
         v21 = 2112;
-        v22 = v9;
+        v22 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@ saveSalt success %@ %@", &v17, 0x20u);
       }
     }
 
     else
     {
-      [v11 setObject:v13 forKeyedSubscript:v9];
+      [v11 setObject:v13 forKeyedSubscript:identifierCopy];
       v15 = +[APSLog courier];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v17 = 138412802;
-        v18 = v10;
+        v18 = userCopy;
         v19 = 2112;
-        v20 = v8;
+        v20 = saltCopy;
         v21 = 2112;
-        v22 = v9;
+        v22 = identifierCopy;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@ saveSalt failed %@ %@", &v17, 0x20u);
       }
     }
@@ -120,35 +120,35 @@
   return v14;
 }
 
-- (id)loadIdentifiersToSaltsForUser:(id)a3
+- (id)loadIdentifiersToSaltsForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(APSKeychainTopicSaltStore *)self _saltStoreForUser:v4];
+  userCopy = user;
+  v5 = [(APSKeychainTopicSaltStore *)self _saltStoreForUser:userCopy];
   if (!v5)
   {
-    v5 = [(APSKeychainTopicSaltStore *)self _loadIdentifiersToSaltsFromKeychainForUser:v4];
+    v5 = [(APSKeychainTopicSaltStore *)self _loadIdentifiersToSaltsFromKeychainForUser:userCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_useSystemSaltStoreForUser:(id)a3
+- (BOOL)_useSystemSaltStoreForUser:(id)user
 {
-  v4 = [a3 isDefaultUser];
-  if (v4)
+  isDefaultUser = [user isDefaultUser];
+  if (isDefaultUser)
   {
-    v5 = [(APSKeychainTopicSaltStore *)self multiUser];
-    v6 = [v5 isMultiUser];
+    multiUser = [(APSKeychainTopicSaltStore *)self multiUser];
+    isMultiUser = [multiUser isMultiUser];
 
-    LOBYTE(v4) = v6;
+    LOBYTE(isDefaultUser) = isMultiUser;
   }
 
-  return v4;
+  return isDefaultUser;
 }
 
-- (id)_saltStoreForUser:(id)a3
+- (id)_saltStoreForUser:(id)user
 {
-  if ([(APSKeychainTopicSaltStore *)self _useSystemSaltStoreForUser:a3])
+  if ([(APSKeychainTopicSaltStore *)self _useSystemSaltStoreForUser:user])
   {
     [(APSKeychainTopicSaltStore *)self identifiersToSaltsSystem];
   }
@@ -162,25 +162,25 @@
   return v4;
 }
 
-- (void)_setSaltStore:(id)a3 forUser:(id)a4
+- (void)_setSaltStore:(id)store forUser:(id)user
 {
-  v6 = a3;
-  if ([(APSKeychainTopicSaltStore *)self _useSystemSaltStoreForUser:a4])
+  storeCopy = store;
+  if ([(APSKeychainTopicSaltStore *)self _useSystemSaltStoreForUser:user])
   {
-    [(APSKeychainTopicSaltStore *)self setIdentifiersToSaltsSystem:v6];
+    [(APSKeychainTopicSaltStore *)self setIdentifiersToSaltsSystem:storeCopy];
   }
 
   else
   {
-    [(APSKeychainTopicSaltStore *)self setIdentifiersToSaltsUser:v6];
+    [(APSKeychainTopicSaltStore *)self setIdentifiersToSaltsUser:storeCopy];
   }
 }
 
-- (id)_loadIdentifiersToSaltsFromKeychainForUser:(id)a3
+- (id)_loadIdentifiersToSaltsFromKeychainForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(APSKeychainTopicSaltStore *)self _loadKeychainDataForUser:v4];
-  if (v5 || ([(APSKeychainTopicSaltStore *)self _loadKeychainDataForUser:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  userCopy = user;
+  v5 = [(APSKeychainTopicSaltStore *)self _loadKeychainDataForUser:userCopy];
+  if (v5 || ([(APSKeychainTopicSaltStore *)self _loadKeychainDataForUser:userCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = [(APSKeychainTopicSaltStore *)self _deserializeKeychainData:v5];
@@ -207,25 +207,25 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v4;
+    v14 = userCopy;
     v15 = 2112;
     v16 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Loaded salt store from keychain %@", &v13, 0x16u);
   }
 
-  [(APSKeychainTopicSaltStore *)self _setSaltStore:v10 forUser:v4];
+  [(APSKeychainTopicSaltStore *)self _setSaltStore:v10 forUser:userCopy];
 
   return v10;
 }
 
-- (BOOL)_saveIdentifiersToSalts:(id)a3 toKeychainForUser:(id)a4
+- (BOOL)_saveIdentifiersToSalts:(id)salts toKeychainForUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  [(APSKeychainTopicSaltStore *)self _setSaltStore:v6 forUser:v7];
-  if ([v6 count])
+  saltsCopy = salts;
+  userCopy = user;
+  [(APSKeychainTopicSaltStore *)self _setSaltStore:saltsCopy forUser:userCopy];
+  if ([saltsCopy count])
   {
-    v8 = [(APSKeychainTopicSaltStore *)self _serializeKeychainDict:v6];
+    v8 = [(APSKeychainTopicSaltStore *)self _serializeKeychainDict:saltsCopy];
   }
 
   else
@@ -233,24 +233,24 @@
     v8 = 0;
   }
 
-  v9 = [(APSKeychainTopicSaltStore *)self _saveKeychainData:v8 forUser:v7];
+  v9 = [(APSKeychainTopicSaltStore *)self _saveKeychainData:v8 forUser:userCopy];
 
   return v9;
 }
 
-- (id)_deserializeKeychainData:(id)a3
+- (id)_deserializeKeychainData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[APSLog courier];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v3;
+    v28 = dataCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_deserializeKeychainData %@", buf, 0xCu);
   }
 
   v26 = 0;
-  v5 = [NSPropertyListSerialization propertyListWithData:v3 options:0 format:0 error:&v26];
+  v5 = [NSPropertyListSerialization propertyListWithData:dataCopy options:0 format:0 error:&v26];
   v6 = v26;
   if (v6)
   {
@@ -290,7 +290,7 @@ LABEL_25:
   v10 = v9;
   v11 = *v23;
   v20 = v6;
-  v21 = v3;
+  v21 = dataCopy;
   while (2)
   {
     for (i = 0; i != v10; i = i + 1)
@@ -307,7 +307,7 @@ LABEL_25:
         v17 = +[APSLog courier];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
         {
-          v3 = v21;
+          dataCopy = v21;
           sub_100108AC8();
 LABEL_24:
           v6 = v20;
@@ -316,7 +316,7 @@ LABEL_24:
         }
 
 LABEL_23:
-        v3 = v21;
+        dataCopy = v21;
         goto LABEL_24;
       }
 
@@ -333,7 +333,7 @@ LABEL_23:
           *buf = 138412546;
           v28 = v19;
           v29 = 2112;
-          v3 = v21;
+          dataCopy = v21;
           v30 = v21;
           _os_log_fault_impl(&_mh_execute_header, v17, OS_LOG_TYPE_FAULT, "KeychainDict value not a data %@ - _deserializeSaltStoreKeychainData %@", buf, 0x16u);
 
@@ -346,7 +346,7 @@ LABEL_23:
 
     v10 = [v8 countByEnumeratingWithState:&v22 objects:v31 count:16];
     v6 = v20;
-    v3 = v21;
+    dataCopy = v21;
     if (v10)
     {
       continue;
@@ -363,19 +363,19 @@ LABEL_26:
   return v16;
 }
 
-- (id)_serializeKeychainDict:(id)a3
+- (id)_serializeKeychainDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = +[APSLog courier];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v3;
+    v11 = dictCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_serializeKeychainDict %@", buf, 0xCu);
   }
 
   v9 = 0;
-  v5 = [NSPropertyListSerialization dataWithPropertyList:v3 format:200 options:0 error:&v9];
+  v5 = [NSPropertyListSerialization dataWithPropertyList:dictCopy format:200 options:0 error:&v9];
   v6 = v9;
   if (v6)
   {
@@ -391,34 +391,34 @@ LABEL_26:
 
 - (id)_keychainService
 {
-  v2 = [(APSKeychainTopicSaltStore *)self environment];
-  v3 = [v2 domain];
-  v4 = [NSString stringWithFormat:@"%@%@", v3, @", TopicSalt.v1"];
+  environment = [(APSKeychainTopicSaltStore *)self environment];
+  domain = [environment domain];
+  v4 = [NSString stringWithFormat:@"%@%@", domain, @", TopicSalt.v1"];
 
   return v4;
 }
 
-- (id)_loadKeychainDataForUser:(id)a3
+- (id)_loadKeychainDataForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = +[APSLog courier];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 138412290;
-    *&v12[4] = v4;
+    *&v12[4] = userCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ _loadSaltStoreKeychainData", v12, 0xCu);
   }
 
-  v6 = [(APSKeychainTopicSaltStore *)self _keychainService];
+  _keychainService = [(APSKeychainTopicSaltStore *)self _keychainService];
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassGenericPassword);
   CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
-  if ([(APSKeychainTopicSaltStore *)self _useSystemSaltStoreForUser:v4])
+  if ([(APSKeychainTopicSaltStore *)self _useSystemSaltStoreForUser:userCopy])
   {
     CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
   }
 
-  CFDictionaryAddValue(Mutable, kSecAttrService, v6);
+  CFDictionaryAddValue(Mutable, kSecAttrService, _keychainService);
   CFDictionaryAddValue(Mutable, kSecReturnData, kCFBooleanTrue);
   *v12 = 0;
   v8 = SecItemCopyMatching(Mutable, v12);
@@ -437,31 +437,31 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)_saveKeychainData:(id)a3 forUser:(id)a4
+- (BOOL)_saveKeychainData:(id)data forUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  userCopy = user;
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = v7;
+    v18 = userCopy;
     v19 = 2112;
-    v20 = v6;
+    v20 = dataCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ _saveSaltStoreKeychainData %@", &v17, 0x16u);
   }
 
-  v9 = [(APSKeychainTopicSaltStore *)self _keychainService];
+  _keychainService = [(APSKeychainTopicSaltStore *)self _keychainService];
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionaryAddValue(Mutable, kSecClass, kSecClassGenericPassword);
   CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, APSBundleIdentifier);
-  if ([(APSKeychainTopicSaltStore *)self _useSystemSaltStoreForUser:v7])
+  if ([(APSKeychainTopicSaltStore *)self _useSystemSaltStoreForUser:userCopy])
   {
     CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, kCFBooleanTrue);
   }
 
-  CFDictionaryAddValue(Mutable, kSecAttrService, v9);
-  if (!v6)
+  CFDictionaryAddValue(Mutable, kSecAttrService, _keychainService);
+  if (!dataCopy)
   {
     if (SecItemDelete(Mutable))
     {
@@ -480,7 +480,7 @@ LABEL_17:
   }
 
   CFDictionaryAddValue(Mutable, kSecAttrAccessible, kSecAttrAccessibleAlwaysThisDeviceOnly);
-  CFDictionaryAddValue(Mutable, kSecValueData, v6);
+  CFDictionaryAddValue(Mutable, kSecValueData, dataCopy);
   v11 = SecItemAdd(Mutable, 0);
   if (v11 == -25299)
   {
@@ -488,13 +488,13 @@ LABEL_17:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v6;
+      v18 = dataCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "SecResult shows duplicate item, trying to update it. _saveSaltStoreKeychainData %@", &v17, 0xCu);
     }
 
     CFDictionaryRemoveValue(Mutable, kSecValueData);
     v13 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    CFDictionaryAddValue(v13, kSecValueData, v6);
+    CFDictionaryAddValue(v13, kSecValueData, dataCopy);
     v11 = SecItemUpdate(Mutable, v13);
     CFRelease(v13);
   }

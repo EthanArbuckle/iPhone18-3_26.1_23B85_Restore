@@ -1,23 +1,23 @@
 @interface IMParticipantSubscriptionSwitchChatItem
-- (id)_initWithItem:(id)a3 sender:(id)a4 otherHandle:(id)a5;
+- (id)_initWithItem:(id)item sender:(id)sender otherHandle:(id)handle;
 @end
 
 @implementation IMParticipantSubscriptionSwitchChatItem
 
-- (id)_initWithItem:(id)a3 sender:(id)a4 otherHandle:(id)a5
+- (id)_initWithItem:(id)item sender:(id)sender otherHandle:(id)handle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  senderCopy = sender;
+  handleCopy = handle;
   v19.receiver = self;
   v19.super_class = IMParticipantSubscriptionSwitchChatItem;
-  v11 = [(IMChatItem *)&v19 _initWithItem:v8];
+  v11 = [(IMChatItem *)&v19 _initWithItem:itemCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(v11 + 7, a4);
-    objc_storeStrong(v12 + 8, a5);
-    v15 = objc_msgSend_guid(v8, v13, v14);
+    objc_storeStrong(v11 + 7, sender);
+    objc_storeStrong(v12 + 8, handle);
+    v15 = objc_msgSend_guid(itemCopy, v13, v14);
     v16 = sub_1A83AC604();
 
     objc_msgSend__setGUID_(v12, v17, v16);

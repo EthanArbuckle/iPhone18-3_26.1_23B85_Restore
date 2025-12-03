@@ -14,8 +14,8 @@
   v4 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.forward"];
   v5 = [v4 imageWithConfiguration:v3];
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
   v13.width = 11.0;
   v13.height = 14.5;

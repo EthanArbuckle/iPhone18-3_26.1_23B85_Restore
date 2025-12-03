@@ -1,5 +1,5 @@
 @interface AVAudioSinkNode
-+ (id)pullInputBlockFromReceiverBlock:(id)a3;
++ (id)pullInputBlockFromReceiverBlock:(id)block;
 - (AVAudioSinkNode)initWithReceiverBlock:(AVAudioSinkNodeReceiverBlock)block;
 @end
 
@@ -12,13 +12,13 @@
   operator new();
 }
 
-+ (id)pullInputBlockFromReceiverBlock:(id)a3
++ (id)pullInputBlockFromReceiverBlock:(id)block
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__AVAudioSinkNode_pullInputBlockFromReceiverBlock___block_invoke;
   aBlock[3] = &unk_1E7EF59A8;
-  aBlock[4] = a3;
+  aBlock[4] = block;
   return _Block_copy(aBlock);
 }
 

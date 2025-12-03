@@ -1,19 +1,19 @@
 @interface SSUXPCUtils
-+ (BOOL)isPlaceholder:(id)a3;
-+ (id)extractSingleBundleId:(id)a3;
-+ (id)extractUserInfo:(id)a3;
-+ (void)dispatchAsyncWithTransaction:(id)a3 block:(id)a4;
++ (BOOL)isPlaceholder:(id)placeholder;
++ (id)extractSingleBundleId:(id)id;
++ (id)extractUserInfo:(id)info;
++ (void)dispatchAsyncWithTransaction:(id)transaction block:(id)block;
 @end
 
 @implementation SSUXPCUtils
 
-+ (id)extractUserInfo:(id)a3
++ (id)extractUserInfo:(id)info
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   if (MEMORY[0x1E1298A50]() == MEMORY[0x1E69E9E80])
   {
-    v5 = xpc_dictionary_get_dictionary(v3, "UserInfo");
+    v5 = xpc_dictionary_get_dictionary(infoCopy, "UserInfo");
   }
 
   else
@@ -34,20 +34,20 @@
   return v5;
 }
 
-+ (void)dispatchAsyncWithTransaction:(id)a3 block:(id)a4
++ (void)dispatchAsyncWithTransaction:(id)transaction block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  transactionCopy = transaction;
   v7 = os_transaction_create();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__SSUXPCUtils_dispatchAsyncWithTransaction_block___block_invoke;
   v10[3] = &unk_1E862F240;
   v11 = v7;
-  v12 = v5;
+  v12 = blockCopy;
   v8 = v7;
-  v9 = v5;
-  dispatch_async(v6, v10);
+  v9 = blockCopy;
+  dispatch_async(transactionCopy, v10);
 }
 
 uint64_t __50__SSUXPCUtils_dispatchAsyncWithTransaction_block___block_invoke(uint64_t a1)
@@ -58,10 +58,10 @@ uint64_t __50__SSUXPCUtils_dispatchAsyncWithTransaction_block___block_invoke(uin
   return result;
 }
 
-+ (id)extractSingleBundleId:(id)a3
++ (id)extractSingleBundleId:(id)id
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [a1 extractUserInfo:a3];
+  v3 = [self extractUserInfo:id];
   v4 = v3;
   if (v3)
   {
@@ -115,7 +115,7 @@ uint64_t __50__SSUXPCUtils_dispatchAsyncWithTransaction_block___block_invoke(uin
           }
         }
 
-        v14 = [v8 firstObject];
+        firstObject = [v8 firstObject];
         goto LABEL_25;
       }
 
@@ -139,7 +139,7 @@ uint64_t __50__SSUXPCUtils_dispatchAsyncWithTransaction_block___block_invoke(uin
       }
     }
 
-    v14 = 0;
+    firstObject = 0;
 LABEL_25:
 
     goto LABEL_26;
@@ -153,18 +153,18 @@ LABEL_25:
     _os_log_error_impl(&dword_1DC287000, v6, OS_LOG_TYPE_ERROR, "%s [ERR]: Received XPC event missing user info", buf, 0xCu);
   }
 
-  v14 = 0;
+  firstObject = 0;
 LABEL_26:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return firstObject;
 }
 
-+ (BOOL)isPlaceholder:(id)a3
++ (BOOL)isPlaceholder:(id)placeholder
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [a1 extractUserInfo:a3];
+  v3 = [self extractUserInfo:placeholder];
   v4 = v3;
   if (v3)
   {

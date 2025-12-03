@@ -2,26 +2,26 @@
 - (DSContinuityController)init;
 - (DSNavigationDelegate)delegate;
 - (id)allComputerNames;
-- (id)computerNameWithUUID:(id)a3;
-- (id)dateDescription:(id)a3;
+- (id)computerNameWithUUID:(id)d;
+- (id)dateDescription:(id)description;
 - (id)selectedComputerNames;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_updateButtons;
-- (void)getDevicesWithCompletion:(id)a3;
+- (void)getDevicesWithCompletion:(id)completion;
 - (void)presentLearnMore;
 - (void)presentRemoveAllDevicesAlert;
 - (void)presentRemoveSelectedDevicesAlert;
-- (void)presentUnpairErrorAlert:(id)a3;
-- (void)remoteDeviceListModified:(id)a3;
+- (void)presentUnpairErrorAlert:(id)alert;
+- (void)remoteDeviceListModified:(id)modified;
 - (void)removeAllPairedDevicesAndPushNextPane;
 - (void)removeDetailViewControllerFromStack;
 - (void)removeSelectedPairedDevicesAndPushNextPane;
-- (void)returnFromDetailAndRemoveDevice:(id)a3;
-- (void)shouldShowWithCompletion:(id)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)returnFromDetailAndRemoveDevice:(id)device;
+- (void)shouldShowWithCompletion:(id)completion;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -54,16 +54,16 @@
     DSLog_4 = v8;
 
     v10 = DSUILocStringForKey(@"SKIP");
-    v11 = [(DSContinuityController *)v6 delegate];
-    v12 = [DSUIUtilities setUpBoldButtonForController:v6 title:v10 target:v11 selector:sel_pushNextPane];
+    delegate = [(DSContinuityController *)v6 delegate];
+    v12 = [DSUIUtilities setUpBoldButtonForController:v6 title:v10 target:delegate selector:sel_pushNextPane];
     [(DSTableWelcomeController *)v6 setBoldButton:v12];
 
     v13 = DSUILocStringForKey(@"CONTINUITY_STOP_ALL");
     v14 = [DSUIUtilities setUpLinkButtonForController:v6 title:v13 target:v6 selector:sel_presentRemoveAllDevicesAlert];
     [(DSTableWelcomeController *)v6 setLinkButton:v14];
 
-    v15 = [MEMORY[0x277CBEB18] array];
-    [(DSContinuityController *)v6 setSelectedDevices:v15];
+    array = [MEMORY[0x277CBEB18] array];
+    [(DSContinuityController *)v6 setSelectedDevices:array];
 
     v16 = objc_alloc_init(MEMORY[0x277D05488]);
     [(DSContinuityController *)v6 setContinuityStore:v16];
@@ -93,9 +93,9 @@ uint64_t __41__DSContinuityController_viewWillAppear___block_invoke(uint64_t a1)
   v3 = [DSUIUtilities setUpLearnMoreButtonForController:self selector:sel_presentLearnMore];
 }
 
-- (void)shouldShowWithCompletion:(id)a3
+- (void)shouldShowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -103,13 +103,13 @@ uint64_t __41__DSContinuityController_viewWillAppear___block_invoke(uint64_t a1)
     v5[2] = __51__DSContinuityController_shouldShowWithCompletion___block_invoke;
     v5[3] = &unk_278F75718;
     v5[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     [(DSContinuityController *)self getDevicesWithCompletion:v5];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -120,18 +120,18 @@ void __51__DSContinuityController_shouldShowWithCompletion___block_invoke(uint64
   (*(v1 + 16))(v1, [v2 count] != 0);
 }
 
-- (void)getDevicesWithCompletion:(id)a3
+- (void)getDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DSContinuityController *)self continuityStore];
+  completionCopy = completion;
+  continuityStore = [(DSContinuityController *)self continuityStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__DSContinuityController_getDevicesWithCompletion___block_invoke;
   v7[3] = &unk_278F75998;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchPairedDevicesWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [continuityStore fetchPairedDevicesWithCompletion:v7];
 }
 
 void __51__DSContinuityController_getDevicesWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -266,8 +266,8 @@ uint64_t __51__DSContinuityController_getDevicesWithCompletion___block_invoke_36
   v4 = MEMORY[0x277CCACA8];
   v5 = DSUILocStringForKey(@"CONTINUITY_DISCONNECT_ALL_CONFIRMATION");
   v6 = MEMORY[0x277CCAAF0];
-  v7 = [(DSContinuityController *)self allComputerNames];
-  v8 = [v6 localizedStringByJoiningStrings:v7];
+  allComputerNames = [(DSContinuityController *)self allComputerNames];
+  v8 = [v6 localizedStringByJoiningStrings:allComputerNames];
   v9 = [v4 stringWithFormat:v5, v8];
 
   v10 = [MEMORY[0x277D75110] alertControllerWithTitle:v3 message:v9 preferredStyle:0];
@@ -291,14 +291,14 @@ uint64_t __51__DSContinuityController_getDevicesWithCompletion___block_invoke_36
 
 - (void)presentRemoveSelectedDevicesAlert
 {
-  v3 = [(DSContinuityController *)self selectedDevices];
-  v4 = [v3 count];
+  selectedDevices = [(DSContinuityController *)self selectedDevices];
+  v4 = [selectedDevices count];
 
   if (v4 == 1)
   {
-    v5 = [(DSContinuityController *)self selectedDevices];
-    v6 = [v5 firstObject];
-    v7 = [(DSContinuityController *)self computerNameWithUUID:v6];
+    selectedDevices2 = [(DSContinuityController *)self selectedDevices];
+    firstObject = [selectedDevices2 firstObject];
+    v7 = [(DSContinuityController *)self computerNameWithUUID:firstObject];
 
     v8 = MEMORY[0x277CCACA8];
     v9 = DSUILocStringForKey(@"CONTINUITY_DISCONNECT_SINGLE_TITLE");
@@ -310,8 +310,8 @@ uint64_t __51__DSContinuityController_getDevicesWithCompletion___block_invoke_36
   else
   {
     v12 = MEMORY[0x277CCAAF0];
-    v13 = [(DSContinuityController *)self selectedComputerNames];
-    v7 = [v12 localizedStringByJoiningStrings:v13];
+    selectedComputerNames = [(DSContinuityController *)self selectedComputerNames];
+    v7 = [v12 localizedStringByJoiningStrings:selectedComputerNames];
 
     v10 = DSUILocStringForKey(@"CONTINUITY_DISCONNECT_TITLE");
     v11 = @"CONTINUITY_DISCONNECT_MULTIPLE_CONFIRMATION";
@@ -340,16 +340,16 @@ uint64_t __51__DSContinuityController_getDevicesWithCompletion___block_invoke_36
   [(DSContinuityController *)self presentViewController:v17 animated:1 completion:0];
 }
 
-- (void)presentUnpairErrorAlert:(id)a3
+- (void)presentUnpairErrorAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = DSLog_4;
   if (os_log_type_enabled(DSLog_4, OS_LOG_TYPE_ERROR))
   {
-    [(DSContinuityController *)v4 presentUnpairErrorAlert:v5, v6, v7, v8, v9, v10, v11];
+    [(DSContinuityController *)alertCopy presentUnpairErrorAlert:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  v12 = [MEMORY[0x277D75110] ds_alertControllerContinuityUnpairError:v4];
+  v12 = [MEMORY[0x277D75110] ds_alertControllerContinuityUnpairError:alertCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__DSContinuityController_presentUnpairErrorAlert___block_invoke;
@@ -376,17 +376,17 @@ uint64_t __50__DSContinuityController_presentUnpairErrorAlert___block_invoke(uin
 
 - (void)removeSelectedPairedDevicesAndPushNextPane
 {
-  v3 = [(DSContinuityController *)self selectedDevices];
-  v4 = [(DSTableWelcomeController *)self boldButton];
-  [v4 showsBusyIndicator];
+  selectedDevices = [(DSContinuityController *)self selectedDevices];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton showsBusyIndicator];
 
-  v5 = [(DSContinuityController *)self continuityStore];
+  continuityStore = [(DSContinuityController *)self continuityStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__DSContinuityController_removeSelectedPairedDevicesAndPushNextPane__block_invoke;
   v6[3] = &unk_278F759C0;
   v6[4] = self;
-  [v5 unpairDevicesWithIDs:v3 completion:v6];
+  [continuityStore unpairDevicesWithIDs:selectedDevices completion:v6];
 }
 
 void __68__DSContinuityController_removeSelectedPairedDevicesAndPushNextPane__block_invoke(uint64_t a1, void *a2)
@@ -436,16 +436,16 @@ void __68__DSContinuityController_removeSelectedPairedDevicesAndPushNextPane__bl
 
 - (void)removeAllPairedDevicesAndPushNextPane
 {
-  v3 = [(DSTableWelcomeController *)self boldButton];
-  [v3 showsBusyIndicator];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton showsBusyIndicator];
 
-  v4 = [(DSContinuityController *)self continuityStore];
+  continuityStore = [(DSContinuityController *)self continuityStore];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __63__DSContinuityController_removeAllPairedDevicesAndPushNextPane__block_invoke;
   v5[3] = &unk_278F759C0;
   v5[4] = self;
-  [v4 unpairAllDevicesWithCompletion:v5];
+  [continuityStore unpairAllDevicesWithCompletion:v5];
 }
 
 void __63__DSContinuityController_removeAllPairedDevicesAndPushNextPane__block_invoke(uint64_t a1, void *a2)
@@ -482,23 +482,23 @@ void __63__DSContinuityController_removeAllPairedDevicesAndPushNextPane__block_i
   [v4 pushNextPane];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(DSContinuityController *)self continuityDevices:a3];
+  v4 = [(DSContinuityController *)self continuityDevices:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)dateDescription:(id)a3
+- (id)dateDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
     v3 = MEMORY[0x277CCA968];
-    v4 = a3;
+    descriptionCopy = description;
     v5 = objc_alloc_init(v3);
     [v5 setDateStyle:1];
-    v6 = [v5 stringFromDate:v4];
+    v6 = [v5 stringFromDate:descriptionCopy];
 
     v7 = MEMORY[0x277CCACA8];
     v8 = DSUILocStringForKey(@"CONTINUITY_TIME_PAIRED");
@@ -513,30 +513,30 @@ void __63__DSContinuityController_removeAllPairedDevicesAndPushNextPane__block_i
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSContinuityController *)self continuityDevices];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  continuityDevices = [(DSContinuityController *)self continuityDevices];
+  v7 = [continuityDevices objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  v9 = [v7 name];
-  v10 = [v7 initialDiscoveryDate];
-  v11 = [(DSContinuityController *)self dateDescription:v10];
-  v12 = [DSIconTableViewCell iconTableViewCellFromTableView:v8 withText:v9 detail:v11 icon:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  name = [v7 name];
+  initialDiscoveryDate = [v7 initialDiscoveryDate];
+  v11 = [(DSContinuityController *)self dateDescription:initialDiscoveryDate];
+  v12 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView withText:name detail:v11 icon:0];
 
-  v13 = [(DSContinuityController *)self selectedDevices];
-  v14 = [v7 deviceID];
-  LODWORD(v10) = [v13 containsObject:v14];
+  selectedDevices = [(DSContinuityController *)self selectedDevices];
+  deviceID = [v7 deviceID];
+  LODWORD(initialDiscoveryDate) = [selectedDevices containsObject:deviceID];
 
-  if (v10)
+  if (initialDiscoveryDate)
   {
-    v15 = [(OBTableWelcomeController *)self tableView];
-    [v15 selectRowAtIndexPath:v5 animated:1 scrollPosition:0];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [tableView2 selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
   }
 
-  v16 = [v7 initialDiscoveryDate];
-  if (v16 || ([v7 serialNumber], (v16 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v7, "model"), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  initialDiscoveryDate2 = [v7 initialDiscoveryDate];
+  if (initialDiscoveryDate2 || ([v7 serialNumber], (initialDiscoveryDate2 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v7, "model"), (initialDiscoveryDate2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_7:
@@ -544,9 +544,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v18 = [v7 marketingName];
+  marketingName = [v7 marketingName];
 
-  if (v18)
+  if (marketingName)
   {
     goto LABEL_7;
   }
@@ -556,46 +556,46 @@ LABEL_8:
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSContinuityController *)self selectedDevices];
-  v7 = [(DSContinuityController *)self continuityDevices];
-  v8 = [v5 row];
+  pathCopy = path;
+  selectedDevices = [(DSContinuityController *)self selectedDevices];
+  continuityDevices = [(DSContinuityController *)self continuityDevices];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
-  v10 = [v9 deviceID];
-  [v6 addObject:v10];
+  v9 = [continuityDevices objectAtIndex:v8];
+  deviceID = [v9 deviceID];
+  [selectedDevices addObject:deviceID];
 
   [(DSContinuityController *)self _updateButtons];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSContinuityController *)self selectedDevices];
-  v7 = [(DSContinuityController *)self continuityDevices];
-  v8 = [v5 row];
+  pathCopy = path;
+  selectedDevices = [(DSContinuityController *)self selectedDevices];
+  continuityDevices = [(DSContinuityController *)self continuityDevices];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
-  v10 = [v9 deviceID];
-  [v6 removeObject:v10];
+  v9 = [continuityDevices objectAtIndex:v8];
+  deviceID = [v9 deviceID];
+  [selectedDevices removeObject:deviceID];
 
   [(DSContinuityController *)self _updateButtons];
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSContinuityController *)self continuityDevices];
-  v7 = [v5 row];
+  pathCopy = path;
+  continuityDevices = [(DSContinuityController *)self continuityDevices];
+  v7 = [pathCopy row];
 
-  v10 = [v6 objectAtIndexedSubscript:v7];
+  v10 = [continuityDevices objectAtIndexedSubscript:v7];
 
   v8 = [[DSContinuityDetailController alloc] initWithContinuityDevice:v10];
   [(DSContinuityDetailController *)v8 setDelegate:self];
-  v9 = [(DSContinuityController *)self navigationController];
-  [v9 pushViewController:v8 animated:1];
+  navigationController = [(DSContinuityController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
 - (void)removeDetailViewControllerFromStack
@@ -606,10 +606,10 @@ LABEL_8:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(DSContinuityController *)self navigationController];
-  v5 = [v4 viewControllers];
+  navigationController = [(DSContinuityController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -621,7 +621,7 @@ LABEL_8:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
@@ -635,37 +635,37 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(DSContinuityController *)self navigationController];
-  [v12 setViewControllers:v3];
+  navigationController2 = [(DSContinuityController *)self navigationController];
+  [navigationController2 setViewControllers:v3];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)returnFromDetailAndRemoveDevice:(id)a3
+- (void)returnFromDetailAndRemoveDevice:(id)device
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DSTableWelcomeController *)self boldButton];
-  [v5 showsBusyIndicator];
+  deviceCopy = device;
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton showsBusyIndicator];
 
-  v6 = [(DSContinuityController *)self continuityStore];
-  v7 = [v4 deviceID];
-  v13[0] = v7;
+  continuityStore = [(DSContinuityController *)self continuityStore];
+  deviceID = [deviceCopy deviceID];
+  v13[0] = deviceID;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__DSContinuityController_returnFromDetailAndRemoveDevice___block_invoke;
   v11[3] = &unk_278F759E8;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  [v6 unpairDevicesWithIDs:v8 completion:v11];
+  v12 = deviceCopy;
+  v9 = deviceCopy;
+  [continuityStore unpairDevicesWithIDs:v8 completion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -739,58 +739,58 @@ void __58__DSContinuityController_returnFromDetailAndRemoveDevice___block_invoke
 
 - (void)_updateButtons
 {
-  v2 = self;
-  v3 = [(DSContinuityController *)v2 selectedDevices];
-  v4 = [v3 count];
+  selfCopy = self;
+  selectedDevices = [(DSContinuityController *)selfCopy selectedDevices];
+  v4 = [selectedDevices count];
 
   if (v4)
   {
     v13 = DSUILocStringForKey(@"CONTINUITY_STOP");
     v5 = sel_presentRemoveSelectedDevicesAlert;
-    v6 = v2;
+    delegate = selfCopy;
   }
 
   else
   {
     v13 = DSUILocStringForKey(@"SKIP");
     v5 = sel_pushNextPane;
-    v6 = [(DSContinuityController *)v2 delegate];
+    delegate = [(DSContinuityController *)selfCopy delegate];
   }
 
-  v7 = [(DSTableWelcomeController *)v2 boldButton];
-  [v7 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)selfCopy boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v8 = [(DSTableWelcomeController *)v2 boldButton];
-  [v8 setTitle:v13 forState:0];
+  boldButton2 = [(DSTableWelcomeController *)selfCopy boldButton];
+  [boldButton2 setTitle:v13 forState:0];
 
-  v9 = [(DSTableWelcomeController *)v2 boldButton];
-  [v9 addTarget:v6 action:v5 forControlEvents:64];
+  boldButton3 = [(DSTableWelcomeController *)selfCopy boldButton];
+  [boldButton3 addTarget:delegate action:v5 forControlEvents:64];
 
-  v10 = [(DSTableWelcomeController *)v2 linkButton];
+  linkButton = [(DSTableWelcomeController *)selfCopy linkButton];
   v11 = DSUILocStringForKey(@"CONTINUITY_STOP_ALL");
-  [v10 setTitle:v11 forState:0];
+  [linkButton setTitle:v11 forState:0];
 
-  v12 = [(DSTableWelcomeController *)v2 linkButton];
-  [v12 addTarget:v2 action:sel_presentRemoveAllDevicesAlert forControlEvents:64];
+  linkButton2 = [(DSTableWelcomeController *)selfCopy linkButton];
+  [linkButton2 addTarget:selfCopy action:sel_presentRemoveAllDevicesAlert forControlEvents:64];
 }
 
 - (void)presentLearnMore
 {
-  v4 = [(DSContinuityController *)self delegate];
+  delegate = [(DSContinuityController *)self delegate];
   v3 = DSUILocStringForKey(@"CONTINUITY_LEARN_MORE_URL");
-  [v4 learnMorePressedForController:self withURL:v3];
+  [delegate learnMorePressedForController:self withURL:v3];
 }
 
 - (id)allComputerNames
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(DSContinuityController *)self continuityDevices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  continuityDevices = [(DSContinuityController *)self continuityDevices];
+  v5 = [continuityDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -801,14 +801,14 @@ void __58__DSContinuityController_returnFromDetailAndRemoveDevice___block_invoke
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(continuityDevices);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) name];
-        [v3 addObject:v9];
+        name = [*(*(&v12 + 1) + 8 * i) name];
+        [array addObject:name];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [continuityDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -816,19 +816,19 @@ void __58__DSContinuityController_returnFromDetailAndRemoveDevice___block_invoke
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (id)selectedComputerNames
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(DSContinuityController *)self selectedDevices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selectedDevices = [(DSContinuityController *)self selectedDevices];
+  v5 = [selectedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -839,17 +839,17 @@ void __58__DSContinuityController_returnFromDetailAndRemoveDevice___block_invoke
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selectedDevices);
         }
 
         v9 = [(DSContinuityController *)self computerNameWithUUID:*(*(&v12 + 1) + 8 * i)];
         if (v9)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selectedDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -857,19 +857,19 @@ void __58__DSContinuityController_returnFromDetailAndRemoveDevice___block_invoke
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (id)computerNameWithUUID:(id)a3
+- (id)computerNameWithUUID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(DSContinuityController *)self continuityDevices];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  continuityDevices = [(DSContinuityController *)self continuityDevices];
+  v6 = [continuityDevices countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -880,22 +880,22 @@ void __58__DSContinuityController_returnFromDetailAndRemoveDevice___block_invoke
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(continuityDevices);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 deviceID];
-        v12 = [v11 isEqual:v4];
+        deviceID = [v10 deviceID];
+        v12 = [deviceID isEqual:dCopy];
 
         if (v12)
         {
-          v20 = [v10 name];
+          name = [v10 name];
 
           goto LABEL_13;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [continuityDevices countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v7)
       {
         continue;
@@ -908,18 +908,18 @@ void __58__DSContinuityController_returnFromDetailAndRemoveDevice___block_invoke
   v13 = DSLog_4;
   if (os_log_type_enabled(DSLog_4, OS_LOG_TYPE_ERROR))
   {
-    [(DSContinuityController *)v4 computerNameWithUUID:v13, v14, v15, v16, v17, v18, v19];
+    [(DSContinuityController *)dCopy computerNameWithUUID:v13, v14, v15, v16, v17, v18, v19];
   }
 
-  v20 = 0;
+  name = 0;
 LABEL_13:
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return name;
 }
 
-- (void)remoteDeviceListModified:(id)a3
+- (void)remoteDeviceListModified:(id)modified
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;

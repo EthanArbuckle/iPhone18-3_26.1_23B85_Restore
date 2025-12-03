@@ -1,16 +1,16 @@
 @interface CAMImageAnalysisInstructionLabel
-- (CAMImageAnalysisInstructionLabel)initWithFrame:(CGRect)a3;
+- (CAMImageAnalysisInstructionLabel)initWithFrame:(CGRect)frame;
 - (void)_updateText;
-- (void)setInstruction:(int64_t)a3;
+- (void)setInstruction:(int64_t)instruction;
 @end
 
 @implementation CAMImageAnalysisInstructionLabel
 
-- (CAMImageAnalysisInstructionLabel)initWithFrame:(CGRect)a3
+- (CAMImageAnalysisInstructionLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMImageAnalysisInstructionLabel;
-  v3 = [(CAMInstructionLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMInstructionLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,27 +20,27 @@
   return v4;
 }
 
-- (void)setInstruction:(int64_t)a3
+- (void)setInstruction:(int64_t)instruction
 {
-  if (self->_instruction != a3)
+  if (self->_instruction != instruction)
   {
-    self->_instruction = a3;
+    self->_instruction = instruction;
     [(CAMImageAnalysisInstructionLabel *)self _updateText];
-    v5 = [(CAMInstructionLabel *)self delegate];
-    [v5 instructionLabelDidChangeIntrinsicContentSize:self];
+    delegate = [(CAMInstructionLabel *)self delegate];
+    [delegate instructionLabelDidChangeIntrinsicContentSize:self];
   }
 }
 
 - (void)_updateText
 {
-  v3 = [(CAMImageAnalysisInstructionLabel *)self instruction];
-  if (!v3)
+  instruction = [(CAMImageAnalysisInstructionLabel *)self instruction];
+  if (!instruction)
   {
     v4 = @"IMAGE_ANALYSIS_INSTRUCTION_SELECT_TEXT";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (instruction == 1)
   {
     v4 = @"IMAGE_ANALYSIS_INSTRUCTION_NO_TEXT_FOUND";
 LABEL_5:

@@ -1,6 +1,6 @@
 @interface BELayerHierarchyHostingView
 - (BELayerHierarchyHandle)handle;
-- (void)setHandle:(id)a3;
+- (void)setHandle:(id)handle;
 @end
 
 @implementation BELayerHierarchyHostingView
@@ -13,26 +13,26 @@
   return handle;
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
-  v12 = a3;
+  handleCopy = handle;
   BSDispatchQueueAssertMain();
   v5 = self->_visibility;
-  v6 = [(BELayerHierarchyHostingView *)self layer];
-  [v6 setNeedsAuthoritativeHostingToken];
-  v7 = [(BELayerHierarchy *)v12 _context];
-  if (v7)
+  layer = [(BELayerHierarchyHostingView *)self layer];
+  [layer setNeedsAuthoritativeHostingToken];
+  _context = [(BELayerHierarchy *)handleCopy _context];
+  if (_context)
   {
-    v8 = [(BELayerHierarchy *)self->_handle _context];
-    [v6 setHostingToken:v7];
-    if (v8 && (v9 = [v8 pid], v9 == objc_msgSend(v7, "pid")))
+    _context2 = [(BELayerHierarchy *)self->_handle _context];
+    [layer setHostingToken:_context];
+    if (_context2 && (v9 = [_context2 pid], v9 == objc_msgSend(_context, "pid")))
     {
       v10 = v5;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69DD830] interactionWithPID:objc_msgSend(v7 environmentIdentifier:{"pid"), @"BEHostingVisibilitySink"}];
+      v10 = [MEMORY[0x1E69DD830] interactionWithPID:objc_msgSend(_context environmentIdentifier:{"pid"), @"BEHostingVisibilitySink"}];
     }
 
     v11 = v10;
@@ -40,11 +40,11 @@
 
   else
   {
-    [v6 setHostingToken:0];
+    [layer setHostingToken:0];
     v11 = 0;
   }
 
-  objc_storeStrong(&self->_handle, a3);
+  objc_storeStrong(&self->_handle, handle);
   if (v11 != v5)
   {
     objc_storeStrong(&self->_visibility, v11);

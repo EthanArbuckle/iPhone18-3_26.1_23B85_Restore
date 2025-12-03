@@ -1,8 +1,8 @@
 @interface CSFVoiceTriggerEventInfoSelfLogger
 + (id)sharedLogger;
-- (void)logRejectEventWithVTEI:(id)a3 withMHUUID:(id)a4 withSecondPassResult:(unint64_t)a5;
-- (void)logStartEventWithFirstPassStartedInfo:(id)a3 withMHUUID:(id)a4;
-- (void)logTriggerEventWithVTEI:(id)a3 withMHUUID:(id)a4;
+- (void)logRejectEventWithVTEI:(id)i withMHUUID:(id)d withSecondPassResult:(unint64_t)result;
+- (void)logStartEventWithFirstPassStartedInfo:(id)info withMHUUID:(id)d;
+- (void)logTriggerEventWithVTEI:(id)i withMHUUID:(id)d;
 @end
 
 @implementation CSFVoiceTriggerEventInfoSelfLogger
@@ -36,24 +36,24 @@ uint64_t __50__CSFVoiceTriggerEventInfoSelfLogger_sharedLogger__block_invoke()
   return result;
 }
 
-- (void)logRejectEventWithVTEI:(id)a3 withMHUUID:(id)a4 withSecondPassResult:(unint64_t)a5
+- (void)logRejectEventWithVTEI:(id)i withMHUUID:(id)d withSecondPassResult:(unint64_t)result
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  dCopy = d;
   __assert_rtn("[CSFVoiceTriggerEventInfoSelfLogger logRejectEventWithVTEI:withMHUUID:withSecondPassResult:]", "CSFVoiceTriggerEventInfoSelfLogger.m", 54, "NO");
 }
 
-- (void)logTriggerEventWithVTEI:(id)a3 withMHUUID:(id)a4
+- (void)logTriggerEventWithVTEI:(id)i withMHUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  iCopy = i;
+  dCopy = d;
   __assert_rtn("[CSFVoiceTriggerEventInfoSelfLogger logTriggerEventWithVTEI:withMHUUID:]", "CSFVoiceTriggerEventInfoSelfLogger.m", 49, "NO");
 }
 
-- (void)logStartEventWithFirstPassStartedInfo:(id)a3 withMHUUID:(id)a4
+- (void)logStartEventWithFirstPassStartedInfo:(id)info withMHUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  dCopy = d;
   __assert_rtn("[CSFVoiceTriggerEventInfoSelfLogger logStartEventWithFirstPassStartedInfo:withMHUUID:]", "CSFVoiceTriggerEventInfoSelfLogger.m", 45, "NO");
 }
 

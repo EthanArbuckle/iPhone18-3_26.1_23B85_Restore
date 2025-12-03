@@ -1,5 +1,5 @@
 @interface MRUODRDSNoticationObserver
-- (MRUODRDSNoticationObserver)initWithDelegate:(id)a3;
+- (MRUODRDSNoticationObserver)initWithDelegate:(id)delegate;
 - (MRUODRDSNoticationObserverDelegate)delegate;
 - (void)endObservation;
 - (void)hearingAidReachabilityDidChange;
@@ -7,16 +7,16 @@
 
 @implementation MRUODRDSNoticationObserver
 
-- (MRUODRDSNoticationObserver)initWithDelegate:(id)a3
+- (MRUODRDSNoticationObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = MRUODRDSNoticationObserver;
   v5 = [(MRUODRDSNoticationObserver *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, _MRUHearingDevicesDidChangeNotification, *MEMORY[0x1E69A45A0], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }

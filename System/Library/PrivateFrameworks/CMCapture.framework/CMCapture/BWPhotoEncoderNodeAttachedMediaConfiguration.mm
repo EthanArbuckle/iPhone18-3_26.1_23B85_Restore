@@ -1,29 +1,29 @@
 @interface BWPhotoEncoderNodeAttachedMediaConfiguration
-- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithDimensions:(id)a3 propagationMode:(int64_t)a4;
-- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithKeepInputDimensions:(BOOL)a3 propagationMode:(int64_t)a4;
-- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithMainImageDownscalingFactor:(float)a3 propagationMode:(int64_t)a4;
+- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithDimensions:(id)dimensions propagationMode:(int64_t)mode;
+- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithKeepInputDimensions:(BOOL)dimensions propagationMode:(int64_t)mode;
+- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithMainImageDownscalingFactor:(float)factor propagationMode:(int64_t)mode;
 - (id)description;
 @end
 
 @implementation BWPhotoEncoderNodeAttachedMediaConfiguration
 
-- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithMainImageDownscalingFactor:(float)a3 propagationMode:(int64_t)a4
+- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithMainImageDownscalingFactor:(float)factor propagationMode:(int64_t)mode
 {
   v7.receiver = self;
   v7.super_class = BWPhotoEncoderNodeAttachedMediaConfiguration;
   result = [(BWPhotoEncoderNodeAttachedMediaConfiguration *)&v7 init];
   if (result)
   {
-    result->_mainImageDownscalingFactor = a3;
+    result->_mainImageDownscalingFactor = factor;
     result->_dimensions = 0;
     result->_keepInputDimensions = 0;
-    result->_propagationMode = a4;
+    result->_propagationMode = mode;
   }
 
   return result;
 }
 
-- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithDimensions:(id)a3 propagationMode:(int64_t)a4
+- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithDimensions:(id)dimensions propagationMode:(int64_t)mode
 {
   v7.receiver = self;
   v7.super_class = BWPhotoEncoderNodeAttachedMediaConfiguration;
@@ -31,15 +31,15 @@
   if (result)
   {
     result->_mainImageDownscalingFactor = 0.0;
-    result->_dimensions = a3;
+    result->_dimensions = dimensions;
     result->_keepInputDimensions = 0;
-    result->_propagationMode = a4;
+    result->_propagationMode = mode;
   }
 
   return result;
 }
 
-- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithKeepInputDimensions:(BOOL)a3 propagationMode:(int64_t)a4
+- (BWPhotoEncoderNodeAttachedMediaConfiguration)initWithKeepInputDimensions:(BOOL)dimensions propagationMode:(int64_t)mode
 {
   v7.receiver = self;
   v7.super_class = BWPhotoEncoderNodeAttachedMediaConfiguration;
@@ -48,8 +48,8 @@
   {
     result->_mainImageDownscalingFactor = 0.0;
     result->_dimensions = 0;
-    result->_keepInputDimensions = a3;
-    result->_propagationMode = a4;
+    result->_keepInputDimensions = dimensions;
+    result->_propagationMode = mode;
   }
 
   return result;

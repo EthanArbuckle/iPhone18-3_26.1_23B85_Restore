@@ -1,21 +1,21 @@
 @interface AVCEffects
-- (AVCEffects)initWithDelegate:(id)a3;
-- (BOOL)enqueueSampleBuffer:(__CVBuffer *)a3 time:(id *)a4;
-- (BOOL)setupRemoteReceiverQueueWithSenderQueue:(id)a3;
-- (void)avcVideoFrameDidRelease:(id)a3;
+- (AVCEffects)initWithDelegate:(id)delegate;
+- (BOOL)enqueueSampleBuffer:(__CVBuffer *)buffer time:(id *)time;
+- (BOOL)setupRemoteReceiverQueueWithSenderQueue:(id)queue;
+- (void)avcVideoFrameDidRelease:(id)release;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
-- (void)encodeProcessedVideoFrame:(id)a3;
+- (void)encodeProcessedVideoFrame:(id)frame;
 - (void)registerBlocksForNotifications;
-- (void)remoteQueueOperationHandlerWithError:(int)a3 operation:(FigRemoteOperation *)a4;
-- (void)setDelegate:(id)a3;
-- (void)setEffectType:(int)a3;
-- (void)setMode:(int)a3;
+- (void)remoteQueueOperationHandlerWithError:(int)error operation:(FigRemoteOperation *)operation;
+- (void)setDelegate:(id)delegate;
+- (void)setEffectType:(int)type;
+- (void)setMode:(int)mode;
 @end
 
 @implementation AVCEffects
 
-- (AVCEffects)initWithDelegate:(id)a3
+- (AVCEffects)initWithDelegate:(id)delegate
 {
   v31 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -31,7 +31,7 @@
       v27 = 1024;
       v28 = 39;
       v29 = 2112;
-      v30 = a3;
+      delegateCopy = delegate;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d inDelegate=%@", buf, 0x26u);
     }
   }
@@ -47,7 +47,7 @@
   v7->_connection = objc_alloc_init(AVConferenceXPCClient);
   CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
   v7->_avConferenceEffectsQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.effects", 0, CustomRootQueue);
-  objc_storeWeak(&v7->_delegate, a3);
+  objc_storeWeak(&v7->_delegate, delegate);
   v9 = [(AVConferenceXPCClient *)v7->_connection sendMessageSync:"vcEffectsInitialize"];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -62,7 +62,7 @@
       v27 = 1024;
       v28 = 51;
       v29 = 2112;
-      v30 = v9;
+      delegateCopy = v9;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Results from initialization: %@", buf, 0x26u);
     }
   }
@@ -198,7 +198,7 @@ LABEL_23:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -214,18 +214,18 @@ LABEL_23:
       v11 = 1024;
       v12 = 107;
       v13 = 2112;
-      v14 = a3;
+      delegateCopy = delegate;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d delegate=%@", &v7, 0x26u);
     }
   }
 
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 }
 
-- (BOOL)setupRemoteReceiverQueueWithSenderQueue:(id)a3
+- (BOOL)setupRemoteReceiverQueueWithSenderQueue:(id)queue
 {
   v8[5] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!queue)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -250,7 +250,7 @@ LABEL_10:
   v8[2] = __54__AVCEffects_setupRemoteReceiverQueueWithSenderQueue___block_invoke;
   v8[3] = &unk_1E85F5340;
   v8[4] = v5;
-  VCRemoteImageQueue_CreateReceiverQueue(a3, v8, self->_avConferenceEffectsQueue, &self->_receiverQueue);
+  VCRemoteImageQueue_CreateReceiverQueue(queue, v8, self->_avConferenceEffectsQueue, &self->_receiverQueue);
   if (!self->_receiverQueue)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -284,10 +284,10 @@ void *__54__AVCEffects_setupRemoteReceiverQueueWithSenderQueue___block_invoke(ui
   return result;
 }
 
-- (void)remoteQueueOperationHandlerWithError:(int)a3 operation:(FigRemoteOperation *)a4
+- (void)remoteQueueOperationHandlerWithError:(int)error operation:(FigRemoteOperation *)operation
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -299,11 +299,11 @@ void *__54__AVCEffects_setupRemoteReceiverQueueWithSenderQueue___block_invoke(ui
     }
   }
 
-  else if (a4->var0 == 1)
+  else if (operation->var0 == 1)
   {
     memset(v18, 170, sizeof(v18));
     FigCFDictionaryGetCMTimeIfPresent();
-    Value = CFDictionaryGetValue(a4->var4.var0.var0, @"vcEffectsImageData");
+    Value = CFDictionaryGetValue(operation->var4.var0.var0, @"vcEffectsImageData");
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
       v9 = VRTraceErrorLogLevelToCSTR();
@@ -359,10 +359,10 @@ void *__54__AVCEffects_setupRemoteReceiverQueueWithSenderQueue___block_invoke(ui
     self->_lastReceivedDepthBuffer = 0;
   }
 
-  else if (a4->var0 == 3)
+  else if (operation->var0 == 3)
   {
     v6 = self->_lastReceivedPixelBuffer;
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4->var4.var0.var0);
+    ImageBuffer = CMSampleBufferGetImageBuffer(operation->var4.var0.var0);
     if (v6)
     {
       self->_lastReceivedDepthBuffer = ImageBuffer;
@@ -600,15 +600,15 @@ void *__44__AVCEffects_registerBlocksForNotifications__block_invoke_38(uint64_t 
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcEffectsServerTimeOut"];
 }
 
-- (void)avcVideoFrameDidRelease:(id)a3
+- (void)avcVideoFrameDidRelease:(id)release
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"vcEffectsFrameTime";
   v4 = MEMORY[0x1E696AD98];
-  if (a3)
+  if (release)
   {
-    [a3 time];
-    a3 = v5;
+    [release time];
+    release = v5;
   }
 
   else
@@ -618,13 +618,13 @@ void *__44__AVCEffects_registerBlocksForNotifications__block_invoke_38(uint64_t 
     v7 = 0;
   }
 
-  v9[0] = [v4 numberWithLongLong:{a3, v5, v6, v7, v8}];
+  v9[0] = [v4 numberWithLongLong:{release, v5, v6, v7, v8}];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](self->_connection, "sendMessageAsync:arguments:", "vcEffectsClientReleasedVideoFrame", [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1]);
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v24 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   v6 = MEMORY[0x1E6986650];
@@ -690,9 +690,9 @@ void __22__AVCEffects_setMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setEffectType:(int)a3
+- (void)setEffectType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v23 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -779,11 +779,11 @@ void __28__AVCEffects_setEffectType___block_invoke(uint64_t a1)
   v2 = *(a1 + 40);
 }
 
-- (BOOL)enqueueSampleBuffer:(__CVBuffer *)a3 time:(id *)a4
+- (BOOL)enqueueSampleBuffer:(__CVBuffer *)buffer time:(id *)time
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = *a4;
-  SampleBufferWithPixelBuffer = createSampleBufferWithPixelBuffer(a3, &v9.var0);
+  v9 = *time;
+  SampleBufferWithPixelBuffer = createSampleBufferWithPixelBuffer(buffer, &v9.var0);
   if (!SampleBufferWithPixelBuffer)
   {
     [AVCEffects enqueueSampleBuffer:? time:?];
@@ -802,7 +802,7 @@ void __28__AVCEffects_setEffectType___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (void)encodeProcessedVideoFrame:(id)a3
+- (void)encodeProcessedVideoFrame:(id)frame
 {
   v29 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -824,7 +824,7 @@ void __28__AVCEffects_setEffectType___block_invoke(uint64_t a1)
         v25 = 1024;
         v26 = 319;
         v27 = 2112;
-        v28 = a3;
+        frameCopy = frame;
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d videoFrame=%@", buf, 0x26u);
       }
     }
@@ -836,14 +836,14 @@ void __28__AVCEffects_setEffectType___block_invoke(uint64_t a1)
   }
 
   kdebug_trace();
-  v11 = a3;
+  frameCopy2 = frame;
   avConferenceEffectsQueue = self->_avConferenceEffectsQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__AVCEffects_encodeProcessedVideoFrame___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = frame;
   dispatch_async(avConferenceEffectsQueue, block);
   if (VRTraceGetErrorLogLevelForModule() >= 8)
   {
@@ -854,9 +854,9 @@ void __28__AVCEffects_setEffectType___block_invoke(uint64_t a1)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (frame)
         {
-          [a3 time];
+          [frame time];
           v16 = v19;
         }
 
@@ -872,16 +872,16 @@ void __28__AVCEffects_setEffectType___block_invoke(uint64_t a1)
         v25 = 1024;
         v26 = 358;
         v27 = 2048;
-        v28 = v16;
+        frameCopy = v16;
         _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Encoding processed video frame %lld", buf, 0x26u);
       }
     }
 
     else if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      if (a3)
+      if (frame)
       {
-        [a3 time];
+        [frame time];
         v17 = v18;
       }
 
@@ -897,7 +897,7 @@ void __28__AVCEffects_setEffectType___block_invoke(uint64_t a1)
       v25 = 1024;
       v26 = 358;
       v27 = 2048;
-      v28 = v17;
+      frameCopy = v17;
       _os_log_debug_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEBUG, " [%s] %s:%d Encoding processed video frame %lld", buf, 0x26u);
     }
   }

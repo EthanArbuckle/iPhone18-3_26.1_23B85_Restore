@@ -1,33 +1,33 @@
 @interface IFTSchemaASTFlatExprPickVariant
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaASTFlatExprPickVariant)initWithDictionary:(id)a3;
-- (IFTSchemaASTFlatExprPickVariant)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaASTFlatExprPickVariant)initWithDictionary:(id)dictionary;
+- (IFTSchemaASTFlatExprPickVariant)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaASTFlatExprPickVariant
 
-- (IFTSchemaASTFlatExprPickVariant)initWithDictionary:(id)a3
+- (IFTSchemaASTFlatExprPickVariant)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = IFTSchemaASTFlatExprPickVariant;
   v5 = [(IFTSchemaASTFlatExprPickVariant *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaASTFlatExprPickVariant setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"rawEventId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"rawEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(IFTSchemaASTFlatExprPickVariant *)v5 setRawEventId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"pickType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"pickType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFTSchemaASTFlatExprPickVariant)initWithJSON:(id)a3
+- (IFTSchemaASTFlatExprPickVariant)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaASTFlatExprPickVariant *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaASTFlatExprPickVariant *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaASTFlatExprPickVariant *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaASTFlatExprPickVariant exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_pickType)
   {
-    v5 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    pickType = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
+    dictionaryRepresentation = [pickType dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"pickType"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"pickType"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"pickType"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"pickType"];
     }
   }
 
   if (self->_rawEventId)
   {
-    v8 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    rawEventId = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
+    dictionaryRepresentation2 = [rawEventId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"rawEventId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"rawEventId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"rawEventId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"rawEventId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -145,15 +145,15 @@
   return v4 ^ [(IFTSchemaASTPickType *)self->_pickType hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -161,26 +161,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
-  v7 = [v4 rawEventId];
-  if ((v6 != 0) == (v7 == 0))
+  rawEventId = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
+  rawEventId2 = [equalCopy rawEventId];
+  if ((rawEventId != 0) == (rawEventId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
-  if (v8)
+  rawEventId3 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
+  if (rawEventId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
-    v11 = [v4 rawEventId];
-    v12 = [v10 isEqual:v11];
+    v9 = rawEventId3;
+    rawEventId4 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
+    rawEventId5 = [equalCopy rawEventId];
+    v12 = [rawEventId4 isEqual:rawEventId5];
 
     if (!v12)
     {
@@ -192,12 +192,12 @@
   {
   }
 
-  v6 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
-  v7 = [v4 pickType];
-  if ((v6 != 0) != (v7 == 0))
+  rawEventId = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
+  rawEventId2 = [equalCopy pickType];
+  if ((rawEventId != 0) != (rawEventId2 == 0))
   {
-    v13 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
-    if (!v13)
+    pickType = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
+    if (!pickType)
     {
 
 LABEL_18:
@@ -205,10 +205,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
-    v16 = [v4 pickType];
-    v17 = [v15 isEqual:v16];
+    v14 = pickType;
+    pickType2 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
+    pickType3 = [equalCopy pickType];
+    v17 = [pickType2 isEqual:pickType3];
 
     if (v17)
     {
@@ -228,54 +228,54 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
+  rawEventId = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
 
-  if (v4)
+  if (rawEventId)
   {
-    v5 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
+    rawEventId2 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
+  pickType = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (pickType)
   {
-    v8 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
+    pickType2 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaASTFlatExprPickVariant;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  rawEventId = [(IFTSchemaASTFlatExprPickVariant *)self rawEventId];
+  v7 = [rawEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaASTFlatExprPickVariant *)self deleteRawEventId];
   }
 
-  v9 = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  pickType = [(IFTSchemaASTFlatExprPickVariant *)self pickType];
+  v10 = [pickType applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaASTFlatExprPickVariant *)self deletePickType];
   }

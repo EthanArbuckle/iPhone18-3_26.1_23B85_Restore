@@ -1,7 +1,7 @@
 @interface AUDeveloperSettingsOverrideController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateDescriptionForSpecifier:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateDescriptionForSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -19,9 +19,9 @@
 
 - (id)specifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *(&v2->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
   if (v3)
   {
     v4 = v3;
@@ -29,35 +29,35 @@
   }
 
   v37 = *MEMORY[0x277D3FC48];
-  v5 = [(AUDeveloperSettingsOverrideController *)v2 loadSpecifiersFromPlistName:*MEMORY[0x277CE5478] target:v2];
+  v5 = [(AUDeveloperSettingsOverrideController *)selfCopy loadSpecifiersFromPlistName:*MEMORY[0x277CE5478] target:selfCopy];
   v6 = [v5 specifierForID:*MEMORY[0x277CE5510]];
-  locationRadioGroup = v2->_locationRadioGroup;
-  v2->_locationRadioGroup = v6;
+  locationRadioGroup = selfCopy->_locationRadioGroup;
+  selfCopy->_locationRadioGroup = v6;
 
   v8 = [v5 specifierForID:*MEMORY[0x277CE54E8]];
-  p_customerSpecifier = &v2->_customerSpecifier;
-  customerSpecifier = v2->_customerSpecifier;
-  v2->_customerSpecifier = v8;
+  p_customerSpecifier = &selfCopy->_customerSpecifier;
+  customerSpecifier = selfCopy->_customerSpecifier;
+  selfCopy->_customerSpecifier = v8;
 
   v11 = [v5 specifierForID:*MEMORY[0x277CE5500]];
-  publicSeedSpecifier = v2->_publicSeedSpecifier;
-  p_publicSeedSpecifier = &v2->_publicSeedSpecifier;
-  v2->_publicSeedSpecifier = v11;
+  publicSeedSpecifier = selfCopy->_publicSeedSpecifier;
+  p_publicSeedSpecifier = &selfCopy->_publicSeedSpecifier;
+  selfCopy->_publicSeedSpecifier = v11;
 
   v13 = [v5 specifierForID:*MEMORY[0x277CE54F8]];
-  developerSeedSpecifier = v2->_developerSeedSpecifier;
-  v2->_developerSeedSpecifier = v13;
+  developerSeedSpecifier = selfCopy->_developerSeedSpecifier;
+  selfCopy->_developerSeedSpecifier = v13;
 
   v15 = [v5 specifierForID:*MEMORY[0x277CE54F0]];
-  customerStagingSpecifier = v2->_customerStagingSpecifier;
-  v2->_customerStagingSpecifier = v15;
+  customerStagingSpecifier = selfCopy->_customerStagingSpecifier;
+  selfCopy->_customerStagingSpecifier = v15;
 
-  v17 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  descriptionSpecifier = v2->_descriptionSpecifier;
-  v2->_descriptionSpecifier = v17;
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  descriptionSpecifier = selfCopy->_descriptionSpecifier;
+  selfCopy->_descriptionSpecifier = emptyGroupSpecifier;
 
-  v19 = [(AUDeveloperSettingsOverrideController *)v2 specifier];
-  v20 = [v19 identifier];
+  specifier = [(AUDeveloperSettingsOverrideController *)selfCopy specifier];
+  identifier = [specifier identifier];
   v21 = getInfoForAccessory();
   v22 = [v21 mutableCopy];
 
@@ -67,21 +67,21 @@
     v24 = *MEMORY[0x277CE5530];
     v25 = [v22 objectForKeyedSubscript:*MEMORY[0x277CE5530]];
     v26 = AUDeveloperSettingsURLStringToType();
-    v27 = v2->_locationRadioGroup;
+    v27 = selfCopy->_locationRadioGroup;
     v28 = *MEMORY[0x277D40090];
     if (v26 > 5)
     {
       if (v26 == 6)
       {
-        [(PSSpecifier *)v27 setProperty:v2->_customerStagingSpecifier forKey:v28];
-        p_customerSpecifier = &v2->_customerStagingSpecifier;
+        [(PSSpecifier *)v27 setProperty:selfCopy->_customerStagingSpecifier forKey:v28];
+        p_customerSpecifier = &selfCopy->_customerStagingSpecifier;
         goto LABEL_14;
       }
 
       if (v26 == 8)
       {
-        [(PSSpecifier *)v27 setProperty:v2->_developerSeedSpecifier forKey:v28];
-        p_customerSpecifier = &v2->_developerSeedSpecifier;
+        [(PSSpecifier *)v27 setProperty:selfCopy->_developerSeedSpecifier forKey:v28];
+        p_customerSpecifier = &selfCopy->_developerSeedSpecifier;
         goto LABEL_14;
       }
     }
@@ -96,10 +96,10 @@
 
       if (v26 == 3)
       {
-        p_customerSpecifier = &v2->_publicSeedSpecifier;
+        p_customerSpecifier = &selfCopy->_publicSeedSpecifier;
         [(PSSpecifier *)v27 setProperty:*p_publicSeedSpecifier forKey:v28];
 LABEL_14:
-        [(AUDeveloperSettingsOverrideController *)v2 updateDescriptionForSpecifier:*p_customerSpecifier, p_publicSeedSpecifier];
+        [(AUDeveloperSettingsOverrideController *)selfCopy updateDescriptionForSpecifier:*p_customerSpecifier, p_publicSeedSpecifier];
         goto LABEL_15;
       }
     }
@@ -108,38 +108,38 @@ LABEL_14:
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:AUDeveloperSettingsURLTypeToString()];
     [v22 setObject:v29 forKeyedSubscript:v24];
 
-    v30 = [MEMORY[0x277CE5450] sharedDatabase];
-    v31 = [(AUDeveloperSettingsOverrideController *)v2 specifier];
-    v32 = [v31 identifier];
-    [v30 addAccessoryWithSerialNumber:v32 info:v22];
+    mEMORY[0x277CE5450] = [MEMORY[0x277CE5450] sharedDatabase];
+    specifier2 = [(AUDeveloperSettingsOverrideController *)selfCopy specifier];
+    identifier2 = [specifier2 identifier];
+    [mEMORY[0x277CE5450] addAccessoryWithSerialNumber:identifier2 info:v22];
 
-    WeakRetained = objc_loadWeakRetained((&v2->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
-    [WeakRetained reloadSpecifier:*(&v2->super.super.super.super.super.isa + *MEMORY[0x277D3FD20])];
+    WeakRetained = objc_loadWeakRetained((&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
+    [WeakRetained reloadSpecifier:*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FD20])];
 
 LABEL_15:
   }
 
-  [v5 addObject:{v2->_descriptionSpecifier, p_publicSeedSpecifier}];
+  [v5 addObject:{selfCopy->_descriptionSpecifier, p_publicSeedSpecifier}];
   v34 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
-  [(AUDeveloperSettingsOverrideController *)v2 setSpecifiers:v34];
+  [(AUDeveloperSettingsOverrideController *)selfCopy setSpecifiers:v34];
 
-  v4 = *(&v2->super.super.super.super.super.isa + v37);
+  v4 = *(&selfCopy->super.super.super.super.super.isa + v37);
 LABEL_17:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)updateDescriptionForSpecifier:(id)a3
+- (void)updateDescriptionForSpecifier:(id)specifier
 {
   v4 = *MEMORY[0x277D40170];
-  v5 = a3;
-  v15 = [v5 propertyForKey:v4];
-  v6 = [v5 propertyForKey:*MEMORY[0x277CE54B8]];
-  v7 = [v5 propertyForKey:*MEMORY[0x277CE5490]];
+  specifierCopy = specifier;
+  v15 = [specifierCopy propertyForKey:v4];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x277CE54B8]];
+  v7 = [specifierCopy propertyForKey:*MEMORY[0x277CE5490]];
 
-  v8 = [(AUDeveloperSettingsOverrideController *)self specifier];
-  v9 = [v8 identifier];
+  specifier = [(AUDeveloperSettingsOverrideController *)self specifier];
+  identifier = [specifier identifier];
   v10 = getInfoForAccessory();
 
   v11 = *MEMORY[0x277CE5538];
@@ -160,19 +160,19 @@ LABEL_17:
   [(AUDeveloperSettingsOverrideController *)self reloadSpecifier:self->_descriptionSpecifier];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AUDeveloperSettingsOverrideController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AUDeveloperSettingsOverrideController *)self indexForIndexPath:pathCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [(AUDeveloperSettingsOverrideController *)self specifierAtIndex:v8];
     if (v9)
     {
       [(AUDeveloperSettingsOverrideController *)self updateDescriptionForSpecifier:v9];
-      v10 = [(AUDeveloperSettingsOverrideController *)self specifier];
-      v11 = [v10 identifier];
+      specifier = [(AUDeveloperSettingsOverrideController *)self specifier];
+      identifier = [specifier identifier];
       v12 = getInfoForAccessory();
       v13 = [v12 mutableCopy];
 
@@ -206,17 +206,17 @@ LABEL_7:
         [(AUDeveloperSettingsOverrideController *)self reloadSpecifier:self->_locationRadioGroup animated:1];
       }
 
-      v23 = [MEMORY[0x277CE5450] sharedDatabase];
-      v24 = [(AUDeveloperSettingsOverrideController *)self specifier];
-      v25 = [v24 identifier];
-      [v23 addAccessoryWithSerialNumber:v25 info:v13];
+      mEMORY[0x277CE5450] = [MEMORY[0x277CE5450] sharedDatabase];
+      specifier2 = [(AUDeveloperSettingsOverrideController *)self specifier];
+      identifier2 = [specifier2 identifier];
+      [mEMORY[0x277CE5450] addAccessoryWithSerialNumber:identifier2 info:v13];
 
       WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
       [WeakRetained reloadSpecifier:*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20])];
 
       v27.receiver = self;
       v27.super_class = AUDeveloperSettingsOverrideController;
-      [(AUDeveloperSettingsOverrideController *)&v27 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(AUDeveloperSettingsOverrideController *)&v27 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
   }
 }

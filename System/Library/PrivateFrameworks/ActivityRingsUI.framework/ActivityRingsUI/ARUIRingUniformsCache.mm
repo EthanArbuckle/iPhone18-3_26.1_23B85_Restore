@@ -1,8 +1,8 @@
 @interface ARUIRingUniformsCache
-+ (id)cacheWithLimit:(unint64_t)a3;
++ (id)cacheWithLimit:(unint64_t)limit;
 + (id)defaultCache;
-- (ARUIRingUniformsCache)initWithLimit:(unint64_t)a3;
-- (id)uniformsForRing:(id)a3 renderedInContext:(id)a4;
+- (ARUIRingUniformsCache)initWithLimit:(unint64_t)limit;
+- (id)uniformsForRing:(id)ring renderedInContext:(id)context;
 @end
 
 @implementation ARUIRingUniformsCache
@@ -14,14 +14,14 @@
   return v2;
 }
 
-+ (id)cacheWithLimit:(unint64_t)a3
++ (id)cacheWithLimit:(unint64_t)limit
 {
-  v3 = [[ARUIRingUniformsCache alloc] initWithLimit:a3];
+  v3 = [[ARUIRingUniformsCache alloc] initWithLimit:limit];
 
   return v3;
 }
 
-- (ARUIRingUniformsCache)initWithLimit:(unint64_t)a3
+- (ARUIRingUniformsCache)initWithLimit:(unint64_t)limit
 {
   v8.receiver = self;
   v8.super_class = ARUIRingUniformsCache;
@@ -32,21 +32,21 @@
     cache = v4->_cache;
     v4->_cache = v5;
 
-    [(NSCache *)v4->_cache setCountLimit:a3];
+    [(NSCache *)v4->_cache setCountLimit:limit];
   }
 
   return v4;
 }
 
-- (id)uniformsForRing:(id)a3 renderedInContext:(id)a4
+- (id)uniformsForRing:(id)ring renderedInContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [ARUIRingUniformsCacheKey keyForRing:v6 context:v7];
+  ringCopy = ring;
+  contextCopy = context;
+  v8 = [ARUIRingUniformsCacheKey keyForRing:ringCopy context:contextCopy];
   v9 = [(NSCache *)self->_cache objectForKey:v8];
   if (!v9)
   {
-    v9 = [[ARUIRingUniforms alloc] initWithRing:v6 inContext:v7];
+    v9 = [[ARUIRingUniforms alloc] initWithRing:ringCopy inContext:contextCopy];
     [(NSCache *)self->_cache setObject:v9 forKey:v8];
   }
 

@@ -1,28 +1,28 @@
 @interface MTTimerDataSource
-- (MTTimerDataSource)initWithTimerManager:(id)a3;
-- (id)activeTimerAtRow:(unint64_t)a3;
-- (id)addTimer:(id)a3 reload:(BOOL)a4;
+- (MTTimerDataSource)initWithTimerManager:(id)manager;
+- (id)activeTimerAtRow:(unint64_t)row;
+- (id)addTimer:(id)timer reload:(BOOL)reload;
 - (id)getDefaultDurations;
 - (id)getFavoriteDurations;
 - (id)getLatestDuration;
 - (id)getRecentDurations;
-- (id)reloadTimersNotifyingObservers:(BOOL)a3;
-- (id)removeTimer:(id)a3;
-- (id)timerAtRow:(unint64_t)a3;
-- (id)updateTimer:(id)a3 reload:(BOOL)a4;
+- (id)reloadTimersNotifyingObservers:(BOOL)observers;
+- (id)removeTimer:(id)timer;
+- (id)timerAtRow:(unint64_t)row;
+- (id)updateTimer:(id)timer reload:(BOOL)reload;
 - (unint64_t)numberOfActiveTimers;
 - (unint64_t)numberOfTimers;
-- (unint64_t)rowForTimer:(id)a3;
-- (unint64_t)rowForTimerWithID:(id)a3;
-- (void)_handleTimerDurationNotification:(id)a3 block:(id)a4;
-- (void)_handleTimerNotification:(id)a3 block:(id)a4;
+- (unint64_t)rowForTimer:(id)timer;
+- (unint64_t)rowForTimerWithID:(id)d;
+- (void)_handleTimerDurationNotification:(id)notification block:(id)block;
+- (void)_handleTimerNotification:(id)notification block:(id)block;
 - (void)_registerForNotifications;
 - (void)_stateReset;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
-- (void)processFavoriteDurationsUpdated:(id)a3;
-- (void)processLatestDurationsUpdatedWith:(id)a3;
-- (void)processRecentDurationsUpdated:(id)a3;
+- (void)processFavoriteDurationsUpdated:(id)updated;
+- (void)processLatestDurationsUpdatedWith:(id)with;
+- (void)processRecentDurationsUpdated:(id)updated;
 - (void)reloadTimerDurations;
 @end
 
@@ -30,24 +30,24 @@
 
 - (void)_registerForNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   timerManager = self->_timerManager;
-  v5 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __46__MTTimerDataSource__registerForNotifications__block_invoke;
   v41[3] = &unk_1E7B0F968;
   v41[4] = self;
-  v6 = [v3 addObserverForName:@"MTTimerManagerTimersAdded" object:timerManager queue:v5 usingBlock:v41];
+  v6 = [defaultCenter addObserverForName:@"MTTimerManagerTimersAdded" object:timerManager queue:mainQueue usingBlock:v41];
 
   v7 = self->_timerManager;
-  v8 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __46__MTTimerDataSource__registerForNotifications__block_invoke_4;
   v40[3] = &unk_1E7B0F968;
   v40[4] = self;
-  v9 = [v3 addObserverForName:@"MTTimerManagerTimersRemoved" object:v7 queue:v8 usingBlock:v40];
+  v9 = [defaultCenter addObserverForName:@"MTTimerManagerTimersRemoved" object:v7 queue:mainQueue2 usingBlock:v40];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -56,7 +56,7 @@
   aBlock[4] = self;
   v10 = _Block_copy(aBlock);
   v11 = self->_timerManager;
-  v12 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue3 = [MEMORY[0x1E696ADC8] mainQueue];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __46__MTTimerDataSource__registerForNotifications__block_invoke_5;
@@ -64,10 +64,10 @@
   v37[4] = self;
   v13 = v10;
   v38 = v13;
-  v14 = [v3 addObserverForName:@"MTTimerManagerFiringTimerChanged" object:v11 queue:v12 usingBlock:v37];
+  v14 = [defaultCenter addObserverForName:@"MTTimerManagerFiringTimerChanged" object:v11 queue:mainQueue3 usingBlock:v37];
 
   v15 = self->_timerManager;
-  v16 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue4 = [MEMORY[0x1E696ADC8] mainQueue];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __46__MTTimerDataSource__registerForNotifications__block_invoke_16;
@@ -75,49 +75,49 @@
   v35[4] = self;
   v36 = v13;
   v17 = v13;
-  v18 = [v3 addObserverForName:@"MTTimerManagerTimersUpdated" object:v15 queue:v16 usingBlock:v35];
+  v18 = [defaultCenter addObserverForName:@"MTTimerManagerTimersUpdated" object:v15 queue:mainQueue4 usingBlock:v35];
 
   v19 = self->_timerManager;
-  v20 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue5 = [MEMORY[0x1E696ADC8] mainQueue];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __46__MTTimerDataSource__registerForNotifications__block_invoke_17;
   v34[3] = &unk_1E7B0F968;
   v34[4] = self;
-  v21 = [v3 addObserverForName:@"MTTimerManagerStateReset" object:v19 queue:v20 usingBlock:v34];
+  v21 = [defaultCenter addObserverForName:@"MTTimerManagerStateReset" object:v19 queue:mainQueue5 usingBlock:v34];
 
   v22 = self->_timerManager;
-  v23 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue6 = [MEMORY[0x1E696ADC8] mainQueue];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __46__MTTimerDataSource__registerForNotifications__block_invoke_25;
   v33[3] = &unk_1E7B0F968;
   v33[4] = self;
-  v24 = [v3 addObserverForName:@"MTTimerManagerRecentDurationsUpdated" object:v22 queue:v23 usingBlock:v33];
+  v24 = [defaultCenter addObserverForName:@"MTTimerManagerRecentDurationsUpdated" object:v22 queue:mainQueue6 usingBlock:v33];
 
   v25 = self->_timerManager;
-  v26 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue7 = [MEMORY[0x1E696ADC8] mainQueue];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __46__MTTimerDataSource__registerForNotifications__block_invoke_27;
   v32[3] = &unk_1E7B0F968;
   v32[4] = self;
-  v27 = [v3 addObserverForName:@"MTTimerManagerFavoriteDurationsUpdated" object:v25 queue:v26 usingBlock:v32];
+  v27 = [defaultCenter addObserverForName:@"MTTimerManagerFavoriteDurationsUpdated" object:v25 queue:mainQueue7 usingBlock:v32];
 
   v28 = self->_timerManager;
-  v29 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue8 = [MEMORY[0x1E696ADC8] mainQueue];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __46__MTTimerDataSource__registerForNotifications__block_invoke_3_29;
   v31[3] = &unk_1E7B0F968;
   v31[4] = self;
-  v30 = [v3 addObserverForName:@"MTTimerManagerLatestDurationUpdated" object:v28 queue:v29 usingBlock:v31];
+  v30 = [defaultCenter addObserverForName:@"MTTimerManagerLatestDurationUpdated" object:v28 queue:mainQueue8 usingBlock:v31];
 }
 
-- (MTTimerDataSource)initWithTimerManager:(id)a3
+- (MTTimerDataSource)initWithTimerManager:(id)manager
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v14.receiver = self;
   v14.super_class = MTTimerDataSource;
@@ -133,7 +133,7 @@
     }
 
     v6->_timerLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_timerManager, a3);
+    objc_storeStrong(&v6->_timerManager, manager);
     v8 = objc_opt_new();
     timers = v6->_timers;
     v6->_timers = v8;
@@ -356,16 +356,16 @@ uint64_t __46__MTTimerDataSource__registerForNotifications__block_invoke_3_29(ui
   return [v2 _handleTimerDurationNotification:a2 block:v4];
 }
 
-- (void)processRecentDurationsUpdated:(id)a3
+- (void)processRecentDurationsUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__MTTimerDataSource_processRecentDurationsUpdated___block_invoke;
   v6[3] = &unk_1E7B0C928;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatedCopy;
+  v5 = updatedCopy;
   [(MTTimerDataSource *)self _withLock:v6];
 }
 
@@ -405,16 +405,16 @@ void __51__MTTimerDataSource_processRecentDurationsUpdated___block_invoke_31(uin
   }
 }
 
-- (void)processFavoriteDurationsUpdated:(id)a3
+- (void)processFavoriteDurationsUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__MTTimerDataSource_processFavoriteDurationsUpdated___block_invoke;
   v6[3] = &unk_1E7B0C928;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatedCopy;
+  v5 = updatedCopy;
   [(MTTimerDataSource *)self _withLock:v6];
 }
 
@@ -439,16 +439,16 @@ void __53__MTTimerDataSource_processFavoriteDurationsUpdated___block_invoke_2(ui
   }
 }
 
-- (void)processLatestDurationsUpdatedWith:(id)a3
+- (void)processLatestDurationsUpdatedWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__MTTimerDataSource_processLatestDurationsUpdatedWith___block_invoke;
   v6[3] = &unk_1E7B0C928;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = withCopy;
+  selfCopy = self;
+  v5 = withCopy;
   [(MTTimerDataSource *)self _withLock:v6];
 }
 
@@ -482,87 +482,87 @@ void __55__MTTimerDataSource_processLatestDurationsUpdatedWith___block_invoke_2(
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"MTTimerManagerTimersAdded" object:self->_timerManager];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"MTTimerManagerTimersAdded" object:self->_timerManager];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"MTTimerManagerTimersRemoved" object:self->_timerManager];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"MTTimerManagerTimersRemoved" object:self->_timerManager];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"MTTimerManagerFiringTimerChanged" object:self->_timerManager];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"MTTimerManagerFiringTimerChanged" object:self->_timerManager];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:@"MTTimerManagerTimersUpdated" object:self->_timerManager];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 removeObserver:self name:@"MTTimerManagerTimersUpdated" object:self->_timerManager];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self name:@"MTTimerManagerStateReset" object:self->_timerManager];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 removeObserver:self name:@"MTTimerManagerStateReset" object:self->_timerManager];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self name:@"MTTimerManagerRecentDurationsUpdated" object:self->_timerManager];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 removeObserver:self name:@"MTTimerManagerRecentDurationsUpdated" object:self->_timerManager];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 removeObserver:self name:@"MTTimerManagerFavoriteDurationsUpdated" object:self->_timerManager];
+  defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter7 removeObserver:self name:@"MTTimerManagerFavoriteDurationsUpdated" object:self->_timerManager];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 removeObserver:self name:@"MTTimerManagerLatestDurationUpdated" object:self->_timerManager];
+  defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter8 removeObserver:self name:@"MTTimerManagerLatestDurationUpdated" object:self->_timerManager];
 
   v11.receiver = self;
   v11.super_class = MTTimerDataSource;
   [(MTTimerDataSource *)&v11 dealloc];
 }
 
-- (void)_handleTimerNotification:(id)a3 block:(id)a4
+- (void)_handleTimerNotification:(id)notification block:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  blockCopy = block;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKey:@"Timers"];
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo objectForKey:@"Timers"];
 
   v10 = MTLogForCategory(4);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 name];
+    name = [notificationCopy name];
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v11;
+    v17 = name;
     v18 = 1024;
     v19 = [v9 count];
     _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ received %{public}@ notification for %d timers.", &v14, 0x1Cu);
   }
 
-  v12 = [(MTTimerDataSource *)self reloadTimers];
-  v7[2](v7, v9);
+  reloadTimers = [(MTTimerDataSource *)self reloadTimers];
+  blockCopy[2](blockCopy, v9);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleTimerDurationNotification:(id)a3 block:(id)a4
+- (void)_handleTimerDurationNotification:(id)notification block:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  blockCopy = block;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKey:@"Durations"];
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo objectForKey:@"Durations"];
 
   v10 = MTLogForCategory(4);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 name];
+    name = [notificationCopy name];
     v13 = 138543874;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v11;
+    v16 = name;
     v17 = 2114;
     v18 = v9;
     _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ received %{public}@ duration payload: %{public}@", &v13, 0x20u);
   }
 
   [(MTTimerDataSource *)self reloadTimerDurations];
-  v7[2](v7, v9);
+  blockCopy[2](blockCopy, v9);
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -575,15 +575,15 @@ void __55__MTTimerDataSource_processLatestDurationsUpdatedWith___block_invoke_2(
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ received MTTimerManagerStateReset notification.", &v6, 0xCu);
   }
 
-  v4 = [(MTTimerDataSource *)self reloadTimers];
+  reloadTimers = [(MTTimerDataSource *)self reloadTimers];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)reloadTimersNotifyingObservers:(BOOL)a3
+- (id)reloadTimersNotifyingObservers:(BOOL)observers
 {
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
@@ -591,19 +591,19 @@ void __55__MTTimerDataSource_processLatestDurationsUpdatedWith___block_invoke_2(
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ asynchronously reloading timers", buf, 0xCu);
   }
 
-  v6 = [(MTTimerManager *)self->_timerManager timers];
-  v7 = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
-  v8 = [v6 reschedule:v7];
+  timers = [(MTTimerManager *)self->_timerManager timers];
+  mtMainThreadScheduler = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
+  v8 = [timers reschedule:mtMainThreadScheduler];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__MTTimerDataSource_reloadTimersNotifyingObservers___block_invoke;
   v13[3] = &unk_1E7B0F9E0;
   v13[4] = self;
-  v14 = a3;
+  observersCopy = observers;
   v9 = [v8 addCompletionBlock:v13];
   v10 = [v9 flatMap:&__block_literal_global_50];
 
@@ -738,7 +738,7 @@ void __52__MTTimerDataSource_reloadTimersNotifyingObservers___block_invoke_2(uin
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ loading all durations with completion", buf, 0xCu);
   }
 
@@ -882,7 +882,7 @@ uint64_t __35__MTTimerDataSource_numberOfTimers__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)timerAtRow:(unint64_t)a3
+- (id)timerAtRow:(unint64_t)row
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = 0;
@@ -897,7 +897,7 @@ uint64_t __35__MTTimerDataSource_numberOfTimers__block_invoke(uint64_t a1)
   v7[3] = &unk_1E7B0FD38;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
+  v7[6] = row;
   [(MTTimerDataSource *)self _withLock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -915,7 +915,7 @@ uint64_t __32__MTTimerDataSource_timerAtRow___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)activeTimerAtRow:(unint64_t)a3
+- (id)activeTimerAtRow:(unint64_t)row
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = 0;
@@ -930,7 +930,7 @@ uint64_t __32__MTTimerDataSource_timerAtRow___block_invoke(void *a1)
   v7[3] = &unk_1E7B0FD38;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
+  v7[6] = row;
   [(MTTimerDataSource *)self _withLock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -974,17 +974,17 @@ uint64_t __41__MTTimerDataSource_numberOfActiveTimers__block_invoke(uint64_t a1)
   return result;
 }
 
-- (unint64_t)rowForTimer:(id)a3
+- (unint64_t)rowForTimer:(id)timer
 {
-  v4 = [a3 timerIDString];
-  v5 = [(MTTimerDataSource *)self rowForTimerWithID:v4];
+  timerIDString = [timer timerIDString];
+  v5 = [(MTTimerDataSource *)self rowForTimerWithID:timerIDString];
 
   return v5;
 }
 
-- (unint64_t)rowForTimerWithID:(id)a3
+- (unint64_t)rowForTimerWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v11 = 0;
   v12 = &v11;
@@ -996,7 +996,7 @@ uint64_t __41__MTTimerDataSource_numberOfActiveTimers__block_invoke(uint64_t a1)
   v8[3] = &unk_1E7B0CB10;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
   [(MTTimerDataSource *)self _withLock:v8];
   v6 = v12[3];
@@ -1148,38 +1148,38 @@ uint64_t __39__MTTimerDataSource_getRecentDurations__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)addTimer:(id)a3 reload:(BOOL)a4
+- (id)addTimer:(id)timer reload:(BOOL)reload
 {
-  v6 = a3;
+  timerCopy = timer;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __37__MTTimerDataSource_addTimer_reload___block_invoke;
   v16[3] = &unk_1E7B0C928;
   v16[4] = self;
-  v17 = v6;
-  v7 = v6;
+  v17 = timerCopy;
+  v7 = timerCopy;
   [(MTTimerDataSource *)self _withLock:v16];
-  v8 = [(MTTimerDataSource *)self timerManager];
-  v9 = [v8 addTimer:v7];
-  v10 = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
-  v11 = [v9 reschedule:v10];
+  timerManager = [(MTTimerDataSource *)self timerManager];
+  v9 = [timerManager addTimer:v7];
+  mtMainThreadScheduler = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
+  v11 = [v9 reschedule:mtMainThreadScheduler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __37__MTTimerDataSource_addTimer_reload___block_invoke_2;
   v14[3] = &unk_1E7B0FA08;
   v14[4] = self;
-  v15 = a4;
+  reloadCopy = reload;
   v12 = [v11 flatMap:v14];
 
   return v12;
 }
 
-- (id)updateTimer:(id)a3 reload:(BOOL)a4
+- (id)updateTimer:(id)timer reload:(BOOL)reload
 {
-  v6 = a3;
+  timerCopy = timer;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v7 = [(MTTimerDataSource *)self rowForTimer:v6];
+  v7 = [(MTTimerDataSource *)self rowForTimer:timerCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16[0] = MEMORY[0x1E69E9820];
@@ -1188,30 +1188,30 @@ uint64_t __39__MTTimerDataSource_getRecentDurations__block_invoke(uint64_t a1)
     v16[3] = &unk_1E7B0CD10;
     v16[4] = self;
     v18 = v7;
-    v17 = v6;
+    v17 = timerCopy;
     [(MTTimerDataSource *)self _withLock:v16];
   }
 
-  v8 = [(MTTimerDataSource *)self timerManager];
-  v9 = [v8 updateTimer:v6];
-  v10 = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
-  v11 = [v9 reschedule:v10];
+  timerManager = [(MTTimerDataSource *)self timerManager];
+  v9 = [timerManager updateTimer:timerCopy];
+  mtMainThreadScheduler = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
+  v11 = [v9 reschedule:mtMainThreadScheduler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __40__MTTimerDataSource_updateTimer_reload___block_invoke_2;
   v14[3] = &unk_1E7B0FA08;
   v14[4] = self;
-  v15 = a4;
+  reloadCopy = reload;
   v12 = [v11 flatMap:v14];
 
   return v12;
 }
 
-- (id)removeTimer:(id)a3
+- (id)removeTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(MTTimerDataSource *)self rowForTimer:v4];
+  v5 = [(MTTimerDataSource *)self rowForTimer:timerCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -1223,10 +1223,10 @@ uint64_t __39__MTTimerDataSource_getRecentDurations__block_invoke(uint64_t a1)
     [(MTTimerDataSource *)self _withLock:v13];
   }
 
-  v6 = [(MTTimerDataSource *)self timerManager];
-  v7 = [v6 removeTimer:v4];
-  v8 = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
-  v9 = [v7 reschedule:v8];
+  timerManager = [(MTTimerDataSource *)self timerManager];
+  v7 = [timerManager removeTimer:timerCopy];
+  mtMainThreadScheduler = [MEMORY[0x1E69B3790] mtMainThreadScheduler];
+  v9 = [v7 reschedule:mtMainThreadScheduler];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __33__MTTimerDataSource_removeTimer___block_invoke_2;
@@ -1237,11 +1237,11 @@ uint64_t __39__MTTimerDataSource_getRecentDurations__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_timerLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_timerLock);
 }

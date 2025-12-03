@@ -1,7 +1,7 @@
 @interface NTFeedTransformationLimit
 - (NTFeedTransformationLimit)init;
-- (NTFeedTransformationLimit)initWithLimit:(unint64_t)a3;
-- (id)transformFeedItems:(id)a3;
+- (NTFeedTransformationLimit)initWithLimit:(unint64_t)limit;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation NTFeedTransformationLimit
@@ -32,28 +32,28 @@
   objc_exception_throw(v6);
 }
 
-- (NTFeedTransformationLimit)initWithLimit:(unint64_t)a3
+- (NTFeedTransformationLimit)initWithLimit:(unint64_t)limit
 {
   v5.receiver = self;
   v5.super_class = NTFeedTransformationLimit;
   result = [(NTFeedTransformationLimit *)&v5 init];
   if (result)
   {
-    result->_limit = a3;
+    result->_limit = limit;
   }
 
   return result;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTFeedTransformationLimit transformFeedItems:];
   }
 
-  v5 = [v4 fc_subarrayWithMaxCount:{-[NTFeedTransformationLimit limit](self, "limit")}];
+  v5 = [itemsCopy fc_subarrayWithMaxCount:{-[NTFeedTransformationLimit limit](self, "limit")}];
 
   return v5;
 }

@@ -1,10 +1,10 @@
 @interface TSDCanvas
-+ (void)p_recursivelyAddOrderedChildrenOfRep:(id)a3 toArray:(id)a4;
++ (void)p_recursivelyAddOrderedChildrenOfRep:(id)rep toArray:(id)array;
 - (BOOL)isCanvasInteractive;
 - (BOOL)isDrawingIntoPDF;
 - (BOOL)isPrinting;
-- (BOOL)p_expandHitRegionOfPoint:(CGPoint)a3 forRep:(id)a4 smallRepOutset:(double)a5 forShortestDistance:(double *)a6;
-- (BOOL)p_shouldRep:(id)a3 countAsClosestSmallRepForSizeLimit:(double)a4;
+- (BOOL)p_expandHitRegionOfPoint:(CGPoint)point forRep:(id)rep smallRepOutset:(double)outset forShortestDistance:(double *)distance;
+- (BOOL)p_shouldRep:(id)rep countAsClosestSmallRepForSizeLimit:(double)limit;
 - (BOOL)p_updateRepsFromLayouts;
 - (BOOL)shouldShowInstructionalText;
 - (BOOL)shouldShowTextOverflowGlyphs;
@@ -12,20 +12,20 @@
 - (BOOL)spellCheckingSupported;
 - (BOOL)spellCheckingSuppressed;
 - (BOOL)supportsAdaptiveLayout;
-- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 returningBounds:(CGRect *)a5 integralBounds:(CGRect *)a6;
-- (CGImage)i_imageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5;
-- (CGImage)i_newImageInContext:(CGContext *)a3 bounds:(CGRect)a4 integralBounds:(CGRect)a5 distortedToMatch:(BOOL)a6;
-- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)a3;
-- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)a3;
-- (CGRect)convertBoundsToUnscaledRect:(CGRect)a3;
-- (CGRect)convertUnscaledToBoundsRect:(CGRect)a3;
-- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)a3;
+- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size returningBounds:(CGRect *)bounds integralBounds:(CGRect *)integralBounds;
+- (CGImage)i_imageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match;
+- (CGImage)i_newImageInContext:(CGContext *)context bounds:(CGRect)bounds integralBounds:(CGRect)integralBounds distortedToMatch:(BOOL)match;
+- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)point;
+- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)point;
+- (CGRect)convertBoundsToUnscaledRect:(CGRect)rect;
+- (CGRect)convertUnscaledToBoundsRect:(CGRect)rect;
+- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)point;
 - (CGRect)i_clipRectForCreatingRepsFromLayouts;
 - (CGRect)i_unscaledRectOfLayouts;
 - (CGRect)p_bounds;
 - (CGRect)visibleUnscaledRectForClippingReps;
-- (CGSize)convertBoundsToUnscaledSize:(CGSize)a3;
-- (CGSize)convertUnscaledToBoundsSize:(CGSize)a3;
+- (CGSize)convertBoundsToUnscaledSize:(CGSize)size;
+- (CGSize)convertUnscaledToBoundsSize:(CGSize)size;
 - (CGSize)unscaledSize;
 - (NSArray)allRepsOrdered;
 - (TSDCanvas)init;
@@ -34,22 +34,22 @@
 - (TSPObjectContext)objectContext;
 - (UIEdgeInsets)contentInset;
 - (id)allReps;
-- (id)hitRep:(CGPoint)a3 inTopLevelReps:(id)a4 smallRepOutset:(double)a5 withGesture:(id)a6 passingTest:(id)a7;
+- (id)hitRep:(CGPoint)rep inTopLevelReps:(id)reps smallRepOutset:(double)outset withGesture:(id)gesture passingTest:(id)test;
 - (id)initForTemporaryLayout;
-- (id)layoutGeometryProviderForLayout:(id)a3;
-- (id)repForLayout:(id)a3;
-- (id)textRendererForLayer:(id)a3 context:(CGContext *)a4;
+- (id)layoutGeometryProviderForLayout:(id)layout;
+- (id)repForLayout:(id)layout;
+- (id)textRendererForLayer:(id)layer context:(CGContext *)context;
 - (id)topLevelReps;
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4;
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context;
 - (void)dealloc;
-- (void)i_drawBackgroundInContext:(CGContext *)a3;
-- (void)i_drawBackgroundInContext:(CGContext *)a3 bounds:(CGRect)a4;
-- (void)i_drawRepsInContext:(CGContext *)a3;
-- (void)i_drawRepsInContext:(CGContext *)a3 distort:(CGAffineTransform *)a4;
-- (void)i_registerRep:(id)a3;
-- (void)i_setCanvasController:(id)a3;
-- (void)i_setInfosToDisplay:(id)a3 updatingLayoutController:(BOOL)a4;
-- (void)i_unregisterRep:(id)a3;
+- (void)i_drawBackgroundInContext:(CGContext *)context;
+- (void)i_drawBackgroundInContext:(CGContext *)context bounds:(CGRect)bounds;
+- (void)i_drawRepsInContext:(CGContext *)context;
+- (void)i_drawRepsInContext:(CGContext *)context distort:(CGAffineTransform *)distort;
+- (void)i_registerRep:(id)rep;
+- (void)i_setCanvasController:(id)controller;
+- (void)i_setInfosToDisplay:(id)display updatingLayoutController:(BOOL)controller;
+- (void)i_unregisterRep:(id)rep;
 - (void)i_updateInfosInLayoutController;
 - (void)invalidateLayers;
 - (void)invalidateReps;
@@ -59,7 +59,7 @@
 - (void)p_layoutWithReadLock;
 - (void)p_removeAllReps;
 - (void)recreateAllLayoutsAndReps;
-- (void)setBackgroundColor:(CGColor *)a3;
+- (void)setBackgroundColor:(CGColor *)color;
 - (void)teardown;
 @end
 
@@ -122,9 +122,9 @@
 {
   if (self->mInfos)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvas dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvas.m"), 100, @"Canvas must be torn down before being deallocated"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvas.m"), 100, @"Canvas must be torn down before being deallocated"}];
   }
 
   [(TSDLayoutController *)self->mLayoutController setInfos:0];
@@ -152,54 +152,54 @@
 
 - (TSPObjectContext)objectContext
 {
-  v2 = [(TSDCanvas *)self documentRoot];
+  documentRoot = [(TSDCanvas *)self documentRoot];
 
-  return [(TSPObject *)v2 context];
+  return [(TSPObject *)documentRoot context];
 }
 
 - (TSKChangeNotifier)changeNotifier
 {
-  v2 = [(TSDCanvas *)self documentRoot];
+  documentRoot = [(TSDCanvas *)self documentRoot];
 
-  return [(TSKDocumentRoot *)v2 changeNotifier];
+  return [(TSKDocumentRoot *)documentRoot changeNotifier];
 }
 
 - (TSKAccessController)accessController
 {
-  v2 = [(TSDCanvas *)self documentRoot];
+  documentRoot = [(TSDCanvas *)self documentRoot];
 
-  return [(TSKDocumentRoot *)v2 accessController];
+  return [(TSKDocumentRoot *)documentRoot accessController];
 }
 
-- (void)i_setCanvasController:(id)a3
+- (void)i_setCanvasController:(id)controller
 {
   if (self->mCanvasController)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvas i_setCanvasController:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvas.m"), 154, @"expected nil value for '%s'", "mCanvasController"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvas.m"), 154, @"expected nil value for '%s'", "mCanvasController"}];
   }
 
-  if (!a3)
+  if (!controller)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvas i_setCanvasController:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvas.m"), 155, @"invalid nil value for '%s'", "icc"}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvas.m"), 155, @"invalid nil value for '%s'", "icc"}];
   }
 
   if (!self->mCanvasController)
   {
-    self->mCanvasController = a3;
+    self->mCanvasController = controller;
   }
 }
 
-- (void)i_setInfosToDisplay:(id)a3 updatingLayoutController:(BOOL)a4
+- (void)i_setInfosToDisplay:(id)display updatingLayoutController:(BOOL)controller
 {
-  v4 = a4;
+  controllerCopy = controller;
 
-  if (a3)
+  if (display)
   {
-    v7 = [a3 copy];
+    v7 = [display copy];
   }
 
   else
@@ -208,7 +208,7 @@
   }
 
   self->mInfos = v7;
-  if (v4)
+  if (controllerCopy)
   {
 
     [(TSDCanvas *)self i_updateInfosInLayoutController];
@@ -217,17 +217,17 @@
 
 - (void)i_updateInfosInLayoutController
 {
-  v3 = [(TSDCanvas *)self layoutController];
+  layoutController = [(TSDCanvas *)self layoutController];
   mInfos = self->mInfos;
 
-  [(TSDLayoutController *)v3 setInfos:mInfos];
+  [(TSDLayoutController *)layoutController setInfos:mInfos];
 }
 
-- (id)repForLayout:(id)a3
+- (id)repForLayout:(id)layout
 {
-  if (a3)
+  if (layout)
   {
-    return CFDictionaryGetValue(self->mRepsByLayout, a3);
+    return CFDictionaryGetValue(self->mRepsByLayout, layout);
   }
 
   else
@@ -256,7 +256,7 @@
   mAllRepsOrdered = self->mAllRepsOrdered;
   if (!mAllRepsOrdered)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -276,7 +276,7 @@
             objc_enumerationMutation(mTopLevelReps);
           }
 
-          [objc_opt_class() p_recursivelyAddOrderedChildrenOfRep:*(*(&v11 + 1) + 8 * i) toArray:v4];
+          [objc_opt_class() p_recursivelyAddOrderedChildrenOfRep:*(*(&v11 + 1) + 8 * i) toArray:array];
         }
 
         v7 = [(NSArray *)mTopLevelReps countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -285,7 +285,7 @@
       while (v7);
     }
 
-    mAllRepsOrdered = [v4 copy];
+    mAllRepsOrdered = [array copy];
     self->mAllRepsOrdered = mAllRepsOrdered;
   }
 
@@ -355,11 +355,11 @@
   [(TSDCanvas *)self p_layoutWithReadLock];
   if ((*&self->mInvalidFlags & 0xF) == 1 && !self->mInLayout)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvas layoutIfNeeded]"];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvas.m"];
 
-    [v3 handleFailureInFunction:v4 file:v5 lineNumber:302 description:@"failed to clear mInvalidFlags after layout"];
+    [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:302 description:@"failed to clear mInvalidFlags after layout"];
   }
 }
 
@@ -375,7 +375,7 @@
   return [(TSDCanvasDelegate *)mDelegate supportsAdaptiveLayout];
 }
 
-- (id)layoutGeometryProviderForLayout:(id)a3
+- (id)layoutGeometryProviderForLayout:(id)layout
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -384,28 +384,28 @@
 
   mDelegate = self->mDelegate;
 
-  return [(TSDCanvasDelegate *)mDelegate canvas:self layoutGeometryProviderForLayout:a3];
+  return [(TSDCanvasDelegate *)mDelegate canvas:self layoutGeometryProviderForLayout:layout];
 }
 
 - (BOOL)spellCheckingSupported
 {
-  v3 = [(TSDCanvas *)self isCanvasInteractive];
-  if (v3)
+  isCanvasInteractive = [(TSDCanvas *)self isCanvasInteractive];
+  if (isCanvasInteractive)
   {
     if (objc_opt_respondsToSelector())
     {
       mDelegate = self->mDelegate;
 
-      LOBYTE(v3) = [(TSDCanvasDelegate *)mDelegate spellCheckingSupported];
+      LOBYTE(isCanvasInteractive) = [(TSDCanvasDelegate *)mDelegate spellCheckingSupported];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isCanvasInteractive) = 1;
     }
   }
 
-  return v3;
+  return isCanvasInteractive;
 }
 
 - (BOOL)spellCheckingSuppressed
@@ -505,15 +505,15 @@
   return [(TSDCanvasDelegate *)mDelegate isCanvasDrawingIntoPDF:self];
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
   mBackgroundColor = self->mBackgroundColor;
-  if (mBackgroundColor != a3)
+  if (mBackgroundColor != color)
   {
     CGColorRelease(mBackgroundColor);
-    if (a3)
+    if (color)
     {
-      Copy = CGColorCreateCopy(a3);
+      Copy = CGColorCreateCopy(color);
     }
 
     else
@@ -525,9 +525,9 @@
   }
 }
 
-- (CGRect)convertUnscaledToBoundsRect:(CGRect)a3
+- (CGRect)convertUnscaledToBoundsRect:(CGRect)rect
 {
-  v3 = TSDMultiplyRectScalar(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, self->mViewScale);
+  v3 = TSDMultiplyRectScalar(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, self->mViewScale);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -535,9 +535,9 @@
   return result;
 }
 
-- (CGRect)convertBoundsToUnscaledRect:(CGRect)a3
+- (CGRect)convertBoundsToUnscaledRect:(CGRect)rect
 {
-  v3 = TSDMultiplyRectScalar(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, 1.0 / self->mViewScale);
+  v3 = TSDMultiplyRectScalar(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, 1.0 / self->mViewScale);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -545,33 +545,33 @@
   return result;
 }
 
-- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)a3
+- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)point
 {
-  v3 = TSDMultiplyPointScalar(a3.x, a3.y, self->mViewScale);
+  v3 = TSDMultiplyPointScalar(point.x, point.y, self->mViewScale);
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)a3
+- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)point
 {
-  v3 = TSDMultiplyPointScalar(a3.x, a3.y, 1.0 / self->mViewScale);
+  v3 = TSDMultiplyPointScalar(point.x, point.y, 1.0 / self->mViewScale);
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGSize)convertUnscaledToBoundsSize:(CGSize)a3
+- (CGSize)convertUnscaledToBoundsSize:(CGSize)size
 {
-  v3 = TSDMultiplySizeScalar(a3.width, a3.height, self->mViewScale);
+  v3 = TSDMultiplySizeScalar(size.width, size.height, self->mViewScale);
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)convertBoundsToUnscaledSize:(CGSize)a3
+- (CGSize)convertBoundsToUnscaledSize:(CGSize)size
 {
-  v3 = TSDMultiplySizeScalar(a3.width, a3.height, 1.0 / self->mViewScale);
+  v3 = TSDMultiplySizeScalar(size.width, size.height, 1.0 / self->mViewScale);
   result.height = v4;
   result.width = v3;
   return result;
@@ -597,17 +597,17 @@
   return result;
 }
 
-- (id)hitRep:(CGPoint)a3 inTopLevelReps:(id)a4 smallRepOutset:(double)a5 withGesture:(id)a6 passingTest:(id)a7
+- (id)hitRep:(CGPoint)rep inTopLevelReps:(id)reps smallRepOutset:(double)outset withGesture:(id)gesture passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   v54 = *MEMORY[0x277D85DE8];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v13 = [a4 reverseObjectEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v47 objects:v53 count:16];
+  reverseObjectEnumerator = [reps reverseObjectEnumerator];
+  v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v14)
   {
     v15 = v14;
@@ -618,19 +618,19 @@
       {
         if (*v48 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v18 = *(*(&v47 + 1) + 8 * i);
         [v18 convertNaturalPointFromUnscaledCanvas:{x, y}];
-        v19 = [v18 hitRepChrome:a7 passingTest:?];
+        v19 = [v18 hitRepChrome:test passingTest:?];
         if (v19)
         {
           return v19;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v47 objects:v53 count:16];
+      v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v47 objects:v53 count:16];
       if (v15)
       {
         continue;
@@ -645,7 +645,7 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = [a4 reverseObjectEnumerator];
+  obj = [reps reverseObjectEnumerator];
   v34 = [obj countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (!v34)
   {
@@ -666,7 +666,7 @@
 
       v22 = *(*(&v42 + 1) + 8 * v21);
       [v22 convertNaturalPointFromUnscaledCanvas:{x, y}];
-      v23 = [v22 hitRep:a6 withGesture:a7 passingTest:?];
+      v23 = [v22 hitRep:gesture withGesture:test passingTest:?];
       if (v23)
       {
         v30 = v23;
@@ -677,12 +677,12 @@
       v36 = v21;
       if (objc_opt_isKindOfClass())
       {
-        v24 = [v22 allRepsContainedInGroup];
+        allRepsContainedInGroup = [v22 allRepsContainedInGroup];
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v25 = [v24 countByEnumeratingWithState:&v38 objects:v51 count:16];
+        v25 = [allRepsContainedInGroup countByEnumeratingWithState:&v38 objects:v51 count:16];
         if (v25)
         {
           v26 = v25;
@@ -693,24 +693,24 @@
             {
               if (*v39 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(allRepsContainedInGroup);
               }
 
               v29 = *(*(&v38 + 1) + 8 * j);
-              if ((!a7 || (*(a7 + 2))(a7, *(*(&v38 + 1) + 8 * j))) && [(TSDCanvas *)self p_expandHitRegionOfPoint:v29 forRep:&v46 smallRepOutset:x forShortestDistance:y, a5])
+              if ((!test || (*(test + 2))(test, *(*(&v38 + 1) + 8 * j))) && [(TSDCanvas *)self p_expandHitRegionOfPoint:v29 forRep:&v46 smallRepOutset:x forShortestDistance:y, outset])
               {
                 v20 = v22;
               }
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v38 objects:v51 count:16];
+            v26 = [allRepsContainedInGroup countByEnumeratingWithState:&v38 objects:v51 count:16];
           }
 
           while (v26);
         }
       }
 
-      else if ([(TSDCanvas *)self p_expandHitRegionOfPoint:v22 forRep:&v46 smallRepOutset:x forShortestDistance:y, a5]&& (!a7 || (*(a7 + 2))(a7, v22)))
+      else if ([(TSDCanvas *)self p_expandHitRegionOfPoint:v22 forRep:&v46 smallRepOutset:x forShortestDistance:y, outset]&& (!test || (*(test + 2))(test, v22)))
       {
         v20 = v22;
       }
@@ -732,7 +732,7 @@
 LABEL_38:
   if (v20)
   {
-    if (![(TSDCanvas *)self p_shouldRep:v30 countAsClosestSmallRepForSizeLimit:a5])
+    if (![(TSDCanvas *)self p_shouldRep:v30 countAsClosestSmallRepForSizeLimit:outset])
     {
       v37 = 0;
       [v30 convertNaturalPointFromUnscaledCanvas:{x, y}];
@@ -747,32 +747,32 @@ LABEL_38:
   return v30;
 }
 
-- (BOOL)p_shouldRep:(id)a3 countAsClosestSmallRepForSizeLimit:(double)a4
+- (BOOL)p_shouldRep:(id)rep countAsClosestSmallRepForSizeLimit:(double)limit
 {
-  v7 = [a3 shouldExpandHitRegionWhenSmall];
-  if (v7)
+  shouldExpandHitRegionWhenSmall = [rep shouldExpandHitRegionWhenSmall];
+  if (shouldExpandHitRegionWhenSmall)
   {
-    [a3 naturalBounds];
+    [rep naturalBounds];
     v9 = v8;
-    [a3 naturalBounds];
+    [rep naturalBounds];
     v11 = v10;
     v12 = fminf(v9, v11);
     [(TSDCanvas *)self viewScale];
-    LOBYTE(v7) = v13 * v12 < a4;
+    LOBYTE(shouldExpandHitRegionWhenSmall) = v13 * v12 < limit;
   }
 
-  return v7;
+  return shouldExpandHitRegionWhenSmall;
 }
 
-- (BOOL)p_expandHitRegionOfPoint:(CGPoint)a3 forRep:(id)a4 smallRepOutset:(double)a5 forShortestDistance:(double *)a6
+- (BOOL)p_expandHitRegionOfPoint:(CGPoint)point forRep:(id)rep smallRepOutset:(double)outset forShortestDistance:(double *)distance
 {
-  y = a3.y;
-  x = a3.x;
-  if (![(TSDCanvas *)self p_shouldRep:a5 countAsClosestSmallRepForSizeLimit:?])
+  y = point.y;
+  x = point.x;
+  if (![(TSDCanvas *)self p_shouldRep:outset countAsClosestSmallRepForSizeLimit:?])
   {
     v49 = 0;
-    [a4 convertNaturalPointFromUnscaledCanvas:{x, y}];
-    [a4 shortestDistanceToPoint:&v49 countAsHit:?];
+    [rep convertNaturalPointFromUnscaledCanvas:{x, y}];
+    [rep shortestDistanceToPoint:&v49 countAsHit:?];
     if (v49 != 1)
     {
       goto LABEL_11;
@@ -781,28 +781,28 @@ LABEL_38:
     goto LABEL_9;
   }
 
-  [a4 naturalBounds];
+  [rep naturalBounds];
   v47 = v13;
   v48 = v12;
   rect = v14;
   v16 = v15;
-  [a4 naturalBounds];
+  [rep naturalBounds];
   v18 = v17;
   [(TSDCanvas *)self viewScale];
   v20 = v19 * v18;
   v21 = 0.0;
-  v22 = -a5;
+  v22 = -outset;
   v23 = 0.0;
-  if (v20 < a5)
+  if (v20 < outset)
   {
     [(TSDCanvas *)self viewScale];
     v23 = v22 / v24;
   }
 
-  [a4 naturalBounds];
+  [rep naturalBounds];
   v26 = v25;
   [(TSDCanvas *)self viewScale];
-  if (v27 * v26 < a5)
+  if (v27 * v26 < outset)
   {
     [(TSDCanvas *)self viewScale];
     v21 = v22 / v28;
@@ -817,7 +817,7 @@ LABEL_38:
   v30 = v52.origin.y;
   width = v52.size.width;
   height = v52.size.height;
-  [a4 convertNaturalPointFromUnscaledCanvas:{x, y}];
+  [rep convertNaturalPointFromUnscaledCanvas:{x, y}];
   v50.x = v33;
   v50.y = v34;
   v53.origin.x = v29;
@@ -827,15 +827,15 @@ LABEL_38:
   v35 = CGRectContainsPoint(v53, v50);
   if (v35)
   {
-    [a4 convertNaturalPointFromUnscaledCanvas:{x, y}];
+    [rep convertNaturalPointFromUnscaledCanvas:{x, y}];
     v37 = v36;
     v39 = v38;
-    [a4 naturalBounds];
+    [rep naturalBounds];
     TSDDistanceToRect(v37, v39, v40, v41, v42, v43);
 LABEL_9:
-    if (v44 < *a6)
+    if (v44 < *distance)
     {
-      *a6 = v44;
+      *distance = v44;
       LOBYTE(v35) = 1;
       return v35;
     }
@@ -847,35 +847,35 @@ LABEL_11:
   return v35;
 }
 
-- (void)i_registerRep:(id)a3
+- (void)i_registerRep:(id)rep
 {
-  if (a3)
+  if (rep)
   {
     if (self->mRepsByLayout)
     {
-      v5 = [a3 layout];
-      if (v5)
+      layout = [rep layout];
+      if (layout)
       {
-        v6 = v5;
+        v6 = layout;
         mRepsByLayout = self->mRepsByLayout;
 
-        CFDictionarySetValue(mRepsByLayout, v6, a3);
+        CFDictionarySetValue(mRepsByLayout, v6, rep);
       }
     }
   }
 }
 
-- (void)i_unregisterRep:(id)a3
+- (void)i_unregisterRep:(id)rep
 {
-  if (a3)
+  if (rep)
   {
     if (self->mRepsByLayout)
     {
-      v5 = [a3 layout];
-      if (v5)
+      layout = [rep layout];
+      if (layout)
       {
-        v6 = v5;
-        if (CFDictionaryGetValue(self->mRepsByLayout, v5) == a3)
+        v6 = layout;
+        if (CFDictionaryGetValue(self->mRepsByLayout, layout) == rep)
         {
           mRepsByLayout = self->mRepsByLayout;
 
@@ -886,9 +886,9 @@ LABEL_11:
   }
 }
 
-- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)a3
+- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)point
 {
-  v3 = TSDRectWithCenterAndSize(a3.x, a3.y + -30.0, 200.0);
+  v3 = TSDRectWithCenterAndSize(point.x, point.y + -30.0, 200.0);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -898,9 +898,9 @@ LABEL_11:
 
 - (CGRect)i_unscaledRectOfLayouts
 {
-  v2 = [(TSDCanvas *)self layoutController];
+  layoutController = [(TSDCanvas *)self layoutController];
 
-  [(TSDLayoutController *)v2 rectOfTopLevelLayouts];
+  [(TSDLayoutController *)layoutController rectOfTopLevelLayouts];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -931,38 +931,38 @@ LABEL_11:
   return result;
 }
 
-- (void)i_drawBackgroundInContext:(CGContext *)a3
+- (void)i_drawBackgroundInContext:(CGContext *)context
 {
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v7 = CGRectIntegral(ClipBoundingBox);
 
-  [(TSDCanvas *)self i_drawBackgroundInContext:a3 bounds:v7.origin.x, v7.origin.y, v7.size.width, v7.size.height];
+  [(TSDCanvas *)self i_drawBackgroundInContext:context bounds:v7.origin.x, v7.origin.y, v7.size.width, v7.size.height];
 }
 
-- (void)i_drawBackgroundInContext:(CGContext *)a3 bounds:(CGRect)a4
+- (void)i_drawBackgroundInContext:(CGContext *)context bounds:(CGRect)bounds
 {
   if (self->mBackgroundColor)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    CGContextSaveGState(a3);
-    CGContextSetFillColorWithColor(a3, self->mBackgroundColor);
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    CGContextSaveGState(context);
+    CGContextSetFillColorWithColor(context, self->mBackgroundColor);
     v11.origin.x = x;
     v11.origin.y = y;
     v11.size.width = width;
     v11.size.height = height;
-    CGContextFillRect(a3, v11);
+    CGContextFillRect(context, v11);
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (info)
   {
     v13 = 0u;
     v14 = 0u;
@@ -983,7 +983,7 @@ LABEL_11:
             objc_enumerationMutation(mTopLevelReps);
           }
 
-          [*(*(&v11 + 1) + 8 * i) recursivelyPerformSelector:sel_addBitmapsToRenderingQualityInfo_inContext_ withObject:a3 withObject:a4];
+          [*(*(&v11 + 1) + 8 * i) recursivelyPerformSelector:sel_addBitmapsToRenderingQualityInfo_inContext_ withObject:info withObject:context];
         }
 
         v8 = [(NSArray *)mTopLevelReps countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -994,14 +994,14 @@ LABEL_11:
   }
 }
 
-- (void)i_drawRepsInContext:(CGContext *)a3 distort:(CGAffineTransform *)a4
+- (void)i_drawRepsInContext:(CGContext *)context distort:(CGAffineTransform *)distort
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (context)
   {
-    CGContextSaveGState(a3);
-    CGContextScaleCTM(a3, self->mViewScale, self->mViewScale);
-    v7 = a4->b == 0.0 && a4->c == 0.0 && a4->tx == 0.0 && a4->ty == 0.0 && fabs(a4->a + -1.0) < 0.001 && fabs(a4->d + -1.0) < 0.001;
+    CGContextSaveGState(context);
+    CGContextScaleCTM(context, self->mViewScale, self->mViewScale);
+    v7 = distort->b == 0.0 && distort->c == 0.0 && distort->tx == 0.0 && distort->ty == 0.0 && fabs(distort->a + -1.0) < 0.001 && fabs(distort->d + -1.0) < 0.001;
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -1022,18 +1022,18 @@ LABEL_11:
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          CGContextSaveGState(a3);
+          CGContextSaveGState(context);
           if (!v7 || [v13 wantsToDistortWithImagerContext])
           {
-            v14 = *&a4->c;
-            *&v15.a = *&a4->a;
+            v14 = *&distort->c;
+            *&v15.a = *&distort->a;
             *&v15.c = v14;
-            *&v15.tx = *&a4->tx;
-            CGContextConcatCTM(a3, &v15);
+            *&v15.tx = *&distort->tx;
+            CGContextConcatCTM(context, &v15);
           }
 
-          [v13 recursivelyDrawInContext:a3];
-          CGContextRestoreGState(a3);
+          [v13 recursivelyDrawInContext:context];
+          CGContextRestoreGState(context);
         }
 
         v10 = [(NSArray *)mTopLevelReps countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1042,46 +1042,46 @@ LABEL_11:
       while (v10);
     }
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)i_drawRepsInContext:(CGContext *)a3
+- (void)i_drawRepsInContext:(CGContext *)context
 {
   v3 = *(MEMORY[0x277CBF2C0] + 16);
   v4[0] = *MEMORY[0x277CBF2C0];
   v4[1] = v3;
   v4[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [(TSDCanvas *)self i_drawRepsInContext:a3 distort:v4];
+  [(TSDCanvas *)self i_drawRepsInContext:context distort:v4];
 }
 
-- (CGImage)i_imageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5
+- (CGImage)i_imageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match
 {
-  v5 = a5;
+  matchCopy = match;
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = [(TSDCanvas *)self i_createContextToDrawImageInScaledRect:&v13 withTargetIntegralSize:&v11 returningBounds:a3.origin.x integralBounds:a3.origin.y, a3.size.width, a3.size.height, a4.width, a4.height];
+  v7 = [(TSDCanvas *)self i_createContextToDrawImageInScaledRect:&v13 withTargetIntegralSize:&v11 returningBounds:rect.origin.x integralBounds:rect.origin.y, rect.size.width, rect.size.height, size.width, size.height];
   if (!v7)
   {
     return 0;
   }
 
   v8 = v7;
-  v9 = [(TSDCanvas *)self i_newImageInContext:v7 bounds:v5 integralBounds:v13 distortedToMatch:v14, v11, v12];
+  v9 = [(TSDCanvas *)self i_newImageInContext:v7 bounds:matchCopy integralBounds:v13 distortedToMatch:v14, v11, v12];
   CGContextRelease(v8);
   return v9;
 }
 
-- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 returningBounds:(CGRect *)a5 integralBounds:(CGRect *)a6
+- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size returningBounds:(CGRect *)bounds integralBounds:(CGRect *)integralBounds
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self->mClipToCanvas)
   {
     [(TSDCanvas *)self p_bounds];
@@ -1170,62 +1170,62 @@ LABEL_11:
   }
 
   result = TSDBitmapContextCreate(v30, v21);
-  if (a5)
+  if (bounds)
   {
-    a5->origin.x = x;
-    a5->origin.y = y;
-    a5->size.width = v9;
-    a5->size.height = v8;
+    bounds->origin.x = x;
+    bounds->origin.y = y;
+    bounds->size.width = v9;
+    bounds->size.height = v8;
   }
 
-  if (a6)
+  if (integralBounds)
   {
-    a6->origin.x = v17;
-    a6->origin.y = v19;
-    a6->size.width = v21;
-    a6->size.height = v23;
+    integralBounds->origin.x = v17;
+    integralBounds->origin.y = v19;
+    integralBounds->size.width = v21;
+    integralBounds->size.height = v23;
   }
 
   return result;
 }
 
-- (CGImage)i_newImageInContext:(CGContext *)a3 bounds:(CGRect)a4 integralBounds:(CGRect)a5 distortedToMatch:(BOOL)a6
+- (CGImage)i_newImageInContext:(CGContext *)context bounds:(CGRect)bounds integralBounds:(CGRect)integralBounds distortedToMatch:(BOOL)match
 {
-  if (!a3)
+  if (!context)
   {
     return 0;
   }
 
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, 0.0, height);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  CGContextTranslateCTM(a3, -x, -y);
+  matchCopy = match;
+  height = integralBounds.size.height;
+  width = integralBounds.size.width;
+  y = integralBounds.origin.y;
+  x = integralBounds.origin.x;
+  v11 = bounds.size.height;
+  v12 = bounds.size.width;
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, 0.0, height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextTranslateCTM(context, -x, -y);
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
   v19.size.height = height;
-  CGContextClipToRect(a3, v19);
+  CGContextClipToRect(context, v19);
   v15 = *(MEMORY[0x277CBF2C0] + 16);
   *&v18.a = *MEMORY[0x277CBF2C0];
   *&v18.c = v15;
   *&v18.tx = *(MEMORY[0x277CBF2C0] + 32);
-  if (v6)
+  if (matchCopy)
   {
     CGAffineTransformMakeScale(&v18, width / v12, height / v11);
   }
 
-  [(TSDCanvas *)self i_drawBackgroundInContext:a3];
+  [(TSDCanvas *)self i_drawBackgroundInContext:context];
   v17 = v18;
-  [(TSDCanvas *)self i_drawRepsInContext:a3 distort:&v17];
-  CGContextRestoreGState(a3);
-  return CGBitmapContextCreateImage(a3);
+  [(TSDCanvas *)self i_drawRepsInContext:context distort:&v17];
+  CGContextRestoreGState(context);
+  return CGBitmapContextCreateImage(context);
 }
 
 - (CGRect)p_bounds
@@ -1280,7 +1280,7 @@ LABEL_10:
       [(TSDCanvasDelegate *)self->mDelegate canvasWillUpdateRepsFromLayouts:self];
     }
 
-    v4 = [(TSDCanvas *)self p_updateRepsFromLayouts];
+    p_updateRepsFromLayouts = [(TSDCanvas *)self p_updateRepsFromLayouts];
     *&self->mInvalidFlags &= 0xF9u;
     if (objc_opt_respondsToSelector())
     {
@@ -1290,9 +1290,9 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v4 = 0;
+  p_updateRepsFromLayouts = 0;
 LABEL_14:
-  if ((mInvalidFlags & 1) != 0 || v4 || (*&self->mInvalidFlags & 8) != 0)
+  if ((mInvalidFlags & 1) != 0 || p_updateRepsFromLayouts || (*&self->mInvalidFlags & 8) != 0)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -1459,7 +1459,7 @@ LABEL_14:
     return 0;
   }
 
-  v33 = self;
+  selfCopy = self;
   self->mPreviouslyVisibleLayouts = v7;
   v59 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v34 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -1484,7 +1484,7 @@ LABEL_14:
         }
 
         v39 = *(*(&v72 + 1) + 8 * v38);
-        v40 = [(TSDCanvas *)v33 repForLayout:v39, v58];
+        v40 = [(TSDCanvas *)selfCopy repForLayout:v39, v58];
         if (v40)
         {
           goto LABEL_52;
@@ -1493,7 +1493,7 @@ LABEL_14:
         v40 = [objc_alloc(objc_msgSend(v39 "repClassOverride"))];
         if (objc_opt_respondsToSelector())
         {
-          [(TSDCanvasDelegate *)v33->mDelegate canvas:v33 willLayoutRep:v40];
+          [(TSDCanvasDelegate *)selfCopy->mDelegate canvas:selfCopy willLayoutRep:v40];
         }
 
         [v40 wasAddedToParent];
@@ -1521,7 +1521,7 @@ LABEL_52:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  mTopLevelReps = v33->mTopLevelReps;
+  mTopLevelReps = selfCopy->mTopLevelReps;
   v42 = [(NSArray *)mTopLevelReps countByEnumeratingWithState:&v68 objects:v94 count:16];
   if (v42)
   {
@@ -1553,7 +1553,7 @@ LABEL_52:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  mAllReps = v33->mAllReps;
+  mAllReps = selfCopy->mAllReps;
   v48 = [(NSSet *)mAllReps countByEnumeratingWithState:&v64 objects:v93 count:16];
   if (v48)
   {
@@ -1602,9 +1602,9 @@ LABEL_52:
           }
 
           v57 = *(*(&v60 + 1) + 8 * jj);
-          if (![(NSSet *)v33->mAllReps containsObject:v57])
+          if (![(NSSet *)selfCopy->mAllReps containsObject:v57])
           {
-            [(TSDCanvasDelegate *)v33->mDelegate canvas:v33 createdRep:v57];
+            [(TSDCanvasDelegate *)selfCopy->mDelegate canvas:selfCopy createdRep:v57];
           }
         }
 
@@ -1617,10 +1617,10 @@ LABEL_52:
 
   [(NSArray *)v59 sortUsingComparator:&__block_literal_global_43];
 
-  v33->mAllReps = v34;
-  v33->mTopLevelReps = v59;
+  selfCopy->mAllReps = v34;
+  selfCopy->mTopLevelReps = v59;
 
-  v33->mAllRepsOrdered = 0;
+  selfCopy->mAllRepsOrdered = 0;
   return 1;
 }
 
@@ -1708,16 +1708,16 @@ uint64_t __36__TSDCanvas_p_updateRepsFromLayouts__block_invoke()
   self->mAllRepsOrdered = 0;
 }
 
-+ (void)p_recursivelyAddOrderedChildrenOfRep:(id)a3 toArray:(id)a4
++ (void)p_recursivelyAddOrderedChildrenOfRep:(id)rep toArray:(id)array
 {
   v16 = *MEMORY[0x277D85DE8];
-  [a4 addObject:?];
+  [array addObject:?];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [TSUProtocolCast() childReps];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childReps = [TSUProtocolCast() childReps];
+  v7 = [childReps countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1729,14 +1729,14 @@ uint64_t __36__TSDCanvas_p_updateRepsFromLayouts__block_invoke()
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childReps);
         }
 
-        [a1 p_recursivelyAddOrderedChildrenOfRep:*(*(&v11 + 1) + 8 * v10++) toArray:a4];
+        [self p_recursivelyAddOrderedChildrenOfRep:*(*(&v11 + 1) + 8 * v10++) toArray:array];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [childReps countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -1765,10 +1765,10 @@ uint64_t __36__TSDCanvas_p_updateRepsFromLayouts__block_invoke()
   return result;
 }
 
-- (id)textRendererForLayer:(id)a3 context:(CGContext *)a4
+- (id)textRendererForLayer:(id)layer context:(CGContext *)context
 {
-  v7 = [[TSWPRenderer alloc] initWithContext:a4];
-  if (TSDCGContextIsShadowContext(a4))
+  v7 = [[TSWPRenderer alloc] initWithContext:context];
+  if (TSDCGContextIsShadowContext(context))
   {
     [(TSWPRenderer *)v7 setFlipShadows:1];
     v8 = 1.0;
@@ -1776,7 +1776,7 @@ uint64_t __36__TSDCanvas_p_updateRepsFromLayouts__block_invoke()
 
   else
   {
-    v9 = a3 && ([a3 contentsAreFlipped] & 1) != 0 || -[TSDCanvas isPrinting](self, "isPrinting");
+    v9 = layer && ([layer contentsAreFlipped] & 1) != 0 || -[TSDCanvas isPrinting](self, "isPrinting");
     [(TSWPRenderer *)v7 setFlipShadows:v9];
     [(TSDCanvas *)self viewScale];
   }

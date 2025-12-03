@@ -1,7 +1,7 @@
 @interface MTLAttributeDescriptorArrayInternal
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (void)dealloc;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation MTLAttributeDescriptorArrayInternal
@@ -20,27 +20,27 @@
   [(MTLAttributeDescriptorArrayInternal *)&v5 dealloc];
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 >= 0x1F)
+  if (subscript >= 0x1F)
   {
     [MTLAttributeDescriptorArrayInternal objectAtIndexedSubscript:];
   }
 
   descriptors = self->_descriptors;
-  result = descriptors[a3];
+  result = descriptors[subscript];
   if (!result)
   {
     result = objc_alloc_init(MTLAttributeDescriptorInternal);
-    descriptors[a3] = result;
+    descriptors[subscript] = result;
   }
 
   return result;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  if (a3)
+  if (object)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -50,16 +50,16 @@
     }
   }
 
-  if (a4 >= 0x1F)
+  if (subscript >= 0x1F)
   {
     [MTLAttributeDescriptorArrayInternal setObject:atIndexedSubscript:];
   }
 
   descriptors = self->_descriptors;
-  if (descriptors[a4] != a3)
+  if (descriptors[subscript] != object)
   {
-    v17 = descriptors[a4];
-    descriptors[a4] = [a3 copy];
+    v17 = descriptors[subscript];
+    descriptors[subscript] = [object copy];
   }
 }
 

@@ -1,86 +1,86 @@
 @interface HMIVisionUtilities
-+ (BOOL)isPixelFormatCompressed:(unsigned int)a3;
-+ (CGRect)applyPadding:(CGRect)a3 withOriginalSize:(CGSize)a4 padding:(CGSize)a5;
-+ (CGRect)imposeMinSizeFor:(CGRect)a3 withOriginalSize:(CGSize)a4 minCrop:(CGSize)a5;
-+ (CGRect)maintainAspectRatio:(CGRect)a3 originalSize:(CGSize)a4 ratioThreshold:(float)a5;
-+ (__CVBuffer)createPixelBufferFromImageData:(id)a3 error:(id *)a4;
-+ (__CVBuffer)createPixelBufferFromJPEGData:(id)a3 error:(id *)a4;
-+ (__CVBuffer)createPixelBufferFromJPEGDataProvider:(CGDataProvider *)a3 error:(id *)a4;
-+ (__CVBuffer)createPixelBufferFromJPEGPath:(id)a3 error:(id *)a4;
-+ (__CVBuffer)createPixelBufferWithSize:(CGSize)a3 pixelFormat:(unsigned int)a4 useIOSurface:(BOOL)a5;
-+ (__CVBuffer)cropPixelBuffer:(__CVBuffer *)a3 crop:(CGRect)a4 error:(id *)a5;
-+ (__CVBuffer)cropPixelBuffer:(__CVBuffer *)a3 crop:(CGRect)a4 options:(int64_t)a5 error:(id *)a6;
-+ (__CVBuffer)resizePixelBuffer:(__CVBuffer *)a3 size:(CGSize)a4 error:(id *)a5;
-+ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)a3 crop:(CGRect)a4 size:(CGSize)a5 pixelFormat:(unsigned int)a6 options:(int64_t)a7 error:(id *)a8;
-+ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)a3 pixelFormat:(unsigned int)a4 options:(int64_t)a5 error:(id *)a6;
-+ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)a3 rotationAngle:(float)a4 crop:(CGRect)a5 size:(CGSize)a6 precision:(unint64_t)a7 error:(id *)a8;
-+ (id)createJPEGDataFromPixelBuffer:(__CVBuffer *)a3 scale:(float)a4 encodeQuality:(float)a5 error:(id *)a6;
++ (BOOL)isPixelFormatCompressed:(unsigned int)compressed;
++ (CGRect)applyPadding:(CGRect)padding withOriginalSize:(CGSize)size padding:(CGSize)a5;
++ (CGRect)imposeMinSizeFor:(CGRect)for withOriginalSize:(CGSize)size minCrop:(CGSize)crop;
++ (CGRect)maintainAspectRatio:(CGRect)ratio originalSize:(CGSize)size ratioThreshold:(float)threshold;
++ (__CVBuffer)createPixelBufferFromImageData:(id)data error:(id *)error;
++ (__CVBuffer)createPixelBufferFromJPEGData:(id)data error:(id *)error;
++ (__CVBuffer)createPixelBufferFromJPEGDataProvider:(CGDataProvider *)provider error:(id *)error;
++ (__CVBuffer)createPixelBufferFromJPEGPath:(id)path error:(id *)error;
++ (__CVBuffer)createPixelBufferWithSize:(CGSize)size pixelFormat:(unsigned int)format useIOSurface:(BOOL)surface;
++ (__CVBuffer)cropPixelBuffer:(__CVBuffer *)buffer crop:(CGRect)crop error:(id *)error;
++ (__CVBuffer)cropPixelBuffer:(__CVBuffer *)buffer crop:(CGRect)crop options:(int64_t)options error:(id *)error;
++ (__CVBuffer)resizePixelBuffer:(__CVBuffer *)buffer size:(CGSize)size error:(id *)error;
++ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)buffer crop:(CGRect)crop size:(CGSize)size pixelFormat:(unsigned int)format options:(int64_t)options error:(id *)error;
++ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)buffer pixelFormat:(unsigned int)format options:(int64_t)options error:(id *)error;
++ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)buffer rotationAngle:(float)angle crop:(CGRect)crop size:(CGSize)size precision:(unint64_t)precision error:(id *)error;
++ (id)createJPEGDataFromPixelBuffer:(__CVBuffer *)buffer scale:(float)scale encodeQuality:(float)quality error:(id *)error;
 + (void)releaseCachedVisionResources;
 @end
 
 @implementation HMIVisionUtilities
 
-+ (__CVBuffer)cropPixelBuffer:(__CVBuffer *)a3 crop:(CGRect)a4 error:(id *)a5
++ (__CVBuffer)cropPixelBuffer:(__CVBuffer *)buffer crop:(CGRect)crop error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
 
-  return [a1 transferPixelBuffer:a3 crop:PixelFormatType size:0 pixelFormat:a5 options:x error:y, width, height, width, height];
+  return [self transferPixelBuffer:buffer crop:PixelFormatType size:0 pixelFormat:error options:x error:y, width, height, width, height];
 }
 
-+ (__CVBuffer)cropPixelBuffer:(__CVBuffer *)a3 crop:(CGRect)a4 options:(int64_t)a5 error:(id *)a6
++ (__CVBuffer)cropPixelBuffer:(__CVBuffer *)buffer crop:(CGRect)crop options:(int64_t)options error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
 
-  return [a1 transferPixelBuffer:a3 crop:PixelFormatType size:a5 pixelFormat:a6 options:x error:y, width, height, width, height];
+  return [self transferPixelBuffer:buffer crop:PixelFormatType size:options pixelFormat:error options:x error:y, width, height, width, height];
 }
 
-+ (__CVBuffer)resizePixelBuffer:(__CVBuffer *)a3 size:(CGSize)a4 error:(id *)a5
++ (__CVBuffer)resizePixelBuffer:(__CVBuffer *)buffer size:(CGSize)size error:(id *)error
 {
-  height = a4.height;
-  width = a4.width;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  height = size.height;
+  width = size.width;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v11 = *MEMORY[0x277CBF398];
   v12 = *(MEMORY[0x277CBF398] + 8);
   v13 = *(MEMORY[0x277CBF398] + 16);
   v14 = *(MEMORY[0x277CBF398] + 24);
 
-  return [a1 transferPixelBuffer:a3 crop:PixelFormatType size:0 pixelFormat:a5 options:v11 error:v12, v13, v14, width, height];
+  return [self transferPixelBuffer:buffer crop:PixelFormatType size:0 pixelFormat:error options:v11 error:v12, v13, v14, width, height];
 }
 
-+ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)a3 pixelFormat:(unsigned int)a4 options:(int64_t)a5 error:(id *)a6
++ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)buffer pixelFormat:(unsigned int)format options:(int64_t)options error:(id *)error
 {
-  v8 = *&a4;
-  Size = HMICVPixelBufferGetSize(a3);
+  v8 = *&format;
+  Size = HMICVPixelBufferGetSize(buffer);
   v13 = v12;
   v14 = *MEMORY[0x277CBF398];
   v15 = *(MEMORY[0x277CBF398] + 8);
   v16 = *(MEMORY[0x277CBF398] + 16);
   v17 = *(MEMORY[0x277CBF398] + 24);
 
-  return [a1 transferPixelBuffer:a3 crop:v8 size:a5 pixelFormat:a6 options:v14 error:v15, v16, v17, Size, v13];
+  return [self transferPixelBuffer:buffer crop:v8 size:options pixelFormat:error options:v14 error:v15, v16, v17, Size, v13];
 }
 
-+ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)a3 crop:(CGRect)a4 size:(CGSize)a5 pixelFormat:(unsigned int)a6 options:(int64_t)a7 error:(id *)a8
++ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)buffer crop:(CGRect)crop size:(CGSize)size pixelFormat:(unsigned int)format options:(int64_t)options error:(id *)error
 {
-  v10 = *&a6;
-  height = a5.height;
-  width = a5.width;
-  v13 = a4.size.height;
-  v14 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  IOSurface = CVPixelBufferGetIOSurface(a3);
-  v20 = (a7 & 1) != 0 || [HMIVisionUtilities isPixelFormatCompressed:v10];
-  Size = HMICVPixelBufferGetSize(v17);
+  v10 = *&format;
+  height = size.height;
+  width = size.width;
+  v13 = crop.size.height;
+  v14 = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  bufferCopy = buffer;
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
+  v20 = (options & 1) != 0 || [HMIVisionUtilities isPixelFormatCompressed:v10];
+  Size = HMICVPixelBufferGetSize(bufferCopy);
   v23 = v22;
   v61.origin.x = x;
   v61.origin.y = y;
@@ -104,13 +104,13 @@
     v24 = !CGRectEqualToRect(v62, v64);
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v17);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(bufferCopy);
   v29 = PixelFormatType;
   if (v24 || PixelFormatType != v10 || Size != width || v23 != height || v20 != (IOSurface != 0))
   {
     pixelTransferSessionOut = 0;
     v60 = [[HMISignpost alloc] initWithName:@"transferPixelBuffer"];
-    if ((a7 & 8) != 0)
+    if ((options & 8) != 0)
     {
       v31 = width * 2.1;
       v32 = height * 2.1;
@@ -131,16 +131,16 @@
         goto LABEL_30;
       }
 
-      v35 = [HMIVisionUtilities transferPixelBuffer:v17 crop:v29 size:a7 & 0xFFFFFFFFFFFFFFF7 | (IOSurface != 0) pixelFormat:a8 options:x error:y, v14, v13, width + width, height + height];
+      height = [HMIVisionUtilities transferPixelBuffer:bufferCopy crop:v29 size:options & 0xFFFFFFFFFFFFFFF7 | (IOSurface != 0) pixelFormat:error options:x error:y, v14, v13, width + width, height + height];
       v24 = 0;
-      if (!v35)
+      if (!height)
       {
-        v36 = 0;
+        height2 = 0;
         goto LABEL_39;
       }
 
       v30 = 1;
-      v17 = v35;
+      bufferCopy = height;
     }
 
     else
@@ -149,8 +149,8 @@
     }
 
 LABEL_30:
-    v36 = [a1 createPixelBufferWithSize:v10 pixelFormat:1 useIOSurface:width, height];
-    if (v36)
+    height2 = [self createPixelBufferWithSize:v10 pixelFormat:1 useIOSurface:width, height];
+    if (height2)
     {
       v37 = VTPixelTransferSessionCreate(0, &pixelTransferSessionOut);
       if (v37)
@@ -158,10 +158,10 @@ LABEL_30:
         v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"VTPixelTransferSessionCreate failed. Error %d", v37];
         v39 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1022 description:v38];
         v40 = v39;
-        if (a8)
+        if (error)
         {
           v41 = v39;
-          *a8 = v40;
+          *error = v40;
         }
       }
 
@@ -188,45 +188,45 @@ LABEL_30:
           v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"VTSessionSetProperty failed. Error %d", v47];
           v48 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1022 description:v38];
           v40 = v48;
-          if (a8)
+          if (error)
           {
             v49 = v48;
-            *a8 = v40;
+            *error = v40;
           }
         }
 
         else
         {
 LABEL_75:
-          if ((a7 & 2) != 0 && (v50 = VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x277CE2880], *MEMORY[0x277CBED28]), v50))
+          if ((options & 2) != 0 && (v50 = VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x277CE2880], *MEMORY[0x277CBED28]), v50))
           {
             v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"VTSessionSetProperty failed. Error %d", v50];
             v51 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1022 description:v38];
             v40 = v51;
-            if (a8)
+            if (error)
             {
               v52 = v51;
-              *a8 = v40;
+              *error = v40;
             }
           }
 
-          else if ((a7 & 4) != 0 && (v53 = VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x277CE2888], *MEMORY[0x277CBED28]), v53))
+          else if ((options & 4) != 0 && (v53 = VTSessionSetProperty(pixelTransferSessionOut, *MEMORY[0x277CE2888], *MEMORY[0x277CBED28]), v53))
           {
             v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"VTSessionSetProperty failed. Error %d", v53];
             v54 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1022 description:v38];
             v40 = v54;
-            if (a8)
+            if (error)
             {
               v55 = v54;
-              *a8 = v40;
+              *error = v40;
             }
           }
 
           else
           {
-            CVPixelBufferLockBaseAddress(v17, 1uLL);
-            v56 = VTPixelTransferSessionTransferImage(pixelTransferSessionOut, v17, v36);
-            CVPixelBufferUnlockBaseAddress(v17, 1uLL);
+            CVPixelBufferLockBaseAddress(bufferCopy, 1uLL);
+            v56 = VTPixelTransferSessionTransferImage(pixelTransferSessionOut, bufferCopy, height2);
+            CVPixelBufferUnlockBaseAddress(bufferCopy, 1uLL);
             if (!v56)
             {
               VTPixelTransferSessionInvalidate(pixelTransferSessionOut);
@@ -237,7 +237,7 @@ LABEL_75:
 
               if (v30)
               {
-                CVPixelBufferRelease(v17);
+                CVPixelBufferRelease(bufferCopy);
               }
 
               goto LABEL_45;
@@ -246,10 +246,10 @@ LABEL_75:
             v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"VTPixelTransferSessionTransferImage failed. Error %d", v56];
             v57 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1022 description:v38];
             v40 = v57;
-            if (a8)
+            if (error)
             {
               v58 = v57;
-              *a8 = v40;
+              *error = v40;
             }
           }
         }
@@ -262,23 +262,23 @@ LABEL_75:
     {
       v42 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1001];
       v43 = v42;
-      if (a8)
+      if (error)
       {
         v44 = v42;
-        *a8 = v43;
+        *error = v43;
       }
 
       HMIErrorLogC(v43);
 
-      v36 = 0;
+      height2 = 0;
     }
 
     v24 = v30;
 LABEL_39:
-    CVPixelBufferRelease(v36);
+    CVPixelBufferRelease(height2);
     if (v24)
     {
-      CVPixelBufferRelease(v17);
+      CVPixelBufferRelease(bufferCopy);
     }
 
     if (pixelTransferSessionOut)
@@ -290,24 +290,24 @@ LABEL_39:
       }
     }
 
-    v36 = 0;
+    height2 = 0;
 LABEL_45:
     __HMISignpostScopeLeave(&v60);
 
-    return v36;
+    return height2;
   }
 
-  CVPixelBufferRetain(v17);
-  return v17;
+  CVPixelBufferRetain(bufferCopy);
+  return bufferCopy;
 }
 
-+ (id)createJPEGDataFromPixelBuffer:(__CVBuffer *)a3 scale:(float)a4 encodeQuality:(float)a5 error:(id *)a6
++ (id)createJPEGDataFromPixelBuffer:(__CVBuffer *)buffer scale:(float)scale encodeQuality:(float)quality error:(id *)error
 {
   v46[2] = *MEMORY[0x277D85DE8];
   theBuffer = 0;
   v38 = [[HMISignpost alloc] initWithName:@"JPEGDataFromPixelBuffer"];
   cf = 0;
-  v9 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v10 = MEMORY[0x277CBEC38];
   v11 = *MEMORY[0x277CF6D60];
   v45[0] = *MEMORY[0x277CF6D68];
@@ -334,11 +334,11 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  Size = HMICVPixelBufferGetSize(a3);
+  Size = HMICVPixelBufferGetSize(buffer);
   v19 = v18;
-  if (a4 > 0.0 && a4 < 1.0)
+  if (scale > 0.0 && scale < 1.0)
   {
-    CGAffineTransformMakeScale(&v35, a4, a4);
+    CGAffineTransformMakeScale(&v35, scale, scale);
     v20 = v19 * v35.c;
     v19 = v19 * v35.d + v35.b * Size;
     Size = v20 + v35.a * Size;
@@ -367,7 +367,7 @@ LABEL_4:
   v15 = [v22 dictionaryWithDictionary:v25];
 
   v26 = *MEMORY[0x277CF6D38];
-  if (a5 <= 0.0 || a5 > 1.0)
+  if (quality <= 0.0 || quality > 1.0)
   {
     [v15 setObject:&unk_284074F88 forKeyedSubscript:v26];
     [v15 setObject:&unk_284074F28 forKeyedSubscript:*MEMORY[0x277CF6D30]];
@@ -377,7 +377,7 @@ LABEL_4:
   {
     [v15 setObject:&unk_284074F70 forKeyedSubscript:v26];
     v39 = *MEMORY[0x277CF6DD8];
-    *&v27 = a5;
+    *&v27 = quality;
     v28 = [MEMORY[0x277CCABB0] numberWithFloat:v27];
     v40 = v28;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
@@ -393,7 +393,7 @@ LABEL_4:
       v34 = malloc_type_malloc(DataLength, 0x9C4C29C1uLL);
       CMBlockBufferCopyDataBytes(v32, 0, DataLength, v34);
       CFRelease(v32);
-      [v9 appendBytes:v34 length:DataLength];
+      [data appendBytes:v34 length:DataLength];
       free(v34);
     }
   }
@@ -409,19 +409,19 @@ LABEL_5:
 
   __HMISignpostScopeLeave(&v38);
 
-  return v9;
+  return data;
 }
 
-+ (__CVBuffer)createPixelBufferFromJPEGDataProvider:(CGDataProvider *)a3 error:(id *)a4
++ (__CVBuffer)createPixelBufferFromJPEGDataProvider:(CGDataProvider *)provider error:(id *)error
 {
-  if (!a3 || (v6 = CGImageCreateWithJPEGDataProvider(a3, 0, 0, kCGRenderingIntentDefault)) == 0)
+  if (!provider || (v6 = CGImageCreateWithJPEGDataProvider(provider, 0, 0, kCGRenderingIntentDefault)) == 0)
   {
     v19 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000];
     v20 = v19;
-    if (a4)
+    if (error)
     {
       v21 = v19;
-      *a4 = v20;
+      *error = v20;
     }
 
     HMIErrorLogC(v20);
@@ -438,15 +438,15 @@ LABEL_5:
   ColorSpace = CGImageGetColorSpace(v7);
   v11 = CGColorSpaceRetain(ColorSpace);
   v12 = Width;
-  v13 = [a1 createPixelBufferWithSize:1111970369 pixelFormat:0 useIOSurface:Width, Height];
-  if (!v13)
+  height = [self createPixelBufferWithSize:1111970369 pixelFormat:0 useIOSurface:Width, Height];
+  if (!height)
   {
     v23 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000];
     v24 = v23;
-    if (a4)
+    if (error)
     {
       v25 = v23;
-      *a4 = v24;
+      *error = v24;
     }
 
     HMIErrorLogC(v24);
@@ -457,8 +457,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v14 = v13;
-  CVPixelBufferLockBaseAddress(v13, 0);
+  v14 = height;
+  CVPixelBufferLockBaseAddress(height, 0);
   BaseAddress = CVPixelBufferGetBaseAddress(v14);
   BytesPerRow = CVPixelBufferGetBytesPerRow(v14);
   v17 = CGBitmapContextCreate(BaseAddress, Width, Height, 8uLL, BytesPerRow, v11, 0x2002u);
@@ -478,10 +478,10 @@ LABEL_9:
     CVPixelBufferUnlockBaseAddress(v14, 0);
     v26 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000];
     v27 = v26;
-    if (a4)
+    if (error)
     {
       v28 = v26;
-      *a4 = v27;
+      *error = v27;
     }
 
     HMIErrorLogC(v27);
@@ -496,23 +496,23 @@ LABEL_10:
   return v14;
 }
 
-+ (__CVBuffer)createPixelBufferFromJPEGPath:(id)a3 error:(id *)a4
++ (__CVBuffer)createPixelBufferFromJPEGPath:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = CGDataProviderCreateWithFilename([a3 UTF8String]);
+  pathCopy = path;
+  v8 = CGDataProviderCreateWithFilename([path UTF8String]);
   if (v8)
   {
-    v9 = [a1 createPixelBufferFromJPEGDataProvider:v8 error:a4];
+    v9 = [self createPixelBufferFromJPEGDataProvider:v8 error:error];
   }
 
   else
   {
     v10 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000];
     v11 = v10;
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     HMIErrorLogC(v11);
@@ -524,22 +524,22 @@ LABEL_10:
   return v9;
 }
 
-+ (__CVBuffer)createPixelBufferFromJPEGData:(id)a3 error:(id *)a4
++ (__CVBuffer)createPixelBufferFromJPEGData:(id)data error:(id *)error
 {
-  v6 = CGDataProviderCreateWithCFData(a3);
+  v6 = CGDataProviderCreateWithCFData(data);
   if (v6)
   {
-    v7 = [a1 createPixelBufferFromJPEGDataProvider:v6 error:a4];
+    v7 = [self createPixelBufferFromJPEGDataProvider:v6 error:error];
   }
 
   else
   {
     v8 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000];
     v9 = v8;
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     HMIErrorLogC(v9);
@@ -551,9 +551,9 @@ LABEL_10:
   return v7;
 }
 
-+ (__CVBuffer)createPixelBufferFromImageData:(id)a3 error:(id *)a4
++ (__CVBuffer)createPixelBufferFromImageData:(id)data error:(id *)error
 {
-  v5 = [MEMORY[0x277CBF758] imageWithData:a3];
+  v5 = [MEMORY[0x277CBF758] imageWithData:data];
   [v5 extent];
   v8 = [HMIVisionUtilities createPixelBufferWithSize:1111970369 pixelFormat:0 useIOSurface:v6, v7];
   v9 = v8;
@@ -569,10 +569,10 @@ LABEL_10:
   {
     v11 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1001];
     v10 = v11;
-    if (a4)
+    if (error)
     {
       v12 = v11;
-      *a4 = v10;
+      *error = v10;
     }
 
     HMIErrorLogC(v10);
@@ -581,12 +581,12 @@ LABEL_10:
   return v9;
 }
 
-+ (__CVBuffer)createPixelBufferWithSize:(CGSize)a3 pixelFormat:(unsigned int)a4 useIOSurface:(BOOL)a5
++ (__CVBuffer)createPixelBufferWithSize:(CGSize)size pixelFormat:(unsigned int)format useIOSurface:(BOOL)surface
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v19 = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (surface)
   {
 LABEL_6:
     v16 = *MEMORY[0x277CC4DE8];
@@ -595,10 +595,10 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if ([HMIVisionUtilities isPixelFormatCompressed:*&a4])
+  if ([HMIVisionUtilities isPixelFormatCompressed:*&format])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -615,7 +615,7 @@ LABEL_6:
   v13 = 0;
 LABEL_8:
   *buf = 0;
-  if (CVPixelBufferCreate(0, width, height, a4, v13, buf))
+  if (CVPixelBufferCreate(0, width, height, format, v13, buf))
   {
     v14 = 0;
   }
@@ -628,18 +628,18 @@ LABEL_8:
   return v14;
 }
 
-+ (CGRect)applyPadding:(CGRect)a3 withOriginalSize:(CGSize)a4 padding:(CGSize)a5
++ (CGRect)applyPadding:(CGRect)padding withOriginalSize:(CGSize)size padding:(CGSize)a5
 {
   height = a5.height;
   width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v7 = size.height;
+  v8 = size.width;
+  v9 = padding.size.height;
+  v10 = padding.size.width;
+  y = padding.origin.y;
+  x = padding.origin.x;
   memset(&v31, 0, sizeof(v31));
-  CGAffineTransformMakeScale(&v31, a4.width, a4.height);
+  CGAffineTransformMakeScale(&v31, size.width, size.height);
   v30 = v31;
   v32.origin.x = x;
   v32.origin.y = y;
@@ -706,18 +706,18 @@ LABEL_8:
   return CGRectApplyAffineTransform(v34, &v30);
 }
 
-+ (CGRect)imposeMinSizeFor:(CGRect)a3 withOriginalSize:(CGSize)a4 minCrop:(CGSize)a5
++ (CGRect)imposeMinSizeFor:(CGRect)for withOriginalSize:(CGSize)size minCrop:(CGSize)crop
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = crop.height;
+  width = crop.width;
+  v7 = size.height;
+  v8 = size.width;
+  v9 = for.size.height;
+  v10 = for.size.width;
+  y = for.origin.y;
+  x = for.origin.x;
   memset(&v26, 0, sizeof(v26));
-  CGAffineTransformMakeScale(&v26, a4.width, a4.height);
+  CGAffineTransformMakeScale(&v26, size.width, size.height);
   v25 = v26;
   v27.origin.x = x;
   v27.origin.y = y;
@@ -747,7 +747,7 @@ LABEL_8:
 
   if (v16 >= 0.0 || v15 >= 0.0)
   {
-    [a1 applyPadding:x withOriginalSize:y padding:{v10, v9, v8, v7, v15}];
+    [self applyPadding:x withOriginalSize:y padding:{v10, v9, v8, v7, v15}];
     x = v17;
     y = v18;
     v10 = v19;
@@ -765,16 +765,16 @@ LABEL_8:
   return result;
 }
 
-+ (CGRect)maintainAspectRatio:(CGRect)a3 originalSize:(CGSize)a4 ratioThreshold:(float)a5
++ (CGRect)maintainAspectRatio:(CGRect)ratio originalSize:(CGSize)size ratioThreshold:(float)threshold
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v8 = ratio.size.height;
+  v9 = ratio.size.width;
+  y = ratio.origin.y;
+  x = ratio.origin.x;
   memset(&v28, 0, sizeof(v28));
-  CGAffineTransformMakeScale(&v28, a4.width, a4.height);
+  CGAffineTransformMakeScale(&v28, size.width, size.height);
   v27 = v28;
   v29.origin.x = x;
   v29.origin.y = y;
@@ -786,9 +786,9 @@ LABEL_8:
   if (v13 <= v14)
   {
     v18 = v14 / v13;
-    if (v18 > a5)
+    if (v18 > threshold)
     {
-      v17 = (((v18 / a5) + -1.0) * v13);
+      v17 = (((v18 / threshold) + -1.0) * v13);
       v16 = 0.0;
       goto LABEL_6;
     }
@@ -797,12 +797,12 @@ LABEL_8:
   else
   {
     v15 = v13 / v14;
-    if (v15 > a5)
+    if (v15 > threshold)
     {
-      v16 = (((v15 / a5) + -1.0) * v14);
+      v16 = (((v15 / threshold) + -1.0) * v14);
       v17 = 0.0;
 LABEL_6:
-      [a1 applyPadding:x withOriginalSize:y padding:{v9, v8, width, height, v17, v16}];
+      [self applyPadding:x withOriginalSize:y padding:{v9, v8, width, height, v17, v16}];
       x = v19;
       y = v20;
       v9 = v21;
@@ -821,15 +821,15 @@ LABEL_6:
   return result;
 }
 
-+ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)a3 rotationAngle:(float)a4 crop:(CGRect)a5 size:(CGSize)a6 precision:(unint64_t)a7 error:(id *)a8
++ (__CVBuffer)transferPixelBuffer:(__CVBuffer *)buffer rotationAngle:(float)angle crop:(CGRect)crop size:(CGSize)size precision:(unint64_t)precision error:(id *)error
 {
-  height = a6.height;
-  width = a6.width;
-  v12 = a5.size.height;
-  v13 = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  if (CGRectIsNull(a5) || (v49.origin.x = x, v49.origin.y = y, v49.size.width = v13, v49.size.height = v12, CGRectIsInfinite(v49)) || (v50.origin.x = x, v50.origin.y = y, v50.size.width = v13, v50.size.height = v12, CGRectIsEmpty(v50)))
+  height = size.height;
+  width = size.width;
+  v12 = crop.size.height;
+  v13 = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  if (CGRectIsNull(crop) || (v49.origin.x = x, v49.origin.y = y, v49.size.width = v13, v49.size.height = v12, CGRectIsInfinite(v49)) || (v50.origin.x = x, v50.origin.y = y, v50.size.width = v13, v50.size.height = v12, CGRectIsEmpty(v50)))
   {
     v19 = MEMORY[0x277CCACA8];
     v20 = @"Invalid crop for affine transform";
@@ -837,10 +837,10 @@ LABEL_5:
     v21 = [v19 stringWithFormat:v20];
     v22 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000 description:v21];
     v23 = v22;
-    if (a8)
+    if (error)
     {
       v24 = v22;
-      *a8 = v23;
+      *error = v23;
     }
 
     HMIErrorLogC(v23);
@@ -848,33 +848,33 @@ LABEL_5:
     return 0;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1111970369)
   {
     v19 = MEMORY[0x277CCACA8];
     v20 = @"Error in pixelbuffer format for affine transform";
     goto LABEL_5;
   }
 
-  v27 = [a1 createPixelBufferWithSize:1111970369 pixelFormat:1 useIOSurface:width, height];
-  if (!v27)
+  height = [self createPixelBufferWithSize:1111970369 pixelFormat:1 useIOSurface:width, height];
+  if (!height)
   {
     v19 = MEMORY[0x277CCACA8];
     v20 = @"Error generating pixelbuffer for affine transform";
     goto LABEL_5;
   }
 
-  v25 = v27;
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v25 = height;
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
   CVPixelBufferLockBaseAddress(v25, 0);
-  v48[0] = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-  v48[1] = CVPixelBufferGetHeight(a3);
-  v48[2] = CVPixelBufferGetWidth(a3);
-  v48[3] = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  v48[0] = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+  v48[1] = CVPixelBufferGetHeight(buffer);
+  v48[2] = CVPixelBufferGetWidth(buffer);
+  v48[3] = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
   v47[0] = CVPixelBufferGetBaseAddressOfPlane(v25, 0);
   v47[1] = CVPixelBufferGetHeight(v25);
   v47[2] = CVPixelBufferGetWidth(v25);
   v47[3] = CVPixelBufferGetBytesPerRowOfPlane(v25, 0);
-  v38 = CVPixelBufferGetHeight(a3);
+  v38 = CVPixelBufferGetHeight(buffer);
   memset(&v46, 0, sizeof(v46));
   v51.origin.x = x;
   v51.origin.y = y;
@@ -888,7 +888,7 @@ LABEL_5:
   MidY = CGRectGetMidY(v52);
   CGAffineTransformMakeTranslation(&v46, v28, MidY - v38);
   memset(&v45, 0, sizeof(v45));
-  CGAffineTransformMakeRotation(&v45, a4);
+  CGAffineTransformMakeRotation(&v45, angle);
   memset(&v44, 0, sizeof(v44));
   v53.origin.x = x;
   v53.origin.y = y;
@@ -912,7 +912,7 @@ LABEL_5:
   v40 = v46;
   CGAffineTransformConcat(&v42, &v40, &t1);
   LODWORD(t1.a) = 0;
-  if (a7 == 1)
+  if (precision == 1)
   {
     v32 = 36;
   }
@@ -923,17 +923,17 @@ LABEL_5:
   }
 
   v33 = MEMORY[0x2318CBCB0](v48, v47, 0, &v42, &t1, v32);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   CVPixelBufferUnlockBaseAddress(v25, 0);
   if (v33)
   {
     v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error applying affine transform"];
     v35 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000 description:v34];
     v36 = v35;
-    if (a8)
+    if (error)
     {
       v37 = v35;
-      *a8 = v36;
+      *error = v36;
     }
 
     HMIErrorLogC(v36);
@@ -947,11 +947,11 @@ LABEL_5:
 
 + (void)releaseCachedVisionResources
 {
-  v2 = [MEMORY[0x277CE2E18] globalSession];
-  [v2 releaseCachedResources];
+  globalSession = [MEMORY[0x277CE2E18] globalSession];
+  [globalSession releaseCachedResources];
 }
 
-+ (BOOL)isPixelFormatCompressed:(unsigned int)a3
++ (BOOL)isPixelFormatCompressed:(unsigned int)compressed
 {
   v3 = CVPixelFormatDescriptionGetDescriptionWithPixelFormatType();
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CC4F18]];

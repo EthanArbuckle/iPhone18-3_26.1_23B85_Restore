@@ -1,19 +1,19 @@
 @interface CTCLGPSSatsVisibilityAssertion
-- (CTCLGPSSatsVisibilityAssertion)initWithQueue:(id)a3 bundleType:(int)a4 callback:(void *)a5;
+- (CTCLGPSSatsVisibilityAssertion)initWithQueue:(id)queue bundleType:(int)type callback:(void *)callback;
 - (id).cxx_construct;
-- (void)handleGPSSatsVisibility:(id)a3 error:(id)a4;
+- (void)handleGPSSatsVisibility:(id)visibility error:(id)error;
 @end
 
 @implementation CTCLGPSSatsVisibilityAssertion
 
-- (CTCLGPSSatsVisibilityAssertion)initWithQueue:(id)a3 bundleType:(int)a4 callback:(void *)a5
+- (CTCLGPSSatsVisibilityAssertion)initWithQueue:(id)queue bundleType:(int)type callback:(void *)callback
 {
-  v7 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CTCLGPSSatsVisibilityAssertion;
   if ([(CTCLGPSSatsVisibilityAssertion *)&v11 init])
   {
-    if (a4)
+    if (type)
     {
       v8 = "cns.gps.vis";
     }
@@ -30,18 +30,18 @@
   return 0;
 }
 
-- (void)handleGPSSatsVisibility:(id)a3 error:(id)a4
+- (void)handleGPSSatsVisibility:(id)visibility error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  visibilityCopy = visibility;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->fQueue);
-  if (v7)
+  if (errorCopy)
   {
     v8 = sub_100032AC8(self->fLogger.__ptr_);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = v7;
+      v24 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Encountered error: %@", buf, 0xCu);
     }
 
@@ -50,7 +50,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!visibilityCopy)
   {
     v8 = sub_100032AC8(self->fLogger.__ptr_);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -67,13 +67,13 @@ LABEL_4:
   TMConvertTicksToSeconds();
   v10 = v9;
   v22 = 0.0;
-  if (sub_100032A6C(v6, @"kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSStartKey", &v22))
+  if (sub_100032A6C(visibilityCopy, @"kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSStartKey", &v22))
   {
     v21 = 0.0;
-    if (sub_100032A6C(v6, @"kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSStopKey", &v21))
+    if (sub_100032A6C(visibilityCopy, @"kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSStopKey", &v21))
     {
       v20 = 0.0;
-      if (!sub_100032A6C(v6, @"kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSYieldKey", &v20))
+      if (!sub_100032A6C(visibilityCopy, @"kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSYieldKey", &v20))
       {
         v11 = sub_100032AC8(self->fLogger.__ptr_);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@ LABEL_4:
           *buf = 136315650;
           v24 = "kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSYieldKey";
           v25 = 2112;
-          v26 = *&v6;
+          v26 = *&visibilityCopy;
           v27 = 2048;
           v28 = v10;
           v12 = "%s Status missing in received locationState: %@, now: %f";
@@ -183,7 +183,7 @@ LABEL_43:
       *buf = 136315650;
       v24 = "kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSStopKey";
       v25 = 2112;
-      v26 = *&v6;
+      v26 = *&visibilityCopy;
       v27 = 2048;
       v28 = v10;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s missing in received locationState: %@, now: %f", buf, 0x20u);
@@ -198,7 +198,7 @@ LABEL_43:
       *buf = 136315650;
       v24 = "kCLGNSSStateQueryAssertion_ResponseKey_LastGNSSStartKey";
       v25 = 2112;
-      v26 = *&v6;
+      v26 = *&visibilityCopy;
       v27 = 2048;
       v28 = v10;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s missing in received locationState: %@, now: %f", buf, 0x20u);

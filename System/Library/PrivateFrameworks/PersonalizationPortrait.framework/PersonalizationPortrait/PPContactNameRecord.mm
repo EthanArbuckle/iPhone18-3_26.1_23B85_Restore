@@ -1,27 +1,27 @@
 @interface PPContactNameRecord
-+ (id)describeChangeType:(unsigned __int8)a3;
-+ (id)describeSource:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContactNameRecord:(id)a3;
-- (PPContactNameRecord)initWithCoder:(id)a3;
-- (PPContactNameRecord)initWithIdentifier:(id)a3 score:(double)a4 source:(unsigned __int8)a5 sourceIdentifier:(id)a6 changeType:(unsigned __int8)a7 firstName:(id)a8 phoneticFirstName:(id)a9 middleName:(id)a10 phoneticMiddleName:(id)a11 lastName:(id)a12 phoneticLastName:(id)a13 organizationName:(id)a14 jobTitle:(id)a15 nickname:(id)a16 relatedNames:(id)a17 streetNames:(id)a18 cityNames:(id)a19;
++ (id)describeChangeType:(unsigned __int8)type;
++ (id)describeSource:(unsigned __int8)source;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContactNameRecord:(id)record;
+- (PPContactNameRecord)initWithCoder:(id)coder;
+- (PPContactNameRecord)initWithIdentifier:(id)identifier score:(double)score source:(unsigned __int8)source sourceIdentifier:(id)sourceIdentifier changeType:(unsigned __int8)type firstName:(id)name phoneticFirstName:(id)firstName middleName:(id)self0 phoneticMiddleName:(id)self1 lastName:(id)self2 phoneticLastName:(id)self3 organizationName:(id)self4 jobTitle:(id)self5 nickname:(id)self6 relatedNames:(id)self7 streetNames:(id)self8 cityNames:(id)self9;
 - (id)description;
 - (id)init_;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPContactNameRecord
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(PPContactNameRecord *)self lastName];
-  v6 = v5;
-  if (v5)
+  compareCopy = compare;
+  lastName = [(PPContactNameRecord *)self lastName];
+  v6 = lastName;
+  if (lastName)
   {
-    v7 = v5;
+    v7 = lastName;
   }
 
   else
@@ -29,11 +29,11 @@
     v7 = &stru_1F1B327D8;
   }
 
-  v8 = [v4 lastName];
-  v9 = v8;
-  if (v8)
+  lastName2 = [compareCopy lastName];
+  v9 = lastName2;
+  if (lastName2)
   {
-    v10 = v8;
+    v10 = lastName2;
   }
 
   else
@@ -45,31 +45,31 @@
 
   if (!v11)
   {
-    v12 = [(PPContactNameRecord *)self firstName];
-    v13 = v12;
-    v14 = v12 ? v12 : &stru_1F1B327D8;
-    v15 = [v4 firstName];
-    v16 = v15;
-    v17 = v15 ? v15 : &stru_1F1B327D8;
+    firstName = [(PPContactNameRecord *)self firstName];
+    v13 = firstName;
+    v14 = firstName ? firstName : &stru_1F1B327D8;
+    firstName2 = [compareCopy firstName];
+    v16 = firstName2;
+    v17 = firstName2 ? firstName2 : &stru_1F1B327D8;
     v11 = [(__CFString *)v14 compare:v17];
 
     if (!v11)
     {
-      v18 = [(PPContactNameRecord *)self middleName];
-      v19 = v18;
-      v20 = v18 ? v18 : &stru_1F1B327D8;
-      v21 = [v4 middleName];
-      v22 = v21;
-      v23 = v21 ? v21 : &stru_1F1B327D8;
+      middleName = [(PPContactNameRecord *)self middleName];
+      v19 = middleName;
+      v20 = middleName ? middleName : &stru_1F1B327D8;
+      middleName2 = [compareCopy middleName];
+      v22 = middleName2;
+      v23 = middleName2 ? middleName2 : &stru_1F1B327D8;
       v11 = [(__CFString *)v20 compare:v23];
 
       if (!v11)
       {
-        v24 = [(PPContactNameRecord *)self sourceIdentifier];
-        v25 = v24;
-        if (v24)
+        sourceIdentifier = [(PPContactNameRecord *)self sourceIdentifier];
+        v25 = sourceIdentifier;
+        if (sourceIdentifier)
         {
-          v26 = v24;
+          v26 = sourceIdentifier;
         }
 
         else
@@ -77,11 +77,11 @@
           v26 = &stru_1F1B327D8;
         }
 
-        v27 = [v4 sourceIdentifier];
-        v28 = v27;
-        if (v27)
+        sourceIdentifier2 = [compareCopy sourceIdentifier];
+        v28 = sourceIdentifier2;
+        if (sourceIdentifier2)
         {
-          v29 = v27;
+          v29 = sourceIdentifier2;
         }
 
         else
@@ -97,44 +97,44 @@
   return v11;
 }
 
-- (BOOL)isEqualToContactNameRecord:(id)a3
+- (BOOL)isEqualToContactNameRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     goto LABEL_51;
   }
 
   [(PPContactNameRecord *)self score];
   v6 = v5;
-  [v4 score];
+  [recordCopy score];
   if (v6 != v7)
   {
     goto LABEL_51;
   }
 
-  v8 = [(PPContactNameRecord *)self source];
-  if (v8 != [v4 source])
+  source = [(PPContactNameRecord *)self source];
+  if (source != [recordCopy source])
   {
     goto LABEL_51;
   }
 
-  v9 = [(PPContactNameRecord *)self changeType];
-  if (v9 != [v4 changeType])
+  changeType = [(PPContactNameRecord *)self changeType];
+  if (changeType != [recordCopy changeType])
   {
     goto LABEL_51;
   }
 
-  v10 = [(PPContactNameRecord *)self sourceIdentifier];
-  v11 = [v4 sourceIdentifier];
-  v12 = v11;
-  if (v10 == v11)
+  sourceIdentifier = [(PPContactNameRecord *)self sourceIdentifier];
+  sourceIdentifier2 = [recordCopy sourceIdentifier];
+  v12 = sourceIdentifier2;
+  if (sourceIdentifier == sourceIdentifier2)
   {
   }
 
   else
   {
-    v13 = [v10 isEqual:v11];
+    v13 = [sourceIdentifier isEqual:sourceIdentifier2];
 
     if ((v13 & 1) == 0)
     {
@@ -142,16 +142,16 @@
     }
   }
 
-  v14 = [(PPContactNameRecord *)self firstName];
-  v15 = [v4 firstName];
-  v16 = v15;
-  if (v14 == v15)
+  firstName = [(PPContactNameRecord *)self firstName];
+  firstName2 = [recordCopy firstName];
+  v16 = firstName2;
+  if (firstName == firstName2)
   {
   }
 
   else
   {
-    v17 = [v14 isEqual:v15];
+    v17 = [firstName isEqual:firstName2];
 
     if ((v17 & 1) == 0)
     {
@@ -159,16 +159,16 @@
     }
   }
 
-  v18 = [(PPContactNameRecord *)self phoneticFirstName];
-  v19 = [v4 phoneticFirstName];
-  v20 = v19;
-  if (v18 == v19)
+  phoneticFirstName = [(PPContactNameRecord *)self phoneticFirstName];
+  phoneticFirstName2 = [recordCopy phoneticFirstName];
+  v20 = phoneticFirstName2;
+  if (phoneticFirstName == phoneticFirstName2)
   {
   }
 
   else
   {
-    v21 = [v18 isEqual:v19];
+    v21 = [phoneticFirstName isEqual:phoneticFirstName2];
 
     if ((v21 & 1) == 0)
     {
@@ -176,16 +176,16 @@
     }
   }
 
-  v22 = [(PPContactNameRecord *)self middleName];
-  v23 = [v4 middleName];
-  v24 = v23;
-  if (v22 == v23)
+  middleName = [(PPContactNameRecord *)self middleName];
+  middleName2 = [recordCopy middleName];
+  v24 = middleName2;
+  if (middleName == middleName2)
   {
   }
 
   else
   {
-    v25 = [v22 isEqual:v23];
+    v25 = [middleName isEqual:middleName2];
 
     if ((v25 & 1) == 0)
     {
@@ -193,16 +193,16 @@
     }
   }
 
-  v26 = [(PPContactNameRecord *)self phoneticMiddleName];
-  v27 = [v4 phoneticMiddleName];
-  v28 = v27;
-  if (v26 == v27)
+  phoneticMiddleName = [(PPContactNameRecord *)self phoneticMiddleName];
+  phoneticMiddleName2 = [recordCopy phoneticMiddleName];
+  v28 = phoneticMiddleName2;
+  if (phoneticMiddleName == phoneticMiddleName2)
   {
   }
 
   else
   {
-    v29 = [v26 isEqual:v27];
+    v29 = [phoneticMiddleName isEqual:phoneticMiddleName2];
 
     if ((v29 & 1) == 0)
     {
@@ -210,16 +210,16 @@
     }
   }
 
-  v30 = [(PPContactNameRecord *)self lastName];
-  v31 = [v4 lastName];
-  v32 = v31;
-  if (v30 == v31)
+  lastName = [(PPContactNameRecord *)self lastName];
+  lastName2 = [recordCopy lastName];
+  v32 = lastName2;
+  if (lastName == lastName2)
   {
   }
 
   else
   {
-    v33 = [v30 isEqual:v31];
+    v33 = [lastName isEqual:lastName2];
 
     if ((v33 & 1) == 0)
     {
@@ -227,16 +227,16 @@
     }
   }
 
-  v34 = [(PPContactNameRecord *)self phoneticLastName];
-  v35 = [v4 phoneticLastName];
-  v36 = v35;
-  if (v34 == v35)
+  phoneticLastName = [(PPContactNameRecord *)self phoneticLastName];
+  phoneticLastName2 = [recordCopy phoneticLastName];
+  v36 = phoneticLastName2;
+  if (phoneticLastName == phoneticLastName2)
   {
   }
 
   else
   {
-    v37 = [v34 isEqual:v35];
+    v37 = [phoneticLastName isEqual:phoneticLastName2];
 
     if ((v37 & 1) == 0)
     {
@@ -244,16 +244,16 @@
     }
   }
 
-  v38 = [(PPContactNameRecord *)self organizationName];
-  v39 = [v4 organizationName];
-  v40 = v39;
-  if (v38 == v39)
+  organizationName = [(PPContactNameRecord *)self organizationName];
+  organizationName2 = [recordCopy organizationName];
+  v40 = organizationName2;
+  if (organizationName == organizationName2)
   {
   }
 
   else
   {
-    v41 = [v38 isEqual:v39];
+    v41 = [organizationName isEqual:organizationName2];
 
     if ((v41 & 1) == 0)
     {
@@ -261,16 +261,16 @@
     }
   }
 
-  v42 = [(PPContactNameRecord *)self jobTitle];
-  v43 = [v4 jobTitle];
-  v44 = v43;
-  if (v42 == v43)
+  jobTitle = [(PPContactNameRecord *)self jobTitle];
+  jobTitle2 = [recordCopy jobTitle];
+  v44 = jobTitle2;
+  if (jobTitle == jobTitle2)
   {
   }
 
   else
   {
-    v45 = [v42 isEqual:v43];
+    v45 = [jobTitle isEqual:jobTitle2];
 
     if ((v45 & 1) == 0)
     {
@@ -278,16 +278,16 @@
     }
   }
 
-  v46 = [(PPContactNameRecord *)self nickname];
-  v47 = [v4 nickname];
-  v48 = v47;
-  if (v46 == v47)
+  nickname = [(PPContactNameRecord *)self nickname];
+  nickname2 = [recordCopy nickname];
+  v48 = nickname2;
+  if (nickname == nickname2)
   {
   }
 
   else
   {
-    v49 = [v46 isEqual:v47];
+    v49 = [nickname isEqual:nickname2];
 
     if ((v49 & 1) == 0)
     {
@@ -295,16 +295,16 @@
     }
   }
 
-  v50 = [(PPContactNameRecord *)self relatedNames];
-  v51 = [v4 relatedNames];
-  v52 = v51;
-  if (v50 == v51)
+  relatedNames = [(PPContactNameRecord *)self relatedNames];
+  relatedNames2 = [recordCopy relatedNames];
+  v52 = relatedNames2;
+  if (relatedNames == relatedNames2)
   {
   }
 
   else
   {
-    v53 = [v50 isEqual:v51];
+    v53 = [relatedNames isEqual:relatedNames2];
 
     if ((v53 & 1) == 0)
     {
@@ -312,16 +312,16 @@
     }
   }
 
-  v54 = [(PPContactNameRecord *)self streetNames];
-  v55 = [v4 streetNames];
-  v56 = v55;
-  if (v54 == v55)
+  streetNames = [(PPContactNameRecord *)self streetNames];
+  streetNames2 = [recordCopy streetNames];
+  v56 = streetNames2;
+  if (streetNames == streetNames2)
   {
   }
 
   else
   {
-    v57 = [v54 isEqual:v55];
+    v57 = [streetNames isEqual:streetNames2];
 
     if ((v57 & 1) == 0)
     {
@@ -331,127 +331,127 @@ LABEL_51:
     }
   }
 
-  v60 = [(PPContactNameRecord *)self cityNames];
-  v61 = [v4 cityNames];
-  if (v60 == v61)
+  cityNames = [(PPContactNameRecord *)self cityNames];
+  cityNames2 = [recordCopy cityNames];
+  if (cityNames == cityNames2)
   {
     v58 = 1;
   }
 
   else
   {
-    v58 = [v60 isEqual:v61];
+    v58 = [cityNames isEqual:cityNames2];
   }
 
 LABEL_52:
   return v58;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPContactNameRecord *)self isEqualToContactNameRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPContactNameRecord *)self isEqualToContactNameRecord:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PPContactNameRecord *)self identifier];
-  [v4 encodeObject:v5 forKey:@"ide"];
+  coderCopy = coder;
+  identifier = [(PPContactNameRecord *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"ide"];
 
   [(PPContactNameRecord *)self score];
-  [v4 encodeDouble:@"scr" forKey:?];
-  [v4 encodeInt32:-[PPContactNameRecord source](self forKey:{"source"), @"src"}];
-  v6 = [(PPContactNameRecord *)self sourceIdentifier];
-  [v4 encodeObject:v6 forKey:@"sid"];
+  [coderCopy encodeDouble:@"scr" forKey:?];
+  [coderCopy encodeInt32:-[PPContactNameRecord source](self forKey:{"source"), @"src"}];
+  sourceIdentifier = [(PPContactNameRecord *)self sourceIdentifier];
+  [coderCopy encodeObject:sourceIdentifier forKey:@"sid"];
 
-  [v4 encodeInt32:-[PPContactNameRecord changeType](self forKey:{"changeType"), @"cht"}];
-  v7 = [(PPContactNameRecord *)self firstName];
-  [v4 encodeObject:v7 forKey:@"fnm"];
+  [coderCopy encodeInt32:-[PPContactNameRecord changeType](self forKey:{"changeType"), @"cht"}];
+  firstName = [(PPContactNameRecord *)self firstName];
+  [coderCopy encodeObject:firstName forKey:@"fnm"];
 
-  v8 = [(PPContactNameRecord *)self phoneticFirstName];
-  [v4 encodeObject:v8 forKey:@"pfn"];
+  phoneticFirstName = [(PPContactNameRecord *)self phoneticFirstName];
+  [coderCopy encodeObject:phoneticFirstName forKey:@"pfn"];
 
-  v9 = [(PPContactNameRecord *)self middleName];
-  [v4 encodeObject:v9 forKey:@"mnm"];
+  middleName = [(PPContactNameRecord *)self middleName];
+  [coderCopy encodeObject:middleName forKey:@"mnm"];
 
-  v10 = [(PPContactNameRecord *)self phoneticMiddleName];
-  [v4 encodeObject:v10 forKey:@"pmn"];
+  phoneticMiddleName = [(PPContactNameRecord *)self phoneticMiddleName];
+  [coderCopy encodeObject:phoneticMiddleName forKey:@"pmn"];
 
-  v11 = [(PPContactNameRecord *)self lastName];
-  [v4 encodeObject:v11 forKey:@"lnm"];
+  lastName = [(PPContactNameRecord *)self lastName];
+  [coderCopy encodeObject:lastName forKey:@"lnm"];
 
-  v12 = [(PPContactNameRecord *)self phoneticLastName];
-  [v4 encodeObject:v12 forKey:@"pln"];
+  phoneticLastName = [(PPContactNameRecord *)self phoneticLastName];
+  [coderCopy encodeObject:phoneticLastName forKey:@"pln"];
 
-  v13 = [(PPContactNameRecord *)self organizationName];
-  [v4 encodeObject:v13 forKey:@"org"];
+  organizationName = [(PPContactNameRecord *)self organizationName];
+  [coderCopy encodeObject:organizationName forKey:@"org"];
 
-  v14 = [(PPContactNameRecord *)self jobTitle];
-  [v4 encodeObject:v14 forKey:@"job"];
+  jobTitle = [(PPContactNameRecord *)self jobTitle];
+  [coderCopy encodeObject:jobTitle forKey:@"job"];
 
-  v15 = [(PPContactNameRecord *)self nickname];
-  [v4 encodeObject:v15 forKey:@"nic"];
+  nickname = [(PPContactNameRecord *)self nickname];
+  [coderCopy encodeObject:nickname forKey:@"nic"];
 
-  v16 = [(PPContactNameRecord *)self relatedNames];
-  [v4 encodeObject:v16 forKey:@"rel"];
+  relatedNames = [(PPContactNameRecord *)self relatedNames];
+  [coderCopy encodeObject:relatedNames forKey:@"rel"];
 
-  v17 = [(PPContactNameRecord *)self streetNames];
-  [v4 encodeObject:v17 forKey:@"str"];
+  streetNames = [(PPContactNameRecord *)self streetNames];
+  [coderCopy encodeObject:streetNames forKey:@"str"];
 
-  v18 = [(PPContactNameRecord *)self cityNames];
-  [v4 encodeObject:v18 forKey:@"cty"];
+  cityNames = [(PPContactNameRecord *)self cityNames];
+  [coderCopy encodeObject:cityNames forKey:@"cty"];
 }
 
-- (PPContactNameRecord)initWithCoder:(id)a3
+- (PPContactNameRecord)initWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = objc_opt_class();
-  v8 = [v4 decodeObjectOfClass:v5 forKey:@"ide"];
+  v8 = [coderCopy decodeObjectOfClass:v5 forKey:@"ide"];
   if (v8)
   {
-    [v4 decodeDoubleForKey:@"scr"];
+    [coderCopy decodeDoubleForKey:@"scr"];
     v10 = v9;
-    v32 = [v4 decodeInt32ForKey:@"src"];
-    v33 = [v4 decodeObjectOfClass:v5 forKey:@"sid"];
-    v30 = [v4 decodeInt32ForKey:@"cht"];
-    v31 = [v4 decodeObjectOfClass:v5 forKey:@"fnm"];
-    v29 = [v4 decodeObjectOfClass:v5 forKey:@"pfn"];
-    v28 = [v4 decodeObjectOfClass:v5 forKey:@"mnm"];
-    v27 = [v4 decodeObjectOfClass:v5 forKey:@"pmn"];
-    v36 = [v4 decodeObjectOfClass:v5 forKey:@"lnm"];
-    v26 = [v4 decodeObjectOfClass:v5 forKey:@"pln"];
-    v35 = [v4 decodeObjectOfClass:v5 forKey:@"org"];
-    v34 = [v4 decodeObjectOfClass:v5 forKey:@"job"];
-    v22 = [v4 decodeObjectOfClass:v5 forKey:@"nic"];
+    v32 = [coderCopy decodeInt32ForKey:@"src"];
+    v33 = [coderCopy decodeObjectOfClass:v5 forKey:@"sid"];
+    v30 = [coderCopy decodeInt32ForKey:@"cht"];
+    v31 = [coderCopy decodeObjectOfClass:v5 forKey:@"fnm"];
+    v29 = [coderCopy decodeObjectOfClass:v5 forKey:@"pfn"];
+    v28 = [coderCopy decodeObjectOfClass:v5 forKey:@"mnm"];
+    v27 = [coderCopy decodeObjectOfClass:v5 forKey:@"pmn"];
+    v36 = [coderCopy decodeObjectOfClass:v5 forKey:@"lnm"];
+    v26 = [coderCopy decodeObjectOfClass:v5 forKey:@"pln"];
+    v35 = [coderCopy decodeObjectOfClass:v5 forKey:@"org"];
+    v34 = [coderCopy decodeObjectOfClass:v5 forKey:@"job"];
+    v22 = [coderCopy decodeObjectOfClass:v5 forKey:@"nic"];
     v11 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v7, v5, 0}];
     objc_autoreleasePoolPop(v11);
-    v21 = [v4 decodeObjectOfClasses:v25 forKey:@"rel"];
+    v21 = [coderCopy decodeObjectOfClasses:v25 forKey:@"rel"];
     v12 = objc_autoreleasePoolPush();
     v23 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v6, v5, 0}];
     objc_autoreleasePoolPop(v12);
-    v20 = [v4 decodeObjectOfClasses:v23 forKey:@"str"];
+    v20 = [coderCopy decodeObjectOfClasses:v23 forKey:@"str"];
     v13 = objc_autoreleasePoolPush();
     v14 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v6, v5, 0}];
     objc_autoreleasePoolPop(v13);
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"cty"];
-    v16 = [(PPContactNameRecord *)v24 initWithIdentifier:v8 score:v32 source:v33 sourceIdentifier:v30 changeType:v31 firstName:v29 phoneticFirstName:v10 middleName:v28 phoneticMiddleName:v27 lastName:v36 phoneticLastName:v26 organizationName:v35 jobTitle:v34 nickname:v22 relatedNames:v21 streetNames:v20 cityNames:v15];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"cty"];
+    v16 = [(PPContactNameRecord *)selfCopy initWithIdentifier:v8 score:v32 source:v33 sourceIdentifier:v30 changeType:v31 firstName:v29 phoneticFirstName:v10 middleName:v28 phoneticMiddleName:v27 lastName:v36 phoneticLastName:v26 organizationName:v35 jobTitle:v34 nickname:v22 relatedNames:v21 streetNames:v20 cityNames:v15];
 
     self = v16;
   }
@@ -462,7 +462,7 @@ LABEL_52:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v38 = v4;
+      v38 = coderCopy;
       _os_log_error_impl(&dword_1A7FD3000, v17, OS_LOG_TYPE_ERROR, "failed to decode identifier from %@", buf, 0xCu);
     }
 
@@ -476,49 +476,49 @@ LABEL_52:
 - (unint64_t)hash
 {
   v71 = *MEMORY[0x1E69E9840];
-  v3 = [(PPContactNameRecord *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(PPContactNameRecord *)self identifier];
+  v4 = [identifier hash];
 
   [(PPContactNameRecord *)self score];
   v6 = 31 * (31 * (v5 - v4 + 32 * v4) + [(PPContactNameRecord *)self source]);
   v7 = v6 + [(PPContactNameRecord *)self changeType];
-  v8 = [(PPContactNameRecord *)self sourceIdentifier];
-  v9 = [v8 hash] - v7 + 32 * v7;
+  sourceIdentifier = [(PPContactNameRecord *)self sourceIdentifier];
+  v9 = [sourceIdentifier hash] - v7 + 32 * v7;
 
-  v10 = [(PPContactNameRecord *)self firstName];
-  v11 = [v10 hash] - v9 + 32 * v9;
+  firstName = [(PPContactNameRecord *)self firstName];
+  v11 = [firstName hash] - v9 + 32 * v9;
 
-  v12 = [(PPContactNameRecord *)self phoneticFirstName];
-  v13 = [v12 hash] - v11 + 32 * v11;
+  phoneticFirstName = [(PPContactNameRecord *)self phoneticFirstName];
+  v13 = [phoneticFirstName hash] - v11 + 32 * v11;
 
-  v14 = [(PPContactNameRecord *)self middleName];
-  v15 = [v14 hash] - v13 + 32 * v13;
+  middleName = [(PPContactNameRecord *)self middleName];
+  v15 = [middleName hash] - v13 + 32 * v13;
 
-  v16 = [(PPContactNameRecord *)self phoneticMiddleName];
-  v17 = [v16 hash] - v15 + 32 * v15;
+  phoneticMiddleName = [(PPContactNameRecord *)self phoneticMiddleName];
+  v17 = [phoneticMiddleName hash] - v15 + 32 * v15;
 
-  v18 = [(PPContactNameRecord *)self lastName];
-  v19 = [v18 hash] - v17 + 32 * v17;
+  lastName = [(PPContactNameRecord *)self lastName];
+  v19 = [lastName hash] - v17 + 32 * v17;
 
-  v20 = [(PPContactNameRecord *)self phoneticLastName];
-  v21 = [v20 hash] - v19 + 32 * v19;
+  phoneticLastName = [(PPContactNameRecord *)self phoneticLastName];
+  v21 = [phoneticLastName hash] - v19 + 32 * v19;
 
-  v22 = [(PPContactNameRecord *)self organizationName];
-  v23 = [v22 hash] - v21 + 32 * v21;
+  organizationName = [(PPContactNameRecord *)self organizationName];
+  v23 = [organizationName hash] - v21 + 32 * v21;
 
-  v24 = [(PPContactNameRecord *)self jobTitle];
-  v25 = [v24 hash] - v23 + 32 * v23;
+  jobTitle = [(PPContactNameRecord *)self jobTitle];
+  v25 = [jobTitle hash] - v23 + 32 * v23;
 
-  v26 = [(PPContactNameRecord *)self nickname];
-  v27 = [v26 hash] - v25 + 32 * v25;
+  nickname = [(PPContactNameRecord *)self nickname];
+  v27 = [nickname hash] - v25 + 32 * v25;
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v28 = [(PPContactNameRecord *)self relatedNames];
-  v29 = [v28 allKeys];
-  v30 = [v29 sortedArrayUsingSelector:sel_compare_];
+  relatedNames = [(PPContactNameRecord *)self relatedNames];
+  allKeys = [relatedNames allKeys];
+  v30 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v31 = [v30 countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (v31)
@@ -538,8 +538,8 @@ LABEL_52:
         v35 = *(*(&v64 + 1) + 8 * v34);
         v36 = objc_autoreleasePoolPush();
         v37 = [v35 hash] - v27 + 32 * v27;
-        v38 = [(PPContactNameRecord *)self relatedNames];
-        v39 = [v38 objectForKeyedSubscript:v35];
+        relatedNames2 = [(PPContactNameRecord *)self relatedNames];
+        v39 = [relatedNames2 objectForKeyedSubscript:v35];
         v27 = [v39 hash] - v37 + 32 * v37;
 
         objc_autoreleasePoolPop(v36);
@@ -557,8 +557,8 @@ LABEL_52:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v40 = [(PPContactNameRecord *)self streetNames];
-  v41 = [v40 countByEnumeratingWithState:&v60 objects:v69 count:16];
+  streetNames = [(PPContactNameRecord *)self streetNames];
+  v41 = [streetNames countByEnumeratingWithState:&v60 objects:v69 count:16];
   if (v41)
   {
     v42 = v41;
@@ -570,7 +570,7 @@ LABEL_52:
       {
         if (*v61 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(streetNames);
         }
 
         v45 = *(*(&v60 + 1) + 8 * v44);
@@ -581,7 +581,7 @@ LABEL_52:
       }
 
       while (v42 != v44);
-      v42 = [v40 countByEnumeratingWithState:&v60 objects:v69 count:16];
+      v42 = [streetNames countByEnumeratingWithState:&v60 objects:v69 count:16];
     }
 
     while (v42);
@@ -591,8 +591,8 @@ LABEL_52:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v47 = [(PPContactNameRecord *)self cityNames];
-  v48 = [v47 countByEnumeratingWithState:&v56 objects:v68 count:16];
+  cityNames = [(PPContactNameRecord *)self cityNames];
+  v48 = [cityNames countByEnumeratingWithState:&v56 objects:v68 count:16];
   if (v48)
   {
     v49 = v48;
@@ -604,7 +604,7 @@ LABEL_52:
       {
         if (*v57 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(cityNames);
         }
 
         v52 = *(*(&v56 + 1) + 8 * v51);
@@ -615,7 +615,7 @@ LABEL_52:
       }
 
       while (v49 != v51);
-      v49 = [v47 countByEnumeratingWithState:&v56 objects:v68 count:16];
+      v49 = [cityNames countByEnumeratingWithState:&v56 objects:v68 count:16];
     }
 
     while (v49);
@@ -628,39 +628,39 @@ LABEL_52:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PPContactNameRecord *)self firstName];
-  v5 = [(PPContactNameRecord *)self middleName];
-  v6 = [(PPContactNameRecord *)self lastName];
-  v7 = [(PPContactNameRecord *)self cityNames];
-  v8 = [v7 _pas_componentsJoinedByString:{@", "}];
+  firstName = [(PPContactNameRecord *)self firstName];
+  middleName = [(PPContactNameRecord *)self middleName];
+  lastName = [(PPContactNameRecord *)self lastName];
+  cityNames = [(PPContactNameRecord *)self cityNames];
+  v8 = [cityNames _pas_componentsJoinedByString:{@", "}];
   [(PPContactNameRecord *)self score];
   v10 = v9;
   v11 = [PPContactNameRecord describeSource:[(PPContactNameRecord *)self source]];
   v12 = [PPContactNameRecord describeChangeType:[(PPContactNameRecord *)self changeType]];
-  v13 = [v3 initWithFormat:@"<PPContactNameRecord '%@' '%@' '%@' [%@] s:%f src:%@ ct:%@>", v4, v5, v6, v8, v10, v11, v12];
+  v13 = [v3 initWithFormat:@"<PPContactNameRecord '%@' '%@' '%@' [%@] s:%f src:%@ ct:%@>", firstName, middleName, lastName, v8, v10, v11, v12];
 
   return v13;
 }
 
-- (PPContactNameRecord)initWithIdentifier:(id)a3 score:(double)a4 source:(unsigned __int8)a5 sourceIdentifier:(id)a6 changeType:(unsigned __int8)a7 firstName:(id)a8 phoneticFirstName:(id)a9 middleName:(id)a10 phoneticMiddleName:(id)a11 lastName:(id)a12 phoneticLastName:(id)a13 organizationName:(id)a14 jobTitle:(id)a15 nickname:(id)a16 relatedNames:(id)a17 streetNames:(id)a18 cityNames:(id)a19
+- (PPContactNameRecord)initWithIdentifier:(id)identifier score:(double)score source:(unsigned __int8)source sourceIdentifier:(id)sourceIdentifier changeType:(unsigned __int8)type firstName:(id)name phoneticFirstName:(id)firstName middleName:(id)self0 phoneticMiddleName:(id)self1 lastName:(id)self2 phoneticLastName:(id)self3 organizationName:(id)self4 jobTitle:(id)self5 nickname:(id)self6 relatedNames:(id)self7 streetNames:(id)self8 cityNames:(id)self9
 {
-  v38 = a7;
-  v37 = a5;
-  v34 = a19;
-  v31 = a18;
-  v30 = a17;
-  v27 = a16;
-  v29 = a15;
-  v42 = a14;
-  v41 = a13;
-  v21 = a12;
-  v22 = a11;
-  v28 = a10;
-  v33 = a9;
-  v23 = a8;
-  v24 = a6;
-  v25 = a3;
-  v39 = [[PPClientContactNameRecord alloc] initWithIdentifier:v25 score:v37 source:v24 sourceIdentifier:v38 changeType:v23 firstName:v33 phoneticFirstName:a4 middleName:v28 phoneticMiddleName:v22 lastName:v21 phoneticLastName:v41 organizationName:v42 jobTitle:v29 nickname:v27 relatedNames:v30 streetNames:v31 cityNames:v34];
+  typeCopy = type;
+  sourceCopy = source;
+  cityNamesCopy = cityNames;
+  streetNamesCopy = streetNames;
+  namesCopy = names;
+  nicknameCopy = nickname;
+  titleCopy = title;
+  organizationNameCopy = organizationName;
+  phoneticLastNameCopy = phoneticLastName;
+  lastNameCopy = lastName;
+  phoneticMiddleNameCopy = phoneticMiddleName;
+  middleNameCopy = middleName;
+  firstNameCopy = firstName;
+  nameCopy = name;
+  sourceIdentifierCopy = sourceIdentifier;
+  identifierCopy = identifier;
+  v39 = [[PPClientContactNameRecord alloc] initWithIdentifier:identifierCopy score:sourceCopy source:sourceIdentifierCopy sourceIdentifier:typeCopy changeType:nameCopy firstName:firstNameCopy phoneticFirstName:score middleName:middleNameCopy phoneticMiddleName:phoneticMiddleNameCopy lastName:lastNameCopy phoneticLastName:phoneticLastNameCopy organizationName:organizationNameCopy jobTitle:titleCopy nickname:nicknameCopy relatedNames:namesCopy streetNames:streetNamesCopy cityNames:cityNamesCopy];
 
   return &v39->super;
 }
@@ -672,34 +672,34 @@ LABEL_52:
   return [(PPContactNameRecord *)&v3 init];
 }
 
-+ (id)describeChangeType:(unsigned __int8)a3
++ (id)describeChangeType:(unsigned __int8)type
 {
-  if (a3 >= 4u)
+  if (type >= 4u)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid (%lu)", a3];
+    type = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid (%lu)", type];
   }
 
   else
   {
-    v3 = off_1E77F7DD0[a3];
+    type = off_1E77F7DD0[type];
   }
 
-  return v3;
+  return type;
 }
 
-+ (id)describeSource:(unsigned __int8)a3
++ (id)describeSource:(unsigned __int8)source
 {
-  if (a3 >= 3u)
+  if (source >= 3u)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid (%lu)", a3];
+    source = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid (%lu)", source];
   }
 
   else
   {
-    v3 = off_1E77F7DB8[a3];
+    source = off_1E77F7DB8[source];
   }
 
-  return v3;
+  return source;
 }
 
 @end

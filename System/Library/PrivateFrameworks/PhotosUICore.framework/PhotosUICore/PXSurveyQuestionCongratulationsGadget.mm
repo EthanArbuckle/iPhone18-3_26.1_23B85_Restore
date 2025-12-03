@@ -1,10 +1,10 @@
 @interface PXSurveyQuestionCongratulationsGadget
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PXGadgetDelegate)delegate;
-- (PXSurveyQuestionCongratulationsGadget)initWithType:(unint64_t)a3;
+- (PXSurveyQuestionCongratulationsGadget)initWithType:(unint64_t)type;
 - (PXSurveyQuestionsCongratulationsGadgetContentView)contentView;
 - (id)uniqueGadgetIdentifier;
-- (void)congratulationsGadgetContentViewDidSelectActionButton:(id)a3;
+- (void)congratulationsGadgetContentViewDidSelectActionButton:(id)button;
 @end
 
 @implementation PXSurveyQuestionCongratulationsGadget
@@ -16,18 +16,18 @@
   return WeakRetained;
 }
 
-- (void)congratulationsGadgetContentViewDidSelectActionButton:(id)a3
+- (void)congratulationsGadgetContentViewDidSelectActionButton:(id)button
 {
-  v4 = [(PXSurveyQuestionCongratulationsGadget *)self delegate];
-  [v4 didSelectActionButtonForType:self->_type];
+  delegate = [(PXSurveyQuestionCongratulationsGadget *)self delegate];
+  [delegate didSelectActionButtonForType:self->_type];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PXSurveyQuestionCongratulationsGadget *)self contentView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  contentView = [(PXSurveyQuestionCongratulationsGadget *)self contentView];
+  [contentView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -97,14 +97,14 @@ LABEL_8:
   }
 }
 
-- (PXSurveyQuestionCongratulationsGadget)initWithType:(unint64_t)a3
+- (PXSurveyQuestionCongratulationsGadget)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PXSurveyQuestionCongratulationsGadget;
   result = [(PXSurveyQuestionCongratulationsGadget *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;

@@ -1,26 +1,26 @@
 @interface MFPGraphics
-+ (float)unitsPerInch:(int)a3;
++ (float)unitsPerInch:(int)inch;
 - (BOOL)areThereOpenContainers;
-- (CGAffineTransform)pageTransformWithScale:(SEL)a3 unit:(float)a4;
+- (CGAffineTransform)pageTransformWithScale:(SEL)scale unit:(float)unit;
 - (CGRect)canvas;
-- (MFPGraphics)initWithCanvas:(CGRect)a3;
-- (float)pixelsPerUnit:(int)a3 direction:(int)a4;
-- (id)fontNameForUppercaseFontName:(id)a3;
-- (void)beginContainerNoParamsWithId:(unsigned int)a3;
-- (void)beginContainerWithId:(unsigned int)a3 boundsInParent:(CGRect)a4 bounds:(CGRect)a5 boundsUnit:(int)a6;
-- (void)beginContainerWithId:(unsigned int)a3 containerTransform:(CGAffineTransform *)a4;
-- (void)restoreGraphicsStateOrEndContainerWithId:(unsigned int)a3;
-- (void)saveGraphicsStateWithId:(unsigned int)a3;
+- (MFPGraphics)initWithCanvas:(CGRect)canvas;
+- (float)pixelsPerUnit:(int)unit direction:(int)direction;
+- (id)fontNameForUppercaseFontName:(id)name;
+- (void)beginContainerNoParamsWithId:(unsigned int)id;
+- (void)beginContainerWithId:(unsigned int)id boundsInParent:(CGRect)parent bounds:(CGRect)bounds boundsUnit:(int)unit;
+- (void)beginContainerWithId:(unsigned int)id containerTransform:(CGAffineTransform *)transform;
+- (void)restoreGraphicsStateOrEndContainerWithId:(unsigned int)id;
+- (void)saveGraphicsStateWithId:(unsigned int)id;
 @end
 
 @implementation MFPGraphics
 
-- (MFPGraphics)initWithCanvas:(CGRect)a3
+- (MFPGraphics)initWithCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
   v23.receiver = self;
   v23.super_class = MFPGraphics;
   v7 = [(MFPGraphics *)&v23 init];
@@ -31,9 +31,9 @@
     v7->mCanvas.origin.y = y;
     v7->mCanvas.size.width = width;
     v7->mCanvas.size.height = height;
-    v9 = [[MFPGraphicsState alloc] initWithDefaults];
+    initWithDefaults = [[MFPGraphicsState alloc] initWithDefaults];
     mCurrentState = v8->mCurrentState;
-    v8->mCurrentState = v9;
+    v8->mCurrentState = initWithDefaults;
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mStateStack = v8->mStateStack;
@@ -54,8 +54,8 @@
       for (i = 0; i != v16; ++i)
       {
         v20 = [v15 objectAtIndex:i];
-        v21 = [v20 uppercaseString];
-        [(NSMutableDictionary *)v8->mAvailableFonts setObject:v20 forKey:v21];
+        uppercaseString = [v20 uppercaseString];
+        [(NSMutableDictionary *)v8->mAvailableFonts setObject:v20 forKey:uppercaseString];
       }
     }
   }
@@ -76,31 +76,31 @@
   return result;
 }
 
-+ (float)unitsPerInch:(int)a3
++ (float)unitsPerInch:(int)inch
 {
   result = 0.0;
-  if ((a3 - 3) <= 3)
+  if ((inch - 3) <= 3)
   {
-    return flt_25D6FDA70[a3 - 3];
+    return flt_25D6FDA70[inch - 3];
   }
 
   return result;
 }
 
-- (float)pixelsPerUnit:(int)a3 direction:(int)a4
+- (float)pixelsPerUnit:(int)unit direction:(int)direction
 {
   v4 = 1.0;
-  if (a3 >= 3)
+  if (unit >= 3)
   {
     [MFPGraphics unitsPerInch:?];
-    if (!a4)
+    if (!direction)
     {
       v8 = 40;
       return *(&self->super.isa + v8) / v7;
     }
 
     v4 = 0.0;
-    if (a4 == 1)
+    if (direction == 1)
     {
       v8 = 44;
       return *(&self->super.isa + v8) / v7;
@@ -110,7 +110,7 @@
   return v4;
 }
 
-- (CGAffineTransform)pageTransformWithScale:(SEL)a3 unit:(float)a4
+- (CGAffineTransform)pageTransformWithScale:(SEL)scale unit:(float)unit
 {
   v7 = MEMORY[0x277CBF2C0];
   v8 = *(MEMORY[0x277CBF2C0] + 16);
@@ -120,18 +120,18 @@
   if (a5 >= 2)
   {
     v9 = *&a5;
-    v10 = self;
+    selfCopy = self;
     [CGAffineTransform pixelsPerUnit:"pixelsPerUnit:direction:" direction:?];
-    v12 = v11 * a4;
-    [(CGAffineTransform *)v10 pixelsPerUnit:v9 direction:1];
+    v12 = v11 * unit;
+    [(CGAffineTransform *)selfCopy pixelsPerUnit:v9 direction:1];
 
-    return CGAffineTransformMakeScale(retstr, v12, (v13 * a4));
+    return CGAffineTransformMakeScale(retstr, v12, (v13 * unit));
   }
 
   return self;
 }
 
-- (void)saveGraphicsStateWithId:(unsigned int)a3
+- (void)saveGraphicsStateWithId:(unsigned int)id
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
@@ -139,26 +139,26 @@
   [(NSMutableArray *)self->mStateStack addObject:?];
 }
 
-- (void)beginContainerWithId:(unsigned int)a3 containerTransform:(CGAffineTransform *)a4
+- (void)beginContainerWithId:(unsigned int)id containerTransform:(CGAffineTransform *)transform
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v7 = [MFPGraphicsContainer alloc];
   mCurrentState = self->mCurrentState;
-  v9 = *&a4->c;
-  v13[0] = *&a4->a;
+  v9 = *&transform->c;
+  v13[0] = *&transform->a;
   v13[1] = v9;
-  v13[2] = *&a4->tx;
+  v13[2] = *&transform->tx;
   v10 = [(MFPGraphicsContainer *)v7 initWithParentGraphicsState:mCurrentState containerTransform:v13];
   [(NSMutableArray *)self->mStateStack addObject:v10];
-  v11 = [[MFPGraphicsState alloc] initWithDefaults];
+  initWithDefaults = [[MFPGraphicsState alloc] initWithDefaults];
   v12 = self->mCurrentState;
-  self->mCurrentState = v11;
+  self->mCurrentState = initWithDefaults;
 }
 
-- (void)beginContainerNoParamsWithId:(unsigned int)a3
+- (void)beginContainerNoParamsWithId:(unsigned int)id
 {
-  v3 = *&a3;
+  v3 = *&id;
   memset(&v7, 0, sizeof(v7));
   mCurrentState = self->mCurrentState;
   if (mCurrentState)
@@ -176,25 +176,25 @@
   [(MFPGraphics *)self beginContainerWithId:v3 containerTransform:&v6];
 }
 
-- (void)beginContainerWithId:(unsigned int)a3 boundsInParent:(CGRect)a4 bounds:(CGRect)a5 boundsUnit:(int)a6
+- (void)beginContainerWithId:(unsigned int)id boundsInParent:(CGRect)parent bounds:(CGRect)bounds boundsUnit:(int)unit
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = *&a3;
+  y = parent.origin.y;
+  x = parent.origin.x;
+  v8 = *&id;
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   v22 = *MEMORY[0x277CBF2C0];
   v23 = v10;
   v24 = *(MEMORY[0x277CBF2C0] + 32);
-  if (a6 >= 2)
+  if (unit >= 2)
   {
-    v11 = *&a6;
-    height = a5.size.height;
-    width = a5.size.width;
-    v14 = a5.origin.y;
-    v15 = a5.origin.x;
-    v16 = a4.size.width;
-    v20 = a4.size.height;
-    [(MFPGraphics *)self pixelsPerUnit:*&a6 direction:0];
+    v11 = *&unit;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    v14 = bounds.origin.y;
+    v15 = bounds.origin.x;
+    v16 = parent.size.width;
+    v20 = parent.size.height;
+    [(MFPGraphics *)self pixelsPerUnit:*&unit direction:0];
     v18 = v17;
     [(MFPGraphics *)self pixelsPerUnit:v11 direction:1];
     mapSrcRectOntoDstRect(&v22, v15 * v18, v14 * v19, width * v18, height * v19, x, y, v16, v20);
@@ -206,33 +206,33 @@
   [(MFPGraphics *)self beginContainerWithId:v8 containerTransform:v21];
 }
 
-- (void)restoreGraphicsStateOrEndContainerWithId:(unsigned int)a3
+- (void)restoreGraphicsStateOrEndContainerWithId:(unsigned int)id
 {
-  if ([(NSMutableArray *)self->mStateStack count]> a3)
+  if ([(NSMutableArray *)self->mStateStack count]> id)
   {
-    v5 = a3;
+    idCopy = id;
     do
     {
-      v6 = [(NSMutableArray *)self->mStateStack lastObject];
+      lastObject = [(NSMutableArray *)self->mStateStack lastObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v6;
+        parentGraphicsState = lastObject;
       }
 
       else
       {
-        v7 = [v6 parentGraphicsState];
+        parentGraphicsState = [lastObject parentGraphicsState];
       }
 
-      v8 = v7;
-      objc_storeStrong(&self->mCurrentState, v7);
+      v8 = parentGraphicsState;
+      objc_storeStrong(&self->mCurrentState, parentGraphicsState);
       [(NSMutableArray *)self->mStateStack removeLastObject];
       CurrentContext = UIGraphicsGetCurrentContext();
       CGContextRestoreGState(CurrentContext);
     }
 
-    while ([(NSMutableArray *)self->mStateStack count]> v5);
+    while ([(NSMutableArray *)self->mStateStack count]> idCopy);
   }
 }
 
@@ -266,9 +266,9 @@
   return isKindOfClass & 1;
 }
 
-- (id)fontNameForUppercaseFontName:(id)a3
+- (id)fontNameForUppercaseFontName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->mAvailableFonts objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mAvailableFonts objectForKey:name];
 
   return v3;
 }

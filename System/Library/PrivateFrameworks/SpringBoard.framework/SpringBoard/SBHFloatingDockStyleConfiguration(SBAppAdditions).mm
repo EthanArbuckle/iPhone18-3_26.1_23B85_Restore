@@ -13,15 +13,15 @@
       +[SBHFloatingDockStyleConfiguration(SBAppAdditions) configurationWithEnvironmentMode:];
     }
 
-    v3 = configurationWithEnvironmentMode__appConfiguration;
+    defaultConfiguration = configurationWithEnvironmentMode__appConfiguration;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D66190] defaultConfiguration];
+    defaultConfiguration = [MEMORY[0x277D66190] defaultConfiguration];
   }
 
-  return v3;
+  return defaultConfiguration;
 }
 
 @end

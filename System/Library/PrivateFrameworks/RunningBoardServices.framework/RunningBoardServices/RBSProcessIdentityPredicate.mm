@@ -1,9 +1,9 @@
 @interface RBSProcessIdentityPredicate
-- (BOOL)isEqual:(id)a3;
-- (RBSProcessIdentityPredicate)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBSProcessIdentityPredicate)initWithRBSXPCCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)initWithIdentity:(void *)a1;
+- (void)initWithIdentity:(void *)identity;
 @end
 
 @implementation RBSProcessIdentityPredicate
@@ -16,10 +16,10 @@
   return [(RBSProcessIdentity *)self->_identity hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -29,7 +29,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      [(RBSProcessIdentityPredicate *)self isEqual:v4, &v8];
+      [(RBSProcessIdentityPredicate *)self isEqual:equalCopy, &v8];
       v6 = v8;
     }
 
@@ -51,15 +51,15 @@
   return v5;
 }
 
-- (RBSProcessIdentityPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSProcessIdentityPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSProcessIdentityPredicate;
   v5 = [(RBSProcessIdentityPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identity"];
     identity = v5->_identity;
     v5->_identity = v6;
   }
@@ -67,30 +67,30 @@
   return v5;
 }
 
-- (void)initWithIdentity:(void *)a1
+- (void)initWithIdentity:(void *)identity
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identity)
   {
     if (!v3)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_initWithIdentity_ object:a1 file:@"RBSProcessPredicate+Identity.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithIdentity_ object:identity file:@"RBSProcessPredicate+Identity.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
     }
 
-    v9.receiver = a1;
+    v9.receiver = identity;
     v9.super_class = RBSProcessIdentityPredicate;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    identity = objc_msgSendSuper2(&v9, sel_init);
+    if (identity)
     {
       v5 = [v4 copy];
-      v6 = a1[1];
-      a1[1] = v5;
+      v6 = identity[1];
+      identity[1] = v5;
     }
   }
 
-  return a1;
+  return identity;
 }
 
 - (uint64_t)isEqual:(char *)a3 .cold.1(uint64_t a1, uint64_t a2, char *a3)

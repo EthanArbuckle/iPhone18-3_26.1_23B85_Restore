@@ -1,113 +1,113 @@
 @interface HMMTRStorage
-+ (BOOL)checkAndUpdateExpiryOfCertificate:(id)a3 keyPair:(id)a4 newCertificate:(id *)a5;
-+ (BOOL)didUpdateMatterItems:(id)a3 oldStorage:(id)a4;
-+ (BOOL)isMatterKey:(id)a3;
-+ (BOOL)isMemoryStorageKey:(id)a3;
-+ (BOOL)isPluginAccessoryNodeKey:(id)a3;
-+ (BOOL)isPluginKey:(id)a3;
-+ (BOOL)shouldIgnoreWritesForKey:(id)a3;
-+ (id)accessoryNodeIDFromPluginKey:(id)a3;
++ (BOOL)checkAndUpdateExpiryOfCertificate:(id)certificate keyPair:(id)pair newCertificate:(id *)newCertificate;
++ (BOOL)didUpdateMatterItems:(id)items oldStorage:(id)storage;
++ (BOOL)isMatterKey:(id)key;
++ (BOOL)isMemoryStorageKey:(id)key;
++ (BOOL)isPluginAccessoryNodeKey:(id)key;
++ (BOOL)isPluginKey:(id)key;
++ (BOOL)shouldIgnoreWritesForKey:(id)key;
++ (id)accessoryNodeIDFromPluginKey:(id)key;
 + (id)chipPluginStorageAccessoryNodeSpecificKeys;
 + (id)chipPluginStorageKeys;
 + (id)generateIPK;
 + (id)ignoredMatterStorageKeys;
-+ (id)keyByStrippingNodeIdFromKey:(id)a3;
++ (id)keyByStrippingNodeIdFromKey:(id)key;
 + (id)logCategory;
-+ (id)matterItemsFromDictionary:(id)a3;
++ (id)matterItemsFromDictionary:(id)dictionary;
 + (id)matterStorageKeys;
 + (id)memoryStorageKeys;
-+ (id)nodeIdFromPluginKey:(id)a3;
-+ (id)removeRecordsForUnpairedNodesInDict:(id)a3 pairedNodes:(id)a4;
++ (id)nodeIdFromPluginKey:(id)key;
++ (id)removeRecordsForUnpairedNodesInDict:(id)dict pairedNodes:(id)nodes;
 + (id)shortDescription;
-+ (unsigned)knownFabricInStorage:(id)a3 fabricID:(id)a4 keyPair:(id)a5 controllerNodeID:(id *)a6 rootCertificate:(id *)a7;
++ (unsigned)knownFabricInStorage:(id)storage fabricID:(id)d keyPair:(id)pair controllerNodeID:(id *)iD rootCertificate:(id *)certificate;
 - (BOOL)_removeAllDataSourceData;
-- (BOOL)_syncSetDataSourceDictionary:(id)a3;
-- (BOOL)_syncSetDataSourceValue:(id)a3 forKey:(id)a4;
-- (BOOL)_syncSetDataSourceValuesWithError:(id *)a3 block:(id)a4;
+- (BOOL)_syncSetDataSourceDictionary:(id)dictionary;
+- (BOOL)_syncSetDataSourceValue:(id)value forKey:(id)key;
+- (BOOL)_syncSetDataSourceValuesWithError:(id *)error block:(id)block;
 - (BOOL)isResidentDevice;
-- (BOOL)isStagedForNode:(id)a3;
+- (BOOL)isStagedForNode:(id)node;
 - (BOOL)localStorageMode;
-- (BOOL)removeValueForKey:(id)a3;
-- (BOOL)removeValueForKey:(id)a3 systemCommissionerFabric:(BOOL)a4;
-- (BOOL)replaceAllKeysAndSyncWithBlock:(id)a3 systemCommissionerFabric:(BOOL)a4;
-- (BOOL)setStorageData:(id)a3 forKey:(id)a4;
-- (BOOL)setValueForKey:(id)a3 removingKeys:(id)a4 systemCommissionerFabric:(BOOL)a5 block:(id)a6;
-- (BOOL)setValueForKey:(id)a3 value:(id)a4;
-- (BOOL)syncDataSourceDictionary:(id)a3 forFabric:(id)a4;
-- (BOOL)threadCredentialManagementEnabledForSystemCommissionerFabricNode:(id)a3;
-- (BOOL)wedSupportedForSystemCommissionerFabricNode:(id)a3;
-- (HMMTRStorage)initWithQueue:(id)a3 dataSource:(id)a4 systemCommissionerFabric:(BOOL)a5 fabricUUID:(id)a6 sharedAdmin:(BOOL)a7;
+- (BOOL)removeValueForKey:(id)key;
+- (BOOL)removeValueForKey:(id)key systemCommissionerFabric:(BOOL)fabric;
+- (BOOL)replaceAllKeysAndSyncWithBlock:(id)block systemCommissionerFabric:(BOOL)fabric;
+- (BOOL)setStorageData:(id)data forKey:(id)key;
+- (BOOL)setValueForKey:(id)key removingKeys:(id)keys systemCommissionerFabric:(BOOL)fabric block:(id)block;
+- (BOOL)setValueForKey:(id)key value:(id)value;
+- (BOOL)syncDataSourceDictionary:(id)dictionary forFabric:(id)fabric;
+- (BOOL)threadCredentialManagementEnabledForSystemCommissionerFabricNode:(id)node;
+- (BOOL)wedSupportedForSystemCommissionerFabricNode:(id)node;
+- (HMMTRStorage)initWithQueue:(id)queue dataSource:(id)source systemCommissionerFabric:(BOOL)fabric fabricUUID:(id)d sharedAdmin:(BOOL)admin;
 - (HMMTRStorageDataSource)dataSource;
 - (NSSet)pairedNodeIDs;
-- (id)_preferencesValueForKey:(id)a3;
-- (id)categoryForNode:(id)a3;
-- (id)categoryForSystemCommissionerFabricNode:(id)a3;
-- (id)configNumberForNode:(id)a3;
-- (id)deviceNameForSystemCommissionerFabricNode:(id)a3;
-- (id)extendedMACAddressForSystemCommissionerFabricNode:(id)a3;
-- (id)fabricIndexForNode:(id)a3;
-- (id)ipkForTargetFabricUUID:(id)a3 forPairing:(BOOL)a4;
+- (id)_preferencesValueForKey:(id)key;
+- (id)categoryForNode:(id)node;
+- (id)categoryForSystemCommissionerFabricNode:(id)node;
+- (id)configNumberForNode:(id)node;
+- (id)deviceNameForSystemCommissionerFabricNode:(id)node;
+- (id)extendedMACAddressForSystemCommissionerFabricNode:(id)node;
+- (id)fabricIndexForNode:(id)node;
+- (id)ipkForTargetFabricUUID:(id)d forPairing:(BOOL)pairing;
 - (id)logIdentifier;
 - (id)operationalCertificate;
-- (id)pairedNodeIDsFromStoredStringValue:(id)a3;
-- (id)productIDForNode:(id)a3;
-- (id)productIDForSystemCommissionerFabricNode:(id)a3;
+- (id)pairedNodeIDsFromStoredStringValue:(id)value;
+- (id)productIDForNode:(id)node;
+- (id)productIDForSystemCommissionerFabricNode:(id)node;
 - (id)rootCertificate;
-- (id)serialNumberForSystemCommissionerFabricNode:(id)a3;
-- (id)setupPayloadForSystemCommissionerFabricNode:(id)a3;
-- (id)storageDataForKey:(id)a3;
-- (id)storedStringValueFromPairedNodeIDs:(id)a3;
-- (id)systemCommissionerFabricNodeIDForUuid:(id)a3;
-- (id)threadCredentialManagementEndpointForSystemCommissionerFabricNode:(id)a3;
+- (id)serialNumberForSystemCommissionerFabricNode:(id)node;
+- (id)setupPayloadForSystemCommissionerFabricNode:(id)node;
+- (id)storageDataForKey:(id)key;
+- (id)storedStringValueFromPairedNodeIDs:(id)ds;
+- (id)systemCommissionerFabricNodeIDForUuid:(id)uuid;
+- (id)threadCredentialManagementEndpointForSystemCommissionerFabricNode:(id)node;
 - (id)threadCredentialManagementNodesAndEndpointsForSystemCommissioner;
-- (id)topologyForNode:(id)a3;
-- (id)uuidForSystemCommissionerFabricNode:(id)a3;
-- (id)valueForKey:(id)a3;
-- (id)valueForKey:(id)a3 systemCommissionerFabric:(BOOL)a4;
-- (id)vendorIDForNode:(id)a3;
-- (id)vendorIDForSystemCommissionerFabricNode:(id)a3;
-- (void)_removeSystemCommissionerFabricNodeIDForUuid:(id)a3;
-- (void)_setPreferencesValueForKey:(id)a3 value:(id)a4;
+- (id)topologyForNode:(id)node;
+- (id)uuidForSystemCommissionerFabricNode:(id)node;
+- (id)valueForKey:(id)key;
+- (id)valueForKey:(id)key systemCommissionerFabric:(BOOL)fabric;
+- (id)vendorIDForNode:(id)node;
+- (id)vendorIDForSystemCommissionerFabricNode:(id)node;
+- (void)_removeSystemCommissionerFabricNodeIDForUuid:(id)uuid;
+- (void)_setPreferencesValueForKey:(id)key value:(id)value;
 - (void)_syncToRemoteStorage;
-- (void)addPairedNodeID:(id)a3;
+- (void)addPairedNodeID:(id)d;
 - (void)clearStaleItems;
 - (void)endLocalStorageModeByPersistingAppleFabricData;
-- (void)endLocalStorageModeBySyncingToRemote:(BOOL)a3;
-- (void)removeAndSyncAllKeysNotIncludedInActiveNodeIDs:(id)a3;
-- (void)removePairedNodeID:(id)a3;
-- (void)removeRecordsForNodeIDs:(id)a3 systemCommissionerFabric:(BOOL)a4;
-- (void)removeRecordsForSystemCommissionerFabricNode:(id)a3;
-- (void)setCategory:(id)a3 forNode:(id)a4;
-- (void)setCategory:(id)a3 forSystemCommissionerFabricNode:(id)a4;
-- (void)setConfigNumber:(id)a3 forNode:(id)a4;
-- (void)setDeviceName:(id)a3 forSystemCommissionerFabricNode:(id)a4;
-- (void)setExtendedMACAddress:(id)a3 forSystemCommissionerFabricNode:(id)a4;
-- (void)setFabricID:(id)a3 forNode:(id)a4;
-- (void)setLocalStorageMode:(BOOL)a3;
-- (void)setOperationalCertificate:(id)a3;
-- (void)setPairedNodeIDs:(id)a3;
-- (void)setProductID:(id)a3 forNode:(id)a4;
-- (void)setProductID:(id)a3 forSystemCommissionerFabricNode:(id)a4;
-- (void)setRootCertificate:(id)a3;
-- (void)setSerialNumber:(id)a3 forSystemCommissionerFabricNode:(id)a4;
-- (void)setSetupPayload:(id)a3 forSystemCommissionerFabricNode:(id)a4;
-- (void)setSystemCommissionerFabricNodeID:(id)a3 forUuid:(id)a4;
-- (void)setThreadCredentialManagementEndpoint:(id)a3 forSystemCommissionerFabricNode:(id)a4;
-- (void)setTopology:(id)a3 forNode:(id)a4;
-- (void)setUuid:(id)a3 forSystemCommissionerFabricNode:(id)a4;
-- (void)setVendorID:(id)a3 forNode:(id)a4;
-- (void)setVendorID:(id)a3 forSystemCommissionerFabricNode:(id)a4;
+- (void)endLocalStorageModeBySyncingToRemote:(BOOL)remote;
+- (void)removeAndSyncAllKeysNotIncludedInActiveNodeIDs:(id)ds;
+- (void)removePairedNodeID:(id)d;
+- (void)removeRecordsForNodeIDs:(id)ds systemCommissionerFabric:(BOOL)fabric;
+- (void)removeRecordsForSystemCommissionerFabricNode:(id)node;
+- (void)setCategory:(id)category forNode:(id)node;
+- (void)setCategory:(id)category forSystemCommissionerFabricNode:(id)node;
+- (void)setConfigNumber:(id)number forNode:(id)node;
+- (void)setDeviceName:(id)name forSystemCommissionerFabricNode:(id)node;
+- (void)setExtendedMACAddress:(id)address forSystemCommissionerFabricNode:(id)node;
+- (void)setFabricID:(id)d forNode:(id)node;
+- (void)setLocalStorageMode:(BOOL)mode;
+- (void)setOperationalCertificate:(id)certificate;
+- (void)setPairedNodeIDs:(id)ds;
+- (void)setProductID:(id)d forNode:(id)node;
+- (void)setProductID:(id)d forSystemCommissionerFabricNode:(id)node;
+- (void)setRootCertificate:(id)certificate;
+- (void)setSerialNumber:(id)number forSystemCommissionerFabricNode:(id)node;
+- (void)setSetupPayload:(id)payload forSystemCommissionerFabricNode:(id)node;
+- (void)setSystemCommissionerFabricNodeID:(id)d forUuid:(id)uuid;
+- (void)setThreadCredentialManagementEndpoint:(id)endpoint forSystemCommissionerFabricNode:(id)node;
+- (void)setTopology:(id)topology forNode:(id)node;
+- (void)setUuid:(id)uuid forSystemCommissionerFabricNode:(id)node;
+- (void)setVendorID:(id)d forNode:(id)node;
+- (void)setVendorID:(id)d forSystemCommissionerFabricNode:(id)node;
 - (void)startLocalStorageMode;
 @end
 
 @implementation HMMTRStorage
 
-- (void)removeRecordsForSystemCommissionerFabricNode:(id)a3
+- (void)removeRecordsForSystemCommissionerFabricNode:(id)node
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodeCopy = node;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -115,65 +115,65 @@
     v27 = 138543618;
     v28 = v8;
     v29 = 2112;
-    v30 = v4;
+    v30 = nodeCopy;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@Deleting records from storage for System Commissioner Fabric NodeID: %@", &v27, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMMTRStorage *)v6 removePairedNodeID:v4 fromSystemCommissionerFabric:1];
-  v9 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.VendorID."];
-  [(HMMTRStorage *)v6 removeValueForKey:v9 systemCommissionerFabric:1];
+  [(HMMTRStorage *)selfCopy removePairedNodeID:nodeCopy fromSystemCommissionerFabric:1];
+  v9 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.VendorID."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v9 systemCommissionerFabric:1];
 
-  v10 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.Topology."];
-  [(HMMTRStorage *)v6 removeValueForKey:v10 systemCommissionerFabric:1];
+  v10 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.Topology."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v10 systemCommissionerFabric:1];
 
-  v11 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.FabricIndex."];
-  [(HMMTRStorage *)v6 removeValueForKey:v11 systemCommissionerFabric:1];
+  v11 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.FabricIndex."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v11 systemCommissionerFabric:1];
 
-  v12 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.ProductID."];
-  [(HMMTRStorage *)v6 removeValueForKey:v12 systemCommissionerFabric:1];
+  v12 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.ProductID."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v12 systemCommissionerFabric:1];
 
-  v13 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.Category."];
-  [(HMMTRStorage *)v6 removeValueForKey:v13 systemCommissionerFabric:1];
+  v13 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.Category."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v13 systemCommissionerFabric:1];
 
-  v14 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.ConfigNumber."];
-  [(HMMTRStorage *)v6 removeValueForKey:v14 systemCommissionerFabric:1];
+  v14 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.ConfigNumber."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v14 systemCommissionerFabric:1];
 
-  v15 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.Staged."];
-  [(HMMTRStorage *)v6 removeValueForKey:v15 systemCommissionerFabric:1];
+  v15 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.Staged."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v15 systemCommissionerFabric:1];
 
-  v16 = [(HMMTRStorage *)v6 uuidForSystemCommissionerFabricNode:v4];
+  v16 = [(HMMTRStorage *)selfCopy uuidForSystemCommissionerFabricNode:nodeCopy];
   if (v16)
   {
-    [(HMMTRStorage *)v6 _removeSystemCommissionerFabricNodeIDForUuid:v16];
+    [(HMMTRStorage *)selfCopy _removeSystemCommissionerFabricNodeIDForUuid:v16];
   }
 
-  v17 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.UUID."];
-  [(HMMTRStorage *)v6 removeValueForKey:v17 systemCommissionerFabric:1];
+  v17 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.UUID."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v17 systemCommissionerFabric:1];
 
-  v18 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.SerialNumber."];
-  [(HMMTRStorage *)v6 removeValueForKey:v18 systemCommissionerFabric:1];
+  v18 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.SerialNumber."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v18 systemCommissionerFabric:1];
 
-  v19 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.DeviceName."];
-  [(HMMTRStorage *)v6 removeValueForKey:v19 systemCommissionerFabric:1];
+  v19 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.DeviceName."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v19 systemCommissionerFabric:1];
 
-  v20 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.SetupPayload."];
-  [(HMMTRStorage *)v6 removeValueForKey:v20 systemCommissionerFabric:1];
+  v20 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.SetupPayload."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v20 systemCommissionerFabric:1];
 
-  v21 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.SetupPayloadString."];
-  [(HMMTRStorage *)v6 removeValueForKey:v21 systemCommissionerFabric:1];
+  v21 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.SetupPayloadString."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v21 systemCommissionerFabric:1];
 
-  v22 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.WEDSupported."];
-  [(HMMTRStorage *)v6 removeValueForKey:v22 systemCommissionerFabric:1];
+  v22 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.WEDSupported."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v22 systemCommissionerFabric:1];
 
-  v23 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.ExtendedMACAddress."];
-  [(HMMTRStorage *)v6 removeValueForKey:v23 systemCommissionerFabric:1];
+  v23 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.ExtendedMACAddress."];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v23 systemCommissionerFabric:1];
 
-  v24 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.TCM.ep"];
-  [(HMMTRStorage *)v6 removeValueForKey:v24 systemCommissionerFabric:1];
+  v24 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.TCM.ep"];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v24 systemCommissionerFabric:1];
 
-  v25 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.TCM.on"];
-  [(HMMTRStorage *)v6 removeValueForKey:v25 systemCommissionerFabric:1];
+  v25 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.TCM.on"];
+  [(HMMTRStorage *)selfCopy removeValueForKey:v25 systemCommissionerFabric:1];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -220,9 +220,9 @@
   return v3;
 }
 
-- (BOOL)threadCredentialManagementEnabledForSystemCommissionerFabricNode:(id)a3
+- (BOOL)threadCredentialManagementEnabledForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.MTS.TCM.on"];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.TCM.on"];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -236,41 +236,14 @@
   }
 
   v7 = v6;
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)threadCredentialManagementEndpointForSystemCommissionerFabricNode:(id)a3
+- (id)threadCredentialManagementEndpointForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.MTS.TCM.ep"];
-  v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
-  objc_opt_class();
-  if (objc_opt_isKindOfClass())
-  {
-    v6 = v5;
-  }
-
-  else
-  {
-    v6 = 0;
-  }
-
-  v7 = v6;
-
-  return v6;
-}
-
-- (void)setThreadCredentialManagementEndpoint:(id)a3 forSystemCommissionerFabricNode:(id)a4
-{
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.MTS.TCM.ep"];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
-}
-
-- (id)extendedMACAddressForSystemCommissionerFabricNode:(id)a3
-{
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.MTS.ExtendedMACAddress."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.TCM.ep"];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -288,16 +261,43 @@
   return v6;
 }
 
-- (void)setExtendedMACAddress:(id)a3 forSystemCommissionerFabricNode:(id)a4
+- (void)setThreadCredentialManagementEndpoint:(id)endpoint forSystemCommissionerFabricNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.MTS.ExtendedMACAddress."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  endpointCopy = endpoint;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.TCM.ep"];
+  [(HMMTRStorage *)self setValueForKey:v7 value:endpointCopy systemCommissionerFabric:1];
 }
 
-- (BOOL)wedSupportedForSystemCommissionerFabricNode:(id)a3
+- (id)extendedMACAddressForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.MTS.WEDSupported."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.ExtendedMACAddress."];
+  v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v6 = v5;
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = v6;
+
+  return v6;
+}
+
+- (void)setExtendedMACAddress:(id)address forSystemCommissionerFabricNode:(id)node
+{
+  addressCopy = address;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.ExtendedMACAddress."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:addressCopy systemCommissionerFabric:1];
+}
+
+- (BOOL)wedSupportedForSystemCommissionerFabricNode:(id)node
+{
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.WEDSupported."];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -325,62 +325,62 @@
   return v8;
 }
 
-- (id)categoryForSystemCommissionerFabricNode:(id)a3
+- (id)categoryForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.Category."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.Category."];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
 
   return v5;
 }
 
-- (void)setCategory:(id)a3 forSystemCommissionerFabricNode:(id)a4
+- (void)setCategory:(id)category forSystemCommissionerFabricNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.Category."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  categoryCopy = category;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.Category."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:categoryCopy systemCommissionerFabric:1];
 }
 
-- (id)productIDForSystemCommissionerFabricNode:(id)a3
+- (id)productIDForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.ProductID."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.ProductID."];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
 
   return v5;
 }
 
-- (void)setProductID:(id)a3 forSystemCommissionerFabricNode:(id)a4
+- (void)setProductID:(id)d forSystemCommissionerFabricNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.ProductID."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  dCopy = d;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.ProductID."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:dCopy systemCommissionerFabric:1];
 }
 
-- (id)vendorIDForSystemCommissionerFabricNode:(id)a3
+- (id)vendorIDForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.VendorID."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.VendorID."];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
 
   return v5;
 }
 
-- (void)setVendorID:(id)a3 forSystemCommissionerFabricNode:(id)a4
+- (void)setVendorID:(id)d forSystemCommissionerFabricNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.VendorID."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  dCopy = d;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.VendorID."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:dCopy systemCommissionerFabric:1];
 }
 
-- (id)setupPayloadForSystemCommissionerFabricNode:(id)a3
+- (id)setupPayloadForSystemCommissionerFabricNode:(id)node
 {
-  v4 = a3;
-  v5 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.SetupPayload."];
+  nodeCopy = node;
+  v5 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.SetupPayload."];
   v6 = [(HMMTRStorage *)self valueForKey:v5 systemCommissionerFabric:1];
   if (v6)
   {
     [(HMMTRStorage *)self removeValueForKey:v5 systemCommissionerFabric:1];
   }
 
-  v7 = [HMMTRStorage formatKeyForNodeId:v4 key:@"HMD.MTRPlugin.MTS.SetupPayloadString."];
+  v7 = [HMMTRStorage formatKeyForNodeId:nodeCopy key:@"HMD.MTRPlugin.MTS.SetupPayloadString."];
 
   v8 = [(HMMTRStorage *)self valueForKey:v7 systemCommissionerFabric:1];
   if (!v8)
@@ -413,88 +413,88 @@
   return v8;
 }
 
-- (void)setSetupPayload:(id)a3 forSystemCommissionerFabricNode:(id)a4
+- (void)setSetupPayload:(id)payload forSystemCommissionerFabricNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.MTS.SetupPayloadString."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  payloadCopy = payload;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.SetupPayloadString."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:payloadCopy systemCommissionerFabric:1];
 }
 
-- (id)deviceNameForSystemCommissionerFabricNode:(id)a3
+- (id)deviceNameForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.MTS.DeviceName."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.DeviceName."];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
 
   return v5;
 }
 
-- (void)setDeviceName:(id)a3 forSystemCommissionerFabricNode:(id)a4
+- (void)setDeviceName:(id)name forSystemCommissionerFabricNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.MTS.DeviceName."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  nameCopy = name;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.DeviceName."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:nameCopy systemCommissionerFabric:1];
 }
 
-- (id)serialNumberForSystemCommissionerFabricNode:(id)a3
+- (id)serialNumberForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.MTS.SerialNumber."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.SerialNumber."];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
 
   return v5;
 }
 
-- (void)setSerialNumber:(id)a3 forSystemCommissionerFabricNode:(id)a4
+- (void)setSerialNumber:(id)number forSystemCommissionerFabricNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.MTS.SerialNumber."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  numberCopy = number;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.SerialNumber."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:numberCopy systemCommissionerFabric:1];
 }
 
-- (void)_removeSystemCommissionerFabricNodeIDForUuid:(id)a3
+- (void)_removeSystemCommissionerFabricNodeIDForUuid:(id)uuid
 {
-  v5 = [a3 UUIDString];
-  v4 = [@"HMD.MTRPlugin.MTS.NodeIDForUUID." stringByAppendingString:v5];
+  uUIDString = [uuid UUIDString];
+  v4 = [@"HMD.MTRPlugin.MTS.NodeIDForUUID." stringByAppendingString:uUIDString];
   [(HMMTRStorage *)self removeValueForKey:v4 systemCommissionerFabric:1];
 }
 
-- (id)systemCommissionerFabricNodeIDForUuid:(id)a3
+- (id)systemCommissionerFabricNodeIDForUuid:(id)uuid
 {
-  v4 = [a3 UUIDString];
-  v5 = [@"HMD.MTRPlugin.MTS.NodeIDForUUID." stringByAppendingString:v4];
+  uUIDString = [uuid UUIDString];
+  v5 = [@"HMD.MTRPlugin.MTS.NodeIDForUUID." stringByAppendingString:uUIDString];
   v6 = [(HMMTRStorage *)self valueForKey:v5 systemCommissionerFabric:1];
 
   return v6;
 }
 
-- (void)setSystemCommissionerFabricNodeID:(id)a3 forUuid:(id)a4
+- (void)setSystemCommissionerFabricNodeID:(id)d forUuid:(id)uuid
 {
-  v6 = a3;
-  v8 = [a4 UUIDString];
-  v7 = [@"HMD.MTRPlugin.MTS.NodeIDForUUID." stringByAppendingString:v8];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  dCopy = d;
+  uUIDString = [uuid UUIDString];
+  v7 = [@"HMD.MTRPlugin.MTS.NodeIDForUUID." stringByAppendingString:uUIDString];
+  [(HMMTRStorage *)self setValueForKey:v7 value:dCopy systemCommissionerFabric:1];
 }
 
-- (id)uuidForSystemCommissionerFabricNode:(id)a3
+- (id)uuidForSystemCommissionerFabricNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.MTS.UUID."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.UUID."];
   v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:1];
 
   return v5;
 }
 
-- (void)setUuid:(id)a3 forSystemCommissionerFabricNode:(id)a4
+- (void)setUuid:(id)uuid forSystemCommissionerFabricNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.MTS.UUID."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:1];
+  uuidCopy = uuid;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.MTS.UUID."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:uuidCopy systemCommissionerFabric:1];
 }
 
-- (void)removeAndSyncAllKeysNotIncludedInActiveNodeIDs:(id)a3
+- (void)removeAndSyncAllKeysNotIncludedInActiveNodeIDs:(id)ds
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -502,7 +502,7 @@
     *buf = 138543618;
     v14 = v8;
     v15 = 2112;
-    v16 = v4;
+    v16 = dsCopy;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing all keys not included in active node IDs: %@", buf, 0x16u);
   }
 
@@ -511,10 +511,10 @@
   v11[1] = 3221225472;
   v11[2] = __72__HMMTRStorage_Records__removeAndSyncAllKeysNotIncludedInActiveNodeIDs___block_invoke;
   v11[3] = &unk_2786ED840;
-  v11[4] = v6;
-  v12 = v4;
-  v9 = v4;
-  [(HMMTRStorage *)v6 replaceAllKeysAndSyncWithBlock:v11 systemCommissionerFabric:[(HMMTRStorage *)v6 isSystemCommissionerFabric:v11[0]]];
+  v11[4] = selfCopy;
+  v12 = dsCopy;
+  v9 = dsCopy;
+  [(HMMTRStorage *)selfCopy replaceAllKeysAndSyncWithBlock:v11 systemCommissionerFabric:[(HMMTRStorage *)selfCopy isSystemCommissionerFabric:v11[0]]];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -602,13 +602,13 @@ LABEL_20:
   return v8;
 }
 
-- (void)removeRecordsForNodeIDs:(id)a3 systemCommissionerFabric:(BOOL)a4
+- (void)removeRecordsForNodeIDs:(id)ds systemCommissionerFabric:(BOOL)fabric
 {
-  v26 = a4;
+  fabricCopy = fabric;
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dsCopy = ds;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -616,18 +616,18 @@ LABEL_20:
     *buf = 138543618;
     v36 = v9;
     v37 = 2112;
-    v38 = v5;
+    v38 = dsCopy;
     _os_log_impl(&dword_22AEAE000, v8, OS_LOG_TYPE_INFO, "%{public}@Deleting records from storage for node IDs: %@", buf, 0x16u);
   }
 
-  v25 = v7;
+  v25 = selfCopy;
   objc_autoreleasePoolPop(v6);
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = dsCopy;
   v11 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v11)
   {
@@ -644,25 +644,25 @@ LABEL_20:
 
         v15 = *(*(&v30 + 1) + 8 * i);
         v16 = [HMMTRStorage formatKeyForNodeId:v15 key:@"HMD.MTRPlugin.VendorID."];
-        [v10 addObject:v16];
+        [array addObject:v16];
 
         v17 = [HMMTRStorage formatKeyForNodeId:v15 key:@"HMD.MTRPlugin.Topology."];
-        [v10 addObject:v17];
+        [array addObject:v17];
 
         v18 = [HMMTRStorage formatKeyForNodeId:v15 key:@"HMD.MTRPlugin.FabricIndex."];
-        [v10 addObject:v18];
+        [array addObject:v18];
 
         v19 = [HMMTRStorage formatKeyForNodeId:v15 key:@"HMD.MTRPlugin.ProductID."];
-        [v10 addObject:v19];
+        [array addObject:v19];
 
         v20 = [HMMTRStorage formatKeyForNodeId:v15 key:@"HMD.MTRPlugin.Category."];
-        [v10 addObject:v20];
+        [array addObject:v20];
 
         v21 = [HMMTRStorage formatKeyForNodeId:v15 key:@"HMD.MTRPlugin.ConfigNumber."];
-        [v10 addObject:v21];
+        [array addObject:v21];
 
         v22 = [HMMTRStorage formatKeyForNodeId:v15 key:@"HMD.MTRPlugin.Staged."];
-        [v10 addObject:v22];
+        [array addObject:v22];
       }
 
       v12 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -678,7 +678,7 @@ LABEL_20:
   v28[4] = v25;
   v29 = obj;
   v23 = obj;
-  [(HMMTRStorage *)v25 setValueForKey:@"HMD.MTRPlugin.PairedNodeIDs" removingKeys:v10 systemCommissionerFabric:v26 block:v28];
+  [(HMMTRStorage *)v25 setValueForKey:@"HMD.MTRPlugin.PairedNodeIDs" removingKeys:array systemCommissionerFabric:fabricCopy block:v28];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -740,9 +740,9 @@ id __74__HMMTRStorage_Records__removeRecordsForNodeIDs_systemCommissionerFabric_
   return v3;
 }
 
-- (void)setOperationalCertificate:(id)a3
+- (void)setOperationalCertificate:(id)certificate
 {
-  v4 = [a3 base64EncodedStringWithOptions:0];
+  v4 = [certificate base64EncodedStringWithOptions:0];
   [(HMMTRStorage *)self setValueForKey:@"HMD.MTRPlugin.OperationalCert" value:v4 systemCommissionerFabric:0];
 }
 
@@ -762,15 +762,15 @@ id __74__HMMTRStorage_Records__removeRecordsForNodeIDs_systemCommissionerFabric_
   return v3;
 }
 
-- (void)setRootCertificate:(id)a3
+- (void)setRootCertificate:(id)certificate
 {
-  v4 = [a3 base64EncodedStringWithOptions:0];
+  v4 = [certificate base64EncodedStringWithOptions:0];
   [(HMMTRStorage *)self setValueForKey:@"HMD.MTRPlugin.RootCert" value:v4 systemCommissionerFabric:0];
 }
 
-- (id)topologyForNode:(id)a3
+- (id)topologyForNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.Topology."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.Topology."];
   v5 = [(HMMTRStorage *)self valueForKey:v4];
   if (v5)
   {
@@ -785,97 +785,97 @@ id __74__HMMTRStorage_Records__removeRecordsForNodeIDs_systemCommissionerFabric_
   return v6;
 }
 
-- (void)setTopology:(id)a3 forNode:(id)a4
+- (void)setTopology:(id)topology forNode:(id)node
 {
-  v6 = a3;
-  v8 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.Topology."];
-  v7 = [v6 base64EncodedStringWithOptions:0];
+  topologyCopy = topology;
+  v8 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.Topology."];
+  v7 = [topologyCopy base64EncodedStringWithOptions:0];
 
   [(HMMTRStorage *)self setValueForKey:v8 value:v7];
 }
 
-- (id)fabricIndexForNode:(id)a3
+- (id)fabricIndexForNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.FabricIndex."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.FabricIndex."];
   v5 = [(HMMTRStorage *)self valueForKey:v4];
 
   return v5;
 }
 
-- (void)setFabricID:(id)a3 forNode:(id)a4
+- (void)setFabricID:(id)d forNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.FabricIndex."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6];
+  dCopy = d;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.FabricIndex."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:dCopy];
 }
 
-- (id)configNumberForNode:(id)a3
+- (id)configNumberForNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.ConfigNumber."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.ConfigNumber."];
   v5 = [(HMMTRStorage *)self valueForKey:v4];
 
   return v5;
 }
 
-- (void)setConfigNumber:(id)a3 forNode:(id)a4
+- (void)setConfigNumber:(id)number forNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.ConfigNumber."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6];
+  numberCopy = number;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.ConfigNumber."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:numberCopy];
 }
 
-- (id)categoryForNode:(id)a3
+- (id)categoryForNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.Category."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.Category."];
   v5 = [(HMMTRStorage *)self valueForKey:v4];
 
   return v5;
 }
 
-- (void)setCategory:(id)a3 forNode:(id)a4
+- (void)setCategory:(id)category forNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.Category."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6];
+  categoryCopy = category;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.Category."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:categoryCopy];
 }
 
-- (id)productIDForNode:(id)a3
+- (id)productIDForNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.ProductID."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.ProductID."];
   v5 = [(HMMTRStorage *)self valueForKey:v4];
 
   return v5;
 }
 
-- (void)setProductID:(id)a3 forNode:(id)a4
+- (void)setProductID:(id)d forNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.ProductID."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6];
+  dCopy = d;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.ProductID."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:dCopy];
 }
 
-- (id)vendorIDForNode:(id)a3
+- (id)vendorIDForNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.VendorID."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.VendorID."];
   v5 = [(HMMTRStorage *)self valueForKey:v4];
 
   return v5;
 }
 
-- (void)setVendorID:(id)a3 forNode:(id)a4
+- (void)setVendorID:(id)d forNode:(id)node
 {
-  v6 = a3;
-  v7 = [HMMTRStorage formatKeyForNodeId:a4 key:@"HMD.MTRPlugin.VendorID."];
-  [(HMMTRStorage *)self setValueForKey:v7 value:v6];
+  dCopy = d;
+  v7 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.VendorID."];
+  [(HMMTRStorage *)self setValueForKey:v7 value:dCopy];
 }
 
-- (BOOL)isStagedForNode:(id)a3
+- (BOOL)isStagedForNode:(id)node
 {
-  v4 = [HMMTRStorage formatKeyForNodeId:a3 key:@"HMD.MTRPlugin.Staged."];
+  v4 = [HMMTRStorage formatKeyForNodeId:node key:@"HMD.MTRPlugin.Staged."];
   v5 = [(HMMTRStorage *)self valueForKey:v4];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 id __73__HMMTRStorage_Records__removePairedNodeID_fromSystemCommissionerFabric___block_invoke(uint64_t a1, uint64_t a2)
@@ -900,11 +900,11 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   return v5;
 }
 
-- (id)storedStringValueFromPairedNodeIDs:(id)a3
+- (id)storedStringValueFromPairedNodeIDs:(id)ds
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [HMMTRUtilities encodeObject:v4];
+  dsCopy = ds;
+  v5 = [HMMTRUtilities encodeObject:dsCopy];
   v6 = v5;
   if (v5)
   {
@@ -914,7 +914,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
@@ -933,13 +933,13 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   return v7;
 }
 
-- (id)pairedNodeIDsFromStoredStringValue:(id)a3
+- (id)pairedNodeIDsFromStoredStringValue:(id)value
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v4 options:0];
+    v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:valueCopy options:0];
     if (v5)
     {
       v6 = MEMORY[0x277CCAAC8];
@@ -962,7 +962,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
       else
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
         {
@@ -984,16 +984,16 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = HMFGetLogIdentifier();
-        v18 = [(HMMTRStorage *)v15 fabricID];
+        fabricID = [(HMMTRStorage *)selfCopy2 fabricID];
         *buf = 138543618;
         v28 = v17;
         v29 = 2112;
-        v30 = v18;
+        v30 = fabricID;
         _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@No paired NodeIDs set for fabricMapping index:%@", buf, 0x16u);
       }
 
@@ -1012,37 +1012,37 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   return v13;
 }
 
-- (void)removePairedNodeID:(id)a3
+- (void)removePairedNodeID:(id)d
 {
-  v4 = a3;
-  [(HMMTRStorage *)self removePairedNodeID:v4 fromSystemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
+  dCopy = d;
+  [(HMMTRStorage *)self removePairedNodeID:dCopy fromSystemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
 }
 
-- (void)addPairedNodeID:(id)a3
+- (void)addPairedNodeID:(id)d
 {
-  v4 = a3;
-  [(HMMTRStorage *)self addPairedNodeID:v4 toSystemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
+  dCopy = d;
+  [(HMMTRStorage *)self addPairedNodeID:dCopy toSystemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
 }
 
-- (void)setPairedNodeIDs:(id)a3
+- (void)setPairedNodeIDs:(id)ds
 {
-  v4 = a3;
-  [(HMMTRStorage *)self setPairedNodeIDs:v4 forSystemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
+  dsCopy = ds;
+  [(HMMTRStorage *)self setPairedNodeIDs:dsCopy forSystemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
 }
 
 - (NSSet)pairedNodeIDs
 {
-  v3 = [(HMMTRStorage *)self isSystemCommissionerFabric];
+  isSystemCommissionerFabric = [(HMMTRStorage *)self isSystemCommissionerFabric];
 
-  return [(HMMTRStorage *)self pairedNodeIDsOnSystemCommissionerFabric:v3];
+  return [(HMMTRStorage *)self pairedNodeIDsOnSystemCommissionerFabric:isSystemCommissionerFabric];
 }
 
-+ (id)accessoryNodeIDFromPluginKey:(id)a3
++ (id)accessoryNodeIDFromPluginKey:(id)key
 {
-  v4 = a3;
-  if ([a1 isPluginAccessoryNodeKey:v4])
+  keyCopy = key;
+  if ([self isPluginAccessoryNodeKey:keyCopy])
   {
-    v5 = [HMMTRStorage nodeIdFromPluginKey:v4];
+    v5 = [HMMTRStorage nodeIdFromPluginKey:keyCopy];
   }
 
   else
@@ -1053,25 +1053,25 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   return v5;
 }
 
-+ (id)nodeIdFromPluginKey:(id)a3
++ (id)nodeIdFromPluginKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([a1 isPluginKey:v4])
+  keyCopy = key;
+  if ([self isPluginKey:keyCopy])
   {
-    v5 = v4;
+    v5 = keyCopy;
     v23 = 0;
     v6 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"\\D+(\\d+)$" options:0 error:&v23];
     v7 = v23;
     v8 = [v6 matchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
     if ([v8 count] < 2)
     {
-      v14 = [v8 firstObject];
-      v15 = v14;
-      if (v14)
+      firstObject = [v8 firstObject];
+      v15 = firstObject;
+      if (firstObject)
       {
         v16 = MEMORY[0x277CCAC80];
-        v17 = [v14 rangeAtIndex:1];
+        v17 = [firstObject rangeAtIndex:1];
         v19 = [v5 substringWithRange:{v17, v18}];
         v20 = [v16 scannerWithString:v19];
 
@@ -1092,7 +1092,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -1117,27 +1117,27 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   return v13;
 }
 
-+ (id)keyByStrippingNodeIdFromKey:(id)a3
++ (id)keyByStrippingNodeIdFromKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v20 = 0;
   v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(.*\\D)\\d+$" options:0 error:&v20];
   v6 = v20;
-  v7 = [v5 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v7 = [v5 matchesInString:keyCopy options:0 range:{0, objc_msgSend(keyCopy, "length")}];
   if ([v7 count] < 2)
   {
-    v13 = [v7 firstObject];
-    v14 = v13;
-    if (v13)
+    firstObject = [v7 firstObject];
+    v14 = firstObject;
+    if (firstObject)
     {
-      v15 = [v13 rangeAtIndex:1];
-      v17 = [v4 substringWithRange:{v15, v16}];
+      v15 = [firstObject rangeAtIndex:1];
+      v17 = [keyCopy substringWithRange:{v15, v16}];
     }
 
     else
     {
-      v17 = v4;
+      v17 = keyCopy;
     }
 
     v12 = v17;
@@ -1146,7 +1146,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1157,7 +1157,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = v4;
+    v12 = keyCopy;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1165,17 +1165,17 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   return v12;
 }
 
-+ (id)matterItemsFromDictionary:(id)a3
++ (id)matterItemsFromDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1186,7 +1186,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -1205,12 +1205,12 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
             continue;
           }
 
-          v10 = [v3 objectForKeyedSubscript:v9];
+          v10 = [dictionaryCopy objectForKeyedSubscript:v9];
           [v15 setObject:v10 forKeyedSubscript:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -1221,12 +1221,12 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   return v15;
 }
 
-+ (BOOL)isMemoryStorageKey:(id)a3
++ (BOOL)isMemoryStorageKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = +[HMMTRStorage memoryStorageKeys];
-  if ([v4 containsObject:v3])
+  if ([v4 containsObject:keyCopy])
   {
     v5 = 1;
     goto LABEL_21;
@@ -1251,7 +1251,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
           objc_enumerationMutation(v6);
         }
 
-        if ([v3 hasPrefix:*(*(&v23 + 1) + 8 * i)])
+        if ([keyCopy hasPrefix:*(*(&v23 + 1) + 8 * i)])
         {
           v5 = 1;
           goto LABEL_20;
@@ -1271,7 +1271,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   v22 = 0;
   v11 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^f/[0-9a-fA-F]+/s/" options:0 error:&v22];
   v6 = v22;
-  v12 = [v11 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v12 = [v11 matchesInString:keyCopy options:0 range:{0, objc_msgSend(keyCopy, "length")}];
   if ([v12 count] == 1)
   {
     goto LABEL_12;
@@ -1281,7 +1281,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
   v13 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^f/[0-9a-fA-F]+/n$" options:0 error:&v21];
   v14 = v21;
 
-  v15 = [v13 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v15 = [v13 matchesInString:keyCopy options:0 range:{0, objc_msgSend(keyCopy, "length")}];
 
   if ([v15 count] == 1)
   {
@@ -1295,7 +1295,7 @@ id __68__HMMTRStorage_Records__addPairedNodeID_toSystemCommissionerFabric___bloc
     v11 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^f/[0-9a-fA-F]+/o$" options:0 error:&v20];
     v6 = v20;
 
-    v12 = [v11 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v12 = [v11 matchesInString:keyCopy options:0 range:{0, objc_msgSend(keyCopy, "length")}];
 
     if ([v12 count] == 1)
     {
@@ -1308,7 +1308,7 @@ LABEL_12:
     v13 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^f/[0-9a-fA-F]+/i$" options:0 error:&v19];
     v14 = v19;
 
-    v16 = [v13 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v16 = [v13 matchesInString:keyCopy options:0 range:{0, objc_msgSend(keyCopy, "length")}];
 
     v5 = [v16 count] == 1;
     v12 = v16;
@@ -1325,41 +1325,41 @@ LABEL_21:
   return v5;
 }
 
-+ (BOOL)shouldIgnoreWritesForKey:(id)a3
++ (BOOL)shouldIgnoreWritesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[HMMTRStorage ignoredMatterStorageKeys];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:keyCopy];
 
   return v5;
 }
 
-+ (BOOL)isPluginAccessoryNodeKey:(id)a3
++ (BOOL)isPluginAccessoryNodeKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[HMMTRStorage chipPluginStorageAccessoryNodeSpecificKeys];
-  v5 = [HMMTRStorage keyByStrippingNodeIdFromKey:v3];
+  v5 = [HMMTRStorage keyByStrippingNodeIdFromKey:keyCopy];
 
-  LOBYTE(v3) = [v4 containsObject:v5];
-  return v3;
+  LOBYTE(keyCopy) = [v4 containsObject:v5];
+  return keyCopy;
 }
 
-+ (BOOL)isPluginKey:(id)a3
++ (BOOL)isPluginKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[HMMTRStorage chipPluginStorageKeys];
-  v5 = [HMMTRStorage keyByStrippingNodeIdFromKey:v3];
+  v5 = [HMMTRStorage keyByStrippingNodeIdFromKey:keyCopy];
 
-  LOBYTE(v3) = [v4 containsObject:v5];
-  return v3;
+  LOBYTE(keyCopy) = [v4 containsObject:v5];
+  return keyCopy;
 }
 
-+ (BOOL)isMatterKey:(id)a3
++ (BOOL)isMatterKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = +[HMMTRStorage matterStorageKeys];
-  if ([v4 containsObject:v3])
+  if ([v4 containsObject:keyCopy])
   {
     v5 = 1;
   }
@@ -1385,7 +1385,7 @@ LABEL_21:
             objc_enumerationMutation(v6);
           }
 
-          if ([v3 hasPrefix:*(*(&v15 + 1) + 8 * i)])
+          if ([keyCopy hasPrefix:*(*(&v15 + 1) + 8 * i)])
           {
             v5 = 1;
             goto LABEL_13;
@@ -1404,7 +1404,7 @@ LABEL_21:
 
     v14 = 0;
     v6 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^f/[0-9a-fA-F]+/s/" options:0 error:&v14];
-    v11 = [v6 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v11 = [v6 matchesInString:keyCopy options:0 range:{0, objc_msgSend(keyCopy, "length")}];
     v5 = [v11 count] == 1;
 
 LABEL_13:
@@ -1504,17 +1504,17 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
   chipPluginStorageKeys_storageKeys = &unk_283EE9180;
 }
 
-+ (id)removeRecordsForUnpairedNodesInDict:(id)a3 pairedNodes:(id)a4
++ (id)removeRecordsForUnpairedNodesInDict:(id)dict pairedNodes:(id)nodes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v5];
+  dictCopy = dict;
+  nodesCopy = nodes;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:dictCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = dictCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -1531,7 +1531,7 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
 
         v13 = *(*(&v17 + 1) + 8 * i);
         v14 = [HMMTRStorage nodeIdFromPluginKey:v13, v17];
-        if (v14 && ([v6 containsObject:v14] & 1) == 0)
+        if (v14 && ([nodesCopy containsObject:v14] & 1) == 0)
         {
           [v7 setObject:0 forKeyedSubscript:v13];
         }
@@ -1557,29 +1557,29 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
 
 - (void)_syncToRemoteStorage
 {
-  v2 = self;
+  selfCopy = self;
   v122 = *MEMORY[0x277D85DE8];
   if (![(HMMTRStorage *)self storageSyncInProgress])
   {
-    if (![(HMMTRStorage *)v2 storageSyncPending])
+    if (![(HMMTRStorage *)selfCopy storageSyncPending])
     {
       goto LABEL_55;
     }
 
-    [(HMMTRStorage *)v2 setStorageSyncInProgress:1];
-    if ([(HMMTRStorage *)v2 isSystemCommissionerFabric])
+    [(HMMTRStorage *)selfCopy setStorageSyncInProgress:1];
+    if ([(HMMTRStorage *)selfCopy isSystemCommissionerFabric])
     {
-      v7 = [(HMMTRStorage *)v2 localStorage];
-      v8 = [(HMMTRStorage *)v2 pairedNodeIDsOnSystemCommissionerFabric:1];
-      v9 = [HMMTRStorage removeRecordsForUnpairedNodesInDict:v7 pairedNodes:v8];
+      localStorage = [(HMMTRStorage *)selfCopy localStorage];
+      v8 = [(HMMTRStorage *)selfCopy pairedNodeIDsOnSystemCommissionerFabric:1];
+      v9 = [HMMTRStorage removeRecordsForUnpairedNodesInDict:localStorage pairedNodes:v8];
 
       v93 = v9;
       v10 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v9];
-      [(HMMTRStorage *)v2 setLocalStorage:v10];
+      [(HMMTRStorage *)selfCopy setLocalStorage:v10];
 
       v11 = objc_autoreleasePoolPush();
-      v94 = v2;
-      v12 = v2;
+      v94 = selfCopy;
+      v12 = selfCopy;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -1593,7 +1593,7 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
       }
 
       objc_autoreleasePoolPop(v11);
-      v95 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v109 = 0u;
       v110 = 0u;
       v111 = 0u;
@@ -1614,27 +1614,27 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
             }
 
             v20 = *(*(&v109 + 1) + 8 * i);
-            v21 = [(HMMTRStorage *)v12 localStorage];
-            v22 = [v21 objectForKey:v20];
+            localStorage2 = [(HMMTRStorage *)v12 localStorage];
+            v22 = [localStorage2 objectForKey:v20];
 
             if (v22)
             {
-              v23 = [(HMMTRStorage *)v12 localStorage];
-              v24 = [v23 objectForKeyedSubscript:v20];
-              v25 = [(HMMTRStorage *)v12 localStorageWithoutUpdates];
-              v26 = [v25 objectForKeyedSubscript:v20];
+              localStorage3 = [(HMMTRStorage *)v12 localStorage];
+              v24 = [localStorage3 objectForKeyedSubscript:v20];
+              localStorageWithoutUpdates = [(HMMTRStorage *)v12 localStorageWithoutUpdates];
+              v26 = [localStorageWithoutUpdates objectForKeyedSubscript:v20];
               v27 = [v24 isEqual:v26];
 
               if (v27)
               {
-                v28 = [(HMMTRStorage *)v12 localStorage];
-                [v28 removeObjectForKey:v20];
+                localStorage4 = [(HMMTRStorage *)v12 localStorage];
+                [localStorage4 removeObjectForKey:v20];
               }
             }
 
             else
             {
-              [v95 addObject:v20];
+              [array addObject:v20];
             }
           }
 
@@ -1648,7 +1648,7 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
       v106 = 0u;
       v107 = 0u;
       v105 = 0u;
-      v29 = v95;
+      v29 = array;
       v30 = [v29 countByEnumeratingWithState:&v105 objects:v120 count:16];
       v96 = v29;
       if (v30)
@@ -1665,9 +1665,9 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
             }
 
             v34 = *(*(&v105 + 1) + 8 * j);
-            v35 = [(HMMTRStorage *)v12 systemCommissionerKeyValueStore];
+            systemCommissionerKeyValueStore = [(HMMTRStorage *)v12 systemCommissionerKeyValueStore];
             v104 = 0;
-            v36 = [v35 removeStoredValueForKey:v34 error:&v104];
+            v36 = [systemCommissionerKeyValueStore removeStoredValueForKey:v34 error:&v104];
             v37 = v104;
 
             if ((v36 & 1) == 0)
@@ -1719,11 +1719,11 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
             }
 
             v46 = *(*(&v100 + 1) + 8 * k);
-            v47 = [(HMMTRStorage *)v12 systemCommissionerKeyValueStore];
-            v48 = [(HMMTRStorage *)v12 localStorage];
-            v49 = [v48 objectForKeyedSubscript:v46];
+            systemCommissionerKeyValueStore2 = [(HMMTRStorage *)v12 systemCommissionerKeyValueStore];
+            localStorage5 = [(HMMTRStorage *)v12 localStorage];
+            v49 = [localStorage5 objectForKeyedSubscript:v46];
             v99 = 0;
-            v50 = [v47 setStoredValue:v49 forKey:v46 error:&v99];
+            v50 = [systemCommissionerKeyValueStore2 setStoredValue:v49 forKey:v46 error:&v99];
             v51 = v99;
 
             if ((v50 & 1) == 0)
@@ -1760,8 +1760,8 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
       {
         v59 = HMFGetLogIdentifier();
         v60 = MEMORY[0x277CCABB0];
-        v61 = [(HMMTRStorage *)v57 localStorage];
-        v62 = [v60 numberWithUnsignedInteger:{objc_msgSend(v61, "count")}];
+        localStorage6 = [(HMMTRStorage *)v57 localStorage];
+        v62 = [v60 numberWithUnsignedInteger:{objc_msgSend(localStorage6, "count")}];
         v63 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v96, "count")}];
         *buf = 138543874;
         v115 = v59;
@@ -1773,10 +1773,10 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
       }
 
       objc_autoreleasePoolPop(v56);
-      v64 = [(HMMTRStorage *)v57 systemCommissionerKeyValueStore];
+      systemCommissionerKeyValueStore3 = [(HMMTRStorage *)v57 systemCommissionerKeyValueStore];
       v65 = objc_opt_respondsToSelector();
 
-      v2 = v94;
+      selfCopy = v94;
       if (v65)
       {
         v66 = objc_autoreleasePoolPush();
@@ -1785,15 +1785,15 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
         if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
         {
           v69 = HMFGetLogIdentifier();
-          v70 = [(HMMTRStorage *)v67 systemCommissionerKeyValueStore];
-          v71 = [v70 storedValuesByKey];
+          systemCommissionerKeyValueStore4 = [(HMMTRStorage *)v67 systemCommissionerKeyValueStore];
+          storedValuesByKey = [systemCommissionerKeyValueStore4 storedValuesByKey];
           *buf = 138543618;
           v115 = v69;
           v116 = 2112;
-          v117 = v71;
+          v117 = storedValuesByKey;
           _os_log_impl(&dword_22AEAE000, v68, OS_LOG_TYPE_INFO, "%{public}@System Commissioner storage contains %@", buf, 0x16u);
 
-          v2 = v94;
+          selfCopy = v94;
         }
 
         objc_autoreleasePoolPop(v66);
@@ -1802,26 +1802,26 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
 
     else
     {
-      v72 = [(HMMTRStorage *)v2 dataSource];
-      v73 = [(HMMTRStorage *)v2 fabricUUID];
-      v74 = [v72 storageDataSourceForFabricUUID:v73];
-      [(HMMTRStorage *)v2 setFabricDataSource:v74];
+      dataSource = [(HMMTRStorage *)selfCopy dataSource];
+      fabricUUID = [(HMMTRStorage *)selfCopy fabricUUID];
+      v74 = [dataSource storageDataSourceForFabricUUID:fabricUUID];
+      [(HMMTRStorage *)selfCopy setFabricDataSource:v74];
 
-      v75 = [(HMMTRStorage *)v2 fabricDataSource];
+      fabricDataSource = [(HMMTRStorage *)selfCopy fabricDataSource];
 
-      if (!v75)
+      if (!fabricDataSource)
       {
         v88 = objc_autoreleasePoolPush();
-        v89 = v2;
+        v89 = selfCopy;
         v90 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
         {
           v91 = HMFGetLogIdentifier();
-          v92 = [(HMMTRStorage *)v89 fabricUUID];
+          fabricUUID2 = [(HMMTRStorage *)v89 fabricUUID];
           *buf = 138543618;
           v115 = v91;
           v116 = 2112;
-          v117 = v92;
+          v117 = fabricUUID2;
           _os_log_impl(&dword_22AEAE000, v90, OS_LOG_TYPE_INFO, "%{public}@Remote storage is not yet available for fabric %@", buf, 0x16u);
         }
 
@@ -1830,19 +1830,19 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
         goto LABEL_54;
       }
 
-      v76 = [(HMMTRStorage *)v2 localStorage];
-      v77 = [v76 copy];
-      [(HMMTRStorage *)v2 _syncSetDataSourceDictionary:v77];
+      localStorage7 = [(HMMTRStorage *)selfCopy localStorage];
+      v77 = [localStorage7 copy];
+      [(HMMTRStorage *)selfCopy _syncSetDataSourceDictionary:v77];
 
       v78 = objc_autoreleasePoolPush();
-      v79 = v2;
+      v79 = selfCopy;
       v80 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_INFO))
       {
         v81 = HMFGetLogIdentifier();
         v82 = MEMORY[0x277CCABB0];
-        v83 = [(HMMTRStorage *)v79 localStorage];
-        v84 = [v82 numberWithUnsignedInteger:{objc_msgSend(v83, "count")}];
+        localStorage8 = [(HMMTRStorage *)v79 localStorage];
+        v84 = [v82 numberWithUnsignedInteger:{objc_msgSend(localStorage8, "count")}];
         *buf = 138543618;
         v115 = v81;
         v116 = 2112;
@@ -1853,18 +1853,18 @@ void __46__HMMTRStorage_Records__chipPluginStorageKeys__block_invoke()
       objc_autoreleasePoolPop(v78);
     }
 
-    v85 = [(HMMTRStorage *)v2 localStorage];
-    [v85 removeAllObjects];
+    localStorage9 = [(HMMTRStorage *)selfCopy localStorage];
+    [localStorage9 removeAllObjects];
 
-    [(HMMTRStorage *)v2 setStorageSyncPending:0];
-    v86 = v2;
+    [(HMMTRStorage *)selfCopy setStorageSyncPending:0];
+    v86 = selfCopy;
 LABEL_54:
     [(HMMTRStorage *)v86 setStorageSyncInProgress:0];
     goto LABEL_55;
   }
 
   v3 = objc_autoreleasePoolPush();
-  v4 = v2;
+  v4 = selfCopy;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1887,7 +1887,7 @@ LABEL_55:
     if ([(HMMTRStorage *)self isSystemCommissionerFabric])
     {
       v3 = objc_autoreleasePoolPush();
-      v4 = self;
+      selfCopy = self;
       v5 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
@@ -1902,12 +1902,12 @@ LABEL_55:
 
     else
     {
-      v7 = [(HMMTRStorage *)self localStorage];
-      v8 = [v7 mutableCopy];
+      localStorage = [(HMMTRStorage *)self localStorage];
+      v8 = [localStorage mutableCopy];
       [(HMMTRStorage *)self setAppleFabricLocalStorage:v8];
 
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -1918,23 +1918,23 @@ LABEL_55:
       }
 
       objc_autoreleasePoolPop(v9);
-      v13 = [(HMMTRStorage *)v10 localStorage];
-      [v13 removeAllObjects];
+      localStorage2 = [(HMMTRStorage *)selfCopy2 localStorage];
+      [localStorage2 removeAllObjects];
 
-      [(HMMTRStorage *)v10 setStorageSyncPending:0];
-      [(HMMTRStorage *)v10 setLocalStorageMode:0];
+      [(HMMTRStorage *)selfCopy2 setStorageSyncPending:0];
+      [(HMMTRStorage *)selfCopy2 setLocalStorageMode:0];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endLocalStorageModeBySyncingToRemote:(BOOL)a3
+- (void)endLocalStorageModeBySyncingToRemote:(BOOL)remote
 {
   v13 = *MEMORY[0x277D85DE8];
   if ([(HMMTRStorage *)self isLocalStorageMode])
   {
-    if (a3)
+    if (remote)
     {
       [(HMMTRStorage *)self setStorageSyncPending:1];
       [(HMMTRStorage *)self _syncToRemoteStorage];
@@ -1943,7 +1943,7 @@ LABEL_55:
     else
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -1954,10 +1954,10 @@ LABEL_55:
       }
 
       objc_autoreleasePoolPop(v5);
-      v9 = [(HMMTRStorage *)v6 localStorage];
-      [v9 removeAllObjects];
+      localStorage = [(HMMTRStorage *)selfCopy localStorage];
+      [localStorage removeAllObjects];
 
-      [(HMMTRStorage *)v6 setStorageSyncPending:0];
+      [(HMMTRStorage *)selfCopy setStorageSyncPending:0];
     }
 
     if (![(HMMTRStorage *)self isSystemCommissionerFabric])
@@ -1975,7 +1975,7 @@ LABEL_55:
 {
   v33 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1986,74 +1986,74 @@ LABEL_55:
   }
 
   objc_autoreleasePoolPop(v3);
-  if (![(HMMTRStorage *)v4 isSystemCommissionerFabric])
+  if (![(HMMTRStorage *)selfCopy isSystemCommissionerFabric])
   {
-    if (![(HMMTRStorage *)v4 isSharedAdmin])
+    if (![(HMMTRStorage *)selfCopy isSharedAdmin])
     {
-      v15 = [(HMMTRStorage *)v4 fabricUUID];
+      fabricUUID = [(HMMTRStorage *)selfCopy fabricUUID];
 
-      if (v15)
+      if (fabricUUID)
       {
-        v16 = [(HMMTRStorage *)v4 dataSource];
-        v17 = [(HMMTRStorage *)v4 fabricUUID];
-        v18 = [v16 storageDataSourceForFabricUUID:v17];
-        [(HMMTRStorage *)v4 setFabricDataSource:v18];
+        dataSource = [(HMMTRStorage *)selfCopy dataSource];
+        fabricUUID2 = [(HMMTRStorage *)selfCopy fabricUUID];
+        v18 = [dataSource storageDataSourceForFabricUUID:fabricUUID2];
+        [(HMMTRStorage *)selfCopy setFabricDataSource:v18];
 
-        v19 = [(HMMTRStorage *)v4 fabricDataSource];
-        v13 = [v19 keyValueStore];
+        fabricDataSource = [(HMMTRStorage *)selfCopy fabricDataSource];
+        keyValueStore = [fabricDataSource keyValueStore];
 
 LABEL_12:
-        v20 = [(HMMTRStorage *)v4 appleFabricLocalStorage];
+        appleFabricLocalStorage = [(HMMTRStorage *)selfCopy appleFabricLocalStorage];
 
-        if (v20)
+        if (appleFabricLocalStorage)
         {
-          [(HMMTRStorage *)v4 appleFabricLocalStorage];
+          [(HMMTRStorage *)selfCopy appleFabricLocalStorage];
         }
 
         else
         {
-          [MEMORY[0x277CBEB38] dictionaryWithDictionary:v13];
+          [MEMORY[0x277CBEB38] dictionaryWithDictionary:keyValueStore];
         }
         v14 = ;
-        [(HMMTRStorage *)v4 setLocalStorage:v14];
+        [(HMMTRStorage *)selfCopy setLocalStorage:v14];
         goto LABEL_16;
       }
 
-      [(HMMTRStorage *)v4 setFabricDataSource:0];
+      [(HMMTRStorage *)selfCopy setFabricDataSource:0];
     }
 
-    v13 = [MEMORY[0x277CBEAC0] dictionary];
+    keyValueStore = [MEMORY[0x277CBEAC0] dictionary];
     goto LABEL_12;
   }
 
-  v7 = [(HMMTRStorage *)v4 systemCommissionerKeyValueStore];
+  systemCommissionerKeyValueStore = [(HMMTRStorage *)selfCopy systemCommissionerKeyValueStore];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = MEMORY[0x277CBEB38];
-    v10 = [(HMMTRStorage *)v4 systemCommissionerKeyValueStore];
-    v11 = [v10 storedValuesByKey];
-    v12 = [v9 dictionaryWithDictionary:v11];
-    [(HMMTRStorage *)v4 setLocalStorage:v12];
+    systemCommissionerKeyValueStore2 = [(HMMTRStorage *)selfCopy systemCommissionerKeyValueStore];
+    storedValuesByKey = [systemCommissionerKeyValueStore2 storedValuesByKey];
+    v12 = [v9 dictionaryWithDictionary:storedValuesByKey];
+    [(HMMTRStorage *)selfCopy setLocalStorage:v12];
   }
 
-  v13 = [(HMMTRStorage *)v4 localStorage];
-  v14 = [v13 copy];
-  [(HMMTRStorage *)v4 setLocalStorageWithoutUpdates:v14];
+  keyValueStore = [(HMMTRStorage *)selfCopy localStorage];
+  v14 = [keyValueStore copy];
+  [(HMMTRStorage *)selfCopy setLocalStorageWithoutUpdates:v14];
 LABEL_16:
 
-  [(HMMTRStorage *)v4 setLocalStorageMode:1];
-  [(HMMTRStorage *)v4 setStorageSyncPending:0];
+  [(HMMTRStorage *)selfCopy setLocalStorageMode:1];
+  [(HMMTRStorage *)selfCopy setStorageSyncPending:0];
   v21 = objc_autoreleasePoolPush();
-  v22 = v4;
+  v22 = selfCopy;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     v24 = HMFGetLogIdentifier();
     v25 = MEMORY[0x277CCABB0];
-    v26 = [(HMMTRStorage *)v22 localStorage];
-    v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(v26, "count")}];
+    localStorage = [(HMMTRStorage *)v22 localStorage];
+    v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(localStorage, "count")}];
     v29 = 138543618;
     v30 = v24;
     v31 = 2112;
@@ -2065,16 +2065,16 @@ LABEL_16:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLocalStorageMode:(BOOL)a3
+- (void)setLocalStorageMode:(BOOL)mode
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    [(HMMTRStorage *)v6 isLocalStorageMode];
+    [(HMMTRStorage *)selfCopy isLocalStorageMode];
     v9 = HMFBooleanToString();
     v10 = HMFBooleanToString();
     v12 = 138543874;
@@ -2088,8 +2088,8 @@ LABEL_16:
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v6->_localStorageMode = a3;
-  os_unfair_lock_unlock(&v6->_lock);
+  selfCopy->_localStorageMode = mode;
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v11 = *MEMORY[0x277D85DE8];
 }
 
@@ -2103,28 +2103,28 @@ LABEL_16:
 
 - (id)logIdentifier
 {
-  v2 = [(HMMTRStorage *)self fabricID];
-  v3 = [v2 stringValue];
+  fabricID = [(HMMTRStorage *)self fabricID];
+  stringValue = [fabricID stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-- (BOOL)replaceAllKeysAndSyncWithBlock:(id)a3 systemCommissionerFabric:(BOOL)a4
+- (BOOL)replaceAllKeysAndSyncWithBlock:(id)block systemCommissionerFabric:(BOOL)fabric
 {
-  v4 = a4;
+  fabricCopy = fabric;
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (fabricCopy)
   {
-    v8 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
-    v9 = [v8 storedValuesByKey];
+    systemCommissionerKeyValueStore = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
+    storedValuesByKey = [systemCommissionerKeyValueStore storedValuesByKey];
 
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v10 = v9;
+    v10 = storedValuesByKey;
     v11 = [v10 countByEnumeratingWithState:&v54 objects:v64 count:16];
     if (v11)
     {
@@ -2153,24 +2153,24 @@ LABEL_16:
           {
             if ([(HMMTRStorage *)self isLocalStorageMode])
             {
-              v19 = [(HMMTRStorage *)self localStorage];
-              [v19 setObject:v18 forKeyedSubscript:v16];
+              localStorage = [(HMMTRStorage *)self localStorage];
+              [localStorage setObject:v18 forKeyedSubscript:v16];
             }
 
             v20 = v10;
-            v21 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
-            v22 = v21;
+            systemCommissionerKeyValueStore2 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
+            v22 = systemCommissionerKeyValueStore2;
             if (v18)
             {
               v53 = 0;
-              v23 = [v21 setStoredValue:v18 forKey:v16 error:&v53];
+              v23 = [systemCommissionerKeyValueStore2 setStoredValue:v18 forKey:v16 error:&v53];
               v24 = v53;
             }
 
             else
             {
               v52 = 0;
-              v23 = [v21 removeStoredValueForKey:v16 error:&v52];
+              v23 = [systemCommissionerKeyValueStore2 removeStoredValueForKey:v16 error:&v52];
               v24 = v52;
             }
 
@@ -2179,7 +2179,7 @@ LABEL_16:
             if (v23)
             {
               v26 = objc_autoreleasePoolPush();
-              v27 = self;
+              selfCopy = self;
               v28 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
               {
@@ -2195,7 +2195,7 @@ LABEL_16:
             else
             {
               v26 = objc_autoreleasePoolPush();
-              v30 = self;
+              selfCopy2 = self;
               v28 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
               {
@@ -2246,14 +2246,14 @@ LABEL_16:
     v49[2] = __72__HMMTRStorage_replaceAllKeysAndSyncWithBlock_systemCommissionerFabric___block_invoke;
     v49[3] = &unk_2786F0E80;
     v49[4] = self;
-    v50 = v6;
+    v50 = blockCopy;
     v32 = [(HMMTRStorage *)self _syncSetDataSourceValuesWithError:&v51 block:v49];
     v10 = v51;
     if (v32)
     {
 
       v33 = objc_autoreleasePoolPush();
-      v34 = self;
+      selfCopy3 = self;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
@@ -2270,7 +2270,7 @@ LABEL_16:
     else
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = self;
+      selfCopy4 = self;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
@@ -2352,29 +2352,29 @@ uint64_t __72__HMMTRStorage_replaceAllKeysAndSyncWithBlock_systemCommissionerFab
   return v9 & 1;
 }
 
-- (BOOL)removeValueForKey:(id)a3 systemCommissionerFabric:(BOOL)a4
+- (BOOL)removeValueForKey:(id)key systemCommissionerFabric:(BOOL)fabric
 {
-  v4 = a4;
+  fabricCopy = fabric;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keyCopy = key;
   if ([(HMMTRStorage *)self isLocalStorageMode])
   {
-    v7 = [(HMMTRStorage *)self localStorage];
-    [v7 removeObjectForKey:v6];
+    localStorage = [(HMMTRStorage *)self localStorage];
+    [localStorage removeObjectForKey:keyCopy];
 
     v8 = 1;
     goto LABEL_15;
   }
 
-  if (v4)
+  if (fabricCopy)
   {
-    v9 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
+    systemCommissionerKeyValueStore = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
     v22 = 0;
-    v8 = [v9 removeStoredValueForKey:v6 error:&v22];
+    v8 = [systemCommissionerKeyValueStore removeStoredValueForKey:keyCopy error:&v22];
     v10 = v22;
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     v14 = v13;
     if (v8)
@@ -2385,7 +2385,7 @@ uint64_t __72__HMMTRStorage_replaceAllKeysAndSyncWithBlock_systemCommissionerFab
         *buf = 138543618;
         v24 = v15;
         v25 = 2112;
-        v26 = v6;
+        v26 = keyCopy;
         v16 = "%{public}@Removal of %@ requested from keychain store";
         v17 = v14;
         v18 = OS_LOG_TYPE_INFO;
@@ -2411,27 +2411,27 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if ([(HMMTRStorage *)self isResidentDevice]&& [HMMTRStorage isMemoryStorageKey:v6])
+  if ([(HMMTRStorage *)self isResidentDevice]&& [HMMTRStorage isMemoryStorageKey:keyCopy])
   {
-    v19 = [(HMMTRStorage *)self inMemoryStorage];
-    [v19 removeObjectForKey:v6];
+    inMemoryStorage = [(HMMTRStorage *)self inMemoryStorage];
+    [inMemoryStorage removeObjectForKey:keyCopy];
   }
 
-  v8 = [(HMMTRStorage *)self _syncSetDataSourceValue:0 forKey:v6];
+  v8 = [(HMMTRStorage *)self _syncSetDataSourceValue:0 forKey:keyCopy];
 LABEL_15:
 
   v20 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (BOOL)setValueForKey:(id)a3 removingKeys:(id)a4 systemCommissionerFabric:(BOOL)a5 block:(id)a6
+- (BOOL)setValueForKey:(id)key removingKeys:(id)keys systemCommissionerFabric:(BOOL)fabric block:(id)block
 {
-  v7 = a5;
+  fabricCopy = fabric;
   v91 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([HMMTRStorage shouldIgnoreWritesForKey:v10])
+  keyCopy = key;
+  keysCopy = keys;
+  blockCopy = block;
+  if ([HMMTRStorage shouldIgnoreWritesForKey:keyCopy])
   {
 LABEL_5:
     v18 = 1;
@@ -2440,38 +2440,38 @@ LABEL_5:
 
   if ([(HMMTRStorage *)self isLocalStorageMode])
   {
-    v13 = [(HMMTRStorage *)self localStorage];
-    v14 = [v13 objectForKeyedSubscript:v10];
-    v15 = v12[2](v12, v14);
-    v16 = [(HMMTRStorage *)self localStorage];
-    [v16 setObject:v15 forKeyedSubscript:v10];
+    localStorage = [(HMMTRStorage *)self localStorage];
+    v14 = [localStorage objectForKeyedSubscript:keyCopy];
+    v15 = blockCopy[2](blockCopy, v14);
+    localStorage2 = [(HMMTRStorage *)self localStorage];
+    [localStorage2 setObject:v15 forKeyedSubscript:keyCopy];
 
-    if (v11)
+    if (keysCopy)
     {
-      v17 = [(HMMTRStorage *)self localStorage];
-      [v17 removeObjectsForKeys:v11];
+      localStorage3 = [(HMMTRStorage *)self localStorage];
+      [localStorage3 removeObjectsForKeys:keysCopy];
     }
 
     goto LABEL_5;
   }
 
-  if (v7)
+  if (fabricCopy)
   {
-    v21 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
-    v22 = [v21 storedValueForKey:v10];
-    v23 = v12[2](v12, v22);
+    systemCommissionerKeyValueStore = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
+    v22 = [systemCommissionerKeyValueStore storedValueForKey:keyCopy];
+    v23 = blockCopy[2](blockCopy, v22);
 
-    v24 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
+    systemCommissionerKeyValueStore2 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
     v81 = 0;
     v63 = v23;
-    LOBYTE(v22) = [v24 setStoredValue:v23 forKey:v10 error:&v81];
+    LOBYTE(v22) = [systemCommissionerKeyValueStore2 setStoredValue:v23 forKey:keyCopy error:&v81];
     v25 = v81;
 
     v68 = v22;
     if ((v22 & 1) == 0)
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -2487,14 +2487,14 @@ LABEL_5:
     }
 
     v62 = v25;
-    v65 = v10;
-    v66 = v12;
+    v65 = keyCopy;
+    v66 = blockCopy;
     v79 = 0u;
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v64 = v11;
-    obj = v11;
+    v64 = keysCopy;
+    obj = keysCopy;
     v30 = [obj countByEnumeratingWithState:&v77 objects:v90 count:16];
     if (v30)
     {
@@ -2510,13 +2510,13 @@ LABEL_5:
           }
 
           v34 = *(*(&v77 + 1) + 8 * i);
-          v35 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
+          systemCommissionerKeyValueStore3 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
           v76 = 0;
-          v36 = [v35 removeStoredValueForKey:v34 error:&v76];
+          v36 = [systemCommissionerKeyValueStore3 removeStoredValueForKey:v34 error:&v76];
           v37 = v76;
 
           v38 = objc_autoreleasePoolPush();
-          v39 = self;
+          selfCopy2 = self;
           v40 = HMFGetOSLogHandle();
           v41 = v40;
           if (v36)
@@ -2558,29 +2558,29 @@ LABEL_5:
       while (v31);
     }
 
-    v11 = v64;
-    v10 = v65;
-    v12 = v66;
+    keysCopy = v64;
+    keyCopy = v65;
+    blockCopy = v66;
     v18 = v68;
   }
 
   else
   {
-    v44 = [(HMMTRStorage *)self dataSource];
-    if (v44)
+    dataSource = [(HMMTRStorage *)self dataSource];
+    if (dataSource)
     {
-      if ([(HMMTRStorage *)self isResidentDevice]&& [HMMTRStorage isMemoryStorageKey:v10])
+      if ([(HMMTRStorage *)self isResidentDevice]&& [HMMTRStorage isMemoryStorageKey:keyCopy])
       {
-        v45 = [(HMMTRStorage *)self inMemoryStorage];
-        v46 = [v45 objectForKeyedSubscript:v10];
-        v47 = v12[2](v12, v46);
-        v48 = [(HMMTRStorage *)self inMemoryStorage];
-        [v48 setObject:v47 forKeyedSubscript:v10];
+        inMemoryStorage = [(HMMTRStorage *)self inMemoryStorage];
+        v46 = [inMemoryStorage objectForKeyedSubscript:keyCopy];
+        v47 = blockCopy[2](blockCopy, v46);
+        inMemoryStorage2 = [(HMMTRStorage *)self inMemoryStorage];
+        [inMemoryStorage2 setObject:v47 forKeyedSubscript:keyCopy];
 
-        if (v11)
+        if (keysCopy)
         {
-          v49 = [(HMMTRStorage *)self inMemoryStorage];
-          [v49 removeObjectsForKeys:v11];
+          inMemoryStorage3 = [(HMMTRStorage *)self inMemoryStorage];
+          [inMemoryStorage3 removeObjectsForKeys:keysCopy];
         }
 
         v18 = 1;
@@ -2593,11 +2593,11 @@ LABEL_5:
         v71[1] = 3221225472;
         v71[2] = __75__HMMTRStorage_setValueForKey_removingKeys_systemCommissionerFabric_block___block_invoke;
         v71[3] = &unk_2786F0E58;
-        v67 = v12;
-        v74 = v12;
-        v50 = v10;
+        v67 = blockCopy;
+        v74 = blockCopy;
+        v50 = keyCopy;
         v72 = v50;
-        v51 = v11;
+        v51 = keysCopy;
         v73 = v51;
         v52 = [(HMMTRStorage *)self _syncSetDataSourceValuesWithError:&v75 block:v71];
         v53 = v75;
@@ -2606,7 +2606,7 @@ LABEL_5:
         {
 
           v54 = objc_autoreleasePoolPush();
-          v55 = self;
+          selfCopy3 = self;
           v56 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
           {
@@ -2626,7 +2626,7 @@ LABEL_5:
         else
         {
           v58 = objc_autoreleasePoolPush();
-          v59 = self;
+          selfCopy4 = self;
           v60 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
           {
@@ -2645,7 +2645,7 @@ LABEL_5:
           objc_autoreleasePoolPop(v58);
         }
 
-        v12 = v67;
+        blockCopy = v67;
         v18 = v69;
       }
     }
@@ -2688,47 +2688,47 @@ uint64_t __75__HMMTRStorage_setValueForKey_removingKeys_systemCommissionerFabric
   return v11 ^ 1u;
 }
 
-- (id)valueForKey:(id)a3 systemCommissionerFabric:(BOOL)a4
+- (id)valueForKey:(id)key systemCommissionerFabric:(BOOL)fabric
 {
-  v4 = a4;
+  fabricCopy = fabric;
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([HMMTRStorage shouldIgnoreWritesForKey:v6])
+  keyCopy = key;
+  if ([HMMTRStorage shouldIgnoreWritesForKey:keyCopy])
   {
 LABEL_2:
     v7 = 0;
     goto LABEL_16;
   }
 
-  if ([(HMMTRStorage *)self isLocalStorageMode]&& [(HMMTRStorage *)self isSystemCommissionerFabric]== v4)
+  if ([(HMMTRStorage *)self isLocalStorageMode]&& [(HMMTRStorage *)self isSystemCommissionerFabric]== fabricCopy)
   {
-    v8 = [(HMMTRStorage *)self localStorage];
-    v9 = [v8 valueForKey:v6];
+    localStorage = [(HMMTRStorage *)self localStorage];
+    v9 = [localStorage valueForKey:keyCopy];
   }
 
-  else if (v4)
+  else if (fabricCopy)
   {
-    v8 = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
-    v9 = [v8 storedValueForKey:v6];
+    localStorage = [(HMMTRStorage *)self systemCommissionerKeyValueStore];
+    v9 = [localStorage storedValueForKey:keyCopy];
   }
 
   else
   {
-    v10 = [(HMMTRStorage *)self fabricID];
+    fabricID = [(HMMTRStorage *)self fabricID];
 
-    if (!v10)
+    if (!fabricID)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v19 = HMFGetLogIdentifier();
-        v20 = [(HMMTRStorage *)v17 fabricUUID];
+        fabricUUID = [(HMMTRStorage *)selfCopy fabricUUID];
         v21 = 138543618;
         v22 = v19;
         v23 = 2112;
-        v24 = v20;
+        v24 = fabricUUID;
         _os_log_impl(&dword_22AEAE000, v18, OS_LOG_TYPE_ERROR, "%{public}@Not reading because fabricID is not yet defined for target fabric %@", &v21, 0x16u);
       }
 
@@ -2736,19 +2736,19 @@ LABEL_2:
       goto LABEL_2;
     }
 
-    v11 = [(HMMTRStorage *)self inMemoryStorage];
-    v8 = [v11 objectForKeyedSubscript:v6];
+    inMemoryStorage = [(HMMTRStorage *)self inMemoryStorage];
+    localStorage = [inMemoryStorage objectForKeyedSubscript:keyCopy];
 
-    if (![(HMMTRStorage *)self isResidentDevice]|| !v8 || ![HMMTRStorage isMemoryStorageKey:v6])
+    if (![(HMMTRStorage *)self isResidentDevice]|| !localStorage || ![HMMTRStorage isMemoryStorageKey:keyCopy])
     {
-      v12 = [(HMMTRStorage *)self fabricDataSource];
-      v13 = [v12 keyValueStore];
-      v7 = [v13 objectForKeyedSubscript:v6];
+      fabricDataSource = [(HMMTRStorage *)self fabricDataSource];
+      keyValueStore = [fabricDataSource keyValueStore];
+      v7 = [keyValueStore objectForKeyedSubscript:keyCopy];
 
       goto LABEL_15;
     }
 
-    v9 = v8;
+    v9 = localStorage;
   }
 
   v7 = v9;
@@ -2760,43 +2760,43 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)removeValueForKey:(id)a3
+- (BOOL)removeValueForKey:(id)key
 {
-  v4 = a3;
-  LOBYTE(self) = [(HMMTRStorage *)self removeValueForKey:v4 systemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
+  keyCopy = key;
+  LOBYTE(self) = [(HMMTRStorage *)self removeValueForKey:keyCopy systemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
 
   return self;
 }
 
-- (BOOL)setValueForKey:(id)a3 value:(id)a4
+- (BOOL)setValueForKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  LOBYTE(self) = [(HMMTRStorage *)self setValueForKey:v7 value:v6 systemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
+  valueCopy = value;
+  keyCopy = key;
+  LOBYTE(self) = [(HMMTRStorage *)self setValueForKey:keyCopy value:valueCopy systemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
 
   return self;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMMTRStorage *)self valueForKey:v4 systemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
+  keyCopy = key;
+  v5 = [(HMMTRStorage *)self valueForKey:keyCopy systemCommissionerFabric:[(HMMTRStorage *)self isSystemCommissionerFabric]];
 
   return v5;
 }
 
-- (BOOL)setStorageData:(id)a3 forKey:(id)a4
+- (BOOL)setStorageData:(id)data forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 base64EncodedStringWithOptions:0];
-  LOBYTE(self) = [(HMMTRStorage *)self setValueForKey:v6 value:v7];
+  keyCopy = key;
+  v7 = [data base64EncodedStringWithOptions:0];
+  LOBYTE(self) = [(HMMTRStorage *)self setValueForKey:keyCopy value:v7];
 
   return self;
 }
 
-- (id)storageDataForKey:(id)a3
+- (id)storageDataForKey:(id)key
 {
-  v3 = [(HMMTRStorage *)self valueForKey:a3];
+  v3 = [(HMMTRStorage *)self valueForKey:key];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
@@ -2810,15 +2810,15 @@ LABEL_16:
   return v4;
 }
 
-- (id)ipkForTargetFabricUUID:(id)a3 forPairing:(BOOL)a4
+- (id)ipkForTargetFabricUUID:(id)d forPairing:(BOOL)pairing
 {
-  v4 = a4;
+  pairingCopy = pairing;
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6 || (-[HMMTRStorage dataSource](self, "dataSource"), v7 = objc_claimAutoreleasedReturnValue(), [v7 storageDataSourceForFabricUUID:v6], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  dCopy = d;
+  if (!dCopy || (-[HMMTRStorage dataSource](self, "dataSource"), v7 = objc_claimAutoreleasedReturnValue(), [v7 storageDataSourceForFabricUUID:dCopy], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -2826,7 +2826,7 @@ LABEL_16:
       v27 = 138543618;
       v28 = v15;
       v29 = 2112;
-      v30 = v6;
+      v30 = dCopy;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@Fabric data source not available; failed to get ipk for fabric %@", &v27, 0x16u);
     }
 
@@ -2834,10 +2834,10 @@ LABEL_16:
     v8 = 0;
 LABEL_9:
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     v19 = v18;
-    if (v4)
+    if (pairingCopy)
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -2845,7 +2845,7 @@ LABEL_9:
         v27 = 138543618;
         v28 = v20;
         v29 = 2112;
-        v30 = v6;
+        v30 = dCopy;
         _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_INFO, "%{public}@Generating new IPK for fabric %@", &v27, 0x16u);
       }
 
@@ -2858,7 +2858,7 @@ LABEL_9:
       }
 
       v16 = objc_autoreleasePoolPush();
-      v24 = v17;
+      v24 = selfCopy2;
       v19 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -2869,7 +2869,7 @@ LABEL_9:
       v27 = 138543618;
       v28 = v22;
       v29 = 2112;
-      v30 = v6;
+      v30 = dCopy;
       v23 = "%{public}@FATAL Error: Failed to generate IPK for fabric %@";
     }
 
@@ -2888,7 +2888,7 @@ LABEL_19:
       v27 = 138543618;
       v28 = v22;
       v29 = 2112;
-      v30 = v6;
+      v30 = dCopy;
       v23 = "%{public}@IPK missing for fabric %@";
     }
 
@@ -2897,8 +2897,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v9 = [v8 keyValueStore];
-  v10 = [v9 objectForKeyedSubscript:@"IPK"];
+  keyValueStore = [v8 keyValueStore];
+  v10 = [keyValueStore objectForKeyedSubscript:@"IPK"];
 
   if (!v10)
   {
@@ -2919,22 +2919,22 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)syncDataSourceDictionary:(id)a3 forFabric:(id)a4
+- (BOOL)syncDataSourceDictionary:(id)dictionary forFabric:(id)fabric
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  fabricCopy = fabric;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 allKeys];
+    allKeys = [dictionaryCopy allKeys];
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = allKeys;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Queueing sync set data source value for keys: %@", buf, 0x16u);
   }
 
@@ -2950,14 +2950,14 @@ LABEL_20:
   v21 = __51__HMMTRStorage_syncDataSourceDictionary_forFabric___block_invoke;
   v22 = &unk_2786F0E08;
   objc_copyWeak(&v27, &location);
-  v23 = v9;
-  v14 = v6;
+  v23 = selfCopy;
+  v14 = dictionaryCopy;
   v24 = v14;
-  v15 = v7;
+  v15 = fabricCopy;
   v25 = v15;
   v26 = buf;
   [v13 addExecutionBlock:&v19];
-  v16 = [(HMMTRStorage *)v9 keyValueStoreUpdateQueue:v19];
+  v16 = [(HMMTRStorage *)selfCopy keyValueStoreUpdateQueue:v19];
   [v16 addOperation:v13];
 
   [v13 waitUntilFinished];
@@ -3088,21 +3088,21 @@ void __51__HMMTRStorage_syncDataSourceDictionary_forFabric___block_invoke_2(uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_syncSetDataSourceDictionary:(id)a3
+- (BOOL)_syncSetDataSourceDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 allKeys];
+    allKeys = [dictionaryCopy allKeys];
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = allKeys;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Queueing sync set data source value for keys: %@", buf, 0x16u);
   }
 
@@ -3118,23 +3118,23 @@ void __51__HMMTRStorage_syncDataSourceDictionary_forFabric___block_invoke_2(uint
   v15[2] = __45__HMMTRStorage__syncSetDataSourceDictionary___block_invoke;
   v15[3] = &unk_2786F0DE0;
   objc_copyWeak(&v18, &location);
-  v15[4] = v6;
-  v11 = v4;
+  v15[4] = selfCopy;
+  v11 = dictionaryCopy;
   v16 = v11;
   v17 = buf;
   [v10 addExecutionBlock:v15];
-  v12 = [(HMMTRStorage *)v6 keyValueStoreUpdateQueue];
-  [v12 addOperation:v10];
+  keyValueStoreUpdateQueue = [(HMMTRStorage *)selfCopy keyValueStoreUpdateQueue];
+  [keyValueStoreUpdateQueue addOperation:v10];
 
   [v10 waitUntilFinished];
-  LOBYTE(v12) = *(*&buf[8] + 24);
+  LOBYTE(keyValueStoreUpdateQueue) = *(*&buf[8] + 24);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 
   _Block_object_dispose(buf, 8);
   v13 = *MEMORY[0x277D85DE8];
-  return v12 & 1;
+  return keyValueStoreUpdateQueue & 1;
 }
 
 void __45__HMMTRStorage__syncSetDataSourceDictionary___block_invoke(uint64_t a1)
@@ -3264,7 +3264,7 @@ void __45__HMMTRStorage__syncSetDataSourceDictionary___block_invoke_2(uint64_t a
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3286,10 +3286,10 @@ void __45__HMMTRStorage__syncSetDataSourceDictionary___block_invoke_2(uint64_t a
   v13 = __40__HMMTRStorage__removeAllDataSourceData__block_invoke;
   v14 = &unk_2786F0D90;
   objc_copyWeak(&v17, &location);
-  v15 = v4;
+  v15 = selfCopy;
   p_buf = &buf;
   [v7 addExecutionBlock:&v11];
-  v8 = [(HMMTRStorage *)v4 keyValueStoreUpdateQueue:v11];
+  v8 = [(HMMTRStorage *)selfCopy keyValueStoreUpdateQueue:v11];
   [v8 addOperation:v7];
 
   [v7 waitUntilFinished];
@@ -3429,12 +3429,12 @@ void __40__HMMTRStorage__removeAllDataSourceData__block_invoke_121(uint64_t a1, 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_syncSetDataSourceValuesWithError:(id *)a3 block:(id)a4
+- (BOOL)_syncSetDataSourceValuesWithError:(id *)error block:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -3458,18 +3458,18 @@ void __40__HMMTRStorage__removeAllDataSourceData__block_invoke_121(uint64_t a1, 
   v17[2] = __56__HMMTRStorage__syncSetDataSourceValuesWithError_block___block_invoke;
   v17[3] = &unk_2786F0D40;
   objc_copyWeak(&v20, &location);
-  v17[4] = v8;
-  v12 = v6;
+  v17[4] = selfCopy;
+  v12 = blockCopy;
   v18 = v12;
   p_buf = &buf;
   [v11 addExecutionBlock:v17];
-  v13 = [(HMMTRStorage *)v8 keyValueStoreUpdateQueue];
-  [v13 addOperation:v11];
+  keyValueStoreUpdateQueue = [(HMMTRStorage *)selfCopy keyValueStoreUpdateQueue];
+  [keyValueStoreUpdateQueue addOperation:v11];
 
   [v11 waitUntilFinished];
-  if (a3)
+  if (error)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   v14 = *(*(&buf + 1) + 40) == 0;
@@ -3560,13 +3560,13 @@ void __56__HMMTRStorage__syncSetDataSourceValuesWithError_block___block_invoke_1
   [*(a1 + 32) finish];
 }
 
-- (BOOL)_syncSetDataSourceValue:(id)a3 forKey:(id)a4
+- (BOOL)_syncSetDataSourceValue:(id)value forKey:(id)key
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -3574,7 +3574,7 @@ void __56__HMMTRStorage__syncSetDataSourceValuesWithError_block___block_invoke_1
     *buf = 138543618;
     v31 = v11;
     v32 = 2112;
-    v33 = v7;
+    v33 = keyCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Queueing sync set data source values for key: %@", buf, 0x16u);
   }
 
@@ -3584,17 +3584,17 @@ void __56__HMMTRStorage__syncSetDataSourceValuesWithError_block___block_invoke_1
   v26[1] = 3221225472;
   v26[2] = __47__HMMTRStorage__syncSetDataSourceValue_forKey___block_invoke;
   v26[3] = &unk_2786F0CF0;
-  v26[4] = v9;
-  v12 = v7;
+  v26[4] = selfCopy;
+  v12 = keyCopy;
   v27 = v12;
-  v13 = v6;
+  v13 = valueCopy;
   v28 = v13;
-  v14 = [(HMMTRStorage *)v9 _syncSetDataSourceValuesWithError:&v29 block:v26];
+  v14 = [(HMMTRStorage *)selfCopy _syncSetDataSourceValuesWithError:&v29 block:v26];
   v15 = v29;
   if (v14)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v9;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -3613,7 +3613,7 @@ void __56__HMMTRStorage__syncSetDataSourceValuesWithError_block___block_invoke_1
   {
 
     v20 = objc_autoreleasePoolPush();
-    v21 = v9;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -3691,13 +3691,13 @@ uint64_t __47__HMMTRStorage__syncSetDataSourceValue_forKey___block_invoke(uint64
 
 - (void)clearStaleItems
 {
-  v3 = [(HMMTRStorage *)self workQueue];
+  workQueue = [(HMMTRStorage *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__HMMTRStorage_clearStaleItems__block_invoke;
   block[3] = &unk_2786F0CA8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __31__HMMTRStorage_clearStaleItems__block_invoke(uint64_t a1)
@@ -3766,13 +3766,13 @@ void __31__HMMTRStorage_clearStaleItems__block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setPreferencesValueForKey:(id)a3 value:(id)a4
+- (void)_setPreferencesValueForKey:(id)key value:(id)value
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -3780,37 +3780,37 @@ void __31__HMMTRStorage_clearStaleItems__block_invoke(uint64_t a1)
     v13 = 138543618;
     v14 = v11;
     v15 = 2112;
-    v16 = v6;
+    v16 = keyCopy;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Setting preferences value for key: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  CFPreferencesSetAppValue(v6, v7, *MEMORY[0x277CBF028]);
+  CFPreferencesSetAppValue(keyCopy, valueCopy, *MEMORY[0x277CBF028]);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_preferencesValueForKey:(id)a3
+- (id)_preferencesValueForKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, *MEMORY[0x277CBF028]);
+  v3 = CFPreferencesCopyAppValue(key, *MEMORY[0x277CBF028]);
 
   return v3;
 }
 
 - (BOOL)isResidentDevice
 {
-  v2 = [(HMMTRStorage *)self dataSource];
-  v3 = [v2 currentFabricUUID];
-  v4 = v3 != 0;
+  dataSource = [(HMMTRStorage *)self dataSource];
+  currentFabricUUID = [dataSource currentFabricUUID];
+  v4 = currentFabricUUID != 0;
 
   return v4;
 }
 
-- (HMMTRStorage)initWithQueue:(id)a3 dataSource:(id)a4 systemCommissionerFabric:(BOOL)a5 fabricUUID:(id)a6 sharedAdmin:(BOOL)a7
+- (HMMTRStorage)initWithQueue:(id)queue dataSource:(id)source systemCommissionerFabric:(BOOL)fabric fabricUUID:(id)d sharedAdmin:(BOOL)admin
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  queueCopy = queue;
+  sourceCopy = source;
+  dCopy = d;
   v30.receiver = self;
   v30.super_class = HMMTRStorage;
   v16 = [(HMMTRStorage *)&v30 init];
@@ -3821,30 +3821,30 @@ void __31__HMMTRStorage_clearStaleItems__block_invoke(uint64_t a1)
     v16->_keyValueStoreUpdateQueue = v17;
 
     [(NSOperationQueue *)v16->_keyValueStoreUpdateQueue setMaxConcurrentOperationCount:1];
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     localStorage = v16->_localStorage;
-    v16->_localStorage = v19;
+    v16->_localStorage = dictionary;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     inMemoryStorage = v16->_inMemoryStorage;
-    v16->_inMemoryStorage = v21;
+    v16->_inMemoryStorage = dictionary2;
 
     v23 = objc_alloc_init(MEMORY[0x277CD55A8]);
     systemCommissionerKeyValueStore = v16->_systemCommissionerKeyValueStore;
     v16->_systemCommissionerKeyValueStore = v23;
 
-    objc_storeStrong(&v16->_workQueue, a3);
-    v16->_sharedAdmin = a7;
-    objc_storeWeak(&v16->_dataSource, v14);
-    v16->_systemCommissionerFabric = a5;
-    objc_storeStrong(&v16->_fabricUUID, a6);
-    if (v15)
+    objc_storeStrong(&v16->_workQueue, queue);
+    v16->_sharedAdmin = admin;
+    objc_storeWeak(&v16->_dataSource, sourceCopy);
+    v16->_systemCommissionerFabric = fabric;
+    objc_storeStrong(&v16->_fabricUUID, d);
+    if (dCopy)
     {
-      v25 = [v14 fabricIDFromFabricUUID:v15];
+      v25 = [sourceCopy fabricIDFromFabricUUID:dCopy];
       fabricID = v16->_fabricID;
       v16->_fabricID = v25;
 
-      v27 = [v14 storageDataSourceForFabricUUID:v15];
+      v27 = [sourceCopy storageDataSourceForFabricUUID:dCopy];
       fabricDataSource = v16->_fabricDataSource;
       v16->_fabricDataSource = v27;
     }
@@ -3853,11 +3853,11 @@ void __31__HMMTRStorage_clearStaleItems__block_invoke(uint64_t a1)
   return v16;
 }
 
-+ (BOOL)didUpdateMatterItems:(id)a3 oldStorage:(id)a4
++ (BOOL)didUpdateMatterItems:(id)items oldStorage:(id)storage
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  storageCopy = storage;
   if (isFeatureMatterLocalFabricConfigEnabled())
   {
     LOBYTE(v7) = 0;
@@ -3869,8 +3869,8 @@ void __31__HMMTRStorage_clearStaleItems__block_invoke(uint64_t a1)
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [v5 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    allKeys = [itemsCopy allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v9)
     {
       v10 = v9;
@@ -3881,14 +3881,14 @@ void __31__HMMTRStorage_clearStaleItems__block_invoke(uint64_t a1)
         {
           if (*v30 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v29 + 1) + 8 * i);
           if (![HMMTRStorage isPluginKey:v13]&& ![HMMTRStorage isMatterKey:v13])
           {
-            v14 = [v5 objectForKeyedSubscript:v13];
-            v15 = [v6 objectForKeyedSubscript:v13];
+            v14 = [itemsCopy objectForKeyedSubscript:v13];
+            v15 = [storageCopy objectForKeyedSubscript:v13];
             if (![v14 isEqual:v15])
             {
 LABEL_24:
@@ -3899,7 +3899,7 @@ LABEL_24:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
         if (v10)
         {
           continue;
@@ -3910,14 +3910,14 @@ LABEL_24:
     }
 
     v16 = MEMORY[0x277CBEB58];
-    v17 = [v5 allKeys];
-    v8 = [v16 setWithArray:v17];
+    allKeys2 = [itemsCopy allKeys];
+    allKeys = [v16 setWithArray:allKeys2];
 
     v18 = MEMORY[0x277CBEB58];
-    v19 = [v6 allKeys];
-    v20 = [v18 setWithArray:v19];
+    allKeys3 = [storageCopy allKeys];
+    v20 = [v18 setWithArray:allKeys3];
 
-    [v20 minusSet:v8];
+    [v20 minusSet:allKeys];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -4009,38 +4009,38 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
   return v2;
 }
 
-+ (BOOL)checkAndUpdateExpiryOfCertificate:(id)a3 keyPair:(id)a4 newCertificate:(id *)a5
++ (BOOL)checkAndUpdateExpiryOfCertificate:(id)certificate keyPair:(id)pair newCertificate:(id *)newCertificate
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([MEMORY[0x277CD5230] keypair:v9 matchesCertificate:v8])
+  certificateCopy = certificate;
+  pairCopy = pair;
+  if ([MEMORY[0x277CD5230] keypair:pairCopy matchesCertificate:certificateCopy])
   {
-    v10 = [MEMORY[0x277CD5230] convertX509Certificate:v8];
+    v10 = [MEMORY[0x277CD5230] convertX509Certificate:certificateCopy];
     v11 = [objc_alloc(MEMORY[0x277CD5228]) initWithTLVBytes:v10];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 notAfter];
-      v14 = [MEMORY[0x277CBEAA8] distantFuture];
-      v15 = [v13 isEqualToDate:v14];
+      notAfter = [v11 notAfter];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v15 = [notAfter isEqualToDate:distantFuture];
 
       if (v15)
       {
         v16 = v12;
         v17 = objc_autoreleasePoolPush();
-        v18 = a1;
+        selfCopy = self;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           v20 = HMFGetLogIdentifier();
-          v21 = [v12 notAfter];
+          notAfter2 = [v12 notAfter];
           [MEMORY[0x277CBEAA8] distantFuture];
           v23 = v22 = v10;
           *buf = 138543874;
           v60 = v20;
           v61 = 2112;
-          v62 = v21;
+          v62 = notAfter2;
           v63 = 2112;
           v64 = v23;
           _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_INFO, "%{public}@Certificate expires in distant future. No update needed %@ vs %@", buf, 0x20u);
@@ -4057,27 +4057,27 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
       {
         v56 = v10;
         v33 = objc_alloc(MEMORY[0x277CCA970]);
-        v34 = [v12 notBefore];
-        v35 = [MEMORY[0x277CBEAA8] distantFuture];
-        v57 = a5;
-        v36 = [v33 initWithStartDate:v34 endDate:v35];
+        notBefore = [v12 notBefore];
+        distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+        newCertificateCopy = newCertificate;
+        v36 = [v33 initWithStartDate:notBefore endDate:distantFuture2];
 
         v37 = MEMORY[0x277CD5230];
-        v38 = [v12 issuer];
-        v39 = [v38 rootCACertificateID];
+        issuer = [v12 issuer];
+        rootCACertificateID = [issuer rootCACertificateID];
         v55 = v12;
-        v40 = [v12 issuer];
-        v41 = [v40 fabricID];
+        issuer2 = [v12 issuer];
+        fabricID = [issuer2 fabricID];
         v58 = 0;
-        v42 = [v37 createRootCertificate:v9 issuerID:v39 fabricID:v41 validityPeriod:v36 error:&v58];
+        v42 = [v37 createRootCertificate:pairCopy issuerID:rootCACertificateID fabricID:fabricID validityPeriod:v36 error:&v58];
         v54 = v58;
         v43 = v42;
-        *v57 = v42;
+        *newCertificateCopy = v42;
 
-        v44 = *v57;
-        v24 = *v57 != 0;
+        v44 = *newCertificateCopy;
+        v24 = *newCertificateCopy != 0;
         v45 = objc_autoreleasePoolPush();
-        v46 = a1;
+        selfCopy2 = self;
         v47 = HMFGetOSLogHandle();
         v48 = v47;
         if (v44)
@@ -4093,7 +4093,7 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
           }
 
           objc_autoreleasePoolPop(v45);
-          [MEMORY[0x277CD5230] printX509Certificate:*v57];
+          [MEMORY[0x277CD5230] printX509Certificate:*newCertificateCopy];
           v50 = v54;
         }
 
@@ -4122,9 +4122,9 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
 
     else
     {
-      [MEMORY[0x277CD5230] printX509Certificate:v8];
+      [MEMORY[0x277CD5230] printX509Certificate:certificateCopy];
       v29 = objc_autoreleasePoolPush();
-      v30 = a1;
+      selfCopy3 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -4141,9 +4141,9 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
 
   else
   {
-    [MEMORY[0x277CD5230] printX509Certificate:v8];
+    [MEMORY[0x277CD5230] printX509Certificate:certificateCopy];
     v25 = objc_autoreleasePoolPush();
-    v26 = a1;
+    selfCopy4 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -4151,7 +4151,7 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
       *buf = 138543618;
       v60 = v28;
       v61 = 2112;
-      v62 = v9;
+      v62 = pairCopy;
       _os_log_impl(&dword_22AEAE000, v27, OS_LOG_TYPE_ERROR, "%{public}@Certificate doesn't match key pair %@", buf, 0x16u);
     }
 
@@ -4163,18 +4163,18 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
   return v24;
 }
 
-+ (unsigned)knownFabricInStorage:(id)a3 fabricID:(id)a4 keyPair:(id)a5 controllerNodeID:(id *)a6 rootCertificate:(id *)a7
++ (unsigned)knownFabricInStorage:(id)storage fabricID:(id)d keyPair:(id)pair controllerNodeID:(id *)iD rootCertificate:(id *)certificate
 {
   v87 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v65 = a4;
-  v70 = a5;
+  storageCopy = storage;
+  dCopy = d;
+  pairCopy = pair;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v10 = [v9 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v76 objects:v86 count:16];
+  allKeys = [storageCopy allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v76 objects:v86 count:16];
   if (!v11)
   {
     goto LABEL_53;
@@ -4182,8 +4182,8 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
 
   v12 = v11;
   v13 = *v77;
-  v67 = v9;
-  v72 = v10;
+  v67 = storageCopy;
+  v72 = allKeys;
   v74 = *v77;
   do
   {
@@ -4191,7 +4191,7 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
     {
       if (*v77 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allKeys);
       }
 
       v15 = *(*(&v76 + 1) + 8 * i);
@@ -4222,7 +4222,7 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
           _HMFPreconditionFailure();
         }
 
-        v21 = [v9 objectForKeyedSubscript:v15];
+        v21 = [storageCopy objectForKeyedSubscript:v15];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -4239,7 +4239,7 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
         if (!v23 || (v24 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v23 options:0]) == 0)
         {
           v37 = objc_autoreleasePoolPush();
-          v38 = a1;
+          selfCopy = self;
           v39 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
           {
@@ -4252,7 +4252,7 @@ uint64_t __27__HMMTRStorage_logCategory__block_invoke()
           }
 
           objc_autoreleasePoolPop(v37);
-          v10 = v72;
+          allKeys = v72;
 LABEL_38:
 
           v13 = v74;
@@ -4261,10 +4261,10 @@ LABEL_38:
 
         v25 = v24;
         v71 = [MEMORY[0x277CD5230] convertMatterCertificate:v24];
-        if ([MEMORY[0x277CD5230] keypair:v70 matchesCertificate:?])
+        if ([MEMORY[0x277CD5230] keypair:pairCopy matchesCertificate:?])
         {
           v69 = [MEMORY[0x277CCACA8] stringWithFormat:@"f/%x/n", v75];
-          v26 = [v9 objectForKeyedSubscript:?];
+          v26 = [storageCopy objectForKeyedSubscript:?];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -4283,20 +4283,20 @@ LABEL_38:
           {
             v63 = v29;
             v66 = [objc_alloc(MEMORY[0x277CD5228]) initWithTLVBytes:v29];
-            v30 = [v66 subject];
-            v31 = [v30 fabricID];
+            subject = [v66 subject];
+            fabricID = [subject fabricID];
 
-            v64 = v31;
-            v62 = [v31 isEqual:v65];
+            v64 = fabricID;
+            v62 = [fabricID isEqual:dCopy];
             if (v62)
             {
-              if (a6)
+              if (iD)
               {
-                v32 = [v66 subject];
-                v60 = [v32 nodeID];
+                subject2 = [v66 subject];
+                nodeID = [subject2 nodeID];
 
                 context = objc_autoreleasePoolPush();
-                v33 = a1;
+                selfCopy2 = self;
                 v34 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
                 {
@@ -4304,24 +4304,24 @@ LABEL_38:
                   *buf = 138544130;
                   v81 = v35;
                   v82 = 2112;
-                  *v83 = v65;
+                  *v83 = dCopy;
                   *&v83[8] = 1024;
                   *&v83[10] = v75;
                   v84 = 2112;
-                  v85 = v60;
+                  v85 = nodeID;
                   _os_log_impl(&dword_22AEAE000, v34, OS_LOG_TYPE_DEBUG, "%{public}@Retrieved root cert for fabric ID %@ with fabric index 0x%x. Controller node ID is %@.", buf, 0x26u);
                 }
 
                 objc_autoreleasePoolPop(context);
-                v36 = v60;
-                *a6 = v36;
+                v36 = nodeID;
+                *iD = v36;
 
-                v10 = v72;
+                allKeys = v72;
               }
 
-              if (a7)
+              if (certificate)
               {
-                *a7 = v71;
+                *certificate = v71;
               }
 
               v59 = v75;
@@ -4330,7 +4330,7 @@ LABEL_38:
             else
             {
               v50 = objc_autoreleasePoolPush();
-              v51 = a1;
+              selfCopy3 = self;
               v52 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
               {
@@ -4343,14 +4343,14 @@ LABEL_38:
                 *&v83[4] = 2112;
                 *&v83[6] = v64;
                 v84 = 2112;
-                v85 = v65;
+                v85 = dCopy;
                 _os_log_impl(&dword_22AEAE000, v52, OS_LOG_TYPE_DEBUG, "%{public}@f/%x/n fabric ID %@ doesn't match fabric ID %@", buf, 0x26u);
 
                 v50 = contexta;
               }
 
               objc_autoreleasePoolPop(v50);
-              v10 = v72;
+              allKeys = v72;
             }
 
             v45 = v62 ^ 1;
@@ -4359,7 +4359,7 @@ LABEL_38:
           else
           {
             v46 = objc_autoreleasePoolPush();
-            v47 = a1;
+            selfCopy4 = self;
             v48 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
             {
@@ -4375,15 +4375,15 @@ LABEL_38:
 
             objc_autoreleasePoolPop(v46);
             v45 = 1;
-            v9 = v67;
-            v10 = v72;
+            storageCopy = v67;
+            allKeys = v72;
           }
         }
 
         else
         {
           v41 = objc_autoreleasePoolPush();
-          v42 = a1;
+          selfCopy5 = self;
           v43 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
           {
@@ -4393,14 +4393,14 @@ LABEL_38:
             v82 = 1024;
             *v83 = v75;
             *&v83[4] = 2112;
-            *&v83[6] = v70;
+            *&v83[6] = pairCopy;
             _os_log_impl(&dword_22AEAE000, v43, OS_LOG_TYPE_DEBUG, "%{public}@f/%x/r doesn't match system commissioner keypair %@", buf, 0x1Cu);
           }
 
           objc_autoreleasePoolPop(v41);
           v45 = 1;
-          v9 = v67;
-          v10 = v72;
+          storageCopy = v67;
+          allKeys = v72;
         }
 
         v13 = v74;
@@ -4411,7 +4411,7 @@ LABEL_38:
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v76 objects:v86 count:16];
+    v12 = [allKeys countByEnumeratingWithState:&v76 objects:v86 count:16];
   }
 
   while (v12);

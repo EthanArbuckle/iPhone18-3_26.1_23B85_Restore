@@ -39,7 +39,7 @@
         *&buf[8] = 3221225472;
         *&buf[16] = sub_1003EB2A0;
         v131 = &unk_100524748;
-        v132 = self;
+        selfCopy2 = self;
         [v11 modifyUsingTransaction:buf];
       }
     }
@@ -63,9 +63,9 @@
   }
 
   v13 = sub_1003BBF50();
-  v14 = [v13 isHRNMode];
+  isHRNMode = [v13 isHRNMode];
 
-  if (v14)
+  if (isHRNMode)
   {
     v15 = sub_10023E644(self->_install, @"client_id");
     install = self->_install;
@@ -80,7 +80,7 @@
 
     if ([@"dmd" isEqualToString:v15])
     {
-      LOBYTE(v14) = 1;
+      LOBYTE(isHRNMode) = 1;
     }
 
     else
@@ -88,11 +88,11 @@
       if (!os_variant_has_internal_content())
       {
 LABEL_25:
-        LOBYTE(v14) = 0;
+        LOBYTE(isHRNMode) = 0;
         goto LABEL_26;
       }
 
-      LOBYTE(v14) = [@"asclient" isEqualToString:v15];
+      LOBYTE(isHRNMode) = [@"asclient" isEqualToString:v15];
     }
 
 LABEL_26:
@@ -100,7 +100,7 @@ LABEL_26:
 
   v19 = sub_10023E604(self->_package, @"archive_type");
   v20 = self->_install;
-  if ((!v20 || (sub_10023E604(v20, @"source_type") == 0) | v14 & 1) && v19 <= 1)
+  if ((!v20 || (sub_10023E604(v20, @"source_type") == 0) | isHRNMode & 1) && v19 <= 1)
   {
     v21 = [ASDBundle alloc];
     v22 = sub_10040908C(self->_install);
@@ -146,9 +146,9 @@ LABEL_26:
     else
     {
       v33 = sub_1003BBF50();
-      v34 = [v33 isHRNMode];
+      isHRNMode2 = [v33 isHRNMode];
 
-      if (v34)
+      if (isHRNMode2)
       {
 LABEL_50:
 
@@ -167,11 +167,11 @@ LABEL_54:
 
       v30 = sub_1001F1F30([AppReceiptTask alloc], v25);
       v36 = +[ACAccountStore ams_sharedAccountStore];
-      v37 = [v36 ams_activeiTunesAccount];
-      v39 = v37;
+      ams_activeiTunesAccount = [v36 ams_activeiTunesAccount];
+      v39 = ams_activeiTunesAccount;
       if (v30)
       {
-        objc_setProperty_nonatomic_copy(v30, v38, v37, 58);
+        objc_setProperty_nonatomic_copy(v30, v38, ams_activeiTunesAccount, 58);
 
         *(v30 + 50) = 1;
       }
@@ -235,10 +235,10 @@ LABEL_55:
 
     if (v54)
     {
-      v55 = [v54 firstObject];
-      v56 = [v55 isEligibleForGamesApp];
+      firstObject = [v54 firstObject];
+      isEligibleForGamesApp = [firstObject isEligibleForGamesApp];
 
-      if (v56)
+      if (isEligibleForGamesApp)
       {
         v57 = sub_100408EB0(&self->_install->super.super.isa);
         v58 = ASDLogHandleForCategory();
@@ -260,7 +260,7 @@ LABEL_55:
           *&buf[8] = 3221225472;
           *&buf[16] = sub_1003EB9AC;
           v131 = &unk_10051E318;
-          v132 = &v134;
+          selfCopy2 = &v134;
           sub_1003EB9AC(buf);
           v59 = *(v135 + 24);
         }
@@ -524,7 +524,7 @@ LABEL_103:
       *&buf[8] = 3221225472;
       *&buf[16] = sub_1003EB3D8;
       v131 = &unk_1005216F0;
-      v132 = self;
+      selfCopy2 = self;
       v133 = v108;
       [v112 setDefaultWebBrowserToApplicationRecord:v133 completionHandler:buf];
     }
@@ -542,7 +542,7 @@ LABEL_103:
   }
 
   v113 = sub_10023E51C(self->_install, @"metrics_install_type");
-  v114 = [v113 unsignedCharValue];
+  unsignedCharValue = [v113 unsignedCharValue];
 
   v115 = sub_10023E0F8(self->_install, @"bundle_id");
   if (v115)
@@ -550,15 +550,15 @@ LABEL_103:
     v116 = sub_1002B5560();
     *buf = v115;
     v117 = [NSArray arrayWithObjects:buf count:1];
-    sub_1002B8950(v116, v117, v114, 1);
+    sub_1002B8950(v116, v117, unsignedCharValue, 1);
   }
 
   v118 = self->_install;
   if (v118 && sub_10023E604(v118, @"source_type") == 1)
   {
     v119 = objc_alloc_init(AMSUniversalLinks);
-    v120 = [v119 updateUniversalLinks];
-    [v120 addFinishBlock:&stru_1005280F0];
+    updateUniversalLinks = [v119 updateUniversalLinks];
+    [updateUniversalLinks addFinishBlock:&stru_1005280F0];
   }
 
   v121 = sub_10040908C(self->_install);

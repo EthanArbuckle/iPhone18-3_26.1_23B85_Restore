@@ -1,43 +1,43 @@
 @interface TopBannerView
 - (id)_initialConstraints;
-- (id)initAllowingBlurredForButton:(BOOL)a3;
+- (id)initAllowingBlurredForButton:(BOOL)button;
 - (void)_commonInit;
 - (void)_createSubviews;
 - (void)_updateItemViews;
-- (void)setItems:(id)a3;
-- (void)setMaximumHeight:(double)a3;
+- (void)setItems:(id)items;
+- (void)setMaximumHeight:(double)height;
 @end
 
 @implementation TopBannerView
 
-- (void)setMaximumHeight:(double)a3
+- (void)setMaximumHeight:(double)height
 {
   [(NSLayoutConstraint *)self->_maximumHeightConstraint constant];
-  if (v5 != a3)
+  if (v5 != height)
   {
-    [(NSLayoutConstraint *)self->_maximumHeightConstraint setConstant:a3];
+    [(NSLayoutConstraint *)self->_maximumHeightConstraint setConstant:height];
     maximumHeightConstraint = self->_maximumHeightConstraint;
 
-    [(NSLayoutConstraint *)maximumHeightConstraint setActive:a3 != -1.0];
+    [(NSLayoutConstraint *)maximumHeightConstraint setActive:height != -1.0];
   }
 }
 
 - (void)_updateItemViews
 {
-  v3 = [(TopBannerView *)self items];
-  v4 = [v3 count];
-  v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v6 = [v5 count];
+  items = [(TopBannerView *)self items];
+  v4 = [items count];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v6 = [arrangedSubviews count];
 
   if (v4 - v6 < 0)
   {
     v7 = v6 - v4;
     do
     {
-      v8 = [(UIStackView *)self->_stackView arrangedSubviews];
-      v9 = [v8 lastObject];
+      arrangedSubviews2 = [(UIStackView *)self->_stackView arrangedSubviews];
+      lastObject = [arrangedSubviews2 lastObject];
 
-      [v9 removeFromSuperview];
+      [lastObject removeFromSuperview];
       --v7;
     }
 
@@ -71,35 +71,35 @@
         }
 
         v19 = *(*(&v31 + 1) + 8 * v17);
-        v20 = [(UIStackView *)self->_stackView arrangedSubviews];
-        v21 = [v20 count];
+        arrangedSubviews3 = [(UIStackView *)self->_stackView arrangedSubviews];
+        v21 = [arrangedSubviews3 count];
 
         if (v13 >= v21)
         {
-          v23 = [[TopBannerItemView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-          [(TopBannerItemView *)v23 setItem:v19];
-          [(UIStackView *)self->_stackView addArrangedSubview:v23];
+          height = [[TopBannerItemView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+          [(TopBannerItemView *)height setItem:v19];
+          [(UIStackView *)self->_stackView addArrangedSubview:height];
         }
 
         else
         {
-          v22 = [(UIStackView *)self->_stackView arrangedSubviews];
-          v23 = [v22 objectAtIndexedSubscript:v13];
+          arrangedSubviews4 = [(UIStackView *)self->_stackView arrangedSubviews];
+          height = [arrangedSubviews4 objectAtIndexedSubscript:v13];
 
-          [(TopBannerItemView *)v23 setItem:v19];
+          [(TopBannerItemView *)height setItem:v19];
         }
 
-        v24 = [(TopBannerView *)self items];
-        v25 = v13 != [v24 count] - 1;
+        items2 = [(TopBannerView *)self items];
+        v25 = v13 != [items2 count] - 1;
 
-        [(TopBannerItemView *)v23 setHairlineVisible:v25];
+        [(TopBannerItemView *)height setHairlineVisible:v25];
         v12 = 1;
-        [(TopBannerItemView *)v23 setFirstItemWithIcon:(v18 & 1) == 0];
-        v26 = [v19 artwork];
-        if (!v26)
+        [(TopBannerItemView *)height setFirstItemWithIcon:(v18 & 1) == 0];
+        artwork = [v19 artwork];
+        if (!artwork)
         {
-          v27 = [v19 artworkURL];
-          v28 = v27 != 0;
+          artworkURL = [v19 artworkURL];
+          v28 = artworkURL != 0;
 
           v12 = v28 | v18;
         }
@@ -120,14 +120,14 @@
   [(TopBannerView *)self setNeedsLayout];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_items != v4)
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (self->_items != itemsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqualToArray:?];
+    v9 = itemsCopy;
+    v6 = [(NSArray *)itemsCopy isEqualToArray:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -143,21 +143,21 @@
 
 - (id)_initialConstraints
 {
-  v16 = [(OverflowView *)self->_overflowView topAnchor];
-  v15 = [(TopBannerView *)self topAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  topAnchor = [(OverflowView *)self->_overflowView topAnchor];
+  topAnchor2 = [(TopBannerView *)self topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v17[0] = v14;
-  v3 = [(OverflowView *)self->_overflowView trailingAnchor];
-  v4 = [(TopBannerView *)self trailingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  trailingAnchor = [(OverflowView *)self->_overflowView trailingAnchor];
+  trailingAnchor2 = [(TopBannerView *)self trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v17[1] = v5;
-  v6 = [(OverflowView *)self->_overflowView leadingAnchor];
-  v7 = [(TopBannerView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  leadingAnchor = [(OverflowView *)self->_overflowView leadingAnchor];
+  leadingAnchor2 = [(TopBannerView *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v17[2] = v8;
-  v9 = [(OverflowView *)self->_overflowView bottomAnchor];
-  v10 = [(TopBannerView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(OverflowView *)self->_overflowView bottomAnchor];
+  bottomAnchor2 = [(TopBannerView *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v17[3] = v11;
   v12 = [NSArray arrayWithObjects:v17 count:4];
 
@@ -180,28 +180,28 @@
   self->_overflowView = v5;
 
   [(OverflowView *)self->_overflowView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(CardView *)self contentView];
-  [v7 addSubview:self->_overflowView];
+  contentView = [(CardView *)self contentView];
+  [contentView addSubview:self->_overflowView];
 }
 
 - (void)_commonInit
 {
   [(CardView *)self setLayoutStyle:6];
   [(TopBannerView *)self _createSubviews];
-  v3 = [(TopBannerView *)self _initialConstraints];
-  [NSLayoutConstraint activateConstraints:v3];
+  _initialConstraints = [(TopBannerView *)self _initialConstraints];
+  [NSLayoutConstraint activateConstraints:_initialConstraints];
 
-  v6 = [(OverflowView *)self->_overflowView heightAnchor];
-  v4 = [v6 constraintLessThanOrEqualToConstant:-1.0];
+  heightAnchor = [(OverflowView *)self->_overflowView heightAnchor];
+  v4 = [heightAnchor constraintLessThanOrEqualToConstant:-1.0];
   maximumHeightConstraint = self->_maximumHeightConstraint;
   self->_maximumHeightConstraint = v4;
 }
 
-- (id)initAllowingBlurredForButton:(BOOL)a3
+- (id)initAllowingBlurredForButton:(BOOL)button
 {
   v6.receiver = self;
   v6.super_class = TopBannerView;
-  v3 = [(CardView *)&v6 initAllowingBlurredForButton:a3 buttonBackgroundType:0];
+  v3 = [(CardView *)&v6 initAllowingBlurredForButton:button buttonBackgroundType:0];
   v4 = v3;
   if (v3)
   {

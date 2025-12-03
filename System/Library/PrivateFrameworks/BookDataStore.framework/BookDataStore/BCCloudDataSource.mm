@@ -2,19 +2,19 @@
 + (id)_documentsDirectoryURL;
 + (id)_sharedLegacyRootDirectoryURL;
 + (id)_sharedRootDirectoryURL;
-+ (void)deleteCloudDataWithCompletion:(id)a3;
-- (BCCloudDataSource)initWithManagedObjectModel:(id)a3;
-- (BCCloudDataSource)initWithManagedObjectModel:(id)a3 nameOnDisk:(id)a4 delegate:(id)a5;
-- (BCCloudDataSource)initWithManagedObjectModel:(id)a3 rootDirectoryURL:(id)a4 legacyRootDirectoryURL:(id)a5 nameOnDisk:(id)a6 delegate:(id)a7;
++ (void)deleteCloudDataWithCompletion:(id)completion;
+- (BCCloudDataSource)initWithManagedObjectModel:(id)model;
+- (BCCloudDataSource)initWithManagedObjectModel:(id)model nameOnDisk:(id)disk delegate:(id)delegate;
+- (BCCloudDataSource)initWithManagedObjectModel:(id)model rootDirectoryURL:(id)l legacyRootDirectoryURL:(id)rL nameOnDisk:(id)disk delegate:(id)delegate;
 - (BCCloudDataSourceDelegate)delegate;
-- (BOOL)_addStoreAtURL:(id)a3;
-- (BOOL)_deleteDirectoryForStoreAtURL:(id)a3;
-- (BOOL)_directoryExistsForStoreAtURL:(id)a3;
-- (BOOL)_setupPersistentStoreWithRootDirectoryURL:(id)a3 legacyRootDirectoryURL:(id)a4 nameOnDisk:(id)a5;
+- (BOOL)_addStoreAtURL:(id)l;
+- (BOOL)_deleteDirectoryForStoreAtURL:(id)l;
+- (BOOL)_directoryExistsForStoreAtURL:(id)l;
+- (BOOL)_setupPersistentStoreWithRootDirectoryURL:(id)l legacyRootDirectoryURL:(id)rL nameOnDisk:(id)disk;
 - (id)_persistentStoreOptions;
-- (void)_createDirectoryForStoreAtURL:(id)a3;
-- (void)_logIf:(BOOL)a3 error:(id)a4 operation:(id)a5;
-- (void)_migrateAndDestroyStoreAtLegacyURL:(id)a3 toModernURL:(id)a4;
+- (void)_createDirectoryForStoreAtURL:(id)l;
+- (void)_logIf:(BOOL)if error:(id)error operation:(id)operation;
+- (void)_migrateAndDestroyStoreAtLegacyURL:(id)l toModernURL:(id)rL;
 - (void)_setupManagedObjectContext;
 @end
 
@@ -22,8 +22,8 @@
 
 + (id)_sharedRootDirectoryURL
 {
-  v2 = [a1 _documentsDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"BCCloudData-iBooks" isDirectory:1];
+  _documentsDirectoryURL = [self _documentsDirectoryURL];
+  v3 = [_documentsDirectoryURL URLByAppendingPathComponent:@"BCCloudData-iBooks" isDirectory:1];
 
   return v3;
 }
@@ -39,8 +39,8 @@
 
 + (id)_sharedLegacyRootDirectoryURL
 {
-  v2 = [a1 _documentsDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"BCCloudAsset-iBooks" isDirectory:1];
+  _documentsDirectoryURL = [self _documentsDirectoryURL];
+  v3 = [_documentsDirectoryURL URLByAppendingPathComponent:@"BCCloudAsset-iBooks" isDirectory:1];
 
   return v3;
 }
@@ -73,22 +73,22 @@
   MEMORY[0x1EEE66B58](v5, sel_setUndoManager_);
 }
 
-- (BCCloudDataSource)initWithManagedObjectModel:(id)a3
+- (BCCloudDataSource)initWithManagedObjectModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v13.receiver = self;
   v13.super_class = BCCloudDataSource;
   v5 = [(BCCloudDataSource *)&v13 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v4];
+    v6 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:modelCopy];
     persistentStoreCoordinator = v5->_persistentStoreCoordinator;
     v5->_persistentStoreCoordinator = v6;
 
     v8 = v5->_persistentStoreCoordinator;
     v9 = *MEMORY[0x1E695D310];
-    v10 = [(BCCloudDataSource *)v5 _persistentStoreOptions];
-    v11 = [(NSPersistentStoreCoordinator *)v8 addPersistentStoreWithType:v9 configuration:0 URL:0 options:v10 error:0];
+    _persistentStoreOptions = [(BCCloudDataSource *)v5 _persistentStoreOptions];
+    v11 = [(NSPersistentStoreCoordinator *)v8 addPersistentStoreWithType:v9 configuration:0 URL:0 options:_persistentStoreOptions error:0];
 
     [(BCCloudDataSource *)v5 _setupManagedObjectContext];
   }
@@ -96,37 +96,37 @@
   return v5;
 }
 
-- (BCCloudDataSource)initWithManagedObjectModel:(id)a3 nameOnDisk:(id)a4 delegate:(id)a5
+- (BCCloudDataSource)initWithManagedObjectModel:(id)model nameOnDisk:(id)disk delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  delegateCopy = delegate;
+  diskCopy = disk;
+  modelCopy = model;
   v11 = +[BCCloudDataSource _sharedRootDirectoryURL];
   v12 = +[BCCloudDataSource _sharedLegacyRootDirectoryURL];
-  v13 = [(BCCloudDataSource *)self initWithManagedObjectModel:v10 rootDirectoryURL:v11 legacyRootDirectoryURL:v12 nameOnDisk:v9 delegate:v8];
+  v13 = [(BCCloudDataSource *)self initWithManagedObjectModel:modelCopy rootDirectoryURL:v11 legacyRootDirectoryURL:v12 nameOnDisk:diskCopy delegate:delegateCopy];
 
   return v13;
 }
 
-- (BCCloudDataSource)initWithManagedObjectModel:(id)a3 rootDirectoryURL:(id)a4 legacyRootDirectoryURL:(id)a5 nameOnDisk:(id)a6 delegate:(id)a7
+- (BCCloudDataSource)initWithManagedObjectModel:(id)model rootDirectoryURL:(id)l legacyRootDirectoryURL:(id)rL nameOnDisk:(id)disk delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  modelCopy = model;
+  lCopy = l;
+  rLCopy = rL;
+  diskCopy = disk;
+  delegateCopy = delegate;
   kdebug_trace();
   v24.receiver = self;
   v24.super_class = BCCloudDataSource;
   v17 = [(BCCloudDataSource *)&v24 init];
   if (v17)
   {
-    v18 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v12];
+    v18 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:modelCopy];
     v19 = *(v17 + 2);
     *(v17 + 2) = v18;
 
-    objc_storeWeak(v17 + 3, v16);
-    if ([v17 _setupPersistentStoreWithRootDirectoryURL:v13 legacyRootDirectoryURL:v14 nameOnDisk:v15] && (objc_msgSend(*(v17 + 2), "persistentStores"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "count"), v20, v21))
+    objc_storeWeak(v17 + 3, delegateCopy);
+    if ([v17 _setupPersistentStoreWithRootDirectoryURL:lCopy legacyRootDirectoryURL:rLCopy nameOnDisk:diskCopy] && (objc_msgSend(*(v17 + 2), "persistentStores"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "count"), v20, v21))
     {
       [v17 _setupManagedObjectContext];
     }
@@ -146,52 +146,52 @@
   return v17;
 }
 
-+ (void)deleteCloudDataWithCompletion:(id)a3
++ (void)deleteCloudDataWithCompletion:(id)completion
 {
   v4 = MEMORY[0x1E696AC08];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [a1 _sharedLegacyRootDirectoryURL];
-  [v6 removeItemAtURL:v7 error:0];
+  completionCopy = completion;
+  defaultManager = [v4 defaultManager];
+  _sharedLegacyRootDirectoryURL = [self _sharedLegacyRootDirectoryURL];
+  [defaultManager removeItemAtURL:_sharedLegacyRootDirectoryURL error:0];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [a1 _sharedRootDirectoryURL];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  _sharedRootDirectoryURL = [self _sharedRootDirectoryURL];
   v13 = 0;
-  v10 = [v8 removeItemAtURL:v9 error:&v13];
+  v10 = [defaultManager2 removeItemAtURL:_sharedRootDirectoryURL error:&v13];
   v11 = v13;
 
-  v12 = _Block_copy(v5);
+  v12 = _Block_copy(completionCopy);
   if (v12)
   {
     v12[2](v12, v10, v11);
   }
 }
 
-- (void)_logIf:(BOOL)a3 error:(id)a4 operation:(id)a5
+- (void)_logIf:(BOOL)if error:(id)error operation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v6)
+  ifCopy = if;
+  errorCopy = error;
+  operationCopy = operation;
+  if (ifCopy)
   {
     v9 = BDSCloudKitLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_1E470854C(v8, v7, v9);
+      sub_1E470854C(operationCopy, errorCopy, v9);
     }
   }
 }
 
-- (BOOL)_setupPersistentStoreWithRootDirectoryURL:(id)a3 legacyRootDirectoryURL:(id)a4 nameOnDisk:(id)a5
+- (BOOL)_setupPersistentStoreWithRootDirectoryURL:(id)l legacyRootDirectoryURL:(id)rL nameOnDisk:(id)disk
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 URLByAppendingPathComponent:v9 isDirectory:1];
-  v11 = [v10 URLByAppendingPathComponent:v9 isDirectory:0];
+  rLCopy = rL;
+  diskCopy = disk;
+  v10 = [l URLByAppendingPathComponent:diskCopy isDirectory:1];
+  v11 = [v10 URLByAppendingPathComponent:diskCopy isDirectory:0];
   if (![(BCCloudDataSource *)self _directoryExistsForStoreAtURL:v11])
   {
-    v12 = [v8 URLByAppendingPathComponent:v9];
+    v12 = [rLCopy URLByAppendingPathComponent:diskCopy];
     [(BCCloudDataSource *)self _createDirectoryForStoreAtURL:v11];
     if ([(BCCloudDataSource *)self _directoryExistsForStoreAtURL:v12])
     {
@@ -215,11 +215,11 @@
     goto LABEL_14;
   }
 
-  v14 = [MEMORY[0x1E698F540] books];
-  v15 = [v14 userDefaults];
+  books = [MEMORY[0x1E698F540] books];
+  userDefaults = [books userDefaults];
 
-  v16 = [v15 stringForKey:@"BDSDevelopmentForceAddStoreFailureOnce"];
-  if (![v16 isEqual:v9])
+  v16 = [userDefaults stringForKey:@"BDSDevelopmentForceAddStoreFailureOnce"];
+  if (![v16 isEqual:diskCopy])
   {
 
 LABEL_14:
@@ -232,7 +232,7 @@ LABEL_14:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138543874;
-    v29 = v9;
+    v29 = diskCopy;
     v30 = 2160;
     v31 = 1752392040;
     v32 = 2112;
@@ -240,7 +240,7 @@ LABEL_14:
     _os_log_impl(&dword_1E45E0000, v17, OS_LOG_TYPE_DEFAULT, "_setupPersistentStoreWithRootDirectoryURL -- Forcing store failure once for %{public}@, url: %{mask.hash}@", &v28, 0x20u);
   }
 
-  [v15 removeObjectForKey:@"BDSDevelopmentForceAddStoreFailureOnce"];
+  [userDefaults removeObjectForKey:@"BDSDevelopmentForceAddStoreFailureOnce"];
   v18 = 0;
   v19 = 1;
 LABEL_15:
@@ -277,8 +277,8 @@ LABEL_15:
   if ([(BCCloudDataSource *)self _deleteDirectoryForStoreAtURL:v11])
   {
     [(BCCloudDataSource *)self _createDirectoryForStoreAtURL:v11];
-    v23 = [(BCCloudDataSource *)self delegate];
-    [v23 dataSource:self storeDidReset:v9];
+    delegate = [(BCCloudDataSource *)self delegate];
+    [delegate dataSource:self storeDidReset:diskCopy];
   }
 
   if ([(BCCloudDataSource *)self _addStoreAtURL:v11])
@@ -302,64 +302,64 @@ LABEL_26:
   return v24;
 }
 
-- (BOOL)_directoryExistsForStoreAtURL:(id)a3
+- (BOOL)_directoryExistsForStoreAtURL:(id)l
 {
-  v3 = [a3 URLByDeletingLastPathComponent];
-  v4 = [v3 checkResourceIsReachableAndReturnError:0];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  v4 = [uRLByDeletingLastPathComponent checkResourceIsReachableAndReturnError:0];
 
   return v4;
 }
 
-- (void)_createDirectoryForStoreAtURL:(id)a3
+- (void)_createDirectoryForStoreAtURL:(id)l
 {
   v4 = MEMORY[0x1E696AC08];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v5 URLByDeletingLastPathComponent];
+  lCopy = l;
+  defaultManager = [v4 defaultManager];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
 
   v9 = 0;
-  LODWORD(v5) = [v6 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v9];
+  LODWORD(lCopy) = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v9];
   v8 = v9;
 
-  [(BCCloudDataSource *)self _logIf:v5 ^ 1 error:v8 operation:@"creating directory for store"];
+  [(BCCloudDataSource *)self _logIf:lCopy ^ 1 error:v8 operation:@"creating directory for store"];
 }
 
-- (BOOL)_deleteDirectoryForStoreAtURL:(id)a3
+- (BOOL)_deleteDirectoryForStoreAtURL:(id)l
 {
   v4 = MEMORY[0x1E696AC08];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v5 URLByDeletingLastPathComponent];
+  lCopy = l;
+  defaultManager = [v4 defaultManager];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
 
   v10 = 0;
-  LODWORD(v5) = [v6 removeItemAtURL:v7 error:&v10];
+  LODWORD(lCopy) = [defaultManager removeItemAtURL:uRLByDeletingLastPathComponent error:&v10];
   v8 = v10;
 
-  [(BCCloudDataSource *)self _logIf:v5 ^ 1 error:v8 operation:@"deleting directory for store"];
-  return v5;
+  [(BCCloudDataSource *)self _logIf:lCopy ^ 1 error:v8 operation:@"deleting directory for store"];
+  return lCopy;
 }
 
-- (void)_migrateAndDestroyStoreAtLegacyURL:(id)a3 toModernURL:(id)a4
+- (void)_migrateAndDestroyStoreAtLegacyURL:(id)l toModernURL:(id)rL
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = BDSCloudKitLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v23 = v6;
+    v23 = lCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = rLCopy;
     _os_log_impl(&dword_1E45E0000, v8, OS_LOG_TYPE_INFO, "Migrating legacy cloud data source from %@ to %@", buf, 0x16u);
   }
 
   persistentStoreCoordinator = self->_persistentStoreCoordinator;
-  v10 = [(BCCloudDataSource *)self _persistentStoreOptions];
-  v11 = [(BCCloudDataSource *)self _persistentStoreOptions];
+  _persistentStoreOptions = [(BCCloudDataSource *)self _persistentStoreOptions];
+  _persistentStoreOptions2 = [(BCCloudDataSource *)self _persistentStoreOptions];
   v12 = *MEMORY[0x1E695D4A8];
   v21 = 0;
-  v13 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator replacePersistentStoreAtURL:v7 destinationOptions:v10 withPersistentStoreFromURL:v6 sourceOptions:v11 storeType:v12 error:&v21];
+  v13 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator replacePersistentStoreAtURL:rLCopy destinationOptions:_persistentStoreOptions withPersistentStoreFromURL:lCopy sourceOptions:_persistentStoreOptions2 storeType:v12 error:&v21];
   v14 = v21;
 
   [(BCCloudDataSource *)self _logIf:!v13 error:v14 operation:@"[MIGRATE] migrate legacy store"];
@@ -367,37 +367,37 @@ LABEL_26:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v23 = v6;
+    v23 = lCopy;
     _os_log_impl(&dword_1E45E0000, v15, OS_LOG_TYPE_INFO, "Destroying legacy cloud data source at %@", buf, 0xCu);
   }
 
   v16 = self->_persistentStoreCoordinator;
   v20 = 0;
-  v17 = [(NSPersistentStoreCoordinator *)v16 destroyPersistentStoreAtURL:v6 withType:v12 options:0 error:&v20];
+  v17 = [(NSPersistentStoreCoordinator *)v16 destroyPersistentStoreAtURL:lCopy withType:v12 options:0 error:&v20];
   v18 = v20;
   [(BCCloudDataSource *)self _logIf:!v17 error:v18 operation:@"[MIGRATE] destroy legacy store"];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_addStoreAtURL:(id)a3
+- (BOOL)_addStoreAtURL:(id)l
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
     *buf = 138412290;
-    v21 = v6;
+    v21 = lastPathComponent;
     _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_INFO, "Adding cloud data source persistent store for %@", buf, 0xCu);
   }
 
   persistentStoreCoordinator = self->_persistentStoreCoordinator;
   v8 = *MEMORY[0x1E695D4A8];
-  v9 = [(BCCloudDataSource *)self _persistentStoreOptions];
+  _persistentStoreOptions = [(BCCloudDataSource *)self _persistentStoreOptions];
   v19 = 0;
-  v10 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator addPersistentStoreWithType:v8 configuration:0 URL:v4 options:v9 error:&v19];
+  v10 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator addPersistentStoreWithType:v8 configuration:0 URL:lCopy options:_persistentStoreOptions error:&v19];
   v11 = v19;
 
   if ([v10 isReadOnly])

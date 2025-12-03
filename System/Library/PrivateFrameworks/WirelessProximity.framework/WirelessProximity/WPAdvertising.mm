@@ -1,27 +1,27 @@
 @interface WPAdvertising
-+ (id)puckTypeToString:(unsigned __int8)a3;
-+ (unsigned)puckStringToType:(id)a3;
-- (WPAdvertising)initWithDelegate:(id)a3 queue:(id)a4;
-- (id)parseCompanyData:(id)a3;
-- (void)advertisingStoppedOfType:(unsigned __int8)a3 withError:(id)a4;
-- (void)deregisterService:(id)a3;
++ (id)puckTypeToString:(unsigned __int8)string;
++ (unsigned)puckStringToType:(id)type;
+- (WPAdvertising)initWithDelegate:(id)delegate queue:(id)queue;
+- (id)parseCompanyData:(id)data;
+- (void)advertisingStoppedOfType:(unsigned __int8)type withError:(id)error;
+- (void)deregisterService:(id)service;
 - (void)invalidate;
-- (void)registerService:(id)a3;
-- (void)stateDidChange:(int64_t)a3;
+- (void)registerService:(id)service;
+- (void)stateDidChange:(int64_t)change;
 @end
 
 @implementation WPAdvertising
 
-- (WPAdvertising)initWithDelegate:(id)a3 queue:(id)a4
+- (WPAdvertising)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = WPAdvertising;
-  v8 = [(WPClient *)&v11 initWithQueue:a4 machName:0];
+  v8 = [(WPClient *)&v11 initWithQueue:queue machName:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegate, a3);
+    objc_storeStrong(&v8->_delegate, delegate);
   }
 
   return v9;
@@ -35,9 +35,9 @@
   [(WPClient *)&v3 invalidate];
 }
 
-+ (unsigned)puckStringToType:(id)a3
++ (unsigned)puckStringToType:(id)type
 {
-  if ([a3 isEqualToString:@"WPBeaconTypeCompany"])
+  if ([type isEqualToString:@"WPBeaconTypeCompany"])
   {
     return 2;
   }
@@ -48,23 +48,23 @@
   }
 }
 
-+ (id)puckTypeToString:(unsigned __int8)a3
++ (id)puckTypeToString:(unsigned __int8)string
 {
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"WPBeaconTypeCompany";
   }
 
-  v4 = a3;
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"WPAdvertising.m" lineNumber:79 description:{@"Unknown puck type %ld", v4}];
+  stringCopy = string;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WPAdvertising.m" lineNumber:79 description:{@"Unknown puck type %ld", stringCopy}];
 
   return 0;
 }
 
-- (void)registerService:(id)a3
+- (void)registerService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   if (WPLogInitOnce != -1)
   {
     [WPAdvertising registerService:];
@@ -73,25 +73,25 @@
   v5 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [(WPAdvertising *)v4 registerService:v5, v6, v7, v8, v9, v10, v11];
+    [(WPAdvertising *)serviceCopy registerService:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"WPBeaconType"];
+  v12 = [serviceCopy objectForKeyedSubscript:@"WPBeaconType"];
   v13 = [WPAdvertising puckStringToType:v12];
 
   v14 = [WPAdvertisingRequest requestForClientType:v13];
   if (v13 == 2)
   {
-    v15 = [(WPAdvertising *)self parseCompanyData:v4];
+    v15 = [(WPAdvertising *)self parseCompanyData:serviceCopy];
     [v14 setAdvertisingData:v15];
 
     if (+[WPClient isHomePodOrIOS])
     {
-      v16 = [v4 objectForKeyedSubscript:@"WPBeaconAdvInterval"];
+      v16 = [serviceCopy objectForKeyedSubscript:@"WPBeaconAdvInterval"];
 
       if (v16)
       {
-        v17 = [v4 objectForKeyedSubscript:@"WPBeaconAdvInterval"];
+        v17 = [serviceCopy objectForKeyedSubscript:@"WPBeaconAdvInterval"];
         [v14 setAdvertisingRate:{objc_msgSend(v17, "integerValue")}];
       }
     }
@@ -102,9 +102,9 @@
   [(WPClient *)&v18 startAdvertising:v14];
 }
 
-- (void)deregisterService:(id)a3
+- (void)deregisterService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   if (WPLogInitOnce != -1)
   {
     [WPAdvertising deregisterService:];
@@ -113,10 +113,10 @@
   v5 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [(WPAdvertising *)v4 deregisterService:v5, v6, v7, v8, v9, v10, v11];
+    [(WPAdvertising *)serviceCopy deregisterService:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"WPBeaconType"];
+  v12 = [serviceCopy objectForKeyedSubscript:@"WPBeaconType"];
   v13 = [WPAdvertising puckStringToType:v12];
 
   v14 = [WPAdvertisingRequest requestForClientType:v13];
@@ -125,24 +125,24 @@
   [(WPClient *)&v15 stopAdvertising:v14];
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
   v7.receiver = self;
   v7.super_class = WPAdvertising;
-  [(WPClient *)&v7 stateDidChange:a3];
-  v4 = [(WPAdvertising *)self delegate];
+  [(WPClient *)&v7 stateDidChange:change];
+  delegate = [(WPAdvertising *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WPAdvertising *)self delegate];
-    [v6 advertiserDidUpdateState:self];
+    delegate2 = [(WPAdvertising *)self delegate];
+    [delegate2 advertiserDidUpdateState:self];
   }
 }
 
-- (void)advertisingStoppedOfType:(unsigned __int8)a3 withError:(id)a4
+- (void)advertisingStoppedOfType:(unsigned __int8)type withError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPAdvertising advertisingStoppedOfType:withError:];
@@ -155,14 +155,14 @@
   }
 }
 
-- (id)parseCompanyData:(id)a3
+- (id)parseCompanyData:(id)data
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"WPBeaconTypeCompanyMajor"];
-  v5 = [v3 objectForKeyedSubscript:@"WPBeaconTypeCompanyMinor"];
-  v6 = [v3 objectForKeyedSubscript:@"WPBeaconTX"];
-  v7 = [v3 objectForKeyedSubscript:@"WPBeaconTypeCompanyUUID"];
+  dataCopy = data;
+  v4 = [dataCopy objectForKeyedSubscript:@"WPBeaconTypeCompanyMajor"];
+  v5 = [dataCopy objectForKeyedSubscript:@"WPBeaconTypeCompanyMinor"];
+  v6 = [dataCopy objectForKeyedSubscript:@"WPBeaconTX"];
+  v7 = [dataCopy objectForKeyedSubscript:@"WPBeaconTypeCompanyUUID"];
   v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
   memset(v22, 0, 22);
   [v8 getUUIDBytes:v22];
@@ -187,14 +187,14 @@
     v9 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
     {
-      [(WPAdvertising *)v3 parseCompanyData:v9, v10, v11, v12, v13, v14, v15];
+      [(WPAdvertising *)dataCopy parseCompanyData:v9, v10, v11, v12, v13, v14, v15];
     }
   }
 
   BYTE4(v22[2]) = [v6 integerValue];
   if (+[WPClient isHomePodOrIOS])
   {
-    v16 = [v3 objectForKeyedSubscript:@"WPBeaconTypeCompanyConfig"];
+    v16 = [dataCopy objectForKeyedSubscript:@"WPBeaconTypeCompanyConfig"];
     v17 = v16;
     if (v16)
     {

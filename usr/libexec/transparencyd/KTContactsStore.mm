@@ -1,58 +1,58 @@
 @interface KTContactsStore
-- (BOOL)haveContact:(id)a3 error:(id *)a4;
-- (KTContactsStore)initWithContactStore:(id)a3;
-- (void)fetchAndStoreContactsSyncTokenWithConfigStore:(id)a3;
+- (BOOL)haveContact:(id)contact error:(id *)error;
+- (KTContactsStore)initWithContactStore:(id)store;
+- (void)fetchAndStoreContactsSyncTokenWithConfigStore:(id)store;
 @end
 
 @implementation KTContactsStore
 
-- (KTContactsStore)initWithContactStore:(id)a3
+- (KTContactsStore)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = KTContactsStore;
   v5 = [(KTContactsStore *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(KTContactsStore *)v5 setContactStore:v4];
+    [(KTContactsStore *)v5 setContactStore:storeCopy];
   }
 
   return v6;
 }
 
-- (void)fetchAndStoreContactsSyncTokenWithConfigStore:(id)a3
+- (void)fetchAndStoreContactsSyncTokenWithConfigStore:(id)store
 {
-  v8 = a3;
-  v4 = [(KTContactsStore *)self contactStore];
-  v5 = [v4 currentHistoryToken];
+  storeCopy = store;
+  contactStore = [(KTContactsStore *)self contactStore];
+  currentHistoryToken = [contactStore currentHistoryToken];
 
-  if (v5)
+  if (currentHistoryToken)
   {
-    v6 = [(KTContactsStore *)self contactStore];
-    v7 = [v6 currentHistoryToken];
-    [v8 setSettingsData:@"lastContactSyncData" data:v7];
+    contactStore2 = [(KTContactsStore *)self contactStore];
+    currentHistoryToken2 = [contactStore2 currentHistoryToken];
+    [storeCopy setSettingsData:@"lastContactSyncData" data:currentHistoryToken2];
   }
 }
 
-- (BOOL)haveContact:(id)a3 error:(id *)a4
+- (BOOL)haveContact:(id)contact error:(id *)error
 {
-  v5 = a3;
-  if ([v5 hasPrefix:@"mailto:"])
+  contactCopy = contact;
+  if ([contactCopy hasPrefix:@"mailto:"])
   {
-    v6 = [v5 substringFromIndex:7];
+    v6 = [contactCopy substringFromIndex:7];
     v7 = [CNContact predicateForContactsMatchingEmailAddress:v6];
   }
 
   else
   {
-    if (![v5 hasPrefix:@"tel:"])
+    if (![contactCopy hasPrefix:@"tel:"])
     {
       v13 = 0;
       goto LABEL_7;
     }
 
-    v6 = [v5 substringFromIndex:4];
+    v6 = [contactCopy substringFromIndex:4];
     v8 = [[CNPhoneNumber alloc] initWithStringValue:v6];
     v7 = [CNContact predicateForContactsMatchingPhoneNumber:v8];
   }
@@ -69,13 +69,13 @@
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v12 = [(KTContactsStore *)self contactStore];
+  contactStore = [(KTContactsStore *)self contactStore];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100047E0C;
   v15[3] = &unk_10031A408;
   v15[4] = &v16;
-  [v12 enumerateContactsWithFetchRequest:v11 error:0 usingBlock:v15];
+  [contactStore enumerateContactsWithFetchRequest:v11 error:0 usingBlock:v15];
 
   v13 = *(v17 + 24);
   _Block_object_dispose(&v16, 8);

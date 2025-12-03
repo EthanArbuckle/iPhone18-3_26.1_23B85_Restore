@@ -1,21 +1,21 @@
 @interface APSDictionaryTopicSaltStore
-- (APSDictionaryTopicSaltStore)initWithDictionary:(id)a3;
-- (BOOL)saveSalt:(id)a3 forIdentifier:(id)a4 user:(id)a5;
-- (id)loadIdentifiersToSaltsForUser:(id)a3;
-- (id)loadSaltForIdentifier:(id)a3 user:(id)a4;
+- (APSDictionaryTopicSaltStore)initWithDictionary:(id)dictionary;
+- (BOOL)saveSalt:(id)salt forIdentifier:(id)identifier user:(id)user;
+- (id)loadIdentifiersToSaltsForUser:(id)user;
+- (id)loadSaltForIdentifier:(id)identifier user:(id)user;
 @end
 
 @implementation APSDictionaryTopicSaltStore
 
-- (APSDictionaryTopicSaltStore)initWithDictionary:(id)a3
+- (APSDictionaryTopicSaltStore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = APSDictionaryTopicSaltStore;
   v5 = [(APSDictionaryTopicSaltStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     identifierToSalt = v5->_identifierToSalt;
     v5->_identifierToSalt = v6;
   }
@@ -23,22 +23,22 @@
   return v5;
 }
 
-- (id)loadSaltForIdentifier:(id)a3 user:(id)a4
+- (id)loadSaltForIdentifier:(id)identifier user:(id)user
 {
-  v5 = a3;
-  v6 = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  identifierCopy = identifier;
+  identifierToSalt = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
+  v7 = [identifierToSalt objectForKeyedSubscript:identifierCopy];
 
   return v7;
 }
 
-- (BOOL)saveSalt:(id)a3 forIdentifier:(id)a4 user:(id)a5
+- (BOOL)saveSalt:(id)salt forIdentifier:(id)identifier user:(id)user
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
-  v10 = v9;
-  if (v7)
+  saltCopy = salt;
+  identifierCopy = identifier;
+  identifierToSalt = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
+  v10 = identifierToSalt;
+  if (saltCopy)
   {
 
     if (!v10)
@@ -47,16 +47,16 @@
       [(APSDictionaryTopicSaltStore *)self setIdentifierToSalt:v11];
     }
 
-    v12 = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
-    [v12 setObject:v7 forKeyedSubscript:v8];
+    identifierToSalt2 = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
+    [identifierToSalt2 setObject:saltCopy forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    [v9 setObject:0 forKeyedSubscript:v8];
+    [identifierToSalt setObject:0 forKeyedSubscript:identifierCopy];
 
-    v13 = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
-    v14 = [v13 count];
+    identifierToSalt3 = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
+    v14 = [identifierToSalt3 count];
 
     if (!v14)
     {
@@ -67,10 +67,10 @@
   return 1;
 }
 
-- (id)loadIdentifiersToSaltsForUser:(id)a3
+- (id)loadIdentifiersToSaltsForUser:(id)user
 {
-  v3 = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
-  v4 = [v3 copy];
+  identifierToSalt = [(APSDictionaryTopicSaltStore *)self identifierToSalt];
+  v4 = [identifierToSalt copy];
 
   return v4;
 }

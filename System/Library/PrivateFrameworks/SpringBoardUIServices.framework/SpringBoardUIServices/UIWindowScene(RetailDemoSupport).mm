@@ -7,38 +7,38 @@
 
 - (uint64_t)sb_disablesMultitaskingWhileForeground
 {
-  v2 = [a1 _FBSScene];
-  v3 = [v2 clientSettings];
+  _FBSScene = [self _FBSScene];
+  clientSettings = [_FBSScene clientSettings];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [a1 _FBSScene];
-    v5 = [v4 clientSettings];
-    v6 = [v5 disablesMultitaskingWhileForeground];
+    _FBSScene2 = [self _FBSScene];
+    clientSettings2 = [_FBSScene2 clientSettings];
+    disablesMultitaskingWhileForeground = [clientSettings2 disablesMultitaskingWhileForeground];
   }
 
   else
   {
-    v6 = 0;
+    disablesMultitaskingWhileForeground = 0;
   }
 
-  return v6;
+  return disablesMultitaskingWhileForeground;
 }
 
 - (void)sb_setDisablesMultitaskingWhileForeground:()RetailDemoSupport
 {
-  v5 = [a1 _FBSScene];
-  v6 = [v5 clientSettings];
+  _FBSScene = [self _FBSScene];
+  clientSettings = [_FBSScene clientSettings];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [a1 _FBSScene];
+    _FBSScene2 = [self _FBSScene];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __78__UIWindowScene_RetailDemoSupport__sb_setDisablesMultitaskingWhileForeground___block_invoke;
     v9[3] = &__block_descriptor_33_e69_v24__0__FBSMutableSceneClientSettings_8__FBSSceneTransitionContext_16l;
     v10 = a3;
-    [v8 updateClientSettings:v9];
+    [_FBSScene2 updateClientSettings:v9];
   }
 }
 

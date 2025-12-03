@@ -1,11 +1,11 @@
 @interface UARPAsset
-- (BOOL)isEqual:(id)a3;
-- (BOOL)prepareLocalFileForUse:(id *)a3;
-- (BOOL)setData:(id)a3 atOffset:(unint64_t)a4 error:(id *)a5;
-- (UARPAsset)initWithID:(id)a3;
-- (UARPAsset)initWithID:(id)a3 sandboxToken:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)prepareLocalFileForUse:(id *)use;
+- (BOOL)setData:(id)data atOffset:(unint64_t)offset error:(id *)error;
+- (UARPAsset)initWithID:(id)d;
+- (UARPAsset)initWithID:(id)d sandboxToken:(id)token;
 - (id)description;
-- (id)getDataInRange:(_NSRange)a3 error:(id *)a4;
+- (id)getDataInRange:(_NSRange)range error:(id *)error;
 - (unint64_t)fileLength;
 - (void)concludeLocalFileAccess;
 - (void)fileLength;
@@ -13,16 +13,16 @@
 
 @implementation UARPAsset
 
-- (UARPAsset)initWithID:(id)a3
+- (UARPAsset)initWithID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = UARPAsset;
   v6 = [(UARPAsset *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_id, a3);
+    objc_storeStrong(&v6->_id, d);
     v8 = os_log_create("com.apple.accessoryupdater.uarp", "assetID");
     log = v7->_log;
     v7->_log = v8;
@@ -31,11 +31,11 @@
   return v7;
 }
 
-- (UARPAsset)initWithID:(id)a3 sandboxToken:(id)a4
+- (UARPAsset)initWithID:(id)d sandboxToken:(id)token
 {
-  v6 = a4;
-  v7 = [(UARPAsset *)self initWithID:a3];
-  if (v7 && (v8 = [[UARPSandboxExtension alloc] initWithTokenString:v6], sandboxExtension = v7->_sandboxExtension, v7->_sandboxExtension = v8, sandboxExtension, !v7->_sandboxExtension))
+  tokenCopy = token;
+  v7 = [(UARPAsset *)self initWithID:d];
+  if (v7 && (v8 = [[UARPSandboxExtension alloc] initWithTokenString:tokenCopy], sandboxExtension = v7->_sandboxExtension, v7->_sandboxExtension = v8, sandboxExtension, !v7->_sandboxExtension))
   {
     v10 = 0;
   }
@@ -48,13 +48,13 @@
   return v10;
 }
 
-- (id)getDataInRange:(_NSRange)a3 error:(id *)a4
+- (id)getDataInRange:(_NSRange)range error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
-  if ([(UARPAsset *)self prepareLocalFileForUse:a4]&& [(NSFileHandle *)self->_filehandle uarpSeekToOffset:location error:a4])
+  length = range.length;
+  location = range.location;
+  if ([(UARPAsset *)self prepareLocalFileForUse:error]&& [(NSFileHandle *)self->_filehandle uarpSeekToOffset:location error:error])
   {
-    v8 = [(NSFileHandle *)self->_filehandle uarpReadDataUpToLength:length error:a4];
+    v8 = [(NSFileHandle *)self->_filehandle uarpReadDataUpToLength:length error:error];
   }
 
   else
@@ -65,10 +65,10 @@
   return v8;
 }
 
-- (BOOL)setData:(id)a3 atOffset:(unint64_t)a4 error:(id *)a5
+- (BOOL)setData:(id)data atOffset:(unint64_t)offset error:(id *)error
 {
-  v8 = a3;
-  v9 = [(UARPAsset *)self prepareLocalFileForUse:a5]&& [(NSFileHandle *)self->_filehandle uarpSeekToOffset:a4 error:a5]&& [(NSFileHandle *)self->_filehandle uarpWriteData:v8 error:a5];
+  dataCopy = data;
+  v9 = [(UARPAsset *)self prepareLocalFileForUse:error]&& [(NSFileHandle *)self->_filehandle uarpSeekToOffset:offset error:error]&& [(NSFileHandle *)self->_filehandle uarpWriteData:dataCopy error:error];
 
   return v9;
 }
@@ -78,19 +78,19 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UARPAssetID *)self->_id rawDescription];
-  v7 = [v3 stringWithFormat:@"<%@: %@>", v5, v6];
+  rawDescription = [(UARPAssetID *)self->_id rawDescription];
+  v7 = [v3 stringWithFormat:@"<%@: %@>", v5, rawDescription];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = self == v4 || [(UARPAssetID *)self->_id isEqual:v4->_id];
+    v5 = self == equalCopy || [(UARPAssetID *)self->_id isEqual:equalCopy->_id];
   }
 
   else
@@ -104,12 +104,12 @@
 - (unint64_t)fileLength
 {
   [(UARPAsset *)self prepareLocalFileForUse:0];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSURL *)self->_url path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->_url path];
   v9 = 0;
-  v5 = [v3 attributesOfItemAtPath:v4 error:&v9];
+  v5 = [defaultManager attributesOfItemAtPath:path error:&v9];
   v6 = v9;
-  v7 = [v5 fileSize];
+  fileSize = [v5 fileSize];
 
   if (v6)
   {
@@ -118,13 +118,13 @@
       [UARPAsset fileLength];
     }
 
-    v7 = 0;
+    fileSize = 0;
   }
 
-  return v7;
+  return fileSize;
 }
 
-- (BOOL)prepareLocalFileForUse:(id *)a3
+- (BOOL)prepareLocalFileForUse:(id *)use
 {
   v11 = 0;
   v12[0] = &v11;
@@ -143,7 +143,7 @@
   if (onceToken != -1)
   {
     dispatch_once(p_onceToken, v10);
-    if (!a3)
+    if (!use)
     {
       goto LABEL_4;
     }
@@ -151,10 +151,10 @@
     goto LABEL_3;
   }
 
-  if (a3)
+  if (use)
   {
 LABEL_3:
-    *a3 = *(v12[0] + 40);
+    *use = *(v12[0] + 40);
   }
 
 LABEL_4:

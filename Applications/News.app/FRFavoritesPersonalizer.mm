@@ -1,30 +1,30 @@
 @interface FRFavoritesPersonalizer
 + (BOOL)frozen;
-+ (void)logPPMessage:(id)a3;
++ (void)logPPMessage:(id)message;
 - (FCPersonalizationBundleIDMapping)bundleIDMapping;
 - (FCPersonalizationURLMapping)urlMapping;
 - (FCPersonalizationWhitelist)allowlist;
 - (FCPersonalizationWhitelist)whitelist;
 - (FRFavoritesPersonalizer)init;
-- (FRFavoritesPersonalizer)initWithCloudContext:(id)a3;
-- (FRFavoritesPersonalizer)initWithCloudContext:(id)a3 storePath:(id)a4;
+- (FRFavoritesPersonalizer)initWithCloudContext:(id)context;
+- (FRFavoritesPersonalizer)initWithCloudContext:(id)context storePath:(id)path;
 - (id)_createNewAutoFavoritesOperation;
-- (unint64_t)allowlistLevelForTagID:(id)a3;
-- (unint64_t)whitelistLevelForTagID:(id)a3;
-- (void)_processAutoFavoritesOperationResult:(id)a3 cursor:(id)a4 error:(id)a5 completion:(id)a6;
+- (unint64_t)allowlistLevelForTagID:(id)d;
+- (unint64_t)whitelistLevelForTagID:(id)d;
+- (void)_processAutoFavoritesOperationResult:(id)result cursor:(id)cursor error:(id)error completion:(id)completion;
 - (void)_saveReadableAllowlist;
-- (void)addProgressivePersonalizationAutoFavorites:(id)a3 groupableSubscriptionForTagIDs:(id)a4 originProvider:(id)a5 completion:(id)a6;
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4;
-- (void)fetchMappingResourcesWithCompletionHandler:(id)a3;
+- (void)addProgressivePersonalizationAutoFavorites:(id)favorites groupableSubscriptionForTagIDs:(id)ds originProvider:(id)provider completion:(id)completion;
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change;
+- (void)fetchMappingResourcesWithCompletionHandler:(id)handler;
 - (void)maybeRemovePersonalizationEngineData;
-- (void)prepareAutoFavoritesWithLanguageChange:(BOOL)a3 completionHandler:(id)a4;
-- (void)prepareFavorites:(id)a3;
-- (void)prepareFavoritesWithLanguageChange:(BOOL)a3 completionHandler:(id)a4;
-- (void)prepareForUseWithCompletionHandler:(id)a3;
-- (void)refreshAutoFavoritesInBackgroundDisregardingCache:(BOOL)a3;
-- (void)setAutofavorites:(id)a3;
-- (void)setLocationManager:(id)a3;
-- (void)subscriptionControllerDidResetToEmpty:(id)a3;
+- (void)prepareAutoFavoritesWithLanguageChange:(BOOL)change completionHandler:(id)handler;
+- (void)prepareFavorites:(id)favorites;
+- (void)prepareFavoritesWithLanguageChange:(BOOL)change completionHandler:(id)handler;
+- (void)prepareForUseWithCompletionHandler:(id)handler;
+- (void)refreshAutoFavoritesInBackgroundDisregardingCache:(BOOL)cache;
+- (void)setAutofavorites:(id)autofavorites;
+- (void)setLocationManager:(id)manager;
+- (void)subscriptionControllerDidResetToEmpty:(id)empty;
 @end
 
 @implementation FRFavoritesPersonalizer
@@ -32,13 +32,13 @@
 - (void)maybeRemovePersonalizationEngineData
 {
   v2 = FRURLForNewsAppCachesDirectory();
-  v3 = [v2 path];
-  v4 = [v3 stringByAppendingPathComponent:@"PersonalizationStore"];
+  path = [v2 path];
+  v4 = [path stringByAppendingPathComponent:@"PersonalizationStore"];
 
   v5 = +[NSFileManager defaultManager];
-  LODWORD(v3) = [v5 fileExistsAtPath:v4];
+  LODWORD(path) = [v5 fileExistsAtPath:v4];
 
-  if (v3)
+  if (path)
   {
     v6 = +[NSFileManager defaultManager];
     v9 = 0;
@@ -76,10 +76,10 @@
   return byte_1000E61A0;
 }
 
-- (FRFavoritesPersonalizer)initWithCloudContext:(id)a3 storePath:(id)a4
+- (FRFavoritesPersonalizer)initWithCloudContext:(id)context storePath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  pathCopy = path;
   v60.receiver = self;
   v60.super_class = FRFavoritesPersonalizer;
   v9 = [(FRFavoritesPersonalizer *)&v60 init];
@@ -90,8 +90,8 @@
       v10 = +[NSFileManager defaultManager];
       v11 = FRURLForNewsPersonalizationDirectory();
       v12 = [v11 URLByAppendingPathComponent:@"knowledgeC.db"];
-      v13 = [v12 path];
-      v14 = [v10 fileExistsAtPath:v13];
+      path = [v12 path];
+      v14 = [v10 fileExistsAtPath:path];
 
       if (v14)
       {
@@ -101,51 +101,51 @@
       }
     }
 
-    objc_storeStrong(&v9->_cloudContext, a3);
-    v17 = [v7 subscriptionController];
+    objc_storeStrong(&v9->_cloudContext, context);
+    subscriptionController = [contextCopy subscriptionController];
     subscriptionController = v9->_subscriptionController;
-    v9->_subscriptionController = v17;
+    v9->_subscriptionController = subscriptionController;
 
     [(FCSubscriptionController *)v9->_subscriptionController addObserver:v9];
-    v19 = [v7 purchaseController];
+    purchaseController = [contextCopy purchaseController];
     purchaseController = v9->_purchaseController;
-    v9->_purchaseController = v19;
+    v9->_purchaseController = purchaseController;
 
-    v21 = [v7 bundleSubscriptionManager];
+    bundleSubscriptionManager = [contextCopy bundleSubscriptionManager];
     bundleSubscriptionManager = v9->_bundleSubscriptionManager;
-    v9->_bundleSubscriptionManager = v21;
+    v9->_bundleSubscriptionManager = bundleSubscriptionManager;
 
-    v23 = [v7 userInfo];
+    userInfo = [contextCopy userInfo];
     userInfo = v9->_userInfo;
-    v9->_userInfo = v23;
+    v9->_userInfo = userInfo;
 
-    v25 = [v7 appConfigurationManager];
+    appConfigurationManager = [contextCopy appConfigurationManager];
     appConfigurationManager = v9->_appConfigurationManager;
-    v9->_appConfigurationManager = v25;
+    v9->_appConfigurationManager = appConfigurationManager;
 
     v27 = dispatch_queue_create("FRPersonalizationDataSource.store", 0);
     storeQueue = v9->_storeQueue;
     v9->_storeQueue = v27;
 
-    v29 = [(FRFavoritesPersonalizer *)v9 storeQueue];
+    storeQueue = [(FRFavoritesPersonalizer *)v9 storeQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100023480;
     block[3] = &unk_1000C1920;
-    v30 = v8;
+    v30 = pathCopy;
     v58 = v30;
     v31 = v9;
     v59 = v31;
-    dispatch_async(v29, block);
+    dispatch_async(storeQueue, block);
 
     [(FCNewsAppConfigurationManager *)v9->_appConfigurationManager addAppConfigObserver:v31];
-    v32 = [v7 personalizationData];
+    personalizationData = [contextCopy personalizationData];
     aggregateStore = v31->_aggregateStore;
-    v31->_aggregateStore = v32;
+    v31->_aggregateStore = personalizationData;
 
     v34 = [FCKeyValueStore alloc];
-    v35 = [v30 path];
-    v36 = [v34 initWithName:@"HourlyFlowRateHighWaterMarks" directory:v35 version:1 options:0 classRegistry:0];
+    path2 = [v30 path];
+    v36 = [v34 initWithName:@"HourlyFlowRateHighWaterMarks" directory:path2 version:1 options:0 classRegistry:0];
     hourlyFlowRateHighWaterMarkValueStore = v31->_hourlyFlowRateHighWaterMarkValueStore;
     v31->_hourlyFlowRateHighWaterMarkValueStore = v36;
 
@@ -154,9 +154,9 @@
     v31->_autoFavoritesQueue = v38;
 
     v40 = +[NSUserDefaults standardUserDefaults];
-    LODWORD(v35) = [v40 BOOLForKey:FCPersonalizationClearSuggestions];
+    LODWORD(path2) = [v40 BOOLForKey:FCPersonalizationClearSuggestions];
 
-    if (v35)
+    if (path2)
     {
       v41 = FCPersonalizationLog;
       if (os_log_type_enabled(FCPersonalizationLog, OS_LOG_TYPE_DEFAULT))
@@ -165,13 +165,13 @@
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Will clear suggestions", buf, 2u);
       }
 
-      v42 = [(FRFavoritesPersonalizer *)v31 autoFavoritesQueue];
+      autoFavoritesQueue = [(FRFavoritesPersonalizer *)v31 autoFavoritesQueue];
       v54[0] = _NSConcreteStackBlock;
       v54[1] = 3221225472;
       v54[2] = sub_10002362C;
       v54[3] = &unk_1000C30E8;
       v55 = v31;
-      [v42 enqueueBlockForMainThread:v54];
+      [autoFavoritesQueue enqueueBlockForMainThread:v54];
     }
 
     v43 = FCPersonalizationLog;
@@ -181,14 +181,14 @@
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Will fetch mapping resources", buf, 2u);
     }
 
-    v44 = [(FRFavoritesPersonalizer *)v31 autoFavoritesQueue];
+    autoFavoritesQueue2 = [(FRFavoritesPersonalizer *)v31 autoFavoritesQueue];
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
     v52[2] = sub_100023848;
     v52[3] = &unk_1000C30E8;
     v45 = v31;
     v53 = v45;
-    [v44 enqueueBlock:v52];
+    [autoFavoritesQueue2 enqueueBlock:v52];
 
     v46 = FCPersonalizationLog;
     if (os_log_type_enabled(FCPersonalizationLog, OS_LOG_TYPE_DEFAULT))
@@ -197,14 +197,14 @@
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Will process events from Today widget", buf, 2u);
     }
 
-    v47 = [(FRFavoritesPersonalizer *)v45 autoFavoritesQueue];
+    autoFavoritesQueue3 = [(FRFavoritesPersonalizer *)v45 autoFavoritesQueue];
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_100023A0C;
     v50[3] = &unk_1000C30E8;
     v48 = v45;
     v51 = v48;
-    [v47 enqueueBlock:v50];
+    [autoFavoritesQueue3 enqueueBlock:v50];
 
     [(FRFavoritesPersonalizer *)v48 processExistingData];
   }
@@ -212,30 +212,30 @@
   return v9;
 }
 
-+ (void)logPPMessage:(id)a3
++ (void)logPPMessage:(id)message
 {
   v4 = FCProgressivePersonalizationLog;
   if (os_log_type_enabled(FCProgressivePersonalizationLog, OS_LOG_TYPE_DEBUG))
   {
-    v5 = *(a3 + 2);
+    v5 = *(message + 2);
     v6 = v4;
-    v7 = v5(a3);
+    v7 = v5(message);
     v8 = 138412290;
     v9 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@", &v8, 0xCu);
   }
 }
 
-- (FRFavoritesPersonalizer)initWithCloudContext:(id)a3
+- (FRFavoritesPersonalizer)initWithCloudContext:(id)context
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  if (!contextCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006C300();
   }
 
   v5 = FRURLForNewsPersonalizationDirectory();
-  v6 = [(FRFavoritesPersonalizer *)self initWithCloudContext:v4 storePath:v5];
+  v6 = [(FRFavoritesPersonalizer *)self initWithCloudContext:contextCopy storePath:v5];
 
   return v6;
 }
@@ -263,34 +263,34 @@
   objc_exception_throw(v4);
 }
 
-- (void)setAutofavorites:(id)a3
+- (void)setAutofavorites:(id)autofavorites
 {
-  objc_storeStrong(&self->_autofavorites, a3);
-  v5 = a3;
-  v6 = [(FRFavoritesPersonalizer *)self configurationStore];
-  [v6 setAutoFavorites:v5];
+  objc_storeStrong(&self->_autofavorites, autofavorites);
+  autofavoritesCopy = autofavorites;
+  configurationStore = [(FRFavoritesPersonalizer *)self configurationStore];
+  [configurationStore setAutoFavorites:autofavoritesCopy];
 }
 
-- (void)setLocationManager:(id)a3
+- (void)setLocationManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [(TSLocationDetectionManagerType *)v4 observableMostFrequentLocation];
+    observableMostFrequentLocation = [(TSLocationDetectionManagerType *)managerCopy observableMostFrequentLocation];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100024558;
     v10[3] = &unk_1000C31E8;
     v10[4] = self;
-    v7 = [v6 observe:v10];
+    v7 = [observableMostFrequentLocation observe:v10];
     [(FRFavoritesPersonalizer *)self setLocationObserver:v7];
   }
 
   else
   {
-    v8 = [(FRFavoritesPersonalizer *)self locationObserver];
-    [v8 dispose];
+    locationObserver = [(FRFavoritesPersonalizer *)self locationObserver];
+    [locationObserver dispose];
 
     [(FRFavoritesPersonalizer *)self setLocationObserver:0];
   }
@@ -299,27 +299,27 @@
   self->_locationManager = v5;
 }
 
-- (void)fetchMappingResourcesWithCompletionHandler:(id)a3
+- (void)fetchMappingResourcesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   +[NSThread isMainThread];
   [objc_opt_class() logPPMessage:&stru_1000C3208];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100024708;
   v14 = &unk_1000C3370;
-  v15 = self;
+  selfCopy = self;
   v17 = xmmword_1000B6ED0;
-  v5 = v4;
+  v5 = handlerCopy;
   v16 = v5;
   v6 = sub_100024708(&v11);
   v7 = FCPersonalizationLog;
   if (os_log_type_enabled(FCPersonalizationLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 shortOperationDescription];
+    shortOperationDescription = [v6 shortOperationDescription];
     *buf = 138543362;
-    v19 = v9;
+    v19 = shortOperationDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Will issue fetch operation %{public}@ for mapping resources", buf, 0xCu);
   }
 
@@ -327,9 +327,9 @@
   [v10 addOperation:v6];
 }
 
-- (void)prepareForUseWithCompletionHandler:(id)a3
+- (void)prepareForUseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (+[NSThread isMainThread]&& os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006CDB8();
@@ -346,10 +346,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000257E8;
   block[3] = &unk_1000C3098;
-  v13 = v4;
-  v6 = v4;
+  v13 = handlerCopy;
+  v6 = handlerCopy;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-  v8 = [(FRFavoritesPersonalizer *)self aggregateStore];
+  aggregateStore = [(FRFavoritesPersonalizer *)self aggregateStore];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100025868;
@@ -357,17 +357,17 @@
   v10[4] = self;
   v11 = v7;
   v9 = v7;
-  [v8 prepareAggregatesForUseWithCompletionHandler:v10];
+  [aggregateStore prepareAggregatesForUseWithCompletionHandler:v10];
 }
 
-- (void)prepareFavorites:(id)a3
+- (void)prepareFavorites:(id)favorites
 {
-  v4 = a3;
+  favoritesCopy = favorites;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 stringForKey:FCPrimaryLanguageKey];
 
   v7 = +[FCAppleAccount sharedAccount];
-  v8 = [v7 primaryLanguageCode];
+  primaryLanguageCode = [v7 primaryLanguageCode];
 
   v9 = FCTranslationLog;
   if (os_log_type_enabled(FCTranslationLog, OS_LOG_TYPE_DEFAULT))
@@ -375,16 +375,16 @@
     *buf = 138543618;
     v34 = v6;
     v35 = 2114;
-    v36 = v8;
+    v36 = primaryLanguageCode;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Preparing favorites with last seen language %{public}@, current language %{public}@", buf, 0x16u);
   }
 
   v10 = dispatch_group_create();
-  v11 = [(FRFavoritesPersonalizer *)self userInfo];
-  v12 = [v11 canonicalLanguage];
-  if (v12)
+  userInfo = [(FRFavoritesPersonalizer *)self userInfo];
+  canonicalLanguage = [userInfo canonicalLanguage];
+  if (canonicalLanguage)
   {
-    v13 = [v6 isEqualToString:v8] ^ 1;
+    v13 = [v6 isEqualToString:primaryLanguageCode] ^ 1;
   }
 
   else
@@ -418,8 +418,8 @@
     v28 = v13;
     v16 = &v27;
     objc_copyWeak(&v27, buf);
-    v25 = v8;
-    v26 = v4;
+    v25 = primaryLanguageCode;
+    v26 = favoritesCopy;
     sub_100025C84(v24);
     v17 = &v25;
     v18 = &v26;
@@ -435,9 +435,9 @@
     v16 = &v22;
     objc_copyWeak(&v22, buf);
     v17 = &v20;
-    v20 = v8;
+    v20 = primaryLanguageCode;
     v18 = &v21;
-    v21 = v4;
+    v21 = favoritesCopy;
     dispatch_group_notify(v15, &_dispatch_main_q, v19);
   }
 
@@ -445,22 +445,22 @@
   objc_destroyWeak(buf);
 }
 
-- (void)prepareFavoritesWithLanguageChange:(BOOL)a3 completionHandler:(id)a4
+- (void)prepareFavoritesWithLanguageChange:(BOOL)change completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (change)
   {
     objc_initWeak(&location, self);
-    v8 = [(FRFavoritesPersonalizer *)self cloudContext];
-    v9 = [v8 translationManager];
+    cloudContext = [(FRFavoritesPersonalizer *)self cloudContext];
+    translationManager = [cloudContext translationManager];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000261B8;
     v10[3] = &unk_1000C3528;
     objc_copyWeak(&v12, &location);
     v11 = v7;
-    [v9 fetchTranslationProvider:v10];
+    [translationManager fetchTranslationProvider:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -472,22 +472,22 @@
     v14[1] = 3221225472;
     v14[2] = sub_100026138;
     v14[3] = &unk_1000C3098;
-    v15 = v6;
+    v15 = handlerCopy;
     sub_100026138(v14);
   }
 }
 
-- (void)prepareAutoFavoritesWithLanguageChange:(BOOL)a3 completionHandler:(id)a4
+- (void)prepareAutoFavoritesWithLanguageChange:(BOOL)change completionHandler:(id)handler
 {
-  v6 = a4;
-  if (!a3)
+  handlerCopy = handler;
+  if (!change)
   {
-    v7 = [(FRFavoritesPersonalizer *)self cloudContext];
-    v8 = [v7 userInfo];
-    v9 = [v8 canonicalLanguage];
+    cloudContext = [(FRFavoritesPersonalizer *)self cloudContext];
+    userInfo = [cloudContext userInfo];
+    canonicalLanguage = [userInfo canonicalLanguage];
     v10 = +[FCAppleAccount sharedAccount];
-    v11 = [v10 primaryLanguageCode];
-    v12 = [v9 isEqualToString:v11];
+    primaryLanguageCode = [v10 primaryLanguageCode];
+    v12 = [canonicalLanguage isEqualToString:primaryLanguageCode];
 
     if ((v12 & 1) == 0)
     {
@@ -496,7 +496,7 @@
       v25[2] = sub_10002748C;
       v25[3] = &unk_1000C1BD8;
       v25[4] = self;
-      v26 = v6;
+      v26 = handlerCopy;
       sub_10002748C(v25);
       v16 = v26;
 LABEL_14:
@@ -512,11 +512,11 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Getting in line to prepare personalization auto-favorites for use", buf, 2u);
   }
 
-  if (+[NSThread isMainThread]|| a3)
+  if (+[NSThread isMainThread]|| change)
   {
 LABEL_13:
-    v17 = [(FRFavoritesPersonalizer *)self storeQueue];
-    v18 = v6;
+    storeQueue = [(FRFavoritesPersonalizer *)self storeQueue];
+    v18 = handlerCopy;
     FCDispatchAsyncWithQoSPropagation();
 
     v16 = v18;
@@ -527,14 +527,14 @@ LABEL_13:
   v22 = buf;
   v23 = 0x2020000000;
   v24 = 0;
-  v14 = [(FRFavoritesPersonalizer *)self storeQueue];
+  storeQueue2 = [(FRFavoritesPersonalizer *)self storeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000275D4;
   block[3] = &unk_1000C3550;
   block[4] = self;
   block[5] = buf;
-  dispatch_sync(v14, block);
+  dispatch_sync(storeQueue2, block);
 
   if (v22[24] != 1)
   {
@@ -549,19 +549,19 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Auto-favorites have been generated in the past so nothing to prepare", v19, 2u);
   }
 
-  v6[2](v6);
+  handlerCopy[2](handlerCopy);
   _Block_object_dispose(buf, 8);
 LABEL_15:
 }
 
-- (void)refreshAutoFavoritesInBackgroundDisregardingCache:(BOOL)a3
+- (void)refreshAutoFavoritesInBackgroundDisregardingCache:(BOOL)cache
 {
-  v5 = [(FRFavoritesPersonalizer *)self cloudContext];
-  v6 = [v5 appConfigurationManager];
-  v7 = [v6 possiblyUnfetchedAppConfiguration];
-  v8 = [v7 enableNewsPersonalizationAutoFavorites];
+  cloudContext = [(FRFavoritesPersonalizer *)self cloudContext];
+  appConfigurationManager = [cloudContext appConfigurationManager];
+  possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+  enableNewsPersonalizationAutoFavorites = [possiblyUnfetchedAppConfiguration enableNewsPersonalizationAutoFavorites];
 
-  if (v8)
+  if (enableNewsPersonalizationAutoFavorites)
   {
 
     sub_100027CB4();
@@ -569,24 +569,24 @@ LABEL_15:
 
   else
   {
-    v9 = [(FRFavoritesPersonalizer *)self cloudContext];
-    v10 = [v9 userInfo];
-    v11 = [v10 canonicalLanguage];
+    cloudContext2 = [(FRFavoritesPersonalizer *)self cloudContext];
+    userInfo = [cloudContext2 userInfo];
+    canonicalLanguage = [userInfo canonicalLanguage];
     v12 = +[FCAppleAccount sharedAccount];
-    v13 = [v12 primaryLanguageCode];
-    v14 = [v11 isEqualToString:v13];
+    primaryLanguageCode = [v12 primaryLanguageCode];
+    v14 = [canonicalLanguage isEqualToString:primaryLanguageCode];
 
     if (v14)
     {
       [objc_opt_class() logPPMessage:&stru_1000C3610];
-      v15 = [(FRFavoritesPersonalizer *)self storeQueue];
+      storeQueue = [(FRFavoritesPersonalizer *)self storeQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100027E54;
       block[3] = &unk_1000C36F0;
       block[4] = self;
-      v17 = a3;
-      dispatch_async(v15, block);
+      cacheCopy = cache;
+      dispatch_async(storeQueue, block);
     }
 
     else
@@ -604,98 +604,98 @@ LABEL_15:
 - (id)_createNewAutoFavoritesOperation
 {
   v3 = objc_alloc_init(FRPersonalizationAutoFavoritesOperation);
-  v4 = [(FRFavoritesPersonalizer *)self autoFavoritesCursor];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setCursor:v4];
+  autoFavoritesCursor = [(FRFavoritesPersonalizer *)self autoFavoritesCursor];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setCursor:autoFavoritesCursor];
 
   [(FRPersonalizationAutoFavoritesOperation *)v3 setSignalProcessingTimeInterval:21600.0];
-  v5 = [(FRFavoritesPersonalizer *)self configurableValues];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setConfigurableValues:v5];
+  configurableValues = [(FRFavoritesPersonalizer *)self configurableValues];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setConfigurableValues:configurableValues];
 
-  v6 = [(FRFavoritesPersonalizer *)self configurationStore];
-  v7 = [v6 urlMapping];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setUrlMapping:v7];
+  configurationStore = [(FRFavoritesPersonalizer *)self configurationStore];
+  urlMapping = [configurationStore urlMapping];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setUrlMapping:urlMapping];
 
-  v8 = [(FRFavoritesPersonalizer *)self configurationStore];
-  v9 = [v8 bundleIDMapping];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setBundleIDMapping:v9];
+  configurationStore2 = [(FRFavoritesPersonalizer *)self configurationStore];
+  bundleIDMapping = [configurationStore2 bundleIDMapping];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setBundleIDMapping:bundleIDMapping];
 
-  v10 = [(FRFavoritesPersonalizer *)self configurationStore];
-  v11 = [v10 whitelist];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setWhitelist:v11];
+  configurationStore3 = [(FRFavoritesPersonalizer *)self configurationStore];
+  whitelist = [configurationStore3 whitelist];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setWhitelist:whitelist];
 
-  v12 = [(FRFavoritesPersonalizer *)self configurationStore];
-  v13 = [v12 favorabilityScores];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setFavorabilityScores:v13];
+  configurationStore4 = [(FRFavoritesPersonalizer *)self configurationStore];
+  favorabilityScores = [configurationStore4 favorabilityScores];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setFavorabilityScores:favorabilityScores];
 
-  v14 = [(FRFavoritesPersonalizer *)self cloudContext];
-  v15 = [v14 localAreasManager];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setLocalAreasManager:v15];
+  cloudContext = [(FRFavoritesPersonalizer *)self cloudContext];
+  localAreasManager = [cloudContext localAreasManager];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setLocalAreasManager:localAreasManager];
 
-  v16 = [(FRFavoritesPersonalizer *)self subscriptionController];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setSubscriptionController:v16];
+  subscriptionController = [(FRFavoritesPersonalizer *)self subscriptionController];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setSubscriptionController:subscriptionController];
 
-  v17 = [(FRFavoritesPersonalizer *)self cloudContext];
-  v18 = [v17 tagController];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setTagController:v18];
+  cloudContext2 = [(FRFavoritesPersonalizer *)self cloudContext];
+  tagController = [cloudContext2 tagController];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setTagController:tagController];
 
-  v19 = [(FRFavoritesPersonalizer *)self userInfo];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setUserInfo:v19];
+  userInfo = [(FRFavoritesPersonalizer *)self userInfo];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setUserInfo:userInfo];
 
-  v20 = [(FRFavoritesPersonalizer *)self tagRanker];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setTagRanker:v20];
+  tagRanker = [(FRFavoritesPersonalizer *)self tagRanker];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setTagRanker:tagRanker];
 
-  v21 = [(FRFavoritesPersonalizer *)self aggregateStoreProvider];
-  v22 = [v21 aggregateStore];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setAggregateStore:v22];
+  aggregateStoreProvider = [(FRFavoritesPersonalizer *)self aggregateStoreProvider];
+  aggregateStore = [aggregateStoreProvider aggregateStore];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setAggregateStore:aggregateStore];
 
-  v23 = [(FRFavoritesPersonalizer *)self locationManager];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setLocationManager:v23];
+  locationManager = [(FRFavoritesPersonalizer *)self locationManager];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setLocationManager:locationManager];
 
-  v24 = [(FRFavoritesPersonalizer *)self cloudContext];
-  v25 = [v24 appConfigurationManager];
-  v26 = [v25 appConfiguration];
-  [(FRPersonalizationAutoFavoritesOperation *)v3 setAppConfiguration:v26];
+  cloudContext3 = [(FRFavoritesPersonalizer *)self cloudContext];
+  appConfigurationManager = [cloudContext3 appConfigurationManager];
+  appConfiguration = [appConfigurationManager appConfiguration];
+  [(FRPersonalizationAutoFavoritesOperation *)v3 setAppConfiguration:appConfiguration];
 
   return v3;
 }
 
-- (void)_processAutoFavoritesOperationResult:(id)a3 cursor:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_processAutoFavoritesOperationResult:(id)result cursor:(id)cursor error:(id)error completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [(FRFavoritesPersonalizer *)self setAutofavorites:v10];
-  if (a5)
+  resultCopy = result;
+  cursorCopy = cursor;
+  completionCopy = completion;
+  [(FRFavoritesPersonalizer *)self setAutofavorites:resultCopy];
+  if (error)
   {
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_1000287E0;
     v24 = &unk_1000C3098;
-    v25 = v12;
+    v25 = completionCopy;
     v25[2]();
     v13 = v25;
   }
 
   else
   {
-    [(FRFavoritesPersonalizer *)self setAutoFavoritesCursor:v11];
-    v14 = [(FRFavoritesPersonalizer *)self storeQueue];
+    [(FRFavoritesPersonalizer *)self setAutoFavoritesCursor:cursorCopy];
+    storeQueue = [(FRFavoritesPersonalizer *)self storeQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000287F0;
     block[3] = &unk_1000C1920;
     block[4] = self;
-    v20 = v11;
-    dispatch_sync(v14, block);
+    v20 = cursorCopy;
+    dispatch_sync(storeQueue, block);
 
-    v15 = [v10 autoFavoriteTagIDs];
-    v16 = [v10 groupableFavoriteTagIDs];
+    autoFavoriteTagIDs = [resultCopy autoFavoriteTagIDs];
+    groupableFavoriteTagIDs = [resultCopy groupableFavoriteTagIDs];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100028890;
     v17[3] = &unk_1000C3718;
-    v18 = v10;
-    [(FRFavoritesPersonalizer *)self addProgressivePersonalizationAutoFavorites:v15 groupableSubscriptionForTagIDs:v16 originProvider:v17 completion:v12];
+    v18 = resultCopy;
+    [(FRFavoritesPersonalizer *)self addProgressivePersonalizationAutoFavorites:autoFavoriteTagIDs groupableSubscriptionForTagIDs:groupableFavoriteTagIDs originProvider:v17 completion:completionCopy];
 
     v13 = v20;
   }
@@ -703,120 +703,120 @@ LABEL_15:
 
 - (FCPersonalizationWhitelist)whitelist
 {
-  v2 = [(FRFavoritesPersonalizer *)self configurationStore];
-  v3 = [v2 whitelist];
+  configurationStore = [(FRFavoritesPersonalizer *)self configurationStore];
+  whitelist = [configurationStore whitelist];
 
-  return v3;
+  return whitelist;
 }
 
 - (FCPersonalizationWhitelist)allowlist
 {
-  v2 = [(FRFavoritesPersonalizer *)self configurationStore];
-  v3 = [v2 whitelist];
+  configurationStore = [(FRFavoritesPersonalizer *)self configurationStore];
+  whitelist = [configurationStore whitelist];
 
-  return v3;
+  return whitelist;
 }
 
-- (unint64_t)whitelistLevelForTagID:(id)a3
+- (unint64_t)whitelistLevelForTagID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 2;
-  v5 = [(FRFavoritesPersonalizer *)self storeQueue];
+  storeQueue = [(FRFavoritesPersonalizer *)self storeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028BDC;
   block[3] = &unk_1000C3740;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(storeQueue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v7;
 }
 
-- (unint64_t)allowlistLevelForTagID:(id)a3
+- (unint64_t)allowlistLevelForTagID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 2;
-  v5 = [(FRFavoritesPersonalizer *)self storeQueue];
+  storeQueue = [(FRFavoritesPersonalizer *)self storeQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028D98;
   block[3] = &unk_1000C3740;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(storeQueue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v7;
 }
 
-- (void)addProgressivePersonalizationAutoFavorites:(id)a3 groupableSubscriptionForTagIDs:(id)a4 originProvider:(id)a5 completion:(id)a6
+- (void)addProgressivePersonalizationAutoFavorites:(id)favorites groupableSubscriptionForTagIDs:(id)ds originProvider:(id)provider completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v9 = v16;
-  v10 = v15;
-  v11 = v14;
-  v12 = v13;
+  favoritesCopy = favorites;
+  dsCopy = ds;
+  providerCopy = provider;
+  completionCopy = completion;
+  v9 = completionCopy;
+  v10 = providerCopy;
+  v11 = dsCopy;
+  v12 = favoritesCopy;
   FCPerformBlockOnMainThread();
 }
 
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change
 {
-  v5 = [a4 personalizationTreatment];
-  if (v5)
+  personalizationTreatment = [change personalizationTreatment];
+  if (personalizationTreatment)
   {
-    v6 = [(FRFavoritesPersonalizer *)self storeQueue];
+    storeQueue = [(FRFavoritesPersonalizer *)self storeQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000290F0;
     v7[3] = &unk_1000C1920;
     v7[4] = self;
-    v8 = v5;
-    dispatch_async(v6, v7);
+    v8 = personalizationTreatment;
+    dispatch_async(storeQueue, v7);
   }
 }
 
-- (void)subscriptionControllerDidResetToEmpty:(id)a3
+- (void)subscriptionControllerDidResetToEmpty:(id)empty
 {
-  v4 = [(FRFavoritesPersonalizer *)self autoFavoritesQueue];
+  autoFavoritesQueue = [(FRFavoritesPersonalizer *)self autoFavoritesQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100029180;
   v5[3] = &unk_1000C30E8;
   v5[4] = self;
-  [v4 enqueueBlock:v5];
+  [autoFavoritesQueue enqueueBlock:v5];
 }
 
 - (FCPersonalizationBundleIDMapping)bundleIDMapping
 {
-  v2 = [(FRFavoritesPersonalizer *)self configurationStore];
-  v3 = [v2 bundleIDMapping];
+  configurationStore = [(FRFavoritesPersonalizer *)self configurationStore];
+  bundleIDMapping = [configurationStore bundleIDMapping];
 
-  return v3;
+  return bundleIDMapping;
 }
 
 - (FCPersonalizationURLMapping)urlMapping
 {
-  v2 = [(FRFavoritesPersonalizer *)self configurationStore];
-  v3 = [v2 urlMapping];
+  configurationStore = [(FRFavoritesPersonalizer *)self configurationStore];
+  urlMapping = [configurationStore urlMapping];
 
-  return v3;
+  return urlMapping;
 }
 
 @end

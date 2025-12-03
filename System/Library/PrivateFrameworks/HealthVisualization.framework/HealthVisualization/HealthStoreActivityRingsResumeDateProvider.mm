@@ -1,10 +1,10 @@
 @interface HealthStoreActivityRingsResumeDateProvider
-- (void)pauseStateLoadedWithNotification:(id)a3;
+- (void)pauseStateLoadedWithNotification:(id)notification;
 @end
 
 @implementation HealthStoreActivityRingsResumeDateProvider
 
-- (void)pauseStateLoadedWithNotification:(id)a3
+- (void)pauseStateLoadedWithNotification:(id)notification
 {
   v3 = sub_1D15A22D8();
   v4 = *(v3 - 8);

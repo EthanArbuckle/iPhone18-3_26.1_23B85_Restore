@@ -1,10 +1,10 @@
 @interface HKAttributeConceptSelection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKAttributeConceptSelection)init;
-- (HKAttributeConceptSelection)initWithAttribute:(int64_t)a3 operatorType:(unint64_t)a4 value:(id)a5;
-- (HKAttributeConceptSelection)initWithCoder:(id)a3;
+- (HKAttributeConceptSelection)initWithAttribute:(int64_t)attribute operatorType:(unint64_t)type value:(id)value;
+- (HKAttributeConceptSelection)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAttributeConceptSelection
@@ -19,18 +19,18 @@
   return 0;
 }
 
-- (HKAttributeConceptSelection)initWithAttribute:(int64_t)a3 operatorType:(unint64_t)a4 value:(id)a5
+- (HKAttributeConceptSelection)initWithAttribute:(int64_t)attribute operatorType:(unint64_t)type value:(id)value
 {
-  v8 = a5;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = HKAttributeConceptSelection;
   v9 = [(HKConceptSelection *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    v9->_operatorType = a4;
-    v11 = [v8 copyWithZone:0];
+    v9->_type = attribute;
+    v9->_operatorType = type;
+    v11 = [valueCopy copyWithZone:0];
     value = v10->_value;
     v10->_value = v11;
   }
@@ -49,67 +49,67 @@
   return v7;
 }
 
-- (HKAttributeConceptSelection)initWithCoder:(id)a3
+- (HKAttributeConceptSelection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"AttributeTypeKey"];
-  v6 = [v4 decodeIntegerForKey:@"AttributeOperatorTypeKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AttributeValueKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"AttributeTypeKey"];
+  v6 = [coderCopy decodeIntegerForKey:@"AttributeOperatorTypeKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AttributeValueKey"];
 
   if (v7)
   {
     self = [(HKAttributeConceptSelection *)self initWithAttribute:v5 operatorType:v6 value:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt64:type forKey:@"AttributeTypeKey"];
-  [v5 encodeInteger:self->_operatorType forKey:@"AttributeOperatorTypeKey"];
-  [v5 encodeObject:self->_value forKey:@"AttributeValueKey"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:type forKey:@"AttributeTypeKey"];
+  [coderCopy encodeInteger:self->_operatorType forKey:@"AttributeOperatorTypeKey"];
+  [coderCopy encodeObject:self->_value forKey:@"AttributeValueKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = HKAttributeConceptSelection;
-  if ([(HKConceptSelection *)&v18 isEqual:v4])
+  if ([(HKConceptSelection *)&v18 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(HKAttributeConceptSelection *)self type];
-    if (v6 != [v5 type])
+    v5 = equalCopy;
+    type = [(HKAttributeConceptSelection *)self type];
+    if (type != [v5 type])
     {
       goto LABEL_12;
     }
 
-    v7 = [(HKAttributeConceptSelection *)self operatorType];
-    if (v7 != [v5 operatorType])
+    operatorType = [(HKAttributeConceptSelection *)self operatorType];
+    if (operatorType != [v5 operatorType])
     {
       goto LABEL_12;
     }
 
-    v8 = [(HKAttributeConceptSelection *)self value];
-    v9 = [v5 value];
-    v10 = v9;
-    if (v8 == v9)
+    value = [(HKAttributeConceptSelection *)self value];
+    value2 = [v5 value];
+    v10 = value2;
+    if (value == value2)
     {
     }
 
     else
     {
-      v11 = [v5 value];
-      if (!v11)
+      value3 = [v5 value];
+      if (!value3)
       {
 
 LABEL_12:
@@ -117,10 +117,10 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v12 = v11;
-      v13 = [(HKAttributeConceptSelection *)self value];
-      v14 = [v5 value];
-      v15 = [v13 isEqual:v14];
+      v12 = value3;
+      value4 = [(HKAttributeConceptSelection *)self value];
+      value5 = [v5 value];
+      v15 = [value4 isEqual:value5];
 
       if ((v15 & 1) == 0)
       {

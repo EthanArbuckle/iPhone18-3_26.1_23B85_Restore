@@ -1,85 +1,85 @@
 @interface MFMessageCriterion
 + (id)VIPSenderMessageCriterion;
-+ (id)andCompoundCriterionWithCriteria:(id)a3;
++ (id)andCompoundCriterionWithCriteria:(id)criteria;
 + (id)ccMeCriterion;
-+ (id)criterionExcludingMailboxes:(id)a3;
-+ (id)criterionForAccount:(id)a3;
-+ (id)criterionForConversationID:(int64_t)a3;
-+ (id)criterionForDateReceivedOlderThanDate:(id)a3;
-+ (id)criterionForLibraryID:(id)a3;
-+ (id)criterionForMailbox:(id)a3;
-+ (id)criterionForMailboxURL:(id)a3;
-+ (id)criterionForNotDeletedConversationID:(int64_t)a3;
-+ (id)defaultsArrayFromCriteria:(id)a3;
-+ (id)expressionForDate:(id)a3;
++ (id)criterionExcludingMailboxes:(id)mailboxes;
++ (id)criterionForAccount:(id)account;
++ (id)criterionForConversationID:(int64_t)d;
++ (id)criterionForDateReceivedOlderThanDate:(id)date;
++ (id)criterionForLibraryID:(id)d;
++ (id)criterionForMailbox:(id)mailbox;
++ (id)criterionForMailboxURL:(id)l;
++ (id)criterionForNotDeletedConversationID:(int64_t)d;
++ (id)defaultsArrayFromCriteria:(id)criteria;
++ (id)expressionForDate:(id)date;
 + (id)flaggedMessageCriterion;
 + (id)hasAttachmentsCriterion;
 + (id)includesMeCriterion;
-+ (id)messageIsDeletedCriterion:(BOOL)a3;
-+ (id)messageIsJournaledCriterion:(BOOL)a3;
-+ (id)messageIsServerSearchResultCriterion:(BOOL)a3;
-+ (id)notCriterionWithCriterion:(id)a3;
-+ (id)orCompoundCriterionWithCriteria:(id)a3;
++ (id)messageIsDeletedCriterion:(BOOL)criterion;
++ (id)messageIsJournaledCriterion:(BOOL)criterion;
++ (id)messageIsServerSearchResultCriterion:(BOOL)criterion;
++ (id)notCriterionWithCriterion:(id)criterion;
++ (id)orCompoundCriterionWithCriteria:(id)criteria;
 + (id)readMessageCriterion;
-+ (id)stringForCriterionType:(int64_t)a3;
++ (id)stringForCriterionType:(int64_t)type;
 + (id)threadMuteMessageCriterion;
 + (id)threadNotifyMessageCriterion;
 + (id)toMeCriterion;
 + (id)todayMessageCriterion;
 + (id)unreadMessageCriterion;
-+ (int64_t)criterionTypeForString:(id)a3;
-- (BOOL)_evaluateAccountCriterion:(id)a3;
-- (BOOL)_evaluateAttachmentCriterion:(id)a3;
-- (BOOL)_evaluateCompoundCriterion:(id)a3;
-- (BOOL)_evaluateConversationIDCriterion:(id)a3;
-- (BOOL)_evaluateDateCriterion:(id)a3;
-- (BOOL)_evaluateFlagCriterion:(id)a3;
-- (BOOL)_evaluateFullNameCriterion:(id)a3;
-- (BOOL)_evaluateHeaderCriterion:(id)a3;
-- (BOOL)_evaluateIsDigitallySignedCriterion:(id)a3;
-- (BOOL)_evaluateIsEncryptedCriterion:(id)a3;
-- (BOOL)_evaluateMailboxCriterion:(id)a3;
-- (BOOL)_evaluatePartOfStructure:(id)a3;
-- (BOOL)_evaluateSenderHeaderCriterion:(id)a3;
-- (BOOL)doesMessageSatisfyCriterion:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (int64_t)criterionTypeForString:(id)string;
+- (BOOL)_evaluateAccountCriterion:(id)criterion;
+- (BOOL)_evaluateAttachmentCriterion:(id)criterion;
+- (BOOL)_evaluateCompoundCriterion:(id)criterion;
+- (BOOL)_evaluateConversationIDCriterion:(id)criterion;
+- (BOOL)_evaluateDateCriterion:(id)criterion;
+- (BOOL)_evaluateFlagCriterion:(id)criterion;
+- (BOOL)_evaluateFullNameCriterion:(id)criterion;
+- (BOOL)_evaluateHeaderCriterion:(id)criterion;
+- (BOOL)_evaluateIsDigitallySignedCriterion:(id)criterion;
+- (BOOL)_evaluateIsEncryptedCriterion:(id)criterion;
+- (BOOL)_evaluateMailboxCriterion:(id)criterion;
+- (BOOL)_evaluatePartOfStructure:(id)structure;
+- (BOOL)_evaluateSenderHeaderCriterion:(id)criterion;
+- (BOOL)doesMessageSatisfyCriterion:(id)criterion;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isVIPCriterion;
 - (MFMessageCriterion)init;
-- (MFMessageCriterion)initWithCriterion:(id)a3 expression:(id)a4;
+- (MFMessageCriterion)initWithCriterion:(id)criterion expression:(id)expression;
 - (NSString)criterionIdentifier;
 - (NSString)expression;
 - (id)_headersRequiredForEvaluation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dateFromExpression;
 - (id)description;
-- (id)descriptionWithDepth:(unsigned int)a3;
+- (id)descriptionWithDepth:(unsigned int)depth;
 - (id)dictionaryRepresentation;
 - (id)simplifiedCriterion;
 - (id)simplifyOnce;
-- (id)stringForMessageRuleQualifier:(int)a3;
-- (int)messageRuleQualifierForString:(id)a3;
+- (id)stringForMessageRuleQualifier:(int)qualifier;
+- (int)messageRuleQualifierForString:(id)string;
 - (int64_t)criterionType;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setCriteria:(id)a3;
-- (void)setCriterionIdentifier:(id)a3;
-- (void)setCriterionType:(int64_t)a3;
-- (void)setDateIsRelative:(BOOL)a3;
-- (void)setExpression:(id)a3;
-- (void)setIncludeRelatedMessages:(BOOL)a3;
+- (void)setCriteria:(id)criteria;
+- (void)setCriterionIdentifier:(id)identifier;
+- (void)setCriterionType:(int64_t)type;
+- (void)setDateIsRelative:(BOOL)relative;
+- (void)setExpression:(id)expression;
+- (void)setIncludeRelatedMessages:(BOOL)messages;
 @end
 
 @implementation MFMessageCriterion
 
-+ (id)defaultsArrayFromCriteria:(id)a3
++ (id)defaultsArrayFromCriteria:(id)criteria
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  criteriaCopy = criteria;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [criteriaCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -91,22 +91,22 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(criteriaCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-        if (v9)
+        dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+        if (dictionaryRepresentation)
         {
           if (!v6)
           {
-            v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+            v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(criteriaCopy, "count")}];
           }
 
-          [v6 addObject:v9];
+          [v6 addObject:dictionaryRepresentation];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [criteriaCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -142,16 +142,16 @@
   return v2;
 }
 
-- (MFMessageCriterion)initWithCriterion:(id)a3 expression:(id)a4
+- (MFMessageCriterion)initWithCriterion:(id)criterion expression:(id)expression
 {
-  v6 = a3;
-  v7 = a4;
+  criterionCopy = criterion;
+  expressionCopy = expression;
   v8 = [(MFMessageCriterion *)self init];
   v9 = v8;
   if (v8)
   {
-    [(MFMessageCriterion *)v8 setCriterionIdentifier:v6];
-    [(MFMessageCriterion *)v9 setExpression:v7];
+    [(MFMessageCriterion *)v8 setCriterionIdentifier:criterionCopy];
+    [(MFMessageCriterion *)v9 setExpression:expressionCopy];
   }
 
   return v9;
@@ -164,10 +164,10 @@
   [(MFMessageCriterion *)&v2 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
     goto LABEL_10;
@@ -180,33 +180,33 @@
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [(MFMessageCriterion *)self criterionIdentifier];
-  v7 = [(MFMessageCriterion *)v5 criterionIdentifier];
-  v8 = [v6 isEqualToString:v7];
+  v5 = equalCopy;
+  criterionIdentifier = [(MFMessageCriterion *)self criterionIdentifier];
+  criterionIdentifier2 = [(MFMessageCriterion *)v5 criterionIdentifier];
+  v8 = [criterionIdentifier isEqualToString:criterionIdentifier2];
 
   if (!v8)
   {
     goto LABEL_6;
   }
 
-  v9 = [(MFMessageCriterion *)self qualifier];
-  if (v9 != [(MFMessageCriterion *)v5 qualifier])
+  qualifier = [(MFMessageCriterion *)self qualifier];
+  if (qualifier != [(MFMessageCriterion *)v5 qualifier])
   {
     goto LABEL_6;
   }
 
-  v10 = [(MFMessageCriterion *)self includeRemoteBodyContent];
-  if (v10 != [(MFMessageCriterion *)v5 includeRemoteBodyContent])
+  includeRemoteBodyContent = [(MFMessageCriterion *)self includeRemoteBodyContent];
+  if (includeRemoteBodyContent != [(MFMessageCriterion *)v5 includeRemoteBodyContent])
   {
     goto LABEL_6;
   }
 
   if ([(MFMessageCriterion *)self criterionType]== 24)
   {
-    v13 = [(MFMessageCriterion *)self criteria];
-    v14 = [(MFMessageCriterion *)v5 criteria];
-    v15 = [v13 isEqualToArray:v14];
+    criteria = [(MFMessageCriterion *)self criteria];
+    criteria2 = [(MFMessageCriterion *)v5 criteria];
+    v15 = [criteria isEqualToArray:criteria2];
 
     if (v15)
     {
@@ -216,9 +216,9 @@
 
   else
   {
-    v16 = [(MFMessageCriterion *)self expression];
-    v17 = [(MFMessageCriterion *)v5 expression];
-    v18 = [v16 isEqualToString:v17];
+    expression = [(MFMessageCriterion *)self expression];
+    expression2 = [(MFMessageCriterion *)v5 expression];
+    v18 = [expression isEqualToString:expression2];
 
     if (v18)
     {
@@ -253,36 +253,36 @@ LABEL_10:
   return v4;
 }
 
-- (id)descriptionWithDepth:(unsigned int)a3
+- (id)descriptionWithDepth:(unsigned int)depth
 {
-  v5 = [MEMORY[0x277CCAB68] stringWithCapacity:4 * a3];
-  if (a3)
+  depth = [MEMORY[0x277CCAB68] stringWithCapacity:4 * depth];
+  if (depth)
   {
-    v6 = a3;
+    depthCopy = depth;
     do
     {
-      --v6;
-      [v5 appendString:@"    "];
+      --depthCopy;
+      [depth appendString:@"    "];
     }
 
-    while (v6);
+    while (depthCopy);
   }
 
   if ([(MFMessageCriterion *)self criterionType]== 24)
   {
-    v7 = [(MFMessageCriterion *)self criteria];
-    v8 = [MEMORY[0x277CCAB68] string];
-    v9 = [v7 count];
+    criteria = [(MFMessageCriterion *)self criteria];
+    string = [MEMORY[0x277CCAB68] string];
+    v9 = [criteria count];
     if (v9)
     {
       v10 = v9;
-      [v8 appendString:@"\n"];
+      [string appendString:@"\n"];
       v11 = v10 - 1;
       do
       {
-        v12 = [v7 objectAtIndex:v11];
-        v13 = [v12 descriptionWithDepth:a3 + 1];
-        [v8 appendString:v13];
+        v12 = [criteria objectAtIndex:v11];
+        v13 = [v12 descriptionWithDepth:depth + 1];
+        [string appendString:v13];
 
         --v11;
       }
@@ -292,18 +292,18 @@ LABEL_10:
 
     else
     {
-      [v8 appendString:@"(none)"];
+      [string appendString:@"(none)"];
     }
 
-    v24 = 0x277CCA000;
+    name2 = 0x277CCA000;
     v25 = MEMORY[0x277CCACA8];
-    v20 = [(MFMessageCriterion *)self criterionIdentifier];
-    v26 = [(MFMessageCriterion *)self name];
-    if (v26)
+    criterionIdentifier = [(MFMessageCriterion *)self criterionIdentifier];
+    name = [(MFMessageCriterion *)self name];
+    if (name)
     {
       v27 = MEMORY[0x277CCACA8];
-      v24 = [(MFMessageCriterion *)self name];
-      v28 = [v27 stringWithFormat:@"%@  Name: %@\n", v5, v24];
+      name2 = [(MFMessageCriterion *)self name];
+      v28 = [v27 stringWithFormat:@"%@  Name: %@\n", depth, name2];
     }
 
     else
@@ -311,15 +311,15 @@ LABEL_10:
       v28 = &stru_288159858;
     }
 
-    v29 = [(MFMessageCriterion *)self allCriteriaMustBeSatisfied];
+    allCriteriaMustBeSatisfied = [(MFMessageCriterion *)self allCriteriaMustBeSatisfied];
     v30 = @"No";
-    if (v29)
+    if (allCriteriaMustBeSatisfied)
     {
       v30 = @"Yes";
     }
 
-    v31 = [v25 stringWithFormat:@"%@Criterion: %@\n%@%@  All criteria must be satisfied: %@\n%@  Criteria: %@", v5, v20, v28, v5, v30, v5, v8];
-    if (v26)
+    v31 = [v25 stringWithFormat:@"%@Criterion: %@\n%@%@  All criteria must be satisfied: %@\n%@  Criteria: %@", depth, criterionIdentifier, v28, depth, v30, depth, string];
+    if (name)
     {
     }
   }
@@ -328,38 +328,38 @@ LABEL_10:
   {
     if ([(MFMessageCriterion *)self criterionType]== 25)
     {
-      v14 = [(MFMessageCriterion *)self criteria];
-      v15 = [v14 count];
+      criteria2 = [(MFMessageCriterion *)self criteria];
+      v15 = [criteria2 count];
 
       if (v15)
       {
-        v16 = [(MFMessageCriterion *)self criteria];
-        v17 = [v16 firstObject];
-        v7 = [v17 descriptionWithDepth:a3 + 1];
+        criteria3 = [(MFMessageCriterion *)self criteria];
+        firstObject = [criteria3 firstObject];
+        criteria = [firstObject descriptionWithDepth:depth + 1];
       }
 
       else
       {
-        v7 = 0;
+        criteria = 0;
       }
 
       v32 = MEMORY[0x277CCACA8];
-      v8 = [(MFMessageCriterion *)self criterionIdentifier];
-      v31 = [v32 stringWithFormat:@"%@Criterion: %@\n%@ Sub-Criterion: \n%@", v5, v8, v5, v7];
+      string = [(MFMessageCriterion *)self criterionIdentifier];
+      v31 = [v32 stringWithFormat:@"%@Criterion: %@\n%@ Sub-Criterion: \n%@", depth, string, depth, criteria];
       goto LABEL_30;
     }
 
-    v18 = 0x277CCA000;
+    name4 = 0x277CCA000;
     v19 = MEMORY[0x277CCACA8];
-    v7 = [(MFMessageCriterion *)self criterionIdentifier];
-    v8 = [(MFMessageCriterion *)self _qualifierString];
-    v20 = [(MFMessageCriterion *)self expression];
-    v21 = [(MFMessageCriterion *)self name];
-    if (v21)
+    criteria = [(MFMessageCriterion *)self criterionIdentifier];
+    string = [(MFMessageCriterion *)self _qualifierString];
+    criterionIdentifier = [(MFMessageCriterion *)self expression];
+    name3 = [(MFMessageCriterion *)self name];
+    if (name3)
     {
       v22 = MEMORY[0x277CCACA8];
-      v18 = [(MFMessageCriterion *)self name];
-      v23 = [v22 stringWithFormat:@"%@  Name: %@\n", v5, v18];
+      name4 = [(MFMessageCriterion *)self name];
+      v23 = [v22 stringWithFormat:@"%@  Name: %@\n", depth, name4];
     }
 
     else
@@ -367,8 +367,8 @@ LABEL_10:
       v23 = &stru_288159858;
     }
 
-    v31 = [v19 stringWithFormat:@"%@Criterion: %@\n%@  Qualifier: %@\n%@  Expression: %@\n%@", v5, v7, v5, v8, v5, v20, v23];
-    if (v21)
+    v31 = [v19 stringWithFormat:@"%@Criterion: %@\n%@  Qualifier: %@\n%@  Expression: %@\n%@", depth, criteria, depth, string, depth, criterionIdentifier, v23];
+    if (name3)
     {
     }
   }
@@ -392,7 +392,7 @@ LABEL_30:
 {
   v29[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  v4 = [(MFMessageCriterion *)self _qualifierString];
+  _qualifierString = [(MFMessageCriterion *)self _qualifierString];
   [v3 setObject:self->_uniqueId forKey:@"CriterionUniqueId"];
   criterionIdentifier = self->_criterionIdentifier;
   if (criterionIdentifier && ![(NSString *)criterionIdentifier isEqualToString:&stru_288159858])
@@ -406,9 +406,9 @@ LABEL_30:
     [v3 setObject:self->_expression forKey:@"Expression"];
   }
 
-  if (v4 && ([v4 isEqualToString:&stru_288159858] & 1) == 0)
+  if (_qualifierString && ([_qualifierString isEqualToString:&stru_288159858] & 1) == 0)
   {
-    [v3 setObject:v4 forKey:@"Qualifier"];
+    [v3 setObject:_qualifierString forKey:@"Qualifier"];
   }
 
   if ([(MFMessageCriterion *)self criterionType]== 7)
@@ -422,8 +422,8 @@ LABEL_30:
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
       v10 = [MailAccount URLForInfo:v9];
 
-      v11 = [v10 absoluteString];
-      [v3 setObject:v11 forKey:@"AccountURL"];
+      absoluteString = [v10 absoluteString];
+      [v3 setObject:absoluteString forKey:@"AccountURL"];
     }
   }
 
@@ -457,8 +457,8 @@ LABEL_30:
               objc_enumerationMutation(v14);
             }
 
-            v19 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-            [v13 addObject:v19];
+            dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+            [v13 addObject:dictionaryRepresentation];
           }
 
           v16 = [(NSArray *)v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -485,31 +485,31 @@ LABEL_30:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(MFMessageCriterion *)self criterionType];
-  v7 = [(MFMessageCriterion *)self qualifier];
-  v8 = [(MFMessageCriterion *)self expression];
-  v9 = [v5 initWithType:v6 qualifier:v7 expression:v8];
+  criterionType = [(MFMessageCriterion *)self criterionType];
+  qualifier = [(MFMessageCriterion *)self qualifier];
+  expression = [(MFMessageCriterion *)self expression];
+  v9 = [v5 initWithType:criterionType qualifier:qualifier expression:expression];
 
-  v10 = [(NSString *)self->_criterionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_criterionIdentifier copyWithZone:zone];
   v11 = *(v9 + 8);
   *(v9 + 8) = v10;
 
-  v12 = [(NSString *)self->_name copyWithZone:a3];
+  v12 = [(NSString *)self->_name copyWithZone:zone];
   v13 = *(v9 + 32);
   *(v9 + 32) = v12;
 
-  v14 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v14 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v15 = *(v9 + 40);
   *(v9 + 40) = v14;
 
-  v16 = [(NSArray *)self->_criteria copyWithZone:a3];
+  v16 = [(NSArray *)self->_criteria copyWithZone:zone];
   v17 = *(v9 + 56);
   *(v9 + 56) = v16;
 
-  v18 = [(NSArray *)self->_requiredHeaders copyWithZone:a3];
+  v18 = [(NSArray *)self->_requiredHeaders copyWithZone:zone];
   v19 = *(v9 + 72);
   *(v9 + 72) = v18;
 
@@ -538,9 +538,9 @@ LABEL_30:
   return result;
 }
 
-- (void)setCriterionType:(int64_t)a3
+- (void)setCriterionType:(int64_t)type
 {
-  v4 = [objc_opt_class() stringForCriterionType:a3];
+  v4 = [objc_opt_class() stringForCriterionType:type];
   [(MFMessageCriterion *)self setCriterionIdentifier:v4];
 
   self->_type = -1;
@@ -559,17 +559,17 @@ LABEL_30:
   }
 }
 
-- (void)setCriterionIdentifier:(id)a3
+- (void)setCriterionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![(__CFString *)v4 caseInsensitiveCompare:@"To or Cc"])
+  identifierCopy = identifier;
+  if (![(__CFString *)identifierCopy caseInsensitiveCompare:@"To or Cc"])
   {
 
-    v4 = @"AnyRecipient";
+    identifierCopy = @"AnyRecipient";
   }
 
   criterionIdentifier = self->_criterionIdentifier;
-  self->_criterionIdentifier = &v4->isa;
+  self->_criterionIdentifier = &identifierCopy->isa;
 
   self->_type = -1;
 }
@@ -579,9 +579,9 @@ LABEL_30:
   expression = self->_expression;
   if (!expression)
   {
-    v4 = [(NSIndexSet *)self->_libraryIdentifiers mf_commaSeparatedString];
+    mf_commaSeparatedString = [(NSIndexSet *)self->_libraryIdentifiers mf_commaSeparatedString];
     v5 = self->_expression;
-    self->_expression = v4;
+    self->_expression = mf_commaSeparatedString;
 
     expression = self->_expression;
   }
@@ -589,9 +589,9 @@ LABEL_30:
   return expression;
 }
 
-- (void)setExpression:(id)a3
+- (void)setExpression:(id)expression
 {
-  v4 = [a3 copy];
+  v4 = [expression copy];
   expression = self->_expression;
   self->_expression = v4;
 
@@ -613,10 +613,10 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v4 = [(MFMessageCriterion *)self criterionType];
-    if (v4 <= 18)
+    criterionType = [(MFMessageCriterion *)self criterionType];
+    if (criterionType <= 18)
     {
-      if ((v4 - 14) < 2 || v4 == 9)
+      if ((criterionType - 14) < 2 || criterionType == 9)
       {
         v7 = *MEMORY[0x277D06F50];
         v30[0] = *MEMORY[0x277D07038];
@@ -640,7 +640,7 @@ LABEL_25:
 
     else
     {
-      if ((v4 - 19) < 3)
+      if ((criterionType - 19) < 3)
       {
         v27 = *MEMORY[0x277D07060];
         v5 = MEMORY[0x277CBEA60];
@@ -650,7 +650,7 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      if (v4 == 38)
+      if (criterionType == 38)
       {
         v29 = *MEMORY[0x277D07038];
         v5 = MEMORY[0x277CBEA60];
@@ -658,7 +658,7 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      if (v4 == 39)
+      if (criterionType == 39)
       {
         v28 = *MEMORY[0x277D06F50];
         v5 = MEMORY[0x277CBEA60];
@@ -667,8 +667,8 @@ LABEL_23:
       }
     }
 
-    v10 = [(MFMessageCriterion *)self criterionIdentifier];
-    v11 = [v10 componentsSeparatedByString:@" or "];
+    criterionIdentifier = [(MFMessageCriterion *)self criterionIdentifier];
+    v11 = [criterionIdentifier componentsSeparatedByString:@" or "];
 
     v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
     v22 = 0u;
@@ -716,17 +716,17 @@ LABEL_27:
   return requiredHeaders;
 }
 
-- (BOOL)_evaluateCompoundCriterion:(id)a3
+- (BOOL)_evaluateCompoundCriterion:(id)criterion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MFMessageCriterion *)self allCriteriaMustBeSatisfied];
+  criterionCopy = criterion;
+  allCriteriaMustBeSatisfied = [(MFMessageCriterion *)self allCriteriaMustBeSatisfied];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(MFMessageCriterion *)self criteria];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  criteria = [(MFMessageCriterion *)self criteria];
+  v7 = [criteria countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -737,18 +737,18 @@ LABEL_3:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(criteria);
       }
 
-      v11 = [*(*(&v14 + 1) + 8 * v10) doesMessageSatisfyCriterion:v4];
-      if (v5 != v11)
+      v11 = [*(*(&v14 + 1) + 8 * v10) doesMessageSatisfyCriterion:criterionCopy];
+      if (allCriteriaMustBeSatisfied != v11)
       {
         break;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [criteria countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -768,37 +768,37 @@ LABEL_3:
   return v11;
 }
 
-- (BOOL)_evaluateFlagCriterion:(id)a3
+- (BOOL)_evaluateFlagCriterion:(id)criterion
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MFMessageCriterion *)self expression];
-  v11 = v5;
+  criterionCopy = criterion;
+  expression = [(MFMessageCriterion *)self expression];
+  v11 = expression;
   v12[0] = &unk_2881756C8;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
   v7 = IMAPMessageFlagsByApplyingDictionary(0, v6);
-  v8 = [v4 messageFlags];
+  messageFlags = [criterionCopy messageFlags];
 
   LOBYTE(self) = [(MFMessageCriterion *)self qualifier]== 3;
   v9 = *MEMORY[0x277D85DE8];
-  return self ^ ((v8 & v7) == 0);
+  return self ^ ((messageFlags & v7) == 0);
 }
 
-- (BOOL)_evaluateHeaderCriterion:(id)a3
+- (BOOL)_evaluateHeaderCriterion:(id)criterion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MFMessageCriterion *)self expression];
-  v6 = [(MFMessageCriterion *)self qualifier];
-  if (v6 == 3 || v5 && [v5 length])
+  criterionCopy = criterion;
+  expression = [(MFMessageCriterion *)self expression];
+  qualifier = [(MFMessageCriterion *)self qualifier];
+  if (qualifier == 3 || expression && [expression length])
   {
-    v25 = v4;
-    v29 = [v4 headers];
+    v25 = criterionCopy;
+    headers = [criterionCopy headers];
     [(MFMessageCriterion *)self _headersRequiredForEvaluation];
     v35 = 0u;
     v36 = 0u;
-    v7 = v6 == 4;
+    v7 = qualifier == 4;
     v37 = 0u;
     obj = v38 = 0u;
     v28 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -806,7 +806,7 @@ LABEL_3:
     {
       v27 = *v36;
       LOBYTE(v8) = 1;
-      v31 = v5;
+      v31 = expression;
 LABEL_6:
       v9 = 0;
       while (1)
@@ -822,12 +822,12 @@ LABEL_6:
         }
 
         v10 = *(*(&v35 + 1) + 8 * v9);
-        v11 = [v29 copyHeadersForKey:v10];
+        v11 = [headers copyHeadersForKey:v10];
         v34 = [MEMORY[0x277D24F40] isStructuredHeaderKey:v10];
         v12 = [v11 count];
         v13 = v12;
         v30 = v9;
-        if (v6 != 3 || v12)
+        if (qualifier != 3 || v12)
         {
           if (v12)
           {
@@ -837,7 +837,7 @@ LABEL_6:
             do
             {
               v15 = [v11 objectAtIndex:v14];
-              if (v15 && [v5 length])
+              if (v15 && [expression length])
               {
                 if (v34)
                 {
@@ -860,7 +860,7 @@ LABEL_6:
                     v21 = [v17 objectAtIndex:v20 - 1];
                     v22 = [(MFMessageCriterion *)self _evaluatePartOfStructure:v21];
 
-                    if (v6 == 4)
+                    if (qualifier == 4)
                     {
                       v8 = v22;
                     }
@@ -870,7 +870,7 @@ LABEL_6:
                       v8 = !v22;
                     }
 
-                    if (v6 == 4)
+                    if (qualifier == 4)
                     {
                       v7 &= v22;
                     }
@@ -896,7 +896,7 @@ LABEL_6:
                   v8 = 1;
                 }
 
-                v5 = v31;
+                expression = v31;
                 v13 = v32;
                 v11 = v33;
               }
@@ -921,7 +921,7 @@ LABEL_6:
 
         else
         {
-          v7 |= [v5 length] == 0;
+          v7 |= [expression length] == 0;
         }
 
         LOBYTE(v8) = 1;
@@ -941,7 +941,7 @@ LABEL_38:
       }
     }
 
-    v4 = v25;
+    criterionCopy = v25;
   }
 
   else
@@ -998,29 +998,29 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)_evaluateSenderHeaderCriterion:(id)a3
+- (BOOL)_evaluateSenderHeaderCriterion:(id)criterion
 {
-  v4 = [a3 firstSender];
-  v5 = [v4 mf_addressComment];
-  v6 = [v4 mf_uncommentedAddress];
-  v7 = [(MFMessageCriterion *)self _evaluatePartOfStructure:v6]|| [(MFMessageCriterion *)self _evaluatePartOfStructure:v5];
+  firstSender = [criterion firstSender];
+  mf_addressComment = [firstSender mf_addressComment];
+  mf_uncommentedAddress = [firstSender mf_uncommentedAddress];
+  v7 = [(MFMessageCriterion *)self _evaluatePartOfStructure:mf_uncommentedAddress]|| [(MFMessageCriterion *)self _evaluatePartOfStructure:mf_addressComment];
 
   return v7;
 }
 
-- (BOOL)_evaluatePartOfStructure:(id)a3
+- (BOOL)_evaluatePartOfStructure:(id)structure
 {
-  v4 = a3;
-  if (v4)
+  structureCopy = structure;
+  if (structureCopy)
   {
-    v5 = [(MFMessageCriterion *)self expression];
-    v6 = [(MFMessageCriterion *)self qualifier];
-    if (v6 > 2)
+    expression = [(MFMessageCriterion *)self expression];
+    qualifier = [(MFMessageCriterion *)self qualifier];
+    if (qualifier > 2)
     {
-      switch(v6)
+      switch(qualifier)
       {
         case 7:
-          v7 = [v4 localizedCaseInsensitiveCompare:v5] != 0;
+          v7 = [structureCopy localizedCaseInsensitiveCompare:expression] != 0;
           goto LABEL_17;
         case 4:
           v8 = 1;
@@ -1028,7 +1028,7 @@ LABEL_15:
           v9 = 385;
           goto LABEL_16;
         case 3:
-          v7 = [v4 localizedCaseInsensitiveCompare:v5] == 0;
+          v7 = [structureCopy localizedCaseInsensitiveCompare:expression] == 0;
 LABEL_17:
 
           goto LABEL_18;
@@ -1039,7 +1039,7 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    if (v6 == 1)
+    if (qualifier == 1)
     {
       v8 = 0;
       v9 = 393;
@@ -1047,7 +1047,7 @@ LABEL_14:
 
     else
     {
-      if (v6 != 2)
+      if (qualifier != 2)
       {
         goto LABEL_14;
       }
@@ -1057,9 +1057,9 @@ LABEL_14:
     }
 
 LABEL_16:
-    v10 = [v4 length];
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
-    v12 = [v4 rangeOfString:v5 options:v9 range:0 locale:{v10, v11}];
+    v10 = [structureCopy length];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v12 = [structureCopy rangeOfString:expression options:v9 range:0 locale:{v10, currentLocale}];
 
     v7 = v8 ^ (v12 != 0x7FFFFFFFFFFFFFFFLL);
     goto LABEL_17;
@@ -1071,30 +1071,30 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)_evaluateFullNameCriterion:(id)a3
+- (BOOL)_evaluateFullNameCriterion:(id)criterion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [a3 headers];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [v3 copyAddressListForTo];
-  if ([v5 count])
+  headers = [criterion headers];
+  array = [MEMORY[0x277CBEB18] array];
+  copyAddressListForTo = [headers copyAddressListForTo];
+  if ([copyAddressListForTo count])
   {
-    [v4 addObjectsFromArray:v5];
+    [array addObjectsFromArray:copyAddressListForTo];
   }
 
-  v6 = [v3 copyAddressListForCc];
-  if ([v6 count])
+  copyAddressListForCc = [headers copyAddressListForCc];
+  if ([copyAddressListForCc count])
   {
-    [v4 addObjectsFromArray:v6];
+    [array addObjectsFromArray:copyAddressListForCc];
   }
 
-  v20 = v3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  v20 = headers;
+  array2 = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v4;
+  v8 = array;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -1110,12 +1110,12 @@ LABEL_18:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 mf_addressComment];
-        v15 = [v14 lowercaseString];
+        mf_addressComment = [v13 mf_addressComment];
+        lowercaseString = [mf_addressComment lowercaseString];
 
-        if (v15 && [v13 caseInsensitiveCompare:v15])
+        if (lowercaseString && [v13 caseInsensitiveCompare:lowercaseString])
         {
-          [v7 addObject:v15];
+          [array2 addObject:lowercaseString];
         }
       }
 
@@ -1130,54 +1130,54 @@ LABEL_18:
   return v16;
 }
 
-- (BOOL)_evaluateIsDigitallySignedCriterion:(id)a3
+- (BOOL)_evaluateIsDigitallySignedCriterion:(id)criterion
 {
-  v3 = a3;
-  v4 = [v3 messageBodyUpdatingFlags:0];
-  [v3 calculateAttachmentInfoFromBody:v4];
+  criterionCopy = criterion;
+  v4 = [criterionCopy messageBodyUpdatingFlags:0];
+  [criterionCopy calculateAttachmentInfoFromBody:v4];
 
-  v5 = [v3 messageFlags];
-  return (v5 >> 23) & 1;
+  messageFlags = [criterionCopy messageFlags];
+  return (messageFlags >> 23) & 1;
 }
 
-- (BOOL)_evaluateIsEncryptedCriterion:(id)a3
+- (BOOL)_evaluateIsEncryptedCriterion:(id)criterion
 {
-  v3 = a3;
-  v4 = [v3 messageBodyUpdatingFlags:0];
-  [v3 calculateAttachmentInfoFromBody:v4];
+  criterionCopy = criterion;
+  v4 = [criterionCopy messageBodyUpdatingFlags:0];
+  [criterionCopy calculateAttachmentInfoFromBody:v4];
 
-  v5 = [v3 messageFlags];
-  return (v5 >> 3) & 1;
+  messageFlags = [criterionCopy messageFlags];
+  return (messageFlags >> 3) & 1;
 }
 
-- (BOOL)_evaluateAttachmentCriterion:(id)a3
+- (BOOL)_evaluateAttachmentCriterion:(id)criterion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MFMessageCriterion *)self expression];
-  v6 = v5;
-  if (!v5 || ([v5 isEqualToString:&stru_288159858] & 1) != 0)
+  criterionCopy = criterion;
+  expression = [(MFMessageCriterion *)self expression];
+  v6 = expression;
+  if (!expression || ([expression isEqualToString:&stru_288159858] & 1) != 0)
   {
     v7 = 0;
     goto LABEL_30;
   }
 
-  v8 = [v4 messageBodyUpdatingFlags:0];
+  v8 = [criterionCopy messageBodyUpdatingFlags:0];
   v9 = +[MFActivityMonitor currentMonitor];
-  v10 = [v9 error];
+  error = [v9 error];
   [v9 setError:0];
-  [v4 calculateAttachmentInfoFromBody:v8];
-  v11 = [v9 error];
-  v12 = [v11 code];
+  [criterionCopy calculateAttachmentInfoFromBody:v8];
+  error2 = [v9 error];
+  code = [error2 code];
 
-  [v9 setError:v10];
-  if ((v12 - 1037) > 0xFFFFFFFFFFFFFFFDLL || ![v4 numberOfAttachments])
+  [v9 setError:error];
+  if ((code - 1037) > 0xFFFFFFFFFFFFFFFDLL || ![criterionCopy numberOfAttachments])
   {
     v7 = 0;
     goto LABEL_29;
   }
 
-  v13 = [(MFMessageCriterion *)self qualifier];
+  qualifier = [(MFMessageCriterion *)self qualifier];
   [v8 attachments];
   v25 = 0u;
   v26 = 0u;
@@ -1191,7 +1191,7 @@ LABEL_18:
   }
 
   v16 = v15;
-  v23 = v10;
+  v23 = error;
   v24 = v8;
   v17 = *v26;
   while (2)
@@ -1203,12 +1203,12 @@ LABEL_18:
         objc_enumerationMutation(v14);
       }
 
-      v19 = [*(*(&v25 + 1) + 8 * i) mimePart];
-      v20 = [v19 attachmentFilename];
+      mimePart = [*(*(&v25 + 1) + 8 * i) mimePart];
+      attachmentFilename = [mimePart attachmentFilename];
 
-      if (v13 == 3)
+      if (qualifier == 3)
       {
-        if (([v20 isEqualToString:v6] & 1) == 0)
+        if (([attachmentFilename isEqualToString:v6] & 1) == 0)
         {
           goto LABEL_19;
         }
@@ -1218,11 +1218,11 @@ LABEL_23:
         goto LABEL_26;
       }
 
-      if (v13 != 2)
+      if (qualifier != 2)
       {
-        if (v13 == 1)
+        if (qualifier == 1)
         {
-          if ([v20 hasPrefix:v6])
+          if ([attachmentFilename hasPrefix:v6])
           {
             goto LABEL_23;
           }
@@ -1230,13 +1230,13 @@ LABEL_23:
           goto LABEL_19;
         }
 
-        v7 = v13 == 4 * ([v20 rangeOfString:v6 options:1] == 0x7FFFFFFFFFFFFFFFLL);
+        v7 = qualifier == 4 * ([attachmentFilename rangeOfString:v6 options:1] == 0x7FFFFFFFFFFFFFFFLL);
 LABEL_26:
 
         goto LABEL_27;
       }
 
-      if ([v20 hasSuffix:v6])
+      if ([attachmentFilename hasSuffix:v6])
       {
         goto LABEL_23;
       }
@@ -1255,7 +1255,7 @@ LABEL_19:
 
   v7 = 0;
 LABEL_27:
-  v10 = v23;
+  error = v23;
   v8 = v24;
 LABEL_28:
 
@@ -1266,36 +1266,36 @@ LABEL_30:
   return v7;
 }
 
-- (BOOL)_evaluateAccountCriterion:(id)a3
+- (BOOL)_evaluateAccountCriterion:(id)criterion
 {
-  v4 = a3;
-  v5 = [(MFMessageCriterion *)self expression];
-  v6 = [MailAccount accountWithPath:v5];
-  v7 = [v4 account];
+  criterionCopy = criterion;
+  expression = [(MFMessageCriterion *)self expression];
+  v6 = [MailAccount accountWithPath:expression];
+  account = [criterionCopy account];
 
-  return v7 == v6;
+  return account == v6;
 }
 
-- (BOOL)_evaluateDateCriterion:(id)a3
+- (BOOL)_evaluateDateCriterion:(id)criterion
 {
-  v4 = a3;
-  v5 = [(MFMessageCriterion *)self expression];
-  v6 = [(MFMessageCriterion *)self qualifier];
-  v7 = [(MFMessageCriterion *)self criterionType];
-  if (!v5)
+  criterionCopy = criterion;
+  expression = [(MFMessageCriterion *)self expression];
+  qualifier = [(MFMessageCriterion *)self qualifier];
+  criterionType = [(MFMessageCriterion *)self criterionType];
+  if (!expression)
   {
     goto LABEL_6;
   }
 
-  v8 = v7;
-  if ([v5 intValue] < 1)
+  v8 = criterionType;
+  if ([expression intValue] < 1)
   {
     goto LABEL_6;
   }
 
   if (v8 == 11)
   {
-    v9 = [v4 dateReceived];
+    dateReceived = [criterionCopy dateReceived];
     goto LABEL_8;
   }
 
@@ -1307,19 +1307,19 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v9 = [v4 dateSent];
+  dateReceived = [criterionCopy dateSent];
 LABEL_8:
-  v10 = v9;
-  [v9 timeIntervalSince1970];
+  v10 = dateReceived;
+  [dateReceived timeIntervalSince1970];
   v13 = v12;
-  [v5 doubleValue];
+  [expression doubleValue];
   v15 = v13 <= v14;
-  if (v6 != 5)
+  if (qualifier != 5)
   {
     v15 = 0;
   }
 
-  if (v6 == 6)
+  if (qualifier == 6)
   {
     v11 = v13 >= v14;
   }
@@ -1334,21 +1334,21 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)_evaluateConversationIDCriterion:(id)a3
+- (BOOL)_evaluateConversationIDCriterion:(id)criterion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MFMessageCriterion *)self expression];
-  v6 = [v5 longLongValue];
+  criterionCopy = criterion;
+  expression = [(MFMessageCriterion *)self expression];
+  longLongValue = [expression longLongValue];
 
   if ([(MFMessageCriterion *)self qualifier]== 3)
   {
-    v7 = [v4 conversationID] == v6;
+    v7 = [criterionCopy conversationID] == longLongValue;
   }
 
   else if ([(MFMessageCriterion *)self qualifier]== 7)
   {
-    v7 = [v4 conversationID] != v6;
+    v7 = [criterionCopy conversationID] != longLongValue;
   }
 
   else
@@ -1357,9 +1357,9 @@ LABEL_13:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218240;
-      v12 = [(MFMessageCriterion *)self qualifier];
+      qualifier = [(MFMessageCriterion *)self qualifier];
       v13 = 2048;
-      v14 = [(MFMessageCriterion *)self criterionType];
+      criterionType = [(MFMessageCriterion *)self criterionType];
       _os_log_impl(&dword_2720B1000, v8, OS_LOG_TYPE_DEFAULT, "Unhandled qualifier %ld for type %ld", &v11, 0x16u);
     }
 
@@ -1370,14 +1370,14 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)_evaluateMailboxCriterion:(id)a3
+- (BOOL)_evaluateMailboxCriterion:(id)criterion
 {
-  v4 = a3;
+  criterionCopy = criterion;
   if ([(MFMessageCriterion *)self qualifier]== 3)
   {
-    v5 = [(MFMessageCriterion *)self expression];
-    v6 = [v4 originalMailboxURL];
-    v7 = [v5 isEqualToString:v6];
+    expression = [(MFMessageCriterion *)self expression];
+    originalMailboxURL = [criterionCopy originalMailboxURL];
+    v7 = [expression isEqualToString:originalMailboxURL];
   }
 
   else
@@ -1388,10 +1388,10 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)doesMessageSatisfyCriterion:(id)a3
+- (BOOL)doesMessageSatisfyCriterion:(id)criterion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  criterionCopy = criterion;
   v5 = 1;
   switch([(MFMessageCriterion *)self criterionType])
   {
@@ -1399,61 +1399,61 @@ LABEL_13:
     case 9:
     case 38:
     case 39:
-      v6 = [(MFMessageCriterion *)self _evaluateHeaderCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateHeaderCriterion:criterionCopy];
       goto LABEL_19;
     case 3:
     case 4:
-      v6 = [(MFMessageCriterion *)self _evaluateAddressBookCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateAddressBookCriterion:criterionCopy];
       goto LABEL_19;
     case 7:
-      v6 = [(MFMessageCriterion *)self _evaluateAccountCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateAccountCriterion:criterionCopy];
       goto LABEL_19;
     case 8:
       break;
     case 10:
     case 11:
-      v6 = [(MFMessageCriterion *)self _evaluateDateCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateDateCriterion:criterionCopy];
       goto LABEL_19;
     case 12:
     case 13:
-      v6 = [(MFMessageCriterion *)self _evaluateAddressHistoryCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateAddressHistoryCriterion:criterionCopy];
       goto LABEL_19;
     case 14:
     case 15:
-      v6 = [(MFMessageCriterion *)self _evaluateFullNameCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateFullNameCriterion:criterionCopy];
       goto LABEL_19;
     case 16:
-      v6 = [(MFMessageCriterion *)self _evaluateIsDigitallySignedCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateIsDigitallySignedCriterion:criterionCopy];
       goto LABEL_19;
     case 17:
-      v6 = [(MFMessageCriterion *)self _evaluateIsEncryptedCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateIsEncryptedCriterion:criterionCopy];
       goto LABEL_19;
     case 18:
-      v6 = [(MFMessageCriterion *)self _evaluateAttachmentCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateAttachmentCriterion:criterionCopy];
       goto LABEL_19;
     case 19:
-      v6 = [(MFMessageCriterion *)self _evaluatePriorityIsHighCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluatePriorityIsHighCriterion:criterionCopy];
       goto LABEL_19;
     case 20:
-      v6 = [(MFMessageCriterion *)self _evaluatePriorityIsNormalCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluatePriorityIsNormalCriterion:criterionCopy];
       goto LABEL_19;
     case 21:
-      v6 = [(MFMessageCriterion *)self _evaluatePriorityIsLowCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluatePriorityIsLowCriterion:criterionCopy];
       goto LABEL_19;
     case 22:
-      v6 = [(MFMessageCriterion *)self _evaluateMailboxCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateMailboxCriterion:criterionCopy];
       goto LABEL_19;
     case 24:
-      v6 = [(MFMessageCriterion *)self _evaluateCompoundCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateCompoundCriterion:criterionCopy];
       goto LABEL_19;
     case 26:
-      v6 = [(MFMessageCriterion *)self _evaluateFlagCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateFlagCriterion:criterionCopy];
       goto LABEL_19;
     case 33:
-      v6 = [(MFMessageCriterion *)self _evaluateConversationIDCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateConversationIDCriterion:criterionCopy];
       goto LABEL_19;
     case 34:
-      v6 = [(MFMessageCriterion *)self _evaluateSenderHeaderCriterion:v4];
+      v6 = [(MFMessageCriterion *)self _evaluateSenderHeaderCriterion:criterionCopy];
 LABEL_19:
       v5 = v6;
       break;
@@ -1462,7 +1462,7 @@ LABEL_19:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 134217984;
-        v11 = [(MFMessageCriterion *)self criterionType];
+        criterionType = [(MFMessageCriterion *)self criterionType];
         _os_log_impl(&dword_2720B1000, v9, OS_LOG_TYPE_DEFAULT, "Unhandled criterion type %ld", &v10, 0xCu);
       }
 
@@ -1474,45 +1474,45 @@ LABEL_19:
   return v5;
 }
 
-- (int)messageRuleQualifierForString:(id)a3
+- (int)messageRuleQualifierForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BeginsWith"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"BeginsWith"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EndsWith"])
+  else if ([stringCopy isEqualToString:@"EndsWith"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"IsEqualTo"])
+  else if ([stringCopy isEqualToString:@"IsEqualTo"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"IsNotEqualTo"])
+  else if ([stringCopy isEqualToString:@"IsNotEqualTo"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"DoesNotContain"])
+  else if ([stringCopy isEqualToString:@"DoesNotContain"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"IsLessThan"])
+  else if ([stringCopy isEqualToString:@"IsLessThan"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"IsGreaterThan"])
+  else if ([stringCopy isEqualToString:@"IsGreaterThan"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ASCIIContains"])
+  else if ([stringCopy isEqualToString:@"ASCIIContains"])
   {
     v4 = 8;
   }
@@ -1525,193 +1525,193 @@ LABEL_19:
   return v4;
 }
 
-- (id)stringForMessageRuleQualifier:(int)a3
+- (id)stringForMessageRuleQualifier:(int)qualifier
 {
-  if (a3 > 8)
+  if (qualifier > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_279E34138[a3];
+    return off_279E34138[qualifier];
   }
 }
 
-+ (int64_t)criterionTypeForString:(id)a3
++ (int64_t)criterionTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Header"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Header"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Body"])
+  else if ([stringCopy isEqualToString:@"Body"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SenderIsInAddressBook"])
+  else if ([stringCopy isEqualToString:@"SenderIsInAddressBook"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SenderIsNotInAddressBook"])
+  else if ([stringCopy isEqualToString:@"SenderIsNotInAddressBook"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SenderHeader"])
+  else if ([stringCopy isEqualToString:@"SenderHeader"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"Account"])
+  else if ([stringCopy isEqualToString:@"Account"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AnyMessage"])
+  else if ([stringCopy isEqualToString:@"AnyMessage"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"AnyRecipient"])
+  else if ([stringCopy isEqualToString:@"AnyRecipient"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"DateReceived"])
+  else if ([stringCopy isEqualToString:@"DateReceived"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"DateLastViewed"])
+  else if ([stringCopy isEqualToString:@"DateLastViewed"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"DateSent"])
+  else if ([stringCopy isEqualToString:@"DateSent"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SenderIsInAddressHistory"])
+  else if ([stringCopy isEqualToString:@"SenderIsInAddressHistory"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SenderIsNotInAddressHistory"])
+  else if ([stringCopy isEqualToString:@"SenderIsNotInAddressHistory"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"AnyRecipientIncludesFullName"])
+  else if ([stringCopy isEqualToString:@"AnyRecipientIncludesFullName"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"NoRecipientIncludesFullName"])
+  else if ([stringCopy isEqualToString:@"NoRecipientIncludesFullName"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"IsDigitallySigned"])
+  else if ([stringCopy isEqualToString:@"IsDigitallySigned"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"IsEncrypted"])
+  else if ([stringCopy isEqualToString:@"IsEncrypted"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"PriorityIsNormal"])
+  else if ([stringCopy isEqualToString:@"PriorityIsNormal"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"PriorityIsHigh"])
+  else if ([stringCopy isEqualToString:@"PriorityIsHigh"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"PriorityIsLow"])
+  else if ([stringCopy isEqualToString:@"PriorityIsLow"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"AnyAttachment"])
+  else if ([stringCopy isEqualToString:@"AnyAttachment"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Mailbox"])
+  else if ([stringCopy isEqualToString:@"Mailbox"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"MessageNumber"])
+  else if ([stringCopy isEqualToString:@"MessageNumber"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"ExternalID"])
+  else if ([stringCopy isEqualToString:@"ExternalID"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"Compound"])
+  else if ([stringCopy isEqualToString:@"Compound"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Flag"])
+  else if ([stringCopy isEqualToString:@"Flag"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"NotInTrashMailbox"])
+  else if ([stringCopy isEqualToString:@"NotInTrashMailbox"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"ContainsAttachments"])
+  else if ([stringCopy isEqualToString:@"ContainsAttachments"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SpotlightSearch"])
+  else if ([stringCopy isEqualToString:@"SpotlightSearch"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"ConversationID"])
+  else if ([stringCopy isEqualToString:@"ConversationID"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"Negation"])
+  else if ([stringCopy isEqualToString:@"Negation"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"MessageIdHash"])
+  else if ([stringCopy isEqualToString:@"MessageIdHash"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"ListIDHash"])
+  else if ([stringCopy isEqualToString:@"ListIDHash"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"ToRecipient"])
+  else if ([stringCopy isEqualToString:@"ToRecipient"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"CcRecipient"])
+  else if ([stringCopy isEqualToString:@"CcRecipient"])
   {
     v4 = 39;
   }
@@ -1724,24 +1724,24 @@ LABEL_19:
   return v4;
 }
 
-+ (id)stringForCriterionType:(int64_t)a3
++ (id)stringForCriterionType:(int64_t)type
 {
-  if ((a3 - 1) > 0x26)
+  if ((type - 1) > 0x26)
   {
     return 0;
   }
 
   else
   {
-    return off_279E34180[a3 - 1];
+    return off_279E34180[type - 1];
   }
 }
 
-- (void)setCriteria:(id)a3
+- (void)setCriteria:(id)criteria
 {
-  if (self->_criteria != a3)
+  if (self->_criteria != criteria)
   {
-    v4 = [a3 copy];
+    v4 = [criteria copy];
     criteria = self->_criteria;
     self->_criteria = v4;
   }
@@ -1749,9 +1749,9 @@ LABEL_19:
   [(MFMessageCriterion *)self setCriterionType:24];
 }
 
-- (void)setDateIsRelative:(BOOL)a3
+- (void)setDateIsRelative:(BOOL)relative
 {
-  if (a3)
+  if (relative)
   {
     v3 = 2;
   }
@@ -1767,17 +1767,17 @@ LABEL_19:
 - (id)dateFromExpression
 {
   v2 = MEMORY[0x277CBEAA8];
-  v3 = [(MFMessageCriterion *)self expression];
-  [v3 doubleValue];
+  expression = [(MFMessageCriterion *)self expression];
+  [expression doubleValue];
   v4 = [v2 dateWithTimeIntervalSince1970:?];
 
   return v4;
 }
 
-+ (id)expressionForDate:(id)a3
++ (id)expressionForDate:(id)date
 {
   v3 = MEMORY[0x277CCACA8];
-  [a3 timeIntervalSince1970];
+  [date timeIntervalSince1970];
   return [v3 stringWithFormat:@"%f", v4];
 }
 
@@ -1785,17 +1785,17 @@ LABEL_19:
 {
   if ([(MFMessageCriterion *)self criterionType]== 24)
   {
-    v3 = [(MFMessageCriterion *)self criteria];
-    v4 = [v3 count];
+    criteria = [(MFMessageCriterion *)self criteria];
+    v4 = [criteria count];
     if (v4)
     {
       v5 = v4;
       if (v4 == 1)
       {
-        v6 = [v3 lastObject];
-        v7 = [v6 simplifiedCriterion];
+        lastObject = [criteria lastObject];
+        selfCopy = [lastObject simplifiedCriterion];
 
-        if (v7)
+        if (selfCopy)
         {
           goto LABEL_23;
         }
@@ -1803,53 +1803,53 @@ LABEL_19:
         goto LABEL_22;
       }
 
-      v7 = 0;
+      selfCopy = 0;
       v8 = 0;
       for (i = 0; i != v5; ++i)
       {
-        v10 = [v3 objectAtIndex:i];
-        v11 = [v10 simplifiedCriterion];
-        if ([v11 criterionType] == 24 && ((v12 = -[MFMessageCriterion allCriteriaMustBeSatisfied](self, "allCriteriaMustBeSatisfied"), v12 == objc_msgSend(v11, "allCriteriaMustBeSatisfied")) || (objc_msgSend(v11, "criteria"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, !v14)))
+        v10 = [criteria objectAtIndex:i];
+        simplifiedCriterion = [v10 simplifiedCriterion];
+        if ([simplifiedCriterion criterionType] == 24 && ((v12 = -[MFMessageCriterion allCriteriaMustBeSatisfied](self, "allCriteriaMustBeSatisfied"), v12 == objc_msgSend(simplifiedCriterion, "allCriteriaMustBeSatisfied")) || (objc_msgSend(simplifiedCriterion, "criteria"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, !v14)))
         {
-          if (!v7)
+          if (!selfCopy)
           {
-            v7 = objc_alloc_init(MFMessageCriterion);
-            [(MFMessageCriterion *)v7 setCriterionType:24];
-            [(MFMessageCriterion *)v7 setAllCriteriaMustBeSatisfied:[(MFMessageCriterion *)self allCriteriaMustBeSatisfied]];
-            v17 = [MEMORY[0x277CBEB18] array];
+            selfCopy = objc_alloc_init(MFMessageCriterion);
+            [(MFMessageCriterion *)selfCopy setCriterionType:24];
+            [(MFMessageCriterion *)selfCopy setAllCriteriaMustBeSatisfied:[(MFMessageCriterion *)self allCriteriaMustBeSatisfied]];
+            array = [MEMORY[0x277CBEB18] array];
 
-            v18 = [v3 subarrayWithRange:{0, i}];
-            [v17 addObjectsFromArray:v18];
+            v18 = [criteria subarrayWithRange:{0, i}];
+            [array addObjectsFromArray:v18];
 
-            v8 = v17;
+            v8 = array;
           }
 
-          v19 = [v11 criteria];
-          [v8 addObjectsFromArray:v19];
+          criteria2 = [simplifiedCriterion criteria];
+          [v8 addObjectsFromArray:criteria2];
         }
 
         else
         {
-          if (v11 != v10 && !v7)
+          if (simplifiedCriterion != v10 && !selfCopy)
           {
-            v7 = objc_alloc_init(MFMessageCriterion);
-            [(MFMessageCriterion *)v7 setCriterionType:24];
-            [(MFMessageCriterion *)v7 setAllCriteriaMustBeSatisfied:[(MFMessageCriterion *)self allCriteriaMustBeSatisfied]];
-            v15 = [MEMORY[0x277CBEB18] array];
+            selfCopy = objc_alloc_init(MFMessageCriterion);
+            [(MFMessageCriterion *)selfCopy setCriterionType:24];
+            [(MFMessageCriterion *)selfCopy setAllCriteriaMustBeSatisfied:[(MFMessageCriterion *)self allCriteriaMustBeSatisfied]];
+            array2 = [MEMORY[0x277CBEB18] array];
 
-            v16 = [v3 subarrayWithRange:{0, i}];
-            [v15 addObjectsFromArray:v16];
+            v16 = [criteria subarrayWithRange:{0, i}];
+            [array2 addObjectsFromArray:v16];
 
-            v8 = v15;
+            v8 = array2;
           }
 
-          [v8 addObject:v11];
+          [v8 addObject:simplifiedCriterion];
         }
       }
 
-      if (v7)
+      if (selfCopy)
       {
-        [(MFMessageCriterion *)v7 setCriteria:v8];
+        [(MFMessageCriterion *)selfCopy setCriteria:v8];
 
         goto LABEL_23;
       }
@@ -1862,27 +1862,27 @@ LABEL_19:
   }
 
 LABEL_22:
-  v7 = self;
+  selfCopy = self;
 LABEL_23:
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)simplifiedCriterion
 {
-  v2 = self;
-  v3 = [(MFMessageCriterion *)v2 simplifyOnce];
-  if (v3 != v2)
+  selfCopy = self;
+  simplifyOnce = [(MFMessageCriterion *)selfCopy simplifyOnce];
+  if (simplifyOnce != selfCopy)
   {
     v4 = 0;
     do
     {
-      v5 = v2;
-      v2 = v3;
+      v5 = selfCopy;
+      selfCopy = simplifyOnce;
 
-      v3 = [(MFMessageCriterion *)v2 simplifyOnce];
+      simplifyOnce = [(MFMessageCriterion *)selfCopy simplifyOnce];
 
-      if (v3 == v2)
+      if (simplifyOnce == selfCopy)
       {
         break;
       }
@@ -1891,42 +1891,42 @@ LABEL_23:
     while (v4++ < 9);
   }
 
-  return v3;
+  return simplifyOnce;
 }
 
-+ (id)criterionForMailbox:(id)a3
++ (id)criterionForMailbox:(id)mailbox
 {
-  v4 = [a3 URLString];
-  v5 = [a1 criterionForMailboxURL:v4];
+  uRLString = [mailbox URLString];
+  v5 = [self criterionForMailboxURL:uRLString];
 
   return v5;
 }
 
-+ (id)criterionForMailboxURL:(id)a3
++ (id)criterionForMailboxURL:(id)l
 {
-  v3 = a3;
-  v4 = [[MFMessageCriterion alloc] initWithType:22 qualifier:3 expression:v3];
+  lCopy = l;
+  v4 = [[MFMessageCriterion alloc] initWithType:22 qualifier:3 expression:lCopy];
 
   return v4;
 }
 
-+ (id)criterionForAccount:(id)a3
++ (id)criterionForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = [MFMessageCriterion alloc];
-  v5 = [v3 URLString];
+  uRLString = [accountCopy URLString];
 
-  v6 = [(MFMessageCriterion *)v4 initWithType:22 qualifier:1 expression:v5];
+  v6 = [(MFMessageCriterion *)v4 initWithType:22 qualifier:1 expression:uRLString];
 
   return v6;
 }
 
-+ (id)criterionExcludingMailboxes:(id)a3
++ (id)criterionExcludingMailboxes:(id)mailboxes
 {
-  v3 = a3;
-  if ([v3 count])
+  mailboxesCopy = mailboxes;
+  if ([mailboxesCopy count])
   {
-    v4 = [v3 vf_map:&__block_literal_global_265];
+    v4 = [mailboxesCopy vf_map:&__block_literal_global_265];
     v5 = [MFMessageCriterion orCompoundCriterionWithCriteria:v4];
     v6 = [MFMessageCriterion notCriterionWithCriterion:v5];
   }
@@ -1939,11 +1939,11 @@ LABEL_23:
   return v6;
 }
 
-+ (id)messageIsDeletedCriterion:(BOOL)a3
++ (id)messageIsDeletedCriterion:(BOOL)criterion
 {
-  v3 = a3;
+  criterionCopy = criterion;
   v4 = [MFMessageCriterion alloc];
-  if (v3)
+  if (criterionCopy)
   {
     v5 = 3;
   }
@@ -1958,11 +1958,11 @@ LABEL_23:
   return v6;
 }
 
-+ (id)messageIsJournaledCriterion:(BOOL)a3
++ (id)messageIsJournaledCriterion:(BOOL)criterion
 {
-  v3 = a3;
+  criterionCopy = criterion;
   v4 = [MFMessageCriterion alloc];
-  if (v3)
+  if (criterionCopy)
   {
     v5 = 3;
   }
@@ -1977,12 +1977,12 @@ LABEL_23:
   return v6;
 }
 
-+ (id)criterionForNotDeletedConversationID:(int64_t)a3
++ (id)criterionForNotDeletedConversationID:(int64_t)d
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v4 = [MFMessageCriterion messageIsDeletedCriterion:0];
   v10[0] = v4;
-  v5 = [MFMessageCriterion criterionForConversationID:a3];
+  v5 = [MFMessageCriterion criterionForConversationID:d];
   v10[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v7 = [MFMessageCriterion andCompoundCriterionWithCriteria:v6];
@@ -1992,27 +1992,27 @@ LABEL_23:
   return v7;
 }
 
-+ (id)criterionForConversationID:(int64_t)a3
++ (id)criterionForConversationID:(int64_t)d
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", a3];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", d];
   v4 = [[MFMessageCriterion alloc] initWithType:33 qualifier:3 expression:v3];
 
   return v4;
 }
 
-+ (id)criterionForLibraryID:(id)a3
++ (id)criterionForLibraryID:(id)d
 {
-  v3 = a3;
-  v4 = [[MFMessageCriterion alloc] initWithType:23 qualifier:3 expression:v3];
+  dCopy = d;
+  v4 = [[MFMessageCriterion alloc] initWithType:23 qualifier:3 expression:dCopy];
 
   return v4;
 }
 
-+ (id)messageIsServerSearchResultCriterion:(BOOL)a3
++ (id)messageIsServerSearchResultCriterion:(BOOL)criterion
 {
-  v3 = a3;
+  criterionCopy = criterion;
   v4 = [MFMessageCriterion alloc];
-  if (v3)
+  if (criterionCopy)
   {
     v5 = 3;
   }
@@ -2042,8 +2042,8 @@ LABEL_23:
     return 0;
   }
 
-  v3 = [(MFMessageCriterion *)self expression];
-  v4 = [v3 isEqualToString:@"MessageSenderIsVIP"];
+  expression = [(MFMessageCriterion *)self expression];
+  v4 = [expression isEqualToString:@"MessageSenderIsVIP"];
 
   return v4;
 }
@@ -2134,25 +2134,25 @@ LABEL_23:
   return v4;
 }
 
-+ (id)criterionForDateReceivedOlderThanDate:(id)a3
++ (id)criterionForDateReceivedOlderThanDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [MFMessageCriterion alloc];
-  v6 = [a1 expressionForDate:v4];
+  v6 = [self expressionForDate:dateCopy];
 
   v7 = [(MFMessageCriterion *)v5 initWithType:11 qualifier:5 expression:v6];
 
   return v7;
 }
 
-+ (id)notCriterionWithCriterion:(id)a3
++ (id)notCriterionWithCriterion:(id)criterion
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (criterion)
   {
-    v3 = a3;
+    criterionCopy = criterion;
     v4 = objc_alloc_init(MFMessageCriterion);
-    v8[0] = v3;
+    v8[0] = criterionCopy;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
     [(MFMessageCriterion *)v4 setCriteria:v5];
@@ -2169,63 +2169,63 @@ LABEL_23:
   return v4;
 }
 
-+ (id)andCompoundCriterionWithCriteria:(id)a3
++ (id)andCompoundCriterionWithCriteria:(id)criteria
 {
-  v3 = a3;
-  if ([v3 count])
+  criteriaCopy = criteria;
+  if ([criteriaCopy count])
   {
-    if ([v3 count] == 1)
+    if ([criteriaCopy count] == 1)
     {
-      v4 = [v3 lastObject];
+      lastObject = [criteriaCopy lastObject];
     }
 
     else
     {
-      v4 = objc_alloc_init(MFMessageCriterion);
-      [(MFMessageCriterion *)v4 setCriterionType:24];
-      [(MFMessageCriterion *)v4 setAllCriteriaMustBeSatisfied:1];
-      [(MFMessageCriterion *)v4 setCriteria:v3];
+      lastObject = objc_alloc_init(MFMessageCriterion);
+      [(MFMessageCriterion *)lastObject setCriterionType:24];
+      [(MFMessageCriterion *)lastObject setAllCriteriaMustBeSatisfied:1];
+      [(MFMessageCriterion *)lastObject setCriteria:criteriaCopy];
     }
   }
 
   else
   {
-    v4 = 0;
+    lastObject = 0;
   }
 
-  return v4;
+  return lastObject;
 }
 
-+ (id)orCompoundCriterionWithCriteria:(id)a3
++ (id)orCompoundCriterionWithCriteria:(id)criteria
 {
-  v3 = a3;
-  if ([v3 count])
+  criteriaCopy = criteria;
+  if ([criteriaCopy count])
   {
-    if ([v3 count] == 1)
+    if ([criteriaCopy count] == 1)
     {
-      v4 = [v3 lastObject];
+      lastObject = [criteriaCopy lastObject];
     }
 
     else
     {
-      v4 = objc_alloc_init(MFMessageCriterion);
-      [(MFMessageCriterion *)v4 setCriterionType:24];
-      [(MFMessageCriterion *)v4 setAllCriteriaMustBeSatisfied:0];
-      [(MFMessageCriterion *)v4 setCriteria:v3];
+      lastObject = objc_alloc_init(MFMessageCriterion);
+      [(MFMessageCriterion *)lastObject setCriterionType:24];
+      [(MFMessageCriterion *)lastObject setAllCriteriaMustBeSatisfied:0];
+      [(MFMessageCriterion *)lastObject setCriteria:criteriaCopy];
     }
   }
 
   else
   {
-    v4 = 0;
+    lastObject = 0;
   }
 
-  return v4;
+  return lastObject;
 }
 
-- (void)setIncludeRelatedMessages:(BOOL)a3
+- (void)setIncludeRelatedMessages:(BOOL)messages
 {
-  if (a3)
+  if (messages)
   {
     v3 = 4;
   }

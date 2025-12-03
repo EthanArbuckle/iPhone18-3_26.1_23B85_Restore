@@ -1,27 +1,27 @@
 @interface UISlidingBarConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UISlidingBarConfiguration)init;
-- (double)leadingBorderWidthForScale:(double)a3;
-- (double)trailingBorderWidthForScale:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)leadingBorderWidthForScale:(double)scale;
+- (double)trailingBorderWidthForScale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setLeadingBorderWidthIsInPixels:(BOOL)a3;
-- (void)_setSupplementaryAdoptsPrimaryBackgroundStyle:(BOOL)a3;
-- (void)_setTrailingBorderWidthIsInPixels:(BOOL)a3;
-- (void)setAllowMixedSideBySideAndOverlay:(BOOL)a3;
-- (void)setAllowTotalWidthGreaterThanParent:(BOOL)a3;
-- (void)setBorderAbuttingMainRendersAsShadow:(BOOL)a3;
-- (void)setForceOverlay:(BOOL)a3;
-- (void)setLeadingBorderWidthInPixels:(double)a3;
-- (void)setLeadingBorderWidthInPoints:(double)a3;
-- (void)setLeadingWidths:(id)a3;
-- (void)setShouldFadeStaticNavBarButton:(BOOL)a3;
-- (void)setSupplementaryMayBeHidden:(BOOL)a3;
-- (void)setTrailingBorderWidthInPixels:(double)a3;
-- (void)setTrailingBorderWidthInPoints:(double)a3;
-- (void)setTrailingMayBeHidden:(BOOL)a3;
-- (void)setTrailingWidths:(id)a3;
+- (void)_setLeadingBorderWidthIsInPixels:(BOOL)pixels;
+- (void)_setSupplementaryAdoptsPrimaryBackgroundStyle:(BOOL)style;
+- (void)_setTrailingBorderWidthIsInPixels:(BOOL)pixels;
+- (void)setAllowMixedSideBySideAndOverlay:(BOOL)overlay;
+- (void)setAllowTotalWidthGreaterThanParent:(BOOL)parent;
+- (void)setBorderAbuttingMainRendersAsShadow:(BOOL)shadow;
+- (void)setForceOverlay:(BOOL)overlay;
+- (void)setLeadingBorderWidthInPixels:(double)pixels;
+- (void)setLeadingBorderWidthInPoints:(double)points;
+- (void)setLeadingWidths:(id)widths;
+- (void)setShouldFadeStaticNavBarButton:(BOOL)button;
+- (void)setSupplementaryMayBeHidden:(BOOL)hidden;
+- (void)setTrailingBorderWidthInPixels:(double)pixels;
+- (void)setTrailingBorderWidthInPoints:(double)points;
+- (void)setTrailingMayBeHidden:(BOOL)hidden;
+- (void)setTrailingWidths:(id)widths;
 @end
 
 @implementation UISlidingBarConfiguration
@@ -54,7 +54,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[2] = self->_configurationFlags.value;
@@ -67,36 +67,36 @@
   [v4 setSupplementaryEdge:{-[UISlidingBarConfiguration supplementaryEdge](self, "supplementaryEdge")}];
   [(UISlidingBarConfiguration *)self rubberBandExtension];
   [v4 setRubberBandExtension:?];
-  v5 = [(UISlidingBarConfiguration *)self leadingWidths];
-  [v4 setLeadingWidths:v5];
+  leadingWidths = [(UISlidingBarConfiguration *)self leadingWidths];
+  [v4 setLeadingWidths:leadingWidths];
 
-  v6 = [(UISlidingBarConfiguration *)self trailingWidths];
-  [v4 setTrailingWidths:v6];
+  trailingWidths = [(UISlidingBarConfiguration *)self trailingWidths];
+  [v4 setTrailingWidths:trailingWidths];
 
-  v7 = [(UISlidingBarConfiguration *)self supplementaryWidths];
-  [v4 setSupplementaryWidths:v7];
+  supplementaryWidths = [(UISlidingBarConfiguration *)self supplementaryWidths];
+  [v4 setSupplementaryWidths:supplementaryWidths];
 
   [(UISlidingBarConfiguration *)self _rawLeadingBorderWidth];
   [v4 _setRawLeadingBorderWidth:?];
   [(UISlidingBarConfiguration *)self _rawTrailingBorderWidth];
   [v4 _setRawTrailingBorderWidth:?];
-  v8 = [(UISlidingBarConfiguration *)self borderColor];
-  [v4 setBorderColor:v8];
+  borderColor = [(UISlidingBarConfiguration *)self borderColor];
+  [v4 setBorderColor:borderColor];
 
   [v4 _setLeadingBackgroundStyle:{-[UISlidingBarConfiguration _leadingBackgroundStyle](self, "_leadingBackgroundStyle")}];
   [v4 _setTrailingBackgroundStyle:{-[UISlidingBarConfiguration _trailingBackgroundStyle](self, "_trailingBackgroundStyle")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_configurationFlags.value != v5[2] || (-[UISlidingBarConfiguration minimumMainWidthFraction](self, "minimumMainWidthFraction"), v7 = v6, [v5 minimumMainWidthFraction], v7 != v8) || (-[UISlidingBarConfiguration minimumMainWidthFractionForSecondColumn](self, "minimumMainWidthFractionForSecondColumn"), v10 = v9, objc_msgSend(v5, "minimumMainWidthFractionForSecondColumn"), v10 != v11) || (-[UISlidingBarConfiguration maximumMainWidth](self, "maximumMainWidth"), v13 = v12, objc_msgSend(v5, "maximumMainWidth"), v13 != v14) || (v15 = -[UISlidingBarConfiguration supplementaryEdge](self, "supplementaryEdge"), v15 != objc_msgSend(v5, "supplementaryEdge")) || (-[UISlidingBarConfiguration rubberBandExtension](self, "rubberBandExtension"), v17 = v16, objc_msgSend(v5, "rubberBandExtension"), v17 != v18))
       {
         v37 = 0;
@@ -105,9 +105,9 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v19 = [(UISlidingBarConfiguration *)self leadingWidths];
-      v20 = [v5 leadingWidths];
-      if (![v19 isEqual:v20])
+      leadingWidths = [(UISlidingBarConfiguration *)self leadingWidths];
+      leadingWidths2 = [v5 leadingWidths];
+      if (![leadingWidths isEqual:leadingWidths2])
       {
         v37 = 0;
 LABEL_26:
@@ -115,9 +115,9 @@ LABEL_26:
         goto LABEL_19;
       }
 
-      v21 = [(UISlidingBarConfiguration *)self trailingWidths];
-      v22 = [v5 trailingWidths];
-      if (![v21 isEqual:v22])
+      trailingWidths = [(UISlidingBarConfiguration *)self trailingWidths];
+      trailingWidths2 = [v5 trailingWidths];
+      if (![trailingWidths isEqual:trailingWidths2])
       {
         v37 = 0;
 LABEL_25:
@@ -125,9 +125,9 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v23 = [(UISlidingBarConfiguration *)self supplementaryWidths];
-      v24 = [v5 supplementaryWidths];
-      if (![v23 isEqual:v24] || (-[UISlidingBarConfiguration _rawLeadingBorderWidth](self, "_rawLeadingBorderWidth"), v26 = v25, objc_msgSend(v5, "_rawLeadingBorderWidth"), v26 != v27) || (-[UISlidingBarConfiguration _rawTrailingBorderWidth](self, "_rawTrailingBorderWidth"), v29 = v28, objc_msgSend(v5, "_rawTrailingBorderWidth"), v29 != v30))
+      supplementaryWidths = [(UISlidingBarConfiguration *)self supplementaryWidths];
+      supplementaryWidths2 = [v5 supplementaryWidths];
+      if (![supplementaryWidths isEqual:supplementaryWidths2] || (-[UISlidingBarConfiguration _rawLeadingBorderWidth](self, "_rawLeadingBorderWidth"), v26 = v25, objc_msgSend(v5, "_rawLeadingBorderWidth"), v26 != v27) || (-[UISlidingBarConfiguration _rawTrailingBorderWidth](self, "_rawTrailingBorderWidth"), v29 = v28, objc_msgSend(v5, "_rawTrailingBorderWidth"), v29 != v30))
       {
         v37 = 0;
 LABEL_24:
@@ -135,22 +135,22 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v31 = [(UISlidingBarConfiguration *)self borderColor];
-      v43 = [v5 borderColor];
-      v44 = v31;
-      if (v31 == v43)
+      borderColor = [(UISlidingBarConfiguration *)self borderColor];
+      borderColor2 = [v5 borderColor];
+      v44 = borderColor;
+      if (borderColor == borderColor2)
       {
-        v36 = [(UISlidingBarConfiguration *)self _leadingBackgroundStyle];
+        _leadingBackgroundStyle = [(UISlidingBarConfiguration *)self _leadingBackgroundStyle];
       }
 
       else
       {
-        v32 = [(UISlidingBarConfiguration *)self borderColor];
-        v33 = [v5 borderColor];
-        v42 = v32;
-        v34 = v32;
-        v35 = v33;
-        if (![v34 isEqual:v33])
+        borderColor3 = [(UISlidingBarConfiguration *)self borderColor];
+        borderColor4 = [v5 borderColor];
+        v42 = borderColor3;
+        v34 = borderColor3;
+        v35 = borderColor4;
+        if (![v34 isEqual:borderColor4])
         {
           v37 = 0;
 LABEL_34:
@@ -159,13 +159,13 @@ LABEL_35:
           goto LABEL_24;
         }
 
-        v36 = [(UISlidingBarConfiguration *)self _leadingBackgroundStyle];
+        _leadingBackgroundStyle = [(UISlidingBarConfiguration *)self _leadingBackgroundStyle];
       }
 
-      if (v36 == [v5 _leadingBackgroundStyle])
+      if (_leadingBackgroundStyle == [v5 _leadingBackgroundStyle])
       {
-        v39 = [(UISlidingBarConfiguration *)self _trailingBackgroundStyle];
-        v37 = v39 == [v5 _trailingBackgroundStyle];
+        _trailingBackgroundStyle = [(UISlidingBarConfiguration *)self _trailingBackgroundStyle];
+        v37 = _trailingBackgroundStyle == [v5 _trailingBackgroundStyle];
       }
 
       else
@@ -174,7 +174,7 @@ LABEL_35:
       }
 
       v35 = v41;
-      if (v44 == v43)
+      if (v44 == borderColor2)
       {
         goto LABEL_35;
       }
@@ -191,19 +191,19 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(UISlidingBarConfiguration *)self leadingWidths];
-  v4 = [v3 hash];
-  v5 = [(UISlidingBarConfiguration *)self trailingWidths];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(UISlidingBarConfiguration *)self supplementaryWidths];
-  v8 = [v7 hash];
+  leadingWidths = [(UISlidingBarConfiguration *)self leadingWidths];
+  v4 = [leadingWidths hash];
+  trailingWidths = [(UISlidingBarConfiguration *)self trailingWidths];
+  v6 = [trailingWidths hash] ^ v4;
+  supplementaryWidths = [(UISlidingBarConfiguration *)self supplementaryWidths];
+  v8 = [supplementaryWidths hash];
 
   return v6 ^ v8;
 }
 
-- (void)setTrailingMayBeHidden:(BOOL)a3
+- (void)setTrailingMayBeHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = 2;
   }
@@ -216,9 +216,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFFFD | v3;
 }
 
-- (void)setSupplementaryMayBeHidden:(BOOL)a3
+- (void)setSupplementaryMayBeHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = 4;
   }
@@ -231,9 +231,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFFFB | v3;
 }
 
-- (void)setAllowMixedSideBySideAndOverlay:(BOOL)a3
+- (void)setAllowMixedSideBySideAndOverlay:(BOOL)overlay
 {
-  if (a3)
+  if (overlay)
   {
     v3 = 8;
   }
@@ -246,9 +246,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFFF7 | v3;
 }
 
-- (void)setAllowTotalWidthGreaterThanParent:(BOOL)a3
+- (void)setAllowTotalWidthGreaterThanParent:(BOOL)parent
 {
-  if (a3)
+  if (parent)
   {
     v3 = 16;
   }
@@ -261,9 +261,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFFEF | v3;
 }
 
-- (void)setForceOverlay:(BOOL)a3
+- (void)setForceOverlay:(BOOL)overlay
 {
-  if (a3)
+  if (overlay)
   {
     v3 = 32;
   }
@@ -276,9 +276,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFFDF | v3;
 }
 
-- (void)setShouldFadeStaticNavBarButton:(BOOL)a3
+- (void)setShouldFadeStaticNavBarButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 256;
   }
@@ -291,9 +291,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFEFF | v3;
 }
 
-- (void)setBorderAbuttingMainRendersAsShadow:(BOOL)a3
+- (void)setBorderAbuttingMainRendersAsShadow:(BOOL)shadow
 {
-  if (a3)
+  if (shadow)
   {
     v3 = 1024;
   }
@@ -306,9 +306,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFBFF | v3;
 }
 
-- (void)_setSupplementaryAdoptsPrimaryBackgroundStyle:(BOOL)a3
+- (void)_setSupplementaryAdoptsPrimaryBackgroundStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 512;
   }
@@ -321,9 +321,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFDFF | v3;
 }
 
-- (double)leadingBorderWidthForScale:(double)a3
+- (double)leadingBorderWidthForScale:(double)scale
 {
-  result = self->__rawLeadingBorderWidth / a3;
+  result = self->__rawLeadingBorderWidth / scale;
   if ((self->_configurationFlags.value & 0x40) == 0)
   {
     return self->__rawLeadingBorderWidth;
@@ -332,31 +332,31 @@ LABEL_20:
   return result;
 }
 
-- (void)setLeadingBorderWidthInPixels:(double)a3
+- (void)setLeadingBorderWidthInPixels:(double)pixels
 {
-  if (a3 < 0.0)
+  if (pixels < 0.0)
   {
-    a3 = 0.0;
+    pixels = 0.0;
   }
 
-  self->__rawLeadingBorderWidth = a3;
+  self->__rawLeadingBorderWidth = pixels;
   self->_configurationFlags.value |= 0x40u;
 }
 
-- (void)setLeadingBorderWidthInPoints:(double)a3
+- (void)setLeadingBorderWidthInPoints:(double)points
 {
-  if (a3 < 0.0)
+  if (points < 0.0)
   {
-    a3 = 0.0;
+    points = 0.0;
   }
 
-  self->__rawLeadingBorderWidth = a3;
+  self->__rawLeadingBorderWidth = points;
   self->_configurationFlags.value &= ~0x40u;
 }
 
-- (double)trailingBorderWidthForScale:(double)a3
+- (double)trailingBorderWidthForScale:(double)scale
 {
-  result = self->__rawTrailingBorderWidth / a3;
+  result = self->__rawTrailingBorderWidth / scale;
   if ((self->_configurationFlags.value & 0x80) == 0)
   {
     return self->__rawTrailingBorderWidth;
@@ -365,31 +365,31 @@ LABEL_20:
   return result;
 }
 
-- (void)setTrailingBorderWidthInPixels:(double)a3
+- (void)setTrailingBorderWidthInPixels:(double)pixels
 {
-  if (a3 < 0.0)
+  if (pixels < 0.0)
   {
-    a3 = 0.0;
+    pixels = 0.0;
   }
 
-  self->__rawTrailingBorderWidth = a3;
+  self->__rawTrailingBorderWidth = pixels;
   self->_configurationFlags.value |= 0x80u;
 }
 
-- (void)setTrailingBorderWidthInPoints:(double)a3
+- (void)setTrailingBorderWidthInPoints:(double)points
 {
-  if (a3 < 0.0)
+  if (points < 0.0)
   {
-    a3 = 0.0;
+    points = 0.0;
   }
 
-  self->__rawTrailingBorderWidth = a3;
+  self->__rawTrailingBorderWidth = points;
   self->_configurationFlags.value &= ~0x80u;
 }
 
-- (void)_setLeadingBorderWidthIsInPixels:(BOOL)a3
+- (void)_setLeadingBorderWidthIsInPixels:(BOOL)pixels
 {
-  if (a3)
+  if (pixels)
   {
     v3 = 64;
   }
@@ -402,9 +402,9 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFFBF | v3;
 }
 
-- (void)_setTrailingBorderWidthIsInPixels:(BOOL)a3
+- (void)_setTrailingBorderWidthIsInPixels:(BOOL)pixels
 {
-  if (a3)
+  if (pixels)
   {
     v3 = 128;
   }
@@ -417,16 +417,16 @@ LABEL_20:
   self->_configurationFlags.value = self->_configurationFlags.value & 0xFFFFFF7F | v3;
 }
 
-- (void)setLeadingWidths:(id)a3
+- (void)setLeadingWidths:(id)widths
 {
-  v4 = filterAndCopyWidths(a3);
+  v4 = filterAndCopyWidths(widths);
   leadingWidths = self->_leadingWidths;
   self->_leadingWidths = v4;
 }
 
-- (void)setTrailingWidths:(id)a3
+- (void)setTrailingWidths:(id)widths
 {
-  v4 = filterAndCopyWidths(a3);
+  v4 = filterAndCopyWidths(widths);
   trailingWidths = self->_trailingWidths;
   self->_trailingWidths = v4;
 }
@@ -544,14 +544,14 @@ LABEL_13:
   v13 = &unk_1E7103AA8;
   v7 = v4;
   v14 = v7;
-  v8 = [(UISlidingBarConfiguration *)self leadingWidths];
-  __40__UISlidingBarConfiguration_description__block_invoke(v11, v8, @"leading");
+  leadingWidths = [(UISlidingBarConfiguration *)self leadingWidths];
+  __40__UISlidingBarConfiguration_description__block_invoke(v11, leadingWidths, @"leading");
 
-  v9 = [(UISlidingBarConfiguration *)self trailingWidths];
-  v12(v11, v9, @"trailing");
+  trailingWidths = [(UISlidingBarConfiguration *)self trailingWidths];
+  v12(v11, trailingWidths, @"trailing");
 
-  v10 = [(UISlidingBarConfiguration *)self supplementaryWidths];
-  v12(v11, v10, @"supplementary");
+  supplementaryWidths = [(UISlidingBarConfiguration *)self supplementaryWidths];
+  v12(v11, supplementaryWidths, @"supplementary");
 
   if (self->_rubberBandExtension != 0.0)
   {

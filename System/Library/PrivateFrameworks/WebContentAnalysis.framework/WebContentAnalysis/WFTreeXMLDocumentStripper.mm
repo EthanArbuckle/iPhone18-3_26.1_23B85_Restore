@@ -1,24 +1,24 @@
 @interface WFTreeXMLDocumentStripper
-+ (id)treeStripperWithXMLDocument:(_xmlDoc *)a3;
-- (WFTreeXMLDocumentStripper)initWithXMLDocument:(_xmlDoc *)a3;
++ (id)treeStripperWithXMLDocument:(_xmlDoc *)document;
+- (WFTreeXMLDocumentStripper)initWithXMLDocument:(_xmlDoc *)document;
 - (id)description;
 - (void)dealloc;
-- (void)processXMLDocument:(_xmlDoc *)a3;
-- (void)setPageTitle:(id)a3;
+- (void)processXMLDocument:(_xmlDoc *)document;
+- (void)setPageTitle:(id)title;
 @end
 
 @implementation WFTreeXMLDocumentStripper
 
-+ (id)treeStripperWithXMLDocument:(_xmlDoc *)a3
++ (id)treeStripperWithXMLDocument:(_xmlDoc *)document
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithXMLDocument:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithXMLDocument:document];
 
   return v3;
 }
 
-- (WFTreeXMLDocumentStripper)initWithXMLDocument:(_xmlDoc *)a3
+- (WFTreeXMLDocumentStripper)initWithXMLDocument:(_xmlDoc *)document
 {
-  if (a3)
+  if (document)
   {
     v7.receiver = self;
     v7.super_class = WFTreeXMLDocumentStripper;
@@ -26,7 +26,7 @@
     v5 = v4;
     if (v4)
     {
-      [(WFTreeXMLDocumentStripper *)v4 setXMLDocument:a3];
+      [(WFTreeXMLDocumentStripper *)v4 setXMLDocument:document];
       [(WFTreeXMLDocumentStripper *)v5 strip];
     }
   }
@@ -40,14 +40,14 @@
   return v5;
 }
 
-- (void)setPageTitle:(id)a3
+- (void)setPageTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
 
-  self->pageTitle = a3;
+  self->pageTitle = title;
 }
 
-- (void)processXMLDocument:(_xmlDoc *)a3
+- (void)processXMLDocument:(_xmlDoc *)document
 {
   v7 = objc_opt_new();
   self->scriptBlocks = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -56,7 +56,7 @@
   self->metaTagsUnlabeled = objc_alloc_init(MEMORY[0x277CBEB18]);
   self->links = objc_alloc_init(MEMORY[0x277CBEB18]);
   *&self->hasFrameset = 0;
-  v5 = [(WFTreeXMLDocumentStripper *)self processXMLDocument:a3 blockComments:1];
+  v5 = [(WFTreeXMLDocumentStripper *)self processXMLDocument:document blockComments:1];
   self->pageContent = v5;
   v6 = v5;
 }

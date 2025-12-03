@@ -1,12 +1,12 @@
 @interface CalendarColors
-+ (id)colorForName:(id)a3;
++ (id)colorForName:(id)name;
 + (id)colorNamesOrderedForAssignment;
 + (id)defaultCalendarColorNames;
-+ (id)localizedColorNameForColorName:(id)a3;
-+ (id)nameOfColor:(id)a3;
-+ (id)symbolicColorForNewCalendarWithExistingSymbolicNames:(id)a3;
-+ (id)textColorForName:(id)a3;
-+ (int)countOfColor:(id)a3 inArray:(id)a4;
++ (id)localizedColorNameForColorName:(id)name;
++ (id)nameOfColor:(id)color;
++ (id)symbolicColorForNewCalendarWithExistingSymbolicNames:(id)names;
++ (id)textColorForName:(id)name;
++ (int)countOfColor:(id)color inArray:(id)array;
 + (void)_bootstrapColorNameMapping;
 + (void)_rebuildColors;
 + (void)initialize;
@@ -14,22 +14,22 @@
 
 @implementation CalendarColors
 
-+ (id)symbolicColorForNewCalendarWithExistingSymbolicNames:(id)a3
++ (id)symbolicColorForNewCalendarWithExistingSymbolicNames:(id)names
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namesCopy = names;
   v5 = MEMORY[0x1E695DF70];
-  v6 = [a1 colorNamesOrderedForAssignment];
-  v7 = [v5 arrayWithArray:v6];
+  colorNamesOrderedForAssignment = [self colorNamesOrderedForAssignment];
+  v7 = [v5 arrayWithArray:colorNamesOrderedForAssignment];
 
-  if ([v4 count])
+  if ([namesCopy count])
   {
-    v8 = [v4 lastObject];
-    [v7 removeObject:v8];
+    lastObject = [namesCopy lastObject];
+    [v7 removeObject:lastObject];
   }
 
-  v9 = [v7 firstObject];
-  v10 = [a1 countOfColor:v9 inArray:v4];
+  firstObject = [v7 firstObject];
+  v10 = [self countOfColor:firstObject inArray:namesCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -50,14 +50,14 @@
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [a1 countOfColor:v16 inArray:{v4, v22}];
+        v17 = [self countOfColor:v16 inArray:{namesCopy, v22}];
         if (v17 < v10)
         {
           v18 = v17;
           v19 = v16;
 
           v10 = v18;
-          v9 = v19;
+          firstObject = v19;
         }
       }
 
@@ -69,14 +69,14 @@
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return firstObject;
 }
 
-+ (int)countOfColor:(id)a3 inArray:(id)a4
++ (int)countOfColor:(id)color inArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  colorCopy = color;
+  arrayCopy = array;
+  v7 = [arrayCopy count];
   if (v7)
   {
     v8 = v7;
@@ -84,8 +84,8 @@
     v10 = 0;
     do
     {
-      v11 = [v6 objectAtIndex:v9];
-      v12 = [v11 isEqual:v5];
+      v11 = [arrayCopy objectAtIndex:v9];
+      v12 = [v11 isEqual:colorCopy];
 
       v10 += v12;
       ++v9;
@@ -104,7 +104,7 @@
 
 + (id)colorNamesOrderedForAssignment
 {
-  [a1 _bootstrapColorNameMapping];
+  [self _bootstrapColorNameMapping];
   v2 = _colorNamesOrderedForAssignment;
 
   return v2;
@@ -112,7 +112,7 @@
 
 + (id)defaultCalendarColorNames
 {
-  [a1 _bootstrapColorNameMapping];
+  [self _bootstrapColorNameMapping];
   v2 = _defaultCalendarColorNames;
 
   return v2;
@@ -122,16 +122,16 @@
 {
   if (!_colorNameMapping)
   {
-    [a1 _rebuildColors];
+    [self _rebuildColors];
   }
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 _bootstrapColorNameMapping];
+    [self _bootstrapColorNameMapping];
   }
 }
 
@@ -139,9 +139,9 @@
 {
   v45 = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v34 = [MEMORY[0x1E695DF90] dictionary];
-  v35 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v33 = v2;
   v32 = [v2 pathForResource:@"CalendarColors" ofType:@"plist"];
   [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:?];
@@ -153,7 +153,7 @@
   if (v39)
   {
     v38 = *v41;
-    v36 = v3;
+    v36 = array;
     do
     {
       v4 = 0;
@@ -168,7 +168,7 @@
         v6 = [v5 objectForKey:@"name"];
         if ([v6 length])
         {
-          if ([v3 containsObject:v6])
+          if ([array containsObject:v6])
           {
             NSLog(&cfstr_SErrorColorAlr.isa, "+[CalendarColors _rebuildColors]", v6);
           }
@@ -177,12 +177,12 @@
           if ([v7 count] == 3)
           {
             v8 = [v7 objectAtIndex:0];
-            v9 = [v8 unsignedIntValue];
+            unsignedIntValue = [v8 unsignedIntValue];
             v10 = [v7 objectAtIndex:1];
-            v11 = [v10 unsignedIntValue];
+            unsignedIntValue2 = [v10 unsignedIntValue];
             v12 = [v7 objectAtIndex:2];
-            v13 = [v12 unsignedIntValue];
-            v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%02X%02X%02X%02X", v9, v11, v13, 255];
+            unsignedIntValue3 = [v12 unsignedIntValue];
+            v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%02X%02X%02X%02X", unsignedIntValue, unsignedIntValue2, unsignedIntValue3, 255];
           }
 
           else
@@ -194,21 +194,21 @@
           if ([v15 count] == 3)
           {
             v16 = [v15 objectAtIndex:0];
-            v17 = [v16 unsignedIntValue];
+            unsignedIntValue4 = [v16 unsignedIntValue];
             v18 = [v15 objectAtIndex:1];
-            v19 = [v18 unsignedIntValue];
+            unsignedIntValue5 = [v18 unsignedIntValue];
             v20 = [v15 objectAtIndex:2];
-            v21 = [v20 unsignedIntValue];
-            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%02X%02X%02X%02X", v17, v19, v21, 255];
+            unsignedIntValue6 = [v20 unsignedIntValue];
+            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%02X%02X%02X%02X", unsignedIntValue4, unsignedIntValue5, unsignedIntValue6, 255];
 
             if (v14)
             {
-              v3 = v36;
+              array = v36;
               if (v22)
               {
                 [v36 addObject:v6];
-                [v34 setObject:v14 forKey:v6];
-                [v35 setObject:v22 forKey:v6];
+                [dictionary setObject:v14 forKey:v6];
+                [dictionary2 setObject:v22 forKey:v6];
 LABEL_18:
 
                 goto LABEL_19;
@@ -217,7 +217,7 @@ LABEL_18:
 
             else
             {
-              v3 = v36;
+              array = v36;
             }
           }
 
@@ -244,29 +244,29 @@ LABEL_19:
   }
 
   v24 = _defaultCalendarColorNames;
-  _defaultCalendarColorNames = v3;
-  v25 = v3;
+  _defaultCalendarColorNames = array;
+  v25 = array;
 
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E69E4038], *MEMORY[0x1E69E4060], *MEMORY[0x1E69E4058], *MEMORY[0x1E69E4050], *MEMORY[0x1E69E4068], *MEMORY[0x1E69E4070], *MEMORY[0x1E69E4040], 0}];
   v27 = _colorNamesOrderedForAssignment;
   _colorNamesOrderedForAssignment = v26;
 
   v28 = _colorNameMapping;
-  _colorNameMapping = v34;
-  v29 = v34;
+  _colorNameMapping = dictionary;
+  v29 = dictionary;
 
   v30 = _textColorNameMapping;
-  _textColorNameMapping = v35;
+  _textColorNameMapping = dictionary2;
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)nameOfColor:(id)a3
++ (id)nameOfColor:(id)color
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [a1 _bootstrapColorNameMapping];
-  v5 = [MEMORY[0x1E69E3C78] symbolicColorForLegacyRGB:v4];
+  colorCopy = color;
+  [self _bootstrapColorNameMapping];
+  v5 = [MEMORY[0x1E69E3C78] symbolicColorForLegacyRGB:colorCopy];
   v6 = v5;
   if (v5)
   {
@@ -279,8 +279,8 @@ LABEL_19:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [_colorNameMapping allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allKeys = [_colorNameMapping allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -291,12 +291,12 @@ LABEL_19:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
           v14 = [_colorNameMapping objectForKey:v13];
-          if (CalColorsAreAlmostEqual(v4, v14))
+          if (CalColorsAreAlmostEqual(colorCopy, v14))
           {
             v7 = v13;
 
@@ -304,7 +304,7 @@ LABEL_19:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           continue;
@@ -324,56 +324,56 @@ LABEL_13:
   return v7;
 }
 
-+ (id)colorForName:(id)a3
++ (id)colorForName:(id)name
 {
-  v4 = a3;
-  [a1 _bootstrapColorNameMapping];
-  v5 = [_colorNameMapping objectForKey:v4];
+  nameCopy = name;
+  [self _bootstrapColorNameMapping];
+  v5 = [_colorNameMapping objectForKey:nameCopy];
 
   return v5;
 }
 
-+ (id)textColorForName:(id)a3
++ (id)textColorForName:(id)name
 {
-  v4 = a3;
-  [a1 _bootstrapColorNameMapping];
-  v5 = [_textColorNameMapping objectForKey:v4];
+  nameCopy = name;
+  [self _bootstrapColorNameMapping];
+  v5 = [_textColorNameMapping objectForKey:nameCopy];
 
   return v5;
 }
 
-+ (id)localizedColorNameForColorName:(id)a3
++ (id)localizedColorNameForColorName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CalendarFoundation"];
-  v5 = v3;
-  v6 = [v5 lowercaseString];
-  if ([v6 isEqualToString:*MEMORY[0x1E69E4038]])
+  v5 = nameCopy;
+  lowercaseString = [v5 lowercaseString];
+  if ([lowercaseString isEqualToString:*MEMORY[0x1E69E4038]])
   {
     v7 = @"Blue";
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E69E4050]])
+  else if ([lowercaseString isEqualToString:*MEMORY[0x1E69E4050]])
   {
     v7 = @"Green";
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E69E4068]])
+  else if ([lowercaseString isEqualToString:*MEMORY[0x1E69E4068]])
   {
     v7 = @"Red";
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E69E4058]])
+  else if ([lowercaseString isEqualToString:*MEMORY[0x1E69E4058]])
   {
     v7 = @"Orange";
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E69E4070]])
+  else if ([lowercaseString isEqualToString:*MEMORY[0x1E69E4070]])
   {
     v7 = @"Yellow";
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E69E4060]])
+  else if ([lowercaseString isEqualToString:*MEMORY[0x1E69E4060]])
   {
     v7 = @"Purple";
   }
@@ -381,7 +381,7 @@ LABEL_13:
   else
   {
     v8 = v5;
-    if (![v6 isEqualToString:*MEMORY[0x1E69E4040]])
+    if (![lowercaseString isEqualToString:*MEMORY[0x1E69E4040]])
     {
       goto LABEL_16;
     }

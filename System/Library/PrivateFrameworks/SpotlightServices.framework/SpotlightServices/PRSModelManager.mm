@@ -1,23 +1,23 @@
 @interface PRSModelManager
-+ (BOOL)loadModelsWithDirectory:(id)a3 intoModelDict:(id)a4;
-+ (id)directivesFromFilePath:(id)a3;
++ (BOOL)loadModelsWithDirectory:(id)directory intoModelDict:(id)dict;
++ (id)directivesFromFilePath:(id)path;
 + (id)sharedModelManager;
-+ (void)cannedInfoForType:(unint64_t)a3 directivesPath:(id *)a4 modelName:(id *)a5;
-+ (void)loadModelWithURL:(id)a3 type:(unint64_t)a4 directivesPath:(id)a5 intoModelDict:(id)a6 error:(id *)a7;
-+ (void)pathsFor:(unint64_t)a3 withParentPath:(id)a4 modelPath:(id *)a5 directivesPath:(id *)a6;
++ (void)cannedInfoForType:(unint64_t)type directivesPath:(id *)path modelName:(id *)name;
++ (void)loadModelWithURL:(id)l type:(unint64_t)type directivesPath:(id)path intoModelDict:(id)dict error:(id *)error;
++ (void)pathsFor:(unint64_t)for withParentPath:(id)path modelPath:(id *)modelPath directivesPath:(id *)directivesPath;
 - (BOOL)loadCannedModels;
 - (BOOL)loadModels;
 - (PRSModelManager)init;
-- (double)testL2WithData:(id)a3 experimental:(BOOL)a4;
-- (float)computeL2ScoresForVectors:(id)a3 secondVector:(id)a4 withServerFeatures:(id)a5 withBundleFeatures:(id)a6 experimentalWeight1:(double)a7 experimentalWeight2:(double)a8 shouldCancel:(BOOL *)a9 clientBundle:(id)a10;
-- (float)computeScoresForFeatures:(id)a3 withBundleFeatures:(id)a4 serverBundleFeatures:(id)a5 usingModelContext:(id)a6 qos:(unsigned int)a7 shouldCancel:(BOOL *)a8 filterBundle:(id)a9;
-- (id)getL2ModelVersionForClientBundle:(id)a3;
+- (double)testL2WithData:(id)data experimental:(BOOL)experimental;
+- (float)computeL2ScoresForVectors:(id)vectors secondVector:(id)vector withServerFeatures:(id)features withBundleFeatures:(id)bundleFeatures experimentalWeight1:(double)weight1 experimentalWeight2:(double)weight2 shouldCancel:(BOOL *)cancel clientBundle:(id)self0;
+- (float)computeScoresForFeatures:(id)features withBundleFeatures:(id)bundleFeatures serverBundleFeatures:(id)serverBundleFeatures usingModelContext:(id)context qos:(unsigned int)qos shouldCancel:(BOOL *)cancel filterBundle:(id)bundle;
+- (id)getL2ModelVersionForClientBundle:(id)bundle;
 - (void)activate;
 - (void)deactivate;
-- (void)loadCannedModelWithType:(unint64_t)a3 error:(id *)a4;
+- (void)loadCannedModelWithType:(unint64_t)type error:(id *)error;
 - (void)triggerUpdate;
 - (void)updateModelsAccordingToHierarchy;
-- (void)updateModelsAccordingToHierarchy:(id)a3 updateEnabled:(BOOL)a4 disablePendingUpdates:(BOOL)a5;
+- (void)updateModelsAccordingToHierarchy:(id)hierarchy updateEnabled:(BOOL)enabled disablePendingUpdates:(BOOL)updates;
 @end
 
 @implementation PRSModelManager
@@ -41,30 +41,30 @@ uint64_t __37__PRSModelManager_sharedModelManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)cannedInfoForType:(unint64_t)a3 directivesPath:(id *)a4 modelName:(id *)a5
++ (void)cannedInfoForType:(unint64_t)type directivesPath:(id *)path modelName:(id *)name
 {
-  if (a3)
+  if (type)
   {
     +[PRSModelManager cannedInfoForType:directivesPath:modelName:];
   }
 
-  *a4 = SSDefaultsGetAssetPath(@"directives_l2.mdplist");
-  *a5 = @"spotlight_l2";
+  *path = SSDefaultsGetAssetPath(@"directives_l2.mdplist");
+  *name = @"spotlight_l2";
 }
 
-+ (void)pathsFor:(unint64_t)a3 withParentPath:(id)a4 modelPath:(id *)a5 directivesPath:(id *)a6
++ (void)pathsFor:(unint64_t)for withParentPath:(id)path modelPath:(id *)modelPath directivesPath:(id *)directivesPath
 {
-  v12 = a4;
-  v9 = [v12 stringByAppendingPathComponent:@"models"];
-  v10 = [v12 stringByAppendingPathComponent:@"directives"];
-  if (a3)
+  pathCopy = path;
+  v9 = [pathCopy stringByAppendingPathComponent:@"models"];
+  v10 = [pathCopy stringByAppendingPathComponent:@"directives"];
+  if (for)
   {
     +[PRSModelManager pathsFor:withParentPath:modelPath:directivesPath:];
   }
 
   v11 = v10;
-  *a5 = [v9 stringByAppendingPathComponent:@"spotlight_l2.mlmodelc"];
-  *a6 = [v11 stringByAppendingPathComponent:@"directives_l2.mdplist"];
+  *modelPath = [v9 stringByAppendingPathComponent:@"spotlight_l2.mlmodelc"];
+  *directivesPath = [v11 stringByAppendingPathComponent:@"directives_l2.mdplist"];
 }
 
 - (PRSModelManager)init
@@ -82,9 +82,9 @@ uint64_t __37__PRSModelManager_sharedModelManager__block_invoke()
     v6 = *(v2 + 10);
     *(v2 + 10) = v5;
 
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v8 = *(v2 + 11);
-    *(v2 + 11) = v7;
+    *(v2 + 11) = standardUserDefaults;
 
     v9 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.searchd"];
     v10 = *(v2 + 11);
@@ -139,17 +139,17 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
   }
 }
 
-- (id)getL2ModelVersionForClientBundle:(id)a3
+- (id)getL2ModelVersionForClientBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = self->_models;
   objc_sync_enter(v5);
   v6 = [(NSMutableDictionary *)self->_models objectForKeyedSubscript:&unk_1F55B4410];
-  v7 = [v6 version];
+  version = [v6 version];
 
   objc_sync_exit(v5);
 
-  return v7;
+  return version;
 }
 
 - (void)activate
@@ -210,18 +210,18 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadCannedModelWithType:(unint64_t)a3 error:(id *)a4
+- (void)loadCannedModelWithType:(unint64_t)type error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
   v21 = 0;
   v22 = 0;
-  [objc_opt_class() cannedInfoForType:a3 directivesPath:&v22 modelName:&v21];
+  [objc_opt_class() cannedInfoForType:type directivesPath:&v22 modelName:&v21];
   v7 = v22;
   v8 = v21;
   v9 = PRSLogCategoryDefault();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     *buf = 138412802;
     v24 = v10;
     v25 = 2112;
@@ -234,7 +234,7 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
   v11 = [objc_opt_class() directivesFromFilePath:v7];
   v12 = objc_opt_new();
   [v12 processDirectives:v11];
-  v13 = [[SSCoreMLInterface alloc] initSpecificModel:v8 error:a4];
+  v13 = [[SSCoreMLInterface alloc] initSpecificModel:v8 error:error];
   v14 = PRSLogCategoryDefault();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -246,40 +246,40 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
   v15 = PRSLogCategoryDefault();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v13 getVersionString];
+    getVersionString = [v13 getVersionString];
     *buf = 138412546;
     v24 = v8;
     v25 = 2112;
-    v26 = v16;
+    v26 = getVersionString;
     _os_log_impl(&dword_1D9F69000, v15, OS_LOG_TYPE_INFO, "[Model loading] loaded model name %@ version %@", buf, 0x16u);
   }
 
-  if (*a4 || !v13)
+  if (*error || !v13)
   {
     v17 = PRSLogCategoryDefault();
     if (os_log_type_enabled(&v17->super, OS_LOG_TYPE_ERROR))
     {
-      [PRSModelManager loadCannedModelWithType:a4 error:?];
+      [PRSModelManager loadCannedModelWithType:error error:?];
     }
   }
 
   else
   {
-    v17 = [[PRSModelContext alloc] initWithModel:v13 directivesManager:v12 type:a3];
+    v17 = [[PRSModelContext alloc] initWithModel:v13 directivesManager:v12 type:type];
     models = self->_models;
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     [(NSMutableDictionary *)models setObject:v17 forKeyedSubscript:v19];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)directivesFromFilePath:(id)a3
++ (id)directivesFromFilePath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3 options:8 error:0];
+    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy options:8 error:0];
   }
 
   else
@@ -306,11 +306,11 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (BOOL)loadModelsWithDirectory:(id)a3 intoModelDict:(id)a4
++ (BOOL)loadModelsWithDirectory:(id)directory intoModelDict:(id)dict
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v22 = a4;
+  directoryCopy = directory;
+  dictCopy = dict;
   v6 = objc_opt_new();
   v7 = 0;
   v8 = 0;
@@ -320,9 +320,9 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
     v10 = v9;
     if ((v9 & 1) == 0)
     {
-      v16 = v22;
-      [v22 removeAllObjects];
-      [v22 addEntriesFromDictionary:v6];
+      v16 = dictCopy;
+      [dictCopy removeAllObjects];
+      [dictCopy addEntriesFromDictionary:v6];
       v14 = 0;
       v11 = v8;
       v12 = v7;
@@ -331,7 +331,7 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
 
     v24 = v7;
     v25 = v8;
-    [PRSModelManager pathsFor:0 withParentPath:v5 modelPath:&v25 directivesPath:&v24];
+    [PRSModelManager pathsFor:0 withParentPath:directoryCopy modelPath:&v25 directivesPath:&v24];
     v11 = v25;
 
     v12 = v24;
@@ -349,7 +349,7 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
   v15 = PRSLogCategoryDefault();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v14 code];
+    code = [v14 code];
     v20 = @"nil";
     if (v11)
     {
@@ -362,7 +362,7 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
     }
 
     *buf = 134218498;
-    v27 = v19;
+    v27 = code;
     v28 = 2112;
     if (v12)
     {
@@ -376,35 +376,35 @@ void __23__PRSModelManager_init__block_invoke(uint64_t a1)
   }
 
   +[SSADEventReporter reportModelLoadingError];
-  v16 = v22;
+  v16 = dictCopy;
 LABEL_7:
 
   v17 = *MEMORY[0x1E69E9840];
   return (v10 & 1) == 0;
 }
 
-+ (void)loadModelWithURL:(id)a3 type:(unint64_t)a4 directivesPath:(id)a5 intoModelDict:(id)a6 error:(id *)a7
++ (void)loadModelWithURL:(id)l type:(unint64_t)type directivesPath:(id)path intoModelDict:(id)dict error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v11 && [v12 length])
+  lCopy = l;
+  pathCopy = path;
+  dictCopy = dict;
+  if (lCopy && [pathCopy length])
   {
-    v14 = [objc_opt_class() directivesFromFilePath:v12];
+    v14 = [objc_opt_class() directivesFromFilePath:pathCopy];
     if ([v14 count])
     {
       v15 = objc_opt_new();
       [v15 processDirectives:v14];
-      v16 = [[SSCoreMLInterface alloc] initWithURL:v11 error:a7];
+      v16 = [[SSCoreMLInterface alloc] initWithURL:lCopy error:error];
       v17 = v16;
-      if (!*a7)
+      if (!*error)
       {
         if (v16)
         {
-          v18 = [[PRSModelContext alloc] initWithModel:v16 directivesManager:v15 type:a4];
-          v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-          [v13 setObject:v18 forKeyedSubscript:v19];
+          v18 = [[PRSModelContext alloc] initWithModel:v16 directivesManager:v15 type:type];
+          v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+          [dictCopy setObject:v18 forKeyedSubscript:v19];
         }
 
         else
@@ -412,10 +412,10 @@ LABEL_7:
           v25 = PRSModelErrorDomain;
           v28 = MEMORY[0x1E696ABC0];
           v29 = @"type";
-          v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+          v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
           v30 = v26;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-          *a7 = [v28 errorWithDomain:v25 code:-1 userInfo:v27];
+          *error = [v28 errorWithDomain:v25 code:-1 userInfo:v27];
         }
       }
     }
@@ -425,10 +425,10 @@ LABEL_7:
       v22 = MEMORY[0x1E696ABC0];
       v23 = PRSModelErrorDomain;
       v31 = @"type";
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
       v32 = v15;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-      *a7 = [v22 errorWithDomain:v23 code:-1000 userInfo:v17];
+      *error = [v22 errorWithDomain:v23 code:-1000 userInfo:v17];
     }
   }
 
@@ -437,10 +437,10 @@ LABEL_7:
     v20 = MEMORY[0x1E696ABC0];
     v21 = PRSModelErrorDomain;
     v33 = @"type";
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     v34[0] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    *a7 = [v20 errorWithDomain:v21 code:-1001 userInfo:v15];
+    *error = [v20 errorWithDomain:v21 code:-1001 userInfo:v15];
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -522,14 +522,14 @@ LABEL_5:
   }
 }
 
-- (void)updateModelsAccordingToHierarchy:(id)a3 updateEnabled:(BOOL)a4 disablePendingUpdates:(BOOL)a5
+- (void)updateModelsAccordingToHierarchy:(id)hierarchy updateEnabled:(BOOL)enabled disablePendingUpdates:(BOOL)updates
 {
-  v6 = a4;
-  v8 = a3;
+  enabledCopy = enabled;
+  hierarchyCopy = hierarchy;
   v9 = +[SSModelLoader sharedInstance];
-  v10 = [v9 hasPendingUpdates];
+  hasPendingUpdates = [v9 hasPendingUpdates];
 
-  if (!a5 && v10)
+  if (!updates && hasPendingUpdates)
   {
     v11 = dispatch_group_create();
     v12 = +[SSModelLoader sharedInstance];
@@ -538,7 +538,7 @@ LABEL_5:
     dispatch_group_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  if (v6 && ([(NSMutableDictionary *)self->_models count]== 0) | v10 & 1 && ![(PRSModelManager *)self loadModels])
+  if (enabledCopy && ([(NSMutableDictionary *)self->_models count]== 0) | hasPendingUpdates & 1 && ![(PRSModelManager *)self loadModels])
   {
     v13 = PRSLogCategoryDefault();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -547,9 +547,9 @@ LABEL_5:
     }
   }
 
-  if (v8)
+  if (hierarchyCopy)
   {
-    dispatch_group_leave(v8);
+    dispatch_group_leave(hierarchyCopy);
   }
 }
 
@@ -560,15 +560,15 @@ LABEL_5:
   [(PRSModelManager *)self updateModelsAccordingToHierarchy:0 updateEnabled:keyExistsAndHasValidFormat == 0 disablePendingUpdates:0];
 }
 
-- (float)computeL2ScoresForVectors:(id)a3 secondVector:(id)a4 withServerFeatures:(id)a5 withBundleFeatures:(id)a6 experimentalWeight1:(double)a7 experimentalWeight2:(double)a8 shouldCancel:(BOOL *)a9 clientBundle:(id)a10
+- (float)computeL2ScoresForVectors:(id)vectors secondVector:(id)vector withServerFeatures:(id)features withBundleFeatures:(id)bundleFeatures experimentalWeight1:(double)weight1 experimentalWeight2:(double)weight2 shouldCancel:(BOOL *)cancel clientBundle:(id)self0
 {
   v61 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a10;
-  if (a9 && *a9)
+  vectorsCopy = vectors;
+  vectorCopy = vector;
+  featuresCopy = features;
+  bundleFeaturesCopy = bundleFeatures;
+  bundleCopy = bundle;
+  if (cancel && *cancel)
   {
     v23 = 0;
   }
@@ -579,12 +579,12 @@ LABEL_5:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v18 count];
+      *(&buf + 4) = [vectorsCopy count];
       _os_log_impl(&dword_1D9F69000, v24, OS_LOG_TYPE_INFO, "computing L2 scores for %lu items", &buf, 0xCu);
     }
 
-    v47 = [(PRSModelManager *)self models];
-    if (![v47 count])
+    models = [(PRSModelManager *)self models];
+    if (![models count])
     {
       v25 = PRSLogCategoryDefault();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -594,15 +594,15 @@ LABEL_5:
 
       getpid();
       v26 = MEMORY[0x1E696AEC0];
-      v27 = [(PRSModelManager *)self modelVersion];
-      v28 = [v26 stringWithFormat:@"expected models version %@", v27];
+      modelVersion = [(PRSModelManager *)self modelVersion];
+      v28 = [v26 stringWithFormat:@"expected models version %@", modelVersion];
       SimulateCrash();
 
       +[SSADEventReporter reportBadL2Models];
     }
 
     pthread_mutex_lock(&sComputeScoreLock);
-    if (a9 && *a9)
+    if (cancel && *cancel)
     {
       pthread_mutex_unlock(&sComputeScoreLock);
       v23 = 0;
@@ -622,35 +622,35 @@ LABEL_5:
       block[3] = &unk_1E8596910;
       p_buf = &buf;
       block[4] = self;
-      v31 = v18;
+      v31 = vectorsCopy;
       v49 = v31;
-      v50 = v21;
-      v51 = v20;
-      v32 = v47;
+      v50 = bundleFeaturesCopy;
+      v51 = featuresCopy;
+      v32 = models;
       v55 = 33;
       v52 = v32;
-      v54 = a9;
+      cancelCopy = cancel;
       dispatch_group_async(v29, v30, block);
 
       dispatch_group_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
       pthread_mutex_unlock(&sComputeScoreLock);
       if (*(*(&buf + 1) + 24))
       {
-        if (a7 <= 0.0 && a8 <= 0.0)
+        if (weight1 <= 0.0 && weight2 <= 0.0)
         {
           v33 = [v32 objectForKeyedSubscript:&unk_1F55B4410];
-          v34 = [v33 directivesManager];
+          directivesManager = [v33 directivesManager];
 
-          [v34 weightX];
-          a7 = v35;
-          [v34 weightY];
-          a8 = v36;
+          [directivesManager weightX];
+          weight1 = v35;
+          [directivesManager weightY];
+          weight2 = v36;
         }
 
         v37 = PRSLogCategoryDefault();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
         {
-          [PRSModelManager computeL2ScoresForVectors:v37 secondVector:a7 withServerFeatures:a8 withBundleFeatures:? experimentalWeight1:? experimentalWeight2:? shouldCancel:? clientBundle:?];
+          [PRSModelManager computeL2ScoresForVectors:v37 secondVector:weight1 withServerFeatures:weight2 withBundleFeatures:? experimentalWeight1:? experimentalWeight2:? shouldCancel:? clientBundle:?];
         }
 
         v38 = [v31 count];
@@ -705,27 +705,27 @@ void __162__PRSModelManager_computeL2ScoresForVectors_secondVector_withServerFea
   *(*(*(a1 + 72) + 8) + 24) = [v2 computeScoresForFeatures:v3 withBundleFeatures:v4 serverBundleFeatures:v5 usingModelContext:v6 qos:*(a1 + 88) shouldCancel:*(a1 + 80) filterBundle:0];
 }
 
-- (float)computeScoresForFeatures:(id)a3 withBundleFeatures:(id)a4 serverBundleFeatures:(id)a5 usingModelContext:(id)a6 qos:(unsigned int)a7 shouldCancel:(BOOL *)a8 filterBundle:(id)a9
+- (float)computeScoresForFeatures:(id)features withBundleFeatures:(id)bundleFeatures serverBundleFeatures:(id)serverBundleFeatures usingModelContext:(id)context qos:(unsigned int)qos shouldCancel:(BOOL *)cancel filterBundle:(id)bundle
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  v19 = [v14 count];
+  featuresCopy = features;
+  bundleFeaturesCopy = bundleFeatures;
+  serverBundleFeaturesCopy = serverBundleFeatures;
+  contextCopy = context;
+  bundleCopy = bundle;
+  v19 = [featuresCopy count];
   v20 = 0;
-  if (v17 && v19)
+  if (contextCopy && v19)
   {
-    if (a8 && *a8)
+    if (cancel && *cancel)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = malloc_type_calloc([v14 count], 4uLL, 0x100004052888210uLL);
-      v21 = [v17 directivesManager];
-      v22 = [v14 count];
+      v20 = malloc_type_calloc([featuresCopy count], 4uLL, 0x100004052888210uLL);
+      directivesManager = [contextCopy directivesManager];
+      v22 = [featuresCopy count];
       v23 = v22 / 0x1E;
       if (v22 % 0x1E)
       {
@@ -733,41 +733,41 @@ void __162__PRSModelManager_computeL2ScoresForVectors_secondVector_withServerFea
       }
 
       iterations = v23;
-      v33 = v16;
-      v34 = v15;
-      [v21 processResultSetValuesWithMap:v15 serverFeatures:v16];
-      v24 = [v21 processingContext];
-      v25 = [v24 expandedFeatureCount];
+      v33 = serverBundleFeaturesCopy;
+      v34 = bundleFeaturesCopy;
+      [directivesManager processResultSetValuesWithMap:bundleFeaturesCopy serverFeatures:serverBundleFeaturesCopy];
+      processingContext = [directivesManager processingContext];
+      expandedFeatureCount = [processingContext expandedFeatureCount];
 
-      v26 = [v17 model];
+      model = [contextCopy model];
       v31 = (PRSRankingSDEnabledFlagState() >> 1) & 1;
-      v27 = dispatch_get_global_queue(a7, 0);
+      v27 = dispatch_get_global_queue(qos, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __132__PRSModelManager_computeScoresForFeatures_withBundleFeatures_serverBundleFeatures_usingModelContext_qos_shouldCancel_filterBundle___block_invoke;
       block[3] = &unk_1E8596938;
-      v41 = v25;
-      v42 = a8;
-      v36 = v14;
-      v37 = v18;
-      v28 = v21;
+      v41 = expandedFeatureCount;
+      cancelCopy = cancel;
+      v36 = featuresCopy;
+      v37 = bundleCopy;
+      v28 = directivesManager;
       v38 = v28;
-      v39 = v26;
+      v39 = model;
       v43 = v20;
       v44 = v31;
-      v40 = v17;
-      v29 = v26;
+      v40 = contextCopy;
+      v29 = model;
       dispatch_apply(iterations, v27, block);
 
       [v28 cleanup];
-      if (a8 && *a8)
+      if (cancel && *cancel)
       {
         free(v20);
         v20 = 0;
       }
 
-      v16 = v33;
-      v15 = v34;
+      serverBundleFeaturesCopy = v33;
+      bundleFeaturesCopy = v34;
     }
   }
 
@@ -889,16 +889,16 @@ void __132__PRSModelManager_computeScoresForFeatures_withBundleFeatures_serverBu
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (double)testL2WithData:(id)a3 experimental:(BOOL)a4
+- (double)testL2WithData:(id)data experimental:(BOOL)experimental
 {
-  v5 = a3;
-  v6 = [(PRSModelManager *)self models];
+  dataCopy = data;
+  models = [(PRSModelManager *)self models];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:0];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 model];
+  v8 = [models objectForKeyedSubscript:v7];
+  model = [v8 model];
 
   v13 = 0;
-  [v9 predict:v5 error:&v13];
+  [model predict:dataCopy error:&v13];
   v11 = v10;
   if (v13)
   {

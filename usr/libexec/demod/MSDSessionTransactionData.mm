@@ -1,13 +1,13 @@
 @interface MSDSessionTransactionData
-- (MSDSessionTransactionData)initWithData:(id)a3;
-- (void)saveToFile:(id)a3;
+- (MSDSessionTransactionData)initWithData:(id)data;
+- (void)saveToFile:(id)file;
 @end
 
 @implementation MSDSessionTransactionData
 
-- (MSDSessionTransactionData)initWithData:(id)a3
+- (MSDSessionTransactionData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v46.receiver = self;
   v46.super_class = MSDSessionTransactionData;
   v5 = [(MSDSessionTransactionData *)&v46 init];
@@ -17,74 +17,74 @@
     [(MSDSessionTransactionData *)v5 setData:v6];
 
     v7 = [MSDSessionTimeIntervalDataPoint alloc];
-    v8 = [v4 domainLookupStartDate];
-    v9 = [v4 domainLookupEndDate];
-    v45 = [(MSDSessionTimeIntervalDataPoint *)v7 initWithStartTime:v8 endTime:v9];
+    domainLookupStartDate = [dataCopy domainLookupStartDate];
+    domainLookupEndDate = [dataCopy domainLookupEndDate];
+    v45 = [(MSDSessionTimeIntervalDataPoint *)v7 initWithStartTime:domainLookupStartDate endTime:domainLookupEndDate];
 
-    v10 = [(MSDSessionTransactionData *)v5 data];
-    [v10 setObject:v45 forKey:@"DNSResolutionTime"];
+    data = [(MSDSessionTransactionData *)v5 data];
+    [data setObject:v45 forKey:@"DNSResolutionTime"];
 
     v11 = [MSDSessionTimeIntervalDataPoint alloc];
-    v12 = [v4 connectStartDate];
-    v13 = [v4 connectEndDate];
-    v44 = [(MSDSessionTimeIntervalDataPoint *)v11 initWithStartTime:v12 endTime:v13];
+    connectStartDate = [dataCopy connectStartDate];
+    connectEndDate = [dataCopy connectEndDate];
+    v44 = [(MSDSessionTimeIntervalDataPoint *)v11 initWithStartTime:connectStartDate endTime:connectEndDate];
 
-    v14 = [(MSDSessionTransactionData *)v5 data];
-    [v14 setObject:v44 forKey:@"ConectionEstablishmentTime"];
+    data2 = [(MSDSessionTransactionData *)v5 data];
+    [data2 setObject:v44 forKey:@"ConectionEstablishmentTime"];
 
     v15 = [MSDSessionTimeIntervalDataPoint alloc];
-    v16 = [v4 connectStartDate];
-    v17 = [v4 secureConnectionStartDate];
-    v43 = [(MSDSessionTimeIntervalDataPoint *)v15 initWithStartTime:v16 endTime:v17];
+    connectStartDate2 = [dataCopy connectStartDate];
+    secureConnectionStartDate = [dataCopy secureConnectionStartDate];
+    v43 = [(MSDSessionTimeIntervalDataPoint *)v15 initWithStartTime:connectStartDate2 endTime:secureConnectionStartDate];
 
-    v18 = [(MSDSessionTransactionData *)v5 data];
-    [v18 setObject:v43 forKey:@"TCPConnectionTime"];
+    data3 = [(MSDSessionTransactionData *)v5 data];
+    [data3 setObject:v43 forKey:@"TCPConnectionTime"];
 
     v19 = [MSDSessionTimeIntervalDataPoint alloc];
-    v20 = [v4 secureConnectionStartDate];
-    v21 = [v4 secureConnectionEndDate];
-    v22 = [(MSDSessionTimeIntervalDataPoint *)v19 initWithStartTime:v20 endTime:v21];
+    secureConnectionStartDate2 = [dataCopy secureConnectionStartDate];
+    secureConnectionEndDate = [dataCopy secureConnectionEndDate];
+    v22 = [(MSDSessionTimeIntervalDataPoint *)v19 initWithStartTime:secureConnectionStartDate2 endTime:secureConnectionEndDate];
 
-    v23 = [(MSDSessionTransactionData *)v5 data];
-    [v23 setObject:v22 forKey:@"SecureConnectionTime"];
+    data4 = [(MSDSessionTransactionData *)v5 data];
+    [data4 setObject:v22 forKey:@"SecureConnectionTime"];
 
     v24 = [MSDSessionTimeIntervalDataPoint alloc];
-    v25 = [v4 requestStartDate];
-    v26 = [v4 requestEndDate];
-    v27 = [(MSDSessionTimeIntervalDataPoint *)v24 initWithStartTime:v25 endTime:v26];
+    requestStartDate = [dataCopy requestStartDate];
+    requestEndDate = [dataCopy requestEndDate];
+    v27 = [(MSDSessionTimeIntervalDataPoint *)v24 initWithStartTime:requestStartDate endTime:requestEndDate];
 
-    v28 = [(MSDSessionTransactionData *)v5 data];
-    [v28 setObject:v27 forKey:@"RequestTime"];
+    data5 = [(MSDSessionTransactionData *)v5 data];
+    [data5 setObject:v27 forKey:@"RequestTime"];
 
     v29 = [MSDSessionTimeIntervalDataPoint alloc];
-    v30 = [v4 responseStartDate];
-    v31 = [v4 responseEndDate];
-    v32 = [(MSDSessionTimeIntervalDataPoint *)v29 initWithStartTime:v30 endTime:v31];
+    responseStartDate = [dataCopy responseStartDate];
+    responseEndDate = [dataCopy responseEndDate];
+    v32 = [(MSDSessionTimeIntervalDataPoint *)v29 initWithStartTime:responseStartDate endTime:responseEndDate];
 
-    v33 = [(MSDSessionTransactionData *)v5 data];
-    [v33 setObject:v32 forKey:@"ResponseTime"];
+    data6 = [(MSDSessionTransactionData *)v5 data];
+    [data6 setObject:v32 forKey:@"ResponseTime"];
 
-    v34 = [v4 countOfRequestHeaderBytesSent];
-    v35 = [v4 countOfRequestBodyBytesSent];
-    v36 = [v4 countOfResponseHeaderBytesReceived];
-    v37 = [v4 countOfResponseBodyBytesReceived];
-    v38 = [[MSDSessionCountDataPoint alloc] initWithCount:&v34[v35]];
-    v39 = [[MSDSessionCountDataPoint alloc] initWithCount:&v36[v37]];
-    v40 = [(MSDSessionTransactionData *)v5 data];
-    [v40 setObject:v38 forKey:@"RequestBytesSent"];
+    countOfRequestHeaderBytesSent = [dataCopy countOfRequestHeaderBytesSent];
+    countOfRequestBodyBytesSent = [dataCopy countOfRequestBodyBytesSent];
+    countOfResponseHeaderBytesReceived = [dataCopy countOfResponseHeaderBytesReceived];
+    countOfResponseBodyBytesReceived = [dataCopy countOfResponseBodyBytesReceived];
+    v38 = [[MSDSessionCountDataPoint alloc] initWithCount:&countOfRequestHeaderBytesSent[countOfRequestBodyBytesSent]];
+    v39 = [[MSDSessionCountDataPoint alloc] initWithCount:&countOfResponseHeaderBytesReceived[countOfResponseBodyBytesReceived]];
+    data7 = [(MSDSessionTransactionData *)v5 data];
+    [data7 setObject:v38 forKey:@"RequestBytesSent"];
 
-    v41 = [(MSDSessionTransactionData *)v5 data];
-    [v41 setObject:v39 forKey:@"ResponseBytesReceived"];
+    data8 = [(MSDSessionTransactionData *)v5 data];
+    [data8 setObject:v39 forKey:@"ResponseBytesReceived"];
   }
 
   return v5;
 }
 
-- (void)saveToFile:(id)a3
+- (void)saveToFile:(id)file
 {
   v21.receiver = self;
   v21.super_class = MSDSessionTransactionData;
-  v16 = a3;
+  fileCopy = file;
   [(MSDSessionMetricsData *)&v21 saveToFile:?];
   v4 = [NSArray arrayWithObjects:@"DNSResolutionTime", @"ConectionEstablishmentTime", @"TCPConnectionTime", @"SecureConnectionTime", @"RequestTime", @"ResponseTime", @"RequestBytesSent", @"ResponseBytesReceived", 0];
   v5 = objc_alloc_init(NSMutableString);
@@ -109,13 +109,13 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(MSDSessionTransactionData *)self data];
-        v13 = [v12 objectForKey:v11];
+        data = [(MSDSessionTransactionData *)self data];
+        v13 = [data objectForKey:v11];
 
         if (v13)
         {
-          v14 = [v13 print];
-          [v5 appendFormat:@"%@, ", v14];
+          print = [v13 print];
+          [v5 appendFormat:@"%@, ", print];
         }
 
         else
@@ -135,7 +135,7 @@
 
   [v5 appendString:@"\n"];
   v15 = [v5 dataUsingEncoding:4];
-  [v16 writeData:v15];
+  [fileCopy writeData:v15];
 }
 
 @end

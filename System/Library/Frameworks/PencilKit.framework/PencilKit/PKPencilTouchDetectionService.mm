@@ -1,28 +1,28 @@
 @interface PKPencilTouchDetectionService
 + (id)sharedInstance;
 + (void)beginObservingTouchesForDetection;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)timestampIndicatesRecentUsage:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)timestampIndicatesRecentUsage:(id)usage;
 - (PKPencilTouchDetectionService)init;
-- (id)stringForTouchDetectionPencilType:(int64_t)a3;
-- (void)_updateActivePencilUsageForTouchType:(int64_t)a3;
+- (id)stringForTouchDetectionPencilType:(int64_t)type;
+- (void)_updateActivePencilUsageForTouchType:(int64_t)type;
 - (void)dealloc;
 - (void)loadDefaultsIfNecessary;
 - (void)loadTimestampsIfNecessary;
-- (void)pencilType:(int64_t)a3 hasRecentlyBeenUsedWithCompletionHandler:(id)a4;
+- (void)pencilType:(int64_t)type hasRecentlyBeenUsedWithCompletionHandler:(id)handler;
 - (void)persistTimestamps;
 - (void)postUpdateNotificationIfNecessary;
-- (void)reset:(id)a3;
+- (void)reset:(id)reset;
 - (void)resumeConnectionIfIdle;
-- (void)updateTimestampForType:(int64_t)a3;
+- (void)updateTimestampForType:(int64_t)type;
 @end
 
 @implementation PKPencilTouchDetectionService
 
 + (void)beginObservingTouchesForDetection
 {
-  v2 = [a1 sharedInstance];
-  [v2 resumeConnectionIfIdle];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance resumeConnectionIfIdle];
 }
 
 + (id)sharedInstance
@@ -90,14 +90,14 @@ void __47__PKPencilTouchDetectionService_sharedInstance__block_invoke()
 
     v7 = v6;
     _Block_object_dispose(&v29, 8);
-    v8 = [v6 configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [v6 configurationForDefaultMainDisplayMonitor];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __37__PKPencilTouchDetectionService_init__block_invoke;
     v21[3] = &unk_1E82DA4E8;
     v9 = v2;
     v22 = v9;
-    [v8 setTransitionHandler:v21];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v21];
     v29 = 0;
     v30 = &v29;
     v31 = 0x2050000000;
@@ -116,7 +116,7 @@ void __47__PKPencilTouchDetectionService_sharedInstance__block_invoke()
 
     v11 = v10;
     _Block_object_dispose(&v29, 8);
-    v12 = [v10 monitorWithConfiguration:v8];
+    v12 = [v10 monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     displayLayoutMonitor = v9->_displayLayoutMonitor;
     v9->_displayLayoutMonitor = v12;
 
@@ -143,9 +143,9 @@ void __47__PKPencilTouchDetectionService_sharedInstance__block_invoke()
 
     v17 = v16;
     _Block_object_dispose(&v29, 8);
-    v18 = [v16 mainIdentity];
-    v19 = [MEMORY[0x1E69DD778] sharedInstance];
-    [v19 addGestureRecognizer:v9->_detectionGesture recognitionEvent:2 toDisplayWithIdentity:v18];
+    mainIdentity = [v16 mainIdentity];
+    mEMORY[0x1E69DD778] = [MEMORY[0x1E69DD778] sharedInstance];
+    [mEMORY[0x1E69DD778] addGestureRecognizer:v9->_detectionGesture recognitionEvent:2 toDisplayWithIdentity:mainIdentity];
   }
 
   return v2;
@@ -178,7 +178,7 @@ uint64_t __37__PKPencilTouchDetectionService_init__block_invoke(uint64_t a1)
   [(PKPencilTouchDetectionService *)&v3 dealloc];
 }
 
-- (void)reset:(id)a3
+- (void)reset:(id)reset
 {
   v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   [(PKPencilTouchDetectionService *)self setTimestamps:v4];
@@ -190,8 +190,8 @@ uint64_t __37__PKPencilTouchDetectionService_init__block_invoke(uint64_t a1)
 {
   if (![(PKPencilTouchDetectionService *)self isListening])
   {
-    v3 = [(PKPencilTouchDetectionService *)self listener];
-    [v3 resume];
+    listener = [(PKPencilTouchDetectionService *)self listener];
+    [listener resume];
 
     [(PKPencilTouchDetectionService *)self setIsListening:1];
   }
@@ -199,9 +199,9 @@ uint64_t __37__PKPencilTouchDetectionService_init__block_invoke(uint64_t a1)
 
 - (void)loadDefaultsIfNecessary
 {
-  v3 = [(PKPencilTouchDetectionService *)self pencilDefaults];
+  pencilDefaults = [(PKPencilTouchDetectionService *)self pencilDefaults];
 
-  if (!v3)
+  if (!pencilDefaults)
   {
     v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.PencilKit"];
     [(PKPencilTouchDetectionService *)self setPencilDefaults:v4];
@@ -210,13 +210,13 @@ uint64_t __37__PKPencilTouchDetectionService_init__block_invoke(uint64_t a1)
 
 - (void)loadTimestampsIfNecessary
 {
-  v3 = [(PKPencilTouchDetectionService *)self timestamps];
+  timestamps = [(PKPencilTouchDetectionService *)self timestamps];
 
-  if (!v3)
+  if (!timestamps)
   {
     [(PKPencilTouchDetectionService *)self loadDefaultsIfNecessary];
-    v4 = [(PKPencilTouchDetectionService *)self pencilDefaults];
-    v7 = [v4 objectForKey:@"TouchTimestamps"];
+    pencilDefaults = [(PKPencilTouchDetectionService *)self pencilDefaults];
+    v7 = [pencilDefaults objectForKey:@"TouchTimestamps"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -236,29 +236,29 @@ uint64_t __37__PKPencilTouchDetectionService_init__block_invoke(uint64_t a1)
 
 - (void)persistTimestamps
 {
-  v3 = [(PKPencilTouchDetectionService *)self timestamps];
+  timestamps = [(PKPencilTouchDetectionService *)self timestamps];
 
-  if (v3)
+  if (timestamps)
   {
     [(PKPencilTouchDetectionService *)self loadDefaultsIfNecessary];
-    v5 = [(PKPencilTouchDetectionService *)self pencilDefaults];
-    v4 = [(PKPencilTouchDetectionService *)self timestamps];
-    [v5 setObject:v4 forKey:@"TouchTimestamps"];
+    pencilDefaults = [(PKPencilTouchDetectionService *)self pencilDefaults];
+    timestamps2 = [(PKPencilTouchDetectionService *)self timestamps];
+    [pencilDefaults setObject:timestamps2 forKey:@"TouchTimestamps"];
   }
 }
 
-- (BOOL)timestampIndicatesRecentUsage:(id)a3
+- (BOOL)timestampIndicatesRecentUsage:(id)usage
 {
-  if (!a3)
+  if (!usage)
   {
     return 0;
   }
 
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
+  usageCopy = usage;
   v5 = [v3 now];
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [v6 dateByAddingUnit:8 value:1 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = [currentCalendar dateByAddingUnit:8 value:1 toDate:usageCopy options:0];
 
   v8 = [v5 compare:v7] == -1;
   return v8;
@@ -266,66 +266,66 @@ uint64_t __37__PKPencilTouchDetectionService_init__block_invoke(uint64_t a1)
 
 - (void)postUpdateNotificationIfNecessary
 {
-  v3 = [(PKPencilTouchDetectionService *)self userInfoForNotification];
+  userInfoForNotification = [(PKPencilTouchDetectionService *)self userInfoForNotification];
 
-  if (v3)
+  if (userInfoForNotification)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    v5 = [(PKPencilTouchDetectionService *)self userInfoForNotification];
-    CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.pencilkit.pktouchdetectionupdate", 0, v5, 1u);
+    userInfoForNotification2 = [(PKPencilTouchDetectionService *)self userInfoForNotification];
+    CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.pencilkit.pktouchdetectionupdate", 0, userInfoForNotification2, 1u);
 
     [(PKPencilTouchDetectionService *)self setUserInfoForNotification:0];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   listener = self->_listener;
-  if (listener == a3)
+  if (listener == listener)
   {
     v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F4811328];
-    [v6 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
   }
 
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
-  return listener == a3;
+  return listener == listener;
 }
 
-- (void)pencilType:(int64_t)a3 hasRecentlyBeenUsedWithCompletionHandler:(id)a4
+- (void)pencilType:(int64_t)type hasRecentlyBeenUsedWithCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = v6;
+    v11 = handlerCopy;
     [(PKPencilTouchDetectionService *)self loadTimestampsIfNecessary];
     v7 = @"Unknown";
-    if (a3 == 1)
+    if (type == 1)
     {
       v7 = @"Crayon";
     }
 
-    if (!a3)
+    if (!type)
     {
       v7 = @"Pencil";
     }
 
     v8 = v7;
-    v9 = [(PKPencilTouchDetectionService *)self timestamps];
-    v10 = [v9 objectForKey:v8];
+    timestamps = [(PKPencilTouchDetectionService *)self timestamps];
+    v10 = [timestamps objectForKey:v8];
 
     v11[2](v11, [(PKPencilTouchDetectionService *)self timestampIndicatesRecentUsage:v10]);
-    v6 = v11;
+    handlerCopy = v11;
   }
 }
 
-- (void)_updateActivePencilUsageForTouchType:(int64_t)a3
+- (void)_updateActivePencilUsageForTouchType:(int64_t)type
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  [v5 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v7 = v6;
 
   [(PKPencilTouchDetectionService *)self activePencilUsageTimestamp];
@@ -333,34 +333,34 @@ uint64_t __37__PKPencilTouchDetectionService_init__block_invoke(uint64_t a1)
   {
     [(PKPencilTouchDetectionService *)self setActivePencilUsageTimestamp:v7];
     v12[0] = @"com.apple.pencilkit.pkactivepencilusage.type";
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v12[1] = @"com.apple.pencilkit.pkactivepencilusage.interval";
     v13[0] = v9;
     v13[1] = &unk_1F47C1F18;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"com.apple.pencilkit.pkactivepencilusage" object:self userInfo:v10];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.pencilkit.pkactivepencilusage" object:self userInfo:v10];
   }
 }
 
-- (void)updateTimestampForType:(int64_t)a3
+- (void)updateTimestampForType:(int64_t)type
 {
   [(PKPencilTouchDetectionService *)self loadTimestampsIfNecessary];
   v5 = @"Unknown";
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = @"Crayon";
   }
 
-  if (!a3)
+  if (!type)
   {
     v5 = @"Pencil";
   }
 
   v14 = v5;
-  v6 = [(PKPencilTouchDetectionService *)self timestamps];
-  v7 = [v6 objectForKey:v14];
+  timestamps = [(PKPencilTouchDetectionService *)self timestamps];
+  v7 = [timestamps objectForKey:v14];
 
   if (v7)
   {
@@ -372,21 +372,21 @@ uint64_t __37__PKPencilTouchDetectionService_init__block_invoke(uint64_t a1)
     v8 = 0;
   }
 
-  v9 = [(PKPencilTouchDetectionService *)self timestamps];
+  timestamps2 = [(PKPencilTouchDetectionService *)self timestamps];
   v10 = [MEMORY[0x1E695DF00] now];
-  [v9 setObject:v10 forKey:v14];
+  [timestamps2 setObject:v10 forKey:v14];
 
-  if (a3)
+  if (type)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (v7)
     {
       if (!v8)
       {
 LABEL_12:
-        if ([v11 count])
+        if ([dictionary count])
         {
-          [(PKPencilTouchDetectionService *)self setUserInfoForNotification:v11];
+          [(PKPencilTouchDetectionService *)self setUserInfoForNotification:dictionary];
         }
 
         goto LABEL_15;
@@ -395,8 +395,8 @@ LABEL_12:
 
     else
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-      [v11 setObject:v13 forKey:@"com.apple.pencilkit.pktouchdetectionupdate.firstUse"];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+      [dictionary setObject:v13 forKey:@"com.apple.pencilkit.pktouchdetectionupdate.firstUse"];
 
       if (!v8)
       {
@@ -404,25 +404,25 @@ LABEL_12:
       }
     }
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v11 setObject:v12 forKey:@"com.apple.pencilkit.pktouchdetectionupdate.reactivation"];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    [dictionary setObject:v12 forKey:@"com.apple.pencilkit.pktouchdetectionupdate.reactivation"];
 
     goto LABEL_12;
   }
 
 LABEL_15:
-  [(PKPencilTouchDetectionService *)self _updateActivePencilUsageForTouchType:a3];
+  [(PKPencilTouchDetectionService *)self _updateActivePencilUsageForTouchType:type];
 }
 
-- (id)stringForTouchDetectionPencilType:(int64_t)a3
+- (id)stringForTouchDetectionPencilType:(int64_t)type
 {
   v3 = @"Crayon";
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }

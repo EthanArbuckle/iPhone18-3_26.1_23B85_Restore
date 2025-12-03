@@ -1,8 +1,8 @@
 @interface ACHActivityTriggerGenerator
 + (unint64_t)allPossibleTriggers;
-- ($A5E8A54F69D71102DC6A95EAED28A9DA)_incrementWithInitialState:(SEL)a3 forGoalType:(id *)a4 dataProvider:(int64_t)a5 goalMetHandler:(id)a6;
-- (ACHActivityTriggerGenerator)initWithPauseRingsCoordinator:(id)a3;
-- (unint64_t)_triggersForNewActivityDataWithGoalType:(int64_t)a3 dataProvider:(id)a4 goalMetHandler:(id)a5;
+- ($A5E8A54F69D71102DC6A95EAED28A9DA)_incrementWithInitialState:(SEL)state forGoalType:(id *)type dataProvider:(int64_t)provider goalMetHandler:(id)handler;
+- (ACHActivityTriggerGenerator)initWithPauseRingsCoordinator:(id)coordinator;
+- (unint64_t)_triggersForNewActivityDataWithGoalType:(int64_t)type dataProvider:(id)provider goalMetHandler:(id)handler;
 @end
 
 @implementation ACHActivityTriggerGenerator
@@ -15,25 +15,25 @@
   return v2 | v3 | v4 | ACHGoalCompletionTrigger(2) | 0x3C9;
 }
 
-- (ACHActivityTriggerGenerator)initWithPauseRingsCoordinator:(id)a3
+- (ACHActivityTriggerGenerator)initWithPauseRingsCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = ACHActivityTriggerGenerator;
   v6 = [(ACHActivityTriggerGenerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pauseRingsCoordinator, a3);
+    objc_storeStrong(&v6->_pauseRingsCoordinator, coordinator);
   }
 
   return v7;
 }
 
-- (unint64_t)_triggersForNewActivityDataWithGoalType:(int64_t)a3 dataProvider:(id)a4 goalMetHandler:(id)a5
+- (unint64_t)_triggersForNewActivityDataWithGoalType:(int64_t)type dataProvider:(id)provider goalMetHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  providerCopy = provider;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v11 = 0uLL;
   v52 = 0u;
@@ -45,9 +45,9 @@
   v46 = 0u;
   v47 = 0u;
   v45 = 0u;
-  if (v8)
+  if (providerCopy)
   {
-    [v8 currentStateForGoalType:a3];
+    [providerCopy currentStateForGoalType:type];
     v11 = 0uLL;
   }
 
@@ -69,7 +69,7 @@
   v32 = v50;
   v27 = v45;
   v28 = v46;
-  [(ACHActivityTriggerGenerator *)self _incrementWithInitialState:&v27 forGoalType:a3 dataProvider:v8 goalMetHandler:v9];
+  [(ACHActivityTriggerGenerator *)self _incrementWithInitialState:&v27 forGoalType:type dataProvider:providerCopy goalMetHandler:handlerCopy];
   v33 = v42;
   v34 = v43;
   v35 = v44;
@@ -79,16 +79,16 @@
   v32 = v41;
   v27 = v36;
   v28 = v37;
-  [v8 setNewState:&v27 forGoalType:a3];
-  v12 = [v8 todayActivitySummary];
-  v13 = [v12 isPaused];
+  [providerCopy setNewState:&v27 forGoalType:type];
+  todayActivitySummary = [providerCopy todayActivitySummary];
+  isPaused = [todayActivitySummary isPaused];
 
-  if ((v13 & 1) == 0)
+  if ((isPaused & 1) == 0)
   {
     if (LOBYTE(v44.f64[0]) == 1)
     {
-      v16 = ACHGoalCompletionTrigger(a3);
-      if ([v8 allGoalsMetToday])
+      v16 = ACHGoalCompletionTrigger(type);
+      if ([providerCopy allGoalsMetToday])
       {
         v17 = v16 | 0x40;
       }
@@ -104,7 +104,7 @@
       v17 = 0;
     }
 
-    v18 = a3 == 3 || a3 == 0;
+    v18 = type == 3 || type == 0;
     if (v18)
     {
       v14.f64[0] = v38.f64[0];
@@ -124,7 +124,7 @@
       }
     }
 
-    switch(a3)
+    switch(type)
     {
       case 1:
         v21 = 256;
@@ -141,8 +141,8 @@ LABEL_37:
         break;
     }
 
-    v22 = [v8 todayActivitySummary];
-    if ([v22 activityMoveMode] == 2 && -[ACHActivityTriggerGenerator _goalTypeIsMoveType:](self, "_goalTypeIsMoveType:", a3))
+    todayActivitySummary2 = [providerCopy todayActivitySummary];
+    if ([todayActivitySummary2 activityMoveMode] == 2 && -[ACHActivityTriggerGenerator _goalTypeIsMoveType:](self, "_goalTypeIsMoveType:", type))
     {
       v23 = &v43;
     }
@@ -175,45 +175,45 @@ LABEL_38:
   return v15;
 }
 
-- ($A5E8A54F69D71102DC6A95EAED28A9DA)_incrementWithInitialState:(SEL)a3 forGoalType:(id *)a4 dataProvider:(int64_t)a5 goalMetHandler:(id)a6
+- ($A5E8A54F69D71102DC6A95EAED28A9DA)_incrementWithInitialState:(SEL)state forGoalType:(id *)type dataProvider:(int64_t)provider goalMetHandler:(id)handler
 {
   v142 = *MEMORY[0x277D85DE8];
-  v95 = a6;
+  handlerCopy = handler;
   v93 = a7;
-  v86 = a5;
-  v92 = ACHGoalDisplayName(a5);
-  if (![v95 todayIndex])
+  providerCopy = provider;
+  v92 = ACHGoalDisplayName(provider);
+  if (![handlerCopy todayIndex])
   {
-    v29 = *&a4->var14;
-    *&retstr->var12 = *&a4->var12;
+    v29 = *&type->var14;
+    *&retstr->var12 = *&type->var12;
     *&retstr->var14 = v29;
-    *&retstr->var16 = *&a4->var16;
-    v30 = *&a4->var6;
-    *&retstr->var4 = *&a4->var4;
+    *&retstr->var16 = *&type->var16;
+    v30 = *&type->var6;
+    *&retstr->var4 = *&type->var4;
     *&retstr->var6 = v30;
-    v31 = *&a4->var10;
-    *&retstr->var8 = *&a4->var8;
+    v31 = *&type->var10;
+    *&retstr->var8 = *&type->var8;
     *&retstr->var10 = v31;
-    v32 = *&a4->var2;
-    *&retstr->var0 = *&a4->var0;
+    v32 = *&type->var2;
+    *&retstr->var0 = *&type->var0;
     *&retstr->var2 = v32;
     goto LABEL_61;
   }
 
   v124 = 0;
   v125 = &v124;
-  v11 = *&a4->var14;
-  v134 = *&a4->var12;
+  v11 = *&type->var14;
+  v134 = *&type->var12;
   v135 = v11;
-  v136 = *&a4->var16;
-  v12 = *&a4->var6;
-  v130 = *&a4->var4;
+  v136 = *&type->var16;
+  v12 = *&type->var6;
+  v130 = *&type->var4;
   v131 = v12;
-  v13 = *&a4->var10;
-  v132 = *&a4->var8;
+  v13 = *&type->var10;
+  v132 = *&type->var8;
   v133 = v13;
-  v14 = *&a4->var2;
-  v128 = *&a4->var0;
+  v14 = *&type->var2;
+  v128 = *&type->var0;
   v129 = v14;
   v127 = &unk_221E74077;
   v94 = *(&v128 + 1) - v128;
@@ -223,31 +223,31 @@ LABEL_38:
     *&v129 = 0;
   }
 
-  v91 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  [v95 todayIndex];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  [handlerCopy todayIndex];
   v96 = _HKActivityCacheDateComponentsFromCacheIndex();
-  v15 = [v91 dateFromComponents:?];
-  v16 = [v91 hk_dateBySubtractingDays:1 fromDate:v15];
+  v15 = [hk_gregorianCalendar dateFromComponents:?];
+  v16 = [hk_gregorianCalendar hk_dateBySubtractingDays:1 fromDate:v15];
   v17 = _HKCacheIndexFromDate();
   [v96 year];
   [v96 month];
   v90 = ACHDateComponentsForYearMonthDay();
   v18 = ACHStartOfFitnessWeekBeforeDateInCalendar();
-  v19 = [v91 components:28 fromDate:v18];
+  v19 = [hk_gregorianCalendar components:28 fromDate:v18];
   v78 = v16;
   v79 = v18;
-  v20 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v21 = [v20 features];
-  v22 = [v21 pauseRings];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  pauseRings = [features pauseRings];
 
   v23 = v93;
   v24 = v93[2](v93, v125[9], v125[10]);
   v25 = v23[2](v23, v125[6], v125[8]);
   v88 = v23[2](v23, v125[7], v125[8]);
-  if (!v22)
+  if (!pauseRings)
   {
     v84 = 0;
-    v89 = 0;
+    ringsPausedToday = 0;
     v28 = 0;
     if (v17 >= *(v125 + 4))
     {
@@ -269,7 +269,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v89 = [v95 ringsPausedToday];
+  ringsPausedToday = [handlerCopy ringsPausedToday];
   if (v17 >= *(v125 + 4))
   {
     v26 = *(v125 + 4);
@@ -280,17 +280,17 @@ LABEL_15:
     v26 = v17;
   }
 
-  v27 = [(ACHActivityTriggerGenerator *)self pauseRingsCoordinator];
-  v84 = [v27 isPausedForActivitySummaryCacheIndexStart:v26 end:v17];
+  pauseRingsCoordinator = [(ACHActivityTriggerGenerator *)self pauseRingsCoordinator];
+  v84 = [pauseRingsCoordinator isPausedForActivitySummaryCacheIndexStart:v26 end:v17];
 
-  v28 = v89;
+  v28 = ringsPausedToday;
   if (v25)
   {
     goto LABEL_15;
   }
 
 LABEL_9:
-  v82 = v88 & (v89 ^ 1);
+  v82 = v88 & (ringsPausedToday ^ 1);
 LABEL_16:
   if (v94 > 172799)
   {
@@ -302,8 +302,8 @@ LABEL_16:
     v33 = v24 ^ 1;
   }
 
-  v34 = [v19 year];
-  if (v34 == [v96 year] && (v35 = objc_msgSend(v19, "month"), v35 == objc_msgSend(v96, "month")))
+  year = [v19 year];
+  if (year == [v96 year] && (v35 = objc_msgSend(v19, "month"), v35 == objc_msgSend(v96, "month")))
   {
     v36 = [v19 day];
     v83 = v36 == [v96 day];
@@ -314,8 +314,8 @@ LABEL_16:
     v83 = 0;
   }
 
-  v37 = [v90 year];
-  if (v37 == [v96 year] && (v38 = objc_msgSend(v90, "month"), v38 == objc_msgSend(v96, "month")))
+  year2 = [v90 year];
+  if (year2 == [v96 year] && (v38 = objc_msgSend(v90, "month"), v38 == objc_msgSend(v96, "month")))
   {
     v39 = [v90 day];
     v81 = v39 == [v96 day];
@@ -329,9 +329,9 @@ LABEL_16:
   v40 = ACHLogAwardEngine();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = [v95 todayIndex];
+    todayIndex = [handlerCopy todayIndex];
     *buf = 134217984;
-    *v138 = v41;
+    *v138 = todayIndex;
     _os_log_impl(&dword_221DDC000, v40, OS_LOG_TYPE_DEFAULT, "[ACHActivityTriggerGenerator] Today's Index: %ld", buf, 0xCu);
   }
 
@@ -349,7 +349,7 @@ LABEL_16:
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
     v44 = @"NO";
-    if (v22)
+    if (pauseRings)
     {
       v44 = @"YES";
     }
@@ -363,7 +363,7 @@ LABEL_16:
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
     v46 = @"NO";
-    if (v89)
+    if (ringsPausedToday)
     {
       v46 = @"YES";
     }
@@ -469,11 +469,11 @@ LABEL_16:
   v97[1] = 3221225472;
   v97[2] = __98__ACHActivityTriggerGenerator__incrementWithInitialState_forGoalType_dataProvider_goalMetHandler___block_invoke_2;
   v97[3] = &unk_278490980;
-  v64 = v95;
+  v64 = handlerCopy;
   v98 = v64;
-  v99 = self;
+  selfCopy = self;
   v100 = &v124;
-  v101 = v86;
+  v101 = providerCopy;
   v65 = _Block_copy(v97);
   if (v94 > 86399)
   {
@@ -482,7 +482,7 @@ LABEL_16:
       v85[2]();
     }
 
-    if ((v89 & 1) == 0)
+    if ((ringsPausedToday & 1) == 0)
     {
       ++*(v125 + 16);
       v65[2](v65);
@@ -505,15 +505,15 @@ LABEL_16:
   }
 
   v63[2](v63);
-  v66 = [v64 todayIndex];
+  todayIndex2 = [v64 todayIndex];
   v67 = v125;
   v68 = v125;
-  *(v125 + 4) = v66;
+  *(v125 + 4) = todayIndex2;
   v69 = v68 + 4;
   v70 = v88;
   if (v88)
   {
-    v70 = v82 & (v89 ^ 1);
+    v70 = v82 & (ringsPausedToday ^ 1);
   }
 
   *(v67 + 160) = v70;

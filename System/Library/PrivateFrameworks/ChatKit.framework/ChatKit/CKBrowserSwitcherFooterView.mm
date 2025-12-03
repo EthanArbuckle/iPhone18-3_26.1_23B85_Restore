@@ -1,43 +1,43 @@
 @interface CKBrowserSwitcherFooterView
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (CGPoint)targetContentOffsetForFocusPoint:(CGPoint)a3 initialLayoutMode:(unint64_t)a4 finalLayoutMode:(unint64_t)a5;
-- (CKBrowserSwitcherFooterView)initWithFrame:(CGRect)a3 toggleBordersOnInterfaceStyle:(BOOL)a4;
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (CGPoint)targetContentOffsetForFocusPoint:(CGPoint)point initialLayoutMode:(unint64_t)mode finalLayoutMode:(unint64_t)layoutMode;
+- (CKBrowserSwitcherFooterView)initWithFrame:(CGRect)frame toggleBordersOnInterfaceStyle:(BOOL)style;
 - (CKBrowserSwitcherFooterViewDataSource)dataSource;
 - (CKBrowserSwitcherFooterViewDelegate)delegate;
 - (UIEdgeInsets)insetsForAppStrip;
 - (double)contentHeight;
 - (double)contentHeightForCameraApps;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateVisibilityState;
-- (void)adjustMagnificationAtPoint:(CGPoint)a3 minifyImmediately:(BOOL)a4;
-- (void)animateAppStripVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)appsLongPressed:(id)a3;
+- (void)adjustMagnificationAtPoint:(CGPoint)point minifyImmediately:(BOOL)immediately;
+- (void)animateAppStripVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
+- (void)appsLongPressed:(id)pressed;
 - (void)clearSelection;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)dealloc;
-- (void)installedAppsChanged:(id)a3;
+- (void)installedAppsChanged:(id)changed;
 - (void)layoutSubviews;
-- (void)minifyImmediately:(BOOL)a3;
+- (void)minifyImmediately:(BOOL)immediately;
 - (void)reloadData;
 - (void)resetScrollPosition;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)selectPluginAtIndexPath:(id)a3;
-- (void)setDataSource:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)selectPluginAtIndexPath:(id)path;
+- (void)setDataSource:(id)source;
 - (void)setInitiallySelectedPluginIfNeeded;
-- (void)touchTrackerTrackedTouches:(id)a3;
-- (void)transcriptCollectionStartedScrolling:(id)a3;
-- (void)updateBrowserCell:(id)a3;
-- (void)updateCollectionView:(id)a3;
-- (void)updatePredictiveTypeSnapshot:(id)a3;
-- (void)visibleAppsChanges:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)touchTrackerTrackedTouches:(id)touches;
+- (void)transcriptCollectionStartedScrolling:(id)scrolling;
+- (void)updateBrowserCell:(id)cell;
+- (void)updateCollectionView:(id)view;
+- (void)updatePredictiveTypeSnapshot:(id)snapshot;
+- (void)visibleAppsChanges:(id)changes;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CKBrowserSwitcherFooterView
@@ -56,19 +56,19 @@
   appStripLayout = self->_appStripLayout;
   self->_appStripLayout = 0;
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = CKBrowserSwitcherFooterView;
   [(CKBrowserSwitcherFooterView *)&v7 dealloc];
 }
 
-- (CKBrowserSwitcherFooterView)initWithFrame:(CGRect)a3 toggleBordersOnInterfaceStyle:(BOOL)a4
+- (CKBrowserSwitcherFooterView)initWithFrame:(CGRect)frame toggleBordersOnInterfaceStyle:(BOOL)style
 {
   v41.receiver = self;
   v41.super_class = CKBrowserSwitcherFooterView;
-  v5 = [(CKBrowserSwitcherFooterView *)&v41 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CKBrowserSwitcherFooterView *)&v41 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -76,24 +76,24 @@
     v6->_scrollsLastUsedAppIconIntoView = 1;
     v6->_minifiesOnSelection = 1;
     v6->_hideShinyStatus = 1;
-    v6->_toggleBordersOnInterfaceStyle = a4;
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    v6->_toggleBordersOnInterfaceStyle = style;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v9 = MEMORY[0x1E695F058];
-    if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v10 = +[CKUIBehavior sharedBehaviors];
-      v11 = [v10 theme];
-      v12 = [v11 browserSwitcherBorderColor];
+      theme = [v10 theme];
+      browserSwitcherBorderColor = [theme browserSwitcherBorderColor];
 
-      if (v12)
+      if (browserSwitcherBorderColor)
       {
         v13 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{*v9, v9[1], v9[2], v9[3]}];
         v14 = +[CKUIBehavior sharedBehaviors];
-        v15 = [v14 theme];
-        v16 = [v15 browserSwitcherBorderColor];
-        [v13 setBackgroundColor:v16];
+        theme2 = [v14 theme];
+        browserSwitcherBorderColor2 = [theme2 browserSwitcherBorderColor];
+        [v13 setBackgroundColor:browserSwitcherBorderColor2];
 
         [(CKBrowserSwitcherFooterView *)v6 setGrayLine:v13];
         [(CKBrowserSwitcherFooterView *)v6 addSubview:v13];
@@ -108,8 +108,8 @@
     for (i = 0; i != 3; ++i)
     {
       v21 = [CKBrowserCell classForItemType:i];
-      v22 = [(objc_class *)v21 reuseIdentifier];
-      [v19 registerClass:v21 forCellWithReuseIdentifier:v22];
+      reuseIdentifier = [(objc_class *)v21 reuseIdentifier];
+      [v19 registerClass:v21 forCellWithReuseIdentifier:reuseIdentifier];
     }
 
     v23 = objc_opt_class();
@@ -119,8 +119,8 @@
 
     [v19 setClipsToBounds:0];
     [v19 setOpaque:0];
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    [v19 setBackgroundColor:v26];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v19 setBackgroundColor:clearColor];
 
     [v19 setAlwaysBounceVertical:0];
     [v19 setAlwaysBounceHorizontal:1];
@@ -150,54 +150,54 @@
     [v30 setDelegate:v6];
     objc_storeStrong(&v6->_touchTracker, v30);
     [(UICollectionView *)v6->_appStripCollectionView addGestureRecognizer:v30];
-    v31 = [MEMORY[0x1E69DC938] currentDevice];
-    v32 = [v31 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v32 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v33 = [(CKBrowserSwitcherFooterView *)v6 grayLine];
-      [(CKBrowserSwitcherFooterView *)v6 bringSubviewToFront:v33];
+      grayLine = [(CKBrowserSwitcherFooterView *)v6 grayLine];
+      [(CKBrowserSwitcherFooterView *)v6 bringSubviewToFront:grayLine];
     }
 
     v6->_isMagnificationEnabled = 0;
     if (v6->_toggleBordersOnInterfaceStyle)
     {
-      v34 = [(CKBrowserSwitcherFooterView *)v6 traitCollection];
-      -[CKBrowserSwitcherFooterView setShowBorders:](v6, "setShowBorders:", [v34 userInterfaceStyle] == 2);
+      traitCollection = [(CKBrowserSwitcherFooterView *)v6 traitCollection];
+      -[CKBrowserSwitcherFooterView setShowBorders:](v6, "setShowBorders:", [traitCollection userInterfaceStyle] == 2);
     }
 
-    v35 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v35 addObserver:v6 selector:sel_visibleAppsChanges_ name:@"CKBrowserSelectionControllerVisibleSwitcherPluginsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_visibleAppsChanges_ name:@"CKBrowserSelectionControllerVisibleSwitcherPluginsChangedNotification" object:0];
 
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v36 addObserver:v6 selector:sel_updateCollectionView_ name:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel_updateCollectionView_ name:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
 
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:v6 selector:sel_installedAppsChanged_ name:@"CKBrowserSelectionControllerInstallationsChangedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel_installedAppsChanged_ name:@"CKBrowserSelectionControllerInstallationsChangedNotification" object:0];
 
-    v38 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v38 addObserver:v6 selector:sel_updateBrowserCell_ name:*MEMORY[0x1E69A56D0] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v6 selector:sel_updateBrowserCell_ name:*MEMORY[0x1E69A56D0] object:0];
 
-    v39 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v39 addObserver:v6 selector:sel_transcriptCollectionStartedScrolling_ name:@"transcriptCollectionViewWillBeginDragging" object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v6 selector:sel_transcriptCollectionStartedScrolling_ name:@"transcriptCollectionViewWillBeginDragging" object:0];
   }
 
   return v6;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  objc_storeWeak(&self->_dataSource, a3);
+  objc_storeWeak(&self->_dataSource, source);
 
   [(CKBrowserSwitcherFooterView *)self reloadData];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v6.receiver = self;
   v6.super_class = CKBrowserSwitcherFooterView;
   [(CKBrowserSwitcherFooterView *)&v6 willMoveToWindow:?];
-  if (!a3)
+  if (!window)
   {
     [(NSTimer *)self->_minificationTimer invalidate];
     minificationTimer = self->_minificationTimer;
@@ -205,12 +205,12 @@
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v6.receiver = self;
   v6.super_class = CKBrowserSwitcherFooterView;
   [(CKBrowserSwitcherFooterView *)&v6 willMoveToSuperview:?];
-  if (!a3)
+  if (!superview)
   {
     [(NSTimer *)self->_minificationTimer invalidate];
     minificationTimer = self->_minificationTimer;
@@ -236,7 +236,7 @@
   [(CKBrowserSwitcherFooterView *)self contentHeight];
   [(UICollectionView *)self->_appStripCollectionView setFrame:v4, v6, v8, v13];
   [(UICollectionView *)self->_appStripCollectionView _setVisibleRectEdgeInsets:0.0, v8 * -0.8, 0.0, v8 * -0.8];
-  v14 = [(CKBrowserSwitcherFooterView *)self grayLine];
+  grayLine = [(CKBrowserSwitcherFooterView *)self grayLine];
   [(CKBrowserSwitcherFooterView *)self bounds];
   v16 = v15;
   if (CKPixelWidth_once_2 != -1)
@@ -244,7 +244,7 @@
     [CKBrowserSwitcherFooterView layoutSubviews];
   }
 
-  [v14 setFrame:{0.0, 0.0, v16, *&CKPixelWidth_sPixel_2}];
+  [grayLine setFrame:{0.0, 0.0, v16, *&CKPixelWidth_sPixel_2}];
 
   self->_isMagnificationEnabled = 1;
 }
@@ -276,8 +276,8 @@
 {
   if (self->_toggleBordersOnInterfaceStyle)
   {
-    v3 = [(CKBrowserSwitcherFooterView *)self traitCollection];
-    -[CKBrowserSwitcherFooterView setShowBorders:](self, "setShowBorders:", [v3 userInterfaceStyle] == 2);
+    traitCollection = [(CKBrowserSwitcherFooterView *)self traitCollection];
+    -[CKBrowserSwitcherFooterView setShowBorders:](self, "setShowBorders:", [traitCollection userInterfaceStyle] == 2);
   }
 
   [(CKBrowserSwitcherFooterView *)self reloadData];
@@ -285,33 +285,33 @@
 
 - (void)setInitiallySelectedPluginIfNeeded
 {
-  v3 = [(CKBrowserSwitcherFooterView *)self delegate];
+  delegate = [(CKBrowserSwitcherFooterView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UICollectionView *)self->_appStripCollectionView indexPathsForSelectedItems];
-    v6 = [v5 count];
+    indexPathsForSelectedItems = [(UICollectionView *)self->_appStripCollectionView indexPathsForSelectedItems];
+    v6 = [indexPathsForSelectedItems count];
 
     if (!v6)
     {
-      v8 = [(CKBrowserSwitcherFooterView *)self delegate];
-      v7 = [v8 indexPathOfCurrentlySelectedPluginInSwitcherView:self];
+      delegate2 = [(CKBrowserSwitcherFooterView *)self delegate];
+      v7 = [delegate2 indexPathOfCurrentlySelectedPluginInSwitcherView:self];
       [(CKBrowserSwitcherFooterView *)self selectPluginAtIndexPath:v7];
     }
   }
 }
 
-- (void)selectPluginAtIndexPath:(id)a3
+- (void)selectPluginAtIndexPath:(id)path
 {
-  v18 = a3;
-  v4 = [(UICollectionView *)self->_appStripCollectionView indexPathsForSelectedItems];
-  v5 = [v4 firstObject];
+  pathCopy = path;
+  indexPathsForSelectedItems = [(UICollectionView *)self->_appStripCollectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  v6 = [(UICollectionView *)self->_appStripCollectionView indexPathsForVisibleItems];
-  if ([v6 containsObject:v18])
+  indexPathsForVisibleItems = [(UICollectionView *)self->_appStripCollectionView indexPathsForVisibleItems];
+  if ([indexPathsForVisibleItems containsObject:pathCopy])
   {
-    v7 = [(UICollectionView *)self->_appStripCollectionView cellForItemAtIndexPath:v18];
+    v7 = [(UICollectionView *)self->_appStripCollectionView cellForItemAtIndexPath:pathCopy];
     [v7 frame];
     v9 = v8;
     [(UICollectionView *)self->_appStripCollectionView contentOffset];
@@ -322,8 +322,8 @@
 
     else
     {
-      v15 = [v18 item];
-      if (v15 <= [v5 item])
+      item = [pathCopy item];
+      if (item <= [firstObject item])
       {
         v16 = 8;
       }
@@ -337,8 +337,8 @@
 
   else
   {
-    v17 = [v18 item];
-    if (v17 <= [v5 item])
+    item2 = [pathCopy item];
+    if (item2 <= [firstObject item])
     {
       v16 = 8;
     }
@@ -349,23 +349,23 @@
     }
   }
 
-  if (v18)
+  if (pathCopy)
   {
     self->_isMagnificationEnabled = 0;
-    [(UICollectionView *)self->_appStripCollectionView selectItemAtIndexPath:v18 animated:0 scrollPosition:v16];
+    [(UICollectionView *)self->_appStripCollectionView selectItemAtIndexPath:pathCopy animated:0 scrollPosition:v16];
     self->_isMagnificationEnabled = 1;
   }
 }
 
 - (void)resetScrollPosition
 {
-  v3 = [(CKBrowserSwitcherFooterView *)self appStripCollectionView];
-  [v3 adjustedContentInset];
+  appStripCollectionView = [(CKBrowserSwitcherFooterView *)self appStripCollectionView];
+  [appStripCollectionView adjustedContentInset];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CKBrowserSwitcherFooterView *)self appStripCollectionView];
-  [v8 setContentOffset:{-v7, -v5}];
+  appStripCollectionView2 = [(CKBrowserSwitcherFooterView *)self appStripCollectionView];
+  [appStripCollectionView2 setContentOffset:{-v7, -v5}];
 
   [(CKBrowserSwitcherFooterView *)self clearSelection];
 }
@@ -373,16 +373,16 @@
 - (void)clearSelection
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(CKBrowserSwitcherFooterView *)self appStripCollectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  appStripCollectionView = [(CKBrowserSwitcherFooterView *)self appStripCollectionView];
+  indexPathsForSelectedItems = [appStripCollectionView indexPathsForSelectedItems];
 
-  if (v4)
+  if (indexPathsForSelectedItems)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v4;
+    v5 = indexPathsForSelectedItems;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -399,8 +399,8 @@
           }
 
           v10 = *(*(&v12 + 1) + 8 * v9);
-          v11 = [(CKBrowserSwitcherFooterView *)self appStripCollectionView];
-          [v11 deselectItemAtIndexPath:v10 animated:0];
+          appStripCollectionView2 = [(CKBrowserSwitcherFooterView *)self appStripCollectionView];
+          [appStripCollectionView2 deselectItemAtIndexPath:v10 animated:0];
 
           ++v9;
         }
@@ -416,10 +416,10 @@
 
 - (double)contentHeightForCameraApps
 {
-  v2 = [(CKBrowserSwitcherFooterView *)self isMagnified];
+  isMagnified = [(CKBrowserSwitcherFooterView *)self isMagnified];
   v3 = +[CKUIBehavior sharedBehaviors];
   v4 = v3;
-  if (v2)
+  if (isMagnified)
   {
     [v3 chatMagnifiedChromeBottomInset];
   }
@@ -453,10 +453,10 @@ LABEL_9:
     return v8;
   }
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
     [v4 chatChromeBottomInset];
@@ -466,9 +466,9 @@ LABEL_9:
   if ([MEMORY[0x1E69DCBB8] __ck_isUsingCompactHeightPredictionBar])
   {
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 isAppStripInKeyboard];
+    isAppStripInKeyboard = [v9 isAppStripInKeyboard];
 
-    if (v10)
+    if (isAppStripInKeyboard)
     {
       return 37.0;
     }
@@ -480,14 +480,14 @@ LABEL_9:
   return result;
 }
 
-- (void)appsLongPressed:(id)a3
+- (void)appsLongPressed:(id)pressed
 {
-  v15 = a3;
-  if ([v15 state] == 1)
+  pressedCopy = pressed;
+  if ([pressedCopy state] == 1)
   {
     if (!self->_isMagnified)
     {
-      v4 = v15;
+      v4 = pressedCopy;
       appStripCollectionView = self;
 LABEL_15:
       [v4 locationInView:appStripCollectionView];
@@ -501,63 +501,63 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [v15 locationInView:self->_appStripCollectionView];
+  [pressedCopy locationInView:self->_appStripCollectionView];
   v7 = v6;
   v9 = v8;
-  v10 = [v15 state];
-  if (v10 == 3)
+  state = [pressedCopy state];
+  if (state == 3)
   {
     [(UICollectionView *)self->_appStripCollectionView endInteractiveMovement];
 LABEL_14:
     [(UICollectionView *)self->_appStripCollectionView setEditing:0];
-    v14 = [(UICollectionView *)self->_appStripCollectionView panGestureRecognizer];
-    [v14 setEnabled:1];
+    panGestureRecognizer = [(UICollectionView *)self->_appStripCollectionView panGestureRecognizer];
+    [panGestureRecognizer setEnabled:1];
 
     appStripCollectionView = self->_appStripCollectionView;
-    v4 = v15;
+    v4 = pressedCopy;
     goto LABEL_15;
   }
 
-  if (v10 == 2)
+  if (state == 2)
   {
     [(UICollectionView *)self->_appStripCollectionView updateInteractiveMovementTargetPosition:v7, v9];
     goto LABEL_16;
   }
 
-  if (v10 != 1)
+  if (state != 1)
   {
     [(UICollectionView *)self->_appStripCollectionView cancelInteractiveMovement];
     goto LABEL_14;
   }
 
   v11 = self->_appStripCollectionView;
-  [v15 locationInView:v11];
+  [pressedCopy locationInView:v11];
   v12 = [(UICollectionView *)v11 indexPathForItemAtPoint:?];
   if (v12)
   {
     [(UICollectionView *)self->_appStripCollectionView setEditing:1];
     [(UICollectionView *)self->_appStripCollectionView beginInteractiveMovementForItemAtIndexPath:v12];
-    v13 = [(UICollectionView *)self->_appStripCollectionView panGestureRecognizer];
-    [v13 setEnabled:0];
+    panGestureRecognizer2 = [(UICollectionView *)self->_appStripCollectionView panGestureRecognizer];
+    [panGestureRecognizer2 setEnabled:0];
   }
 
 LABEL_16:
 }
 
-- (void)touchTrackerTrackedTouches:(id)a3
+- (void)touchTrackerTrackedTouches:(id)touches
 {
-  v4 = [a3 state];
-  if ((v4 - 4) < 2)
+  state = [touches state];
+  if ((state - 4) < 2)
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
   }
 
   else
   {
-    if (v4 != 3)
+    if (state != 3)
     {
-      if (v4 == 1)
+      if (state == 1)
       {
         self->_hasTouches = 1;
       }
@@ -565,36 +565,36 @@ LABEL_16:
       return;
     }
 
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
   }
 
-  [(CKBrowserSwitcherFooterView *)v5 minifyImmediately:v6];
+  [(CKBrowserSwitcherFooterView *)selfCopy2 minifyImmediately:v6];
 }
 
-- (void)minifyImmediately:(BOOL)a3
+- (void)minifyImmediately:(BOOL)immediately
 {
   self->_hasTouches = 0;
   if (self->_isMagnified)
   {
-    v4 = a3;
+    immediatelyCopy = immediately;
     [(UILongPressGestureRecognizer *)self->_longPressRecognizer locationInView:self->_appStripCollectionView];
 
-    [(CKBrowserSwitcherFooterView *)self adjustMagnificationAtPoint:v4 minifyImmediately:?];
+    [(CKBrowserSwitcherFooterView *)self adjustMagnificationAtPoint:immediatelyCopy minifyImmediately:?];
   }
 }
 
-- (CGPoint)targetContentOffsetForFocusPoint:(CGPoint)a3 initialLayoutMode:(unint64_t)a4 finalLayoutMode:(unint64_t)a5
+- (CGPoint)targetContentOffsetForFocusPoint:(CGPoint)point initialLayoutMode:(unint64_t)mode finalLayoutMode:(unint64_t)layoutMode
 {
-  x = a3.x;
-  [(UICollectionView *)self->_appStripCollectionView contentOffset:a3.x];
+  x = point.x;
+  [(UICollectionView *)self->_appStripCollectionView contentOffset:point.x];
   v10 = v9;
   v12 = v11;
-  if (a4 != 1 || v9 != -self->_minifiedContentInsets.left)
+  if (mode != 1 || v9 != -self->_minifiedContentInsets.left)
   {
-    [(CKAppStripLayout *)self->_appStripLayout collectionViewContentSizeForLayoutMode:a4];
+    [(CKAppStripLayout *)self->_appStripLayout collectionViewContentSizeForLayoutMode:mode];
     v14 = v13;
-    [(CKAppStripLayout *)self->_appStripLayout collectionViewContentSizeForLayoutMode:a5];
+    [(CKAppStripLayout *)self->_appStripLayout collectionViewContentSizeForLayoutMode:layoutMode];
     v10 = (x + v10) / v14 * v15 - x;
   }
 
@@ -605,16 +605,16 @@ LABEL_16:
   return result;
 }
 
-- (void)adjustMagnificationAtPoint:(CGPoint)a3 minifyImmediately:(BOOL)a4
+- (void)adjustMagnificationAtPoint:(CGPoint)point minifyImmediately:(BOOL)immediately
 {
   if (self->_isMagnificationEnabled)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     if (![(UICollectionView *)self->_appStripCollectionView isEditing])
     {
       v8 = 0.0;
-      if (!a4)
+      if (!immediately)
       {
         v8 = 1.5;
         if (!self->_isMagnified)
@@ -646,16 +646,16 @@ LABEL_16:
       v15 = __76__CKBrowserSwitcherFooterView_adjustMagnificationAtPoint_minifyImmediately___block_invoke_3;
       v16 = &unk_1E72F10D0;
       objc_copyWeak(v18, &location);
-      v19 = a4;
+      immediatelyCopy = immediately;
       v18[1] = *&x;
       v18[2] = *&y;
-      v17 = self;
+      selfCopy = self;
       v10 = [v9 scheduledTimerWithTimeInterval:0 repeats:&v13 block:v8];
       minificationTimer = self->_minificationTimer;
       self->_minificationTimer = v10;
 
-      v12 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      [v12 addTimer:self->_minificationTimer forMode:*MEMORY[0x1E695DA28]];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      [currentRunLoop addTimer:self->_minificationTimer forMode:*MEMORY[0x1E695DA28]];
 
       objc_destroyWeak(v18);
       objc_destroyWeak(&location);
@@ -790,15 +790,15 @@ void __76__CKBrowserSwitcherFooterView_adjustMagnificationAtPoint_minifyImmediat
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   if (self->_isMagnificationEnabled && !self->_isDoingMagnificationAnimation)
   {
-    v8 = v4;
-    v5 = [(UICollectionView *)self->_appStripCollectionView isEditing];
-    v4 = v8;
-    if (!v5)
+    v8 = draggingCopy;
+    isEditing = [(UICollectionView *)self->_appStripCollectionView isEditing];
+    draggingCopy = v8;
+    if (!isEditing)
     {
       if (__CurrentTestName)
       {
@@ -812,34 +812,34 @@ void __76__CKBrowserSwitcherFooterView_adjustMagnificationAtPoint_minifyImmediat
       }
 
       [(CKBrowserSwitcherFooterView *)self adjustMagnificationAtPoint:0 minifyImmediately:v6, v7];
-      v4 = v8;
+      draggingCopy = v8;
     }
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v25 = a3;
-  v6 = a4;
-  v7 = [v25 cellForItemAtIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [viewCopy cellForItemAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 superview];
+    superview = [v7 superview];
     [v7 center];
-    [v8 convertPoint:self toView:?];
+    [superview convertPoint:self toView:?];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(CKBrowserSwitcherFooterView *)self delegate];
+    delegate = [(CKBrowserSwitcherFooterView *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(CKBrowserSwitcherFooterView *)self delegate];
-      v16 = [v15 indexPathOfCurrentlySelectedPluginInSwitcherView:self];
+      delegate2 = [(CKBrowserSwitcherFooterView *)self delegate];
+      v16 = [delegate2 indexPathOfCurrentlySelectedPluginInSwitcherView:self];
 
-      if (v16 && [v6 isEqual:v16])
+      if (v16 && [pathCopy isEqual:v16])
       {
         [(CKBrowserSwitcherFooterView *)self adjustMagnificationAtPoint:self->_isMagnified minifyImmediately:v10, v12];
 LABEL_16:
@@ -853,10 +853,10 @@ LABEL_16:
       v16 = 0;
     }
 
-    if ([v6 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      v17 = [v6 row];
-      v18 = v17 == [v25 numberOfItemsInSection:1] - 1;
+      v17 = [pathCopy row];
+      v18 = v17 == [viewCopy numberOfItemsInSection:1] - 1;
     }
 
     else
@@ -870,20 +870,20 @@ LABEL_16:
     }
 
     self->_ignoreDataSourceChanges = 1;
-    if ([v6 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      v19 = [v6 row];
+      v19 = [pathCopy row];
       v20 = +[CKBalloonPluginManager sharedInstance];
-      v21 = [v20 visibleFavoriteAppStripPlugins];
-      v22 = [v21 count];
+      visibleFavoriteAppStripPlugins = [v20 visibleFavoriteAppStripPlugins];
+      v22 = [visibleFavoriteAppStripPlugins count];
 
       v23 = [MEMORY[0x1E696AC88] indexPathForRow:v22 + v19 inSection:0];
 
-      v6 = v23;
+      pathCopy = v23;
     }
 
-    v24 = [(CKBrowserSwitcherFooterView *)self delegate];
-    [v24 switcherView:self didSelectPluginAtIndex:v6];
+    delegate3 = [(CKBrowserSwitcherFooterView *)self delegate];
+    [delegate3 switcherView:self didSelectPluginAtIndex:pathCopy];
 
     self->_ignoreDataSourceChanges = 0;
     goto LABEL_16;
@@ -892,33 +892,33 @@ LABEL_16:
 LABEL_17:
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v4 = [a3 cellForItemAtIndexPath:a4];
+  v4 = [view cellForItemAtIndexPath:path];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v6 = a4;
-  v7 = a5;
-  if ([v6 section] != 1 || objc_msgSend(v7, "section") != 1)
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if ([pathCopy section] != 1 || objc_msgSend(indexPathCopy, "section") != 1)
   {
-    if (![v6 section] && objc_msgSend(v7, "section") == 1)
+    if (![pathCopy section] && objc_msgSend(indexPathCopy, "section") == 1)
     {
       v8 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:1];
       goto LABEL_14;
     }
 
-    if (![v7 section])
+    if (![indexPathCopy section])
     {
       v9 = +[CKBalloonPluginManager sharedInstance];
-      v10 = [v9 isAppStoreEnabled];
+      isAppStoreEnabled = [v9 isAppStoreEnabled];
 
-      if (v10)
+      if (isAppStoreEnabled)
       {
         v11 = 2;
       }
@@ -928,45 +928,45 @@ LABEL_17:
         v11 = 1;
       }
 
-      if ([v7 item] <= v11)
+      if ([indexPathCopy item] <= v11)
       {
         v8 = [MEMORY[0x1E696AC88] indexPathForItem:v11 inSection:0];
       }
 
       else
       {
-        v8 = v7;
+        v8 = indexPathCopy;
       }
 
       goto LABEL_14;
     }
   }
 
-  v8 = v6;
+  v8 = pathCopy;
 LABEL_14:
   v12 = v8;
 
   return v12;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(CKBrowserSwitcherFooterView *)self dataSource];
-  v7 = [v6 numberOfPluginsInSwitcherView:self forSection:a4];
+  dataSource = [(CKBrowserSwitcherFooterView *)self dataSource];
+  v7 = [dataSource numberOfPluginsInSwitcherView:self forSection:section];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v22 = 0;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKBrowserSwitcherFooterView *)self dataSource];
-  v9 = [v8 switcherView:self modelAtIndexPath:v6 type:&v22];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(CKBrowserSwitcherFooterView *)self dataSource];
+  v9 = [dataSource switcherView:self modelAtIndexPath:pathCopy type:&v22];
 
   v10 = [(objc_class *)[CKBrowserCell classForItemType:?]];
-  v11 = [v7 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v6];
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
   if (v22 == 2)
   {
@@ -979,25 +979,25 @@ LABEL_14:
     {
       v12 = v11;
       [v12 setPlugin:v9 hideShinyStatus:[(CKBrowserSwitcherFooterView *)self hideShinyStatus]];
-      v13 = [v12 browserImage];
-      v14 = [v13 layer];
-      v15 = [(CKBrowserSwitcherFooterView *)self appStripLayout];
-      v16 = [v15 shouldDimPluginCells];
+      browserImage = [v12 browserImage];
+      layer = [browserImage layer];
+      appStripLayout = [(CKBrowserSwitcherFooterView *)self appStripLayout];
+      shouldDimPluginCells = [appStripLayout shouldDimPluginCells];
       v17 = +[CKUIBehavior sharedBehaviors];
-      v18 = [v17 theme];
-      v19 = v18;
-      if (v16)
+      theme = [v17 theme];
+      v19 = theme;
+      if (shouldDimPluginCells)
       {
-        [v18 browserAppStripDimmedPluginCellOpacity];
+        [theme browserAppStripDimmedPluginCellOpacity];
       }
 
       else
       {
-        [v18 browserAppStripLightPluginCellOpacity];
+        [theme browserAppStripLightPluginCellOpacity];
       }
 
       *&v20 = v20;
-      [v14 setOpacity:v20];
+      [layer setOpacity:v20];
     }
 
     else
@@ -1021,13 +1021,13 @@ LABEL_12:
   return v11;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CKBrowserSwitcherFooterAccessoryCell supplementryViewKind];
   v9 = +[CKBrowserSwitcherFooterAccessoryCell reuseIdentifier];
-  v10 = [v7 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v9 forIndexPath:pathCopy];
 
   +[CKAppStripLayout maxHeight];
   [v10 setMaxHeight:?];
@@ -1037,30 +1037,30 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (CKIsRunningInCameraAppsClient())
   {
     goto LABEL_13;
   }
 
-  v6 = ![v5 section] && objc_msgSend(v5, "item") == 0;
-  if ([v5 section] || objc_msgSend(v5, "item") != 1)
+  v6 = ![pathCopy section] && objc_msgSend(pathCopy, "item") == 0;
+  if ([pathCopy section] || objc_msgSend(pathCopy, "item") != 1)
   {
-    v8 = 0;
+    isAppStoreEnabled = 0;
   }
 
   else
   {
     v7 = +[CKBalloonPluginManager sharedInstance];
-    v8 = [v7 isAppStoreEnabled];
+    isAppStoreEnabled = [v7 isAppStoreEnabled];
   }
 
-  if ([v5 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    v9 = [v5 item];
-    v10 = v9 != [(UICollectionView *)self->_appStripCollectionView numberOfItemsInSection:1]- 1;
+    item = [pathCopy item];
+    v10 = item != [(UICollectionView *)self->_appStripCollectionView numberOfItemsInSection:1]- 1;
   }
 
   else
@@ -1069,10 +1069,10 @@ LABEL_12:
   }
 
   v15 = 0;
-  v11 = [(CKBrowserSwitcherFooterView *)self dataSource];
-  v12 = [v11 switcherView:self modelAtIndexPath:v5 type:&v15];
+  dataSource = [(CKBrowserSwitcherFooterView *)self dataSource];
+  v12 = [dataSource switcherView:self modelAtIndexPath:pathCopy type:&v15];
 
-  if ((v6 | v8))
+  if ((v6 | isAppStoreEnabled))
   {
 LABEL_13:
     v13 = 0;
@@ -1086,29 +1086,29 @@ LABEL_13:
   return v13;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a5;
+  indexPathCopy = indexPath;
   v12 = 0;
-  v8 = a4;
-  v9 = [(CKBrowserSwitcherFooterView *)self dataSource];
-  v10 = [v9 switcherView:self modelAtIndexPath:v8 type:&v12];
+  pathCopy = path;
+  dataSource = [(CKBrowserSwitcherFooterView *)self dataSource];
+  v10 = [dataSource switcherView:self modelAtIndexPath:pathCopy type:&v12];
 
   if (v12 == 1)
   {
     v11 = +[CKBalloonPluginManager sharedInstance];
-    [v11 updateIndexPath:v7 forPlugin:v10 isDrawerPluginPath:1];
+    [v11 updateIndexPath:indexPathCopy forPlugin:v10 isDrawerPluginPath:1];
   }
 }
 
-- (void)visibleAppsChanges:(id)a3
+- (void)visibleAppsChanges:(id)changes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changesCopy = changes;
   if ([(CKBrowserSwitcherFooterView *)self scrollsLastUsedAppIconIntoView])
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKey:@"CKBrowserSelectionControllerInstalledPluginsKey"];
+    userInfo = [changesCopy userInfo];
+    v6 = [userInfo objectForKey:@"CKBrowserSelectionControllerInstalledPluginsKey"];
 
     if ([v6 count])
     {
@@ -1135,8 +1135,8 @@ LABEL_13:
             }
 
             v13 = *(*(&v22 + 1) + 8 * v12);
-            v14 = [(CKBrowserSwitcherFooterView *)self dataSource];
-            v15 = [v14 switcherView:self indexPathOfModelWithIdentifier:v13];
+            dataSource = [(CKBrowserSwitcherFooterView *)self dataSource];
+            v15 = [dataSource switcherView:self indexPathOfModelWithIdentifier:v13];
 
             if ([v7 item] == 0x7FFFFFFFFFFFFFFFLL || (v16 = objc_msgSend(v15, "item"), v16 > objc_msgSend(v7, "item")))
             {
@@ -1174,7 +1174,7 @@ LABEL_13:
   }
 }
 
-- (void)updateCollectionView:(id)a3
+- (void)updateCollectionView:(id)view
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1184,7 +1184,7 @@ LABEL_13:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)installedAppsChanged:(id)a3
+- (void)installedAppsChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1201,16 +1201,16 @@ LABEL_13:
     return;
   }
 
-  v4 = [(UICollectionView *)self->_appStripCollectionView indexPathsForSelectedItems];
-  v9 = [v4 lastObject];
+  indexPathsForSelectedItems = [(UICollectionView *)self->_appStripCollectionView indexPathsForSelectedItems];
+  lastObject = [indexPathsForSelectedItems lastObject];
 
   [(CKAppStripLayout *)self->_appStripLayout invalidateCachedLayout];
   [(UICollectionView *)self->_appStripCollectionView reloadData];
   v5 = [(UICollectionView *)self->_appStripCollectionView numberOfItemsInSection:0];
-  if ([v9 item] < v5 - 1)
+  if ([lastObject item] < v5 - 1)
   {
-    v6 = v9;
-    if (!v9)
+    v6 = lastObject;
+    if (!lastObject)
     {
       goto LABEL_7;
     }
@@ -1234,16 +1234,16 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)updateBrowserCell:(id)a3
+- (void)updateBrowserCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__CKBrowserSwitcherFooterView_updateBrowserCell___block_invoke;
   v6[3] = &unk_1E72EB8D0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = cellCopy;
+  selfCopy = self;
+  v5 = cellCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -1267,42 +1267,42 @@ void __49__CKBrowserSwitcherFooterView_updateBrowserCell___block_invoke(uint64_t
   }
 }
 
-- (void)transcriptCollectionStartedScrolling:(id)a3
+- (void)transcriptCollectionStartedScrolling:(id)scrolling
 {
-  v4 = a3;
+  scrollingCopy = scrolling;
   if (self->_isMagnified && !self->_isMinifyingOnTranscriptScroll)
   {
     self->_isMinifyingOnTranscriptScroll = 1;
-    v5 = v4;
+    v5 = scrollingCopy;
     [(CKBrowserSwitcherFooterView *)self minifyImmediately:1];
-    v4 = v5;
+    scrollingCopy = v5;
   }
 }
 
-- (void)updatePredictiveTypeSnapshot:(id)a3
+- (void)updatePredictiveTypeSnapshot:(id)snapshot
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   [(UIView *)self->_predictiveTypeSnapshotView removeFromSuperview];
-  if (v5)
+  if (snapshotCopy)
   {
-    objc_storeStrong(&self->_predictiveTypeSnapshotView, a3);
+    objc_storeStrong(&self->_predictiveTypeSnapshotView, snapshot);
     if (!self->_visibleView)
     {
-      objc_storeStrong(&self->_visibleView, a3);
+      objc_storeStrong(&self->_visibleView, snapshot);
     }
 
-    [(CKBrowserSwitcherFooterView *)self addSubview:v5];
+    [(CKBrowserSwitcherFooterView *)self addSubview:snapshotCopy];
   }
 
   [(CKBrowserSwitcherFooterView *)self _updateVisibilityState];
 }
 
-- (void)animateAppStripVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)animateAppStripVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v21 = a5;
-  if (v6)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  completionCopy = completion;
+  if (visibleCopy)
   {
     v8 = self->_appStripCollectionView;
   }
@@ -1328,7 +1328,7 @@ void __49__CKBrowserSwitcherFooterView_updateBrowserCell___block_invoke(uint64_t
 
     [(UIView *)v17 setHidden:0];
     [(UIView *)v17 setUserInteractionEnabled:1];
-    if (v5)
+    if (animatedCopy)
     {
       if (v19 == self->_predictiveTypeSnapshotView)
       {
@@ -1340,7 +1340,7 @@ void __49__CKBrowserSwitcherFooterView_updateBrowserCell___block_invoke(uint64_t
         v20 = -1;
       }
 
-      [(CKAppStripPredictiveTypeTransition *)self->_animator transitionFromView:v19 toView:v17 withDirection:v20 completion:v21];
+      [(CKAppStripPredictiveTypeTransition *)self->_animator transitionFromView:v19 toView:v17 withDirection:v20 completion:completionCopy];
 
       goto LABEL_13;
     }
@@ -1348,9 +1348,9 @@ void __49__CKBrowserSwitcherFooterView_updateBrowserCell___block_invoke(uint64_t
     [(CKBrowserSwitcherFooterView *)self _updateVisibilityState];
   }
 
-  if (v21)
+  if (completionCopy)
   {
-    v21[2](v21, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
 LABEL_13:

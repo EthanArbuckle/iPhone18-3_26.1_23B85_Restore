@@ -10,15 +10,15 @@
   [v3 setImageIsRightAligned:1];
   v4 = objc_alloc_init(SFRichText);
   v5 = sub_100078408(@"SEE_MORE_ON_PUNCHOUT_FORMAT");
-  v6 = [(SAGKSourceLinkPod *)self punchOut];
-  v7 = [v6 punchOutName];
-  v8 = [NSString stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:0, v7];
+  punchOut = [(SAGKSourceLinkPod *)self punchOut];
+  punchOutName = [punchOut punchOutName];
+  v8 = [NSString stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:0, punchOutName];
   [v4 setText:v8];
 
   [v3 setLeadingText:v4];
-  v9 = [(SAGKSourceLinkPod *)self punchOut];
-  v10 = [v9 _convertedPunchout];
-  v15 = v10;
+  punchOut2 = [(SAGKSourceLinkPod *)self punchOut];
+  _convertedPunchout = [punchOut2 _convertedPunchout];
+  v15 = _convertedPunchout;
   v11 = [NSArray arrayWithObjects:&v15 count:1];
   [v3 setPunchoutOptions:v11];
 

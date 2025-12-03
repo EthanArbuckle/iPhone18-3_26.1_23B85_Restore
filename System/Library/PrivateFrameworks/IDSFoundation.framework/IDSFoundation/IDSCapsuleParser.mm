@@ -1,25 +1,25 @@
 @interface IDSCapsuleParser
 - (BOOL)_parseHeader;
-- (IDSCapsuleParser)initWithQueue:(id)a3;
-- (void)_readCapsuleWithExistingData:(id)a3 completionHandler:(id)a4;
-- (void)_readHeader:(id)a3 completionHandler:(id)a4;
-- (void)_readWithCompletionHandler:(id)a3;
+- (IDSCapsuleParser)initWithQueue:(id)queue;
+- (void)_readCapsuleWithExistingData:(id)data completionHandler:(id)handler;
+- (void)_readHeader:(id)header completionHandler:(id)handler;
+- (void)_readWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)readCapsuleWithCompletionHandler:(id)a3;
+- (void)readCapsuleWithCompletionHandler:(id)handler;
 @end
 
 @implementation IDSCapsuleParser
 
-- (IDSCapsuleParser)initWithQueue:(id)a3
+- (IDSCapsuleParser)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = IDSCapsuleParser;
   v6 = [(IDSCapsuleParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
@@ -60,15 +60,15 @@
   [(IDSCapsuleParser *)&v2 dealloc];
 }
 
-- (void)_readHeader:(id)a3 completionHandler:(id)a4
+- (void)_readHeader:(id)header completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  headerCopy = header;
+  handlerCopy = handler;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v6 && (applier[0] = MEMORY[0x1E69E9820], applier[1] = 3221225472, applier[2] = sub_1A7C97ED0, applier[3] = &unk_1E77E2910, applier[4] = self, applier[5] = &v23, dispatch_data_apply(v6, applier), (v24[3] & 1) != 0))
+  if (headerCopy && (applier[0] = MEMORY[0x1E69E9820], applier[1] = 3221225472, applier[2] = sub_1A7C97ED0, applier[3] = &unk_1E77E2910, applier[4] = self, applier[5] = &v23, dispatch_data_apply(headerCopy, applier), (v24[3] & 1) != 0))
   {
     pendingData = self->_pendingData;
     if (!pendingData)
@@ -113,7 +113,7 @@
         pendingError = self->_pendingError;
       }
 
-      v7[2](v7, self->_currentCapsuleType, subrange, 1, pendingError);
+      handlerCopy[2](handlerCopy, self->_currentCapsuleType, subrange, 1, pendingError);
     }
 
     else
@@ -124,34 +124,34 @@
       v14 = self->_pendingData;
       self->_pendingData = 0;
 
-      v7[2](v7, self->_currentCapsuleType, subrange, 0, self->_pendingError);
+      handlerCopy[2](handlerCopy, self->_currentCapsuleType, subrange, 0, self->_pendingError);
     }
   }
 
   else if (self->_pendingError)
   {
-    (v7[2])(v7, 0, 0, self->_headerBufferSize == 0);
+    (handlerCopy[2])(handlerCopy, 0, 0, self->_headerBufferSize == 0);
   }
 
   else
   {
-    v15 = [(IDSCapsuleParser *)self connection];
+    connection = [(IDSCapsuleParser *)self connection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = sub_1A7C97F54;
     v20[3] = &unk_1E77E2938;
     v20[4] = self;
-    v21 = v7;
-    nw_connection_receive(v15, 1u, 0x100000u, v20);
+    v21 = handlerCopy;
+    nw_connection_receive(connection, 1u, 0x100000u, v20);
   }
 
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)_readWithCompletionHandler:(id)a3
+- (void)_readWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   state = self->_state;
   if (state == 1)
   {
@@ -167,7 +167,7 @@
 
     if (self->_pendingError)
     {
-      (*(v4 + 2))(v4, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     }
 
     else
@@ -178,14 +178,14 @@
         sub_1A7E20274(self, v7);
       }
 
-      v8 = [(IDSCapsuleParser *)self connection];
+      connection = [(IDSCapsuleParser *)self connection];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = sub_1A7C98294;
       v9[3] = &unk_1E77E2938;
       v9[4] = self;
       v10 = v5;
-      nw_connection_receive(v8, 1u, 0x100000u, v9);
+      nw_connection_receive(connection, 1u, 0x100000u, v9);
     }
   }
 
@@ -196,29 +196,29 @@
       sub_1A7E2033C();
     }
 
-    [(IDSCapsuleParser *)self _readHeader:self->_pendingData completionHandler:v4];
+    [(IDSCapsuleParser *)self _readHeader:self->_pendingData completionHandler:handlerCopy];
   }
 }
 
-- (void)_readCapsuleWithExistingData:(id)a3 completionHandler:(id)a4
+- (void)_readCapsuleWithExistingData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1A7C985A8;
   v10[3] = &unk_1E77E2960;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = dataCopy;
+  v8 = dataCopy;
+  v9 = handlerCopy;
   [(IDSCapsuleParser *)self _readWithCompletionHandler:v10];
 }
 
-- (void)readCapsuleWithCompletionHandler:(id)a3
+- (void)readCapsuleWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_state)
   {
     sub_1A7E203AC();
@@ -229,7 +229,7 @@
     sub_1A7E203D8();
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   self->_processingReadCall = 1;
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
@@ -237,7 +237,7 @@
   v10[2] = sub_1A7C98794;
   v10[3] = &unk_1E77DCE00;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v7 = queue;
   v8 = v5;
   v9 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, v10);

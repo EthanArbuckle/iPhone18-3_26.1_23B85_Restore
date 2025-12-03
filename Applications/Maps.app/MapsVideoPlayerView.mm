@@ -1,71 +1,71 @@
 @interface MapsVideoPlayerView
 - (void)_createVideoPlayer;
 - (void)_destroyVideoPlayer;
-- (void)_replaceCurrentItemWithPlayerItem:(id)a3 preserveCurrentTimestamp:(BOOL)a4;
+- (void)_replaceCurrentItemWithPlayerItem:(id)item preserveCurrentTimestamp:(BOOL)timestamp;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)loadAssetNamed:(id)a3 preservingTimestamp:(BOOL)a4;
+- (void)loadAssetNamed:(id)named preservingTimestamp:(BOOL)timestamp;
 - (void)play;
-- (void)playerItemDidPlayToEndTimeNotification:(id)a3;
-- (void)playerItemFailedToPlayToEndTimeNotification:(id)a3;
+- (void)playerItemDidPlayToEndTimeNotification:(id)notification;
+- (void)playerItemFailedToPlayToEndTimeNotification:(id)notification;
 - (void)reset;
-- (void)sceneWillEnterForegroundNotification:(id)a3;
+- (void)sceneWillEnterForegroundNotification:(id)notification;
 @end
 
 @implementation MapsVideoPlayerView
 
-- (void)sceneWillEnterForegroundNotification:(id)a3
+- (void)sceneWillEnterForegroundNotification:(id)notification
 {
   v4 = sub_1008A1450();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Application will enter foreground; re-starting video", &v6, 0xCu);
   }
 
-  v5 = [(MapsVideoPlayerView *)self playerItem];
-  [(MapsVideoPlayerView *)self _replaceCurrentItemWithPlayerItem:v5 preserveCurrentTimestamp:1];
+  playerItem = [(MapsVideoPlayerView *)self playerItem];
+  [(MapsVideoPlayerView *)self _replaceCurrentItemWithPlayerItem:playerItem preserveCurrentTimestamp:1];
 }
 
-- (void)playerItemFailedToPlayToEndTimeNotification:(id)a3
+- (void)playerItemFailedToPlayToEndTimeNotification:(id)notification
 {
   v4 = sub_1008A1450();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    v5 = [(MapsVideoPlayerView *)self player];
-    v6 = [v5 currentItem];
-    v7 = [v6 error];
+    player = [(MapsVideoPlayerView *)self player];
+    currentItem = [player currentItem];
+    error = [currentItem error];
     v9 = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v7;
+    v12 = error;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "[%{public}p] Player item failed to play to end time notification: %@; re-starting video", &v9, 0x16u);
   }
 
-  v8 = [(MapsVideoPlayerView *)self playerItem];
-  [(MapsVideoPlayerView *)self _replaceCurrentItemWithPlayerItem:v8 preserveCurrentTimestamp:0];
+  playerItem = [(MapsVideoPlayerView *)self playerItem];
+  [(MapsVideoPlayerView *)self _replaceCurrentItemWithPlayerItem:playerItem preserveCurrentTimestamp:0];
 }
 
-- (void)playerItemDidPlayToEndTimeNotification:(id)a3
+- (void)playerItemDidPlayToEndTimeNotification:(id)notification
 {
   v4 = sub_1008A1450();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Video finished playing; looping", &v7, 0xCu);
   }
 
-  v5 = [(MapsVideoPlayerView *)self playbackDidEndBlock];
+  playbackDidEndBlock = [(MapsVideoPlayerView *)self playbackDidEndBlock];
 
-  if (v5)
+  if (playbackDidEndBlock)
   {
-    v6 = [(MapsVideoPlayerView *)self playbackDidEndBlock];
-    v6[2]();
+    playbackDidEndBlock2 = [(MapsVideoPlayerView *)self playbackDidEndBlock];
+    playbackDidEndBlock2[2]();
   }
 }
 
@@ -77,7 +77,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134349056;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Stop observing notifications", &v6, 0xCu);
     }
 
@@ -99,19 +99,19 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       v10 = 134349056;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Start observing notifications", &v10, 0xCu);
     }
 
     v4 = +[NSNotificationCenter defaultCenter];
-    v5 = [(MapsVideoPlayerView *)self player];
-    v6 = [v5 currentItem];
-    [v4 addObserver:self selector:"playerItemDidPlayToEndTimeNotification:" name:AVPlayerItemDidPlayToEndTimeNotification object:v6];
+    player = [(MapsVideoPlayerView *)self player];
+    currentItem = [player currentItem];
+    [v4 addObserver:self selector:"playerItemDidPlayToEndTimeNotification:" name:AVPlayerItemDidPlayToEndTimeNotification object:currentItem];
 
     v7 = +[NSNotificationCenter defaultCenter];
-    v8 = [(MapsVideoPlayerView *)self player];
-    v9 = [v8 currentItem];
-    [v7 addObserver:self selector:"playerItemFailedToPlayToEndTimeNotification:" name:AVPlayerItemFailedToPlayToEndTimeNotification object:v9];
+    player2 = [(MapsVideoPlayerView *)self player];
+    currentItem2 = [player2 currentItem];
+    [v7 addObserver:self selector:"playerItemFailedToPlayToEndTimeNotification:" name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem2];
 
     [(MapsVideoPlayerView *)self setObserving:1];
   }
@@ -123,19 +123,19 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Destroying video player", &v7, 0xCu);
   }
 
   [(MapsVideoPlayerView *)self _stopObserving];
-  v4 = [(MapsVideoPlayerView *)self player];
-  [v4 replaceCurrentItemWithPlayerItem:0];
+  player = [(MapsVideoPlayerView *)self player];
+  [player replaceCurrentItemWithPlayerItem:0];
 
   playerItem = self->_playerItem;
   self->_playerItem = 0;
 
-  v6 = [(MapsVideoPlayerView *)self player];
-  [v6 pause];
+  player2 = [(MapsVideoPlayerView *)self player];
+  [player2 pause];
 
   [(MapsVideoPlayerView *)self setPlayer:0];
 }
@@ -146,7 +146,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v15 = 134349056;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Creating video player", &v15, 0xCu);
   }
 
@@ -163,44 +163,44 @@
 
   [(MapsVideoPlayerView *)self bounds];
   [(AVPlayerLayer *)self->_playerLayer setFrame:?];
-  v8 = [(MapsVideoPlayerView *)self aspectFill];
+  aspectFill = [(MapsVideoPlayerView *)self aspectFill];
   v9 = &kCAGravityResizeAspectFill;
-  if (!v8)
+  if (!aspectFill)
   {
     v9 = &kCAGravityResizeAspect;
   }
 
   [(AVPlayerLayer *)self->_playerLayer setContentsGravity:*v9];
-  v10 = [(MapsVideoPlayerView *)self aspectFill];
+  aspectFill2 = [(MapsVideoPlayerView *)self aspectFill];
   v11 = &AVLayerVideoGravityResize;
-  if (!v10)
+  if (!aspectFill2)
   {
     v11 = &AVLayerVideoGravityResizeAspect;
   }
 
   [(AVPlayerLayer *)self->_playerLayer setVideoGravity:*v11];
-  v12 = [(MapsVideoPlayerView *)self layer];
-  [v12 addSublayer:self->_playerLayer];
+  layer = [(MapsVideoPlayerView *)self layer];
+  [layer addSublayer:self->_playerLayer];
 
-  v13 = [(MapsVideoPlayerView *)self playerItem];
+  playerItem = [(MapsVideoPlayerView *)self playerItem];
 
-  if (v13)
+  if (playerItem)
   {
-    v14 = [(MapsVideoPlayerView *)self playerItem];
-    [(MapsVideoPlayerView *)self _replaceCurrentItemWithPlayerItem:v14 preserveCurrentTimestamp:0];
+    playerItem2 = [(MapsVideoPlayerView *)self playerItem];
+    [(MapsVideoPlayerView *)self _replaceCurrentItemWithPlayerItem:playerItem2 preserveCurrentTimestamp:0];
   }
 }
 
-- (void)_replaceCurrentItemWithPlayerItem:(id)a3 preserveCurrentTimestamp:(BOOL)a4
+- (void)_replaceCurrentItemWithPlayerItem:(id)item preserveCurrentTimestamp:(BOOL)timestamp
 {
-  v4 = a4;
-  v6 = a3;
+  timestampCopy = timestamp;
+  itemCopy = item;
   v7 = sub_1008A1450();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(MapsVideoPlayerView *)self playerItem];
+    playerItem = [(MapsVideoPlayerView *)self playerItem];
     v9 = @"NO";
-    if (v4)
+    if (timestampCopy)
     {
       v9 = @"YES";
     }
@@ -209,17 +209,17 @@
     LODWORD(buf.value) = 134349826;
     *(&buf.value + 4) = self;
     LOWORD(buf.flags) = 2112;
-    *(&buf.flags + 2) = v8;
+    *(&buf.flags + 2) = playerItem;
     HIWORD(buf.epoch) = 2112;
-    v25 = v6;
+    v25 = itemCopy;
     v26 = 2112;
     v27 = v10;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Swapping video; old player item: %@, new player item: %@; preserving timestamp: %@", &buf, 0x2Au);
   }
 
-  v11 = [(MapsVideoPlayerView *)self playerItem];
+  playerItem2 = [(MapsVideoPlayerView *)self playerItem];
 
-  if (!v11)
+  if (!playerItem2)
   {
     v15 = sub_1008A1450();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -229,31 +229,31 @@
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "[%{public}p] There was no previously playing item; disabling timestamp preservation", &buf, 0xCu);
     }
 
-    [(MapsVideoPlayerView *)self setPlayerItem:v6];
+    [(MapsVideoPlayerView *)self setPlayerItem:itemCopy];
     [(MapsVideoPlayerView *)self _stopObserving];
     goto LABEL_12;
   }
 
-  [(MapsVideoPlayerView *)self setPlayerItem:v6];
+  [(MapsVideoPlayerView *)self setPlayerItem:itemCopy];
   [(MapsVideoPlayerView *)self _stopObserving];
-  if (!v4)
+  if (!timestampCopy)
   {
 LABEL_12:
-    v16 = [(MapsVideoPlayerView *)self player];
-    v17 = [(MapsVideoPlayerView *)self playerItem];
-    [v16 replaceCurrentItemWithPlayerItem:v17];
+    player = [(MapsVideoPlayerView *)self player];
+    playerItem3 = [(MapsVideoPlayerView *)self playerItem];
+    [player replaceCurrentItemWithPlayerItem:playerItem3];
 
     goto LABEL_13;
   }
 
-  v12 = [(MapsVideoPlayerView *)self player];
-  [v12 pause];
+  player2 = [(MapsVideoPlayerView *)self player];
+  [player2 pause];
 
-  v13 = [(MapsVideoPlayerView *)self player];
-  v14 = v13;
-  if (v13)
+  player3 = [(MapsVideoPlayerView *)self player];
+  v14 = player3;
+  if (player3)
   {
-    [v13 currentTime];
+    [player3 currentTime];
   }
 
   else
@@ -263,13 +263,13 @@ LABEL_12:
 
   buf = time2;
 
-  v18 = [(MapsVideoPlayerView *)self player];
-  v19 = [(MapsVideoPlayerView *)self playerItem];
-  [v18 replaceCurrentItemWithPlayerItem:v19];
+  player4 = [(MapsVideoPlayerView *)self player];
+  playerItem4 = [(MapsVideoPlayerView *)self playerItem];
+  [player4 replaceCurrentItemWithPlayerItem:playerItem4];
 
-  if (v6)
+  if (itemCopy)
   {
-    [v6 duration];
+    [itemCopy duration];
   }
 
   else
@@ -279,27 +279,27 @@ LABEL_12:
 
   v22 = buf;
   v20 = CMTimeCompare(&v22, &time2);
-  v16 = sub_1008A1450();
-  v21 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
+  player = sub_1008A1450();
+  v21 = os_log_type_enabled(player, OS_LOG_TYPE_INFO);
   if (v20 <= 0)
   {
     if (v21)
     {
       LODWORD(time2.value) = 134349056;
       *(&time2.value + 4) = self;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Preserving timestamp of last video", &time2, 0xCu);
+      _os_log_impl(&_mh_execute_header, player, OS_LOG_TYPE_INFO, "[%{public}p] Preserving timestamp of last video", &time2, 0xCu);
     }
 
-    v16 = [(MapsVideoPlayerView *)self player];
+    player = [(MapsVideoPlayerView *)self player];
     time2 = buf;
-    [v16 seekToTime:&time2];
+    [player seekToTime:&time2];
   }
 
   else if (v21)
   {
     LODWORD(time2.value) = 134349056;
     *(&time2.value + 4) = self;
-    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Could not preserve the timestamp of the last video because the new video is shorter than the timestamp of the last one", &time2, 0xCu);
+    _os_log_impl(&_mh_execute_header, player, OS_LOG_TYPE_INFO, "[%{public}p] Could not preserve the timestamp of the last video because the new video is shorter than the timestamp of the last one", &time2, 0xCu);
   }
 
 LABEL_13:
@@ -309,37 +309,37 @@ LABEL_13:
 
 - (void)reset
 {
-  v3 = [(MapsVideoPlayerView *)self player];
-  [v3 pause];
+  player = [(MapsVideoPlayerView *)self player];
+  [player pause];
 
-  v4 = [(MapsVideoPlayerView *)self player];
+  player2 = [(MapsVideoPlayerView *)self player];
   v5 = *&kCMTimeZero.value;
   epoch = kCMTimeZero.epoch;
-  [v4 seekToTime:&v5];
+  [player2 seekToTime:&v5];
 }
 
 - (void)play
 {
-  v2 = [(MapsVideoPlayerView *)self player];
-  [v2 play];
+  player = [(MapsVideoPlayerView *)self player];
+  [player play];
 }
 
-- (void)loadAssetNamed:(id)a3 preservingTimestamp:(BOOL)a4
+- (void)loadAssetNamed:(id)named preservingTimestamp:(BOOL)timestamp
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[NSDataAsset alloc] initWithName:v6];
+  timestampCopy = timestamp;
+  namedCopy = named;
+  v7 = [[NSDataAsset alloc] initWithName:namedCopy];
 
-  v8 = [v7 data];
+  data = [v7 data];
   v12[0] = AVAssetPreferPreciseDurationAndTimingKey;
   v12[1] = AVAssetReferenceRestrictionsKey;
   v13[0] = &__kCFBooleanFalse;
   v13[1] = &off_1016E75F8;
   v9 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
-  v10 = [AVAsset assetWithData:v8 contentType:AVFileTypeMPEG4 options:v9];
+  v10 = [AVAsset assetWithData:data contentType:AVFileTypeMPEG4 options:v9];
 
   v11 = [AVPlayerItem playerItemWithAsset:v10];
-  [(MapsVideoPlayerView *)self _replaceCurrentItemWithPlayerItem:v11 preserveCurrentTimestamp:v4];
+  [(MapsVideoPlayerView *)self _replaceCurrentItemWithPlayerItem:v11 preserveCurrentTimestamp:timestampCopy];
 }
 
 - (void)didMoveToWindow
@@ -350,21 +350,21 @@ LABEL_13:
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self name:UISceneWillEnterForegroundNotification object:0];
 
-  v4 = [(MapsVideoPlayerView *)self window];
-  v5 = [v4 windowScene];
+  window = [(MapsVideoPlayerView *)self window];
+  windowScene = [window windowScene];
 
-  if (v5)
+  if (windowScene)
   {
     v6 = +[NSNotificationCenter defaultCenter];
-    v7 = [(MapsVideoPlayerView *)self window];
-    v8 = [v7 windowScene];
-    [v6 addObserver:self selector:"sceneWillEnterForegroundNotification:" name:UISceneWillEnterForegroundNotification object:v8];
+    window2 = [(MapsVideoPlayerView *)self window];
+    windowScene2 = [window2 windowScene];
+    [v6 addObserver:self selector:"sceneWillEnterForegroundNotification:" name:UISceneWillEnterForegroundNotification object:windowScene2];
 
     v9 = sub_1008A1450();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349056;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Setting audio session category to ambient", buf, 0xCu);
     }
 
@@ -379,7 +379,7 @@ LABEL_13:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 134349314;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2112;
         v19 = v12;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "[%{public}p] Error setting audio session category to ambient: %@", buf, 0x16u);
@@ -405,8 +405,8 @@ LABEL_13:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MapsVideoPlayerView *)self playerLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  playerLayer = [(MapsVideoPlayerView *)self playerLayer];
+  [playerLayer setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)dealloc

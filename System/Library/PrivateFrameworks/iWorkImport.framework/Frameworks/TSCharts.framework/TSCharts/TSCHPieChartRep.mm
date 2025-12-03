@@ -1,19 +1,19 @@
 @interface TSCHPieChartRep
-- (TSCHPieChartRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (double)dragTravelAlongBisectorBetweenStartPoint:(CGPoint)a3 andEndingPoint:(CGPoint)a4 forSeries:(unint64_t)a5;
+- (TSCHPieChartRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (double)dragTravelAlongBisectorBetweenStartPoint:(CGPoint)point andEndingPoint:(CGPoint)endingPoint forSeries:(unint64_t)series;
 - (double)p_radius;
 - (id)pieElementRenderer;
 - (void)clearRenderers;
-- (void)renderIntoContext:(CGContext *)a3 visible:(CGRect)a4;
+- (void)renderIntoContext:(CGContext *)context visible:(CGRect)visible;
 @end
 
 @implementation TSCHPieChartRep
 
-- (TSCHPieChartRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSCHPieChartRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v5.receiver = self;
   v5.super_class = TSCHPieChartRep;
-  return [(TSCHChartRep *)&v5 initWithLayout:a3 canvas:a4];
+  return [(TSCHChartRep *)&v5 initWithLayout:layout canvas:canvas];
 }
 
 - (id)pieElementRenderer
@@ -77,18 +77,18 @@ LABEL_12:
   [(TSCHChartRep *)&v4 clearRenderers];
 }
 
-- (double)dragTravelAlongBisectorBetweenStartPoint:(CGPoint)a3 andEndingPoint:(CGPoint)a4 forSeries:(unint64_t)a5
+- (double)dragTravelAlongBisectorBetweenStartPoint:(CGPoint)point andEndingPoint:(CGPoint)endingPoint forSeries:(unint64_t)series
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v12 = objc_msgSend_pieElementRenderer(self, a2, a3.x, a3.y, a4.x);
+  y = endingPoint.y;
+  x = endingPoint.x;
+  v8 = point.y;
+  v9 = point.x;
+  v12 = objc_msgSend_pieElementRenderer(self, a2, point.x, point.y, endingPoint.x);
   if (v12)
   {
     v16 = objc_msgSend_chartLayout(self, v11, v13, v14, v15);
     v21 = objc_msgSend_model(v16, v17, v18, v19, v20);
-    v26 = objc_msgSend_pieSeriesModelCacheForSeries_(v21, v22, v23, v24, v25, a5);
+    v26 = objc_msgSend_pieSeriesModelCacheForSeries_(v21, v22, v23, v24, v25, series);
 
     v31 = objc_msgSend_midAngle(v26, v27, v28, v29, v30);
     v35 = v34;
@@ -146,21 +146,21 @@ LABEL_12:
   return v37;
 }
 
-- (void)renderIntoContext:(CGContext *)a3 visible:(CGRect)a4
+- (void)renderIntoContext:(CGContext *)context visible:(CGRect)visible
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
   v78 = *MEMORY[0x277D85DE8];
   v10 = !self->_hasDrawnSinceWedgeKnobTrackerCreated && self->_seriesIndexedPieWedgeDraggingLayers != 0;
   self->_hasDrawnSinceWedgeKnobTrackerCreated = 1;
-  CGContextGetCTM(&v76, a3);
+  CGContextGetCTM(&v76, context);
   v12 = TSUIsTransformAxisAligned();
   if (v12)
   {
     v16 = 0;
-    v17 = a3;
+    contextCopy2 = context;
   }
 
   else
@@ -179,7 +179,7 @@ LABEL_12:
     v71 = 0;
     v68 = 0;
     v69 = 0;
-    CGContextGetCTM(&v76, a3);
+    CGContextGetCTM(&v76, context);
     TSURectWithSize();
     TSUTransformedCornersOfRect();
     TSUDistance();
@@ -188,24 +188,24 @@ LABEL_12:
     v39 = ceil(fabs(v38));
     v79.width = v37;
     v79.height = v39;
-    v40 = CGLayerCreateWithContext(a3, v79, 0);
+    v40 = CGLayerCreateWithContext(context, v79, 0);
     v16 = v40;
-    v17 = a3;
+    contextCopy2 = context;
     if (v40)
     {
       Context = CGLayerGetContext(v40);
-      v17 = Context;
+      contextCopy2 = Context;
       if (Context)
       {
         CGContextSaveGState(Context);
-        CGContextScaleCTM(v17, v37 / v33, v39 / v35);
+        CGContextScaleCTM(contextCopy2, v37 / v33, v39 / v35);
       }
     }
   }
 
   v67.receiver = self;
   v67.super_class = TSCHPieChartRep;
-  [(TSCHChartRep *)&v67 renderIntoContext:v17 visible:x, y, width, height];
+  [(TSCHChartRep *)&v67 renderIntoContext:contextCopy2 visible:x, y, width, height];
   if (v16)
   {
     v45 = v12;
@@ -218,11 +218,11 @@ LABEL_12:
 
   if ((v45 & 1) == 0)
   {
-    if (v17)
+    if (contextCopy2)
     {
-      CGContextRestoreGState(v17);
+      CGContextRestoreGState(contextCopy2);
       TSURectWithSize();
-      objc_msgSend_drawCGLayer_inContext_rect_(TSCHRenderUtilities, v46, v47, v48, v49, v16, a3);
+      objc_msgSend_drawCGLayer_inContext_rect_(TSCHRenderUtilities, v46, v47, v48, v49, v16, context);
     }
 
     CGLayerRelease(v16);

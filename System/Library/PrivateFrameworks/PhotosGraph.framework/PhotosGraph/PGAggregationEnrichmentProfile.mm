@@ -1,19 +1,19 @@
 @interface PGAggregationEnrichmentProfile
-- (PGAggregationEnrichmentProfile)initWithCurationManager:(id)a3 loggingConnection:(id)a4;
-- (double)promotionScoreWithHighlightInfo:(id)a3;
+- (PGAggregationEnrichmentProfile)initWithCurationManager:(id)manager loggingConnection:(id)connection;
+- (double)promotionScoreWithHighlightInfo:(id)info;
 @end
 
 @implementation PGAggregationEnrichmentProfile
 
-- (double)promotionScoreWithHighlightInfo:(id)a3
+- (double)promotionScoreWithHighlightInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 childHighlights];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childHighlights = [info childHighlights];
+  v4 = [childHighlights countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,7 +25,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childHighlights);
         }
 
         [*(*(&v12 + 1) + 8 * i) promotionScore];
@@ -35,7 +35,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [childHighlights countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -50,11 +50,11 @@
   return v7;
 }
 
-- (PGAggregationEnrichmentProfile)initWithCurationManager:(id)a3 loggingConnection:(id)a4
+- (PGAggregationEnrichmentProfile)initWithCurationManager:(id)manager loggingConnection:(id)connection
 {
   v8.receiver = self;
   v8.super_class = PGAggregationEnrichmentProfile;
-  v4 = [(PGDayGroupAbstractEnrichmentProfile *)&v8 initWithCurationManager:a3 loggingConnection:a4];
+  v4 = [(PGDayGroupAbstractEnrichmentProfile *)&v8 initWithCurationManager:manager loggingConnection:connection];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D3AC48]);

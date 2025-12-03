@@ -2,8 +2,8 @@
 + (id)logCategory;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (HMMQueuingRTCBackendOperation)initWithMessages:(id)a3 serviceName:(id)a4 sessionUUID:(id)a5 isRealtime:(BOOL)a6 rtcFactory:(id)a7 staleSessionBlock:(id)a8;
-- (void)changeOperationState:(int64_t)a3;
+- (HMMQueuingRTCBackendOperation)initWithMessages:(id)messages serviceName:(id)name sessionUUID:(id)d isRealtime:(BOOL)realtime rtcFactory:(id)factory staleSessionBlock:(id)block;
+- (void)changeOperationState:(int64_t)state;
 - (void)start;
 @end
 
@@ -25,17 +25,17 @@
   return v3;
 }
 
-- (void)changeOperationState:(int64_t)a3
+- (void)changeOperationState:(int64_t)state
 {
   operationState = self->_operationState;
-  v6 = a3 == 1 || operationState == 1;
+  v6 = state == 1 || operationState == 1;
   v7 = v6;
   if (v6)
   {
     [(HMMQueuingRTCBackendOperation *)self willChangeValueForKey:@"executing"];
   }
 
-  v8 = a3 == 2 || operationState == 2;
+  v8 = state == 2 || operationState == 2;
   v9 = v8;
   if (v8)
   {
@@ -43,7 +43,7 @@
   }
 
   os_unfair_lock_lock_with_options();
-  self->_operationState = a3;
+  self->_operationState = state;
   os_unfair_lock_unlock(&self->_lock);
   if (v7)
   {
@@ -68,16 +68,16 @@
   else
   {
     [(HMMQueuingRTCBackendOperation *)self changeOperationState:1];
-    v3 = [(HMMQueuingRTCBackendOperation *)self rtcFactory];
-    v4 = [(HMMQueuingRTCBackendOperation *)self serviceName];
-    v5 = [(HMMQueuingRTCBackendOperation *)self sessionUUID];
-    v6 = [v3 sessionWithServiceName:v4 samplingUUID:v5 containsRealtime:{-[HMMQueuingRTCBackendOperation isRealtime](self, "isRealtime")}];
+    rtcFactory = [(HMMQueuingRTCBackendOperation *)self rtcFactory];
+    serviceName = [(HMMQueuingRTCBackendOperation *)self serviceName];
+    sessionUUID = [(HMMQueuingRTCBackendOperation *)self sessionUUID];
+    v6 = [rtcFactory sessionWithServiceName:serviceName samplingUUID:sessionUUID containsRealtime:{-[HMMQueuingRTCBackendOperation isRealtime](self, "isRealtime")}];
 
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __38__HMMQueuingRTCBackendOperation_start__block_invoke;
     v12 = &unk_2786F8F20;
-    v13 = self;
+    selfCopy = self;
     v14 = v6;
     v7 = v6;
     [v7 startConfigurationWithCompletionHandler:&v9];
@@ -174,25 +174,25 @@ void __38__HMMQueuingRTCBackendOperation_start__block_invoke(uint64_t a1, void *
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMQueuingRTCBackendOperation)initWithMessages:(id)a3 serviceName:(id)a4 sessionUUID:(id)a5 isRealtime:(BOOL)a6 rtcFactory:(id)a7 staleSessionBlock:(id)a8
+- (HMMQueuingRTCBackendOperation)initWithMessages:(id)messages serviceName:(id)name sessionUUID:(id)d isRealtime:(BOOL)realtime rtcFactory:(id)factory staleSessionBlock:(id)block
 {
-  v24 = a3;
-  v23 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  messagesCopy = messages;
+  nameCopy = name;
+  dCopy = d;
+  factoryCopy = factory;
+  blockCopy = block;
   v25.receiver = self;
   v25.super_class = HMMQueuingRTCBackendOperation;
   v18 = [(HMMQueuingRTCBackendOperation *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_messages, a3);
-    objc_storeStrong(&v19->_serviceName, a4);
-    objc_storeStrong(&v19->_sessionUUID, a5);
-    v19->_isRealtime = a6;
-    objc_storeStrong(&v19->_rtcFactory, a7);
-    v20 = _Block_copy(v17);
+    objc_storeStrong(&v18->_messages, messages);
+    objc_storeStrong(&v19->_serviceName, name);
+    objc_storeStrong(&v19->_sessionUUID, d);
+    v19->_isRealtime = realtime;
+    objc_storeStrong(&v19->_rtcFactory, factory);
+    v20 = _Block_copy(blockCopy);
     staleSessionBlock = v19->_staleSessionBlock;
     v19->_staleSessionBlock = v20;
 

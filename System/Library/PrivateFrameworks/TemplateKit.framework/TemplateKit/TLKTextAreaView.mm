@@ -9,21 +9,21 @@
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
 - (void)insertDetailsStackViewIfNeeded;
-- (void)internalTextFieldsInBatchUpdate:(BOOL)a3;
-- (void)performBatchUpdates:(id)a3;
+- (void)internalTextFieldsInBatchUpdate:(BOOL)update;
+- (void)performBatchUpdates:(id)updates;
 - (void)propertiesDidChange;
-- (void)setAccessoryView:(id)a3;
-- (void)setBannerText:(id)a3;
-- (void)setDetailTexts:(id)a3;
-- (void)setFootnote:(id)a3;
-- (void)setFootnoteButtonText:(id)a3;
-- (void)setSecondaryTitle:(id)a3;
-- (void)setSecondaryTitleImage:(id)a3;
-- (void)setSecondaryTitleIsDetached:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTopText:(id)a3;
-- (void)setTruncateTitleMiddle:(BOOL)a3;
-- (void)setUseCompactMode:(BOOL)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setBannerText:(id)text;
+- (void)setDetailTexts:(id)texts;
+- (void)setFootnote:(id)footnote;
+- (void)setFootnoteButtonText:(id)text;
+- (void)setSecondaryTitle:(id)title;
+- (void)setSecondaryTitleImage:(id)image;
+- (void)setSecondaryTitleIsDetached:(BOOL)detached;
+- (void)setTitle:(id)title;
+- (void)setTopText:(id)text;
+- (void)setTruncateTitleMiddle:(BOOL)middle;
+- (void)setUseCompactMode:(BOOL)mode;
 - (void)updateBannerBadge;
 - (void)updateDetailFieldStackViewVisibility;
 - (void)updateDetails;
@@ -38,24 +38,24 @@
   v3 = objc_opt_new();
   [(TLKTextAreaView *)self setTitleContainer:v3];
 
-  v4 = [(TLKTextAreaView *)self titleContainer];
-  [TLKLayoutUtilities requireIntrinsicSizeForView:v4];
+  titleContainer = [(TLKTextAreaView *)self titleContainer];
+  [TLKLayoutUtilities requireIntrinsicSizeForView:titleContainer];
 
   v5 = objc_opt_new();
   [(TLKTextAreaView *)self setDetailFieldAndFootnoteStackView:v5];
 
-  v6 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-  [v6 setAxis:1];
+  detailFieldAndFootnoteStackView = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+  [detailFieldAndFootnoteStackView setAxis:1];
 
-  v7 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-  [v7 setArrangedSubviewRemovalPolicy:1];
+  detailFieldAndFootnoteStackView2 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+  [detailFieldAndFootnoteStackView2 setArrangedSubviewRemovalPolicy:1];
 
-  v8 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-  [v8 setArrangedSubviewAdditionPolicy:1];
+  detailFieldAndFootnoteStackView3 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+  [detailFieldAndFootnoteStackView3 setArrangedSubviewAdditionPolicy:1];
 
   v9 = objc_alloc(MEMORY[0x1E698B730]);
-  v10 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-  v21[0] = v10;
+  detailFieldAndFootnoteStackView4 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+  v21[0] = detailFieldAndFootnoteStackView4;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v12 = [v9 initWithArrangedSubviews:v11];
 
@@ -63,8 +63,8 @@
   [TLKView makeContainerShadowCompatible:v12];
   [(TLKTextAreaView *)self setDetailFieldFootnoteAndAccessoryStackView:v12];
   v13 = [TLKStackView alloc];
-  v14 = [(TLKTextAreaView *)self titleContainer];
-  v20[0] = v14;
+  titleContainer2 = [(TLKTextAreaView *)self titleContainer];
+  v20[0] = titleContainer2;
   v20[1] = v12;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [(NUIContainerStackView *)v13 initWithArrangedSubviews:v15];
@@ -93,11 +93,11 @@
     v3 = 1;
   }
 
-  v4 = [(TLKView *)self contentView];
-  [v4 setAxis:v3];
+  contentView = [(TLKView *)self contentView];
+  [contentView setAxis:v3];
 
-  v5 = [(TLKView *)self contentView];
-  if ([v5 axis])
+  contentView2 = [(TLKView *)self contentView];
+  if ([contentView2 axis])
   {
     v6 = 1;
   }
@@ -107,11 +107,11 @@
     v6 = 5;
   }
 
-  v7 = [(TLKView *)self contentView];
-  [v7 setAlignment:v6];
+  contentView3 = [(TLKView *)self contentView];
+  [contentView3 setAlignment:v6];
 
-  v8 = [(TLKView *)self contentView];
-  if ([v8 axis])
+  contentView4 = [(TLKView *)self contentView];
+  if ([contentView4 axis])
   {
     v9 = 1;
   }
@@ -121,79 +121,79 @@
     v9 = 5;
   }
 
-  v10 = [(TLKView *)self contentView];
-  [v10 setAlignment:v9];
+  contentView5 = [(TLKView *)self contentView];
+  [contentView5 setAlignment:v9];
 
-  v40 = [(TLKTextAreaView *)self topTextField];
-  v11 = [(TLKTextAreaView *)self topText];
+  topTextField = [(TLKTextAreaView *)self topTextField];
+  topText = [(TLKTextAreaView *)self topText];
 
-  if (v11 && !v40)
+  if (topText && !topTextField)
   {
-    v40 = objc_opt_new();
-    [v40 setProminence:1];
+    topTextField = objc_opt_new();
+    [topTextField setProminence:1];
     v12 = [TLKFontUtilities cachedFontForTextStyle:*MEMORY[0x1E69DDD10] isShort:0 isBold:1];
-    [v40 setFont:v12];
+    [topTextField setFont:v12];
 
-    [v40 setScaleIconsToFont:1];
-    v13 = [(TLKView *)self contentView];
-    [v13 insertArrangedSubview:v40 atIndex:0];
+    [topTextField setScaleIconsToFont:1];
+    contentView6 = [(TLKView *)self contentView];
+    [contentView6 insertArrangedSubview:topTextField atIndex:0];
 
-    v14 = [(TLKView *)self contentView];
+    contentView7 = [(TLKView *)self contentView];
     [TLKLayoutUtilities deviceScaledRoundedValue:self forView:2.5];
-    [v14 setCustomSpacing:v40 afterView:?];
+    [contentView7 setCustomSpacing:topTextField afterView:?];
 
-    [(TLKTextAreaView *)self setTopTextField:v40];
+    [(TLKTextAreaView *)self setTopTextField:topTextField];
   }
 
-  v15 = [(TLKTextAreaView *)self topText];
-  [v40 setRichText:v15];
+  topText2 = [(TLKTextAreaView *)self topText];
+  [topTextField setRichText:topText2];
 
-  v16 = [(TLKTextAreaView *)self topText];
-  [v40 setHidden:v16 == 0];
+  topText3 = [(TLKTextAreaView *)self topText];
+  [topTextField setHidden:topText3 == 0];
 
-  v17 = [(TLKTextAreaView *)self titleContainer];
-  v18 = [(TLKTextAreaView *)self title];
-  v19 = [(TLKTextAreaView *)self secondaryTitle];
-  v20 = [(TLKTextAreaView *)self secondaryTitleImage];
-  [v17 updateResultWithTitle:v18 secondaryTitle:v19 image:v20 detached:-[TLKTextAreaView secondaryTitleIsDetached](self useCompactMode:"secondaryTitleIsDetached") truncateMiddle:{-[TLKTextAreaView useCompactMode](self, "useCompactMode"), -[TLKTextAreaView truncateTitleMiddle](self, "truncateTitleMiddle")}];
+  titleContainer = [(TLKTextAreaView *)self titleContainer];
+  title = [(TLKTextAreaView *)self title];
+  secondaryTitle = [(TLKTextAreaView *)self secondaryTitle];
+  secondaryTitleImage = [(TLKTextAreaView *)self secondaryTitleImage];
+  [titleContainer updateResultWithTitle:title secondaryTitle:secondaryTitle image:secondaryTitleImage detached:-[TLKTextAreaView secondaryTitleIsDetached](self useCompactMode:"secondaryTitleIsDetached") truncateMiddle:{-[TLKTextAreaView useCompactMode](self, "useCompactMode"), -[TLKTextAreaView truncateTitleMiddle](self, "truncateTitleMiddle")}];
 
-  v21 = [(TLKView *)self contentView];
-  v22 = [(TLKTextAreaView *)self secondaryTitle];
-  v23 = [(TLKTextAreaView *)self titleContainer];
-  [v21 setAlignment:v22 == 0 forView:v23 inAxis:0];
+  contentView8 = [(TLKView *)self contentView];
+  secondaryTitle2 = [(TLKTextAreaView *)self secondaryTitle];
+  titleContainer2 = [(TLKTextAreaView *)self titleContainer];
+  [contentView8 setAlignment:secondaryTitle2 == 0 forView:titleContainer2 inAxis:0];
 
   [(TLKTextAreaView *)self updateBannerBadge];
   [(TLKTextAreaView *)self updateDetails];
   [(TLKTextAreaView *)self updateFootnote];
-  v24 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
-  v25 = [v24 arrangedSubviews];
+  detailFieldFootnoteAndAccessoryStackView = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
+  arrangedSubviews = [detailFieldFootnoteAndAccessoryStackView arrangedSubviews];
 
-  v26 = 0;
-  if ([v25 count] >= 2)
+  lastObject = 0;
+  if ([arrangedSubviews count] >= 2)
   {
-    v26 = [v25 lastObject];
+    lastObject = [arrangedSubviews lastObject];
   }
 
-  v27 = [(TLKTextAreaView *)self accessoryView];
-  if (v26 != v27)
+  accessoryView = [(TLKTextAreaView *)self accessoryView];
+  if (lastObject != accessoryView)
   {
-    if (v26)
+    if (lastObject)
     {
-      v28 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
-      [v28 removeArrangedSubview:v26];
+      detailFieldFootnoteAndAccessoryStackView2 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
+      [detailFieldFootnoteAndAccessoryStackView2 removeArrangedSubview:lastObject];
     }
 
-    if (v27)
+    if (accessoryView)
     {
-      [v27 setCustomAlignmentRectInsets:{-2.0, 0.0, 0.0, 0.0}];
+      [accessoryView setCustomAlignmentRectInsets:{-2.0, 0.0, 0.0, 0.0}];
       [(TLKTextAreaView *)self insertDetailsStackViewIfNeeded];
-      v29 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
-      [v29 addArrangedSubview:v27];
+      detailFieldFootnoteAndAccessoryStackView3 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
+      [detailFieldFootnoteAndAccessoryStackView3 addArrangedSubview:accessoryView];
     }
   }
 
-  v30 = [(TLKTextAreaView *)self detailsFields];
-  v31 = [v30 firstObject];
+  detailsFields = [(TLKTextAreaView *)self detailsFields];
+  firstObject = [detailsFields firstObject];
 
   v32 = 3.0;
   if (!+[TLKUtilities isMacOS])
@@ -224,19 +224,19 @@
     v34 = 1.7;
   }
 
-  v35 = [(TLKView *)self contentView];
+  contentView9 = [(TLKView *)self contentView];
   if (![(TLKTextAreaView *)self useCompactMode])
   {
     v32 = 5.0;
-    if (![TLKUtilities isHiddenView:v31])
+    if (![TLKUtilities isHiddenView:firstObject])
     {
       [TLKLayoutUtilities deviceScaledRoundedValue:self forView:v34];
       v32 = v36;
     }
   }
 
-  v37 = [(TLKTextAreaView *)self titleContainer];
-  [v35 setCustomSpacing:v37 afterView:v32];
+  titleContainer3 = [(TLKTextAreaView *)self titleContainer];
+  [contentView9 setCustomSpacing:titleContainer3 afterView:v32];
 
   [(TLKTextAreaView *)self updateDetailFieldStackViewVisibility];
   if ([(TLKTextAreaView *)self isAccessoryViewBottomAligned])
@@ -249,50 +249,50 @@
     v38 = 1;
   }
 
-  v39 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
-  [v39 setAlignment:v38];
+  detailFieldFootnoteAndAccessoryStackView4 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
+  [detailFieldFootnoteAndAccessoryStackView4 setAlignment:v38];
 }
 
 - (void)updateBannerBadge
 {
-  v13 = [(TLKTextAreaView *)self bannerText];
-  if (v13)
+  bannerText = [(TLKTextAreaView *)self bannerText];
+  if (bannerText)
   {
-    v3 = [(TLKTextAreaView *)self bannerBadgeView];
+    bannerBadgeView = [(TLKTextAreaView *)self bannerBadgeView];
 
-    if (!v3)
+    if (!bannerBadgeView)
     {
       v4 = objc_opt_new();
       [(TLKTextAreaView *)self setBannerBadgeView:v4];
 
-      v5 = [(TLKView *)self contentView];
-      v6 = [(TLKTextAreaView *)self bannerBadgeView];
-      [v5 insertArrangedSubview:v6 atIndex:0];
+      contentView = [(TLKView *)self contentView];
+      bannerBadgeView2 = [(TLKTextAreaView *)self bannerBadgeView];
+      [contentView insertArrangedSubview:bannerBadgeView2 atIndex:0];
 
-      v7 = [(TLKView *)self contentView];
-      v8 = [(TLKTextAreaView *)self bannerBadgeView];
-      [v7 setCustomSpacing:v8 afterView:4.0];
+      contentView2 = [(TLKView *)self contentView];
+      bannerBadgeView3 = [(TLKTextAreaView *)self bannerBadgeView];
+      [contentView2 setCustomSpacing:bannerBadgeView3 afterView:4.0];
 
-      v9 = [(TLKTextAreaView *)self bannerBadgeView];
-      [TLKLayoutUtilities requireIntrinsicSizeForView:v9];
+      bannerBadgeView4 = [(TLKTextAreaView *)self bannerBadgeView];
+      [TLKLayoutUtilities requireIntrinsicSizeForView:bannerBadgeView4];
     }
   }
 
-  v10 = [(TLKTextAreaView *)self bannerBadgeView];
+  bannerBadgeView5 = [(TLKTextAreaView *)self bannerBadgeView];
   v11 = [TLKFontUtilities cachedFontForTextStyle:*MEMORY[0x1E69DDD10] isShort:0 isBold:1];
-  [v10 setText:v13 font:v11 customInsetSize:1 badge:{4.0, 2.0}];
+  [bannerBadgeView5 setText:bannerText font:v11 customInsetSize:1 badge:{4.0, 2.0}];
 
-  v12 = [(TLKTextAreaView *)self bannerBadgeView];
-  [v12 setHidden:v13 == 0];
+  bannerBadgeView6 = [(TLKTextAreaView *)self bannerBadgeView];
+  [bannerBadgeView6 setHidden:bannerText == 0];
 }
 
 - (void)updateDetails
 {
-  v2 = self;
+  selfCopy = self;
   v118 = *MEMORY[0x1E69E9840];
-  v3 = [(TLKTextAreaView *)self detailTexts];
+  detailTexts = [(TLKTextAreaView *)self detailTexts];
   v4 = 0x1E7FD8000uLL;
-  if (![v3 count])
+  if (![detailTexts count])
   {
     goto LABEL_39;
   }
@@ -306,32 +306,32 @@
   v95 = -1;
   do
   {
-    [(TLKTextAreaView *)v2 insertDetailsStackViewIfNeeded];
-    v8 = [(TLKTextAreaView *)v2 detailsFields];
-    v9 = [v8 count];
+    [(TLKTextAreaView *)selfCopy insertDetailsStackViewIfNeeded];
+    detailsFields = [(TLKTextAreaView *)selfCopy detailsFields];
+    v9 = [detailsFields count];
 
     if (v5 >= v9)
     {
       v11 = objc_opt_new();
-      v10 = [(TLKTextAreaView *)v2 detailsFields];
-      [v10 addObject:v11];
+      detailsFields2 = [(TLKTextAreaView *)selfCopy detailsFields];
+      [detailsFields2 addObject:v11];
     }
 
     else
     {
-      v10 = [(TLKTextAreaView *)v2 detailsFields];
-      v11 = [v10 objectAtIndexedSubscript:v5];
+      detailsFields2 = [(TLKTextAreaView *)selfCopy detailsFields];
+      v11 = [detailsFields2 objectAtIndexedSubscript:v5];
     }
 
-    [v11 setUseCompactMode:{-[TLKTextAreaView useCompactMode](v2, "useCompactMode")}];
-    v12 = [v3 objectAtIndexedSubscript:v5];
-    if ([(TLKTextAreaView *)v2 useCompactMode])
+    [v11 setUseCompactMode:{-[TLKTextAreaView useCompactMode](selfCopy, "useCompactMode")}];
+    v12 = [detailTexts objectAtIndexedSubscript:v5];
+    if ([(TLKTextAreaView *)selfCopy useCompactMode])
     {
       [v12 setMaxLines:1];
     }
 
     [v11 setRichText:v12];
-    if ([(TLKTextAreaView *)v2 useCompactMode])
+    if ([(TLKTextAreaView *)selfCopy useCompactMode])
     {
       if (TLKBiggerSuggestionsLayoutEnabled())
       {
@@ -346,15 +346,15 @@
       v14 = v13;
       if ([*(v4 + 1824) isMacOS])
       {
-        v15 = [(TLKTextAreaView *)v2 titleContainer];
-        v16 = [v15 titleFont];
+        titleContainer = [(TLKTextAreaView *)selfCopy titleContainer];
+        titleFont = [titleContainer titleFont];
 
         v4 = 0x1E7FD8000;
       }
 
       else
       {
-        v16 = [TLKFontUtilities cachedFontForTextStyle:v14 isShort:0 isBold:0];
+        titleFont = [TLKFontUtilities cachedFontForTextStyle:v14 isShort:0 isBold:0];
       }
     }
 
@@ -380,22 +380,22 @@
         v18 = [TLKFontUtilities cachedFontForTextStyle:v6];
       }
 
-      v16 = v18;
+      titleFont = v18;
     }
 
-    [v11 setFont:v16];
-    if ([(TLKTextAreaView *)v2 useCompactMode])
+    [v11 setFont:titleFont];
+    if ([(TLKTextAreaView *)selfCopy useCompactMode])
     {
-      v19 = [v12 stars];
-      if (v19)
+      stars = [v12 stars];
+      if (stars)
       {
-        v20 = v19;
+        text2 = stars;
       }
 
       else
       {
-        v21 = [v12 text];
-        v22 = [v21 length];
+        text = [v12 text];
+        v22 = [text length];
 
         v23 = v22 >= v101;
         v4 = 0x1E7FD8000uLL;
@@ -404,14 +404,14 @@
           goto LABEL_30;
         }
 
-        v20 = [v12 text];
-        v101 = [v20 length];
+        text2 = [v12 text];
+        v101 = [text2 length];
         v95 = v5;
       }
 
 LABEL_30:
-      v24 = [v12 stars];
-      if (v24)
+      stars2 = [v12 stars];
+      if (stars2)
       {
         *&v25 = 1000.0;
       }
@@ -423,7 +423,7 @@ LABEL_30:
 
       [v11 setContentCompressionResistancePriority:0 forAxis:v25];
 
-      v26 = [v3 count];
+      v26 = [detailTexts count];
       LODWORD(v27) = 1132068864;
       if (v5 != v26 - 1)
       {
@@ -436,11 +436,11 @@ LABEL_30:
     ++v5;
   }
 
-  while (v5 < [v3 count]);
+  while (v5 < [detailTexts count]);
   if (v95 > 0)
   {
-    v28 = [(TLKTextAreaView *)v2 detailsFields];
-    v29 = [v28 objectAtIndexedSubscript:v95];
+    detailsFields3 = [(TLKTextAreaView *)selfCopy detailsFields];
+    v29 = [detailsFields3 objectAtIndexedSubscript:v95];
     LODWORD(v30) = 1132068864;
     [v29 setContentCompressionResistancePriority:0 forAxis:v30];
   }
@@ -449,7 +449,7 @@ LABEL_39:
   v31 = objc_opt_new();
   if ([*(v4 + 1824) isMacOS])
   {
-    if ([(TLKTextAreaView *)v2 useCompactMode])
+    if ([(TLKTextAreaView *)selfCopy useCompactMode])
     {
       v32 = 2;
     }
@@ -473,33 +473,33 @@ LABEL_39:
   v98 = v31;
   if ([*(v4 + 1824) isMacOS])
   {
-    v33 = [(TLKTextAreaView *)v2 detailTexts];
-    if (![v33 count])
+    detailTexts2 = [(TLKTextAreaView *)selfCopy detailTexts];
+    if (![detailTexts2 count])
     {
       goto LABEL_52;
     }
 
-    v34 = [(TLKTextAreaView *)v2 useCompactMode];
+    useCompactMode = [(TLKTextAreaView *)selfCopy useCompactMode];
 
     v31 = v98;
-    if (v34)
+    if (useCompactMode)
     {
-      v35 = [(TLKTextAreaView *)v2 hyphenField];
+      hyphenField = [(TLKTextAreaView *)selfCopy hyphenField];
 
-      if (!v35)
+      if (!hyphenField)
       {
         v36 = [[TLKLabel alloc] initWithProminence:v32];
-        [(TLKTextAreaView *)v2 setHyphenField:v36];
+        [(TLKTextAreaView *)selfCopy setHyphenField:v36];
 
-        v37 = [(TLKTextAreaView *)v2 hyphenField];
-        [v37 setText:@"—"];
+        hyphenField2 = [(TLKTextAreaView *)selfCopy hyphenField];
+        [hyphenField2 setText:@"—"];
       }
 
-      v38 = [(TLKTextAreaView *)v2 hyphenField];
-      [v98 addObject:v38];
+      hyphenField3 = [(TLKTextAreaView *)selfCopy hyphenField];
+      [v98 addObject:hyphenField3];
 
-      v33 = [(TLKTextAreaView *)v2 hyphenField];
-      [TLKLayoutUtilities requireIntrinsicSizeForView:v33];
+      detailTexts2 = [(TLKTextAreaView *)selfCopy hyphenField];
+      [TLKLayoutUtilities requireIntrinsicSizeForView:detailTexts2];
 LABEL_52:
 
       v31 = v98;
@@ -507,17 +507,17 @@ LABEL_52:
   }
 
   v100 = objc_opt_new();
-  v39 = [(TLKTextAreaView *)v2 detailsFields];
-  v40 = [v39 count];
+  detailsFields4 = [(TLKTextAreaView *)selfCopy detailsFields];
+  v40 = [detailsFields4 count];
 
   if (v40)
   {
     v41 = 0;
     do
     {
-      v42 = [v3 count];
-      v43 = [(TLKTextAreaView *)v2 detailsFields];
-      v44 = [v43 objectAtIndexedSubscript:v41];
+      v42 = [detailTexts count];
+      detailsFields5 = [(TLKTextAreaView *)selfCopy detailsFields];
+      v44 = [detailsFields5 objectAtIndexedSubscript:v41];
 
       [v44 setHidden:v41 >= v42];
       if (v41 < v42)
@@ -525,30 +525,30 @@ LABEL_52:
         [v44 setProminence:v32];
         [v100 addObject:v44];
         [v31 addObject:v44];
-        if ([(TLKTextAreaView *)v2 useCompactMode])
+        if ([(TLKTextAreaView *)selfCopy useCompactMode])
         {
-          if (v41 != [v3 count] - 1)
+          if (v41 != [detailTexts count] - 1)
           {
-            v45 = [(TLKTextAreaView *)v2 bulletFields];
-            v46 = [v45 count];
+            bulletFields = [(TLKTextAreaView *)selfCopy bulletFields];
+            v46 = [bulletFields count];
 
             if (v41 >= v46)
             {
               v48 = [[TLKLabel alloc] initWithProminence:v32];
-              v49 = [v44 font];
-              [(TLKLabel *)v48 setFont:v49];
+              font = [v44 font];
+              [(TLKLabel *)v48 setFont:font];
 
               [(TLKLabel *)v48 setText:@"·"];
               [TLKLayoutUtilities requireIntrinsicSizeForView:v48];
-              v47 = [(TLKTextAreaView *)v2 bulletFields];
-              [v47 addObject:v48];
+              bulletFields2 = [(TLKTextAreaView *)selfCopy bulletFields];
+              [bulletFields2 addObject:v48];
             }
 
             else
             {
               [0 setProminence:v32];
-              v47 = [(TLKTextAreaView *)v2 bulletFields];
-              v48 = [v47 objectAtIndexedSubscript:v41];
+              bulletFields2 = [(TLKTextAreaView *)selfCopy bulletFields];
+              v48 = [bulletFields2 objectAtIndexedSubscript:v41];
             }
 
             [v31 addObject:v48];
@@ -557,22 +557,22 @@ LABEL_52:
       }
 
       ++v41;
-      v50 = [(TLKTextAreaView *)v2 detailsFields];
-      v51 = [v50 count];
+      detailsFields6 = [(TLKTextAreaView *)selfCopy detailsFields];
+      v51 = [detailsFields6 count];
     }
 
     while (v41 < v51);
   }
 
-  v52 = [(TLKTextAreaView *)v2 detailFieldStackView];
-  [v52 setArrangedSubviews:v31];
+  detailFieldStackView = [(TLKTextAreaView *)selfCopy detailFieldStackView];
+  [detailFieldStackView setArrangedSubviews:v31];
 
-  [(TLKTextAreaView *)v2 updateDetailFieldStackViewVisibility];
-  v53 = [(TLKTextAreaView *)v2 useCompactMode]^ 1;
-  v54 = [(TLKTextAreaView *)v2 detailFieldStackView];
-  [v54 setAxis:v53];
+  [(TLKTextAreaView *)selfCopy updateDetailFieldStackViewVisibility];
+  v53 = [(TLKTextAreaView *)selfCopy useCompactMode]^ 1;
+  detailFieldStackView2 = [(TLKTextAreaView *)selfCopy detailFieldStackView];
+  [detailFieldStackView2 setAxis:v53];
 
-  if ([(TLKTextAreaView *)v2 useCompactMode])
+  if ([(TLKTextAreaView *)selfCopy useCompactMode])
   {
     v55 = 5;
   }
@@ -582,8 +582,8 @@ LABEL_52:
     v55 = 1;
   }
 
-  v56 = [(TLKTextAreaView *)v2 detailFieldStackView];
-  [v56 setAlignment:v55];
+  detailFieldStackView3 = [(TLKTextAreaView *)selfCopy detailFieldStackView];
+  [detailFieldStackView3 setAlignment:v55];
 
   if (+[TLKUtilities isMacOS])
   {
@@ -595,7 +595,7 @@ LABEL_52:
     v57 = 2.0;
   }
 
-  if ([(TLKTextAreaView *)v2 useCompactMode])
+  if ([(TLKTextAreaView *)selfCopy useCompactMode])
   {
     v58 = 3.0;
   }
@@ -605,8 +605,8 @@ LABEL_52:
     v58 = v57;
   }
 
-  v59 = [(TLKTextAreaView *)v2 detailFieldStackView];
-  [v59 setSpacing:v58];
+  detailFieldStackView4 = [(TLKTextAreaView *)selfCopy detailFieldStackView];
+  [detailFieldStackView4 setSpacing:v58];
 
   if (+[TLKUtilities isMacOS])
   {
@@ -631,8 +631,8 @@ LABEL_52:
           }
 
           v66 = *(*(&v111 + 1) + 8 * i);
-          v67 = [(TLKTextAreaView *)v2 detailFieldStackView];
-          [v67 setCustomSpacing:v66 afterView:v64];
+          detailFieldStackView5 = [(TLKTextAreaView *)selfCopy detailFieldStackView];
+          [detailFieldStackView5 setCustomSpacing:v66 afterView:v64];
         }
 
         v62 = [v60 countByEnumeratingWithState:&v111 objects:v117 count:16];
@@ -673,24 +673,24 @@ LABEL_52:
             {
               [v76 richText];
               v77 = v72;
-              v78 = v2;
+              v78 = selfCopy;
               v79 = v68;
               v81 = v80 = v73;
-              v82 = [v81 icons];
-              v83 = [v82 count];
+              icons = [v81 icons];
+              v83 = [icons count];
 
               v73 = v80;
               v68 = v79;
-              v2 = v78;
+              selfCopy = v78;
               v72 = v77;
               v70 = v102;
               if (v83 == 1)
               {
-                v84 = [(TLKTextAreaView *)v2 detailFieldStackView];
-                [v84 setCustomSpacing:v75 afterView:v57];
+                detailFieldStackView6 = [(TLKTextAreaView *)selfCopy detailFieldStackView];
+                [detailFieldStackView6 setCustomSpacing:v75 afterView:v57];
 
-                v85 = [(TLKTextAreaView *)v2 detailFieldStackView];
-                [v85 setCustomSpacing:v76 afterView:3.0];
+                detailFieldStackView7 = [(TLKTextAreaView *)selfCopy detailFieldStackView];
+                [detailFieldStackView7 setCustomSpacing:v76 afterView:3.0];
               }
             }
           }
@@ -738,24 +738,24 @@ LABEL_52:
         }
 
         v91 = *(*(&v103 + 1) + 8 * j);
-        if ([(TLKTextAreaView *)v2 useCompactMode])
+        if ([(TLKTextAreaView *)selfCopy useCompactMode])
         {
-          v92 = [v91 viewForLastBaselineLayout];
-          v93 = [v91 alignmentForView:v92 inAxis:1];
+          viewForLastBaselineLayout = [v91 viewForLastBaselineLayout];
+          alignment = [v91 alignmentForView:viewForLastBaselineLayout inAxis:1];
 
-          if (v93 == -1)
+          if (alignment == -1)
           {
-            v93 = [v91 alignment];
+            alignment = [v91 alignment];
           }
         }
 
         else
         {
-          v93 = -1;
+          alignment = -1;
         }
 
-        v94 = [(TLKTextAreaView *)v2 detailFieldStackView];
-        [v94 setAlignment:v93 forView:v91 inAxis:1];
+        detailFieldStackView8 = [(TLKTextAreaView *)selfCopy detailFieldStackView];
+        [detailFieldStackView8 setAlignment:alignment forView:v91 inAxis:1];
       }
 
       v88 = [v86 countByEnumeratingWithState:&v103 objects:v115 count:16];
@@ -767,66 +767,66 @@ LABEL_52:
 
 - (void)updateDetailFieldStackViewVisibility
 {
-  v3 = [(TLKTextAreaView *)self detailFieldStackView];
-  v4 = [v3 visibleArrangedSubviews];
-  if ([v4 count])
+  detailFieldStackView = [(TLKTextAreaView *)self detailFieldStackView];
+  visibleArrangedSubviews = [detailFieldStackView visibleArrangedSubviews];
+  if ([visibleArrangedSubviews count])
   {
     if ([(TLKTextAreaView *)self useCompactMode])
     {
-      v5 = [(TLKTextAreaView *)self isHorizontallyCompressed];
+      isHorizontallyCompressed = [(TLKTextAreaView *)self isHorizontallyCompressed];
     }
 
     else
     {
-      v5 = 0;
+      isHorizontallyCompressed = 0;
     }
   }
 
   else
   {
-    v5 = 1;
+    isHorizontallyCompressed = 1;
   }
 
-  v6 = [(TLKTextAreaView *)self detailFieldStackView];
-  [v6 setHidden:v5];
+  detailFieldStackView2 = [(TLKTextAreaView *)self detailFieldStackView];
+  [detailFieldStackView2 setHidden:isHorizontallyCompressed];
 
-  v7 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-  v8 = [v7 visibleArrangedSubviews];
-  v9 = [v8 count] == 0;
-  v10 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-  [v10 setHidden:v9];
+  detailFieldAndFootnoteStackView = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+  visibleArrangedSubviews2 = [detailFieldAndFootnoteStackView visibleArrangedSubviews];
+  v9 = [visibleArrangedSubviews2 count] == 0;
+  detailFieldAndFootnoteStackView2 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+  [detailFieldAndFootnoteStackView2 setHidden:v9];
 
-  v14 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
-  v11 = [v14 visibleArrangedSubviews];
-  v12 = [v11 count] == 0;
-  v13 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
-  [v13 setHidden:v12];
+  detailFieldFootnoteAndAccessoryStackView = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
+  visibleArrangedSubviews3 = [detailFieldFootnoteAndAccessoryStackView visibleArrangedSubviews];
+  v12 = [visibleArrangedSubviews3 count] == 0;
+  detailFieldFootnoteAndAccessoryStackView2 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
+  [detailFieldFootnoteAndAccessoryStackView2 setHidden:v12];
 }
 
 - (void)updateFootnote
 {
-  v4 = [(TLKTextAreaView *)self footnote];
-  v5 = [(TLKTextAreaView *)self footnoteButtonText];
-  if (v4 | v5)
+  footnote = [(TLKTextAreaView *)self footnote];
+  footnoteButtonText = [(TLKTextAreaView *)self footnoteButtonText];
+  if (footnote | footnoteButtonText)
   {
-    v6 = [(TLKTextAreaView *)self footnoteContainer];
+    footnoteContainer = [(TLKTextAreaView *)self footnoteContainer];
 
-    if (!v6)
+    if (!footnoteContainer)
     {
       v7 = objc_opt_new();
       [(TLKTextAreaView *)self setFootnoteContainer:v7];
 
-      v8 = [(TLKTextAreaView *)self footnoteContainer];
-      [v8 setAlignment:5];
+      footnoteContainer2 = [(TLKTextAreaView *)self footnoteContainer];
+      [footnoteContainer2 setAlignment:5];
 
       v9 = objc_opt_new();
       [(TLKTextAreaView *)self setFootnoteLabel:v9];
-      v10 = [(TLKTextAreaView *)self footnoteContainer];
-      [v10 addArrangedSubview:v9];
+      footnoteContainer3 = [(TLKTextAreaView *)self footnoteContainer];
+      [footnoteContainer3 addArrangedSubview:v9];
 
-      v11 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-      v12 = [(TLKTextAreaView *)self footnoteContainer];
-      [v11 addArrangedSubview:v12];
+      detailFieldAndFootnoteStackView = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+      footnoteContainer4 = [(TLKTextAreaView *)self footnoteContainer];
+      [detailFieldAndFootnoteStackView addArrangedSubview:footnoteContainer4];
     }
 
     v13 = TLKBiggerSuggestionsLayoutEnabled();
@@ -847,18 +847,18 @@ LABEL_52:
       [objc_opt_class() footNoteLabelFont];
     }
     v16 = ;
-    v17 = [(TLKTextAreaView *)self footnoteLabel];
-    [v17 setFont:v16];
+    footnoteLabel = [(TLKTextAreaView *)self footnoteLabel];
+    [footnoteLabel setFont:v16];
 
-    if (v5)
+    if (footnoteButtonText)
     {
-      v18 = [(TLKTextAreaView *)self footnoteButton];
+      footnoteButton = [(TLKTextAreaView *)self footnoteButton];
 
-      if (!v18)
+      if (!footnoteButton)
       {
         v19 = objc_opt_new();
-        v20 = [(TLKTextAreaView *)self buttonDelegate];
-        [v19 addTarget:v20 action:sel_footnoteButtonPressed];
+        buttonDelegate = [(TLKTextAreaView *)self buttonDelegate];
+        [v19 addTarget:buttonDelegate action:sel_footnoteButtonPressed];
 
         [v19 setProminence:3];
         [v19 setMatchesHeightForAlignmentRectWithIntrinsicContentSize:1];
@@ -872,34 +872,34 @@ LABEL_52:
           v21 = 0;
         }
 
-        v22 = [v19 titleLabel];
-        [v22 setTextAlignment:v21];
+        titleLabel = [v19 titleLabel];
+        [titleLabel setTextAlignment:v21];
 
         [TLKLayoutUtilities requireIntrinsicSizeForView:v19];
         [(TLKTextAreaView *)self setFootnoteButton:v19];
-        v23 = [(TLKTextAreaView *)self footnoteContainer];
-        v2 = [(TLKTextAreaView *)self footnoteButton];
-        [v23 addArrangedSubview:v2];
+        footnoteContainer5 = [(TLKTextAreaView *)self footnoteContainer];
+        footnoteButton2 = [(TLKTextAreaView *)self footnoteButton];
+        [footnoteContainer5 addArrangedSubview:footnoteButton2];
       }
     }
 
-    v24 = [(TLKTextAreaView *)self footnoteButton];
-    [v24 setFont:v16];
+    footnoteButton3 = [(TLKTextAreaView *)self footnoteButton];
+    [footnoteButton3 setFont:v16];
 
-    v25 = [(TLKTextAreaView *)self footnoteButton];
+    footnoteButton4 = [(TLKTextAreaView *)self footnoteButton];
 
-    if (v25)
+    if (footnoteButton4)
     {
       v26 = v15;
-      if (v5)
+      if (footnoteButtonText)
       {
-        v25 = [(TLKTextAreaView *)self buttonDelegate];
+        footnoteButton4 = [(TLKTextAreaView *)self buttonDelegate];
         if (objc_opt_respondsToSelector())
         {
-          v27 = [(TLKTextAreaView *)self buttonDelegate];
-          v2 = [(TLKTextAreaView *)self footnoteButton];
-          v48 = v27;
-          v28 = [v27 configureMenuForFootnoteButton:v2];
+          buttonDelegate2 = [(TLKTextAreaView *)self buttonDelegate];
+          footnoteButton2 = [(TLKTextAreaView *)self footnoteButton];
+          v48 = buttonDelegate2;
+          v28 = [buttonDelegate2 configureMenuForFootnoteButton:footnoteButton2];
           v29 = 1;
         }
 
@@ -916,34 +916,34 @@ LABEL_52:
         v28 = 0;
       }
 
-      v30 = [(TLKTextAreaView *)self footnoteButton];
-      [v30 setShowsMenuAsPrimaryAction:v28];
+      footnoteButton5 = [(TLKTextAreaView *)self footnoteButton];
+      [footnoteButton5 setShowsMenuAsPrimaryAction:v28];
 
       if (v29)
       {
       }
 
       v15 = v26;
-      if (v5)
+      if (footnoteButtonText)
       {
       }
     }
 
-    v31 = [(TLKTextAreaView *)self footnoteButton];
-    [v31 setTitle:v5];
+    footnoteButton6 = [(TLKTextAreaView *)self footnoteButton];
+    [footnoteButton6 setTitle:footnoteButtonText];
 
-    v32 = [(TLKTextAreaView *)self footnoteLabel];
+    footnoteLabel2 = [(TLKTextAreaView *)self footnoteLabel];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __33__TLKTextAreaView_updateFootnote__block_invoke;
     v49[3] = &unk_1E7FD8DA8;
     v49[4] = self;
-    v50 = v4;
-    [v32 performBatchUpdates:v49];
+    v50 = footnote;
+    [footnoteLabel2 performBatchUpdates:v49];
 
-    v33 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-    v34 = [(TLKTextAreaView *)self footnoteContainer];
-    [v33 setAlignment:v5 == 0 forView:v34 inAxis:0];
+    detailFieldAndFootnoteStackView2 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+    footnoteContainer6 = [(TLKTextAreaView *)self footnoteContainer];
+    [detailFieldAndFootnoteStackView2 setAlignment:footnoteButtonText == 0 forView:footnoteContainer6 inAxis:0];
 
     if ([(TLKTextAreaView *)self useCompactMode])
     {
@@ -955,8 +955,8 @@ LABEL_52:
       v35 = 2;
     }
 
-    v36 = [(TLKTextAreaView *)self footnoteLabel];
-    [v36 setProminence:v35];
+    footnoteLabel3 = [(TLKTextAreaView *)self footnoteLabel];
+    [footnoteLabel3 setProminence:v35];
 
     if ([(TLKTextAreaView *)self useCompactMode])
     {
@@ -968,54 +968,54 @@ LABEL_52:
       v37 = 3.0;
     }
 
-    v38 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-    v39 = [(TLKTextAreaView *)self detailFieldStackView];
-    [v38 setCustomSpacing:v39 afterView:v37];
+    detailFieldAndFootnoteStackView3 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+    detailFieldStackView = [(TLKTextAreaView *)self detailFieldStackView];
+    [detailFieldAndFootnoteStackView3 setCustomSpacing:detailFieldStackView afterView:v37];
   }
 
-  v40 = [v4 hasContent];
-  v41 = [(TLKTextAreaView *)self footnoteLabel];
-  [v41 setHidden:v40 ^ 1u];
+  hasContent = [footnote hasContent];
+  footnoteLabel4 = [(TLKTextAreaView *)self footnoteLabel];
+  [footnoteLabel4 setHidden:hasContent ^ 1u];
 
-  v42 = [v5 length] == 0;
-  v43 = [(TLKTextAreaView *)self footnoteButton];
-  [v43 setHidden:v42];
+  v42 = [footnoteButtonText length] == 0;
+  footnoteButton7 = [(TLKTextAreaView *)self footnoteButton];
+  [footnoteButton7 setHidden:v42];
 
-  v44 = [(TLKTextAreaView *)self footnoteContainer];
-  v45 = [v44 visibleArrangedSubviews];
-  v46 = [v45 count] == 0;
-  v47 = [(TLKTextAreaView *)self footnoteContainer];
-  [v47 setHidden:v46];
+  footnoteContainer7 = [(TLKTextAreaView *)self footnoteContainer];
+  visibleArrangedSubviews = [footnoteContainer7 visibleArrangedSubviews];
+  v46 = [visibleArrangedSubviews count] == 0;
+  footnoteContainer8 = [(TLKTextAreaView *)self footnoteContainer];
+  [footnoteContainer8 setHidden:v46];
 }
 
 - (id)viewForFirstBaselineLayout
 {
-  v3 = [(TLKView *)self contentView];
+  contentView = [(TLKView *)self contentView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     while (1)
     {
-      v4 = [v3 viewForFirstBaselineLayout];
+      viewForFirstBaselineLayout = [contentView viewForFirstBaselineLayout];
 
-      if (v4 == v3)
+      if (viewForFirstBaselineLayout == contentView)
       {
         break;
       }
 
-      v5 = [v3 viewForFirstBaselineLayout];
+      viewForFirstBaselineLayout2 = [contentView viewForFirstBaselineLayout];
 
-      v6 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
+      detailFieldFootnoteAndAccessoryStackView = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
 
-      if (v5 == v6)
+      if (viewForFirstBaselineLayout2 == detailFieldFootnoteAndAccessoryStackView)
       {
-        v7 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+        detailFieldAndFootnoteStackView = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
 
-        v5 = v7;
+        viewForFirstBaselineLayout2 = detailFieldAndFootnoteStackView;
       }
 
       objc_opt_class();
-      v3 = v5;
+      contentView = viewForFirstBaselineLayout2;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         goto LABEL_8;
@@ -1023,268 +1023,268 @@ LABEL_52:
     }
   }
 
-  v5 = v3;
+  viewForFirstBaselineLayout2 = contentView;
 LABEL_8:
 
-  return v5;
+  return viewForFirstBaselineLayout2;
 }
 
-- (void)setBannerText:(id)a3
+- (void)setBannerText:(id)text
 {
-  v10 = a3;
-  if (self->_bannerText != v10)
+  textCopy = text;
+  if (self->_bannerText != textCopy)
   {
-    objc_storeStrong(&self->_bannerText, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_bannerText, text);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setTopText:(id)a3
+- (void)setTopText:(id)text
 {
-  v10 = a3;
-  if (self->_topText != v10)
+  textCopy = text;
+  if (self->_topText != textCopy)
   {
-    objc_storeStrong(&self->_topText, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_topText, text);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
-  if (self->_title != v10)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    objc_storeStrong(&self->_title, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_title, title);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setTruncateTitleMiddle:(BOOL)a3
+- (void)setTruncateTitleMiddle:(BOOL)middle
 {
-  if (self->_truncateTitleMiddle != a3)
+  if (self->_truncateTitleMiddle != middle)
   {
-    self->_truncateTitleMiddle = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_truncateTitleMiddle = middle;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setSecondaryTitle:(id)a3
+- (void)setSecondaryTitle:(id)title
 {
-  v10 = a3;
-  if (self->_secondaryTitle != v10)
+  titleCopy = title;
+  if (self->_secondaryTitle != titleCopy)
   {
-    objc_storeStrong(&self->_secondaryTitle, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_secondaryTitle, title);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setSecondaryTitleImage:(id)a3
+- (void)setSecondaryTitleImage:(id)image
 {
-  v10 = a3;
-  if (self->_secondaryTitleImage != v10)
+  imageCopy = image;
+  if (self->_secondaryTitleImage != imageCopy)
   {
-    objc_storeStrong(&self->_secondaryTitleImage, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_secondaryTitleImage, image);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setSecondaryTitleIsDetached:(BOOL)a3
+- (void)setSecondaryTitleIsDetached:(BOOL)detached
 {
-  if (self->_secondaryTitleIsDetached != a3)
+  if (self->_secondaryTitleIsDetached != detached)
   {
-    self->_secondaryTitleIsDetached = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_secondaryTitleIsDetached = detached;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setDetailTexts:(id)a3
+- (void)setDetailTexts:(id)texts
 {
-  v10 = a3;
-  if (self->_detailTexts != v10)
+  textsCopy = texts;
+  if (self->_detailTexts != textsCopy)
   {
-    objc_storeStrong(&self->_detailTexts, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_detailTexts, texts);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setFootnote:(id)a3
+- (void)setFootnote:(id)footnote
 {
-  v10 = a3;
-  if (self->_footnote != v10)
+  footnoteCopy = footnote;
+  if (self->_footnote != footnoteCopy)
   {
-    objc_storeStrong(&self->_footnote, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_footnote, footnote);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setFootnoteButtonText:(id)a3
+- (void)setFootnoteButtonText:(id)text
 {
-  v10 = a3;
-  if (self->_footnoteButtonText != v10)
+  textCopy = text;
+  if (self->_footnoteButtonText != textCopy)
   {
-    objc_storeStrong(&self->_footnoteButtonText, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_footnoteButtonText, text);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setUseCompactMode:(BOOL)a3
+- (void)setUseCompactMode:(BOOL)mode
 {
-  if (self->_useCompactMode != a3)
+  if (self->_useCompactMode != mode)
   {
-    self->_useCompactMode = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_useCompactMode = mode;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v10 = a3;
-  if (self->_accessoryView != v10)
+  viewCopy = view;
+  if (self->_accessoryView != viewCopy)
   {
-    objc_storeStrong(&self->_accessoryView, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_accessoryView, view);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
@@ -1292,37 +1292,37 @@ LABEL_8:
 
 - (void)insertDetailsStackViewIfNeeded
 {
-  v3 = [(TLKTextAreaView *)self detailFieldStackView];
+  detailFieldStackView = [(TLKTextAreaView *)self detailFieldStackView];
 
-  if (!v3)
+  if (!detailFieldStackView)
   {
     v4 = objc_opt_new();
     [(TLKTextAreaView *)self setDetailFieldStackView:v4];
 
-    v5 = [(TLKTextAreaView *)self detailFieldStackView];
-    [v5 setArrangedSubviewRemovalPolicy:1];
+    detailFieldStackView2 = [(TLKTextAreaView *)self detailFieldStackView];
+    [detailFieldStackView2 setArrangedSubviewRemovalPolicy:1];
 
-    v6 = [(TLKTextAreaView *)self detailFieldStackView];
-    [v6 setArrangedSubviewAdditionPolicy:1];
+    detailFieldStackView3 = [(TLKTextAreaView *)self detailFieldStackView];
+    [detailFieldStackView3 setArrangedSubviewAdditionPolicy:1];
 
-    v8 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
-    v7 = [(TLKTextAreaView *)self detailFieldStackView];
-    [v8 insertArrangedSubview:v7 atIndex:0];
+    detailFieldAndFootnoteStackView = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+    detailFieldStackView4 = [(TLKTextAreaView *)self detailFieldStackView];
+    [detailFieldAndFootnoteStackView insertArrangedSubview:detailFieldStackView4 atIndex:0];
   }
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__TLKTextAreaView_performBatchUpdates___block_invoke;
   v7[3] = &unk_1E7FD8DD0;
   v7[4] = self;
-  v8 = v4;
+  v8 = updatesCopy;
   v6.receiver = self;
   v6.super_class = TLKTextAreaView;
-  v5 = v4;
+  v5 = updatesCopy;
   [(TLKView *)&v6 performBatchUpdates:v7];
 }
 
@@ -1335,21 +1335,21 @@ uint64_t __39__TLKTextAreaView_performBatchUpdates___block_invoke(uint64_t a1)
   return [v2 internalTextFieldsInBatchUpdate:0];
 }
 
-- (void)internalTextFieldsInBatchUpdate:(BOOL)a3
+- (void)internalTextFieldsInBatchUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(TLKTextAreaView *)self detailsFields];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  detailsFields = [(TLKTextAreaView *)self detailsFields];
+  v5 = [detailsFields countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v15;
-    if (v3)
+    if (updateCopy)
     {
       v8 = 1;
     }
@@ -1365,17 +1365,17 @@ uint64_t __39__TLKTextAreaView_performBatchUpdates___block_invoke(uint64_t a1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(detailsFields);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 observer];
-        v12 = [v11 batchUpdateCount];
-        v13 = [v10 observer];
-        [v13 setBatchUpdateCount:v12 + v8];
+        observer = [v10 observer];
+        batchUpdateCount = [observer batchUpdateCount];
+        observer2 = [v10 observer];
+        [observer2 setBatchUpdateCount:batchUpdateCount + v8];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [detailsFields countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1416,32 +1416,32 @@ void __33__TLKTextAreaView_updateFootnote__block_invoke(uint64_t a1)
 
 - (id)viewForLastBaselineLayout
 {
-  v3 = [(TLKView *)self contentView];
+  contentView = [(TLKView *)self contentView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     while (1)
     {
-      v4 = [v3 viewForLastBaselineLayout];
+      viewForLastBaselineLayout = [contentView viewForLastBaselineLayout];
 
-      if (v4 == v3)
+      if (viewForLastBaselineLayout == contentView)
       {
         break;
       }
 
-      v5 = [v3 viewForLastBaselineLayout];
+      viewForLastBaselineLayout2 = [contentView viewForLastBaselineLayout];
 
-      v6 = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
+      detailFieldFootnoteAndAccessoryStackView = [(TLKTextAreaView *)self detailFieldFootnoteAndAccessoryStackView];
 
-      if (v5 == v6)
+      if (viewForLastBaselineLayout2 == detailFieldFootnoteAndAccessoryStackView)
       {
-        v7 = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
+        detailFieldAndFootnoteStackView = [(TLKTextAreaView *)self detailFieldAndFootnoteStackView];
 
-        v5 = v7;
+        viewForLastBaselineLayout2 = detailFieldAndFootnoteStackView;
       }
 
       objc_opt_class();
-      v3 = v5;
+      contentView = viewForLastBaselineLayout2;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         goto LABEL_8;
@@ -1449,10 +1449,10 @@ void __33__TLKTextAreaView_updateFootnote__block_invoke(uint64_t a1)
     }
   }
 
-  v5 = v3;
+  viewForLastBaselineLayout2 = contentView;
 LABEL_8:
 
-  return v5;
+  return viewForLastBaselineLayout2;
 }
 
 - (id)detailsStrings
@@ -1463,8 +1463,8 @@ LABEL_8:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(TLKTextAreaView *)self detailsFields];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  detailsFields = [(TLKTextAreaView *)self detailsFields];
+  v5 = [detailsFields countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1475,18 +1475,18 @@ LABEL_8:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(detailsFields);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if (([v9 isHidden] & 1) == 0)
         {
-          v10 = [v9 attributedString];
-          [v3 addObject:v10];
+          attributedString = [v9 attributedString];
+          [v3 addObject:attributedString];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [detailsFields countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1497,38 +1497,38 @@ LABEL_8:
 
 - (id)titleLabelString
 {
-  v2 = [(TLKTextAreaView *)self titleContainer];
-  v3 = [v2 titleLabelString];
+  titleContainer = [(TLKTextAreaView *)self titleContainer];
+  titleLabelString = [titleContainer titleLabelString];
 
-  return v3;
+  return titleLabelString;
 }
 
 - (id)secondaryTitleLabelString
 {
-  v2 = [(TLKTextAreaView *)self titleContainer];
-  v3 = [v2 secondaryTitleLabelString];
+  titleContainer = [(TLKTextAreaView *)self titleContainer];
+  secondaryTitleLabelString = [titleContainer secondaryTitleLabelString];
 
-  return v3;
+  return secondaryTitleLabelString;
 }
 
 - (id)footnoteLabelString
 {
-  v3 = [(TLKTextAreaView *)self footnoteLabel];
-  v4 = [v3 isHidden];
+  footnoteLabel = [(TLKTextAreaView *)self footnoteLabel];
+  isHidden = [footnoteLabel isHidden];
 
-  if (v4)
+  if (isHidden)
   {
-    v5 = 0;
+    string = 0;
   }
 
   else
   {
-    v6 = [(TLKTextAreaView *)self footnoteLabel];
-    v7 = [v6 attributedString];
-    v5 = [v7 string];
+    footnoteLabel2 = [(TLKTextAreaView *)self footnoteLabel];
+    attributedString = [footnoteLabel2 attributedString];
+    string = [attributedString string];
   }
 
-  return v5;
+  return string;
 }
 
 - (TLKTextAreaViewDelegate)buttonDelegate

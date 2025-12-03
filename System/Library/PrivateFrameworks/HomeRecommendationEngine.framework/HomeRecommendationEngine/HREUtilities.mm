@@ -1,17 +1,17 @@
 @interface HREUtilities
-+ (id)accessoryCategoryAnalyticsDescription:(id)a3;
++ (id)accessoryCategoryAnalyticsDescription:(id)description;
 @end
 
 @implementation HREUtilities
 
-+ (id)accessoryCategoryAnalyticsDescription:(id)a3
++ (id)accessoryCategoryAnalyticsDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __54__HREUtilities_accessoryCategoryAnalyticsDescription___block_invoke;
   v24[3] = &unk_279777430;
-  v4 = v3;
+  v4 = descriptionCopy;
   v25 = v4;
   v5 = MEMORY[0x259C0B570](v24);
   v19 = MEMORY[0x277D85DD0];
@@ -21,23 +21,23 @@
   v6 = v4;
   v23 = v6;
   v7 = MEMORY[0x259C0B570](&v19);
-  v8 = [v6 accessories];
-  v9 = [v8 na_map:&__block_literal_global_11_0];
+  accessories = [v6 accessories];
+  v9 = [accessories na_map:&__block_literal_global_11_0];
 
   if ([v9 count] == 1)
   {
-    v10 = [v9 anyObject];
+    anyObject = [v9 anyObject];
   }
 
   else
   {
-    v10 = 0;
+    anyObject = 0;
   }
 
   if (v5[2](v5))
   {
     v11 = @"MixedServiceGroup";
-    if (!v10)
+    if (!anyObject)
     {
       goto LABEL_15;
     }
@@ -46,22 +46,22 @@
   else if (v7[2](v7))
   {
     v11 = @"MixedMediaAccessory";
-    if (!v10)
+    if (!anyObject)
     {
       goto LABEL_15;
     }
   }
 
-  else if (v10)
+  else if (anyObject)
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = *MEMORY[0x277CCE8C8];
+    anyObject = *MEMORY[0x277CCE8C8];
     v11 = 0;
-    if (!v10)
+    if (!anyObject)
     {
 LABEL_15:
       v15 = 0;
@@ -69,7 +69,7 @@ LABEL_15:
     }
   }
 
-  v12 = [MEMORY[0x277CD1650] hf_getUserFriendlyDescriptionKey:v10];
+  v12 = [MEMORY[0x277CD1650] hf_getUserFriendlyDescriptionKey:anyObject];
   v13 = v12;
   if (v12)
   {
@@ -78,7 +78,7 @@ LABEL_15:
 
   else
   {
-    v14 = [MEMORY[0x277CD1D90] hf_getUserFriendlyDescriptionKey:v10];
+    v14 = [MEMORY[0x277CD1D90] hf_getUserFriendlyDescriptionKey:anyObject];
   }
 
   v15 = v14;

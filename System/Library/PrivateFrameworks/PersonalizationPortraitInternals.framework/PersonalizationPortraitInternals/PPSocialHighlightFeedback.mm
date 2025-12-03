@@ -1,45 +1,45 @@
 @interface PPSocialHighlightFeedback
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFeedbackType:(id)a3;
+- (int)StringAsFeedbackType:(id)type;
 - (int)feedbackType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFeedbackType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFeedbackType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPSocialHighlightFeedback
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PPSocialHighlightFeedback *)self setClientIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_feedbackType = *(v4 + 6);
+    self->_feedbackType = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if (v5)
   {
-    self->_feedbackCreationSecondsSinceReferenceDate = *(v4 + 1);
+    self->_feedbackCreationSecondsSinceReferenceDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   highlight = self->_highlight;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   if (highlight)
   {
     if (!v7)
@@ -60,9 +60,9 @@
     [(PPSocialHighlightFeedback *)self setHighlight:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_13:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PPSocialHighlightFeedback *)self setVariant:?];
   }
@@ -123,16 +123,16 @@ LABEL_9:
   return v11 ^ [(NSString *)self->_variant hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   clientIdentifier = self->_clientIdentifier;
-  if (clientIdentifier | *(v4 + 2))
+  if (clientIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)clientIdentifier isEqual:?])
     {
@@ -140,16 +140,16 @@ LABEL_9:
     }
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_feedbackType != *(v4 + 6))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_feedbackType != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_18:
     v9 = 0;
@@ -158,25 +158,25 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_feedbackCreationSecondsSinceReferenceDate != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_feedbackCreationSecondsSinceReferenceDate != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_18;
   }
 
   highlight = self->_highlight;
-  if (highlight | *(v4 + 4) && ![(PPRankableSocialHighlight *)highlight isEqual:?])
+  if (highlight | *(equalCopy + 4) && ![(PPRankableSocialHighlight *)highlight isEqual:?])
   {
     goto LABEL_18;
   }
 
   variant = self->_variant;
-  if (variant | *(v4 + 5))
+  if (variant | *(equalCopy + 5))
   {
     v9 = [(NSString *)variant isEqual:?];
   }
@@ -191,10 +191,10 @@ LABEL_19:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -212,62 +212,62 @@ LABEL_19:
     *(v5 + 48) |= 1u;
   }
 
-  v9 = [(PPRankableSocialHighlight *)self->_highlight copyWithZone:a3];
+  v9 = [(PPRankableSocialHighlight *)self->_highlight copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
-  v11 = [(NSString *)self->_variant copyWithZone:a3];
+  v11 = [(NSString *)self->_variant copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_clientIdentifier)
   {
-    [v4 setClientIdentifier:?];
-    v4 = v6;
+    [toCopy setClientIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_feedbackType;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 6) = self->_feedbackType;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_feedbackCreationSecondsSinceReferenceDate;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_feedbackCreationSecondsSinceReferenceDate;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_highlight)
   {
     [v6 setHighlight:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_variant)
   {
     [v6 setVariant:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_clientIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -275,7 +275,7 @@ LABEL_19:
   {
     feedbackType = self->_feedbackType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -283,30 +283,30 @@ LABEL_19:
   {
     feedbackCreationSecondsSinceReferenceDate = self->_feedbackCreationSecondsSinceReferenceDate;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_highlight)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_variant)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    [v3 setObject:clientIdentifier forKey:@"clientIdentifier"];
+    [dictionary setObject:clientIdentifier forKey:@"clientIdentifier"];
   }
 
   has = self->_has;
@@ -337,8 +337,8 @@ LABEL_19:
   highlight = self->_highlight;
   if (highlight)
   {
-    v11 = [(PPRankableSocialHighlight *)highlight dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"highlight"];
+    dictionaryRepresentation = [(PPRankableSocialHighlight *)highlight dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"highlight"];
   }
 
   variant = self->_variant;
@@ -356,71 +356,71 @@ LABEL_19:
   v8.receiver = self;
   v8.super_class = PPSocialHighlightFeedback;
   v4 = [(PPSocialHighlightFeedback *)&v8 description];
-  v5 = [(PPSocialHighlightFeedback *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPSocialHighlightFeedback *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsFeedbackType:(id)a3
+- (int)StringAsFeedbackType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Displayed"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Displayed"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UserInteracted"])
+  else if ([typeCopy isEqualToString:@"UserInteracted"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Hide"])
+  else if ([typeCopy isEqualToString:@"Hide"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AppButton"])
+  else if ([typeCopy isEqualToString:@"AppButton"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ActivityButton"])
+  else if ([typeCopy isEqualToString:@"ActivityButton"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ConsumptionStarted"])
+  else if ([typeCopy isEqualToString:@"ConsumptionStarted"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ConsumptionFinished"])
+  else if ([typeCopy isEqualToString:@"ConsumptionFinished"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ItemDetailViewed"])
+  else if ([typeCopy isEqualToString:@"ItemDetailViewed"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ParentDetailViewed"])
+  else if ([typeCopy isEqualToString:@"ParentDetailViewed"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"AppReply"])
+  else if ([typeCopy isEqualToString:@"AppReply"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ConsumedExternally"])
+  else if ([typeCopy isEqualToString:@"ConsumedExternally"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ValueUnknown"])
+  else if ([typeCopy isEqualToString:@"ValueUnknown"])
   {
     v4 = 11;
   }
@@ -433,9 +433,9 @@ LABEL_19:
   return v4;
 }
 
-- (void)setHasFeedbackType:(BOOL)a3
+- (void)setHasFeedbackType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

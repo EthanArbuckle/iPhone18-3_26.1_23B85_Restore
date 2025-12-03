@@ -1,6 +1,6 @@
 @interface PXKeyboardSettings
 + (PXKeyboardSettings)sharedInstance;
-+ (id)_makeAnimationStyleChoiceRowWithTitle:(id)a3 valueKeyPath:(id)a4;
++ (id)_makeAnimationStyleChoiceRowWithTitle:(id)title valueKeyPath:(id)path;
 + (id)_makeLocalFocusAnimationSection;
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
@@ -22,9 +22,9 @@
   [(PXKeyboardSettings *)self setDetailsViewOverlayAlpha:0.3];
 }
 
-+ (id)_makeAnimationStyleChoiceRowWithTitle:(id)a3 valueKeyPath:(id)a4
++ (id)_makeAnimationStyleChoiceRowWithTitle:(id)title valueKeyPath:(id)path
 {
-  v4 = [MEMORY[0x1E69C6668] rowWithTitle:a3 valueKeyPath:a4];
+  v4 = [MEMORY[0x1E69C6668] rowWithTitle:title valueKeyPath:path];
   v5 = [v4 possibleValues:&unk_1F1910F30 titles:&unk_1F1910F48];
 
   return v4;
@@ -40,7 +40,7 @@
     {
       v5 = [&unk_1F1910F00 objectAtIndexedSubscript:v4];
       v6 = [&unk_1F1910F18 objectAtIndexedSubscript:v4];
-      v7 = [a1 _makeAnimationStyleChoiceRowWithTitle:v5 valueKeyPath:v6];
+      v7 = [self _makeAnimationStyleChoiceRowWithTitle:v5 valueKeyPath:v6];
       [v3 addObject:v7];
 
       v8 = MEMORY[0x1E69C66A0];
@@ -71,10 +71,10 @@
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C6638];
-  v3 = [a1 _makeLocalFocusAnimationSection];
-  v8[0] = v3;
-  v4 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v8[1] = v4;
+  _makeLocalFocusAnimationSection = [self _makeLocalFocusAnimationSection];
+  v8[0] = _makeLocalFocusAnimationSection;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v8[1] = px_restoreDefaultsSection;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v6 = [v2 moduleWithTitle:@"Keyboard" contents:v5];
 

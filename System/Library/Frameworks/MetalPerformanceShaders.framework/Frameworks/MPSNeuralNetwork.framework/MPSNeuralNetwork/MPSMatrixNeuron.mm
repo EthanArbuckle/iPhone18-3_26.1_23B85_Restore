@@ -5,7 +5,7 @@
 - (id)debugDescription;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputMatrix:(MPSMatrix *)inputMatrix biasVector:(MPSVector *)biasVector resultMatrix:(MPSMatrix *)resultMatrix;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setNeuronToPReLUWithParametersA:(NSData *)A;
 - (void)setNeuronType:(MPSCNNNeuronType)neuronType parameterA:(float)parameterA parameterB:(float)parameterB parameterC:(float)parameterC;
 @end
@@ -516,29 +516,29 @@ LABEL_9:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v61.receiver = self;
   v61.super_class = MPSMatrixNeuron;
   [(MPSMatrixUnaryKernel *)&v61 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"MPSMatrixFullyConnected._alpha;", v6, v7, v8, v9, v10, self->_alpha);
-  objc_msgSend_encodeInt64_forKey_(a3, v11, self->_sourceNumberOfFeatureVectors, @"MPSMatrixFullyConnected._sourceNumberOfFeatureVectors;", v12, v13, v14, v15);
-  objc_msgSend_encodeInt64_forKey_(a3, v16, self->_sourceInputFeatureChannels, @"MPSMatrixFullyConnected._sourceInputFeatureChannels;", v17, v18, v19, v20);
-  objc_msgSend_encodeInt32_forKey_(a3, v21, self->_neuronType, @"MPSMatrixFullyConnected._neuronType;", v22, v23, v24, v25);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"MPSMatrixFullyConnected._alpha;", v6, v7, v8, v9, v10, self->_alpha);
+  objc_msgSend_encodeInt64_forKey_(coder, v11, self->_sourceNumberOfFeatureVectors, @"MPSMatrixFullyConnected._sourceNumberOfFeatureVectors;", v12, v13, v14, v15);
+  objc_msgSend_encodeInt64_forKey_(coder, v16, self->_sourceInputFeatureChannels, @"MPSMatrixFullyConnected._sourceInputFeatureChannels;", v17, v18, v19, v20);
+  objc_msgSend_encodeInt32_forKey_(coder, v21, self->_neuronType, @"MPSMatrixFullyConnected._neuronType;", v22, v23, v24, v25);
   *&v26 = self->_neuronA;
-  objc_msgSend_encodeFloat_forKey_(a3, v27, @"MPSMatrixFullyConnected._neuronA;", v28, v29, v30, v31, v32, v26);
+  objc_msgSend_encodeFloat_forKey_(coder, v27, @"MPSMatrixFullyConnected._neuronA;", v28, v29, v30, v31, v32, v26);
   *&v33 = self->_neuronB;
-  objc_msgSend_encodeFloat_forKey_(a3, v34, @"MPSMatrixFullyConnected._neuronB;", v35, v36, v37, v38, v39, v33);
+  objc_msgSend_encodeFloat_forKey_(coder, v34, @"MPSMatrixFullyConnected._neuronB;", v35, v36, v37, v38, v39, v33);
   *&v40 = self->_neuronC;
-  objc_msgSend_encodeFloat_forKey_(a3, v41, @"MPSMatrixFullyConnected._neuronC;", v42, v43, v44, v45, v46, v40);
+  objc_msgSend_encodeFloat_forKey_(coder, v41, @"MPSMatrixFullyConnected._neuronC;", v42, v43, v44, v45, v46, v40);
   if (self->_neuronType == 10)
   {
     neuronAParamBuf = self->neuronAParamBuf;
     if (neuronAParamBuf)
     {
       v55 = objc_msgSend_length(neuronAParamBuf, v47, v48, v49, v50, v51, v52, v53);
-      sub_239BF605C(a3, neuronAParamBuf, v55 >> 2, v56, v57, v58, v59, v60);
+      sub_239BF605C(coder, neuronAParamBuf, v55 >> 2, v56, v57, v58, v59, v60);
     }
   }
 }

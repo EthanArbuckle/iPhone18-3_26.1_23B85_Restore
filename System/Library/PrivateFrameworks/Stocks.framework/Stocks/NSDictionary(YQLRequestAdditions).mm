@@ -6,7 +6,7 @@
 
 - (void)yql_objectForKey:()YQLRequestAdditions ofClass:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1)
   {
     if (objc_opt_isKindOfClass())

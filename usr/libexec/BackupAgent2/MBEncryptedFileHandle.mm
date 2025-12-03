@@ -1,23 +1,23 @@
 @interface MBEncryptedFileHandle
-+ (id)encryptedFileHandleForBackupWithPath:(id)a3 keybag:(id)a4 error:(id *)a5;
-+ (id)encryptedFileHandleForRestoreWithPath:(id)a3 keybag:(id)a4 key:(id)a5 error:(id *)a6;
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)statWithBuffer:(stat *)a3 error:(id *)a4;
-- (BOOL)validateEncryptionKey:(id)a3 error:(id *)a4;
-- (MBEncryptedFileHandle)initWithPath:(id)a3 keybag:(id)a4 file:(_mkbfileref *)a5 restore:(BOOL)a6;
-- (id)encryptionKeyWithError:(id *)a3;
-- (int64_t)readWithBytes:(void *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (int64_t)writeWithBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5;
++ (id)encryptedFileHandleForBackupWithPath:(id)path keybag:(id)keybag error:(id *)error;
++ (id)encryptedFileHandleForRestoreWithPath:(id)path keybag:(id)keybag key:(id)key error:(id *)error;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)statWithBuffer:(stat *)buffer error:(id *)error;
+- (BOOL)validateEncryptionKey:(id)key error:(id *)error;
+- (MBEncryptedFileHandle)initWithPath:(id)path keybag:(id)keybag file:(_mkbfileref *)file restore:(BOOL)restore;
+- (id)encryptionKeyWithError:(id *)error;
+- (int64_t)readWithBytes:(void *)bytes length:(unint64_t)length error:(id *)error;
+- (int64_t)writeWithBytes:(const void *)bytes length:(unint64_t)length error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MBEncryptedFileHandle
 
-+ (id)encryptedFileHandleForBackupWithPath:(id)a3 keybag:(id)a4 error:(id *)a5
++ (id)encryptedFileHandleForBackupWithPath:(id)path keybag:(id)keybag error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  pathCopy = path;
+  keybagCopy = keybag;
+  if (!keybagCopy)
   {
     sub_10009F714();
   }
@@ -27,7 +27,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v15 = v7;
+    v15 = pathCopy;
     v16 = 1024;
     v17 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "MKBFileOpenForBackup(%@, ...): %d", buf, 0x12u);
@@ -36,9 +36,9 @@
 
   if (v9)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MBKeyBag errorWithReturnCode:v9 path:v7 description:@"Error opening encrypted file for backup"];
+      *error = [MBKeyBag errorWithReturnCode:v9 path:pathCopy description:@"Error opening encrypted file for backup"];
     }
 
     if (v9 >= 0xFFFFFFFE)
@@ -47,14 +47,14 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412546;
-        v15 = v7;
+        v15 = pathCopy;
         v16 = 1024;
         v17 = v9;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_FAULT, "MKBFileOpenForBackup failed at %@: %d", buf, 0x12u);
         _MBLog();
       }
 
-      sub_10000D2DC(v7, v9, "MKBFileOpenForBackup");
+      sub_10000D2DC(pathCopy, v9, "MKBFileOpenForBackup");
     }
 
     v12 = 0;
@@ -62,21 +62,21 @@
 
   else
   {
-    v12 = [[MBEncryptedFileHandle alloc] initWithPath:v7 keybag:v8 file:0 restore:0];
+    v12 = [[MBEncryptedFileHandle alloc] initWithPath:pathCopy keybag:keybagCopy file:0 restore:0];
   }
 
   return v12;
 }
 
-+ (id)encryptedFileHandleForRestoreWithPath:(id)a3 keybag:(id)a4 key:(id)a5 error:(id *)a6
++ (id)encryptedFileHandleForRestoreWithPath:(id)path keybag:(id)keybag key:(id)key error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (v12)
+  pathCopy = path;
+  keybagCopy = keybag;
+  keyCopy = key;
+  v14 = keyCopy;
+  if (keybagCopy)
   {
-    if (v13)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -91,21 +91,21 @@
     }
   }
 
-  sub_10009F7EC(a2, a1, v11);
+  sub_10009F7EC(a2, self, pathCopy);
 LABEL_3:
-  v15 = [v12 encryptedFileForRestoreWithPath:v11 key:v14 error:a6];
+  v15 = [keybagCopy encryptedFileForRestoreWithPath:pathCopy key:v14 error:error];
   if (v15)
   {
-    v15 = [[MBEncryptedFileHandle alloc] initWithPath:v11 keybag:v12 file:v15 restore:1];
+    v15 = [[MBEncryptedFileHandle alloc] initWithPath:pathCopy keybag:keybagCopy file:v15 restore:1];
   }
 
   return v15;
 }
 
-- (MBEncryptedFileHandle)initWithPath:(id)a3 keybag:(id)a4 file:(_mkbfileref *)a5 restore:(BOOL)a6
+- (MBEncryptedFileHandle)initWithPath:(id)path keybag:(id)keybag file:(_mkbfileref *)file restore:(BOOL)restore
 {
-  v11 = a3;
-  v12 = a4;
+  pathCopy = path;
+  keybagCopy = keybag;
   v18.receiver = self;
   v18.super_class = MBEncryptedFileHandle;
   v13 = [(MBEncryptedFileHandle *)&v18 init];
@@ -115,19 +115,19 @@ LABEL_3:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v20 = v11;
+      v20 = pathCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Opened encrypted file at %@", buf, 0xCu);
       _MBLog();
     }
 
-    objc_storeStrong(&v13->_path, a3);
-    objc_storeStrong(&v13->_keybag, a4);
-    v13->_file = a5;
+    objc_storeStrong(&v13->_path, path);
+    objc_storeStrong(&v13->_keybag, keybag);
+    v13->_file = file;
     v15 = [[NSMutableData alloc] initWithCapacity:0];
     buffer = v13->_buffer;
     v13->_buffer = v15;
 
-    v13->_restore = a6;
+    v13->_restore = restore;
   }
 
   return v13;
@@ -145,7 +145,7 @@ LABEL_3:
   [(MBEncryptedFileHandle *)&v3 dealloc];
 }
 
-- (id)encryptionKeyWithError:(id *)a3
+- (id)encryptionKeyWithError:(id *)error
 {
   if (!self->_keybag)
   {
@@ -156,24 +156,24 @@ LABEL_3:
   path = self->_path;
   keybag = self->_keybag;
 
-  return [(MBKeyBag *)keybag encryptionKeyForFile:file path:path error:a3];
+  return [(MBKeyBag *)keybag encryptionKeyForFile:file path:path error:error];
 }
 
-- (BOOL)validateEncryptionKey:(id)a3 error:(id *)a4
+- (BOOL)validateEncryptionKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   keybag = self->_keybag;
   if (!keybag)
   {
     sub_10009F898();
   }
 
-  v8 = [(MBKeyBag *)keybag validateEncryptionKey:v6 file:self->_file path:self->_path error:a4];
+  v8 = [(MBKeyBag *)keybag validateEncryptionKey:keyCopy file:self->_file path:self->_path error:error];
 
   return v8;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   if (self->_restore)
   {
@@ -191,7 +191,7 @@ LABEL_3:
         _MBLog();
       }
 
-      if (a3)
+      if (error)
       {
         v11 = [MBError posixErrorWithFormat:@"MKBFileWrite error"];
         goto LABEL_16;
@@ -214,14 +214,14 @@ LABEL_3:
   self->_file = 0;
   if (v10)
   {
-    if (a3)
+    if (error)
     {
       v11 = [MBKeyBag errorWithReturnCode:v10 description:@"MKBFileClose error"];
 LABEL_16:
       v15 = v11;
       v16 = v11;
       result = 0;
-      *a3 = v15;
+      *error = v15;
       return result;
     }
 
@@ -242,19 +242,19 @@ LABEL_16:
   return 1;
 }
 
-- (BOOL)statWithBuffer:(stat *)a3 error:(id *)a4
+- (BOOL)statWithBuffer:(stat *)buffer error:(id *)error
 {
-  v5 = fstat([(MBEncryptedFileHandle *)self fd], a3);
+  v5 = fstat([(MBEncryptedFileHandle *)self fd], buffer);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [MBError posixErrorWithFormat:@"fstat error"];
+    *error = [MBError posixErrorWithFormat:@"fstat error"];
   }
 
   return v6 == 0;
 }
 
-- (int64_t)readWithBytes:(void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (int64_t)readWithBytes:(void *)bytes length:(unint64_t)length error:(id *)error
 {
   if (self->_restore)
   {
@@ -270,13 +270,13 @@ LABEL_16:
 
     else
     {
-      if (a4 <= 0xF)
+      if (length <= 0xF)
       {
-        if (a5)
+        if (error)
         {
           v10 = [MBError errorWithCode:100 format:@"Buffer for reading from encrypted file too small"];
 LABEL_19:
-          *a5 = v10;
+          *error = v10;
         }
 
         return -1;
@@ -295,14 +295,14 @@ LABEL_19:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218240;
-      v16 = a4;
+      lengthCopy2 = length;
       v17 = 2048;
       v18 = v8;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "MKBFileRead(%{bytes}lu): %zd", buf, 0x16u);
       _MBLog();
     }
 
-    if (a5)
+    if (error)
     {
       v10 = [MBError posixErrorWithFormat:@"MKBFileRead error"];
       goto LABEL_19;
@@ -317,7 +317,7 @@ LABEL_12:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v16 = a4;
+    lengthCopy2 = length;
     v17 = 2048;
     v18 = v8;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "MKBFileRead(%{bytes}lu): %{bytes}zd", buf, 0x16u);
@@ -327,7 +327,7 @@ LABEL_12:
   return v8;
 }
 
-- (int64_t)writeWithBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (int64_t)writeWithBytes:(const void *)bytes length:(unint64_t)length error:(id *)error
 {
   if (!self->_restore)
   {
@@ -345,7 +345,7 @@ LABEL_12:
       if (v12)
       {
         *buf = 134218240;
-        v23 = a4;
+        lengthCopy2 = length;
         v24 = 2048;
         v25 = v10;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "MKBFileWrite(%{bytes}lu): %{bytes}zd", buf, 0x16u);
@@ -360,11 +360,11 @@ LABEL_22:
     if (v12)
     {
       *buf = 134218240;
-      v23 = a4;
+      lengthCopy2 = length;
       v24 = 2048;
       v25 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "MKBFileWrite(%{bytes}lu): %zd", buf, 0x16u);
-      v20 = a4;
+      lengthCopy3 = length;
       v21 = v10;
 LABEL_27:
       _MBLog();
@@ -376,9 +376,9 @@ LABEL_27:
 
   if (![(NSMutableData *)self->_buffer length])
   {
-    if ((a4 & 0xF) != 0)
+    if ((length & 0xF) != 0)
     {
-      [(NSMutableData *)self->_buffer appendBytes:a3 + (a4 & 0xFFFFFFFFFFFFFFF0) length:a4 & 0xF];
+      [(NSMutableData *)self->_buffer appendBytes:bytes + (length & 0xFFFFFFFFFFFFFFF0) length:length & 0xF];
     }
 
     v16 = self->_file;
@@ -390,7 +390,7 @@ LABEL_27:
       if (v18)
       {
         *buf = 134218240;
-        v23 = a4 & 0xFFFFFFFFFFFFFFF0;
+        lengthCopy2 = length & 0xFFFFFFFFFFFFFFF0;
         v24 = 2048;
         v25 = v17;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "MKBFileWrite(%{bytes}lu): %{bytes}zd", buf, 0x16u);
@@ -399,24 +399,24 @@ LABEL_27:
 
 LABEL_23:
 
-      return a4;
+      return length;
     }
 
     if (v18)
     {
       *buf = 134218240;
-      v23 = a4 & 0xFFFFFFFFFFFFFFF0;
+      lengthCopy2 = length & 0xFFFFFFFFFFFFFFF0;
       v24 = 2048;
       v25 = v17;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "MKBFileWrite(%{bytes}lu): %zd", buf, 0x16u);
-      v20 = a4 & 0xFFFFFFFFFFFFFFF0;
+      lengthCopy3 = length & 0xFFFFFFFFFFFFFFF0;
       v21 = v17;
       goto LABEL_27;
     }
 
 LABEL_28:
 
-    if (!a5)
+    if (!error)
     {
       return -1;
     }
@@ -425,12 +425,12 @@ LABEL_28:
   }
 
   v13 = [(NSMutableData *)self->_buffer length];
-  if (16 - v13 < a4)
+  if (16 - v13 < length)
   {
-    a4 = 16 - v13;
+    length = 16 - v13;
   }
 
-  [(NSMutableData *)self->_buffer appendBytes:a3 length:a4];
+  [(NSMutableData *)self->_buffer appendBytes:bytes length:length];
   if ([(NSMutableData *)self->_buffer length]>= 0x10)
   {
     v14 = self->_file;
@@ -440,18 +440,18 @@ LABEL_28:
     [(NSMutableData *)self->_buffer setLength:0];
     if (v15 < 0)
     {
-      if (!a5)
+      if (!error)
       {
         return -1;
       }
 
 LABEL_13:
-      *a5 = [MBError posixErrorWithFormat:@"MKBFileWrite error", v20, v21];
+      *error = [MBError posixErrorWithFormat:@"MKBFileWrite error", lengthCopy3, v21];
       return -1;
     }
   }
 
-  return a4;
+  return length;
 }
 
 @end

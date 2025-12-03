@@ -1,21 +1,21 @@
 @interface CATActiveIDSServiceConnectionContentClose
-+ (id)instanceWithDictionary:(id)a3;
-- (CATActiveIDSServiceConnectionContentClose)initWithError:(id)a3;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CATActiveIDSServiceConnectionContentClose)initWithError:(id)error;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CATActiveIDSServiceConnectionContentClose
 
-- (CATActiveIDSServiceConnectionContentClose)initWithError:(id)a3
+- (CATActiveIDSServiceConnectionContentClose)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = CATActiveIDSServiceConnectionContentClose;
   v6 = [(CATActiveIDSServiceConnectionContentClose *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
   }
 
   return v7;
@@ -24,18 +24,18 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(CATActiveIDSServiceConnectionContentClose *)self error];
-  v5 = [v4 cat_dictionaryValue];
-  [v3 setObject:v5 forKeyedSubscript:@"Error"];
+  error = [(CATActiveIDSServiceConnectionContentClose *)self error];
+  cat_dictionaryValue = [error cat_dictionaryValue];
+  [v3 setObject:cat_dictionaryValue forKeyedSubscript:@"Error"];
 
   v6 = [v3 copy];
 
   return v6;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"Error"];
+  v4 = [dictionary objectForKeyedSubscript:@"Error"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -49,9 +49,9 @@
 
   v6 = v5;
 
-  v7 = [v6 cat_errorValue];
+  cat_errorValue = [v6 cat_errorValue];
 
-  v8 = [[a1 alloc] initWithError:v7];
+  v8 = [[self alloc] initWithError:cat_errorValue];
 
   return v8;
 }

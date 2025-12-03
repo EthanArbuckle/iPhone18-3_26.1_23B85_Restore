@@ -7,21 +7,21 @@
 - (void)execute
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPModelLibrarySDKAddToPlaylistChangeRequestOperation *)self request];
-  v4 = [v3 productID];
-  v5 = [v3 isCloudID];
-  v6 = [v3 playlist];
-  v7 = [(MPAsyncOperation *)self userIdentity];
-  v8 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v7];
+  request = [(MPModelLibrarySDKAddToPlaylistChangeRequestOperation *)self request];
+  productID = [request productID];
+  isCloudID = [request isCloudID];
+  playlist = [request playlist];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v8 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
   if (+[MPMediaLibrary authorizationStatus]== MPMediaLibraryAuthorizationStatusAuthorized)
   {
-    if (([v6 userEditableComponents] & 1) == 0)
+    if (([playlist userEditableComponents] & 1) == 0)
     {
       if (self->_responseHandler)
       {
-        v9 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-        v10 = [v9 localizedStringForKey:@"NOT_SUPPORTED" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+        mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+        v10 = [mediaPlayerBundle localizedStringForKey:@"NOT_SUPPORTED" value:&stru_1F149ECA8 table:@"MediaPlayer"];
 
         if (v10)
         {
@@ -47,24 +47,24 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v13 = [v8 libraryDataProvider];
-    if (v5)
+    libraryDataProvider = [v8 libraryDataProvider];
+    if (isCloudID)
     {
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v6 identifiers];
-        v15 = [v14 library];
-        v16 = [v15 persistentID];
+        identifiers = [playlist identifiers];
+        library = [identifiers library];
+        persistentID = [library persistentID];
 
-        v17 = [v4 longLongValue];
-        if (v17)
+        longLongValue = [productID longLongValue];
+        if (longLongValue)
         {
           v32[0] = MEMORY[0x1E69E9820];
           v32[1] = 3221225472;
           v32[2] = __63__MPModelLibrarySDKAddToPlaylistChangeRequestOperation_execute__block_invoke_2;
           v32[3] = &unk_1E767D2A0;
           v32[4] = self;
-          [v13 sdk_addItemWithSagaIdentifier:v17 toPlaylistWithIdentifier:v16 completionBlock:v32];
+          [libraryDataProvider sdk_addItemWithSagaIdentifier:longLongValue toPlaylistWithIdentifier:persistentID completionBlock:v32];
 LABEL_31:
 
           goto LABEL_32;
@@ -72,8 +72,8 @@ LABEL_31:
 
         if (self->_responseHandler)
         {
-          v30 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-          v22 = [v30 localizedStringForKey:@"NOT_SUPPORTED" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+          mediaPlayerBundle2 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+          v22 = [mediaPlayerBundle2 localizedStringForKey:@"NOT_SUPPORTED" value:&stru_1F149ECA8 table:@"MediaPlayer"];
 
           if (v22)
           {
@@ -94,23 +94,23 @@ LABEL_31:
 
     else if (objc_opt_respondsToSelector())
     {
-      v18 = [v6 identifiers];
-      v19 = [v18 library];
-      v20 = [v19 persistentID];
+      identifiers2 = [playlist identifiers];
+      library2 = [identifiers2 library];
+      persistentID2 = [library2 persistentID];
 
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __63__MPModelLibrarySDKAddToPlaylistChangeRequestOperation_execute__block_invoke;
       v33[3] = &unk_1E767D2A0;
       v33[4] = self;
-      [v13 sdk_addItemWithOpaqueIdentifier:v4 toPlaylistWithIdentifier:v20 completionBlock:v33];
+      [libraryDataProvider sdk_addItemWithOpaqueIdentifier:productID toPlaylistWithIdentifier:persistentID2 completionBlock:v33];
       goto LABEL_31;
     }
 
     if (self->_responseHandler)
     {
-      v21 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-      v22 = [v21 localizedStringForKey:@"NOT_SUPPORTED" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+      mediaPlayerBundle3 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+      v22 = [mediaPlayerBundle3 localizedStringForKey:@"NOT_SUPPORTED" value:&stru_1F149ECA8 table:@"MediaPlayer"];
 
       if (v22)
       {
@@ -140,8 +140,8 @@ LABEL_30:
 
   if (self->_responseHandler)
   {
-    v12 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-    v10 = [v12 localizedStringForKey:@"PERMISSION_DENIED" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+    mediaPlayerBundle4 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+    v10 = [mediaPlayerBundle4 localizedStringForKey:@"PERMISSION_DENIED" value:&stru_1F149ECA8 table:@"MediaPlayer"];
 
     if ([v10 length])
     {

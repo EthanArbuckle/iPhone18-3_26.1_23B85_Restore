@@ -1,19 +1,19 @@
 @interface TSgPTPClock
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromMachAbsoluteTo128BitgPTPTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromTimeSyncTimeTo128BitgPTPTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromMachAbsoluteTo128BitgPTPTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromTimeSyncTimeTo128BitgPTPTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
 - (NSArray)ports;
-- (TSgPTPClock)initWithImplDC:(id)a3;
+- (TSgPTPClock)initWithImplDC:(id)c;
 - (id)getMetrics;
-- (id)getMetricsWithDelta:(id)a3;
+- (id)getMetricsWithDelta:(id)delta;
 - (void)dealloc;
 @end
 
 @implementation TSgPTPClock
 
-- (TSgPTPClock)initWithImplDC:(id)a3
+- (TSgPTPClock)initWithImplDC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -25,10 +25,10 @@
 
   v9.receiver = self;
   v9.super_class = TSgPTPClock;
-  v5 = [(TSKernelClock *)&v9 initWithImplDC:v4];
+  v5 = [(TSKernelClock *)&v9 initWithImplDC:cCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = cCopy;
     impl = v5->_impl;
     v5->_impl = v6;
 LABEL_4:
@@ -37,17 +37,17 @@ LABEL_4:
   return v5;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromMachAbsoluteTo128BitgPTPTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromMachAbsoluteTo128BitgPTPTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
-  v5 = [(TSDCgPTPClock *)self->_impl convertFromMachAbsoluteTo128BitgPTPTime:a3 grandmasterUsed:a4 portNumber:a5];
+  v5 = [(TSDCgPTPClock *)self->_impl convertFromMachAbsoluteTo128BitgPTPTime:time grandmasterUsed:used portNumber:number];
   result.var1 = v6;
   result.var0 = v5;
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromTimeSyncTimeTo128BitgPTPTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromTimeSyncTimeTo128BitgPTPTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
-  v5 = [(TSDCgPTPClock *)self->_impl convertFromTimeSyncTimeTo128BitgPTPTime:a3 grandmasterUsed:a4 portNumber:a5];
+  v5 = [(TSDCgPTPClock *)self->_impl convertFromTimeSyncTimeTo128BitgPTPTime:time grandmasterUsed:used portNumber:number];
   result.var1 = v6;
   result.var0 = v5;
   return result;
@@ -55,10 +55,10 @@ LABEL_4:
 
 - (id)getMetrics
 {
-  v2 = [(TSDCgPTPClock *)self->_impl getMetrics];
-  if (v2)
+  getMetrics = [(TSDCgPTPClock *)self->_impl getMetrics];
+  if (getMetrics)
   {
-    v3 = [[TSClockMetrics alloc] initWithDaemonMetrics:v2];
+    v3 = [[TSClockMetrics alloc] initWithDaemonMetrics:getMetrics];
   }
 
   else
@@ -69,11 +69,11 @@ LABEL_4:
   return v3;
 }
 
-- (id)getMetricsWithDelta:(id)a3
+- (id)getMetricsWithDelta:(id)delta
 {
   impl = self->_impl;
-  v4 = [a3 toDaemonMetrics];
-  v5 = [(TSDCgPTPClock *)impl getMetricsWithDelta:v4];
+  toDaemonMetrics = [delta toDaemonMetrics];
+  v5 = [(TSDCgPTPClock *)impl getMetricsWithDelta:toDaemonMetrics];
 
   if (v5)
   {
@@ -91,13 +91,13 @@ LABEL_4:
 - (NSArray)ports
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TSDCgPTPClock *)self->_impl ports];
+  array = [MEMORY[0x277CBEB18] array];
+  ports = [(TSDCgPTPClock *)self->_impl ports];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [ports countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -108,17 +108,17 @@ LABEL_4:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(ports);
         }
 
         v9 = [TSgPTPPort gPTPPortWithImplDC:*(*(&v12 + 1) + 8 * i)];
         if (v9)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [ports countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -126,7 +126,7 @@ LABEL_4:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (void)dealloc
@@ -136,16 +136,16 @@ LABEL_4:
   [(TSKernelClock *)&v2 dealloc];
 }
 
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v49.receiver = a1;
+  infoCopy = info;
+  indentCopy = indent;
+  v49.receiver = self;
   v49.super_class = &OBJC_METACLASS___TSgPTPClock;
-  v8 = objc_msgSendSuper2(&v49, sel_diagnosticDescriptionForInfo_withIndent_, v6, v7);
-  [v8 appendFormat:@"%@    Grandmaster Clock Identity: ", v7];
-  v9 = [v6 objectForKeyedSubscript:@"GrandmasterID"];
+  v8 = objc_msgSendSuper2(&v49, sel_diagnosticDescriptionForInfo_withIndent_, infoCopy, indentCopy);
+  [v8 appendFormat:@"%@    Grandmaster Clock Identity: ", indentCopy];
+  v9 = [infoCopy objectForKeyedSubscript:@"GrandmasterID"];
   v38 = v9;
   if (v9)
   {
@@ -157,8 +157,8 @@ LABEL_4:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    gPTP Path: ", v7];
-  v10 = [v6 objectForKeyedSubscript:@"ASPath"];
+  [v8 appendFormat:@"%@    gPTP Path: ", indentCopy];
+  v10 = [infoCopy objectForKeyedSubscript:@"ASPath"];
   v37 = v10;
   if (v10)
   {
@@ -183,7 +183,7 @@ LABEL_4:
             objc_enumerationMutation(v12);
           }
 
-          [v8 appendFormat:@"%@        0x%016llx\n", v7, objc_msgSend(*(*(&v45 + 1) + 8 * i), "unsignedLongLongValue"), v37, v38];
+          [v8 appendFormat:@"%@        0x%016llx\n", indentCopy, objc_msgSend(*(*(&v45 + 1) + 8 * i), "unsignedLongLongValue"), v37, v38];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -198,15 +198,15 @@ LABEL_4:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Ports:\n", v7];
-  v39 = v7;
-  v17 = [v7 stringByAppendingString:@"        |"];
+  [v8 appendFormat:@"%@    Ports:\n", indentCopy];
+  v39 = indentCopy;
+  v17 = [indentCopy stringByAppendingString:@"        |"];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v40 = v6;
-  v18 = [v6 objectForKeyedSubscript:@"Ports"];
+  v40 = infoCopy;
+  v18 = [infoCopy objectForKeyedSubscript:@"Ports"];
   v19 = [v18 countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v19)
   {

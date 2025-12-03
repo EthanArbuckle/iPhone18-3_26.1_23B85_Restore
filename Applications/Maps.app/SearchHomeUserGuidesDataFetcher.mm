@@ -2,10 +2,10 @@
 - (NSArray)dataProviders;
 - (SearchHomeDataFetcherDelegate)delegate;
 - (_TtC4Maps31SearchHomeUserGuidesDataFetcher)init;
-- (_TtC4Maps31SearchHomeUserGuidesDataFetcher)initWithDelegate:(id)a3 isSearchAlongRoute:(BOOL)a4;
+- (_TtC4Maps31SearchHomeUserGuidesDataFetcher)initWithDelegate:(id)delegate isSearchAlongRoute:(BOOL)route;
 - (void)fetchContent;
-- (void)setDataProviders:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)setDataProviders:(id)providers;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SearchHomeUserGuidesDataFetcher
@@ -17,9 +17,9 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  *(self + OBJC_IVAR____TtC4Maps31SearchHomeUserGuidesDataFetcher_delegate) = a3;
+  *(self + OBJC_IVAR____TtC4Maps31SearchHomeUserGuidesDataFetcher_delegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -42,9 +42,9 @@
   return v2.super.isa;
 }
 
-- (void)setDataProviders:(id)a3
+- (void)setDataProviders:(id)providers
 {
-  if (a3)
+  if (providers)
   {
     sub_1000CE6B8(&unk_10190C500);
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -58,17 +58,17 @@
   *(self + OBJC_IVAR____TtC4Maps31SearchHomeUserGuidesDataFetcher_dataProviders) = v4;
 }
 
-- (_TtC4Maps31SearchHomeUserGuidesDataFetcher)initWithDelegate:(id)a3 isSearchAlongRoute:(BOOL)a4
+- (_TtC4Maps31SearchHomeUserGuidesDataFetcher)initWithDelegate:(id)delegate isSearchAlongRoute:(BOOL)route
 {
   swift_unknownObjectRetain();
-  v5 = sub_10013E080(a3);
+  v5 = sub_10013E080(delegate);
   swift_unknownObjectRelease();
   return v5;
 }
 
 - (void)fetchContent
 {
-  v2 = self;
+  selfCopy = self;
   sub_10013D434();
 }
 

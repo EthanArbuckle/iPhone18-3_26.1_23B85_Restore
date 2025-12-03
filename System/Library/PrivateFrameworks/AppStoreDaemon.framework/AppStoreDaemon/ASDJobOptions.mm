@@ -1,33 +1,33 @@
 @interface ASDJobOptions
-- (ASDJobOptions)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDJobOptions)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDJobOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASDJobOptions *)self manifest];
-  [v4 encodeObject:v5 forKey:@"purchaseManifest"];
+  coderCopy = coder;
+  manifest = [(ASDJobOptions *)self manifest];
+  [coderCopy encodeObject:manifest forKey:@"purchaseManifest"];
 
-  v6 = [(ASDJobOptions *)self endpoint];
-  [v4 encodeObject:v6 forKey:@"endpoint"];
+  endpoint = [(ASDJobOptions *)self endpoint];
+  [coderCopy encodeObject:endpoint forKey:@"endpoint"];
 }
 
-- (ASDJobOptions)initWithCoder:(id)a3
+- (ASDJobOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ASDJobOptions;
   v5 = [(ASDJobOptions *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchaseManifest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchaseManifest"];
     manifest = v5->_manifest;
     v5->_manifest = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
     if (v8)
     {
       v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v8];

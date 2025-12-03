@@ -7,21 +7,21 @@
 
 - (void)VisionCore_prependPaddingCharacter:()VisionCore toMinimumLength:
 {
-  v7 = [a1 length];
+  v7 = [self length];
   if (a4 > v7)
   {
     v8 = _repeatedCharacterString(a3, a4 - v7);
-    [a1 insertString:v8 atIndex:0];
+    [self insertString:v8 atIndex:0];
   }
 }
 
 - (void)VisionCore_appendPaddingCharacter:()VisionCore toMinimumLength:
 {
-  v7 = [a1 length];
+  v7 = [self length];
   if (a4 > v7)
   {
     v8 = _repeatedCharacterString(a3, a4 - v7);
-    [a1 appendString:v8];
+    [self appendString:v8];
   }
 }
 

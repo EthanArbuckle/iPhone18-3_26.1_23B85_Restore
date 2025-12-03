@@ -7,13 +7,13 @@
 - (BOOL)canDuplicateRecording;
 - (BOOL)canEditRecording;
 - (BOOL)canHandleCancel;
-- (BOOL)canHandleCustomAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canHandleCustomAction:(SEL)action withSender:(id)sender;
 - (BOOL)canHandleDone;
 - (BOOL)canJumpBackward;
 - (BOOL)canJumpForward;
-- (BOOL)canMoveRecordingsWithUUIDs:(id)a3 toFolderWithUUID:(id)a4 toFolderType:(int64_t)a5 fromFolderUUID:(id)a6;
-- (BOOL)canMoveSelectedRecordingsFromFolderWithUUID:(id)a3 toFolderWithDisplayModel:(id)a4 excludedFolderUUIDsForSelection:(id)a5;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canMoveRecordingsWithUUIDs:(id)ds toFolderWithUUID:(id)d toFolderType:(int64_t)type fromFolderUUID:(id)iD;
+- (BOOL)canMoveSelectedRecordingsFromFolderWithUUID:(id)d toFolderWithDisplayModel:(id)model excludedFolderUUIDsForSelection:(id)selection;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canPlayRecording;
 - (BOOL)canRenameRecording;
 - (BOOL)canShareRecording;
@@ -30,9 +30,9 @@
 - (BOOL)currentSelectionHasSpeechIsolatorEnabled;
 - (BOOL)currentSelectionIsEnhanced;
 - (BOOL)currentSelectionIsFavorite;
-- (BOOL)isEditingInFlightForUUID:(id)a3;
-- (BOOL)isFavoriteForUUID:(id)a3;
-- (BOOL)isPlayingForUUID:(id)a3;
+- (BOOL)isEditingInFlightForUUID:(id)d;
+- (BOOL)isFavoriteForUUID:(id)d;
+- (BOOL)isPlayingForUUID:(id)d;
 - (BOOL)isQuickRecordingWorkflowDismissal;
 - (BOOL)isRecording;
 - (BOOL)isShowingRecentlyDeleted;
@@ -41,8 +41,8 @@
 - (BOOL)toggleRecording;
 - (NSString)selectedUUID;
 - (RCFolderSelectionContainerViewController)presentedSelectFolderViewController;
-- (RCMainViewController)initWithCoder:(id)a3;
-- (RCMainViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (RCMainViewController)initWithCoder:(id)coder;
+- (RCMainViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (RCMainViewControllerDelegate)mainViewControllerDelegate;
 - (RCPlaybackSettings)playbackSettings;
 - (RCPlaybackSettingsViewController)presentedPlaybackSettingsViewController;
@@ -54,79 +54,79 @@
 - (VMAudioPlayer)audioPlayer;
 - (VMAudioRecorder)audioRecorder;
 - (double)currentTime;
-- (id)_stringForAudioEditingStatus:(int)a3;
+- (id)_stringForAudioEditingStatus:(int)status;
 - (id)_uuidOfRecordingForPlaybackActivities;
 - (id)activeFolderViewController;
 - (id)availableQuickActions;
 - (id)contentScrollView;
-- (id)folderUUIDsToExcludeWhenMovingRecordingUUIDs:(id)a3;
-- (id)moveToFolderContainerViewControllerWithUUIDs:(id)a3;
+- (id)folderUUIDsToExcludeWhenMovingRecordingUUIDs:(id)ds;
+- (id)moveToFolderContainerViewControllerWithUUIDs:(id)ds;
 - (id)overviewWaveformViewController;
-- (id)platterViewControllerForPresentationStyle:(unint64_t)a3;
+- (id)platterViewControllerForPresentationStyle:(unint64_t)style;
 - (id)recordingCardNavigationController;
 - (id)recordingCardNavigationItem;
 - (id)recordingInProgressUUID;
 - (id)selectedComposition;
 - (id)waveformViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_axAnnounceDidSetEnhanced:(BOOL)a3;
+- (void)_axAnnounceDidSetEnhanced:(BOOL)enhanced;
 - (void)_commonInit;
-- (void)_dismissCardView:(id)a3;
-- (void)_dismissShareMemoVCIfNeededForDeletedUUIDs:(id)a3;
+- (void)_dismissCardView:(id)view;
+- (void)_dismissShareMemoVCIfNeededForDeletedUUIDs:(id)ds;
 - (void)_displayMultiLayerAlertIfNeeded;
 - (void)_endDescriptionViewTextEditing;
 - (void)_hideNavigationItemTitle;
-- (void)_myPresentViewController:(id)a3 sourceController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_newFolderTextDidChange:(id)a3;
-- (void)_openForModifyRecordingWithUUID:(id)a3 enterTrim:(BOOL)a4;
-- (void)_prepareToDisplayCardViewWithCompletionBlock:(id)a3;
-- (void)_presentCardViewWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)_presentMoveToFolderUIForRecordingWithUUID:(id)a3;
-- (void)_presentMoveToFolderUIForRecordingsWithUUIDs:(id)a3;
-- (void)_presentNameTakenAlertWithName:(id)a3 sourceController:(id)a4;
-- (void)_presentPlaybackSettingsUIWithSource:(id)a3 UUID:(id)a4;
-- (void)_presentViewController:(id)a3 fromViewController:(id)a4 animated:(BOOL)a5 widthHeightConstraintConstant:(double)a6 completion:(id)a7;
-- (void)_processMoveOfUUID:(id)a3 toBuiltInFolderOfType:(int64_t)a4;
-- (void)_removeFromUserFolderRecordingsWithUUIDs:(id)a3;
-- (void)_renamingTextDidChange:(id)a3;
+- (void)_myPresentViewController:(id)controller sourceController:(id)sourceController animated:(BOOL)animated completion:(id)completion;
+- (void)_newFolderTextDidChange:(id)change;
+- (void)_openForModifyRecordingWithUUID:(id)d enterTrim:(BOOL)trim;
+- (void)_prepareToDisplayCardViewWithCompletionBlock:(id)block;
+- (void)_presentCardViewWithOptions:(unint64_t)options completion:(id)completion;
+- (void)_presentMoveToFolderUIForRecordingWithUUID:(id)d;
+- (void)_presentMoveToFolderUIForRecordingsWithUUIDs:(id)ds;
+- (void)_presentNameTakenAlertWithName:(id)name sourceController:(id)controller;
+- (void)_presentPlaybackSettingsUIWithSource:(id)source UUID:(id)d;
+- (void)_presentViewController:(id)controller fromViewController:(id)viewController animated:(BOOL)animated widthHeightConstraintConstant:(double)constant completion:(id)completion;
+- (void)_processMoveOfUUID:(id)d toBuiltInFolderOfType:(int64_t)type;
+- (void)_removeFromUserFolderRecordingsWithUUIDs:(id)ds;
+- (void)_renamingTextDidChange:(id)change;
 - (void)_restyleCardViewAndReparentIfNeeded;
-- (void)_selectRecordingWithUUID:(id)a3 inRecordingsCollectionViewController:(id)a4;
-- (void)_setCorrectOriginalFolderForRecordingWithUUID:(id)a3 folderType:(int64_t)a4 userFolderName:(id)a5;
+- (void)_selectRecordingWithUUID:(id)d inRecordingsCollectionViewController:(id)controller;
+- (void)_setCorrectOriginalFolderForRecordingWithUUID:(id)d folderType:(int64_t)type userFolderName:(id)name;
 - (void)_showNavigationItemTitle;
-- (void)_startCapturing:(id)a3 completion:(id)a4;
+- (void)_startCapturing:(id)capturing completion:(id)completion;
 - (void)_styleView;
-- (void)_switchToCapturingFromPreviousActivityType:(int64_t)a3 displayModel:(id)a4 waveformDataSource:(id)a5 isReplaceOrAppend:(BOOL)a6;
-- (void)_switchToEditingFromPreviousActivityType:(int64_t)a3 displayModel:(id)a4 withComposition:(id)a5 enterTrim:(BOOL)a6;
-- (void)_switchToIdleFromPreviousActivityType:(int64_t)a3 fromSubActivityType:(int64_t)a4 toSubActivityType:(int64_t)a5 displayModel:(id)a6 withUUID:(id)a7;
-- (void)_switchToPlayingBackFromPreviousActivityType:(int64_t)a3 withUUID:(id)a4;
-- (void)_transitionToBrowsing:(id)a3;
-- (void)_transitionToCaptureAndModifyWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)_updateControllersToEditingInFlight:(BOOL)a3 progress:(float)a4 forUUID:(id)a5;
-- (void)backupTimerFiredForUUID:(id)a3;
+- (void)_switchToCapturingFromPreviousActivityType:(int64_t)type displayModel:(id)model waveformDataSource:(id)source isReplaceOrAppend:(BOOL)append;
+- (void)_switchToEditingFromPreviousActivityType:(int64_t)type displayModel:(id)model withComposition:(id)composition enterTrim:(BOOL)trim;
+- (void)_switchToIdleFromPreviousActivityType:(int64_t)type fromSubActivityType:(int64_t)activityType toSubActivityType:(int64_t)subActivityType displayModel:(id)model withUUID:(id)d;
+- (void)_switchToPlayingBackFromPreviousActivityType:(int64_t)type withUUID:(id)d;
+- (void)_transitionToBrowsing:(id)browsing;
+- (void)_transitionToCaptureAndModifyWithOptions:(unint64_t)options completion:(id)completion;
+- (void)_updateControllersToEditingInFlight:(BOOL)flight progress:(float)progress forUUID:(id)d;
+- (void)backupTimerFiredForUUID:(id)d;
 - (void)cancelTrimMode;
-- (void)captureFailedWithError:(id)a3;
+- (void)captureFailedWithError:(id)error;
 - (void)closeSidebar;
-- (void)confirmEraseAllWithSourceController:(id)a3 source:(id)a4 eraseAllDeleted:(BOOL)a5;
-- (void)confirmEraseSelectedWithSourceController:(id)a3 source:(id)a4 eraseAllDeleted:(BOOL)a5;
-- (void)confirmEraseWithUUIDs:(id)a3 sourceController:(id)a4 source:(id)a5 eraseAllDeleted:(BOOL)a6;
-- (void)confirmRecoverAllWithSourceController:(id)a3 source:(id)a4;
-- (void)confirmRecoverSelectedWithSourceController:(id)a3 source:(id)a4;
-- (void)confirmRecoverWithUUIDs:(id)a3 sourceController:(id)a4 source:(id)a5 force:(BOOL)a6;
-- (void)copyTranscript:(id)a3;
-- (void)delete:(id)a3;
-- (void)deleteFolder:(id)a3 controller:(id)a4 completionBlock:(id)a5;
-- (void)deleteRecordingsWithUUIDs:(id)a3 sourceController:(id)a4 source:(id)a5 showInfo:(BOOL)a6;
+- (void)confirmEraseAllWithSourceController:(id)controller source:(id)source eraseAllDeleted:(BOOL)deleted;
+- (void)confirmEraseSelectedWithSourceController:(id)controller source:(id)source eraseAllDeleted:(BOOL)deleted;
+- (void)confirmEraseWithUUIDs:(id)ds sourceController:(id)controller source:(id)source eraseAllDeleted:(BOOL)deleted;
+- (void)confirmRecoverAllWithSourceController:(id)controller source:(id)source;
+- (void)confirmRecoverSelectedWithSourceController:(id)controller source:(id)source;
+- (void)confirmRecoverWithUUIDs:(id)ds sourceController:(id)controller source:(id)source force:(BOOL)force;
+- (void)copyTranscript:(id)transcript;
+- (void)delete:(id)delete;
+- (void)deleteFolder:(id)folder controller:(id)controller completionBlock:(id)block;
+- (void)deleteRecordingsWithUUIDs:(id)ds sourceController:(id)controller source:(id)source showInfo:(BOOL)info;
 - (void)didEndDragSession;
 - (void)didExitTrimMode;
 - (void)didHidePlaybackSettingsViewController;
 - (void)didReturnToFoldersList;
-- (void)didSelectFolderOfType:(int64_t)a3;
-- (void)didSelectForUUID:(id)a3 resetPosition:(BOOL)a4 force:(BOOL)a5;
-- (void)didTransitionWithTransitionInfo:(id)a3;
+- (void)didSelectFolderOfType:(int64_t)type;
+- (void)didSelectForUUID:(id)d resetPosition:(BOOL)position force:(BOOL)force;
+- (void)didTransitionWithTransitionInfo:(id)info;
 - (void)didUpdateCurrentRecordingDisplayModel;
 - (void)didUpdateNavigationBarVisibility;
 - (void)didUpdateRecordingViewDisplayStyle;
-- (void)didUpdateToStatus:(int)a3 progress:(float)a4 forRecordingWithUUID:(id)a5;
+- (void)didUpdateToStatus:(int)status progress:(float)progress forRecordingWithUUID:(id)d;
 - (void)duplicateRecording;
 - (void)editRecording;
 - (void)enableUndoFirstResponder;
@@ -134,11 +134,11 @@
 - (void)endRecording;
 - (void)eraseRecording;
 - (void)exitTrimMode;
-- (void)finishInitialSetup:(id)a3 goToAllRecordings:(BOOL)a4;
-- (void)finishedEditingWithNewRecordingUUID:(id)a3;
-- (void)goToAllRecordingsIfNeeded:(BOOL)a3 completion:(id)a4;
-- (void)goToFolderOfType:(int64_t)a3 withName:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)goToRecentlyDeletedIfNeededWithCompletion:(id)a3;
+- (void)finishInitialSetup:(id)setup goToAllRecordings:(BOOL)recordings;
+- (void)finishedEditingWithNewRecordingUUID:(id)d;
+- (void)goToAllRecordingsIfNeeded:(BOOL)needed completion:(id)completion;
+- (void)goToFolderOfType:(int64_t)type withName:(id)name animated:(BOOL)animated completion:(id)completion;
+- (void)goToRecentlyDeletedIfNeededWithCompletion:(id)completion;
 - (void)handleCancel;
 - (void)handleDone;
 - (void)handleEndOfWelcome;
@@ -146,65 +146,65 @@
 - (void)hidePlaybackSettingsViewController;
 - (void)jumpSelectionBackward;
 - (void)jumpSelectionForward;
-- (void)libraryWillChangeEditingState:(BOOL)a3;
+- (void)libraryWillChangeEditingState:(BOOL)state;
 - (void)loadView;
-- (void)moveFolder:(id)a3 toDestinationIndexPath:(id)a4;
-- (void)moveRecordingsWithUUIDs:(id)a3 fromFolderOfType:(int64_t)a4 toBuiltInFolderOfType:(int64_t)a5;
-- (void)moveRecordingsWithUUIDs:(id)a3 toBuiltInFolderOfType:(int64_t)a4 source:(id)a5;
-- (void)moveRecordingsWithUUIDs:(id)a3 toFolderWithUUID:(id)a4;
-- (void)moveRecordingsWithUUIDs:(id)a3 toUserFolderNamed:(id)a4 source:(id)a5;
+- (void)moveFolder:(id)folder toDestinationIndexPath:(id)path;
+- (void)moveRecordingsWithUUIDs:(id)ds fromFolderOfType:(int64_t)type toBuiltInFolderOfType:(int64_t)ofType;
+- (void)moveRecordingsWithUUIDs:(id)ds toBuiltInFolderOfType:(int64_t)type source:(id)source;
+- (void)moveRecordingsWithUUIDs:(id)ds toFolderWithUUID:(id)d;
+- (void)moveRecordingsWithUUIDs:(id)ds toUserFolderNamed:(id)named source:(id)source;
 - (void)openSidebar;
 - (void)pauseRecording;
-- (void)performAction:(int64_t)a3 atPosition:(double)a4 forUUID:(id)a5 sourceController:(id)a6 source:(id)a7 trackIndex:(unint64_t)a8;
+- (void)performAction:(int64_t)action atPosition:(double)position forUUID:(id)d sourceController:(id)controller source:(id)source trackIndex:(unint64_t)index;
 - (void)performClearAllRecentlyDeleted;
 - (void)performDelayedSetup;
-- (void)performRenameWithNewTitle:(id)a3 forUUID:(id)a4;
+- (void)performRenameWithNewTitle:(id)title forUUID:(id)d;
 - (void)playRecording;
-- (void)playRecordingWithUUID:(id)a3;
-- (void)playbackSettingsViewController:(id)a3 contentSizeChanged:(CGSize)a4;
+- (void)playRecordingWithUUID:(id)d;
+- (void)playbackSettingsViewController:(id)controller contentSizeChanged:(CGSize)changed;
 - (void)recordingDidEnd;
-- (void)recordingDurationUpdated:(double)a3;
+- (void)recordingDurationUpdated:(double)updated;
 - (void)recoverRecording;
-- (void)recoverRecordingsWithUUIDs:(id)a3 sourceController:(id)a4 source:(id)a5 force:(BOOL)a6;
-- (void)refreshDisplayWithDisplayModel:(id)a3;
-- (void)reloadWaveformsFromComposition:(id)a3;
-- (void)renameDescriptionViewTitleTextField:(id)a3 withUUID:(id)a4;
-- (void)renameFolder:(id)a3 toName:(id)a4;
+- (void)recoverRecordingsWithUUIDs:(id)ds sourceController:(id)controller source:(id)source force:(BOOL)force;
+- (void)refreshDisplayWithDisplayModel:(id)model;
+- (void)reloadWaveformsFromComposition:(id)composition;
+- (void)renameDescriptionViewTitleTextField:(id)field withUUID:(id)d;
+- (void)renameFolder:(id)folder toName:(id)name;
 - (void)renameRecording;
-- (void)replaceRecording:(unint64_t)a3;
+- (void)replaceRecording:(unint64_t)recording;
 - (void)restyle;
-- (void)resumeRecording:(unint64_t)a3;
-- (void)saveAsNewDoneButtonAction:(BOOL)a3;
+- (void)resumeRecording:(unint64_t)recording;
+- (void)saveAsNewDoneButtonAction:(BOOL)action;
 - (void)selectNewRecordingForDismiss;
-- (void)selectRecordingWithUUID:(id)a3 returnToBrowse:(BOOL)a4;
-- (void)separateRecordingLayers:(id)a3;
-- (void)setCurrentTime:(double)a3 withUUID:(id)a4;
-- (void)setEnhanced:(BOOL)a3 forUUID:(id)a4;
-- (void)setFavorite:(BOOL)a3 forRecordingWithUUID:(id)a4;
-- (void)setFavorite:(BOOL)a3 forRecordingsWithUUIDs:(id)a4;
-- (void)setForegroundCompletionBlock:(id)a3;
-- (void)setIsInForeground:(BOOL)a3;
-- (void)setLayerMix:(double)a3 forUUID:(id)a4;
-- (void)setPlaybackSpeed:(double)a3 forUUID:(id)a4;
-- (void)setRemoveSilence:(BOOL)a3 forUUID:(id)a4;
-- (void)setSpeechIsolatorEnabled:(BOOL)a3 forUUID:(id)a4;
-- (void)setSpeechIsolatorValue:(float)a3 forUUID:(id)a4;
-- (void)setState:(int64_t)a3 withOptions:(unint64_t)a4 completion:(id)a5;
-- (void)shareRecording:(id)a3;
-- (void)shouldEnableTrimSave:(BOOL)a3;
-- (void)showNewFolderUIFromController:(id)a3;
-- (void)showRenamingControllerWithFolderName:(id)a3 controller:(id)a4;
+- (void)selectRecordingWithUUID:(id)d returnToBrowse:(BOOL)browse;
+- (void)separateRecordingLayers:(id)layers;
+- (void)setCurrentTime:(double)time withUUID:(id)d;
+- (void)setEnhanced:(BOOL)enhanced forUUID:(id)d;
+- (void)setFavorite:(BOOL)favorite forRecordingWithUUID:(id)d;
+- (void)setFavorite:(BOOL)favorite forRecordingsWithUUIDs:(id)ds;
+- (void)setForegroundCompletionBlock:(id)block;
+- (void)setIsInForeground:(BOOL)foreground;
+- (void)setLayerMix:(double)mix forUUID:(id)d;
+- (void)setPlaybackSpeed:(double)speed forUUID:(id)d;
+- (void)setRemoveSilence:(BOOL)silence forUUID:(id)d;
+- (void)setSpeechIsolatorEnabled:(BOOL)enabled forUUID:(id)d;
+- (void)setSpeechIsolatorValue:(float)value forUUID:(id)d;
+- (void)setState:(int64_t)state withOptions:(unint64_t)options completion:(id)completion;
+- (void)shareRecording:(id)recording;
+- (void)shouldEnableTrimSave:(BOOL)save;
+- (void)showNewFolderUIFromController:(id)controller;
+- (void)showRenamingControllerWithFolderName:(id)name controller:(id)controller;
 - (void)startNewRecordingAction;
 - (void)stopPlayback;
 - (void)toggleEnhanceRecording;
-- (void)toggleEnhanceRecordingForUUID:(id)a3;
-- (void)toggleFavoriteForUUID:(id)a3;
+- (void)toggleEnhanceRecordingForUUID:(id)d;
+- (void)toggleFavoriteForUUID:(id)d;
 - (void)toggleFavoriteRecording;
 - (void)toggleRemoveSilence;
-- (void)toggleRemoveSilenceForUUID:(id)a3;
+- (void)toggleRemoveSilenceForUUID:(id)d;
 - (void)toggleSpeechIsolator;
-- (void)toggleSpeechIsolatorEnabledForUUID:(id)a3;
-- (void)toggleSpeechIsolatorForUUID:(id)a3;
+- (void)toggleSpeechIsolatorEnabledForUUID:(id)d;
+- (void)toggleSpeechIsolatorForUUID:(id)d;
 - (void)toggleTranscriptView;
 - (void)trimRecording;
 - (void)undo;
@@ -215,18 +215,18 @@
 - (void)updatePlaybackSettings;
 - (void)updateQuickActions;
 - (void)updateUndoButtonStateFromUndoManager;
-- (void)userDidDeleteRecordingsWithUUIDs:(id)a3;
-- (void)userDidEraseRecordingsWithUUIDs:(id)a3;
-- (void)userDidRecoverRecordingsWithUUIDs:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)wasDeselectedForUUID:(id)a3;
-- (void)waveformTimeUpdated:(double)a3;
+- (void)userDidDeleteRecordingsWithUUIDs:(id)ds;
+- (void)userDidEraseRecordingsWithUUIDs:(id)ds;
+- (void)userDidRecoverRecordingsWithUUIDs:(id)ds;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)wasDeselectedForUUID:(id)d;
+- (void)waveformTimeUpdated:(double)updated;
 - (void)willBeginDragSession;
-- (void)willTransitionFromHorizontalSizeClass:(int64_t)a3 toHorizontalSizeClass:(int64_t)a4;
+- (void)willTransitionFromHorizontalSizeClass:(int64_t)class toHorizontalSizeClass:(int64_t)sizeClass;
 @end
 
 @implementation RCMainViewController
@@ -264,16 +264,16 @@
 
 - (id)contentScrollView
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 collectionViewIfLoaded];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  collectionViewIfLoaded = [browseFoldersViewController collectionViewIfLoaded];
 
-  return v3;
+  return collectionViewIfLoaded;
 }
 
 - (void)stopPlayback
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  [v2 stopPlayback];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper stopPlayback];
 }
 
 - (RCPlaybackViewController)playbackViewController
@@ -285,34 +285,34 @@
 
 - (void)updatePlaybackContentUnavailableViewIfNeeded
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
 
-  if (v3)
+  if (playbackViewController)
   {
-    v4 = [(RCMainViewController *)self browseFoldersViewController];
-    v14 = [v4 activeRecordingsCollectionViewController];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
-    v5 = [v14 recordingsDataCoordinator];
-    v6 = [v5 recordingDataArray];
-    v7 = [v6 count];
+    recordingsDataCoordinator = [activeRecordingsCollectionViewController recordingsDataCoordinator];
+    recordingDataArray = [recordingsDataCoordinator recordingDataArray];
+    v7 = [recordingDataArray count];
     v8 = v7 == 0;
 
-    v9 = [(RCMainViewController *)self playbackViewController];
-    v10 = [v9 uuidBeingDisplayed];
+    playbackViewController2 = [(RCMainViewController *)self playbackViewController];
+    uuidBeingDisplayed = [playbackViewController2 uuidBeingDisplayed];
 
-    if (!v10)
+    if (!uuidBeingDisplayed)
     {
-      if ([v14 isEditing])
+      if ([activeRecordingsCollectionViewController isEditing])
       {
         v8 = 1;
       }
 
       else
       {
-        v11 = [v14 willSelectRecordingAfterExitingEditMode];
+        willSelectRecordingAfterExitingEditMode = [activeRecordingsCollectionViewController willSelectRecordingAfterExitingEditMode];
         if (v7)
         {
-          v8 = v11;
+          v8 = willSelectRecordingAfterExitingEditMode;
         }
 
         else
@@ -322,7 +322,7 @@
       }
     }
 
-    if (v10)
+    if (uuidBeingDisplayed)
     {
       v12 = -1;
     }
@@ -332,8 +332,8 @@
       v12 = !v8;
     }
 
-    v13 = [(RCMainViewController *)self playbackViewController];
-    [v13 updateContentUnavailableViewState:v12];
+    playbackViewController3 = [(RCMainViewController *)self playbackViewController];
+    [playbackViewController3 updateContentUnavailableViewState:v12];
 
     [(RCMainViewController *)self updateMenuBarWindowTitle];
   }
@@ -341,9 +341,9 @@
 
 - (void)handleEndOfWelcome
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
-  [v4 becomeFirstResponder];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  [activeRecordingsCollectionViewController becomeFirstResponder];
 
   [(RCMainViewController *)self updateQuickActions];
 }
@@ -351,8 +351,8 @@
 - (void)updateQuickActions
 {
   v4 = +[UIApplication sharedApplication];
-  v3 = [(RCMainViewController *)self availableQuickActions];
-  [v4 setShortcutItems:v3];
+  availableQuickActions = [(RCMainViewController *)self availableQuickActions];
+  [v4 setShortcutItems:availableQuickActions];
 }
 
 - (id)availableQuickActions
@@ -371,25 +371,25 @@
   if ([(RCMainViewController *)self _shouldPresentPlaybackQuickActions])
   {
     v18 = +[RCApplicationModel sharedApplicationModel];
-    v8 = [v18 recordings];
+    recordings = [v18 recordings];
     for (i = 0; i != 3; ++i)
     {
-      if (i >= [v8 count])
+      if (i >= [recordings count])
       {
         break;
       }
 
-      v10 = [v8 objectAtIndexedSubscript:i];
-      v11 = [v10 title];
-      v12 = [v10 uuid];
-      if ([v11 length] && objc_msgSend(v12, "length"))
+      v10 = [recordings objectAtIndexedSubscript:i];
+      title = [v10 title];
+      uuid = [v10 uuid];
+      if ([title length] && objc_msgSend(uuid, "length"))
       {
         v13 = [UIApplicationShortcutIcon iconWithSystemImageName:@"play.circle"];
         v14 = [UIApplicationShortcutItem alloc];
         v19 = @"uniqueID";
-        v20 = v12;
+        v20 = uuid;
         v15 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-        v16 = [v14 initWithType:@"com.apple.VoiceMemos.PlayRecording" localizedTitle:v11 localizedSubtitle:0 icon:v13 userInfo:v15];
+        v16 = [v14 initWithType:@"com.apple.VoiceMemos.PlayRecording" localizedTitle:title localizedSubtitle:0 icon:v13 userInfo:v15];
 
         [v3 addObject:v16];
       }
@@ -401,13 +401,13 @@
 
 - (BOOL)_isRecordingOrBlockedByModal
 {
-  v3 = [(RCMainViewController *)self mainControllerHelper];
-  v4 = [v3 isRecording];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  isRecording = [mainControllerHelper isRecording];
 
-  v5 = [(RCMainViewController *)self mainViewControllerDelegate];
-  LOBYTE(v3) = [v5 modalMustShowOrIsShowing];
+  mainViewControllerDelegate = [(RCMainViewController *)self mainViewControllerDelegate];
+  LOBYTE(mainControllerHelper) = [mainViewControllerDelegate modalMustShowOrIsShowing];
 
-  return (v4 | v3) & 1;
+  return (isRecording | mainControllerHelper) & 1;
 }
 
 - (RCMainViewControllerDelegate)mainViewControllerDelegate
@@ -419,25 +419,25 @@
 
 - (BOOL)_libraryIsEditing
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 activeRecordingsCollectionViewController];
-  v4 = [v3 isEditing];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  isEditing = [activeRecordingsCollectionViewController isEditing];
 
-  return v4;
+  return isEditing;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [v2 supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (double)currentTime
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  [v2 currentTime];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper currentTime];
   v4 = v3;
 
   return v4;
@@ -445,118 +445,118 @@
 
 - (void)performDelayedSetup
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
-  [v4 performDelayedSetup];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  [activeRecordingsCollectionViewController performDelayedSetup];
 
-  v5 = [(RCMainViewController *)self navigationItem];
-  [v5 setBackButtonDisplayMode:2];
+  navigationItem = [(RCMainViewController *)self navigationItem];
+  [navigationItem setBackButtonDisplayMode:2];
 
-  v6 = [(RCMainViewController *)self mainControllerHelper];
-  [v6 startMonitoringFinalizingRecordings];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper startMonitoringFinalizingRecordings];
 }
 
 - (void)updateNavigationItemForCurrentState
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v2 currentActiveFolderViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  currentActiveFolderViewController = [browseFoldersViewController currentActiveFolderViewController];
 
-  v3 = [v5 viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [currentActiveFolderViewController viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v4)
+  if (window)
   {
-    [v5 updateNavigationItemForCurrentState];
+    [currentActiveFolderViewController updateNavigationItemForCurrentState];
   }
 }
 
 - (VMAudioRecorder)audioRecorder
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  v3 = [v2 audioRecorder];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  audioRecorder = [mainControllerHelper audioRecorder];
 
-  return v3;
+  return audioRecorder;
 }
 
 - (VMAudioPlayer)audioPlayer
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  v3 = [v2 audioPlayer];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  audioPlayer = [mainControllerHelper audioPlayer];
 
-  return v3;
+  return audioPlayer;
 }
 
 - (id)recordingInProgressUUID
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  v3 = [v2 recordingInProgressUUID];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  recordingInProgressUUID = [mainControllerHelper recordingInProgressUUID];
 
-  return v3;
+  return recordingInProgressUUID;
 }
 
 - (void)openSidebar
 {
-  v2 = [(RCMainViewController *)self splitViewController];
-  [v2 showColumn:0];
+  splitViewController = [(RCMainViewController *)self splitViewController];
+  [splitViewController showColumn:0];
 }
 
 - (void)closeSidebar
 {
-  v3 = [(RCMainViewController *)self splitViewController];
+  splitViewController = [(RCMainViewController *)self splitViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(RCMainViewController *)self splitViewController];
-    if ([v6 isCollapsedAndShowingPrimary])
+    splitViewController2 = [(RCMainViewController *)self splitViewController];
+    if ([splitViewController2 isCollapsedAndShowingPrimary])
     {
       [(RCMainViewController *)self goToAllRecordingsIfNeeded:1 completion:0];
     }
 
-    else if (([v6 isCollapsed] & 1) == 0)
+    else if (([splitViewController2 isCollapsed] & 1) == 0)
     {
-      v5 = [(RCMainViewController *)self splitViewController];
-      [v5 hideColumn:0];
+      splitViewController3 = [(RCMainViewController *)self splitViewController];
+      [splitViewController3 hideColumn:0];
     }
   }
 }
 
-- (void)goToFolderOfType:(int64_t)a3 withName:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)goToFolderOfType:(int64_t)type withName:(id)name animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v13 = a4;
-  v10 = a6;
-  v11 = [(RCMainViewController *)self browseFoldersViewController];
-  v12 = v11;
-  if (a3 == 4)
+  animatedCopy = animated;
+  nameCopy = name;
+  completionCopy = completion;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  v12 = browseFoldersViewController;
+  if (type == 4)
   {
-    [v11 goToUserFolderWithName:v13 animated:v7 completion:v10];
+    [browseFoldersViewController goToUserFolderWithName:nameCopy animated:animatedCopy completion:completionCopy];
   }
 
   else
   {
-    [v11 goToBuiltInFolderOfType:a3 animated:v7 completion:v10];
+    [browseFoldersViewController goToBuiltInFolderOfType:type animated:animatedCopy completion:completionCopy];
   }
 }
 
 - (id)activeFolderViewController
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 currentActiveFolderViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  currentActiveFolderViewController = [browseFoldersViewController currentActiveFolderViewController];
 
-  return v3;
+  return currentActiveFolderViewController;
 }
 
 - (RCPlaybackSettings)playbackSettings
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  v3 = [v2 currentRecordingDisplayModel];
-  v4 = [v3 UUID];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  currentRecordingDisplayModel = [mainControllerHelper currentRecordingDisplayModel];
+  uUID = [currentRecordingDisplayModel UUID];
 
-  if (v4)
+  if (uUID)
   {
-    v5 = [v2 playbackSettingsForUUID:v4];
+    v5 = [mainControllerHelper playbackSettingsForUUID:uUID];
   }
 
   else
@@ -567,48 +567,48 @@
   return v5;
 }
 
-- (void)setState:(int64_t)a3 withOptions:(unint64_t)a4 completion:(id)a5
+- (void)setState:(int64_t)state withOptions:(unint64_t)options completion:(id)completion
 {
-  v8 = a5;
-  if (self->_state != a3)
+  completionCopy = completion;
+  if (self->_state != state)
   {
-    self->_state = a3;
-    if (a3 == 1)
+    self->_state = state;
+    if (state == 1)
     {
-      v9 = v8;
-      [(RCMainViewController *)self _transitionToCaptureAndModifyWithOptions:a4 completion:v8];
+      v9 = completionCopy;
+      [(RCMainViewController *)self _transitionToCaptureAndModifyWithOptions:options completion:completionCopy];
     }
 
     else
     {
-      if (a3)
+      if (state)
       {
         goto LABEL_7;
       }
 
-      v9 = v8;
-      [(RCMainViewController *)self _transitionToBrowsing:v8];
+      v9 = completionCopy;
+      [(RCMainViewController *)self _transitionToBrowsing:completionCopy];
     }
 
-    v8 = v9;
+    completionCopy = v9;
   }
 
 LABEL_7:
 }
 
-- (void)setIsInForeground:(BOOL)a3
+- (void)setIsInForeground:(BOOL)foreground
 {
-  if (self->_isInForeground != a3)
+  if (self->_isInForeground != foreground)
   {
-    self->_isInForeground = a3;
-    if (a3)
+    self->_isInForeground = foreground;
+    if (foreground)
     {
-      v4 = [(RCMainViewController *)self foregroundCompletionBlock];
+      foregroundCompletionBlock = [(RCMainViewController *)self foregroundCompletionBlock];
 
-      if (v4)
+      if (foregroundCompletionBlock)
       {
-        v5 = [(RCMainViewController *)self foregroundCompletionBlock];
-        v5[2]();
+        foregroundCompletionBlock2 = [(RCMainViewController *)self foregroundCompletionBlock];
+        foregroundCompletionBlock2[2]();
 
         foregroundCompletionBlock = self->_foregroundCompletionBlock;
         self->_foregroundCompletionBlock = 0;
@@ -617,9 +617,9 @@ LABEL_7:
   }
 }
 
-- (void)setForegroundCompletionBlock:(id)a3
+- (void)setForegroundCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_foregroundCompletionBlock)
   {
     v5 = OSLogForCategory();
@@ -629,14 +629,14 @@ LABEL_7:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [blockCopy copy];
   foregroundCompletionBlock = self->_foregroundCompletionBlock;
   self->_foregroundCompletionBlock = v6;
 
-  v8 = [(RCMainViewController *)self isInForeground];
-  if (v4 && v8)
+  isInForeground = [(RCMainViewController *)self isInForeground];
+  if (blockCopy && isInForeground)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
     v9 = self->_foregroundCompletionBlock;
     self->_foregroundCompletionBlock = 0;
   }
@@ -644,25 +644,25 @@ LABEL_7:
 
 - (BOOL)isRecording
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  v3 = [v2 isRecording];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  isRecording = [mainControllerHelper isRecording];
 
-  return v3;
+  return isRecording;
 }
 
 - (BOOL)isSilencing
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  v3 = [v2 isSilencing];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  isSilencing = [mainControllerHelper isSilencing];
 
-  return v3;
+  return isSilencing;
 }
 
-- (RCMainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (RCMainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = RCMainViewController;
-  v4 = [(RCMainViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(RCMainViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -672,11 +672,11 @@ LABEL_7:
   return v5;
 }
 
-- (RCMainViewController)initWithCoder:(id)a3
+- (RCMainViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RCMainViewController;
-  v3 = [(RCMainViewController *)&v6 initWithCoder:a3];
+  v3 = [(RCMainViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -694,103 +694,103 @@ LABEL_7:
   v3 = objc_opt_new();
   [(RCMainViewController *)self setView:v3];
   [(RCMainViewController *)self _styleView];
-  v4 = [(RCMainViewController *)self navigationItem];
-  [v4 setBackButtonDisplayMode:2];
+  navigationItem = [(RCMainViewController *)self navigationItem];
+  [navigationItem setBackButtonDisplayMode:2];
 
-  v5 = [(RCMainViewController *)self view];
-  [v5 setNeedsUpdateConstraints];
+  view = [(RCMainViewController *)self view];
+  [view setNeedsUpdateConstraints];
 
-  v6 = [(RCMainViewController *)self view];
-  [v6 setAccessibilityIdentifier:@"BrowseFoldersView"];
+  view2 = [(RCMainViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"BrowseFoldersView"];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(RCMainViewController *)self browseFoldersViewController];
-  v6 = [v5 view];
-  v7 = [(RCMainViewController *)self view];
-  [v7 setBrowseFoldersView:v6];
+  appearCopy = appear;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  view = [browseFoldersViewController view];
+  view2 = [(RCMainViewController *)self view];
+  [view2 setBrowseFoldersView:view];
 
   self->_viewIsAppearingOrDisappearing = 1;
   v9.receiver = self;
   v9.super_class = RCMainViewController;
-  [(RCMainViewController *)&v9 viewWillAppear:v3];
+  [(RCMainViewController *)&v9 viewWillAppear:appearCopy];
   [(RCMainViewController *)self _styleView];
-  v8 = [(RCMainViewController *)self navigationController];
-  [v8 setToolbarHidden:0 animated:0];
+  navigationController = [(RCMainViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RCMainViewController;
-  [(RCMainViewController *)&v4 viewDidAppear:a3];
+  [(RCMainViewController *)&v4 viewDidAppear:appear];
   self->_viewIsAppearingOrDisappearing = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   self->_viewIsAppearingOrDisappearing = 1;
   v3.receiver = self;
   v3.super_class = RCMainViewController;
-  [(RCMainViewController *)&v3 viewWillDisappear:a3];
+  [(RCMainViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = RCMainViewController;
-  [(RCMainViewController *)&v4 viewDidDisappear:a3];
+  [(RCMainViewController *)&v4 viewDidDisappear:disappear];
   self->_viewIsAppearingOrDisappearing = 0;
 }
 
-- (void)finishInitialSetup:(id)a3 goToAllRecordings:(BOOL)a4
+- (void)finishInitialSetup:(id)setup goToAllRecordings:(BOOL)recordings
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  recordingsCopy = recordings;
+  setupCopy = setup;
+  if (recordingsCopy)
   {
-    v8 = v6;
-    v7 = [(RCMainViewController *)self browseFoldersViewController];
-    [v7 goToBuiltInFolderOfType:0 animated:0 completion:v8];
+    v8 = setupCopy;
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    [browseFoldersViewController goToBuiltInFolderOfType:0 animated:0 completion:v8];
   }
 
   else
   {
-    if (!v6)
+    if (!setupCopy)
     {
       goto LABEL_6;
     }
 
-    v8 = v6;
-    v6[2]();
+    v8 = setupCopy;
+    setupCopy[2]();
   }
 
-  v6 = v8;
+  setupCopy = v8;
 LABEL_6:
 }
 
 - (void)restyle
 {
   [(RCMainViewController *)self _restyleCardViewAndReparentIfNeeded];
-  v3 = [(RCMainViewController *)self playbackViewController];
-  [v3 restyle];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController restyle];
 
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  [v4 restyle];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  [browseFoldersViewController restyle];
 
   [(RCMainViewController *)self _styleView];
 
   [(RCMainViewController *)self updateLibraryViewInEditModeForMedusa];
 }
 
-- (void)willTransitionFromHorizontalSizeClass:(int64_t)a3 toHorizontalSizeClass:(int64_t)a4
+- (void)willTransitionFromHorizontalSizeClass:(int64_t)class toHorizontalSizeClass:(int64_t)sizeClass
 {
   [(RCMainViewController *)self updatePlaybackSettings];
-  v6 = [(RCMainViewController *)self presentedPlaybackSettingsViewController];
+  presentedPlaybackSettingsViewController = [(RCMainViewController *)self presentedPlaybackSettingsViewController];
 
-  if (v6)
+  if (presentedPlaybackSettingsViewController)
   {
     [(RCMainViewController *)self hidePlaybackSettingsViewController];
   }
@@ -799,66 +799,66 @@ LABEL_6:
 
   if (v7)
   {
-    v8 = [(RCMainViewController *)self presentedViewController];
-    [v8 dismissViewControllerAnimated:1 completion:0];
+    presentedViewController = [(RCMainViewController *)self presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:1 completion:0];
   }
 
-  v9 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  v10 = [v9 presentedViewController];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  presentedViewController2 = [recordingCardPresentationHelper presentedViewController];
 
-  if (a4 == 1 && v10)
+  if (sizeClass == 1 && presentedViewController2)
   {
-    v11 = [(RCMainViewController *)self recordingCardPresentationHelper];
-    [v11 selectLargeDetent];
+    recordingCardPresentationHelper2 = [(RCMainViewController *)self recordingCardPresentationHelper];
+    [recordingCardPresentationHelper2 selectLargeDetent];
   }
 }
 
 - (void)updateLibraryViewInEditModeForMedusa
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 recordingViewController];
-  v5 = [v4 isEditing];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  isEditing = [recordingViewController isEditing];
 
-  if (v5)
+  if (isEditing)
   {
-    v7 = [(RCMainViewController *)self browseFoldersViewController];
-    v6 = [v7 activeRecordingsCollectionViewController];
-    [v6 updateToolbarAndFooterView];
+    browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController = [browseFoldersViewController2 activeRecordingsCollectionViewController];
+    [activeRecordingsCollectionViewController updateToolbarAndFooterView];
   }
 }
 
 - (void)_restyleCardViewAndReparentIfNeeded
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 applicationState];
+  applicationState = [v3 applicationState];
 
-  if (v4 != 2)
+  if (applicationState != 2)
   {
-    v5 = [(RCMainViewController *)self recordingCardPresentationHelper];
-    [v5 restyleRecordingCardSheetPresentationController];
+    recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+    [recordingCardPresentationHelper restyleRecordingCardSheetPresentationController];
 
-    v7 = [(RCMainViewController *)self browseFoldersViewController];
-    v6 = [v7 recordingViewController];
-    [v6 restyle];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController recordingViewController];
+    [recordingViewController restyle];
   }
 }
 
 - (void)_showNavigationItemTitle
 {
-  v4 = [(RCMainViewController *)self navigationItem];
-  [v4 setLargeTitleDisplayMode:1];
+  navigationItem = [(RCMainViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:1];
   v2 = +[NSBundle mainBundle];
   v3 = [v2 localizedStringForKey:@"DEFAULT_NAVIGATION_TITLE" value:&stru_100295BB8 table:0];
-  [v4 setTitle:v3];
+  [navigationItem setTitle:v3];
 
-  [v4 _setSupportsTwoLineLargeTitles:1];
+  [navigationItem _setSupportsTwoLineLargeTitles:1];
 }
 
 - (void)_hideNavigationItemTitle
 {
-  v2 = [(RCMainViewController *)self navigationItem];
-  [v2 setLargeTitleDisplayMode:2];
-  [v2 setTitle:0];
+  navigationItem = [(RCMainViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
+  [navigationItem setTitle:0];
 }
 
 - (void)_styleView
@@ -874,126 +874,126 @@ LABEL_6:
     [(RCMainViewController *)self _hideNavigationItemTitle];
   }
 
-  v3 = [(RCMainViewController *)self view];
-  [v3 restyle];
+  view = [(RCMainViewController *)self view];
+  [view restyle];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = RCMainViewController;
-  v7 = a4;
-  [(RCMainViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(RCMainViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009F000;
   v8[3] = &unk_10028A488;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (id)selectedComposition
 {
-  v3 = [(RCMainControllerHelper *)self->_mainControllerHelper currentRecordingDisplayModel];
-  v4 = [v3 UUID];
+  currentRecordingDisplayModel = [(RCMainControllerHelper *)self->_mainControllerHelper currentRecordingDisplayModel];
+  uUID = [currentRecordingDisplayModel UUID];
 
-  v5 = [(RCMainControllerHelper *)self->_mainControllerHelper compositionForUUID:v4];
+  v5 = [(RCMainControllerHelper *)self->_mainControllerHelper compositionForUUID:uUID];
 
   return v5;
 }
 
-- (void)saveAsNewDoneButtonAction:(BOOL)a3
+- (void)saveAsNewDoneButtonAction:(BOOL)action
 {
-  v3 = a3;
-  v4 = [(RCMainViewController *)self mainControllerHelper];
-  [v4 doneButtonShouldSaveAsNew:v3];
+  actionCopy = action;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper doneButtonShouldSaveAsNew:actionCopy];
 }
 
-- (void)_transitionToBrowsing:(id)a3
+- (void)_transitionToBrowsing:(id)browsing
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self mainControllerHelper];
-  [v5 exitEditMode];
+  browsingCopy = browsing;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper exitEditMode];
 
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_10009F2D0;
   v19 = &unk_10028BC38;
-  v20 = self;
-  v21 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v21 = browsingCopy;
+  v6 = browsingCopy;
   [(RCMainViewController *)self _dismissCardView:&v16];
   v7 = [(RCMainViewController *)self browseFoldersViewController:v16];
-  v8 = [v7 recordingViewController];
+  recordingViewController = [v7 recordingViewController];
 
-  v9 = [v8 uuidBeingDisplayed];
-  v10 = [(RCMainViewController *)self browseFoldersViewController];
-  v11 = [v10 recordingViewController];
-  [v11 reset];
+  uuidBeingDisplayed = [recordingViewController uuidBeingDisplayed];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController2 = [browseFoldersViewController recordingViewController];
+  [recordingViewController2 reset];
 
-  v12 = [(RCMainViewController *)self browseFoldersViewController];
-  v13 = [v12 selectedRecording];
-  v14 = [v13 uuid];
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  selectedRecording = [browseFoldersViewController2 selectedRecording];
+  uuid = [selectedRecording uuid];
 
-  if (!v14)
+  if (!uuid)
   {
-    v15 = [(RCMainViewController *)self mainControllerHelper];
-    v14 = [v15 uuidOfPlayingRecording];
+    mainControllerHelper2 = [(RCMainViewController *)self mainControllerHelper];
+    uuid = [mainControllerHelper2 uuidOfPlayingRecording];
 
-    if (!v14)
+    if (!uuid)
     {
-      v14 = v9;
+      uuid = uuidBeingDisplayed;
     }
   }
 
-  [(RCMainViewController *)self didSelectForUUID:v14 resetPosition:0 force:1];
+  [(RCMainViewController *)self didSelectForUUID:uuid resetPosition:0 force:1];
 }
 
-- (void)_transitionToCaptureAndModifyWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)_transitionToCaptureAndModifyWithOptions:(unint64_t)options completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009F3BC;
   v7[3] = &unk_10028A510;
-  v8 = a4;
-  v6 = v8;
-  [(RCMainViewController *)self _presentCardViewWithOptions:a3 completion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(RCMainViewController *)self _presentCardViewWithOptions:options completion:v7];
 }
 
-- (void)_presentCardViewWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)_presentCardViewWithOptions:(unint64_t)options completion:(id)completion
 {
-  v4 = a3;
-  v24 = a4;
-  v6 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  v7 = [v6 presentedViewController];
+  optionsCopy = options;
+  completionCopy = completion;
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  presentedViewController = [recordingCardPresentationHelper presentedViewController];
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 delegate];
+  delegate = [v8 delegate];
 
-  v10 = [v9 defaultSceneDelegate];
-  v11 = [v10 rootSplitViewController];
+  defaultSceneDelegate = [delegate defaultSceneDelegate];
+  rootSplitViewController = [defaultSceneDelegate rootSplitViewController];
 
-  if (!v7 && v11)
+  if (!presentedViewController && rootSplitViewController)
   {
     v12 = [_TtC10VoiceMemos33RCRecordingCardPresentationHelper alloc];
-    v13 = [(RCMainViewController *)self browseFoldersViewController];
-    v14 = [(RCMainViewController *)self playbackViewController];
-    v15 = [(RCRecordingCardPresentationHelper *)v12 initWithSplitViewController:v11 browseFoldersViewController:v13 playbackViewController:v14];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    v15 = [(RCRecordingCardPresentationHelper *)v12 initWithSplitViewController:rootSplitViewController browseFoldersViewController:browseFoldersViewController playbackViewController:playbackViewController];
     [(RCMainViewController *)self setRecordingCardPresentationHelper:v15];
 
-    v16 = [(RCMainViewController *)self recordingCardPresentationHelper];
-    [v16 presentCardFrom:v11 isEditMode:v4 & 1 completion:v24];
+    recordingCardPresentationHelper2 = [(RCMainViewController *)self recordingCardPresentationHelper];
+    [recordingCardPresentationHelper2 presentCardFrom:rootSplitViewController isEditMode:optionsCopy & 1 completion:completionCopy];
 
-    v17 = [(RCMainViewController *)self undoManager];
-    [(RCMainViewController *)self setMainUndoManager:v17];
+    undoManager = [(RCMainViewController *)self undoManager];
+    [(RCMainViewController *)self setMainUndoManager:undoManager];
 
-    v18 = [(RCMainViewController *)self recordingCardPresentationHelper];
-    v19 = [v18 presentedCardViewController];
-    v20 = [v19 undoManager];
+    recordingCardPresentationHelper3 = [(RCMainViewController *)self recordingCardPresentationHelper];
+    presentedCardViewController = [recordingCardPresentationHelper3 presentedCardViewController];
+    undoManager2 = [presentedCardViewController undoManager];
     currentUndoManager = self->_currentUndoManager;
-    self->_currentUndoManager = v20;
+    self->_currentUndoManager = undoManager2;
 
     v22 = +[NSNotificationCenter defaultCenter];
     [v22 addObserver:self selector:"updateUndoButtonStateFromUndoManager" name:NSUndoManagerDidUndoChangeNotification object:self->_currentUndoManager];
@@ -1011,10 +1011,10 @@ LABEL_6:
   {
     if ((v4 & 1) == 0)
     {
-      v5 = [(RCMainViewController *)self mainControllerHelper];
-      v6 = [v5 willMigrateFromSingleLayerToMultiLayer];
+      mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+      willMigrateFromSingleLayerToMultiLayer = [mainControllerHelper willMigrateFromSingleLayerToMultiLayer];
 
-      if (v6)
+      if (willMigrateFromSingleLayerToMultiLayer)
       {
         v7 = +[NSBundle mainBundle];
         v8 = [v7 localizedStringForKey:@"NEW_LAYERED_RECORDING_ALERT_TITLE" value:&stru_100295BB8 table:0];
@@ -1027,7 +1027,7 @@ LABEL_6:
         v14 = sub_10009F77C;
         v15 = &unk_10028A650;
         v16 = v3;
-        v17 = self;
+        selfCopy = self;
         v11 = [UIAlertController rc_OKAlertControllerWithTitle:v8 message:v10 handler:&v12];
         [v11 rc_showInMainWindow];
       }
@@ -1035,71 +1035,71 @@ LABEL_6:
   }
 }
 
-- (void)goToAllRecordingsIfNeeded:(BOOL)a3 completion:(id)a4
+- (void)goToAllRecordingsIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v4 = a3;
-  v13 = a4;
-  v6 = [(RCMainViewController *)self browseFoldersViewController];
-  v7 = [v6 currentActiveFolderViewController];
-  v8 = v7;
-  if (!v7)
+  neededCopy = needed;
+  completionCopy = completion;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  currentActiveFolderViewController = [browseFoldersViewController currentActiveFolderViewController];
+  v8 = currentActiveFolderViewController;
+  if (!currentActiveFolderViewController)
   {
     goto LABEL_8;
   }
 
-  v9 = [v7 supportsRecording];
-  v10 = [v8 folderType];
-  v11 = !v4;
-  if (!v10)
+  supportsRecording = [currentActiveFolderViewController supportsRecording];
+  folderType = [v8 folderType];
+  v11 = !neededCopy;
+  if (!folderType)
   {
     v11 = 1;
   }
 
-  if (v9 && v11)
+  if (supportsRecording && v11)
   {
-    if (v13)
+    if (completionCopy)
     {
-      v13[2]();
+      completionCopy[2]();
     }
   }
 
   else
   {
 LABEL_8:
-    v12 = [(RCMainViewController *)self browseFoldersViewController];
-    [v12 goToBuiltInFolderOfType:0 animated:0 completion:v13];
+    browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+    [browseFoldersViewController2 goToBuiltInFolderOfType:0 animated:0 completion:completionCopy];
   }
 }
 
-- (void)goToRecentlyDeletedIfNeededWithCompletion:(id)a3
+- (void)goToRecentlyDeletedIfNeededWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v4 currentActiveFolderViewController];
-  v6 = [v5 folderType];
-  if (v5 && v6 == 3)
+  completionCopy = completion;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  currentActiveFolderViewController = [browseFoldersViewController currentActiveFolderViewController];
+  folderType = [currentActiveFolderViewController folderType];
+  if (currentActiveFolderViewController && folderType == 3)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2]();
+      completionCopy[2]();
     }
   }
 
   else
   {
-    v7 = [(RCMainViewController *)self browseFoldersViewController];
-    [v7 goToBuiltInFolderOfType:3 animated:0 completion:v8];
+    browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+    [browseFoldersViewController2 goToBuiltInFolderOfType:3 animated:0 completion:completionCopy];
   }
 }
 
 - (BOOL)toggleRecording
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 currentActiveFolderViewController];
-  v5 = [v4 recordingsCollectionViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  currentActiveFolderViewController = [browseFoldersViewController currentActiveFolderViewController];
+  recordingsCollectionViewController = [currentActiveFolderViewController recordingsCollectionViewController];
 
-  v6 = [(RCMainViewController *)self browseFoldersViewController];
-  if ([v6 isShowingRecentlyDeleted])
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  if ([browseFoldersViewController2 isShowingRecentlyDeleted])
   {
 
 LABEL_4:
@@ -1112,17 +1112,17 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v7 = [v5 isEditing];
+  isEditing = [recordingsCollectionViewController isEditing];
 
-  if (v7)
+  if (isEditing)
   {
     goto LABEL_4;
   }
 
-  v12 = [(RCMainViewController *)self mainControllerHelper];
-  v13 = [v12 isRecording];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  isRecording = [mainControllerHelper isRecording];
 
-  if (v13)
+  if (isRecording)
   {
     [(RCMainViewController *)self endRecording];
   }
@@ -1138,18 +1138,18 @@ LABEL_9:
   return v11;
 }
 
-- (void)_startCapturing:(id)a3 completion:(id)a4
+- (void)_startCapturing:(id)capturing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RCMainViewController *)self mainControllerHelper];
-  v9 = [v8 isRecording];
+  capturingCopy = capturing;
+  completionCopy = completion;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  isRecording = [mainControllerHelper isRecording];
 
-  if (v9)
+  if (isRecording)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1160,48 +1160,48 @@ LABEL_9:
     v10[2] = sub_10009FBC8;
     v10[3] = &unk_10028A538;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = capturingCopy;
+    v12 = completionCopy;
     [(RCMainViewController *)self goToAllRecordingsIfNeeded:0 completion:v10];
   }
 }
 
 - (void)pauseRecording
 {
-  v3 = [(RCMainViewController *)self mainControllerHelper];
-  [v3 pauseCapturing];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper pauseCapturing];
 
   [(RCMainViewController *)self updateUndoButtonStateFromUndoManager];
 }
 
-- (void)resumeRecording:(unint64_t)a3
+- (void)resumeRecording:(unint64_t)recording
 {
-  v4 = [(RCMainViewController *)self mainControllerHelper];
-  [v4 resumeCapturing:a3];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper resumeCapturing:recording];
 }
 
-- (void)replaceRecording:(unint64_t)a3
+- (void)replaceRecording:(unint64_t)recording
 {
-  v4 = [(RCMainViewController *)self mainControllerHelper];
-  [v4 replaceCapturing:a3];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper replaceCapturing:recording];
 }
 
 - (void)endRecording
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  [v2 stopCapturing];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper stopCapturing];
 }
 
 - (void)endEditing
 {
   if ([(RCMainViewController *)self state]== 1)
   {
-    v3 = [(RCMainViewController *)self browseFoldersViewController];
-    v4 = [v3 recordingViewController];
-    v5 = [v4 view];
-    v6 = [v5 recordingViewState];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController recordingViewController];
+    view = [recordingViewController view];
+    recordingViewState = [view recordingViewState];
 
-    if (v6 == 8)
+    if (recordingViewState == 8)
     {
       [(RCMainViewController *)self cancelTrimMode];
     }
@@ -1210,21 +1210,21 @@ LABEL_9:
   [(RCMainViewController *)self setState:0];
 }
 
-- (void)playRecordingWithUUID:(id)a3
+- (void)playRecordingWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self browseFoldersViewController];
-  v6 = [v5 recordingViewController];
-  v7 = [v6 uuidBeingDisplayed];
-  v8 = [v7 isEqualToString:v4];
+  dCopy = d;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  uuidBeingDisplayed = [recordingViewController uuidBeingDisplayed];
+  v8 = [uuidBeingDisplayed isEqualToString:dCopy];
 
   if ((v8 & 1) == 0)
   {
     [(RCMainViewController *)self endEditing];
   }
 
-  v9 = [(RCMainViewController *)self mainControllerHelper];
-  [v9 playbackForUUID:v4];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper playbackForUUID:dCopy];
 
   [(RCMainViewController *)self setShouldStopPlaybackBeforeNavigating:0];
   objc_initWeak(&location, self);
@@ -1233,7 +1233,7 @@ LABEL_9:
   v29[2] = sub_1000A00B4;
   v29[3] = &unk_10028B0D0;
   objc_copyWeak(&v31, &location);
-  v10 = v4;
+  v10 = dCopy;
   v30 = v10;
   v11 = objc_retainBlock(v29);
   v26[0] = _NSConcreteStackBlock;
@@ -1248,16 +1248,16 @@ LABEL_9:
   v20 = 3221225472;
   v21 = sub_1000A0304;
   v22 = &unk_10028A538;
-  v23 = self;
+  selfCopy = self;
   v14 = v10;
   v24 = v14;
   v15 = v13;
   v25 = v15;
   v16 = objc_retainBlock(&v19);
   v17 = [(RCMainViewController *)self recordingCardPresentationHelper:v19];
-  v18 = [v17 presentedViewController];
+  presentedViewController = [v17 presentedViewController];
 
-  if (v18)
+  if (presentedViewController)
   {
     (v16[2])(v16);
   }
@@ -1274,32 +1274,32 @@ LABEL_9:
 
 - (void)exitTrimMode
 {
-  v3 = [(RCMainViewController *)self mainControllerHelper];
-  [v3 exitTrimMode];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper exitTrimMode];
 
   [(RCMainViewController *)self updateUndoButtonStateFromUndoManager];
 }
 
 - (void)didExitTrimMode
 {
-  v2 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  [v2 restyleRecordingCardSheetPresentationController];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  [recordingCardPresentationHelper restyleRecordingCardSheetPresentationController];
 }
 
-- (void)shouldEnableTrimSave:(BOOL)a3
+- (void)shouldEnableTrimSave:(BOOL)save
 {
-  v3 = a3;
-  v5 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v5 recordingViewController];
-  [v4 updateTrimSaveState:v3];
+  saveCopy = save;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  [recordingViewController updateTrimSaveState:saveCopy];
 }
 
 - (void)enableUndoFirstResponder
 {
   v3 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [v3 supportsMainViewControllerUndo];
+  supportsMainViewControllerUndo = [v3 supportsMainViewControllerUndo];
 
-  if (v4)
+  if (supportsMainViewControllerUndo)
   {
 
     [(RCMainViewController *)self becomeFirstResponder];
@@ -1307,53 +1307,53 @@ LABEL_9:
 
   else
   {
-    v6 = [(RCMainViewController *)self recordingCardPresentationHelper];
-    v5 = [v6 presentedViewController];
-    [v5 becomeFirstResponder];
+    recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+    presentedViewController = [recordingCardPresentationHelper presentedViewController];
+    [presentedViewController becomeFirstResponder];
   }
 }
 
-- (void)didUpdateToStatus:(int)a3 progress:(float)a4 forRecordingWithUUID:(id)a5
+- (void)didUpdateToStatus:(int)status progress:(float)progress forRecordingWithUUID:(id)d
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 1)
+  dCopy = d;
+  v9 = dCopy;
+  if (status == 1)
   {
-    v18 = v8;
-    v10 = [(RCMainViewController *)self editingProgressItems];
-    v11 = [v10 objectForKeyedSubscript:v18];
+    v18 = dCopy;
+    editingProgressItems = [(RCMainViewController *)self editingProgressItems];
+    v11 = [editingProgressItems objectForKeyedSubscript:v18];
 
     if (!v11)
     {
       v11 = objc_opt_new();
       [v11 setDelegate:self];
       [v11 setUUID:v18];
-      v13 = [(RCMainViewController *)self editingProgressItems];
-      [v13 setObject:v11 forKeyedSubscript:v18];
+      editingProgressItems2 = [(RCMainViewController *)self editingProgressItems];
+      [editingProgressItems2 setObject:v11 forKeyedSubscript:v18];
 
-      v14 = [(RCMainViewController *)self mainControllerHelper];
-      [v14 stopForUUID:v18];
+      mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+      [mainControllerHelper stopForUUID:v18];
     }
 
-    *&v12 = a4;
+    *&v12 = progress;
     [v11 setProgress:v12];
     if ([v11 hasMetTimeThreshold])
     {
-      *&v15 = a4;
+      *&v15 = progress;
       [(RCMainViewController *)self _updateControllersToEditingInFlight:1 progress:v18 forUUID:v15];
     }
   }
 
   else
   {
-    if (!v8)
+    if (!dCopy)
     {
       goto LABEL_10;
     }
 
-    v18 = v8;
-    v16 = [(RCMainViewController *)self editingProgressItems];
-    [v16 removeObjectForKey:v18];
+    v18 = dCopy;
+    editingProgressItems3 = [(RCMainViewController *)self editingProgressItems];
+    [editingProgressItems3 removeObjectForKey:v18];
 
     LODWORD(v17) = 1.0;
     [(RCMainViewController *)self _updateControllersToEditingInFlight:0 progress:v18 forUUID:v17];
@@ -1365,19 +1365,19 @@ LABEL_10:
 
 - (void)didUpdateCurrentRecordingDisplayModel
 {
-  v3 = [(RCMainViewController *)self mainControllerHelper];
-  v4 = [v3 currentRecordingDisplayModel];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  currentRecordingDisplayModel = [mainControllerHelper currentRecordingDisplayModel];
 
-  if (v4)
+  if (currentRecordingDisplayModel)
   {
-    v5 = [(RCMainViewController *)self browseFoldersViewController];
-    v6 = [v5 recordingViewController];
-    v7 = [v6 view];
-    [v7 setupSubviews];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController recordingViewController];
+    view = [recordingViewController view];
+    [view setupSubviews];
 
-    v8 = [(RCMainViewController *)self playbackViewController];
-    v9 = [v8 view];
-    [v9 setupSubviews];
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    view2 = [playbackViewController view];
+    [view2 setupSubviews];
   }
 
   [(RCMainViewController *)self updatePlaybackSettings];
@@ -1385,84 +1385,84 @@ LABEL_10:
 
 - (BOOL)isQuickRecordingWorkflowDismissal
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 recordingViewController];
-  v4 = [v3 view];
-  v5 = [v4 displayStyle] == 2;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  view = [recordingViewController view];
+  v5 = [view displayStyle] == 2;
 
   return v5;
 }
 
-- (void)backupTimerFiredForUUID:(id)a3
+- (void)backupTimerFiredForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self editingProgressItems];
-  v10 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  editingProgressItems = [(RCMainViewController *)self editingProgressItems];
+  v10 = [editingProgressItems objectForKeyedSubscript:dCopy];
 
   if (v10)
   {
     [v10 progress];
     v7 = v6;
-    v8 = [v10 UUID];
+    uUID = [v10 UUID];
     LODWORD(v9) = v7;
-    [(RCMainViewController *)self _updateControllersToEditingInFlight:1 progress:v8 forUUID:v9];
+    [(RCMainViewController *)self _updateControllersToEditingInFlight:1 progress:uUID forUUID:v9];
   }
 }
 
-- (void)_updateControllersToEditingInFlight:(BOOL)a3 progress:(float)a4 forUUID:(id)a5
+- (void)_updateControllersToEditingInFlight:(BOOL)flight progress:(float)progress forUUID:(id)d
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [(RCMainViewController *)self browseFoldersViewController];
-  v10 = [v9 activeRecordingsCollectionViewController];
-  *&v11 = a4;
-  [v10 editingIsInFlight:v6 progress:v8 forUUID:v11];
+  flightCopy = flight;
+  dCopy = d;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  *&v11 = progress;
+  [activeRecordingsCollectionViewController editingIsInFlight:flightCopy progress:dCopy forUUID:v11];
 
-  v12 = [(RCMainViewController *)self browseFoldersViewController];
-  v13 = [v12 recordingViewController];
-  *&v14 = a4;
-  [v13 updateToEditingInFlight:v6 progress:v8 forUUID:v14];
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController2 recordingViewController];
+  *&v14 = progress;
+  [recordingViewController updateToEditingInFlight:flightCopy progress:dCopy forUUID:v14];
 
-  v16 = [(RCMainViewController *)self playbackViewController];
-  *&v15 = a4;
-  [v16 updateToEditingInFlight:v6 progress:v8 forUUID:v15];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  *&v15 = progress;
+  [playbackViewController updateToEditingInFlight:flightCopy progress:dCopy forUUID:v15];
 }
 
-- (id)_stringForAudioEditingStatus:(int)a3
+- (id)_stringForAudioEditingStatus:(int)status
 {
-  if (a3 > 4)
+  if (status > 4)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_10028C310 + a3);
+    return *(&off_10028C310 + status);
   }
 }
 
 - (BOOL)isShowingRecentlyDeleted
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 isShowingRecentlyDeleted];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  isShowingRecentlyDeleted = [browseFoldersViewController isShowingRecentlyDeleted];
 
-  return v3;
+  return isShowingRecentlyDeleted;
 }
 
 - (BOOL)canSwipeToNavigateBack
 {
-  v3 = [(RCMainViewController *)self state];
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v4 currentActiveFolderViewController];
+  state = [(RCMainViewController *)self state];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  currentActiveFolderViewController = [browseFoldersViewController currentActiveFolderViewController];
 
-  if (v3)
+  if (state)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v5 == 0;
+    v6 = currentActiveFolderViewController == 0;
   }
 
   return !v6;
@@ -1470,14 +1470,14 @@ LABEL_10:
 
 - (void)updateUndoButtonStateFromUndoManager
 {
-  v3 = [(RCUndoManager *)self->_currentUndoManager canUndo];
-  v4 = [(RCMainViewController *)self mainControllerHelper];
-  v5 = [v4 audioRecorder];
-  v6 = [v5 isNewRecording];
+  canUndo = [(RCUndoManager *)self->_currentUndoManager canUndo];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  audioRecorder = [mainControllerHelper audioRecorder];
+  isNewRecording = [audioRecorder isNewRecording];
 
-  v8 = [(RCMainViewController *)self browseFoldersViewController];
-  v7 = [v8 recordingViewController];
-  [v7 updateUndoState:v3 isNewRecording:v6];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  [recordingViewController updateUndoState:canUndo isNewRecording:isNewRecording];
 }
 
 - (void)willBeginDragSession
@@ -1485,8 +1485,8 @@ LABEL_10:
   activeDragSessionCount = self->_activeDragSessionCount;
   if (!activeDragSessionCount)
   {
-    v4 = [(RCMainViewController *)self playbackViewController];
-    [v4 enableWaveformScrolling:0];
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    [playbackViewController enableWaveformScrolling:0];
 
     activeDragSessionCount = self->_activeDragSessionCount;
   }
@@ -1500,49 +1500,49 @@ LABEL_10:
   self->_activeDragSessionCount = v3;
   if (!v3)
   {
-    v4 = [(RCMainViewController *)self playbackViewController];
-    [v4 enableWaveformScrolling:1];
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    [playbackViewController enableWaveformScrolling:1];
   }
 }
 
 - (void)cancelTrimMode
 {
-  v3 = [(RCMainViewController *)self mainControllerHelper];
-  [v3 cancelTrimModeWithDismissal:1];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper cancelTrimModeWithDismissal:1];
 
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v4 recordingViewController];
-  [v5 cleanupAfterExitTrim];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  [recordingViewController cleanupAfterExitTrim];
 
   [(RCMainViewController *)self updateUndoButtonStateFromUndoManager];
-  v6 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  [v6 restyleRecordingCardSheetPresentationController];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  [recordingCardPresentationHelper restyleRecordingCardSheetPresentationController];
 }
 
 - (id)waveformViewController
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 recordingViewController];
-  v4 = [v3 waveformContainerViewControllers];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  waveformContainerViewControllers = [recordingViewController waveformContainerViewControllers];
+  v5 = [waveformContainerViewControllers objectAtIndexedSubscript:0];
 
   return v5;
 }
 
 - (id)overviewWaveformViewController
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 recordingViewController];
-  v4 = [v3 overviewWaveformViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  overviewWaveformViewController = [recordingViewController overviewWaveformViewController];
 
-  return v4;
+  return overviewWaveformViewController;
 }
 
 - (BOOL)remoteToggleShouldPauseRecording
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 recordingViewController];
-  v4 = [v3 recordingControlState] == 1;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  v4 = [recordingViewController recordingControlState] == 1;
 
   return v4;
 }
@@ -1554,126 +1554,126 @@ LABEL_10:
   [(RCMainViewController *)self saveAsNewDoneButtonAction:0];
 }
 
-- (void)finishedEditingWithNewRecordingUUID:(id)a3
+- (void)finishedEditingWithNewRecordingUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self browseFoldersViewController];
-  v6 = [v5 activeRecordingsCollectionViewController];
+  dCopy = d;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
-  [v6 prepareForAdditionOfNewRecordingWithUUID:v4];
+  [activeRecordingsCollectionViewController prepareForAdditionOfNewRecordingWithUUID:dCopy];
 }
 
 - (void)updatePlaybackSettings
 {
-  v8 = [(RCMainViewController *)self playbackSettings];
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 recordingViewController];
-  [v4 updateWithPlaybackSettings:v8];
+  playbackSettings = [(RCMainViewController *)self playbackSettings];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  [recordingViewController updateWithPlaybackSettings:playbackSettings];
 
-  v5 = [(RCMainViewController *)self playbackViewController];
-  [v5 updateWithPlaybackSettings:v8];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController updateWithPlaybackSettings:playbackSettings];
 
-  v6 = [(RCMainViewController *)self presentedPlaybackSettingsViewController];
-  v7 = v6;
-  if (v6)
+  presentedPlaybackSettingsViewController = [(RCMainViewController *)self presentedPlaybackSettingsViewController];
+  v7 = presentedPlaybackSettingsViewController;
+  if (presentedPlaybackSettingsViewController)
   {
-    [v6 setPlaybackSettings:v8];
+    [presentedPlaybackSettingsViewController setPlaybackSettings:playbackSettings];
   }
 }
 
-- (void)waveformTimeUpdated:(double)a3
+- (void)waveformTimeUpdated:(double)updated
 {
-  v6 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v6 recordingViewController];
-  v5 = [v4 view];
-  [v5 setCurrentTime:a3];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  view = [recordingViewController view];
+  [view setCurrentTime:updated];
 }
 
 - (void)didUpdateRecordingViewDisplayStyle
 {
-  v2 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  [v2 updateSelectedDetent];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  [recordingCardPresentationHelper updateSelectedDetent];
 }
 
 - (void)didUpdateNavigationBarVisibility
 {
-  v2 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  v3 = [v2 sheetPresentationController];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  sheetPresentationController = [recordingCardPresentationHelper sheetPresentationController];
 
-  [v3 invalidateDetents];
+  [sheetPresentationController invalidateDetents];
 }
 
 - (id)recordingCardNavigationController
 {
-  v2 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  v3 = [v2 presentedCardViewController];
-  v4 = [v3 navigationController];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  presentedCardViewController = [recordingCardPresentationHelper presentedCardViewController];
+  navigationController = [presentedCardViewController navigationController];
 
-  return v4;
+  return navigationController;
 }
 
 - (id)recordingCardNavigationItem
 {
-  v2 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  v3 = [v2 presentedCardViewController];
-  v4 = [v3 navigationItem];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  presentedCardViewController = [recordingCardPresentationHelper presentedCardViewController];
+  navigationItem = [presentedCardViewController navigationItem];
 
-  return v4;
+  return navigationItem;
 }
 
-- (BOOL)isPlayingForUUID:(id)a3
+- (BOOL)isPlayingForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self mainControllerHelper];
-  v6 = [v5 isPlayingForUUID:v4];
+  dCopy = d;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  v6 = [mainControllerHelper isPlayingForUUID:dCopy];
 
   return v6;
 }
 
-- (void)setFavorite:(BOOL)a3 forRecordingWithUUID:(id)a4
+- (void)setFavorite:(BOOL)favorite forRecordingWithUUID:(id)d
 {
-  v4 = a3;
-  v8 = a4;
-  v6 = a4;
-  v7 = [NSArray arrayWithObjects:&v8 count:1];
+  favoriteCopy = favorite;
+  dCopy = d;
+  dCopy2 = d;
+  v7 = [NSArray arrayWithObjects:&dCopy count:1];
 
-  [(RCMainViewController *)self setFavorite:v4 forRecordingsWithUUIDs:v7, v8];
+  [(RCMainViewController *)self setFavorite:favoriteCopy forRecordingsWithUUIDs:v7, dCopy];
 }
 
-- (void)setFavorite:(BOOL)a3 forRecordingsWithUUIDs:(id)a4
+- (void)setFavorite:(BOOL)favorite forRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RCMainViewController *)self mainControllerHelper];
-  [v7 setFavorite:v4 forRecordingsWithUUIDs:v6];
+  favoriteCopy = favorite;
+  dsCopy = ds;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper setFavorite:favoriteCopy forRecordingsWithUUIDs:dsCopy];
 }
 
-- (BOOL)isFavoriteForUUID:(id)a3
+- (BOOL)isFavoriteForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self mainControllerHelper];
-  v6 = [v5 isFavoriteForUUID:v4];
+  dCopy = d;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  v6 = [mainControllerHelper isFavoriteForUUID:dCopy];
 
   return v6;
 }
 
-- (void)toggleFavoriteForUUID:(id)a3
+- (void)toggleFavoriteForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self mainControllerHelper];
-  [v5 toggleFavoriteForUUID:v4];
+  dCopy = d;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper toggleFavoriteForUUID:dCopy];
 }
 
-- (void)_dismissCardView:(id)a3
+- (void)_dismissCardView:(id)view
 {
-  v12 = a3;
-  v4 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  v5 = [v4 presentedViewController];
+  viewCopy = view;
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  presentedViewController = [recordingCardPresentationHelper presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
-    v6 = [(RCMainViewController *)self recordingCardPresentationHelper];
-    [v6 dismissCardWithCompletion:v12];
+    recordingCardPresentationHelper2 = [(RCMainViewController *)self recordingCardPresentationHelper];
+    [recordingCardPresentationHelper2 dismissCardWithCompletion:viewCopy];
 
     [(RCMainViewController *)self selectNewRecordingForDismiss];
     v7 = +[NSNotificationCenter defaultCenter];
@@ -1682,29 +1682,29 @@ LABEL_10:
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 removeObserver:self name:NSUndoManagerDidRedoChangeNotification object:self->_currentUndoManager];
 
-    v9 = [(RCMainViewController *)self view];
-    [v9 setNeedsUpdateConstraints];
+    view = [(RCMainViewController *)self view];
+    [view setNeedsUpdateConstraints];
 
-    v10 = [(RCMainViewController *)self mainUndoManager];
+    mainUndoManager = [(RCMainViewController *)self mainUndoManager];
     currentUndoManager = self->_currentUndoManager;
-    self->_currentUndoManager = v10;
+    self->_currentUndoManager = mainUndoManager;
   }
 }
 
-- (void)selectRecordingWithUUID:(id)a3 returnToBrowse:(BOOL)a4
+- (void)selectRecordingWithUUID:(id)d returnToBrowse:(BOOL)browse
 {
-  v4 = a4;
-  v6 = a3;
+  browseCopy = browse;
+  dCopy = d;
   if (![(RCMainViewController *)self isRecording])
   {
-    v7 = [(RCMainViewController *)self browseFoldersViewController];
-    v8 = [v7 currentActiveFolderViewController];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    currentActiveFolderViewController = [browseFoldersViewController currentActiveFolderViewController];
 
-    v9 = [v8 recordingsCollectionViewController];
-    v10 = v9;
-    if (v9)
+    recordingsCollectionViewController = [currentActiveFolderViewController recordingsCollectionViewController];
+    v10 = recordingsCollectionViewController;
+    if (recordingsCollectionViewController)
     {
-      v11 = [v9 presentsRecordingWithUUID:v6];
+      v11 = [recordingsCollectionViewController presentsRecordingWithUUID:dCopy];
     }
 
     else
@@ -1718,10 +1718,10 @@ LABEL_10:
     v12[2] = sub_1000A1548;
     v12[3] = &unk_10028C0C8;
     v12[4] = self;
-    v13 = v6;
+    v13 = dCopy;
     v14 = v11;
     [CATransaction setCompletionBlock:v12];
-    if (v4)
+    if (browseCopy)
     {
       [(RCMainViewController *)self setState:0];
     }
@@ -1730,152 +1730,152 @@ LABEL_10:
   }
 }
 
-- (void)_selectRecordingWithUUID:(id)a3 inRecordingsCollectionViewController:(id)a4
+- (void)_selectRecordingWithUUID:(id)d inRecordingsCollectionViewController:(id)controller
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v6 uuidOfSelectedItem];
-  if (([v7 isEqualToString:v8] & 1) == 0)
+  dCopy = d;
+  controllerCopy = controller;
+  uuidOfSelectedItem = [controllerCopy uuidOfSelectedItem];
+  if (([uuidOfSelectedItem isEqualToString:dCopy] & 1) == 0)
   {
-    [v6 selectItemWithUUID:v8 animated:0];
-    [(RCMainViewController *)self didSelectForUUID:v8 resetPosition:1 force:0];
+    [controllerCopy selectItemWithUUID:dCopy animated:0];
+    [(RCMainViewController *)self didSelectForUUID:dCopy resetPosition:1 force:0];
   }
 }
 
 - (void)undo
 {
-  v3 = [(RCMainViewController *)self undoManager];
-  [v3 undo];
+  undoManager = [(RCMainViewController *)self undoManager];
+  [undoManager undo];
 
   [(RCMainViewController *)self updateUndoButtonStateFromUndoManager];
 }
 
-- (void)performRenameWithNewTitle:(id)a3 forUUID:(id)a4
+- (void)performRenameWithNewTitle:(id)title forUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RCMainViewController *)self browseFoldersViewController];
-  v9 = [v8 activeRecordingsCollectionViewController];
-  v10 = [v9 collectionView];
-  [v10 becomeFirstResponder];
+  dCopy = d;
+  titleCopy = title;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  collectionView = [activeRecordingsCollectionViewController collectionView];
+  [collectionView becomeFirstResponder];
 
-  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor performRenameWithNewTitle:v7 forUUID:v6];
-  v11 = [RCRecordingDisplayModel recordingDisplayModelForUUID:v6];
-  v12 = [(RCMainViewController *)self mainControllerHelper];
-  [v12 setCurrentRecordingDisplayModel:v11];
+  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor performRenameWithNewTitle:titleCopy forUUID:dCopy];
+  v11 = [RCRecordingDisplayModel recordingDisplayModelForUUID:dCopy];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper setCurrentRecordingDisplayModel:v11];
 
-  v13 = [(RCMainViewController *)self browseFoldersViewController];
-  v14 = [v13 recordingViewController];
-  [v14 renameForUUID:v6 toNewTitle:v7];
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController2 recordingViewController];
+  [recordingViewController renameForUUID:dCopy toNewTitle:titleCopy];
 
-  v15 = [(RCMainViewController *)self playbackViewController];
-  [v15 renameForUUID:v6 toNewTitle:v7];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController renameForUUID:dCopy toNewTitle:titleCopy];
 
   [(RCMainViewController *)self updateQuickActions];
 
   [(RCMainViewController *)self updateMenuBarWindowTitle];
 }
 
-- (void)refreshDisplayWithDisplayModel:(id)a3
+- (void)refreshDisplayWithDisplayModel:(id)model
 {
-  v13 = a3;
-  v4 = [(RCMainViewController *)self mainControllerHelper];
-  v5 = [v4 currentRecordingDisplayModel];
-  v6 = [v5 UUID];
-  v7 = [v13 UUID];
-  v8 = [v6 isEqualToString:v7];
+  modelCopy = model;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  currentRecordingDisplayModel = [mainControllerHelper currentRecordingDisplayModel];
+  uUID = [currentRecordingDisplayModel UUID];
+  uUID2 = [modelCopy UUID];
+  v8 = [uUID isEqualToString:uUID2];
 
   if (v8)
   {
-    v9 = [(RCMainViewController *)self mainControllerHelper];
-    [v9 setCurrentRecordingDisplayModel:v13];
+    mainControllerHelper2 = [(RCMainViewController *)self mainControllerHelper];
+    [mainControllerHelper2 setCurrentRecordingDisplayModel:modelCopy];
   }
 
-  v10 = [(RCMainViewController *)self browseFoldersViewController];
-  v11 = [v10 recordingViewController];
-  [v11 updateWithRecordingModel:v13 requireMatchingUUID:1];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  [recordingViewController updateWithRecordingModel:modelCopy requireMatchingUUID:1];
 
-  v12 = [(RCMainViewController *)self playbackViewController];
-  [v12 updateWithRecordingModel:v13 requireMatchingUUID:1];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController updateWithRecordingModel:modelCopy requireMatchingUUID:1];
 }
 
 - (void)performClearAllRecentlyDeleted
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  [v2 performClearAllRecentlyDeleted];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper performClearAllRecentlyDeleted];
 }
 
-- (void)didSelectForUUID:(id)a3 resetPosition:(BOOL)a4 force:(BOOL)a5
+- (void)didSelectForUUID:(id)d resetPosition:(BOOL)position force:(BOOL)force
 {
-  v5 = a5;
-  v6 = a4;
-  v28 = a3;
-  v8 = [RCRecordingDisplayModel recordingDisplayModelForUUID:v28];
-  v9 = [(RCMainViewController *)self playbackViewController];
-  [v9 stopScrolling];
-  if (v28)
+  forceCopy = force;
+  positionCopy = position;
+  dCopy = d;
+  v8 = [RCRecordingDisplayModel recordingDisplayModelForUUID:dCopy];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController stopScrolling];
+  if (dCopy)
   {
     if (v8)
     {
-      v10 = [v9 uuidBeingDisplayed];
-      v11 = [v10 isEqualToString:v28];
+      uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+      v11 = [uuidBeingDisplayed isEqualToString:dCopy];
 
-      if (!v11 || v5)
+      if (!v11 || forceCopy)
       {
-        v12 = [v9 contentUnavailableConfiguration];
-        v13 = v12 != 0;
+        contentUnavailableConfiguration = [playbackViewController contentUnavailableConfiguration];
+        v13 = contentUnavailableConfiguration != 0;
 
-        v14 = [(RCMainViewController *)self mainControllerHelper];
-        [v14 prepareForPlaybackForUUID:v28 force:v13];
-        v15 = [v9 uuidBeingDisplayed];
-        if (v15 && ([v28 isEqualToString:v15] & 1) == 0)
+        mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+        [mainControllerHelper prepareForPlaybackForUUID:dCopy force:v13];
+        uuidBeingDisplayed2 = [playbackViewController uuidBeingDisplayed];
+        if (uuidBeingDisplayed2 && ([dCopy isEqualToString:uuidBeingDisplayed2] & 1) == 0)
         {
-          [v14 stopForUUID:v15];
+          [mainControllerHelper stopForUUID:uuidBeingDisplayed2];
         }
 
-        v27 = [v14 compositionForUUID:v28];
-        v16 = [(RCMainViewController *)self browseFoldersViewController];
-        v17 = [v16 selectedRecording];
+        v27 = [mainControllerHelper compositionForUUID:dCopy];
+        browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+        selectedRecording = [browseFoldersViewController selectedRecording];
 
-        [v9 updateWithRecordingModel:v8];
-        if (v17)
+        [playbackViewController updateWithRecordingModel:v8];
+        if (selectedRecording)
         {
-          v18 = [v14 currentRecordingDisplayModel];
+          currentRecordingDisplayModel = [mainControllerHelper currentRecordingDisplayModel];
 
-          if (v18 != v8)
+          if (currentRecordingDisplayModel != v8)
           {
-            [v14 setCurrentRecordingDisplayModel:v8];
+            [mainControllerHelper setCurrentRecordingDisplayModel:v8];
           }
         }
 
         +[CATransaction begin];
         [CATransaction setDisableActions:1];
-        v19 = [(RCMainViewController *)self recordingCardPresentationHelper];
-        v20 = [v19 presentedViewController];
+        recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+        presentedViewController = [recordingCardPresentationHelper presentedViewController];
 
-        if (!v20)
+        if (!presentedViewController)
         {
-          v21 = [(RCMainViewController *)self mainControllerHelper];
-          v22 = [v21 timeController];
-          [v9 enablePlaybackWithComposition:v27 displayModel:v8 timeController:v22];
+          mainControllerHelper2 = [(RCMainViewController *)self mainControllerHelper];
+          timeController = [mainControllerHelper2 timeController];
+          [playbackViewController enablePlaybackWithComposition:v27 displayModel:v8 timeController:timeController];
         }
 
         +[CATransaction commit];
         [(RCMainViewController *)self updatePlaybackContentUnavailableViewIfNeeded];
-        if (([v14 isPlayingForUUID:v28] & 1) == 0)
+        if (([mainControllerHelper isPlayingForUUID:dCopy] & 1) == 0)
         {
-          if (v6)
+          if (positionCopy)
           {
-            [v14 setCurrentTime:0.0];
+            [mainControllerHelper setCurrentTime:0.0];
           }
 
           else
           {
-            v23 = [v14 timeController];
-            [v23 currentTime];
+            timeController2 = [mainControllerHelper timeController];
+            [timeController2 currentTime];
             v25 = v24;
-            v26 = [v14 timeController];
-            [v26 setTargetTime:v25];
+            timeController3 = [mainControllerHelper timeController];
+            [timeController3 setTargetTime:v25];
           }
         }
       }
@@ -1885,97 +1885,97 @@ LABEL_10:
 
 - (void)updateMenuBarWindowTitle
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v4 = [v3 uuidBeingDisplayed];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
 
   v5 = +[RecorderAppDelegate sharedAppDelegate];
-  v6 = [v5 defaultSceneDelegate];
-  v7 = [v6 window];
-  v12 = [v7 windowScene];
+  defaultSceneDelegate = [v5 defaultSceneDelegate];
+  window = [defaultSceneDelegate window];
+  windowScene = [window windowScene];
 
-  if (v4)
+  if (uuidBeingDisplayed)
   {
-    v8 = [(RCMainViewController *)self mainControllerHelper];
-    v9 = [v8 currentRecordingDisplayModel];
-    v10 = [v9 title];
+    mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+    currentRecordingDisplayModel = [mainControllerHelper currentRecordingDisplayModel];
+    title = [currentRecordingDisplayModel title];
 
-    [v12 setTitle:v10];
+    [windowScene setTitle:title];
   }
 
   else
   {
-    v10 = +[NSBundle mainBundle];
-    v11 = [v10 localizedStringForKey:@"VOICE_MEMOS_APP_NAME" value:&stru_100295BB8 table:0];
-    [v12 setTitle:v11];
+    title = +[NSBundle mainBundle];
+    v11 = [title localizedStringForKey:@"VOICE_MEMOS_APP_NAME" value:&stru_100295BB8 table:0];
+    [windowScene setTitle:v11];
   }
 }
 
-- (void)wasDeselectedForUUID:(id)a3
+- (void)wasDeselectedForUUID:(id)d
 {
-  v12 = a3;
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v4 activeRecordingsCollectionViewController];
-  [v5 showIdleForItemWithUUID:v12];
+  dCopy = d;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  [activeRecordingsCollectionViewController showIdleForItemWithUUID:dCopy];
 
-  v6 = [(RCMainViewController *)self playbackViewController];
-  [v6 showIdleForUUID:v12];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController showIdleForUUID:dCopy];
 
-  v7 = [(RCMainViewController *)self playbackViewController];
-  v8 = [v7 uuidBeingDisplayed];
-  v9 = [v8 isEqualToString:v12];
+  playbackViewController2 = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController2 uuidBeingDisplayed];
+  v9 = [uuidBeingDisplayed isEqualToString:dCopy];
 
   if (v9)
   {
-    v10 = [(RCMainViewController *)self playbackViewController];
-    [v10 clear];
+    playbackViewController3 = [(RCMainViewController *)self playbackViewController];
+    [playbackViewController3 clear];
   }
 
-  v11 = [(RCMainViewController *)self mainControllerHelper];
-  [v11 stopForUUID:v12];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper stopForUUID:dCopy];
 }
 
-- (void)performAction:(int64_t)a3 atPosition:(double)a4 forUUID:(id)a5 sourceController:(id)a6 source:(id)a7 trackIndex:(unint64_t)a8
+- (void)performAction:(int64_t)action atPosition:(double)position forUUID:(id)d sourceController:(id)controller source:(id)source trackIndex:(unint64_t)index
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (a3 <= 0x1D && ((1 << a3) & 0x203680FE) != 0)
+  dCopy = d;
+  controllerCopy = controller;
+  sourceCopy = source;
+  if (action <= 0x1D && ((1 << action) & 0x203680FE) != 0)
   {
-    v17 = v14 == 0;
+    v17 = dCopy == 0;
 LABEL_4:
-    v18 = [(RCMainViewController *)self mainControllerHelper];
-    v19 = [(RCMainViewController *)self browseFoldersViewController];
-    v20 = [v19 recordingViewController];
+    mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController recordingViewController];
 
-    v21 = [(RCMainViewController *)self recordingsModelInteractor];
+    recordingsModelInteractor = [(RCMainViewController *)self recordingsModelInteractor];
     [(RCMainViewController *)self saveAsNewDoneButtonAction:0];
     [(RCMainViewController *)self setShouldOpenTranscriptAfterNavigatingToEdit:0];
-    switch(a3)
+    switch(action)
     {
       case 0:
-        [v18 playbackForUUID:v14];
+        [mainControllerHelper playbackForUUID:dCopy];
         break;
       case 1:
         if (v17)
         {
-          [v18 stopPlayback];
+          [mainControllerHelper stopPlayback];
         }
 
         else
         {
-          [v18 pauseForUUID:v14];
+          [mainControllerHelper pauseForUUID:dCopy];
         }
 
         break;
       case 2:
         if (v17)
         {
-          [v18 togglePlayback];
+          [mainControllerHelper togglePlayback];
         }
 
         else
         {
-          [v18 toggleForUUID:v14];
+          [mainControllerHelper toggleForUUID:dCopy];
         }
 
         break;
@@ -1991,67 +1991,67 @@ LABEL_4:
         break;
       case 6:
         [(RCMainViewController *)self saveAsNewDoneButtonAction:1];
-        [(RCMainViewController *)self resumeRecording:a8];
+        [(RCMainViewController *)self resumeRecording:index];
         goto LABEL_44;
       case 7:
         [(RCMainViewController *)self saveAsNewDoneButtonAction:1];
-        [(RCMainViewController *)self replaceRecording:a8];
+        [(RCMainViewController *)self replaceRecording:index];
 LABEL_44:
         +[RCAnalyticsUtilities sendDidCaptureModifyExistingRecording];
         break;
       case 8:
-        [v18 startScrubbingForUUID:v14 atPosition:a4];
+        [mainControllerHelper startScrubbingForUUID:dCopy atPosition:position];
         break;
       case 9:
-        [v18 updateScrubbingForUUID:v14 atPosition:a4];
+        [mainControllerHelper updateScrubbingForUUID:dCopy atPosition:position];
         break;
       case 10:
-        [v18 endScrubbingForUUID:v14 atPosition:a4];
+        [mainControllerHelper endScrubbingForUUID:dCopy atPosition:position];
         break;
       case 11:
-        [v18 jumpForwardForUUID:v14];
+        [mainControllerHelper jumpForwardForUUID:dCopy];
         break;
       case 12:
-        [v18 jumpBackwardForUUID:v14];
+        [mainControllerHelper jumpBackwardForUUID:dCopy];
         break;
       case 13:
-        v38 = [v21 duplicateRecordingWithUUID:v14];
+        v38 = [recordingsModelInteractor duplicateRecordingWithUUID:dCopy];
         break;
       case 14:
-        v50 = v14;
-        v32 = [NSArray arrayWithObjects:&v50 count:1];
-        [(RCMainViewController *)self deleteRecordingsWithUUIDs:v32 sourceController:v15 source:v16 showInfo:1];
+        v50 = dCopy;
+        browseFoldersViewController2 = [NSArray arrayWithObjects:&v50 count:1];
+        [(RCMainViewController *)self deleteRecordingsWithUUIDs:browseFoldersViewController2 sourceController:controllerCopy source:sourceCopy showInfo:1];
         goto LABEL_54;
       case 15:
-        v32 = [(RCMainViewController *)self browseFoldersViewController];
-        v35 = [v32 activeRecordingsCollectionViewController];
-        v36 = [v35 selectedUUIDs];
-        [(RCMainViewController *)self deleteRecordingsWithUUIDs:v36 sourceController:v15 source:v16 showInfo:1];
+        browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+        activeRecordingsCollectionViewController = [browseFoldersViewController2 activeRecordingsCollectionViewController];
+        selectedUUIDs = [activeRecordingsCollectionViewController selectedUUIDs];
+        [(RCMainViewController *)self deleteRecordingsWithUUIDs:selectedUUIDs sourceController:controllerCopy source:sourceCopy showInfo:1];
 
         goto LABEL_54;
       case 16:
-        v49 = v14;
-        v32 = [NSArray arrayWithObjects:&v49 count:1];
-        [(RCMainViewController *)self confirmEraseWithUUIDs:v32 sourceController:v15 source:v16 eraseAllDeleted:0];
+        v49 = dCopy;
+        browseFoldersViewController2 = [NSArray arrayWithObjects:&v49 count:1];
+        [(RCMainViewController *)self confirmEraseWithUUIDs:browseFoldersViewController2 sourceController:controllerCopy source:sourceCopy eraseAllDeleted:0];
         goto LABEL_54;
       case 17:
-        [(RCMainViewController *)self confirmEraseSelectedWithSourceController:v15 source:v16 eraseAllDeleted:0];
+        [(RCMainViewController *)self confirmEraseSelectedWithSourceController:controllerCopy source:sourceCopy eraseAllDeleted:0];
         break;
       case 18:
-        [(RCMainViewController *)self confirmEraseAllWithSourceController:v15 source:v16 eraseAllDeleted:1];
+        [(RCMainViewController *)self confirmEraseAllWithSourceController:controllerCopy source:sourceCopy eraseAllDeleted:1];
         break;
       case 19:
-        v48 = v14;
-        v32 = [NSArray arrayWithObjects:&v48 count:1];
-        [(RCMainViewController *)self confirmRecoverWithUUIDs:v32 sourceController:v15 source:v16 force:0];
+        v48 = dCopy;
+        browseFoldersViewController2 = [NSArray arrayWithObjects:&v48 count:1];
+        [(RCMainViewController *)self confirmRecoverWithUUIDs:browseFoldersViewController2 sourceController:controllerCopy source:sourceCopy force:0];
 LABEL_54:
 
         break;
       case 20:
-        [(RCMainViewController *)self confirmRecoverSelectedWithSourceController:v15 source:v16];
+        [(RCMainViewController *)self confirmRecoverSelectedWithSourceController:controllerCopy source:sourceCopy];
         break;
       case 21:
-        [(RCMainViewController *)self confirmRecoverAllWithSourceController:v15 source:v16];
+        [(RCMainViewController *)self confirmRecoverAllWithSourceController:controllerCopy source:sourceCopy];
         break;
       case 22:
         goto LABEL_60;
@@ -2059,132 +2059,132 @@ LABEL_54:
         [(RCMainViewController *)self setShouldOpenTranscriptAfterNavigatingToEdit:1];
         goto LABEL_60;
       case 24:
-        v33 = self;
+        selfCopy2 = self;
         v34 = 0;
         goto LABEL_28;
       case 25:
-        v33 = self;
+        selfCopy2 = self;
         v34 = 1;
 LABEL_28:
-        [(RCMainViewController *)v33 saveAsNewDoneButtonAction:v34];
-        [v20 handleDone];
+        [(RCMainViewController *)selfCopy2 saveAsNewDoneButtonAction:v34];
+        [recordingViewController handleDone];
         break;
       case 26:
-        [v20 handleCancel];
+        [recordingViewController handleCancel];
         break;
       case 27:
         [(RCMainViewController *)self _endDescriptionViewTextEditing];
-        v52 = v14;
+        v52 = dCopy;
         v26 = [NSArray arrayWithObjects:&v52 count:1];
-        v27 = v18;
+        v27 = mainControllerHelper;
         v28 = v26;
-        v29 = v15;
-        v30 = v16;
+        v29 = controllerCopy;
+        v30 = sourceCopy;
         v31 = 0;
         goto LABEL_58;
       case 28:
         [(RCMainViewController *)self _endDescriptionViewTextEditing];
-        v51 = v14;
+        v51 = dCopy;
         v26 = [NSArray arrayWithObjects:&v51 count:1];
-        v27 = v18;
+        v27 = mainControllerHelper;
         v28 = v26;
-        v29 = v15;
-        v30 = v16;
+        v29 = controllerCopy;
+        v30 = sourceCopy;
         v31 = 1;
 LABEL_58:
         [v27 shareRecordingsWithUUIDs:v28 inViewController:v29 source:v30 isShareButton:v31 completionWithItemsHandler:0];
 
         break;
       case 29:
-        v44 = [(RCMainViewController *)self browseFoldersViewController];
-        v45 = [v44 activeRecordingsCollectionViewController];
-        v46 = [v45 selectedUUIDs];
+        browseFoldersViewController3 = [(RCMainViewController *)self browseFoldersViewController];
+        activeRecordingsCollectionViewController2 = [browseFoldersViewController3 activeRecordingsCollectionViewController];
+        selectedUUIDs2 = [activeRecordingsCollectionViewController2 selectedUUIDs];
 
         v47[0] = _NSConcreteStackBlock;
         v47[1] = 3221225472;
         v47[2] = sub_1000A26F4;
         v47[3] = &unk_10028C0F0;
         v47[4] = self;
-        [v18 shareRecordingsWithUUIDs:v46 inViewController:v15 source:v16 isShareButton:1 completionWithItemsHandler:v47];
+        [mainControllerHelper shareRecordingsWithUUIDs:selectedUUIDs2 inViewController:controllerCopy source:sourceCopy isShareButton:1 completionWithItemsHandler:v47];
 
 LABEL_60:
-        v39 = self;
-        v40 = v14;
+        selfCopy4 = self;
+        v40 = dCopy;
         v41 = 0;
         goto LABEL_61;
       case 30:
-        v39 = self;
-        v40 = v14;
+        selfCopy4 = self;
+        v40 = dCopy;
         v41 = 1;
 LABEL_61:
-        [(RCMainViewController *)v39 _openForModifyRecordingWithUUID:v40 enterTrim:v41];
+        [(RCMainViewController *)selfCopy4 _openForModifyRecordingWithUUID:v40 enterTrim:v41];
         break;
       case 31:
-        [v18 performTrimByKeepingSelectedRangeForRecordingWithUUID:v14 source:v16];
+        [mainControllerHelper performTrimByKeepingSelectedRangeForRecordingWithUUID:dCopy source:sourceCopy];
         break;
       case 32:
-        [v18 performTrimByDeletingSelectedRangeForRecordingWithUUID:v14 source:v16];
+        [mainControllerHelper performTrimByDeletingSelectedRangeForRecordingWithUUID:dCopy source:sourceCopy];
         break;
       case 33:
         [(RCMainViewController *)self undo];
         break;
       case 34:
-        v24 = self;
+        selfCopy6 = self;
         v25 = 1;
         goto LABEL_17;
       case 35:
-        v24 = self;
+        selfCopy6 = self;
         v25 = 0;
 LABEL_17:
-        [(RCMainViewController *)v24 setSpeechIsolatorEnabled:v25 forUUID:v14];
+        [(RCMainViewController *)selfCopy6 setSpeechIsolatorEnabled:v25 forUUID:dCopy];
         break;
       case 36:
-        v22 = self;
+        selfCopy8 = self;
         v23 = 1;
         goto LABEL_14;
       case 37:
-        v22 = self;
+        selfCopy8 = self;
         v23 = 0;
 LABEL_14:
-        [(RCMainViewController *)v22 setFavorite:v23 forRecordingWithUUID:v14];
+        [(RCMainViewController *)selfCopy8 setFavorite:v23 forRecordingWithUUID:dCopy];
         break;
       case 38:
         [(RCMainViewController *)self _endDescriptionViewTextEditing];
-        [v21 setEnhanced:1 forUUID:v14];
-        v42 = self;
+        [recordingsModelInteractor setEnhanced:1 forUUID:dCopy];
+        selfCopy10 = self;
         v43 = 1;
         goto LABEL_63;
       case 39:
         [(RCMainViewController *)self _endDescriptionViewTextEditing];
-        [v21 setEnhanced:0 forUUID:v14];
-        v42 = self;
+        [recordingsModelInteractor setEnhanced:0 forUUID:dCopy];
+        selfCopy10 = self;
         v43 = 0;
 LABEL_63:
-        [(RCMainViewController *)v42 _axAnnounceDidSetEnhanced:v43];
+        [(RCMainViewController *)selfCopy10 _axAnnounceDidSetEnhanced:v43];
         break;
       case 40:
         [(RCMainViewController *)self _endDescriptionViewTextEditing];
-        [(RCMainViewController *)self _presentMoveToFolderUIForRecordingWithUUID:v14];
+        [(RCMainViewController *)self _presentMoveToFolderUIForRecordingWithUUID:dCopy];
         break;
       case 41:
         [(RCMainViewController *)self _endDescriptionViewTextEditing];
-        v37 = [v20 view];
-        [v37 setTranscriptViewState:0];
+        view = [recordingViewController view];
+        [view setTranscriptViewState:0];
 
-        [(RCMainViewController *)self _presentPlaybackSettingsUIWithSource:v16 UUID:v14];
+        [(RCMainViewController *)self _presentPlaybackSettingsUIWithSource:sourceCopy UUID:dCopy];
         break;
       case 42:
         [(RCMainViewController *)self toggleTranscriptView];
         break;
       case 43:
-        [(RCMainViewController *)self copyTranscript:v14];
+        [(RCMainViewController *)self copyTranscript:dCopy];
         break;
       case 44:
         goto LABEL_51;
       case 45:
-        [(RCMainViewController *)self separateRecordingLayers:v14];
+        [(RCMainViewController *)self separateRecordingLayers:dCopy];
 LABEL_51:
-        [(RCMainViewController *)self renameDescriptionViewTitleTextField:v16 withUUID:v14];
+        [(RCMainViewController *)self renameDescriptionViewTitleTextField:sourceCopy withUUID:dCopy];
         break;
       default:
         break;
@@ -2193,83 +2193,83 @@ LABEL_51:
     goto LABEL_68;
   }
 
-  if (v14)
+  if (dCopy)
   {
     v17 = 0;
     goto LABEL_4;
   }
 
-  v18 = OSLogForCategory();
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+  mainControllerHelper = OSLogForCategory();
+  if (os_log_type_enabled(mainControllerHelper, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001BA794(v18);
+    sub_1001BA794(mainControllerHelper);
   }
 
 LABEL_68:
 }
 
-- (void)_openForModifyRecordingWithUUID:(id)a3 enterTrim:(BOOL)a4
+- (void)_openForModifyRecordingWithUUID:(id)d enterTrim:(BOOL)trim
 {
-  v4 = a4;
-  v14 = a3;
-  if (v4 && [(RCMainViewController *)self state]== 1)
+  trimCopy = trim;
+  dCopy = d;
+  if (trimCopy && [(RCMainViewController *)self state]== 1)
   {
-    v6 = [(RCMainViewController *)self mainControllerHelper];
-    [v6 enterTrimMode];
+    mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+    [mainControllerHelper enterTrimMode];
 
-    v7 = [(RCMainViewController *)self browseFoldersViewController];
-    v8 = [v7 recordingViewController];
-    [v8 updateForTrimMode];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController recordingViewController];
+    [recordingViewController updateForTrimMode];
   }
 
   else
   {
-    v7 = [(RCMainViewController *)self mainControllerHelper];
-    v9 = [(RCMainViewController *)self browseFoldersViewController];
-    v10 = [v9 activeRecordingsCollectionViewController];
-    v8 = [v10 uuidOfSelectedItem];
+    browseFoldersViewController = [(RCMainViewController *)self mainControllerHelper];
+    browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController = [browseFoldersViewController2 activeRecordingsCollectionViewController];
+    recordingViewController = [activeRecordingsCollectionViewController uuidOfSelectedItem];
 
-    if (([v8 isEqualToString:v14] & 1) == 0)
+    if (([recordingViewController isEqualToString:dCopy] & 1) == 0)
     {
-      v11 = [(RCMainViewController *)self browseFoldersViewController];
-      v12 = [v11 activeRecordingsCollectionViewController];
-      [v12 selectItemWithUUID:v14];
+      browseFoldersViewController3 = [(RCMainViewController *)self browseFoldersViewController];
+      activeRecordingsCollectionViewController2 = [browseFoldersViewController3 activeRecordingsCollectionViewController];
+      [activeRecordingsCollectionViewController2 selectItemWithUUID:dCopy];
     }
 
-    [v7 openForModifyRecordingWithUUID:v14 withSubActivityType:v4];
+    [browseFoldersViewController openForModifyRecordingWithUUID:dCopy withSubActivityType:trimCopy];
   }
 
-  v13 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  [v13 restyleRecordingCardSheetPresentationController];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  [recordingCardPresentationHelper restyleRecordingCardSheetPresentationController];
 }
 
-- (void)deleteRecordingsWithUUIDs:(id)a3 sourceController:(id)a4 source:(id)a5 showInfo:(BOOL)a6
+- (void)deleteRecordingsWithUUIDs:(id)ds sourceController:(id)controller source:(id)source showInfo:(BOOL)info
 {
-  v6 = a6;
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v17 && [v17 count])
+  infoCopy = info;
+  dsCopy = ds;
+  controllerCopy = controller;
+  sourceCopy = source;
+  if (dsCopy && [dsCopy count])
   {
     v12 = +[NSUserDefaults sharedSettingsUserDefaults];
     v13 = v12;
     if (v12 && [v12 rc_deletionIsImmediate])
     {
-      [(RCMainViewController *)self confirmEraseWithUUIDs:v17 sourceController:v10 source:v11 eraseAllDeleted:0];
+      [(RCMainViewController *)self confirmEraseWithUUIDs:dsCopy sourceController:controllerCopy source:sourceCopy eraseAllDeleted:0];
     }
 
     else
     {
-      v14 = [(RCMainViewController *)self mainControllerHelper];
-      v15 = [v14 deleteWithUUIDs:v17 source:v11 showInfo:v6];
+      mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+      v15 = [mainControllerHelper deleteWithUUIDs:dsCopy source:sourceCopy showInfo:infoCopy];
 
       if (v15)
       {
         v16 = +[RCShareMemoViewController presentedController];
         [v16 dismissViewControllerAnimated:0 completion:0];
 
-        [v15 rc_configurePopoverControllerWithSource:v11];
-        [(RCMainViewController *)self _myPresentViewController:v15 sourceController:v10 animated:1 completion:0];
+        [v15 rc_configurePopoverControllerWithSource:sourceCopy];
+        [(RCMainViewController *)self _myPresentViewController:v15 sourceController:controllerCopy animated:1 completion:0];
       }
     }
 
@@ -2277,54 +2277,54 @@ LABEL_68:
   }
 }
 
-- (void)confirmEraseSelectedWithSourceController:(id)a3 source:(id)a4 eraseAllDeleted:(BOOL)a5
+- (void)confirmEraseSelectedWithSourceController:(id)controller source:(id)source eraseAllDeleted:(BOOL)deleted
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
+  deletedCopy = deleted;
+  controllerCopy = controller;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v11;
-    v10 = [v9 selectedUUIDs];
-    [(RCMainViewController *)self confirmEraseWithUUIDs:v10 sourceController:v9 source:v8 eraseAllDeleted:v5];
+    v9 = controllerCopy;
+    selectedUUIDs = [v9 selectedUUIDs];
+    [(RCMainViewController *)self confirmEraseWithUUIDs:selectedUUIDs sourceController:v9 source:sourceCopy eraseAllDeleted:deletedCopy];
   }
 }
 
-- (void)confirmEraseAllWithSourceController:(id)a3 source:(id)a4 eraseAllDeleted:(BOOL)a5
+- (void)confirmEraseAllWithSourceController:(id)controller source:(id)source eraseAllDeleted:(BOOL)deleted
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
+  deletedCopy = deleted;
+  controllerCopy = controller;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v11;
-    v10 = [v9 allUUIDs];
-    [(RCMainViewController *)self confirmEraseWithUUIDs:v10 sourceController:v9 source:v8 eraseAllDeleted:v5];
+    v9 = controllerCopy;
+    allUUIDs = [v9 allUUIDs];
+    [(RCMainViewController *)self confirmEraseWithUUIDs:allUUIDs sourceController:v9 source:sourceCopy eraseAllDeleted:deletedCopy];
   }
 }
 
-- (void)confirmEraseWithUUIDs:(id)a3 sourceController:(id)a4 source:(id)a5 eraseAllDeleted:(BOOL)a6
+- (void)confirmEraseWithUUIDs:(id)ds sourceController:(id)controller source:(id)source eraseAllDeleted:(BOOL)deleted
 {
-  v6 = a6;
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v18 && [v18 count])
+  deletedCopy = deleted;
+  dsCopy = ds;
+  controllerCopy = controller;
+  sourceCopy = source;
+  if (dsCopy && [dsCopy count])
   {
-    v12 = [(RCMainViewController *)self mainControllerHelper];
-    v13 = v12;
-    if (v6)
+    mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+    v13 = mainControllerHelper;
+    if (deletedCopy)
     {
-      v14 = [v12 eraseAllRecordingsAndConfirmWithSource:v11];
+      v14 = [mainControllerHelper eraseAllRecordingsAndConfirmWithSource:sourceCopy];
     }
 
     else
     {
-      v15 = [(RCMainViewController *)self browseFoldersViewController];
-      v16 = [v15 activeRecordingsCollectionViewController];
-      v14 = [v13 eraseAndConfirmWithUUIDs:v18 source:v11 collectionViewController:v16];
+      browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+      activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+      v14 = [v13 eraseAndConfirmWithUUIDs:dsCopy source:sourceCopy collectionViewController:activeRecordingsCollectionViewController];
     }
 
     if (v14)
@@ -2332,64 +2332,64 @@ LABEL_68:
       v17 = +[RCShareMemoViewController presentedController];
       [v17 dismissViewControllerAnimated:0 completion:0];
 
-      [v14 rc_configurePopoverControllerWithSource:v11];
-      [(RCMainViewController *)self _myPresentViewController:v14 sourceController:v10 animated:1 completion:0];
+      [v14 rc_configurePopoverControllerWithSource:sourceCopy];
+      [(RCMainViewController *)self _myPresentViewController:v14 sourceController:controllerCopy animated:1 completion:0];
     }
   }
 }
 
-- (void)recoverRecordingsWithUUIDs:(id)a3 sourceController:(id)a4 source:(id)a5 force:(BOOL)a6
+- (void)recoverRecordingsWithUUIDs:(id)ds sourceController:(id)controller source:(id)source force:(BOOL)force
 {
-  v6 = a6;
-  v12 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v12 && [v12 count])
+  forceCopy = force;
+  dsCopy = ds;
+  controllerCopy = controller;
+  sourceCopy = source;
+  if (dsCopy && [dsCopy count])
   {
-    [(RCMainViewController *)self confirmRecoverWithUUIDs:v12 sourceController:v10 source:v11 force:v6];
+    [(RCMainViewController *)self confirmRecoverWithUUIDs:dsCopy sourceController:controllerCopy source:sourceCopy force:forceCopy];
   }
 }
 
-- (void)confirmRecoverSelectedWithSourceController:(id)a3 source:(id)a4
+- (void)confirmRecoverSelectedWithSourceController:(id)controller source:(id)source
 {
-  v9 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v9;
-    v8 = [v7 selectedUUIDs];
-    [(RCMainViewController *)self confirmRecoverWithUUIDs:v8 sourceController:v7 source:v6 force:0];
+    v7 = controllerCopy;
+    selectedUUIDs = [v7 selectedUUIDs];
+    [(RCMainViewController *)self confirmRecoverWithUUIDs:selectedUUIDs sourceController:v7 source:sourceCopy force:0];
   }
 }
 
-- (void)confirmRecoverAllWithSourceController:(id)a3 source:(id)a4
+- (void)confirmRecoverAllWithSourceController:(id)controller source:(id)source
 {
-  v9 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v9;
-    v8 = [v7 allUUIDs];
-    [(RCMainViewController *)self confirmRecoverWithUUIDs:v8 sourceController:v7 source:v6 force:0];
+    v7 = controllerCopy;
+    allUUIDs = [v7 allUUIDs];
+    [(RCMainViewController *)self confirmRecoverWithUUIDs:allUUIDs sourceController:v7 source:sourceCopy force:0];
   }
 }
 
-- (void)confirmRecoverWithUUIDs:(id)a3 sourceController:(id)a4 source:(id)a5 force:(BOOL)a6
+- (void)confirmRecoverWithUUIDs:(id)ds sourceController:(id)controller source:(id)source force:(BOOL)force
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10 && [v10 count])
+  forceCopy = force;
+  dsCopy = ds;
+  controllerCopy = controller;
+  sourceCopy = source;
+  if (dsCopy && [dsCopy count])
   {
-    v24 = v6;
+    v24 = forceCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = v10;
+    v13 = dsCopy;
     v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v14)
     {
@@ -2406,8 +2406,8 @@ LABEL_68:
           }
 
           v18 = *(*(&v25 + 1) + 8 * v17);
-          v19 = [(RCMainViewController *)self mainControllerHelper];
-          [v19 pauseForUUID:v18];
+          mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+          [mainControllerHelper pauseForUUID:v18];
 
           v17 = v17 + 1;
         }
@@ -2419,134 +2419,134 @@ LABEL_68:
       while (v15);
     }
 
-    v20 = [(RCMainViewController *)self mainControllerHelper];
-    v21 = [(RCMainViewController *)self browseFoldersViewController];
-    v22 = [v21 activeRecordingsCollectionViewController];
-    v23 = [v20 restoreRecordingsWithUUIDs:v13 isRecover:1 source:v12 force:v24 collectionViewController:v22];
+    mainControllerHelper2 = [(RCMainViewController *)self mainControllerHelper];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+    v23 = [mainControllerHelper2 restoreRecordingsWithUUIDs:v13 isRecover:1 source:sourceCopy force:v24 collectionViewController:activeRecordingsCollectionViewController];
 
     if (v23)
     {
-      [v23 rc_configurePopoverControllerWithSource:v12];
-      [(RCMainViewController *)self _myPresentViewController:v23 sourceController:v11 animated:1 completion:0];
+      [v23 rc_configurePopoverControllerWithSource:sourceCopy];
+      [(RCMainViewController *)self _myPresentViewController:v23 sourceController:controllerCopy animated:1 completion:0];
     }
   }
 }
 
-- (void)moveRecordingsWithUUIDs:(id)a3 toUserFolderNamed:(id)a4 source:(id)a5
+- (void)moveRecordingsWithUUIDs:(id)ds toUserFolderNamed:(id)named source:(id)source
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v11)
+  dsCopy = ds;
+  namedCopy = named;
+  sourceCopy = source;
+  if (dsCopy)
   {
-    v10 = [v11 count];
-    if (v8)
+    v10 = [dsCopy count];
+    if (namedCopy)
     {
       if (v10)
       {
-        [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor addRecordingsWithUUIDs:v11 toUserFolderNamed:v8];
+        [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor addRecordingsWithUUIDs:dsCopy toUserFolderNamed:namedCopy];
       }
     }
   }
 }
 
-- (void)moveRecordingsWithUUIDs:(id)a3 toBuiltInFolderOfType:(int64_t)a4 source:(id)a5
+- (void)moveRecordingsWithUUIDs:(id)ds toBuiltInFolderOfType:(int64_t)type source:(id)source
 {
-  v9 = a3;
-  v8 = a5;
-  if (v9 && [v9 count])
+  dsCopy = ds;
+  sourceCopy = source;
+  if (dsCopy && [dsCopy count])
   {
-    [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor addRecordingsWithUUIDs:v9 toBuiltInFolderOfType:a4];
+    [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor addRecordingsWithUUIDs:dsCopy toBuiltInFolderOfType:type];
   }
 }
 
-- (void)_myPresentViewController:(id)a3 sourceController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_myPresentViewController:(id)controller sourceController:(id)sourceController animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v13 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (!v10)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  selfCopy = sourceController;
+  completionCopy = completion;
+  if (!selfCopy)
   {
-    v12 = [(RCMainViewController *)self navigationController];
-    v10 = [v12 presentedViewController];
+    navigationController = [(RCMainViewController *)self navigationController];
+    selfCopy = [navigationController presentedViewController];
 
-    if (!v10)
+    if (!selfCopy)
     {
-      v10 = self;
+      selfCopy = self;
     }
   }
 
-  [(RCMainViewController *)self setPresentedConfirmationController:v13];
-  [(RCMainViewController *)v10 presentViewController:v13 animated:v7 completion:v11];
+  [(RCMainViewController *)self setPresentedConfirmationController:controllerCopy];
+  [(RCMainViewController *)selfCopy presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)libraryWillChangeEditingState:(BOOL)a3
+- (void)libraryWillChangeEditingState:(BOOL)state
 {
-  v3 = a3;
-  if (a3)
+  stateCopy = state;
+  if (state)
   {
-    v5 = [(RCMainViewController *)self mainControllerHelper];
-    [v5 stopPlayback];
+    mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+    [mainControllerHelper stopPlayback];
   }
 
-  v6 = [(RCMainViewController *)self playbackViewController];
-  [v6 updateActionButtonState:!v3];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController updateActionButtonState:!stateCopy];
 }
 
-- (BOOL)isEditingInFlightForUUID:(id)a3
+- (BOOL)isEditingInFlightForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self editingProgressItems];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  editingProgressItems = [(RCMainViewController *)self editingProgressItems];
+  v6 = [editingProgressItems objectForKeyedSubscript:dCopy];
 
   return v6 != 0;
 }
 
 - (void)selectNewRecordingForDismiss
 {
-  v11 = [(RCMainViewController *)self uuidToSelectAfterDismiss];
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
-  v5 = [v4 presentsRecordingWithUUID:v11];
+  uuidToSelectAfterDismiss = [(RCMainViewController *)self uuidToSelectAfterDismiss];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  v5 = [activeRecordingsCollectionViewController presentsRecordingWithUUID:uuidToSelectAfterDismiss];
 
   if (![(RCMainViewController *)self state]&& v5)
   {
-    v6 = [(RCMainViewController *)self browseFoldersViewController];
-    v7 = [v6 activeRecordingsCollectionViewController];
-    [v7 selectItemWithUUID:v11];
+    browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController2 = [browseFoldersViewController2 activeRecordingsCollectionViewController];
+    [activeRecordingsCollectionViewController2 selectItemWithUUID:uuidToSelectAfterDismiss];
 
-    v8 = [(RCMainViewController *)self playbackViewController];
-    v9 = [v8 uuidBeingDisplayed];
-    v10 = [v9 isEqualToString:v11];
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+    v10 = [uuidBeingDisplayed isEqualToString:uuidToSelectAfterDismiss];
 
     if ((v10 & 1) == 0)
     {
-      [(RCMainViewController *)self didSelectForUUID:v11 resetPosition:0 force:0];
+      [(RCMainViewController *)self didSelectForUUID:uuidToSelectAfterDismiss resetPosition:0 force:0];
     }
 
     [(RCMainViewController *)self setUuidToSelectAfterDismiss:0];
   }
 }
 
-- (void)_presentMoveToFolderUIForRecordingWithUUID:(id)a3
+- (void)_presentMoveToFolderUIForRecordingWithUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v6 = a3;
-    v4 = a3;
-    v5 = [NSArray arrayWithObjects:&v6 count:1];
+    dCopy = d;
+    dCopy2 = d;
+    v5 = [NSArray arrayWithObjects:&dCopy count:1];
 
-    [(RCMainViewController *)self _presentMoveToFolderUIForRecordingsWithUUIDs:v5, v6];
+    [(RCMainViewController *)self _presentMoveToFolderUIForRecordingsWithUUIDs:v5, dCopy];
   }
 }
 
-- (void)_presentMoveToFolderUIForRecordingsWithUUIDs:(id)a3
+- (void)_presentMoveToFolderUIForRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self moveToFolderContainerViewControllerWithUUIDs:v4];
-  v6 = [v5 collectionViewController];
-  [v6 setPresentingDelegate:self];
+  dsCopy = ds;
+  v5 = [(RCMainViewController *)self moveToFolderContainerViewControllerWithUUIDs:dsCopy];
+  collectionViewController = [v5 collectionViewController];
+  [collectionViewController setPresentingDelegate:self];
 
   v7 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v7 presentedViewsMinimumWidth];
@@ -2566,37 +2566,37 @@ LABEL_68:
   objc_destroyWeak(&location);
 }
 
-- (id)moveToFolderContainerViewControllerWithUUIDs:(id)a3
+- (id)moveToFolderContainerViewControllerWithUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   [v5 setModalPresentationStyle:2];
   [v5 setSelectionDelegate:self];
-  [v5 setUuidsToMove:v4];
+  [v5 setUuidsToMove:dsCopy];
 
-  v6 = [(RCMainViewController *)self browseFoldersViewController];
-  v7 = [v6 currentActiveFolderViewController];
-  v8 = [v7 folderUUID];
-  [v5 setUuidOfSourceFolder:v8];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  currentActiveFolderViewController = [browseFoldersViewController currentActiveFolderViewController];
+  folderUUID = [currentActiveFolderViewController folderUUID];
+  [v5 setUuidOfSourceFolder:folderUUID];
 
-  v9 = [(RCMainViewController *)self browseFoldersViewController];
-  v10 = [v9 currentActiveFolderViewController];
-  [v5 setFolderTypeOfSourceFolder:{objc_msgSend(v10, "folderType")}];
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  currentActiveFolderViewController2 = [browseFoldersViewController2 currentActiveFolderViewController];
+  [v5 setFolderTypeOfSourceFolder:{objc_msgSend(currentActiveFolderViewController2, "folderType")}];
 
   v11 = [[RCFolderSelectionContainerViewController alloc] initWithCollectionViewController:v5];
 
   return v11;
 }
 
-- (id)folderUUIDsToExcludeWhenMovingRecordingUUIDs:(id)a3
+- (id)folderUUIDsToExcludeWhenMovingRecordingUUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v6)
   {
@@ -2623,10 +2623,10 @@ LABEL_68:
       }
 
       v13 = *(*(&v29 + 1) + 8 * i);
-      v14 = [(RCMainViewController *)self recordingsModelInteractor];
-      v15 = [v14 isRecentlyDeletedForUUID:v13];
-      v16 = [v14 isFavoriteForUUID:v13];
-      v17 = [v14 uuidOfUserFolderForRecordingWithUUID:v13];
+      recordingsModelInteractor = [(RCMainViewController *)self recordingsModelInteractor];
+      v15 = [recordingsModelInteractor isRecentlyDeletedForUUID:v13];
+      v16 = [recordingsModelInteractor isFavoriteForUUID:v13];
+      v17 = [recordingsModelInteractor uuidOfUserFolderForRecordingWithUUID:v13];
       if (v8)
       {
 LABEL_7:
@@ -2686,7 +2686,7 @@ LABEL_14:
   {
 LABEL_24:
     v19 = +[RCApplicationModel sharedApplicationModel];
-    v20 = [v19 recentlyDeletedRecordingsFolder];
+    recentlyDeletedRecordingsFolder = [v19 recentlyDeletedRecordingsFolder];
     goto LABEL_25;
   }
 
@@ -2694,18 +2694,18 @@ LABEL_29:
   if (v10)
   {
     v19 = +[RCApplicationModel sharedApplicationModel];
-    v20 = [v19 favoriteRecordingsFolder];
+    recentlyDeletedRecordingsFolder = [v19 favoriteRecordingsFolder];
     goto LABEL_25;
   }
 
   if (![v4 count])
   {
     v19 = +[RCApplicationModel sharedApplicationModel];
-    v20 = [v19 voiceMemosRecordingsFolder];
+    recentlyDeletedRecordingsFolder = [v19 voiceMemosRecordingsFolder];
 LABEL_25:
-    v21 = v20;
-    v22 = [v20 uuid];
-    [v4 addObject:v22];
+    v21 = recentlyDeletedRecordingsFolder;
+    uuid = [recentlyDeletedRecordingsFolder uuid];
+    [v4 addObject:uuid];
   }
 
   v23 = [NSArray arrayWithArray:v4];
@@ -2713,50 +2713,50 @@ LABEL_25:
   return v23;
 }
 
-- (void)_presentPlaybackSettingsUIWithSource:(id)a3 UUID:(id)a4
+- (void)_presentPlaybackSettingsUIWithSource:(id)source UUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RCMainViewController *)self browseFoldersViewController];
-  v9 = [v8 activeRecordingsCollectionViewController];
-  v10 = [v9 uuidOfSelectedItem];
+  sourceCopy = source;
+  dCopy = d;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  uuidOfSelectedItem = [activeRecordingsCollectionViewController uuidOfSelectedItem];
 
-  if (([v10 isEqualToString:v7] & 1) == 0)
+  if (([uuidOfSelectedItem isEqualToString:dCopy] & 1) == 0)
   {
-    v11 = [(RCMainViewController *)self browseFoldersViewController];
-    v12 = [v11 activeRecordingsCollectionViewController];
-    [v12 selectItemWithUUID:v7];
+    browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController2 = [browseFoldersViewController2 activeRecordingsCollectionViewController];
+    [activeRecordingsCollectionViewController2 selectItemWithUUID:dCopy];
   }
 
-  v13 = [(RCMainViewController *)self mainControllerHelper];
-  v14 = [v13 playbackSettingsForUUID:v7];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  v14 = [mainControllerHelper playbackSettingsForUUID:dCopy];
 
   if (v14)
   {
-    v15 = [(RCMainViewController *)self presentedPlaybackSettingsViewController];
+    presentedPlaybackSettingsViewController = [(RCMainViewController *)self presentedPlaybackSettingsViewController];
 
-    if (!v15)
+    if (!presentedPlaybackSettingsViewController)
     {
       v16 = objc_alloc_init(RCPlaybackSettingsViewController);
       [(RCPlaybackSettingsViewController *)v16 setDelegate:self];
       [(RCPlaybackSettingsViewController *)v16 setPlaybackSettings:v14];
       v35 = [[UINavigationController alloc] initWithRootViewController:v16];
       v34 = +[RCRecorderStyleProvider sharedStyleProvider];
-      v17 = [v34 supportsPopoverPlaybackSettingsPresentation];
-      if (v6 && ((v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass()) : (isKindOfClass = 1), (v18 & isKindOfClass) == 1))
+      supportsPopoverPlaybackSettingsPresentation = [v34 supportsPopoverPlaybackSettingsPresentation];
+      if (sourceCopy && ((v18 = supportsPopoverPlaybackSettingsPresentation, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass()) : (isKindOfClass = 1), (v18 & isKindOfClass) == 1))
       {
         [v35 setModalPresentationStyle:7];
-        [v35 rc_configurePopoverControllerWithSource:v6];
+        [v35 rc_configurePopoverControllerWithSource:sourceCopy];
       }
 
       else
       {
         [(RCPlaybackSettingsViewController *)v16 setNeedsDoneButton:1];
-        v20 = [v35 presentationController];
+        presentationController = [v35 presentationController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = v20;
+          v21 = presentationController;
           v22 = +[UISheetPresentationControllerDetent largeDetent];
           v41 = v22;
           v23 = [NSArray arrayWithObjects:&v41 count:1];
@@ -2765,20 +2765,20 @@ LABEL_25:
         }
       }
 
-      v24 = [(RCMainViewController *)self recordingCardPresentationHelper];
-      v25 = [v24 presentedViewController];
-      v26 = v25;
-      if (v25)
+      recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+      presentedViewController = [recordingCardPresentationHelper presentedViewController];
+      v26 = presentedViewController;
+      if (presentedViewController)
       {
-        v27 = v25;
+        selfCopy = presentedViewController;
       }
 
       else
       {
-        v27 = self;
+        selfCopy = self;
       }
 
-      v28 = v27;
+      v28 = selfCopy;
 
       v29 = +[RCRecorderStyleProvider sharedStyleProvider];
       [v29 presentedViewsMinimumWidth];
@@ -2802,106 +2802,106 @@ LABEL_25:
   }
 }
 
-- (void)_presentViewController:(id)a3 fromViewController:(id)a4 animated:(BOOL)a5 widthHeightConstraintConstant:(double)a6 completion:(id)a7
+- (void)_presentViewController:(id)controller fromViewController:(id)viewController animated:(BOOL)animated widthHeightConstraintConstant:(double)constant completion:(id)completion
 {
-  v9 = a5;
-  v33 = a3;
-  v11 = a4;
-  v12 = a7;
-  if (a6 > 0.0)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
+  if (constant > 0.0)
   {
-    v13 = [v33 view];
-    v14 = [v13 widthAnchor];
-    v15 = [v14 constraintGreaterThanOrEqualToConstant:a6];
+    view = [controllerCopy view];
+    widthAnchor = [view widthAnchor];
+    v15 = [widthAnchor constraintGreaterThanOrEqualToConstant:constant];
     [v15 setActive:1];
 
-    v16 = [v33 view];
-    v17 = [v16 heightAnchor];
-    v18 = [v17 constraintGreaterThanOrEqualToConstant:a6];
+    view2 = [controllerCopy view];
+    heightAnchor = [view2 heightAnchor];
+    v18 = [heightAnchor constraintGreaterThanOrEqualToConstant:constant];
     [v18 setActive:1];
 
     v19 = +[UIApplication sharedApplication];
-    v20 = [v19 delegate];
-    v21 = [v20 window];
+    delegate = [v19 delegate];
+    window = [delegate window];
 
-    if (v21)
+    if (window)
     {
-      [v21 frame];
+      [window frame];
       v23 = v22 * 0.9;
       v25 = v24 * 0.9;
-      if (v22 * 0.9 > a6 && v25 > a6)
+      if (v22 * 0.9 > constant && v25 > constant)
       {
-        v27 = [v33 view];
-        v28 = [v27 widthAnchor];
-        v29 = [v28 constraintLessThanOrEqualToConstant:v23];
+        view3 = [controllerCopy view];
+        widthAnchor2 = [view3 widthAnchor];
+        v29 = [widthAnchor2 constraintLessThanOrEqualToConstant:v23];
         [v29 setActive:1];
 
-        v30 = [v33 view];
-        v31 = [v30 heightAnchor];
-        v32 = [v31 constraintLessThanOrEqualToConstant:v25];
+        view4 = [controllerCopy view];
+        heightAnchor2 = [view4 heightAnchor];
+        v32 = [heightAnchor2 constraintLessThanOrEqualToConstant:v25];
         [v32 setActive:1];
       }
     }
   }
 
-  [v11 presentViewController:v33 animated:v9 completion:v12];
+  [viewControllerCopy presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (void)_endDescriptionViewTextEditing
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  [v2 endDescriptionViewTextEditing];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper endDescriptionViewTextEditing];
 }
 
 - (void)hideFolderSelectionViewController
 {
-  v2 = [(RCMainViewController *)self presentedSelectFolderViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentedSelectFolderViewController = [(RCMainViewController *)self presentedSelectFolderViewController];
+  [presentedSelectFolderViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_processMoveOfUUID:(id)a3 toBuiltInFolderOfType:(int64_t)a4
+- (void)_processMoveOfUUID:(id)d toBuiltInFolderOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  switch(a4)
+  dCopy = d;
+  v7 = dCopy;
+  switch(type)
   {
     case 3:
-      v14 = v6;
-      v8 = [NSArray arrayWithObjects:&v14 count:1];
-      v11 = [(RCMainViewController *)self browseFoldersViewController];
-      [(RCMainViewController *)self deleteRecordingsWithUUIDs:v8 sourceController:v11 source:0 showInfo:0];
+      v14 = dCopy;
+      mainControllerHelper = [NSArray arrayWithObjects:&v14 count:1];
+      browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+      [(RCMainViewController *)self deleteRecordingsWithUUIDs:mainControllerHelper sourceController:browseFoldersViewController source:0 showInfo:0];
 
 LABEL_11:
       break;
     case 1:
-      [(RCMainViewController *)self setFavorite:1 forRecordingWithUUID:v6];
+      [(RCMainViewController *)self setFavorite:1 forRecordingWithUUID:dCopy];
       break;
     case 0:
-      v8 = [(RCMainViewController *)self mainControllerHelper];
-      v9 = [(RCMainViewController *)self recordingsModelInteractor];
-      v10 = [v9 uuidOfUserFolderForRecordingWithUUID:v7];
+      mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+      recordingsModelInteractor = [(RCMainViewController *)self recordingsModelInteractor];
+      v10 = [recordingsModelInteractor uuidOfUserFolderForRecordingWithUUID:v7];
       if (v10)
       {
-        [v9 removeRecordingWithUUID:v7 fromUserFolderWithUUID:v10];
+        [recordingsModelInteractor removeRecordingWithUUID:v7 fromUserFolderWithUUID:v10];
       }
 
       else
       {
         v15 = v7;
         v12 = [NSArray arrayWithObjects:&v15 count:1];
-        v13 = [v8 restoreRecordingsWithUUIDs:v12 isRecover:1 source:0 force:1 collectionViewController:0];
+        v13 = [mainControllerHelper restoreRecordingsWithUUIDs:v12 isRecover:1 source:0 force:1 collectionViewController:0];
       }
 
       goto LABEL_11;
     default:
-      [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor addRecordingWithUUID:v6 toBuiltInFolderOfType:a4];
+      [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor addRecordingWithUUID:dCopy toBuiltInFolderOfType:type];
       break;
   }
 }
 
-- (void)showNewFolderUIFromController:(id)a3
+- (void)showNewFolderUIFromController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"NEW_FOLDER" value:&stru_100295BB8 table:0];
   v7 = +[NSBundle mainBundle];
@@ -2923,7 +2923,7 @@ LABEL_11:
   v17[3] = &unk_10028C140;
   objc_copyWeak(&v19, &location);
   v17[4] = self;
-  v12 = v4;
+  v12 = controllerCopy;
   v18 = v12;
   v13 = [UIAlertAction actionWithTitle:v11 style:0 handler:v17];
 
@@ -2941,43 +2941,43 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)showRenamingControllerWithFolderName:(id)a3 controller:(id)a4
+- (void)showRenamingControllerWithFolderName:(id)name controller:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  controllerCopy = controller;
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"RENAME" value:&stru_100295BB8 table:0];
   v10 = [UIAlertController alertControllerWithTitle:v9 message:0 preferredStyle:1];
 
-  [(RCMainViewController *)self setOldFolderName:v6];
+  [(RCMainViewController *)self setOldFolderName:nameCopy];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1000A4AE0;
   v31[3] = &unk_10028C188;
-  v11 = v6;
+  v11 = nameCopy;
   v32 = v11;
-  v33 = self;
+  selfCopy = self;
   [v10 addTextFieldWithConfigurationHandler:v31];
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"SAVE" value:&stru_100295BB8 table:0];
 
-  v14 = [v10 textFields];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  textFields = [v10 textFields];
+  v15 = [textFields objectAtIndexedSubscript:0];
 
   [v15 setText:v11];
   v23 = _NSConcreteStackBlock;
   v24 = 3221225472;
   v25 = sub_1000A4B54;
   v26 = &unk_10028C1B0;
-  v27 = self;
+  selfCopy2 = self;
   v28 = v15;
-  v29 = v7;
+  v29 = controllerCopy;
   v30 = v11;
   v16 = v11;
-  v17 = v7;
+  v17 = controllerCopy;
   v18 = v15;
   v19 = [UIAlertAction actionWithTitle:v13 style:0 handler:&v23];
-  [(RCMainViewController *)self setRenameFolderSaveAction:v19, v23, v24, v25, v26, v27];
+  [(RCMainViewController *)self setRenameFolderSaveAction:v19, v23, v24, v25, v26, selfCopy2];
   [(RCMainViewController *)self _renamingTextDidChange:v18];
   [v10 addAction:v19];
   v20 = +[NSBundle mainBundle];
@@ -2989,9 +2989,9 @@ LABEL_11:
   [(RCMainViewController *)self presentViewController:v10 sourceController:self animated:1 completion:0];
 }
 
-- (void)_presentNameTakenAlertWithName:(id)a3 sourceController:(id)a4
+- (void)_presentNameTakenAlertWithName:(id)name sourceController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"NEW_FOLDER_NAME_EXISTS" value:&stru_100295BB8 table:0];
   v8 = +[NSBundle mainBundle];
@@ -3003,28 +3003,28 @@ LABEL_11:
   v12 = [UIAlertAction actionWithTitle:v11 style:0 handler:0];
 
   [v14 addAction:v12];
-  [(RCMainViewController *)self _myPresentViewController:v14 sourceController:v5 animated:1 completion:0];
+  [(RCMainViewController *)self _myPresentViewController:v14 sourceController:controllerCopy animated:1 completion:0];
 
   LODWORD(self) = UIAccessibilityScreenChangedNotification;
-  v13 = [v14 view];
-  UIAccessibilityPostNotification(self, v13);
+  view = [v14 view];
+  UIAccessibilityPostNotification(self, view);
 }
 
-- (void)_newFolderTextDidChange:(id)a3
+- (void)_newFolderTextDidChange:(id)change
 {
-  v6 = [a3 text];
-  v4 = [v6 length] != 0;
-  v5 = [(RCMainViewController *)self createNewFolderSaveAction];
-  [v5 setEnabled:v4];
+  text = [change text];
+  v4 = [text length] != 0;
+  createNewFolderSaveAction = [(RCMainViewController *)self createNewFolderSaveAction];
+  [createNewFolderSaveAction setEnabled:v4];
 }
 
-- (void)_renamingTextDidChange:(id)a3
+- (void)_renamingTextDidChange:(id)change
 {
-  v7 = [a3 text];
-  if ([v7 length])
+  text = [change text];
+  if ([text length])
   {
-    v4 = [(RCMainViewController *)self oldFolderName];
-    v5 = [v7 isEqualToString:v4] ^ 1;
+    oldFolderName = [(RCMainViewController *)self oldFolderName];
+    v5 = [text isEqualToString:oldFolderName] ^ 1;
   }
 
   else
@@ -3032,35 +3032,35 @@ LABEL_11:
     v5 = 0;
   }
 
-  v6 = [(RCMainViewController *)self renameFolderSaveAction];
-  [v6 setEnabled:v5];
+  renameFolderSaveAction = [(RCMainViewController *)self renameFolderSaveAction];
+  [renameFolderSaveAction setEnabled:v5];
 }
 
-- (void)moveFolder:(id)a3 toDestinationIndexPath:(id)a4
+- (void)moveFolder:(id)folder toDestinationIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RCMainViewController *)self recordingsModelInteractor];
-  [v8 moveFolder:v7 toDestinationIndexPath:v6];
+  pathCopy = path;
+  folderCopy = folder;
+  recordingsModelInteractor = [(RCMainViewController *)self recordingsModelInteractor];
+  [recordingsModelInteractor moveFolder:folderCopy toDestinationIndexPath:pathCopy];
 }
 
-- (void)deleteFolder:(id)a3 controller:(id)a4 completionBlock:(id)a5
+- (void)deleteFolder:(id)folder controller:(id)controller completionBlock:(id)block
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(RCMainViewController *)self mainControllerHelper];
-  v11 = [v10 deleteFolder:v9 source:v12 completionBlock:v8];
+  controllerCopy = controller;
+  blockCopy = block;
+  folderCopy = folder;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  v11 = [mainControllerHelper deleteFolder:folderCopy source:controllerCopy completionBlock:blockCopy];
 
   if (v11)
   {
-    [(RCMainViewController *)self _myPresentViewController:v11 sourceController:v12 animated:1 completion:0];
+    [(RCMainViewController *)self _myPresentViewController:v11 sourceController:controllerCopy animated:1 completion:0];
   }
 }
 
-- (void)setEnhanced:(BOOL)a3 forUUID:(id)a4
+- (void)setEnhanced:(BOOL)enhanced forUUID:(id)d
 {
-  if (a3)
+  if (enhanced)
   {
     v4 = 38;
   }
@@ -3070,70 +3070,70 @@ LABEL_11:
     v4 = 39;
   }
 
-  [(RCMainViewController *)self performAction:v4 atPosition:a4 forUUID:0 sourceController:0 source:0.0];
+  [(RCMainViewController *)self performAction:v4 atPosition:d forUUID:0 sourceController:0 source:0.0];
 }
 
-- (void)setRemoveSilence:(BOOL)a3 forUUID:(id)a4
+- (void)setRemoveSilence:(BOOL)silence forUUID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RCMainViewController *)self mainControllerHelper];
-  [v7 setRemoveSilence:v4 forUUID:v6];
+  silenceCopy = silence;
+  dCopy = d;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper setRemoveSilence:silenceCopy forUUID:dCopy];
 
   [(RCMainViewController *)self updatePlaybackSettings];
 }
 
-- (void)setPlaybackSpeed:(double)a3 forUUID:(id)a4
+- (void)setPlaybackSpeed:(double)speed forUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCMainViewController *)self mainControllerHelper];
-  [v7 setPlaybackSpeed:v6 forUUID:a3];
+  dCopy = d;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper setPlaybackSpeed:dCopy forUUID:speed];
 
   [(RCMainViewController *)self updatePlaybackSettings];
 }
 
-- (void)setLayerMix:(double)a3 forUUID:(id)a4
+- (void)setLayerMix:(double)mix forUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCMainViewController *)self mainControllerHelper];
-  [v7 setLayerMix:v6 forUUID:a3];
+  dCopy = d;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper setLayerMix:dCopy forUUID:mix];
 
   [(RCMainViewController *)self updatePlaybackSettings];
 }
 
-- (void)setSpeechIsolatorEnabled:(BOOL)a3 forUUID:(id)a4
+- (void)setSpeechIsolatorEnabled:(BOOL)enabled forUUID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RCMainViewController *)self mainControllerHelper];
-  [v7 setSpeechIsolatorEnabled:v4 forUUID:v6];
+  enabledCopy = enabled;
+  dCopy = d;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  [mainControllerHelper setSpeechIsolatorEnabled:enabledCopy forUUID:dCopy];
 
   [(RCMainViewController *)self updatePlaybackSettings];
 }
 
-- (void)setSpeechIsolatorValue:(float)a3 forUUID:(id)a4
+- (void)setSpeechIsolatorValue:(float)value forUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCMainViewController *)self mainControllerHelper];
-  *&v8 = a3;
-  [v7 setSpeechIsolatorValue:v6 forUUID:v8];
+  dCopy = d;
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  *&v8 = value;
+  [mainControllerHelper setSpeechIsolatorValue:dCopy forUUID:v8];
 
   [(RCMainViewController *)self updatePlaybackSettings];
 }
 
-- (void)toggleSpeechIsolatorEnabledForUUID:(id)a3
+- (void)toggleSpeechIsolatorEnabledForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self playbackSettings];
-  v6 = [v5 uuid];
-  v7 = [v6 isEqual:v4];
+  dCopy = d;
+  playbackSettings = [(RCMainViewController *)self playbackSettings];
+  uuid = [playbackSettings uuid];
+  v7 = [uuid isEqual:dCopy];
 
   if (v7)
   {
-    v8 = [(RCMainViewController *)self playbackSettings];
-    v9 = [v8 speechIsolatorEnabled];
+    playbackSettings2 = [(RCMainViewController *)self playbackSettings];
+    speechIsolatorEnabled = [playbackSettings2 speechIsolatorEnabled];
 
-    [(RCMainViewController *)self setSpeechIsolatorEnabled:v9 ^ 1 forUUID:v4];
+    [(RCMainViewController *)self setSpeechIsolatorEnabled:speechIsolatorEnabled ^ 1 forUUID:dCopy];
   }
 
   else
@@ -3141,59 +3141,59 @@ LABEL_11:
     v10 = OSLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_1001BA818(v4, self);
+      sub_1001BA818(dCopy, self);
     }
   }
 }
 
 - (void)hidePlaybackSettingsViewController
 {
-  v2 = [(RCMainViewController *)self presentedPlaybackSettingsViewController];
-  v5 = [v2 navigationController];
+  presentedPlaybackSettingsViewController = [(RCMainViewController *)self presentedPlaybackSettingsViewController];
+  navigationController = [presentedPlaybackSettingsViewController navigationController];
 
-  v3 = v5;
-  if (v5)
+  v3 = navigationController;
+  if (navigationController)
   {
-    v4 = [v5 isBeingDismissed];
-    v3 = v5;
-    if ((v4 & 1) == 0)
+    isBeingDismissed = [navigationController isBeingDismissed];
+    v3 = navigationController;
+    if ((isBeingDismissed & 1) == 0)
     {
-      [v5 dismissViewControllerAnimated:1 completion:0];
-      v3 = v5;
+      [navigationController dismissViewControllerAnimated:1 completion:0];
+      v3 = navigationController;
     }
   }
 }
 
 - (void)didHidePlaybackSettingsViewController
 {
-  v4 = [(RCMainViewController *)self mainControllerHelper];
-  v3 = [(RCMainViewController *)self selectedUUID];
-  [v4 setLooping:0 forUUID:v3];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  selectedUUID = [(RCMainViewController *)self selectedUUID];
+  [mainControllerHelper setLooping:0 forUUID:selectedUUID];
 }
 
-- (void)playbackSettingsViewController:(id)a3 contentSizeChanged:(CGSize)a4
+- (void)playbackSettingsViewController:(id)controller contentSizeChanged:(CGSize)changed
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  height = changed.height;
+  width = changed.width;
+  controllerCopy = controller;
   v6 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v6 shouldSetPreferredContentSizeOnPlaybackSettingsView])
   {
     [v6 playbackSettingsPopoverBottomPadding];
     v8 = height + v7;
-    v9 = [v10 navigationController];
-    [v9 setPreferredContentSize:{width, v8}];
+    navigationController = [controllerCopy navigationController];
+    [navigationController setPreferredContentSize:{width, v8}];
   }
 }
 
 - (void)didReturnToFoldersList
 {
   [(RCMainViewController *)self stopPlayback];
-  v3 = [(RCMainViewController *)self playbackViewController];
-  [v3 clear];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController clear];
 }
 
-- (void)didSelectFolderOfType:(int64_t)a3
+- (void)didSelectFolderOfType:(int64_t)type
 {
   if ([(RCMainViewController *)self shouldStopPlaybackBeforeNavigating])
   {
@@ -3205,142 +3205,142 @@ LABEL_11:
     [(RCMainViewController *)self setShouldStopPlaybackBeforeNavigating:1];
   }
 
-  v4 = [(RCMainViewController *)self playbackViewController];
-  [v4 clear];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController clear];
 
   [(RCMainViewController *)self updatePlaybackContentUnavailableViewIfNeeded];
 }
 
-- (void)renameFolder:(id)a3 toName:(id)a4
+- (void)renameFolder:(id)folder toName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RCMainViewController *)self recordingsModelInteractor];
-  [v8 renameFolder:v7 toName:v6];
+  nameCopy = name;
+  folderCopy = folder;
+  recordingsModelInteractor = [(RCMainViewController *)self recordingsModelInteractor];
+  [recordingsModelInteractor renameFolder:folderCopy toName:nameCopy];
 }
 
-- (BOOL)canMoveRecordingsWithUUIDs:(id)a3 toFolderWithUUID:(id)a4 toFolderType:(int64_t)a5 fromFolderUUID:(id)a6
+- (BOOL)canMoveRecordingsWithUUIDs:(id)ds toFolderWithUUID:(id)d toFolderType:(int64_t)type fromFolderUUID:(id)iD
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
+  dCopy = d;
+  iDCopy = iD;
+  dsCopy = ds;
   v13 = +[RCApplicationModel sharedApplicationModel];
   v14 = v13;
   v15 = 0;
-  if (a5 <= 1)
+  if (type <= 1)
   {
-    if (!a5)
+    if (!type)
     {
-      v16 = [v13 voiceMemosRecordingsFolder];
+      voiceMemosRecordingsFolder = [v13 voiceMemosRecordingsFolder];
       goto LABEL_12;
     }
 
-    if (a5 == 1)
+    if (type == 1)
     {
-      v16 = [v13 favoriteRecordingsFolder];
+      voiceMemosRecordingsFolder = [v13 favoriteRecordingsFolder];
       goto LABEL_12;
     }
   }
 
   else
   {
-    switch(a5)
+    switch(type)
     {
       case 2:
-        v16 = [v13 capturedOnWatchRecordingsFolder];
+        voiceMemosRecordingsFolder = [v13 capturedOnWatchRecordingsFolder];
         goto LABEL_12;
       case 3:
-        v16 = [v13 recentlyDeletedRecordingsFolder];
+        voiceMemosRecordingsFolder = [v13 recentlyDeletedRecordingsFolder];
         goto LABEL_12;
       case 4:
-        v16 = [v13 existingFolderWithUUID:v10];
+        voiceMemosRecordingsFolder = [v13 existingFolderWithUUID:dCopy];
 LABEL_12:
-        v15 = v16;
+        v15 = voiceMemosRecordingsFolder;
         break;
     }
   }
 
   v17 = [RCFolderDisplayModel folderDisplayModelWithFolderModel:v15];
-  v18 = [(RCMainViewController *)self folderUUIDsToExcludeWhenMovingRecordingUUIDs:v12];
+  v18 = [(RCMainViewController *)self folderUUIDsToExcludeWhenMovingRecordingUUIDs:dsCopy];
 
-  v19 = [(RCMainViewController *)self canMoveSelectedRecordingsFromFolderWithUUID:v11 toFolderWithDisplayModel:v17 excludedFolderUUIDsForSelection:v18];
+  v19 = [(RCMainViewController *)self canMoveSelectedRecordingsFromFolderWithUUID:iDCopy toFolderWithDisplayModel:v17 excludedFolderUUIDsForSelection:v18];
   return v19;
 }
 
-- (BOOL)canMoveSelectedRecordingsFromFolderWithUUID:(id)a3 toFolderWithDisplayModel:(id)a4 excludedFolderUUIDsForSelection:(id)a5
+- (BOOL)canMoveSelectedRecordingsFromFolderWithUUID:(id)d toFolderWithDisplayModel:(id)model excludedFolderUUIDsForSelection:(id)selection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 UUID];
-  v11 = [v9 containsObject:v10];
+  dCopy = d;
+  modelCopy = model;
+  selectionCopy = selection;
+  uUID = [modelCopy UUID];
+  v11 = [selectionCopy containsObject:uUID];
 
-  if (v11 & 1) != 0 || ([v10 isEqualToString:v7])
+  if (v11 & 1) != 0 || ([uUID isEqualToString:dCopy])
   {
-    v12 = 0;
+    representsPossibleMoveDestination = 0;
   }
 
   else
   {
-    v12 = [v8 representsPossibleMoveDestination];
+    representsPossibleMoveDestination = [modelCopy representsPossibleMoveDestination];
   }
 
-  return v12;
+  return representsPossibleMoveDestination;
 }
 
-- (void)moveRecordingsWithUUIDs:(id)a3 toFolderWithUUID:(id)a4
+- (void)moveRecordingsWithUUIDs:(id)ds toFolderWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RCMainViewController *)self recordingsModelInteractor];
-  v9 = [v6 firstObject];
-  v10 = [v8 uuidOfUserFolderForRecordingWithUUID:v9];
+  dsCopy = ds;
+  dCopy = d;
+  recordingsModelInteractor = [(RCMainViewController *)self recordingsModelInteractor];
+  firstObject = [dsCopy firstObject];
+  v10 = [recordingsModelInteractor uuidOfUserFolderForRecordingWithUUID:firstObject];
 
-  v11 = [(RCMainViewController *)self undoManager];
-  v12 = [(RCMainViewController *)self browseFoldersViewController];
-  v13 = [v12 activeRecordingsCollectionViewController];
+  undoManager = [(RCMainViewController *)self undoManager];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
-  v14 = [(RCMainViewController *)self mainControllerHelper];
-  v15 = [v14 restoreRecordingsWithUUIDs:v6 isRecover:1 source:0 force:1 collectionViewController:v13];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  v15 = [mainControllerHelper restoreRecordingsWithUUIDs:dsCopy isRecover:1 source:0 force:1 collectionViewController:activeRecordingsCollectionViewController];
 
-  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor addRecordingsWithUUIDs:v6 toUserFolderWithUUID:v7];
-  [v13 endEditing];
+  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor addRecordingsWithUUIDs:dsCopy toUserFolderWithUUID:dCopy];
+  [activeRecordingsCollectionViewController endEditing];
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
   v22 = sub_1000A59F8;
   v23 = &unk_10028C1D8;
   v24 = v10;
-  v25 = v6;
-  v16 = v6;
+  v25 = dsCopy;
+  v16 = dsCopy;
   v17 = v10;
-  [v11 registerUndoWithTarget:self handler:&v20];
+  [undoManager registerUndoWithTarget:self handler:&v20];
   v18 = [NSBundle mainBundle:v20];
   v19 = [v18 localizedStringForKey:@"TITLE_FOR_MOVE_RECORDING_UNDO" value:&stru_100295BB8 table:0];
 
-  [v11 setActionName:v19];
+  [undoManager setActionName:v19];
 }
 
-- (void)moveRecordingsWithUUIDs:(id)a3 fromFolderOfType:(int64_t)a4 toBuiltInFolderOfType:(int64_t)a5
+- (void)moveRecordingsWithUUIDs:(id)ds fromFolderOfType:(int64_t)type toBuiltInFolderOfType:(int64_t)ofType
 {
-  v8 = a3;
-  v9 = [(RCMainViewController *)self browseFoldersViewController];
-  v10 = [v9 activeRecordingsCollectionViewController];
+  dsCopy = ds;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
-  if (a4 == 3)
+  if (type == 3)
   {
-    v11 = [(RCMainViewController *)self mainControllerHelper];
-    v12 = [v11 restoreRecordingsWithUUIDs:v8 isRecover:1 source:0 force:1 collectionViewController:v10];
+    mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+    v12 = [mainControllerHelper restoreRecordingsWithUUIDs:dsCopy isRecover:1 source:0 force:1 collectionViewController:activeRecordingsCollectionViewController];
   }
 
-  if (a5)
+  if (ofType)
   {
-    if (a5 == 1)
+    if (ofType == 1)
     {
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v13 = v8;
+      v13 = dsCopy;
       v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v14)
       {
@@ -3368,222 +3368,222 @@ LABEL_12:
       }
     }
 
-    else if (a5 == 3)
+    else if (ofType == 3)
     {
-      [(RCMainViewController *)self deleteRecordingsWithUUIDs:v8 sourceController:v10 source:0 showInfo:0];
+      [(RCMainViewController *)self deleteRecordingsWithUUIDs:dsCopy sourceController:activeRecordingsCollectionViewController source:0 showInfo:0];
     }
   }
 
-  else if (a4 == 4)
+  else if (type == 4)
   {
-    [(RCMainViewController *)self _removeFromUserFolderRecordingsWithUUIDs:v8];
+    [(RCMainViewController *)self _removeFromUserFolderRecordingsWithUUIDs:dsCopy];
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
-    [(RCMainViewController *)self setFavorite:0 forRecordingsWithUUIDs:v8];
+    [(RCMainViewController *)self setFavorite:0 forRecordingsWithUUIDs:dsCopy];
   }
 
-  [v10 endEditing];
+  [activeRecordingsCollectionViewController endEditing];
 }
 
-- (void)_removeFromUserFolderRecordingsWithUUIDs:(id)a3
+- (void)_removeFromUserFolderRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self recordingsModelInteractor];
-  v6 = [v4 firstObject];
-  v7 = [v5 uuidOfUserFolderForRecordingWithUUID:v6];
+  dsCopy = ds;
+  recordingsModelInteractor = [(RCMainViewController *)self recordingsModelInteractor];
+  firstObject = [dsCopy firstObject];
+  v7 = [recordingsModelInteractor uuidOfUserFolderForRecordingWithUUID:firstObject];
 
-  v8 = [(RCMainViewController *)self undoManager];
-  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor removeRecordingsWithUUIDs:v4 fromUserFolderWithUUID:0];
+  undoManager = [(RCMainViewController *)self undoManager];
+  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor removeRecordingsWithUUIDs:dsCopy fromUserFolderWithUUID:0];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1000A5D58;
   v16 = &unk_10028C1D8;
-  v17 = v4;
+  v17 = dsCopy;
   v18 = v7;
   v9 = v7;
-  v10 = v4;
-  [v8 registerUndoWithTarget:self handler:&v13];
+  v10 = dsCopy;
+  [undoManager registerUndoWithTarget:self handler:&v13];
   v11 = [NSBundle mainBundle:v13];
   v12 = [v11 localizedStringForKey:@"TITLE_FOR_MOVE_RECORDING_UNDO" value:&stru_100295BB8 table:0];
 
-  [v8 setActionName:v12];
+  [undoManager setActionName:v12];
 }
 
-- (void)reloadWaveformsFromComposition:(id)a3
+- (void)reloadWaveformsFromComposition:(id)composition
 {
-  v4 = a3;
-  v6 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v6 recordingViewController];
-  [v5 reloadWaveformsFromComposition:v4];
+  compositionCopy = composition;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  [recordingViewController reloadWaveformsFromComposition:compositionCopy];
 }
 
-- (void)didTransitionWithTransitionInfo:(id)a3
+- (void)didTransitionWithTransitionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 toActivityType];
-  v6 = [v4 toSubType];
-  v7 = [v4 fromActivityType];
-  v8 = [v4 fromSubType];
-  v15 = [v4 displayModel];
-  v9 = [v4 waveformDataSource];
-  v10 = [v4 composition];
+  infoCopy = info;
+  toActivityType = [infoCopy toActivityType];
+  toSubType = [infoCopy toSubType];
+  fromActivityType = [infoCopy fromActivityType];
+  fromSubType = [infoCopy fromSubType];
+  displayModel = [infoCopy displayModel];
+  waveformDataSource = [infoCopy waveformDataSource];
+  composition = [infoCopy composition];
 
-  if (v5 > 1)
+  if (toActivityType > 1)
   {
-    if (v5 == 2)
+    if (toActivityType == 2)
     {
-      v12 = [v15 UUID];
-      [(RCMainViewController *)self _switchToPlayingBackFromPreviousActivityType:v7 withUUID:v12];
+      uUID = [displayModel UUID];
+      [(RCMainViewController *)self _switchToPlayingBackFromPreviousActivityType:fromActivityType withUUID:uUID];
     }
 
-    else if (v5 == 3)
+    else if (toActivityType == 3)
     {
-      [(RCMainViewController *)self _switchToEditingFromPreviousActivityType:v7 displayModel:v15 withComposition:v10 enterTrim:v6 == 1];
+      [(RCMainViewController *)self _switchToEditingFromPreviousActivityType:fromActivityType displayModel:displayModel withComposition:composition enterTrim:toSubType == 1];
     }
   }
 
-  else if (v5)
+  else if (toActivityType)
   {
-    if (v5 == 1)
+    if (toActivityType == 1)
     {
-      [(RCMainViewController *)self _switchToCapturingFromPreviousActivityType:v7 displayModel:v15 waveformDataSource:v9 isReplaceOrAppend:v6 != 2];
+      [(RCMainViewController *)self _switchToCapturingFromPreviousActivityType:fromActivityType displayModel:displayModel waveformDataSource:waveformDataSource isReplaceOrAppend:toSubType != 2];
     }
   }
 
   else
   {
-    v11 = [v15 UUID];
-    [(RCMainViewController *)self _switchToIdleFromPreviousActivityType:v7 fromSubActivityType:v8 toSubActivityType:v6 displayModel:v15 withUUID:v11];
+    uUID2 = [displayModel UUID];
+    [(RCMainViewController *)self _switchToIdleFromPreviousActivityType:fromActivityType fromSubActivityType:fromSubType toSubActivityType:toSubType displayModel:displayModel withUUID:uUID2];
   }
 
-  v13 = [(RCMainViewController *)self browseFoldersViewController];
-  v14 = [v13 activeRecordingsCollectionViewController];
-  [v14 setCaptureIsUnderway:v5 == 1];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  [activeRecordingsCollectionViewController setCaptureIsUnderway:toActivityType == 1];
 }
 
-- (void)_switchToPlayingBackFromPreviousActivityType:(int64_t)a3 withUUID:(id)a4
+- (void)_switchToPlayingBackFromPreviousActivityType:(int64_t)type withUUID:(id)d
 {
-  v5 = a4;
-  v6 = [(RCMainViewController *)self browseFoldersViewController];
-  v7 = [v6 activeRecordingsCollectionViewController];
-  [v7 showPlayingForItemWithUUID:v5];
+  dCopy = d;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  [activeRecordingsCollectionViewController showPlayingForItemWithUUID:dCopy];
 
-  v8 = [(RCMainViewController *)self browseFoldersViewController];
-  v9 = [v8 recordingViewController];
-  [v9 showPlayingForUUID:v5];
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController2 recordingViewController];
+  [recordingViewController showPlayingForUUID:dCopy];
 
-  v10 = [(RCMainViewController *)self playbackViewController];
-  [v10 showPlayingForUUID:v5];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController showPlayingForUUID:dCopy];
 
   [(RCMainViewController *)self updateQuickActions];
 }
 
-- (void)_switchToEditingFromPreviousActivityType:(int64_t)a3 displayModel:(id)a4 withComposition:(id)a5 enterTrim:(BOOL)a6
+- (void)_switchToEditingFromPreviousActivityType:(int64_t)type displayModel:(id)model withComposition:(id)composition enterTrim:(BOOL)trim
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000A611C;
   v12[3] = &unk_10028C248;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
-  v16 = a3;
-  v17 = a6;
-  v10 = v15;
-  v11 = v13;
+  modelCopy = model;
+  selfCopy = self;
+  compositionCopy = composition;
+  typeCopy = type;
+  trimCopy = trim;
+  v10 = compositionCopy;
+  v11 = modelCopy;
   [(RCMainViewController *)self _prepareToDisplayCardViewWithCompletionBlock:v12];
 }
 
-- (id)platterViewControllerForPresentationStyle:(unint64_t)a3
+- (id)platterViewControllerForPresentationStyle:(unint64_t)style
 {
-  v4 = [[RCPlatterViewController alloc] initWithPresentationStyle:a3];
-  v5 = [(RCMainViewController *)self mainControllerHelper];
-  v6 = [v5 timeController];
-  [(RCPlatterViewController *)v4 setActiveTimeController:v6];
+  v4 = [[RCPlatterViewController alloc] initWithPresentationStyle:style];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  timeController = [mainControllerHelper timeController];
+  [(RCPlatterViewController *)v4 setActiveTimeController:timeController];
 
-  v7 = [(RCMainViewController *)self mainControllerHelper];
-  v8 = [v7 activityWaveformProcessor];
-  [(RCPlatterViewController *)v4 setActivityWaveformProcessor:v8];
+  mainControllerHelper2 = [(RCMainViewController *)self mainControllerHelper];
+  activityWaveformProcessor = [mainControllerHelper2 activityWaveformProcessor];
+  [(RCPlatterViewController *)v4 setActivityWaveformProcessor:activityWaveformProcessor];
 
-  v9 = [(RCMainViewController *)self mainControllerHelper];
-  v10 = [v9 timeController];
-  [v10 addTimeObserver:v4];
+  mainControllerHelper3 = [(RCMainViewController *)self mainControllerHelper];
+  timeController2 = [mainControllerHelper3 timeController];
+  [timeController2 addTimeObserver:v4];
 
   return v4;
 }
 
-- (void)_switchToCapturingFromPreviousActivityType:(int64_t)a3 displayModel:(id)a4 waveformDataSource:(id)a5 isReplaceOrAppend:(BOOL)a6
+- (void)_switchToCapturingFromPreviousActivityType:(int64_t)type displayModel:(id)model waveformDataSource:(id)source isReplaceOrAppend:(BOOL)append
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000A66D8;
   v9[3] = &unk_10028B7F8;
-  v13 = a6;
-  v10 = self;
-  v11 = a4;
-  v12 = a5;
-  v7 = v12;
-  v8 = v11;
-  [(RCMainViewController *)v10 _prepareToDisplayCardViewWithCompletionBlock:v9];
+  appendCopy = append;
+  selfCopy = self;
+  modelCopy = model;
+  sourceCopy = source;
+  v7 = sourceCopy;
+  v8 = modelCopy;
+  [(RCMainViewController *)selfCopy _prepareToDisplayCardViewWithCompletionBlock:v9];
 }
 
-- (void)_prepareToDisplayCardViewWithCompletionBlock:(id)a3
+- (void)_prepareToDisplayCardViewWithCompletionBlock:(id)block
 {
-  v10 = a3;
-  v4 = [(RCMainViewController *)self presentedViewController];
-  if (v4 && (v5 = v4, -[RCMainViewController presentedViewController](self, "presentedViewController"), v6 = objc_claimAutoreleasedReturnValue(), -[RCMainViewController recordingCardPresentationHelper](self, "recordingCardPresentationHelper"), v7 = objc_claimAutoreleasedReturnValue(), [v7 presentedViewController], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v6, "isEqual:", v8), v8, v7, v6, v5, (v9 & 1) == 0))
+  blockCopy = block;
+  presentedViewController = [(RCMainViewController *)self presentedViewController];
+  if (presentedViewController && (v5 = presentedViewController, -[RCMainViewController presentedViewController](self, "presentedViewController"), v6 = objc_claimAutoreleasedReturnValue(), -[RCMainViewController recordingCardPresentationHelper](self, "recordingCardPresentationHelper"), v7 = objc_claimAutoreleasedReturnValue(), [v7 presentedViewController], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v6, "isEqual:", v8), v8, v7, v6, v5, (v9 & 1) == 0))
   {
-    [(RCMainViewController *)self dismissViewControllerAnimated:0 completion:v10];
+    [(RCMainViewController *)self dismissViewControllerAnimated:0 completion:blockCopy];
   }
 
   else
   {
-    v10[2]();
+    blockCopy[2]();
   }
 }
 
-- (void)_setCorrectOriginalFolderForRecordingWithUUID:(id)a3 folderType:(int64_t)a4 userFolderName:(id)a5
+- (void)_setCorrectOriginalFolderForRecordingWithUUID:(id)d folderType:(int64_t)type userFolderName:(id)name
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8 && a4)
+  dCopy = d;
+  nameCopy = name;
+  if (dCopy && type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor setFavorite:1 forUUID:v8];
+      [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor setFavorite:1 forUUID:dCopy];
     }
 
-    else if (a4 == 4)
+    else if (type == 4)
     {
-      v13 = v8;
+      v13 = dCopy;
       v10 = [NSArray arrayWithObjects:&v13 count:1];
-      [(RCMainViewController *)self moveRecordingsWithUUIDs:v10 toUserFolderNamed:v9 source:0];
+      [(RCMainViewController *)self moveRecordingsWithUUIDs:v10 toUserFolderNamed:nameCopy source:0];
     }
 
     else
     {
-      v12 = v8;
+      v12 = dCopy;
       v11 = [NSArray arrayWithObjects:&v12 count:1];
-      [(RCMainViewController *)self moveRecordingsWithUUIDs:v11 toBuiltInFolderOfType:a4 source:0];
+      [(RCMainViewController *)self moveRecordingsWithUUIDs:v11 toBuiltInFolderOfType:type source:0];
     }
   }
 }
 
-- (void)_switchToIdleFromPreviousActivityType:(int64_t)a3 fromSubActivityType:(int64_t)a4 toSubActivityType:(int64_t)a5 displayModel:(id)a6 withUUID:(id)a7
+- (void)_switchToIdleFromPreviousActivityType:(int64_t)type fromSubActivityType:(int64_t)activityType toSubActivityType:(int64_t)subActivityType displayModel:(id)model withUUID:(id)d
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = [(RCMainViewController *)self browseFoldersViewController];
-  v15 = [v14 recordingViewController];
+  modelCopy = model;
+  dCopy = d;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
 
-  v16 = [(RCMainViewController *)self playbackViewController];
-  [v16 showIdleForUUID:v13];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController showIdleForUUID:dCopy];
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    if ([(RCMainViewController *)self _cardDismissalRequiredForSwitchToIdleFromActivityType:1 subActivityType:a4])
+    if ([(RCMainViewController *)self _cardDismissalRequiredForSwitchToIdleFromActivityType:1 subActivityType:activityType])
     {
       objc_initWeak(&location, self);
       v21 = _NSConcreteStackBlock;
@@ -3596,46 +3596,46 @@ LABEL_12:
       objc_destroyWeak(&location);
     }
 
-    [v15 updateForRecordingEnd:{a4 == 3, v21, v22, v23, v24}];
+    [recordingViewController updateForRecordingEnd:{activityType == 3, v21, v22, v23, v24}];
   }
 
-  else if (a5 != 5)
+  else if (subActivityType != 5)
   {
-    v17 = [(RCMainViewController *)self browseFoldersViewController];
-    v18 = [v17 activeRecordingsCollectionViewController];
-    [v18 showIdleForItemWithUUID:v13];
+    browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController = [browseFoldersViewController2 activeRecordingsCollectionViewController];
+    [activeRecordingsCollectionViewController showIdleForItemWithUUID:dCopy];
 
-    v19 = [(RCMainViewController *)self mainControllerHelper];
-    v20 = [v19 uuidOfPlayingRecording];
-    [v15 showIdleForUUID:v20];
+    mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+    uuidOfPlayingRecording = [mainControllerHelper uuidOfPlayingRecording];
+    [recordingViewController showIdleForUUID:uuidOfPlayingRecording];
   }
 
   [(RCMainViewController *)self updateQuickActions];
 }
 
-- (void)captureFailedWithError:(id)a3
+- (void)captureFailedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if ([v5 isEqualToString:RCVoiceMemosErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:RCVoiceMemosErrorDomain])
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
 
-    if (!v6)
+    if (!code)
     {
       v7 = +[NSBundle mainBundle];
       v8 = [v7 localizedStringForKey:@"ERROR_RECORDING_FAILED" value:&stru_100295BB8 table:0];
-      v9 = [v4 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1000A7204;
       v17[3] = &unk_10028A3B8;
       v17[4] = self;
-      v10 = [UIAlertController rc_OKAlertControllerWithTitle:v8 message:v9 handler:v17];
+      v10 = [UIAlertController rc_OKAlertControllerWithTitle:v8 message:localizedDescription handler:v17];
 
-      v11 = [(RCMainViewController *)self browseFoldersViewController];
-      v12 = [v11 activeRecordingsCollectionViewController];
-      [v12 presentViewController:v10 animated:1 completion:0];
+      browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+      activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+      [activeRecordingsCollectionViewController presentViewController:v10 animated:1 completion:0];
     }
   }
 
@@ -3643,82 +3643,82 @@ LABEL_12:
   {
   }
 
-  v13 = [v4 domain];
-  if ([v13 isEqualToString:@"VMAudioServiceErrorDomain"] && objc_msgSend(v4, "code") == 6)
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:@"VMAudioServiceErrorDomain"] && objc_msgSend(errorCopy, "code") == 6)
   {
-    v14 = [(RCMainViewController *)self state];
+    state = [(RCMainViewController *)self state];
 
-    if (v14 != 1)
+    if (state != 1)
     {
       goto LABEL_10;
     }
 
-    v13 = [(RCMainViewController *)self browseFoldersViewController];
-    v15 = [v13 recordingViewController];
-    [v15 handleDone];
+    domain2 = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [domain2 recordingViewController];
+    [recordingViewController handleDone];
   }
 
 LABEL_10:
-  v16 = [(RCMainViewController *)self selectedUUID];
-  if (v16)
+  selectedUUID = [(RCMainViewController *)self selectedUUID];
+  if (selectedUUID)
   {
-    [(RCMainViewController *)self didSelectForUUID:v16 resetPosition:0 force:1];
+    [(RCMainViewController *)self didSelectForUUID:selectedUUID resetPosition:0 force:1];
   }
 }
 
-- (void)recordingDurationUpdated:(double)a3
+- (void)recordingDurationUpdated:(double)updated
 {
   if ([(RCMainViewController *)self isRecording])
   {
     return;
   }
 
-  v5 = [(RCMainViewController *)self browseFoldersViewController];
-  v6 = [v5 recordingViewController];
-  v7 = [v6 view];
-  [v7 setRecordingDuration:a3];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  view = [recordingViewController view];
+  [view setRecordingDuration:updated];
 
-  v32 = [(RCMainViewController *)self selectedComposition];
-  v8 = [v32 savedRecordingUUID];
-  v9 = [RCRecordingDisplayModel recordingDisplayModelForUUID:v8];
+  selectedComposition = [(RCMainViewController *)self selectedComposition];
+  savedRecordingUUID = [selectedComposition savedRecordingUUID];
+  v9 = [RCRecordingDisplayModel recordingDisplayModelForUUID:savedRecordingUUID];
 
-  if (v32)
+  if (selectedComposition)
   {
     if (v9)
     {
       [v9 duration];
-      if (v10 == a3 || ([v9 title], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "creationDate"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "UUID"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v9, "recentlyDeleted"), v15 = objc_msgSend(v9, "isFavorite"), v16 = objc_msgSend(v9, "isEnhanced"), v17 = objc_msgSend(v9, "hasTranscription"), v18 = objc_msgSend(v9, "isSpatialRecording"), BYTE3(v31) = objc_msgSend(v9, "wasManuallyRenamed"), BYTE2(v31) = v18, BYTE1(v31) = v17, LOBYTE(v31) = v16, +[RCRecordingDisplayModel recordingDisplayModelWithTitle:creationDate:duration:UUID:recentlyDeleted:representsDownloadingFile:isFavorite:isEnhanced:hasTranscription:isSpatialRecording:wasManuallyRenamed:](RCRecordingDisplayModel, "recordingDisplayModelWithTitle:creationDate:duration:UUID:recentlyDeleted:representsDownloadingFile:isFavorite:isEnhanced:hasTranscription:isSpatialRecording:wasManuallyRenamed:", v11, v12, v13, v14, 0, v15, a3, v31), v19 = objc_claimAutoreleasedReturnValue(), v13, v12, v11, v9, (v9 = v19) != 0))
+      if (v10 == updated || ([v9 title], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "creationDate"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "UUID"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v9, "recentlyDeleted"), v15 = objc_msgSend(v9, "isFavorite"), v16 = objc_msgSend(v9, "isEnhanced"), v17 = objc_msgSend(v9, "hasTranscription"), v18 = objc_msgSend(v9, "isSpatialRecording"), BYTE3(v31) = objc_msgSend(v9, "wasManuallyRenamed"), BYTE2(v31) = v18, BYTE1(v31) = v17, LOBYTE(v31) = v16, +[RCRecordingDisplayModel recordingDisplayModelWithTitle:creationDate:duration:UUID:recentlyDeleted:representsDownloadingFile:isFavorite:isEnhanced:hasTranscription:isSpatialRecording:wasManuallyRenamed:](RCRecordingDisplayModel, "recordingDisplayModelWithTitle:creationDate:duration:UUID:recentlyDeleted:representsDownloadingFile:isFavorite:isEnhanced:hasTranscription:isSpatialRecording:wasManuallyRenamed:", v11, v12, v13, v14, 0, v15, updated, v31), v19 = objc_claimAutoreleasedReturnValue(), v13, v12, v11, v9, (v9 = v19) != 0))
       {
-        v20 = [(RCMainViewController *)self mainControllerHelper];
-        v21 = [v20 currentRecordingDisplayModel];
+        mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+        currentRecordingDisplayModel = [mainControllerHelper currentRecordingDisplayModel];
 
-        if (v21 != v9)
+        if (currentRecordingDisplayModel != v9)
         {
-          v22 = [(RCMainViewController *)self mainControllerHelper];
-          [v22 setCurrentRecordingDisplayModel:v9];
+          mainControllerHelper2 = [(RCMainViewController *)self mainControllerHelper];
+          [mainControllerHelper2 setCurrentRecordingDisplayModel:v9];
         }
 
-        v23 = [(RCMainViewController *)self recordingCardPresentationHelper];
-        v24 = [v23 presentedViewController];
-        if (v24)
+        recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+        presentedViewController = [recordingCardPresentationHelper presentedViewController];
+        if (presentedViewController)
         {
-          v25 = v24;
+          mainControllerHelper3 = presentedViewController;
 LABEL_12:
 
           goto LABEL_13;
         }
 
-        v26 = [(RCMainViewController *)self playbackViewController];
-        v27 = [v26 uuidBeingDisplayed];
-        v28 = [v9 UUID];
-        v29 = [v27 isEqualToString:v28];
+        playbackViewController = [(RCMainViewController *)self playbackViewController];
+        uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+        uUID = [v9 UUID];
+        v29 = [uuidBeingDisplayed isEqualToString:uUID];
 
         if (v29)
         {
-          v23 = [(RCMainViewController *)self playbackViewController];
-          v25 = [(RCMainViewController *)self mainControllerHelper];
-          v30 = [v25 timeController];
-          [v23 enablePlaybackWithComposition:v32 displayModel:v9 timeController:v30];
+          recordingCardPresentationHelper = [(RCMainViewController *)self playbackViewController];
+          mainControllerHelper3 = [(RCMainViewController *)self mainControllerHelper];
+          timeController = [mainControllerHelper3 timeController];
+          [recordingCardPresentationHelper enablePlaybackWithComposition:selectedComposition displayModel:v9 timeController:timeController];
 
           goto LABEL_12;
         }
@@ -3731,38 +3731,38 @@ LABEL_13:
 
 - (NSString)selectedUUID
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 selectedRecording];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  selectedRecording = [browseFoldersViewController selectedRecording];
 
-  v4 = [v3 uuid];
+  uuid = [selectedRecording uuid];
 
-  return v4;
+  return uuid;
 }
 
-- (void)setCurrentTime:(double)a3 withUUID:(id)a4
+- (void)setCurrentTime:(double)time withUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCMainViewController *)self browseFoldersViewController];
-  v8 = [v7 activeRecordingsCollectionViewController];
-  [v8 setCurrentTime:v6 forItemWithUUID:a3];
+  dCopy = d;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  [activeRecordingsCollectionViewController setCurrentTime:dCopy forItemWithUUID:time];
 
-  v9 = [(RCMainViewController *)self browseFoldersViewController];
-  v10 = [v9 recordingViewController];
-  [v10 updateCurrentTimeForUUID:v6 toTime:a3];
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController2 recordingViewController];
+  [recordingViewController updateCurrentTimeForUUID:dCopy toTime:time];
 
-  v11 = [(RCMainViewController *)self playbackViewController];
-  [v11 updateCurrentTimeForUUID:v6 toTime:a3];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController updateCurrentTimeForUUID:dCopy toTime:time];
 }
 
-- (void)userDidDeleteRecordingsWithUUIDs:(id)a3
+- (void)userDidDeleteRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  [(RCMainViewController *)self _dismissShareMemoVCIfNeededForDeletedUUIDs:v4];
+  dsCopy = ds;
+  [(RCMainViewController *)self _dismissShareMemoVCIfNeededForDeletedUUIDs:dsCopy];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -3779,16 +3779,16 @@ LABEL_13:
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
-        v11 = [(RCMainViewController *)self browseFoldersViewController];
-        v12 = [v11 activeRecordingsCollectionViewController];
-        [v12 handleDeleteForUUID:v10];
+        browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+        activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+        [activeRecordingsCollectionViewController handleDeleteForUUID:v10];
 
-        v13 = [(RCMainViewController *)self browseFoldersViewController];
-        v14 = [v13 recordingViewController];
-        [v14 handleRemovalOfUUID:v10];
+        browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+        recordingViewController = [browseFoldersViewController2 recordingViewController];
+        [recordingViewController handleRemovalOfUUID:v10];
 
-        v15 = [(RCMainViewController *)self playbackViewController];
-        [v15 handleRemovalOfUUID:v10];
+        playbackViewController = [(RCMainViewController *)self playbackViewController];
+        [playbackViewController handleRemovalOfUUID:v10];
 
         v9 = v9 + 1;
       }
@@ -3803,14 +3803,14 @@ LABEL_13:
   [(RCMainViewController *)self updateQuickActions];
 }
 
-- (void)userDidRecoverRecordingsWithUUIDs:(id)a3
+- (void)userDidRecoverRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3822,42 +3822,42 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(RCMainViewController *)self playbackViewController];
-        [v10 handleRemovalOfUUID:v9];
+        playbackViewController = [(RCMainViewController *)self playbackViewController];
+        [playbackViewController handleRemovalOfUUID:v9];
 
-        v11 = [(RCMainViewController *)self browseFoldersViewController];
-        v12 = [v11 activeRecordingsCollectionViewController];
+        browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+        activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v12 handleRecoverForUUID:v9];
+          [activeRecordingsCollectionViewController handleRecoverForUUID:v9];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)userDidEraseRecordingsWithUUIDs:(id)a3
+- (void)userDidEraseRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  [(RCMainViewController *)self _dismissShareMemoVCIfNeededForDeletedUUIDs:v4];
+  dsCopy = ds;
+  [(RCMainViewController *)self _dismissShareMemoVCIfNeededForDeletedUUIDs:dsCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -3874,16 +3874,16 @@ LABEL_13:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(RCMainViewController *)self playbackViewController];
-        [v11 handleRemovalOfUUID:v10];
+        playbackViewController = [(RCMainViewController *)self playbackViewController];
+        [playbackViewController handleRemovalOfUUID:v10];
 
-        v12 = [(RCMainViewController *)self browseFoldersViewController];
-        v13 = [v12 activeRecordingsCollectionViewController];
+        browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+        activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v13 handleEraseForUUID:v10];
+          [activeRecordingsCollectionViewController handleEraseForUUID:v10];
         }
 
         v9 = v9 + 1;
@@ -3899,28 +3899,28 @@ LABEL_13:
   [(RCMainViewController *)self updateQuickActions];
 }
 
-- (void)_dismissShareMemoVCIfNeededForDeletedUUIDs:(id)a3
+- (void)_dismissShareMemoVCIfNeededForDeletedUUIDs:(id)ds
 {
-  v8 = a3;
+  dsCopy = ds;
   v4 = +[RCShareMemoViewController presentedController];
   if (v4)
   {
-    v5 = [(RCMainViewController *)self browseFoldersViewController];
-    v6 = [v5 activeRecordingsCollectionViewController];
-    v7 = [v6 uuidOfSelectedItem];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+    uuidOfSelectedItem = [activeRecordingsCollectionViewController uuidOfSelectedItem];
 
-    if ([v8 containsObject:v7])
+    if ([dsCopy containsObject:uuidOfSelectedItem])
     {
       [v4 dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
-- (BOOL)canHandleCustomAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canHandleCustomAction:(SEL)action withSender:(id)sender
 {
-  v5 = a4;
+  senderCopy = sender;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) == 0 || ([v5 modifierFlags] & 0x100000) != 0 || (-[RCMainViewController isFirstResponder](self, "isFirstResponder"))
+  if (objc_opt_isKindOfClass() & 1) == 0 || ([senderCopy modifierFlags] & 0x100000) != 0 || (-[RCMainViewController isFirstResponder](self, "isFirstResponder"))
   {
     LOBYTE(v6) = 1;
   }
@@ -3940,25 +3940,25 @@ LABEL_13:
     }
   }
 
-  v7 = [(RCMainViewController *)self presentedViewController];
-  v8 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  v9 = [v8 presentedViewController];
-  v10 = [v7 isEqual:v9];
+  presentedViewController = [(RCMainViewController *)self presentedViewController];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  presentedViewController2 = [recordingCardPresentationHelper presentedViewController];
+  v10 = [presentedViewController isEqual:presentedViewController2];
 
   if (v10)
   {
-    v11 = [(RCMainViewController *)self recordingCardPresentationHelper];
-    v12 = [v11 presentedViewController];
-    v13 = [v12 presentedViewController];
+    recordingCardPresentationHelper2 = [(RCMainViewController *)self recordingCardPresentationHelper];
+    presentedViewController3 = [recordingCardPresentationHelper2 presentedViewController];
+    v12PresentedViewController = [presentedViewController3 presentedViewController];
 
-    if (v13)
+    if (v12PresentedViewController)
     {
-      v14 = [(RCMainViewController *)self recordingCardPresentationHelper];
-      v15 = [v14 presentedViewController];
-      v16 = [v15 presentedViewController];
+      recordingCardPresentationHelper3 = [(RCMainViewController *)self recordingCardPresentationHelper];
+      presentedViewController4 = [recordingCardPresentationHelper3 presentedViewController];
+      v15PresentedViewController = [presentedViewController4 presentedViewController];
 
       v17 = 0;
-      v7 = v16;
+      presentedViewController = v15PresentedViewController;
     }
 
     else
@@ -3972,22 +3972,22 @@ LABEL_13:
     v17 = 0;
   }
 
-  v18 = [(RCMainViewController *)self presentedViewController];
+  presentedViewController5 = [(RCMainViewController *)self presentedViewController];
 
-  LOBYTE(v18) = v17 | (v18 == 0) | ([v7 modalPresentationStyle] == 7);
-  return v6 & v18;
+  LOBYTE(presentedViewController5) = v17 | (presentedViewController5 == 0) | ([presentedViewController modalPresentationStyle] == 7);
+  return v6 & presentedViewController5;
 }
 
 - (BOOL)canStartNewRecording
 {
-  v3 = [(RCMainViewController *)self _isRecordingOrBlockedByModal];
-  v4 = [(RCMainViewController *)self activeFolderViewController];
-  if (v4)
+  _isRecordingOrBlockedByModal = [(RCMainViewController *)self _isRecordingOrBlockedByModal];
+  activeFolderViewController = [(RCMainViewController *)self activeFolderViewController];
+  if (activeFolderViewController)
   {
-    v5 = [(RCMainViewController *)self activeFolderViewController];
-    v6 = [v5 supportsRecording];
+    activeFolderViewController2 = [(RCMainViewController *)self activeFolderViewController];
+    supportsRecording = [activeFolderViewController2 supportsRecording];
 
-    v7 = v6 ^ 1;
+    v7 = supportsRecording ^ 1;
   }
 
   else
@@ -3995,51 +3995,51 @@ LABEL_13:
     v7 = 0;
   }
 
-  return ((v3 | v7) & 1) == 0 && !self->_viewIsAppearingOrDisappearing;
+  return ((_isRecordingOrBlockedByModal | v7) & 1) == 0 && !self->_viewIsAppearingOrDisappearing;
 }
 
 - (void)startNewRecordingAction
 {
-  v5 = [(RCMainViewController *)self selectedComposition];
-  if (!v5 || ([v5 savedRecordingUUID], v3 = objc_claimAutoreleasedReturnValue(), v3, v4 = v5, v3))
+  selectedComposition = [(RCMainViewController *)self selectedComposition];
+  if (!selectedComposition || ([selectedComposition savedRecordingUUID], v3 = objc_claimAutoreleasedReturnValue(), v3, v4 = selectedComposition, v3))
   {
     [(RCMainViewController *)self performAction:3 atPosition:0 forUUID:0 sourceController:0 source:0.0];
-    v4 = v5;
+    v4 = selectedComposition;
   }
 }
 
 - (BOOL)canPlayRecording
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
-  v5 = [(RCMainViewController *)self mainControllerHelper];
-  if ([v5 isRecording])
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  if ([mainControllerHelper isRecording])
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v7 = [(RCMainViewController *)self mainControllerHelper];
-    if ([v7 readyForPlayback])
+    mainControllerHelper2 = [(RCMainViewController *)self mainControllerHelper];
+    if ([mainControllerHelper2 readyForPlayback])
     {
-      v8 = [(RCMainViewController *)self _uuidOfRecordingForPlaybackActivities];
-      if (v8)
+      _uuidOfRecordingForPlaybackActivities = [(RCMainViewController *)self _uuidOfRecordingForPlaybackActivities];
+      if (_uuidOfRecordingForPlaybackActivities)
       {
-        v9 = [(RCMainViewController *)self playbackViewController];
-        v10 = [v9 view];
-        if ([v10 textFieldIsBeingEdited] & 1) != 0 || (objc_msgSend(v4, "selectedCellIsEditingTitle") & 1) != 0 || (objc_msgSend(v4, "selectedCellIsInFlightEditing"))
+        playbackViewController = [(RCMainViewController *)self playbackViewController];
+        view = [playbackViewController view];
+        if ([view textFieldIsBeingEdited] & 1) != 0 || (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsEditingTitle") & 1) != 0 || (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsInFlightEditing"))
         {
           LOBYTE(v6) = 0;
         }
 
         else
         {
-          v12 = [(RCMainViewController *)self browseFoldersViewController];
-          v13 = [v12 recordingViewController];
-          v14 = [v13 view];
-          v6 = [v14 textFieldIsBeingEdited] ^ 1;
+          browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+          recordingViewController = [browseFoldersViewController2 recordingViewController];
+          view2 = [recordingViewController view];
+          v6 = [view2 textFieldIsBeingEdited] ^ 1;
         }
       }
 
@@ -4060,20 +4060,20 @@ LABEL_13:
 
 - (void)playRecording
 {
-  v3 = [(RCMainViewController *)self _uuidOfRecordingForPlaybackActivities];
-  [(RCMainViewController *)self performAction:2 atPosition:v3 forUUID:0 sourceController:0 source:0.0];
+  _uuidOfRecordingForPlaybackActivities = [(RCMainViewController *)self _uuidOfRecordingForPlaybackActivities];
+  [(RCMainViewController *)self performAction:2 atPosition:_uuidOfRecordingForPlaybackActivities forUUID:0 sourceController:0 source:0.0];
 }
 
 - (BOOL)canRenameRecording
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v4 = [v3 uuidBeingDisplayed];
-  if (v4)
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  if (uuidBeingDisplayed)
   {
-    v5 = [(RCMainViewController *)self browseFoldersViewController];
-    v6 = [v5 recordingViewController];
-    v7 = [v6 uuidBeingDisplayed];
-    v8 = v7 == 0;
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController recordingViewController];
+    uuidBeingDisplayed2 = [recordingViewController uuidBeingDisplayed];
+    v8 = uuidBeingDisplayed2 == 0;
   }
 
   else
@@ -4086,20 +4086,20 @@ LABEL_13:
 
 - (void)renameRecording
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v2 = [v3 activeRecordingsCollectionViewController];
-  [v2 editSelectedItemTitle];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  [activeRecordingsCollectionViewController editSelectedItemTitle];
 }
 
 - (BOOL)canShareRecording
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v4 = [v3 uuidBeingDisplayed];
-  if (v4)
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  if (uuidBeingDisplayed)
   {
-    v5 = [(RCMainViewController *)self browseFoldersViewController];
-    v6 = [v5 activeRecordingsCollectionViewController];
-    v7 = [v6 selectedCellIsInFlightEditing] ^ 1;
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+    v7 = [activeRecordingsCollectionViewController selectedCellIsInFlightEditing] ^ 1;
   }
 
   else
@@ -4110,36 +4110,36 @@ LABEL_13:
   return v7;
 }
 
-- (void)shareRecording:(id)a3
+- (void)shareRecording:(id)recording
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self playbackViewController];
-  [v5 shareCurrentRecording:v4];
+  recordingCopy = recording;
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController shareCurrentRecording:recordingCopy];
 }
 
 - (BOOL)canDuplicateRecording
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
-  v5 = [v4 selectedUUIDs];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  selectedUUIDs = [activeRecordingsCollectionViewController selectedUUIDs];
 
-  if ([v5 count] == 1)
+  if ([selectedUUIDs count] == 1)
   {
-    v6 = [(RCMainViewController *)self _canDuplicate];
+    _canDuplicate = [(RCMainViewController *)self _canDuplicate];
   }
 
   else
   {
-    v6 = 0;
+    _canDuplicate = 0;
   }
 
-  return v6;
+  return _canDuplicate;
 }
 
 - (BOOL)canEditRecording
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
   if ([(RCMainViewController *)self state])
   {
@@ -4148,17 +4148,17 @@ LABEL_13:
 
   else
   {
-    v6 = [(RCMainViewController *)self playbackViewController];
-    v7 = [v6 uuidBeingDisplayed];
-    if (!v7 || ([v4 selectedCellIsEditingTitle] & 1) != 0 || (objc_msgSend(v4, "selectedCellIsInFlightEditing") & 1) != 0)
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+    if (!uuidBeingDisplayed || ([activeRecordingsCollectionViewController selectedCellIsEditingTitle] & 1) != 0 || (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsInFlightEditing") & 1) != 0)
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v9 = [(RCMainViewController *)self browseFoldersViewController];
-      v5 = [v9 isShowingRecentlyDeleted] ^ 1;
+      browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+      v5 = [browseFoldersViewController2 isShowingRecentlyDeleted] ^ 1;
     }
   }
 
@@ -4167,66 +4167,66 @@ LABEL_13:
 
 - (BOOL)canTrimRecording
 {
-  v3 = [(RCMainViewController *)self isRecording];
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v4 recordingViewController];
-  v6 = [v5 view];
-  v7 = [v6 recordingViewState];
+  isRecording = [(RCMainViewController *)self isRecording];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  view = [recordingViewController view];
+  recordingViewState = [view recordingViewState];
 
-  v8 = [(RCMainViewController *)self browseFoldersViewController];
-  v9 = [v8 recordingViewController];
-  if ([v9 isDisplayingTranscriptView])
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController2 = [browseFoldersViewController2 recordingViewController];
+  if ([recordingViewController2 isDisplayingTranscriptView])
   {
-    v10 = 1;
+    isDisplayingTranscriptView = 1;
   }
 
   else
   {
-    v11 = [(RCMainViewController *)self playbackViewController];
-    v10 = [v11 isDisplayingTranscriptView];
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    isDisplayingTranscriptView = [playbackViewController isDisplayingTranscriptView];
   }
 
-  v13 = [(RCMainViewController *)self browseFoldersViewController];
-  v12 = [v13 activeRecordingsCollectionViewController];
+  browseFoldersViewController3 = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController3 activeRecordingsCollectionViewController];
 
-  LOBYTE(v13) = 0;
-  if (v7 == 8)
+  LOBYTE(browseFoldersViewController3) = 0;
+  if (recordingViewState == 8)
   {
     v14 = 1;
   }
 
   else
   {
-    v14 = v3;
+    v14 = isRecording;
   }
 
-  if ((v14 & 1) == 0 && (v10 & 1) == 0)
+  if ((v14 & 1) == 0 && (isDisplayingTranscriptView & 1) == 0)
   {
-    v15 = [(RCMainViewController *)self playbackViewController];
-    v16 = [v15 uuidBeingDisplayed];
-    if (!v16 || ([v12 selectedCellIsEditingTitle] & 1) != 0 || (objc_msgSend(v12, "selectedCellIsInFlightEditing") & 1) != 0)
+    playbackViewController2 = [(RCMainViewController *)self playbackViewController];
+    uuidBeingDisplayed = [playbackViewController2 uuidBeingDisplayed];
+    if (!uuidBeingDisplayed || ([activeRecordingsCollectionViewController selectedCellIsEditingTitle] & 1) != 0 || (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsInFlightEditing") & 1) != 0)
     {
-      LOBYTE(v13) = 0;
+      LOBYTE(browseFoldersViewController3) = 0;
     }
 
     else
     {
-      v18 = [(RCMainViewController *)self browseFoldersViewController];
-      LODWORD(v13) = [v18 isShowingRecentlyDeleted] ^ 1;
+      browseFoldersViewController4 = [(RCMainViewController *)self browseFoldersViewController];
+      LODWORD(browseFoldersViewController3) = [browseFoldersViewController4 isShowingRecentlyDeleted] ^ 1;
     }
   }
 
-  return v13;
+  return browseFoldersViewController3;
 }
 
 - (BOOL)canToggleFavoriteRecording
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v4 = [v3 uuidBeingDisplayed];
-  if (v4)
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  if (uuidBeingDisplayed)
   {
-    v5 = [(RCMainViewController *)self browseFoldersViewController];
-    v6 = [v5 isShowingRecentlyDeleted] ^ 1;
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    v6 = [browseFoldersViewController isShowingRecentlyDeleted] ^ 1;
   }
 
   else
@@ -4239,10 +4239,10 @@ LABEL_13:
 
 - (BOOL)currentSelectionHasSpatialRecording
 {
-  v2 = [(RCMainViewController *)self mainControllerHelper];
-  v3 = [v2 currentSelectionHasSpatialAudio];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  currentSelectionHasSpatialAudio = [mainControllerHelper currentSelectionHasSpatialAudio];
 
-  return v3;
+  return currentSelectionHasSpatialAudio;
 }
 
 - (BOOL)canToggleEnhanceRecording
@@ -4254,12 +4254,12 @@ LABEL_13:
 
   else
   {
-    v4 = [(RCMainViewController *)self playbackViewController];
-    v5 = [v4 uuidBeingDisplayed];
-    if (v5)
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+    if (uuidBeingDisplayed)
     {
-      v6 = [(RCMainViewController *)self browseFoldersViewController];
-      v3 = [v6 isShowingRecentlyDeleted] ^ 1;
+      browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+      v3 = [browseFoldersViewController isShowingRecentlyDeleted] ^ 1;
     }
 
     else
@@ -4280,12 +4280,12 @@ LABEL_13:
 
   else
   {
-    v4 = [(RCMainViewController *)self playbackViewController];
-    v5 = [v4 uuidBeingDisplayed];
-    if (v5)
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+    if (uuidBeingDisplayed)
     {
-      v6 = [(RCMainViewController *)self browseFoldersViewController];
-      v3 = [v6 isShowingRecentlyDeleted] ^ 1;
+      browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+      v3 = [browseFoldersViewController isShowingRecentlyDeleted] ^ 1;
     }
 
     else
@@ -4306,12 +4306,12 @@ LABEL_13:
 
   else
   {
-    v4 = [(RCMainViewController *)self playbackViewController];
-    v5 = [v4 uuidBeingDisplayed];
-    if (v5)
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+    if (uuidBeingDisplayed)
     {
-      v6 = [(RCMainViewController *)self browseFoldersViewController];
-      v3 = [v6 isShowingRecentlyDeleted] ^ 1;
+      browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+      v3 = [browseFoldersViewController isShowingRecentlyDeleted] ^ 1;
     }
 
     else
@@ -4325,47 +4325,47 @@ LABEL_13:
 
 - (BOOL)currentSelectionHasSpeechIsolatorEnabled
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v4 = [v3 uuidBeingDisplayed];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
 
-  v5 = [(RCMainViewController *)self playbackSettings];
-  v6 = [v5 uuid];
-  v7 = [v6 isEqual:v4];
+  playbackSettings = [(RCMainViewController *)self playbackSettings];
+  uuid = [playbackSettings uuid];
+  v7 = [uuid isEqual:uuidBeingDisplayed];
 
   if (v7)
   {
-    v8 = [(RCMainViewController *)self playbackSettings];
-    v9 = [v8 speechIsolatorEnabled];
+    playbackSettings2 = [(RCMainViewController *)self playbackSettings];
+    speechIsolatorEnabled = [playbackSettings2 speechIsolatorEnabled];
   }
 
   else
   {
-    v9 = 0;
+    speechIsolatorEnabled = 0;
   }
 
-  return v9;
+  return speechIsolatorEnabled;
 }
 
 - (void)toggleSpeechIsolator
 {
-  v4 = [(RCMainViewController *)self playbackViewController];
-  v3 = [v4 uuidBeingDisplayed];
-  [(RCMainViewController *)self toggleSpeechIsolatorForUUID:v3];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  [(RCMainViewController *)self toggleSpeechIsolatorForUUID:uuidBeingDisplayed];
 }
 
-- (void)toggleSpeechIsolatorForUUID:(id)a3
+- (void)toggleSpeechIsolatorForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self playbackSettings];
-  v6 = [v5 uuid];
-  v7 = [v6 isEqual:v4];
+  dCopy = d;
+  playbackSettings = [(RCMainViewController *)self playbackSettings];
+  uuid = [playbackSettings uuid];
+  v7 = [uuid isEqual:dCopy];
 
   if (v7)
   {
-    v8 = [(RCMainViewController *)self playbackSettings];
-    v9 = [v8 speechIsolatorEnabled];
+    playbackSettings2 = [(RCMainViewController *)self playbackSettings];
+    speechIsolatorEnabled = [playbackSettings2 speechIsolatorEnabled];
 
-    [(RCMainViewController *)self setSpeechIsolatorEnabled:v9 ^ 1 forUUID:v4];
+    [(RCMainViewController *)self setSpeechIsolatorEnabled:speechIsolatorEnabled ^ 1 forUUID:dCopy];
   }
 
   else
@@ -4373,58 +4373,58 @@ LABEL_13:
     v10 = OSLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_1001BA8C8(v4, self);
+      sub_1001BA8C8(dCopy, self);
     }
   }
 }
 
 - (void)duplicateRecording
 {
-  v5 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v5 activeRecordingsCollectionViewController];
-  v4 = [v3 uuidOfSelectedRecording];
-  [(RCMainViewController *)self performAction:13 atPosition:v4 forUUID:0 sourceController:0 source:0.0];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  uuidOfSelectedRecording = [activeRecordingsCollectionViewController uuidOfSelectedRecording];
+  [(RCMainViewController *)self performAction:13 atPosition:uuidOfSelectedRecording forUUID:0 sourceController:0 source:0.0];
 }
 
 - (void)editRecording
 {
-  v3 = [(RCMainViewController *)self mainControllerHelper];
-  v4 = [v3 currentRecordingDisplayModel];
-  v6 = [v4 UUID];
+  mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+  currentRecordingDisplayModel = [mainControllerHelper currentRecordingDisplayModel];
+  uUID = [currentRecordingDisplayModel UUID];
 
-  if (v6)
+  if (uUID)
   {
-    v5 = [(RCMainViewController *)self playbackViewController];
-    [v5 stopScrolling];
+    playbackViewController = [(RCMainViewController *)self playbackViewController];
+    [playbackViewController stopScrolling];
 
-    [(RCMainViewController *)self performAction:22 atPosition:v6 forUUID:0 sourceController:0 source:0.0];
+    [(RCMainViewController *)self performAction:22 atPosition:uUID forUUID:0 sourceController:0 source:0.0];
   }
 }
 
 - (void)trimRecording
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v4 = [v3 uuidBeingDisplayed];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
 
-  if (v4)
+  if (uuidBeingDisplayed)
   {
-    v5 = [(RCMainViewController *)self playbackViewController];
-    [v5 stopScrolling];
+    playbackViewController2 = [(RCMainViewController *)self playbackViewController];
+    [playbackViewController2 stopScrolling];
 
-    v7 = [(RCMainViewController *)self playbackViewController];
-    v6 = [v7 uuidBeingDisplayed];
-    [(RCMainViewController *)self performAction:30 atPosition:v6 forUUID:0 sourceController:0 source:0.0];
+    playbackViewController3 = [(RCMainViewController *)self playbackViewController];
+    uuidBeingDisplayed2 = [playbackViewController3 uuidBeingDisplayed];
+    [(RCMainViewController *)self performAction:30 atPosition:uuidBeingDisplayed2 forUUID:0 sourceController:0 source:0.0];
   }
 }
 
 - (BOOL)currentSelectionIsFavorite
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v4 = [v3 uuidBeingDisplayed];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
 
-  if (v4)
+  if (uuidBeingDisplayed)
   {
-    v5 = [(RCMainViewController *)self isFavoriteForUUID:v4];
+    v5 = [(RCMainViewController *)self isFavoriteForUUID:uuidBeingDisplayed];
   }
 
   else
@@ -4437,46 +4437,46 @@ LABEL_13:
 
 - (void)toggleFavoriteRecording
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v5 = [v3 uuidBeingDisplayed];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
 
-  v4 = v5;
-  if (v5)
+  v4 = uuidBeingDisplayed;
+  if (uuidBeingDisplayed)
   {
-    [(RCMainViewController *)self toggleFavoriteForUUID:v5];
-    v4 = v5;
+    [(RCMainViewController *)self toggleFavoriteForUUID:uuidBeingDisplayed];
+    v4 = uuidBeingDisplayed;
   }
 }
 
 - (BOOL)currentSelectionIsEnhanced
 {
-  v2 = [(RCMainViewController *)self playbackViewController];
-  v3 = [v2 uuidBeingDisplayed];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
 
-  if (v3)
+  if (uuidBeingDisplayed)
   {
-    v4 = [RCRecordingDisplayModel recordingDisplayModelForUUID:v3];
-    v5 = [v4 isEnhanced];
+    v4 = [RCRecordingDisplayModel recordingDisplayModelForUUID:uuidBeingDisplayed];
+    isEnhanced = [v4 isEnhanced];
   }
 
   else
   {
-    v5 = 0;
+    isEnhanced = 0;
   }
 
-  return v5;
+  return isEnhanced;
 }
 
 - (void)toggleEnhanceRecording
 {
-  v4 = [(RCMainViewController *)self playbackViewController];
-  v3 = [v4 uuidBeingDisplayed];
-  [(RCMainViewController *)self toggleEnhanceRecordingForUUID:v3];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  [(RCMainViewController *)self toggleEnhanceRecordingForUUID:uuidBeingDisplayed];
 }
 
-- (void)toggleEnhanceRecordingForUUID:(id)a3
+- (void)toggleEnhanceRecordingForUUID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   v4 = [RCRecordingDisplayModel recordingDisplayModelForUUID:?];
   v5 = v4;
   if (v4)
@@ -4491,49 +4491,49 @@ LABEL_13:
       v6 = 38;
     }
 
-    [(RCMainViewController *)self performAction:v6 atPosition:v7 forUUID:0 sourceController:0 source:0.0];
+    [(RCMainViewController *)self performAction:v6 atPosition:dCopy forUUID:0 sourceController:0 source:0.0];
   }
 }
 
 - (BOOL)currentSelectionHasSilenceRemoved
 {
-  v3 = [(RCMainViewController *)self playbackViewController];
-  v4 = [v3 uuidBeingDisplayed];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
 
-  if (v4 && (-[RCMainViewController playbackSettings](self, "playbackSettings"), v5 = objc_claimAutoreleasedReturnValue(), [v5 uuid], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", v4), v6, v5, v7))
+  if (uuidBeingDisplayed && (-[RCMainViewController playbackSettings](self, "playbackSettings"), v5 = objc_claimAutoreleasedReturnValue(), [v5 uuid], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", uuidBeingDisplayed), v6, v5, v7))
   {
-    v8 = [(RCMainViewController *)self playbackSettings];
-    v9 = [v8 silenceRemoved];
+    playbackSettings = [(RCMainViewController *)self playbackSettings];
+    silenceRemoved = [playbackSettings silenceRemoved];
   }
 
   else
   {
-    v9 = 0;
+    silenceRemoved = 0;
   }
 
-  return v9;
+  return silenceRemoved;
 }
 
 - (void)toggleRemoveSilence
 {
-  v4 = [(RCMainViewController *)self playbackViewController];
-  v3 = [v4 uuidBeingDisplayed];
-  [(RCMainViewController *)self toggleRemoveSilenceForUUID:v3];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  [(RCMainViewController *)self toggleRemoveSilenceForUUID:uuidBeingDisplayed];
 }
 
-- (void)toggleRemoveSilenceForUUID:(id)a3
+- (void)toggleRemoveSilenceForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainViewController *)self playbackSettings];
-  v6 = [v5 uuid];
-  v7 = [v6 isEqual:v4];
+  dCopy = d;
+  playbackSettings = [(RCMainViewController *)self playbackSettings];
+  uuid = [playbackSettings uuid];
+  v7 = [uuid isEqual:dCopy];
 
   if (v7)
   {
-    v8 = [(RCMainViewController *)self playbackSettings];
-    v9 = [v8 silenceRemoved];
+    playbackSettings2 = [(RCMainViewController *)self playbackSettings];
+    silenceRemoved = [playbackSettings2 silenceRemoved];
 
-    [(RCMainViewController *)self setRemoveSilence:v9 ^ 1 forUUID:v4];
+    [(RCMainViewController *)self setRemoveSilence:silenceRemoved ^ 1 forUUID:dCopy];
   }
 
   else
@@ -4541,58 +4541,58 @@ LABEL_13:
     v10 = OSLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_1001BA978(v4, self);
+      sub_1001BA978(dCopy, self);
     }
   }
 }
 
 - (void)toggleTranscriptView
 {
-  v3 = [(RCMainViewController *)self recordingCardPresentationHelper];
-  v4 = [v3 presentedViewController];
+  recordingCardPresentationHelper = [(RCMainViewController *)self recordingCardPresentationHelper];
+  presentedViewController = [recordingCardPresentationHelper presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = [(RCMainViewController *)self browseFoldersViewController];
-    v6 = [v5 recordingViewController];
-    [v6 toggleTranscriptView];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController recordingViewController];
+    [recordingViewController toggleTranscriptView];
   }
 
-  v7 = [(RCMainViewController *)self playbackViewController];
-  [v7 toggleTranscriptView];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  [playbackViewController toggleTranscriptView];
 }
 
-- (void)copyTranscript:(id)a3
+- (void)copyTranscript:(id)transcript
 {
-  v3 = a3;
+  transcriptCopy = transcript;
   v4 = objc_opt_new();
-  [v4 transcriptionStringForRecordingUUID:v3 completionHandler:&stru_10028C2F0];
+  [v4 transcriptionStringForRecordingUUID:transcriptCopy completionHandler:&stru_10028C2F0];
 }
 
-- (void)renameDescriptionViewTitleTextField:(id)a3 withUUID:(id)a4
+- (void)renameDescriptionViewTitleTextField:(id)field withUUID:(id)d
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+  fieldCopy = field;
+  dCopy = d;
+  if (fieldCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [(RCMainViewController *)self browseFoldersViewController];
-    v8 = [v7 activeRecordingsCollectionViewController];
-    v9 = [v8 uuidOfSelectedItem];
+    browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+    activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+    uuidOfSelectedItem = [activeRecordingsCollectionViewController uuidOfSelectedItem];
 
-    if (([v9 isEqualToString:v6] & 1) == 0)
+    if (([uuidOfSelectedItem isEqualToString:dCopy] & 1) == 0)
     {
-      v10 = [(RCMainViewController *)self browseFoldersViewController];
-      v11 = [v10 activeRecordingsCollectionViewController];
-      [v11 selectItemWithUUID:v6];
+      browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+      activeRecordingsCollectionViewController2 = [browseFoldersViewController2 activeRecordingsCollectionViewController];
+      [activeRecordingsCollectionViewController2 selectItemWithUUID:dCopy];
     }
 
-    [v12 beginEditingTitle];
+    [fieldCopy beginEditingTitle];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (![(RCMainViewController *)self canHandleCustomAction:a3 withSender:a4]|| "delete:" != a3)
+  if (![(RCMainViewController *)self canHandleCustomAction:action withSender:sender]|| "delete:" != action)
   {
     return 0;
   }
@@ -4602,9 +4602,9 @@ LABEL_13:
 
 - (BOOL)canDelete
 {
-  v3 = [(RCMainViewController *)self presentedConfirmationController];
+  presentedConfirmationController = [(RCMainViewController *)self presentedConfirmationController];
 
-  if (v3)
+  if (presentedConfirmationController)
   {
     return 0;
   }
@@ -4612,22 +4612,22 @@ LABEL_13:
   return [(RCMainViewController *)self _canDelete];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v4 activeRecordingsCollectionViewController];
-  v6 = [v5 selectedCellIsEditingTitle];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  selectedCellIsEditingTitle = [activeRecordingsCollectionViewController selectedCellIsEditingTitle];
 
-  if (v6)
+  if (selectedCellIsEditingTitle)
   {
     return;
   }
 
-  v7 = [(RCMainViewController *)self browseFoldersViewController];
-  v8 = [v7 activeRecordingsCollectionViewController];
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController2 = [browseFoldersViewController2 activeRecordingsCollectionViewController];
 
-  v9 = [(RCMainViewController *)self browseFoldersViewController];
-  if ([v9 isShowingRecentlyDeleted])
+  browseFoldersViewController3 = [(RCMainViewController *)self browseFoldersViewController];
+  if ([browseFoldersViewController3 isShowingRecentlyDeleted])
   {
     v10 = 17;
   }
@@ -4637,36 +4637,36 @@ LABEL_13:
     v10 = 15;
   }
 
-  v11 = [(RCMainViewController *)self state];
-  if (v11 == 1)
+  state = [(RCMainViewController *)self state];
+  if (state == 1)
   {
-    v14 = [(RCMainViewController *)self browseFoldersViewController];
-    v15 = [v14 recordingViewController];
+    browseFoldersViewController4 = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController4 recordingViewController];
 
-    v12 = v15;
-    v20 = [v12 uuidBeingDisplayed];
-    v16 = [v12 view];
-    [(RCMainViewController *)self performAction:14 atPosition:v20 forUUID:v12 sourceController:v16 source:0.0];
+    v12 = recordingViewController;
+    uuidBeingDisplayed = [v12 uuidBeingDisplayed];
+    view = [v12 view];
+    [(RCMainViewController *)self performAction:14 atPosition:uuidBeingDisplayed forUUID:v12 sourceController:view source:0.0];
   }
 
   else
   {
-    if (v11)
+    if (state)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = v8;
+      v12 = activeRecordingsCollectionViewController2;
       if (![v12 isEditing] || (objc_msgSend(v12, "selectedUUIDs"), v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
       {
-        v20 = [v12 uuidOfSelectedItem];
-        v17 = [v12 view];
-        v18 = [v17 window];
-        if (v18)
+        uuidBeingDisplayed = [v12 uuidOfSelectedItem];
+        view2 = [v12 view];
+        window = [view2 window];
+        if (window)
         {
-          v19 = [v12 cellForUUID:v20];
+          v19 = [v12 cellForUUID:uuidBeingDisplayed];
         }
 
         else
@@ -4674,14 +4674,14 @@ LABEL_13:
           v19 = 0;
         }
 
-        [(RCMainViewController *)self performAction:v10 atPosition:v20 forUUID:v12 sourceController:v19 source:0.0];
+        [(RCMainViewController *)self performAction:v10 atPosition:uuidBeingDisplayed forUUID:v12 sourceController:v19 source:0.0];
         goto LABEL_17;
       }
 
       [v12 deleteSelectedItems];
     }
 
-    v20 = 0;
+    uuidBeingDisplayed = 0;
   }
 
 LABEL_17:
@@ -4689,205 +4689,205 @@ LABEL_17:
 
 - (BOOL)canJumpForward
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
-  v5 = [(RCMainViewController *)self playbackViewController];
-  v6 = [v5 uuidBeingDisplayed];
-  if (v6)
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  if (uuidBeingDisplayed)
   {
-    v7 = [v5 view];
-    if ([v7 textFieldIsBeingEdited])
+    view = [playbackViewController view];
+    if ([view textFieldIsBeingEdited])
     {
-      v8 = 0;
+      canJumpForward = 0;
     }
 
     else
     {
-      v9 = [(RCMainViewController *)self browseFoldersViewController];
-      v10 = [v9 recordingViewController];
-      v11 = [v10 view];
-      if ([v11 textFieldIsBeingEdited] & 1) != 0 || (objc_msgSend(v4, "selectedCellIsEditingTitle") & 1) != 0 || (objc_msgSend(v4, "selectedCellIsInFlightEditing"))
+      browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+      recordingViewController = [browseFoldersViewController2 recordingViewController];
+      view2 = [recordingViewController view];
+      if ([view2 textFieldIsBeingEdited] & 1) != 0 || (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsEditingTitle") & 1) != 0 || (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsInFlightEditing"))
       {
-        v8 = 0;
+        canJumpForward = 0;
       }
 
       else
       {
-        v13 = [(RCMainViewController *)self mainControllerHelper];
-        v8 = [v13 canJumpForward];
+        mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+        canJumpForward = [mainControllerHelper canJumpForward];
       }
     }
   }
 
   else
   {
-    v8 = 0;
+    canJumpForward = 0;
   }
 
-  return v8;
+  return canJumpForward;
 }
 
 - (void)jumpSelectionForward
 {
-  v3 = [(RCMainViewController *)self _uuidOfRecordingForPlaybackActivities];
-  [(RCMainViewController *)self performAction:11 atPosition:v3 forUUID:0 sourceController:0 source:0.0];
+  _uuidOfRecordingForPlaybackActivities = [(RCMainViewController *)self _uuidOfRecordingForPlaybackActivities];
+  [(RCMainViewController *)self performAction:11 atPosition:_uuidOfRecordingForPlaybackActivities forUUID:0 sourceController:0 source:0.0];
 }
 
 - (BOOL)canJumpBackward
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
-  v5 = [(RCMainViewController *)self playbackViewController];
-  v6 = [v5 uuidBeingDisplayed];
-  if (v6)
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  if (uuidBeingDisplayed)
   {
-    v7 = [v5 view];
-    if ([v7 textFieldIsBeingEdited])
+    view = [playbackViewController view];
+    if ([view textFieldIsBeingEdited])
     {
-      v8 = 0;
+      canJumpBackward = 0;
     }
 
     else
     {
-      v9 = [(RCMainViewController *)self browseFoldersViewController];
-      v10 = [v9 recordingViewController];
-      v11 = [v10 view];
-      if ([v11 textFieldIsBeingEdited] & 1) != 0 || (objc_msgSend(v4, "selectedCellIsEditingTitle") & 1) != 0 || (objc_msgSend(v4, "selectedCellIsInFlightEditing"))
+      browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+      recordingViewController = [browseFoldersViewController2 recordingViewController];
+      view2 = [recordingViewController view];
+      if ([view2 textFieldIsBeingEdited] & 1) != 0 || (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsEditingTitle") & 1) != 0 || (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsInFlightEditing"))
       {
-        v8 = 0;
+        canJumpBackward = 0;
       }
 
       else
       {
-        v13 = [(RCMainViewController *)self mainControllerHelper];
-        v8 = [v13 canJumpBackward];
+        mainControllerHelper = [(RCMainViewController *)self mainControllerHelper];
+        canJumpBackward = [mainControllerHelper canJumpBackward];
       }
     }
   }
 
   else
   {
-    v8 = 0;
+    canJumpBackward = 0;
   }
 
-  return v8;
+  return canJumpBackward;
 }
 
 - (void)jumpSelectionBackward
 {
-  v3 = [(RCMainViewController *)self _uuidOfRecordingForPlaybackActivities];
-  [(RCMainViewController *)self performAction:12 atPosition:v3 forUUID:0 sourceController:0 source:0.0];
+  _uuidOfRecordingForPlaybackActivities = [(RCMainViewController *)self _uuidOfRecordingForPlaybackActivities];
+  [(RCMainViewController *)self performAction:12 atPosition:_uuidOfRecordingForPlaybackActivities forUUID:0 sourceController:0 source:0.0];
 }
 
 - (BOOL)canHandleDone
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 recordingViewController];
-  v5 = [v4 view];
-  v6 = [v5 recordingViewState];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  view = [recordingViewController view];
+  recordingViewState = [view recordingViewState];
 
-  if (!v6)
+  if (!recordingViewState)
   {
     return 0;
   }
 
-  v7 = [(RCMainViewController *)self browseFoldersViewController];
-  v8 = [v7 recordingViewController];
-  v9 = [v8 view];
-  v10 = [v9 recordingViewState];
+  browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController2 = [browseFoldersViewController2 recordingViewController];
+  view2 = [recordingViewController2 view];
+  recordingViewState2 = [view2 recordingViewState];
 
-  if (v10 != 8)
+  if (recordingViewState2 != 8)
   {
     return 1;
   }
 
-  v11 = [(RCMainViewController *)self browseFoldersViewController];
-  v12 = [v11 recordingViewController];
-  v13 = [v12 view];
-  v14 = [v13 canSaveTrimChanges];
+  browseFoldersViewController3 = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController3 = [browseFoldersViewController3 recordingViewController];
+  view3 = [recordingViewController3 view];
+  canSaveTrimChanges = [view3 canSaveTrimChanges];
 
-  return v14;
+  return canSaveTrimChanges;
 }
 
 - (void)handleDone
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v2 = [v3 recordingViewController];
-  [v2 handleDone];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  [recordingViewController handleDone];
 }
 
 - (BOOL)canHandleCancel
 {
-  v2 = [(RCMainViewController *)self browseFoldersViewController];
-  v3 = [v2 recordingViewController];
-  v4 = [v3 view];
-  v5 = [v4 recordingViewState] == 8;
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  view = [recordingViewController view];
+  v5 = [view recordingViewState] == 8;
 
   return v5;
 }
 
 - (void)handleCancel
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v2 = [v3 recordingViewController];
-  [v2 handleCancel];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  recordingViewController = [browseFoldersViewController recordingViewController];
+  [recordingViewController handleCancel];
 }
 
 - (BOOL)canToggleSidebar
 {
-  v3 = [(RCMainViewController *)self state];
-  v4 = [(RCMainViewController *)self presentedViewController];
-  v5 = v3 | v4;
+  state = [(RCMainViewController *)self state];
+  presentedViewController = [(RCMainViewController *)self presentedViewController];
+  v5 = state | presentedViewController;
 
   return v5 == 0;
 }
 
 - (void)recoverRecording
 {
-  v4 = [(RCMainViewController *)self playbackViewController];
-  v3 = [v4 uuidBeingDisplayed];
-  [(RCMainViewController *)self performAction:19 atPosition:v3 forUUID:self sourceController:0 source:0.0];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  [(RCMainViewController *)self performAction:19 atPosition:uuidBeingDisplayed forUUID:self sourceController:0 source:0.0];
 }
 
 - (void)eraseRecording
 {
-  v4 = [(RCMainViewController *)self playbackViewController];
-  v3 = [v4 uuidBeingDisplayed];
-  [(RCMainViewController *)self performAction:16 atPosition:v3 forUUID:self sourceController:0 source:0.0];
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  [(RCMainViewController *)self performAction:16 atPosition:uuidBeingDisplayed forUUID:self sourceController:0 source:0.0];
 }
 
 - (id)_uuidOfRecordingForPlaybackActivities
 {
-  v3 = [(RCMainViewController *)self browseFoldersViewController];
-  v4 = [v3 activeRecordingsCollectionViewController];
-  v5 = [v4 selectedRecording];
-  v6 = [v5 uuid];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
+  selectedRecording = [activeRecordingsCollectionViewController selectedRecording];
+  uuid = [selectedRecording uuid];
 
-  if (!v6)
+  if (!uuid)
   {
-    v7 = [(RCMainViewController *)self browseFoldersViewController];
-    v8 = [v7 recordingViewController];
-    v6 = [v8 uuidBeingDisplayed];
+    browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+    recordingViewController = [browseFoldersViewController2 recordingViewController];
+    uuid = [recordingViewController uuidBeingDisplayed];
   }
 
-  return v6;
+  return uuid;
 }
 
 - (BOOL)_canDuplicate
 {
-  v3 = [(RCMainViewController *)self _canDelete];
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v4 isShowingRecentlyDeleted] ^ 1;
+  _canDelete = [(RCMainViewController *)self _canDelete];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  v5 = [browseFoldersViewController isShowingRecentlyDeleted] ^ 1;
 
-  return v3 & v5;
+  return _canDelete & v5;
 }
 
 - (BOOL)_canDelete
 {
-  v4 = [(RCMainViewController *)self browseFoldersViewController];
-  v5 = [v4 activeRecordingsCollectionViewController];
+  browseFoldersViewController = [(RCMainViewController *)self browseFoldersViewController];
+  activeRecordingsCollectionViewController = [browseFoldersViewController activeRecordingsCollectionViewController];
 
   if (([(RCMainViewController *)self isFirstResponder]& 1) != 0)
   {
@@ -4910,12 +4910,12 @@ LABEL_17:
     }
   }
 
-  v9 = [(RCMainViewController *)self playbackViewController];
-  v10 = [v9 uuidBeingDisplayed];
-  if (!v10)
+  playbackViewController = [(RCMainViewController *)self playbackViewController];
+  uuidBeingDisplayed = [playbackViewController uuidBeingDisplayed];
+  if (!uuidBeingDisplayed)
   {
-    v2 = [v5 uuidOfSelectedItem];
-    if (!v2)
+    uuidOfSelectedItem = [activeRecordingsCollectionViewController uuidOfSelectedItem];
+    if (!uuidOfSelectedItem)
     {
       LOBYTE(v14) = 0;
 LABEL_17:
@@ -4925,41 +4925,41 @@ LABEL_17:
     }
   }
 
-  if (!-[RCMainViewController state](self, "state") && ([v5 selectedCellIsEditingTitle] & 1) == 0 && (objc_msgSend(v5, "selectedCellIsInFlightEditing") & 1) == 0)
+  if (!-[RCMainViewController state](self, "state") && ([activeRecordingsCollectionViewController selectedCellIsEditingTitle] & 1) == 0 && (objc_msgSend(activeRecordingsCollectionViewController, "selectedCellIsInFlightEditing") & 1) == 0)
   {
-    v11 = [v5 searchController];
-    v12 = [v11 searchBar];
-    v13 = [v12 searchTextField];
-    if (([v13 isEditing] & 1) == 0)
+    searchController = [activeRecordingsCollectionViewController searchController];
+    searchBar = [searchController searchBar];
+    searchTextField = [searchBar searchTextField];
+    if (([searchTextField isEditing] & 1) == 0)
     {
-      v24 = [(RCMainViewController *)self playbackViewController];
-      v17 = [v24 view];
-      if ([v17 textFieldIsBeingEdited])
+      playbackViewController2 = [(RCMainViewController *)self playbackViewController];
+      view = [playbackViewController2 view];
+      if ([view textFieldIsBeingEdited])
       {
         LOBYTE(v14) = 0;
       }
 
       else
       {
-        v23 = [(RCMainViewController *)self browseFoldersViewController];
-        v22 = [v23 recordingViewController];
-        v21 = [v22 view];
-        if ([v21 textFieldIsBeingEdited])
+        browseFoldersViewController2 = [(RCMainViewController *)self browseFoldersViewController];
+        recordingViewController = [browseFoldersViewController2 recordingViewController];
+        view2 = [recordingViewController view];
+        if ([view2 textFieldIsBeingEdited])
         {
           LOBYTE(v14) = 0;
         }
 
         else
         {
-          v20 = [(RCMainViewController *)self browseFoldersViewController];
-          v19 = [v20 recordingViewController];
-          v18 = [v19 view];
-          v14 = ([v18 editingInFlight] ^ 1) & v6;
+          browseFoldersViewController3 = [(RCMainViewController *)self browseFoldersViewController];
+          recordingViewController2 = [browseFoldersViewController3 recordingViewController];
+          view3 = [recordingViewController2 view];
+          v14 = ([view3 editingInFlight] ^ 1) & v6;
         }
       }
 
       v15 = v14;
-      if (!v10)
+      if (!uuidBeingDisplayed)
       {
         goto LABEL_17;
       }
@@ -4970,7 +4970,7 @@ LABEL_17:
 
   LOBYTE(v14) = 0;
   v15 = 0;
-  if (!v10)
+  if (!uuidBeingDisplayed)
   {
     goto LABEL_17;
   }
@@ -4980,12 +4980,12 @@ LABEL_18:
   return v15;
 }
 
-- (void)_axAnnounceDidSetEnhanced:(BOOL)a3
+- (void)_axAnnounceDidSetEnhanced:(BOOL)enhanced
 {
-  v3 = a3;
+  enhancedCopy = enhanced;
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (enhancedCopy)
   {
     v6 = @"AX_ENHANCE_ON_ANNOUNCE";
   }
@@ -5049,7 +5049,7 @@ LABEL_18:
   return WeakRetained;
 }
 
-- (void)separateRecordingLayers:(id)a3
+- (void)separateRecordingLayers:(id)layers
 {
   v4 = sub_1000C773C(&unk_1002D1D90);
   __chkstk_darwin(v4 - 8, v5);
@@ -5059,14 +5059,14 @@ LABEL_18:
   v11 = type metadata accessor for TaskPriority();
   (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
   type metadata accessor for MainActor();
-  v12 = self;
+  selfCopy = self;
   v13 = static MainActor.shared.getter();
   v14 = swift_allocObject();
   v14[2] = v13;
   v14[3] = &protocol witness table for MainActor;
   v14[4] = v8;
   v14[5] = v10;
-  v14[6] = v12;
+  v14[6] = selfCopy;
   sub_100194190(0, 0, v7, &unk_10024F220, v14);
 }
 

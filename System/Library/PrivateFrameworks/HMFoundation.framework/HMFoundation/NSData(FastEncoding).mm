@@ -30,9 +30,9 @@
 
 - (uint64_t)hmf_bytesAtOffset:()FastEncoding length:
 {
-  if (a4 + a3 <= [a1 length])
+  if (a4 + a3 <= [self length])
   {
-    return [a1 bytes] + a3;
+    return [self bytes] + a3;
   }
 
   else
@@ -43,7 +43,7 @@
 
 - (uint64_t)hmf_readBytesAtOffset:()FastEncoding length:
 {
-  result = [a1 hmf_bytesAtOffset:*a3 length:?];
+  result = [self hmf_bytesAtOffset:*a3 length:?];
   if (result)
   {
     *a3 += a4;
@@ -54,7 +54,7 @@
 
 - (unsigned)hmf_readLengthAtOffset:()FastEncoding
 {
-  result = [a1 hmf_readBytesAtOffset:a3 length:4];
+  result = [self hmf_readBytesAtOffset:a3 length:4];
   if (result)
   {
     return *result;
@@ -65,7 +65,7 @@
 
 - (unsigned)hmf_readShortLengthAtOffset:()FastEncoding
 {
-  result = [a1 hmf_readBytesAtOffset:a3 length:1];
+  result = [self hmf_readBytesAtOffset:a3 length:1];
   if (result)
   {
     return *result;
@@ -77,8 +77,8 @@
 - (id)hmf_readDataNoCopyAtOffset:()FastEncoding
 {
   v8 = *a3;
-  v5 = [a1 hmf_readLengthAtOffset:&v8];
-  v6 = [a1 hmf_readBytesAtOffset:&v8 length:v5];
+  v5 = [self hmf_readLengthAtOffset:&v8];
+  v6 = [self hmf_readBytesAtOffset:&v8 length:v5];
   if (v6)
   {
     *a3 = v8;
@@ -91,8 +91,8 @@
 - (id)hmf_readShortDataNoCopyAtOffset:()FastEncoding
 {
   v8 = *a3;
-  v5 = [a1 hmf_readShortLengthAtOffset:&v8];
-  v6 = [a1 hmf_readBytesAtOffset:&v8 length:v5];
+  v5 = [self hmf_readShortLengthAtOffset:&v8];
+  v6 = [self hmf_readBytesAtOffset:&v8 length:v5];
   if (v6)
   {
     *a3 = v8;
@@ -105,7 +105,7 @@
 - (id)hmf_readStringAtOffset:()FastEncoding
 {
   v7 = *a3;
-  v4 = [a1 hmf_readDataNoCopyAtOffset:&v7];
+  v4 = [self hmf_readDataNoCopyAtOffset:&v7];
   if (v4)
   {
     *a3 = v7;
@@ -123,7 +123,7 @@
 - (id)hmf_readShortStringAtOffset:()FastEncoding
 {
   v7 = *a3;
-  v4 = [a1 hmf_readShortDataNoCopyAtOffset:&v7];
+  v4 = [self hmf_readShortDataNoCopyAtOffset:&v7];
   if (v4)
   {
     *a3 = v7;
@@ -140,11 +140,11 @@
 
 - (unsigned)hmf_readTableAtOffset:()FastEncoding length:
 {
-  result = [a1 hmf_readBytesAtOffset:a3 length:4];
+  result = [self hmf_readBytesAtOffset:a3 length:4];
   if (result)
   {
     v8 = result;
-    result = [a1 hmf_readBytesAtOffset:a3 length:4 * *result];
+    result = [self hmf_readBytesAtOffset:a3 length:4 * *result];
     if (result)
     {
       *a4 = *v8;
@@ -158,7 +158,7 @@
 {
   v7 = 0;
   v8 = a4;
-  v5 = [a1 hmf_readTableAtOffset:&v8 length:&v7];
+  v5 = [self hmf_readTableAtOffset:&v8 length:&v7];
   result = 0;
   if (v5)
   {
@@ -176,13 +176,13 @@
   v5 = *a3;
   v11 = 0;
   v12 = v5;
-  [a1 hmf_readTableAtOffset:&v12 length:&v11];
+  [self hmf_readTableAtOffset:&v12 length:&v11];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:v11];
   if (v11)
   {
     for (i = 0; i < v11; ++i)
     {
-      v8 = [a1 hmf_readObjectAtOffset:&v12];
+      v8 = [self hmf_readObjectAtOffset:&v12];
       [v6 addObject:v8];
     }
   }
@@ -198,13 +198,13 @@
   v5 = *a3;
   v11 = 0;
   v12 = v5;
-  [a1 hmf_readTableAtOffset:&v12 length:&v11];
+  [self hmf_readTableAtOffset:&v12 length:&v11];
   v6 = [MEMORY[0x277CBEB58] setWithCapacity:v11];
   if (v11)
   {
     for (i = 0; i < v11; ++i)
     {
-      v8 = [a1 hmf_readObjectAtOffset:&v12];
+      v8 = [self hmf_readObjectAtOffset:&v12];
       [v6 addObject:v8];
     }
   }
@@ -218,7 +218,7 @@
 - (objc_class)hmf_readFastEncodableObjectAtOffset:()FastEncoding
 {
   v17 = *a3;
-  v5 = [a1 hmf_readBytesAtOffset:&v17 length:1];
+  v5 = [self hmf_readBytesAtOffset:&v17 length:1];
   if (!v5)
   {
     v8 = 0;
@@ -228,7 +228,7 @@
   v6 = *v5;
   if (v6 == 38)
   {
-    v7 = [a1 hmf_readShortStringAtOffset:&v17];
+    v7 = [self hmf_readShortStringAtOffset:&v17];
   }
 
   else
@@ -239,18 +239,18 @@
       goto LABEL_17;
     }
 
-    v7 = [a1 hmf_readStringAtOffset:&v17];
+    v7 = [self hmf_readStringAtOffset:&v17];
   }
 
   v9 = v7;
   if (v7)
   {
-    v10 = [a1 hmf_readBytesAtOffset:&v17 length:1];
+    v10 = [self hmf_readBytesAtOffset:&v17 length:1];
     if (v10)
     {
       if (*v10 == 68)
       {
-        v11 = [a1 hmf_readDataNoCopyAtOffset:&v17];
+        v11 = [self hmf_readDataNoCopyAtOffset:&v17];
         v12 = [v11 copy];
 
         if (v12)
@@ -298,14 +298,14 @@ LABEL_19:
   v5 = *a3;
   v12 = 0;
   v13 = v5;
-  [a1 hmf_readTableAtOffset:&v13 length:&v12];
+  [self hmf_readTableAtOffset:&v13 length:&v12];
   v6 = objc_opt_new();
   if (v12)
   {
     for (i = 0; i < v12; ++i)
     {
-      v8 = [a1 hmf_readObjectAtOffset:&v13];
-      v9 = [a1 hmf_readObjectAtOffset:&v13];
+      v8 = [self hmf_readObjectAtOffset:&v13];
+      v9 = [self hmf_readObjectAtOffset:&v13];
       [v6 setValue:v9 forKey:v8];
     }
   }
@@ -318,7 +318,7 @@ LABEL_19:
 
 - (id)hmf_readObjectAtOffset:()FastEncoding
 {
-  v5 = [a1 hmf_readBytesAtOffset:a3 length:1];
+  v5 = [self hmf_readBytesAtOffset:a3 length:1];
   v6 = 0;
   if (v5)
   {
@@ -331,7 +331,7 @@ LABEL_19:
         {
           if (v7 == 99)
           {
-            v8 = [MEMORY[0x277CCABB0] numberWithChar:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 1)}];
+            v8 = [MEMORY[0x277CCABB0] numberWithChar:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 1)}];
           }
 
           else
@@ -341,13 +341,13 @@ LABEL_19:
               goto LABEL_46;
             }
 
-            v8 = [MEMORY[0x277CCABB0] numberWithDouble:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 8)}];
+            v8 = [MEMORY[0x277CCABB0] numberWithDouble:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 8)}];
           }
         }
 
         else if (v7 == 88)
         {
-          v8 = [a1 hmf_readFastEncodableObjectAtOffset:a3];
+          v8 = [self hmf_readFastEncodableObjectAtOffset:a3];
         }
 
         else
@@ -357,7 +357,7 @@ LABEL_19:
             goto LABEL_46;
           }
 
-          v8 = [a1 hmf_readArrayAtOffset:a3];
+          v8 = [self hmf_readArrayAtOffset:a3];
         }
       }
 
@@ -366,7 +366,7 @@ LABEL_19:
         if (v7 == 102)
         {
           v10 = MEMORY[0x277CCABB0];
-          LODWORD(v11) = *[a1 hmf_readBytesAtOffset:a3 length:4];
+          LODWORD(v11) = *[self hmf_readBytesAtOffset:a3 length:4];
           v8 = [v10 numberWithFloat:v11];
         }
 
@@ -377,7 +377,7 @@ LABEL_19:
             goto LABEL_46;
           }
 
-          v8 = [MEMORY[0x277CCABB0] numberWithInt:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 4)}];
+          v8 = [MEMORY[0x277CCABB0] numberWithInt:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 4)}];
         }
       }
 
@@ -386,13 +386,13 @@ LABEL_19:
         switch(v7)
         {
           case 'q':
-            v8 = [MEMORY[0x277CCABB0] numberWithLongLong:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 8)}];
+            v8 = [MEMORY[0x277CCABB0] numberWithLongLong:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 8)}];
             break;
           case 's':
-            v8 = [MEMORY[0x277CCABB0] numberWithShort:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 2)}];
+            v8 = [MEMORY[0x277CCABB0] numberWithShort:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 2)}];
             break;
           case '{':
-            v8 = [a1 hmf_readSetAtOffset:a3];
+            v8 = [self hmf_readSetAtOffset:a3];
             break;
           default:
             goto LABEL_46;
@@ -408,7 +408,7 @@ LABEL_19:
       {
         if (v7 == 64)
         {
-          v8 = [a1 hmf_readStringAtOffset:a3];
+          v8 = [self hmf_readStringAtOffset:a3];
         }
 
         else
@@ -418,13 +418,13 @@ LABEL_19:
             goto LABEL_46;
           }
 
-          v8 = [MEMORY[0x277CCABB0] numberWithBool:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 1)}];
+          v8 = [MEMORY[0x277CCABB0] numberWithBool:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 1)}];
         }
       }
 
       else if (v7 == 38)
       {
-        v8 = [a1 hmf_readShortStringAtOffset:a3];
+        v8 = [self hmf_readShortStringAtOffset:a3];
       }
 
       else
@@ -434,7 +434,7 @@ LABEL_19:
           goto LABEL_46;
         }
 
-        v8 = [a1 hmf_readDictionaryAtOffset:a3];
+        v8 = [self hmf_readDictionaryAtOffset:a3];
       }
 
       goto LABEL_45;
@@ -445,13 +445,13 @@ LABEL_19:
       switch(v7)
       {
         case 'I':
-          v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 4)}];
+          v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 4)}];
           break;
         case 'Q':
-          v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 8)}];
+          v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 8)}];
           break;
         case 'S':
-          v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 2)}];
+          v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 2)}];
           break;
         default:
           goto LABEL_46;
@@ -462,7 +462,7 @@ LABEL_19:
 
     if (v7 == 67)
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*objc_msgSend(a1, "hmf_readBytesAtOffset:length:", a3, 1)}];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{*objc_msgSend(self, "hmf_readBytesAtOffset:length:", a3, 1)}];
 LABEL_45:
       v6 = v8;
       goto LABEL_46;
@@ -470,7 +470,7 @@ LABEL_45:
 
     if (v7 == 68)
     {
-      v9 = [a1 hmf_readDataNoCopyAtOffset:a3];
+      v9 = [self hmf_readDataNoCopyAtOffset:a3];
       v6 = [v9 copy];
     }
   }
@@ -482,7 +482,7 @@ LABEL_46:
 
 - (unsigned)hmf_readAndCheckTag:()FastEncoding offset:
 {
-  result = [a1 hmf_readBytesAtOffset:a4 length:1];
+  result = [self hmf_readBytesAtOffset:a4 length:1];
   if (result)
   {
     return (*result == a3);
@@ -494,9 +494,9 @@ LABEL_46:
 - (id)hmf_objectAtIndex:()FastEncoding forArrayAtOffset:
 {
   v8 = a4;
-  if ([a1 hmf_readAndCheckTag:91 offset:&v8] && (v8 = objc_msgSend(a1, "hmf_tableLookupWithIndex:offset:", a3, v8)) != 0)
+  if ([self hmf_readAndCheckTag:91 offset:&v8] && (v8 = objc_msgSend(self, "hmf_tableLookupWithIndex:offset:", a3, v8)) != 0)
   {
-    v6 = [a1 hmf_readObjectAtOffset:&v8];
+    v6 = [self hmf_readObjectAtOffset:&v8];
   }
 
   else
@@ -509,11 +509,11 @@ LABEL_46:
 
 - (id)hmf_objectForKey:()FastEncoding forDictionaryAtOffset:
 {
-  v2 = [a1 hmf_offsetForKeyValue:? forDictionaryAtOffset:?];
+  v2 = [self hmf_offsetForKeyValue:? forDictionaryAtOffset:?];
   if (v2)
   {
     v5 = v2;
-    v3 = [a1 hmf_readObjectAtOffset:&v5];
+    v3 = [self hmf_readObjectAtOffset:&v5];
   }
 
   else
@@ -527,7 +527,7 @@ LABEL_46:
 - (id)hmf_readObject
 {
   v3 = 0;
-  v1 = [a1 hmf_readObjectAtOffset:&v3];
+  v1 = [self hmf_readObjectAtOffset:&v3];
 
   return v1;
 }
@@ -536,22 +536,22 @@ LABEL_46:
 {
   v6 = a3;
   v16 = a4;
-  if ([a1 hmf_readAndCheckTag:60 offset:&v16])
+  if ([self hmf_readAndCheckTag:60 offset:&v16])
   {
     v15 = 0;
-    v7 = [a1 hmf_readTableAtOffset:&v16 length:&v15];
+    v7 = [self hmf_readTableAtOffset:&v16 length:&v15];
     v8 = v15;
     __compar[0] = MEMORY[0x277D85DD0];
     __compar[1] = 3221225472;
     __compar[2] = __68__NSData_FastEncoding__hmf_offsetForKeyValue_forDictionaryAtOffset___block_invoke;
     __compar[3] = &unk_2786E6E58;
-    __compar[4] = a1;
+    __compar[4] = self;
     v14 = v6;
     v9 = bsearch_b(0, v7, v8, 4uLL, __compar);
     if (v9)
     {
       v16 = *v9;
-      v10 = [a1 hmf_readObjectAtOffset:&v16];
+      v10 = [self hmf_readObjectAtOffset:&v16];
       v11 = v16;
     }
 
@@ -573,23 +573,23 @@ LABEL_46:
 {
   v6 = a3;
   __nel_4 = a4;
-  if ([a1 hmf_readAndCheckTag:123 offset:&__nel_4])
+  if ([self hmf_readAndCheckTag:123 offset:&__nel_4])
   {
     __nel = 0;
-    v7 = [a1 hmf_readTableAtOffset:&__nel_4 length:&__nel];
+    v7 = [self hmf_readTableAtOffset:&__nel_4 length:&__nel];
     v8 = [v6 hash];
     __compar[0] = MEMORY[0x277D85DD0];
     __compar[1] = 3221225472;
     __compar[2] = __58__NSData_FastEncoding__hmf_containsObject_forSetAtOffset___block_invoke;
     __compar[3] = &unk_2786E6E80;
-    __compar[4] = a1;
+    __compar[4] = self;
     __compar[5] = v8;
     v9 = bsearch_b(0, v7, __nel, 4uLL, __compar);
     v10 = v9;
     if (v9)
     {
       v21 = *v9;
-      v11 = [a1 hmf_readObjectAtOffset:&v21];
+      v11 = [self hmf_readObjectAtOffset:&v21];
       if ([v6 isEqual:v11])
       {
 LABEL_4:
@@ -606,7 +606,7 @@ LABEL_4:
             v13 = *(v12 - 4);
             v12 -= 4;
             v20 = v13;
-            v14 = [a1 hmf_readObjectAtOffset:&v20];
+            v14 = [self hmf_readObjectAtOffset:&v20];
             if ([v14 hash] != v8)
             {
               break;
@@ -633,7 +633,7 @@ LABEL_13:
           while (1)
           {
             v20 = *(v16 - 4);
-            v17 = [a1 hmf_readObjectAtOffset:&v20];
+            v17 = [self hmf_readObjectAtOffset:&v20];
             if ([v17 hash] != v8)
             {
               break;
@@ -673,7 +673,7 @@ LABEL_22:
 - (id)hmf_member:()FastEncoding forSetAtOffset:
 {
   v6 = a3;
-  if ([a1 hmf_containsObject:v6 forSetAtOffset:a4])
+  if ([self hmf_containsObject:v6 forSetAtOffset:a4])
   {
     v7 = v6;
   }
@@ -692,10 +692,10 @@ LABEL_22:
   v5 = a4;
   if (v5)
   {
-    if ([a1 hmf_readAndCheckTag:123 offset:&v14])
+    if ([self hmf_readAndCheckTag:123 offset:&v14])
     {
       v13 = 0;
-      v6 = [a1 hmf_readTableAtOffset:&v14 length:&v13];
+      v6 = [self hmf_readTableAtOffset:&v14 length:&v13];
       if (v6)
       {
         v12 = 0;
@@ -707,7 +707,7 @@ LABEL_22:
           {
             v9 = objc_autoreleasePoolPush();
             v11 = *(v7 + 4 * v8);
-            v10 = [a1 hmf_readObjectAtOffset:&v11];
+            v10 = [self hmf_readObjectAtOffset:&v11];
             if (v10)
             {
               v5[2](v5, v10, &v12);
@@ -736,7 +736,7 @@ LABEL_11:
 - (id)hmf_keysForDictionaryAtOffset:()FastEncoding
 {
   v14 = a3;
-  if ([a1 hmf_readAndCheckTag:60 offset:&v14] && (v13 = 0, (v4 = objc_msgSend(a1, "hmf_readTableAtOffset:length:", &v14, &v13)) != 0))
+  if ([self hmf_readAndCheckTag:60 offset:&v14] && (v13 = 0, (v4 = objc_msgSend(self, "hmf_readTableAtOffset:length:", &v14, &v13)) != 0))
   {
     v5 = v4;
     v6 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -746,7 +746,7 @@ LABEL_11:
       for (i = 0; i < v13; ++i)
       {
         v12 = *(v5 + 4 * i);
-        v9 = [a1 hmf_readObjectAtOffset:&v12];
+        v9 = [self hmf_readObjectAtOffset:&v12];
         if (v9)
         {
           [v7 addObject:v9];
@@ -768,7 +768,7 @@ LABEL_11:
 - (id)hmf_valuesForDictionaryAtOffset:()FastEncoding
 {
   v16 = a3;
-  if ([a1 hmf_readAndCheckTag:60 offset:&v16] && (v15 = 0, (v4 = objc_msgSend(a1, "hmf_readTableAtOffset:length:", &v16, &v15)) != 0))
+  if ([self hmf_readAndCheckTag:60 offset:&v16] && (v15 = 0, (v4 = objc_msgSend(self, "hmf_readTableAtOffset:length:", &v16, &v15)) != 0))
   {
     v5 = v4;
     v6 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -779,8 +779,8 @@ LABEL_11:
       for (i = 0; i < v15; ++i)
       {
         v14 = *(v5 + 4 * i);
-        v10 = [a1 hmf_readObjectAtOffset:&v14];
-        v11 = [a1 hmf_readObjectAtOffset:&v14];
+        v10 = [self hmf_readObjectAtOffset:&v14];
+        v11 = [self hmf_readObjectAtOffset:&v14];
         if (v11)
         {
           [v7 addObject:v11];

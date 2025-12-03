@@ -1,36 +1,36 @@
 @interface CoreIRDeviceProvider
-- ($E9D0CE23C4879AFD1046A22AEC3FB8EC)_findButtonWithCommand:(unint64_t)a3;
-- (BOOL)clearAllStoredCommands:(id *)a3;
-- (BOOL)disableButtonCombination:(id)a3 delay:(double)a4 error:(id *)a5;
-- (BOOL)dispatchEventForCommand:(id)a3 matchingButton:(id *)a4 timestamp:(unint64_t)a5 toDevice:(id)a6;
-- (BOOL)dispatchEventsForCommand:(id)a3 toDevice:(id)a4;
-- (BOOL)enableButtonCombination:(id)a3 delay:(double)a4 error:(id *)a5;
-- (BOOL)sendCommand:(id)a3 error:(id *)a4;
-- (BOOL)sendCommand:(unint64_t)a3 target:(id)a4 withDuration:(unint64_t)a5 error:(id *)a6;
-- (BOOL)sendHIDEvent:(id)a3 target:(id)a4 error:(id *)a5;
-- (BOOL)setCommand:(unint64_t)a3 target:(id)a4 forButtonCombination:(id)a5 delay:(double)a6 error:(id *)a7;
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setInfraredCommand:(id)a3 forCommand:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setMappingWithSession:(id)a3 error:(id *)a4;
-- (BOOL)setOSDName:(id)a3 error:(id *)a4;
-- (BOOL)updateMappingWithSession:(id)a3 error:(id *)a4;
-- (CoreIRDeviceProvider)initWithCoder:(id)a3;
-- (CoreIRDeviceProvider)initWithDevice:(id)a3;
+- ($E9D0CE23C4879AFD1046A22AEC3FB8EC)_findButtonWithCommand:(unint64_t)command;
+- (BOOL)clearAllStoredCommands:(id *)commands;
+- (BOOL)disableButtonCombination:(id)combination delay:(double)delay error:(id *)error;
+- (BOOL)dispatchEventForCommand:(id)command matchingButton:(id *)button timestamp:(unint64_t)timestamp toDevice:(id)device;
+- (BOOL)dispatchEventsForCommand:(id)command toDevice:(id)device;
+- (BOOL)enableButtonCombination:(id)combination delay:(double)delay error:(id *)error;
+- (BOOL)sendCommand:(id)command error:(id *)error;
+- (BOOL)sendCommand:(unint64_t)command target:(id)target withDuration:(unint64_t)duration error:(id *)error;
+- (BOOL)sendHIDEvent:(id)event target:(id)target error:(id *)error;
+- (BOOL)setCommand:(unint64_t)command target:(id)target forButtonCombination:(id)combination delay:(double)delay error:(id *)error;
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key error:(id *)error;
+- (BOOL)setInfraredCommand:(id)command forCommand:(unint64_t)forCommand error:(id *)error;
+- (BOOL)setMappingWithSession:(id)session error:(id *)error;
+- (BOOL)setOSDName:(id)name error:(id *)error;
+- (BOOL)updateMappingWithSession:(id)session error:(id *)error;
+- (CoreIRDeviceProvider)initWithCoder:(id)coder;
+- (CoreIRDeviceProvider)initWithDevice:(id)device;
 - (NSDictionary)persistentProperties;
-- (id)extendedPropertyForKey:(id)a3 error:(id *)a4;
-- (id)infraredCommandForCommand:(unint64_t)a3;
+- (id)extendedPropertyForKey:(id)key error:(id *)error;
+- (id)infraredCommandForCommand:(unint64_t)command;
 - (id)interface;
-- (id)startLearningSessionWithReason:(unint64_t)a3 error:(id *)a4;
-- (int)_setInfraredCommandPattern:(id)a3 repeatPattern:(id)a4 forCommand:(unint64_t)a5;
-- (unint64_t)findDuplicateIRCommand:(id)a3 forCommand:(unint64_t)a4 device:(id *)a5;
+- (id)startLearningSessionWithReason:(unint64_t)reason error:(id *)error;
+- (int)_setInfraredCommandPattern:(id)pattern repeatPattern:(id)repeatPattern forCommand:(unint64_t)command;
+- (unint64_t)findDuplicateIRCommand:(id)command forCommand:(unint64_t)forCommand device:(id *)device;
 - (unsigned)protocolMask;
-- (void)_removeMappingForCommand:(unint64_t)a3;
+- (void)_removeMappingForCommand:(unint64_t)command;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleIRCommand:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleIRCommand:(id)command;
 - (void)schedulePressAndHoldTimer;
-- (void)setPersistentProperties:(id)a3;
-- (void)synthesizeButtonReleaseWithTimestamp:(unint64_t)a3;
+- (void)setPersistentProperties:(id)properties;
+- (void)synthesizeButtonReleaseWithTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation CoreIRDeviceProvider
@@ -68,7 +68,7 @@
   [(CoreIRDevice *)&v6 dealloc];
 }
 
-- (CoreIRDeviceProvider)initWithDevice:(id)a3
+- (CoreIRDeviceProvider)initWithDevice:(id)device
 {
   v7.receiver = self;
   v7.super_class = CoreIRDeviceProvider;
@@ -78,8 +78,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4->_matchingDict = [a3 matchingDict];
-      v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:*(a3 + 12) copyItems:1];
+      v4->_matchingDict = [device matchingDict];
+      v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:*(device + 12) copyItems:1];
     }
 
     else
@@ -95,14 +95,14 @@
   return v4;
 }
 
-- (CoreIRDeviceProvider)initWithCoder:(id)a3
+- (CoreIRDeviceProvider)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CoreIRDeviceProvider;
   v4 = [(CoreIRDevice *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_matchingDict = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"matchingDict"];
+    v4->_matchingDict = [coder decodeObjectOfClass:objc_opt_class() forKey:@"matchingDict"];
     v4->_commandMappings = objc_opt_new();
     v4->_lastButtonPressed = 0;
   }
@@ -110,12 +110,12 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CoreIRDeviceProvider;
   [(CoreIRDevice *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_matchingDict forKey:@"matchingDict"];
+  [coder encodeObject:self->_matchingDict forKey:@"matchingDict"];
 }
 
 - (id)interface
@@ -125,16 +125,16 @@
   return [v2 interface];
 }
 
-- (BOOL)setOSDName:(id)a3 error:(id *)a4
+- (BOOL)setOSDName:(id)name error:(id *)error
 {
   v9 = 0;
-  if (a3)
+  if (name)
   {
     if ([-[CoreRCDevice bus](self "bus")])
     {
       v8.receiver = self;
       v8.super_class = CoreIRDeviceProvider;
-      if ([(CoreIRDevice *)&v8 setOSDName:a3 error:&v9])
+      if ([(CoreIRDevice *)&v8 setOSDName:name error:&v9])
       {
         [-[CoreRCDevice bus](self "bus")];
         return 1;
@@ -153,9 +153,9 @@
   }
 
   result = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = v9;
+    *error = v9;
   }
 
   return result;
@@ -163,18 +163,18 @@
 
 - (NSDictionary)persistentProperties
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(CoreIRDevice *)self OSDName])
   {
-    [(NSDictionary *)v3 setObject:[(CoreIRDevice *)self OSDName] forKeyedSubscript:@"OSDName"];
+    [(NSDictionary *)dictionary setObject:[(CoreIRDevice *)self OSDName] forKeyedSubscript:@"OSDName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)setPersistentProperties:(id)a3
+- (void)setPersistentProperties:(id)properties
 {
-  v4 = [a3 objectForKeyedSubscript:@"OSDName"];
+  v4 = [properties objectForKeyedSubscript:@"OSDName"];
   if (v4)
   {
     v5.receiver = self;
@@ -183,7 +183,7 @@
   }
 }
 
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -193,7 +193,7 @@
   return 0;
 }
 
-- (id)extendedPropertyForKey:(id)a3 error:(id *)a4
+- (id)extendedPropertyForKey:(id)key error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -244,7 +244,7 @@
   return v5;
 }
 
-- (id)infraredCommandForCommand:(unint64_t)a3
+- (id)infraredCommandForCommand:(unint64_t)command
 {
   v21 = *MEMORY[0x277D85DE8];
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -279,7 +279,7 @@
           [CoreIRDeviceProvider infraredCommandForCommand:];
         }
 
-        if (v11 == a3)
+        if (v11 == command)
         {
           v13 = [v10 objectForKey:@"Mapping IRCommand"];
           if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
@@ -311,7 +311,7 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)setInfraredCommand:(id)a3 forCommand:(unint64_t)a4 error:(id *)a5
+- (BOOL)setInfraredCommand:(id)command forCommand:(unint64_t)forCommand error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 50 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
@@ -319,23 +319,23 @@ LABEL_21:
   }
 
   v9 = -6705;
-  if (!a4 || !a3)
+  if (!forCommand || !command)
   {
     goto LABEL_13;
   }
 
-  v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{a3, @"Mapping IRCommand", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", a4), @"Mapping CoreRCCommand", 0}];
+  v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{command, @"Mapping IRCommand", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", forCommand), @"Mapping CoreRCCommand", 0}];
   if (!v10)
   {
     v9 = -6728;
 LABEL_13:
-    [(CoreCECBus *)a5 setOSDName:v9 error:&v13];
+    [(CoreCECBus *)error setOSDName:v9 error:&v13];
     return v13;
   }
 
   v11 = v10;
-  [(CoreIRDeviceProvider *)self _removeMappingForCommand:a4];
-  if (a4 == 46)
+  [(CoreIRDeviceProvider *)self _removeMappingForCommand:forCommand];
+  if (forCommand == 46)
   {
     [(CoreIRDeviceProvider *)self _removeMappingForCommand:67];
     [(CoreIRDeviceProvider *)self _removeMappingForCommand:47];
@@ -345,7 +345,7 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)sendHIDEvent:(id)a3 target:(id)a4 error:(id *)a5
+- (BOOL)sendHIDEvent:(id)event target:(id)target error:(id *)error
 {
   v13 = 0;
   v12 = 0;
@@ -355,18 +355,18 @@ LABEL_13:
     [CoreIRDeviceProvider sendHIDEvent:target:error:];
   }
 
-  if ([a3 isRepeat])
+  if ([event isRepeat])
   {
     [CoreIRDeviceProvider setOSDName:v9 error:?];
   }
 
   else
   {
-    [a3 getCommand:&v11 pressed:&v12];
+    [event getCommand:&v11 pressed:&v12];
     if (v11)
     {
-      result = [(CoreIRDeviceProvider *)self sendCommand:v11 target:a4 withDuration:0 error:&v13];
-      if (!a5)
+      result = [(CoreIRDeviceProvider *)self sendCommand:v11 target:target withDuration:0 error:&v13];
+      if (!error)
       {
         return result;
       }
@@ -378,7 +378,7 @@ LABEL_13:
   }
 
   result = 0;
-  if (!a5)
+  if (!error)
   {
     return result;
   }
@@ -386,19 +386,19 @@ LABEL_13:
 LABEL_7:
   if (!result)
   {
-    *a5 = v13;
+    *error = v13;
   }
 
   return result;
 }
 
-- (BOOL)sendCommand:(unint64_t)a3 target:(id)a4 withDuration:(unint64_t)a5 error:(id *)a6
+- (BOOL)sendCommand:(unint64_t)command target:(id)target withDuration:(unint64_t)duration error:(id *)error
 {
   v12 = 0;
-  if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass())) && a3)
+  if (!target || (objc_opt_class(), (objc_opt_isKindOfClass())) && command)
   {
     result = [-[CoreIRDeviceProvider interface](self "interface")];
-    if (!a6)
+    if (!error)
     {
       return result;
     }
@@ -408,7 +408,7 @@ LABEL_7:
   {
     [CoreIRDeviceProvider setOSDName:a2 error:?];
     result = 0;
-    if (!a6)
+    if (!error)
     {
       return result;
     }
@@ -416,19 +416,19 @@ LABEL_7:
 
   if (!result)
   {
-    *a6 = v12;
+    *error = v12;
   }
 
   return result;
 }
 
-- (BOOL)sendCommand:(id)a3 error:(id *)a4
+- (BOOL)sendCommand:(id)command error:(id *)error
 {
   v6 = 0;
-  if (a3)
+  if (command)
   {
     result = [-[CoreIRDeviceProvider interface](self "interface")];
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -438,7 +438,7 @@ LABEL_7:
   {
     [CoreIRDeviceProvider setOSDName:a2 error:?];
     result = 0;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -446,29 +446,29 @@ LABEL_7:
 
   if (!result)
   {
-    *a4 = v6;
+    *error = v6;
   }
 
   return result;
 }
 
-- (BOOL)clearAllStoredCommands:(id *)a3
+- (BOOL)clearAllStoredCommands:(id *)commands
 {
-  v4 = [(CoreIRDeviceProvider *)self interface];
+  interface = [(CoreIRDeviceProvider *)self interface];
 
-  return [v4 clearAllStoredCommands:a3];
+  return [interface clearAllStoredCommands:commands];
 }
 
-- (BOOL)setCommand:(unint64_t)a3 target:(id)a4 forButtonCombination:(id)a5 delay:(double)a6 error:(id *)a7
+- (BOOL)setCommand:(unint64_t)command target:(id)target forButtonCombination:(id)combination delay:(double)delay error:(id *)error
 {
   v16 = 0;
-  if (!a3)
+  if (!command)
   {
-    v13 = [(CoreIRDeviceProvider *)self interface:0];
+    interface = [(CoreIRDeviceProvider *)self interface:0];
     v14 = 0;
 LABEL_5:
-    result = [v13 setCommand:v14 forButtonCombination:a5 delay:&v16 error:a6];
-    if (!a7)
+    result = [interface setCommand:v14 forButtonCombination:combination delay:&v16 error:delay];
+    if (!error)
     {
       return result;
     }
@@ -476,18 +476,18 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = [a4 infraredCommandForCommand:?];
+  v11 = [target infraredCommandForCommand:?];
   if (v11)
   {
     v12 = v11;
-    v13 = [(CoreIRDeviceProvider *)self interface];
+    interface = [(CoreIRDeviceProvider *)self interface];
     v14 = v12;
     goto LABEL_5;
   }
 
   [CoreIRDeviceProvider setCommand:? target:? forButtonCombination:? delay:? error:?];
   result = 0;
-  if (!a7)
+  if (!error)
   {
     return result;
   }
@@ -495,29 +495,29 @@ LABEL_5:
 LABEL_6:
   if (!result)
   {
-    *a7 = v16;
+    *error = v16;
   }
 
   return result;
 }
 
-- (BOOL)enableButtonCombination:(id)a3 delay:(double)a4 error:(id *)a5
+- (BOOL)enableButtonCombination:(id)combination delay:(double)delay error:(id *)error
 {
-  v8 = [(CoreIRDeviceProvider *)self interface];
+  interface = [(CoreIRDeviceProvider *)self interface];
 
-  return [v8 enableButtonCombination:a3 delay:a5 error:a4];
+  return [interface enableButtonCombination:combination delay:error error:delay];
 }
 
-- (BOOL)disableButtonCombination:(id)a3 delay:(double)a4 error:(id *)a5
+- (BOOL)disableButtonCombination:(id)combination delay:(double)delay error:(id *)error
 {
-  v8 = [(CoreIRDeviceProvider *)self interface];
+  interface = [(CoreIRDeviceProvider *)self interface];
 
-  return [v8 disableButtonCombination:a3 delay:a5 error:a4];
+  return [interface disableButtonCombination:combination delay:error error:delay];
 }
 
-- (id)startLearningSessionWithReason:(unint64_t)a3 error:(id *)a4
+- (id)startLearningSessionWithReason:(unint64_t)reason error:(id *)error
 {
-  v6 = [[CoreIRLearningSessionProvider alloc] initWithReason:a3];
+  v6 = [[CoreIRLearningSessionProvider alloc] initWithReason:reason];
   if (v6)
   {
     -[CoreIRLearningSessionProvider scheduleWithDispatchQueue:](v6, "scheduleWithDispatchQueue:", [-[CoreRCDevice bus](self "bus")]);
@@ -526,13 +526,13 @@ LABEL_6:
 
   else
   {
-    [CoreIRDeviceProvider startLearningSessionWithReason:a4 error:?];
+    [CoreIRDeviceProvider startLearningSessionWithReason:error error:?];
   }
 
   return v6;
 }
 
-- (BOOL)setMappingWithSession:(id)a3 error:(id *)a4
+- (BOOL)setMappingWithSession:(id)session error:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -551,16 +551,16 @@ LABEL_6:
   v8[4] = self;
   v8[5] = &v13;
   v8[6] = &v9;
-  [a3 enumerateMappingUsingBlock:v8];
+  [session enumerateMappingUsingBlock:v8];
   if ((v10[3] & 1) == 0 && !v14[5])
   {
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6705 userInfo:0];
     v14[5] = v5;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v6 = *(v10 + 24);
@@ -581,17 +581,17 @@ uint64_t __52__CoreIRDeviceProvider_setMappingWithSession_error___block_invoke(u
   return result;
 }
 
-- (BOOL)dispatchEventsForCommand:(id)a3 toDevice:(id)a4
+- (BOOL)dispatchEventsForCommand:(id)command toDevice:(id)device
 {
-  v7 = [a3 timestamp];
+  timestamp = [command timestamp];
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    [CoreIRDeviceProvider dispatchEventsForCommand:a3 toDevice:?];
+    [CoreIRDeviceProvider dispatchEventsForCommand:command toDevice:?];
   }
 
-  if ([a4 learningSessionProvider])
+  if ([device learningSessionProvider])
   {
-    v39 = [objc_msgSend(a4 "learningSessionProvider")];
+    v39 = [objc_msgSend(device "learningSessionProvider")];
   }
 
   else
@@ -601,7 +601,7 @@ uint64_t __52__CoreIRDeviceProvider_setMappingWithSession_error___block_invoke(u
 
   buttonCount = self->_buttonCount;
   v9 = 0x27EE4F000uLL;
-  if ([a3 isRepeat] && v7 - self->_lastCommandTimestamp > _maxRepeatIntervalTicks_0)
+  if ([command isRepeat] && timestamp - self->_lastCommandTimestamp > _maxRepeatIntervalTicks_0)
   {
     if (gLogCategory_CoreRCDevice <= 50 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
@@ -662,8 +662,8 @@ LABEL_56:
 
 LABEL_23:
   v36 = a2;
-  v37 = a4;
-  v38 = v7;
+  deviceCopy = device;
+  v38 = timestamp;
   v17 = 0;
   v18 = 104;
   v19 = 1;
@@ -717,7 +717,7 @@ LABEL_51:
     if (v24 > v25)
     {
       v26 = *(v23 + 8 * v25);
-      if (v26 == [a3 payload])
+      if (v26 == [command payload])
       {
         break;
       }
@@ -730,7 +730,7 @@ LABEL_47:
     if (buttonCount == v17)
     {
       v19 = 0;
-      v7 = v38;
+      timestamp = v38;
       goto LABEL_53;
     }
   }
@@ -762,8 +762,8 @@ LABEL_47:
     }
   }
 
-  v7 = v38;
-  [(CoreIRDeviceProvider *)self dispatchEventForCommand:a3 matchingButton:self + v18 timestamp:v38 toDevice:v37, v30, v31, v32, v33, v34, v35];
+  timestamp = v38;
+  [(CoreIRDeviceProvider *)self dispatchEventForCommand:command matchingButton:self + v18 timestamp:v38 toDevice:deviceCopy, v30, v31, v32, v33, v34, v35];
 LABEL_53:
   v9 = 0x27EE4F000;
 LABEL_57:
@@ -772,14 +772,14 @@ LABEL_57:
     [CoreIRDeviceProvider dispatchEventsForCommand:v19 toDevice:&self->_buttonCount];
   }
 
-  *(&self->super.super.super.isa + *(v9 + 2132)) = v7;
+  *(&self->super.super.super.isa + *(v9 + 2132)) = timestamp;
   return v19;
 }
 
-- (unint64_t)findDuplicateIRCommand:(id)a3 forCommand:(unint64_t)a4 device:(id *)a5
+- (unint64_t)findDuplicateIRCommand:(id)command forCommand:(unint64_t)forCommand device:(id *)device
 {
   v38 = *MEMORY[0x277D85DE8];
-  if (!a5)
+  if (!device)
   {
     [CoreIRDeviceProvider findDuplicateIRCommand:a2 forCommand:self device:?];
   }
@@ -808,7 +808,7 @@ LABEL_57:
           v14 = *(*(&v32 + 1) + 8 * i);
           if (([v14 isLocalDevice] & 1) == 0 && (objc_msgSend(v14, "isReceiver") & 1) == 0)
           {
-            v15 = [v14 findDuplicateIRCommand:a3 forCommand:a4 device:a5];
+            v15 = [v14 findDuplicateIRCommand:command forCommand:forCommand device:device];
             if (v15)
             {
               v22 = v15;
@@ -844,8 +844,8 @@ LABEL_25:
   }
 
   v18 = v17;
-  v26 = self;
-  v27 = a5;
+  selfCopy = self;
+  deviceCopy = device;
   v19 = *v29;
   while (2)
   {
@@ -857,11 +857,11 @@ LABEL_25:
       }
 
       v21 = *(*(&v28 + 1) + 8 * j);
-      v22 = [objc_msgSend(v21 objectForKeyedSubscript:{@"Mapping CoreRCCommand", v26, v27), "unsignedIntegerValue"}];
+      v22 = [objc_msgSend(v21 objectForKeyedSubscript:{@"Mapping CoreRCCommand", selfCopy, deviceCopy), "unsignedIntegerValue"}];
       v23 = [v21 objectForKeyedSubscript:@"Mapping IRCommand"];
-      if (v22 != a4 && ([a3 isEqual:v23] & 1) != 0)
+      if (v22 != forCommand && ([command isEqual:v23] & 1) != 0)
       {
-        *v27 = v26;
+        *deviceCopy = selfCopy;
         goto LABEL_28;
       }
     }
@@ -881,7 +881,7 @@ LABEL_28:
   return v22;
 }
 
-- (void)synthesizeButtonReleaseWithTimestamp:(unint64_t)a3
+- (void)synthesizeButtonReleaseWithTimestamp:(unint64_t)timestamp
 {
   lastButtonPressed = self->_lastButtonPressed;
   if (lastButtonPressed)
@@ -897,7 +897,7 @@ LABEL_28:
       }
     }
 
-    -[CoreIRDeviceProvider dispatchButtonEventWithCommand:pressed:timestamp:toDevice:](self, "dispatchButtonEventWithCommand:pressed:timestamp:toDevice:", lastButtonPressed->var5, 0, a3, [-[CoreIRDeviceProvider busProvider](self busProvider]);
+    -[CoreIRDeviceProvider dispatchButtonEventWithCommand:pressed:timestamp:toDevice:](self, "dispatchButtonEventWithCommand:pressed:timestamp:toDevice:", lastButtonPressed->var5, 0, timestamp, [-[CoreIRDeviceProvider busProvider](self busProvider]);
     self->_lastButtonPressed = 0;
   }
 
@@ -944,11 +944,11 @@ uint64_t __49__CoreIRDeviceProvider_schedulePressAndHoldTimer__block_invoke(uint
   return result;
 }
 
-- (BOOL)dispatchEventForCommand:(id)a3 matchingButton:(id *)a4 timestamp:(unint64_t)a5 toDevice:(id)a6
+- (BOOL)dispatchEventForCommand:(id)command matchingButton:(id *)button timestamp:(unint64_t)timestamp toDevice:(id)device
 {
   [(CoreIRDeviceProvider *)self cancelPressAndHoldTimer];
-  p_var5 = &a4->var5;
-  var5 = a4->var5;
+  p_var5 = &button->var5;
+  var5 = button->var5;
   if (!var5)
   {
     [CoreIRDeviceProvider dispatchEventForCommand:&v17 matchingButton:? timestamp:? toDevice:?];
@@ -979,22 +979,22 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (lastButtonPressed != a4)
+  if (lastButtonPressed != button)
   {
-    [(CoreIRDeviceProvider *)self synthesizeButtonReleaseWithTimestamp:a5];
+    [(CoreIRDeviceProvider *)self synthesizeButtonReleaseWithTimestamp:timestamp];
 LABEL_9:
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
       [CoreIRDeviceProvider dispatchEventForCommand:? matchingButton:? timestamp:? toDevice:?];
     }
 
-    if (![(CoreIRDeviceProvider *)self dispatchButtonEventWithCommand:*p_var5 pressed:1 timestamp:a5 toDevice:a6, v15])
+    if (![(CoreIRDeviceProvider *)self dispatchButtonEventWithCommand:*p_var5 pressed:1 timestamp:timestamp toDevice:device, v15])
     {
       [CoreIRDeviceProvider dispatchEventForCommand:? matchingButton:? timestamp:? toDevice:?];
       return v16;
     }
 
-    self->_lastButtonPressed = a4;
+    self->_lastButtonPressed = button;
     v13 = 1;
     goto LABEL_15;
   }
@@ -1005,13 +1005,13 @@ LABEL_15:
   return v13;
 }
 
-- (void)_removeMappingForCommand:(unint64_t)a3
+- (void)_removeMappingForCommand:(unint64_t)command
 {
   v37 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (command)
   {
     commandMappings = self->_commandMappings;
-    v11 = OUTLINED_FUNCTION_2_7(self, a2, a3, v3, v4, v5, v6, v7, 0, 0, 0, 0, 0, 0, 0, 0, v33, v35);
+    v11 = OUTLINED_FUNCTION_2_7(self, a2, command, v3, v4, v5, v6, v7, 0, 0, 0, 0, 0, 0, 0, 0, v33, v35);
     if (v11)
     {
       v12 = v11;
@@ -1027,7 +1027,7 @@ LABEL_15:
 
           v15 = *(v26 + 8 * i);
           v16 = [objc_msgSend(v15 objectForKeyedSubscript:{@"Mapping CoreRCCommand", "unsignedIntegerValue"}];
-          if (v16 == a3)
+          if (v16 == command)
           {
             [(NSMutableSet *)self->_commandMappings removeObject:v15];
             goto LABEL_12;
@@ -1049,7 +1049,7 @@ LABEL_12:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateMappingWithSession:(id)a3 error:(id *)a4
+- (BOOL)updateMappingWithSession:(id)session error:(id *)error
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1059,7 +1059,7 @@ LABEL_10:
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v10 userInfo:0];
 LABEL_11:
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       return v8;
     }
@@ -1067,7 +1067,7 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  if (![(CoreIRDeviceProvider *)self setMappingWithSession:a3 error:a4])
+  if (![(CoreIRDeviceProvider *)self setMappingWithSession:session error:error])
   {
     v7 = 0;
     goto LABEL_11;
@@ -1081,18 +1081,18 @@ LABEL_11:
 
   v7 = 0;
   v8 = 1;
-  if (a4)
+  if (error)
   {
 LABEL_5:
-    *a4 = v7;
+    *error = v7;
   }
 
   return v8;
 }
 
-- ($E9D0CE23C4879AFD1046A22AEC3FB8EC)_findButtonWithCommand:(unint64_t)a3
+- ($E9D0CE23C4879AFD1046A22AEC3FB8EC)_findButtonWithCommand:(unint64_t)command
 {
-  if (!a3)
+  if (!command)
   {
     return 0;
   }
@@ -1103,7 +1103,7 @@ LABEL_5:
     return 0;
   }
 
-  for (result = self->_buttonArray; result->var5 != a3; ++result)
+  for (result = self->_buttonArray; result->var5 != command; ++result)
   {
     if (!--buttonCount)
     {
@@ -1114,33 +1114,33 @@ LABEL_5:
   return result;
 }
 
-- (int)_setInfraredCommandPattern:(id)a3 repeatPattern:(id)a4 forCommand:(unint64_t)a5
+- (int)_setInfraredCommandPattern:(id)pattern repeatPattern:(id)repeatPattern forCommand:(unint64_t)command
 {
   result = -6705;
-  if (!a4)
+  if (!repeatPattern)
   {
     return result;
   }
 
-  if (!a3)
+  if (!pattern)
   {
     return result;
   }
 
-  v8 = a5;
-  if (!a5)
+  commandCopy = command;
+  if (!command)
   {
     return result;
   }
 
-  if (![a3 sequenceCount] || !objc_msgSend(a4, "sequenceCount"))
+  if (![pattern sequenceCount] || !objc_msgSend(repeatPattern, "sequenceCount"))
   {
     return -6705;
   }
 
-  if (v8 != 46)
+  if (commandCopy != 46)
   {
-    v13 = [(CoreIRDeviceProvider *)self _findButtonWithCommand:v8];
+    v13 = [(CoreIRDeviceProvider *)self _findButtonWithCommand:commandCopy];
     if (v13)
     {
       v11 = v13;
@@ -1172,30 +1172,30 @@ LABEL_12:
 
   v11 = v10;
   v12 = 0;
-  v8 = 46;
+  commandCopy = 46;
 LABEL_14:
-  v11->command = v8;
+  v11->command = commandCopy;
 LABEL_15:
-  v15 = malloc_type_malloc(8 * [a3 sequenceCount], 0x100004000313F17uLL);
+  v15 = malloc_type_malloc(8 * [pattern sequenceCount], 0x100004000313F17uLL);
   if (!v15)
   {
     return -6729;
   }
 
   v16 = v15;
-  if ([a3 sequenceCount])
+  if ([pattern sequenceCount])
   {
     v17 = 0;
     do
     {
-      v16[v17] = *([a3 sequence] + 8 * v17);
+      v16[v17] = *([pattern sequence] + 8 * v17);
       ++v17;
     }
 
-    while (v17 < [a3 sequenceCount]);
+    while (v17 < [pattern sequenceCount]);
   }
 
-  v18 = malloc_type_malloc(8 * [a4 sequenceCount], 0x100004000313F17uLL);
+  v18 = malloc_type_malloc(8 * [repeatPattern sequenceCount], 0x100004000313F17uLL);
   if (!v18)
   {
     free(v16);
@@ -1203,19 +1203,19 @@ LABEL_15:
   }
 
   v19 = v18;
-  if ([a4 sequenceCount])
+  if ([repeatPattern sequenceCount])
   {
     v20 = 0;
     do
     {
-      v19[v20] = *([a4 sequence] + 8 * v20);
+      v19[v20] = *([repeatPattern sequence] + 8 * v20);
       ++v20;
     }
 
-    while (v20 < [a4 sequenceCount]);
+    while (v20 < [repeatPattern sequenceCount]);
   }
 
-  if ([(CoreIRDeviceProvider *)self setInfraredCommand:a3 forCommand:v11->command error:0])
+  if ([(CoreIRDeviceProvider *)self setInfraredCommand:pattern forCommand:v11->command error:0])
   {
     commandArray = v11->commandArray;
     if (commandArray)
@@ -1231,10 +1231,10 @@ LABEL_15:
 
     v11->commandArray = v16;
     v11->repeatArray = v19;
-    v11->commandCount = [a3 sequenceCount];
-    v23 = [a4 sequenceCount];
+    v11->commandCount = [pattern sequenceCount];
+    sequenceCount = [repeatPattern sequenceCount];
     result = 0;
-    v11->repeatCount = v23;
+    v11->repeatCount = sequenceCount;
     v11->matchIndex = 0;
     if (v12)
     {
@@ -1253,44 +1253,44 @@ LABEL_15:
   return result;
 }
 
-- (void)handleIRCommand:(id)a3
+- (void)handleIRCommand:(id)command
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(CoreIRDeviceProvider *)self busProvider];
+  busProvider = [(CoreIRDeviceProvider *)self busProvider];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    v16 = a3;
+    commandCopy = command;
     LogPrintF();
   }
 
   if (isKindOfClass)
   {
-    if ([a3 isRepeat])
+    if ([command isRepeat])
     {
-      if ([v5 lastAppleRemote])
+      if ([busProvider lastAppleRemote])
       {
-        [objc_msgSend(v5 "lastAppleRemote")];
+        [objc_msgSend(busProvider "lastAppleRemote")];
       }
     }
 
     else
     {
-      v7 = [v5 appleIRDeviceWithUID:objc_msgSend(a3 create:{"deviceUID"), 1}];
+      v7 = [busProvider appleIRDeviceWithUID:objc_msgSend(command create:{"deviceUID"), 1}];
       if (!v7)
       {
         goto LABEL_26;
       }
 
       v8 = v7;
-      if ([v7 dispatchEventsForCommand:a3 toDevice:self])
+      if ([v7 dispatchEventsForCommand:command toDevice:self])
       {
-        [v5 didDispatchCommandFromAppleRemote:v8];
+        [busProvider didDispatchCommandFromAppleRemote:v8];
       }
     }
 
-    if (![a3 isRepeat])
+    if (![command isRepeat])
     {
       goto LABEL_26;
     }
@@ -1300,8 +1300,8 @@ LABEL_15:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v5 thirdPartyRemotes];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  thirdPartyRemotes = [busProvider thirdPartyRemotes];
+  v10 = [thirdPartyRemotes countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1312,7 +1312,7 @@ LABEL_15:
     {
       if (*v19 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(thirdPartyRemotes);
       }
 
       v14 = *(*(&v18 + 1) + 8 * v13);
@@ -1322,14 +1322,14 @@ LABEL_15:
         LogPrintF();
       }
 
-      if ([v14 dispatchEventsForCommand:a3 toDevice:{self, v17}])
+      if ([v14 dispatchEventsForCommand:command toDevice:{self, v17}])
       {
         break;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [thirdPartyRemotes countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           goto LABEL_15;

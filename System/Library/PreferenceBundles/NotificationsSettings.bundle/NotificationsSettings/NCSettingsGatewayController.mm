@@ -1,14 +1,14 @@
 @interface NCSettingsGatewayController
 + (id)sharedInstance;
 - (NCSettingsGatewayController)init;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
-- (void)_applicationWillEnterForegroundNotification:(id)a3;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
+- (void)_applicationWillEnterForegroundNotification:(id)notification;
 - (void)_createSettingsObserverIfNeeded;
 - (void)_invalidateSettingsObserver;
-- (void)addObserver:(id)a3;
-- (void)observer:(id)a3 updateGlobalSettings:(id)a4;
-- (void)observer:(id)a3 updateSectionInfo:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)observer:(id)observer updateGlobalSettings:(id)settings;
+- (void)observer:(id)observer updateSectionInfo:(id)info;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NCSettingsGatewayController
@@ -79,77 +79,77 @@
   self->_settingsObserver = 0;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_AAB0;
   v7[3] = &unk_4D0D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_AB54;
   v7[3] = &unk_4D0D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_applicationWillEnterForegroundNotification:(id)a3
+- (void)_applicationWillEnterForegroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_ABF8;
   v7[3] = &unk_4D0D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_AC9C;
   v7[3] = &unk_4D0D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)observer:(id)a3 updateSectionInfo:(id)a4
+- (void)observer:(id)observer updateSectionInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_AD58;
   v8[3] = &unk_4D0D8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = infoCopy;
+  v7 = infoCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)observer:(id)a3 updateGlobalSettings:(id)a4
+- (void)observer:(id)observer updateGlobalSettings:(id)settings
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;

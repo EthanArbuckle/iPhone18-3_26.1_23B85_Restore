@@ -1,16 +1,16 @@
 @interface DAExclavesSupport
-+ (id)_eicStatusCheck:(id)a3;
++ (id)_eicStatusCheck:(id)check;
 + (id)_exDisplayPipeStats;
-+ (id)_stringForSensorStatus:(unsigned int)a3;
-+ (id)exclavesStatusForSensors:(unint64_t)a3;
-+ (id)testResultOverrideForExclavesStatus:(id)a3 originalResult:(id)a4;
++ (id)_stringForSensorStatus:(unsigned int)status;
++ (id)exclavesStatusForSensors:(unint64_t)sensors;
++ (id)testResultOverrideForExclavesStatus:(id)status originalResult:(id)result;
 @end
 
 @implementation DAExclavesSupport
 
-+ (id)exclavesStatusForSensors:(unint64_t)a3
++ (id)exclavesStatusForSensors:(unint64_t)sensors
 {
-  v3 = a3;
+  sensorsCopy = sensors;
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = MGGetBoolAnswer();
   if (v6)
@@ -29,9 +29,9 @@
     goto LABEL_12;
   }
 
-  if ((v3 & 1) == 0)
+  if ((sensorsCopy & 1) == 0)
   {
-    if ((v3 & 2) == 0)
+    if ((sensorsCopy & 2) == 0)
     {
       goto LABEL_7;
     }
@@ -40,7 +40,7 @@ LABEL_16:
     v14 = [DAExclavesSupport _eicStatusCheck:@"com.apple.sensors.cam"];
     [v5 setObject:v14 forKeyedSubscript:@"camera"];
 
-    if ((v3 & 4) == 0)
+    if ((sensorsCopy & 4) == 0)
     {
       goto LABEL_9;
     }
@@ -51,13 +51,13 @@ LABEL_16:
   v13 = [DAExclavesSupport _eicStatusCheck:@"com.apple.sensors.mic"];
   [v5 setObject:v13 forKeyedSubscript:@"mic"];
 
-  if ((v3 & 2) != 0)
+  if ((sensorsCopy & 2) != 0)
   {
     goto LABEL_16;
   }
 
 LABEL_7:
-  if ((v3 & 4) != 0)
+  if ((sensorsCopy & 4) != 0)
   {
 LABEL_8:
     v8 = [DAExclavesSupport _eicStatusCheck:@"com.apple.sensors.cam_alt_faceid"];
@@ -65,10 +65,10 @@ LABEL_8:
   }
 
 LABEL_9:
-  v9 = [a1 _exDisplayPipeStats];
-  if (v9)
+  _exDisplayPipeStats = [self _exDisplayPipeStats];
+  if (_exDisplayPipeStats)
   {
-    [v5 setObject:v9 forKeyedSubscript:@"displayPipeStats"];
+    [v5 setObject:_exDisplayPipeStats forKeyedSubscript:@"displayPipeStats"];
   }
 
 LABEL_12:
@@ -80,13 +80,13 @@ LABEL_12:
   return v11;
 }
 
-+ (id)testResultOverrideForExclavesStatus:(id)a3 originalResult:(id)a4
++ (id)testResultOverrideForExclavesStatus:(id)status originalResult:(id)result
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToNumber:&off_10000CA38] & 1) != 0 && v5)
+  statusCopy = status;
+  resultCopy = result;
+  if (([resultCopy isEqualToNumber:&off_10000CA38] & 1) != 0 && statusCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:@"exclavesStatus"];
+    v7 = [statusCopy objectForKeyedSubscript:@"exclavesStatus"];
     v8 = v7;
     if (v7)
     {
@@ -146,33 +146,33 @@ LABEL_22:
           }
         }
 
-        v15 = v6;
+        v15 = resultCopy;
 LABEL_23:
       }
 
       else
       {
-        v15 = v6;
+        v15 = resultCopy;
       }
     }
 
     else
     {
-      v15 = v6;
+      v15 = resultCopy;
     }
   }
 
   else
   {
-    v15 = v6;
+    v15 = resultCopy;
   }
 
   return v15;
 }
 
-+ (id)_eicStatusCheck:(id)a3
++ (id)_eicStatusCheck:(id)check
 {
-  [a3 cStringUsingEncoding:4];
+  [check cStringUsingEncoding:4];
   if (exclaves_sensor_create() || (v3 = exclaves_sensor_status(), mach_port_deallocate(mach_task_self_, 0), v3))
   {
     v4 = @"unknown";
@@ -186,16 +186,16 @@ LABEL_23:
   return v4;
 }
 
-+ (id)_stringForSensorStatus:(unsigned int)a3
++ (id)_stringForSensorStatus:(unsigned int)status
 {
-  if (a3 - 1 > 3)
+  if (status - 1 > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_10000C480 + a3 - 1);
+    return *(&off_10000C480 + status - 1);
   }
 }
 

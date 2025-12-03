@@ -1,8 +1,8 @@
 @interface PrivacyProxyNetworkStatusTime
-- (PrivacyProxyNetworkStatusTime)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PrivacyProxyNetworkStatusTime)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PrivacyProxyNetworkStatusTime
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PrivacyProxyNetworkStatusTime allocWithZone:?]];
   v5 = v4;
@@ -50,23 +50,23 @@
   return v5;
 }
 
-- (PrivacyProxyNetworkStatusTime)initWithCoder:(id)a3
+- (PrivacyProxyNetworkStatusTime)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PrivacyProxyNetworkStatusTime;
   v5 = [(PrivacyProxyNetworkStatusTime *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyNetworkStatusTimeNetworkStatus"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyNetworkStatusTimeNetworkStatus"];
     networkStatus = v5->_networkStatus;
     v5->_networkStatus = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyNetworkStatusTimeNetworkStartTime"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyNetworkStatusTimeNetworkStartTime"];
     networkStatusStartTime = v5->_networkStatusStartTime;
     v5->_networkStatusStartTime = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyNetworkStatusTimeNetworkEndTime"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyNetworkStatusTimeNetworkEndTime"];
     networkStatusEndTime = v5->_networkStatusEndTime;
     v5->_networkStatusEndTime = v10;
 
@@ -86,24 +86,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_networkStatus forKey:@"PrivacyProxyNetworkStatusTimeNetworkStatus"];
-    [v5 encodeObject:self->_networkStatusStartTime forKey:@"PrivacyProxyNetworkStatusTimeNetworkStartTime"];
+    [coderCopy encodeObject:self->_networkStatus forKey:@"PrivacyProxyNetworkStatusTimeNetworkStatus"];
+    [coderCopy encodeObject:self->_networkStatusStartTime forKey:@"PrivacyProxyNetworkStatusTimeNetworkStartTime"];
     networkStatusEndTime = self->_networkStatusEndTime;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"PrivacyProxyNetworkStatusTimeNetworkStatus"];
-    [v5 encodeObject:0 forKey:@"PrivacyProxyNetworkStatusTimeNetworkStartTime"];
+    [coderCopy encodeObject:0 forKey:@"PrivacyProxyNetworkStatusTimeNetworkStatus"];
+    [coderCopy encodeObject:0 forKey:@"PrivacyProxyNetworkStatusTimeNetworkStartTime"];
     networkStatusEndTime = 0;
   }
 
-  [v5 encodeObject:networkStatusEndTime forKey:@"PrivacyProxyNetworkStatusTimeNetworkEndTime"];
+  [coderCopy encodeObject:networkStatusEndTime forKey:@"PrivacyProxyNetworkStatusTimeNetworkEndTime"];
 }
 
 @end
